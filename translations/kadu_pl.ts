@@ -1100,8 +1100,8 @@
         <translation>Tryb cichy</translation>
     </message>
     <message>
-        <source>Disable notifications when my status is set to 'Do not Disturb'</source>
-        <translation>Wyłącz powiadomienia gdy ustawię status 'Nie przeszkadzać'</translation>
+        <source>Disable notifications when my status is set to &apos;Do not Disturb&apos;</source>
+        <translation>Wyłącz powiadomienia gdy ustawię status &apos;Nie przeszkadzać&apos;</translation>
     </message>
     <message>
         <source>Disable notifications when a fullscreen application is active</source>
@@ -1336,6 +1336,10 @@ po połączeniu się z serwerem</translation>
         <source>&amp;Close</source>
         <translation>&amp;Zamknij</translation>
     </message>
+    <message>
+        <source>Version %1</source>
+        <translation>Wersja %1</translation>
+    </message>
 </context>
 <context>
     <name>AccountAvatarWidget</name>
@@ -1397,6 +1401,18 @@ Eksport listy kontaktów na serwer się nie powiódł</translation>
     <message>
         <source>Select file</source>
         <translation>Wybierz plik</translation>
+    </message>
+    <message>
+        <source>Store to file</source>
+        <translation>Zapisz do pliku</translation>
+    </message>
+    <message>
+        <source>Kadu</source>
+        <translation>Kadu</translation>
+    </message>
+    <message>
+        <source>Contacts list couldn&apos;t be imported. File %0 doesn&apos;t contain correct contacts list.</source>
+        <translation>Lista kontaktów nie została zaimportowana. Plik %0 nie zawiera poprawnej listy kontaktów.</translation>
     </message>
 </context>
 <context>
@@ -1485,7 +1501,7 @@ Eksport listy kontaktów na serwer się nie powiódł</translation>
     </message>
 </context>
 <context>
-    <name>BuddiesListView</name>
+    <name>BuddiesListViewMenuManager</name>
     <message>
         <source>More Actions...</source>
         <translation>Więcej operacji...</translation>
@@ -1542,6 +1558,10 @@ Eksport listy kontaktów na serwer się nie powiódł</translation>
     <message>
         <source>Are you sure do you want to delete this contact from buddy &lt;b&gt;%1&lt;/b&gt;?</source>
 		<translation>Czy na pewno chcesz usunąc tego znajomego z użytkownia &lt;b&gt;%1&lt;/b&gt;?</translation>
+    </message>
+    <message>
+        <source>Kadu</source>
+        <translation>Kadu</translation>
     </message>
 </context>
 <context>
@@ -1667,6 +1687,10 @@ Eksport listy kontaktów na serwer się nie powiódł</translation>
         <source>Hide description</source>
         <translation>Ukryj opis</translation>
     </message>
+    <message>
+        <source>Block buddy</source>
+        <translation>Blokuj kontakt</translation>
+    </message>
 </context>
 <context>
     <name>BuddyPersonalInfoConfigurationWidget</name>
@@ -1761,6 +1785,10 @@ Some of them probably will not get it.</source>
 Czy na pewno chcesz wysłać ten obrazek?
 Niektórzy z nich na pewno go nie otrzymają.</translation>
     </message>
+    <message>
+        <source>Kadu</source>
+        <translation>Kadu</translation>
+    </message>
 </context>
 <context>
     <name>ChatNotification</name>
@@ -1806,6 +1834,10 @@ Niektórzy z nich na pewno go nie otrzymają.</translation>
         <source>Unable to remove style: %1</source>
         <translation>Nie można usunąć stylu %1</translation>
     </message>
+    <message>
+        <source>Kadu</source>
+        <translation>Kadu</translation>
+    </message>
 </context>
 <context>
     <name>ChatTypeConference</name>
@@ -1844,6 +1876,10 @@ Niektórzy z nich na pewno go nie otrzymają.</translation>
 from now on. Are you sure you want to leave this conference?</source>
         <translation>Wszystkie wiadomości w tej konferencji od tego momentu
 zostaną zignorowane. Czy na pewno chcesz opuścić konferencję?</translation>
+    </message>
+    <message>
+        <source>Kadu</source>
+        <translation>Kadu</translation>
     </message>
 </context>
 <context>
@@ -1926,6 +1962,10 @@ zostaną zignorowane. Czy na pewno chcesz opuścić konferencję?</translation>
         <source>New message received, close window anyway?</source>
         <translation>Otrzymano nową wiadomość, zamknąc mimo to?</translation>
     </message>
+    <message>
+        <source>Kadu</source>
+        <translation>Kadu</translation>
+    </message>
 </context>
 <context>
     <name>ChooseDescription</name>
@@ -1971,8 +2011,12 @@ zostaną zignorowane. Czy na pewno chcesz opuścić konferencję?</translation>
         <translation>Błąd połączenia</translation>
     </message>
     <message>
-        <source>&lt;b&gt;Error:&lt;/b&gt; (%1) %2</source>
-        <translation>&lt;b&gt;Błąd:&lt;/b&gt; (%1) %2</translation>
+        <source>&lt;b&gt;Connection error:&lt;/b&gt; %1</source>
+        <translation>&lt;b&gt;Błąd połączenia:&lt;/b&gt; %1</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Connection error:&lt;/b&gt; (%1) %2</source>
+        <translation>&lt;b&gt;Błąd połączenia:&lt;/b&gt; (%1) %2</translation>
     </message>
 </context>
 <context>
@@ -2093,6 +2137,10 @@ o rozmiarze &lt;b&gt;%3&lt;/b&gt; używając konta &lt;b&gt;%4&lt;/b&gt;.
 Jest to prawdopodobnie dalsza część pliku &lt;b&gt;%5&lt;/b&gt;
  Co powinienem zrobić?</translation>
     </message>
+    <message>
+        <source>Kadu</source>
+        <translation>Kadu</translation>
+    </message>
 </context>
 <context>
     <name>FileTransferWidget</name>
@@ -2148,6 +2196,10 @@ Jest to prawdopodobnie dalsza część pliku &lt;b&gt;%5&lt;/b&gt;
         <source>&lt;b&gt;Rejected&lt;/b&gt;</source>
         <translation>&lt;b&gt;Odrzucony&lt;/b&gt;</translation>
     </message>
+    <message>
+        <source>Kadu</source>
+        <translation>Kadu</translation>
+    </message>
 </context>
 <context>
     <name>FileTransferWindow</name>
@@ -2199,6 +2251,10 @@ Jest to prawdopodobnie dalsza część pliku &lt;b&gt;%5&lt;/b&gt;
     <message>
         <source>Group of that name already exists!</source>
         <translation>Grupa o tej nazwie już istnieje!</translation>
+    </message>
+    <message>
+        <source>Kadu</source>
+        <translation>Kadu</translation>
     </message>
 </context>
 <context>
@@ -2324,6 +2380,10 @@ Jest to prawdopodobnie dalsza część pliku &lt;b&gt;%5&lt;/b&gt;
         <translation>Wybrana grupa:
 %0 zostanie usunięta. Jesteś pewien?</translation>
     </message>
+    <message>
+        <source>Kadu</source>
+        <translation>Kadu</translation>
+    </message>
 </context>
 <context>
     <name>GroupsComboBox</name>
@@ -2361,6 +2421,14 @@ Jest to prawdopodobnie dalsza część pliku &lt;b&gt;%5&lt;/b&gt;
     <message>
         <source>Please enter the name for the new identity:</source>
         <translation>Podaj nazwę dla nowej identyfikacji:</translation>
+    </message>
+    <message>
+        <source>Kadu</source>
+        <translation>Kadu</translation>
+    </message>
+    <message>
+        <source>Identity of that name already exists!</source>
+        <translation>Kontakt o podanej nazwie już istnieje!</translation>
     </message>
 </context>
 <context>
@@ -2414,6 +2482,10 @@ Jest to prawdopodobnie dalsza część pliku &lt;b&gt;%5&lt;/b&gt;
     <message>
         <source>Cannot save image: %1</source>
         <translation>Nie można zapisać obrazka: %1</translation>
+    </message>
+    <message>
+        <source>Kadu</source>
+        <translation>Kadu</translation>
     </message>
 </context>
 <context>
@@ -2593,6 +2665,29 @@ Jest to prawdopodobnie dalsza część pliku &lt;b&gt;%5&lt;/b&gt;
 ][Tel. kom.: %m
 ]</translation>
     </message>
+    <message>
+        <source>Your Accounts...</source>
+        <translation>Twoje konta...</translation>
+    </message>
+    <message>
+        <source>Show Blocked Buddies</source>
+        <translation>Pokaż zablokowane kontakty</translation>
+    </message>
+    <message>
+        <source>Show descriptions</source>
+        <translation>Pokazuj opisy</translation>
+    </message>
+    <message>
+        <source>Hide descriptions</source>
+        <translation>Ukryj opisy</translation>
+    </message>
+</context>
+<context>
+    <name>LineEditWithClearButton</name>
+    <message>
+        <source>Clear current text in the line edit.</source>
+        <translation>Wyczyść wprowadzony tekst.</translation>
+    </message>
 </context>
 <context>
     <name>MainConfigurationWindow</name>
@@ -2707,6 +2802,10 @@ Być może nie jest to moduł kompatybilny z Kadu.</translation>
         <source>Module initialization routine for %1 failed.</source>
         <translation>Inicjacja modułu %1 nieudana.</translation>
     </message>
+    <message>
+        <source>Kadu</source>
+        <translation>Kadu</translation>
+    </message>
 </context>
 <context>
     <name>ModulesWindow</name>
@@ -2809,6 +2908,10 @@ Jeśli zechcesz włączyć (lub wyłączyć) któryś z nich, wystarczy dwukrotn
     <message>
         <source>Unable to find notifier for %1 event</source>
         <translation>Nie znaleziono modułu powiadamiającego dla zdarzenia %1</translation>
+    </message>
+    <message>
+        <source>Kadu</source>
+        <translation>Kadu</translation>
     </message>
 </context>
 <context>
@@ -3065,7 +3168,7 @@ Jeśli zechcesz włączyć (lub wyłączyć) któryś z nich, wystarczy dwukrotn
         <translation>&amp;Rozmowa</translation>
     </message>
     <message>
-        <source>For this network we don't offer contacts search feature yet</source>
+        <source>For this network we don&apos;t offer contacts search feature yet</source>
         <translation>Dla tej sieci nie oferujemy wyszukiwania kontaktów</translation>
     </message>
     <message>
@@ -3083,6 +3186,14 @@ Jeśli zechcesz włączyć (lub wyłączyć) któryś z nich, wystarczy dwukrotn
     <message>
         <source>There were no results of your search</source>
         <translation>Nie było żadnych wyników Twojego wyszukiwania</translation>
+    </message>
+    <message>
+        <source>Kadu</source>
+        <translation>Kadu</translation>
+    </message>
+    <message>
+        <source>We don&apos;t offer contacts search feature yet for this network</source>
+        <translation>Nie oferujemy jeszcze wyszukiwania kontaktów dla tej sieci</translation>
     </message>
 </context>
 <context>
@@ -3200,6 +3311,10 @@ Jeśli zechcesz włączyć (lub wyłączyć) któryś z nich, wystarczy dwukrotn
         <source>Unable to remove syntax: %1</source>
         <translation>Nie można usunąć składni %1</translation>
     </message>
+    <message>
+        <source>Kadu</source>
+        <translation>Kadu</translation>
+    </message>
 </context>
 <context>
     <name>SyntaxEditorWindow</name>
@@ -3238,6 +3353,17 @@ Jeśli zechcesz włączyć (lub wyłączyć) któryś z nich, wystarczy dwukrotn
     <message>
         <source>Overwrite %1 syntax?</source>
         <translation>Nadpisać składnię %1?</translation>
+    </message>
+    <message>
+        <source>Kadu</source>
+        <translation>Kadu</translation>
+    </message>
+</context>
+<context>
+    <name>ThemeManager</name>
+    <message>
+        <source>None</source>
+        <translation>Brak</translation>
     </message>
 </context>
 <context>
@@ -3303,15 +3429,50 @@ Jeśli zechcesz włączyć (lub wyłączyć) któryś z nich, wystarczy dwukrotn
         <translation>Blokuj paski narzędziowe</translation>
     </message>
     <message>
-        <source>Do you really want to remove this toolbar?</source>
+        <source>Kadu</source>
+        <translation>Kadu</translation>
+    </message>
+    <message>
+        <source>Do you really want to remove selected toolbar?</source>
         <translation>Czy na pewno chcesz usunąć ten pasek narzędziowy?</translation>
     </message>
 </context>
 <context>
-    <name>Updates</name>
+    <name>UpdatesDialog</name>
     <message>
-        <source>The newest Kadu version is %1</source>
-        <translation>Najnowszą wersją Kadu jest %1</translation>
+        <source>New version is available. Please update</source>
+        <translation>Dostępna jest nowa wersja. Proszę zaktualizować</translation>
+    </message>
+    <message>
+        <source>A new version %1 of Kadu Instant Messenger is available for download. Please &lt;a href=&apos;download&apos;&gt;download&lt;/a&gt; an installer and upgrade or use your package management system to update Kadu.</source>
+        <translation>Nowa wersja %1 Kadu jest dostępna do pobrania. Proszę &lt;a href=&apos;download&apos;&gt;pobrać&lt;/a&gt; instalator i zaktualizować program albo skorzystać z narzędzi systemowych do aktualizacji pakietów.</translation>
+    </message>
+    <message>
+        <source>A new version %1 of Kadu Instant Messenger is available for download. Please &lt;a href=&apos;download&apos;&gt;download&lt;/a&gt; an installer and upgrade.</source>
+        <translation>Nowa wersja %1 Kadu jest dostępna do pobrania. Proszę &lt;a href=&apos;download&apos;&gt;pobrać&lt;/a&gt; instalator i zaktualizować program.</translation>
+    </message>
+    <message>
+        <source>Check for updates when Kadu is opened</source>
+        <translation>Sprawdzaj aktualizacje</translation>
+    </message>
+    <message>
+        <source>Ok</source>
+        <translation>Ok</translation>
+    </message>
+</context>
+<context>
+    <name>UrlOpener</name>
+    <message>
+        <source>Kadu</source>
+        <translation>Kadu</translation>
+    </message>
+    <message>
+        <source>Could not spawn Web browser process. Check if the Web browser is functional</source>
+        <translation>Nie można uruchomić przeglądarki. Sprawdź czy Twoja przeglądarka działa poprawnie</translation>
+    </message>
+    <message>
+        <source>Could not spawn Mail client process. Check if the Mail client is functional</source>
+        <translation>Nie można uruchomić klienta poczty. Sprawdź czy Twój klient poczty działa poprawnie</translation>
     </message>
 </context>
 <context>
