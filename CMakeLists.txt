@@ -252,6 +252,7 @@ find_package (Qt4 REQUIRED)
 set (QT_USE_QTXML 1)
 set (QT_USE_QTNETWORK 1)
 set (QT_USE_QTWEBKIT 1)
+set (QT_USE_QTSVG 1)
 include (${QT_USE_FILE})
 include_directories (${CMAKE_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/kadu-core ${QT_INCLUDES})
 

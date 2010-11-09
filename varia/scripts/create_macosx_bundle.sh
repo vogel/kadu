@@ -115,6 +115,7 @@ Plugins = plugins" > ${RSC_DIR}/qt.conf
 mkdir -p ${CNT_DIR}/plugins/imageformats
 mkdir -p ${CNT_DIR}/plugins/sqldrivers
 mkdir -p ${CNT_DIR}/plugins/crypto
+mkdir -p ${CNT_DIR}/plugins/iconengines
 
 FM_DIR=${CNT_DIR}/Frameworks
 mkdir ${FM_DIR}
@@ -162,6 +163,18 @@ if [ -f ${QTDIR}/lib/QtSql.framework/versions/4/QtSql ]; then
 	echo "log: copying QtSql library"
 	cp ${QTDIR}/lib/QtSql.framework/versions/4/QtSql ${FM_DIR}
 	install_name_tool -id @executable_path/../Frameworks/QtSql ${FM_DIR}/QtSql
+fi
+
+if [ -f ${QTDIR}/lib/QtSvg.framework/versions/4/QtSvg ]; then
+	echo "log: copying QtSvg library"
+	cp ${QTDIR}/lib/QtSvg.framework/versions/4/QtSvg ${FM_DIR}
+	install_name_tool -id @executable_path/../Frameworks/QtSvg ${FM_DIR}/QtSvg
+fi
+
+if [ -f ${QTDIR}/lib/QtScript.framework/versions/4/QtScript ]; then
+	echo "log: copying QtScript library"
+	cp ${QTDIR}/lib/QtScript.framework/versions/4/QtScript ${FM_DIR}
+	install_name_tool -id @executable_path/../Frameworks/QtScript ${FM_DIR}/QtScript
 fi
 
 if [ -f ${QTDIR}/lib/QtNetwork.framework/versions/4/QtNetwork ]; then
@@ -220,6 +233,12 @@ if [ -f ${QTDIR}/plugins/sqldrivers/libqsqlite.dylib ]; then
 	cp -f  ${QTDIR}/plugins/sqldrivers/libqsqlite.dylib ${CNT_DIR}/plugins/sqldrivers/libqsqlite.dylib
 fi
 
+if [ -f ${QTDIR}/plugins/iconengines/libqsvgicon.dylib ]; then
+	echo "log: copying Qt icon engines plugins"
+	cp -f ${QTDIR}/plugins/iconengines/libqsvgicon.dylib ${CNT_DIR}/plugins/iconengines/libqsvgicon.dylib
+	
+fi
+
 if [ -f ${SNDFILEPATH}/lib/libsndfile.1.dylib ]; then
 	echo "log: copying sndfile library"
 	cp ${SNDFILEPATH}/lib/libsndfile.1.dylib ${FM_DIR}
@@ -240,26 +259,24 @@ fi
 
 cd ${FM_DIR}
 echo "log: changing framework bindings"
-install_name_tool -change ${QTDIR}/lib/QtSql.framework/Versions/4/QtSql @executable_path/../Frameworks/QtSql ./QtCore
-#install_name_tool -change ${QTDIR}/lib/QtSql.framework/Versions/4/QtSql @executable_path/../Frameworks/QtSql ./Qt3Support
-#install_name_tool -change ${QTDIR}/lib/QtXml.framework/Versions/4/QtXml @executable_path/../Frameworks/QtXml ./Qt3Support
-#install_name_tool -change ${QTDIR}/lib/QtGui.framework/Versions/4/QtGui @executable_path/../Frameworks/QtGui ./Qt3Support
-#install_name_tool -change ${QTDIR}/lib/QtNetwork.framework/Versions/4/QtNetwork @executable_path/../Frameworks/QtNetwork ./Qt3Support
-#install_name_tool -change ${QTDIR}/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore ./Qt3Support
+install_name_tool -change ${QTDIR}/lib/QtSql.framework/Versions/4/QtSql   @executable_path/../Frameworks/QtSql  ./QtCore
+install_name_tool -change ${QTDIR}/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore ./QtSvg
+install_name_tool -change ${QTDIR}/lib/QtGui.framework/Versions/4/QtGui   @executable_path/../Frameworks/QtGui  ./QtSvg
 install_name_tool -change ${QTDIR}/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore ./QtSql
+install_name_tool -change ${QTDIR}/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore ./QtScript
 install_name_tool -change ${QTDIR}/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore ./QtXml
 install_name_tool -change ${QTDIR}/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore ./QtGui
 install_name_tool -change ${QTDIR}/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore ./QtWebKit
 install_name_tool -change ${QTDIR}/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore ./QtWebKit
 install_name_tool -change ${QTDIR}/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore ./QtNetwork
-install_name_tool -change ${QTDIR}/lib/QtGui.framework/Versions/4/QtGui @executable_path/../Frameworks/QtGui ./QtWebKit
+install_name_tool -change ${QTDIR}/lib/QtGui.framework/Versions/4/QtGui   @executable_path/../Frameworks/QtGui  ./QtWebKit
 install_name_tool -change ${QTDIR}/lib/QtXmlPatterns.framework/Versions/4/QtXmlPatterns @executable_path/../Frameworks/QtXmlPatterns ./QtWebKit
 install_name_tool -change ${QTDIR}/lib/QtNetwork.framework/Versions/4/QtNetwork @executable_path/../Frameworks/QtNetwork ./QtWebKit
 install_name_tool -change ${QTDIR}/lib/phonon.framework/Versions/4/phonon @executable_path/../Frameworks/phonon ./QtWebKit
 install_name_tool -change ${QTDIR}/lib/QtDBus.framework/Versions/4/QtDBus @executable_path/../Frameworks/QtDBus ./QtWebKit
-install_name_tool -change ${QTDIR}/lib/QtXml.framework/Versions/4/QtXml @executable_path/../Frameworks/QtXml ./QtWebKit
+install_name_tool -change ${QTDIR}/lib/QtXml.framework/Versions/4/QtXml   @executable_path/../Frameworks/QtXml  ./QtWebKit
 install_name_tool -change ${QTDIR}/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore ./phonon
-install_name_tool -change ${QTDIR}/lib/QtGui.framework/Versions/4/QtGui @executable_path/../Frameworks/QtGui ./phonon
+install_name_tool -change ${QTDIR}/lib/QtGui.framework/Versions/4/QtGui   @executable_path/../Frameworks/QtGui  ./phonon
 install_name_tool -change ${QTDIR}/lib/QtNetwork.framework/Versions/4/QtNetwork @executable_path/../Frameworks/QtNetwork ./QtXmlPatterns
 install_name_tool -change ${QTDIR}/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore ./QtXmlPatterns
 
@@ -292,6 +309,12 @@ install_name_tool -change ${QTDIR}/lib/QtXml.framework/Versions/4/QtXml   @execu
 install_name_tool -change ${QTDIR}/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore ./libqtiff.dylib
 install_name_tool -change ${QTDIR}/lib/QtGui.framework/Versions/4/QtGui   @executable_path/../Frameworks/QtGui  ./libqtiff.dylib
 
+cd ${CNT_DIR}/plugins/iconengines
+install_name_tool -change ${QTDIR}/lib/QtGui.framework/Versions/4/QtGui   @executable_path/../Frameworks/QtGui  ./libqsvgicon.dylib
+install_name_tool -change ${QTDIR}/lib/QtSvg.framework/Versions/4/QtSvg   @executable_path/../Frameworks/QtSvg  ./libqsvgicon.dylib
+install_name_tool -change ${QTDIR}/lib/QtXml.framework/Versions/4/QtXml   @executable_path/../Frameworks/QtXml  ./libqsvgicon.dylib
+install_name_tool -change ${QTDIR}/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore ./libqsvgicon.dylib
+
 cd  ${CNT_DIR}/plugins/sqldrivers
 install_name_tool -change ${QTDIR}/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore ./libqsqlite.dylib
 install_name_tool -change ${QTDIR}/lib/QtSql.framework/Versions/4/QtSql @executable_path/../Frameworks/QtSql ./libqsqlite.dylib
@@ -323,6 +346,15 @@ fi
 if [ -f ${DEST}/Kadu.app/kadu/modules/libgadu_protocol.so ]; then
 	install_name_tool -change ${LIBGADU}/lib/libgadu.3.dylib @executable_path/../Frameworks/libgadu.3.dylib ${DEST}/Kadu.app/kadu/modules/libgadu_protocol.so
 	install_name_tool -change ${QCADIR}/lib/libqca.2.dylib @executable_path/../Frameworks/libqca.2.dylib ${DEST}/Kadu.app/kadu/modules/libgadu_protocol.so
+
+	install_name_tool -change ${QTDIR}/lib/QtWebKit.framework/Versions/4/QtWebKit @executable_path/../Frameworks/QtWebKit ${DEST}/Kadu.app/kadu/modules/libgadu_protocol.so
+	install_name_tool -change ${QTDIR}/lib/QtGui.framework/Versions/4/QtGui @executable_path/../Frameworks/QtGui ${DEST}/Kadu.app/kadu/modules/libgadu_protocol.so
+	install_name_tool -change ${QTDIR}/lib/QtXml.framework/Versions/4/QtXml @executable_path/../Frameworks/QtXml ${DEST}/Kadu.app/kadu/modules/libgadu_protocol.so
+	install_name_tool -change ${QTDIR}/lib/QtXmlPatterns.framework/Versions/4/QtXmlPatterns @executable_path/../Frameworks/QtXmlPatterns ${DEST}/Kadu.app/kadu/modules/libgadu_protocol.so
+	install_name_tool -change ${QTDIR}/lib/QtNetwork.framework/Versions/4/QtNetwork @executable_path/../Frameworks/QtNetwork ${DEST}/Kadu.app/kadu/modules/libgadu_protocol.so
+	install_name_tool -change ${QTDIR}/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore ${DEST}/Kadu.app/kadu/modules/libgadu_protocol.so
+	install_name_tool -change ${QTDIR}/lib/QtScript.framework/Versions/4/QtScript @executable_path/../Frameworks/QtScript ${DEST}/Kadu.app/kadu/modules/libgadu_protocol.so
+
 fi
 
 if [ -f  ${DEST}/Kadu.app/kadu/modules/libjabber_protocol.so ]; then
