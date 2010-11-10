@@ -431,7 +431,7 @@ void ChatStylesManager::styleChangedSlot(const QString &styleName)
 	VariantListCombo->clear();
 	VariantListCombo->addItems(engine->styleVariants(styleName));
 
-	QString currentVariant = CurrentEngine->defaultVariant(styleName);
+	QString currentVariant = AvailableStyles[SyntaxListCombo->currentText()].engine->defaultVariant(styleName);
 	if (!currentVariant.isEmpty() && VariantListCombo->findText(currentVariant) == -1)
 		VariantListCombo->insertItem(0, currentVariant);
 
