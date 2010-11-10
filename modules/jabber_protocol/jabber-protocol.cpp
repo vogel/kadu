@@ -182,6 +182,7 @@ void JabberProtocol::initializeJabberClient()
 		   this, SLOT(clientResourceReceived(const XMPP::Jid &, const XMPP::Resource &)));
 
 	connect(JabberClient, SIGNAL(connectionError(QString)), this, SLOT(connectionErrorSlot(QString)));
+	connect(JabberClient, SIGNAL(invalidPassword()), this, SLOT(invalidPasswordSlot()));
 
 		/*//TODO: implement in the future
 		connect( JabberClient, SIGNAL ( groupChatJoined ( const XMPP::Jid & ) ),
@@ -210,6 +211,11 @@ void JabberProtocol::connectionErrorSlot(const QString& message)
 {
 	if (JabberClient && JabberClient->clientConnector())
 		emit connectionError(account(), JabberClient->clientConnector()->host(), message);
+}
+
+void JabberProtocol::invalidPasswordSlot()
+{
+	emit invalidPassword(account());
 }
 
 void JabberProtocol::connectToServer()

@@ -31,6 +31,7 @@
 #include "core/core.h"
 #include "notify/notification-manager.h"
 #include "protocols/connection-error-notification.h"
+#include "protocols/invalid-password-notification.h"
 #include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocols-manager.h"
@@ -98,6 +99,8 @@ void AccountManager::itemRegistered(Account item)
 	AccountsAwareObject::notifyAccountRegistered(item);
 	connect(item.protocolHandler(), SIGNAL(connectionError(Account, const QString &, const QString &)),
 			this, SLOT(connectionError(Account, const QString &, const QString &)));
+	connect(item.protocolHandler(), SIGNAL(invalidPassword(Account)),
+			this, SLOT(invalidPassword(Account)));
 
 	emit accountRegistered(item);
 }
@@ -109,6 +112,8 @@ void AccountManager::itemAboutToBeUnregisterd(Account item)
 	AccountsAwareObject::notifyAccountUnregistered(item);
 	disconnect(item.protocolHandler(), SIGNAL(connectionError(Account, const QString &, const QString &)),
 			this, SLOT(connectionError(Account, const QString &, const QString &)));
+	disconnect(item.protocolHandler(), SIGNAL(invalidPassword(Account)),
+			this, SLOT(invalidPassword(Account)));
 
 	emit accountAboutToBeUnregistered(item);
 }
@@ -216,7 +221,17 @@ void AccountManager::connectionError(Account account, const QString &server, con
 				server, message);
 		NotificationManager::instance()->notify(connectionErrorNotification);
 	}
+}
 
+void AccountManager::invalidPassword(Account account)
+{
+	QMutexLocker(&mutex());
+
+	if (!InvalidPasswordNotification::activeError(account))
+	{
+		InvalidPasswordNotification *invalidPasswordNotification = new InvalidPasswordNotification(account);
+		NotificationManager::instance()->notify(invalidPasswordNotification);
+	}
 }
 
 void AccountManager::removeAccountAndBuddies(Account account)

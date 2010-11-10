@@ -150,6 +150,8 @@ signals:
 
 // TODO: REVIEW
 	void connectionError(Account account, const QString &server, const QString &reason);
+	void invalidPassword(Account account);
+	
 
 };
 

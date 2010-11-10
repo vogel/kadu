@@ -518,6 +518,7 @@ signals:
 	void csAuthenticated();
 
 	void connectionError(const QString &message);
+	void invalidPassword();
 
 	/**
 	 * Client stream error.

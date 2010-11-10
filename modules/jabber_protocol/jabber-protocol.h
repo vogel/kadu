@@ -102,6 +102,7 @@ private slots:
 	void itemRetracted(const XMPP::Jid& j, const QString& n, const XMPP::PubSubRetraction& item);
 
 	void connectionErrorSlot(const QString &message);
+	void invalidPasswordSlot();
 
 protected:
 	virtual void changeStatus();

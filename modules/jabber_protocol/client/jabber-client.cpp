@@ -675,7 +675,7 @@ void JabberClient::slotCSError(int error)
 	{
 		kdebug("Incorrect password, retrying.\n");
 		Protocol->logout(/*Kopete::Account::BadPassword*/);
-		emit connectionError(tr("Incorrect password"));
+		emit invalidPassword();
 	}
 	else
 	{
