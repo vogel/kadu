@@ -188,10 +188,21 @@ void ChatStylesManager::configurationUpdated()
 	// if Style was changed, load new Style
 	if (!CurrentEngine || CurrentEngine->currentStyleName() != newStyleName || CurrentEngine->currentStyleVariant() != newVariantName)
 	{
-		if (!AvailableStyles.contains(newStyleName))// if Style not exists load kadu Style
-			newStyleName = "kadu";
-		if (AvailableStyles[newStyleName].engine != CurrentEngine)
-			CurrentEngine = AvailableStyles[newStyleName].engine;
+		if (!AvailableStyles.contains(newStyleName))
+		{
+			newStyleName = "Satin";
+			if (!AvailableStyles.contains(newStyleName))
+			{
+				newStyleName = "kadu";
+				if (!AvailableStyles.contains(newStyleName))
+					newStyleName = *AvailableStyles.keys().constBegin();
+			}
+		}
+		CurrentEngine = AvailableStyles[newStyleName].engine;
+
+		if (!CurrentEngine->styleVariants(newStyleName).contains(newVariantName))
+			newVariantName = CurrentEngine->defaultVariant(newStyleName);
+
 		CurrentEngine->loadStyle(newStyleName, newVariantName);
 	}
 	else if (CurrentEngine)
@@ -448,7 +459,7 @@ void ChatStylesManager::deleteStyleClicked()
 	{
 		AvailableStyles.remove(styleName);
 		SyntaxListCombo->removeItem(SyntaxListCombo->currentIndex());
-		styleChangedSlot(*(AvailableStyles.keys().begin()));
+		styleChangedSlot(*AvailableStyles.keys().constBegin());
 	}
 	else
 		MessageDialog::show("dialog-error", tr("Kadu"), tr("Unable to remove style: %1").arg(styleName));
