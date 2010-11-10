@@ -205,7 +205,7 @@ void ChatStylesManager::configurationUpdated()
 
 		CurrentEngine->loadStyle(newStyleName, newVariantName);
 	}
-	else if (CurrentEngine)
+	else
 		CurrentEngine->configurationUpdated();
 
 	triggerCompositingStateChanged();
