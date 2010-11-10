@@ -38,7 +38,7 @@ private slots:
 
 public:
 	static void getPassword(const QString &message, QObject *receiver, const char *slot);
-	
+
 	explicit PasswordWindow(const QString &message, QWidget* parent);
 	virtual ~PasswordWindow();
 

@@ -20,9 +20,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "gui/windows/password-window.h"
 #include "notify/notification-manager.h"
 #include "notify/notify-event.h"
 #include "parser/parser.h"
+#include "protocols/protocol.h"
 #include "debug.h"
 #include "icons-manager.h"
 
@@ -60,6 +62,7 @@ InvalidPasswordNotification::InvalidPasswordNotification(Account account) :
 {
 	setTitle(tr("Invalid password"));
 	setText(tr("<b>Invalid password for:</b> %1").arg(account.accountIdentity().name()));
+	setDefaultCallback(30000, "callbackDiscard()");
 
 	addCallback(tr("Enter new password"), SLOT(callbackAccept()), "callbackAccept()");
 	addCallback(tr("Ignore"), SLOT(callbackDiscard()), "callbackDiscard()");
@@ -70,4 +73,22 @@ InvalidPasswordNotification::InvalidPasswordNotification(Account account) :
 InvalidPasswordNotification::~InvalidPasswordNotification()
 {
 	ActiveErrors.remove(account());
+}
+
+bool InvalidPasswordNotification::requireCallback()
+{
+    return true;
+}
+
+void InvalidPasswordNotification::callbackAccept()
+{
+	close();
+
+	if (!account().protocolHandler())
+		return;
+
+	QString message = tr("Please provide valid password for %1 (%2) account")
+			.arg(account().accountIdentity().name())
+			.arg(account().id());
+	PasswordWindow::getPassword(message, account().protocolHandler(), SLOT(login(const QString &, bool)));
 }

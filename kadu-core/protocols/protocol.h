@@ -139,6 +139,9 @@ public:
 		emit contactStatusChanged(contact, oldStatus);
 	}
 
+public slots:
+	virtual void login(const QString &password, bool permanent) = 0;
+
 signals:
 	void connecting(Account account);
 	void connected(Account account);

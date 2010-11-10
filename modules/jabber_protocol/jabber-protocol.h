@@ -81,7 +81,6 @@ class JabberProtocol : public Protocol
 	XMPP::ClientStream::AllowPlainType plainAuthToXMPP(JabberAccountDetails::AllowPlainType type);
 
 private slots:
-	void login(const QString &password, bool permanent);
 	void connectedToServer();
 	void disconnectedFromServer();
 	void disconnectFromServer(const XMPP::Status &s = XMPP::Status ("", "", 0, false));
@@ -143,6 +142,7 @@ public:
 public slots:
 	void connectToServer();
 	void login();
+	virtual void login(const QString &password, bool permanent);
 	void logout();
 
 signals:

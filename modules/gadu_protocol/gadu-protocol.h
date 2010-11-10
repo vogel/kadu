@@ -118,7 +118,6 @@ private:
 	void changeStatus(bool force);
 
 private slots:
-	void login(const QString &password, bool permanent);
 	void login();
 
 	void connectionTimeoutTimerSlot();
@@ -166,6 +165,9 @@ public:
 	gg_session * gaduSession() { return GaduSession; }
 	GaduProtocolSocketNotifiers * socketNotifiers() { return SocketNotifiers; }
 	DccManager * dccManager() { return Dcc; }
+
+public slots:
+	virtual void login(const QString &password, bool permanent);
 
 signals:
 	/**

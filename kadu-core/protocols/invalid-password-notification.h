@@ -41,6 +41,11 @@ public:
 	InvalidPasswordNotification(Account account);
 	virtual ~InvalidPasswordNotification();
 
+    virtual bool requireCallback();
+
+public slots:
+	virtual void callbackAccept();
+
 };
 
 #endif // INVALID_PASSWORD_NOTIFICATION_H
