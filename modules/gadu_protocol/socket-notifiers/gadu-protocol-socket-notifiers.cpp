@@ -221,7 +221,10 @@ void GaduProtocolSocketNotifiers::socketEvent()
 	gg_event *e;
 	if (!(e = gg_watch_fd(Sess)) || GG_STATE_IDLE == Sess->state)
 	{
-		CurrentProtocol->socketConnFailed(GaduProtocol::ConnectionUnknow);
+		if (e && e->type == GG_EVENT_CONN_FAILED)
+			handleEventConnFailed(e);
+		else
+			CurrentProtocol->socketConnFailed(GaduProtocol::ConnectionUnknow);
 		return;
 	}
 

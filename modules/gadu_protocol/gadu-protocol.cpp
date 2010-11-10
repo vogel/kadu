@@ -251,7 +251,7 @@ GaduProtocol::~GaduProtocol()
 	disconnect(ContactManager::instance(), SIGNAL(contactIdChanged(Contact, const QString &)),
 			this, SLOT(contactIdChanged(Contact, const QString &)));
 
-	networkDisconnected(false);
+	networkDisconnected(false, false);
 
 	kdebugf2();
 }
@@ -290,7 +290,7 @@ void GaduProtocol::changeStatus(bool force)
 			statusChanged(newStatus);
 
 		if (NetworkConnecting == state())
-			networkDisconnected(false);
+			networkDisconnected(false, false);
 		return;
 	}
 
@@ -318,7 +318,7 @@ void GaduProtocol::changeStatus(bool force)
 		gg_change_status(GaduSession, type | friends);
 
 	if (newStatus.isDisconnected())
-		networkDisconnected(false);
+		networkDisconnected(false, false);
 
 	statusChanged(newStatus);
 }
@@ -398,7 +398,7 @@ void GaduProtocol::login()
 	if (GaduSession)
 		SocketNotifiers->watchFor(GaduSession);
 	else
-		networkDisconnected(false);
+		networkDisconnected(false, false);
 
 	kdebugf2();
 }
@@ -519,7 +519,7 @@ void GaduProtocol::networkConnected()
 	networkStateChanged(NetworkConnected);
 }
 
-void GaduProtocol::networkDisconnected(bool tryAgain)
+void GaduProtocol::networkDisconnected(bool tryAgain, bool waitForPassword)
 {
 	if (!tryAgain)
 		networkStateChanged(NetworkDisconnected);
@@ -553,7 +553,8 @@ void GaduProtocol::networkDisconnected(bool tryAgain)
 	if (tryAgain && !nextStatus().isDisconnected()) // user still wants to login
 		QTimer::singleShot(1000, this, SLOT(login())); // try again after one second
 	else if (!nextStatus().isDisconnected())
-		setStatus(Status());
+		if (!waitForPassword)
+			setStatus(Status());
 }
 
 void GaduProtocol::sendUserList()
@@ -600,6 +601,8 @@ void GaduProtocol::socketConnFailed(GaduError error)
 	QString msg;
 
 	bool tryAgain = true;
+	bool waitForPassword = false;
+
 	switch (error)
 	{
 		case ConnectionServerNotFound:
@@ -630,9 +633,9 @@ void GaduProtocol::socketConnFailed(GaduError error)
 			break;
 
 		case ConnectionIncorrectPassword:
-			msg = tr("Unable to connect, incorrect password");
+			emit invalidPassword(account());
+			waitForPassword = true;
 			tryAgain = false;
-			MessageDialog::show("dialog-error", tr("Kadu"), tr("Connection will be stopped\nYour password is incorrect!"));
 			break;
 
 		case ConnectionTlsError:
@@ -642,7 +645,6 @@ void GaduProtocol::socketConnFailed(GaduError error)
 		case ConnectionIntruderError:
 			msg = tr("Too many connection attempts with bad password!");
 			tryAgain = false;
-			MessageDialog::show("dialog-error", tr("Kadu"), tr("Connection will be stopped\nToo many attempts with bad password"));
 			break;
 
 		case ConnectionUnavailableError:
@@ -682,7 +684,7 @@ void GaduProtocol::socketConnFailed(GaduError error)
 
 	if (tryAgain)
 		GaduServersManager::instance()->markServerAsBad(ActiveServer);
-	networkDisconnected(tryAgain);
+	networkDisconnected(tryAgain, waitForPassword);
 
 	kdebugf2();
 }
@@ -723,7 +725,7 @@ void GaduProtocol::socketDisconnected()
 {
 	kdebugf();
 
-	networkDisconnected(false);
+	networkDisconnected(false, false);
 
 	kdebugf2();
 }

@@ -106,7 +106,7 @@ private:
 	void cleanUpProxySettings();
 
 	void networkConnected();
-	void networkDisconnected(bool tryAgain);
+	void networkDisconnected(bool tryAgain, bool waitForPassword);
 
 	void sendUserList();
 

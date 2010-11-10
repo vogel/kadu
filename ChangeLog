@@ -1,6 +1,8 @@
 +++ version 0.6.6-beta11
 * history: speed up history window opening (Vogel)
 * chat: fix loading Adium style variants when switching from Kadu style or when in clean profile (beevvy)
+* gadu: #1656 fixed: proper invalid password server error handling (Vogel)
+* gui: #1506 fixed: nice invalid password message and dialog for entering new one (Vogel)
 
 +++ version 0.6.6-beta10
 * modules: don't build echo module by default (beevvy)
