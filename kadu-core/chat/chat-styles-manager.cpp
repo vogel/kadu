@@ -352,6 +352,10 @@ void ChatStylesManager::mainConfigurationWindowCreated(MainConfigurationWindow *
 	editorLayout->addWidget(SyntaxListCombo, 100);
 	editorLayout->addWidget(EditButton);
 	editorLayout->addWidget(DeleteButton);
+//preview
+	EnginePreview = new Preview();
+
+	preparePreview(EnginePreview);
 //variants
 	VariantListCombo = new QComboBox();
 	VariantListCombo->addItems(CurrentEngine->styleVariants(CurrentEngine->currentStyleName()));
@@ -359,15 +363,13 @@ void ChatStylesManager::mainConfigurationWindowCreated(MainConfigurationWindow *
 	if (!defaultVariant.isEmpty() && VariantListCombo->findText(defaultVariant) == -1)
 		VariantListCombo->insertItem(0, defaultVariant);
 
-	VariantListCombo->setCurrentIndex(VariantListCombo->findText(CurrentEngine->currentStyleVariant().isNull() ? defaultVariant : CurrentEngine->currentStyleVariant()));
+	QString newVariant = CurrentEngine->currentStyleVariant().isNull()
+			? defaultVariant
+			: CurrentEngine->currentStyleVariant();
+	variantChangedSlot(newVariant);
+	VariantListCombo->setCurrentIndex(VariantListCombo->findText(newVariant));
 	VariantListCombo->setEnabled(CurrentEngine->supportVariants());
 	connect(VariantListCombo, SIGNAL(activated(const QString &)), this, SLOT(variantChangedSlot(const QString &)));
-//preview
-	EnginePreview = new Preview();
-
-	preparePreview(EnginePreview);
-
-	CurrentEngine->prepareStylePreview(EnginePreview, CurrentEngine->currentStyleName(), CurrentEngine->currentStyleVariant());
 //
 	groupBox->addWidgets(editorLabel, editor);
 	groupBox->addWidgets(new QLabel(qApp->translate("@default", "Style variant") + ':'), VariantListCombo);
