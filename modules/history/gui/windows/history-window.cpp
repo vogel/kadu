@@ -40,7 +40,7 @@
 #include "chat/message/message.h"
 #include "chat/type/chat-type.h"
 #include "chat/type/chat-type-manager.h"
-#include "chat/aggregate-chat-builder.h"
+#include "chat/aggregate-chat-manager.h"
 #include "gui/actions/actions.h"
 #include "gui/widgets/buddies-list-view-menu-manager.h"
 #include "gui/widgets/chat-widget-manager.h"
@@ -242,13 +242,11 @@ void HistoryWindow::updateData()
 	QList<Chat> chatsList = History::instance()->chatsList(Search);
 	QList<Chat> result;
 
-	AggregateChatBuilder aggregateChatBuilder;
-
 	foreach (Chat chat, chatsList)
 	{
 		if (usedChats.contains(chat))
 			continue;
-		Chat aggregate = aggregateChatBuilder.getAggregateChat(chat.contacts().toBuddySet());
+		Chat aggregate = AggregateChatManager::instance()->aggregateChat(chat);
 		if (aggregate)
 		{
 			ChatDetailsAggregate *details = dynamic_cast<ChatDetailsAggregate *>(aggregate.details());
@@ -658,8 +656,7 @@ void HistoryWindow::show(Chat chat)
 		return;
 	}
 
-	AggregateChatBuilder aggregateChatBuilder;
-	Chat aggregate = aggregateChatBuilder.getAggregateChat(chat.contacts().toBuddySet());
+	Chat aggregate = AggregateChatManager::instance()->aggregateChat(chat);
 	if (aggregate)
 		chat = aggregate;
 

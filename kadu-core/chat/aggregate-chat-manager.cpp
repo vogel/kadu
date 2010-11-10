@@ -24,24 +24,68 @@
 #include "buddies/buddy-shared.h"
 #include "protocols/protocol.h"
 
-#include "chat/aggregate-chat-builder.h"
+#include "chat/aggregate-chat-manager.h"
 #include "chat/chat-manager.h"
 #include "chat-details-aggregate.h"
 
-AggregateChatBuilder::AggregateChatBuilder()
+AggregateChatManager * AggregateChatManager::Instance = 0;
+
+AggregateChatManager * AggregateChatManager::instance()
 {
-	foreach (Chat chat, ChatManager::instance()->allItems())
+	if (!Instance)
+		Instance = new AggregateChatManager();
+
+	return Instance;
+}
+
+
+AggregateChatManager::AggregateChatManager()
+{
+	connect(ChatManager::instance(), SIGNAL(chatAdded(Chat)), this, SLOT(chatAdded(Chat)));
+	connect(ChatManager::instance(), SIGNAL(chatRemoved(Chat)), this, SLOT(chatRemoved(Chat)));
+
+	foreach (const Chat &chat, ChatManager::instance()->allItems())
+		chatAdded(chat);
+}
+
+AggregateChatManager::~AggregateChatManager()
+{
+	disconnect(ChatManager::instance(), SIGNAL(chatAdded(Chat)), this, SLOT(chatAdded(Chat)));
+	disconnect(ChatManager::instance(), SIGNAL(chatRemoved(Chat)), this, SLOT(chatRemoved(Chat)));
+
+	foreach (const Chat &chat, ChatManager::instance()->allItems())
+		chatRemoved(chat);
+}
+
+void AggregateChatManager::chatAdded(Chat chat)
+{
+	BuddySet buddies = chat.contacts().toBuddySet();
+
+	if (!AggregateChats.contains(buddies))
 	{
-		BuddySet buddies = chat.contacts().toBuddySet();
-		if (Chats.contains(buddies))
-			Chats[buddies].append(chat);
-		else
-		{
-			QList<Chat> chats;
-			chats.append(chat);
-			Chats.insert(buddies, chats);
-		}
+		QList<Chat> chats;
+		chats.append(chat);
+		AggregateChats.insert(buddies, chats);
 	}
+	else
+		AggregateChats[buddies].append(chat);
+}
+
+void AggregateChatManager::chatRemoved(Chat  chat)
+{
+	BuddySet buddies = chat.contacts().toBuddySet();
+
+	if (!AggregateChats.contains(buddies))
+		return;
+
+	AggregateChats[buddies].removeAll(chat);
+	if (AggregateChats[buddies].isEmpty())
+		AggregateChats.remove(buddies);
+}
+
+Chat AggregateChatManager::aggregateChat(Chat chat)
+{
+	return aggregateChat(chat.contacts().toBuddySet());
 }
 
 /**
@@ -52,12 +96,12 @@ AggregateChatBuilder::AggregateChatBuilder()
  * This method will create and return new chat of 'Aggregate' type that
  * contains all chats (for different accounts) for given set of buddies.
  */
-Chat AggregateChatBuilder::getAggregateChat(BuddySet buddies)
+Chat AggregateChatManager::aggregateChat(BuddySet buddies)
 {
-	if (!Chats.contains(buddies))
+	if (!AggregateChats.contains(buddies))
 		return Chat::null;
 
-	QList<Chat> chats = Chats[buddies];
+	QList<Chat> chats = AggregateChats[buddies];
 	if (chats.count() <= 1)
 		return Chat::null;
 

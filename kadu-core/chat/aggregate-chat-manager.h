@@ -19,16 +19,16 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef AGGREGATE_CHAT_BUILDER_H
-#define AGGREGATE_CHAT_BUILDER_H
+#ifndef AGGREGATE_CHAT_MANAGER_H
+#define AGGREGATE_CHAT_MANAGER_H
 
 #include <QtCore/QMap>
 #include <QtCore/QObject>
 
+#include "chat/chat.h"
 #include "exports.h"
 
 class BuddySet;
-class Chat;
 
 /**
  * @addtogroup Chat
@@ -36,20 +36,33 @@ class Chat;
  */
 
 /**
- * @class AggregateChatBuilder
+ * @class AggregateChatManager
  * @short Makes chat object that aggregates all chats for given buddy set.
  *
  * Class contains one static method that makes chat object that
  * aggregates all chats for given buddy set.
  */
-class KADUAPI AggregateChatBuilder
+class KADUAPI AggregateChatManager : public QObject
 {
-	QMap<BuddySet, QList<Chat> > Chats;
+	Q_OBJECT
+	Q_DISABLE_COPY(AggregateChatManager)
+
+	static AggregateChatManager *Instance;
+
+	QMap<BuddySet, QList<Chat> > AggregateChats;
+
+	AggregateChatManager();
+	~AggregateChatManager();
+
+private slots:
+	void chatAdded(Chat chat);
+	void chatRemoved(Chat chat);
 
 public:
-	AggregateChatBuilder();
+	static AggregateChatManager * instance();
 
-	Chat getAggregateChat(BuddySet buddies);
+	Chat aggregateChat(Chat chat);
+	Chat aggregateChat(BuddySet buddies);
 
 };
 
@@ -57,4 +70,4 @@ public:
  * @}
  */
 
-#endif // AGGREGATE_CHAT_BUILDER_H
+#endif // AGGREGATE_CHAT_MANAGER_H
