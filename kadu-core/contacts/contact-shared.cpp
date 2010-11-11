@@ -21,9 +21,9 @@
  */
 
 #include "accounts/account-manager.h"
-#include "buddies/avatar.h"
-#include "buddies/avatar-manager.h"
-#include "buddies/avatar-shared.h"
+#include "avatars/avatar.h"
+#include "avatars/avatar-manager.h"
+#include "avatars/avatar-shared.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-shared.h"
 #include "contacts/contact-details.h"

@@ -25,7 +25,7 @@
 #include <QtCore/QQueue>
 
 #include "accounts/accounts-aware-object.h"
-#include "buddies/avatar.h"
+#include "avatars/avatar.h"
 #include "storage/simple-manager.h"
 #include "exports.h"
 

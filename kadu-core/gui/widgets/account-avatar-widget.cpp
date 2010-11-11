@@ -23,7 +23,7 @@
 #include <QtGui/QPushButton>
 #include <QtGui/QVBoxLayout>
 
-#include "buddies/avatar.h"
+#include "avatars/avatar.h"
 #include "protocols/services/avatar-service.h"
 #include "protocols/protocol.h"
 #include "icons-manager.h"

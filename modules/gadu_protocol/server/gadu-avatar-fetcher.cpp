@@ -28,9 +28,9 @@
 #include <QtXml/QDomDocument>
 
 #include "accounts/account.h"
-#include "buddies/avatar.h"
-#include "buddies/avatar-manager.h"
-#include "buddies/avatar-shared.h"
+#include "avatars/avatar.h"
+#include "avatars/avatar-manager.h"
+#include "avatars/avatar-shared.h"
 #include "misc/path-conversion.h"
 
 #include "server/gadu-avatar-data-parser.h"

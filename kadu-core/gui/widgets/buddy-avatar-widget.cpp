@@ -22,7 +22,7 @@
 #include <QtGui/QPushButton>
 #include <QtGui/QVBoxLayout>
 
-#include "buddies/avatar.h"
+#include "avatars/avatar.h"
 #include "buddies/buddy-preferred-manager.h"
 
 #include "buddy-avatar-widget.h"

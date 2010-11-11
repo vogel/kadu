@@ -16,7 +16,7 @@
  */
 
 #include "accounts/account.h"
-#include "buddies/avatar.h"
+#include "avatars/avatar.h"
 #include "buddies/buddy-preferred-manager.h"
 #include "misc/path-conversion.h"
 #include "parser/parser.h"

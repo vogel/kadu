@@ -26,7 +26,7 @@
 #include <QtCore/QDateTime>
 #include <QtGui/QPixmap>
 
-#include "buddies/avatar-shared.h"
+#include "avatars/avatar-shared.h"
 #include "storage/shared-base.h"
 #include "exports.h"
 

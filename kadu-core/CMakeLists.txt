@@ -12,9 +12,10 @@ set (kadu_SRCS
 	accounts/model/accounts-model.cpp
 	accounts/model/accounts-proxy-model.cpp
 
-	buddies/avatar.cpp
-	buddies/avatar-manager.cpp
-	buddies/avatar-shared.cpp
+	avatars/avatar.cpp
+	avatars/avatar-manager.cpp
+	avatars/avatar-shared.cpp
+
 	buddies/buddies-aware-object.cpp
 	buddies/buddy.cpp
 	buddies/buddy-additional-data-delete-handler.cpp
@@ -367,8 +368,9 @@ set (kadu_MOC_SRCS
 	accounts/model/accounts-model.h
 	accounts/model/accounts-proxy-model.h
 
-	buddies/avatar-manager.h
-	buddies/avatar-shared.h
+	avatars/avatar-manager.h
+	avatars/avatar-shared.h
+
 	buddies/buddy-additional-data-delete-handler-manager.h
 	buddies/buddy-shared.h
 	buddies/buddy-manager.h

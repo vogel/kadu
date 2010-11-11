@@ -25,7 +25,7 @@
 #include <QtXml/QDomNamedNodeMap>
 
 #include "accounts/account.h"
-#include "buddies/avatar-manager.h"
+#include "avatars/avatar-manager.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/group.h"
 #include "buddies/group-manager.h"

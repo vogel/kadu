@@ -24,8 +24,8 @@
 #include <QtCore/QTimer>
 
 #include "accounts/account.h"
-#include "buddies/avatar.h"
-#include "buddies/avatar-shared.h"
+#include "avatars/avatar.h"
+#include "avatars/avatar-shared.h"
 #include "configuration/configuration-manager.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"

@@ -22,8 +22,8 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
-#include "buddies/avatar.h"
-#include "buddies/avatar-manager.h"
+#include "avatars/avatar.h"
+#include "avatars/avatar-manager.h"
 #include "buddies/buddy.h"
 #include "buddies/buddy-kadu-data.h"
 #include "buddies/buddy-list-mime-data-helper.h"

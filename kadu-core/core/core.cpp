@@ -30,7 +30,7 @@
 #include <QtGui/QApplication>
 
 #include "accounts/account-manager.h"
-#include "buddies/avatar-manager.h"
+#include "avatars/avatar-manager.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/group-manager.h"
 #include "chat/message/pending-messages-manager.h"

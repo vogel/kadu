@@ -70,7 +70,7 @@ public:
 };
 
 // for MOC
-#include "buddies/avatar.h"
+#include "avatars/avatar.h"
 #include "contacts/contact.h"
 
 #endif // BUDDIES_LIST_VIEW_DELEGATE_H

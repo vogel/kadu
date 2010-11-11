@@ -21,7 +21,7 @@
 #include <QtCore/QDir>
 #include <QtCore/QFile>
 
-#include "buddies/avatar-manager.h"
+#include "avatars/avatar-manager.h"
 #include "misc/misc.h"
 
 #include "avatar-shared.h"

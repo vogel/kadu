@@ -23,8 +23,8 @@
 #include <QtGui/QAbstractItemView>
 
 #include "accounts/account.h"
-#include "buddies/avatar.h"
-#include "buddies/avatar-manager.h"
+#include "avatars/avatar.h"
+#include "avatars/avatar-manager.h"
 #include "buddies/buddy-preferred-manager.h"
 #include "buddies/model/abstract-buddies-model.h"
 #include "contacts/contact-manager.h"

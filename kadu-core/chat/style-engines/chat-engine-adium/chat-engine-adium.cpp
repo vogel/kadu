@@ -25,7 +25,7 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
-#include "buddies/avatar.h"
+#include "avatars/avatar.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-set.h"
 #include "chat/chat-styles-manager.h"

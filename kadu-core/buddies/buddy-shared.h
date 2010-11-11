@@ -32,7 +32,7 @@
 #include <QtCore/QUuid>
 #include <QtXml/QDomElement>
 
-#include "buddies/avatar.h"
+#include "avatars/avatar.h"
 #include "buddies/buddy-gender.h"
 #include "buddies/group.h"
 #include "storage/shared.h"
