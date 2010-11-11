@@ -667,7 +667,7 @@ void HintManager::createDefaultConfiguration()
 	events << "ConnectionError" << "NewChat" << "NewMessage" << "StatusChanged"
 		<<"StatusChanged/ToFreeForChat" << "StatusChanged/ToOnline"  << "StatusChanged/ToAway"
 		<< "StatusChanged/ToNotAvailable"<< "StatusChanged/ToDoNotDisturb" << "StatusChanged/ToOffline"
-		<< "FileTransfer" << "FileTransfer/IncomingFile" << "FileTransfer/Finished";
+		<< "FileTransfer" << "FileTransfer/IncomingFile" << "FileTransfer/Finished" << "InvalidPassword";
 	foreach (const QString &event, events)
 	{
 		config_file.addVariable("Hints", "Event_" + event + "_bgcolor", qApp->palette().window().color());
