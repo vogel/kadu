@@ -176,6 +176,7 @@ public:
 	void setDefaultCallback(int timeout, const char *slot);
 
 	virtual bool requireCallback() { return false; }
+	virtual bool ignoreSilentMode() { return false; }
 
 	/**
 		Typ zdarzenia.

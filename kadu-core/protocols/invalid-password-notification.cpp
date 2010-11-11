@@ -77,7 +77,12 @@ InvalidPasswordNotification::~InvalidPasswordNotification()
 
 bool InvalidPasswordNotification::requireCallback()
 {
-    return true;
+	return true;
+}
+
+bool InvalidPasswordNotification::ignoreSilentMode()
+{
+	return true;
 }
 
 void InvalidPasswordNotification::callbackAccept()

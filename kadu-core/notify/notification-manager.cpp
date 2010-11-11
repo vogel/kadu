@@ -463,7 +463,7 @@ void NotificationManager::notify(Notification *notification)
 	bool foundNotifier = false;
 	bool foundNotifierWithCallbackSupported = !notification->requireCallback();
 
-	if (ignoreNotifications())
+	if (ignoreNotifications() && !notification->ignoreSilentMode())
 	{
 		notification->callbackDiscard();
 		return;
