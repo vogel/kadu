@@ -229,7 +229,7 @@ bool ChatWidget::keyPressEventHandled(QKeyEvent *e)
 	return false;
 }
 
-QIcon ChatWidget::icon()
+QIcon ChatWidget::icon() const
 {
 	return chat().icon();
 }
@@ -294,11 +294,6 @@ void ChatWidget::setTitle(const QString &title)
 		Title = title;
 		emit titleChanged(this, title);
 	}
-}
-
-QDateTime ChatWidget::lastMessageTime()
-{
-	return LastMessageTime;
 }
 
 void ChatWidget::appendMessages(const QList<MessageRenderInfo *> &messages, bool pending)
@@ -476,7 +471,7 @@ void ChatWidget::colorSelectorAboutToClose()
 	kdebugf2();
 }
 
-CustomInput * ChatWidget::edit()
+CustomInput * ChatWidget::edit() const
 {
 	return InputBox->inputBox();
 }
@@ -536,7 +531,7 @@ void ChatWidget::dropEvent(QDropEvent *e)
 	}
 }
 
-Protocol *ChatWidget::currentProtocol()
+Protocol *ChatWidget::currentProtocol() const
 {
 	return CurrentChat.chatAccount().protocolHandler();
 }
@@ -552,11 +547,6 @@ void ChatWidget::makeActive()
 void ChatWidget::markAllMessagesRead()
 {
 	NewMessagesCount = 0;
-}
-
-unsigned int ChatWidget::newMessagesCount() const
-{
-	return NewMessagesCount;
 }
 
 void ChatWidget::kaduRestoreGeometry()
