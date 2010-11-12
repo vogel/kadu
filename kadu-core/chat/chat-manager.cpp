@@ -226,7 +226,6 @@ Chat ChatManager::findChat(ContactSet contacts, bool create)
 	chat.setDetails(details);
 	//TODO 0.6.6:
 	chat.setType(details->type()->name());
-	chat.refreshTitle();
 
 	addItem(chat);
 	return chat;

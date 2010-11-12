@@ -58,7 +58,6 @@ class KADUAPI ChatShared : public QObject, public Shared, public DetailsHolder<C
 
 	Account ChatAccount;
 	QString Type;
-	QString Title;
 	bool IgnoreAllMessages;
 
 protected:
@@ -112,16 +111,6 @@ public:
 
 	/**
 	 * @author Rafal 'Vogel' Malinowski
-	 * @short Title of chat.
-	 *
-	 * Chat title is used to display in window titles.
-	 */
-	KaduShared_PropertyRead(QString, title, Title)
-	void setTitle(QString title);
-
-
-	/**
-	 * @author Rafal 'Vogel' Malinowski
 	 * @short Icon of chat.
 	 *
 	 * Chat icon is used to display in window titles. For 'simple' chats it is icon of status
@@ -132,11 +121,7 @@ public:
 	// temporary, not stored, lost after program close
 	KaduShared_PropertyBool(IgnoreAllMessages)
 
-public slots:
-	void refreshTitle();
-
 signals:
-	void titleChanged(Chat chat, const QString &newTitle);
 	void updated();
 
 };

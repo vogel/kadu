@@ -115,7 +115,7 @@ public slots:
 	void onDestroyingChat(ChatWidget *chat);
 
 	void onOpenChat(ChatWidget *chat, bool activate);
-	void onTitleChanged(Chat chatChanged, const QString &newTitle);
+	void onTitleChanged(ChatWidget *chatChanged, const QString &newTitle);
 
 	void onTabChange(int index);
 

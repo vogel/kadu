@@ -119,23 +119,10 @@ Chat::~Chat()
 {
 }
 
-/**
- * @author Rafal 'Vogel' Malinowski
- * @short Refresh title for chat.
- *
- * Refresh title for chat. After successful refresh updated signal will be triggered.
- */
-void Chat::refreshTitle()
-{
-	if (!isNull())
-		data()->refreshTitle();
-}
-
 KaduSharedBase_PropertyReadDef(Chat, ContactSet, contacts, Contacts, ContactSet())
 KaduSharedBase_PropertyReadDef(Chat, QString, name, Name, QString::null)
 KaduSharedBase_PropertyDef(Chat, ChatDetails *, details, Details, 0)
 KaduSharedBase_PropertyDef(Chat, Account, chatAccount, ChatAccount, Account::null)
 KaduSharedBase_PropertyDef(Chat, QString, type, Type, QString::null)
-KaduSharedBase_PropertyDef(Chat, QString, title, Title, QString::null)
 KaduSharedBase_PropertyReadDef(Chat, QIcon, icon, Icon, QIcon())
 KaduSharedBase_PropertyBoolDef(Chat, IgnoreAllMessages, false)

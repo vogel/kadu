@@ -58,8 +58,6 @@ void ChatDetailsConference::load()
 	ChatDetails::load();
 
 	Contacts = ContactSetConfigurationHelper::loadFromConfiguration(this, "Contacts", mainData()->chatAccount());
-
-	mainData()->refreshTitle();
 }
 
 /**
