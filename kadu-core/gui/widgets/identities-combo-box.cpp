@@ -49,7 +49,8 @@ IdentitiesComboBox::IdentitiesComboBox(bool includeSelectIdentity, QWidget *pare
 
 IdentitiesComboBox::~IdentitiesComboBox()
 {
-	IdentityManager::instance()->removeUnused();
+	// TODO 0.8: this should be called here, but not until Mantis bug #1674 is properly fixed
+// 	IdentityManager::instance()->removeUnused();
 }
 
 void IdentitiesComboBox::setCurrentIdentity(Identity identity)
