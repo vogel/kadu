@@ -13,6 +13,7 @@ set (kadu_SRCS
 	accounts/model/accounts-proxy-model.cpp
 
 	avatars/avatar.cpp
+	avatars/avatar-job-manager.cpp
 	avatars/avatar-manager.cpp
 	avatars/avatar-shared.cpp
 
@@ -368,6 +369,7 @@ set (kadu_MOC_SRCS
 	accounts/model/accounts-model.h
 	accounts/model/accounts-proxy-model.h
 
+	avatars/avatar-job-manager.h
 	avatars/avatar-manager.h
 	avatars/avatar-shared.h
 

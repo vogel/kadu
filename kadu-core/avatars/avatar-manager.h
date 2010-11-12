@@ -22,7 +22,6 @@
 #define AVATAR_MANAGER_H
 
 #include <QtCore/QObject>
-#include <QtCore/QQueue>
 
 #include "accounts/accounts-aware-object.h"
 #include "avatars/avatar.h"
@@ -40,7 +39,6 @@ class KADUAPI AvatarManager : public QObject, public SimpleManager<Avatar>, Acco
 	static AvatarManager *Instance;
 
 	QTimer *UpdateTimer;
-	QQueue<Contact> UpdateQueue;
 	bool IsFetching;
 
 	AvatarManager();
