@@ -229,11 +229,6 @@ bool ChatWidget::keyPressEventHandled(QKeyEvent *e)
 	return false;
 }
 
-QIcon ChatWidget::icon() const
-{
-	return chat().icon();
-}
-
 void ChatWidget::keyPressEvent(QKeyEvent *e)
 {
 	kdebugf();

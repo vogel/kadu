@@ -201,7 +201,7 @@ void SingleWindow::onOpenChat(ChatWidget *w)
 {
 	QString title = w->chat().name();
 
-	tabs->addTab(w, w->icon(), title);
+	tabs->addTab(w, w->chat().icon(), title);
 	tabs->setCurrentIndex(tabs->count()-1);
 	w->edit()->setFocus();
 
@@ -286,7 +286,7 @@ void SingleWindow::onTabChange(int index)
 		return;
 
 	ChatWidget *w = (ChatWidget *)tabs->widget(index);
-	tabs->setTabIcon(index, w->icon());
+	tabs->setTabIcon(index, w->chat().icon());
 
 	QString title = tabs->tabText(index);
 	int pos = title.indexOf(" [");

@@ -140,7 +140,6 @@ public:
 	void setTitle(const QString &title);
 
 	const QDateTime & lastMessageTime() const { return LastMessageTime; }
-	QIcon icon() const;
 
 	void kaduStoreGeometry();
 	void kaduRestoreGeometry();
