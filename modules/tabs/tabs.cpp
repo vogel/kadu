@@ -390,7 +390,7 @@ void TabsManager::insertTab(ChatWidget* chat)
 	}
 
 	// Ustawiam tytul karty w zaleznosci od tego czy mamy do czynienia z rozmowa czy z konferencja
-	TabDialog->insertTab(TargetTabs, chat, chat->icon(), formatTabName(chat));
+	TabDialog->insertTab(TargetTabs, chat, chat->chat().icon(), formatTabName(chat));
 
 	TabDialog->setTabToolTip(TargetTabs, chat->title());
 
@@ -455,7 +455,7 @@ void TabsManager::onTimer()
 			if (msg)
 				TabDialog->setTabIcon(i, IconsManager::instance()->iconByPath("protocols/common/message"));
 			else
-				TabDialog->setTabIcon(i, chat->icon());
+				TabDialog->setTabIcon(i, chat->chat().icon());
 
 			if (tabsActive)
 			{
@@ -465,7 +465,7 @@ void TabsManager::onTimer()
 					chat->markAllMessagesRead();
 					// a tutaj przywroc tytul�
 					TabDialog->setWindowTitle(chat->title());
-					TabDialog->setTabIcon(i, chat->icon());
+					TabDialog->setTabIcon(i, chat->chat().icon());
 					// wywal go z listy chatow z nowymi wiadomosciami
 					ChatsWithNewMessages.removeOne(chat);
 				}
@@ -752,7 +752,7 @@ void TabsManager::repaintTabs()
 	}
 
 	//uaktualnienie ikonki w oknie tabs
-	TabDialog->setWindowIcon(dynamic_cast<ChatWidget *>(TabDialog->currentWidget())->icon());
+	TabDialog->setWindowIcon(dynamic_cast<ChatWidget *>(TabDialog->currentWidget())->chat().icon());
 }
 
 QString TabsManager::formatTabName(ChatWidget * chatWidget)
