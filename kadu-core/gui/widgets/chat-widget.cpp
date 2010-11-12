@@ -79,6 +79,10 @@ ChatWidget::ChatWidget(Chat chat, QWidget *parent) :
 	createGui();
 	configurationUpdated();
 
+	connect(CurrentChat.chatAccount(), SIGNAL(buddyStatusChanged(Contact, Status)),
+			this, SLOT(refreshTitle()));
+
+
 	kdebugf2();
 }
 
@@ -181,6 +185,8 @@ void ChatWidget::configurationUpdated()
 
 	InputBox->inputBox()->setFont(config_file.readFontEntry("Look","ChatFont"));
  	InputBox->inputBox()->setStyleSheet(QString("QTextEdit {background-color: %1}").arg(config_file.readColorEntry("Look", "ChatTextBgColor").name()));
+
+	refreshTitle();
 }
 
 bool ChatWidget::keyPressEventHandled(QKeyEvent *e)
@@ -236,6 +242,58 @@ void ChatWidget::keyPressEvent(QKeyEvent *e)
 	else
 		QWidget::keyPressEvent(e);
 	kdebugf2();
+}
+
+void ChatWidget::refreshTitle()
+{
+	kdebugf();
+	QString title;
+
+	int contactsCount = chat().contacts().count();
+	kdebugmf(KDEBUG_FUNCTION_START, "chat().contacts().size() = %d\n", contactsCount);
+	if (contactsCount > 1)
+	{
+		title = config_file.readEntry("Look", "ConferencePrefix");
+		if (title.isEmpty())
+			title = tr("Conference with ");
+
+		QString conferenceContents = config_file.readEntry("Look", "ConferenceContents");
+		QStringList contactslist;
+		foreach (Contact contact, chat().contacts())
+			contactslist.append(Parser::parse(conferenceContents.isEmpty() ? "%a" : conferenceContents, contact, false));
+
+		title.append(contactslist.join(", "));
+	}
+	else if (contactsCount == 1)
+	{
+		Contact contact = chat().contacts().toContact();
+
+		if (config_file.readEntry("Look", "ChatContents").isEmpty())
+		{
+			if (contact.ownerBuddy().isAnonymous())
+				title = Parser::parse(tr("Chat with ") + "%a", contact, false);
+			else
+				title = Parser::parse(tr("Chat with ") + "%a (%s[: %d])", contact, false);
+		}
+		else
+			title = Parser::parse(config_file.readEntry("Look", "ChatContents"), contact, false);
+	}
+
+	title.replace("<br/>", " ");
+	title.replace("&nbsp;", " ");
+
+	setTitle(title);
+
+	kdebugf2();
+}
+
+void ChatWidget::setTitle(const QString &title)
+{
+	if (title != Title)
+	{
+		Title = title;
+		emit titleChanged(this, title);
+	}
 }
 
 QDateTime ChatWidget::lastMessageTime()
@@ -532,10 +590,10 @@ void ChatWidget::kaduStoreGeometry()
 		return;
 
 	cgd->setWidgetVerticalSizes(vertSplit->sizes());
-	
+
 	if (horizSplit)
 		cgd->setWidgetHorizontalSizes(horizSplit->sizes());
-	
+
 	cgd->store();
 }
 

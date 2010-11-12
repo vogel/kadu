@@ -28,13 +28,14 @@
 #include "jabber-protocol.h"
 #include "jabber-chat-state-service.h"
 
-JabberChatStateService::JabberChatStateService(JabberProtocol *parent) : ParentProtocol(parent)
+JabberChatStateService::JabberChatStateService(JabberProtocol *parent) :
+		ParentProtocol(parent)
 {
 	foreach (Chat chat, ChatManager::instance()->items())
 	{
 		ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(chat);
 		if (chatWidget && ParentProtocol == dynamic_cast<JabberProtocol *>(chat.chatAccount().protocolHandler()))
-			  ChatStateMap.insert(chatWidget, new ChatState(chat));
+			  ChatStateMap.insert(chatWidget, new ChatState(chatWidget));
 	}
 
 	QObject::connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetCreated(ChatWidget *)), this, SLOT(chatWidgetCreated(ChatWidget *)));
@@ -43,9 +44,8 @@ JabberChatStateService::JabberChatStateService(JabberProtocol *parent) : ParentP
 
 void JabberChatStateService::chatWidgetCreated(ChatWidget *chatWidget)
 {
-	Chat chat = chatWidget->chat();
-	if (ParentProtocol == dynamic_cast<JabberProtocol *>(chat.chatAccount().protocolHandler()))
-		ChatStateMap.insert(chatWidget, new ChatState(chat));
+	if (ParentProtocol == dynamic_cast<JabberProtocol *>(chatWidget->chat().chatAccount().protocolHandler()))
+		ChatStateMap.insert(chatWidget, new ChatState(chatWidget));
 }
 
 void JabberChatStateService::chatWidgetDestroying(ChatWidget *chatWidget)
@@ -59,17 +59,13 @@ void JabberChatStateService::chatWidgetDestroying(ChatWidget *chatWidget)
 	}
 }
 
-ChatState::ChatState(Chat chat) : ObservedChat(chat)
+ChatState::ChatState(ChatWidget *chatWidget) :
+		ObservedChatWidget(chatWidget)
 {
-	ChatWidget *c = ChatWidgetManager::instance()->byChat(chat);
-	if (c)
-	{
-		Widget = c;
-		CustomInput *input = c->getChatEditBox()->inputBox();
-		QObject::connect(input, SIGNAL(textChanged()), this, SLOT(setComposing()));
-	}
+	QObject::connect(ObservedChatWidget->getChatEditBox()->inputBox(), SIGNAL(textChanged()),
+			this, SLOT(setComposing()));
 
-	Protocol = dynamic_cast<JabberProtocol *>(chat.chatAccount().protocolHandler());
+	Protocol = dynamic_cast<JabberProtocol *>(ObservedChatWidget->chat().chatAccount().protocolHandler());
 	if (Protocol)
 	{
 		connect(Protocol->client(), SIGNAL(messageReceived(const XMPP::Message &)),
@@ -157,7 +153,7 @@ void ChatState::setChatState(XMPP::ChatState state)
 		}*/
 
 		// Don't send to offline resource
-		Contact contact = ObservedChat.contacts().toContact();
+		Contact contact = ObservedChatWidget->chat().contacts().toContact();
 		if (contact.currentStatus().isDisconnected())
 		{
 			SendComposingEvents = false;
@@ -186,7 +182,7 @@ void ChatState::setChatState(XMPP::ChatState state)
 		}
 
 		// Build event message
-		XMPP::Message m(ObservedChat.contacts().toContact().id());
+		XMPP::Message m(ObservedChatWidget->chat().contacts().toContact().id());
 		if (SendComposingEvents)
 		{
 			m.setEventId(EventId);
@@ -207,7 +203,7 @@ void ChatState::setChatState(XMPP::ChatState state)
 					|| (state == XMPP::StateComposing && LastChatState == XMPP::StateInactive))
 				{
 					// First go to the paused state
-					XMPP::Message tm(ObservedChat.contacts().toContact().id());
+					XMPP::Message tm(ObservedChatWidget->chat().contacts().toContact().id());
 					m.setType("chat");
 					m.setChatState(XMPP::StatePaused);
 					if (Protocol->isConnected())
@@ -237,7 +233,7 @@ void ChatState::setChatState(XMPP::ChatState state)
 
 void ChatState::incomingMessage(const XMPP::Message &m)
 {
-	if (m.from().bare() != (*ObservedChat.contacts().begin()).id())
+	if (m.from().bare() != (*ObservedChatWidget->chat().contacts().constBegin()).id())
 		return;
 
 	if (m.body().isEmpty())
@@ -282,17 +278,17 @@ void ChatState::setContactChatState(XMPP::ChatState state)
 	ContactChatState = state;
 	if (state == XMPP::StateGone)
 	{
-		Contact contact = ObservedChat.contacts().toContact();
+		Contact contact = ObservedChatWidget->chat().contacts().toContact();
 		QString msg = "[ " + tr("%1 ended the conversation").arg(contact.ownerBuddy().display()) + " ]";
 		Message message = Message::create();
-		message.setMessageChat(ObservedChat);
+		message.setMessageChat(ObservedChatWidget->chat());
 		message.setType(Message::TypeSystem);
 		message.setMessageSender(contact);
 		message.setContent(msg);
 		message.setSendDate(QDateTime::currentDateTime());
 		message.setReceiveDate(QDateTime::currentDateTime());
 
-		Widget->chatMessagesView()->appendMessage(message);
+		ObservedChatWidget->chatMessagesView()->appendMessage(message);
 	}
 	else
 	{
@@ -314,22 +310,22 @@ void ChatState::messageAboutToSend(XMPP::Message &message)
 
 void ChatState::updateChatTitle()
 {
-	ObservedChat.refreshTitle();
-	QString cap = ObservedChat.title();
+	ObservedChatWidget->refreshTitle();
+	QString cap = ObservedChatWidget->title();
 
 	if (ContactChatState == XMPP::StateComposing)
 	{
 		cap = tr("%1 (Composing ...)").arg(cap);
-		ObservedChat.setTitle(cap);
+		ObservedChatWidget->setTitle(cap);
 	}
 	else if (ContactChatState == XMPP::StateInactive)
 	{
 		cap = tr("%1 (Inactive)").arg(cap);
-		ObservedChat.setTitle(cap);
+		ObservedChatWidget->setTitle(cap);
 	}
 	else
 	{
-		ObservedChat.refreshTitle();
+		ObservedChatWidget->refreshTitle();
 	}
 }
 

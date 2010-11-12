@@ -61,6 +61,8 @@ class KADUAPI ChatWidget : public QWidget, ConfigurationAwareObject
 
 	QSplitter *vertSplit, *horizSplit; /*!< obiekty oddzielaj�ce kontrolki od siebie */
 
+	QString Title;
+
 	QDateTime LastMessageTime; /*!< czas ostatniej wiadomo�ci */
 
 	unsigned int NewMessagesCount; /*!< liczba nowych wiadomo�ci w oknie rozmowy */
@@ -134,6 +136,9 @@ public:
 
 	unsigned int newMessagesCount() const;
 
+	const QString & title() { return Title; }
+	void setTitle(const QString &title);
+
 	QDateTime lastMessageTime();
 	QIcon icon();
 
@@ -183,6 +188,15 @@ public slots:
 
 	void leaveConference();
 
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Updates chat title.
+	 *
+	 * After any contact from this chat changes his/her status, this method is calles to update
+	 * chat title. Connect to updated() signal to get information about this change.
+	 */
+	void refreshTitle();
+
 signals:
 	/**
 		\fn void messageSendRequested(Chat* chat)
@@ -224,7 +238,7 @@ signals:
 	**/
 	void fileDropped(Chat contacts, const QString &fileName);
 
-	void captionUpdated();
+	void titleChanged(ChatWidget *chatWidget, const QString &newTitle);
 	void closed();
 };
 
