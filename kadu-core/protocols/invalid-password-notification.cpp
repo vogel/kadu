@@ -62,7 +62,7 @@ InvalidPasswordNotification::InvalidPasswordNotification(Account account) :
 {
 	setTitle(tr("Invalid password"));
 	setText(tr("<b>Invalid password for:</b> %1").arg(account.accountIdentity().name()));
-	setDefaultCallback(30000, "callbackDiscard()");
+	setDefaultCallback(30000, SLOT(callbackDiscard()));
 
 	addCallback(tr("Enter new password"), SLOT(callbackAccept()), "callbackAccept()");
 	addCallback(tr("Ignore"), SLOT(callbackDiscard()), "callbackDiscard()");
