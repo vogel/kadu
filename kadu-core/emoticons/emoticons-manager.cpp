@@ -319,7 +319,7 @@ QString EmoticonsManager::selectorString(int emot_num) const
 
 QString EmoticonsManager::selectorAnimPath(int emot_num) const
 {
-	if ((emot_num >= 0 && (emot_num)) < (Selector.count()))
+	if ((emot_num >= 0) && (emot_num < Selector.count()))
 		return Selector[emot_num].anim;
 	else
 		return QString::null;
