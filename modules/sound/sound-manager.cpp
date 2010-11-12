@@ -99,6 +99,7 @@ void SoundManager::import_0_6_5_configuration()
 void SoundManager::createDefaultConfiguration()
 {
 	config_file.addVariable("Notify", "ConnectionError_Sound", true);
+	config_file.addVariable("Notify", "InvalidPassword_Sound", true);
 	config_file.addVariable("Notify", "NewChat_Sound", true);
 	config_file.addVariable("Notify", "NewMessage_Sound", true);
 	config_file.addVariable("Notify", "StatusChanged/ToOnline_Sound", true);
