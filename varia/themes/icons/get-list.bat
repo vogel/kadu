@@ -6,17 +6,18 @@ SET TYPE=%1
 SET AVAILABLE_MODULES=
 
 FOR /F "eol=# tokens=2,3,* delims=_=" %%i IN (..\..\..\.config) DO (
-	SET LINE=%%i
-	SET SETTING=%%j
+	CALL SET LINE=%%i
+	CALL SET SETTING=%%j
 
 	IF NOT "%%k" EQU "" (
-		SET LINE=%%i_%%j
-		SET SETTING=%%k
+		CALL SET LINE=%%i_%%j
+		CALL SET SETTING=%%k
 	)
-	
+
 	FOR %%M IN (%*) DO (
-		SET MODULE=%%M
-		IF !LINE! == !MODULE! ( 
+		CALL SET MODULE=%%M
+
+		IF !LINE! == !MODULE! (
 			IF !TYPE! == !SETTING! (
 				CALL SET AVAILABLE_MODULES=%%AVAILABLE_MODULES%%;!MODULE!
 			)
