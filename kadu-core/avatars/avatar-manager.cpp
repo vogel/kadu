@@ -25,6 +25,7 @@
 
 #include "accounts/account.h"
 #include "avatars/avatar.h"
+#include "avatars/avatar-job-manager.h"
 #include "avatars/avatar-shared.h"
 #include "configuration/configuration-manager.h"
 #include "contacts/contact-manager.h"
@@ -172,10 +173,10 @@ void AvatarManager::fetchNextFromQueue()
 	if (IsFetching)
 		return;
 
-	if (UpdateQueue.empty())
+	if (!AvatarJobManager::instance()->hasJob())
 		return;
 
-	Contact contact = UpdateQueue.dequeue();
+	Contact contact = AvatarJobManager::instance()->nextJob();
 
 	AvatarService *service = avatarService(contact);
 	if (!service)
@@ -192,7 +193,7 @@ void AvatarManager::updateAvatar(Contact contact, bool force)
 	if (!force && !needUpdate(contact))
 		return;
 
-	UpdateQueue.enqueue(contact);
+	AvatarJobManager::instance()->addJob(contact);
 	fetchNextFromQueue();
 }
 
