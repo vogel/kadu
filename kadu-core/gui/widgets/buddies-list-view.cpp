@@ -423,9 +423,7 @@ void BuddiesListView::currentChanged(const QModelIndex &current, const QModelInd
 
 void BuddiesListView::selectionChanged(const QItemSelection &selected, const QItemSelection &deselected)
 {
-	Q_UNUSED(selected)
-	Q_UNUSED(deselected)
-
+	QTreeView::selectionChanged(selected, deselected);
 	emit buddySelectionChanged();
 }
 
