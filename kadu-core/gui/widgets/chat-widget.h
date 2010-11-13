@@ -190,9 +190,6 @@ public slots:
 	/**
 	 * @author Rafal 'Vogel' Malinowski
 	 * @short Updates chat title.
-	 *
-	 * After any contact from this chat changes his/her status, this method is calles to update
-	 * chat title. Connect to updated() signal to get information about this change.
 	 */
 	void refreshTitle();
 
