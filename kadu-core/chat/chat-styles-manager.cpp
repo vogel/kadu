@@ -188,9 +188,9 @@ void ChatStylesManager::configurationUpdated()
 	// if Style was changed, load new Style
 	if (!CurrentEngine || CurrentEngine->currentStyleName() != newStyleName || CurrentEngine->currentStyleVariant() != newVariantName)
 	{
-		fixStyleName(newStyleName);
+		newStyleName = fixedStyleName(newStyleName);
 		CurrentEngine = AvailableStyles[newStyleName].engine;
-		fixVariantName(newStyleName, newVariantName);
+		newVariantName = fixedVariantName(newStyleName, newVariantName);
 
 		CurrentEngine->loadStyle(newStyleName, newVariantName);
 	}
@@ -200,7 +200,7 @@ void ChatStylesManager::configurationUpdated()
 	triggerCompositingStateChanged();
 }
 
-void ChatStylesManager::fixStyleName(QString &styleName)
+QString ChatStylesManager::fixedStyleName(QString styleName)
 {
 	if (!AvailableStyles.contains(styleName))
 	{
@@ -212,12 +212,16 @@ void ChatStylesManager::fixStyleName(QString &styleName)
 				styleName = *AvailableStyles.keys().constBegin();
 		}
 	}
+
+	return styleName;
 }
 
-void ChatStylesManager::fixVariantName(const QString &styleName, QString &variantName)
+QString ChatStylesManager::fixedVariantName(const QString &styleName, QString variantName)
 {
 	if (!CurrentEngine->styleVariants(styleName).contains(variantName))
-		variantName = CurrentEngine->defaultVariant(styleName);
+		return CurrentEngine->defaultVariant(styleName);
+
+	return variantName;
 }
 
 void ChatStylesManager::compositingEnabled()
