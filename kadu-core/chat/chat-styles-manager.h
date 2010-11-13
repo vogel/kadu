@@ -90,8 +90,8 @@ class KADUAPI ChatStylesManager : public QObject, ConfigurationAwareObject, Comp
 	void compositingEnabled();
 	void compositingDisabled();
 
-	void fixStyleName(QString &styleName);
-	void fixVariantName(const QString &styleName, QString &variantName);
+	QString fixedStyleName(QString styleName);
+	QString fixedVariantName(const QString &styleName, QString variantName);
 
 private slots:
 	void styleChangedSlot(const QString &styleName);
