@@ -40,14 +40,33 @@ for /D %%F in (*) do (
 		xcopy "%%F" %DESTINATION%\syntax\chat\"%%F" /C /H /R /Y /S /I /Q
 	)
 )
+xcopy Default %DESTINATION%\syntax\chat\Default /C /H /R /Y /S /I /Q
 cd ..\..\..
 
 xcopy varia\syntax\infopanel\*.syntax %DESTINATION%\syntax\infopanel\ /C /H /R /Y /Q
 xcopy translations\*.qm               %DESTINATION%\translations\ /C /H /R /Y /Q
 
-xcopy varia\themes\emoticons\penguins\* %DESTINATION%\themes\emoticons\penguins\ /C /H /R /Y /Q
-xcopy varia\themes\icons\default\*      %DESTINATION%\themes\icons\default\ /E /C /H /R /Y  /Q
-xcopy varia\themes\sounds\default\*     %DESTINATION%\themes\sounds\default\ /C /H /R /Y /Q
+cd varia\themes\emoticons
+for /D %%D in (*) do (
+	IF NOT "%%D"=="CMakeFiles" (
+		xcopy %%D %DESTINATION%\themes\emoticons\%%D /C /H /R /Y /S /I /Q
+	)
+)
+
+cd ..\icons
+for /D %%D in (*) do (
+	IF NOT "%%D"=="CMakeFiles" (
+		xcopy %%D %DESTINATION%\themes\icons\%%D /C /H /R /Y /S /I /Q
+	)
+)
+
+cd ..\sounds
+for /D %%D in (*) do (
+	IF NOT "%%D"=="CMakeFiles" (
+		xcopy %%D %DESTINATION%\themes\sounds\%%D /C /H /R /Y /S /I /Q
+	)
+)
+cd ..\..\..
 
 ECHO Copying modules
 cd modules
