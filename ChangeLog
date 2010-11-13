@@ -4,6 +4,8 @@
 * gadu: #1656 fixed: proper invalid password server error handling (Vogel)
 * gui: #1506 fixed: nice invalid password message and dialog for entering new one (Vogel)
 * gui: #1674 fixed: asking for new identity after deleting account that had its own identity (beevvy)
+* gui: chat titles are properly updated without restart after setting custom syntax in configration (beevvy)
+* gui: #1686 fixed: selection doesn't update visually in certain Qt styles, like Plastik (beevvy)
 * build: enable autodownload on windows
 * theme: one icon theme glass introduced instead of glass16 and glass22
 
