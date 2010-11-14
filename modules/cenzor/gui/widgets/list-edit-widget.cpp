@@ -89,7 +89,7 @@ void ListEditWidget::addItem()
 		return;
 
 	ListWidget->addItem(LineEdit->text());
-	LineEdit->setText("");
+	LineEdit->clear();
 }
 
 void ListEditWidget::changeItem()
@@ -99,7 +99,7 @@ void ListEditWidget::changeItem()
 		return;
 
 	item->setText(LineEdit->text());
-	LineEdit->setText("");
+	LineEdit->clear();
 }
 
 void ListEditWidget::deleteItem()
@@ -109,5 +109,5 @@ void ListEditWidget::deleteItem()
 		return;
 
 	delete item;
-	LineEdit->setText("");
+	LineEdit->clear();
 }

@@ -128,10 +128,10 @@ void GaduCreateAccountWidget::createGui()
 
 void GaduCreateAccountWidget::resetGui()
 {
-	NewPassword->setText("");
-	ReNewPassword->setText("");
+	NewPassword->clear();
+	ReNewPassword->clear();
 	RememberPassword->setChecked(true);
-	EMail->setText("");
+	EMail->clear();
 	IdentityCombo->setCurrentIdentity(Identity::null);
 	MyTokenWidget->setTokenValue("");
 

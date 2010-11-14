@@ -100,13 +100,13 @@ void JabberContactPersonalInfoWidget::createGui()
 
 void JabberContactPersonalInfoWidget::reset()
 {
-	FullNameText->setText(QString::null);
-	FamilyNameText->setText(QString::null);
-	NicknameText->setText(QString::null);
-	BirthdateText->setText(QString::null);
-	CityText->setText(QString::null);
-	EmailText->setText(QString::null);
-	WebsiteText->setText(QString::null);
+	FullNameText->clear();
+	FamilyNameText->clear();
+	NicknameText->clear();
+	BirthdateText->clear();
+	CityText->clear();
+	EmailText->clear();
+	WebsiteText->clear();
 }
 
 void JabberContactPersonalInfoWidget::personalInfoAvailable(Buddy buddy)
@@ -123,7 +123,7 @@ void JabberContactPersonalInfoWidget::personalInfoAvailable(Buddy buddy)
 	if (0 != buddy.birthYear())
 		BirthdateText->setText(QString::number(buddy.birthYear()));
 	else
-		BirthdateText->setText("");
+		BirthdateText->clear();
 
 	CityText->setText(buddy.city());
 	EmailText->setText(buddy.email());

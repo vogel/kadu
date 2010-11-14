@@ -77,7 +77,7 @@ void HotKeyEdit::setShortCut(const QString &shortcut)
 {
 	QKeySequence str(shortcut);
 	if (str == QKeySequence())
-		setText(QString::null);
+		clear();
 	else
 		setText(shortcut);
 }
@@ -96,5 +96,5 @@ void HotKeyEdit::keyReleaseEvent(QKeyEvent *)
 	// sprawdzenie czy ostatnim znakiem jest "+"
 	// jesli tak to nie ma takiego skrotu klawiszowego
 	if (text().at(text().length() - 1) == '+')
-		setText(QString::null);
+		clear();
 }

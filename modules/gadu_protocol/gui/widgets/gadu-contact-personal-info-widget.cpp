@@ -106,17 +106,17 @@ void GaduContactPersonalInfoWidget::createGui()
 
 void GaduContactPersonalInfoWidget::reset()
 {
-	FirstNameText->setText(QString::null);
-	LastNameText->setText(QString::null);
-	NicknameText->setText(QString::null);
-	GenderText->setText(QString::null);
-	BirthdateText->setText(QString::null);
-	CityText->setText(QString::null);
-	StateProvinceText->setText(QString::null);
-	IpText->setText(QString::null);
-	PortText->setText(QString::null);
-	DnsNameText->setText(QString::null);
-	ProtocolVerText->setText(QString::null);
+	FirstNameText->clear();
+	LastNameText->clear();
+	NicknameText->clear();
+	GenderText->clear();
+	BirthdateText->clear();
+	CityText->clear();
+	StateProvinceText->clear();
+	IpText->clear();
+	PortText->clear();
+	DnsNameText->clear();
+	ProtocolVerText->clear();
 }
 
 void GaduContactPersonalInfoWidget::personalInfoAvailable(Buddy buddy)
@@ -142,17 +142,17 @@ void GaduContactPersonalInfoWidget::personalInfoAvailable(Buddy buddy)
 			GenderText->setText(tr("Male"));
 			break;
 		case GenderUnknown:
-			GenderText->setText("");
+			GenderText->clear();
 			break;
 	}
 
 	if (0 != buddy.birthYear())
 		BirthdateText->setText(QString::number(buddy.birthYear()));
 	else
-		BirthdateText->setText("");
+		BirthdateText->clear();
 
 	CityText->setText(buddy.city());
-	StateProvinceText->setText(""); // do not have any info, do we need this control anyway?
+	StateProvinceText->clear(); // do not have any info, do we need this control anyway?
 	IpText->setText(contact.address().toString());
 	PortText->setText(QString::number(contact.port()));
 	DnsNameText->setText(contact.dnsName());
