@@ -76,7 +76,7 @@ QKeySequence HotKeyEdit::shortCut() const {
 void HotKeyEdit::setShortCut(const QString &shortcut)
 {
 	QKeySequence str(shortcut);
-	if (str == QKeySequence())
+	if (str.isEmpty())
 		clear();
 	else
 		setText(shortcut);
