@@ -33,6 +33,7 @@
 #include "contacts/contact-manager.h"
 #include "misc/misc.h"
 #include "model/roles.h"
+#include "os/generic/url-opener.h"
 #include "protocols/protocol.h"
 #include "protocols/services/contact-personal-info-service.h"
 
@@ -125,5 +126,12 @@ void JabberContactPersonalInfoWidget::personalInfoAvailable(Buddy buddy)
 
 	CityText->setText(buddy.city());
 	EmailText->setText(buddy.email());
-	WebsiteText->setText(buddy.website());
+	WebsiteText->setText(QString("<a href=\"%1\">%1</a>").arg(buddy.website()));
+
+	connect(WebsiteText, SIGNAL(linkActivated(const QString)), this, SLOT(urlClicked(const QString)));
+}
+
+void JabberContactPersonalInfoWidget::urlClicked(const QString link)
+{
+	UrlOpener::openUrl(link);
 }
