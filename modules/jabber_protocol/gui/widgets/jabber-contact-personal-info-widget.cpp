@@ -92,6 +92,7 @@ void JabberContactPersonalInfoWidget::createGui()
 
 	WebsiteText = new QLabel(this);
 	infoLayout->addRow(new QLabel(tr("Website") + ':', infoWidget), WebsiteText);
+	connect(WebsiteText, SIGNAL(linkActivated(const QString &)), this, SLOT(urlClicked(const QString &)));
 
 	layout->addWidget(infoWidget);
 	layout->addStretch(100);
@@ -127,11 +128,9 @@ void JabberContactPersonalInfoWidget::personalInfoAvailable(Buddy buddy)
 	CityText->setText(buddy.city());
 	EmailText->setText(buddy.email());
 	WebsiteText->setText(QString("<a href=\"%1\">%1</a>").arg(buddy.website()));
-
-	connect(WebsiteText, SIGNAL(linkActivated(const QString)), this, SLOT(urlClicked(const QString)));
 }
 
-void JabberContactPersonalInfoWidget::urlClicked(const QString link)
+void JabberContactPersonalInfoWidget::urlClicked(const QString &link)
 {
 	UrlOpener::openUrl(link);
 }
