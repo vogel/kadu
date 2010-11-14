@@ -722,11 +722,11 @@ void ProfileConfigurationWindow::fillDir(const QString &s)
 
 void ProfileConfigurationWindow::clear()
 {
-	profileName->setText("");
-	profileUIN->setText("");
-	profilePassword->setText("");
-	profileDir->setText("");
-	protectPassword->setText("");
+	profileName->clear();
+	profileUIN->clear();
+	profilePassword->clear();
+	profileDir->clear();
+	protectPassword->clear();
 	configCheck->setChecked(true);
 	userlistCheck->setChecked(false);
 	autostartCheck->setChecked(false);

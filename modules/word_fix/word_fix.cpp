@@ -271,8 +271,8 @@ void WordFix::changeSelected()
 	item->setText(0, wordStr);
 	item->setText(1, valueStr);
 
-	wordEdit->setText("");
-	valueEdit->setText("");
+	wordEdit->clear();
+	valueEdit->clear();
 
 	changeButton->setEnabled(false);
 	deleteButton->setEnabled(false);
@@ -290,8 +290,8 @@ void WordFix::deleteSelected()
 	QString wordStr = item->text(0);
 	delete item;
 
-	wordEdit->setText("");
-	valueEdit->setText("");
+	wordEdit->clear();
+	valueEdit->clear();
 
 	changeButton->setEnabled(false);
 	deleteButton->setEnabled(false);
@@ -319,8 +319,8 @@ void WordFix::addNew()
 		list->setCurrentItem(item);
 	}
 
-	wordEdit->setText("");
-	valueEdit->setText("");
+	wordEdit->clear();
+	valueEdit->clear();
 
 	changeButton->setEnabled(false);
 	deleteButton->setEnabled(false);

@@ -127,7 +127,7 @@ void AntistringConfigurationUiHandler::addCondition()
 	Antistring::instance()->configuration().conditions().append(qMakePair(condition, factor));
 
 	FactorWidget->setValue(0);
-	ConditionWidget->setText("");
+	ConditionWidget->clear();
 }
 
 void AntistringConfigurationUiHandler::changeCondition()
@@ -148,7 +148,7 @@ void AntistringConfigurationUiHandler::changeCondition()
 	Antistring::instance()->configuration().conditions()[index] = qMakePair(condition, factor);
 
 	FactorWidget->setValue(0);
-	ConditionWidget->setText("");
+	ConditionWidget->clear();
 }
 
 void AntistringConfigurationUiHandler::deleteCondition()
@@ -171,7 +171,7 @@ void AntistringConfigurationUiHandler::wordSelected(QListWidgetItem *item)
 	if (index < 0 || index >= Antistring::instance()->configuration().conditions().count())
 	{
 		FactorWidget->setValue(0);
-		ConditionWidget->setText("");
+		ConditionWidget->clear();
 		return;
 	}
 

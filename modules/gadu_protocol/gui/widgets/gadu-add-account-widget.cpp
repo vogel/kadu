@@ -124,8 +124,8 @@ void GaduAddAccountWidget::createGui()
 
 void GaduAddAccountWidget::resetGui()
 {
-	AccountId->setText("");
-	AccountPassword->setText("");
+	AccountId->clear();
+	AccountPassword->clear();
 	RememberPassword->setChecked(true);
 	Identity->setCurrentIdentity(Identity::null);
 
