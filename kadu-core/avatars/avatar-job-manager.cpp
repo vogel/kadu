@@ -17,6 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "avatars/avatar-job-runner.h"
 #include "contacts/contact-shared.h"
 
 #include "avatar-job-manager.h"
@@ -32,19 +33,46 @@ AvatarJobManager * AvatarJobManager::instance()
 }
 
 AvatarJobManager::AvatarJobManager() :
-		Mutex(QMutex::Recursive)
+		Mutex(QMutex::Recursive), JobTimer(this)
 {
+	JobTimer.setInterval(250);
+	JobTimer.setSingleShot(true);
+
+	connect(&JobTimer, SIGNAL(timeout()), this, SLOT(jobTimerTimeout()));
 }
 
 AvatarJobManager::~AvatarJobManager()
 {
 }
 
+void AvatarJobManager::jobTimerTimeout()
+{
+	if (!hasJob())
+		return;
+
+	Contact contact = nextJob();
+	AvatarJobRunner *runner = new AvatarJobRunner(this);
+	connect(runner, SIGNAL(jobFinished(bool)), this, SLOT(jobFinished()));
+	runner->runJob(contact);
+}
+
+void AvatarJobManager::jobFinished()
+{
+	if (!JobTimer.isActive() && hasJob())
+		JobTimer.start();
+}
+
 void AvatarJobManager::addJob(const Contact &contact)
 {
 	QMutexLocker(&mutex());
 
+	if (!contact)
+		return;
+
 	Jobs.insert(contact);
+
+	if (!JobTimer.isActive())
+		JobTimer.start();
 }
 
 bool AvatarJobManager::hasJob()

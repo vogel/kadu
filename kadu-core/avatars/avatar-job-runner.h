@@ -17,52 +17,38 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef AVATAR_JOB_MANAGER_H
-#define AVATAR_JOB_MANAGER_H
+#ifndef AVATAR_JOB_RUNNER_H
+#define AVATAR_JOB_RUNNER_H
 
 #include <QtCore/QObject>
-#include <QtCore/QTimer>
 
-#include "accounts/accounts-aware-object.h"
-#include "avatars/avatar.h"
-#include "storage/simple-manager.h"
 #include "exports.h"
 
-class KADUAPI AvatarJobManager : public QObject
+class Account;
+class AvatarService;
+class Contact;
+
+class KADUAPI AvatarJobRunner : public QObject
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(AvatarJobManager)
 
-	static AvatarJobManager *Instance;
-
-	QMutex Mutex;
-	QTimer JobTimer;
-
-	QSet<Contact> Jobs;
-
-	AvatarJobManager();
-	virtual ~AvatarJobManager();
-
-	QMutex & mutex() { return Mutex; }
+	AvatarService * avatarService(Account account);
+	AvatarService * avatarService(Contact contact);
 
 private slots:
-	void jobTimerTimeout();
-	void jobFinished();
+	void avatarFetched(Contact contact, bool ok, const QByteArray &data);
 
 public:
-	static KADUAPI AvatarJobManager * instance();
+	explicit AvatarJobRunner(QObject *parent);
+	virtual ~AvatarJobRunner();
 
-	void addJob(const Contact &contact);
-
-	bool hasJob();
-	Contact nextJob();
+	void runJob(Contact contact);
 
 signals:
-	void jobAvailable();
+	void jobFinished(bool ok);
 
 };
 
-// for MOC
-#include "contacts/contact.h"
+#include "contacts/contact.h" // for MOC
 
-#endif // AVATAR_JOB_MANAGER_H
+#endif // AVATAR_JOB_RUNNER_H
