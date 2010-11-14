@@ -63,8 +63,6 @@ public:
 
 	virtual ~Chat();
 
-	void refreshTitle();
-
 	ContactSet contacts() const;
 	QString name() const;
 
@@ -98,14 +96,6 @@ public:
 	 * chats).
 	 */
 	KaduSharedBase_Property(QString, type, Type);
-
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Title of chat.
-	 *
-	 * Chat title is used to display in window titles.
-	 */
-	KaduSharedBase_Property(QString, title, Title);
 
 	/**
 	 * @author Rafal 'Vogel' Malinowski

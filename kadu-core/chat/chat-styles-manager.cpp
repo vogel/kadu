@@ -188,20 +188,9 @@ void ChatStylesManager::configurationUpdated()
 	// if Style was changed, load new Style
 	if (!CurrentEngine || CurrentEngine->currentStyleName() != newStyleName || CurrentEngine->currentStyleVariant() != newVariantName)
 	{
-		if (!AvailableStyles.contains(newStyleName))
-		{
-			newStyleName = "Satin";
-			if (!AvailableStyles.contains(newStyleName))
-			{
-				newStyleName = "kadu";
-				if (!AvailableStyles.contains(newStyleName))
-					newStyleName = *AvailableStyles.keys().constBegin();
-			}
-		}
+		newStyleName = fixedStyleName(newStyleName);
 		CurrentEngine = AvailableStyles[newStyleName].engine;
-
-		if (!CurrentEngine->styleVariants(newStyleName).contains(newVariantName))
-			newVariantName = CurrentEngine->defaultVariant(newStyleName);
+		newVariantName = fixedVariantName(newStyleName, newVariantName);
 
 		CurrentEngine->loadStyle(newStyleName, newVariantName);
 	}
@@ -209,6 +198,30 @@ void ChatStylesManager::configurationUpdated()
 		CurrentEngine->configurationUpdated();
 
 	triggerCompositingStateChanged();
+}
+
+QString ChatStylesManager::fixedStyleName(QString styleName)
+{
+	if (!AvailableStyles.contains(styleName))
+	{
+		styleName = "Satin";
+		if (!AvailableStyles.contains(styleName))
+		{
+			styleName = "kadu";
+			if (!AvailableStyles.contains(styleName))
+				styleName = *AvailableStyles.keys().constBegin();
+		}
+	}
+
+	return styleName;
+}
+
+QString ChatStylesManager::fixedVariantName(const QString &styleName, QString variantName)
+{
+	if (!CurrentEngine->styleVariants(styleName).contains(variantName))
+		return CurrentEngine->defaultVariant(styleName);
+
+	return variantName;
 }
 
 void ChatStylesManager::compositingEnabled()

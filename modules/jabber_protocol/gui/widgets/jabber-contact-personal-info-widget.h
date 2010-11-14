@@ -46,9 +46,10 @@ class JabberContactPersonalInfoWidget : public QWidget
 	Contact MyContact;
 	void createGui();
 	void reset();
-	
+
 private slots:
 	void personalInfoAvailable(Buddy buddy);
+	void urlClicked(const QString &link);
 
 public:
 	explicit JabberContactPersonalInfoWidget(Contact &contact, QWidget *parent = 0);

@@ -33,38 +33,36 @@ class JabberProtocol;
 class ChatState : public QObject
 {
 	Q_OBJECT
-	
-	Chat ObservedChat;
-	ChatWidget *Widget;
+
+	ChatWidget *ObservedChatWidget;
 	JabberProtocol *Protocol;
 	// Message Events & Chat States
-	QTimer* ComposingTimer;
+	QTimer *ComposingTimer;
 	bool IsComposing;
 	bool SendComposingEvents;
 	QString EventId;
 	XMPP::ChatState ContactChatState;
 	XMPP::ChatState LastChatState;
-	
+
 	void setContactChatState(XMPP::ChatState state);
 	void updateChatTitle();
 
-  public:
-	ChatState(Chat chat);
-	
-	Chat chat() { return ObservedChat; }
+public:
+	explicit ChatState(ChatWidget *chatWidget);
+
 	void chatClosed();
-	
-  private slots:
-  	void setComposing();
-  	void resetComposing();
+
+private slots:
+	void setComposing();
+	void resetComposing();
 	void checkComposing();
 	void updateIsComposing(bool b);
 	void setChatState(XMPP::ChatState state);
 	void incomingMessage(const XMPP::Message &m);
 	void messageAboutToSend(XMPP::Message &message);
-	
-  signals:
-    	/**
+
+signals:
+	/**
 	 * Signals if user (re)started/stopped composing
 	 */
 	void composing(bool);
@@ -73,14 +71,14 @@ class ChatState : public QObject
 class JabberChatStateService : public QObject
 {
 	Q_OBJECT
-	
+
 	JabberProtocol *ParentProtocol;
 	QMap<ChatWidget *, ChatState *> ChatStateMap;
 
-  public:
+public:
 	JabberChatStateService(JabberProtocol *parent);
 
-  private slots:
+private slots:
 	void chatWidgetCreated(ChatWidget *chat);
 	void chatWidgetDestroying(ChatWidget *chat);
 };

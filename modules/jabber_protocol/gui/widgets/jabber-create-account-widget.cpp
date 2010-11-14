@@ -297,10 +297,10 @@ void JabberCreateAccountWidget::cancel()
 
 void JabberCreateAccountWidget::resetGui()
 {
-	Username->setText("");
+	Username->clear();
 	Domain->setCurrentIndex(-1);
-	NewPassword->setText("");
-	ReNewPassword->setText("");
+	NewPassword->clear();
+	ReNewPassword->clear();
 	RememberPassword->setChecked(true);
 	IdentityCombo->setCurrentIdentity(Identity::null);
 

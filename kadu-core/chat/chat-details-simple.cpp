@@ -79,8 +79,6 @@ void ChatDetailsSimple::load()
 				CurrentContact = contactList[0];
 		}
 	}
-
-	mainData()->refreshTitle();
 }
 
 /**

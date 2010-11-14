@@ -92,8 +92,8 @@ void ChatWindow::setChatWidget(ChatWidget *newChatWidget)
 	layout->setSpacing(0);
 
 	connect(currentChatWidget, SIGNAL(closed()), this, SLOT(close()));
-	connect(currentChatWidget->chat(), SIGNAL(titleChanged(Chat , const QString &)), this, SLOT(updateTitle()));
-	connect(currentChatWidget, SIGNAL(messageReceived(Chat )), this, SLOT(alertNewMessage()));
+	connect(currentChatWidget, SIGNAL(titleChanged(Chat, const QString &)), this, SLOT(updateTitle()));
+	connect(currentChatWidget, SIGNAL(messageReceived(Chat)), this, SLOT(alertNewMessage()));
 
 	setFocusProxy(currentChatWidget);
 
@@ -208,7 +208,7 @@ void ChatWindow::closeEvent(QCloseEvent *e)
 void ChatWindow::updateTitle()
 {
 	setWindowIcon(currentChatWidget->chat().icon());
-	setWindowTitle(currentChatWidget->chat().title());
+	setWindowTitle(currentChatWidget->title());
 
 	if (showNewMessagesNum && currentChatWidget->newMessagesCount()) // if we don't have new messages or don't want them to be shown
 		showNewMessagesNumInTitle();
@@ -218,15 +218,15 @@ void ChatWindow::blinkTitle()
 {
  	if (!_isActiveWindow(this))
   	{
-		if (!windowTitle().contains(currentChatWidget->chat().title()) || !blinkChatTitle)
+		if (!windowTitle().contains(currentChatWidget->title()) || !blinkChatTitle)
 		{
   			if (!showNewMessagesNum) // if we don't show number od new messages waiting
-  				setWindowTitle(currentChatWidget->chat().title());
+  				setWindowTitle(currentChatWidget->title());
   			else
 				showNewMessagesNumInTitle();
 		}
 		else
-			setWindowTitle(QString().fill(' ', (currentChatWidget->chat().title().length() + 5)));
+			setWindowTitle(QString().fill(' ', (currentChatWidget->title().length() + 5)));
 
 		if (blinkChatTitle) // timer will not be started, if configuration option was changed
 		{
@@ -239,7 +239,7 @@ void ChatWindow::blinkTitle()
 void ChatWindow::showNewMessagesNumInTitle()
 {
 	if (!_isActiveWindow(this))
-		setWindowTitle('[' + QString::number(currentChatWidget->newMessagesCount()) + "] " + currentChatWidget->chat().title());
+		setWindowTitle('[' + QString::number(currentChatWidget->newMessagesCount()) + "] " + currentChatWidget->title());
 }
 
 void ChatWindow::windowActivationChange(bool b)
@@ -248,7 +248,7 @@ void ChatWindow::windowActivationChange(bool b)
 	if (_isActiveWindow(this))
 	{
 		currentChatWidget->markAllMessagesRead();
-		setWindowTitle(currentChatWidget->chat().title());
+		setWindowTitle(currentChatWidget->title());
 
 		if (title_timer->isActive())
 			title_timer->stop();

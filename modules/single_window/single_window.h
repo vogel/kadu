@@ -42,7 +42,7 @@ public slots:
 	void onChatKeyPressed(QKeyEvent *e, CustomInput *w, bool &handled);
 	void onkaduKeyPressed(QKeyEvent *e);
 	void closeTab(int index);
-	void onTitleChanged(Chat chatChanged, const QString &newTitle);
+	void onTitleChanged(ChatWidget *chatChanged, const QString &newTitle);
 	void onStatusPixmapChanged(const QIcon &icon);
 	void showHide();
 };

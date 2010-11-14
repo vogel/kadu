@@ -132,12 +132,6 @@ void ChatShared::load()
 	ChatAccount = AccountManager::instance()->byUuid(QUuid(loadValue<QString>("Account")));
 
 	triggerAllChatTypesRegistered();
-
-	if (ChatAccount)
-		connect(ChatAccount, SIGNAL(buddyStatusChanged(Contact, Status)),
-				this, SLOT(refreshTitle()));
-
-	refreshTitle();
 }
 
 /**
@@ -261,65 +255,6 @@ void ChatShared::detailsAdded()
 void ChatShared::detailsAboutToBeRemoved()
 {
 	details()->store();
-}
-
-void ChatShared::setTitle(QString title)
-{
-	ensureLoaded();
-	Title = title;
-	dataUpdated();
-
-	emit titleChanged(this, title);
-}
-
-/**
- * @author Rafal 'Vogel' Malinowski
- * @short Updates chat title.
- *
- * After any contact from this chat changes his/her status, this method is calles to update
- * chat title. Connect to updated() signal to get information about this change.
- */
-void ChatShared::refreshTitle()
-{
-	kdebugf();
-	QString title;
-
-	int contactsCount = contacts().count();
-	kdebugmf(KDEBUG_FUNCTION_START, "contacts().size() = %d\n", contactsCount);
-	if (contactsCount > 1)
-	{
-		title = config_file.readEntry("Look","ConferencePrefix");
-		if (title.isEmpty())
-			title = tr("Conference with ");
-
-		QString conferenceContents = config_file.readEntry("Look", "ConferenceContents");
-		QStringList contactslist;
-		foreach (Contact contact, contacts())
-			contactslist.append(Parser::parse(conferenceContents.isEmpty() ? "%a" : conferenceContents, contact, false));
-
-		title.append(contactslist.join(", "));
-	}
-	else if (contactsCount > 0)
-	{
-		Contact contact = contacts().toContact();
-
-		if (config_file.readEntry("Look", "ChatContents").isEmpty())
-		{
-			if (contact.ownerBuddy().isAnonymous())
-				title = Parser::parse(tr("Chat with ")+"%a", contact, false);
-			else
-				title = Parser::parse(tr("Chat with ")+"%a (%s[: %d])", contact, false);
-		}
-		else
-			title = Parser::parse(config_file.readEntry("Look","ChatContents"), contact, false);
-	}
-
-	title.replace("<br/>", " ");
-	title.replace("&nbsp;", " ");
-
-	setTitle(title);
-
-	kdebugf2();
 }
 
 /**

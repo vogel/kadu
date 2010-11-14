@@ -6,8 +6,9 @@
 * gui: #1674 fixed: asking for new identity after deleting account that had its own identity (beevvy)
 * gui: chat titles are properly updated without restart after setting custom syntax in configration (beevvy)
 * gui: #1686 fixed: selection doesn't update visually in certain Qt styles, like Plastik (beevvy)
-* build: enable autodownload on windows
-* theme: one icon theme glass introduced instead of glass16 and glass22
+* build: enable autodownload on windows (dorr)
+* theme: one icon theme glass introduced instead of glass16 and glass22 (dorr)
+* api: AvatarManager class split into 3 other classes (Vogel)
 
 +++ version 0.6.6-beta10
 * modules: don't build echo module by default (beevvy)

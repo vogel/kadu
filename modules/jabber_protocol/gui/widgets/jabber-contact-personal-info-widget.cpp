@@ -33,6 +33,7 @@
 #include "contacts/contact-manager.h"
 #include "misc/misc.h"
 #include "model/roles.h"
+#include "os/generic/url-opener.h"
 #include "protocols/protocol.h"
 #include "protocols/services/contact-personal-info-service.h"
 
@@ -91,6 +92,7 @@ void JabberContactPersonalInfoWidget::createGui()
 
 	WebsiteText = new QLabel(this);
 	infoLayout->addRow(new QLabel(tr("Website") + ':', infoWidget), WebsiteText);
+	connect(WebsiteText, SIGNAL(linkActivated(const QString &)), this, SLOT(urlClicked(const QString &)));
 
 	layout->addWidget(infoWidget);
 	layout->addStretch(100);
@@ -98,13 +100,13 @@ void JabberContactPersonalInfoWidget::createGui()
 
 void JabberContactPersonalInfoWidget::reset()
 {
-	FullNameText->setText(QString::null);
-	FamilyNameText->setText(QString::null);
-	NicknameText->setText(QString::null);
-	BirthdateText->setText(QString::null);
-	CityText->setText(QString::null);
-	EmailText->setText(QString::null);
-	WebsiteText->setText(QString::null);
+	FullNameText->clear();
+	FamilyNameText->clear();
+	NicknameText->clear();
+	BirthdateText->clear();
+	CityText->clear();
+	EmailText->clear();
+	WebsiteText->clear();
 }
 
 void JabberContactPersonalInfoWidget::personalInfoAvailable(Buddy buddy)
@@ -121,9 +123,14 @@ void JabberContactPersonalInfoWidget::personalInfoAvailable(Buddy buddy)
 	if (0 != buddy.birthYear())
 		BirthdateText->setText(QString::number(buddy.birthYear()));
 	else
-		BirthdateText->setText("");
+		BirthdateText->clear();
 
 	CityText->setText(buddy.city());
 	EmailText->setText(buddy.email());
-	WebsiteText->setText(buddy.website());
+	WebsiteText->setText(QString("<a href=\"%1\">%1</a>").arg(buddy.website()));
+}
+
+void JabberContactPersonalInfoWidget::urlClicked(const QString &link)
+{
+	UrlOpener::openUrl(link);
 }

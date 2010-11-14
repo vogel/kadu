@@ -625,7 +625,7 @@ void SearchWindow::byrFromDataTyped(void)
 	bool b = e_byrFrom->text().isEmpty();
 	e_byrTo->setEnabled(!b);
 	if (b)
-		e_byrTo->setText(QString::null);
+		e_byrTo->clear();
 }
 
 void SearchWindow::persClicked()

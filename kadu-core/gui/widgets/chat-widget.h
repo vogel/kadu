@@ -61,6 +61,8 @@ class KADUAPI ChatWidget : public QWidget, ConfigurationAwareObject
 
 	QSplitter *vertSplit, *horizSplit; /*!< obiekty oddzielaj�ce kontrolki od siebie */
 
+	QString Title;
+
 	QDateTime LastMessageTime; /*!< czas ostatniej wiadomo�ci */
 
 	unsigned int NewMessagesCount; /*!< liczba nowych wiadomo�ci w oknie rozmowy */
@@ -90,7 +92,7 @@ public:
 	explicit ChatWidget(Chat chat, QWidget *parent = 0);
 	virtual ~ChatWidget();
 
-	Chat  chat() { return CurrentChat; }
+	Chat chat() const { return CurrentChat; }
 
 	/**
 		Dodaje now� wiadomos� systemow� do okna.
@@ -121,26 +123,28 @@ public:
 	**/
 	void repaintMessages();
 
-	CustomInput * edit();
-	BuddiesListView * contactsListWidget() { return BuddiesWidget ? BuddiesWidget->view() : 0; }
-	ChatEditBox * getChatEditBox() { return InputBox; }
-	ChatMessagesView * chatMessagesView() { return MessagesView; }
+	CustomInput * edit() const;
+	BuddiesListView * contactsListWidget() const { return BuddiesWidget ? BuddiesWidget->view() : 0; }
+	ChatEditBox * getChatEditBox() const { return InputBox; }
+	ChatMessagesView * chatMessagesView() const { return MessagesView; }
 
 	virtual void dragEnterEvent(QDragEnterEvent *e);
 	virtual void dropEvent(QDropEvent *e);
 	virtual void dragMoveEvent(QDragMoveEvent *e);
 
-	Protocol *currentProtocol();
+	Protocol * currentProtocol() const;
 
-	unsigned int newMessagesCount() const;
+	unsigned int newMessagesCount() const { return NewMessagesCount; }
 
-	QDateTime lastMessageTime();
-	QIcon icon();
+	const QString & title() { return Title; }
+	void setTitle(const QString &title);
+
+	const QDateTime & lastMessageTime() const { return LastMessageTime; }
 
 	void kaduStoreGeometry();
 	void kaduRestoreGeometry();
 
-	unsigned int countMessages() { return MessagesView->countMessages(); }
+	unsigned int countMessages() const { return MessagesView->countMessages(); }
 
 public slots:
 // 	void messageStatusChanged(int messageId, ChatService::MessageStatus status);
@@ -183,6 +187,12 @@ public slots:
 
 	void leaveConference();
 
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Updates chat title.
+	 */
+	void refreshTitle();
+
 signals:
 	/**
 		\fn void messageSendRequested(Chat* chat)
@@ -224,7 +234,7 @@ signals:
 	**/
 	void fileDropped(Chat contacts, const QString &fileName);
 
-	void captionUpdated();
+	void titleChanged(ChatWidget *chatWidget, const QString &newTitle);
 	void closed();
 };
 
@@ -238,17 +248,16 @@ signals:
 	Informuje kt�ry chat powinien zosta� zamkni�ty w przypadku np. ignorowania kontaktu
 	z kt�rym prowadzona jest rozmowa
 **/
-
 class ChatContainer
 {
-	public:
-		ChatContainer() {}
-		virtual ~ChatContainer() {}
+public:
+	ChatContainer() {}
+	virtual ~ChatContainer() {}
 
-		/**
-			Metoda informuj�ca, kt�ry chat powinien zosta� zamkni�ty
-		 **/
-		virtual void closeChatWidget(ChatWidget *chat) = 0;
+	/**
+		Metoda informuj�ca, kt�ry chat powinien zosta� zamkni�ty
+	 **/
+	virtual void closeChatWidget(ChatWidget *chat) = 0;
 };
 
 #endif // CHAT_WIDGET_H

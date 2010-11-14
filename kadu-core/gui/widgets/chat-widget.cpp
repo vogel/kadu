@@ -79,6 +79,10 @@ ChatWidget::ChatWidget(Chat chat, QWidget *parent) :
 	createGui();
 	configurationUpdated();
 
+	connect(CurrentChat.chatAccount(), SIGNAL(buddyStatusChanged(Contact, Status)),
+			this, SLOT(refreshTitle()));
+
+
 	kdebugf2();
 }
 
@@ -126,6 +130,7 @@ void ChatWidget::createGui()
 
 	// shit, createContactsList needs that
 	InputBox = new ChatEditBox(CurrentChat, this);
+	InputBox->setSizePolicy(QSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored));
 
 	if (CurrentChat.contacts().count() > 1)
 		createContactsList();
@@ -181,6 +186,8 @@ void ChatWidget::configurationUpdated()
 
 	InputBox->inputBox()->setFont(config_file.readFontEntry("Look","ChatFont"));
  	InputBox->inputBox()->setStyleSheet(QString("QTextEdit {background-color: %1}").arg(config_file.readColorEntry("Look", "ChatTextBgColor").name()));
+
+	refreshTitle();
 }
 
 bool ChatWidget::keyPressEventHandled(QKeyEvent *e)
@@ -223,11 +230,6 @@ bool ChatWidget::keyPressEventHandled(QKeyEvent *e)
 	return false;
 }
 
-QIcon ChatWidget::icon()
-{
-	return chat().icon();
-}
-
 void ChatWidget::keyPressEvent(QKeyEvent *e)
 {
 	kdebugf();
@@ -238,9 +240,56 @@ void ChatWidget::keyPressEvent(QKeyEvent *e)
 	kdebugf2();
 }
 
-QDateTime ChatWidget::lastMessageTime()
+void ChatWidget::refreshTitle()
 {
-	return LastMessageTime;
+	kdebugf();
+	QString title;
+
+	int contactsCount = chat().contacts().count();
+	kdebugmf(KDEBUG_FUNCTION_START, "chat().contacts().size() = %d\n", contactsCount);
+	if (contactsCount > 1)
+	{
+		title = config_file.readEntry("Look", "ConferencePrefix");
+		if (title.isEmpty())
+			title = tr("Conference with ");
+
+		QString conferenceContents = config_file.readEntry("Look", "ConferenceContents");
+		QStringList contactslist;
+		foreach (Contact contact, chat().contacts())
+			contactslist.append(Parser::parse(conferenceContents.isEmpty() ? "%a" : conferenceContents, contact, false));
+
+		title.append(contactslist.join(", "));
+	}
+	else if (contactsCount == 1)
+	{
+		Contact contact = chat().contacts().toContact();
+
+		if (config_file.readEntry("Look", "ChatContents").isEmpty())
+		{
+			if (contact.ownerBuddy().isAnonymous())
+				title = Parser::parse(tr("Chat with ") + "%a", contact, false);
+			else
+				title = Parser::parse(tr("Chat with ") + "%a (%s[: %d])", contact, false);
+		}
+		else
+			title = Parser::parse(config_file.readEntry("Look", "ChatContents"), contact, false);
+	}
+
+	title.replace("<br/>", " ");
+	title.replace("&nbsp;", " ");
+
+	setTitle(title);
+
+	kdebugf2();
+}
+
+void ChatWidget::setTitle(const QString &title)
+{
+	if (title != Title)
+	{
+		Title = title;
+		emit titleChanged(this, title);
+	}
 }
 
 void ChatWidget::appendMessages(const QList<MessageRenderInfo *> &messages, bool pending)
@@ -418,7 +467,7 @@ void ChatWidget::colorSelectorAboutToClose()
 	kdebugf2();
 }
 
-CustomInput * ChatWidget::edit()
+CustomInput * ChatWidget::edit() const
 {
 	return InputBox->inputBox();
 }
@@ -478,7 +527,7 @@ void ChatWidget::dropEvent(QDropEvent *e)
 	}
 }
 
-Protocol *ChatWidget::currentProtocol()
+Protocol *ChatWidget::currentProtocol() const
 {
 	return CurrentChat.chatAccount().protocolHandler();
 }
@@ -494,11 +543,6 @@ void ChatWidget::makeActive()
 void ChatWidget::markAllMessagesRead()
 {
 	NewMessagesCount = 0;
-}
-
-unsigned int ChatWidget::newMessagesCount() const
-{
-	return NewMessagesCount;
 }
 
 void ChatWidget::kaduRestoreGeometry()
@@ -532,10 +576,10 @@ void ChatWidget::kaduStoreGeometry()
 		return;
 
 	cgd->setWidgetVerticalSizes(vertSplit->sizes());
-	
+
 	if (horizSplit)
 		cgd->setWidgetHorizontalSizes(horizSplit->sizes());
-	
+
 	cgd->store();
 }
 
