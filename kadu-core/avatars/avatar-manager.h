@@ -39,22 +39,16 @@ class KADUAPI AvatarManager : public QObject, public SimpleManager<Avatar>, Acco
 	static AvatarManager *Instance;
 
 	QTimer *UpdateTimer;
-	bool IsFetching;
 
 	AvatarManager();
 	virtual ~AvatarManager();
 
-	AvatarService * avatarService(Account account);
-	AvatarService * avatarService(Contact contact);
-
 	bool needUpdate(Contact contact);
 	void updateAvatar(Contact contact, bool force = false);
-	void fetchNextFromQueue();
 
 private slots:
 	void avatarDataUpdated();
 
-	void avatarFetched(Contact contact, bool ok, const QByteArray &data);
 	void updateAvatars();
 	void updateAccountAvatars();
 	void contactAdded(Contact contact);
