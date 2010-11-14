@@ -126,6 +126,7 @@ void ChatWidget::createGui()
 
 	// shit, createContactsList needs that
 	InputBox = new ChatEditBox(CurrentChat, this);
+	InputBox->setSizePolicy(QSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored));
 
 	if (CurrentChat.contacts().count() > 1)
 		createContactsList();
