@@ -28,7 +28,6 @@ AccountsComboBox::AccountsComboBox(QWidget *parent) :
 		KaduComboBox<Account>(parent)
 {
 	AccountsModel *accountsModel = new AccountsModel(this);
-	accountsModel->setUseSmallIcon(true);
 
 	setUpModel(accountsModel, new AccountsProxyModel(this));
 

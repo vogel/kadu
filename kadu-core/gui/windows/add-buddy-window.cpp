@@ -45,7 +45,6 @@
 #include "gui/widgets/groups-combo-box.h"
 #include "gui/widgets/select-buddy-combo-box.h"
 #include "misc/misc.h"
-#include "model/actions-proxy-model.h"
 #include "model/roles.h"
 #include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
