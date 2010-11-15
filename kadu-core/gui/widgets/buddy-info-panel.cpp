@@ -57,7 +57,7 @@ void BuddyInfoPanel::configurationUpdated()
 
 void BuddyInfoPanel::buddyUpdated(Buddy &buddy)
 {
-	if (buddy == SelectionItem.buddy())
+	if (buddy == Item.buddy())
 		update();
 }
 
@@ -114,7 +114,7 @@ void BuddyInfoPanel::update()
 		"<table><tr><td><img width=\"32\" height=\"32\" align=\"left\" valign=\"top\" src=\"file:///@{ManageUsersWindowIcon}\"></td><td> "
 		"<div align=\"left\"> [<b>%a</b>][ (%u)] [<br>tel.: %m][<br>IP: %i]</div></td></tr></table> <hr> <b>%s</b> [<br>%d]");
 	setHtml(QString("<body bgcolor=\"") + config_file.readEntry("Look", "InfoPanelBgColor") + "\"></body>");
-	displaySelectionItem(SelectionItem);
+	displayItem(Item);
 
 	if (config_file.readBoolEntry("Look", "PanelVerticalScrollbar"))
 		page()->mainFrame()->setScrollBarPolicy(Qt::Vertical, Qt::ScrollBarAsNeeded);
@@ -124,7 +124,7 @@ void BuddyInfoPanel::update()
 
 void BuddyInfoPanel::connectContact()
 {
-	Contact MyContact = SelectionItem.contact();
+	Contact MyContact = Item.contact();
 	if (!MyContact)
 		return;
 
@@ -137,7 +137,7 @@ void BuddyInfoPanel::connectContact()
 
 void BuddyInfoPanel::disconnectContact()
 {
-	Contact MyContact = SelectionItem.contact();
+	Contact MyContact = Item.contact();
 	if (!MyContact)
 		return;
 
@@ -154,7 +154,7 @@ void BuddyInfoPanel::displayContact(Contact contact)
 	MyContact = contact;
 	connectContact();
 
-	if (!SelectionItem.contact())
+	if (!Item.contact())
 	{
 		setHtml(Template.arg(""));
 		return;
@@ -175,14 +175,14 @@ void BuddyInfoPanel::displayContact(Contact contact)
 	setHtml(Template.arg(doc.generateHtml()));
 }
 
-void BuddyInfoPanel::displaySelectionItem(BuddiesListViewSelectionItem selectionItem)
+void BuddyInfoPanel::displayItem(BuddyOrContact item)
 {
-	SelectionItem = selectionItem;
+	Item = item;
 
-	if (selectionItem.type() == BuddiesListViewSelectionItem::SelectedItemBuddy)
-		displayContact(BuddyPreferredManager::instance()->preferredContact(selectionItem.buddy()));
+	if (Item.type() == BuddyOrContact::ItemBuddy)
+		displayContact(BuddyPreferredManager::instance()->preferredContact(Item.buddy()));
 	else
-		displayContact(selectionItem.contact());
+		displayContact(Item.contact());
 }
 
 void BuddyInfoPanel::setVisible(bool visible)
@@ -190,7 +190,7 @@ void BuddyInfoPanel::setVisible(bool visible)
 	QWidget::setVisible(visible);
 
 	if (visible)
-		displaySelectionItem(SelectionItem);
+		displayItem(Item);
 }
 
 void BuddyInfoPanel::styleFixup(QString &syntax)

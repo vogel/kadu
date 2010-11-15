@@ -27,10 +27,10 @@
 #include <QtCore/QTimer>
 
 #include "buddies/buddy.h"
+#include "buddies/buddy-or-contact.h"
 #include "chat/chat.h"
 #include "contacts/contact.h"
 #include "gui/actions/action-data-source.h"
-#include "gui/widgets/buddies-list-view-selection-item.h"
 
 class QContextMenuEvent;
 class QModelIndex;
@@ -152,7 +152,7 @@ signals:
 	void buddySelectionChanged();
 	void currentBuddyChanged(Buddy buddy);
 	void currentContactChanged(Contact contact);
-	void currentChanged(BuddiesListViewSelectionItem selectionItem);
+	void currentChanged(BuddyOrContact buddyOrContact);
 
 };
 

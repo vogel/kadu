@@ -17,28 +17,28 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "buddies-list-view-selection-item.h"
+#include "buddy-or-contact.h"
 
-BuddiesListViewSelectionItem::BuddiesListViewSelectionItem() :
-		SelectedItem(SelectedItemNone)
+BuddyOrContact::BuddyOrContact() :
+		Type(ItemNone)
 {
 }
 
-BuddiesListViewSelectionItem::BuddiesListViewSelectionItem(BuddiesListViewSelectionItem::SelectedItemType selectedItem, Buddy selectedBuddy, Contact selectedContact) :
-		SelectedItem(selectedItem), SelectedBuddy(selectedBuddy), SelectedContact(selectedContact)
+BuddyOrContact::BuddyOrContact(BuddyOrContact::ItemType type, Buddy selectedBuddy, Contact selectedContact) :
+		Type(type), SelectedBuddy(selectedBuddy), SelectedContact(selectedContact)
 {
 }
 
-BuddiesListViewSelectionItem::BuddiesListViewSelectionItem(const BuddiesListViewSelectionItem &copyMe)
+BuddyOrContact::BuddyOrContact(const BuddyOrContact &copyMe)
 {
-	SelectedItem = copyMe.SelectedItem;
+	Type = copyMe.Type;
 	SelectedBuddy = copyMe.SelectedBuddy;
 	SelectedContact = copyMe.SelectedContact;
 }
 
-BuddiesListViewSelectionItem & BuddiesListViewSelectionItem::operator=(const BuddiesListViewSelectionItem &copyMe)
+BuddyOrContact & BuddyOrContact::operator=(const BuddyOrContact &copyMe)
 {
-	SelectedItem = copyMe.SelectedItem;
+	Type = copyMe.Type;
 	SelectedBuddy = copyMe.SelectedBuddy;
 	SelectedContact = copyMe.SelectedContact;
 

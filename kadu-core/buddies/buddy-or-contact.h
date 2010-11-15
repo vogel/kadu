@@ -17,39 +17,38 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef BUDDIES_LIST_VIEW_SELECTION_ITEM_H
-#define BUDDIES_LIST_VIEW_SELECTION_ITEM_H
+#ifndef BUDDY_OR_CONTACT_H
+#define BUDDY_OR_CONTACT_H
 
 #include "buddies/buddy.h"
 #include "contacts/contact.h"
 
-class BuddiesListViewSelectionItem
+class BuddyOrContact
 {
 public:
-	enum SelectedItemType
+	enum ItemType
 	{
-		SelectedItemNone,
-		SelectedItemBuddy,
-		SelectedItemContact
+		ItemNone,
+		ItemBuddy,
+		ItemContact
 	};
 
 private:
-	SelectedItemType SelectedItem;
+	ItemType Type;
 	Buddy SelectedBuddy;
 	Contact SelectedContact;
 
 public:
-	BuddiesListViewSelectionItem();
-	BuddiesListViewSelectionItem(SelectedItemType selectedItem, Buddy selectedBuddy, Contact selectedContact);
-	BuddiesListViewSelectionItem(const BuddiesListViewSelectionItem& copyMe);
+	BuddyOrContact();
+	BuddyOrContact(ItemType type, Buddy selectedBuddy, Contact selectedContact);
+	BuddyOrContact(const BuddyOrContact& copyMe);
 
-	BuddiesListViewSelectionItem & operator = (const BuddiesListViewSelectionItem &copyMe);
+	BuddyOrContact & operator = (const BuddyOrContact &copyMe);
 
-	SelectedItemType type() { return SelectedItem; }
+	ItemType type() { return Type; }
 	Buddy buddy() { return SelectedBuddy; }
 	Contact contact() { return SelectedContact; }
 
 };
 
-#endif // BUDDIES_LIST_VIEW_SELECTION_ITEM_H
-
+#endif // BUDDY_OR_CONTACT_H

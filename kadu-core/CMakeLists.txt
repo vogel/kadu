@@ -27,6 +27,7 @@ set (kadu_SRCS
 	buddies/buddy-list-configuration-helper.cpp
 	buddies/buddy-list-mime-data-helper.cpp
 	buddies/buddy-manager.cpp
+	buddies/buddy-or-contact.cpp
 	buddies/buddy-preferred-manager.cpp
 	buddies/buddy-remove-predicate-object.cpp
 	buddies/buddy-search-criteria.cpp
@@ -146,7 +147,6 @@ set (kadu_SRCS
 	gui/widgets/buddies-list-view-item-painter.cpp
 	gui/widgets/buddies-list-view-menu-item.cpp
 	gui/widgets/buddies-list-view-menu-manager.cpp
-	gui/widgets/buddies-list-view-selection-item.cpp
 	gui/widgets/buddies-list-widget.cpp
 	gui/widgets/buddy-avatar-widget.cpp
 	gui/widgets/buddy-contacts-table-delegate.cpp
