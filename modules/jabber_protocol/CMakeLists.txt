@@ -265,6 +265,7 @@ set (SOURCES
 	resource/jabber-resource.cpp
 	resource/jabber-resource-pool.cpp
 	server/jabber-avatar-fetcher.cpp
+	server/jabber-avatar-uploader.cpp
 	server/jabber-server-change-password.cpp
 	server/jabber-server-register-account.cpp
 	services/jabber-avatar-service.cpp
@@ -305,6 +306,7 @@ set (MOC_SOURCES
 	resource/jabber-resource.h
 	resource/jabber-resource-pool.h
 	server/jabber-avatar-fetcher.h
+	server/jabber-avatar-uploader.h
 	server/jabber-server-change-password.h
 	server/jabber-server-register-account.h
 	services/jabber-avatar-service.h

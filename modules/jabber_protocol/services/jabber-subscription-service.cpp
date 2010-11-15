@@ -17,6 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "xmpp_tasks.h"
+
 #include "buddies/buddy-manager.h"
 #include "contacts/contact-manager.h"
 #include "gui/windows/message-dialog.h"
