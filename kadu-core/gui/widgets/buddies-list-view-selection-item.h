@@ -45,9 +45,9 @@ public:
 
 	BuddiesListViewSelectionItem & operator = (const BuddiesListViewSelectionItem &copyMe);
 
-	SelectedItemType selectedItem() { return SelectedItem; }
-	Buddy selectedBuddy() { return SelectedBuddy; }
-	Contact selectedContact() { return SelectedContact; }
+	SelectedItemType type() { return SelectedItem; }
+	Buddy buddy() { return SelectedBuddy; }
+	Contact contact() { return SelectedContact; }
 
 };
 

@@ -57,7 +57,7 @@ void BuddyInfoPanel::configurationUpdated()
 
 void BuddyInfoPanel::buddyUpdated(Buddy &buddy)
 {
-	if (buddy == SelectionItem.selectedBuddy())
+	if (buddy == SelectionItem.buddy())
 		update();
 }
 
@@ -124,7 +124,7 @@ void BuddyInfoPanel::update()
 
 void BuddyInfoPanel::connectContact()
 {
-	Contact MyContact = SelectionItem.selectedContact();
+	Contact MyContact = SelectionItem.contact();
 	if (!MyContact)
 		return;
 
@@ -137,7 +137,7 @@ void BuddyInfoPanel::connectContact()
 
 void BuddyInfoPanel::disconnectContact()
 {
-	Contact MyContact = SelectionItem.selectedContact();
+	Contact MyContact = SelectionItem.contact();
 	if (!MyContact)
 		return;
 
@@ -154,7 +154,7 @@ void BuddyInfoPanel::displayContact(Contact contact)
 	MyContact = contact;
 	connectContact();
 
-	if (!SelectionItem.selectedContact())
+	if (!SelectionItem.contact())
 	{
 		setHtml(Template.arg(""));
 		return;
@@ -179,10 +179,10 @@ void BuddyInfoPanel::displaySelectionItem(BuddiesListViewSelectionItem selection
 {
 	SelectionItem = selectionItem;
 
-	if (selectionItem.selectedItem() == BuddiesListViewSelectionItem::SelectedItemBuddy)
-		displayContact(BuddyPreferredManager::instance()->preferredContact(selectionItem.selectedBuddy()));
+	if (selectionItem.type() == BuddiesListViewSelectionItem::SelectedItemBuddy)
+		displayContact(BuddyPreferredManager::instance()->preferredContact(selectionItem.buddy()));
 	else
-		displayContact(selectionItem.selectedContact());
+		displayContact(selectionItem.contact());
 }
 
 void BuddyInfoPanel::setVisible(bool visible)
