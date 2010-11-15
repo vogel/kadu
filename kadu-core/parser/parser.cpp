@@ -44,10 +44,10 @@
 #include "parser.h"
 
 QMap<QString, QString> Parser::globalVariables;
-QMap<QString, QString (*)(Contact)> Parser::registeredTags;
-QMap<QString, QString (*)(const QObject * const)> Parser::registeredObjectTags;
+QMap<QString, Parser::BuddyContactTagCallback> Parser::registeredTags;
+QMap<QString, Parser::ObjectTagCallback> Parser::registeredObjectTags;
 
-bool Parser::registerTag(const QString &name, QString (*func)(Contact contact))
+bool Parser::registerTag(const QString &name, BuddyContactTagCallback func)
 {
 	kdebugf();
 	if (registeredTags.contains(name))
@@ -63,8 +63,10 @@ bool Parser::registerTag(const QString &name, QString (*func)(Contact contact))
 	}
 }
 
-bool Parser::unregisterTag(const QString &name, QString (* /*func*/)(Contact contact))
+bool Parser::unregisterTag(const QString &name, BuddyContactTagCallback func)
 {
+	Q_UNUSED(func)
+
 	kdebugf();
 	if (!registeredTags.contains(name))
 	{
@@ -95,8 +97,10 @@ bool Parser::registerObjectTag(const QString &name, ObjectTagCallback func)
 	}
 }
 
-bool Parser::unregisterObjectTag(const QString &name, ObjectTagCallback)
+bool Parser::unregisterObjectTag(const QString &name, ObjectTagCallback func)
 {
+	Q_UNUSED(func)
+
 	kdebugf();
 	if (!registeredObjectTags.contains(name))
 	{

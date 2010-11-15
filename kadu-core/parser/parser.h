@@ -33,8 +33,9 @@
 class KADUAPI Parser
 {
 	typedef QString (*ObjectTagCallback)(const QObject * const);
+	typedef QString (*BuddyContactTagCallback)(Contact);
 
-	static QMap<QString, QString (*)(Contact)> registeredTags;
+	static QMap<QString, BuddyContactTagCallback> registeredTags;
 	static QMap<QString, ObjectTagCallback> registeredObjectTags;
 
 	static QString executeCmd(const QString &cmd);
@@ -44,8 +45,8 @@ public:
 	static QString parse(const QString &s, const QObject * const object, bool escape = true);
 	static QString parse(const QString &s, Buddy buddy, Contact contact, bool escape = true);
 	static QString parse(const QString &s, Buddy buddy, Contact contact, const QObject * const object, bool escape = true);
-	static bool registerTag(const QString &name, QString (*func)(Contact contact));
-	static bool unregisterTag(const QString &name, QString (*func)(Contact contact));
+	static bool registerTag(const QString &name, BuddyContactTagCallback);
+	static bool unregisterTag(const QString &name, BuddyContactTagCallback);
 
 	static bool registerObjectTag(const QString &name, ObjectTagCallback);
 	static bool unregisterObjectTag(const QString &name, ObjectTagCallback);
