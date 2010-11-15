@@ -92,7 +92,7 @@ HintOverUserConfigurationWindow::HintOverUserConfigurationWindow(Buddy exampleBu
 	lay->addWidget(syntaxChangedButton);
 	groupBox->addWidget(syntaxWidget, true);
 
-	hint_manager->prepareOverUserHint(previewFrame, previewTipLabel, BuddyPreferredManager::instance()->preferredContact(ExampleBuddy));
+	hint_manager->prepareOverUserHint(previewFrame, previewTipLabel, ExampleBuddy);
 
 	bgcolor = config_file.readColorEntry("Hints", "HintOverUser_bgcolor").name();
 	fgcolor = config_file.readColorEntry("Hints", "HintOverUser_fgcolor").name();

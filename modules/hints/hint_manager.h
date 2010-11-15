@@ -146,9 +146,9 @@ public:
 	virtual void showToolTip(const QPoint &point, BuddyOrContact buddyOrContact);
 	virtual void hideToolTip();
 
-	virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = 0);
+	virtual NotifierConfigurationWidget * createConfigurationWidget(QWidget *parent = 0);
 
-	void prepareOverUserHint(QFrame* tipFrame, QLabel* tipLabel, Contact contact);
+	void prepareOverUserHint(QFrame *tipFrame, QLabel *tipLabel, BuddyOrContact buddyOrContact);
 
 	const QString & style() const { return Style; }
 	double opacity() { return Opacity; }
