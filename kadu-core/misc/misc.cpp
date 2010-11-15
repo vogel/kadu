@@ -122,20 +122,20 @@ QString translateLanguage(const QApplication *application, const QString &locale
 		return "en";
 }
 
-QList<int> toIntList(const QList<QVariant> &in)
+QList<int> stringToIntList(const QString &in)
 {
 	QList<int> out;
-	foreach(const QVariant &it, in)
+	foreach (const QString &it, in.split(';', QString::SkipEmptyParts))
 		out.append(it.toInt());
 	return out;
 }
 
-QList<QVariant> toVariantList(const QList<int> &in)
+QString intListToString(const QList<int> &in)
 {
-	QList<QVariant> out;
-	foreach(const int &it, in)
-		out.append(QVariant(it));
-	return out;
+	QStringList out;
+	foreach (const int &it, in)
+		out.append(QString::number(it));
+	return out.join(";");
 }
 
 QRect stringToRect(const QString &value, const QRect *def)

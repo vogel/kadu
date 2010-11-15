@@ -42,8 +42,8 @@ void KADUAPI loadWindowGeometry(QWidget *w, const QString &section, const QStrin
 QRect stringToRect(const QString &value, const QRect *def = NULL);
 QString rectToString(const QRect& rect);
 
-QList<int> toIntList(const QList<QVariant> &in);
-QList<QVariant> toVariantList(const QList<int> &in);
+QList<int> stringToIntList(const QString &in);
+QString intListToString(const QList<int> &in);
 
 /**
 	zast�pstwo dla arga w QString, kt�re podmienia kolejne %[1-4] w miejscu
