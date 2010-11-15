@@ -155,7 +155,7 @@ QString KaduChatStyleEngine::formatMessage(MessageRenderInfo *message, MessageRe
 		message->setSeparatorSize(separatorSize);
 
 		Contact sender = msg.messageSender();
-		return Parser::parse(format, sender.ownerBuddy(), sender, message, true);
+		return Parser::parse(format, BuddyOrContact(sender), message, true);
 	}
 	else
 	{
@@ -185,7 +185,7 @@ QString KaduChatStyleEngine::formatMessage(MessageRenderInfo *message, MessageRe
 		message->setSeparatorSize(separatorSize);
 
 		Contact sender = msg.messageSender();
-		return Parser::parse(format, sender.ownerBuddy(), sender, message, true);
+		return Parser::parse(format, BuddyOrContact(sender), message, true);
 	}
 }
 

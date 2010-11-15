@@ -149,72 +149,82 @@ QString getUptime(int mode)
 }
 
 /* Returns current time (without secs) */
-QString parseTime(Contact contact)
+QString parseTime(BuddyOrContact buddyOrContact)
 {
-	Q_UNUSED(contact)
+	Q_UNUSED(buddyOrContact)
+
 	return QDateTime::currentDateTime().toString("h:mm");
 }
 
 /* Returns current time (with secs) */
-QString parseLongTime(Contact contact)
+QString parseLongTime(BuddyOrContact buddyOrContact)
 {
-	Q_UNUSED(contact)
+	Q_UNUSED(buddyOrContact)
+
 	return QDateTime::currentDateTime().toString("hh:mm:ss");
 }
 
 /* Returns current date (without year) */
-QString parseDate(Contact contact)
+QString parseDate(BuddyOrContact buddyOrContact)
 {
-	Q_UNUSED(contact)
+	Q_UNUSED(buddyOrContact)
+
 	return QDateTime::currentDateTime().toString("dd-MM");
 }
 
 /* Returns current date (with year) */
-QString parseLongDate(Contact contact)
+QString parseLongDate(BuddyOrContact buddyOrContact)
 {
-	Q_UNUSED(contact)
+	Q_UNUSED(buddyOrContact)
+
 	return QDateTime::currentDateTime().toString("dd-MM-yyyy");
 }
 
 /* Returns time of module start (without seconds) */
-QString parseStartTime(Contact contact)
+QString parseStartTime(BuddyOrContact buddyOrContact)
 {
-	Q_UNUSED(contact)
+	Q_UNUSED(buddyOrContact)
+
 	return started.toString("hh:mm");
 }
 
 /* Returns time of module start (with seconds) */
-QString parseLongStartTime(Contact contact)
+QString parseLongStartTime(BuddyOrContact buddyOrContact)
 {
-	Q_UNUSED(contact)
+	Q_UNUSED(buddyOrContact)
+
 	return  started.toString("dd-MM-yy hh:mm:ss");
 }
 
 /* Returns uptime (seconds) */
-QString parseUptime(Contact contact)
+QString parseUptime(BuddyOrContact buddyOrContact)
 {
-	Q_UNUSED(contact)
+	Q_UNUSED(buddyOrContact)
+
 	return getUptime(0);
 }
 
 /* Returns uptime (formatted) */
-QString parseLongUptime(Contact contact)
+QString parseLongUptime(BuddyOrContact buddyOrContact)
 {
-	Q_UNUSED(contact)
+	Q_UNUSED(buddyOrContact)
+
 	return getUptime(1);
 }
 
 /* Returns Kadu uptime */
-QString parseKaduUptime(Contact contact)
+QString parseKaduUptime(BuddyOrContact buddyOrContact)
 {
-	Q_UNUSED(contact)
+	Q_UNUSED(buddyOrContact)
+
 	return getKaduUptime(0);
 }
 
 /* Returns Kadu uptime (formatted) */
-QString parseLongKaduUptime(Contact contact)
+QString parseLongKaduUptime(BuddyOrContact buddyOrContact)
 {
-	Q_UNUSED(contact)
+	Q_UNUSED(buddyOrContact)
+
 	return getKaduUptime(1);
 }
 

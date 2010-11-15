@@ -165,8 +165,7 @@ void Hint::updateText()
 		if (CurrentChat)
 		{
 			Contact contact = *CurrentChat.contacts().begin();
-			Buddy buddy = contact.ownerBuddy();
-			text = Parser::parse(syntax, buddy, contact, notification);
+			text = Parser::parse(syntax, BuddyOrContact(contact), notification);
 		}
 		else
 			text = Parser::parse(syntax, notification);

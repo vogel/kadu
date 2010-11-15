@@ -247,7 +247,7 @@ void Speech::notify(Notification *notification)
 		if (chat)
 		{
 			Contact contact = *chat.contacts().begin();
-			text = Parser::parse(syntax, contact.ownerBuddy(), contact, notification);
+			text = Parser::parse(syntax, BuddyOrContact(contact), notification);
 		}
 		else
 			text= Parser::parse(syntax, notification);

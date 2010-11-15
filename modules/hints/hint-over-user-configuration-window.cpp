@@ -150,7 +150,7 @@ void HintOverUserConfigurationWindow::syntaxChanged()
 	if (!hintSyntax->document()->isModified())
 		return;
 
-	QString text = Parser::parse(hintSyntax->toPlainText(), ExampleBuddy, BuddyPreferredManager::instance()->preferredContact(ExampleBuddy));
+	QString text = Parser::parse(hintSyntax->toPlainText(), BuddyOrContact(ExampleBuddy));
 
 	/* Dorr: the file:// in img tag doesn't generate the image on hint.
 	 * for compatibility with other syntaxes we're allowing to put the file://

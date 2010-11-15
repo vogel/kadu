@@ -63,7 +63,7 @@ void Preview::syntaxChanged(const QString &content)
 			text += Parser::parse(syntax, contact.ownerBuddy(), contact, objectsToParse.at(i));
 	}
 	else
-		text = Parser::parse(syntax, contact.ownerBuddy(), contact);
+		text = Parser::parse(syntax, BuddyOrContact(contact));
 
 	emit needFixup(text);
 

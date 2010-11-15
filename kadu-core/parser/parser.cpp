@@ -44,10 +44,10 @@
 #include "parser.h"
 
 QMap<QString, QString> Parser::globalVariables;
-QMap<QString, Parser::BuddyContactTagCallback> Parser::registeredTags;
+QMap<QString, Parser::BuddyOrContactTagCallback> Parser::registeredTags;
 QMap<QString, Parser::ObjectTagCallback> Parser::registeredObjectTags;
 
-bool Parser::registerTag(const QString &name, BuddyContactTagCallback func)
+bool Parser::registerTag(const QString &name, BuddyOrContactTagCallback func)
 {
 	kdebugf();
 	if (registeredTags.contains(name))
@@ -63,7 +63,7 @@ bool Parser::registerTag(const QString &name, BuddyContactTagCallback func)
 	}
 }
 
-bool Parser::unregisterTag(const QString &name, BuddyContactTagCallback func)
+bool Parser::unregisterTag(const QString &name, BuddyOrContactTagCallback func)
 {
 	Q_UNUSED(func)
 
@@ -133,17 +133,18 @@ QString Parser::executeCmd(const QString &cmd)
 
 QString Parser::parse(const QString &s, const QObject * const object, bool escape)
 {
-	return parse(s, Buddy::null, Contact::null, object, escape);
+	return parse(s, BuddyOrContact(), object, escape);
 }
 
-QString Parser::parse(const QString &s, Buddy buddy, Contact contact, bool escape)
+QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, bool escape)
 {
-	return parse(s, buddy, contact, 0, escape);
+	return parse(s, buddyOrContact, 0, escape);
 }
 
-QString Parser::parse(const QString &s, Buddy buddy, Contact contact, const QObject * const object, bool escape)
+QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QObject * const object, bool escape)
 {
-	Q_UNUSED(buddy)
+	Buddy buddy = buddyOrContact.buddy();
+	Contact contact = buddyOrContact.contact();
 
 	kdebugmf(KDEBUG_DUMP, "%s escape=%i\n", qPrintable(s), escape);
 	int index = 0, i, len = s.length();
@@ -499,7 +500,7 @@ QString Parser::parse(const QString &s, Buddy buddy, Contact contact, const QObj
 						parseStack.pop_back();
 						pe.type = ParserToken::PT_STRING;
 						if (registeredTags.contains(pe.content))
-							pe.content = registeredTags[pe.content](contact);
+							pe.content = registeredTags[pe.content](buddyOrContact);
 						else if (object && registeredObjectTags.contains(pe.content))
 							pe.content = registeredObjectTags[pe.content](object);
 						else

@@ -26,27 +26,27 @@
 
 #include "contact-parser-tags.h"
 
-static QString getAvatarPath(Contact contact)
+static QString getAvatarPath(BuddyOrContact buddyOrContact)
 {
-	if (!contact)
+	Avatar avatar;
+	if (BuddyOrContact::ItemBuddy == buddyOrContact.type())
+		avatar = buddyOrContact.buddy().buddyAvatar();
+
+	if (!avatar)
+		avatar = buddyOrContact.contact().contactAvatar();
+
+	if (!avatar)
 		return "";
 
-	// WORKAROUND http://kadu.net/mantis/view.php?id=1606
-	// fix by rewriting parser
-	Buddy buddy = contact.ownerBuddy();
-	Contact preffered = BuddyPreferredManager::instance()->preferredContact(buddy);
-	if (preffered == contact && !buddy.buddyAvatar().isEmpty())
-		return webKitPath(buddy.buddyAvatar().filePath());
-	else
-		return webKitPath(contact.contactAvatar().filePath());
+	return webKitPath(avatar.filePath());
 }
 
-static QString getStatusIconPath(Contact contact)
+static QString getStatusIconPath(BuddyOrContact buddyOrContact)
 {
-	if (!contact)
-		return "";
+	Buddy buddy = buddyOrContact.buddy();
+	Contact contact = buddyOrContact.contact();
 
-	if (contact.ownerBuddy().isBlocked())
+	if (buddy.isBlocked())
 		return webKitPath(IconsManager::instance()->iconPath("kadu_icons", "16x16", "kadu-blocked"));
 
 	if (contact.isBlocking())

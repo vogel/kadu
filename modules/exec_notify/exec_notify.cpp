@@ -254,9 +254,8 @@ void ExecNotify::notify(Notification *notification)
 		QString sendersString = sendersList.join(",");
 
 		Contact contact = *contacts.begin();
-		Buddy buddy = contact.ownerBuddy();
 		foreach (QString it, s)
-			result.append(Parser::parse(it.replace("%ids", sendersString), buddy, contact, notification));
+			result.append(Parser::parse(it.replace("%ids", sendersString), BuddyOrContact(contact), notification));
 	}
 	else
 		foreach (QString it, s)
