@@ -384,8 +384,6 @@ void BuddiesListView::currentChanged(const QModelIndex &current, const QModelInd
 
 	if (!current.isValid())
 	{
-		emit currentBuddyChanged(Buddy::null);
-		emit currentContactChanged(Contact::null);
 		emit currentChanged(BuddyOrContact());
 		return;
 	}
@@ -402,12 +400,6 @@ void BuddiesListView::currentChanged(const QModelIndex &current, const QModelInd
 		default:
 			return;
 	}
-
-	if (buddyOrContact.buddy())
-		emit currentBuddyChanged(buddyOrContact.buddy());
-
-	if (buddyOrContact.contact())
-		emit currentContactChanged(buddyOrContact.contact());
 
 	emit currentChanged(buddyOrContact);
 }

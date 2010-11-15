@@ -150,8 +150,6 @@ signals:
 	void buddyActivated(Buddy buddy);
 
 	void buddySelectionChanged();
-	void currentBuddyChanged(Buddy buddy);
-	void currentContactChanged(Contact contact);
 	void currentChanged(BuddyOrContact buddyOrContact);
 
 };
