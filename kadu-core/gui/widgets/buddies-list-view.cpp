@@ -190,6 +190,19 @@ BuddySet BuddiesListView::selectedBuddies() const
 	return result;
 }
 
+BuddyOrContact BuddiesListView::buddyOrContactAt(const QModelIndex &index) const
+{
+	switch (index.data(ItemTypeRole).toInt())
+	{
+		case BuddyRole:
+			return buddyAt(index);
+		case ContactRole:
+			return contactAt(index);
+	}
+
+	return BuddyOrContact();
+}
+
 Buddy BuddiesListView::buddyAt(const QModelIndex &index) const
 {
 	const AbstractBuddiesModel *model = dynamic_cast<const AbstractBuddiesModel *>(index.model());
@@ -388,20 +401,9 @@ void BuddiesListView::currentChanged(const QModelIndex &current, const QModelInd
 		return;
 	}
 
-	BuddyOrContact buddyOrContact;
-	switch (current.data(ItemTypeRole).toInt())
-	{
-		case BuddyRole:
-			buddyOrContact = buddyAt(current);
-			break;
-		case ContactRole:
-			buddyOrContact = contactAt(current);
-			break;
-		default:
-			return;
-	}
-
-	emit currentChanged(buddyOrContact);
+	BuddyOrContact buddyOrContact = buddyOrContactAt(current);
+	if (BuddyOrContact::ItemNone != buddyOrContact.type())
+		emit currentChanged(buddyOrContact);
 }
 
 void BuddiesListView::selectionChanged(const QItemSelection &selected, const QItemSelection &deselected)

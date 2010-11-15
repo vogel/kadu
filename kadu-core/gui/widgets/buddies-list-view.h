@@ -69,6 +69,7 @@ private:
 
 	ContactNoUnloadedAccountFilter *HideUnloadedFilter;
 
+	BuddyOrContact buddyOrContactAt(const QModelIndex &index) const;
 	Buddy buddyAt(const QModelIndex &index) const;
 	Contact contactAt(const QModelIndex &index) const;
 	void triggerActivate(const QModelIndex &index);
