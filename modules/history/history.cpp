@@ -247,6 +247,8 @@ void History::showMoreMessages(QAction *action)
 	if (!chatMessagesView)
 		return;
 
+	Chat chat = AggregateChatManager::instance()->aggregateChat(chatWidget->chat());
+
 	chatMessagesView->setForcePruneDisabled(0 != days);
 	QList<Message> messages;
 
@@ -258,12 +260,12 @@ void History::showMoreMessages(QAction *action)
 	else if (0 != days)
 	{
 		QDate since = QDate::currentDate().addDays(-days);
-		messages = CurrentStorage->messagesSince(AggregateChatManager::instance()->aggregateChat(chatWidget->chat()), since);
+		messages = CurrentStorage->messagesSince(chat ? chat : chatWidget->chat(), since);
 	}
 	else
 	{
 		QDateTime backTo = QDateTime::currentDateTime().addDays(config_file.readNumEntry("Chat", "ChatHistoryQuotationTime", -744)/24);
-		messages = CurrentStorage->messagesBackTo(AggregateChatManager::instance()->aggregateChat(chatWidget->chat()), backTo, config_file.readNumEntry("Chat", "ChatPruneLen", 20));
+		messages = CurrentStorage->messagesBackTo(chat ? chat : chatWidget->chat(), backTo, config_file.readNumEntry("Chat", "ChatPruneLen", 20));
 	}
 
 	chatMessagesView->clearMessages();
@@ -309,8 +311,10 @@ void History::chatCreated(ChatWidget *chatWidget)
 	unsigned int chatHistoryQuotation = qMax(config_file.readNumEntry("History", "ChatHistoryCitation"),
 			PendingMessagesManager::instance()->pendingMessagesForChat(chatWidget->chat()).size());
 
+	Chat chat = AggregateChatManager::instance()->aggregateChat(chatWidget->chat());
+
 	QDateTime backTo = QDateTime::currentDateTime().addSecs(config_file.readNumEntry("History", "ChatHistoryQuotationTime", -744)*3600);
-	messages = CurrentStorage->messagesBackTo(AggregateChatManager::instance()->aggregateChat(chatWidget->chat()), backTo, chatHistoryQuotation);
+	messages = CurrentStorage->messagesBackTo(chat ? chat : chatWidget->chat(), backTo, chatHistoryQuotation);
 
 	chatMessagesView->appendMessages(messages);
 
