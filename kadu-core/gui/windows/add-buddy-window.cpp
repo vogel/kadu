@@ -62,9 +62,9 @@ AddBuddyWindow::AddBuddyWindow(QWidget *parent) :
 	createGui();
 	addMobileAccountToComboBox();
 
-	connect(AccountCombo, SIGNAL(activated(int)), this, SLOT(updateGui()));
-	connect(AccountCombo, SIGNAL(activated(int)), this, SLOT(setAddContactEnabled()));
-	connect(AccountCombo, SIGNAL(activated(int)), this, SLOT(setValidateRegularExpression()));
+	connect(AccountCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(updateGui()));
+	connect(AccountCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(setAddContactEnabled()));
+	connect(AccountCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(setValidateRegularExpression()));
 
 	setAddContactEnabled();
 	setValidateRegularExpression();
