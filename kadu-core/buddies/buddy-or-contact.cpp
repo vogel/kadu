@@ -17,6 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "buddies/buddy-preferred-manager.h"
+
 #include "buddy-or-contact.h"
 
 BuddyOrContact::BuddyOrContact() :
@@ -24,23 +26,46 @@ BuddyOrContact::BuddyOrContact() :
 {
 }
 
-BuddyOrContact::BuddyOrContact(BuddyOrContact::ItemType type, Buddy selectedBuddy, Contact selectedContact) :
-		Type(type), SelectedBuddy(selectedBuddy), SelectedContact(selectedContact)
+BuddyOrContact::BuddyOrContact(Buddy buddy) :
+		Type(ItemBuddy), MyBuddy(buddy), MyContact(BuddyPreferredManager::instance()->preferredContact(buddy))
+{
+}
+
+BuddyOrContact::BuddyOrContact(Contact contact) :
+		Type(ItemContact), MyBuddy(contact.ownerBuddy()), MyContact(contact)
 {
 }
 
 BuddyOrContact::BuddyOrContact(const BuddyOrContact &copyMe)
 {
 	Type = copyMe.Type;
-	SelectedBuddy = copyMe.SelectedBuddy;
-	SelectedContact = copyMe.SelectedContact;
+	MyBuddy = copyMe.MyBuddy;
+	MyContact = copyMe.MyContact;
 }
 
-BuddyOrContact & BuddyOrContact::operator=(const BuddyOrContact &copyMe)
+BuddyOrContact & BuddyOrContact::operator = (Buddy buddy)
+{
+	Type = ItemBuddy;
+	MyBuddy = buddy;
+	MyContact = BuddyPreferredManager::instance()->preferredContact(buddy);
+
+	return *this;
+}
+
+BuddyOrContact & BuddyOrContact::operator = (Contact contact)
+{
+	Type = ItemContact;
+	MyBuddy = contact.ownerBuddy();
+	MyContact = contact;
+
+	return *this;
+}
+
+BuddyOrContact & BuddyOrContact::operator = (const BuddyOrContact &copyMe)
 {
 	Type = copyMe.Type;
-	SelectedBuddy = copyMe.SelectedBuddy;
-	SelectedContact = copyMe.SelectedContact;
+	MyBuddy = copyMe.MyBuddy;
+	MyContact = copyMe.MyContact;
 
 	return *this;
 }

@@ -35,19 +35,22 @@ public:
 
 private:
 	ItemType Type;
-	Buddy SelectedBuddy;
-	Contact SelectedContact;
+	Buddy MyBuddy;
+	Contact MyContact;
 
 public:
 	BuddyOrContact();
-	BuddyOrContact(ItemType type, Buddy selectedBuddy, Contact selectedContact);
+	BuddyOrContact(Buddy buddy);
+	BuddyOrContact(Contact contact);
 	BuddyOrContact(const BuddyOrContact& copyMe);
 
+	BuddyOrContact & operator = (Buddy buddy);
+	BuddyOrContact & operator = (Contact contact);
 	BuddyOrContact & operator = (const BuddyOrContact &copyMe);
 
 	ItemType type() { return Type; }
-	Buddy buddy() { return SelectedBuddy; }
-	Contact contact() { return SelectedContact; }
+	Buddy buddy() { return MyBuddy; }
+	Contact contact() { return MyContact; }
 
 };
 

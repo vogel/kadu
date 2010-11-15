@@ -386,32 +386,30 @@ void BuddiesListView::currentChanged(const QModelIndex &current, const QModelInd
 	{
 		emit currentBuddyChanged(Buddy::null);
 		emit currentContactChanged(Contact::null);
-		emit currentChanged(BuddyOrContact(BuddyOrContact::ItemNone, Buddy::null, Contact::null));
+		emit currentChanged(BuddyOrContact());
 		return;
 	}
 
-	Contact contact = contactAt(current);
-	Buddy buddy = contact.ownerBuddy();
-
-	if (contact)
-	{
-		if (buddy)
-			emit currentBuddyChanged(buddy);
-		emit currentContactChanged(contact);
-	}
-
-	BuddyOrContact::ItemType itemType = BuddyOrContact::ItemNone;
+	BuddyOrContact buddyOrContact;
 	switch (current.data(ItemTypeRole).toInt())
 	{
 		case BuddyRole:
-			itemType = BuddyOrContact::ItemBuddy;
+			buddyOrContact = buddyAt(current);
 			break;
 		case ContactRole:
-			itemType = BuddyOrContact::ItemContact;
+			buddyOrContact = contactAt(current);
 			break;
+		default:
+			return;
 	}
 
-	emit currentChanged(BuddyOrContact(itemType, buddy, contact));
+	if (buddyOrContact.buddy())
+		emit currentBuddyChanged(buddyOrContact.buddy());
+
+	if (buddyOrContact.contact())
+		emit currentContactChanged(buddyOrContact.contact());
+
+	emit currentChanged(buddyOrContact);
 }
 
 void BuddiesListView::selectionChanged(const QItemSelection &selected, const QItemSelection &deselected)
