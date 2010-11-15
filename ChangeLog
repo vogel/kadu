@@ -14,6 +14,7 @@
 * gui: #1616 fixed: Add Buddy window now allows to add mobile-only buddies (Vogel)
 * history: #1673 fixed: messages from all buddy's chats should be quoted in chat window (WhE)
 * gui: #1699: fixed: "Allow to see..." option is not used in Add Buddy window (WhE)
+* gui: #1606 fixed: use buddy custom avatar in parser when available (Vogel)
 
 +++ version 0.6.6-beta10
 * modules: don't build echo module by default (beevvy)

@@ -32,14 +32,11 @@ class BuddyInfoPanel : public KaduWebView, private ConfigurationAwareObject
 	Q_OBJECT
 
 	BuddyOrContact Item;
-	Contact MyContact;
 	QString Template;
 	QString Syntax;
 
-	void connectContact();
-	void disconnectContact();
-
-	void displayContact(Contact contact);
+	void connectItem();
+	void disconnectItem();
 
 private slots:
 	void buddyUpdated(Buddy &buddy);

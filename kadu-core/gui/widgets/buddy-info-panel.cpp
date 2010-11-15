@@ -122,49 +122,55 @@ void BuddyInfoPanel::update()
 		page()->mainFrame()->setScrollBarPolicy(Qt::Vertical, Qt::ScrollBarAlwaysOff);
 }
 
-void BuddyInfoPanel::connectContact()
+void BuddyInfoPanel::connectItem()
 {
-	Contact MyContact = Item.contact();
-	if (!MyContact)
-		return;
-
-	connect(MyContact, SIGNAL(updated()), this, SLOT(update()));
-	if (MyContact.ownerBuddy())
-		connect(MyContact.ownerBuddy(), SIGNAL(updated()), this, SLOT(update()));
-	if (MyContact.contactAvatar())
-		connect(MyContact.contactAvatar(), SIGNAL(updated()), this, SLOT(update()));
-}
-
-void BuddyInfoPanel::disconnectContact()
-{
-	Contact MyContact = Item.contact();
-	if (!MyContact)
-		return;
-
-	disconnect(MyContact, SIGNAL(updated()), this, SLOT(update()));
-	if (MyContact.ownerBuddy())
-		disconnect(MyContact.ownerBuddy(), SIGNAL(updated()), this, SLOT(update()));
-	if (MyContact.contactAvatar())
-		disconnect(MyContact.contactAvatar(), SIGNAL(updated()), this, SLOT(update()));
-}
-
-void BuddyInfoPanel::displayContact(Contact contact)
-{
-	disconnectContact();
-	MyContact = contact;
-	connectContact();
-
-	if (!Item.contact())
+	Buddy buddy = Item.buddy();
+	if (buddy)
 	{
-		setHtml(Template.arg(""));
-		return;
+		connect(buddy, SIGNAL(updated()), this, SLOT(update()));
+		if (buddy.buddyAvatar())
+			connect(buddy.buddyAvatar(), SIGNAL(updated()), this, SLOT(update()));
 	}
+
+	Contact contact = Item.contact();
+	if (contact)
+	{
+		connect(contact, SIGNAL(updated()), this, SLOT(update()));
+		if (contact.contactAvatar())
+			connect(contact.contactAvatar(), SIGNAL(updated()), this, SLOT(update()));
+	}
+}
+
+void BuddyInfoPanel::disconnectItem()
+{
+	Buddy buddy = Item.buddy();
+	if (buddy)
+	{
+		disconnect(buddy, SIGNAL(updated()), this, SLOT(update()));
+		if (buddy.buddyAvatar())
+			disconnect(buddy.buddyAvatar(), SIGNAL(updated()), this, SLOT(update()));
+	}
+
+	Contact contact = Item.contact();
+	if (contact)
+	{
+		disconnect(contact, SIGNAL(updated()), this, SLOT(update()));
+		if (contact.contactAvatar())
+			disconnect(contact.contactAvatar(), SIGNAL(updated()), this, SLOT(update()));
+	}
+}
+
+void BuddyInfoPanel::displayItem(BuddyOrContact item)
+{
+	disconnectItem();
+	Item = item;
+	connectItem();
 
 	if (!isVisible())
 		return;
 
 	HtmlDocument doc;
-	doc.parseHtml(Parser::parse(Syntax, BuddyOrContact(MyContact)));
+	doc.parseHtml(Parser::parse(Syntax, item));
 	UrlHandlerManager::instance()->convertAllUrls(doc);
 
 	if (EmoticonsStyleNone != (EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle") &&
@@ -173,16 +179,6 @@ void BuddyInfoPanel::displayContact(Contact contact)
 				(EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle"));
 
 	setHtml(Template.arg(doc.generateHtml()));
-}
-
-void BuddyInfoPanel::displayItem(BuddyOrContact item)
-{
-	Item = item;
-
-	if (Item.type() == BuddyOrContact::ItemBuddy)
-		displayContact(BuddyPreferredManager::instance()->preferredContact(Item.buddy()));
-	else
-		displayContact(Item.contact());
 }
 
 void BuddyInfoPanel::setVisible(bool visible)
