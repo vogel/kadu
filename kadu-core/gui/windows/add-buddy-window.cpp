@@ -60,6 +60,7 @@ AddBuddyWindow::AddBuddyWindow(QWidget *parent) :
 	setAttribute(Qt::WA_DeleteOnClose);
 
 	createGui();
+	addMobileAccountToComboBox();
 
 	connect(AccountCombo, SIGNAL(accountChanged(Account)), this, SLOT(setUsernameLabel()));
 	connect(AccountCombo, SIGNAL(accountChanged(Account)), this, SLOT(setAddContactEnabled()));
@@ -168,6 +169,14 @@ void AddBuddyWindow::createGui()
 	layout->setColumnMinimumWidth(1, 200);
 	setFixedHeight(layout->minimumSize().height());
 	setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
+}
+
+void AddBuddyWindow::addMobileAccountToComboBox()
+{
+	ActionsProxyModel *actionsModel = AccountCombo->actionsModel();
+
+	QAction *mobileAccountAction = new QAction(IconsManager::instance()->iconByPath("phone"), tr("Mobile"), AccountCombo);
+	actionsModel->addAfterAction(mobileAccountAction);
 }
 
 void AddBuddyWindow::displayErrorMessage(const QString &message)

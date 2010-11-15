@@ -188,8 +188,6 @@ protected:
 			setCurrentIndex(0);
 	}
 
-	ActionsProxyModel * actionsModel() { return ActionsModel; }
-
 public:
 	explicit KaduComboBox(QWidget *parent = 0) :
 		QComboBox(parent),
@@ -201,6 +199,8 @@ public:
 	virtual ~KaduComboBox()
 	{
 	}
+
+	ActionsProxyModel * actionsModel() { return ActionsModel; }
 
 };
 

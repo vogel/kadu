@@ -56,6 +56,7 @@ class AddBuddyWindow : public QDialog
 	Buddy MyBuddy;
 
 	void createGui();
+	void addMobileAccountToComboBox();
 	void displayErrorMessage(const QString &message);
 
 private slots:
