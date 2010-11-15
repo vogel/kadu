@@ -50,7 +50,7 @@ public:
 	QStringList getToolTipClasses();
 	void useToolTipClass(const QString &toolTipClassName);
 
-	bool showToolTip(const QPoint &point, Contact contact);
+	bool showToolTip(const QPoint &point, BuddyOrContact buddyOrContact);
 	bool hideToolTip();
 
 	virtual void configurationUpdated();

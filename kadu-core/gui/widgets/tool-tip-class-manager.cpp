@@ -18,8 +18,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "buddies/buddy-or-contact.h"
 #include "configuration/configuration-file.h"
-#include "contacts/contact.h"
 
 #include "tool-tip-class-manager.h"
 
@@ -83,11 +83,11 @@ void ToolTipClassManager::useToolTipClass(const QString &toolTipClassName)
 		CurrentToolTipClass = 0;
 }
 
-bool ToolTipClassManager::showToolTip(const QPoint &where, Contact contact)
+bool ToolTipClassManager::showToolTip(const QPoint &where, BuddyOrContact buddyOrContact)
 {
 	if (CurrentToolTipClass)
 	{
-		CurrentToolTipClass->showToolTip(where, contact);
+		CurrentToolTipClass->showToolTip(where, buddyOrContact);
 		return true;
 	}
 
