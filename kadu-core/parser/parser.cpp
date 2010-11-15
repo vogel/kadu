@@ -251,6 +251,8 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 					++i;
 					if (contact)
 						pe.content = contact.id();
+					else if (buddy)
+						pe.content = buddy.mobile().isEmpty() ? buddy.email() : buddy.mobile();
 					break;
 				case 'h':
 					++i;
@@ -259,44 +261,44 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 					break;
 				case 'n':
 					++i;
-					pe.content = contact.ownerBuddy().nickName();
+					pe.content = buddy.nickName();
 					if (escape)
 						HtmlDocument::escapeText(pe.content);
 					break;
 				case 'a':
 					++i;
-					pe.content = contact.ownerBuddy().display();
+					pe.content = buddy.display();
 					if (escape)
 						HtmlDocument::escapeText(pe.content);
 					break;
 				case 'f':
 					++i;
-					pe.content = contact.ownerBuddy().firstName();
+					pe.content = buddy.firstName();
 					if (escape)
 						HtmlDocument::escapeText(pe.content);
 					break;
 				case 'r':
 					++i;
-					pe.content = contact.ownerBuddy().lastName();
+					pe.content = buddy.lastName();
 					if (escape)
 						HtmlDocument::escapeText(pe.content);
 					break;
 				case 'm':
 					++i;
-					pe.content = contact.ownerBuddy().mobile();
+					pe.content = buddy.mobile();
 					break;
 				case 'g':
 					{
 						++i;
 						QStringList groups;
-						foreach (Group group, contact.ownerBuddy().groups())
+						foreach (Group group, buddy.groups())
 							groups << group.name();
 						pe.content = groups.join(",");
 						break;
 					}
 				case 'e':
 					++i;
-					pe.content = contact.ownerBuddy().email();
+					pe.content = buddy.email();
 					break;
 				case 'x':
 					++i;
@@ -305,8 +307,8 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 					break;
 				case 'z':
 					++i;
-					if (contact)
-						pe.content = QString::number(contact.ownerBuddy().gender());
+					if (buddy)
+						pe.content = QString::number(buddy.gender());
 					break;
 				case '%':
 					++i;
