@@ -175,8 +175,8 @@ void AddBuddyWindow::addMobileAccountToComboBox()
 {
 	ActionsProxyModel *actionsModel = AccountCombo->actionsModel();
 
-	QAction *mobileAccountAction = new QAction(IconsManager::instance()->iconByPath("phone"), tr("Mobile"), AccountCombo);
-	actionsModel->addAfterAction(mobileAccountAction);
+	MobileAccountAction = new QAction(IconsManager::instance()->iconByPath("phone"), tr("Mobile"), AccountCombo);
+	actionsModel->addAfterAction(MobileAccountAction);
 }
 
 void AddBuddyWindow::displayErrorMessage(const QString &message)

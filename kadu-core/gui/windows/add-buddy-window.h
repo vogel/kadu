@@ -43,6 +43,7 @@ class AddBuddyWindow : public QDialog
 	QLabel *UserNameLabel;
 	QLineEdit *UserNameEdit;
 	QRegExpValidator *UserNameValidator;
+	QAction *MobileAccountAction; // TODO: hack
 	AccountsComboBox *AccountCombo;
 	IdRegularExpressionFilter *AccountComboIdFilter;
 	GroupsComboBox *GroupCombo;

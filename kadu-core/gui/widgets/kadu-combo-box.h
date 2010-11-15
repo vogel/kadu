@@ -200,7 +200,12 @@ public:
 	{
 	}
 
-	ActionsProxyModel * actionsModel() { return ActionsModel; }
+	QVariant data(int role) const
+	{
+		return ActionsModel->index(currentIndex(), modelColumn()).data(role);
+	}
+
+	ActionsProxyModel * actionsModel() const { return ActionsModel; }
 
 };
 
