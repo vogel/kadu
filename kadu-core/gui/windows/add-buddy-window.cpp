@@ -62,7 +62,7 @@ AddBuddyWindow::AddBuddyWindow(QWidget *parent) :
 	createGui();
 	addMobileAccountToComboBox();
 
-	connect(AccountCombo, SIGNAL(accountChanged(Account)), this, SLOT(setUsernameLabel()));
+	connect(AccountCombo, SIGNAL(accountChanged(Account)), this, SLOT(updateGui()));
 	connect(AccountCombo, SIGNAL(accountChanged(Account)), this, SLOT(setAddContactEnabled()));
 	connect(AccountCombo, SIGNAL(accountChanged(Account)), this, SLOT(setValidateRegularExpression()));
 
@@ -203,24 +203,36 @@ void AddBuddyWindow::setGroup(Group group)
 	GroupCombo->setCurrentGroup(group);
 }
 
-void AddBuddyWindow::setUsernameLabel()
+bool AddBuddyWindow::isMobileAccount()
 {
-	if (isMobileAccount())
-	{
-		UserNameLabel->setText(tr("Mobile number:"));
-		return;
-	}
+	return AccountCombo->data(ActionRole).value<QAction *>() == MobileAccountAction;
+}
 
+void AddBuddyWindow::updateAccountGui()
+{
 	Account account = AccountCombo->currentAccount();
 	if (account.isNull())
 		UserNameLabel->setText(tr("Username:"));
 	else
 		UserNameLabel->setText(account.protocolHandler()->protocolFactory()->idLabel());
+
+	MergeContact->setEnabled(true);
 }
 
-bool AddBuddyWindow::isMobileAccount()
+void AddBuddyWindow::updateMobileGui()
 {
-	return AccountCombo->data(ActionRole).value<QAction *>() == MobileAccountAction;
+	UserNameLabel->setText(tr("Mobile number:"));
+	MergeContact->setChecked(false);
+	MergeContact->setEnabled(false);
+	SelectContact->setCurrentBuddy(Buddy::null);
+}
+
+void AddBuddyWindow::updateGui()
+{
+	if (isMobileAccount())
+		updateMobileGui();
+	else
+		updateAccountGui();
 }
 
 void AddBuddyWindow::validateData()

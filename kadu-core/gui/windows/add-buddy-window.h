@@ -62,11 +62,14 @@ class AddBuddyWindow : public QDialog
 
 	bool isMobileAccount();
 
+	void updateAccountGui();
+	void updateMobileGui();
+
 	void validateData();
 	void validateMobileData();
 
 private slots:
-	void setUsernameLabel();
+	void updateGui();
 	void setAddContactEnabled();
 	void setValidateRegularExpression();
 	void setAccountFilter();
