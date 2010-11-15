@@ -217,6 +217,7 @@ void AddBuddyWindow::updateAccountGui()
 		UserNameLabel->setText(account.protocolHandler()->protocolFactory()->idLabel());
 
 	MergeContact->setEnabled(true);
+	AllowToSeeMeCheck->setEnabled(true);
 }
 
 void AddBuddyWindow::updateMobileGui()
@@ -225,6 +226,7 @@ void AddBuddyWindow::updateMobileGui()
 	MergeContact->setChecked(false);
 	MergeContact->setEnabled(false);
 	SelectContact->setCurrentBuddy(Buddy::null);
+	AllowToSeeMeCheck->setEnabled(false);
 }
 
 void AddBuddyWindow::updateGui()
