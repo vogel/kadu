@@ -358,6 +358,8 @@ bool AddBuddyWindow::addContact()
 		BuddyManager::instance()->addItem(buddy);
 
 		buddy.setAnonymous(false);
+		buddy.setOfflineTo(!AllowToSeeMeCheck->isChecked());
+
 		QString display = DisplayNameEdit->text().isEmpty() ? UserNameEdit->text() : DisplayNameEdit->text();
 		buddy.setDisplay(display);
 	}
