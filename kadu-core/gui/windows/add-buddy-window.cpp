@@ -205,11 +205,22 @@ void AddBuddyWindow::setGroup(Group group)
 
 void AddBuddyWindow::setUsernameLabel()
 {
+	if (isMobileAccount())
+	{
+		UserNameLabel->setText(tr("Mobile number:"));
+		return;
+	}
+
 	Account account = AccountCombo->currentAccount();
 	if (account.isNull())
 		UserNameLabel->setText(tr("Username:"));
 	else
 		UserNameLabel->setText(account.protocolHandler()->protocolFactory()->idLabel());
+}
+
+bool AddBuddyWindow::isMobileAccount()
+{
+	return AccountCombo->data(ActionRole).value<QAction *>() == MobileAccountAction;
 }
 
 void AddBuddyWindow::validateData()
@@ -279,8 +290,7 @@ void AddBuddyWindow::validateMobileData()
 
 void AddBuddyWindow::setAddContactEnabled()
 {
-	QAction *action = AccountCombo->data(ActionRole).value<QAction *>();
-	if (MobileAccountAction == action)
+	if (isMobileAccount())
 		validateMobileData();
 	else
 		validateData();

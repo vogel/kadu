@@ -60,6 +60,8 @@ class AddBuddyWindow : public QDialog
 	void addMobileAccountToComboBox();
 	void displayErrorMessage(const QString &message);
 
+	bool isMobileAccount();
+
 	void validateData();
 	void validateMobileData();
 
