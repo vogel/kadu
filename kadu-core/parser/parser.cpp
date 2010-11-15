@@ -129,16 +129,18 @@ QString Parser::executeCmd(const QString &cmd)
 
 QString Parser::parse(const QString &s, const QObject * const object, bool escape)
 {
-	return parse(s, Contact::null, object, escape);
+	return parse(s, Buddy::null, Contact::null, object, escape);
 }
 
-QString Parser::parse(const QString &s, Contact contact, bool escape)
+QString Parser::parse(const QString &s, Buddy buddy, Contact contact, bool escape)
 {
-	return parse(s, contact, 0, escape);
+	return parse(s, buddy, contact, 0, escape);
 }
 
-QString Parser::parse(const QString &s, Contact contact, const QObject * const object, bool escape)
+QString Parser::parse(const QString &s, Buddy buddy, Contact contact, const QObject * const object, bool escape)
 {
+	Q_UNUSED(buddy)
+
 	kdebugmf(KDEBUG_DUMP, "%s escape=%i\n", qPrintable(s), escape);
 	int index = 0, i, len = s.length();
 	QList<ParserToken> parseStack;

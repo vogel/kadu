@@ -57,10 +57,13 @@ void Preview::syntaxChanged(const QString &content)
 	int count = objectsToParse.count();
 
 	if (count)
+	{
+		Contact contact = *contacts.constBegin();
 		for (int i = 0; i < count; i++)
-			text += Parser::parse(syntax, contacts.toContactList()[i], objectsToParse.at(i));
+			text += Parser::parse(syntax, contact.ownerBuddy(), contact, objectsToParse.at(i));
+	}
 	else
-		text = Parser::parse(syntax, contact);
+		text = Parser::parse(syntax, contact.ownerBuddy(), contact);
 
 	emit needFixup(text);
 

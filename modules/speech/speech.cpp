@@ -244,8 +244,13 @@ void Speech::notify(Notification *notification)
 
 		syntax = syntax.arg(details);
 
-		text = chat ? Parser::parse(syntax, *chat.contacts().begin(), notification)
-					: Parser::parse(syntax, notification);
+		if (chat)
+		{
+			Contact contact = *chat.contacts().begin();
+			text = Parser::parse(syntax, contact.ownerBuddy(), contact, notification);
+		}
+		else
+			text= Parser::parse(syntax, notification);
 	}
 
 	text.replace("&nbsp;", " ");

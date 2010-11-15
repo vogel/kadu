@@ -153,7 +153,9 @@ QString KaduChatStyleEngine::formatMessage(MessageRenderInfo *message, MessageRe
 		format = ChatSyntaxWithoutHeader;
 
 		message->setSeparatorSize(separatorSize);
-		return Parser::parse(format, msg.messageSender(), message, true);
+
+		Contact sender = msg.messageSender();
+		return Parser::parse(format, sender.ownerBuddy(), sender, message, true);
 	}
 	else
 	{
@@ -182,7 +184,8 @@ QString KaduChatStyleEngine::formatMessage(MessageRenderInfo *message, MessageRe
 		message->setShowServerTime(ChatStylesManager::instance()->noServerTime(), ChatStylesManager::instance()->noServerTimeDiff());
 		message->setSeparatorSize(separatorSize);
 
-		return Parser::parse(format, msg.messageSender(), message, true);
+		Contact sender = msg.messageSender();
+		return Parser::parse(format, sender.ownerBuddy(), sender, message, true);
 	}
 }
 
@@ -240,7 +243,8 @@ void KaduChatStyleEngine::prepareStylePreview(Preview *preview, QString styleNam
 		for (int i = 0; i < count; i++)
 		{
 			message = dynamic_cast<MessageRenderInfo *>(preview->getObjectsToParse().at(i));
-			text += Parser::parse(content, message->message().messageSender(), message);
+			Contact sender = message->message().messageSender();
+			text += Parser::parse(content, sender.ownerBuddy(), sender, message);
 		}
 	}
 	preview->setHtml(QString("<html><head><style type='text/css'>%1</style></head><body>%2</body>").arg(ChatStylesManager::instance()->mainStyle(), text));

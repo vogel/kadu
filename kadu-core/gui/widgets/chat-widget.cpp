@@ -256,7 +256,7 @@ void ChatWidget::refreshTitle()
 		QString conferenceContents = config_file.readEntry("Look", "ConferenceContents");
 		QStringList contactslist;
 		foreach (Contact contact, chat().contacts())
-			contactslist.append(Parser::parse(conferenceContents.isEmpty() ? "%a" : conferenceContents, contact, false));
+			contactslist.append(Parser::parse(conferenceContents.isEmpty() ? "%a" : conferenceContents, contact.ownerBuddy(), contact, false));
 
 		title.append(contactslist.join(", "));
 	}
@@ -267,12 +267,12 @@ void ChatWidget::refreshTitle()
 		if (config_file.readEntry("Look", "ChatContents").isEmpty())
 		{
 			if (contact.ownerBuddy().isAnonymous())
-				title = Parser::parse(tr("Chat with ") + "%a", contact, false);
+				title = Parser::parse(tr("Chat with ") + "%a", contact.ownerBuddy(), contact, false);
 			else
-				title = Parser::parse(tr("Chat with ") + "%a (%s[: %d])", contact, false);
+				title = Parser::parse(tr("Chat with ") + "%a (%s[: %d])", contact.ownerBuddy(), contact, false);
 		}
 		else
-			title = Parser::parse(config_file.readEntry("Look", "ChatContents"), contact, false);
+			title = Parser::parse(config_file.readEntry("Look", "ChatContents"), contact.ownerBuddy(), contact, false);
 	}
 
 	title.replace("<br/>", " ");
