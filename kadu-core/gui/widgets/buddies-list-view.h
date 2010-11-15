@@ -77,7 +77,7 @@ private:
 	Chat chatForIndex(const QModelIndex &index) const;
 
 	// Tool tips
-	Contact ToolTipContact;
+	BuddyOrContact ToolTipItem;
 	QTimer ToolTipTimeoutTimer;
 
 	QString BackgroundColor;

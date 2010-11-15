@@ -48,6 +48,9 @@ public:
 	BuddyOrContact & operator = (Contact contact);
 	BuddyOrContact & operator = (const BuddyOrContact &copyMe);
 
+	bool operator == (const BuddyOrContact &compareTo) const;
+	bool operator != (const BuddyOrContact &compareTo) const;
+
 	ItemType type() { return Type; }
 	Buddy buddy() { return MyBuddy; }
 	Contact contact() { return MyContact; }

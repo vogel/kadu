@@ -69,3 +69,13 @@ BuddyOrContact & BuddyOrContact::operator = (const BuddyOrContact &copyMe)
 
 	return *this;
 }
+
+bool BuddyOrContact::operator == (const BuddyOrContact &compareTo) const
+{
+	return (Type == compareTo.Type) && (MyBuddy == compareTo.MyBuddy) && (MyContact == compareTo.MyContact);
+}
+
+bool BuddyOrContact::operator != (const BuddyOrContact &compareTo) const
+{
+	return !(*this == compareTo);
+}

@@ -516,9 +516,9 @@ void BuddiesListView::updateBackground()
 
 void BuddiesListView::toolTipTimeout()
 {
-	if (!ToolTipContact.isNull())
+	if (BuddyOrContact::ItemNone != ToolTipItem.type())
 	{
-		ToolTipClassManager::instance()->showToolTip(QCursor::pos(), ToolTipContact);
+		ToolTipClassManager::instance()->showToolTip(QCursor::pos(), ToolTipItem);
 		ToolTipTimeoutTimer.stop();
 	}
 }
@@ -527,18 +527,18 @@ void BuddiesListView::toolTipTimeout()
 
 void BuddiesListView::toolTipRestart(QPoint pos)
 {
-	Contact con = contactAt(indexAt(pos));
+	BuddyOrContact item = buddyOrContactAt(indexAt(pos));
 
-	if (!con.isNull())
+	if (BuddyOrContact::ItemNone != item.type())
 	{
-		if (con != ToolTipContact)
+		if (item != ToolTipItem)
 			toolTipHide();
-		ToolTipContact = con;
+		ToolTipItem = item;
 	}
 	else
 	{
 		toolTipHide();
-		ToolTipContact = Contact::null;
+		ToolTipItem = BuddyOrContact();
 	}
 
 	ToolTipTimeoutTimer.start(TOOL_TIP_TIMEOUT);
