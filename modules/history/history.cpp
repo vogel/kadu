@@ -43,6 +43,7 @@
 #include "buddies/buddy-additional-data-delete-handler-manager.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-shared.h"
+#include "chat/aggregate-chat-manager.h"
 #include "chat/chat.h"
 #include "chat/chat-manager.h"
 #include "chat/message/message.h"
@@ -257,12 +258,12 @@ void History::showMoreMessages(QAction *action)
 	else if (0 != days)
 	{
 		QDate since = QDate::currentDate().addDays(-days);
-		messages = CurrentStorage->messagesSince(chatWidget->chat(), since);
+		messages = CurrentStorage->messagesSince(AggregateChatManager::instance()->aggregateChat(chatWidget->chat()), since);
 	}
 	else
 	{
 		QDateTime backTo = QDateTime::currentDateTime().addDays(config_file.readNumEntry("Chat", "ChatHistoryQuotationTime", -744)/24);
-		messages = CurrentStorage->messagesBackTo(chatWidget->chat(), backTo, config_file.readNumEntry("Chat", "ChatPruneLen", 20));
+		messages = CurrentStorage->messagesBackTo(AggregateChatManager::instance()->aggregateChat(chatWidget->chat()), backTo, config_file.readNumEntry("Chat", "ChatPruneLen", 20));
 	}
 
 	chatMessagesView->clearMessages();
@@ -309,7 +310,7 @@ void History::chatCreated(ChatWidget *chatWidget)
 			PendingMessagesManager::instance()->pendingMessagesForChat(chatWidget->chat()).size());
 
 	QDateTime backTo = QDateTime::currentDateTime().addSecs(config_file.readNumEntry("History", "ChatHistoryQuotationTime", -744)*3600);
-	messages = CurrentStorage->messagesBackTo(chatWidget->chat(), backTo, chatHistoryQuotation);
+	messages = CurrentStorage->messagesBackTo(AggregateChatManager::instance()->aggregateChat(chatWidget->chat()), backTo, chatHistoryQuotation);
 
 	chatMessagesView->appendMessages(messages);
 

@@ -13,6 +13,7 @@
 * gui: #1667 fixed: clickable links in buddy personal info (badboy)
 * jabber: move uploading avatars to JabberAvatarUploader (Juzef)
 * gui: #1616 fixed: Add Buddy window now allows to add mobile-only buddies (Vogel)
+* history: #1673 fixed: messages from all buddy's chats should be quoted in chat window (WhE)
 
 +++ version 0.6.6-beta10
 * modules: don't build echo module by default (beevvy)
