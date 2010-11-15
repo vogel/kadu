@@ -200,6 +200,13 @@ public:
 	{
 	}
 
+	QVariant data(int role) const
+	{
+		return ActionsModel->index(currentIndex(), modelColumn()).data(role);
+	}
+
+	ActionsProxyModel * actionsModel() const { return ActionsModel; }
+
 };
 
 #endif // KADU_COMBO_BOX_H

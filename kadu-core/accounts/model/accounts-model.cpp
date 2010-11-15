@@ -27,7 +27,7 @@
 #include "accounts-model.h"
 
 AccountsModel::AccountsModel(QObject *parent) :
-		QAbstractListModel(parent), UseSmallIcon(false)
+		QAbstractListModel(parent)
 {
 	connect(AccountManager::instance(), SIGNAL(accountUpdated(Account)),
 			this, SLOT(accountUpdated(Account)));

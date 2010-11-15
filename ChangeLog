@@ -12,6 +12,7 @@
 * api: AvatarManager class split into 3 other classes (Vogel)
 * gui: #1667 fixed: clickable links in buddy personal info (badboy)
 * jabber: move uploading avatars to JabberAvatarUploader (Juzef)
+* gui: #1616 fixed: Add Buddy window now allows to add mobile-only buddies (Vogel)
 
 +++ version 0.6.6-beta10
 * modules: don't build echo module by default (beevvy)

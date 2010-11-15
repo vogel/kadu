@@ -45,7 +45,6 @@
 #include "gui/widgets/groups-combo-box.h"
 #include "gui/widgets/select-buddy-combo-box.h"
 #include "misc/misc.h"
-#include "model/actions-proxy-model.h"
 #include "model/roles.h"
 #include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
@@ -61,10 +60,11 @@ AddBuddyWindow::AddBuddyWindow(QWidget *parent) :
 	setAttribute(Qt::WA_DeleteOnClose);
 
 	createGui();
+	addMobileAccountToComboBox();
 
-	connect(AccountCombo, SIGNAL(accountChanged(Account)), this, SLOT(setUsernameLabel()));
-	connect(AccountCombo, SIGNAL(accountChanged(Account)), this, SLOT(setAddContactEnabled()));
-	connect(AccountCombo, SIGNAL(accountChanged(Account)), this, SLOT(setValidateRegularExpression()));
+	connect(AccountCombo, SIGNAL(activated(int)), this, SLOT(updateGui()));
+	connect(AccountCombo, SIGNAL(activated(int)), this, SLOT(setAddContactEnabled()));
+	connect(AccountCombo, SIGNAL(activated(int)), this, SLOT(setValidateRegularExpression()));
 
 	setAddContactEnabled();
 	setValidateRegularExpression();
@@ -171,6 +171,14 @@ void AddBuddyWindow::createGui()
 	setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 }
 
+void AddBuddyWindow::addMobileAccountToComboBox()
+{
+	ActionsProxyModel *actionsModel = AccountCombo->actionsModel();
+
+	MobileAccountAction = new QAction(IconsManager::instance()->iconByPath("phone"), tr("Mobile"), AccountCombo);
+	actionsModel->addAfterAction(MobileAccountAction);
+}
+
 void AddBuddyWindow::displayErrorMessage(const QString &message)
 {
 	ErrorLabel->setText(message);
@@ -195,28 +203,53 @@ void AddBuddyWindow::setGroup(Group group)
 	GroupCombo->setCurrentGroup(group);
 }
 
-void AddBuddyWindow::setUsernameLabel()
+bool AddBuddyWindow::isMobileAccount()
+{
+	return AccountCombo->data(ActionRole).value<QAction *>() == MobileAccountAction;
+}
+
+void AddBuddyWindow::updateAccountGui()
 {
 	Account account = AccountCombo->currentAccount();
 	if (account.isNull())
 		UserNameLabel->setText(tr("Username:"));
 	else
 		UserNameLabel->setText(account.protocolHandler()->protocolFactory()->idLabel());
+
+	MergeContact->setEnabled(true);
+	AllowToSeeMeCheck->setEnabled(true);
 }
 
-void AddBuddyWindow::setAddContactEnabled()
+void AddBuddyWindow::updateMobileGui()
 {
+	UserNameLabel->setText(tr("Mobile number:"));
+	MergeContact->setChecked(false);
+	MergeContact->setEnabled(false);
+	SelectContact->setCurrentBuddy(Buddy::null);
+	AllowToSeeMeCheck->setEnabled(false);
+}
+
+void AddBuddyWindow::updateGui()
+{
+	if (isMobileAccount())
+		updateMobileGui();
+	else
+		updateAccountGui();
+}
+
+void AddBuddyWindow::validateData()
+{
+	AddContactButton->setEnabled(false);
+
 	Account account = AccountCombo->currentAccount();
 	if (account.isNull() || !account.protocolHandler() || !account.protocolHandler()->protocolFactory())
 	{
-		AddContactButton->setEnabled(false);
 		displayErrorMessage(tr("Account is not selected"));
 		return;
 	}
 
 	if (!account.protocolHandler()->protocolFactory()->idRegularExpression().exactMatch(UserNameEdit->text()))
 	{
-		AddContactButton->setEnabled(false);
 		displayErrorMessage(tr("Entered username is invalid"));
 		return;
 	}
@@ -224,7 +257,6 @@ void AddBuddyWindow::setAddContactEnabled()
 	Contact contact = ContactManager::instance()->byId(account, UserNameEdit->text(), ActionReturnNull);
 	if (contact && contact.ownerBuddy() && !contact.ownerBuddy().isAnonymous())
 	{
-		AddContactButton->setEnabled(false);
 		displayErrorMessage(tr("This contact is already available as <i>%1</i>").arg(contact.ownerBuddy().display()));
 		return;
 	}
@@ -233,7 +265,6 @@ void AddBuddyWindow::setAddContactEnabled()
 	{
 		if (!SelectContact->currentBuddy())
 		{
-			AddContactButton->setEnabled(false);
 			displayErrorMessage(tr("Select contact to merge with"));
 			return;
 		}
@@ -242,7 +273,6 @@ void AddBuddyWindow::setAddContactEnabled()
 	{
 		if (BuddyManager::instance()->byDisplay(DisplayNameEdit->text(), ActionReturnNull))
 		{
-			AddContactButton->setEnabled(false);
 			displayErrorMessage(tr("Visible name is already used for another contact"));
 			return;
 		}
@@ -250,6 +280,34 @@ void AddBuddyWindow::setAddContactEnabled()
 
 	AddContactButton->setEnabled(true);
 	displayErrorMessage(QString::null);
+}
+
+void AddBuddyWindow::validateMobileData()
+{
+	static QRegExp mobileRegularExpression("[0-9]{3,12}");
+
+	if (!mobileRegularExpression.exactMatch(UserNameEdit->text()))
+	{
+		displayErrorMessage(tr("Entered mobile number is invalid"));
+		return;
+	}
+
+	if (MergeContact->isChecked())
+	{
+		displayErrorMessage(tr("Merging mobile number with buddy is not supported. Please use edit buddy window."));
+		return;
+	}
+
+	AddContactButton->setEnabled(true);
+	displayErrorMessage(QString::null);
+}
+
+void AddBuddyWindow::setAddContactEnabled()
+{
+	if (isMobileAccount())
+		validateMobileData();
+	else
+		validateData();
 }
 
 void AddBuddyWindow::setValidateRegularExpression()
@@ -279,11 +337,11 @@ void AddBuddyWindow::setAccountFilter()
 	AccountComboIdFilter->setId(UserNameEdit->text());
 }
 
-void AddBuddyWindow::accept()
+bool AddBuddyWindow::addContact()
 {
 	Account account = AccountCombo->currentAccount();
 	if (account.isNull())
-		return;
+		return false;
 
 	Buddy buddy;
 
@@ -307,7 +365,7 @@ void AddBuddyWindow::accept()
 	{
 		buddy = SelectContact->currentBuddy();
 		if (buddy.isNull())
-			return;
+			return false;
 	}
 
 	Contact contact = ContactManager::instance()->byId(account, UserNameEdit->text(), ActionCreateAndAdd);
@@ -317,7 +375,34 @@ void AddBuddyWindow::accept()
 
 	buddy.addToGroup(GroupCombo->currentGroup());
 
-	QDialog::accept();
+	return true;
+}
+
+bool AddBuddyWindow::addMobile()
+{
+	Buddy buddy = Buddy::create();
+	buddy.data()->setState(StorableObject::StateNew);
+	buddy.setAnonymous(false);
+	buddy.setMobile(UserNameEdit->text());
+	buddy.setDisplay(DisplayNameEdit->text().isEmpty() ? UserNameEdit->text() : DisplayNameEdit->text());
+	buddy.addToGroup(GroupCombo->currentGroup());
+
+	BuddyManager::instance()->addItem(buddy);
+
+	return true;
+}
+
+void AddBuddyWindow::accept()
+{
+	bool ok;
+
+	if (isMobileAccount())
+		ok = addMobile();
+	else
+		ok = addContact();
+
+	if (ok)
+		QDialog::accept();
 }
 
 void AddBuddyWindow::reject()
