@@ -335,11 +335,11 @@ void AddBuddyWindow::setAccountFilter()
 	AccountComboIdFilter->setId(UserNameEdit->text());
 }
 
-void AddBuddyWindow::accept()
+bool AddBuddyWindow::addContact()
 {
 	Account account = AccountCombo->currentAccount();
 	if (account.isNull())
-		return;
+		return false;
 
 	Buddy buddy;
 
@@ -363,7 +363,7 @@ void AddBuddyWindow::accept()
 	{
 		buddy = SelectContact->currentBuddy();
 		if (buddy.isNull())
-			return;
+			return false;
 	}
 
 	Contact contact = ContactManager::instance()->byId(account, UserNameEdit->text(), ActionCreateAndAdd);
@@ -373,7 +373,34 @@ void AddBuddyWindow::accept()
 
 	buddy.addToGroup(GroupCombo->currentGroup());
 
-	QDialog::accept();
+	return true;
+}
+
+bool AddBuddyWindow::addMobile()
+{
+	Buddy buddy = Buddy::create();
+	buddy.data()->setState(StorableObject::StateNew);
+	buddy.setAnonymous(false);
+	buddy.setMobile(UserNameEdit->text());
+	buddy.setDisplay(DisplayNameEdit->text().isEmpty() ? UserNameEdit->text() : DisplayNameEdit->text());
+	buddy.addToGroup(GroupCombo->currentGroup());
+
+	BuddyManager::instance()->addItem(buddy);
+
+	return true;
+}
+
+void AddBuddyWindow::accept()
+{
+	bool ok;
+
+	if (isMobileAccount())
+		ok = addMobile();
+	else
+		ok = addContact();
+
+	if (ok)
+		QDialog::accept();
 }
 
 void AddBuddyWindow::reject()
