@@ -212,7 +212,7 @@ void AddBuddyWindow::setUsernameLabel()
 		UserNameLabel->setText(account.protocolHandler()->protocolFactory()->idLabel());
 }
 
-void AddBuddyWindow::setAddContactEnabled()
+void AddBuddyWindow::validateData()
 {
 	Account account = AccountCombo->currentAccount();
 	if (account.isNull() || !account.protocolHandler() || !account.protocolHandler()->protocolFactory())
@@ -258,6 +258,21 @@ void AddBuddyWindow::setAddContactEnabled()
 
 	AddContactButton->setEnabled(true);
 	displayErrorMessage(QString::null);
+}
+
+void AddBuddyWindow::validateMobileData()
+{
+	AddContactButton->setEnabled(false);
+	displayErrorMessage(tr("Adding mobile users is not supported yet"));
+}
+
+void AddBuddyWindow::setAddContactEnabled()
+{
+	QAction *action = AccountCombo->data(ActionRole).value<QAction *>();
+	if (MobileAccountAction == action)
+		validateMobileData();
+	else
+		validateData();
 }
 
 void AddBuddyWindow::setValidateRegularExpression()
