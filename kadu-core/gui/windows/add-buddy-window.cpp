@@ -214,17 +214,17 @@ void AddBuddyWindow::setUsernameLabel()
 
 void AddBuddyWindow::validateData()
 {
+	AddContactButton->setEnabled(false);
+
 	Account account = AccountCombo->currentAccount();
 	if (account.isNull() || !account.protocolHandler() || !account.protocolHandler()->protocolFactory())
 	{
-		AddContactButton->setEnabled(false);
 		displayErrorMessage(tr("Account is not selected"));
 		return;
 	}
 
 	if (!account.protocolHandler()->protocolFactory()->idRegularExpression().exactMatch(UserNameEdit->text()))
 	{
-		AddContactButton->setEnabled(false);
 		displayErrorMessage(tr("Entered username is invalid"));
 		return;
 	}
@@ -232,7 +232,6 @@ void AddBuddyWindow::validateData()
 	Contact contact = ContactManager::instance()->byId(account, UserNameEdit->text(), ActionReturnNull);
 	if (contact && contact.ownerBuddy() && !contact.ownerBuddy().isAnonymous())
 	{
-		AddContactButton->setEnabled(false);
 		displayErrorMessage(tr("This contact is already available as <i>%1</i>").arg(contact.ownerBuddy().display()));
 		return;
 	}
@@ -241,7 +240,6 @@ void AddBuddyWindow::validateData()
 	{
 		if (!SelectContact->currentBuddy())
 		{
-			AddContactButton->setEnabled(false);
 			displayErrorMessage(tr("Select contact to merge with"));
 			return;
 		}
@@ -250,7 +248,6 @@ void AddBuddyWindow::validateData()
 	{
 		if (BuddyManager::instance()->byDisplay(DisplayNameEdit->text(), ActionReturnNull))
 		{
-			AddContactButton->setEnabled(false);
 			displayErrorMessage(tr("Visible name is already used for another contact"));
 			return;
 		}
