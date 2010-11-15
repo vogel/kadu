@@ -259,8 +259,22 @@ void AddBuddyWindow::validateData()
 
 void AddBuddyWindow::validateMobileData()
 {
-	AddContactButton->setEnabled(false);
-	displayErrorMessage(tr("Adding mobile users is not supported yet"));
+	static QRegExp mobileRegularExpression("[0-9]{3,12}");
+
+	if (!mobileRegularExpression.exactMatch(UserNameEdit->text()))
+	{
+		displayErrorMessage(tr("Entered mobile number is invalid"));
+		return;
+	}
+
+	if (MergeContact->isChecked())
+	{
+		displayErrorMessage(tr("Merging mobile number with buddy is not supported. Please use edit buddy window."));
+		return;
+	}
+
+	AddContactButton->setEnabled(true);
+	displayErrorMessage(QString::null);
 }
 
 void AddBuddyWindow::setAddContactEnabled()
