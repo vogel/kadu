@@ -23,7 +23,7 @@
 
 #define DEFAULT_DELAY 7200
 
-const QString GaduAvatarDataParser::AvatarQuery("/result/users/user[@uin='%1']/avatars/avatar[@order='0' and @blank='']/originSmallAvatar/text()");
+const QString GaduAvatarDataParser::AvatarQuery("/result/users/user[@uin='%1']/avatars/avatar[@order='0' and @blank='']/originBigAvatar/text()");
 const QString GaduAvatarDataParser::BlankAvatarQuery("/result/users/user[@uin='%1']/avatars/avatar[@order='0']/@blank/text()");
 const QString GaduAvatarDataParser::TimestampQuery("/result/users/user[@uin='%1']/avatars/avatar[@order='0' and @blank='']/timestamp/text()");
 const QString GaduAvatarDataParser::PackageDelayQuery("/result/users/user[@uin='%1']/avatars/avatar[@order='0' and @blank='']/packageDelay/text()");
