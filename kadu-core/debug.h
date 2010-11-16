@@ -24,6 +24,8 @@
 #ifndef DEBUG_H
 #define DEBUG_H
 
+#include <QtCore/QDateTime>
+
 #include "exports.h"
 
 /* pierwsze 8 bitow zarezerwowane jest dla libgadu */
@@ -106,5 +108,11 @@ KADUAPI void _kdebug_with_mask(int mask, const char *file, const int line, const
 ;
 #endif
 extern KADUAPI int debug_mask;
+
+namespace Debug
+{
+	void ktDebugStart(const QString &message, QDateTime &time);
+	void ktDebugCheckPoint(const QString &message, QDateTime &time);
+};
 
 #endif // DEBUG_H
