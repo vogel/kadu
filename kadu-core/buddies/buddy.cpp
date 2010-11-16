@@ -260,12 +260,11 @@ Buddy Buddy::dummy()
 		contact.setPort(80);
 		contact.setDetails(account.protocolHandler()->protocolFactory()->createContactDetails(contact));
 
-		Avatar avatar = Avatar::create();
-		AvatarManager::instance()->addItem(avatar);
+		// this is just an example contact, do not add avatar to list
+		Avatar avatar = AvatarManager::instance()->byContact(contact, ActionCreate);
 
 		avatar.setLastUpdated(QDateTime::currentDateTime());
 		avatar.setPixmap(IconsManager::instance()->iconByPath("system-users").pixmap(32, 32));
-		contact.setContactAvatar(avatar);
 
 		example.addContact(contact);
 		example.setAnonymous(false);

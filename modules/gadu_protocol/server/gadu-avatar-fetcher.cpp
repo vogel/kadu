@@ -88,10 +88,9 @@ void GaduAvatarFetcher::requestFinished(int id, bool error)
 		return;
 	}
 
-	if (MyContact.contactAvatar().isNull())
-		MyContact.setContactAvatar(Avatar::create());
+	Avatar contactAvatar = AvatarManager::instance()->byContact(MyContact, ActionCreateAndAdd);
 
-	if (MyContact.contactAvatar().lastUpdated() == parser.timestamp())
+	if (contactAvatar.lastUpdated() == parser.timestamp())
 	{
 		// only if we have file too
 		if (!MyContact.contactAvatar().pixmap().isNull())
@@ -104,10 +103,8 @@ void GaduAvatarFetcher::requestFinished(int id, bool error)
 		}
 	}
 
-	MyContact.contactAvatar().setNextUpdate(QDateTime::fromTime_t(QDateTime::currentDateTime().toTime_t() + parser.delay()));
-
-	MyContact.contactAvatar().setLastUpdated(parser.timestamp());
-	AvatarManager::instance()->addItem(MyContact.contactAvatar());
+	contactAvatar.setNextUpdate(QDateTime::fromTime_t(QDateTime::currentDateTime().toTime_t() + parser.delay()));
+	contactAvatar.setLastUpdated(parser.timestamp());
 
 	QUrl url = parser.avatarUrl();
 

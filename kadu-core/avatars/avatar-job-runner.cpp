@@ -72,14 +72,7 @@ void AvatarJobRunner::avatarFetched(Contact contact, bool ok, const QByteArray &
 		return;
 	}
 
-	Avatar avatar = contact.contactAvatar();
-	if (!avatar)
-	{
-		avatar = Avatar::create();
-		AvatarManager::instance()->addItem(avatar);
-		contact.setContactAvatar(avatar);
-	}
-
+	Avatar avatar = AvatarManager::instance()->byContact(contact, ActionCreateAndAdd);
 	avatar.setLastUpdated(QDateTime::currentDateTime());
 
 	QPixmap pixmap;

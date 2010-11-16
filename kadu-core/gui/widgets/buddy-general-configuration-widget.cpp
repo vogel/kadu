@@ -141,16 +141,8 @@ void BuddyGeneralConfigurationWidget::save()
 		MyBuddy.setBuddyAvatar(Avatar::null);
 	else
 	{
-		Avatar buddyAvatar = MyBuddy.buddyAvatar();
-		if (!buddyAvatar)
-		{
-			buddyAvatar = Avatar::create();
-			AvatarManager::instance()->addItem(buddyAvatar);
-			MyBuddy.setBuddyAvatar(buddyAvatar);
-		}
-
+		Avatar buddyAvatar = AvatarManager::instance()->byBuddy(MyBuddy, ActionCreateAndAdd);
 		buddyAvatar.setPixmap(avatar);
-		MyBuddy.setBuddyAvatar(buddyAvatar);
 	}
 
 	ContactsTable->save();

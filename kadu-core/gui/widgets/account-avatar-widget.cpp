@@ -24,6 +24,7 @@
 #include <QtGui/QVBoxLayout>
 
 #include "avatars/avatar.h"
+#include "avatars/avatar-manager.h"
 #include "protocols/services/avatar-service.h"
 #include "protocols/protocol.h"
 #include "icons-manager.h"
@@ -132,7 +133,7 @@ void AccountAvatarWidget::changeAvatar()
 void AccountAvatarWidget::avatarUploaded(bool ok, QImage image)
 {
 	if (ok)
-		MyAccount.accountContact().contactAvatar().setPixmap(QPixmap::fromImage(image));
+		AvatarManager::instance()->byContact(MyAccount.accountContact(), ActionCreateAndAdd).setPixmap(QPixmap::fromImage(image));
 
 	avatarUpdated();
 	ChangeAvatarButton->setEnabled(true);

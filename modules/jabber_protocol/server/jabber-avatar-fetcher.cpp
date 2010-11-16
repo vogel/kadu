@@ -69,10 +69,8 @@ void JabberAvatarFetcher::receivedVCard()
 
 	if (vcard && !vcard->photo().isEmpty())
 	{
-		if (MyContact.contactAvatar().isNull())
-			MyContact.setContactAvatar(Avatar::create());
-
-		MyContact.contactAvatar().setNextUpdate(QDateTime::fromTime_t(QDateTime::currentDateTime().toTime_t() + 7200));
+		Avatar contactAvatar = AvatarManager::instance()->byContact(MyContact, ActionCreateAndAdd);
+		contactAvatar.setNextUpdate(QDateTime::fromTime_t(QDateTime::currentDateTime().toTime_t() + 7200));
 		done(vcard->photo());
 	}
 	else
