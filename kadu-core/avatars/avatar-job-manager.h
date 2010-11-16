@@ -21,7 +21,6 @@
 #define AVATAR_JOB_MANAGER_H
 
 #include <QtCore/QObject>
-#include <QtCore/QTimer>
 
 #include "accounts/accounts-aware-object.h"
 #include "avatars/avatar.h"
@@ -36,7 +35,7 @@ class KADUAPI AvatarJobManager : public QObject
 	static AvatarJobManager *Instance;
 
 	QMutex Mutex;
-	QTimer JobTimer;
+	bool IsJobRunning;
 
 	QSet<Contact> Jobs;
 
@@ -45,8 +44,10 @@ class KADUAPI AvatarJobManager : public QObject
 
 	QMutex & mutex() { return Mutex; }
 
+	void scheduleJob();
+
 private slots:
-	void jobTimerTimeout();
+	void runJob();
 	void jobFinished();
 
 public:

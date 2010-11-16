@@ -17,6 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QTimer>
+
 #include "avatars/avatar-job-runner.h"
 #include "contacts/contact-shared.h"
 
@@ -33,22 +35,35 @@ AvatarJobManager * AvatarJobManager::instance()
 }
 
 AvatarJobManager::AvatarJobManager() :
-		Mutex(QMutex::Recursive), JobTimer(this)
+		Mutex(QMutex::Recursive), IsJobRunning(false)
 {
-	JobTimer.setInterval(250);
-	JobTimer.setSingleShot(true);
-
-	connect(&JobTimer, SIGNAL(timeout()), this, SLOT(jobTimerTimeout()));
 }
 
 AvatarJobManager::~AvatarJobManager()
 {
 }
 
-void AvatarJobManager::jobTimerTimeout()
+void AvatarJobManager::scheduleJob()
 {
+	QMutexLocker(&mutex());
+
+	if (!IsJobRunning && hasJob())
+		// run it in next even cycle
+		// this is for reccursion prevention, so we save on stack memory
+		QTimer::singleShot(0, this, SLOT(runJob()));
+}
+
+void AvatarJobManager::runJob()
+{
+	QMutexLocker(&mutex());
+
+	if (IsJobRunning)
+		return;
+
 	if (!hasJob())
 		return;
+
+	IsJobRunning = true;
 
 	Contact contact = nextJob();
 	AvatarJobRunner *runner = new AvatarJobRunner(this);
@@ -58,8 +73,10 @@ void AvatarJobManager::jobTimerTimeout()
 
 void AvatarJobManager::jobFinished()
 {
-	if (!JobTimer.isActive() && hasJob())
-		JobTimer.start();
+	QMutexLocker(&mutex());
+
+	IsJobRunning = false;
+	scheduleJob();
 }
 
 void AvatarJobManager::addJob(const Contact &contact)
@@ -70,9 +87,7 @@ void AvatarJobManager::addJob(const Contact &contact)
 		return;
 
 	Jobs.insert(contact);
-
-	if (!JobTimer.isActive())
-		JobTimer.start();
+	scheduleJob();
 }
 
 bool AvatarJobManager::hasJob()

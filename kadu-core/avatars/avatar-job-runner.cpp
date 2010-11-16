@@ -68,6 +68,7 @@ void AvatarJobRunner::avatarFetched(Contact contact, bool ok, const QByteArray &
 	if (!ok)
 	{
 		emit jobFinished(false);
+		deleteLater();
 		return;
 	}
 
@@ -88,4 +89,6 @@ void AvatarJobRunner::avatarFetched(Contact contact, bool ok, const QByteArray &
 	avatar.setPixmap(pixmap);
 
 	emit jobFinished(true);
+
+	deleteLater();
 }
