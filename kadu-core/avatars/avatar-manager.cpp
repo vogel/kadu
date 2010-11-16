@@ -171,3 +171,37 @@ void AvatarManager::avatarDataUpdated()
 	if (!avatar.isNull())
 		emit avatarUpdated(avatar);
 }
+
+Avatar AvatarManager::byBuddy(Buddy buddy, NotFoundAction action)
+{
+	if (buddy.buddyAvatar())
+		return buddy.buddyAvatar();
+
+	if (ActionReturnNull == action)
+		return Avatar::null;
+
+	Avatar avatar = Avatar::create();
+	buddy.setBuddyAvatar(avatar);
+
+	if (ActionCreateAndAdd == action)
+		addItem(avatar);
+
+	return avatar;
+}
+
+Avatar AvatarManager::byContact(Contact contact, NotFoundAction action)
+{
+	if (contact.contactAvatar())
+		return contact.contactAvatar();
+
+	if (ActionReturnNull == action)
+		return Avatar::null;
+
+	Avatar avatar = Avatar::create();
+	contact.setContactAvatar(avatar);
+
+	if (ActionCreateAndAdd == action)
+		addItem(avatar);
+
+	return avatar;
+}

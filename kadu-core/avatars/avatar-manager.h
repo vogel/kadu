@@ -68,6 +68,9 @@ public:
 	virtual QString storageNodeName() { return QLatin1String("Avatars"); }
 	virtual QString storageNodeItemName() { return QLatin1String("Avatar"); }
 
+	Avatar byBuddy(Buddy buddy, NotFoundAction action);
+	Avatar byContact(Contact contact, NotFoundAction action);
+
 signals:
 	void avatarAboutToBeAdded(Avatar avatar);
 	void avatarAdded(Avatar avatar);
