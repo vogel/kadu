@@ -483,6 +483,9 @@ void JabberProtocol::addContactToRoster(Contact contact, bool requestAuth)
 
 	//TODO last parameter: automagic authorization request - make it configurable
 	JabberClient->addContact(contact.id(), buddy.display(), groupsList, requestAuth);
+
+	if (!contact.ownerBuddy().isOfflineTo())
+		CurrentSubscriptionService->authorizeContact(contact, true);
 }
 
 void JabberProtocol::contactAttached(Contact contact)
