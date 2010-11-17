@@ -41,13 +41,8 @@ void JabberAvatarService::uploadAvatar(QImage avatar)
 {
 	if (account().accountContact().id().isEmpty())
 		return;
-	
+
 	JabberAvatarUploader *avatarUploader = new JabberAvatarUploader(account(), this);
 	connect(avatarUploader, SIGNAL(avatarUploaded(bool, QImage)), this, SIGNAL(avatarUploaded(bool, QImage)));
 	avatarUploader->uploadAvatar(avatar);
 }
-
-
-
-
-
