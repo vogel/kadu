@@ -91,7 +91,11 @@ About::About(QWidget *parent) :
 
 	QWidget *wb_about = new QWidget(tw_about);
 	QVBoxLayout *about_layout = new QVBoxLayout(wb_about);
+	about_layout->addSpacing(10);
 	about_layout->addWidget(new QLabel(tr("Instant Messenger"), wb_about));
+	about_layout->addSpacing(10);
+	about_layout->addWidget(new QLabel("IRC:\nirc.freenode.net - #kadu", wb_about));
+	about_layout->addSpacing(10);
 	about_layout->addWidget(new QLabel(tr("Support:"), wb_about));
 	about_layout->addWidget(new KaduLink("http://www.kadu.net/forum/", wb_about));
 	about_layout->addSpacing(20);

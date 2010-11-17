@@ -16,6 +16,7 @@
 * gui: #1699: fixed: "Allow to see..." option is not used in Add Buddy window (WhE)
 * gui: #1606 fixed: use buddy custom avatar in parser when available (Vogel)
 * gui: #1619 fixed: display info about mobile-only buddies in infopanel (Vogel)
+* gui: #1687 fixed: add information about kadu's irc channel to about window (WhE)
 
 +++ version 0.6.6-beta10
 * modules: don't build echo module by default (beevvy)
