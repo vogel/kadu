@@ -244,7 +244,7 @@ void KaduChatStyleEngine::prepareStylePreview(Preview *preview, QString styleNam
 		{
 			message = dynamic_cast<MessageRenderInfo *>(preview->getObjectsToParse().at(i));
 			Contact sender = message->message().messageSender();
-			text += Parser::parse(content, sender.ownerBuddy(), sender, message);
+			text += Parser::parse(content, BuddyOrContact(sender), message, true);
 		}
 	}
 	preview->setHtml(QString("<html><head><style type='text/css'>%1</style></head><body>%2</body>").arg(ChatStylesManager::instance()->mainStyle(), text));
