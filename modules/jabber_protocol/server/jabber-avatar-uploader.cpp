@@ -37,23 +37,43 @@ JabberAvatarUploader::~JabberAvatarUploader()
 void JabberAvatarUploader::uploadAvatarPEP(QImage avatar)
 {
 	JabberAvatarPepUploader *pepUploader = new JabberAvatarPepUploader(MyAccount, this);
-	connect(pepUploader, SIGNAL(avatarUploaded(bool, QImage)), this, SIGNAL(avatarUploaded(bool, QImage)));
+	connect(pepUploader, SIGNAL(avatarUploaded(bool, QImage)), this, SLOT(pepAvatarUploaded(bool, QImage)));
 	pepUploader->uploadAvatar(avatar);
 }
+
+void JabberAvatarUploader::pepAvatarUploaded(bool ok, QImage image)
+{
+	if (ok)
+	{
+		emit avatarUploaded(ok, image);
+		deleteLater();
+		return;
+	}
+
+	// do a fallback to vcard
+	uploadAvatarVCard(UploadingAvatar);
+}
+
 
 void JabberAvatarUploader::uploadAvatarVCard(QImage avatar)
 {
 	JabberAvatarVCardUploader *vcardUploader = new JabberAvatarVCardUploader(MyAccount, this);
-	connect(vcardUploader, SIGNAL(avatarUploaded(bool, QImage)), this, SIGNAL(avatarUploaded(bool, QImage)));
+	connect(vcardUploader, SIGNAL(avatarUploaded(bool, QImage)), this, SIGNAL(avatarUploadedSlot(bool, QImage)));
+	connect(vcardUploader, SIGNAL(avatarUploaded(bool, QImage)), this, SLOT(deleteLater()));
 	vcardUploader->uploadAvatar(avatar);
-
 }
 
 void JabberAvatarUploader::uploadAvatar(QImage avatar)
 {
 	JabberProtocol *protocol = dynamic_cast<JabberProtocol *>(MyAccount.protocolHandler());
-	if (!protocol)
+	if (!protocol || !protocol->client() || !protocol->client()->rootTask())
+	{
+		deleteLater();
+		emit avatarUploaded(false, avatar);
 		return;
+	}
+
+	UploadingAvatar = avatar;
 
 	if (protocol->isPEPAvailable() && protocol->pepManager())
 		uploadAvatarPEP(avatar);

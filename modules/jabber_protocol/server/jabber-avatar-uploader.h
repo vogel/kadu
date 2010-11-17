@@ -23,9 +23,6 @@
 
 #include <QtGui/QImage>
 
-#include "xmpp_vcard.h"
-#include "xmpp_tasks.h"
-
 #include "accounts/account.h"
 
 class QNetworkAccessManager;
@@ -36,9 +33,13 @@ class JabberAvatarUploader : public QObject
 	Q_OBJECT
 
 	Account MyAccount;
+	QImage UploadingAvatar;
 
 	void uploadAvatarPEP(QImage avatar);
 	void uploadAvatarVCard(QImage avatar);
+
+private slots:
+	void pepAvatarUploaded(bool ok, QImage image);
 
 public:
 	explicit JabberAvatarUploader(Account account, QObject *parent = 0);
