@@ -18,8 +18,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QBuffer>
-
 #include "utils/vcard-factory.h"
 #include "jabber-protocol.h"
 
@@ -40,20 +38,9 @@ JabberAvatarVCardUploader::~JabberAvatarVCardUploader()
 {
 }
 
-QByteArray JabberAvatarVCardUploader::avatarData(const QImage &avatar)
+void JabberAvatarVCardUploader::uploadAvatar(const QByteArray &data)
 {
-	QByteArray data;
-	QBuffer buffer(&data);
-	buffer.open(QIODevice::WriteOnly);
-	avatar.save(&buffer, "PNG");
-	buffer.close();
-
-	return data;
-}
-
-void JabberAvatarVCardUploader::uploadAvatar(QImage avatar)
-{
-	UploadedAvatar = avatar;
+	UploadedAvatarData = data;
 
 	VCardFactory::instance()->getVCard(MyAccount.id(), MyProtocol->client()->rootTask(), this, SLOT(vcardReceived()));
 }
@@ -64,7 +51,7 @@ void JabberAvatarVCardUploader::vcardReceived()
 
 	if (!task || !task->success())
 	{
-		emit avatarUploaded(false, UploadedAvatar);
+		emit avatarUploaded(false);
 		deleteLater();
 		return;
 	}
@@ -72,7 +59,7 @@ void JabberAvatarVCardUploader::vcardReceived()
 	XMPP::Jid jid = XMPP::Jid(MyAccount.id());
 
 	XMPP::VCard vcard = task->vcard();
-	vcard.setPhoto(avatarData(UploadedAvatar));
+	vcard.setPhoto(UploadedAvatarData);
 
 	VCardFactory::instance()->setVCard(MyProtocol->client()->rootTask(), jid, vcard, this, SLOT(vcardUploaded()));
 }
@@ -82,13 +69,12 @@ void JabberAvatarVCardUploader::vcardUploaded()
 	XMPP::JT_VCard *task = dynamic_cast<XMPP::JT_VCard *>(sender());
 	if (!task || !task->success())
 	{
-		emit avatarUploaded(false, UploadedAvatar);
+		emit avatarUploaded(false);
 		deleteLater();
 		return;
 	}
 
 
-	emit avatarUploaded(true, UploadedAvatar);
-
+	emit avatarUploaded(true);
 	deleteLater();
 }

@@ -37,9 +37,7 @@ class JabberAvatarVCardUploader : public QObject
 	Account MyAccount;
 	JabberProtocol *MyProtocol;
 
-	QImage UploadedAvatar;
-
-	QByteArray avatarData(const QImage &avatar);
+	QByteArray UploadedAvatarData;
 
 private slots:
 	void vcardReceived();
@@ -49,10 +47,10 @@ public:
 	explicit JabberAvatarVCardUploader(Account account, QObject *parent = 0);
 	virtual ~JabberAvatarVCardUploader();
 
-	void uploadAvatar(QImage avatar);
+	void uploadAvatar(const QByteArray &data);
 
 signals:
-	void avatarUploaded(bool ok, QImage image);
+	void avatarUploaded(bool ok);
 
 };
 

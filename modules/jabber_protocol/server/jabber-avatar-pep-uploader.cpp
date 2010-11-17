@@ -18,8 +18,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QBuffer>
-
 #include "utils/pep-manager.h"
 #include "jabber-protocol.h"
 
@@ -27,7 +25,6 @@
 
 #define NS_METADATA "http://www.xmpp.org/extensions/xep-0084.html#ns-metadata"
 #define NS_DATA "http://www.xmpp.org/extensions/xep-0084.html#ns-data"
-#define MAX_AVATAR_DIMENSION 96
 
 JabberAvatarPepUploader::JabberAvatarPepUploader(Account account, QObject *parent) :
 		QObject(parent), MyAccount(account)
@@ -64,7 +61,7 @@ void JabberAvatarPepUploader::publishSuccess(const QString &ns, const XMPP::PubS
 
 	MyProtocol->pepManager()->publish(NS_METADATA, XMPP::PubSubItem(UploadedAvatarHash, metaElement));
 
-	emit avatarUploaded(true, UploadedAvatar);
+	emit avatarUploaded(true);
 
 	deleteLater();
 
@@ -75,29 +72,9 @@ void JabberAvatarPepUploader::publishError(const QString &ns, const XMPP::PubSub
 	Q_UNUSED(ns)
 	Q_UNUSED(item)
 
-	emit avatarUploaded(false, QImage());
+	emit avatarUploaded(false);
 
 	deleteLater();
-}
-
-
-QImage JabberAvatarPepUploader::createScaledAvatar(const QImage &avatarToScale)
-{
-	if (avatarToScale.height() < MAX_AVATAR_DIMENSION && avatarToScale.width() < MAX_AVATAR_DIMENSION)
-		return avatarToScale;
-
-	return avatarToScale.scaled(MAX_AVATAR_DIMENSION, MAX_AVATAR_DIMENSION, Qt::KeepAspectRatio, Qt::SmoothTransformation);
-}
-
-QByteArray JabberAvatarPepUploader::avatarData(const QImage &avatar)
-{
-	QByteArray data;
-	QBuffer buffer(&data);
-	buffer.open(QIODevice::WriteOnly);
-	avatar.save(&buffer, "PNG");
-	buffer.close();
-
-	return data;
 }
 
 void JabberAvatarPepUploader::doUpload(const QByteArray &data)
@@ -125,12 +102,12 @@ void JabberAvatarPepUploader::doRemove()
 	MyProtocol->pepManager()->publish(NS_METADATA, XMPP::PubSubItem("current", metaDataElement));
 }
 
-void JabberAvatarPepUploader::uploadAvatar(QImage avatar)
+void JabberAvatarPepUploader::uploadAvatar(const QImage &avatar, const QByteArray &data)
 {
-	UploadedAvatar = createScaledAvatar(avatar);
+	UploadedAvatar = avatar;
 
 	if (!UploadedAvatar.isNull())
-		doUpload(avatarData(avatar));
+		doUpload(data);
 	else
 		doRemove();
 }

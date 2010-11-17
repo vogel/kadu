@@ -17,6 +17,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+#include <QtCore/QBuffer>
 
 #include "server/jabber-avatar-pep-uploader.h"
 #include "server/jabber-avatar-vcard-uploader.h"
@@ -24,6 +25,7 @@
 
 #include "jabber-avatar-uploader.h"
 
+#define MAX_AVATAR_DIMENSION 96
 
 JabberAvatarUploader::JabberAvatarUploader(Account account, QObject *parent) :
 		QObject(parent), MyAccount(account)
@@ -34,33 +36,56 @@ JabberAvatarUploader::~JabberAvatarUploader()
 {
 }
 
-void JabberAvatarUploader::uploadAvatarPEP(QImage avatar)
+QImage JabberAvatarUploader::createScaledAvatar(const QImage &avatarToScale)
 {
-	JabberAvatarPepUploader *pepUploader = new JabberAvatarPepUploader(MyAccount, this);
-	connect(pepUploader, SIGNAL(avatarUploaded(bool, QImage)), this, SLOT(pepAvatarUploaded(bool, QImage)));
-	pepUploader->uploadAvatar(avatar);
+	if (avatarToScale.height() < MAX_AVATAR_DIMENSION && avatarToScale.width() < MAX_AVATAR_DIMENSION)
+		return avatarToScale;
+
+	return avatarToScale.scaled(MAX_AVATAR_DIMENSION, MAX_AVATAR_DIMENSION, Qt::KeepAspectRatio, Qt::SmoothTransformation);
 }
 
-void JabberAvatarUploader::pepAvatarUploaded(bool ok, QImage image)
+QByteArray JabberAvatarUploader::avatarData(const QImage &avatar)
+{
+	QByteArray data;
+	QBuffer buffer(&data);
+	buffer.open(QIODevice::WriteOnly);
+	avatar.save(&buffer, "PNG");
+	buffer.close();
+
+	return data;
+}
+
+void JabberAvatarUploader::uploadAvatarPEP()
+{
+	JabberAvatarPepUploader *pepUploader = new JabberAvatarPepUploader(MyAccount, this);
+	connect(pepUploader, SIGNAL(avatarUploaded(bool)), this, SLOT(pepAvatarUploaded(bool)));
+	pepUploader->uploadAvatar(UploadingAvatar, UploadingAvatarData);
+}
+
+void JabberAvatarUploader::uploadAvatarVCard()
+{
+	JabberAvatarVCardUploader *vcardUploader = new JabberAvatarVCardUploader(MyAccount, this);
+	connect(vcardUploader, SIGNAL(avatarUploaded(bool)), this, SLOT(avatarUploadedSlot(bool)));
+	vcardUploader->uploadAvatar(UploadingAvatarData);
+}
+
+void JabberAvatarUploader::pepAvatarUploaded(bool ok)
 {
 	if (ok)
 	{
-		emit avatarUploaded(ok, image);
+		emit avatarUploaded(ok, UploadingAvatar);
 		deleteLater();
 		return;
 	}
 
 	// do a fallback to vcard
-	uploadAvatarVCard(UploadingAvatar);
+	uploadAvatarVCard();
 }
 
-
-void JabberAvatarUploader::uploadAvatarVCard(QImage avatar)
+void JabberAvatarUploader::avatarUploadedSlot(bool ok)
 {
-	JabberAvatarVCardUploader *vcardUploader = new JabberAvatarVCardUploader(MyAccount, this);
-	connect(vcardUploader, SIGNAL(avatarUploaded(bool, QImage)), this, SIGNAL(avatarUploadedSlot(bool, QImage)));
-	connect(vcardUploader, SIGNAL(avatarUploaded(bool, QImage)), this, SLOT(deleteLater()));
-	vcardUploader->uploadAvatar(avatar);
+	emit avatarUploaded(ok, UploadingAvatar);
+	deleteLater();
 }
 
 void JabberAvatarUploader::uploadAvatar(QImage avatar)
@@ -73,10 +98,11 @@ void JabberAvatarUploader::uploadAvatar(QImage avatar)
 		return;
 	}
 
-	UploadingAvatar = avatar;
+	UploadingAvatar = createScaledAvatar(avatar);
+	UploadingAvatarData = avatarData(UploadingAvatar);
 
 	if (protocol->isPEPAvailable() && protocol->pepManager())
-		uploadAvatarPEP(avatar);
+		uploadAvatarPEP();
 	else
-		uploadAvatarVCard(avatar);
+		uploadAvatarVCard();
 }

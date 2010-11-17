@@ -41,12 +41,6 @@ class JabberAvatarPepUploader : public QObject
 
 	QString UploadedAvatarHash;
 
-	// http://xmpp.org/extensions/xep-0153.html
-	// we dont like too big files
-	QImage createScaledAvatar(const QImage &avatarToScale);
-
-	QByteArray avatarData(const QImage &avatar);
-
 	void doUpload(const QByteArray &data);
 	void doRemove();
 
@@ -58,10 +52,10 @@ public:
 	explicit JabberAvatarPepUploader(Account account, QObject *parent = 0);
 	virtual ~JabberAvatarPepUploader();
 
-	void uploadAvatar(QImage avatar);
+	void uploadAvatar(const QImage &avatar, const QByteArray &data);
 
 signals:
-	void avatarUploaded(bool ok, QImage image);
+	void avatarUploaded(bool ok);
 
 };
 
