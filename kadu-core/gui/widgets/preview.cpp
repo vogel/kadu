@@ -60,7 +60,7 @@ void Preview::syntaxChanged(const QString &content)
 	{
 		Contact contact = *contacts.constBegin();
 		for (int i = 0; i < count; i++)
-			text += Parser::parse(syntax, contact.ownerBuddy(), contact, objectsToParse.at(i));
+			text += Parser::parse(syntax, BuddyOrContact(contact), objectsToParse.at(i));
 	}
 	else
 		text = Parser::parse(syntax, BuddyOrContact(contact));
