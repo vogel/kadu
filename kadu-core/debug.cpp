@@ -124,14 +124,14 @@ void ktDebugStart(const QString &message, QDateTime &time)
 {
 	time = QDateTime::currentDateTime();
 
-	printf(qPrintable(QString("[timer start] %1\n").arg(message)));
+	printf("%s", qPrintable(QString("[timer start] %1\n").arg(message)));
 }
 
 void ktDebugCheckPoint(const QString& message, QDateTime& time)
 {
 	time = QDateTime::currentDateTime();
 
-	printf(qPrintable(QString("[timer checkpoint: %1] %2\n").arg(QDateTime::currentDateTime().msecsTo(time)).arg(message)));
+	printf("%s", qPrintable(QString("[timer checkpoint: %1] %2\n").arg(QDateTime::currentDateTime().msecsTo(time)).arg(message)));
 }
 
 }; // namespace Debug
