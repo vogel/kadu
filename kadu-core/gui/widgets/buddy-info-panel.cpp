@@ -40,6 +40,9 @@
 
 BuddyInfoPanel::BuddyInfoPanel(QWidget *parent) : KaduWebView(parent)
 {
+	QWebSettings::setMaximumPagesInCache(0);
+	QWebSettings::setObjectCacheCapacities(0, 0, 0);
+
 	configurationUpdated();
 
 	connect(BuddyPreferredManager::instance(), SIGNAL(buddyUpdated(Buddy&)), this, SLOT(buddyUpdated(Buddy&)));

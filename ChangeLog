@@ -22,6 +22,7 @@
 * jabber: #1675 fixed: send subscription to added contact, when "Allow to see.." option is enabled (WhE)
 * gui: #1692 fixed: cannot set avatar on imported account (Vogel)
 * gadu: #1649 fixed: bug that auto blocked some contacts (Vogel)
+* gui: #1606 another fix: remove web kit cache support so avatars in info panel are refreshed (Vogel)
 
 +++ version 0.6.6-beta10
 * modules: don't build echo module by default (beevvy)
