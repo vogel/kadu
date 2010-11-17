@@ -173,12 +173,15 @@ void GaduImporter::importIgnored()
 	foreach (QDomElement ignoredGroup, ignoredGroups)
 	{
 		QList<QDomElement> ignoredContacts = xml_config_file->getNodes(ignoredGroup, "IgnoredContact");
-		foreach (QDomElement ignoredContact, ignoredContacts)
+		if (1 == ignoredContacts.count())
 		{
+			QDomElement ignoredContact = ignoredContacts.at(0);
 			Buddy buddy = BuddyManager::instance()->byId(account, ignoredContact.attribute("uin"), ActionCreateAndAdd);
 			buddy.setBlocked(true);
 		}
 	}
+
+	xml_config_file->removeNode(xml_config_file->rootElement(), "Ignored");
 }
 
 void GaduImporter::buddyAdded(Buddy &buddy)
