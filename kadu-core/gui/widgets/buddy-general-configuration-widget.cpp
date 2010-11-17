@@ -137,13 +137,27 @@ void BuddyGeneralConfigurationWidget::save()
 	MyBuddy.setWebsite(WebsiteEdit->text());
 
 	QPixmap avatar = AvatarWidget->avatarPixmap();
-	if (avatar.isNull())
-		MyBuddy.setBuddyAvatar(Avatar::null);
+	if (!AvatarWidget->buddyAvatar() || avatar.isNull())
+		removeBuddyAvatar();
 	else
-	{
-		Avatar buddyAvatar = AvatarManager::instance()->byBuddy(MyBuddy, ActionCreateAndAdd);
-		buddyAvatar.setPixmap(avatar);
-	}
+		setBuddyAvatar(avatar);
 
 	ContactsTable->save();
+}
+
+void BuddyGeneralConfigurationWidget::removeBuddyAvatar()
+{
+	Avatar buddyAvatar = MyBuddy.buddyAvatar();
+	if (buddyAvatar.isNull())
+		return;
+
+	buddyAvatar.setPixmap(QPixmap());
+	AvatarManager::instance()->removeItem(buddyAvatar);
+	MyBuddy.setBuddyAvatar(Avatar::null);
+}
+
+void BuddyGeneralConfigurationWidget::setBuddyAvatar(const QPixmap& avatar)
+{
+	Avatar buddyAvatar = AvatarManager::instance()->byBuddy(MyBuddy, ActionCreateAndAdd);
+	buddyAvatar.setPixmap(avatar);
 }

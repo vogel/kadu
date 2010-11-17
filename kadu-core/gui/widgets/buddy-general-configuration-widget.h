@@ -56,6 +56,9 @@ class KADUAPI BuddyGeneralConfigurationWidget : public QWidget
 
 	void createGui();
 
+	void removeBuddyAvatar();
+	void setBuddyAvatar(const QPixmap &avatar);
+
 public:
 	explicit BuddyGeneralConfigurationWidget(Buddy &buddy, QWidget *parent = 0);
 	virtual ~BuddyGeneralConfigurationWidget();

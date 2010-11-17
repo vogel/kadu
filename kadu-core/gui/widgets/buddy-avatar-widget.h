@@ -25,6 +25,7 @@
 #include "buddies/buddy.h"
 
 class QLabel;
+class QPushButton;
 
 class BuddyAvatarWidget : public QWidget
 {
@@ -32,19 +33,31 @@ class BuddyAvatarWidget : public QWidget
 
 	Buddy MyBuddy;
 
-	bool BuddyAvatarIsShown;
+	bool BuddyAvatar;
 
 	QLabel *AvatarLabel;
+	QPushButton *ChangePhotoButton;
 
 	void createGui();
+	void setupChangeButton();
+
+	void showAvatar();
+	void showAvatar(QPixmap pixmap);
+	void showBuddyAvatar();
+	void showContactAvatar();
+
+	void changeAvatar();
+	void removeAvatar();
 
 private slots:
-	void changeAvatar();
+	void buttonClicked();
 
 public:
 	explicit BuddyAvatarWidget(Buddy buddy, QWidget *parent = 0);
 
 	const QPixmap avatarPixmap();
+	bool buddyAvatar() const { return BuddyAvatar; }
+
 };
 
 #endif // BUDDY_AVATAR_WIDGET_H
