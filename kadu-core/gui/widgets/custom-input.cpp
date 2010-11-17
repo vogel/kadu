@@ -110,8 +110,7 @@ void CustomInput::keyPressEvent(QKeyEvent *e)
 		}
 		if (!CopyPossible && e->key() == Qt::Key_C && e->modifiers() & Qt::ControlModifier)
 		{
-// 			emit specialKeyPressed(CustomInput::KEY_COPY);
- 			e->accept();
+			e->ignore();
  			kdebugf2();
  			return;
 		}

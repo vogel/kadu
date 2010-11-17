@@ -79,9 +79,6 @@ private slots:
 	void connectAcknowledgeSlots();
 	void disconnectAcknowledgeSlots();
 
-	void messagesViewSelectionChanged();
-	void editBoxSelectionChanged();
-
 protected:
 	virtual void keyPressEvent(QKeyEvent *e);
 	bool keyPressEventHandled(QKeyEvent *);

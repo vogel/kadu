@@ -69,7 +69,7 @@
 ChatWidget::ChatWidget(Chat chat, QWidget *parent) :
 		QWidget(parent), CurrentChat(chat),
 		BuddiesWidget(0), InputBox(0), horizSplit(0),
-		NewMessagesCount(0), SelectionFromMessagesView(true)
+		NewMessagesCount(0)
 {
 	kdebugf();
 
@@ -116,7 +116,6 @@ void ChatWidget::createGui()
 	horizSplit->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
 
 	MessagesView = new ChatMessagesView(CurrentChat);
-	connect(MessagesView, SIGNAL(selectionChanged()), this, SLOT(messagesViewSelectionChanged()));
 
 	QShortcut *shortcut = new QShortcut(QKeySequence(Qt::Key_Return + Qt::CTRL), this);
 	connect(shortcut, SIGNAL(activated()), this, SLOT(sendMessage()));
@@ -192,15 +191,10 @@ void ChatWidget::configurationUpdated()
 
 bool ChatWidget::keyPressEventHandled(QKeyEvent *e)
 {
-	if (e->modifiers() == Qt::ControlModifier && (e->key() == 'c' || e->key() == 'C'))
+	if (e->modifiers() & Qt::ControlModifier && e->key() == Qt::Key_C)
 	{
-		if (SelectionFromMessagesView)
-		{
-			MessagesView->page()->action(QWebPage::Copy)->trigger();
-			return true;
-		}
-		else
-			return false;
+		MessagesView->page()->action(QWebPage::Copy)->trigger();
+		return true;
 	}
 
 	if (HotKey::shortCut(e,"ShortCuts", "chat_clear"))
@@ -592,14 +586,4 @@ void ChatWidget::leaveConference()
 		CurrentChat.setIgnoreAllMessages(true);
 
 	emit closed();
-}
-
-void ChatWidget::messagesViewSelectionChanged()
-{
-	SelectionFromMessagesView = true;
-}
-
-void ChatWidget::editBoxSelectionChanged()
-{
-	SelectionFromMessagesView = false;
 }
