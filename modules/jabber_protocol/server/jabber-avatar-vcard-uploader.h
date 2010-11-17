@@ -1,8 +1,8 @@
 /*
  * %kadu copyright begin%
  * Copyright 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
- * Copyright 2010 Wojciech Treter (juzefwt@gmail.com)
  * %kadu copyright end%
+ * Copyright 2010 Wojciech Treter (juzefwt@gmail.com)
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -18,31 +18,36 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef JABBER_AVATAR_UPLOADER_H
-#define JABBER_AVATAR_UPLOADER_H
+#ifndef JABBER_AVATAR_VCARD_UPLOADER_H
+#define JABBER_AVATAR_VCARD_UPLOADER_H
 
 #include <QtGui/QImage>
 
-#include "xmpp_vcard.h"
-#include "xmpp_tasks.h"
+#include <iris/xmpp_pubsubitem.h>
+#include <xmpp/jid/jid.h>
 
 #include "accounts/account.h"
 
-class QNetworkAccessManager;
-class QNetworkReply;
+class JabberProtocol;
 
-class JabberAvatarUploader : public QObject
+class JabberAvatarVCardUploader : public QObject
 {
 	Q_OBJECT
 
 	Account MyAccount;
+	JabberProtocol *MyProtocol;
 
-	void uploadAvatarPEP(QImage avatar);
-	void uploadAvatarVCard(QImage avatar);
+	QImage UploadedAvatar;
+
+	QByteArray avatarData(const QImage &avatar);
+
+private slots:
+	void vcardReceived();
+	void vcardUploaded();
 
 public:
-	explicit JabberAvatarUploader(Account account, QObject *parent = 0);
-	virtual ~JabberAvatarUploader();
+	explicit JabberAvatarVCardUploader(Account account, QObject *parent = 0);
+	virtual ~JabberAvatarVCardUploader();
 
 	void uploadAvatar(QImage avatar);
 
@@ -51,4 +56,4 @@ signals:
 
 };
 
-#endif // JABBER_AVATAR_UPLOADER_H
+#endif // JABBER_AVATAR_VCARD_UPLOADER_H

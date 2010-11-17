@@ -1,8 +1,8 @@
 /*
  * %kadu copyright begin%
  * Copyright 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
- * Copyright 2010 Wojciech Treter (juzefwt@gmail.com)
  * %kadu copyright end%
+ * Copyright 2010 Wojciech Treter (juzefwt@gmail.com)
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -18,31 +18,45 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef JABBER_AVATAR_UPLOADER_H
-#define JABBER_AVATAR_UPLOADER_H
+#ifndef JABBER_AVATAR_PEP_UPLOADER_H
+#define JABBER_AVATAR_PEP_UPLOADER_H
 
 #include <QtGui/QImage>
 
-#include "xmpp_vcard.h"
-#include "xmpp_tasks.h"
+#include <iris/xmpp_pubsubitem.h>
+#include <xmpp/jid/jid.h>
 
 #include "accounts/account.h"
 
-class QNetworkAccessManager;
-class QNetworkReply;
+class JabberProtocol;
 
-class JabberAvatarUploader : public QObject
+class JabberAvatarPepUploader : public QObject
 {
 	Q_OBJECT
 
 	Account MyAccount;
+	JabberProtocol *MyProtocol;
 
-	void uploadAvatarPEP(QImage avatar);
-	void uploadAvatarVCard(QImage avatar);
+	QImage UploadedAvatar;
+
+	QString UploadedAvatarHash;
+
+	// http://xmpp.org/extensions/xep-0153.html
+	// we dont like too big files
+	QImage createScaledAvatar(const QImage &avatarToScale);
+
+	QByteArray avatarData(const QImage &avatar);
+
+	void doUpload(const QByteArray &data);
+	void doRemove();
+
+private slots:
+	void publishSuccess(const QString &ns, const XMPP::PubSubItem &item);
+	void publishError(const QString &ns, const XMPP::PubSubItem &item);
 
 public:
-	explicit JabberAvatarUploader(Account account, QObject *parent = 0);
-	virtual ~JabberAvatarUploader();
+	explicit JabberAvatarPepUploader(Account account, QObject *parent = 0);
+	virtual ~JabberAvatarPepUploader();
 
 	void uploadAvatar(QImage avatar);
 
