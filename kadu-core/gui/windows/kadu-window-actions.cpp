@@ -162,6 +162,12 @@ void disableNoEMail(Action *action)
 	kdebugf2();
 }
 
+void disableIfContactSelected(Action *action)
+{
+	if (action && action->dataSource())
+		action->setEnabled(!action->dataSource()->hasContactSelected());
+}
+
 KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 {
 	Configuration = new ActionDescription(this,
@@ -352,7 +358,8 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 	MergeContact = new ActionDescription(this,
 		ActionDescription::TypeUser, "mergeContactAction",
 		this, SLOT(mergeContactActionActivated(QAction *, bool)),
-		"", "", tr("Merge Buddies...")
+		"", "", tr("Merge Buddies..."), false, QString::null,
+		disableIfContactSelected
 	);
 	BuddiesListViewMenuManager::instance()->addActionDescription(MergeContact, BuddiesListViewMenuItem::MenuCategoryManagement, 100);
 
@@ -361,7 +368,8 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 	DeleteUsers = new ActionDescription(this,
 		ActionDescription::TypeUser, "deleteUsersAction",
 		this, SLOT(deleteUsersActionActivated(QAction *, bool)),
-		"edit-delete", "edit-delete", tr("Delete Buddy...")
+		"edit-delete", "edit-delete", tr("Delete Buddy..."), false, QString::null,
+		disableIfContactSelected
 	);
 	DeleteUsers->setShortcut("kadu_deleteuser");
 	BuddiesListViewMenuManager::instance()->addActionDescription(DeleteUsers, BuddiesListViewMenuItem::MenuCategoryManagement, 1000);

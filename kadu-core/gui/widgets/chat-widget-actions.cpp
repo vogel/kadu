@@ -83,6 +83,9 @@ void checkBlocking(Action *action)
 		return;
 	}
 
+	if (action && action->dataSource())
+		action->setEnabled(!action->dataSource()->hasContactSelected());
+
 	bool on = false;
 	foreach (const Buddy &buddy, buddies)
 		if (buddy.isBlocked())

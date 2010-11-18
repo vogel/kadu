@@ -437,6 +437,11 @@ Chat KaduWindow::chat()
 	return ContactsWidget->view()->currentChat();
 }
 
+bool KaduWindow::hasContactSelected()
+{
+	return ContactsWidget->view()->hasContactSelected();
+}
+
 void KaduWindow::configurationUpdated()
 {
 	QString bgColor = config_file.readColorEntry("Look","UserboxBgColor").name();

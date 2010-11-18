@@ -136,6 +136,7 @@ public:
 	virtual ContactSet contacts() { return ContactSet(); }
 	virtual BuddySet buddies() { return BuddySet(); }
 	virtual Chat chat() { return Chat::null; }
+	virtual bool hasContactSelected() { return true; } // we really have contacts now
 
 	void nextSearch();
 	void stopSearch();
