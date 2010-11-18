@@ -120,18 +120,18 @@ void _kdebug_with_mask(int mask, const char* file, const int line, const char* f
 namespace Debug
 {
 
-void ktDebugStart(const QString &message, QDateTime &time)
+void ktDebugStart(const QString &message, QTime &time)
 {
-	time = QDateTime::currentDateTime();
+	time = QTime::currentTime();
 
 	printf("%s", qPrintable(QString("[timer start] %1\n").arg(message)));
 }
 
-void ktDebugCheckPoint(const QString& message, QDateTime& time)
+void ktDebugCheckPoint(const QString& message, QTime& time)
 {
-	time = QDateTime::currentDateTime();
+	time = QTime::currentTime();
 
-	printf("%s", qPrintable(QString("[timer checkpoint: %1] %2\n").arg(QDateTime::currentDateTime().msecsTo(time)).arg(message)));
+	printf("%s", qPrintable(QString("[timer checkpoint: %1] %2\n").arg(QTime::currentTime().msecsTo(time)).arg(message)));
 }
 
 }; // namespace Debug

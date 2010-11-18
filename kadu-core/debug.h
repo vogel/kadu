@@ -111,8 +111,8 @@ extern KADUAPI int debug_mask;
 
 namespace Debug
 {
-	void ktDebugStart(const QString &message, QDateTime &time);
-	void ktDebugCheckPoint(const QString &message, QDateTime &time);
+	void ktDebugStart(const QString &message, QTime &time);
+	void ktDebugCheckPoint(const QString &message, QTime &time);
 };
 
 #endif // DEBUG_H
