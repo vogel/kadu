@@ -28,9 +28,11 @@
 #include "contacts/contact.h"
 #include "../../exports.h"
 
+class QCheckBox;
 class QLineEdit;
 
 class GroupsComboBox;
+class SelectBuddyComboBox;
 
 class KADUAPI SubscriptionWindow : public QDialog
 {
@@ -39,6 +41,8 @@ class KADUAPI SubscriptionWindow : public QDialog
 	Contact CurrentContact;
 	QLineEdit *VisibleName;
 	GroupsComboBox *GroupCombo;
+	QCheckBox *MergeContact;
+	SelectBuddyComboBox *SelectContact;
 
 private slots:
 	void accepted();

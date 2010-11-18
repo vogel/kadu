@@ -35,6 +35,7 @@
 #include "buddies/group-manager.h"
 #include "contacts/contact-manager.h"
 #include "gui/widgets/groups-combo-box.h"
+#include "gui/widgets/select-buddy-combo-box.h"
 #include "icons-manager.h"
 #include "model/actions-proxy-model.h"
 #include "model/roles.h"
@@ -60,13 +61,36 @@ SubscriptionWindow::SubscriptionWindow(Contact contact, QWidget *parent) :
 	QGridLayout *layout = new QGridLayout(this);
 	layout->setColumnStretch(2, 4);
 
-	QLabel *messageLabel = new QLabel(tr("%1 wants to be able to chat with you.").arg(contact.id()), this);
-	QLabel *visibleNameLabel = new QLabel(tr("Visible Name") + ':', this);
-	QLabel *enterNameLabel = new QLabel(tr("Enter a name for this contact."), this);
-	VisibleName = new QLineEdit(this);
+	QLabel *messageLabel = new QLabel(tr("<b>%1</b> wants to be able to chat with you.").arg(contact.id()), this);
+
 	QLabel *groupLabel = new QLabel(tr("Add in Group") + ':', this);
 
 	GroupCombo = new GroupsComboBox(this);
+
+	QLabel *visibleNameLabel = new QLabel(tr("Visible Name") + ':', this);
+
+	QLabel *hintLabel = new QLabel(tr("Enter a name for this contact."), this);
+	QFont hintLabelFont = hintLabel->font();
+	hintLabelFont.setItalic(true);
+	hintLabelFont.setPointSize(hintLabelFont.pointSize() - 2);
+	hintLabel->setFont(hintLabelFont);
+
+	VisibleName = new QLineEdit(this);
+
+	MergeContact = new QCheckBox(tr("Merge with an existing contact"), this);
+
+	QWidget *selectContactWidget = new QWidget(this);
+	QHBoxLayout *selectContactLayout = new QHBoxLayout(selectContactWidget);
+	selectContactLayout->addSpacing(20);
+	SelectContact = new SelectBuddyComboBox(selectContactWidget);
+	SelectContact->setEnabled(false);
+	selectContactLayout->addWidget(SelectContact);
+
+	connect(MergeContact, SIGNAL(toggled(bool)), SelectContact, SLOT(setEnabled(bool)));
+	connect(MergeContact, SIGNAL(toggled(bool)), VisibleName, SLOT(setDisabled(bool)));
+	connect(MergeContact, SIGNAL(toggled(bool)), this, SLOT(setAddContactEnabled()));
+	connect(SelectContact, SIGNAL(buddyChanged(Buddy)), this, SLOT(setAddContactEnabled()));
+	connect(SelectContact, SIGNAL(buddyChanged(Buddy)), this, SLOT(setAccountFilter()));
 
 	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
 
@@ -80,12 +104,15 @@ SubscriptionWindow::SubscriptionWindow(Contact contact, QWidget *parent) :
 	connect(cancelButton, SIGNAL(clicked(bool)), this, SLOT(rejected()));
 
 	layout->addWidget(messageLabel, 0, 0, 1, 3);
-	layout->addWidget(visibleNameLabel, 1, 0, 1, 1);
-	layout->addWidget(VisibleName, 1, 1, 1, 1);
-	layout->addWidget(enterNameLabel, 2, 1, 1, 1);
-	layout->addWidget(groupLabel, 3, 0, 1, 1);
-	layout->addWidget(GroupCombo, 3, 1, 1, 1);
-	layout->addWidget(buttons, 4, 1, 1, 3);
+	layout->addWidget(groupLabel, 1, 0, 1, 1);
+	layout->addWidget(GroupCombo, 1, 1, 1, 1);
+	layout->addWidget(visibleNameLabel, 2, 0, 1, 1);
+	layout->addWidget(VisibleName, 2, 1, 1, 1);
+	layout->addWidget(hintLabel, 3, 1, 1, 1);
+	layout->addWidget(MergeContact, 4, 1, 1, 3);
+	layout->addWidget(selectContactWidget, 5, 1, 1, 3);
+
+	layout->addWidget(buttons, 6, 1, 1, 3);
 }
 
 SubscriptionWindow::~SubscriptionWindow()
@@ -95,18 +122,31 @@ SubscriptionWindow::~SubscriptionWindow()
 void SubscriptionWindow::accepted()
 {
 	//Giving somebody a status subscription does not force us to add them to our contact list.
-	if (VisibleName->text().isEmpty())
+	if (VisibleName->text().isEmpty() && !MergeContact->isChecked())
 	{
 		emit requestAccepted(CurrentContact, true);
 		close();
 	}
 
 	ContactManager::instance()->addItem(CurrentContact);
-	Buddy buddy = BuddyManager::instance()->byContact(CurrentContact, ActionCreateAndAdd);
-	buddy.setAnonymous(false);
-	buddy.setDisplay(VisibleName->text());
 
-	Group group= GroupCombo->currentGroup();
+	Buddy buddy;
+	if (!MergeContact->isChecked())
+	{
+		buddy = BuddyManager::instance()->byContact(CurrentContact, ActionCreateAndAdd);
+		buddy.setAnonymous(false);
+		buddy.setDisplay(VisibleName->text());
+	}
+	else
+	{
+		buddy = SelectContact->currentBuddy();
+		if (!buddy)
+			return;
+
+		CurrentContact.setOwnerBuddy(buddy);
+	}
+
+	Group group = GroupCombo->currentGroup();
 	if (group)
 		buddy.addToGroup(group);
 

@@ -3273,8 +3273,8 @@ Jeśli zechcesz włączyć (lub wyłączyć) któryś z nich, wystarczy dwukrotn
         <translation>Prośba o dodanie do listy kontaktów</translation>
     </message>
     <message>
-        <source>%1 wants to be able to chat with you.</source>
-        <translation>Użytkownik %1 chce porozmawiać z Tobą.</translation>
+		<source>&lt;b&gt;%1&lt;/b&gt; wants to be able to chat with you.</source>
+		<translation>Użytkownik &lt;b&gt;%1&lt;/b&gt; chce porozmawiać z Tobą.</translation>
     </message>
     <message>
         <source>Visible Name</source>
