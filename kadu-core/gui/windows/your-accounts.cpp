@@ -62,7 +62,7 @@
 YourAccounts *YourAccounts::Instance = 0;
 
 YourAccounts::YourAccounts(QWidget *parent) :
-		QWidget(parent), CurrentWidget(0), IsCurrentWidgetEditAccount(false), CanRegisterFilter(new CanRegisterProtocolFilter())
+		QWidget(parent), CurrentWidget(0), IsCurrentWidgetEditAccount(false), ForceWidgetChange(false), CanRegisterFilter(new CanRegisterProtocolFilter())
 {
 	setWindowRole("kadu-your-accounts");
 
@@ -297,14 +297,16 @@ void YourAccounts::protocolChanged(ProtocolFactory *protocolFactory, ProtocolFac
 		return;
 	}
 
-	Protocols->blockSignals(true);
+	ForceWidgetChange = true;
 	Protocols->setCurrentProtocol(lastProtocolFactory);
-	Protocols->blockSignals(false);
+	ForceWidgetChange = false;
 }
 
 void YourAccounts::resetProtocol()
 {
+	ForceWidgetChange = true;
 	Protocols->setCurrentProtocol(0);
+	ForceWidgetChange = false;
 }
 
 void YourAccounts::updateCurrentWidget()
@@ -353,6 +355,9 @@ void YourAccounts::updateCurrentWidget()
 
 bool YourAccounts::canChangeWidget()
 {
+	if (ForceWidgetChange)
+		return true;
+
 	if (!CurrentWidget)
 		return true;
 
@@ -449,10 +454,9 @@ void YourAccounts::accountSelectionChanged(const QItemSelection &selected, const
 		return;
 	}
 
-	// fix infinite reccursion
-	AccountsView->selectionModel()->blockSignals(true);
+	ForceWidgetChange = true;
 	AccountsView->selectionModel()->select(deselected, QItemSelectionModel::ClearAndSelect);
-	AccountsView->selectionModel()->blockSignals(false);
+	ForceWidgetChange = false;
 }
 
 void YourAccounts::accountUnregistered(Account account)
