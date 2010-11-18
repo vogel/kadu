@@ -19,6 +19,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QChar>
 #include <QtGui/QDialogButtonBox>
 #include <QtGui/QKeyEvent>
 #include <QtGui/QPushButton>
@@ -59,11 +60,11 @@ OpenChatWith * OpenChatWith::instance()
 }
 
 OpenChatWith::OpenChatWith() :
-	QWidget(0, Qt::Window), ListModel(0)
+	QWidget(0, Qt::Window), IsTyping(false), ListModel(0)
 {
 	kdebugf();
 
-	setWindowRole( "kadu-open-chat-with" );
+	setWindowRole("kadu-open-chat-with");
 
 	setWindowTitle(tr("Open chat with..."));
 	setAttribute(Qt::WA_DeleteOnClose);
@@ -73,6 +74,7 @@ OpenChatWith::OpenChatWith() :
 	MainLayout->setSpacing(0);
 
 	ContactID = new LineEditWithClearButton(this);
+	ContactID->installEventFilter(this);
 	connect(ContactID, SIGNAL(textChanged(const QString &)), this, SLOT(inputChanged(const QString &)));
 	MainLayout->addWidget(ContactID);
 
@@ -103,50 +105,87 @@ OpenChatWith::~OpenChatWith()
 	OpenChatWithRunnerManager::instance()->unregisterRunner(OpenChatRunner);
 	Instance = 0;
 
-	if (OpenChatRunner)
+	delete OpenChatRunner;
+	OpenChatRunner = 0;
+
+	delete ListModel;
+	ListModel = 0;
+}
+
+bool OpenChatWith::eventFilter(QObject *obj, QEvent *e)
+{
+	if (obj == ContactID && e->type() == QEvent::KeyPress)
 	{
-		delete OpenChatRunner;
-		OpenChatRunner = 0;
+		int key = static_cast<QKeyEvent *>(e)->key();
+		if (key == Qt::Key_Down ||
+				key == Qt::Key_Up ||
+				key == Qt::Key_PageDown ||
+				key == Qt::Key_PageUp)
+		{
+			qApp->sendEvent(BuddiesWidget, e);
+			return true;
+		}
 	}
 
-	if (ListModel)
-	{
-		delete ListModel;
-		ListModel = 0;
-	}
+	return false;
 }
 
 void OpenChatWith::keyPressEvent(QKeyEvent *e)
 {
 	kdebugf();
+
 	switch (e->key())
 	{
 		case Qt::Key_Enter:
 		case Qt::Key_Return:
+			e->accept();
 			inputAccepted();
+			return;
 			break;
 		case Qt::Key_Escape:
+			e->accept();
 			close();
+			return;
 			break;
 	}
+
+	if (QChar(e->key()).isPrint())
+	{
+		ContactID->setText(e->text());
+		ContactID->setFocus(Qt::OtherFocusReason);
+		e->accept();
+		return;
+	}
+
+	QWidget::keyPressEvent(e);
+
 	kdebugf2();
 }
 
 void OpenChatWith::inputChanged(const QString &text)
 {
 	kdebugf();
+
 	BuddyList matchingContacts;
 	if (!text.isEmpty())
 		matchingContacts = OpenChatWithRunnerManager::instance()->matchingContacts(text);
 
-	if (ListModel)
-		delete ListModel;
-
+	delete ListModel;
 	ListModel = new BuddyListModel(matchingContacts, this);
 	BuddiesWidget->setModel(ListModel);
 
-	QItemSelectionModel *selectionModel = BuddiesWidget->selectionModel();
-	selectionModel->select(BuddiesWidget->model()->index(0, 0), QItemSelectionModel::SelectCurrent);
+	if (!text.isEmpty())
+	{
+		if (!IsTyping || BuddiesWidget->selectionModel()->selectedIndexes().count() == 0)
+		{
+			BuddiesWidget->setCurrentIndex(BuddiesWidget->model()->index(0, 0));
+			BuddiesWidget->selectionModel()->select(BuddiesWidget->model()->index(0, 0), QItemSelectionModel::SelectCurrent);
+		}
+		IsTyping = true;
+	}
+	else
+		IsTyping = false;
+
 	kdebugf2();
 }
 

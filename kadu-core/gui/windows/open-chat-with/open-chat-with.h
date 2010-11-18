@@ -40,27 +40,30 @@ class KADUAPI OpenChatWith : public QWidget
 	static OpenChatWith *Instance;
 
 	explicit OpenChatWith();
-	
+
+	bool IsTyping;
+
 	BuddiesListView *BuddiesWidget;
 	LineEditWithClearButton *ContactID;
 	QVBoxLayout *MainLayout;
 	OpenChatWithRunner *OpenChatRunner;
 
 	BuddyListModel *ListModel;
-	
+
 private slots:
 	void inputAccepted();
 	void inputChanged(const QString &text);
 	void openChat();
 
 protected:
+	virtual bool eventFilter(QObject *obj, QEvent *e);
 	virtual void keyPressEvent(QKeyEvent *e);
 
 public:
   	static OpenChatWith * instance();
-  
+
 	virtual ~OpenChatWith();
-	
+
 	void show();
 };
 
