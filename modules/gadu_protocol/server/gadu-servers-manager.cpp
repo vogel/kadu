@@ -23,74 +23,15 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QFile>
 #include <QtCore/QRegExp>
 
 #include <libgadu.h>
 
 #include "configuration/configuration-file.h"
+#include "misc/path-conversion.h"
 
 #include "gadu-servers-manager.h"
-
-/* Dorr: GG Server addresses update based on:
- * http://gg.thinkspire.org/ (on 25.03.2009, 08:30:01)
- * Server 91.197.13.24 is known to cause invalid password
- * errors so I have disabled it.
- */
-#define GG_SERVERS_COUNT 52
-const char *GaduServersManager::Ips[GG_SERVERS_COUNT] = {
-	"91.214.237.2",
-	"91.214.237.3",
-	"91.214.237.4",
-	"91.214.237.5",
-	"91.214.237.6",
-	"91.214.237.7",
-	"91.214.237.8",
-	"91.214.237.9",
-	"91.214.237.10",
-	"91.214.237.11",
-	"91.214.237.12",
-	"91.214.237.13",
-	"91.214.237.14",
-	"91.214.237.15",
-	"91.214.237.16",
-	"91.214.237.17",
-	"91.214.237.18",
-	"91.214.237.19",
-	"91.214.237.20",
-	"91.214.237.21",
-	"91.214.237.22",
-	"91.214.237.23",
-	"91.214.237.24",
-	"91.214.237.25",
-	"91.214.237.26",
-	"91.214.237.27",
-	"91.214.237.40",
-	"91.214.237.41",
-	"91.214.237.44",
-	"91.214.237.45",
-	"91.214.237.46",
-	"91.214.237.47",
-	"91.214.237.48",
-	"91.214.237.49",
-	"91.214.237.50",
-	"91.214.237.51",
-	"91.214.237.52",
-	"91.214.237.53",
-	"91.214.237.54",
-	"91.214.237.55",
-	"91.214.237.56",
-	"91.214.237.57",
-	"91.214.237.58",
-	"91.214.237.59",
-	"91.214.237.62",
-	"91.214.237.63",
-	"91.214.237.64",
-	"91.214.237.66",
-	"91.214.237.67",
-	"91.214.237.69",
-	"91.214.237.70",
-	"91.214.237.72"
-};
 
 GaduServersManager * GaduServersManager::Instance = 0;
 
@@ -153,6 +94,37 @@ QList<GaduServersManager::GaduServer> GaduServersManager::gaduServersFromString(
 	return result;
 }
 
+void GaduServersManager::loadServerListFromFile(const QString &fileName)
+{
+	GoodServers << GaduServer(QHostAddress((quint32)0), 0); // for GG hub
+	GoodServers << gaduServersFromString(config_file.readEntry("Network", "LastServerIP"));
+
+	QFile file(fileName);
+
+	if (!file.open(QFile::ReadOnly))
+		return;
+
+	QTextStream serversStream(&file);
+
+	while (!serversStream.atEnd())
+	{
+		QString server = serversStream.readLine();
+		GoodServers << gaduServersFromString(server);
+	}
+
+	file.close();
+}
+
+void GaduServersManager::loadServerListFromString(const QString& data)
+{
+	QStringList servers = data.split(';', QString::SkipEmptyParts);
+
+	foreach (const QString &server, servers)
+		GoodServers << gaduServersFromString(server.trimmed());
+	GoodServers << GaduServer(QHostAddress((quint32)0), 0); // for GG hub
+	GoodServers << gaduServersFromString(config_file.readEntry("Network", "LastServerIP"));
+}
+
 void GaduServersManager::buildServerList()
 {
 	GoodServers.clear();
@@ -171,20 +143,9 @@ void GaduServersManager::buildServerList()
 		AllPorts << 443;
 
 	if (config_file.readBoolEntry("Network", "isDefServers", true))
-	{
-		GoodServers << GaduServer(QHostAddress((quint32)0), 0); // for GG hub
-		GoodServers << gaduServersFromString(config_file.readEntry("Network", "LastServerIP"));
-		for (int i = 0; i < GG_SERVERS_COUNT; ++i)
-			GoodServers << gaduServersFromString(QString::fromLatin1(Ips[i]));
-	}
+		loadServerListFromFile(dataPath("kadu/modules/data/gadu_protocol/servers.txt"));
 	else
-	{
-		QStringList servers = config_file.readEntry("Network", "Server").split(';', QString::SkipEmptyParts);
-		foreach (const QString &server, servers)
-			GoodServers << gaduServersFromString(server.trimmed());
-		GoodServers << GaduServer(QHostAddress((quint32)0), 0); // for GG hub
-		GoodServers << gaduServersFromString(config_file.readEntry("Network", "LastServerIP"));
-	}
+		loadServerListFromString(config_file.readEntry("Network", "Server"));
 
 	AllServers = GoodServers;
 }
