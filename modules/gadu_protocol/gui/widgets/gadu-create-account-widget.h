@@ -25,7 +25,7 @@
 #include <QtGui/QWidget>
 
 #include "accounts/account.h"
-#include "gui/widgets/modal-configuration-widget.h"
+#include "gui/widgets/account-create-widget.h"
 #include "protocols/protocol.h"
 
 class QCheckBox;
@@ -37,13 +37,13 @@ class GaduServerRegisterAccount;
 class IdentitiesComboBox;
 class TokenWidget;
 
-class GaduCreateAccountWidget : public ModalConfigurationWidget
+class GaduCreateAccountWidget : public AccountCreateWidget
 {
 	Q_OBJECT
 
 	QLineEdit *NewPassword;
 	QLineEdit *ReNewPassword;
-	QCheckBox *RememberPassword;	
+	QCheckBox *RememberPassword;
 	QLineEdit *EMail;
 	IdentitiesComboBox *IdentityCombo;
 	TokenWidget *MyTokenWidget;
@@ -64,10 +64,6 @@ public:
 public slots:
 	virtual void apply();
 	virtual void cancel();
-
-signals:
-	void accountCreated(Account account);
-	void cancelled();
 
 };
 

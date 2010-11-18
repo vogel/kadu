@@ -50,6 +50,7 @@ JabberAddAccountWidget::JabberAddAccountWidget(JabberProtocolFactory *factory, Q
 	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
 	createGui();
+	resetGui();
 }
 
 JabberAddAccountWidget::~JabberAddAccountWidget()
@@ -81,11 +82,15 @@ void JabberAddAccountWidget::createGui()
 
 	Domain = new QComboBox();
 	Domain->setEditable(true);
-	Domain->setEditText(Factory->defaultServer());
 	if (!Factory->allowChangeServer())
 	{
 		Domain->setVisible(false);
 		AtLabel->setVisible(false);
+	}
+	else
+	{
+		connect(Domain, SIGNAL(currentIndexChanged(QString)), this, SLOT(dataChanged()));
+		connect(Domain, SIGNAL(editTextChanged(QString)), this, SLOT(dataChanged()));
 	}
 	jidLayout->addWidget(Domain, 0, 2);
 
@@ -97,7 +102,6 @@ void JabberAddAccountWidget::createGui()
 	layout->addRow(tr("Password") + ':', AccountPassword);
 
 	RememberPassword = new QCheckBox(tr("Remember Password"), this);
-	RememberPassword->setChecked(true);
 	layout->addRow(0, RememberPassword);
 
 	Identity = new IdentitiesComboBox(true, this);
@@ -123,16 +127,25 @@ void JabberAddAccountWidget::createGui()
 
 	connect(AddAccountButton, SIGNAL(clicked(bool)), this, SLOT(apply()));
 	connect(cancelButton, SIGNAL(clicked(bool)), this, SLOT(cancel()));
-
-	dataChanged();
 }
 
 void JabberAddAccountWidget::dataChanged()
 {
-	AddAccountButton->setEnabled(!Username->text().isEmpty()
-				     && !AccountPassword->text().isEmpty()
-				     && (!Domain->isVisible() || !Domain->currentText().isEmpty())
-				     && Identity->currentIdentity());
+	bool valid = !Username->text().isEmpty()
+			&& !AccountPassword->text().isEmpty()
+			&& !Domain->currentText().isEmpty()
+			&& Identity->currentIdentity();
+
+	AddAccountButton->setEnabled(valid);
+
+	if (Username->text().isEmpty()
+			&& AccountPassword->text().isEmpty()
+			&& RememberPassword->isChecked()
+			&& Domain->currentText() == Factory->defaultServer()
+			&& !Identity->currentIdentity())
+		setState(StateNotChanged);
+	else
+		setState(valid ? StateChangedDataValid : StateChangedDataInvalid);
 }
 
 void JabberAddAccountWidget::apply()
@@ -178,6 +191,8 @@ void JabberAddAccountWidget::resetGui()
 	Domain->setEditText(Factory->defaultServer());
 	RememberPassword->setChecked(true);
 	Identity->setCurrentIdentity(Identity::null);
+	AddAccountButton->setDisabled(true);
 
 	IdentityManager::instance()->removeUnused();
+	setState(StateNotChanged);
 }

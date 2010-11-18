@@ -41,6 +41,7 @@
 #include "accounts/account-manager.h"
 #include "accounts/model/accounts-model.h"
 #include "gui/widgets/account-add-widget.h"
+#include "gui/widgets/account-create-widget.h"
 #include "gui/widgets/account-edit-widget.h"
 #include "gui/widgets/modal-configuration-widget.h"
 #include "gui/widgets/protocols-combo-box.h"
@@ -226,9 +227,9 @@ void YourAccounts::createEditAccountWidget()
 	MainStack->addWidget(EditStack);
 }
 
-QWidget * YourAccounts::getAccountCreateWidget(ProtocolFactory *protocol)
+AccountCreateWidget * YourAccounts::getAccountCreateWidget(ProtocolFactory *protocol)
 {
-	QWidget *widget = 0;
+	AccountCreateWidget *widget = 0;
 
 	if (!CreateWidgets.contains(protocol))
 	{

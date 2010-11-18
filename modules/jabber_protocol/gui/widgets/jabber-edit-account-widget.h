@@ -92,6 +92,8 @@ class JabberEditAccountWidget : public AccountEditWidget
 	void loadConnectionData();
 	bool checkSSL();
 
+	void resetState();
+
 private slots:
 	void removeAccount();
 	void sslActivated(int i);

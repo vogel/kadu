@@ -45,11 +45,8 @@ class GaduAddAccountWidget : public AccountAddWidget
 
 	void createGui();
 	void resetGui();
-	
-private slots:
-	void addAccountButtonClicked();
-	void cancelButtonClicked();
 
+private slots:
 	void dataChanged();
 
 public:

@@ -68,8 +68,7 @@ GaduEditAccountWidget::GaduEditAccountWidget(Account account, QWidget *parent) :
 	createGui();
 	loadAccountData();
 	loadConnectionData();
-
-	dataChanged();
+	resetState();
 }
 
 GaduEditAccountWidget::~GaduEditAccountWidget()
@@ -294,12 +293,10 @@ void GaduEditAccountWidget::apply()
 	if (gpiw->isModified())
 		gpiw->apply();
 
+	IdentityManager::instance()->removeUnused();
 	ConfigurationManager::instance()->flush();
 
-	IdentityManager::instance()->removeUnused();
-	setState(StateNotChanged);
-	ApplyButton->setEnabled(false);
-	CancelButton->setEnabled(false);
+	resetState();
 }
 
 void GaduEditAccountWidget::cancel()
@@ -310,6 +307,12 @@ void GaduEditAccountWidget::cancel()
 	gpiw->cancel();
 
 	IdentityManager::instance()->removeUnused();
+
+	resetState();
+}
+
+void GaduEditAccountWidget::resetState()
+{
 	setState(StateNotChanged);
 	ApplyButton->setEnabled(false);
 	CancelButton->setEnabled(false);
@@ -331,9 +334,7 @@ void GaduEditAccountWidget::dataChanged()
 		&& StateNotChanged == Proxy->state()
 		&& !gpiw->isModified())
 	{
-		setState(StateNotChanged);
-		ApplyButton->setEnabled(false);
-		CancelButton->setEnabled(false);
+		resetState();
 		return;
 	}
 

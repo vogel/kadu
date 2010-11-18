@@ -53,17 +53,10 @@ GaduAddAccountWidget::GaduAddAccountWidget(QWidget *parent) :
 	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
 	createGui();
+	resetGui();
 }
 
 GaduAddAccountWidget::~GaduAddAccountWidget()
-{
-}
-
-void GaduAddAccountWidget::apply()
-{
-}
-
-void GaduAddAccountWidget::cancel()
 {
 }
 
@@ -87,7 +80,6 @@ void GaduAddAccountWidget::createGui()
 	layout->addRow(tr("Password") + ':', AccountPassword);
 
 	RememberPassword = new QCheckBox(tr("Remember Password"), this);
-	RememberPassword->setChecked(true);
 	layout->addRow(0, RememberPassword);
 
 	RemindPassword = new QLabel();
@@ -116,10 +108,8 @@ void GaduAddAccountWidget::createGui()
 	buttons->addButton(AddAccountButton, QDialogButtonBox::AcceptRole);
 	buttons->addButton(cancelButton, QDialogButtonBox::DestructiveRole);
 
-	connect(AddAccountButton, SIGNAL(clicked(bool)), this, SLOT(addAccountButtonClicked()));
-	connect(cancelButton, SIGNAL(clicked(bool)), this, SLOT(cancelButtonClicked()));
-
-	dataChanged();
+	connect(AddAccountButton, SIGNAL(clicked(bool)), this, SLOT(apply()));
+	connect(cancelButton, SIGNAL(clicked(bool)), this, SLOT(cancel()));
 }
 
 void GaduAddAccountWidget::resetGui()
@@ -130,9 +120,10 @@ void GaduAddAccountWidget::resetGui()
 	Identity->setCurrentIdentity(Identity::null);
 
 	IdentityManager::instance()->removeUnused();
+	dataChanged();
 }
 
-void GaduAddAccountWidget::addAccountButtonClicked()
+void GaduAddAccountWidget::apply()
 {
 	Account gaduAccount = Account::create();
 	// TODO: 0.6.6 set protocol after details because of crash
@@ -156,7 +147,7 @@ void GaduAddAccountWidget::addAccountButtonClicked()
 	emit accountCreated(gaduAccount);
 }
 
-void GaduAddAccountWidget::cancelButtonClicked()
+void GaduAddAccountWidget::cancel()
 {
 	resetGui();
 }
@@ -174,11 +165,19 @@ void GaduAddAccountWidget::dataChanged()
 		RemindPassword->setEnabled(true);
 	}
 
-	AddAccountButton->setEnabled(
-		!AccountId->text().isEmpty() &&
-		!AccountPassword->text().isEmpty() &&
-		Identity->currentIdentity()
-	);
+	bool valid = !AccountId->text().isEmpty()
+			&& !AccountPassword->text().isEmpty()
+			&& Identity->currentIdentity();
+
+	AddAccountButton->setEnabled(valid);
+
+	if (AccountId->text().isEmpty()
+			&& AccountPassword->text().isEmpty()
+			&& RememberPassword->isChecked()
+			&& !Identity->currentIdentity())
+		setState(StateNotChanged);
+	else
+		setState(valid ? StateChangedDataValid : StateChangedDataInvalid);
 }
 
 void GaduAddAccountWidget::remindPasssword()

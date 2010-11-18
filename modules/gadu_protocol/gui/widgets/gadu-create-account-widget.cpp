@@ -50,12 +50,12 @@
 #include "gadu-create-account-widget.h"
 
 GaduCreateAccountWidget::GaduCreateAccountWidget(QWidget *parent) :
-		ModalConfigurationWidget(parent)
+		AccountCreateWidget(parent)
 {
 	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
 	createGui();
-	dataChanged();
+	resetGui();
 }
 
 GaduCreateAccountWidget::~GaduCreateAccountWidget()
@@ -82,7 +82,6 @@ void GaduCreateAccountWidget::createGui()
 	layout->addRow(tr("Retype Password") + ':', ReNewPassword);
 
 	RememberPassword = new QCheckBox(tr("Remember password"), this);
-	RememberPassword->setChecked(true);
 	layout->addWidget(RememberPassword);
 
 	EMail = new QLineEdit(this);
@@ -117,13 +116,12 @@ void GaduCreateAccountWidget::createGui()
 	RegisterAccountButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogApplyButton), tr("Regster Account"), this);
 	QPushButton *cancelButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton), tr("Cancel"), this);
 
-	connect(RegisterAccountButton, SIGNAL(clicked(bool)), this, SLOT(apply()));
-	connect(cancelButton, SIGNAL(clicked(bool)), this, SLOT(cancel()));
-
 	buttons->addButton(RegisterAccountButton, QDialogButtonBox::ApplyRole);
 	buttons->addButton(cancelButton, QDialogButtonBox::RejectRole);
 
-	dataChanged();
+	connect(RegisterAccountButton, SIGNAL(clicked(bool)), this, SLOT(apply()));
+	connect(cancelButton, SIGNAL(clicked(bool)), this, SLOT(cancel()));
+	connect(cancelButton, SIGNAL(clicked(bool)), this, SIGNAL(cancelled()));
 }
 
 void GaduCreateAccountWidget::resetGui()
@@ -134,30 +132,31 @@ void GaduCreateAccountWidget::resetGui()
 	EMail->clear();
 	IdentityCombo->setCurrentIdentity(Identity::null);
 	MyTokenWidget->setTokenValue("");
+	RegisterAccountButton->setEnabled(false);
 
 	IdentityManager::instance()->removeUnused();
+	setState(StateNotChanged);
 }
 
 void GaduCreateAccountWidget::dataChanged()
 {
-	bool disable = NewPassword->text().isEmpty()
-			|| ReNewPassword->text().isEmpty()
-			|| EMail->text().indexOf(UrlHandlerManager::instance()->mailRegExp()) < 0
-			|| MyTokenWidget->tokenValue().isEmpty()
-			|| NewPassword->text() != ReNewPassword->text()
-			|| !IdentityCombo->currentIdentity();
+	bool valid = !NewPassword->text().isEmpty()
+			&& !ReNewPassword->text().isEmpty()
+			&& !EMail->text().indexOf(UrlHandlerManager::instance()->mailRegExp()) < 0
+			&& !MyTokenWidget->tokenValue().isEmpty()
+			&& IdentityCombo->currentIdentity();
 
-	RegisterAccountButton->setEnabled(!disable);
+	RegisterAccountButton->setEnabled(valid);
 
 	if (NewPassword->text().isEmpty()
 			&& ReNewPassword->text().isEmpty()
 			&& RememberPassword->isChecked()
 			&& EMail->text().isEmpty()
-			&& IdentityCombo->currentIdentity().isNull()
+			&& !IdentityCombo->currentIdentity()
 			&& MyTokenWidget->tokenValue().isEmpty())
 		setState(StateNotChanged);
 	else
-		setState(disable ? StateChangedDataInvalid : StateChangedDataValid);
+		setState(valid ? StateChangedDataValid : StateChangedDataInvalid);
 }
 
 void GaduCreateAccountWidget::apply()
@@ -181,7 +180,6 @@ void GaduCreateAccountWidget::apply()
 void GaduCreateAccountWidget::cancel()
 {
 	resetGui();
-	emit cancelled();
 }
 
 void GaduCreateAccountWidget::uinRegistered(UinType uin)

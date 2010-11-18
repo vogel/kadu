@@ -59,8 +59,7 @@ JabberEditAccountWidget::JabberEditAccountWidget(Account account, QWidget *paren
 	createGui();
 	loadAccountData();
 	loadConnectionData();
-
-	dataChanged();
+	resetState();
 }
 
 JabberEditAccountWidget::~JabberEditAccountWidget()
@@ -358,6 +357,13 @@ void JabberEditAccountWidget::sslActivated(int i)
 	}
 }
 
+void JabberEditAccountWidget::resetState()
+{
+	setState(StateNotChanged);
+	ApplyButton->setEnabled(false);
+	CancelButton->setEnabled(false);
+}
+
 void JabberEditAccountWidget::dataChanged()
 {
   	AccountDetails = dynamic_cast<JabberAccountDetails *>(account().details());
@@ -380,9 +386,7 @@ void JabberEditAccountWidget::dataChanged()
 		&& StateNotChanged == Proxy->state()
 		&& !PersonalInfoWidget->isModified())
 	{
-		setState(StateNotChanged);
-		ApplyButton->setEnabled(false);
-		CancelButton->setEnabled(false);
+		resetState();
 		return;
 	}
 
@@ -461,12 +465,10 @@ void JabberEditAccountWidget::apply()
 	if (PersonalInfoWidget->isModified())
 		PersonalInfoWidget->apply();
 
+	IdentityManager::instance()->removeUnused();
 	ConfigurationManager::instance()->flush();
 
-	IdentityManager::instance()->removeUnused();
-	setState(StateNotChanged);
-	ApplyButton->setEnabled(false);
-	CancelButton->setEnabled(false);
+	resetState();
 }
 
 void JabberEditAccountWidget::cancel()
@@ -477,9 +479,8 @@ void JabberEditAccountWidget::cancel()
 	PersonalInfoWidget->cancel();
 
 	IdentityManager::instance()->removeUnused();
-	setState(StateNotChanged);
-	ApplyButton->setEnabled(false);
-	CancelButton->setEnabled(false);
+
+	resetState();
 }
 
 void JabberEditAccountWidget::removeAccount()

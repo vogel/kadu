@@ -33,6 +33,7 @@
 #include <QtGui/QWidget>
 
 #include "accounts/account.h"
+#include "gui/widgets/account-create-widget.h"
 #include "gui/widgets/identities-combo-box.h"
 
 class QGridLayout;
@@ -43,10 +44,10 @@ class ChooseIdentityWidget;
 class JabberServerRegisterAccount;
 class TokenWidget;
 
-class JabberCreateAccountWidget : public QWidget
+class JabberCreateAccountWidget : public AccountCreateWidget
 {
 	Q_OBJECT
-	
+
 	QLineEdit *Username;
 	QComboBox *Domain;
 	QLineEdit *NewPassword;
@@ -73,7 +74,7 @@ class JabberCreateAccountWidget : public QWidget
 	QString host_;
 	int port_;
 	bool ShowConnectionOptions;
-	
+
 	void createGui();
 	bool checkSSL();
 	void resetGui();
@@ -84,15 +85,14 @@ private slots:
 	void connectionOptionsChanged();
 	void hostToggled(bool on);
 	void sslActivated(int i);
-	void cancel();
-	virtual void apply();
+
 public:
 	explicit JabberCreateAccountWidget(QWidget *parent = 0);
 	virtual ~JabberCreateAccountWidget();
 
-signals:
-	void accountCreated(Account account);
-	void cancelled();
+public slots:
+	virtual void apply();
+	virtual void cancel();
 
 };
 

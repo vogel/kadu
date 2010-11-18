@@ -74,6 +74,8 @@ class GaduEditAccountWidget : public AccountEditWidget
 	void loadAccountData();
 	void loadConnectionData();
 
+	void resetState();
+
 private slots:
 	void dataChanged();
 	void removeAccount();

@@ -89,7 +89,7 @@ AccountAddWidget * JabberProtocolFactory::newAddAccountWidget(QWidget *parent)
 	return new JabberAddAccountWidget(this, parent);
 }
 
-QWidget * JabberProtocolFactory::newCreateAccountWidget(QWidget *parent)
+AccountCreateWidget * JabberProtocolFactory::newCreateAccountWidget(QWidget *parent)
 {
 	return new JabberCreateAccountWidget(parent);
 }

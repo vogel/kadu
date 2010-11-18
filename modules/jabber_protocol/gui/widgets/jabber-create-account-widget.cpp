@@ -45,7 +45,7 @@
 #include "jabber-create-account-widget.h"
 
 JabberCreateAccountWidget::JabberCreateAccountWidget(QWidget *parent) :
-		QWidget(parent), ShowConnectionOptions(false)
+		AccountCreateWidget(parent), ShowConnectionOptions(false)
 {
 	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
@@ -55,6 +55,7 @@ JabberCreateAccountWidget::JabberCreateAccountWidget(QWidget *parent) :
 	port_ = 5222;
 
 	createGui();
+	resetGui();
 }
 
 JabberCreateAccountWidget::~JabberCreateAccountWidget()
@@ -63,7 +64,7 @@ JabberCreateAccountWidget::~JabberCreateAccountWidget()
 
 void JabberCreateAccountWidget::createGui()
 {
-  	QVBoxLayout *mainLayout = new QVBoxLayout(this);
+	QVBoxLayout *mainLayout = new QVBoxLayout(this);
 
 	QWidget *formWidget = new QWidget(this);
 	mainLayout->addWidget(formWidget);
@@ -86,6 +87,8 @@ void JabberCreateAccountWidget::createGui()
 
 	Domain = new QComboBox();
 	Domain->setEditable(true);
+	connect(Domain, SIGNAL(currentIndexChanged(QString)), this, SLOT(dataChanged()));
+	connect(Domain, SIGNAL(editTextChanged(QString)), this, SLOT(dataChanged()));
 	jidLayout->addWidget(Domain, 0, 2);
 
 	layout->addRow(tr("Username") + ':', jidWidget);
@@ -101,7 +104,6 @@ void JabberCreateAccountWidget::createGui()
 	layout->addRow(tr("Retype Password") + ':', ReNewPassword);
 
 	RememberPassword = new QCheckBox(tr("Remember password"), this);
-	RememberPassword->setChecked(true);
 	layout->addWidget(RememberPassword);
 
 	IdentityCombo = new IdentitiesComboBox(true, this);
@@ -132,71 +134,62 @@ void JabberCreateAccountWidget::createGui()
 	layout->addRow(0, moreOptions);
 
 	OptionsWidget = new QWidget(this);
-        QGroupBox *ConnectionOptions = new QGroupBox(OptionsWidget);
+	QGroupBox *ConnectionOptions = new QGroupBox(OptionsWidget);
 	ConnectionOptions->setTitle(tr("Connection settings"));
-	OptionsWidget->setVisible(false);
 
-        QVBoxLayout *vboxLayout2 = new QVBoxLayout(ConnectionOptions);
-        vboxLayout2->setSpacing(6);
-        vboxLayout2->setMargin(9);
+	QVBoxLayout *vboxLayout2 = new QVBoxLayout(ConnectionOptions);
+	vboxLayout2->setSpacing(6);
+	vboxLayout2->setMargin(9);
 
-        CustomHostPort = new QCheckBox(ConnectionOptions);
-        CustomHostPort->setText(tr("Manually Specify Server Host/Port") + ':');
-        vboxLayout2->addWidget(CustomHostPort);
-
-        HostPortLayout = new QHBoxLayout();
-        HostPortLayout->setSpacing(6);
-        HostPortLayout->setMargin(0);
-
-        CustomHostLabel = new QLabel(ConnectionOptions);
-        CustomHostLabel->setText(tr("Host") + ':');
-        HostPortLayout->addWidget(CustomHostLabel);
-
-        CustomHost = new QLineEdit(ConnectionOptions);
-        HostPortLayout->addWidget(CustomHost);
-
-        CustomPortLabel = new QLabel(ConnectionOptions);
-        CustomPortLabel->setText(tr("Port") + ':');
-        HostPortLayout->addWidget(CustomPortLabel);
-
-        CustomPort = new QLineEdit(ConnectionOptions);
-        CustomPort->setMinimumSize(QSize(56, 0));
-        CustomPort->setMaximumSize(QSize(56, 32767));
-	CustomPort->setText(QString::number(port_));
-        HostPortLayout->addWidget(CustomPort);
-
-	// Manual Host/Port
-	CustomHost->setEnabled(false);
-	CustomHostLabel->setEnabled(false);
-	CustomPort->setEnabled(false);
-	CustomPortLabel->setEnabled(false);
+	CustomHostPort = new QCheckBox(ConnectionOptions);
+	CustomHostPort->setText(tr("Manually Specify Server Host/Port") + ':');
+	vboxLayout2->addWidget(CustomHostPort);
 	connect(CustomHostPort, SIGNAL(toggled(bool)), SLOT(hostToggled(bool)));
 
-        vboxLayout2->addLayout(HostPortLayout);
+	HostPortLayout = new QHBoxLayout();
+	HostPortLayout->setSpacing(6);
+	HostPortLayout->setMargin(0);
 
-        QHBoxLayout *EncryptionLayout = new QHBoxLayout();
-        EncryptionLayout->setSpacing(6);
-        EncryptionLayout->setMargin(0);
-        EncryptionModeLabel = new QLabel(ConnectionOptions);
-        EncryptionModeLabel->setText(tr("Encrypt connection") + ':');
-        EncryptionLayout->addWidget(EncryptionModeLabel);
+	CustomHostLabel = new QLabel(ConnectionOptions);
+	CustomHostLabel->setText(tr("Host") + ':');
+	HostPortLayout->addWidget(CustomHostLabel);
 
-        EncryptionMode = new QComboBox(ConnectionOptions);
+	CustomHost = new QLineEdit(ConnectionOptions);
+	HostPortLayout->addWidget(CustomHost);
+
+	CustomPortLabel = new QLabel(ConnectionOptions);
+	CustomPortLabel->setText(tr("Port") + ':');
+	HostPortLayout->addWidget(CustomPortLabel);
+
+	CustomPort = new QLineEdit(ConnectionOptions);
+	CustomPort->setMinimumSize(QSize(56, 0));
+	CustomPort->setMaximumSize(QSize(56, 32767));
+	CustomPort->setText(QString::number(port_));
+	HostPortLayout->addWidget(CustomPort);
+
+	vboxLayout2->addLayout(HostPortLayout);
+
+	QHBoxLayout *EncryptionLayout = new QHBoxLayout();
+	EncryptionLayout->setSpacing(6);
+	EncryptionLayout->setMargin(0);
+	EncryptionModeLabel = new QLabel(ConnectionOptions);
+	EncryptionModeLabel->setText(tr("Encrypt connection") + ':');
+	EncryptionLayout->addWidget(EncryptionModeLabel);
+
+	EncryptionMode = new QComboBox(ConnectionOptions);
 	EncryptionMode->addItem(tr("Always"), 0);
 	EncryptionMode->addItem(tr("When available"), 1);
 	EncryptionMode->addItem(tr("Legacy SSL"), 2);
-	EncryptionMode->setCurrentIndex(1);
 	connect(EncryptionMode, SIGNAL(activated(int)), SLOT(sslActivated(int)));
-        EncryptionLayout->addWidget(EncryptionMode);
+	EncryptionLayout->addWidget(EncryptionMode);
 
-        QSpacerItem *spacerItem = new QSpacerItem(151, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-        EncryptionLayout->addItem(spacerItem);
-        vboxLayout2->addLayout(EncryptionLayout);
+	QSpacerItem *spacerItem = new QSpacerItem(151, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+	EncryptionLayout->addItem(spacerItem);
+	vboxLayout2->addLayout(EncryptionLayout);
 
-        LegacySSLProbe = new QCheckBox(ConnectionOptions);
-        LegacySSLProbe->setText(tr("Probe legacy SSL port"));
-	LegacySSLProbe->setChecked(legacy_ssl_probe_);
-        vboxLayout2->addWidget(LegacySSLProbe);
+	LegacySSLProbe = new QCheckBox(ConnectionOptions);
+	LegacySSLProbe->setText(tr("Probe legacy SSL port"));
+	vboxLayout2->addWidget(LegacySSLProbe);
 
 	layout->addRow(0, OptionsWidget);
 
@@ -208,13 +201,12 @@ void JabberCreateAccountWidget::createGui()
 	RegisterAccountButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogApplyButton), tr("Register Account"), this);
 	QPushButton *cancelButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton), tr("Cancel"), this);
 
-	connect(RegisterAccountButton, SIGNAL(clicked(bool)), this, SLOT(apply()));
-	connect(cancelButton, SIGNAL(clicked(bool)), this, SLOT(cancel()));
-
 	buttons->addButton(RegisterAccountButton, QDialogButtonBox::ApplyRole);
 	buttons->addButton(cancelButton, QDialogButtonBox::RejectRole);
 
-	dataChanged();
+	connect(RegisterAccountButton, SIGNAL(clicked(bool)), this, SLOT(apply()));
+	connect(cancelButton, SIGNAL(clicked(bool)), this, SLOT(cancel()));
+	connect(cancelButton, SIGNAL(clicked(bool)), this, SIGNAL(cancelled()));
 }
 
 bool JabberCreateAccountWidget::checkSSL()
@@ -257,18 +249,29 @@ void JabberCreateAccountWidget::connectionOptionsChanged()
 
 void JabberCreateAccountWidget::dataChanged()
 {
-	bool disable = Domain->currentText().isEmpty()
-			|| Username->text().isEmpty()
-			|| NewPassword->text().isEmpty()
-			|| ReNewPassword->text().isEmpty()
-			|| !IdentityCombo->currentIdentity();
+	bool valid = !Domain->currentText().isEmpty()
+			&& !Username->text().isEmpty()
+			&& !NewPassword->text().isEmpty()
+			&& !ReNewPassword->text().isEmpty()
+			&& IdentityCombo->currentIdentity();
 
-	RegisterAccountButton->setEnabled(!disable);
+	RegisterAccountButton->setEnabled(valid);
+
+	if (Domain->currentText().isEmpty()
+			&& Username->text().isEmpty()
+			&& NewPassword->text().isEmpty()
+			&& ReNewPassword->text().isEmpty()
+			&& RememberPassword->isChecked()
+			&& !IdentityCombo->currentIdentity()
+			&& !OptionsWidget->isVisible() /*TODO 0.6.6: do correct check here*/)
+		setState(StateNotChanged);
+	else
+		setState(valid ? StateChangedDataValid : StateChangedDataInvalid);
 }
 
 void JabberCreateAccountWidget::apply()
 {
-    	if (NewPassword->text() != ReNewPassword->text())
+	if (NewPassword->text() != ReNewPassword->text())
 	{
 		MessageDialog::show("dialog-warning", tr("Kadu"), tr("Invalid data entered in required fields.\n\n"
 			"Password entered in both fields (\"New password\" and \"Retype password\") "
@@ -292,7 +295,6 @@ void JabberCreateAccountWidget::apply()
 void JabberCreateAccountWidget::cancel()
 {
 	resetGui();
-	emit cancelled();
 }
 
 void JabberCreateAccountWidget::resetGui()
@@ -303,8 +305,19 @@ void JabberCreateAccountWidget::resetGui()
 	ReNewPassword->clear();
 	RememberPassword->setChecked(true);
 	IdentityCombo->setCurrentIdentity(Identity::null);
+	ShowConnectionOptions = false;
+	ExpandConnectionOptionsButton->setText(">");
+	OptionsWidget->setVisible(false);
+	CustomHost->setEnabled(false);
+	CustomHostLabel->setEnabled(false);
+	CustomPort->setEnabled(false);
+	CustomPortLabel->setEnabled(false);
+	EncryptionMode->setCurrentIndex(1);
+	LegacySSLProbe->setChecked(true);
+	RegisterAccountButton->setEnabled(false);
 
 	IdentityManager::instance()->removeUnused();
+	setState(StateNotChanged);
 }
 
 void JabberCreateAccountWidget::registerNewAccountFinished(JabberServerRegisterAccount *jsra)
