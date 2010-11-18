@@ -26,6 +26,7 @@
 * gui: #1606 another fix: support for removing custom avatars (Vogel)
 * jabber: #1707 fixed: after clicking Cancel in add GTalk account widget, "gmail.com" domain disappears (beevvy)
 * gui: filter in Open chat with... window behaves more like filter widget in main window (beevvy)
+* gui: #1691 fixed: after restart first group in tabbar always works as All group (WhE)
 
 +++ version 0.6.6-beta10
 * modules: don't build echo module by default (beevvy)

@@ -111,7 +111,11 @@ GroupTabBar::GroupTabBar(QWidget *parent)
 
 	Filter->setAllGroupShown(showAllGroup);
 
-	setCurrentIndex(config_file.readNumEntry("Look", "CurrentGroupTab", 0));
+	int currentGroup = config_file.readNumEntry("Look", "CurrentGroupTab", 0);
+	if (0 == currentGroup)
+		currentChangedSlot(currentGroup);
+	else
+		setCurrentIndex(currentGroup);
 }
 
 GroupTabBar::~GroupTabBar()
