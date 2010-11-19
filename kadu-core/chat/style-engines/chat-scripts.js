@@ -31,7 +31,12 @@ function kadu_appendMessage(html)
 	node.appendChild(documentFragment);
 
 	if (shouldScroll)
-		document.body.scrollTop = document.body.offsetHeight;
+		setTimeout("scrollToBottom()", 0);
+}
+
+function scrollToBottom()
+{
+	document.body.scrollTop = document.body.offsetHeight;
 }
 
 function kadu_removeFirstMessage()
