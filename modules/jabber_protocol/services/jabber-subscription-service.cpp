@@ -90,37 +90,14 @@ void JabberSubscriptionService::subscription(const XMPP::Jid &jid, const QString
 
 	if (type == "subscribe")
 	{
-		if ( 0 /*("options.subscriptions.automatically-allow-authorization").toBool()*/)
-		{
-			// Check if we want to request auth as well
-			Contact contact = ContactManager::instance()->byId(Protocol->account(), jid.bare(), ActionReturnNull);
-
-			JabberContactDetails *data = Protocol->jabberContactDetails(contact);
-
-			if (!contact || !data || (data->subscription().type() != XMPP::Subscription::Both && data->subscription().type() != XMPP::Subscription::To))
-			{
-				Protocol->addContactToRoster(contact);
-			}
-
-			Protocol->client()->resendSubscription(jid);
-		}
-		else
-		{
-			Contact contact = ContactManager::instance()->byId(Protocol->account(), jid.bare(), ActionCreate);
+		Contact contact = ContactManager::instance()->byId(Protocol->account(), jid.bare(), ActionCreate);
+		if (contact.ownerBuddy().isAnonymous())
 			SubscriptionWindow::getSubscription(contact, this, SLOT(authorizeContact(Contact, bool)));
-		}
+		else
+			authorizeContact(contact, MessageDialog::ask("", tr("Kadu - authorize user?"), tr("The user %1 (%2) is asking for subscription from you. "
+						   "He will be able to view your online/offline status. "
+						   "Do you want to authorize the contact?").arg(contact.ownerBuddy().display(), jid.full())));
 	}
-	else if (type == "subscribed")
-	{
-		//TODO some option in GUI
-		/*if (!getOption("options.ui.notifications.successful-subscription").toBool())
-			MessageDialog::msg(QString("You are authorized by %1").arg(jid.bare()), false, "dialog-warning");
-		*/
-	}
-	/*else if (type == "unsubscribe")
-	{
-		//in Psi it's ignored
-	}*/
 }
 
 void JabberSubscriptionService::authorizeContact(Contact contact, bool authorized)

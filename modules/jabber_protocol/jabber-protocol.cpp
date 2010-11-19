@@ -36,7 +36,6 @@
 #include "status/status-type-manager.h"
 #include "url-handlers/url-handler-manager.h"
 
-#include "gui/windows/subscription-window.h"
 #include "resource/jabber-resource-pool.h"
 #include "utils/pep-manager.h"
 #include "utils/server-info-manager.h"
