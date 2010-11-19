@@ -145,6 +145,7 @@ public:
 	virtual BuddySet buddies();
 	virtual ContactSet contacts();
 	virtual Chat chat();
+	virtual bool hasContactSelected();
 
 signals:
 	void chatActivated(Chat chat);

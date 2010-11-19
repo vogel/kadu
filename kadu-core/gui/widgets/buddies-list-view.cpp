@@ -715,3 +715,13 @@ Chat BuddiesListView::chat()
 {
 	return currentChat();
 }
+
+bool BuddiesListView::hasContactSelected()
+{
+	QModelIndexList selectionList = selectedIndexes();
+	foreach (QModelIndex selection, selectionList)
+		if (ContactRole == selection.data(ItemTypeRole).toInt())
+			return true;
+
+	return false;
+}

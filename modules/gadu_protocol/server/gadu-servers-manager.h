@@ -37,7 +37,6 @@ public:
 	typedef QPair<QHostAddress, int> GaduServer;
 
 private:
-	static const char *Ips[];
 	static GaduServersManager * Instance;
 
 	QList<int> AllPorts;
@@ -48,6 +47,9 @@ private:
 	GaduServersManager();
 
 	QList<GaduServer> gaduServersFromString(const QString &serverAddress);
+
+	void loadServerListFromFile(const QString &fileName);
+	void loadServerListFromString(const QString &data);
 
 protected:
 	virtual void configurationUpdated();

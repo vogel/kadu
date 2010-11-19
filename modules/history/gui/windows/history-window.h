@@ -132,6 +132,7 @@ public:
 	virtual BuddiesListView * buddiesListView() { return 0; }
 	virtual StatusContainer* statusContainer() { return 0; }
 	virtual Chat chat() { return Chat::null; }
+	virtual bool hasContactSelected() { return false; } // we can select only buddies here
 
 	void show(Chat chat);
 

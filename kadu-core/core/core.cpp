@@ -58,6 +58,7 @@
 #include "activate.h"
 #include "debug.h"
 #include "icons-manager.h"
+#include "kadu-config.h"
 #include "modules.h"
 #include "updates.h"
 
@@ -74,6 +75,11 @@ Core * Core::instance()
 	}
 
 	return Instance;
+}
+
+QString Core::version()
+{
+	return QString(VERSION);
 }
 
 Core::Core() :

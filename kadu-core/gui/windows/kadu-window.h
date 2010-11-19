@@ -125,6 +125,7 @@ protected:
 	virtual ContactSet contacts();
 	virtual BuddySet buddies();
 	virtual Chat chat();
+	virtual bool hasContactSelected();
 
 	virtual void configurationUpdated();
 

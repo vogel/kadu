@@ -395,7 +395,7 @@ bool ModulesManager::moduleInfo(const QString& module_name, ModuleInfo& info) co
 	info.author = desc_file.readEntry("Module", "Author");
 
 	if (desc_file.readEntry("Module", "Version") == "core")
-		info.version = VERSION;
+		info.version = Core::version();
 	else
 		info.version = desc_file.readEntry("Module", "Version");
 

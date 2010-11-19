@@ -27,7 +27,9 @@
 * jabber: #1707 fixed: after clicking Cancel in add GTalk account widget, "gmail.com" domain disappears (beevvy)
 * gui: filter in Open chat with... window behaves more like filter widget in main window (beevvy)
 * gui: #1691 fixed: after restart first group in tabbar always works as All group (WhE, beevvy)
-* gui: #1677: add possibility to add contact to existing buddy in subscription window (WhE)
+* gui: #1677 fixed: add possibility to add contact to existing buddy in subscription window (WhE)
+* gui: #1617 fixed: disable buddy actions when contacts are selected, this removes confusion (Vogel)
+* gadu: #1668 fixed: store list of gadu-gadu servers in external file (Vogel)
 
 +++ version 0.6.6-beta10
 * modules: don't build echo module by default (beevvy)

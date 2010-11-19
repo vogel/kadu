@@ -75,7 +75,8 @@ KaduWindow::KaduWindow(QWidget *parent) :
 	setWindowRole("kadu-main");
 
 #ifdef Q_OS_MAC
-	setUnifiedTitleAndToolBarOnMac(true);
+	/* Dorr: workaround for Qt window geometry bug when unified toolbars enabled */
+	setUnifiedTitleAndToolBarOnMac(false);
 	MenuBar = new QMenuBar(0); // TODO: couldn't it have "this" as parent?
 #endif
 
@@ -91,13 +92,8 @@ KaduWindow::KaduWindow(QWidget *parent) :
 	loadWindowGeometry(this, "General", "Geometry", 0, 50, 255, 565);
 
 #if defined(Q_OS_MAC)
-#if (QT_VERSION < 0x040602)
-	/* Dorr: On Mac OS X the saved height of the main window is reduced by 48px (toolbar size?) */
-	resize(width(), height() + 48);
-#else
-	if (y() > 34)
-	    move(x(), y() - 34);
-#endif
+	/* Dorr: workaround for Qt window geometry bug when unified toolbars enabled */
+	setUnifiedTitleAndToolBarOnMac(true);
 #endif
 }
 
@@ -188,7 +184,7 @@ void KaduWindow::createKaduMenu()
 {
 	KaduMenu = new QMenu(this);
 #ifdef Q_OS_MAC
-	KaduMenu->setTitle("General");
+	KaduMenu->setTitle(tr("General"));
 #else
 	KaduMenu->setTitle("&Kadu");
 #endif
@@ -352,8 +348,16 @@ void KaduWindow::openRecentChats(QAction *action)
 
 void KaduWindow::storeConfiguration()
 {
-	writeToolBarsToConfig("");
+        writeToolBarsToConfig("");
+#ifdef Q_OS_MAC
+	/* Dorr: workaround for Qt window geometry bug when unified toolbars enabled */
+	setUnifiedTitleAndToolBarOnMac(false);
+#endif
 	saveWindowGeometry(this, "General", "Geometry");
+#ifdef Q_OS_MAC
+	/* Dorr: workaround for Qt window geometry bug when unified toolbars enabled */
+	setUnifiedTitleAndToolBarOnMac(true);
+#endif
 
 	if (config_file.readBoolEntry("Look", "ShowInfoPanel"))
 	{
@@ -435,6 +439,11 @@ BuddySet KaduWindow::buddies()
 Chat KaduWindow::chat()
 {
 	return ContactsWidget->view()->currentChat();
+}
+
+bool KaduWindow::hasContactSelected()
+{
+	return ContactsWidget->view()->hasContactSelected();
 }
 
 void KaduWindow::configurationUpdated()

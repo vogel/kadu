@@ -92,7 +92,7 @@ void ChatWindow::setChatWidget(ChatWidget *newChatWidget)
 	layout->setSpacing(0);
 
 	connect(currentChatWidget, SIGNAL(closed()), this, SLOT(close()));
-	connect(currentChatWidget, SIGNAL(titleChanged(Chat, const QString &)), this, SLOT(updateTitle()));
+	connect(currentChatWidget, SIGNAL(titleChanged(ChatWidget *, const QString &)), this, SLOT(updateTitle()));
 	connect(currentChatWidget, SIGNAL(messageReceived(Chat)), this, SLOT(alertNewMessage()));
 
 	setFocusProxy(currentChatWidget);

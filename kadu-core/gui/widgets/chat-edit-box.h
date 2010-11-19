@@ -66,6 +66,8 @@ public:
 	virtual ContactSet contacts();
 	virtual BuddySet buddies();
 	virtual Chat chat() { return CurrentChat; }
+	virtual bool hasContactSelected() { return false; } // we cannot select one contact, we can only select buddies
+
 	ChatWidget * chatWidget();
 
 	void openEmoticonSelector(const QWidget *activatingWidget);
