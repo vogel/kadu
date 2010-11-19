@@ -41,8 +41,8 @@
 #include <QtGui/QTextEdit>
 #include <QtGui/QVBoxLayout>
 
+#include "core/core.h"
 #include "debug.h"
-#include "kadu-config.h"
 #include "icons-manager.h"
 #include "html_document.h"
 #include "misc/misc.h"
@@ -72,7 +72,7 @@ About::About(QWidget *parent) :
 	l_info->setBackgroundRole(texts->backgroundRole());
 
 	l_info->setText("<font size=\"5\">Kadu</font><br /><b>"
-		+ tr("Version %1").arg(VERSION)
+		+ tr("Version %1").arg(Core::version())
 		+ "</b><br />"
 		+ QString("Qt %2 (compiled with Qt %3)").arg(qVersion()).arg(QT_VERSION_STR));
 

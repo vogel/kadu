@@ -30,6 +30,7 @@
 
 #include <errno.h>
 
+#include "core/core.h"
 #include "misc/misc.h"
 #include "debug.h"
 #include "kadu-config.h"
@@ -107,7 +108,7 @@ void XmlConfigFile::write(const QString& f)
 {
 	kdebugf();
 	rootElement().setAttribute("last_save_time", QDateTime::currentDateTime().toString());
-	rootElement().setAttribute("last_save_version", VERSION);
+	rootElement().setAttribute("last_save_version", Core::version());
 	QFile file;
 	QString fileName, tmpFileName;
 	if (f.isEmpty())
@@ -365,7 +366,7 @@ QList<QDomElement> XmlConfigFile::getNodes(QDomElement parent, const QString &no
 {
 	QDomNodeList nodes = parent.childNodes();
 	QList<QDomElement> result;
-	
+
 	int count = nodes.count();
 	for (int i = 0; i < count; i++)
 	{
@@ -376,7 +377,7 @@ QList<QDomElement> XmlConfigFile::getNodes(QDomElement parent, const QString &no
 		if (element.tagName() == nodeTagName)
 			result.append(element);
 	}
-	
+
 	return result;
 }
 
