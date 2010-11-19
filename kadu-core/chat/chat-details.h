@@ -89,24 +89,10 @@ public:
 	 */
 	virtual QString name() const = 0;
 
-signals:
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Emitted when chat title changes.
-	 * @param chat this chat
-	 * @param newTitle new chat title
-	 *
-	 * Signal is emitted when chat title changes. Title can be list of
-	 * chat names, topic of IRC room or anything else (depens on chat type).
-	 */
-	void titleChanged(Chat chat, const QString &newTitle);
-
 };
 
 /**
  * @}
  */
-
-#include "chat/chat.h" // for MOC
 
 #endif // CHAT_DETAILS_H
