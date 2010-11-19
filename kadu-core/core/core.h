@@ -35,7 +35,6 @@
 #include "status/status.h"
 
 #include "exports.h"
-#include "kadu-config.h"
 
 class KaduWindow;
 class Message;
@@ -80,7 +79,7 @@ protected:
 public:
 	static Core * instance();
 
-	QString version() { return QString(VERSION);}
+	static QString version();
 	bool isClosing() { return IsClosing; }
 	Buddy myself() { return Myself; }
 
