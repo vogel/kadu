@@ -39,18 +39,14 @@ class ChatState : public QObject
 	// Message Events & Chat States
 	QTimer *ComposingTimer;
 	bool IsComposing;
-	bool SendComposingEvents;
+	bool UserRequestedEvents;
 	QString EventId;
 	XMPP::ChatState ContactChatState;
 	XMPP::ChatState LastChatState;
 
 	void setContactChatState(XMPP::ChatState state);
 	void updateChatTitle();
-
-public:
-	explicit ChatState(ChatWidget *chatWidget);
-
-	void chatClosed();
+	bool shouldSendEvent(XMPP::ChatState state);
 
 private slots:
 	void setComposing();
@@ -60,6 +56,12 @@ private slots:
 	void setChatState(XMPP::ChatState state);
 	void incomingMessage(const XMPP::Message &m);
 	void messageAboutToSend(XMPP::Message &message);
+
+
+public:
+	explicit ChatState(ChatWidget *chatWidget);
+
+	void chatClosed();
 
 signals:
 	/**

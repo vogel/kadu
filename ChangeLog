@@ -31,6 +31,7 @@
 * gui: #1617 fixed: disable buddy actions when contacts are selected, this removes confusion (Vogel)
 * gadu: #1668 fixed: store list of gadu-gadu servers in external file (Vogel)
 * chat: #1679, #1702 fixed: messages with emoticons are not scrolled properly in kadu styles (WhE)
+* jabber: #1650 fixed: add an option to disable typing and gone notifications (WhE)
 
 +++ version 0.6.6-beta10
 * modules: don't build echo module by default (beevvy)
