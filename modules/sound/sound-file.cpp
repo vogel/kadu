@@ -94,6 +94,7 @@ void SoundFile::loadData(const QString &path)
 #endif
 }
 
+#ifndef Q_OS_WIN
 void SoundFile::loadFloatSamples(SNDFILE *f)
 {
 	float buffer[Length];
@@ -114,6 +115,7 @@ void SoundFile::loadIntSamples(SNDFILE *f)
 {
 	sf_read_short(f, Data, Length);
 }
+#endif
 
 bool SoundFile::valid()
 {

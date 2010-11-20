@@ -22,8 +22,9 @@
 
 #include "buddies/buddy.h"
 #include "contacts/contact.h"
+#include "exports.h"
 
-class BuddyOrContact
+class KADUAPI BuddyOrContact
 {
 public:
 	enum ItemType
