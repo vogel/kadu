@@ -35,6 +35,7 @@
 * jabber: #1678 fixed: do not ask for adding a contact requesting authorization when the contact is already on list (WhE)
 * history: #1623 fixed: cleanup history module configuration (WhE)
 * history: add an option to not save chats with anonymous buddies in history (WhE)
+* gui: #1715 fixed: information panel synax preview doesn't work (WhE)
 
 +++ version 0.6.6-beta10
 * modules: don't build echo module by default (beevvy)
