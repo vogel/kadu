@@ -23,7 +23,7 @@
 #define GG_IGNORE_DEPRECATED
 #include <libgadu.h>
 
-#include <QtCore/QFile>
+#include <QtCore/QFileInfo>
 #include <QtGui/QApplication>
 
 #include "accounts/account.h"
@@ -164,9 +164,6 @@ void GaduFormater::appendToMessage(Account account, FormattedMessage &result, Ui
 		if (size == 20 && (crc32 == 4567 || crc32 == 99)) // fake spy images
 			return;
 
-		QString file_name = GaduChatImageService::imageFileName(sender, size, crc32);
-		QFile file(file_name);
-
 		if (!receiveImages)
 		{
 			result << FormattedMessagePart(qApp->translate("@default", QT_TR_NOOP("###IMAGE BLOCKED###")), false, false, false, textColor);
@@ -189,7 +186,12 @@ void GaduFormater::appendToMessage(Account account, FormattedMessage &result, Ui
 		{
 			dynamic_cast<GaduChatImageService *>(gadu->chatImageService())->
 					sendImageRequest(ContactManager::instance()->byId(account, QString::number(sender)), size, crc32);
-			result << FormattedMessagePart(file_name, !file.exists());
+
+			QString fileName = GaduChatImageService::imageFileName(sender, size, crc32);
+			if (QFileInfo(fileName).isFile())
+				result << FormattedMessagePart(fileName, false);
+			else
+				result << FormattedMessagePart(fileName, true, GaduFormater::createImageId(sender, size, crc32));
 		}
 	}
 	else

@@ -45,9 +45,9 @@ FormattedMessagePart::FormattedMessagePart(const QString &content, bool bold, bo
 {
 }
 
-FormattedMessagePart::FormattedMessagePart(const QString &imagePath, bool imageDelayed) :
-		Content("\n"), Image(true), ImageDelayed(imageDelayed),
-		ImagePath(imagePath)
+FormattedMessagePart::FormattedMessagePart(const QString &imagePath, bool delayed, const QString &imageId) :
+		Content("\n"), Image(true), ImageDelayed(delayed),
+		ImagePath(imagePath), ImageId(imageId)
 {
 }
 
@@ -58,7 +58,9 @@ FormattedMessagePart::~FormattedMessagePart()
 QString FormattedMessagePart::toHtml() const
 {
 	if (Image)
-		return QString("<img src=\"file:///%1\" />").arg(ImagePath);
+		return ImageDelayed
+				? loadingImageHtml(ImageId)
+				: QString("<img src=\"file:///%1\" />").arg(ImagePath);
 
 	QString result = Qt::escape(Content);
 	result.replace("\r\n", "<br/>");

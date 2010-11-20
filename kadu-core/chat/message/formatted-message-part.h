@@ -59,6 +59,7 @@ class KADUAPI FormattedMessagePart
 	bool Image;
 	bool ImageDelayed;
 	QString ImagePath;
+	QString ImageId;
 
 public:
 	static KADUAPI QString loadingImageHtml(const QString &imageId);
@@ -78,7 +79,7 @@ public:
 	 * Creates image message part (ready or to-be-received).
 	 * @arg imagePath local image path
 	 */
-	FormattedMessagePart(const QString &imagePath, bool delayed);
+	FormattedMessagePart(const QString &imagePath, bool delayed, const QString &imageId = QString::null);
 	virtual ~FormattedMessagePart();
 
 	bool isImage() const { return Image; }
