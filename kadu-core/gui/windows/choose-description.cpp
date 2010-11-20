@@ -173,8 +173,8 @@ void ChooseDescription::setDescription()
 	QString description = Description->currentText();
 	DescriptionManager::instance()->addDescription(description);
 
-// 	if (config_file.readBoolEntry("General", "ParseStatus", false))
-// 		description = Parser::parse(description, account, Core::instance()->myself(), true);
+	if (config_file.readBoolEntry("General", "ParseStatus", false))
+		description = Parser::parse(description, BuddyOrContact(Core::instance()->myself()), false);
 
 	MyStatusContainer->setDescription(description);
 }
