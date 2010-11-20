@@ -105,6 +105,9 @@ bool MainConfigurationWindow::hasInstance()
 
 ConfigFileDataManager * MainConfigurationWindow::instanceDataManager()
 {
+	if (!InstanceDataManager)
+		InstanceDataManager = new ConfigFileDataManager();
+
 	return InstanceDataManager;
 }
 
@@ -154,7 +157,7 @@ void MainConfigurationWindow::instanceCreated()
 }
 
 MainConfigurationWindow::MainConfigurationWindow()
-	: ConfigurationWindow("MainConfiguration", tr("Kadu configuration"), "General", InstanceDataManager), lookChatAdvanced(0)
+	: ConfigurationWindow("MainConfiguration", tr("Kadu configuration"), "General", instanceDataManager()), lookChatAdvanced(0)
 {
 	setWindowRole("kadu-configuration");
 
@@ -248,8 +251,6 @@ MainConfigurationWindow::MainConfigurationWindow()
 MainConfigurationWindow::~MainConfigurationWindow()
 {
 	Instance = 0;
-	delete InstanceDataManager;
-	InstanceDataManager = 0;
 }
 
 void MainConfigurationWindow::compositingEnabled()
@@ -364,7 +365,7 @@ void MainConfigurationWindow::showLookChatAdvanced()
 {
 	if (!lookChatAdvanced)
 	{
-		lookChatAdvanced = new ConfigurationWindow("LookChatAdvanced", tr("Advenced chat's look configuration"), "General", InstanceDataManager);
+		lookChatAdvanced = new ConfigurationWindow("LookChatAdvanced", tr("Advenced chat's look configuration"), "General", instanceDataManager());
 		lookChatAdvanced->widget()->appendUiFile(dataPath("kadu/configuration/dialog-look-chat-advanced.ui"));
 
 		connect(lookChatAdvanced->widget()->widgetById("removeServerTime"), SIGNAL(toggled(bool)), lookChatAdvanced->widget()->widgetById("maxTimeDifference"), SLOT(setEnabled(bool)));
