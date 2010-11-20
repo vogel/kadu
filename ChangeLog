@@ -30,7 +30,7 @@
 * gui: #1677 fixed: add possibility to add contact to existing buddy in subscription window (WhE)
 * gui: #1617 fixed: disable buddy actions when contacts are selected, this removes confusion (Vogel)
 * gadu: #1668 fixed: store list of gadu-gadu servers in external file (Vogel)
-* chat: #1679, #1702 fixed: messages with emoticons are not scrolled properly in kadu styles (WhE)
+* chat: #1679, #1702 fixed: messages with emoticons are not scrolled properly in some styles (WhE)
 * jabber: #1650 fixed: add an option to disable typing and gone notifications (WhE)
 * jabber: #1678 fixed: do not ask for adding a contact requesting authorization when the contact is already on list (WhE)
 * history: #1623 fixed: cleanup history module configuration (WhE)

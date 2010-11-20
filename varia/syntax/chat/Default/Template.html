@@ -305,7 +305,7 @@
 				}
 			}
 
-			if (shouldScroll) scrollToBottom();
+			if (shouldScroll) setTimeout("scrollToBottom()", 0);
 		}
 
 		window.onresize = function windowDidResize(){

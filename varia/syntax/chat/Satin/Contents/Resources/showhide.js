@@ -129,7 +129,7 @@
 				}
 			}
 			
-			if(shouldScroll) scrollToBottom();
+			if(shouldScroll) setTimeout("scrollToBottom()", 0);
 		}
 		
 		function toggleParent(parentId) {
