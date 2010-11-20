@@ -18,8 +18,8 @@
 			</group-box>
 			<group-box name="Default Language">
 				<combo-box caption="Language" config-section="General" config-item="Language" id="languages" tool-tip="Choose your language" />
-				<label caption="Kadu will use [regional application] as the default network in this configuration." />
-				<action-button caption="Change..." id="change-network" />
+				<!-- <label caption="Kadu will use [regional application] as the default network in this configuration." />
+				<action-button caption="Change..." id="change-network" /> -->
 			</group-box>
 		</tab>
 
