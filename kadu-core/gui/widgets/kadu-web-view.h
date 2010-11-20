@@ -49,7 +49,7 @@ class KADUAPI KaduWebView : public QWebView
 private slots:
 	void hyperlinkClicked(const QUrl &anchor) const;
 	void loadStarted();
-	void loadFinished(bool success);
+	void loadFinishedSlot(bool success);
 	void refreshLater();
 	void saveImage();
 	void textCopied() const;
