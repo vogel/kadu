@@ -170,6 +170,7 @@ void ChatMessagesView::appendMessages(QList<MessageRenderInfo *> messages)
 	rememberScrollBarPosition();
 
 	Renderer->appendMessages(messages);
+	emit messagesUpdated();
 }
 
 void ChatMessagesView::clearMessages()
