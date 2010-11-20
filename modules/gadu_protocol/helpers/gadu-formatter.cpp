@@ -158,8 +158,8 @@ void GaduFormater::appendToMessage(Account account, FormattedMessage &result, Ui
 
 	if (format.font & GG_FONT_IMAGE)
 	{
-		int32_t size = gg_fix32(image.size);
-		int32_t crc32 = gg_fix32(image.crc32);
+		uint32_t size = gg_fix32(image.size);
+		uint32_t crc32 = gg_fix32(image.crc32);
 
 		if (size == 20 && (crc32 == 4567 || crc32 == 99)) // fake spy images
 			return;
@@ -174,7 +174,7 @@ void GaduFormater::appendToMessage(Account account, FormattedMessage &result, Ui
 		if (!details)
 			return;
 
-		if (size > details->maximumImageSize() * 1024)
+		if (size > (uint32_t)details->maximumImageSize() * 1024)
 		{
 			result << FormattedMessagePart(qApp->translate("@default", QT_TR_NOOP("###IMAGE TOO BIG###")), false, false, false, textColor);
 			return;
