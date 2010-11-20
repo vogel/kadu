@@ -165,7 +165,7 @@ void ChatMessagesView::appendMessages(QList<MessageRenderInfo *> messages)
 	kdebugf2();
 
 	foreach (MessageRenderInfo *message, messages)
-		connect(message, SIGNAL(statusChanged(Message::Status)),
+		connect(message->message(), SIGNAL(statusChanged(Message::Status)),
 				this, SLOT(messageStatusChanged(Message::Status)));
 	rememberScrollBarPosition();
 
