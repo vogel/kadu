@@ -19,8 +19,8 @@
 	margin: 0px 0px 0px 48px;
 	}
 .buddyicon img {
-	height: 32px;
-	width: 32px;
+	max-height: 32px;
+	max-width: 32px;
 	z-index: 3;
 	}
 .buddyicon {
