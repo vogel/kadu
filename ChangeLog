@@ -33,6 +33,8 @@
 * chat: #1679, #1702 fixed: messages with emoticons are not scrolled properly in kadu styles (WhE)
 * jabber: #1650 fixed: add an option to disable typing and gone notifications (WhE)
 * jabber: #1678 fixed: do not ask for adding a contact requesting authorization when the contact is already on list (WhE)
+* history: #1623 fixed: cleanup history module configuration (WhE)
+* history: add an option to not save chats with anonymous buddies in history (WhE)
 
 +++ version 0.6.6-beta10
 * modules: don't build echo module by default (beevvy)

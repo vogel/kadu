@@ -362,6 +362,10 @@ void History::enqueueMessage(const Message &message)
 	if (!CurrentStorage || !SaveChats)
 		return;
 
+	if (!SaveChatsWithAnonymous && message.messageChat().contacts().count() == 1
+		&& (*message.messageChat().contacts().begin()).ownerBuddy().isAnonymous())
+		return;
+
 	UnsavedDataMutex.lock();
 	UnsavedMessages.enqueue(message);
 	UnsavedDataMutex.unlock();
@@ -439,119 +443,15 @@ void History::stopSaveThread()
 
 void History::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
-// 	ConfigGroupBox *chatsGroupBox = mainConfigurationWindow->widget()->configGroupBox("Chat", "History", "Chats history");
-	//TODO 0.6.6:
-/*	QWidget *selectedChatsUsersWidget = new QWidget(chatsGroupBox->widget());
-	QGridLayout *selectedChatsUsersLayout = new QGridLayout(selectedChatsUsersWidget);
-	selectedChatsUsersLayout->setSpacing(5);
-	selectedChatsUsersLayout->setMargin(5);
-
-	allChatsUsers = new QListWidget(selectedChatsUsersWidget);
-	QPushButton *moveToSelectedChatsList = new QPushButton(tr("Move to 'Selected list'"), selectedChatsUsersWidget);
-
-	selectedChatsUsersLayout->addWidget(new QLabel(tr("User list"), selectedChatsUsersWidget), 0, 0);
-	selectedChatsUsersLayout->addWidget(allChatsUsers, 1, 0);
-	selectedChatsUsersLayout->addWidget(moveToSelectedChatsList, 2, 0);
-
-	selectedChatsUsers = new QListWidget(selectedChatsUsersWidget);
-	QPushButton *moveToAllChatsList = new QPushButton(tr("Move to 'User list'"), selectedChatsUsersWidget);
-
-	selectedChatsUsersLayout->addWidget(new QLabel(tr("Selected list"), selectedChatsUsersWidget), 0, 1);
-	selectedChatsUsersLayout->addWidget(selectedChatsUsers, 1, 1);
-	selectedChatsUsersLayout->addWidget(moveToAllChatsList, 2, 1);
-
-	connect(moveToSelectedChatsList, SIGNAL(clicked()), this, SLOT(moveToSelectedChatsList()));
-	connect(moveToAllChatsList, SIGNAL(clicked()), this, SLOT(moveToAllChatsList()));
-
-	chatsGroupBox->addWidgets(0, selectedChatsUsersWidget);
-	foreach(const UserListElement &user, *userlist)
-		if (!user.protocolList().isEmpty() && !user.isAnonymous())
-			if (!user.data("history_save_chats").toBool())
-				allChatsUsers->addItem(user.altNick());
-			else
-				selectedChatsUsers->addItem(user.altNick());
-
-	allChatsUsers->sortItems();
-	selectedChatsUsers->sortItems();
-	allChatsUsers->setSelectionMode(QAbstractItemView::ExtendedSelection);
-	selectedChatsUsers->setSelectionMode(QAbstractItemView::ExtendedSelection);
-
-	connect(selectedChatsUsers, SIGNAL(doubleClicked(QListWidgetItem *)), this, SLOT(moveToAllChatsList()));
-	connect(allChatsUsers, SIGNAL(doubleClicked(QListWidgetItem *)), this, SLOT(moveToSelectedChatsList()));
-
-	ConfigGroupBox *statusGroupBox = mainConfigurationWindow->widget()->configGroupBox("Chat", "History", "Status changes");
-	QWidget *selectedStatusUsersWidget = new QWidget(statusGroupBox->widget());
-	QGridLayout *selectedStatusUsersLayout = new QGridLayout(selectedStatusUsersWidget);
-	selectedStatusUsersLayout->setSpacing(5);
-	selectedStatusUsersLayout->setMargin(5);
-
-	allStatusUsers = new QListWidget(selectedStatusUsersWidget);
-	QPushButton *moveToSelectedStatusList = new QPushButton(tr("Move to 'Selected list'"), selectedStatusUsersWidget);
-
-	selectedStatusUsersLayout->addWidget(new QLabel(tr("User list"), selectedStatusUsersWidget), 0, 0);
-	selectedStatusUsersLayout->addWidget(allStatusUsers, 1, 0);
-	selectedStatusUsersLayout->addWidget(moveToSelectedStatusList, 2, 0);
-
-	selectedStatusUsers = new QListWidget(selectedStatusUsersWidget);
-	QPushButton *moveToAllStatusList = new QPushButton(tr("Move to 'User list'"), selectedStatusUsersWidget);
-
-	selectedStatusUsersLayout->addWidget(new QLabel(tr("Selected list"), selectedStatusUsersWidget), 0, 1);
-	selectedStatusUsersLayout->addWidget(selectedStatusUsers, 1, 1);
-	selectedStatusUsersLayout->addWidget(moveToAllStatusList, 2, 1);
-
-	connect(moveToSelectedStatusList, SIGNAL(clicked()), this, SLOT(moveToSelectedStatusList()));
-	connect(moveToAllStatusList, SIGNAL(clicked()), this, SLOT(moveToAllStatusList()));
-
-	statusGroupBox->addWidgets(0, selectedStatusUsersWidget);
-	foreach(const UserListElement &user, *userlist)
-		if (!user.protocolList().isEmpty() && !user.isAnonymous())
-			if (!user.data("history_save_status").toBool())
-				allStatusUsers->addItem(user.altNick());
-			else
-				selectedStatusUsers->addItem(user.altNick());
-
-	allStatusUsers->sortItems();
-	selectedStatusUsers->sortItems();
-	allStatusUsers->setSelectionMode(QAbstractItemView::ExtendedSelection);
-	selectedStatusUsers->setSelectionMode(QAbstractItemView::ExtendedSelection);
-
-	connect(selectedStatusUsers, SIGNAL(doubleClicked(QListWidgetItem *)), this, SLOT(moveToAllStatusList()));
-	connect(allStatusUsers, SIGNAL(doubleClicked(QListWidgetItem *)), this, SLOT(moveToSelectedStatusList()));
-	*/
 	dontCiteOldMessagesLabel = dynamic_cast<QLabel *>(mainConfigurationWindow->widget()->widgetById("history/dontCiteOldMessagesLabel"));
 	connect(mainConfigurationWindow->widget()->widgetById("history/dontCiteOldMessages"), SIGNAL(valueChanged(int)),
 		this, SLOT(updateQuoteTimeLabel(int)));
 
 	connect(mainConfigurationWindow->widget()->widgetById("history/save"), SIGNAL(toggled(bool)),
-		mainConfigurationWindow->widget()->widgetById("history/chats"), SLOT(setEnabled(bool)));
-
-	connect(mainConfigurationWindow->widget()->widgetById("history/save"), SIGNAL(toggled(bool)),
-		mainConfigurationWindow->widget()->widgetById("history/statusChanges"), SLOT(setEnabled(bool)));
-
-	connect(mainConfigurationWindow->widget()->widgetById("history/save"), SIGNAL(toggled(bool)),
-		mainConfigurationWindow->widget()->widgetById("history/citation"), SLOT(setEnabled(bool)));
-
-//	connect(mainConfigurationWindow->widget()->widgetById("history/savestatusforall"), SIGNAL(toggled(bool)), selectedStatusUsersWidget, SLOT(setDisabled(bool)));
-
-	connect(mainConfigurationWindow->widget()->widgetById("history/save"), SIGNAL(toggled(bool)),
 		mainConfigurationWindow->widget()->widgetById("history/savechatswithanonymous"), SLOT(setEnabled(bool)));
-//	connect(mainConfigurationWindow->widget()->widgetById("history/savechats"), SIGNAL(toggled(bool)),
-//		mainConfigurationWindow->widget()->widgetById("history/saveundeliveredmsgs"), SLOT(setEnabled(bool)));
-//	connect(mainConfigurationWindow->widget()->widgetById("history/savechats"), SIGNAL(toggled(bool)),
-//		selectedChatsUsersWidget, SLOT(setEnabled(bool)));
-	connect(mainConfigurationWindow->widget()->widgetById("history/save"), SIGNAL(toggled(bool)),
-		mainConfigurationWindow->widget()->widgetById("history/savechatsforall"), SLOT(setEnabled(bool)));
 
-//	connect(mainConfigurationWindow->widget()->widgetById("history/savechatsforall"), SIGNAL(toggled(bool)), selectedChatsUsersWidget, SLOT(setDisabled(bool)));
-	connect(mainConfigurationWindow->widget()->widgetById("history/savestatuschanges"), SIGNAL(toggled(bool)),
-		mainConfigurationWindow->widget()->widgetById("history/ignoresomestatuschanges"), SLOT(setEnabled(bool)));
 	connect(mainConfigurationWindow->widget()->widgetById("history/savestatuschanges"), SIGNAL(toggled(bool)),
 		mainConfigurationWindow->widget()->widgetById("history/saveonlystatuswithdescription"), SLOT(setEnabled(bool)));
-//	connect(mainConfigurationWindow->widget()->widgetById("history/savestatuschanges"), SIGNAL(toggled(bool)),
-//		selectedStatusUsersWidget, SLOT(setEnabled(bool)));
-	connect(mainConfigurationWindow->widget()->widgetById("history/savestatuschanges"), SIGNAL(toggled(bool)),
-		mainConfigurationWindow->widget()->widgetById("history/savestatusforall"), SLOT(setEnabled(bool)));
-	connect(mainConfigurationWindow, SIGNAL(configurationWindowApplied()), this, SLOT(configurationWindowApplied()));
 }
 
 void History::updateQuoteTimeLabel(int value)
@@ -559,32 +459,12 @@ void History::updateQuoteTimeLabel(int value)
 	dontCiteOldMessagesLabel->setText(tr("%1 day(s) %2 hour(s)").arg(-value / 24).arg((-value) % 24));
 }
 
-void History::configurationWindowApplied()
-{
-/*
-	int count = selectedStatusUsers->count();
-	for (int i = 0; i < count; i++)
-		userlist->byAltNick(selectedStatusUsers->item(i)->text()).setData("history_save_status", true, true, i+1 == count);
-
-	count = allStatusUsers->count();
-	for (int i = 0; i < count; i++)
-		userlist->byAltNick(allStatusUsers->item(i)->text()).setData("history_save_status", false, true, i+1 == count);
-
-  	count = selectedChatsUsers->count();
-	for (int i = 0; i < count; i++)
-		userlist->byAltNick(selectedChatsUsers->item(i)->text()).setData("history_save_chats", true, true, i+1 == count );
-
-	count = allChatsUsers->count();
-	for (int i = 0; i < count; i++)
-		userlist->byAltNick(allChatsUsers->item(i)->text()).setData("history_save_chats", false, true, i+1 == count);
-*/
-}
-
 void History::configurationUpdated()
 {
 	kdebugf();
 
 	SaveChats = config_file.readBoolEntry("History", "SaveChats", true);
+	SaveChatsWithAnonymous = config_file.readBoolEntry("History", "SaveChatsWithAnonymous", true);
 	SaveStatuses = config_file.readBoolEntry("History", "SaveStatusChanges", false);
 	SaveOnlyStatusesWithDescription = config_file.readBoolEntry("History", "SaveOnlyStatusWithDescription", false);
 
@@ -730,17 +610,14 @@ void History::createDefaultConfiguration()
 {
 	config_file.addVariable("History", "SaveChats", config_file.readBoolEntry("History", "Logging", true));
 	config_file.removeVariable("History", "Logging");
+
 	config_file.addVariable("ShortCuts", "kadu_viewhistory", "Ctrl+H");
 
 	config_file.addVariable("History", "SaveStatusChanges", true);
-	config_file.addVariable("History", "ShowStatusChanges", true);
 
 	config_file.addVariable("History", "SaveChatsWithAnonymous", true);
-	config_file.addVariable("History", "SaveChatsForAll", true);
 
-	config_file.addVariable("History", "IgnoreSomeStatusChanges", false);
 	config_file.addVariable("History", "SaveOnlyStatusWithDescription", true);
-	config_file.addVariable("History", "SaveStatusChangesForAll", true);
 
 	config_file.addVariable("History", "ChatHistoryCitation", 10);
 	config_file.addVariable("History", "ChatHistoryQuotationTime", -24);
