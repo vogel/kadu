@@ -37,6 +37,7 @@
 * history: add an option to not save chats with anonymous buddies in history (WhE)
 * gui: #1715 fixed: information panel preview doesn't work (WhE)
 * core: #1665 fixed: prefer contacts from connected accounts to disconnected ones (WhE)
+* jabber: clickable emails in buddy personal info (badboy)
 
 +++ version 0.6.6-beta10
 * modules: don't build echo module by default (beevvy)
