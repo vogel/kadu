@@ -33,6 +33,8 @@ class HintsConfigurationUiHandler : public ConfigurationUiHandler
 	Q_OBJECT
 
 private:
+	ConfigurationWindow *AdvancedWindow;
+
 	QFrame *previewHintsFrame;
 	QVBoxLayout *previewHintsLayout;
 
@@ -54,6 +56,9 @@ private:
 	void setPreviewLayoutDirection();
 
 private slots:
+	void showAdvanced();
+	void advancedDestroyed();
+
 	void minimumWidthChanged(int value);
 	void maximumWidthChanged(int value);
 	
@@ -76,6 +81,7 @@ public:
 	virtual ~HintsConfigurationUiHandler();
 
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
+
 };
 
 #endif // HINTS_CONFIGURATION_UI_HANDLER_H
