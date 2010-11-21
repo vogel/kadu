@@ -27,9 +27,9 @@ GatewayEra.prototype = {
 		return "02";
 	},
 
-	sendSms: function(recipient, sender, signature, content, callbackObject) {
+	sendSms: function(recipient, signature, content, callbackObject) {
 		var sender = new EraGatewaySmsSender();
-		sender.sendSms(recipient, sender, signature, content, callbackObject);
+		sender.sendSms(recipient, signature, content, callbackObject);
 	}
 };
 
@@ -49,7 +49,7 @@ EraGatewaySmsSender.prototype = {
 		this.callbackObject.result();
 	},
 
-	sendSms: function(recipient, sender, signature, content, callbackObject) {
+	sendSms: function(recipient, signature, content, callbackObject) {
 		this.callbackObject = callbackObject;
 
 		if (!network) {

@@ -150,7 +150,6 @@ void SmsInternalSender::sendSms()
 	QScriptValueList arguments;
 	arguments.append(GatewayId);
 	arguments.append(number());
-	arguments.append(contact());
 	arguments.append(signature());
 	arguments.append(Message);
 	arguments.append(engine->newQObject(this));
