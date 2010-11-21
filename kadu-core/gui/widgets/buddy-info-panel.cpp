@@ -55,6 +55,8 @@ BuddyInfoPanel::~BuddyInfoPanel()
 
 void BuddyInfoPanel::configurationUpdated()
 {
+	EmoticonsManager::instance()->configurationUpdated();
+
 	update();
 }
 

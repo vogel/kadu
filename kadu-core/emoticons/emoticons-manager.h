@@ -29,7 +29,6 @@
 #ifndef EMOTICONS_MANAGER_H
 #define EMOTICONS_MANAGER_H
 
-#include "configuration/configuration-aware-object.h"
 #include "emoticons/emoticons.h"
 #include "themes.h"
 
@@ -40,7 +39,7 @@ class HtmlDocument;
 /**
 	Menad�er emotikon�w
 **/
-class KADUAPI EmoticonsManager : public QObject, ConfigurationAwareObject
+class KADUAPI EmoticonsManager : public QObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(EmoticonsManager)
@@ -72,9 +71,6 @@ class KADUAPI EmoticonsManager : public QObject, ConfigurationAwareObject
 	bool loadGGEmoticonThemePart(const QString &themeSubDirPath);
 	bool loadGGEmoticonTheme(const QString &themeDirPath);
 	void loadTheme();
-
-protected:
-	virtual void configurationUpdated();
 
 public:
 	static EmoticonsManager * instance();
@@ -117,6 +113,7 @@ public:
 	**/
 	QString selectorStaticPath(int emot_num) const;
 
+	void configurationUpdated();
 };
 
 #endif // EMOTICONS_MANAGER_H
