@@ -34,6 +34,7 @@ public:
 
 	virtual void fetchAvatar(Contact contact);
 	virtual void uploadAvatar(QImage avatar);
+
 };
 
 #endif // JABBER_AVATAR_SERVICE_H

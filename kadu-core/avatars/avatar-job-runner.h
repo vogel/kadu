@@ -36,7 +36,7 @@ class KADUAPI AvatarJobRunner : public QObject
 	AvatarService * avatarService(Contact contact);
 
 private slots:
-	void avatarFetched(Contact contact, bool ok, const QByteArray &data);
+	void avatarFetched(Contact contact, bool ok);
 
 public:
 	explicit AvatarJobRunner(QObject *parent);

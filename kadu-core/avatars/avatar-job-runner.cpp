@@ -58,30 +58,15 @@ void AvatarJobRunner::runJob(Contact contact)
 	if (!service)
 		return;
 
-	connect(service, SIGNAL(avatarFetched(Contact,bool,QByteArray)),
-			this, SLOT(avatarFetched(Contact,bool,QByteArray)));
+	connect(service, SIGNAL(avatarFetched(Contact,bool)),
+			this, SLOT(avatarFetched(Contact,bool)));
 	service->fetchAvatar(contact);
 }
 
-void AvatarJobRunner::avatarFetched(Contact contact, bool ok, const QByteArray &data)
+void AvatarJobRunner::avatarFetched(Contact contact, bool ok)
 {
-	if (!ok)
-	{
-		emit jobFinished(false);
-		deleteLater();
-		return;
-	}
+	Q_UNUSED(contact)
 
-	Avatar avatar = AvatarManager::instance()->byContact(contact, ActionCreateAndAdd);
-	avatar.setLastUpdated(QDateTime::currentDateTime());
-
-	QPixmap pixmap;
-	if (!data.isEmpty())
-		pixmap.loadFromData(data);
-
-	avatar.setPixmap(pixmap);
-
-	emit jobFinished(true);
-
+	emit jobFinished(ok);
 	deleteLater();
 }
