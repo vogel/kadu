@@ -2,6 +2,7 @@
  * %kadu copyright begin%
  * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
  * Copyright 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2010 Piotr Galiszewski (piotr.galiszewski@kadu.im)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -23,6 +24,7 @@
 #include <QtNetwork/QNetworkReply>
 #include <QtScript/QScriptEngine>
 
+#include "configuration/configuration-file.h"
 #include "gui/windows/message-dialog.h"
 #include "misc/token-reader.h"
 #include "debug.h"
@@ -129,6 +131,11 @@ void SmsInternalSender::tokenRead(const QString &tokenValue)
 	QScriptValueList arguments;
 	arguments.append(tokenValue);
 	TokenCallbackMethod.call(TokenCallbackObject, arguments);
+}
+
+QScriptValue SmsInternalSender::readFromConfiguration(const QString &group, const QString &name, const QString &defaultValue)
+{
+	return config_file.readEntry(group, name, defaultValue);
 }
 
 void SmsInternalSender::sendSms()

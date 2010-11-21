@@ -40,6 +40,7 @@
 * jabber: clickable emails in buddy personal info (badboy)
 * gui: #1697 fixed: Sating style now supports non-rectangual avatars (Vogel)
 * gui: general configuration window cleanup (Vogel)
+* sms: #1417 fixed: Era GSM Gateway support added (WhE)
 
 +++ version 0.6.6-beta10
 * modules: don't build echo module by default (beevvy)
