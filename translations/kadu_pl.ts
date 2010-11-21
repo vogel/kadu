@@ -3444,12 +3444,12 @@ Jeśli zechcesz włączyć (lub wyłączyć) któryś z nich, wystarczy dwukrotn
         <translation>Dostępna jest nowa wersja. Proszę zaktualizować</translation>
     </message>
     <message>
-        <source>A new version %1 of Kadu Instant Messenger is available for download. Please &lt;a href=&apos;download&apos;&gt;download&lt;/a&gt; an installer and upgrade or use your package management system to update Kadu.</source>
-        <translation>Nowa wersja %1 Kadu jest dostępna do pobrania. Proszę &lt;a href=&apos;download&apos;&gt;pobrać&lt;/a&gt; instalator i zaktualizować program albo skorzystać z narzędzi systemowych do aktualizacji pakietów.</translation>
+		<source>A new version &lt;b&gt;%1&lt;/b&gt; of Kadu Instant Messenger is available for download. Please &lt;a href=&apos;download&apos;&gt;download&lt;/a&gt; an installer and upgrade or use your package management system to update Kadu.</source>
+		<translation>Nowa wersja &lt;b&gt;%1&lt;/b&gt; Kadu jest dostępna do pobrania. Proszę &lt;a href=&apos;download&apos;&gt;pobrać&lt;/a&gt; instalator i zaktualizować program albo skorzystać z narzędzi systemowych do aktualizacji pakietów.</translation>
     </message>
     <message>
-        <source>A new version %1 of Kadu Instant Messenger is available for download. Please &lt;a href=&apos;download&apos;&gt;download&lt;/a&gt; an installer and upgrade.</source>
-        <translation>Nowa wersja %1 Kadu jest dostępna do pobrania. Proszę &lt;a href=&apos;download&apos;&gt;pobrać&lt;/a&gt; instalator i zaktualizować program.</translation>
+		<source>A new version &lt;b&gt;%1&lt;/b&gt; of Kadu Instant Messenger is available for download. Please &lt;a href=&apos;download&apos;&gt;download&lt;/a&gt; an installer and upgrade.</source>
+		<translation>Nowa wersja &lt;b&gt;%1&lt;/b&gt; Kadu jest dostępna do pobrania. Proszę &lt;a href=&apos;download&apos;&gt;pobrać&lt;/a&gt; instalator i zaktualizować program.</translation>
     </message>
     <message>
         <source>Check for updates when Kadu is opened</source>

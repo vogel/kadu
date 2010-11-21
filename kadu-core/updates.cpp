@@ -42,9 +42,8 @@ Updates::Updates(QObject *parent) :
 		QObject(parent), UpdateChecked(false), HttpClient(0)
 {
 	kdebugf();
-
 	buildQuery();
-	triggerAllAccountsAdded();
+	triggerAllAccountsRegistered();
 }
 
 Updates::~Updates()

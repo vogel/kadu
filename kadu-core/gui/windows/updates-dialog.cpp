@@ -39,6 +39,7 @@ UpdatesDialog::UpdatesDialog(const QString &newestVersion, QWidget *parent) :
 	setWindowTitle(tr("New version is available. Please update"));
 
 	setAttribute(Qt::WA_DeleteOnClose);
+	setMinimumSize(QSize(450, 150));
 
 	QVBoxLayout *layout = new QVBoxLayout(this);
 
@@ -46,11 +47,11 @@ UpdatesDialog::UpdatesDialog(const QString &newestVersion, QWidget *parent) :
 	messageLabel->setWordWrap(true);
 
 #ifdef Q_WS_X11
-	messageLabel->setText(QString(tr("A new version %1 of Kadu Instant Messenger is available for download. "
+	messageLabel->setText(QString(tr("A new version <b>%1</b> of Kadu Instant Messenger is available for download. "
 							 "Please <a href='download'>download</a> an installer and upgrade or use "
 							 "your package management system to update Kadu.")).arg(newestVersion));
 #else
-	messageLabel->setText(QString(tr("A new version %1 of Kadu Instant Messenger is available for download. "
+	messageLabel->setText(QString(tr("A new version <b>%1</b> of Kadu Instant Messenger is available for download. "
 							 "Please <a href='download'>download</a> an installer and upgrade.")).arg(newestVersion));
 #endif
 
@@ -71,6 +72,7 @@ UpdatesDialog::UpdatesDialog(const QString &newestVersion, QWidget *parent) :
 	layout->addSpacing(5);
 	layout->addWidget(CheckForUpdates);
 	layout->setAlignment(CheckForUpdates, Qt::AlignRight);
+	layout->addStretch(100);
 	layout->addWidget(buttons);
 }
 
