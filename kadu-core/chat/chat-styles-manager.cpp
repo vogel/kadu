@@ -38,6 +38,7 @@
 #include "chat/message/message-render-info.h"
 #include "configuration/configuration-file.h"
 #include "core/core.h"
+#include "emoticons/emoticons-manager.h"
 #include "gui/widgets/chat-messages-view.h"
 #include "gui/widgets/preview.h"
 #include "gui/widgets/configuration/configuration-widget.h"
@@ -119,6 +120,7 @@ void ChatStylesManager::chatViewDestroyed(ChatMessagesView *view)
 
 void ChatStylesManager::configurationUpdated()
 {
+	EmoticonsManager::instance()->configurationUpdated();
 	if (config_file.readBoolEntry("Chat", "ChatPrune"))
 		Prune = config_file.readUnsignedNumEntry("Chat", "ChatPruneLen");
 	else

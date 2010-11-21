@@ -42,6 +42,7 @@
 * gui: general configuration window cleanup (Vogel)
 * sms: #1417 fixed: Era GSM Gateway support added (WhE)
 * gui: #1722 fixed: insert emoticons action should be disabled, when emoticons are disabled in configuration (WhE)
+* gui: #1723 fixed: fix refreshing emoticons after changing theme in configuration (WhE)
 
 +++ version 0.6.6-beta10
 * modules: don't build echo module by default (beevvy)
