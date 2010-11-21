@@ -11,7 +11,6 @@
 
 #include "buddies/buddy-manager.h"
 #include "chat/chat.h"
-#include "configuration/configuration-aware-object.h"
 #include "gui/actions/action.h"
 #include "gui/windows/main-configuration-window.h"
 
@@ -23,7 +22,7 @@ class QListWidget;
 class QProcess;
 class QTextEdit;
 
-class SMSAPI SmsConfigurationUiHandler : public ConfigurationUiHandler, ConfigurationAwareObject
+class SMSAPI SmsConfigurationUiHandler : public ConfigurationUiHandler
 {
 	Q_OBJECT
 
@@ -31,15 +30,8 @@ class SMSAPI SmsConfigurationUiHandler : public ConfigurationUiHandler, Configur
 	QLineEdit *customApp;
 	QCheckBox *useCustomString;
 	QLineEdit *customString;
-	QListWidget *gatewayListWidget;
 
 	void createDefaultConfiguration();
-
-private slots:
-	void mainConfigurationWindowDestroyed();
-
-protected:
-	virtual void configurationUpdated();
 
 public:
 	SmsConfigurationUiHandler();
@@ -49,8 +41,7 @@ public:
 
 public slots:
 	void onSmsBuildInCheckToggle(bool);
-	void onUpButton();
-	void onDownButton();
+
 };
 
 extern SMSAPI SmsConfigurationUiHandler *smsConfigurationUiHandler;

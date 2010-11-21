@@ -105,14 +105,18 @@ p {margin: 0px;overflow: hidden;}
 	background: url("../images/header/header_sender_bg.png") no-repeat;
 	position: relative;
 	#-webkit-transform:rotate(14deg);
-	width: 46px;
-	height: 46px;
+	max-width: 46px;
+	max-height: 46px;
 	margin-left: 14px;
 	margin-top: 4px;
 	padding: 3px 5px 7px 6px;
 	float: left;
 	z-index: 200;
 	}
+#headerImage img {
+	max-width: 46px;
+	max-height: 46px;
+}
 #headerChatWho {
 	color: #787878;
 	font: 10px "HelveticaNeue-Light", "Helvetica Neue", Helvetica;

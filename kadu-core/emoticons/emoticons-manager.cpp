@@ -149,7 +149,7 @@ bool EmoticonsManager::loadGGEmoticonThemePart(const QString &themeSubDirPath)
 			multi = true;
 			++i;
 		}
-		for(;;)
+		for (;;)
 		{
 			aliases.append(getQuoted(line, i));
 			if (!multi || i >= lineLength || line[i] == ')')
@@ -168,7 +168,7 @@ bool EmoticonsManager::loadGGEmoticonThemePart(const QString &themeSubDirPath)
 		else
 			item.stat = item.anim;
 
-		foreach(const QString &alias, aliases)
+		foreach (const QString &alias, aliases)
 		{
 			item.alias = alias;
 			item.escapedAlias = alias;
@@ -243,7 +243,7 @@ void EmoticonsManager::expandEmoticons(HtmlDocument &doc, EmoticonsStyle style)
 
 	kdebugm(KDEBUG_INFO, "Expanding emoticons...\n");
 	// iterate through parsed html parts of message
-	for(int e_i = 0; e_i < doc.countElements(); ++e_i)
+	for (int e_i = 0; e_i < doc.countElements(); ++e_i)
 	{
 		// emots are not expanded in html tags
 		if (doc.isTagElement(e_i))
@@ -258,7 +258,7 @@ void EmoticonsManager::expandEmoticons(HtmlDocument &doc, EmoticonsStyle style)
 		// intitialize automata for checking occurrences
 		// of emots in text
 		walker -> initWalking();
-		for(unsigned int j = 0, textlength = text.length(); j < textlength; ++j)
+		for (unsigned int j = 0, textlength = text.length(); j < textlength; ++j)
 		{
 			// find out if there is some emot occurrence when we
 			// add current character

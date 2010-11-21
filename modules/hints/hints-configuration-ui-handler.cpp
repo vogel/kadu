@@ -28,6 +28,7 @@
 #include <QtGui/QSpinBox>
 
 #include "buddies/buddy-preferred-manager.h"
+#include "configuration/config-file-data-manager.h"
 #include "core/core.h"
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"
@@ -40,7 +41,7 @@
 #include "hints-configuration-ui-handler.h"
 
 HintsConfigurationUiHandler::HintsConfigurationUiHandler(QObject *parent, QString style):
-	overUserConfigurationWindow(0)
+	AdvancedWindow(0), overUserConfigurationWindow(0)
 {
 #ifdef Q_OS_MAC
 	previewHintsFrame = new QFrame(dynamic_cast<QWidget *>(parent), Qt::FramelessWindowHint | Qt::SplashScreen | Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint |Qt::MSWindowsOwnDC);
@@ -66,34 +67,12 @@ HintsConfigurationUiHandler::~HintsConfigurationUiHandler()
 
 void HintsConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
-   	connect(mainConfigurationWindow, SIGNAL(destroyed(QObject *)), this, SLOT(mainConfigurationWindowDestroyed()));
+	connect(mainConfigurationWindow, SIGNAL(destroyed(QObject *)), this, SLOT(mainConfigurationWindowDestroyed()));
+
+	connect(mainConfigurationWindow->widget()->widgetById("hints/advanced"), SIGNAL(clicked()), this, SLOT(showAdvanced()));
 
 	connect(mainConfigurationWindow->widget()->widgetById("hints/showContent"), SIGNAL(toggled(bool)),
 	mainConfigurationWindow->widget()->widgetById("hints/showContentCount"), SLOT(setEnabled(bool)));
-
-	newHintUnder = dynamic_cast<QComboBox *>(mainConfigurationWindow->widget()->widgetById("hints/newHintUnder"));
-
-	ownPosition = dynamic_cast<QCheckBox *>(mainConfigurationWindow->widget()->widgetById("hints/ownPosition"));
-	connect(ownPosition, SIGNAL(toggled(bool)), mainConfigurationWindow->widget()->widgetById("hints/ownPositionX"), SLOT(setEnabled(bool)));
-	connect(ownPosition, SIGNAL(toggled(bool)), mainConfigurationWindow->widget()->widgetById("hints/ownPositionY"), SLOT(setEnabled(bool)));
-	connect(ownPosition, SIGNAL(toggled(bool)), mainConfigurationWindow->widget()->widgetById("hints/ownPositionCorner"), SLOT(setEnabled(bool)));
-	connect(ownPosition, SIGNAL(toggled(bool)), this, SLOT(updateHintsPreview()));
-
-	minimumWidth = dynamic_cast<QSpinBox *>(mainConfigurationWindow->widget()->widgetById("hints/minimumWidth"));
-	maximumWidth = dynamic_cast<QSpinBox *>(mainConfigurationWindow->widget()->widgetById("hints/maximumWidth"));
-	connect(minimumWidth, SIGNAL(valueChanged(int)), this, SLOT(minimumWidthChanged(int)));
-	connect(maximumWidth, SIGNAL(valueChanged(int)), this, SLOT(maximumWidthChanged(int)));
-
-	xPosition = dynamic_cast<QSpinBox *>(mainConfigurationWindow->widget()->widgetById("hints/ownPositionX"));
-	connect(xPosition, SIGNAL(valueChanged(int)), this, SLOT(updateHintsPreview()));
-	yPosition = dynamic_cast<QSpinBox *>(mainConfigurationWindow->widget()->widgetById("hints/ownPositionY"));
-	connect(yPosition, SIGNAL(valueChanged(int)), this, SLOT(updateHintsPreview()));
-
-	QPushButton *previewButton = dynamic_cast<QPushButton *>(mainConfigurationWindow->widget()->widgetById("hints/preview"));
-	connect(previewButton, SIGNAL(clicked()), this, SLOT(addHintsPreview()));
-
-	ownPositionCorner = dynamic_cast<QComboBox *>(mainConfigurationWindow->widget()->widgetById("hints/ownPositionCorner"));
-	connect(ownPositionCorner, SIGNAL(currentIndexChanged(int)), this, SLOT(updateHintsPreview()));
 
 	connect(mainConfigurationWindow->widget()->widgetById("toolTipClasses"), SIGNAL(currentIndexChanged(const QString &)),
 		this, SLOT(toolTipClassesHighlighted(const QString &)));
@@ -126,6 +105,48 @@ void HintsConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurati
 	lay->addWidget(configureOverUserHint);
 
 	toolTipBox->addWidgets(new QLabel("Hint over buddy list: "), configureHint);
+}
+
+void HintsConfigurationUiHandler::showAdvanced()
+{
+	if (!AdvancedWindow)
+	{
+		AdvancedWindow = new ConfigurationWindow("HintsAdvanced", tr("Advenced hints's configuration"), "Notification", MainConfigurationWindow::instanceDataManager());
+		AdvancedWindow->widget()->appendUiFile(dataPath("kadu/modules/configuration/hints-advanced.ui"));
+
+		newHintUnder = dynamic_cast<QComboBox *>(AdvancedWindow->widget()->widgetById("hints/newHintUnder"));
+
+		ownPosition = dynamic_cast<QCheckBox *>(AdvancedWindow->widget()->widgetById("hints/ownPosition"));
+		connect(ownPosition, SIGNAL(toggled(bool)), AdvancedWindow->widget()->widgetById("hints/ownPositionX"), SLOT(setEnabled(bool)));
+		connect(ownPosition, SIGNAL(toggled(bool)), AdvancedWindow->widget()->widgetById("hints/ownPositionY"), SLOT(setEnabled(bool)));
+		connect(ownPosition, SIGNAL(toggled(bool)), AdvancedWindow->widget()->widgetById("hints/ownPositionCorner"), SLOT(setEnabled(bool)));
+		connect(ownPosition, SIGNAL(toggled(bool)), this, SLOT(updateHintsPreview()));
+
+		minimumWidth = dynamic_cast<QSpinBox *>(AdvancedWindow->widget()->widgetById("hints/minimumWidth"));
+		maximumWidth = dynamic_cast<QSpinBox *>(AdvancedWindow->widget()->widgetById("hints/maximumWidth"));
+		connect(minimumWidth, SIGNAL(valueChanged(int)), this, SLOT(minimumWidthChanged(int)));
+		connect(maximumWidth, SIGNAL(valueChanged(int)), this, SLOT(maximumWidthChanged(int)));
+
+		xPosition = dynamic_cast<QSpinBox *>(AdvancedWindow->widget()->widgetById("hints/ownPositionX"));
+		connect(xPosition, SIGNAL(valueChanged(int)), this, SLOT(updateHintsPreview()));
+		yPosition = dynamic_cast<QSpinBox *>(AdvancedWindow->widget()->widgetById("hints/ownPositionY"));
+		connect(yPosition, SIGNAL(valueChanged(int)), this, SLOT(updateHintsPreview()));
+
+		ownPositionCorner = dynamic_cast<QComboBox *>(AdvancedWindow->widget()->widgetById("hints/ownPositionCorner"));
+		connect(ownPositionCorner, SIGNAL(currentIndexChanged(int)), this, SLOT(updateHintsPreview()));
+
+		QPushButton *previewButton = dynamic_cast<QPushButton *>(AdvancedWindow->widget()->widgetById("hints/preview"));
+		connect(previewButton, SIGNAL(clicked()), this, SLOT(addHintsPreview()));
+
+		connect(AdvancedWindow, SIGNAL(destroyed()), this, SLOT(advancedDestroyed()));
+	}
+
+	AdvancedWindow->show();
+}
+
+void HintsConfigurationUiHandler::advancedDestroyed()
+{
+	AdvancedWindow = 0;
 }
 
 void HintsConfigurationUiHandler::addHintsPreview()

@@ -122,11 +122,6 @@ void SmsDialog::createGui()
 	LengthLabel = new QLabel("0", this);
 	formLayout->addRow(0, LengthLabel);
 
-	ContactEdit = new QLineEdit(this);
-	connect(ContactEdit, SIGNAL(returnPressed()), this, SLOT(editReturnPressed()));
-
-	formLayout->addRow(tr("Contact") + ':', ContactEdit);
-
 	SignatureEdit = new QLineEdit(config_file.readEntry("SMS", "SmsNick"), this);
 	connect(SignatureEdit, SIGNAL(returnPressed()), this, SLOT(editReturnPressed()));
 
@@ -243,7 +238,6 @@ void SmsDialog::sendSms()
 	}
 
 	connect(sender, SIGNAL(gatewayAssigned(QString,QString)), this, SLOT(gatewayAssigned(QString,QString)));
-	sender->setContact(ContactEdit->text());
 	sender->setSignature(SignatureEdit->text());
 
 	SmsProgressWindow *window = new SmsProgressWindow(sender);
@@ -265,7 +259,6 @@ void SmsDialog::clear()
 	RecipientComboBox->clear();
 	ProviderComboBox->clear();
 	ContentEdit->clear();
-	ContactEdit->clear();
 	SignatureEdit->clear();
 }
 

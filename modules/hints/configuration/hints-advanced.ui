@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration-ui>
+	<section name="Notifications">
+		<tab name="Hints">
+			<group-box name="Layout">
+				<combo-box caption="New hints go" config-section="Hints" config-item="NewHintUnder" id="hints/newHintUnder">
+					<item value="0" caption="Auto" />
+					<item value="1" caption="On top" />
+					<item value="2" caption="On bottom" />
+				</combo-box>
+				<check-box caption="Own hints position" config-section="Hints" config-item="UseUserPosition" id="hints/ownPosition" />
+				<spin-box caption="X" config-section="Hints" config-item="HintsPositionX" min-value="-10240" max-value="10240" id="hints/ownPositionX" suffix="px" />
+				<spin-box caption="Y" config-section="Hints" config-item="HintsPositionY" min-value="-10240" max-value="10240" id="hints/ownPositionY" suffix="px" />
+				<combo-box caption="Corner" config-section="Hints" config-item="Corner" id="hints/ownPositionCorner">
+					<item value="0" caption="Top left" />
+					<item value="1" caption="Top right" />
+					<item value="2" caption="Bottom left" />
+					<item value="3" caption="Bottom right" />
+				</combo-box>
+				<spin-box caption="Minimum width" config-section="Hints" config-item="MinimumWidth" min-value="0" max-value="10240" id="hints/minimumWidth" suffix="px" />
+				<spin-box caption="Maximum width" config-section="Hints" config-item="MaximumWidth" min-value="0" max-value="10240" id="hints/maximumWidth" suffix="px" />
+				<action-button caption="Hints position preview" id="hints/preview" />
+			</group-box>
+			<group-box name="Mouse Buttons">
+				<combo-box caption="Left button" config-section="Hints" config-item="LeftButton">
+					<item value="0" caption="Nothing" />
+					<item value="1" caption="Open chat" />
+					<item value="2" caption="Delete hint" />
+					<item value="3" caption="Delete all hints" />
+				</combo-box>
+				<combo-box caption="Middle button" config-section="Hints" config-item="MiddleButton">
+					<item value="0" caption="Nothing" />
+					<item value="1" caption="Open chat" />
+					<item value="2" caption="Delete hint" />
+					<item value="3" caption="Delete all hints" />
+				</combo-box>
+				<combo-box caption="Right button" config-section="Hints" config-item="RightButton">
+					<item value="0" caption="Nothing" />
+					<item value="1" caption="Open chat" />
+					<item value="2" caption="Delete hint" />
+					<item value="3" caption="Delete all hints" />
+				</combo-box>
+				<check-box caption="'Open chat' works on all events" config-section="Hints" config-item="OpenChatOnEveryNotification" />
+			</group-box>
+		</tab>
+	</section>
+</configuration-ui>

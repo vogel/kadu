@@ -74,6 +74,9 @@ void JabberAccountDetails::load()
 	setLegacySSLProbe(loadValue<bool>("LegacySSLProbe"));
 	setTlsOverrideCert(XMPP::Base64::decode(loadValue<QByteArray>("TlsOverrideCert")));
 	setTlsOverrideDomain(loadValue<QString>("TlsOverrideDomain"));
+
+	setSendTypingNotification(loadValue<bool>("SendTypingNotification", true));
+	setSendGoneNotification(loadValue<bool>("SendGoneNotification", true));
 }
 
 void JabberAccountDetails::store()
@@ -95,4 +98,7 @@ void JabberAccountDetails::store()
 	storeValue("LegacySSLProbe", legacySSLProbe());
 	storeValue("TlsOverrideCert", XMPP::Base64::encode(tlsOverrideCert()));
 	storeValue("TlsOverrideDomain", tlsOverrideDomain());
+
+	storeValue("SendTypingNotification", sendTypingNotification());
+	storeValue("SendGoneNotification", sendGoneNotification());
 }

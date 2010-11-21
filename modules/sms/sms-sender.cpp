@@ -46,11 +46,6 @@ bool SmsSender::validateSignature()
 	return !Signature.isEmpty();
 }
 
-void SmsSender::setContact(const QString &contact)
-{
-	Contact = contact;
-}
-
 void SmsSender::setSignature(const QString &signature)
 {
 	Signature = signature;

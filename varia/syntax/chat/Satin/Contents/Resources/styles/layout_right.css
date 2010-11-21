@@ -34,8 +34,8 @@
 	#border: 1px solid #999999;
 	}
 .buddyicon img {
-	height: 32px;
-	width: 32px;
+	max-height: 32px;
+	max-width: 32px;
 	#margin-top: 2px;
 	#margin-left: 4px;
 	z-index: 3;

@@ -91,6 +91,15 @@ void AvatarShared::store()
 
 	storeValue("LastUpdated", LastUpdated);
 	storeValue("NextUpdate", NextUpdate);
+
+	QDir avatarsDir(profilePath("avatars"));
+	if (!avatarsDir.exists())
+		avatarsDir.mkpath(profilePath("avatars"));
+
+	if (Pixmap.isNull())
+		QFile::remove(filePath());
+	else
+		Pixmap.save(filePath(), "PNG");
 }
 
 bool AvatarShared::shouldStore()
@@ -117,17 +126,8 @@ bool AvatarShared::isEmpty()
 
 void AvatarShared::setPixmap(QPixmap pixmap)
 {
-	QDir avatarsDir(profilePath("avatars"));
-	if (!avatarsDir.exists())
-		avatarsDir.mkpath(profilePath("avatars"));
-
 	Pixmap = pixmap;
 	dataUpdated();
-
-	if (pixmap.isNull())
-		QFile::remove(filePath());
-	else
-		pixmap.save(filePath(), "PNG");
 }
 
 void AvatarShared::emitUpdated()

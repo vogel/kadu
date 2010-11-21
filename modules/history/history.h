@@ -77,6 +77,7 @@ class HISTORYAPI History : public ConfigurationUiHandler, ConfigurationAwareObje
 	static History *Instance;
 
 	bool SaveChats;
+	bool SaveChatsWithAnonymous;
 	bool SaveStatuses;
 	bool SaveOnlyStatusesWithDescription;
 
@@ -126,7 +127,6 @@ private slots:
 	void chatCreated(ChatWidget *chatWidget);
 
 	void updateQuoteTimeLabel(int value);
-	void configurationWindowApplied();
 
 protected:
 	virtual void crash();

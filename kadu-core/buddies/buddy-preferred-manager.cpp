@@ -148,5 +148,12 @@ Contact BuddyPreferredManager::morePreferredContactByStatus(Contact c1, Contact 
 		return c2;
 	if (!c2)
 		return c1;
+
+	if (c1.contactAccount().data()->status().isDisconnected() && !c2.contactAccount().data()->status().isDisconnected())
+		return c2;
+
+	if (c2.contactAccount().data()->status().isDisconnected() && !c1.contactAccount().data()->status().isDisconnected())
+		return c1;
+
 	return Contact::contactWithHigherStatus(c1, c2);
 }

@@ -89,6 +89,7 @@ void JabberContactPersonalInfoWidget::createGui()
 
 	EmailText = new QLabel(this);
 	infoLayout->addRow(new QLabel(tr("E-Mail") + ':', infoWidget), EmailText);
+	connect(EmailText, SIGNAL(linkActivated(const QString &)), this, SLOT(urlClicked(const QString &)));
 
 	WebsiteText = new QLabel(this);
 	infoLayout->addRow(new QLabel(tr("Website") + ':', infoWidget), WebsiteText);
@@ -126,7 +127,7 @@ void JabberContactPersonalInfoWidget::personalInfoAvailable(Buddy buddy)
 		BirthdateText->clear();
 
 	CityText->setText(buddy.city());
-	EmailText->setText(buddy.email());
+	EmailText->setText(QString("<a href=\"mailto:%1\">%1</a>").arg(buddy.email()));
 	WebsiteText->setText(QString("<a href=\"%1\">%1</a>").arg(buddy.website()));
 }
 

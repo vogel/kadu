@@ -49,6 +49,7 @@ class ChatWidgetActions : public QObject, ConfigurationAwareObject
 	ActionDescription *ColorSelector;
 
 	void autoSendActionCheck();
+	void insertEmoticonsActionCheck();
 	void updateBlockingActions(Buddy buddy);
 
 private slots:

@@ -2,7 +2,7 @@
 <configuration-ui>
 	<section name="Chat">
 		<tab name="History">
-			<group-box name="General">
+			<group-box name="Import History">
 				<action-button caption="Import old history" id="history-migration/import" />
 			</group-box>
 		</tab>

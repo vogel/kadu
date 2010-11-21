@@ -38,8 +38,10 @@ class SoundFile
 	int SampleRate;
 
 	void loadData(const QString &path);
+#ifndef Q_OS_WIN
 	void loadFloatSamples(SNDFILE *f);
 	void loadIntSamples(SNDFILE *f);
+#endif
 
 public:
 	static void setVolume(short int *data, int length, float volume);

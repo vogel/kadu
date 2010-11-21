@@ -2,6 +2,7 @@
  * %kadu copyright begin%
  * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
  * Copyright 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2010 Piotr Galiszewski (piotr.galiszewski@kadu.im)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -60,6 +61,8 @@ public:
 public slots:
 	void gatewayQueryDone(const QString &gatewayId);
 	void readToken(const QString &tokenImageUrl, QScriptValue callbackObject, QScriptValue callbackMethod);
+
+	QScriptValue readFromConfiguration(const QString &group, const QString &name, const QString &defaultValue);
 
 	void result();
 	void failure(const QString &errorMessage);

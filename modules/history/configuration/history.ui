@@ -2,29 +2,20 @@
 <configuration-ui>
 	<section name="Chat">
 		<tab name="History">
-			<group-box name="General">
+			<group-box name="Chats History" id="history/chats">
 				<check-box caption="Save messages in history" config-section="History" config-item="SaveChats" id="history/save"
-					   tool-tip="Save messages in history" />
+						tool-tip="Save messages in history" />
+				<check-box caption="Save chats with anonymous users" config-section="History" config-item="SaveChatsWithAnonymous" id="history/savechatswithanonymous" />
 			</group-box>
 			<group-box name="Status Changes" id="history/statusChanges">
-				<check-box caption="Show status changes" config-section="History" config-item="ShowStatusChanges"
-					   tool-tip="Show status changes in history" />
 				<check-box caption="Save status changes" config-section="History" config-item="SaveStatusChanges"
 					   tool-tip="Save status changes in history" id="history/savestatuschanges"/>
+				<check-box caption="Save status only with description" config-section="History" config-item="SaveOnlyStatusWithDescription" id="history/saveonlystatuswithdescription" />
 			</group-box>
 			<group-box name="Quotation" id="history/citation">
 				<spin-box caption="Quote message in chat window" config-section="History" config-item="ChatHistoryCitation" min-value="0" max-value="200" />
 				<slider caption="Don't quote messages older than" config-section="History" config-item="ChatHistoryQuotationTime" min-value="-744" max-value="-1" page-step="24" id="history/dontCiteOldMessages" />
 				<label caption="." id="history/dontCiteOldMessagesLabel" />
-			</group-box>
-			<group-box name="Chats History" id="history/chats">
-				<check-box caption="Save chats with anonymous users" config-section="History" config-item="SaveChatsWithAnonymous" id="history/savechatswithanonymous" />
-				<check-box caption="Save for all users" config-section="History" config-item="SaveChatsForAll" id="history/savechatsforall" />
-			</group-box>
-			<group-box name="Status Changes" id="history/statusChanges">
-				<check-box caption="Ignore changes from available / busy to busy / available" config-section="History" config-item="IgnoreSomeStatusChanges" id="history/ignoresomestatuschanges" />
-				<check-box caption="Save status only with description" config-section="History" config-item="SaveOnlyStatusWithDescription" id="history/saveonlystatuswithdescription" />
-				<check-box caption="Save for all users" config-section="History" config-item="SaveStatusChangesForAll" id="history/savestatusforall" />
 			</group-box>
 		</tab>
 	</section>

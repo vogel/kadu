@@ -18,8 +18,8 @@
 			</group-box>
 			<group-box name="Default Language">
 				<combo-box caption="Language" config-section="General" config-item="Language" id="languages" tool-tip="Choose your language" />
-				<label caption="Kadu will use [regional application] as the default network in this configuration." />
-				<action-button caption="Change..." id="change-network" />
+				<!-- <label caption="Kadu will use [regional application] as the default network in this configuration." />
+				<action-button caption="Change..." id="change-network" /> -->
 			</group-box>
 		</tab>
 
@@ -157,6 +157,12 @@
 			<group-box name="Style">
 				<check-box caption="Turn on transparency" config-section="Chat" config-item="UseTransparency" id="useTransparency" />
 			</group-box>
+			<group-box name="Advanced">
+				<action-button caption="Advanced..." id="lookChatAdvanced" />
+			</group-box>
+		</tab>
+
+		<tab name="Emoticons">
 			<group-box name="Emoticons">
 				<combo-box caption="Emoticons theme" config-section="Chat" config-item="EmoticonsTheme" id="emoticonsTheme"
 					tool-tip="Choose emoticons theme" />
@@ -173,9 +179,6 @@
 				</combo-box>
 				<path-list-edit caption="Emoticons paths" config-section="Chat" config-item="EmoticonsPaths" id="emoticonsPaths"
 					tool-tip="Define emoticons paths" />
-			</group-box>
-			<group-box name="Advanced">
-				<action-button caption="Advanced..." id="lookChatAdvanced" />
 			</group-box>
 		</tab>
 

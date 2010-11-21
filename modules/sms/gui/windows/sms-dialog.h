@@ -44,7 +44,6 @@ class SmsDialog : public QWidget, ConfigurationAwareObject
 	QComboBox *ProviderComboBox;
 	QTextEdit *ContentEdit;
 	QLabel *LengthLabel;
-	QLineEdit *ContactEdit;
 	QLineEdit *SignatureEdit;
 	QPushButton *SendButton;
 	QCheckBox *SaveInHistoryCheckBox;

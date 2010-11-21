@@ -78,7 +78,6 @@ extern "C" KADU_EXPORT void sms_close()
 }
 
 SmsConfigurationUiHandler::SmsConfigurationUiHandler()
-	: gatewayListWidget(0)
 {
 	createDefaultConfiguration();
 }
@@ -103,98 +102,16 @@ void SmsConfigurationUiHandler::onSmsBuildInCheckToggle(bool value)
 	}
 }
 
-void SmsConfigurationUiHandler::configurationUpdated()
-{
-	if (!gatewayListWidget)
-		return;
-
-	QStringList priority;
-	for (int index = 0; index < gatewayListWidget->count(); ++index)
-			priority += gatewayListWidget->item(index)->text();
-
-	// FIXME: : instead of ;
-	config_file.writeEntry("SMS", "Priority", priority.join(";"));
-}
-
-void SmsConfigurationUiHandler::onUpButton()
-{
-	int index = gatewayListWidget->currentRow();
-	if (index < 1)
-		return;
-
-	QListWidgetItem * item = gatewayListWidget->takeItem(index);
-	gatewayListWidget->insertItem(--index, item);
-	item->setSelected(true);
-	gatewayListWidget->setCurrentItem(item);
-}
-
-void SmsConfigurationUiHandler::onDownButton()
-{
-	int index = gatewayListWidget->currentRow();
-	if (index == gatewayListWidget->count() - 1 || index == -1)
-		return;
-
-	QListWidgetItem *item = gatewayListWidget->takeItem(index);
-	gatewayListWidget->insertItem(++index, item);
-	item->setSelected(true);
-	gatewayListWidget->setCurrentItem(item);
-}
-
 void SmsConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
-	connect(mainConfigurationWindow, SIGNAL(destroyed(QObject *)), this, SLOT(mainConfigurationWindowDestroyed()));
-
 	useBuiltIn = dynamic_cast<QCheckBox *>(mainConfigurationWindow->widget()->widgetById("sms/useBuildInApp"));
 	customApp = dynamic_cast<QLineEdit *>(mainConfigurationWindow->widget()->widgetById("sms/customApp"));
 	useCustomString = dynamic_cast<QCheckBox *>(mainConfigurationWindow->widget()->widgetById("sms/useCustomString"));
 	customString = dynamic_cast<QLineEdit *>(mainConfigurationWindow->widget()->widgetById("sms/customString"));
 
-	ConfigGroupBox *gatewayGroupBox = mainConfigurationWindow->widget()->configGroupBox("SMS", "General", "Gateways");
-
-	QWidget *gatewayWidget = new QWidget(gatewayGroupBox->widget());
-
-	QHBoxLayout *gatewayLayout = new QHBoxLayout(gatewayWidget);
-	gatewayLayout->setSpacing(5);
-
-	gatewayListWidget = new QListWidget(gatewayWidget);
-
-	QWidget *buttons = new QWidget(gatewayWidget);
-	QVBoxLayout *buttonsLayout = new QVBoxLayout(buttons);
-	buttonsLayout->setSpacing(5);
-
-	QPushButton *up = new QPushButton(tr("Up"), buttons);
-	QPushButton *down = new QPushButton(tr("Down"), buttons);
-
-	buttonsLayout->addWidget(up);
-	buttonsLayout->addWidget(down);
-	buttonsLayout->addStretch(100);
-
-	gatewayLayout->addWidget(gatewayListWidget);
-	gatewayLayout->addWidget(buttons);
-
-	connect(up, SIGNAL(clicked()), this, SLOT(onUpButton()));
-	connect(down, SIGNAL(clicked()), this, SLOT(onDownButton()));
-
-	gatewayGroupBox->addWidgets(new QLabel(tr("Gateways priorites"), gatewayGroupBox->widget()), gatewayWidget);
-
 	connect(useBuiltIn, SIGNAL(toggled(bool)), this, SLOT(onSmsBuildInCheckToggle(bool)));
 	connect(useCustomString, SIGNAL(toggled(bool)), customString, SLOT(setEnabled(bool)));
 
-// TODO: fix it, should be ':' not ';'
-	QStringList priority = config_file.readEntry("SMS", "Priority").split(';');
-
-// 	foreach(const QString &gate, priority)
-// 		if (SmsGatewayManager::instance()->gateways().contains(gate))
-// 			gatewayListWidget->addItem(gate);
-
-// 	foreach(const QString &key, SmsGatewayManager::instance()->gateways().keys())
-// 		if (gatewayListWidget->findItems(key, 0).isEmpty())
-// 			gatewayListWidget->addItem(key);
-}
-
-void SmsConfigurationUiHandler::mainConfigurationWindowDestroyed()
-{
-	gatewayListWidget = 0; // protect configurationUpdated
 }
 
 void SmsConfigurationUiHandler::createDefaultConfiguration()
@@ -208,4 +125,3 @@ void SmsConfigurationUiHandler::createDefaultConfiguration()
 }
 
 SmsConfigurationUiHandler *smsConfigurationUiHandler;
-
