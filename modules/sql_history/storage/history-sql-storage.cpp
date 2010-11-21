@@ -43,6 +43,7 @@
 #include "misc/path-conversion.h"
 #include "gui/widgets/chat-widget.h"
 
+#include "modules/history/history.h"
 #include "modules/history/search/history-search-parameters.h"
 #include "modules/history/timed-status.h"
 
@@ -82,6 +83,7 @@ void HistorySqlStorage::initDatabase()
 		MessageDialog::show("dialog-warning", tr("Kadu"),
 				tr("It seems your Qt library does not provide support for selected database.\n "
 				   "Please select another driver in configuration window or install Qt with %1 plugin.").arg("QSQLITE"));
+		History::instance()->unregisterStorage(this);
 		return;
 	}
 
