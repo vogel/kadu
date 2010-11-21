@@ -1886,7 +1886,7 @@ zostaną zignorowane. Czy na pewno chcesz opuścić konferencję?</translation>
     <name>ChatWidgetActions</name>
     <message>
         <source>%1 Sends Message</source>
-        <translation>Użytkownik %1 wysyła wiadomość</translation>
+        <translation>%1 wysyła wiadomość</translation>
     </message>
     <message>
         <source>Clear Messages in Chat Window</source>
