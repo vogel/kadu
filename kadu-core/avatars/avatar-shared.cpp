@@ -128,6 +128,7 @@ void AvatarShared::setPixmap(QPixmap pixmap)
 {
 	Pixmap = pixmap;
 	dataUpdated();
+	emit pixmapUpdated();
 }
 
 void AvatarShared::emitUpdated()

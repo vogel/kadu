@@ -48,6 +48,7 @@ class KADUAPI AvatarManager : public QObject, public SimpleManager<Avatar>, Acco
 
 private slots:
 	void avatarDataUpdated();
+	void avatarPixmapUpdated();
 
 	void updateAvatars();
 	void updateAccountAvatars();

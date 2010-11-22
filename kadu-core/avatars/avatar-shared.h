@@ -71,6 +71,7 @@ public:
 
 signals:
 	void updated();
+	void pixmapUpdated();
 
 };
 
