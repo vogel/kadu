@@ -13,7 +13,7 @@ function alignChat(shouldScroll) {
 		}
 	}
 	
-	if (shouldScroll) setTimeout("scrollToBottom()", 0);
+	if (shouldScroll) scrollToBottom();
 }
 
 function scrollToBottom() {
