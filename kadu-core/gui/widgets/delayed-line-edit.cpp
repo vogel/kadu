@@ -1,6 +1,7 @@
 /*
  * %kadu copyright begin%
  * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyr
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -21,7 +22,7 @@
 
 
 DelayedLineEdit::DelayedLineEdit(QWidget *parent) :
-		QLineEdit(parent)
+		LineEditWithClearButton(parent)
 {
 	Timer.setSingleShot(true);
 	Timer.setInterval(1000);

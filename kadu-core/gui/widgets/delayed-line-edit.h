@@ -22,10 +22,11 @@
 #define DELAYED_LINE_EDIT_H
 
 #include <QtCore/QTimer>
-#include <QtGui/QLineEdit>
+
+#include "line-edit-with-clear-button.h"
 #include "exports.h"
 
-class KADUAPI DelayedLineEdit : public QLineEdit
+class KADUAPI DelayedLineEdit : public LineEditWithClearButton
 {
 	Q_OBJECT
 
