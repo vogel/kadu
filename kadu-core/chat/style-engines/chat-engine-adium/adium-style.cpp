@@ -118,9 +118,9 @@ void AdiumStyle::readConfiugrationFile()
 
 	StyleViewVersion = styleSettings.value("MessageViewVersion", 1).toInt();
 
-	DefaultVariant = styleSettings.value("DisplayNameForNoVariant", "").toString() + ".css";
+	DefaultVariant = styleSettings.value("DefaultVariant", "").toString() + ".css";
 	if (DefaultVariant == ".css")
-		DefaultVariant = styleSettings.value("DefaultVariant", "Default").toString() + ".css";
+		DefaultVariant = styleSettings.value("DisplayNameForNoVariant", "Default").toString() + ".css";
 }
 
 void AdiumStyle::loadHtmlFiles()
