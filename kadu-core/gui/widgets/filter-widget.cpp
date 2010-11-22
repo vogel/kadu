@@ -123,6 +123,9 @@ void FilterWidget::filterTextChanged(const QString &s)
 #else
 	emit textChanged(s);
 
+	if (!View)
+		return;
+
 	if (NameFilterEdit->text().isEmpty())
 	{
 		QModelIndexList selection = View->selectionModel()->selectedIndexes();

@@ -48,6 +48,7 @@
 * sms: #1742 fixed: double error messages after sending sms without signature (WhE)
 * gui: #1719 fixed: chat title is not updated after setting buddy name (WhE)
 * gui: #1746 fixed: invalid behaviour of "Edit buddy" action in main window (WhE)
+* history: #1739 part1 fixes: use FilterWidget for filtering chats view in history window (WhE)
 
 +++ version 0.6.6-beta10
 * modules: don't build echo module by default (beevvy)

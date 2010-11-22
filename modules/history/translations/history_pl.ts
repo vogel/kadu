@@ -211,7 +211,7 @@
     </message>
     <message>
         <location filename="../gui/windows/history-window.cpp" line="176"/>
-        <source>Filter</source>
+		<source>Search</source>
         <translation>Szukaj</translation>
     </message>
     <message>
