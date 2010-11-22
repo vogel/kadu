@@ -76,6 +76,12 @@ QString Avatar::filePath()
 	return isNull() ? QString::null : data()->filePath();
 }
 
+void Avatar::setFilePath(const QString& filePath)
+{
+	if (!isNull())
+		data()->setFilePath(filePath);
+}
+
 KaduSharedBase_PropertyBoolReadDef(Avatar, Empty, true)
 KaduSharedBase_PropertyDef(Avatar, Contact, avatarContact, AvatarContact, Contact::null)
 KaduSharedBase_PropertyDef(Avatar, QDateTime, lastUpdated, LastUpdated, QDateTime())
