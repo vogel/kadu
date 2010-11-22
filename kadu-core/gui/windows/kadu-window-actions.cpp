@@ -88,13 +88,17 @@ void checkBuddyProperties(Action *action)
 {
 	kdebugf();
 
-	if (!action->contact().isNull() && action->contact().ownerBuddy().isAnonymous())
+	if (action->contact() && action->contact().ownerBuddy().isAnonymous())
 	{
+		action->setEnabled(true);
+
 		action->setIcon(IconsManager::instance()->iconByPath("contact-new"));
 		action->setText(qApp->translate("KaduWindowActions", "Add Buddy"));
 	}
 	else
 	{
+		action->setEnabled(action->contact());
+
 		action->setText(qApp->translate("KaduWindowActions", "View Buddy Properties"));
 		action->setIcon(IconsManager::instance()->iconByPath("x-office-address-book"));
 	}
@@ -469,11 +473,12 @@ void KaduWindowActions::onlineAndDescUsersActionCreated(Action *action)
 void KaduWindowActions::editUserActionCreated(Action *action)
 {
 	Buddy buddy = action->buddy();
-	if (buddy.isAnonymous())
+	if (buddy && buddy.isAnonymous())
 	{
 		action->setIcon(IconsManager::instance()->iconByPath("contact-new"));
 		action->setText(tr("Add Buddy"));
 	}
+	action->setEnabled(action->contact());
 }
 
 void KaduWindowActions::showStatusActionCreated(Action *action)
