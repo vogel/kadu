@@ -181,19 +181,19 @@
     </message>
     <message>
         <source>Anonymous</source>
-        <translation>Nieznane</translation>
+		<translation>Nieznajomi</translation>
     </message>
     <message>
         <source>Ignore messages from anonymous users</source>
-        <translation>Ignoruj wiadomości od nieznanych użytkowników</translation>
+		<translation>Ignoruj wiadomości od nieznajomych użytkowników</translation>
     </message>
     <message>
         <source>Ignore messages from anonymous users also in conferences</source>
-        <translation>Ignoruj wiadomości od nieznanych użytkowników także w konferencjach</translation>
+		<translation>Ignoruj wiadomości od nieznajomych użytkowników także w konferencjach</translation>
     </message>
     <message>
         <source>Ignore richtext from anonymous users</source>
-        <translation>Ignoruj formatowane wiadomości od nieznanych użytkowników</translation>
+		<translation>Ignoruj formatowane wiadomości od nieznajomych użytkowników</translation>
     </message>
     <message>
         <source>Status</source>
