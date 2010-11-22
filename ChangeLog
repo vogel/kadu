@@ -51,6 +51,7 @@
 * history: #1739 part1 fixed: use FilterWidget for filtering chats view in history window (WhE)
 * gui: #1739 part2 fixed: use LineEditWithClearButton as a base for DelayedLineEdit (WhE)
 * gui: #1740 fixed: avatar in chat preview (Vogel)
+* config_wizard: #1736 fixed: applications and sound tab removed (Vogel)
 
 +++ version 0.6.6-beta10
 * modules: don't build echo module by default (beevvy)
