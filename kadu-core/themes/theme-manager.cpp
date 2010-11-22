@@ -82,8 +82,9 @@ void ThemeManager::loadThemes(QStringList pathList)
 
 	Themes.clear();
 
+	// Use " " instead of "" to prevent autoloading of default theme on startup
 	if (IncludeNone)
-		Themes.append(Theme("", tr("None")));
+		Themes.append(Theme(" ", tr("None")));
 
 	foreach (const QString &path, pathList)
 	{
