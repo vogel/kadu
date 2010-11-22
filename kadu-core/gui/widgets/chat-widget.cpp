@@ -35,6 +35,8 @@
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
 #include "buddies/model/buddy-list-model.h"
+#include "buddies/buddy.h"
+#include "buddies/buddy-shared.h"
 #include "buddies/buddy-set.h"
 #include "chat/chat-geometry-data.h"
 #include "chat/chat-manager.h"
@@ -81,6 +83,9 @@ ChatWidget::ChatWidget(Chat chat, QWidget *parent) :
 
 	connect(CurrentChat.chatAccount(), SIGNAL(buddyStatusChanged(Contact, Status)),
 			this, SLOT(refreshTitle()));
+
+	foreach (Contact contact, chat.contacts())
+		connect(contact.ownerBuddy(), SIGNAL(updated()), this, SLOT(refreshTitle()));
 
 
 	kdebugf2();

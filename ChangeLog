@@ -46,6 +46,7 @@
 * chat, gui: #1635 fixed: saving full paths for received images in history (beevvy)
 * chat styles: bigger fonts in Satin style (beevvy)
 * sms: #1742 fixed: double error messages after sending sms without signature (WhE)
+* gui: #1719 fixed: chat title is not updated after setting buddy name (WhE)
 
 +++ version 0.6.6-beta10
 * modules: don't build echo module by default (beevvy)
