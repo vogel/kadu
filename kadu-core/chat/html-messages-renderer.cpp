@@ -124,10 +124,10 @@ void HtmlMessagesRenderer::refresh()
 	ChatStylesManager::instance()->currentEngine()->refreshView(this);
 }
 
-void HtmlMessagesRenderer::replaceLoadingImages(const QString &imageId, const QString &imagePath)
+void HtmlMessagesRenderer::replaceLoadingImages(const QString &imageId, const QString &imageFileName)
 {
 	foreach (MessageRenderInfo *message, MyChatMessages)
-		message->replaceLoadingImages(imageId, imagePath);
+		message->replaceLoadingImages(imageId, imageFileName);
 
 	refresh();
 }
@@ -140,7 +140,7 @@ void HtmlMessagesRenderer::updateBackgroundsAndColors()
 	QString usrBackgroundColor = config_file.readEntry("Look", "ChatUsrBgColor");
 	QString usrFontColor = config_file.readEntry("Look", "ChatUsrFontColor");
 	QString usrNickColor = config_file.readEntry("Look", "ChatUsrNickColor");
-	
+
 	foreach (MessageRenderInfo *message, MyChatMessages)
 	{
 		switch (message->message().type())
@@ -161,7 +161,7 @@ void HtmlMessagesRenderer::updateBackgroundsAndColors()
 				// do nothing
 				break;
 		}
-		
+
 	}
 }
 

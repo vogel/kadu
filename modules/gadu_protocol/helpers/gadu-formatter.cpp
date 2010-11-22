@@ -188,7 +188,7 @@ void GaduFormater::appendToMessage(Account account, FormattedMessage &result, Ui
 					sendImageRequest(ContactManager::instance()->byId(account, QString::number(sender)), size, crc32);
 
 			QString fileName = GaduChatImageService::imageFileName(sender, size, crc32);
-			if (QFileInfo(fileName).isFile())
+			if (QFileInfo(ChatImageService::imagesPath() + fileName).isFile())
 				result << FormattedMessagePart(fileName, false);
 			else
 				result << FormattedMessagePart(fileName, true, GaduFormater::createImageId(sender, size, crc32));

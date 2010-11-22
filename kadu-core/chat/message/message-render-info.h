@@ -58,7 +58,7 @@ public:
 	MessageRenderInfo(const Message &msg);
 	virtual ~MessageRenderInfo();
 
-	void replaceLoadingImages(const QString &imageId, const QString &imagePath);
+	void replaceLoadingImages(const QString &imageId, const QString &imageFileName);
 
 	const Message & message() const { return MyMessage; }
 	Message & message() { return MyMessage; }

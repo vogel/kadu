@@ -1,7 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
- * Copyright 2009 Michał Podsiadlik (michal@kadu.net)
+ * Copyright 2010 Bartosz Brachaczek (b.brachaczek@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -18,28 +17,22 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CHAT_IMAGE_SERVICE_H
-#define CHAT_IMAGE_SERVICE_H
+#ifndef CHAT_VIEW_NETWORK_ACCESS_MANAGER
+#define CHAT_VIEW_NETWORK_ACCESS_MANAGER
 
-#include <QtCore/QObject>
+#include <QtNetwork/QNetworkAccessManager>
 
-#include "exports.h"
-
-class KADUAPI ChatImageService : public QObject
+// taken from "Adding New Protocols to QtWebKit" article found in Qt Quarterly
+// http://doc.trolltech.com/qq/32/qq32-webkit-protocols.html
+class ChatViewNetworkAccessManager : public QNetworkAccessManager
 {
 	Q_OBJECT
 
 public:
-	static QString imagesPath();
+	explicit ChatViewNetworkAccessManager(QNetworkAccessManager *oldManager, QObject *parent = 0);
 
-	explicit ChatImageService(QObject *parent = 0);
-
-signals:
-	void imageReceived(const QString &id, const QString &fileName);
-
+protected:
+	virtual QNetworkReply * createRequest(Operation operation, const QNetworkRequest &request, QIODevice *device);
 };
 
-// for MOC
-#include <QtCore/QString>
-
-#endif // CHAT_IMAGE_SERVICE_H
+#endif // CHAT_VIEW_NETWORK_ACCESS_MANAGER

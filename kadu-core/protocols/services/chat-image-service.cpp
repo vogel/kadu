@@ -18,28 +18,18 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CHAT_IMAGE_SERVICE_H
-#define CHAT_IMAGE_SERVICE_H
+#include "misc/path-conversion.h"
 
-#include <QtCore/QObject>
+#include "debug.h"
 
-#include "exports.h"
+#include "chat-image-service.h"
 
-class KADUAPI ChatImageService : public QObject
+QString ChatImageService::imagesPath()
 {
-	Q_OBJECT
+	return profilePath("images/");
+}
 
-public:
-	static QString imagesPath();
-
-	explicit ChatImageService(QObject *parent = 0);
-
-signals:
-	void imageReceived(const QString &id, const QString &fileName);
-
-};
-
-// for MOC
-#include <QtCore/QString>
-
-#endif // CHAT_IMAGE_SERVICE_H
+ChatImageService::ChatImageService(QObject *parent) :
+		QObject(parent)
+{
+}
