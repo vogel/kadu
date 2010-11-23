@@ -25,6 +25,10 @@
 
 class QByteArray;
 class QString;
+class QTextCodec;
+
+extern KADUAPI QTextCodec *codec_cp1250;
+extern KADUAPI QTextCodec *codec_latin2;
 
 KADUAPI QString cp2unicode(const QByteArray &);
 KADUAPI QByteArray unicode2cp(const QString &);
