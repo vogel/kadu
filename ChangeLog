@@ -1,3 +1,6 @@
++++ version 0.6.6-beta12
+* gui: #1745 fixed: invalid encoding of text in About window on Windows (beevvy)
+
 +++ version 0.6.6-beta11
 * history: speed up history window opening (Vogel)
 * chat: fix loading Adium style variants when switching from Kadu style or when in clean profile (beevvy)
