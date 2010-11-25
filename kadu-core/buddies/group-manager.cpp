@@ -128,7 +128,7 @@ Group GroupManager::byName(const QString &name, bool create)
 }
 
 // TODO: move some of this to %like-encoding, so we don't block normal names
-bool GroupManager::acceptableGroupName(const QString &groupName)
+bool GroupManager::acceptableGroupName(const QString &groupName, bool acceptExistingGroupName)
 {
 	kdebugf();
 	if (groupName.isEmpty())
@@ -169,7 +169,7 @@ bool GroupManager::acceptableGroupName(const QString &groupName)
  		return false;
 	}
 
-	if (byName(groupName, false))
+	if (!acceptExistingGroupName && byName(groupName, false))
  	{
 		MessageDialog::show("dialog-warning", tr("Kadu"), tr("Group of that name already exists!"));
  		kdebugf2();

@@ -60,7 +60,7 @@ public:
 
 	Group byName(const QString &name, bool create = true);
 
-	bool acceptableGroupName(const QString &groupName);
+	bool acceptableGroupName(const QString &groupName, bool acceptExistingGroupName = false);
 
 signals:
 	void groupAboutToBeAdded(Group group);
