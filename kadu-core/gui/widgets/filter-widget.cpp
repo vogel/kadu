@@ -153,6 +153,8 @@ void FilterWidget::filterTextChanged(const QString &s)
 
 FilterWidget::FilterWidget(QWidget *parent) : QWidget(parent)
 {
+	View = 0;
+
 #ifdef Q_OS_MAC
 
 	searchFieldText = CFStringCreateWithCString(0,
@@ -172,7 +174,6 @@ FilterWidget::FilterWidget(QWidget *parent) : QWidget(parent)
 
 #elif !defined(Q_WS_MAEMO_5)
 
-	View = 0;
 
 	QHBoxLayout *layout = new QHBoxLayout(this);
 	layout->setMargin(3);
