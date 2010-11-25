@@ -89,7 +89,7 @@ void GroupsComboBox::currentIndexChangedSlot(int index)
 			tr("Please enter the name for the new group:"), QLineEdit::Normal,
 			QString::null, &ok);
 
-	if (!ok || !GroupManager::instance()->acceptableGroupName(newGroupName))
+	if (!ok || !GroupManager::instance()->acceptableGroupName(newGroupName, true))
 	{
 		Group typedGroup = GroupManager::instance()->byName(newGroupName, false);
 		if (typedGroup)

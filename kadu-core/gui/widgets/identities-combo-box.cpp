@@ -86,14 +86,11 @@ void IdentitiesComboBox::currentIndexChangedSlot(int index)
 			tr("Please enter the name for the new identity:"), QLineEdit::Normal,
 			QString::null, &ok);
 
-	Identity typedIdentity;
-	if (!ok || identityName.isEmpty() || (typedIdentity = IdentityManager::instance()->byName(identityName, false)))
+	if (!ok || identityName.isEmpty())
 	{
+		Identity typedIdentity = IdentityManager::instance()->byName(identityName, false);
 		if (typedIdentity)
-		{
-			MessageDialog::show("dialog-warning", tr("Kadu"), tr("Identity of that name already exists!"));
 			setCurrentIdentity(typedIdentity);
-		}
 		else
 			setCurrentIndex(0);
 
