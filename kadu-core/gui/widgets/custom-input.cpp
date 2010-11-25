@@ -134,7 +134,7 @@ void CustomInput::keyReleaseEvent(QKeyEvent *e)
 
 void CustomInput::contextMenuEvent(QContextMenuEvent *e)
 {
-	QMenu *menu = new QMenu();
+	QMenu *menu = new QMenu(this);
 
 	QAction *undo = new QAction(tr("Undo"), menu);
 	undo->setShortcut(QKeySequence::Undo);
@@ -175,6 +175,8 @@ void CustomInput::contextMenuEvent(QContextMenuEvent *e)
 	menu->addAction(all);
 
 	menu->exec(e->globalPos());
+
+	delete menu;
 }
 
 void CustomInput::setAutoSend(bool on)
