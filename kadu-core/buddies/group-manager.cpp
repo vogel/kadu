@@ -162,7 +162,7 @@ bool GroupManager::acceptableGroupName(const QString &groupName)
 	}
 
 	// TODO All translation
- 	if (groupName == tr("All") || instance()->byName(groupName, false))
+ 	if (groupName == tr("All") || byName(groupName, false))
  	{
 		MessageDialog::show("dialog-warning", tr("Kadu"), tr("Group of that name already exists!"));
  		kdebugf2();
