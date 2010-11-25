@@ -161,8 +161,15 @@ bool GroupManager::acceptableGroupName(const QString &groupName)
 		return false;
 	}
 
-	// TODO All translation
- 	if (groupName == tr("All") || byName(groupName, false))
+	// TODO All translations
+ 	if (groupName == tr("All"))
+	{
+		MessageDialog::show("dialog-warning", tr("Kadu"), tr("Group name %1 is prohibited").arg(groupName));
+ 		kdebugf2();
+ 		return false;
+	}
+
+	if (byName(groupName, false))
  	{
 		MessageDialog::show("dialog-warning", tr("Kadu"), tr("Group of that name already exists!"));
  		kdebugf2();
