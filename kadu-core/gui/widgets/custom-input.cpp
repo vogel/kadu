@@ -134,49 +134,47 @@ void CustomInput::keyReleaseEvent(QKeyEvent *e)
 
 void CustomInput::contextMenuEvent(QContextMenuEvent *e)
 {
-	QMenu *menu = new QMenu(this);
+	QMenu menu(this);
 
-	QAction *undo = new QAction(tr("Undo"), menu);
+	QAction *undo = new QAction(tr("Undo"), &menu);
 	undo->setShortcut(QKeySequence::Undo);
 	connect(undo, SIGNAL(triggered()), this, SLOT(undo()));
-	menu->addAction(undo);
+	menu.addAction(undo);
 
-	QAction *redo = new QAction(tr("Redo"), menu);
+	QAction *redo = new QAction(tr("Redo"), &menu);
 	redo->setShortcut(QKeySequence::Redo);
 	connect(redo, SIGNAL(triggered()), this, SLOT(redo()));
-	menu->addAction(redo);
+	menu.addAction(redo);
 
-	menu->addSeparator();
+	menu.addSeparator();
 
-	QAction *cut = new QAction(tr("Cut"), menu);
+	QAction *cut = new QAction(tr("Cut"), &menu);
 	cut->setShortcut(QKeySequence::Cut);
 	connect(cut, SIGNAL(triggered()), this, SLOT(cut()));
-	menu->addAction(cut);
+	menu.addAction(cut);
 
-	QAction *copy = new QAction(tr("Copy"), menu);
+	QAction *copy = new QAction(tr("Copy"), &menu);
 	copy->setShortcut(QKeySequence::Copy);
 	connect(copy, SIGNAL(triggered()), this, SLOT(copy()));
-	menu->addAction(copy);
+	menu.addAction(copy);
 
-	QAction *paste = new QAction(tr("Paste"), menu);
+	QAction *paste = new QAction(tr("Paste"), &menu);
 	paste->setShortcut(QKeySequence::Paste);
 	connect(paste, SIGNAL(triggered()), this, SLOT(paste()));
-	menu->addAction(paste);
+	menu.addAction(paste);
 
-	QAction *clear = new QAction(tr("Clear"), menu);
+	QAction *clear = new QAction(tr("Clear"), &menu);
 	connect(clear, SIGNAL(triggered()), this, SLOT(clear()));
-	menu->addAction(clear);
+	menu.addAction(clear);
 
-	menu->addSeparator();
+	menu.addSeparator();
 
-	QAction *all = new QAction(tr("Select All"), menu);
+	QAction *all = new QAction(tr("Select All"), &menu);
 	all->setShortcut(QKeySequence::SelectAll);
 	connect(all, SIGNAL(triggered()), this, SLOT(selectAll()));
-	menu->addAction(all);
+	menu.addAction(all);
 
-	menu->exec(e->globalPos());
-
-	delete menu;
+	menu.exec(e->globalPos());
 }
 
 void CustomInput::setAutoSend(bool on)
