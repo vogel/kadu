@@ -57,8 +57,7 @@ void CustomInput::keyPressEvent(QKeyEvent *e)
 		return;
 	}
 
-	if (autosend_enabled && !(e->modifiers() & Qt::ShiftModifier)
-			&& (HotKey::shortCut(e, "ShortCuts", "chat_send") || e->key() == Qt::Key_Enter))
+	if (autosend_enabled && (HotKey::shortCut(e, "ShortCuts", "chat_send") || e->key() == Qt::Key_Enter))
 	{
 		kdebugmf(KDEBUG_INFO, "emit sendMessage()\n");
 		emit sendMessage();
