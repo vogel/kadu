@@ -130,8 +130,6 @@ Group GroupManager::byName(const QString &name, bool create)
 // TODO: move some of this to %like-encoding, so we don't block normal names
 bool GroupManager::acceptableGroupName(const QString &groupName)
 {
-	QMutexLocker(&mutex());
-
 	kdebugf();
 	if (groupName.isEmpty())
 	{
@@ -163,10 +161,8 @@ bool GroupManager::acceptableGroupName(const QString &groupName)
 		return false;
 	}
 
-	ensureLoaded();
-
 	// TODO All translation
- 	if (groupName == tr("All") || byName(groupName, false))
+ 	if (groupName == tr("All") || instance()->byName(groupName, false))
  	{
 		MessageDialog::show("dialog-warning", tr("Kadu"), tr("Group of that name already exists!"));
  		kdebugf2();
