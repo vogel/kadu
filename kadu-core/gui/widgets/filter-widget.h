@@ -39,18 +39,16 @@ class FilterWidget : public QWidget
 	HIViewRef searchField;
 #else
 	QLineEdit *NameFilterEdit;
-	BuddiesListView *View;
-
-	bool sendKeyEventToView(QKeyEvent *);
 #endif
+	BuddiesListView *View;
+	bool sendKeyEventToView(QKeyEvent *);
+
 
 private slots:
 	void filterTextChanged(const QString &);
 
-#ifndef Q_OS_MAC
 protected:
 	virtual void keyPressEvent(QKeyEvent *);
-#endif
 
 public:
 	explicit FilterWidget(QWidget *parent = 0);
