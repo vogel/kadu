@@ -131,7 +131,8 @@ Core::~Core()
 
 void Core::import_0_6_5_configuration()
 {
-      	config_file.addVariable("Look", "UserboxAlternateBgColor", config_file.readEntry("Look", "UserboxBgColor"));
+	config_file.addVariable("Look", "UserboxAlternateBgColor", config_file.readEntry("Look", "UserboxBgColor"));
+	config_file.addVariable("ShortCuts", "chat_send", config_file.readEntry("ShortCuts", "chat_newline"));
 }
 
 void Core::createDefaultConfiguration()
@@ -289,7 +290,7 @@ void Core::createDefaultConfiguration()
 	config_file.addVariable("ShortCuts", "chat_bold", "Ctrl+B");
 	config_file.addVariable("ShortCuts", "chat_close", "Esc");
 	config_file.addVariable("ShortCuts", "chat_italic", "Ctrl+I");
-	config_file.addVariable("ShortCuts", "chat_newline", "Return");
+	config_file.addVariable("ShortCuts", "chat_send", "Return");
 	config_file.addVariable("ShortCuts", "chat_underline", "Ctrl+U");
 	config_file.addVariable("ShortCuts", "kadu_adduser", "Ctrl+N");
 	config_file.addVariable("ShortCuts", "kadu_deleteuser", "Del");

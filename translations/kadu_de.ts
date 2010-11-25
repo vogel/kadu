@@ -878,8 +878,8 @@ Es ist ein Sicherheitsrisiko!</translation>
         <translation>Zeige/Verstecke Kontakte ohne Beschreibung</translation>
     </message>
     <message>
-        <source>New line / send message</source>
-        <translation>Neue Zeile / Nachricht senden</translation>
+        <source>Send message</source>
+        <translation>Nachricht senden</translation>
     </message>
     <message>
         <source>Clear chat</source>

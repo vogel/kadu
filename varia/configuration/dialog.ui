@@ -268,7 +268,7 @@
 
 		<tab name="Chat Window">
 			<group-box name="Chat Window">
-				<hot-key-edit caption="New line / send message" config-section="ShortCuts" config-item="chat_newline" />
+				<hot-key-edit caption="Send message" config-section="ShortCuts" config-item="chat_send" />
 				<hot-key-edit caption="Clear chat" config-section="ShortCuts" config-item="chat_clear" />
 				<hot-key-edit caption="Close chat" config-section="ShortCuts" config-item="chat_close" />
 				<hot-key-edit caption="Bold text" config-section="ShortCuts" config-item="chat_bold" />

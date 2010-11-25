@@ -520,8 +520,8 @@
         <translation>Rozpocznij rozmowę z ...</translation>
     </message>
     <message>
-        <source>New line / send message</source>
-        <translation>Nowa linia / wyślij wiadomość</translation>
+        <source>Send message</source>
+        <translation>Wyślij wiadomość</translation>
     </message>
     <message>
         <source>Clear chat</source>
