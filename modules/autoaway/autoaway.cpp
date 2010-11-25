@@ -201,6 +201,7 @@ void AutoAway::configurationUpdated()
 	refreshStatusInterval = refreshStatusTime;
 
 	autoStatusText = config_file.readEntry("General", "AutoStatusText");
+	DescriptionAddon = parseDescription(autoStatusText);
 
 	changeTo = (AutoAwayStatusChanger::ChangeDescriptionTo)config_file.readNumEntry("General", "AutoChangeDescription");
 
