@@ -66,7 +66,7 @@ static OSStatus FilterFieldEventHandler(EventHandlerCallRef handlerCallRef,
 
 void FilterWidget::emitTextChanged(void)
 {
-	emit textChanged(text());
+	filterTextChanged(text());
 }
 
 void FilterWidget::clear(void)
@@ -110,7 +110,7 @@ QSize FilterWidget::sizeHint (void) const
 	GetEventParameter(event, kEventParamControlOptimalBounds, typeHIRect,
 		0, sizeof(HIRect), 0, &optimalBounds);
 	ReleaseEvent(event);
-	return QSize(optimalBounds.size.width + 200, optimalBounds.size.height);
+	return QSize(optimalBounds.size.width + 200, optimalBounds.size.height - 4);
 }
 #endif
 
