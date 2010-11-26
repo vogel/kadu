@@ -2,6 +2,7 @@
 * gui: #1745 fixed: invalid encoding of text in About window on Windows (beevvy)
 * autoaway: fixed bad working description changing with interval of auto-refreshing status set to 0 (beevvy)
 * gui: now Ctrl+Return enters a new line if autosend enabled, otherwise sends the message (beevvy)
+* gui: #1751 fixed: Ctrl or Shift press cancels filtering (beevvy)
 
 +++ version 0.6.6-beta11
 * history: speed up history window opening (Vogel)

@@ -338,7 +338,7 @@ void BuddiesListView::keyPressEvent(QKeyEvent *event)
 				triggerActivate(currentIndex());
 				break;
 			default:
-				if (!QChar(event->key()).isPrint())
+				if (event->text().isEmpty())
 					QTreeView::keyPressEvent(event);
 				else
 					event->ignore();

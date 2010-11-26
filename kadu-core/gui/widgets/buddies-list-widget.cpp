@@ -81,7 +81,7 @@ void BuddiesListWidget::nameFilterChanged(const QString &filter)
 
 void BuddiesListWidget::keyPressEvent(QKeyEvent *event)
 {
-	if (!QChar(event->key()).isPrint())
+	if (event->text().isEmpty())
 	{
 		QWidget::keyPressEvent(event);
 		return;
@@ -89,6 +89,4 @@ void BuddiesListWidget::keyPressEvent(QKeyEvent *event)
 
 	NameFilterWidget->setFilter(event->text());
 	NameFilterWidget->setFocus(Qt::OtherFocusReason);
-
-	Qt::KeyboardModifiers modifiers = event->modifiers();
 }
