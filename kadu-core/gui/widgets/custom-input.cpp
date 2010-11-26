@@ -65,55 +65,53 @@ void CustomInput::keyPressEvent(QKeyEvent *e)
 		kdebugf2();
 		return;
 	}
-	else
+	else if (HotKey::shortCut(e, "ShortCuts", "chat_bold"))
 	{
- 		if (HotKey::shortCut(e, "ShortCuts", "chat_bold"))
- 		{
-			if (QFont::Normal == fontWeight())
-				setFontWeight(QFont::Bold);
-			else
-				setFontWeight(QFont::Normal);
+		if (QFont::Normal == fontWeight())
+			setFontWeight(QFont::Bold);
+		else
+			setFontWeight(QFont::Normal);
 
-			emit fontChanged(currentFont());
+		emit fontChanged(currentFont());
 
- 			e->accept();
- 			kdebugf2();
- 			return;
- 		}
- 		if (HotKey::shortCut(e, "ShortCuts", "chat_italic"))
- 		{
- 			setFontItalic(!fontItalic());
-
-			emit fontChanged(currentFont());
-
- 			e->accept();
- 			kdebugf2();
- 			return;
- 		}
- 		if (HotKey::shortCut(e, "ShortCuts", "chat_underline"))
- 		{
-			setFontUnderline(!fontUnderline());
-
-			emit fontChanged(currentFont());
-
- 			e->accept();
- 			kdebugf2();
- 			return;
- 		}
-		if (e->matches(QKeySequence::SelectAll))
-		{
-			selectAll();
-			e->accept();
- 			kdebugf2();
- 			return;
-		}
-		if (!CopyPossible && e->matches(QKeySequence::Copy))
-		{
-			e->ignore();
- 			kdebugf2();
- 			return;
-		}
+		e->accept();
+		kdebugf2();
+		return;
 	}
+	else if (HotKey::shortCut(e, "ShortCuts", "chat_italic"))
+	{
+		setFontItalic(!fontItalic());
+
+		emit fontChanged(currentFont());
+
+		e->accept();
+		kdebugf2();
+		return;
+	}
+	else if (HotKey::shortCut(e, "ShortCuts", "chat_underline"))
+	{
+		setFontUnderline(!fontUnderline());
+
+		emit fontChanged(currentFont());
+
+		e->accept();
+		kdebugf2();
+		return;
+	}
+	else if (e->matches(QKeySequence::SelectAll))
+	{
+		selectAll();
+		e->accept();
+		kdebugf2();
+		return;
+	}
+	else if (!CopyPossible && e->matches(QKeySequence::Copy))
+	{
+		e->ignore();
+		kdebugf2();
+		return;
+	}
+
 	QTextEdit::keyPressEvent(e);
 	kdebugf2();
 }
