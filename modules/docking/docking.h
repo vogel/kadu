@@ -53,11 +53,12 @@ class DOCKINGAPI DockingManager : public QObject, ConfigurationAwareObject, Stat
 	Docker *CurrentDocker;
 
 	QMenu *DockMenu;
+ #ifdef Q_OS_MAC
+	QAction *OpenChatAction;
+	QMenu *MacDockMenu;
+ #endif
 	QAction *CloseKaduAction;
 	QAction *containersSeparator;
-#ifdef Q_OS_MAC
-	QAction *OpenChatAction;
-#endif
 
 	QMap<StatusContainer *, QAction *> StatusContainerMenus;
 
