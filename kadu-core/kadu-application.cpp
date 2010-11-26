@@ -60,8 +60,8 @@ static OSStatus appleEventProcessor(const AppleEvent *ae, AppleEvent *event, lon
 	{
 		if (aeID == kAEReopenApplication)
 		{
-			ChatWidgetManager::instance()->openPendingMsgs(true);
 			Core::instance()->kaduWindow()->show();
+			ChatWidgetManager::instance()->openPendingMsgs(true);
 		}
 		return noErr;
 	}
