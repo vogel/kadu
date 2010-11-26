@@ -196,7 +196,7 @@ void ChatWidget::configurationUpdated()
 
 bool ChatWidget::keyPressEventHandled(QKeyEvent *e)
 {
-	if (e->modifiers() & Qt::ControlModifier && e->key() == Qt::Key_C)
+	if (e->matches(QKeySequence::Copy))
 	{
 		MessagesView->page()->action(QWebPage::Copy)->trigger();
 		return true;

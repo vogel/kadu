@@ -100,14 +100,14 @@ void CustomInput::keyPressEvent(QKeyEvent *e)
  			kdebugf2();
  			return;
  		}
-		if (e->key() == Qt::Key_A && (e->modifiers() & Qt::ControlModifier))
+		if (e->matches(QKeySequence::SelectAll))
 		{
 			selectAll();
 			e->accept();
  			kdebugf2();
  			return;
 		}
-		if (!CopyPossible && e->key() == Qt::Key_C && e->modifiers() & Qt::ControlModifier)
+		if (!CopyPossible && e->matches(QKeySequence::Copy))
 		{
 			e->ignore();
  			kdebugf2();
