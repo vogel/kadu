@@ -360,7 +360,9 @@ void DockingManager::updateContextMenu()
 	if (statusContainersCount == 1)
 	{
 		new StatusMenu(StatusContainerManager::instance()->statusContainers()[0], DockMenu);
+#ifdef Q_OS_MAC
 		new StatusMenu(StatusContainerManager::instance()->statusContainers()[0], MacDockMenu);
+#endif
 	}
 	else
 	{
@@ -377,7 +379,9 @@ void DockingManager::updateContextMenu()
 			containersSeparator = DockMenu->addSeparator();
 
 		new StatusMenu(StatusContainerManager::instance(), DockMenu);
+#ifdef Q_OS_MAC
 		new StatusMenu(StatusContainerManager::instance(), MacDockMenu);
+#endif
 	}
 
 	DockMenu->addAction(CloseKaduAction);
