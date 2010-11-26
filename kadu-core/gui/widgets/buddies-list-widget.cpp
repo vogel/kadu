@@ -81,12 +81,13 @@ void BuddiesListWidget::nameFilterChanged(const QString &filter)
 
 void BuddiesListWidget::keyPressEvent(QKeyEvent *event)
 {
-	if (event->text().isEmpty())
+	if (BuddiesListView::shouldEventGoToFilter(event))
 	{
-		QWidget::keyPressEvent(event);
+		NameFilterWidget->setFilter(event->text());
+		NameFilterWidget->setFocus(Qt::OtherFocusReason);
+		event->accept();
 		return;
 	}
 
-	NameFilterWidget->setFilter(event->text());
-	NameFilterWidget->setFocus(Qt::OtherFocusReason);
+	QWidget::keyPressEvent(event);
 }

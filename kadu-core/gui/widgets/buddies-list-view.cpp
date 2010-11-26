@@ -322,6 +322,13 @@ void BuddiesListView::contextMenuEvent(QContextMenuEvent *event)
 	delete menu;
 }
 
+bool BuddiesListView::shouldEventGoToFilter(QKeyEvent *event)
+{
+	return (!event->text().isEmpty()
+			&& event->key() != Qt::Key_Escape
+			&& event->key() != Qt::Key_Backspace);
+}
+
 void BuddiesListView::keyPressEvent(QKeyEvent *event)
 {
 	// TODO 0.6.7: add proper shortcuts handling
@@ -330,7 +337,6 @@ void BuddiesListView::keyPressEvent(QKeyEvent *event)
 	else if (HotKey::shortCut(event, "ShortCuts", "kadu_persinfo"))
 		KaduWindowActions::editUserActionActivated(this);
 	else
-	{
 		switch (event->key())
 		{
 			case Qt::Key_Return:
@@ -338,12 +344,11 @@ void BuddiesListView::keyPressEvent(QKeyEvent *event)
 				triggerActivate(currentIndex());
 				break;
 			default:
-				if (event->text().isEmpty())
-					QTreeView::keyPressEvent(event);
-				else
+				if (shouldEventGoToFilter(event))
 					event->ignore();
+				else
+					QTreeView::keyPressEvent(event);
 		}
-	}
 
 	toolTipHide(false);
 }
