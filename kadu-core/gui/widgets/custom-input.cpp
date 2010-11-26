@@ -57,10 +57,27 @@ void CustomInput::keyPressEvent(QKeyEvent *e)
 		return;
 	}
 
-	if (autosend_enabled && (HotKey::shortCut(e, "ShortCuts", "chat_send") || e->key() == Qt::Key_Enter))
+	/* Ctrl+Return has a special meaning:
+	 * 1) autosend_enabled -> new line is entered
+	 * 2) message is sent
+	 */
+	bool isCtrlReturn = ((e->modifiers() & Qt::ControlModifier) && e->key() == Qt::Key_Return);
+
+	if ((autosend_enabled && (HotKey::shortCut(e, "ShortCuts", "chat_send") || e->key() == Qt::Key_Enter))
+			|| (!autosend_enabled && isCtrlReturn))
 	{
 		kdebugmf(KDEBUG_INFO, "emit sendMessage()\n");
 		emit sendMessage();
+		e->accept();
+		kdebugf2();
+		return;
+	}
+	else if (isCtrlReturn)
+	{
+		// now surely autosend_enabled == true, so we can emulate Shift+Return to get a new line
+		QKeyEvent emulateNewLineEvent(QEvent::KeyPress, Qt::Key_Return, Qt::ShiftModifier, "\n", false, 2);
+		QTextEdit::keyPressEvent(&emulateNewLineEvent);
+
 		e->accept();
 		kdebugf2();
 		return;

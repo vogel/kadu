@@ -122,10 +122,7 @@ void ChatWidget::createGui()
 
 	MessagesView = new ChatMessagesView(CurrentChat);
 
-	QShortcut *shortcut = new QShortcut(QKeySequence(Qt::Key_Return + Qt::CTRL), this);
-	connect(shortcut, SIGNAL(activated()), this, SLOT(sendMessage()));
-
-	shortcut = new QShortcut(QKeySequence(Qt::Key_PageUp + Qt::SHIFT), this);
+	QShortcut *shortcut = new QShortcut(QKeySequence(Qt::Key_PageUp + Qt::SHIFT), this);
 	connect(shortcut, SIGNAL(activated()), MessagesView, SLOT(pageUp()));
 
 	shortcut = new QShortcut(QKeySequence(Qt::Key_PageDown + Qt::SHIFT), this);
