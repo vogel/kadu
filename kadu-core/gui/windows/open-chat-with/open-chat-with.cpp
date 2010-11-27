@@ -116,14 +116,19 @@ bool OpenChatWith::eventFilter(QObject *obj, QEvent *e)
 {
 	if (obj == ContactID && e->type() == QEvent::KeyPress)
 	{
-		int key = static_cast<QKeyEvent *>(e)->key();
-		if (key == Qt::Key_Down ||
-				key == Qt::Key_Up ||
-				key == Qt::Key_PageDown ||
-				key == Qt::Key_PageUp)
+		if (static_cast<QKeyEvent *>(e)->modifiers() == Qt::NoModifier)
 		{
-			qApp->sendEvent(BuddiesWidget, e);
-			return true;
+			int key = static_cast<QKeyEvent *>(e)->key();
+			if (key == Qt::Key_Down ||
+					key == Qt::Key_Up ||
+					key == Qt::Key_PageDown ||
+					key == Qt::Key_PageUp ||
+					key == Qt::Key_Left ||
+					key == Qt::Key_Right)
+			{
+				qApp->sendEvent(BuddiesWidget, e);
+				return true;
+			}
 		}
 	}
 
