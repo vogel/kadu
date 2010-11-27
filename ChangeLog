@@ -3,6 +3,7 @@
 * autoaway: fixed bad working description changing with interval of auto-refreshing status set to 0 (beevvy)
 * gui: now Ctrl+Return enters a new line if autosend enabled, otherwise sends the message (beevvy)
 * gui: #1751 fixed: Ctrl or Shift press cancels filtering (beevvy)
+* avatars: #1749 fixed: wrong avatars (with empty uuid) are stored and incorrectly displayed in buddy info and chat (beevvy)
 
 +++ version 0.6.6-beta11
 * history: speed up history window opening (Vogel)
