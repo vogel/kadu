@@ -36,7 +36,7 @@
 
 #include "buddies-list-view-item-painter.h"
 
-BuddiesListViewItemPainter::BuddiesListViewItemPainter(const BuddiesListViewDelegateConfiguration &configuration, const QStyleOptionViewItemV4 &option, const QModelIndex &index, bool useConfigurationColors) :
+BuddiesListViewItemPainter::BuddiesListViewItemPainter(const BuddiesListViewDelegateConfiguration &configuration, QStyleOptionViewItemV4 option, const QModelIndex &index, bool useConfigurationColors) :
 		Configuration(configuration), Option(option), Index(index),
 		UseConfigurationColors(useConfigurationColors),
 		FontMetrics(Configuration.font()),
@@ -56,6 +56,17 @@ BuddiesListViewItemPainter::~BuddiesListViewItemPainter()
 {
 	delete DescriptionDocument;
 	DescriptionDocument = 0;
+}
+
+void BuddiesListViewItemPainter::fixColors()
+{
+#ifdef Q_OS_WIN
+	// http://kadu.net/mantis/view.php?id=1531
+	// http://bugreports.qt.nokia.com/browse/QTBUG-15637
+	// for windows only
+	Option.palette.setColor(QPalette::All, QPalette::HighlightedText, Option.palette.color(QPalette::Active, QPalette::Text));
+	Option.palette.setColor(QPalette::All, QPalette::Highlight, Option.palette.base().color().darker(108));
+#endif
 }
 
 QColor BuddiesListViewItemPainter::textColor() const
@@ -226,11 +237,12 @@ QTextDocument * BuddiesListViewItemPainter::getDescriptionDocument(int width)
 	if (DescriptionDocument)
 		return DescriptionDocument;
 
-	DescriptionDocument = createDescriptionDocument(Index.data(DescriptionRole).toString(), width,
-			((drawSelected()) || !UseConfigurationColors)
-					? textColor() 
-					: Configuration.descriptionColor());
+	fixColors();
 
+	QColor color = drawSelected() || drawDisabled() || !UseConfigurationColors
+			? textColor()
+			: Configuration.descriptionColor();
+	DescriptionDocument = createDescriptionDocument(Index.data(DescriptionRole).toString(), width, color);
 	return DescriptionDocument;
 }
 
@@ -434,6 +446,8 @@ void BuddiesListViewItemPainter::paint(QPainter *painter)
 	ItemRect.adjust(HFrameMargin, VFrameMargin, -HFrameMargin, -VFrameMargin);
 
 	computeLayout();
+
+	fixColors();
 
 	// some bit of broken logic
 	if (drawSelected() || drawDisabled() || !UseConfigurationColors)

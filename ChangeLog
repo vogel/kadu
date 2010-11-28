@@ -6,6 +6,7 @@
 * avatars: #1749 fixed: wrong avatars (with empty uuid) are stored and incorrectly displayed in buddy info and chat (beevvy)
 * chat: #1759 fixed: kadu chat styles with line end style other than "\n" didn't work (beevvy)
 * modules: #1753 fixed: added blacklist for modules in CMakeLists.txt, so invalid modules cannot be compiled (Vogel)
+* gui: #1531 probably fixed: white font on selected items in buddies window on Windows Vista/7 (Vogel)
 
 +++ version 0.6.6-beta11
 * history: speed up history window opening (Vogel)
