@@ -47,14 +47,7 @@ BuddyList GaduOpenChatWithRunner::matchingContacts(const QString &query)
 		return matchedContacts;
 
 	Contact contact = ContactManager::instance()->byId(ParentAccount, query, ActionCreate);
-	Buddy buddy = contact.ownerBuddy();
-	if (buddy.isNull())
-	{
-		Buddy buddy = Buddy::create();
-		buddy.setDisplay(QString("%1: %2").arg(ParentAccount.accountIdentity().name()).arg(query));
-		contact.setOwnerBuddy(buddy);
-	}
-	matchedContacts.append(buddy);
+	matchedContacts.append(contact.ownerBuddy());
 
 	return matchedContacts;
 }
