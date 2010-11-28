@@ -29,8 +29,6 @@ class GaduOpenChatWithRunner : public OpenChatWithRunner
 {
 	Account ParentAccount;
 
-	bool validateUserID(const QString &uid);
-
 public:
 	GaduOpenChatWithRunner(Account account);
 	virtual BuddyList matchingContacts(const QString &query);
