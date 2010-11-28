@@ -30,7 +30,7 @@ class BuddiesListViewDelegateConfiguration;
 class BuddiesListViewItemPainter
 {
 	const BuddiesListViewDelegateConfiguration &Configuration;
-	const QStyleOptionViewItemV4 &Option;
+	QStyleOptionViewItemV4 Option;
 	const QModelIndex &Index;
 	const QTreeView *Widget;
 
@@ -56,13 +56,18 @@ class BuddiesListViewItemPainter
 
 	QString getAccountName();
 	QString getName();
-	bool drawDisabled();
+
+	bool drawSelected() const;
+	bool drawDisabled() const;
 
 	QTextDocument * createDescriptionDocument(const QString &text, int width, QColor color) const;
 	QTextDocument * getDescriptionDocument(int width);
 
 	const QFontMetrics & fontMetrics();
 	int itemIndentation();
+
+	void fixColors();
+	QColor textColor() const;
 
 	bool useBold() const;
 	bool showMessagePixmap() const;
@@ -88,7 +93,7 @@ class BuddiesListViewItemPainter
 	void paintDescription(QPainter *painter);
 
 public:
-	BuddiesListViewItemPainter(const BuddiesListViewDelegateConfiguration &configuration, const QStyleOptionViewItemV4 &option, const QModelIndex &index, bool useConfigurationColors);
+	BuddiesListViewItemPainter(const BuddiesListViewDelegateConfiguration &configuration, QStyleOptionViewItemV4 option, const QModelIndex &index, bool useConfigurationColors);
 	~BuddiesListViewItemPainter();
 
 	QPixmap buddyAvatar() const;

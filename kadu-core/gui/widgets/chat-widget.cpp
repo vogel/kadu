@@ -35,6 +35,8 @@
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
 #include "buddies/model/buddy-list-model.h"
+#include "buddies/buddy.h"
+#include "buddies/buddy-shared.h"
 #include "buddies/buddy-set.h"
 #include "chat/chat-geometry-data.h"
 #include "chat/chat-manager.h"
@@ -82,6 +84,9 @@ ChatWidget::ChatWidget(Chat chat, QWidget *parent) :
 	connect(CurrentChat.chatAccount(), SIGNAL(buddyStatusChanged(Contact, Status)),
 			this, SLOT(refreshTitle()));
 
+	foreach (Contact contact, chat.contacts())
+		connect(contact.ownerBuddy(), SIGNAL(updated()), this, SLOT(refreshTitle()));
+
 
 	kdebugf2();
 }
@@ -117,10 +122,7 @@ void ChatWidget::createGui()
 
 	MessagesView = new ChatMessagesView(CurrentChat);
 
-	QShortcut *shortcut = new QShortcut(QKeySequence(Qt::Key_Return + Qt::CTRL), this);
-	connect(shortcut, SIGNAL(activated()), this, SLOT(sendMessage()));
-
-	shortcut = new QShortcut(QKeySequence(Qt::Key_PageUp + Qt::SHIFT), this);
+	QShortcut *shortcut = new QShortcut(QKeySequence(Qt::Key_PageUp + Qt::SHIFT), this);
 	connect(shortcut, SIGNAL(activated()), MessagesView, SLOT(pageUp()));
 
 	shortcut = new QShortcut(QKeySequence(Qt::Key_PageDown + Qt::SHIFT), this);
@@ -191,7 +193,7 @@ void ChatWidget::configurationUpdated()
 
 bool ChatWidget::keyPressEventHandled(QKeyEvent *e)
 {
-	if (e->modifiers() & Qt::ControlModifier && e->key() == Qt::Key_C)
+	if (e->matches(QKeySequence::Copy))
 	{
 		MessagesView->page()->action(QWebPage::Copy)->trigger();
 		return true;

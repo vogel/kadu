@@ -34,9 +34,9 @@ QString FormattedMessagePart::loadingImageHtml(const QString &imageId)
 			.arg(imageId);
 }
 
-QString FormattedMessagePart::replaceLoadingImages(QString message, const QString &imageId, const QString &imagePath)
+QString FormattedMessagePart::replaceLoadingImages(QString message, const QString &imageId, const QString &imageFileName)
 {
-	QString img = QString("<img src=\"file:///%1\" />").arg(imagePath);
+	QString img = QString("<img src=\"kaduimg:///%1\" />").arg(imageFileName);
 	return message.replace(loadingImageHtml(imageId), img);
 }
 
@@ -45,9 +45,9 @@ FormattedMessagePart::FormattedMessagePart(const QString &content, bool bold, bo
 {
 }
 
-FormattedMessagePart::FormattedMessagePart(const QString &imagePath, bool imageDelayed) :
-		Content("\n"), Image(true), ImageDelayed(imageDelayed),
-		ImagePath(imagePath)
+FormattedMessagePart::FormattedMessagePart(const QString &imageFileName, bool delayed, const QString &imageId) :
+		Content("\n"), Image(true), ImageDelayed(delayed),
+		ImageFileName(imageFileName), ImageId(imageId)
 {
 }
 
@@ -58,7 +58,9 @@ FormattedMessagePart::~FormattedMessagePart()
 QString FormattedMessagePart::toHtml() const
 {
 	if (Image)
-		return QString("<img src=\"file:///%1\" />").arg(ImagePath);
+		return ImageDelayed
+				? loadingImageHtml(ImageId)
+				: QString("<img src=\"kaduimg:///%1\" />").arg(ImageFileName);
 
 	QString result = Qt::escape(Content);
 	result.replace("\r\n", "<br/>");

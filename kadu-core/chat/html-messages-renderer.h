@@ -69,7 +69,7 @@ public:
 	void setLastMessage(MessageRenderInfo *message);
 
 	void refresh();
-	void replaceLoadingImages(const QString &imageId, const QString &imagePath);
+	void replaceLoadingImages(const QString &imageId, const QString &imageFileName);
 	void updateBackgroundsAndColors();
 	void messageStatusChanged(Message message, Message::Status status);
 

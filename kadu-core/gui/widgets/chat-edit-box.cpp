@@ -71,8 +71,6 @@ ChatEditBox::ChatEditBox(Chat chat, QWidget *parent) :
 
 	connect(ChatWidgetManager::instance()->actions()->colorSelector(), SIGNAL(actionCreated(Action *)),
 			this, SLOT(colorSelectorActionCreated(Action *)));
-	connect(InputBox, SIGNAL(keyPressed(QKeyEvent *,CustomInput *, bool &)),
-			this, SIGNAL(keyPressed(QKeyEvent *,CustomInput *,bool &)));
 	connect(InputBox, SIGNAL(fontChanged(QFont)), this, SLOT(fontChanged(QFont)));
 	connect(InputBox, SIGNAL(cursorPositionChanged()), this, SLOT(cursorPositionChanged()));
 

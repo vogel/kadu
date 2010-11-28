@@ -18,33 +18,18 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef DELAYED_LINE_EDIT_H
-#define DELAYED_LINE_EDIT_H
+#include "misc/path-conversion.h"
 
-#include <QtCore/QTimer>
+#include "debug.h"
 
-#include "line-edit-with-clear-button.h"
-#include "exports.h"
+#include "chat-image-service.h"
 
-class KADUAPI DelayedLineEdit : public LineEditWithClearButton
+QString ChatImageService::imagesPath()
 {
-	Q_OBJECT
+	return profilePath("images/");
+}
 
-	QTimer Timer;
-
-private slots:
-	void timeout();
-	void textChangedSlot(const QString &text);
-
-public:
-	DelayedLineEdit(QWidget *parent = 0);
-	virtual ~DelayedLineEdit();
-
-	void setDelay(unsigned int delay);
-
-signals:
-	void delayedTextChanged(const QString &text);
-
-};
-
-#endif // DELAYED_LINE_EDIT_H
+ChatImageService::ChatImageService(QObject *parent) :
+		QObject(parent)
+{
+}

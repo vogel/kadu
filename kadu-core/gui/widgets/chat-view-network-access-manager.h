@@ -1,7 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
- * Copyright 2009 Michał Podsiadlik (michal@kadu.net)
+ * Copyright 2010 Bartosz Brachaczek (b.brachaczek@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -18,33 +17,22 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef DELAYED_LINE_EDIT_H
-#define DELAYED_LINE_EDIT_H
+#ifndef CHAT_VIEW_NETWORK_ACCESS_MANAGER
+#define CHAT_VIEW_NETWORK_ACCESS_MANAGER
 
-#include <QtCore/QTimer>
+#include <QtNetwork/QNetworkAccessManager>
 
-#include "line-edit-with-clear-button.h"
-#include "exports.h"
-
-class KADUAPI DelayedLineEdit : public LineEditWithClearButton
+// taken from "Adding New Protocols to QtWebKit" article found in Qt Quarterly
+// http://doc.trolltech.com/qq/32/qq32-webkit-protocols.html
+class ChatViewNetworkAccessManager : public QNetworkAccessManager
 {
 	Q_OBJECT
 
-	QTimer Timer;
-
-private slots:
-	void timeout();
-	void textChangedSlot(const QString &text);
-
 public:
-	DelayedLineEdit(QWidget *parent = 0);
-	virtual ~DelayedLineEdit();
+	explicit ChatViewNetworkAccessManager(QNetworkAccessManager *oldManager, QObject *parent = 0);
 
-	void setDelay(unsigned int delay);
-
-signals:
-	void delayedTextChanged(const QString &text);
-
+protected:
+	virtual QNetworkReply * createRequest(Operation operation, const QNetworkRequest &request, QIODevice *device);
 };
 
-#endif // DELAYED_LINE_EDIT_H
+#endif // CHAT_VIEW_NETWORK_ACCESS_MANAGER

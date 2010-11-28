@@ -163,9 +163,9 @@ MessageRenderInfo::~MessageRenderInfo()
 {
 }
 
-void MessageRenderInfo::replaceLoadingImages(const QString &imageId, const QString &imagePath)
+void MessageRenderInfo::replaceLoadingImages(const QString &imageId, const QString &imageFileName)
 {
-	HtmlMessageContent = FormattedMessagePart::replaceLoadingImages(HtmlMessageContent, imageId, imagePath);
+	HtmlMessageContent = FormattedMessagePart::replaceLoadingImages(HtmlMessageContent, imageId, imageFileName);
 }
 
 MessageRenderInfo & MessageRenderInfo::setShowServerTime(bool noServerTime, int noServerTimeDiff)

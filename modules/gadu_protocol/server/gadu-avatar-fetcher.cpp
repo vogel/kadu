@@ -42,14 +42,14 @@ GaduAvatarFetcher::GaduAvatarFetcher(Contact contact, QObject *parent) :
 {
 }
 
-void GaduAvatarFetcher::done(const QByteArray &avatar)
+void GaduAvatarFetcher::done()
 {
-	emit avatarFetched(MyContact, true, avatar);
+	emit avatarFetched(MyContact, true);
 }
 
 void GaduAvatarFetcher::failed()
 {
-	emit avatarFetched(MyContact, false, QByteArray());
+	emit avatarFetched(MyContact, false);
 }
 
 void GaduAvatarFetcher::fetchAvatar()
@@ -83,7 +83,11 @@ void GaduAvatarFetcher::requestFinished(int id, bool error)
 	if (parser.isBlank())
 	{
 		// clear avatar data
-		done(QByteArray());
+		Avatar contactAvatar = AvatarManager::instance()->byContact(MyContact, ActionReturnNull);
+		if (contactAvatar)
+			contactAvatar.setPixmap(QPixmap());
+		
+		done();
 		deleteLater();
 		return;
 	}
@@ -120,7 +124,13 @@ void GaduAvatarFetcher::avatarDownloaded(int id, bool error)
 	Q_UNUSED(id)
 	Q_UNUSED(error)
 
-	done(AvatarBuffer.buffer());
+	QPixmap pixmap;
+	if (!AvatarBuffer.buffer().isEmpty())
+		pixmap.loadFromData(AvatarBuffer.buffer());
+
+	AvatarManager::instance()->byContact(MyContact, ActionCreateAndAdd).setPixmap(pixmap);
+
+	done();
 
 	deleteLater();
 }

@@ -64,7 +64,7 @@ private slots:
 	void pageDown();
 	void scrollToLine();
 
-	void imageReceived(const QString &imageId, const QString &imagePath);
+	void imageReceived(const QString &imageId, const QString &imageFileName);
 
 	void messageStatusChanged(Message::Status);
 

@@ -1,3 +1,14 @@
++++ version 0.6.6-beta12
+* gui: #1745 fixed: invalid encoding of text in About window on Windows (beevvy)
+* autoaway: fixed bad working description changing with interval of auto-refreshing status set to 0 (beevvy)
+* gui: now Ctrl+Return enters a new line if autosend enabled, otherwise sends the message (beevvy)
+* gui: #1751 fixed: Ctrl or Shift press cancels filtering (beevvy)
+* avatars: #1749 fixed: wrong avatars (with empty uuid) are stored and incorrectly displayed in buddy info and chat (beevvy)
+* chat: #1759 fixed: kadu chat styles with line end style other than "\n" didn't work (beevvy)
+* modules: #1753 fixed: added blacklist for modules in CMakeLists.txt, so invalid modules cannot be compiled (Vogel)
+* gui: #1531 probably fixed: white font on selected items in buddies window on Windows Vista/7 (Vogel)
+* gui: #1670 fixed: Ctrl+A (Select All) in BuddiesListView doesn't work (beevvy)
+
 +++ version 0.6.6-beta11
 * history: speed up history window opening (Vogel)
 * chat: fix loading Adium style variants when switching from Kadu style or when in clean profile (beevvy)
@@ -38,11 +49,20 @@
 * gui: #1715 fixed: information panel preview doesn't work (WhE)
 * core: #1665 fixed: prefer contacts from connected accounts to disconnected ones (WhE)
 * jabber: clickable emails in buddy personal info (badboy)
-* gui: #1697 fixed: Sating style now supports non-rectangual avatars (Vogel)
+* gui: #1697 fixed: Satin style now supports non-rectangual avatars (Vogel)
 * gui: general configuration window cleanup (Vogel)
 * sms: #1417 fixed: Era GSM Gateway support added (WhE)
 * gui: #1722 fixed: insert emoticons action should be disabled, when emoticons are disabled in configuration (WhE)
 * gui: #1723 fixed: fix refreshing emoticons after changing theme in configuration (WhE)
+* chat, gui: #1635 fixed: saving full paths for received images in history (beevvy)
+* chat styles: bigger fonts in Satin style (beevvy)
+* sms: #1742 fixed: double error messages after sending sms without signature (WhE)
+* gui: #1719 fixed: chat title is not updated after setting buddy name (WhE)
+* gui: #1746 fixed: invalid behaviour of "Edit buddy" action in main window (WhE)
+* history: #1739 part1 fixed: use FilterWidget for filtering chats view in history window (WhE)
+* gui: #1739 part2 fixed: use LineEditWithClearButton as a base for DelayedLineEdit (WhE)
+* gui: #1740 fixed: avatar in chat preview (Vogel)
+* config_wizard: #1736 fixed: applications and sound tab removed (Vogel)
 
 +++ version 0.6.6-beta10
 * modules: don't build echo module by default (beevvy)

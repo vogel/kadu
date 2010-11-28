@@ -877,7 +877,7 @@ Attention danger!
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>New line / send message</source>
+        <source>Send message</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

@@ -876,8 +876,8 @@ E un rischio per la sicurezza!</translation>
         <translation>Visualizza/nascondi contatti senza descrizione</translation>
     </message>
     <message>
-        <source>New line / send message</source>
-        <translation>Nuova line / manda messaggio</translation>
+        <source>Send message</source>
+        <translation>Manda messaggio</translation>
     </message>
     <message>
         <source>Clear chat</source>

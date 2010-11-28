@@ -73,6 +73,7 @@ void AvatarManager::itemAboutToBeAdded(Avatar item)
 void AvatarManager::itemAdded(Avatar item)
 {
 	connect(item, SIGNAL(updated()), this, SLOT(avatarDataUpdated()));
+	connect(item, SIGNAL(pixmapUpdated()), this, SLOT(avatarPixmapUpdated()));
 	emit avatarAdded(item);
 }
 
@@ -80,6 +81,7 @@ void AvatarManager::itemAboutToBeRemoved(Avatar item)
 {
 	emit avatarAboutToBeRemoved(item);
 	disconnect(item, SIGNAL(updated()), this, SLOT(avatarDataUpdated()));
+	disconnect(item, SIGNAL(pixmapUpdated()), this, SLOT(avatarPixmapUpdated()));
 }
 
 void AvatarManager::itemRemoved(Avatar item)
@@ -168,8 +170,17 @@ void AvatarManager::avatarDataUpdated()
 	QMutexLocker(&mutex());
 
 	Avatar avatar(sender());
-	if (!avatar.isNull())
+	if (avatar)
 		emit avatarUpdated(avatar);
+}
+
+void AvatarManager::avatarPixmapUpdated()
+{
+	QMutexLocker(&mutex());
+
+	Avatar avatar(sender());
+	if (avatar)
+		avatar.store(); // store file now so webkit can see it
 }
 
 Avatar AvatarManager::byBuddy(Buddy buddy, NotFoundAction action)

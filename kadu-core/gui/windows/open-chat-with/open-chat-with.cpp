@@ -149,7 +149,7 @@ void OpenChatWith::keyPressEvent(QKeyEvent *e)
 			break;
 	}
 
-	if (QChar(e->key()).isPrint())
+	if (BuddiesListView::shouldEventGoToFilter(e))
 	{
 		ContactID->setText(e->text());
 		ContactID->setFocus(Qt::OtherFocusReason);

@@ -181,19 +181,19 @@
     </message>
     <message>
         <source>Anonymous</source>
-        <translation>Nieznane</translation>
+		<translation>Nieznajomi</translation>
     </message>
     <message>
         <source>Ignore messages from anonymous users</source>
-        <translation>Ignoruj wiadomości od nieznanych użytkowników</translation>
+		<translation>Ignoruj wiadomości od nieznajomych użytkowników</translation>
     </message>
     <message>
         <source>Ignore messages from anonymous users also in conferences</source>
-        <translation>Ignoruj wiadomości od nieznanych użytkowników także w konferencjach</translation>
+		<translation>Ignoruj wiadomości od nieznajomych użytkowników także w konferencjach</translation>
     </message>
     <message>
         <source>Ignore richtext from anonymous users</source>
-        <translation>Ignoruj formatowane wiadomości od nieznanych użytkowników</translation>
+		<translation>Ignoruj formatowane wiadomości od nieznajomych użytkowników</translation>
     </message>
     <message>
         <source>Status</source>
@@ -520,8 +520,8 @@
         <translation>Rozpocznij rozmowę z ...</translation>
     </message>
     <message>
-        <source>New line / send message</source>
-        <translation>Nowa linia / wyślij wiadomość</translation>
+        <source>Send message</source>
+        <translation>Wyślij wiadomość</translation>
     </message>
     <message>
         <source>Clear chat</source>
@@ -1886,7 +1886,7 @@ zostaną zignorowane. Czy na pewno chcesz opuścić konferencję?</translation>
     <name>ChatWidgetActions</name>
     <message>
         <source>%1 Sends Message</source>
-        <translation>Użytkownik %1 wysyła wiadomość</translation>
+        <translation>%1 wysyła wiadomość</translation>
     </message>
     <message>
         <source>Clear Messages in Chat Window</source>
@@ -3444,12 +3444,12 @@ Jeśli zechcesz włączyć (lub wyłączyć) któryś z nich, wystarczy dwukrotn
         <translation>Dostępna jest nowa wersja. Proszę zaktualizować</translation>
     </message>
     <message>
-        <source>A new version %1 of Kadu Instant Messenger is available for download. Please &lt;a href=&apos;download&apos;&gt;download&lt;/a&gt; an installer and upgrade or use your package management system to update Kadu.</source>
-        <translation>Nowa wersja %1 Kadu jest dostępna do pobrania. Proszę &lt;a href=&apos;download&apos;&gt;pobrać&lt;/a&gt; instalator i zaktualizować program albo skorzystać z narzędzi systemowych do aktualizacji pakietów.</translation>
+		<source>A new version &lt;b&gt;%1&lt;/b&gt; of Kadu Instant Messenger is available for download. Please &lt;a href=&apos;download&apos;&gt;download&lt;/a&gt; an installer and upgrade or use your package management system to update Kadu.</source>
+		<translation>Nowa wersja &lt;b&gt;%1&lt;/b&gt; Kadu jest dostępna do pobrania. Proszę &lt;a href=&apos;download&apos;&gt;pobrać&lt;/a&gt; instalator i zaktualizować program albo skorzystać z narzędzi systemowych do aktualizacji pakietów.</translation>
     </message>
     <message>
-        <source>A new version %1 of Kadu Instant Messenger is available for download. Please &lt;a href=&apos;download&apos;&gt;download&lt;/a&gt; an installer and upgrade.</source>
-        <translation>Nowa wersja %1 Kadu jest dostępna do pobrania. Proszę &lt;a href=&apos;download&apos;&gt;pobrać&lt;/a&gt; instalator i zaktualizować program.</translation>
+		<source>A new version &lt;b&gt;%1&lt;/b&gt; of Kadu Instant Messenger is available for download. Please &lt;a href=&apos;download&apos;&gt;download&lt;/a&gt; an installer and upgrade.</source>
+		<translation>Nowa wersja &lt;b&gt;%1&lt;/b&gt; Kadu jest dostępna do pobrania. Proszę &lt;a href=&apos;download&apos;&gt;pobrać&lt;/a&gt; instalator i zaktualizować program.</translation>
     </message>
     <message>
         <source>Check for updates when Kadu is opened</source>

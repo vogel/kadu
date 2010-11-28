@@ -98,13 +98,13 @@ void SoundManager::import_0_6_5_configuration()
 
 void SoundManager::createDefaultConfiguration()
 {
-	config_file.addVariable("Notify", "ConnectionError_Sound", true);
-	config_file.addVariable("Notify", "InvalidPassword_Sound", true);
+	config_file.addVariable("Notify", "ConnectionError_Sound", false);
+	config_file.addVariable("Notify", "InvalidPassword_Sound", false);
 	config_file.addVariable("Notify", "NewChat_Sound", true);
 	config_file.addVariable("Notify", "NewMessage_Sound", true);
-	config_file.addVariable("Notify", "StatusChanged/ToFreeForChat", true);
-	config_file.addVariable("Notify", "StatusChanged/ToOnline_Sound", true);
-	config_file.addVariable("Notify", "StatusChanged/ToAway_Sound", true);
+	config_file.addVariable("Notify", "StatusChanged/ToFreeForChat", false);
+	config_file.addVariable("Notify", "StatusChanged/ToOnline_Sound", false);
+	config_file.addVariable("Notify", "StatusChanged/ToAway_Sound", false);
 	config_file.addVariable("Notify", "FileTransfer/IncomingFile_Sound", true);
 
 	config_file.addVariable("Sounds", "PlaySound", true);

@@ -32,8 +32,8 @@ void JabberAvatarService::fetchAvatar(Contact contact)
 		return;
 
 	JabberAvatarFetcher *avatarFetcher = new JabberAvatarFetcher(contact, this);
-	connect(avatarFetcher, SIGNAL(avatarFetched(Contact, bool, const QByteArray &)),
-			this, SIGNAL(avatarFetched(Contact, bool, const QByteArray &)));
+	connect(avatarFetcher, SIGNAL(avatarFetched(Contact, bool)),
+			this, SIGNAL(avatarFetched(Contact, bool)));
 	avatarFetcher->fetchAvatar();
 }
 

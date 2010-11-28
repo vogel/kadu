@@ -41,14 +41,14 @@ JabberAvatarFetcher::JabberAvatarFetcher(Contact contact, QObject *parent) :
 {
 }
 
-void JabberAvatarFetcher::done(const QByteArray &avatar)
+void JabberAvatarFetcher::done()
 {
-	emit avatarFetched(MyContact, true, avatar);
+	emit avatarFetched(MyContact, true);
 }
 
 void JabberAvatarFetcher::failed()
 {
-	emit avatarFetched(MyContact, false, QByteArray());
+	emit avatarFetched(MyContact, false);
 }
 
 void JabberAvatarFetcher::fetchAvatar()
@@ -70,8 +70,14 @@ void JabberAvatarFetcher::receivedVCard()
 	if (vcard && !vcard->photo().isEmpty())
 	{
 		Avatar contactAvatar = AvatarManager::instance()->byContact(MyContact, ActionCreateAndAdd);
+		contactAvatar.setLastUpdated(QDateTime::currentDateTime());
 		contactAvatar.setNextUpdate(QDateTime::fromTime_t(QDateTime::currentDateTime().toTime_t() + 7200));
-		done(vcard->photo());
+
+		QPixmap pixmap;
+		pixmap.loadFromData(vcard->photo());
+
+		contactAvatar.setPixmap(pixmap);
+		done();
 	}
 	else
 		failed();

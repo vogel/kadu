@@ -30,8 +30,6 @@ class JabberOpenChatWithRunner : public OpenChatWithRunner
 {
 	Account ParentAccount;
 
-	bool validateUserID(const QString &uid);
-
 public:
 	JabberOpenChatWithRunner(Account account);
 	virtual BuddyList matchingContacts(const QString &query);

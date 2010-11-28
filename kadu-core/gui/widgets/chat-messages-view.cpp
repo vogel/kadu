@@ -34,6 +34,7 @@
 #include "chat/chat.h"
 #include "chat/chat-styles-manager.h"
 #include "chat/html-messages-renderer.h"
+#include "gui/widgets/chat-view-network-access-manager.h"
 #include "protocols/services/chat-image-service.h"
 
 #include "debug.h"
@@ -45,6 +46,10 @@ ChatMessagesView::ChatMessagesView(Chat chat, bool supportTransparency, QWidget 
 		LastScrollValue(0), LastLine(false), SupportTransparency(supportTransparency)
 {
 	Renderer = new HtmlMessagesRenderer(CurrentChat, this);
+
+	QNetworkAccessManager *oldManager = Renderer->webPage()->networkAccessManager();
+	ChatViewNetworkAccessManager *newManager = new ChatViewNetworkAccessManager(oldManager, this);
+	Renderer->webPage()->setNetworkAccessManager(newManager);
 
 	// TODO: for me with empty styleSheet if has artifacts on scrollbars...
 	// maybe Qt bug?
@@ -115,10 +120,10 @@ void ChatMessagesView::pageDown()
 	keyPressEvent(&event);
 }
 
-void ChatMessagesView::imageReceived(const QString &messageId, const QString &messagePath)
+void ChatMessagesView::imageReceived(const QString &imageId, const QString &imageFileName)
 {
 	rememberScrollBarPosition();
-	Renderer->replaceLoadingImages(messageId, messagePath);
+	Renderer->replaceLoadingImages(imageId, imageFileName);
 }
 
 void ChatMessagesView::updateBackgroundsAndColors()
@@ -165,11 +170,12 @@ void ChatMessagesView::appendMessages(QList<MessageRenderInfo *> messages)
 	kdebugf2();
 
 	foreach (MessageRenderInfo *message, messages)
-		connect(message, SIGNAL(statusChanged(Message::Status)),
+		connect(message->message(), SIGNAL(statusChanged(Message::Status)),
 				this, SLOT(messageStatusChanged(Message::Status)));
 	rememberScrollBarPosition();
 
 	Renderer->appendMessages(messages);
+	emit messagesUpdated();
 }
 
 void ChatMessagesView::clearMessages()

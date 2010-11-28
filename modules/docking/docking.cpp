@@ -13,6 +13,7 @@
  * Copyright 2008, 2009, 2010 Piotr Galiszewski (piotrgaliszewski@gmail.com)
  * Copyright 2004, 2005 Paweł Płuciennik (pawel_p@kadu.net)
  * Copyright 2002, 2003 Dariusz Jagodzik (mast3r@kadu.net)
+ * Copyright 2010 Tomasz Rostański (rozteck@interia.pl)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -110,7 +111,9 @@ DockingManager::DockingManager() :
 		tr("Show Pending Messages"), this);
 	connect(OpenChatAction, SIGNAL(triggered()), ChatWidgetManager::instance(),
 		SLOT(openPendingMsgs()));
-	qt_mac_set_dock_menu(DockMenu);
+
+	MacDockMenu = new QMenu();
+	qt_mac_set_dock_menu(MacDockMenu);
 #endif
 	CloseKaduAction = new QAction(IconsManager::instance()->iconByPath("application-exit"), tr("&Exit Kadu"), this);
 	connect(CloseKaduAction, SIGNAL(triggered()), qApp, SLOT(quit()));
@@ -137,6 +140,10 @@ DockingManager::~DockingManager()
 
 	delete DockMenu;
 	DockMenu = 0;
+#ifdef Q_OS_MAC
+	delete MacDockMenu;
+	MacDockMenu = 0;
+#endif
 
 	delete icon_timer;
 	icon_timer = 0;
@@ -197,6 +204,10 @@ void DockingManager::pendingMessageAdded()
 
 void DockingManager::pendingMessageDeleted()
 {
+#ifdef Q_OS_MAC
+	MacDockingHelper::instance()->removeOverlay();
+	MacDockingHelper::instance()->stopBounce();
+#endif
 	if (!PendingMessagesManager::instance()->hasPendingMessages())
 	{
 		Account account = AccountManager::instance()->defaultAccount();
@@ -207,10 +218,6 @@ void DockingManager::pendingMessageDeleted()
 		if (CurrentDocker)
 			CurrentDocker->changeTrayIcon(account.protocolHandler()->statusIcon(stat));
 	}
-#ifdef Q_OS_MAC
-	MacDockingHelper::instance()->removeOverlay();
-	MacDockingHelper::instance()->stopBounce();
-#endif
 }
 
 void DockingManager::defaultToolTip()
@@ -340,18 +347,22 @@ void DockingManager::setDocker(Docker *docker)
 void DockingManager::updateContextMenu()
 {
 	DockMenu->clear();
-	qDeleteAll(StatusContainerMenus.values());
-	StatusContainerMenus.clear();
-
 #ifdef Q_OS_MAC
+	MacDockMenu->clear();
 	DockMenu->addAction(OpenChatAction);
 #endif
+
+	qDeleteAll(StatusContainerMenus.values());
+	StatusContainerMenus.clear();
 
 	int statusContainersCount = StatusContainerManager::instance()->statusContainers().count();
 
 	if (statusContainersCount == 1)
 	{
 		new StatusMenu(StatusContainerManager::instance()->statusContainers()[0], DockMenu);
+#ifdef Q_OS_MAC
+		new StatusMenu(StatusContainerManager::instance()->statusContainers()[0], MacDockMenu);
+#endif
 	}
 	else
 	{
@@ -362,12 +373,15 @@ void DockingManager::updateContextMenu()
 			new StatusMenu(container, menu);
 			StatusContainerMenus[container] = DockMenu->addMenu(menu);
 			connect(container, SIGNAL(statusChanged()), this, SLOT(containerStatusChanged()));
-
 		}
+
 		if (statusContainersCount > 1)
 			containersSeparator = DockMenu->addSeparator();
 
 		new StatusMenu(StatusContainerManager::instance(), DockMenu);
+#ifdef Q_OS_MAC
+		new StatusMenu(StatusContainerManager::instance(), MacDockMenu);
+#endif
 	}
 
 	DockMenu->addAction(CloseKaduAction);

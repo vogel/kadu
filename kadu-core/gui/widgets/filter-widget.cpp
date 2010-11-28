@@ -66,7 +66,7 @@ static OSStatus FilterFieldEventHandler(EventHandlerCallRef handlerCallRef,
 
 void FilterWidget::emitTextChanged(void)
 {
-	emit textChanged(text());
+	filterTextChanged(text());
 }
 
 void FilterWidget::clear(void)
@@ -93,10 +93,8 @@ void FilterWidget::setText(const QString &text)
 
 void FilterWidget::activate(void)
 {
-	HIViewAdvanceFocus(searchField, 0);
-	/* Dorr: I don't know the Carbon API. The HIViewAdvanceFocus was the only one
-	 * method to pass the focus to searchbox. However I have to reset the text here
-	 * otherwise some letters will be duplicated */
+	SetKeyboardFocus(HIViewGetWindow(searchField), searchField, kControlFocusNoPart);
+	SetKeyboardFocus(HIViewGetWindow(searchField), searchField, kControlFocusNextPart);
 	setText(text());
 }
 
@@ -112,18 +110,22 @@ QSize FilterWidget::sizeHint (void) const
 	GetEventParameter(event, kEventParamControlOptimalBounds, typeHIRect,
 		0, sizeof(HIRect), 0, &optimalBounds);
 	ReleaseEvent(event);
-	return QSize(optimalBounds.size.width + 200, optimalBounds.size.height);
+	return QSize(optimalBounds.size.width + 200, optimalBounds.size.height - 4);
 }
 #endif
 
 void FilterWidget::filterTextChanged(const QString &s)
 {
-#ifdef Q_OS_MAC
-	Q_UNUSED(s);
-#else
 	emit textChanged(s);
 
+	if (!View)
+		return;
+
+#ifdef Q_OS_MAC
+	if (text().isEmpty())
+#else
 	if (NameFilterEdit->text().isEmpty())
+#endif
 	{
 		QModelIndexList selection = View->selectionModel()->selectedIndexes();
 		if (!selection.isEmpty())
@@ -132,7 +134,9 @@ void FilterWidget::filterTextChanged(const QString &s)
 			View->scrollTo(selection.first());
 		}
 		View->setFocus(Qt::OtherFocusReason);
+#ifndef Q_OS_MAC
 		hide();
+#endif
 	}
 	else
 	{
@@ -141,13 +145,16 @@ void FilterWidget::filterTextChanged(const QString &s)
 			View->setCurrentIndex(View->model()->index(0, 0));
 			View->selectionModel()->select(View->model()->index(0, 0), QItemSelectionModel::SelectCurrent);
 		}
+#ifndef Q_OS_MAC
 		show();
-	}
 #endif
+	}
 }
 
 FilterWidget::FilterWidget(QWidget *parent) : QWidget(parent)
 {
+	View = 0;
+
 #ifdef Q_OS_MAC
 
 	searchFieldText = CFStringCreateWithCString(0,
@@ -167,7 +174,6 @@ FilterWidget::FilterWidget(QWidget *parent) : QWidget(parent)
 
 #elif !defined(Q_WS_MAEMO_5)
 
-	View = 0;
 
 	QHBoxLayout *layout = new QHBoxLayout(this);
 	layout->setMargin(3);
@@ -194,21 +200,20 @@ FilterWidget::~FilterWidget()
 
 void FilterWidget::setFilter(const QString &filter)
 {
-#ifndef Q_OS_MAC
+#ifdef Q_OS_MAC
+	if (text().isEmpty())
+		setText(filter);
+	activate();
+#else
 	NameFilterEdit->setText(filter);
 #endif
 }
 
 void FilterWidget::setView(BuddiesListView *view)
 {
-#ifdef Q_OS_MAC
-	Q_UNUSED(view);
-#else
 	View = view;
-#endif
 }
 
-#ifndef Q_OS_MAC
 bool FilterWidget::sendKeyEventToView(QKeyEvent *event)
 {
 	switch (event->key())
@@ -241,5 +246,3 @@ void FilterWidget::keyPressEvent(QKeyEvent *event)
 
 	QWidget::keyPressEvent(event);
 }
-
-#endif

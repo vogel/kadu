@@ -22,9 +22,9 @@
 
 #include <QtCore/QDir>
 #include <QtCore/QFile>
+#include <QtCore/QFileInfo>
 
 #include "configuration/configuration-file.h"
-#include "misc/misc.h"
 #include "debug.h"
 
 #include "helpers/gadu-formatter.h"
@@ -35,6 +35,11 @@
 
 #include "gadu-chat-image-service.h"
 
+QString GaduChatImageService::imageFileName(UinType sender, uint32_t size, uint32_t crc32)
+{
+	return QString("%1-%2-%3").arg(sender).arg(size).arg(crc32);
+}
+
 GaduChatImageService::GaduChatImageService(GaduProtocol *protocol)
 	: ChatImageService(protocol), Protocol(protocol), CurrentMinuteSendImageRequests(0)
 {
@@ -44,15 +49,20 @@ QString GaduChatImageService::saveImage(UinType sender, uint32_t size, uint32_t 
 {
 	kdebugf();
 
-	QString fileName = imageFileName(sender, size, crc32);
-	if (!fileName.isEmpty())
+	QString path = ChatImageService::imagesPath();
+	if (!QFileInfo(path).isDir() && !QDir().mkdir(path))
 	{
-		QFile file(fileName);
-		file.open(QIODevice::WriteOnly);
-		file.write(data, size);
-		file.close();
+		kdebugm(KDEBUG_INFO, "Failed creating directory: %s\n", qPrintable(path));
+		return QString::null;
 	}
 
+	QString fileName = imageFileName(sender, size, crc32);
+	QFile file(path + fileName);
+	if (!file.open(QIODevice::WriteOnly))
+		return QString::null;
+
+	file.write(data, size);
+	file.close();
 	return fileName;
 }
 
@@ -113,15 +123,15 @@ void GaduChatImageService::handleEventImageReply(struct gg_event *e)
 			.arg(e->event.image_reply.sender).arg(e->event.image_reply.size)
 			.arg(e->event.image_reply.crc32).arg(e->event.image_reply.filename)));
 
-	QString fullPath = saveImage(e->event.image_reply.sender,
+	QString fileName = saveImage(e->event.image_reply.sender,
 			e->event.image_reply.size, e->event.image_reply.crc32,
 			/*e->event.image_reply.filename, */e->event.image_reply.image);
 
-	if (fullPath.isNull())
+	if (fileName.isEmpty())
 		return;
 
 	emit imageReceived(GaduFormater::createImageId(e->event.image_reply.sender,
-			e->event.image_reply.size, e->event.image_reply.crc32), fullPath);
+			e->event.image_reply.size, e->event.image_reply.crc32), fileName);
 }
 
 bool GaduChatImageService::sendImageRequest(Contact contact, int size, uint32_t crc32)
@@ -154,19 +164,4 @@ void GaduChatImageService::prepareImageToSend(const QString &imageFileName, uint
 	crc32 = imageToSend.crc32;
 
 	ImagesToSend[qMakePair(size, crc32)] = imageToSend;
-}
-
-QString GaduChatImageService::imageFileName(UinType sender, uint32_t size, uint32_t crc32)
-{
-	QString path = profilePath("images");
-	QDir dir;
-	kdebugm(KDEBUG_INFO, "Creating directory: %s\n", qPrintable(path));
-
-	if (!dir.exists(path) && !dir.mkdir(path))
-	{
-		kdebugm(KDEBUG_INFO, "Failed creating directory: %s\n", qPrintable(path));
-		return QString::null;
-	}
-
-	return QString("%1/%2-%3-%4").arg(path).arg(sender).arg(size).arg(crc32);
 }

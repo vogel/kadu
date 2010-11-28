@@ -27,8 +27,6 @@
 #include "date-time.h"
 #include "path-conversion.h"
 
-extern KADUAPI QTextCodec *codec_cp1250;
-extern KADUAPI QTextCodec *codec_latin2;
 // private
 extern KADUAPI long int startTime, beforeExecTime, endingTime, exitingTime;
 extern KADUAPI bool measureTime;

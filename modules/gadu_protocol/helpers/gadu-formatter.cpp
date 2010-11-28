@@ -23,7 +23,7 @@
 #define GG_IGNORE_DEPRECATED
 #include <libgadu.h>
 
-#include <QtCore/QFile>
+#include <QtCore/QFileInfo>
 #include <QtGui/QApplication>
 
 #include "accounts/account.h"
@@ -158,14 +158,11 @@ void GaduFormater::appendToMessage(Account account, FormattedMessage &result, Ui
 
 	if (format.font & GG_FONT_IMAGE)
 	{
-		int32_t size = gg_fix32(image.size);
-		int32_t crc32 = gg_fix32(image.crc32);
+		uint32_t size = gg_fix32(image.size);
+		uint32_t crc32 = gg_fix32(image.crc32);
 
 		if (size == 20 && (crc32 == 4567 || crc32 == 99)) // fake spy images
 			return;
-
-		QString file_name = GaduChatImageService::imageFileName(sender, size, crc32);
-		QFile file(file_name);
 
 		if (!receiveImages)
 		{
@@ -177,7 +174,7 @@ void GaduFormater::appendToMessage(Account account, FormattedMessage &result, Ui
 		if (!details)
 			return;
 
-		if (size > details->maximumImageSize() * 1024)
+		if (size > (uint32_t)details->maximumImageSize() * 1024)
 		{
 			result << FormattedMessagePart(qApp->translate("@default", QT_TR_NOOP("###IMAGE TOO BIG###")), false, false, false, textColor);
 			return;
@@ -189,7 +186,12 @@ void GaduFormater::appendToMessage(Account account, FormattedMessage &result, Ui
 		{
 			dynamic_cast<GaduChatImageService *>(gadu->chatImageService())->
 					sendImageRequest(ContactManager::instance()->byId(account, QString::number(sender)), size, crc32);
-			result << FormattedMessagePart(file_name, !file.exists());
+
+			QString fileName = GaduChatImageService::imageFileName(sender, size, crc32);
+			if (QFileInfo(ChatImageService::imagesPath() + fileName).isFile())
+				result << FormattedMessagePart(fileName, false);
+			else
+				result << FormattedMessagePart(fileName, true, GaduFormater::createImageId(sender, size, crc32));
 		}
 	}
 	else

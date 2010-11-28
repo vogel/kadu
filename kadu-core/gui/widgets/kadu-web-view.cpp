@@ -87,7 +87,7 @@ void KaduWebView::setPage(QWebPage *page)
 
 	connect(page, SIGNAL(linkClicked(const QUrl &)), this, SLOT(hyperlinkClicked(const QUrl &)));
 	connect(page, SIGNAL(loadStarted()), this, SLOT(loadStarted()));
-	connect(page, SIGNAL(loadFinished(bool)), this, SLOT(loadFinished(bool)));
+	connect(page, SIGNAL(loadFinished(bool)), this, SLOT(loadFinishedSlot(bool)));
 	connect(page->action(QWebPage::Copy), SIGNAL(triggered()), this, SLOT(textCopied()));
 	connect(page->action(QWebPage::DownloadImageToDisk), SIGNAL(triggered()), this, SLOT(saveImage()));
 }
@@ -226,7 +226,7 @@ void KaduWebView::loadStarted()
 	IsLoading = true;
 }
 
-void KaduWebView::loadFinished(bool success)
+void KaduWebView::loadFinishedSlot(bool success)
 {
 	Q_UNUSED(success)
 

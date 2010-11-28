@@ -30,11 +30,16 @@ class KADUAPI ChatImageService : public QObject
 	Q_OBJECT
 
 public:
-	explicit ChatImageService(QObject *parent = 0) : QObject(parent) {}
+	static QString imagesPath();
+
+	explicit ChatImageService(QObject *parent = 0);
 
 signals:
 	void imageReceived(const QString &id, const QString &fileName);
 
 };
+
+// for MOC
+#include <QtCore/QString>
 
 #endif // CHAT_IMAGE_SERVICE_H

@@ -36,7 +36,7 @@
 
 #include "buddies-list-view-item-painter.h"
 
-BuddiesListViewItemPainter::BuddiesListViewItemPainter(const BuddiesListViewDelegateConfiguration &configuration, const QStyleOptionViewItemV4 &option, const QModelIndex &index, bool useConfigurationColors) :
+BuddiesListViewItemPainter::BuddiesListViewItemPainter(const BuddiesListViewDelegateConfiguration &configuration, QStyleOptionViewItemV4 option, const QModelIndex &index, bool useConfigurationColors) :
 		Configuration(configuration), Option(option), Index(index),
 		UseConfigurationColors(useConfigurationColors),
 		FontMetrics(Configuration.font()),
@@ -56,6 +56,30 @@ BuddiesListViewItemPainter::~BuddiesListViewItemPainter()
 {
 	delete DescriptionDocument;
 	DescriptionDocument = 0;
+}
+
+void BuddiesListViewItemPainter::fixColors()
+{
+#ifdef Q_OS_WIN
+	// http://kadu.net/mantis/view.php?id=1531
+	// http://bugreports.qt.nokia.com/browse/QTBUG-15637
+	// for windows only
+	Option.palette.setColor(QPalette::All, QPalette::HighlightedText, Option.palette.color(QPalette::Active, QPalette::Text));
+	Option.palette.setColor(QPalette::All, QPalette::Highlight, Option.palette.base().color().darker(108));
+#endif
+}
+
+QColor BuddiesListViewItemPainter::textColor() const
+{
+	QPalette::ColorGroup colorGroup = drawDisabled()
+			? QPalette::Disabled
+			: QPalette::Normal;
+
+	QPalette::ColorRole colorRole = drawSelected()
+			? QPalette::HighlightedText
+			: QPalette::Text;
+
+	return Option.palette.color(colorGroup, colorRole);
 }
 
 bool BuddiesListViewItemPainter::useBold() const
@@ -172,7 +196,12 @@ QString BuddiesListViewItemPainter::getName()
 	return Index.data(Qt::DisplayRole).toString();
 }
 
-bool BuddiesListViewItemPainter::drawDisabled()
+bool BuddiesListViewItemPainter::drawSelected() const
+{
+	return Option.state & QStyle::State_Selected;
+}
+
+bool BuddiesListViewItemPainter::drawDisabled() const
 {
 	Buddy buddy = Index.data(BuddyRole).value<Buddy>();
 	return buddy.isOfflineTo();
@@ -208,15 +237,12 @@ QTextDocument * BuddiesListViewItemPainter::getDescriptionDocument(int width)
 	if (DescriptionDocument)
 		return DescriptionDocument;
 
-	QColor textcolor = Option.palette.color(QPalette::Normal, Option.state & QStyle::State_Selected
-			? QPalette::HighlightedText
-			: QPalette::Text);
+	fixColors();
 
-	DescriptionDocument = createDescriptionDocument(Index.data(DescriptionRole).toString(), width,
-			((Option.state & QStyle::State_Selected) || !UseConfigurationColors)
-					? textcolor
-					: Configuration.descriptionColor());
-
+	QColor color = drawSelected() || drawDisabled() || !UseConfigurationColors
+			? textColor()
+			: Configuration.descriptionColor();
+	DescriptionDocument = createDescriptionDocument(Index.data(DescriptionRole).toString(), width, color);
 	return DescriptionDocument;
 }
 
@@ -421,24 +447,20 @@ void BuddiesListViewItemPainter::paint(QPainter *painter)
 
 	computeLayout();
 
-	QPalette::ColorGroup colorGroup = drawDisabled()
-			? QPalette::Disabled
-			: QPalette::Normal;
+	fixColors();
 
-	if (Option.state & QStyle::State_Selected)
-		painter->setPen(Option.palette.color(colorGroup, QPalette::HighlightedText));
+	// some bit of broken logic
+	if (drawSelected() || drawDisabled() || !UseConfigurationColors)
+		painter->setPen(textColor());
 	else
-		if (UseConfigurationColors && !drawDisabled()) // some bit of broken logic
-		{
-			Buddy buddy = Index.data(BuddyRole).value<Buddy>();
-			Contact contact = Index.data(ContactRole).value<Contact>();
-			if (buddy.isBlocked() || contact.isBlocking())
-				painter->setPen(QColor(255, 0, 0));
-			else
-				painter->setPen(Configuration.fontColor());
-		}
+	{
+		Buddy buddy = Index.data(BuddyRole).value<Buddy>();
+		Contact contact = Index.data(ContactRole).value<Contact>();
+		if (buddy.isBlocked() || contact.isBlocking())
+			painter->setPen(QColor(255, 0, 0));
 		else
-			painter->setPen(Option.palette.color(colorGroup, QPalette::Text));
+			painter->setPen(Configuration.fontColor());
+	}
 
 	paintIcon(painter);
 	paintMessageIcon(painter);

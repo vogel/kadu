@@ -57,8 +57,14 @@ void CustomInput::keyPressEvent(QKeyEvent *e)
 		return;
 	}
 
-	if (autosend_enabled && ((HotKey::shortCut(e, "ShortCuts", "chat_newline"))
-		|| e->key() == Qt::Key_Enter) && !(e->modifiers() & Qt::ShiftModifier))
+	/* Ctrl+Return has a special meaning:
+	 * 1) autosend_enabled -> new line is entered
+	 * 2) message is sent
+	 */
+	bool isCtrlReturn = ((e->modifiers() & Qt::ControlModifier) && e->key() == Qt::Key_Return);
+
+	if ((autosend_enabled && (HotKey::shortCut(e, "ShortCuts", "chat_send") || e->key() == Qt::Key_Enter))
+			|| (!autosend_enabled && isCtrlReturn))
 	{
 		kdebugmf(KDEBUG_INFO, "emit sendMessage()\n");
 		emit sendMessage();
@@ -66,55 +72,63 @@ void CustomInput::keyPressEvent(QKeyEvent *e)
 		kdebugf2();
 		return;
 	}
-	else
+	else if (isCtrlReturn)
 	{
- 		if (HotKey::shortCut(e, "ShortCuts", "chat_bold"))
- 		{
-			if (QFont::Normal == fontWeight())
-				setFontWeight(QFont::Bold);
-			else
-				setFontWeight(QFont::Normal);
+		// now surely autosend_enabled == true, so we can emulate Shift+Return to get a new line
+		QKeyEvent emulateNewLineEvent(QEvent::KeyPress, Qt::Key_Return, Qt::ShiftModifier, "\n", false, 2);
+		QTextEdit::keyPressEvent(&emulateNewLineEvent);
 
-			emit fontChanged(currentFont());
-
- 			e->accept();
- 			kdebugf2();
- 			return;
- 		}
- 		if (HotKey::shortCut(e, "ShortCuts", "chat_italic"))
- 		{
- 			setFontItalic(!fontItalic());
-
-			emit fontChanged(currentFont());
-
- 			e->accept();
- 			kdebugf2();
- 			return;
- 		}
- 		if (HotKey::shortCut(e, "ShortCuts", "chat_underline"))
- 		{
-			setFontUnderline(!fontUnderline());
-
-			emit fontChanged(currentFont());
-
- 			e->accept();
- 			kdebugf2();
- 			return;
- 		}
-		if (e->key() == Qt::Key_A && (e->modifiers() & Qt::ControlModifier))
-		{
-			selectAll();
-			e->accept();
- 			kdebugf2();
- 			return;
-		}
-		if (!CopyPossible && e->key() == Qt::Key_C && e->modifiers() & Qt::ControlModifier)
-		{
-			e->ignore();
- 			kdebugf2();
- 			return;
-		}
+		e->accept();
+		kdebugf2();
+		return;
 	}
+	else if (HotKey::shortCut(e, "ShortCuts", "chat_bold"))
+	{
+		if (QFont::Normal == fontWeight())
+			setFontWeight(QFont::Bold);
+		else
+			setFontWeight(QFont::Normal);
+
+		emit fontChanged(currentFont());
+
+		e->accept();
+		kdebugf2();
+		return;
+	}
+	else if (HotKey::shortCut(e, "ShortCuts", "chat_italic"))
+	{
+		setFontItalic(!fontItalic());
+
+		emit fontChanged(currentFont());
+
+		e->accept();
+		kdebugf2();
+		return;
+	}
+	else if (HotKey::shortCut(e, "ShortCuts", "chat_underline"))
+	{
+		setFontUnderline(!fontUnderline());
+
+		emit fontChanged(currentFont());
+
+		e->accept();
+		kdebugf2();
+		return;
+	}
+	else if (e->matches(QKeySequence::SelectAll))
+	{
+		selectAll();
+		e->accept();
+		kdebugf2();
+		return;
+	}
+	else if (!CopyPossible && e->matches(QKeySequence::Copy))
+	{
+		e->ignore();
+		kdebugf2();
+		return;
+	}
+
 	QTextEdit::keyPressEvent(e);
 	kdebugf2();
 }
@@ -134,47 +148,47 @@ void CustomInput::keyReleaseEvent(QKeyEvent *e)
 
 void CustomInput::contextMenuEvent(QContextMenuEvent *e)
 {
-	QMenu *menu = new QMenu();
+	QMenu menu(this);
 
-	QAction *undo = new QAction(tr("Undo"), menu);
+	QAction *undo = new QAction(tr("Undo"), &menu);
 	undo->setShortcut(QKeySequence::Undo);
 	connect(undo, SIGNAL(triggered()), this, SLOT(undo()));
-	menu->addAction(undo);
+	menu.addAction(undo);
 
-	QAction *redo = new QAction(tr("Redo"), menu);
+	QAction *redo = new QAction(tr("Redo"), &menu);
 	redo->setShortcut(QKeySequence::Redo);
 	connect(redo, SIGNAL(triggered()), this, SLOT(redo()));
-	menu->addAction(redo);
+	menu.addAction(redo);
 
-	menu->addSeparator();
+	menu.addSeparator();
 
-	QAction *cut = new QAction(tr("Cut"), menu);
+	QAction *cut = new QAction(tr("Cut"), &menu);
 	cut->setShortcut(QKeySequence::Cut);
 	connect(cut, SIGNAL(triggered()), this, SLOT(cut()));
-	menu->addAction(cut);
+	menu.addAction(cut);
 
-	QAction *copy = new QAction(tr("Copy"), menu);
+	QAction *copy = new QAction(tr("Copy"), &menu);
 	copy->setShortcut(QKeySequence::Copy);
 	connect(copy, SIGNAL(triggered()), this, SLOT(copy()));
-	menu->addAction(copy);
+	menu.addAction(copy);
 
-	QAction *paste = new QAction(tr("Paste"), menu);
+	QAction *paste = new QAction(tr("Paste"), &menu);
 	paste->setShortcut(QKeySequence::Paste);
 	connect(paste, SIGNAL(triggered()), this, SLOT(paste()));
-	menu->addAction(paste);
+	menu.addAction(paste);
 
-	QAction *clear = new QAction(tr("Clear"), menu);
+	QAction *clear = new QAction(tr("Clear"), &menu);
 	connect(clear, SIGNAL(triggered()), this, SLOT(clear()));
-	menu->addAction(clear);
+	menu.addAction(clear);
 
-	menu->addSeparator();
+	menu.addSeparator();
 
-	QAction *all = new QAction(tr("Select All"), menu);
+	QAction *all = new QAction(tr("Select All"), &menu);
 	all->setShortcut(QKeySequence::SelectAll);
 	connect(all, SIGNAL(triggered()), this, SLOT(selectAll()));
-	menu->addAction(all);
+	menu.addAction(all);
 
-	menu->exec(e->globalPos());
+	menu.exec(e->globalPos());
 }
 
 void CustomInput::setAutoSend(bool on)

@@ -43,9 +43,9 @@ void FormattedMessage::parseImages(FormattedMessage &message, const QString &mes
 			message << FormattedMessagePart(partContent, b, i, u, color);
 		}
 
-		QString fileName = ImageRegExp.cap(1);
-		if (!fileName.isEmpty())
-			message << FormattedMessagePart(fileName, false);
+		QString filePath = ImageRegExp.cap(1);
+		if (!filePath.isEmpty())
+			message << FormattedMessagePart(filePath, false);
 
 		pos += ImageRegExp.matchedLength();
 		lastPos = pos;

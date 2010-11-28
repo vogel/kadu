@@ -395,7 +395,7 @@ void KaduWindow::keyPressEvent(QKeyEvent *e)
 	// after action moving this could be restored
 	// else if (HotKey::shortCut(e,"ShortCuts", "kadu_deleteuser"))
 	//	deleteUsersActionDescription->createAction(this)->trigger();
-	else if (e->key() == Qt::Key_C && e->modifiers() & Qt::ControlModifier)
+	else if (e->matches(QKeySequence::Copy))
 		InfoPanel->pageAction(QWebPage::Copy)->trigger();
 
 	emit keyPressed(e);

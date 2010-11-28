@@ -201,6 +201,7 @@ void AutoAway::configurationUpdated()
 	refreshStatusInterval = refreshStatusTime;
 
 	autoStatusText = config_file.readEntry("General", "AutoStatusText");
+	DescriptionAddon = parseDescription(autoStatusText);
 
 	changeTo = (AutoAwayStatusChanger::ChangeDescriptionTo)config_file.readNumEntry("General", "AutoChangeDescription");
 
@@ -262,7 +263,7 @@ void AutoAway::createDefaultConfiguration()
 	config_file.addVariable("General", "AutoAwayTime", 300);
 	config_file.addVariable("General", "AutoExtendedAway", true);
 	config_file.addVariable("General", "AutoExtendedAwayTime", 900);
-	config_file.addVariable("General", "AutoChangeDescription", false);
+	config_file.addVariable("General", "AutoChangeDescription", 0);
 	config_file.addVariable("General", "AutoDisconnect", false);
 	config_file.addVariable("General", "AutoDisconnectTime", 3600);
 	config_file.addVariable("General", "AutoInvisible", false);

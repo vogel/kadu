@@ -161,6 +161,7 @@ set (kadu_SRCS
 	gui/widgets/buddy-info-panel.cpp
 	gui/widgets/chat-edit-box.cpp
 	gui/widgets/chat-messages-view.cpp
+	gui/widgets/chat-view-network-access-manager.cpp
 	gui/widgets/chat-widget.cpp
 	gui/widgets/chat-widget-actions.cpp
 	gui/widgets/chat-widget-manager.cpp
@@ -297,6 +298,7 @@ set (kadu_SRCS
 	protocols/model/protocols-model.cpp
 	protocols/model/protocols-model-proxy.cpp
 	protocols/services/chat-service.cpp
+	protocols/services/chat-image-service.cpp
 	protocols/services/contact-list-service.cpp
 
 	qt/long-validator.cpp
@@ -487,6 +489,7 @@ set (kadu_MOC_SRCS
 	gui/widgets/buddy-info-panel.h
 	gui/widgets/chat-edit-box.h
 	gui/widgets/chat-messages-view.h
+	gui/widgets/chat-view-network-access-manager.h
 	gui/widgets/chat-widget.h
 	gui/widgets/chat-widget-actions.h
 	gui/widgets/chat-widget-manager.h

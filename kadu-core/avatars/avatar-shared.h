@@ -35,6 +35,7 @@ class KADUAPI AvatarShared : public QObject, public Shared
 	Contact AvatarContact;
 	QDateTime LastUpdated;
 	QDateTime NextUpdate;
+	QString FilePath;
 	QPixmap Pixmap;
 
 	QString AvatarsDir;
@@ -59,6 +60,7 @@ public:
 	virtual void aboutToBeRemoved();
 
 	QString filePath();
+	void setFilePath(const QString &filePath);
 
 	bool isEmpty();
 
@@ -71,6 +73,7 @@ public:
 
 signals:
 	void updated();
+	void pixmapUpdated();
 
 };
 

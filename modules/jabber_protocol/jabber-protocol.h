@@ -111,13 +111,15 @@ public:
 	static int initModule();
 	static void closeModule();
 
+	static bool validateJid(const QString &jid);
+
 	JabberProtocol(Account account, ProtocolFactory *factory);
 	virtual ~JabberProtocol();
 
 	XMPP::JabberClient * client() { return JabberClient; }
 	bool isPEPAvailable() { return pepAvailable; }
 
-	virtual bool validateUserID(const QString& uid);
+	virtual bool validateUserID(const QString &uid);
 
 	void setContactsListReadOnly(bool contactsListReadOnly);
 	virtual bool contactsListReadOnly();

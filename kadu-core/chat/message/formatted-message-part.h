@@ -58,11 +58,12 @@ class KADUAPI FormattedMessagePart
 
 	bool Image;
 	bool ImageDelayed;
-	QString ImagePath;
+	QString ImageFileName;
+	QString ImageId;
 
 public:
 	static KADUAPI QString loadingImageHtml(const QString &imageId);
-	static KADUAPI QString replaceLoadingImages(QString message, const QString &imageId, const QString &imagePath);
+	static KADUAPI QString replaceLoadingImages(QString message, const QString &imageId, const QString &imageFileName);
 
 	/**
 	 * Creates text message part with formatting.
@@ -78,7 +79,7 @@ public:
 	 * Creates image message part (ready or to-be-received).
 	 * @arg imagePath local image path
 	 */
-	FormattedMessagePart(const QString &imagePath, bool delayed);
+	FormattedMessagePart(const QString &imageFileName, bool delayed, const QString &imageId = QString::null);
 	virtual ~FormattedMessagePart();
 
 	bool isImage() const { return Image; }
@@ -90,7 +91,8 @@ public:
 	bool underline() const { return Underline; }
 	const QColor & color() const { return Color; }
 
-	const QString & imagePath() const { return ImagePath; }
+	// TODO 0.6.6: rename to imageFileName once we're saving sent images in imagesPath
+	const QString & imagePath() const { return ImageFileName; }
 
 	/**
 	 * Converts message part to HTML - either formatted text or image.
