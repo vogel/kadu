@@ -58,6 +58,19 @@ BuddiesListViewItemPainter::~BuddiesListViewItemPainter()
 	DescriptionDocument = 0;
 }
 
+QColor BuddiesListViewItemPainter::textColor() const
+{
+	QPalette::ColorGroup colorGroup = drawDisabled()
+			? QPalette::Disabled
+			: QPalette::Normal;
+
+	QPalette::ColorRole colorRole = drawSelected()
+			? QPalette::HighlightedText
+			: QPalette::Text;
+
+	return Option.palette.color(colorGroup, colorRole);
+}
+
 bool BuddiesListViewItemPainter::useBold() const
 {
 	if (!Configuration.showBold())
@@ -172,7 +185,12 @@ QString BuddiesListViewItemPainter::getName()
 	return Index.data(Qt::DisplayRole).toString();
 }
 
-bool BuddiesListViewItemPainter::drawDisabled()
+bool BuddiesListViewItemPainter::drawSelected() const
+{
+	return Option.state & QStyle::State_Selected;
+}
+
+bool BuddiesListViewItemPainter::drawDisabled() const
 {
 	Buddy buddy = Index.data(BuddyRole).value<Buddy>();
 	return buddy.isOfflineTo();
@@ -208,13 +226,9 @@ QTextDocument * BuddiesListViewItemPainter::getDescriptionDocument(int width)
 	if (DescriptionDocument)
 		return DescriptionDocument;
 
-	QColor textcolor = Option.palette.color(QPalette::Normal, Option.state & QStyle::State_Selected
-			? QPalette::HighlightedText
-			: QPalette::Text);
-
 	DescriptionDocument = createDescriptionDocument(Index.data(DescriptionRole).toString(), width,
-			((Option.state & QStyle::State_Selected) || !UseConfigurationColors)
-					? textcolor
+			((drawSelected()) || !UseConfigurationColors)
+					? textColor() 
 					: Configuration.descriptionColor());
 
 	return DescriptionDocument;
@@ -421,24 +435,18 @@ void BuddiesListViewItemPainter::paint(QPainter *painter)
 
 	computeLayout();
 
-	QPalette::ColorGroup colorGroup = drawDisabled()
-			? QPalette::Disabled
-			: QPalette::Normal;
-
-	if (Option.state & QStyle::State_Selected)
-		painter->setPen(Option.palette.color(colorGroup, QPalette::HighlightedText));
+	// some bit of broken logic
+	if (drawSelected() || drawDisabled() || !UseConfigurationColors)
+		painter->setPen(textColor());
 	else
-		if (UseConfigurationColors && !drawDisabled()) // some bit of broken logic
-		{
-			Buddy buddy = Index.data(BuddyRole).value<Buddy>();
-			Contact contact = Index.data(ContactRole).value<Contact>();
-			if (buddy.isBlocked() || contact.isBlocking())
-				painter->setPen(QColor(255, 0, 0));
-			else
-				painter->setPen(Configuration.fontColor());
-		}
+	{
+		Buddy buddy = Index.data(BuddyRole).value<Buddy>();
+		Contact contact = Index.data(ContactRole).value<Contact>();
+		if (buddy.isBlocked() || contact.isBlocking())
+			painter->setPen(QColor(255, 0, 0));
 		else
-			painter->setPen(Option.palette.color(colorGroup, QPalette::Text));
+			painter->setPen(Configuration.fontColor());
+	}
 
 	paintIcon(painter);
 	paintMessageIcon(painter);

@@ -56,13 +56,17 @@ class BuddiesListViewItemPainter
 
 	QString getAccountName();
 	QString getName();
-	bool drawDisabled();
+
+	bool drawSelected() const;
+	bool drawDisabled() const;
 
 	QTextDocument * createDescriptionDocument(const QString &text, int width, QColor color) const;
 	QTextDocument * getDescriptionDocument(int width);
 
 	const QFontMetrics & fontMetrics();
 	int itemIndentation();
+
+	QColor textColor() const;
 
 	bool useBold() const;
 	bool showMessagePixmap() const;
