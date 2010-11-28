@@ -324,9 +324,7 @@ void BuddiesListView::contextMenuEvent(QContextMenuEvent *event)
 
 bool BuddiesListView::shouldEventGoToFilter(QKeyEvent *event)
 {
-	return (!event->text().isEmpty()
-			&& event->key() != Qt::Key_Escape
-			&& event->key() != Qt::Key_Backspace);
+	return !event->text().isEmpty() && event->text().at(0).isPrint();
 }
 
 void BuddiesListView::keyPressEvent(QKeyEvent *event)
