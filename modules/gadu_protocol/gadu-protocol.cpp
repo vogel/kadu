@@ -174,6 +174,14 @@ unsigned int GaduProtocol::gaduStatusFromStatus(const Status &status)
 	return hasDescription ? GG_STATUS_NOT_AVAIL_DESCR : GG_STATUS_NOT_AVAIL;
 }
 
+bool GaduProtocol::validateGaduNumber(QString uid)
+{
+	LongValidator v(1, 3999999999U);
+	int pos = 0;
+
+	return (v.validate(uid, pos) == QValidator::Acceptable);
+}
+
 Buddy GaduProtocol::searchResultToBuddy(gg_pubdir50_t res, int number)
 {
 	Buddy result = Buddy::create();
@@ -258,14 +266,7 @@ GaduProtocol::~GaduProtocol()
 
 bool GaduProtocol::validateUserID(const QString &uid)
 {
-	LongValidator v(1, 3999999999U, this);
-	int pos = 0;
-
-	QString id = uid; // need non-const copy
-	if (v.validate(id, pos) == QValidator::Acceptable)
-		return true;
-
-	return false;
+	return validateGaduNumber(uid);
 }
 
 int GaduProtocol::maxDescriptionLength()
