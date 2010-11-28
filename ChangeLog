@@ -4,6 +4,7 @@
 * gui: now Ctrl+Return enters a new line if autosend enabled, otherwise sends the message (beevvy)
 * gui: #1751 fixed: Ctrl or Shift press cancels filtering (beevvy)
 * avatars: #1749 fixed: wrong avatars (with empty uuid) are stored and incorrectly displayed in buddy info and chat (beevvy)
+* chat: #1759 fixed: kadu chat styles with line end style other than "\n" didn't work (beevvy)
 
 +++ version 0.6.6-beta11
 * history: speed up history window opening (Vogel)
