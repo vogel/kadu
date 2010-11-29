@@ -8,6 +8,8 @@
 * modules: #1753 fixed: added blacklist for modules in CMakeLists.txt, so invalid modules cannot be compiled (Vogel)
 * gui: #1531 probably fixed: white font on selected items in buddies window on Windows Vista/7 (Vogel)
 * gui: #1670 fixed: Ctrl+A (Select All) in BuddiesListView doesn't work (beevvy)
+* gui: #1504 fixed: Buddy list filtering works different on Mac OS X (dorr)
+* gui: Clicking on bouncing dock icon opens only chat windows (dorr)
 
 +++ version 0.6.6-beta11
 * history: speed up history window opening (Vogel)
