@@ -91,6 +91,8 @@
 
 	void _activateWindow( QWidget *window )
 	{
+		if (window->isMinimized())
+			window->showNormal();
 		window->activateWindow();
 		window->raise();
 	}
