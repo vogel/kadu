@@ -46,7 +46,6 @@ AvatarShared::AvatarShared(QUuid uuid) :
 		Shared(uuid), AvatarContact(Contact::null)
 {
 	AvatarsDir = profilePath("avatars/");
-	FilePath = AvatarsDir + uuid.toString();
 }
 
 AvatarShared::~AvatarShared()
@@ -66,7 +65,7 @@ QString AvatarShared::storageNodeName()
 QString AvatarShared::filePath()
 {
 	ensureLoaded();
-	return FilePath;
+	return FilePath.isEmpty() ? AvatarsDir + uuid() : FilePath;
 }
 
 void AvatarShared::setFilePath(const QString& filePath)
@@ -87,7 +86,6 @@ void AvatarShared::load()
 
 	Shared::load();
 
-	FilePath = AvatarsDir + uuid().toString();
 	LastUpdated = loadValue<QDateTime>("LastUpdated");
 	NextUpdate = loadValue<QDateTime>("NextUpdate");
 	Pixmap.load(filePath());

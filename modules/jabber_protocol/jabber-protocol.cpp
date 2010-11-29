@@ -93,6 +93,11 @@ void JabberProtocol::closeModule()
 	kdebugf2();
 }
 
+bool JabberProtocol::validateJid(const QString &jid)
+{
+	return XMPP::Jid(jid).isValid();
+}
+
 JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 		Protocol(account, factory), JabberClient(0), ResourcePool(0), serverInfoManager(0), PepManager(0),
 		ContactsListReadOnly(false)
@@ -542,10 +547,9 @@ void JabberProtocol::contactIdChanged(Contact contact, const QString &oldId)
 	contactAttached(contact);
 }
 
-bool JabberProtocol::validateUserID(const QString& uid)
+bool JabberProtocol::validateUserID(const QString &uid)
 {
-	XMPP::Jid j = XMPP::Jid(uid);
-	return j.isValid();
+	return validateJid(uid);
 }
 
 JabberResourcePool *JabberProtocol::resourcePool()

@@ -3,6 +3,11 @@
 * autoaway: fixed bad working description changing with interval of auto-refreshing status set to 0 (beevvy)
 * gui: now Ctrl+Return enters a new line if autosend enabled, otherwise sends the message (beevvy)
 * gui: #1751 fixed: Ctrl or Shift press cancels filtering (beevvy)
+* avatars: #1749 fixed: wrong avatars (with empty uuid) are stored and incorrectly displayed in buddy info and chat (beevvy)
+* chat: #1759 fixed: kadu chat styles with line end style other than "\n" didn't work (beevvy)
+* modules: #1753 fixed: added blacklist for modules in CMakeLists.txt, so invalid modules cannot be compiled (Vogel)
+* gui: #1531 probably fixed: white font on selected items in buddies window on Windows Vista/7 (Vogel)
+* gui: #1670 fixed: Ctrl+A (Select All) in BuddiesListView doesn't work (beevvy)
 
 +++ version 0.6.6-beta11
 * history: speed up history window opening (Vogel)

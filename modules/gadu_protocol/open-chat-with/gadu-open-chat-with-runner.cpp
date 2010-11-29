@@ -20,20 +20,17 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QIntValidator>
-
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
-
 #include "buddies/buddy.h"
 #include "buddies/buddy-shared.h"
-
 #include "contacts/contact.h"
 #include "contacts/contact-manager.h"
-
 #include "debug.h"
 
 #include "gadu-contact-details.h"
+#include "gadu-protocol.h"
+
 #include "gadu-open-chat-with-runner.h"
 
 GaduOpenChatWithRunner::GaduOpenChatWithRunner(Account account) :
@@ -46,26 +43,11 @@ BuddyList GaduOpenChatWithRunner::matchingContacts(const QString &query)
 	kdebugf();
 
 	BuddyList matchedContacts;
-	if (!validateUserID(query))
+	if (!GaduProtocol::validateGaduNumber(query))
 		return matchedContacts;
 
 	Contact contact = ContactManager::instance()->byId(ParentAccount, query, ActionCreate);
-	Buddy buddy = contact.ownerBuddy();
-	if (buddy.isNull())
-	{
-		Buddy buddy = Buddy::create();
-		buddy.setDisplay(QString("%1: %2").arg(ParentAccount.accountIdentity().name()).arg(query));
-		contact.setOwnerBuddy(buddy);
-	}
-	matchedContacts.append(buddy);
+	matchedContacts.append(contact.ownerBuddy());
 
 	return matchedContacts;
-}
-
-bool GaduOpenChatWithRunner::validateUserID(const QString &uid)
-{
-	QIntValidator v(1, 999999999, 0);
-	int pos = 0;
-	QString text = uid;
-	return v.validate(text, pos) == QValidator::Acceptable;
 }
