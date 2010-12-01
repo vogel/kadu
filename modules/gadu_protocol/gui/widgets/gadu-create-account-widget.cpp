@@ -142,7 +142,7 @@ void GaduCreateAccountWidget::dataChanged()
 {
 	bool valid = !NewPassword->text().isEmpty()
 			&& !ReNewPassword->text().isEmpty()
-			&& !EMail->text().indexOf(UrlHandlerManager::instance()->mailRegExp()) < 0
+			&& !(EMail->text().indexOf(UrlHandlerManager::instance()->mailRegExp()) < 0)
 			&& !MyTokenWidget->tokenValue().isEmpty()
 			&& IdentityCombo->currentIdentity();
 
