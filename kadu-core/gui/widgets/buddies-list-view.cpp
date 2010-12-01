@@ -245,7 +245,7 @@ Chat BuddiesListView::currentChat() const
 	{
 		if (!account)
 		{
-			if (!selection.parent().isValid())
+			if (selection.data(ItemTypeRole) == BuddyRole)
 				buddies.insert(buddyAt(selection));
 			else
 			{
@@ -269,7 +269,7 @@ Chat BuddiesListView::currentChat() const
 		}
 		else
 		{
-			if (!selection.parent().isValid())
+			if (selection.data(ItemTypeRole) == BuddyRole)
 		    {
 				contact = BuddyPreferredManager::instance()->preferredContact(buddyAt(selection), account);
 				if (!contact)
