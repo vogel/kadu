@@ -34,6 +34,8 @@
 
 #include "certificates/certificate-helpers.h"
 #include "resource/jabber-resource-pool.h"
+#include "utils/pep-manager.h"
+#include "utils/server-info-manager.h"
 #include "jabber-account-details.h"
 #include "jabber-client.h"
 #include "jabber-protocol.h"
@@ -49,7 +51,7 @@ int JabberClient::S5bServerPort = 8010;
 
 JabberClient::JabberClient(JabberProtocol *protocol, QObject *parent) :
 		QObject(parent), jabberClient(0), JabberClientStream(0), JabberClientConnector(0),
-		JabberTLS(0), JabberTLSHandler(0), Protocol(protocol)
+		JabberTLS(0), JabberTLSHandler(0), Protocol(protocol), serverInfoManager(0), PepManager(0)
 {
 	cleanUp();
 
@@ -329,6 +331,19 @@ void JabberClient::connect(const XMPP::Jid &jid, const QString &password, bool a
 	 * Setup client layer.
 	 */
 	jabberClient = new XMPP::Client(this);
+
+	// Initialize server info stuff
+	serverInfoManager = new ServerInfoManager(jabberClient, jabberClient);
+	QObject::connect(serverInfoManager, SIGNAL(featuresChanged()),
+		this, SLOT(serverFeaturesChanged()));
+
+	// Initialize PubSub stuff
+	PepManager = new PEPManager(jabberClient, serverInfoManager, jabberClient);
+	QObject::connect(PepManager, SIGNAL(publish_success(const QString&, const XMPP::PubSubItem&)),
+		this, SIGNAL(publishSuccess(const QString&,const XMPP::PubSubItem&)));
+	QObject::connect(PepManager, SIGNAL(publish_error(const QString&, const XMPP::PubSubItem&)),
+		this, SIGNAL(publishError(const QString&,const XMPP::PubSubItem&)));
+	PepAvailable = false;
 
 	/*
 	 * Enable file transfer (IP and server will be set after connection
@@ -1008,6 +1023,36 @@ void JabberClient::getErrorInfo(int err, AdvancedConnector *conn, Stream *stream
 	//printf("str[%s], reconn=%d\n", str.latin1(), reconn);
 	*_str = str;
 	*_reconn = reconn;
+}
+
+void JabberClient::serverFeaturesChanged()
+{
+	if (serverInfoManager)
+		setPEPAvailable(serverInfoManager->hasPEP());
+}
+
+void JabberClient::setPEPAvailable(bool b)
+{
+	if (PepAvailable == b)
+		return;
+
+	PepAvailable = b;
+
+	// Publish support
+	if (b && client()->extensions().contains("ep"))
+	{
+		QStringList pepNodes;
+		/*pepNodes += "http://jabber.org/protocol/mood";
+		pepNodes += "http://jabber.org/protocol/tune";
+		pepNodes += "http://jabber.org/protocol/physloc";
+		pepNodes += "http://jabber.org/protocol/geoloc";*/
+		pepNodes += "http://www.xmpp.org/extensions/xep-0084.html#ns-data";
+		pepNodes += "http://www.xmpp.org/extensions/xep-0084.html#ns-metadata";
+		client()->addExtension("ep", XMPP::Features(pepNodes));
+		//setStatusActual(d->loginStatus);
+	}
+	else if (!b && client()->extensions().contains("ep"))
+		client()->removeExtension("ep");
 }
 
 }

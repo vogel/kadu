@@ -31,9 +31,9 @@ JabberAvatarPepUploader::JabberAvatarPepUploader(Account account, QObject *paren
 {
 	MyProtocol = dynamic_cast<JabberProtocol *>(account.protocolHandler());
 
-	connect(MyProtocol->pepManager(),SIGNAL(publish_success(const QString&, const XMPP::PubSubItem&)),
+	connect(MyProtocol->client(),SIGNAL(publishSuccess(const QString&, const XMPP::PubSubItem&)),
 		this, SLOT(publishSuccess(const QString&,const XMPP::PubSubItem&)));
-	connect(MyProtocol->pepManager(),SIGNAL(publish_error(const QString&, const XMPP::PubSubItem&)),
+	connect(MyProtocol->client(),SIGNAL(publishError(const QString&, const XMPP::PubSubItem&)),
 		this, SLOT(publishError(const QString&,const XMPP::PubSubItem&)));
 }
 
@@ -59,7 +59,7 @@ void JabberAvatarPepUploader::publishSuccess(const QString &ns, const XMPP::PubS
 	infoElement.setAttribute("type", "image/png");
 	metaElement.appendChild(infoElement);
 
-	MyProtocol->pepManager()->publish(NS_METADATA, XMPP::PubSubItem(UploadedAvatarHash, metaElement));
+	MyProtocol->client()->pepManager()->publish(NS_METADATA, XMPP::PubSubItem(UploadedAvatarHash, metaElement));
 
 	emit avatarUploaded(true);
 
@@ -89,7 +89,7 @@ void JabberAvatarPepUploader::doUpload(const QByteArray &data)
 
 	UploadedAvatarHash = hash;
 
-	MyProtocol->pepManager()->publish(NS_METADATA, XMPP::PubSubItem(hash, el));
+	MyProtocol->client()->pepManager()->publish(NS_METADATA, XMPP::PubSubItem(hash, el));
 }
 
 void JabberAvatarPepUploader::doRemove()
@@ -99,7 +99,7 @@ void JabberAvatarPepUploader::doRemove()
 	QDomElement metaDataElement =  doc->createElement("metadata");
 	metaDataElement.setAttribute("xmlns", NS_METADATA);
 	metaDataElement.appendChild(doc->createElement("stop"));
-	MyProtocol->pepManager()->publish(NS_METADATA, XMPP::PubSubItem("current", metaDataElement));
+	MyProtocol->client()->pepManager()->publish(NS_METADATA, XMPP::PubSubItem("current", metaDataElement));
 }
 
 void JabberAvatarPepUploader::uploadAvatar(const QImage &avatar, const QByteArray &data)

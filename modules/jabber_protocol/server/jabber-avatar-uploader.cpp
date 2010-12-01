@@ -101,7 +101,7 @@ void JabberAvatarUploader::uploadAvatar(QImage avatar)
 	UploadingAvatar = createScaledAvatar(avatar);
 	UploadingAvatarData = avatarData(UploadingAvatar);
 
-	if (protocol->isPEPAvailable() && protocol->pepManager())
+	if (protocol->client()->isPEPAvailable() && protocol->client()->pepManager())
 		uploadAvatarPEP();
 	else
 		uploadAvatarVCard();
