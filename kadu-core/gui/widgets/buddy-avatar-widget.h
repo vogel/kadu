@@ -35,6 +35,8 @@ class BuddyAvatarWidget : public QWidget
 
 	bool BuddyAvatar;
 
+	QPixmap BuddyAvatarPixmap;
+
 	QLabel *AvatarLabel;
 	QPushButton *ChangePhotoButton;
 
