@@ -611,19 +611,14 @@ void JabberClient::slotCSWarning(int warning)
 {
 	emit debugMessage("Client stream warning.");
 
-	bool showNoTlsWarning = warning == ClientStream::WarnNoTLS && false/*acc.ssl == UserAccount::SSL_Yes*/;
+	bool showNoTlsWarning = warning == ClientStream::WarnNoTLS;
 	bool doCleanupStream = !JabberClientStream || showNoTlsWarning;
 
 	if (doCleanupStream)
-	{
 		disconnect();
 
-	}
-
 	if (showNoTlsWarning)
-	{
 		emit connectionError(tr("The server does not support TLS encryption."));
-	}
 	else if (!doCleanupStream)
 	{
 		Q_ASSERT(JabberClientStream);
@@ -641,29 +636,31 @@ void JabberClient::slotCSError(int error)
 		&& (clientStream()->errorCondition() == XMPP::ClientStream::NotAuthorized))
 	{
 		kdebug("Incorrect password, retrying.\n");
-		Protocol->logout(/*Kopete::Account::BadPassword*/);
+		Protocol->logout();
+
 		emit invalidPassword();
 	}
 	else
 	{
-		//Kopete::Account::DisconnectReason errorClass =  Kopete::Account::Unknown;
-
 		kdebug("Disconnecting.\n");
 
 		if (Protocol->isConnected() || Protocol->isConnecting())
 		{
 			getErrorInfo(error, JabberClientConnector, JabberClientStream, JabberTLSHandler, &errorText, &reconn);
-			if (reconn)
-				Protocol->connectToServer();
-
 			emit connectionError(tr("There was an error communicating with the server.\nDetails: %1").arg(errorText));
+
+			if (reconn)
+			{
+				cleanUp();
+				Protocol->connectToServer();
+			}
+			else
+			{
+				Protocol->resourcePool()->clear();
+				Protocol->logout();
+			}
 		}
-		if (Protocol->isConnected() || Protocol->isConnecting())
-			Protocol->logout(/* errorClass */);
-
-		Protocol->resourcePool()->clear();
 	}
-
 }
 
 void JabberClient::addContact(const XMPP::Jid &j, const QString &name, const QStringList &groups, bool authReq)
@@ -759,9 +756,7 @@ void JabberClient::setPresence(const XMPP::Status &status)
 			kdebug("We were not connected, presence update aborted.");
 		}
 	}
-
 }
-
 
 void JabberClient::requestSubscription(const XMPP::Jid &jid)
 {

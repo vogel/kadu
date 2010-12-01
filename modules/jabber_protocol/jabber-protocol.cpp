@@ -213,6 +213,9 @@ void JabberProtocol::initializeJabberClient()
 
 void JabberProtocol::login(const QString &password, bool permanent)
 {
+	if (isConnected())
+		return;
+
 	account().setPassword(password);
 	account().setRememberPassword(permanent);
 	account().setHasPassword(!password.isEmpty());
@@ -255,8 +258,6 @@ void JabberProtocol::connectToServer()
 		PasswordWindow::getPassword(message, this, SLOT(login(const QString &, bool)));
 		return;
 	}
-
-	JabberClient->disconnect();
 
 	JabberClient->setOSName(SystemInfo::instance()->osFullName());
 	JabberClient->setTimeZone(SystemInfo::instance()->timezone(), SystemInfo::instance()->timezoneOffset());
@@ -499,17 +500,12 @@ void JabberProtocol::changeStatus()
 
 	if (newStatus.isDisconnected() && status().isDisconnected())
 	{
-		networkStateChanged(NetworkDisconnected);
-
-		setAllOffline();
-
-		JabberClient->disconnect();
-
 		if (newStatus.description() != status().description())
 			statusChanged(newStatus);
 
-		// i dont thing we need it
-		// setStatus(newStatus());
+		if (NetworkConnecting == state())
+			networkStateChanged(NetworkDisconnected);
+
 		return;
 	}
 
