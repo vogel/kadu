@@ -376,8 +376,6 @@ void JabberProtocol::disconnectedFromServer()
 
 	if (!nextStatus().isDisconnected()) // user still wants to login
 		QTimer::singleShot(1000, this, SLOT(login())); // try again after one second
-	else if (!nextStatus().isDisconnected())
-		setStatus(Status());
 
 	kdebugf2();
 }
