@@ -53,8 +53,6 @@
 
 #include "jabber-protocol.h"
 
-bool JabberProtocol::ModuleUnloading = false;
-
 int JabberProtocol::initModule()
 {
 	kdebugf();
@@ -78,8 +76,6 @@ int JabberProtocol::initModule()
 void JabberProtocol::closeModule()
 {
 	kdebugf();
-
-	ModuleUnloading = true;
 
 	UrlHandlerManager::instance()->unregisterUrlHandler("Jabber");
 	ProtocolsManager::instance()->unregisterProtocolFactory(JabberProtocolFactory::instance());
@@ -177,6 +173,19 @@ void JabberProtocol::initializeJabberClient()
 {
 	JabberClient = new XMPP::JabberClient(this, this);
 
+	// Initialize server info stuff
+	serverInfoManager = new ServerInfoManager(JabberClient->client(), this);
+	connect(serverInfoManager, SIGNAL(featuresChanged()),
+		this, SLOT(serverFeaturesChanged()));
+
+	// Initialize PubSub stuff
+	PepManager = new PEPManager(JabberClient->client(), serverInfoManager, this);
+	connect(PepManager, SIGNAL(itemPublished(const XMPP::Jid&, const QString&, const XMPP::PubSubItem&)),
+		this, SLOT(itemPublished(const XMPP::Jid&, const QString&, const XMPP::PubSubItem&)));
+	connect(PepManager, SIGNAL(itemRetracted(const XMPP::Jid&, const QString&, const XMPP::PubSubRetraction&)),
+		this, SLOT(itemRetracted(const XMPP::Jid&, const QString&, const XMPP::PubSubRetraction&)));
+	pepAvailable = false;
+
 	connect(JabberClient, SIGNAL(csDisconnected()), this, SLOT(disconnectedFromServer()));
 	connect(JabberClient, SIGNAL(connected()), this, SLOT(connectedToServer()));
 
@@ -267,62 +276,11 @@ void JabberProtocol::connectToServer()
 	JabberClient->setFileTransfersEnabled(true); // i haz it
 	jabberID = account().id();
 
-	// PROXY CONNECTION
-	// Cannot be used, because JabberClient->connect does its own Proxy stuff
-	// that looks like it gets global Proxy settings, this code looks like it should
-	// not be here, because JabberClient implements this already
-	// TODO: ecleanup code
-
-/*
-	connector = JabberClient->clientConnector();
-	XMPP::AdvancedConnector::Proxy p;
-
-	AccountProxySettings proxySettings = account().proxySettings();
-	if (proxySettings.enabled())
-	{
-		p.setHttpConnect(proxySettings.address(), proxySettings.port());
-		if (proxySettings.requiresAuthentication() && !proxySettings.user().isEmpty())
-			p.setUserPass(proxySettings.user(), proxySettings.password());
-	}
-
-	connector->setProxy(p);
-
-	// END OF PROXY SETTINGS
-	// THis is also implemented in JabberClient class
-
-	if (confUseSSL && QCA::isSupported("tls"))
-	{
-		tls = new QCA::TLS;
-		tls->setTrustedCertificates(CertUtil::allCertificates());
-		tlsHandler = new XMPP::QCATLSHandler(tls);
-		tlsHandler->setXMPPCertCheck(true);
-		connect(tlsHandler, SIGNAL(tlsHandshaken()), SLOT(tlsHandshaken()));
-	}
-
-	connector->setOptHostPort(host, port);
-	connector->setOptSSL(confUseSSL);
-
-	stream = new XMPP::ClientStream(connector, tlsHandler);
-*/
-
 	JabberClient->setAllowPlainTextPassword(plainAuthToXMPP(jabberAccountDetails->plainAuthMode()));
 
 	networkStateChanged(NetworkConnecting);
 	jabberID = jabberID.withResource(jabberAccountDetails->resource());
 	JabberClient->connect(jabberID, account().password(), true);
-
-	// Initialize server info stuff
-	serverInfoManager = new ServerInfoManager(JabberClient->client(), this);
-	connect(serverInfoManager, SIGNAL(featuresChanged()),
-		this, SLOT(serverFeaturesChanged()));
-
-	// Initialize PubSub stuff
-	PepManager = new PEPManager(JabberClient->client(), serverInfoManager, this);
-	connect(PepManager, SIGNAL(itemPublished(const XMPP::Jid&, const QString&, const XMPP::PubSubItem&)),
-		this, SLOT(itemPublished(const XMPP::Jid&, const QString&, const XMPP::PubSubItem&)));
-	connect(PepManager, SIGNAL(itemRetracted(const XMPP::Jid&, const QString&, const XMPP::PubSubRetraction&)),
-		this, SLOT(itemRetracted(const XMPP::Jid&, const QString&, const XMPP::PubSubRetraction&)));
-	pepAvailable = false;
 
 	kdebugf2();
 }
@@ -395,31 +353,7 @@ void JabberProtocol::disconnectFromServer(const XMPP::Status &s)
 		JabberClient->disconnect();
 	}
 
-	/* FIXME:
-	 * We should delete the JabberClient instance here,
-	 * but active timers in Iris prevent us from doing so.
-	 * (in a failed connection attempt, these timers will
-	 * try to access an already deleted object).
-	 * Instead, the instance will lurk until the next
-	 * connection attempt.
-	 */
 	kdebug("Disconnected.\n");
-
-	if (serverInfoManager)
-	{
-		disconnect(serverInfoManager, SIGNAL(featuresChanged()),
-			this, SLOT(serverFeaturesChanged()));
-	}
-
-	delete serverInfoManager;
-	serverInfoManager = 0;
-
-	if (!ModuleUnloading && PepManager)
-	{
-		delete PepManager;
-		PepManager = 0;
-		pepAvailable = false;
-	}
 
 	networkStateChanged(NetworkDisconnected);
 	kdebugf2();
@@ -768,5 +702,3 @@ void JabberProtocol::itemRetracted(const XMPP::Jid& j, const QString& n, const X
 	}
 	*/
 }
-
-

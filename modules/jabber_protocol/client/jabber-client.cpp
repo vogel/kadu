@@ -636,10 +636,7 @@ void JabberClient::slotCSWarning(int warning)
 	if (doCleanupStream)
 	{
 		disconnect();
-		//v_isActive = false;
-		//loginStatus = Status(Status::Offline);
-		//stateChanged();
-		//disconnected();
+
 	}
 
 	if (showNoTlsWarning)
@@ -671,9 +668,8 @@ void JabberClient::slotCSError(int error)
 		//Kopete::Account::DisconnectReason errorClass =  Kopete::Account::Unknown;
 
 		kdebug("Disconnecting.\n");
-		// display message to user
-		// when removing or disconnecting, connection errors are normal
-		if (/*!m_removing && */Protocol->isConnected() || Protocol->isConnecting())
+
+		if (Protocol->isConnected() || Protocol->isConnecting())
 		{
 			getErrorInfo(error, JabberClientConnector, JabberClientStream, JabberTLSHandler, &errorText, &reconn);
 			if (reconn)

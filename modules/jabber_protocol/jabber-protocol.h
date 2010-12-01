@@ -47,8 +47,6 @@ class JabberProtocol : public Protocol
 {
 	Q_OBJECT
 
-	static bool ModuleUnloading;
-
 	JabberAvatarService *CurrentAvatarService;
 	JabberChatService *CurrentChatService;
 	JabberChatStateService *CurrentChatStateService;
