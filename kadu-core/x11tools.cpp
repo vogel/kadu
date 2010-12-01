@@ -360,7 +360,7 @@ void X11_moveWindowToDesktop( Display *display, Window window, unsigned long des
 }
 
 
-bool X11_isWindowVisibleOnDesktop( Display *display, Window window, unsigned long desktop, bool forceFreeDesktop )
+bool X11_isWindowOnDesktop( Display *display, Window window, unsigned long desktop, bool forceFreeDesktop )
 {
 	if( ( ! forceFreeDesktop ) && ( ! X11_isFreeDesktopCompatible( display ) ) )
 	{
@@ -427,20 +427,20 @@ bool X11_isWindowFullyVisible( Display *display, Window window )
 				break;
 			k++;
 		}
+		k++;
 		Atom typedock = XInternAtom( display, "_NET_WM_WINDOW_TYPE_DOCK", False );
 		Atom typemenu = XInternAtom( display, "_NET_WM_WINDOW_TYPE_MENU", False );
-		while( k < nchildren )
+		unsigned long currentdesktop = X11_getCurrentDesktop( display );
+		for( ; k < nchildren ; k++ )
 		{
 			if( children[k] == window )
-			{
-				k++;
 				continue;
-			}
+			if( ! X11_isWindowOnDesktop( display, children[k], currentdesktop ) )
+				continue;
 			XWindowAttributes attr;
 			XGetWindowAttributes( display, children[k], &attr );
 			if( attr.map_state != IsViewable )
 			{
-				k++;
 				continue;
 			}
 			std::pair<int,int> pos2 = X11_getWindowPos( display, children[k] );
@@ -482,7 +482,6 @@ bool X11_isWindowFullyVisible( Display *display, Window window )
 					return false;
 				}
 			}
-			k++;
 		}
 		XFree( children );
 	}
@@ -649,12 +648,12 @@ void X11_setActiveWindowCheck( Display *display, Window window, bool forceFreeDe
 	int time = 0;
 	while( time < X11_SETACTIVEWINDOW_TIMEOUT )
 	{
-		if( X11_isWindowVisibleOnDesktop( display, window, X11_getCurrentDesktop( display ), forceFreeDesktop ) )
+		if( X11_isWindowOnDesktop( display, window, X11_getCurrentDesktop( display ), forceFreeDesktop ) )
 			break;
 		usleep( X11_SETACTIVEWINDOW_CHECKTIME );
 		time += X11_SETACTIVEWINDOW_CHECKTIME;
 	}
-	if( ! X11_isWindowVisibleOnDesktop( display, window, X11_getCurrentDesktop( display ), forceFreeDesktop ) )
+	if( ! X11_isWindowOnDesktop( display, window, X11_getCurrentDesktop( display ), forceFreeDesktop ) )
 		return;
 	X11_setActiveWindow( display, window );
 }
@@ -873,12 +872,12 @@ bool X11_checkFullScreen( Display *display )
 				if(
 						X11_isPropertyAtomSet( display, wt, "_NET_WM_STATE", "_NET_WM_STATE_MAXIMIZED_HORZ" ) &&
 						X11_isPropertyAtomSet( display, wt, "_NET_WM_STATE", "_NET_WM_STATE_MAXIMIZED_VERT" ) &&
-						X11_getDesktopOfWindow( display, wt ) == currentdesktop
+						X11_isWindowOnDesktop( display, wt, currentdesktop )
 					)
 					return false;
 				_debug( "[D3]" );
 				_debug( "[wtD=%d]", X11_getDesktopOfWindow( display, wt ) );
-				if( X11_getDesktopOfWindow( display, wt ) == currentdesktop )
+				if( X11_isWindowOnDesktop( display, wt, currentdesktop ) )
 					return true;
 				_debug( "[D4]" );
 			}
@@ -893,7 +892,7 @@ bool X11_checkFullScreen( Display *display )
 				if(
 						X11_isPropertyAtomSet( display, wl, "_NET_WM_STATE", "_NET_WM_STATE_MAXIMIZED_HORZ" ) &&
 						X11_isPropertyAtomSet( display, wl, "_NET_WM_STATE", "_NET_WM_STATE_MAXIMIZED_VERT" ) &&
-						X11_getDesktopOfWindow( display, wl ) == currentdesktop
+						X11_isWindowOnDesktop( display, wl, currentdesktop )
 					)
 					return false;
 				_debug( "[E3]" );
