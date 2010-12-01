@@ -48,7 +48,7 @@ int JabberClient::S5bServerPort = 8010;
 
 JabberClient::JabberClient(JabberProtocol *protocol, QObject *parent) :
 		QObject(parent), jabberClient(0), JabberClientStream(0), JabberClientConnector(0),
-		JabberTLS(0), JabberTLSHandler(0)/*, privacyManager(0)*/, Protocol(protocol)
+		JabberTLS(0), JabberTLSHandler(0), Protocol(protocol)
 {
 	cleanUp();
 
@@ -69,7 +69,6 @@ JabberClient::~JabberClient()
 	delete JabberTLS;
 
 	jabberClient = 0;
-	// privacyManager will be deleted with jabberClient, its parent's parent
 }
 
 void JabberClient::cleanUp()
@@ -82,14 +81,12 @@ void JabberClient::cleanUp()
 	delete JabberClientConnector;
 	delete JabberTLSHandler;
 	delete JabberTLS;
-	// privacyManager will be deleted with jabberClient, its parent's parent
 
 	jabberClient = 0L;
 	JabberClientStream = 0L;
 	JabberClientConnector = 0L;
 	JabberTLSHandler = 0L;
 	JabberTLS = 0L;
-	///privacyManager = 0L;
 
 	CurrentPenaltyTime = 0;
 
@@ -237,11 +234,6 @@ int JabberClient::getPenaltyTime()
 	return currentTime;
 }
 
-// PrivacyManager *JabberClient::privacyManager() const
-// {
-// 	return privacyManager;
-// }
-
 void JabberClient::connect(const XMPP::Jid &jid, const QString &password, bool auth)
 {
 	/*
@@ -342,11 +334,6 @@ void JabberClient::connect(const XMPP::Jid &jid, const QString &password, bool a
 	 * Setup client layer.
 	 */
 	jabberClient = new XMPP::Client(this);
-
-	/*
-	 * Setup privacy manager
-	 */
-	///privacyManager = new PrivacyManager ( rootTask() );
 
 	/*
 	 * Enable file transfer (IP and server will be set after connection

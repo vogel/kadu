@@ -77,7 +77,6 @@ class JabberClient : public QObject
 	QCA::TLS *JabberTLS;
 	XMPP::QCATLSHandler *JabberTLSHandler;
 	QCA::Initializer QCAInit;
-	//PrivacyManager *privacyManager;
 	QStringList AddedContacts;
 
 	// ignore TLS warnings
@@ -438,11 +437,6 @@ public:
 	 * transfers.
 	 */
 	XMPP::FileTransferManager *fileTransferManager() const { return client() ? client()->fileTransferManager() : 0; }
-
-	/**
-	 * Returns the privacy lists manager
-	 */
-	//PrivacyManager *privacyManager () const;
 
 	/**
 	 * Join a groupchat.
