@@ -236,12 +236,6 @@ int JabberClient::getPenaltyTime()
 
 void JabberClient::connect(const XMPP::Jid &jid, const QString &password, bool auth)
 {
-	/*
-	 * Close any existing connection.
-	 */
-	if (jabberClient)
-		cleanUp();
-
 	MyJid = jid;
 	Password = password;
 
