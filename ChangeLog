@@ -15,6 +15,7 @@
 * cenzor: #1752 fixed: swear words list is empty (WhE)
 * jabber: fix a couple of memory leaks after reconneting to server (WhE)
 * core: #1764 fixed: manually added avatars are scalled to 128x128 px (WhE)
+* jabber: #1776 fixed: "More options" button in create new account widget doesn't work (WhE)
 
 +++ version 0.6.6-beta11
 * history: speed up history window opening (Vogel)

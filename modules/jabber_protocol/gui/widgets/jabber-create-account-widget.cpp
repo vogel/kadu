@@ -131,10 +131,12 @@ void JabberCreateAccountWidget::createGui()
 	moreOptionsLayout->insertStretch(-1);
 	moreOptions->setLayout(moreOptionsLayout);
 
-	layout->addRow(0, moreOptions);
+	mainLayout->addWidget(moreOptions);
 
 	OptionsWidget = new QWidget(this);
+	QHBoxLayout *optionsLayout = new QHBoxLayout((OptionsWidget));
 	QGroupBox *ConnectionOptions = new QGroupBox(OptionsWidget);
+	optionsLayout->addWidget(ConnectionOptions);
 	ConnectionOptions->setTitle(tr("Connection settings"));
 
 	QVBoxLayout *vboxLayout2 = new QVBoxLayout(ConnectionOptions);
@@ -191,7 +193,7 @@ void JabberCreateAccountWidget::createGui()
 	LegacySSLProbe->setText(tr("Probe legacy SSL port"));
 	vboxLayout2->addWidget(LegacySSLProbe);
 
-	layout->addRow(0, OptionsWidget);
+	mainLayout->addWidget(OptionsWidget);
 
 	mainLayout->addStretch(100);
 
