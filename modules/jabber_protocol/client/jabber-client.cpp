@@ -248,7 +248,7 @@ void JabberClient::connect(const XMPP::Jid &jid, const QString &password, bool a
 	 * Close any existing connection.
 	 */
 	if (jabberClient)
-		jabberClient->close();
+		cleanUp();
 
 	MyJid = jid;
 	Password = password;
@@ -431,37 +431,26 @@ void JabberClient::connect(const XMPP::Jid &jid, const QString &password, bool a
 
 void JabberClient::disconnect()
 {
-	if (jabberClient)
-		jabberClient->close();
-	else
-		cleanUp();
+	cleanUp();
 }
 
-void JabberClient::disconnect( XMPP::Status &reason)
+void JabberClient::disconnect(XMPP::Status &reason)
 {
-	if (jabberClient)
+	if (JabberClientStream && JabberClientStream->isActive())
 	{
-		if (JabberClientStream->isActive())
-		{
-			XMPP::JT_Presence *pres = new JT_Presence(rootTask());
-			reason.setIsAvailable( false);
-			pres->pres( reason);
-			pres->go();
+		XMPP::JT_Presence *pres = new JT_Presence(rootTask());
+		reason.setIsAvailable( false);
+		pres->pres( reason);
+		pres->go();
 
-			JabberClientStream->close();
-			jabberClient->close();
-		}
+		JabberClientStream->close();
 	}
-	else
-		cleanUp();
+	cleanUp();
 }
 
 bool JabberClient::isConnected() const
 {
-	if (jabberClient)
-		return jabberClient->isActive();
-
-	return false;
+	return jabberClient && jabberClient->isActive();
 }
 
 void JabberClient::joinGroupChat(const QString &host, const QString &room, const QString &nick)
@@ -811,7 +800,6 @@ void JabberClient::rejectSubscription(const XMPP::Jid &jid)
 {
 	changeSubscription(jid, "unsubscribed");
 }
-
 
 void JabberClient::changeSubscription(const XMPP::Jid &jid, const QString &type)
 {
