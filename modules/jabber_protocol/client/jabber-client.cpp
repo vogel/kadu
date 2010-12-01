@@ -21,9 +21,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QTimer>
-#include <QRegExp>
+#include <QtCore/QRegExp>
+#include <QtCore/QTimer>
 #include <QtCrypto>
+
 #include <bsocket.h>
 #include <filetransfer.h>
 #include <xmpp_tasks.h>
