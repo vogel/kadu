@@ -17,6 +17,7 @@
 * core: #1764 fixed: manually added avatars are scalled to 128x128 px (WhE)
 * jabber: #1776 fixed: "More options" button in create new account widget doesn't work (WhE)
 * gui: #1789 fixed: double click on contact in conferences list opens chat with preferred contact (WhE)
+* gui: #1790 fixed: Your accouns/default network not implemented (WhE)
 
 +++ version 0.6.6-beta11
 * history: speed up history window opening (Vogel)
