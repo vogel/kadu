@@ -17,38 +17,26 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "accounts/account.h"
-#include "protocols/protocol.h"
-#include "protocols/protocol-factory.h"
+#ifndef ID_REGULAR_EXPRESSION_FILTER
+#define ID_REGULAR_EXPRESSION_FILTER
 
-#include "id-regular-expression-filter.h"
+#include "accounts/filter/abstract-account-filter.h"
 
-IdRegularExpressionFilter::IdRegularExpressionFilter(QObject *parent) :
-		AbstractAccountFilter(parent)
+class IdValidityFilter : public AbstractAccountFilter
 {
-}
+	Q_OBJECT
 
-IdRegularExpressionFilter::~IdRegularExpressionFilter()
-{
-}
+	QString Id;
 
-void IdRegularExpressionFilter::setId(QString id)
-{
-	if (Id == id)
-		return;
+protected:
+	virtual bool acceptAccount(Account account);
 
-	Id = id;
-	emit filterChanged();
-}
+public:
+	explicit IdValidityFilter(QObject *parent = 0);
+	virtual ~IdValidityFilter();
 
-bool IdRegularExpressionFilter::acceptAccount(Account account)
-{
-	if (Id.isEmpty())
-		return true;
-	
-	QRegExp regularExpression = account.protocolHandler()->protocolFactory()->idRegularExpression();
-	if (regularExpression.exactMatch(Id))
-		return true;
+	void setId(const QString &id);
 
-	return regularExpression.matchedLength() == Id.length(); // for not-full matches
-}
+};
+
+#endif // ID_REGULAR_EXPRESSION_FILTER

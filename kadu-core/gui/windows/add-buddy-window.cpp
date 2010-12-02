@@ -31,7 +31,7 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
-#include "accounts/filter/id-regular-expression-filter.h"
+#include "accounts/filter/id-validity-filter.h"
 #include "accounts/filter/writeable-contacts-list-filter.h"
 #include "accounts/model/accounts-model.h"
 #include "accounts/model/accounts-proxy-model.h"
@@ -95,7 +95,7 @@ void AddBuddyWindow::createGui()
 
 	AccountCombo = new AccountsComboBox(this);
 
-	AccountComboIdFilter = new IdRegularExpressionFilter(AccountCombo);
+	AccountComboIdFilter = new IdValidityFilter(AccountCombo);
 	AccountCombo->addFilter(AccountComboIdFilter);
 
 	WriteableContactsListFilter *writeableCotnactsListFilter = new WriteableContactsListFilter(AccountCombo);
