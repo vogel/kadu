@@ -32,7 +32,6 @@ class JabberProtocolFactory : public ProtocolFactory
 
 	static JabberProtocolFactory *Instance;
 	QList<StatusType *> SupportedStatusTypes;
-	QRegExp IdRegularExpression;
 
 public:
 	static JabberProtocolFactory * instance();
@@ -46,7 +45,7 @@ public:
 	virtual QWidget * newContactPersonalInfoWidget(Contact contact, QWidget *parent = 0);
 	virtual QList<StatusType *> supportedStatusTypes();
 	virtual QString idLabel();
-	virtual QRegExp idRegularExpression();
+	virtual QValidator::State validateId(QString id);
 	virtual bool allowChangeServer();
 	virtual QString defaultServer();
 

@@ -29,9 +29,9 @@
 #include "accounts/account-manager.h"
 #include "gui/windows/message-dialog.h"
 #include "misc/misc.h"
-#include "qt/long-validator.h"
 #include "icons-manager.h"
 
+#include "gadu-id-validator.h"
 #include "gui/widgets/token-widget.h"
 #include "server/gadu-server-unregister-account.h"
 
@@ -79,7 +79,7 @@ void GaduUnregisterAccountWindow::createGui()
 	QFormLayout *layout = new QFormLayout(formWidget);
 
 	AccountId = new QLineEdit(this);
-	AccountId->setValidator(new LongValidator(1, 3999999999U, this));
+	AccountId->setValidator(GaduIdValidator::instance());
 	connect(AccountId, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
 	layout->addRow(tr("Gadu-Gadu number") + ':', AccountId);
 

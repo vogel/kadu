@@ -73,7 +73,6 @@ public:
 	};
 
 private:
-
 	ProtocolFactory *Factory;
 
 	Account CurrentAccount;
@@ -108,7 +107,6 @@ public:
 	virtual ContactPersonalInfoService * contactPersonalInfoService() { return 0; }
 	virtual SearchService * searchService() { return 0; }
 
-	virtual bool validateUserID(const QString &uid) = 0;
 	virtual bool contactsListReadOnly() = 0;
 	virtual bool supportsPrivateStatus() { return false; }
 
@@ -154,7 +152,6 @@ signals:
 // TODO: REVIEW
 	void connectionError(Account account, const QString &server, const QString &reason);
 	void invalidPassword(Account account);
-	
 
 };
 

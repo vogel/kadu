@@ -44,6 +44,7 @@
 #include "services/jabber-subscription-service.h"
 #include "iris-status-adapter.h"
 #include "jabber-contact-details.h"
+#include "jabber-id-validator.h"
 #include "jabber-protocol-factory.h"
 #include "facebook-protocol-factory.h"
 #include "gtalk-protocol-factory.h"
@@ -60,6 +61,7 @@ int JabberProtocol::initModule()
 			|| ProtocolsManager::instance()->hasProtocolFactory("facebook"))
 		return 0;
 
+	JabberIdValidator::createInstance();
 	VCardFactory::createInstance();
 
 	ProtocolsManager::instance()->registerProtocolFactory(JabberProtocolFactory::instance());
@@ -82,17 +84,13 @@ void JabberProtocol::closeModule()
 	ProtocolsManager::instance()->unregisterProtocolFactory(FacebookProtocolFactory::instance());
 
 	VCardFactory::destroyInstance();
+	JabberIdValidator::destroyInstance();
 
 	XMPP::irisNetCleanup();
 
 	qRemovePostRoutine(QCA::deinit);
 
 	kdebugf2();
-}
-
-bool JabberProtocol::validateJid(const QString &jid)
-{
-	return XMPP::Jid(jid).isValid();
 }
 
 JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
@@ -464,11 +462,6 @@ void JabberProtocol::contactIdChanged(Contact contact, const QString &oldId)
 
 	JabberClient->removeContact(oldId);
 	contactAttached(contact);
-}
-
-bool JabberProtocol::validateUserID(const QString &uid)
-{
-	return validateJid(uid);
 }
 
 JabberResourcePool *JabberProtocol::resourcePool()

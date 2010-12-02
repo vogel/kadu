@@ -33,7 +33,7 @@ class QRegExpValidator;
 
 class AccountsComboBox;
 class GroupsComboBox;
-class IdRegularExpressionFilter;
+class IdValidityFilter;
 class SelectBuddyComboBox;
 
 class AddBuddyWindow : public QDialog
@@ -42,10 +42,9 @@ class AddBuddyWindow : public QDialog
 
 	QLabel *UserNameLabel;
 	QLineEdit *UserNameEdit;
-	QRegExpValidator *UserNameValidator;
 	QAction *MobileAccountAction; // TODO: hack
 	AccountsComboBox *AccountCombo;
-	IdRegularExpressionFilter *AccountComboIdFilter;
+	IdValidityFilter *AccountComboIdFilter;
 	GroupsComboBox *GroupCombo;
 	QLineEdit *DisplayNameEdit;
 	QCheckBox *MergeContact;
@@ -74,7 +73,6 @@ class AddBuddyWindow : public QDialog
 private slots:
 	void updateGui();
 	void setAddContactEnabled();
-	void setValidateRegularExpression();
 	void setAccountFilter();
 
 protected slots:

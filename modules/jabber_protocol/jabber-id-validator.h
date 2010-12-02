@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2010 Bartosz Brachaczek (b.brachaczek@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -17,26 +17,28 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ID_REGULAR_EXPRESSION_FILTER
-#define ID_REGULAR_EXPRESSION_FILTER
+#ifndef JABBER_ID_VALIDATOR_H
+#define JABBER_ID_VALIDATOR_H
 
-#include "accounts/filter/abstract-account-filter.h"
+#include <QtGui/QValidator>
 
-class IdRegularExpressionFilter : public AbstractAccountFilter
+class JabberIdValidator : public QValidator
 {
 	Q_OBJECT
 
-	QString Id;
+	static QValidator *Instance;
 
-protected:
-	virtual bool acceptAccount(Account account);
+	explicit JabberIdValidator(QObject *parent = 0);
+	virtual ~JabberIdValidator();
 
 public:
-	explicit IdRegularExpressionFilter(QObject *parent = 0);
-	virtual ~IdRegularExpressionFilter();
+	static void createInstance();
+	static void destroyInstance();
 
-	void setId(QString id);
+	static QValidator * instance();
+
+	virtual QValidator::State validate(QString &input, int &pos) const;
 
 };
 
-#endif // ID_REGULAR_EXPRESSION_FILTER
+#endif // JABBER_ID_VALIDATOR_H

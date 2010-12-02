@@ -35,13 +35,13 @@
 #include "gui/windows/message-dialog.h"
 #include "identities/identity-manager.h"
 #include "protocols/protocols-manager.h"
-#include "qt/long-validator.h"
 #include "html_document.h"
 #include "icons-manager.h"
 
 #include "gui/windows/gadu-remind-password-window.h"
 #include "server/gadu-server-register-account.h"
 #include "gadu-account-details.h"
+#include "gadu-id-validator.h"
 #include "gadu-protocol-factory.h"
 #include "token-widget.h"
 
@@ -70,7 +70,7 @@ void GaduAddAccountWidget::createGui()
 	QFormLayout *layout = new QFormLayout(formWidget);
 
 	AccountId = new QLineEdit(this);
-	AccountId->setValidator(new LongValidator(1, 3999999999U, this));
+	AccountId->setValidator(GaduIdValidator::instance());
 	connect(AccountId, SIGNAL(textEdited(QString)), this, SLOT(dataChanged()));
 	layout->addRow(tr("Gadu-Gadu number") + ':', AccountId);
 

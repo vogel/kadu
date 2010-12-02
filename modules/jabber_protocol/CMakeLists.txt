@@ -256,6 +256,7 @@ set (SOURCES
 	jabber-account-details.cpp
 	jabber-contact-data-manager.cpp
 	jabber-contact-details.cpp
+	jabber-id-validator.cpp
 	jabber-module.cpp
 	jabber-protocol.cpp
 	jabber-protocol-factory.cpp
@@ -302,6 +303,7 @@ set (MOC_SOURCES
 	gui/windows/xml-console.h
 	jabber-account-data-manager.h
 	jabber-contact-data-manager.h
+	jabber-id-validator.h
 	jabber-protocol.h
 	jabber-protocol-factory.h
 	jabber-url-handler.h
