@@ -60,10 +60,11 @@ int JabberProtocol::initModule()
 			|| ProtocolsManager::instance()->hasProtocolFactory("facebook"))
 		return 0;
 
+	VCardFactory::createInstance();
+
 	ProtocolsManager::instance()->registerProtocolFactory(JabberProtocolFactory::instance());
 	ProtocolsManager::instance()->registerProtocolFactory(GTalkProtocolFactory::instance());
 	ProtocolsManager::instance()->registerProtocolFactory(FacebookProtocolFactory::instance());
-
 
 	UrlHandlerManager::instance()->registerUrlHandler("Jabber", new JabberUrlHandler());
 
@@ -79,6 +80,8 @@ void JabberProtocol::closeModule()
 	ProtocolsManager::instance()->unregisterProtocolFactory(JabberProtocolFactory::instance());
 	ProtocolsManager::instance()->unregisterProtocolFactory(GTalkProtocolFactory::instance());
 	ProtocolsManager::instance()->unregisterProtocolFactory(FacebookProtocolFactory::instance());
+
+	VCardFactory::destroyInstance();
 
 	XMPP::irisNetCleanup();
 
@@ -97,8 +100,6 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 		ContactsListReadOnly(false)
 {
 	kdebugf();
-
-	VCardFactory::createInstance(this);
 
 	if (account.id().endsWith(QLatin1String("@chat.facebook.com")))
 		setContactsListReadOnly(true);

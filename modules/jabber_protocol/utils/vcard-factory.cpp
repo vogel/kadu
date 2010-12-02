@@ -56,16 +56,22 @@ VCardFactory::~VCardFactory()
 	instance_ = 0;
 }
 
-void VCardFactory::createInstance(QObject *parent)
+void VCardFactory::createInstance()
 {
 	if (!instance_)
-		instance_ = new VCardFactory(parent);
+		instance_ = new VCardFactory();
+}
+
+void VCardFactory::destroyInstance()
+{
+	delete instance_;
+	instance_ = 0;
 }
 
 /**
  * \brief Returns the VCardFactory instance.
  */
-VCardFactory* VCardFactory::instance()
+VCardFactory * VCardFactory::instance()
 {
 	return instance_;
 }
