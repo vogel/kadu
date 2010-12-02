@@ -19,6 +19,8 @@
 * gui: #1789 fixed: double click on contact in conferences list opens chat with preferred contact (WhE)
 * gui: #1790 fixed: Your accouns/default network not implemented (WhE)
 * sound: #1729 fixed: "Play a sound" checkbox in notifications configuration doesn't have an icon (WhE)
+* gadu: #1763 fixed: restore information about successful export contacts to server (WhE)
+* gadu: #1795 fixed: kadu wants to remove anonymous contacts after importing contacts from server (WhE)
 
 +++ version 0.6.6-beta11
 * history: speed up history window opening (Vogel)
