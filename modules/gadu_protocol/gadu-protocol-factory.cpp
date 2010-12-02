@@ -59,8 +59,6 @@ GaduProtocolFactory::GaduProtocolFactory()
 	SupportedStatusTypes.append(statusTypeManager->statusType("Offline"));
 
 	qSort(SupportedStatusTypes.begin(), SupportedStatusTypes.end(), StatusType::lessThan);
-
-	IdRegularExpression.setPattern("[0-9]{1,12}");
 }
 
 Protocol * GaduProtocolFactory::createProtocolHandler(Account account)
@@ -101,11 +99,6 @@ QList<StatusType *> GaduProtocolFactory::supportedStatusTypes()
 QString GaduProtocolFactory::idLabel()
 {
 	return tr("Gadu-Gadu number:");
-}
-
-QRegExp GaduProtocolFactory::idRegularExpression()
-{
-	return IdRegularExpression;
 }
 
 QValidator::State GaduProtocolFactory::validateId(QString id)

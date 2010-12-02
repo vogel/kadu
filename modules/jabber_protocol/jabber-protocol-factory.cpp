@@ -56,8 +56,6 @@ JabberProtocolFactory::JabberProtocolFactory()
 	SupportedStatusTypes.append(statusTypeManager->statusType("Offline"));
 
 	qSort(SupportedStatusTypes.begin(), SupportedStatusTypes.end(), StatusType::lessThan);
-
-	IdRegularExpression.setPattern("[a-zA-Z0-9\\._\\+\\-]+@[a-zA-Z0-9\\._-]+");
 }
 
 QIcon JabberProtocolFactory::icon()
@@ -108,11 +106,6 @@ QList<StatusType *> JabberProtocolFactory::supportedStatusTypes()
 QString JabberProtocolFactory::idLabel()
 {
 	return tr("Username:");
-}
-
-QRegExp JabberProtocolFactory::idRegularExpression()
-{
-	return IdRegularExpression;
 }
 
 QValidator::State JabberProtocolFactory::validateId(QString id)

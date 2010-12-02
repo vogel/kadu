@@ -61,7 +61,6 @@ public:
 	virtual ProtocolMenuManager * protocolMenuManager() { return 0; }
 	virtual QList<StatusType *> supportedStatusTypes() = 0;
 	virtual QString idLabel() = 0;
-	virtual QRegExp idRegularExpression() = 0;
 	virtual QValidator::State validateId(QString id) = 0;
 	virtual bool canRegister() { return true; }
 
