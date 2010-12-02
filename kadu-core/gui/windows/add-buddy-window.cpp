@@ -64,10 +64,8 @@ AddBuddyWindow::AddBuddyWindow(QWidget *parent) :
 
 	connect(AccountCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(updateGui()));
 	connect(AccountCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(setAddContactEnabled()));
-	connect(AccountCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(setValidateRegularExpression()));
 
 	setAddContactEnabled();
-	setValidateRegularExpression();
 }
 
 AddBuddyWindow::~AddBuddyWindow()
@@ -88,8 +86,6 @@ void AddBuddyWindow::createGui()
 	connect(UserNameEdit, SIGNAL(textChanged(const QString &)), this, SLOT(setAddContactEnabled()));
 	connect(UserNameEdit, SIGNAL(textChanged(const QString &)), this, SLOT(setAccountFilter()));
 
-	UserNameValidator = new QRegExpValidator(UserNameEdit);
-	UserNameEdit->setValidator(UserNameValidator);
 	layout->addWidget(UserNameEdit, 0, 1);
 	layout->addWidget(new QLabel(tr("in"), this), 0, 2);
 
@@ -308,28 +304,6 @@ void AddBuddyWindow::setAddContactEnabled()
 		validateMobileData();
 	else
 		validateData();
-}
-
-void AddBuddyWindow::setValidateRegularExpression()
-{
-	Account account = AccountCombo->currentAccount();
-	if (!account.isNull() && account.protocolHandler())
-	{
-		UserNameValidator->setRegExp(account.protocolHandler()->protocolFactory()->idRegularExpression());
-		return;
-	}
-
-	QStringList regularExpressions;
-
-	foreach (Account account, AccountManager::instance()->items())
-	{
-		QRegExp regularExpression = account.protocolHandler()->protocolFactory()->idRegularExpression();
-		if (!regularExpression.isEmpty())
-			regularExpressions.append(regularExpression.pattern());
-	}
-
-	regularExpressions.removeDuplicates();
-	UserNameValidator->setRegExp(QRegExp(QString("(%1)").arg(regularExpressions.join("|"))));
 }
 
 void AddBuddyWindow::setAccountFilter()

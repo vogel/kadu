@@ -42,7 +42,6 @@ class AddBuddyWindow : public QDialog
 
 	QLabel *UserNameLabel;
 	QLineEdit *UserNameEdit;
-	QRegExpValidator *UserNameValidator;
 	QAction *MobileAccountAction; // TODO: hack
 	AccountsComboBox *AccountCombo;
 	IdValidityFilter *AccountComboIdFilter;
@@ -74,7 +73,6 @@ class AddBuddyWindow : public QDialog
 private slots:
 	void updateGui();
 	void setAddContactEnabled();
-	void setValidateRegularExpression();
 	void setAccountFilter();
 
 protected slots:
