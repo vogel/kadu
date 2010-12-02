@@ -244,7 +244,7 @@ void AddBuddyWindow::validateData()
 		return;
 	}
 
-	if (!account.protocolHandler()->protocolFactory()->idRegularExpression().exactMatch(UserNameEdit->text()))
+	if (account.protocolHandler()->protocolFactory()->validateId(UserNameEdit->text()) != QValidator::Acceptable)
 	{
 		displayErrorMessage(tr("Entered username is invalid"));
 		return;
