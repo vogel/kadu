@@ -370,8 +370,13 @@ void BuddiesListView::leaveEvent(QEvent *event)
 
 void BuddiesListView::mousePressEvent(QMouseEvent *event)
 {
-	toolTipHide();
 	QTreeView::mousePressEvent(event);
+
+	// TODO 0.6.7: remove once #1802 is fixed
+	if (!indexAt(event->pos()).isValid())
+		setCurrentIndex(QModelIndex());
+
+	toolTipHide();
 }
 
 void BuddiesListView::mouseReleaseEvent(QMouseEvent *event)
