@@ -29,7 +29,7 @@
 #include "debug.h"
 
 #include "gadu-contact-details.h"
-#include "gadu-protocol.h"
+#include "gadu-id-validator.h"
 
 #include "gadu-open-chat-with-runner.h"
 
@@ -43,7 +43,9 @@ BuddyList GaduOpenChatWithRunner::matchingContacts(const QString &query)
 	kdebugf();
 
 	BuddyList matchedContacts;
-	if (!GaduProtocol::validateGaduNumber(query))
+	QString queryCopy(query);
+	int pos = 0;
+	if (GaduIdValidator::instance()->validate(queryCopy, pos) != QValidator::Acceptable)
 		return matchedContacts;
 
 	Contact contact = ContactManager::instance()->byId(ParentAccount, query, ActionCreate);

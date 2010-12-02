@@ -63,6 +63,7 @@
 #include "helpers/gadu-importer.h"
 #include "gadu-account-details.h"
 #include "gadu-contact-details.h"
+#include "gadu-id-validator.h"
 #include "gadu-protocol-factory.h"
 #ifndef Q_OS_WIN
 #include "gadu-resolver.h"
@@ -92,6 +93,9 @@ extern "C" KADU_EXPORT int gadu_protocol_init(bool firstLoad)
 #ifndef Q_OS_WIN
 	gg_global_set_custom_resolver(gadu_resolver_start, gadu_resolver_cleanup);
 #endif
+
+	GaduIdValidator::createInstance();
+
 	ProtocolsManager::instance()->registerProtocolFactory(GaduProtocolFactory::instance());
 	UrlHandlerManager::instance()->registerUrlHandler("Gadu", new GaduUrlHandler());
 
@@ -107,6 +111,8 @@ extern "C" KADU_EXPORT void gadu_protocol_close()
 {
 	UrlHandlerManager::instance()->unregisterUrlHandler("Gadu");
 	ProtocolsManager::instance()->unregisterProtocolFactory(GaduProtocolFactory::instance());
+
+	GaduIdValidator::destroyInstance();
 
 	qRemovePostRoutine(QCA::deinit);
 }
@@ -172,14 +178,6 @@ unsigned int GaduProtocol::gaduStatusFromStatus(const Status &status)
 		return hasDescription ? GG_STATUS_INVISIBLE_DESCR : GG_STATUS_INVISIBLE;
 
 	return hasDescription ? GG_STATUS_NOT_AVAIL_DESCR : GG_STATUS_NOT_AVAIL;
-}
-
-bool GaduProtocol::validateGaduNumber(QString uid)
-{
-	LongValidator v(1, 3999999999U);
-	int pos = 0;
-
-	return (v.validate(uid, pos) == QValidator::Acceptable);
 }
 
 Buddy GaduProtocol::searchResultToBuddy(gg_pubdir50_t res, int number)
@@ -262,11 +260,6 @@ GaduProtocol::~GaduProtocol()
 	networkDisconnected(false, false);
 
 	kdebugf2();
-}
-
-bool GaduProtocol::validateUserID(const QString &uid)
-{
-	return validateGaduNumber(uid);
 }
 
 int GaduProtocol::maxDescriptionLength()

@@ -47,6 +47,7 @@ public:
 	virtual QList<StatusType *> supportedStatusTypes();
 	virtual QString idLabel();
 	virtual QRegExp idRegularExpression();
+	virtual QValidator::State validateId(QString id);
 	virtual bool allowChangeServer();
 	virtual QString defaultServer();
 

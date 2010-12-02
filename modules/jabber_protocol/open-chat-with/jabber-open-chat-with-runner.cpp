@@ -26,7 +26,7 @@
 #include "debug.h"
 
 #include "jabber-contact-details.h"
-#include "jabber-protocol.h"
+#include "jabber-id-validator.h"
 
 #include "jabber-open-chat-with-runner.h"
 
@@ -40,7 +40,9 @@ BuddyList JabberOpenChatWithRunner::matchingContacts(const QString &query)
 	kdebugf();
 
 	BuddyList matchedContacts;
-	if (!JabberProtocol::validateJid(query))
+	QString queryCopy(query);
+	int pos = 0;
+	if (JabberIdValidator::instance()->validate(queryCopy, pos) != QValidator::Acceptable)
 		return matchedContacts;
 
 	Contact contact = ContactManager::instance()->byId(ParentAccount, query, ActionCreate);

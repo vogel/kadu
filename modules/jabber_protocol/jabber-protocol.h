@@ -99,14 +99,10 @@ public:
 	static int initModule();
 	static void closeModule();
 
-	static bool validateJid(const QString &jid);
-
 	JabberProtocol(Account account, ProtocolFactory *factory);
 	virtual ~JabberProtocol();
 
 	XMPP::JabberClient * client() { return JabberClient; }
-
-	virtual bool validateUserID(const QString &uid);
 
 	void setContactsListReadOnly(bool contactsListReadOnly);
 	virtual bool contactsListReadOnly();

@@ -33,6 +33,7 @@
 
 #include "gadu-account-details.h"
 #include "gadu-contact-details.h"
+#include "gadu-id-validator.h"
 #include "gadu-protocol.h"
 
 #include "gadu-protocol-factory.h"
@@ -105,6 +106,12 @@ QString GaduProtocolFactory::idLabel()
 QRegExp GaduProtocolFactory::idRegularExpression()
 {
 	return IdRegularExpression;
+}
+
+QValidator::State GaduProtocolFactory::validateId(QString id)
+{
+	int pos = 0;
+	return GaduIdValidator::instance()->validate(id, pos);
 }
 
 QWidget * GaduProtocolFactory::newContactPersonalInfoWidget(Contact contact, QWidget *parent)

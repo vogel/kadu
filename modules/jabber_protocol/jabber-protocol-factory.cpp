@@ -31,6 +31,7 @@
 #include "gui/widgets/jabber-edit-account-widget.h"
 #include "jabber-account-details.h"
 #include "jabber-contact-details.h"
+#include "jabber-id-validator.h"
 #include "jabber-protocol.h"
 #include "jabber-protocol-factory.h"
 
@@ -112,6 +113,12 @@ QString JabberProtocolFactory::idLabel()
 QRegExp JabberProtocolFactory::idRegularExpression()
 {
 	return IdRegularExpression;
+}
+
+QValidator::State JabberProtocolFactory::validateId(QString id)
+{
+	int pos = 0;
+	return JabberIdValidator::instance()->validate(id, pos);
 }
 
 bool JabberProtocolFactory::allowChangeServer()
