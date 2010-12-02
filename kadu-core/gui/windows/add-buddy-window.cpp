@@ -81,7 +81,7 @@ void AddBuddyWindow::createGui()
 
 	QGridLayout *layout = new QGridLayout(this);
 
-	UserNameLabel = new QLabel(tr("Username:"), this);
+	UserNameLabel = new QLabel(tr("User ID:"), this);
 	UserNameLabel->setAlignment(Qt::AlignRight);
 	layout->addWidget(UserNameLabel, 0, 0, Qt::AlignRight);
 	UserNameEdit = new QLineEdit(this);
