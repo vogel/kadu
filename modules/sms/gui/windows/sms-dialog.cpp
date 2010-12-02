@@ -104,7 +104,7 @@ void SmsDialog::createGui()
 	formLayout->addRow(tr("Recipient") + ':', recipientWidget);
 
 	ProviderComboBox = new QComboBox(this);
-//	ProviderComboBox->addItem(tr("Select automatically"), "");
+	ProviderComboBox->addItem(tr("Select automatically"), "");
 
 	foreach (SmsGateway gateway, SmsGatewayManager::instance()->items())
 		ProviderComboBox->addItem(gateway.second, gateway.first);
