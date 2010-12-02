@@ -136,8 +136,8 @@ void ContactListService::setBuddiesList(BuddyList buddies, bool removeOld)
 	{
 		if (MessageDialog::ask("", tr("Kadu"), tr("Following contacts from your list were not found on server: <b>%0</b>.\nDo you want to remove them from contacts list?").arg(contactsList.join("</b>, <b>"))))
 		{
-			foreach (const Contact &c, unImportedContacts)
-				ContactManager::instance()->removeItem(c);
+			foreach (Contact contact, unImportedContacts)
+				BuddyManager::instance()->clearOwnerAndRemoveEmptyBuddy(contact);
 		}
 	}
 
