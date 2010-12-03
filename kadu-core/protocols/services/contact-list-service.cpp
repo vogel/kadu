@@ -119,17 +119,21 @@ void ContactListService::setBuddiesList(BuddyList buddies, bool removeOld)
 	}
 
 	QStringList contactsList;
-	for (QList<Contact>::iterator i = unImportedContacts.begin(); i != unImportedContacts.end() ; ++i)
+	QList<Contact>::iterator i = unImportedContacts.begin();
+	while (i != unImportedContacts.end())
 	{
 		// TODO: why not Contact.ownerBuddy()?
-		Buddy buddy = BuddyManager::instance()->byId(CurrentProtocol->account(), (*i).id(), ActionCreate);
+		Buddy buddy = BuddyManager::instance()->byId(CurrentProtocol->account(), i->id(), ActionCreate);
 		if (buddy.isAnonymous())
 		{
-			unImportedContacts.removeAll((*i));
+			i = unImportedContacts.erase(i);
 			continue;
 		}
+
 		if (!contactsList.contains(buddy.display()))
 			contactsList.append(buddy.display());
+
+		++i;
 	}
 
 	if (removeOld && !unImportedContacts.isEmpty())
