@@ -25,6 +25,7 @@
 * jabber: #1768 fixed: OpenChatWith should require node name in JID (beevvy)
 * gui: keyboard focus is properly given to buddies list after filter close because of activation change such as minimalization or opening a chat (beevvy)
 * gui: #1703 fixed: Warnings when closing kadu with opened "Buddy data" window (WhE)
+* chat: fixed a bug in beta11 causing paths to received images to be saved incorrectly in history (beevvy)
 
 +++ version 0.6.6-beta11
 * history: speed up history window opening (Vogel)
