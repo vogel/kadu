@@ -50,6 +50,7 @@
 
 #include "configuration/configuration-file.h"
 #include "gui/windows/message-dialog.h"
+#include "protocols/services/chat-image-service.h"
 #include "url-handlers/url-handler-manager.h"
 
 #include "debug.h"
@@ -243,7 +244,12 @@ void KaduWebView::saveImage()
 {
 	kdebugf();
 
-	QString image = page()->currentFrame()->hitTestContent(ContextMenuPos).imageUrl().toLocalFile();
+	QUrl imageUrl = page()->currentFrame()->hitTestContent(ContextMenuPos).imageUrl();
+	QString image = imageUrl.scheme() == "kaduimg"
+			? (imageUrl.path().startsWith("//") // TODO 0.6.6: remove once we're saving sent images in imagesPath
+				? imageUrl.path()
+				: ChatImageService::imagesPath() + imageUrl.path())
+			: imageUrl.toLocalFile();
 	if (image.isEmpty())
 		return;
 
