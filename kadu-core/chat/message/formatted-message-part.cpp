@@ -20,6 +20,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QFileInfo>
 #include <QtGui/QTextBlock>
 #include <QtGui/QTextDocument>
 
@@ -42,7 +43,9 @@ FormattedMessagePart::~FormattedMessagePart()
 QString FormattedMessagePart::toHtml() const
 {
 	if (Image)
-		return QString("<img src=\"kaduimg:///%1\" />").arg(ImageFileName);
+		return QFileInfo(ImageFileName).isRelative()
+				? QString("<img src=\"kaduimg:///%1\" />").arg(ImageFileName)
+				: QString("<img src=\"file://%1\" />").arg(ImageFileName); // TODO 0.6.6: remove once we're saving sent images in imagesPath
 
 	QString result = Qt::escape(Content);
 	result.replace("\r\n", "<br/>");

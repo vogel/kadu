@@ -178,7 +178,7 @@ MessageRenderInfo::MessageRenderInfo(const Message &msg) :
 			break;
 		matchedLength = kaduimgRegExp.matchedLength();
 		QString imgId = kaduimgRegExp.cap(1);
-		// TODO 0.6.6: remove the first condition once we're saving sent images in imagesPath
+		// TODO 0.6.6: remove before RC release (will break compatibility with sent images saved in history by beta11)
 		if (!imgId.startsWith('/') && !QFile(ChatImageService::imagesPath() + imgId).exists())
 			HtmlMessageContent.replace(kaduimgRegExp.cap(0), loadingImageHtml(imgId));
 	}
