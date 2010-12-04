@@ -547,7 +547,7 @@ void JabberClient::slotTLSHandshaken()
 		QString("%1: ").arg(Protocol->account().accountIdentity().name()) + tr("Server Authentication"), host, Protocol->account()))
 		JabberTLSHandler->continueAfterHandshake();
 	else
-		disconnect();
+		Protocol->logout();
 }
 
 void JabberClient::slotCSNeedAuthParams(bool user, bool pass, bool realm)
@@ -639,7 +639,7 @@ void JabberClient::slotCSWarning(int warning)
 	bool doCleanupStream = !JabberClientStream || showNoTlsWarning;
 
 	if (doCleanupStream)
-		disconnect();
+		Protocol->logout();
 
 	if (showNoTlsWarning)
 		emit connectionError(tr("The server does not support TLS encryption."));
