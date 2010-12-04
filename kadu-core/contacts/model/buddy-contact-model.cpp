@@ -20,6 +20,7 @@
  */
 
 #include "accounts/account.h"
+#include "buddies/buddy-shared.h"
 #include "contacts/contact.h"
 #include "contacts/contact-manager.h"
 #include "model/roles.h"
@@ -30,25 +31,25 @@
 BuddyContactModel::BuddyContactModel(Buddy buddy, QObject *parent) :
 		QAbstractListModel(parent), SourceBuddy(buddy)
 {
-	connect(ContactManager::instance(), SIGNAL(contactAboutToBeAdded(Contact)),
+	connect(SourceBuddy, SIGNAL(contactAboutToBeAdded(Contact)),
 			this, SLOT(contactAboutToBeAdded(Contact)));
-	connect(ContactManager::instance(), SIGNAL(contactAdded(Contact)),
+	connect(SourceBuddy, SIGNAL(contactAdded(Contact)),
 			this, SLOT(contactAdded(Contact)));
-	connect(ContactManager::instance(), SIGNAL(contactAboutToBeRemoved(Contact)),
+	connect(SourceBuddy, SIGNAL(contactAboutToBeRemoved(Contact)),
 			this, SLOT(contactAboutToBeRemoved(Contact)));
-	connect(ContactManager::instance(), SIGNAL(contactRemoved(Contact)),
+	connect(SourceBuddy, SIGNAL(contactRemoved(Contact)),
 			this, SLOT(contactRemoved(Contact)));
 }
 
 BuddyContactModel::~BuddyContactModel()
 {
-	disconnect(ContactManager::instance(), SIGNAL(contactAboutToBeAdded(Contact)),
+	disconnect(SourceBuddy, SIGNAL(contactAboutToBeAdded(Contact)),
 			this, SLOT(contactAboutToBeAdded(Contact)));
-	disconnect(ContactManager::instance(), SIGNAL(contactAdded(Contact)),
+	disconnect(SourceBuddy, SIGNAL(contactAdded(Contact)),
 			this, SLOT(contactAdded(Contact)));
-	disconnect(ContactManager::instance(), SIGNAL(contactAboutToBeRemoved(Contact)),
+	disconnect(SourceBuddy, SIGNAL(contactAboutToBeRemoved(Contact)),
 			this, SLOT(contactAboutToBeRemoved(Contact)));
-	disconnect(ContactManager::instance(), SIGNAL(contactRemoved(Contact)),
+	disconnect(SourceBuddy, SIGNAL(contactRemoved(Contact)),
 			this, SLOT(contactRemoved(Contact)));
 }
 

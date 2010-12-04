@@ -24,6 +24,7 @@
 * gadu: #1797, #1794 fixed: kadu crashes after removing contacts, which are not on a server (WhE)
 * jabber: #1768 fixed: OpenChatWith should require node name in JID (beevvy)
 * gui: keyboard focus is properly given to buddies list after filter close because of activation change such as minimalization or opening a chat (beevvy)
+* gui: #1703 fixed: Warnings when closing kadu with opened "Buddy data" window (WhE)
 
 +++ version 0.6.6-beta11
 * history: speed up history window opening (Vogel)
