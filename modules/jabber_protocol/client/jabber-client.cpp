@@ -291,7 +291,7 @@ void JabberClient::connect(const XMPP::Jid &jid, const QString &password, bool a
 		JabberTLSHandler->setXMPPCertCheck(true);
 		
 		JabberAccountDetails *jabberAccountDetails = dynamic_cast<JabberAccountDetails *>(Protocol->account().details());
-		if (!jabberAccountDetails)
+		if (jabberAccountDetails)
 		{
 			QString host = jabberAccountDetails->useCustomHostPort() ? jabberAccountDetails->customHost() : XMPP::Jid(Protocol->account().id()).domain();
 			JabberTLSHandler->startClient(host);
