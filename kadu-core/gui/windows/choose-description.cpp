@@ -77,18 +77,12 @@ ChooseDescription::ChooseDescription(StatusContainer *statusContainer, QWidget *
 	setWindowTitle(tr("Select description"));
 	setAttribute(Qt::WA_DeleteOnClose);
 
-	QString currentDescription = MyStatusContainer->status().description();
-
 	Description = new QComboBox(this);
 	Description->setMaxVisibleItems(10);
 	Description->setModel(DescriptionManager::instance()->model());
 	Description->setEditable(true);
-	Description->setLineEdit(new QLineEdit(this));
 	Description->setInsertPolicy(QComboBox::NoInsert);
-	Description->setDuplicatesEnabled(false);
-
-	Description->setEditText(currentDescription);
-
+	Description->setEditText(MyStatusContainer->status().description());
 	connect(Description, SIGNAL(activated(int)), this, SLOT(activated(int)));
 
 	OkButton = new QPushButton(tr("&OK"), this);
