@@ -107,7 +107,7 @@ QString profilePath(const QString &subpath)
 		Parser::globalVariables["HOME"] = home;
 		QString config_dir = QString::fromLocal8Bit(getenv("CONFIG_DIR"));
 
-#ifdef Q_OS_MACX
+#ifdef Q_OS_MAC
 		if (config_dir.isNull())
 			path = QString("%1/Library/Kadu/").arg(home);
 		else if (QDir(config_dir).isAbsolute())
