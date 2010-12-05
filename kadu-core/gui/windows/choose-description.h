@@ -54,7 +54,7 @@ private slots:
 	void currentDescriptionChanged(const QString &);
 
 public:
-	static ChooseDescription *showDialog(StatusContainer *statusContainer, const QPoint &position = QPoint() );
+	static ChooseDescription * showDialog(StatusContainer *statusContainer, const QPoint &position = QPoint());
 
 	virtual QSize sizeHint() const;
 
