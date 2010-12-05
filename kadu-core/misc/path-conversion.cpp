@@ -127,6 +127,7 @@ QString profilePath(const QString &subpath)
 #elif defined(Q_OS_WIN)
 		if (config_dir.isNull())
 			path = QString("%1\\Kadu\\").arg(home);
+		else if (QDir(config_dir).isAbsolute())
 		{
 			if (QDir(QString("%1\\Kadu").arg(config_dir)).exists())
 				path = QString("%1\\Kadu\\").arg(config_dir);
