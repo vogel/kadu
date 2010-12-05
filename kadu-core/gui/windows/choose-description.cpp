@@ -53,17 +53,13 @@ ChooseDescription * ChooseDescription::showDialog(StatusContainer *statusContain
 	{
 		dialog = new ChooseDescription(statusContainer, Core::instance()->kaduWindow());
 		Dialogs[statusContainer] = dialog;
-		if (position.isNull())
-			dialog->resize(dialog->sizeHint());
 	}
 
 	if (!position.isNull())
 		dialog->setPosition(position);
 	else
-	{
-		dialog->setPosition(QPoint((qApp->desktop()->screenGeometry().width() - dialog->size().width()) / 2,
-				(qApp->desktop()->screenGeometry().height() - dialog->size().height()) / 2));
-	}
+		dialog->setPosition(QPoint((qApp->desktop()->screenGeometry().width() - dialog->sizeHint().width()) / 2,
+				(qApp->desktop()->screenGeometry().height() - dialog->sizeHint().height()) / 2));
 
 	dialog->show();
 	_activateWindow(dialog);
