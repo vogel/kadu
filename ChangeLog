@@ -26,6 +26,7 @@
 * gui: keyboard focus is properly given to buddies list after filter close because of activation change such as minimalization or opening a chat (beevvy)
 * gui: #1703 fixed: Warnings when closing kadu with opened "Buddy data" window (WhE)
 * chat: fixed a bug in beta11 causing paths to received images to be saved incorrectly in history (beevvy)
+* gui: #1135 fixed: if new description is set that differs with one of 10 last descriptions only in case, the latter is actually set (WhE, beevvy)
 
 +++ version 0.6.6-beta11
 * history: speed up history window opening (Vogel)

@@ -22,6 +22,7 @@
 
 #include <QtGui/QApplication>
 #include <QtGui/QComboBox>
+#include <QtGui/QCompleter>
 #include <QtGui/QDesktopWidget>
 #include <QtGui/QGridLayout>
 #include <QtGui/QLabel>
@@ -82,6 +83,7 @@ ChooseDescription::ChooseDescription(StatusContainer *statusContainer, QWidget *
 	Description->setModel(DescriptionManager::instance()->model());
 	Description->setEditable(true);
 	Description->setInsertPolicy(QComboBox::NoInsert);
+	Description->completer()->setCaseSensitivity(Qt::CaseSensitive);
 	Description->setEditText(MyStatusContainer->status().description());
 	connect(Description, SIGNAL(activated(int)), this, SLOT(activated(int)));
 
