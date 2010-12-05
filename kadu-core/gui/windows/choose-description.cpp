@@ -103,8 +103,6 @@ ChooseDescription::ChooseDescription(StatusContainer *statusContainer, QWidget *
 
 	Description->setEditText(currentDescription);
 
-	MaxDescriptionLength = statusContainer->maxDescriptionLength();
-
 	connect(Description, SIGNAL(activated(int)), this, SLOT(activated(int)));
 
 	OkButton = new QPushButton(tr("&OK"), this);
@@ -117,12 +115,13 @@ ChooseDescription::ChooseDescription(StatusContainer *statusContainer, QWidget *
 	connect(cancelButton, SIGNAL(clicked(bool)), this, SLOT(reject()));
 
 	QGridLayout *grid = new QGridLayout(this);
-
 	grid->addWidget(Description, 0, 0, 1, -1);
-	if (MaxDescriptionLength > 0)
+
+	int maxDescriptionLength = statusContainer->maxDescriptionLength();
+	if (maxDescriptionLength > 0)
 	{
 		AvailableChars = new QLabel(this);
-		Description->lineEdit()->setMaxLength(MaxDescriptionLength);
+		Description->lineEdit()->setMaxLength(maxDescriptionLength);
 		currentDescriptionChanged(Description->currentText());
 		connect(Description, SIGNAL(textChanged(const QString &)), this, SLOT(currentDescriptionChanged(const QString &)));
 		grid->addWidget(AvailableChars, 1, 0);
@@ -189,7 +188,7 @@ void ChooseDescription::activated(int index)
 void ChooseDescription::currentDescriptionChanged(const QString &text)
 {
 	int length = text.length();
-	AvailableChars->setText(' ' + QString::number(MaxDescriptionLength - length));
+	AvailableChars->setText(' ' + QString::number(MyStatusContainer->maxDescriptionLength() - length));
 }
 
 void ChooseDescription::statusChanged()

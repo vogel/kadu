@@ -42,8 +42,6 @@ class ChooseDescription : public QDialog
 
 	StatusContainer *MyStatusContainer;
 
-	int MaxDescriptionLength;
-
 private slots:
 	void statusChanged();
 	void setDescription();
