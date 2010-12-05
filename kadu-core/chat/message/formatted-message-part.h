@@ -56,7 +56,7 @@ class KADUAPI FormattedMessagePart
 	bool Underline;
 	QColor Color;
 
-	bool Image;
+	bool IsImage;
 	QString ImageFileName;
 
 public:
@@ -77,8 +77,8 @@ public:
 	explicit FormattedMessagePart(const QString &imageFileName);
 	virtual ~FormattedMessagePart();
 
-	bool isImage() const { return Image; }
-	bool isEmpty() const { return !Image && Content.isEmpty(); }
+	bool isImage() const { return IsImage; }
+	bool isEmpty() const { return !IsImage && Content.isEmpty(); }
 
 	const QString & content() const { return Content; }
 	bool bold() const { return Bold; }

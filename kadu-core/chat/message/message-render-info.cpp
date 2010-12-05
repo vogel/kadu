@@ -169,15 +169,15 @@ MessageRenderInfo::MessageRenderInfo(const Message &msg) :
 
 	// compare this regexp with FormattedMessagePart::toHtml()
 	QRegExp kaduimgRegExp("<img src=\"kaduimg:///([^\"]*)\" />");
-	int firstMatchIndex = 0;
-	while ((firstMatchIndex = kaduimgRegExp.indexIn(HtmlMessageContent, firstMatchIndex)) != -1)
+	int pos = 0;
+	while ((pos = kaduimgRegExp.indexIn(HtmlMessageContent, pos)) != -1)
 	{
 		QString imgId = kaduimgRegExp.cap(1);
 		// TODO 0.6.6: remove the first condition before RC release (will break compatibility with sent images saved in history by beta11)
 		if (!imgId.startsWith('/') && !QFile(ChatImageService::imagesPath() + imgId).exists())
 			HtmlMessageContent.replace(kaduimgRegExp.cap(0), loadingImageHtml(imgId));
 		else
-			firstMatchIndex += kaduimgRegExp.matchedLength();
+			pos += kaduimgRegExp.matchedLength();
 	}
 
 // 	convertCharacters(unformattedMessage, backgroundColor,

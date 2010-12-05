@@ -27,12 +27,12 @@
 #include "formatted-message-part.h"
 
 FormattedMessagePart::FormattedMessagePart(const QString &content, bool bold, bool italic, bool underline, QColor color) :
-		Content(content), Bold(bold), Italic(italic), Underline(underline), Color(color), Image(false)
+		Content(content), Bold(bold), Italic(italic), Underline(underline), Color(color), IsImage(false)
 {
 }
 
 FormattedMessagePart::FormattedMessagePart(const QString &imageFileName) :
-		Content("\n"), Image(true), ImageFileName(imageFileName)
+		Content("\n"), IsImage(true), ImageFileName(imageFileName)
 {
 }
 
@@ -42,7 +42,7 @@ FormattedMessagePart::~FormattedMessagePart()
 
 QString FormattedMessagePart::toHtml() const
 {
-	if (Image)
+	if (IsImage)
 		return QFileInfo(ImageFileName).isRelative()
 				? QString("<img src=\"kaduimg:///%1\" />").arg(ImageFileName)
 				: QString("<img src=\"file://%1\" />").arg(ImageFileName); // TODO 0.6.6: remove once we're saving sent images in imagesPath
