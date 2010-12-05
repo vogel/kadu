@@ -42,6 +42,11 @@ class ChooseDescription : public QDialog
 
 	StatusContainer *MyStatusContainer;
 
+	void setPosition(const QPoint &position);
+
+	explicit ChooseDescription(StatusContainer *statusContainer, QWidget *parent = 0);
+	virtual ~ChooseDescription();
+
 private slots:
 	void statusChanged();
 	void setDescription();
@@ -51,12 +56,7 @@ private slots:
 public:
 	static ChooseDescription *showDialog(StatusContainer *statusContainer, const QPoint &position = QPoint() );
 
-	ChooseDescription(StatusContainer *statusContainer, QWidget *parent = 0);
-	virtual ~ChooseDescription();
-
 	virtual QSize sizeHint() const;
-
-	void setPosition(const QPoint &position);
 
 };
 
