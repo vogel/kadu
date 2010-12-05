@@ -8,6 +8,7 @@
  * Copyright 2008 Tomasz Rostański (rozteck@interia.pl)
  * Copyright 2008, 2010 Piotr Galiszewski (piotrgaliszewski@gmail.com)
  * Copyright 2005 Paweł Płuciennik (pawel_p@kadu.net)
+ * Copyright 2010 Piotr Dąbrowski (ultr@ultr.pl)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -50,6 +51,8 @@ class KADUAPI IconsManager : public QObject, public ConfigurationAwareObject
 	QHash<QString, QIcon> IconCache;
 
 	void clearCache();
+
+	QString localProtocolPath;
 
 	QIcon buildPngIcon(const QString &path);
 	QIcon buildSvgIcon(const QString &path);

@@ -9,6 +9,7 @@
  * Copyright 2008 Tomasz Rostański (rozteck@interia.pl)
  * Copyright 2008, 2009 Piotr Galiszewski (piotrgaliszewski@gmail.com)
  * Copyright 2005 Paweł Płuciennik (pawel_p@kadu.net)
+ * Copyright 2010 Piotr Dąbrowski (ultr@ultr.pl)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -28,8 +29,10 @@
 #include <QtCore/QFile>
 #include <QtCore/QFileInfo>
 
+#include "accounts/account-manager.h"
 #include "configuration/configuration-file.h"
 #include "misc/misc.h"
+#include "protocols/protocol.h"
 #include "themes/icon-theme-manager.h"
 #include "debug.h"
 
@@ -57,6 +60,9 @@ IconsManager::IconsManager()
 
 	config_file.writeEntry("Look", "IconTheme", ThemeManager->currentTheme().path());
 
+	// TODO: localized protocol
+	localProtocolPath = "gadu-gadu";
+
 	kdebugf2();
 }
 
@@ -68,18 +74,29 @@ IconThemeManager * IconsManager::themeManager() const
 QString IconsManager::iconPath(const QString &path, const QString &size, const QString &name) const
 {
 	QString fileName = ThemeManager->currentTheme().path() + path + '/' + size + '/' + name + ".png";
-
 	QFileInfo fileInfo(fileName);
-	if (!fileInfo.isFile() || !fileInfo.isReadable())
-	{
-		fileName = ThemeManager->currentTheme().path() + path + "/svg/" + name + ".svg";
-		fileInfo.setFile(fileName);
 
-		if (!fileInfo.isFile() || !fileInfo.isReadable())
-			return QString::null;
+	if (fileInfo.isFile() && fileInfo.isReadable())
+		return fileInfo.canonicalFilePath();
+
+	fileName = ThemeManager->currentTheme().path() + path + "/svg/" + name + ".svg";
+	fileInfo.setFile(fileName);
+	if (fileInfo.isFile() && fileInfo.isReadable())
+		return fileInfo.canonicalFilePath();
+
+	QRegExp commonRegexp = QRegExp("^protocols/common/(.+)$");
+	if (path.contains(commonRegexp))
+	{
+		QString protocolpath;
+		if(AccountManager::instance()->defaultAccount())
+			protocolpath = AccountManager::instance()->defaultAccount().protocolHandler()->statusPixmapPath();
+		else
+			protocolpath = localProtocolPath;
+		QString path2 = QString("protocols/%1/%2").arg(protocolpath, commonRegexp.cap(1));
+		return iconPath(path2, size, name);
 	}
 
-	return fileInfo.canonicalFilePath();
+	return QString::null;
 }
 
 QString IconsManager::iconPath(const QString &path, const QString &size) const
@@ -171,6 +188,20 @@ const QIcon & IconsManager::iconByPath(const QString &path)
 			icon = buildSvgIcon(path);
 			if (icon.isNull())
 				icon = buildPngIcon(path);
+			if (icon.isNull() )
+			{
+				QRegExp commonRegexp = QRegExp("^protocols/common/(.+)$");
+				if (path.contains(commonRegexp))
+				{
+					QString protocolpath;
+					if(AccountManager::instance()->defaultAccount())
+						protocolpath = AccountManager::instance()->defaultAccount().protocolHandler()->statusPixmapPath();
+					else
+						protocolpath = localProtocolPath;
+					QString path2 = QString("protocols/%1/%2").arg(protocolpath, commonRegexp.cap(1));
+					return iconByPath(path2);
+				}
+			}
 		}
 
 		IconCache.insert(path, icon);
