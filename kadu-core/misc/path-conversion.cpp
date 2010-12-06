@@ -113,14 +113,14 @@ QString profilePath(const QString &subpath)
 		else if (QDir(config_dir).isAbsolute())
 		{
 			if (QDir(QString("%1/Kadu").arg(config_dir)).exists())
-				path = QString("%1/Kadu/").arg(config_dir);
+				path = QString("%1/Kadu/").arg(config_dir); // compatibility with earlier versions
 			else
 				path = QString("%1/").arg(config_dir);
 		}
 		else
 		{
 			if (QDir(QString("%1/%2/Kadu").arg(home).arg(config_dir)).exists())
-				path = QString("%1/%2/Kadu/").arg(home).arg(config_dir);
+				path = QString("%1/%2/Kadu/").arg(home).arg(config_dir); // compatibility with earlier versions
 			else
 				path = QString("%1/%2/").arg(home).arg(config_dir);
 		}
@@ -130,14 +130,14 @@ QString profilePath(const QString &subpath)
 		else if (QDir(config_dir).isAbsolute())
 		{
 			if (QDir(QString("%1\\Kadu").arg(config_dir)).exists())
-				path = QString("%1\\Kadu\\").arg(config_dir);
+				path = QString("%1\\Kadu\\").arg(config_dir); // compatibility with earlier versions
 			else
 				path = QString("%1\\").arg(config_dir);
 		}
 		else
 		{
 			if (QDir(QString("%1\\%2\\Kadu").arg(home).arg(config_dir)).exists())
-				path = QString("%1\\%2\\Kadu\\").arg(home).arg(config_dir);
+				path = QString("%1\\%2\\Kadu\\").arg(home).arg(config_dir); // compatibility with earlier versions
 			else
 				path = QString("%1\\%2\\").arg(home).arg(config_dir);
 		}
@@ -147,14 +147,14 @@ QString profilePath(const QString &subpath)
 		else if (QDir(config_dir).isAbsolute())
 		{
 			if (QDir(QString("%1/kadu").arg(config_dir)).exists())
-				path = QString("%1/kadu/").arg(config_dir);
+				path = QString("%1/kadu/").arg(config_dir); // compatibility with earlier versions
 			else
 				path = QString("%1/").arg(config_dir);
 		}
 		else
 		{
 			if (QDir(QString("%1/%2/kadu").arg(home).arg(config_dir)).exists())
-				path = QString("%1/%2/kadu/").arg(home).arg(config_dir);
+				path = QString("%1/%2/kadu/").arg(home).arg(config_dir); // compatibility with earlier versions
 			else
 				path = QString("%1/%2/").arg(home).arg(config_dir);
 		}

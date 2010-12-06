@@ -12,6 +12,7 @@
 * gui: Clicking on bouncing dock icon opens only chat windows (dorr)
 * kde_notify: #1793 fixed: wrong module description coding (beevvy)
 * gadu: #1801 fixed: cannot register new GG account (beevvy)
+* core: #1725 fixed: --config-dir fixes and support for absolute paths (ultr)
 
 +++ version 0.6.6-beta11
 * history: speed up history window opening (Vogel)
