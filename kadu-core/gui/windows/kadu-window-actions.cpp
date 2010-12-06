@@ -319,7 +319,7 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 	InactiveUsers = new ActionDescription(this,
 		ActionDescription::TypeUserList, "inactiveUsersAction",
 		this, SLOT(inactiveUsersActionActivated(QAction *, bool)),
-		"kadu_icons/kadu-inactiveusers_on", "kadu_icons/kadu-inactiveusers_off", tr("Show Offline Buddies"),
+		"kadu_icons/kadu-inactiveusers-off", "kadu_icons/kadu-inactiveusers-on", tr("Show Offline Buddies"),
 		true
 	);
 	connect(InactiveUsers, SIGNAL(actionCreated(Action *)), this, SLOT(inactiveUsersActionCreated(Action *)));
