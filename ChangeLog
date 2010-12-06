@@ -27,6 +27,7 @@
 * gui: #1703 fixed: Warnings when closing kadu with opened "Buddy data" window (WhE)
 * chat: fixed a bug in beta11 causing paths to received images to be saved incorrectly in history (beevvy)
 * gui: #1135 fixed: if new description is set that differs with one of 10 last descriptions only in case, the latter is actually set (WhE, beevvy)
+* gui: if a module cannot be unloaded, display list of modules using it (dorr, beevvy)
 * core: #1725 fixed: --config-dir fixes and support for absolute paths (ultr)
 
 +++ version 0.6.6-beta11
