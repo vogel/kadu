@@ -108,7 +108,7 @@ void checkBuddyProperties(Action *action)
 
 void checkHideDescription(Action *action)
 {
-	action->setEnabled(true);
+	action->setEnabled(action->buddies().count());
 
 	bool on = false;
 	foreach (const Buddy buddy, action->buddies())
@@ -169,7 +169,7 @@ void disableNoEMail(Action *action)
 void disableIfContactSelected(Action *action)
 {
 	if (action && action->dataSource())
-		action->setEnabled(!action->dataSource()->hasContactSelected());
+		action->setEnabled(!action->dataSource()->hasContactSelected() && action->dataSource()->buddies().count());
 }
 
 KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)

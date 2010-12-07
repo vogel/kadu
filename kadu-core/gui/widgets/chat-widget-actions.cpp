@@ -77,7 +77,7 @@ void checkBlocking(Action *action)
 {
 	BuddySet buddies = action->buddies();
 
-	if (buddies.contains(Core::instance()->myself()))
+	if (!buddies.count() || buddies.contains(Core::instance()->myself()))
 	{
 		action->setEnabled(false);
 		return;

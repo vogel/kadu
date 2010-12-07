@@ -30,6 +30,7 @@
 * gui: if a module cannot be unloaded, display list of modules using it (dorr, beevvy)
 * core: #1725 fixed: --config-dir fixes and support for absolute paths (ultr)
 * tabs: #1815 fixed: "Chat in New Window" action doesn't work properly for conferences (WhE)
+* gui: #1816 fixed: contacts' actions should be disabled, when contact is not selected (WhE)
 
 +++ version 0.6.6-beta11
 * history: speed up history window opening (Vogel)
