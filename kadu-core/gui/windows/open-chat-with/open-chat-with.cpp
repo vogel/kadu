@@ -123,12 +123,10 @@ bool OpenChatWith::eventFilter(QObject *obj, QEvent *e)
 					key == Qt::Key_Up ||
 					key == Qt::Key_PageDown ||
 					key == Qt::Key_PageUp ||
-					key == Qt::Key_Left ||
-					key == Qt::Key_Right)
+					(key == Qt::Key_Right && ContactID->cursorPosition() == ContactID->text().length()))
 			{
 				qApp->sendEvent(BuddiesWidget, e);
-				if (key != Qt::Key_Left && key != Qt::Key_Right)
-					return true;
+				return true;
 			}
 		}
 	}
