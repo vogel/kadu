@@ -222,7 +222,6 @@ QString About::loadFile(const QString &name)
 
 	QTextStream str(&file);
 	str.setCodec("UTF-8");
-	str.setAutoDetectUnicode(true);
 	QString data = str.readAll();
 	file.close();
 
