@@ -328,19 +328,7 @@ void TabsManager::onNewTab(QAction *sender, bool toggled)
 	if (!action)
 		return;
 
-	ContactSet contacts = action->contacts();
-	int contactsCount = contacts.count();
-
-	if (0 == contactsCount)
-		return;
-
-	// TODO 0.6.6: check if every contact has the same account
-	Account account = (*contacts.begin()).contactAccount();
-	if (account.isNull() || !account.protocolHandler() || !account.protocolHandler()->chatService())
-		return;
-
-	Chat chat = ChatManager::instance()->findChat(contacts);
-
+	Chat chat = action->chat();
 	if (!chat)
 		return;
 
@@ -360,9 +348,9 @@ void TabsManager::onNewTab(QAction *sender, bool toggled)
 		if (ConfigDefaultTabs)
 			NoTabs = true;
 		// w miejsce recznego dodawania chata do kart automatyczne ;)
-		else if (contactsCount == 1 || ConfigConferencesInTabs)
+		else if (chat.contacts().count() == 1 || ConfigConferencesInTabs)
 			ForceTabs = true;
-		// but here chat = 0
+
 		ChatWidgetManager::instance()->openPendingMsgs(chat, true);
 	}
 
