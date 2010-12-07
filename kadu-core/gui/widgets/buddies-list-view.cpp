@@ -233,6 +233,15 @@ Chat BuddiesListView::chatForIndex(const QModelIndex &index) const
 	return ChatManager::instance()->findChat(ContactSet(con));
 }
 
+Chat BuddiesListView::chatByPendingMessages(const QModelIndex &index) const
+{
+	if (index.data(ItemTypeRole) == BuddyRole)
+		return PendingMessagesManager::instance()->chatForBuddy(buddyAt(index));
+	else
+		return PendingMessagesManager::instance()->chatForContact(contactAt(index));
+}
+
+// TODO 0.8.0: This method is too big. Review and split
 Chat BuddiesListView::currentChat() const
 {
 	BuddySet buddies;
@@ -241,6 +250,13 @@ Chat BuddiesListView::currentChat() const
 	Account account;
 
 	QModelIndexList selectionList = selectedIndexes();
+	if (selectionList.count() == 1)
+	{
+		Chat chat = chatByPendingMessages(selectionList[0]);
+		if (chat)
+			return chat;
+	}
+
 	foreach (QModelIndex selection, selectionList)
 	{
 		if (!account)
@@ -270,7 +286,7 @@ Chat BuddiesListView::currentChat() const
 		else
 		{
 			if (selection.data(ItemTypeRole) == BuddyRole)
-		    {
+			{
 				contact = BuddyPreferredManager::instance()->preferredContact(buddyAt(selection), account);
 				if (!contact)
 					return Chat::null;

@@ -73,6 +73,9 @@ public:
 	bool hasPendingMessagesForChat(Chat chat);
 	bool hasPendingMessages();
 
+	Chat chatForBuddy(Buddy buddy);
+	Chat chatForContact(Contact contact);
+
 	QList<Message> pendingMessagesForContact(Contact contact);
 	QList<Message> pendingMessagesForBuddy(Buddy buddy);
 	QList<Message> pendingMessagesForChat(Chat chat);

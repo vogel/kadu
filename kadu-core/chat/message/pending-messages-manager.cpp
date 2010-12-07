@@ -68,7 +68,7 @@ bool PendingMessagesManager::hasPendingMessagesForContact(Contact contact)
 	QMutexLocker(&mutex());
 
 	foreach (Message message, items())
-		if (message.isPending() && message.messageChat().contacts().contains(contact))
+		if (message.isPending() && message.messageSender() == contact)
 			return true;
 
 	return false;
@@ -78,10 +78,8 @@ bool PendingMessagesManager::hasPendingMessagesForBuddy(Buddy buddy)
 {
 	QMutexLocker(&mutex());
 
-	QSet<Contact> contacts = buddy.contacts().toSet();
-
 	foreach (Message message, items())
-		if (message.isPending() && !message.messageChat().contacts().intersect(contacts).isEmpty())
+		if (message.isPending() && buddy.contacts().contains(message.messageSender()))
 			return true;
 
 	return false;
@@ -107,6 +105,30 @@ bool PendingMessagesManager::hasPendingMessages()
 			return true;
 
 	return false;
+}
+
+Chat PendingMessagesManager::chatForBuddy(Buddy buddy)
+{
+	QMutexLocker(&mutex());
+
+	QSet<Contact> contacts = buddy.contacts().toSet();
+
+	foreach (Message message, items())
+		if (message.isPending() && !message.messageChat().contacts().intersect(contacts).isEmpty())
+			return message.messageChat();
+
+	return Chat::null;
+}
+
+Chat PendingMessagesManager::chatForContact(Contact contact)
+{
+	QMutexLocker(&mutex());
+
+	foreach (Message message, items())
+		if (message.isPending() && message.messageChat().contacts().contains(contact))
+			return message.messageChat();
+
+	return Chat::null;
 }
 
 QList<Message> PendingMessagesManager::pendingMessagesForContact(Contact contact)
@@ -194,13 +216,3 @@ void PendingMessagesManager::itemRemoved(Message message)
 	BuddyPreferredManager::instance()->updatePreferred(message.messageSender().ownerBuddy());
 	emit messageRemoved(message);
 }
-
-// void Kadu::imageReceivedAndSaved(UinType sender, uint32_t size, uint32_t crc32, const QString &/*path*/)
-// {
-// 	for (int i = 0, count = pending.count(); i < count; i++)
-// 	{
-// 		PendingMsgs::Element& e = pending[i];
-//	TODO: 0.6.6 or sth?
-// 		e.msg = gadu_images_manager.replaceLoadingImages(e.msg, sender, size, crc32);
-// 	}
-// }
