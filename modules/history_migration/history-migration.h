@@ -47,13 +47,14 @@ private slots:
 	void updateProgressWindow();
 	void threadFinished();
 	void configurationWindowDestroyed();
-	void canceled();
 
 public:
 	static HistoryImporter * instance();
 
 public slots:
 	void run();
+	void canceled();
+
 };
 
 #endif // HISTORY_IMPORTER_H

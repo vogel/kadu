@@ -34,6 +34,8 @@
 * core: #1803 fixed: many fixes for handling pending messages on buddy list, when messages were received in conferences (WhE)
 * jabber: #1777 fixed: SSL host mismatch when custom host/port is set (Juzef)
 * jabber: #1591 probably fixed: random crashes in jabber protocol trigerred by connection problems (WhE)
+* gui: #1661 fixed: backtrace from _activateWindow (ultr)
+* history_migration: #1820 fixed: crashes in configuration window after unloading module (WhE)
 
 +++ version 0.6.6-beta11
 * history: speed up history window opening (Vogel)

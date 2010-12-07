@@ -60,6 +60,8 @@ extern "C" KADU_EXPORT void history_migration_close()
 	kdebugf();
 
 	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/history-migration.ui"));
+
+	HistoryImporter::instance()->canceled();
 }
 
 HistoryImporter * HistoryImporter::Instance = 0;
