@@ -36,6 +36,7 @@
 * jabber: #1591 probably fixed: random crashes in jabber protocol trigerred by connection problems (WhE)
 * gui: #1661 fixed: backtrace from _activateWindow (ultr)
 * history_migration: #1820 fixed: crashes in configuration window after unloading module (WhE)
+* core: #1766 fixed: save buddy's gender in configuration (WhE)
 
 +++ version 0.6.6-beta11
 * history: speed up history window opening (Vogel)
