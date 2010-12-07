@@ -199,7 +199,7 @@ unsigned long X11_getCurrentDesktop( Display *display, bool forceFreeDesktop )
 
 void X11_setCurrentDesktop( Display *display, unsigned long desktop, bool forceFreeDesktop )
 {
-	if( desktop != X11_getCurrentDesktop( display, forceFreeDesktop ) )
+	if( ( desktop != X11_ALLDESKTOPS ) && ( desktop != X11_NODESKTOP ) && ( desktop != X11_getCurrentDesktop( display, forceFreeDesktop ) ) )
 	{
 		// generate MouseLeave event
 		int rootx, rooty, windowx, windowy;
@@ -269,7 +269,6 @@ void X11_setCurrentDesktop( Display *display, unsigned long desktop, bool forceF
 			xev.xclient.data.l[3]    = 0;
 			xev.xclient.data.l[4]    = 0;
 			XSendEvent( display, DefaultRootWindow( display ), False, SubstructureRedirectMask | SubstructureNotifyMask, &xev );
-			///XFlush( display );
 		}
 	}
 }
@@ -277,10 +276,6 @@ void X11_setCurrentDesktop( Display *display, unsigned long desktop, bool forceF
 
 unsigned long X11_getDesktopOfWindow( Display *display, Window window, bool forceFreeDesktop, bool windowareadecides )
 {
-	XWindowAttributes xwa;
-	XGetWindowAttributes( display, window, &xwa );
-	if( xwa.map_state == IsUnmapped )
-		return X11_NODESKTOP;
 	if( ( ! forceFreeDesktop ) && ( ! X11_isFreeDesktopCompatible( display ) ) )
 	{
 		unsigned long currentdesktop = X11_getCurrentDesktop( display, forceFreeDesktop );
@@ -638,8 +633,6 @@ void X11_setActiveWindow( Display *display, Window window )
 	e.xclient.data.l[3] = 0l;
 	e.xclient.data.l[4] = 0l;
 	XSendEvent( display, DefaultRootWindow( display ), False, SubstructureRedirectMask|SubstructureNotifyMask, &e );
-	// XSetInputFocus()
-	XSetInputFocus( display, window, RevertToNone, CurrentTime );
 }
 
 
