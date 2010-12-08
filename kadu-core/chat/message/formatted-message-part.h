@@ -56,15 +56,10 @@ class KADUAPI FormattedMessagePart
 	bool Underline;
 	QColor Color;
 
-	bool Image;
-	bool ImageDelayed;
+	bool IsImage;
 	QString ImageFileName;
-	QString ImageId;
 
 public:
-	static KADUAPI QString loadingImageHtml(const QString &imageId);
-	static KADUAPI QString replaceLoadingImages(QString message, const QString &imageId, const QString &imageFileName);
-
 	/**
 	 * Creates text message part with formatting.
 	 * @arg content content of message
@@ -79,11 +74,11 @@ public:
 	 * Creates image message part (ready or to-be-received).
 	 * @arg imagePath local image path
 	 */
-	FormattedMessagePart(const QString &imageFileName, bool delayed, const QString &imageId = QString::null);
+	explicit FormattedMessagePart(const QString &imageFileName);
 	virtual ~FormattedMessagePart();
 
-	bool isImage() const { return Image; }
-	bool isEmpty() const { return !Image && Content.isEmpty(); }
+	bool isImage() const { return IsImage; }
+	bool isEmpty() const { return !IsImage && Content.isEmpty(); }
 
 	const QString & content() const { return Content; }
 	bool bold() const { return Bold; }

@@ -108,7 +108,6 @@ About::About(QWidget *parent) :
 	QTextEdit *tb_authors = new QTextEdit(tw_about);
 	tb_authors->setReadOnly(true);
 	tb_authors->setFrameStyle(QFrame::NoFrame);
-	tb_authors->setWordWrapMode(QTextOption::NoWrap);
 	tb_authors->viewport()->setAutoFillBackground(false);
 	tb_authors->setTextInteractionFlags(Qt::TextBrowserInteraction);
 	QString authors = loadFile("AUTHORS");
@@ -116,22 +115,28 @@ About::About(QWidget *parent) :
 	authors.replace(" (at) ", "@");
 	authors.replace(" (dot) ", ".");
 	authors.remove(QRegExp("[<>]"));
+	authors.prepend("<b>");
 	authors.replace("\n   ", "</b><br/>&nbsp;&nbsp;&nbsp;");
 	authors.replace('\n', QLatin1String("</b><br/><b>"));
-	HtmlDocument doc;
-	doc.parseHtml(authors);
+	HtmlDocument authors_html;
+	authors_html.parseHtml(authors);
 	MailUrlHandler *handler = new MailUrlHandler;
-	handler->convertUrlsToHtml(doc);
+	handler->convertUrlsToHtml(authors_html);
 	delete handler;
-	tb_authors->setHtml(doc.generateHtml());
+	tb_authors->setHtml(authors_html.generateHtml());
 
 	// people to thank
 	QTextEdit *tb_thanks = new QTextEdit(tw_about);
 	tb_thanks->setReadOnly(true);
 	tb_thanks->setFrameStyle(QFrame::NoFrame);
-	tb_thanks->setWordWrapMode(QTextOption::NoWrap);
 	tb_thanks->viewport()->setAutoFillBackground(false);
-	tb_thanks->setText(loadFile("THANKS"));
+	QString thanks = loadFile("THANKS");
+	thanks.prepend("<b>");
+	thanks = thanks.replace("\n\n", QLatin1String("</b><br/><br/>"));
+	thanks = thanks.replace("\n   ", "<br/>&nbsp;&nbsp;&nbsp;");
+	HtmlDocument thanks_html;
+	thanks_html.parseHtml(thanks);
+	tb_thanks->setHtml(thanks_html.generateHtml());
 
 	// license
 	QTextEdit *tb_license = new QTextEdit(tw_about);
@@ -145,7 +150,6 @@ About::About(QWidget *parent) :
 	QTextEdit *tb_changelog = new QTextEdit(tw_about);
 	tb_changelog->setReadOnly(true);
 	tb_changelog->setFrameStyle(QFrame::NoFrame);
-	tb_changelog->setWordWrapMode(QTextOption::NoWrap);
 	tb_changelog->viewport()->setAutoFillBackground(false);
 	tb_changelog->setText(loadFile("ChangeLog"));
 
@@ -215,7 +219,6 @@ QString About::loadFile(const QString &name)
 
 	QTextStream str(&file);
 	str.setCodec("UTF-8");
-	str.setAutoDetectUnicode(true);
 	QString data = str.readAll();
 	file.close();
 

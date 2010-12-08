@@ -1,7 +1,7 @@
 [Module]
 Description=Notification by KNotify
-Description[pl]=Modu≈Ç powiadamiania u≈ºytkownika o zdarzeniach za pomocƒÖ KNotify
-Author=Jacek Jab≈Ço≈Ñski, Kadu Team
+Description[pl]=Modu≥ powiadamiania uøytkownika o zdarzeniach za pomoc± KNotify
+Author=Jacek Jab≥oÒski, Kadu Team
 Dependencies=
 Provides=notify_method
 Version=core

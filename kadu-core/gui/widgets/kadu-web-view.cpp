@@ -41,6 +41,7 @@
 #include <QtGui/QContextMenuEvent>
 #include <QtGui/QDrag>
 #include <QtGui/QFileDialog>
+#include <QtGui/QImage>
 #include <QtGui/QMenu>
 #include <QtGui/QMouseEvent>
 #include <QtGui/QStyle>
@@ -50,6 +51,7 @@
 
 #include "configuration/configuration-file.h"
 #include "gui/windows/message-dialog.h"
+#include "protocols/services/chat-image-service.h"
 #include "url-handlers/url-handler-manager.h"
 
 #include "debug.h"
@@ -243,18 +245,37 @@ void KaduWebView::saveImage()
 {
 	kdebugf();
 
-	QString image = page()->currentFrame()->hitTestContent(ContextMenuPos).imageUrl().toLocalFile();
-	if (image.isEmpty())
+	QUrl imageUrl = page()->currentFrame()->hitTestContent(ContextMenuPos).imageUrl();
+	QString imageFullPath = imageUrl.scheme() == "kaduimg"
+			? (imageUrl.path().startsWith("//") // TODO 0.6.6: remove before RC release (will break compatibility with sent images saved in history by beta11)
+				? imageUrl.path()
+				: ChatImageService::imagesPath() + imageUrl.path())
+			: imageUrl.toLocalFile();
+	if (imageFullPath.isEmpty())
 		return;
 
-	QString fileExt = '.' + image.section('.', -1);
+	QImage image;
+	QString fileExt = '.' + imageFullPath.section('.', -1);
+	bool formatUnknown = false;
+	if (fileExt == "." || fileExt.contains('/'))
+	{
+		// TODO: we'd better guess the file format and not use QImage
+		fileExt = ".png";
+		formatUnknown = true;
+
+		if (!image.load(imageFullPath))
+		{
+			MessageDialog::show("dialog-warning", tr("Kadu"), tr("Cannot save this image"));
+			return;
+		}
+	}
 
 	QFileDialog fd(this);
 	fd.setFileMode(QFileDialog::AnyFile);
 	fd.setAcceptMode(QFileDialog::AcceptSave);
 	fd.setDirectory(config_file.readEntry("Chat", "LastImagePath"));
 	fd.setFilter(QString("%1 (*%2)").arg(qApp->translate("ImageDialog", "Images"), fileExt));
-	fd.setLabelText(QFileDialog::FileName, image.section('/', -1));
+	fd.setLabelText(QFileDialog::FileName, imageFullPath.section('/', -1));
 	fd.setWindowTitle(tr("Save image"));
 
 	do
@@ -284,11 +305,22 @@ void KaduWebView::saveImage()
 		if (!dst.endsWith(fileExt))
 			dst.append(fileExt);
 
-		QFile src(image);
-		if (!src.copy(dst))
+		if (formatUnknown)
 		{
-			MessageDialog::show("dialog-warning", tr("Kadu"), tr("Cannot save image: %1").arg(src.errorString()));
-			continue;
+			if (!image.save(dst, "PNG"))
+			{
+				MessageDialog::show("dialog-warning", tr("Kadu"), tr("Cannot save image"));
+				continue;
+			}
+		}
+		else
+		{
+			QFile src(imageFullPath);
+			if (!src.copy(dst))
+			{
+				MessageDialog::show("dialog-warning", tr("Kadu"), tr("Cannot save image: %1").arg(src.errorString()));
+				continue;
+			}
 		}
 
 		config_file.writeEntry("Chat", "LastImagePath", fd.directory().absolutePath());

@@ -23,7 +23,6 @@
 #define GG_IGNORE_DEPRECATED
 #include <libgadu.h>
 
-#include <QtCore/QFileInfo>
 #include <QtGui/QApplication>
 
 #include "accounts/account.h"
@@ -187,11 +186,7 @@ void GaduFormater::appendToMessage(Account account, FormattedMessage &result, Ui
 			dynamic_cast<GaduChatImageService *>(gadu->chatImageService())->
 					sendImageRequest(ContactManager::instance()->byId(account, QString::number(sender)), size, crc32);
 
-			QString fileName = GaduChatImageService::imageFileName(sender, size, crc32);
-			if (QFileInfo(ChatImageService::imagesPath() + fileName).isFile())
-				result << FormattedMessagePart(fileName, false);
-			else
-				result << FormattedMessagePart(fileName, true, GaduFormater::createImageId(sender, size, crc32));
+			result << FormattedMessagePart(GaduChatImageService::imageFileName(sender, size, crc32));
 		}
 	}
 	else

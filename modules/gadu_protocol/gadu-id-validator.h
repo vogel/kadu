@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2010 Bartosz Brachaczek (b.brachaczek@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -17,43 +17,26 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SOUND_PLAY_THREAD_H
-#define SOUND_PLAY_THREAD_H
+#ifndef GADU_ID_VALIDATOR_H
+#define GADU_ID_VALIDATOR_H
 
-#include <QtCore/QMutex>
-#include <QtCore/QThread>
+#include "qt/long-validator.h"
 
-class SoundPlayer;
-
-class SoundPlayThread : public QThread
+class GaduIdValidator : public LongValidator
 {
 	Q_OBJECT
 
-	bool End;
-	QMutex PlayingMutex;
-	QMutex NewSoundMutex;
+	static QValidator *Instance;
 
-	bool Play;
-
-	SoundPlayer *Player;
-	QString Path;
-	bool VolumeControl;
-	float Volume;
-
-private slots:
-	void playerDestroyed();
-
-protected:
-	virtual void run();
+	explicit GaduIdValidator(QObject *parent = 0);
+	virtual ~GaduIdValidator();
 
 public:
-	explicit SoundPlayThread(QObject *parent = 0);
-	virtual ~SoundPlayThread();
+	static void createInstance();
+	static void destroyInstance();
 
-	void end();
-
-	void play(SoundPlayer *player, const QString &path, bool volumeControl = false, float volume = 1.0);
+	static QValidator * instance();
 
 };
 
-#endif // SOUND_PLAY_THREAD_H
+#endif // GADU_ID_VALIDATOR_H

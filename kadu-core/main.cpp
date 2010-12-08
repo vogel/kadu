@@ -317,7 +317,7 @@ int main(int argc, char *argv[])
 
 		delete xml_config_file;
 		delete config_file_ptr;
-		delete qApp;
+		//delete qApp;
 
 		return 10;
 	}
@@ -343,7 +343,7 @@ int main(int argc, char *argv[])
 
 		delete config_file_ptr;
 		delete xml_config_file;
-		delete qApp;
+		//delete qApp;
 
 		return 1;
 	}
@@ -399,7 +399,10 @@ int main(int argc, char *argv[])
 	WSACleanup();
 #endif
 
-	delete qApp;
+	// TODO 0.6.6: it causes segfault on exit with QGtkStyle, at least
+	// on Ubuntu 10.10 (I tested it) --beevvy
+	// it's a hackish WORKAROUND!
+	//delete qApp;
 
 	if (measureTime)
 	{

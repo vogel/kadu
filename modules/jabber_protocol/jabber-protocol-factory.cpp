@@ -31,6 +31,7 @@
 #include "gui/widgets/jabber-edit-account-widget.h"
 #include "jabber-account-details.h"
 #include "jabber-contact-details.h"
+#include "jabber-id-validator.h"
 #include "jabber-protocol.h"
 #include "jabber-protocol-factory.h"
 
@@ -55,8 +56,6 @@ JabberProtocolFactory::JabberProtocolFactory()
 	SupportedStatusTypes.append(statusTypeManager->statusType("Offline"));
 
 	qSort(SupportedStatusTypes.begin(), SupportedStatusTypes.end(), StatusType::lessThan);
-
-	IdRegularExpression.setPattern("[a-zA-Z0-9\\._\\+\\-]+@[a-zA-Z0-9\\._-]+");
 }
 
 QIcon JabberProtocolFactory::icon()
@@ -106,12 +105,13 @@ QList<StatusType *> JabberProtocolFactory::supportedStatusTypes()
 
 QString JabberProtocolFactory::idLabel()
 {
-	return tr("Username:");
+	return tr("User JID:");
 }
 
-QRegExp JabberProtocolFactory::idRegularExpression()
+QValidator::State JabberProtocolFactory::validateId(QString id)
 {
-	return IdRegularExpression;
+	int pos = 0;
+	return JabberIdValidator::instance()->validate(id, pos);
 }
 
 bool JabberProtocolFactory::allowChangeServer()

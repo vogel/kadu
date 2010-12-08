@@ -42,7 +42,6 @@ class KADUAPI AccountBuddyListWidget : public QWidget
 	BuddiesListWidget *BuddiesWidget;
 	QPushButton *ExportButton;
 	QPushButton *ImportButton;
-	bool Clear;
 
 private slots:
 	void startImportTransfer();

@@ -314,6 +314,8 @@ public:
 	**/
 	bool moduleIsActive(const QString &module_name) const;
 
+	QString modulesUsing(const QString &module_name) const;
+
 	/**
 		\fn bool conflictsWithLoaded(const QString &module_name, const ModuleInfo &module_info) const
 		Sprawdza czy podany modu� konfliktuje

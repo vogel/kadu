@@ -138,7 +138,6 @@ void AccountBuddyListWidget::startExportTransfer()
 		return;
 
 	ExportButton->setEnabled(false);
-	Clear = false;
 	service->exportContactList();
 
 	kdebugf2();
@@ -171,16 +170,10 @@ void AccountBuddyListWidget::buddiesListExported(bool ok)
 {
 	kdebugf();
 
-	if (Clear)
-	{
-		if (!ok)
-			MessageDialog::show("dialog-error", tr("Kadu"), tr("The application encountered an internal error\nThe delete userlist on server was unsuccessful"));
-	}
+	if (ok)
+		MessageDialog::show("dialog-information", tr("Kadu"), tr("Your userlist has been successfully exported to server"));
 	else
-	{
-		if (!ok)
-			MessageDialog::show("dialog-error", tr("Kadu"), tr("The application encountered an internal error\nThe export was unsuccessful"));
-	}
+		MessageDialog::show("dialog-error", tr("Kadu"), tr("The application encountered an internal error\nThe export was unsuccessful"));
 
 	ExportButton->setEnabled(true);
 

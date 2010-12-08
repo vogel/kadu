@@ -80,6 +80,7 @@ QString profilePath(const QString &subpath)
 	if (path.isNull())
 	{
 		QString home;
+
 #ifdef Q_OS_WIN
 		// on win32 dataPath doesn't need real argv[0] so it's safe to use this
 		// in such ugly way
@@ -89,7 +90,6 @@ QString profilePath(const QString &subpath)
 			Parser::globalVariables["KADU_CONFIG"] = path;
 			return (path+subpath);
 		}
-
 		WCHAR *homepath = new WCHAR[MAX_PATH + 1];
 		WCHAR *homepath_guard = homepath;
 		if (!SUCCEEDED(SHGetFolderPathW(NULL, CSIDL_APPDATA, NULL, 0, homepath)))
@@ -103,24 +103,63 @@ QString profilePath(const QString &subpath)
 		else
 			home = QString::fromLocal8Bit(getenv("HOME"));
 #endif
+
 		Parser::globalVariables["HOME"] = home;
 		QString config_dir = QString::fromLocal8Bit(getenv("CONFIG_DIR"));
+
 #ifdef Q_OS_MAC
 		if (config_dir.isNull())
 			path = QString("%1/Library/Kadu/").arg(home);
+		else if (QDir(config_dir).isAbsolute())
+		{
+			if (QDir(QString("%1/Kadu").arg(config_dir)).exists())
+				path = QString("%1/Kadu/").arg(config_dir); // compatibility with earlier versions
+			else
+				path = QString("%1/").arg(config_dir);
+		}
 		else
-			path = QString("%1/%2/Kadu/").arg(home).arg(config_dir);
+		{
+			if (QDir(QString("%1/%2/Kadu").arg(home).arg(config_dir)).exists())
+				path = QString("%1/%2/Kadu/").arg(home).arg(config_dir); // compatibility with earlier versions
+			else
+				path = QString("%1/%2/").arg(home).arg(config_dir);
+		}
 #elif defined(Q_OS_WIN)
 		if (config_dir.isNull())
-			path = QString("%1\\Kadu\\").arg(home);
+			path = QString("%1/Kadu/").arg(home);
+		else if (QDir(config_dir).isAbsolute())
+		{
+			if (QDir(QString("%1/Kadu").arg(config_dir)).exists())
+				path = QString("%1/Kadu/").arg(config_dir); // compatibility with earlier versions
+			else
+				path = QString("%1/").arg(config_dir);
+		}
 		else
-			path = QString("%1\\%2\\Kadu\\").arg(home).arg(config_dir);
+		{
+			if (QDir(QString("%1/%2/Kadu").arg(home).arg(config_dir)).exists())
+				path = QString("%1/%2/Kadu/").arg(home).arg(config_dir); // compatibility with earlier versions
+			else
+				path = QString("%1/%2/").arg(home).arg(config_dir);
+		}
 #else
 		if (config_dir.isNull())
 			path = QString("%1/.kadu/").arg(home);
+		else if (QDir(config_dir).isAbsolute())
+		{
+			if (QDir(QString("%1/kadu").arg(config_dir)).exists())
+				path = QString("%1/kadu/").arg(config_dir); // compatibility with earlier versions
+			else
+				path = QString("%1/").arg(config_dir);
+		}
 		else
-			path = QString("%1/%2/kadu/").arg(home).arg(config_dir);
+		{
+			if (QDir(QString("%1/%2/kadu").arg(home).arg(config_dir)).exists())
+				path = QString("%1/%2/kadu/").arg(home).arg(config_dir); // compatibility with earlier versions
+			else
+				path = QString("%1/%2/").arg(home).arg(config_dir);
+		}
 #endif
+
 		Parser::globalVariables["KADU_CONFIG"] = path;
 	}
 
@@ -173,8 +212,8 @@ QString dataPath(const QString &p, const char *argv0)
 		QString bindir(KADU_BINDIR);
 		QString libdir(KADU_LIBDIR);
 
-		//je�eli �cie�ki nie ko�cz� si� na /share i /bin oraz gdy bez tych ko�c�wek
-		//�cie�ki si� nie pokrywaj�, to znaczy �e kto� ustawi� r�cznie KADU_DATADIR lub KADU_BINDIR
+		//jeżeli ścieżki nie kończą się na /share i /bin oraz gdy bez tych końcówek
+		//ścieżki się nie pokrywają, to znaczy, że ktoś ustawił ręcznie KADU_DATADIR lub KADU_BINDIR
 		if (!datadir.endsWith(QLatin1String("/share")) || !bindir.endsWith(QLatin1String("/bin")) || !libdir.endsWith(QLatin1String("/lib")) ||
 			datadir.left(datadir.length() - 6) != bindir.left(bindir.length() - 4) ||
 			bindir.left(bindir.length() - 4) != libdir.left(libdir.length() - 4))

@@ -17,43 +17,31 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SOUND_PLAY_THREAD_H
-#define SOUND_PLAY_THREAD_H
+#include "accounts/account.h"
+#include "protocols/protocol.h"
+#include "protocols/protocol-factory.h"
 
-#include <QtCore/QMutex>
-#include <QtCore/QThread>
+#include "id-validity-filter.h"
 
-class SoundPlayer;
-
-class SoundPlayThread : public QThread
+IdValidityFilter::IdValidityFilter(QObject *parent) :
+		AbstractAccountFilter(parent)
 {
-	Q_OBJECT
+}
 
-	bool End;
-	QMutex PlayingMutex;
-	QMutex NewSoundMutex;
+IdValidityFilter::~IdValidityFilter()
+{
+}
 
-	bool Play;
+void IdValidityFilter::setId(const QString &id)
+{
+	if (Id == id)
+		return;
 
-	SoundPlayer *Player;
-	QString Path;
-	bool VolumeControl;
-	float Volume;
+	Id = id;
+	emit filterChanged();
+}
 
-private slots:
-	void playerDestroyed();
-
-protected:
-	virtual void run();
-
-public:
-	explicit SoundPlayThread(QObject *parent = 0);
-	virtual ~SoundPlayThread();
-
-	void end();
-
-	void play(SoundPlayer *player, const QString &path, bool volumeControl = false, float volume = 1.0);
-
-};
-
-#endif // SOUND_PLAY_THREAD_H
+bool IdValidityFilter::acceptAccount(Account account)
+{
+	return (account.protocolHandler()->protocolFactory()->validateId(Id) >= QValidator::Intermediate);
+}

@@ -42,7 +42,10 @@ class ChooseDescription : public QDialog
 
 	StatusContainer *MyStatusContainer;
 
-	int MaxDescriptionLength;
+	void setPosition(const QPoint &position);
+
+	explicit ChooseDescription(StatusContainer *statusContainer, QWidget *parent = 0);
+	virtual ~ChooseDescription();
 
 private slots:
 	void statusChanged();
@@ -51,14 +54,9 @@ private slots:
 	void currentDescriptionChanged(const QString &);
 
 public:
-	static ChooseDescription *showDialog(StatusContainer *statusContainer, const QPoint &position = QPoint() );
-
-	ChooseDescription(StatusContainer *statusContainer, QWidget *parent = 0);
-	virtual ~ChooseDescription();
+	static ChooseDescription * showDialog(StatusContainer *statusContainer, const QPoint &position = QPoint());
 
 	virtual QSize sizeHint() const;
-
-	void setPosition(const QPoint &position);
 
 };
 

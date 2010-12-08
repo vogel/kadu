@@ -135,7 +135,6 @@ public:
 	static GADUAPI QString statusTypeFromGaduStatus(unsigned int index);
 	static GADUAPI bool isBlockingStatus(unsigned int index);
 	static GADUAPI unsigned int gaduStatusFromStatus(const Status &status);
-	static GADUAPI bool validateGaduNumber(QString uid);
 	Buddy searchResultToBuddy(gg_pubdir50_t res, int number);
 
 	GaduProtocol(Account account, ProtocolFactory *factory);
@@ -150,7 +149,6 @@ public:
 	virtual PersonalInfoService * personalInfoService() { return CurrentPersonalInfoService; }
 	virtual SearchService * searchService() { return CurrentSearchService; }
 
-	virtual bool validateUserID(const QString &uid);
 	virtual bool contactsListReadOnly() { return false; }
 	virtual bool supportsPrivateStatus() { return true; }
 

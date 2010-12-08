@@ -44,6 +44,7 @@
 #include "core/core.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/widgets/chat-widget-manager.h"
+#include "chat/message/pending-messages-manager.h"
 
 static OSStatus appleEventProcessor(const AppleEvent *ae, AppleEvent *event, long handlerRefCon)
 {
@@ -60,8 +61,10 @@ static OSStatus appleEventProcessor(const AppleEvent *ae, AppleEvent *event, lon
 	{
 		if (aeID == kAEReopenApplication)
 		{
-			ChatWidgetManager::instance()->openPendingMsgs(true);
-			Core::instance()->kaduWindow()->show();
+			if (PendingMessagesManager::instance()->hasPendingMessages())
+				ChatWidgetManager::instance()->openPendingMsgs(true);
+			else
+				Core::instance()->kaduWindow()->show();
 		}
 		return noErr;
 	}

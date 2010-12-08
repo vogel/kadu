@@ -31,7 +31,7 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
-#include "accounts/filter/id-regular-expression-filter.h"
+#include "accounts/filter/id-validity-filter.h"
 #include "accounts/filter/writeable-contacts-list-filter.h"
 #include "accounts/model/accounts-model.h"
 #include "accounts/model/accounts-proxy-model.h"
@@ -64,10 +64,8 @@ AddBuddyWindow::AddBuddyWindow(QWidget *parent) :
 
 	connect(AccountCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(updateGui()));
 	connect(AccountCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(setAddContactEnabled()));
-	connect(AccountCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(setValidateRegularExpression()));
 
 	setAddContactEnabled();
-	setValidateRegularExpression();
 }
 
 AddBuddyWindow::~AddBuddyWindow()
@@ -81,21 +79,19 @@ void AddBuddyWindow::createGui()
 
 	QGridLayout *layout = new QGridLayout(this);
 
-	UserNameLabel = new QLabel(tr("Username:"), this);
+	UserNameLabel = new QLabel(tr("User ID:"), this);
 	UserNameLabel->setAlignment(Qt::AlignRight);
 	layout->addWidget(UserNameLabel, 0, 0, Qt::AlignRight);
 	UserNameEdit = new QLineEdit(this);
 	connect(UserNameEdit, SIGNAL(textChanged(const QString &)), this, SLOT(setAddContactEnabled()));
 	connect(UserNameEdit, SIGNAL(textChanged(const QString &)), this, SLOT(setAccountFilter()));
 
-	UserNameValidator = new QRegExpValidator(UserNameEdit);
-	UserNameEdit->setValidator(UserNameValidator);
 	layout->addWidget(UserNameEdit, 0, 1);
 	layout->addWidget(new QLabel(tr("in"), this), 0, 2);
 
 	AccountCombo = new AccountsComboBox(this);
 
-	AccountComboIdFilter = new IdRegularExpressionFilter(AccountCombo);
+	AccountComboIdFilter = new IdValidityFilter(AccountCombo);
 	AccountCombo->addFilter(AccountComboIdFilter);
 
 	WriteableContactsListFilter *writeableCotnactsListFilter = new WriteableContactsListFilter(AccountCombo);
@@ -248,7 +244,7 @@ void AddBuddyWindow::validateData()
 		return;
 	}
 
-	if (!account.protocolHandler()->protocolFactory()->idRegularExpression().exactMatch(UserNameEdit->text()))
+	if (account.protocolHandler()->protocolFactory()->validateId(UserNameEdit->text()) != QValidator::Acceptable)
 	{
 		displayErrorMessage(tr("Entered username is invalid"));
 		return;
@@ -308,28 +304,6 @@ void AddBuddyWindow::setAddContactEnabled()
 		validateMobileData();
 	else
 		validateData();
-}
-
-void AddBuddyWindow::setValidateRegularExpression()
-{
-	Account account = AccountCombo->currentAccount();
-	if (!account.isNull() && account.protocolHandler())
-	{
-		UserNameValidator->setRegExp(account.protocolHandler()->protocolFactory()->idRegularExpression());
-		return;
-	}
-
-	QStringList regularExpressions;
-
-	foreach (Account account, AccountManager::instance()->items())
-	{
-		QRegExp regularExpression = account.protocolHandler()->protocolFactory()->idRegularExpression();
-		if (!regularExpression.isEmpty())
-			regularExpressions.append(regularExpression.pattern());
-	}
-
-	regularExpressions.removeDuplicates();
-	UserNameValidator->setRegExp(QRegExp(QString("(%1)").arg(regularExpressions.join("|"))));
 }
 
 void AddBuddyWindow::setAccountFilter()

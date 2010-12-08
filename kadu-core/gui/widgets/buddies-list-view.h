@@ -75,6 +75,7 @@ private:
 	void triggerActivate(const QModelIndex &index);
 
 	Chat chatForIndex(const QModelIndex &index) const;
+	Chat chatByPendingMessages(const QModelIndex &index) const;
 
 	// Tool tips
 	BuddyOrContact ToolTipItem;

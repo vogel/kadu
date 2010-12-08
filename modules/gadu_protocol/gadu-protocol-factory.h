@@ -32,7 +32,6 @@ class GaduProtocolFactory : public ProtocolFactory
 
 	static GaduProtocolFactory *Instance;
 	QList<StatusType *> SupportedStatusTypes;
-	QRegExp IdRegularExpression;
 
 	GaduProtocolFactory();
 
@@ -48,7 +47,7 @@ public:
 	virtual QWidget * newContactPersonalInfoWidget(Contact contact, QWidget *parent = 0);
 	virtual QList<StatusType *> supportedStatusTypes();
 	virtual QString idLabel();
-	virtual QRegExp idRegularExpression();
+	virtual QValidator::State validateId(QString id);
 
 	virtual QString name() { return "gadu"; }
 	virtual QString displayName() { return tr("Gadu-Gadu"); }

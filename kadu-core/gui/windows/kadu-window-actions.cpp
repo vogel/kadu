@@ -108,7 +108,7 @@ void checkBuddyProperties(Action *action)
 
 void checkHideDescription(Action *action)
 {
-	action->setEnabled(true);
+	action->setEnabled(action->buddies().count());
 
 	bool on = false;
 	foreach (const Buddy buddy, action->buddies())
@@ -169,7 +169,7 @@ void disableNoEMail(Action *action)
 void disableIfContactSelected(Action *action)
 {
 	if (action && action->dataSource())
-		action->setEnabled(!action->dataSource()->hasContactSelected());
+		action->setEnabled(!action->dataSource()->hasContactSelected() && action->dataSource()->buddies().count());
 }
 
 KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
@@ -337,7 +337,7 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 	ShowDescriptions = new ActionDescription(this,
 		ActionDescription::TypeUserList, "descriptionsAction",
 		this, SLOT(showDescriptionsActionActivated(QAction *, bool)),
-		"kadu_icons/kadu-descriptions_off", "kadu_icons/kadu-descriptions_on", tr("Show descriptions"),
+		"kadu_icons/kadu-descriptions_on", "kadu_icons/kadu-descriptions_off", tr("Show descriptions"),
 		true, tr("Hide descriptions")
 	);
 	connect(ShowDescriptions, SIGNAL(actionCreated(Action *)), this, SLOT(showDescriptionsActionCreated(Action *)));

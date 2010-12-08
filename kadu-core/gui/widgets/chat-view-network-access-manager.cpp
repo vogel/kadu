@@ -41,7 +41,7 @@ QNetworkReply * ChatViewNetworkAccessManager::createRequest(QNetworkAccessManage
 
 	QUrl newUrl(request.url());
 	newUrl.setScheme("file");
-	if (!newUrl.path().startsWith("//")) // TODO 0.6.6: it's a hack we need until we're saving sent images in imagesPath
+	if (!newUrl.path().startsWith("//")) // TODO 0.6.6: remove before RC release (will break compatibility with sent images saved in history by beta11)
 		newUrl.setPath(ChatImageService::imagesPath() + newUrl.path());
 
 	QNetworkRequest newRequest(request);

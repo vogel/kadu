@@ -20,34 +20,19 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QFileInfo>
 #include <QtGui/QTextBlock>
 #include <QtGui/QTextDocument>
 
-#include "icons-manager.h"
-
 #include "formatted-message-part.h"
 
-QString FormattedMessagePart::loadingImageHtml(const QString &imageId)
-{
-	return QString("<img src=\"file:///%1\" id=\"%2\" />")
-			.arg(IconsManager::instance()->iconPath("kadu_icons/16x16/please-wait.gif"))
-			.arg(imageId);
-}
-
-QString FormattedMessagePart::replaceLoadingImages(QString message, const QString &imageId, const QString &imageFileName)
-{
-	QString img = QString("<img src=\"kaduimg:///%1\" />").arg(imageFileName);
-	return message.replace(loadingImageHtml(imageId), img);
-}
-
 FormattedMessagePart::FormattedMessagePart(const QString &content, bool bold, bool italic, bool underline, QColor color) :
-		Content(content), Bold(bold), Italic(italic), Underline(underline), Color(color), Image(false), ImageDelayed(false)
+		Content(content), Bold(bold), Italic(italic), Underline(underline), Color(color), IsImage(false)
 {
 }
 
-FormattedMessagePart::FormattedMessagePart(const QString &imageFileName, bool delayed, const QString &imageId) :
-		Content("\n"), Image(true), ImageDelayed(delayed),
-		ImageFileName(imageFileName), ImageId(imageId)
+FormattedMessagePart::FormattedMessagePart(const QString &imageFileName) :
+		Content("\n"), IsImage(true), ImageFileName(imageFileName)
 {
 }
 
@@ -57,10 +42,10 @@ FormattedMessagePart::~FormattedMessagePart()
 
 QString FormattedMessagePart::toHtml() const
 {
-	if (Image)
-		return ImageDelayed
-				? loadingImageHtml(ImageId)
-				: QString("<img src=\"kaduimg:///%1\" />").arg(ImageFileName);
+	if (IsImage)
+		return QFileInfo(ImageFileName).isRelative()
+				? QString("<img src=\"kaduimg:///%1\" />").arg(ImageFileName)
+				: QString("<img src=\"file://%1\" />").arg(ImageFileName); // TODO 0.6.6: remove once we're saving sent images in imagesPath
 
 	QString result = Qt::escape(Content);
 	result.replace("\r\n", "<br/>");

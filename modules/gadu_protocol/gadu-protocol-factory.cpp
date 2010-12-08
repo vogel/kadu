@@ -33,6 +33,7 @@
 
 #include "gadu-account-details.h"
 #include "gadu-contact-details.h"
+#include "gadu-id-validator.h"
 #include "gadu-protocol.h"
 
 #include "gadu-protocol-factory.h"
@@ -58,8 +59,6 @@ GaduProtocolFactory::GaduProtocolFactory()
 	SupportedStatusTypes.append(statusTypeManager->statusType("Offline"));
 
 	qSort(SupportedStatusTypes.begin(), SupportedStatusTypes.end(), StatusType::lessThan);
-
-	IdRegularExpression.setPattern("[0-9]{1,12}");
 }
 
 Protocol * GaduProtocolFactory::createProtocolHandler(Account account)
@@ -99,12 +98,13 @@ QList<StatusType *> GaduProtocolFactory::supportedStatusTypes()
 
 QString GaduProtocolFactory::idLabel()
 {
-	return tr("Gadu Gadu number:");
+	return tr("Gadu-Gadu number:");
 }
 
-QRegExp GaduProtocolFactory::idRegularExpression()
+QValidator::State GaduProtocolFactory::validateId(QString id)
 {
-	return IdRegularExpression;
+	int pos = 0;
+	return GaduIdValidator::instance()->validate(id, pos);
 }
 
 QWidget * GaduProtocolFactory::newContactPersonalInfoWidget(Contact contact, QWidget *parent)

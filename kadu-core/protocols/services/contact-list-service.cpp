@@ -118,21 +118,30 @@ void ContactListService::setBuddiesList(BuddyList buddies, bool removeOld)
 			unImportedContacts.removeAll(contact);
 	}
 
-	if (removeOld && !unImportedContacts.isEmpty())
+	QStringList contactsList;
+	QList<Contact>::iterator i = unImportedContacts.begin();
+	while (i != unImportedContacts.end())
 	{
-		// create names list
-		QStringList contactsList;
-		foreach (const Contact &c, unImportedContacts)
+		// TODO: why not Contact.ownerBuddy()?
+		Buddy buddy = BuddyManager::instance()->byId(CurrentProtocol->account(), i->id(), ActionCreate);
+		if (buddy.isAnonymous())
 		{
-			QString display = BuddyManager::instance()->byId(CurrentProtocol->account(), c.id(), ActionCreate).display();
-			if (!contactsList.contains(display))
-				contactsList.append(display);
+			i = unImportedContacts.erase(i);
+			continue;
 		}
 
+		if (!contactsList.contains(buddy.display()))
+			contactsList.append(buddy.display());
+
+		++i;
+	}
+
+	if (removeOld && !unImportedContacts.isEmpty())
+	{
 		if (MessageDialog::ask("", tr("Kadu"), tr("Following contacts from your list were not found on server: <b>%0</b>.\nDo you want to remove them from contacts list?").arg(contactsList.join("</b>, <b>"))))
 		{
-			foreach (const Contact &c, unImportedContacts)
-				ContactManager::instance()->removeItem(c);
+			foreach (Contact contact, unImportedContacts)
+				BuddyManager::instance()->clearOwnerAndRemoveEmptyBuddy(contact);
 		}
 	}
 

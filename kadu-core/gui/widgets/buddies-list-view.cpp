@@ -233,6 +233,15 @@ Chat BuddiesListView::chatForIndex(const QModelIndex &index) const
 	return ChatManager::instance()->findChat(ContactSet(con));
 }
 
+Chat BuddiesListView::chatByPendingMessages(const QModelIndex &index) const
+{
+	if (index.data(ItemTypeRole) == BuddyRole)
+		return PendingMessagesManager::instance()->chatForBuddy(buddyAt(index));
+	else
+		return PendingMessagesManager::instance()->chatForContact(contactAt(index));
+}
+
+// TODO 0.8.0: This method is too big. Review and split
 Chat BuddiesListView::currentChat() const
 {
 	BuddySet buddies;
@@ -241,11 +250,18 @@ Chat BuddiesListView::currentChat() const
 	Account account;
 
 	QModelIndexList selectionList = selectedIndexes();
+	if (selectionList.count() == 1)
+	{
+		Chat chat = chatByPendingMessages(selectionList[0]);
+		if (chat)
+			return chat;
+	}
+
 	foreach (QModelIndex selection, selectionList)
 	{
 		if (!account)
 		{
-			if (!selection.parent().isValid())
+			if (selection.data(ItemTypeRole) == BuddyRole)
 				buddies.insert(buddyAt(selection));
 			else
 			{
@@ -269,8 +285,8 @@ Chat BuddiesListView::currentChat() const
 		}
 		else
 		{
-			if (!selection.parent().isValid())
-		    {
+			if (selection.data(ItemTypeRole) == BuddyRole)
+			{
 				contact = BuddyPreferredManager::instance()->preferredContact(buddyAt(selection), account);
 				if (!contact)
 					return Chat::null;
@@ -370,8 +386,13 @@ void BuddiesListView::leaveEvent(QEvent *event)
 
 void BuddiesListView::mousePressEvent(QMouseEvent *event)
 {
-	toolTipHide();
 	QTreeView::mousePressEvent(event);
+
+	// TODO 0.6.7: remove once #1802 is fixed
+	if (!indexAt(event->pos()).isValid())
+		setCurrentIndex(QModelIndex());
+
+	toolTipHide();
 }
 
 void BuddiesListView::mouseReleaseEvent(QMouseEvent *event)

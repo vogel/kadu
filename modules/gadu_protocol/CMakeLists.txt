@@ -61,6 +61,7 @@ set (SOURCES
 	gadu-account-details.cpp
 	gadu-contact-data-manager.cpp
 	gadu-contact-details.cpp
+	gadu-id-validator.cpp
 	gadu-protocol.cpp
 	gadu-protocol-factory.cpp
 	gadu-resolver.cpp
@@ -118,6 +119,7 @@ set (MOC_SOURCES
 	gadu-account-data-manager.h
 	#gadu-account-details.h
 	gadu-contact-data-manager.h
+	gadu-id-validator.h
 	gadu-protocol-factory.h
 	gadu-protocol.h
 	gadu-resolver.h

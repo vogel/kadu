@@ -133,6 +133,10 @@ void FilterWidget::filterTextChanged(const QString &s)
 			qSort(selection);
 			View->scrollTo(selection.first());
 		}
+		// clearFocus() is needed to ensure that focus on View wiil be restored
+		// even if this function had been called at time KaduWindow was not active
+		clearFocus();
+		// from qdocs: "[It works] if this widget or one of its parents is the active window"
 		View->setFocus(Qt::OtherFocusReason);
 #ifndef Q_OS_MAC
 		hide();

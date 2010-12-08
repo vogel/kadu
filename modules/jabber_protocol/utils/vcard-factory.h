@@ -44,29 +44,30 @@ namespace XMPP {
 class VCardFactory : public QObject
 {
 	Q_OBJECT
-	
+
 public:
-	static void createInstance(QObject *parent = 0);
+	static void createInstance();
+	static void destroyInstance();
 	static VCardFactory * instance();
 	const XMPP::VCard * vcard(const XMPP::Jid &);
 	void setVCard(const XMPP::Jid &, const XMPP::VCard &);
 	void setVCard(XMPP::Task *rootTask, const XMPP::Jid &, const XMPP::VCard &v, QObject *obj = 0, const char *slot = 0);
 	XMPP::JT_VCard *getVCard(const XMPP::Jid &, XMPP::Task *rootTask, const QObject *, const char *slot, bool cacheVCard = true);
-	
+
 signals:
 	void vcardChanged(const XMPP::Jid &);
-	
+
 protected:
 	void checkLimit(QString jid, XMPP::VCard *vcard);
-	
+
 private slots:
 	void updateVCardFinished();
 	void taskFinished();
-	
+
 private:
 	explicit VCardFactory(QObject *parent = 0);
 	virtual ~VCardFactory();
-	
+
 	static VCardFactory* instance_;
 	const int dictSize_;
 	QStringList vcardList_;

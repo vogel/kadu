@@ -40,14 +40,10 @@ class JabberContactDetails;
 class JabberResourcePool;
 class JabberRosterService;
 class JabberSubscriptionService;
-class PEPManager;
-class ServerInfoManager;
 
 class JabberProtocol : public Protocol
 {
 	Q_OBJECT
-
-	static bool ModuleUnloading;
 
 	JabberAvatarService *CurrentAvatarService;
 	JabberChatService *CurrentChatService;
@@ -61,19 +57,15 @@ class JabberProtocol : public Protocol
 	XMPP::JabberClient *JabberClient;
 	XMPP::Jid jabberID;
 	JabberResourcePool *ResourcePool;
-	ServerInfoManager *serverInfoManager;
-	PEPManager *PepManager;
 
 	bool usingSSL;
 	bool confUseSSL;
 	bool doReconnect;
 	bool doAboutRoster;
-	bool pepAvailable;
 
 	bool ContactsListReadOnly;
 
 	void initializeJabberClient();
-	void setPEPAvailable(bool b);
 
 	friend class JabberRosterService;
 	void connectContactManagerSignals();
@@ -96,10 +88,6 @@ private slots:
 
 	void contactIdChanged(Contact contact, const QString &oldId);
 
-	void serverFeaturesChanged();
-	void itemPublished(const XMPP::Jid& j, const QString& n, const XMPP::PubSubItem& item);
-	void itemRetracted(const XMPP::Jid& j, const QString& n, const XMPP::PubSubRetraction& item);
-
 	void connectionErrorSlot(const QString &message);
 	void invalidPasswordSlot();
 
@@ -111,15 +99,10 @@ public:
 	static int initModule();
 	static void closeModule();
 
-	static bool validateJid(const QString &jid);
-
 	JabberProtocol(Account account, ProtocolFactory *factory);
 	virtual ~JabberProtocol();
 
 	XMPP::JabberClient * client() { return JabberClient; }
-	bool isPEPAvailable() { return pepAvailable; }
-
-	virtual bool validateUserID(const QString &uid);
 
 	void setContactsListReadOnly(bool contactsListReadOnly);
 	virtual bool contactsListReadOnly();
@@ -135,7 +118,6 @@ public:
 	virtual PersonalInfoService * personalInfoService() { return CurrentPersonalInfoService; }
 	virtual SearchService * searchService() { return 0; }
 	JabberResourcePool *resourcePool();
-	PEPManager *pepManager() { return PepManager; }
 
 	JabberContactDetails * jabberContactDetails(Contact contact) const;
 

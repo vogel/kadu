@@ -20,6 +20,7 @@
 #include <QtCore/QVariant>
 
 #include "buddies/buddy.h"
+#include "buddies/buddy-preferred-manager.h"
 #include "model/roles.h"
 #include "icons-manager.h"
 
@@ -46,7 +47,7 @@ QVariant BuddyDataExtractor::data(Buddy buddy, int role)
 		case BuddyRole:
 			return QVariant::fromValue(buddy);
 		case StatusRole:
-			return QVariant::fromValue(Status::null);
+			return QVariant::fromValue(BuddyPreferredManager::instance()->preferredContact(buddy, false).currentStatus());
 		case ItemTypeRole:
 			return BuddyRole;
 		default:

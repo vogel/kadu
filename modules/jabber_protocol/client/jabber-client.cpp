@@ -21,9 +21,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QTimer>
-#include <QRegExp>
+#include <QtCore/QRegExp>
+#include <QtCore/QTimer>
 #include <QtCrypto>
+
 #include <bsocket.h>
 #include <filetransfer.h>
 #include <xmpp_tasks.h>
@@ -33,6 +34,8 @@
 
 #include "certificates/certificate-helpers.h"
 #include "resource/jabber-resource-pool.h"
+#include "utils/pep-manager.h"
+#include "utils/server-info-manager.h"
 #include "jabber-account-details.h"
 #include "jabber-client.h"
 #include "jabber-protocol.h"
@@ -48,7 +51,7 @@ int JabberClient::S5bServerPort = 8010;
 
 JabberClient::JabberClient(JabberProtocol *protocol, QObject *parent) :
 		QObject(parent), jabberClient(0), JabberClientStream(0), JabberClientConnector(0),
-		JabberTLS(0), JabberTLSHandler(0)/*, privacyManager(0)*/, Protocol(protocol)
+		JabberTLS(0), JabberTLSHandler(0), Protocol(protocol), serverInfoManager(0), PepManager(0)
 {
 	cleanUp();
 
@@ -69,7 +72,6 @@ JabberClient::~JabberClient()
 	delete JabberTLS;
 
 	jabberClient = 0;
-	// privacyManager will be deleted with jabberClient, its parent's parent
 }
 
 void JabberClient::cleanUp()
@@ -82,14 +84,12 @@ void JabberClient::cleanUp()
 	delete JabberClientConnector;
 	delete JabberTLSHandler;
 	delete JabberTLS;
-	// privacyManager will be deleted with jabberClient, its parent's parent
 
 	jabberClient = 0L;
 	JabberClientStream = 0L;
 	JabberClientConnector = 0L;
 	JabberTLSHandler = 0L;
 	JabberTLS = 0L;
-	///privacyManager = 0L;
 
 	CurrentPenaltyTime = 0;
 
@@ -237,19 +237,8 @@ int JabberClient::getPenaltyTime()
 	return currentTime;
 }
 
-// PrivacyManager *JabberClient::privacyManager() const
-// {
-// 	return privacyManager;
-// }
-
 void JabberClient::connect(const XMPP::Jid &jid, const QString &password, bool auth)
 {
-	/*
-	 * Close any existing connection.
-	 */
-	if (jabberClient)
-		jabberClient->close();
-
 	MyJid = jid;
 	Password = password;
 
@@ -300,6 +289,13 @@ void JabberClient::connect(const XMPP::Jid &jid, const QString &password, bool a
 		JabberTLS->setTrustedCertificates(CertificateHelpers::allCertificates(CertificateHelpers::getCertificateStoreDirs()));
 		JabberTLSHandler = new QCATLSHandler(JabberTLS);
 		JabberTLSHandler->setXMPPCertCheck(true);
+		
+		JabberAccountDetails *jabberAccountDetails = dynamic_cast<JabberAccountDetails *>(Protocol->account().details());
+		if (jabberAccountDetails)
+		{
+			QString host = jabberAccountDetails->useCustomHostPort() ? jabberAccountDetails->customHost() : XMPP::Jid(Protocol->account().id()).domain();
+			JabberTLSHandler->startClient(host);
+		}
 
 		QObject::connect(JabberTLSHandler, SIGNAL(tlsHandshaken()), SLOT(slotTLSHandshaken()));
 	}
@@ -343,10 +339,18 @@ void JabberClient::connect(const XMPP::Jid &jid, const QString &password, bool a
 	 */
 	jabberClient = new XMPP::Client(this);
 
-	/*
-	 * Setup privacy manager
-	 */
-	///privacyManager = new PrivacyManager ( rootTask() );
+	// Initialize server info stuff
+	serverInfoManager = new ServerInfoManager(jabberClient, jabberClient);
+	QObject::connect(serverInfoManager, SIGNAL(featuresChanged()),
+		this, SLOT(serverFeaturesChanged()));
+
+	// Initialize PubSub stuff
+	PepManager = new PEPManager(jabberClient, serverInfoManager, jabberClient);
+	QObject::connect(PepManager, SIGNAL(publish_success(const QString&, const XMPP::PubSubItem&)),
+		this, SIGNAL(publishSuccess(const QString&,const XMPP::PubSubItem&)));
+	QObject::connect(PepManager, SIGNAL(publish_error(const QString&, const XMPP::PubSubItem&)),
+		this, SIGNAL(publishError(const QString&,const XMPP::PubSubItem&)));
+	PepAvailable = false;
 
 	/*
 	 * Enable file transfer (IP and server will be set after connection
@@ -431,37 +435,26 @@ void JabberClient::connect(const XMPP::Jid &jid, const QString &password, bool a
 
 void JabberClient::disconnect()
 {
-	if (jabberClient)
-		jabberClient->close();
-	else
-		cleanUp();
+	cleanUp();
 }
 
-void JabberClient::disconnect( XMPP::Status &reason)
+void JabberClient::disconnect(XMPP::Status &reason)
 {
-	if (jabberClient)
+	if (JabberClientStream && JabberClientStream->isActive())
 	{
-		if (JabberClientStream->isActive())
-		{
-			XMPP::JT_Presence *pres = new JT_Presence(rootTask());
-			reason.setIsAvailable( false);
-			pres->pres( reason);
-			pres->go();
+		XMPP::JT_Presence *pres = new JT_Presence(rootTask());
+		reason.setIsAvailable( false);
+		pres->pres( reason);
+		pres->go();
 
-			JabberClientStream->close();
-			jabberClient->close();
-		}
+		JabberClientStream->close();
 	}
-	else
-		cleanUp();
+	cleanUp();
 }
 
 bool JabberClient::isConnected() const
 {
-	if (jabberClient)
-		return jabberClient->isActive();
-
-	return false;
+	return jabberClient && jabberClient->isActive();
 }
 
 void JabberClient::joinGroupChat(const QString &host, const QString &room, const QString &nick)
@@ -548,12 +541,13 @@ void JabberClient::slotTLSHandshaken()
 		return;
 
 	QString domain = jabberAccountDetails->tlsOverrideDomain();
+	QString host = jabberAccountDetails->useCustomHostPort() ? jabberAccountDetails->customHost() : XMPP::Jid(Protocol->account().id()).domain();
 	QByteArray cert = jabberAccountDetails->tlsOverrideCert();
 	if (CertificateHelpers::checkCertificate(JabberTLS, JabberTLSHandler, domain,
-		QString("%1: ").arg(Protocol->account().accountIdentity().name()) + tr("Server Authentication"), XMPP::Jid(Protocol->account().id()).domain(), Protocol->account()))
+		QString("%1: ").arg(Protocol->account().accountIdentity().name()) + tr("Server Authentication"), host, Protocol->account()))
 		JabberTLSHandler->continueAfterHandshake();
 	else
-		disconnect();
+		Protocol->logout();
 }
 
 void JabberClient::slotCSNeedAuthParams(bool user, bool pass, bool realm)
@@ -641,22 +635,14 @@ void JabberClient::slotCSWarning(int warning)
 {
 	emit debugMessage("Client stream warning.");
 
-	bool showNoTlsWarning = warning == ClientStream::WarnNoTLS && false/*acc.ssl == UserAccount::SSL_Yes*/;
+	bool showNoTlsWarning = warning == ClientStream::WarnNoTLS;
 	bool doCleanupStream = !JabberClientStream || showNoTlsWarning;
 
 	if (doCleanupStream)
-	{
-		disconnect();
-		//v_isActive = false;
-		//loginStatus = Status(Status::Offline);
-		//stateChanged();
-		//disconnected();
-	}
+		Protocol->logout();
 
 	if (showNoTlsWarning)
-	{
 		emit connectionError(tr("The server does not support TLS encryption."));
-	}
 	else if (!doCleanupStream)
 	{
 		Q_ASSERT(JabberClientStream);
@@ -674,30 +660,31 @@ void JabberClient::slotCSError(int error)
 		&& (clientStream()->errorCondition() == XMPP::ClientStream::NotAuthorized))
 	{
 		kdebug("Incorrect password, retrying.\n");
-		Protocol->logout(/*Kopete::Account::BadPassword*/);
+		Protocol->logout();
+
 		emit invalidPassword();
 	}
 	else
 	{
-		//Kopete::Account::DisconnectReason errorClass =  Kopete::Account::Unknown;
-
 		kdebug("Disconnecting.\n");
-		// display message to user
-		// when removing or disconnecting, connection errors are normal
-		if (/*!m_removing && */Protocol->isConnected() || Protocol->isConnecting())
+
+		if (Protocol->isConnected() || Protocol->isConnecting())
 		{
 			getErrorInfo(error, JabberClientConnector, JabberClientStream, JabberTLSHandler, &errorText, &reconn);
-			if (reconn)
-				Protocol->connectToServer();
-
 			emit connectionError(tr("There was an error communicating with the server.\nDetails: %1").arg(errorText));
+
+			if (reconn)
+			{
+				cleanUp();
+				Protocol->connectToServer();
+			}
+			else
+			{
+				Protocol->resourcePool()->clear();
+				Protocol->logout();
+			}
 		}
-		if (Protocol->isConnected() || Protocol->isConnecting())
-			Protocol->logout(/* errorClass */);
-
-		Protocol->resourcePool()->clear();
 	}
-
 }
 
 void JabberClient::addContact(const XMPP::Jid &j, const QString &name, const QStringList &groups, bool authReq)
@@ -793,9 +780,7 @@ void JabberClient::setPresence(const XMPP::Status &status)
 			kdebug("We were not connected, presence update aborted.");
 		}
 	}
-
 }
-
 
 void JabberClient::requestSubscription(const XMPP::Jid &jid)
 {
@@ -811,7 +796,6 @@ void JabberClient::rejectSubscription(const XMPP::Jid &jid)
 {
 	changeSubscription(jid, "unsubscribed");
 }
-
 
 void JabberClient::changeSubscription(const XMPP::Jid &jid, const QString &type)
 {
@@ -1047,6 +1031,36 @@ void JabberClient::getErrorInfo(int err, AdvancedConnector *conn, Stream *stream
 	//printf("str[%s], reconn=%d\n", str.latin1(), reconn);
 	*_str = str;
 	*_reconn = reconn;
+}
+
+void JabberClient::serverFeaturesChanged()
+{
+	if (serverInfoManager)
+		setPEPAvailable(serverInfoManager->hasPEP());
+}
+
+void JabberClient::setPEPAvailable(bool b)
+{
+	if (PepAvailable == b)
+		return;
+
+	PepAvailable = b;
+
+	// Publish support
+	if (b && client()->extensions().contains("ep"))
+	{
+		QStringList pepNodes;
+		/*pepNodes += "http://jabber.org/protocol/mood";
+		pepNodes += "http://jabber.org/protocol/tune";
+		pepNodes += "http://jabber.org/protocol/physloc";
+		pepNodes += "http://jabber.org/protocol/geoloc";*/
+		pepNodes += "http://www.xmpp.org/extensions/xep-0084.html#ns-data";
+		pepNodes += "http://www.xmpp.org/extensions/xep-0084.html#ns-metadata";
+		client()->addExtension("ep", XMPP::Features(pepNodes));
+		//setStatusActual(d->loginStatus);
+	}
+	else if (!b && client()->extensions().contains("ep"))
+		client()->removeExtension("ep");
 }
 
 }

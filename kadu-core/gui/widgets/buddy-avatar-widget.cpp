@@ -108,6 +108,7 @@ void BuddyAvatarWidget::changeAvatar()
 	if (pixmap.load(newAvatar))
 	{
 		showAvatar(newAvatar);
+		BuddyAvatarPixmap = pixmap;
 		BuddyAvatar = true;
 	}
 
@@ -122,10 +123,8 @@ void BuddyAvatarWidget::removeAvatar()
 
 const QPixmap BuddyAvatarWidget::avatarPixmap()
 {
-	const QPixmap *avatar = AvatarLabel->pixmap();
-
-	if (avatar && !avatar->isNull())
-		return *avatar;
+	if (BuddyAvatar && !BuddyAvatarPixmap.isNull())
+		return BuddyAvatarPixmap;
 
 	return QPixmap();
 }

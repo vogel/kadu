@@ -28,9 +28,7 @@
 	{
 		// unshade the window if needed (important!)
 		if( X11_isWindowShaded( QX11Info::display(), window->winId() ) )
-		{
 			X11_shadeWindow( QX11Info::display(), window->winId(), false );
-		}
 		// read user settings
 		int action = config_file.readNumEntry( "General", "WindowActivationMethod" );
 		// window & desktop
@@ -38,22 +36,18 @@
 		{
 			unsigned long desktopofwindow = X11_getDesktopOfWindow( QX11Info::display(), window->winId() );
 			unsigned long currentdesktop = X11_getCurrentDesktop( QX11Info::display() );
-			if( ( desktopofwindow != currentdesktop ) && ( desktopofwindow != X11_ALLDESKTOPS ) && ( desktopofwindow != X11_NODESKTOP ) )
+			if( ( desktopofwindow != currentdesktop ) && ( desktopofwindow != X11_ALLDESKTOPS ) )
 			{
-				if( action == 0 )
-				{
-					if( X11_isWholeWindowOnOneDesktop( QX11Info::display(), window->winId() ) )
-					{
-						X11_moveWindowToDesktop( QX11Info::display(), window->winId(), currentdesktop );
-					}
-					else
-					{
-						X11_centerWindow( QX11Info::display(), window->winId(), currentdesktop );
-					}
-				}
-				if( action == 1 )
+				if( ( action == 1 ) && ( desktopofwindow != X11_NODESKTOP ) && ( desktopofwindow != X11_ALLDESKTOPS ) )
 				{
 					X11_setCurrentDesktop( QX11Info::display(), desktopofwindow );
+				}
+				else
+				{
+					if( X11_isWholeWindowOnOneDesktop( QX11Info::display(), window->winId() ) )
+						X11_moveWindowToDesktop( QX11Info::display(), window->winId(), currentdesktop );
+					else
+						X11_centerWindow( QX11Info::display(), window->winId(), currentdesktop );
 				}
 			}
 		}
@@ -91,6 +85,8 @@
 
 	void _activateWindow( QWidget *window )
 	{
+		if (window->isMinimized())
+			window->showNormal();
 		window->activateWindow();
 		window->raise();
 	}

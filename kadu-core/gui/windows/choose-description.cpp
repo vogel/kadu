@@ -22,6 +22,7 @@
 
 #include <QtGui/QApplication>
 #include <QtGui/QComboBox>
+#include <QtGui/QCompleter>
 #include <QtGui/QDesktopWidget>
 #include <QtGui/QGridLayout>
 #include <QtGui/QLabel>
@@ -35,7 +36,6 @@
 #include "parser/parser.h"
 #include "status/description-manager.h"
 #include "status/description-model.h"
-#include "activate.h"
 
 #include "activate.h"
 #include "debug.h"
@@ -43,44 +43,33 @@
 
 #include "choose-description.h"
 
-#define CHOOSEDESCRIPTION_MINIMUMSIZE   250,80
-#define CHOOSEDESCRIPTION_PREFERREDSIZE 350,80
-
 QMap<StatusContainer *, ChooseDescription *> ChooseDescription::Dialogs;
 
-ChooseDescription *ChooseDescription::showDialog(StatusContainer *statusContainer, const QPoint &position)
+ChooseDescription * ChooseDescription::showDialog(StatusContainer *statusContainer, const QPoint &position)
 {
 	ChooseDescription *dialog;
 	if (Dialogs.contains(statusContainer))
-	{
 		dialog = Dialogs[statusContainer];
-	}
 	else
 	{
 		dialog = new ChooseDescription(statusContainer, Core::instance()->kaduWindow());
 		Dialogs[statusContainer] = dialog;
-		if (position.isNull())
-			dialog->resize(dialog->sizeHint());
 	}
-	if (! position.isNull())
-	{
+
+	if (!position.isNull())
 		dialog->setPosition(position);
-	}
 	else
-	{
-		dialog->setPosition( QPoint(
-			( qApp->desktop()->screenGeometry().width()  - dialog->size().width()  ) / 2,
-			( qApp->desktop()->screenGeometry().height() - dialog->size().height() ) / 2
-			) );
-	}
+		dialog->setPosition(QPoint((qApp->desktop()->screenGeometry().width() - dialog->sizeHint().width()) / 2,
+				(qApp->desktop()->screenGeometry().height() - dialog->sizeHint().height()) / 2));
+
 	dialog->show();
 	_activateWindow(dialog);
 
 	return dialog;
 }
 
-ChooseDescription::ChooseDescription(StatusContainer *statusContainer, QWidget *parent)
-	: QDialog(parent), MyStatusContainer(statusContainer)
+ChooseDescription::ChooseDescription(StatusContainer *statusContainer, QWidget *parent) :
+		QDialog(parent), MyStatusContainer(statusContainer)
 {
 	kdebugf();
 
@@ -89,26 +78,17 @@ ChooseDescription::ChooseDescription(StatusContainer *statusContainer, QWidget *
 	setWindowTitle(tr("Select description"));
 	setAttribute(Qt::WA_DeleteOnClose);
 
-	connect(statusContainer, SIGNAL(statusChanged()), this, SLOT(statusChanged()));
-
-	QString currentDescription = MyStatusContainer->status().description();
-
 	Description = new QComboBox(this);
 	Description->setMaxVisibleItems(10);
 	Description->setModel(DescriptionManager::instance()->model());
 	Description->setEditable(true);
-	Description->setLineEdit(new QLineEdit(this));
 	Description->setInsertPolicy(QComboBox::NoInsert);
-	Description->setDuplicatesEnabled(false);
-
-	Description->setEditText(currentDescription);
-
-	MaxDescriptionLength = statusContainer->maxDescriptionLength();
-
+	Description->completer()->setCaseSensitivity(Qt::CaseSensitive);
+	Description->setEditText(MyStatusContainer->status().description());
 	connect(Description, SIGNAL(activated(int)), this, SLOT(activated(int)));
 
 	OkButton = new QPushButton(tr("&OK"), this);
-	OkButton->setIcon(statusContainer->statusIcon());
+	OkButton->setIcon(MyStatusContainer->statusIcon());
 	OkButton->setDefault(true);
 	connect(OkButton, SIGNAL(clicked(bool)), this, SLOT(accept()));
 
@@ -117,27 +97,29 @@ ChooseDescription::ChooseDescription(StatusContainer *statusContainer, QWidget *
 	connect(cancelButton, SIGNAL(clicked(bool)), this, SLOT(reject()));
 
 	QGridLayout *grid = new QGridLayout(this);
-
 	grid->addWidget(Description, 0, 0, 1, -1);
-	if (MaxDescriptionLength > 0)
+
+	int maxDescriptionLength = MyStatusContainer->maxDescriptionLength();
+	if (maxDescriptionLength > 0)
 	{
 		AvailableChars = new QLabel(this);
-		Description->lineEdit()->setMaxLength(MaxDescriptionLength);
+		Description->lineEdit()->setMaxLength(maxDescriptionLength);
 		currentDescriptionChanged(Description->currentText());
 		connect(Description, SIGNAL(textChanged(const QString &)), this, SLOT(currentDescriptionChanged(const QString &)));
 		grid->addWidget(AvailableChars, 1, 0);
 	}
 
 	QWidget *spacer = new QWidget(this);
-	spacer->setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Minimum );
+	spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
 	grid->addWidget(spacer, 1, 1);
 
 	grid->addWidget(OkButton, 1, 2, Qt::AlignRight);
 	grid->addWidget(cancelButton, 1, 3, Qt::AlignRight);
 
-	connect(this, SIGNAL(accepted()), this, SLOT(setDescription()));
+	setMinimumSize(QDialog::sizeHint().expandedTo(QSize(250, 80)));
 
-	setMinimumSize( QDialog::sizeHint().expandedTo( QSize(CHOOSEDESCRIPTION_MINIMUMSIZE) ) );
+	connect(this, SIGNAL(accepted()), this, SLOT(setDescription()));
+	connect(MyStatusContainer, SIGNAL(statusChanged()), this, SLOT(statusChanged()));
 
 	kdebugf2();
 }
@@ -149,7 +131,7 @@ ChooseDescription::~ChooseDescription()
 
 QSize ChooseDescription::sizeHint() const
 {
-	return QDialog::sizeHint().expandedTo( QSize(CHOOSEDESCRIPTION_PREFERREDSIZE) );
+	return QDialog::sizeHint().expandedTo(QSize(350, 80));
 }
 
 void ChooseDescription::setPosition(const QPoint &position)
@@ -189,7 +171,7 @@ void ChooseDescription::activated(int index)
 void ChooseDescription::currentDescriptionChanged(const QString &text)
 {
 	int length = text.length();
-	AvailableChars->setText(' ' + QString::number(MaxDescriptionLength - length));
+	AvailableChars->setText(' ' + QString::number(MyStatusContainer->maxDescriptionLength() - length));
 }
 
 void ChooseDescription::statusChanged()

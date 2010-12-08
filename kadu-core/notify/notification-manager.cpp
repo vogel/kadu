@@ -602,7 +602,7 @@ void checkNotify(Action *action)
 {
 	kdebugf();
 
-	action->setEnabled(true);
+	action->setEnabled(action->buddies().count());
 
 	bool on = true;
 	foreach (const Buddy buddy, action->contacts().toBuddySet())

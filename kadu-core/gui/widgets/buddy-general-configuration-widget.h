@@ -52,7 +52,6 @@ class KADUAPI BuddyGeneralConfigurationWidget : public QWidget
 	BuddyContactsTable *ContactsTable;
 
 	Buddy MyBuddy;
-	BuddyContactModel *AccountDataModel;
 
 	void createGui();
 

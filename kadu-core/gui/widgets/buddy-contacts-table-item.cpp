@@ -116,7 +116,7 @@ bool BuddyContactsTableItem::isAddValid() const
 	if (!handler)
 		return true;
 
-	if (!handler->validateUserID(Id))
+	if (handler->protocolFactory()->validateId(Id) != QValidator::Acceptable)
 		return false;
 
 	// allow contacts without buddy or new ones
@@ -139,7 +139,7 @@ bool BuddyContactsTableItem::isEditValid() const
 	if (!handler)
 		return true;
 
-	if (!handler->validateUserID(Id))
+	if (handler->protocolFactory()->validateId(Id) != QValidator::Acceptable)
 		return false;
 
 	if (ItemAccount != ItemContact.contactAccount() || Id != ItemContact.id())

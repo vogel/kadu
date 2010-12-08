@@ -197,10 +197,10 @@ void YourAccounts::createAccountWidget()
 	Protocols = new ProtocolsComboBox(CreateAddAccountContainer);
 	selectNetworkLayout->addRow(imNetworkLabel, Protocols);
 
-#ifndef Q_WS_MAEMO_5
-	QLabel *protocolComboLabel = new QLabel(tr("<font size='-1'><i>The default network has been selected based on your language settings.</i></font>"));
-	selectNetworkLayout->addRow(0, protocolComboLabel);
-#endif
+//#ifndef Q_WS_MAEMO_5
+//	QLabel *protocolComboLabel = new QLabel(tr("<font size='-1'><i>The default network has been selected based on your language settings.</i></font>"));
+//	selectNetworkLayout->addRow(0, protocolComboLabel);
+//#endif
 
 	newAccountLayout->addWidget(selectNetworkGroupbox);
 

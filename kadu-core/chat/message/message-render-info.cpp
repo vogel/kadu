@@ -21,11 +21,16 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QFile>
+#include <QtCore/QRegExp>
+
 #include "chat/message/formatted-message-part.h"
 #include "configuration/configuration-file.h"
 #include "emoticons/emoticons-manager.h"
+#include "icons-manager.h"
 #include "misc/misc.h"
 #include "parser/parser.h"
+#include "protocols/services/chat-image-service.h"
 #include "url-handlers/url-handler-manager.h"
 
 #include "message-render-info.h"
@@ -104,6 +109,13 @@ static QString getSeparator(const QObject * const object)
 		return "";
 }
 
+static QString loadingImageHtml(const QString &imageId)
+{
+	return QString("<img src=\"file:///%1\" id=\"%2\" />")
+			.arg(IconsManager::instance()->iconPath("kadu_icons/16x16/please-wait.gif"))
+			.arg(imageId);
+}
+
 void MessageRenderInfo::registerParserTags()
 {
 	Parser::registerObjectTag("message", getMessage);
@@ -155,6 +167,19 @@ MessageRenderInfo::MessageRenderInfo(const Message &msg) :
 	HtmlMessageContent.replace("\r",   "<br/>");
 	HtmlMessageContent.replace(QChar::LineSeparator, "<br />");
 
+	// compare this regexp with FormattedMessagePart::toHtml()
+	QRegExp kaduimgRegExp("<img src=\"kaduimg:///([^\"]*)\" />");
+	int pos = 0;
+	while ((pos = kaduimgRegExp.indexIn(HtmlMessageContent, pos)) != -1)
+	{
+		QString imgId = kaduimgRegExp.cap(1);
+		// TODO 0.6.6: remove the first condition before RC release (will break compatibility with sent images saved in history by beta11)
+		if (!imgId.startsWith('/') && !QFile(ChatImageService::imagesPath() + imgId).exists())
+			HtmlMessageContent.replace(kaduimgRegExp.cap(0), loadingImageHtml(imgId));
+		else
+			pos += kaduimgRegExp.matchedLength();
+	}
+
 // 	convertCharacters(unformattedMessage, backgroundColor,
 // 		(EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle"));
 }
@@ -165,7 +190,8 @@ MessageRenderInfo::~MessageRenderInfo()
 
 void MessageRenderInfo::replaceLoadingImages(const QString &imageId, const QString &imageFileName)
 {
-	HtmlMessageContent = FormattedMessagePart::replaceLoadingImages(HtmlMessageContent, imageId, imageFileName);
+	QString img = QString("<img src=\"kaduimg:///%1\" />").arg(imageFileName);
+	HtmlMessageContent.replace(loadingImageHtml(imageId), img);
 }
 
 MessageRenderInfo & MessageRenderInfo::setShowServerTime(bool noServerTime, int noServerTimeDiff)

@@ -37,8 +37,6 @@
 #include "url-handlers/url-handler-manager.h"
 
 #include "resource/jabber-resource-pool.h"
-#include "utils/pep-manager.h"
-#include "utils/server-info-manager.h"
 #include "utils/vcard-factory.h"
 #include "iris/filetransfer.h"
 #include "iris/irisnetglobal.h"
@@ -46,14 +44,13 @@
 #include "services/jabber-subscription-service.h"
 #include "iris-status-adapter.h"
 #include "jabber-contact-details.h"
+#include "jabber-id-validator.h"
 #include "jabber-protocol-factory.h"
 #include "facebook-protocol-factory.h"
 #include "gtalk-protocol-factory.h"
 #include "jabber-url-handler.h"
 
 #include "jabber-protocol.h"
-
-bool JabberProtocol::ModuleUnloading = false;
 
 int JabberProtocol::initModule()
 {
@@ -64,10 +61,12 @@ int JabberProtocol::initModule()
 			|| ProtocolsManager::instance()->hasProtocolFactory("facebook"))
 		return 0;
 
+	JabberIdValidator::createInstance();
+	VCardFactory::createInstance();
+
 	ProtocolsManager::instance()->registerProtocolFactory(JabberProtocolFactory::instance());
 	ProtocolsManager::instance()->registerProtocolFactory(GTalkProtocolFactory::instance());
 	ProtocolsManager::instance()->registerProtocolFactory(FacebookProtocolFactory::instance());
-
 
 	UrlHandlerManager::instance()->registerUrlHandler("Jabber", new JabberUrlHandler());
 
@@ -79,12 +78,13 @@ void JabberProtocol::closeModule()
 {
 	kdebugf();
 
-	ModuleUnloading = true;
-
 	UrlHandlerManager::instance()->unregisterUrlHandler("Jabber");
 	ProtocolsManager::instance()->unregisterProtocolFactory(JabberProtocolFactory::instance());
 	ProtocolsManager::instance()->unregisterProtocolFactory(GTalkProtocolFactory::instance());
 	ProtocolsManager::instance()->unregisterProtocolFactory(FacebookProtocolFactory::instance());
+
+	VCardFactory::destroyInstance();
+	JabberIdValidator::destroyInstance();
 
 	XMPP::irisNetCleanup();
 
@@ -93,18 +93,11 @@ void JabberProtocol::closeModule()
 	kdebugf2();
 }
 
-bool JabberProtocol::validateJid(const QString &jid)
-{
-	return XMPP::Jid(jid).isValid();
-}
-
 JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
-		Protocol(account, factory), JabberClient(0), ResourcePool(0), serverInfoManager(0), PepManager(0),
+		Protocol(account, factory), JabberClient(0), ResourcePool(0),
 		ContactsListReadOnly(false)
 {
 	kdebugf();
-
-	VCardFactory::createInstance(this);
 
 	if (account.id().endsWith(QLatin1String("@chat.facebook.com")))
 		setContactsListReadOnly(true);
@@ -204,6 +197,9 @@ void JabberProtocol::initializeJabberClient()
 
 void JabberProtocol::login(const QString &password, bool permanent)
 {
+	if (isConnected())
+		return;
+
 	account().setPassword(password);
 	account().setRememberPassword(permanent);
 	account().setHasPassword(!password.isEmpty());
@@ -247,8 +243,6 @@ void JabberProtocol::connectToServer()
 		return;
 	}
 
-	JabberClient->disconnect();
-
 	JabberClient->setOSName(SystemInfo::instance()->osFullName());
 	JabberClient->setTimeZone(SystemInfo::instance()->timezone(), SystemInfo::instance()->timezoneOffset());
 	JabberClient->setClientName("Kadu");
@@ -267,62 +261,11 @@ void JabberProtocol::connectToServer()
 	JabberClient->setFileTransfersEnabled(true); // i haz it
 	jabberID = account().id();
 
-	// PROXY CONNECTION
-	// Cannot be used, because JabberClient->connect does its own Proxy stuff
-	// that looks like it gets global Proxy settings, this code looks like it should
-	// not be here, because JabberClient implements this already
-	// TODO: ecleanup code
-
-/*
-	connector = JabberClient->clientConnector();
-	XMPP::AdvancedConnector::Proxy p;
-
-	AccountProxySettings proxySettings = account().proxySettings();
-	if (proxySettings.enabled())
-	{
-		p.setHttpConnect(proxySettings.address(), proxySettings.port());
-		if (proxySettings.requiresAuthentication() && !proxySettings.user().isEmpty())
-			p.setUserPass(proxySettings.user(), proxySettings.password());
-	}
-
-	connector->setProxy(p);
-
-	// END OF PROXY SETTINGS
-	// THis is also implemented in JabberClient class
-
-	if (confUseSSL && QCA::isSupported("tls"))
-	{
-		tls = new QCA::TLS;
-		tls->setTrustedCertificates(CertUtil::allCertificates());
-		tlsHandler = new XMPP::QCATLSHandler(tls);
-		tlsHandler->setXMPPCertCheck(true);
-		connect(tlsHandler, SIGNAL(tlsHandshaken()), SLOT(tlsHandshaken()));
-	}
-
-	connector->setOptHostPort(host, port);
-	connector->setOptSSL(confUseSSL);
-
-	stream = new XMPP::ClientStream(connector, tlsHandler);
-*/
-
 	JabberClient->setAllowPlainTextPassword(plainAuthToXMPP(jabberAccountDetails->plainAuthMode()));
 
 	networkStateChanged(NetworkConnecting);
 	jabberID = jabberID.withResource(jabberAccountDetails->resource());
 	JabberClient->connect(jabberID, account().password(), true);
-
-	// Initialize server info stuff
-	serverInfoManager = new ServerInfoManager(JabberClient->client(), this);
-	connect(serverInfoManager, SIGNAL(featuresChanged()),
-		this, SLOT(serverFeaturesChanged()));
-
-	// Initialize PubSub stuff
-	PepManager = new PEPManager(JabberClient->client(), serverInfoManager, this);
-	connect(PepManager, SIGNAL(itemPublished(const XMPP::Jid&, const QString&, const XMPP::PubSubItem&)),
-		this, SLOT(itemPublished(const XMPP::Jid&, const QString&, const XMPP::PubSubItem&)));
-	connect(PepManager, SIGNAL(itemRetracted(const XMPP::Jid&, const QString&, const XMPP::PubSubRetraction&)),
-		this, SLOT(itemRetracted(const XMPP::Jid&, const QString&, const XMPP::PubSubRetraction&)));
-	pepAvailable = false;
 
 	kdebugf2();
 }
@@ -395,31 +338,7 @@ void JabberProtocol::disconnectFromServer(const XMPP::Status &s)
 		JabberClient->disconnect();
 	}
 
-	/* FIXME:
-	 * We should delete the JabberClient instance here,
-	 * but active timers in Iris prevent us from doing so.
-	 * (in a failed connection attempt, these timers will
-	 * try to access an already deleted object).
-	 * Instead, the instance will lurk until the next
-	 * connection attempt.
-	 */
 	kdebug("Disconnected.\n");
-
-	if (serverInfoManager)
-	{
-		disconnect(serverInfoManager, SIGNAL(featuresChanged()),
-			this, SLOT(serverFeaturesChanged()));
-	}
-
-	delete serverInfoManager;
-	serverInfoManager = 0;
-
-	if (!ModuleUnloading && PepManager)
-	{
-		delete PepManager;
-		PepManager = 0;
-		pepAvailable = false;
-	}
 
 	networkStateChanged(NetworkDisconnected);
 	kdebugf2();
@@ -442,8 +361,6 @@ void JabberProtocol::disconnectedFromServer()
 
 	if (!nextStatus().isDisconnected()) // user still wants to login
 		QTimer::singleShot(1000, this, SLOT(login())); // try again after one second
-	else if (!nextStatus().isDisconnected())
-		setStatus(Status());
 
 	kdebugf2();
 }
@@ -547,11 +464,6 @@ void JabberProtocol::contactIdChanged(Contact contact, const QString &oldId)
 	contactAttached(contact);
 }
 
-bool JabberProtocol::validateUserID(const QString &uid)
-{
-	return validateJid(uid);
-}
-
 JabberResourcePool *JabberProtocol::resourcePool()
 {
 	if (!ResourcePool)
@@ -567,17 +479,12 @@ void JabberProtocol::changeStatus()
 
 	if (newStatus.isDisconnected() && status().isDisconnected())
 	{
-		networkStateChanged(NetworkDisconnected);
-
-		setAllOffline();
-
-		JabberClient->disconnect();
-
 		if (newStatus.description() != status().description())
 			statusChanged(newStatus);
 
-		// i dont thing we need it
-		// setStatus(newStatus());
+		if (NetworkConnecting == state())
+			networkStateChanged(NetworkDisconnected);
+
 		return;
 	}
 
@@ -625,148 +532,3 @@ JabberContactDetails * JabberProtocol::jabberContactDetails(Contact contact) con
 
 	return dynamic_cast<JabberContactDetails *>(contact.details());
 }
-
-void JabberProtocol::serverFeaturesChanged()
-{
-	if (serverInfoManager)
-		setPEPAvailable(serverInfoManager->hasPEP());
-}
-
-void JabberProtocol::setPEPAvailable(bool b)
-{
-	if (pepAvailable == b)
-		return;
-
-	pepAvailable = b;
-
-	// Publish support
-	if (b && JabberClient->client()->extensions().contains("ep"))
-	{
-		QStringList pepNodes;
-		/*pepNodes += "http://jabber.org/protocol/mood";
-		pepNodes += "http://jabber.org/protocol/tune";
-		pepNodes += "http://jabber.org/protocol/physloc";
-		pepNodes += "http://jabber.org/protocol/geoloc";*/
-		pepNodes += "http://www.xmpp.org/extensions/xep-0084.html#ns-data";
-		pepNodes += "http://www.xmpp.org/extensions/xep-0084.html#ns-metadata";
-		JabberClient->client()->addExtension("ep", XMPP::Features(pepNodes));
-		//setStatusActual(d->loginStatus);
-	}
-	else if (!b && JabberClient->client()->extensions().contains("ep"))
-	{
-		JabberClient->client()->removeExtension("ep");
-		//setStatusActual(d->loginStatus);
-	}
-
-	// Publish current tune information
-// 	if (b && d->psi->tuneController() && d->options->getOption("options.extended-presence.tune.publish").toBool()) {
-// 		Tune current = d->psi->tuneController()->currentTune();
-// 		if (!current.isNull())
-// 			publishTune(current);
-// 	}
-}
-
-void JabberProtocol::itemPublished(const XMPP::Jid& j, const QString& n, const XMPP::PubSubItem& item)
-{
-	Q_UNUSED(j)
-	Q_UNUSED(n)
-	Q_UNUSED(item)
-	/*
-	// User Tune
-	if (n == "http://jabber.org/protocol/tune") {
-		// Parse tune
-		QDomElement element = item.payload();
-		QDomElement e;
-		QString tune;
-		bool found;
-
-		e = findSubTag(element, "artist", &found);
-		if (found)
-			tune += e.text() + " - ";
-
-		e = findSubTag(element, "title", &found);
-		if (found)
-			tune += e.text();
-
-		foreach(UserListItem* u, findRelevant(j)) {
-			// FIXME: try to find the right resource using JEP-33 'replyto'
-			//UserResourceList::Iterator rit = u->userResourceList().find(<resource>);
-			//bool found = (rit == u->userResourceList().end()) ? false: true;
-			//if(found)
-			//	(*rit).setTune(tune);
-			u->setTune(tune);
-			cpUpdate(*u);
-		}
-	}
-	else if (n == "http://jabber.org/protocol/mood") {
-		Mood mood(item.payload());
-		foreach(UserListItem* u, findRelevant(j)) {
-			u->setMood(mood);
-			cpUpdate(*u);
-		}
-	}
-	else if (n == "http://jabber.org/protocol/geoloc") {
-		// FIXME: try to find the right resource using JEP-33 'replyto'
-		// see tune case above
-		GeoLocation geoloc(item.payload());
-		foreach(UserListItem* u, findRelevant(j)) {
-			u->setGeoLocation(geoloc);
-			cpUpdate(*u);
-		}
-	}
-	else if (n == "http://jabber.org/protocol/physloc") {
-		// FIXME: try to find the right resource using JEP-33 'replyto'
-		// see tune case above
-		PhysicalLocation physloc(item.payload());
-		foreach(UserListItem* u, findRelevant(j)) {
-			u->setPhysicalLocation(physloc);
-			cpUpdate(*u);
-		}
-	}
-	*/
-}
-
-void JabberProtocol::itemRetracted(const XMPP::Jid& j, const QString& n, const XMPP::PubSubRetraction& item)
-{
-	Q_UNUSED(j)
-	Q_UNUSED(n)
-	Q_UNUSED(item)
-	// User Tune
-	/*if (n == "http://jabber.org/protocol/tune") {
-		// Parse tune
-		foreach(UserListItem* u, findRelevant(j)) {
-			// FIXME: try to find the right resource using JEP-33 'replyto'
-			//UserResourceList::Iterator rit = u->userResourceList().find(<resource>);
-			//bool found = (rit == u->userResourceList().end()) ? false: true;
-			//if(found)
-			//	(*rit).setTune(tune);
-			u->setTune(QString());
-			cpUpdate(*u);
-		}
-	}
-	else if (n == "http://jabber.org/protocol/mood") {
-		foreach(UserListItem* u, findRelevant(j)) {
-			u->setMood(Mood());
-			cpUpdate(*u);
-		}
-	}
-	else if (n == "http://jabber.org/protocol/geoloc") {
-		// FIXME: try to find the right resource using JEP-33 'replyto'
-		// see tune case above
-		foreach(UserListItem* u, findRelevant(j)) {
-			u->setGeoLocation(GeoLocation());
-			cpUpdate(*u);
-		}
-	}
-	else if (n == "http://jabber.org/protocol/physloc") {
-		// FIXME: try to find the right resource using JEP-33 'replyto'
-		// see tune case above
-		foreach(UserListItem* u, findRelevant(j)) {
-			u->setPhysicalLocation(PhysicalLocation());
-			cpUpdate(*u);
-		}
-	}
-	*/
-}
-
-
