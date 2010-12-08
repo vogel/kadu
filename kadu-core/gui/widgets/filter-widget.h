@@ -21,6 +21,7 @@
 #define FILTERWIDGET_H
 
 #include <QtGui/QWidget>
+#include "exports.h"
 
 #ifdef Q_OS_MAC
 #	include <Carbon/Carbon.h>
@@ -30,7 +31,7 @@ class BuddiesListView;
 
 class QLineEdit;
 
-class FilterWidget : public QWidget
+class KADUAPI FilterWidget : public QWidget
 {
 	Q_OBJECT
 
