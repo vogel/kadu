@@ -41,7 +41,7 @@ class SoundPlayThread : public QThread
 	float Volume;
 
 private slots:
-	void playerDestroyed(QObject *player);
+	void playerDestroyed();
 
 public:
 	explicit SoundPlayThread(QObject *parent = 0);

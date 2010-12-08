@@ -75,12 +75,12 @@ void SoundPlayThread::play(SoundPlayer *player, const QString &path, bool volume
 		return; // one sound is played, we ignore next one
 
 	if (Player)
-		disconnect(Player, SIGNAL(destroyed(QObject*)), this, SLOT(playerDestroyed(QObject*)));
+		disconnect(Player, SIGNAL(destroyed()), this, SLOT(playerDestroyed()));
 
 	Player = player;
 
 	if (Player)
-		connect(Player, SIGNAL(destroyed(QObject*)), this, SLOT(playerDestroyed(QObject*)));
+		connect(Player, SIGNAL(destroyed()), this, SLOT(playerDestroyed()));
 
 	Path = path;
 	VolumeControl = volumeControl;
@@ -91,9 +91,7 @@ void SoundPlayThread::play(SoundPlayer *player, const QString &path, bool volume
 	PlayingMutex.unlock();
 }
 
-void SoundPlayThread::playerDestroyed(QObject *player)
+void SoundPlayThread::playerDestroyed()
 {
-	Q_UNUSED(player)
-
 	Player = 0;
 }
