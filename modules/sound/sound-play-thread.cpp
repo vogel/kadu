@@ -72,7 +72,6 @@ void SoundPlayThread::run()
 
 void SoundPlayThread::end()
 {
-	PlayingMutex.unlock();
 	NewSoundMutex.unlock();
 	End = true;
 }
