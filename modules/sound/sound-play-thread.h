@@ -43,11 +43,13 @@ class SoundPlayThread : public QThread
 private slots:
 	void playerDestroyed();
 
+protected:
+	virtual void run();
+
 public:
 	explicit SoundPlayThread(QObject *parent = 0);
 	virtual ~SoundPlayThread();
 
-	void run();
 	void end();
 
 	void play(SoundPlayer *player, const QString &path, bool volumeControl = false, float volume = 1.0);
