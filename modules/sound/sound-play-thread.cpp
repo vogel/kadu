@@ -53,10 +53,12 @@ void SoundPlayThread::run()
 			continue;
 		}
 
-		PlayingMutex.lock();
 		if (Player)
+		{
+			PlayingMutex.lock();
 			Player->playSound(Path, VolumeControl, Volume);
-		PlayingMutex.unlock();
+			PlayingMutex.unlock();
+		}
 	}
 
 	kdebugf2();
