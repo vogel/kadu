@@ -1,6 +1,3 @@
-+++ version 0.6.6-beta13
-* sound: #1376 fixed: long delays on Kadu exit and warnings from Qt regarding mutexes (beevvy)
-
 +++ version 0.6.6-beta12
 * gui: #1745 fixed: invalid encoding of text in About window on Windows (beevvy)
 * autoaway: fixed bad working description changing with interval of auto-refreshing status set to 0 (beevvy)

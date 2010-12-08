@@ -39,8 +39,12 @@ void SoundPlayThread::run()
 {
 	kdebugf();
 
-	while (NewSoundMutex.tryLock())
+	NewSoundMutex.lock();
+
+	while (!End)
 	{
+		NewSoundMutex.lock();
+
 		if (End)
 		{
 			NewSoundMutex.unlock();
@@ -66,6 +70,8 @@ void SoundPlayThread::run()
 
 void SoundPlayThread::end()
 {
+	PlayingMutex.unlock();
+	NewSoundMutex.unlock();
 	End = true;
 }
 
@@ -89,6 +95,7 @@ void SoundPlayThread::play(SoundPlayer *player, const QString &path, bool volume
 	Play = true;
 
 	PlayingMutex.unlock();
+	NewSoundMutex.unlock();
 }
 
 void SoundPlayThread::playerDestroyed()
