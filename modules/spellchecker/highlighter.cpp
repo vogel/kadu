@@ -24,41 +24,41 @@
 
 #include "highlighter.h"
 
-QList<Highlighter *> Highlighter::highlighters;
-QTextCharFormat Highlighter::highlightFormat;
+QList<Highlighter *> Highlighter::Highlighters;
+QTextCharFormat Highlighter::HighlightFormat;
 
 void Highlighter::rehighlightAll()
 {
-	foreach(Highlighter *highlighter, highlighters)
+	foreach (Highlighter *highlighter, Highlighters)
 		highlighter->rehighlight();
 }
 
-Highlighter::Highlighter(QTextDocument* document) : QSyntaxHighlighter(document)
+Highlighter::Highlighter(QTextDocument *document) :
+		QSyntaxHighlighter(document)
 {
-	highlighters.append(this);
+	Highlighters.append(this);
 }
 
 Highlighter::~Highlighter()
 {
-	highlighters.removeAll(this);
+	Highlighters.removeAll(this);
 }
 
 void Highlighter::highlightBlock(const QString& text)
 {
 	QRegExp word("\\b\\w+\\b");
 
-	int index = word.indexIn(text);
-	while (index >= 0)
+	int index = 0;
+	while ((index = word.indexIn(text, index)) != -1)
 	{
-		int length = word.matchedLength();
 		if (!spellcheck->checkWord(word.cap()))
-			setFormat(index, length, highlightFormat);
-		index = word.indexIn(text, index + length);
+			setFormat(index, word.matchedLength(), HighlightFormat);
+		index += word.matchedLength();
 	}
 }
 
-void Highlighter::setHighlightFormat(QTextCharFormat format)
+void Highlighter::setHighlightFormat(const QTextCharFormat &format)
 {
-	highlightFormat = format;
+	HighlightFormat = format;
 }
 

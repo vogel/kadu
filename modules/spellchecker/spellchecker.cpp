@@ -25,10 +25,10 @@
 #define ASPELL_STATIC
 #include <aspell.h>
 
-#include <QGridLayout>
-#include <QLabel>
-#include <QListWidget>
-#include <QPushButton>
+#include <QtGui/QGridLayout>
+#include <QtGui/QLabel>
+#include <QtGui/QListWidget>
+#include <QtGui/QPushButton>
 
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/chat-widget.h"
@@ -40,9 +40,10 @@
 #include "misc/misc.h"
 
 #include "highlighter.h"
+
 #include "spellchecker.h"
 
-SpellChecker* spellcheck;
+SpellChecker *spellcheck;
 
 extern "C" KADU_EXPORT int spellchecker_init(bool firstLoad)
 {
@@ -54,6 +55,7 @@ extern "C" KADU_EXPORT int spellchecker_init(bool firstLoad)
 	if (!spellcheck->buildCheckers())
 	{
 		delete spellcheck;
+		spellcheck = 0;
 		return 1;
 	}
 	else
@@ -71,21 +73,23 @@ extern "C" KADU_EXPORT void spellchecker_close()
 		MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/spellchecker.ui"));
 		MainConfigurationWindow::unregisterUiHandler(spellcheck);
 		delete spellcheck;
+		spellcheck = 0;
 	}
 }
 
 SpellChecker::SpellChecker()
 {
-	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetCreated(ChatWidget *)), this, SLOT(chatCreated(ChatWidget *)));
+	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetCreated(ChatWidget *)),
+			this, SLOT(chatCreated(ChatWidget *)));
 
 	// prepare configuration of spellchecker
-	spellConfig = new_aspell_config();
-	aspell_config_replace(spellConfig, "encoding", "utf-8");
+	SpellConfig = new_aspell_config();
+	aspell_config_replace(SpellConfig, "encoding", "utf-8");
 
 #ifdef Q_OS_WIN32
-	aspell_config_replace(spellConfig, "dict-dir", qPrintable(dataPath("aspell/dict")));
-	aspell_config_replace(spellConfig, "data-dir", qPrintable(dataPath("aspell/data")));
-	aspell_config_replace(spellConfig, "prefix", qPrintable(profilePath("dicts")));
+	aspell_config_replace(SpellConfig, "dict-dir", qPrintable(dataPath("aspell/dict")));
+	aspell_config_replace(SpellConfig, "data-dir", qPrintable(dataPath("aspell/data")));
+	aspell_config_replace(SpellConfig, "prefix", qPrintable(profilePath("dicts")));
 #endif
 
 	createDefaultConfiguration();
@@ -95,30 +99,29 @@ SpellChecker::SpellChecker()
 
 SpellChecker::~SpellChecker()
 {
-	disconnect(ChatWidgetManager::instance(), SIGNAL(chatWidgetCreated(ChatWidget *)), this, SLOT(chatCreated(ChatWidget *)));
+	disconnect(ChatWidgetManager::instance(), SIGNAL(chatWidgetCreated(ChatWidget *)),
+			this, SLOT(chatCreated(ChatWidget *)));
 
-	delete_aspell_config(spellConfig);
+	delete_aspell_config(SpellConfig);
 
-	foreach(AspellSpeller *speller, checkers.values())
+	foreach (AspellSpeller *speller, MyCheckers.values())
 		delete_aspell_speller(speller);
 }
 
 QStringList SpellChecker::notCheckedLanguages()
 {
 	QStringList result;
-	AspellDictInfoList* dlist;
-	AspellDictInfoEnumeration* dels;
-	const AspellDictInfo* entry;
+	AspellDictInfoList *dlist;
+	AspellDictInfoEnumeration *dels;
+	const AspellDictInfo *entry;
 
 	/* the returned pointer should _not_ need to be deleted */
-	dlist = get_aspell_dict_info_list(spellConfig);
+	dlist = get_aspell_dict_info_list(SpellConfig);
 
 	dels = aspell_dict_info_list_elements(dlist);
-	while ((entry = aspell_dict_info_enumeration_next(dels)) != 0)
-	{
-		if (checkers.find(entry->name) == checkers.end())
+	while ((entry = aspell_dict_info_enumeration_next(dels)))
+		if (!MyCheckers.contains(entry->name))
 			result.push_back(entry->name);
-	}
 	delete_aspell_dict_info_enumeration(dels);
 
 	return result;
@@ -127,77 +130,73 @@ QStringList SpellChecker::notCheckedLanguages()
 QStringList SpellChecker::checkedLanguages()
 {
 	QStringList result;
-	for (Checkers::Iterator it = checkers.begin(); it != checkers.end(); it++)
+	for (Checkers::const_iterator it = MyCheckers.constBegin(); it != MyCheckers.constEnd(); ++it)
 		result.append(it.key());
-
 	return result;
 }
 
-bool SpellChecker::addCheckedLang(QString &name)
+bool SpellChecker::addCheckedLang(const QString &name)
 {
-	if (checkers.find(name) != checkers.end())
+	if (MyCheckers.contains(name))
 		return true;
 
-	aspell_config_replace(spellConfig, "lang", name.toAscii());
+	aspell_config_replace(SpellConfig, "lang", name.toAscii().constData());
 
 	// create spell checker using prepared configuration
-	AspellCanHaveError* possibleErr = new_aspell_speller(spellConfig);
+	AspellCanHaveError *possibleErr = new_aspell_speller(SpellConfig);
 	if (aspell_error_number(possibleErr) != 0)
 	{
 		MessageDialog::show("dialog-error", tr("Kadu"), aspell_error_message(possibleErr));
 		return false;
 	}
 	else
-		checkers[name] = to_aspell_speller(possibleErr);
+		MyCheckers[name] = to_aspell_speller(possibleErr);
 
-	if (checkers.size() == 1)
-	{
-		foreach(ChatWidget *chat, ChatWidgetManager::instance()->chats())
+	if (MyCheckers.size() == 1)
+		foreach (ChatWidget *chat, ChatWidgetManager::instance()->chats())
 			chatCreated(chat);
-	}
 
 	return true;
 }
 
-void SpellChecker::removeCheckedLang(QString &name)
+void SpellChecker::removeCheckedLang(const QString &name)
 {
-	Checkers::Iterator checker = checkers.find(name);
-	if (checker != checkers.end())
+	Checkers::iterator checker = MyCheckers.find(name);
+	if (checker != MyCheckers.end())
 	{
 		delete_aspell_speller(checker.value());
-		checkers.remove(name);
+		MyCheckers.erase(checker);
 	}
 }
 
 bool SpellChecker::buildCheckers()
 {
-	foreach(AspellSpeller *speller, checkers.values())
+	foreach (AspellSpeller *speller, MyCheckers.values())
 		delete_aspell_speller(speller);
-
-	checkers.clear();
+	MyCheckers.clear();
 
 	// load languages to check from configuration
 	QString checkedStr = config_file.readEntry("ASpell", "Checked", "pl");
 	QStringList checkedList = checkedStr.split(',', QString::SkipEmptyParts);
 
 	if (config_file.readBoolEntry("ASpell", "Accents", false))
-		aspell_config_replace(spellConfig, "ignore-accents", "true");
+		aspell_config_replace(SpellConfig, "ignore-accents", "true");
 	else
-		aspell_config_replace(spellConfig, "ignore-accents", "false");
+		aspell_config_replace(SpellConfig, "ignore-accents", "false");
 
 	if (config_file.readBoolEntry( "ASpell", "Case", false))
-		aspell_config_replace(spellConfig, "ignore-case", "true");
+		aspell_config_replace(SpellConfig, "ignore-case", "true");
 	else
-		aspell_config_replace(spellConfig, "ignore-case", "false");
+		aspell_config_replace(SpellConfig, "ignore-case", "false");
 
 	// create aspell checkers for each language
 	for (int i = 0; i < checkedList.count(); i++)
 	{
 		addCheckedLang(checkedList[i]);
 		/*
-		if ( !addCheckedLang( checkedList[i] ) )
+		if (!addCheckedLang(checkedList[i]))
 		{
-			delete_aspell_config( spellConfig );
+			delete_aspell_config(SpellConfig);
 			delete config;
 			return false;
 		}
@@ -208,7 +207,7 @@ bool SpellChecker::buildCheckers()
 
 void SpellChecker::buildMarkTag()
 {
-        QTextCharFormat format;
+	QTextCharFormat format;
 
 	QColor colorMark("#FF0101");
 	colorMark = config_file.readColorEntry("ASpell", "Color", &colorMark);
@@ -231,74 +230,77 @@ void SpellChecker::buildMarkTag()
 
 void SpellChecker::chatCreated(ChatWidget *chat)
 {
-	if (checkers.size() > 0)
+	if (!MyCheckers.isEmpty())
 		new Highlighter(chat->edit()->document());
 }
 
 void SpellChecker::configForward()
 {
-	if (availList->selectedItems().count() > 0)
-		configForward2(availList->selectedItems()[0]);
+	if (!AvailableLanguagesList->selectedItems().isEmpty())
+		configForward2(AvailableLanguagesList->selectedItems()[0]);
 }
 
 void SpellChecker::configBackward()
 {
-	if (checkList->selectedItems().count() > 0)
-		configBackward2(checkList->selectedItems()[0]);
+	if (!CheckedLanguagesList->selectedItems().isEmpty())
+		configBackward2(CheckedLanguagesList->selectedItems()[0]);
 }
 
-void SpellChecker::configForward2(QListWidgetItem *it)
+void SpellChecker::configForward2(QListWidgetItem *item)
 {
-	QString langName = it->text();
+	QString langName = item->text();
 	if (addCheckedLang(langName))
 	{
-		checkList->addItem(langName);
-		delete availList->takeItem(availList->row(it));
+		CheckedLanguagesList->addItem(langName);
+		delete AvailableLanguagesList->takeItem(AvailableLanguagesList->row(item));
 	}
 }
 
-void SpellChecker::configBackward2(QListWidgetItem *it)
+void SpellChecker::configBackward2(QListWidgetItem *item)
 {
-	QString langName = it->text();
-	availList->addItem(langName);
-	delete checkList->takeItem(checkList->row(it));
+	QString langName = item->text();
+	AvailableLanguagesList->addItem(langName);
+	delete CheckedLanguagesList->takeItem(CheckedLanguagesList->row(item));
 	removeCheckedLang(langName);
 }
 
 void SpellChecker::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
-	connect(mainConfigurationWindow, SIGNAL(configurationWindowApplied()), this, SLOT(configurationWindowApplied()));
+	connect(mainConfigurationWindow, SIGNAL(configurationWindowApplied()),
+			this, SLOT(configurationWindowApplied()));
 
 	ConfigGroupBox *optionsGroupBox = mainConfigurationWindow->widget()->configGroupBox("Chat", "SpellChecker", tr("ASpell options"));
 
 	QWidget *options = new QWidget(optionsGroupBox->widget());
 	QGridLayout *optionsLayout = new QGridLayout(options);
 
-	availList = new QListWidget(options);
-	QPushButton *moveToCheckList = new QPushButton(tr("Move to 'Checked'"), options);
+	AvailableLanguagesList = new QListWidget(options);
+	QPushButton *moveToChecked = new QPushButton(tr("Move to 'Checked'"), options);
 
 	optionsLayout->addWidget(new QLabel(tr("Available languages"), options), 0, 0);
-	optionsLayout->addWidget(availList, 1, 0);
-	optionsLayout->addWidget(moveToCheckList, 2, 0);
+	optionsLayout->addWidget(AvailableLanguagesList, 1, 0);
+	optionsLayout->addWidget(moveToChecked, 2, 0);
 
-	checkList = new QListWidget(options);
-	QPushButton *moveToAvailList = new QPushButton(tr("Move to 'Available languages'"), options);
+	CheckedLanguagesList = new QListWidget(options);
+	QPushButton *moveToAvailable = new QPushButton(tr("Move to 'Available languages'"), options);
 
 	optionsLayout->addWidget(new QLabel(tr("Checked"), options), 0, 1);
-	optionsLayout->addWidget(checkList, 1, 1);
-	optionsLayout->addWidget(moveToAvailList, 2, 1);
+	optionsLayout->addWidget(CheckedLanguagesList, 1, 1);
+	optionsLayout->addWidget(moveToAvailable, 2, 1);
 
-	connect(moveToCheckList, SIGNAL(clicked()), this, SLOT(configForward()));
-	connect(moveToAvailList, SIGNAL(clicked()), this, SLOT(configBackward()));
-	connect(checkList, SIGNAL(itemDoubleClicked(QListWidgetItem *)), this, SLOT(configBackward2(QListWidgetItem *)));
-	connect(availList, SIGNAL(itemDoubleClicked(QListWidgetItem *)), this, SLOT(configForward2(QListWidgetItem*)));
+	connect(moveToChecked, SIGNAL(clicked()), this, SLOT(configForward()));
+	connect(moveToAvailable, SIGNAL(clicked()), this, SLOT(configBackward()));
+	connect(CheckedLanguagesList, SIGNAL(itemDoubleClicked(QListWidgetItem *)),
+			this, SLOT(configBackward2(QListWidgetItem *)));
+	connect(AvailableLanguagesList, SIGNAL(itemDoubleClicked(QListWidgetItem *)),
+			this, SLOT(configForward2(QListWidgetItem*)));
 
 	optionsGroupBox->addWidgets(0, options);
 
-	availList->setSelectionMode(QAbstractItemView::SingleSelection);
-	checkList->setSelectionMode(QAbstractItemView::SingleSelection);
-	availList->addItems(notCheckedLanguages());
-	checkList->addItems(checkedLanguages());
+	AvailableLanguagesList->setSelectionMode(QAbstractItemView::SingleSelection);
+	CheckedLanguagesList->setSelectionMode(QAbstractItemView::SingleSelection);
+	AvailableLanguagesList->addItems(notCheckedLanguages());
+	CheckedLanguagesList->addItems(checkedLanguages());
 }
 
 void SpellChecker::configurationUpdated()
@@ -322,22 +324,21 @@ void SpellChecker::createDefaultConfiguration()
 	config_file.addVariable("ASpell", "Case", "false");
 }
 
-bool SpellChecker::checkWord(QString word)
+bool SpellChecker::checkWord(const QString &word)
 {
-	bool isWordValid = checkers.size() == 0;
-	if (QRegExp("\\D").indexIn(word) == -1)
+	if (MyCheckers.isEmpty())
+		return true;
+
+	bool isWordValid = false;
+	if (!word.contains(QRegExp("\\D")))
 		isWordValid = true;
 	else
-	{
-		for (Checkers::Iterator it = checkers.begin(); it != checkers.end(); it++)
-		{
-			if (aspell_speller_check(it.value(), word.toUtf8(), -1))
+		for (Checkers::const_iterator it = MyCheckers.constBegin(); it != MyCheckers.constEnd(); it++)
+			if (aspell_speller_check(it.value(), word.toUtf8().constData(), -1))
 			{
 				isWordValid = true;
 				break;
 			}
-		}
-	}
 
 	return isWordValid;
 }
