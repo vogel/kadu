@@ -44,11 +44,11 @@ extern "C" KADU_EXPORT int history_migration_init(bool firstLoad)
 {
 	kdebugf();
 
-	HistoryImporter *hi = HistoryImporter::instance();
 	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/history-migration.ui"));
 
 	bool imported = config_file.readBoolEntry("History", "Imported_from_0.6.5", false);
 
+	HistoryImporter *hi = HistoryImporter::instance();
 	if (!imported && firstLoad && QFile::exists(profilePath("history")))
 		hi->run();
 
