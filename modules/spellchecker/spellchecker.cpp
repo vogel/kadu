@@ -113,6 +113,8 @@ SpellChecker::~SpellChecker()
 	disconnect(ChatWidgetManager::instance(), SIGNAL(chatWidgetCreated(ChatWidget *)),
 			this, SLOT(chatCreated(ChatWidget *)));
 
+	Highlighter::removeAll();
+
 #ifdef HAVE_ASPELL
 	delete_aspell_config(SpellConfig);
 

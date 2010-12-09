@@ -18,6 +18,7 @@ public:
 
 	static void rehighlightAll();
 	static void setHighlightFormat(const QTextCharFormat &format);
+	static void removeAll();
 
 };
 

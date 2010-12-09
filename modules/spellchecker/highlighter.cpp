@@ -62,3 +62,8 @@ void Highlighter::setHighlightFormat(const QTextCharFormat &format)
 	HighlightFormat = format;
 }
 
+void Highlighter::removeAll()
+{
+	qDeleteAll(Highlighters);
+	Highlighters.clear();
+}
