@@ -64,7 +64,7 @@
 #include "modules.h"
 
 #ifndef Q_WS_WIN
-void kaduQtMessageHandler(QtMsgType type, const char *msg)
+static void kaduQtMessageHandler(QtMsgType type, const char *msg)
 {
 	switch (type)
 	{
@@ -101,8 +101,9 @@ void kaduQtMessageHandler(QtMsgType type, const char *msg)
 #ifdef DEBUG_ENABLED
 extern KADUAPI bool showTimesInDebug;
 #endif
-extern KADUAPI char* SystemUserName;
+extern KADUAPI char *SystemUserName;
 
+// defined in main_unix.cpp and main_win32.cpp
 void enableSignalHandling();
 
 static void printVersion()

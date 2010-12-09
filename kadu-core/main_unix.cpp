@@ -20,17 +20,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QFile>
-#include <QtGui/QApplication>
-#include <QtGui/QMessageBox>
-
-#include <errno.h>
 #include <sys/file.h>
 #include <sys/stat.h>
 #include <sys/time.h>
 #include <sys/types.h>
 
-#include "configuration/configuration-file.h"
 #include "configuration/xml-configuration-file.h"
 #include "core/core.h"
 #include "core/crash-aware-object.h"
@@ -38,121 +32,118 @@
 
 #include "debug.h"
 #include "kadu-config.h"
-#include "misc/misc.h"
+#include "misc/path-conversion.h"
 #include "modules.h"
 
 #ifdef SIG_HANDLING_ENABLED
-	#include <QtCore/QDateTime>
-	#include <signal.h>
-#ifdef HAVE_EXECINFO
-	#include <execinfo.h>
-#endif
+#include <signal.h>
 
-static int sigsegvCount = 0;
-static void kadu_signal_handler(int s)
+#include <QtCore/QDateTime>
+
+#ifdef HAVE_EXECINFO
+#include <execinfo.h>
+#endif // HAVE_EXECINFO
+
+static void kadu_signal_handler(int signal)
 {
 	kdebugmf(KDEBUG_WARNING, "%d\n", s);
+
+	static int sigsegvCount = 0;
+
 	if (sigsegvCount > 1)
 	{
 		kdebugmf(KDEBUG_WARNING, "sigsegv recursion: %d\n", sigsegvCount);
 		abort();
 	}
 
-	if (s == SIGSEGV)
+	if (signal == SIGSEGV)
 	{
 		++sigsegvCount;
 		kdebugm(KDEBUG_PANIC, "Kadu crashed :(\n");
 
 		CrashAwareObject::notifyCrash();
 
-		QString f = QString("kadu.conf.xml.backup.%1").arg(QDateTime::currentDateTime().toString("yyyy.MM.dd.hh.mm.ss"));
-		QString debug_file = QString("kadu.backtrace.%1").arg(QDateTime::currentDateTime().toString("yyyy.MM.dd.hh.mm.ss"));
+		QString backupFileName = QString("kadu.conf.xml.backup.%1").arg(QDateTime::currentDateTime().toString("yyyy.MM.dd.hh.mm.ss"));
+		QString backtraceFileName = QString("kadu.backtrace.%1").arg(QDateTime::currentDateTime().toString("yyyy.MM.dd.hh.mm.ss"));
 
 #ifdef HAVE_EXECINFO
-		void *bt_array[100];
-		char **bt_strings;
-		int num_entries;
-		FILE *dbgfile;
-		if ((num_entries = backtrace(bt_array, 100)) < 0)
+		void *backtraceArray[100];
+		char **backtraceStrings;
+		int numEntries;
+
+		if ((numEntries = backtrace(backtraceArray, 100)) < 0)
 		{
 			kdebugm(KDEBUG_PANIC, "could not generate backtrace\n");
 			abort();
 		}
-		if ((bt_strings = backtrace_symbols(bt_array, num_entries)) == NULL)
+		if (!(backtraceStrings = backtrace_symbols(backtraceArray, numEntries)))
 		{
 			kdebugm(KDEBUG_PANIC, "could not get symbol names for backtrace\n");
 			abort();
 		}
 
 		fprintf(stderr, "\n======= BEGIN OF BACKTRACE =====\n");
-		for (int i = 0; i < num_entries; ++i)
-			fprintf(stderr, "[%d] %s\n", i, bt_strings[i]);
+		for (int i = 0; i < numEntries; ++i)
+			fprintf(stderr, "[%d] %s\n", i, backtraceStrings[i]);
 		fprintf(stderr, "======= END OF BACKTRACE  ======\n");
 		fflush(stderr);
 
-		dbgfile = fopen(qPrintable(profilePath(debug_file)), "w");
-		if (dbgfile)
+		FILE *backtraceFile = fopen(qPrintable(profilePath(backtraceFileName)), "w");
+		if (backtraceFile)
 		{
-			fprintf(dbgfile, "======= BEGIN OF BACKTRACE =====\n");
-			for (int i = 0; i < num_entries; ++i)
-				fprintf(dbgfile, "[%d] %s\n", i, bt_strings[i]);
-			fprintf(dbgfile, "======= END OF BACKTRACE  ======\n");
-			fflush(dbgfile);
+			fprintf(backtraceFile, "======= BEGIN OF BACKTRACE =====\n");
+			for (int i = 0; i < numEntries; ++i)
+				fprintf(backtraceFile, "[%d] %s\n", i, backtraceStrings[i]);
+			fprintf(backtraceFile, "======= END OF BACKTRACE  ======\n");
 
-			fprintf(dbgfile, "static modules:\n");
+			fprintf(backtraceFile, "static modules:\n");
 			QStringList modules = ModulesManager::instance()->staticModules();
 
-			foreach(const QString &module, modules)
-				fprintf(dbgfile, "> %s\n", qPrintable(module));
-			fflush(dbgfile);
+			foreach (const QString &module, modules)
+				fprintf(backtraceFile, "> %s\n", qPrintable(module));
 
-			fprintf(dbgfile, "loaded modules:\n");
+			fprintf(backtraceFile, "loaded modules:\n");
 			modules = ModulesManager::instance()->loadedModules();
-			foreach(const QString &module, modules)
-				fprintf(dbgfile, "> %s\n", qPrintable(module));
-			fflush(dbgfile);
-			fprintf(dbgfile, "Qt compile time version: %s\nQt runtime version: %s\n", QT_VERSION_STR, qVersion());
-			fprintf(dbgfile, "Kadu version: %s\n", qPrintable(Core::version()));
-			#ifdef __GNUC__
-				//in gcc < 3.0 __GNUC_PATCHLEVEL__ is not defined
-				#ifdef __GNUC_PATCHLEVEL__
-					fprintf(dbgfile, "GCC version: %d.%d.%d\n", __GNUC__, __GNUC_MINOR__, __GNUC_PATCHLEVEL__);
-				#else
-					fprintf(dbgfile, "GCC version: %d.%d\n", __GNUC__, __GNUC_MINOR__);
-				#endif
-			#endif
-			fprintf(dbgfile, "EOF\n");
+			foreach (const QString &module, modules)
+				fprintf(backtraceFile, "> %s\n", qPrintable(module));
+			fprintf(backtraceFile, "Kadu version: %s\n", qPrintable(Core::version()));
+			fprintf(backtraceFile, "Qt compile time version: %s\nQt runtime version: %s\n",
+					QT_VERSION_STR, qVersion());
+#ifdef __GNUC__
+			fprintf(backtraceFile, "GCC version: %d.%d.%d\n",
+					__GNUC__, __GNUC_MINOR__, __GNUC_PATCHLEVEL__);
+#endif // __GNUC__
+			fprintf(backtraceFile, "EOF\n");
 
-			fclose(dbgfile);
+			fclose(backtraceFile);
 		}
 
-		free(bt_strings);
-#else
+		free(backtraceStrings);
+#else // HAVE_EXECINFO
 		kdebugm(KDEBUG_PANIC, "backtrace not available\n");
-#endif
-		xml_config_file->saveTo(profilePath(f.toLatin1()));
+#endif // HAVE_EXECINFO
+
+		xml_config_file->saveTo(profilePath(backupFileName.toLatin1()));
 		abort();
 	}
-	else if (s == SIGUSR1)
+	else if (signal == SIGUSR1)
 	{
 		kdebugm(KDEBUG_INFO, "ok, got a signal to show up\n");
 		Core::instance()->kaduWindow()->show();
 	}
-	else if (s == SIGINT || s == SIGTERM)
+	else if (signal == SIGINT || signal == SIGTERM)
 		Core::instance()->quit();
 }
 
-#endif
-
-bool sh_enabled=true;
+#endif // SIG_HANDLING_ENABLED
 
 void enableSignalHandling()
 {
 #ifdef SIG_HANDLING_ENABLED
-	char *d=getenv("SIGNAL_HANDLING");
-	if (d)
-		sh_enabled=(atoi(d)!=0);
-	if (sh_enabled)
+	char *d = getenv("SIGNAL_HANDLING");
+	bool signalHandlingEnabled = d ? (atoi(d) != 0) : true;
+
+	if (signalHandlingEnabled)
 	{
 		signal(SIGSEGV, kadu_signal_handler);
 		signal(SIGINT, kadu_signal_handler);
@@ -160,5 +151,5 @@ void enableSignalHandling()
 		signal(SIGUSR1, kadu_signal_handler);
 		signal(SIGPIPE, SIG_IGN);
 	}
-#endif
+#endif // SIG_HANDLING_ENABLED
 }
