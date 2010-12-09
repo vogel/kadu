@@ -102,9 +102,6 @@ public:
 	virtual void clearChatHistory(Chat chat);
     virtual void deleteHistory(Buddy buddy);
 
-	//TODO 0.6.6
-	void convertSenderToContact();
-
 };
 
 #endif // HISTORY_SQL_STORAGE_H
