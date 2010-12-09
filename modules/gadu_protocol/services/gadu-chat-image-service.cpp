@@ -35,11 +35,6 @@
 
 #include "gadu-chat-image-service.h"
 
-QString GaduChatImageService::imageFileName(UinType sender, uint32_t size, uint32_t crc32)
-{
-	return QString("%1-%2-%3").arg(sender).arg(size).arg(crc32);
-}
-
 GaduChatImageService::GaduChatImageService(GaduProtocol *protocol)
 	: ChatImageService(protocol), Protocol(protocol), CurrentMinuteSendImageRequests(0)
 {
@@ -56,7 +51,7 @@ QString GaduChatImageService::saveImage(UinType sender, uint32_t size, uint32_t 
 		return QString::null;
 	}
 
-	QString fileName = imageFileName(sender, size, crc32);
+	QString fileName = GaduFormater::createImageId(sender, size, crc32);
 	QFile file(path + fileName);
 	if (!file.open(QIODevice::WriteOnly))
 		return QString::null;

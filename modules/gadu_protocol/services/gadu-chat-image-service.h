@@ -54,8 +54,6 @@ class GaduChatImageService : public ChatImageService
 	void handleEventImageReply(struct gg_event *e);
 
 public:
-	static QString imageFileName(UinType sender, quint32 size, quint32 crc32);
-
 	GaduChatImageService(GaduProtocol *protocol);
 
 	void resetSendImageRequests() { CurrentMinuteSendImageRequests = 0; }
