@@ -10,17 +10,35 @@
 class QListWidget;
 class QListWidgetItem;
 
+class ChatWidget;
+
+#ifdef HAVE_ASPELL
 class AspellSpeller;
 class AspellConfig;
-class ChatWidget;
+#else
+namespace enchant
+{
+	class Dict;
+}
+#endif
 
 class SpellChecker : public ConfigurationUiHandler, ConfigurationAwareObject
 {
-    Q_OBJECT
+	Q_OBJECT
 
+public:
+#ifdef HAVE_ASPELL
 	typedef QMap<QString, AspellSpeller *> Checkers;
-	Checkers MyCheckers;
+#else
+	typedef QMap<QString, enchant::Dict *> Checkers;
+#endif
+
+private:
+#ifdef HAVE_ASPELL
 	AspellConfig *SpellConfig;
+#endif
+
+	Checkers MyCheckers;
 
 	QListWidget *AvailableLanguagesList;
 	QListWidget *CheckedLanguagesList;

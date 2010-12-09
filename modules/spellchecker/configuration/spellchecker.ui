@@ -11,7 +11,7 @@
 
 			<group-box name="Spell Checker Options">
 			<!--	<check-box caption="Ignore accents" config-section="ASpell" config-item="Accents" /> -->
-				<check-box caption="Ignore case" config-section="ASpell" config-item="Case" />
+				<check-box caption="Ignore case" config-section="ASpell" config-item="Case" id="spellchecker/ignoreCase" />
 			</group-box>
 		</tab>
 	</section>

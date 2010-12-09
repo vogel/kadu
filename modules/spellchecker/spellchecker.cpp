@@ -22,9 +22,14 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifdef HAVE_ASPELL
 #define ASPELL_STATIC
 #include <aspell.h>
+#else
+#include <enchant++.h>
+#endif
 
+#include <QtGui/QApplication>
 #include <QtGui/QGridLayout>
 #include <QtGui/QLabel>
 #include <QtGui/QListWidget>
@@ -77,11 +82,30 @@ extern "C" KADU_EXPORT void spellchecker_close()
 	}
 }
 
+#ifdef HAVE_ENCHANT
+typedef std::pair<SpellChecker::Checkers *, QStringList *> DescWrapper;
+
+static void enchantDictDescribe(const char * const langTag, const char * const providerName,
+		const char * const providerDesc, const char * const providerFile, void *userData)
+{
+	Q_UNUSED(providerName)
+	Q_UNUSED(providerDesc)
+	Q_UNUSED(providerFile)
+
+	DescWrapper *pWrapper = static_cast<DescWrapper *>(userData);
+	const SpellChecker::Checkers &checkers = *pWrapper->first;
+	QStringList &result = *pWrapper->second;
+	if (!checkers.contains(langTag))
+		result.append(langTag);
+}
+#endif
+
 SpellChecker::SpellChecker()
 {
 	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetCreated(ChatWidget *)),
 			this, SLOT(chatCreated(ChatWidget *)));
 
+#ifdef HAVE_ASPELL
 	// prepare configuration of spellchecker
 	SpellConfig = new_aspell_config();
 	aspell_config_replace(SpellConfig, "encoding", "utf-8");
@@ -90,7 +114,8 @@ SpellChecker::SpellChecker()
 	aspell_config_replace(SpellConfig, "dict-dir", qPrintable(dataPath("aspell/dict")));
 	aspell_config_replace(SpellConfig, "data-dir", qPrintable(dataPath("aspell/data")));
 	aspell_config_replace(SpellConfig, "prefix", qPrintable(profilePath("dicts")));
-#endif
+#endif // Q_OS_WIN32
+#endif // HAVE_ASPELL
 
 	createDefaultConfiguration();
 	// load mark settings
@@ -102,15 +127,21 @@ SpellChecker::~SpellChecker()
 	disconnect(ChatWidgetManager::instance(), SIGNAL(chatWidgetCreated(ChatWidget *)),
 			this, SLOT(chatCreated(ChatWidget *)));
 
+#ifdef HAVE_ASPELL
 	delete_aspell_config(SpellConfig);
 
 	foreach (AspellSpeller *speller, MyCheckers.values())
 		delete_aspell_speller(speller);
+#else
+	qDeleteAll(MyCheckers);
+#endif
 }
 
 QStringList SpellChecker::notCheckedLanguages()
 {
 	QStringList result;
+
+#ifdef HAVE_ASPELL
 	AspellDictInfoList *dlist;
 	AspellDictInfoEnumeration *dels;
 	const AspellDictInfo *entry;
@@ -123,6 +154,10 @@ QStringList SpellChecker::notCheckedLanguages()
 		if (!MyCheckers.contains(entry->name))
 			result.push_back(entry->name);
 	delete_aspell_dict_info_enumeration(dels);
+#else
+	DescWrapper aWrapper(&MyCheckers, &result);
+	enchant::Broker::instance()->list_dicts(enchantDictDescribe, &aWrapper);
+#endif
 
 	return result;
 }
@@ -140,6 +175,7 @@ bool SpellChecker::addCheckedLang(const QString &name)
 	if (MyCheckers.contains(name))
 		return true;
 
+#ifdef HAVE_ASPELL
 	aspell_config_replace(SpellConfig, "lang", name.toAscii().constData());
 
 	// create spell checker using prepared configuration
@@ -151,6 +187,17 @@ bool SpellChecker::addCheckedLang(const QString &name)
 	}
 	else
 		MyCheckers[name] = to_aspell_speller(possibleErr);
+#else
+	try
+	{
+		MyCheckers[name] = enchant::Broker::instance()->request_dict(name.toStdString());
+	}
+	catch (enchant::Exception &e)
+	{
+		MessageDialog::show("dialog-error", tr("Kadu"), e.what());
+		return false;
+	}
+#endif
 
 	if (MyCheckers.size() == 1)
 		foreach (ChatWidget *chat, ChatWidgetManager::instance()->chats())
@@ -164,32 +211,42 @@ void SpellChecker::removeCheckedLang(const QString &name)
 	Checkers::iterator checker = MyCheckers.find(name);
 	if (checker != MyCheckers.end())
 	{
+#ifdef HAVE_ASPELL
 		delete_aspell_speller(checker.value());
+#else
+		delete checker.value();
+#endif
 		MyCheckers.erase(checker);
 	}
 }
 
 bool SpellChecker::buildCheckers()
 {
+#ifdef HAVE_ASPELL
 	foreach (AspellSpeller *speller, MyCheckers.values())
 		delete_aspell_speller(speller);
+#else
+	qDeleteAll(MyCheckers);
+#endif
 	MyCheckers.clear();
 
-	// load languages to check from configuration
-	QString checkedStr = config_file.readEntry("ASpell", "Checked", "pl");
-	QStringList checkedList = checkedStr.split(',', QString::SkipEmptyParts);
-
+#ifdef HAVE_ASPELL
 	if (config_file.readBoolEntry("ASpell", "Accents", false))
 		aspell_config_replace(SpellConfig, "ignore-accents", "true");
 	else
 		aspell_config_replace(SpellConfig, "ignore-accents", "false");
 
-	if (config_file.readBoolEntry( "ASpell", "Case", false))
+	if (config_file.readBoolEntry("ASpell", "Case", false))
 		aspell_config_replace(SpellConfig, "ignore-case", "true");
 	else
 		aspell_config_replace(SpellConfig, "ignore-case", "false");
+#endif
 
-	// create aspell checkers for each language
+	// load languages to check from configuration
+	QString checkedStr = config_file.readEntry("ASpell", "Checked", "pl");
+	QStringList checkedList = checkedStr.split(',', QString::SkipEmptyParts);
+
+	// create spell checkers for each language
 	for (int i = 0; i < checkedList.count(); i++)
 	{
 		addCheckedLang(checkedList[i]);
@@ -269,7 +326,11 @@ void SpellChecker::mainConfigurationWindowCreated(MainConfigurationWindow *mainC
 	connect(mainConfigurationWindow, SIGNAL(configurationWindowApplied()),
 			this, SLOT(configurationWindowApplied()));
 
-	ConfigGroupBox *optionsGroupBox = mainConfigurationWindow->widget()->configGroupBox("Chat", "SpellChecker", tr("ASpell options"));
+#ifndef HAVE_ASPELL
+	mainConfigurationWindow->widget()->widgetById("spellchecker/ignoreCase")->hide();
+#endif
+
+	ConfigGroupBox *optionsGroupBox = mainConfigurationWindow->widget()->configGroupBox("Chat", "SpellChecker", qApp->translate("@default", "Spell Checker Options"));
 
 	QWidget *options = new QWidget(optionsGroupBox->widget());
 	QGridLayout *optionsLayout = new QGridLayout(options);
@@ -334,7 +395,11 @@ bool SpellChecker::checkWord(const QString &word)
 		isWordValid = true;
 	else
 		for (Checkers::const_iterator it = MyCheckers.constBegin(); it != MyCheckers.constEnd(); it++)
+#ifdef HAVE_ASPELL
 			if (aspell_speller_check(it.value(), word.toUtf8().constData(), -1))
+#else
+			if (it.value()->check(word.toUtf8().constData()))
+#endif
 			{
 				isWordValid = true;
 				break;
