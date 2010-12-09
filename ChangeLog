@@ -2,6 +2,7 @@
 * sound: #1376 fixed: long delays on Kadu exit and warnings from Qt regarding mutexes (beevvy)
 * history_migration: #1820 fixed for good: crash when loading the module with opened configuration window (beevvy)
 * spellchecker: add enchant backend (Caolan McNamara, dorr, beevvy)
+* gui: #1825 fixed: input box doesn't get keyboard focus in conference (beevvy)
 
 +++ version 0.6.6-beta12
 * gui: #1745 fixed: invalid encoding of text in About window on Windows (beevvy)

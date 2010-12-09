@@ -34,6 +34,7 @@
 #include "configuration/configuration-file.h"
 #include "contacts/contact-set.h"
 #include "gui/widgets/chat-widget-manager.h"
+#include "gui/widgets/custom-input.h"
 #include "gui/windows/message-dialog.h"
 
 #include "activate.h"
@@ -86,6 +87,7 @@ void ChatWindow::setChatWidget(ChatWidget *newChatWidget)
 	currentChatWidget = newChatWidget;
 	newChatWidget->setParent(this);
 	newChatWidget->show();
+	newChatWidget->edit()->setFocus();
 
 	layout->addWidget(newChatWidget);
 	layout->setContentsMargins(0, 0, 0, 0);
@@ -94,8 +96,6 @@ void ChatWindow::setChatWidget(ChatWidget *newChatWidget)
 	connect(currentChatWidget, SIGNAL(closed()), this, SLOT(close()));
 	connect(currentChatWidget, SIGNAL(titleChanged(ChatWidget *, const QString &)), this, SLOT(updateTitle()));
 	connect(currentChatWidget, SIGNAL(messageReceived(Chat)), this, SLOT(alertNewMessage()));
-
-	setFocusProxy(currentChatWidget);
 
 	kaduRestoreGeometry();
 	updateTitle();
