@@ -129,19 +129,16 @@ void ChatWidget::createGui()
 	connect(shortcut, SIGNAL(activated()), MessagesView, SLOT(pageDown()));
 	horizSplit->addWidget(MessagesView);
 
-	// shit, createContactsList needs that
-	InputBox = new ChatEditBox(CurrentChat, this);
-	InputBox->setSizePolicy(QSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored));
-
 	if (CurrentChat.contacts().count() > 1)
 		createContactsList();
+
+	InputBox = new ChatEditBox(CurrentChat, this);
+	InputBox->setSizePolicy(QSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored));
 
 	vertSplit->addWidget(horizSplit);
 	vertSplit->addWidget(InputBox);
 
 	connect(InputBox->inputBox(), SIGNAL(sendMessage()), this, SLOT(sendMessage()));
-
-	setFocusProxy(InputBox);
 }
 
 void ChatWidget::createContactsList()
