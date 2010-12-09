@@ -608,6 +608,10 @@ E un rischio per la sicurezza!</translation>
         <translation>Panello Informazione</translation>
     </message>
     <message>
+        <source>Use custom background color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Fonts</source>
         <translation>Caratteri</translation>
     </message>

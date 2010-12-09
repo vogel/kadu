@@ -222,8 +222,9 @@ void Core::createDefaultConfiguration()
 	config_file.addVariable("Look", "DisplayGroupTabs", true);
 	config_file.addVariable("Look", "HeaderSeparatorHeight", 1);
 	config_file.addVariable("Look", "IconsPaths", "");
-	config_file.addVariable("Look", "InfoPanelBgColor", w.palette().base().color());
 	config_file.addVariable("Look", "InfoPanelFgColor", w.palette().text().color());
+	config_file.addVariable("Look", "InfoPanelBgFilled", false);
+	config_file.addVariable("Look", "InfoPanelBgColor", w.palette().base().color());
 	config_file.addVariable("Look", "InfoPanelSyntaxFile", "default");
 	config_file.addVariable("Look", "NiceDateFormat", true);
 	config_file.addVariable("Look", "NoHeaderInterval", 30);
