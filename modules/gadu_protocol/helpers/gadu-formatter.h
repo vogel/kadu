@@ -26,19 +26,14 @@
 
 class FormattedMessage;
 
-class GaduFormater
+namespace GaduFormatter
 {
-	static void appendToMessage(Account account, FormattedMessage &result, GaduProtocol::UinType sender, const QString &content,
-			struct gg_msg_richtext_format &format,
-			struct gg_msg_richtext_color &color, struct gg_msg_richtext_image &image, bool receiveImages);
+	unsigned int computeFormatsSize(const FormattedMessage &message);
+	unsigned char * createFormats(Account account, const FormattedMessage &message, unsigned int &size);
 
-public:
-	static unsigned int computeFormatsSize(const FormattedMessage &message);
-	static unsigned char * createFormats(Account account, const FormattedMessage &message, unsigned int &size);
+	QString createImageId(GaduProtocol::UinType sender, unsigned int size, unsigned int crc32);
 
-	static QString createImageId(GaduProtocol::UinType sender, unsigned int size, unsigned int crc32);
-
-	static FormattedMessage createMessage(Account acccount, GaduProtocol::UinType sender, const QString &content, unsigned char *formats,
+	FormattedMessage createMessage(Account acccount, GaduProtocol::UinType sender, const QString &content, unsigned char *formats,
 			unsigned int size, bool receiveImages);
 
 };

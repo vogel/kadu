@@ -51,7 +51,7 @@ QString GaduChatImageService::saveImage(UinType sender, uint32_t size, uint32_t 
 		return QString::null;
 	}
 
-	QString fileName = GaduFormater::createImageId(sender, size, crc32);
+	QString fileName = GaduFormatter::createImageId(sender, size, crc32);
 	QFile file(path + fileName);
 	if (!file.open(QIODevice::WriteOnly))
 		return QString::null;
@@ -125,7 +125,7 @@ void GaduChatImageService::handleEventImageReply(struct gg_event *e)
 	if (fileName.isEmpty())
 		return;
 
-	emit imageReceived(GaduFormater::createImageId(e->event.image_reply.sender,
+	emit imageReceived(GaduFormatter::createImageId(e->event.image_reply.sender,
 			e->event.image_reply.size, e->event.image_reply.crc32), fileName);
 }
 

@@ -76,7 +76,7 @@ bool GaduChatService::sendMessage(Chat chat, FormattedMessage &message, bool sil
 
 	unsigned int uinsCount = 0;
 	unsigned int formatsSize = 0;
-	unsigned char *formats = GaduFormater::createFormats(Protocol->account(), message, formatsSize);
+	unsigned char *formats = GaduFormatter::createFormats(Protocol->account(), message, formatsSize);
 	bool stop = false;
 
 	kdebugmf(KDEBUG_INFO, "\n%s\n", (const char *)unicode2latin(plain));
@@ -255,9 +255,9 @@ FormattedMessage GaduChatService::createFormattedMessage(gg_event *e, Chat chat,
 		return FormattedMessage();
 
 	if (ignoreRichText(e, sender))
-		return GaduFormater::createMessage(Protocol->account(), sender.id().toUInt(), content, 0, 0, false);
+		return GaduFormatter::createMessage(Protocol->account(), sender.id().toUInt(), content, 0, 0, false);
 	else
-		return GaduFormater::createMessage(Protocol->account(), sender.id().toUInt(), content,
+		return GaduFormatter::createMessage(Protocol->account(), sender.id().toUInt(), content,
 				(unsigned char *)e->event.msg.formats, e->event.msg.formats_length, !ignoreImages(e, sender));
 }
 
