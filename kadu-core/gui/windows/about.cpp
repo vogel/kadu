@@ -222,6 +222,8 @@ QString About::loadFile(const QString &name)
 	QString data = str.readAll();
 	file.close();
 
+	data.replace(QRegExp("\r\n?"), QLatin1String("\n"));
+
 	kdebugf2();
 	return data;
 }
