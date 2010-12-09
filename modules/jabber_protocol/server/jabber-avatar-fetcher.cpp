@@ -57,6 +57,7 @@ void JabberAvatarFetcher::fetchAvatar()
 	if (!jabberProtocol || !jabberProtocol->isConnected())
 	{
 		failed();
+		deleteLater();
 		return;
 	}
 
