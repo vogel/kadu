@@ -635,7 +635,7 @@ void JabberClient::slotCSWarning(int warning)
 {
 	emit debugMessage("Client stream warning.");
 
-	bool showNoTlsWarning = warning == ClientStream::WarnNoTLS;
+	bool showNoTlsWarning = (warning == ClientStream::WarnNoTLS) && forceTLS();
 	bool doCleanupStream = !JabberClientStream || showNoTlsWarning;
 
 	if (doCleanupStream)
