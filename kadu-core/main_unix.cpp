@@ -113,9 +113,6 @@ static void kadu_signal_handler(int s)
 			fflush(dbgfile);
 			fprintf(dbgfile, "Qt compile time version: %s\nQt runtime version: %s\n", QT_VERSION_STR, qVersion());
 			fprintf(dbgfile, "Kadu version: %s\n", qPrintable(Core::version()));
-			#ifdef __DATE__
-			fprintf(dbgfile, "Compile time: %s %s\n", __DATE__, __TIME__);
-			#endif
 			#ifdef __GNUC__
 				//in gcc < 3.0 __GNUC_PATCHLEVEL__ is not defined
 				#ifdef __GNUC_PATCHLEVEL__
