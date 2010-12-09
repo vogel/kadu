@@ -80,6 +80,9 @@ public slots:
 	void addEmoticon(const QString &emoticon);
 	void changeColor(const QColor &newColor);
 
+signals:
+	void keyPressed(QKeyEvent *e, CustomInput *sender, bool &handled);
+
 };
 
 #endif // CHAT_EDIT_BOX_H
