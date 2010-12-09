@@ -56,30 +56,17 @@ extern "C" KADU_EXPORT int spellchecker_init(bool firstLoad)
 
 	spellcheck = new SpellChecker();
 
-	// use configuration settings to create spellcheckers for languages
-	if (!spellcheck->buildCheckers())
-	{
-		delete spellcheck;
-		spellcheck = 0;
-		return 1;
-	}
-	else
-	{
-		MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/spellchecker.ui"));
-		MainConfigurationWindow::registerUiHandler(spellcheck);
-		return 0;
-	}
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/spellchecker.ui"));
+	MainConfigurationWindow::registerUiHandler(spellcheck);
+	return 0;
 }
 
 extern "C" KADU_EXPORT void spellchecker_close()
 {
-	if (spellcheck)
-	{
-		MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/spellchecker.ui"));
-		MainConfigurationWindow::unregisterUiHandler(spellcheck);
-		delete spellcheck;
-		spellcheck = 0;
-	}
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/spellchecker.ui"));
+	MainConfigurationWindow::unregisterUiHandler(spellcheck);
+	delete spellcheck;
+	spellcheck = 0;
 }
 
 #ifdef HAVE_ENCHANT
@@ -118,8 +105,7 @@ SpellChecker::SpellChecker()
 #endif // HAVE_ASPELL
 
 	createDefaultConfiguration();
-	// load mark settings
-	buildMarkTag();
+	configurationUpdated();
 }
 
 SpellChecker::~SpellChecker()
@@ -220,7 +206,7 @@ void SpellChecker::removeCheckedLang(const QString &name)
 	}
 }
 
-bool SpellChecker::buildCheckers()
+void SpellChecker::buildCheckers()
 {
 #ifdef HAVE_ASPELL
 	foreach (AspellSpeller *speller, MyCheckers.values())
@@ -248,18 +234,7 @@ bool SpellChecker::buildCheckers()
 
 	// create spell checkers for each language
 	for (int i = 0; i < checkedList.count(); i++)
-	{
 		addCheckedLang(checkedList[i]);
-		/*
-		if (!addCheckedLang(checkedList[i]))
-		{
-			delete_aspell_config(SpellConfig);
-			delete config;
-			return false;
-		}
-		*/
-	}
-	return true;
 }
 
 void SpellChecker::buildMarkTag()
@@ -367,6 +342,7 @@ void SpellChecker::mainConfigurationWindowCreated(MainConfigurationWindow *mainC
 void SpellChecker::configurationUpdated()
 {
 	buildMarkTag();
+	buildCheckers();
 }
 
 void SpellChecker::configurationWindowApplied()

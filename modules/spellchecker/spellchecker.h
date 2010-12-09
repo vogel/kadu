@@ -60,7 +60,7 @@ public:
 	bool addCheckedLang(const QString &name);
 	void removeCheckedLang(const QString &name);
 	void buildMarkTag();
-	bool buildCheckers();
+	void buildCheckers();
 	bool checkWord(const QString &word);
 
 public slots:
