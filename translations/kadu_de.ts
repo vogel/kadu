@@ -610,6 +610,10 @@ Es ist ein Sicherheitsrisiko!</translation>
         <translation>Informationspanel</translation>
     </message>
     <message>
+        <source>Use custom background color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Fonts</source>
         <translation>Schriftarten</translation>
     </message>

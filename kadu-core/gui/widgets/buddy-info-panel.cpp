@@ -45,6 +45,11 @@ BuddyInfoPanel::BuddyInfoPanel(QWidget *parent) : KaduWebView(parent)
 
 	configurationUpdated();
 
+	QPalette p = palette();
+	p.setBrush(QPalette::Base, Qt::transparent);
+	page()->setPalette(p);
+	setAttribute(Qt::WA_OpaquePaintEvent, false);
+
 	connect(BuddyPreferredManager::instance(), SIGNAL(buddyUpdated(Buddy&)), this, SLOT(buddyUpdated(Buddy&)));
 }
 
@@ -79,8 +84,13 @@ void BuddyInfoPanel::update()
 	QString fontStyle = font.italic() ? "italic" : "normal";
 	QString fontWeight = font.bold() ? "bold" : "normal";
 	QString textDecoration = font.underline() ? "underline" : "none";
-	QString backgroundColor = config_file.readColorEntry("Look", "InfoPanelBgColor").name();
 	QString fontColor = config_file.readColorEntry("Look", "InfoPanelFgColor").name();
+	bool backgroundFilled = config_file.readBoolEntry("Look", "InfoPanelBgFilled");
+	QString backgroundColor;
+	if (backgroundFilled)
+		backgroundColor = config_file.readColorEntry("Look", "InfoPanelBgColor").name();
+	else
+		backgroundColor = "transparent";
 
 	Template = QString(
 		"<html>"
@@ -118,7 +128,7 @@ void BuddyInfoPanel::update()
 	Syntax = SyntaxList::readSyntax("infopanel", config_file.readEntry("Look", "InfoPanelSyntaxFile"),
 		"<table><tr><td><img width=\"32\" height=\"32\" align=\"left\" valign=\"top\" src=\"file:///@{ManageUsersWindowIcon}\"></td><td> "
 		"<div align=\"left\"> [<b>%a</b>][ (%u)] [<br>tel.: %m][<br>IP: %i]</div></td></tr></table> <hr> <b>%s</b> [<br>%d]");
-	setHtml(QString("<body bgcolor=\"") + config_file.readEntry("Look", "InfoPanelBgColor") + "\"></body>");
+	setHtml(QString("<body%1></body>").arg(backgroundFilled ? QString(" bgcolor=\"%1\"").arg(backgroundColor) : ""));
 	displayItem(Item);
 
 	if (config_file.readBoolEntry("Look", "PanelVerticalScrollbar"))

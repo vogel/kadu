@@ -607,6 +607,10 @@ It&apos;s a high security risk!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Use custom background color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Fonts</source>
         <translation type="unfinished"></translation>
     </message>
