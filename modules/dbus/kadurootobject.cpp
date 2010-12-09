@@ -23,7 +23,6 @@
 #include "accounts/account-manager.h"
 #include "core/core.h"
 #include "gui/windows/kadu-window.h"
-#include "kadu-config.h"
 
 #include "kadurootobject.h"
 
@@ -37,7 +36,7 @@ KaduRootObject::~KaduRootObject()
 
 QString KaduRootObject::Version()
 {
-	return "Kadu " + Core::instance()->version();
+	return "Kadu " + Core::version();
 }
 
 void KaduRootObject::Disconnect()

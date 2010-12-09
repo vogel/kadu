@@ -109,7 +109,7 @@ static void printVersion()
 {
 	printf("Kadu %s Copyright (c) 2001-2010 Kadu Team\n"
 		"Compiled with Qt %s\nRunning on Qt %s\n",
-		VERSION, QT_VERSION_STR, qVersion());
+		qPrintable(Core::version()), QT_VERSION_STR, qVersion());
 }
 
 static void printUsage()

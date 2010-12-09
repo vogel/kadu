@@ -112,7 +112,7 @@ static void kadu_signal_handler(int s)
 				fprintf(dbgfile, "> %s\n", qPrintable(module));
 			fflush(dbgfile);
 			fprintf(dbgfile, "Qt compile time version: %s\nQt runtime version: %s\n", QT_VERSION_STR, qVersion());
-			fprintf(dbgfile, "Kadu version: %s\n", VERSION);
+			fprintf(dbgfile, "Kadu version: %s\n", qPrintable(Core::version()));
 			#ifdef __DATE__
 			fprintf(dbgfile, "Compile time: %s %s\n", __DATE__, __TIME__);
 			#endif
