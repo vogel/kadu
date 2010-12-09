@@ -32,6 +32,7 @@
 #include <QtGui/QLabel>
 #include <QtGui/QWidget>
 
+class QUrl;
 class QKeyEvent;
 class QMouseEvent;
 class QString;
@@ -46,6 +47,10 @@ class About : public QWidget
 
 	QString loadFile(const QString &name);
 
+private slots:
+	void openUrl(const QUrl &url);
+
+protected:
 	virtual void keyPressEvent(QKeyEvent *);
 
 public:

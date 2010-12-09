@@ -32,12 +32,14 @@
 #include <QtCore/QFile>
 #include <QtCore/QString>
 #include <QtCore/QTextStream>
+#include <QtCore/QUrl>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QKeyEvent>
 #include <QtGui/QMouseEvent>
 #include <QtGui/QPushButton>
 #include <QtGui/QStyle>
 #include <QtGui/QTabWidget>
+#include <QtGui/QTextBrowser>
 #include <QtGui/QTextEdit>
 #include <QtGui/QVBoxLayout>
 
@@ -132,8 +134,8 @@ About::About(QWidget *parent) :
 	tb_thanks->viewport()->setAutoFillBackground(false);
 	QString thanks = loadFile("THANKS");
 	thanks.prepend("<b>");
-	thanks = thanks.replace("\n\n", QLatin1String("</b><br/><br/>"));
-	thanks = thanks.replace("\n   ", "<br/>&nbsp;&nbsp;&nbsp;");
+	thanks.replace("\n\n", QLatin1String("</b><br/><br/>"));
+	thanks.replace("\n   ", "<br/>&nbsp;&nbsp;&nbsp;");
 	HtmlDocument thanks_html;
 	thanks_html.parseHtml(thanks);
 	tb_thanks->setHtml(thanks_html.generateHtml());
@@ -147,11 +149,28 @@ About::About(QWidget *parent) :
 	tb_license->setText(loadFile("COPYING"));
 
 	// changelog
-	QTextEdit *tb_changelog = new QTextEdit(tw_about);
-	tb_changelog->setReadOnly(true);
+	QTextBrowser *tb_changelog = new QTextBrowser(tw_about);
+	tb_changelog->setOpenExternalLinks(false);
+	tb_changelog->setOpenLinks(false);
 	tb_changelog->setFrameStyle(QFrame::NoFrame);
 	tb_changelog->viewport()->setAutoFillBackground(false);
-	tb_changelog->setText(loadFile("ChangeLog"));
+	QString changelog = loadFile("ChangeLog");
+	changelog.replace("\n", "<br/>");
+	HtmlDocument changelog_html;
+	changelog_html.parseHtml(changelog);
+	changelog = changelog_html.generateHtml();
+	// #bug_no -> Mantis URL
+	changelog.replace(QRegExp("#(\\d+)"), "<a href=\"http://www.kadu.net/mantis/view.php?id=\\1\">#\\1</a>");
+	// bold headers with green "+++"
+	changelog.replace(QRegExp("(^|<br/>)\\+\\+\\+([^<]*)<br/>"), "\\1<b><span style=\"color:green;\">+++</span>\\2</b><br/>");
+	// bold subsystem names preceded by nice green bullets instead of "*"
+	changelog.replace(QRegExp("<br/>\\* ([^:<]*):"), "<br/><b><span style=\"color:green;\">&#8226;</span> \\1</b>:");
+	// green bullets also when no subsystem name
+	changelog.replace("<br/>* ", "<br/><b><span style=\"color:green;\">&#8226;</span></b> ");
+	// authors in italics
+	changelog.replace(QRegExp("\\(([^\\)]+)\\)<br/>"), "<i>(\\1)</i><br/>");
+	tb_changelog->setHtml(changelog);
+	connect(tb_changelog, SIGNAL(anchorClicked(const QUrl &)), this, SLOT(openUrl(const QUrl &)));
 
 	// add tabs
 	tw_about->addTab(wb_about, tr("&About"));
@@ -198,6 +217,12 @@ About::~About()
  	saveWindowGeometry(this, "General", "AboutGeometry");
 
 	kdebugf2();
+}
+
+void About::openUrl(const QUrl &url)
+{
+	if (url.scheme().startsWith("http"))
+		UrlOpener::openUrl(url.toString());
 }
 
 void About::keyPressEvent(QKeyEvent *ke_event)

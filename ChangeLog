@@ -5,6 +5,7 @@
 * gui: #1825 fixed: input box doesn't get keyboard focus in conference (beevvy)
 * spellchecker: fixed crash after module unload (dorr, beevvy)
 * gadu: fixed almost always not showing reveived images in chat window (it was broken in betas 11 and 12) (beevvy)
+* gui: now ChangeLog is nicely highlighted in About window (beevvy)
 
 +++ version 0.6.6-beta12
 * gui: #1745 fixed: invalid encoding of text in About window on Windows (beevvy)
