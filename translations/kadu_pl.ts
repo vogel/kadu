@@ -332,6 +332,10 @@
         <translation>Panel informacyjny</translation>
     </message>
     <message>
+        <source>Use custom background color</source>
+        <translation>Używaj niestandardowego koloru tła</translation>
+    </message>
+    <message>
         <source>Fonts</source>
         <translation>Czcionki</translation>
     </message>

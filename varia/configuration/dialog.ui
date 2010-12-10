@@ -133,8 +133,9 @@
 				<color-button caption="Descriptions font" config-section="Look" config-item="DescriptionColor" />
 			</group-box>
 			<group-box name="Information Panel">
-				<color-button caption="Background" config-section="Look" config-item="InfoPanelBgColor" />
 				<color-button caption="Font" config-section="Look" config-item="InfoPanelFgColor" />
+				<check-box caption="Use custom background color" config-section="Look" config-item="InfoPanelBgFilled" id="infoPanelBgFilled" />
+				<color-button caption="Background" config-section="Look" config-item="InfoPanelBgColor" id="infoPanelBgColor" />
 			</group-box>
 		</tab>
 
