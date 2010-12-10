@@ -1,5 +1,6 @@
 set (SOURCES
 	encryption-ng-module.cpp
+	encryption-provider-manager.cpp
 )
 
 set (MOC_SOURCES

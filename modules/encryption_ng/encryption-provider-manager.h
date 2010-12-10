@@ -17,18 +17,34 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ENCRYPTOR_H
-#define ENCRYPTOR_H
+#ifndef ENCRYPTION_PROVIDER_MANAGER_H
+#define ENCRYPTION_PROVIDER_MANAGER_H
 
-class QByteArray;
+#include <QtCore/QList>
 
-class Encryptor
+class EncryptionProvider;
+
+class EncryptionProviderManager
 {
-public:
-	virtual ~Encryptor() {}
+	static EncryptionProviderManager * Instance;
 
-	virtual QByteArray encrypt(const QByteArray &data) = 0;
+	QList<EncryptionProvider *> Providers;
+
+	EncryptionProviderManager();
+	~EncryptionProviderManager();
+
+public:
+	static void createInstance();
+	static void destroyInstance();
+
+	EncryptionProviderManager * instance() { return Instance; }
+
+	void registerProvider(EncryptionProvider *provider);
+	void unregisterProvider(EncryptionProvider *provider);
+
+	Encryptor * encryptor(const Contact &contact);
+	Decryptor * decryptor(const Contact &contact);
 
 };
 
-#endif // ENCRYPTOR_H
+#endif // ENCRYPTION_PROVIDER_MANAGER_H

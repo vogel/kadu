@@ -27,7 +27,7 @@ class Decryptor
 public:
 	virtual ~Decryptor() {}
 
-	QByteArray decrypt(const QByteArray &data) = 0;
+	virtual QByteArray decrypt(const QByteArray &data) = 0;
 
 };
 
