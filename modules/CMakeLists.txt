@@ -1,6 +1,7 @@
 set (BLACKLIST_MODULES
 	advanced_userlist
 	dbus
+	encryption
 	tlen_protocol
 )
 
