@@ -46,7 +46,7 @@
 
 static void kadu_signal_handler(int signal)
 {
-	kdebugmf(KDEBUG_WARNING, "%d\n", s);
+	kdebugmf(KDEBUG_WARNING, "%d\n", signal);
 
 	static int sigsegvCount = 0;
 
