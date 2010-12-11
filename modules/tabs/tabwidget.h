@@ -114,6 +114,8 @@ private slots:
 	*/
 	void deleteTab();
 
+	void activationChange();
+
 protected:
 	/**
 	* Metoda wywoływana w chwili naciśnięcia x na ?pasku dekoracji?
