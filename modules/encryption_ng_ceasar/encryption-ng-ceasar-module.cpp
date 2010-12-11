@@ -19,13 +19,22 @@
 
 #include <QtCore/QtGlobal>
 
+#include "modules/encryption_ng/encryption-provider-manager.h"
+
+#include "encryption-ng-ceasar-provider.h"
+
 extern "C" int encryption_ng_ceasar_init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
+
+	EncryptionNgCeasarProvider::createInstance();
+	EncryptionProviderManager::instance()->registerProvider(EncryptionNgCeasarProvider::instance());
 
 	return 0;
 }
 
 extern "C" void encryption_ng_ceasar_close()
 {
+	EncryptionProviderManager::instance()->unregisterProvider(EncryptionNgCeasarProvider::instance());
+	EncryptionNgCeasarProvider::destroyInstance();
 }

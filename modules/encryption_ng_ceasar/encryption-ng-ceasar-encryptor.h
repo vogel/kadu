@@ -17,37 +17,19 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ENCRYPTION_PROVIDER_MANAGER_H
-#define ENCRYPTION_PROVIDER_MANAGER_H
+#ifndef ENCRYPTION_NG_CEASAR_ENCRYPTOR_H
+#define ENCRYPTION_NG_CEASAR_ENCRYPTOR_H
 
-#include <QtCore/QList>
+#include "modules/encryption_ng/encryptor.h"
 
-class Contact;
-class Decryptor;
-class Encryptor;
-class EncryptionProvider;
-
-class EncryptionProviderManager
+class EncryptionNgCeasarEncryptor : public Encryptor
 {
-	static EncryptionProviderManager * Instance;
-
-	QList<EncryptionProvider *> Providers;
-
-	EncryptionProviderManager();
-	~EncryptionProviderManager();
 
 public:
-	static void createInstance();
-	static void destroyInstance();
+	virtual ~EncryptionNgCeasarEncryptor() {}
 
-	static EncryptionProviderManager * instance() { return Instance; }
-
-	void registerProvider(EncryptionProvider *provider);
-	void unregisterProvider(EncryptionProvider *provider);
-
-	Encryptor * encryptor(const Contact &contact);
-	Decryptor * decryptor(const Contact &contact);
+	virtual QByteArray encrypt(const QByteArray &data);
 
 };
 
-#endif // ENCRYPTION_PROVIDER_MANAGER_H
+#endif // ENCRYPTION_NG_CEASAR_ENCRYPTOR_H

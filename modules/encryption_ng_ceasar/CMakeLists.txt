@@ -1,5 +1,8 @@
 set (SOURCES
+	encryption-ng-ceasar-decryptor.cpp
+	encryption-ng-ceasar-encryptor.cpp
 	encryption-ng-ceasar-module.cpp
+	encryption-ng-ceasar-provider.cpp
 )
 
 set (MOC_SOURCES
