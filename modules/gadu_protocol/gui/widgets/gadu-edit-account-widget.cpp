@@ -408,7 +408,7 @@ void GaduEditAccountWidget::removeAccount()
 void GaduEditAccountWidget::remindPasssword()
 {
 	bool ok;
-	int uin = AccountId->text().toInt(&ok);
+	UinType uin = AccountId->text().toUInt(&ok);
 	if (ok)
 		(new GaduRemindPasswordWindow(uin))->show();
 }
@@ -416,7 +416,7 @@ void GaduEditAccountWidget::remindPasssword()
 void GaduEditAccountWidget::changePasssword()
 {
 	bool ok;
-	int uin = AccountId->text().toInt(&ok);
+	UinType uin = AccountId->text().toUInt(&ok);
 	if (ok)
 	{
 		GaduChangePasswordWindow *changePasswordWindow = new GaduChangePasswordWindow(uin, account());

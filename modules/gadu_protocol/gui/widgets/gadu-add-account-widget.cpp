@@ -183,7 +183,7 @@ void GaduAddAccountWidget::dataChanged()
 void GaduAddAccountWidget::remindPasssword()
 {
 	bool ok;
-	int uin = AccountId->text().toInt(&ok);
+	UinType uin = AccountId->text().toUInt(&ok);
 	if (ok)
 		(new GaduRemindPasswordWindow(uin))->show();
 }
