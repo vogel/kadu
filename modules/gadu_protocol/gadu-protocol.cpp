@@ -783,7 +783,7 @@ void GaduProtocol::contactIdChanged(Contact contact, const QString &oldId)
 		return;
 
 	bool ok;
-	UinType oldUin = oldId.toInt(&ok);
+	UinType oldUin = oldId.toUInt(&ok);
 	if (ok)
 		ContactListHandler->removeContactEntry(oldUin);
 

@@ -130,7 +130,7 @@ void GaduUnregisterAccountWindow::dataChanged()
 
 void GaduUnregisterAccountWindow::removeAccount()
 {
-	GaduServerUnregisterAccount *gsua = new GaduServerUnregisterAccount(AccountId->text().toInt(), Password->text(),
+	GaduServerUnregisterAccount *gsua = new GaduServerUnregisterAccount(AccountId->text().toUInt(), Password->text(),
 			MyTokenWidget->tokenId(), MyTokenWidget->tokenValue());
 	connect(gsua, SIGNAL(finished(GaduServerUnregisterAccount *)),
 			this, SLOT(unregisteringFinished(GaduServerUnregisterAccount *)));
