@@ -88,6 +88,13 @@ bool Identity::hasAccount(Account account)
 			: false;
 }
 
+bool Identity::hasAnyAccountWithDetails()
+{
+	return !isNull()
+			? data()->hasAnyAccountWithDetails()
+			: false;
+}
+
 bool Identity::isEmpty()
 {
 	return !isNull()

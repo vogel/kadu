@@ -115,6 +115,15 @@ bool IdentityShared::hasAccount(Account account)
 	return Accounts.contains(account);
 }
 
+bool IdentityShared::hasAnyAccountWithDetails()
+{
+	foreach (Account account, Accounts)
+		if (account.details())
+			return true;
+
+	return false;
+}
+
 bool IdentityShared::isEmpty()
 {
 	return Accounts.isEmpty();
