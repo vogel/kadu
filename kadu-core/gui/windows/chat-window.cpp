@@ -259,6 +259,7 @@ void ChatWindow::changeEvent(QEvent *event)
 		}
 		kdebugf2();
 	}
+	QWidget::changeEvent(event);
 }
 
 void ChatWindow::alertNewMessage()

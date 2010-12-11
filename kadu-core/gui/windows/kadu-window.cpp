@@ -409,8 +409,8 @@ void KaduWindow::changeEvent(QEvent *event)
 	{
 		if (!_isActiveWindow(this))
 			ContactsWidget->clearFilter();
-		MainWindow::changeEvent(event);
 	}
+	MainWindow::changeEvent(event);
 }
 
 bool KaduWindow::supportsActionType(ActionDescription::ActionType type)
