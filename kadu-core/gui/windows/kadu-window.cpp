@@ -403,12 +403,14 @@ void KaduWindow::keyPressEvent(QKeyEvent *e)
 	MainWindow::keyPressEvent(e);
 }
 
-void KaduWindow::windowActivationChange(bool b)
+void KaduWindow::changeEvent(QEvent *event)
 {
-	if (!_isActiveWindow(this))
-		ContactsWidget->clearFilter();
-
-	MainWindow::windowActivationChange(b);
+	if (event->type() == QEvent::ActivationChange)
+	{
+		if (!_isActiveWindow(this))
+			ContactsWidget->clearFilter();
+		MainWindow::changeEvent(event);
+	}
 }
 
 bool KaduWindow::supportsActionType(ActionDescription::ActionType type)

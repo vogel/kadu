@@ -91,7 +91,7 @@ private:
 	QPoint LastPositionBeforeStatusMenuHide;
 
 	bool CompositingEnabled;
-	
+
 	void createGui();
 	void createMenu();
 	void createKaduMenu();
@@ -116,7 +116,7 @@ private slots:
 protected:
 	virtual void closeEvent(QCloseEvent *);
 	virtual void keyPressEvent(QKeyEvent *);
-	virtual void windowActivationChange(bool b);
+	virtual void changeEvent(QEvent *event);
 
 	virtual bool supportsActionType(ActionDescription::ActionType type);
 
