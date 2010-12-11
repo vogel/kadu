@@ -110,7 +110,7 @@ private:
 
 	void sendUserList();
 
-	void socketContactStatusChanged(unsigned int uin, unsigned int status, const QString &description,
+	void socketContactStatusChanged(UinType uin, unsigned int status, const QString &description,
 			const QHostAddress &ip, unsigned short port, unsigned int maxImageSize, unsigned int version);
 	void socketConnFailed(GaduError error);
 	void socketConnSuccess();

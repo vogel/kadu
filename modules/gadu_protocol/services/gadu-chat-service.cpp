@@ -188,7 +188,7 @@ bool GaduChatService::ignoreSender(gg_event *e, Buddy sender)
 
 	if (ignore)
 	{
-		kdebugmf(KDEBUG_INFO, "Ignored anonymous. %d is ignored\n", sender.id(Protocol->account()).toUInt());
+		kdebugmf(KDEBUG_INFO, "Ignored anonymous. %u is ignored\n", sender.id(Protocol->account()).toUInt());
 	}
 
 	return ignore;
@@ -288,7 +288,7 @@ void GaduChatService::handleEventMsg(struct gg_event *e)
 	if (message.isEmpty())
 		return;
 
-	kdebugmf(KDEBUG_INFO, "Got message from %d saying \"%s\"\n",
+	kdebugmf(KDEBUG_INFO, "Got message from %u saying \"%s\"\n",
 			sender.id().toUInt(), qPrintable(message.toPlain()));
 
 	QDateTime time = QDateTime::fromTime_t(e->event.msg.time);
@@ -317,39 +317,39 @@ void GaduChatService::handleEventAck(struct gg_event *e)
 	if (!UndeliveredMessages.contains(messageId))
 		return;
 
-	int uin = e->event.ack.recipient;
+	UinType uin = e->event.ack.recipient;
 	Q_UNUSED(uin) // only in debug mode
 
 	Message::Status status = Message::StatusUnknown;
 	switch (e->event.ack.status)
 	{
 		case GG_ACK_DELIVERED:
-			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "message delivered (uin: %d, seq: %d)\n", uin, messageId);
+			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "message delivered (uin: %u, seq: %d)\n", uin, messageId);
 			emit messageStatusChanged(messageId, StatusAcceptedDelivered);
 			status = Message::StatusDelivered;
 			break;
 		case GG_ACK_QUEUED:
-			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "message queued (uin: %d, seq: %d)\n", uin, messageId);
+			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "message queued (uin: %u, seq: %d)\n", uin, messageId);
 			emit messageStatusChanged(messageId, StatusAcceptedQueued);
 			status = Message::StatusDelivered;
 			break;
 		case GG_ACK_BLOCKED:
-			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "message blocked (uin: %d, seq: %d)\n", uin, messageId);
+			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "message blocked (uin: %u, seq: %d)\n", uin, messageId);
 			emit messageStatusChanged(messageId, StatusRejectedBlocked);
 			status = Message::StatusWontDeliver;
 			break;
 		case GG_ACK_MBOXFULL:
-			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "message box full (uin: %d, seq: %d)\n", uin, messageId);
+			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "message box full (uin: %u, seq: %d)\n", uin, messageId);
 			emit messageStatusChanged(messageId, StatusRejectedBoxFull);
 			status = Message::StatusWontDeliver;
 			break;
 		case GG_ACK_NOT_DELIVERED:
-			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "message not delivered (uin: %d, seq: %d)\n", uin, messageId);
+			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "message not delivered (uin: %u, seq: %d)\n", uin, messageId);
 			emit messageStatusChanged(messageId, StatusRejectedUnknown);
 			status = Message::StatusWontDeliver;
 			break;
 		default:
-			kdebugm(KDEBUG_NETWORK|KDEBUG_WARNING, "unknown acknowledge! (uin: %d, seq: %d, status:%d)\n", uin, messageId, e->event.ack.status);
+			kdebugm(KDEBUG_NETWORK|KDEBUG_WARNING, "unknown acknowledge! (uin: %u, seq: %d, status:%d)\n", uin, messageId, e->event.ack.status);
 			break;
 	}
 

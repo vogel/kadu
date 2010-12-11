@@ -257,7 +257,7 @@ void DccManager::connectionRequestReceived(Contact contact)
 	kdebugf2();
 }
 
-bool DccManager::acceptConnection(unsigned int uin, unsigned int peerUin, unsigned int peerAddr)
+bool DccManager::acceptConnection(UinType uin, UinType peerUin, unsigned int peerAddr)
 {
 	GaduAccountDetails *gaduAccountDetails = dynamic_cast<GaduAccountDetails *>(Protocol->account().details());
 	if (!gaduAccountDetails)
@@ -270,13 +270,13 @@ bool DccManager::acceptConnection(unsigned int uin, unsigned int peerUin, unsign
 	Buddy buddy = contact.ownerBuddy();
 	if (uin != gaduAccountDetails->uin() || buddy.isAnonymous())
 	{
-		kdebugm(KDEBUG_WARNING, "insane values: uin:%d peer_uin:%d\n", uin, peerUin);
+		kdebugm(KDEBUG_WARNING, "insane values: uin:%u peer_uin:%u\n", uin, peerUin);
 		return false;
 	}
 
 	if (buddy.isBlocked())
 	{
-		kdebugm(KDEBUG_WARNING, "unbidden user: %d\n", peerUin);
+		kdebugm(KDEBUG_WARNING, "unbidden user: %u\n", peerUin);
 		return false;
 	}
 
@@ -285,7 +285,7 @@ bool DccManager::acceptConnection(unsigned int uin, unsigned int peerUin, unsign
 	if (remoteAddress == contact.address())
 		return true;
 
-	kdebugm(KDEBUG_WARNING, "possible spoofing attempt from %s (uin:%d)\n", qPrintable(remoteAddress.toString()), peerUin);
+	kdebugm(KDEBUG_WARNING, "possible spoofing attempt from %s (uin:%u)\n", qPrintable(remoteAddress.toString()), peerUin);
 
 	return MessageDialog::ask("", tr("Kadu"), narg(
 			tr("%1 is asking for direct connection but his/her\n"
@@ -440,7 +440,7 @@ void DccManager::fileTransferHandlerDestroyed(QObject *object)
 		WaitingFileTransfers.removeAll(handler);
 }
 
-void DccManager::attachSendFileTransferSocket6(unsigned int uin, Contact contact, GaduFileTransferHandler *handler)
+void DccManager::attachSendFileTransferSocket6(UinType uin, Contact contact, GaduFileTransferHandler *handler)
 {
 	kdebugf();
 

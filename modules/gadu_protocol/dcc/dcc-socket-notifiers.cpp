@@ -163,7 +163,7 @@ void DccSocketNotifiers::handleEventDccClientAccept(struct gg_event *e)
 {
 	Q_UNUSED(e)
 
-	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "uin:%d peer_uin:%d\n", Socket->uin, Socket->peer_uin);
+	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "uin:%u peer_uin:%u\n", Socket->uin, Socket->peer_uin);
 
 	// TODO: make async TODO: 0.6.6
 	if (!Manager->acceptConnection(Socket->uin, Socket->peer_uin, Socket->remote_addr))
@@ -177,7 +177,7 @@ void DccSocketNotifiers::handleEventDccCallback(struct gg_event *e)
 {
 	Q_UNUSED(e)
 
-	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "uin:%d peer_uin:%d\n", Socket->uin, Socket->peer_uin);
+	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "uin:%u peer_uin:%u\n", Socket->uin, Socket->peer_uin);
 
 	GaduFileTransferHandler *handler = Manager->findFileTransferHandler(this);
 	if (handler)
