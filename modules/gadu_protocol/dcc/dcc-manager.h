@@ -79,7 +79,7 @@ class DccManager : public QObject
 	void handleEventDccNew(struct gg_event *e);
 
 	void connectionRequestReceived(Contact contact);
-	bool acceptConnection(unsigned int uin, unsigned int peerUin, unsigned int peerAddr);
+	bool acceptConnection(UinType uin, UinType peerUin, unsigned int peerAddr);
 	void needIncomingFileTransferAccept(DccSocketNotifiers *socket);
 
 	friend class GaduProtocolSocketNotifiers;
@@ -91,7 +91,7 @@ class DccManager : public QObject
 
 // 	void onIpAutotetectToggled(bool toggled);
 
-	void attachSendFileTransferSocket6(unsigned int uin, Contact contact, GaduFileTransferHandler *handler);
+	void attachSendFileTransferSocket6(UinType uin, Contact contact, GaduFileTransferHandler *handler);
 	void attachSendFileTransferSocket7(Contact contact, GaduFileTransferHandler *handler);
 
 private slots:
@@ -124,4 +124,4 @@ public:
 
 #endif // DCC_MANAGER_H
 
-// kate: indent-mode cstyle; replace-tabs off; tab-width 4; 
+// kate: indent-mode cstyle; replace-tabs off; tab-width 4;

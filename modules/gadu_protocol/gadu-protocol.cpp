@@ -556,7 +556,7 @@ void GaduProtocol::sendUserList()
 	ContactListHandler->setUpContactList(ContactManager::instance()->contacts(account()));
 }
 
-void GaduProtocol::socketContactStatusChanged(unsigned int uin, unsigned int status, const QString &description,
+void GaduProtocol::socketContactStatusChanged(UinType uin, unsigned int status, const QString &description,
 		const QHostAddress &ip, unsigned short port, unsigned int maxImageSize, unsigned int version)
 {
 	Contact contact = ContactManager::instance()->byId(account(), QString::number(uin));
@@ -564,7 +564,7 @@ void GaduProtocol::socketContactStatusChanged(unsigned int uin, unsigned int sta
 
 	if (buddy.isAnonymous())
 	{
-		kdebugmf(KDEBUG_INFO, "buddy %d not in list. Damned server!\n", uin);
+		kdebugmf(KDEBUG_INFO, "buddy %u not in list. Damned server!\n", uin);
 		emit userStatusChangeIgnored(buddy);
 		ContactListHandler->removeContactEntry(uin);
 		return;
