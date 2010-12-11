@@ -139,7 +139,7 @@ protected:
 	*/
 	virtual void dropEvent(QDropEvent *event);
 
-	virtual void windowActivationChange(bool oldActive);
+	virtual void changeEvent(QEvent *event);
 
 	virtual void tabInserted(int index);
 	virtual void tabRemoved(int index);

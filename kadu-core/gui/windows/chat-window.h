@@ -14,14 +14,14 @@ class KADUAPI ChatWindow : public QWidget, public ChatContainer, ConfigurationAw
 
 private:
 	ChatWidget *currentChatWidget;
-	QTimer *title_timer;  /*!< zmienna przechowuj�ca czas od ostatniego od�wie�enia tytu�u okna */
+	QTimer *title_timer;  /*!< zmienna przechowująca czas od ostatniego odświeżenia tytułu okna */
 
 	void kaduStoreGeometry();
 	void kaduRestoreGeometry();
 
-	bool activateWithNewMessages; /*!< czy aktywujemy okno po przyj�ciu nowej wiadomo�ci */
-	bool showNewMessagesNum; /*!< czy pokazujemy liczb� nowych wiadomo�ci w tytule nieaktywnego okna */
-	bool blinkChatTitle; /*!< czy tytu� nieaktywnego okna z nieprzeczytanymi wiadomo�ciami powinien mruga� */
+	bool activateWithNewMessages; /*!< czy aktywujemy okno po przyjęciu nowej wiadomości */
+	bool showNewMessagesNum; /*!< czy pokazujemy liczbę nowych wiadomości w tytule nieaktywnego okna */
+	bool blinkChatTitle; /*!< czy tytuł nieaktywnego okna z nieprzeczytanymi wiadomościami powinien mrugać */
 
 	void setDefaultGeometry();
 
@@ -31,15 +31,15 @@ private slots:
 protected:
 	/**
 		\fn virtual void closeEvent(QCloseEvent* e)
-		Funkcja obs�uguj�ca zamkni�cie okna
+		Funkcja obsługująca zamknięcie okna
 	**/
 	virtual void closeEvent(QCloseEvent *e);
 
 	/**
-		\fn virtual void windowActivationChange(bool oldActive)
-		Funkcja steruj�ca mruganiem napisu okna
+		\fn virtual void changeEvent(QEvent *event)
+		Funkcja sterująca mruganiem napisu okna
 	**/
-	virtual void windowActivationChange(bool oldActive);
+	virtual void changeEvent(QEvent *event);
 
 	virtual void configurationUpdated();
 
