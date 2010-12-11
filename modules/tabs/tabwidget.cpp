@@ -20,6 +20,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QTimer>
 #include <QtGui/QDrag>
 
 #include "gui/widgets/buddies-list-widget.h"
@@ -222,18 +223,21 @@ void TabWidget::dropEvent(QDropEvent* e)
 
 void TabWidget::changeEvent(QEvent *event)
 {
-	if (event->type() == QEvent::ActivationChange)
-	{
-		kdebugf();
-		ChatWidget *chat = dynamic_cast<ChatWidget *>(currentWidget());
-		if (_isActiveWindow(this) && chat)
-		{
-			chat->markAllMessagesRead();
-			emit chatWidgetActivated(chat);
-		}
-		kdebugf2();
-	}
 	QTabWidget::changeEvent(event);
+	if (event->type() == QEvent::ActivationChange)
+		QTimer::singleShot(1, this, SLOT(activationChange()));
+}
+
+void TabWidget::activationChange()
+{
+	kdebugf();
+	ChatWidget *chat = dynamic_cast<ChatWidget *>(currentWidget());
+	if (_isActiveWindow(this) && chat)
+	{
+		chat->markAllMessagesRead();
+		emit chatWidgetActivated(chat);
+	}
+	kdebugf2();
 }
 
 void TabWidget::mouseDoubleClickEvent(QMouseEvent *e)
