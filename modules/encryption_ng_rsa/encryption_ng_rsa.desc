@@ -4,4 +4,4 @@ Description[pl]=Modu³ obs³ugi szyfrowania rozmów w QCA2 (RSA)
 Author=Kadu Team
 LoadByDefault=true
 Version=core
-Dependencies=encryption
+Dependencies=encryption_ng

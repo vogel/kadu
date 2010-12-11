@@ -29,8 +29,8 @@ class EncryptionProvider
 public:
 	virtual ~EncryptionProvider() {}
 
-	Encryptor * encryptor(const Contact &contact);
-	Decryptor * decryptor(const Contact &contact);
+	virtual Encryptor * encryptor(const Contact &contact) = 0;
+	virtual Decryptor * decryptor(const Contact &contact) = 0;
 
 };
 
