@@ -21,14 +21,10 @@
 #ifndef STATUS_CONTAINER_MANAGER_H
 #define STATUS_CONTAINER_MANAGER_H
 
-#include <QtCore/QObject>
-
 #include "accounts/accounts-aware-object.h"
 #include "configuration/configuration-aware-object.h"
 #include "identities/identities-aware-object.h"
 #include "status/status-container.h"
-
-#include <stdio.h>
 
 class KADUAPI StatusContainerManager : public StatusContainer,
 		public ConfigurationAwareObject, private AccountsAwareObject, private IdentitiesAwareObject
