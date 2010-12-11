@@ -1,4 +1,3 @@
-
 /*
  * %kadu copyright begin%
  * Copyright 2009, 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
