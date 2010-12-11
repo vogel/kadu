@@ -59,6 +59,7 @@ public:
 	void addAccount(Account account);
 	void removeAccount(Account account);
 	bool hasAccount(Account account);
+	bool hasAnyAccountWithDetails();
 	bool isEmpty();
 
 	KaduShared_Property(QString, name, Name)
