@@ -233,6 +233,7 @@ void TabWidget::changeEvent(QEvent *event)
 		}
 		kdebugf2();
 	}
+	QTabWidget::changeEvent(event);
 }
 
 void TabWidget::mouseDoubleClickEvent(QMouseEvent *e)
