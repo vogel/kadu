@@ -20,7 +20,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QTimer>
 #include <QtGui/QDrag>
 
 #include "gui/widgets/buddies-list-widget.h"
