@@ -17,23 +17,40 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QtGlobal>
+#include "gui/actions/action-description.h"
 
 #include "encryption-actions.h"
-#include "encryption-provider-manager.h"
 
-extern "C" int encryption_ng_init(bool firstLoad)
+EncryptionActions * EncryptionActions::Instance = 0;
+
+void EncryptionActions::registerActions()
 {
-	Q_UNUSED(firstLoad)
-
-	EncryptionProviderManager::createInstance();
-	EncryptionActions::registerActions();
-
-	return 0;
+	if (!Instance)
+		Instance = new EncryptionActions();
 }
 
-extern "C" void encryption_ng_close()
+void EncryptionActions::unregisterActions()
 {
-	EncryptionActions::unregisterActions();
-	EncryptionProviderManager::destroyInstance();
+	delete Instance;
+	Instance = 0;
+}
+
+EncryptionActions::EncryptionActions()
+{
+	EnableEncryptionActionDescription = new ActionDescription(this,
+			ActionDescription::TypeChat, "encryptionAction",
+			this, SLOT(enableEncryptionActionActivated(QAction *, bool)),
+			"security-high", "security-low", tr("Enable encryption for this conversation"),
+			true, tr("Disable encryption for this conversation")
+	);
+}
+
+EncryptionActions::~EncryptionActions()
+{
+}
+
+void EncryptionActions::enableEncryptionActionActivated(QAction *sender, bool toggled)
+{
+	Q_UNUSED(sender)
+	Q_UNUSED(toggled)
 }

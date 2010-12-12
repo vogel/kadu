@@ -17,23 +17,35 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QtGlobal>
+#ifndef ENCRYPTION_ACTIONS_H
+#define ENCRYPTION_ACTIONS_H
 
-#include "encryption-actions.h"
-#include "encryption-provider-manager.h"
+#include <QtCore/QObject>
+#include <QtGui/QAction>
 
-extern "C" int encryption_ng_init(bool firstLoad)
+class ActionDescription;
+
+class EncryptionActions : public QObject
 {
-	Q_UNUSED(firstLoad)
+	Q_OBJECT
+	Q_DISABLE_COPY(EncryptionActions)
 
-	EncryptionProviderManager::createInstance();
-	EncryptionActions::registerActions();
+	static EncryptionActions *Instance;
 
-	return 0;
-}
+	ActionDescription *EnableEncryptionActionDescription;
 
-extern "C" void encryption_ng_close()
-{
-	EncryptionActions::unregisterActions();
-	EncryptionProviderManager::destroyInstance();
-}
+	EncryptionActions();
+	virtual ~EncryptionActions();
+
+private slots:
+	void enableEncryptionActionActivated(QAction *sender, bool toggled);
+
+public:
+	static void registerActions();
+	static void unregisterActions();
+
+	static EncryptionActions * instance() { return Instance; }
+
+};
+
+#endif // ENCRYPTION_ACTIONS_H

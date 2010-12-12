@@ -1,9 +1,11 @@
 set (SOURCES
+	encryption-actions.cpp
 	encryption-ng-module.cpp
 	encryption-provider-manager.cpp
 )
 
 set (MOC_SOURCES
+	encryption-actions.h
 )
 
 set (TRANSLATION_SOURCES
