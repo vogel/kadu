@@ -266,9 +266,7 @@ void ChatWindow::alertNewMessage()
 	if (!_isActiveWindow(this))
 	{
 		if (activateWithNewMessages && qApp->activeWindow() && !isMinimized())
-		{
 			_activateWindow(this);
-		}
 		else if (blinkChatTitle)
 		{
 			if (!title_timer->isActive())
