@@ -28,8 +28,6 @@ private:
 private slots:
 	void updateTitle();
 
-	void activationChange();
-
 protected:
 	/**
 		\fn virtual void closeEvent(QCloseEvent* e)

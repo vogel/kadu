@@ -407,13 +407,10 @@ void KaduWindow::changeEvent(QEvent *event)
 {
 	MainWindow::changeEvent(event);
 	if (event->type() == QEvent::ActivationChange)
-		QTimer::singleShot(1, this, SLOT(activationChange()));
-}
-
-void KaduWindow::activationChange()
-{
-	if (!_isActiveWindow(this))
-		ContactsWidget->clearFilter();
+	{
+		if (!_isActiveWindow(this))
+			ContactsWidget->clearFilter();
+	}
 }
 
 bool KaduWindow::supportsActionType(ActionDescription::ActionType type)

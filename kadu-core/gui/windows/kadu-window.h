@@ -113,8 +113,6 @@ private slots:
 	void createRecentChatsMenu();
 	void openRecentChats(QAction *action);
 
-	void activationChange();
-
 protected:
 	virtual void closeEvent(QCloseEvent *);
 	virtual void keyPressEvent(QKeyEvent *);
