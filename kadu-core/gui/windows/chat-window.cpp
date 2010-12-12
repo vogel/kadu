@@ -242,21 +242,23 @@ void ChatWindow::showNewMessagesNumInTitle()
 		setWindowTitle('[' + QString::number(currentChatWidget->newMessagesCount()) + "] " + currentChatWidget->title());
 }
 
-void ChatWindow::windowActivationChange(bool b)
+void ChatWindow::changeEvent(QEvent *event)
 {
-	kdebugf();
-	if (_isActiveWindow(this))
+	QWidget::changeEvent(event);
+	if (event->type() == QEvent::ActivationChange)
 	{
-		currentChatWidget->markAllMessagesRead();
-		setWindowTitle(currentChatWidget->title());
+		kdebugf();
+		if (_isActiveWindow(this))
+		{
+			currentChatWidget->markAllMessagesRead();
+			setWindowTitle(currentChatWidget->title());
 
-		if (title_timer->isActive())
 			title_timer->stop();
 
-		if (!b)
 			emit chatWidgetActivated(currentChatWidget);
+		}
+		kdebugf2();
 	}
-	kdebugf2();
 }
 
 void ChatWindow::alertNewMessage()

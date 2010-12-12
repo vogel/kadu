@@ -220,16 +220,20 @@ void TabWidget::dropEvent(QDropEvent* e)
 	kdebugf2();
 }
 
-void TabWidget::windowActivationChange(bool oldActive)
+void TabWidget::changeEvent(QEvent *event)
 {
-	kdebugf();
-	ChatWidget *chat = dynamic_cast<ChatWidget *>(currentWidget());
-	if (_isActiveWindow(this) && !oldActive && chat)
+	QTabWidget::changeEvent(event);
+	if (event->type() == QEvent::ActivationChange)
 	{
-		chat->markAllMessagesRead();
-		emit chatWidgetActivated(chat);
+		kdebugf();
+		ChatWidget *chat = dynamic_cast<ChatWidget *>(currentWidget());
+		if (_isActiveWindow(this) && chat)
+		{
+			chat->markAllMessagesRead();
+			emit chatWidgetActivated(chat);
+		}
+		kdebugf2();
 	}
-	kdebugf2();
 }
 
 void TabWidget::mouseDoubleClickEvent(QMouseEvent *e)
