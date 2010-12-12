@@ -20,12 +20,14 @@
 #include <QtCore/QtGlobal>
 
 #include "encryption-actions.h"
+#include "encryption-manager.h"
 #include "encryption-provider-manager.h"
 
 extern "C" int encryption_ng_init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
+	EncryptionManager::createInstance();
 	EncryptionProviderManager::createInstance();
 	EncryptionActions::registerActions();
 
@@ -36,4 +38,5 @@ extern "C" void encryption_ng_close()
 {
 	EncryptionActions::unregisterActions();
 	EncryptionProviderManager::destroyInstance();
+	EncryptionManager::destroyInstance();
 }

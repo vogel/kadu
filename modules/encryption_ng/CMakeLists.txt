@@ -1,11 +1,13 @@
 set (SOURCES
 	encryption-actions.cpp
+	encryption-manager.cpp
 	encryption-ng-module.cpp
 	encryption-provider-manager.cpp
 )
 
 set (MOC_SOURCES
 	encryption-actions.h
+	encryption-manager.h
 	encryption-provider.h
 	encryption-provider-manager.h
 )
