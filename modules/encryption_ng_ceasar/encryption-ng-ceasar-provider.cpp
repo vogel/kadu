@@ -51,6 +51,20 @@ EncryptionNgCeasarProvider::~EncryptionNgCeasarProvider()
 	CeasarEncryptor = 0;
 }
 
+bool EncryptionNgCeasarProvider::canDecrypt(const Chat &chat)
+{
+	Q_UNUSED(chat)
+
+	return true;
+}
+
+bool EncryptionNgCeasarProvider::canEncrypt(const Chat &chat)
+{
+	Q_UNUSED(chat)
+
+	return true;
+}
+
 Decryptor * EncryptionNgCeasarProvider::decryptor(const Chat &chat)
 {
 	Q_UNUSED(chat)

@@ -54,6 +54,24 @@ void EncryptionProviderManager::unregisterProvider(EncryptionProvider *provider)
 	Providers.removeAll(provider);
 }
 
+bool EncryptionProviderManager::canDecrypt(const Chat &chat)
+{
+	foreach (EncryptionProvider *provider, Providers)
+		if (provider->canDecrypt(chat))
+			return true;
+
+	return false;
+}
+
+bool EncryptionProviderManager::canEncrypt(const Chat &chat)
+{
+	foreach (EncryptionProvider *provider, Providers)
+		if (provider->canEncrypt(chat))
+			return true;
+
+	return false;
+}
+
 Decryptor * EncryptionProviderManager::decryptor(const Chat &chat)
 {
 	foreach (EncryptionProvider *provider, Providers)

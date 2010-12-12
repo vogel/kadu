@@ -45,6 +45,9 @@ public:
 	void registerProvider(EncryptionProvider *provider);
 	void unregisterProvider(EncryptionProvider *provider);
 
+	bool canEncrypt(const Chat &chat);
+	bool canDecrypt(const Chat &chat);
+
 	Encryptor * encryptor(const Chat &chat);
 	Decryptor * decryptor(const Chat &chat);
 

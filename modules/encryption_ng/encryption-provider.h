@@ -29,6 +29,9 @@ class EncryptionProvider
 public:
 	virtual ~EncryptionProvider() {}
 
+	virtual bool canEncrypt(const Chat &chat) = 0;
+	virtual bool canDecrypt(const Chat &chat) = 0;
+
 	virtual Encryptor * encryptor(const Chat &chat) = 0;
 	virtual Decryptor * decryptor(const Chat &chat) = 0;
 
