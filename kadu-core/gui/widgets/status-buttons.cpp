@@ -105,12 +105,18 @@ void StatusButtons::disableStatusName()
 
 void StatusButtons::statusContainerRegistered(StatusContainer *statusContainer)
 {
-	if (Buttons.contains(statusContainer))
-		return;
-
 	// first status container inserted
 	if (1 == StatusContainerManager::instance()->count())
 		statusContainerUnregistered(StatusContainerManager::instance());
+
+	/* This should be called at the beginning of this method but there is going
+	 * something strange that we have a statusContainer in Buttons but
+	 * StatusContainerManager::instance()->count() returns 1. Moving it here
+	 * fixed #1762.
+	 * TODO 0.6.7: Find out what's going wrong.
+	 */
+	if (Buttons.contains(statusContainer))
+		return;
 
 	disableStatusName(); // only disables if 
 
