@@ -16,8 +16,6 @@
 
 	bool _isActiveWindow( QWidget *window )
 	{
-		// wait for WM
-		usleep( 1000 );
 		// desktop
 		unsigned long desktopofwindow = X11_getDesktopOfWindow( QX11Info::display(), window->winId() );
 		if( ( desktopofwindow != X11_ALLDESKTOPS ) && ( desktopofwindow != X11_NODESKTOP ) && ( desktopofwindow != X11_getCurrentDesktop( QX11Info::display() ) ) )

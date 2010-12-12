@@ -246,22 +246,19 @@ void ChatWindow::changeEvent(QEvent *event)
 {
 	QWidget::changeEvent(event);
 	if (event->type() == QEvent::ActivationChange)
-		QTimer::singleShot(1, this, SLOT(activationChange()));
-}
-
-void ChatWindow::activationChange()
-{
-	kdebugf();
-	if (_isActiveWindow(this))
 	{
-		currentChatWidget->markAllMessagesRead();
-		setWindowTitle(currentChatWidget->title());
+		kdebugf();
+		if (_isActiveWindow(this))
+		{
+			currentChatWidget->markAllMessagesRead();
+			setWindowTitle(currentChatWidget->title());
 
-		title_timer->stop();
+			title_timer->stop();
 
-		emit chatWidgetActivated(currentChatWidget);
+			emit chatWidgetActivated(currentChatWidget);
+		}
+		kdebugf2();
 	}
-	kdebugf2();
 }
 
 void ChatWindow::alertNewMessage()
