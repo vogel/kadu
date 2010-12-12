@@ -23,7 +23,7 @@
 
 QByteArray EncryptionNgCeasarDecryptor::decrypt(const QByteArray &data)
 {
-	QByteArray result(data.size(), Qt::Uninitialized);
+	QByteArray result;
 	for (int i = 0, s = data.size(); i < s; i++)
 		result.append(data.at(i) - 1);
 	return result;
