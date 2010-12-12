@@ -90,6 +90,8 @@ SingleWindow::SingleWindow()
 		split->addWidget(kadu);
 	}
 
+	kadu->setMaximumWidth(QWIDGETSIZE_MAX);
+	tabs->setMaximumWidth(QWIDGETSIZE_MAX);
 	kadu->setMinimumWidth(170);
 	tabs->setMinimumWidth(200);
 
