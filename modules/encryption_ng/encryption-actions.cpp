@@ -17,9 +17,25 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "chat/chat.h"
+#include "gui/actions/action.h"
 #include "gui/actions/action-description.h"
 
+#include "encryption-provider-manager.h"
+
 #include "encryption-actions.h"
+
+void checkCanEncrypt(Action *action)
+{
+	Chat chat = action->chat();
+	if (!chat)
+	{
+		action->setEnabled(false);
+		return;
+	}
+
+	action->setEnabled(EncryptionProviderManager::instance()->canEncrypt(chat));
+}
 
 EncryptionActions * EncryptionActions::Instance = 0;
 
@@ -41,7 +57,8 @@ EncryptionActions::EncryptionActions()
 			ActionDescription::TypeChat, "encryptionAction",
 			this, SLOT(enableEncryptionActionActivated(QAction *, bool)),
 			"security-high", "security-low", tr("Enable encryption for this conversation"),
-			true, tr("Disable encryption for this conversation")
+			true, tr("Disable encryption for this conversation"),
+			checkCanEncrypt
 	);
 }
 
