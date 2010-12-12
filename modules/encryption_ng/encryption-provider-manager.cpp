@@ -22,6 +22,7 @@
 #include "encryptor.h"
 
 #include "encryption-provider-manager.h"
+#include <chat/chat-manager.h>
 
 EncryptionProviderManager * EncryptionProviderManager::Instance = 0;
 
@@ -47,11 +48,23 @@ EncryptionProviderManager::~EncryptionProviderManager()
 void EncryptionProviderManager::registerProvider(EncryptionProvider *provider)
 {
 	Providers.append(provider);
+
+	foreach (const Chat &chat, ChatManager::instance()->items())
+	{
+		emit canDecryptChanged(chat);
+		emit canEncryptChanged(chat);
+	}
 }
 
 void EncryptionProviderManager::unregisterProvider(EncryptionProvider *provider)
 {
 	Providers.removeAll(provider);
+
+	foreach (const Chat &chat, ChatManager::instance()->items())
+	{
+		emit canDecryptChanged(chat);
+		emit canEncryptChanged(chat);
+	}
 }
 
 bool EncryptionProviderManager::canDecrypt(const Chat &chat)

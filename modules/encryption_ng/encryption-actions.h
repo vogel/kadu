@@ -23,6 +23,8 @@
 #include <QtCore/QObject>
 #include <QtGui/QAction>
 
+#include "chat/chat.h"
+
 class ActionDescription;
 
 class EncryptionActions : public QObject
@@ -38,6 +40,8 @@ class EncryptionActions : public QObject
 	virtual ~EncryptionActions();
 
 private slots:
+	void canDecryptChanged(const Chat &chat);
+
 	void enableEncryptionActionActivated(QAction *sender, bool toggled);
 
 public:

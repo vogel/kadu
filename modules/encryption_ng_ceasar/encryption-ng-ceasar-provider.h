@@ -24,6 +24,8 @@
 
 class EncryptionNgCeasarProvider : public EncryptionProvider
 {
+	Q_OBJECT
+
 	static EncryptionNgCeasarProvider * Instance;
 
 	Decryptor *CeasarDecryptor;

@@ -6,6 +6,8 @@ set (SOURCES
 
 set (MOC_SOURCES
 	encryption-actions.h
+	encryption-provider.h
+	encryption-provider-manager.h
 )
 
 set (TRANSLATION_SOURCES

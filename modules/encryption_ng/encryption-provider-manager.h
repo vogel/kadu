@@ -20,15 +20,18 @@
 #ifndef ENCRYPTION_PROVIDER_MANAGER_H
 #define ENCRYPTION_PROVIDER_MANAGER_H
 
-#include <QtCore/QList>
+#include <QtCore/QObject>
 
-class Chat;
+#include "chat/chat.h"
+
 class Decryptor;
 class Encryptor;
 class EncryptionProvider;
 
-class EncryptionProviderManager
+class EncryptionProviderManager : public QObject
 {
+	Q_OBJECT
+
 	static EncryptionProviderManager * Instance;
 
 	QList<EncryptionProvider *> Providers;
@@ -50,6 +53,10 @@ public:
 
 	Encryptor * encryptor(const Chat &chat);
 	Decryptor * decryptor(const Chat &chat);
+
+signals:
+	void canEncryptChanged(const Chat &chat);
+	void canDecryptChanged(const Chat &chat);
 
 };
 

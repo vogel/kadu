@@ -20,12 +20,17 @@
 #ifndef ENCRYPTION_PROVIDER_H
 #define ENCRYPTION_PROVIDER_H
 
-class Chat;
+#include <QtCore/QObject>
+
+#include "chat/chat.h"
+
 class Decryptor;
 class Encryptor;
 
-class EncryptionProvider
+class EncryptionProvider : public QObject
 {
+	Q_OBJECT
+
 public:
 	virtual ~EncryptionProvider() {}
 
@@ -34,6 +39,10 @@ public:
 
 	virtual Encryptor * encryptor(const Chat &chat) = 0;
 	virtual Decryptor * decryptor(const Chat &chat) = 0;
+
+signals:
+	void canEncryptChanged(const Chat &chat);
+	void canDecryptChanged(const Chat &chat);
 
 };
 

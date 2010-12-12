@@ -60,10 +60,23 @@ EncryptionActions::EncryptionActions()
 			true, tr("Disable encryption for this conversation"),
 			checkCanEncrypt
 	);
+
+	connect(EncryptionProviderManager::instance(), SIGNAL(canDecryptChanged(Chat)), this, SLOT(canDecryptChanged(Chat)));
 }
 
 EncryptionActions::~EncryptionActions()
 {
+	disconnect(EncryptionProviderManager::instance(), SIGNAL(canDecryptChanged(Chat)), this, SLOT(canDecryptChanged(Chat)));
+}
+
+void EncryptionActions::canDecryptChanged(const Chat &chat)
+{
+	// there is only as much actions as chat windows, so this is not really N^2 when
+	// this slot is called for each chat when new encryption implementation is loaded/unloaded
+	// so no need to optimize it
+	foreach (Action *action, EnableEncryptionActionDescription->actions())
+		if (action->chat() == chat)
+			action->checkState();
 }
 
 void EncryptionActions::enableEncryptionActionActivated(QAction *sender, bool toggled)
