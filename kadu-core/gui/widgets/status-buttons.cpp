@@ -105,7 +105,7 @@ void StatusButtons::disableStatusName()
 
 void StatusButtons::statusContainerRegistered(StatusContainer *statusContainer)
 {
-	if (Buttons.contains(statusContainer) || !Layout)
+	if (Buttons.contains(statusContainer))
 		return;
 
 	// first status container inserted
