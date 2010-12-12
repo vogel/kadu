@@ -131,7 +131,7 @@ void DccManager::setUpDcc()
 	}
 
 	MainSocketNotifiers = new DccSocketNotifiers(Protocol, this);
-	SocketNotifiers = QList<DccSocketNotifiers *>();
+	SocketNotifiers.clear();
 
 	QHostAddress DCCIP;
 

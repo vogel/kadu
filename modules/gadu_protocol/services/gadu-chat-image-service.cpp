@@ -66,7 +66,7 @@ void GaduChatImageService::loadImageContent(ImageToSend &image)
 	QFile imageFile(image.fileName);
 	if (!imageFile.open(QIODevice::ReadOnly))
 	{
-		image.content = QByteArray();
+		image.content.clear();
 		kdebugm(KDEBUG_ERROR, "Error opening file\n");
 		return;
 	}
@@ -76,7 +76,7 @@ void GaduChatImageService::loadImageContent(ImageToSend &image)
 
 	if (data.length() != imageFile.size())
 	{
-		image.content = QByteArray();
+		image.content.clear();
 		kdebugm(KDEBUG_ERROR, "Error reading file\n");
 		return;
 	}
@@ -108,7 +108,7 @@ void GaduChatImageService::handleEventImageRequest(struct gg_event *e)
 
 	gg_image_reply(Protocol->gaduSession(), e->event.image_request.sender, qPrintable(image.fileName), image.content.constData(), image.content.length());
 
-	image.content = QByteArray();
+	image.content.clear();
 	image.lastSent = QDateTime::currentDateTime();
 }
 

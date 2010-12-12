@@ -229,8 +229,8 @@ void BuddyShared::aboutToBeRemoved()
 	foreach (Contact contact, Contacts)
 		contact.setOwnerBuddy(Buddy::null);
 
-	Contacts = QList<Contact>();
-	Groups = QList<Group>();
+	Contacts.clear();
+	Groups.clear();
 
 	AvatarManager::instance()->removeItem(BuddyAvatar);
 	BuddyAvatar = Avatar::null;

@@ -29,7 +29,7 @@ DNSHandler::DNSHandler(const QString &marker, const QHostAddress &address)
 	kdebugf();
 //	kdebugm(KDEBUG_WARNING, ">>>>>>>>>>%s\n", qPrintable(marker));
 
-	if (address == QHostAddress())
+	if (address.isNull())
 	{
 		kdebugmf(KDEBUG_WARNING, "NULL ip address!\n");
 	}
@@ -54,7 +54,7 @@ void DNSHandler::resultsReady(QHostInfo hostInfo)
 		emit result(marker, QString::null);
 	else
 		emit result(marker, hostInfo.hostName());
-		
+
 
 	deleteLater();
 	kdebugf2();
