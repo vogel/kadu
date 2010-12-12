@@ -21,6 +21,7 @@
 #include "gui/actions/action.h"
 #include "gui/actions/action-description.h"
 
+#include "encryption-manager.h"
 #include "encryption-provider-manager.h"
 
 #include "encryption-actions.h"
@@ -81,6 +82,12 @@ void EncryptionActions::canDecryptChanged(const Chat &chat)
 
 void EncryptionActions::enableEncryptionActionActivated(QAction *sender, bool toggled)
 {
-	Q_UNUSED(sender)
-	Q_UNUSED(toggled)
+	Action *action = dynamic_cast<Action *>(sender);
+	if (!action)
+		return;
+
+	if (!action->chat())
+		return;
+
+	EncryptionManager::instance()->setEnableEncryption(action->chat(), toggled);
 }

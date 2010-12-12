@@ -21,6 +21,7 @@
 #include "protocols/protocol.h"
 
 #include "encryption-chat-data.h"
+#include "encryption-provider-manager.h"
 #include "encryptor.h"
 
 #include "encryption-manager.h"
@@ -76,6 +77,20 @@ void EncryptionManager::accountUnregistered(Account account)
 		disconnect(chatService, SIGNAL(filterOutgoingMessage(Chat,QByteArray&,bool&)),
 				this, SLOT(filterOutgoingMessage(Chat,QByteArray&,bool&)));
 	}
+}
+
+void EncryptionManager::setEnableEncryption(const Chat &chat, bool enable)
+{
+	// TODO: find out life-cycle of encryptor-decryptor classes
+	EncryptionChatData *encryptionChatData = chat.data()->moduleData<EncryptionChatData>("encryption-ng", true);
+	if (enable)
+	{
+		Encryptor *encryptor = EncryptionProviderManager::instance()->encryptor(chat);
+		encryptionChatData->setEncryptor(encryptor);
+	}
+	else
+		// destroy it here or sth?
+		encryptionChatData->setEncryptor(0);
 }
 
 void EncryptionManager::filterIncomingMessage(Chat chat, Contact sender, const QString &message, time_t time, bool &ignore)
