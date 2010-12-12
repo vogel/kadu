@@ -22,7 +22,7 @@
 
 #include <QtCore/QList>
 
-class Contact;
+class Chat;
 class Decryptor;
 class Encryptor;
 class EncryptionProvider;
@@ -45,8 +45,8 @@ public:
 	void registerProvider(EncryptionProvider *provider);
 	void unregisterProvider(EncryptionProvider *provider);
 
-	Encryptor * encryptor(const Contact &contact);
-	Decryptor * decryptor(const Contact &contact);
+	Encryptor * encryptor(const Chat &chat);
+	Decryptor * decryptor(const Chat &chat);
 
 };
 

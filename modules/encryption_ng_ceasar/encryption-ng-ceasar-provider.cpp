@@ -51,16 +51,16 @@ EncryptionNgCeasarProvider::~EncryptionNgCeasarProvider()
 	CeasarEncryptor = 0;
 }
 
-Decryptor * EncryptionNgCeasarProvider::decryptor(const Contact &contact)
+Decryptor * EncryptionNgCeasarProvider::decryptor(const Chat &chat)
 {
-	Q_UNUSED(contact)
+	Q_UNUSED(chat)
 
 	return CeasarDecryptor;
 }
 
-Encryptor * EncryptionNgCeasarProvider::encryptor(const Contact &contact)
+Encryptor * EncryptionNgCeasarProvider::encryptor(const Chat &chat)
 {
-	Q_UNUSED(contact)
+	Q_UNUSED(chat)
 
 	return CeasarEncryptor;
 }

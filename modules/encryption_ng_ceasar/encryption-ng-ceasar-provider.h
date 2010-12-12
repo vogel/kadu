@@ -38,8 +38,8 @@ public:
 
 	static EncryptionNgCeasarProvider * instance() { return Instance; }
 
-	virtual Decryptor * decryptor(const Contact &contact);
-	virtual Encryptor * encryptor(const Contact &contact);
+	virtual Decryptor * decryptor(const Chat &chat);
+	virtual Encryptor * encryptor(const Chat &chat);
 
 };
 

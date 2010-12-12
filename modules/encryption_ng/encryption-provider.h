@@ -20,7 +20,7 @@
 #ifndef ENCRYPTION_PROVIDER_H
 #define ENCRYPTION_PROVIDER_H
 
-class Contact;
+class Chat;
 class Decryptor;
 class Encryptor;
 
@@ -29,8 +29,8 @@ class EncryptionProvider
 public:
 	virtual ~EncryptionProvider() {}
 
-	virtual Encryptor * encryptor(const Contact &contact) = 0;
-	virtual Decryptor * decryptor(const Contact &contact) = 0;
+	virtual Encryptor * encryptor(const Chat &chat) = 0;
+	virtual Decryptor * decryptor(const Chat &chat) = 0;
 
 };
 

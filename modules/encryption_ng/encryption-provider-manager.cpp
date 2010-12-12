@@ -54,11 +54,11 @@ void EncryptionProviderManager::unregisterProvider(EncryptionProvider *provider)
 	Providers.removeAll(provider);
 }
 
-Decryptor * EncryptionProviderManager::decryptor(const Contact &contact)
+Decryptor * EncryptionProviderManager::decryptor(const Chat &chat)
 {
 	foreach (EncryptionProvider *provider, Providers)
 	{
-		Decryptor *result = provider->decryptor(contact);
+		Decryptor *result = provider->decryptor(chat);
 		if (result)
 			return result;
 	}
@@ -66,11 +66,11 @@ Decryptor * EncryptionProviderManager::decryptor(const Contact &contact)
 	return 0;
 }
 
-Encryptor * EncryptionProviderManager::encryptor(const Contact &contact)
+Encryptor * EncryptionProviderManager::encryptor(const Chat &chat)
 {
 	foreach (EncryptionProvider *provider, Providers)
 	{
-		Encryptor *result = provider->encryptor(contact);
+		Encryptor *result = provider->encryptor(chat);
 		if (result)
 			return result;
 	}
