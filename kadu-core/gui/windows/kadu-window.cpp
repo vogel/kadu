@@ -74,6 +74,8 @@ KaduWindow::KaduWindow(QWidget *parent) :
 {
 	setWindowRole("kadu-main");
 
+	WindowParent = parent;
+
 #ifdef Q_OS_MAC
 	/* Dorr: workaround for Qt window geometry bug when unified toolbars enabled */
 	setUnifiedTitleAndToolBarOnMac(false);
@@ -410,6 +412,11 @@ void KaduWindow::changeEvent(QEvent *event)
 	{
 		if (!_isActiveWindow(this))
 			ContactsWidget->clearFilter();
+	}
+	if (event->type() == QEvent::ParentChange)
+	{
+		emit parentChanged(WindowParent);
+		WindowParent = dynamic_cast<QWidget *>(parent());
 	}
 }
 
