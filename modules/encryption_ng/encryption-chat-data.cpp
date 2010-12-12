@@ -17,20 +17,36 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ENCRYPTOR_H
-#define ENCRYPTOR_H
+#include "encryptor.h"
 
-#include <QtCore/QObject>
+#include "encryption-chat-data.h"
 
-class Encryptor : public QObject
+EncryptionChatData::EncryptionChatData() :
+		ChatEncryptor(0)
 {
-	Q_OBJECT
+}
 
-public:
-	virtual ~Encryptor() {}
+EncryptionChatData::~EncryptionChatData()
+{
+}
 
-	virtual QByteArray encrypt(const QByteArray &data) = 0;
+void EncryptionChatData::encryptorDestroyed()
+{
+	ChatEncryptor = 0;
+}
 
-};
+void EncryptionChatData::setEncryptor(Encryptor *encryptor)
+{
+	if (ChatEncryptor)
+		disconnect(ChatEncryptor, SIGNAL(destroyed(QObject*)), this, SLOT(encryptorDestroyed()));
 
-#endif // ENCRYPTOR_H
+	ChatEncryptor = encryptor;
+
+	if (ChatEncryptor)
+		connect(ChatEncryptor, SIGNAL(destroyed(QObject*)), this, SLOT(encryptorDestroyed()));
+}
+
+Encryptor * EncryptionChatData::encryptor()
+{
+	return ChatEncryptor;
+}

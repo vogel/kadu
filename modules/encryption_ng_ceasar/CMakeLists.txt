@@ -6,6 +6,8 @@ set (SOURCES
 )
 
 set (MOC_SOURCES
+	encryption-ng-ceasar-decryptor.h
+	encryption-ng-ceasar-encryptor.h
 	encryption-ng-ceasar-provider.h
 )
 

@@ -1,15 +1,19 @@
 set (SOURCES
 	encryption-actions.cpp
+	encryption-chat-data.cpp
 	encryption-manager.cpp
 	encryption-ng-module.cpp
 	encryption-provider-manager.cpp
 )
 
 set (MOC_SOURCES
+	decryptor.h
 	encryption-actions.h
+	encryption-chat-data.h
 	encryption-manager.h
 	encryption-provider.h
 	encryption-provider-manager.h
+	encryptor.h
 )
 
 set (TRANSLATION_SOURCES

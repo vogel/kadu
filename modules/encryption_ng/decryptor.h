@@ -20,10 +20,12 @@
 #ifndef DECRYPTOR_H
 #define DECRYPTOR_H
 
-class QByteArray;
+#include <QtCore/QObject>
 
-class Decryptor
+class Decryptor : public QObject
 {
+	Q_OBJECT
+
 public:
 	virtual ~Decryptor() {}
 

@@ -17,20 +17,32 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ENCRYPTOR_H
-#define ENCRYPTOR_H
+#ifndef ENCRYPTION_CHAT_DATA_H
+#define ENCRYPTION_CHAT_DATA_H
 
 #include <QtCore/QObject>
+#include <QtGui/QAction>
 
-class Encryptor : public QObject
+#include "chat/chat.h"
+
+class Encryptor;
+
+class EncryptionChatData : public QObject
 {
 	Q_OBJECT
 
-public:
-	virtual ~Encryptor() {}
+	Encryptor *ChatEncryptor;
 
-	virtual QByteArray encrypt(const QByteArray &data) = 0;
+private slots:
+	void encryptorDestroyed();
+
+public:
+	EncryptionChatData();
+	virtual ~EncryptionChatData();
+
+	void setEncryptor(Encryptor *encryptor);
+	Encryptor * encryptor();
 
 };
 
-#endif // ENCRYPTOR_H
+#endif // ENCRYPTION_CHAT_DATA_H

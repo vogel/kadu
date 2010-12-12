@@ -24,6 +24,7 @@
 
 class EncryptionNgCeasarDecryptor : public Decryptor
 {
+	Q_OBJECT
 
 public:
 	virtual ~EncryptionNgCeasarDecryptor() {}
