@@ -47,6 +47,7 @@ extern "C" KADU_EXPORT void single_window_close()
 
 SingleWindowManager::SingleWindowManager()
 {
+	config_file.addVariable("SingleWindow", "RosterPosition", 0);
 	singleWindow = new SingleWindow();
 }
 
