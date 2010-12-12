@@ -262,7 +262,7 @@ SystemInfo::SystemInfo()
 			break;
 		Timezone += QChar(w);
 	}
-	OsFullName = QString();
+	OsFullName.clear();
 	OsName = "Windows";
 	OSVERSIONINFOEX osvi;
 	BOOL bOsVersionInfoEx;

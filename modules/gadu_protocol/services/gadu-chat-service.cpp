@@ -366,7 +366,7 @@ void GaduChatService::removeTimeoutUndeliveredMessages()
 // TODO: move to const or something
 	#define MAX_DELIVERY_TIME 60
 
-	QDateTime now = QDateTime();
+	QDateTime now;
 	QList<int> toRemove;
 
 	QHash<int, Message>::const_iterator message = UndeliveredMessages.constBegin();

@@ -35,7 +35,7 @@ ServerInfoManager::ServerInfoManager(XMPP::Client *client, QObject *parent) :
 void ServerInfoManager::reset()
 {
 	hasPEP_ = false;
-	multicastService_ = QString();
+	multicastService_.clear();
 }
 
 void ServerInfoManager::initialize()

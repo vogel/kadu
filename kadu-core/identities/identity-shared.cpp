@@ -91,7 +91,7 @@ void IdentityShared::store()
 
 void IdentityShared::aboutToBeRemoved()
 {
-	Accounts = QList<Account>();
+	Accounts.clear();
 }
 
 void IdentityShared::addAccount(Account account)

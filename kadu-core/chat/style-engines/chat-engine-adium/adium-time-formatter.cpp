@@ -356,7 +356,7 @@ while (length > NUM) \
 			if (!error)
 				return str;
 
-			str = QString();
+			str.clear();
 		}
 
 		WeekDate week_date(date);
