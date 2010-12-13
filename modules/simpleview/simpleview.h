@@ -20,8 +20,7 @@
 #define SIMPLEVIEW_H
 
 #include <QtCore/QObject>
-#include <QtCore/QPoint>
-#include <QtCore/QSize>
+#include <QtCore/QRect>
 
 #include "configuration/configuration-aware-object.h"
 #include "os/generic/compositing-aware-object.h"
@@ -48,8 +47,7 @@ class SimpleView :
 	bool SimpleViewActive;
 	bool Borderless;
 
-	QPoint BackupPosition;
-	QSize BackupSize;
+	QRect DiffRect;
 	QString BuddiesListViewStyle;
 
 	QAction *DockAction;
