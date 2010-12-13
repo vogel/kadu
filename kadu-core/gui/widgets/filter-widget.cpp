@@ -208,8 +208,10 @@ void FilterWidget::setFilter(const QString &filter)
 	if (text().isEmpty())
 		setText(filter);
 	activate();
-#else
+#elif !defined(Q_WS_MAEMO_5)
 	NameFilterEdit->setText(filter);
+#else
+	Q_UNUSED(filter);
 #endif
 }
 
