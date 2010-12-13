@@ -18,7 +18,7 @@
  */
 
 #ifndef ENCRYPTION_NG_CEASAR_PROVIDER_H
-#define ENCRYPTION_NG_CEASAR_ENCRYPTOR_H
+#define ENCRYPTION_NG_CEASAR_PROVIDER_H
 
 #include "modules/encryption_ng/encryption-provider.h"
 
@@ -26,7 +26,7 @@ class EncryptionNgCeasarProvider : public EncryptionProvider
 {
 	Q_OBJECT
 
-	static EncryptionNgCeasarProvider * Instance;
+	static EncryptionNgCeasarProvider *Instance;
 
 	Decryptor *CeasarDecryptor;
 	Encryptor *CeasarEncryptor;
@@ -48,4 +48,4 @@ public:
 
 };
 
-#endif // ENCRYPTION_NG_CEASAR_ENCRYPTOR_H
+#endif // ENCRYPTION_NG_CEASAR_PROVIDER_H
