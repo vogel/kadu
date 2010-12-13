@@ -7,6 +7,7 @@
 * gadu: fixed almost always not showing reveived images in chat window (it was broken in betas 11 and 12) (beevvy)
 * gui: now ChangeLog is nicely highlighted in About window (beevvy)
 * gui: #1762 fixed: fake identity "All" is displayed when it shouldn't be in certain circumstances (beevvy)
+* gui: #1760 fixed: remove ability to set custom shortcut for "Send Message" action (beevvy)
 
 +++ version 0.6.6-beta12
 * gui: #1745 fixed: invalid encoding of text in About window on Windows (beevvy)

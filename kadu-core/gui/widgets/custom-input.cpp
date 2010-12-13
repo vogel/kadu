@@ -61,9 +61,9 @@ void CustomInput::keyPressEvent(QKeyEvent *e)
 	 * 1) autosend_enabled -> new line is entered
 	 * 2) message is sent
 	 */
-	bool isCtrlReturn = ((e->modifiers() & Qt::ControlModifier) && e->key() == Qt::Key_Return);
+	bool isCtrlReturn = (e->modifiers() == Qt::ControlModifier && e->key() == Qt::Key_Return);
 
-	if ((autosend_enabled && (HotKey::shortCut(e, "ShortCuts", "chat_send") || e->key() == Qt::Key_Enter))
+	if ((autosend_enabled && e->modifiers() == Qt::NoModifier && (e->key() == Qt::Key_Return || e->key() == Qt::Key_Enter))
 			|| (!autosend_enabled && isCtrlReturn))
 	{
 		kdebugmf(KDEBUG_INFO, "emit sendMessage()\n");

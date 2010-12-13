@@ -101,7 +101,7 @@ ChatWidgetActions::ChatWidgetActions(QObject *parent) : QObject(parent)
 	AutoSend = new ActionDescription(0,
 		ActionDescription::TypeChat, "autoSendAction",
 		this, SLOT(autoSendActionActivated(QAction *, bool)),
-		"kadu_icons/kadu-enter", "kadu_icons/kadu-enter", tr("%1 Sends Message").arg(config_file.readEntry("ShortCuts", "chat_send")), true
+		"kadu_icons/kadu-enter", "kadu_icons/kadu-enter", tr("Return Sends Message"), true
 	);
 	connect(AutoSend, SIGNAL(actionCreated(Action *)), this, SLOT(autoSendActionCreated(Action *)));
 
