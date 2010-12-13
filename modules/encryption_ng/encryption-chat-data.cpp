@@ -38,12 +38,12 @@ void EncryptionChatData::encryptorDestroyed()
 void EncryptionChatData::setEncryptor(Encryptor *encryptor)
 {
 	if (ChatEncryptor)
-		disconnect(ChatEncryptor, SIGNAL(destroyed(QObject*)), this, SLOT(encryptorDestroyed()));
+		disconnect(ChatEncryptor, SIGNAL(destroyed()), this, SLOT(encryptorDestroyed()));
 
 	ChatEncryptor = encryptor;
 
 	if (ChatEncryptor)
-		connect(ChatEncryptor, SIGNAL(destroyed(QObject*)), this, SLOT(encryptorDestroyed()));
+		connect(ChatEncryptor, SIGNAL(destroyed()), this, SLOT(encryptorDestroyed()));
 }
 
 Encryptor * EncryptionChatData::encryptor()

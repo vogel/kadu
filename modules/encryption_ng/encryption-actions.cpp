@@ -26,7 +26,7 @@
 
 #include "encryption-actions.h"
 
-void checkCanEncrypt(Action *action)
+static void checkCanEncrypt(Action *action)
 {
 	Chat chat = action->chat();
 	if (!chat)
