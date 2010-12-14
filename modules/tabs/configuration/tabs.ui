@@ -12,8 +12,8 @@
 			</group-box>
 			<group-box name="Look">
 				<check-box caption="Show &quot;New Tab&quot; button" config-section="Tabs" config-item="OpenChatButton" />
-				<check-box caption="Show &quot;Close current Tab&quot; button" config-section="Tabs" config-item="CloseButton" />
-				<check-box caption="Close button on each tab" config-section="Tabs" config-item="CloseButtonOnTab" />
+				<check-box caption="Show common &quot;Close Current Tab&quot; button in the corner" config-section="Tabs" config-item="CloseButton" />
+				<check-box caption="Show Close button on each tab" config-section="Tabs" config-item="CloseButtonOnTab" />
 			</group-box>
 		</tab>
 	</section>
