@@ -30,6 +30,8 @@
 
 #include "gui/widgets/progress-label.h"
 
+#include "modules/history/history.h"
+
 #include "sms-internal-sender.h"
 
 #include "sms-progress-window.h"
@@ -37,7 +39,8 @@
 SmsProgressWindow::SmsProgressWindow(SmsSender *sender, QWidget *parent) :
 		ProgressWindow(parent), TokenLabel(0), TokenEdit(0), TokenAcceptButton(0), Sender(sender)
 {
-	connect(Sender, SIGNAL(finished(QString)), this, SLOT(senderFinished(QString)));
+	connect(Sender, SIGNAL(failed(const QString &)), this, SLOT(sendingFailed(const QString &)));
+	connect(Sender, SIGNAL(succeed(const QString &)), this, SLOT(sendingSucceed(const QString &)));
 
 	Sender->setParent(this);
 	Sender->setTokenReader(this);
@@ -101,10 +104,15 @@ void SmsProgressWindow::tokenValueEntered()
 	container()->layout()->invalidate();
 }
 
-void SmsProgressWindow::senderFinished(const QString &errorMessage)
+void SmsProgressWindow::sendingFailed(const QString &errorMessage)
 {
-	if (errorMessage.isEmpty())
-		setState(ProgressIcon::StateFinished, tr("Sms sent successfully"));
-	else
-		setState(ProgressIcon::StateFailed, errorMessage);
+	setState(ProgressIcon::StateFailed, errorMessage);
+}
+
+void SmsProgressWindow::sendingSucceed(const QString &message)
+{
+	if (History::instance()->currentStorage())
+		History::instance()->currentStorage()->appendSms(Sender->number(), message);
+
+	setState(ProgressIcon::StateFinished, tr("Sms sent successfully"));
 }

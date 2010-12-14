@@ -537,10 +537,11 @@ void HistoryWindow::dateCurrentChanged(const QModelIndex &current, const QModelI
 		case HistoryTypeSms:
 		{
 			QString recipient = treeItem.smsRecipient();
-			QList<QString> sms;
+			QList<Message> sms;
 			if (!recipient.isEmpty() && date.isValid())
 				sms = History::instance()->sms(recipient, date);
-			ContentBrowser->appendMessages(smsToMessage(sms));
+			ContentBrowser->setChat(Chat::null);
+			ContentBrowser->appendMessages(sms);
 			QTimer::singleShot(500, this, SLOT(selectQueryText()));
 			break;
 		}
@@ -568,23 +569,6 @@ QList<Message> HistoryWindow::statusesToMessages(QList<TimedStatus> statuses)
 
 		message.setReceiveDate(timedStatus.dateTime());
 		message.setSendDate(timedStatus.dateTime());
-
-		messages.append(message);
-	}
-
-	return messages;
-}
-
-QList<Message> HistoryWindow::smsToMessage(QList<QString> sms)
-{
-	QList<Message> messages;
-
-	foreach (QString oneSms, sms)
-	{
-		Message message = Message::create();
-		message.setStatus(Message::StatusSent);
-		message.setType(Message::TypeReceived);
-		message.setContent(oneSms);
 
 		messages.append(message);
 	}

@@ -136,8 +136,7 @@ void HistoryImportThread::importEntry(Chat chat, const HistoryEntry &entry)
 			break;
 		}
 		case HistoryEntry::SmsSend:
-			// TODO 0.6.6: check correctness of this call and uncomment
-			//History::instance()->currentStorage()->appendSms(entry.Mobile, entry.Content, entry.Date);
+			History::instance()->currentStorage()->appendSms(entry.Mobile, entry.Content, entry.Date);
 			ImportedEntries++;
 			break;
 		default:

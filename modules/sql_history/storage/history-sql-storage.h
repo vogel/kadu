@@ -62,6 +62,7 @@ class HistorySqlStorage : public HistoryStorage, CrashAwareObject
 	void executeQuery(QSqlQuery query);
 	QList<Message> messagesFromQuery(Chat chat, QSqlQuery query);
 	QList<TimedStatus> statusesFromQuery(QSqlQuery query);
+	QList<Message> smsFromQuery(QSqlQuery query);
 
 private slots:
 	virtual void messageReceived(const Message &message);
@@ -90,7 +91,7 @@ public:
 
 	virtual QList<QString> smsRecipientsList(HistorySearchParameters search);
 	virtual QList<QDate> datesForSmsRecipient(const QString &recipient, HistorySearchParameters search);
-	virtual QList<QString> sms(const QString &recipient, QDate date = QDate(), int limit = 0);
+	virtual QList<Message> sms(const QString &recipient, QDate date = QDate(), int limit = 0);
 	virtual int smsCount(const QString &recipient, QDate date = QDate());
 
 	virtual void appendMessage(const Message &message);

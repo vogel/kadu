@@ -47,7 +47,8 @@ class SmsProgressWindow : public ProgressWindow, public TokenReader
 
 private slots:
     void tokenValueEntered();
-    void senderFinished(const QString &errorMessage);
+	void sendingFailed(const QString &errorMessage);
+	void sendingSucceed(const QString &message);
 
 public:
 	explicit SmsProgressWindow(SmsSender *sender, QWidget *parent = 0);

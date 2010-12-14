@@ -63,7 +63,7 @@ public:
 
 	virtual QList<QString> smsRecipientsList(HistorySearchParameters search) = 0;
 	virtual QList<QDate> datesForSmsRecipient(const QString &recipient, HistorySearchParameters search) = 0;
-	virtual QList<QString> sms(const QString &recipient, QDate date = QDate(), int limit = 0) = 0;
+	virtual QList<Message> sms(const QString &recipient, QDate date = QDate(), int limit = 0) = 0;
 	virtual int smsCount(const QString &recipient, QDate date = QDate()) = 0;
 
 	virtual void appendMessage(const Message &message) = 0;

@@ -152,7 +152,7 @@ QString KaduChatStyleEngine::formatMessage(MessageRenderInfo *message, MessageRe
 	if (msg.type() == Message::TypeSystem)
 	{
 		separatorSize = ChatStylesManager::instance()->paragraphSeparator();
-		format = ChatSyntaxWithoutHeader;
+		format = ChatSyntaxWithHeader;
 
 		message->setSeparatorSize(separatorSize);
 
@@ -193,7 +193,7 @@ QString KaduChatStyleEngine::formatMessage(MessageRenderInfo *message, MessageRe
 
 void KaduChatStyleEngine::repaintMessages(HtmlMessagesRenderer *renderer)
 {
-	if (!renderer->chat())
+	if (!renderer)
 		return;
 
 	QString text = QString(

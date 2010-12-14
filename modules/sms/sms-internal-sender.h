@@ -33,7 +33,6 @@ class SmsInternalSender : public SmsSender
 	Q_OBJECT
 
 	QString GatewayId;
-	QString Message;
 
 	QNetworkReply *TokenReply;
 

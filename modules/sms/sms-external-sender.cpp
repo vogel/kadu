@@ -54,6 +54,8 @@ QStringList SmsExternalSender::buildProgramArguments(const QString &message)
 
 void SmsExternalSender::sendMessage(const QString &message)
 {
+	Message = message;
+
 	QString smsAppPath = config_file.readEntry("SMS", "SmsApp");
 
 	Process = new QProcess(this);
@@ -61,7 +63,7 @@ void SmsExternalSender::sendMessage(const QString &message)
 
 	if (!Process->waitForStarted())
 	{
-		emit finished(tr("Could not spawn child process. Check if the program is functional"));
+		emit failed(tr("Could not spawn child process. Check if the program is functional"));
 		delete Process;
 		Process = 0;
 		return;
@@ -73,9 +75,9 @@ void SmsExternalSender::sendMessage(const QString &message)
 void SmsExternalSender::processFinished()
 {
 	if (QProcess::NormalExit == Process->exitStatus())
-		emit finished("");
+		emit succeed(Message);
 	else
-		emit finished(tr("The process exited abnormally. The SMS may not be sent"));
+		emit failed(tr("The process exited abnormally. The SMS may not be sent"));
 
 	delete Process;
 	Process = 0;
