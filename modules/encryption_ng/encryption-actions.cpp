@@ -57,8 +57,8 @@ EncryptionActions::EncryptionActions()
 	EnableEncryptionActionDescription = new ActionDescription(this,
 			ActionDescription::TypeChat, "encryptionAction",
 			this, SLOT(enableEncryptionActionActivated(QAction *, bool)),
-			"security-high", "security-low", tr("Enable encryption for this conversation"),
-			true, tr("Disable encryption for this conversation"),
+			"security-high", "security-high", tr("Encrypt"),
+			true, tr("Encrypt"),
 			checkCanEncrypt
 	);
 
