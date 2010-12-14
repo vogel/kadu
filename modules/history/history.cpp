@@ -586,7 +586,7 @@ QList< QDate > History::datesForSmsRecipient(const QString &recipient, HistorySe
 	return CurrentStorage->datesForSmsRecipient(recipient, search);
 }
 
-QList< QString > History::sms(const QString &recipient, QDate date, int limit)
+QList<Message> History::sms(const QString &recipient, QDate date, int limit)
 {
 	kdebugf();
 
