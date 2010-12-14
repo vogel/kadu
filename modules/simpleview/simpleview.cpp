@@ -131,9 +131,9 @@ void SimpleView::simpleViewToggle(bool activate)
 			}
 			else
 				r = MainWindowHandle->frameGeometry();
-			
+
 			DiffRect.setRect(mr.x() - r.x(), mr.y() - r.y(), mr.width() - r.width(), mr.height() - r.height());
-			
+
 			if (Borderless)
 				BuddiesListViewStyle = BuddiesListWidgetHandle->view()->styleSheet();
 			
@@ -183,11 +183,11 @@ void SimpleView::simpleViewToggle(bool activate)
 				BuddiesListWidgetHandle->view()->setStyleSheet(BuddiesListViewStyle);
 
 			r.setRect(mr.x() + DiffRect.x(), mr.y() + DiffRect.y(), mr.width() + DiffRect.width(), mr.height() + DiffRect.height());
-			
-			MainWindowHandle->setGeometry(r);
 
 			MainWindowHandle->setWindowFlags(flags & ~(Qt::FramelessWindowHint));
-
+			
+			MainWindowHandle->setGeometry(r);
+			
 			/* Status button */
 			StatusButtonsHandle->setVisible(config_file.readBoolEntry("Look", "ShowStatusButton"));
 
