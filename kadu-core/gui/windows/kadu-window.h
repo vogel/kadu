@@ -90,6 +90,8 @@ private:
 	StatusButtons *ChangeStatusButtons;
 	QPoint LastPositionBeforeStatusMenuHide;
 
+	QWidget *WindowParent;
+
 	bool CompositingEnabled;
 
 	void createGui();
@@ -149,6 +151,7 @@ public:
 
 signals:
 	void keyPressed(QKeyEvent *e);
+	void parentChanged(QWidget *oldParent);
 
 };
 
