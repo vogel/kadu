@@ -20,6 +20,7 @@
  */
 
 #include <QtCore/QChar>
+#include <QtGui/QDesktopWidget>
 #include <QtGui/QDialogButtonBox>
 #include <QtGui/QKeyEvent>
 #include <QtGui/QPushButton>
@@ -68,6 +69,10 @@ OpenChatWith::OpenChatWith() :
 
 	setWindowTitle(tr("Open chat with..."));
 	setAttribute(Qt::WA_DeleteOnClose);
+	
+	int width = QDesktopWidget().availableGeometry().width()*0.25;
+	int height = QDesktopWidget().availableGeometry().height()*0.3;
+	setGeometry(QDesktopWidget().availableGeometry().center().x()-width/2, QDesktopWidget().availableGeometry().center().y()-height/2, width, height);
 
 	MainLayout = new QVBoxLayout(this);
 	MainLayout->setMargin(0);
