@@ -416,7 +416,7 @@ void KaduWindow::changeEvent(QEvent *event)
 	if (event->type() == QEvent::ParentChange)
 	{
 		emit parentChanged(WindowParent);
-		WindowParent = dynamic_cast<QWidget *>(parent());
+		WindowParent = parentWidget();
 	}
 }
 
