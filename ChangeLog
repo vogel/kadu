@@ -9,6 +9,7 @@
 * gui: #1762 fixed: fake identity "All" is displayed when it shouldn't be in certain circumstances (beevvy)
 * gui: #1760 fixed: remove ability to set custom shortcut for "Send Message" action (beevvy)
 * sms/history: #1826 fixed: sent sms is not saved in history (WhE)
+* chat styles: #1693 fixed: first message disappeared in chat history when both "Prune messages" and "Remove duplicate headers" option are active (WhE)
 
 +++ version 0.6.6-beta12
 * gui: #1745 fixed: invalid encoding of text in About window on Windows (beevvy)

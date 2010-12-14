@@ -64,7 +64,7 @@ QString HtmlMessagesRenderer::content()
 
 bool HtmlMessagesRenderer::pruneEnabled()
 {
-	return !ForcePruneDisabled && ChatStylesManager::instance()->prune() > 0;
+	return !ForcePruneDisabled && PruneEnabled;
 }
 
 void HtmlMessagesRenderer::pruneMessages()
@@ -72,11 +72,19 @@ void HtmlMessagesRenderer::pruneMessages()
 	if (ForcePruneDisabled)
 		return;
 
-	if (!PruneEnabled || ChatStylesManager::instance()->prune() == 0)
+	if (ChatStylesManager::instance()->prune() == 0)
+	{
+		PruneEnabled = false;
 		return;
+	}
 
 	if (MyChatMessages.count() <= ChatStylesManager::instance()->prune())
+	{
+		PruneEnabled = false;
 		return;
+	}
+
+	PruneEnabled = true;
 
 	QList<MessageRenderInfo *>::iterator start = MyChatMessages.begin();
 	QList<MessageRenderInfo *>::iterator stop = MyChatMessages.end() - ChatStylesManager::instance()->prune();
