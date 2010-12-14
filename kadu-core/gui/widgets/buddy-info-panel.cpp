@@ -86,11 +86,10 @@ void BuddyInfoPanel::update()
 	QString textDecoration = font.underline() ? "underline" : "none";
 	QString fontColor = config_file.readColorEntry("Look", "InfoPanelFgColor").name();
 	bool backgroundFilled = config_file.readBoolEntry("Look", "InfoPanelBgFilled");
-	QString backgroundColor;
 	if (backgroundFilled)
-		backgroundColor = config_file.readColorEntry("Look", "InfoPanelBgColor").name();
+		BackgroundColor = config_file.readColorEntry("Look", "InfoPanelBgColor").name();
 	else
-		backgroundColor = "transparent";
+		BackgroundColor = "transparent";
 
 	Template = QString(
 		"<html>"
@@ -123,12 +122,11 @@ void BuddyInfoPanel::update()
 		"		%8"
 		"	</body>"
 		"</html>"
-		).arg(fontColor, fontStyle, fontWeight, fontSize, fontFamily, textDecoration, backgroundColor, "%1");
+		).arg(fontColor, fontStyle, fontWeight, fontSize, fontFamily, textDecoration, BackgroundColor, "%1");
 
 	Syntax = SyntaxList::readSyntax("infopanel", config_file.readEntry("Look", "InfoPanelSyntaxFile"),
 		"<table><tr><td><img width=\"32\" height=\"32\" align=\"left\" valign=\"top\" src=\"file:///@{ManageUsersWindowIcon}\"></td><td> "
 		"<div align=\"left\"> [<b>%a</b>][ (%u)] [<br>tel.: %m][<br>IP: %i]</div></td></tr></table> <hr> <b>%s</b> [<br>%d]");
-	setHtml(QString("<body%1></body>").arg(backgroundFilled ? QString(" bgcolor=\"%1\"").arg(backgroundColor) : ""));
 	displayItem(Item);
 
 	if (config_file.readBoolEntry("Look", "PanelVerticalScrollbar"))
@@ -183,6 +181,12 @@ void BuddyInfoPanel::displayItem(BuddyOrContact item)
 
 	if (!isVisible())
 		return;
+
+	if (!item.contact())
+	{
+		setHtml("<body bgcolor=\"" + BackgroundColor + "\"></body>");
+		return;
+	}
 
 	HtmlDocument doc;
 	doc.parseHtml(Parser::parse(Syntax, item));

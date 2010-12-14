@@ -34,6 +34,7 @@ class BuddyInfoPanel : public KaduWebView, private ConfigurationAwareObject
 	BuddyOrContact Item;
 	QString Template;
 	QString Syntax;
+	QString BackgroundColor;
 
 	void connectItem();
 	void disconnectItem();
