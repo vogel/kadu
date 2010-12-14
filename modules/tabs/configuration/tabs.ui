@@ -4,7 +4,7 @@
 		<tab name="Tabs">
 			<group-box name="General">
 				<check-box caption="Use tabs by default" config-section="Chat" config-item="DefaultTabs" id="tabs/DefaultTabs" />
-				<spin-box caption="Minimum number of tabs" config-section="Chat" config-item="MinTabs" min-value="1" max-value="255" step="1" id="tabs/MinTabs"/>
+				<spin-box caption="Minimum number of tabs" config-section="Chat" config-item="MinTabs" min-value="1" max-value="255" step="1" special-value="Always use tabs" id="tabs/MinTabs"/>
 				<check-box caption="Tabs at the bottom of the window" config-section="Chat" config-item="TabsBelowChats" />
 				<check-box caption="Auto tab change" config-section="Chat" config-item="AutoTabChange" />
 				<check-box caption="Conferences in tabs" config-section="Chat" config-item="ConferencesInTabs" />
