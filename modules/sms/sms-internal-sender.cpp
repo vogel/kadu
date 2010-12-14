@@ -49,14 +49,14 @@ void SmsInternalSender::sendMessage(const QString &message)
 
 	if (!validateNumber())
 	{
-		emit finished(tr("Mobile number is incorrect"));
+		emit failed(tr("Mobile number is incorrect"));
 		kdebugf2();
 		return;
 	}
 
 	if (!validateSignature())
 	{
-		emit finished(tr("Signature can't be empty"));
+		emit failed(tr("Signature can't be empty"));
 		kdebugf2();
 		return;
 	}
@@ -78,7 +78,7 @@ void SmsInternalSender::gatewayQueryDone(const QString &gatewayId)
 {
 	if (gatewayId.isEmpty())
 	{
-		emit finished(tr("Automatic gateway selection is not available. Please select SMS gateway manually."));
+		emit failed(tr("Automatic gateway selection is not available. Please select SMS gateway manually."));
 		kdebugf2();
 		return;
 	}
@@ -155,10 +155,10 @@ void SmsInternalSender::sendSms()
 
 void SmsInternalSender::result()
 {
-	emit finished(QString::null);
+	emit succeed(Message);
 }
 
 void SmsInternalSender::failure(const QString &errorMessage)
 {
-	emit finished(errorMessage);
+	emit failed(errorMessage);
 }

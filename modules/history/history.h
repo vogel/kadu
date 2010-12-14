@@ -153,7 +153,7 @@ public:
 
 	QList<QString> smsRecipientsList(HistorySearchParameters search);
 	QList<QDate> datesForSmsRecipient(const QString &recipient, HistorySearchParameters search);
-	QList<QString> sms(const QString &recipient, QDate date = QDate(), int limit = 0);
+	QList<Message> sms(const QString &recipient, QDate date = QDate(), int limit = 0);
 	int smsCount(const QString &recipient, QDate date = QDate());
 
 	void deleteHistory(Buddy buddy);

@@ -38,8 +38,6 @@
 #include "icons-manager.h"
 #include "modules.h"
 
-#include "modules/history/history.h"
-
 #include "gui/windows/sms-progress-window.h"
 #include "mobile-number-manager.h"
 #include "sms-external-sender.h"
@@ -237,7 +235,7 @@ void SmsDialog::sendSms()
 		sender = new SmsExternalSender(RecipientEdit->text(), this);
 	}
 
-	connect(sender, SIGNAL(gatewayAssigned(QString,QString)), this, SLOT(gatewayAssigned(QString,QString)));
+	connect(sender, SIGNAL(gatewayAssigned(QString, QString)), this, SLOT(gatewayAssigned(QString, QString)));
 	sender->setSignature(SignatureEdit->text());
 
 	SmsProgressWindow *window = new SmsProgressWindow(sender);

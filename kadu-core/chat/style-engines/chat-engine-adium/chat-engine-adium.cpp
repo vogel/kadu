@@ -169,7 +169,7 @@ void AdiumChatStyleEngine::appendChatMessage(HtmlMessagesRenderer *renderer, Mes
 			else
 				formattedMessageHtml = CurrentStyle.nextOutgoingHtml();
 			break;
-		}//TODO 0.6.6:
+		}
 		case Message::TypeSystem:
 		{
 			formattedMessageHtml = CurrentStyle.statusHtml();
@@ -177,7 +177,6 @@ void AdiumChatStyleEngine::appendChatMessage(HtmlMessagesRenderer *renderer, Mes
 		}
 
 		default:
-			// do nothing
 			break;
 	}
 
@@ -332,7 +331,7 @@ void AdiumChatStyleEngine::prepareStylePreview(Preview *preview, QString styleNa
 // Some parts of the code below are borrowed from Kopete project (http://kopete.kde.org/)
 QString AdiumChatStyleEngine::replaceKeywords(Chat chat, const QString &styleHref, const QString &style)
 {
-    	if (!chat)
+	if (!chat)
 		return QString("");
 
 	QString result = style;
@@ -384,11 +383,7 @@ QString AdiumChatStyleEngine::replaceKeywords(Chat chat, const QString &styleHre
 
 QString AdiumChatStyleEngine::replaceKeywords(Chat chat, const QString &styleHref, const QString &source, MessageRenderInfo *message)
 {
-	if (!chat)
-		return QString("");
-
 	QString result = source;
-	QString nick, contactId, service, protocolIcon, nickLink;
 
 	Message msg = message->message();
 
@@ -397,7 +392,7 @@ QString AdiumChatStyleEngine::replaceKeywords(Chat chat, const QString &styleHre
 	// Replace %screenName% (contact ID)
 	result.replace(QString("%senderScreenName%"), msg.messageSender().id());
 	// Replace service name (protocol name)
-	if (chat.chatAccount().protocolHandler() && chat.chatAccount().protocolHandler()->protocolFactory())
+	if (chat && chat.chatAccount().protocolHandler() && chat.chatAccount().protocolHandler()->protocolFactory())
 	{
 		result.replace(QString("%service%"), chat.chatAccount().protocolHandler()->protocolFactory()->displayName());
 		// Replace protocolIcon (sender statusIcon). TODO:
@@ -440,7 +435,7 @@ QString AdiumChatStyleEngine::replaceKeywords(Chat chat, const QString &styleHre
 		else
 			photoPath = webKitPath(styleHref + QLatin1String("Incoming/buddy_icon.png"));
 	}
-	else
+	else if (msg.type() == Message::TypeSent)
 	{
    		result.replace(QString("%messageClasses%"), "message outgoing");
 		Avatar avatar = chat.chatAccount().accountContact().contactAvatar();
@@ -449,6 +444,9 @@ QString AdiumChatStyleEngine::replaceKeywords(Chat chat, const QString &styleHre
 		else
 			photoPath = webKitPath(styleHref + QLatin1String("Outgoing/buddy_icon.png"));
 	}
+	else
+		result.replace(QString("%messageClasses%"), "");
+
 	result.replace(QString("%userIconPath%"), photoPath);
 
 	//Message direction ("rtl"(Right-To-Left) or "ltr"(Left-to-right))

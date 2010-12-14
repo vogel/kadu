@@ -51,8 +51,6 @@
 #include "modules.h"
 #include "misc/path-conversion.h"
 
-#include "../history/history.h"
-
 #include "gui/windows/sms-image-dialog.h"
 #include "gui/windows/sms-dialog.h"
 

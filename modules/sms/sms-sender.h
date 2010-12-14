@@ -39,6 +39,8 @@ class SmsSender : public QObject, public TokenAcceptor
 	void fixNumber();
 
 protected:
+	QString Message;
+
 	bool validateNumber();
 	bool validateSignature();
 
@@ -60,8 +62,8 @@ public:
 
 signals:
 	void gatewayAssigned(const QString &number, const QString &gatewayId);
-	void finished(const QString &errorMessage);
-
+	void succeed(const QString &message);
+	void failed(const QString &errorMessage);
 };
 
 #endif // SMS_SENDER_H

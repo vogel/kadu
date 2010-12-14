@@ -653,7 +653,7 @@ QList<QDate> HistorySqlStorage::datesForSmsRecipient(const QString &recipient, H
 	return dates;
 }
 
-QList<QString> HistorySqlStorage::sms(const QString &recipient, QDate date, int limit)
+QList<Message> HistorySqlStorage::sms(const QString &recipient, QDate date, int limit)
 {
 	kdebugf();
 
@@ -667,7 +667,6 @@ QList<QString> HistorySqlStorage::sms(const QString &recipient, QDate date, int 
 	if (0 != limit)
 		queryString += " LIMIT :limit";
 
-	QList<Message> messages;
 	query.prepare(queryString);
 
 	query.bindValue(":receipient", recipient);
@@ -677,10 +676,7 @@ QList<QString> HistorySqlStorage::sms(const QString &recipient, QDate date, int 
 		query.bindValue(":limit", limit);
 	executeQuery(query);
 
-	QList<QString> result;
-
-	while (query.next())
-		result.append(query.value(0).toString());
+	QList<Message> result = smsFromQuery(query);
 
 	DatabaseMutex.unlock();
 
@@ -924,4 +920,23 @@ QList<TimedStatus> HistorySqlStorage::statusesFromQuery(QSqlQuery query)
 	}
 
 	return statuses;
+}
+
+QList<Message> HistorySqlStorage::smsFromQuery(QSqlQuery query)
+{
+	QList<Message> messages;
+
+	while (query.next())
+	{
+		Message message = Message::create();
+		message.setStatus(Message::StatusSent);
+		message.setType(Message::TypeSystem);
+		message.setReceiveDate(query.value(1).toDateTime());
+		message.setSendDate(query.value(1).toDateTime());
+		message.setContent(query.value(0).toString());
+
+		messages.append(message);
+	}
+
+	return messages;
 }
