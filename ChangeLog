@@ -11,6 +11,8 @@
 * sms/history: #1826 fixed: sent sms is not saved in history (WhE)
 * chat styles: #1693 fixed: first message disappeared in chat history when both "Prune messages" and "Remove duplicate headers" option are active (WhE)
 * gui: #1810 fixed: Info panel is not properly cleared after deselecting contacts on contact list (WhE)
+* jabber: conneting to facebook chats is again possible (fixed regression from beta12) (WhE)
+* jabber: remove big memory leak after unsuccessful downloading avatar (WhE)
 
 +++ version 0.6.6-beta12
 * gui: #1745 fixed: invalid encoding of text in About window on Windows (beevvy)
