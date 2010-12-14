@@ -111,10 +111,8 @@ Chat PendingMessagesManager::chatForBuddy(Buddy buddy)
 {
 	QMutexLocker(&mutex());
 
-	QSet<Contact> contacts = buddy.contacts().toSet();
-
 	foreach (Message message, items())
-		if (message.isPending() && !message.messageChat().contacts().intersect(contacts).isEmpty())
+		if (message.isPending() && buddy.contacts().contains(message.messageSender()))
 			return message.messageChat();
 
 	return Chat::null;
@@ -125,7 +123,7 @@ Chat PendingMessagesManager::chatForContact(Contact contact)
 	QMutexLocker(&mutex());
 
 	foreach (Message message, items())
-		if (message.isPending() && message.messageChat().contacts().contains(contact))
+		if (message.isPending() && message.messageSender() == contact)
 			return message.messageChat();
 
 	return Chat::null;
