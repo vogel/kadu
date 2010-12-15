@@ -65,10 +65,16 @@ SimpleView::SimpleView() :
 	StatusButtonsHandle = KaduWindowHandle->findChild<StatusButtons *>();
 
 	configurationUpdated();
+	
+	DiffRect = config_file.readRectEntry("Look", "SimpleViewGeometry");
+	if (!DiffRect.isNull())
+		simpleViewToggle(true);
 }
 
 SimpleView::~SimpleView()
 {
+	config_file.writeEntry("Look", "SimpleViewGeometry", DiffRect);
+	
 	simpleViewToggle(false);
 
 	if (!Core::instance()->isClosing())
@@ -124,15 +130,20 @@ void SimpleView::simpleViewToggle(bool activate)
 
 		if (SimpleViewActive)
 		{
-			if (KeepSize)
+			if (DiffRect.isNull())
 			{
-				r.setTopLeft(BuddiesListWidgetHandle->view()->mapToGlobal(BuddiesListWidgetHandle->view()->rect().topLeft()));
-				r.setSize(BuddiesListWidgetHandle->view()->rect().size());
+				if (KeepSize)
+				{
+					r.setTopLeft(BuddiesListWidgetHandle->view()->mapToGlobal(BuddiesListWidgetHandle->view()->rect().topLeft()));
+					r.setSize(BuddiesListWidgetHandle->view()->rect().size());
+				}
+				else
+					r = MainWindowHandle->frameGeometry();
+
+				DiffRect.setRect(mr.x() - r.x(), mr.y() - r.y(), mr.width() - r.width(), mr.height() - r.height());
 			}
 			else
-				r = MainWindowHandle->frameGeometry();
-
-			DiffRect.setRect(mr.x() - r.x(), mr.y() - r.y(), mr.width() - r.width(), mr.height() - r.height());
+				r.setRect(mr.x() - DiffRect.x(), mr.y() - DiffRect.y(), mr.width() - DiffRect.width(), mr.height() - DiffRect.height());
 
 			if (Borderless)
 				BuddiesListViewStyle = BuddiesListWidgetHandle->view()->styleSheet();
@@ -216,6 +227,8 @@ void SimpleView::simpleViewToggle(bool activate)
 				if (toolBar)
 					toolBar->setVisible(true);
 			}
+			
+			DiffRect = QRect(0,0,0,0);
 		}
 		MainWindowHandle->show();
 		
