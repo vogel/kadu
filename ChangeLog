@@ -13,6 +13,7 @@
 * gui: #1810 fixed: Info panel is not properly cleared after deselecting contacts on contact list (WhE)
 * jabber: conneting to facebook chats is again possible (fixed regression from beta12) (WhE)
 * jabber: remove big memory leak after unsuccessful downloading avatar (WhE)
+* gui: #1769 fixed: centering OpenChatWith window on screen (Juzef)
 
 +++ version 0.6.6-beta12
 * gui: #1745 fixed: invalid encoding of text in About window on Windows (beevvy)
