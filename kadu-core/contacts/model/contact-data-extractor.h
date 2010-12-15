@@ -26,7 +26,7 @@ class Contact;
 
 namespace ContactDataExtractor
 {
-	QVariant data(Contact contact, int role, bool useBuddyData);
+	QVariant data(const Contact &contact, int role, bool useBuddyData);
 };
 
 #endif // CONTACT_DATA_EXTRACTOR_H

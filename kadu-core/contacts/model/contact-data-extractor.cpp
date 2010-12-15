@@ -28,7 +28,7 @@
 
 #include "contact-data-extractor.h"
 
-QVariant ContactDataExtractor::data(Contact contact, int role, bool useBuddyData)
+QVariant ContactDataExtractor::data(const Contact &contact, int role, bool useBuddyData)
 {
 	if (contact.isNull())
 		return QVariant();
