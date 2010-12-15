@@ -26,7 +26,7 @@
 
 #include "buddy-data-extractor.h"
 
-QVariant BuddyDataExtractor::decoration(Buddy buddy)
+QVariant BuddyDataExtractor::decoration(const Buddy &buddy)
 {
 	if (!buddy.homePhone().isEmpty() || !buddy.mobile().isEmpty())
 		return IconsManager::instance()->iconByPath("phone");
@@ -36,7 +36,7 @@ QVariant BuddyDataExtractor::decoration(Buddy buddy)
 		return IconsManager::instance()->iconByPath("system-users");
 }
 
-QVariant BuddyDataExtractor::data(Buddy buddy, int role)
+QVariant BuddyDataExtractor::data(const Buddy &buddy, int role)
 {
 	switch (role)
 	{
