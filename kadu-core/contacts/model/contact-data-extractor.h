@@ -24,13 +24,9 @@ class QVariant;
 
 class Contact;
 
-class ContactDataExtractor
+namespace ContactDataExtractor
 {
-	ContactDataExtractor();
-
-public:
-	static QVariant data(Contact contact, int role, bool useBuddyData);
-
+	QVariant data(Contact contact, int role, bool useBuddyData);
 };
 
 #endif // CONTACT_DATA_EXTRACTOR_H
