@@ -36,7 +36,7 @@ class GaduListHelper
 {
 
 public:
-	static QByteArray buddyListToByteArray(Account account, BuddyList buddies);
+	static QByteArray buddyListToByteArray(Account account, const BuddyList &buddies);
 	static QString contactToLine70(Contact contact);
 	static BuddyList byteArrayToBuddyList(Account account, QByteArray &content);
 	static BuddyList streamToBuddyList(Account account, QTextStream &content);

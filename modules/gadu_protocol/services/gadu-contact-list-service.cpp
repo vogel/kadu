@@ -101,7 +101,7 @@ void GaduContactListService::exportContactList()
 	exportContactList(BuddyManager::instance()->buddies(Protocol->account()));
 }
 
-void GaduContactListService::exportContactList(BuddyList buddies)
+void GaduContactListService::exportContactList(const BuddyList &buddies)
 {
 	QByteArray contacts = GaduListHelper::buddyListToByteArray(Protocol->account(), buddies);
 
@@ -116,7 +116,7 @@ QList<Buddy> GaduContactListService::loadBuddyList(QTextStream &dataStream)
 	return GaduListHelper::streamToBuddyList(Protocol->account(), dataStream);
 }
 
-QByteArray GaduContactListService::storeBuddyList(BuddyList buddies)
+QByteArray GaduContactListService::storeBuddyList(const BuddyList &buddies)
 {
 	return GaduListHelper::buddyListToByteArray(Protocol->account(), buddies);
 }

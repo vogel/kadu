@@ -46,7 +46,7 @@ class KADUAPI AccountBuddyListWidget : public QWidget
 private slots:
 	void startImportTransfer();
 	void startExportTransfer();
-	void buddiesListImported(bool ok, BuddyList buddies);
+	void buddiesListImported(bool ok, const BuddyList &buddies);
 	void buddiesListExported(bool ok);
 
 	void restoreFromFile();

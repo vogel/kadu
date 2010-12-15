@@ -104,7 +104,7 @@ Buddy ContactListService::mergeBuddy(Buddy oneBuddy)
 	return buddy;
 }
 
-void ContactListService::setBuddiesList(BuddyList buddies, bool removeOld)
+void ContactListService::setBuddiesList(const BuddyList &buddies, bool removeOld)
 {
 	QList<Contact> unImportedContacts = ContactManager::instance()->contacts(CurrentProtocol->account());
 

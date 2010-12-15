@@ -28,7 +28,7 @@
 
 #include "buddy-list-model.h"
 
-BuddyListModel::BuddyListModel(BuddyList list, QObject *parent) :
+BuddyListModel::BuddyListModel(const BuddyList &list, QObject *parent) :
 		BuddiesModelBase(parent), List(list)
 {
 	triggerAllAccountsRegistered();

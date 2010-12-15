@@ -33,7 +33,7 @@ class FileTransferActions : public QObject
 	ActionDescription *FileTransferWindowActionDescription;
 
 	QStringList selectFilesToSend();
-	void selectFilesAndSend(ContactSet contacts);
+	void selectFilesAndSend(const ContactSet &contacts);
 
 private slots:
 	void sendFileActionActivated(QAction *sender, bool toggled);

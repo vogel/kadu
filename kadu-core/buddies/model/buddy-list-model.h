@@ -38,7 +38,7 @@ class BuddyListModel : public BuddiesModelBase
 	BuddyList List;
 
 public:
-	explicit BuddyListModel(BuddyList list, QObject *parent = 0);
+	explicit BuddyListModel(const BuddyList &list, QObject *parent = 0);
 	virtual ~BuddyListModel();
 
 	virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;

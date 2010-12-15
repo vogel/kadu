@@ -32,7 +32,7 @@
 
 #include "buddy-delete-window.h"
 
-BuddyDeleteWindow::BuddyDeleteWindow(BuddySet buddiesToDelete, QWidget *parent) :
+BuddyDeleteWindow::BuddyDeleteWindow(const BuddySet &buddiesToDelete, QWidget *parent) :
 		QDialog(parent), BuddiesToDelete(buddiesToDelete)
 {
 	setWindowRole("kadu-buddy-delete");

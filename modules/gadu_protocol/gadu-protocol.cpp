@@ -192,7 +192,8 @@ Buddy GaduProtocol::searchResultToBuddy(gg_pubdir50_t res, int number)
 
 	const char *pubdirStatus = gg_pubdir50_get(res, number, GG_PUBDIR50_STATUS);
 	if (pubdirStatus)
-	{	Status status;
+	{
+		Status status;
 		status.setType(statusTypeFromGaduStatus(atoi(pubdirStatus) & 127));
 		contact.setCurrentStatus(status);
 	}

@@ -146,8 +146,7 @@ public:
 	void chatFound();
 
 public slots:
-
-	void newSearchResults(BuddyList buddies);
+	void newSearchResults(const BuddyList &buddies);
 	void firstSearch();
 };
 

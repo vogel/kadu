@@ -41,7 +41,7 @@ class BuddyDeleteWindow : public QDialog
 	void deleteBuddy(Buddy buddy);
 
 public:
-	explicit BuddyDeleteWindow(BuddySet buddiesToDelete, QWidget *parent = 0);
+	explicit BuddyDeleteWindow(const BuddySet &buddiesToDelete, QWidget *parent = 0);
 	virtual ~BuddyDeleteWindow();
 
 public slots:

@@ -69,7 +69,7 @@ QString GaduListHelper::contactToLine70(Contact contact)
 	return list.join(";");
 }
 
-QByteArray GaduListHelper::buddyListToByteArray(Account account, BuddyList buddies)
+QByteArray GaduListHelper::buddyListToByteArray(Account account, const BuddyList &buddies)
 {
 	kdebugf();
 

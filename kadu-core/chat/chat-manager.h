@@ -62,7 +62,6 @@
  */
 
 class Account;
-class BuddyList;
 class BuddySet;
 class XmlConfigFile;
 
@@ -120,10 +119,10 @@ public:
 	virtual QString storageNodeItemName() { return QLatin1String("Chat"); }
 
 	// TODO: move somewhere
-	bool isAccountCommon(Account account, BuddySet buddies);
-	Account getCommonAccount(BuddySet buddies);
-	Chat findChat(BuddySet buddies, bool create = true);
-	Chat findChat(ContactSet contacts, bool create = true);
+	bool isAccountCommon(Account account, const BuddySet &buddies);
+	Account getCommonAccount(const BuddySet &buddies);
+	Chat findChat(const BuddySet &buddies, bool create = true);
+	Chat findChat(const ContactSet &contacts, bool create = true);
 
 	// TODO: hide it someway...
 	void detailsLoaded(Chat chat);

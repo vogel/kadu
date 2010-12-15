@@ -33,7 +33,7 @@ class BuddyListMimeDataHelper
 
 public:
 	static QStringList mimeTypes();
-	static QMimeData * toMimeData(BuddyList contactList);
+	static QMimeData * toMimeData(const BuddyList &buddyList);
 	static BuddyList fromMimeData(const QMimeData *mimeData);
 
 };
