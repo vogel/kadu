@@ -243,7 +243,7 @@ void HistoryWindow::updateData()
 	QList<Chat> chatsList = History::instance()->chatsList(Search);
 	QList<Chat> result;
 
-	foreach (Chat chat, chatsList)
+	foreach (const Chat &chat, chatsList)
 	{
 		if (usedChats.contains(chat))
 			continue;
@@ -253,7 +253,7 @@ void HistoryWindow::updateData()
 			ChatDetailsAggregate *details = dynamic_cast<ChatDetailsAggregate *>(aggregate.details());
 
 			if (details)
-				foreach (Chat usedChat, details->chats())
+				foreach (const Chat &usedChat, details->chats())
 					usedChats.insert(usedChat);
 
 			result.append(aggregate);

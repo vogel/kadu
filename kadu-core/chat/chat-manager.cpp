@@ -108,7 +108,7 @@ bool ChatManager::isAccountCommon(Account account, BuddySet buddies)
 {
 	QMutexLocker(&mutex());
 
-	foreach (Buddy buddy, buddies)
+	foreach (const Buddy &buddy, buddies)
 		if (buddy.contacts(account).isEmpty())
 			return false;
 
@@ -145,7 +145,7 @@ Chat ChatManager::findChat(BuddySet buddies, bool create)
 		return Chat::null;
 
 	ContactSet contacts;
-	foreach (Buddy buddy, buddies)
+	foreach (const Buddy &buddy, buddies)
 		// it is common account, so each buddy has at least one contact in this account
 		contacts.insert(buddy.contacts(commonAccount).at(0));
 
@@ -188,7 +188,7 @@ Chat ChatManager::findChat(ContactSet contacts, bool create)
 	if (account.isNull())
 		return Chat::null;
 
-	foreach (Contact contact, contacts)
+	foreach (const Contact &contact, contacts)
 		if (account != contact.contactAccount())
 			return Chat::null;
 

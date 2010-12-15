@@ -71,7 +71,7 @@ ColorSelector::ColorSelector(const QColor &defColor, const QWidget *activatingWi
 	QGridLayout *grid = new QGridLayout(this);
 
 	i = 0;
-	foreach(const QColor &color, qcolors)
+	foreach (const QColor &color, qcolors)
 	{
 		ColorSelectorButton *btn = new ColorSelectorButton(color, 1, this);
 		grid->addWidget(btn, i / selector_width, i % selector_width);

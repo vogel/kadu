@@ -126,8 +126,8 @@ void RecentChatManager::store()
 		mainElement.removeChild(chatElements.at(i));
 
 	if (!config_file.readBoolEntry("Chat", "RecentChatsClear", false))
-		foreach (Chat chat, RecentChats)
-			if (chat && !chat.uuid().isNull())
+		foreach (const Chat &chat, RecentChats)
+			if (!chat.isNull() && !chat.uuid().isNull())
 			{
 				QDomElement chatelement = point->point().ownerDocument().createElement("Chat");
 				chatelement.setAttribute("time", chat.data()->moduleData<QDateTime>("recent-chat")->toTime_t());
@@ -234,7 +234,7 @@ void RecentChatManager::cleanUp()
 	QDateTime now = QDateTime::currentDateTime();
 
 	QList<Chat> toRemove;
-	foreach (Chat chat, RecentChats)
+	foreach (const Chat &chat, RecentChats)
 	{
 		QDateTime *recentChatData = chat.data()->moduleData<QDateTime>("recent-chat");
 		if (!recentChatData)
@@ -247,6 +247,6 @@ void RecentChatManager::cleanUp()
 			toRemove.append(chat);
 	}
 
-	foreach (Chat chat, toRemove)
+	foreach (const Chat &chat, toRemove)
 		removeRecentChat(chat);
 }

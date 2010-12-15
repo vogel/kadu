@@ -35,8 +35,8 @@ class KADUAPI BuddyList : public QList<Buddy>
 public:
 
 	BuddyList();
-	BuddyList(QList<Buddy> list);
-	BuddyList(Buddy buddy);
+	BuddyList(const QList<Buddy> &list);
+	BuddyList(const Buddy &buddy);
 
 	bool operator == (const BuddyList &compare) const;
 

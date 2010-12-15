@@ -748,7 +748,7 @@ void GaduProtocol::buddySubscriptionChanged(Buddy &buddy)
 {
 	// update offline to and other data
 	if (ContactListHandler)
-		foreach (Contact contact, buddy.contacts(account()))
+		foreach (const Contact &contact, buddy.contacts(account()))
 			ContactListHandler->updateContactEntry(contact);
 }
 

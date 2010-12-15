@@ -249,7 +249,7 @@ void ExecNotify::notify(Notification *notification)
 		ContactSet contacts = chatNotification->chat().contacts();
 
 		QStringList sendersList;
-		foreach (Contact contact, contacts)
+		foreach (const Contact &contact, contacts)
 			sendersList.append(contact.id());
 		QString sendersString = sendersList.join(",");
 

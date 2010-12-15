@@ -94,7 +94,7 @@ bool Contact::isValid()
 	return validateId();
 }
 
-Contact Contact::contactWithHigherStatus(Contact c1, Contact c2)
+Contact Contact::contactWithHigherStatus(const Contact &c1, const Contact &c2)
 {
 	if (!c1)
 		return c2;

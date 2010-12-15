@@ -125,11 +125,11 @@ void PlainConfigFile::write() const
 		kdebugm(KDEBUG_INFO, "file opened '%s'\n", qPrintable(file.fileName()));
 		QTextStream stream(&file);
 		stream.setCodec(codec_latin2);
-		foreach(const QString &key, groups.keys())
+		foreach (const QString &key, groups.keys())
 		{
 //			kdebugm(KDEBUG_DUMP, ">> %s\n", (i.key()));
 			out.append(format1.arg(key));
-			foreach(const QString &dataKey, groups[key].keys())
+			foreach (const QString &dataKey, groups[key].keys())
 			{
 				QString q = groups[key][dataKey];
 				out.append(format2.arg(dataKey).arg(q.replace('\n', "\\n")));

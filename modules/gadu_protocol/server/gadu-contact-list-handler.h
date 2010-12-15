@@ -39,7 +39,7 @@ public:
 	explicit GaduContactListHandler(GaduProtocol *protocol, QObject *parent = 0);
 	virtual ~GaduContactListHandler();
 
-	void setUpContactList(QList<Contact> contacts);
+	void setUpContactList(const QList<Contact> &contacts);
 
 	void updateContactEntry(Contact contact);
 

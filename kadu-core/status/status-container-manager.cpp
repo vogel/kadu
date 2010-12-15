@@ -69,7 +69,7 @@ void StatusContainerManager::updateIdentities()
 	if (!MainConfiguration::instance()->simpleMode())
 		return;
 
-	foreach (Identity identity, IdentityManager::instance()->items())
+	foreach (const Identity &identity, IdentityManager::instance()->items())
 		if (StatusContainers.contains(identity) && !identity.hasAnyAccountWithDetails())
 			unregisterStatusContainer(identity);
 		else if (!StatusContainers.contains(identity) && identity.hasAnyAccountWithDetails())

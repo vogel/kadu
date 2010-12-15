@@ -116,7 +116,7 @@ QList<ConfigWidget *> ConfigurationWidget::appendUiFile(const QString &fileName,
 	QList<ConfigWidget *> widgets = processUiFile(fileName);
 
 	if (load)
-		foreach(ConfigWidget *widget, widgets)
+		foreach (ConfigWidget *widget, widgets)
 			if (widget)
 				widget->loadConfiguration();
 
@@ -453,7 +453,7 @@ void ConfigurationWidget::loadConfiguration(QObject *object)
 		return;
 
 	const QObjectList children = object->children();
-	foreach(QObject *child, children)
+	foreach (QObject *child, children)
 		loadConfiguration(child);
 
 	ConfigWidget *configWidget = dynamic_cast<ConfigWidget *>(object);
@@ -474,7 +474,7 @@ void ConfigurationWidget::saveConfiguration(QObject *object)
 		return;
 
 	const QObjectList children = object->children();
-	foreach(QObject *child, children)
+	foreach (QObject *child, children)
 		saveConfiguration(child);
 
 	ConfigWidget *configWidget = dynamic_cast<ConfigWidget *>(object);

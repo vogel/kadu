@@ -103,7 +103,7 @@ void BuddyPreferredManager::updatePreferred(Buddy buddy)
 Contact BuddyPreferredManager::preferredContactByPendingMessages(Buddy buddy, Account account)
 {
 	Contact result;
-	foreach (Message message, PendingMessagesManager::instance()->pendingMessagesForBuddy(buddy))
+	foreach (const Message &message, PendingMessagesManager::instance()->pendingMessagesForBuddy(buddy))
 	{
 		Contact contact = message.messageSender();
 		result = morePreferredContactByStatus(result, contact, account);

@@ -46,7 +46,7 @@ GaduContactListHandler::~GaduContactListHandler()
 {
 }
 
-void GaduContactListHandler::setUpContactList(QList<Contact> contacts)
+void GaduContactListHandler::setUpContactList(const QList<Contact> &contacts)
 {
 	/*
 	 * it looks like gadu-gadu now stores contact list mask (offlineto, blocked, normal)

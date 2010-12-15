@@ -221,7 +221,7 @@ About::~About()
 
 void About::openUrl(const QUrl &url)
 {
-	if (url.scheme().startsWith("http"))
+	if (url.scheme().startsWith(QLatin1String("http")))
 		UrlOpener::openUrl(url.toString());
 }
 

@@ -206,7 +206,7 @@ void Infos::contactStatusChanged(Contact contact, Status status)
 void Infos::updateTimes()
 {
 	kdebugf();
-	foreach(Contact contact, ContactManager::instance()->items())
+	foreach (const Contact &contact, ContactManager::instance()->items())
 	{
 		if (!contact.currentStatus().isDisconnected())
 		{

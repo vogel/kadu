@@ -345,8 +345,6 @@ void GroupTabBar::moveToGroup()
 	if (!currentGroup)
 		return;
 
-	QStringList groups;
-
 	foreach (Buddy buddy, currentBuddies)
 	{
 		buddy.removeFromGroup(GroupManager::instance()->byUuid(tabData(currentIndex()).toString()));

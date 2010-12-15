@@ -53,7 +53,7 @@ QString GaduListHelper::contactToLine70(Contact contact)
 	list.append(buddy.mobile());
 
 	QStringList groups;
-	foreach (Group group, buddy.groups())
+	foreach (const Group &group, buddy.groups())
 		groups.append(group.name());
 
 	list.append(groups.join(","));
@@ -76,8 +76,8 @@ QByteArray GaduListHelper::buddyListToByteArray(Account account, BuddyList buddi
 	QStringList result;
 	result.append("GG70ExportString");
 
-	foreach (Buddy buddy, buddies)
-		foreach (Contact contact, buddy.contacts(account))
+	foreach (const Buddy &buddy, buddies)
+		foreach (const Contact &contact, buddy.contacts(account))
 			result.append(contactToLine70(contact));
 
 	return codec_cp1250->fromUnicode(result.join("\n"));

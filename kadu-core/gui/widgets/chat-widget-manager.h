@@ -80,7 +80,7 @@ public:
 
 	const QHash<Chat , ChatWidget *> & chats() const;
 
-	ChatWidget * byChat(Chat chat, bool create = false) const;
+	ChatWidget * byChat(const Chat &chat, bool create = false) const;
 
 	virtual void store();
 

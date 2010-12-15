@@ -47,7 +47,7 @@ public:
 	static Contact loadFromStorage(const QSharedPointer<StoragePoint> &storage);
 	static Contact null;
 
-	static Contact contactWithHigherStatus(Contact c1, Contact c2);
+	static Contact contactWithHigherStatus(const Contact &c1, const Contact &c2);
 
 	Contact();
 	Contact(ContactShared *data);

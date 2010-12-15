@@ -157,7 +157,7 @@ Buddy BuddyManager::byDisplay(const QString &display, NotFoundAction action)
 	if (display.isEmpty())
 		return Buddy::null;
 
-	foreach (Buddy buddy, items())
+	foreach (const Buddy &buddy, items())
 	{
 		if (display == buddy.display())
 			return buddy;
@@ -218,7 +218,7 @@ Buddy BuddyManager::byUuid(const QUuid &uuid)
 	if (uuid.isNull())
 		return Buddy::create();
 
-	foreach (Buddy buddy, items())
+	foreach (const Buddy &buddy, items())
 		if (buddy.uuid() == uuid)
 			return buddy;
 
@@ -245,7 +245,7 @@ BuddyList BuddyManager::buddies(Account account, bool includeAnonymous)
 
 	BuddyList result;
 
-	foreach (Buddy buddy, items())
+	foreach (const Buddy &buddy, items())
 		if (buddy.hasContact(account) && (includeAnonymous || !buddy.isAnonymous()))
 			result << buddy;
 

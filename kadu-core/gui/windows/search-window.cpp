@@ -334,7 +334,7 @@ QTreeWidgetItem * SearchWindow::selectedItem()
 
 void SearchWindow::addFound()
 {
-	foreach (Buddy buddy, selected().toBuddySet().toList())
+	foreach (const Buddy &buddy, selected().toBuddySet().toList())
 	{
 		AddBuddyWindow *a = new AddBuddyWindow(this);
 		a->setBuddy(buddy);
@@ -523,7 +523,7 @@ void SearchWindow::newSearchResults(BuddyList buddies)
 	QTreeWidgetItem *qlv = 0;
 	QIcon pix;
 
-	foreach(Buddy buddy, buddies)
+	foreach (const Buddy &buddy, buddies)
 	{
 		QList<Contact> contactslist = buddy.contacts(CurrentAccount);
 		Contact contact = contactslist.isEmpty() ? Contact::null : contactslist[0];

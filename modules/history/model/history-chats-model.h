@@ -42,7 +42,7 @@ class HistoryChatsModel : public QAbstractItemModel, ChatTypeAwareObject
 	QList<QString> SmsRecipients;
 
 	void clearChats();
-	void addChat(Chat chat);
+	void addChat(const Chat &chat);
 
 	void clearStatusBuddies();
 	void clearSmsRecipients();

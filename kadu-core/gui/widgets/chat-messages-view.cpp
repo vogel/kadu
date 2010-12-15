@@ -161,7 +161,7 @@ void ChatMessagesView::appendMessages(QList<Message> messages)
 {
 	kdebugf2();
 
-	foreach (Message message, messages)
+	foreach (const Message &message, messages)
 		appendMessage(message);
 }
 
