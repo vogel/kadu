@@ -43,7 +43,7 @@ BuddyPreferredManager::~BuddyPreferredManager()
 }
 
 // TODO: 0.8 do a big review
-Contact BuddyPreferredManager::preferredContact(Buddy buddy, Account account, bool includechats)
+Contact BuddyPreferredManager::preferredContact(const Buddy &buddy, const Account &account, bool includechats)
 {
 	Q_UNUSED(includechats)
 
@@ -74,12 +74,12 @@ Contact BuddyPreferredManager::preferredContact(Buddy buddy, Account account, bo
 	return contact;*/
 }
 
-Contact BuddyPreferredManager::preferredContact(Buddy buddy, bool includechats)
+Contact BuddyPreferredManager::preferredContact(const Buddy &buddy, bool includechats)
 {
 	return BuddyPreferredManager::preferredContact(buddy, Account::null, includechats);
 }
 
-Account BuddyPreferredManager::preferredAccount(Buddy buddy, bool includechats)
+Account BuddyPreferredManager::preferredAccount(const Buddy &buddy, bool includechats)
 {
 	Contact contact = BuddyPreferredManager::preferredContact(buddy, includechats);
 	return contact.contactAccount();
@@ -100,7 +100,7 @@ void BuddyPreferredManager::updatePreferred(Buddy buddy)
 	emit buddyUpdated(buddy);
 }
 
-Contact BuddyPreferredManager::preferredContactByPendingMessages(Buddy buddy, Account account)
+Contact BuddyPreferredManager::preferredContactByPendingMessages(const Buddy &buddy, const Account &account)
 {
 	Contact result;
 	foreach (const Message &message, PendingMessagesManager::instance()->pendingMessagesForBuddy(buddy))
@@ -111,7 +111,7 @@ Contact BuddyPreferredManager::preferredContactByPendingMessages(Buddy buddy, Ac
 	return result;
 }
 
-Contact BuddyPreferredManager::preferredContactByChatWidgets(Buddy buddy, Account account)
+Contact BuddyPreferredManager::preferredContactByChatWidgets(const Buddy &buddy, const Account &account)
 {
 	Contact result;
 	foreach (ChatWidget *chatwidget, ChatWidgetManager::instance()->chats())
@@ -127,7 +127,7 @@ Contact BuddyPreferredManager::preferredContactByChatWidgets(Buddy buddy, Accoun
 	return result;
 }
 
-Contact BuddyPreferredManager::preferredContactByStatus(Buddy buddy, Account account)
+Contact BuddyPreferredManager::preferredContactByStatus(const Buddy &buddy, const Account &account)
 {
 	Contact result;
 	foreach (const Contact &contact, buddy.contacts())
@@ -135,18 +135,12 @@ Contact BuddyPreferredManager::preferredContactByStatus(Buddy buddy, Account acc
 	return result;
 }
 
-Contact BuddyPreferredManager::morePreferredContactByStatus(Contact c1, Contact c2, Account account)
+Contact BuddyPreferredManager::morePreferredContactByStatus(const Contact &c1, const Contact &c2, const Account &account)
 {
-	if (account)
-	{
-		if (c1.contactAccount() != account)
-			c1 = Contact::null;
-		if (c2.contactAccount() != account)
-			c2 = Contact::null;
-	}
-	if (!c1)
+	if (!c1 || (account && c1.contactAccount() != account))
 		return c2;
-	if (!c2)
+
+	if (!c2 || (account && c2.contactAccount() != account))
 		return c1;
 
 	if (c1.contactAccount().data()->status().isDisconnected() && !c2.contactAccount().data()->status().isDisconnected())
