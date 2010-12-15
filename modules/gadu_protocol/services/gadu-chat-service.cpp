@@ -371,7 +371,7 @@ void GaduChatService::removeTimeoutUndeliveredMessages()
 
 	QHash<int, Message>::const_iterator message = UndeliveredMessages.constBegin();
 	QHash<int, Message>::const_iterator end = UndeliveredMessages.constEnd();
-	for (; message != end; message++)
+	for (; message != end; ++message)
 	{
 		if (message.value().sendDate().addSecs(MAX_DELIVERY_TIME) < now)
 		{

@@ -197,7 +197,7 @@ void KdeNotify::notificationClosed(Notification *notification)
 
 			return;
 		}
-		i++;
+		++i;
 	}
 }
 
