@@ -18,13 +18,21 @@
  */
 
 #include <QtCore/QByteArray>
+#include <QtCrypto/QtCrypto>
 
 #include "encryption-ng-ceasar-encryptor.h"
 
 QByteArray EncryptionNgCeasarEncryptor::encrypt(const QByteArray &data)
 {
 	QByteArray result;
+	QCA::Base64 encoder;
+
 	for (int i = 0, s = data.size(); i < s; i++)
 		result.append(data.at(i) + 1);
-	return result;
+
+	QByteArray encoded("=== KADU CEASAR ENCRYPTION ===\n");
+	encoded.append(encoder.encode(result).toByteArray());
+	encoded.append("\n=== KADU CEASAR ENCRYPTION ===\n");
+
+	return encoded;
 }
