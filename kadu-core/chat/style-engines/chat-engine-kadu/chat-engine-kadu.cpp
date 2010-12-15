@@ -61,7 +61,7 @@ void KaduChatStyleEngine::pruneMessage(HtmlMessagesRenderer *renderer)
 		renderer->webPage()->mainFrame()->evaluateJavaScript("kadu_removeFirstMessage()");
 }
 
-void KaduChatStyleEngine::appendMessages(HtmlMessagesRenderer *renderer, QList<MessageRenderInfo *> messages)
+void KaduChatStyleEngine::appendMessages(HtmlMessagesRenderer *renderer, const QList<MessageRenderInfo *> &messages)
 {
 	if (ChatStylesManager::instance()->cfgNoHeaderRepeat() && renderer->pruneEnabled())
 	{

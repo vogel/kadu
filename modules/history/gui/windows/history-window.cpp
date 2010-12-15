@@ -491,22 +491,18 @@ void HistoryWindow::treeCurrentChanged(const QModelIndex &current, const QModelI
 
 void HistoryWindow::dateCurrentChanged(const QModelIndex &current, const QModelIndex &previous)
 {
+	kdebugf();
+
 	if (current == previous)
 		return;
-
-	Q_UNUSED(previous)
-
-	kdebugf();
 
 	HistoryTreeItem treeItem = current.data(HistoryItemRole).value<HistoryTreeItem>();
 	QDate date = current.data(DateRole).value<QDate>();
 
-	ContentBrowser->clearMessages();
-
 	switch (treeItem.type())
 	{
 		case HistoryTypeNone:
-			// do nothing
+			ContentBrowser->setChat(Chat::null);
 			break;
 
 		case HistoryTypeChat:
@@ -517,7 +513,6 @@ void HistoryWindow::dateCurrentChanged(const QModelIndex &current, const QModelI
 				messages = History::instance()->messages(chat, date);
 			ContentBrowser->setChat(chat);
 			ContentBrowser->appendMessages(messages);
-			QTimer::singleShot(500, this, SLOT(selectQueryText()));
 			break;
 		}
 
@@ -530,7 +525,6 @@ void HistoryWindow::dateCurrentChanged(const QModelIndex &current, const QModelI
 			if (buddy.contacts().size() > 0)
 				ContentBrowser->setChat(ChatManager::instance()->findChat(ContactSet(buddy.contacts()[0]), true));
 			ContentBrowser->appendMessages(statusesToMessages(statuses));
-			QTimer::singleShot(500, this, SLOT(selectQueryText()));
 			break;
 		}
 
@@ -542,10 +536,13 @@ void HistoryWindow::dateCurrentChanged(const QModelIndex &current, const QModelI
 				sms = History::instance()->sms(recipient, date);
 			ContentBrowser->setChat(Chat::null);
 			ContentBrowser->appendMessages(sms);
-			QTimer::singleShot(500, this, SLOT(selectQueryText()));
 			break;
 		}
 	}
+
+	if (!Search.query().isEmpty())
+		QTimer::singleShot(500, this, SLOT(selectQueryText()));
+
 
 	kdebugf2();
 }

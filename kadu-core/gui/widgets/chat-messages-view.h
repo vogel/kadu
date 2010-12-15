@@ -74,11 +74,11 @@ public:
 
 	HtmlMessagesRenderer * renderer() { return Renderer; }
 
-	void appendMessage(Message message);
+	void appendMessage(const Message &message);
 	void appendMessage(MessageRenderInfo *message);
 
-	void appendMessages(QList<Message> messages);
-	void appendMessages(QList<MessageRenderInfo *> messages);
+	void appendMessages(const QList<Message> &messages);
+	void appendMessages(const QList<MessageRenderInfo *> &messages);
 
  	unsigned int countMessages();
 

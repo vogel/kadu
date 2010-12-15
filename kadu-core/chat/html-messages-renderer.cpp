@@ -105,7 +105,7 @@ void HtmlMessagesRenderer::appendMessage(MessageRenderInfo *message)
 	ChatStylesManager::instance()->currentEngine()->appendMessage(this, message);
 }
 
-void HtmlMessagesRenderer::appendMessages(QList<MessageRenderInfo *> messages)
+void HtmlMessagesRenderer::appendMessages(const QList<MessageRenderInfo *> &messages)
 {
 	MyChatMessages.append(messages);
 	pruneMessages();

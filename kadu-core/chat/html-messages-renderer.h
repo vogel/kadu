@@ -62,7 +62,7 @@ public:
 
 	const QList<MessageRenderInfo *> & messages() const { return MyChatMessages; }
 	void appendMessage(MessageRenderInfo *message);
-	void appendMessages(QList<MessageRenderInfo *> messages);
+	void appendMessages(const QList<MessageRenderInfo *> &messages);
 	void clearMessages();
 
 	MessageRenderInfo * lastMessage() { return LastMessage; }
