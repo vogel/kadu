@@ -240,8 +240,8 @@
 * core: #1395 fixed: adding contacts from search window does not work (WhE)
 * core: #1468 fixed: crash after changing contact account in Buddy Data window (WhE)
 * core: #1530, #1310 fixed: INS hot-key is not working properly (WhE)
-* history_migration: Import also status changes from old history (beevy)
-* history_migration: #1366 fixed: only about 300k of history entries are properly imported (beevy)
+* history_migration: Import also status changes from old history (beevvy)
+* history_migration: #1366 fixed: only about 300k of history entries are properly imported (beevvy)
 * gui: #1484 fixed: formatted messages aren't shown in chat view (WhE)
 * all: many other fixes all around the code
 
@@ -252,7 +252,7 @@
 * gui: #1306 fixed: changing accounts updated status buttons (Vogel)
 * gui: #1400 fixed: invalid size of some widgets in config window (Vogel)
 * gui: #1414 fixed: anonymous buddies displayed on account buddy list (Vogel)
-* core: path #2071 merged: removing unneccessary combobox items (beevvy)
+* core: removing unneccessary combobox items (beevvy)
 * core: #1401 fixed: displaying contact personal info in buddy data window (Juzef)
 * gui: #1373 fixed: creating default toolbars in search window works again (Juzef)
 * core: simple mode bug fixed, all accounts are now properly loaded in simple mode (Vogel)
@@ -427,7 +427,7 @@
 * ChangeLog: split into 2 files (old and new) (Vogel)
 * notify: fixed fetching data from parent notification if 'use custom settings' is off (Vogel)
 * gui: OpenChatWith window does not add to contacts list everything that was written (Vogel)
-* gui: new selector window (Bartosz Brachaczek)
+* gui: new selector window (beevvy)
 * gui: do not detach tabs when Kadu is closing (Kermit)
 * mediaplayer: initial port of mediaplayer moduled (Uzi)
 * dbus: module added (Uzi)
