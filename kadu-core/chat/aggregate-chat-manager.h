@@ -22,7 +22,7 @@
 #ifndef AGGREGATE_CHAT_MANAGER_H
 #define AGGREGATE_CHAT_MANAGER_H
 
-#include <QtCore/QMap>
+#include <QtCore/QHash>
 #include <QtCore/QObject>
 
 #include "chat/chat.h"
@@ -49,19 +49,19 @@ class KADUAPI AggregateChatManager : public QObject
 
 	static AggregateChatManager *Instance;
 
-	QMap<BuddySet, QList<Chat> > AggregateChats;
+	QHash<BuddySet, QList<Chat> > AggregateChats;
 
 	AggregateChatManager();
 	~AggregateChatManager();
 
 private slots:
-	void chatAdded(Chat chat);
-	void chatRemoved(Chat chat);
+	void chatAdded(const Chat &chat);
+	void chatRemoved(const Chat &chat);
 
 public:
 	static AggregateChatManager * instance();
 
-	Chat aggregateChat(Chat chat);
+	Chat aggregateChat(const Chat &chat);
 	Chat aggregateChat(const BuddySet &buddies);
 
 };

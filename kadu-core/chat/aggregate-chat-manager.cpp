@@ -57,7 +57,7 @@ AggregateChatManager::~AggregateChatManager()
 		chatRemoved(chat);
 }
 
-void AggregateChatManager::chatAdded(Chat chat)
+void AggregateChatManager::chatAdded(const Chat &chat)
 {
 	BuddySet buddies = chat.contacts().toBuddySet();
 
@@ -71,7 +71,7 @@ void AggregateChatManager::chatAdded(Chat chat)
 		AggregateChats[buddies].append(chat);
 }
 
-void AggregateChatManager::chatRemoved(Chat  chat)
+void AggregateChatManager::chatRemoved(const Chat &chat)
 {
 	BuddySet buddies = chat.contacts().toBuddySet();
 
@@ -83,7 +83,7 @@ void AggregateChatManager::chatRemoved(Chat  chat)
 		AggregateChats.remove(buddies);
 }
 
-Chat AggregateChatManager::aggregateChat(Chat chat)
+Chat AggregateChatManager::aggregateChat(const Chat &chat)
 {
 	return aggregateChat(chat.contacts().toBuddySet());
 }
