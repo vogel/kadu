@@ -372,7 +372,7 @@ bool SpellChecker::checkWord(const QString &word)
 	if (!word.contains(QRegExp("\\D")))
 		isWordValid = true;
 	else
-		for (Checkers::const_iterator it = MyCheckers.constBegin(); it != MyCheckers.constEnd(); it++)
+		for (Checkers::const_iterator it = MyCheckers.constBegin(); it != MyCheckers.constEnd(); ++it)
 #ifdef HAVE_ASPELL
 			if (aspell_speller_check(it.value(), word.toUtf8().constData(), -1))
 #else
