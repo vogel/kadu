@@ -43,10 +43,10 @@ public:
 
 	virtual void importContactList();
 	virtual void exportContactList();
-	virtual void exportContactList(BuddyList buddies);
+	virtual void exportContactList(const BuddyList &buddies);
 
 	virtual QList<Buddy> loadBuddyList(QTextStream &dataStream);
-	virtual QByteArray storeBuddyList(BuddyList buddies);
+	virtual QByteArray storeBuddyList(const BuddyList &buddies);
 
 };
 

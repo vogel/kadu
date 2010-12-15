@@ -104,7 +104,7 @@ void ChatManager::detailsUnloaded(Chat chat)
 		unregisterItem(chat);
 }
 
-bool ChatManager::isAccountCommon(Account account, BuddySet buddies)
+bool ChatManager::isAccountCommon(Account account, const BuddySet &buddies)
 {
 	QMutexLocker(&mutex());
 
@@ -115,7 +115,7 @@ bool ChatManager::isAccountCommon(Account account, BuddySet buddies)
 	return true;
 }
 
-Account ChatManager::getCommonAccount(BuddySet buddies)
+Account ChatManager::getCommonAccount(const BuddySet &buddies)
 {
 	QMutexLocker(&mutex());
 
@@ -127,7 +127,7 @@ Account ChatManager::getCommonAccount(BuddySet buddies)
 	return Account::null;
 }
 
-Chat ChatManager::findChat(BuddySet buddies, bool create)
+Chat ChatManager::findChat(const BuddySet &buddies, bool create)
 {
 	QMutexLocker(&mutex());
 
@@ -173,7 +173,7 @@ Chat ChatManager::findChat(BuddySet buddies, bool create)
  * Do not manually create chats of type "Simple" and "Conference" - use this
  * method instead.
  */
-Chat ChatManager::findChat(ContactSet contacts, bool create)
+Chat ChatManager::findChat(const ContactSet &contacts, bool create)
 {
 	QMutexLocker(&mutex());
 
@@ -184,7 +184,7 @@ Chat ChatManager::findChat(ContactSet contacts, bool create)
 
 	// check if every contact has the same account
 	// if not true, we cannot create chat for them
-	Account account = (*contacts.begin()).contactAccount();
+	Account account = (*contacts.constBegin()).contactAccount();
 	if (account.isNull())
 		return Chat::null;
 

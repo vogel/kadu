@@ -516,7 +516,7 @@ void SearchWindow::nextSearch()
 	kdebugf2();
 }
 
-void SearchWindow::newSearchResults(BuddyList buddies)
+void SearchWindow::newSearchResults(const BuddyList &buddies)
 {
 	kdebugf();
 

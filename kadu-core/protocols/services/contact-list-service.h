@@ -42,15 +42,15 @@ public:
 
 	virtual void importContactList() = 0;
 	virtual void exportContactList() = 0;
-	virtual void exportContactList(BuddyList buddies) = 0;
+	virtual void exportContactList(const BuddyList &buddies) = 0;
 
 	virtual QList<Buddy> loadBuddyList(QTextStream &dataStream) = 0;
-	virtual QByteArray storeBuddyList(BuddyList buddies) = 0;
+	virtual QByteArray storeBuddyList(const BuddyList &buddies) = 0;
 
-	void setBuddiesList(BuddyList buddies, bool removeOld = true);
+	void setBuddiesList(const BuddyList &buddies, bool removeOld = true);
 
 signals:
-	void contactListImported(bool ok, BuddyList buddies);
+	void contactListImported(bool ok, const BuddyList &buddies);
 	void contactListExported(bool ok);
 
 };

@@ -122,7 +122,7 @@ QStringList FileTransferActions::selectFilesToSend()
 			config_file.readEntry("Network", "LastUploadDirectory"));
 }
 
-void FileTransferActions::selectFilesAndSend(ContactSet contacts)
+void FileTransferActions::selectFilesAndSend(const ContactSet &contacts)
 {
 	QStringList files = selectFilesToSend();
 	if (!files.count())

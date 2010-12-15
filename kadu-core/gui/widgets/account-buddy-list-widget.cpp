@@ -99,8 +99,8 @@ AccountBuddyListWidget::AccountBuddyListWidget(Account account, QWidget *parent)
 	}
 
 	connect(manager, SIGNAL(contactListExported(bool)), this, SLOT(buddiesListExported(bool)));
-	connect(manager, SIGNAL(contactListImported(bool, BuddyList)),
-		this, SLOT(buddiesListImported(bool, BuddyList)));
+	connect(manager, SIGNAL(contactListImported(bool, const BuddyList &)),
+		this, SLOT(buddiesListImported(bool, const BuddyList &)));
 }
 
 void AccountBuddyListWidget::startImportTransfer()
@@ -143,7 +143,7 @@ void AccountBuddyListWidget::startExportTransfer()
 	kdebugf2();
 }
 
-void AccountBuddyListWidget::buddiesListImported(bool ok, BuddyList buddies)
+void AccountBuddyListWidget::buddiesListImported(bool ok, const BuddyList &buddies)
 {
 	kdebugf();
 

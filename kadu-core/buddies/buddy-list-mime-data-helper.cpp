@@ -36,18 +36,18 @@ QStringList BuddyListMimeDataHelper::mimeTypes()
 	return result;
 }
 
-QMimeData * BuddyListMimeDataHelper::toMimeData(BuddyList contactList)
+QMimeData * BuddyListMimeDataHelper::toMimeData(const BuddyList &buddyList)
 {
-	if (!contactList.count())
+	if (!buddyList.count())
 		return 0;
 
 	QMimeData *mimeData = new QMimeData();
 
-	QStringList contactListStrings;
-	foreach (const Buddy &buddy, contactList)
-		contactListStrings << buddy.uuid().toString();
+	QStringList buddyListStrings;
+	foreach (const Buddy &buddy, buddyList)
+		buddyListStrings << buddy.uuid().toString();
 
-	mimeData->setData(MimeType, contactListStrings.join(":").toAscii());
+	mimeData->setData(MimeType, buddyListStrings.join(":").toAscii());
 	return mimeData;
 }
 
@@ -55,14 +55,14 @@ BuddyList BuddyListMimeDataHelper::fromMimeData(const QMimeData * mimeData)
 {
 	BuddyList result;
 
-	QString contactListString(mimeData->data(MimeType));
-	if (contactListString.isEmpty())
+	QString buddyListString(mimeData->data(MimeType));
+	if (buddyListString.isEmpty())
 		return result;
 
-	QStringList contactListStrings = contactListString.split(':');
-	foreach (const QString &contactListString, contactListStrings)
+	QStringList buddyListStrings = buddyListString.split(':');
+	foreach (const QString &buddyListString, buddyListStrings)
 	{
-		Buddy buddy = BuddyManager::instance()->byUuid(contactListString);
+		Buddy buddy = BuddyManager::instance()->byUuid(buddyListString);
 		if (buddy.isNull())
 			continue;
 

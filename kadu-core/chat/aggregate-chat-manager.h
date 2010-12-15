@@ -62,7 +62,7 @@ public:
 	static AggregateChatManager * instance();
 
 	Chat aggregateChat(Chat chat);
-	Chat aggregateChat(BuddySet buddies);
+	Chat aggregateChat(const BuddySet &buddies);
 
 };
 

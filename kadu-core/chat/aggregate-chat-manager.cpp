@@ -96,7 +96,7 @@ Chat AggregateChatManager::aggregateChat(Chat chat)
  * This method will create and return new chat of 'Aggregate' type that
  * contains all chats (for different accounts) for given set of buddies.
  */
-Chat AggregateChatManager::aggregateChat(BuddySet buddies)
+Chat AggregateChatManager::aggregateChat(const BuddySet &buddies)
 {
 	if (!AggregateChats.contains(buddies))
 		return Chat::null;

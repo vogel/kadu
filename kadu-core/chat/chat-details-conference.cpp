@@ -127,7 +127,7 @@ QString ChatDetailsConference::name() const
  *
  * Assigns contact set to this chat.
  */
-void ChatDetailsConference::setContacts(ContactSet contacts)
+void ChatDetailsConference::setContacts(const ContactSet &contacts)
 {
 	ensureLoaded();
 

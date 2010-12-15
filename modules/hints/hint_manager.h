@@ -58,7 +58,7 @@ class HintManager : public Notifier, public AbstractToolTip, public Configuratio
 
 	void processButtonPress(const QString &buttonName, Hint *hint);
 
-	void showNewMessage(const QString &configurationDirective, const QString &title, const QString &contentTitle, BuddyList buddies, const QString &msg);
+	void showNewMessage(const QString &configurationDirective, const QString &title, const QString &contentTitle, const BuddyList &buddies, const QString &msg);
 
 	/**
 		ustala r�g, od kt�rego b�dzie liczona pozycja grupy dymk�w
