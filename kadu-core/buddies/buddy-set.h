@@ -45,9 +45,8 @@ public:
 
 	BuddyList toBuddyList() const;
 	QList<Contact> getAllContacts() const;
-
-	bool operator < (const BuddySet &other) const;
-
 };
+
+uint qHash(const BuddySet &buddySet);
 
 #endif // BUDDY_SET_H

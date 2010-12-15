@@ -50,26 +50,11 @@ QList<Contact> BuddySet::getAllContacts() const
 	return allContacts;
 }
 
-bool BuddySet::operator < (const BuddySet& other) const
+uint qHash(const BuddySet &buddySet)
 {
-	if (count() < other.count())
-		return true;
-	if (count() > other.count())
-		return false;
+	int hash = 0;
+	foreach (const Buddy &buddy, buddySet)
+		hash = hash ^ qHash(buddy);
 
-	QList<Buddy> buddies = toList();
-	qSort(buddies);
-
-	QList<Buddy> otherBuddies = other.toList();
-	qSort(otherBuddies);
-
-	for (int i = 0; i < buddies.count(); i++)
-	{
-		if (buddies[i] < otherBuddies[i])
-			return true;
-		if (otherBuddies[i] < buddies[i])
-			return false;
-	}
-
-	return false; // equal
+	return hash;
 }
