@@ -24,7 +24,6 @@ set (kadu_SRCS
 	buddies/buddy-additional-data-delete-handler-manager.cpp
 	buddies/buddy-kadu-data.cpp
 	buddies/buddy-list.cpp
-	buddies/buddy-list-configuration-helper.cpp
 	buddies/buddy-list-mime-data-helper.cpp
 	buddies/buddy-manager.cpp
 	buddies/buddy-or-contact.cpp
