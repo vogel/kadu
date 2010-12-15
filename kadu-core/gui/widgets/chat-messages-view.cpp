@@ -137,7 +137,7 @@ void ChatMessagesView::repaintMessages()
 	Renderer->refresh();
 }
 
-void ChatMessagesView::appendMessage(Message message)
+void ChatMessagesView::appendMessage(const Message &message)
 {
 	MessageRenderInfo *messageRenderInfo = new MessageRenderInfo(message);
 	appendMessage(messageRenderInfo);
@@ -147,32 +147,46 @@ void ChatMessagesView::appendMessage(MessageRenderInfo *message)
 {
 	kdebugf();
 
-	connect(message->message(), SIGNAL(statusChanged(Message::Status)),
-				this, SLOT(messageStatusChanged(Message::Status)));
-
-	rememberScrollBarPosition();
+// TODO 0.8.0: currently we do not support showing messages state,
+//	so disable this for now
+//	connect(message->message(), SIGNAL(statusChanged(Message::Status)),
+//				this, SLOT(messageStatusChanged(Message::Status)));
+//	rememberScrollBarPosition();
 
 	Renderer->appendMessage(message);
 
 	emit messagesUpdated();
 }
 
-void ChatMessagesView::appendMessages(QList<Message> messages)
+void ChatMessagesView::appendMessages(const QList<Message> &messages)
 {
 	kdebugf2();
+
+	QList<MessageRenderInfo *> rendererMessages;
+
+#if (QT_VERSION >= 0x040700)
+	rendererMessages.reserve(messages.size());
+#endif
 
 	foreach (const Message &message, messages)
-		appendMessage(message);
+	{
+		MessageRenderInfo *messageRenderInfo = new MessageRenderInfo(message);
+		rendererMessages.append(messageRenderInfo);
+	}
+
+	appendMessages(rendererMessages);
 }
 
-void ChatMessagesView::appendMessages(QList<MessageRenderInfo *> messages)
+void ChatMessagesView::appendMessages(const QList<MessageRenderInfo *> &messages)
 {
 	kdebugf2();
 
-	foreach (MessageRenderInfo *message, messages)
-		connect(message->message(), SIGNAL(statusChanged(Message::Status)),
-				this, SLOT(messageStatusChanged(Message::Status)));
-	rememberScrollBarPosition();
+// TODO 0.8.0: currently we do not support showing messages state,
+//	so disable this for now
+//	foreach (MessageRenderInfo *message, messages)
+//		connect(message->message(), SIGNAL(statusChanged(Message::Status)),
+//				this, SLOT(messageStatusChanged(Message::Status)));
+//	rememberScrollBarPosition();
 
 	Renderer->appendMessages(messages);
 	emit messagesUpdated();

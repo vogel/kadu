@@ -102,7 +102,7 @@ QStringList AdiumChatStyleEngine::styleVariants(QString styleName)
 	return dir.entryList();
 }
 
-void AdiumChatStyleEngine::appendMessages(HtmlMessagesRenderer *renderer, QList<MessageRenderInfo *> messages)
+void AdiumChatStyleEngine::appendMessages(HtmlMessagesRenderer *renderer, const QList<MessageRenderInfo *> &messages)
 {
 	if (ChatStylesManager::instance()->cfgNoHeaderRepeat() && renderer->pruneEnabled())
 	{
