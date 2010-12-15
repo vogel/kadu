@@ -403,8 +403,8 @@ void ChatWidgetActions::blockUserActionActivated(QAction *sender, bool toggled)
 
 	bool on = false;
 
-	foreach (Buddy user, buddies)
-		if (!user.isBlocked())
+	foreach (const Buddy &buddy, buddies)
+		if (!buddy.isBlocked())
 		{
 			on = true;
 			break;

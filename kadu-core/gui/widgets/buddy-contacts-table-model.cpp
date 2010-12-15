@@ -73,7 +73,7 @@ void BuddyContactsTableModel::contactsFromBuddy()
 		CurrentMaxPriority = ModelBuddy.contacts().last().priority();
 
 	Contacts.clear();
-	foreach (Contact contact, ModelBuddy.contacts())
+	foreach (const Contact &contact, ModelBuddy.contacts())
 		addItem(new BuddyContactsTableItem(contact, this));
 }
 

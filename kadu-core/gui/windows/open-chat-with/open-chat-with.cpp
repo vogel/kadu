@@ -202,7 +202,7 @@ void OpenChatWith::inputChanged(const QString &text)
 void OpenChatWith::openChat()
 {
 	ContactSet contacts = BuddiesWidget->selectedContacts();
-	foreach (Contact contact, contacts)
+	foreach (const Contact &contact, contacts)
 		ContactManager::instance()->addItem(contact);
 
 	BuddySet buddies = contacts.toBuddySet();

@@ -37,12 +37,12 @@ void IdentitiesAwareObject::notifyIdentityRemoved(Identity identity)
 
 void IdentitiesAwareObject::triggerAllIdentitiesAdded()
 {
-	foreach (Identity identity, IdentityManager::instance()->items())
+	foreach (const Identity &identity, IdentityManager::instance()->items())
 		identityAdded(identity);
 }
 
 void IdentitiesAwareObject::triggerAllIdentitiesRemoved()
 {
-	foreach (Identity identity, IdentityManager::instance()->items())
+	foreach (const Identity &identity, IdentityManager::instance()->items())
 		identityRemoved(identity);
 }

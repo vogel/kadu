@@ -143,7 +143,7 @@ void JabberRosterService::rosterRequestFinished(bool success)
 	// the roster was imported successfully, clear
 	// all "dirty" items from the contact list
 	if (success)
-		foreach (Contact contact, ContactsForDelete)
+		foreach (const Contact &contact, ContactsForDelete)
 			BuddyManager::instance()->clearOwnerAndRemoveEmptyBuddy(contact);
 
 	InRequest = false;

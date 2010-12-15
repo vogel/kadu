@@ -216,7 +216,7 @@ bool EmoticonsManager::loadGGEmoticonTheme(const QString &themeDirPath)
 
 		// put all emots into dictionary, to allow easy finding
 		// their occurrences in text
-		foreach(const EmoticonsListItem &item, Aliases)
+		foreach (const EmoticonsListItem &item, Aliases)
 			walker->insertString(item.alias.toLower(), i++);
 	}
 

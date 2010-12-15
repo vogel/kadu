@@ -30,7 +30,7 @@ ContactSet::ContactSet()
 {
 }
 
-ContactSet::ContactSet(Contact contact)
+ContactSet::ContactSet(const Contact &contact)
 {
 	insert(contact);
 }

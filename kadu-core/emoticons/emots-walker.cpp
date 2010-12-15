@@ -76,14 +76,15 @@ PrefixNode* EmotsWalker::insertChild(PrefixNode* node, const QChar &c)
 	Prefix newPair = qMakePair(c, newNode);
 	// insert new child into childs of current node, performing binary
 	// search to find correct position for it
-	node -> children.insert(std::upper_bound(node -> children.begin(), node -> children.end(), newPair), newPair);
+	node->children.insert(std::upper_bound(node -> children.begin(), node -> children.end(), newPair), newPair);
 	return newNode;
 }
 
 /** recursively delete all childs of given node */
 void EmotsWalker::removeChilds(PrefixNode *node)
 {
-	foreach(const Prefix &ch, node->children) {
+	foreach (const Prefix &ch, node->children)
+	{
 		removeChilds(ch.second);
 		delete ch.second;
 	}

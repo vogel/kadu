@@ -81,21 +81,21 @@ void Identity::removeAccount(Account account)
 		data()->removeAccount(account);
 }
 
-bool Identity::hasAccount(Account account)
+bool Identity::hasAccount(Account account) const
 {
 	return !isNull()
 			? data()->hasAccount(account)
 			: false;
 }
 
-bool Identity::hasAnyAccountWithDetails()
+bool Identity::hasAnyAccountWithDetails() const
 {
 	return !isNull()
 			? data()->hasAnyAccountWithDetails()
 			: false;
 }
 
-bool Identity::isEmpty()
+bool Identity::isEmpty() const
 {
 	return !isNull()
 			? data()->isEmpty()

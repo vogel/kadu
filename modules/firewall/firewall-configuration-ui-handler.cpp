@@ -94,7 +94,7 @@ void FirewallConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigur
 
 	secureGroupBox->addWidgets(0, secure);
 
-	foreach (Buddy buddy, BuddyManager::instance()->items())
+	foreach (const Buddy &buddy, BuddyManager::instance()->items())
 		if (!buddy.isAnonymous())
 		{
 			BuddyFirewallData *bfd = 0;

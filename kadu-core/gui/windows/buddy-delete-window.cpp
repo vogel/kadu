@@ -111,7 +111,7 @@ void BuddyDeleteWindow::fillAdditionalDataListView()
 QString BuddyDeleteWindow::getBuddiesNames()
 {
 	QStringList displays;
-	foreach (Buddy buddy, BuddiesToDelete)
+	foreach (const Buddy &buddy, BuddiesToDelete)
 		displays.append(QString("<b>%0</b>").arg(buddy.display()));
 
 	return displays.join(", ");
@@ -141,7 +141,7 @@ void BuddyDeleteWindow::accept()
 {
     QDialog::accept();
 
-	foreach (Buddy buddy, BuddiesToDelete)
+	foreach (const Buddy &buddy, BuddiesToDelete)
 		deleteBuddy(buddy);
 	BuddyManager::instance()->store();
 }

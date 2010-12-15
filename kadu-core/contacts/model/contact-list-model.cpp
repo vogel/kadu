@@ -69,7 +69,7 @@ Contact ContactListModel::contactAt(const QModelIndex &index) const
 QModelIndex ContactListModel::indexForValue(const QVariant &value) const
 {
 	int i = 0;
-	foreach (Contact contact, List)
+	foreach (const Contact &contact, List)
 	{
 		if (contact.ownerBuddy() == value.value<Buddy>())
 			return createIndex(i, 0, 0);

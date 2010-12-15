@@ -184,7 +184,7 @@ void AutoResponder::filterIncomingMessage(Chat chat, Contact sender, const QStri
 		chatService->sendMessage(chat, tr("KADU AUTORESPONDER:") + '\n'
 				+ Parser::parse(autoRespondText, BuddyOrContact(sender)), true);
 		// dołączamy użytkowników, którym odpowiedziano
-		foreach (Contact contact, chat.contacts())
+		foreach (const Contact &contact, chat.contacts())
 			repliedUsers.insert(contact);
 	}
 
@@ -195,7 +195,7 @@ void AutoResponder::chatOpenedClosed(ChatWidget *chatWidget, bool activate)
 {
 	Q_UNUSED(activate)
 	Chat chat = chatWidget->chat();
-	foreach(Contact contact, chat.contacts())
+	foreach (const Contact &contact, chat.contacts())
 		repliedUsers.remove(contact);
 }
 

@@ -37,12 +37,12 @@ void BuddiesAwareObject::notifyBuddyRemoved(Buddy buddy)
 
 void BuddiesAwareObject::triggerAllBuddiesAdded()
 {
-	foreach (Buddy buddy, BuddyManager::instance()->items())
+	foreach (const Buddy &buddy, BuddyManager::instance()->items())
 		contactAdded(buddy);
 }
 
 void BuddiesAwareObject::triggerAllBuddiesRemoved()
 {
-	foreach (Buddy buddy, BuddyManager::instance()->items())
+	foreach (const Buddy &buddy, BuddyManager::instance()->items())
 		contactRemoved(buddy);
 }

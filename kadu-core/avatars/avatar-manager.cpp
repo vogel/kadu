@@ -112,7 +112,7 @@ void AvatarManager::contactAdded(Contact contact)
 		updateAvatar(contact, true);
 }
 
-bool AvatarManager::needUpdate(Contact contact)
+bool AvatarManager::needUpdate(const Contact &contact)
 {
 	QMutexLocker(&mutex());
 
@@ -133,7 +133,7 @@ bool AvatarManager::needUpdate(Contact contact)
 	return false;
 }
 
-void AvatarManager::updateAvatar(Contact contact, bool force)
+void AvatarManager::updateAvatar(const Contact &contact, bool force)
 {
 	QMutexLocker(&mutex());
 
@@ -147,7 +147,7 @@ void AvatarManager::updateAvatars()
 {
 	QMutexLocker(&mutex());
 
-	foreach (Contact contact, ContactManager::instance()->items())
+	foreach (const Contact &contact, ContactManager::instance()->items())
 		if (!contact.ownerBuddy().isAnonymous())
 			updateAvatar(contact);
 }
@@ -160,7 +160,7 @@ void AvatarManager::updateAccountAvatars()
 	if (!account)
 		return;
 
-	foreach (Contact contact, ContactManager::instance()->contacts(account))
+	foreach (const Contact &contact, ContactManager::instance()->contacts(account))
 		if (!contact.ownerBuddy().isAnonymous())
 			updateAvatar(contact, true);
 }

@@ -38,7 +38,7 @@ class KADUAPI ContactSet : public QSet<Contact>
 
 public:
 	ContactSet();
-	explicit ContactSet(Contact contact);
+	explicit ContactSet(const Contact &contact);
 
 	QList<Contact> toContactList() const;
 	BuddySet toBuddySet() const;

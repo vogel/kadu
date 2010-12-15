@@ -237,7 +237,7 @@ void HistoryChatsModel::clearChats()
 	}
 }
 
-void HistoryChatsModel::addChat(Chat chat)
+void HistoryChatsModel::addChat(const Chat &chat)
 {
 	ChatType *chatType = ChatTypeManager::instance()->chatType(chat.type());
 	if (!chatType)
@@ -257,7 +257,7 @@ void HistoryChatsModel::setChats(QList<Chat> chats)
 {
 	clearChats();
 
-	foreach (Chat chat, chats)
+	foreach (const Chat &chat, chats)
 		addChat(chat);
 }
 

@@ -248,7 +248,7 @@ QString HistorySqlStorage::chatWhere(Chat chat)
 		return QString("chat = '%1'").arg(chat.uuid().toString());
 
 	QStringList uuids;
-	foreach (Chat aggregatedChat, aggregate->chats())
+	foreach (const Chat &aggregatedChat, aggregate->chats())
 		uuids.append(QString("'%1'").arg(aggregatedChat.uuid().toString()));
 
 	return QString("chat IN (%1)").arg(uuids.join(QLatin1String(", ")));
@@ -260,7 +260,7 @@ QString HistorySqlStorage::buddyContactsWhere(Buddy buddy)
 		return  QLatin1String("false");
 
 	QStringList uuids;
-	foreach (Contact contact, buddy.contacts())
+	foreach (const Contact &contact, buddy.contacts())
 		uuids.append(QString("'%1'").arg(contact.uuid().toString()));
 
 	return QString("contact IN (%1)").arg(uuids.join(QLatin1String(", ")));
@@ -364,7 +364,7 @@ void HistorySqlStorage::deleteHistory(Buddy buddy)
 
 	QSqlQuery query(Database);
 
-	foreach (Contact contact, buddy.contacts())
+	foreach (const Contact &contact, buddy.contacts())
 	{
 		Chat chat = ChatManager::instance()->findChat(ContactSet(contact), false);
 		if (chat)
@@ -743,7 +743,7 @@ QList<Buddy> HistorySqlStorage::statusBuddiesList(HistorySearchParameters search
 		{
 			Buddy buddy = BuddyManager::instance()->byContact(contact, ActionCreateAndAdd);
 			buddies.append(buddy);
-			foreach (Contact contact, buddy.contacts())
+			foreach (const Contact &contact, buddy.contacts())
 				usedContacts.insert(contact);
 		}
 	}

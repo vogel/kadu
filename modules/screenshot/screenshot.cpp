@@ -121,7 +121,7 @@ bool ScreenShot::checkImageSize(long int size)
 	Q_UNUSED(size)
 
 	ContactSet contacts = MyChatWidget->chat().contacts();
-	foreach (Contact contact, contacts)
+	foreach (const Contact &contact, contacts)
 		if (contact.maximumImageSize() * 1024 < size)
 			return false;
 

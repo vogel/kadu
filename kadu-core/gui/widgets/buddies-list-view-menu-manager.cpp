@@ -142,7 +142,7 @@ QMenu * BuddiesListViewMenuManager::menu(QWidget *parent, ActionDataSource *acti
 		first = false;
 	}
 
-	foreach (Contact contact, contacts)
+	foreach (const Contact &contact, contacts)
 	{
 		if (!contact.contactAccount() || !contact.contactAccount().protocolHandler())
 			continue;

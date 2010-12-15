@@ -84,7 +84,7 @@ ChatWidget::ChatWidget(Chat chat, QWidget *parent) :
 	connect(CurrentChat.chatAccount(), SIGNAL(buddyStatusChanged(Contact, Status)),
 			this, SLOT(refreshTitle()));
 
-	foreach (Contact contact, chat.contacts())
+	foreach (const Contact &contact, chat.contacts())
 		connect(contact.ownerBuddy(), SIGNAL(updated()), this, SLOT(refreshTitle()));
 
 

@@ -35,7 +35,7 @@
 JabberChatStateService::JabberChatStateService(JabberProtocol *parent) :
 		ParentProtocol(parent)
 {
-	foreach (Chat chat, ChatManager::instance()->items())
+	foreach (const Chat &chat, ChatManager::instance()->items())
 	{
 		ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(chat);
 		if (chatWidget && ParentProtocol == dynamic_cast<JabberProtocol *>(chat.chatAccount().protocolHandler()))
