@@ -51,10 +51,10 @@ public:
 	void removeFilter(ChatFilter *filter);
 
 	QModelIndex chatTypeIndex(ChatType *type) const;
-	QModelIndex chatIndex(Chat chat) const;
+	QModelIndex chatIndex(const Chat &chat) const;
 
 	QModelIndex statusIndex() const;
-	QModelIndex statusBuddyIndex(Buddy buddy) const;
+	QModelIndex statusBuddyIndex(const Buddy &buddy) const;
 
 	QModelIndex smsIndex() const;
 	QModelIndex smsRecipientIndex(const QString &smsRecipient) const;

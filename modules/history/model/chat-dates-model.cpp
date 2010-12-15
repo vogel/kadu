@@ -30,7 +30,7 @@
 
 #include "chat-dates-model.h"
 
-ChatDatesModel::ChatDatesModel(Chat chat, QList<QDate> dates, QObject *parent) :
+ChatDatesModel::ChatDatesModel(const Chat &chat, const QList<QDate> &dates, QObject *parent) :
 		QAbstractListModel(parent), MyChat(chat), Dates(dates)
 {
 	Cache = new QMap<QDate, ItemCachedData>();
@@ -71,7 +71,7 @@ QVariant ChatDatesModel::headerData(int section, Qt::Orientation orientation, in
 	return QVariant();
 }
 
-QString ChatDatesModel::fetchTitle(QDate date) const
+QString ChatDatesModel::fetchTitle(const QDate &date) const
 {
 	QList<Message> messages = History::instance()->messages(MyChat, date, 1);
 	if (messages.size() == 0)
@@ -92,12 +92,12 @@ QString ChatDatesModel::fetchTitle(QDate date) const
 	return title;
 }
 
-int ChatDatesModel::fetchSize(QDate date) const
+int ChatDatesModel::fetchSize(const QDate &date) const
 {
 	return History::instance()->messagesCount(MyChat, date);
 }
 
-ChatDatesModel::ItemCachedData ChatDatesModel::fetchCachedData(QDate date) const
+ChatDatesModel::ItemCachedData ChatDatesModel::fetchCachedData(const QDate &date) const
 {
 	if (Cache->contains(date))
 		return Cache->value(date);
@@ -146,12 +146,12 @@ QVariant ChatDatesModel::data(const QModelIndex &index, int role) const
 	return QVariant();
 }
 
-void ChatDatesModel::setChat(Chat chat)
+void ChatDatesModel::setChat(const Chat &chat)
 {
 	MyChat = chat;
 }
 
-void ChatDatesModel::setDates(QList<QDate> dates)
+void ChatDatesModel::setDates(const QList<QDate> &dates)
 {
 	Cache->clear();
 
@@ -164,7 +164,7 @@ void ChatDatesModel::setDates(QList<QDate> dates)
 	endInsertRows();
 }
 
-QModelIndex ChatDatesModel::indexForDate(QDate date)
+QModelIndex ChatDatesModel::indexForDate(const QDate &date)
 {
 	return index(Dates.indexOf(date));
 }

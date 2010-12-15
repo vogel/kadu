@@ -141,22 +141,22 @@ public:
 	void registerStorage(HistoryStorage *storage);
 	void unregisterStorage(HistoryStorage *storage);
 
-	QList<Chat> chatsList(HistorySearchParameters search);
-	QList<QDate> datesForChat(Chat chat, HistorySearchParameters search);
-	QList<Message> messages(Chat chat, QDate date = QDate(), int limit = 0);
-	int messagesCount(Chat chat, QDate date = QDate());
+	QList<Chat> chatsList(const HistorySearchParameters &search);
+	QList<QDate> datesForChat(const Chat &chat, const HistorySearchParameters &search);
+	QList<Message> messages(const Chat &chat, const QDate &date = QDate(), int limit = 0);
+	int messagesCount(const Chat &chat, const QDate &date = QDate());
 
-	QList<Buddy> statusBuddiesList(HistorySearchParameters search);
-	QList<QDate> datesForStatusBuddy(Buddy buddy, HistorySearchParameters search);
-	QList<TimedStatus> statuses(Buddy buddy, QDate date = QDate(), int limit = 0);
-	int statusBuddyCount(Buddy buddy, QDate date = QDate());
+	QList<Buddy> statusBuddiesList(const HistorySearchParameters &search);
+	QList<QDate> datesForStatusBuddy(const Buddy &buddy, const HistorySearchParameters &search);
+	QList<TimedStatus> statuses(const Buddy &buddy, const QDate &date = QDate(), int limit = 0);
+	int statusBuddyCount(const Buddy &buddy, const QDate &date = QDate());
 
-	QList<QString> smsRecipientsList(HistorySearchParameters search);
-	QList<QDate> datesForSmsRecipient(const QString &recipient, HistorySearchParameters search);
-	QList<Message> sms(const QString &recipient, QDate date = QDate(), int limit = 0);
-	int smsCount(const QString &recipient, QDate date = QDate());
+	QList<QString> smsRecipientsList(const HistorySearchParameters &search);
+	QList<QDate> datesForSmsRecipient(const QString &recipient, const HistorySearchParameters &search);
+	QList<Message> sms(const QString &recipient, const QDate &date = QDate(), int limit = 0);
+	int smsCount(const QString &recipient, const QDate &date = QDate());
 
-	void deleteHistory(Buddy buddy);
+	void deleteHistory(const Buddy &buddy);
 
 };
 

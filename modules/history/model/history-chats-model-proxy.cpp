@@ -120,7 +120,7 @@ QModelIndex HistoryChatsModelProxy::chatTypeIndex(ChatType *type) const
 	return mapFromSource(index);
 }
 
-QModelIndex HistoryChatsModelProxy::chatIndex(Chat chat) const
+QModelIndex HistoryChatsModelProxy::chatIndex(const Chat &chat) const
 {
 	if (!Model)
 		return QModelIndex();
@@ -138,7 +138,7 @@ QModelIndex HistoryChatsModelProxy::statusIndex() const
 	return mapFromSource(index);
 }
 
-QModelIndex HistoryChatsModelProxy::statusBuddyIndex(Buddy buddy) const
+QModelIndex HistoryChatsModelProxy::statusBuddyIndex(const Buddy &buddy) const
 {
 	if (!Model)
 		return QModelIndex();

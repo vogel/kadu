@@ -273,7 +273,7 @@ void HistoryWindow::updateData()
 	ChatsModel->setSmsRecipients(History::instance()->smsRecipientsList(Search));
 }
 
-void HistoryWindow::selectChat(Chat chat)
+void HistoryWindow::selectChat(const Chat &chat)
 {
 	QString typeName = chat.type();
 	ChatType *type = ChatTypeManager::instance()->chatType(typeName);
@@ -300,7 +300,7 @@ void HistoryWindow::selectChat(Chat chat)
 	chatActivated(chat);
 }
 
-void HistoryWindow::selectStatusBuddy(Buddy buddy)
+void HistoryWindow::selectStatusBuddy(const Buddy &buddy)
 {
 	QModelIndex statusIndex = ChatsModelProxy->statusIndex();
 	if (!statusIndex.isValid())
@@ -336,7 +336,7 @@ void HistoryWindow::selectSmsRecipient(const QString& recipient)
 	smsRecipientActivated(recipient);
 }
 
-void HistoryWindow::selectHistoryItem(HistoryTreeItem item)
+void HistoryWindow::selectHistoryItem(const HistoryTreeItem &item)
 {
 	switch (item.type())
 	{
@@ -358,7 +358,7 @@ void HistoryWindow::selectHistoryItem(HistoryTreeItem item)
 	}
 }
 
-void HistoryWindow::chatActivated(Chat chat)
+void HistoryWindow::chatActivated(const Chat &chat)
 {
 	kdebugf();
 
@@ -389,7 +389,7 @@ void HistoryWindow::chatActivated(Chat chat)
 	kdebugf2();
 }
 
-void HistoryWindow::statusBuddyActivated(Buddy buddy)
+void HistoryWindow::statusBuddyActivated(const Buddy &buddy)
 {
 	kdebugf();
 
@@ -455,7 +455,7 @@ void HistoryWindow::smsRecipientActivated(const QString& recipient)
 	kdebugf2();
 }
 
-void HistoryWindow::treeItemActivated(HistoryTreeItem item)
+void HistoryWindow::treeItemActivated(const HistoryTreeItem &item)
 {
 	switch (item.type())
 	{
@@ -547,7 +547,7 @@ void HistoryWindow::dateCurrentChanged(const QModelIndex &current, const QModelI
 	kdebugf2();
 }
 
-QList<Message> HistoryWindow::statusesToMessages(QList<TimedStatus> statuses)
+QList<Message> HistoryWindow::statusesToMessages(const QList<TimedStatus> &statuses)
 {
 	QList<Message> messages;
 
@@ -630,7 +630,7 @@ void HistoryWindow::showDetailsPopupMenu(const QPoint &pos)
 	DetailsPopupMenu->exec(QCursor::pos());
 }
 
-void HistoryWindow::show(Chat chat)
+void HistoryWindow::show(const Chat &chat)
 {
 	if (!History::instance()->currentStorage())
 	{
@@ -639,11 +639,11 @@ void HistoryWindow::show(Chat chat)
 	}
 
 	Chat aggregate = AggregateChatManager::instance()->aggregateChat(chat);
-	if (aggregate)
-		chat = aggregate;
+	if (!aggregate)
+		aggregate = chat;
 
 	updateData();
-	selectChat(chat);
+	selectChat(aggregate);
 
 	QWidget::show();
 	_activateWindow(this);

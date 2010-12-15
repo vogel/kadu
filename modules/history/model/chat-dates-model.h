@@ -40,12 +40,12 @@ class ChatDatesModel : public QAbstractListModel
 	QList<QDate> Dates;
 	QMap<QDate, ItemCachedData> *Cache;
 
-	QString fetchTitle(QDate date) const;
-	int fetchSize(QDate date) const;
-	ItemCachedData fetchCachedData(QDate date) const;
+	QString fetchTitle(const QDate &date) const;
+	int fetchSize(const QDate &date) const;
+	ItemCachedData fetchCachedData(const QDate &date) const;
 
 public:
-	ChatDatesModel(Chat chat, QList<QDate> dates, QObject *parent = 0);
+	ChatDatesModel(const Chat &chat, const QList<QDate> &dates, QObject *parent = 0);
 	virtual ~ChatDatesModel();
 
 	virtual int columnCount(const QModelIndex &parent) const;
@@ -54,10 +54,10 @@ public:
 	virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
 	virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 
-	void setChat(Chat chat);
-	void setDates(QList<QDate> dates);
+	void setChat(const Chat &chat);
+	void setDates(const QList<QDate> &dates);
 
-	QModelIndex indexForDate(QDate date);
+	QModelIndex indexForDate(const QDate &date);
 
 };
 

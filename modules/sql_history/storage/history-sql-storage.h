@@ -56,11 +56,11 @@ class HistorySqlStorage : public HistoryStorage, CrashAwareObject
 	void initKaduStatusesTable();
 	void initKaduSmsTable();
 
-	QString chatWhere(Chat chat);
-	QString buddyContactsWhere(Buddy buddy);
+	QString chatWhere(const Chat &chat);
+	QString buddyContactsWhere(const Buddy &buddy);
 
 	void executeQuery(QSqlQuery query);
-	QList<Message> messagesFromQuery(Chat chat, QSqlQuery query);
+	QList<Message> messagesFromQuery(const Chat &chat, QSqlQuery query);
 	QList<TimedStatus> statusesFromQuery(QSqlQuery query);
 	QList<Message> smsFromQuery(QSqlQuery query);
 
@@ -75,33 +75,33 @@ public:
 	explicit HistorySqlStorage(QObject *parent = 0);
 	virtual ~HistorySqlStorage();
 
-	virtual QList<Chat> chats(HistorySearchParameters search);
+	virtual QList<Chat> chats(const HistorySearchParameters &search);
 
-	virtual QList<QDate> chatDates(Chat chat, HistorySearchParameters search);
-	virtual QList<Message> messages(Chat chat, QDate date = QDate(), int limit = 0);
-	virtual QList<Message> messagesSince(Chat chat, QDate date);
-	virtual QList<Message> messagesBackTo(Chat chat, QDateTime datetime, int limit);
+	virtual QList<QDate> chatDates(const Chat &chat, const HistorySearchParameters &search);
+	virtual QList<Message> messages(const Chat &chat, const QDate &date = QDate(), int limit = 0);
+	virtual QList<Message> messagesSince(const Chat &chat, const QDate &date);
+	virtual QList<Message> messagesBackTo(const Chat &chat, const QDateTime &datetime, int limit);
 
-	virtual QList<Buddy> statusBuddiesList(HistorySearchParameters search);
-	virtual QList<QDate> datesForStatusBuddy(Buddy buddy, HistorySearchParameters search);
-	virtual QList<TimedStatus> statuses(Buddy buddy, QDate date = QDate(), int limit = 0);
-	virtual int statusBuddyCount(Buddy buddy, QDate date = QDate());
+	virtual QList<Buddy> statusBuddiesList(const HistorySearchParameters &search);
+	virtual QList<QDate> datesForStatusBuddy(const Buddy &buddy, const HistorySearchParameters &search);
+	virtual QList<TimedStatus> statuses(const Buddy &buddy, const QDate &date = QDate(), int limit = 0);
+	virtual int statusBuddyCount(const Buddy &buddy, const QDate &date = QDate());
 
-	virtual int messagesCount(Chat chat, QDate date = QDate());
+	virtual int messagesCount(const Chat &chat, const QDate &date = QDate());
 
-	virtual QList<QString> smsRecipientsList(HistorySearchParameters search);
-	virtual QList<QDate> datesForSmsRecipient(const QString &recipient, HistorySearchParameters search);
-	virtual QList<Message> sms(const QString &recipient, QDate date = QDate(), int limit = 0);
-	virtual int smsCount(const QString &recipient, QDate date = QDate());
+	virtual QList<QString> smsRecipientsList(const HistorySearchParameters &search);
+	virtual QList<QDate> datesForSmsRecipient(const QString &recipient, const HistorySearchParameters &search);
+	virtual QList<Message> sms(const QString &recipient, const QDate &date = QDate(), int limit = 0);
+	virtual int smsCount(const QString &recipient, const QDate &date = QDate());
 
 	virtual void appendMessage(const Message &message);
-	virtual void appendStatus(Contact contact, Status status, QDateTime time = QDateTime::currentDateTime());
-	virtual void appendSms(const QString &recipient, const QString &content, QDateTime time = QDateTime::currentDateTime());
+	virtual void appendStatus(const Contact &contact, const Status &status, const QDateTime &time = QDateTime::currentDateTime());
+	virtual void appendSms(const QString &recipient, const QString &content, const QDateTime &time = QDateTime::currentDateTime());
 
 	void sync();
 
-	virtual void clearChatHistory(Chat chat);
-    virtual void deleteHistory(Buddy buddy);
+	virtual void clearChatHistory(const Chat &chat);
+	virtual void deleteHistory(const Buddy &buddy);
 
 };
 

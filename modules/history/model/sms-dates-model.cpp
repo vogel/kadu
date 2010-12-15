@@ -27,7 +27,7 @@
 
 #include "sms-dates-model.h"
 
-SmsDatesModel::SmsDatesModel(const QString &recipient, QList<QDate> dates, QObject *parent) :
+SmsDatesModel::SmsDatesModel(const QString &recipient, const QList<QDate> &dates, QObject *parent) :
 		QAbstractListModel(parent), Recipient(recipient), Dates(dates)
 {
 	Cache = new QMap<QDate, ItemCachedData>();
@@ -66,12 +66,12 @@ QVariant SmsDatesModel::headerData(int section, Qt::Orientation orientation, int
 	return QVariant();
 }
 
-int SmsDatesModel::fetchSize(QDate date) const
+int SmsDatesModel::fetchSize(const QDate &date) const
 {
 	return History::instance()->smsCount(Recipient, date);
 }
 
-SmsDatesModel::ItemCachedData SmsDatesModel::fetchCachedData(QDate date) const
+SmsDatesModel::ItemCachedData SmsDatesModel::fetchCachedData(const QDate &date) const
 {
 	if (Cache->contains(date))
 		return Cache->value(date);
@@ -121,7 +121,7 @@ void SmsDatesModel::setRecipient(const QString &recipient)
 	Recipient = recipient;
 }
 
-void SmsDatesModel::setDates(QList<QDate> dates)
+void SmsDatesModel::setDates(const QList<QDate> &dates)
 {
 	Cache->clear();
 
@@ -134,7 +134,7 @@ void SmsDatesModel::setDates(QList<QDate> dates)
 	endInsertRows();
 }
 
-QModelIndex SmsDatesModel::indexForDate(QDate date)
+QModelIndex SmsDatesModel::indexForDate(const QDate &date)
 {
 	return index(Dates.indexOf(date));
 }

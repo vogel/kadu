@@ -39,11 +39,11 @@ class BuddyStatusDatesModel : public QAbstractListModel
 	QList<QDate> Dates;
 	QMap<QDate, ItemCachedData> *Cache;
 
-	int fetchSize(QDate date) const;
-	ItemCachedData fetchCachedData(QDate date) const;
+	int fetchSize(const QDate &date) const;
+	ItemCachedData fetchCachedData(const QDate &date) const;
 
 public:
-	BuddyStatusDatesModel(Buddy buddy, QList<QDate> dates, QObject *parent = 0);
+	BuddyStatusDatesModel(const Buddy &buddy, const QList<QDate> &dates, QObject *parent = 0);
 	virtual ~BuddyStatusDatesModel();
 
 	virtual int columnCount(const QModelIndex &parent) const;
@@ -52,10 +52,10 @@ public:
 	virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
 	virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 
-	void setBuddy(Buddy buddy);
-	void setDates(QList<QDate> dates);
+	void setBuddy(const Buddy &buddy);
+	void setDates(const QList<QDate> &dates);
 
-	QModelIndex indexForDate(QDate date);
+	QModelIndex indexForDate(const QDate &date);
 
 };
 

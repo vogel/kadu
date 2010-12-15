@@ -69,15 +69,15 @@ public:
 
 	virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 
-	void setChats(QList<Chat> chats);
-	void setStatusBuddies(QList<Buddy> buddies);
-	void setSmsRecipients(QList<QString> smsRecipients);
+	void setChats(const QList<Chat> &chats);
+	void setStatusBuddies(const QList<Buddy> &buddies);
+	void setSmsRecipients(const QList<QString> &smsRecipients);
 
 	QModelIndex chatTypeIndex(ChatType *type) const;
-	QModelIndex chatIndex(Chat chat) const;
+	QModelIndex chatIndex(const Chat &chat) const;
 
 	QModelIndex statusIndex() const;
-	QModelIndex statusBuddyIndex(Buddy buddy) const;
+	QModelIndex statusBuddyIndex(const Buddy &buddy) const;
 
 	QModelIndex smsIndex() const;
 	QModelIndex smsRecipientIndex(const QString &recipient) const;
