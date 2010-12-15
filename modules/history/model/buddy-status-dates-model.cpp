@@ -27,7 +27,7 @@
 
 #include "buddy-status-dates-model.h"
 
-BuddyStatusDatesModel::BuddyStatusDatesModel(Buddy buddy, QList<QDate> dates, QObject *parent) :
+BuddyStatusDatesModel::BuddyStatusDatesModel(const Buddy &buddy, const QList<QDate> &dates, QObject *parent) :
 		QAbstractListModel(parent), MyBuddy(buddy), Dates(dates)
 {
 	Cache = new QMap<QDate, ItemCachedData>();
@@ -66,12 +66,12 @@ QVariant BuddyStatusDatesModel::headerData(int section, Qt::Orientation orientat
 	return QVariant();
 }
 
-int BuddyStatusDatesModel::fetchSize(QDate date) const
+int BuddyStatusDatesModel::fetchSize(const QDate &date) const
 {
 	return History::instance()->statusBuddyCount(MyBuddy, date);
 }
 
-BuddyStatusDatesModel::ItemCachedData BuddyStatusDatesModel::fetchCachedData(QDate date) const
+BuddyStatusDatesModel::ItemCachedData BuddyStatusDatesModel::fetchCachedData(const QDate &date) const
 {
 	if (Cache->contains(date))
 		return Cache->value(date);
@@ -117,12 +117,12 @@ QVariant BuddyStatusDatesModel::data(const QModelIndex &index, int role) const
 	return QVariant();
 }
 
-void BuddyStatusDatesModel::setBuddy(Buddy buddy)
+void BuddyStatusDatesModel::setBuddy(const Buddy &buddy)
 {
 	MyBuddy = buddy;
 }
 
-void BuddyStatusDatesModel::setDates(QList<QDate> dates)
+void BuddyStatusDatesModel::setDates(const QList<QDate> &dates)
 {
 	Cache->clear();
 
@@ -135,7 +135,7 @@ void BuddyStatusDatesModel::setDates(QList<QDate> dates)
 	endInsertRows();
 }
 
-QModelIndex BuddyStatusDatesModel::indexForDate(QDate date)
+QModelIndex BuddyStatusDatesModel::indexForDate(const QDate &date)
 {
 	return index(Dates.indexOf(date));
 }

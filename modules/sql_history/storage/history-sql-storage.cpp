@@ -234,7 +234,7 @@ void HistorySqlStorage::initQueries()
 			"(:receipient, :send_time, :content)");
 }
 
-QString HistorySqlStorage::chatWhere(Chat chat)
+QString HistorySqlStorage::chatWhere(const Chat &chat)
 {
 	if (!chat)
 		return QLatin1String("false");
@@ -254,7 +254,7 @@ QString HistorySqlStorage::chatWhere(Chat chat)
 	return QString("chat IN (%1)").arg(uuids.join(QLatin1String(", ")));
 }
 
-QString HistorySqlStorage::buddyContactsWhere(Buddy buddy)
+QString HistorySqlStorage::buddyContactsWhere(const Buddy &buddy)
 {
 	if (!buddy || buddy.contacts().isEmpty())
 		return  QLatin1String("false");
@@ -310,7 +310,7 @@ void HistorySqlStorage::appendMessage(const Message &message)
 	kdebugf2();
 }
 
-void HistorySqlStorage::appendStatus(Contact contact, Status status, QDateTime time)
+void HistorySqlStorage::appendStatus(const Contact &contact, const Status &status, const QDateTime &time)
 {
 	kdebugf();
 
@@ -328,7 +328,7 @@ void HistorySqlStorage::appendStatus(Contact contact, Status status, QDateTime t
 	kdebugf2();
 }
 
-void HistorySqlStorage::appendSms(const QString &recipient, const QString &content, QDateTime time)
+void HistorySqlStorage::appendSms(const QString &recipient, const QString &content, const QDateTime &time)
 {
 	kdebugf();
 
@@ -345,7 +345,7 @@ void HistorySqlStorage::appendSms(const QString &recipient, const QString &conte
 	kdebugf2();
 }
 
-void HistorySqlStorage::clearChatHistory(Chat chat)
+void HistorySqlStorage::clearChatHistory(const Chat &chat)
 {
 	DatabaseMutex.lock();
 
@@ -358,7 +358,7 @@ void HistorySqlStorage::clearChatHistory(Chat chat)
 	DatabaseMutex.unlock();
 }
 
-void HistorySqlStorage::deleteHistory(Buddy buddy)
+void HistorySqlStorage::deleteHistory(const Buddy &buddy)
 {
 	DatabaseMutex.lock();
 
@@ -382,7 +382,7 @@ void HistorySqlStorage::deleteHistory(Buddy buddy)
 	DatabaseMutex.unlock();
 }
 
-QList<Chat> HistorySqlStorage::chats(HistorySearchParameters search)
+QList<Chat> HistorySqlStorage::chats(const HistorySearchParameters &search)
 {
 	kdebugf();
 
@@ -422,7 +422,7 @@ QList<Chat> HistorySqlStorage::chats(HistorySearchParameters search)
 	return chats;
 }
 
-QList<QDate> HistorySqlStorage::chatDates(Chat chat, HistorySearchParameters search)
+QList<QDate> HistorySqlStorage::chatDates(const Chat &chat, const HistorySearchParameters &search)
 {
 	kdebugf();
 
@@ -465,7 +465,7 @@ QList<QDate> HistorySqlStorage::chatDates(Chat chat, HistorySearchParameters sea
 	return dates;
 }
 
-QList<Message> HistorySqlStorage::messages(Chat chat, QDate date, int limit)
+QList<Message> HistorySqlStorage::messages(const Chat &chat, const QDate &date, int limit)
 {
 	kdebugf();
 
@@ -494,7 +494,7 @@ QList<Message> HistorySqlStorage::messages(Chat chat, QDate date, int limit)
 	return messages;
 }
 
-QList<Message> HistorySqlStorage::messagesSince(Chat chat, QDate date)
+QList<Message> HistorySqlStorage::messagesSince(const Chat &chat, const QDate &date)
 {
 	kdebugf();
 
@@ -521,7 +521,7 @@ QList<Message> HistorySqlStorage::messagesSince(Chat chat, QDate date)
 	return messages;
 }
 
-QList<Message> HistorySqlStorage::messagesBackTo(Chat chat, QDateTime datetime, int limit)
+QList<Message> HistorySqlStorage::messagesBackTo(const Chat &chat, const QDateTime &datetime, int limit)
 {
 	DatabaseMutex.lock();
 
@@ -550,7 +550,7 @@ QList<Message> HistorySqlStorage::messagesBackTo(Chat chat, QDateTime datetime, 
 	return messages;
 }
 
-int HistorySqlStorage::messagesCount(Chat chat, QDate date)
+int HistorySqlStorage::messagesCount(const Chat &chat, const QDate &date)
 {
 	kdebugf();
 
@@ -573,7 +573,7 @@ int HistorySqlStorage::messagesCount(Chat chat, QDate date)
 	return query.value(0).toInt();
 }
 
-QList<QString> HistorySqlStorage::smsRecipientsList(HistorySearchParameters search)
+QList<QString> HistorySqlStorage::smsRecipientsList(const HistorySearchParameters &search)
 {
 	kdebugf();
 
@@ -609,7 +609,7 @@ QList<QString> HistorySqlStorage::smsRecipientsList(HistorySearchParameters sear
 	return recipients;
 }
 
-QList<QDate> HistorySqlStorage::datesForSmsRecipient(const QString &recipient, HistorySearchParameters search)
+QList<QDate> HistorySqlStorage::datesForSmsRecipient(const QString &recipient, const HistorySearchParameters &search)
 {
 	kdebugf();
 
@@ -653,7 +653,7 @@ QList<QDate> HistorySqlStorage::datesForSmsRecipient(const QString &recipient, H
 	return dates;
 }
 
-QList<Message> HistorySqlStorage::sms(const QString &recipient, QDate date, int limit)
+QList<Message> HistorySqlStorage::sms(const QString &recipient, const QDate &date, int limit)
 {
 	kdebugf();
 
@@ -683,7 +683,7 @@ QList<Message> HistorySqlStorage::sms(const QString &recipient, QDate date, int 
 	return result;
 }
 
-int HistorySqlStorage::smsCount(const QString &recipient, QDate date)
+int HistorySqlStorage::smsCount(const QString &recipient, const QDate &date)
 {
 	kdebugf();
 
@@ -707,7 +707,7 @@ int HistorySqlStorage::smsCount(const QString &recipient, QDate date)
 	return query.value(0).toInt();
 }
 
-QList<Buddy> HistorySqlStorage::statusBuddiesList(HistorySearchParameters search)
+QList<Buddy> HistorySqlStorage::statusBuddiesList(const HistorySearchParameters &search)
 {
 	kdebugf();
 
@@ -753,7 +753,7 @@ QList<Buddy> HistorySqlStorage::statusBuddiesList(HistorySearchParameters search
 	return buddies;
 }
 
-QList<QDate> HistorySqlStorage::datesForStatusBuddy(Buddy buddy, HistorySearchParameters search)
+QList<QDate> HistorySqlStorage::datesForStatusBuddy(const Buddy &buddy, const HistorySearchParameters &search)
 {
 	kdebugf();
 
@@ -797,7 +797,7 @@ QList<QDate> HistorySqlStorage::datesForStatusBuddy(Buddy buddy, HistorySearchPa
 	return dates;
 }
 
-QList<TimedStatus> HistorySqlStorage::statuses(Buddy buddy, QDate date, int limit)
+QList<TimedStatus> HistorySqlStorage::statuses(const Buddy &buddy, const QDate &date, int limit)
 {
 	kdebugf();
 
@@ -827,7 +827,7 @@ QList<TimedStatus> HistorySqlStorage::statuses(Buddy buddy, QDate date, int limi
 	return statuses;
 }
 
-int HistorySqlStorage::statusBuddyCount(Buddy buddy, QDate date)
+int HistorySqlStorage::statusBuddyCount(const Buddy &buddy, const QDate &date)
 {
 	kdebugf();
 
@@ -869,7 +869,7 @@ void HistorySqlStorage::executeQuery(QSqlQuery query)
 }
 
 
-QList<Message> HistorySqlStorage::messagesFromQuery(Chat chat, QSqlQuery query)
+QList<Message> HistorySqlStorage::messagesFromQuery(const Chat &chat, QSqlQuery query)
 {
 	QList<Message> messages;
 

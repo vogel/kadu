@@ -516,91 +516,91 @@ void History::unregisterStorage(HistoryStorage *storage)
 	CurrentStorage = 0;
 }
 
-QList<Chat> History::chatsList(HistorySearchParameters search)
+QList<Chat> History::chatsList(const HistorySearchParameters &search)
 {
 	kdebugf();
 
 	return CurrentStorage->chats(search);
 }
 
-QList<QDate> History::datesForChat(Chat chat, HistorySearchParameters search)
+QList<QDate> History::datesForChat(const Chat &chat, const HistorySearchParameters &search)
 {
 	kdebugf();
 
 	return CurrentStorage->chatDates(chat, search);
 }
 
-QList<Message> History::messages(Chat chat, QDate date, int limit)
+QList<Message> History::messages(const Chat &chat, const QDate &date, int limit)
 {
 	kdebugf();
 
 	return CurrentStorage->messages(chat, date, limit);
 }
 
-int History::messagesCount(Chat chat, QDate date)
+int History::messagesCount(const Chat &chat, const QDate &date)
 {
 	kdebugf();
 
 	return CurrentStorage->messagesCount(chat, date);
 }
 
-QList<Buddy> History::statusBuddiesList(HistorySearchParameters search)
+QList<Buddy> History::statusBuddiesList(const HistorySearchParameters &search)
 {
 	kdebugf();
 
 	return CurrentStorage->statusBuddiesList(search);
 }
 
-QList< QDate > History::datesForStatusBuddy(Buddy buddy, HistorySearchParameters search)
+QList< QDate > History::datesForStatusBuddy(const Buddy &buddy, const HistorySearchParameters &search)
 {
 	kdebugf();
 
 	return CurrentStorage->datesForStatusBuddy(buddy, search);
 }
 
-QList< TimedStatus > History::statuses(Buddy buddy, QDate date, int limit)
+QList< TimedStatus > History::statuses(const Buddy &buddy, const QDate &date, int limit)
 {
 	kdebugf();
 
 	return CurrentStorage->statuses(buddy, date, limit);
 }
 
-int History::statusBuddyCount(Buddy buddy, QDate date)
+int History::statusBuddyCount(const Buddy &buddy, const QDate &date)
 {
 	kdebugf();
 
 	return CurrentStorage->statusBuddyCount(buddy, date);
 }
 
-QList< QString > History::smsRecipientsList(HistorySearchParameters search)
+QList< QString > History::smsRecipientsList(const HistorySearchParameters &search)
 {
 	kdebugf();
 
 	return CurrentStorage->smsRecipientsList(search);
 }
 
-QList< QDate > History::datesForSmsRecipient(const QString &recipient, HistorySearchParameters search)
+QList< QDate > History::datesForSmsRecipient(const QString &recipient, const HistorySearchParameters &search)
 {
 	kdebugf();
 
 	return CurrentStorage->datesForSmsRecipient(recipient, search);
 }
 
-QList<Message> History::sms(const QString &recipient, QDate date, int limit)
+QList<Message> History::sms(const QString &recipient, const QDate &date, int limit)
 {
 	kdebugf();
 
 	return CurrentStorage->sms(recipient, date, limit);
 }
 
-int History::smsCount(const QString &recipient, QDate date)
+int History::smsCount(const QString &recipient, const QDate &date)
 {
 	kdebugf();
 
 	return CurrentStorage->smsCount(recipient, date);
 }
 
-void History::deleteHistory(Buddy buddy)
+void History::deleteHistory(const Buddy &buddy)
 {
 	if (CurrentStorage)
 		CurrentStorage->deleteHistory(buddy);

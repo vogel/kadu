@@ -39,11 +39,11 @@ class SmsDatesModel : public QAbstractListModel
 	QList<QDate> Dates;
 	QMap<QDate, ItemCachedData> *Cache;
 
-	int fetchSize(QDate date) const;
-	ItemCachedData fetchCachedData(QDate date) const;
+	int fetchSize(const QDate &date) const;
+	ItemCachedData fetchCachedData(const QDate &date) const;
 
 public:
-	SmsDatesModel(const QString &recipient, QList<QDate> dates, QObject *parent = 0);
+	SmsDatesModel(const QString &recipient, const QList<QDate> &dates, QObject *parent = 0);
 	virtual ~SmsDatesModel();
 
 	virtual int columnCount(const QModelIndex &parent) const;
@@ -53,9 +53,9 @@ public:
 	virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 
 	void setRecipient(const QString &recipient);
-	void setDates(QList<QDate> dates);
+	void setDates(const QList<QDate> &dates);
 
-	QModelIndex indexForDate(QDate date);
+	QModelIndex indexForDate(const QDate &date);
 
 };
 
