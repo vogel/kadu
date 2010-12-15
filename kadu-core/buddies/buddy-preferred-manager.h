@@ -39,7 +39,7 @@ class KADUAPI BuddyPreferredManager : public QObject
 
 	static BuddyPreferredManager *Instance;
 
-	QMap<Buddy,Contact> Preferreds;
+	QMap<Buddy, Contact> Preferreds;
 
 	BuddyPreferredManager();
 	~BuddyPreferredManager();
@@ -47,14 +47,14 @@ class KADUAPI BuddyPreferredManager : public QObject
 public:
 	static BuddyPreferredManager *instance();
 
-	Contact preferredContact(Buddy buddy, Account account, bool includechats = true);
-	Contact preferredContact(Buddy buddy, bool includechats = true);
-	Account preferredAccount(Buddy buddy, bool includechats = true);
+	Contact preferredContact(const Buddy &buddy, const Account &account, bool includechats = true);
+	Contact preferredContact(const Buddy &buddy, bool includechats = true);
+	Account preferredAccount(const Buddy &buddy, bool includechats = true);
 
-	Contact preferredContactByPendingMessages(Buddy buddy, Account account = Account::null);
-	Contact preferredContactByChatWidgets(Buddy buddy, Account account = Account::null);
-	Contact preferredContactByStatus(Buddy buddy, Account account = Account::null);
-	Contact morePreferredContactByStatus(Contact c1, Contact c2, Account account = Account::null);
+	Contact preferredContactByPendingMessages(const Buddy &buddy, const Account &account = Account::null);
+	Contact preferredContactByChatWidgets(const Buddy &buddy, const Account &account = Account::null);
+	Contact preferredContactByStatus(const Buddy &buddy, const Account &account = Account::null);
+	Contact morePreferredContactByStatus(const Contact & c1, const Contact & c2, const Account &account = Account::null);
 
 	void updatePreferred(Buddy buddy);
 
