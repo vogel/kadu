@@ -59,7 +59,7 @@ private slots:
 	void continueTransfer();
 
 public:
-	FileTransferWidget(FileTransfer fileTransfer = FileTransfer::null, QWidget *parent = 0);
+	explicit FileTransferWidget(FileTransfer fileTransfer = FileTransfer::null, QWidget *parent = 0);
 	virtual ~FileTransferWidget();
 
 	FileTransfer fileTransfer() { return CurrentTransfer; }

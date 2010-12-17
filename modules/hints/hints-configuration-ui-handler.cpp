@@ -40,7 +40,7 @@
 
 #include "hints-configuration-ui-handler.h"
 
-HintsConfigurationUiHandler::HintsConfigurationUiHandler(QObject *parent, QString style):
+HintsConfigurationUiHandler::HintsConfigurationUiHandler(const QString &style, QObject *parent):
 	AdvancedWindow(0), overUserConfigurationWindow(0)
 {
 #ifdef Q_OS_MAC

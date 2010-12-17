@@ -30,7 +30,7 @@ class BuddyDataManager : public ConfigurationWindowDataManager
 	Buddy MyBuddy;
 
 public:
-	BuddyDataManager(Buddy buddy, QObject *parent = 0);
+	explicit BuddyDataManager(Buddy buddy, QObject *parent = 0);
 
 	virtual void writeEntry(const QString &section, const QString &name, const QVariant &value);
 	virtual QVariant readEntry(const QString &section, const QString &name);

@@ -34,7 +34,7 @@ class WindowNotifierWindow : public QDialog
 	void addButton(QWidget *parent, const QString &caption, const char *slot);
 
 public:
-	WindowNotifierWindow(Notification *notification, QWidget *parent = 0);
+	explicit WindowNotifierWindow(Notification *notification, QWidget *parent = 0);
 	virtual ~WindowNotifierWindow();
 
 };
