@@ -45,7 +45,7 @@ class HtmlMessagesRenderer : public QObject
 	void pruneMessages();
 
 public:
-	HtmlMessagesRenderer(Chat chat, QObject *parent = 0);
+	explicit HtmlMessagesRenderer(Chat chat, QObject *parent = 0);
 	virtual ~HtmlMessagesRenderer();
 
 	Chat  chat() { return MyChat; }

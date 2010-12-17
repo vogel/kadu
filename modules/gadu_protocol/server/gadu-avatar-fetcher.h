@@ -45,7 +45,7 @@ private slots:
 	void avatarDownloaded(int id, bool error);
 
 public:
-	GaduAvatarFetcher(Contact contact, QObject *parent = 0);
+	explicit GaduAvatarFetcher(Contact contact, QObject *parent = 0);
 	void fetchAvatar();
 
 signals:

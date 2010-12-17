@@ -73,7 +73,7 @@ private slots:
 	void keyPressEvent(QKeyEvent *e);
 
 public:
-	PathListEditWindow(const QStringList &pathList, QWidget *parent = 0);
+	explicit PathListEditWindow(const QStringList &pathList, QWidget *parent = 0);
 	~PathListEditWindow();
 
 public slots:

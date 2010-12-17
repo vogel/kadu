@@ -55,7 +55,7 @@ protected:
 	virtual void keyPressEvent(QKeyEvent *e);
 
 public:
-	GroupPropertiesWindow(Group editedGroup, QWidget *parent = 0);
+	explicit GroupPropertiesWindow(Group editedGroup, QWidget *parent = 0);
 
 };
 

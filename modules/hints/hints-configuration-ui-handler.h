@@ -77,7 +77,7 @@ signals:
 	void searchingForTrayPosition(QPoint &pos);
 
 public:
-	HintsConfigurationUiHandler(QObject *parent = 0, QString style = NULL);
+	explicit HintsConfigurationUiHandler(const QString &style, QObject *parent = 0);
 	virtual ~HintsConfigurationUiHandler();
 
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);

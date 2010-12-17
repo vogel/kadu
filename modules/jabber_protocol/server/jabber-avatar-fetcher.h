@@ -42,7 +42,7 @@ private slots:
 	void receivedVCard();
 
 public:
-	JabberAvatarFetcher(Contact contact, QObject *parent = 0);
+	explicit JabberAvatarFetcher(Contact contact, QObject *parent = 0);
 	void fetchAvatar();
 
 signals:

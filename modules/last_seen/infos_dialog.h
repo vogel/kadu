@@ -35,9 +35,10 @@ typedef QMap<QPair<QString, QString>, QString> LastSeen;
 class InfosDialog : public QDialog
 {
 	Q_OBJECT
+
 public:
 	/*! Default constructor. */
-	InfosDialog(const LastSeen &lastSeen, QWidget *parent = 0);
+	explicit InfosDialog(const LastSeen &lastSeen, QWidget *parent = 0);
 
 	/*! Default destructor. */
 	~InfosDialog();

@@ -100,7 +100,7 @@ HintManager::HintManager(QWidget *parent) :
 	NotificationManager::instance()->registerNotifier(this);
 	ToolTipClassManager::instance()->registerToolTipClass(QT_TRANSLATE_NOOP("@default", "Hints"), this);
 
-	UiHandler = new HintsConfigurationUiHandler(this, Style);
+	UiHandler = new HintsConfigurationUiHandler(Style, this);
 
 	kdebugf2();
 }
