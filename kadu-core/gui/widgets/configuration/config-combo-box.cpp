@@ -68,7 +68,7 @@ QString ConfigComboBox::currentItemValue()
 	int index = currentIndex();
 
 	if ((index < 0) || (index >= itemValues.size()))
-		return QString::null;
+		return QString();
 
 	return itemValues[index];
 }

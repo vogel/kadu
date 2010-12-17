@@ -36,7 +36,7 @@ private slots:
 	void findClicked();
 
 public:
-	EnterCityDialog(UserListElement user = UserListElement(), const QString &cityName = QString::null);
+	EnterCityDialog(UserListElement user = UserListElement(), const QString &cityName = QString());
 };
 
 class SearchingCityDialog : public QDialog
@@ -58,7 +58,7 @@ private slots:
 	void cancelClicked();
 
 public:
-	SearchingCityDialog(UserListElement user = UserListElement(), const QString &cityName = QString::null);
+	SearchingCityDialog(UserListElement user = UserListElement(), const QString &cityName = QString());
 	void show();
 };
 

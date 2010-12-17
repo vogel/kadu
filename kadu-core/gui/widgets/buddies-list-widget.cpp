@@ -71,7 +71,7 @@ BuddiesListWidget::~BuddiesListWidget()
 
 void BuddiesListWidget::clearFilter()
 {
-	NameFilterWidget->setFilter("");
+	NameFilterWidget->setFilter(QString());
 }
 
 void BuddiesListWidget::nameFilterChanged(const QString &filter)

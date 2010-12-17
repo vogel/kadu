@@ -35,11 +35,11 @@ static QString getNotificationTitle(const QObject * const object)
 	if (notification)
 		return notification->title();
 	else
-		return "";
+		return QString();
 }
 
 Notification::Notification(const QString &type, const QString &iconPath) :
-	Type(type), Title(""), Text(""), IconPath(IconsManager::instance()->iconPath(iconPath, "16x16")),
+	Type(type), IconPath(IconsManager::instance()->iconPath(iconPath, "16x16")),
 	Icon(IconsManager::instance()->iconByPath(iconPath)), DefaultCallbackTimer(0),
 	ReferencesCount(0), Closing(false)
 {

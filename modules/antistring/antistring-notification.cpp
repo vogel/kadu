@@ -46,7 +46,7 @@ void AntistringNotification::notifyStringReceived(Chat chat)
 }
 
 AntistringNotification::AntistringNotification(Chat chat) :
-		ChatNotification(chat, "Antistring", "")
+		ChatNotification(chat, "Antistring", QString())
 {
 }
 

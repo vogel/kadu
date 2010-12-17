@@ -41,7 +41,7 @@ void TokenFetcher::fetchToken()
 	H = gg_token(1);
 	if (!H || H->fd <= 0)
 	{
-		emit tokenFetched(QString::null, QPixmap());
+		emit tokenFetched(QString(), QPixmap());
 		return;
 	}
 

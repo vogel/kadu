@@ -25,7 +25,7 @@
 #include "speech-configuration-widget.h"
 
 SpeechConfigurationWidget::SpeechConfigurationWidget(QWidget *parent) :
-		NotifierConfigurationWidget(parent), currentNotifyEvent("")
+		NotifierConfigurationWidget(parent)
 {
 	maleLineEdit = new QLineEdit(this);
 	femaleLineEdit = new QLineEdit(this);

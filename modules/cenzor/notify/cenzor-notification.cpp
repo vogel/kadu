@@ -54,7 +54,7 @@ void CenzorNotification::notifyCenzored(Chat chat)
 }
 
 CenzorNotification::CenzorNotification(Chat chat) :
-		ChatNotification(chat, "cenzorNotification", "")
+		ChatNotification(chat, "cenzorNotification", QString())
 {
 }
 

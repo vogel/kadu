@@ -70,7 +70,7 @@ Message::~Message()
 
 KaduSharedBase_PropertyDef(Message, Chat, messageChat, MessageChat, Chat::null)
 KaduSharedBase_PropertyDef(Message, Contact, messageSender, MessageSender, Contact::null)
-KaduSharedBase_PropertyDef(Message, QString, content, Content, QString::null)
+KaduSharedBase_PropertyDef(Message, QString, content, Content, QString())
 KaduSharedBase_PropertyDef(Message, QDateTime, receiveDate, ReceiveDate, QDateTime())
 KaduSharedBase_PropertyDef(Message, QDateTime, sendDate, SendDate, QDateTime())
 KaduSharedBase_PropertyDef(Message, Message::Status, status, Status, Message::StatusUnknown)

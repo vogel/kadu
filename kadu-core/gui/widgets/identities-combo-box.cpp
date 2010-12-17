@@ -84,7 +84,7 @@ void IdentitiesComboBox::currentIndexChangedSlot(int index)
 
 	QString identityName = QInputDialog::getText(this, tr("New Identity"),
 			tr("Please enter the name for the new identity:"), QLineEdit::Normal,
-			QString::null, &ok);
+			QString(), &ok);
 
 	if (!ok || identityName.isEmpty())
 	{

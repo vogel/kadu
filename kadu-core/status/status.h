@@ -42,7 +42,7 @@ private:
 public:
 	static Status null;
 
-	explicit Status(const QString &type = QString::null, const QString &description = QString::null);
+	explicit Status(const QString &type = QString(), const QString &description = QString());
 	Status(const Status &copyme);
 	~Status();
 

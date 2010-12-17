@@ -91,7 +91,7 @@ void MiniClient::connectToServer(const Jid &jid, bool legacy_ssl_probe, bool leg
 	}
 /*
 	AdvancedConnector::Proxy p;
-	if(proxy != "") {
+	if(proxy != QString()) {
 		const ProxyItem &pi = pm->getItem(proxy);
 		if(pi.type == "http") // HTTP Connect
 			p.setHttpConnect(pi.settings.host, pi.settings.port);
@@ -197,7 +197,7 @@ void MiniClient::cs_needAuthParams(bool user, bool password, bool realm)
 
 void MiniClient::cs_authenticated()
 {
-	_client->start(j.domain(), j.node(), "", "");
+	_client->start(j.domain(), j.node(), QString(), QString());
 
 	if (!stream->old() && auth) {
 		JT_Session *j = new JT_Session(_client->rootTask());

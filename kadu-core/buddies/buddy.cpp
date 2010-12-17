@@ -106,7 +106,7 @@ QSharedPointer<StoragePoint> Buddy::storagePointForModuleData(const QString& mod
 
 QString Buddy::customData(const QString &key)
 {
-	return isNull() ? QString::null : data()->customData()[key];
+	return isNull() ? QString() : data()->customData()[key];
 }
 
 void Buddy::setCustomData(const QString &key, const QString &value)
@@ -164,7 +164,7 @@ bool Buddy::hasContact(Account account) const
 
 QString Buddy::id(Account account) const
 {
-	return isNull() ? QString::null : data()->id(account);
+	return isNull() ? QString() : data()->id(account);
 }
 
 bool Buddy::isInGroup(Group group) const
@@ -200,7 +200,7 @@ bool Buddy::isEmpty() const
 QString Buddy::display() const
 {
 	if (isNull())
-		return QString::null;
+		return QString();
 
 	QString result = data()->display().isEmpty()
 			? data()->nickName().isEmpty()
@@ -277,16 +277,16 @@ Buddy Buddy::dummy()
 
 KaduSharedBase_PropertyDef(Buddy, Avatar, buddyAvatar, BuddyAvatar, Avatar::null)
 KaduSharedBase_PropertyWriteDef(Buddy, QString, display, Display)
-KaduSharedBase_PropertyDef(Buddy, QString, firstName, FirstName, QString::null)
-KaduSharedBase_PropertyDef(Buddy, QString, lastName, LastName, QString::null)
-KaduSharedBase_PropertyDef(Buddy, QString, familyName, FamilyName, QString::null)
-KaduSharedBase_PropertyDef(Buddy, QString, city, City, QString::null)
-KaduSharedBase_PropertyDef(Buddy, QString, familyCity, FamilyCity, QString::null)
-KaduSharedBase_PropertyDef(Buddy, QString, nickName, NickName, QString::null)
-KaduSharedBase_PropertyDef(Buddy, QString, homePhone, HomePhone, QString::null)
-KaduSharedBase_PropertyDef(Buddy, QString, mobile, Mobile, QString::null)
-KaduSharedBase_PropertyDef(Buddy, QString, email, Email, QString::null)
-KaduSharedBase_PropertyDef(Buddy, QString, website, Website, QString::null)
+KaduSharedBase_PropertyDef(Buddy, QString, firstName, FirstName, QString())
+KaduSharedBase_PropertyDef(Buddy, QString, lastName, LastName, QString())
+KaduSharedBase_PropertyDef(Buddy, QString, familyName, FamilyName, QString())
+KaduSharedBase_PropertyDef(Buddy, QString, city, City, QString())
+KaduSharedBase_PropertyDef(Buddy, QString, familyCity, FamilyCity, QString())
+KaduSharedBase_PropertyDef(Buddy, QString, nickName, NickName, QString())
+KaduSharedBase_PropertyDef(Buddy, QString, homePhone, HomePhone, QString())
+KaduSharedBase_PropertyDef(Buddy, QString, mobile, Mobile, QString())
+KaduSharedBase_PropertyDef(Buddy, QString, email, Email, QString())
+KaduSharedBase_PropertyDef(Buddy, QString, website, Website, QString())
 KaduSharedBase_PropertyDef(Buddy, unsigned short, birthYear, BirthYear, 0)
 KaduSharedBase_PropertyDef(Buddy, BuddyGender, gender, Gender, GenderUnknown)
 KaduSharedBase_PropertyDef(Buddy, QList<Group>, groups, Groups, QList<Group>())

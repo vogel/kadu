@@ -176,13 +176,13 @@ void GroupTabBar::updateGroup(Group group)
 	if (-1 == groupId)
 		return;
 
-	setTabIcon(groupId, QIcon(group.showIcon() ? group.icon() : ""));
-	setTabText(groupId, group.showName() ? group.name() : "");
+	setTabIcon(groupId, QIcon(group.showIcon() ? group.icon() : QString()));
+	setTabText(groupId, group.showName() ? group.name() : QString());
 
 	if (group.showName())
 		setTabText(groupId, group.name());
 	else
-		setTabText(groupId, "");
+		setTabText(groupId, QString());
 }
 
 void GroupTabBar::groupUpdated()
@@ -244,7 +244,7 @@ void GroupTabBar::dropEvent(QDropEvent *event)
 		{
 			newGroupName = QInputDialog::getText(this, tr("New Group"),
 				tr("Please enter the name for the new group:"), QLineEdit::Normal,
-				QString::null, &ok);
+				QString(), &ok);
 
 			if (!ok)
 				return;
@@ -317,7 +317,7 @@ void GroupTabBar::createNewGroup()
 	bool ok;
 	QString newGroupName = QInputDialog::getText(this, tr("New Group"),
 				tr("Please enter the name for the new group:"), QLineEdit::Normal,
-				QString::null, &ok);
+				QString(), &ok);
 
 	if (ok && !newGroupName.isEmpty() && GroupManager::instance()->acceptableGroupName(newGroupName))
 		GroupManager::instance()->byName(newGroupName);
@@ -415,7 +415,7 @@ void GroupTabBar::configurationUpdated()
 			config_file.writeEntry("Look", "AllGroupTabPosition", autoGroupOldPosition);
 			AutoGroupTabPosition = 	config_file.readNumEntry("Look", "UngroupedGroupTabPosition", -1);
 			setTabText(autoGroupOldPosition, tr("Ungrouped"));
-			setTabIcon(autoGroupOldPosition, QIcon(""));
+			setTabIcon(autoGroupOldPosition, QIcon(QString()));
 		}
 
 		moveTab(autoGroupOldPosition, AutoGroupTabPosition);

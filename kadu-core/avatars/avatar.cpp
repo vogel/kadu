@@ -73,7 +73,7 @@ Avatar::~Avatar()
 
 QString Avatar::filePath()
 {
-	return isNull() ? QString::null : data()->filePath();
+	return isNull() ? QString() : data()->filePath();
 }
 
 void Avatar::setFilePath(const QString& filePath)

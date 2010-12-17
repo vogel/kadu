@@ -43,7 +43,7 @@ void ConfigurationContactDataManager::writeEntry(const QString &section, const Q
 QVariant ConfigurationContactDataManager::readEntry(const QString &section, const QString &name)
 {
 	if (section != "Contact")
-		return QVariant(QString::null);
+		return QVariant(QString());
 
 	if (name == "Id")
 		return Data.id();
@@ -67,5 +67,5 @@ QVariant ConfigurationContactDataManager::readEntry(const QString &section, cons
 	if (name == "OfflineTo")
 		return Data.ownerBuddy().isOfflineTo();
 
-	return QVariant(QString::null);
+	return QVariant(QString());
 }

@@ -127,7 +127,7 @@ void ContactShared::store()
 	storeValue("Account", ContactAccount.uuid().toString());
 
 	if (OwnerBuddy.isAnonymous())
-		storeValue("Buddy", "");
+		storeValue("Buddy", QString());
 	else
 		storeValue("Buddy", OwnerBuddy.uuid().toString());
 

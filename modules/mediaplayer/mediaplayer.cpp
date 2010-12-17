@@ -157,37 +157,37 @@ MediaPlayer::MediaPlayer(bool firstLoad)
 	mediaPlayerMenu = new ActionDescription(
 		0, ActionDescription::TypeChat, "mediaplayer_button",
 		this, SLOT(mediaPlayerMenuActivated(QAction *, bool)),
-		"external_modules/module_mediaplayer-media-playback-start", "external_modules/module_mediaplayer-media-playback-start", tr("MediaPlayer"), false, ""
+		"external_modules/module_mediaplayer-media-playback-start", "external_modules/module_mediaplayer-media-playback-start", tr("MediaPlayer"), false, QString()
 	);
 	playAction = new ActionDescription(
 		0, ActionDescription::TypeChat, "mediaplayer_play",
 		this, SLOT(playPause()),
-		"external_modules/module_mediaplayer-media-playback-start", "external_modules/module_mediaplayer-media-playback-start", tr("Play"), false, ""
+		"external_modules/module_mediaplayer-media-playback-start", "external_modules/module_mediaplayer-media-playback-start", tr("Play"), false, QString()
 	);
 	stopAction = new ActionDescription(
 		0, ActionDescription::TypeChat, "mediaplayer_stop",
 		this, SLOT(stop()),
-		"external_modules/module_mediaplayer-media-playback-stop", "external_modules/module_mediaplayer-media-playback-stop", tr("Stop"), false, ""
+		"external_modules/module_mediaplayer-media-playback-stop", "external_modules/module_mediaplayer-media-playback-stop", tr("Stop"), false, QString()
 	);
 	prevAction = new ActionDescription(
 		0, ActionDescription::TypeChat, "mediaplayer_prev",
 		this, SLOT(prevTrack()),
-		"external_modules/module_mediaplayer-media-skip-backward", "external_modules/module_mediaplayer-media-skip-backward", tr("Previous Track"), false, ""
+		"external_modules/module_mediaplayer-media-skip-backward", "external_modules/module_mediaplayer-media-skip-backward", tr("Previous Track"), false, QString()
 	);
 	nextAction = new ActionDescription(
 		0, ActionDescription::TypeChat, "mediaplayer_next",
 		this, SLOT(nextTrack()),
-		"external_modules/module_mediaplayer-media-skip-forward", "external_modules/module_mediaplayer-media-skip-forward", tr("Next Track"), false, ""
+		"external_modules/module_mediaplayer-media-skip-forward", "external_modules/module_mediaplayer-media-skip-forward", tr("Next Track"), false, QString()
 	);
 	volUpAction = new ActionDescription(
 		0, ActionDescription::TypeChat, "mediaplayer_vol_up",
 		this, SLOT(incrVolume()),
-		"audio-volume-high", "audio-volume-high", tr("Volume Up"), false, ""
+		"audio-volume-high", "audio-volume-high", tr("Volume Up"), false, QString()
 	);
 	volDownAction = new ActionDescription(
 		0, ActionDescription::TypeChat, "mediaplayer_vol_down",
 		this, SLOT(decrVolume()),
-		"audio-volume-low", "audio-volume-low", tr("Volume Down"), false, ""
+		"audio-volume-low", "audio-volume-low", tr("Volume Down"), false, QString()
 	);
 
 	if (firstLoad)
@@ -529,13 +529,13 @@ void MediaPlayer::putPlayList(int ident)
 
 	if (emptyEntries > (lgt / 10))
 	{
-		if (!MessageDialog::ask("", tr("Kadu"), tr("More than 1/10 of titles you're trying to send are empty.<br>Perhaps %1 hasn't read all titles yet, give its some more time.<br>Do you want to send playlist anyway?").arg(getPlayerName())))
+		if (!MessageDialog::ask(QString(), tr("Kadu"), tr("More than 1/10 of titles you're trying to send are empty.<br>Perhaps %1 hasn't read all titles yet, give its some more time.<br>Do you want to send playlist anyway?").arg(getPlayerName())))
 			return;
 	}
 
 	if (chars >= 2000)
 	{
-		if (!MessageDialog::ask("", tr("Kadu"), tr("You're trying to send %1 entries of %2 playlist.<br>It will be split and sent in few messages<br>Are you sure to do that?")
+		if (!MessageDialog::ask(QString(), tr("Kadu"), tr("You're trying to send %1 entries of %2 playlist.<br>It will be split and sent in few messages<br>Are you sure to do that?")
 			.arg(QString::number(lgt)).arg(getPlayerName())) )
 			return;
 	}
@@ -935,7 +935,7 @@ QString MediaPlayer::getPlayerName()
 	if (playerInfoSupported())
 		return playerInfo->getPlayerName();
 
-	return "";
+	return QString();
 }
 
 QString MediaPlayer::getPlayerVersion()
@@ -943,7 +943,7 @@ QString MediaPlayer::getPlayerVersion()
 	if (playerInfoSupported())
 		return playerInfo->getPlayerVersion();
 
-	return "";
+	return QString();
 }
 
 QString MediaPlayer::getTitle(int position)
@@ -962,7 +962,7 @@ QString MediaPlayer::getTitle(int position)
 		return title;
 	}
 
-	return "";
+	return QString();
 }
 
 QString MediaPlayer::getAlbum(int position)
@@ -970,7 +970,7 @@ QString MediaPlayer::getAlbum(int position)
 	if (playerInfoSupported())
 		return playerInfo->getAlbum(position);
 
-	return "";
+	return QString();
 }
 
 QString MediaPlayer::getArtist(int position)
@@ -978,7 +978,7 @@ QString MediaPlayer::getArtist(int position)
 	if (playerInfoSupported())
 		return playerInfo->getArtist(position);
 
-	return "";
+	return QString();
 }
 
 QString MediaPlayer::getFile(int position)
@@ -986,7 +986,7 @@ QString MediaPlayer::getFile(int position)
 	if (playerInfoSupported())
 		return playerInfo->getFile(position);
 
-	return "";
+	return QString();
 }
 
 int MediaPlayer::getLength(int position)

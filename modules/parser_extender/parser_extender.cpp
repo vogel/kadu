@@ -69,7 +69,7 @@ extern "C" KADU_EXPORT void parser_extender_close()
  */
 QString getKaduUptime(int mode)
 {
-	QString uptime = "0";
+	QString uptime('0');
 
 	uptime += "s ";
 	if (QDateTime::currentDateTime() > started)
@@ -107,7 +107,7 @@ QString getKaduUptime(int mode)
  */
 QString getUptime(int mode)
 {
-	QString uptime = "0";
+	QString uptime('0');
 
 #ifdef Q_OS_LINUX //TODO 0.6.6: find more portable way to get system uptime
 	time_t upTime = 0;
@@ -117,13 +117,13 @@ QString getUptime(int mode)
 	if (!fscanf(f, "%lf", &duptime))
 	{
 		fclose(f);
-		return QString::null;
+		return QString();
 	}
 
 	fclose(f);
 	upTime = (time_t)duptime;
 
-	QString s = "";
+	QString s;
 	if (mode == 0)
 	 	uptime = s.setNum(upTime) + "s ";
 	else

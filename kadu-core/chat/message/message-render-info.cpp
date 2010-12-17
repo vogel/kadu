@@ -51,7 +51,7 @@ static QString getMessage(const QObject * const object)
 	if (messageRenderInfo)
 		return formatMessage(messageRenderInfo->htmlMessageContent());
 	else
-		return "";
+		return QString();
 }
 
 static QString getBackgroundColor(const QObject * const object)
@@ -60,7 +60,7 @@ static QString getBackgroundColor(const QObject * const object)
 	if (messageRenderInfo)
 		return messageRenderInfo->backgroundColor();
 	else
-		return "";
+		return QString();
 }
 
 static QString getFontColor(const QObject * const object)
@@ -69,7 +69,7 @@ static QString getFontColor(const QObject * const object)
 	if (messageRenderInfo)
 		return messageRenderInfo->fontColor();
 	else
-		return "";
+		return QString();
 }
 
 static QString getNickColor(const QObject * const object)
@@ -78,7 +78,7 @@ static QString getNickColor(const QObject * const object)
 	if (messageRenderInfo)
 		return messageRenderInfo->nickColor();
 	else
-		return "";
+		return QString();
 }
 
 static QString getSentDate(const QObject * const object)
@@ -87,7 +87,7 @@ static QString getSentDate(const QObject * const object)
 	if (messageRenderInfo && messageRenderInfo->showServerTime())
 		return printDateTime(messageRenderInfo->message().sendDate());
 	else
-		return "";
+		return QString();
 }
 
 static QString getReceivedDate(const QObject * const object)
@@ -96,7 +96,7 @@ static QString getReceivedDate(const QObject * const object)
 	if (messageRenderInfo)
 		return printDateTime(messageRenderInfo->message().receiveDate());
 	else
-		return "";
+		return QString();
 }
 
 static QString getSeparator(const QObject * const object)
@@ -106,7 +106,7 @@ static QString getSeparator(const QObject * const object)
 	if (separatorSize)
 		return "<div style=\"margin: 0; margin-top:" + QString::number(separatorSize) + "px\"></div>";
 	else
-		return "";
+		return QString();
 }
 
 static QString loadingImageHtml(const QString &imageId)
@@ -163,8 +163,8 @@ MessageRenderInfo::MessageRenderInfo(const Message &msg) :
 	HtmlMessageContent = MyMessage.content();
 
 	HtmlMessageContent.replace("\r\n", "<br/>");
-	HtmlMessageContent.replace("\n",   "<br/>");
-	HtmlMessageContent.replace("\r",   "<br/>");
+	HtmlMessageContent.replace('\n',   "<br/>");
+	HtmlMessageContent.replace('\r',   "<br/>");
 	HtmlMessageContent.replace(QChar::LineSeparator, "<br />");
 
 	// compare this regexp with FormattedMessagePart::toHtml()

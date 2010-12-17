@@ -62,7 +62,7 @@ void Status::setType(const QString& type)
 
 QString Status::name(const Status &status, bool fullName)
 {
-	return status.Type + ((fullName && !status.Description.isEmpty()) ? "WithDescription" : "");
+	return status.Type + ((fullName && !status.Description.isEmpty()) ? "WithDescription" : QString());
 }
 
 bool Status::isDisconnected() const

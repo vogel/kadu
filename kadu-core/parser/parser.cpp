@@ -484,7 +484,7 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 						else
 						{
 							kdebugm(KDEBUG_WARNING, "variable %s undefined\n", qPrintable(pe.content));
-							pe.content = QString::null;
+							pe.content.clear();
 						}
 						parseStack.push_back(pe);
 						break;
@@ -508,7 +508,7 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 						else
 						{
 							kdebugm(KDEBUG_WARNING, "tag %s not registered\n", qPrintable(pe.content));
-							pe.content = QString::null;
+							pe.content.clear();;
 						}
 						parseStack.push_back(pe);
 						break;
@@ -541,7 +541,7 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 		else if (c == '\'')
 		{
 			++i;
-			pe.content = QString::null;
+			pe.content.clear();
 			bool found = false;
 			if (!parseStack.isEmpty())
 			{

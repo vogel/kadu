@@ -124,7 +124,7 @@ void HtmlDocument::parseHtml(const QString &html)
 					e.text += ch;
 					addElement(e);
 					e.tag = false;
-					e.text = QString::null;
+					e.text.clear();
 				}
 				break;
 			default:

@@ -115,7 +115,7 @@ QString KaduChatStyleEngine::isStyleValid(QString stylePath)
 {
 	QFileInfo fi;
 	fi.setFile(stylePath);
-	return fi.suffix() == "syntax" ? fi.completeBaseName() : QString::null;
+	return fi.suffix() == "syntax" ? fi.completeBaseName() : QString();
 }
 
 void KaduChatStyleEngine::loadStyle(const QString &styleName, const QString &variantName)
@@ -222,16 +222,16 @@ void KaduChatStyleEngine::repaintMessages(HtmlMessagesRenderer *renderer)
 
 void KaduChatStyleEngine::configurationUpdated()
 {
-	QString chatSyntax = SyntaxList::readSyntax("chat", CurrentStyleName, "");
+	QString chatSyntax = SyntaxList::readSyntax("chat", CurrentStyleName, QString());
 	if (ChatSyntaxWithHeader != chatSyntax)
-		loadStyle(CurrentStyleName, "");
+		loadStyle(CurrentStyleName, QString());
 }
 
 void KaduChatStyleEngine::prepareStylePreview(Preview *preview, QString styleName, QString variantName)
 {
 	Q_UNUSED(variantName)
 
-	QString content = SyntaxList::readSyntax("chat", styleName, "");
+	QString content = SyntaxList::readSyntax("chat", styleName, QString());
 
 	content.replace(QRegExp("%o"), " ");
 	content.remove("<kadu:header>");

@@ -114,9 +114,9 @@ void SmsConfigurationUiHandler::mainConfigurationWindowCreated(MainConfiguration
 
 void SmsConfigurationUiHandler::createDefaultConfiguration()
 {
-	config_file.addVariable("SMS", "Priority", QString::null);
+	config_file.addVariable("SMS", "Priority", QString());
 	config_file.addVariable("SMS", "BuiltInApp", true);
-	config_file.addVariable("SMS", "SmsNick", "");
+	config_file.addVariable("SMS", "SmsNick", QString());
 	config_file.addVariable("SMS", "UseCustomString", false);
 
 	config_file.addVariable("ShortCuts", "kadu_sendsms", "Ctrl+S");

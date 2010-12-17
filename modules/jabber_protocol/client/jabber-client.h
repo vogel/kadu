@@ -359,7 +359,7 @@ namespace XMPP
 		 * This only has an effect if the old protocol (@ref useXMPP09)
 		 * has been enabled. Default is false.
 		 */
-		void setOverrideHost(bool flag, const QString &server = "", int port = 5222);
+		void setOverrideHost(bool flag, const QString &server = QString(), int port = 5222);
 
 		/**
 		 * Returns if the server name and port are overridden.

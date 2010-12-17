@@ -339,7 +339,7 @@ void MainConfigurationWindow::setToolTipClasses()
 	QStringList captions;
 	QStringList values;
 	captions << tr("None");
-	values << "";
+	values << QString();
 
 	QStringList toolTipClasses = ToolTipClassManager::instance()->getToolTipClasses();
 	foreach(const QString &toolTipClass, toolTipClasses)

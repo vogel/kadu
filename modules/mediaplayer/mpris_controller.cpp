@@ -86,11 +86,6 @@ MPRISController::MPRISController(const QString &s, QObject *parent) :
 
 	active_ = (bus.lastError().type() == QDBusError::NoError);
 
-	currentTrack_.title  = "";
-	currentTrack_.album  = "";
-	currentTrack_.artist = "";
-	currentTrack_.file   = "";
-	currentTrack_.track  = "";
 	currentTrack_.time   =  0;
 	currentStatus_.i1    =  2;
 }

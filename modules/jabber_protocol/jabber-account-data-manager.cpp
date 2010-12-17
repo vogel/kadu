@@ -64,7 +64,7 @@ void JabberAccountDataManager::writeEntry(const QString &section, const QString 
 QVariant JabberAccountDataManager::readEntry(const QString &section, const QString &name)
 {
 	if (!Data)
-		return QVariant(QString::null);
+		return QVariant(QString());
 
 	if (section != "Jabber")
 		return AccountDataManager::readEntry(section, name);
@@ -80,5 +80,5 @@ QVariant JabberAccountDataManager::readEntry(const QString &section, const QStri
 
 	// other data
 
-	return QVariant(QString::null);
+	return QVariant(QString());
 }

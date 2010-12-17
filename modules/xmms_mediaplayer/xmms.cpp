@@ -66,7 +66,7 @@ QString XmmsMediaPlayer::getPlayerName()
 
 QString XmmsMediaPlayer::getPlayerVersion()
 {
-	return QString::null;
+	return QString();
 }
 
 QStringList XmmsMediaPlayer::getPlayListTitles()
@@ -126,12 +126,12 @@ QString XmmsMediaPlayer::getTitle(int position)
 
 QString XmmsMediaPlayer::getAlbum(int position)
 {
-	return QString::null;
+	return QString();
 }
 
 QString XmmsMediaPlayer::getArtist(int position)
 {
-	return QString::null;
+	return QString();
 }
 
 QString XmmsMediaPlayer::getFile(int position)

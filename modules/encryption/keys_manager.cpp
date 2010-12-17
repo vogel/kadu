@@ -255,7 +255,7 @@ void KeysManager::refreshKeysList()
 				encrypt = config_file.readBoolEntry("Chat", "Encryption");
 
 			QStringList strings;
-			strings << (userlist->contains(ule) ? ule.altNick() : QString::null) << ule.ID("Gadu") << bool2text(encrypt);
+			strings << (userlist->contains(ule) ? ule.altNick() : QString()) << ule.ID("Gadu") << bool2text(encrypt);
 
 			new QTreeWidgetItem(lv_keys, strings);
 		}

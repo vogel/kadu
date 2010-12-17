@@ -103,5 +103,5 @@ bool Identity::isEmpty() const
 }
 
 KaduSharedBase_PropertyBoolDef(Identity, Permanent, false)
-KaduSharedBase_PropertyDef(Identity, QString, name, Name, QString::null)
+KaduSharedBase_PropertyDef(Identity, QString, name, Name, QString())
 

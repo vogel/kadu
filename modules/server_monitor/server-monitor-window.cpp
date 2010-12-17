@@ -161,8 +161,8 @@ void ServerMonitorWindow::loadServersListFromFile()
 		QStringList lineSpilted = line.split(':');
 
 		QString addr = lineSpilted[0];
-		QString port = "";
-		QString name = "";
+		QString port;
+		QString name;
 
 		if (lineSpilted.length() > 1)
 		{

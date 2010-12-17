@@ -82,7 +82,7 @@ namespace HistoryMigrationHelper
 		else if (filename == "sms" && f.open(QIODevice::ReadOnly))
 		{
 			QTextStream stream(&f);
-			while (stream.readLine() != QString::null)
+			while (!stream.readLine().isNull())
 				lines++;
 			f.close();
 		}
@@ -167,7 +167,7 @@ namespace HistoryMigrationHelper
 
 		QTextStream stream(&f);
 		stream.setCodec(codec_latin2);
-		while ((line = stream.readLine()) != QString::null)
+		while (!(line = stream.readLine()).isNull())
 		{
 			HistoryEntry entry;
 
@@ -327,9 +327,9 @@ namespace HistoryMigrationHelper
 				if (letter == sep)
 				{
 					if (!token.isEmpty())
-						token = QString::null;
+						token.clear();
 					else
-						strlist.append(QString::null);
+						strlist.append(QString());
 				}
 				else if (letter == '"')
 					inString = true;

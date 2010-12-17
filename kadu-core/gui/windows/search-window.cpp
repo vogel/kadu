@@ -543,7 +543,7 @@ void SearchWindow::newSearchResults(const BuddyList &buddies)
 		else
 		{
 			QStringList strings;
-			strings << QString::null << contact.id() << buddy.firstName() << buddy.city() << buddy.nickName() << QString::number(buddy.birthYear());
+			strings << QString() << contact.id() << buddy.firstName() << buddy.city() << buddy.nickName() << QString::number(buddy.birthYear());
 			qlv = new QTreeWidgetItem(results, strings);
 			qlv->setIcon(0, pix);
 			qlv = 0;

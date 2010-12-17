@@ -452,7 +452,7 @@ void HintManager::prepareOverUserHint(QFrame *tipFrame, QLabel *tipLabel, BuddyO
 	/* Dorr: the file:// in img tag doesn't generate the image on hint.
 	 * for compatibility with other syntaxes we're allowing to put the file://
 	 * so we have to remove it here */
-	text = text.replace("file://", "");
+	text = text.remove("file://");
 
 	while (text.endsWith(QLatin1String("<br/>")))
 		text.resize(text.length() - 5 /* 5 == QString("<br/>").length()*/);
@@ -683,7 +683,7 @@ void HintManager::createDefaultConfiguration()
 	config_file.addVariable("Hints", "MaximumWidth", 500);
 	config_file.addVariable("Hints", "MiddleButton", 3);
 	config_file.addVariable("Hints", "MinimumWidth", 100);
-	config_file.addVariable("Hints", "MouseOverUserSyntax", "");
+	config_file.addVariable("Hints", "MouseOverUserSyntax", QString());
 	config_file.addVariable("Hints", "NewHintUnder", 0);
 	config_file.addVariable("Hints", "ShowContentMessage", true);
 	config_file.addVariable("Hints", "UseUserPosition", false);

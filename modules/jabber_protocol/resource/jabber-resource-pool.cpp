@@ -30,7 +30,7 @@
  * for a given JID can be found. It's an empty offline
  * resource.
  */
-XMPP::Resource JabberResourcePool::EmptyResource("", XMPP::Status("", "", 0, false));
+XMPP::Resource JabberResourcePool::EmptyResource(QString(), XMPP::Status(QString(), QString(), 0, false));
 
 JabberResourcePool::JabberResourcePool(JabberProtocol *protocol)
 	: protocol(protocol)

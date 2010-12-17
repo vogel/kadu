@@ -77,7 +77,7 @@ void MPRISMediaPlayer::send(QString obj, QString func, int val)
 QString MPRISMediaPlayer::getString(QString obj, QString func)
 {
 	if (!isActive() || service.isEmpty())
-		return "";
+		return QString();
 
 	QDBusInterface mprisApp(service, obj, "org.freedesktop.MediaPlayer");
 	QDBusReply<QString> reply = mprisApp.call(func);
@@ -86,7 +86,7 @@ QString MPRISMediaPlayer::getString(QString obj, QString func)
 	{
 		return reply.value().simplified();
 	}
-	return "";
+	return QString();
 }
 
 int MPRISMediaPlayer::getInt(QString obj, QString func)
@@ -116,7 +116,7 @@ QString MPRISMediaPlayer::getStringMapValue(QString obj, QString func, int param
 			return map.value(field).toString();
 		}
 	}
-	return "";
+	return QString();
 }
 
 int MPRISMediaPlayer::getIntMapValue(QString obj, QString func, int param, QString field)
@@ -194,7 +194,7 @@ uint MPRISMediaPlayer::getPlayListLength()
 QString MPRISMediaPlayer::getTitle(int position)
 {
 	kdebugf();
-	if (!isPlaying()) return "";
+	if (!isPlaying()) return QString();
 
 	if (position == -1)
 		return controller->currentTrack().title;
@@ -206,7 +206,7 @@ QString MPRISMediaPlayer::getTitle(int position)
 QString MPRISMediaPlayer::getAlbum(int position)
 {
 	kdebugf();
-	if (!isPlaying()) return "";
+	if (!isPlaying()) return QString();
 
 	if ((position == -1) && !controller->currentTrack().album.isEmpty())
 		return controller->currentTrack().album;
@@ -218,7 +218,7 @@ QString MPRISMediaPlayer::getAlbum(int position)
 QString MPRISMediaPlayer::getArtist(int position)
 {
 	kdebugf();
-	if (!isPlaying()) return "";
+	if (!isPlaying()) return QString();
 
 	if ((position == -1) && !controller->currentTrack().artist.isEmpty())
 		return controller->currentTrack().artist;
@@ -230,7 +230,7 @@ QString MPRISMediaPlayer::getArtist(int position)
 QString MPRISMediaPlayer::getFile(int position)
 {
 	kdebugf();
-	if (!isPlaying()) return "";
+	if (!isPlaying()) return QString();
 
 	if ((position == -1) && !controller->currentTrack().file.isEmpty())
 		return controller->currentTrack().file;

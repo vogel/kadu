@@ -65,7 +65,7 @@ QString WinampMediaPlayer::readWinampMemory(quint32 command, quint32 arg, bool u
 		void* pResult=(void*)SendMessage(hWinamp, WM_WA_IPC, arg, command);
 		if((int)pResult == 1){
 			kdebugm(KDEBUG_WARNING, "command %d unsupported by player\n", command);
-			return QString::null;
+			return QString();
 		}
 		DWORD processId;
 		GetWindowThreadProcessId(hWinamp, &processId);
@@ -73,14 +73,14 @@ QString WinampMediaPlayer::readWinampMemory(quint32 command, quint32 arg, bool u
 		HANDLE hWinampProcess=OpenProcess(PROCESS_VM_OPERATION | PROCESS_VM_READ, 0, processId);
 		if(!SUCCEEDED(hWinampProcess)){
 			kdebugm(KDEBUG_WARNING, "unable to open winamp process\n");
-			return QString::null;
+			return QString();
 		}
 
 		char lpBuffer[512];
 		if(!SUCCEEDED(ReadProcessMemory(hWinampProcess, pResult, lpBuffer, 512, NULL))){
 			kdebugm(KDEBUG_WARNING, "unable to read winamp memory\n");
 			CloseHandle(hWinampProcess);
-			return QString::null;
+			return QString();
 		}
 
 		if(unicode){
@@ -91,7 +91,7 @@ QString WinampMediaPlayer::readWinampMemory(quint32 command, quint32 arg, bool u
 			return QString::fromLocal8Bit(lpBuffer);
 		}
 	}
-	return QString::null;
+	return QString();
 }
 
 QString WinampMediaPlayer::getFileTagW(int position, QString tag)
@@ -104,7 +104,7 @@ QString WinampMediaPlayer::getFileTagW(int position, QString tag)
 		HANDLE hWinampProcess=OpenProcess(PROCESS_VM_OPERATION | PROCESS_VM_READ | PROCESS_VM_WRITE, 0, processId);
 		if(!SUCCEEDED(hWinampProcess)){
 			kdebugm(KDEBUG_WARNING, "unable to open winamp process\n");
-			return QString::null;
+			return QString();
 		}
 
 		extendedFileInfoStructW* pFileInfo = (extendedFileInfoStructW*)VirtualAllocEx(hWinampProcess, NULL, sizeof(extendedFileInfoStructW), MEM_COMMIT, PAGE_READWRITE);
@@ -114,7 +114,7 @@ QString WinampMediaPlayer::getFileTagW(int position, QString tag)
 		if(!pFileInfo || ! pForeightTag || !pForeightRet){
 			kdebugm(KDEBUG_WARNING, "unable to allocate foreight memory\n");
 			CloseHandle(hWinampProcess);
-			return QString::null;
+			return QString();
 		}
 
 		extendedFileInfoStructW fis;
@@ -143,7 +143,7 @@ QString WinampMediaPlayer::getFileTagW(int position, QString tag)
 
 		return QString::fromUtf16((const ushort*)lpReturn);
 	}
-	return QString::null;
+	return QString();
 }
 
 QString WinampMediaPlayer::getFileTagA(int position, QString tag)
@@ -156,7 +156,7 @@ QString WinampMediaPlayer::getFileTagA(int position, QString tag)
 		HANDLE hWinampProcess=OpenProcess(PROCESS_VM_OPERATION | PROCESS_VM_READ | PROCESS_VM_WRITE, 0, processId);
 		if(!SUCCEEDED(hWinampProcess)){
 			kdebugm(KDEBUG_WARNING, "unable to open winamp process\n");
-			return QString::null;
+			return QString();
 		}
 
 		extendedFileInfoStruct* pFileInfo = (extendedFileInfoStruct*)VirtualAllocEx(hWinampProcess, NULL, sizeof(extendedFileInfoStruct), MEM_COMMIT, PAGE_READWRITE);
@@ -166,7 +166,7 @@ QString WinampMediaPlayer::getFileTagA(int position, QString tag)
 		if(!pFileInfo || ! pForeightTag || !pForeightRet){
 			kdebugm(KDEBUG_WARNING, "unable to allocate foreight memory\n");
 			CloseHandle(hWinampProcess);
-			return QString::null;
+			return QString();
 		}
 
 		extendedFileInfoStruct fis;
@@ -195,7 +195,7 @@ QString WinampMediaPlayer::getFileTagA(int position, QString tag)
 
 		return QString::fromLocal8Bit((const char*)lpReturn);
 	}
-	return QString::null;
+	return QString();
 }
 
 // PlayerInfo
@@ -214,7 +214,7 @@ QString WinampMediaPlayer::getPlayerVersion()
 		int version=SendMessage(hWinamp, WM_WA_IPC, 0, IPC_GETVERSION);
 		return QString("%1.%2").arg(WINAMP_VERSION_MAJOR(version)).arg(WINAMP_VERSION_MINOR(version));
 	}
-	return QString::null;
+	return QString();
 }
 
 QStringList WinampMediaPlayer::getPlayListTitles()
@@ -276,7 +276,7 @@ QString WinampMediaPlayer::getTitle(int position)
 
 		return title;
 	}
-	return QString::null;
+	return QString();
 }
 
 QString WinampMediaPlayer::getAlbum(int position)
@@ -296,7 +296,7 @@ QString WinampMediaPlayer::getAlbum(int position)
 
 		return album;
 	}
-	return QString::null;
+	return QString();
 }
 
 QString WinampMediaPlayer::getArtist(int position)
@@ -337,7 +337,7 @@ QString WinampMediaPlayer::getFile(int position)
 		return file;
 	}
 
-	return QString::null;
+	return QString();
 }
 
 int WinampMediaPlayer::getLength(int position)

@@ -71,7 +71,7 @@ void ScreenShotConfiguration::createDefaultConfiguration()
 
 void ScreenShotConfiguration::configurationUpdated()
 {
-	FileFormat = config_file.readEntry("ScreenShot", "fileFormat", "");
+	FileFormat = config_file.readEntry("ScreenShot", "fileFormat", QString());
 	UseShortJpgExtension = config_file.readBoolEntry("ScreenShot", "use_short_jpg", true);
 	Quality = config_file.readNumEntry("ScreenShot", "quality", -1);
 	ImagePath = config_file.readEntry("ScreenShot", "path", profilePath("images/"));

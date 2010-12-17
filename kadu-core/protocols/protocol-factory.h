@@ -74,7 +74,7 @@ public:
 
 	virtual QString iconPath()
 	{
-		return QString::null;
+		return QString();
 	}
 
 };

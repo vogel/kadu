@@ -51,7 +51,7 @@ void DNSHandler::resultsReady(QHostInfo hostInfo)
 //	kdebugm(KDEBUG_WARNING, "resultsReady>>>>>>>>>>%s\n", qPrintable(marker));
 
 	if (hostInfo.hostName().isEmpty())
-		emit result(marker, QString::null);
+		emit result(marker, QString());
 	else
 		emit result(marker, hostInfo.hostName());
 

@@ -524,7 +524,7 @@ void Firewall::import_0_6_5_configuration()
 	kdebugf();
 
 	QString loadedStr = config_file.readEntry("Firewall", "Secured_list");
-	QStringList secured = loadedStr.split(",", QString::SkipEmptyParts);
+	QStringList secured = loadedStr.split(',', QString::SkipEmptyParts);
 
 	foreach (const QString &contact, secured)
 	{

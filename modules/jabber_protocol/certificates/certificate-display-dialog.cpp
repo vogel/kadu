@@ -213,7 +213,7 @@ QString CertificateDisplayDialog::makePropEntry(QCA::CertificateInfoType var, co
 		val += values.at(i) + "<br>";
 
 	if(val.isEmpty())
-		return "";
+		return QString();
 	else
 		return QString("<tr><td><nobr><b>") + name + "</b></nobr></td><td>" + val + "</td></tr>";
 }

@@ -54,5 +54,5 @@ QVariant JabberContactDataManager::readEntry(const QString &section, const QStri
 
 	// other data
 
-	return QVariant(QString::null);
+	return QVariant(QString());
 }

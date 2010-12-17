@@ -46,7 +46,7 @@ void TextProgress::setProgressText()
 
 void TextProgress::clearProgressText()
 {
-	text_ = QString::null;
+	text_.clear();
 	clear();
 }
 

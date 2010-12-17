@@ -140,7 +140,7 @@ public:
 
 	BuddiesListViewDelegateConfiguration & delegateConfiguration();
 
-	void setBackground(const QString& backgroundColor, const QString& alternateColor, const QString& file = QString::null, BuddiesListView::BackgroundMode mode = BackgroundNone);
+	void setBackground(const QString& backgroundColor, const QString& alternateColor, const QString& file = QString(), BuddiesListView::BackgroundMode mode = BackgroundNone);
 	void updateBackground();
 	void updateLayout() { updateGeometries(); }
 

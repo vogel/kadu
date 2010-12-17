@@ -154,7 +154,7 @@ QString WeatherGlobal::getConfigFile(const QString &serverName) const
 	if (server != servers_.end())
 		return server->configFile_;
 	else
-		QString::null;
+		QString();
 }
 
 QString WeatherGlobal::getServerName(const QString &configFile) const
@@ -163,7 +163,7 @@ QString WeatherGlobal::getServerName(const QString &configFile) const
 	if (server != servers_.end())
 		return server->name_;
 	else
-		QString::null;
+		QString();
 }
 
 bool WeatherGlobal::configFileExists(const QString &configFile) const

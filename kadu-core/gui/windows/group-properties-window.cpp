@@ -139,7 +139,7 @@ void GroupPropertiesWindow::selectIcon()
 	{
 		QFileInfo fileInfo(file);
 		config_file.writeEntry("GroupIcon", "recentPath", fileInfo.absolutePath());
-		icon->setText("");
+		icon->setText(QString());
 		icon->setIcon(QIcon(file));
 		iconPath = file;
 	}

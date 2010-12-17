@@ -424,7 +424,7 @@ void DockingManager::configurationUpdated()
 	else
 	{
 		if (CurrentDocker)
-			CurrentDocker->changeTrayTooltip(QString::null);
+			CurrentDocker->changeTrayTooltip(QString());
 	}
 
 	IconType it = (IconType)config_file.readNumEntry("Look", "NewMessageIcon");

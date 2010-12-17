@@ -29,7 +29,7 @@ MprisPlayer* mpris;
 
 extern "C" int mpris_mediaplayer_init()
 {
-	mpris = new MprisPlayer("MPRIS", QString::null);
+	mpris = new MprisPlayer("MPRIS", QString());
 
 	MainConfigurationWindow::registerUiFile(
 		dataPath("kadu/modules/configuration/mpris_mediaplayer.ui"));
@@ -51,7 +51,7 @@ extern "C" void mpris_mediaplayer_close()
 
 MprisPlayer::MprisPlayer(QString name, QString service) : MPRISMediaPlayer(name, service)
 {
-	setService(config_file.readEntry("MediaPlayer", "MPRISService", QString::null));
+	setService(config_file.readEntry("MediaPlayer", "MPRISService", QString()));
 }
 
 MprisPlayer::~MprisPlayer()
@@ -60,5 +60,5 @@ MprisPlayer::~MprisPlayer()
 
 void MprisPlayer::configurationUpdated()
 {
-	setService(config_file.readEntry("MediaPlayer", "MPRISService", QString::null));
+	setService(config_file.readEntry("MediaPlayer", "MPRISService", QString()));
 }

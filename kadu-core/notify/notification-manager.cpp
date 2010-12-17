@@ -112,7 +112,7 @@ void NotificationManager::init()
 	notifyAboutUserActionDescription = new ActionDescription(this,
 		ActionDescription::TypeUser, "notifyAboutUserAction",
 		this, SLOT(notifyAboutUserActionActivated(QAction *, bool)),
-		"kadu_icons/kadu-notifyaboutuser", "kadu_icons/kadu-notifyaboutuser", tr("Notify about user"), true, "",
+		"kadu_icons/kadu-notifyaboutuser", "kadu_icons/kadu-notifyaboutuser", tr("Notify about user"), true, QString(),
 		checkNotify
 	);
 

@@ -39,7 +39,7 @@ void AccountDataManager::writeEntry(const QString &section, const QString &name,
 QVariant AccountDataManager::readEntry(const QString &section, const QString &name)
 {
 	if (section != "Account")
-		return QVariant(QString::null);
+		return QVariant(QString());
 
 	if (name == "Id")
 		return Data.id();
@@ -47,5 +47,5 @@ QVariant AccountDataManager::readEntry(const QString &section, const QString &na
 	if (name == "Password")
 		return Data.password();
 
-	return QVariant(QString::null);
+	return QVariant(QString());
 }

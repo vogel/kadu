@@ -74,7 +74,7 @@ public:
 		\param name typ zestawu
 		\param configname plik z konfiguracj� zestawu
 	**/
-	Themes(const QString &name, const QString &configname = QString::null);
+	Themes(const QString &name, const QString &configname = QString());
 
 	/**
 		\fn QStringList defaultKaduPathsWithThemes() const
@@ -108,7 +108,7 @@ public:
 		\fn const QStringList &paths() const
 		Funkcja zwraca �cie�k� do wskazanego zestawu
 	**/
-	QString themePath(const QString &theme = QString::null) const;
+	QString themePath(const QString &theme = QString()) const;
 
 	QString getThemeEntry(const QString &name) const;
 	const QMap<QString, QString>  &getEntries() { return entries; }

@@ -25,23 +25,23 @@
 
 #include "exports.h"
 
-KADUAPI void printBacktrace(const QString &header = QString::null);
+KADUAPI void printBacktrace(const QString &header = QString());
 
 /**
 	Zmienia ścieżkę relatywną do katalogu z ustawieniami programu
 	na ścieżkę bezwzgledną uwzględniając zmienne środowiskowe
 	$HOME i $CONFIG_DIR
 **/
-KADUAPI QString profilePath(const QString &subpath = QString::null);
+KADUAPI QString profilePath(const QString &subpath = QString());
 
 /**
 	zwraca ścieżkę do pliku f
 	jeżeli drugi parametr nie jest == 0, to funkcja próbuje najpierw ustalić
 	ścieżkę na podstawie argv0, które ma być równe argv[0] oraz zmiennej PATH
 **/
-KADUAPI QString dataPath(const QString &f = QString::null, const char *argv0 = 0);
+KADUAPI QString dataPath(const QString &f = QString(), const char *argv0 = 0);
 
-KADUAPI QString libPath(const QString &f = QString::null);
+KADUAPI QString libPath(const QString &f = QString());
 
 KADUAPI QString webKitPath(const QString &path);
 

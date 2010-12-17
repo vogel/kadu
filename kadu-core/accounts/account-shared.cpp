@@ -322,7 +322,7 @@ QString AccountShared::statusIconPath(const QString &statusType)
 	if (ProtocolHandler)
 		return ProtocolHandler->statusIconFullPath(statusType);
 	else
-		return "";
+		return QString();
 }
 
 QIcon AccountShared::statusIcon(const QString &statusType)

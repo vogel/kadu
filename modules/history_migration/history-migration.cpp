@@ -126,7 +126,7 @@ void HistoryImporter::run()
 		ConfigurationWindow->widget()->widgetById("history-migration/import")->setVisible(false);
 
 	ProgressDialog = new QProgressDialog(qApp->translate("HistoryMigration", "Migrating old history: %1 of %2").arg(0).arg(totalEntries),
-	"", 0, totalEntries, Core::instance()->kaduWindow());
+	QString(), 0, totalEntries, Core::instance()->kaduWindow());
 	ProgressDialog->setCancelButton(0);
 	ProgressDialog->setWindowModality(Qt::NonModal);
 	ProgressDialog->setAutoClose(false);

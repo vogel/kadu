@@ -348,7 +348,7 @@ void ChatWidget::resetEditBox()
 void ChatWidget::clearChatWindow()
 {
 	kdebugf();
-	if (!config_file.readBoolEntry("Chat", "ConfirmChatClear") || MessageDialog::ask("", tr("Kadu"), tr("Chat window will be cleared. Continue?")))
+	if (!config_file.readBoolEntry("Chat", "ConfirmChatClear") || MessageDialog::ask(QString(), tr("Kadu"), tr("Chat window will be cleared. Continue?")))
 	{
 		MessagesView->clearMessages();
 		activateWindow();

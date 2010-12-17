@@ -275,7 +275,7 @@ void AddBuddyWindow::validateData()
 	}
 
 	AddContactButton->setEnabled(true);
-	displayErrorMessage(QString::null);
+	displayErrorMessage(QString());
 }
 
 void AddBuddyWindow::validateMobileData()
@@ -295,7 +295,7 @@ void AddBuddyWindow::validateMobileData()
 	}
 
 	AddContactButton->setEnabled(true);
-	displayErrorMessage(QString::null);
+	displayErrorMessage(QString());
 }
 
 void AddBuddyWindow::setAddContactEnabled()

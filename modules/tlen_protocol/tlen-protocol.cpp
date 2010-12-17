@@ -538,7 +538,7 @@ void TlenProtocol::itemReceived(QString jid, QString name, QString subscription,
 	buddy.setAnonymous(false);
 
 	// TODO: 0.6.6 remember to set every contact offline after add to contact list
-	//presenceChanged(jid, "unavailable", QString::null);
+	//presenceChanged(jid, "unavailable", QString());
 
 	kdebugf2();
 }

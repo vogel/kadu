@@ -513,7 +513,7 @@ void BuddiesListView::updateBackground()
 		QImage image(BackgroundImageFile);
 		if (image.isNull())
 		{
-			setStyleSheet("");
+			setStyleSheet(QString());
 			return;
 		}
 

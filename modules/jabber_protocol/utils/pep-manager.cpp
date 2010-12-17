@@ -112,7 +112,7 @@ class PEPPublishTask : public XMPP::Task
 {
 public:
 	PEPPublishTask(Task* parent, const QString& node, const XMPP::PubSubItem& it, PEPManager::Access access) : XMPP::Task(parent), node_(node), item_(it) {
-		iq_ = createIQ(doc(), "set", "", id());
+		iq_ = createIQ(doc(), "set", QString(), id());
 		
 		QDomElement pubsub = doc()->createElement("pubsub");
 		pubsub.setAttribute("xmlns", "http://jabber.org/protocol/pubsub");
@@ -161,7 +161,7 @@ public:
 	}
 	
 	bool take(const QDomElement& x) {
-		if(!iqVerify(x, "", id()))
+		if(!iqVerify(x, QString(), id()))
 			return false;
 
 		if(x.attribute("type") == "result") {
@@ -198,7 +198,7 @@ class PEPRetractTask : public XMPP::Task
 {
 public:
 	PEPRetractTask(Task* parent, const QString& node, const QString& itemId) : XMPP::Task(parent), node_(node), itemId_(itemId) {
-		iq_ = createIQ(doc(), "set", "", id());
+		iq_ = createIQ(doc(), "set", QString(), id());
 		
 		QDomElement pubsub = doc()->createElement("pubsub");
 		pubsub.setAttribute("xmlns", "http://jabber.org/protocol/pubsub");
@@ -215,7 +215,7 @@ public:
 	}
 	
 	bool take(const QDomElement& x) {
-		if(!iqVerify(x, "", id()))
+		if(!iqVerify(x, QString(), id()))
 			return false;
 
 		if(x.attribute("type") == "result") {

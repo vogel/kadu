@@ -110,8 +110,8 @@ QString StatusTypeManager::statusIconPath(const QString &protocol, const QString
 	return QString("protocols/%1/%2%3%4")
 			.arg(protocol)
 			.arg(statusType->iconName())
-			.arg(description ? "_d" : "")
-			.arg(mobile ? "_m" : "");
+			.arg(description ? "_d" : QString())
+			.arg(mobile ? "_m" : QString());
 }
 
 QString StatusTypeManager::statusIconFullPath(const QString &protocol, const QString &type, bool description, bool mobile)
@@ -123,8 +123,8 @@ QString StatusTypeManager::statusIconFullPath(const QString &protocol, const QSt
 	QString iconName = QString("protocols/%1/%2%3%4")
 			.arg(protocol)
 			.arg(statusType->iconName())
-			.arg(description ? "_d" : "")
-			.arg(mobile ? "_m" : "");
+			.arg(description ? "_d" : QString())
+			.arg(mobile ? "_m" : QString());
 
 	return IconsManager::instance()->iconPath(iconName, "16x16");
 }
@@ -138,8 +138,8 @@ QIcon StatusTypeManager::statusIcon(const QString &protocol, const QString &type
 	QString iconName = QString("protocols/%1/%2%3%4")
 			.arg(protocol)
 			.arg(statusType->iconName())
-			.arg(description ? "_d" : "")
-			.arg(mobile ? "_m" : "");
+			.arg(description ? "_d" : QString())
+			.arg(mobile ? "_m" : QString());
 
 	QIcon icon = IconsManager::instance()->iconByPath(iconName);
 

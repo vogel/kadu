@@ -48,13 +48,13 @@ QString GaduChatImageService::saveImage(UinType sender, uint32_t size, uint32_t 
 	if (!QFileInfo(path).isDir() && !QDir().mkdir(path))
 	{
 		kdebugm(KDEBUG_INFO, "Failed creating directory: %s\n", qPrintable(path));
-		return QString::null;
+		return QString();
 	}
 
 	QString fileName = GaduFormatter::createImageId(sender, size, crc32);
 	QFile file(path + fileName);
 	if (!file.open(QIODevice::WriteOnly))
-		return QString::null;
+		return QString();
 
 	file.write(data, size);
 	file.close();

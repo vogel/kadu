@@ -44,7 +44,7 @@ void ConfigWizardCompletedPage::createGui()
 
 	ConfigureAccouuntsCheckBox = new QCheckBox(tr("Go to Accounts Setting after closing this window"), this);
 
-	formLayout()->addRow("", ConfigureAccouuntsCheckBox);
+	formLayout()->addRow(QString(), ConfigureAccouuntsCheckBox);
 }
 
 void ConfigWizardCompletedPage::initializePage()

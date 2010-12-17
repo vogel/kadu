@@ -76,7 +76,7 @@ QString IconsManager::iconPath(const QString &path, const QString &size, const Q
 		fileInfo.setFile(fileName);
 
 		if (!fileInfo.isFile() || !fileInfo.isReadable())
-			return QString::null;
+			return QString();
 	}
 
 	return fileInfo.canonicalFilePath();
@@ -105,7 +105,7 @@ QString IconsManager::iconPath(const QString &path) const
 
 	QFileInfo fileInfo(fileName);
 	if (!fileInfo.isFile() || !fileInfo.isReadable())
-		return QString::null;
+		return QString();
 
 	return fileInfo.canonicalFilePath();
 }

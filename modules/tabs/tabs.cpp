@@ -109,7 +109,7 @@ TabsManager::TabsManager(bool firstload)
 	OpenInNewTabActionDescription = new ActionDescription(this,
 		ActionDescription::TypeUser, "openInNewTabAction",
 		this, SLOT(onNewTab(QAction *, bool)),
-		"internet-group-chat", "internet-group-chat", tr("Chat in New Tab"), false, QString::null, disableNewTab
+		"internet-group-chat", "internet-group-chat", tr("Chat in New Tab"), false, QString(), disableNewTab
 	);
 	BuddiesListViewMenuManager::instance()->addActionDescription(OpenInNewTabActionDescription, BuddiesListViewMenuItem::MenuCategoryChat, 200);
 

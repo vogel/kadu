@@ -33,7 +33,7 @@ void GaduServerConnector::perform()
 	H = gg_token(1);
 	if (!H || H->fd <= 0)
 	{
-		tokenFetched(QString::null, QPixmap());
+		tokenFetched(QString(), QPixmap());
 		return;
 	}
 

@@ -105,7 +105,7 @@ void SyntaxList::reload()
 		info.global = false;
 		insert("custom", info);
 
-		updateSyntax("custom", "");
+		updateSyntax("custom", QString());
 	}
 }
 

@@ -75,7 +75,7 @@ QString ChatDatesModel::fetchTitle(const QDate &date) const
 {
 	QList<Message> messages = History::instance()->messages(MyChat, date, 1);
 	if (messages.size() == 0)
-		return "";
+		return QString();
 
 	Message firstMessage = messages.first();
 	QTextDocument document;
