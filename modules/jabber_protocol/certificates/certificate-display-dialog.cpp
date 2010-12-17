@@ -36,107 +36,107 @@ CertificateDisplayDialog::CertificateDisplayDialog(const QCA::Certificate &cert,
 {
 	// raw code from uic
 	resize(518, 369);
-        vboxLayout = new QVBoxLayout(this);
-        vboxLayout->setSpacing(6);
-        vboxLayout->setMargin(11);
-        vboxLayout->setObjectName(QString::fromUtf8("vboxLayout"));
-        hboxLayout = new QHBoxLayout();
-        hboxLayout->setSpacing(6);
-        hboxLayout->setMargin(0);
-        hboxLayout->setObjectName(QString::fromUtf8("hboxLayout"));
-        vboxLayout1 = new QVBoxLayout();
-        vboxLayout1->setSpacing(6);
-        vboxLayout1->setMargin(0);
-        vboxLayout1->setObjectName(QString::fromUtf8("vboxLayout1"));
-        textLabel4 = new QLabel;
-        textLabel4->setObjectName(QString::fromUtf8("textLabel4"));
+	vboxLayout = new QVBoxLayout(this);
+	vboxLayout->setSpacing(6);
+	vboxLayout->setMargin(11);
+	vboxLayout->setObjectName(QString::fromUtf8("vboxLayout"));
+	hboxLayout = new QHBoxLayout();
+	hboxLayout->setSpacing(6);
+	hboxLayout->setMargin(0);
+	hboxLayout->setObjectName(QString::fromUtf8("hboxLayout"));
+	vboxLayout1 = new QVBoxLayout();
+	vboxLayout1->setSpacing(6);
+	vboxLayout1->setMargin(0);
+	vboxLayout1->setObjectName(QString::fromUtf8("vboxLayout1"));
+	textLabel4 = new QLabel;
+	textLabel4->setObjectName(QString::fromUtf8("textLabel4"));
 
-        vboxLayout1->addWidget(textLabel4);
+	vboxLayout1->addWidget(textLabel4);
 
-        lb_valid = new QLabel;
-        lb_valid->setObjectName(QString::fromUtf8("lb_valid"));
+	lb_valid = new QLabel;
+	lb_valid->setObjectName(QString::fromUtf8("lb_valid"));
 
-        vboxLayout1->addWidget(lb_valid);
+	vboxLayout1->addWidget(lb_valid);
 
-        textLabel2 = new QLabel;
-        textLabel2->setObjectName(QString::fromUtf8("textLabel2"));
+	textLabel2 = new QLabel;
+	textLabel2->setObjectName(QString::fromUtf8("textLabel2"));
 
-        vboxLayout1->addWidget(textLabel2);
+	vboxLayout1->addWidget(textLabel2);
 
-        lb_notBefore = new QLabel;
-        lb_notBefore->setObjectName(QString::fromUtf8("lb_notBefore"));
+	lb_notBefore = new QLabel;
+	lb_notBefore->setObjectName(QString::fromUtf8("lb_notBefore"));
 
-        vboxLayout1->addWidget(lb_notBefore);
+	vboxLayout1->addWidget(lb_notBefore);
 
-        textLabel3 = new QLabel;
-        textLabel3->setObjectName(QString::fromUtf8("textLabel3"));
+	textLabel3 = new QLabel;
+	textLabel3->setObjectName(QString::fromUtf8("textLabel3"));
 
-        vboxLayout1->addWidget(textLabel3);
+	vboxLayout1->addWidget(textLabel3);
 
-        lb_notAfter = new QLabel;
-        lb_notAfter->setObjectName(QString::fromUtf8("lb_notAfter"));
+	lb_notAfter = new QLabel;
+	lb_notAfter->setObjectName(QString::fromUtf8("lb_notAfter"));
 
-        vboxLayout1->addWidget(lb_notAfter);
+	vboxLayout1->addWidget(lb_notAfter);
 
-        textLabel1 = new QLabel;
-        textLabel1->setObjectName(QString::fromUtf8("textLabel1"));
+	textLabel1 = new QLabel;
+	textLabel1->setObjectName(QString::fromUtf8("textLabel1"));
 
-        vboxLayout1->addWidget(textLabel1);
+	vboxLayout1->addWidget(textLabel1);
 
-        lb_sn = new QLabel;
-        lb_sn->setObjectName(QString::fromUtf8("lb_sn"));
+	lb_sn = new QLabel;
+	lb_sn->setObjectName(QString::fromUtf8("lb_sn"));
 
-        vboxLayout1->addWidget(lb_sn);
+	vboxLayout1->addWidget(lb_sn);
 
-        spacerItem = new QSpacerItem(20, 106, QSizePolicy::Minimum, QSizePolicy::Expanding);
+	spacerItem = new QSpacerItem(20, 106, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
-        vboxLayout1->addItem(spacerItem);
-
-
-        hboxLayout->addLayout(vboxLayout1);
-
-        tb_cert = new QTextBrowser;
-        tb_cert->setObjectName(QString::fromUtf8("tb_cert"));
-        tb_cert->setMinimumSize(QSize(350, 300));
-        tb_cert->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-
-        hboxLayout->addWidget(tb_cert);
+	vboxLayout1->addItem(spacerItem);
 
 
-        vboxLayout->addLayout(hboxLayout);
+	hboxLayout->addLayout(vboxLayout1);
 
-        line1 = new QFrame;
-        line1->setObjectName(QString::fromUtf8("line1"));
-        line1->setFrameShape(QFrame::HLine);
-        line1->setFrameShadow(QFrame::Sunken);
-        line1->setFrameShape(QFrame::HLine);
+	tb_cert = new QTextBrowser;
+	tb_cert->setObjectName(QString::fromUtf8("tb_cert"));
+	tb_cert->setMinimumSize(QSize(350, 300));
+	tb_cert->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
-        vboxLayout->addWidget(line1);
+	hboxLayout->addWidget(tb_cert);
 
-        hboxLayout1 = new QHBoxLayout();
-        hboxLayout1->setSpacing(6);
-        hboxLayout1->setMargin(0);
-        hboxLayout1->setObjectName(QString::fromUtf8("hboxLayout1"));
-        spacerItem1 = new QSpacerItem(421, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
-        hboxLayout1->addItem(spacerItem1);
+	vboxLayout->addLayout(hboxLayout);
 
-        pb_close = new QPushButton;
-        pb_close->setObjectName(QString::fromUtf8("pb_close"));
+	line1 = new QFrame;
+	line1->setObjectName(QString::fromUtf8("line1"));
+	line1->setFrameShape(QFrame::HLine);
+	line1->setFrameShadow(QFrame::Sunken);
+	line1->setFrameShape(QFrame::HLine);
 
-        hboxLayout1->addWidget(pb_close);
-        vboxLayout->addLayout(hboxLayout1);
+	vboxLayout->addWidget(line1);
+
+	hboxLayout1 = new QHBoxLayout();
+	hboxLayout1->setSpacing(6);
+	hboxLayout1->setMargin(0);
+	hboxLayout1->setObjectName(QString::fromUtf8("hboxLayout1"));
+	spacerItem1 = new QSpacerItem(421, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+	hboxLayout1->addItem(spacerItem1);
+
+	pb_close = new QPushButton;
+	pb_close->setObjectName(QString::fromUtf8("pb_close"));
+
+	hboxLayout1->addWidget(pb_close);
+	vboxLayout->addLayout(hboxLayout1);
 
 	setWindowTitle(tr("Certificate Information"));
-        textLabel4->setText(tr("Certificate Validation") + ':');
-        lb_valid->setText(QString());
-        textLabel2->setText(tr("Valid From") + ':');
-        lb_notBefore->setText(QString());
-        textLabel3->setText(tr("Valid Until") + ':');
-        lb_notAfter->setText(QString());
-        textLabel1->setText(tr("Serial Number") + ':');
-        lb_sn->setText(QString());
-        pb_close->setText(tr("Close"));
+	textLabel4->setText(tr("Certificate Validation") + ':');
+	lb_valid->setText(QString());
+	textLabel2->setText(tr("Valid From") + ':');
+	lb_notBefore->setText(QString());
+	textLabel3->setText(tr("Valid Until") + ':');
+	lb_notAfter->setText(QString());
+	textLabel1->setText(tr("Serial Number") + ':');
+	lb_sn->setText(QString());
+	pb_close->setText(tr("Close"));
 
 	// end of raw code from uic
 	setModal(true);
@@ -145,15 +145,16 @@ CertificateDisplayDialog::CertificateDisplayDialog(const QCA::Certificate &cert,
 	pb_close->setDefault(true);
 	pb_close->setFocus();
 
-	if(cert.isNull()) {
+	if (cert.isNull())
 		return;
-	}
 
-	if (result == QCA::TLS::Valid) {
+	if (result == QCA::TLS::Valid)
+	{
 		lb_valid->setText(tr("The certificate is valid."));
 		setLabelStatus(*lb_valid, true);
 	}
-	else {
+	else
+	{
 		lb_valid->setText(tr("The certificate is NOT valid!") + '\n' + QString(tr("Reason: %1.")).arg(CertificateHelpers::resultToString(result, validity)));
 		setLabelStatus(*lb_valid, false);
 	}
@@ -173,7 +174,8 @@ CertificateDisplayDialog::CertificateDisplayDialog(const QCA::Certificate &cert,
 	str += makePropTable(tr("Subject Details:"), cert.subjectInfo());
 	str += makePropTable(tr("Issuer Details:"), cert.issuerInfo());
 	str += "</table>";
-	for (int i=0; i < 2; i++) {
+	for (int i=0; i < 2; i++)
+	{
 		QString hashstr = QCA::Hash(i == 0 ? "md5" : "sha1").hashToString(cert.toDER()).toUpper().replace(QRegExp("(..)"), ":\\1").mid(1);
 		str += QString("Fingerprint(%1): %2<br>").arg(i == 0 ? "MD5" : "SHA-1").arg(hashstr);
 	}
@@ -212,7 +214,7 @@ QString CertificateDisplayDialog::makePropEntry(QCA::CertificateInfoType var, co
 	for (int i = 0; i < values.size(); ++i)
 		val += values.at(i) + "<br>";
 
-	if(val.isEmpty())
+	if (val.isEmpty())
 		return QString();
 	else
 		return QString("<tr><td><nobr><b>") + name + "</b></nobr></td><td>" + val + "</td></tr>";

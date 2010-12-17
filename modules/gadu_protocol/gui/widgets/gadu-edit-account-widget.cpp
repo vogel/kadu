@@ -20,6 +20,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QPointer>
 #include <QtGui/QApplication>
 #include <QtGui/QCheckBox>
 #include <QtGui/QComboBox>
@@ -382,7 +383,7 @@ void GaduEditAccountWidget::loadConnectionData()
 
 void GaduEditAccountWidget::removeAccount()
 {
-	QMessageBox *messageBox = new QMessageBox(this);
+	QPointer<QMessageBox> messageBox = new QMessageBox(this);
 	messageBox->setWindowTitle(tr("Confirm account removal"));
 	messageBox->setText(tr("Are you sure do you want to remove account %1 (%2)")
 			.arg(account().accountIdentity().name())

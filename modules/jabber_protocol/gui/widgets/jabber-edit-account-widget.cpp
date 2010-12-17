@@ -34,6 +34,7 @@
 #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
 #include <QtGui/QMessageBox>
+#include <QtCore/QPointer>
 #include <QtGui/QTabWidget>
 #include <QtGui/QVBoxLayout>
 
@@ -510,7 +511,7 @@ void JabberEditAccountWidget::cancel()
 
 void JabberEditAccountWidget::removeAccount()
 {
-	QMessageBox *messageBox = new QMessageBox(this);
+	QPointer<QMessageBox> messageBox = new QMessageBox(this);
 	messageBox->setWindowTitle(tr("Confirm account removal"));
 	messageBox->setText(tr("Are you sure you want to remove account %1 (%2)?")
 			.arg(account().accountIdentity().name())
