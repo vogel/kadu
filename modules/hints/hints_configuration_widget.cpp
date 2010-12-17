@@ -38,7 +38,7 @@
 #include "hints_configuration_widget.h"
 
 HintsConfigurationWidget::HintsConfigurationWidget(QWidget *parent)
-	: NotifierConfigurationWidget(parent), currentNotifyEvent("")
+	: NotifierConfigurationWidget(parent)
 {
 	preview = new QLabel(tr("<b>Preview</b> text"), this);
     	QPushButton *configureButton = new QPushButton(tr("Configure"));

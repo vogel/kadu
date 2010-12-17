@@ -36,7 +36,7 @@ static QString getAvatarPath(BuddyOrContact buddyOrContact)
 		avatar = buddyOrContact.contact().contactAvatar();
 
 	if (!avatar)
-		return "";
+		return QString();
 
 	return webKitPath(avatar.filePath());
 }
@@ -68,7 +68,7 @@ static QString getStatusIconPath(BuddyOrContact buddyOrContact)
 		}
 	}
 
-	return "";
+	return QString();
 }
 
 void ContactParserTags::registerParserTags()

@@ -503,10 +503,10 @@ QString DccSocketNotifiers::remoteFileName()
 		case Dcc7:
 			return QString::fromUtf8((const char *)Socket7->filename);
 		case DccUnknown:
-			return QString::null;
+			return QString();
 	}
 
-	return QString::null;
+	return QString();
 }
 
 void DccSocketNotifiers::setGaduFileTransferHandler(GaduFileTransferHandler *fileTransferHandler)

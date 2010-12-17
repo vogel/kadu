@@ -63,7 +63,7 @@ ScreenshotActions::ScreenshotActions() :
 			this, SLOT(screenshotActionActivated(QAction *, bool)),
 			"external_modules/module_screenshot-camera-photo",
 			"external_modules/module_screenshot-camera-photo",
-			tr("ScreenShot"), false, ""
+			tr("ScreenShot"), false, QString()
 	);
 
 	createMenu();

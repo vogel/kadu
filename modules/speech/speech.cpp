@@ -82,12 +82,12 @@ Speech::~Speech()
 
 void Speech::import_0_5_0_ConfigurationFromTo(const QString &from, const QString &to)
 {
-	QString entry = config_file.readEntry("Speech", from + "Female", "");
+	QString entry = config_file.readEntry("Speech", from + "Female", QString());
 	if (!entry.isEmpty())
 		config_file.writeEntry("Speech", from + "_Syntax/Female", entry);
 	config_file.removeVariable("Speech", from + "Female");
 
-	entry = config_file.readEntry("Speech", to + "Male", "");
+	entry = config_file.readEntry("Speech", to + "Male", QString());
 	if (!entry.isEmpty())
 		config_file.writeEntry("Speech", to + "_Syntax/Male", entry);
 	config_file.removeVariable("Speech", to + "Male");
@@ -97,12 +97,12 @@ void Speech::import_0_5_0_Configuration()
 {
 	QString entry;
 
-	entry = config_file.readEntry("Speech", "ConnectionError", "");
+	entry = config_file.readEntry("Speech", "ConnectionError", QString());
 	if (!entry.isEmpty())
 		config_file.writeEntry("Speech", "ConnectionError_Syntax", entry.replace("%1", "(#{errorServer}) #{error}"));
 	config_file.removeVariable("Speech", "ConnectionError");
 
-	entry = config_file.readEntry("Speech", "NotifyFormatFemale", "");
+	entry = config_file.readEntry("Speech", "NotifyFormatFemale", QString());
 	if (!entry.isEmpty())
 	{
 		config_file.writeEntry("Speech", "StatusChanged/ToOnline_Syntax/Female", entry);
@@ -114,7 +114,7 @@ void Speech::import_0_5_0_Configuration()
 	}
 	config_file.removeVariable("Speech", "NotifyFormatFemale");
 
-	entry = config_file.readEntry("Speech", "NotifyFormatMale", "");
+	entry = config_file.readEntry("Speech", "NotifyFormatMale", QString());
 	if (!entry.isEmpty())
 	{
 		config_file.writeEntry("Speech", "StatusChanged/ToOnline_Syntax/Male", entry);
@@ -233,7 +233,7 @@ void Speech::notify(Notification *notification)
 			sex = "Female";
 	}
 
-	QString syntax = config_file.readEntry("Speech", notification->type() + "_Syntax/" + sex, "");
+	QString syntax = config_file.readEntry("Speech", notification->type() + "_Syntax/" + sex, QString());
 	if (syntax.isEmpty())
 		text = notification->text();
 	else

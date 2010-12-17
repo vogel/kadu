@@ -50,9 +50,9 @@ public:
 	NotifierConfigurationWidget * createConfigurationWidget(QWidget *parent);
 
 	void say(const QString &s,
-		const QString &path = QString::null,
+		const QString &path = QString(),
 		bool klatt = false, bool melodie = false,
-		const QString &sound_system = QString::null, const QString &device = QString::null,
+		const QString &sound_system = QString(), const QString &device = QString(),
 		int freq = 0, int tempo = 0, int basefreq = 0);
 
 	static Speech * instance();

@@ -41,7 +41,7 @@ TokenWidget::TokenWidget(QWidget *parent) : QWidget(parent)
 	TokenImage->setFixedHeight(32);
 	TokenImage->setScaledContents(true);
 
-	QPushButton *refreshButton = new QPushButton(IconsManager::instance()->iconByPath("view-refresh"), "" ,this);
+	QPushButton *refreshButton = new QPushButton(IconsManager::instance()->iconByPath("view-refresh"), QString() ,this);
 	refreshButton->setIconSize(IconsManager::instance()->getIconsSize());
 	connect(refreshButton, SIGNAL(clicked()), this, SLOT(refreshToken()));
 

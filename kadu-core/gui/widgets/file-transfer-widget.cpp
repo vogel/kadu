@@ -153,7 +153,7 @@ void FileTransferWidget::removeTransfer()
 
 	if (StatusFinished != CurrentTransfer.transferStatus())
 	{
-		if (!MessageDialog::ask("", tr("Kadu"), tr("Are you sure you want to remove this transfer?"), this))
+		if (!MessageDialog::ask(QString(), tr("Kadu"), tr("Are you sure you want to remove this transfer?"), this))
 			return;
 		else
 			if (handler())

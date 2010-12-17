@@ -284,7 +284,7 @@ QString ChatShared::name()
 {
 	ensureLoaded();
 
-	return details() ? details()->name() : QString::null;
+	return details() ? details()->name() : QString();
 }
 
 QIcon ChatShared::icon()

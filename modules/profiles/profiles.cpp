@@ -133,7 +133,7 @@ void ProfileManager::firstRun()
 
 	QString dirnameString = dirString();
 	//pobierz katalog ze wszystkimi jego podkatalogami
-	QDir directory(dirnameString, QString::null, QDir::Name | QDir::IgnoreCase, QDir::Dirs | QDir::Readable | QDir::Writable);
+	QDir directory(dirnameString, QString(), QDir::Name | QDir::IgnoreCase, QDir::Dirs | QDir::Readable | QDir::Writable);
 
 	//jak katalog nie istnieje to stworz nowy
 	if (!directory.exists())
@@ -616,7 +616,7 @@ void ProfileConfigurationWindow::deleteBtnPressed()
 	if ((QString::compare(profileDir->text(), "") != 0) && (MessageDialog::ask(tr("Are you sure to continue? Directory (with all contents) will be deleted."))))
 	{
 		//usun katalog i jego pliki
-		QDir directory(profileDir->text(), QString::null, QDir::Name, QDir::Files);
+		QDir directory(profileDir->text(), QString(), QDir::Name, QDir::Files);
 		if (directory.exists()) {
 			//to tak na wszelki wypadek by komus nie wyciac systemu
 			if ((QString::compare(profileDir->text(), "/") == 0) ||

@@ -246,7 +246,7 @@ void ModulesWindow::refreshList()
 			strings << module << info.version << tr("Static") << tr("Loaded");
 		}
 		else
-			strings << module << QString::null << tr("Static") << tr("Loaded");
+			strings << module << QString() << tr("Static") << tr("Loaded");
 
 		new QTreeWidgetItem(lv_modules, strings);
 	}
@@ -264,7 +264,7 @@ void ModulesWindow::refreshList()
 			strings << module << info.version << tr("Dynamic") << tr("Loaded");
 		}
 		else
-			strings << module << QString::null << tr("Dynamic") << tr("Loaded");
+			strings << module << QString() << tr("Dynamic") << tr("Loaded");
 
 		new QTreeWidgetItem(lv_modules, strings);
 	}
@@ -282,7 +282,7 @@ void ModulesWindow::refreshList()
 			strings << module << info.version << tr("Dynamic") << tr("Not loaded");
 		}
 		else
-			strings << module << QString::null << tr("Dynamic") << tr("Not loaded");
+			strings << module << QString() << tr("Dynamic") << tr("Not loaded");
 
 		new QTreeWidgetItem(lv_modules, strings);
 	}

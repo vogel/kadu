@@ -87,7 +87,7 @@ void GroupsComboBox::currentIndexChangedSlot(int index)
 
 	QString newGroupName = QInputDialog::getText(this, tr("New Group"),
 			tr("Please enter the name for the new group:"), QLineEdit::Normal,
-			QString::null, &ok);
+			QString(), &ok);
 
 	if (!ok || !GroupManager::instance()->acceptableGroupName(newGroupName, true))
 	{

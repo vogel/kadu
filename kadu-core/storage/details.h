@@ -110,7 +110,7 @@ public:
 	{
 		return MainData
 				? MainData->storageNodeName()
-				: QString::null;
+				: QString();
 	}
 
 };

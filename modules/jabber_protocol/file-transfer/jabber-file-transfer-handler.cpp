@@ -238,7 +238,7 @@ bool JabberFileTransferHandler::accept(const QFile &file)
 {
 	transfer().accept(file);
 
-	LocalFile.setFileName(file.fileName());// = QFile("");
+	LocalFile.setFileName(file.fileName());// = QFile(QString());
 	Length = JabberTransfer->fileSize();
 	bool couldOpen = false;
 	qlonglong offset = 0;
@@ -449,7 +449,7 @@ void JabberFileTransferHandler::ft_error(int x)
 	JabberTransfer = 0;
 
 	if(x == XMPP::FileTransfer::ErrReject)
-		ft_error(ErrReject, x, "");
+		ft_error(ErrReject, x, QString());
 	else if(x == XMPP::FileTransfer::ErrNeg)
 		ft_error(ErrTransfer, x, tr("Unable to negotiate transfer."));
 	else if(x == XMPP::FileTransfer::ErrConnect)

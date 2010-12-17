@@ -40,7 +40,7 @@ QSettings::SettingsMap parseDict(const QDomNode &rootElement)
 
 	QDomNode subelement = rootElement;
 
-	QString key = "";
+	QString key;
 
 	for (QDomNode node = subelement.firstChild(); !node.isNull(); node = node.nextSibling())
 	{
@@ -118,7 +118,7 @@ void AdiumStyle::readConfiugrationFile()
 
 	StyleViewVersion = styleSettings.value("MessageViewVersion", 1).toInt();
 
-	DefaultVariant = styleSettings.value("DefaultVariant", "").toString() + ".css";
+	DefaultVariant = styleSettings.value("DefaultVariant", QString()).toString() + ".css";
 	if (DefaultVariant == ".css")
 		DefaultVariant = styleSettings.value("DisplayNameForNoVariant", "Default").toString() + ".css";
 }

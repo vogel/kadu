@@ -38,7 +38,7 @@ SelectFile::SelectFile(const QString &type, QWidget *parent)
 	LineEdit = new QLineEdit(this);
 	connect(LineEdit, SIGNAL(editingFinished()), this, SLOT(fileEdited()));
 
-	QPushButton *selectFile = new QPushButton(IconsManager::instance()->iconByPath("document-open"), "", this);
+	QPushButton *selectFile = new QPushButton(IconsManager::instance()->iconByPath("document-open"), QString(), this);
 	connect(selectFile, SIGNAL(clicked()), this, SLOT(selectFileClicked()));
 
 	layout->addWidget(LineEdit);
@@ -55,7 +55,7 @@ SelectFile::SelectFile(QWidget *parent)
 	LineEdit = new QLineEdit(this);
 	connect(LineEdit, SIGNAL(editingFinished()), this, SLOT(fileEdited()));
 
-	QPushButton *selectFile = new QPushButton(IconsManager::instance()->iconByPath("document-open"), "", this);
+	QPushButton *selectFile = new QPushButton(IconsManager::instance()->iconByPath("document-open"), QString(), this);
 	connect(selectFile, SIGNAL(clicked()), this, SLOT(selectFileClicked()));
 
 	layout->addWidget(LineEdit);

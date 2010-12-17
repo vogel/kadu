@@ -71,7 +71,7 @@ void AdiumChatStyleEngine::clearMessages(HtmlMessagesRenderer *renderer)
 
 QString AdiumChatStyleEngine::isStyleValid(QString stylePath)
 {
-	return AdiumStyle::isStyleValid(stylePath) ? QDir(stylePath).dirName() : QString::null;
+	return AdiumStyle::isStyleValid(stylePath) ? QDir(stylePath).dirName() : QString();
 }
 
 bool AdiumChatStyleEngine::styleUsesTransparencyByDefault(QString styleName)
@@ -332,7 +332,7 @@ void AdiumChatStyleEngine::prepareStylePreview(Preview *preview, QString styleNa
 QString AdiumChatStyleEngine::replaceKeywords(Chat chat, const QString &styleHref, const QString &style)
 {
 	if (!chat)
-		return QString("");
+		return QString();
 
 	QString result = style;
 
@@ -445,7 +445,7 @@ QString AdiumChatStyleEngine::replaceKeywords(Chat chat, const QString &styleHre
 			photoPath = webKitPath(styleHref + QLatin1String("Outgoing/buddy_icon.png"));
 	}
 	else
-		result.replace(QString("%messageClasses%"), "");
+		result.remove(QString("%messageClasses%"));
 
 	result.replace(QString("%userIconPath%"), photoPath);
 

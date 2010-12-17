@@ -37,7 +37,7 @@ static QString getErrorMessage(const QObject * const object)
 	if (connectionErrorNotification)
 		return connectionErrorNotification->errorMessage();
 	else
-		return "";
+		return QString();
 }
 
 static QString getErrorServer(const QObject * const object)
@@ -46,7 +46,7 @@ static QString getErrorServer(const QObject * const object)
 	if (connectionErrorNotification)
 		return connectionErrorNotification->errorServer();
 	else
-		return "";
+		return QString();
 }
 
 void ConnectionErrorNotification::registerEvent()

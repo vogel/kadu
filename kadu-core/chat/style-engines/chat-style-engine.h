@@ -46,7 +46,7 @@ public:
 
 	virtual bool supportVariants() = 0;
 	virtual bool supportEditing() = 0;
-	virtual QString isStyleValid(QString) = 0; //return QString::null, if style is not valid
+	virtual QString isStyleValid(QString) = 0; //return QString(), if style is not valid
 	virtual bool styleUsesTransparencyByDefault(QString) = 0;
 
 	virtual void clearMessages(HtmlMessagesRenderer *) = 0;

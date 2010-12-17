@@ -39,7 +39,7 @@
 #include "qt4_docking_notify_configuration_widget.h"
 
 Qt4NotifyConfigurationWidget::Qt4NotifyConfigurationWidget(QWidget *parent)
-	: NotifierConfigurationWidget(parent), currentNotifyEvent("")
+	: NotifierConfigurationWidget(parent)
 {
 	QPushButton *configureButton = new QPushButton(tr("Configure"));
 	connect(configureButton, SIGNAL(clicked()), this, SLOT(showConfigurationWindow()));

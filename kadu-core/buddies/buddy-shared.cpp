@@ -304,7 +304,7 @@ QString BuddyShared::id(Account account)
 	if (contactslist.count() > 0)
 		return contactslist[0].id();
 
-	return QString::null;
+	return QString();
 }
 
 bool contactPriorityLessThan(const Contact &c1, const Contact &c2)

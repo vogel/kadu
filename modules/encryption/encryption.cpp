@@ -143,7 +143,7 @@ EncryptionManager::EncryptionManager(bool firstLoad)
 	sendPublicKeyActionDescription = new ActionDescription(
 		ActionDescription::TypeUser, "sendPublicKeyAction",
 		this, SLOT(sendPublicKeyActionActivated(QAction *, bool)),
-		"kadu/security-high", "kadu/security-high", tr("Send my public key"), false, QString::null,
+		"kadu/security-high", "kadu/security-high", tr("Send my public key"), false, QString(),
 		disableSendKey
 	);
 	UserBox::insertActionDescription(2, sendPublicKeyActionDescription);

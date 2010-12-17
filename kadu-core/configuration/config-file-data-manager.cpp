@@ -32,7 +32,7 @@ void ConfigFileDataManager::writeEntry(const QString &section, const QString &na
 QVariant ConfigFileDataManager::readEntry(const QString &section, const QString &name)
 {
 	if (section.isEmpty() || name.isEmpty())
-		return QVariant(QString::null);
+		return QVariant(QString());
 
 	return QVariant(config_file.readEntry(section, name));
 }

@@ -101,8 +101,8 @@ bool FileTransfer::accept(const QFile &file)
 }
 
 KaduSharedBase_PropertyDef(FileTransfer, Contact, peer, Peer, Contact::null)
-KaduSharedBase_PropertyDef(FileTransfer, QString, localFileName, LocalFileName, QString::null)
-KaduSharedBase_PropertyDef(FileTransfer, QString, remoteFileName, RemoteFileName, QString::null)
+KaduSharedBase_PropertyDef(FileTransfer, QString, localFileName, LocalFileName, QString())
+KaduSharedBase_PropertyDef(FileTransfer, QString, remoteFileName, RemoteFileName, QString())
 KaduSharedBase_PropertyDef(FileTransfer, unsigned long, fileSize, FileSize, 0)
 KaduSharedBase_PropertyDef(FileTransfer, unsigned long, transferredSize, TransferredSize, 0)
 KaduSharedBase_PropertyDef(FileTransfer, FileTransferType, transferType, TransferType, TypeSend)

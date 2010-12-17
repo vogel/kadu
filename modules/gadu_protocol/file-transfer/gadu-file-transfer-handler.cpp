@@ -111,7 +111,7 @@ void GaduFileTransferHandler::send()
 
 	Contact contact = transfer().peer();
 	Account account = contact.contactAccount();
-	transfer().setRemoteFileName(QString::null);
+	transfer().setRemoteFileName(QString());
 
 	if (account.isNull() || transfer().localFileName().isEmpty())
 	{

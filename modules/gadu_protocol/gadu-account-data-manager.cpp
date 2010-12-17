@@ -45,5 +45,5 @@ QVariant GaduAccountDataManager::readEntry(const QString &section, const QString
 
 	// other data
 
-	return QVariant(QString::null);
+	return QVariant(QString());
 }

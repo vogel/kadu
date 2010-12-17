@@ -121,7 +121,7 @@ QString JIDUtil::accountToString(const Jid& j, bool withResource)
 Jid JIDUtil::accountFromString(const QString& s)
 {/*
 	if (!defaultDomain().isEmpty()) {
-		return Jid(s, defaultDomain(), "");
+		return Jid(s, defaultDomain(), QString());
 	}
 	else {*/
 		return Jid(s);

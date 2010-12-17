@@ -285,7 +285,7 @@ QString StatusContainerManager::statusIconPath(const QString &statusType)
 {
 	return DefaultStatusContainer && this != DefaultStatusContainer
 			? DefaultStatusContainer->statusIconPath(statusType)
-			: "";
+			: QString();
 }
 
 QIcon StatusContainerManager::statusIcon(const QString &statusType)

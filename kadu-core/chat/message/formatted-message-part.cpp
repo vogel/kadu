@@ -32,7 +32,7 @@ FormattedMessagePart::FormattedMessagePart(const QString &content, bool bold, bo
 }
 
 FormattedMessagePart::FormattedMessagePart(const QString &imageFileName) :
-		Content("\n"), IsImage(true), ImageFileName(imageFileName)
+		Content('\n'), IsImage(true), ImageFileName(imageFileName)
 {
 }
 
@@ -49,8 +49,8 @@ QString FormattedMessagePart::toHtml() const
 
 	QString result = Qt::escape(Content);
 	result.replace("\r\n", "<br/>");
-	result.replace("\n",   "<br/>");
-	result.replace("\r",   "<br/>");
+	result.replace('\n',   "<br/>");
+	result.replace('\r',   "<br/>");
 	result.replace(QChar::LineSeparator, "<br/>");
 
 	if (!Bold && !Italic && !Underline && !Color.isValid())

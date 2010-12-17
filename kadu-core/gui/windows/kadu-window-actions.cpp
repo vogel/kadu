@@ -230,19 +230,19 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 	Bugs = new ActionDescription(this,
 		ActionDescription::TypeMainMenu, "bugsAction",
 		this, SLOT(bugsActionActivated(QAction *, bool)),
-		"", "", tr("Report a Bug...")
+		QString(), QString(), tr("Report a Bug...")
 	);
 
 	Support = new ActionDescription(this,
 		ActionDescription::TypeMainMenu, "supportAction",
 		this, SLOT(supportActionActivated(QAction *, bool)),
-		"", "", tr("Support Us")
+		QString(), QString(), tr("Support Us")
 	);
 
 	GetInvolved = new ActionDescription(this,
 		ActionDescription::TypeMainMenu, "getInvolvedAction",
 		this, SLOT(getInvolvedActionActivated(QAction *, bool)),
-		"", "", tr("Get Involved")
+		QString(), QString(), tr("Get Involved")
 	);
 
 	About = new ActionDescription(this,
@@ -254,27 +254,27 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 	Translate = new ActionDescription(this,
 		ActionDescription::TypeMainMenu, "translateAction",
 		this, SLOT(translateActionActivated(QAction *, bool)),
-		"", "", tr("Translate Kadu...")
+		QString(), QString(), tr("Translate Kadu...")
 	);
 // TODO 0.6.6: icon
 	ShowInfoPanel = new ActionDescription(this,
 		ActionDescription::TypeMainMenu, "showInfoPanelAction",
 		this, SLOT(showInfoPanelActionActivated(QAction *, bool)),
-		"", "", tr("Show Information Panel"), true
+		QString(), QString(), tr("Show Information Panel"), true
 	);
 	connect(ShowInfoPanel, SIGNAL(actionCreated(Action *)), this, SLOT(showInfoPanelActionCreated(Action *)));
 
 	ShowBlockedBuddies = new ActionDescription(this,
 		ActionDescription::TypeMainMenu, "showIgnoredAction",
 		this, SLOT(showBlockedActionActivated(QAction *, bool)),
-		"", "", tr("Show Blocked Buddies"), true
+		QString(), QString(), tr("Show Blocked Buddies"), true
 	);
 	connect(ShowBlockedBuddies, SIGNAL(actionCreated(Action *)), this, SLOT(showBlockedActionCreated(Action *)));
 
 	CopyDescription = new ActionDescription(this,
 		ActionDescription::TypeUser, "copyDescriptionAction",
 		this, SLOT(copyDescriptionActionActivated(QAction *, bool)),
-		"edit-copy", "edit-copy", tr("Copy Description"), false, "",
+		"edit-copy", "edit-copy", tr("Copy Description"), false, QString(),
 		disableNoDescription
 	);
 	BuddiesListViewMenuManager::instance()->addListActionDescription(CopyDescription, BuddiesListViewMenuItem::MenuCategoryActions, 10);
@@ -289,7 +289,7 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 	OpenDescriptionLink = new ActionDescription(this,
 		ActionDescription::TypeUser, "openDescriptionLinkAction",
 		this, SLOT(openDescriptionLinkActionActivated(QAction *, bool)),
-		"go-jump", "go-jump", tr("Open Description Link in Browser..."), false, "",
+		"go-jump", "go-jump", tr("Open Description Link in Browser..."), false, QString(),
 		disableNoDescriptionUrl
 	);
 	BuddiesListViewMenuManager::instance()->addListActionDescription(OpenDescriptionLink, BuddiesListViewMenuItem::MenuCategoryActions, 30);
@@ -297,7 +297,7 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 	WriteEmail = new ActionDescription(this,
 		ActionDescription::TypeUser, "writeEmailAction",
 		this, SLOT(writeEmailActionActivated(QAction *, bool)),
-		"mail-message-new", "mail-message-new", tr("Send E-Mail"), false, "",
+		"mail-message-new", "mail-message-new", tr("Send E-Mail"), false, QString(),
 		disableNoEMail
 	);
 	BuddiesListViewMenuManager::instance()->addActionDescription(WriteEmail, BuddiesListViewMenuItem::MenuCategoryActions, 200);
@@ -305,14 +305,14 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 	LookupUserInfo = new ActionDescription(this,
 		ActionDescription::TypeUser, "lookupUserInfoAction",
 		this, SLOT(lookupInDirectoryActionActivated(QAction *, bool)),
-		"edit-find", "edit-find", tr("Search in Directory"), false, "",
+		"edit-find", "edit-find", tr("Search in Directory"), false, QString(),
 		disableNoContact
 	);
 
 	HideDescription = new ActionDescription(this,
 		ActionDescription::TypeUser, "hideDescriptionAction",
 		this, SLOT(hideDescriptionActionActivated(QAction *, bool)),
-		"kadu_icons/kadu-descriptions_on", "kadu_icons/kadu-descriptions_off", tr("Hide Description"), true, "",
+		"kadu_icons/kadu-descriptions_on", "kadu_icons/kadu-descriptions_off", tr("Hide Description"), true, QString(),
 		checkHideDescription
 	);
 
@@ -353,7 +353,7 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 	EditUser = new ActionDescription(this,
 		ActionDescription::TypeUser, "editUserAction",
 		this, SLOT(editUserActionActivated(QAction *, bool)),
-		"x-office-address-book", "x-office-address-book", tr("View Buddy Properties"), false, QString::null,
+		"x-office-address-book", "x-office-address-book", tr("View Buddy Properties"), false, QString(),
 		checkBuddyProperties
 	);
 	connect(EditUser, SIGNAL(actionCreated(Action *)), this, SLOT(editUserActionCreated(Action *)));
@@ -362,7 +362,7 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 	MergeContact = new ActionDescription(this,
 		ActionDescription::TypeUser, "mergeContactAction",
 		this, SLOT(mergeContactActionActivated(QAction *, bool)),
-		"", "", tr("Merge Buddies..."), false, QString::null,
+		QString(), QString(), tr("Merge Buddies..."), false, QString(),
 		disableIfContactSelected
 	);
 	BuddiesListViewMenuManager::instance()->addActionDescription(MergeContact, BuddiesListViewMenuItem::MenuCategoryManagement, 100);
@@ -372,7 +372,7 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 	DeleteUsers = new ActionDescription(this,
 		ActionDescription::TypeUser, "deleteUsersAction",
 		this, SLOT(deleteUsersActionActivated(QAction *, bool)),
-		"edit-delete", "edit-delete", tr("Delete Buddy..."), false, QString::null,
+		"edit-delete", "edit-delete", tr("Delete Buddy..."), false, QString(),
 		disableIfContactSelected
 	);
 	DeleteUsers->setShortcut("kadu_deleteuser");
@@ -599,7 +599,7 @@ void KaduWindowActions::addGroupActionActivated(QAction *sender, bool toggled)
 	bool ok;
 	QString newGroupName = QInputDialog::getText(sender->parentWidget(), tr("New Group"),
 				tr("Please enter the name for the new group:"), QLineEdit::Normal,
-				QString::null, &ok);
+				QString(), &ok);
 
 	if (ok && !newGroupName.isEmpty() && GroupManager::instance()->acceptableGroupName(newGroupName))
 		GroupManager::instance()->byName(newGroupName);

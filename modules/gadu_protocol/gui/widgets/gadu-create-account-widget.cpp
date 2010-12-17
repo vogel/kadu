@@ -131,7 +131,7 @@ void GaduCreateAccountWidget::resetGui()
 	RememberPassword->setChecked(true);
 	EMail->clear();
 	IdentityCombo->setCurrentIdentity(Identity::null);
-	MyTokenWidget->setTokenValue("");
+	MyTokenWidget->setTokenValue(QString());
 	RegisterAccountButton->setEnabled(false);
 
 	IdentityManager::instance()->removeUnused();

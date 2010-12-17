@@ -58,7 +58,7 @@ void GaduTokenSocketNotifiers::socketEvent()
 	if (gg_token_watch_fd(H) == -1)
 	{
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "getting token error\n");
-		finished(QString::null, QPixmap());
+		finished(QString(), QPixmap());
 		return;
 	}
 
@@ -74,7 +74,7 @@ void GaduTokenSocketNotifiers::socketEvent()
 
 		case GG_STATE_ERROR:
 			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "getting token error\n");
-			finished(QString::null, QPixmap());
+			finished(QString(), QPixmap());
 			break;
 
 		case GG_STATE_DONE:
@@ -98,7 +98,7 @@ void GaduTokenSocketNotifiers::socketEvent()
 			else
 			{
 				kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "getting token error\n");
-				finished(QString::null, QPixmap());
+				finished(QString(), QPixmap());
 			}
 
 			break;
@@ -121,5 +121,5 @@ bool GaduTokenSocketNotifiers::handleSoftTimeout()
 
 void GaduTokenSocketNotifiers::connectionTimeout()
 {
-	finished(QString::null, QPixmap());
+	finished(QString(), QPixmap());
 }

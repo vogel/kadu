@@ -71,8 +71,8 @@ Group::~Group()
 {
 }
 
-KaduSharedBase_PropertyDef(Group, QString, name, Name, QString::null)
-KaduSharedBase_PropertyDef(Group, QString, icon, Icon, QString::null)
+KaduSharedBase_PropertyDef(Group, QString, name, Name, QString())
+KaduSharedBase_PropertyDef(Group, QString, icon, Icon, QString())
 KaduSharedBase_PropertyDef(Group, bool, notifyAboutStatusChanges, NotifyAboutStatusChanges, false)
 KaduSharedBase_PropertyDef(Group, bool, showInAllGroup, ShowInAllGroup, false)
 KaduSharedBase_PropertyDef(Group, bool, offlineToGroup, OfflineToGroup, false)

@@ -108,7 +108,7 @@ void Qt4TrayIcon::changeTrayMovie(const QString &moviePath)
 		Movie->deleteLater();
 	}
 	else
-		setIcon(QIcon(""));
+		setIcon(QIcon(QString()));
 
 	Movie = new QMovie(moviePath);
 	Movie->start();

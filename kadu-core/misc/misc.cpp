@@ -172,7 +172,7 @@ QString narg(const QString &s, const QString **tab, int count)
 	int j = 0;
 	char maxc = '0' + count;
 	if (count > 9)
-		return QString::null;
+		return QString();
 
 	while (d != dend)
 	{

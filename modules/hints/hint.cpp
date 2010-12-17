@@ -155,7 +155,7 @@ void Hint::updateText()
 {
 	QString text;
 
-	QString syntax = config_file.readEntry("Hints", "Event_" + notification->key() + "_syntax", "");
+	QString syntax = config_file.readEntry("Hints", "Event_" + notification->key() + "_syntax", QString());
 	if (syntax.isEmpty())
 		text = notification->text();
 	else
@@ -173,7 +173,7 @@ void Hint::updateText()
 		/* Dorr: the file:// in img tag doesn't generate the image on hint.
 		 * for compatibility with other syntaxes we're allowing to put the file://
 		 * so we have to remove it here */
-		text = text.replace("file://", "");
+		text = text.remove("file://");
 	}
 
 	if (config_file.readBoolEntry("Hints", "ShowContentMessage"))

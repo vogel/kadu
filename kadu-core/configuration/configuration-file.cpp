@@ -56,7 +56,7 @@ PlainConfigFile &PlainConfigFile::operator=(const PlainConfigFile &c)
 {
 	filename = c.filename;
 	groups = c.groups;
-	activeGroupName = QString::null;
+	activeGroupName.clear();;
 	return *this;
 }
 
@@ -137,7 +137,7 @@ void PlainConfigFile::write() const
 			}
 			out.append("\n");
 		}
-		stream << out.join(QString::null);
+		stream << out.join(QString());
 		file.close();
 	}
 	else
@@ -193,7 +193,7 @@ QString PlainConfigFile::getEntry(const QString &group, const QString &name, boo
 		{
 			if (ok)
 				*ok=false;
-			return QString::null;
+			return QString();
 		}
 
 		changeActiveGroup(group);
@@ -203,7 +203,7 @@ QString PlainConfigFile::getEntry(const QString &group, const QString &name, boo
 	if (activeGroup.contains(name))
 		return activeGroup[name];
 	else
-		return QString::null;
+		return QString();
 }
 
 void PlainConfigFile::writeEntry(const QString &group, const QString &name, const QVariant &value)

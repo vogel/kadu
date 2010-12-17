@@ -42,7 +42,7 @@ QString ScreenShotSaver::createScreenshotPath()
 	if (!dir.exists() && !dir.mkpath(dirPath))
 	{
 		MessageDialog::show("dialog-warning", tr("Kadu"), tr("Unable to create direcotry %1 for storing screenshots!").arg(dirPath));
-		return QString::null;
+		return QString();
 	}
 
 	return QDir::cleanPath(QString("%1/%2%3.%4")
@@ -56,7 +56,7 @@ QString ScreenShotSaver::saveScreenShot(QPixmap pixmap)
 {
 	QString path = createScreenshotPath();
 	if (path.isEmpty())
-		return QString::null;
+		return QString();
 
 	// TODO: 0.6.6, fix
 	const char *format = ScreenShotConfiguration::instance()->fileFormat().toAscii();
@@ -67,7 +67,7 @@ QString ScreenShotSaver::saveScreenShot(QPixmap pixmap)
 	if (!pixmap.save(path, "PNG"))
 	{
 		MessageDialog::show("dialog-warning", tr("Kadu"), tr("Can't write file %1.\nAccess denied or other problem!").arg(path));
-		return QString::null;
+		return QString();
 	}
 
 	QFileInfo f(path);
@@ -76,7 +76,7 @@ QString ScreenShotSaver::saveScreenShot(QPixmap pixmap)
 	if (Size == 0)
 	{
 		MessageDialog::show("dialog-warning", tr("Kadu"), tr("Screenshot %1 has 0 size!\nIt should be bigger.").arg(path));
-		return QString::null;
+		return QString();
 	}
 
 	return path;

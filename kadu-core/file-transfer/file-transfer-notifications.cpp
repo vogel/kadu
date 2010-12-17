@@ -58,7 +58,7 @@ void NewFileTransferNotification::unregisterEvents()
 }
 
 NewFileTransferNotification::NewFileTransferNotification(const QString &type, FileTransfer ft, Chat chat, StartType startType) :
-		ChatNotification(chat, type, ""), ft(ft), fileName("")
+		ChatNotification(chat, type, QString()), ft(ft)
 {
 	if (startType == StartRestore)
 	{
@@ -86,7 +86,7 @@ void NewFileTransferNotification::callbackAcceptAsNew()
 	close();
 
 	// let user choose new file name
-	ft.setLocalFileName(QString::null);
+	ft.setLocalFileName(QString());
 	FileTransferManager::instance()->acceptFileTransfer(ft);
 }
 
@@ -97,7 +97,7 @@ void NewFileTransferNotification::callbackAccept()
 	close();
 
 	if (!Continue) // let user choose new file name
-		ft.setLocalFileName(QString::null);
+		ft.setLocalFileName(QString());
 
 	FileTransferManager::instance()->acceptFileTransfer(ft);
 }

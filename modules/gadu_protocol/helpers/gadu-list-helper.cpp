@@ -59,11 +59,11 @@ QString GaduListHelper::contactToLine70(Contact contact)
 	list.append(groups.join(","));
 	list.append(contact.id());
 	list.append(buddy.email());
-	list.append(""); // alive sound
-	list.append(""); // alive sound
-	list.append(""); // message sound
-	list.append(""); // message sound
-	list.append(""); // offlineTo
+	list.append(QString()); // alive sound
+	list.append(QString()); // alive sound
+	list.append(QString()); // message sound
+	list.append(QString()); // message sound
+	list.append(QString()); // offlineTo
 	list.append(buddy.homePhone());
 
 	return list.join(";");

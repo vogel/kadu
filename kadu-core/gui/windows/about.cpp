@@ -155,7 +155,7 @@ About::About(QWidget *parent) :
 	tb_changelog->setFrameStyle(QFrame::NoFrame);
 	tb_changelog->viewport()->setAutoFillBackground(false);
 	QString changelog = loadFile("ChangeLog");
-	changelog.replace("\n", "<br/>");
+	changelog.replace('\n', "<br/>");
 	HtmlDocument changelog_html;
 	changelog_html.parseHtml(changelog);
 	changelog = changelog_html.generateHtml();
@@ -239,7 +239,7 @@ QString About::loadFile(const QString &name)
 	if (!file.open(QIODevice::ReadOnly))
 	{
 		kdebugm(KDEBUG_ERROR, "About::loadFile(%s) cannot open file\n", qPrintable(name));
-		return QString::null;
+		return QString();
 	}
 
 	QTextStream str(&file);

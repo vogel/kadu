@@ -46,12 +46,12 @@ void TlenAccountDataManager::writeEntry(const QString &section, const QString &n
 QVariant TlenAccountDataManager::readEntry(const QString &section, const QString &name)
 {
 	if (!Data)
-		return QVariant(QString::null);
+		return QVariant(QString());
 
 	if (section != "Tlen")
 		return AccountDataManager::readEntry(section, name);
 
 	// other data
 
-	return QVariant(QString::null);
+	return QVariant(QString());
 }

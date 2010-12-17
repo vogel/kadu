@@ -59,7 +59,7 @@ private slots:
 	void connectionError(QAbstractSocket::SocketError socketError);
 
 public:
-	explicit ServerStatusWidget(const QString &watchedAddress, quint16 watchedPort = 8074, const QString &hostName = "", QWidget *parent = 0);
+	explicit ServerStatusWidget(const QString &watchedAddress, quint16 watchedPort = 8074, const QString &hostName = QString(), QWidget *parent = 0);
 	virtual ~ServerStatusWidget();
 
 	QString serverStateToString(ServerState serverState);

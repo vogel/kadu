@@ -70,7 +70,7 @@ extern "C" KADU_EXPORT void exec_notify_close()
 }
 
 ExecConfigurationWidget::ExecConfigurationWidget(QWidget *parent)
-	: NotifierConfigurationWidget(parent), currentNotifyEvent("")
+	: NotifierConfigurationWidget(parent)
 {
 	commandLineEdit = new QLineEdit(this);
 	commandLineEdit->setToolTip(qApp->translate("@default", MainConfigurationWindow::SyntaxTextNotify));
@@ -211,9 +211,9 @@ QStringList mySplit(const QChar &sep, const QString &str)
 			if (letter == sep)
 			{
 				if (!token.isEmpty())
-					token = QString::null;
+					token.clear();
 				else
-					strlist.append(QString::null);
+					strlist.append(QString());
 			}
 			else if (letter == '"')
 				inString = true;
@@ -261,7 +261,7 @@ void ExecNotify::notify(Notification *notification)
 		foreach (QString it, s)
 			result.append(Parser::parse(it, notification));
 
-	run(result, QString::null);
+	run(result, QString());
 
 
 }

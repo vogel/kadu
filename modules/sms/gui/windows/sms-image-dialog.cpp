@@ -110,6 +110,6 @@ void SmsImageDialog::accept()
 
 void SmsImageDialog::reject()
 {
-	result("");
+	result(QString());
 	QDialog::reject();
 }

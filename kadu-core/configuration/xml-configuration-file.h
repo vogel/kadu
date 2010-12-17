@@ -42,7 +42,7 @@ public:
 
 private:
 	QDomDocument DomDocument;
-	void write(const QString& f = QString::null);
+	void write(const QString& f = QString());
 
 	bool isElementNamed(const QDomElement &element, const QString &name);
 	bool isElementUuid(const QDomElement &element, const QString &uuid);
@@ -131,7 +131,7 @@ public:
 	void createTextNode(QDomElement parentNode, const QString &nodeTagName, const QString &nodeContent);
 	void createNamedTextNode(QDomElement parentNode, const QString &nodeTagName, const QString &nodeName,
 			const QString &nodeContent);
-	QString getTextNode(QDomElement parentNode, const QString &nodeTagName, const QString &defaultValue = "");
+	QString getTextNode(QDomElement parentNode, const QString &nodeTagName, const QString &defaultValue = QString());
 
 	void removeNode(QDomElement parentNode, const QString &nodeTagName);
 

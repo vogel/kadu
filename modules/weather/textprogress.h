@@ -29,7 +29,7 @@ private slots:
 	void timeout();
 
 public:
-	TextProgress(QWidget *parent, const QString &text = QString::null);
+	TextProgress(QWidget *parent, const QString &text = QString());
 	void clearProgressText();
 
 public slots:

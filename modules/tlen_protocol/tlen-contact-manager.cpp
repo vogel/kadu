@@ -56,5 +56,5 @@ QVariant TlenContactManager::readEntry(const QString &section, const QString &na
 
 	// other data
 
-	return QVariant(QString::null);
+	return QVariant(QString());
 }

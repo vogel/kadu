@@ -26,7 +26,7 @@
 
 ActionDescription::ActionDescription(QObject *parent, ActionType Type, const QString &Name, QObject *Object, const char *Slot,
 	const QString &IconPathOn, const QString &IconPathOff, const QString &Text, bool Checkable, const QString &CheckedText, ActionBoolCallback enableCallback)
-	: QObject(parent), ShortcutItem(""), ShortcutContext(Qt::WidgetShortcut)
+	: QObject(parent), ShortcutContext(Qt::WidgetShortcut)
 {
 	this->Type = Type;
 	this->Name = Name;

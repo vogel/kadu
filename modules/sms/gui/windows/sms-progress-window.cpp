@@ -57,7 +57,7 @@ QString SmsProgressWindow::readToken(const QPixmap &tokenPixmap)
 	Q_UNUSED(tokenPixmap);
 
 	// ignore
-	return QString::null;
+	return QString();
 }
 
 void SmsProgressWindow::readTokenAsync(const QPixmap &tokenPixmap, TokenAcceptor *acceptor)

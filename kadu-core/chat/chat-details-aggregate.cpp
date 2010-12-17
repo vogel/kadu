@@ -81,7 +81,7 @@ ContactSet ChatDetailsAggregate::contacts() const
  */
 QString ChatDetailsAggregate::name() const
 {
-	return Chats.isEmpty() ? QString::null : Chats[0].name();
+	return Chats.isEmpty() ? QString() : Chats[0].name();
 }
 
 /**

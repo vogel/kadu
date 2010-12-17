@@ -127,7 +127,7 @@ void HistoryWindow::createGui()
 
 	MyChatDatesModel = new ChatDatesModel(Chat::null, QList<QDate>(), this);
 	MyBuddyStatusDatesModel = new BuddyStatusDatesModel(Buddy::null, QList<QDate>(), this);
-	MySmsDatesModel = new SmsDatesModel(QString::null, QList<QDate>(), this);
+	MySmsDatesModel = new SmsDatesModel(QString(), QList<QDate>(), this);
 
 	DetailsListView->setRootIsDecorated(false);
 	DetailsListView->setUniformRowHeights(true);
@@ -676,7 +676,7 @@ void HistoryWindow::clearHistory()
 void HistoryWindow::selectQueryText()
 {
 #if QT_VERSION >= QT_VERSION_CHECK(4,6,0)
-	ContentBrowser->findText(""); // clear old selection
+	ContentBrowser->findText(QString()); // clear old selection
 	ContentBrowser->findText(Search.query(), QWebPage::HighlightAllOccurrences);
 #else
 	ContentBrowser->findText(Search.query());

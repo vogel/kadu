@@ -130,5 +130,5 @@ QString MobileNumberManager::gatewayId(const QString &mobileNumber)
 		if (number->number() == mobileNumber)
 			return number->gatewayId();
 
-	return QString::null;
+	return QString();
 }

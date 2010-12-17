@@ -68,7 +68,7 @@ QString ThemeManager::getThemeName(const QString &themePath)
 #ifdef Q_WS_WIN
 		if (-1 == (lastSlash = path.lastIndexOf('\\')))
 #endif
-			return "";
+			return QString();
 
 	return path.mid(lastSlash + 1);
 }

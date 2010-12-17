@@ -108,7 +108,7 @@ void SoundManager::createDefaultConfiguration()
 	config_file.addVariable("Notify", "FileTransfer/IncomingFile_Sound", true);
 
 	config_file.addVariable("Sounds", "PlaySound", true);
-	config_file.addVariable("Sounds", "SoundPaths", "");
+	config_file.addVariable("Sounds", "SoundPaths", QString());
 	config_file.addVariable("Sounds", "SoundTheme", "default");
 	config_file.addVariable("Sounds", "SoundVolume", 100);
 	config_file.addVariable("Sounds", "VolumeControl", false);

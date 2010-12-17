@@ -287,7 +287,7 @@ bool DccManager::acceptConnection(UinType uin, UinType peerUin, unsigned int pee
 
 	kdebugm(KDEBUG_WARNING, "possible spoofing attempt from %s (uin:%u)\n", qPrintable(remoteAddress.toString()), peerUin);
 
-	return MessageDialog::ask("", tr("Kadu"), narg(
+	return MessageDialog::ask(QString(), tr("Kadu"), narg(
 			tr("%1 is asking for direct connection but his/her\n"
 				"IP address (%2) differs from what GG server returned\n"
 				"as his/her IP address (%3). It may be spoofing\n"

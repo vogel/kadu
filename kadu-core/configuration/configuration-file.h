@@ -188,7 +188,7 @@ template <class T>
 		@return warto�� danego pola, je�li nie istnieje zwracana
 		jest warto�� "def"
 	**/
-	QString readEntry(const QString &group, const QString &name, const QString &def = QString::null);
+	QString readEntry(const QString &group, const QString &name, const QString &def = QString());
 
 	/**
 		Zwraca warto�� pola "name" z grupy "group"
@@ -488,7 +488,7 @@ public:
 		@return warto�� danego pola, je�li nie istnieje zwracana
 		jest warto�� "def"
 	**/
-	QString readEntry(const QString &group, const QString &name, const QString &def = QString::null) const;
+	QString readEntry(const QString &group, const QString &name, const QString &def = QString()) const;
 
 	/**
 		Zwraca warto�� pola "name" z grupy "group"

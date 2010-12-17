@@ -138,7 +138,7 @@ void FileTransferManager::acceptFileTransfer(FileTransfer transfer)
 		if (fileName.isEmpty())
 			fileName = QFileDialog::getSaveFileName(Core::instance()->kaduWindow(), tr("Select file location"),
 					config_file.readEntry("Network", "LastDownloadDirectory") + transfer.remoteFileName(),
-							QString::null, 0, QFileDialog::DontConfirmOverwrite);
+							QString(), 0, QFileDialog::DontConfirmOverwrite);
 
 		if (fileName.isEmpty())
 		{
@@ -182,7 +182,7 @@ void FileTransferManager::acceptFileTransfer(FileTransfer transfer)
 		if (!file.open(flags))
 		{
 			MessageDialog::show("dialog-warning", tr("Kadu"), tr("Could not open file. Select another one."));
-			fileName = QString::null;
+			fileName.clear();;
 		}
 
 		transfer.createHandler();
@@ -191,7 +191,7 @@ void FileTransferManager::acceptFileTransfer(FileTransfer transfer)
 			if (!transfer.handler()->accept(file))
 			{
 				MessageDialog::show("dialog-warning", tr("Kadu"), tr("Could not open file. Select another one."));
-				fileName = QString::null;
+				fileName.clear();
 				continue;
 			}
 		}

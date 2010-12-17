@@ -66,7 +66,7 @@ FileTransferActions::FileTransferActions(QObject *parent)
 	SendFileActionDescription = new ActionDescription(this,
 		ActionDescription::TypeUser, "sendFileAction",
 		this, SLOT(sendFileActionActivated(QAction *, bool)),
-		"document-send", "document-send", tr("Send File..."), false, QString::null,
+		"document-send", "document-send", tr("Send File..."), false, QString(),
 		disableNonFileTransferContacts
 	);
 	SendFileActionDescription->setShortcut("kadu_sendfile");

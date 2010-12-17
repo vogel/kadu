@@ -135,7 +135,7 @@ void GaduProtocolSocketNotifiers::handleEventNotify(struct gg_event *e)
 	{
 		QString description = (GG_EVENT_NOTIFY_DESCR == e->type)
 				? QString::fromUtf8(e->event.notify_descr.descr)
-				: QString::null;
+				: QString();
 
 		CurrentProtocol->socketContactStatusChanged(notify->uin, notify->status, description,
 				QHostAddress((unsigned int)ntohl(notify->remote_ip)), notify->remote_port, 0, notify->version);

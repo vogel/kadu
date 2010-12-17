@@ -26,7 +26,7 @@
 #include "jabber-server-register-account.h"
 
 JabberServerRegisterAccount::JabberServerRegisterAccount(const QString &server, const QString &username, const QString &password, bool legacySSLProbe, bool legacySSL, bool forceSSL, const QString &host, int port)
-	: QObject(), Result(0), Server(server), Username(username), Password(password), Jid(QString::null)
+	: QObject(), Result(0), Server(server), Username(username), Password(password), Jid(QString())
 {
 	Client = new MiniClient;
 	connect(Client, SIGNAL(handshaken()), SLOT(clientHandshaken()));

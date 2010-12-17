@@ -121,7 +121,7 @@ bool JabberProtocolFactory::allowChangeServer()
 
 QString JabberProtocolFactory::defaultServer()
 {
-	return QString::null;
+	return QString();
 }
 
 QWidget * JabberProtocolFactory::newContactPersonalInfoWidget(Contact contact, QWidget *parent)

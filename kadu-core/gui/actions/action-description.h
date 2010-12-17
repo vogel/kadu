@@ -76,7 +76,7 @@ protected:
 public:
 	ActionDescription(QObject *parent, ActionType Type, const QString &Name, QObject *Object, const char *Slot,
 		const QString &iconPathOn, const QString &iconPathOff, const QString &Text, bool Checkable = false,
-		const QString &CheckedText = "", ActionBoolCallback enableCallback = 0);
+		const QString &CheckedText = QString(), ActionBoolCallback enableCallback = 0);
 	virtual ~ActionDescription();
 
 	const QString & name() const { return Name; }

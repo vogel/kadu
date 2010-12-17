@@ -242,7 +242,7 @@ void FilterWidget::keyPressEvent(QKeyEvent *event)
 	switch (event->key())
 	{
 		case Qt::Key_Escape:
-			setFilter("");
+			setFilter(QString());
 			event->accept();
 			return;
 	}

@@ -110,7 +110,7 @@ JabberTransport::JabberTransport( Account parentAccount, const QString & _accoun
 	m_status=Creating;
 	m_account = parentAccount;
 
-	const QString contactJID_s = "";///configGroup()->readEntry("GatewayJID");
+	const QString contactJID_s = QString();///configGroup()->readEntry("GatewayJID");
 
 	if(contactJID_s.isEmpty())
 	{
@@ -232,7 +232,7 @@ void JabberTransport::setOnlineStatus(/* const Kopete::OnlineStatus& status  , c
 		return;
 	}
 
-	XMPP::Status xmppStatus ( "", reason );
+	XMPP::Status xmppStatus ( QString(), reason );
 
 	switch ( status.internalStatus () )
 	{
@@ -241,7 +241,7 @@ void JabberTransport::setOnlineStatus(/* const Kopete::OnlineStatus& status  , c
 			break;
 
 		case JabberProtocol::JabberOnline:
-			xmppStatus.setShow ( "" );
+			xmppStatus.setShow ( QString() );
 			break;
 
 		case JabberProtocol::JabberAway:
@@ -300,7 +300,7 @@ bool JabberTransport::removeAccount( )
 // 	QObject::connect ( task, SIGNAL ( finished () ), this, SLOT ( removeAllContacts() ) );*/
 
 	//JabberContactmy=static_cast<JabberContact*>(myself());
-// 	task->unreg (""/** myself()->contactId() */);
+// 	task->unreg (QString()/** myself()->contactId() */);
 // 	task->go ( true );
 	return false; //delay the removal
 }

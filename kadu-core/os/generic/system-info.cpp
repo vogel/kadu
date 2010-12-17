@@ -254,7 +254,7 @@ SystemInfo::SystemInfo()
 	if(inDST)
 		bias += i.DaylightBias;
 	TimezoneOffset = -bias;
-	Timezone = "";
+	Timezone.clear();
 	for(int n = 0; n < 32; ++n)
 	{
 		int w = inDST ? i.DaylightName[n] : i.StandardName[n];
