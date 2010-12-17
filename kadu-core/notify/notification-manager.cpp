@@ -125,7 +125,7 @@ void NotificationManager::init()
 
 	connect(StatusContainerManager::instance(), SIGNAL(statusChanged()), this, SLOT(statusChanged()));
 
-	foreach (Group group, GroupManager::instance()->items())
+	foreach (const Group &group, GroupManager::instance()->items())
 		groupAdded(group);
 
 	new WindowNotifier(this);
@@ -181,7 +181,7 @@ void NotificationManager::notifyAboutUserActionActivated(QAction *sender, bool t
 	BuddySet buddies = action->buddies();
 
 	bool on = true;
-	foreach (const Buddy buddy, buddies)
+	foreach (const Buddy &buddy, buddies)
 	{
 		BuddyNotifyData *bnd = 0;
 		if (buddy.data())
@@ -200,7 +200,7 @@ void NotificationManager::notifyAboutUserActionActivated(QAction *sender, bool t
 		config_file.writeEntry("Notify", "NotifyAboutAll", false);
 	}
 
-	foreach (const Buddy buddy, buddies)
+	foreach (const Buddy &buddy, buddies)
 	{
 		if (buddy.isNull() || buddy.isAnonymous())
 			continue;
@@ -505,7 +505,7 @@ void NotificationManager::notify(Notification *notification)
 	kdebugf2();
 }
 
-void NotificationManager::groupAdded(Group group)
+void NotificationManager::groupAdded(const Group &group)
 {
 	connect(group, SIGNAL(updated()), this, SLOT(groupUpdated()));
 }
@@ -525,7 +525,7 @@ void NotificationManager::groupUpdated()
 		config_file.writeEntry("Notify", "NotifyAboutAll", false);
 	}
 
-	foreach (const Buddy buddy, BuddyManager::instance()->items())
+	foreach (const Buddy &buddy, BuddyManager::instance()->items())
 	{
 		if (buddy.isNull() || buddy.isAnonymous() || buddy.groups().contains(group))
 			continue;
@@ -605,7 +605,7 @@ void checkNotify(Action *action)
 	action->setEnabled(action->buddies().count());
 
 	bool on = true;
-	foreach (const Buddy buddy, action->contacts().toBuddySet())
+	foreach (const Buddy &buddy, action->contacts().toBuddySet())
 	{
 		BuddyNotifyData *bnd = 0;
 		if (buddy.data())

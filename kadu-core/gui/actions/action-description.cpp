@@ -91,7 +91,7 @@ Action * ActionDescription::createAction(ActionDataSource *dataSource, QObject *
 		result->setShortcut(HotKey::shortCutFromFile("ShortCuts", ShortcutItem));
 		result->setShortcutContext(ShortcutContext);
 	}
-	else if (MappedActions.values().count() == 1)
+	else if (MappedActions.count() == 1)
 	{
 		result->setShortcut(HotKey::shortCutFromFile("ShortCuts", ShortcutItem));
 		result->setShortcutContext(ShortcutContext);
@@ -119,13 +119,13 @@ void ActionDescription::configurationUpdated()
 
 	if (ShortcutContext != Qt::ApplicationShortcut)
 	{
-		foreach (Action *action, MappedActions.values())
+		foreach (Action *action, MappedActions)
 		{
 			action->setShortcut(HotKey::shortCutFromFile("ShortCuts", ShortcutItem));
 			action->setShortcutContext(ShortcutContext);
 		}
 	}
-	else if (MappedActions.values().count() > 0)
+	else if (MappedActions.count() > 0)
 	{
 		MappedActions.values()[0]->setShortcut(HotKey::shortCutFromFile("ShortCuts", ShortcutItem));
 		MappedActions.values()[0]->setShortcutContext(ShortcutContext);

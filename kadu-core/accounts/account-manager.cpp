@@ -157,7 +157,7 @@ const QList<Account> AccountManager::byIdentity(Identity identity)
 	ensureLoaded();
 
 	QList<Account> list;
-	foreach (Account account, allItems())
+	foreach (const Account &account, allItems())
 		if (account.accountIdentity() == identity)
 			list.append(account);
 
@@ -170,8 +170,7 @@ Account AccountManager::byId(const QString& protocolName, const QString& id)
 
 	ensureLoaded();
 
-	QList<Account> list;
-	foreach (Account account, allItems())
+	foreach (const Account &account, allItems())
 		if (account.protocolName() == protocolName && account.id() == id)
 			return account;
 
@@ -185,7 +184,7 @@ const QList<Account> AccountManager::byProtocolName(const QString &name)
 	ensureLoaded();
 
 	QList<Account> list;
-	foreach (Account account, allItems())
+	foreach (const Account &account, allItems())
 		if (account.protocolName() == name)
 			list.append(account);
 

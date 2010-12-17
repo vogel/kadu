@@ -45,7 +45,7 @@ unsigned int computeFormatsSize(const FormattedMessage &message)
 	unsigned int size = sizeof(struct gg_msg_richtext);
 	bool first = true;
 
-	foreach (const FormattedMessagePart part, message.parts())
+	foreach (const FormattedMessagePart &part, message.parts())
 	{
 		if (!first || part.isImage() || part.bold() || part.italic() || part.underline() || part.color().isValid())
 		{
@@ -90,7 +90,7 @@ unsigned char * createFormats(Account account, const FormattedMessage &message, 
 	header.length = gg_fix16(size - sizeof(struct gg_msg_richtext));
 	memcpy(result, &header, sizeof(header));
 
-	foreach (FormattedMessagePart part, message.parts())
+	foreach (const FormattedMessagePart &part, message.parts())
 	{
 		if (first && !part.isImage() && !part.bold() && !part.italic() && !part.underline() && !part.color().isValid())
 		{

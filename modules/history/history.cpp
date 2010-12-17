@@ -498,7 +498,7 @@ void History::registerStorage(HistoryStorage *storage)
 	foreach (ChatWidget *chat, ChatWidgetManager::instance()->chats())
 		chatCreated(chat);
 
-	foreach (Account account, AccountManager::instance()->items())
+	foreach (const Account &account, AccountManager::instance()->items())
 		accountRegistered(account);
 }
 
@@ -507,7 +507,7 @@ void History::unregisterStorage(HistoryStorage *storage)
 	if (CurrentStorage != storage)
 		return;
 
-	foreach (Account account, AccountManager::instance()->items())
+	foreach (const Account &account, AccountManager::instance()->items())
 		accountUnregistered(account);
 
 	stopSaveThread();

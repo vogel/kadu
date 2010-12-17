@@ -133,7 +133,7 @@ void StatusContainerManager::cleanStatusContainers()
 
 void StatusContainerManager::addAllAccounts()
 {
-	foreach (Account account, AccountManager::instance()->items())
+	foreach (const Account &account, AccountManager::instance()->items())
 		registerStatusContainer(account);
 }
 

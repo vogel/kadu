@@ -170,7 +170,7 @@ void GaduImporter::importIgnored()
 		return;
 
 	QList<QDomElement> ignoredGroups = xml_config_file->getNodes(ignored, "IgnoredGroup");
-	foreach (QDomElement ignoredGroup, ignoredGroups)
+	foreach (const QDomElement &ignoredGroup, ignoredGroups)
 	{
 		QList<QDomElement> ignoredContacts = xml_config_file->getNodes(ignoredGroup, "IgnoredContact");
 		if (1 == ignoredContacts.count())

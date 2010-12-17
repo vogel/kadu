@@ -80,7 +80,7 @@ void BuddyManager::importConfiguration(XmlConfigFile *configurationStorage)
 		return;
 
 	QList<QDomElement> contactElements = configurationStorage->getNodes(contactsNode, "Contact");
-	foreach (QDomElement contactElement, contactElements)
+	foreach (const QDomElement &contactElement, contactElements)
 	{
 		Buddy buddy = Buddy::create();
 		buddy.importConfiguration(contactElement);

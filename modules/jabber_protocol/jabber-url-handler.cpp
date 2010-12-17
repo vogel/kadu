@@ -104,7 +104,7 @@ void JabberUrlHandler::openUrl(const QString &url, bool disableMenu)
 		QMenu *menu = new QMenu;
 
 		QStringList ids;
-		foreach (Account account, jabberAccounts)
+		foreach (const Account &account, jabberAccounts)
 		{
 			ids.clear();
 			ids.append(account.id());

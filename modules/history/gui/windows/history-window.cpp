@@ -551,7 +551,7 @@ QList<Message> HistoryWindow::statusesToMessages(const QList<TimedStatus> &statu
 {
 	QList<Message> messages;
 
-	foreach (TimedStatus timedStatus, statuses)
+	foreach (const TimedStatus &timedStatus, statuses)
 	{
 		Message message = Message::create();
 		message.setStatus(Message::StatusReceived);

@@ -120,7 +120,7 @@ Account ChatManager::getCommonAccount(const BuddySet &buddies)
 	QMutexLocker(&mutex());
 
 	QList<Account> accounts = AccountManager::instance()->items();
-	foreach (Account account, accounts)
+	foreach (const Account &account, accounts)
 		if (isAccountCommon(account, buddies))
 			return account;
 

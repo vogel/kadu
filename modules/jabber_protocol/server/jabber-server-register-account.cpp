@@ -95,7 +95,7 @@ XMPP::XData JabberServerRegisterAccount::convertToXData(const XMPP::Form& form)
 	kdebugf();
 	// Convert the fields
 	XMPP::XData::FieldList fields;
-	foreach(XMPP::FormField f, form) {
+	foreach (const XMPP::FormField &f, form) {
 		XMPP::XData::Field field;
 		field.setLabel(f.fieldName());
 		field.setVar(f.realName());
@@ -121,7 +121,7 @@ XMPP::Form JabberServerRegisterAccount::convertFromXData(const XMPP::XData& xdat
 {
 	kdebugf();
 	XMPP::Form form;
-	foreach(XMPP::XData::Field field, xdata.fields()) {
+	foreach(const XMPP::XData::Field &field, xdata.fields()) {
 		if (!field.value().isEmpty()) {
 			XMPP::FormField f;
 			f.setType(field.var());

@@ -64,13 +64,13 @@ void UrlHandlerManager::unregisterUrlHandler(const QString &name)
 }
 void UrlHandlerManager::convertAllUrls(HtmlDocument &document)
 {
-	foreach (UrlHandler *handler, RegisteredHandlers.values())
+	foreach (UrlHandler *handler, RegisteredHandlers)
 		handler->convertUrlsToHtml(document);
 }
 
 void UrlHandlerManager::openUrl(const QString &url, bool disableMenu)
 {
-	foreach (UrlHandler *handler, RegisteredHandlers.values())
+	foreach (UrlHandler *handler, RegisteredHandlers)
 	{
 		if (handler->isUrlValid(url))
 		{

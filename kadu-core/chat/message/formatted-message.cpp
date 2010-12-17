@@ -136,7 +136,7 @@ FormattedMessage & FormattedMessage::operator << (FormattedMessagePart part)
 
 bool FormattedMessage::isEmpty() const
 {
-	foreach (FormattedMessagePart part, Parts)
+	foreach (const FormattedMessagePart &part, Parts)
 		if (!part.isEmpty())
 			return false;
 
@@ -146,7 +146,7 @@ bool FormattedMessage::isEmpty() const
 QString FormattedMessage::toPlain() const
 {
 	QString result;
-	foreach (FormattedMessagePart part, Parts)
+	foreach (const FormattedMessagePart &part, Parts)
 		result += part.content();
 
 	return result;
@@ -155,7 +155,7 @@ QString FormattedMessage::toPlain() const
 QString FormattedMessage::toHtml() const
 {
 	QString result;
-	foreach (FormattedMessagePart part, Parts)
+	foreach (const FormattedMessagePart &part, Parts)
 		result += part.toHtml();
 
 	return result;

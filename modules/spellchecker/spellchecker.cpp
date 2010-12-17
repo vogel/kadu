@@ -118,7 +118,7 @@ SpellChecker::~SpellChecker()
 #ifdef HAVE_ASPELL
 	delete_aspell_config(SpellConfig);
 
-	foreach (AspellSpeller *speller, MyCheckers.values())
+	foreach (AspellSpeller *speller, MyCheckers)
 		delete_aspell_speller(speller);
 #else
 	qDeleteAll(MyCheckers);
@@ -211,7 +211,7 @@ void SpellChecker::removeCheckedLang(const QString &name)
 void SpellChecker::buildCheckers()
 {
 #ifdef HAVE_ASPELL
-	foreach (AspellSpeller *speller, MyCheckers.values())
+	foreach (AspellSpeller *speller, MyCheckers)
 		delete_aspell_speller(speller);
 #else
 	qDeleteAll(MyCheckers);

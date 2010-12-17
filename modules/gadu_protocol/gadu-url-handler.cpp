@@ -89,7 +89,7 @@ void GaduUrlHandler::openUrl(const QString &url, bool disableMenu)
 		QMenu *menu = new QMenu;
 
 		QStringList ids;
-		foreach (Account account, gaduAccounts)
+		foreach (const Account &account, gaduAccounts)
 		{
 			ids.clear();
 			ids.append(account.id());

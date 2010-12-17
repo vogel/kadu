@@ -117,7 +117,7 @@ bool IdentityShared::hasAccount(Account account)
 
 bool IdentityShared::hasAnyAccountWithDetails()
 {
-	foreach (Account account, Accounts)
+	foreach (const Account &account, Accounts)
 		if (account.details())
 			return true;
 
@@ -131,7 +131,7 @@ bool IdentityShared::isEmpty()
 
 void IdentityShared::doSetStatus(Status status)
 {
-	foreach (Account account, Accounts)
+	foreach (const Account &account, Accounts)
 		if (account)
 			account.data()->setStatus(status);
 }
@@ -143,7 +143,7 @@ Account IdentityShared::bestAccount()
 		return result;
 
 	Status resultStatus = Status::null;
-	foreach (Account account, Accounts)
+	foreach (const Account &account, Accounts)
 		if (account.data())
 		{
 			if (resultStatus == Status::null || account.data()->status() < resultStatus)

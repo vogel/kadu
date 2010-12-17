@@ -170,7 +170,7 @@ QStringList BuddiesModelBase::mimeTypes() const
 QMimeData * BuddiesModelBase::mimeData(const QModelIndexList &indexes) const
 {
 	BuddyList list;
-	foreach (QModelIndex index, indexes)
+	foreach (const QModelIndex &index, indexes)
 	{
 		Buddy con = index.data(BuddyRole).value<Buddy>();
 		if (con.isNull())

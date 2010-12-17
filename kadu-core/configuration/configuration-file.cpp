@@ -115,7 +115,6 @@ void PlainConfigFile::write() const
 	{*/
 
 	QFile file(filename);
-	QString line;
 	QStringList out;
 	QString format1("[%1]\n");
 	QString format2("%1=%2\n");

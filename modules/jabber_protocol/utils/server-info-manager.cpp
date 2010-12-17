@@ -76,7 +76,7 @@ void ServerInfoManager::disco_finished()
 
 		// Identities
 		XMPP::DiscoItem::Identities is = jt->item().identities();
-		foreach(XMPP::DiscoItem::Identity i, is) {
+		foreach(const XMPP::DiscoItem::Identity &i, is) {
 			if (i.category == "pubsub" && i.type == "pep")
 				hasPEP_ = true;
 		}

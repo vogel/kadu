@@ -399,7 +399,7 @@ void JabberProtocol::addContactToRoster(Contact contact, bool requestAuth)
 	Buddy buddy = contact.ownerBuddy();
 	QStringList groupsList;
 
-	foreach (Group group, buddy.groups())
+	foreach (const Group &group, buddy.groups())
 		groupsList.append(group.name());
 
 	//TODO last parameter: automagic authorization request - make it configurable
@@ -432,7 +432,7 @@ void JabberProtocol::buddyUpdated(Buddy &buddy)
 		return;
 
 	QStringList groupsList;
-	foreach (Group group, buddy.groups())
+	foreach (const Group &group, buddy.groups())
 		groupsList.append(group.name());
 
 	foreach (const Contact &contact, contacts)
@@ -449,7 +449,7 @@ void JabberProtocol::contactUpdated(Contact contact)
 		return;
 
 	QStringList groupsList;
-	foreach (Group group, buddy.groups())
+	foreach (const Group &group, buddy.groups())
 		groupsList.append(group.name());
 
 	JabberClient->updateContact(contact.id(), buddy.display(), groupsList);

@@ -290,10 +290,10 @@ void PEPManager::get(const XMPP::Jid& jid, const QString& node, const QString& i
 
 void PEPManager::messageReceived(const Message &m)
 {
-	foreach(XMPP::PubSubRetraction i, m.pubsubRetractions()) {
+	foreach (const XMPP::PubSubRetraction &i, m.pubsubRetractions()) {
 		emit itemRetracted(m.from(),m.pubsubNode(), i);
 	}
-	foreach(XMPP::PubSubItem i, m.pubsubItems()) {
+	foreach (const XMPP::PubSubItem &i, m.pubsubItems()) {
 		emit itemPublished(m.from(),m.pubsubNode(),i);
 	}
 }

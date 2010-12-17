@@ -85,7 +85,7 @@ Buddy::~Buddy()
 {
 }
 
-void Buddy::importConfiguration(QDomElement parent)
+void Buddy::importConfiguration(const QDomElement &parent)
 {
 	if (data())
 		data()->importConfiguration(parent);
