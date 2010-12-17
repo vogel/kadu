@@ -57,9 +57,7 @@ set (SOURCES
 	socket-notifiers/gadu-socket-notifiers.cpp
 	socket-notifiers/gadu-token-socket-notifiers.cpp
 
-	gadu-account-data-manager.cpp
 	gadu-account-details.cpp
-	gadu-contact-data-manager.cpp
 	gadu-contact-details.cpp
 	gadu-id-validator.cpp
 	gadu-protocol.cpp
@@ -116,9 +114,6 @@ set (MOC_SOURCES
 	socket-notifiers/gadu-socket-notifiers.h
 	socket-notifiers/gadu-token-socket-notifiers.h
 
-	gadu-account-data-manager.h
-	#gadu-account-details.h
-	gadu-contact-data-manager.h
 	gadu-id-validator.h
 	gadu-protocol-factory.h
 	gadu-protocol.h

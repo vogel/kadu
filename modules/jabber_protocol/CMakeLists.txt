@@ -252,9 +252,7 @@ set (SOURCES
 	gui/windows/xml-console.cpp
 	open-chat-with/jabber-open-chat-with-runner.cpp
 	iris-status-adapter.cpp
-	jabber-account-data-manager.cpp
 	jabber-account-details.cpp
-	jabber-contact-data-manager.cpp
 	jabber-contact-details.cpp
 	jabber-id-validator.cpp
 	jabber-module.cpp
@@ -301,8 +299,6 @@ set (MOC_SOURCES
 	gui/widgets/jabber-personal-info-widget.h
 	gui/windows/jabber-change-password-window.h
 	gui/windows/xml-console.h
-	jabber-account-data-manager.h
-	jabber-contact-data-manager.h
 	jabber-id-validator.h
 	jabber-protocol.h
 	jabber-protocol-factory.h
