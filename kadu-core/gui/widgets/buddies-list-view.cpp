@@ -160,7 +160,7 @@ ContactSet BuddiesListView::selectedContacts() const
 	ContactSet result;
 
 	QModelIndexList selectionList = selectedIndexes();
-	foreach (QModelIndex selection, selectionList)
+	foreach (const QModelIndex &selection, selectionList)
 	{
 		Contact contact = contactAt(selection);
 		if (contact)
@@ -180,7 +180,7 @@ BuddySet BuddiesListView::selectedBuddies() const
 	BuddySet result;
 
 	QModelIndexList selectionList = selectedIndexes();
-	foreach (QModelIndex selection, selectionList)
+	foreach (const QModelIndex &selection, selectionList)
 	{
 		Buddy buddy = buddyAt(selection);
 		if (buddy)
@@ -257,7 +257,7 @@ Chat BuddiesListView::currentChat() const
 			return chat;
 	}
 
-	foreach (QModelIndex selection, selectionList)
+	foreach (const QModelIndex &selection, selectionList)
 	{
 		if (!account)
 		{
@@ -743,7 +743,7 @@ Chat BuddiesListView::chat()
 bool BuddiesListView::hasContactSelected()
 {
 	QModelIndexList selectionList = selectedIndexes();
-	foreach (QModelIndex selection, selectionList)
+	foreach (const QModelIndex &selection, selectionList)
 		if (ContactRole == selection.data(ItemTypeRole).toInt())
 			return true;
 

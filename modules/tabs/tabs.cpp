@@ -628,7 +628,7 @@ void TabsManager::store()
 
 	storageFile->removeChildren(point);
 
-	foreach (ChatWidget * chatWidget, ChatWidgetManager::instance()->chats().values())
+	foreach (ChatWidget * chatWidget, ChatWidgetManager::instance()->chats())
 	{
 		if (!chatWidget)
 			continue;

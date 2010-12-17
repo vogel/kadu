@@ -93,7 +93,7 @@ private slots:
 	void silentModeActionCreated(Action *action);
 	void silentModeActionActivated(QAction *sender, bool toggled);
 
-	void groupAdded(Group group);
+	void groupAdded(const Group &group);
 	void groupUpdated();
 
 	void accountConnected();

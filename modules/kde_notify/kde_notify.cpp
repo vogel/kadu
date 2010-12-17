@@ -159,7 +159,7 @@ void KdeNotify::notify(Notification *notification)
 
 	QStringList actions;
 
-	foreach (Notification::Callback callback, notification->getCallbacks())
+	foreach (const Notification::Callback &callback, notification->getCallbacks())
 	{
 		actions << callback.Signature;
 		actions << callback.Caption;

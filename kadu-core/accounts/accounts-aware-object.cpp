@@ -59,24 +59,24 @@ void AccountsAwareObject::notifyAccountUnregistered(Account account)
 
 void AccountsAwareObject::triggerAllAccountsAdded()
 {
-	foreach (Account account, AccountManager::instance()->items())
+	foreach (const Account &account, AccountManager::instance()->items())
 		accountAdded(account);
 }
 
 void AccountsAwareObject::triggerAllAccountsRemoved()
 {
-	foreach (Account account, AccountManager::instance()->items())
+	foreach (const Account &account, AccountManager::instance()->items())
 		accountRemoved(account);
 }
 
 void AccountsAwareObject::triggerAllAccountsRegistered()
 {
-	foreach (Account account, AccountManager::instance()->items())
+	foreach (const Account &account, AccountManager::instance()->items())
 		accountRegistered(account);
 }
 
 void AccountsAwareObject::triggerAllAccountsUnregistered()
 {
-	foreach (Account account, AccountManager::instance()->items())
+	foreach (const Account &account, AccountManager::instance()->items())
 		accountUnregistered(account);
 }

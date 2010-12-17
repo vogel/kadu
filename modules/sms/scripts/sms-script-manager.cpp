@@ -76,7 +76,7 @@ void SmsScriptsManager::init()
 		filters.append("gateway-*.js");
 
 		QFileInfoList gateways = scriptDirectory.entryInfoList(filters);
-		foreach (QFileInfo gatewayFile, gateways)
+		foreach (const QFileInfo &gatewayFile, gateways)
 			loadScript(gatewayFile.filePath());
 	}
 }

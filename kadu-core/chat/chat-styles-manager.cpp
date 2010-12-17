@@ -297,7 +297,7 @@ void ChatStylesManager::loadStyles()
 		fi.setFile(path + file);
 		if (fi.isReadable() && !AvailableStyles.contains(file))
 		{
-			foreach (ChatStyleEngine *engine, RegisteredEngines.values())
+			foreach (ChatStyleEngine *engine, RegisteredEngines)
 			{
 				StyleName = engine->isStyleValid(path + file);
 				if (!StyleName.isNull())
@@ -320,7 +320,7 @@ void ChatStylesManager::loadStyles()
 		fi.setFile(path + file);
 		if (fi.isReadable() && !AvailableStyles.contains(file))
 		{
-			foreach (ChatStyleEngine *engine, RegisteredEngines.values())
+			foreach (ChatStyleEngine *engine, RegisteredEngines)
 			{
 				StyleName = engine->isStyleValid(path + file);
 				if (!StyleName.isNull())

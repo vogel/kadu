@@ -120,7 +120,7 @@ void JabberRosterService::contactUpdated(const XMPP::RosterItem &item)
 
 	GroupManager *gm = GroupManager::instance();
 	// add this contact to all groups the contact is a member of
-	foreach (QString group, item.groups())
+	foreach (const QString &group, item.groups())
 		buddy.addToGroup(gm->byName(group, true /* create group */));
 
 	Protocol->connectContactManagerSignals();

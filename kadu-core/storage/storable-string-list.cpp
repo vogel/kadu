@@ -52,7 +52,7 @@ void StorableStringList::load()
 	QDomElement point = storage()->point();
 
 	QList<QDomElement> elements = storageFile->getNodes(point, storageItemNodeName());
-	foreach (QDomElement element, elements)
+	foreach (const QDomElement &element, elements)
 		StringList.append(element.text());
 }
 

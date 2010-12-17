@@ -64,7 +64,7 @@ void BuddyGroupsConfigurationWidget::createGui()
 
 	QVBoxLayout *groupsLayout = new QVBoxLayout(Groups);
 
-	foreach (Group group, GroupManager::instance()->items())
+	foreach (const Group &group, GroupManager::instance()->items())
 	{
 		QCheckBox *groupCheckBox = new QCheckBox(group.name(), Groups);
 		groupCheckBox->setChecked(MyBuddy.isInGroup(group));
@@ -77,7 +77,7 @@ void BuddyGroupsConfigurationWidget::createGui()
 
 void BuddyGroupsConfigurationWidget::save()
 {
-	foreach (Group group, MyBuddy.groups())
+	foreach (const Group &group, MyBuddy.groups())
 		MyBuddy.removeFromGroup(group);
 
 	foreach (QCheckBox *groupBox, GroupCheckBoxList)

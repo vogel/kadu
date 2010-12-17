@@ -96,7 +96,7 @@ void AntistringConfiguration::readConditions()
 		return;
 	}
 
-	foreach (QString conditionItem, conditionsList)
+	foreach (const QString &conditionItem, conditionsList)
 		addCondition(conditionItem);
 }
 
@@ -104,7 +104,7 @@ void AntistringConfiguration::storeConditions()
 {
 	QStringList conditionsList;
 
-	foreach (ConditionPair condition, Conditions)
+	foreach (const ConditionPair &condition, Conditions)
 		conditionsList.append(QString::number(condition.second) + '\t' + condition.first);
 
 	config_file.writeEntry("PowerKadu", "antistring conditions", conditionsList.join("\t\t"));

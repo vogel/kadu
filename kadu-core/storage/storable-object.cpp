@@ -133,7 +133,7 @@ void StorableObject::store()
 {
 	ensureLoaded();
 
-	foreach (StorableObject *moduleData, ModulesStorableData.values())
+	foreach (StorableObject *moduleData, ModulesStorableData)
 		moduleData->store();
 }
 

@@ -335,7 +335,6 @@ void ChatWidgetManager::openPendingMsgs(Chat chat, bool forceActivate)
 		return;
 
 	QList<MessageRenderInfo *> messages;
-	Message msg;
 
 	ChatWidget *chatWidget = openChatWidget(chat, forceActivate);
 	if (!chatWidget)

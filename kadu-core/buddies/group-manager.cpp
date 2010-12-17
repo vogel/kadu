@@ -72,11 +72,11 @@ void GroupManager::importConfiguration()
 		return;
 
 	QList<QDomElement> contactsElements = configurationStorage->getNodes(contactsNode, "Contact");
-	foreach (QDomElement contactElement, contactsElements)
-		foreach (QString newGroup, contactElement.attribute("groups").split(',', QString::SkipEmptyParts))
+	foreach (const QDomElement &contactElement, contactsElements)
+		foreach (const QString &newGroup, contactElement.attribute("groups").split(',', QString::SkipEmptyParts))
 			groups << newGroup;
 
-	foreach (QString groupName, groups)
+	foreach (const QString &groupName, groups)
 		byName(groupName); // it can do import, too
 }
 

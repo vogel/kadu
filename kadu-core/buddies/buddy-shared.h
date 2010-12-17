@@ -95,7 +95,7 @@ public:
 	virtual StorableObject * storageParent();
 	virtual QString storageNodeName();
 
-	void importConfiguration(QDomElement parent);
+	void importConfiguration(const QDomElement &parent);
 
 	virtual void store();
     virtual bool shouldStore();

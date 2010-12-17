@@ -114,11 +114,11 @@ void FileTransferManager::cleanUp()
 
 	QList<FileTransfer> toRemove;
 
-	foreach (FileTransfer fileTransfer, items())
+	foreach (const FileTransfer &fileTransfer, items())
 		if (StatusFinished == fileTransfer.transferStatus())
 			toRemove.append(fileTransfer);
 
-	foreach (FileTransfer fileTransfer, toRemove)
+	foreach (const FileTransfer &fileTransfer, toRemove)
 		removeItem(fileTransfer);
 }
 
@@ -253,7 +253,7 @@ FileTransfer FileTransferManager::byPeerAndRemoteFileName(Contact peer, const QS
 {
 	QMutexLocker(&mutex());
 
-	foreach (FileTransfer transfer, items())
+	foreach (const FileTransfer &transfer, items())
 		if (transfer.transferType() == TypeReceive && transfer.peer() == peer && transfer.remoteFileName() == remoteFileName)
 			return transfer;
 

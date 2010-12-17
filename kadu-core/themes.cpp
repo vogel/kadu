@@ -174,7 +174,7 @@ QString Themes::themePath(const QString &theme) const
 		return "Custom";
 
 	QRegExp r("(/" + t + "/)$");
-	foreach (QString theme, ThemesPaths)
+	foreach (const QString &theme, ThemesPaths)
 		if (-1 != r.indexIn(theme))
 			return theme;
 

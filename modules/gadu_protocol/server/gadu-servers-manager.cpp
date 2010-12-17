@@ -86,7 +86,7 @@ QList<GaduServersManager::GaduServer> GaduServersManager::gaduServersFromString(
 		servers << address;
 
 	QHostAddress ip;
-	foreach (QString server, servers)
+	foreach (const QString &server, servers)
 		if (ip.setAddress(server))
 			foreach (int port, ports)
 				result.append(GaduServer(ip, port));

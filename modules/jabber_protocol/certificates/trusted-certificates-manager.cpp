@@ -84,7 +84,7 @@ void TrustedCertificatesManager::removeTrustedCertificate(const QString& certifi
 
 bool TrustedCertificatesManager::isTrusted(const QString &certificate)
 {
-	foreach (QString cert, StringList)
+	foreach (const QString &cert, StringList)
 		if (cert == certificate)
 			return true;
 	return false;

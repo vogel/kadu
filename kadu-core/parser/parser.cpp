@@ -291,7 +291,7 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 					{
 						++i;
 						QStringList groups;
-						foreach (Group group, buddy.groups())
+						foreach (const Group &group, buddy.groups())
 							groups << group.name();
 						pe.content = groups.join(",");
 						break;

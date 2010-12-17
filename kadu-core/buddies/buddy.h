@@ -68,7 +68,7 @@ public:
 
 	void mergeWith(Buddy buddy); // TODO: 0.8 refactor
 
-	void importConfiguration(QDomElement parent);
+	void importConfiguration(const QDomElement &parent);
 	void store();
 
 	QSharedPointer<StoragePoint> storagePointForModuleData(const QString &module, bool create = false) const;

@@ -258,7 +258,7 @@ void ExecNotify::notify(Notification *notification)
 			result.append(Parser::parse(it.replace("%ids", sendersString), BuddyOrContact(contact), notification));
 	}
 	else
-		foreach (QString it, s)
+		foreach (const QString &it, s)
 			result.append(Parser::parse(it, notification));
 
 	run(result, QString());
