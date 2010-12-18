@@ -65,6 +65,7 @@
 #include "debug.h"
 
 #include "buddy-history-delete-handler.h"
+#include "gui/windows/history-window.h"
 #include "history-save-thread.h"
 #include "timed-status.h"
 

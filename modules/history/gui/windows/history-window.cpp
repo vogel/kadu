@@ -61,6 +61,7 @@
 #include "model/history-chats-model-proxy.h"
 #include "model/sms-dates-model.h"
 #include "storage/history-storage.h"
+#include "history.h"
 #include "history-tree-item.h"
 #include "timed-status.h"
 

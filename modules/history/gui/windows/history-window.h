@@ -53,6 +53,8 @@ class HistoryWindow : public MainWindow
 {
 	Q_OBJECT
 
+	friend class History;
+
 	QTreeView *ChatsTree;
 	QTreeView *DetailsListView;
 	HistoryChatsModel *ChatsModel;
@@ -77,6 +79,8 @@ class HistoryWindow : public MainWindow
 	ActionDescription *historyPrevResultsActionDescription;
 
 	HistorySearchParameters Search;
+
+	explicit HistoryWindow(QWidget *parent = 0);
 
 	void createGui();
 	void createChatTree(QWidget *parent);
@@ -117,7 +121,6 @@ protected:
 	virtual void keyPressEvent(QKeyEvent *e);
 
 public:
-	HistoryWindow(QWidget *parent = 0);
 	virtual ~HistoryWindow();
 
 	virtual QTreeView * detailsListView() { return DetailsListView; }
