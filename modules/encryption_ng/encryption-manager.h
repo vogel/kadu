@@ -39,8 +39,8 @@ class EncryptionManager : public QObject, AccountsAwareObject
 	virtual ~EncryptionManager();
 
 private slots:
-	void filterOutgoingMessage(Chat chat, QByteArray &message, bool &stop);
-	void filterIncomingMessage(Chat chat, Contact sender, const QString &message, time_t time, bool &ignore);
+	void filterRawOutgoingMessage(Chat chat, QByteArray &message, bool &stop);
+	void filterRawIncomingMessage(Chat chat, Contact sender, QByteArray &message, bool &ignore);
 
 protected:
 	virtual void accountRegistered(Account account);

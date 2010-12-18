@@ -55,9 +55,13 @@ public slots:
 	virtual bool sendMessage(Chat chat, FormattedMessage &message, bool silent = false) = 0;
 
 signals:
-	void filterOutgoingMessage(Chat chat, QByteArray &msg, bool &stop);
+	void filterRawOutgoingMessage(Chat chat, QByteArray &message, bool &stop);
+	void filterOutgoingMessage(Chat chat, QString &message, bool &stop);
+
+	void filterRawIncomingMessage(Chat chat, Contact sender, QByteArray &message, bool &ignore);
+	void filterIncomingMessage(Chat chat, Contact sender, QString &message, time_t time, bool &ignore);
+
 	void messageStatusChanged(int messsageId, ChatService::MessageStatus status);
-	void filterIncomingMessage(Chat chat, Contact sender, const QString &message, time_t time, bool &ignore);
 	void messageSent(const Message &message);
 	void messageReceived(const Message &message);
 

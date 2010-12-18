@@ -42,16 +42,6 @@
 JabberChatService::JabberChatService(JabberProtocol *protocol)
 	: ChatService(protocol), Protocol(protocol)
 {
-	//TODO move here some functions from jabber_protocol
-
-	//connect(protocol, SIGNAL(ackReceived(int, uin_t, int)),
-	//	this, SLOT(ackReceived(int, uin_t, int)));
-// 	connect(protocol, SIGNAL(filterOutgoingMessage(Chat , QByteArray &, bool &)),
-// 		this, SIGNAL(filterOutgoingMessage(Chat , QByteArray &, bool &)));
-// 	connect(protocol, SIGNAL(messageStatusChanged(int , ChatService::MessageStatus)),
-//     		this, SIGNAL(messageStatusChanged(int , ChatService::MessageStatus)));
-// 	connect(protocol, SIGNAL(filterIncomingMessage(Chat , Contact, const QString &, time_t , bool &)),
-// 		this, SIGNAL(filterIncomingMessage(Chat , Contact, const QString &, time_t, bool &)));
 	connect(protocol->client(), SIGNAL(messageReceived(const XMPP::Message &)),
 		this, SLOT(clientMessageReceived(const XMPP::Message &)));
 }
@@ -72,10 +62,12 @@ bool JabberChatService::sendMessage(Chat chat, FormattedMessage &formattedMessag
 	XMPP::Message msg = XMPP::Message(jus);
 
 	bool stop = false;
-	///plain na QByteArray
-	QByteArray data = unicode2cp(plain);
 
-	emit filterOutgoingMessage(chat, data, stop);
+	QByteArray data = plain.toUtf8();
+	emit filterRawOutgoingMessage(chat, data, stop);
+	plain = QString::fromUtf8(data);
+	emit filterOutgoingMessage(chat, plain, stop);
+
 	if (stop)
 	{
 	    // TODO: implement formats
@@ -132,13 +124,17 @@ void JabberChatService::clientMessageReceived(const XMPP::Message &msg)
 	Contact contact = ContactManager::instance()->byId(Protocol->account(), msg.from().bare(), ActionCreateAndAdd);
 	ContactSet contacts(contact);
 
+	Chat chat = ChatManager::instance()->findChat(contacts);
+	bool ignore = false;
+
 	time_t msgtime = msg.timeStamp().toTime_t();
-	FormattedMessage formattedMessage(msg.body());
+	QByteArray body = msg.body().toUtf8();
+	emit filterRawIncomingMessage(chat, contact, body, ignore);
+
+	FormattedMessage formattedMessage(QString::fromUtf8(body));
 
 	QString plain = formattedMessage.toPlain();
 
-	bool ignore = false;
-	Chat chat = ChatManager::instance()->findChat(contacts);
 	emit filterIncomingMessage(chat, contact, plain, msgtime, ignore);
 	if (ignore)
 		return;

@@ -51,7 +51,7 @@ class Antistring : public QObject, public AccountsAwareObject
 	ChatService * chatService(Account account) const;
 
 private slots:
-	void filterIncomingMessage(Chat chat, Contact sender, const QString &message, time_t time, bool &ignore);
+	void filterIncomingMessage(Chat chat, Contact sender, QString &message, time_t time, bool &ignore);
 
 protected:
 	virtual void accountRegistered(Account account);

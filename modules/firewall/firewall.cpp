@@ -144,7 +144,7 @@ void Firewall::accountUnregistered(Account account)
 	disconnect(account, SIGNAL(connected()), this, SLOT(accountConnected()));
 }
 
-void Firewall::filterIncomingMessage(Chat chat, Contact sender, const QString &message, time_t time, bool &ignore)
+void Firewall::filterIncomingMessage(Chat chat, Contact sender, QString &message, time_t time, bool &ignore)
 {
 	Q_UNUSED(time)
 

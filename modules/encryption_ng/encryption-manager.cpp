@@ -57,10 +57,10 @@ void EncryptionManager::accountRegistered(Account account)
 	ChatService *chatService = account.protocolHandler()->chatService();
 	if (chatService)
 	{
-		connect(chatService, SIGNAL(filterIncomingMessage(Chat,Contact,QString,time_t,bool&)),
-				this, SLOT(filterIncomingMessage(Chat,Contact,QString,time_t,bool&)));
-		connect(chatService, SIGNAL(filterOutgoingMessage(Chat,QByteArray&,bool&)),
-				this, SLOT(filterOutgoingMessage(Chat,QByteArray&,bool&)));
+		connect(chatService, SIGNAL(filterRawIncomingMessage(Chat,Contact,QByteArray&,bool&)),
+				this, SLOT(filterRawIncomingMessage(Chat,Contact,QByteArray&,bool&)));
+		connect(chatService, SIGNAL(filterRawOutgoingMessage(Chat,QByteArray&,bool&)),
+				this, SLOT(filterRawOutgoingMessage(Chat,QByteArray&,bool&)));
 	}
 }
 
@@ -72,10 +72,10 @@ void EncryptionManager::accountUnregistered(Account account)
 	ChatService *chatService = account.protocolHandler()->chatService();
 	if (chatService)
 	{
-		disconnect(chatService, SIGNAL(filterIncomingMessage(Chat,Contact,QString,time_t,bool&)),
-				this, SLOT(filterIncomingMessage(Chat,Contact,QString,time_t,bool&)));
-		disconnect(chatService, SIGNAL(filterOutgoingMessage(Chat,QByteArray&,bool&)),
-				this, SLOT(filterOutgoingMessage(Chat,QByteArray&,bool&)));
+		disconnect(chatService, SIGNAL(filterRawIncomingMessage(Chat,Contact,QByteArray&,bool&)),
+				this, SLOT(filterRawIncomingMessage(Chat,Contact,QByteArray&,bool&)));
+		disconnect(chatService, SIGNAL(filterRawOutgoingMessage(Chat,QByteArray&,bool&)),
+				this, SLOT(filterRawOutgoingMessage(Chat,QByteArray&,bool&)));
 	}
 }
 
@@ -93,16 +93,15 @@ void EncryptionManager::setEnableEncryption(const Chat &chat, bool enable)
 		encryptionChatData->setEncryptor(0);
 }
 
-void EncryptionManager::filterIncomingMessage(Chat chat, Contact sender, const QString &message, time_t time, bool &ignore)
+void EncryptionManager::filterRawIncomingMessage(Chat chat, Contact sender, QByteArray &message, bool &ignore)
 {
 	Q_UNUSED(chat)
 	Q_UNUSED(sender)
 	Q_UNUSED(message)
-	Q_UNUSED(time)
 	Q_UNUSED(ignore)
 }
 
-void EncryptionManager::filterOutgoingMessage(Chat chat, QByteArray &message, bool &stop)
+void EncryptionManager::filterRawOutgoingMessage(Chat chat, QByteArray &message, bool &stop)
 {
 	Q_UNUSED(stop)
 

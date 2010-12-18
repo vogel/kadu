@@ -76,7 +76,7 @@ void Cenzor::accountUnregistered(Account account)
 			this, SLOT(filterIncomingMessage(Chat,Contact,QString,time_t,bool&)));
 }
 
-void Cenzor::filterIncomingMessage(Chat chat, Contact sender, const QString &message, time_t time, bool &ignore)
+void Cenzor::filterIncomingMessage(Chat chat, Contact sender, QString &message, time_t time, bool &ignore)
 {
 	Q_UNUSED(sender)
 	Q_UNUSED(time)
