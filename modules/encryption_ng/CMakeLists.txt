@@ -13,6 +13,7 @@ set (SOURCES
 
 set (MOC_SOURCES
 	keys/keys-manager.h
+	keys/key-shared.h
 
 	decryptor.h
 	decryptor-wrapper.h

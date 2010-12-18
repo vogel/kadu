@@ -19,13 +19,13 @@
 
 #include <QtCore/QtGlobal>
 
-extern "C" int encryption_ng_rsa_init(bool firstLoad)
+extern "C" int encryption_ng_simlite_init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
 	return 0;
 }
 
-extern "C" void encryption_ng_rsa_close()
+extern "C" void encryption_ng_simlite_close()
 {
 }
