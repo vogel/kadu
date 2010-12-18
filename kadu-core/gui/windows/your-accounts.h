@@ -122,7 +122,7 @@ public:
 	static KADUAPI YourAccounts * instance();
 
 	virtual ~YourAccounts();
-	virtual void show();
+	void show();
 };
 
 #endif // YOUR_ACCOUNT
