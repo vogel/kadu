@@ -20,8 +20,10 @@
 #include <QtCore/QDir>
 #include <QtCore/QFile>
 
-#include "keys/keys-manager.h"
+#include "contacts/contact-manager.h"
 #include "misc/misc.h"
+
+#include "keys/keys-manager.h"
 
 #include "key-shared.h"
 
@@ -76,6 +78,9 @@ void KeyShared::load()
 
 	KeyType = loadValue<QString>("KeyType");
 
+	QString contactUuid = loadValue<QString>("Contact");
+	setKeyContact(ContactManager::instance()->byUuid(contactUuid));
+
 	QFile keyFile(filePath());
 	if (keyFile.exists() && keyFile.open(QFile::ReadOnly))
 	{
@@ -94,6 +99,7 @@ void KeyShared::store()
 	Shared::store();
 
 	storeValue("KeyType", KeyType);
+	storeValue("Contact", KeyContact.uuid().toString());
 
 	QDir keysDir(KeysDir + KeyType);
 	if (!keysDir.exists())

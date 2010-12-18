@@ -20,6 +20,8 @@
 #ifndef KEY_SHARED_H
 #define KEY_SHARED_H
 
+#include "contacts/contact.h"
+
 #include "storage/shared.h"
 
 class KADUAPI KeyShared : public QObject, public Shared
@@ -28,6 +30,7 @@ class KADUAPI KeyShared : public QObject, public Shared
 	Q_DISABLE_COPY(KeyShared)
 
 	QString KeyType;
+	Contact KeyContact;
 	QByteArray Key;
 
 	QString KeysDir;
@@ -56,6 +59,7 @@ public:
 	bool isEmpty();
 
 	KaduShared_Property(QString, keyType, KeyType)
+	KaduShared_Property(Contact, keyContact, KeyContact)
 	KaduShared_Property(QByteArray, key, Key)
 
 signals:
