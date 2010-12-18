@@ -95,9 +95,9 @@ void KeyShared::store()
 
 	storeValue("KeyType", KeyType);
 
-	QDir keysDir(profilePath("avatars/") + KeyType);
+	QDir keysDir(KeysDir + KeyType);
 	if (!keysDir.exists())
-		keysDir.mkpath(profilePath("avatars/") + KeyType);
+		keysDir.mkpath(KeysDir + KeyType);
 
 	if (Key.isEmpty())
 		QFile::remove(filePath());

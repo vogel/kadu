@@ -1,5 +1,6 @@
 set (SOURCES
 	encryption-ng-simlite-module.cpp
+	key-importer.cpp
 )
 
 set (MOC_SOURCES

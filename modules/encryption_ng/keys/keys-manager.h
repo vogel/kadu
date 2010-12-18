@@ -22,7 +22,8 @@
 
 #include <QtCore/QObject>
 
-#include "keys/key.h"
+#include "key.h"
+
 #include "storage/simple-manager.h"
 #include "exports.h"
 

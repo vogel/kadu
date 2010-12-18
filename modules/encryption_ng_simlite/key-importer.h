@@ -17,19 +17,15 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QtGlobal>
+#ifndef KEY_IMPORTER_H
+#define KEY_IMPORTER_H
 
-#include "key-importer.h"
+class QFileInfo;
 
-extern "C" int encryption_ng_simlite_init(bool firstLoad)
+namespace EncryptioNgSimlite
 {
-	Q_UNUSED(firstLoad)
-
-	EncryptioNgSimlite::importKeys();
-
-	return 0;
+	void importKey(const QFileInfo &fileInfo);
+	void importKeys();
 }
 
-extern "C" void encryption_ng_simlite_close()
-{
-}
+#endif // KEY_IMPORTER_H

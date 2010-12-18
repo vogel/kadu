@@ -20,7 +20,8 @@
 #ifndef KEY_H
 #define KEY_H
 
-#include "keys/key-shared.h"
+#include "key-shared.h"
+
 #include "storage/shared-base.h"
 #include "exports.h"
 
