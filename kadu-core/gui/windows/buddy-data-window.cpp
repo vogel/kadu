@@ -208,7 +208,12 @@ void BuddyDataWindow::updateBuddyAndClose()
 void BuddyDataWindow::keyPressEvent(QKeyEvent *event)
 {
 	if (event->key() == Qt::Key_Escape)
+	{
+		event->accept();
 		close();
+	}
+	else
+		QWidget::keyPressEvent(event);
 }
 
 bool BuddyDataWindow::isValid()

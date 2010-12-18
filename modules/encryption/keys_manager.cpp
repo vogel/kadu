@@ -40,7 +40,7 @@
 
 #include "keys_manager.h"
 
-KeysManager::KeysManager(QDialog *parent) 
+KeysManager::KeysManager(QDialog *parent)
 	: QWidget(parent),
 	lv_keys(0), e_key(0), pb_del(0), pb_on(0)
 {
@@ -90,14 +90,14 @@ KeysManager::KeysManager(QDialog *parent)
 	QGroupBox *vgb_key = new QGroupBox(tr("Key"), center);
 	QVBoxLayout *keyLayout = new QVBoxLayout(vgb_key);
 	// end our QVroupBox
-	
+
 	// our QTextEdit
 	e_key = new QTextEdit(vgb_key);
 	e_key->setReadOnly(true);
 	keyLayout->addWidget(e_key);
 //	e_key->setTextFormat(Qt::LogText);
 	// end our QTextEdit
-                                                                                                                                                                        
+
 	// buttons
 	QWidget *bottom = new QWidget;
 
@@ -133,7 +133,7 @@ KeysManager::KeysManager(QDialog *parent)
 
 	connect(lv_keys, SIGNAL(itemSelectionChanged()), this, SLOT(selectionChanged()));
 	connect(lv_keys, SIGNAL(itemDoubleClicked(QTreeWidgetItem *, int)), this, SLOT(turnEncryption(QTreeWidgetItem *)));
-	
+
 	// refreshing (loading) QTreeWidget
 	refreshKeysList();
 
@@ -151,10 +151,15 @@ KeysManager::~KeysManager()
 	kdebugf2();
 }
 
-void KeysManager::keyPressEvent(QKeyEvent *ke_event)
+void KeysManager::keyPressEvent(QKeyEvent *event)
 {
-	if (ke_event->key() == Qt::Key_Escape)
+	if (event->key() == Qt::Key_Escape)
+	{
+		event->accept();
 		close();
+	}
+	else
+		QWidget::keyPressEvent(event);
 }
 
 QTreeWidgetItem * KeysManager::getSelected()
@@ -168,14 +173,14 @@ QTreeWidgetItem * KeysManager::getSelected()
 void KeysManager::getKeysList(QStringList &uins)
 {
 	kdebugf();
-	
+
 	QDir dir(profilePath("keys/"), "*.pem", QDir::Name, QDir::Files);
 	QStringList list = dir.entryList();
 	QFile file;
-	
+
 	QString temp;
 	QString GGUIN = QString::number(config_file.readNumEntry("General", "UIN"));
-	
+
 	foreach(const QString &fileName, list)
 	{
 		file.setName(profilePath("keys/").append(fileName));
@@ -239,10 +244,10 @@ void KeysManager::refreshKeysList()
 	UserListElement ule;
 	bool ok;
 	bool encrypt;
-	
+
 	// clearing list
 	lv_keys->clear();
-	
+
 	foreach(const QString &strUin, uins)
 	{
 		UinType uin = strUin.toUInt(&ok);

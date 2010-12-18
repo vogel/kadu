@@ -32,9 +32,10 @@ class KeysManager : public QWidget
 	private slots:
 		void removeKey();
 		void selectionChanged();
-		void keyPressEvent(QKeyEvent *);
 		void turnEncryption();
 		void turnEncryption(QTreeWidgetItem *);
+	protected:
+		virtual void keyPressEvent(QKeyEvent *event);
 	public:
 		KeysManager(QDialog *parent = 0);
 		~KeysManager();

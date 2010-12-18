@@ -210,7 +210,15 @@ void PathListEditWindow::closeEvent(QCloseEvent *e)
 void PathListEditWindow::keyPressEvent(QKeyEvent *e)
 {
 	if (e->key() == Qt::Key_Delete)
+	{
+		e->accept();
 		deletePathClicked();
+	}
 	else if (e->key() == Qt::Key_Escape)
+	{
+		e->accept();
 		close();
+	}
+	else
+		QWidget::keyPressEvent(e);
 }

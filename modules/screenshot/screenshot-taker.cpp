@@ -81,13 +81,13 @@ void ScreenshotTaker::closeEvent(QCloseEvent *e)
 
 void ScreenshotTaker::keyPressEvent(QKeyEvent *e)
 {
-	if (e->modifiers() != Qt::NoModifier || e->key() != Qt::Key_Escape)
+	if (e->key() == Qt::Key_Escape)
 	{
-		QWidget::keyPressEvent(e);
-		return;
+		e->accept();
+		close();
 	}
-
-	close();
+	else
+		QWidget::keyPressEvent(e);
 }
 
 void ScreenshotTaker::mousePressEvent(QMouseEvent *e)

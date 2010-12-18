@@ -225,10 +225,15 @@ void About::openUrl(const QUrl &url)
 		UrlOpener::openUrl(url.toString());
 }
 
-void About::keyPressEvent(QKeyEvent *ke_event)
+void About::keyPressEvent(QKeyEvent *event)
 {
-	if (ke_event->key() == Qt::Key_Escape)
+	if (event->key() == Qt::Key_Escape)
+	{
+		event->accept();
 		close();
+	}
+	else
+		QWidget::keyPressEvent(event);
 }
 
 QString About::loadFile(const QString &name)

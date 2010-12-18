@@ -51,7 +51,7 @@ private slots:
 	void openUrl(const QUrl &url);
 
 protected:
-	virtual void keyPressEvent(QKeyEvent *);
+	virtual void keyPressEvent(QKeyEvent *event);
 
 public:
 	/**

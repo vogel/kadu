@@ -62,7 +62,9 @@ private slots:
 	void itemsChanging();
 	void getInfo();
 	void refreshList();
-	void keyPressEvent(QKeyEvent *);
+
+protected:
+	virtual void keyPressEvent(QKeyEvent *event);
 
 public:
 	/**

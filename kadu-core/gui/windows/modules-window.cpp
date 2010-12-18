@@ -329,8 +329,13 @@ void ModulesWindow::getInfo()
 	kdebugf2();
 }
 
-void ModulesWindow::keyPressEvent(QKeyEvent *ke_event)
+void ModulesWindow::keyPressEvent(QKeyEvent *event)
 {
-	if (ke_event->key() == Qt::Key_Escape)
+	if (event->key() == Qt::Key_Escape)
+	{
+		event->accept();
 		close();
+	}
+	else
+		QWidget::keyPressEvent(event);
 }
