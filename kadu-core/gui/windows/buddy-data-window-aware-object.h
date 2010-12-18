@@ -47,6 +47,7 @@ protected:
 	* This method must be overridden.
 	*/
 	virtual void buddyDataWindowCreated(BuddyDataWindow *buddydatawindow) = 0;
+
 	/**
 	* @author Piotr 'ultr' Dąbrowski
 	* @short Method is called when a BuddyDataWindow window is destroyed.
@@ -56,11 +57,14 @@ protected:
 	* This method must be overridden.
 	*/
 	virtual void buddyDataWindowDestroyed(BuddyDataWindow *buddydatawindow) = 0;
+
 public:
 	static KADUAPI void notifyBuddyDataWindowCreated(BuddyDataWindow *buddydatawindow);
 	static KADUAPI void notifyBuddyDataWindowDestroyed(BuddyDataWindow *buddydatawindow);
+
 	void triggerAllBuddyDataWindowsCreated();
 	void triggerAllBuddyDataWindowsDestroyed();
+
 };
 
-#endif
+#endif // BUDDY_DATA_WINDOW_AWARE_OBJECT

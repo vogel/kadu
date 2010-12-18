@@ -83,8 +83,6 @@ class KADUAPI BuddyDataWindow : public QWidget
 	void createOptionsTab(QTabWidget *tabWidget);
 	void createButtons(QLayout *layout);
 
-	void keyPressEvent(QKeyEvent *);
-
 	bool isValid();
 
 private slots:
@@ -93,15 +91,18 @@ private slots:
 	void updateBuddy();
 	void updateBuddyAndClose();
 
-signals:
-	void updatingBuddy();
+protected:
+	virtual void keyPressEvent(QKeyEvent *event);
 
 public:
 	explicit BuddyDataWindow(Buddy buddy, QWidget *parent = 0);
 	virtual ~BuddyDataWindow();
 
-	Buddy buddy() { return MyBuddy; }
-	QTabWidget *tabWidget() { return TabWidget; }
+	Buddy buddy() const { return MyBuddy; }
+	QTabWidget * tabWidget() const { return TabWidget; }
+
+signals:
+	void updatingBuddy();
 
 };
 

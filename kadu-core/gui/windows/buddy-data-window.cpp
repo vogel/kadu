@@ -72,7 +72,7 @@
 
 #include "buddy-data-window.h"
 
-QList<BuddyDataWindow*> BuddyDataWindow::Instances;
+QList<BuddyDataWindow *> BuddyDataWindow::Instances;
 
 BuddyDataWindow::BuddyDataWindow(Buddy buddy, QWidget *parent) :
 		QWidget(parent, Qt::Dialog), MyBuddy(buddy)
@@ -82,7 +82,6 @@ BuddyDataWindow::BuddyDataWindow(Buddy buddy, QWidget *parent) :
 	Instances.append(this);
 
 	setWindowRole("kadu-buddy-data");
-
 	setAttribute(Qt::WA_DeleteOnClose);
 	setWindowTitle(tr("Buddy Properties - %1").arg(MyBuddy.display()));
 
@@ -191,9 +190,9 @@ void BuddyDataWindow::updateBuddyAndClose()
 	}
 }
 
-void BuddyDataWindow::keyPressEvent(QKeyEvent *ke_event)
+void BuddyDataWindow::keyPressEvent(QKeyEvent *event)
 {
-	if (ke_event->key() == Qt::Key_Escape)
+	if (event->key() == Qt::Key_Escape)
 		close();
 }
 
