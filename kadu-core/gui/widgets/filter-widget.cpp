@@ -239,16 +239,23 @@ bool FilterWidget::sendKeyEventToView(QKeyEvent *event)
 
 void FilterWidget::keyPressEvent(QKeyEvent *event)
 {
-	switch (event->key())
+#ifndef Q_WS_MAEMO_5
+	if (event->key() == Qt::Key_Escape &&
+#ifdef Q_OS_MAC
+			!text().isEmpty()
+#else
+			!NameFilterEdit->text().isEmpty()
+#endif
+			)
 	{
-		case Qt::Key_Escape:
-			setFilter(QString());
-			event->accept();
-			return;
+		setFilter(QString());
+		event->accept();
+		return;
 	}
 
 	if (View && sendKeyEventToView(event))
 		return;
+#endif // !Q_WS_MAEMO_5
 
 	QWidget::keyPressEvent(event);
 }
