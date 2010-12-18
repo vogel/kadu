@@ -17,7 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "decryptor.h"
+#include "decryptor-wrapper.h"
 #include "encryption-provider.h"
 #include "encryptor.h"
 
@@ -95,6 +95,20 @@ Decryptor * EncryptionProviderManager::decryptor(const Chat &chat)
 	}
 
 	return 0;
+}
+
+Decryptor * EncryptionProviderManager::decryptorWrapper(const Chat& chat)
+{
+	DecryptorWrapper *result = new DecryptorWrapper();
+
+	foreach (EncryptionProvider *provider, Providers)
+	{
+		Decryptor *decryptor = provider->decryptor(chat);
+		if (decryptor)
+			result->addDecryptor(decryptor);
+	}
+
+	return result;
 }
 
 Encryptor * EncryptionProviderManager::encryptor(const Chat &chat)

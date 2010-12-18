@@ -101,9 +101,14 @@ void EncryptionManager::filterRawIncomingMessage(Chat chat, Contact sender, QByt
 	Q_UNUSED(message)
 	Q_UNUSED(ignore)
 
-	EncryptionChatData *encryptionChatData = chat.data()->moduleData<EncryptionChatData>("encryption-ng");
-	if (encryptionChatData && encryptionChatData->decryptor())
-		message = encryptionChatData->decryptor()->decrypt(message);
+	EncryptionChatData *encryptionChatData = chat.data()->moduleData<EncryptionChatData>("encryption-ng", true);
+	if (!encryptionChatData)
+		return;
+
+	if (!encryptionChatData->decryptor())
+		encryptionChatData->setDecryptor(EncryptionProviderManager::instance()->decryptorWrapper(chat));
+
+	message = encryptionChatData->decryptor()->decrypt(message);
 }
 
 void EncryptionManager::filterRawOutgoingMessage(Chat chat, QByteArray &message, bool &stop)

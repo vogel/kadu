@@ -53,6 +53,7 @@ public:
 
 	Encryptor * encryptor(const Chat &chat);
 	Decryptor * decryptor(const Chat &chat);
+    Decryptor * decryptorWrapper(const Chat &chat);
 
 signals:
 	void canEncryptChanged(const Chat &chat);

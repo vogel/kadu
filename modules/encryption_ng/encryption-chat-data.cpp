@@ -23,7 +23,7 @@
 #include "encryption-chat-data.h"
 
 EncryptionChatData::EncryptionChatData() :
-		ChatEncryptor(0)
+		ChatEncryptor(0), ChatDecryptor(0)
 {
 }
 
@@ -68,7 +68,7 @@ void EncryptionChatData::setDecryptor(Decryptor *decryptor)
 		connect(ChatDecryptor, SIGNAL(destroyed(QObject*)), this, SLOT(decryptorDestroyed()));
 }
 
-Decryptor* EncryptionChatData::decryptor()
+Decryptor * EncryptionChatData::decryptor()
 {
 	return ChatDecryptor;
 }
