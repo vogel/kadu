@@ -14,6 +14,7 @@
 * jabber: conneting to facebook chats is again possible (fixed regression from beta12) (WhE)
 * jabber: remove big memory leak after unsuccessful downloading avatar (WhE)
 * gui: #1769 fixed: centering OpenChatWith window on screen (Juzef)
+* chat styles: #1705 fixed: restoring emoticon img on mouse click works incorrectly (beevvy)
 
 +++ version 0.6.6-beta12
 * gui: #1745 fixed: invalid encoding of text in About window on Windows (beevvy)

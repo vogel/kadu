@@ -103,7 +103,7 @@
 			if(node.tagName == 'IMG' && node.alt && node.className!="avatar") {
 				a = document.createElement('a');
 				a.setAttribute('onclick', 'imageSwap(this)');
-				a.setAttribute('src', node.src);
+				a.setAttribute('src', node.getAttribute('src'));
 				a.className = node.className;
 				text = document.createTextNode(node.alt);
 				a.appendChild(text);
@@ -115,7 +115,7 @@
 
 			//Swap the image/text
 			img = document.createElement('img');
-			img.setAttribute('src', node.src);
+			img.setAttribute('src', node.getAttribute('src'));
 			img.className = node.className;
 			img.setAttribute('alt', node.firstChild.nodeValue);
 			node.parentNode.replaceChild(img, node);
