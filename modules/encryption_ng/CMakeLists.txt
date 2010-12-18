@@ -1,4 +1,5 @@
 set (SOURCES
+	decryptor-wrapper.cpp
 	encryption-actions.cpp
 	encryption-chat-data.cpp
 	encryption-manager.cpp
@@ -8,6 +9,7 @@ set (SOURCES
 
 set (MOC_SOURCES
 	decryptor.h
+	decryptor-wrapper.h
 	encryption-actions.h
 	encryption-chat-data.h
 	encryption-manager.h
