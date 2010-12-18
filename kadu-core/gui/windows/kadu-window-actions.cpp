@@ -953,7 +953,7 @@ void KaduWindowActions::editUserActionActivated(ActionDataSource *source)
 		addBuddyWindow->show();
 	}
 	else
-		(new BuddyDataWindow(buddy, Core::instance()->kaduWindow()))->show();
+		BuddyDataWindow::instance(buddy, Core::instance()->kaduWindow())->show();
 
 	kdebugf2();
 }

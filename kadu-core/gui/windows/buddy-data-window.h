@@ -32,7 +32,6 @@
 #ifndef BUDDY_DATA_WINDOW_H
 #define BUDDY_DATA_WINDOW_H
 
-#include <QtCore/QList>
 #include <QtCore/QMap>
 #include <QtGui/QWidget>
 
@@ -62,8 +61,8 @@ class KADUAPI BuddyDataWindow : public QWidget
 
 	Q_OBJECT
 
-	static QList<BuddyDataWindow *> Instances;
-	static const QList<BuddyDataWindow *> & instances() { return Instances; }
+	static QMap<Buddy, BuddyDataWindow *> Instances;
+	static const QMap<Buddy, BuddyDataWindow *> & instances() { return Instances; }
 
 	Buddy MyBuddy;
 	BuddyGeneralConfigurationWidget *ContactTab;
@@ -74,6 +73,8 @@ class KADUAPI BuddyDataWindow : public QWidget
 	QTabWidget *TabWidget;
 	QPushButton *OkButton;
 	QPushButton *ApplyButton;
+
+	BuddyDataWindow(const Buddy &buddy, QWidget *parent);
 
 	void createGui();
 	void createTabs(QLayout *layout);
@@ -95,8 +96,11 @@ protected:
 	virtual void keyPressEvent(QKeyEvent *event);
 
 public:
-	explicit BuddyDataWindow(Buddy buddy, QWidget *parent = 0);
+	static BuddyDataWindow * instance(const Buddy &buddy, QWidget *parent = 0);
+
 	virtual ~BuddyDataWindow();
+
+	void show();
 
 	Buddy buddy() const { return MyBuddy; }
 	QTabWidget * tabWidget() const { return TabWidget; }

@@ -47,13 +47,13 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
+#include "activate.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-shared.h"
 #include "buddies/group.h"
 #include "buddies/group-manager.h"
 #include "configuration/configuration-file.h"
 #include "configuration/xml-configuration-file.h"
-
 #include "contacts/contact.h"
 #include "gui/widgets/buddy-general-configuration-widget.h"
 #include "gui/widgets/buddy-groups-configuration-widget.h"
@@ -62,7 +62,6 @@
 #include "gui/windows/buddy-data-manager.h"
 #include "gui/windows/buddy-data-window-aware-object.h"
 #include "gui/windows/message-dialog.h"
-
 #include "misc/misc.h"
 #include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
@@ -72,14 +71,23 @@
 
 #include "buddy-data-window.h"
 
-QList<BuddyDataWindow *> BuddyDataWindow::Instances;
+QMap<Buddy, BuddyDataWindow *> BuddyDataWindow::Instances;
 
-BuddyDataWindow::BuddyDataWindow(Buddy buddy, QWidget *parent) :
+BuddyDataWindow * BuddyDataWindow::instance(const Buddy &buddy, QWidget *parent)
+{
+	if (Instances.contains(buddy))
+		// TODO: it might be useful someday to reparent in case the new parent is different than the old
+		return Instances.value(buddy);
+	else
+		return new BuddyDataWindow(buddy, parent);
+}
+
+BuddyDataWindow::BuddyDataWindow(const Buddy &buddy, QWidget *parent) :
 		QWidget(parent, Qt::Dialog), MyBuddy(buddy)
 {
 	kdebugf();
 
-	Instances.append(this);
+	Instances.insert(MyBuddy, this);
 
 	setWindowRole("kadu-buddy-data");
 	setAttribute(Qt::WA_DeleteOnClose);
@@ -98,8 +106,15 @@ BuddyDataWindow::~BuddyDataWindow()
 	kdebugf();
 	saveWindowGeometry(this, "General", "ManageUsersDialogGeometry");
 	BuddyDataWindowAwareObject::notifyBuddyDataWindowDestroyed(this);
-	Instances.removeOne(this);
+	Instances.remove(MyBuddy);
 	kdebugf2();
+}
+
+void BuddyDataWindow::show()
+{
+	QWidget::show();
+
+	_activateWindow(this);
 }
 
 void BuddyDataWindow::createGui()
