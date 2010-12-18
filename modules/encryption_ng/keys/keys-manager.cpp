@@ -76,25 +76,21 @@ void KeysManager::keyDataUpdated()
 		emit keyUpdated(key);
 }
 
-Key KeysManager::byContact(Contact contact, NotFoundAction action)
+Key KeysManager::byContactAndType(Contact contact, const QString &keyType, NotFoundAction action)
 {
-	Q_UNUSED(contact)
-	Q_UNUSED(action)
-
-	return Key::null;
-/*
-	if (contact.contactAvatar())
-		return contact.contactAvatar();
+	foreach (const Key &key, items())
+		if (key.keyContact() == contact && key.keyType() == keyType)
+			return key;
 
 	if (ActionReturnNull == action)
-		return Avatar::null;
+		return Key::null;
 
-	Avatar avatar = Avatar::create();
-	contact.setContactAvatar(avatar);
+	Key key = Key::create();
+	key.setKeyContact(contact);
+	key.setKeyType(keyType);
 
 	if (ActionCreateAndAdd == action)
-		addItem(avatar);
+		addItem(key);
 
-	return avatar;
-*/
+	return key;
 }

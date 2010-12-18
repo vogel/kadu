@@ -52,7 +52,7 @@ public:
 	virtual QString storageNodeName() { return QLatin1String("Keys"); }
 	virtual QString storageNodeItemName() { return QLatin1String("Key"); }
 
-	Key byContact(Contact contact, NotFoundAction action);
+	Key byContactAndType(Contact contact, const QString &keyType, NotFoundAction action);
 
 signals:
 	void keyAboutToBeAdded(Key key);
