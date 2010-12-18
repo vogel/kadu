@@ -20,6 +20,8 @@
 #include <QtCore/QByteArray>
 #include <QtCrypto/QtCrypto>
 
+#include "encryption-ng-ceasar-marker.h"
+
 #include "encryption-ng-ceasar-encryptor.h"
 
 QByteArray EncryptionNgCeasarEncryptor::encrypt(const QByteArray &data)
@@ -30,9 +32,9 @@ QByteArray EncryptionNgCeasarEncryptor::encrypt(const QByteArray &data)
 	for (int i = 0, s = data.size(); i < s; i++)
 		result.append(data.at(i) + 1);
 
-	QByteArray encoded("=== KADU CEASAR ENCRYPTION ===\n");
+	QByteArray encoded(KADU_CEASAR_ENCRYPTION_MARKER_BEGIN);
 	encoded.append(encoder.encode(result).toByteArray());
-	encoded.append("\n=== KADU CEASAR ENCRYPTION ===\n");
+	encoded.append(KADU_CEASAR_ENCRYPTION_MARKER_END);
 
 	return encoded;
 }

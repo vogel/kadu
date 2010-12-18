@@ -18,13 +18,26 @@
  */
 
 #include <QtCore/QByteArray>
+#include <QtCrypto/QtCrypto>
+
+#include "encryption-ng-ceasar-marker.h"
 
 #include "encryption-ng-ceasar-decryptor.h"
 
 QByteArray EncryptionNgCeasarDecryptor::decrypt(const QByteArray &data)
 {
+	if (!data.startsWith(KADU_CEASAR_ENCRYPTION_MARKER_BEGIN) || !data.endsWith(KADU_CEASAR_ENCRYPTION_MARKER_END))
+		return data;
+
+	QByteArray base64 = data.mid(strlen(KADU_CEASAR_ENCRYPTION_MARKER_BEGIN),
+			data.length() - strlen(KADU_CEASAR_ENCRYPTION_MARKER_BEGIN) - strlen(KADU_CEASAR_ENCRYPTION_MARKER_END));
+
+	QCA::Base64 decoder;
+	QByteArray encryped = decoder.decode(base64).toByteArray();
+
 	QByteArray result;
-	for (int i = 0, s = data.size(); i < s; i++)
-		result.append(data.at(i) - 1);
+	for (int i = 0, s = encryped.size(); i < s; i++)
+		result.append(encryped.at(i) - 1);
+
 	return result;
 }
