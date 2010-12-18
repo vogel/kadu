@@ -17,6 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "decryptor.h"
 #include "encryptor.h"
 
 #include "encryption-chat-data.h"
@@ -35,6 +36,11 @@ void EncryptionChatData::encryptorDestroyed()
 	ChatEncryptor = 0;
 }
 
+void EncryptionChatData::decryptorDestroyed()
+{
+	ChatDecryptor = 0;
+}
+
 void EncryptionChatData::setEncryptor(Encryptor *encryptor)
 {
 	if (ChatEncryptor)
@@ -49,4 +55,20 @@ void EncryptionChatData::setEncryptor(Encryptor *encryptor)
 Encryptor * EncryptionChatData::encryptor()
 {
 	return ChatEncryptor;
+}
+
+void EncryptionChatData::setDecryptor(Decryptor *decryptor)
+{
+	if (ChatDecryptor)
+		disconnect(ChatDecryptor, SIGNAL(destroyed(QObject*)), this, SLOT(decryptorDestroyed()));
+
+	ChatDecryptor = decryptor;
+
+	if (ChatDecryptor)
+		connect(ChatDecryptor, SIGNAL(destroyed(QObject*)), this, SLOT(decryptorDestroyed()));
+}
+
+Decryptor* EncryptionChatData::decryptor()
+{
+	return ChatDecryptor;
 }

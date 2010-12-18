@@ -20,6 +20,7 @@
 #include "protocols/services/chat-service.h"
 #include "protocols/protocol.h"
 
+#include "decryptor.h"
 #include "encryption-chat-data.h"
 #include "encryption-provider-manager.h"
 #include "encryptor.h"
@@ -99,6 +100,10 @@ void EncryptionManager::filterRawIncomingMessage(Chat chat, Contact sender, QByt
 	Q_UNUSED(sender)
 	Q_UNUSED(message)
 	Q_UNUSED(ignore)
+
+	EncryptionChatData *encryptionChatData = chat.data()->moduleData<EncryptionChatData>("encryption-ng");
+	if (encryptionChatData && encryptionChatData->decryptor())
+		message = encryptionChatData->decryptor()->decrypt(message);
 }
 
 void EncryptionManager::filterRawOutgoingMessage(Chat chat, QByteArray &message, bool &stop)

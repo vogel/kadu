@@ -25,6 +25,7 @@
 
 #include "chat/chat.h"
 
+class Decryptor;
 class Encryptor;
 
 class EncryptionChatData : public QObject
@@ -32,9 +33,11 @@ class EncryptionChatData : public QObject
 	Q_OBJECT
 
 	Encryptor *ChatEncryptor;
+	Decryptor *ChatDecryptor;
 
 private slots:
 	void encryptorDestroyed();
+	void decryptorDestroyed();
 
 public:
 	EncryptionChatData();
@@ -42,6 +45,9 @@ public:
 
 	void setEncryptor(Encryptor *encryptor);
 	Encryptor * encryptor();
+
+	void setDecryptor(Decryptor *decryptor);
+	Decryptor * decryptor();
 
 };
 
