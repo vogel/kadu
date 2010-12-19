@@ -31,13 +31,14 @@ class EncryptionProvider;
 class EncryptionProviderManager : public QObject
 {
 	Q_OBJECT
+	Q_DISABLE_COPY(EncryptionProviderManager)
 
 	static EncryptionProviderManager * Instance;
 
 	QList<EncryptionProvider *> Providers;
 
 	EncryptionProviderManager();
-	~EncryptionProviderManager();
+	virtual ~EncryptionProviderManager();
 
 private slots:
 	void keyReceived(const Contact &contact, const QString &keyType, const QByteArray &keyData);

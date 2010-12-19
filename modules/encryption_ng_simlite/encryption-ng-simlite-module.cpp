@@ -17,8 +17,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QtGlobal>
-
 #include "modules/encryption_ng/encryption-provider-manager.h"
 
 #include "encryption-ng-simlite-key-importer.h"
@@ -38,6 +36,7 @@ extern "C" int encryption_ng_simlite_init(bool firstLoad)
 extern "C" void encryption_ng_simlite_close()
 {
 	EncryptionProviderManager::instance()->unregisterProvider(EncryptioNgSimliteProvider::instance());
+	EncryptioNgSimliteProvider::destroyInstance();
 
 	// it can work without createInstance too, so don't care about firstLoad here
 	EncryptioNgSimliteKeyImporter::destroyInstance();

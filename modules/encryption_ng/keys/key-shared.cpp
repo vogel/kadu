@@ -66,7 +66,7 @@ QString KeyShared::storageNodeName()
 QString KeyShared::filePath()
 {
 	ensureLoaded();
-	return KeysDir + KeyType + "/" + uuid();
+	return KeysDir + KeyType + '/' + uuid();
 }
 
 void KeyShared::load()

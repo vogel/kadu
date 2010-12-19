@@ -71,7 +71,7 @@ void EncryptioNgSimliteKeyImporter::importKey(const Account &account, const QFil
 	keyFile.close();
 
 	QString fileName = fileInfo.fileName();
-	QString keyName = fileName.mid(0, fileName.length() - 4); // remove .pem suffix
+	QString keyName = fileName.left(fileName.length() - 4); // remove .pem suffix
 
 	QString keyType = keyName == "private" ? "simlite_private" : "simlite";
 
