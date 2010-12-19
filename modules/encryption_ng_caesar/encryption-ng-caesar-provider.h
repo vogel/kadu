@@ -17,20 +17,35 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ENCRYPTION_NG_CEASAR_DECRYPTOR_H
-#define ENCRYPTION_NG_CEASAR_DECRYPTOR_H
+#ifndef ENCRYPTION_NG_CAESAR_PROVIDER_H
+#define ENCRYPTION_NG_CAESAR_PROVIDER_H
 
-#include "modules/encryption_ng/decryptor.h"
+#include "modules/encryption_ng/encryption-provider.h"
 
-class EncryptionNgCeasarDecryptor : public Decryptor
+class EncryptionNgCaesarProvider : public EncryptionProvider
 {
 	Q_OBJECT
 
-public:
-	virtual ~EncryptionNgCeasarDecryptor() {}
+	static EncryptionNgCaesarProvider *Instance;
 
-	virtual QByteArray decrypt(const QByteArray &data);
+	Decryptor *CaesarDecryptor;
+	Encryptor *CaesarEncryptor;
+
+	EncryptionNgCaesarProvider();
+	virtual ~EncryptionNgCaesarProvider();
+
+public:
+	static void createInstance();
+	static void destroyInstance();
+
+	static EncryptionNgCaesarProvider * instance() { return Instance; }
+
+	virtual bool canDecrypt(const Chat &chat);
+	virtual bool canEncrypt(const Chat &chat);
+
+	virtual Decryptor * decryptor(const Chat &chat);
+	virtual Encryptor * encryptor(const Chat &chat);
 
 };
 
-#endif // ENCRYPTION_NG_CEASAR_DECRYPTOR_H
+#endif // ENCRYPTION_NG_CAESAR_PROVIDER_H

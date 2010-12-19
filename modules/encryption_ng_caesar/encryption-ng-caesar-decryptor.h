@@ -17,24 +17,20 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QByteArray>
-#include <QtCrypto>
+#ifndef ENCRYPTION_NG_CAESAR_DECRYPTOR_H
+#define ENCRYPTION_NG_CAESAR_DECRYPTOR_H
 
-#include "encryption-ng-ceasar-marker.h"
+#include "modules/encryption_ng/decryptor.h"
 
-#include "encryption-ng-ceasar-encryptor.h"
-
-QByteArray EncryptionNgCeasarEncryptor::encrypt(const QByteArray &data)
+class EncryptionNgCaesarDecryptor : public Decryptor
 {
-	QByteArray result;
-	QCA::Base64 encoder;
+	Q_OBJECT
 
-	for (int i = 0, s = data.size(); i < s; i++)
-		result.append(data.at(i) + 1);
+public:
+	virtual ~EncryptionNgCaesarDecryptor() {}
 
-	QByteArray encoded(KADU_CEASAR_ENCRYPTION_MARKER_BEGIN);
-	encoded.append(encoder.encode(result).toByteArray());
-	encoded.append(KADU_CEASAR_ENCRYPTION_MARKER_END);
+	virtual QByteArray decrypt(const QByteArray &data);
 
-	return encoded;
-}
+};
+
+#endif // ENCRYPTION_NG_CAESAR_DECRYPTOR_H

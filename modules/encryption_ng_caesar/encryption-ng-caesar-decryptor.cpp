@@ -17,10 +17,27 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ENCRYPTION_NG_CEASAR_MARKER_H
-#define ENCRYPTION_NG_CEASAR_MARKER_H
+#include <QtCore/QByteArray>
+#include <QtCrypto>
 
-#define KADU_CEASAR_ENCRYPTION_MARKER_BEGIN "=== KADU CEASAR ENCRYPTION BEGIN ==="
-#define KADU_CEASAR_ENCRYPTION_MARKER_END "=== KADU CEASAR ENCRYPTION END ==="
+#include "encryption-ng-caesar-marker.h"
 
-#endif // ENCRYPTION_NG_CEASAR_MARKER_H
+#include "encryption-ng-caesar-decryptor.h"
+
+QByteArray EncryptionNgCaesarDecryptor::decrypt(const QByteArray &data)
+{
+    if (!data.startsWith(KADU_CAESAR_ENCRYPTION_MARKER_BEGIN) || !data.endsWith(KADU_CAESAR_ENCRYPTION_MARKER_END))
+        return data;
+
+    QByteArray base64 = data.mid(strlen(KADU_CAESAR_ENCRYPTION_MARKER_BEGIN),
+            data.length() - strlen(KADU_CAESAR_ENCRYPTION_MARKER_BEGIN) - strlen(KADU_CAESAR_ENCRYPTION_MARKER_END));
+
+    QCA::Base64 decoder;
+    QByteArray encryped = decoder.decode(base64).toByteArray();
+
+    QByteArray result;
+    for (int i = 0, s = encryped.size(); i < s; i++)
+        result.append(encryped.at(i) - 1);
+
+    return result;
+}

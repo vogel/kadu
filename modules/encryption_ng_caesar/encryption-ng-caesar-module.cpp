@@ -17,27 +17,24 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QByteArray>
-#include <QtCrypto>
+#include <QtCore/QtGlobal>
 
-#include "encryption-ng-ceasar-marker.h"
+#include "modules/encryption_ng/encryption-provider-manager.h"
 
-#include "encryption-ng-ceasar-decryptor.h"
+#include "encryption-ng-caesar-provider.h"
 
-QByteArray EncryptionNgCeasarDecryptor::decrypt(const QByteArray &data)
+extern "C" int encryption_ng_caesar_init(bool firstLoad)
 {
-	if (!data.startsWith(KADU_CEASAR_ENCRYPTION_MARKER_BEGIN) || !data.endsWith(KADU_CEASAR_ENCRYPTION_MARKER_END))
-		return data;
+    Q_UNUSED(firstLoad)
 
-	QByteArray base64 = data.mid(strlen(KADU_CEASAR_ENCRYPTION_MARKER_BEGIN),
-			data.length() - strlen(KADU_CEASAR_ENCRYPTION_MARKER_BEGIN) - strlen(KADU_CEASAR_ENCRYPTION_MARKER_END));
+    EncryptionNgCaesarProvider::createInstance();
+    EncryptionProviderManager::instance()->registerProvider(EncryptionNgCaesarProvider::instance());
 
-	QCA::Base64 decoder;
-	QByteArray encryped = decoder.decode(base64).toByteArray();
+    return 0;
+}
 
-	QByteArray result;
-	for (int i = 0, s = encryped.size(); i < s; i++)
-		result.append(encryped.at(i) - 1);
-
-	return result;
+extern "C" void encryption_ng_caesar_close()
+{
+    EncryptionProviderManager::instance()->unregisterProvider(EncryptionNgCaesarProvider::instance());
+    EncryptionNgCaesarProvider::destroyInstance();
 }

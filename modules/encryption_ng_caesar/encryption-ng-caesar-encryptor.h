@@ -17,20 +17,20 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ENCRYPTION_NG_CEASAR_ENCRYPTOR_H
-#define ENCRYPTION_NG_CEASAR_ENCRYPTOR_H
+#ifndef ENCRYPTION_NG_CAESAR_ENCRYPTOR_H
+#define ENCRYPTION_NG_CAESAR_ENCRYPTOR_H
 
 #include "modules/encryption_ng/encryptor.h"
 
-class EncryptionNgCeasarEncryptor : public Encryptor
+class EncryptionNgCaesarEncryptor : public Encryptor
 {
 	Q_OBJECT
 
 public:
-	virtual ~EncryptionNgCeasarEncryptor() {}
+	virtual ~EncryptionNgCaesarEncryptor() {}
 
 	virtual QByteArray encrypt(const QByteArray &data);
 
 };
 
-#endif // ENCRYPTION_NG_CEASAR_ENCRYPTOR_H
+#endif // ENCRYPTION_NG_CAESAR_ENCRYPTOR_H

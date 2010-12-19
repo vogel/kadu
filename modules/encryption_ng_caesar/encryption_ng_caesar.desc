@@ -1,5 +1,5 @@
 [Module]
-Description=Ceasars chat encryption module
+Description=Caesars chat encryption module
 Description[pl]=Modu³ obs³ugi szyfrowania rozmów szyfrem cezara
 Author=Kadu Team
 LoadByDefault=true

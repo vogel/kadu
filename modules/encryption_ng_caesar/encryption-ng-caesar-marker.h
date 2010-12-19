@@ -17,24 +17,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QtGlobal>
+#ifndef ENCRYPTION_NG_CAESAR_MARKER_H
+#define ENCRYPTION_NG_CAESAR_MARKER_H
 
-#include "modules/encryption_ng/encryption-provider-manager.h"
+#define KADU_CAESAR_ENCRYPTION_MARKER_BEGIN "=== KADU CAESAR ENCRYPTION BEGIN ==="
+#define KADU_CAESAR_ENCRYPTION_MARKER_END "=== KADU CAESAR ENCRYPTION END ==="
 
-#include "encryption-ng-ceasar-provider.h"
-
-extern "C" int encryption_ng_ceasar_init(bool firstLoad)
-{
-	Q_UNUSED(firstLoad)
-
-	EncryptionNgCeasarProvider::createInstance();
-	EncryptionProviderManager::instance()->registerProvider(EncryptionNgCeasarProvider::instance());
-
-	return 0;
-}
-
-extern "C" void encryption_ng_ceasar_close()
-{
-	EncryptionProviderManager::instance()->unregisterProvider(EncryptionNgCeasarProvider::instance());
-	EncryptionNgCeasarProvider::destroyInstance();
-}
+#endif // ENCRYPTION_NG_CAESAR_MARKER_H

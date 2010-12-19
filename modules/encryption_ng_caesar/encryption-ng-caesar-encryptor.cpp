@@ -17,35 +17,24 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ENCRYPTION_NG_CEASAR_PROVIDER_H
-#define ENCRYPTION_NG_CEASAR_PROVIDER_H
+#include <QtCore/QByteArray>
+#include <QtCrypto>
 
-#include "modules/encryption_ng/encryption-provider.h"
+#include "encryption-ng-caesar-marker.h"
 
-class EncryptionNgCeasarProvider : public EncryptionProvider
+#include "encryption-ng-caesar-encryptor.h"
+
+QByteArray EncryptionNgCaesarEncryptor::encrypt(const QByteArray &data)
 {
-	Q_OBJECT
+    QByteArray result;
+    QCA::Base64 encoder;
 
-	static EncryptionNgCeasarProvider *Instance;
+    for (int i = 0, s = data.size(); i < s; i++)
+        result.append(data.at(i) + 1);
 
-	Decryptor *CeasarDecryptor;
-	Encryptor *CeasarEncryptor;
+    QByteArray encoded(KADU_CAESAR_ENCRYPTION_MARKER_BEGIN);
+    encoded.append(encoder.encode(result).toByteArray());
+    encoded.append(KADU_CAESAR_ENCRYPTION_MARKER_END);
 
-	EncryptionNgCeasarProvider();
-	virtual ~EncryptionNgCeasarProvider();
-
-public:
-	static void createInstance();
-	static void destroyInstance();
-
-	static EncryptionNgCeasarProvider * instance() { return Instance; }
-
-	virtual bool canDecrypt(const Chat &chat);
-	virtual bool canEncrypt(const Chat &chat);
-
-	virtual Decryptor * decryptor(const Chat &chat);
-	virtual Encryptor * encryptor(const Chat &chat);
-
-};
-
-#endif // ENCRYPTION_NG_CEASAR_PROVIDER_H
+    return encoded;
+}

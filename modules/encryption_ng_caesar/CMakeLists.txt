@@ -1,14 +1,14 @@
 set (SOURCES
-	encryption-ng-ceasar-decryptor.cpp
-	encryption-ng-ceasar-encryptor.cpp
-	encryption-ng-ceasar-module.cpp
-	encryption-ng-ceasar-provider.cpp
+	encryption-ng-caesar-decryptor.cpp
+	encryption-ng-caesar-encryptor.cpp
+	encryption-ng-caesar-module.cpp
+	encryption-ng-caesar-provider.cpp
 )
 
 set (MOC_SOURCES
-	encryption-ng-ceasar-decryptor.h
-	encryption-ng-ceasar-encryptor.h
-	encryption-ng-ceasar-provider.h
+	encryption-ng-caesar-decryptor.h
+	encryption-ng-caesar-encryptor.h
+	encryption-ng-caesar-provider.h
 )
 
 set (TRANSLATION_SOURCES
@@ -34,7 +34,7 @@ link_directories (${QCA2_LIBRARY_DIRS})
 add_definitions (${QCA2_CFLAGS_OTHER})
 include_directories (${QCA2_INCLUDE_DIRS})
 
-kadu_module (encryption_ng_ceasar
+kadu_module (encryption_ng_caesar
 	MODULE_SOURCES ${SOURCES}
 	MODULE_MOC_SOURCES ${MOC_SOURCES}
 	MODULE_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
