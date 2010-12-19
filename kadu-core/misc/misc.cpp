@@ -109,7 +109,7 @@ QString translateLanguage(const QApplication *application, const QString &locale
 	{
 		if (l2n)
 		{
-			if (locale.mid(0, 2) == local[i])
+			if (locale.leftRef(2) == local[i])
 				return application->translate("@default", name[i]);
 		}
 		else

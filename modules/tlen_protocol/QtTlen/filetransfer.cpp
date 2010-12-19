@@ -436,7 +436,7 @@ void fileTransferThread::parseFileList( const QByteArray &fl ) {
 	QTreeWidgetItem *item;
 	QStringList finfo;
 	QString path = settings->profileValue( QString("filetransfer/%1").arg(rndid) ).toString(), fname;
-	memcpy(&fc, fl.mid(0,4).data(), 4);
+	memcpy(&fc, fl.leftRef(4).constData(), 4);
 	for(quint32 i=0; i<fc; ++i) {
 		memcpy(&fs, fl.mid(4+i*260, 4).data(), 4);
 		fname=fl.mid(4+i*260+4, 256);
@@ -500,7 +500,7 @@ void fileTransferThread::sendFile( const QByteArray &f ) {
 	cfParsed=0;
 	if(!t->isActive())
 		t->start(1000);
-	memcpy(&currentFile, f.mid(0,4).data(), 4);
+	memcpy(&currentFile, f.leftRef(4).constData(), 4);
 	QTreeWidgetItem *it = fileMap.at(currentFile);
 	current->setFileName( it->text(6)+"/"+it->text(0) );
 	current->open(QIODevice::ReadOnly);

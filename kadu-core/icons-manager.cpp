@@ -90,7 +90,7 @@ QString IconsManager::iconPath(const QString &path, const QString &size) const
 	int lastHash = path.lastIndexOf('/');
 	if (-1 != lastHash)
 	{
-		realPath = path.mid(0, lastHash);
+		realPath = path.left(lastHash);
 		iconName = path.mid(lastHash + 1);
 	}
 	else
@@ -141,7 +141,7 @@ QIcon IconsManager::buildSvgIcon(const QString& path)
 	int lastHash = path.lastIndexOf('/');
 	if (lastHash != -1)
 	{
-		realPath = path.mid(0, lastHash);
+		realPath = path.left(lastHash);
 		iconName = path.mid(lastHash + 1);
 	}
 	else

@@ -245,7 +245,7 @@ FormattedMessage createMessage(Account account, UinType sender, const QString &c
 		textPosition = gg_fix16(format.position);
 
 		if (first && format.position > 0)
-			result << FormattedMessagePart(content.mid(0, textPosition), false, false, false, QColor());
+			result << FormattedMessagePart(content.left(textPosition), false, false, false, QColor());
 
 		if (format.font & GG_FONT_IMAGE)
 		{

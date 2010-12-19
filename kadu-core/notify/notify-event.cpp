@@ -24,7 +24,7 @@ NotifyEvent::NotifyEvent(const QString &name, NotifyEvent::CallbackRequirement i
 		Name(name), IsCallbackRequired(isCallbackRequired), Description(description)
 {
 	int index = Name.indexOf("/");
-	Category = (index > 0) ? Name.mid(0, index) : QString();
+	Category = (index > 0) ? Name.left(index) : QString();
 }
 
 bool NotifyEvent::operator == (const NotifyEvent &compare)

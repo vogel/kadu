@@ -135,7 +135,7 @@ void KaduChatStyleEngine::loadStyle(const QString &styleName, const QString &var
 	ChatSyntaxWithHeader.remove("</kadu:header>");
 
 	if (endOfHeader != -1)
-		ChatSyntaxWithoutHeader = chatSyntax.mid(0, beginOfHeader) + chatSyntax.mid(endOfHeader + strlen("</kadu:header>"));
+		ChatSyntaxWithoutHeader = chatSyntax.left(beginOfHeader) + chatSyntax.mid(endOfHeader + strlen("</kadu:header>"));
 	else
 		ChatSyntaxWithoutHeader = ChatSyntaxWithHeader;
 	CurrentStyleName = styleName;
