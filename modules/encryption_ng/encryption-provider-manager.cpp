@@ -49,6 +49,8 @@ void EncryptionProviderManager::registerProvider(EncryptionProvider *provider)
 {
 	Providers.append(provider);
 
+	connect(provider, SIGNAL(keyReceived(Contact,QByteArray)), this, SIGNAL(keyReceived(Contact,QByteArray)));
+
 	foreach (const Chat &chat, ChatManager::instance()->items())
 	{
 		emit canDecryptChanged(chat);
@@ -59,6 +61,8 @@ void EncryptionProviderManager::registerProvider(EncryptionProvider *provider)
 void EncryptionProviderManager::unregisterProvider(EncryptionProvider *provider)
 {
 	Providers.removeAll(provider);
+
+	disconnect(provider, SIGNAL(keyReceived(Contact,QByteArray)), this, SIGNAL(keyReceived(Contact,QByteArray)));
 
 	foreach (const Chat &chat, ChatManager::instance()->items())
 	{

@@ -43,6 +43,7 @@ public:
 signals:
 	void canEncryptChanged(const Chat &chat);
 	void canDecryptChanged(const Chat &chat);
+	void keyReceived(const Contact &contact, const QByteArray &key);
 
 };
 
