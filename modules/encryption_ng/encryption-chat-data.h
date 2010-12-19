@@ -17,47 +17,38 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CENZOR_H
-#define CENZOR_H
+#ifndef ENCRYPTION_CHAT_DATA_H
+#define ENCRYPTION_CHAT_DATA_H
 
 #include <QtCore/QObject>
+#include <QtGui/QAction>
 
-#include "accounts/accounts-aware-object.h"
 #include "chat/chat.h"
 
-#include "configuration/cenzor-configuration.h"
+class Decryptor;
+class Encryptor;
 
-class Cenzor : public QObject, AccountsAwareObject
+class EncryptionChatData : public QObject
 {
 	Q_OBJECT
 
-	static Cenzor * Instance;
-
-	CenzorConfiguration Configuration;
-
-	Cenzor();
-	~Cenzor();
-
-	bool shouldIgnore(const QString &message);
-	bool isExclusion(const QString &word);
+	Encryptor *ChatEncryptor;
+	Decryptor *ChatDecryptor;
 
 private slots:
-	void filterIncomingMessage(Chat chat, Contact sender, QString &message, time_t time, bool &ignore);
-
-protected:
-	virtual void accountRegistered(Account account);
-	virtual void accountUnregistered(Account account);
+	void encryptorDestroyed();
+	void decryptorDestroyed();
 
 public:
-	static void createInstance();
-	static void destroyInstance();
+	EncryptionChatData();
+	virtual ~EncryptionChatData();
 
-	static Cenzor * instance() { return Instance; }
+	void setEncryptor(Encryptor *encryptor);
+	Encryptor * encryptor();
 
-	CenzorConfiguration & configuration() { return Configuration; }
+	void setDecryptor(Decryptor *decryptor);
+	Decryptor * decryptor();
 
 };
 
-extern Cenzor *cenzor;
-
-#endif
+#endif // ENCRYPTION_CHAT_DATA_H

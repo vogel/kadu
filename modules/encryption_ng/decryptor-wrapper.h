@@ -17,47 +17,28 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CENZOR_H
-#define CENZOR_H
+#ifndef DECRYPTOR_WRAPPER_H
+#define DECRYPTOR_WRAPPER_H
 
-#include <QtCore/QObject>
+#include "decryptor.h"
 
-#include "accounts/accounts-aware-object.h"
-#include "chat/chat.h"
-
-#include "configuration/cenzor-configuration.h"
-
-class Cenzor : public QObject, AccountsAwareObject
+class DecryptorWrapper : public Decryptor
 {
 	Q_OBJECT
 
-	static Cenzor * Instance;
-
-	CenzorConfiguration Configuration;
-
-	Cenzor();
-	~Cenzor();
-
-	bool shouldIgnore(const QString &message);
-	bool isExclusion(const QString &word);
+	QList<Decryptor *> Decryptors;
 
 private slots:
-	void filterIncomingMessage(Chat chat, Contact sender, QString &message, time_t time, bool &ignore);
-
-protected:
-	virtual void accountRegistered(Account account);
-	virtual void accountUnregistered(Account account);
+	void decryptorDestroyed(QObject *decryptor);
 
 public:
-	static void createInstance();
-	static void destroyInstance();
+	virtual ~DecryptorWrapper() {}
 
-	static Cenzor * instance() { return Instance; }
+	virtual QByteArray decrypt(const QByteArray &data);
 
-	CenzorConfiguration & configuration() { return Configuration; }
+	void addDecryptor(Decryptor *decryptor);
+	void removeDecryptor(Decryptor *decryptor);
 
 };
 
-extern Cenzor *cenzor;
-
-#endif
+#endif // DECRYPTOR_WRAPPER_H

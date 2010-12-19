@@ -17,32 +17,30 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CENZOR_H
-#define CENZOR_H
+#ifndef ENCRYPTION_MANAGER_H
+#define ENCRYPTION_MANAGER_H
 
 #include <QtCore/QObject>
+#include <QtGui/QAction>
 
 #include "accounts/accounts-aware-object.h"
 #include "chat/chat.h"
 
-#include "configuration/cenzor-configuration.h"
+class ActionDescription;
 
-class Cenzor : public QObject, AccountsAwareObject
+class EncryptionManager : public QObject, AccountsAwareObject
 {
 	Q_OBJECT
+	Q_DISABLE_COPY(EncryptionManager)
 
-	static Cenzor * Instance;
+	static EncryptionManager *Instance;
 
-	CenzorConfiguration Configuration;
-
-	Cenzor();
-	~Cenzor();
-
-	bool shouldIgnore(const QString &message);
-	bool isExclusion(const QString &word);
+	EncryptionManager();
+	virtual ~EncryptionManager();
 
 private slots:
-	void filterIncomingMessage(Chat chat, Contact sender, QString &message, time_t time, bool &ignore);
+	void filterRawOutgoingMessage(Chat chat, QByteArray &message, bool &stop);
+	void filterRawIncomingMessage(Chat chat, Contact sender, QByteArray &message, bool &ignore);
 
 protected:
 	virtual void accountRegistered(Account account);
@@ -52,12 +50,10 @@ public:
 	static void createInstance();
 	static void destroyInstance();
 
-	static Cenzor * instance() { return Instance; }
+	static EncryptionManager * instance() { return Instance; }
 
-	CenzorConfiguration & configuration() { return Configuration; }
+	void setEnableEncryption(const Chat &chat, bool enable);
 
 };
 
-extern Cenzor *cenzor;
-
-#endif
+#endif // ENCRYPTION_MANAGER_H

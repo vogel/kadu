@@ -17,47 +17,31 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CENZOR_H
-#define CENZOR_H
+#ifndef ENCRYPTION_NG_SIMLITE_ENCRYPTOR_H
+#define ENCRYPTION_NG_SIMLITE_ENCRYPTOR_H
 
 #include <QtCore/QObject>
+#include <QtCrypto/QtCrypto>
 
-#include "accounts/accounts-aware-object.h"
-#include "chat/chat.h"
+#include "modules/encryption_ng/encryptor.h"
 
-#include "configuration/cenzor-configuration.h"
+class Key;
 
-class Cenzor : public QObject, AccountsAwareObject
+class EncryptioNgSimliteEncryptor : public Encryptor
 {
 	Q_OBJECT
 
-	static Cenzor * Instance;
+	QCA::PublicKey EncodingKey;
+	bool Valid;
 
-	CenzorConfiguration Configuration;
-
-	Cenzor();
-	~Cenzor();
-
-	bool shouldIgnore(const QString &message);
-	bool isExclusion(const QString &word);
-
-private slots:
-	void filterIncomingMessage(Chat chat, Contact sender, QString &message, time_t time, bool &ignore);
-
-protected:
-	virtual void accountRegistered(Account account);
-	virtual void accountUnregistered(Account account);
+	QCA::PublicKey getPublicKey(const Key &key);
 
 public:
-	static void createInstance();
-	static void destroyInstance();
+	EncryptioNgSimliteEncryptor(const Key &key);
+	virtual ~EncryptioNgSimliteEncryptor();
 
-	static Cenzor * instance() { return Instance; }
-
-	CenzorConfiguration & configuration() { return Configuration; }
+	virtual QByteArray encrypt(const QByteArray &data);
 
 };
 
-extern Cenzor *cenzor;
-
-#endif
+#endif // ENCRYPTION_NG_SIMLITE_ENCRYPTOR_H

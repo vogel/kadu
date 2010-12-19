@@ -20,7 +20,7 @@ class Echo : public QObject, AccountsAwareObject
 		virtual void accountUnregistered(Account account);
 
 	public slots:
-		void filterIncomingMessage(Chat chat, Contact sender, const QString &message, time_t time, bool &ignore);
+		void filterIncomingMessage(Chat chat, Contact sender, QString &message, time_t time, bool &ignore);
 };
 
 extern Echo* echo;

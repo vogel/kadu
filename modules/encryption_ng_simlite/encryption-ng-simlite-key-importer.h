@@ -17,32 +17,26 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CENZOR_H
-#define CENZOR_H
+#ifndef ENCRYPTION_NG_SIMLITE_KEY_IMPORTER_H
+#define ENCRYPTION_NG_SIMLITE_KEY_IMPORTER_H
 
 #include <QtCore/QObject>
 
 #include "accounts/accounts-aware-object.h"
-#include "chat/chat.h"
 
-#include "configuration/cenzor-configuration.h"
+class QFileInfo;
 
-class Cenzor : public QObject, AccountsAwareObject
+class EncryptioNgSimliteKeyImporter : public QObject, AccountsAwareObject
 {
 	Q_OBJECT
+	Q_DISABLE_COPY(EncryptioNgSimliteKeyImporter)
 
-	static Cenzor * Instance;
+	static EncryptioNgSimliteKeyImporter *Instance;
 
-	CenzorConfiguration Configuration;
+	EncryptioNgSimliteKeyImporter();
 
-	Cenzor();
-	~Cenzor();
-
-	bool shouldIgnore(const QString &message);
-	bool isExclusion(const QString &word);
-
-private slots:
-	void filterIncomingMessage(Chat chat, Contact sender, QString &message, time_t time, bool &ignore);
+	void importKey(const Account &account, const QFileInfo &fileInfo);
+	void importKeys(const Account &account);
 
 protected:
 	virtual void accountRegistered(Account account);
@@ -52,12 +46,6 @@ public:
 	static void createInstance();
 	static void destroyInstance();
 
-	static Cenzor * instance() { return Instance; }
-
-	CenzorConfiguration & configuration() { return Configuration; }
-
 };
 
-extern Cenzor *cenzor;
-
-#endif
+#endif // ENCRYPTION_NG_SIMLITE_KEY_IMPORTER_H

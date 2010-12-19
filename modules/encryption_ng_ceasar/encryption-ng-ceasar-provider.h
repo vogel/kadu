@@ -17,47 +17,35 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CENZOR_H
-#define CENZOR_H
+#ifndef ENCRYPTION_NG_CEASAR_PROVIDER_H
+#define ENCRYPTION_NG_CEASAR_PROVIDER_H
 
-#include <QtCore/QObject>
+#include "modules/encryption_ng/encryption-provider.h"
 
-#include "accounts/accounts-aware-object.h"
-#include "chat/chat.h"
-
-#include "configuration/cenzor-configuration.h"
-
-class Cenzor : public QObject, AccountsAwareObject
+class EncryptionNgCeasarProvider : public EncryptionProvider
 {
 	Q_OBJECT
 
-	static Cenzor * Instance;
+	static EncryptionNgCeasarProvider *Instance;
 
-	CenzorConfiguration Configuration;
+	Decryptor *CeasarDecryptor;
+	Encryptor *CeasarEncryptor;
 
-	Cenzor();
-	~Cenzor();
-
-	bool shouldIgnore(const QString &message);
-	bool isExclusion(const QString &word);
-
-private slots:
-	void filterIncomingMessage(Chat chat, Contact sender, QString &message, time_t time, bool &ignore);
-
-protected:
-	virtual void accountRegistered(Account account);
-	virtual void accountUnregistered(Account account);
+	EncryptionNgCeasarProvider();
+	virtual ~EncryptionNgCeasarProvider();
 
 public:
 	static void createInstance();
 	static void destroyInstance();
 
-	static Cenzor * instance() { return Instance; }
+	static EncryptionNgCeasarProvider * instance() { return Instance; }
 
-	CenzorConfiguration & configuration() { return Configuration; }
+	virtual bool canDecrypt(const Chat &chat);
+	virtual bool canEncrypt(const Chat &chat);
+
+	virtual Decryptor * decryptor(const Chat &chat);
+	virtual Encryptor * encryptor(const Chat &chat);
 
 };
 
-extern Cenzor *cenzor;
-
-#endif
+#endif // ENCRYPTION_NG_CEASAR_PROVIDER_H

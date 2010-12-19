@@ -17,47 +17,34 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CENZOR_H
-#define CENZOR_H
+#ifndef ENCRYPTION_PROVIDER_H
+#define ENCRYPTION_PROVIDER_H
 
 #include <QtCore/QObject>
 
-#include "accounts/accounts-aware-object.h"
 #include "chat/chat.h"
 
-#include "configuration/cenzor-configuration.h"
+class Decryptor;
+class Encryptor;
 
-class Cenzor : public QObject, AccountsAwareObject
+class EncryptionProvider : public QObject
 {
 	Q_OBJECT
 
-	static Cenzor * Instance;
-
-	CenzorConfiguration Configuration;
-
-	Cenzor();
-	~Cenzor();
-
-	bool shouldIgnore(const QString &message);
-	bool isExclusion(const QString &word);
-
-private slots:
-	void filterIncomingMessage(Chat chat, Contact sender, QString &message, time_t time, bool &ignore);
-
-protected:
-	virtual void accountRegistered(Account account);
-	virtual void accountUnregistered(Account account);
-
 public:
-	static void createInstance();
-	static void destroyInstance();
+	virtual ~EncryptionProvider() {}
 
-	static Cenzor * instance() { return Instance; }
+	virtual bool canEncrypt(const Chat &chat) = 0;
+	virtual bool canDecrypt(const Chat &chat) = 0;
 
-	CenzorConfiguration & configuration() { return Configuration; }
+	virtual Encryptor * encryptor(const Chat &chat) = 0;
+	virtual Decryptor * decryptor(const Chat &chat) = 0;
+
+signals:
+	void canEncryptChanged(const Chat &chat);
+	void canDecryptChanged(const Chat &chat);
+	void keyReceived(const Contact &contact, const QString &keyType, const QByteArray &key);
 
 };
 
-extern Cenzor *cenzor;
-
-#endif
+#endif // ENCRYPTION_PROVIDER_H

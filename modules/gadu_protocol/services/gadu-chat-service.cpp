@@ -83,7 +83,9 @@ bool GaduChatService::sendMessage(Chat chat, FormattedMessage &message, bool sil
 
 	QByteArray data = plain.toUtf8();
 
-	emit filterOutgoingMessage(chat, data, stop);
+	emit filterRawOutgoingMessage(chat, data, stop);
+	plain = QString::fromUtf8(data);
+	emit filterOutgoingMessage(chat, plain, stop);
 
 	if (stop)
 	{
@@ -203,21 +205,13 @@ ContactSet GaduChatService::getRecipients(gg_event *e)
 	return recipients;
 }
 
-QString GaduChatService::getContent(gg_event *e)
+QByteArray GaduChatService::getContent(gg_event *e)
 {
-	QString content = QString::fromUtf8((const char *)e->event.msg.message);
-
-	content.replace(QLatin1String("\r\n"), QString(QChar::LineSeparator));
-	content.replace(QLatin1String("\n"),   QString(QChar::LineSeparator));
-	content.replace(QLatin1String("\r"),   QString(QChar::LineSeparator));
-
-	return content;
+	return QByteArray((const char *)e->event.msg.message);
 }
 
-bool GaduChatService::ignoreRichText(gg_event *e, Contact sender)
+bool GaduChatService::ignoreRichText(Contact sender)
 {
-	Q_UNUSED(e)
-
 	bool ignore = sender.ownerBuddy().isAnonymous() &&
 		config_file.readBoolEntry("Chat","IgnoreAnonymousRichtext");
 
@@ -229,10 +223,8 @@ bool GaduChatService::ignoreRichText(gg_event *e, Contact sender)
 	return ignore;
 }
 
-bool GaduChatService::ignoreImages(gg_event *e, Contact sender)
+bool GaduChatService::ignoreImages(Contact sender)
 {
-	Q_UNUSED(e)
-
 	GaduAccountDetails *gaduAccountDetails = dynamic_cast<GaduAccountDetails *>(Protocol->account().details());
 
 	return sender.ownerBuddy().isAnonymous() ||
@@ -245,20 +237,13 @@ bool GaduChatService::ignoreImages(gg_event *e, Contact sender)
 		);
 }
 
-FormattedMessage GaduChatService::createFormattedMessage(gg_event *e, Chat chat, Contact sender)
+FormattedMessage GaduChatService::createFormattedMessage(struct gg_event *e, QString &content, Contact sender)
 {
-	QString content = getContent(e);
-
-	bool ignore = false;
-	emit filterRawIncomingMessage(chat, sender, content, ignore); //TODO: 0.6.6 + xhtml?
-	if (ignore)
-		return FormattedMessage();
-
-	if (ignoreRichText(e, sender))
+	if (ignoreRichText(sender))
 		return GaduFormatter::createMessage(Protocol->account(), sender.id().toUInt(), content, 0, 0, false);
 	else
 		return GaduFormatter::createMessage(Protocol->account(), sender.id().toUInt(), content,
-				(unsigned char *)e->event.msg.formats, e->event.msg.formats_length, !ignoreImages(e, sender));
+				(unsigned char *)e->event.msg.formats, e->event.msg.formats_length, !ignoreImages(sender));
 }
 
 void GaduChatService::handleEventMsg(struct gg_event *e)
@@ -284,17 +269,28 @@ void GaduChatService::handleEventMsg(struct gg_event *e)
 	if (chat.isIgnoreAllMessages())
 		return;
 
-	FormattedMessage message = createFormattedMessage(e, chat, sender);
+	QByteArray content = getContent(e);
+	QDateTime time = QDateTime::fromTime_t(e->event.msg.time);
+
+	bool ignore = false;
+	emit filterRawIncomingMessage(chat, sender, content, ignore);
+
+	QString stringContent = QString::fromUtf8(content);
+	QString separator(QChar::LineSeparator);
+
+	stringContent.replace("\r\n", separator);
+	stringContent.replace("\n",   separator);
+	stringContent.replace("\r",   separator);
+
+	FormattedMessage message = createFormattedMessage(e, stringContent, sender);
 	if (message.isEmpty())
 		return;
 
 	kdebugmf(KDEBUG_INFO, "Got message from %u saying \"%s\"\n",
 			sender.id().toUInt(), qPrintable(message.toPlain()));
 
-	QDateTime time = QDateTime::fromTime_t(e->event.msg.time);
-
-	bool ignore = false;
-	emit filterIncomingMessage(chat, sender, message.toPlain(), time.toTime_t(), ignore);
+	QString messageString = message.toPlain();
+	emit filterIncomingMessage(chat, sender, messageString, time.toTime_t(), ignore);
 	if (ignore)
 		return;
 

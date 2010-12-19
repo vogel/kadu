@@ -45,10 +45,10 @@ class GaduChatService : public ChatService
 	Contact getSender(struct gg_event *e);
 	bool ignoreSender(gg_event *e, Buddy sender);
 	ContactSet getRecipients(struct gg_event *e);
-	QString getContent(struct gg_event *e);
-	bool ignoreRichText(struct gg_event *e, Contact sender);
-	bool ignoreImages(struct gg_event *e, Contact sender);
-	FormattedMessage createFormattedMessage(struct gg_event *e, Chat chat, Contact sender);
+	QByteArray getContent(struct gg_event *e);
+	bool ignoreRichText(Contact sender);
+	bool ignoreImages(Contact sender);
+	FormattedMessage createFormattedMessage(struct gg_event *e, QString &content, Contact sender);
 
 	void removeTimeoutUndeliveredMessages();
 
@@ -60,20 +60,6 @@ public:
 
 public slots:
 	virtual bool sendMessage(Chat chat, FormattedMessage &message, bool silent = false);
-
-signals:
-	/**
-		Sygna� daje mozliwo�� operowania na wiadomo�ci
-		kt�ra przysz�a z serwera jeszcze w jej oryginalnej
-		formie przed konwersj� na unicode i innymi zabiegami.
-		Tre�� wiadomo�ci mo�na zmieni� grzebi�c w buforze msg,
-		ale uwaga: mo�na zepsu� formatowanie tekstu zapisane
-		w formats. Oczywi�cie je r�wnie� mo�na zmienia� wed�ug
-		opisu protoko�u GG ;)
-		Mo�na te� przerwa� dalsz� obr�bk� wiadomo�ci ustawiaj�c
-		stop na true.
-	**/
-	void filterRawIncomingMessage(Chat chat, Contact sender, QString &msg, bool &ignore);
 
 };
 
