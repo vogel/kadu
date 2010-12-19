@@ -19,7 +19,7 @@ set (CONFIGURATION_FILES
 
 if (MINGW)
 	if (NOT MINGW_QCA_DIR)
-		message (SEND_ERROR " Pass path to qca -DMINGW_QCA_DIR=path")
+		message (SEND_ERROR " Pass path to libqca2 -DMINGW_QCA_DIR=path")
 		set (MINGW_LIBSNDFILE_DIR "")
 	else (NOT MINGW_QCA_DIR)
 		set (QCA2_INCLUDE_DIRS ${MINGW_QCA_DIR}/include/QtCrypto)
