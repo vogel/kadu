@@ -19,17 +19,18 @@
 
 #include <QtCore/QtGlobal>
 
-#include "key-importer.h"
+#include "encryption-ng-simlite-key-importer.h"
 
 extern "C" int encryption_ng_simlite_init(bool firstLoad)
 {
-	Q_UNUSED(firstLoad)
-
-	EncryptioNgSimlite::importKeys();
+	if (firstLoad)
+		EncryptioNgSimliteKeyImporter::createInstance();
 
 	return 0;
 }
 
 extern "C" void encryption_ng_simlite_close()
 {
+	// it can work without createInstance too, so don't care about firstLoad here
+	EncryptioNgSimliteKeyImporter::destroyInstance();
 }

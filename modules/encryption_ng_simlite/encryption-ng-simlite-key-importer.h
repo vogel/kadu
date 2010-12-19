@@ -17,15 +17,35 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef KEY_IMPORTER_H
-#define KEY_IMPORTER_H
+#ifndef ENCRYPTION_NG_SIMLITE_KEY_IMPORTER_H
+#define ENCRYPTION_NG_SIMLITE_KEY_IMPORTER_H
+
+#include <QtCore/QObject>
+
+#include "accounts/accounts-aware-object.h"
 
 class QFileInfo;
 
-namespace EncryptioNgSimlite
+class EncryptioNgSimliteKeyImporter : public QObject, AccountsAwareObject
 {
-	void importKey(const QFileInfo &fileInfo);
-	void importKeys();
-}
+	Q_OBJECT
+	Q_DISABLE_COPY(EncryptioNgSimliteKeyImporter)
 
-#endif // KEY_IMPORTER_H
+	static EncryptioNgSimliteKeyImporter *Instance;
+
+	EncryptioNgSimliteKeyImporter();
+
+	void importKey(const Account &account, const QFileInfo &fileInfo);
+	void importKeys(const Account &account);
+
+protected:
+	virtual void accountRegistered(Account account);
+	virtual void accountUnregistered(Account account);
+
+public:
+	static void createInstance();
+	static void destroyInstance();
+
+};
+
+#endif // ENCRYPTION_NG_SIMLITE_KEY_IMPORTER_H

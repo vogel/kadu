@@ -120,7 +120,7 @@ void KeyShared::store()
 
 bool KeyShared::shouldStore()
 {
-	return UuidStorableObject::shouldStore() && !Key.isEmpty();
+	return UuidStorableObject::shouldStore() && !Key.isEmpty() && KeyContact;
 }
 
 void KeyShared::aboutToBeRemoved()
