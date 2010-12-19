@@ -1,10 +1,14 @@
 set (SOURCES
+	encryption-ng-simlite-encryptor.cpp
 	encryption-ng-simlite-key-importer.cpp
 	encryption-ng-simlite-module.cpp
 	encryption-ng-simlite-provider.cpp
+
+	pkcs1_certificate.cpp
 )
 
 set (MOC_SOURCES
+	encryption-ng-simlite-encryptor.h
 	encryption-ng-simlite-key-importer.h
 	encryption-ng-simlite-provider.h
 )

@@ -23,6 +23,8 @@
 
 #include "modules/encryption_ng/keys/keys-manager.h"
 
+#include "encryption-ng-simlite-encryptor.h"
+
 #include "encryption-ng-simlite-provider.h"
 
 #define RSA_PUBLIC_KEY_BEGIN "-----BEGIN RSA PUBLIC KEY-----"
@@ -111,6 +113,12 @@ Decryptor * EncryptioNgSimliteProvider::decryptor(const Chat &chat)
 
 Encryptor * EncryptioNgSimliteProvider::encryptor(const Chat &chat)
 {
-	Q_UNUSED(chat)
-	return 0;
+	if (1 != chat.contacts().size())
+		return 0;
+
+	Key key = KeysManager::instance()->byContactAndType(*chat.contacts().begin(), "simlite", ActionReturnNull);
+	if (!key)
+		return 0;
+
+	return new EncryptioNgSimliteEncryptor(key);
 }
