@@ -17,12 +17,17 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "buddies/buddy-manager.h"
+#include "chat/chat-manager.h"
+#include "gui/windows/message-dialog.h"
+
+#include "keys/keys-manager.h"
+
 #include "decryptor-wrapper.h"
 #include "encryption-provider.h"
 #include "encryptor.h"
 
 #include "encryption-provider-manager.h"
-#include <chat/chat-manager.h>
 
 EncryptionProviderManager * EncryptionProviderManager::Instance = 0;
 
@@ -49,7 +54,7 @@ void EncryptionProviderManager::registerProvider(EncryptionProvider *provider)
 {
 	Providers.append(provider);
 
-	connect(provider, SIGNAL(keyReceived(Contact,QByteArray)), this, SIGNAL(keyReceived(Contact,QByteArray)));
+	connect(provider, SIGNAL(keyReceived(Contact,QString,QByteArray)), this, SLOT(keyReceived(Contact,QString,QByteArray)));
 
 	foreach (const Chat &chat, ChatManager::instance()->items())
 	{
@@ -62,7 +67,7 @@ void EncryptionProviderManager::unregisterProvider(EncryptionProvider *provider)
 {
 	Providers.removeAll(provider);
 
-	disconnect(provider, SIGNAL(keyReceived(Contact,QByteArray)), this, SIGNAL(keyReceived(Contact,QByteArray)));
+	disconnect(provider, SIGNAL(keyReceived(Contact,QString,QByteArray)), this, SLOT(keyReceived(Contact,QString,QByteArray)));
 
 	foreach (const Chat &chat, ChatManager::instance()->items())
 	{
@@ -125,4 +130,21 @@ Encryptor * EncryptionProviderManager::encryptor(const Chat &chat)
 	}
 
 	return 0;
+}
+
+// I know it is not best place for invoking gui, pleace change it in future
+void EncryptionProviderManager::keyReceived(const Contact &contact, const QString &keyType, const QByteArray &keyData)
+{
+	Buddy buddy = BuddyManager::instance()->byContact(contact, ActionReturnNull);
+	if (!buddy)
+		return; // just ignore anonymous contacts
+
+	QString question = tr("Buddy %1 is sending you his public key. Do you want to save it?").arg(buddy.display());
+	bool answer = MessageDialog::ask("dialog-question", tr("Encryption"), question);
+
+	if (answer)
+	{
+		Key key = KeysManager::instance()->byContactAndType(contact, keyType, ActionCreateAndAdd);
+		key.setKey(keyData);
+	}
 }

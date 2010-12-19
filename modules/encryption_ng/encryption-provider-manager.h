@@ -39,6 +39,9 @@ class EncryptionProviderManager : public QObject
 	EncryptionProviderManager();
 	~EncryptionProviderManager();
 
+private slots:
+	void keyReceived(const Contact &contact, const QString &keyType, const QByteArray &keyData);
+
 public:
 	static void createInstance();
 	static void destroyInstance();
@@ -58,7 +61,6 @@ public:
 signals:
 	void canEncryptChanged(const Chat &chat);
 	void canDecryptChanged(const Chat &chat);
-	void keyReceived(const Contact &contact, const QByteArray &key);
 
 };
 
