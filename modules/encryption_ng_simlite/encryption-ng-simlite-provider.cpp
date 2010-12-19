@@ -17,8 +17,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "contacts/contact-set.h"
 #include "protocols/services/chat-service.h"
 #include "protocols/protocol.h"
+
+#include "modules/encryption_ng/keys/keys-manager.h"
 
 #include "encryption-ng-simlite-provider.h"
 
@@ -93,8 +96,11 @@ bool EncryptioNgSimliteProvider::canDecrypt(const Chat &chat)
 
 bool EncryptioNgSimliteProvider::canEncrypt(const Chat &chat)
 {
-	Q_UNUSED(chat)
-	return false;
+	if (1 != chat.contacts().size())
+		return false;
+
+	Key key = KeysManager::instance()->byContactAndType(*chat.contacts().begin(), "simlite", ActionReturnNull);
+	return !key.isNull();
 }
 
 Decryptor * EncryptioNgSimliteProvider::decryptor(const Chat &chat)
