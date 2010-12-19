@@ -89,5 +89,5 @@ void EncryptionActions::enableEncryptionActionActivated(QAction *sender, bool to
 	if (!action->chat())
 		return;
 
-	EncryptionManager::instance()->setEnableEncryption(action->chat(), toggled);
+	EncryptionManager::instance()->setEncryptionEnabled(action->chat(), toggled);
 }

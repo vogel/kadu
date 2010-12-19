@@ -80,7 +80,7 @@ void EncryptionManager::accountUnregistered(Account account)
 	}
 }
 
-void EncryptionManager::setEnableEncryption(const Chat &chat, bool enable)
+void EncryptionManager::setEncryptionEnabled(const Chat &chat, bool enable)
 {
 	// TODO: find out life-cycle of encryptor-decryptor classes
 	EncryptionChatData *encryptionChatData = chat.data()->moduleData<EncryptionChatData>("encryption-ng", true);
