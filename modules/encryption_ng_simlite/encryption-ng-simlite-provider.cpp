@@ -17,7 +17,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "protocols/services/chat-service.h"
+#include "protocols/protocol.h"
+
 #include "encryption-ng-simlite-provider.h"
+
+#define RSA_PUBLIC_KEY_BEGIN "-----BEGIN RSA PUBLIC KEY-----"
 
 EncryptioNgSimliteProvider * EncryptioNgSimliteProvider::Instance = 0;
 
@@ -44,12 +49,40 @@ EncryptioNgSimliteProvider::~EncryptioNgSimliteProvider()
 
 void EncryptioNgSimliteProvider::accountRegistered(Account account)
 {
-	Q_UNUSED(account)
+	Protocol *protocol = account.protocolHandler();
+	if (!protocol)
+		return;
+
+	ChatService *chatService = protocol->chatService();
+	if (!chatService)
+		return;
+
+	connect(chatService, SIGNAL(filterRawIncomingMessage(Chat,Contact,QByteArray&,bool&)),
+			this, SLOT(filterRawIncomingMessage(Chat,Contact,QByteArray&,bool&)));
 }
 
 void EncryptioNgSimliteProvider::accountUnregistered(Account account)
 {
-	Q_UNUSED(account)
+	Protocol *protocol = account.protocolHandler();
+	if (!protocol)
+		return;
+
+	ChatService *chatService = protocol->chatService();
+	if (!chatService)
+		return;
+
+	connect(chatService, SIGNAL(filterRawIncomingMessage(Chat,Contact,QByteArray&,bool&)),
+			this, SLOT(filterRawIncomingMessage(Chat,Contact,QByteArray&,bool&)));
+}
+
+void EncryptioNgSimliteProvider::filterRawIncomingMessage(Chat chat, Contact sender, QByteArray &message, bool &ignore)
+{
+	Q_UNUSED(chat)
+	if (!message.startsWith(RSA_PUBLIC_KEY_BEGIN))
+		return;
+
+	emit keyReceived(sender, "simlite", message);
+	ignore = true;
 }
 
 bool EncryptioNgSimliteProvider::canDecrypt(const Chat &chat)

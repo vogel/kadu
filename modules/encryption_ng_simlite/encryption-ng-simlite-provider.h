@@ -36,6 +36,9 @@ class EncryptioNgSimliteProvider : public EncryptionProvider, AccountsAwareObjec
 	EncryptioNgSimliteProvider();
 	virtual ~EncryptioNgSimliteProvider();
 
+private slots:
+	void filterRawIncomingMessage(Chat chat, Contact sender, QByteArray &message, bool &ignore);
+
 protected:
 	virtual void accountRegistered(Account account);
 	virtual void accountUnregistered(Account account);
