@@ -207,15 +207,7 @@ ContactSet GaduChatService::getRecipients(gg_event *e)
 
 QByteArray GaduChatService::getContent(gg_event *e)
 {
-	QByteArray content((const char *)e->event.msg.message);
-
-	QString separator(QChar::LineSeparator);
-
-	content.replace("\r\n", separator.toUtf8());
-	content.replace("\n",   separator.toUtf8());
-	content.replace("\r",   separator.toUtf8());
-
-	return content;
+	return QByteArray((const char *)e->event.msg.message);
 }
 
 bool GaduChatService::ignoreRichText(Contact sender)
@@ -245,13 +237,12 @@ bool GaduChatService::ignoreImages(Contact sender)
 		);
 }
 
-FormattedMessage GaduChatService::createFormattedMessage(struct gg_event *e, QByteArray &content, Contact sender)
+FormattedMessage GaduChatService::createFormattedMessage(struct gg_event *e, QString &content, Contact sender)
 {
-	QString stringContent = QString::fromUtf8(content);
 	if (ignoreRichText(sender))
-		return GaduFormatter::createMessage(Protocol->account(), sender.id().toUInt(), stringContent, 0, 0, false);
+		return GaduFormatter::createMessage(Protocol->account(), sender.id().toUInt(), content, 0, 0, false);
 	else
-		return GaduFormatter::createMessage(Protocol->account(), sender.id().toUInt(), stringContent,
+		return GaduFormatter::createMessage(Protocol->account(), sender.id().toUInt(), content,
 				(unsigned char *)e->event.msg.formats, e->event.msg.formats_length, !ignoreImages(sender));
 }
 
@@ -284,7 +275,14 @@ void GaduChatService::handleEventMsg(struct gg_event *e)
 	bool ignore = false;
 	emit filterRawIncomingMessage(chat, sender, content, ignore);
 
-	FormattedMessage message = createFormattedMessage(e, content, sender);
+	QString stringContent = QString::fromUtf8(content);
+	QString separator(QChar::LineSeparator);
+
+	stringContent.replace("\r\n", separator);
+	stringContent.replace("\n",   separator);
+	stringContent.replace("\r",   separator);
+
+	FormattedMessage message = createFormattedMessage(e, stringContent, sender);
 	if (message.isEmpty())
 		return;
 

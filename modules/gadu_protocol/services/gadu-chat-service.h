@@ -48,7 +48,7 @@ class GaduChatService : public ChatService
 	QByteArray getContent(struct gg_event *e);
 	bool ignoreRichText(Contact sender);
 	bool ignoreImages(Contact sender);
-	FormattedMessage createFormattedMessage(struct gg_event *e, QByteArray &content, Contact sender);
+	FormattedMessage createFormattedMessage(struct gg_event *e, QString &content, Contact sender);
 
 	void removeTimeoutUndeliveredMessages();
 

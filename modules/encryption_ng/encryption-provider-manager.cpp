@@ -139,7 +139,7 @@ void EncryptionProviderManager::keyReceived(const Contact &contact, const QStrin
 	if (!buddy)
 		return; // just ignore anonymous contacts
 
-	QString question = tr("Buddy %1 is sending you his public key. Do you want to save it?").arg(buddy.display());
+	QString question = tr("Buddy %1 is sending you his public key.\nDo you want to save it?").arg(buddy.display());
 	bool answer = MessageDialog::ask("dialog-question", tr("Encryption"), question);
 
 	if (answer)
