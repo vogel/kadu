@@ -19,18 +19,26 @@
 
 #include <QtCore/QtGlobal>
 
+#include "modules/encryption_ng/encryption-provider-manager.h"
+
 #include "encryption-ng-simlite-key-importer.h"
+#include "encryption-ng-simlite-provider.h"
 
 extern "C" int encryption_ng_simlite_init(bool firstLoad)
 {
 	if (firstLoad)
 		EncryptioNgSimliteKeyImporter::createInstance();
 
+	EncryptioNgSimliteProvider::createInstance();
+	EncryptionProviderManager::instance()->registerProvider(EncryptioNgSimliteProvider::instance());
+
 	return 0;
 }
 
 extern "C" void encryption_ng_simlite_close()
 {
+	EncryptionProviderManager::instance()->unregisterProvider(EncryptioNgSimliteProvider::instance());
+
 	// it can work without createInstance too, so don't care about firstLoad here
 	EncryptioNgSimliteKeyImporter::destroyInstance();
 }

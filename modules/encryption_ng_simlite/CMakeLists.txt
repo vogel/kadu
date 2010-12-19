@@ -1,10 +1,12 @@
 set (SOURCES
 	encryption-ng-simlite-key-importer.cpp
 	encryption-ng-simlite-module.cpp
+	encryption-ng-simlite-provider.cpp
 )
 
 set (MOC_SOURCES
 	encryption-ng-simlite-key-importer.h
+	encryption-ng-simlite-provider.h
 )
 
 set (TRANSLATION_SOURCES
