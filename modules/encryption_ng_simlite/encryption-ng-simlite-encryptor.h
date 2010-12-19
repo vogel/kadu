@@ -21,7 +21,7 @@
 #define ENCRYPTION_NG_SIMLITE_ENCRYPTOR_H
 
 #include <QtCore/QObject>
-#include <QtCrypto/QtCrypto>
+#include <QtCrypto>
 
 #include "modules/encryption_ng/encryptor.h"
 

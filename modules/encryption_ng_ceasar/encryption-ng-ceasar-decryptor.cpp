@@ -18,7 +18,7 @@
  */
 
 #include <QtCore/QByteArray>
-#include <QtCrypto/QtCrypto>
+#include <QtCrypto>
 
 #include "encryption-ng-ceasar-marker.h"
 
