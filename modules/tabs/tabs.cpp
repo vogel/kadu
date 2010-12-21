@@ -263,7 +263,7 @@ void TabsManager::onTitleChanged(ChatWidget *chatChanged, const QString &newTitl
 	if (TabDialog->currentIndex() == chatIndex)
 	{
 		TabDialog->setWindowTitle(newTitle);
-		TabDialog->setWindowIcon(chatChanged->chat().icon());
+		TabDialog->setWindowIcon(chatChanged->icon());
 	}
 
 	kdebugf2();
@@ -279,7 +279,7 @@ void TabsManager::onTabChange(int index)
 	refreshTab(index, chat);
 
 	TabDialog->setWindowTitle(chat->title());
-	TabDialog->setWindowIcon(chat->chat().icon());
+	TabDialog->setWindowIcon(chat->icon());
 
 	emit chatWidgetActivated(chat);
 	// ustawiamy focus na pole edycji chata
@@ -378,7 +378,7 @@ void TabsManager::insertTab(ChatWidget* chat)
 	}
 
 	// Ustawiam tytul karty w zaleznosci od tego czy mamy do czynienia z rozmowa czy z konferencja
-	TabDialog->insertTab(TargetTabs, chat, chat->chat().icon(), formatTabName(chat));
+	TabDialog->insertTab(TargetTabs, chat, chat->icon(), formatTabName(chat));
 
 	TabDialog->setTabToolTip(TargetTabs, chat->title());
 
@@ -443,7 +443,7 @@ void TabsManager::onTimer()
 			if (msg)
 				TabDialog->setTabIcon(i, IconsManager::instance()->iconByPath("protocols/common/message"));
 			else
-				TabDialog->setTabIcon(i, chat->chat().icon());
+				TabDialog->setTabIcon(i, chat->icon());
 
 			if (tabsActive)
 			{
@@ -453,7 +453,7 @@ void TabsManager::onTimer()
 					chat->markAllMessagesRead();
 					// a tutaj przywroc tytul�
 					TabDialog->setWindowTitle(chat->title());
-					TabDialog->setTabIcon(i, chat->chat().icon());
+					TabDialog->setTabIcon(i, chat->icon());
 					// wywal go z listy chatow z nowymi wiadomosciami
 					ChatsWithNewMessages.removeOne(chat);
 				}
@@ -741,7 +741,7 @@ void TabsManager::repaintTabs()
 	}
 
 	//uaktualnienie ikonki w oknie tabs
-	TabDialog->setWindowIcon(dynamic_cast<ChatWidget *>(TabDialog->currentWidget())->chat().icon());
+	TabDialog->setWindowIcon(dynamic_cast<ChatWidget *>(TabDialog->currentWidget())->icon());
 }
 
 QString TabsManager::formatTabName(ChatWidget * chatWidget)
@@ -767,7 +767,7 @@ void TabsManager::refreshTab(int tabIndex, ChatWidget *chatWidget)
 	TabDialog->setTabToolTip(tabIndex, chatWidget->title());
 
 	//uaktualnienie ikonki
-	TabDialog->setTabIcon(tabIndex, chatWidget->chat().icon());
+	TabDialog->setTabIcon(tabIndex, chatWidget->icon());
 
 	// uaktualnienie nazwy
 	TabDialog->setTabText(tabIndex, formatTabName(chatWidget));

@@ -97,15 +97,6 @@ public:
 	 */
 	KaduSharedBase_Property(QString, type, Type);
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Icon of chat.
-	 *
-	 * Chat icon is used to display in window titles. For 'simple' chats it is icon of status
-	 * of peer, for 'conference' chats it is generic icon.
-	 */
-	KaduSharedBase_Property(QIcon, icon, Icon);
-
 	KaduSharedBase_PropertyBool(IgnoreAllMessages);
 
 };

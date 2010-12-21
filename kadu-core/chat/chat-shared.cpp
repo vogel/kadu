@@ -23,15 +23,12 @@
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-set.h"
 #include "chat/type/chat-type.h"
-#include "chat/type/chat-type-manager.h"
 #include "chat/chat-details.h"
 #include "chat/chat-manager.h"
 #include "configuration/configuration-file.h"
-#include "contacts/model/contact-data-extractor.h"
 #include "contacts/contact-set.h"
 #include "parser/parser.h"
 #include "debug.h"
-#include "icons-manager.h"
 
 #include "chat-shared.h"
 
@@ -285,22 +282,4 @@ QString ChatShared::name()
 	ensureLoaded();
 
 	return details() ? details()->name() : QString();
-}
-
-QIcon ChatShared::icon()
-{
-	ensureLoaded();
-
-	int contactsCount = contacts().count();
-	if (contactsCount > 1)
-		return ChatTypeManager::instance()->chatType("Conference")->icon();
-
-	if (contactsCount > 0)
-	{
-		Contact contact = contacts().toContact();
-		if (contact)
-			return ContactDataExtractor::data(contact, Qt::DecorationRole, false).value<QIcon>();
-	}
-
-	return IconsManager::instance()->iconByPath("internet-group-chat");
 }

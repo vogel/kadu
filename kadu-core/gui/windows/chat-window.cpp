@@ -207,7 +207,7 @@ void ChatWindow::closeEvent(QCloseEvent *e)
 
 void ChatWindow::updateTitle()
 {
-	setWindowIcon(currentChatWidget->chat().icon());
+	setWindowIcon(currentChatWidget->icon());
 	setWindowTitle(currentChatWidget->title());
 
 	if (showNewMessagesNum && currentChatWidget->newMessagesCount()) // if we don't have new messages or don't want them to be shown

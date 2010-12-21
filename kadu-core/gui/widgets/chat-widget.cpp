@@ -26,6 +26,7 @@
  */
 
 #include <QtCore/QFileInfo>
+#include <QtGui/QIcon>
 #include <QtGui/QKeyEvent>
 #include <QtGui/QPushButton>
 #include <QtGui/QShortcut>
@@ -41,9 +42,11 @@
 #include "chat/chat-geometry-data.h"
 #include "chat/chat-manager.h"
 #include "chat/message/message-render-info.h"
+#include "chat/type/chat-type-manager.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact.h"
 #include "contacts/contact-set.h"
+#include "contacts/model/contact-data-extractor.h"
 #include "contacts/model/contact-list-model.h"
 #include "core/core.h"
 #include "gui/hot-key.h"
@@ -283,6 +286,21 @@ void ChatWidget::setTitle(const QString &title)
 		Title = title;
 		emit titleChanged(this, title);
 	}
+}
+
+QIcon ChatWidget::icon()
+{
+	int contactsCount = chat().contacts().count();
+	if (contactsCount == 1)
+	{
+		Contact contact = chat().contacts().toContact();
+		if (contact)
+			return ContactDataExtractor::data(contact, Qt::DecorationRole, false).value<QIcon>();
+	}
+	else if (contactsCount > 1)
+		return ChatTypeManager::instance()->chatType("Conference")->icon();
+
+	return IconsManager::instance()->iconByPath("internet-group-chat");
 }
 
 void ChatWidget::appendMessages(const QList<MessageRenderInfo *> &messages, bool pending)

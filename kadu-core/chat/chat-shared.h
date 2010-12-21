@@ -23,8 +23,6 @@
 #ifndef CHAT_SHARED_H
 #define CHAT_SHARED_H
 
-#include <QtGui/QIcon>
-
 #include "accounts/account.h"
 #include "chat/type/chat-type-aware-object.h"
 #include "storage/details-holder.h"
@@ -108,15 +106,6 @@ public:
 	 * chats).
 	 */
 	KaduShared_Property(QString, type, Type);
-
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Icon of chat.
-	 *
-	 * Chat icon is used to display in window titles. For 'simple' chats it is icon of status
-	 * of peer, for 'conference' chats it is generic icon.
-	 */
-	QIcon icon();
 
 	// temporary, not stored, lost after program close
 	KaduShared_PropertyBool(IgnoreAllMessages)

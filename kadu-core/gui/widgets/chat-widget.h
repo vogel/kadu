@@ -136,6 +136,15 @@ public:
 	const QString & title() { return Title; }
 	void setTitle(const QString &title);
 
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Icon of chat.
+	 *
+	 * Chat icon is used to display in window titles. For 'simple' chats it is icon of status
+	 * of peer, for 'conference' chats it is generic icon.
+	 */
+	QIcon icon();
+
 	const QDateTime & lastMessageTime() const { return LastMessageTime; }
 
 	void kaduStoreGeometry();
