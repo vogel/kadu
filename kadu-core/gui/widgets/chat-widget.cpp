@@ -84,12 +84,22 @@ ChatWidget::ChatWidget(Chat chat, QWidget *parent) :
 	createGui();
 	configurationUpdated();
 
-	foreach (const Contact &contact, chat.contacts())
+	foreach (const Contact &contact, CurrentChat.contacts())
 	{
 		connect(contact, SIGNAL(updated()), this, SLOT(refreshTitle()));
 		connect(contact.ownerBuddy(), SIGNAL(updated()), this, SLOT(refreshTitle()));
 	}
 
+	// icon for conference never changes
+	if (CurrentChat.contacts().count() == 1)
+		foreach (const Contact &contact, CurrentChat.contacts())
+		{
+			// actually we only need to send iconChanged() on CurrentStatus update
+			// but we don't have a signal for that in ContactShared
+			// TODO 0.6.7: consider adding currentStatusChanged() signal to ContactShared
+			connect(contact, SIGNAL(updated()), this, SIGNAL(iconChanged()));
+			connect(contact.ownerBuddy(), SIGNAL(buddySubscriptionChanged()), this, SIGNAL(iconChanged()));
+		}
 
 	kdebugf2();
 }

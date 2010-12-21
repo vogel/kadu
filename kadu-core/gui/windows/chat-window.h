@@ -26,6 +26,7 @@ private:
 	void setDefaultGeometry();
 
 private slots:
+	void updateIcon();
 	void updateTitle();
 
 protected:

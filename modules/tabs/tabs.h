@@ -113,8 +113,8 @@ public:
 public slots:
 	void onNewChat(ChatWidget *chat, bool &handled);
 	void onDestroyingChat(ChatWidget *chat);
-
 	void onOpenChat(ChatWidget *chat, bool activate);
+	void onIconChanged();
 	void onTitleChanged(ChatWidget *chatChanged, const QString &newTitle);
 
 	void onTabChange(int index);

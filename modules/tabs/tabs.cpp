@@ -245,7 +245,26 @@ void TabsManager::onDestroyingChat(ChatWidget* chat)
 	disconnect(chat->edit(), SIGNAL(keyPressed(QKeyEvent*, CustomInput*, bool&)), TabDialog, SLOT(chatKeyPressed(QKeyEvent*, CustomInput*, bool&)));
 	disconnect(chat, SIGNAL(messageReceived(Chat)), this, SLOT(onMessageReceived(Chat)));
 	disconnect(chat, SIGNAL(closed()), this, SLOT(closeChat()));
+	disconnect(chat, SIGNAL(iconChanged()), this, SLOT(onIconChanged()));
 	disconnect(chat, SIGNAL(titleChanged(ChatWidget *, const QString &)), this, SLOT(onTitleChanged(ChatWidget *, const QString &)));
+	kdebugf2();
+}
+
+void TabsManager::onIconChanged()
+{
+	kdebugf();
+
+	ChatWidget *chatWidget = static_cast<ChatWidget *>(sender());
+
+	int chatIndex;
+	if (!chatWidget || (chatIndex = TabDialog->indexOf(chatWidget)) == -1)
+		return;
+
+	refreshTab(chatIndex, chatWidget);
+
+	if (TabDialog->currentIndex() == chatIndex)
+		TabDialog->setWindowIcon(chatWidget->icon());
+
 	kdebugf2();
 }
 
@@ -261,10 +280,7 @@ void TabsManager::onTitleChanged(ChatWidget *chatChanged, const QString &newTitl
 	refreshTab(chatIndex, chatChanged);
 
 	if (TabDialog->currentIndex() == chatIndex)
-	{
 		TabDialog->setWindowTitle(newTitle);
-		TabDialog->setWindowIcon(chatChanged->icon());
-	}
 
 	kdebugf2();
 }
@@ -392,6 +408,7 @@ void TabsManager::insertTab(ChatWidget* chat)
 	// Podlaczamy sie do nowej wiadomości w chacie, tylko jesli dodany on zostal do kart
 	connect(chat, SIGNAL(messageReceived(Chat)),this, SLOT(onMessageReceived(Chat)));
 	connect(chat, SIGNAL(closed()), this, SLOT(closeChat()));
+	connect(chat, SIGNAL(iconChanged()), this, SLOT(onIconChanged()));
 	connect(chat, SIGNAL(titleChanged(ChatWidget * , const QString &)),
 			this, SLOT(onTitleChanged(ChatWidget *, const QString &)));
 

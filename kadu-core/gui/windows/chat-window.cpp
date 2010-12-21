@@ -94,6 +94,7 @@ void ChatWindow::setChatWidget(ChatWidget *newChatWidget)
 	layout->setSpacing(0);
 
 	connect(currentChatWidget, SIGNAL(closed()), this, SLOT(close()));
+	connect(currentChatWidget, SIGNAL(iconChanged()), this, SLOT(updateIcon()));
 	connect(currentChatWidget, SIGNAL(titleChanged(ChatWidget *, const QString &)), this, SLOT(updateTitle()));
 	connect(currentChatWidget, SIGNAL(messageReceived(Chat)), this, SLOT(alertNewMessage()));
 
@@ -205,11 +206,16 @@ void ChatWindow::closeEvent(QCloseEvent *e)
  	QWidget::closeEvent(e);
 }
 
-void ChatWindow::updateTitle()
+void ChatWindow::updateIcon()
 {
 	setWindowIcon(currentChatWidget->icon());
+}
+
+void ChatWindow::updateTitle()
+{
 	setWindowTitle(currentChatWidget->title());
 
+	// TODO 0.6.6: is that really needed here? this method is called only on chat widget title change
 	if (showNewMessagesNum && currentChatWidget->newMessagesCount()) // if we don't have new messages or don't want them to be shown
 		showNewMessagesNumInTitle();
 }

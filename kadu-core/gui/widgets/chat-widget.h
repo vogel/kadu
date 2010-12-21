@@ -240,6 +240,7 @@ signals:
 	**/
 	void fileDropped(Chat contacts, const QString &fileName);
 
+	void iconChanged();
 	void titleChanged(ChatWidget *chatWidget, const QString &newTitle);
 	void closed();
 };
