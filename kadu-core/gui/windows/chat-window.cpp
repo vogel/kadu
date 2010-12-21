@@ -232,7 +232,7 @@ void ChatWindow::blinkTitle()
 				showNewMessagesNumInTitle();
 		}
 		else
-			setWindowTitle(QString().fill(' ', (currentChatWidget->title().length() + 5)));
+			setWindowTitle(QString(currentChatWidget->title().length() + 5, ' '));
 
 		if (blinkChatTitle) // timer will not be started, if configuration option was changed
 		{

@@ -173,9 +173,9 @@ bool Updates::isNewerVersion(const QString &newestversion)
 	QString newest = stripVersion(newestversion);
 
 	if (newest.length() > actual.length())
-		actual.append(QString().fill('0', newest.length() - actual.length()));
+		actual.append(QString(newest.length() - actual.length(), '0'));
 	else
-		newest.append(QString().fill('0', actual.length() - newest.length()));
+		newest.append(QString(actual.length() - newest.length(), '0'));
 
 	return (newest.toUInt() > actual.toUInt());
 }

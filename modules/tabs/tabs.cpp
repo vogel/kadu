@@ -437,11 +437,15 @@ void TabsManager::onTimer()
 				qApp->alert(TabDialog);
 				// jesli chat jest na aktywnej karcie - zachowuje sie jak normalne okno
 				if (currentChat == chat)
-				{	if (msg && ConfigBlinkChatTitle)
-						TabDialog->setWindowTitle(QString().fill(' ', (chat->title().length() + 5)));
-					else if (!msg)
+				{
+					if (msg)
 					{
-						if(ConfigShowNewMessagesNum)
+						if (ConfigBlinkChatTitle)
+							TabDialog->setWindowTitle(QString(chat->title().length() + 5, ' '));
+					}
+					else
+					{
+						if (ConfigShowNewMessagesNum)
 							TabDialog->setWindowTitle('[' + QString::number(chat->newMessagesCount()) + "] " + chat->title());
 						else
 							TabDialog->setWindowTitle(chat->title());
