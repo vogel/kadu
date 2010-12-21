@@ -260,10 +260,11 @@ void TabsManager::onIconChanged()
 	if (!chatWidget || (chatIndex = TabDialog->indexOf(chatWidget)) == -1)
 		return;
 
-	refreshTab(chatIndex, chatWidget);
+	QIcon newIcon = chatWidget->icon();
 
+	TabDialog->setTabIcon(chatIndex, newIcon);
 	if (TabDialog->currentIndex() == chatIndex)
-		TabDialog->setWindowIcon(chatWidget->icon());
+		TabDialog->setWindowIcon(newIcon);
 
 	kdebugf2();
 }
@@ -277,8 +278,7 @@ void TabsManager::onTitleChanged(ChatWidget *chatChanged, const QString &newTitl
 	if (-1 == chatIndex || !chatChanged)
 		return;
 
-	refreshTab(chatIndex, chatChanged);
-
+	TabDialog->setTabToolTip(chatIndex, newTitle);
 	if (TabDialog->currentIndex() == chatIndex)
 		TabDialog->setWindowTitle(newTitle);
 
@@ -753,21 +753,6 @@ QString TabsManager::formatTabName(ChatWidget * chatWidget)
 		TabName = chatWidget->chat().name();
 
 	return TabName;
-}
-
-void TabsManager::refreshTab(int tabIndex, ChatWidget *chatWidget)
-{
-	if (0 == chatWidget)
-		return;
-
-	// uaktualnienie podp.
-	TabDialog->setTabToolTip(tabIndex, chatWidget->title());
-
-	//uaktualnienie ikonki
-	TabDialog->setTabIcon(tabIndex, chatWidget->icon());
-
-	// uaktualnienie nazwy
-	TabDialog->setTabText(tabIndex, formatTabName(chatWidget));
 }
 
 void TabsManager::closeChat()
