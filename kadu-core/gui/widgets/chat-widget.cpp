@@ -84,11 +84,11 @@ ChatWidget::ChatWidget(Chat chat, QWidget *parent) :
 	createGui();
 	configurationUpdated();
 
-	connect(CurrentChat.chatAccount(), SIGNAL(buddyStatusChanged(Contact, Status)),
-			this, SLOT(refreshTitle()));
-
 	foreach (const Contact &contact, chat.contacts())
+	{
+		connect(contact, SIGNAL(updated()), this, SLOT(refreshTitle()));
 		connect(contact.ownerBuddy(), SIGNAL(updated()), this, SLOT(refreshTitle()));
+	}
 
 
 	kdebugf2();
