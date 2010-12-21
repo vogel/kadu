@@ -67,8 +67,6 @@ class TabsManager : public ConfigurationUiHandler, ConfigurationAwareObject, Sto
 	ChatWidget *SelectedChat;
 	QMenu *Menu;
 
-	void repaintTabs();
-
 	QString formatTabName(ChatWidget *chatWidget);
 
 	void refreshTab(int tabIndex, ChatWidget *chatWidget);

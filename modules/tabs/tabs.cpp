@@ -704,7 +704,6 @@ void TabsManager::configurationUpdated()
 	}
 	*/
 	TabDialog->configurationUpdated();
-	repaintTabs();
 
 	//uaktualniamy ikonki w menu kontekstowym pod PPM na karcie
 	// TODO : to remove ?
@@ -742,23 +741,6 @@ void TabsManager::openTabWith(QStringList altnicks, int index)
 		ChatWidgetManager::instance()->openPendingMsgs(contacts, true);
 	}
 	*/
-}
-
-void TabsManager::repaintTabs()
-{
-	if (!TabDialog->count())
-		return;
-
-	ChatWidget *chat;
-
-	for (int i = TabDialog->count() -1 ; i >= 0; i--)
-	{
-		chat = dynamic_cast<ChatWidget *>(TabDialog->widget(i));
-		refreshTab(i, chat);
-	}
-
-	//uaktualnienie ikonki w oknie tabs
-	TabDialog->setWindowIcon(dynamic_cast<ChatWidget *>(TabDialog->currentWidget())->icon());
 }
 
 QString TabsManager::formatTabName(ChatWidget * chatWidget)
