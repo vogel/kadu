@@ -28,7 +28,7 @@
  * new uuid is created and assigned to object.
  */
 Shared::Shared(QUuid uuid) :
-		BlockUpdatedSignalCount(0)
+		BlockUpdatedSignalCount(0), Updated(false)
 {
 	setUuid(uuid.isNull() ? QUuid::createUuid() : uuid);
 }
@@ -117,8 +117,6 @@ void Shared::aboutToBeRemoved()
  */
 void Shared::blockUpdatedSignal()
 {
-	if (0 == BlockUpdatedSignalCount)
-		Updated = false;
 	BlockUpdatedSignalCount++;
 }
 
