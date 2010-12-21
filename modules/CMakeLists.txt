@@ -1,7 +1,9 @@
 set (BLACKLIST_MODULES
 	advanced_userlist
 	dbus
+	echo
 	encryption
+	encryption_ng_caesar
 	tlen_protocol
 )
 
