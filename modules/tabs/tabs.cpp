@@ -292,8 +292,6 @@ void TabsManager::onTabChange(int index)
 
 	ChatWidget *chat = dynamic_cast<ChatWidget *>(TabDialog->widget(index));
 
-	refreshTab(index, chat);
-
 	TabDialog->setWindowTitle(chat->title());
 	TabDialog->setWindowIcon(chat->icon());
 
