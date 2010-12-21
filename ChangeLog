@@ -17,6 +17,9 @@
 * chat styles: #1705 fixed: restoring emoticon img on mouse click works incorrectly in Satin style (beevvy)
 * gui: #1848 fixed: if chat icon should be updated but chat title not, chat icon is not updated (beevvy)
 * gui: #1844 fixed: disable OpenChatOnMessage option by default (beevvy)
+* encryption_ng: new encryption module added (Vogel)
+* encryption_ng_simlite: port of old encryption module added (Vogel)
+* modules: encryption, encryption_ng_caesar, echo blacklisted (Vogel)
 
 +++ version 0.6.6-beta12
 * gui: #1745 fixed: invalid encoding of text in About window on Windows (beevvy)
