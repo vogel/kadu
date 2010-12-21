@@ -1,3 +1,5 @@
++++ version 0.6.6-beta14
+
 +++ version 0.6.6-beta13
 * sound: #1376 fixed: long delays on Kadu exit and warnings from Qt regarding mutexes (beevvy)
 * history_migration: #1820 fixed for good: crash when loading the module with opened configuration window (beevvy)
