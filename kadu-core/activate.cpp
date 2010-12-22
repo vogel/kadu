@@ -16,6 +16,8 @@
 
 	bool _isActiveWindow( QWidget *window )
 	{
+		// we need to ensure we operate on widget's window, if not passed
+		window = window->window();
 		// desktop
 		unsigned long desktopofwindow = X11_getDesktopOfWindow( QX11Info::display(), window->winId() );
 		if( ( desktopofwindow != X11_ALLDESKTOPS ) && ( desktopofwindow != X11_NODESKTOP ) && ( desktopofwindow != X11_getCurrentDesktop( QX11Info::display() ) ) )
@@ -26,6 +28,8 @@
 
 	void _activateWindow( QWidget *window )
 	{
+		// we need to ensure we operate on widget's window, if not passed
+		window = window->window();
 		// unshade the window if needed (important!)
 		if( X11_isWindowShaded( QX11Info::display(), window->winId() ) )
 			X11_shadeWindow( QX11Info::display(), window->winId(), false );
@@ -71,6 +75,8 @@
 
 	void _activateWindow( QWidget *window )
 	{
+		// we need to ensure we operate on widget's window, if not passed
+		window = window->window();
 		window->activateWindow();
 		window->raise();
 		SetForegroundWindow((HWND)(window->winId()));
