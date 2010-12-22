@@ -40,7 +40,7 @@ MessageShared * MessageShared::loadFromStorage(const QSharedPointer<StoragePoint
 }
 
 MessageShared::MessageShared(QUuid uuid) :
-		Shared(uuid), Status(Message::StatusUnknown), Type(Message::TypeUnknown), Pending(false)
+		Shared(uuid), Status(Message::StatusUnknown), Type(Message::TypeUnknown), Pending(false), Id(-1)
 {
 }
 

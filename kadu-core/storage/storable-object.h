@@ -329,7 +329,7 @@ template<class T>
 			return 0;
 
 		T *result = new T();
-		ModulesData[module] = result;
+		ModulesData.insert(module, result);
 		return result;
 	}
 
