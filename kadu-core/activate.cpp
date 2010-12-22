@@ -42,7 +42,7 @@
 			unsigned long currentdesktop = X11_getCurrentDesktop( QX11Info::display() );
 			if( ( desktopofwindow != currentdesktop ) && ( desktopofwindow != X11_ALLDESKTOPS ) )
 			{
-				if( ( action == 1 ) && ( desktopofwindow != X11_NODESKTOP ) && ( desktopofwindow != X11_ALLDESKTOPS ) )
+				if( ( action == 1 ) && ( desktopofwindow != X11_NODESKTOP ) )
 				{
 					X11_setCurrentDesktop( QX11Info::display(), desktopofwindow );
 				}
