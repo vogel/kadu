@@ -289,7 +289,7 @@ int main(int argc, char *argv[])
 #else
 		char *tmp = getenv("TEMP");
 		if (!tmp)
-			tmp='.';
+			tmp = ".";
 		sprintf(path, "%s\\kadu-dbg-%04d-%02d-%02d-%02d-%02d-%02d.txt",
 				tmp, 1900 + t->tm_year, 1 + t->tm_mon, t->tm_mday, t->tm_hour, t->tm_min, t->tm_sec);
 		if (freopen(path, "w+", stderr) == 0)
