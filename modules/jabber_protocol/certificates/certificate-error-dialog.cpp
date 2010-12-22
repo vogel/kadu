@@ -36,9 +36,8 @@
 #include "client/mini-client.h"
 
 CertificateErrorDialog::CertificateErrorDialog(const QString& title, const QString& host, const QCA::Certificate& cert, 
-	int result, QCA::Validity validity, const QString &domainOverride, QObject *parent, QString &tlsOverrideDomain) 
-	: certificate_(cert), result_(result), validity_(validity), domainOverride_(domainOverride), host_(host), Parent(parent),
-	tlsOverrideDomain_(tlsOverrideDomain)
+	int result, QCA::Validity validity, const QString &domainOverride, QString &tlsOverrideDomain)
+	: certificate_(cert), result_(result), validity_(validity), domainOverride_(domainOverride), host_(host), tlsOverrideDomain_(tlsOverrideDomain)
 {
 	messageBox_ = new QMessageBox(QMessageBox::Warning, title, QObject::tr("The %1 certificate failed the authenticity test.").arg(host));
 	messageBox_->setInformativeText(CertificateHelpers::resultToString(result, validity));
@@ -54,6 +53,11 @@ CertificateErrorDialog::CertificateErrorDialog(const QString& title, const QStri
 	cancelButton_ = messageBox_->addButton(QMessageBox::Cancel);
 
 	messageBox_->setDefaultButton(detailsButton_);
+}
+
+CertificateErrorDialog::~CertificateErrorDialog()
+{
+	delete messageBox_;
 }
 
 int CertificateErrorDialog::exec()

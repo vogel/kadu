@@ -211,7 +211,7 @@ bool CertificateHelpers::checkCertificate(QCA::TLS* tls, XMPP::QCATLSHandler *tl
 		CertificateErrorDialog errorDialog(
 				title, host, cert,
 				result, tls->peerCertificateValidity(),
-				hostnameOverrideable, parent, tlsOverrideDomain);
+				hostnameOverrideable, tlsOverrideDomain);
 
 		QObject::connect(parent, SIGNAL(disconnected()), errorDialog.getMessageBox(), SLOT(reject()), Qt::AutoConnection);
 		if (errorDialog.exec() == QDialog::Accepted)

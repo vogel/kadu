@@ -46,11 +46,11 @@ class CertificateErrorDialog
 		QCA::Validity validity_;
 		QString domainOverride_;
 		QString host_;
-		QObject *Parent;
 		QString &tlsOverrideDomain_;
 
 	public:
-		CertificateErrorDialog(const QString& title, const QString& host, const QCA::Certificate& cert, int result, QCA::Validity validity, const QString &domainOverride, QObject *parent, QString &tlsOverrideDomain_);
+		CertificateErrorDialog(const QString &title, const QString &host, const QCA::Certificate &cert, int result, QCA::Validity validity, const QString &domainOverride, QString &tlsOverrideDomain_);
+		virtual ~CertificateErrorDialog();
 
 		QMessageBox * getMessageBox() { return messageBox_; }
 
