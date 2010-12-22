@@ -393,7 +393,7 @@ bool X11_isWholeWindowOnOneDesktop( Display *display, Window window )
 }
 
 
-bool X11_isWindowFullyVisible( Display *display, Window window )
+bool X11_isWindowCovered( Display *display, Window window )
 {
 	Window parent = window;
 	Window root;
@@ -431,13 +431,12 @@ bool X11_isWindowFullyVisible( Display *display, Window window )
 			if( children[k] == window )
 				continue;
 			if( ! X11_isWindowOnDesktop( display, children[k], currentdesktop ) )
-				continue;
+				if( X11_getDesktopOfWindow( display, children[k] ) != X11_NODESKTOP )
+					continue;
 			XWindowAttributes attr;
 			XGetWindowAttributes( display, children[k], &attr );
 			if( attr.map_state != IsViewable )
-			{
 				continue;
-			}
 			std::pair<int,int> pos2 = X11_getWindowPos( display, children[k] );
 			std::pair<int,int> size2 = X11_getWindowSize( display, children[k] );
 			int X1 = pos2.first;
@@ -474,13 +473,13 @@ bool X11_isWindowFullyVisible( Display *display, Window window )
 				if( ( hastype ) && ( type != typedock ) && ( type != typemenu ) )
 				{
 					XFree( children );
-					return false;
+					return true;
 				}
 			}
 		}
 		XFree( children );
 	}
-	return true;
+	return false;
 }
 
 
