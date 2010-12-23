@@ -1,4 +1,5 @@
 set (SOURCES
+	encryption-ng-simlite-decryptor.cpp
 	encryption-ng-simlite-encryptor.cpp
 	encryption-ng-simlite-key-importer.cpp
 	encryption-ng-simlite-module.cpp
@@ -8,6 +9,7 @@ set (SOURCES
 )
 
 set (MOC_SOURCES
+	encryption-ng-simlite-decryptor.h
 	encryption-ng-simlite-encryptor.h
 	encryption-ng-simlite-key-importer.h
 	encryption-ng-simlite-provider.h

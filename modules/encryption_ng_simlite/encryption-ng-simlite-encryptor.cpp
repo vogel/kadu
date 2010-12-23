@@ -20,8 +20,9 @@
 
 #include "modules/encryption_ng/keys/key.h"
 
-#include "encryption-ng-simlite-encryptor.h"
 #include "pkcs1_certificate.h"
+
+#include "encryption-ng-simlite-encryptor.h"
 
 #define BEGIN_RSA_PUBLIC_KEY "-----BEGIN RSA PUBLIC KEY-----"
 #define END_RSA_PUBLIC_KEY "-----END RSA PUBLIC KEY-----"
@@ -37,7 +38,6 @@ typedef struct {
 	uint8_t magicSecondPart;
 	uint8_t flags;
 } sim_message_header;
-
 
 EncryptioNgSimliteEncryptor::EncryptioNgSimliteEncryptor(const Key &key)
 {
@@ -93,6 +93,9 @@ QCA::PublicKey EncryptioNgSimliteEncryptor::getPublicKey(const Key &key)
 
 QByteArray EncryptioNgSimliteEncryptor::encrypt(const QByteArray &data)
 {
+	if (!Valid)
+		return data;
+
 	//generate a symmetric key for Blowfish (16 bytes in length)
 	QCA::SymmetricKey blowfishKey(16);
 

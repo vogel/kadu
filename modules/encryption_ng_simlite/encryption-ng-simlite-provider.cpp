@@ -17,6 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "chat/chat-manager.h"
 #include "contacts/contact-set.h"
 #include "contacts/contact-shared.h"
 #include "protocols/services/chat-service.h"
@@ -24,10 +25,10 @@
 
 #include "modules/encryption_ng/keys/keys-manager.h"
 
+#include "encryption-ng-simlite-decryptor.h"
 #include "encryption-ng-simlite-encryptor.h"
 
 #include "encryption-ng-simlite-provider.h"
-#include <chat/chat-manager.h>
 
 #define RSA_PUBLIC_KEY_BEGIN "-----BEGIN RSA PUBLIC KEY-----"
 
@@ -98,8 +99,11 @@ void EncryptioNgSimliteProvider::filterRawIncomingMessage(Chat chat, Contact sen
 
 bool EncryptioNgSimliteProvider::canDecrypt(const Chat &chat)
 {
-	Q_UNUSED(chat)
-	return false;
+	if (1 != chat.contacts().size())
+		return false;
+
+	Key key = KeysManager::instance()->byContactAndType(chat.chatAccount().accountContact(), "simlite_private", ActionReturnNull);
+	return !key.isNull() && !key.isEmpty();
 }
 
 bool EncryptioNgSimliteProvider::canEncrypt(const Chat &chat)
@@ -113,8 +117,14 @@ bool EncryptioNgSimliteProvider::canEncrypt(const Chat &chat)
 
 Decryptor * EncryptioNgSimliteProvider::decryptor(const Chat &chat)
 {
-	Q_UNUSED(chat)
-	return 0;
+	if (1 != chat.contacts().size())
+		return 0;
+
+	Key key = KeysManager::instance()->byContactAndType(chat.chatAccount().accountContact(), "simlite_private", ActionReturnNull);
+	if (!key)
+		return 0;
+
+	return new EncryptioNgSimliteDecryptor(key);
 }
 
 Encryptor * EncryptioNgSimliteProvider::encryptor(const Chat &chat)
