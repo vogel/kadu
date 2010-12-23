@@ -319,16 +319,18 @@ void TabsManager::onMessageReceived(Chat chat)
 	if (!chatWidget)
 		return;
 
-	if (!(ChatsWithNewMessages.contains(chatWidget)) &&
-		(TabDialog->currentWidget() != chatWidget || !_isActiveWindow(TabDialog)))
+	if (TabDialog->currentWidget() != chatWidget || !_isWindowActiveOrFullyVisible(TabDialog))
 	{
-		ChatsWithNewMessages.append(chatWidget);
-		if (!Timer.isActive())
-			Timer.start(500);
+		if (!ChatsWithNewMessages.contains(chatWidget))
+		{
+			ChatsWithNewMessages.append(chatWidget);
+			if (!Timer.isActive())
+				Timer.start(500);
+		}
 	}
-	// jezelo chat jest aktywny zerujemy licznik nowych wiadomosci
-	if (_isActiveWindow(TabDialog) && TabDialog->currentWidget() == chatWidget)
+	else
 		chatWidget->markAllMessagesRead();
+
 	kdebugf2();
 }
 

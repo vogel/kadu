@@ -269,22 +269,29 @@ void ChatWindow::changeEvent(QEvent *event)
 
 void ChatWindow::alertNewMessage()
 {
-	if (!_isActiveWindow(this))
+	if (!_isWindowActiveOrFullyVisible(this))
 	{
-		if (activateWithNewMessages && qApp->activeWindow() && !isMinimized())
+		if (activateWithNewMessages)
 			_activateWindow(this);
 		else if (blinkChatTitle)
 		{
 			if (!title_timer->isActive())
 				blinkTitle(); // blinking is able to show new messages also...
+			qApp->alert(this); // TODO: make notifier from this
 		}
 		else if (showNewMessagesNum) // ... so we check this condition as 'else'
+		{
 			showNewMessagesNumInTitle();
-
-		qApp->alert(this); // TODO: make notifier from this
+			qApp->alert(this); // TODO: make notifier from this
+		}
 	}
 	else
+	{
+		if (activateWithNewMessages)
+			_activateWindow(this);
+
 		currentChatWidget->markAllMessagesRead();
+	}
 }
 
 void ChatWindow::setWindowTitle(const QString &title)

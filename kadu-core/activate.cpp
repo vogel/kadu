@@ -1,15 +1,10 @@
-#include <QtCore/QtGlobal>
-#include "activate.h"
+#include <QtGui/QWidget>
 
+#include "activate.h"
 
 #ifdef Q_WS_X11
 
-	#include <QtGui/QApplication>
-	#include <QtGui/QDesktopWidget>
-	#include <QtGui/QMdiSubWindow>
-	#include <QtGui/QWidget>
 	#include <QtGui/QX11Info>
-	#include <math.h>
 
 	#include "configuration/configuration-file.h"
 	#include "x11tools.h"
@@ -98,3 +93,22 @@
 	}
 
 #endif
+
+bool _isWindowActiveOrFullyVisible( QWidget *window )
+{
+	// we need to ensure we operate on widget's window, if not passed
+	window = window->window();
+#ifdef Q_WS_X11
+	if( _isActiveWindow( window ) )
+		return true;
+
+	Display *display = QX11Info::display();
+	WId wId = window->winId();
+	return ! window->isMinimized() &&
+			X11_isWindowOnDesktop( display, wId, X11_getCurrentDesktop( display ) ) &&
+			X11_isWholeWindowOnOneDesktop( display, wId ) &&
+			! X11_isWindowCovered( display, wId );
+#else
+	return _isActiveWindow( window );
+#endif
+}

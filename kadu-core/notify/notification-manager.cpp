@@ -57,6 +57,7 @@
 #include "notify/window-notifier.h"
 #include "status/status-container-manager.h"
 
+#include "activate.h"
 #include "debug.h"
 #include "misc/misc.h"
 
@@ -372,11 +373,10 @@ void NotificationManager::messageReceived(const Message &message)
 	kdebugf();
 
 	ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(message.messageChat());
-	if (!chatWidget) // new chat
+	if (!chatWidget)
 		notify(new MessageNotification(MessageNotification::NewChat, message));
-	else // new message in chat
-		if (!chatWidget->edit()->hasFocus() || !config_file.readBoolEntry("Notify", "NewMessageOnlyIfInactive"))
-			notify(new MessageNotification(MessageNotification::NewMessage, message));
+	else if (!config_file.readBoolEntry("Notify", "NewMessageOnlyIfInactive") || !_isWindowActiveOrFullyVisible(chatWidget))
+		notify(new MessageNotification(MessageNotification::NewMessage, message));
 
 	kdebugf2();
 }

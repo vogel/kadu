@@ -1,4 +1,5 @@
 +++ version 0.6.6-beta14
+* gui: #1792 fixed: do not notify about new messages if window is not active but still fully visible to the user (beevvy)
 
 +++ version 0.6.6-beta13
 * sound: #1376 fixed: long delays on Kadu exit and warnings from Qt regarding mutexes (beevvy)
