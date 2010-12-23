@@ -196,7 +196,7 @@ void ChatWidget::configurationUpdated()
 	}*/
 
 	InputBox->inputBox()->setFont(config_file.readFontEntry("Look","ChatFont"));
- 	InputBox->inputBox()->setStyleSheet(QString("QTextEdit {background-color: %1}").arg(config_file.readColorEntry("Look", "ChatTextBgColor").name()));
+ 	InputBox->inputBox()->viewport()->setStyleSheet(QString("background-color: %1").arg(config_file.readColorEntry("Look", "ChatTextBgColor").name()));
 
 	refreshTitle();
 }
