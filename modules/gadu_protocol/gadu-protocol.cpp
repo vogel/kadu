@@ -343,9 +343,11 @@ void GaduProtocol::everyMinuteActions()
 
 void GaduProtocol::login(const QString &password, bool permanent)
 {
-  	if (password.isEmpty())
+	if (password.isEmpty()) // user did not give us password, so prevent from further reconnecting
 	{
-		setStatus(Status());
+		Status newstat = status();
+		newstat.setType("Offline");
+		setStatus(newstat);
 		return;
 	}
   

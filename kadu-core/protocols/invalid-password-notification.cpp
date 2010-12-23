@@ -85,6 +85,16 @@ bool InvalidPasswordNotification::ignoreSilentMode()
 	return true;
 }
 
+void InvalidPasswordNotification::callbackDiscard()
+{
+  	close();
+
+	if (!account().protocolHandler())
+		return;
+	
+	account().protocolHandler()->login("", false);
+}
+
 void InvalidPasswordNotification::callbackAccept()
 {
 	close();

@@ -46,6 +46,7 @@ public:
 
 public slots:
 	virtual void callbackAccept();
+	virtual void callbackDiscard();
 
 };
 
