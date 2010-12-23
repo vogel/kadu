@@ -30,12 +30,14 @@ class QLabel;
 class QLineEdit;
 class QSpinBox;
 class QComboBox;
+class QCheckBox;
 
 struct GrowlNotifyProperties
 {
 	QString eventName;
 	QString syntax;
 	QString title;
+	bool    showAvatar;
 };
 
 class GrowlNotifyConfigurationWidget : public NotifierConfigurationWidget
@@ -48,10 +50,12 @@ class GrowlNotifyConfigurationWidget : public NotifierConfigurationWidget
 
 	QLineEdit *syntax;
 	QLineEdit *title;
+//	QCheckBox *showAvatar;
 
 private slots:
 	void syntaxChanged(const QString &syntax);
 	void titleChanged(const QString &title);
+//	void avatarChanged(int state);
 
 public:
 	GrowlNotifyConfigurationWidget(QWidget *parent = 0);

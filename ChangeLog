@@ -1,6 +1,7 @@
 +++ version 0.6.6-beta14
 * gui: #1792 fixed: do not notify about new messages if window is not active but still fully visible to the user (beevvy)
 * docking: #1857 fixed: do not bounce the dock icon in silent mode on Mac (dorr)
+* growl_notify: #1755 fixed: show avatar in growl notification on Mac (dorr)
 
 +++ version 0.6.6-beta13
 * sound: #1376 fixed: long delays on Kadu exit and warnings from Qt regarding mutexes (beevvy)

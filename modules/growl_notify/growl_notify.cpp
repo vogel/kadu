@@ -25,8 +25,11 @@
 
 #include <QtGui/QTextDocument>
 
+#include "avatars/avatar.h"
 #include "configuration/configuration-file.h"
 #include "gui/windows/message-dialog.h"
+#include "notify/account-notification.h"
+#include "notify/chat-notification.h"
 #include "notify/notification-manager.h"
 #include "notify/notification.h"
 #include "parser/parser.h"
@@ -120,16 +123,31 @@ void GrowlNotify::notify(Notification *notification)
 	if (growlNotifier->isNotifying())
 		return;
 
+	QPixmap pixmap;
 	QString title = config_file.readEntry("GrowlNotify", QString("Event_") + notification->type() + "_title");
 	QString syntax = config_file.readEntry("GrowlNotify", QString("Event_") + notification->type() + "_syntax");
+//	bool showAvatar = config_file.readBoolEntry("GrowlNotify", QString("Event_") + notification->type() + "_avatar");
 
 	notification->acquire();
+
+//	if (showAvatar)
+	{
+		ChatNotification *chatNotification = dynamic_cast<ChatNotification *>(notification);
+		if (chatNotification)
+		{
+			Avatar avatar = //chatNotification->account().accountContact().contactAvatar();
+			chatNotification->chat().contacts().toContact().contactAvatar();
+			if (!avatar.isEmpty())
+				pixmap = avatar.pixmap();
+		}
+	}
+	if (pixmap.isNull())
+		pixmap = notification->icon().pixmap(128,128);
 
 	growlNotifier->notify("Kadu Notification",
 		parseText(title, notification, notification->text()),
 		parseText(syntax, notification, notification->details()),
-		notification->icon().pixmap(128,128),
-		false, notification, SLOT(callbackAccept()));
+		pixmap, false, notification, SLOT(callbackAccept()));
 
 	//notification->release(); //released withing notification_timeout/notification_clicked
 
