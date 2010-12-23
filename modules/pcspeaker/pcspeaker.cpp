@@ -28,7 +28,6 @@
 #include "notify/notification-manager.h"
 #include "notify/notification.h"
 #include "misc/misc.h"
-#include "core/core.h"
 
 #include <QtGui/QLineEdit>
 #include <QtGui/QSlider>
@@ -131,8 +130,7 @@ PCSpeaker::PCSpeaker() : Notifier("PC Speaker", "PC Speaker", IconsManager::inst
 
 PCSpeaker::~PCSpeaker()
 {
-	if (!Core::instance()->isClosing())
-		NotificationManager::instance()->unregisterNotifier(this);
+	NotificationManager::instance()->unregisterNotifier(this);
 }
 
 void PCSpeaker::mainConfigurationWindowCreated(MainConfigurationWindow */*mainConfigurationWindow*/)
