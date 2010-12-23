@@ -63,7 +63,7 @@ PasswordWindow::PasswordWindow(const QString &message, QWidget *parent) :
 	buttons->addButton(cancelButton, QDialogButtonBox::RejectRole);
 
 	connect(okButton, SIGNAL(clicked(bool)), this, SLOT(accepted()));
-	connect(cancelButton, SIGNAL(clicked(bool)), this, SLOT(accepted()));
+	connect(cancelButton, SIGNAL(clicked(bool)), this, SLOT(canceled()));
 
 	layout->addWidget(messageLabel);
 	layout->addWidget(Password);
@@ -78,5 +78,11 @@ PasswordWindow::~PasswordWindow()
 void PasswordWindow::accepted()
 {
 	emit passwordEntered(Password->text(), Store->isChecked());
+	close();
+}
+
+void PasswordWindow::canceled()
+{
+	emit passwordEntered(QString(), false);
 	close();
 }

@@ -35,6 +35,7 @@ class KADUAPI PasswordWindow : public QDialog
 
 private slots:
 	void accepted();
+	void canceled();
 
 public:
 	static void getPassword(const QString &message, QObject *receiver, const char *slot);
