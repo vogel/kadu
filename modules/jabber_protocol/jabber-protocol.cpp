@@ -199,6 +199,12 @@ void JabberProtocol::login(const QString &password, bool permanent)
 {
 	if (isConnected())
 		return;
+	
+	if (password.isEmpty())
+	{
+		setStatus(Status());
+		return;
+	}
 
 	account().setPassword(password);
 	account().setRememberPassword(permanent);

@@ -343,6 +343,12 @@ void GaduProtocol::everyMinuteActions()
 
 void GaduProtocol::login(const QString &password, bool permanent)
 {
+  	if (password.isEmpty())
+	{
+		setStatus(Status());
+		return;
+	}
+  
 	account().setPassword(password);
 	account().setRememberPassword(permanent);
 	account().setHasPassword(!password.isEmpty());

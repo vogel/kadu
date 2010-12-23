@@ -435,6 +435,7 @@ void JabberClient::connect(const XMPP::Jid &jid, const QString &password, bool a
 
 void JabberClient::disconnect()
 {
+	// do real disconnect
 	XMPP::Status status = XMPP::Status(XMPP::Status::Offline);
 	disconnect(status);
 }
