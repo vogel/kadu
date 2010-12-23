@@ -54,7 +54,7 @@ class CertificateErrorDialog : public QObject
 
 public:
 	CertificateErrorDialog(const QString& title, const QString& host, const QCA::Certificate& cert, int result, QCA::Validity validity, 
-			       const QString &domainOverride, QObject *parent, QString &tlsOverrideDomain_);
+			       const QString &domainOverride, QString &tlsOverrideDomain_);
 	virtual ~CertificateErrorDialog();
 	QMessageBox * getMessageBox() { return messageBox_; }
 
