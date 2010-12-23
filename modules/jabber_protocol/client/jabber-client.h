@@ -159,6 +159,13 @@ namespace XMPP
 
 		void setPEPAvailable(bool b);
 
+		/**
+		 * Enable file transfers. Default is false.
+		 * @param flag Whether to enable file transfers.
+		 * @param localAddress Local address to receive file transfers at. Will be determined automatically if not specified.
+		 */
+		void setFileTransfersEnabled(bool flag, const QString &localAddress = QString());
+
 	private slots:
 		/* S5B server object has been destroyed. */
 		void slotS5BServerGone();
@@ -377,13 +384,6 @@ namespace XMPP
 		* Returns if plain text passwords are allowed.
 		 */
 		XMPP::ClientStream::AllowPlainType allowPlainTextPassword() const { return AllowPlainTextPassword; }
-
-		/**
-		 * Enable file transfers. Default is false.
-		 * @param flag Whether to enable file transfers.
-		 * @param localAddress Local address to receive file transfers at. Will be determined automatically if not specified.
-		 */
-		void setFileTransfersEnabled(bool flag, const QString &localAddress = QString());
 
 		/**
 		 * Returns the address of the local interface.

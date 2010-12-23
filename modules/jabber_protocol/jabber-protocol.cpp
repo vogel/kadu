@@ -108,7 +108,6 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 	CurrentChatService = new JabberChatService(this);
 	CurrentChatStateService = new JabberChatStateService(this);
 	CurrentContactPersonalInfoService = new JabberContactPersonalInfoService(this);
-	CurrentFileTransferService = new JabberFileTransferService(this);
 	CurrentPersonalInfoService = new JabberPersonalInfoService(this);
 	CurrentRosterService = new JabberRosterService(this);
 	connect(CurrentRosterService, SIGNAL(rosterDownloaded(bool)),
@@ -266,7 +265,7 @@ void JabberProtocol::connectToServer()
 	JabberClient->setUseSSL(jabberAccountDetails->encryptionMode() == JabberAccountDetails::Encryption_Legacy);
 	JabberClient->setOverrideHost(jabberAccountDetails->useCustomHostPort(), jabberAccountDetails->customHost(), jabberAccountDetails->customPort());
 
-	JabberClient->setFileTransfersEnabled(true); // i haz it
+//	JabberClient->setFileTransfersEnabled(true); // i haz it
 	jabberID = account().id();
 
 	JabberClient->setAllowPlainTextPassword(plainAuthToXMPP(jabberAccountDetails->plainAuthMode()));

@@ -33,7 +33,6 @@
 #include "services/jabber-chat-service.h"
 #include "services/jabber-chat-state-service.h"
 #include "services/jabber-contact-personal-info-service.h"
-#include "services/jabber-file-transfer-service.h"
 #include "services/jabber-personal-info-service.h"
 
 class JabberContactDetails;
@@ -49,7 +48,6 @@ class JabberProtocol : public Protocol
 	JabberChatService *CurrentChatService;
 	JabberChatStateService *CurrentChatStateService;
 	JabberContactPersonalInfoService *CurrentContactPersonalInfoService;
-	JabberFileTransferService *CurrentFileTransferService;
 	JabberPersonalInfoService *CurrentPersonalInfoService;
 	JabberRosterService *CurrentRosterService;
 	JabberSubscriptionService *CurrentSubscriptionService;
@@ -114,7 +112,7 @@ public:
 	virtual ChatImageService * chatImageService() { return 0; }
 	virtual ContactListService * contactListService() { return 0; }
 	virtual ContactPersonalInfoService * contactPersonalInfoService() { return CurrentContactPersonalInfoService; }
-	virtual FileTransferService * fileTransferService() { return CurrentFileTransferService; }
+	virtual FileTransferService * fileTransferService() { return 0; }
 	virtual PersonalInfoService * personalInfoService() { return CurrentPersonalInfoService; }
 	virtual SearchService * searchService() { return 0; }
 	JabberResourcePool *resourcePool();
