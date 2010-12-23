@@ -58,10 +58,8 @@ private:
 	QString Name;
 	QObject *Object;
 	const char *Slot;
-	QString IconPathOn;
-	QString IconPathOff;
+	QString IconPath;
 	QString Text;
-	QString CheckedText;
 	QString ShortcutItem;
 	Qt::ShortcutContext ShortcutContext;
 	bool Checkable;
@@ -75,8 +73,7 @@ protected:
 
 public:
 	ActionDescription(QObject *parent, ActionType Type, const QString &Name, QObject *Object, const char *Slot,
-		const QString &iconPathOn, const QString &iconPathOff, const QString &Text, bool Checkable = false,
-		const QString &CheckedText = QString(), ActionBoolCallback enableCallback = 0);
+		const QString &iconPath, const QString &Text, bool Checkable = false, ActionBoolCallback enableCallback = 0);
 	virtual ~ActionDescription();
 
 	const QString & name() const { return Name; }
@@ -85,8 +82,7 @@ public:
 	Action * action(ActionDataSource *dataSource);
 
 	const QString & text() const { return Text; }
-	const QString & iconPathOn() const { return IconPathOn; }
-	const QString & iconPathOff() const { return IconPathOff; }
+	const QString & iconPath() const { return IconPath; }
 
 	void setShortcut(QString configItem, Qt::ShortcutContext context = Qt::WindowShortcut);
 

@@ -62,8 +62,7 @@ ScreenshotActions::ScreenshotActions() :
 			ActionDescription::TypeChat, "ScreenShotAction",
 			this, SLOT(screenshotActionActivated(QAction *, bool)),
 			"external_modules/module_screenshot-camera-photo",
-			"external_modules/module_screenshot-camera-photo",
-			tr("ScreenShot"), false, QString()
+			tr("ScreenShot"), false
 	);
 
 	createMenu();

@@ -66,7 +66,7 @@ FileTransferActions::FileTransferActions(QObject *parent)
 	SendFileActionDescription = new ActionDescription(this,
 		ActionDescription::TypeUser, "sendFileAction",
 		this, SLOT(sendFileActionActivated(QAction *, bool)),
-		"document-send", "document-send", tr("Send File..."), false, QString(),
+		"document-send", tr("Send File..."), false,
 		disableNonFileTransferContacts
 	);
 	SendFileActionDescription->setShortcut("kadu_sendfile");
@@ -75,7 +75,7 @@ FileTransferActions::FileTransferActions(QObject *parent)
 	FileTransferWindowActionDescription = new ActionDescription(this,
 		ActionDescription::TypeMainMenu, "sendFileWindowAction",
 		this, SLOT(toggleFileTransferWindow(QAction *, bool)),
-		"document-send", "document-send", tr("View File Transfers")
+		"document-send", tr("View File Transfers")
 	);
 
 	Core::instance()->kaduWindow()->insertMenuActionDescription(FileTransferWindowActionDescription, KaduWindow::MenuKadu, 5);

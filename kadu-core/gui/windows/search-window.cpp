@@ -274,42 +274,42 @@ void SearchWindow::initModule()
 	firstSearchAction = new ActionDescription(searchActionsSlot,
 		ActionDescription::TypeSearch, "firstSearchAction",
 		searchActionsSlot, SLOT(firstSearchActionActivated(QAction *, bool)),
-		"edit-find", "edit-find", tr("&Search")
+		"edit-find", tr("&Search")
 	);
 	QObject::connect(firstSearchAction, SIGNAL(actionCreated(Action *)), searchActionsSlot, SLOT(firstSearchActionCreated(Action *)));
 
 	nextResultsAction = new ActionDescription(searchActionsSlot,
 		ActionDescription::TypeSearch, "nextResultsAction",
 		searchActionsSlot, SLOT(nextResultsActionActivated(QAction *, bool)),
-		"go-next", "go-next", tr("&Next results")
+		"go-next", tr("&Next results")
 	);
 	QObject::connect(nextResultsAction, SIGNAL(actionCreated(Action *)), searchActionsSlot, SLOT(nextResultsActionCreated(Action *)));
 
 	stopSearchAction = new ActionDescription(searchActionsSlot,
 		ActionDescription::TypeSearch, "stopSearchAction",
 		searchActionsSlot, SLOT(stopSearchActionActivated(QAction *, bool)),
-		"dialog-cancel", "dialog-cancel", tr("Stop")
+		"dialog-cancel", tr("Stop")
 	);
 	QObject::connect(stopSearchAction, SIGNAL(actionCreated(Action *)), searchActionsSlot, SLOT(stopSearchActionCreated(Action *)));
 
 	clearResultsAction = new ActionDescription(searchActionsSlot,
 		ActionDescription::TypeSearch, "clearSearchAction",
 		searchActionsSlot, SLOT(clearResultsActionActivated(QAction *, bool)),
-		"edit-clear", "edit-clear", tr("Clear results")
+		"edit-clear", tr("Clear results")
 	);
 	QObject::connect(clearResultsAction, SIGNAL(actionCreated(Action *)), searchActionsSlot, SLOT(clearResultsActionCreated(Action *)));
 
 	addFoundAction = new ActionDescription(searchActionsSlot,
 		ActionDescription::TypeSearch, "addSearchedAction",
 		searchActionsSlot, SLOT(addFoundActionActivated(QAction *, bool)),
-		"contact-new", "contact-new", tr("Add selected user")
+		"contact-new", tr("Add selected user")
 	);
 	QObject::connect(addFoundAction, SIGNAL(actionCreated(Action *)), searchActionsSlot, SLOT(actionsFoundActionCreated(Action *)));
 
 	chatFoundAction = new ActionDescription(searchActionsSlot,
 		ActionDescription::TypeSearch, "chatSearchedAction",
 		searchActionsSlot, SLOT(chatFoundActionActivated(QAction *, bool)),
-		"internet-group-chat", "internet-group-chat", tr("&Chat")
+		"internet-group-chat", tr("&Chat")
 	);
 	QObject::connect(chatFoundAction, SIGNAL(actionCreated(Action *)), searchActionsSlot, SLOT(actionsFoundActionCreated(Action *)));
 

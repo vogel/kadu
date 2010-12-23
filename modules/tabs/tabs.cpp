@@ -109,14 +109,14 @@ TabsManager::TabsManager(bool firstload)
 	OpenInNewTabActionDescription = new ActionDescription(this,
 		ActionDescription::TypeUser, "openInNewTabAction",
 		this, SLOT(onNewTab(QAction *, bool)),
-		"internet-group-chat", "internet-group-chat", tr("Chat in New Tab"), false, QString(), disableNewTab
+		"internet-group-chat", tr("Chat in New Tab"), false, disableNewTab
 	);
 	BuddiesListViewMenuManager::instance()->addActionDescription(OpenInNewTabActionDescription, BuddiesListViewMenuItem::MenuCategoryChat, 200);
 
 	AttachToTabsActionDescription = new ActionDescription(this,
 		ActionDescription::TypeChat, "attachToTabsAction",
 		this, SLOT(onTabAttach(QAction *, bool)),
-		"kadu_icons/module_tabs-detach", "kadu_icons/module_tabs-detach", tr("Attach Chat to Tabs"), true, tr("Detach chat from tabs")
+		"kadu_icons/module_tabs-detach", tr("Attach Chat to Tabs"), true
 	);
 	connect(AttachToTabsActionDescription, SIGNAL(actionCreated(Action *)), this, SLOT(attachToTabsActionCreated(Action *)));
 

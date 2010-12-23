@@ -57,9 +57,8 @@ EncryptionActions::EncryptionActions()
 	EnableEncryptionActionDescription = new ActionDescription(this,
 			ActionDescription::TypeChat, "encryptionAction",
 			this, SLOT(enableEncryptionActionActivated(QAction *, bool)),
-			"security-high", "security-high", tr("Encrypt"),
-			true, tr("Encrypt"),
-			checkCanEncrypt
+			"security-high", tr("Encrypt"),
+			true, checkCanEncrypt
 	);
 
 	connect(EncryptionProviderManager::instance(), SIGNAL(canDecryptChanged(Chat)), this, SLOT(canDecryptChanged(Chat)));

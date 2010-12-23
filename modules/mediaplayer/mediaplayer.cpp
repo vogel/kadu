@@ -152,42 +152,42 @@ MediaPlayer::MediaPlayer(bool firstLoad)
 	enableMediaPlayerStatuses = new ActionDescription(
 		0, ActionDescription::TypeGlobal, "enableMediaPlayerStatusesAction",
 		this, SLOT(mediaPlayerStatusChangerActivated(QAction *, bool)),
-		"external_modules/module_mediaplayer-media-playback-start", "external_modules/module_mediaplayer-media-playback-start", tr("Enable MediaPlayer Statuses"), true
+		"external_modules/module_mediaplayer-media-playback-start", tr("Enable MediaPlayer Statuses"), true
 	);
 	mediaPlayerMenu = new ActionDescription(
 		0, ActionDescription::TypeChat, "mediaplayer_button",
 		this, SLOT(mediaPlayerMenuActivated(QAction *, bool)),
-		"external_modules/module_mediaplayer-media-playback-start", "external_modules/module_mediaplayer-media-playback-start", tr("MediaPlayer"), false, QString()
+		"external_modules/module_mediaplayer-media-playback-start", tr("MediaPlayer"), false
 	);
 	playAction = new ActionDescription(
 		0, ActionDescription::TypeChat, "mediaplayer_play",
 		this, SLOT(playPause()),
-		"external_modules/module_mediaplayer-media-playback-start", "external_modules/module_mediaplayer-media-playback-start", tr("Play"), false, QString()
+		"external_modules/module_mediaplayer-media-playback-start", tr("Play"), false
 	);
 	stopAction = new ActionDescription(
 		0, ActionDescription::TypeChat, "mediaplayer_stop",
 		this, SLOT(stop()),
-		"external_modules/module_mediaplayer-media-playback-stop", "external_modules/module_mediaplayer-media-playback-stop", tr("Stop"), false, QString()
+		"external_modules/module_mediaplayer-media-playback-stop", tr("Stop"), false
 	);
 	prevAction = new ActionDescription(
 		0, ActionDescription::TypeChat, "mediaplayer_prev",
 		this, SLOT(prevTrack()),
-		"external_modules/module_mediaplayer-media-skip-backward", "external_modules/module_mediaplayer-media-skip-backward", tr("Previous Track"), false, QString()
+		"external_modules/module_mediaplayer-media-skip-backward", tr("Previous Track"), false
 	);
 	nextAction = new ActionDescription(
 		0, ActionDescription::TypeChat, "mediaplayer_next",
 		this, SLOT(nextTrack()),
-		"external_modules/module_mediaplayer-media-skip-forward", "external_modules/module_mediaplayer-media-skip-forward", tr("Next Track"), false, QString()
+		"external_modules/module_mediaplayer-media-skip-forward", tr("Next Track"), false
 	);
 	volUpAction = new ActionDescription(
 		0, ActionDescription::TypeChat, "mediaplayer_vol_up",
 		this, SLOT(incrVolume()),
-		"audio-volume-high", "audio-volume-high", tr("Volume Up"), false, QString()
+		"audio-volume-high", tr("Volume Up"), false
 	);
 	volDownAction = new ActionDescription(
 		0, ActionDescription::TypeChat, "mediaplayer_vol_down",
 		this, SLOT(decrVolume()),
-		"audio-volume-low", "audio-volume-low", tr("Volume Down"), false, QString()
+		"audio-volume-low", tr("Volume Down"), false
 	);
 
 	if (firstLoad)

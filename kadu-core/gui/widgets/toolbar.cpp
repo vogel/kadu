@@ -833,7 +833,7 @@ QMenu *ToolBar::createContextMenu(QWidget *widget)
 
 			if (!hasAction(actionDescription->name()))
 			{
-				QAction *action = actionsMenu->addAction(IconsManager::instance()->iconByPath(actionDescription->iconPathOn()), actionDescription->text());
+				QAction *action = actionsMenu->addAction(IconsManager::instance()->iconByPath(actionDescription->iconPath()), actionDescription->text());
 				action->setData(actionDescription->name());
 			}
 		}

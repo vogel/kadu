@@ -68,7 +68,7 @@ SoundActions::SoundActions()
 	MuteActionDescription = new ActionDescription(this,
 		ActionDescription::TypeGlobal, "muteSoundsAction",
 		this, SLOT(muteActionActivated(QAction *, bool)),
-		"audio-volume-high", "audio-volume-muted", tr("Play Sounds"), true//, tr("Unmute sounds")
+		"audio-volume-high", tr("Play Sounds"), true
 	);
 	connect(MuteActionDescription, SIGNAL(actionCreated(Action *)), this, SLOT(setMuteActionState()));
 

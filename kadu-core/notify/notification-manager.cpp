@@ -112,14 +112,14 @@ void NotificationManager::init()
 	notifyAboutUserActionDescription = new ActionDescription(this,
 		ActionDescription::TypeUser, "notifyAboutUserAction",
 		this, SLOT(notifyAboutUserActionActivated(QAction *, bool)),
-		"kadu_icons/kadu-notifyaboutuser", "kadu_icons/kadu-notifyaboutuser", tr("Notify about user"), true, QString(),
+		"kadu_icons/kadu-notifyaboutuser", tr("Notify about user"), true,
 		checkNotify
 	);
 
 	SilentModeActionDescription = new ActionDescription(this,
 		ActionDescription::TypeGlobal, "silentModeAction",
 		this, SLOT(silentModeActionActivated(QAction *, bool)),
-		"kadu_icons/silent-mode-off", "kadu_icons/silent-mode-off", tr("Enable notifications"), true, tr("Enable notifications")
+		"kadu_icons/silent-mode-off", tr("Enable notifications"), true
 	);
 	connect(SilentModeActionDescription, SIGNAL(actionCreated(Action *)), this, SLOT(silentModeActionCreated(Action *)));
 

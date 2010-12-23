@@ -25,18 +25,16 @@
 #include "action-description.h"
 
 ActionDescription::ActionDescription(QObject *parent, ActionType Type, const QString &Name, QObject *Object, const char *Slot,
-	const QString &IconPathOn, const QString &IconPathOff, const QString &Text, bool Checkable, const QString &CheckedText, ActionBoolCallback enableCallback)
-	: QObject(parent), ShortcutContext(Qt::WidgetShortcut)
+	const QString &IconPath, const QString &Text, bool Checkable, ActionBoolCallback enableCallback) :
+		QObject(parent), ShortcutContext(Qt::WidgetShortcut)
 {
 	this->Type = Type;
 	this->Name = Name;
 	this->Object = Object;
 	this->Slot = Slot;
-	this->IconPathOn = IconPathOn;
-	this->IconPathOff = IconPathOff;
+	this->IconPath = IconPath;
 	this->Text = Text;
 	this->Checkable = Checkable;
-	this->CheckedText = CheckedText;
 	this->EnableCallback = enableCallback;
 	this->deleted = 0;
 

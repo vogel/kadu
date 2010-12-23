@@ -44,16 +44,11 @@ class KADUAPI Action : public QAction
 	ActionDescription *Description;
 	ActionDataSource *DataSource;
 
-	QString OnText;
-	QString OffText;
-
-	QIcon OnIcon;
-	QIcon OffIcon;
+	QIcon Icon;
 
 private slots:
 	void changedSlot();
 	void hoveredSlot();
-	void toggledSlot(bool checked);
 	void triggeredSlot(bool checked);
 
 public:

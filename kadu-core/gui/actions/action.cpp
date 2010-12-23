@@ -33,32 +33,16 @@ Action::Action(ActionDescription *description, ActionDataSource *dataSource, QOb
 {
 	setText(Description->Text);
 
-	if (Description->Checkable)
-	{
-		OnText = Description->CheckedText;
-		OffText = Description->Text;
-	}
-
-	if (!Description->iconPathOn().isEmpty())
+	if (!Description->iconPath().isEmpty())
 	{
 		connect(IconsManager::instance(), SIGNAL(themeChanged()), this, SLOT(updateIcon()));
-
-		if (Description->Checkable)
-		{
-			OnIcon = IconsManager::instance()->iconByPath(Description->iconPathOn());
-			OffIcon = IconsManager::instance()->iconByPath(Description->iconPathOff());
-
-			setIcon(OffIcon);
-		}
-		else
-			setIcon(IconsManager::instance()->iconByPath(Description->iconPathOn()));
+		setIcon(IconsManager::instance()->iconByPath(Description->iconPath()));
 	}
 
 	setCheckable(Description->Checkable);
 
 	connect(this, SIGNAL(changed()), this, SLOT(changedSlot()));
 	connect(this, SIGNAL(hovered()), this, SLOT(hoveredSlot()));
-	connect(this, SIGNAL(toggled(bool)), this, SLOT(toggledSlot(bool)));
 	connect(this, SIGNAL(triggered(bool)), this, SLOT(triggeredSlot(bool)));
 
 	checkState();
@@ -125,24 +109,6 @@ void Action::hoveredSlot()
 	emit hovered(this);
 }
 
-void Action::toggledSlot(bool checked)
-{
-	if (checked)
-	{
-		if (!OnText.isEmpty())
-			setText(OnText);
-		if (!OnIcon.isNull())
-			setIcon(OnIcon);
-	}
-	else
-	{
-		if (!OffText.isEmpty())
-			setText(OffText);
-		if (!OffIcon.isNull())
-			setIcon(OffIcon);
-	}
-}
-
 void Action::triggeredSlot(bool checked)
 {
 	emit triggered(this, checked);
@@ -156,15 +122,7 @@ void Action::checkState()
 
 void Action::updateIcon()
 {
-	if (Description->Checkable)
-	{
-		OnIcon = IconsManager::instance()->iconByPath(Description->iconPathOn());
-		OffIcon = IconsManager::instance()->iconByPath(Description->iconPathOff());
-
-		toggledSlot(isChecked());
-	}
-	else
-		setIcon(IconsManager::instance()->iconByPath(Description->iconPathOn()));
+	setIcon(IconsManager::instance()->iconByPath(Description->iconPath()));
 }
 
 void disableEmptyContacts(Action *action)

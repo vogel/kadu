@@ -160,7 +160,7 @@ void History::createActionDescriptions()
 	ShowHistoryActionDescription = new ActionDescription(this,
 		ActionDescription::TypeUser, "showHistoryAction",
 		this, SLOT(showHistoryActionActivated(QAction *, bool)),
-		"kadu_icons/kadu-history", "kadu_icons/kadu-history", tr("View Chat History"), false, QString()
+		"kadu_icons/kadu-history", tr("View Chat History"), false
 	);
 	ShowHistoryActionDescription->setShortcut("kadu_viewhistory");
 	BuddiesListViewMenuManager::instance()->addActionDescription(ShowHistoryActionDescription, BuddiesListViewMenuItem::MenuCategoryView, 100);
@@ -169,7 +169,7 @@ void History::createActionDescriptions()
 	ClearHistoryActionDescription = new ActionDescription(this,
 		ActionDescription::TypeUser, "clearHistoryAction",
 		this, SLOT(clearHistoryActionActivated(QAction *, bool)),
-		"kadu_icons/history-clear", "kadu_icons/history-clear", tr("Clear history"), false, QString(),
+		"kadu_icons/history-clear", tr("Clear history"), false,
 		disableNonHistoryContacts
 	);
 
