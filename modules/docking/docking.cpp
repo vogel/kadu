@@ -61,6 +61,7 @@
 #include "debug.h"
 
 #ifdef Q_OS_MAC
+#include "notify/notification-manager.h"
 #include "mac_docking_helper.h"
 extern void qt_mac_set_dock_menu(QMenu *);
 #endif
@@ -198,7 +199,8 @@ void DockingManager::pendingMessageAdded()
 	changeIcon();
 #ifdef Q_OS_MAC
 	MacDockingHelper::instance()->overlay(QString::number(PendingMessagesManager::instance()->pendingMessages().count()));
-	MacDockingHelper::instance()->startBounce();
+	if (!NotificationManager::instance()->silentMode())
+		MacDockingHelper::instance()->startBounce();
 #endif
 }
 
