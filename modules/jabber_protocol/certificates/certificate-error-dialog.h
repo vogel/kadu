@@ -30,31 +30,39 @@
 #include <QtCrypto>
 #include <QString>
 
+#include "accounts/account.h"
+
 class QMessageBox;
 class QPushButton;
 
-class CertificateErrorDialog
+class CertificateErrorDialog : public QObject
 {
+	Q_OBJECT
 
-		QMessageBox* messageBox_;
-		QPushButton* detailsButton_;
-		QPushButton* continueButton_;
-		QPushButton* cancelButton_;
-		QPushButton* saveButton_;
-		QCA::Certificate certificate_;
-		int result_;
-		QCA::Validity validity_;
-		QString domainOverride_;
-		QString host_;
-		QString &tlsOverrideDomain_;
+	QMessageBox* messageBox_;
+	QPushButton* detailsButton_;
+	QPushButton* continueButton_;
+	QPushButton* cancelButton_;
+	QPushButton* saveButton_;
+	QCA::Certificate certificate_;
+	int result_;
+	QCA::Validity validity_;
+	QString domainOverride_;
+	QString host_;
+	QObject *Parent;
+	QString &tlsOverrideDomain_;
 
-	public:
-		CertificateErrorDialog(const QString &title, const QString &host, const QCA::Certificate &cert, int result, QCA::Validity validity, const QString &domainOverride, QString &tlsOverrideDomain_);
-		virtual ~CertificateErrorDialog();
+public:
+	CertificateErrorDialog(const QString& title, const QString& host, const QCA::Certificate& cert, int result, QCA::Validity validity, 
+			       const QString &domainOverride, QString &tlsOverrideDomain_);
+	virtual ~CertificateErrorDialog();
+	QMessageBox * getMessageBox() { return messageBox_; }
 
-		QMessageBox * getMessageBox() { return messageBox_; }
+	int exec();
+	
+public slots:
+	void disconnected(Account account);
 
-		int exec();
 };
 
 #endif
