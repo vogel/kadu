@@ -270,6 +270,8 @@ void KaduWindow::compositingEnabled()
 			ChangeStatusButtons->setAutoFillBackground(true);
 			ContactsWidget->nameFilterWidget()->setAutoFillBackground(true);
 			ContactsWidget->view()->verticalScrollBar()->setAutoFillBackground(true);
+			// TODO: find a way to paint this QFrame outside its viewport still allowing the viewport to be transparent
+			ContactsWidget->view()->setFrameShape(QFrame::NoFrame);
 			for (int i = 1; i < Split->count(); ++i)
 			{
 				QSplitterHandle *splitterHandle = Split->handle(i);
@@ -293,6 +295,7 @@ void KaduWindow::compositingDisabled()
 		ChangeStatusButtons->setAutoFillBackground(false);
 		ContactsWidget->nameFilterWidget()->setAutoFillBackground(false);
 		ContactsWidget->view()->verticalScrollBar()->setAutoFillBackground(false);
+		ContactsWidget->view()->setFrameShape(QFrame::StyledPanel);
 		for (int i = 1; i < Split->count(); ++i)
 		{
 			QSplitterHandle *splitterHandle = Split->handle(i);

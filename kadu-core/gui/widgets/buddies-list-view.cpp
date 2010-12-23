@@ -65,7 +65,6 @@ BuddiesListView::BuddiesListView(MainWindow *mainWindow, QWidget *parent) :
 		QTreeView(parent), MyMainWindow(mainWindow), Delegate(0), Model(0),
 		ProxyModel(new BuddiesModelProxy(this)), BackgroundTemporaryFile(0)
 {
-	setAlternatingRowColors(true);
 	setAnimated(BackgroundImageMode == BackgroundNone);
 #ifndef Q_WS_MAEMO_5
 	/* Disable as we use kinetic scrolling by default */
@@ -488,52 +487,54 @@ void BuddiesListView::updateBackground()
 			"{ border-image: none; image: url(" + IconsManager::instance()->iconPath("kadu_icons/stylesheet-branch-open", "16x16") + ") }");
 	}
 
-	style.append("QFrame {");
+	style.append("QTreeView { background-color: transparent;");
 
-	style.append(QString(" background-color: %1;").arg(BackgroundColor));
+	QString viewportStyle(QString("QWidget { background-color: %1;").arg(BackgroundColor));
 
 	if (BackgroundImageMode == BackgroundNone)
 	{
-		style.append(QString("alternate-background-color: %1; }").arg(AlternateBackgroundColor));
 		setAlternatingRowColors(true);
-		setStyleSheet(style);
-
-		return;
-	}
-
-	setAlternatingRowColors(false);
-
-	if (BackgroundImageMode != BackgroundTiled && BackgroundImageMode != BackgroundTiledAndCentered)
-		style.append(" background-repeat: no-repeat;");
-	if (BackgroundImageMode == BackgroundCentered || BackgroundImageMode == BackgroundTiledAndCentered)
-		style.append("background-position: center;");
-	if (BackgroundImageMode == BackgroundStretched)
-	{
-		// style.append("background-size: 100% 100%;"); will work in 4.6 maybe?
-		QImage image(BackgroundImageFile);
-		if (image.isNull())
-		{
-			setStyleSheet(QString());
-			return;
-		}
-
-		if (BackgroundTemporaryFile)
-			delete BackgroundTemporaryFile;
-			BackgroundTemporaryFile = new QTemporaryFile(QDir::tempPath() + "/kadu_background_XXXXXX.png", this);
-
-		if (BackgroundTemporaryFile->open())
-		{
-			QImage stretched = image.scaled(viewport()->width(), viewport()->height(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-			if (stretched.save(BackgroundTemporaryFile, "PNG"))
-				style.append(QString("background-image: url(%1);").arg(BackgroundTemporaryFile->fileName()));
-			BackgroundTemporaryFile->close();
-		}
+		style.append(QString("alternate-background-color: %1;").arg(AlternateBackgroundColor));
 	}
 	else
-		style.append(QString("background-image: url(%1);").arg(BackgroundImageFile));
-	style.append("background-attachment:fixed;}");
+	{
+		setAlternatingRowColors(false);
+
+		if (BackgroundImageMode != BackgroundTiled && BackgroundImageMode != BackgroundTiledAndCentered)
+			viewportStyle.append("background-repeat: no-repeat;");
+
+		if (BackgroundImageMode == BackgroundCentered || BackgroundImageMode == BackgroundTiledAndCentered)
+			viewportStyle.append("background-position: center;");
+
+		if (BackgroundImageMode == BackgroundStretched)
+		{
+			// style.append("background-size: 100% 100%;"); will work in 4.6 maybe?
+			QImage image(BackgroundImageFile);
+			if (!image.isNull())
+			{
+				delete BackgroundTemporaryFile;
+				BackgroundTemporaryFile = new QTemporaryFile(QDir::tempPath() + "/kadu_background_XXXXXX.png", this);
+
+				if (BackgroundTemporaryFile->open())
+				{
+					QImage stretched = image.scaled(viewport()->width(), viewport()->height(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+					if (stretched.save(BackgroundTemporaryFile, "PNG"))
+						viewportStyle.append(QString("background-image: url(%1);").arg(BackgroundTemporaryFile->fileName()));
+					BackgroundTemporaryFile->close();
+				}
+			}
+		}
+		else
+			viewportStyle.append(QString("background-image: url(%1);").arg(BackgroundImageFile));
+
+		viewportStyle.append("background-attachment: fixed;");
+	}
+
+	style.append("}");
+	viewportStyle.append("}");
 
 	setStyleSheet(style);
+	viewport()->setStyleSheet(viewportStyle);
 }
 
 // Tool Tips
