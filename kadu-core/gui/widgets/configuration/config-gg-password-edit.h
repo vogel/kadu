@@ -21,8 +21,8 @@
 #define CONFIG_GG_PASSWORD_EDIT_H
 
 #include "gui/widgets/configuration/config-line-edit.h"
-#include "configuration/configuration-window-data-manager.h"
-#include "misc/misc.h"
+
+#include "exports.h"
 
 class ConfigGroupBox;
 

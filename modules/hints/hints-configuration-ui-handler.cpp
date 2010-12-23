@@ -37,6 +37,7 @@
 #include "hint-over-user-configuration-window.h"
 
 #include "activate.h"
+#include "misc/misc.h"
 
 #include "hints-configuration-ui-handler.h"
 

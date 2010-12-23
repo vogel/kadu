@@ -23,7 +23,7 @@
 
 #include <QtCore/QObject>
 
-#include "misc/misc.h"
+#include "exports.h"
 
 class ConfigTab;
 class QGridLayout;
