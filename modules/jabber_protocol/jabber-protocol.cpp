@@ -332,6 +332,7 @@ void JabberProtocol::disconnectFromServer(const XMPP::Status &s)
 		kdebug("Still connected, closing connection...\n");
 		// make sure that the connection animation gets stopped if we're still
 		// in the process of connecting
+
 		JabberClient->setPresence(s);
 	}
 	/* Tell backend class to disconnect. */

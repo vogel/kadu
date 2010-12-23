@@ -286,6 +286,7 @@ set (SOURCES
 
 set (MOC_SOURCES
 	certificates/certificate-display-dialog.h
+	certificates/certificate-error-dialog.h
 	certificates/trusted-certificates-manager.h
 	client/jabber-client.h
 	client/mini-client.h
