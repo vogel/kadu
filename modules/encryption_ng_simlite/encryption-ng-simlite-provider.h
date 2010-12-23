@@ -24,6 +24,8 @@
 
 #include "accounts/accounts-aware-object.h"
 
+#include "modules/encryption_ng/keys/key.h"
+
 #include "modules/encryption_ng/encryption-provider.h"
 
 class EncryptioNgSimliteProvider : public EncryptionProvider, AccountsAwareObject
@@ -37,6 +39,8 @@ class EncryptioNgSimliteProvider : public EncryptionProvider, AccountsAwareObjec
 	virtual ~EncryptioNgSimliteProvider();
 
 private slots:
+	void keyUpdated(Key key);
+
 	void filterRawIncomingMessage(Chat chat, Contact sender, QByteArray &message, bool &ignore);
 
 protected:

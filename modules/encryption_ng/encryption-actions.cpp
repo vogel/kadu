@@ -61,15 +61,15 @@ EncryptionActions::EncryptionActions()
 			true, checkCanEncrypt
 	);
 
-	connect(EncryptionProviderManager::instance(), SIGNAL(canDecryptChanged(Chat)), this, SLOT(canDecryptChanged(Chat)));
+	connect(EncryptionProviderManager::instance(), SIGNAL(canEncryptChanged(Chat)), this, SLOT(canEncryptChanged(Chat)));
 }
 
 EncryptionActions::~EncryptionActions()
 {
-	disconnect(EncryptionProviderManager::instance(), SIGNAL(canDecryptChanged(Chat)), this, SLOT(canDecryptChanged(Chat)));
+	disconnect(EncryptionProviderManager::instance(), SIGNAL(canEncryptChanged(Chat)), this, SLOT(canEncryptChanged(Chat)));
 }
 
-void EncryptionActions::canDecryptChanged(const Chat &chat)
+void EncryptionActions::canEncryptChanged(const Chat &chat)
 {
 	// there is only as much actions as chat windows, so this is not really N^2 when
 	// this slot is called for each chat when new encryption implementation is loaded/unloaded

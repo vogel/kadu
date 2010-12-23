@@ -40,7 +40,7 @@ class EncryptionActions : public QObject
 	virtual ~EncryptionActions();
 
 private slots:
-	void canDecryptChanged(const Chat &chat);
+	void canEncryptChanged(const Chat &chat);
 
 	void enableEncryptionActionActivated(QAction *sender, bool toggled);
 

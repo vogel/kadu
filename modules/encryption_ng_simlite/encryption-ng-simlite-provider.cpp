@@ -18,6 +18,7 @@
  */
 
 #include "contacts/contact-set.h"
+#include "contacts/contact-shared.h"
 #include "protocols/services/chat-service.h"
 #include "protocols/protocol.h"
 
@@ -26,6 +27,7 @@
 #include "encryption-ng-simlite-encryptor.h"
 
 #include "encryption-ng-simlite-provider.h"
+#include <chat/chat-manager.h>
 
 #define RSA_PUBLIC_KEY_BEGIN "-----BEGIN RSA PUBLIC KEY-----"
 
@@ -45,6 +47,10 @@ void EncryptioNgSimliteProvider::destroyInstance()
 EncryptioNgSimliteProvider::EncryptioNgSimliteProvider()
 {
 	triggerAllAccountsRegistered();
+
+	connect(KeysManager::instance(), SIGNAL(keyAdded(Key)), this, SLOT(keyUpdated(Key)));
+	connect(KeysManager::instance(), SIGNAL(keyUpdated(Key)), this, SLOT(keyUpdated(Key)));
+	connect(KeysManager::instance(), SIGNAL(keyRemoved(Key)), this, SLOT(keyUpdated(Key)));
 }
 
 EncryptioNgSimliteProvider::~EncryptioNgSimliteProvider()
@@ -102,7 +108,7 @@ bool EncryptioNgSimliteProvider::canEncrypt(const Chat &chat)
 		return false;
 
 	Key key = KeysManager::instance()->byContactAndType(*chat.contacts().begin(), "simlite", ActionReturnNull);
-	return !key.isNull();
+	return !key.isNull() && !key.isEmpty();
 }
 
 Decryptor * EncryptioNgSimliteProvider::decryptor(const Chat &chat)
@@ -121,4 +127,17 @@ Encryptor * EncryptioNgSimliteProvider::encryptor(const Chat &chat)
 		return 0;
 
 	return new EncryptioNgSimliteEncryptor(key);
+}
+
+void EncryptioNgSimliteProvider::keyUpdated(Key key)
+{
+	Contact contact = key.keyContact();
+	ContactSet contacts;
+	contacts.insert(contact);
+
+	Chat chat = ChatManager::instance()->findChat(contacts, false);
+	if (!chat)
+		return;
+
+	emit canEncryptChanged(chat);
 }
