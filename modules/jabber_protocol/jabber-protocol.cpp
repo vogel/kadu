@@ -363,6 +363,8 @@ void JabberProtocol::disconnectedFromServer()
 
 	networkStateChanged(NetworkDisconnected);
 
+	JabberClient->disconnect();
+
 	if (!nextStatus().isDisconnected()) // user still wants to login
 		QTimer::singleShot(1000, this, SLOT(login())); // try again after one second
 
