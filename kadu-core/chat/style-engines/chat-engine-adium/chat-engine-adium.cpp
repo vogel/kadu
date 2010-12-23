@@ -338,7 +338,8 @@ QString AdiumChatStyleEngine::replaceKeywords(Chat chat, const QString &styleHre
 
 	//TODO: get Chat name (contacts' nicks?)
 	//Replace %chatName% //TODO. Find way to dynamic update this tag (add id ?)
-	result.replace(QString("%chatName%"), chat.name());
+	int contactsCount = chat.contacts().count();
+	result.replace(QString("%chatName%"), contactsCount > 1 ? tr("Conference [%1]").arg(contactsCount) : chat.name());
 	// Replace %sourceName%
 	result.replace(QString("%sourceName%"), chat.chatAccount().accountIdentity().name());
 	// Replace %destinationName%
