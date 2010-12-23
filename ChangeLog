@@ -6,6 +6,8 @@
 * docking: #1857 fixed: do not bounce the dock icon in silent mode on Mac (dorr)
 * growl_notify: #1755 fixed: show avatar in growl notification on Mac (dorr)
 * actions: removed on/off texts and icons, all checkable actions have only one text and icon now (Vogel)
+* jabber: more memory leaks removed (WhE)
+* notify: #1853 fixed: invalid behaviour of NotificationManager::setSilent() (WhE)
 
 +++ version 0.6.6-beta13
 * sound: #1376 fixed: long delays on Kadu exit and warnings from Qt regarding mutexes (beevvy)

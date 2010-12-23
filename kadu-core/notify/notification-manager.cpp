@@ -105,7 +105,6 @@ void NotificationManager::init()
 	IsFullScreen = false;
 
 	createDefaultConfiguration();
-	configurationUpdated();
 	AutoSilentMode = false;
 	//TODO 0.6.6:
 	//triggerAllAccountsRegistered();
@@ -122,6 +121,7 @@ void NotificationManager::init()
 		this, SLOT(silentModeActionActivated(QAction *, bool)),
 		"kadu_icons/silent-mode-off", tr("Enable notifications"), true
 	);
+	configurationUpdated();
 	connect(SilentModeActionDescription, SIGNAL(actionCreated(Action *)), this, SLOT(silentModeActionCreated(Action *)));
 
 	connect(StatusContainerManager::instance(), SIGNAL(statusChanged()), this, SLOT(statusChanged()));
@@ -160,6 +160,11 @@ void NotificationManager::setSilentMode(bool silentMode)
 	if (silentMode != SilentMode)
 	{
 		SilentMode = silentMode;
+		foreach (Action *action, SilentModeActionDescription->actions())
+			action->setChecked(!silentMode);
+
+		config_file.writeEntry("Notify", "SilentMode", SilentMode);
+
 		emit silentModeToggled(SilentMode);
 	}
 }
@@ -236,10 +241,6 @@ void NotificationManager::silentModeActionActivated(QAction *sender, bool toggle
 	Q_UNUSED(sender)
 
 	setSilentMode(!toggled);
-	foreach (Action *action, SilentModeActionDescription->actions())
-		action->setChecked(toggled);
-
-	config_file.writeEntry("Notify", "SilentMode", SilentMode);
 }
 
 void NotificationManager::statusChanged()
