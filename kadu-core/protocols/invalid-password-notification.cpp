@@ -92,7 +92,7 @@ void InvalidPasswordNotification::callbackDiscard()
 	if (!account().protocolHandler())
 		return;
 	
-	account().protocolHandler()->login("", false);
+	account().protocolHandler()->login(QString(), false);
 }
 
 void InvalidPasswordNotification::callbackAccept()

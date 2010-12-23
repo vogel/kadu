@@ -1,5 +1,6 @@
 +++ version 0.6.6-beta14
-* core: #1804 fixed: Cancel button in PasswordWindow really cancels connection(Juzef)
+* core: #1720 fixed: Ignore button in invalid password window really cancels connection (Juzef)
+* core: #1804 fixed: Cancel button in PasswordWindow really cancels connection (Juzef)
 * jabber: #1778 fixed: correct CertificateErrorDialog behaviour (Juzef)
 * gui: #1792 fixed: do not notify about new messages if window is not active but still fully visible to the user (beevvy)
 * docking: #1857 fixed: do not bounce the dock icon in silent mode on Mac (dorr)
