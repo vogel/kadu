@@ -36,7 +36,6 @@
 #include "services/jabber-personal-info-service.h"
 
 class JabberContactDetails;
-class JabberResourcePool;
 class JabberRosterService;
 class JabberSubscriptionService;
 
@@ -54,7 +53,6 @@ class JabberProtocol : public Protocol
 
 	XMPP::JabberClient *JabberClient;
 	XMPP::Jid jabberID;
-	JabberResourcePool *ResourcePool;
 
 	bool usingSSL;
 	bool confUseSSL;
@@ -115,7 +113,6 @@ public:
 	virtual FileTransferService * fileTransferService() { return 0; }
 	virtual PersonalInfoService * personalInfoService() { return CurrentPersonalInfoService; }
 	virtual SearchService * searchService() { return 0; }
-	JabberResourcePool *resourcePool();
 
 	JabberContactDetails * jabberContactDetails(Contact contact) const;
 

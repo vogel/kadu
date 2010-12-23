@@ -36,9 +36,7 @@
 #include "status/status-type-manager.h"
 #include "url-handlers/url-handler-manager.h"
 
-#include "resource/jabber-resource-pool.h"
 #include "utils/vcard-factory.h"
-#include "iris/filetransfer.h"
 #include "iris/irisnetglobal.h"
 #include "services/jabber-roster-service.h"
 #include "services/jabber-subscription-service.h"
@@ -94,8 +92,7 @@ void JabberProtocol::closeModule()
 }
 
 JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
-		Protocol(account, factory), JabberClient(0), ResourcePool(0),
-		ContactsListReadOnly(false)
+		Protocol(account, factory), JabberClient(0), ContactsListReadOnly(false)
 {
 	kdebugf();
 
@@ -383,7 +380,7 @@ void JabberProtocol::clientResourceReceived(const XMPP::Jid &jid, const XMPP::Re
 {
 	kdebugf();
 	kdebug("New resource available for %s\n", jid.full().toLocal8Bit().data());
-	resourcePool()->addResource(jid, resource);
+//	resourcePool()->addResource(jid, resource);
 
 	Status status(IrisStatusAdapter::fromIrisStatus(resource.status()));
 	Contact contact = ContactManager::instance()->byId(account(), jid.bare(), ActionReturnNull);
@@ -469,13 +466,6 @@ void JabberProtocol::contactIdChanged(Contact contact, const QString &oldId)
 
 	JabberClient->removeContact(oldId);
 	contactAttached(contact);
-}
-
-JabberResourcePool *JabberProtocol::resourcePool()
-{
-	if (!ResourcePool)
-		ResourcePool = new JabberResourcePool(this);
-	return ResourcePool;
 }
 
 void JabberProtocol::changeStatus()

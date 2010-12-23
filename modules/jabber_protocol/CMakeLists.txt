@@ -260,8 +260,6 @@ set (SOURCES
 	jabber-url-handler.cpp
 	facebook-protocol-factory.cpp
 	gtalk-protocol-factory.cpp
-	resource/jabber-resource.cpp
-	resource/jabber-resource-pool.cpp
 	server/jabber-avatar-fetcher.cpp
 	server/jabber-avatar-pep-uploader.cpp
 	server/jabber-avatar-uploader.cpp
@@ -301,8 +299,6 @@ set (MOC_SOURCES
 	jabber-protocol.h
 	jabber-protocol-factory.h
 	jabber-url-handler.h
-	resource/jabber-resource.h
-	resource/jabber-resource-pool.h
 	server/jabber-avatar-fetcher.h
 	server/jabber-avatar-pep-uploader.h
 	server/jabber-avatar-uploader.h

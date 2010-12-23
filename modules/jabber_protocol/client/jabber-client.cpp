@@ -33,7 +33,6 @@
 #include "debug.h"
 
 #include "certificates/certificate-helpers.h"
-#include "resource/jabber-resource-pool.h"
 #include "utils/pep-manager.h"
 #include "utils/server-info-manager.h"
 #include "jabber-account-details.h"
@@ -683,7 +682,7 @@ void JabberClient::slotCSError(int error)
 			}
 			else
 			{
-				Protocol->resourcePool()->clear();
+//				Protocol->resourcePool()->clear();
 				Protocol->logout();
 			}
 		}
@@ -756,10 +755,10 @@ void JabberClient::setPresence(const XMPP::Status &status)
 		XMPP::Resource newResource(jabberAccountDetails->resource(), newStatus);
 
 		// update our resource in the resource pool
-		Protocol->resourcePool()->addResource(jid(), newResource);
+		// Protocol->resourcePool()->addResource(jid(), newResource);
 
 		// make sure that we only consider our own resource locally
-		Protocol->resourcePool()->lockToResource(jid(), newResource);
+		// Protocol->resourcePool()->lockToResource(jid(), newResource);
 	}
 
 	/*
