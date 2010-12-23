@@ -29,7 +29,6 @@
 #include "configuration/configuration-file.h"
 #include "gui/widgets/configuration/notify-group-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"
-#include "misc/misc.h"
 #include "activate.h"
 #include "debug.h"
 
@@ -77,6 +76,6 @@ void HintsConfigurationWidget::updatePreview()
 
 	QColor bcolor = config_file.readColorEntry("Hints", "Event_" + currentNotifyEvent + "_bgcolor");
 	QColor fcolor = config_file.readColorEntry("Hints", "Event_" + currentNotifyEvent + "_fgcolor");
-	QString style = narg("QWidget {color:%1; background-color:%2}", fcolor.name(), bcolor.name());
+	QString style = QString("QWidget {color:%1; background-color:%2}").arg(fcolor.name(), bcolor.name());
 	preview->setStyleSheet(style);
 }

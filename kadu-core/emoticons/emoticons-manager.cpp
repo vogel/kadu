@@ -272,8 +272,7 @@ void EmoticonsManager::expandEmoticons(HtmlDocument &doc, EmoticonsStyle style)
 				{
 					// if so, then replace that previous occurrence
 					// with html tag
-					QString new_text;
-					new_text = narg(emotTemplate, Aliases[lastEmot].escapedAlias, animated ? Aliases[lastEmot].anim : Aliases[lastEmot].stat);
+					QString new_text = emotTemplate.arg(Aliases[lastEmot].escapedAlias, animated ? Aliases[lastEmot].anim : Aliases[lastEmot].stat);
 
 					doc.splitElement(e_i, lastBegin, Aliases[lastEmot].alias.length());
 					doc.setElementValue(e_i, new_text, true);
@@ -293,8 +292,7 @@ void EmoticonsManager::expandEmoticons(HtmlDocument &doc, EmoticonsStyle style)
 		// this is the case, when only one emot was found in current text part
 		if (lastEmot >= 0)
 		{
-			QString new_text;
-			new_text = narg(emotTemplate, Aliases[lastEmot].escapedAlias, animated ? Aliases[lastEmot].anim : Aliases[lastEmot].stat);
+			QString new_text = emotTemplate.arg(Aliases[lastEmot].escapedAlias, animated ? Aliases[lastEmot].anim : Aliases[lastEmot].stat);
 
 			doc.splitElement(e_i, lastBegin, Aliases[lastEmot].alias.length());
 			doc.setElementValue(e_i, new_text, true);

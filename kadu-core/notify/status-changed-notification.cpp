@@ -26,7 +26,6 @@
 #include "chat/chat-manager.h"
 #include "contacts/contact.h"
 #include "contacts/contact-set.h"
-#include "misc/misc.h"
 #include "notify/notify-event.h"
 #include "protocols/protocol.h"
 
@@ -119,9 +118,7 @@ StatusChangedNotification::StatusChangedNotification(const QString &toStatus, co
 		syntax = tr("<b>%1</b> changed status to <i>%2</i>");
 
 	setTitle(tr("Status changed"));
-	setText(narg(syntax,
-		Qt::escape(contact.ownerBuddy().display()),
-		qApp->translate("@default", Status::name(status, false).toAscii().data()),
-		Qt::escape(status.description())
-	));
+	setText(syntax.arg(Qt::escape(contact.ownerBuddy().display()),
+			qApp->translate("@default", Status::name(status, false).toAscii().data()),
+			Qt::escape(status.description())));
 }

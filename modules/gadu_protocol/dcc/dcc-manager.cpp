@@ -44,7 +44,6 @@
 #include "gui/windows/message-dialog.h"
 
 #include "debug.h"
-#include "misc/misc.h"
 
 #include "dcc/dcc-manager.h"
 #include "dcc/dcc-socket-notifiers.h"
@@ -287,14 +286,12 @@ bool DccManager::acceptConnection(UinType uin, UinType peerUin, unsigned int pee
 
 	kdebugm(KDEBUG_WARNING, "possible spoofing attempt from %s (uin:%u)\n", qPrintable(remoteAddress.toString()), peerUin);
 
-	return MessageDialog::ask(QString(), tr("Kadu"), narg(
-			tr("%1 is asking for direct connection but his/her\n"
+	return MessageDialog::ask(QString(), tr("Kadu"), tr("%1 is asking for direct connection but his/her\n"
 				"IP address (%2) differs from what GG server returned\n"
 				"as his/her IP address (%3). It may be spoofing\n"
-				"or he/she has port forwarding. Continue connection?"),
-			buddy.display(),
-			remoteAddress.toString(),
-			contact.address().toString()));
+				"or he/she has port forwarding. Continue connection?").arg(buddy.display(),
+					remoteAddress.toString(),
+					contact.address().toString()));
 }
 
 void DccManager::needIncomingFileTransferAccept(DccSocketNotifiers *socket)

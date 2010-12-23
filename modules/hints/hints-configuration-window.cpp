@@ -28,7 +28,7 @@
 #include "gui/widgets/configuration/config-select-font.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/windows/main-configuration-window.h"
-#include "misc/misc.h"
+#include "misc/path-conversion.h"
 
 #include "hints-configuration-window.h"
 
@@ -57,7 +57,7 @@ HintsConfigurationWindow::HintsConfigurationWindow(const QString &eventName, Not
 
 	QColor bcolor = dataManager->readEntry("Hints", "_bgcolor").value<QColor>();
 	QColor fcolor = dataManager->readEntry("Hints", "_fgcolor").value<QColor>();
-	QString style = narg("QWidget {color:%1; background-color:%2}", fcolor.name(), bcolor.name());
+	QString style = QString("QWidget {color:%1; background-color:%2}").arg(fcolor.name(), bcolor.name());
 	preview->setStyleSheet(style);
 }
 
@@ -89,14 +89,14 @@ void HintsConfigurationWindow::fontChanged(QFont font)
 
 void HintsConfigurationWindow::foregroundColorChanged(const QColor &color)
 {
-    	QColor bcolor = preview->palette().color(preview->backgroundRole());
-	QString style = narg("QWidget {color:%1; background-color:%2}", color.name(), bcolor.name());
+	QColor bcolor = preview->palette().color(preview->backgroundRole());
+	QString style = QString("QWidget {color:%1; background-color:%2}").arg(color.name(), bcolor.name());
 	preview->setStyleSheet(style);
 }
 
 void HintsConfigurationWindow::backgroundColorChanged(const QColor &color)
 {
 	QColor fcolor = preview->palette().color(preview->foregroundRole());
-	QString style = narg("QWidget {color:%1; background-color:%2}", fcolor.name(), color.name());
+	QString style = QString("QWidget {color:%1; background-color:%2}").arg(fcolor.name(), color.name());
 	preview->setStyleSheet(style);
 }

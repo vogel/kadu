@@ -162,54 +162,6 @@ QString rectToString(const QRect& rect)
 	return QString("%1,%2,%3,%4").arg(rect.left()).arg(rect.top()).arg(rect.width()).arg(rect.height());
 }
 
-
-QString narg(const QString &s, const QString **tab, int count)
-{
-	kdebugf();
-	QString out;
-	const QChar *d = s.unicode();
-	const QChar *dend = d + s.length();
-	int j = 0;
-	char maxc = '0' + count;
-	if (count > 9)
-		return QString();
-
-	while (d != dend)
-	{
-		if (*d == '%' && d + 1 < dend && *(d + 1) >= '1' && *(d + 1) <= maxc)
-		{
-			out.append(QString(d - j, j));
-			++d;
-			out.append(*(tab[d->digitValue() - 1]));
-			j = 0;
-		}
-		else
-			++j;
-		++d;
-	}
-	out.append(QString(d - j, j));
-//	kdebugm(KDEBUG_DUMP, "out: '%s'\n", qPrintable(out));
-	kdebugf2();
-
-	return out;
-}
-
-QString narg(const QString &s, const QString &arg1, const QString &arg2,
-				const QString &arg3, const QString &arg4,
-				const QString &arg5, const QString &arg6,
-				const QString &arg7, const QString &arg8,
-				const QString &arg9)
-{
-	const QString *tab[9]={&arg1, &arg2, &arg3, &arg4, &arg5, &arg6, &arg7, &arg8, &arg9};
-	return narg(s, tab, 9);
-}
-
-QString narg(const QString &s, const QString &arg1, const QString &arg2, const QString &arg3, const QString &arg4)
-{
-	const QString *tab[4]={&arg1, &arg2, &arg3, &arg4};
-	return narg(s, tab, 4);
-}
-
 QString fixFileName(const QString &path, const QString &fn)
 {
 	// check if original path is ok

@@ -23,6 +23,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtGui/QApplication>
 #include <QtGui/QLabel>
 #include <QtGui/QMouseEvent>
 #include <QtGui/QPushButton>
@@ -31,7 +32,6 @@
 #include "chat/chat.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact-set.h"
-#include "misc/misc.h"
 #include "notify/chat-notification.h"
 #include "notify/notification.h"
 #include "parser/parser.h"
@@ -117,7 +117,7 @@ void Hint::configurationUpdated()
 	bcolor = config_file.readColorEntry("Hints", "Event_" + notification->key() + "_bgcolor", &qApp->palette().background().color());
 	fcolor = config_file.readColorEntry("Hints", "Event_" + notification->key() + "_fgcolor", &qApp->palette().foreground().color());
 	label->setFont(config_file.readFontEntry("Hints", "Event_" + notification->key() + "_font", &qApp->font()));
-	QString style = narg("QWidget {color:%1; background-color:%2; border-width:0px; border-color:%2}", fcolor.name(), bcolor.name());
+	QString style = QString("QWidget {color:%1; background-color:%2; border-width:0px; border-color:%2}").arg(fcolor.name(), bcolor.name());
 
 	setStyleSheet(style);
 
@@ -279,13 +279,13 @@ void Hint::mouseReleaseEvent(QMouseEvent *event)
 
 void Hint::enterEvent(QEvent *)
 {
-	QString style = narg("QWidget {color:%1; background-color:%2; border-width:0px; border-color:%2}", fcolor.name(), bcolor.lighter().name());
+	QString style = QString("QWidget {color:%1; background-color:%2; border-width:0px; border-color:%2}").arg(fcolor.name(), bcolor.lighter().name());
 	setStyleSheet(style);
 }
 
 void Hint::leaveEvent(QEvent *)
 {
-	QString style = narg("QWidget {color:%1; background-color:%2; border-width:0px; border-color:%2}", fcolor.name(), bcolor.name());
+	QString style = QString("QWidget {color:%1; background-color:%2; border-width:0px; border-color:%2}").arg(fcolor.name(), bcolor.name());
 	setStyleSheet(style);
 }
 
