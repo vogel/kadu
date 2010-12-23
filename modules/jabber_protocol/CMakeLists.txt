@@ -273,7 +273,6 @@ set (SOURCES
 	services/jabber-contact-personal-info-service.cpp
 	services/jabber-roster-service.cpp
 	services/jabber-subscription-service.cpp
-	transport/jabber-transport.cpp
 	utils/jid-util.cpp
 	utils/vcard-factory.cpp
 	utils/pep-manager.cpp
@@ -312,7 +311,6 @@ set (MOC_SOURCES
 	services/jabber-contact-personal-info-service.h
 	services/jabber-roster-service.h
 	services/jabber-subscription-service.h
-	transport/jabber-transport.h
 	utils/vcard-factory.h
 	utils/pep-manager.h
 	utils/server-info-manager.h
