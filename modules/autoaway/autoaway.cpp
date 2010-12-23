@@ -35,8 +35,10 @@
 
 #include "accounts/account.h"
 #include "configuration/configuration-file.h"
+#include "core/core.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/windows/main-configuration-window.h"
+#include "parser/parser.h"
 #include "misc/path-conversion.h"
 #include "status/status-changer-manager.h"
 #include "debug.h"
@@ -250,9 +252,9 @@ void AutoAway::descriptionChangeChanged(int index)
 
 QString AutoAway::parseDescription(const QString &parseDescription)
 {
-// 	if (parseAutoStatus)//TODO 0.6.6:
-// 		return (KaduParser::parse(parseDescription, AccountManager::instance()->defaultAccount(), kadu->myself(), true));
-// 	else
+	if (parseAutoStatus)
+		return (Parser::parse(parseDescription, BuddyOrContact(Core::instance()->myself()), true));
+	else
 		return parseDescription;
 }
 
