@@ -58,6 +58,7 @@ ChatMessagesView::ChatMessagesView(const Chat &chat, bool supportTransparency, Q
 	setMinimumSize(QSize(100,100));
 	setPage(Renderer->webPage());
 	settings()->setAttribute(QWebSettings::JavascriptEnabled, true);
+	settings()->setAttribute(QWebSettings::PluginsEnabled, true);
 
 	connectChat();
 

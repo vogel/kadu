@@ -1,0 +1,5 @@
+[Module]
+Description=Automatic images and YouTube links parser
+Description[pl]=Automatic images and YouTube links parser
+Author=NeoX
+Version=0.4
