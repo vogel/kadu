@@ -66,12 +66,12 @@ void BuddyDeleteWindow::createGui()
 
 	QVBoxLayout *contentLayout = new QVBoxLayout(contentWidget);
 
-	QLabel *messageLabel = new QLabel(tr("Selected users:\n%0 will be deleted. Are you sure?").arg(getBuddiesNames()), contentWidget);
+	QLabel *messageLabel = new QLabel(tr("The following buddies will be deleted:<br/>%1.<br/>Are you sure?").arg(getBuddiesNames()), contentWidget);
 	messageLabel->setTextFormat(Qt::RichText);
 	messageLabel->setWordWrap(true);
 	contentLayout->addWidget(messageLabel);
 
-	QLabel *additionalDataLabel = new QLabel(tr("Select additional data that should be removed:"), contentWidget);
+	QLabel *additionalDataLabel = new QLabel(tr("Please select additional data that will be removed:"), contentWidget);
 	contentLayout->addWidget(additionalDataLabel);
 
 	AdditionalDataListView = new QListWidget(contentWidget);
@@ -79,20 +79,17 @@ void BuddyDeleteWindow::createGui()
 
 	fillAdditionalDataListView();
 
-	QDialogButtonBox *buttons = new QDialogButtonBox(this);
-	mainLayout->addWidget(buttons);
-
-	QPushButton *deleteButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogDiscardButton), tr("Delete"));
-	deleteButton->setAutoDefault(true);
-	deleteButton->setDefault(true);
-
+	QPushButton *deleteButton = new QPushButton(tr("Delete"));
 	QPushButton *cancelButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton), tr("Cancel"));
+	cancelButton->setDefault(true);
+
+	QDialogButtonBox *buttons = new QDialogButtonBox(this);
+	buttons->addButton(deleteButton, QDialogButtonBox::DestructiveRole);
+	buttons->addButton(cancelButton, QDialogButtonBox::RejectRole);
+	mainLayout->addWidget(buttons);
 
 	connect(deleteButton, SIGNAL(clicked(bool)), this, SLOT(accept()));
 	connect(cancelButton, SIGNAL(clicked(bool)), this, SLOT(reject()));
-
-	buttons->addButton(deleteButton, QDialogButtonBox::DestructiveRole);
-	buttons->addButton(cancelButton, QDialogButtonBox::RejectRole);
 }
 
 void BuddyDeleteWindow::fillAdditionalDataListView()
@@ -101,7 +98,7 @@ void BuddyDeleteWindow::fillAdditionalDataListView()
 	{
 		QListWidgetItem *item = new QListWidgetItem(AdditionalDataListView);
 		item->setText(handler->displayName());
-		item->setCheckState(Qt::Checked);
+		item->setCheckState(Qt::Unchecked);
 		item->setData(Qt::UserRole, handler->name());
 
 		AdditionalDataListView->addItem(item);
@@ -112,7 +109,7 @@ QString BuddyDeleteWindow::getBuddiesNames()
 {
 	QStringList displays;
 	foreach (const Buddy &buddy, BuddiesToDelete)
-		displays.append(QString("<b>%0</b>").arg(buddy.display()));
+		displays.append(QString("<b>%1</b>").arg(buddy.display()));
 
 	return displays.join(", ");
 }
