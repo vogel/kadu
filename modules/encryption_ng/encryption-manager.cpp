@@ -136,6 +136,5 @@ void EncryptionManager::chatWidgetDestroying(ChatWidget *chatWidget)
 	EncryptionChatData *encryptionChatData = chat.data()->moduleData<EncryptionChatData>("encryption-ng");
 	chat.data()->removeModuleData("encryption-ng");
 
-	if (encryptionChatData)
-		delete encryptionChatData;
+	delete encryptionChatData;
 }

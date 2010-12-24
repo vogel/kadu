@@ -42,7 +42,7 @@ class EncryptionManager : public QObject, AccountsAwareObject
 private slots:
 	void filterRawOutgoingMessage(Chat chat, QByteArray &message, bool &stop);
 	void filterRawIncomingMessage(Chat chat, Contact sender, QByteArray &message, bool &ignore);
-    void chatWidgetDestroying(ChatWidget *chatWidget);
+	void chatWidgetDestroying(ChatWidget *chatWidget);
 
 protected:
 	virtual void accountRegistered(Account account);
