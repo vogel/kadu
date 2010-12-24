@@ -19,9 +19,21 @@
 
 #include "decryptor-wrapper.h"
 
-DecryptorWrapper::DecryptorWrapper(EncryptionProvider *provider, QObject *parent) :
-		Decryptor(provider, parent)
+DecryptorWrapper::DecryptorWrapper(const Chat &chat, EncryptionProviderManager *provider, QObject *parent) :
+		Decryptor(provider, parent), MyChat(chat)
 {
+	connect(provider, SIGNAL(providerRegistered(EncryptionProvider*)),
+			this, SLOT(providerRegistered(EncryptionProvider*)));
+
+	foreach (EncryptionProvider *provider, provider->providers())
+		providerRegistered(provider);
+}
+
+void DecryptorWrapper::providerRegistered(EncryptionProvider *provider)
+{
+	Decryptor *decryptor = provider->acquireDecryptor(MyChat);
+	if (decryptor)
+		addDecryptor(decryptor);
 }
 
 void DecryptorWrapper::addDecryptor(Decryptor *decryptor)

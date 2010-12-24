@@ -104,16 +104,7 @@ bool EncryptionProviderManager::canEncrypt(const Chat &chat)
 
 Decryptor * EncryptionProviderManager::acquireDecryptor(const Chat &chat)
 {
-	DecryptorWrapper *result = new DecryptorWrapper(this);
-
-	foreach (EncryptionProvider *provider, Providers)
-	{
-		Decryptor *decryptor = provider->acquireDecryptor(chat);
-		if (decryptor)
-			result->addDecryptor(decryptor);
-	}
-
-	return result;
+	return new DecryptorWrapper(chat, this, this);
 }
 
 Encryptor * EncryptionProviderManager::acquireEncryptor(const Chat &chat)

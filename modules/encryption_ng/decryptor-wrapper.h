@@ -20,19 +20,25 @@
 #ifndef DECRYPTOR_WRAPPER_H
 #define DECRYPTOR_WRAPPER_H
 
+#include "chat/chat.h"
+
+#include "encryption-provider-manager.h"
+
 #include "decryptor.h"
 
 class DecryptorWrapper : public Decryptor
 {
 	Q_OBJECT
 
+	Chat MyChat;
 	QList<Decryptor *> Decryptors;
 
 private slots:
+	void providerRegistered(EncryptionProvider *provider);
 	void decryptorDestroyed(QObject *decryptor);
 
 public:
-	DecryptorWrapper(EncryptionProvider *provider, QObject *parent = 0);
+	DecryptorWrapper(const Chat &chat, EncryptionProviderManager *provider, QObject *parent = 0);
 	virtual ~DecryptorWrapper() {}
 
 	virtual QByteArray decrypt(const QByteArray &data);
