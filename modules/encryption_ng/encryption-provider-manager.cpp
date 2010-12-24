@@ -63,6 +63,8 @@ void EncryptionProviderManager::registerProvider(EncryptionProvider *provider)
 		emit canDecryptChanged(chat);
 		emit canEncryptChanged(chat);
 	}
+
+	emit providerRegistered(provider);
 }
 
 void EncryptionProviderManager::unregisterProvider(EncryptionProvider *provider)
@@ -78,6 +80,8 @@ void EncryptionProviderManager::unregisterProvider(EncryptionProvider *provider)
 		emit canDecryptChanged(chat);
 		emit canEncryptChanged(chat);
 	}
+
+	emit providerUnregistered(provider);
 }
 
 bool EncryptionProviderManager::canDecrypt(const Chat &chat)

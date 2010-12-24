@@ -62,6 +62,10 @@ public:
 	virtual void releaseEncryptor(const Chat &chat, Encryptor *encryptor);
 	virtual void releaseDecryptor(const Chat &chat, Decryptor *decryptor);
 
+signals:
+	void providerRegistered(EncryptionProvider *provider);
+	void providerUnregistered(EncryptionProvider *provider);
+
 };
 
 #endif // ENCRYPTION_PROVIDER_MANAGER_H
