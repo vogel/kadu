@@ -23,46 +23,27 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ECHO_H
-#define ECHO_H
+#include "debug.h"
 
-#include <time.h>
+#include "echo.h"
 
-#include <QtCore/QObject>
-
-#include "accounts/accounts-aware-object.h"
-
-class QString;
-
-class Chat;
-class Contact;
-
-class Echo : public QObject, AccountsAwareObject
+extern "C" int echo_init(bool firstLoad)
 {
-	Q_OBJECT
+	Q_UNUSED(firstLoad)
 
-	static Echo *Instance;
+	kdebugf();
 
-	explicit Echo(QObject *parent = 0);
-	virtual ~Echo();
+	Echo::createInstance();
 
-private slots:
-	void filterIncomingMessage(Chat chat, Contact sender, QString &message, time_t time, bool &ignore);
+	kdebugf2();
+	return 0;
+}
 
-protected:
-	virtual void accountRegistered(Account account);
-	virtual void accountUnregistered(Account account);
+extern "C" void echo_close()
+{
+	kdebugf();
 
-public:
-	static Echo * instance();
-	static void createInstance();
-	static void destroyInstance();
+	Echo::destroyInstance();
 
-};
-
-// for MOC
-#include <QtCore/QString>
-#include "chat/chat.h"
-#include "contacts/contact.h"
-
-#endif // ECHO_H
+	kdebugf2();
+}
