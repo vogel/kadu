@@ -98,25 +98,13 @@ bool EncryptionProviderManager::canEncrypt(const Chat &chat)
 	return false;
 }
 
-Decryptor * EncryptionProviderManager::decryptor(const Chat &chat)
-{
-	foreach (EncryptionProvider *provider, Providers)
-	{
-		Decryptor *result = provider->decryptor(chat);
-		if (result)
-			return result;
-	}
-
-	return 0;
-}
-
-Decryptor * EncryptionProviderManager::decryptorWrapper(const Chat& chat)
+Decryptor * EncryptionProviderManager::acquireDecryptor(const Chat &chat)
 {
 	DecryptorWrapper *result = new DecryptorWrapper(this);
 
 	foreach (EncryptionProvider *provider, Providers)
 	{
-		Decryptor *decryptor = provider->decryptor(chat);
+		Decryptor *decryptor = provider->acquireDecryptor(chat);
 		if (decryptor)
 			result->addDecryptor(decryptor);
 	}
@@ -124,16 +112,39 @@ Decryptor * EncryptionProviderManager::decryptorWrapper(const Chat& chat)
 	return result;
 }
 
-Encryptor * EncryptionProviderManager::encryptor(const Chat &chat)
+Encryptor * EncryptionProviderManager::acquireEncryptor(const Chat &chat)
 {
 	foreach (EncryptionProvider *provider, Providers)
 	{
-		Encryptor *result = provider->encryptor(chat);
+		Encryptor *result = provider->acquireEncryptor(chat);
 		if (result)
 			return result;
 	}
 
 	return 0;
+}
+
+void EncryptionProviderManager::releaseDecryptor(const Chat &chat, Decryptor *decryptor)
+{
+	Q_UNUSED(chat)
+
+	DecryptorWrapper *decryptorWrapper = dynamic_cast<DecryptorWrapper *>(decryptor);
+	if (!decryptorWrapper)
+		return;
+
+	QList<Decryptor *> decryptors = decryptorWrapper->decryptors();
+	foreach (Decryptor *decryptor, decryptors)
+		decryptor->provider()->releaseDecryptor(chat, decryptor);
+
+	delete decryptorWrapper;
+}
+
+void EncryptionProviderManager::releaseEncryptor(const Chat &chat, Encryptor *encryptor)
+{
+	Q_UNUSED(chat)
+	Q_UNUSED(encryptor)
+
+	// should not get called, we just provide encryptors from other class
 }
 
 // I know it is not best place for invoking gui, please change it in future

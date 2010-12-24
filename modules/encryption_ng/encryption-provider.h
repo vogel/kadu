@@ -37,8 +37,11 @@ public:
 	virtual bool canEncrypt(const Chat &chat) = 0;
 	virtual bool canDecrypt(const Chat &chat) = 0;
 
-	virtual Encryptor * encryptor(const Chat &chat) = 0;
-	virtual Decryptor * decryptor(const Chat &chat) = 0;
+	virtual Encryptor * acquireEncryptor(const Chat &chat) = 0;
+	virtual Decryptor * acquireDecryptor(const Chat &chat) = 0;
+
+	virtual void releaseEncryptor(const Chat &chat, Encryptor *encryptor) = 0;
+	virtual void releaseDecryptor(const Chat &chat, Decryptor *decryptor) = 0;
 
 signals:
 	void canEncryptChanged(const Chat &chat);

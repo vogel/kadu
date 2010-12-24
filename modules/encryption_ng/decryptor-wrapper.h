@@ -37,6 +37,8 @@ public:
 
 	virtual QByteArray decrypt(const QByteArray &data);
 
+	QList<Decryptor *> decryptors() { return Decryptors; }
+
 	void addDecryptor(Decryptor *decryptor);
 	void removeDecryptor(Decryptor *decryptor);
 

@@ -89,16 +89,24 @@ void EncryptionManager::accountUnregistered(Account account)
 
 void EncryptionManager::setEncryptionEnabled(const Chat &chat, bool enable)
 {
-	// TODO: find out life-cycle of encryptor-decryptor classes
 	EncryptionChatData *encryptionChatData = chat.data()->moduleData<EncryptionChatData>("encryption-ng", true);
 	if (enable)
 	{
-		Encryptor *encryptor = EncryptionProviderManager::instance()->encryptor(chat);
+		// just in case release previous one
+		Encryptor *encryptor = encryptionChatData->encryptor();
+		if (encryptor)
+			encryptor->provider()->releaseEncryptor(chat, encryptor);
+
+		encryptor = EncryptionProviderManager::instance()->acquireEncryptor(chat);
 		encryptionChatData->setEncryptor(encryptor);
 	}
 	else
-		// destroy it here or sth?
+	{
+		Encryptor *encryptor = encryptionChatData->encryptor();
+		if (encryptor)
+			encryptor->provider()->releaseEncryptor(chat, encryptor);
 		encryptionChatData->setEncryptor(0);
+	}
 }
 
 void EncryptionManager::filterRawIncomingMessage(Chat chat, Contact sender, QByteArray &message, bool &ignore)
@@ -113,7 +121,7 @@ void EncryptionManager::filterRawIncomingMessage(Chat chat, Contact sender, QByt
 		return;
 
 	if (!encryptionChatData->decryptor())
-		encryptionChatData->setDecryptor(EncryptionProviderManager::instance()->decryptorWrapper(chat));
+		encryptionChatData->setDecryptor(EncryptionProviderManager::instance()->acquireDecryptor(chat));
 
 	message = encryptionChatData->decryptor()->decrypt(message);
 }

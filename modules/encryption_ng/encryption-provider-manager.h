@@ -56,9 +56,11 @@ public:
 	bool canEncrypt(const Chat &chat);
 	bool canDecrypt(const Chat &chat);
 
-	Encryptor * encryptor(const Chat &chat);
-	Decryptor * decryptor(const Chat &chat);
-	Decryptor * decryptorWrapper(const Chat &chat);
+	virtual Encryptor * acquireEncryptor(const Chat &chat);
+	virtual Decryptor * acquireDecryptor(const Chat &chat);
+
+	virtual void releaseEncryptor(const Chat &chat, Encryptor *encryptor);
+	virtual void releaseDecryptor(const Chat &chat, Decryptor *decryptor);
 
 };
 

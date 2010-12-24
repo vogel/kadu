@@ -115,7 +115,7 @@ bool EncryptioNgSimliteProvider::canEncrypt(const Chat &chat)
 	return !key.isNull() && !key.isEmpty();
 }
 
-Decryptor * EncryptioNgSimliteProvider::decryptor(const Chat &chat)
+Decryptor * EncryptioNgSimliteProvider::acquireDecryptor(const Chat &chat)
 {
 	if (1 != chat.contacts().size())
 		return 0;
@@ -127,7 +127,7 @@ Decryptor * EncryptioNgSimliteProvider::decryptor(const Chat &chat)
 	return new EncryptioNgSimliteDecryptor(key, this, this);
 }
 
-Encryptor * EncryptioNgSimliteProvider::encryptor(const Chat &chat)
+Encryptor * EncryptioNgSimliteProvider::acquireEncryptor(const Chat &chat)
 {
 	if (1 != chat.contacts().size())
 		return 0;
@@ -137,6 +137,18 @@ Encryptor * EncryptioNgSimliteProvider::encryptor(const Chat &chat)
 		return 0;
 
 	return new EncryptioNgSimliteEncryptor(key, this, this);
+}
+
+void EncryptioNgSimliteProvider::releaseDecryptor(const Chat &chat, Decryptor *decryptor)
+{
+	Q_UNUSED(chat)
+	delete decryptor;
+}
+
+void EncryptioNgSimliteProvider::releaseEncryptor(const Chat &chat, Encryptor *encryptor)
+{
+	Q_UNUSED(chat)
+	delete encryptor;
 }
 
 void EncryptioNgSimliteProvider::keyUpdated(Key key)
