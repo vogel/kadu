@@ -168,3 +168,13 @@ void EncryptionActions::sendPublicKey(const Contact &contact)
 	Chat chat = ChatManager::instance()->findChat(contacts, true);
 	chatService->sendMessage(chat, QString::fromUtf8(key.key().data()), true);
 }
+
+void EncryptionActions::checkEnableEncryption(const Chat &chat, bool check)
+{
+	// there is only as much actions as chat windows, so this is not really N^2 when
+	// this slot is called for each chat when new encryption implementation is loaded/unloaded
+	// so no need to optimize it
+	foreach (Action *action, EnableEncryptionActionDescription->actions())
+		if (action->chat() == chat)
+			action->setChecked(check);
+}

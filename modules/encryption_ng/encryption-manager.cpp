@@ -21,7 +21,9 @@
 #include "protocols/services/chat-service.h"
 #include "protocols/protocol.h"
 
+#include "configuration/encryption-ng-configuration.h"
 #include "decryptor.h"
+#include "encryption-actions.h"
 #include "encryption-chat-data.h"
 #include "encryption-provider-manager.h"
 #include "encryptor.h"
@@ -45,6 +47,8 @@ EncryptionManager::EncryptionManager()
 {
 	triggerAllAccountsRegistered();
 
+	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetCreated(ChatWidget*)),
+			this, SLOT(chatWidgetCreated(ChatWidget*)));
 	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetDestroying(ChatWidget*)),
 			this, SLOT(chatWidgetDestroying(ChatWidget*)));
 }
@@ -53,6 +57,8 @@ EncryptionManager::~EncryptionManager()
 {
 	triggerAllAccountsUnregistered();
 
+	disconnect(ChatWidgetManager::instance(), SIGNAL(chatWidgetCreated(ChatWidget*)),
+			this, SLOT(chatWidgetCreated(ChatWidget*)));
 	disconnect(ChatWidgetManager::instance(), SIGNAL(chatWidgetDestroying(ChatWidget*)),
 			this, SLOT(chatWidgetDestroying(ChatWidget*)));
 }
@@ -100,6 +106,7 @@ bool EncryptionManager::setEncryptionEnabled(const Chat &chat, bool enable)
 		encryptor = EncryptionProviderManager::instance()->acquireEncryptor(chat);
 		encryptionChatData->setEncryptor(encryptor);
 
+		EncryptionActions::instance()->checkEnableEncryption(chat, 0 != encryptor);
 		return 0 != encryptor;
 	}
 	else
@@ -109,6 +116,7 @@ bool EncryptionManager::setEncryptionEnabled(const Chat &chat, bool enable)
 			encryptor->provider()->releaseEncryptor(chat, encryptor);
 		encryptionChatData->setEncryptor(0);
 
+		EncryptionActions::instance()->checkEnableEncryption(chat, false);
 		return true; // we can always disable
 	}
 }
@@ -137,6 +145,17 @@ void EncryptionManager::filterRawOutgoingMessage(Chat chat, QByteArray &message,
 	EncryptionChatData *encryptionChatData = chat.data()->moduleData<EncryptionChatData>("encryption-ng");
 	if (encryptionChatData && encryptionChatData->encryptor())
 		message = encryptionChatData->encryptor()->encrypt(message);
+}
+
+void EncryptionManager::chatWidgetCreated(ChatWidget *chatWidget)
+{
+	Chat chat = chatWidget->chat();
+	if (!chat.data())
+		return;
+
+	bool encrypt = EncryptionNgConfiguration::instance()->encryptByDefault();
+	if (encrypt) // TODO: make it aware of per-chat configuration
+		setEncryptionEnabled(chat, true);
 }
 
 void EncryptionManager::chatWidgetDestroying(ChatWidget *chatWidget)

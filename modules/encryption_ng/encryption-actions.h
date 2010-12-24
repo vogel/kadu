@@ -54,6 +54,8 @@ public:
 
 	static EncryptionActions * instance() { return Instance; }
 
+	void checkEnableEncryption(const Chat &chat, bool check);
+
 };
 
 #endif // ENCRYPTION_ACTIONS_H
