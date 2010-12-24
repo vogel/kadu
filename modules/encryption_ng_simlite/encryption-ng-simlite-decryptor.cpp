@@ -52,9 +52,9 @@ EncryptioNgSimliteDecryptor::EncryptioNgSimliteDecryptor(const Account &account,
 
 EncryptioNgSimliteDecryptor::~EncryptioNgSimliteDecryptor()
 {
-	connect(KeysManager::instance(), SIGNAL(keyAdded(Key)), this, SLOT(keyUpdated(Key)));
-	connect(KeysManager::instance(), SIGNAL(keyUpdated(Key)), this, SLOT(keyUpdated(Key)));
-	connect(KeysManager::instance(), SIGNAL(keyRemoved(Key)), this, SLOT(keyUpdated(Key)));
+	disconnect(KeysManager::instance(), SIGNAL(keyAdded(Key)), this, SLOT(keyUpdated(Key)));
+	disconnect(KeysManager::instance(), SIGNAL(keyUpdated(Key)), this, SLOT(keyUpdated(Key)));
+	disconnect(KeysManager::instance(), SIGNAL(keyRemoved(Key)), this, SLOT(keyUpdated(Key)));
 }
 
 void EncryptioNgSimliteDecryptor::keyUpdated(const Key &key)

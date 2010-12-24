@@ -142,11 +142,11 @@ Encryptor * EncryptioNgSimliteProvider::acquireEncryptor(const Chat &chat)
 	if (1 != chat.contacts().size())
 		return 0;
 
-	Key key = KeysManager::instance()->byContactAndType(*chat.contacts().begin(), "simlite", ActionReturnNull);
-	if (!key)
+	EncryptioNgSimliteEncryptor *encryptor = new EncryptioNgSimliteEncryptor(*chat.contacts().begin(), this, this);
+	if (!encryptor->isValid())
 		return 0;
 
-	return new EncryptioNgSimliteEncryptor(key, this, this);
+	return encryptor;
 }
 
 void EncryptioNgSimliteProvider::releaseDecryptor(const Chat &chat, Decryptor *decryptor)

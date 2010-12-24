@@ -23,6 +23,8 @@
 #include <QtCore/QObject>
 #include <QtCrypto>
 
+#include "contacts/contact.h"
+
 #include "modules/encryption_ng/encryptor.h"
 
 class Key;
@@ -31,16 +33,23 @@ class EncryptioNgSimliteEncryptor : public Encryptor
 {
 	Q_OBJECT
 
+	Contact MyContact;
 	QCA::PublicKey EncodingKey;
 	bool Valid;
 
+	void updateKey();
 	QCA::PublicKey getPublicKey(const Key &key);
 
+private slots:
+	void keyUpdated(const Key &key);
+
 public:
-	EncryptioNgSimliteEncryptor(const Key &key, EncryptionProvider *provider, QObject *parent = 0);
+	EncryptioNgSimliteEncryptor(const Contact &contact, EncryptionProvider *provider, QObject *parent = 0);
 	virtual ~EncryptioNgSimliteEncryptor();
 
 	virtual QByteArray encrypt(const QByteArray &data);
+
+	bool isValid() { return Valid; }
 
 };
 
