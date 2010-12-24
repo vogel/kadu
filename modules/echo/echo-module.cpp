@@ -24,10 +24,11 @@
  */
 
 #include "debug.h"
+#include "exports.h"
 
 #include "echo.h"
 
-extern "C" int echo_init(bool firstLoad)
+extern "C" KADU_EXPORT int echo_init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
@@ -39,7 +40,7 @@ extern "C" int echo_init(bool firstLoad)
 	return 0;
 }
 
-extern "C" void echo_close()
+extern "C" KADU_EXPORT void echo_close()
 {
 	kdebugf();
 
