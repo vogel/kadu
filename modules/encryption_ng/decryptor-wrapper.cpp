@@ -19,6 +19,11 @@
 
 #include "decryptor-wrapper.h"
 
+DecryptorWrapper::DecryptorWrapper(EncryptionProvider *provider, QObject *parent) :
+	Decryptor(provider, parent)
+{
+}
+
 void DecryptorWrapper::addDecryptor(Decryptor *decryptor)
 {
 	Decryptors.append(decryptor);

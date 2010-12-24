@@ -22,12 +22,19 @@
 
 #include <QtCore/QObject>
 
+class EncryptionProvider;
+
 class Encryptor : public QObject
 {
 	Q_OBJECT
 
+	EncryptionProvider *Provider;
+
 public:
+	Encryptor(EncryptionProvider *provider, QObject *parent = 0);
 	virtual ~Encryptor() {}
+
+	EncryptionProvider * provider() { return Provider; }
 
 	virtual QByteArray encrypt(const QByteArray &data) = 0;
 

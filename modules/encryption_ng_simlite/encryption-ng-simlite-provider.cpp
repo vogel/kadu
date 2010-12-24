@@ -124,7 +124,7 @@ Decryptor * EncryptioNgSimliteProvider::decryptor(const Chat &chat)
 	if (!key)
 		return 0;
 
-	return new EncryptioNgSimliteDecryptor(key);
+	return new EncryptioNgSimliteDecryptor(key, this, this);
 }
 
 Encryptor * EncryptioNgSimliteProvider::encryptor(const Chat &chat)
@@ -136,7 +136,7 @@ Encryptor * EncryptioNgSimliteProvider::encryptor(const Chat &chat)
 	if (!key)
 		return 0;
 
-	return new EncryptioNgSimliteEncryptor(key);
+	return new EncryptioNgSimliteEncryptor(key, this, this);
 }
 
 void EncryptioNgSimliteProvider::keyUpdated(Key key)

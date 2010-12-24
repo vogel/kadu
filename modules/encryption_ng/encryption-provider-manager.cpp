@@ -112,7 +112,7 @@ Decryptor * EncryptionProviderManager::decryptor(const Chat &chat)
 
 Decryptor * EncryptionProviderManager::decryptorWrapper(const Chat& chat)
 {
-	DecryptorWrapper *result = new DecryptorWrapper();
+	DecryptorWrapper *result = new DecryptorWrapper(this);
 
 	foreach (EncryptionProvider *provider, Providers)
 	{

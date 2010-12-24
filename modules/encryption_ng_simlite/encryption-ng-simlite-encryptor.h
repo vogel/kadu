@@ -37,7 +37,7 @@ class EncryptioNgSimliteEncryptor : public Encryptor
 	QCA::PublicKey getPublicKey(const Key &key);
 
 public:
-	EncryptioNgSimliteEncryptor(const Key &key);
+	EncryptioNgSimliteEncryptor(const Key &key, EncryptionProvider *provider, QObject *parent = 0);
 	virtual ~EncryptioNgSimliteEncryptor();
 
 	virtual QByteArray encrypt(const QByteArray &data);

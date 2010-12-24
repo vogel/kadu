@@ -39,7 +39,8 @@ typedef struct {
 	uint8_t flags;
 } sim_message_header;
 
-EncryptioNgSimliteEncryptor::EncryptioNgSimliteEncryptor(const Key &key)
+EncryptioNgSimliteEncryptor::EncryptioNgSimliteEncryptor(const Key &key, EncryptionProvider *provider, QObject *parent) :
+		Encryptor(provider, parent)
 {
 	Valid = true;
 	EncodingKey = getPublicKey(key);

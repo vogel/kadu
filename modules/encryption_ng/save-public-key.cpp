@@ -17,31 +17,15 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ENCRYPTION_NG_SIMLITE_DECRYPTOR_H
-#define ENCRYPTION_NG_SIMLITE_DECRYPTOR_H
+#include "save-public-key-window.h"
 
-#include <QtCore/QObject>
-#include <QtCrypto>
-
-#include "modules/encryption_ng/decryptor.h"
-
-class Key;
-
-class EncryptioNgSimliteDecryptor : public Decryptor
+SavePublicKeyWindow::SavePublicKeyWindow(const Contact &contact, const QByteArray &key, QWidget *parent) :
+		QDialog(parent), MyContact(contact), Key(key)
 {
-	Q_OBJECT
+	createGui();
+}
 
-	QCA::PrivateKey DecodingKey;
-	bool Valid;
+SavePublicKeyWindow::~SavePublicKeyWindow()
+{
 
-	QCA::PrivateKey getPrivateKey(const Key &key);
-
-public:
-	EncryptioNgSimliteDecryptor(const Key &key, EncryptionProvider *provider, QObject *parent = 0);
-	virtual ~EncryptioNgSimliteDecryptor();
-
-	virtual QByteArray decrypt(const QByteArray &data);
-
-};
-
-#endif // ENCRYPTION_NG_SIMLITE_DECRYPTOR_H
+}

@@ -3,12 +3,14 @@ set (SOURCES
 	keys/key-shared.cpp
 	keys/key.cpp
 
+	decryptor.cpp
 	decryptor-wrapper.cpp
 	encryption-actions.cpp
 	encryption-chat-data.cpp
 	encryption-manager.cpp
 	encryption-ng-module.cpp
 	encryption-provider-manager.cpp
+	encryptor.cpp
 )
 
 set (MOC_SOURCES

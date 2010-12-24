@@ -17,31 +17,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ENCRYPTION_NG_SIMLITE_DECRYPTOR_H
-#define ENCRYPTION_NG_SIMLITE_DECRYPTOR_H
+#include "encryptor.h"
 
-#include <QtCore/QObject>
-#include <QtCrypto>
-
-#include "modules/encryption_ng/decryptor.h"
-
-class Key;
-
-class EncryptioNgSimliteDecryptor : public Decryptor
+Encryptor::Encryptor(EncryptionProvider *provider, QObject *parent) :
+		QObject(parent), Provider(provider)
 {
-	Q_OBJECT
-
-	QCA::PrivateKey DecodingKey;
-	bool Valid;
-
-	QCA::PrivateKey getPrivateKey(const Key &key);
-
-public:
-	EncryptioNgSimliteDecryptor(const Key &key, EncryptionProvider *provider, QObject *parent = 0);
-	virtual ~EncryptioNgSimliteDecryptor();
-
-	virtual QByteArray decrypt(const QByteArray &data);
-
-};
-
-#endif // ENCRYPTION_NG_SIMLITE_DECRYPTOR_H
+}

@@ -32,6 +32,7 @@ private slots:
 	void decryptorDestroyed(QObject *decryptor);
 
 public:
+	DecryptorWrapper(EncryptionProvider *provider, QObject *parent = 0);
 	virtual ~DecryptorWrapper() {}
 
 	virtual QByteArray decrypt(const QByteArray &data);
