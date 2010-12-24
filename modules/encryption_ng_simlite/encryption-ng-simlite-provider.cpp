@@ -61,6 +61,9 @@ EncryptioNgSimliteProvider::~EncryptioNgSimliteProvider()
 
 void EncryptioNgSimliteProvider::accountRegistered(Account account)
 {
+	EncryptioNgSimliteDecryptor *accountDecryptor = new EncryptioNgSimliteDecryptor(account, this, this);
+	Decryptors.insert(account, accountDecryptor);
+
 	Protocol *protocol = account.protocolHandler();
 	if (!protocol)
 		return;
@@ -75,6 +78,12 @@ void EncryptioNgSimliteProvider::accountRegistered(Account account)
 
 void EncryptioNgSimliteProvider::accountUnregistered(Account account)
 {
+	if (Decryptors.contains(account))
+	{
+		EncryptioNgSimliteDecryptor *decryptor = Decryptors.take(account);
+		delete decryptor;
+	}
+
 	Protocol *protocol = account.protocolHandler();
 	if (!protocol)
 		return;
@@ -102,8 +111,10 @@ bool EncryptioNgSimliteProvider::canDecrypt(const Chat &chat)
 	if (1 != chat.contacts().size())
 		return false;
 
-	Key key = KeysManager::instance()->byContactAndType(chat.chatAccount().accountContact(), "simlite_private", ActionReturnNull);
-	return !key.isNull() && !key.isEmpty();
+	if (!Decryptors.contains(chat.chatAccount()))
+		return false;
+
+	return Decryptors.value(chat.chatAccount())->isValid();
 }
 
 bool EncryptioNgSimliteProvider::canEncrypt(const Chat &chat)
@@ -120,11 +131,10 @@ Decryptor * EncryptioNgSimliteProvider::acquireDecryptor(const Chat &chat)
 	if (1 != chat.contacts().size())
 		return 0;
 
-	Key key = KeysManager::instance()->byContactAndType(chat.chatAccount().accountContact(), "simlite_private", ActionReturnNull);
-	if (!key)
+	if (!Decryptors.contains(chat.chatAccount()))
 		return 0;
 
-	return new EncryptioNgSimliteDecryptor(key, this, this);
+	return Decryptors.value(chat.chatAccount());
 }
 
 Encryptor * EncryptioNgSimliteProvider::acquireEncryptor(const Chat &chat)
@@ -142,7 +152,7 @@ Encryptor * EncryptioNgSimliteProvider::acquireEncryptor(const Chat &chat)
 void EncryptioNgSimliteProvider::releaseDecryptor(const Chat &chat, Decryptor *decryptor)
 {
 	Q_UNUSED(chat)
-	delete decryptor;
+	Q_UNUSED(decryptor)
 }
 
 void EncryptioNgSimliteProvider::releaseEncryptor(const Chat &chat, Encryptor *encryptor)

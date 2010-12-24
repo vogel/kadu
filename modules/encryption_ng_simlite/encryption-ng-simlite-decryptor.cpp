@@ -19,6 +19,7 @@
  */
 
 #include "modules/encryption_ng/keys/key.h"
+#include "modules/encryption_ng/keys/keys-manager.h"
 
 #include "pkcs1_certificate.h"
 
@@ -39,15 +40,39 @@ typedef struct {
 	uint8_t flags;
 } sim_message_header;
 
-EncryptioNgSimliteDecryptor::EncryptioNgSimliteDecryptor(const Key &key, EncryptionProvider *provider, QObject *parent) :
-		Decryptor(provider, parent)
+EncryptioNgSimliteDecryptor::EncryptioNgSimliteDecryptor(const Account &account, EncryptionProvider *provider, QObject *parent) :
+		Decryptor(provider, parent), MyAccount(account)
 {
-	Valid = true;
-	DecodingKey = getPrivateKey(key);
+	connect(KeysManager::instance(), SIGNAL(keyAdded(Key)), this, SLOT(keyUpdated(Key)));
+	connect(KeysManager::instance(), SIGNAL(keyUpdated(Key)), this, SLOT(keyUpdated(Key)));
+	connect(KeysManager::instance(), SIGNAL(keyRemoved(Key)), this, SLOT(keyUpdated(Key)));
+
+	updateKey();
 }
 
 EncryptioNgSimliteDecryptor::~EncryptioNgSimliteDecryptor()
 {
+	connect(KeysManager::instance(), SIGNAL(keyAdded(Key)), this, SLOT(keyUpdated(Key)));
+	connect(KeysManager::instance(), SIGNAL(keyUpdated(Key)), this, SLOT(keyUpdated(Key)));
+	connect(KeysManager::instance(), SIGNAL(keyRemoved(Key)), this, SLOT(keyUpdated(Key)));
+}
+
+void EncryptioNgSimliteDecryptor::keyUpdated(const Key &key)
+{
+	if (key.keyContact() == MyAccount.accountContact() && key.keyType() == "simlite_private")
+		updateKey();
+}
+
+void EncryptioNgSimliteDecryptor::updateKey()
+{
+	Valid = false;
+	DecodingKey = QCA::PrivateKey();
+
+	Key key = KeysManager::instance()->byContactAndType(MyAccount.accountContact(), "simlite_private", ActionReturnNull);
+	if (key.isNull() || key.isEmpty())
+		return;
+
+	DecodingKey = getPrivateKey(key);
 }
 
 QCA::PrivateKey EncryptioNgSimliteDecryptor::getPrivateKey(const Key &key)
@@ -94,6 +119,7 @@ QCA::PrivateKey EncryptioNgSimliteDecryptor::getPrivateKey(const Key &key)
 		return QCA::PrivateKey();
 	}
 
+	Valid = true;
 	return privateKey;
 }
 

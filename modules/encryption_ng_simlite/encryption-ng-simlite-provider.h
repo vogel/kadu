@@ -28,12 +28,16 @@
 
 #include "modules/encryption_ng/encryption-provider.h"
 
+class EncryptioNgSimliteDecryptor;
+
 class EncryptioNgSimliteProvider : public EncryptionProvider, AccountsAwareObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(EncryptioNgSimliteProvider)
 
 	static EncryptioNgSimliteProvider *Instance;
+
+	QMap<Account, EncryptioNgSimliteDecryptor *> Decryptors;
 
 	EncryptioNgSimliteProvider();
 	virtual ~EncryptioNgSimliteProvider();

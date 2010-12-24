@@ -23,24 +23,32 @@
 #include <QtCore/QObject>
 #include <QtCrypto>
 
-#include "modules/encryption_ng/decryptor.h"
+#include "accounts/account.h"
 
-class Key;
+#include "modules/encryption_ng/keys/key.h"
+#include "modules/encryption_ng/decryptor.h"
 
 class EncryptioNgSimliteDecryptor : public Decryptor
 {
 	Q_OBJECT
 
+	Account MyAccount;
 	QCA::PrivateKey DecodingKey;
 	bool Valid;
 
+	void updateKey();
 	QCA::PrivateKey getPrivateKey(const Key &key);
 
+private slots:
+	void keyUpdated(const Key &key);
+
 public:
-	EncryptioNgSimliteDecryptor(const Key &key, EncryptionProvider *provider, QObject *parent = 0);
+	EncryptioNgSimliteDecryptor(const Account &account, EncryptionProvider *provider, QObject *parent = 0);
 	virtual ~EncryptioNgSimliteDecryptor();
 
 	virtual QByteArray decrypt(const QByteArray &data);
+
+	bool isValid() { return Valid; }
 
 };
 
