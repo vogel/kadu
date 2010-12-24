@@ -20,7 +20,7 @@
 #ifndef KEY_SHARED_H
 #define KEY_SHARED_H
 
-#include <QtCrypto/QtCrypto>
+#include <QtCrypto>
 
 #include "contacts/contact.h"
 
