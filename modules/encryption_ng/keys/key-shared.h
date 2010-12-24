@@ -20,6 +20,8 @@
 #ifndef KEY_SHARED_H
 #define KEY_SHARED_H
 
+#include <QtCrypto/QtCrypto>
+
 #include "contacts/contact.h"
 
 #include "storage/shared.h"
@@ -31,7 +33,7 @@ class KADUAPI KeyShared : public QObject, public Shared
 
 	QString KeyType;
 	Contact KeyContact;
-	QByteArray Key;
+	QCA::SecureArray Key;
 
 	QString KeysDir;
 
@@ -60,7 +62,7 @@ public:
 
 	KaduShared_Property(QString, keyType, KeyType)
 	KaduShared_Property(Contact, keyContact, KeyContact)
-	KaduShared_Property(QByteArray, key, Key)
+	KaduShared_Property(QCA::SecureArray, key, Key)
 
 signals:
 	void updated();

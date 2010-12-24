@@ -51,20 +51,25 @@ EncryptioNgSimliteDecryptor::~EncryptioNgSimliteDecryptor()
 
 QCA::PrivateKey EncryptioNgSimliteDecryptor::getPrivateKey(const Key &key)
 {
-	QByteArray keyData = key.key().trimmed();
+	QByteArray keyData = key.key().toByteArray().trimmed();
 	if (!keyData.startsWith(BEGIN_RSA_PRIVATE_KEY) || !keyData.endsWith(END_RSA_PRIVATE_KEY))
 	{
 		Valid = false;
 		return QCA::PrivateKey();
 	}
 
-	QByteArray keyBase64 = keyData.mid(BEGIN_RSA_PRIVATE_KEY_LENGTH, keyData.length() - BEGIN_RSA_PRIVATE_KEY_LENGTH - END_RSA_PRIVATE_KEY_LENGTH);
+	keyData = keyData.mid(BEGIN_RSA_PRIVATE_KEY_LENGTH, keyData.length() - BEGIN_RSA_PRIVATE_KEY_LENGTH - END_RSA_PRIVATE_KEY_LENGTH);
 
 	QCA::SecureArray certificate;
 
 	QCA::Base64 decoder(QCA::Decode);
 	decoder.setLineBreaksEnabled(true);
-	certificate = decoder.decode(keyBase64);
+	certificate = decoder.decode(keyData);
+
+	// just some fake security added
+	keyData.fill(' ', keyData.size());
+	keyData.clear();
+
 	certificate += decoder.final();
 	if (!decoder.ok())
 	{

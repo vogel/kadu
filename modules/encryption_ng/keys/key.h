@@ -49,7 +49,7 @@ public:
 	KaduSharedBase_PropertyBoolRead(Empty)
 	KaduSharedBase_Property(QString, keyType, KeyType)
 	KaduSharedBase_Property(Contact, keyContact, KeyContact)
-	KaduSharedBase_Property(QByteArray, key, Key)
+	KaduSharedBase_Property(QCA::SecureArray, key, Key)
 
 };
 

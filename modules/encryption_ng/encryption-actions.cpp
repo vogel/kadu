@@ -161,5 +161,5 @@ void EncryptionActions::sendPublicKey(const Contact &contact)
 	contacts.insert(contact);
 
 	Chat chat = ChatManager::instance()->findChat(contacts, true);
-	chatService->sendMessage(chat, QString::fromUtf8(key.key()), true);
+	chatService->sendMessage(chat, QString::fromUtf8(key.key().data()), true);
 }

@@ -118,7 +118,7 @@ void KeyShared::store()
 
 		if (keyFile.open(QFile::WriteOnly))
 		{
-			keyFile.write(Key);
+			keyFile.write(Key.data());
 			keyFile.close();
 		}
 	}
