@@ -130,8 +130,7 @@ void ChatWidgetManager::closeAllWindows()
 {
 	kdebugf();
 
-	if (config_file.readBoolEntry("Chat", "SaveOpenedWindows", true))
-		store();
+	store();
 
 	QHash<Chat, ChatWidget *>::iterator i = Chats.begin();
 	while (i != Chats.end())
@@ -178,14 +177,17 @@ void ChatWidgetManager::store()
 
 	StringList.clear();
 
-	// TODO: are all this conditions needed?
-	foreach (const Chat &chat, Chats.keys())
+	if (config_file.readBoolEntry("Chat", "SaveOpenedWindows", true))
 	{
-		if (chat.isNull() || chat.chatAccount().isNull() || !chat.chatAccount().protocolHandler()
-			|| !chat.chatAccount().protocolHandler()->protocolFactory() || !dynamic_cast<ChatWindow *>(Chats.value(chat)->window()))
-				continue;
+		// TODO: are all this conditions needed?
+		foreach (const Chat &chat, Chats.keys())
+		{
+			if (chat.isNull() || chat.chatAccount().isNull() || !chat.chatAccount().protocolHandler()
+				|| !chat.chatAccount().protocolHandler()->protocolFactory() || !dynamic_cast<ChatWindow *>(Chats.value(chat)->window()))
+					continue;
 
-		StringList.append(chat.uuid().toString());
+			StringList.append(chat.uuid().toString());
+		}
 	}
 
 	StorableStringList::store();
