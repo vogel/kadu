@@ -54,7 +54,7 @@ public:
 
 	static EncryptionManager * instance() { return Instance; }
 
-	void setEncryptionEnabled(const Chat &chat, bool enable);
+	bool setEncryptionEnabled(const Chat &chat, bool enable);
 
 };
 

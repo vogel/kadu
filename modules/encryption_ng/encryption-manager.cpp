@@ -87,7 +87,7 @@ void EncryptionManager::accountUnregistered(Account account)
 	}
 }
 
-void EncryptionManager::setEncryptionEnabled(const Chat &chat, bool enable)
+bool EncryptionManager::setEncryptionEnabled(const Chat &chat, bool enable)
 {
 	EncryptionChatData *encryptionChatData = chat.data()->moduleData<EncryptionChatData>("encryption-ng", true);
 	if (enable)
@@ -99,6 +99,8 @@ void EncryptionManager::setEncryptionEnabled(const Chat &chat, bool enable)
 
 		encryptor = EncryptionProviderManager::instance()->acquireEncryptor(chat);
 		encryptionChatData->setEncryptor(encryptor);
+
+		return 0 != encryptor;
 	}
 	else
 	{
@@ -106,6 +108,8 @@ void EncryptionManager::setEncryptionEnabled(const Chat &chat, bool enable)
 		if (encryptor)
 			encryptor->provider()->releaseEncryptor(chat, encryptor);
 		encryptionChatData->setEncryptor(0);
+
+		return true; // we can always disable
 	}
 }
 
