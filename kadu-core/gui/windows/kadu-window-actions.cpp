@@ -106,29 +106,6 @@ void checkBuddyProperties(Action *action)
 	kdebugf2();
 }
 
-void checkHideDescription(Action *action)
-{
-	action->setEnabled(action->buddies().count());
-
-	bool on = false;
-	foreach (const Buddy buddy, action->buddies())
-	{
-		BuddyKaduData *ckd = 0;
-		if (buddy.data())
-			ckd = buddy.data()->moduleStorableData<BuddyKaduData>("kadu", false);
-		if (!ckd)
-			continue;
-
-		if (ckd->hideDescription())
-		{
-			on = true;
-			break;
-		}
-	}
-
-	action->setChecked(on);
-}
-
 void disableNoContact(Action *action)
 {
 	action->setEnabled(action->contact());
@@ -307,13 +284,6 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 		this, SLOT(lookupInDirectoryActionActivated(QAction *, bool)),
 		"edit-find", tr("Search in Directory"), false,
 		disableNoContact
-	);
-
-	HideDescription = new ActionDescription(this,
-		ActionDescription::TypeUser, "hideDescriptionAction",
-		this, SLOT(hideDescriptionActionActivated(QAction *, bool)),
-		"kadu_icons/kadu-descriptions_off", tr("Hide Description"), true,
-		checkHideDescription
 	);
 
 	InactiveUsers = new ActionDescription(this,
@@ -809,41 +779,6 @@ void KaduWindowActions::lookupInDirectoryActionActivated(QAction *sender, bool t
 	SearchWindow *sd = new SearchWindow(Core::instance()->kaduWindow(), buddy);
 	sd->show();
 	sd->firstSearch();
-
-	kdebugf2();
-}
-
-void KaduWindowActions::hideDescriptionActionActivated(QAction *sender, bool toggled)
-{
-	kdebugf();
-
-	Action *action = dynamic_cast<Action *>(sender);
-	if (!action)
-		return;
-
-	BuddySet buddies = action->buddies();
-
-	foreach (const Buddy &buddy, buddies)
-	{
-		if (buddy.isNull() || buddy.isAnonymous())
-			continue;
-
-		BuddyKaduData *bkd = 0;
-		if (buddy.data())
-			bkd = buddy.data()->moduleStorableData<BuddyKaduData>("kadu", true);
-		if (!bkd)
-			continue;
-
-		if (bkd->hideDescription() != toggled)
-		{
-			bkd->setHideDescription(toggled);
-			bkd->store();
-		}
-	}
-
-	foreach (Action *action, HideDescription->actions())
-		if (action->buddies() == buddies)
-			action->setChecked(toggled);
 
 	kdebugf2();
 }
