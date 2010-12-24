@@ -1,4 +1,6 @@
 set (SOURCES
+	configuration/encryption-ng-configuration.cpp
+
 	keys/keys-manager.cpp
 	keys/key-shared.cpp
 	keys/key.cpp

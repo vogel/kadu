@@ -22,6 +22,7 @@
 #include "gui/windows/main-configuration-window.h"
 #include "misc/path-conversion.h"
 
+#include "configuration/encryption-ng-configuration.h"
 #include "encryption-actions.h"
 #include "encryption-manager.h"
 #include "encryption-provider-manager.h"
@@ -30,6 +31,7 @@ extern "C" int encryption_ng_init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
+	EncryptionNgConfiguration::createInstance();
 	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/encryption-ng.ui"));
 
 	EncryptionManager::createInstance();
@@ -46,4 +48,5 @@ extern "C" void encryption_ng_close()
 	EncryptionManager::destroyInstance();
 
 	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/encryption-ng.ui"));
+	EncryptionNgConfiguration::destroyInstance();
 }
