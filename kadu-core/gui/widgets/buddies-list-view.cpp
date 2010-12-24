@@ -45,7 +45,6 @@
 #include "gui/actions/action-description.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/windows/kadu-window-actions.h"
-#include "gui/windows/main-window.h"
 #include "gui/hot-key.h"
 #include "model/roles.h"
 #include "protocols/protocol.h"
@@ -61,9 +60,10 @@
 #include "buddies-list-view.h"
 #include "tool-tip-class-manager.h"
 
-BuddiesListView::BuddiesListView(MainWindow *mainWindow, QWidget *parent) :
-		QTreeView(parent), MyMainWindow(mainWindow), Delegate(0), Model(0),
-		ProxyModel(new BuddiesModelProxy(this)), BackgroundTemporaryFile(0)
+BuddiesListView::BuddiesListView(QWidget *parent) :
+		QTreeView(parent), Delegate(0), Model(0),
+		ProxyModel(new BuddiesModelProxy(this)), BackgroundTemporaryFile(0),
+		ContextMenuEnabled(false)
 {
 	setAnimated(BackgroundImageMode == BackgroundNone);
 #ifndef Q_WS_MAEMO_5
@@ -323,9 +323,14 @@ void BuddiesListView::triggerActivate(const QModelIndex& index)
 		emit buddyActivated(buddy);
 }
 
+void BuddiesListView::setContextMenuEnabled(bool enabled)
+{
+	ContextMenuEnabled = enabled;
+}
+
 void BuddiesListView::contextMenuEvent(QContextMenuEvent *event)
 {
-	if (!MyMainWindow)
+	if (!ContextMenuEnabled)
 		return;
 
 	Buddy buddy = buddyAt(indexAt(event->pos()));

@@ -28,7 +28,7 @@
 #include "select-buddy-popup.h"
 
 SelectBuddyPopup::SelectBuddyPopup(QWidget *parent) :
-		BuddiesListWidget(FilterAtBottom, 0, parent)
+		BuddiesListWidget(FilterAtBottom, parent)
 {
 	setWindowFlags(Qt::Popup);
 

@@ -52,7 +52,7 @@ AccountBuddyListWidget::AccountBuddyListWidget(Account account, QWidget *parent)
 	layout->setContentsMargins(0, 0, 0, 0);
 	layout->setSpacing(5);
 
-	BuddiesWidget = new BuddiesListWidget(BuddiesListWidget::FilterAtTop, 0, this);
+	BuddiesWidget = new BuddiesListWidget(BuddiesListWidget::FilterAtTop, this);
 	BuddiesModelProxy *model = new BuddiesModelProxy(this);
 	model->setSourceModel(new BuddiesModel(this));
 	BuddiesWidget->view()->setModel(model);

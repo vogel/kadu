@@ -162,12 +162,13 @@ void ChatWidget::createContactsList()
 	layout->setContentsMargins(0, 0, 0, 0);
 	layout->setSpacing(0);
 
-	BuddiesWidget = new BuddiesListWidget(BuddiesListWidget::FilterAtTop, getChatEditBox(), this);
+	BuddiesWidget = new BuddiesListWidget(BuddiesListWidget::FilterAtTop, this);
 	BuddiesWidget->view()->setItemsExpandable(false);
 	BuddiesWidget->setMinimumSize(QSize(30, 30));
 	BuddiesWidget->view()->setModel(new ContactListModel(CurrentChat.contacts().toContactList(), this));
 	BuddiesWidget->view()->setRootIsDecorated(false);
 	BuddiesWidget->view()->setShowAccountName(false);
+	BuddiesWidget->view()->setContextMenuEnabled(true);
 
 	connect(BuddiesWidget->view(), SIGNAL(chatActivated(Chat)),
 			Core::instance()->kaduWindow(), SLOT(openChatWindow(Chat)));

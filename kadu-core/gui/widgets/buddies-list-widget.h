@@ -55,7 +55,7 @@ protected:
 	virtual void keyPressEvent(QKeyEvent *event);
 
 public:
-	explicit BuddiesListWidget(FilterPosition filterPosition, MainWindow *mainWindow, QWidget *parent = 0);
+	explicit BuddiesListWidget(FilterPosition filterPosition, QWidget *parent = 0);
 	virtual ~BuddiesListWidget();
 
 	void clearFilter();

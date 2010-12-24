@@ -83,7 +83,7 @@ OpenChatWith::OpenChatWith() :
 	connect(ContactID, SIGNAL(textChanged(const QString &)), this, SLOT(inputChanged(const QString &)));
 	MainLayout->addWidget(ContactID);
 
-	BuddiesWidget = new BuddiesListView(0, this);
+	BuddiesWidget = new BuddiesListView(this);
 	connect(BuddiesWidget, SIGNAL(chatActivated(Chat)), this, SLOT(openChat()));
 	MainLayout->addWidget(BuddiesWidget);
 

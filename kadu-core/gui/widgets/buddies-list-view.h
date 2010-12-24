@@ -45,7 +45,6 @@ class BuddiesListViewDelegateConfiguration;
 class BuddiesModelProxy;
 class ContactNoUnloadedAccountFilter;
 class ContactSet;
-class MainWindow;
 
 class BuddiesListView : public QTreeView, public ActionDataSource
 {
@@ -62,7 +61,6 @@ public:
 	};
 
 private:
-	MainWindow *MyMainWindow;
 	BuddiesListViewDelegate *Delegate;
 	AbstractBuddiesModel *Model;
 	BuddiesModelProxy *ProxyModel;
@@ -86,6 +84,8 @@ private:
 	BackgroundMode BackgroundImageMode;
 	QString BackgroundImageFile;
 	QTemporaryFile *BackgroundTemporaryFile;
+
+	bool ContextMenuEnabled;
 
 private slots:
 	void simpleModeChanged();
@@ -116,7 +116,7 @@ protected slots:
 public:
 	static bool shouldEventGoToFilter(QKeyEvent *event);
 
-	explicit BuddiesListView(MainWindow *mainWindow, QWidget *parent = 0);
+	explicit BuddiesListView(QWidget *parent = 0);
 	virtual ~BuddiesListView();
 
 	virtual void setModel(AbstractBuddiesModel *model);
@@ -143,6 +143,8 @@ public:
 	void setBackground(const QString& backgroundColor, const QString& alternateColor, const QString& file = QString(), BuddiesListView::BackgroundMode mode = BackgroundNone);
 	void updateBackground();
 	void updateLayout() { updateGeometries(); }
+
+	void setContextMenuEnabled(bool enabled);
 
 	// ActionDataSource implementation
 	virtual BuddySet buddies();

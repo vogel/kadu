@@ -33,7 +33,7 @@
 
 #include "buddies-list-widget.h"
 
-BuddiesListWidget::BuddiesListWidget(FilterPosition filterPosition, MainWindow *mainWindow, QWidget *parent) :
+BuddiesListWidget::BuddiesListWidget(FilterPosition filterPosition, QWidget *parent) :
 		QWidget(parent)
 {
 	QVBoxLayout *layout = new QVBoxLayout(this);
@@ -45,7 +45,7 @@ BuddiesListWidget::BuddiesListWidget(FilterPosition filterPosition, MainWindow *
 	connect(NameFilterWidget, SIGNAL(textChanged(const QString &)),
 		this, SLOT(nameFilterChanged(const QString &)));
 
-	View = new BuddiesListView(mainWindow, this);
+	View = new BuddiesListView(this);
 	NameFilterWidget->setView(View);
 #ifndef Q_OS_MAC
 	NameFilterWidget->hide(); // hide by default
