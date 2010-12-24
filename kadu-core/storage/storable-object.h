@@ -333,6 +333,20 @@ template<class T>
 		return result;
 	}
 
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Removes non-storable module data from object.
+	 * @param module name of module data to be removed
+	 *
+	 * Removed module data for given key. Caller is responsible for freeing
+	 * memory used by this module data.
+	 */
+	void removeModuleData(const QString &module)
+	{
+		if (ModulesData.contains(module))
+			ModulesData.remove(module);
+	}
+
 	void storeValue(const QString &name, const QVariant value);
 	void storeAttribute(const QString &name, const QVariant value);
 

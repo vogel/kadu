@@ -17,6 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "gui/widgets/chat-widget-manager.h"
 #include "protocols/services/chat-service.h"
 #include "protocols/protocol.h"
 
@@ -43,11 +44,17 @@ void EncryptionManager::destroyInstance()
 EncryptionManager::EncryptionManager()
 {
 	triggerAllAccountsRegistered();
+
+	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetDestroying(ChatWidget*)),
+			this, SLOT(chatWidgetDestroying(ChatWidget*)));
 }
 
 EncryptionManager::~EncryptionManager()
 {
 	triggerAllAccountsUnregistered();
+
+	disconnect(ChatWidgetManager::instance(), SIGNAL(chatWidgetDestroying(ChatWidget*)),
+			this, SLOT(chatWidgetDestroying(ChatWidget*)));
 }
 
 void EncryptionManager::accountRegistered(Account account)
@@ -118,4 +125,17 @@ void EncryptionManager::filterRawOutgoingMessage(Chat chat, QByteArray &message,
 	EncryptionChatData *encryptionChatData = chat.data()->moduleData<EncryptionChatData>("encryption-ng");
 	if (encryptionChatData && encryptionChatData->encryptor())
 		message = encryptionChatData->encryptor()->encrypt(message);
+}
+
+void EncryptionManager::chatWidgetDestroying(ChatWidget *chatWidget)
+{
+	Chat chat = chatWidget->chat();
+	if (!chat.data())
+		return;
+
+	EncryptionChatData *encryptionChatData = chat.data()->moduleData<EncryptionChatData>("encryption-ng");
+	chat.data()->removeModuleData("encryption-ng");
+
+	if (encryptionChatData)
+		delete encryptionChatData;
 }

@@ -136,7 +136,7 @@ Encryptor * EncryptionProviderManager::encryptor(const Chat &chat)
 	return 0;
 }
 
-// I know it is not best place for invoking gui, pleace change it in future
+// I know it is not best place for invoking gui, please change it in future
 void EncryptionProviderManager::keyReceived(const Contact &contact, const QString &keyType, const QByteArray &keyData)
 {
 	Buddy buddy = BuddyManager::instance()->byContact(contact, ActionReturnNull);
