@@ -19,6 +19,9 @@
 
 #include <QtCore/QtGlobal>
 
+#include "gui/windows/main-configuration-window.h"
+#include "misc/path-conversion.h"
+
 #include "encryption-actions.h"
 #include "encryption-manager.h"
 #include "encryption-provider-manager.h"
@@ -26,6 +29,8 @@
 extern "C" int encryption_ng_init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
+
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/encryption-ng.ui"));
 
 	EncryptionManager::createInstance();
 	EncryptionProviderManager::createInstance();
@@ -39,4 +44,6 @@ extern "C" void encryption_ng_close()
 	EncryptionActions::unregisterActions();
 	EncryptionProviderManager::destroyInstance();
 	EncryptionManager::destroyInstance();
+
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/encryption-ng.ui"));
 }

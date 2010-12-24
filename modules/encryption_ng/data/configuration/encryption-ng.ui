@@ -1,0 +1,10 @@
+<configuration-ui>
+	<section name="Chat">
+		<tab name="Encryption">
+			<group-box name="General">
+				<check-box caption="Encrypt by default" config-section="Chat" config-item="Encryption" />
+				<check-box caption="Encrypt after receive encrypted message" config-section="Chat" config-item="EncryptAfterReceiveEncryptedMessage" />
+			</group-box>
+		</tab>
+	</section>
+</configuration-ui>

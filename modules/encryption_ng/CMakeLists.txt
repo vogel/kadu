@@ -31,6 +31,7 @@ set (TRANSLATION_SOURCES
 )
 
 set (CONFIGURATION_FILES
+	data/configuration/encryption-ng.ui
 )
 
 if (MINGW)
