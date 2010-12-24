@@ -100,7 +100,7 @@ Core::~Core()
 
 	// unloading modules does that
 	/*StatusContainerManager::instance()->disconnectAndStoreLastStatus(disconnectWithCurrentDescription, disconnectDescription);*/
-
+	ChatWidgetManager::instance()->closeAllWindows();
 	ConfigurationManager::instance()->store();
 // 	delete Configuration;
 // 	Configuration = 0;

@@ -79,6 +79,7 @@ ChatWidgetManager * ChatWidgetManager::instance()
 ChatWidgetManager::ChatWidgetManager()
 {
 	kdebugf();
+	setState(StateNotLoaded);
 
 	MessageRenderInfo::registerParserTags();
 
@@ -88,12 +89,6 @@ ChatWidgetManager::ChatWidgetManager()
 			this, SLOT(messageSent(const Message &)));
 
 	Actions = new ChatWidgetActions(this);
-
-	ConfigurationManager::instance()->registerStorableObject(this);
-
-	// TODO 0.6.6 : Implement import old Config
-	//if (xml_config_file->getNode("ChatWindows", XmlConfigFile::ModeFind).isNull())
-	//	import();
 
 	configurationUpdated();
 
@@ -112,7 +107,6 @@ ChatWidgetManager::~ChatWidgetManager()
 
 	closeAllWindows();
 
-	ConfigurationManager::instance()->unregisterStorableObject(this);
 
 	kdebugf2();
 }
@@ -139,14 +133,18 @@ void ChatWidgetManager::closeAllWindows()
 	if (config_file.readBoolEntry("Chat", "SaveOpenedWindows", true))
 		store();
 
-	foreach (ChatWidget *chatWidget, Chats)
+	QHash<Chat, ChatWidget *>::iterator i = Chats.begin();
+	while (i != Chats.end())
 	{
-		ChatWindow *window = dynamic_cast<ChatWindow *>(chatWidget->parent());
+		ChatWindow *window = dynamic_cast<ChatWindow *>(i.value()->window());
 		if (window)
+		{
+			i = Chats.erase(i);
 			delete window;
+			continue;
+		}
+		++i;
 	}
-
-	Chats.clear();
 
 	kdebugf2();
 }
@@ -168,7 +166,7 @@ void ChatWidgetManager::load()
 		Chat chat = ChatManager::instance()->byUuid(chatId);
 		if (!chat)
 			continue;
-		// TODO 0.6.6 before it was openChatWidget(chat, true)
+
 		openPendingMsgs(chat, true);
 	}
 }
@@ -180,10 +178,11 @@ void ChatWidgetManager::store()
 
 	StringList.clear();
 
+	// TODO: are all this conditions needed?
 	foreach (const Chat &chat, Chats.keys())
 	{
 		if (chat.isNull() || chat.chatAccount().isNull() || !chat.chatAccount().protocolHandler()
-			|| !chat.chatAccount().protocolHandler()->protocolFactory())
+			|| !chat.chatAccount().protocolHandler()->protocolFactory() || !dynamic_cast<ChatWindow *>(Chats.value(chat)->window()))
 				continue;
 
 		StringList.append(chat.uuid().toString());

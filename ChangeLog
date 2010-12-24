@@ -10,6 +10,8 @@
 * notify: #1853 fixed: invalid behaviour of NotificationManager::setSilent() (WhE)
 * chat styles: #1856 fixed: Conference titles are too long (WhE)
 * gui: #1847 fixed: Cancel should be the default action in BuddyDeleteWindow (beevvy)
+* tabs: #1835 fixed: chat's geometry is not saved on closing program (WhE)
+* core: #1822: Save opened windows option is not working wiyhout tabs module (WhE)
 
 +++ version 0.6.6-beta13
 * sound: #1376 fixed: long delays on Kadu exit and warnings from Qt regarding mutexes (beevvy)

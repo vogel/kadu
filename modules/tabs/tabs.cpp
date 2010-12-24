@@ -233,7 +233,6 @@ void TabsManager::onDestroyingChat(ChatWidget* chat)
 
 	if (TabDialog->indexOf(chat) != -1)
 	{
-		//tabdialog->removePage(chat);
 		TabDialog->removeTab(TabDialog->indexOf(chat));
 		// zapamietuje wewnetrzne rozmiary chata
 		chat->kaduStoreGeometry();
@@ -662,9 +661,11 @@ void TabsManager::store()
 		if ((TabDialog->indexOf(chatWidget) == -1) && (DetachedChats.indexOf(chatWidget) == -1))
 			continue;
 
+		chatWidget->kaduStoreGeometry();
+
 		QDomElement window_elem = storageFile->createElement(point, "Tab");
 
-		window_elem.setAttribute("chat", chat.uuid() );
+		window_elem.setAttribute("chat", chat.uuid());
 		if (TabDialog->indexOf(chatWidget) != -1)
 			window_elem.setAttribute("type", "tab");
 		else if (DetachedChats.indexOf(chatWidget) != -1)
