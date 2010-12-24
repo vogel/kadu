@@ -123,8 +123,11 @@ QCA::PrivateKey EncryptioNgSimliteDecryptor::getPrivateKey(const Key &key)
 	return privateKey;
 }
 
-QByteArray EncryptioNgSimliteDecryptor::decrypt(const QByteArray &data)
+QByteArray EncryptioNgSimliteDecryptor::decrypt(const QByteArray &data, bool *ok)
 {
+	if (*ok)
+		*ok = false;
+
 	if (!Valid)
 		return data;
 
@@ -177,6 +180,9 @@ QByteArray EncryptioNgSimliteDecryptor::decrypt(const QByteArray &data)
 	memcpy(&head, plainText.data(), sizeof(sim_message_header));
 	if (head.magicFirstPart != SIM_MAGIC_V1_1 || head.magicSecondPart != SIM_MAGIC_V1_2)
 		return data;
+
+	if (ok)
+		*ok = true;
 
 	//the message has been decrypted! :D
 	//put it into the input/output byte array

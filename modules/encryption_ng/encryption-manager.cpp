@@ -135,7 +135,11 @@ void EncryptionManager::filterRawIncomingMessage(Chat chat, Contact sender, QByt
 	if (!encryptionChatData->decryptor())
 		encryptionChatData->setDecryptor(EncryptionProviderManager::instance()->acquireDecryptor(chat));
 
-	message = encryptionChatData->decryptor()->decrypt(message);
+	bool decrypted;
+	message = encryptionChatData->decryptor()->decrypt(message, &decrypted);
+
+	if (decrypted && EncryptionNgConfiguration::instance()->encryptAfterReceiveEncryptedMessage())
+		setEncryptionEnabled(chat, true);
 }
 
 void EncryptionManager::filterRawOutgoingMessage(Chat chat, QByteArray &message, bool &stop)

@@ -53,12 +53,17 @@ void DecryptorWrapper::decryptorDestroyed(QObject *decryptor)
 	Decryptors.removeAll(static_cast<Decryptor *>(decryptor));
 }
 
-QByteArray DecryptorWrapper::decrypt(const QByteArray &data)
+QByteArray DecryptorWrapper::decrypt(const QByteArray &data, bool *ok)
 {
 	QByteArray decrypted = data;
 
 	foreach (Decryptor *decryptor, Decryptors)
-		decrypted = decryptor->decrypt(decrypted);
+	{
+		bool thisOk;
+		decrypted = decryptor->decrypt(decrypted, &thisOk);
+		if (ok)
+			*ok = *ok || thisOk;
+	}
 
 	return decrypted;
 }

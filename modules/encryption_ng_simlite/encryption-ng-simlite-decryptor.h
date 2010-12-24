@@ -46,7 +46,7 @@ public:
 	EncryptioNgSimliteDecryptor(const Account &account, EncryptionProvider *provider, QObject *parent = 0);
 	virtual ~EncryptioNgSimliteDecryptor();
 
-	virtual QByteArray decrypt(const QByteArray &data);
+	virtual QByteArray decrypt(const QByteArray &data, bool *ok);
 
 	bool isValid() { return Valid; }
 
