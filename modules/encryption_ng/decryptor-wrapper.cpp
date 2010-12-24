@@ -20,7 +20,7 @@
 #include "decryptor-wrapper.h"
 
 DecryptorWrapper::DecryptorWrapper(EncryptionProvider *provider, QObject *parent) :
-	Decryptor(provider, parent)
+		Decryptor(provider, parent)
 {
 }
 
@@ -38,7 +38,7 @@ void DecryptorWrapper::removeDecryptor(Decryptor* decryptor)
 
 void DecryptorWrapper::decryptorDestroyed(QObject *decryptor)
 {
-	Decryptors.removeAll(dynamic_cast<Decryptor *>(decryptor));
+	Decryptors.removeAll(static_cast<Decryptor *>(decryptor));
 }
 
 QByteArray DecryptorWrapper::decrypt(const QByteArray &data)
