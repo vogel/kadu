@@ -144,7 +144,10 @@ Encryptor * EncryptioNgSimliteProvider::acquireEncryptor(const Chat &chat)
 
 	EncryptioNgSimliteEncryptor *encryptor = new EncryptioNgSimliteEncryptor(*chat.contacts().begin(), this, this);
 	if (!encryptor->isValid())
+	{
+		delete encryptor;
 		return 0;
+	}
 
 	return encryptor;
 }
