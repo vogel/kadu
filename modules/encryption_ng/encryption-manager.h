@@ -43,7 +43,7 @@ private slots:
 	void filterRawOutgoingMessage(Chat chat, QByteArray &message, bool &stop);
 	void filterRawIncomingMessage(Chat chat, Contact sender, QByteArray &message, bool &ignore);
 
-    void chatWidgetCreated(ChatWidget *chatWidget);
+	void chatWidgetCreated(ChatWidget *chatWidget);
 	void chatWidgetDestroying(ChatWidget *chatWidget);
 
 protected:
