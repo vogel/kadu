@@ -19,38 +19,15 @@
 
 #include <QtCore/QString>
 
-#include "chat/chat-manager.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "debug.h"
-#include "gui/windows/main-configuration-window.h"
 #include "configuration/configuration-file.h"
-#include "notify/notification-manager.h"
 #include "chat/message/message-render-info.h"
-#include "misc/path-conversion.h"
 #include "contacts/contact-set.h"
 
 #include "imagelink.h"
 
 ImageLink *imageLink;
-
-extern "C" KADU_EXPORT int imagelink_init()
-{
-	kdebugf();
-	imageLink = new ImageLink();
-	MainConfigurationWindow::registerUiFile(dataPath ("kadu/modules/configuration/imagelink.ui") );
-	kdebugf2();
-	return 0;
-}
-
-
-extern "C" KADU_EXPORT void imagelink_close()
-{
-	kdebugf();
-	delete imageLink;
-	MainConfigurationWindow::unregisterUiFile(dataPath ("kadu/modules/configuration/imagelink.ui") );
-	imageLink = NULL;
-	kdebugf2();
-}
 
 
 ImageLink::ImageLink()
@@ -83,8 +60,8 @@ void ImageLink::accountRegistered(Account account)
 	
 	if (chatService)
 	{
-		connect (chatService, SIGNAL(filterIncomingMessage(Chat, Contact, QString &, time_t, bool &)),
-		         this, SLOT (filterIncomingMessage(Chat, Contact, QString &, time_t, bool &)));
+		connect(chatService, SIGNAL(filterIncomingMessage(Chat, Contact, QString &, time_t, bool &)),
+		        this, SLOT(filterIncomingMessage(Chat, Contact, QString &, time_t, bool &)));
 	}
 	
 	kdebugf2();
@@ -106,8 +83,8 @@ void ImageLink::accountUnregistered(Account account)
 	
 	if (chatService)
 	{
-		disconnect (chatService, SIGNAL(filterIncomingMessage(Chat, Contact, QString &, time_t, bool &)),
-		            this, SLOT(filterIncomingMessage(Chat, Contact, QString &, time_t, bool &)));
+		disconnect(chatService, SIGNAL(filterIncomingMessage(Chat, Contact, QString &, time_t, bool &)),
+		           this, SLOT(filterIncomingMessage(Chat, Contact, QString &, time_t, bool &)));
 	}
 	
 	kdebugf2();
@@ -130,52 +107,56 @@ void ImageLink::createDefaultConfiguration()
 
 void ImageLink::filterIncomingMessage(Chat chat, Contact sender, QString &message, time_t time, bool &ignore)
 {
-	Q_UNUSED (time)
-	Q_UNUSED (ignore)
-	Q_UNUSED (sender)
-	
+	Q_UNUSED(time)
+	Q_UNUSED(ignore)
+	Q_UNUSED(sender)
+	QRegExp yt;
+	QStringList list;
 	kdebugf();
-	QRegExp yt ("(http://.*.gif|.*.jpg|.*.png)");
-	yt.indexIn(message);
-	QStringList list = yt.capturedTexts();
 	
-	if (yt.matchedLength() > 0)
+	if (config_show_image)
 	{
-		if (config_show_image)
-		{
-			ChatWidgetManager::instance()->openChatWidget(chat, false);
-			ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(chat);
-			showObject (list[0], 0, chatWidget);
-		}
-	}
-	
-	yt = QRegExp ("http://www.youtube.com/watch(.*)&");
-	yt.indexIn(message);
-	list = yt.capturedTexts();
-	
-	if (yt.matchedLength() > 0)
-	{
-		if (config_show_yt)
-		{
-			ChatWidgetManager::instance()->openChatWidget(chat, false);
-			ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(chat);
-			showObject (list[1], 1, chatWidget);
-		}
-	}
-	
-	else
-	{
-		yt = QRegExp ("http://www.youtube.com/watch(.*)");
+		yt = QRegExp("(http://.*.gif|.*.jpg|.*.png)");
 		yt.indexIn(message);
 		list = yt.capturedTexts();
 		
 		if (yt.matchedLength() > 0)
 		{
-			if (config_show_yt)
 			{
 				ChatWidgetManager::instance()->openChatWidget(chat, false);
 				ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(chat);
-				showObject (list[1], 1, chatWidget);
+				showObject(list[0], 0, chatWidget);
+			}
+		}
+	}
+	
+	if (config_show_yt)
+	{
+		yt = QRegExp("http://www.youtube.com/watch(.*)&");
+		yt.indexIn(message);
+		list = yt.capturedTexts();
+		
+		if (yt.matchedLength() > 0)
+		{
+		
+			{
+				ChatWidgetManager::instance()->openChatWidget(chat, false);
+				ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(chat);
+				showObject(list[1], 1, chatWidget);
+			}
+		}
+		
+		else
+		{
+			yt = QRegExp("http://www.youtube.com/watch(.*)");
+			yt.indexIn(message);
+			list = yt.capturedTexts();
+			
+			if (yt.matchedLength() > 0)
+			{
+				ChatWidgetManager::instance()->openChatWidget(chat, false);
+				ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(chat);
+				showObject(list[1], 1, chatWidget);
 			}
 		}
 	}
@@ -185,36 +166,37 @@ void ImageLink::filterIncomingMessage(Chat chat, Contact sender, QString &messag
 
 void ImageLink::showObject(QString video, int mode, ChatWidget *widget)
 {
-	int	width = (widget->width()) / 3;
-	int height = (widget->height()) / 3;
-	QString messageStr, tmp, tmp2, autoplaystr;
-	
-	if (config_file.readBoolEntry("Imagelink", "autostart", true))
-		autoplaystr.setNum (1);
-		
-	else
-		autoplaystr.setNum (0);
-		
-	if (mode == 1)
-		messageStr = QString ("<object width=\"%2\" height=\"%3\"><embed src=\"http://www.youtube.com/v/%1&autoplay=%4 \" type=\"application/x-shockwave-flash\" allowscriptaccess=\"always\" allowfullscreen=\"true\" width=\"%2\" height=\"%3\"></embed></object>").arg(video.remove("?v=")).arg(tmp.setNum(width)).arg(tmp2.setNum(height)).arg(autoplaystr);
-		
-	else
-		messageStr = QString ("<img src=\"%1\">").arg(video);
-		
-	Message render = Message::create();
-	
 	if (widget)
 	{
+		int	width = (widget->width()) / 3;
+		int height = (widget->height()) / 3;
+		QString messageStr, tmp, tmp2, autoplaystr;
+		
+		if (config_file.readBoolEntry("Imagelink", "autostart", true))
+			autoplaystr.setNum(1);
+			
+		else
+			autoplaystr.setNum(0);
+			
+		if (mode == 1)
+			messageStr = QString("<object width=\"%2\" height=\"%3\"><embed src=\"http://www.youtube.com/v/%1&autoplay=%4 \" type=\"application/x-shockwave-flash\" allowscriptaccess=\"always\" allowfullscreen=\"true\" width=\"%2\" height=\"%3\"></embed></object>").arg(video.remove("?v=")).arg(tmp.setNum(width)).arg(tmp2.setNum(height)).arg(autoplaystr);
+			
+		else
+			messageStr = QString("<img src=\"%1\">").arg(video);
+			
+		Message render = Message::create();
+		
+		
 		Chat chat = widget->chat();
 		
-		if (!chat.isNull() )
+		if (!chat.isNull())
 		{
 			render.setMessageChat(chat);
-			render.setType (Message::TypeSystem);
-			render.setMessageSender(chat.contacts().toContact() );
+			render.setType(Message::TypeSystem);
+			render.setMessageSender(chat.contacts().toContact());
 			render.setContent(messageStr);
-			render.setReceiveDate(QDateTime::currentDateTime() );
-			render.setSendDate(QDateTime::currentDateTime() );
+			render.setReceiveDate(QDateTime::currentDateTime());
+			render.setSendDate(QDateTime::currentDateTime());
 			MessageRenderInfo *renderInfo = new MessageRenderInfo(render);
 			widget->appendMessage(renderInfo);
 		}

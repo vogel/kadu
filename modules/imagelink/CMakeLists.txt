@@ -1,5 +1,6 @@
 set (SOURCES
 	imagelink.cpp
+	imagelink-module.cpp
 )
 
 set (MOC_SOURCES

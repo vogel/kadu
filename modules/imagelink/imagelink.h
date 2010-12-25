@@ -17,8 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CHAT_COMMANDS_H
-#define CHAT_COMMANDS_H
+#ifndef IMAGELINK_H
+#define IMAGELINK_H
 
 #include <QtCore/QObject>
 #include "configuration/configuration-aware-object.h"
