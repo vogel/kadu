@@ -7,12 +7,12 @@
 * growl_notify: #1755 fixed: show avatar in growl notification on Mac (dorr)
 * actions: removed on/off texts and icons, all checkable actions have only one text and icon now (Vogel)
 * jabber: more memory leaks removed (WhE)
-* notify: #1853 fixed: invalid behaviour of NotificationManager::setSilent() (WhE)
+* notify: #1853 fixed: invalid behaviour of NotificationManager::setSilentMode() (WhE)
 * chat styles: #1856 fixed: Conference titles are too long (WhE)
 * gui: #1847 fixed: Cancel should be the default action in BuddyDeleteWindow (beevvy)
 * tabs: #1835 fixed: chat's geometry is not saved on closing program (WhE)
 * core: #1822 fixed: save opened windows option is not working without tabs module (WhE)
-* gui: #1864 fixed: can not turn off save opened windows option (Vogel)
+* gui: #1864 fixed: can not turn off save opened windows option (WhE)
 
 +++ version 0.6.6-beta13
 * sound: #1376 fixed: long delays on Kadu exit and warnings from Qt regarding mutexes (beevvy)
