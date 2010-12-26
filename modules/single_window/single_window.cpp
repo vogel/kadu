@@ -48,6 +48,7 @@ extern "C" KADU_EXPORT void single_window_close()
 SingleWindowManager::SingleWindowManager()
 {
 	config_file.addVariable("SingleWindow", "RosterPosition", 0);
+	config_file.addVariable("SingleWindow", "KaduWindowWidth", 205);
 	singleWindow = new SingleWindow();
 }
 
@@ -98,23 +99,25 @@ SingleWindow::SingleWindow()
 
 	loadWindowGeometry(this, "SingleWindow", "WindowGeometry", 0, 0, 800, 440);
 
+	int kaduwidth = config_file.readNumEntry("SingleWindow", "KaduWindowWidth", 205);
+
 #ifdef Q_WS_MAEMO_5
 	int w = kadu->width();
 	if (w > 250)
 		w = 250;
-
 	kadu->setFixedWidth(w);
+	kaduwidth = w;
 #endif
 
 	if (rosterPos == 0)
 	{
-		splitSizes.append(kadu->width());
-		splitSizes.append(width() - kadu->width());
+		splitSizes.append(kaduwidth);
+		splitSizes.append(width() - kaduwidth);
 	}
 	else
 	{
-		splitSizes.append(width() - kadu->width());
-		splitSizes.append(kadu->width());
+		splitSizes.append(width() - kaduwidth);
+		splitSizes.append(kaduwidth);
 	}
 	split->setSizes(splitSizes);
 
@@ -153,9 +156,9 @@ SingleWindow::SingleWindow()
 SingleWindow::~SingleWindow()
 {
 	KaduWindow *kadu = Core::instance()->kaduWindow();
-	split->setSizes(splitSizes);
 
 	saveWindowGeometry(this, "SingleWindow", "WindowGeometry");
+	config_file.writeEntry("SingleWindow", "KaduWindowWidth", kadu->width());
 
 	disconnect(ChatWidgetManager::instance(), SIGNAL(handleNewChatWidget(ChatWidget *,bool &)),
 			this, SLOT(onNewChat(ChatWidget *,bool &)));
