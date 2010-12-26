@@ -100,6 +100,7 @@ void ChatWindow::setChatWidget(ChatWidget *newChatWidget)
 
 	kaduRestoreGeometry();
 	updateTitle();
+	updateIcon();
 }
 
 ChatWidget * ChatWindow::chatWidget()
