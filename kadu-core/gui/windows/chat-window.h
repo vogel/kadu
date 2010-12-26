@@ -48,11 +48,10 @@ protected:
 	virtual void compositingDisabled();
 
 public:
-	ChatWindow(QWidget *parent = 0);
+	explicit ChatWindow(ChatWidget *chatWidget, QWidget *parent = 0);
 	virtual ~ChatWindow();
 
-	void setChatWidget(ChatWidget *chatWidget);
-	ChatWidget * chatWidget();
+	ChatWidget * chatWidget() const { return currentChatWidget; }
 
 	void closeChatWidget(ChatWidget *chatWidget);
 	void setWindowTitle(const QString &title);

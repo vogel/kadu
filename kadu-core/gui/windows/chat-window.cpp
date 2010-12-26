@@ -43,23 +43,41 @@
 
 #include "chat-window.h"
 
-ChatWindow::ChatWindow(QWidget *parent) :
-		QWidget(parent), currentChatWidget(0), title_timer(new QTimer(this))
+ChatWindow::ChatWindow(ChatWidget *chatWidget, QWidget *parent) :
+		QWidget(parent), currentChatWidget(chatWidget), title_timer(new QTimer(this))
 {
 	kdebugf();
 
 	setWindowRole("kadu-chat");
-
-	connect(title_timer, SIGNAL(timeout()), this, SLOT(blinkTitle()));
-	connect(this, SIGNAL(chatWidgetActivated(ChatWidget *)),
-			ChatWidgetManager::instance(), SIGNAL(chatWidgetActivated(ChatWidget *)));
 
 #ifdef Q_OS_MAC
 	setAttribute(Qt::WA_MacBrushedMetal);
 #endif
 	setAttribute(Qt::WA_DeleteOnClose);
 
+	currentChatWidget->setParent(this);
+	currentChatWidget->show();
+	currentChatWidget->edit()->setFocus();
+
+	QVBoxLayout *layout = new QVBoxLayout(this);
+	layout->addWidget(currentChatWidget);
+	layout->setContentsMargins(0, 0, 0, 0);
+	layout->setSpacing(0);
+
+	kaduRestoreGeometry();
+	updateTitle();
+	updateIcon();
+
 	configurationUpdated();
+
+	connect(currentChatWidget, SIGNAL(closed()), this, SLOT(close()));
+	connect(currentChatWidget, SIGNAL(iconChanged()), this, SLOT(updateIcon()));
+	connect(currentChatWidget, SIGNAL(titleChanged(ChatWidget *, const QString &)), this, SLOT(updateTitle()));
+	connect(currentChatWidget, SIGNAL(messageReceived(Chat)), this, SLOT(alertNewMessage()));
+	connect(title_timer, SIGNAL(timeout()), this, SLOT(blinkTitle()));
+	connect(this, SIGNAL(chatWidgetActivated(ChatWidget *)),
+			ChatWidgetManager::instance(), SIGNAL(chatWidgetActivated(ChatWidget *)));
+
 }
 
 ChatWindow::~ChatWindow()
@@ -75,37 +93,8 @@ void ChatWindow::configurationUpdated()
 	showNewMessagesNum = config_file.readBoolEntry("Chat", "NewMessagesInChatTitle", false);
 	blinkChatTitle = config_file.readBoolEntry("Chat", "BlinkChatTitle", true);
 
-	if (currentChatWidget && currentChatWidget->newMessagesCount())
+	if (currentChatWidget->newMessagesCount())
 		blinkTitle();
-}
-
-// TODO: fix it
-void ChatWindow::setChatWidget(ChatWidget *newChatWidget)
-{
-	QVBoxLayout *layout = new QVBoxLayout(this);
-
-	currentChatWidget = newChatWidget;
-	newChatWidget->setParent(this);
-	newChatWidget->show();
-	newChatWidget->edit()->setFocus();
-
-	layout->addWidget(newChatWidget);
-	layout->setContentsMargins(0, 0, 0, 0);
-	layout->setSpacing(0);
-
-	connect(currentChatWidget, SIGNAL(closed()), this, SLOT(close()));
-	connect(currentChatWidget, SIGNAL(iconChanged()), this, SLOT(updateIcon()));
-	connect(currentChatWidget, SIGNAL(titleChanged(ChatWidget *, const QString &)), this, SLOT(updateTitle()));
-	connect(currentChatWidget, SIGNAL(messageReceived(Chat)), this, SLOT(alertNewMessage()));
-
-	kaduRestoreGeometry();
-	updateTitle();
-	updateIcon();
-}
-
-ChatWidget * ChatWindow::chatWidget()
-{
-	return currentChatWidget;
 }
 
 void ChatWindow::compositingEnabled()
@@ -153,9 +142,7 @@ void ChatWindow::setDefaultGeometry()
 
 void ChatWindow::kaduRestoreGeometry()
 {
-	ChatGeometryData *cgd = 0;
-	if (currentChatWidget)
-		cgd = currentChatWidget->chat().data()->moduleStorableData<ChatGeometryData>("chat-geometry");
+	ChatGeometryData *cgd = currentChatWidget->chat().data()->moduleStorableData<ChatGeometryData>("chat-geometry");
 
 	if (!cgd || !cgd->windowGeometry().isValid())
 		setDefaultGeometry();
@@ -172,9 +159,6 @@ void ChatWindow::kaduRestoreGeometry()
 
 void ChatWindow::kaduStoreGeometry()
 {
-	if (!currentChatWidget)
-		return;
-
 	currentChatWidget->kaduStoreGeometry();
 
 	ChatGeometryData *cgd = currentChatWidget->chat().data()->moduleStorableData<ChatGeometryData>("chat-geometry", true);

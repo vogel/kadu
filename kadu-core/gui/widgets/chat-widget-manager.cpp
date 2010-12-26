@@ -280,13 +280,7 @@ ChatWidget * ChatWidgetManager::openChatWidget(Chat chat, bool forceActivate)
 	bool handled = false;
 	emit handleNewChatWidget(chatWidget, handled);
 	if (!handled)
-	{
-		ChatWindow *window = new ChatWindow();
-		chatWidget->setParent(window);
-		chatWidget->show();
-		window->setChatWidget(chatWidget);
-		window->show();
-	}
+		(new ChatWindow(chatWidget))->show();
 
 	connect(chatWidget, SIGNAL(messageSentAndConfirmed(Chat , const QString &)),
 		this, SIGNAL(messageSentAndConfirmed(Chat , const QString &)));
