@@ -47,24 +47,18 @@ unsigned int computeFormatsSize(const FormattedMessage &message)
 
 	foreach (const FormattedMessagePart &part, message.parts())
 	{
-		if (!first || part.isImage() || part.bold() || part.italic() || part.underline() || part.color().isValid())
+		if (first && !part.isImage() && !part.bold() && !part.italic() && !part.underline() && !part.color().isValid())
 		{
-			size += sizeof(struct gg_msg_richtext_format);
-			first = false;
-		}
-
-		if (part.isImage())
-		{
-			size += sizeof(struct gg_msg_richtext_image);
 			first = false;
 			continue;
 		}
 
-		if (part.color().isValid())
-		{
+		size += sizeof(struct gg_msg_richtext_format);
+
+		if (part.isImage())
+			size += sizeof(struct gg_msg_richtext_image);
+		else if (part.color().isValid())
 			size += sizeof(struct gg_msg_richtext_color);
-			first = false;
-		}
 	}
 
 	return first ? 0 : size;
