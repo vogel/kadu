@@ -102,11 +102,10 @@ SingleWindow::SingleWindow()
 	int kaduwidth = config_file.readNumEntry("SingleWindow", "KaduWindowWidth", 205);
 
 #ifdef Q_WS_MAEMO_5
-	int w = kadu->width();
-	if (w > 250)
-		w = 250;
-	kadu->setFixedWidth(w);
-	kaduwidth = w;
+	kaduwidth = kadu->width();
+	if (kaduwidth > 250)
+		kaduwidth = 250;
+	kadu->setFixedWidth(kaduwidth);
 #endif
 
 	if (rosterPos == 0)
