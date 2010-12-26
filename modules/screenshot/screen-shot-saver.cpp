@@ -49,7 +49,7 @@ QString ScreenShotSaver::createScreenshotPath()
 			.arg(dir.absolutePath())
 			.arg(ScreenShotConfiguration::instance()->fileNamePrefix())
 			.arg(QString::number(QDateTime::currentDateTime().toTime_t()))
-			.arg(ScreenShotConfiguration::instance()->screenshotFileNameExtension()));
+			.arg(ScreenShotConfiguration::instance()->screenshotFileNameExtension().toLower()));
 }
 
 QString ScreenShotSaver::saveScreenShot(QPixmap pixmap)
