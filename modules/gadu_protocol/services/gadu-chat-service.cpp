@@ -123,19 +123,16 @@ bool GaduChatService::sendMessage(Chat chat, FormattedMessage &message, bool sil
 			messageId = gg_send_message_confer(
 					Protocol->gaduSession(), GG_CLASS_CHAT, uinsCount, uins, (unsigned char *)data.data());
 	}
-	else
-		foreach (const Contact &contact, contacts)
-		{
-			if (formatsSize)
-				messageId = gg_send_message_richtext(
-						Protocol->gaduSession(), GG_CLASS_CHAT, Protocol->uin(contact), (unsigned char *)data.data(),
-						formats, formatsSize);
-			else
-				messageId = gg_send_message(
-						Protocol->gaduSession(), GG_CLASS_CHAT, Protocol->uin(contact), (unsigned char *)data.data());
-
-			break;
-		}
+	else if (uinsCount == 1)
+	{
+		if (formatsSize)
+			messageId = gg_send_message_richtext(
+					Protocol->gaduSession(), GG_CLASS_CHAT, Protocol->uin(contacts.first()), (unsigned char *)data.data(),
+					formats, formatsSize);
+		else
+			messageId = gg_send_message(
+					Protocol->gaduSession(), GG_CLASS_CHAT, Protocol->uin(contacts.first()), (unsigned char *)data.data());
+	}
 
 	delete[] formats;
 
