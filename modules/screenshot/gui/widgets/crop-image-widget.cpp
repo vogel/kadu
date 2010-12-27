@@ -225,7 +225,6 @@ void CropImageWidget::mouseReleaseEvent(QMouseEvent *event)
 	CropRect.setTopLeft(NewTopLeft);
 	CropRect.setBottomRight(event->pos());
 	normalizeCropRect();
-	updateCropRectDisplay();
 	updateToolBoxFileSizeHint();
 }
 
@@ -239,7 +238,6 @@ void CropImageWidget::mouseMoveEvent(QMouseEvent *event)
 	CropRect.setTopLeft(NewTopLeft);
 	CropRect.setBottomRight(event->pos());
 	normalizeCropRect();
-	updateCropRectDisplay();
 }
 
 void CropImageWidget::resizeEvent(QResizeEvent *event)
