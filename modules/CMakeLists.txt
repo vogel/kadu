@@ -5,6 +5,7 @@ set (BLACKLIST_MODULES
 	encryption
 	encryption_ng_caesar
 	tlen_protocol
+	weather
 )
 
 if (WIN32)
