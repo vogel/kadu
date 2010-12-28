@@ -15,6 +15,7 @@
 * gui: #1864 fixed: can not turn off save opened windows option (WhE)
 * gadu: #1141, #1868 fixed: crash when sending message containing specific combination of newlines and spaces (beevvy)
 * gui: fixed regression in beta13: icon in tab-less chat window is incorrect until it has to update (beevvy)
+* encryption_ng: #1575 fixed: module encryption fully ported to new Kadu (Vogel)
 
 +++ version 0.6.6-beta13
 * sound: #1376 fixed: long delays on Kadu exit and warnings from Qt regarding mutexes (beevvy)
