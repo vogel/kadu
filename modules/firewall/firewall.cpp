@@ -120,8 +120,8 @@ void Firewall::accountRegistered(Account account)
 	if (!chatService)
 		return;
 
-	connect(chatService, SIGNAL(filterIncomingMessage(Chat, Contact, QString, time_t, bool &)),
-			this, SLOT(filterIncomingMessage(Chat, Contact, QString, time_t, bool &)));
+	connect(chatService, SIGNAL(filterIncomingMessage(Chat, Contact, QString &, time_t, bool &)),
+			this, SLOT(filterIncomingMessage(Chat, Contact, QString &, time_t, bool &)));
 	connect(chatService, SIGNAL(filterOutgoingMessage(Chat, QByteArray &, bool &)),
 			this, SLOT(filterOutgoingMessage(Chat, QByteArray &, bool &)));
 	connect(account, SIGNAL(connected()), this, SLOT(accountConnected()));
@@ -137,8 +137,8 @@ void Firewall::accountUnregistered(Account account)
 	if (!chatService)
 		return;
 
-	disconnect(chatService, SIGNAL(filterIncomingMessage(Chat, Contact, QString, time_t, bool &)),
-			this, SLOT(filterIncomingMessage(Chat, Contact, QString, time_t, bool &)));
+	disconnect(chatService, SIGNAL(filterIncomingMessage(Chat, Contact, QString &, time_t, bool &)),
+			this, SLOT(filterIncomingMessage(Chat, Contact, QString &, time_t, bool &)));
 	disconnect(chatService, SIGNAL(filterOutgoingMessage(Chat, QByteArray &, bool &)),
 			this, SLOT(filterOutgoingMessage(Chat, QByteArray &, bool &)));
 	disconnect(account, SIGNAL(connected()), this, SLOT(accountConnected()));
