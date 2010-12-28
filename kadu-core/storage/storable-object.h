@@ -234,6 +234,19 @@ template<class T>
 
 	/**
 	 * @author Rafal 'Vogel' Malinowski
+	 * @short Check if value is available in XML node (as subnode).
+	 * @param name name of subnode that will be checked
+	 * @return true, if subnode is available
+	 *
+	 * Check if value is available in XML node (as subnode).
+	 */
+	bool hasValue(const QString &name) const
+	{
+		return Storage->storage()->hasNode(Storage->point(), name);
+	}
+
+	/**
+	 * @author Rafal 'Vogel' Malinowski
 	 * @short Loads value from XML node (as an attribute).
 	 * @param T type of returned value
 	 * @param name name of attribute that will be loaded
