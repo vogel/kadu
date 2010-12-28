@@ -87,8 +87,15 @@ bool BuddiesListViewItemPainter::useBold() const
 	if (!Configuration.showBold())
 		return false;
 
-	Status status = Index.data(StatusRole).value<Status>();
+	Contact contact = Index.data(ContactRole).value<Contact>();
+	if (!contact)
+		return false;
+	if (contact.isBlocking())
+		return false;
+	if (contact.ownerBuddy().isBlocked())
+		return false;
 
+	Status status = Index.data(StatusRole).value<Status>();
 	return !status.isDisconnected();
 }
 
