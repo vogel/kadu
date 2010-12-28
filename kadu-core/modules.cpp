@@ -144,6 +144,13 @@ ModulesManager::ModulesManager() : QObject(),
 	QString unloaded_str = config_file.readEntry("General", "UnloadedModules");
 	unloaded_list = unloaded_str.split(',', QString::SkipEmptyParts);
 
+	if (loaded_list.contains("encryption"))
+	{
+		loaded_list.removeAll("encryption");
+		loaded_list.append("encryption_ng");
+		loaded_list.append("encryption_ng_simlite");
+	}
+
 	registerStaticModules();
 
 	foreach(const QString &i, staticModules())
