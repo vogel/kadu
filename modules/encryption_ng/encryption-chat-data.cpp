@@ -17,7 +17,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "chat/chat-shared.h"
 #include "configuration/encryption-ng-configuration.h"
+#include "contacts/contact-set.h"
 #include "decryptor.h"
 #include "encryptor.h"
 
@@ -32,6 +34,29 @@ EncryptionChatData::~EncryptionChatData()
 {
 }
 
+bool EncryptionChatData::importEncrypt()
+{
+	bool result = EncryptionNgConfiguration::instance()->encryptByDefault();
+	StorableObject *chatStorage = storageParent();
+	ChatShared *chat = dynamic_cast<ChatShared *>(chatStorage);
+
+	if (!chat)
+		return result;
+
+	ContactSet contacts = chat->contacts();
+	if (1 != contacts.size())
+		return result;
+
+	Contact contact = *contacts.begin();
+	QString encryptionEnabled = contact.ownerBuddy().customData("encryption_enabled");
+	contact.ownerBuddy().removeCustomData("encryption_enabled");
+
+	if (!encryptionEnabled.isEmpty())
+		result = encryptionEnabled == "true";
+
+	return result;
+}
+
 void EncryptionChatData::load()
 {
 	if (!isValidStorage())
@@ -41,7 +66,7 @@ void EncryptionChatData::load()
 
 	Encrypt = hasValue("Encrypt")
 			? loadValue<bool>("Encrypt")
-			: EncryptionNgConfiguration::instance()->encryptByDefault();
+			: importEncrypt();
 }
 
 void EncryptionChatData::store()

@@ -43,6 +43,8 @@ class EncryptionChatData : public QObject, public ModuleData
 
 	bool Encrypt;
 
+	bool importEncrypt();
+
 private slots:
 	void encryptorDestroyed();
 	void decryptorDestroyed();
