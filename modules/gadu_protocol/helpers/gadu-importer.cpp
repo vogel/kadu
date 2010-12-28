@@ -66,8 +66,6 @@ void GaduImporter::markImported()
 
 void GaduImporter::importAccounts()
 {
-	printf("GaduImporter::importAccounts\n");
-
 	if (0 == config_file.readNumEntry("General", "UIN"))
 		return;
 
@@ -129,8 +127,6 @@ void GaduImporter::importAccounts()
 
 void GaduImporter::importContacts()
 {
-	printf("GaduImporter::importContacts\n");
-
 	connect(BuddyManager::instance(), SIGNAL(buddyAdded(Buddy &)),
 			this, SLOT(buddyAdded(Buddy &)));
 
@@ -142,8 +138,6 @@ void GaduImporter::importContacts()
 
 void GaduImporter::importGaduContact(Buddy &buddy)
 {
-	printf("GaduImporter::importGaduContact\n");
-
 	QList<Account> allGaduAccounts = AccountManager::instance()->byProtocolName("gadu");
 	if (0 == allGaduAccounts.count())
 		return;
@@ -192,8 +186,6 @@ void GaduImporter::importIgnored()
 
 void GaduImporter::buddyAdded(Buddy &buddy)
 {
-	printf("GaduImporter::buddyAdded\n");
-
 	if (!buddy.customData("uin").isEmpty())
 		importGaduContact(buddy);
 }
