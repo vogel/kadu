@@ -17,6 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <math.h>
+
 #include <QtCore/QBuffer>
 #include <QtCore/QTimer>
 #include <QtGui/QCursor>
@@ -140,7 +142,7 @@ void CropImageWidget::updateCropRectDisplay()
 	BottomHandler->setPos(xMiddle - HANDLER_HALF_SIZE, CropRect.bottom() - HANDLER_HALF_SIZE);
 	BottomRightHandler->setPos(CropRect.right() - HANDLER_HALF_SIZE, CropRect.bottom() - HANDLER_HALF_SIZE);
 
-	ToolBox->setGeometry(QString("%1x%2").arg(CropRect.width()).arg(CropRect.height()));
+	ToolBox->setGeometry(QString("%1x%2").arg(normalized.width()).arg(normalized.height()));
 	ToolBoxProxy->setPos(xMiddle - ToolBox->width() / 2, yMiddle - ToolBox->height() / 2);
 
 	scene()->update(scene()->sceneRect());
@@ -148,6 +150,8 @@ void CropImageWidget::updateCropRectDisplay()
 
 QPixmap CropImageWidget::croppedPixmap()
 {
+	if (CropRect.normalized().isEmpty())
+		return QPixmap();
 	return PixmapItem->pixmap().copy(CropRect.normalized());
 }
 
@@ -176,10 +180,16 @@ void CropImageWidget::updateToolBoxFileSizeHint()
 	QBuffer buffer;
 	QPixmap pixmap = croppedPixmap();
 
+	if (pixmap.isNull())
+	{
+		ToolBox->setFileSize("0 KiB");
+		return;
+	}
+
 	bool ret = pixmap.save(&buffer, "png");
 
 	if (ret)
-		ToolBox->setFileSize(QString::number(buffer.size()/1024) + " KB");
+		ToolBox->setFileSize(QString::number(ceil(1.0 * buffer.size() / 1024.0)) + " KiB");
 }
 
 void CropImageWidget::mousePressEvent(QMouseEvent *event)
@@ -212,9 +222,9 @@ void CropImageWidget::mouseReleaseEvent(QMouseEvent *event)
 
 	IsMouseButtonPressed = false;
 
+	CropRect.setTopLeft(NewTopLeft);
 	CropRect.setBottomRight(event->pos());
 	normalizeCropRect();
-	updateCropRectDisplay();
 	updateToolBoxFileSizeHint();
 }
 
@@ -227,7 +237,7 @@ void CropImageWidget::mouseMoveEvent(QMouseEvent *event)
 
 	CropRect.setTopLeft(NewTopLeft);
 	CropRect.setBottomRight(event->pos());
-	updateCropRectDisplay();
+	normalizeCropRect();
 }
 
 void CropImageWidget::resizeEvent(QResizeEvent *event)

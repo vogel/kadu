@@ -33,7 +33,13 @@ ScreenshotToolBox::ScreenshotToolBox(QWidget *parent) :
 	layout->setSpacing(5);
 
 	GeometryLabel = new QLabel(this);
-	FileSizeLabel = new QLabel(tr("0 KB"), this);
+	GeometryLabel->setAlignment(Qt::AlignHCenter);
+	QFont font = GeometryLabel->font();
+	font.setBold(true);
+	GeometryLabel->setFont(font);
+
+	FileSizeLabel = new QLabel(tr("0 KiB"), this);
+	FileSizeLabel->setAlignment(Qt::AlignHCenter);
 
 	QPushButton *cropButton = new QPushButton(tr("Crop"), this);
 	connect(cropButton, SIGNAL(clicked(bool)), this, SIGNAL(crop()));
