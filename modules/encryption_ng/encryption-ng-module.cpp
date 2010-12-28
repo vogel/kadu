@@ -36,14 +36,12 @@ namespace EncryptionNg
 
 extern "C" int encryption_ng_init(bool firstLoad)
 {
-	Q_UNUSED(firstLoad)
-
 	EncryptionNgConfiguration::createInstance();
 	EncryptionNgConfigurationUiHandler::registerConfigurationUi();
 
 	EncryptionManager::createInstance();
 	EncryptionProviderManager::createInstance();
-	EncryptionActions::registerActions();
+	EncryptionActions::registerActions(firstLoad);
 
 	return 0;
 }

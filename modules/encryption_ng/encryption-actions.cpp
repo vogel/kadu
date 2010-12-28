@@ -24,6 +24,7 @@
 #include "gui/actions/action.h"
 #include "gui/actions/action-description.h"
 #include "gui/widgets/buddies-list-view-menu-manager.h"
+#include "gui/widgets/chat-edit-box.h"
 #include "protocols/services/chat-service.h"
 #include "protocols/protocol.h"
 
@@ -70,10 +71,10 @@ static void checkSendKey(Action *action)
 
 EncryptionActions * EncryptionActions::Instance = 0;
 
-void EncryptionActions::registerActions()
+void EncryptionActions::registerActions(bool firstLoad)
 {
 	if (!Instance)
-		Instance = new EncryptionActions();
+		Instance = new EncryptionActions(firstLoad);
 }
 
 void EncryptionActions::unregisterActions()
@@ -82,7 +83,7 @@ void EncryptionActions::unregisterActions()
 	Instance = 0;
 }
 
-EncryptionActions::EncryptionActions()
+EncryptionActions::EncryptionActions(bool firstLoad)
 {
 	EnableEncryptionActionDescription = new ActionDescription(this,
 			ActionDescription::TypeChat, "encryptionAction",
@@ -90,6 +91,9 @@ EncryptionActions::EncryptionActions()
 			"security-high", tr("Encrypt"),
 			true, checkCanEncrypt
 	);
+
+	if (firstLoad)
+		ChatEditBox::addAction("encryptionAction");
 
 	SendPublicKeyActionDescription = new ActionDescription(this,
 		ActionDescription::TypeUser, "sendPublicKeyAction",
