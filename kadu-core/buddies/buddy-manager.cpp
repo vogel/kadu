@@ -66,9 +66,14 @@ void BuddyManager::init()
 
 	connect(GroupManager::instance(), SIGNAL(groupAboutToBeRemoved(Group)),
 			this, SLOT(groupRemoved(Group)));
-	
-	if (xml_config_file->getNode("Buddies", XmlConfigFile::ModeFind).isNull())
+
+	int itemsSize = items().size();
+	QDomElement buddiesNode = xml_config_file->getNode("Buddies", XmlConfigFile::ModeFind);
+	if (buddiesNode.isNull() || (itemsSize == 0 && !buddiesNode.hasAttribute("imported")))
+	{
 		importConfiguration(xml_config_file);
+		buddiesNode.setAttribute("imported", "true");
+	}
 }
 
 void BuddyManager::importConfiguration(XmlConfigFile *configurationStorage)
@@ -87,7 +92,7 @@ void BuddyManager::importConfiguration(XmlConfigFile *configurationStorage)
 
 		addItem(buddy);
 	}
-	
+
 	// flush configuration to save all changes
 	ConfigurationManager::instance()->flush();
 }

@@ -86,10 +86,7 @@ void ConfigurationManager::importConfiguration()
 	QDomElement general = xml_config_file->findElementByProperty(root.firstChild().firstChild().toElement(), "Group", "name", "General");
 	QDomElement mainConfiguration = xml_config_file->findElementByProperty(general, "Entry", "name", "ConfigGeometry");
 	
-	if (root.elementsByTagName("Contacts").count() == 1 &&
-		root.elementsByTagName("ContactsNew").count() == 0 &&
-		root.elementsByTagName("Buddies").count() == 0 &&
-		root.elementsByTagName("ContactAccountDatas").count() == 0)
+	if (root.elementsByTagName("OldContacts").count() == 0)
 		copyOldContactsToImport();
 
 	if (root.elementsByTagName("Contacts").count() == 0 &&
@@ -105,8 +102,6 @@ void ConfigurationManager::importConfiguration()
 	
 	if(!mainConfiguration.isNull())
 		  mainConfiguration.setAttribute("name", "MainConfiguration_Geometry");
-
-	
 }
 
 void ConfigurationManager::copyOldContactsToImport()
