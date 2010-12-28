@@ -17,8 +17,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "modules/encryption_ng/encryption-manager.h"
 #include "modules/encryption_ng/encryption-provider-manager.h"
 
+#include "encryption-ng-simlite-key-generator.h"
 #include "encryption-ng-simlite-key-importer.h"
 #include "encryption-ng-simlite-provider.h"
 
@@ -26,6 +28,9 @@ extern "C" int encryption_ng_simlite_init(bool firstLoad)
 {
 	if (firstLoad)
 		EncryptioNgSimliteKeyImporter::createInstance();
+
+	EncryptioNgSimliteKeyGenerator::createInstance();
+	EncryptionManager::instance()->setGenerator(EncryptioNgSimliteKeyGenerator::instance());
 
 	EncryptioNgSimliteProvider::createInstance();
 	EncryptionProviderManager::instance()->registerProvider(EncryptioNgSimliteProvider::instance());
@@ -37,6 +42,9 @@ extern "C" void encryption_ng_simlite_close()
 {
 	EncryptionProviderManager::instance()->unregisterProvider(EncryptioNgSimliteProvider::instance());
 	EncryptioNgSimliteProvider::destroyInstance();
+
+	EncryptionManager::instance()->setGenerator(0);
+	EncryptioNgSimliteKeyGenerator::destroyInstance();
 
 	// it can work without createInstance too, so don't care about firstLoad here
 	EncryptioNgSimliteKeyImporter::destroyInstance();

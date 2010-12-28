@@ -21,12 +21,12 @@
 #include <QtCore/QtGlobal>
 #include <QtCrypto>
 
-#include "gui/windows/main-configuration-window.h"
 #include "misc/path-conversion.h"
 
 #include "configuration/encryption-ng-configuration.h"
 #include "encryption-actions.h"
 #include "encryption-manager.h"
+#include "encryption-ng-configuration-ui-handler.h"
 #include "encryption-provider-manager.h"
 
 namespace EncryptionNg
@@ -39,7 +39,7 @@ extern "C" int encryption_ng_init(bool firstLoad)
 	Q_UNUSED(firstLoad)
 
 	EncryptionNgConfiguration::createInstance();
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/encryption-ng.ui"));
+	EncryptionNgConfigurationUiHandler::registerConfigurationUi();
 
 	EncryptionManager::createInstance();
 	EncryptionProviderManager::createInstance();
@@ -54,7 +54,7 @@ extern "C" void encryption_ng_close()
 	EncryptionProviderManager::destroyInstance();
 	EncryptionManager::destroyInstance();
 
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/encryption-ng.ui"));
+	EncryptionNgConfigurationUiHandler::unregisterConfigurationUi();
 	EncryptionNgConfiguration::destroyInstance();
 
 	qRemovePostRoutine(QCA::deinit);

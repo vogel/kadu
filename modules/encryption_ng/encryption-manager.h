@@ -28,6 +28,7 @@
 
 class ActionDescription;
 class ChatWidget;
+class KeyGenerator;
 
 class EncryptionManager : public QObject, AccountsAwareObject
 {
@@ -35,6 +36,8 @@ class EncryptionManager : public QObject, AccountsAwareObject
 	Q_DISABLE_COPY(EncryptionManager)
 
 	static EncryptionManager *Instance;
+
+	KeyGenerator *Generator;
 
 	EncryptionManager();
 	virtual ~EncryptionManager();
@@ -55,6 +58,9 @@ public:
 	static void destroyInstance();
 
 	static EncryptionManager * instance() { return Instance; }
+
+	void setGenerator(KeyGenerator *generator);
+	KeyGenerator * generator();
 
 	bool setEncryptionEnabled(const Chat &chat, bool enable);
 

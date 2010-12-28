@@ -43,7 +43,8 @@ void EncryptionManager::destroyInstance()
 	Instance = 0;
 }
 
-EncryptionManager::EncryptionManager()
+EncryptionManager::EncryptionManager() :
+		Generator(0)
 {
 	triggerAllAccountsRegistered();
 
@@ -181,4 +182,14 @@ void EncryptionManager::chatWidgetDestroying(ChatWidget *chatWidget)
 		encryptionChatData->encryptor()->provider()->releaseEncryptor(chat, encryptionChatData->encryptor());
 		encryptionChatData->setEncryptor(0);
 	}
+}
+
+void EncryptionManager::setGenerator(KeyGenerator *generator)
+{
+	Generator = generator;
+}
+
+KeyGenerator * EncryptionManager::generator()
+{
+	return Generator;
 }

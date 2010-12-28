@@ -1,6 +1,7 @@
 set (SOURCES
 	encryption-ng-simlite-decryptor.cpp
 	encryption-ng-simlite-encryptor.cpp
+	encryption-ng-simlite-key-generator.cpp
 	encryption-ng-simlite-key-importer.cpp
 	encryption-ng-simlite-module.cpp
 	encryption-ng-simlite-provider.cpp

@@ -10,6 +10,7 @@ set (SOURCES
 	encryption-actions.cpp
 	encryption-chat-data.cpp
 	encryption-manager.cpp
+	encryption-ng-configuration-ui-handler.cpp
 	encryption-ng-module.cpp
 	encryption-provider-manager.cpp
 	encryptor.cpp
@@ -24,6 +25,7 @@ set (MOC_SOURCES
 	encryption-actions.h
 	encryption-chat-data.h
 	encryption-manager.h
+	encryption-ng-configuration-ui-handler.h
 	encryption-provider.h
 	encryption-provider-manager.h
 	encryptor.h
