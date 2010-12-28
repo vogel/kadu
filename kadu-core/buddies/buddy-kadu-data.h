@@ -45,6 +45,7 @@ public:
 	virtual QString name() const;
 
 	Property(bool, hideDescription, HideDescription)
+
 };
 
 #endif // BUDDY_KADU_DATA_H

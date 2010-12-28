@@ -17,18 +17,44 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "configuration/encryption-ng-configuration.h"
 #include "decryptor.h"
 #include "encryptor.h"
 
 #include "encryption-chat-data.h"
 
-EncryptionChatData::EncryptionChatData() :
-		ChatEncryptor(0), ChatDecryptor(0)
+EncryptionChatData::EncryptionChatData(StorableObject *parent) :
+		ModuleData(parent), ChatEncryptor(0), ChatDecryptor(0)
 {
 }
 
 EncryptionChatData::~EncryptionChatData()
 {
+}
+
+void EncryptionChatData::load()
+{
+	if (!isValidStorage())
+		return;
+
+	StorableObject::load();
+
+	Encrypt = hasValue("Encrypt")
+			? loadValue<bool>("Encrypt")
+			: EncryptionNgConfiguration::instance()->encryptByDefault();
+}
+
+void EncryptionChatData::store()
+{
+	if (!isValidStorage())
+		return;
+
+	storeValue("Encrypt", Encrypt);
+}
+
+QString EncryptionChatData::name() const
+{
+	return QLatin1String("encryption-ng");
 }
 
 void EncryptionChatData::encryptorDestroyed()

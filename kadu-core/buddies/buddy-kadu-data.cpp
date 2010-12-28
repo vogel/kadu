@@ -27,8 +27,8 @@
 
 #include "buddy-kadu-data.h"
 
-BuddyKaduData::BuddyKaduData(StorableObject *parent)
-		: ModuleData(parent)
+BuddyKaduData::BuddyKaduData(StorableObject *parent) :
+		ModuleData(parent)
 {
 }
 
