@@ -17,7 +17,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QCoreApplication>
 #include <QtCore/QtGlobal>
+#include <QtCrypto>
 
 #include "gui/windows/main-configuration-window.h"
 #include "misc/path-conversion.h"
@@ -26,6 +28,11 @@
 #include "encryption-actions.h"
 #include "encryption-manager.h"
 #include "encryption-provider-manager.h"
+
+namespace EncryptionNg
+{
+	QCA::Initializer InitObject;
+}
 
 extern "C" int encryption_ng_init(bool firstLoad)
 {
@@ -49,4 +56,6 @@ extern "C" void encryption_ng_close()
 
 	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/encryption-ng.ui"));
 	EncryptionNgConfiguration::destroyInstance();
+
+	qRemovePostRoutine(QCA::deinit);
 }
