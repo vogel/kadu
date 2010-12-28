@@ -123,9 +123,7 @@ bool EncryptionManager::setEncryptionEnabled(const Chat &chat, bool enable)
 
 void EncryptionManager::filterRawIncomingMessage(Chat chat, Contact sender, QByteArray &message, bool &ignore)
 {
-	Q_UNUSED(chat)
 	Q_UNUSED(sender)
-	Q_UNUSED(message)
 	Q_UNUSED(ignore)
 
 	EncryptionChatData *encryptionChatData = chat.data()->moduleData<EncryptionChatData>("encryption-ng", true);
