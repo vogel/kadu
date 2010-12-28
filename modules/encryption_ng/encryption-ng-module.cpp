@@ -1,4 +1,5 @@
 /*
+ * Copyright 2007, 2008, 2009 Tomasz Kazmierczak
  * %kadu copyright begin%
  * Copyright 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
@@ -19,6 +20,7 @@
 
 #include <QtCore/QCoreApplication>
 #include <QtCore/QtGlobal>
+#include <QtGui/QApplication>
 #include <QtCrypto>
 
 #include "misc/path-conversion.h"
@@ -28,6 +30,7 @@
 #include "encryption-manager.h"
 #include "encryption-ng-configuration-ui-handler.h"
 #include "encryption-provider-manager.h"
+#include <gui/windows/message-dialog.h>
 
 namespace EncryptionNg
 {
@@ -36,6 +39,15 @@ namespace EncryptionNg
 
 extern "C" int encryption_ng_init(bool firstLoad)
 {
+	if (!QCA::isSupported("pkey") ||
+			!QCA::PKey::supportedIOTypes().contains(QCA::PKey::RSA) ||
+			!QCA::isSupported("sha1"))
+	{
+		MessageDialog::exec("dialog-error", QApplication::tr("Encryption"),
+				QApplication::tr("The QCA OSSL plugin for libqca2 is not present!"));
+		return -1;
+	}
+
 	EncryptionNgConfiguration::createInstance();
 	EncryptionNgConfigurationUiHandler::registerConfigurationUi();
 
