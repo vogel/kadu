@@ -89,7 +89,7 @@ bool JabberChatService::sendMessage(Chat chat, FormattedMessage &formattedMessag
 		message.setMessageChat(chat);
 		message.setType(Message::TypeSent);
 		message.setMessageSender(Protocol->account().accountContact());
-		message.setContent(plain);
+		message.setContent(formattedMessage.toPlain());
 		message.setSendDate(QDateTime::currentDateTime());
 		message.setReceiveDate(QDateTime::currentDateTime());
 
