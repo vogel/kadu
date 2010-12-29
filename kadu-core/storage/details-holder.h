@@ -82,6 +82,7 @@ class DetailsHolder
 
 		detailsAdded();
 		ManagerClass::instance()->detailsLoaded((Class *)this);
+		afterDetailsAdded();
 	}
 
 	/**
@@ -107,6 +108,7 @@ class DetailsHolder
 		detailsRemoved();
 
 		ManagerClass::instance()->detailsUnloaded((Class *)this);
+		afterDetailsRemoved();
 	}
 
 protected:
@@ -155,6 +157,16 @@ protected:
 
 	/**
 	 * @author Rafal 'Vogel' Malinowski
+	 * @short Method called after informing manager about new details.
+	 *
+	 * Method is called after adding informing manager about new detais.
+	 */
+	virtual void afterDetailsAdded()
+	{
+	}
+
+	/**
+	 * @author Rafal 'Vogel' Malinowski
 	 * @short Method called before removing old details.
 	 *
 	 * Method is called always before removing old details. Included
@@ -172,6 +184,16 @@ protected:
 	 * destroying object with not-NULL details.
 	 */
 	virtual void detailsRemoved()
+	{
+	}
+
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Method called after informing manager about removing old details.
+	 *
+	 * Method is called always after informing manager about removing old details.
+	 */
+	virtual void afterDetailsRemoved()
 	{
 	}
 

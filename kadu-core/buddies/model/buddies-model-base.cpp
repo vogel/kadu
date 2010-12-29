@@ -87,8 +87,8 @@ int BuddiesModelBase::rowCount(const QModelIndex &parentIndex) const
 	if (!parentIndex.isValid() || parent(parentIndex).isValid())
 		return 0;
 
-	Buddy con = buddyAt(parentIndex);
-	return con.contacts().size();
+	Buddy buddy = buddyAt(parentIndex);
+	return buddy.contacts().count();
 }
 
 QFlags<Qt::ItemFlag> BuddiesModelBase::flags(const QModelIndex& index) const

@@ -148,40 +148,53 @@ void ContactShared::emitUpdated()
 	emit updated();
 }
 
+void ContactShared::detach(const Buddy &buddy, bool emitSignals)
+{
+	if (!details() || !buddy)
+		return;
+
+	if (emitSignals)
+		emit aboutToBeDetached();
+
+	OwnerBuddy.removeContact(this);
+
+	if (emitSignals)
+		emit detached();
+}
+
+void ContactShared::attach(const Buddy &buddy, bool emitReattached)
+{
+	if (!details())
+		return;
+
+	if (!buddy)
+		return;
+
+	if (!emitReattached)
+		emit aboutToBeAttached();
+
+	OwnerBuddy.addContact(this);
+
+	if (!emitReattached)
+		emit attached();
+	else
+		emit reattached();
+}
+
 void ContactShared::setOwnerBuddy(Buddy buddy)
 {
 	if (OwnerBuddy == buddy)
 		return;
 
 	bool hadBuddy = !OwnerBuddy.isNull() && !OwnerBuddy.isAnonymous();
-	if (!OwnerBuddy.isNull())
-	{
-		if (buddy.isNull())
-			emit aboutToBeDetached();
 
-		OwnerBuddy.removeContact(this);
-
-		if (buddy.isNull())
-			emit detached();
-	}
-
+	detach(OwnerBuddy, !buddy);
 	OwnerBuddy = buddy;
+	attach(OwnerBuddy, hadBuddy);
 
-	if (!OwnerBuddy.isNull())
-	{
-		if (!hadBuddy)
-			emit aboutToBeAttached();
-
-		OwnerBuddy.addContact(this);
-
-		if (!hadBuddy)
-			emit attached();
-		else
-			emit reattached();
-	}
 	// TODO: make it pretty
 	// don't allow empty buddy to be set, use at least anonymous one
-	else
+	if (!OwnerBuddy)
 		OwnerBuddy = BuddyManager::instance()->byContact(Contact(this), ActionCreate);
 
 	dataUpdated();
@@ -213,6 +226,11 @@ void ContactShared::detailsAdded()
 	emitUpdated();
 }
 
+void ContactShared::afterDetailsAdded()
+{
+	attach(OwnerBuddy, false);
+}
+
 void ContactShared::detailsAboutToBeRemoved()
 {
 	// do not store contacts that are not in contact manager
@@ -223,6 +241,11 @@ void ContactShared::detailsAboutToBeRemoved()
 void ContactShared::detailsRemoved()
 {
 	emitUpdated();
+}
+
+void ContactShared::afterDetailsRemoved()
+{
+	detach(OwnerBuddy, true);
 }
 
 void ContactShared::setId(const QString &id)

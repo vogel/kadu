@@ -56,6 +56,9 @@ class KADUAPI ContactShared : public QObject, public Shared, public DetailsHolde
 	unsigned int Port;
 	QString DnsName;
 
+	void detach(const Buddy &buddy, bool emitSignals);
+	void attach(const Buddy &buddy, bool emitReattached);
+
 protected:
 	virtual void load();
 
@@ -65,8 +68,10 @@ protected:
 	virtual void protocolUnregistered(ProtocolFactory *protocolFactory);
 
 	virtual void detailsAdded();
+	virtual void afterDetailsAdded();
 	virtual void detailsAboutToBeRemoved();
 	virtual void detailsRemoved();
+	virtual void afterDetailsRemoved();
 
 public:
 	static ContactShared * loadStubFromStorage(const QSharedPointer<StoragePoint> &contactStoragePoint);

@@ -98,7 +98,9 @@ Buddy BuddiesModel::buddyAt(const QModelIndex &index) const
 
 QModelIndex BuddiesModel::indexForValue(const QVariant &value) const
 {
-	return index(BuddyManager::instance()->indexOf(value.value<Buddy>()), 0);
+	Buddy buddy = value.value<Buddy>();
+	int result = BuddyManager::instance()->indexOf(buddy);
+	return index(result, 0);
 }
 
 void BuddiesModel::buddyAboutToBeAdded(Buddy &buddy)
@@ -149,8 +151,6 @@ void BuddiesModel::contactAboutToBeAttached(Contact contact)
 
 	int count = rowCount(index);
 	beginInsertRows(index, count, count);
-
-	connect(contact, SIGNAL(updated()), this, SLOT(contactUpdated()));
 }
 
 void BuddiesModel::contactAttached(Contact contact)
@@ -162,10 +162,14 @@ void BuddiesModel::contactAttached(Contact contact)
 		return;
 
 	endInsertRows();
+
+	connect(contact, SIGNAL(updated()), this, SLOT(contactUpdated()));
 }
 
 void BuddiesModel::contactAboutToBeDetached(Contact contact)
 {
+	disconnect(contact, SIGNAL(updated()), this, SLOT(contactUpdated()));
+
 	Buddy buddy = contact.ownerBuddy();
 
 	QModelIndex index = indexForValue(buddy);
@@ -174,8 +178,6 @@ void BuddiesModel::contactAboutToBeDetached(Contact contact)
 
 	int contactIndex = buddy.contacts().indexOf(contact);
 	beginRemoveRows(index, contactIndex, contactIndex);
-
-	disconnect(contact, SIGNAL(updated()), this, SLOT(contactUpdated()));
 }
 
 void BuddiesModel::contactDetached(Contact contact)

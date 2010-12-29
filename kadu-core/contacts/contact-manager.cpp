@@ -20,6 +20,7 @@
  */
 
 #include "buddies/buddy.h"
+#include "buddies/buddy-shared.h"
 #include "configuration/configuration-manager.h"
 #include "contacts/contact.h"
 #include "contacts/contact-parser-tags.h"
@@ -118,6 +119,7 @@ void ContactManager::itemRegistered(Contact item)
 	QMutexLocker(&mutex());
 
 	emit contactAdded(item);
+
 	connect(item, SIGNAL(idChanged(const QString &)), this, SLOT(idChanged(const QString &)));
 	connect(item, SIGNAL(aboutToBeDetached()), this, SLOT(aboutToBeDetached()));
 	connect(item, SIGNAL(detached()), this, SLOT(detached()));
