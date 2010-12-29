@@ -74,11 +74,6 @@ class DOCKINGAPI DockingManager : public QObject, ConfigurationAwareObject, Stat
 	DockingManager();
 	virtual ~DockingManager();
 
-protected:
-	virtual void configurationUpdated();
-	virtual void statusContainerRegistered(StatusContainer *statusContainer);
-	virtual void statusContainerUnregistered(StatusContainer *statusContainer);
-
 private slots:
 	void statusPixmapChanged(const QIcon &icon);
 	void changeIcon();
@@ -87,6 +82,11 @@ private slots:
 	void searchingForTrayPosition(QPoint &point);
 
 	void containerStatusChanged();
+
+protected:
+	virtual void configurationUpdated();
+	virtual void statusContainerRegistered(StatusContainer *statusContainer);
+	virtual void statusContainerUnregistered(StatusContainer *statusContainer);
 
 public:
 	static void createInstance();

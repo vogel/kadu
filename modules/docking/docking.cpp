@@ -393,33 +393,16 @@ void DockingManager::containerStatusChanged()
 
 void DockingManager::statusContainerRegistered(StatusContainer *statusContainer)
 {
-	if (StatusContainerManager::instance()->statusContainers().count() < 3)
-		updateContextMenu();
-	else
-	{
-		QMenu *menu = new QMenu(statusContainer->statusContainerName());
-		menu->setIcon(statusContainer->statusIcon());
-		new StatusMenu(statusContainer, menu);
-		StatusContainerMenus[statusContainer] = DockMenu->insertMenu(containersSeparator, menu);
-		connect(statusContainer, SIGNAL(statusChanged()), this, SLOT(containerStatusChanged()));
-	}
+	Q_UNUSED(statusContainer)
+
+	updateContextMenu();
 }
 
 void DockingManager::statusContainerUnregistered(StatusContainer *statusContainer)
 {
-	if (StatusContainerManager::instance()->statusContainers().count() < 2)
-		updateContextMenu();
-	else
-	{
-		QAction *menuAction = StatusContainerMenus[statusContainer];
-		if (!menuAction)
-			    return;
+	Q_UNUSED(statusContainer)
 
-		menuAction->menu()->clear();
-		StatusContainerMenus.remove(statusContainer);
-		DockMenu->removeAction(menuAction);
-		delete menuAction;
-	}
+	updateContextMenu();
 }
 
 void DockingManager::configurationUpdated()
