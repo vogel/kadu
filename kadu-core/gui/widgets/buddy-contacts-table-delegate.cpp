@@ -47,7 +47,7 @@ QWidget * BuddyContactsTableDelegate::createEditor(QWidget *parent, const QStyle
 	return accountsComboBox;
 }
 
-void BuddyContactsTableDelegate::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem& option, const QModelIndex& index) const
+void BuddyContactsTableDelegate::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
 	Q_UNUSED(index)
 
@@ -66,7 +66,7 @@ void BuddyContactsTableDelegate::setEditorData(QWidget *editor, const QModelInde
 	accountsComboBox->setCurrentAccount(index.data(AccountRole).value<Account>());
 }
 
-void BuddyContactsTableDelegate::setModelData(QWidget* editor, QAbstractItemModel *model, const QModelIndex &index) const
+void BuddyContactsTableDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
 {
 	AccountsComboBox *accountsComboBox = dynamic_cast<AccountsComboBox *>(editor);
 	if (!accountsComboBox)
@@ -87,12 +87,16 @@ void BuddyContactsTableDelegate::dataChanged()
 
 bool BuddyContactsTableDelegate::eventFilter(QObject *editor, QEvent *event)
 {
-	if (event->type() == QEvent::KeyPress)
+	bool handled = QStyledItemDelegate::eventFilter(editor, event);
+
+	if (!handled && event->type() == QEvent::KeyPress)
 	{
-		QWidget *editorWidget = dynamic_cast<QWidget *>(editor);
+		QWidget *editorWidget = qobject_cast<QWidget *>(editor);
 		if (editorWidget)
-			emit commitData(editorWidget);
+			// we need to delay it a bit, otherwise it is executed before the event goes to the widget
+			// it's exactly how Qt does it
+			QMetaObject::invokeMethod(this, "commitData", Qt::QueuedConnection, Q_ARG(QWidget *, editorWidget));
 	}
 
-	return QStyledItemDelegate::eventFilter(editor, event);
+	return handled;
 }
