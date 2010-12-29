@@ -25,7 +25,6 @@
 
 #include "accounts/account.h"
 #include "core/core.h"
-#include "debug.h"
 #include "gui/windows/message-dialog.h"
 #include "protocols/services/chat-service.h"
 #include "protocols/protocol.h"
@@ -56,64 +55,42 @@ Echo * Echo::instance()
 Echo::Echo(QObject *parent) :
 		QObject(parent)
 {
-	kdebugf();
-
 	MessageDialog::show("dialog-information", tr("Kadu"), tr("Echo started"));
 
 	triggerAllAccountsRegistered();
-
-	kdebugf2();
 }
 
 Echo::~Echo()
 {
-	kdebugf();
-
 	// if we are closing the user won't notice this message anyway
 	if (!Core::instance()->isClosing())
 		MessageDialog::show("dialog-information", tr("Kadu"), tr("Echo stopped"));
 
 	triggerAllAccountsUnregistered();
-
-	kdebugf2();
 }
 
 void Echo::accountRegistered(Account account)
 {
-	kdebugf();
-
 	Protocol *protocol = account.protocolHandler();
 	if (!protocol)
-	{
-		kdebugf2();
 		return;
-	}
 
 	ChatService *chatService = protocol->chatService();
 	if (chatService)
 		connect(chatService, SIGNAL(filterIncomingMessage(Chat, Contact, QString &, time_t, bool &)),
 				this, SLOT(filterIncomingMessage(Chat, Contact, QString &, time_t, bool &)));
-
-	kdebugf2();
 }
 
 void Echo::accountUnregistered(Account account)
 {
-	kdebugf();
-
 	Protocol *protocol = account.protocolHandler();
 	if (!protocol)
-	{
-		kdebugf2();
 		return;
-	}
 
 	ChatService *chatService = protocol->chatService();
 	if (chatService)
 		disconnect(chatService, SIGNAL(filterIncomingMessage(Chat, Contact, QString &, time_t, bool &)),
 				this, SLOT(filterIncomingMessage(Chat, Contact, QString &, time_t, bool &)));
-
-	kdebugf2();
 }
 
 void Echo::filterIncomingMessage(Chat chat, Contact sender, QString &message, time_t time, bool &ignore)
@@ -122,30 +99,17 @@ void Echo::filterIncomingMessage(Chat chat, Contact sender, QString &message, ti
 	Q_UNUSED(time)
 	Q_UNUSED(ignore)
 
-	kdebugf();
-
 	// to prevent infinite loop in case there is also Kadu Echo at the second end
 	if (message.startsWith(ECHO_MESSAGE))
-	{
-		kdebugf2();
 		return;
-	}
 
 	Protocol *protocol = chat.chatAccount().protocolHandler();
 	if (!protocol)
-	{
-		kdebugf2();
 		return;
-	}
 
 	ChatService *chatService = protocol->chatService();
 	if (!chatService)
-	{
-		kdebugf2();
 		return;
-	}
 
 	chatService->sendMessage(chat, ECHO_MESSAGE + message);
-
-	kdebugf2();
 }

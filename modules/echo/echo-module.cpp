@@ -23,7 +23,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "debug.h"
 #include "exports.h"
 
 #include "echo.h"
@@ -32,19 +31,12 @@ extern "C" KADU_EXPORT int echo_init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
-	kdebugf();
-
 	Echo::createInstance();
 
-	kdebugf2();
 	return 0;
 }
 
 extern "C" KADU_EXPORT void echo_close()
 {
-	kdebugf();
-
 	Echo::destroyInstance();
-
-	kdebugf2();
 }
