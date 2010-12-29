@@ -169,12 +169,13 @@ QString IdentityShared::statusName()
 
 QIcon IdentityShared::statusIcon()
 {
-	return statusIcon(status().type());
+	return statusIcon(status());
 }
 
 QIcon IdentityShared::statusIcon(Status status)
 {
-	return statusIcon(status.type());
+	Account account = bestAccount();
+	return account ? account.data()->statusIcon(status) : QIcon();
 }
 
 QString IdentityShared::statusIconPath(const QString &statusType)
