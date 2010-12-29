@@ -117,7 +117,7 @@ void BuddyOptionsConfigurationWidget::updateOfflineTo()
 	OfflineToCheckBox->setEnabled(false);
 	foreach (const Contact &contact, MyBuddy.contacts())
 	{
-		if (!contact.contactAccount() && !contact.contactAccount().protocolHandler())
+		if (!contact.contactAccount().protocolHandler())
 			continue;
 
 		if (contact.contactAccount().protocolHandler()->supportsPrivateStatus())
@@ -135,7 +135,7 @@ void BuddyOptionsConfigurationWidget::offlineToToggled(bool toggled)
 
 	foreach (const Contact &contact, MyBuddy.contacts())
 	{
-		if (!contact.contactAccount() && !contact.contactAccount().protocolHandler())
+		if (!contact.contactAccount().protocolHandler())
 			continue;
 
 		if (contact.contactAccount().protocolHandler()->supportsPrivateStatus() && !contact.contactAccount().privateStatus())
