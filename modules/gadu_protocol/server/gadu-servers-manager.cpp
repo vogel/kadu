@@ -35,12 +35,16 @@
 
 GaduServersManager * GaduServersManager::Instance = 0;
 
-GaduServersManager * GaduServersManager::instance()
+void GaduServersManager::createInstance()
 {
 	if (!Instance)
 		Instance = new GaduServersManager();
+}
 
-	return Instance;
+void GaduServersManager::destroyInstance()
+{
+	delete Instance;
+	Instance = 0;
 }
 
 GaduServersManager::GaduServersManager()

@@ -78,6 +78,8 @@ extern "C" KADU_EXPORT int gadu_protocol_init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
+	GaduServersManager::createInstance();
+
 	if (ProtocolsManager::instance()->hasProtocolFactory("gadu"))
 		return 0;
 
@@ -113,6 +115,7 @@ extern "C" KADU_EXPORT void gadu_protocol_close()
 	ProtocolsManager::instance()->unregisterProtocolFactory(GaduProtocolFactory::instance());
 
 	GaduIdValidator::destroyInstance();
+	GaduServersManager::destroyInstance();
 
 	qRemovePostRoutine(QCA::deinit);
 }

@@ -55,7 +55,10 @@ protected:
 	virtual void configurationUpdated();
 
 public:
-	static GADUAPI GaduServersManager * instance();
+	static GADUAPI void createInstance();
+	static GADUAPI void destroyInstance();
+
+	static GADUAPI GaduServersManager * instance() { return Instance; }
 
 	const QList<GaduServer> & getServersList();
 	QPair<QHostAddress, int> getServer();
