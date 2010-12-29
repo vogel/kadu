@@ -29,8 +29,8 @@
 
 #include "status-actions.h"
 
-StatusActions::StatusActions(StatusContainer *statusContainer, QObject *parent) :
-		QObject(parent), MyStatusContainer(statusContainer)
+StatusActions::StatusActions(StatusContainer *statusContainer, QObject *parent, bool commonStatusIcons) :
+		QObject(parent), MyStatusContainer(statusContainer), CommonStatusIcons(commonStatusIcons)
 {
 	ChangeStatusActionGroup = new QActionGroup(this);
 	ChangeStatusActionGroup->setExclusive(true); // HACK
@@ -82,8 +82,8 @@ void StatusActions::createActions()
 
 		Actions.append(StatusTypeActions[statusType]);
 	}
-	
-	Actions.append(createSeparator());	
+
+	Actions.append(createSeparator());
 }
 
 void StatusActions::createBasicActions()
@@ -112,9 +112,14 @@ QAction * StatusActions::createSeparator()
 
 QAction * StatusActions::createStatusAction(StatusType *statusType)
 {
+	QIcon icon;
+	if (!CommonStatusIcons)
+		icon = MyStatusContainer->statusIcon(statusType->name());
+	else
+		icon = StatusContainerManager::instance()->statusIcon(statusType->name());
 	QAction *statusAction = ChangeStatusActionGroup->addAction(
-			MyStatusContainer->statusIcon(statusType->name()).pixmap(16, 16),
-			MyStatusContainer->statusNamePrefix() + statusType->displayName());
+		icon.pixmap(16, 16),
+		MyStatusContainer->statusNamePrefix() + statusType->displayName());
 	statusAction->setCheckable(true);
 	statusAction->setData(QVariant::fromValue(statusType));
 

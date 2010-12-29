@@ -289,7 +289,7 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 	InactiveUsers = new ActionDescription(this,
 		ActionDescription::TypeUserList, "inactiveUsersAction",
 		this, SLOT(inactiveUsersActionActivated(QAction *, bool)),
-		"protocols/gadu-gadu/offline", tr("Show Offline Buddies"),
+		"kadu_icons/kadu-inactiveusers-off", tr("Show Offline Buddies"),
 		true
 	);
 	connect(InactiveUsers, SIGNAL(actionCreated(Action *)), this, SLOT(inactiveUsersActionCreated(Action *)));
@@ -351,7 +351,7 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 	ShowStatus = new ActionDescription(this,
 		ActionDescription::TypeGlobal, "openStatusAction",
 		this, SLOT(showStatusActionActivated(QAction *, bool)),
-		"protocols/gadu-gadu/offline", tr("Change Status")
+		"kadu_icons/kadu-changestatus", tr("Change Status")
 	);
 	connect(ShowStatus, SIGNAL(actionCreated(Action *)), this, SLOT(showStatusActionCreated(Action *)));
 

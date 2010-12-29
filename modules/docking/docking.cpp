@@ -184,7 +184,7 @@ void DockingManager::changeIcon()
 				const Status &stat = account.protocolHandler()->status();
 
 				if (CurrentDocker)
-					CurrentDocker->changeTrayIcon(account.protocolHandler()->statusIcon(stat));
+					CurrentDocker->changeTrayIcon(StatusContainerManager::instance()->statusIcon(stat));
 
 				icon_timer->setSingleShot(true);
 				icon_timer->start(500);
@@ -218,7 +218,7 @@ void DockingManager::pendingMessageDeleted()
 
 		const Status &stat = account.protocolHandler()->status();
 		if (CurrentDocker)
-			CurrentDocker->changeTrayIcon(account.protocolHandler()->statusIcon(stat));
+			CurrentDocker->changeTrayIcon(StatusContainerManager::instance()->statusIcon(stat));
 	}
 }
 
@@ -315,7 +315,7 @@ QIcon DockingManager::defaultPixmap()
 	if (account.isNull() || !account.protocolHandler())
 		return StatusContainerManager::instance()->statusIcon();
 
-	return account.protocolHandler()->statusIcon(account.protocolHandler()->status());
+	return StatusContainerManager::instance()->statusIcon(account.protocolHandler()->status());
 }
 
 void DockingManager::setDocker(Docker *docker)
@@ -353,9 +353,9 @@ void DockingManager::updateContextMenu()
 
 	if (statusContainersCount == 1)
 	{
-		new StatusMenu(StatusContainerManager::instance()->statusContainers()[0], DockMenu);
+		new StatusMenu(StatusContainerManager::instance()->statusContainers()[0], DockMenu, true);
 #ifdef Q_OS_MAC
-		new StatusMenu(StatusContainerManager::instance()->statusContainers()[0], MacDockMenu);
+		new StatusMenu(StatusContainerManager::instance()->statusContainers()[0], MacDockMenu, true);
 #endif
 	}
 	else

@@ -337,7 +337,7 @@ void Core::init()
 
 	new Updates(this);
 
-	setIcon(IconsManager::instance()->iconByPath(QLatin1String("protocols/gadu-gadu/offline")));
+	setIcon(IconsManager::instance()->iconByPath(QLatin1String("protocols/common/offline")));
 	QTimer::singleShot(15000, this, SLOT(deleteOldConfigurationFiles()));
 
 	NotificationManager::instance(); // TODO: 0.6.6

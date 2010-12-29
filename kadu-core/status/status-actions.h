@@ -46,11 +46,13 @@ class StatusActions : public QObject
 	QAction * createSeparator();
 	QAction * createStatusAction(StatusType *statusType);
 
+	bool CommonStatusIcons;
+
 private slots:
 	void statusChanged();
 
 public:
-	explicit StatusActions(StatusContainer *statusContainer, QObject *parent);
+	explicit StatusActions(StatusContainer *statusContainer, QObject *parent, bool commonStatusIcons = false);
 	virtual ~StatusActions();
 
 	const QList<QAction *> & actions() const { return Actions; }

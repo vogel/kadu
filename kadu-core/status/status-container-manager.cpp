@@ -24,7 +24,9 @@
 #include "configuration/main-configuration.h"
 #include "core/core.h"
 #include "identities/identity-manager.h"
+#include "protocols/protocol.h"
 #include "status/status-container-aware-object.h"
+#include "status/status-type-manager.h"
 #include "status/status-type.h"
 #include "icons-manager.h"
 
@@ -243,29 +245,31 @@ QString StatusContainerManager::statusName()
 
 QIcon StatusContainerManager::statusIcon()
 {
-	return DefaultStatusContainer
-			? DefaultStatusContainer->statusIcon()
-			: IconsManager::instance()->iconByPath("protocols/gadu-gadu/offline");
+	if (!DefaultStatusContainer)
+		return IconsManager::instance()->iconByPath("protocols/common/offline");
+	Status status = DefaultStatusContainer->status();
+	return StatusTypeManager::instance()->statusIcon("common", status.type(), status.hasDescription(), false);
 }
 
 QIcon StatusContainerManager::statusIcon(Status status)
 {
-	return statusIcon(status.type());
+	if (!DefaultStatusContainer)
+		return IconsManager::instance()->iconByPath("protocols/common/offline");
+	return StatusTypeManager::instance()->statusIcon("common", status.type(), status.hasDescription(), false);
 }
 
 QString StatusContainerManager::statusIconPath(const QString &statusType)
 {
-	return DefaultStatusContainer
-			? DefaultStatusContainer->statusIconPath(statusType)
-			: QString();
+	if (!DefaultStatusContainer)
+		return "protocols/common/offline";
+	return StatusTypeManager::instance()->statusIconPath("common", statusType, false, false);
 }
 
 QIcon StatusContainerManager::statusIcon(const QString &statusType)
 {
-	return DefaultStatusContainer
-			? DefaultStatusContainer->statusIcon(statusType)
-			: QIcon();
-// 			: IconsManager::instance()->loadPixmap(statusType);
+	if (!DefaultStatusContainer)
+		return IconsManager::instance()->iconByPath("protocols/common/offline");
+	return StatusTypeManager::instance()->statusIcon("common", statusType, false, false);
 }
 
 QList<StatusType *> StatusContainerManager::supportedStatusTypes()

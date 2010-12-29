@@ -94,3 +94,8 @@ bool Status::operator != (const Status& compare) const
 {
 	return !(*this == compare);
 }
+
+bool Status::hasDescription()
+{
+	return !Description.isEmpty();
+}
