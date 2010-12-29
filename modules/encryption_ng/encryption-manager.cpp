@@ -129,6 +129,9 @@ void EncryptionManager::filterRawIncomingMessage(Chat chat, Contact sender, QByt
 	Q_UNUSED(sender)
 	Q_UNUSED(ignore)
 
+	if (!chat)
+		return;
+
 	EncryptionChatData *encryptionChatData = chat.data()->moduleStorableData<EncryptionChatData>("encryption-ng", true);
 	if (!encryptionChatData)
 		return;
@@ -146,6 +149,9 @@ void EncryptionManager::filterRawIncomingMessage(Chat chat, Contact sender, QByt
 void EncryptionManager::filterRawOutgoingMessage(Chat chat, QByteArray &message, bool &stop)
 {
 	Q_UNUSED(stop)
+
+	if (!chat)
+		return;
 
 	EncryptionChatData *encryptionChatData = chat.data()->moduleStorableData<EncryptionChatData>("encryption-ng");
 	if (encryptionChatData && encryptionChatData->encryptor())

@@ -149,6 +149,9 @@ Chat ChatManager::findChat(const BuddySet &buddies, bool create)
 		// it is common account, so each buddy has at least one contact in this account
 		contacts.insert(buddy.contacts(commonAccount).at(0));
 
+	if (contacts.size() != buddies.size())
+		return Chat::null;
+
 	return findChat(contacts, create);
 }
 
@@ -193,6 +196,15 @@ Chat ChatManager::findChat(const ContactSet &contacts, bool create)
 			return Chat::null;
 
 	ChatTypeManager::instance(); // load standard chat types
+
+	// TODO #1694
+	// for some users that have self on user list
+	// this should not be possible, and prevented on other level (like in ContactManager)
+	foreach (const Contact &contact, contacts)
+	{
+		if (contact.id() == account.id())
+			return Chat::null;
+	}
 
 	foreach (const Chat &c, allItems()) // search allItems, chats can be not loaded yet
 		if ((c.type() == QLatin1String("Simple") || c.type() == QLatin1String("Conference")) && c.contacts() == contacts)
