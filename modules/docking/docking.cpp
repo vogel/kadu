@@ -372,10 +372,13 @@ void DockingManager::updateContextMenu()
 		if (statusContainersCount > 1)
 			containersSeparator = DockMenu->addSeparator();
 
-		new StatusMenu(StatusContainerManager::instance(), DockMenu);
+		if (statusContainersCount > 0)
+		{
+			new StatusMenu(StatusContainerManager::instance(), DockMenu);
 #ifdef Q_OS_MAC
-		new StatusMenu(StatusContainerManager::instance(), MacDockMenu);
+			new StatusMenu(StatusContainerManager::instance(), MacDockMenu);
 #endif
+		}
 	}
 
 	DockMenu->addAction(CloseKaduAction);

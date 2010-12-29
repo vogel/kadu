@@ -39,9 +39,6 @@ StatusButtons::StatusButtons(QWidget *parent) :
 
 	triggerAllStatusContainerRegistered();
 
-	if (0 == StatusContainerManager::instance()->count())
-		statusContainerRegistered(StatusContainerManager::instance());
-
 	connect(AccountManager::instance(), SIGNAL(accountUpdated(Account)), this, SLOT(rebuildGui()));
 }
 
@@ -86,7 +83,7 @@ void StatusButtons::simpleModeChanged()
 {
 	if (SimpleMode == MainConfiguration::instance()->simpleMode())
 		return;
-
+ 
 	SimpleMode = MainConfiguration::instance()->simpleMode();
 	updateLayout(!SimpleMode);
 }
@@ -105,20 +102,10 @@ void StatusButtons::disableStatusName()
 
 void StatusButtons::statusContainerRegistered(StatusContainer *statusContainer)
 {
-	// first status container inserted
-	if (1 == StatusContainerManager::instance()->count())
-		statusContainerUnregistered(StatusContainerManager::instance());
-
-	/* This should be called at the beginning of this method but there is going
-	 * something strange that we have a statusContainer in Buttons but
-	 * StatusContainerManager::instance()->count() returns 1. Moving it here
-	 * fixed #1762.
-	 * TODO 0.6.7: Find out what's going wrong.
-	 */
 	if (Buttons.contains(statusContainer))
 		return;
 
-	disableStatusName(); // only disables if 
+	disableStatusName();
 
 	StatusButton *button = new StatusButton(statusContainer);
 	addButton(button);
@@ -137,6 +124,4 @@ void StatusButtons::statusContainerUnregistered(StatusContainer *statusContainer
 
 		enableStatusName();
 	}
-	if (0 == StatusContainerManager::instance()->count())
-		statusContainerRegistered(StatusContainerManager::instance());
 }

@@ -17,6 +17,7 @@
 * gui: fixed regression in beta13: icon in tab-less chat window is incorrect until it has to update (beevvy)
 * encryption_ng: #1575 fixed: module encryption fully ported to new Kadu (Vogel)
 * chat styles: #1872 fixed: only message's receive date is shown in irc style (WhE)
+* gui: #1634 fixed: do not display status buttons or menu when no account is available (Vogel)
 
 +++ version 0.6.6-beta13
 * sound: #1376 fixed: long delays on Kadu exit and warnings from Qt regarding mutexes (beevvy)
