@@ -19,6 +19,7 @@
 * chat styles: #1872 fixed: only message's receive date is shown in irc style (WhE)
 * gui: #1634 fixed: do not display status buttons or menu when no account is available (Vogel)
 * gui: fixed crash when opening Buddy Properties Window for buddy with contact with unloaded protocol (beevvy)
+* gui: #1882 fixed: pressing Return and Enter on keypad in chat gives different effects (beevvy)
 
 +++ version 0.6.6-beta13
 * sound: #1376 fixed: long delays on Kadu exit and warnings from Qt regarding mutexes (beevvy)

@@ -57,14 +57,17 @@ void CustomInput::keyPressEvent(QKeyEvent *e)
 		return;
 	}
 
-	/* Ctrl+Return has a special meaning:
+	/* Ctrl+Return and Ctrl+Enter have a special meaning:
 	 * 1) autosend_enabled -> new line is entered
 	 * 2) message is sent
 	 */
-	bool isCtrlReturn = (e->modifiers() == Qt::ControlModifier && e->key() == Qt::Key_Return);
+	bool isCtrlEnter = (e->key() == Qt::Key_Return && e->modifiers() == Qt::ControlModifier)
+			|| (e->key() == Qt::Key_Enter && e->modifiers() == (Qt::KeypadModifier | Qt::ControlModifier));
 
-	if ((autosend_enabled && e->modifiers() == Qt::NoModifier && (e->key() == Qt::Key_Return || e->key() == Qt::Key_Enter))
-			|| (!autosend_enabled && isCtrlReturn))
+	if ((autosend_enabled
+			&& ((e->key() == Qt::Key_Return && e->modifiers() == Qt::NoModifier)
+				|| (e->key() == Qt::Key_Enter && e->modifiers() == Qt::KeypadModifier)))
+		|| (!autosend_enabled && isCtrlEnter))
 	{
 		kdebugmf(KDEBUG_INFO, "emit sendMessage()\n");
 		emit sendMessage();
@@ -72,7 +75,7 @@ void CustomInput::keyPressEvent(QKeyEvent *e)
 		kdebugf2();
 		return;
 	}
-	else if (isCtrlReturn)
+	else if (isCtrlEnter)
 	{
 		// now surely autosend_enabled == true, so we can emulate Shift+Return to get a new line
 		QKeyEvent emulateNewLineEvent(QEvent::KeyPress, Qt::Key_Return, Qt::ShiftModifier, "\n", false, 2);
