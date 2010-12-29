@@ -17,6 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QEvent>
 #include <QtGui/QComboBox>
 
 #include "accounts/account.h"
@@ -39,7 +40,11 @@ QWidget * BuddyContactsTableDelegate::createEditor(QWidget *parent, const QStyle
 	if (1 != index.column()) // not account
 		return QStyledItemDelegate::createEditor(parent, option, index);
 
-	return new AccountsComboBox(parent);
+	AccountsComboBox *accountsComboBox = new AccountsComboBox(parent);
+	// this connect does not work withour Account
+	connect(accountsComboBox, SIGNAL(accountChanged(Account)), this, SLOT(dataChanged()));
+
+	return accountsComboBox;
 }
 
 void BuddyContactsTableDelegate::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem& option, const QModelIndex& index) const
@@ -73,10 +78,21 @@ void BuddyContactsTableDelegate::setModelData(QWidget* editor, QAbstractItemMode
 	model->setData(index, QVariant::fromValue<Account>(accountsComboBox->currentAccount()), AccountRole);
 }
 
-bool BuddyContactsTableDelegate::eventFilter(QObject *editor, QEvent *event)
+void BuddyContactsTableDelegate::dataChanged()
 {
-	QWidget *editorWidget = dynamic_cast<QWidget *>(editor);
+	QWidget *editorWidget = qobject_cast<QWidget *>(sender());
 	if (editorWidget)
 		emit commitData(editorWidget);
+}
+
+bool BuddyContactsTableDelegate::eventFilter(QObject *editor, QEvent *event)
+{
+	if (event->type() == QEvent::KeyPress)
+	{
+		QWidget *editorWidget = dynamic_cast<QWidget *>(editor);
+		if (editorWidget)
+			emit commitData(editorWidget);
+	}
+
 	return QStyledItemDelegate::eventFilter(editor, event);
 }

@@ -26,6 +26,9 @@ class BuddyContactsTableDelegate : public QStyledItemDelegate
 {
 	Q_OBJECT
 
+private slots:
+	void dataChanged();
+
 protected:
 	virtual bool eventFilter(QObject *editor, QEvent *event);
 
