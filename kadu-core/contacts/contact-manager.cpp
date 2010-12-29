@@ -134,11 +134,17 @@ void ContactManager::itemAboutToBeUnregisterd(Contact item)
 
 	disconnect(item, SIGNAL(updated()), this, SLOT(contactDataUpdated()));
 	emit contactAboutToBeRemoved(item);
-	disconnect(item, SIGNAL(idChanged(const QString &)), this, SLOT(idChanged(const QString &)));
 }
 
 void ContactManager::itemUnregistered(Contact item)
 {
+	disconnect(item, SIGNAL(idChanged(const QString &)), this, SLOT(idChanged(const QString &)));
+	disconnect(item, SIGNAL(aboutToBeDetached()), this, SLOT(aboutToBeDetached()));
+	disconnect(item, SIGNAL(detached()), this, SLOT(detached()));
+	disconnect(item, SIGNAL(aboutToBeAttached()), this, SLOT(aboutToBeAttached()));
+	disconnect(item, SIGNAL(attached()), this, SLOT(attached()));
+	disconnect(item, SIGNAL(reattached()), this, SLOT(reattached()));
+
 	emit contactRemoved(item);
 }
 

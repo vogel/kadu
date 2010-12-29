@@ -71,7 +71,6 @@ protected:
 	virtual void afterDetailsAdded();
 	virtual void detailsAboutToBeRemoved();
 	virtual void detailsRemoved();
-	virtual void afterDetailsRemoved();
 
 public:
 	static ContactShared * loadStubFromStorage(const QSharedPointer<StoragePoint> &contactStoragePoint);
