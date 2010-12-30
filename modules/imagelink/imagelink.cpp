@@ -19,11 +19,11 @@
 
 #include <QtCore/QString>
 
-#include "gui/widgets/chat-widget-manager.h"
-#include "debug.h"
-#include "configuration/configuration-file.h"
 #include "chat/message/message-render-info.h"
+#include "configuration/configuration-file.h"
 #include "contacts/contact-set.h"
+#include "debug.h"
+#include "gui/widgets/chat-widget-manager.h"
 
 #include "imagelink.h"
 

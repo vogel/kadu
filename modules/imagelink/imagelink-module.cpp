@@ -18,9 +18,10 @@
  */
 
 
-#include "gui/windows/main-configuration-window.h"
 #include "debug.h"
+#include "gui/windows/main-configuration-window.h"
 #include "misc/path-conversion.h"
+
 #include "imagelink.h"
 
 extern "C" KADU_EXPORT int imagelink_init()

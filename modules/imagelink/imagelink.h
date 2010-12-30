@@ -21,9 +21,9 @@
 #define IMAGELINK_H
 
 #include <QtCore/QObject>
-#include "configuration/configuration-aware-object.h"
-#include "accounts/accounts-aware-object.h"
 
+#include "accounts/accounts-aware-object.h"
+#include "configuration/configuration-aware-object.h"
 #include "contacts/contact.h"
 #include "protocols/protocol.h"
 
