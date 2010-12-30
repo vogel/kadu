@@ -259,7 +259,7 @@ void BuddyShared::addContact(Contact contact)
 
 	emit contactAdded(contact);
 
-	emitUpdated();
+	dataUpdated();
 }
 
 void BuddyShared::removeContact(Contact contact)
@@ -275,7 +275,7 @@ void BuddyShared::removeContact(Contact contact)
 
 	normalizePriorities();
 
-	emitUpdated();
+	dataUpdated();
 }
 
 QList<Contact> BuddyShared::contacts(Account account)

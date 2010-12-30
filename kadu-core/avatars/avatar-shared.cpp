@@ -74,7 +74,7 @@ void AvatarShared::setFilePath(const QString& filePath)
 	{
 		FilePath = filePath;
 		Pixmap.load(filePath);
-		emitUpdated();
+		dataUpdated();
 		emit pixmapUpdated();
 	}
 }

@@ -246,7 +246,7 @@ void ContactShared::detailsAdded()
 {
 	details()->ensureLoaded();
 
-	emitUpdated();
+	dataUpdated();
 }
 
 void ContactShared::afterDetailsAdded()
@@ -265,7 +265,7 @@ void ContactShared::detailsAboutToBeRemoved()
 
 void ContactShared::detailsRemoved()
 {
-	emitUpdated();
+	dataUpdated();
 }
 
 void ContactShared::setId(const QString &id)
