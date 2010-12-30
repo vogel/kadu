@@ -221,6 +221,8 @@ void ContactShared::setContactAccount(Account account)
 
 void ContactShared::protocolRegistered(ProtocolFactory *protocolFactory)
 {
+	ensureLoaded();
+
 	if (ContactAccount.protocolName() != protocolFactory->name())
 		return;
 
@@ -232,6 +234,8 @@ void ContactShared::protocolRegistered(ProtocolFactory *protocolFactory)
 
 void ContactShared::protocolUnregistered(ProtocolFactory *protocolFactory)
 {
+	ensureLoaded();
+
 	if (ContactAccount.protocolName() != protocolFactory->name())
 		return;
 
