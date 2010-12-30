@@ -20,6 +20,7 @@
 #ifndef CONFIG_WIZARD_SET_UP_ACCOUNT_PAGE_H
 #define CONFIG_WIZARD_SET_UP_ACCOUNT_PAGE_H
 
+#include "accounts/account.h"
 #include "gui/widgets/config-wizard-page.h"
 
 class AccountAddWidget;
@@ -34,6 +35,9 @@ class ConfigWizardSetUpAccountPage : public ConfigWizardPage
 
 	void createGui();
 
+private slots:
+	void accountCreated(Account account);
+
 public:
 	explicit ConfigWizardSetUpAccountPage(QWidget *parent = 0);
 	virtual ~ConfigWizardSetUpAccountPage();
@@ -42,6 +46,8 @@ public:
 
 	virtual void initializePage();
 	virtual void cleanupPage();
+	virtual bool validatePage();
+
 	virtual void acceptPage();
 
 };

@@ -68,12 +68,14 @@ void ConfigWizardSetUpAccountPage::initializePage()
 		formLayout()->addRow(QString(), CreateAccountWidget);
 
 		connect(CreateAccountWidget, SIGNAL(stateChanged(ModalConfigurationWidgetState)), this, SIGNAL(completeChanged()));
+		connect(CreateAccountWidget, SIGNAL(accountCreated(Account)), this, SLOT(accountCreated(Account)));
 	} else if (field("choose-network.existing").toBool())
 	{
 		AddAccountWidget = pf->newAddAccountWidget(false, this);
 		formLayout()->addRow(QString(), AddAccountWidget);
 
-		connect(CreateAccountWidget, SIGNAL(stateChanged(ModalConfigurationWidgetState)), this, SIGNAL(completeChanged()));
+		connect(AddAccountWidget, SIGNAL(stateChanged(ModalConfigurationWidgetState)), this, SIGNAL(completeChanged()));
+		connect(AddAccountWidget, SIGNAL(accountCreated(Account)), this, SLOT(accountCreated(Account)));
 	}
 }
 
@@ -87,6 +89,24 @@ void ConfigWizardSetUpAccountPage::cleanupPage()
 	QWizardPage::cleanupPage();
 }
 
+bool ConfigWizardSetUpAccountPage::validatePage()
+{
+	if (CreateAccountWidget)
+		CreateAccountWidget->apply();
+	else if (AddAccountWidget)
+		AddAccountWidget->apply();
+
+	return true;
+}
+
 void ConfigWizardSetUpAccountPage::acceptPage()
 {
+}
+
+void ConfigWizardSetUpAccountPage::accountCreated(Account account)
+{
+	account.importProxySettings();
+	AccountManager::instance()->addItem(account);
+
+	ConfigurationManager::instance()->flush();
 }
