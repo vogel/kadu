@@ -19,6 +19,7 @@
 
 #include "debug.h"
 
+#include "gui/widgets/config-wizard-choose-network-page.h"
 #include "gui/widgets/config-wizard-completed-page.h"
 #include "gui/widgets/config-wizard-profile-page.h"
 
@@ -50,6 +51,7 @@ ConfigWizardWindow::ConfigWizardWindow(QWidget *parent) :
 #endif
 
 	addPage(new ConfigWizardProfilePage(this));
+	addPage(new ConfigWizardChooseNetworkPage(this));
 	addPage(new ConfigWizardCompletedPage(this));
 
 	connect(this, SIGNAL(accepted()), this, SLOT(acceptedSlot()));
