@@ -81,10 +81,11 @@ class JabberCreateAccountWidget : public AccountCreateWidget
 
 private slots:
 	void dataChanged();
-	void registerNewAccountFinished(JabberServerRegisterAccount *jsra);
 	void connectionOptionsChanged();
 	void hostToggled(bool on);
 	void sslActivated(int i);
+
+	void jidRegistered(const QString &jid, const QString &tlsDomain);
 
 public:
 	explicit JabberCreateAccountWidget(bool showButtons, QWidget *parent = 0);

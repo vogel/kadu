@@ -248,6 +248,7 @@ set (SOURCES
 	gui/widgets/jabber-edit-account-widget.cpp
 	gui/widgets/jabber-personal-info-widget.cpp
 	gui/windows/jabber-change-password-window.cpp
+	gui/windows/jabber-wait-for-account-register-window.cpp
 	gui/windows/xml-console.cpp
 	open-chat-with/jabber-open-chat-with-runner.cpp
 	iris-status-adapter.cpp
@@ -293,6 +294,7 @@ set (MOC_SOURCES
 	gui/widgets/jabber-edit-account-widget.h
 	gui/widgets/jabber-personal-info-widget.h
 	gui/windows/jabber-change-password-window.h
+	gui/windows/jabber-wait-for-account-register-window.h
 	gui/windows/xml-console.h
 	jabber-id-validator.h
 	jabber-protocol.h
