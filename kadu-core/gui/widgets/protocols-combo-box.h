@@ -28,6 +28,7 @@ class AbstractProtocolFilter;
 class ProtocolsComboBox : public KaduComboBox<ProtocolFactory *>
 {
 	Q_OBJECT
+	Q_PROPERTY(ProtocolFactory* currentProtocol READ currentProtocol WRITE setCurrentProtocol)
 
 private slots:
 	void currentIndexChangedSlot(int index);
@@ -50,7 +51,7 @@ public:
 	void removeFilter(AbstractProtocolFilter *filter);
 
 signals:
-	void protocolChanged(ProtocolFactory *protocol, ProtocolFactory *lastProtocol);
+	void protocolChanged(ProtocolFactory *protocol = 0, ProtocolFactory *lastProtocol = 0);
 
 };
 

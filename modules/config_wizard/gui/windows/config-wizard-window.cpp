@@ -25,6 +25,7 @@
 #include "gui/widgets/config-wizard-completed-page.h"
 #include "gui/widgets/config-wizard-profile-page.h"
 #include "gui/widgets/config-wizard-set-up-account-page.h"
+#include "protocols/protocol-factory.h"
 
 #include "config-wizard-window.h"
 
@@ -77,6 +78,21 @@ void ConfigWizardWindow::setPage(int id, ConfigWizardPage *page)
 	QWizard::setPage(id, page);
 }
 
+bool ConfigWizardWindow::goToAccountSetUp() const
+{
+	if (field("choose-network.ignore").toBool())
+		return false;
+
+	ProtocolFactory *pf = field("choose-network.protocol-factory").value<ProtocolFactory *>();
+	if (!pf)
+		return false;
+
+	if (field("choose-network.new").toBool() && !pf->canRegister())
+		return false;
+
+	return true;
+}
+
 int ConfigWizardWindow::nextId() const
 {
 	switch (currentId())
@@ -84,12 +100,9 @@ int ConfigWizardWindow::nextId() const
 		case ProfilePage:
 			return ChooseNetworkPage;
 		case ChooseNetworkPage:
-		{
-			if (field("choose-network.ignore").toBool())
-				return CompletedPage;
-			else
-				return SetUpAccountPage;
-		}
+			return goToAccountSetUp()
+					? SetUpAccountPage
+					: CompletedPage;
 		case SetUpAccountPage:
 			return CompletedPage;
 		case CompletedPage:

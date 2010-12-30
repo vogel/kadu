@@ -61,6 +61,7 @@ void ConfigWizardChooseNetworkPage::createGui()
 	formLayout()->addRow(QString(), SetUpNew);
 	formLayout()->addRow(QString(), Ignore);
 
+	registerField("choose-network.protocol-factory", SelectProtocol, "currentProtocol", SIGNAL(protocolChanged()));
 	registerField("choose-network.existing", SetUpExisting);
 	registerField("choose-network.new", SetUpNew);
 	registerField("choose-network.ignore", Ignore);

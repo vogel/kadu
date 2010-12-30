@@ -42,8 +42,8 @@ class ConfigWizardWindow : public QWizard
 
 	QList<ConfigWizardPage *> ConfigWizardPages;
 
-
 	void setPage(int id, ConfigWizardPage *page);
+	bool goToAccountSetUp() const;
 
 private slots:
 	void acceptedSlot();
