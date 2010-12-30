@@ -76,14 +76,14 @@ ContactDetails * GaduProtocolFactory::createContactDetails(ContactShared *contac
 	return new GaduContactDetails(contactShared);
 }
 
-AccountAddWidget * GaduProtocolFactory::newAddAccountWidget(QWidget *parent)
+AccountAddWidget * GaduProtocolFactory::newAddAccountWidget(bool showButtons, QWidget *parent)
 {
-	return new GaduAddAccountWidget(parent);
+	return new GaduAddAccountWidget(showButtons, parent);
 }
 
-AccountCreateWidget * GaduProtocolFactory::newCreateAccountWidget(QWidget *parent)
+AccountCreateWidget * GaduProtocolFactory::newCreateAccountWidget(bool showButtons, QWidget *parent)
 {
-	return new GaduCreateAccountWidget(parent);
+	return new GaduCreateAccountWidget(showButtons, parent);
 }
 
 AccountEditWidget * GaduProtocolFactory::newEditAccountWidget(Account account, QWidget *parent)

@@ -49,7 +49,7 @@ class GaduCreateAccountWidget : public AccountCreateWidget
 	TokenWidget *MyTokenWidget;
 	QPushButton *RegisterAccountButton;
 
-	void createGui();
+	void createGui(bool showButtons);
 	void resetGui();
 
 private slots:
@@ -58,7 +58,7 @@ private slots:
 	void uinRegistered(UinType uin);
 
 public:
-	explicit GaduCreateAccountWidget(QWidget *parent = 0);
+	explicit GaduCreateAccountWidget(bool showButtons, QWidget *parent = 0);
 	virtual ~GaduCreateAccountWidget();
 
 public slots:

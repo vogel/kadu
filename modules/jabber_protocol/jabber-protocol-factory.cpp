@@ -83,14 +83,14 @@ ContactDetails * JabberProtocolFactory::createContactDetails(ContactShared *cont
 	return new JabberContactDetails(contactShared);
 }
 
-AccountAddWidget * JabberProtocolFactory::newAddAccountWidget(QWidget *parent)
+AccountAddWidget * JabberProtocolFactory::newAddAccountWidget(bool showButtons, QWidget *parent)
 {
-	return new JabberAddAccountWidget(this, parent);
+	return new JabberAddAccountWidget(this, showButtons, parent);
 }
 
-AccountCreateWidget * JabberProtocolFactory::newCreateAccountWidget(QWidget *parent)
+AccountCreateWidget * JabberProtocolFactory::newCreateAccountWidget(bool showButtons, QWidget *parent)
 {
-	return new JabberCreateAccountWidget(parent);
+	return new JabberCreateAccountWidget(showButtons, parent);
 }
 
 AccountEditWidget * JabberProtocolFactory::newEditAccountWidget(Account account, QWidget *parent)

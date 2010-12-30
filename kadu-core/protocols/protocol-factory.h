@@ -54,8 +54,8 @@ public:
 	virtual Protocol * createProtocolHandler(Account account) = 0;
 	virtual AccountDetails * createAccountDetails(AccountShared *accountShared) = 0;
 	virtual ContactDetails * createContactDetails(ContactShared *contactShared) = 0;
-	virtual AccountAddWidget * newAddAccountWidget(QWidget *parent = 0) = 0;
-	virtual AccountCreateWidget * newCreateAccountWidget(QWidget *parent = 0) = 0;
+	virtual AccountAddWidget * newAddAccountWidget(bool showButtons, QWidget *parent = 0) = 0;
+	virtual AccountCreateWidget * newCreateAccountWidget(bool showButtons, QWidget *parent = 0) = 0;
 	virtual AccountEditWidget * newEditAccountWidget(Account, QWidget *parent = 0) = 0;
 	virtual QWidget * newContactPersonalInfoWidget(Contact contact, QWidget *parent = 0) = 0;
 	virtual ProtocolMenuManager * protocolMenuManager() { return 0; }

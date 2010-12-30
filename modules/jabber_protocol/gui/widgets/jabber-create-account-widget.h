@@ -75,7 +75,7 @@ class JabberCreateAccountWidget : public AccountCreateWidget
 	int port_;
 	bool ShowConnectionOptions;
 
-	void createGui();
+	void createGui(bool showButtons);
 	bool checkSSL();
 	void resetGui();
 
@@ -87,7 +87,7 @@ private slots:
 	void sslActivated(int i);
 
 public:
-	explicit JabberCreateAccountWidget(QWidget *parent = 0);
+	explicit JabberCreateAccountWidget(bool showButtons, QWidget *parent = 0);
 	virtual ~JabberCreateAccountWidget();
 
 public slots:

@@ -49,12 +49,12 @@
 
 #include "gadu-create-account-widget.h"
 
-GaduCreateAccountWidget::GaduCreateAccountWidget(QWidget *parent) :
+GaduCreateAccountWidget::GaduCreateAccountWidget(bool showButtons, QWidget *parent) :
 		AccountCreateWidget(parent)
 {
 	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
-	createGui();
+	createGui(showButtons);
 	resetGui();
 }
 
@@ -62,7 +62,7 @@ GaduCreateAccountWidget::~GaduCreateAccountWidget()
 {
 }
 
-void GaduCreateAccountWidget::createGui()
+void GaduCreateAccountWidget::createGui(bool showButtons)
 {
 	QVBoxLayout *mainLayout = new QVBoxLayout(this);
 
@@ -122,6 +122,9 @@ void GaduCreateAccountWidget::createGui()
 	connect(RegisterAccountButton, SIGNAL(clicked(bool)), this, SLOT(apply()));
 	connect(cancelButton, SIGNAL(clicked(bool)), this, SLOT(cancel()));
 	connect(cancelButton, SIGNAL(clicked(bool)), this, SIGNAL(cancelled()));
+
+	if (!showButtons)
+		buttons->hide();
 }
 
 void GaduCreateAccountWidget::resetGui()

@@ -39,8 +39,8 @@ public:
 	virtual Protocol * createProtocolHandler(Account account);
 	virtual AccountDetails * createAccountDetails(AccountShared *accountShared);
 	virtual ContactDetails * createContactDetails(ContactShared *contactShared);
-	virtual AccountAddWidget * newAddAccountWidget(QWidget *parent);
-	virtual AccountCreateWidget * newCreateAccountWidget(QWidget *parent);
+	virtual AccountAddWidget * newAddAccountWidget(bool showButtons, QWidget *parent);
+	virtual AccountCreateWidget * newCreateAccountWidget(bool showButtons, QWidget *parent);
 	virtual AccountEditWidget* newEditAccountWidget(Account, QWidget*);
 	virtual QWidget * newContactPersonalInfoWidget(Contact contact, QWidget *parent = 0);
 	virtual QList<StatusType *> supportedStatusTypes();

@@ -52,14 +52,14 @@ class JabberAddAccountWidget : public AccountAddWidget
 	IdentitiesComboBox *Identity;
 	QPushButton *AddAccountButton;
 
-	void createGui();
+	void createGui(bool showButtons);
 	void resetGui();
 
 private slots:
 	void dataChanged();
 
 public:
-	explicit JabberAddAccountWidget(JabberProtocolFactory *factory, QWidget *parent = 0);
+	explicit JabberAddAccountWidget(JabberProtocolFactory *factory, bool showButtons, QWidget *parent = 0);
 	virtual ~JabberAddAccountWidget();
 
 public slots:

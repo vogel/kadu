@@ -44,12 +44,12 @@
 
 #include "jabber-add-account-widget.h"
 
-JabberAddAccountWidget::JabberAddAccountWidget(JabberProtocolFactory *factory, QWidget *parent) :
+JabberAddAccountWidget::JabberAddAccountWidget(JabberProtocolFactory *factory, bool showButtons, QWidget *parent) :
 		AccountAddWidget(parent), Factory(factory)
 {
 	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
-	createGui();
+	createGui(showButtons);
 	resetGui();
 }
 
@@ -57,7 +57,7 @@ JabberAddAccountWidget::~JabberAddAccountWidget()
 {
 }
 
-void JabberAddAccountWidget::createGui()
+void JabberAddAccountWidget::createGui(bool showButtons)
 {
   	QVBoxLayout *mainLayout = new QVBoxLayout(this);
 
@@ -127,6 +127,9 @@ void JabberAddAccountWidget::createGui()
 
 	connect(AddAccountButton, SIGNAL(clicked(bool)), this, SLOT(apply()));
 	connect(cancelButton, SIGNAL(clicked(bool)), this, SLOT(cancel()));
+
+	if (!showButtons)
+		buttons->hide();
 }
 
 void JabberAddAccountWidget::dataChanged()

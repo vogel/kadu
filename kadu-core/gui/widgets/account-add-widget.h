@@ -34,7 +34,11 @@ class KADUAPI AccountAddWidget : public ModalConfigurationWidget
 	Q_OBJECT
 
 public:
-	explicit AccountAddWidget(QWidget *parent = 0) : ModalConfigurationWidget(parent) {}
+	explicit AccountAddWidget(bool showButtons, QWidget *parent = 0) : ModalConfigurationWidget(parent)
+	{
+		Q_UNUSED(showButtons)
+	}
+
 	virtual ~AccountAddWidget() {}
 
 signals:

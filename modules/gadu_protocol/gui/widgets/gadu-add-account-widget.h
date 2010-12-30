@@ -43,14 +43,14 @@ class GaduAddAccountWidget : public AccountAddWidget
 	IdentitiesComboBox *Identity;
 	QPushButton *AddAccountButton;
 
-	void createGui();
+	void createGui(bool showButtons);
 	void resetGui();
 
 private slots:
 	void dataChanged();
 
 public:
-	explicit GaduAddAccountWidget(QWidget *parent = 0);
+	explicit GaduAddAccountWidget(bool showButtons, QWidget *parent = 0);
 	virtual ~GaduAddAccountWidget();
 
 public slots:

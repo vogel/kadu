@@ -44,7 +44,7 @@
 
 #include "jabber-create-account-widget.h"
 
-JabberCreateAccountWidget::JabberCreateAccountWidget(QWidget *parent) :
+JabberCreateAccountWidget::JabberCreateAccountWidget(bool showButtons, QWidget *parent) :
 		AccountCreateWidget(parent), ShowConnectionOptions(false)
 {
 	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
@@ -54,7 +54,7 @@ JabberCreateAccountWidget::JabberCreateAccountWidget(QWidget *parent) :
 	legacy_ssl_probe_ = true;
 	port_ = 5222;
 
-	createGui();
+	createGui(showButtons);
 	resetGui();
 }
 
@@ -62,7 +62,7 @@ JabberCreateAccountWidget::~JabberCreateAccountWidget()
 {
 }
 
-void JabberCreateAccountWidget::createGui()
+void JabberCreateAccountWidget::createGui(bool showButtons)
 {
 	QVBoxLayout *mainLayout = new QVBoxLayout(this);
 
@@ -209,6 +209,9 @@ void JabberCreateAccountWidget::createGui()
 	connect(RegisterAccountButton, SIGNAL(clicked(bool)), this, SLOT(apply()));
 	connect(cancelButton, SIGNAL(clicked(bool)), this, SLOT(cancel()));
 	connect(cancelButton, SIGNAL(clicked(bool)), this, SIGNAL(cancelled()));
+
+	if (!showButtons)
+		buttons->hide();
 }
 
 bool JabberCreateAccountWidget::checkSSL()

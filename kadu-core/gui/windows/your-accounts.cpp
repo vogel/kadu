@@ -234,7 +234,7 @@ AccountCreateWidget * YourAccounts::getAccountCreateWidget(ProtocolFactory *prot
 	if (!CreateWidgets.contains(protocol))
 	{
 		if (protocol)
-			widget = protocol->newCreateAccountWidget(CreateAddStack);
+			widget = protocol->newCreateAccountWidget(true, CreateAddStack);
 
 		CreateWidgets[protocol] = widget;
 		if (widget)
@@ -257,7 +257,7 @@ AccountAddWidget * YourAccounts::getAccountAddWidget(ProtocolFactory *protocol)
 	if (!AddWidgets.contains(protocol))
 	{
 		if (protocol)
-			widget = protocol->newAddAccountWidget(CreateAddStack);
+			widget = protocol->newAddAccountWidget(true, CreateAddStack);
 
 		AddWidgets[protocol] = widget;
 		if (widget)

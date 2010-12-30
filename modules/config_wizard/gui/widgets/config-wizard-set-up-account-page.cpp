@@ -64,13 +64,13 @@ void ConfigWizardSetUpAccountPage::initializePage()
 
 	if (field("choose-network.new").toBool())
 	{
-		CreateAccountWidget = pf->newCreateAccountWidget(this);
+		CreateAccountWidget = pf->newCreateAccountWidget(false, this);
 		formLayout()->addRow(QString(), CreateAccountWidget);
 
 		connect(CreateAccountWidget, SIGNAL(stateChanged(ModalConfigurationWidgetState)), this, SIGNAL(completeChanged()));
 	} else if (field("choose-network.existing").toBool())
 	{
-		AddAccountWidget = pf->newAddAccountWidget(this);
+		AddAccountWidget = pf->newAddAccountWidget(false, this);
 		formLayout()->addRow(QString(), AddAccountWidget);
 
 		connect(CreateAccountWidget, SIGNAL(stateChanged(ModalConfigurationWidgetState)), this, SIGNAL(completeChanged()));
