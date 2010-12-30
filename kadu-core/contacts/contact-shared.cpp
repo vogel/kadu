@@ -200,6 +200,20 @@ void ContactShared::setOwnerBuddy(Buddy buddy)
 	dataUpdated();
 }
 
+void ContactShared::setContactAccount(Account account)
+{
+	if (ContactAccount == account)
+		return;
+
+	if (ContactAccount && ContactAccount.protocolHandler() && ContactAccount.protocolHandler()->protocolFactory())
+		protocolUnregistered(ContactAccount.protocolHandler()->protocolFactory());
+
+	ContactAccount = account;
+
+	if (ContactAccount && ContactAccount.protocolHandler() && ContactAccount.protocolHandler()->protocolFactory())
+		protocolRegistered(ContactAccount.protocolHandler()->protocolFactory());
+}
+
 void ContactShared::protocolRegistered(ProtocolFactory *protocolFactory)
 {
 	if (ContactAccount.protocolName() != protocolFactory->name())

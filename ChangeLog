@@ -23,6 +23,7 @@
 * gui: #1779 probably fixed: display all contacts for each buddy at start (Vogel)
 * chat: #1694 fixed: do not allow to chat with self (Vogel)
 * gui: #1757 fixed: display proper status icons (with description) when in simple mode (Vogel)
+* contacts: #1743 fixed: changing contact protocol/account does not crash Kadu anymore (Vogel)
 
 +++ version 0.6.6-beta13
 * sound: #1376 fixed: long delays on Kadu exit and warnings from Qt regarding mutexes (beevvy)

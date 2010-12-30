@@ -118,10 +118,12 @@ void BuddyContactsTableModel::performItemActionEdit(BuddyContactsTableItem *item
 
 	if (contact.contactAccount() != item->itemAccount())
 	{
-		// allow protocol handles to handle that
+		// allow protocol handlers to handle that
+		contact.setOwnerBuddy(Buddy::null);
 		ContactManager::instance()->removeItem(contact);
 		contact.setContactAccount(item->itemAccount());
 		contact.setId(item->id());
+		contact.setOwnerBuddy(ModelBuddy);
 		ContactManager::instance()->addItem(contact);
 	}
 	else

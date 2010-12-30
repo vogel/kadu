@@ -86,7 +86,9 @@ public:
 	virtual bool shouldStore();
 	virtual void aboutToBeRemoved();
 
-	KaduShared_Property(Account, contactAccount, ContactAccount)
+	KaduShared_PropertyRead(Account, contactAccount, ContactAccount)
+	void setContactAccount(Account account);
+
 	KaduShared_Property(Avatar, contactAvatar, ContactAvatar)
 	KaduShared_PropertyRead(Buddy, ownerBuddy, OwnerBuddy)
 	void setOwnerBuddy(Buddy buddy);
