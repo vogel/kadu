@@ -122,8 +122,8 @@ void Firewall::accountRegistered(Account account)
 
 	connect(chatService, SIGNAL(filterIncomingMessage(Chat, Contact, QString &, time_t, bool &)),
 			this, SLOT(filterIncomingMessage(Chat, Contact, QString &, time_t, bool &)));
-	connect(chatService, SIGNAL(filterOutgoingMessage(Chat, QByteArray &, bool &)),
-			this, SLOT(filterOutgoingMessage(Chat, QByteArray &, bool &)));
+	connect(chatService, SIGNAL(filterOutgoingMessage(Chat, QString &, bool &)),
+			this, SLOT(filterOutgoingMessage(Chat, QString &, bool &)));
 	connect(account, SIGNAL(connected()), this, SLOT(accountConnected()));
 }
 
@@ -139,8 +139,8 @@ void Firewall::accountUnregistered(Account account)
 
 	disconnect(chatService, SIGNAL(filterIncomingMessage(Chat, Contact, QString &, time_t, bool &)),
 			this, SLOT(filterIncomingMessage(Chat, Contact, QString &, time_t, bool &)));
-	disconnect(chatService, SIGNAL(filterOutgoingMessage(Chat, QByteArray &, bool &)),
-			this, SLOT(filterOutgoingMessage(Chat, QByteArray &, bool &)));
+	disconnect(chatService, SIGNAL(filterOutgoingMessage(Chat, QString &, bool &)),
+			this, SLOT(filterOutgoingMessage(Chat, QString &, bool &)));
 	disconnect(account, SIGNAL(connected()), this, SLOT(accountConnected()));
 }
 
@@ -446,7 +446,7 @@ void Firewall::chatDestroyed(ChatWidget *chatWidget)
 	kdebugf2();
 }
 
-void Firewall::filterOutgoingMessage(Chat chat, QByteArray &msg, bool &ignore)
+void Firewall::filterOutgoingMessage(Chat chat, QString &msg, bool &stop)
 {
 	Q_UNUSED(msg)
 	kdebugf();
@@ -479,7 +479,7 @@ void Firewall::filterOutgoingMessage(Chat chat, QByteArray &msg, bool &ignore)
 				switch (QMessageBox::warning(0, "Kadu", tr("Are you sure you want to send this message?"), tr("&Yes"), tr("Yes and allow until chat closed"), tr("&No"), 2, 2))
 				{
 						default:
-							ignore = true;
+							stop = true;
 							return;
 						case 0:
 							return;

@@ -87,7 +87,7 @@ class Firewall : public QObject, ConfigurationAwareObject, AccountsAwareObject
 
 private slots:
 	void filterIncomingMessage(Chat chat, Contact sender, QString &message, time_t time, bool &ignore);
-	void filterOutgoingMessage(Chat chat, QByteArray &msg, bool &stop);
+	void filterOutgoingMessage(Chat chat, QString &msg, bool &stop);
 
 	void accountConnected();
 
