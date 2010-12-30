@@ -112,11 +112,6 @@ void JabberContactPersonalInfoWidget::reset()
 
 void JabberContactPersonalInfoWidget::personalInfoAvailable(Buddy buddy)
 {
-	Contact contact = buddy.contacts().first();
-
-	if (MyContact.id() != contact.id())
-		return;
-
 	FullNameText->setText(buddy.firstName());
 	FamilyNameText->setText(buddy.familyName());
 	NicknameText->setText(buddy.nickName());
