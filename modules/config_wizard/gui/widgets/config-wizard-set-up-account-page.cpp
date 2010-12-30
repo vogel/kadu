@@ -30,7 +30,7 @@
 #include "config-wizard-set-up-account-page.h"
 
 ConfigWizardSetUpAccountPage::ConfigWizardSetUpAccountPage(QWidget *parent) :
-		ConfigWizardPage(parent), SetUpAccountWidget(0)
+		ConfigWizardPage(parent), AddAccountWidget(0), CreateAccountWidget(0)
 {
 	setDescription("<p>Please enter your account data.</p><p>Go back if you want to select a different Account Setup option.</p>");
 
@@ -46,6 +46,16 @@ void ConfigWizardSetUpAccountPage::createGui()
 	formLayout()->addRow(new QLabel(tr("<h3>Account Setup</h3>"), this));
 }
 
+bool ConfigWizardSetUpAccountPage::isComplete() const
+{
+	if (CreateAccountWidget)
+		return StateChangedDataValid == CreateAccountWidget->state();
+	if (AddAccountWidget)
+		return StateChangedDataValid == AddAccountWidget->state();
+
+	return true;
+}
+
 void ConfigWizardSetUpAccountPage::initializePage()
 {
 	ProtocolFactory *pf = field("choose-network.protocol-factory").value<ProtocolFactory *>();
@@ -54,24 +64,25 @@ void ConfigWizardSetUpAccountPage::initializePage()
 
 	if (field("choose-network.new").toBool())
 	{
-		AccountCreateWidget *createAccountWidget = pf->newCreateAccountWidget(this);
-		formLayout()->addRow(QString(), createAccountWidget);
+		CreateAccountWidget = pf->newCreateAccountWidget(this);
+		formLayout()->addRow(QString(), CreateAccountWidget);
 
-		SetUpAccountWidget = createAccountWidget;
-	}
-	if (field("choose-network.existing").toBool())
+		connect(CreateAccountWidget, SIGNAL(stateChanged(ModalConfigurationWidgetState)), this, SIGNAL(completeChanged()));
+	} else if (field("choose-network.existing").toBool())
 	{
-		AccountAddWidget *addAccountWidget = pf->newAddAccountWidget(this);
-		formLayout()->addRow(QString(), addAccountWidget);
+		AddAccountWidget = pf->newAddAccountWidget(this);
+		formLayout()->addRow(QString(), AddAccountWidget);
 
-		SetUpAccountWidget = addAccountWidget;
+		connect(CreateAccountWidget, SIGNAL(stateChanged(ModalConfigurationWidgetState)), this, SIGNAL(completeChanged()));
 	}
 }
 
 void ConfigWizardSetUpAccountPage::cleanupPage()
 {
-	delete SetUpAccountWidget;
-	SetUpAccountWidget = 0;
+	delete AddAccountWidget;
+	AddAccountWidget = 0;
+	delete CreateAccountWidget;
+	CreateAccountWidget = 0;
 
 	QWizardPage::cleanupPage();
 }

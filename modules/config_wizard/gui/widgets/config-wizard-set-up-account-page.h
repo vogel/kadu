@@ -22,11 +22,15 @@
 
 #include "gui/widgets/config-wizard-page.h"
 
+class AccountAddWidget;
+class AccountCreateWidget;
+
 class ConfigWizardSetUpAccountPage : public ConfigWizardPage
 {
 	Q_OBJECT
 
-	QWidget *SetUpAccountWidget;
+	AccountAddWidget *AddAccountWidget;
+	AccountCreateWidget *CreateAccountWidget;
 
 	void createGui();
 
@@ -34,8 +38,10 @@ public:
 	explicit ConfigWizardSetUpAccountPage(QWidget *parent = 0);
 	virtual ~ConfigWizardSetUpAccountPage();
 
-    virtual void initializePage();
-    virtual void cleanupPage();
+	virtual bool isComplete() const;
+
+	virtual void initializePage();
+	virtual void cleanupPage();
 	virtual void acceptPage();
 
 };
