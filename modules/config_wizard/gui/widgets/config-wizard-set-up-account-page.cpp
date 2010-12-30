@@ -17,47 +17,36 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CONFIG_WIZARD_WINDOW_H
-#define CONFIG_WIZARD_WINDOW_H
+#include <QtGui/QCheckBox>
+#include <QtGui/QFormLayout>
+#include <QtGui/QLabel>
 
-#include <QtGui/QWizard>
+#include "accounts/account-manager.h"
+#include "gui/windows/your-accounts.h"
 
-class ConfigWizardPage;
+#include "config-wizard-set-up-account-page.h"
 
-/**
- * @defgroup config_wizard Config wizard
- * @{
- */
-class ConfigWizardWindow : public QWizard
+ConfigWizardSetUpAccountPage::ConfigWizardSetUpAccountPage(QWidget *parent) :
+		ConfigWizardPage(parent)
 {
-	Q_OBJECT
+	setDescription("<p>Please enter your account data.</p><p>Go back if you want to select a different Account Setup option.</p>");
 
-	enum Pages
-	{
-		ProfilePage,
-		ChooseNetworkPage,
-		SetUpAccountPage,
-		CompletedPage
-	};
+	createGui();
+}
 
-	QList<ConfigWizardPage *> ConfigWizardPages;
+ConfigWizardSetUpAccountPage::~ConfigWizardSetUpAccountPage()
+{
+}
 
+void ConfigWizardSetUpAccountPage::createGui()
+{
+	formLayout()->addRow(new QLabel(tr("<h3>Account Setup</h3>"), this));
+}
 
-	void setPage(int id, ConfigWizardPage *page);
+void ConfigWizardSetUpAccountPage::initializePage()
+{
+}
 
-private slots:
-	void acceptedSlot();
-	void rejectedSlot();
-
-protected:
-	virtual int nextId() const;
-
-public:
-	explicit ConfigWizardWindow(QWidget *parent = 0);
-	virtual ~ConfigWizardWindow();
-
-};
-
-/** @} */
-
-#endif // CONFIG_WIZARD_WINDOW_H
+void ConfigWizardSetUpAccountPage::acceptPage()
+{
+}

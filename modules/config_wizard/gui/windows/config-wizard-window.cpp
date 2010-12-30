@@ -17,11 +17,14 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QVariant>
+
 #include "debug.h"
 
 #include "gui/widgets/config-wizard-choose-network-page.h"
 #include "gui/widgets/config-wizard-completed-page.h"
 #include "gui/widgets/config-wizard-profile-page.h"
+#include "gui/widgets/config-wizard-set-up-account-page.h"
 
 #include "config-wizard-window.h"
 
@@ -50,9 +53,10 @@ ConfigWizardWindow::ConfigWizardWindow(QWidget *parent) :
 	setMinimumSize(710, 300);
 #endif
 
-	addPage(new ConfigWizardProfilePage(this));
-	addPage(new ConfigWizardChooseNetworkPage(this));
-	addPage(new ConfigWizardCompletedPage(this));
+	setPage(ProfilePage, new ConfigWizardProfilePage(this));
+	setPage(ChooseNetworkPage, new ConfigWizardChooseNetworkPage(this));
+	setPage(SetUpAccountPage, new ConfigWizardSetUpAccountPage(this));
+	setPage(CompletedPage, new ConfigWizardCompletedPage(this));
 
 	connect(this, SIGNAL(accepted()), this, SLOT(acceptedSlot()));
 	connect(this, SIGNAL(rejected()), this, SLOT(rejectedSlot()));
@@ -66,11 +70,32 @@ ConfigWizardWindow::~ConfigWizardWindow()
 	kdebugf2();
 }
 
-void ConfigWizardWindow::addPage(ConfigWizardPage *page)
+void ConfigWizardWindow::setPage(int id, ConfigWizardPage *page)
 {
 	ConfigWizardPages.append(page);
 
-	QWizard::addPage(page);
+	QWizard::setPage(id, page);
+}
+
+int ConfigWizardWindow::nextId() const
+{
+	switch (currentId())
+	{
+		case ProfilePage:
+			return ChooseNetworkPage;
+		case ChooseNetworkPage:
+		{
+			if (field("choose-network.ignore").toBool())
+				return CompletedPage;
+			else
+				return SetUpAccountPage;
+		}
+		case SetUpAccountPage:
+			return CompletedPage;
+		case CompletedPage:
+		default:
+			return -1;
+	}
 }
 
 void ConfigWizardWindow::acceptedSlot()

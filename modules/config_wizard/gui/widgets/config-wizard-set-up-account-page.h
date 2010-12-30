@@ -17,47 +17,24 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CONFIG_WIZARD_WINDOW_H
-#define CONFIG_WIZARD_WINDOW_H
+#ifndef CONFIG_WIZARD_SET_UP_ACCOUNT_PAGE_H
+#define CONFIG_WIZARD_SET_UP_ACCOUNT_PAGE_H
 
-#include <QtGui/QWizard>
+#include "gui/widgets/config-wizard-page.h"
 
-class ConfigWizardPage;
-
-/**
- * @defgroup config_wizard Config wizard
- * @{
- */
-class ConfigWizardWindow : public QWizard
+class ConfigWizardSetUpAccountPage : public ConfigWizardPage
 {
 	Q_OBJECT
 
-	enum Pages
-	{
-		ProfilePage,
-		ChooseNetworkPage,
-		SetUpAccountPage,
-		CompletedPage
-	};
-
-	QList<ConfigWizardPage *> ConfigWizardPages;
-
-
-	void setPage(int id, ConfigWizardPage *page);
-
-private slots:
-	void acceptedSlot();
-	void rejectedSlot();
-
-protected:
-	virtual int nextId() const;
+	void createGui();
 
 public:
-	explicit ConfigWizardWindow(QWidget *parent = 0);
-	virtual ~ConfigWizardWindow();
+	explicit ConfigWizardSetUpAccountPage(QWidget *parent = 0);
+	virtual ~ConfigWizardSetUpAccountPage();
+
+    virtual void initializePage();
+	virtual void acceptPage();
 
 };
 
-/** @} */
-
-#endif // CONFIG_WIZARD_WINDOW_H
+#endif // CONFIG_WIZARD_SET_UP_ACCOUNT_PAGE_H
