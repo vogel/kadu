@@ -36,7 +36,10 @@ class GaduProtocolFactory : public ProtocolFactory
 	GaduProtocolFactory();
 
 public:
-	static GaduProtocolFactory * instance();
+	static void createInstance();
+	static void destroyInstance();
+
+	static GaduProtocolFactory * instance() { return Instance; }
 
 	virtual Protocol * createProtocolHandler(Account account);
 	virtual AccountDetails * createAccountDetails(AccountShared *accountShared);

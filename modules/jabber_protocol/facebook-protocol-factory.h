@@ -35,7 +35,10 @@ class FacebookProtocolFactory : public JabberProtocolFactory
 	FacebookProtocolFactory();
 
 public:
-	static FacebookProtocolFactory * instance();
+	static void createInstance();
+	static void destroyInstance();
+
+	static FacebookProtocolFactory * instance() { return Instance; }
 
 	virtual QString idLabel();
 	virtual bool allowChangeServer();

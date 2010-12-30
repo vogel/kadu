@@ -98,6 +98,8 @@ extern "C" KADU_EXPORT int gadu_protocol_init(bool firstLoad)
 
 	GaduIdValidator::createInstance();
 
+	GaduProtocolFactory::createInstance();
+
 	ProtocolsManager::instance()->registerProtocolFactory(GaduProtocolFactory::instance());
 	UrlHandlerManager::instance()->registerUrlHandler("Gadu", new GaduUrlHandler());
 
@@ -113,6 +115,8 @@ extern "C" KADU_EXPORT void gadu_protocol_close()
 {
 	UrlHandlerManager::instance()->unregisterUrlHandler("Gadu");
 	ProtocolsManager::instance()->unregisterProtocolFactory(GaduProtocolFactory::instance());
+
+	GaduProtocolFactory::destroyInstance();
 
 	GaduIdValidator::destroyInstance();
 	GaduServersManager::destroyInstance();

@@ -62,6 +62,10 @@ int JabberProtocol::initModule()
 	JabberIdValidator::createInstance();
 	VCardFactory::createInstance();
 
+	JabberProtocolFactory::createInstance();
+	GTalkProtocolFactory::createInstance();
+	FacebookProtocolFactory::createInstance();
+
 	ProtocolsManager::instance()->registerProtocolFactory(JabberProtocolFactory::instance());
 	ProtocolsManager::instance()->registerProtocolFactory(GTalkProtocolFactory::instance());
 	ProtocolsManager::instance()->registerProtocolFactory(FacebookProtocolFactory::instance());
@@ -80,6 +84,10 @@ void JabberProtocol::closeModule()
 	ProtocolsManager::instance()->unregisterProtocolFactory(JabberProtocolFactory::instance());
 	ProtocolsManager::instance()->unregisterProtocolFactory(GTalkProtocolFactory::instance());
 	ProtocolsManager::instance()->unregisterProtocolFactory(FacebookProtocolFactory::instance());
+
+	JabberProtocolFactory::destroyInstance();
+	GTalkProtocolFactory::destroyInstance();
+	FacebookProtocolFactory::destroyInstance();
 
 	VCardFactory::destroyInstance();
 	JabberIdValidator::destroyInstance();

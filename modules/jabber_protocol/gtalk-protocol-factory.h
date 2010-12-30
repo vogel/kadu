@@ -35,7 +35,10 @@ class GTalkProtocolFactory : public JabberProtocolFactory
 	GTalkProtocolFactory();
 
 public:
-	static GTalkProtocolFactory * instance();
+	static void createInstance();
+	static void destroyInstance();
+
+	static GTalkProtocolFactory * instance() { return Instance; }
 
 	virtual QString idLabel();
     virtual QString defaultServer();

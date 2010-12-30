@@ -37,12 +37,16 @@
 
 GTalkProtocolFactory * GTalkProtocolFactory::Instance = 0;
 
-GTalkProtocolFactory * GTalkProtocolFactory::instance()
+void GTalkProtocolFactory::createInstance()
 {
 	if (!Instance)
 		Instance = new GTalkProtocolFactory();
+}
 
-	return Instance;
+void GTalkProtocolFactory::destroyInstance()
+{
+	delete Instance;
+	Instance = 0;
 }
 
 GTalkProtocolFactory::GTalkProtocolFactory()

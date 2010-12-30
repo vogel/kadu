@@ -29,6 +29,8 @@ public:
 	const QList<ProtocolFactory *> & protocolFactories() const { return Factories; }
 	bool hasProtocolFactory(const QString &name);
 
+	int count() { return Factories.count(); }
+
 	ProtocolFactory * byName(const QString &name);
 	ProtocolFactory * byIndex(int index);
 

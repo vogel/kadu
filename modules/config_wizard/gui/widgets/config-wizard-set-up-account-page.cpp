@@ -69,6 +69,7 @@ void ConfigWizardSetUpAccountPage::initializePage()
 
 		connect(CreateAccountWidget, SIGNAL(stateChanged(ModalConfigurationWidgetState)), this, SIGNAL(completeChanged()));
 		connect(CreateAccountWidget, SIGNAL(accountCreated(Account)), this, SLOT(accountCreated(Account)));
+		connect(CreateAccountWidget, SIGNAL(destroyed()), this, SLOT(createAccountWidgetDestroyed()));
 	} else if (field("choose-network.existing").toBool())
 	{
 		AddAccountWidget = pf->newAddAccountWidget(false, this);
@@ -76,6 +77,7 @@ void ConfigWizardSetUpAccountPage::initializePage()
 
 		connect(AddAccountWidget, SIGNAL(stateChanged(ModalConfigurationWidgetState)), this, SIGNAL(completeChanged()));
 		connect(AddAccountWidget, SIGNAL(accountCreated(Account)), this, SLOT(accountCreated(Account)));
+		connect(AddAccountWidget, SIGNAL(destroyed()), this, SLOT(addAccountWidgetDestroyed()));
 	}
 }
 
@@ -109,4 +111,18 @@ void ConfigWizardSetUpAccountPage::accountCreated(Account account)
 	AccountManager::instance()->addItem(account);
 
 	ConfigurationManager::instance()->flush();
+}
+
+void ConfigWizardSetUpAccountPage::addAccountWidgetDestroyed()
+{
+	AddAccountWidget = 0;
+
+	((QWizard *)parent())->back();
+}
+
+void ConfigWizardSetUpAccountPage::createAccountWidgetDestroyed()
+{
+	CreateAccountWidget = 0;
+
+	((QWizard *)parent())->back();
 }

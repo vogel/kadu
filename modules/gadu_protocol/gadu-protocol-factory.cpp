@@ -40,12 +40,16 @@
 
 GaduProtocolFactory *GaduProtocolFactory::Instance = 0;
 
-GaduProtocolFactory * GaduProtocolFactory::instance()
+void GaduProtocolFactory::createInstance()
 {
 	if (!Instance)
 		Instance = new GaduProtocolFactory();
+}
 
-	return Instance;
+void GaduProtocolFactory::destroyInstance()
+{
+	delete Instance;
+	Instance = 0;
 }
 
 GaduProtocolFactory::GaduProtocolFactory()
@@ -78,17 +82,23 @@ ContactDetails * GaduProtocolFactory::createContactDetails(ContactShared *contac
 
 AccountAddWidget * GaduProtocolFactory::newAddAccountWidget(bool showButtons, QWidget *parent)
 {
-	return new GaduAddAccountWidget(showButtons, parent);
+	GaduAddAccountWidget *result = new GaduAddAccountWidget(showButtons, parent);
+	connect(this, SIGNAL(destroyed()), result, SLOT(deleteLater()));
+	return result;
 }
 
 AccountCreateWidget * GaduProtocolFactory::newCreateAccountWidget(bool showButtons, QWidget *parent)
 {
-	return new GaduCreateAccountWidget(showButtons, parent);
+	GaduCreateAccountWidget *result = new GaduCreateAccountWidget(showButtons, parent);
+	connect(this, SIGNAL(destroyed()), result, SLOT(deleteLater()));
+	return result;
 }
 
 AccountEditWidget * GaduProtocolFactory::newEditAccountWidget(Account account, QWidget *parent)
 {
-	return new GaduEditAccountWidget(account, parent);
+	GaduEditAccountWidget *result = new GaduEditAccountWidget(account, parent);
+	connect(this, SIGNAL(destroyed()), result, SLOT(deleteLater()));
+	return result;
 }
 
 QList<StatusType *> GaduProtocolFactory::supportedStatusTypes()

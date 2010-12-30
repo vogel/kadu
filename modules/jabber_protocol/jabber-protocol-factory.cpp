@@ -37,12 +37,16 @@
 
 JabberProtocolFactory * JabberProtocolFactory::Instance = 0;
 
-JabberProtocolFactory * JabberProtocolFactory::instance()
+void JabberProtocolFactory::createInstance()
 {
 	if (!Instance)
 		Instance = new JabberProtocolFactory();
+}
 
-	return Instance;
+void JabberProtocolFactory::destroyInstance()
+{
+	delete Instance;
+	Instance = 0;
 }
 
 JabberProtocolFactory::JabberProtocolFactory()
@@ -85,17 +89,23 @@ ContactDetails * JabberProtocolFactory::createContactDetails(ContactShared *cont
 
 AccountAddWidget * JabberProtocolFactory::newAddAccountWidget(bool showButtons, QWidget *parent)
 {
-	return new JabberAddAccountWidget(this, showButtons, parent);
+	JabberAddAccountWidget *result = new JabberAddAccountWidget(this, showButtons, parent);
+	connect(this, SIGNAL(destroyed()), result, SLOT(deleteLater()));
+	return result;
 }
 
 AccountCreateWidget * JabberProtocolFactory::newCreateAccountWidget(bool showButtons, QWidget *parent)
 {
-	return new JabberCreateAccountWidget(showButtons, parent);
+	JabberCreateAccountWidget *result = new JabberCreateAccountWidget(showButtons, parent);
+	connect(this, SIGNAL(destroyed()), result, SLOT(deleteLater()));
+	return result;
 }
 
 AccountEditWidget * JabberProtocolFactory::newEditAccountWidget(Account account, QWidget *parent)
 {
-	return new JabberEditAccountWidget(account, parent);
+	JabberEditAccountWidget *result = new JabberEditAccountWidget(account, parent);
+	connect(this, SIGNAL(destroyed()), result, SLOT(deleteLater()));
+	return result;
 }
 
 QList<StatusType *> JabberProtocolFactory::supportedStatusTypes()

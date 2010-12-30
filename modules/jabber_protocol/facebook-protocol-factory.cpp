@@ -37,12 +37,16 @@
 
 FacebookProtocolFactory * FacebookProtocolFactory::Instance = 0;
 
-FacebookProtocolFactory * FacebookProtocolFactory::instance()
+void FacebookProtocolFactory::createInstance()
 {
 	if (!Instance)
 		Instance = new FacebookProtocolFactory();
+}
 
-	return Instance;
+void FacebookProtocolFactory::destroyInstance()
+{
+	delete Instance;
+	Instance = 0;
 }
 
 FacebookProtocolFactory::FacebookProtocolFactory()

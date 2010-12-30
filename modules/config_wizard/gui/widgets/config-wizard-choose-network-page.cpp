@@ -41,7 +41,7 @@ ConfigWizardChooseNetworkPage::~ConfigWizardChooseNetworkPage()
 
 void ConfigWizardChooseNetworkPage::createGui()
 {
-	formLayout()->addRow(new QLabel(tr("<h3>AccountSetup</h3>"), this));
+	formLayout()->addRow(new QLabel(tr("<h3>Account Setup</h3>"), this));
 
 	SelectProtocol = new ProtocolsComboBox(this);
 	connect(SelectProtocol, SIGNAL(protocolChanged(ProtocolFactory*,ProtocolFactory*)),

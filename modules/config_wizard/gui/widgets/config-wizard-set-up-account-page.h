@@ -37,6 +37,8 @@ class ConfigWizardSetUpAccountPage : public ConfigWizardPage
 
 private slots:
 	void accountCreated(Account account);
+	void addAccountWidgetDestroyed();
+	void createAccountWidgetDestroyed();
 
 public:
 	explicit ConfigWizardSetUpAccountPage(QWidget *parent = 0);

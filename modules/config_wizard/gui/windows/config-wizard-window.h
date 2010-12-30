@@ -32,17 +32,10 @@ class ConfigWizardWindow : public QWizard
 {
 	Q_OBJECT
 
-	enum Pages
-	{
-		ProfilePage,
-		ChooseNetworkPage,
-		SetUpAccountPage,
-		CompletedPage
-	};
-
 	QList<ConfigWizardPage *> ConfigWizardPages;
 
 	void setPage(int id, ConfigWizardPage *page);
+	bool goToChooseNetwork() const;
 	bool goToAccountSetUp() const;
 
 private slots:
@@ -53,6 +46,14 @@ protected:
 	virtual int nextId() const;
 
 public:
+	enum Pages
+	{
+		ProfilePage,
+		ChooseNetworkPage,
+		SetUpAccountPage,
+		CompletedPage
+	};
+
 	explicit ConfigWizardWindow(QWidget *parent = 0);
 	virtual ~ConfigWizardWindow();
 

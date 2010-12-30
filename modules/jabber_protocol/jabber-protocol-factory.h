@@ -34,7 +34,10 @@ class JabberProtocolFactory : public ProtocolFactory
 	QList<StatusType *> SupportedStatusTypes;
 
 public:
-	static JabberProtocolFactory * instance();
+	static void createInstance();
+	static void destroyInstance();
+
+	static JabberProtocolFactory * instance() { return Instance; }
 
 	virtual Protocol * createProtocolHandler(Account account);
 	virtual AccountDetails * createAccountDetails(AccountShared *accountShared);
