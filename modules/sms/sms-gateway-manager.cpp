@@ -37,6 +37,12 @@ SmsGatewayManager * SmsGatewayManager::instance()
 	return Instance;
 }
 
+void SmsGatewayManager::destroyInstance()
+{
+	delete Instance;
+	Instance = 0;
+}
+
 SmsGatewayManager::SmsGatewayManager()
 {
 }

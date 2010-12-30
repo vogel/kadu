@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2010 Piotr Galiszewski (piotr.galiszewski@kadu.im)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -17,33 +17,23 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SMS_GATEWAY_MANAGER_H
-#define SMS_GATEWAY_MANAGER_H
+#include "mobile-number-manager.h"
+#include "sms-actions.h"
+#include "sms-configuration-ui-handler.h"
+#include "sms-gateway-manager.h"
 
-#include <QtCore/QPair>
-#include <QtCore/QStringList>
-
-typedef QPair<QString, QString> SmsGateway;
-
-class SmsGatewayManager
+extern "C" KADU_EXPORT int sms_init(bool firstLoad)
 {
-	Q_DISABLE_COPY(SmsGatewayManager)
+	SmsConfigurationUiHandler::registerConfigurationUi();
+	SmsActions::registerActions(firstLoad);
 
-	static SmsGatewayManager *Instance;
+	return 0;
+}
 
-	QList<SmsGateway> Items;
-
-	SmsGatewayManager();
-	~SmsGatewayManager();
-
-	void load();
-
-public:
-	static SmsGatewayManager * instance();
-	static void destroyInstance();
-
-	const QList<SmsGateway> & items() const { return Items; }
-
-};
-
-#endif // SMS_GATEWAY_MANAGER_H
+extern "C" KADU_EXPORT void sms_close()
+{
+	SmsGatewayManager::destroyInstance();
+	MobileNumberManager::destroyInstance();
+	SmsActions::unregisterActions();
+	SmsConfigurationUiHandler::unregisterConfigurationUi();
+}

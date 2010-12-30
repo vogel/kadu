@@ -43,6 +43,7 @@ protected:
 
 public:
 	static MobileNumberManager * instance();
+	static void destroyInstance();
 
 	virtual void store();
 

@@ -26,6 +26,8 @@ class SMSAPI SmsConfigurationUiHandler : public ConfigurationUiHandler
 {
 	Q_OBJECT
 
+	static SmsConfigurationUiHandler *Instance;
+
 	QCheckBox *useBuiltIn;
 	QLineEdit *customApp;
 	QCheckBox *useCustomString;
@@ -33,9 +35,12 @@ class SMSAPI SmsConfigurationUiHandler : public ConfigurationUiHandler
 
 	void createDefaultConfiguration();
 
-public:
 	SmsConfigurationUiHandler();
 	virtual ~SmsConfigurationUiHandler();
+
+public:
+	static void registerConfigurationUi();
+	static void unregisterConfigurationUi();
 
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
 

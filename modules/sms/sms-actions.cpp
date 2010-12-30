@@ -23,6 +23,7 @@
 
 #include "contacts/contact-set.h"
 #include "core/core.h"
+#include "gui/actions/action.h"
 #include "gui/actions/action-description.h"
 #include "gui/widgets/buddies-list-view.h"
 #include "gui/widgets/buddies-list-view-menu-manager.h"
@@ -33,7 +34,6 @@
 
 #include "gui/windows/sms-image-dialog.h"
 #include "gui/windows/sms-dialog.h"
-#include "sms.h"
 
 #include "sms-actions.h"
 

@@ -28,9 +28,15 @@
 
 MobileNumberManager * MobileNumberManager::Instance = 0;
 
+void MobileNumberManager::destroyInstance()
+{
+	delete Instance;
+	Instance = 0;
+}
+
 MobileNumberManager * MobileNumberManager::instance()
 {
-	if (0 == Instance)
+	if (!Instance)
 		Instance = new MobileNumberManager();
 
 	return Instance;

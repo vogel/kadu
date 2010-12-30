@@ -40,7 +40,6 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
-#include "buddies/buddy-additional-data-delete-handler-manager.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-shared.h"
 #include "chat/aggregate-chat-manager.h"
@@ -64,39 +63,13 @@
 
 #include "debug.h"
 
-#include "buddy-history-delete-handler.h"
 #include "gui/windows/history-window.h"
 #include "history-save-thread.h"
 #include "timed-status.h"
 
 #include "history.h"
 
-extern "C" KADU_EXPORT int history_init(bool firstLoad)
-{
-	Q_UNUSED(firstLoad)
 
-	kdebugf();
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/history.ui"));
-	MainConfigurationWindow::registerUiHandler(History::instance());
-
-	BuddyHistoryDeleteHandler::createInstance();
-	BuddyAdditionalDataDeleteHandlerManager::instance()->registerAdditionalDataDeleteHandler(BuddyHistoryDeleteHandler::instance());
-
-	kdebugf2();
-	return 0;
-}
-
-extern "C" KADU_EXPORT void history_close()
-{
-	kdebugf();
-
-	BuddyAdditionalDataDeleteHandlerManager::instance()->unregisterAdditionalDataDeleteHandler(BuddyHistoryDeleteHandler::instance());
-	BuddyHistoryDeleteHandler::destroyInstance();
-
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/history.ui"));
-	MainConfigurationWindow::unregisterUiHandler(History::instance());
-	kdebugf2();
-}
 
 void disableNonHistoryContacts(Action *action)
 {
@@ -123,10 +96,20 @@ void disableNonHistoryContacts(Action *action)
 
 History * History::Instance = 0;
 
-History * History::instance()
+void History::createInstance()
 {
 	if (!Instance)
 		Instance = new History();
+}
+
+void History::destroyInstance()
+{
+	delete Instance;
+	Instance = 0;
+}
+
+History * History::instance()
+{
 	return Instance;
 }
 

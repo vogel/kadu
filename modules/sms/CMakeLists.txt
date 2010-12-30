@@ -9,12 +9,13 @@ set (SOURCES
 
 	mobile-number.cpp
 	mobile-number-manager.cpp
-	sms.cpp
 	sms-actions.cpp
+	sms-configuration-ui-handler.cpp
 	sms-gateway-manager.cpp
 	sms-gateway-query.cpp
 	sms-external-sender.cpp
 	sms-internal-sender.cpp
+	sms-module.cpp
 	sms-sender.cpp
 )
 
@@ -27,8 +28,8 @@ set (MOC_SOURCES
 	scripts/network-reply-wrapper.h
 	scripts/sms-script-manager.h
 
-	sms.h
 	sms-actions.h
+	sms-configuration-ui-handler.h
 	sms-gateway-query.h
 	sms-external-sender.h
 	sms-internal-sender.h

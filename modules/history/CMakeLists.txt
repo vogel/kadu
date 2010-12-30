@@ -12,6 +12,7 @@ set (SOURCES
 
 	buddy-history-delete-handler.cpp
 	history.cpp
+	history-module.cpp
 	history-tree-item.cpp
 	history-save-thread.cpp
 	timed-status.cpp

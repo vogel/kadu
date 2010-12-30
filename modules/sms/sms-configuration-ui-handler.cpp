@@ -55,24 +55,30 @@
 #include "gui/windows/sms-dialog.h"
 
 #include "sms-actions.h"
-#include "sms.h"
 
-extern "C" KADU_EXPORT int sms_init(bool firstLoad)
+#include "sms-configuration-ui-handler.h"
+
+SmsConfigurationUiHandler *SmsConfigurationUiHandler::Instance = 0;
+
+void SmsConfigurationUiHandler::registerConfigurationUi()
 {
-	SmsActions::registerActions(firstLoad);
-	smsConfigurationUiHandler = new SmsConfigurationUiHandler();
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/sms.ui"));
-	MainConfigurationWindow::registerUiHandler(smsConfigurationUiHandler);
-	return 0;
+	if (!Instance)
+	{
+		Instance = new SmsConfigurationUiHandler();
+		MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/sms.ui"));
+		MainConfigurationWindow::registerUiHandler(smsConfigurationUiHandler);
+	}
 }
 
-extern "C" KADU_EXPORT void sms_close()
+void SmsConfigurationUiHandler::unregisterConfigurationUi()
 {
-  	SmsActions::unregisterActions();
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/sms.ui"));
-	MainConfigurationWindow::unregisterUiHandler(smsConfigurationUiHandler);
-	delete smsConfigurationUiHandler;
-	smsConfigurationUiHandler = 0;
+	if (Instance)
+	{
+		MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/sms.ui"));
+		MainConfigurationWindow::unregisterUiHandler(smsConfigurationUiHandler);
+		delete Instance;
+		Instance = 0;
+	}
 }
 
 SmsConfigurationUiHandler::SmsConfigurationUiHandler()
@@ -81,8 +87,8 @@ SmsConfigurationUiHandler::SmsConfigurationUiHandler()
 }
 
 SmsConfigurationUiHandler::~SmsConfigurationUiHandler()
-{}
-
+{
+}
 
 void SmsConfigurationUiHandler::onSmsBuildInCheckToggle(bool value)
 {

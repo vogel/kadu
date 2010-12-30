@@ -132,6 +132,8 @@ protected:
 	virtual void crash();
 
 public:
+	static void createInstance();
+	static void destroyInstance();
 	static History * instance();
 
 	Message dequeueUnsavedMessage();
