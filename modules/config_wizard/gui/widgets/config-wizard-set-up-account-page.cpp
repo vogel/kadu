@@ -22,12 +22,15 @@
 #include <QtGui/QLabel>
 
 #include "accounts/account-manager.h"
+#include "gui/widgets/account-add-widget.h"
+#include "gui/widgets/account-create-widget.h"
 #include "gui/windows/your-accounts.h"
+#include "protocols/protocol-factory.h"
 
 #include "config-wizard-set-up-account-page.h"
 
 ConfigWizardSetUpAccountPage::ConfigWizardSetUpAccountPage(QWidget *parent) :
-		ConfigWizardPage(parent)
+		ConfigWizardPage(parent), SetUpAccountWidget(0)
 {
 	setDescription("<p>Please enter your account data.</p><p>Go back if you want to select a different Account Setup option.</p>");
 
@@ -45,6 +48,32 @@ void ConfigWizardSetUpAccountPage::createGui()
 
 void ConfigWizardSetUpAccountPage::initializePage()
 {
+	ProtocolFactory *pf = field("choose-network.protocol-factory").value<ProtocolFactory *>();
+	if (!pf)
+		return;
+
+	if (field("choose-network.new").toBool())
+	{
+		AccountCreateWidget *createAccountWidget = pf->newCreateAccountWidget(this);
+		formLayout()->addRow(QString(), createAccountWidget);
+
+		SetUpAccountWidget = createAccountWidget;
+	}
+	if (field("choose-network.existing").toBool())
+	{
+		AccountAddWidget *addAccountWidget = pf->newAddAccountWidget(this);
+		formLayout()->addRow(QString(), addAccountWidget);
+
+		SetUpAccountWidget = addAccountWidget;
+	}
+}
+
+void ConfigWizardSetUpAccountPage::cleanupPage()
+{
+	delete SetUpAccountWidget;
+	SetUpAccountWidget = 0;
+
+	QWizardPage::cleanupPage();
 }
 
 void ConfigWizardSetUpAccountPage::acceptPage()

@@ -42,8 +42,6 @@ ConfigWizardWindow::ConfigWizardWindow(QWidget *parent) :
 	setAttribute(Qt::WA_DeleteOnClose);
 	setWindowTitle(tr("Kadu Wizard"));
 
-	setOption(IndependentPages, true);
-
 #ifdef Q_OS_MAC
 	/* MacOSX has it's own QWizard style which requires much more space
 	 * than the other ones so we're forcing the ClassicStyle to unify
@@ -51,7 +49,7 @@ ConfigWizardWindow::ConfigWizardWindow(QWidget *parent) :
 	 */
 	setWizardStyle(QWizard::ClassicStyle);
 #else
-	setMinimumSize(710, 300);
+	setMinimumSize(710, 500);
 #endif
 
 	setPage(ProfilePage, new ConfigWizardProfilePage(this));

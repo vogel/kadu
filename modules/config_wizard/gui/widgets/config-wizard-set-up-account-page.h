@@ -26,6 +26,8 @@ class ConfigWizardSetUpAccountPage : public ConfigWizardPage
 {
 	Q_OBJECT
 
+	QWidget *SetUpAccountWidget;
+
 	void createGui();
 
 public:
@@ -33,6 +35,7 @@ public:
 	virtual ~ConfigWizardSetUpAccountPage();
 
     virtual void initializePage();
+    virtual void cleanupPage();
 	virtual void acceptPage();
 
 };
