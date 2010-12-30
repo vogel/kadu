@@ -48,8 +48,6 @@ class ImageLink : public QObject, AccountsAwareObject, ConfigurationAwareObject
 	bool config_show_image;
 	bool config_autostart;
 
-private:
-
 	void showObject(QString,int,ChatWidget *widget);
 	
 protected:

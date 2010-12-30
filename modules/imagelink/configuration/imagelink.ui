@@ -3,7 +3,7 @@
 		<tab name="General">
 			<group-box name="Imagelink">
 				<check-box caption="Show YouTube movies in chat window" config-section="Imagelink" config-item="show_yt" />
-				<check-box caption="Autoplay movies" config-section="Imagelink" config-item="config_autostart" />
+				<check-box caption="Autoplay movies" config-section="Imagelink" config-item="autoplay" />
 				<check-box caption="Show images in chat window" config-section="Imagelink" config-item="show_image" />
 			</group-box>
 		</tab>
