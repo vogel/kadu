@@ -69,7 +69,8 @@ void BuddyManager::init()
 
 	int itemsSize = items().size();
 	QDomElement buddiesNode = xml_config_file->getNode("Buddies", XmlConfigFile::ModeFind);
-	if (buddiesNode.isNull() || (itemsSize == 0 && !buddiesNode.hasAttribute("imported")))
+	QDomElement oldContactsNode = xml_config_file->getNode("OldContacts", XmlConfigFile::ModeFind);
+	if (oldContactsNode.isNull() && (buddiesNode.isNull() || (itemsSize == 0 && !buddiesNode.hasAttribute("imported"))))
 	{
 		importConfiguration(xml_config_file);
 		buddiesNode.setAttribute("imported", "true");
@@ -80,10 +81,11 @@ void BuddyManager::importConfiguration(XmlConfigFile *configurationStorage)
 {
 	QMutexLocker(&mutex());
 
-	QDomElement contactsNode = configurationStorage->getNode("OldContacts", XmlConfigFile::ModeFind);
+	QDomElement contactsNode = configurationStorage->getNode("Contacts", XmlConfigFile::ModeFind);
 	if (contactsNode.isNull())
 		return;
 
+	contactsNode.setTagName("OldContacts");
 	QList<QDomElement> contactElements = configurationStorage->getNodes(contactsNode, "Contact");
 	foreach (const QDomElement &contactElement, contactElements)
 	{
@@ -92,6 +94,9 @@ void BuddyManager::importConfiguration(XmlConfigFile *configurationStorage)
 
 		addItem(buddy);
 	}
+
+	// OldContacts is no longer needed
+	contactsNode.parentNode().removeChild(contactsNode);
 
 	// flush configuration to save all changes
 	ConfigurationManager::instance()->flush();
@@ -149,7 +154,7 @@ void BuddyManager::mergeBuddies(Buddy destination, Buddy source)
 
 	source.data()->setUuid(destination.uuid()); // just for case
 // 	source.data() setData(destination.data()); // TODO: 0.6.6 tricky merge, this should work well ;)
-	
+
 	ConfigurationManager::instance()->flush();
 }
 
@@ -207,7 +212,7 @@ Buddy BuddyManager::byContact(Contact contact, NotFoundAction action)
 
 	if (!contact.ownerBuddy())
 		contact.setOwnerBuddy(Buddy::create());
-	
+
 	if (ActionCreateAndAdd == action)
 		addItem(contact.ownerBuddy());
 

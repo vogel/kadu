@@ -40,7 +40,6 @@ class KADUAPI ConfigurationManager
 	ConfigurationManager();
 
 	void importConfiguration();
-	void copyOldContactsToImport();
 
 public:
 	static ConfigurationManager * instance();
