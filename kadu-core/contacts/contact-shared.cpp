@@ -1,4 +1,3 @@
-
 /*
  * %kadu copyright begin%
  * Copyright 2009, 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
@@ -183,6 +182,8 @@ void ContactShared::attach(const Buddy &buddy, bool emitReattached)
 
 void ContactShared::setOwnerBuddy(Buddy buddy)
 {
+	ensureLoaded();
+
 	if (OwnerBuddy == buddy)
 		return;
 
@@ -202,6 +203,8 @@ void ContactShared::setOwnerBuddy(Buddy buddy)
 
 void ContactShared::setContactAccount(Account account)
 {
+	ensureLoaded();
+
 	if (ContactAccount == account)
 		return;
 
@@ -212,6 +215,8 @@ void ContactShared::setContactAccount(Account account)
 
 	if (ContactAccount && ContactAccount.protocolHandler() && ContactAccount.protocolHandler()->protocolFactory())
 		protocolRegistered(ContactAccount.protocolHandler()->protocolFactory());
+
+	dataUpdated();
 }
 
 void ContactShared::protocolRegistered(ProtocolFactory *protocolFactory)
@@ -261,11 +266,14 @@ void ContactShared::detailsRemoved()
 
 void ContactShared::setId(const QString &id)
 {
+	ensureLoaded();
+
 	if (Id == id)
 		return;
 
 	QString oldId = Id;
 	Id = id;
 
+	dataUpdated();
 	emit idChanged(oldId);
 }

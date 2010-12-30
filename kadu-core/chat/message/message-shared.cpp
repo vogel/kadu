@@ -111,9 +111,12 @@ void MessageShared::emitUpdated()
 
 void MessageShared::setStatus(Message::Status status)
 {
+	ensureLoaded();
+
 	if (status != Status)
 	{
 		Status = status;
+		dataUpdated();
 		emit statusChanged(Status);
 	}
 }

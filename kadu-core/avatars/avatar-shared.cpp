@@ -137,6 +137,8 @@ bool AvatarShared::isEmpty()
 
 void AvatarShared::setPixmap(QPixmap pixmap)
 {
+	ensureLoaded();
+
 	Pixmap = pixmap;
 	dataUpdated();
 	emit pixmapUpdated();

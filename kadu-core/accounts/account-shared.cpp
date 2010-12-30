@@ -234,6 +234,8 @@ void AccountShared::detailsAboutToBeRemoved()
 
 void AccountShared::setAccountIdentity(Identity accountIdentity)
 {
+	ensureLoaded();
+
 	if (AccountIdentity == accountIdentity)
 		return;
 

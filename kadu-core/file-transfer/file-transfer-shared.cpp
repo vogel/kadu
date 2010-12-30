@@ -97,6 +97,8 @@ void FileTransferShared::store()
 
 void FileTransferShared::setTransferStatus(FileTransferStatus transferStatus)
 {
+	ensureLoaded();
+
 	if (TransferStatus == transferStatus)
 		return;
 
@@ -107,6 +109,8 @@ void FileTransferShared::setTransferStatus(FileTransferStatus transferStatus)
 
 void FileTransferShared::setTransferError(FileTransferError transferError)
 {
+	ensureLoaded();
+
 	if (TransferStatus == StatusNotConnected && TransferError == transferError)
 		return;
 
@@ -118,14 +122,16 @@ void FileTransferShared::setTransferError(FileTransferError transferError)
 
 void FileTransferShared::setHandler(FileTransferHandler *handler)
 {
+	ensureLoaded();
+
 	if (Handler == handler)
 		return;
 
 	if (Handler)
-		disconnect(Handler, SIGNAL(destroyed(QObject *)), this, SLOT(handlerDestroyed()));
+		disconnect(Handler, SIGNAL(destroyed()), this, SLOT(handlerDestroyed()));
 
 	Handler = handler;
-	connect(Handler, SIGNAL(destroyed(QObject *)), this, SLOT(handlerDestroyed()));
+	connect(Handler, SIGNAL(destroyed()), this, SLOT(handlerDestroyed()));
 	dataUpdated();
 }
 
