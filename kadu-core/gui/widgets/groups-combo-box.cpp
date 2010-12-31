@@ -31,7 +31,7 @@
 #include "groups-combo-box.h"
 
 GroupsComboBox::GroupsComboBox(QWidget *parent) :
-		KaduComboBox<Group>(parent), LastAction(0)
+		KaduComboBox<Group>(parent), InActivatedSlot(false)
 {
 	setUpModel(new GroupsModel(this), new QSortFilterProxyModel(this));
 
@@ -50,6 +50,7 @@ GroupsComboBox::GroupsComboBox(QWidget *parent) :
 			this, SLOT(updateValueBeforeChange()));
 	connect(model(), SIGNAL(rowsRemoved(const QModelIndex &, int, int)),
 			this, SLOT(rowsRemoved(const QModelIndex &, int, int)));
+	connect(this, SIGNAL(activated(int)), this, SLOT(activatedSlot(int)));
 	connect(this, SIGNAL(currentIndexChanged(int)), this, SLOT(currentIndexChangedSlot(int)));
 }
 
@@ -67,40 +68,54 @@ Group GroupsComboBox::currentGroup()
 	return currentValue();
 }
 
+void GroupsComboBox::resetComboBox()
+{
+	if (!InActivatedSlot)
+		setCurrentIndex(0);
+}
+
+void GroupsComboBox::activatedSlot(int index)
+{
+	InActivatedSlot = true;
+
+	QModelIndex modelIndex = model()->index(index, modelColumn(), rootModelIndex());
+	QAction *action = modelIndex.data(ActionRole).value<QAction *>();
+
+	if (action == CreateNewGroupAction)
+	{
+		bool ok;
+
+		QString newGroupName = QInputDialog::getText(this, tr("New Group"),
+				tr("Please enter the name for the new group:"), QLineEdit::Normal,
+				QString(), &ok);
+
+		ok = ok && GroupManager::instance()->acceptableGroupName(newGroupName, true);
+
+		Group switchToGroup = GroupManager::instance()->byName(newGroupName, ok);
+		if (switchToGroup)
+			setCurrentGroup(switchToGroup);
+		else
+			setCurrentIndex(0);
+	}
+
+	InActivatedSlot = false;
+}
+
 void GroupsComboBox::currentIndexChangedSlot(int index)
 {
 	QModelIndex modelIndex = model()->index(index, modelColumn(), rootModelIndex());
 	QAction *action = modelIndex.data(ActionRole).value<QAction *>();
-
-	if (action && action == LastAction)
-		return;
-
-	LastAction = action;
-
-	if (action != CreateNewGroupAction)
+	if (action == CreateNewGroupAction)
 	{
-		KaduComboBox<Group>::currentIndexChangedSlot(index);
+		// this is needed to fix Mantis bugs #1674 and #1690
+		// as this action has to be activated by the user, otherwise we have to ignore it and reset combo box
+		// TODO 0.9: try to redo this as this is a bit tricky
+		if (!InActivatedSlot)
+			QMetaObject::invokeMethod(this, "resetComboBox", Qt::QueuedConnection);
 		return;
 	}
 
-	bool ok;
-
-	QString newGroupName = QInputDialog::getText(this, tr("New Group"),
-			tr("Please enter the name for the new group:"), QLineEdit::Normal,
-			QString(), &ok);
-
-	if (!ok || !GroupManager::instance()->acceptableGroupName(newGroupName, true))
-	{
-		Group typedGroup = GroupManager::instance()->byName(newGroupName, false);
-		if (typedGroup)
-			setCurrentGroup(typedGroup);
-		else
-			setCurrentIndex(0);
-
-		return;
-	}
-
-	setCurrentGroup(GroupManager::instance()->byName(newGroupName));
+	KaduComboBox<Group>::currentIndexChangedSlot(index);
 }
 
 void GroupsComboBox::updateValueBeforeChange()

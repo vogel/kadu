@@ -29,7 +29,7 @@
 #include "identities-combo-box.h"
 
 IdentitiesComboBox::IdentitiesComboBox(bool includeSelectIdentity, QWidget *parent) :
-		KaduComboBox<Identity>(parent), IncludeSelectIdentity(includeSelectIdentity), LastAction(0)
+		KaduComboBox<Identity>(parent), InActivatedSlot(false), IncludeSelectIdentity(includeSelectIdentity)
 {
 	setUpModel(new IdentityModel(this));
 
@@ -44,13 +44,13 @@ IdentitiesComboBox::IdentitiesComboBox(bool includeSelectIdentity, QWidget *pare
 			this, SLOT(updateValueBeforeChange()));
 	connect(model(), SIGNAL(rowsRemoved(const QModelIndex &, int, int)),
 			this, SLOT(rowsRemoved(const QModelIndex &, int, int)));
+	connect(this, SIGNAL(activated(int)), this, SLOT(activatedSlot(int)));
 	connect(this, SIGNAL(currentIndexChanged(int)), this, SLOT(currentIndexChangedSlot(int)));
 }
 
 IdentitiesComboBox::~IdentitiesComboBox()
 {
-	// TODO 0.8: this should be called here, but not until Mantis bug #1674 is properly fixed
-// 	IdentityManager::instance()->removeUnused();
+	IdentityManager::instance()->removeUnused();
 }
 
 void IdentitiesComboBox::setCurrentIdentity(Identity identity)
@@ -63,41 +63,53 @@ Identity IdentitiesComboBox::currentIdentity()
 	return currentValue();
 }
 
+void IdentitiesComboBox::resetComboBox()
+{
+	if (!InActivatedSlot)
+		setCurrentIndex(0);
+}
+
+void IdentitiesComboBox::activatedSlot(int index)
+{
+	InActivatedSlot = true;
+
+	QModelIndex modelIndex = this->model()->index(index, modelColumn(), rootModelIndex());
+	QAction *action = modelIndex.data(ActionRole).value<QAction *>();
+
+	if (action == CreateNewIdentityAction)
+	{
+		bool ok;
+
+		QString identityName = QInputDialog::getText(this, tr("New Identity"),
+				tr("Please enter the name for the new identity:"), QLineEdit::Normal,
+				QString(), &ok);
+
+		Identity identityToSwitch = IdentityManager::instance()->byName(identityName, ok);
+		if (identityToSwitch)
+			setCurrentIdentity(identityToSwitch);
+		else
+			setCurrentIndex(0);
+	}
+
+	InActivatedSlot = false;
+}
+
 void IdentitiesComboBox::currentIndexChangedSlot(int index)
 {
 	QModelIndex modelIndex = this->model()->index(index, modelColumn(), rootModelIndex());
 	QAction *action = modelIndex.data(ActionRole).value<QAction *>();
-
-	if (action && action == LastAction)
-		return;
-
-	LastAction = action;
-
-	if (action != CreateNewIdentityAction)
+	if (action == CreateNewIdentityAction)
 	{
-		if (KaduComboBox<Identity>::currentIndexChangedSlot(index))
-			emit identityChanged(CurrentValue);
+		// this is needed to fix Mantis bugs #1674 and #1690
+		// as this action has to be activated by the user, otherwise we have to ignore it and reset combo box
+		// TODO 0.9: try to redo this as this is a bit tricky
+		if (!InActivatedSlot)
+			QMetaObject::invokeMethod(this, "resetComboBox", Qt::QueuedConnection);
 		return;
 	}
 
-	bool ok;
-
-	QString identityName = QInputDialog::getText(this, tr("New Identity"),
-			tr("Please enter the name for the new identity:"), QLineEdit::Normal,
-			QString(), &ok);
-
-	if (!ok || identityName.isEmpty())
-	{
-		Identity typedIdentity = IdentityManager::instance()->byName(identityName, false);
-		if (typedIdentity)
-			setCurrentIdentity(typedIdentity);
-		else
-			setCurrentIndex(0);
-
-		return;
-	}
-
-	setCurrentIdentity(IdentityManager::instance()->byName(identityName));
+	if (KaduComboBox<Identity>::currentIndexChangedSlot(index))
+		emit identityChanged(CurrentValue);
 }
 
 void IdentitiesComboBox::updateValueBeforeChange()

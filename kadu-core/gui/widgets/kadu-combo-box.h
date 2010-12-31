@@ -100,9 +100,6 @@ protected:
 		if (!SourceModel)
 			return;
 
-		if (value == CurrentValue)
-			return;
-
 		QModelIndex index =
 			dynamic_cast<KaduAbstractModel *>(SourceModel)->indexForValue(QVariant::fromValue<T>(value));
 		if (SourceProxyModel)

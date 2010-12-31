@@ -29,6 +29,7 @@
 * jabber: #1884 fixed: crash when opening Buddy Properties Window for buddy with only one jabber contact (WhE)
 * gui: #1890 fixed: do not disable "Edit Buddy" action for buddies without contacts (Vogel)
 * gui: #1632 fixed: display proper sent image even if source file changed (Vogel)
+* gui: #1690 fixed: possible wrong identity or group combo box behavior when deleting identities or groups (beevvy)
 
 +++ version 0.6.6-beta13
 * sound: #1376 fixed: long delays on Kadu exit and warnings from Qt regarding mutexes (beevvy)

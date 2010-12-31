@@ -28,12 +28,14 @@ class KADUAPI IdentitiesComboBox : public KaduComboBox<Identity>
 {
 	Q_OBJECT
 
+	bool InActivatedSlot;
 	bool IncludeSelectIdentity;
 
 	QAction *CreateNewIdentityAction;
-	QAction *LastAction;
 
 private slots:
+	void resetComboBox();
+	void activatedSlot(int index);
 	void currentIndexChangedSlot(int index);
 	void updateValueBeforeChange();
 	void rowsRemoved(const QModelIndex &parent, int start, int end);

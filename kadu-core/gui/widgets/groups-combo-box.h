@@ -29,10 +29,13 @@ class GroupsComboBox : public KaduComboBox<Group>
 {
 	Q_OBJECT
 
+	bool InActivatedSlot;
+
 	QAction *CreateNewGroupAction;
-	QAction *LastAction;
 
 private slots:
+	void resetComboBox();
+	void activatedSlot(int index);
 	void currentIndexChangedSlot(int index);
 	void updateValueBeforeChange();
 	void rowsRemoved(const QModelIndex &parent, int start, int end);
