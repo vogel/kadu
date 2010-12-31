@@ -27,6 +27,7 @@
 * gui: #1837, #1808 fixed: bugs in sorting contacts (Vogel)
 * config_wizard: #1756 fixed: allow to add account from config wizard (Vogel)
 * jabber: #1884 fixed: crash when opening Buddy Properties Window for buddy with only one jabber contact (WhE)
+* gui: #1890 fixed: do not disable "Edit Buddy" action for buddies without contacts (Vogel)
 
 +++ version 0.6.6-beta13
 * sound: #1376 fixed: long delays on Kadu exit and warnings from Qt regarding mutexes (beevvy)
