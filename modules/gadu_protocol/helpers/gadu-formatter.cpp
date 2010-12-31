@@ -47,10 +47,10 @@ unsigned int computeFormatsSize(const FormattedMessage &message)
 
 	foreach (const FormattedMessagePart &part, message.parts())
 	{
-		if (first && !part.isImage() && !part.bold() && !part.italic() && !part.underline() && !part.color().isValid())
-			first = false;
-		else
+		if (!first || part.isImage() || part.bold() || part.italic() || part.underline() || part.color().isValid())
 		{
+			first = false;
+
 			size += sizeof(struct gg_msg_richtext_format);
 
 			if (part.isImage())
@@ -85,10 +85,10 @@ unsigned char * createFormats(Account account, const FormattedMessage &message, 
 
 	foreach (const FormattedMessagePart &part, message.parts())
 	{
-		if (first && !part.isImage() && !part.bold() && !part.italic() && !part.underline() && !part.color().isValid())
-			first = false;
-		else
+		if (!first || part.isImage() || part.bold() || part.italic() || part.underline() || part.color().isValid())
 		{
+			first = false;
+
 			format.position = gg_fix16(textPosition);
 			format.font = 0;
 
