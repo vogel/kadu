@@ -38,6 +38,7 @@
 #ifdef SIG_HANDLING_ENABLED
 #include <signal.h>
 
+#include <QtCore/QCoreApplication>
 #include <QtCore/QDateTime>
 
 #ifdef HAVE_EXECINFO
@@ -132,7 +133,7 @@ static void kadu_signal_handler(int signal)
 		Core::instance()->kaduWindow()->show();
 	}
 	else if (signal == SIGINT || signal == SIGTERM)
-		Core::instance()->quit();
+		qApp->quit();
 }
 
 #endif // SIG_HANDLING_ENABLED
