@@ -180,7 +180,7 @@ void AdiumChatStyleEngine::appendChatMessage(HtmlMessagesRenderer *renderer, Mes
 			break;
 	}
 
-	formattedMessageHtml = replaceKeywords(renderer->chat(), CurrentStyle.baseHref(), formattedMessageHtml, message);
+	formattedMessageHtml = replaceKeywords(CurrentStyle.baseHref(), formattedMessageHtml, message);
 	formattedMessageHtml.replace('\n', ' ');
 	formattedMessageHtml.replace('\'', QLatin1String("\\'"));
 	formattedMessageHtml.replace('\\', QLatin1String("\\\\"));
@@ -303,7 +303,7 @@ void AdiumChatStyleEngine::prepareStylePreview(Preview *preview, QString styleNa
 	//I don't know why, sometimes 'initStyle' was performed after 'appendMessage'
 	preview->page()->mainFrame()->evaluateJavaScript("initStyle()");
 
-	QString outgoingHtml = replaceKeywords(msg.messageChat(), style.baseHref(), style.outgoingHtml(), message);
+	QString outgoingHtml = replaceKeywords(style.baseHref(), style.outgoingHtml(), message);
 	outgoingHtml.replace('\n', ' ');
 	outgoingHtml.replace('\'', QLatin1String("\\'"));
 	outgoingHtml.prepend("<span>");
@@ -311,7 +311,7 @@ void AdiumChatStyleEngine::prepareStylePreview(Preview *preview, QString styleNa
 	preview->page()->mainFrame()->evaluateJavaScript("appendMessage(\'" + outgoingHtml + "\')");
 
 	message = dynamic_cast<MessageRenderInfo *>(preview->getObjectsToParse().at(1));
-	QString incomingHtml = replaceKeywords(msg.messageChat(), style.baseHref(), style.incomingHtml(), message);
+	QString incomingHtml = replaceKeywords(style.baseHref(), style.incomingHtml(), message);
 	incomingHtml.replace('\n', ' ');
 	incomingHtml.replace('\'', QLatin1String("\\'"));
 	incomingHtml.prepend("<span>");
@@ -382,7 +382,7 @@ QString AdiumChatStyleEngine::replaceKeywords(Chat chat, const QString &styleHre
 	return result;
 }
 
-QString AdiumChatStyleEngine::replaceKeywords(Chat chat, const QString &styleHref, const QString &source, MessageRenderInfo *message)
+QString AdiumChatStyleEngine::replaceKeywords(const QString &styleHref, const QString &source, MessageRenderInfo *message)
 {
 	QString result = source;
 
@@ -393,11 +393,11 @@ QString AdiumChatStyleEngine::replaceKeywords(Chat chat, const QString &styleHre
 	// Replace %screenName% (contact ID)
 	result.replace(QString("%senderScreenName%"), msg.messageSender().id());
 	// Replace service name (protocol name)
-	if (chat && chat.chatAccount().protocolHandler() && chat.chatAccount().protocolHandler()->protocolFactory())
+	if (msg.messageChat().chatAccount().protocolHandler() && msg.messageChat().chatAccount().protocolHandler()->protocolFactory())
 	{
-		result.replace(QString("%service%"), chat.chatAccount().protocolHandler()->protocolFactory()->displayName());
+		result.replace(QString("%service%"), msg.messageChat().chatAccount().protocolHandler()->protocolFactory()->displayName());
 		// Replace protocolIcon (sender statusIcon). TODO:
-		result.replace(QString("%senderStatusIcon%"), chat.chatAccount().protocolHandler()->protocolFactory()->iconPath());
+		result.replace(QString("%senderStatusIcon%"), msg.messageChat().chatAccount().protocolHandler()->protocolFactory()->iconPath());
 	}
 	else
 	{
@@ -439,7 +439,7 @@ QString AdiumChatStyleEngine::replaceKeywords(Chat chat, const QString &styleHre
 	else if (msg.type() == Message::TypeSent)
 	{
    		result.replace(QString("%messageClasses%"), "message outgoing");
-		Avatar avatar = chat.chatAccount().accountContact().contactAvatar();
+		Avatar avatar = msg.messageChat().chatAccount().accountContact().contactAvatar();
 		if (!avatar.isEmpty())
 			photoPath = webKitPath(avatar.filePath());
 		else

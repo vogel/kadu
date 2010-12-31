@@ -31,6 +31,7 @@
 * gui: #1632 fixed: display proper sent image even if source file changed (Vogel)
 * gui: #1690 fixed: possible wrong identity or group combo box behavior when deleting identities or groups (beevvy)
 * core: #1704 fixed: proper kadu closing after receiving  SIGINT or SIGTRM signal (WhE)
+* history/chat styles: #1888 fixed: Wrong protocol information when displaying combined history in chat in for example Satin style (WhE)
 
 +++ version 0.6.6-beta13
 * sound: #1376 fixed: long delays on Kadu exit and warnings from Qt regarding mutexes (beevvy)

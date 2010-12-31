@@ -60,7 +60,7 @@ class HistorySqlStorage : public HistoryStorage, CrashAwareObject
 	QString buddyContactsWhere(const Buddy &buddy);
 
 	void executeQuery(QSqlQuery query);
-	QList<Message> messagesFromQuery(const Chat &chat, QSqlQuery query);
+	QList<Message> messagesFromQuery(QSqlQuery query);
 	QList<TimedStatus> statusesFromQuery(QSqlQuery query);
 	QList<Message> smsFromQuery(QSqlQuery query);
 
