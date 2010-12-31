@@ -43,6 +43,7 @@
 #include "toolbar.h"
 
 #include "chat-edit-box.h"
+#include <protocols/services/chat-image-service.h>
 
 QList<ChatEditBox *> chatEditBoxes;
 
@@ -266,6 +267,17 @@ void ChatEditBox::openInsertImageDialog()
 		else if (counter > 0 &&
 			!MessageDialog::ask(QString(), tr("Kadu"), tr("This file is too big for %1 of %2 contacts.\nDo you really want to send this image?\nSome of them probably will not get it.").arg(counter).arg(CurrentChat.contacts().count())))
 			return;
+
+		QString path = ChatImageService::imagesPath();
+		if (!QFileInfo(path).isDir() && !QDir().mkdir(path))
+		{
+			kdebugm(KDEBUG_INFO, "Failed creating directory: %s\n", qPrintable(path));
+			return;
+		}
+
+		QString copyFilePath = path + QUuid::createUuid().toString();
+		if (QFile::copy(selectedFile, copyFilePath))
+			selectedFile = copyFilePath;
 
 		InputBox->insertPlainText(QString("[IMAGE %1]").arg(selectedFile));
 	}
