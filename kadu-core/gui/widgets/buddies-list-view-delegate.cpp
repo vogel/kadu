@@ -57,8 +57,21 @@ void BuddiesListViewDelegate::setModel(AbstractBuddiesModel *model)
 
 void BuddiesListViewDelegate::avatarUpdated(Avatar avatar)
 {
-	if (Model)
-		emit sizeHintChanged(Model->indexForValue(avatar.avatarContact().ownerBuddy()));
+	if (!Model)
+		return;
+
+	if (avatar.avatarContact())
+	{
+		Buddy buddy = avatar.avatarContact().ownerBuddy();
+		Contact contact = avatar.avatarContact();
+
+		QModelIndex buddyIndex = Model->indexForValue(buddy);
+		QModelIndex contactIndex = buddyIndex.child(buddy.contacts().indexOf(contact), 0);
+		emit sizeHintChanged(buddyIndex);
+		emit sizeHintChanged(contactIndex);
+	}
+	else if (avatar.avatarBuddy())
+		emit sizeHintChanged(Model->indexForValue(avatar.avatarBuddy()));
 }
 
 void BuddiesListViewDelegate::contactUpdated(Contact &contact)

@@ -83,6 +83,7 @@ void Avatar::setFilePath(const QString& filePath)
 }
 
 KaduSharedBase_PropertyBoolReadDef(Avatar, Empty, true)
+KaduSharedBase_PropertyDef(Avatar, Buddy, avatarBuddy, AvatarBuddy, Buddy::null)
 KaduSharedBase_PropertyDef(Avatar, Contact, avatarContact, AvatarContact, Contact::null)
 KaduSharedBase_PropertyDef(Avatar, QDateTime, lastUpdated, LastUpdated, QDateTime())
 KaduSharedBase_PropertyDef(Avatar, QDateTime, nextUpdate, NextUpdate, QDateTime())

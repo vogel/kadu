@@ -32,6 +32,7 @@ class KADUAPI AvatarShared : public QObject, public Shared
 	Q_OBJECT
 	Q_DISABLE_COPY(AvatarShared)
 
+	Buddy AvatarBuddy;
 	Contact AvatarContact;
 	QDateTime LastUpdated;
 	QDateTime NextUpdate;
@@ -66,6 +67,7 @@ public:
 
 	void setPixmap(QPixmap pixmap);
 
+	KaduShared_Property(Buddy, avatarBuddy, AvatarBuddy)
 	KaduShared_Property(Contact, avatarContact, AvatarContact)
 	KaduShared_Property(QDateTime, lastUpdated, LastUpdated)
 	KaduShared_Property(QDateTime, nextUpdate, NextUpdate)

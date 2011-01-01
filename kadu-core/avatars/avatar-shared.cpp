@@ -121,6 +121,10 @@ bool AvatarShared::shouldStore()
 void AvatarShared::aboutToBeRemoved()
 {
 	// cleanup references
+	AvatarBuddy.setBuddyAvatar(Avatar::null);
+	AvatarContact.setContactAvatar(Avatar::null);
+
+	AvatarBuddy = Buddy::null;
 	AvatarContact = Contact::null;
 
 	QFile avatarFile(filePath());
