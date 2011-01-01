@@ -33,6 +33,7 @@
 * core: #1704 fixed: proper kadu closing after receiving  SIGINT or SIGTRM signal (WhE)
 * history/chat styles: #1888 fixed: wrong protocol information when displaying combined history in chat in for example Satin style (WhE)
 * avatar: #1718 fixed: avatarContact property is never set (Vogel)
+* sms: #1721 fixed: parsing errors from era gateway added (Vogel)
 
 +++ version 0.6.6-beta13
 * sound: #1376 fixed: long delays on Kadu exit and warnings from Qt regarding mutexes (beevvy)

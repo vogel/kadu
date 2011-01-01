@@ -105,10 +105,13 @@ EraGatewaySmsSender.prototype = {
 
 	smsSent: function() {
 		var content = this.reply.redirect();
-		// TODO 0.6.6: add parsing of error number
-		if (content.indexOf("error?") >= 0)
-			this.failure("An error occured");
-		else if (content.indexOf("ok?") >= 0)
+		if (content.indexOf("error?") >= 0) {
+			var message = "An error occured";
+			if (content.match(/error\?X-ERA-error=([0-9]+)/)) {
+				message += ": " + this.errorToString(RegExp.$1);
+			}
+			this.failure(message);
+		} else if (content.indexOf("ok?") >= 0)
 			this.finished();
 		else
 			this.failure("Provider gateway results page looks strange. SMS was probably NOT sent.");
