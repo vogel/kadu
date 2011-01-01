@@ -36,6 +36,7 @@
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/color-selector.h"
 #include "gui/windows/message-dialog.h"
+#include "protocols/services/chat-image-service.h"
 
 #include "chat-widget.h"
 #include "custom-input.h"
@@ -43,7 +44,6 @@
 #include "toolbar.h"
 
 #include "chat-edit-box.h"
-#include <protocols/services/chat-image-service.h>
 
 QList<ChatEditBox *> chatEditBoxes;
 
@@ -269,15 +269,12 @@ void ChatEditBox::openInsertImageDialog()
 			return;
 
 		QString path = ChatImageService::imagesPath();
-		if (!QFileInfo(path).isDir() && !QDir().mkdir(path))
+		if (QFileInfo(path).isDir() ||QDir().mkdir(path))
 		{
-			kdebugm(KDEBUG_INFO, "Failed creating directory: %s\n", qPrintable(path));
-			return;
+			QString copyFilePath = path + QUuid::createUuid().toString();
+			if (QFile::copy(selectedFile, copyFilePath))
+				selectedFile = copyFilePath;
 		}
-
-		QString copyFilePath = path + QUuid::createUuid().toString();
-		if (QFile::copy(selectedFile, copyFilePath))
-			selectedFile = copyFilePath;
 
 		InputBox->insertPlainText(QString("[IMAGE %1]").arg(selectedFile));
 	}
