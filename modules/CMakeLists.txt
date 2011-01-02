@@ -2,6 +2,8 @@ set (BLACKLIST_MODULES
 	advanced_userlist
 	dbus
 	echo
+	profiles
+	split_messages
 	tlen_protocol
 	weather
 )
