@@ -2,7 +2,6 @@ set (BLACKLIST_MODULES
 	advanced_userlist
 	dbus
 	echo
-	encryption
 	tlen_protocol
 	weather
 )
