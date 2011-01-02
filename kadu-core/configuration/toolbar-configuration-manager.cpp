@@ -32,6 +32,6 @@ ToolbarConfigurationManager::~ToolbarConfigurationManager()
 
 void ToolbarConfigurationManager::notifyConfigurationUpdated()
 {
-	// another pass of event loop
-	QTimer::singleShot(0, this, SIGNAL(configurationUpdated()));
+	// do not use '0' here, with '50' there is no flicking
+	QTimer::singleShot(50, this, SIGNAL(configurationUpdated()));
 }
