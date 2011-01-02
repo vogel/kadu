@@ -169,7 +169,7 @@ ChatWidgetActions::ChatWidgetActions(QObject *parent) : QObject(parent)
 	OpenWith = new ActionDescription(0,
 		ActionDescription::TypeGlobal, "openChatWithAction",
 		this, SLOT(openChatWithActionActivated(QAction *, bool)),
-		"internet-group-chat", tr("Open Chat With...")
+		"internet-group-chat", tr("Open Chat with...")
 	);
 	OpenWith->setShortcut("kadu_openchatwith", Qt::ApplicationShortcut);
 
