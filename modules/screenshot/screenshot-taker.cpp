@@ -43,7 +43,7 @@ ScreenshotTaker::ScreenshotTaker(ChatWidget *chatWidget, QWidget *parent) :
 
 	QLabel *crossLabel = new QLabel(this);
 	crossLabel->setAlignment(Qt::AlignCenter);
-	crossLabel->setPixmap(IconsManager::instance()->iconByPath("external_modules/module_screenshot-camera-photo").pixmap(16, 16));
+	crossLabel->setPixmap(IconsManager::instance()->iconByPath("external_modules/screenshot-camera-photo").pixmap(16, 16));
 
 	layout->addWidget(crossLabel, Qt::AlignCenter);
 }
@@ -94,7 +94,7 @@ void ScreenshotTaker::mousePressEvent(QMouseEvent *e)
 {
 	Q_UNUSED(e)
 
-	setCursor(IconsManager::instance()->iconByPath("external_modules/module_screenshot-camera-photo").pixmap(32, 32));
+	setCursor(IconsManager::instance()->iconByPath("external_modules/screenshot-camera-photo").pixmap(32, 32));
 }
 
 void ScreenshotTaker::mouseReleaseEvent(QMouseEvent *e)

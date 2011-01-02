@@ -41,22 +41,22 @@ for size in "16x16" "22x22" "32x32" "48x48" "64x64"; do
 	cp ../protocols/common/${size}/online.png ../kadu_icons/${size}/section-status.png
 done
 
-
 for size in "16x16" "22x22" "32x32" "48x48" "64x64"; do
 	cp ../protocols/common/${size}/online.png ../kadu_icons/${size}/change-status.png
 done
-
 
 for size in "16x16" "22x22" "32x32" "48x48" "64x64"; do
 	cp ../protocols/common/${size}/offline.png ../kadu_icons/${size}/show-offline-buddies.png
 done
 
+for size in "16x16" "22x22" "32x32" "48x48" "64x64"; do
+	cp ../kadu_icons/${size}/blocked.png ../kadu_icons/${size}/show-blocked-buddies.png
+done
 
 xcf2png statuses.xcf offline50_ _d ___desc > ../kadu_icons/64x64/only-show-with-description.png
 for size in "16x16" "22x22" "32x32" "48x48"; do
 	convert ../kadu_icons/64x64/only-show-with-description.png -resize ${size} -filter ${FILTER} ../kadu_icons/${size}/only-show-with-description.png
 done
-
 
 xcf2png statuses.xcf online_ _d ___status_desc > ../kadu_icons/64x64/only-show-online-and-with-description.png
 for size in "16x16" "22x22" "32x32" "48x48"; do
