@@ -156,9 +156,6 @@ private slots:
 
 	void setBlockToolbars(bool checked);
 
-	void actionLoaded(const QString &name);
-	void actionUnloaded(const QString &actionName);
-
 	void updateButtons();
 	void widgetPressed();
 

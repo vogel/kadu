@@ -108,9 +108,6 @@ ToolBar::ToolBar(QWidget *parent)
 	if (!watcher)
 		watcher = new DisabledActionsWatcher();
 
-	connect(&KaduActions, SIGNAL(actionLoaded(const QString &)), this, SLOT(actionLoaded(const QString &)));
-	connect(&KaduActions, SIGNAL(actionUnloaded(const QString &)), this, SLOT(actionUnloaded(const QString &)));
-
 	configurationUpdated();
 
 	kdebugf2();
@@ -120,9 +117,6 @@ ToolBar::ToolBar(QWidget *parent)
 ToolBar::~ToolBar()
 {
 	kdebugf();
-
-	disconnect(&KaduActions, SIGNAL(actionLoaded(const QString &)), this, SLOT(actionLoaded(const QString &)));
-	disconnect(&KaduActions, SIGNAL(actionUnloaded(const QString &)), this, SLOT(actionUnloaded(const QString &)));
 
 	kdebugf2();
 }
@@ -153,7 +147,7 @@ ToolBarSpacer * ToolBar::createSpacer(QAction *before, ToolBarAction &action)
 
 QToolButton * ToolBar::createPushButton(QAction *before, ToolBarAction &action)
 {
-	action.action = KaduActions.createAction(action.actionName, dynamic_cast<MainWindow *>(parent()));
+	action.action = Actions::instance()->createAction(action.actionName, dynamic_cast<MainWindow *>(parent()));
 	insertAction(before, action.action);
 
 	QToolButton *button = dynamic_cast<QToolButton *>(widgetForAction(action.action));
@@ -295,7 +289,7 @@ void ToolBar::dragEnterEvent(QDragEnterEvent *event)
 				ActionDrag::decode(event, actionName, style) &&
 				(
 					(event->source() == this)
-					|| (!hasAction(actionName) && KaduActions.contains(actionName) && dynamic_cast<MainWindow *>(parent())->supportsActionType(KaduActions[actionName]->type()))
+					|| (!hasAction(actionName) && Actions::instance()->contains(actionName) && dynamic_cast<MainWindow *>(parent())->supportsActionType(Actions::instance()->value(actionName)->type()))
 					|| (actionName.startsWith(QLatin1String("__separator")) || actionName.startsWith(QLatin1String("__spacer")))
 				)
 			)
@@ -586,31 +580,6 @@ bool ToolBar::hasAction(const QString &action_name)
 	kdebugf2();
 }
 
-void ToolBar::actionLoaded(const QString &actionName)
-{
-	if (!hasAction(actionName))
-		return;
-	//workaround for modules
-	QTimer::singleShot(0, this, SLOT(updateButtons()));
-}
-
-void ToolBar::actionUnloaded(const QString &actionName)
-{
-	if (!hasAction(actionName))
-		return;
-
-	QList<ToolBarAction>::iterator toolBarAction;
- 	for (toolBarAction = ToolBarActions.begin(); toolBarAction != ToolBarActions.end(); ++toolBarAction)
-	{
-		if ((*toolBarAction).actionName == actionName)
-		{
-			(*toolBarAction).action = 0;
-			(*toolBarAction).widget = 0;
-			return;
-		}
-	}
-}
-
 void ToolBar::updateButtons()
 {
 	QAction *lastAction = 0;
@@ -629,7 +598,7 @@ void ToolBar::updateButtons()
 
 		if ((*toolBarAction).action)
 		{
-			if (KaduActions.contains(actionName) || actionName.startsWith(QLatin1String("__separator")) || actionName.startsWith(QLatin1String("__spacer")))
+			if (Actions::instance()->contains(actionName) || actionName.startsWith(QLatin1String("__separator")) || actionName.startsWith(QLatin1String("__spacer")))
 			{
 				lastAction = (*toolBarAction).action;
 				continue;
@@ -666,9 +635,9 @@ void ToolBar::updateButtons()
 			connect(widget, SIGNAL(pressed()), this, SLOT(widgetPressed()));
 			lastAction = (*toolBarAction).action;
 		}
-		else if (KaduActions.contains(actionName) && KaduActions.contains(actionName) && kaduMainWindow->supportsActionType(KaduActions[actionName]->type()))
+		else if (Actions::instance()->contains(actionName) && Actions::instance()->contains(actionName) && kaduMainWindow->supportsActionType(Actions::instance()->value(actionName)->type()))
 		{
-			(*toolBarAction).action = KaduActions.createAction(actionName, dynamic_cast<MainWindow *>(parent()));
+			(*toolBarAction).action = Actions::instance()->createAction(actionName, dynamic_cast<MainWindow *>(parent()));
 			if (toolBarNextAction != ToolBarActions.end() && (*toolBarNextAction).action)
 				insertAction((*toolBarNextAction).action, (*toolBarAction).action);
 			else
@@ -798,7 +767,7 @@ QMenu *ToolBar::createContextMenu(QWidget *widget)
 		menu->addSeparator();
 
 		QMenu *actionsMenu = new QMenu(tr("Add new button"), this);
-		foreach (ActionDescription *actionDescription, KaduActions.values())
+		foreach (ActionDescription *actionDescription, Actions::instance()->values())
 		{
 			bool supportsAction;
 			MainWindow *kaduMainWindow = 0;

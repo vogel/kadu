@@ -38,7 +38,7 @@ ActionDescription::ActionDescription(QObject *parent, ActionType Type, const QSt
 	this->EnableCallback = enableCallback;
 	this->deleted = 0;
 
-	KaduActions.insert(this);
+	Actions::instance()->insert(this);
 }
 
 ActionDescription::~ActionDescription()
@@ -46,7 +46,7 @@ ActionDescription::~ActionDescription()
 	deleted = 1;
 	qDeleteAll(MappedActions);
 	MappedActions.clear();
-	KaduActions.remove(this);
+	Actions::instance()->remove(this);
 }
 
 void ActionDescription::actionDestroyed(QObject *action)

@@ -35,13 +35,17 @@ class KADUAPI Actions : public QObject, public QMap<QString, ActionDescription *
 {
 	Q_OBJECT
 
+	static Actions * Instance;
+
 	void insert(ActionDescription *action);
 	void remove(ActionDescription *action);
 	friend class ActionDescription;
 
-public:
 	Actions();
 	virtual ~Actions() {}
+
+public:
+	static Actions * instance();
 
 	QAction * createAction(const QString &name, MainWindow *kaduMainWindow);
 
@@ -51,7 +55,5 @@ signals:
 	void actionUnloaded(const QString &actionName);
 
 };
-
-extern KADUAPI Actions KaduActions;
 
 #endif // ACTIONS_H

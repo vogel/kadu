@@ -23,6 +23,16 @@
 
 #include "actions.h"
 
+Actions * Actions::Instance = 0;
+
+Actions * Actions::instance()
+{
+	if (!Instance)
+		Instance = new Actions();
+
+	return Instance;
+}
+
 Actions::Actions()
 {
 }
@@ -52,5 +62,3 @@ QAction * Actions::createAction(const QString &name, MainWindow *kaduMainWindow)
 
 	return result;
 }
-
-Actions KaduActions;

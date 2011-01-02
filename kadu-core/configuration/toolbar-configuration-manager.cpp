@@ -19,15 +19,21 @@
 
 #include <QtCore/QTimer>
 
+#include "gui/actions/actions.h"
+
 #include "toolbar-configuration-manager.h"
 
 ToolbarConfigurationManager::ToolbarConfigurationManager(QObject *parent) :
 		QObject(parent)
 {
+	connect(Actions::instance(), SIGNAL(actionLoaded(QString)), this, SIGNAL(configurationUpdated()));
+	connect(Actions::instance(), SIGNAL(actionUnloaded(QString)), this, SIGNAL(configurationUpdated()));
 }
 
 ToolbarConfigurationManager::~ToolbarConfigurationManager()
 {
+	disconnect(Actions::instance(), SIGNAL(actionLoaded(QString)), this, SIGNAL(configurationUpdated()));
+	disconnect(Actions::instance(), SIGNAL(actionUnloaded(QString)), this, SIGNAL(configurationUpdated()));
 }
 
 void ToolbarConfigurationManager::notifyConfigurationUpdated()

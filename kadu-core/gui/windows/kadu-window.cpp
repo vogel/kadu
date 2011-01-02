@@ -70,7 +70,7 @@ extern void qt_mac_set_menubar_icons(bool enable);
 #endif
 
 KaduWindow::KaduWindow(QWidget *parent) :
-		MainWindow(QString(), parent), Docked(false), CompositingEnabled(false)
+		MainWindow(QString(), parent), Docked(false), ContactsWidget(0), CompositingEnabled(false)
 {
 	setWindowRole("kadu-main");
 
@@ -84,6 +84,7 @@ KaduWindow::KaduWindow(QWidget *parent) :
 
 	setAttribute(Qt::WA_DeleteOnClose, true);
 	setWindowTitle(QLatin1String("Kadu"));
+
 
 	Actions = new KaduWindowActions(this);
 
@@ -430,7 +431,9 @@ bool KaduWindow::supportsActionType(ActionDescription::ActionType type)
 
 BuddiesListView * KaduWindow::buddiesListView()
 {
-	return ContactsWidget->view();
+	return ContactsWidget
+			? ContactsWidget->view()
+			: 0;
 }
 
 StatusContainer * KaduWindow::statusContainer()
