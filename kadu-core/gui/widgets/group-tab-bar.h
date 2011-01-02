@@ -34,7 +34,7 @@ class KADUAPI GroupTabBar : public QTabBar, ConfigurationAwareObject
 	Q_OBJECT
 
 	GroupBuddyFilter *Filter;
-	//for dnd support
+	// for dnd support
 	Group currentGroup;
 	BuddyList currentBuddies;
 
@@ -63,23 +63,23 @@ private slots:
 	void saveGroupTabsPosition();
 
 protected:
-	void contextMenuEvent(QContextMenuEvent *event);
+	virtual void contextMenuEvent(QContextMenuEvent *event);
 
-	void dragEnterEvent(QDragEnterEvent *event);
-	void dropEvent(QDropEvent *event);
+	virtual void dragEnterEvent(QDragEnterEvent *event);
+	virtual void dropEvent(QDropEvent *event);
 
 	virtual void configurationUpdated();
 
 public:
-	GroupTabBar(QWidget *parent = 0);
-	~GroupTabBar();
+	explicit GroupTabBar(QWidget *parent = 0);
+	virtual ~GroupTabBar();
 
-	void addGroup(const Group group);
+	void addGroup(const Group &group);
 
 	GroupBuddyFilter * filter() { return Filter; }
 
 signals:
-	void currentGroupChanged(const Group group);
+	void currentGroupChanged(const Group &group);
 
 };
 
