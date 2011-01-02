@@ -87,8 +87,6 @@ ChatEditBox::~ChatEditBox()
 	disconnect(InputBox, SIGNAL(cursorPositionChanged()), this, SLOT(cursorPositionChanged()));
 
 	chatEditBoxes.removeAll(this);
-
-	writeToolBarsToConfig();
 }
 
 void ChatEditBox::fontChanged(QFont font)

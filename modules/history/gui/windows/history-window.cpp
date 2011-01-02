@@ -94,7 +94,6 @@ HistoryWindow::~HistoryWindow()
 
 	saveWindowGeometry(this, "History", "HistoryDialogGeometry");
 
-	//writeToolBarsToConfig();
 	kdebugf2();
 }
 

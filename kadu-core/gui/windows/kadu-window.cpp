@@ -354,7 +354,6 @@ void KaduWindow::openRecentChats(QAction *action)
 
 void KaduWindow::storeConfiguration()
 {
-		writeToolBarsToConfig();
 #ifdef Q_OS_MAC
 	/* Dorr: workaround for Qt window geometry bug when unified toolbars enabled */
 	setUnifiedTitleAndToolBarOnMac(false);

@@ -259,7 +259,6 @@ SearchWindow::SearchWindow(QWidget *parent, Buddy buddy) :
 SearchWindow::~SearchWindow()
 {
 	kdebugf();
-	writeToolBarsToConfig();
  	saveWindowGeometry(this, "General", "SearchWindowGeometry");
 	closeModule();
 	kdebugf2();
