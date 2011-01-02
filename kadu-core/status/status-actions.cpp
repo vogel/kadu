@@ -88,7 +88,7 @@ void StatusActions::createActions()
 
 void StatusActions::createBasicActions()
 {
-	ChangeDescription = new QAction(tr("Change status message..."), this);
+	ChangeDescription = new QAction(tr("Change Status Message..."), this);
 	connect(ChangeDescription, SIGNAL(triggered(bool)), this, SIGNAL(changeDescriptionActionTriggered(bool)));
 }
 

@@ -53,7 +53,7 @@ void ScreenshotNotification::notifySizeLimit(int size)
 }
 
 ScreenshotNotification::ScreenshotNotification() :
-		Notification("ssSizeLimit", "kadu_icons/kadu-blocking")
+		Notification("ssSizeLimit", "kadu_icons/blocking")
 {
 }
 

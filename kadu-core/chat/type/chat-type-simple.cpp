@@ -1,6 +1,7 @@
 /*
  * %kadu copyright begin%
  * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2011 Piotr Dąbrowski (ultr@ultr.pl)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -74,6 +75,21 @@ QString ChatTypeSimple::name() const
 QString ChatTypeSimple::displayName() const
 {
 	return tr("Chat");
+}
+
+/**
+ * @author Piotr 'ultr' Dąbrowski
+ * @short Display name of chat type in plural form.
+ * @return display name of chat typein plural form
+ *
+ * Chat type display name in plural form. Display name is used in history window.
+ * This name is translated into national languaes.
+ *
+ * Plural display name for ChatTypeSimple is 'Chats'.
+ */
+QString ChatTypeSimple::displayNamePlural() const
+{
+	return tr("Chats");
 }
 
 /**

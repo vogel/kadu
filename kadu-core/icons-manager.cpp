@@ -9,7 +9,7 @@
  * Copyright 2008 Tomasz Rostański (rozteck@interia.pl)
  * Copyright 2008, 2009 Piotr Galiszewski (piotrgaliszewski@gmail.com)
  * Copyright 2005 Paweł Płuciennik (pawel_p@kadu.net)
- * Copyright 2010 Piotr Dąbrowski (ultr@ultr.pl)
+ * Copyright 2010, 2011 Piotr Dąbrowski (ultr@ultr.pl)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -73,13 +73,20 @@ IconThemeManager * IconsManager::themeManager() const
 
 QString IconsManager::iconPath(const QString &path, const QString &size, const QString &name) const
 {
-	QString fileName = ThemeManager->currentTheme().path() + path + '/' + size + '/' + name + ".png";
-	QFileInfo fileInfo(fileName);
+	QString fileName;
+	QFileInfo fileInfo;
 
+	fileName = ThemeManager->currentTheme().path() + path + '/' + size + '/' + name + ".png";
+	fileInfo.setFile(fileName);
 	if (fileInfo.isFile() && fileInfo.isReadable())
 		return fileInfo.canonicalFilePath();
 
 	fileName = ThemeManager->currentTheme().path() + path + "/svg/" + name + ".svg";
+	fileInfo.setFile(fileName);
+	if (fileInfo.isFile() && fileInfo.isReadable())
+		return fileInfo.canonicalFilePath();
+
+	fileName = ThemeManager->currentTheme().path() + path + "/svg/" + name + ".svgz";
 	fileInfo.setFile(fileName);
 	if (fileInfo.isFile() && fileInfo.isReadable())
 		return fileInfo.canonicalFilePath();
@@ -164,9 +171,16 @@ QIcon IconsManager::buildSvgIcon(const QString& path)
 	else
 		iconName = path;
 
-	QString fileName = ThemeManager->currentTheme().path() + realPath + "/svg/" + iconName + ".svg";
+	QString fileName;
+	QFileInfo fileInfo;
 
-	QFileInfo fileInfo(fileName);
+	fileName = ThemeManager->currentTheme().path() + realPath + "/svg/" + iconName + ".svg";
+	fileInfo.setFile(fileName);
+	if (fileInfo.isFile() && fileInfo.isReadable())
+		icon.addFile(fileInfo.canonicalFilePath());
+
+	fileName = ThemeManager->currentTheme().path() + realPath + "/svg/" + iconName + ".svgz";
+	fileInfo.setFile(fileName);
 	if (fileInfo.isFile() && fileInfo.isReadable())
 		icon.addFile(fileInfo.canonicalFilePath());
 

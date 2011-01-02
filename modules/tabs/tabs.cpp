@@ -116,7 +116,7 @@ TabsManager::TabsManager(bool firstload)
 	AttachToTabsActionDescription = new ActionDescription(this,
 		ActionDescription::TypeChat, "attachToTabsAction",
 		this, SLOT(onTabAttach(QAction *, bool)),
-		"kadu_icons/module_tabs-detach", tr("Attach Chat to Tabs"), true
+		"kadu_icons/tab-detach", tr("Attach Chat to Tabs"), true
 	);
 	connect(AttachToTabsActionDescription, SIGNAL(actionCreated(Action *)), this, SLOT(attachToTabsActionCreated(Action *)));
 
@@ -537,10 +537,10 @@ void TabsManager::makePopupMenu()
 
 	Menu = new QMenu();
 	//menu->setCheckable(true);
-	Menu->addAction(IconsManager::instance()->iconByPath("kadu_icons/module_tabs-detach"), tr("Detach"), this, SLOT(onMenuActionDetach()));
+	Menu->addAction(IconsManager::instance()->iconByPath("kadu_icons/tab-detach"), tr("Detach"), this, SLOT(onMenuActionDetach()));
 	Menu->addAction(tr("Detach all"), this, SLOT(onMenuActionDetachAll()));
 	Menu->addSeparator();
-	Menu->addAction(IconsManager::instance()->iconByPath("kadu_icons/module_tabs-close"), tr("Close"), this, SLOT(onMenuActionClose()));
+	Menu->addAction(IconsManager::instance()->iconByPath("kadu_icons/tab-close"), tr("Close"), this, SLOT(onMenuActionClose()));
 	Menu->addAction(tr("Close all"), this, SLOT(onMenuActionCloseAll()));
 
 	kdebugf2();

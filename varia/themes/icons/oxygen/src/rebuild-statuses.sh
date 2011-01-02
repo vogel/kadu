@@ -14,12 +14,12 @@ done
 
 mkdir -p ../kadu_icons/64x64
 for kaduicon in "blocked" "blocking"; do
-	xcf2png statuses.xcf ${kaduicon} > ../kadu_icons/64x64/kadu-${kaduicon}.png
+	xcf2png statuses.xcf ${kaduicon} > ../kadu_icons/64x64/${kaduicon}.png
 	for size in "16x16" "22x22" "32x32" "48x48"; do
 		mkdir -p ../kadu_icons/${size}
-		convert ../kadu_icons/64x64/kadu-${kaduicon}.png -resize ${size} -filter ${FILTER} ../kadu_icons/${size}/kadu-${kaduicon}.png
-	done;
-done;
+		convert ../kadu_icons/64x64/${kaduicon}.png -resize ${size} -filter ${FILTER} ../kadu_icons/${size}/${kaduicon}.png
+	done
+done
 
 for protocol in "common" "gadu-gadu" "xmpp"; do
 	mkdir -p ../protocols/${protocol}/64x64
@@ -38,29 +38,24 @@ done
 
 
 for size in "16x16" "22x22" "32x32" "48x48" "64x64"; do
-	mkdir -p ../protocols/common/${size}
-	cp ../protocols/common/${size}/offline.png ../${size}/user-offline.png
-	cp ../protocols/common/${size}/online.png  ../${size}/user-online.png
+	cp ../protocols/common/${size}/online.png ../kadu_icons/${size}/section-status.png
 done
 
 
-xcf2png statuses.xcf offline50_ _d ___force_d > ../kadu_icons/64x64/kadu-showdescriptionusers_off.png
-for size in "16x16" "22x22" "32x32" "48x48"; do
-	convert ../kadu_icons/64x64/kadu-showdescriptionusers_off.png -resize ${size} -filter ${FILTER} ../kadu_icons/${size}/kadu-showdescriptionusers_off.png
-done
-xcf2png statuses.xcf offline50_ _d > ../kadu_icons/64x64/kadu-showdescriptionusers.png
-for size in "16x16" "22x22" "32x32" "48x48"; do
-	convert ../kadu_icons/64x64/kadu-showdescriptionusers.png -resize ${size} -filter ${FILTER} ../kadu_icons/${size}/kadu-showdescriptionusers.png
+for size in "16x16" "22x22" "32x32" "48x48" "64x64"; do
+	cp ../protocols/common/${size}/online.png ../kadu_icons/${size}/change-status.png
 done
 
 
-xcf2png statuses.xcf online_ _d ___force_online_d > ../kadu_icons/64x64/kadu-onoff_onlineandd_off.png
+xcf2png statuses.xcf offline50_ _d > ../kadu_icons/64x64/only-show-buddies-with-description.png
 for size in "16x16" "22x22" "32x32" "48x48"; do
-	convert ../kadu_icons/64x64/kadu-onoff_onlineandd_off.png -resize ${size} -filter ${FILTER} ../kadu_icons/${size}/kadu-onoff_onlineandd_off.png
+	convert ../kadu_icons/64x64/only-show-buddies-with-description.png -resize ${size} -filter ${FILTER} ../kadu_icons/${size}/only-show-buddies-with-description.png
 done
-xcf2png statuses.xcf online_ _d > ../kadu_icons/64x64/kadu-onoff_onlineandd.png
+
+
+xcf2png statuses.xcf online_ _d > ../kadu_icons/64x64/only-show-online-buddies-with-description.png
 for size in "16x16" "22x22" "32x32" "48x48"; do
-	convert ../kadu_icons/64x64/kadu-onoff_onlineandd.png -resize ${size} -filter ${FILTER} ../kadu_icons/${size}/kadu-onoff_onlineandd.png
+	convert ../kadu_icons/64x64/only-show-online-buddies-with-description.png -resize ${size} -filter ${FILTER} ../kadu_icons/${size}/only-show-online-buddies-with-description.png
 done
 
 

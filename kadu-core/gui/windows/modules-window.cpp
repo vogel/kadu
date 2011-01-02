@@ -74,7 +74,7 @@ ModulesWindow::ModulesWindow(QWidget *parent)
 
 #ifndef Q_WS_MAEMO_5
 	QLabel *l_info = new QLabel(center);
-	l_icon->setPixmap(IconsManager::instance()->iconByPath("kadu_icons/kadu-modmanager").pixmap(32, 32));
+	l_icon->setPixmap(IconsManager::instance()->iconByPath("kadu_icons/plugins").pixmap(32, 32));
 	l_info->setText(tr("This dialog box allows you to manage installed modules. Modules are responsible "
 			"for numerous vital features like playing sounds or message encryption.\n"
 			"You can load (or unload) them by double-clicking on their names."));

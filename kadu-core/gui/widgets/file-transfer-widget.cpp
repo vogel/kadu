@@ -127,13 +127,13 @@ void FileTransferWidget::createGui()
 
 	if (TypeSend == CurrentTransfer.transferType())
 	{
-		icon->setPixmap(IconsManager::instance()->iconByPath("kadu_icons/kadu-transfer_send").pixmap(16, 16));
+		icon->setPixmap(IconsManager::instance()->iconByPath("kadu_icons/transfer-send").pixmap(16, 16));
 		DescriptionLabel->setText(tr("File <b>%1</b><br /> to <b>%2</b><br />on account <b>%3</b>")
 				.arg(fileName).arg(buddy.display()).arg(account.accountIdentity().name()));
 	}
 	else
 	{
-		icon->setPixmap(IconsManager::instance()->iconByPath("kadu_icons/kadu-transfer_receive").pixmap(16, 16));
+		icon->setPixmap(IconsManager::instance()->iconByPath("kadu_icons/transfer-receive").pixmap(16, 16));
 		DescriptionLabel->setText(tr("File <b>%1</b><br /> from <b>%2</b><br />on account <b>%3</b>")
 				.arg(fileName).arg(buddy.display()).arg(account.accountIdentity().name()));
 	}

@@ -44,7 +44,7 @@ extern "C" KADU_EXPORT int weather_init(bool firstLoad)
 }
 
 extern "C" KADU_EXPORT void weather_close()
-{	
+{
 	delete weather_session;
 	delete weather_global;
 }
@@ -65,22 +65,22 @@ Weather::Weather()
 	config_file.addVariable("Weather", "DescriptionDay", 0);
 	config_file.addVariable("Weather", "HintText", tr("<u>%l</u> - <b>%d:</b><br>Temperature: %t<br>Pressure: %p"));
 	config_file.addVariable("Weather", "DescriptionText", tr("Temperature in %l: %t"));
-	
+
 	cfgHandler_ = new WeatherCfgUiHandler;
-	
+
 	notification_manager->registerEvent("NewForecast",  QT_TRANSLATE_NOOP("@default", "New forecast has been fetched"), CallbackNotRequired);
-	
+
 	actionLocalWeather_ = new ActionDescription(ActionDescription::TypeGlobal, "LocalWeather", this, SLOT(ShowLocalWeather()),
 		"ShowWeather", tr("Local forecast"));
 	actionWeatherFor_ = new ActionDescription(ActionDescription::TypeGlobal, "WeatherFor", this, SLOT(ShowWeatherFor()),
 		"ShowWeather", tr("Forecast for..."));
 	actionContactWeather_ = new ActionDescription(ActionDescription::TypeGlobal, "ContactWeather", this, SLOT(ShowContactWeather()),
 		"ShowWeather", tr("Show contact weather"));
-	
+
 	menuLocalWeather_ = config_file.readBoolEntry("Weather", "ShowLocalForecast", true);
 	menuWeatherFor_ = config_file.readBoolEntry("Weather", "ForecastFor", true);
 	menuContactWeather_ = config_file.readBoolEntry("Weather", "ShowContactWeather", true);
-	
+
 	if (menuLocalWeather_)
 		kadu->insertMenuActionDescription(0, actionLocalWeather_);
 	if (menuWeatherFor_ )
@@ -93,7 +93,7 @@ Weather::~Weather()
 {
 	delete cfgHandler_;
  	notification_manager->unregisterEvent("NewForecast");
-	
+
 	if (menuLocalWeather_)
 		kadu->removeMenuActionDescription(actionLocalWeather_);
 	if (menuWeatherFor_)
@@ -114,7 +114,7 @@ void Weather::configurationUpdated()
 		kadu->removeMenuActionDescription(actionLocalWeather_);
 		menuLocalWeather_ = false;
 	}
-	
+
 	if (config_file.readBoolEntry("Weather", "ForecastFor") && !menuWeatherFor_)
 	{
 		kadu->addMenuActionDescription(actionWeatherFor_);
@@ -125,7 +125,7 @@ void Weather::configurationUpdated()
 		kadu->removeMenuActionDescription(actionWeatherFor_);
 		menuWeatherFor_ = false;
 	}
-	
+
 	if (config_file.readBoolEntry("Weather", "ShowContactWeather") && !menuContactWeather_)
 	{
 		UserBox::addActionDescription(actionContactWeather_);
@@ -144,7 +144,7 @@ void Weather::ShowContactWeather()
 	if (userBox != 0)
 	{
 		UserListElement user = userBox->selectedUsers().first();
-	
+
 		CitySearchResult result;
 		if (result.readUserWeatherData(user))
 		{
@@ -172,7 +172,7 @@ void Weather::ShowLocalWeather()
 		SearchingCityDialog *scd = new SearchingCityDialog(kadu->myself());
 		scd->show();
 	}
-	
+
 }
 
 void Weather::ShowWeatherFor()

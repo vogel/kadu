@@ -123,7 +123,7 @@ void KdeNotify::notify(Notification *notification)
 	QList<QVariant> args;
 	args.append("Kadu");
 	args.append(0U);
-	args.append(IconsManager::instance()->iconPath("kadu_icons/kadu-tab", "32x32"));
+	args.append(IconsManager::instance()->iconPath("kadu_icons/section-kadu", "32x32"));
 
 	/* the new spec doesn't have this */
 	if (!UseFreedesktopStandard)

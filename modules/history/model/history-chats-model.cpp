@@ -22,10 +22,10 @@
 #include "chat/chat.h"
 #include "chat/type/chat-type-manager.h"
 #include "model/roles.h"
+#include "icons-manager.h"
 
 #include "model/history-type.h"
 #include "history-tree-item.h"
-
 #include "history-chats-model.h"
 
 HistoryChatsModel::HistoryChatsModel(QObject *parent) :
@@ -117,7 +117,7 @@ QVariant HistoryChatsModel::chatTypeData(const QModelIndex &index, int role) con
 	switch (role)
 	{
 		case Qt::DisplayRole:
-			return chatType->displayName();
+			return chatType->displayNamePlural();
 
 		case Qt::DecorationRole:
 			return chatType->icon();
@@ -158,32 +158,46 @@ QVariant HistoryChatsModel::chatData(const QModelIndex &index, int role) const
 QVariant HistoryChatsModel::statusData(const QModelIndex &index, int role) const
 {
 	if (!index.parent().isValid())
-		return role == Qt::DisplayRole ? tr("Statuses") : QVariant();
+	{
+		switch (role)
+		{
+			case Qt::DisplayRole:
+				return tr("Statuses");
+			case Qt::DecorationRole:
+				return IconsManager::instance()->iconByPath("protocols/common/online");
+		}
+		return QVariant();
+	}
 
 	if (index.row() < 0 || index.row() >= StatusBuddies.size())
 		return QVariant();
 
 	Buddy buddy = StatusBuddies[index.row()];
-
 	switch (role)
 	{
 		case Qt::DisplayRole:
 			return buddy.display();
-
 		case BuddyRole:
 			return QVariant::fromValue<Buddy>(buddy);
-
 		case HistoryItemRole:
 			return QVariant::fromValue<HistoryTreeItem>(HistoryTreeItem(buddy));
 	}
-
 	return QVariant();
 }
 
 QVariant HistoryChatsModel::smsRecipientData(const QModelIndex &index, int role) const
 {
 	if (!index.parent().isValid())
-		return role == Qt::DisplayRole ? tr("Sms") : QVariant();
+	{
+		switch (role)
+		{
+			case Qt::DisplayRole:
+				return tr("SMSes");
+			case Qt::DecorationRole:
+				return IconsManager::instance()->iconByPath("phone");
+		}
+		return QVariant();
+	}
 
 	if (index.row() < 0 || index.row() >= SmsRecipients.size())
 		return QVariant();
@@ -192,11 +206,9 @@ QVariant HistoryChatsModel::smsRecipientData(const QModelIndex &index, int role)
 	{
 		case Qt::DisplayRole:
 			return SmsRecipients[index.row()];
-
 		case HistoryItemRole:
 			return QVariant::fromValue<HistoryTreeItem>(HistoryTreeItem(SmsRecipients[index.row()]));
 	}
-
 	return QVariant();
 }
 

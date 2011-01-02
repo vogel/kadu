@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration-ui>
 
-	<section name="Kadu" icon="kadu_icons/kadu-tab">
+	<section name="Kadu" icon="kadu_icons/section-kadu">
 		<tab name="General">
 			<group-box name="Nickname">
 				<line-edit caption="Nickname" config-section="General" config-item="Nick" />
@@ -76,7 +76,7 @@
 		</tab>
 	</section>
 
-	<section name="Status" icon="user-online">
+	<section name="Status" icon="kadu_icons/section-status">
 		<tab name="General">
 			<group-box name="Description">
 				<combo-box caption="On startup, set" config-section="General" config-item="StartupStatus" id="startupStatus"
@@ -322,7 +322,7 @@
 		</tab>
 	</section>
 
-	<section name="Notifications" icon="kadu_icons/kadu-notifications">
+	<section name="Notifications" icon="kadu_icons/section-notifications">
 		<tab name="General">
 			<group-box name="Notifications">
 			</group-box>
