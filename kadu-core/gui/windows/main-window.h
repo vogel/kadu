@@ -65,10 +65,12 @@ protected:
 	static QDomElement findExistingToolbarOnArea(const QString &areaName);
 	static QDomElement findExistingToolbar(const QString &prefix);
 
-	void refreshToolBars();
 	void setTransparency(bool enable);
 
 	void contextMenuEvent(QContextMenuEvent *event);
+
+protected slots:
+	void refreshToolBars();
 
 public:
 	static MainWindow * findMainWindow(QWidget *widget);

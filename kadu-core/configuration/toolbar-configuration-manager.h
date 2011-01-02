@@ -32,6 +32,11 @@ public:
 	explicit ToolbarConfigurationManager(QObject *parent = 0);
 	virtual ~ToolbarConfigurationManager();
 
+	void notifyConfigurationUpdated();
+
+signals:
+	void configurationUpdated();
+
 };
 
 #endif // TOOLBAR_CONFIGURATION_MANAGER_H

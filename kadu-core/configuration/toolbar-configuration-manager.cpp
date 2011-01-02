@@ -27,3 +27,8 @@ ToolbarConfigurationManager::ToolbarConfigurationManager(QObject *parent) :
 ToolbarConfigurationManager::~ToolbarConfigurationManager()
 {
 }
+
+void ToolbarConfigurationManager::notifyConfigurationUpdated()
+{
+	emit configurationUpdated();
+}

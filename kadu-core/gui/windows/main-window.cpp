@@ -23,6 +23,8 @@
 
 #include "accounts/account-manager.h"
 #include "configuration/configuration-file.h"
+#include "configuration/configuration-manager.h"
+#include "configuration/toolbar-configuration-manager.h"
 #include "configuration/xml-configuration-file.h"
 #include "buddies/buddy.h"
 #include "buddies/buddy-set.h"
@@ -50,10 +52,15 @@ MainWindow::MainWindow(const QString &windowName, QWidget *parent) :
 		QMainWindow(parent), WindowName(windowName), TransparencyEnabled(false)
 {
 	setWindowRole("kadu-main");
+
+	connect(ConfigurationManager::instance()->toolbarConfigurationManager(), SIGNAL(configurationUpdated()),
+			this, SLOT(refreshToolBars()));
 }
 
 MainWindow::~MainWindow()
 {
+	disconnect(ConfigurationManager::instance()->toolbarConfigurationManager(), SIGNAL(configurationUpdated()),
+			this, SLOT(refreshToolBars()));
 }
 
 void MainWindow::loadToolBarsFromConfig()
