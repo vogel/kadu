@@ -199,21 +199,23 @@ void SingleWindow::changeRosterPos(int newRosterPos)
 void SingleWindow::onNewChat(ChatWidget *w, bool &handled)
 {
 	handled = true;
-	onOpenChat(w);
-}
-
-void SingleWindow::onOpenChat(ChatWidget *w)
-{
 	QString title = w->chat().name();
 
 	tabs->addTab(w, w->icon(), title);
-	tabs->setCurrentIndex(tabs->count()-1);
-	w->edit()->setFocus();
 
 	connect(w, SIGNAL(messageReceived(Chat)), this, SLOT(onNewMessage(Chat)));
 	connect(w->edit(), SIGNAL(keyPressed(QKeyEvent *, CustomInput *, bool &)),
 		this, SLOT(onChatKeyPressed(QKeyEvent *, CustomInput *, bool &)));
 	connect(w, SIGNAL(iconChanged()), this, SLOT(onIconChanged()));
+
+	onOpenChat(w);
+}
+
+void SingleWindow::onOpenChat(ChatWidget *w)
+{
+	setWindowState(windowState() & ~Qt::WindowMinimized);
+	tabs->setCurrentWidget(w);
+	w->edit()->setFocus();
 }
 
 void SingleWindow::closeTab(int index)

@@ -35,6 +35,7 @@
 * avatar: #1718 fixed: avatarContact property is never set (Vogel)
 * sms: #1721 fixed: parsing errors from era gateway added (Vogel)
 * gui: #747, #1875 fixed: toolbars in chat windows are now synchronized (Vogel)
+* single_window: #1867 fixed: unminimize window after openning new chat (WhE)
 
 +++ version 0.6.6-beta13
 * sound: #1376 fixed: long delays on Kadu exit and warnings from Qt regarding mutexes (beevvy)
