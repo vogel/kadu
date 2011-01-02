@@ -38,7 +38,8 @@
 class QMenu;
 class QToolButton;
 
-class UserGroup;
+class ToolBarSeparator;
+class ToolBarSpacer;
 
 #define TOOLBAR_SEPARATOR_SIZE 12 /*px*/
 
@@ -90,6 +91,8 @@ class KADUAPI ToolBar : public QToolBar, public ConfigurationAwareObject
 
 	QList<ToolBarAction> ToolBarActions;
 
+	static QMap<QString, QList<ToolBarAction> > DefaultActions;
+
 	// TODO: remove, used only when reading from config
 	int XOffset;
 	int YOffset;
@@ -114,7 +117,13 @@ class KADUAPI ToolBar : public QToolBar, public ConfigurationAwareObject
 
 	void addAction(const QString &actionName, Qt::ToolButtonStyle style, QAction *before = 0);
 
-	static QMap<QString, QList<ToolBarAction> > DefaultActions;
+	int indexOf(QAction *action);
+	int indexOf(const QString &action);
+
+	ToolBarSeparator * createSeparator(QAction *before, ToolBarAction &action);
+	ToolBarSpacer * createSpacer(QAction *before, ToolBarAction &action);
+	QToolButton * createPushButton(QAction *before, ToolBarAction &action);
+	QWidget * createActionWidget(QAction *before, ToolBarAction &action);
 
 private slots:
 	/**
