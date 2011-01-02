@@ -52,12 +52,18 @@ class KADUAPI MainWindow : public QMainWindow, public ActionDataSource
 
 	ToolBar *newToolbar(QWidget *parent);
 
+	void loadToolBarsFromConfigNode(QDomElement dockareaConfig, Qt::ToolBarArea area);
+
 protected:
 	void loadToolBarsFromConfig();
-	bool loadToolBarsFromConfig(const QString &configName, Qt::ToolBarArea area, bool remove = false);
+	void loadToolBarsFromConfig(Qt::ToolBarArea area);
+
+	bool loadOldToolBarsFromConfig(const QString &configName, Qt::ToolBarArea area);
 
 	void writeToolBarsToConfig();
-	void writeToolBarsToConfig(QDomElement parentConfig, const QString &configName, Qt::ToolBarArea area);
+	void writeToolBarsToConfig(Qt::ToolBarArea area);
+
+	QDomElement getDockAreaConfigElement(Qt::ToolBarArea area);
 
 	static QDomElement getToolbarsConfigElement();
 	static QDomElement getDockAreaConfigElement(QDomElement toolbarsConfig, const QString &name);

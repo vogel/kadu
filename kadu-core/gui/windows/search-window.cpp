@@ -206,7 +206,7 @@ SearchWindow::SearchWindow(QWidget *parent, Buddy buddy) :
 
 	setCentralWidget(centralWidget);
 
-	if (loadToolBarsFromConfig("searchDockArea", Qt::BottomToolBarArea, true))
+	if (loadOldToolBarsFromConfig("searchDockArea", Qt::BottomToolBarArea))
 		writeToolBarsToConfig(); // port old config
 	else
 		loadToolBarsFromConfig(); // load new config

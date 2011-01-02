@@ -59,11 +59,11 @@ ChatEditBox::ChatEditBox(Chat chat, QWidget *parent) :
 #endif
 	setCentralWidget(InputBox);
 
-	bool old_top = loadToolBarsFromConfig("chatTopDockArea", Qt::TopToolBarArea, true);
-	bool old_middle = loadToolBarsFromConfig("chatMiddleDockArea", Qt::TopToolBarArea, true);
-	bool old_bottom = loadToolBarsFromConfig("chatBottomDockArea", Qt::BottomToolBarArea, true);
-	bool old_left = loadToolBarsFromConfig("chatLeftDockArea", Qt::LeftToolBarArea, true);
-	bool old_right = loadToolBarsFromConfig("chatRightDockArea", Qt::RightToolBarArea, true);
+	bool old_top = loadOldToolBarsFromConfig("chatTopDockArea", Qt::TopToolBarArea);
+	bool old_middle = loadOldToolBarsFromConfig("chatMiddleDockArea", Qt::TopToolBarArea);
+	bool old_bottom = loadOldToolBarsFromConfig("chatBottomDockArea", Qt::BottomToolBarArea);
+	bool old_left = loadOldToolBarsFromConfig("chatLeftDockArea", Qt::LeftToolBarArea);
+	bool old_right = loadOldToolBarsFromConfig("chatRightDockArea", Qt::RightToolBarArea);
 
 	if (old_top || old_middle || old_bottom || old_left || old_right)
 		writeToolBarsToConfig(); // port old config
