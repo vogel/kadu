@@ -54,6 +54,9 @@ class KADUAPI MainWindow : public QMainWindow, public ActionDataSource
 
 	void loadToolBarsFromConfigNode(QDomElement dockareaConfig, Qt::ToolBarArea area);
 
+private slots:
+	void toolbarUpdated();
+
 protected:
 	void loadToolBarsFromConfig();
 	void loadToolBarsFromConfig(Qt::ToolBarArea area);
@@ -73,7 +76,7 @@ protected:
 
 	void setTransparency(bool enable);
 
-	void contextMenuEvent(QContextMenuEvent *event);
+	virtual void contextMenuEvent(QContextMenuEvent *event);
 
 protected slots:
 	void refreshToolBars();

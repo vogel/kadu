@@ -202,6 +202,8 @@ void ToolBar::addAction(const QString &actionName, Qt::ToolButtonStyle style, QA
 		button->setToolButtonStyle(newAction.style);
 	}
 	ToolBarActions.append(newAction);
+
+	emit updated();
 }
 
 void ToolBar::moveAction(const QString &actionName, Qt::ToolButtonStyle style, QAction *before)
@@ -270,6 +272,8 @@ void ToolBar::moveAction(const QString &actionName, Qt::ToolButtonStyle style, Q
 		button->setToolButtonStyle(newAction.style);
 	}
 	ToolBarActions.insert(index, newAction);
+
+	emit updated();
 }
 
 void ToolBar::addButtonClicked(QAction *action)
@@ -389,6 +393,16 @@ void ToolBar::dropEvent(QDropEvent *event)
 	event->acceptProposedAction();
 
 	kdebugf2();
+}
+
+bool ToolBar::event(QEvent *event)
+{
+	bool result = QToolBar::event(event);
+
+	if (QEvent::MouseButtonRelease == event->type() && result)
+		emit updated();
+
+	return result;
 }
 
 Qt::ToolBarArea ToolBar::toolBarArea()
@@ -930,6 +944,7 @@ void ToolBar::removeButton()
 			removeAction(toolBarAction.action);
 			ToolBarActions.removeOne(toolBarAction);
 			currentWidget = 0;
+			emit updated();
 			return;
 		}
 }
@@ -945,6 +960,7 @@ void ToolBar::removeSeparator()
 			removeAction(toolBarAction.action);
 			ToolBarActions.removeOne(toolBarAction);
 			currentWidget = 0;
+			emit updated();
 			return;
 		}
 }
@@ -960,6 +976,7 @@ void ToolBar::removeSpacer()
 			removeAction(toolBarAction.action);
 			ToolBarActions.removeOne(toolBarAction);
 			currentWidget = 0;
+			emit updated();
 			return;
 		}
 }
@@ -971,6 +988,7 @@ void ToolBar::deleteAction(const QString &actionName)
 		{
 			removeAction(toolBarAction.action);
 			ToolBarActions.removeOne(toolBarAction);
+			emit updated();
 			return;
 		}
 
@@ -989,6 +1007,7 @@ void ToolBar::slotContextIcons()
 		{
 			(*toolBarAction).style = Qt::ToolButtonIconOnly;
 			currentButton->setToolButtonStyle(Qt::ToolButtonIconOnly);
+			emit updated();
 			return;
 		}
 	}
@@ -1007,6 +1026,7 @@ void ToolBar::slotContextText()
 		{
 			(*toolBarAction).style = Qt::ToolButtonTextOnly;
 			currentButton->setToolButtonStyle(Qt::ToolButtonTextOnly);
+			emit updated();
 			return;
 		}
 	}
@@ -1025,6 +1045,7 @@ void ToolBar::slotContextTextUnder()
 		{
 			(*toolBarAction).style = Qt::ToolButtonTextUnderIcon;
 			currentButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+			emit updated();
 			return;
 		}
 	}
@@ -1043,6 +1064,7 @@ void ToolBar::slotContextTextRight()
 		{
 			(*toolBarAction).style = Qt::ToolButtonTextBesideIcon;
 			currentButton->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+			emit updated();
 			return;
 		}
 	}

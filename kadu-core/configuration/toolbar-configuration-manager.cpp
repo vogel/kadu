@@ -17,6 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QTimer>
+
 #include "toolbar-configuration-manager.h"
 
 ToolbarConfigurationManager::ToolbarConfigurationManager(QObject *parent) :
@@ -30,5 +32,6 @@ ToolbarConfigurationManager::~ToolbarConfigurationManager()
 
 void ToolbarConfigurationManager::notifyConfigurationUpdated()
 {
-	emit configurationUpdated();
+	// another pass of event loop
+	QTimer::singleShot(0, this, SIGNAL(configurationUpdated()));
 }

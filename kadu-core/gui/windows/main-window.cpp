@@ -313,6 +313,8 @@ void MainWindow::contextMenuEvent(QContextMenuEvent *event)
 ToolBar *MainWindow::newToolbar(QWidget *parent)
 {
 	ToolBar *toolBar = new ToolBar(parent);
+	connect(toolBar, SIGNAL(updated()), this, SLOT(toolbarUpdated()));
+	connect(toolBar, SIGNAL(destroyed()), this, SLOT(toolbarUpdated()));
 
 	if (toolBar)
 	{
@@ -326,21 +328,25 @@ ToolBar *MainWindow::newToolbar(QWidget *parent)
 void MainWindow::addTopToolbar()
 {
 	addToolBar(Qt::TopToolBarArea, newToolbar(this));
+	toolbarUpdated();
 }
 
 void MainWindow::addBottomToolbar()
 {
 	addToolBar(Qt::BottomToolBarArea, newToolbar(this));
+	toolbarUpdated();
 }
 
 void MainWindow::addLeftToolbar()
 {
 	addToolBar(Qt::LeftToolBarArea, newToolbar(this));
+	toolbarUpdated();
 }
 
 void MainWindow::addRightToolbar()
 {
 	addToolBar(Qt::RightToolBarArea, newToolbar(this));
+	toolbarUpdated();
 }
 
 void MainWindow::actionAdded(Action *action)
@@ -402,3 +408,9 @@ void MainWindow::setTransparency(bool enable)
 	}
 }
 
+void MainWindow::toolbarUpdated()
+{
+	writeToolBarsToConfig();
+
+	ConfigurationManager::instance()->toolbarConfigurationManager()->notifyConfigurationUpdated();
+}

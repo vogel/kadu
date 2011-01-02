@@ -177,6 +177,8 @@ protected:
 	**/
 	virtual void dropEvent(QDropEvent *event);
 
+	virtual bool event(QEvent *event);
+
 	virtual void dragLeaveEvent(QDragLeaveEvent *event);
 	virtual void leaveEvent(QEvent *event);
 
@@ -240,6 +242,9 @@ public slots:
 		akcje znajdujące się na pasku.
 	**/
 	void writeToConfig(QDomElement parent_element);
+
+signals:
+	void updated();
 
 };
 
