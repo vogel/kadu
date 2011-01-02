@@ -70,7 +70,7 @@ extern void qt_mac_set_menubar_icons(bool enable);
 #endif
 
 KaduWindow::KaduWindow(QWidget *parent) :
-		MainWindow(parent), Docked(false), CompositingEnabled(false)
+		MainWindow(QString(), parent), Docked(false), CompositingEnabled(false)
 {
 	setWindowRole("kadu-main");
 
@@ -88,7 +88,7 @@ KaduWindow::KaduWindow(QWidget *parent) :
 	Actions = new KaduWindowActions(this);
 
 	createGui();
-	loadToolBarsFromConfig(QString());
+	loadToolBarsFromConfig();
 	configurationUpdated();
 
 	loadWindowGeometry(this, "General", "Geometry", 0, 50, 255, 565);
@@ -354,7 +354,7 @@ void KaduWindow::openRecentChats(QAction *action)
 
 void KaduWindow::storeConfiguration()
 {
-		writeToolBarsToConfig(QString());
+		writeToolBarsToConfig();
 #ifdef Q_OS_MAC
 	/* Dorr: workaround for Qt window geometry bug when unified toolbars enabled */
 	setUnifiedTitleAndToolBarOnMac(false);
@@ -575,7 +575,7 @@ void KaduWindow::createDefaultToolbars(QDomElement parentConfig)
 void KaduWindow::addAction(const QString &actionName, Qt::ToolButtonStyle style)
 {
 	addToolButton(findExistingToolbar(QString()), actionName, style);
-	Core::instance()->kaduWindow()->refreshToolBars(QString());
+	Core::instance()->kaduWindow()->refreshToolBars();
 }
 
 ActionDataSource * KaduWindow::actionSource()

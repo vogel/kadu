@@ -48,7 +48,7 @@
 QList<ChatEditBox *> chatEditBoxes;
 
 ChatEditBox::ChatEditBox(Chat chat, QWidget *parent) :
-		MainWindow(parent), CurrentChat(chat)
+		MainWindow("chat", parent), CurrentChat(chat)
 {
 	chatEditBoxes.append(this);
 
@@ -66,9 +66,9 @@ ChatEditBox::ChatEditBox(Chat chat, QWidget *parent) :
 	bool old_right = loadToolBarsFromConfig("chatRightDockArea", Qt::RightToolBarArea, true);
 
 	if (old_top || old_middle || old_bottom || old_left || old_right)
-		writeToolBarsToConfig("chat"); // port old config
+		writeToolBarsToConfig(); // port old config
 	else
-		loadToolBarsFromConfig("chat"); // load new config
+		loadToolBarsFromConfig(); // load new config
 
 	connect(ChatWidgetManager::instance()->actions()->colorSelector(), SIGNAL(actionCreated(Action *)),
 			this, SLOT(colorSelectorActionCreated(Action *)));
@@ -88,7 +88,7 @@ ChatEditBox::~ChatEditBox()
 
 	chatEditBoxes.removeAll(this);
 
-	writeToolBarsToConfig("chat");
+	writeToolBarsToConfig();
 }
 
 void ChatEditBox::fontChanged(QFont font)
@@ -210,7 +210,7 @@ void ChatEditBox::addAction(const QString &actionName, Qt::ToolButtonStyle style
 	addToolButton(findExistingToolbar("chat"), actionName, style);
 
 	foreach (ChatEditBox *chatEditBox, chatEditBoxes)
-		chatEditBox->refreshToolBars("chat");
+		chatEditBox->refreshToolBars();
 }
 
 void ChatEditBox::openEmoticonSelector(const QWidget *activatingWidget)

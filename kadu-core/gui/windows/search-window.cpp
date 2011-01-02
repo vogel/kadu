@@ -64,7 +64,7 @@ ActionDescription *SearchWindow::addFoundAction;
 ActionDescription *SearchWindow::chatFoundAction;
 
 SearchWindow::SearchWindow(QWidget *parent, Buddy buddy) :
-		MainWindow(parent),
+		MainWindow("search", parent),
 		only_active(0), e_uin(0), e_name(0), e_nick(0), e_byrFrom(0), e_byrTo(0), e_surname(0),
 		c_gender(0), e_city(0), results(0), progress(0), r_uin(0), r_pers(0),
 		seq(0), selectedUsers(BuddySet()), CurrentSearchCriteria(BuddySearchCriteria()),
@@ -207,9 +207,9 @@ SearchWindow::SearchWindow(QWidget *parent, Buddy buddy) :
 	setCentralWidget(centralWidget);
 
 	if (loadToolBarsFromConfig("searchDockArea", Qt::BottomToolBarArea, true))
-		writeToolBarsToConfig("search"); // port old config
+		writeToolBarsToConfig(); // port old config
 	else
-		loadToolBarsFromConfig("search"); // load new config
+		loadToolBarsFromConfig(); // load new config
 
  	setActionState(stopSearchAction, false);
  	setActionState(firstSearchAction, false);
@@ -259,7 +259,7 @@ SearchWindow::SearchWindow(QWidget *parent, Buddy buddy) :
 SearchWindow::~SearchWindow()
 {
 	kdebugf();
-	writeToolBarsToConfig("search");
+	writeToolBarsToConfig();
  	saveWindowGeometry(this, "General", "SearchWindowGeometry");
 	closeModule();
 	kdebugf2();

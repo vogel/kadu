@@ -47,16 +47,16 @@ class KADUAPI MainWindow : public QMainWindow, public ActionDataSource
 
 	friend class Actions;
 
-private:
+	QString WindowName;
 	bool TransparencyEnabled;
 
 	ToolBar *newToolbar(QWidget *parent);
 
 protected:
-	void loadToolBarsFromConfig(const QString &prefix);
+	void loadToolBarsFromConfig();
 	bool loadToolBarsFromConfig(const QString &configName, Qt::ToolBarArea area, bool remove = false);
 
-	void writeToolBarsToConfig(const QString &prefix);
+	void writeToolBarsToConfig();
 	void writeToolBarsToConfig(QDomElement parentConfig, const QString &configName, Qt::ToolBarArea area);
 
 	static QDomElement getToolbarsConfigElement();
@@ -65,7 +65,7 @@ protected:
 	static QDomElement findExistingToolbarOnArea(const QString &areaName);
 	static QDomElement findExistingToolbar(const QString &prefix);
 
-	void refreshToolBars(const QString &prefix);
+	void refreshToolBars();
 	void setTransparency(bool enable);
 
 	void contextMenuEvent(QContextMenuEvent *event);
@@ -73,8 +73,10 @@ protected:
 public:
 	static MainWindow * findMainWindow(QWidget *widget);
 
-	MainWindow(QWidget *parent);
+	MainWindow(const QString &windowName, QWidget *parent);
 	virtual ~MainWindow();
+
+	QString windowName() { return WindowName; }
 
 	virtual QMenu * createPopupMenu() { return 0; }
 

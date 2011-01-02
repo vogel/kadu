@@ -68,7 +68,7 @@
 #include "history-window.h"
 
 HistoryWindow::HistoryWindow(QWidget *parent) :
-		MainWindow(parent)
+		MainWindow("history", parent)
 {
 	kdebugf();
 
@@ -94,7 +94,7 @@ HistoryWindow::~HistoryWindow()
 
 	saveWindowGeometry(this, "History", "HistoryDialogGeometry");
 
-	//writeToolBarsToConfig("history");
+	//writeToolBarsToConfig();
 	kdebugf2();
 }
 
