@@ -30,6 +30,7 @@
 #include "buddies/buddy-set.h"
 #include "gui/actions/action.h"
 #include "gui/widgets/buddies-list-view.h"
+#include "gui/widgets/toolbar.h"
 
 #include "debug.h"
 

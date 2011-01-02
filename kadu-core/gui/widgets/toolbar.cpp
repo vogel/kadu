@@ -33,6 +33,7 @@
 #include <QtGui/QMenu>
 #include <QtGui/QPainter>
 #include <QtGui/QToolButton>
+#include <QtXml/QDomElement>
 
 #include "configuration/configuration-file.h"
 #include "configuration/xml-configuration-file.h"
@@ -194,7 +195,7 @@ int ToolBar::indexOf(QAction *action)
 	return -1; // not found
 }
 
-int ToolBar::indexOf(const QString& action)
+int ToolBar::indexOf(const QString &action)
 {
 	int index = 0;
 	foreach (const ToolBarAction &toolBarAction, ToolBarActions)
@@ -396,7 +397,7 @@ Qt::Orientation ToolBar::orientationByArea(Qt::ToolBarArea toolbararea)
 	return Qt::Vertical;
 }
 
-QAction *ToolBar::findActionToDropBefore(QPoint pos)
+QAction * ToolBar::findActionToDropBefore(const QPoint &pos)
 {
 	// action
 	QAction *action = actionNear(pos);
@@ -418,7 +419,7 @@ QAction *ToolBar::findActionToDropBefore(QPoint pos)
 	return before;
 }
 
-QAction *ToolBar::actionNear(QPoint pos)
+QAction * ToolBar::actionNear(const QPoint &pos)
 {
 	QAction *action;
 	action = actionAt(pos);
@@ -459,7 +460,7 @@ int ToolBar::rowCount()
 	return r + 1;
 }
 
-int ToolBar::rowAt(QPoint pos)
+int ToolBar::rowAt(const QPoint &pos)
 {
 	int rcount = rowCount();
 	for (int r = 1; r < rcount; ++r)
@@ -494,9 +495,9 @@ QRect ToolBar::rowRect(int row)
 		return QRect( p, 0, size, height() );
 }
 
-QList<QAction*> ToolBar::actionsForRow(int row)
+QList<QAction *> ToolBar::actionsForRow(int row)
 {
-	QList<QAction*> list;
+	QList<QAction *> list;
 	int r = 0;
 	int lastp = 0;
 	foreach (QAction *action, actions())
@@ -555,7 +556,7 @@ void ToolBar::configurationUpdated()
 	setIconSize(IconsManager::instance()->getIconsSize());
 }
 
-void ToolBar::writeToConfig(QDomElement parent_element)
+void ToolBar::writeToConfig(const QDomElement &parent_element)
 {
 	kdebugf();
 	QDomElement toolbar_elem = xml_config_file->createElement(parent_element, "ToolBar");
@@ -590,7 +591,7 @@ bool ToolBar::hasAction(const QString &action_name)
 	kdebugf2();
 }
 
-void ToolBar::loadFromConfig(QDomElement toolbar_element)
+void ToolBar::loadFromConfig(const QDomElement &toolbar_element)
 {
 	kdebugf();
 
@@ -659,7 +660,7 @@ void ToolBar::loadFromConfig(QDomElement toolbar_element)
 	kdebugf2();
 }
 
-QMenu *ToolBar::createContextMenu(QWidget *widget)
+QMenu * ToolBar::createContextMenu(QWidget *widget)
 {
 	currentWidget = widget;
 

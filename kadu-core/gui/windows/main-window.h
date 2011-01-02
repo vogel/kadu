@@ -27,7 +27,6 @@
 
 #include "gui/actions/action-data-source.h"
 #include "gui/actions/action-description.h"
-#include "gui/widgets/toolbar.h"
 
 #include "exports.h"
 
@@ -40,6 +39,7 @@ class Chat;
 class Contact;
 class ContactSet;
 class StatusContainer;
+class ToolBar;
 
 class KADUAPI MainWindow : public QMainWindow, public ActionDataSource
 {
@@ -50,7 +50,7 @@ class KADUAPI MainWindow : public QMainWindow, public ActionDataSource
 	QString WindowName;
 	bool TransparencyEnabled;
 
-	ToolBar *newToolbar(QWidget *parent);
+	ToolBar * newToolbar(QWidget *parent);
 
 	void loadToolBarsFromConfigNode(QDomElement dockareaConfig, Qt::ToolBarArea area);
 
@@ -105,7 +105,7 @@ public slots:
 	void addBottomToolbar();
 	void addLeftToolbar();
 	void addRightToolbar();
-	
+
 };
 
 #endif // KADU_MAIN_WINDOW_H
