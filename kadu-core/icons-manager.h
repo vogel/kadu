@@ -65,10 +65,10 @@ public:
 
 	IconThemeManager * themeManager() const;
 
-	QString iconPath(const QString &path, const QString &size, const QString &name) const;
-	QString iconPath(const QString &path, const QString &size) const;
-	QString iconPath(const QString &path) const;
-	const QIcon & iconByPath(const QString &path);
+	QString iconPath(const QString &path, const QString &size, const QString &name, bool emptyIfNonExistent = false) const;
+	QString iconPath(const QString &path, const QString &size, bool emptyIfNonExistent = false) const;
+	QString iconPath(const QString &path, bool emptyIfNonExistent = false) const;
+	const QIcon & iconByPath(const QString &path, bool emptyIfNonExistent = false );
 
 	QSize getIconsSize();
 

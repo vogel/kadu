@@ -71,7 +71,7 @@ IconThemeManager * IconsManager::themeManager() const
 	return ThemeManager;
 }
 
-QString IconsManager::iconPath(const QString &path, const QString &size, const QString &name) const
+QString IconsManager::iconPath(const QString &path, const QString &size, const QString &name, bool emptyIfNonExistent) const
 {
 	QString fileName;
 	QFileInfo fileInfo;
@@ -100,13 +100,15 @@ QString IconsManager::iconPath(const QString &path, const QString &size, const Q
 		else
 			protocolpath = localProtocolPath;
 		QString path2 = QString("protocols/%1/%2").arg(protocolpath, commonRegexp.cap(1));
-		return iconPath(path2, size, name);
+		return iconPath(path2, size, name, emptyIfNonExistent);
 	}
 
-	return QString::null;
+	if( emptyIfNonExistent )
+		return QString::null;
+	return iconPath("kadu_icons", size, "0", true );
 }
 
-QString IconsManager::iconPath(const QString &path, const QString &size) const
+QString IconsManager::iconPath(const QString &path, const QString &size, bool emptyIfNonExistent) const
 {
 	QString realPath;
 	QString iconName;
@@ -120,18 +122,20 @@ QString IconsManager::iconPath(const QString &path, const QString &size) const
 	else
 		iconName = path;
 
-	return iconPath(realPath, size, iconName);
+	return iconPath(realPath, size, iconName, emptyIfNonExistent);
 }
 
-QString IconsManager::iconPath(const QString &path) const
+QString IconsManager::iconPath(const QString &path, bool emptyIfNonExistent) const
 {
 	QString fileName = ThemeManager->currentTheme().path() + path;
 
 	QFileInfo fileInfo(fileName);
-	if (!fileInfo.isFile() || !fileInfo.isReadable())
-		return QString();
+	if (fileInfo.isFile() && fileInfo.isReadable())
+		return fileInfo.canonicalFilePath();
 
-	return fileInfo.canonicalFilePath();
+	if( emptyIfNonExistent )
+		return QString();
+	return iconPath( "kadu_icons/64x64/0.png", true );
 }
 
 QIcon IconsManager::buildPngIcon(const QString &path)
@@ -148,7 +152,7 @@ QIcon IconsManager::buildPngIcon(const QString &path)
 	QIcon icon;
 	for (int i = 0; i < sizes_count; i++)
 	{
-		QString fullPath = iconPath(path, sizes[i]);
+		QString fullPath = iconPath(path, sizes[i], true);
 		if (!fullPath.isEmpty())
 			icon.addFile(fullPath);
 	}
@@ -187,8 +191,7 @@ QIcon IconsManager::buildSvgIcon(const QString& path)
 	return icon;
 }
 
-
-const QIcon & IconsManager::iconByPath(const QString &path)
+const QIcon & IconsManager::iconByPath(const QString &path, bool emptyIfNonExistent)
 {
 	if (!IconCache.contains(path))
 	{
@@ -200,9 +203,11 @@ const QIcon & IconsManager::iconByPath(const QString &path)
 		else
 		{
 			icon = buildSvgIcon(path);
+
 			if (icon.isNull())
 				icon = buildPngIcon(path);
-			if (icon.isNull() )
+
+			if (icon.isNull())
 			{
 				QRegExp commonRegexp = QRegExp("^protocols/common/(.+)$");
 				if (path.contains(commonRegexp))
@@ -215,6 +220,11 @@ const QIcon & IconsManager::iconByPath(const QString &path)
 					QString path2 = QString("protocols/%1/%2").arg(protocolpath, commonRegexp.cap(1));
 					return iconByPath(path2);
 				}
+			}
+
+			if (icon.isNull() && !emptyIfNonExistent)
+			{
+				icon = buildPngIcon("kadu_icons/0");
 			}
 		}
 
