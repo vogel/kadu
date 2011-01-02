@@ -85,11 +85,13 @@ KaduWindow::KaduWindow(QWidget *parent) :
 	setAttribute(Qt::WA_DeleteOnClose, true);
 	setWindowTitle(QLatin1String("Kadu"));
 
-
-	Actions = new KaduWindowActions(this);
-
+	// we need to create gui first, then actions, then menus
+	// TODO: fix it in 0.8 or whenever
 	createGui();
+	Actions = new KaduWindowActions(this);
 	loadToolBarsFromConfig();
+	createMenu();
+
 	configurationUpdated();
 
 	loadWindowGeometry(this, "General", "Geometry", 0, 50, 255, 565);
@@ -170,8 +172,6 @@ void KaduWindow::createGui()
 
 	setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
 	setCentralWidget(MainWidget);
-
-	createMenu();
 }
 
 void KaduWindow::createMenu()
@@ -443,22 +443,30 @@ StatusContainer * KaduWindow::statusContainer()
 
 ContactSet KaduWindow::contacts()
 {
-	return ContactsWidget->view()->selectedContacts();
+	return ContactsWidget
+			? ContactsWidget->view()->selectedContacts()
+			: ContactSet();
 }
 
 BuddySet KaduWindow::buddies()
 {
-	return ContactsWidget->view()->selectedBuddies();
+	return ContactsWidget
+			? ContactsWidget->view()->selectedBuddies()
+			: BuddySet();
 }
 
 Chat KaduWindow::chat()
 {
-	return ContactsWidget->view()->currentChat();
+	return ContactsWidget
+			? ContactsWidget->view()->currentChat()
+			: Chat::null;
 }
 
 bool KaduWindow::hasContactSelected()
 {
-	return ContactsWidget->view()->hasContactSelected();
+	return ContactsWidget
+			? ContactsWidget->view()->hasContactSelected()
+			: false;
 }
 
 void KaduWindow::configurationUpdated()

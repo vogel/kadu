@@ -69,6 +69,7 @@ private slots:
 	void actionDestroyed(QObject *action);
 
 protected:
+	virtual void connectNotify(const char *signal);
 	virtual void configurationUpdated();
 
 public:

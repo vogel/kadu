@@ -99,6 +99,8 @@ class KADUAPI ToolBar : public QToolBar, public ConfigurationAwareObject
 
 	QPoint MouseStart;
 
+	bool EnableUpdatedSignal;
+
 	Qt::ToolBarArea toolBarArea();
 	Qt::Orientation orientationByArea(Qt::ToolBarArea toolbararea);
 
@@ -124,6 +126,8 @@ class KADUAPI ToolBar : public QToolBar, public ConfigurationAwareObject
 	ToolBarSpacer * createSpacer(QAction *before, ToolBarAction &action);
 	QToolButton * createPushButton(QAction *before, ToolBarAction &action);
 	QWidget * createActionWidget(QAction *before, ToolBarAction &action);
+
+	void emitUpdated();
 
 private slots:
 	/**
@@ -156,7 +160,6 @@ private slots:
 
 	void setBlockToolbars(bool checked);
 
-	void updateButtons();
 	void widgetPressed();
 
 	QMenu * createContextMenu(QWidget *widget);

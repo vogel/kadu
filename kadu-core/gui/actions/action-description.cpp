@@ -17,6 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QLatin1String>
+
 #include "gui/hot-key.h"
 #include "gui/actions/action.h"
 #include "gui/actions/actions.h"
@@ -128,4 +130,14 @@ void ActionDescription::configurationUpdated()
 		MappedActions.values()[0]->setShortcut(HotKey::shortCutFromFile("ShortCuts", ShortcutItem));
 		MappedActions.values()[0]->setShortcutContext(ShortcutContext);
 	}
+}
+
+// TODO: a hack
+void ActionDescription::connectNotify(const char *signal)
+{
+	QObject::connectNotify(signal);
+
+	if (QLatin1String(signal) == SIGNAL(actionCreated(Action*))) // do not insert space here
+		foreach (Action *action, MappedActions)
+			emit actionCreated(action);
 }
