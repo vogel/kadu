@@ -29,6 +29,7 @@
 #include "exports.h"
 
 class StorableObject;
+class ToolbarConfigurationManager;
 
 class KADUAPI ConfigurationManager
 {
@@ -37,7 +38,10 @@ class KADUAPI ConfigurationManager
 	QUuid Uuid;
 	QList<StorableObject *> RegisteredStorableObjects;
 
+	ToolbarConfigurationManager *ToolbarConfiguration;
+
 	ConfigurationManager();
+	~ConfigurationManager();
 
 	void importConfiguration();
 
@@ -52,6 +56,8 @@ public:
 
 	void registerStorableObject(StorableObject *object);
 	void unregisterStorableObject(StorableObject *object);
+
+	ToolbarConfigurationManager * toolbarConfigurationManager() { return ToolbarConfiguration; }
 
 };
 

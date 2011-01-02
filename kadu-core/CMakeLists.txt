@@ -98,6 +98,7 @@ set (kadu_SRCS
 	configuration/configuration-manager.cpp
 	configuration/main-configuration.cpp
 	configuration/notifier-configuration-data-manager.cpp
+	configuration/toolbar-configuration-manager.cpp
 	configuration/xml-configuration-file.cpp
 
 	contacts/contact.cpp
@@ -446,6 +447,7 @@ set (kadu_MOC_SRCS
 	configuration/configuration-window-data-manager.h
 	configuration/main-configuration.h
 	configuration/notifier-configuration-data-manager.h
+	configuration/toolbar-configuration-manager.h
 
 	core/core.h
 

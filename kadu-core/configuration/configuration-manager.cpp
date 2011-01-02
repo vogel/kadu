@@ -20,6 +20,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "configuration/toolbar-configuration-manager.h"
 #include "configuration/xml-configuration-file.h"
 #include "storage/storable-object.h"
 
@@ -40,7 +41,13 @@ ConfigurationManager * ConfigurationManager::instance()
 
 ConfigurationManager::ConfigurationManager()
 {
+	ToolbarConfiguration = new ToolbarConfigurationManager();
+}
 
+ConfigurationManager::~ConfigurationManager()
+{
+	delete ToolbarConfiguration;
+	ToolbarConfiguration = 0;
 }
 
 void ConfigurationManager::load()
