@@ -3,7 +3,6 @@ set (BLACKLIST_MODULES
 	dbus
 	echo
 	encryption
-	encryption_ng_caesar
 	tlen_protocol
 	weather
 )
