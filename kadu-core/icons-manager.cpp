@@ -95,7 +95,7 @@ QString IconsManager::iconPath(const QString &path, const QString &size, const Q
 	if (path.contains(commonRegexp))
 	{
 		QString protocolpath;
-		if(AccountManager::instance()->defaultAccount())
+		if (AccountManager::instance()->defaultAccount())
 			protocolpath = AccountManager::instance()->defaultAccount().protocolHandler()->statusPixmapPath();
 		else
 			protocolpath = localProtocolPath;
@@ -103,8 +103,8 @@ QString IconsManager::iconPath(const QString &path, const QString &size, const Q
 		return iconPath(path2, size, name, emptyIfNonExistent);
 	}
 
-	if( emptyIfNonExistent )
-		return QString::null;
+	if (emptyIfNonExistent)
+		return QString();
 	return iconPath("kadu_icons", size, "0", true );
 }
 
@@ -133,7 +133,7 @@ QString IconsManager::iconPath(const QString &path, bool emptyIfNonExistent) con
 	if (fileInfo.isFile() && fileInfo.isReadable())
 		return fileInfo.canonicalFilePath();
 
-	if( emptyIfNonExistent )
+	if (emptyIfNonExistent)
 		return QString();
 	return iconPath( "kadu_icons/64x64/0.png", true );
 }
@@ -213,7 +213,7 @@ const QIcon & IconsManager::iconByPath(const QString &path, bool emptyIfNonExist
 				if (path.contains(commonRegexp))
 				{
 					QString protocolpath;
-					if(AccountManager::instance()->defaultAccount())
+					if (AccountManager::instance()->defaultAccount())
 						protocolpath = AccountManager::instance()->defaultAccount().protocolHandler()->statusPixmapPath();
 					else
 						protocolpath = localProtocolPath;

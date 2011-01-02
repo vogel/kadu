@@ -16,7 +16,7 @@
 
 #include "config_file.h"
 #include "icons_manager.h"
- 
+
 #include "weather_cfg_ui_handler.h"
 #include "weather_global.h"
 
@@ -59,7 +59,7 @@ void WeatherCfgUiHandler::mainConfigurationWindowCreated(MainConfigurationWindow
 	serversBoxLayout->addWidget(serverList_);
 	serversBoxLayout->addLayout(buttonsBox);
 	weatherServersBox->addWidget(serversBox, true);
-	
+
 	connect(upButton, SIGNAL(clicked()), this, SLOT(upClicked()));
 	connect(downButton, SIGNAL(clicked()), this, SLOT(downClicked()));
 	connect(mainCfgWindow->widgetById("weather/autodownload"), SIGNAL(toggled(bool)),
@@ -77,7 +77,7 @@ void WeatherCfgUiHandler::mainConfigurationWindowCreated(MainConfigurationWindow
 	connect(mainCfgWindow->widgetById("weather/updatedescription"), SIGNAL(toggled(bool)),
 			 mainCfgWindow->widgetById("weather/desc_day"), SLOT(setEnabled(bool)));
 	connect(serverList_, SIGNAL(itemPressed(QTreeWidgetItem *, int)), this, SLOT(serverListItemChanged(QTreeWidgetItem *, int)));
-	
+
 	// Weather servers
 	//
 	WeatherGlobal::SERVERITERATOR server;
@@ -107,12 +107,12 @@ void WeatherCfgUiHandler::serverListItemChanged(QTreeWidgetItem *item, int colum
 {
 // 	if( item == 0 )
 // 		return;
-// 	
+//
 // 	if( item->checkState() == Qt::Checked )
 // 		return;
-// 	
+//
 // 	QCheckListItem* listItem = reinterpret_cast<QCheckListItem*>( serverList_->firstChild() );
-// 	
+//
 // 	while( listItem != 0 )
 // 	{
 // 		if( listItem->isOn() )
