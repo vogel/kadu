@@ -21,6 +21,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtGui/QTextDocument>
+
 #include "buddies/buddy-set.h"
 #include "chat/chat.h"
 #include "chat/chat-manager.h"
@@ -89,7 +91,7 @@ bool JabberChatService::sendMessage(Chat chat, FormattedMessage &formattedMessag
 		message.setMessageChat(chat);
 		message.setType(Message::TypeSent);
 		message.setMessageSender(Protocol->account().accountContact());
-		message.setContent(formattedMessage.toPlain());
+		message.setContent(Qt::escape(formattedMessage.toPlain()));
 		message.setSendDate(QDateTime::currentDateTime());
 		message.setReceiveDate(QDateTime::currentDateTime());
 
