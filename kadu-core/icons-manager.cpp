@@ -87,6 +87,18 @@ QString IconsManager::iconPath(const QString &path, const QString &size, const Q
 	if (fileInfo.isFile() && fileInfo.isReadable())
 		return fileInfo.canonicalFilePath();
 
+	QRegExp commonRegexp = QRegExp("^protocols/common/(.+)$");
+	if (path.contains(commonRegexp))
+	{
+		QString protocolpath;
+		if (AccountManager::instance()->defaultAccount())
+			protocolpath = AccountManager::instance()->defaultAccount().protocolHandler()->statusPixmapPath();
+		else
+			protocolpath = localProtocolPath;
+		QString path2 = QString("protocols/%1/%2").arg(protocolpath, commonRegexp.cap(1));
+		return iconPath(path2, size, name);
+	}
+
 	return QString::null;
 }
 
