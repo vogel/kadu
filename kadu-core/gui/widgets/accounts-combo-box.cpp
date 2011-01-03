@@ -55,7 +55,7 @@ Account AccountsComboBox::currentAccount()
 void AccountsComboBox::currentIndexChangedSlot(int index)
 {
 	if (KaduComboBox<Account>::currentIndexChangedSlot(index))
-		emit accountChanged(CurrentValue);
+		emit accountChanged(CurrentValue, ValueBeforeChange);
 }
 
 void AccountsComboBox::updateValueBeforeChange()

@@ -50,7 +50,7 @@ public:
 	void removeFilter(AbstractAccountFilter *filter);
 
 signals:
-	void accountChanged(Account account);
+	void accountChanged(Account account, Account lastAccount = Account::null);
 
 };
 

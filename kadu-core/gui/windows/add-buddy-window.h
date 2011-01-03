@@ -75,7 +75,7 @@ class AddBuddyWindow : public QDialog
 	void askForAuthorization(Contact contact);
 
 private slots:
-    void accountChanged(Account account);
+    void accountChanged(Account account, Account lastAccount);
 	void updateGui();
 	void setAddContactEnabled();
 	void setAccountFilter();

@@ -112,7 +112,7 @@ public:
 	virtual ContactPersonalInfoService * contactPersonalInfoService() { return CurrentContactPersonalInfoService; }
 	virtual FileTransferService * fileTransferService() { return 0; }
 	virtual PersonalInfoService * personalInfoService() { return CurrentPersonalInfoService; }
-    virtual RosterService * rosterService() { return CurrentRosterService; }
+	virtual RosterService * rosterService() { return CurrentRosterService; }
 	virtual SearchService * searchService() { return 0; }
 	JabberSubscriptionService * subscriptionService() { return CurrentSubscriptionService; }
 

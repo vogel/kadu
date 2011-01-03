@@ -63,7 +63,7 @@ AddBuddyWindow::AddBuddyWindow(QWidget *parent) :
 	createGui();
 	addMobileAccountToComboBox();
 
-	connect(AccountCombo, SIGNAL(accountChanged(Account)), this, SLOT(accountChanged(Account)));
+	connect(AccountCombo, SIGNAL(accountChanged(Account, Account)), this, SLOT(accountChanged(Account, Account)));
 	connect(AccountCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(updateGui()));
 	connect(AccountCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(setAddContactEnabled()));
 
@@ -210,8 +210,14 @@ bool AddBuddyWindow::isMobileAccount()
 	return AccountCombo->data(ActionRole).value<QAction *>() == MobileAccountAction;
 }
 
-void AddBuddyWindow::accountChanged(Account account)
+void AddBuddyWindow::accountChanged(Account account, Account lastAccount)
 {
+	if (lastAccount && lastAccount.protocolHandler())
+	{
+		disconnect(lastAccount.protocolHandler(), SIGNAL(connected(Account)), this, SLOT(setAddContactEnabled()));
+		disconnect(lastAccount.protocolHandler(), SIGNAL(disconnected(Account)), this, SLOT(setAddContactEnabled()));
+	}
+
 	if (!account || !account.protocolHandler() || !account.protocolHandler()->rosterService())
 	{
 		AskForAuthorization->setEnabled(false);
@@ -219,6 +225,9 @@ void AddBuddyWindow::accountChanged(Account account)
 	}
 	else
 	{
+		connect(account.protocolHandler(), SIGNAL(connected(Account)), this, SLOT(setAddContactEnabled()));
+		connect(account.protocolHandler(), SIGNAL(disconnected(Account)), this, SLOT(setAddContactEnabled()));
+
 		AskForAuthorization->setEnabled(true);
 		AskForAuthorization->setChecked(true);
 	}
@@ -261,6 +270,12 @@ void AddBuddyWindow::validateData()
 	if (account.isNull() || !account.protocolHandler() || !account.protocolHandler()->protocolFactory())
 	{
 		displayErrorMessage(tr("Account is not selected"));
+		return;
+	}
+
+	if (account.protocolHandler()->rosterService() && !account.protocolHandler()->isConnected())
+	{
+		displayErrorMessage(tr("You must be connected to add contacts to this account"));
 		return;
 	}
 
