@@ -22,6 +22,8 @@
 
 #include <QtCore/QObject>
 
+#include "contacts/contact.h"
+
 #include "exports.h"
 
 class KADUAPI RosterService : public QObject
@@ -31,6 +33,9 @@ class KADUAPI RosterService : public QObject
 public:
 	RosterService(QObject *parent = 0) : QObject(parent) {}
 
+	virtual void addContact(const Contact &contact) = 0;
+	virtual void removeContact(const Contact &contact) = 0;
+	virtual void askForAuthorization(const Contact &contact) = 0;
 
 };
 

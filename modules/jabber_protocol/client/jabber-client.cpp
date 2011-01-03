@@ -689,7 +689,7 @@ void JabberClient::slotCSError(int error)
 	}
 }
 
-void JabberClient::addContact(const XMPP::Jid &j, const QString &name, const QStringList &groups, bool authReq)
+void JabberClient::addContact(const XMPP::Jid &j, const QString &name, const QStringList &groups)
 {
 	if (AddedContacts.contains(j.bare()))
 		return;
@@ -699,9 +699,6 @@ void JabberClient::addContact(const XMPP::Jid &j, const QString &name, const QSt
 	r->go(true);
 
 	AddedContacts.append(j.bare());
-
-	if(authReq)
-		requestSubscription(j);
 }
 
 void JabberClient::removeContact(const XMPP::Jid &j)

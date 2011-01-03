@@ -72,6 +72,8 @@ class AddBuddyWindow : public QDialog
 	bool addContact();
 	bool addMobile();
 
+	void askForAuthorization(Contact contact);
+
 private slots:
     void accountChanged(Account account);
 	void updateGui();

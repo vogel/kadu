@@ -38,6 +38,7 @@
 * single_window: #1867 fixed: unminimize window after openning new chat (WhE)
 * gui: #1863 fixed: toolbar buttons could be wrongly positioned after module load (Vogel)
 * gui: #1877 fixed: filtering buddies by name disables all other filters (Vogel)
+* gui: #1676 fixed: ask for authorization option in add buddy window added (Vogel)
 
 +++ version 0.6.6-beta13
 * sound: #1376 fixed: long delays on Kadu exit and warnings from Qt regarding mutexes (beevvy)

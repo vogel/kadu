@@ -405,35 +405,16 @@ void JabberProtocol::clientResourceReceived(const XMPP::Jid &jid, const XMPP::Re
 	kdebugf2();
 }
 
-void JabberProtocol::addContactToRoster(Contact contact, bool requestAuth)
-{
-	if (!isConnected() || contact.contactAccount() != account() || contact.ownerBuddy().isAnonymous())
-		return;
-
-	Buddy buddy = contact.ownerBuddy();
-	QStringList groupsList;
-
-	foreach (const Group &group, buddy.groups())
-		groupsList.append(group.name());
-
-	//TODO last parameter: automagic authorization request - make it configurable
-	JabberClient->addContact(contact.id(), buddy.display(), groupsList, requestAuth);
-
-	if (!contact.ownerBuddy().isOfflineTo())
-		CurrentSubscriptionService->authorizeContact(contact, true);
-}
-
 void JabberProtocol::contactAttached(Contact contact)
 {
-	return addContactToRoster(contact, true);
+	if (CurrentRosterService)
+		CurrentRosterService->addContact(contact);
 }
 
 void JabberProtocol::contactDetached(Contact contact)
 {
-	if (!isConnected() || contact.contactAccount() != account())
-		return;
-
-	JabberClient->removeContact(contact.id());
+	if (CurrentRosterService)
+		CurrentRosterService->removeContact(contact);
 }
 
 void JabberProtocol::buddyUpdated(Buddy &buddy)

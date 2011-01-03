@@ -46,6 +46,7 @@
 #include "gui/widgets/select-buddy-combo-box.h"
 #include "misc/misc.h"
 #include "model/roles.h"
+#include "protocols/services/roster-service.h"
 #include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
 #include "icons-manager.h"
@@ -370,6 +371,9 @@ bool AddBuddyWindow::addContact()
 
 	buddy.addToGroup(GroupCombo->currentGroup());
 
+	if (AskForAuthorization->isChecked())
+		askForAuthorization(contact);
+
 	return true;
 }
 
@@ -403,4 +407,14 @@ void AddBuddyWindow::accept()
 void AddBuddyWindow::reject()
 {
 	QDialog::reject();
+}
+
+void AddBuddyWindow::askForAuthorization(Contact contact)
+{
+	Account account = AccountCombo->currentAccount();
+
+	if (!account || !account.protocolHandler() || !account.protocolHandler()->rosterService())
+		return;
+
+	account.protocolHandler()->rosterService()->askForAuthorization(contact);
 }

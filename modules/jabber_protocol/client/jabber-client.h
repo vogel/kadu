@@ -580,7 +580,7 @@ namespace XMPP
 
 		static void getErrorInfo(int err, AdvancedConnector *conn, Stream *stream, QCATLSHandler *tlsHandler, QString *_str, bool *_reconn);
 
-		void addContact(const XMPP::Jid &j, const QString &name, const QStringList &groups, bool authReq);
+		void addContact(const XMPP::Jid &j, const QString &name, const QStringList &groups);
 		void updateContact(const XMPP::Jid &j, const QString &name, const QStringList &groups);
 		void removeContact(const XMPP::Jid &j);
 		void changeSubscription(const XMPP::Jid &jid, const QString &type);

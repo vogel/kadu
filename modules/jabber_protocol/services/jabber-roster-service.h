@@ -52,6 +52,10 @@ public:
 	explicit JabberRosterService(JabberProtocol *protocol);
 	virtual ~JabberRosterService();
 
+	virtual void addContact(const Contact &contact);
+	virtual void removeContact(const Contact &contact);
+	virtual void askForAuthorization(const Contact &contact);
+
 	void downloadRoster();
 
 signals:

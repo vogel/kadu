@@ -114,10 +114,9 @@ public:
 	virtual PersonalInfoService * personalInfoService() { return CurrentPersonalInfoService; }
     virtual RosterService * rosterService() { return CurrentRosterService; }
 	virtual SearchService * searchService() { return 0; }
+	JabberSubscriptionService * subscriptionService() { return CurrentSubscriptionService; }
 
 	JabberContactDetails * jabberContactDetails(Contact contact) const;
-
-	void addContactToRoster(Contact contact, bool requestAuth = false);
 
 public slots:
 	void connectToServer();
