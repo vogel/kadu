@@ -1,6 +1,6 @@
 +++ version 0.6.6-beta14
-* core: #1720 fixed: Ignore button in invalid password window really cancels connection (Juzef)
-* core: #1804 fixed: Cancel button in PasswordWindow really cancels connection (Juzef)
+* core: #1720 fixed: ignore button in invalid password window really cancels connection (Juzef)
+* core: #1804 fixed: cancel button in PasswordWindow really cancels connection (Juzef)
 * jabber: #1778 fixed: correct CertificateErrorDialog behaviour (Juzef)
 * gui: #1792 fixed: do not notify about new messages if window is not active but still fully visible to the user (beevvy)
 * docking: #1857 fixed: do not bounce the dock icon in silent mode on Mac (dorr)
@@ -9,7 +9,7 @@
 * jabber: more memory leaks removed (WhE)
 * notify: #1853 fixed: invalid behaviour of NotificationManager::setSilentMode() (WhE)
 * chat styles: #1856 fixed: Conference titles are too long (WhE)
-* gui: #1847 fixed: Cancel should be the default action in BuddyDeleteWindow (beevvy)
+* gui: #1847 fixed: cancel should be the default action in BuddyDeleteWindow (beevvy)
 * tabs: #1835 fixed: chat's geometry is not saved on closing program (WhE)
 * core: #1822 fixed: save opened windows option is not working without tabs module (WhE)
 * gui: #1864 fixed: can not turn off save opened windows option (WhE)
@@ -40,10 +40,11 @@
 * gui: #1877 fixed: filtering buddies by name disables all other filters (Vogel)
 * gui: #1676 fixed: ask for authorization option in add buddy window added (Vogel)
 * jabber: #1898 fixed: '>' character is not displayed displayed in chat's view (WhE)
-* jabber: #1840 fixed: Crash in CertificateHelpers::checkCertificate() (WhE)
+* jabber: #1840 fixed: crash in CertificateHelpers::checkCertificate() (WhE)
 * modules: #1883 fixed: properly destroy all singletons in modules (WhE, Vogel)
 * gui: #1862 fixed: occassionally incorrect text-area size when opening a tab (WhE)
 * jabber: added menu for contacts with subscription options (Vogel)
+* icons: update icons naming, added new Oxygen theme (Ultr)
 
 +++ version 0.6.6-beta13
 * sound: #1376 fixed: long delays on Kadu exit and warnings from Qt regarding mutexes (beevvy)
