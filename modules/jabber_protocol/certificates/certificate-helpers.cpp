@@ -189,6 +189,9 @@ QString CertificateHelpers::resultToString(int result, QCA::Validity validity)
 
 bool CertificateHelpers::checkCertificate(QCA::TLS* tls, XMPP::QCATLSHandler *tlsHandler, QString &tlsOverrideDomain, const QString &title, const QString &host, QObject *parent)
 {
+	if (tls->peerCertificateChain().isEmpty())
+		return false;
+
 	QCA::Certificate cert = tls->peerCertificateChain().primary();
 	int result = tls->peerIdentityResult();
 	QString hostnameOverrideable;
