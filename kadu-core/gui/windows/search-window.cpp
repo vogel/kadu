@@ -698,19 +698,16 @@ void SearchWindow::setActionState(ActionDescription *actionDescription, bool too
 void SearchActionsSlots::firstSearchActionCreated(Action *action)
 {
 	SearchWindow *search = dynamic_cast<SearchWindow *>(action->parent());
-	if (!search)
-		return;
 
-	if (search->searching || (search->r_pers->isChecked() && search->isPersonalDataEmpty()) || (search->r_uin->isChecked() && search->e_uin->text().isEmpty()))
+	if (!search || !search->r_pers || search->searching || (search->r_pers->isChecked() && search->isPersonalDataEmpty()) || (search->r_uin->isChecked() && search->e_uin->text().isEmpty()))
 		action->setEnabled(false);
 }
 
 void SearchActionsSlots::nextResultsActionCreated(Action *action)
 {
 	SearchWindow *search = dynamic_cast<SearchWindow *>(action->parent());
-	if (!search)
-		return;
-	if (search->searching || search->r_uin->isChecked() || search->isPersonalDataEmpty())
+
+	if (!search || !search->r_uin || search->searching || search->r_uin->isChecked() || search->isPersonalDataEmpty())
 		action->setEnabled(false);
 
 }
@@ -718,27 +715,23 @@ void SearchActionsSlots::nextResultsActionCreated(Action *action)
 void SearchActionsSlots::stopSearchActionCreated(Action *action)
 {
 	SearchWindow *search = dynamic_cast<SearchWindow *>(action->parent());
-	if (!search)
-		return;
-	if (!search->searching)
+
+	if (!search || !search->searching)
 		action->setEnabled(false);
 }
 
 void SearchActionsSlots::clearResultsActionCreated(Action *action)
 {
 	SearchWindow *search = dynamic_cast<SearchWindow *>(action->parent());
-	if (!search)
-		return;
-	if (!search->results->topLevelItemCount())
+	if (!search || !search->results || !search->results->topLevelItemCount())
 		action->setEnabled(false);
 }
 
 void SearchActionsSlots::actionsFoundActionCreated(Action *action)
 {
 	SearchWindow *search = dynamic_cast<SearchWindow *>(action->parent());
-	if (!search)
-		return;
-	if (search->results->selectedItems().count() == 0)
+
+	if (!search || !search->results || search->results->selectedItems().count() == 0)
 		action->setEnabled(false);
 }
 
