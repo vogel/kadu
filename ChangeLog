@@ -1,3 +1,5 @@
++++ version 0.6.6-beta15
+
 +++ version 0.6.6-beta14
 * core: #1720 fixed: ignore button in invalid password window really cancels connection (Juzef)
 * core: #1804 fixed: cancel button in PasswordWindow really cancels connection (Juzef)
