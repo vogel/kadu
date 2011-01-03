@@ -62,6 +62,7 @@ AddBuddyWindow::AddBuddyWindow(QWidget *parent) :
 	createGui();
 	addMobileAccountToComboBox();
 
+	connect(AccountCombo, SIGNAL(accountChanged(Account)), this, SLOT(accountChanged(Account)));
 	connect(AccountCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(updateGui()));
 	connect(AccountCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(setAddContactEnabled()));
 
@@ -133,23 +134,27 @@ void AddBuddyWindow::createGui()
 	connect(SelectContact, SIGNAL(buddyChanged(Buddy)), this, SLOT(setAddContactEnabled()));
 	connect(SelectContact, SIGNAL(buddyChanged(Buddy)), this, SLOT(setAccountFilter()));
 
+	AskForAuthorization = new QCheckBox(tr("Ask contact for authorization"), this);
+	AskForAuthorization->setEnabled(false);
+	layout->addWidget(AskForAuthorization, 7, 1, 1, 3);
+
 	// TODO 0.6.6: it is not used anywhere
 	AllowToSeeMeCheck = new QCheckBox(tr("Allow contact to see me when I'm available"), this);
 	AllowToSeeMeCheck->setChecked(true);
-	layout->addWidget(AllowToSeeMeCheck, 7, 1, 1, 3);
+	layout->addWidget(AllowToSeeMeCheck, 8, 1, 1, 3);
 
 	layout->setRowMinimumHeight(6, 20);
-	layout->setRowMinimumHeight(8, 20);
-	layout->setRowStretch(8, 100);
+	layout->setRowMinimumHeight(9, 20);
+	layout->setRowStretch(9, 100);
 
 	ErrorLabel = new QLabel();
 	QFont labelFont = ErrorLabel->font();
 	labelFont.setBold(true);
 	ErrorLabel->setFont(labelFont);
-	layout->addWidget(ErrorLabel, 9, 1, 1, 4);
+	layout->addWidget(ErrorLabel, 10, 1, 1, 4);
 
 	QDialogButtonBox *buttons = new QDialogButtonBox(this);
-	layout->addWidget(buttons, 10, 0, 1, 4);
+	layout->addWidget(buttons, 11, 0, 1, 4);
 
 	AddContactButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogOkButton), tr("Add contact"), this);
 	AddContactButton->setDefault(true);
@@ -202,6 +207,20 @@ void AddBuddyWindow::setGroup(Group group)
 bool AddBuddyWindow::isMobileAccount()
 {
 	return AccountCombo->data(ActionRole).value<QAction *>() == MobileAccountAction;
+}
+
+void AddBuddyWindow::accountChanged(Account account)
+{
+	if (!account || !account.protocolHandler() || !account.protocolHandler()->rosterService())
+	{
+		AskForAuthorization->setEnabled(false);
+		AskForAuthorization->setChecked(false);
+	}
+	else
+	{
+		AskForAuthorization->setEnabled(true);
+		AskForAuthorization->setChecked(true);
+	}
 }
 
 void AddBuddyWindow::updateAccountGui()

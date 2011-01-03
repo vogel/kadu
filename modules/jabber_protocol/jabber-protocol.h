@@ -34,9 +34,9 @@
 #include "services/jabber-chat-state-service.h"
 #include "services/jabber-contact-personal-info-service.h"
 #include "services/jabber-personal-info-service.h"
+#include "services/jabber-roster-service.h"
 
 class JabberContactDetails;
-class JabberRosterService;
 class JabberSubscriptionService;
 
 class JabberProtocol : public Protocol
@@ -112,6 +112,7 @@ public:
 	virtual ContactPersonalInfoService * contactPersonalInfoService() { return CurrentContactPersonalInfoService; }
 	virtual FileTransferService * fileTransferService() { return 0; }
 	virtual PersonalInfoService * personalInfoService() { return CurrentPersonalInfoService; }
+    virtual RosterService * rosterService() { return CurrentRosterService; }
 	virtual SearchService * searchService() { return 0; }
 
 	JabberContactDetails * jabberContactDetails(Contact contact) const;
