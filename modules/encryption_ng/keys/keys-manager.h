@@ -49,6 +49,8 @@ protected:
 public:
 	static KADUAPI KeysManager * instance();
 
+	static void destroyInstance();
+
 	virtual QString storageNodeName() { return QLatin1String("Keys"); }
 	virtual QString storageNodeItemName() { return QLatin1String("Key"); }
 

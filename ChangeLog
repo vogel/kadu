@@ -41,6 +41,7 @@
 * gui: #1676 fixed: ask for authorization option in add buddy window added (Vogel)
 * jabber: #1898 fixed: '>' character is not displayed displayed in chat's view (WhE)
 * jabber: #1840 fixed: Crash in CertificateHelpers::checkCertificate() (WhE)
+* modules: #1883 fixed: properly destroy all singletons in modules (WhE, Vogel)
 
 +++ version 0.6.6-beta13
 * sound: #1376 fixed: long delays on Kadu exit and warnings from Qt regarding mutexes (beevvy)

@@ -37,6 +37,12 @@ KeysManager * KeysManager::instance()
 	return Instance;
 }
 
+void KeysManager::destroyInstance()
+{
+	delete Instance;
+	Instance = 0;
+}
+
 KeysManager::KeysManager()
 {
 }

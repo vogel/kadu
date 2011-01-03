@@ -23,14 +23,15 @@
 #include <QtGui/QApplication>
 #include <QtCrypto>
 
+#include "gui/windows/message-dialog.h"
 #include "misc/path-conversion.h"
 
 #include "configuration/encryption-ng-configuration.h"
+#include "keys/keys-manager.h"
 #include "encryption-actions.h"
 #include "encryption-manager.h"
 #include "encryption-ng-configuration-ui-handler.h"
 #include "encryption-provider-manager.h"
-#include <gui/windows/message-dialog.h>
 
 namespace EncryptionNg
 {
@@ -73,6 +74,7 @@ extern "C" void encryption_ng_close()
 
 	EncryptionNgConfigurationUiHandler::unregisterConfigurationUi();
 	EncryptionNgConfiguration::destroyInstance();
+	KeysManager::destroyInstance();
 
 	delete EncryptionNg::InitObject;
 	EncryptionNg::InitObject = 0;
