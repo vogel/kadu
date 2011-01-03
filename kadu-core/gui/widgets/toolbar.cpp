@@ -126,9 +126,7 @@ ToolBarSeparator * ToolBar::createSeparator(QAction *before, ToolBarAction &acti
 {
 	ToolBarSeparator *separator = new ToolBarSeparator(this);
 	action.action = insertWidget(before, separator);
-
 	action.widget = separator;
-	action.action = 0;
 	connect(separator, SIGNAL(pressed()), this, SLOT(widgetPressed()));
 
 	return separator;
@@ -138,9 +136,7 @@ ToolBarSpacer * ToolBar::createSpacer(QAction *before, ToolBarAction &action)
 {
 	ToolBarSpacer *spacer = new ToolBarSpacer(this);
 	action.action = insertWidget(before, spacer);
-
 	action.widget = spacer;
-	action.action = 0;
 	connect(spacer, SIGNAL(pressed()), this, SLOT(widgetPressed()));
 
 	return spacer;
@@ -1086,7 +1082,7 @@ void ToolBar::paintDropMarker()
 void ToolBar::emitUpdated()
 {
 	if (EnableUpdatedSignal)
-		emit update();
+		emit updated();
 }
 
 ActionDrag::ActionDrag(const QString &actionName, Qt::ToolButtonStyle style, QWidget *dragSource)

@@ -314,14 +314,11 @@ void MainWindow::contextMenuEvent(QContextMenuEvent *event)
 ToolBar *MainWindow::newToolbar(QWidget *parent)
 {
 	ToolBar *toolBar = new ToolBar(parent);
+	toolBar->setAttribute(Qt::WA_NoSystemBackground, !TransparencyEnabled);
+	toolBar->setAutoFillBackground(TransparencyEnabled);
+
 	connect(toolBar, SIGNAL(updated()), this, SLOT(toolbarUpdated()));
 	connect(toolBar, SIGNAL(destroyed()), this, SLOT(toolbarUpdated()));
-
-	if (toolBar)
-	{
-		toolBar->setAttribute(Qt::WA_NoSystemBackground, !TransparencyEnabled);
-		toolBar->setAutoFillBackground(TransparencyEnabled);
-	}
 
 	return toolBar;
 }
