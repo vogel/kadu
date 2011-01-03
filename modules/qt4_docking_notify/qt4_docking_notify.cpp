@@ -67,7 +67,7 @@ extern "C" KADU_EXPORT void qt4_docking_notify_close()
 }
 
 Qt4Notify::Qt4Notify() :
-		Notifier("Tray Icon Balloon", "Tray Icon Balloon", IconsManager::instance()->iconByPath("external_modules/module_qt4notify"))
+		Notifier("Tray Icon Balloon", "Tray Icon Balloon", IconsManager::instance()->iconByPath("external_modules/qt4notify"))
 {
 	kdebugf();
 

@@ -8,7 +8,7 @@
  * Copyright 2008 Tomasz Rostański (rozteck@interia.pl)
  * Copyright 2008, 2010 Piotr Galiszewski (piotrgaliszewski@gmail.com)
  * Copyright 2005 Paweł Płuciennik (pawel_p@kadu.net)
- * Copyright 2010 Piotr Dąbrowski (ultr@ultr.pl)
+ * Copyright 2010, 2011 Piotr Dąbrowski (ultr@ultr.pl)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -65,10 +65,15 @@ public:
 
 	IconThemeManager * themeManager() const;
 
+	QString iconPathAllowEmpty(const QString &path, const QString &size, const QString &name) const;
+	QString iconPathAllowEmpty(const QString &path, const QString &size) const;
+	QString iconPathAllowEmpty(const QString &path) const;
+
 	QString iconPath(const QString &path, const QString &size, const QString &name) const;
 	QString iconPath(const QString &path, const QString &size) const;
 	QString iconPath(const QString &path) const;
-	const QIcon & iconByPath(const QString &path);
+
+	const QIcon & iconByPath(const QString &path, const bool &allowEmpty = false);
 
 	QSize getIconsSize();
 

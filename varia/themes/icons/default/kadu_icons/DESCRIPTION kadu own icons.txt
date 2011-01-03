@@ -1,3 +1,13 @@
-From time to time "Freedesktop icon specification"[*]  should be checked. Maybe more freedesktop-icons are available now and some icons may be removed from "kadu_icons" folder. The less icons here, the better because than we may use system icons on Linux (both KDE and Gnome) 
+Notice:
 
-[*] Both official repo located at http://standards.freedesktop.org/icon-naming-spec/icon-naming-spec-latest.html (from 2006!) and unofficial (i.e.. just check if some icon is available in Ubuntu icon set and in Oxygen-KDE set, if the name of corresponding icon is the same in both sets then use it as "unofficial standard")
+From time to time "Freedesktop icon specification"[*]  should be checked.
+Maybe more freedesktop-icons are available now and some icons may be removed
+from "kadu_icons" folder. The less icons here, the better because than we may
+use system icons on Linux (both KDE and Gnome).
+
+[*] Both official repo located at
+  http://standards.freedesktop.org/icon-naming-spec/icon-naming-spec-latest.html
+  (from 2006!) and unofficial (i.e.. just check if some icon is available in
+  Ubuntu icon set and in Oxygen-KDE set, if the name of corresponding icon is
+  the same in both sets then use it as "unofficial standard").
+

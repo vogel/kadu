@@ -1,6 +1,7 @@
 /*
  * %kadu copyright begin%
  * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2011 Piotr Dąbrowski (ultr@ultr.pl)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -77,17 +78,32 @@ QString ChatTypeConference::displayName() const
 }
 
 /**
+ * @author Piotr 'ultr' Dąbrowski
+ * @short Display name of chat type in plural form.
+ * @return display name of chat typein plural form
+ *
+ * Chat type display name in plural form. Display name is used in history window.
+ * This name is translated into national languaes.
+ *
+ * Plural display name for ChatTypeConference is 'Conferences'.
+ */
+QString ChatTypeConference::displayNamePlural() const
+{
+	return tr("Conferences");
+}
+
+/**
  * @author Rafal 'Vogel' Malinowski
  * @short Icon of chat type.
  * @return icon of chat type
  *
  * Chat type icon. Icon is used in history window and as icon of chat windows.
  *
- * Icon for ChatTypeConference is 'kadu_icons/kadu-modmanager'.
+ * Icon for ChatTypeConference is 'kadu_icons/conference'.
  */
 QIcon ChatTypeConference::icon() const
 {
-	return IconsManager::instance()->iconByPath("kadu_icons/kadu-modmanager");
+	return IconsManager::instance()->iconByPath("kadu_icons/conference");
 }
 
 /**

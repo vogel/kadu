@@ -108,7 +108,7 @@ void ExecConfigurationWidget::switchToEvent(const QString &event)
 
 //TODO 0.6.6 icon:
 ExecNotify::ExecNotify(QObject *parent) :
-		Notifier("Exec", "Run command", IconsManager::instance()->iconByPath("external_modules/module_mediaplayer"), parent)
+		Notifier("Exec", "Run command", IconsManager::instance()->iconByPath("external_modules/execnotify"), parent)
 {
 	kdebugf();
 

@@ -42,10 +42,10 @@ QVariant ContactDataExtractor::data(const Contact &contact, int role, bool useBu
 		case Qt::DecorationRole:
 		{
 			if (contact.ownerBuddy().isBlocked())
-				return IconsManager::instance()->iconByPath("kadu_icons/kadu-blocked");
+				return IconsManager::instance()->iconByPath("kadu_icons/blocked");
 
 			if (contact.isBlocking())
-				return IconsManager::instance()->iconByPath("kadu_icons/kadu-blocking");
+				return IconsManager::instance()->iconByPath("kadu_icons/blocking");
 
 			// TODO generic icon
 			return !contact.contactAccount().isNull()

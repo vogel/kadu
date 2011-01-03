@@ -64,7 +64,7 @@ extern "C" KADU_EXPORT void kde_notify_close()
 }
 
 KdeNotify::KdeNotify(QObject *parent) :
-		Notifier("KNotify", tr("KDE4 notifications"), IconsManager::instance()->iconByPath("internet-group-chat"), parent),
+		Notifier("KNotify", tr("KDE4 notifications"), IconsManager::instance()->iconByPath("kadu_icons/notify-hints"), parent),
 		UseFreedesktopStandard(false)
 {
 	kdebugf();
@@ -123,7 +123,7 @@ void KdeNotify::notify(Notification *notification)
 	QList<QVariant> args;
 	args.append("Kadu");
 	args.append(0U);
-	args.append(IconsManager::instance()->iconPath("kadu_icons/kadu-tab", "32x32"));
+	args.append(IconsManager::instance()->iconPath("kadu_icons/section-kadu", "32x32"));
 
 	/* the new spec doesn't have this */
 	if (!UseFreedesktopStandard)

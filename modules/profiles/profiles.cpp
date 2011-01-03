@@ -62,7 +62,7 @@ ProfileManager::ProfileManager(QObject *parent, const char *name)
 	profileMenuActionDescription = new ActionDescription(this,
 		ActionDescription::TypeMainMenu, "profileManagerAction",
 		this, SLOT(showMenu()),
-		"external_modules/module_profiles", "external_modules/module_profiles", tr("Profiles...")
+		"external_modules/profiles-profiles", "external_modules/profiles-profiles", tr("Profiles...")
 	);
 	kadu->insertMenuActionDescription(0, profileMenuActionDescription);
 

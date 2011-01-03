@@ -101,7 +101,7 @@ ChatWidgetActions::ChatWidgetActions(QObject *parent) : QObject(parent)
 	AutoSend = new ActionDescription(0,
 		ActionDescription::TypeChat, "autoSendAction",
 		this, SLOT(autoSendActionActivated(QAction *, bool)),
-		"kadu_icons/kadu-enter", tr("Return Sends Message"), true
+		"kadu_icons/enter", tr("Return Sends Message"), true
 	);
 	connect(AutoSend, SIGNAL(actionCreated(Action *)), this, SLOT(autoSendActionCreated(Action *)));
 
@@ -155,7 +155,7 @@ ChatWidgetActions::ChatWidgetActions(QObject *parent) : QObject(parent)
 	BlockUser = new ActionDescription(0,
 		ActionDescription::TypeUser, "blockUserAction",
 		this, SLOT(blockUserActionActivated(QAction *, bool)),
-		"kadu_icons/kadu-block", tr("Block Buddy"), true,
+		"kadu_icons/block-buddy", tr("Block Buddy"), true,
 		checkBlocking
 	);
 
@@ -183,7 +183,7 @@ ChatWidgetActions::ChatWidgetActions(QObject *parent) : QObject(parent)
 	ColorSelector = new ActionDescription(0,
 		ActionDescription::TypeChat, "colorAction",
 		this, SLOT(colorSelectorActionActivated(QAction *, bool)),
-		"kadu_icons/kadu-colors", tr("Change Color")
+		"kadu_icons/change-color", tr("Change Color")
 	);
 
 	BuddiesListViewMenuManager::instance()->addActionDescription(OpenChat, BuddiesListViewMenuItem::MenuCategoryChat, 25);

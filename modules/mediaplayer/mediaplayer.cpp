@@ -152,32 +152,32 @@ MediaPlayer::MediaPlayer(bool firstLoad)
 	enableMediaPlayerStatuses = new ActionDescription(
 		0, ActionDescription::TypeGlobal, "enableMediaPlayerStatusesAction",
 		this, SLOT(mediaPlayerStatusChangerActivated(QAction *, bool)),
-		"external_modules/module_mediaplayer-media-playback-start", tr("Enable MediaPlayer Statuses"), true
+		"external_modules/mediaplayer-media-playback-play", tr("Enable MediaPlayer Statuses"), true
 	);
 	mediaPlayerMenu = new ActionDescription(
 		0, ActionDescription::TypeChat, "mediaplayer_button",
 		this, SLOT(mediaPlayerMenuActivated(QAction *, bool)),
-		"external_modules/module_mediaplayer-media-playback-start", tr("MediaPlayer"), false
+		"external_modules/mediaplayer", tr("MediaPlayer"), false
 	);
 	playAction = new ActionDescription(
 		0, ActionDescription::TypeChat, "mediaplayer_play",
 		this, SLOT(playPause()),
-		"external_modules/module_mediaplayer-media-playback-start", tr("Play"), false
+		"external_modules/mediaplayer-media-playback-play", tr("Play"), false
 	);
 	stopAction = new ActionDescription(
 		0, ActionDescription::TypeChat, "mediaplayer_stop",
 		this, SLOT(stop()),
-		"external_modules/module_mediaplayer-media-playback-stop", tr("Stop"), false
+		"external_modules/mediaplayer-media-playback-stop", tr("Stop"), false
 	);
 	prevAction = new ActionDescription(
 		0, ActionDescription::TypeChat, "mediaplayer_prev",
 		this, SLOT(prevTrack()),
-		"external_modules/module_mediaplayer-media-skip-backward", tr("Previous Track"), false
+		"external_modules/mediaplayer-media-skip-backward", tr("Previous Track"), false
 	);
 	nextAction = new ActionDescription(
 		0, ActionDescription::TypeChat, "mediaplayer_next",
 		this, SLOT(nextTrack()),
-		"external_modules/module_mediaplayer-media-skip-forward", tr("Next Track"), false
+		"external_modules/mediaplayer-media-skip-forward", tr("Next Track"), false
 	);
 	volUpAction = new ActionDescription(
 		0, ActionDescription::TypeChat, "mediaplayer_vol_up",
@@ -766,7 +766,7 @@ void MediaPlayer::putTitleHint(QString title)
 {
 	kdebugf();
 
-	Notification *notification = new Notification(QString(mediaPlayerOsdHint), "external_modules/module_mediaplayer-media-playback-start");
+	Notification *notification = new Notification(QString(mediaPlayerOsdHint), "external_modules/mediaplayer-media-playback-play");
 	notification->setText(title);
 	NotificationManager::instance()->notify(notification);
 }
@@ -865,7 +865,7 @@ void MediaPlayer::playPause()
 		isPaused = false;
 		foreach(Action *action, playAction->actions())
 		{
-			action->setIcon(IconsManager::instance()->iconByPath("external_modules/module_mediaplayer-media-playback-pause"));
+			action->setIcon(IconsManager::instance()->iconByPath("external_modules/mediaplayer-media-playback-pause"));
 			action->setText(tr("Pause"));
 
 		}
@@ -876,7 +876,7 @@ void MediaPlayer::playPause()
 		isPaused = true;
 		foreach(Action *action, playAction->actions())
 		{
-			action->setIcon(IconsManager::instance()->iconByPath("external_modules/module_mediaplayer-media-playback-start"));
+			action->setIcon(IconsManager::instance()->iconByPath("external_modules/mediaplayer-media-playback-play"));
 			action->setText(tr("Play"));
 		}
 	}
@@ -889,7 +889,7 @@ void MediaPlayer::play()
 
 	isPaused = false;
 	foreach(Action *action, playAction->actions())
-		action->setIcon(IconsManager::instance()->iconByPath("external_modules/module_mediaplayer-media-playback-start"));
+		action->setIcon(IconsManager::instance()->iconByPath("external_modules/mediaplayer-media-playback-play"));
 }
 
 void MediaPlayer::stop()
@@ -899,7 +899,7 @@ void MediaPlayer::stop()
 
 	isPaused = true;
 	foreach(Action *action, playAction->actions())
-		action->setIcon(IconsManager::instance()->iconByPath("external_modules/module_mediaplayer-media-playback-start"));
+		action->setIcon(IconsManager::instance()->iconByPath("external_modules/mediaplayer-media-playback-play"));
 }
 
 void MediaPlayer::pause()
@@ -909,7 +909,7 @@ void MediaPlayer::pause()
 
 	isPaused = true;
 	foreach(Action *action, playAction->actions())
-		action->setIcon(IconsManager::instance()->iconByPath("external_modules/module_mediaplayer-media-playback-start"));
+		action->setIcon(IconsManager::instance()->iconByPath("external_modules/mediaplayer-media-playback-play"));
 }
 
 void MediaPlayer::setVolume(int vol)

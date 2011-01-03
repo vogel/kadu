@@ -2,6 +2,7 @@
  * %kadu copyright begin%
  * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * Copyright 2009 Michał Podsiadlik (michal@kadu.net)
+ * Copyright 2011 Piotr Dąbrowski (ultr@ultr.pl)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -83,6 +84,16 @@ public:
 	 * is translated into national languaes.
 	 */
 	virtual QString displayName() const = 0;
+
+	/**
+	 * @author Piotr 'ultr' Dąbrowski
+	 * @short Display name of chat type in plural form.
+	 * @return display name of chat type in plural form
+	 *
+	 * Plural chat type display name. Display name is used in history window.
+	 * This name is translated into national languaes.
+	 */
+	virtual QString displayNamePlural() const = 0;
 
 	/**
 	 * @author Rafal 'Vogel' Malinowski

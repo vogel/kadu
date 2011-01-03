@@ -75,7 +75,7 @@ HistoryWindow::HistoryWindow(QWidget *parent) :
 	setWindowRole("kadu-history");
 
 	setWindowTitle(tr("History"));
-	setWindowIcon(IconsManager::instance()->iconByPath("kadu_icons/kadu-history"));
+	setWindowIcon(IconsManager::instance()->iconByPath("kadu_icons/history"));
 
 	createGui();
 	connectGui();
@@ -609,7 +609,7 @@ void HistoryWindow::showMainPopupMenu(const QPoint &pos)
 		return;
 
 	QMenu *menu = BuddiesListViewMenuManager::instance()->menu(this, this, chat.contacts().toContactList());
-	menu->addAction(IconsManager::instance()->iconByPath("kadu_icons/history-clear"), tr("&Clear history"), this, SLOT(clearHistory()));
+	menu->addAction(IconsManager::instance()->iconByPath("kadu_icons/clear-history"), tr("&Clear History"), this, SLOT(clearHistory()));
 	menu->exec(QCursor::pos());
 
 	delete menu;
