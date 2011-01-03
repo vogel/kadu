@@ -233,9 +233,10 @@ void TabsManager::onDestroyingChat(ChatWidget* chat)
 
 	if (TabDialog->indexOf(chat) != -1)
 	{
-		TabDialog->removeTab(TabDialog->indexOf(chat));
 		// zapamietuje wewnetrzne rozmiary chata
 		chat->kaduStoreGeometry();
+
+		TabDialog->removeTab(TabDialog->indexOf(chat));
 	}
 
 	NewChats.removeOne(chat);
@@ -376,11 +377,14 @@ void TabsManager::insertTab(ChatWidget* chat)
 {
 	kdebugf();
 
+	bool restoreChatGeometry = true;
+
 	// jeśli jest otwarty chatwindow przypisany do chat to zostanie on zamknięty
 	if (chat->parent())
+	{
 		chat->parent()->deleteLater();
-	else
-		chat->kaduRestoreGeometry();
+		restoreChatGeometry = false;
+	}
 
 	ContactSet contacts = chat->chat().contacts();
 
@@ -394,6 +398,9 @@ void TabsManager::insertTab(ChatWidget* chat)
 
 	// Ustawiam tytul karty w zaleznosci od tego czy mamy do czynienia z rozmowa czy z konferencja
 	TabDialog->insertTab(TargetTabs, chat, chat->icon(), formatTabName(chat));
+
+	if (restoreChatGeometry)
+		chat->kaduRestoreGeometry();
 
 	TabDialog->setTabToolTip(TargetTabs, chat->title());
 

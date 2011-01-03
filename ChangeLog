@@ -42,6 +42,7 @@
 * jabber: #1898 fixed: '>' character is not displayed displayed in chat's view (WhE)
 * jabber: #1840 fixed: Crash in CertificateHelpers::checkCertificate() (WhE)
 * modules: #1883 fixed: properly destroy all singletons in modules (WhE, Vogel)
+* gui: #1862 fixed: occassionally incorrect text-area size when opening a tab (WhE)
 
 +++ version 0.6.6-beta13
 * sound: #1376 fixed: long delays on Kadu exit and warnings from Qt regarding mutexes (beevvy)
