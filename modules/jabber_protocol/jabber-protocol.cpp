@@ -36,6 +36,7 @@
 #include "status/status-type-manager.h"
 #include "url-handlers/url-handler-manager.h"
 
+#include "actions/jabber-actions.h"
 #include "certificates/trusted-certificates-manager.h"
 #include "utils/vcard-factory.h"
 #include "iris/irisnetglobal.h"
@@ -63,6 +64,8 @@ int JabberProtocol::initModule()
 	JabberIdValidator::createInstance();
 	VCardFactory::createInstance();
 
+	JabberActions::registerActions();
+
 	JabberProtocolFactory::createInstance();
 	GTalkProtocolFactory::createInstance();
 	FacebookProtocolFactory::createInstance();
@@ -89,6 +92,8 @@ void JabberProtocol::closeModule()
 	JabberProtocolFactory::destroyInstance();
 	GTalkProtocolFactory::destroyInstance();
 	FacebookProtocolFactory::destroyInstance();
+
+	JabberActions::unregisterActions();
 
 	VCardFactory::destroyInstance();
 	JabberIdValidator::destroyInstance();

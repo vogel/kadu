@@ -236,6 +236,7 @@ else (WIN32)
 endif (WIN32)
 
 set (SOURCES
+	actions/jabber-actions.cpp
 	certificates/certificate-display-dialog.cpp
 	certificates/certificate-error-dialog.cpp
 	certificates/certificate-helpers.cpp
@@ -281,6 +282,7 @@ set (SOURCES
 )
 
 set (MOC_SOURCES
+	actions/jabber-actions.h
 	certificates/certificate-display-dialog.h
 	certificates/certificate-error-dialog.h
 	certificates/trusted-certificates-manager.h
