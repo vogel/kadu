@@ -1,7 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
- * Copyright 2009 Bartłomiej Zimoń (uzi18@o2.pl)
+ * Copyright 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -18,30 +17,28 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PROTOCOL_MENU_MANAGER_H
-#define PROTOCOL_MENU_MANAGER_H
+#ifndef JABBER_PROTOCOL_MENU_MANAGER_H
+#define JABBER_PROTOCOL_MENU_MANAGER_H
 
-#include <QtCore/QList>
-#include "exports.h"
+#include "protocols/protocol-menu-manager.h"
 
-class Account;
-class ActionDescription;
-class Buddy;
-
-class KADUAPI ProtocolMenuManager
+class JabberProtocolMenuManager : public ProtocolMenuManager
 {
-	// TODO : remove or use it somewhere or extend to kadu menu
-	QList<ActionDescription *> ContactsListActions;
-	QList<ActionDescription *> ManagementActions;
-	QList<ActionDescription *> ProtocolActions;
+	static JabberProtocolMenuManager *Instance;
+
+	QList<ActionDescription *> RosterActions;
+
+	explicit JabberProtocolMenuManager();
+	virtual ~JabberProtocolMenuManager();
 
 public:
-	ProtocolMenuManager();
+	static void createInstance();
+	static void destroyInstance();
 
-	virtual const QList<ActionDescription *> & contactsListActions() const { return ContactsListActions; }
-	virtual const QList<ActionDescription *> & managementActions() const { return ManagementActions; }
+	static JabberProtocolMenuManager * instance() { return Instance; }
+
 	virtual QList<ActionDescription *> protocolActions(Account account, Buddy buddy);
 
 };
 
-#endif // PROTOCOL_MENU_MANAGER_H
+#endif // JABBER_PROTOCOL_MENU_MANAGER_H

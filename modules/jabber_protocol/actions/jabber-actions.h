@@ -48,7 +48,11 @@ public:
 	static void registerActions();
 	static void unregisterActions();
 
-	JabberActions * instance() { return Instance; }
+	static JabberActions * instance() { return Instance; }
+
+	ActionDescription * resendSubscription() { return ResendSubscription; }
+	ActionDescription * removeSubscription() { return RemoveSubscription; }
+	ActionDescription * askForSubscription() { return AskForSubscription; }
 
 };
 

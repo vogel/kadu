@@ -237,6 +237,7 @@ endif (WIN32)
 
 set (SOURCES
 	actions/jabber-actions.cpp
+	actions/jabber-protocol-menu-manager.cpp
 	certificates/certificate-display-dialog.cpp
 	certificates/certificate-error-dialog.cpp
 	certificates/certificate-helpers.cpp

@@ -25,6 +25,7 @@
 #include "status/status-type-manager.h"
 #include "icons-manager.h"
 
+#include "actions/jabber-protocol-menu-manager.h"
 #include "gui/widgets/jabber-contact-personal-info-widget.h"
 #include "gui/widgets/jabber-add-account-widget.h"
 #include "gui/widgets/jabber-create-account-widget.h"
@@ -137,4 +138,9 @@ QString JabberProtocolFactory::defaultServer()
 QWidget * JabberProtocolFactory::newContactPersonalInfoWidget(Contact contact, QWidget *parent)
 {
 	return new JabberContactPersonalInfoWidget(contact, parent);
+}
+
+ProtocolMenuManager * JabberProtocolFactory::protocolMenuManager()
+{
+	return JabberProtocolMenuManager::instance();
 }

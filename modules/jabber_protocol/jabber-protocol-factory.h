@@ -46,6 +46,7 @@ public:
 	virtual AccountCreateWidget * newCreateAccountWidget(bool showButtons, QWidget *parent);
 	virtual AccountEditWidget* newEditAccountWidget(Account, QWidget*);
 	virtual QWidget * newContactPersonalInfoWidget(Contact contact, QWidget *parent = 0);
+    virtual ProtocolMenuManager * protocolMenuManager();
 	virtual QList<StatusType *> supportedStatusTypes();
 	virtual QString idLabel();
 	virtual QValidator::State validateId(QString id);
