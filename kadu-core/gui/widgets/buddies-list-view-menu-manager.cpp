@@ -20,7 +20,9 @@
 #include <QtGui/QMenu>
 
 #include "accounts/account.h"
+#include "contacts/contact-set.h"
 #include "gui/actions/action.h"
+#include "gui/actions/action-data-source.h"
 #include "gui/actions/action-description.h"
 #include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
@@ -99,8 +101,11 @@ void BuddiesListViewMenuManager::removeListActionDescription(ActionDescription *
 	}
 }
 
+// TODO: refactor, split
 QMenu * BuddiesListViewMenuManager::menu(QWidget *parent, ActionDataSource *actionDataSource, QList<Contact> contacts)
 {
+	Q_UNUSED(contacts)
+
 	sortBuddiesContexMenu();
 	sortBuddyListActions();
 
@@ -123,6 +128,36 @@ QMenu * BuddiesListViewMenuManager::menu(QWidget *parent, ActionDataSource *acti
 		first = false;
 	}
 
+	if (actionDataSource->hasContactSelected())
+	{
+		if (1 == actionDataSource->contacts().size())
+		{
+			Contact contact = *actionDataSource->contacts().begin();
+
+			if (contact.contactAccount() && contact.contactAccount().protocolHandler())
+			{
+				Account account = contact.contactAccount();
+				ProtocolFactory *protocolFactory = account.protocolHandler()->protocolFactory();
+
+				if (protocolFactory && protocolFactory->protocolMenuManager())
+				{
+					if (!first && protocolFactory->protocolMenuManager()->protocolActions().size() > 0)
+						actions->addSeparator();
+
+					foreach (ActionDescription *actionDescription, protocolFactory->protocolMenuManager()->protocolActions())
+						if (actionDescription)
+						{
+							Action *action = actionDescription->createAction(actionDataSource, parent);
+							actions->addAction(action);
+							action->checkState();
+						}
+						else
+							actions->addSeparator();
+				}
+			}
+		}
+	}
+
 	lastCategory = BuddiesListViewMenuItem::MenuCategoryChat;
 	first = true;
 	foreach (BuddiesListViewMenuItem menuItem, BuddiesContexMenu)
@@ -140,35 +175,6 @@ QMenu * BuddiesListViewMenuManager::menu(QWidget *parent, ActionDataSource *acti
 
 		lastCategory = menuItem.category();
 		first = false;
-	}
-
-	foreach (const Contact &contact, contacts)
-	{
-		if (!contact.contactAccount() || !contact.contactAccount().protocolHandler())
-			continue;
-
-		Account account = contact.contactAccount();
-		ProtocolFactory *protocolFactory = account.protocolHandler()->protocolFactory();
-
-		if (!account.protocolHandler()->protocolFactory() || !protocolFactory->protocolMenuManager())
-			continue;
-
-		QMenu *account_menu = menu->addMenu(account.accountIdentity().name());
-		if (!protocolFactory->icon().isNull())
-			account_menu->setIcon(protocolFactory->icon());
-
-		if (protocolFactory->protocolMenuManager()->protocolActions(account, contact.ownerBuddy()).size() == 0)
-			continue;
-
-		foreach (ActionDescription *actionDescription, protocolFactory->protocolMenuManager()->protocolActions(account, contact.ownerBuddy()))
-			if (actionDescription)
-			{
-				Action *action = actionDescription->createAction(actionDataSource, parent);
-				account_menu->addAction(action);
-				action->checkState();
-			}
-			else
-				account_menu->addSeparator();
 	}
 
 	return menu;

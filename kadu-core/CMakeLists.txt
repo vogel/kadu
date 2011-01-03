@@ -291,7 +291,6 @@ set (kadu_SRCS
 	protocols/connection-error-notification.cpp
 	protocols/invalid-password-notification.cpp
 	protocols/protocol.cpp
-	protocols/protocol-menu-manager.cpp
 	protocols/protocols-aware-object.cpp
 	protocols/protocols-manager.cpp
 	protocols/filter/can-register-protocol-filter.cpp

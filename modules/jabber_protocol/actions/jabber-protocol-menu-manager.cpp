@@ -17,9 +17,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "accounts/account.h"
-#include "buddies/buddy.h"
-
 #include "actions/jabber-actions.h"
 
 #include "jabber-protocol-menu-manager.h"
@@ -50,10 +47,7 @@ JabberProtocolMenuManager::~JabberProtocolMenuManager()
 	RosterActions.clear();
 }
 
-QList<ActionDescription *> JabberProtocolMenuManager::protocolActions(Account account, Buddy buddy)
+QList<ActionDescription *> JabberProtocolMenuManager::protocolActions()
 {
-	Q_UNUSED(account)
-	Q_UNUSED(buddy)
-
 	return RosterActions;
 }

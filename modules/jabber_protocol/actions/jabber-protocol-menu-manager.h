@@ -37,7 +37,7 @@ public:
 
 	static JabberProtocolMenuManager * instance() { return Instance; }
 
-	virtual QList<ActionDescription *> protocolActions(Account account, Buddy buddy);
+	virtual QList<ActionDescription *> protocolActions();
 
 };
 

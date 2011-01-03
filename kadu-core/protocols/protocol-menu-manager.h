@@ -21,26 +21,14 @@
 #ifndef PROTOCOL_MENU_MANAGER_H
 #define PROTOCOL_MENU_MANAGER_H
 
-#include <QtCore/QList>
 #include "exports.h"
 
-class Account;
 class ActionDescription;
-class Buddy;
 
 class KADUAPI ProtocolMenuManager
 {
-	// TODO : remove or use it somewhere or extend to kadu menu
-	QList<ActionDescription *> ContactsListActions;
-	QList<ActionDescription *> ManagementActions;
-	QList<ActionDescription *> ProtocolActions;
-
 public:
-	ProtocolMenuManager();
-
-	virtual const QList<ActionDescription *> & contactsListActions() const { return ContactsListActions; }
-	virtual const QList<ActionDescription *> & managementActions() const { return ManagementActions; }
-	virtual QList<ActionDescription *> protocolActions(Account account, Buddy buddy);
+	virtual QList<ActionDescription *> protocolActions() = 0;
 
 };
 
