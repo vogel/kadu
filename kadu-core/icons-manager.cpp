@@ -71,44 +71,26 @@ IconThemeManager * IconsManager::themeManager() const
 	return ThemeManager;
 }
 
-QString IconsManager::iconPath(const QString &path, const QString &size, const QString &name, bool emptyIfNonExistent) const
+QString IconsManager::iconPath(const QString &path, const QString &size, const QString &name) const
 {
-	QString fileName;
 	QFileInfo fileInfo;
 
-	fileName = ThemeManager->currentTheme().path() + path + '/' + size + '/' + name + ".png";
-	fileInfo.setFile(fileName);
+	fileInfo.setFile( ThemeManager->currentTheme().path() + path + '/' + size + '/' + name + ".png" );
 	if (fileInfo.isFile() && fileInfo.isReadable())
 		return fileInfo.canonicalFilePath();
 
-	fileName = ThemeManager->currentTheme().path() + path + "/svg/" + name + ".svg";
-	fileInfo.setFile(fileName);
+	fileInfo.setFile( ThemeManager->currentTheme().path() + path + "/svg/" + name + ".svg" );
 	if (fileInfo.isFile() && fileInfo.isReadable())
 		return fileInfo.canonicalFilePath();
 
-	fileName = ThemeManager->currentTheme().path() + path + "/svg/" + name + ".svgz";
-	fileInfo.setFile(fileName);
+	fileInfo.setFile( ThemeManager->currentTheme().path() + path + "/svg/" + name + ".svgz" );
 	if (fileInfo.isFile() && fileInfo.isReadable())
 		return fileInfo.canonicalFilePath();
 
-	QRegExp commonRegexp = QRegExp("^protocols/common/(.+)$");
-	if (path.contains(commonRegexp))
-	{
-		QString protocolpath;
-		if (AccountManager::instance()->defaultAccount())
-			protocolpath = AccountManager::instance()->defaultAccount().protocolHandler()->statusPixmapPath();
-		else
-			protocolpath = localProtocolPath;
-		QString path2 = QString("protocols/%1/%2").arg(protocolpath, commonRegexp.cap(1));
-		return iconPath(path2, size, name, emptyIfNonExistent);
-	}
-
-	if (emptyIfNonExistent)
-		return QString();
-	return iconPath("kadu_icons", size, "0", true );
+	return QString::null;
 }
 
-QString IconsManager::iconPath(const QString &path, const QString &size, bool emptyIfNonExistent) const
+QString IconsManager::iconPath(const QString &path, const QString &size) const
 {
 	QString realPath;
 	QString iconName;
@@ -116,26 +98,24 @@ QString IconsManager::iconPath(const QString &path, const QString &size, bool em
 	int lastHash = path.lastIndexOf('/');
 	if (-1 != lastHash)
 	{
-		realPath = path.left(lastHash);
+		realPath = path.mid(0, lastHash);
 		iconName = path.mid(lastHash + 1);
 	}
 	else
 		iconName = path;
 
-	return iconPath(realPath, size, iconName, emptyIfNonExistent);
+	return iconPath(realPath, size, iconName);
 }
 
-QString IconsManager::iconPath(const QString &path, bool emptyIfNonExistent) const
+QString IconsManager::iconPath(const QString &path) const
 {
 	QString fileName = ThemeManager->currentTheme().path() + path;
 
 	QFileInfo fileInfo(fileName);
-	if (fileInfo.isFile() && fileInfo.isReadable())
-		return fileInfo.canonicalFilePath();
+	if (!fileInfo.isFile() || !fileInfo.isReadable())
+		return QString::null;
 
-	if (emptyIfNonExistent)
-		return QString();
-	return iconPath( "kadu_icons/64x64/0.png", true );
+	return fileInfo.canonicalFilePath();
 }
 
 QIcon IconsManager::buildPngIcon(const QString &path)
@@ -152,7 +132,7 @@ QIcon IconsManager::buildPngIcon(const QString &path)
 	QIcon icon;
 	for (int i = 0; i < sizes_count; i++)
 	{
-		QString fullPath = iconPath(path, sizes[i], true);
+		QString fullPath = iconPath(path, sizes[i]);
 		if (!fullPath.isEmpty())
 			icon.addFile(fullPath);
 	}
@@ -169,29 +149,27 @@ QIcon IconsManager::buildSvgIcon(const QString& path)
 	int lastHash = path.lastIndexOf('/');
 	if (lastHash != -1)
 	{
-		realPath = path.left(lastHash);
+		realPath = path.mid(0, lastHash);
 		iconName = path.mid(lastHash + 1);
 	}
 	else
 		iconName = path;
 
-	QString fileName;
 	QFileInfo fileInfo;
 
-	fileName = ThemeManager->currentTheme().path() + realPath + "/svg/" + iconName + ".svg";
-	fileInfo.setFile(fileName);
+	fileInfo.setFile( ThemeManager->currentTheme().path() + realPath + "/svg/" + iconName + ".svg" );
 	if (fileInfo.isFile() && fileInfo.isReadable())
 		icon.addFile(fileInfo.canonicalFilePath());
 
-	fileName = ThemeManager->currentTheme().path() + realPath + "/svg/" + iconName + ".svgz";
-	fileInfo.setFile(fileName);
+	fileInfo.setFile( ThemeManager->currentTheme().path() + realPath + "/svg/" + iconName + ".svgz" );
 	if (fileInfo.isFile() && fileInfo.isReadable())
 		icon.addFile(fileInfo.canonicalFilePath());
 
 	return icon;
 }
 
-const QIcon & IconsManager::iconByPath(const QString &path, bool emptyIfNonExistent)
+
+const QIcon & IconsManager::iconByPath(const QString &path)
 {
 	if (!IconCache.contains(path))
 	{
@@ -222,10 +200,6 @@ const QIcon & IconsManager::iconByPath(const QString &path, bool emptyIfNonExist
 				}
 			}
 
-			if (icon.isNull() && !emptyIfNonExistent)
-			{
-				icon = buildPngIcon("kadu_icons/0");
-			}
 		}
 
 		IconCache.insert(path, icon);
