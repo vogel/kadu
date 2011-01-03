@@ -35,6 +35,7 @@ public:
 	virtual ~AbstractBuddyFilter() {}
 
 	virtual bool acceptBuddy(Buddy buddy) = 0;
+	virtual bool ignoreNextFilters() { return false; }
 
 signals:
 	void filterChanged();

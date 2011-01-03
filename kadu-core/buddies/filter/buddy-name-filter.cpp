@@ -45,6 +45,11 @@ bool BuddyNameFilter::acceptBuddy(Buddy buddy)
 	return false;
 }
 
+bool BuddyNameFilter::ignoreNextFilters()
+{
+	return !Name.isEmpty();
+}
+
 void BuddyNameFilter::setName(const QString &name)
 {
 	if (Name != name)

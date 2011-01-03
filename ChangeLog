@@ -37,6 +37,7 @@
 * gui: #747, #1875 fixed: toolbars in chat windows are now synchronized (Vogel)
 * single_window: #1867 fixed: unminimize window after openning new chat (WhE)
 * gui: #1863 fixed: toolbar buttons could be wrongly positioned after module load (Vogel)
+* gui: #1877 fixed: filtering buddies by name disables all other filters (Vogel)
 
 +++ version 0.6.6-beta13
 * sound: #1376 fixed: long delays on Kadu exit and warnings from Qt regarding mutexes (beevvy)

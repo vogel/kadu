@@ -155,6 +155,8 @@ bool BuddiesModelProxy::filterAcceptsRow(int sourceRow, const QModelIndex &sourc
 		foreach (AbstractBuddyFilter *filter, BuddyFilters)
 			if (!filter->acceptBuddy(buddy))
 				return false;
+			else if (filter->ignoreNextFilters())
+				return true;
 	}
 
 	return true;
