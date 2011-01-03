@@ -71,7 +71,7 @@ IconThemeManager * IconsManager::themeManager() const
 	return ThemeManager;
 }
 
-QString IconsManager::iconPath(const QString &path, const QString &size, const QString &name) const
+QString IconsManager::iconPathAllowEmpty(const QString &path, const QString &size, const QString &name) const
 {
 	QFileInfo fileInfo;
 
@@ -102,7 +102,7 @@ QString IconsManager::iconPath(const QString &path, const QString &size, const Q
 	return QString::null;
 }
 
-QString IconsManager::iconPath(const QString &path, const QString &size) const
+QString IconsManager::iconPathAllowEmpty(const QString &path, const QString &size) const
 {
 	QString realPath;
 	QString iconName;
@@ -119,7 +119,7 @@ QString IconsManager::iconPath(const QString &path, const QString &size) const
 	return iconPath(realPath, size, iconName);
 }
 
-QString IconsManager::iconPath(const QString &path) const
+QString IconsManager::iconPathAllowEmpty(const QString &path) const
 {
 	QString fileName = ThemeManager->currentTheme().path() + path;
 
@@ -128,6 +128,30 @@ QString IconsManager::iconPath(const QString &path) const
 		return QString::null;
 
 	return fileInfo.canonicalFilePath();
+}
+
+QString IconsManager::iconPath(const QString &path, const QString &size, const QString &name) const
+{
+	QString result = iconPathAllowEmpty(path, size, name);
+	if(!result.isEmpty())
+		return result;
+	return iconPathAllowEmpty("kadu_icons", size, "0");
+}
+
+QString IconsManager::iconPath(const QString &path, const QString &size) const
+{
+	QString result = iconPathAllowEmpty(path, size);
+	if(!result.isEmpty())
+		return result;
+	return iconPathAllowEmpty("kadu_icons/0", size);
+}
+
+QString IconsManager::iconPath(const QString &path) const
+{
+	QString result = iconPathAllowEmpty(path);
+	if(!result.isEmpty())
+		return result;
+	return iconPathAllowEmpty("kadu_icons/64x64/0");
 }
 
 QIcon IconsManager::buildPngIcon(const QString &path)
@@ -180,8 +204,7 @@ QIcon IconsManager::buildSvgIcon(const QString& path)
 	return icon;
 }
 
-
-const QIcon & IconsManager::iconByPath(const QString &path)
+const QIcon & IconsManager::iconByPath(const QString &path, const bool &allowEmpty)
 {
 	if (!IconCache.contains(path))
 	{
@@ -211,6 +234,9 @@ const QIcon & IconsManager::iconByPath(const QString &path)
 					return iconByPath(path2);
 				}
 			}
+
+			if (icon.isNull() && !allowEmpty)
+				icon = buildPngIcon("kadu_icons/0");
 
 		}
 
