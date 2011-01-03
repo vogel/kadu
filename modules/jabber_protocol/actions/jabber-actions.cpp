@@ -23,6 +23,9 @@
 #include "gui/actions/action-description.h"
 #include "protocols/protocol.h"
 
+#include "services/jabber-subscription-service.h"
+#include "jabber-protocol.h"
+
 #include "jabber-actions.h"
 
 void disableNoRosterContact(Action *action)
@@ -74,20 +77,69 @@ JabberActions::~JabberActions()
 {
 }
 
+Contact JabberActions::contactFromAction(QAction *action)
+{
+	Action *kaduAction = qobject_cast<Action *>(action);
+	if (!kaduAction)
+		return Contact::null;
+
+	return kaduAction->contact();
+}
+
+JabberSubscriptionService * JabberActions::subscriptionServiceFromContact(const Contact& contact)
+{
+	Protocol *protocolHandler = contact.contactAccount().protocolHandler();
+	if (!protocolHandler)
+		return 0;
+
+	JabberProtocol *jabberProtocolHandler = qobject_cast<JabberProtocol *>(protocolHandler);
+	if (!jabberProtocolHandler)
+		return 0;
+
+	return jabberProtocolHandler->subscriptionService();
+}
+
 void JabberActions::resendSubscriptionActionActivated(QAction *sender, bool toggled)
 {
-	Q_UNUSED(sender)
 	Q_UNUSED(toggled)
+
+	Contact contact = contactFromAction(sender);
+	if (!contact)
+		return;
+
+	JabberSubscriptionService *subscriptionService = subscriptionServiceFromContact(contact);
+	if (!subscriptionService)
+		return;
+
+	subscriptionService->resendSubscription(contact);
 }
 
 void JabberActions::removeSubscriptionActionActivated(QAction *sender, bool toggled)
 {
-	Q_UNUSED(sender)
 	Q_UNUSED(toggled)
+
+	Contact contact = contactFromAction(sender);
+	if (!contact)
+		return;
+
+	JabberSubscriptionService *subscriptionService = subscriptionServiceFromContact(contact);
+	if (!subscriptionService)
+		return;
+
+	subscriptionService->removeSubscription(contact);
 }
 
 void JabberActions::askForSubscriptionActionActivated(QAction *sender, bool toggled)
 {
-	Q_UNUSED(sender)
 	Q_UNUSED(toggled)
+
+	Contact contact = contactFromAction(sender);
+	if (!contact)
+		return;
+
+	JabberSubscriptionService *subscriptionService = subscriptionServiceFromContact(contact);
+	if (!subscriptionService)
+		return;
+
+	subscriptionService->requestSubscription(contact);
 }

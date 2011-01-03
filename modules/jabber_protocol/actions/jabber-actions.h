@@ -25,6 +25,8 @@
 class QAction;
 
 class ActionDescription;
+class Contact;
+class JabberSubscriptionService;
 
 class JabberActions : QObject
 {
@@ -35,6 +37,9 @@ class JabberActions : QObject
 	ActionDescription *ResendSubscription;
 	ActionDescription *RemoveSubscription;
 	ActionDescription *AskForSubscription;
+
+	Contact contactFromAction(QAction *action);
+	JabberSubscriptionService * subscriptionServiceFromContact(const Contact &contact);
 
 	explicit JabberActions();
 	virtual ~JabberActions();

@@ -108,3 +108,21 @@ void JabberSubscriptionService::authorizeContact(Contact contact, bool authorize
 	else
 		Protocol->client()->rejectSubscription(jid);
 }
+
+void JabberSubscriptionService::resendSubscription(const Contact &contact)
+{
+	if (Protocol && Protocol->client())
+		Protocol->client()->resendSubscription(contact.id());
+}
+
+void JabberSubscriptionService::removeSubscription(const Contact &contact)
+{
+	if (Protocol && Protocol->client())
+		Protocol->client()->rejectSubscription(contact.id());
+}
+
+void JabberSubscriptionService::requestSubscription(const Contact &contact)
+{
+	if (Protocol && Protocol->client())
+		Protocol->client()->requestSubscription(contact.id());
+}

@@ -40,6 +40,10 @@ private slots:
 public:
 	explicit JabberSubscriptionService(JabberProtocol *protocol);
 
+	void resendSubscription(const Contact &contact);
+	void removeSubscription(const Contact &contact);
+	void requestSubscription(const Contact &contact);
+
 public slots:
 	void authorizeContact(Contact contact, bool authorized);
 
