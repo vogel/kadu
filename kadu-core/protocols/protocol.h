@@ -56,6 +56,7 @@ class Message;
 class PersonalInfoService;
 class ContactPersonalInfoService;
 class ProtocolFactory;
+class RosterService;
 class SearchService;
 class Status;
 
@@ -105,6 +106,7 @@ public:
 	virtual FileTransferService * fileTransferService() { return 0; }
 	virtual PersonalInfoService * personalInfoService() { return 0; }
 	virtual ContactPersonalInfoService * contactPersonalInfoService() { return 0; }
+	virtual RosterService * rosterService() { return 0; }
 	virtual SearchService * searchService() { return 0; }
 
 	virtual bool contactsListReadOnly() = 0;

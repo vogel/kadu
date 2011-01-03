@@ -20,8 +20,7 @@
 #ifndef JABBER_ROSTER_SERVICE_H
 #define JABBER_ROSTER_SERVICE_H
 
-#include <QtCore/QObject>
-
+#include "protocols/services/roster-service.h"
 
 namespace XMPP
 {
@@ -32,7 +31,7 @@ class Buddy;
 class Contact;
 class JabberProtocol;
 
-class JabberRosterService : public QObject
+class JabberRosterService : public RosterService
 {
 	Q_OBJECT
 

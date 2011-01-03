@@ -618,6 +618,7 @@ set (kadu_MOC_SRCS
 	protocols/services/contact-personal-info-service.h
 	protocols/services/file-transfer-service.h
 	protocols/services/personal-info-service.h
+	protocols/services/roster-service.h
 	protocols/services/search-service.h
 
 	qt/long-validator.h

@@ -27,7 +27,7 @@
 #include "jabber-roster-service.h"
 
 JabberRosterService::JabberRosterService(JabberProtocol *protocol) :
-		QObject(protocol), Protocol(protocol), InRequest(false)
+		RosterService(protocol), Protocol(protocol), InRequest(false)
 {
 	connect(Protocol->client(), SIGNAL(newContact(const XMPP::RosterItem &)),
 			this, SLOT(contactUpdated(const XMPP::RosterItem &)));
