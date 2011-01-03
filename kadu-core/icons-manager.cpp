@@ -115,7 +115,7 @@ QString IconsManager::iconPathAllowEmpty(const QString &path, const QString &siz
 	else
 		iconName = path;
 
-	return iconPath(realPath, size, iconName);
+	return iconPathAllowEmpty(realPath, size, iconName);
 }
 
 QString IconsManager::iconPathAllowEmpty(const QString &path) const
@@ -167,7 +167,7 @@ QIcon IconsManager::buildPngIcon(const QString &path)
 	QIcon icon;
 	for (int i = 0; i < sizes_count; i++)
 	{
-		QString fullPath = iconPath(path, sizes[i]);
+		QString fullPath = iconPathAllowEmpty(path, sizes[i]);
 		if (!fullPath.isEmpty())
 			icon.addFile(fullPath);
 	}
