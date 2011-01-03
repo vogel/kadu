@@ -34,6 +34,7 @@ class TrustedCertificatesManager : public QObject, public StorableStringList
 
 public:
 	static TrustedCertificatesManager * instance();
+	static void destroyInstance();
 
 	virtual StorableObject * storageParent();
 	virtual QString storageNodeName();

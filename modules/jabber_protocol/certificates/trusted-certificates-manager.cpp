@@ -33,6 +33,12 @@ TrustedCertificatesManager * TrustedCertificatesManager::instance()
 	return Instance;
 }
 
+void TrustedCertificatesManager::destroyInstance()
+{
+	delete Instance;
+	Instance = 0;
+}
+
 TrustedCertificatesManager::TrustedCertificatesManager()
 {
 	ConfigurationManager::instance()->registerStorableObject(this);

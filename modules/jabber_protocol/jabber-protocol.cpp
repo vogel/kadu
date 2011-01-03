@@ -36,6 +36,7 @@
 #include "status/status-type-manager.h"
 #include "url-handlers/url-handler-manager.h"
 
+#include "certificates/trusted-certificates-manager.h"
 #include "utils/vcard-factory.h"
 #include "iris/irisnetglobal.h"
 #include "services/jabber-roster-service.h"
@@ -91,7 +92,7 @@ void JabberProtocol::closeModule()
 
 	VCardFactory::destroyInstance();
 	JabberIdValidator::destroyInstance();
-
+	TrustedCertificatesManager::destroyInstance();
 	XMPP::irisNetCleanup();
 
 	qRemovePostRoutine(QCA::deinit);
