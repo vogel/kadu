@@ -99,7 +99,7 @@ QString IconsManager::iconPathAllowEmpty(const QString &path, const QString &siz
 		return iconPath(path2, size, name);
 	}
 
-	return QString::null;
+	return QString();
 }
 
 QString IconsManager::iconPathAllowEmpty(const QString &path, const QString &size) const
@@ -125,7 +125,7 @@ QString IconsManager::iconPathAllowEmpty(const QString &path) const
 
 	QFileInfo fileInfo(fileName);
 	if (!fileInfo.isFile() || !fileInfo.isReadable())
-		return QString::null;
+		return QString();
 
 	return fileInfo.canonicalFilePath();
 }
