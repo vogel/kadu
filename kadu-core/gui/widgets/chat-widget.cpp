@@ -173,7 +173,7 @@ void ChatWidget::createContactsList()
 	connect(BuddiesWidget->view(), SIGNAL(chatActivated(Chat)),
 			Core::instance()->kaduWindow(), SLOT(openChatWindow(Chat)));
 
-	QPushButton *leaveConference = new QPushButton(tr("Leave conference"), contactsListContainer);
+	QPushButton *leaveConference = new QPushButton(tr("Leave\nconference"), contactsListContainer);
 	leaveConference->setMinimumWidth(BuddiesWidget->minimumWidth());
 	connect(leaveConference, SIGNAL(clicked()), this, SLOT(leaveConference()));
 

@@ -1341,8 +1341,10 @@ durante primo colegamento Kadu con serwer</translation>
 <context>
     <name>ChatWidget</name>
     <message>
-        <source>Leave conference</source>
-        <translation>Esci la conferenza</translation>
+        <source>Leave
+conference</source>
+        <translation>Esci la
+conferenza</translation>
     </message>
     <message>
         <source>Insert image</source>

@@ -1365,8 +1365,10 @@ kurz nachdem Sie sich mit dem Server verbunden haben</translation>
 <context>
     <name>ChatWidget</name>
     <message>
-        <source>Leave conference</source>
-        <translation>Konferenz beenden</translation>
+        <source>Leave
+conference</source>
+        <translation>Konferenz
+beenden</translation>
     </message>
     <message>
         <source>Insert image</source>

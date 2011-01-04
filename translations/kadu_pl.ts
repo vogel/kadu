@@ -1860,8 +1860,10 @@ Niektórzy z nich na pewno go nie otrzymają.</translation>
 <context>
     <name>ChatWidget</name>
     <message>
-        <source>Leave conference</source>
-        <translation>Opuść konferencję</translation>
+        <source>Leave
+conference</source>
+        <translation>Opuść
+konferencję</translation>
     </message>
     <message>
         <source>Chat window will be cleared. Continue?</source>

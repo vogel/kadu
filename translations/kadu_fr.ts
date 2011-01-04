@@ -1333,7 +1333,8 @@ changes upon establishing connection to the server</source>
 <context>
     <name>ChatWidget</name>
     <message>
-        <source>Leave conference</source>
+        <source>Leave
+conference</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
