@@ -73,7 +73,7 @@ public:
 	QString iconPath(const QString &path, const QString &size) const;
 	QString iconPath(const QString &path) const;
 
-	const QIcon & iconByPath(const QString &path, const bool &allowEmpty = false);
+	const QIcon & iconByPath(const QString &path, bool allowEmpty = false);
 
 	QSize getIconsSize();
 
