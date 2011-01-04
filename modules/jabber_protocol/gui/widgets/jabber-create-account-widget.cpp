@@ -209,7 +209,6 @@ void JabberCreateAccountWidget::createGui(bool showButtons)
 
 	connect(RegisterAccountButton, SIGNAL(clicked(bool)), this, SLOT(apply()));
 	connect(cancelButton, SIGNAL(clicked(bool)), this, SLOT(cancel()));
-	connect(cancelButton, SIGNAL(clicked(bool)), this, SIGNAL(cancelled()));
 
 	if (!showButtons)
 		buttons->hide();

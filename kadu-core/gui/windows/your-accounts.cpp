@@ -240,7 +240,6 @@ AccountCreateWidget * YourAccounts::getAccountCreateWidget(ProtocolFactory *prot
 		if (widget)
 		{
 			connect(widget, SIGNAL(accountCreated(Account)), this, SLOT(accountCreated(Account)));
-			connect(widget, SIGNAL(cancelled()), this, SLOT(resetProtocol()));
 			CreateAddStack->addWidget(widget);
 		}
 	}
@@ -292,21 +291,13 @@ void YourAccounts::protocolChanged(ProtocolFactory *protocolFactory, ProtocolFac
 	Q_UNUSED(protocolFactory)
 
 	if (canChangeWidget())
-	{
 		updateCurrentWidget();
-		return;
+	else
+	{
+		ForceWidgetChange = true;
+		Protocols->setCurrentProtocol(lastProtocolFactory);
+		ForceWidgetChange = false;
 	}
-
-	ForceWidgetChange = true;
-	Protocols->setCurrentProtocol(lastProtocolFactory);
-	ForceWidgetChange = false;
-}
-
-void YourAccounts::resetProtocol()
-{
-	ForceWidgetChange = true;
-	Protocols->setCurrentProtocol(0);
-	ForceWidgetChange = false;
 }
 
 void YourAccounts::updateCurrentWidget()

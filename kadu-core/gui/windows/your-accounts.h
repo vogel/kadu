@@ -69,9 +69,8 @@ class KADUAPI YourAccounts : public QWidget, AccountsAwareObject
 	/*
 	 * This is necessary to prevent infinite recursion when checking
 	 * if we can safely change widget. Blocking signals doesn't work
-	 * as expected, because for instance ProtocolsComboBox really wants
-	 * to have signals enabled when we set currentProtocol to 0 in
-	 * resetProtocol().
+	 * as expected, because ProtocolsComboBox really wants to have
+	 * signals enabled to update its CurrentValue properly.
 	 */
 	bool ForceWidgetChange;
 
@@ -105,7 +104,6 @@ class KADUAPI YourAccounts : public QWidget, AccountsAwareObject
 
 private slots:
 	void protocolChanged(ProtocolFactory *protocolFactory, ProtocolFactory *lastProtocolFactory);
-	void resetProtocol();
 
 	void accountCreated(Account account);
 	void accountSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
