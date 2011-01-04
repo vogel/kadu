@@ -115,6 +115,25 @@ static void checkBlocking(Action *action)
 	action->setChecked(on);
 }
 
+// TODO: quickhack
+static void disableNoGadu(Action *action)
+{
+	action->setEnabled(false);
+
+	Chat chat = action->chat();
+	if (!chat)
+		return;
+
+	Protocol *protocol = chat.chatAccount().protocolHandler();
+	if (!protocol)
+		return;
+
+	if (!protocol->protocolFactory())
+		return;
+
+	action->setEnabled(protocol->protocolFactory()->name() == "gadu");
+}
+
 ChatWidgetActions::ChatWidgetActions(QObject *parent) : QObject(parent)
 {
 	AutoSend = new ActionDescription(0,
@@ -142,19 +161,22 @@ ChatWidgetActions::ChatWidgetActions(QObject *parent) : QObject(parent)
 	Bold = new ActionDescription(0,
 		ActionDescription::TypeChat, "boldAction",
 		this, SLOT(boldActionActivated(QAction *, bool)),
-		"format-text-bold", tr("Bold"), true
+		"format-text-bold", tr("Bold"), true,
+		disableNoGadu
 	);
 
 	Italic = new ActionDescription(0,
 		ActionDescription::TypeChat, "italicAction",
 		this, SLOT(italicActionActivated(QAction *, bool)),
-		"format-text-italic", tr("Italic"), true
+		"format-text-italic", tr("Italic"), true,
+		disableNoGadu
 	);
 
 	Underline = new ActionDescription(0,
 		ActionDescription::TypeChat, "underlineAction",
 		this, SLOT(underlineActionActivated(QAction *, bool)),
-		"format-text-underline", tr("Underline"), true
+		"format-text-underline", tr("Underline"), true,
+		disableNoGadu
 	);
 
 	Send = new ActionDescription(0,
