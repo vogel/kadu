@@ -78,9 +78,7 @@ void ConfigWizardChooseNetworkPage::acceptPage()
 
 void ConfigWizardChooseNetworkPage::protocolChanged(ProtocolFactory *protocol, ProtocolFactory *lastProtocol)
 {
-	Q_UNUSED(lastProtocol)
-
-	if (0 == protocol)
+	if (!protocol)
 	{
 		SetUpExisting->setEnabled(false);
 		SetUpNew->setEnabled(false);
@@ -92,6 +90,6 @@ void ConfigWizardChooseNetworkPage::protocolChanged(ProtocolFactory *protocol, P
 	SetUpExisting->setEnabled(true);
 	SetUpNew->setEnabled(protocol->canRegister());
 
-	if (SetUpNew->isChecked() && ! SetUpNew->isEnabled())
+	if (!lastProtocol || (SetUpNew->isChecked() && !SetUpNew->isEnabled()))
 		SetUpExisting->setChecked(true);
 }
