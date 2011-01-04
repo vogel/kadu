@@ -1,6 +1,7 @@
 +++ version 0.6.6-beta15
 * tabs: #1906 fixed: crash on tabs module load (regression from beta14) (beevvy)
 * chat: #1905 fixed: send image action enabled only for protocols that support it (Vogel)
+* chat: #1799 fixed: leave conference button now has title in two lines (Ultr)
 
 +++ version 0.6.6-beta14
 * core: #1720 fixed: ignore button in invalid password window really cancels connection (Juzef)
