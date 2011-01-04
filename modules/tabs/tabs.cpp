@@ -77,7 +77,7 @@ extern "C" KADU_EXPORT void tabs_close()
 	tabs_manager = 0;
 }
 
-void disableNewTab(Action *action)
+static void disableNewTab(Action *action)
 {
 	action->setEnabled(action->chat());
 
@@ -89,7 +89,8 @@ void disableNewTab(Action *action)
 	kdebugf2();
 }
 
-TabsManager::TabsManager(bool firstload)
+TabsManager::TabsManager(bool firstLoad) :
+		NoTabs(false), ForceTabs(false), TargetTabs(-1)
 {
 	kdebugf();
 
@@ -105,23 +106,6 @@ TabsManager::TabsManager(bool firstload)
 			this, SLOT(onOpenChat(ChatWidget *, bool)));
 
 	connect(&Timer, SIGNAL(timeout()), this, SLOT(onTimer()));
-
-	OpenInNewTabActionDescription = new ActionDescription(this,
-		ActionDescription::TypeUser, "openInNewTabAction",
-		this, SLOT(onNewTab(QAction *, bool)),
-		"internet-group-chat", tr("Chat in New Tab"), false, disableNewTab
-	);
-	BuddiesListViewMenuManager::instance()->addActionDescription(OpenInNewTabActionDescription, BuddiesListViewMenuItem::MenuCategoryChat, 200);
-
-	AttachToTabsActionDescription = new ActionDescription(this,
-		ActionDescription::TypeChat, "attachToTabsAction",
-		this, SLOT(onTabAttach(QAction *, bool)),
-		"kadu_icons/tab-detach", tr("Attach Chat to Tabs"), true
-	);
-	connect(AttachToTabsActionDescription, SIGNAL(actionCreated(Action *)), this, SLOT(attachToTabsActionCreated(Action *)));
-
-	if (firstload)
-		ChatEditBox::addAction("attachToTabsAction");
 
 	TabDialog = new TabWidget();
 	TabDialog->setContextMenuPolicy(Qt::CustomContextMenu);
@@ -145,9 +129,22 @@ TabsManager::TabsManager(bool firstload)
 	// pozycja tabów
 	configurationUpdated();
 
-	NoTabs = false;
-	ForceTabs = false;
-	TargetTabs = -1;
+	OpenInNewTabActionDescription = new ActionDescription(this,
+		ActionDescription::TypeUser, "openInNewTabAction",
+		this, SLOT(onNewTab(QAction *, bool)),
+		"internet-group-chat", tr("Chat in New Tab"), false, disableNewTab
+	);
+	BuddiesListViewMenuManager::instance()->addActionDescription(OpenInNewTabActionDescription, BuddiesListViewMenuItem::MenuCategoryChat, 200);
+
+	AttachToTabsActionDescription = new ActionDescription(this,
+		ActionDescription::TypeChat, "attachToTabsAction",
+		this, SLOT(onTabAttach(QAction *, bool)),
+		"kadu_icons/tab-detach", tr("Attach Chat to Tabs"), true
+	);
+	connect(AttachToTabsActionDescription, SIGNAL(actionCreated(Action *)), this, SLOT(attachToTabsActionCreated(Action *)));
+
+	if (firstLoad)
+		ChatEditBox::addAction("attachToTabsAction");
 
 	if (config_file.readBoolEntry("Chat", "SaveOpenedWindows", true))
 		ensureLoaded(); //loadTabs();
