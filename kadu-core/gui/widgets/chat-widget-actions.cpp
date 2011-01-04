@@ -49,7 +49,7 @@
 
 #include "chat-widget-actions.h"
 
-void disableEmptyTextBox(Action *action)
+static void disableEmptyTextBox(Action *action)
 {
 	ChatEditBox *chatEditBox = dynamic_cast<ChatEditBox *>(action->parent());
 	if (!chatEditBox)
@@ -61,7 +61,7 @@ void disableEmptyTextBox(Action *action)
 	action->setEnabled(!chatEditBox->inputBox()->toPlainText().isEmpty());
 }
 
-void disableEmptyMessages(Action *action)
+static void disableEmptyMessages(Action *action)
 {
 	ChatEditBox *chatEditBox = dynamic_cast<ChatEditBox *>(action->parent());
 	if (!chatEditBox)
@@ -73,7 +73,26 @@ void disableEmptyMessages(Action *action)
 	action->setEnabled(0 != chatEditBox->chatWidget()->chatMessagesView()->countMessages());
 }
 
-void checkBlocking(Action *action)
+static void disableNoChatImageService(Action *action)
+{
+	action->setEnabled(false);
+
+	ChatEditBox *chatEditBox = dynamic_cast<ChatEditBox *>(action->parent());
+	if (!chatEditBox)
+		return;
+
+	Account account = action->chat().chatAccount();
+	if (!account)
+		return;
+
+	Protocol *protocol = account.protocolHandler();
+	if (!protocol)
+		return;
+
+	action->setEnabled(protocol->chatImageService());
+}
+
+static void checkBlocking(Action *action)
 {
 	BuddySet buddies = action->buddies();
 
@@ -116,7 +135,8 @@ ChatWidgetActions::ChatWidgetActions(QObject *parent) : QObject(parent)
 	InsertImage = new ActionDescription(0,
 		ActionDescription::TypeChat, "insertImageAction",
 		this, SLOT(insertImageActionActivated(QAction *, bool)),
-		"insert-image", tr("Insert Image")
+		"insert-image", tr("Insert Image"), false,
+		disableNoChatImageService
 	);
 
 	Bold = new ActionDescription(0,
