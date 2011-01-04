@@ -40,6 +40,7 @@ ConfigWizardWindow::ConfigWizardWindow(QWidget *parent) :
 {
 	kdebugf();
 
+	setWindowRole("kadu-wizard");
 	setAttribute(Qt::WA_DeleteOnClose);
 	setWindowTitle(tr("Kadu Wizard"));
 
