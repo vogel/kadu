@@ -50,7 +50,7 @@ bool ConfigWizardSetUpAccountPage::isComplete() const
 {
 	if (CreateAccountWidget)
 		return StateChangedDataValid == CreateAccountWidget->state();
-	if (AddAccountWidget)
+	else if (AddAccountWidget)
 		return StateChangedDataValid == AddAccountWidget->state();
 
 	return true;
@@ -70,7 +70,8 @@ void ConfigWizardSetUpAccountPage::initializePage()
 		connect(CreateAccountWidget, SIGNAL(stateChanged(ModalConfigurationWidgetState)), this, SIGNAL(completeChanged()));
 		connect(CreateAccountWidget, SIGNAL(accountCreated(Account)), this, SLOT(accountCreated(Account)));
 		connect(CreateAccountWidget, SIGNAL(destroyed()), this, SLOT(createAccountWidgetDestroyed()));
-	} else if (field("choose-network.existing").toBool())
+	}
+	else if (field("choose-network.existing").toBool())
 	{
 		AddAccountWidget = pf->newAddAccountWidget(false, this);
 		formLayout()->addRow(QString(), AddAccountWidget);
@@ -83,10 +84,18 @@ void ConfigWizardSetUpAccountPage::initializePage()
 
 void ConfigWizardSetUpAccountPage::cleanupPage()
 {
-	delete AddAccountWidget;
-	AddAccountWidget = 0;
-	delete CreateAccountWidget;
-	CreateAccountWidget = 0;
+	if (CreateAccountWidget)
+	{
+		disconnect(CreateAccountWidget, SIGNAL(destroyed()), this, SLOT(createAccountWidgetDestroyed()));
+		delete CreateAccountWidget;
+		CreateAccountWidget = 0;
+	}
+	else if (AddAccountWidget)
+	{
+		disconnect(AddAccountWidget, SIGNAL(destroyed()), this, SLOT(addAccountWidgetDestroyed()));
+		delete AddAccountWidget;
+		AddAccountWidget = 0;
+	}
 
 	QWizardPage::cleanupPage();
 }
@@ -117,12 +126,12 @@ void ConfigWizardSetUpAccountPage::addAccountWidgetDestroyed()
 {
 	AddAccountWidget = 0;
 
-	((QWizard *)parent())->back();
+	static_cast<QWizard *>(parentWidget())->back();
 }
 
 void ConfigWizardSetUpAccountPage::createAccountWidgetDestroyed()
 {
 	CreateAccountWidget = 0;
 
-	((QWizard *)parent())->back();
+	static_cast<QWizard *>(parentWidget())->back();
 }
