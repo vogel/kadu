@@ -30,7 +30,7 @@
 #include "config-wizard-set-up-account-page.h"
 
 ConfigWizardSetUpAccountPage::ConfigWizardSetUpAccountPage(QWidget *parent) :
-		ConfigWizardPage(parent), AddAccountWidget(0), CreateAccountWidget(0)
+		ConfigWizardPage(parent), AccountWidget(0)
 {
 	setDescription("<p>Please enter your account data.</p><p>Go back if you want to select a different Account Setup option.</p>");
 
@@ -48,10 +48,8 @@ void ConfigWizardSetUpAccountPage::createGui()
 
 bool ConfigWizardSetUpAccountPage::isComplete() const
 {
-	if (CreateAccountWidget)
-		return StateChangedDataValid == CreateAccountWidget->state();
-	else if (AddAccountWidget)
-		return StateChangedDataValid == AddAccountWidget->state();
+	if (AccountWidget)
+		return StateChangedDataValid == AccountWidget->state();
 
 	return true;
 }
@@ -63,38 +61,29 @@ void ConfigWizardSetUpAccountPage::initializePage()
 		return;
 
 	if (field("choose-network.new").toBool())
-	{
-		CreateAccountWidget = pf->newCreateAccountWidget(false, this);
-		formLayout()->addRow(QString(), CreateAccountWidget);
-
-		connect(CreateAccountWidget, SIGNAL(stateChanged(ModalConfigurationWidgetState)), this, SIGNAL(completeChanged()));
-		connect(CreateAccountWidget, SIGNAL(accountCreated(Account)), this, SLOT(accountCreated(Account)));
-		connect(CreateAccountWidget, SIGNAL(destroyed()), this, SLOT(createAccountWidgetDestroyed()));
-	}
+		AccountWidget = pf->newCreateAccountWidget(false, this);
 	else if (field("choose-network.existing").toBool())
-	{
-		AddAccountWidget = pf->newAddAccountWidget(false, this);
-		formLayout()->addRow(QString(), AddAccountWidget);
+		AccountWidget = pf->newAddAccountWidget(false, this);
 
-		connect(AddAccountWidget, SIGNAL(stateChanged(ModalConfigurationWidgetState)), this, SIGNAL(completeChanged()));
-		connect(AddAccountWidget, SIGNAL(accountCreated(Account)), this, SLOT(accountCreated(Account)));
-		connect(AddAccountWidget, SIGNAL(destroyed()), this, SLOT(addAccountWidgetDestroyed()));
+	if (AccountWidget)
+	{
+		formLayout()->addRow(QString(), AccountWidget);
+
+		connect(AccountWidget, SIGNAL(stateChanged(ModalConfigurationWidgetState)), this, SIGNAL(completeChanged()));
+		// NOTE: This signal is declared by AccountCreateWidget and AccountCreateWidget
+		// but not by ModalConfigurationWidget. It will work correctly with Qt meta-object system, though.
+		connect(AccountWidget, SIGNAL(accountCreated(Account)), this, SLOT(accountCreated(Account)));
+		connect(AccountWidget, SIGNAL(destroyed()), this, SLOT(accountWidgetDestroyed()));
 	}
 }
 
 void ConfigWizardSetUpAccountPage::cleanupPage()
 {
-	if (CreateAccountWidget)
+	if (AccountWidget)
 	{
-		disconnect(CreateAccountWidget, SIGNAL(destroyed()), this, SLOT(createAccountWidgetDestroyed()));
-		delete CreateAccountWidget;
-		CreateAccountWidget = 0;
-	}
-	else if (AddAccountWidget)
-	{
-		disconnect(AddAccountWidget, SIGNAL(destroyed()), this, SLOT(addAccountWidgetDestroyed()));
-		delete AddAccountWidget;
-		AddAccountWidget = 0;
+		disconnect(AccountWidget, SIGNAL(destroyed()), this, SLOT(accountWidgetDestroyed()));
+		delete AccountWidget;
+		AccountWidget = 0;
 	}
 
 	QWizardPage::cleanupPage();
@@ -102,10 +91,8 @@ void ConfigWizardSetUpAccountPage::cleanupPage()
 
 bool ConfigWizardSetUpAccountPage::validatePage()
 {
-	if (CreateAccountWidget)
-		CreateAccountWidget->apply();
-	else if (AddAccountWidget)
-		AddAccountWidget->apply();
+	if (AccountWidget)
+		AccountWidget->apply();
 
 	return true;
 }
@@ -122,16 +109,9 @@ void ConfigWizardSetUpAccountPage::accountCreated(Account account)
 	ConfigurationManager::instance()->flush();
 }
 
-void ConfigWizardSetUpAccountPage::addAccountWidgetDestroyed()
+void ConfigWizardSetUpAccountPage::accountWidgetDestroyed()
 {
-	AddAccountWidget = 0;
-
-	static_cast<QWizard *>(parentWidget())->back();
-}
-
-void ConfigWizardSetUpAccountPage::createAccountWidgetDestroyed()
-{
-	CreateAccountWidget = 0;
+	AccountWidget = 0;
 
 	static_cast<QWizard *>(parentWidget())->back();
 }

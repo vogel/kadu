@@ -23,22 +23,19 @@
 #include "accounts/account.h"
 #include "gui/widgets/config-wizard-page.h"
 
-class AccountAddWidget;
-class AccountCreateWidget;
+class ModalConfigurationWidget;
 
 class ConfigWizardSetUpAccountPage : public ConfigWizardPage
 {
 	Q_OBJECT
 
-	AccountAddWidget *AddAccountWidget;
-	AccountCreateWidget *CreateAccountWidget;
+	ModalConfigurationWidget *AccountWidget;
 
 	void createGui();
 
 private slots:
 	void accountCreated(Account account);
-	void addAccountWidgetDestroyed();
-	void createAccountWidgetDestroyed();
+	void accountWidgetDestroyed();
 
 public:
 	explicit ConfigWizardSetUpAccountPage(QWidget *parent = 0);
