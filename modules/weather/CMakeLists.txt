@@ -97,10 +97,6 @@ install (FILES ${ICON_FILES}
 	DESTINATION "share/kadu/modules/data/weather/icons"
 )
 
-if (COMMAND cmake_policy)
-	cmake_policy (SET CMP0003 NEW)
-endif (COMMAND cmake_policy)
-
 add_library (weather ${weather} ${SOURCES} ${MOC_FILES})
 add_custom_target (weather-translations DEPENDS ${TRANSLATION_FILES})
 if (weather STREQUAL STATIC)

@@ -27,6 +27,14 @@ endif (NOT DEFINED CMAKE_VERSION)
 
 cmake_minimum_required (VERSION ${CMAKE_MIN_VERSION} FATAL_ERROR)
 
+if (COMMAND cmake_policy)
+	cmake_policy (SET CMP0003 NEW)
+
+	if (${CMAKE_VERSION} VERSION_GREATER 2.8.0)
+		cmake_policy (SET CMP0015 OLD)
+	endif (${CMAKE_VERSION} VERSION_GREATER 2.8.0)
+endif (COMMAND cmake_policy)
+
 include (FindPkgConfig)
 include (CheckIncludeFiles)
 include (CheckFunctionExists)
@@ -215,10 +223,6 @@ macro (kadu_module)
 			DESTINATION ${KADU_MODULES_DIR}/data/${MODULE_NAME}
 		)
 	endif (NOT "${MODULE_DATA_DIRECTORY}" STREQUAL "")
-
-	if (COMMAND cmake_policy)
-		cmake_policy (SET CMP0003 NEW)
-	endif (COMMAND cmake_policy)
 
 	add_library (${MODULE_NAME} ${${MODULE_NAME}} ${MODULE_SOURCES} ${MODULE_MOC_FILES})
 	add_custom_target (${MODULE_NAME}-translations DEPENDS ${MODULE_TRANSLATION_FILES})

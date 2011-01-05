@@ -134,10 +134,6 @@ MACRO(LIST_CONTAINS var value)
 ENDMACRO(LIST_CONTAINS)
 
 if (NOT STATIC_MODULES STREQUAL "\n")
-	if (COMMAND cmake_policy)
-		cmake_policy (SET CMP0015 OLD)
-	endif (COMMAND cmake_policy)
-
 	set (STATIC_MODULES ${STATIC_MODULES} CACHE INTERNAL "")
 
 	foreach (MODULE ${STATIC_MODULES})
