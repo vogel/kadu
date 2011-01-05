@@ -20,6 +20,7 @@
 #ifndef URL_HANDLER_MANAGER_H
 #define URL_HANDLER_MANAGER_H
 
+#include <QtCore/QList>
 #include <QtCore/QMap>
 
 #include "html_document.h"
@@ -37,6 +38,7 @@ class KADUAPI UrlHandlerManager
 	UrlHandlerManager();
 
 	QMap<QString, UrlHandler *> RegisteredHandlers;
+	QList<UrlHandler *> RegisteredHandlersByPriority;
 
 	MailUrlHandler *mailUrlHandler;
 	StandardUrlHandler *standardUrlHandler;

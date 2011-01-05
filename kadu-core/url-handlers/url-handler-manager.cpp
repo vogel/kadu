@@ -35,6 +35,7 @@ UrlHandlerManager * UrlHandlerManager::instance()
 
 UrlHandlerManager::UrlHandlerManager()
 {
+	// NOTE: StandardUrlHandler has to be the first one to fix bug #1894
 	standardUrlHandler = new StandardUrlHandler();
 	registerUrlHandler("Standard", standardUrlHandler);
 
@@ -44,33 +45,39 @@ UrlHandlerManager::UrlHandlerManager()
 
 UrlHandlerManager::~UrlHandlerManager()
 {
-	qDeleteAll(RegisteredHandlers);
+	qDeleteAll(RegisteredHandlersByPriority);
+	RegisteredHandlersByPriority.clear();
 	RegisteredHandlers.clear();
 }
 
 void UrlHandlerManager::registerUrlHandler(const QString &name, UrlHandler *handler)
 {
 	if (0 != handler && !RegisteredHandlers.contains(name))
+	{
 		RegisteredHandlers[name] = handler;
+		// TODO: some day it might be useful to add priority to UrlHandler class like in StatusChanger
+		RegisteredHandlersByPriority.append(handler);
+	}
 }
 
 void UrlHandlerManager::unregisterUrlHandler(const QString &name)
 {
 	if (RegisteredHandlers.contains(name))
 	{
-		delete RegisteredHandlers[name];
-		RegisteredHandlers.remove(name);
+		UrlHandler *handler = RegisteredHandlers.take(name);
+		RegisteredHandlersByPriority.removeAll(handler);
+		delete handler;
 	}
 }
 void UrlHandlerManager::convertAllUrls(HtmlDocument &document)
 {
-	foreach (UrlHandler *handler, RegisteredHandlers)
+	foreach (UrlHandler *handler, RegisteredHandlersByPriority)
 		handler->convertUrlsToHtml(document);
 }
 
 void UrlHandlerManager::openUrl(const QString &url, bool disableMenu)
 {
-	foreach (UrlHandler *handler, RegisteredHandlers)
+	foreach (UrlHandler *handler, RegisteredHandlersByPriority)
 	{
 		if (handler->isUrlValid(url))
 		{
