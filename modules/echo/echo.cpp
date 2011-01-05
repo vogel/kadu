@@ -111,5 +111,5 @@ void Echo::filterIncomingMessage(Chat chat, Contact sender, QString &message, ti
 	if (!chatService)
 		return;
 
-	chatService->sendMessage(chat, ECHO_MESSAGE + message);
+	chatService->sendMessage(chat, ECHO_MESSAGE + message, true);
 }
