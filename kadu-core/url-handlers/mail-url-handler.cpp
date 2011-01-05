@@ -23,7 +23,7 @@
 
 MailUrlHandler::MailUrlHandler()
 {
-	MailRegExp = QRegExp("[a-zA-Z0-9_\\.\\-]+@[a-zA-Z0-9\\-\\.]+\\.[a-zA-Z]{2,4}");
+	MailRegExp = QRegExp("\\b[a-zA-Z0-9_\\.\\-]+@[a-zA-Z0-9\\-\\.]+\\.[a-zA-Z]{2,4}\\b");
 }
 
 bool MailUrlHandler::isUrlValid(const QString &url)

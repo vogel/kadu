@@ -38,12 +38,14 @@ JabberUrlHandler::JabberUrlHandler()
 	// (RFC5122 - 3.3, XEP-0147)
 	// "(?:xmpp|jabber):" - if we ever need to handle jabber: links
 
-	JabberRegExp = QRegExp("xmpp:"
+	JabberRegExp = QRegExp("\\b"
+						   "xmpp:"
 	                       "(?://([^@ ]+)@([^/?# ]+)/?)?"                 // auth-xmpp
 	                       "(?:(?:([^@ ]+)@)?([^/?# ]+)(?:/([^?# ]+))?)?" // path-xmpp
 	                       "(?:\\?([^&# ]+)"                              // querytype
 	                       "(&[^# ]+)?)?"                                 // pair, will need to be reparsed, later
 	                       "(?:#(\\S*))?"                                 // fragment
+						   "\\b"
 	);
 	// Reparse pair with: "&([^=]+)=([^&]+)"
 }

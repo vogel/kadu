@@ -33,7 +33,7 @@
 
 GaduUrlHandler::GaduUrlHandler()
 {
-	GaduRegExp = QRegExp("gg:(/){0,3}[0-9]{1,8}");
+	GaduRegExp = QRegExp("\\bgg:(/){0,3}[0-9]{1,8}\\b");
 }
 
 bool GaduUrlHandler::isUrlValid(const QString &url)
