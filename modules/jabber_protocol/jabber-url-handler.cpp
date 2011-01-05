@@ -40,13 +40,13 @@ JabberUrlHandler::JabberUrlHandler()
 	// "(?:xmpp|jabber):" - if we ever need to handle jabber: links
 
 	JabberRegExp = QRegExp("\\b"
-						   "xmpp:"
+	                       "xmpp:"
 	                       "(?://([^@ ]+)@([^/?# ]+)/?)?"                 // auth-xmpp
 	                       "(?:(?:([^@ ]+)@)?([^/?# ]+)(?:/([^?# ]+))?)?" // path-xmpp
 	                       "(?:\\?([^&# ]+)"                              // querytype
 	                       "(&[^# ]+)?)?"                                 // pair, will need to be reparsed, later
 	                       "(?:#(\\S*))?"                                 // fragment
-						   "\\b"
+	                       "\\b"
 	);
 	// Reparse pair with: "&([^=]+)=([^&]+)"
 }
