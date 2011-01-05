@@ -58,7 +58,7 @@ public:
 	static GADUAPI void createInstance();
 	static GADUAPI void destroyInstance();
 
-	static GADUAPI GaduServersManager * instance() { return Instance; }
+	static GaduServersManager * instance() { return Instance; }
 
 	const QList<GaduServer> & getServersList();
 	QPair<QHostAddress, int> getServer();

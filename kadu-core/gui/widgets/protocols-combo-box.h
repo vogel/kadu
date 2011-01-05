@@ -22,10 +22,11 @@
 
 #include "gui/widgets/kadu-combo-box.h"
 #include "protocols/protocol-factory.h"
+#include "exports.h"
 
 class AbstractProtocolFilter;
 
-class ProtocolsComboBox : public KaduComboBox<ProtocolFactory *>
+class KADUAPI ProtocolsComboBox : public KaduComboBox<ProtocolFactory *>
 {
 	Q_OBJECT
 	Q_PROPERTY(ProtocolFactory* currentProtocol READ currentProtocol WRITE setCurrentProtocol)
