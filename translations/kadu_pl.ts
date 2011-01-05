@@ -1175,7 +1175,7 @@ znajomych po połączeniu się z serwerem</translation>
     </message>
     <message>
         <source>dddd at </source>
-        <translation>dddd o</translation>
+        <translation>dddd o </translation>
     </message>
     <message>
         <source>week ago at </source>
@@ -1191,7 +1191,7 @@ znajomych po połączeniu się z serwerem</translation>
     </message>
     <message>
         <source>%1 weeks ago at </source>
-        <translation>%1 tygodni temu</translation>
+        <translation>%1 tygodni temu o </translation>
     </message>
     <message>
         <source>%1 weeks and day ago at </source>
