@@ -20,6 +20,7 @@
 
 #include <QtGui/QCursor>
 #include <QtGui/QMenu>
+#include <QtGui/QTextDocument>
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
@@ -71,7 +72,7 @@ void JabberUrlHandler::convertUrlsToHtml(HtmlDocument &document)
 			continue;
 
 		unsigned int length = JabberRegExp.matchedLength();
-		QString jid = text.mid(index, length);
+		QString jid = Qt::escape(text.mid(index, length));
 
 		document.splitElement(i, index, length);
 		document.setElementValue(i, "<a href=\"" + jid + "\">" + jid + "</a>", true);
