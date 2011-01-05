@@ -22,8 +22,9 @@
 #include <QtCore/QTextStream>
 #include <QtGui/QMainWindow>
 #include <QtScript/QScriptEngine>
+#ifndef Q_OS_MAC
 #include <QtScriptTools/QScriptEngineDebugger>
-
+#endif
 #include "misc/path-conversion.h"
 
 #include "gui/windows/sms-token-reader.h"

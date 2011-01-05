@@ -31,6 +31,7 @@
 #include "gui/actions/action.h"
 #include "gui/widgets/buddies-list-view.h"
 #include "gui/widgets/toolbar.h"
+#include "core/core.h"
 
 #include "debug.h"
 
@@ -292,6 +293,10 @@ void MainWindow::writeToolBarsToConfig(Qt::ToolBarArea area)
 
 void MainWindow::refreshToolBars()
 {
+#ifdef Q_OS_MAC
+	if (Core::instance()->isClosing())
+		return;
+#endif
 	foreach (const QObject *object, children())
 	{
 		const QToolBar *toolBar = dynamic_cast<const QToolBar *>(object);
