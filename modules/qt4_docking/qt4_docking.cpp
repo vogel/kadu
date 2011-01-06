@@ -137,14 +137,19 @@ void Qt4TrayIcon::movieUpdate()
 void Qt4TrayIcon::trayActivated(QSystemTrayIcon::ActivationReason reason)
 {
 	QMouseEvent *ev = 0;
+
 	// nie przekazujemy klikniecia ppm poniewaz QSystemTrayIcon reaguje
 	// na niego i wyswietla menu kontekstowe samemu
 	if (reason == QSystemTrayIcon::Trigger)
-		ev = new QMouseEvent(QEvent::MouseButtonPress, QPoint(0,0), Qt::LeftButton, Qt::NoButton, Qt::NoModifier);
+		ev = new QMouseEvent(QEvent::MouseButtonPress, QPoint(0,0), Qt::LeftButton, Qt::LeftButton, Qt::NoModifier);
 	else if (reason == QSystemTrayIcon::MiddleClick)
 		ev = new QMouseEvent(QEvent::MouseButtonPress, QPoint(0,0), Qt::MidButton, Qt::MidButton, Qt::NoModifier);
+
 	if (ev)
+	{
 		DockingManager::instance()->trayMousePressEvent(ev);
+		delete ev;
+	}
 }
 
 
