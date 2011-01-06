@@ -295,11 +295,11 @@ void MainWindow::refreshToolBars()
 	if (Core::instance()->isClosing())
 		return;
 #endif
-	foreach (const QObject *object, children())
+	foreach (QObject *object, children())
 	{
-		const QToolBar *toolBar = dynamic_cast<const QToolBar *>(object);
+		QToolBar *toolBar = dynamic_cast<QToolBar *>(object);
 		if (toolBar)
-			removeToolBar(const_cast<QToolBar *>(toolBar));
+			removeToolBar(toolBar);
 	}
 	loadToolBarsFromConfig();
 }
