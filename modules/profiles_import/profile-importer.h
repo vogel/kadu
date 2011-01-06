@@ -26,6 +26,10 @@ class ProfileImporter : public QObject
 {
 	Q_OBJECT
 
+	static const QString UinQuery;
+	static const QString PasswordQuery;
+	static const QString ContactsQuery;
+
 	QString ProfileFileName;
 	QString ErrorMessage;
 

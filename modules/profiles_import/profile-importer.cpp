@@ -17,7 +17,14 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtXmlPatterns/QXmlQuery>
+#include <QtXmlPatterns/QXmlResultItems>
+
 #include "profile-importer.h"
+
+const QString ProfileImporter::UinQuery("/Kadu/Deprecated/ConfigFile[@name='kadu.conf']/Group[@name='General']/Entry[@name='UIN']/@value/string()");
+const QString ProfileImporter::PasswordQuery("/Kadu/Deprecated/ConfigFile[@name='kadu.conf']/Group[@name='General']/Entry[@name='Password']/@value/string()");
+const QString ProfileImporter::ContactsQuery("/Kadu/Contacts/Contact");
 
 ProfileImporter::ProfileImporter(const QString &profileFileName) :
 		ProfileFileName(profileFileName)
@@ -31,6 +38,43 @@ QString ProfileImporter::errorMessage()
 
 bool ProfileImporter::import()
 {
-	ErrorMessage = tr("Not implemented");
+	QFile profileFile(ProfileFileName);
+	if (!profileFile.open(QIODevice::ReadOnly))
+	{
+		ErrorMessage = tr("Unable to open profile file [%1].").arg(ProfileFileName);
+		return false;
+	}
+
+	QXmlQuery xmlQuery;
+	xmlQuery.setFocus(&profileFile);
+
+	xmlQuery.setQuery(UinQuery);
+	QString uin;
+	if (!xmlQuery.evaluateTo(&uin) || uin.isEmpty())
+	{
+		ErrorMessage = tr("Invalid profile. UIN data not found.");
+		profileFile.close();
+		return false;
+	}
+
+	xmlQuery.setQuery(PasswordQuery);
+	QString password;
+	if (!xmlQuery.evaluateTo(&password) || password.isEmpty())
+	{
+		ErrorMessage = tr("Invalid profile. Password data not found.");
+		profileFile.close();
+		return false;
+	}
+
+	xmlQuery.setQuery(ContactsQuery);
+	QXmlResultItems contacts;
+	xmlQuery.evaluateTo(&contacts);
+
+	int count = 0;
+	while (!contacts.next().isNull())
+		count++;
+
+	ErrorMessage = tr("Found data:\nUin: %1\n Password: %2\nContact count: %3").arg(uin).arg(password).arg(count);
+	profileFile.close();
 	return false;
 }

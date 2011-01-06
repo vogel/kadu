@@ -79,7 +79,7 @@ void ProfilesImportActions::importExternalProfileActionActivated(QAction *action
 			continue;
 		}
 
-		ProfileImporter importer(kaduConfFile.fileName());
+		ProfileImporter importer(kaduConfFile.absoluteFilePath());
 		if (importer.import())
 			MessageDialog::exec("dialog-information", tr("Import external profile..."), tr("Profile successfully importer!"));
 		else
