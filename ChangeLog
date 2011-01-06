@@ -1,4 +1,7 @@
 +++ version 0.6.6-beta15
+* url-handlers: #1908 fixed: links containing HTML entities were not escaped (beevvy)
+* url-handlers: #1894 fixed: HTTP links containing e-mail addresses were wrongly interpreted (beevvy)
+* modules: creating static modules is again possible (WhE)
 
 +++ version 0.6.6-beta14.2
 * tabs: #1906 fixed: crash on tabs module load (regression from beta14) (beevvy)

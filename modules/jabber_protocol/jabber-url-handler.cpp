@@ -20,6 +20,7 @@
 
 #include <QtGui/QCursor>
 #include <QtGui/QMenu>
+#include <QtGui/QTextDocument>
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
@@ -38,12 +39,14 @@ JabberUrlHandler::JabberUrlHandler()
 	// (RFC5122 - 3.3, XEP-0147)
 	// "(?:xmpp|jabber):" - if we ever need to handle jabber: links
 
-	JabberRegExp = QRegExp("xmpp:"
+	JabberRegExp = QRegExp("\\b"
+	                       "xmpp:"
 	                       "(?://([^@ ]+)@([^/?# ]+)/?)?"                 // auth-xmpp
 	                       "(?:(?:([^@ ]+)@)?([^/?# ]+)(?:/([^?# ]+))?)?" // path-xmpp
 	                       "(?:\\?([^&# ]+)"                              // querytype
 	                       "(&[^# ]+)?)?"                                 // pair, will need to be reparsed, later
 	                       "(?:#(\\S*))?"                                 // fragment
+	                       "\\b"
 	);
 	// Reparse pair with: "&([^=]+)=([^&]+)"
 }
@@ -69,7 +72,7 @@ void JabberUrlHandler::convertUrlsToHtml(HtmlDocument &document)
 			continue;
 
 		unsigned int length = JabberRegExp.matchedLength();
-		QString jid = text.mid(index, length);
+		QString jid = Qt::escape(text.mid(index, length));
 
 		document.splitElement(i, index, length);
 		document.setElementValue(i, "<a href=\"" + jid + "\">" + jid + "</a>", true);

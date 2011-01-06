@@ -17,13 +17,15 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtGui/QTextDocument>
+
 #include "os/generic/url-opener.h"
 
 #include "mail-url-handler.h"
 
 MailUrlHandler::MailUrlHandler()
 {
-	MailRegExp = QRegExp("(mailto:){0,1}[a-zA-Z0-9_\\.\\-]+@[a-zA-Z0-9\\-\\.]+\\.[a-zA-Z]{2,4}");
+	MailRegExp = QRegExp("\\b[a-zA-Z0-9_\\.\\-]+@[a-zA-Z0-9\\-\\.]+\\.[a-zA-Z]{2,4}\\b");
 }
 
 bool MailUrlHandler::isUrlValid(const QString &url)
@@ -44,7 +46,7 @@ void MailUrlHandler::convertUrlsToHtml(HtmlDocument &document)
 			continue;
 
 		unsigned int length = MailRegExp.matchedLength();
-		QString mail = text.mid(index, length);
+		QString mail = Qt::escape(text.mid(index, length));
 
 		document.splitElement(i, index, length);
 		document.setElementValue(i, "<a href=\"mailto:" + mail + "\">" + mail + "</a>", true);

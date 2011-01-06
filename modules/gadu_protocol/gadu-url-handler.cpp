@@ -19,6 +19,7 @@
 
 #include <QtGui/QCursor>
 #include <QtGui/QMenu>
+#include <QtGui/QTextDocument>
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
@@ -33,7 +34,7 @@
 
 GaduUrlHandler::GaduUrlHandler()
 {
-	GaduRegExp = QRegExp("gg:(/){0,3}[0-9]{1,8}");
+	GaduRegExp = QRegExp("\\bgg:(/){0,3}[0-9]{1,8}\\b");
 }
 
 bool GaduUrlHandler::isUrlValid(const QString &url)
@@ -54,7 +55,7 @@ void GaduUrlHandler::convertUrlsToHtml(HtmlDocument &document)
 			continue;
 
 		unsigned int length = GaduRegExp.matchedLength();
-		QString gg = text.mid(index, length);
+		QString gg = Qt::escape(text.mid(index, length));
 
 		document.splitElement(i, index, length);
 		document.setElementValue(i, "<a href=\"" + gg + "\">" + gg + "</a>", true);

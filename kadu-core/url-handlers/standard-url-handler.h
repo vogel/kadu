@@ -28,7 +28,7 @@
 class StandardUrlHandler : public UrlHandler
 {
 	QRegExp UrlRegExp;
-	int LinkForTreshold;
+	int LinkFoldTreshold;
 	bool FoldLink;
 
 protected:

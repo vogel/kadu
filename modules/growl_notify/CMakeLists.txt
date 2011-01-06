@@ -23,10 +23,6 @@ install (FILES ${TRANSLATION_FILES}
 	DESTINATION "share/kadu/modules/translations"
 )
 
-if (COMMAND cmake_policy)
-	cmake_policy (SET CMP0003 NEW)
-endif (COMMAND cmake_policy)
-
 add_library (growl_notify ${growl_notify} ${SOURCES} ${MOC_FILES})
 add_custom_target (growl_notify-translations DEPENDS ${TRANSLATION_FILES})
 add_dependencies (growl_notify growl_notify-translations)

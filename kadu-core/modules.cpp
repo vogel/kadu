@@ -171,10 +171,6 @@ ModulesManager::~ModulesManager()
 
 void ModulesManager::loadProtocolModules()
 {
-	foreach (const QString &i, staticModules())
-		if (!moduleIsActive(i))
-			activateModule(i);
-
 	foreach (const QString &i, protocolModulesList)
 	{
 		if (!moduleIsActive(i))
