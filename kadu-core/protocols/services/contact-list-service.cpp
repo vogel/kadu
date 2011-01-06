@@ -148,3 +148,19 @@ void ContactListService::setBuddiesList(const BuddyList &buddies, bool removeOld
 	// flush configuration to save all changes
 	ConfigurationManager::instance()->flush();
 }
+
+void ContactListService::importContactList(bool automaticallySetBuddiesList)
+{
+	if (automaticallySetBuddiesList)
+		connect(this, SIGNAL(contactListImported(bool,BuddyList)),
+				this, SLOT(contactListImportedSlot(bool,BuddyList)));
+}
+
+void ContactListService::contactListImportedSlot(bool ok, const BuddyList &buddies)
+{
+	disconnect(this, SIGNAL(contactListImported(bool,BuddyList)),
+			this, SLOT(contactListImportedSlot(bool,BuddyList)));
+
+	if (ok)
+		setBuddiesList(buddies);
+}

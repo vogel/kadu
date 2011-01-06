@@ -117,7 +117,7 @@ void AccountBuddyListWidget::startImportTransfer()
 	if (!service)
 		return;
 	ImportButton->setEnabled(false);
-	service->importContactList();
+	service->importContactList(false);
 
 	kdebugf2();
 }

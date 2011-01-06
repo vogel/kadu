@@ -40,7 +40,7 @@ public:
 	explicit ContactListService(Protocol *protocol = 0);
 	virtual ~ContactListService();
 
-	virtual void importContactList() = 0;
+	virtual void importContactList(bool automaticallySetBuddiesList = true);
 	virtual void exportContactList() = 0;
 	virtual void exportContactList(const BuddyList &buddies) = 0;
 
@@ -48,6 +48,9 @@ public:
 	virtual QByteArray storeBuddyList(const BuddyList &buddies) = 0;
 
 	void setBuddiesList(const BuddyList &buddies, bool removeOld = true);
+
+public slots:
+	virtual void contactListImportedSlot(bool ok, const BuddyList &buddies);
 
 signals:
 	void contactListImported(bool ok, const BuddyList &buddies);

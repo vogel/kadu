@@ -41,7 +41,7 @@ class GaduContactListService : public ContactListService
 public:
 	GaduContactListService(GaduProtocol *protocol);
 
-	virtual void importContactList();
+	virtual void importContactList(bool automaticallySetBuddiesList = true);
 	virtual void exportContactList();
 	virtual void exportContactList(const BuddyList &buddies);
 

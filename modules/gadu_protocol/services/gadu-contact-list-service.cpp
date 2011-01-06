@@ -88,8 +88,10 @@ void GaduContactListService::handleEventUserlist(struct gg_event *e)
 	}
 }
 
-void GaduContactListService::importContactList()
+void GaduContactListService::importContactList(bool automaticallySetBuddiesList)
 {
+	ContactListService::importContactList(automaticallySetBuddiesList);
+
 	ImportReply.clear();
 
 	if (-1 == gg_userlist_request(Protocol->gaduSession(), GG_USERLIST_GET, 0))
