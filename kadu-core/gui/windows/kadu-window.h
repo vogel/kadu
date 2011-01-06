@@ -57,6 +57,7 @@ public:
 	{
 		MenuKadu,
 		MenuContacts,
+		MenuTools,
 		MenuHelp
 	};
 
@@ -76,6 +77,7 @@ private:
 #endif
 	QMenu *KaduMenu;
 	QMenu *ContactsMenu;
+	QMenu *ToolsMenu;
 	QMenu *HelpMenu;
 	QMenu *RecentChatsMenu;
 	QAction *RecentChatsMenuAction;
@@ -98,6 +100,7 @@ private:
 	void createMenu();
 	void createKaduMenu();
 	void createContactsMenu();
+	void createToolsMenu();
 	void createHelpMenu();
 
 	void storeConfiguration();
