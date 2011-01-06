@@ -1,8 +1,10 @@
 set (SOURCES
+	profiles-import-actions.cpp
 	profiles-import-module.cpp
 )
 
 set (MOC_SOURCES
+	profiles-import-actions.h
 )
 
 set (TRANSLATION_SOURCES

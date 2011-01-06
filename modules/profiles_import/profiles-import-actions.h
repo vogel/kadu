@@ -17,18 +17,35 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "profiles-import-actions.h"
+#ifndef PROFILES_IMPORT_ACTIONS_H
+#define PROFILES_IMPORT_ACTIONS_H
 
-extern "C" int profiles_import_init(bool firstLoad)
+#include <QtCore/QObject>
+
+class QAction;
+
+class ActionDescription;
+
+class ProfilesImportActions : public QObject
 {
-	Q_UNUSED(firstLoad)
+	Q_OBJECT
 
-	ProfilesImportActions::registerActions();
+	static ProfilesImportActions * Instance;
 
-	return 0;
-}
+	ActionDescription *ImportExternalProfile;
 
-extern "C" void profiles_import_close()
-{
-	ProfilesImportActions::unregisterActions();
-}
+	ProfilesImportActions();
+	virtual ~ProfilesImportActions();
+
+private slots:
+	void importExternalProfileActionActivated(QAction *action, bool toggled);
+
+public:
+	static void registerActions();
+	static void unregisterActions();
+
+	static ProfilesImportActions * instance();
+
+};
+
+#endif // PROFILES_IMPORT_ACTIONS_H
