@@ -1,9 +1,11 @@
 set (SOURCES
+	profile-importer.cpp
 	profiles-import-actions.cpp
 	profiles-import-module.cpp
 )
 
-set (MOC_SOURCES
+set(MOC_SOURCES
+	profile-importer.h
 	profiles-import-actions.h
 )
 
