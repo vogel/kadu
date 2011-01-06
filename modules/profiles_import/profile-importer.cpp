@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -17,6 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtXmlPatterns/QXmlQuery>
+
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
 #include "identities/identity-manager.h"
@@ -24,6 +26,8 @@
 #include "modules/gadu_protocol/helpers/gadu-importer.h"
 
 #include "profile-importer.h"
+#include <buddies/buddy-manager.h>
+#include <contacts/contact-manager.h>
 
 ProfileImporter::ProfileImporter(const QString &profileFileName) :
 		ProfileFileName(profileFileName)
@@ -44,7 +48,10 @@ bool ProfileImporter::import(const QString &name)
 		return false;
 	}
 
-	Account importedAccount = GaduImporter::import065Account(&profileFile);
+	QXmlQuery xmlQuery;
+	xmlQuery.setFocus(&profileFile);
+
+	Account importedAccount = GaduImporter::import065Account(xmlQuery);
 	profileFile.close();
 
 	if (importedAccount.id().isEmpty())
@@ -61,5 +68,22 @@ bool ProfileImporter::import(const QString &name)
 	importedAccount.setAccountIdentity(accountIdentity);
 
 	AccountManager::instance()->addItem(importedAccount);
+
+	QList<Buddy> buddies = GaduImporter::import065Buddies(importedAccount, xmlQuery);
+	foreach (const Buddy &buddy, buddies)
+	{
+		foreach (const Contact &contact, buddy.contacts())
+		{
+			ContactManager::instance()->addItem(contact);
+		}
+
+		Buddy existingBuddy = BuddyManager::instance()->byDisplay(buddy.display(), ActionReturnNull);
+		if (existingBuddy)
+			foreach (const Contact &contact, buddy.contacts())
+				contact.setOwnerBuddy(existingBuddy);
+		else
+			BuddyManager::instance()->addItem(buddy);
+	}
+
 	return true;
 }

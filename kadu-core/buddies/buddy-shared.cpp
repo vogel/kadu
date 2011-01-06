@@ -89,6 +89,11 @@ void BuddyShared::importConfiguration(const QDomElement &parent)
 
 	Anonymous = false;
 
+	importConfiguration();
+}
+
+void BuddyShared::importConfiguration()
+{
 	QStringList groups = CustomData["groups"].split(',', QString::SkipEmptyParts);
 	foreach (const QString &group, groups)
 		Groups << GroupManager::instance()->byName(group);
@@ -102,6 +107,7 @@ void BuddyShared::importConfiguration(const QDomElement &parent)
 	ImportProperty(HomePhone, home_phone)
 	ImportProperty(Mobile, mobile)
 	ImportProperty(Email, email)
+
 }
 
 void BuddyShared::load()

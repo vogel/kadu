@@ -26,17 +26,19 @@
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
 #include "accounts/account-shared.h"
-#include "configuration/configuration-file.h"
-#include "configuration/xml-configuration-file.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-set.h"
 #include "buddies/buddy-shared.h"
 #include "buddies/buddy.h"
+#include "configuration/configuration-file.h"
+#include "configuration/xml-configuration-file.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact-shared.h"
 #include "identities/identity-manager.h"
 #include "protocols/protocols-manager.h"
 #include "misc/misc.h"
+
+#include "helpers/gadu-imported-contact-xml-receiver.h"
 #include "gadu-account-details.h"
 #include "gadu-contact-details.h"
 #include "gadu-protocol-factory.h"
@@ -81,11 +83,8 @@ QVariant GaduImporter::readEntry(QXmlQuery &xmlQuery, const QString &groupName, 
 		return defaultValue;
 }
 
-Account GaduImporter::import065Account(QIODevice* ioDevice)
+Account GaduImporter::import065Account(QXmlQuery &xmlQuery)
 {
-	QXmlQuery xmlQuery;
-	xmlQuery.setFocus(ioDevice);
-
 	Account result = Account::create();
 	result.setProtocolName("gadu");
 
@@ -118,6 +117,28 @@ Account GaduImporter::import065Account(QIODevice* ioDevice)
 	proxySettings.setRequiresAuthentication(!proxySettings.user().isEmpty());
 
 	result.setProxySettings(proxySettings);
+
+	return result;
+}
+
+QList<Buddy> GaduImporter::import065Buddies(Account account, QXmlQuery &xmlQuery)
+{
+	QList<Buddy> result;
+
+	GaduImportedContactXmlReceiver Receiver(xmlQuery.namePool());
+
+	xmlQuery.setQuery(ContactsQuery);
+	xmlQuery.evaluateTo(&Receiver);
+
+	result = Receiver.importedBuddies();
+
+	foreach (Buddy buddy, result)
+	{
+		buddy.importConfiguration();
+
+		if (!buddy.customData("uin").isEmpty())
+			importGaduContact(account, buddy);
+	}
 
 	return result;
 }
@@ -194,14 +215,8 @@ void GaduImporter::importContacts()
 	importIgnored();
 }
 
-void GaduImporter::importGaduContact(Buddy &buddy)
+Contact GaduImporter::importGaduContact(Account account, Buddy buddy)
 {
-	QList<Account> allGaduAccounts = AccountManager::instance()->byProtocolName("gadu");
-	if (0 == allGaduAccounts.count())
-		return;
-
-	// take 1st one
-	Account account = allGaduAccounts[0];
 	QString id = buddy.customData("uin");
 
 	Contact contact = ContactManager::instance()->byId(account, id, ActionCreateAndAdd);
@@ -214,7 +229,7 @@ void GaduImporter::importGaduContact(Buddy &buddy)
 
 	contact.setOwnerBuddy(buddy);
 
-	ContactManager::instance()->addItem(contact);
+	return contact;
 }
 
 void GaduImporter::importIgnored()
@@ -244,6 +259,18 @@ void GaduImporter::importIgnored()
 
 void GaduImporter::buddyAdded(Buddy &buddy)
 {
-	if (!buddy.customData("uin").isEmpty())
-		importGaduContact(buddy);
+	if (buddy.customData("uin").isEmpty())
+		return;
+
+	QList<Account> allGaduAccounts = AccountManager::instance()->byProtocolName("gadu");
+	if (0 == allGaduAccounts.count())
+		return;
+
+	// take 1st one
+	Account account = allGaduAccounts[0];
+
+	Contact contact = importGaduContact(account, buddy);
+
+	if (contact)
+		ContactManager::instance()->addItem(contact);
 }

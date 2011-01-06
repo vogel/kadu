@@ -96,6 +96,7 @@ public:
 	virtual QString storageNodeName();
 
 	void importConfiguration(const QDomElement &parent);
+	void importConfiguration(); // imports configuration from custom data values
 
 	virtual void store();
     virtual bool shouldStore();

@@ -91,6 +91,12 @@ void Buddy::importConfiguration(const QDomElement &parent)
 		data()->importConfiguration(parent);
 }
 
+void Buddy::importConfiguration()
+{
+	if (data())
+		data()->importConfiguration();
+}
+
 void Buddy::store()
 {
 	if ((!isNull() && !isAnonymous()) || (isAnonymous() && !BuddyRemovePredicateObject::inquireAll(*this)))

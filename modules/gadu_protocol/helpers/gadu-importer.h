@@ -24,11 +24,12 @@
 #include <QtCore/QObject>
 #include <QtCore/QVariant>
 
-class QIODevice;
+class QXmlItem;
 class QXmlQuery;
 
 class Account;
 class Buddy;
+class Contact;
 
 class GaduImporter : public QObject
 {
@@ -44,8 +45,7 @@ class GaduImporter : public QObject
 	bool alreadyImported();
 	void markImported();
 
-	void importContact(Buddy &buddy);
-	void importGaduContact(Buddy &buddy);
+	static Contact importGaduContact(Account account, Buddy buddy);
 	void importIgnored();
 
 	static QVariant readEntry(QXmlQuery &xmlQuery, const QString &groupName, const QString &entryName, const QVariant &defaultValue = QVariant());
@@ -56,7 +56,8 @@ private slots:
 public:
 	static GaduImporter * instance();
 
-	static Account import065Account(QIODevice *ioDevice);
+	static Account import065Account(QXmlQuery &xmlQuery);
+	static QList<Buddy> import065Buddies(Account account, QXmlQuery &xmlQuery);
 
 	void importAccounts();
 	void importContacts();
