@@ -20,6 +20,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtXmlPatterns/QXmlQuery>
+#include <QtXmlPatterns/QXmlResultItems>
+
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
 #include "accounts/account-shared.h"
@@ -42,6 +45,9 @@
 
 GaduImporter * GaduImporter::Instance;
 
+const QString GaduImporter::EntryQuery("/Kadu/Deprecated/ConfigFile[@name='kadu.conf']/Group[@name='%1']/Entry[@name='%2']/@value/string()");
+const QString GaduImporter::ContactsQuery("/Kadu/Contacts/Contact");
+
 GaduImporter * GaduImporter::instance()
 {
 	if (0 == Instance)
@@ -62,6 +68,58 @@ void GaduImporter::markImported()
 {
 	QDomElement node = xml_config_file->getNode("Accounts", XmlConfigFile::ModeFind);
 	node.setAttribute("import_done", "true");
+}
+
+QVariant GaduImporter::readEntry(QXmlQuery &xmlQuery, const QString &groupName, const QString &entryName, const QVariant &defaultValue)
+{
+	xmlQuery.setQuery(EntryQuery.arg(groupName).arg(entryName));
+
+	QString result;
+	if (xmlQuery.evaluateTo(&result))
+		return result.trimmed();
+	else
+		return defaultValue;
+}
+
+Account GaduImporter::import065Account(QIODevice* ioDevice)
+{
+	QXmlQuery xmlQuery;
+	xmlQuery.setFocus(ioDevice);
+
+	Account result = Account::create();
+	result.setProtocolName("gadu");
+
+	GaduAccountDetails *accountDetails = dynamic_cast<GaduAccountDetails *>(result.details());
+	accountDetails->setState(StorableObject::StateNew);
+
+	result.setId(readEntry(xmlQuery, "General", "UIN").toString());
+	result.setPassword(pwHash(readEntry(xmlQuery, "General", "Password").toString()));
+	result.setRememberPassword(true);
+	result.setHasPassword(!result.password().isEmpty());
+	result.setPrivateStatus(readEntry(xmlQuery, "General", "PrivateStatus").toBool());
+	accountDetails->setAllowDcc(readEntry(xmlQuery, "Network", "AllowDCC").toBool());
+
+	accountDetails->setDccExternalPort(readEntry(xmlQuery, "Network", "ExternalPort").toUInt());
+	accountDetails->setDccPort(readEntry(xmlQuery, "Network", "ExternalPort").toUInt());
+	accountDetails->setDccIpDetect(readEntry(xmlQuery, "Network", "DccIpDetect").toBool());
+	accountDetails->setDccLocalPort(readEntry(xmlQuery, "Network", "LocalPort").toUInt());
+	accountDetails->setDccForwarding(readEntry(xmlQuery, "Network", "DccForwarding").toBool());
+	accountDetails->setMaximumImageSize(readEntry(xmlQuery, "Chat", "MaxImageSize", 255).toUInt());
+	accountDetails->setReceiveImagesDuringInvisibility(readEntry(xmlQuery, "Chat", "ReceiveImagesDuringInvisibility").toBool());
+	accountDetails->setMaximumImageRequests(readEntry(xmlQuery, "Chat", "MaxImageRequests").toUInt());
+	accountDetails->setRemoveCompletedTransfers(readEntry(xmlQuery, "Network", "RemoveCompletedTransfers").toBool());
+
+	AccountProxySettings proxySettings;
+	proxySettings.setEnabled(readEntry(xmlQuery, "Network", "UseProxy").toBool());
+	proxySettings.setAddress(readEntry(xmlQuery, "Network", "ProxyHost").toString());
+	proxySettings.setPort(readEntry(xmlQuery, "Network", "ProxyPort").toUInt());
+	proxySettings.setUser(readEntry(xmlQuery, "Network", "ProxyUser").toString());
+	proxySettings.setPassword(readEntry(xmlQuery, "Network", "ProxyPassword").toString());
+	proxySettings.setRequiresAuthentication(!proxySettings.user().isEmpty());
+
+	result.setProxySettings(proxySettings);
+
+	return result;
 }
 
 void GaduImporter::importAccounts()

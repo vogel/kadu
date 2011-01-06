@@ -17,14 +17,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtXmlPatterns/QXmlQuery>
-#include <QtXmlPatterns/QXmlResultItems>
+#include "accounts/account-manager.h"
+#include "accounts/account.h"
+#include "identities/identity-manager.h"
+
+#include "modules/gadu_protocol/helpers/gadu-importer.h"
 
 #include "profile-importer.h"
-
-const QString ProfileImporter::UinQuery("/Kadu/Deprecated/ConfigFile[@name='kadu.conf']/Group[@name='General']/Entry[@name='UIN']/@value/string()");
-const QString ProfileImporter::PasswordQuery("/Kadu/Deprecated/ConfigFile[@name='kadu.conf']/Group[@name='General']/Entry[@name='Password']/@value/string()");
-const QString ProfileImporter::ContactsQuery("/Kadu/Contacts/Contact");
 
 ProfileImporter::ProfileImporter(const QString &profileFileName) :
 		ProfileFileName(profileFileName)
@@ -36,7 +35,7 @@ QString ProfileImporter::errorMessage()
 	return ErrorMessage;
 }
 
-bool ProfileImporter::import()
+bool ProfileImporter::import(const QString &name)
 {
 	QFile profileFile(ProfileFileName);
 	if (!profileFile.open(QIODevice::ReadOnly))
@@ -45,36 +44,22 @@ bool ProfileImporter::import()
 		return false;
 	}
 
-	QXmlQuery xmlQuery;
-	xmlQuery.setFocus(&profileFile);
-
-	xmlQuery.setQuery(UinQuery);
-	QString uin;
-	if (!xmlQuery.evaluateTo(&uin) || uin.isEmpty())
-	{
-		ErrorMessage = tr("Invalid profile. UIN data not found.");
-		profileFile.close();
-		return false;
-	}
-
-	xmlQuery.setQuery(PasswordQuery);
-	QString password;
-	if (!xmlQuery.evaluateTo(&password) || password.isEmpty())
-	{
-		ErrorMessage = tr("Invalid profile. Password data not found.");
-		profileFile.close();
-		return false;
-	}
-
-	xmlQuery.setQuery(ContactsQuery);
-	QXmlResultItems contacts;
-	xmlQuery.evaluateTo(&contacts);
-
-	int count = 0;
-	while (!contacts.next().isNull())
-		count++;
-
-	ErrorMessage = tr("Found data:\nUin: %1\n Password: %2\nContact count: %3").arg(uin).arg(password).arg(count);
+	Account importedAccount = GaduImporter::import065Account(&profileFile);
 	profileFile.close();
-	return false;
+
+	if (importedAccount.id().isEmpty())
+	{
+		ErrorMessage = tr("Imported account has no ID");
+		return false;
+	}
+
+	QString identity = name;
+	if (identity.isEmpty())
+		identity = tr("Imported: %1").arg(importedAccount.id());
+
+	Identity accountIdentity = IdentityManager::instance()->byName(identity, true);
+	importedAccount.setAccountIdentity(accountIdentity);
+
+	AccountManager::instance()->addItem(importedAccount);
+	return true;
 }

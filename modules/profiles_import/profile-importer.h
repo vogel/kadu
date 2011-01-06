@@ -26,17 +26,13 @@ class ProfileImporter : public QObject
 {
 	Q_OBJECT
 
-	static const QString UinQuery;
-	static const QString PasswordQuery;
-	static const QString ContactsQuery;
-
 	QString ProfileFileName;
 	QString ErrorMessage;
 
 public:
 	ProfileImporter(const QString &profileFileName);
 
-	bool import();
+	bool import(const QString &name = QString());
 
 	QString errorMessage();
 	

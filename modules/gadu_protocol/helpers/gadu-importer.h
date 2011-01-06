@@ -22,7 +22,12 @@
 #define GADU_IMPORTER
 
 #include <QtCore/QObject>
+#include <QtCore/QVariant>
 
+class QIODevice;
+class QXmlQuery;
+
+class Account;
 class Buddy;
 
 class GaduImporter : public QObject
@@ -30,6 +35,9 @@ class GaduImporter : public QObject
 	Q_OBJECT
 
 	static GaduImporter *Instance;
+
+	static const QString EntryQuery;
+	static const QString ContactsQuery;
 
 	GaduImporter() {}
 
@@ -40,11 +48,15 @@ class GaduImporter : public QObject
 	void importGaduContact(Buddy &buddy);
 	void importIgnored();
 
+	static QVariant readEntry(QXmlQuery &xmlQuery, const QString &groupName, const QString &entryName, const QVariant &defaultValue = QVariant());
+
 private slots:
 	void buddyAdded(Buddy &buddy);
 
 public:
 	static GaduImporter * instance();
+
+	static Account import065Account(QIODevice *ioDevice);
 
 	void importAccounts();
 	void importContacts();
