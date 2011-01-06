@@ -1,0 +1,7 @@
+[Module]
+Description=Old Kadu profiles import
+Description[pl]=Import profili z poprzednich wersji programu
+Author=Kadu Team
+LoadByDefault=true
+Version=core
+Dependencies=gadu_protocol history_migration
