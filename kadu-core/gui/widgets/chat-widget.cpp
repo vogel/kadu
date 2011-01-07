@@ -174,6 +174,7 @@ void ChatWidget::createContactsList()
 			Core::instance()->kaduWindow(), SLOT(openChatWindow(Chat)));
 
 	QPushButton *leaveConference = new QPushButton(tr("Leave\nconference"), contactsListContainer);
+	leaveConference->setStyleSheet("text-align: center;");
 	leaveConference->setMinimumWidth(BuddiesWidget->minimumWidth());
 	connect(leaveConference, SIGNAL(clicked()), this, SLOT(leaveConference()));
 
