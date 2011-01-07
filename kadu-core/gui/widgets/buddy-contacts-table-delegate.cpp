@@ -40,7 +40,7 @@ QWidget * BuddyContactsTableDelegate::createEditor(QWidget *parent, const QStyle
 	if (1 != index.column()) // not account
 		return QStyledItemDelegate::createEditor(parent, option, index);
 
-	AccountsComboBox *accountsComboBox = new AccountsComboBox(parent);
+	AccountsComboBox *accountsComboBox = new AccountsComboBox(index.data(AccountRole).value<Account>().isNull(), parent);
 	// this connect does not work withour Account
 	connect(accountsComboBox, SIGNAL(accountChanged(Account)), this, SLOT(dataChanged()));
 

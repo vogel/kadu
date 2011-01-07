@@ -29,6 +29,8 @@ class AccountsComboBox : public KaduComboBox<Account>
 {
 	Q_OBJECT
 
+	bool IncludeSelectAccount;
+
 private slots:
 	void currentIndexChangedSlot(int index);
 	void updateValueBeforeChange();
@@ -40,7 +42,7 @@ protected:
 	virtual ActionsProxyModel::ActionVisibility selectVisibility() const;
 
 public:
-	explicit AccountsComboBox(QWidget *parent = 0);
+	explicit AccountsComboBox(bool includeSelectAccount, QWidget *parent = 0);
 	virtual ~AccountsComboBox();
 
 	void setCurrentAccount(Account account);

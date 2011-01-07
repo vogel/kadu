@@ -24,8 +24,8 @@
 
 #include "accounts-combo-box.h"
 
-AccountsComboBox::AccountsComboBox(QWidget *parent) :
-		KaduComboBox<Account>(parent)
+AccountsComboBox::AccountsComboBox(bool includeSelectAccount, QWidget *parent) :
+		KaduComboBox<Account>(parent), IncludeSelectAccount(includeSelectAccount)
 {
 	AccountsModel *accountsModel = new AccountsModel(this);
 
@@ -75,7 +75,7 @@ int AccountsComboBox::preferredDataRole() const
 
 QString AccountsComboBox::selectString() const
 {
-	return tr(" - Select account - ");
+	return IncludeSelectAccount ? tr(" - Select account - ") : QString();
 }
 
 ActionsProxyModel::ActionVisibility AccountsComboBox::selectVisibility() const

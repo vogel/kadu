@@ -104,7 +104,7 @@ void AddBuddyWindow::createGui()
 		layout->addWidget(UserNameEdit, 0, 1);
 	}
 
-	AccountCombo = new AccountsComboBox(this);
+	AccountCombo = new AccountsComboBox(MyBuddy.isNull(), this);
 	AccountCombo->setModelColumn(1); // use long account name
 
 	AccountComboIdFilter = new IdValidityFilter(AccountCombo);
