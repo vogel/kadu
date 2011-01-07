@@ -129,12 +129,6 @@ void AddBuddyWindow::createGui()
 	selectContactLayout->addWidget(SelectBuddy);
 	layout->addWidget(selectContactWidget, 5, 1, 1, 3);
 
-	connect(MergeBuddy, SIGNAL(toggled(bool)), SelectBuddy, SLOT(setEnabled(bool)));
-	connect(MergeBuddy, SIGNAL(toggled(bool)), DisplayNameEdit, SLOT(setDisabled(bool)));
-	connect(MergeBuddy, SIGNAL(toggled(bool)), this, SLOT(setAddContactEnabled()));
-	connect(SelectBuddy, SIGNAL(buddyChanged(Buddy)), this, SLOT(setAddContactEnabled()));
-	connect(SelectBuddy, SIGNAL(buddyChanged(Buddy)), this, SLOT(setAccountFilter()));
-
 	AskForAuthorization = new QCheckBox(tr("Ask contact for authorization"), this);
 	AskForAuthorization->setEnabled(false);
 	layout->addWidget(AskForAuthorization, 7, 1, 1, 3);
@@ -170,6 +164,13 @@ void AddBuddyWindow::createGui()
 	layout->setColumnMinimumWidth(1, 200);
 	setFixedHeight(layout->minimumSize().height());
 	setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
+
+	connect(MergeBuddy, SIGNAL(toggled(bool)), SelectBuddy, SLOT(setEnabled(bool)));
+	connect(MergeBuddy, SIGNAL(toggled(bool)), DisplayNameEdit, SLOT(setDisabled(bool)));
+	connect(MergeBuddy, SIGNAL(toggled(bool)), AllowToSeeMeCheck, SLOT(setDisabled(bool)));
+	connect(MergeBuddy, SIGNAL(toggled(bool)), this, SLOT(setAddContactEnabled()));
+	connect(SelectBuddy, SIGNAL(buddyChanged(Buddy)), this, SLOT(setAddContactEnabled()));
+	connect(SelectBuddy, SIGNAL(buddyChanged(Buddy)), this, SLOT(setAccountFilter()));
 
 	updateGui();
 }
