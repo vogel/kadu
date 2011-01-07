@@ -536,12 +536,11 @@ void KaduWindowActions::addUserActionActivated(QAction *sender, bool toggled)
 		return;
 
 	Buddy buddy = action->buddy();
-	AddBuddyWindow *addBuddyWindow = new AddBuddyWindow(action->parentWidget());
 
 	if (buddy.isAnonymous())
-		addBuddyWindow->setBuddy(buddy);
-
-	addBuddyWindow->show();
+		(new AddBuddyWindow(action->parentWidget(), buddy, true))->show();
+	else
+		(new AddBuddyWindow(action->parentWidget()))->show();
 
  	kdebugf2();
 }
@@ -886,11 +885,7 @@ void KaduWindowActions::editUserActionActivated(ActionDataSource *source)
 	Buddy buddy = *buddySet.begin();
 
 	if (buddy.isAnonymous())
-	{
-		AddBuddyWindow *addBuddyWindow = new AddBuddyWindow(Core::instance()->kaduWindow());
-		addBuddyWindow->setBuddy(buddy);
-		addBuddyWindow->show();
-	}
+		(new AddBuddyWindow(Core::instance()->kaduWindow(), buddy, true))->show();
 	else
 		BuddyDataWindow::instance(buddy, Core::instance()->kaduWindow())->show();
 

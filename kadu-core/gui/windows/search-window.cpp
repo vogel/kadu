@@ -334,11 +334,7 @@ QTreeWidgetItem * SearchWindow::selectedItem()
 void SearchWindow::addFound()
 {
 	foreach (const Buddy &buddy, selected().toBuddySet().toList())
-	{
-		AddBuddyWindow *a = new AddBuddyWindow(this);
-		a->setBuddy(buddy);
-		a->show();
-	}
+		(new AddBuddyWindow(this, buddy))->show();
 }
 
 void SearchWindow::chatFound()

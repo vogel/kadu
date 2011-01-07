@@ -7,6 +7,7 @@ set (kadu_SRCS
 	accounts/accounts-aware-object.cpp
 
 	accounts/filter/id-validity-filter.cpp
+	accounts/filter/protocol-filter.cpp
 	accounts/filter/writeable-contacts-list-filter.cpp
 
 	accounts/model/accounts-model.cpp
@@ -366,6 +367,7 @@ set (kadu_MOC_SRCS
 
 	accounts/filter/abstract-account-filter.h
 	accounts/filter/id-validity-filter.h
+	accounts/filter/protocol-filter.h
 	accounts/filter/writeable-contacts-list-filter.h
 
 	accounts/model/accounts-model.h
