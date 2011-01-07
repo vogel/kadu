@@ -88,7 +88,7 @@ int SelectBuddyComboBox::preferredDataRole() const
 
 QString SelectBuddyComboBox::selectString() const
 {
-	return tr(" - Select contact - ");
+	return tr(" - Select buddy - ");
 }
 
 void SelectBuddyComboBox::showPopup()

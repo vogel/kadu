@@ -48,8 +48,8 @@ class AddBuddyWindow : public QDialog
 	IdValidityFilter *AccountComboIdFilter;
 	GroupsComboBox *GroupCombo;
 	QLineEdit *DisplayNameEdit;
-	QCheckBox *MergeContact;
-	SelectBuddyComboBox *SelectContact;
+	QCheckBox *MergeBuddy;
+	SelectBuddyComboBox *SelectBuddy;
 	QCheckBox *AskForAuthorization;
 	QCheckBox *AllowToSeeMeCheck;
 	QLabel *ErrorLabel;

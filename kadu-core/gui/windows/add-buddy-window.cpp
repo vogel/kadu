@@ -111,36 +111,35 @@ void AddBuddyWindow::createGui()
 	connect(DisplayNameEdit, SIGNAL(textChanged(const QString &)), this, SLOT(setAddContactEnabled()));
 	layout->addWidget(DisplayNameEdit, 2, 1, 1, 1);
 
-	QLabel *hintLabel = new QLabel(tr("Enter a name for this contact"));
+	QLabel *hintLabel = new QLabel(tr("Enter a name for this buddy"));
 	QFont hintLabelFont = hintLabel->font();
 	hintLabelFont.setItalic(true);
 	hintLabelFont.setPointSize(hintLabelFont.pointSize() - 2);
 	hintLabel->setFont(hintLabelFont);
 	layout->addWidget(hintLabel, 3, 1, 1, 3);
 
-	MergeContact = new QCheckBox(tr("Merge with an existing contact"), this);
-	layout->addWidget(MergeContact, 4, 1, 1, 3);
+	MergeBuddy = new QCheckBox(tr("Merge with existing buddy"), this);
+	layout->addWidget(MergeBuddy, 4, 1, 1, 3);
 
 	QWidget *selectContactWidget = new QWidget(this);
 	QHBoxLayout *selectContactLayout = new QHBoxLayout(selectContactWidget);
 	selectContactLayout->addSpacing(20);
-	SelectContact = new SelectBuddyComboBox(selectContactWidget);
-	SelectContact->setEnabled(false);
-	selectContactLayout->addWidget(SelectContact);
+	SelectBuddy = new SelectBuddyComboBox(selectContactWidget);
+	SelectBuddy->setEnabled(false);
+	selectContactLayout->addWidget(SelectBuddy);
 	layout->addWidget(selectContactWidget, 5, 1, 1, 3);
 
-	connect(MergeContact, SIGNAL(toggled(bool)), SelectContact, SLOT(setEnabled(bool)));
-	connect(MergeContact, SIGNAL(toggled(bool)), DisplayNameEdit, SLOT(setDisabled(bool)));
-	connect(MergeContact, SIGNAL(toggled(bool)), this, SLOT(setAddContactEnabled()));
-	connect(SelectContact, SIGNAL(buddyChanged(Buddy)), this, SLOT(setAddContactEnabled()));
-	connect(SelectContact, SIGNAL(buddyChanged(Buddy)), this, SLOT(setAccountFilter()));
+	connect(MergeBuddy, SIGNAL(toggled(bool)), SelectBuddy, SLOT(setEnabled(bool)));
+	connect(MergeBuddy, SIGNAL(toggled(bool)), DisplayNameEdit, SLOT(setDisabled(bool)));
+	connect(MergeBuddy, SIGNAL(toggled(bool)), this, SLOT(setAddContactEnabled()));
+	connect(SelectBuddy, SIGNAL(buddyChanged(Buddy)), this, SLOT(setAddContactEnabled()));
+	connect(SelectBuddy, SIGNAL(buddyChanged(Buddy)), this, SLOT(setAccountFilter()));
 
 	AskForAuthorization = new QCheckBox(tr("Ask contact for authorization"), this);
 	AskForAuthorization->setEnabled(false);
 	layout->addWidget(AskForAuthorization, 7, 1, 1, 3);
 
-	// TODO 0.6.6: it is not used anywhere
-	AllowToSeeMeCheck = new QCheckBox(tr("Allow contact to see me when I'm available"), this);
+	AllowToSeeMeCheck = new QCheckBox(tr("Allow buddy to see me when I'm available"), this);
 	AllowToSeeMeCheck->setChecked(true);
 	layout->addWidget(AllowToSeeMeCheck, 8, 1, 1, 3);
 
@@ -157,7 +156,7 @@ void AddBuddyWindow::createGui()
 	QDialogButtonBox *buttons = new QDialogButtonBox(this);
 	layout->addWidget(buttons, 11, 0, 1, 4);
 
-	AddContactButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogOkButton), tr("Add contact"), this);
+	AddContactButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogOkButton), tr("Add buddy"), this);
 	AddContactButton->setDefault(true);
 	connect(AddContactButton, SIGNAL(clicked(bool)), this, SLOT(accept()));
 
@@ -241,16 +240,16 @@ void AddBuddyWindow::updateAccountGui()
 	else
 		UserNameLabel->setText(account.protocolHandler()->protocolFactory()->idLabel());
 
-	MergeContact->setEnabled(true);
+	MergeBuddy->setEnabled(true);
 	AllowToSeeMeCheck->setEnabled(true);
 }
 
 void AddBuddyWindow::updateMobileGui()
 {
 	UserNameLabel->setText(tr("Mobile number:"));
-	MergeContact->setChecked(false);
-	MergeContact->setEnabled(false);
-	SelectContact->setCurrentBuddy(Buddy::null);
+	MergeBuddy->setChecked(false);
+	MergeBuddy->setEnabled(false);
+	SelectBuddy->setCurrentBuddy(Buddy::null);
 	AllowToSeeMeCheck->setEnabled(false);
 }
 
@@ -292,11 +291,11 @@ void AddBuddyWindow::validateData()
 		return;
 	}
 
-	if (MergeContact->isChecked())
+	if (MergeBuddy->isChecked())
 	{
-		if (!SelectContact->currentBuddy())
+		if (!SelectBuddy->currentBuddy())
 		{
-			displayErrorMessage(tr("Select contact to merge with"));
+			displayErrorMessage(tr("Select buddy to merge with"));
 			return;
 		}
 	}
@@ -304,7 +303,7 @@ void AddBuddyWindow::validateData()
 	{
 		if (BuddyManager::instance()->byDisplay(DisplayNameEdit->text(), ActionReturnNull))
 		{
-			displayErrorMessage(tr("Visible name is already used for another contact"));
+			displayErrorMessage(tr("Visible name is already used for another buddy"));
 			return;
 		}
 	}
@@ -323,7 +322,7 @@ void AddBuddyWindow::validateMobileData()
 		return;
 	}
 
-	if (MergeContact->isChecked())
+	if (MergeBuddy->isChecked())
 	{
 		displayErrorMessage(tr("Merging mobile number with buddy is not supported. Please use edit buddy window."));
 		return;
@@ -354,7 +353,7 @@ bool AddBuddyWindow::addContact()
 
 	Buddy buddy;
 
-	if (!MergeContact->isChecked())
+	if (!MergeBuddy->isChecked())
 	{
 		if (MyBuddy.isNull())
 		{
@@ -374,7 +373,7 @@ bool AddBuddyWindow::addContact()
 	}
 	else
 	{
-		buddy = SelectContact->currentBuddy();
+		buddy = SelectBuddy->currentBuddy();
 		if (buddy.isNull())
 			return false;
 	}
