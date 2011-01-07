@@ -81,7 +81,7 @@ void AddBuddyWindow::createGui()
 
 	QGridLayout *layout = new QGridLayout(this);
 
-	UserNameLabel = new QLabel(tr("User ID:"), this);
+	UserNameLabel = new QLabel(this);
 	UserNameLabel->setAlignment(Qt::AlignRight);
 	layout->addWidget(UserNameLabel, 0, 0, Qt::AlignRight);
 	UserNameEdit = new QLineEdit(this);
@@ -170,6 +170,8 @@ void AddBuddyWindow::createGui()
 	layout->setColumnMinimumWidth(1, 200);
 	setFixedHeight(layout->minimumSize().height());
 	setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
+
+	updateGui();
 }
 
 void AddBuddyWindow::addMobileAccountToComboBox()
@@ -236,7 +238,7 @@ void AddBuddyWindow::updateAccountGui()
 {
 	Account account = AccountCombo->currentAccount();
 	if (account.isNull())
-		UserNameLabel->setText(tr("Username:"));
+		UserNameLabel->setText(tr("User ID:"));
 	else
 		UserNameLabel->setText(account.protocolHandler()->protocolFactory()->idLabel());
 
