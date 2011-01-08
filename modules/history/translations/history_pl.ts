@@ -155,7 +155,7 @@
     </message>
     <message>
         <location filename="../history.cpp" line="175"/>
-        <source>Clear history</source>
+        <source>Clear History</source>
         <translation>Wyczyść historię</translation>
     </message>
     <message>

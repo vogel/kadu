@@ -164,7 +164,7 @@
     </message>
     <message>
         <location filename="../sql_history.cpp" line="336"/>
-        <source>Clear history</source>
+        <source>Clear History</source>
         <translation>Verlauf leeren</translation>
     </message>
     <message>

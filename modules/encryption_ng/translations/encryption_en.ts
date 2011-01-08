@@ -49,7 +49,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Send my public key</source>
+        <source>Send My Public Key</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

@@ -1891,8 +1891,8 @@ zostaną zignorowane. Czy na pewno chcesz opuścić konferencję?</translation>
 <context>
     <name>ChatWidgetActions</name>
     <message>
-        <source>%1 Sends Message</source>
-        <translation>%1 wysyła wiadomość</translation>
+        <source>Return Sends Message</source>
+        <translation>Enter wysyła wiadomość</translation>
     </message>
     <message>
         <source>Clear Messages in Chat Window</source>
@@ -2552,20 +2552,20 @@ Jest to prawdopodobnie dalsza część pliku &lt;b&gt;%5&lt;/b&gt;
         <translation>Ignorowani...</translation>
     </message>
     <message>
-        <source>Getting H&amp;elp</source>
-        <translation>&amp;Pomoc</translation>
+        <source>Getting H&amp;elp...</source>
+        <translation>&amp;Pomoc...</translation>
     </message>
     <message>
         <source>Report a Bug...</source>
         <translation>Zgłoś błąd...</translation>
     </message>
     <message>
-        <source>Support Us</source>
-        <translation>Wesprzyj nas</translation>
+        <source>Support Us...</source>
+        <translation>Wesprzyj nas...</translation>
     </message>
     <message>
-        <source>Get Involved</source>
-        <translation>Dołącz</translation>
+        <source>Get Involved...</source>
+        <translation>Dołącz...</translation>
     </message>
     <message>
         <source>A&amp;bout Kadu</source>
@@ -2573,7 +2573,7 @@ Jest to prawdopodobnie dalsza część pliku &lt;b&gt;%5&lt;/b&gt;
     </message>
     <message>
         <source>Translate Kadu...</source>
-        <translation>Przetłumacz kadu...</translation>
+        <translation>Przetłumacz Kadu...</translation>
     </message>
     <message>
         <source>Show Information Panel</source>
@@ -2620,12 +2620,12 @@ Jest to prawdopodobnie dalsza część pliku &lt;b&gt;%5&lt;/b&gt;
         <translation>Ukryj kontakty bez opisu</translation>
     </message>
     <message>
-        <source>Show Users Without Description</source>
-        <translation>Pokaż kontakty bez opisu</translation>
+        <source>Only Show Buddies with Description</source>
+        <translation>Pokaż tylko znajomych z opisem</translation>
     </message>
     <message>
-        <source>Show Only Online and Description Users</source>
-        <translation>Pokaż tylko kontakty dostępne i z opisem</translation>
+        <source>Only Show Online Buddies and Buddies with Description</source>
+        <translation>Pokaż tylko dostępnych znajomych i znajomych z opisem</translation>
     </message>
     <message>
         <source>Show all users</source>
@@ -2904,11 +2904,11 @@ Jeśli zechcesz włączyć (lub wyłączyć) któryś z nich, wystarczy dwukrotn
 <context>
     <name>NotificationManager</name>
     <message>
-        <source>Notify about user</source>
-        <translation>Powiadom o kontakcie</translation>
+        <source>Notify About Buddy</source>
+        <translation>Powiadom o znajomym</translation>
     </message>
     <message>
-        <source>Enable notifications</source>
+        <source>Enable Notifications</source>
         <translation>Włącz powiadomienia</translation>
     </message>
     <message>

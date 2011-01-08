@@ -98,7 +98,7 @@ EncryptionActions::EncryptionActions(bool firstLoad)
 	SendPublicKeyActionDescription = new ActionDescription(this,
 		ActionDescription::TypeUser, "sendPublicKeyAction",
 		this, SLOT(sendPublicKeyActionActivated(QAction *, bool)),
-		"security-high", tr("Send my public key"),
+		"security-high", tr("Send My Public Key"),
 		false, checkSendKey
 	);
 	BuddiesListViewMenuManager::instance()->addListActionDescription(SendPublicKeyActionDescription,

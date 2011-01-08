@@ -43,7 +43,7 @@
 <context>
     <name>EncryptionManager</name>
     <message>
-        <source>Send my public key</source>
+        <source>Send My Public Key</source>
         <translation>Wyślij mój klucz publiczny</translation>
     </message>
     <message>
