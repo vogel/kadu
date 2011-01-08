@@ -17,14 +17,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QFileDialog>
-
 #include "core/core.h"
 #include "gui/actions/action-description.h"
 #include "gui/windows/kadu-window.h"
-#include "gui/windows/message-dialog.h"
 
-#include "profile-importer.h"
+#include "gui/windows/import-profile-window.h"
 
 #include "profiles-import-actions.h"
 
@@ -65,26 +62,5 @@ void ProfilesImportActions::importExternalProfileActionActivated(QAction *action
 	Q_UNUSED(action)
 	Q_UNUSED(toggled)
 
-	while (true)
-	{
-		QString directoryPath = QFileDialog::getExistingDirectory(Core::instance()->kaduWindow(), tr("Select profile directory"), QString());
-		if (directoryPath.isEmpty())
-			break; // cancel selected
-
-		QFileInfo kaduConfFile(directoryPath + "/kadu.conf.xml");
-
-		if (!kaduConfFile.exists())
-		{
-			MessageDialog::exec("dialog-warning", tr("Import external profile..."), tr("This directory is not a Kadu profile directory.\nFile kadu.conf.xml not found"));
-			continue;
-		}
-
-		ProfileImporter importer(kaduConfFile.absoluteFilePath());
-		if (importer.import())
-			MessageDialog::exec("dialog-information", tr("Import external profile..."), tr("Profile successfully imported!"));
-		else
-			MessageDialog::exec("dialog-warning", tr("Import external profile..."), tr("Unable to import profile: %1").arg(importer.errorMessage()));
-
-		return;
-	}
+	(new ImportProfileWindow(Core::instance()->kaduWindow()))->show();
 }

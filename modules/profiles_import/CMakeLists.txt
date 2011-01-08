@@ -1,10 +1,14 @@
 set (SOURCES
+	gui/windows/import-profile-window.cpp
+
 	profile-importer.cpp
 	profiles-import-actions.cpp
 	profiles-import-module.cpp
 )
 
 set(MOC_SOURCES
+	gui/windows/import-profile-window.h
+
 	profile-importer.h
 	profiles-import-actions.h
 )

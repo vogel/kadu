@@ -73,16 +73,19 @@ bool ProfileImporter::import(const QString &name)
 	foreach (const Buddy &buddy, buddies)
 	{
 		foreach (const Contact &contact, buddy.contacts())
-		{
 			ContactManager::instance()->addItem(contact);
-		}
 
 		Buddy existingBuddy = BuddyManager::instance()->byDisplay(buddy.display(), ActionReturnNull);
 		if (existingBuddy)
+		{
 			foreach (const Contact &contact, buddy.contacts())
 				contact.setOwnerBuddy(existingBuddy);
+		}
 		else
+		{
+			buddy.setAnonymous(false);
 			BuddyManager::instance()->addItem(buddy);
+		}
 	}
 
 	return true;

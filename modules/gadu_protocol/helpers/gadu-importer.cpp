@@ -47,7 +47,7 @@
 
 GaduImporter * GaduImporter::Instance;
 
-const QString GaduImporter::EntryQuery("/Kadu/Deprecated/ConfigFile[@name='kadu.conf']/Group[@name='%1']/Entry[@name='%2']/@value/string()");
+const QString GaduImporter::EntryQuery("/Kadu/Deprecated/ConfigFile[ends-with(@name,'kadu.conf')]/Group[@name='%1']/Entry[@name='%2']/@value/string()");
 const QString GaduImporter::ContactsQuery("/Kadu/Contacts/Contact");
 
 GaduImporter * GaduImporter::instance()

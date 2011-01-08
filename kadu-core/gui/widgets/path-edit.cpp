@@ -40,14 +40,14 @@ void PathEdit::createGui()
 	QHBoxLayout *layout = new QHBoxLayout(this);
 
 	PathLineEdit = new QLineEdit(this);
+	PathLineEdit->setMinimumWidth(200);
 	layout->addWidget(PathLineEdit);
 
 	QPushButton *selectButton = new QPushButton(IconsManager::instance()->iconByPath("document-open"), QString(), this);
 	layout->addWidget(selectButton);
 
 	connect(selectButton, SIGNAL(pressed()), this, SLOT(selectPath()));
-
-	connect(PathLineEdit, SIGNAL(textChanged(QString)), this, SLOT(pathChanged(QString)));
+	connect(PathLineEdit, SIGNAL(textChanged(QString)), this, SIGNAL(pathChanged(QString)));
 }
 
 QString PathEdit::path()
