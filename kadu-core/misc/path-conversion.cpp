@@ -74,6 +74,42 @@ void printBacktrace(const QString &header)
 	fflush(stderr);
 }
 
+QString homePath()
+{
+	static QString path;
+	if (path.isNull())
+	{
+		QString home;
+
+#ifdef Q_OS_WIN
+		// on win32 dataPath doesn't need real argv[0] so it's safe to use this
+		// in such ugly way
+		if (QFile::exists(dataPath("usbinst", "")))
+		{
+			path = dataPath("config/");
+			Parser::globalVariables["KADU_CONFIG"] = path;
+			return (path+subpath);
+		}
+		WCHAR *homepath = new WCHAR[MAX_PATH + 1];
+		WCHAR *homepath_guard = homepath;
+		if (!SUCCEEDED(SHGetFolderPathW(NULL, CSIDL_APPDATA, NULL, 0, homepath)))
+			homepath = _wgetenv(L"HOMEPATH");
+		home = QString::fromUtf16((const ushort *)homepath);
+		delete [] homepath_guard;
+#else
+		struct passwd *pw;
+		if ((pw = getpwuid(getuid())))
+			home = QString::fromLocal8Bit(pw->pw_dir);
+		else
+			home = QString::fromLocal8Bit(getenv("HOME"));
+#endif
+
+		path = home;
+	}
+
+	return path;
+}
+
 QString profilePath(const QString &subpath)
 {
 	static QString path;

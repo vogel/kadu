@@ -1,0 +1,118 @@
+/*
+ * %kadu copyright begin%
+ * Copyright 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * %kadu copyright end%
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of
+ * the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#include <QtGui/QApplication>
+#include <QtGui/QCheckBox>
+#include <QtGui/QDialogButtonBox>
+#include <QtGui/QFormLayout>
+#include <QtGui/QLabel>
+#include <QtGui/QPushButton>
+#include <QtGui/QStyle>
+
+#include "gui/windows/message-dialog.h"
+#include "identities/identity-manager.h"
+#include "misc/path-conversion.h"
+
+#include "profile-data-reader.h"
+#include "profile-importer.h"
+
+#include "import-profiles-window.h"
+
+ImportProfilesWindow::ImportProfilesWindow(QWidget *parent) :
+		QDialog(parent)
+{
+	setAttribute(Qt::WA_DeleteOnClose, true);
+
+	createGui();
+}
+
+ImportProfilesWindow::~ImportProfilesWindow()
+{
+}
+
+void ImportProfilesWindow::createGui()
+{
+	QGridLayout *layout = new QGridLayout(this);
+	layout->setColumnMinimumWidth(0, 32);
+
+	QLabel *descriptionLabel = new QLabel(
+			tr("<p>Current version of Kadu does not support user profiles.<br />Instead, multiple account are supported in one instances of kadu.</p>"
+			   "<p>Please select profiles that you would like to import as<br />account into this instance of Kadu.</p>"), this);
+	// descriptionLabel->setWordWrap(true); // this work strange
+	layout->addWidget(descriptionLabel, 0, 0, 1, 2);
+
+	createProfileList(layout);
+
+	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
+	layout->addWidget(buttons, layout->rowCount(), 0, 1, 2);
+
+	QPushButton *importButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogApplyButton), tr("Import"), this);
+	connect(importButton, SIGNAL(clicked(bool)), this, SLOT(accept()));
+	buttons->addButton(importButton, QDialogButtonBox::AcceptRole);
+
+	QPushButton *cancelButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton), tr("Close"), this);
+	connect(cancelButton, SIGNAL(clicked(bool)), this, SLOT(close()));
+	buttons->addButton(cancelButton, QDialogButtonBox::RejectRole);
+
+	setFixedHeight(layout->minimumSize().height());
+	setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
+}
+
+void ImportProfilesWindow::createProfileList(QGridLayout *layout)
+{
+	QList<ProfileData> profiles = ProfileDataReader::readProfileData();
+	foreach (const ProfileData &profile, profiles)
+	{
+		QCheckBox *profileCheckBox = new QCheckBox(profile.Name, this);
+		profileCheckBox->setChecked(true);
+
+		ProfileCheckBoxes[profileCheckBox] = profile;
+
+		QCheckBox *historyCheckBox = new QCheckBox(tr("Import history"), this);
+		historyCheckBox->setEnabled(false);
+
+		layout->addWidget(profileCheckBox, layout->rowCount(), 0, 1, 2);
+		layout->addWidget(historyCheckBox, layout->rowCount(), 1);
+	}
+}
+void ImportProfilesWindow::accept()
+{
+	foreach (QCheckBox *importCheckBox, ProfileCheckBoxes.keys())
+	{
+		if (!importCheckBox->isChecked())
+			continue;
+
+		ProfileData profile = ProfileCheckBoxes[importCheckBox];
+
+		QString path = profile.Path.startsWith('/')
+				? profile.Path
+				: homePath() + "/" + profile.Path;
+
+		ProfileImporter importer(path + "/kadu/kadu.conf.xml");
+		if (!importer.import(IdentityManager::instance()->byName(profile.Name, true)))
+			MessageDialog::exec("dialog-warning", tr("Import profile..."), tr("Unable to import profile: %1: %2")
+					.arg(profile.Name)
+					.arg(importer.errorMessage()));
+		else
+			MessageDialog::exec("dialog-information", tr("Import external profile..."), tr("Profile %1 successfully imported!")
+					.arg(profile.Name));
+	}
+
+	QDialog::accept();
+}

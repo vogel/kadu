@@ -22,6 +22,8 @@
 #include "gui/windows/kadu-window.h"
 
 #include "gui/windows/import-profile-window.h"
+#include "gui/windows/import-profiles-window.h"
+#include "profile-data-reader.h"
 
 #include "profiles-import-actions.h"
 
@@ -46,6 +48,14 @@ ProfilesImportActions * ProfilesImportActions::instance()
 
 ProfilesImportActions::ProfilesImportActions()
 {
+	if (!ProfileDataReader::readProfileData().isEmpty())
+	{
+		ImportProfiles = new ActionDescription(this, ActionDescription::TypeGlobal, "import_profiles",
+				this, SLOT(importProfilesActionActivated(QAction*, bool)), QString(),
+				tr("Import profiles..."), false);
+		Core::instance()->kaduWindow()->insertMenuActionDescription(ImportProfiles, KaduWindow::MenuTools);
+	}
+
 	ImportExternalProfile = new ActionDescription(this, ActionDescription::TypeGlobal, "import_external_profile",
 			this, SLOT(importExternalProfileActionActivated(QAction*, bool)), QString(),
 			tr("Import external profile..."), false);
@@ -54,7 +64,16 @@ ProfilesImportActions::ProfilesImportActions()
 
 ProfilesImportActions::~ProfilesImportActions()
 {
+	Core::instance()->kaduWindow()->removeMenuActionDescription(ImportProfiles);
 	Core::instance()->kaduWindow()->removeMenuActionDescription(ImportExternalProfile);
+}
+
+void ProfilesImportActions::importProfilesActionActivated(QAction *action, bool toggled)
+{
+	Q_UNUSED(action)
+	Q_UNUSED(toggled)
+
+	(new ImportProfilesWindow(Core::instance()->kaduWindow()))->show();
 }
 
 void ProfilesImportActions::importExternalProfileActionActivated(QAction *action, bool toggled)

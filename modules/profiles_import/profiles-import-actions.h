@@ -32,12 +32,14 @@ class ProfilesImportActions : public QObject
 
 	static ProfilesImportActions * Instance;
 
+	ActionDescription *ImportProfiles;
 	ActionDescription *ImportExternalProfile;
 
 	ProfilesImportActions();
 	virtual ~ProfilesImportActions();
 
 private slots:
+	void importProfilesActionActivated(QAction *action, bool toggled);
 	void importExternalProfileActionActivated(QAction *action, bool toggled);
 
 public:

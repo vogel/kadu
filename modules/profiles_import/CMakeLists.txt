@@ -1,6 +1,8 @@
 set (SOURCES
 	gui/windows/import-profile-window.cpp
+	gui/windows/import-profiles-window.cpp
 
+	profile-data-reader.cpp
 	profile-importer.cpp
 	profiles-import-actions.cpp
 	profiles-import-module.cpp
@@ -8,6 +10,7 @@ set (SOURCES
 
 set(MOC_SOURCES
 	gui/windows/import-profile-window.h
+	gui/windows/import-profiles-window.h
 
 	profile-importer.h
 	profiles-import-actions.h
