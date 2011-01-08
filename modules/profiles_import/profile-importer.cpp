@@ -52,11 +52,19 @@ bool ProfileImporter::import(const Identity &identity)
 	xmlQuery.setFocus(&profileFile);
 
 	Account importedAccount = GaduImporter::import065Account(xmlQuery);
-	profileFile.close();
+
+	Account existingAccount = AccountManager::instance()->byId(importedAccount.protocolName(), importedAccount.id());
+	if (existingAccount)
+	{
+		ErrorMessage = tr("Account already exists.");
+		profileFile.close();
+		return false;
+	}
 
 	if (importedAccount.id().isEmpty())
 	{
 		ErrorMessage = tr("Imported account has no ID");
+		profileFile.close();
 		return false;
 	}
 
@@ -83,5 +91,6 @@ bool ProfileImporter::import(const Identity &identity)
 		}
 	}
 
+	profileFile.close();
 	return true;
 }
