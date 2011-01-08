@@ -1249,7 +1249,7 @@ changes upon establishing connection to the server</source>
 <context>
     <name>ChatManager</name>
     <message>
-        <source>%1 sends message</source>
+        <source>Return Sends Message</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1316,11 +1316,11 @@ changes upon establishing connection to the server</source>
 <context>
     <name>NotificationManager</name>
     <message>
-        <source>Notify about user</source>
+        <source>Notify About Buddy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Enable notifications</source>
+        <source>Enable Notifications</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1713,11 +1713,11 @@ Too many attempts with bad password</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Show users without description</source>
+        <source>Only Show Buddies with Description</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Show only online and description users</source>
+        <source>Only Show Online Buddies and Buddies with Description</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
