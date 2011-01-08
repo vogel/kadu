@@ -36,12 +36,13 @@ enum EmoticonsStyle
 	EmoticonsStyleAnimated
 };
 
+// flag
 enum EmoticonsScaling
 {
-	EmoticonsScalingNone,
-	EmoticonsScalingStatic,
-	EmoticonsScalingAnimated,
-	EmoticonsScalingAll
+	EmoticonsScalingNone = 0x0,
+	EmoticonsScalingStatic = 0x1,
+	EmoticonsScalingAnimated = 0x2,
+	EmoticonsScalingAll = EmoticonsScalingStatic | EmoticonsScalingAnimated
 };
 
 #endif // EMOTICONS_H
