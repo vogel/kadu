@@ -59,8 +59,12 @@ void ImportProfileWindow::createGui()
 	connect(SelectIdentity, SIGNAL(identityChanged(Identity)), this, SLOT(validate()));
 
 	ImportHistory = new QCheckBox(tr("Import history"), this);
-	ImportHistory->setChecked(true);
+	ImportHistory->setChecked(false);
+	ImportHistory->setEnabled(false);
 	layout->addRow(0, ImportHistory);
+
+	ErrorLabel = new QLabel(this);
+	layout->addRow(ErrorLabel);
 
 	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
 	layout->addRow(buttons);
@@ -79,16 +83,23 @@ void ImportProfileWindow::createGui()
 
 void ImportProfileWindow::validate()
 {
-	ImportButton->setEnabled(false);
+	bool valid = true;
+	ErrorLabel->setText(QString());
 
 	if (!SelectIdentity->currentIdentity())
-		return;
+	{
+		ErrorLabel->setText(tr("<b>Identity not selected</b>"));
+		valid = false;
+	}
 
 	QFileInfo kaduConfFile(ProfilePathEdit->path() + "/kadu.conf.xml");
 	if (!kaduConfFile.exists())
-		return;
+	{
+		ErrorLabel->setText(tr("<b>Selected directory does not contain kadu.conf.xml file</b>"));
+		valid = false;
+	}
 
-	ImportButton->setEnabled(true);
+	ImportButton->setEnabled(valid);
 }
 
 void ImportProfileWindow::accept()
@@ -102,7 +113,7 @@ void ImportProfileWindow::accept()
 	}
 
 	ProfileImporter importer(kaduConfFile.absoluteFilePath());
-	if (importer.import())
+	if (importer.import(SelectIdentity->currentIdentity()))
 		MessageDialog::exec("dialog-information", tr("Import external profile..."), tr("Profile successfully imported!"));
 	else
 		MessageDialog::exec("dialog-warning", tr("Import external profile..."), tr("Unable to import profile: %1").arg(importer.errorMessage()));

@@ -39,7 +39,7 @@ QString ProfileImporter::errorMessage()
 	return ErrorMessage;
 }
 
-bool ProfileImporter::import(const QString &name)
+bool ProfileImporter::import(const Identity &identity)
 {
 	QFile profileFile(ProfileFileName);
 	if (!profileFile.open(QIODevice::ReadOnly))
@@ -60,12 +60,7 @@ bool ProfileImporter::import(const QString &name)
 		return false;
 	}
 
-	QString identity = name;
-	if (identity.isEmpty())
-		identity = tr("Imported: %1").arg(importedAccount.id());
-
-	Identity accountIdentity = IdentityManager::instance()->byName(identity, true);
-	importedAccount.setAccountIdentity(accountIdentity);
+	importedAccount.setAccountIdentity(identity);
 
 	AccountManager::instance()->addItem(importedAccount);
 

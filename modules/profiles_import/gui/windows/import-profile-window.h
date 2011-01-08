@@ -23,6 +23,7 @@
 #include <QtGui/QDialog>
 
 class QCheckBox;
+class QLabel;
 
 class IdentitiesComboBox;
 class PathEdit;
@@ -34,6 +35,7 @@ class ImportProfileWindow : public QDialog
 	PathEdit *ProfilePathEdit;
 	IdentitiesComboBox *SelectIdentity;
 	QCheckBox *ImportHistory;
+	QLabel *ErrorLabel;
 	QPushButton *ImportButton;
 
 	void createGui();

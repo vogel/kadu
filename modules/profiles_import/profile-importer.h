@@ -22,6 +22,8 @@
 
 #include <QtCore/QFile>
 
+class Identity;
+
 class ProfileImporter : public QObject
 {
 	Q_OBJECT
@@ -32,7 +34,7 @@ class ProfileImporter : public QObject
 public:
 	ProfileImporter(const QString &profileFileName);
 
-	bool import(const QString &name = QString());
+	bool import(const Identity &identity);
 
 	QString errorMessage();
 	
