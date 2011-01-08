@@ -17,6 +17,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "core/core.h"
+#include "gui/windows/kadu-window.h"
+
+#include "gui/windows/import-profiles-window.h"
+#include "profile-data-reader.h"
+
 #include "profiles-import-actions.h"
 
 extern "C" int profiles_import_init(bool firstLoad)
@@ -24,6 +30,9 @@ extern "C" int profiles_import_init(bool firstLoad)
 	Q_UNUSED(firstLoad)
 
 	ProfilesImportActions::registerActions();
+
+	if (firstLoad && !ProfileDataReader::readProfileData().isEmpty())
+		(new ImportProfilesWindow(Core::instance()->kaduWindow()))->show();
 
 	return 0;
 }
