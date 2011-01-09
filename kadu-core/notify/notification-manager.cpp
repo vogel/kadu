@@ -10,6 +10,7 @@
  * Copyright 2009, 2009 Bartłomiej Zimoń (uzi18@o2.pl)
  * Copyright 2008, 2009, 2010 Piotr Galiszewski (piotrgaliszewski@gmail.com)
  * Copyright 2005 Paweł Płuciennik (pawel_p@kadu.net)
+ * Copyright 2010, 2011 Piotr Dąbrowski (ultr@ultr.pl)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -29,6 +30,8 @@
 #include <QtGui/QApplication>
 
 #ifdef Q_WS_X11
+#include <QtDBus/QDBusInterface>
+#include <QtDBus/QDBusReply>
 #include <QtGui/QX11Info>
 #endif
 
@@ -89,6 +92,9 @@ NotificationManager * NotificationManager::instance()
 
 NotificationManager::NotificationManager()
 {
+#if defined(Q_WS_X11) && !defined(Q_WS_MAEMO_5)
+	x11display = XOpenDisplay(0);
+#endif
 }
 
 void NotificationManager::init()
@@ -151,6 +157,10 @@ NotificationManager::~NotificationManager()
 		kdebugm(KDEBUG_WARNING, "WARNING: not unregistered notifiers found! (%u)\n", Notifiers.size());
 		unregisterNotifier(Notifiers[0]);
 	}
+
+#if defined(Q_WS_X11) && !defined(Q_WS_MAEMO_5)
+	XCloseDisplay(x11display);
+#endif
 
 	kdebugf2();
 }
@@ -593,10 +603,48 @@ void NotificationManager::checkFullScreen()
 {
 #if defined(Q_WS_X11) && !defined(Q_WS_MAEMO_5)
 	bool wasSilent = silentMode();
-	IsFullScreen = X11_checkFullScreen(QX11Info::display());
+	IsFullScreen = X11_checkFullScreen(x11display) && (!isScreenSaverRunning());
 	if (silentMode() != wasSilent)
 		emit silentModeToggled(silentMode());
 #endif
+}
+
+bool NotificationManager::isScreenSaverRunning()
+{
+#if defined(Q_WS_X11) && !defined(Q_WS_MAEMO_5)
+	// org.freedesktop.ScreenSaver
+	{
+		QDBusInterface dbus("org.freedesktop.ScreenSaver", "/ScreenSaver", "org.freedesktop.ScreenSaver", QDBusConnection::sessionBus());
+		if (dbus.isValid())
+		{
+			QDBusReply<bool> reply = dbus.call("GetActive");
+			if (reply.isValid() && reply.value())
+				return true;
+		}
+	}
+	// org.kde.screensaver
+	{
+		QDBusInterface dbus("org.kde.screensaver", "/ScreenSaver", "org.freedesktop.ScreenSaver", QDBusConnection::sessionBus());
+		if (dbus.isValid())
+		{
+			QDBusReply<bool> reply = dbus.call("GetActive");
+			if (reply.isValid() && reply.value())
+				return true;
+		}
+	}
+	// org.gnome.ScreenSaver
+	{
+		QDBusInterface dbus("org.gnome.ScreenSaver", "/", "org.gnome.ScreenSaver", QDBusConnection::sessionBus());
+		if (dbus.isValid())
+		{
+			QDBusReply<bool> reply = dbus.call("GetActive");
+			if (reply.isValid() && reply.value())
+				return true;
+		}
+	}
+#endif
+	// no screensaver
+	return false;
 }
 
 void checkNotify(Action *action)

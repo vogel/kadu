@@ -3,6 +3,7 @@
  * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * Copyright 2009, 2010 Piotr Galiszewski (piotrgaliszewski@gmail.com)
  * Copyright 2009 Bartłomiej Zimoń (uzi18@o2.pl)
+ * Copyright 2010, 2011 Piotr Dąbrowski (ultr@ultr.pl)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -76,6 +77,10 @@ class KADUAPI NotificationManager : public QObject, AccountsAwareObject, Configu
 	QTimer FullScreenCheckTimer;
 	bool IsFullScreen;
 
+#if defined(Q_WS_X11) && !defined(Q_WS_MAEMO_5)
+	Display *x11display;
+#endif
+
 	NotificationManager();
 	virtual ~NotificationManager();
 
@@ -99,6 +104,7 @@ private slots:
 	void accountConnected();
 
 	void checkFullScreen();
+	bool isScreenSaverRunning();
 
 protected:
 	virtual void accountRegistered(Account account);
