@@ -23,7 +23,7 @@
 
 #include "gui/windows/import-profile-window.h"
 #include "gui/windows/import-profiles-window.h"
-#include "profile-data-reader.h"
+#include "profile-data-manager.h"
 
 #include "profiles-import-actions.h"
 
@@ -46,9 +46,10 @@ ProfilesImportActions * ProfilesImportActions::instance()
 	return Instance;
 }
 
-ProfilesImportActions::ProfilesImportActions()
+ProfilesImportActions::ProfilesImportActions() :
+		ImportProfiles(0)
 {
-	if (!ProfileDataReader::readProfileData().isEmpty())
+	if (!ProfileDataManager::readProfileData().isEmpty())
 	{
 		ImportProfiles = new ActionDescription(this, ActionDescription::TypeGlobal, "import_profiles",
 				this, SLOT(importProfilesActionActivated(QAction*, bool)), QString(),
@@ -66,6 +67,12 @@ ProfilesImportActions::~ProfilesImportActions()
 {
 	Core::instance()->kaduWindow()->removeMenuActionDescription(ImportProfiles);
 	Core::instance()->kaduWindow()->removeMenuActionDescription(ImportExternalProfile);
+}
+
+void ProfilesImportActions::updateActions()
+{
+	if (ProfileDataManager::readProfileData().isEmpty())
+		Core::instance()->kaduWindow()->removeMenuActionDescription(ImportProfiles);
 }
 
 void ProfilesImportActions::importProfilesActionActivated(QAction *action, bool toggled)

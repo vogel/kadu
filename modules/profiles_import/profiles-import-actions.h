@@ -48,6 +48,8 @@ public:
 
 	static ProfilesImportActions * instance();
 
+	void updateActions();
+
 };
 
 #endif // PROFILES_IMPORT_ACTIONS_H

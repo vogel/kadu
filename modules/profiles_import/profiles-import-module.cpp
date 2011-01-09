@@ -21,7 +21,7 @@
 #include "gui/windows/kadu-window.h"
 
 #include "gui/windows/import-profiles-window.h"
-#include "profile-data-reader.h"
+#include "profile-data-manager.h"
 
 #include "profiles-import-actions.h"
 
@@ -31,7 +31,7 @@ extern "C" int profiles_import_init(bool firstLoad)
 
 	ProfilesImportActions::registerActions();
 
-	if (firstLoad && !ProfileDataReader::readProfileData().isEmpty())
+	if (firstLoad && !ProfileDataManager::readProfileData().isEmpty())
 		(new ImportProfilesWindow(Core::instance()->kaduWindow()))->show();
 
 	return 0;

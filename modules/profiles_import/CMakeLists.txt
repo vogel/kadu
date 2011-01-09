@@ -2,7 +2,7 @@ set (SOURCES
 	gui/windows/import-profile-window.cpp
 	gui/windows/import-profiles-window.cpp
 
-	profile-data-reader.cpp
+	profile-data-manager.cpp
 	profile-importer.cpp
 	profiles-import-actions.cpp
 	profiles-import-module.cpp

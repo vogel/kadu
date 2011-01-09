@@ -19,15 +19,13 @@
 
 #include "configuration/xml-configuration-file.h"
 
-#include "profile-data-reader.h"
+#include "profile-data-manager.h"
 
-QList<ProfileData> ProfileDataReader::readProfileData()
+QDomElement ProfileDataManager::getProfilesNode()
 {
-	QList<ProfileData> result;
-
 	QDomElement deprecated = xml_config_file->getNode("Deprecated", XmlConfigFile::ModeFind);
 	if (deprecated.isNull())
-		return result;
+		return QDomElement();
 
 	QDomElement configFile;
 	QList<QDomElement> configFiles = xml_config_file->getNodes(deprecated, "ConfigFile");
@@ -40,20 +38,40 @@ QList<ProfileData> ProfileDataReader::readProfileData()
 		}
 
 	if (configFile.isNull())
-		return result;
+		return QDomElement();
 
-	QDomElement groupProfiles = xml_config_file->getNamedNode(configFile, "Group", "Profiles");
+	return xml_config_file->getNamedNode(configFile, "Group", "Profiles");
+}
+
+QList<ProfileData> ProfileDataManager::readProfileData()
+{
+	QList<ProfileData> result;
+
+	QDomElement groupProfiles = getProfilesNode();
 	if (groupProfiles.isNull())
 		return result;
 
 	QList<QDomElement> profiles = xml_config_file->getNodes(groupProfiles, "Profile");
 	foreach (const QDomElement &profile, profiles)
 	{
-		ProfileData newProfile;
-		newProfile.Name = profile.attribute("name");
-		newProfile.Path = profile.attribute("directory");
-		result.append(newProfile);
+		if (profile.attribute("imported") != "yes")
+		{
+			ProfileData newProfile;
+			newProfile.Name = profile.attribute("name");
+			newProfile.Path = profile.attribute("directory");
+			result.append(newProfile);
+		}
 	}
 
 	return result;
+}
+
+void ProfileDataManager::markImported(const QString &name)
+{
+	QDomElement groupProfiles = getProfilesNode();
+	if (groupProfiles.isNull())
+		return;
+
+	QDomElement profile = xml_config_file->getNamedNode(groupProfiles, "Profile", name);
+	profile.setAttribute("imported", "yes");
 }

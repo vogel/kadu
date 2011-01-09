@@ -29,8 +29,9 @@
 #include "identities/identity-manager.h"
 #include "misc/path-conversion.h"
 
-#include "profile-data-reader.h"
+#include "profile-data-manager.h"
 #include "profile-importer.h"
+#include "profiles-import-actions.h"
 
 #include "import-profiles-window.h"
 
@@ -76,7 +77,7 @@ void ImportProfilesWindow::createGui()
 
 void ImportProfilesWindow::createProfileList(QGridLayout *layout)
 {
-	QList<ProfileData> profiles = ProfileDataReader::readProfileData();
+	QList<ProfileData> profiles = ProfileDataManager::readProfileData();
 	foreach (const ProfileData &profile, profiles)
 	{
 		QCheckBox *profileCheckBox = new QCheckBox(profile.Name, this);
@@ -105,14 +106,19 @@ void ImportProfilesWindow::accept()
 				: homePath() + "/" + profile.Path;
 
 		ProfileImporter importer(path + "/kadu/kadu.conf.xml");
-		if (!importer.import(IdentityManager::instance()->byName(profile.Name, true)))
+		if (importer.import(IdentityManager::instance()->byName(profile.Name, true)))
+		{
+			ProfileDataManager::markImported(profile.Name);
+			MessageDialog::exec("dialog-information", tr("Import external profile..."), tr("Profile %1 successfully imported!")
+					.arg(profile.Name));
+		}
+		else
 			MessageDialog::exec("dialog-warning", tr("Import profile..."), tr("Unable to import profile: %1: %2")
 					.arg(profile.Name)
 					.arg(importer.errorMessage()));
-		else
-			MessageDialog::exec("dialog-information", tr("Import external profile..."), tr("Profile %1 successfully imported!")
-					.arg(profile.Name));
 	}
+
+	ProfilesImportActions::instance()->updateActions();
 
 	QDialog::accept();
 }
