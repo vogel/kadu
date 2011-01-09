@@ -78,7 +78,7 @@ FileTransferActions::FileTransferActions(QObject *parent)
 		"document-send", tr("View File Transfers")
 	);
 
-	Core::instance()->kaduWindow()->insertMenuActionDescription(FileTransferWindowActionDescription, KaduWindow::MenuKadu, 5);
+	Core::instance()->kaduWindow()->insertMenuActionDescription(FileTransferWindowActionDescription, KaduWindow::MenuTools, 5);
 }
 
 FileTransferActions::~FileTransferActions()

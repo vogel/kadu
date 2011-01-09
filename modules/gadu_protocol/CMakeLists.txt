@@ -18,6 +18,7 @@ set (SOURCES
 	gui/windows/gadu-wait-for-account-register-window.cpp
 
 	helpers/gadu-formatter.cpp
+	helpers/gadu-imported-contact-xml-receiver.cpp
 	helpers/gadu-importer.cpp
 	helpers/gadu-list-helper.cpp
 

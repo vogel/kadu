@@ -27,6 +27,8 @@
 
 KADUAPI void printBacktrace(const QString &header = QString());
 
+KADUAPI QString homePath();
+
 /**
 	Zmienia ścieżkę relatywną do katalogu z ustawieniami programu
 	na ścieżkę bezwzgledną uwzględniając zmienne środowiskowe

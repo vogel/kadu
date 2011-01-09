@@ -181,6 +181,7 @@ void KaduWindow::createMenu()
 #endif
 	createKaduMenu();
 	createContactsMenu();
+	createToolsMenu();
 	createHelpMenu();
 }
 
@@ -232,6 +233,14 @@ void KaduWindow::createContactsMenu()
 	insertMenuActionDescription(Actions->ShowInfoPanel, MenuContacts);
 
 	menuBar()->addMenu(ContactsMenu);
+}
+
+void KaduWindow::createToolsMenu()
+{
+	ToolsMenu = new QMenu(this);
+	ToolsMenu->setTitle(tr("&Tools"));
+
+	menuBar()->addMenu(ToolsMenu);
 }
 
 void KaduWindow::createHelpMenu()
@@ -528,6 +537,9 @@ void KaduWindow::insertMenuActionDescription(ActionDescription *actionDescriptio
 		case MenuContacts:
 			menu = ContactsMenu;
 			break;
+		case MenuTools:
+			menu = ToolsMenu;
+			break;
 		case MenuHelp:
 			menu = HelpMenu;
 	}
@@ -559,6 +571,9 @@ void KaduWindow::removeMenuActionDescription(ActionDescription *actionDescriptio
 			break;
 		case MenuContacts:
 			ContactsMenu->removeAction(action);
+			break;
+		case MenuTools:
+			ToolsMenu->removeAction(action);
 			break;
 		case MenuHelp:
 			HelpMenu->removeAction(action);

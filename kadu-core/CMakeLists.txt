@@ -180,6 +180,7 @@ set (kadu_SRCS
 	gui/widgets/line-edit-clear-button.cpp
 	gui/widgets/line-edit-with-clear-button.cpp
 	gui/widgets/modal-configuration-widget.cpp
+	gui/widgets/path-edit.cpp
 	gui/widgets/path-list-edit.cpp
 	gui/widgets/progress-icon.cpp
 	gui/widgets/progress-label.cpp
@@ -509,6 +510,7 @@ set (kadu_MOC_SRCS
 	gui/widgets/line-edit-clear-button.h
 	gui/widgets/line-edit-with-clear-button.h
 	gui/widgets/modal-configuration-widget.h
+	gui/widgets/path-edit.h
 	gui/widgets/path-list-edit.h
 	gui/widgets/preview.h
 	gui/widgets/progress-icon.h
