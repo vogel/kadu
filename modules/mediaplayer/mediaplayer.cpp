@@ -215,7 +215,7 @@ MediaPlayer::MediaPlayer(bool firstLoad)
 //	}
 //	else
 //	{
-	Core::instance()->kaduWindow()->insertMenuActionDescription(enableMediaPlayerStatuses, KaduWindow::MenuKadu, 8);
+	Core::instance()->kaduWindow()->insertMenuActionDescription(enableMediaPlayerStatuses, KaduWindow::MenuKadu, 7);
 	mediaplayerStatus = NULL;
 //	}
 

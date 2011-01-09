@@ -117,7 +117,7 @@ Infos::Infos(QObject *parent) :
 		this, SLOT(onShowInfos()),
 		QString(), tr("&Show infos about buddies...")
 	);
-	Core::instance()->kaduWindow()->insertMenuActionDescription(lastSeenActionDescription, KaduWindow::MenuKadu, 0);
+	Core::instance()->kaduWindow()->insertMenuActionDescription(lastSeenActionDescription, KaduWindow::MenuTools, 3);
 
 	kdebugf2();
 }
