@@ -1,17 +1,18 @@
 set (SOURCES
 	history-import-thread.cpp
 	history-importer.cpp
+	history-migration-actions.cpp
 	history-migration-helper.cpp
 	history-migration-module.cpp
 )
 
 set (MOC_SOURCES
+	history-migration-actions.h
 	history-import-thread.h
 	history-importer.h
 )
 
 set (CONFIGURATION_FILES
-	configuration/history-migration.ui
 )
 
 #set (TRANSLATION_SOURCES

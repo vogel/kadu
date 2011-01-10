@@ -26,7 +26,6 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
-#include "gui/widgets/configuration/configuration-widget.h"
 #include "configuration/configuration-file.h"
 #include "core/core.h"
 #include "gui/windows/kadu-window.h"
@@ -50,17 +49,13 @@ HistoryImporter * HistoryImporter::instance()
 }
 
 HistoryImporter::HistoryImporter() :
-		ConfigurationWindow(0), Thread(0)
+		Thread(0)
 {
 	kdebugf();
-
-	MainConfigurationWindow::registerUiHandler(this);
 }
 
 HistoryImporter::~HistoryImporter()
 {
-	MainConfigurationWindow::unregisterUiHandler(this);
-
 	Instance = 0;
 
 	kdebugf();
@@ -96,9 +91,6 @@ void HistoryImporter::run()
 
 	if (0 == totalEntries)
 		return;
-
-	if (ConfigurationWindow)
-		ConfigurationWindow->widget()->widgetById("history-migration/import")->setVisible(false);
 
 	ProgressDialog = new QProgressDialog(qApp->translate("HistoryMigration", "Migrating old history: %1 of %2").arg(0).arg(totalEntries),
 	QString(), 0, totalEntries, Core::instance()->kaduWindow());
@@ -139,22 +131,6 @@ void HistoryImporter::threadFinished()
 	ProgressDialog = 0;
 
 	deleteLater();
-}
-
-void HistoryImporter::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
-{
-	ConfigurationWindow = mainConfigurationWindow;
-	connect(ConfigurationWindow, SIGNAL(destroyed()), this, SLOT(configurationWindowDestroyed()));
-
-	QWidget *importButton = mainConfigurationWindow->widget()->widgetById("history-migration/import");
-	importButton->setVisible(!config_file.readBoolEntry("History", "Imported_from_0.6.5", false));
-
-	connect(importButton, SIGNAL(clicked()), this, SLOT(run()));
-}
-
-void HistoryImporter::configurationWindowDestroyed()
-{
-	ConfigurationWindow = 0;
 }
 
 void HistoryImporter::canceled()

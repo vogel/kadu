@@ -20,9 +20,9 @@
 #include <QtCore/QFile>
 
 #include "history-importer.h"
+#include "history-migration-actions.h"
 
 #include "configuration/configuration-file.h"
-#include "gui/windows/main-configuration-window.h"
 #include "misc/path-conversion.h"
 #include "debug.h"
 
@@ -30,7 +30,7 @@ extern "C" KADU_EXPORT int history_migration_init(bool firstLoad)
 {
 	kdebugf();
 
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/history-migration.ui"));
+	HistoryMigrationActions::registerActions();
 
 	bool imported = config_file.readBoolEntry("History", "Imported_from_0.6.5", false);
 
@@ -45,7 +45,7 @@ extern "C" KADU_EXPORT void history_migration_close()
 {
 	kdebugf();
 
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/history-migration.ui"));
-
 	HistoryImporter::instance()->canceled();
+
+	HistoryMigrationActions::unregisterActions();
 }

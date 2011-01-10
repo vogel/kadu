@@ -1,7 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
- * Copyright 2009, 2010 Piotr Galiszewski (piotrgaliszewski@gmail.com)
+ * Copyright 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -18,39 +17,35 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef HISTORY_IMPORTER_H
-#define HISTORY_IMPORTER_H
+#ifndef HISTORY_MIGRATION_ACTIONS_H
+#define HISTORY_MIGRATION_ACTIONS_H
 
 #include <QtCore/QObject>
 
-class QProgressDialog;
+class QAction;
 
-class HistoryImportThread;
+class ActionDescription;
 
-class HistoryImporter : public QObject
+class HistoryMigrationActions : public QObject
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(HistoryImporter)
 
-	static HistoryImporter *Instance;
+	static HistoryMigrationActions *Instance;
 
-	HistoryImportThread *Thread;
-	QProgressDialog *ProgressDialog;
+	ActionDescription *ImportHistoryActionDescription;
 
-	HistoryImporter();
-	virtual ~HistoryImporter();
+	HistoryMigrationActions();
+	~HistoryMigrationActions();
 
 private slots:
-	void updateProgressWindow();
-	void threadFinished();
+	void importHistoryActionActivated(QAction *sender, bool toggled);
 
 public:
-	static HistoryImporter * instance();
+	static void registerActions();
+	static void unregisterActions();
 
-public slots:
-	void run();
-	void canceled();
+	static HistoryMigrationActions * instance() { return Instance; }
 
 };
 
-#endif // HISTORY_IMPORTER_H
+#endif // HISTORY_MIGRATION_ACTIONS_H
