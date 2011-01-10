@@ -126,14 +126,22 @@
  * This class stores data for @link SharedBase @endlink objects that allows many places of code to access
  * data of one object without concerning about copying, creating or destroying object. Many SharedBase objects
  * can contain the same Shared object (so the same data) - especially copied objects, so every change
- * in one of them is immediately visible in all other. Setter 
+ * in one of them is immediately visible in all other. Setter
  *
  * Support for notyfiing of any changes to this object is also available. Every change calls
- * @link dataUpdated @endlink method (that can be ovveriden and used to send a signal). To block
+ * @link dataUpdated @endlink method (that can be overridden and used to send a signal). To block
  * this method (when multiple changes are performed at once) @link blockUpdatedSignal @endlink
  * can be called. Then first change creates deffered call that is executed after call of
  * @link unblockUpdatedSignal @endlink (multiple calls of blockUpdatedSignal requires as much calls
  * of unblockUpdatedSignal to call doEmitUpdated).
+ *
+ * Note that because of QExplicitlySharedDataPointer implementation details it is not guaranteed that in
+ * some method when you do something causing directly or not to remove the last @link SharedBase @endlink
+ * object that refers to this object, this object will be deleted after your method ends. Actually, the object
+ * may be deleted in the middle of it, so when such last reference loss is possible in a method, you need
+ * to create a @link SharedBase @endlink guard object on the stack that will delay deletion to the moment
+ * when the stack unrolls and destroys that @link SharedBase @endlink object or even avoid deletion at all
+ * if after removing the last reference you set up another one.
  */
 class KADUAPI Shared : public UuidStorableObject, public QSharedData
 {

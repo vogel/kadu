@@ -55,6 +55,7 @@ IdentityShared::IdentityShared(const QUuid &uuid) :
 
 IdentityShared::~IdentityShared()
 {
+	ref.ref();
 }
 
 StorableObject * IdentityShared::storageParent()

@@ -47,7 +47,6 @@ Key::Key()
 Key::Key(KeyShared *data) :
 		SharedBase<KeyShared>(data)
 {
-	data->ref.ref();
 }
 
 Key::Key(QObject *data)

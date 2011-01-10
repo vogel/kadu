@@ -46,6 +46,7 @@ MessageShared::MessageShared(QUuid uuid) :
 
 MessageShared::~MessageShared()
 {
+	ref.ref();
 }
 
 StorableObject * MessageShared::storageParent()

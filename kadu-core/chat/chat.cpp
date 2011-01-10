@@ -83,7 +83,6 @@ Chat::Chat()
 Chat::Chat(ChatShared *data) :
 		SharedBase<ChatShared>(data)
 {
-	data->ref.ref();
 }
 
 /**

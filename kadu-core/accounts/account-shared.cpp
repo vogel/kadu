@@ -55,6 +55,8 @@ AccountShared::AccountShared(QUuid uuid) :
 
 AccountShared::~AccountShared()
 {
+	ref.ref();
+
 	triggerAllProtocolsUnregistered();
 
 	if (ProtocolHandler)
@@ -238,6 +240,12 @@ void AccountShared::setAccountIdentity(Identity accountIdentity)
 
 	if (AccountIdentity == accountIdentity)
 		return;
+
+	/* NOTE: This guard is needed to avoid deleting this object when removing
+	 * Account from Identity which may hold last reference to it and thus wants
+	 * to delete it.
+	 */
+	Account guard(this);
 
 	AccountIdentity.removeAccount(this);
 	AccountIdentity = accountIdentity;

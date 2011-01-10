@@ -49,7 +49,6 @@ Message::Message()
 Message::Message(MessageShared *data) :
 		SharedBase<MessageShared>(data)
 {
-	data->ref.ref();
 }
 
 Message::Message(QObject *data)

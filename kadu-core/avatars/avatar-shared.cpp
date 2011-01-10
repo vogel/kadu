@@ -50,6 +50,7 @@ AvatarShared::AvatarShared(QUuid uuid) :
 
 AvatarShared::~AvatarShared()
 {
+	ref.ref();
 }
 
 StorableObject * AvatarShared::storageParent()
@@ -120,6 +121,13 @@ bool AvatarShared::shouldStore()
 
 void AvatarShared::aboutToBeRemoved()
 {
+	/* NOTE: This guard is needed to delay deleting this object when removing
+	 * Avatar from Contact or Buddy holding last reference to it and thus wanting
+	 * to delete it. But we don't want this to happen now because we have still
+	 * some things to do here.
+	 */
+	Avatar guard(this);
+
 	// cleanup references
 	AvatarBuddy.setBuddyAvatar(Avatar::null);
 	AvatarContact.setContactAvatar(Avatar::null);

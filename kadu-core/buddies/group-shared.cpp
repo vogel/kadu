@@ -48,6 +48,7 @@ GroupShared::GroupShared(QUuid uuid) :
 
 GroupShared::~GroupShared()
 {
+	ref.ref();
 }
 
 StorableObject * GroupShared::storageParent()

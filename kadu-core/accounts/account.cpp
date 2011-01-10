@@ -62,7 +62,6 @@ Account::Account()
 Account::Account(AccountShared *data) :
 		SharedBase<AccountShared>(data)
 {
-	data->ref.ref();
 }
 
 Account::Account(QObject *data)

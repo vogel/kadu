@@ -50,6 +50,7 @@ FileTransferShared::FileTransferShared(QUuid uuid) :
 
 FileTransferShared::~FileTransferShared()
 {
+	ref.ref();
 }
 
 StorableObject * FileTransferShared::storageParent()

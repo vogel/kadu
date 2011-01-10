@@ -80,6 +80,8 @@ ChatShared::ChatShared(QUuid uuid) :
  */
 ChatShared::~ChatShared()
 {
+	ref.ref();
+
 	triggerAllChatTypesUnregistered();
 }
 

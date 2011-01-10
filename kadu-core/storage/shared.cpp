@@ -35,12 +35,24 @@ Shared::Shared(QUuid uuid) :
 
 /**
  * @author Rafal 'Vogel' Malinowski
+ * @author Bartosz 'beevvy' Brachaczek
  * @short Destroys object.
  *
  * Destroys object.
+ *
+ * If you are going to reimplement destructor, you need to call ref.ref() at
+ * the beginning of it. This is needed to prevent infinite recursion that may
+ * occur in case some method called directly or indirectly by this destructor
+ * created SharedBase-derived object with pointer to this. Then, when this
+ * object would be destroyed (I assume it was a short-lifetime object), it
+ * would also try to delete this Shared object because its reference count was
+ * already 0 at time of creation of that SharedBase-derived object. This in
+ * turn would lead to calling the same destructor again, which destructor would
+ * do exactly the same thing, etc.
  */
 Shared::~Shared()
 {
+	ref.ref();
 }
 
 /**

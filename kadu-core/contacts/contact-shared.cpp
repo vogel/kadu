@@ -56,6 +56,8 @@ ContactShared::ContactShared(QUuid uuid) :
 
 ContactShared::~ContactShared()
 {
+	ref.ref();
+
 	triggerAllProtocolsUnregistered();
 }
 
@@ -152,6 +154,13 @@ void ContactShared::detach(const Buddy &buddy, bool emitSignals)
 	if (!details() || !buddy)
 		return;
 
+	/* NOTE: This guard is needed to delay deleting this object when removing
+	 * Contact from Buddy which holds last reference to it and thus wants to
+	 * delete it. But we don't want this to happen now because we have to emit
+	 * detached() signal first.
+	 */
+	Contact guard(this);
+
 	if (emitSignals)
 		emit aboutToBeDetached();
 
@@ -186,6 +195,12 @@ void ContactShared::setOwnerBuddy(Buddy buddy)
 
 	if (OwnerBuddy == buddy)
 		return;
+
+	/* NOTE: This guard is needed to avoid deleting this object when removing
+	 * Contact from Buddy which may hold last reference to it and thus wants to
+	 * delete it. But we don't want this to happen.
+	 */
+	Contact guard(this);
 
 	bool hadBuddy = !OwnerBuddy.isNull() && !OwnerBuddy.isAnonymous();
 

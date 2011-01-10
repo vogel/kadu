@@ -51,6 +51,7 @@ KeyShared::KeyShared(QUuid uuid) :
 
 KeyShared::~KeyShared()
 {
+	ref.ref();
 }
 
 StorableObject * KeyShared::storageParent()

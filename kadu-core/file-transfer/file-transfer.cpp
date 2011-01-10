@@ -60,7 +60,6 @@ FileTransfer::FileTransfer()
 FileTransfer::FileTransfer(FileTransferShared *data) :
 		SharedBase<FileTransferShared>(data)
 {
-	data->ref.ref();
 }
 
 FileTransfer::FileTransfer(QObject *data)

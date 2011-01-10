@@ -60,6 +60,7 @@ BuddyShared::BuddyShared(QUuid uuid) :
 
 BuddyShared::~BuddyShared()
 {
+	ref.ref();
 }
 
 StorableObject * BuddyShared::storageParent()
@@ -230,6 +231,13 @@ bool BuddyShared::shouldStore()
 
 void BuddyShared::aboutToBeRemoved()
 {
+	/* NOTE: This guard is needed to delay deleting this object when removing
+	 * Buddy from Contact which may hold last reference to it and thus wants to
+	 * delete it. But we don't want this to happen now because we have still
+	 * some things to do here.
+	 */
+	Buddy guard(this);
+
 	setAnonymous(true);
 
 	foreach (Contact contact, Contacts)
