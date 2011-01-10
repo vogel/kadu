@@ -37,7 +37,7 @@
 
 #include "history-import-thread.h"
 
-#include "history-migration.h"
+#include "history-importer.h"
 
 HistoryImporter * HistoryImporter::Instance = 0;
 

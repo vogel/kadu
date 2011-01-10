@@ -19,7 +19,7 @@
 
 #include <QtCore/QFile>
 
-#include "history-migration.h"
+#include "history-importer.h"
 
 #include "configuration/configuration-file.h"
 #include "gui/windows/main-configuration-window.h"
