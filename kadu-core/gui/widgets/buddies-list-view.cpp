@@ -408,11 +408,7 @@ void BuddiesListView::mouseReleaseEvent(QMouseEvent *event)
 void BuddiesListView::mouseMoveEvent(QMouseEvent *event)
 {
 	QTreeView::mouseMoveEvent(event);
-	if (event->pos() != lastmousemovepos)
-	{
-		toolTipRestart(event->pos());
-		lastmousemovepos = event->pos();
-	}
+	toolTipRestart(event->pos());
 }
 
 void BuddiesListView::resizeEvent(QResizeEvent *event)
