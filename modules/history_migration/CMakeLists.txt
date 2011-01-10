@@ -2,6 +2,7 @@ set (SOURCES
 	history-import-thread.cpp
 	history-migration.cpp
 	history-migration-helper.cpp
+	history-migration-module.cpp
 )
 
 set (MOC_SOURCES

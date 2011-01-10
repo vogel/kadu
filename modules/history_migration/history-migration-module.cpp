@@ -1,0 +1,51 @@
+/*
+ * %kadu copyright begin%
+ * Copyright 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * %kadu copyright end%
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of
+ * the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#include <QtCore/QFile>
+
+#include "history-migration.h"
+
+#include "configuration/configuration-file.h"
+#include "gui/windows/main-configuration-window.h"
+#include "misc/path-conversion.h"
+#include "debug.h"
+
+extern "C" KADU_EXPORT int history_migration_init(bool firstLoad)
+{
+	kdebugf();
+
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/history-migration.ui"));
+
+	bool imported = config_file.readBoolEntry("History", "Imported_from_0.6.5", false);
+
+	HistoryImporter *hi = HistoryImporter::instance();
+	if (!imported && firstLoad && QFile::exists(profilePath("history")))
+		hi->run();
+
+	return 0;
+}
+
+extern "C" KADU_EXPORT void history_migration_close()
+{
+	kdebugf();
+
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/history-migration.ui"));
+
+	HistoryImporter::instance()->canceled();
+}

@@ -32,37 +32,12 @@
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-dialog.h"
 #include "misc/misc.h"
-#include "misc/path-conversion.h"
 #include "modules/history/history.h"
 #include "debug.h"
 
 #include "history-import-thread.h"
 
 #include "history-migration.h"
-
-extern "C" KADU_EXPORT int history_migration_init(bool firstLoad)
-{
-	kdebugf();
-
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/history-migration.ui"));
-
-	bool imported = config_file.readBoolEntry("History", "Imported_from_0.6.5", false);
-
-	HistoryImporter *hi = HistoryImporter::instance();
-	if (!imported && firstLoad && QFile::exists(profilePath("history")))
-		hi->run();
-
-	return 0;
-}
-
-extern "C" KADU_EXPORT void history_migration_close()
-{
-	kdebugf();
-
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/history-migration.ui"));
-
-	HistoryImporter::instance()->canceled();
-}
 
 HistoryImporter * HistoryImporter::Instance = 0;
 
