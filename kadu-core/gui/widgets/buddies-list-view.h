@@ -87,6 +87,8 @@ private:
 
 	bool ContextMenuEnabled;
 
+	QPoint lastmousemovepos;
+
 private slots:
 	void simpleModeChanged();
 	void doubleClickedSlot(const QModelIndex &index);
