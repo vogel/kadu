@@ -1,7 +1,7 @@
 /****************************************************************************
 *                                                                           *
 *   X11tools                                                                *
-*   Copyright (C) 2008-2010  Piotr Dąbrowski ultr@ultr.pl                   *
+*   Copyright (C) 2008-2011  Piotr Dąbrowski ultr@ultr.pl                   *
 *                                                                           *
 *   This program is free software: you can redistribute it and/or modify    *
 *   it under the terms of the GNU General Public License as published by    *
@@ -843,15 +843,12 @@ bool X11_checkFullScreen( Display *display )
 	_debug( "[wt=%dx%d]", X11_getWindowSize( display, wt ).first, X11_getWindowSize( display, wt ).second );
 	unsigned long currentdesktop = X11_getCurrentDesktop( display );
 	_debug( "[cD=%d]", currentdesktop );
-	int status = XGrabPointer(
+	int status = XGrabKeyboard(
 		display,
 		DefaultRootWindow( display ),
 		True,
-		ButtonReleaseMask | ButtonMotionMask | ButtonPressMask,
 		GrabModeAsync,
 		GrabModeAsync,
-		None,
-		None,
 		CurrentTime
 	);
 	if( status != GrabSuccess )
@@ -945,7 +942,7 @@ bool X11_checkFullScreen( Display *display )
 	else
 	{
 		_debug( "[J]" );
-		XUngrabPointer( display, CurrentTime );
+		XUngrabKeyboard( display, CurrentTime );
 		XFlush( display );
 	}
 	_debug( "[Z]" );

@@ -1,7 +1,7 @@
 /****************************************************************************
 *                                                                           *
 *   X11tools                                                                *
-*   Copyright (C) 2008-2010  Piotr Dąbrowski ultr@ultr.pl                   *
+*   Copyright (C) 2008-2011  Piotr Dąbrowski ultr@ultr.pl                   *
 *                                                                           *
 *   This program is free software: you can redistribute it and/or modify    *
 *   it under the terms of the GNU General Public License as published by    *
@@ -19,7 +19,7 @@
 ****************************************************************************/
 
 
-// VERSION: 1.12
+// VERSION: 1.13
 
 
 /*
