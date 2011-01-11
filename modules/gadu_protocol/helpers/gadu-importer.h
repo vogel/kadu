@@ -24,6 +24,8 @@
 #include <QtCore/QObject>
 #include <QtCore/QVariant>
 
+#include "../gadu-exports.h"
+
 class QXmlItem;
 class QXmlQuery;
 
@@ -31,7 +33,7 @@ class Account;
 class Buddy;
 class Contact;
 
-class GaduImporter : public QObject
+class GADUAPI GaduImporter : public QObject
 {
 	Q_OBJECT
 
