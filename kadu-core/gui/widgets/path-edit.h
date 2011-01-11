@@ -21,10 +21,11 @@
 #define PATH_EDIT_H
 
 #include <QtGui/QWidget>
+#include "exports.h"
 
 class QLineEdit;
 
-class PathEdit : public QWidget
+class KADUAPI PathEdit : public QWidget
 {
 	Q_OBJECT
 

@@ -60,7 +60,7 @@
  * This class is thread-safe.
  */
 template<class Item>
-class KADUAPI SimpleManager : public StorableObject
+class SimpleManager : public StorableObject
 {
 	QMutex Mutex;
 

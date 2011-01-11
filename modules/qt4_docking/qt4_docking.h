@@ -48,11 +48,10 @@ public:
 	explicit Qt4TrayIcon(QWidget *parent = 0);
 	virtual ~Qt4TrayIcon();
 
-    virtual void changeTrayIcon(const QIcon& icon);
-    virtual void changeTrayMovie(const QString& moviePath);
-    virtual void changeTrayTooltip(const QString& tooltip);
-    virtual QPoint trayPosition();
-		
+	virtual void changeTrayIcon(const QIcon& icon);
+	virtual void changeTrayMovie(const QString& moviePath);
+	virtual void changeTrayTooltip(const QString& tooltip);
+	virtual QPoint trayPosition();
 };
 
 extern Qt4TrayIcon* qt4_tray_icon;

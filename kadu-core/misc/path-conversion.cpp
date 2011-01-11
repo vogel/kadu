@@ -88,7 +88,7 @@ QString homePath()
 		{
 			path = dataPath("config/");
 			Parser::globalVariables["KADU_CONFIG"] = path;
-			return (path+subpath);
+			return (path);
 		}
 		WCHAR *homepath = new WCHAR[MAX_PATH + 1];
 		WCHAR *homepath_guard = homepath;
