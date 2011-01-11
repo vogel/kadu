@@ -7,6 +7,7 @@
 * profiles: #1748 half-way done: importing old profiles into new identisies, no history import yet (Vogel)
 * core: #1895 fixed: added screensaver detection for automatic fullscreen silent mode (ultr)
 * gui: #1610 fixed: flashing hints over buddies list fixed (ultr)
+* gadu_protocol: #1640 fixed: no tokens when creating a new account (dorr)
 
 +++ version 0.6.6-beta14.2
 * tabs: #1906 fixed: crash on tabs module load (regression from beta14) (beevvy)
