@@ -1,4 +1,6 @@
 set (SOURCES
+	gui/windows/history-import-window.cpp
+
 	history-import-thread.cpp
 	history-importer.cpp
 	history-migration-actions.cpp
@@ -7,6 +9,8 @@ set (SOURCES
 )
 
 set (MOC_SOURCES
+	gui/windows/history-import-window.h
+
 	history-migration-actions.h
 	history-import-thread.h
 	history-importer.h

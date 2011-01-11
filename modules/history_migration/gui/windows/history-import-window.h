@@ -1,7 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
- * Copyright 2009, 2010 Piotr Galiszewski (piotrgaliszewski@gmail.com)
+ * Copyright 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -18,38 +17,32 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef HISTORY_IMPORTER_H
-#define HISTORY_IMPORTER_H
+#ifndef HISTORY_IMPORT_WINDOW_H
+#define HISTORY_IMPORT_WINDOW_H
 
-#include <QtCore/QObject>
+#include <QtGui/QDialog>
 
-class HistoryImportThread;
-class HistoryImportWindow;
+class QProgressBar;
 
-class HistoryImporter : public QObject
+class HistoryImportWindow : public QDialog
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(HistoryImporter)
 
-	static HistoryImporter *Instance;
+	QProgressBar *ChatsProgressBar;
+	QProgressBar *MessagesProgressBar;
 
-	HistoryImportThread *Thread;
-	HistoryImportWindow *ProgressWindow;
-
-	HistoryImporter();
-	virtual ~HistoryImporter();
-
-private slots:
-	void updateProgressWindow();
-	void threadFinished();
+	void createGui();
 
 public:
-	static HistoryImporter * instance();
+	explicit HistoryImportWindow(QWidget *parent = 0);
+	virtual ~HistoryImportWindow();
 
-public slots:
-	void run();
-	void canceled();
+	void setChatsCount(int count);
+	void setChatsProgress(int progress);
+
+	void setMessagesCount(int count);
+	void setMessagesProgress(int progress);
 
 };
 
-#endif // HISTORY_IMPORTER_H
+#endif // HISTORY_IMPORT_WINDOW_H

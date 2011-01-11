@@ -40,6 +40,9 @@ class HistoryImportThread : public QThread
 	bool Canceled;
 	int TotalEntries;
 	int ImportedEntries;
+	int ImportedChats;
+	int TotalMessages;
+	int ImportedMessages;
 
 	Chat chatFromUinsList(const UinsList &uinsList) const;
 	void importEntry(Chat chat, const HistoryEntry &entry);
@@ -52,6 +55,9 @@ public:
 	void cancel();
 
 	int importedEntries() { return ImportedEntries; }
+	int importedChats() { return ImportedChats; }
+	int totalMessages() { return TotalMessages; }
+	int importedMessages() { return ImportedMessages; }
 
 };
 

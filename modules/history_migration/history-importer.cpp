@@ -34,6 +34,8 @@
 #include "modules/history/history.h"
 #include "debug.h"
 
+#include "gui/windows/history-import-window.h"
+
 #include "history-import-thread.h"
 
 #include "history-importer.h"
@@ -92,12 +94,10 @@ void HistoryImporter::run()
 	if (0 == totalEntries)
 		return;
 
-	ProgressDialog = new QProgressDialog(qApp->translate("HistoryMigration", "Migrating old history: %1 of %2").arg(0).arg(totalEntries),
-	QString(), 0, totalEntries, Core::instance()->kaduWindow());
-	ProgressDialog->setCancelButton(0);
-	ProgressDialog->setWindowModality(Qt::NonModal);
-	ProgressDialog->setAutoClose(false);
-	connect(ProgressDialog, SIGNAL(canceled()), this, SLOT(canceled()));
+	ProgressWindow = new HistoryImportWindow();
+	ProgressWindow->setChatsCount(uinsLists.size());
+
+	connect(ProgressWindow, SIGNAL(rejected()), this, SLOT(canceled()));
 
 	Thread = new HistoryImportThread(gaduAccount, uinsLists, totalEntries);
 	connect(Thread, SIGNAL(finished()), this, SLOT(threadFinished()));
@@ -108,18 +108,17 @@ void HistoryImporter::run()
 	connect(updateProgressBar, SIGNAL(timeout()), this, SLOT(updateProgressWindow()));
 
 	Thread->start();
-	ProgressDialog->show();
+	ProgressWindow->show();
 	updateProgressBar->start();
 }
 
 void HistoryImporter::updateProgressWindow()
 {
-	if (ProgressDialog)
+	if (ProgressWindow)
 	{
-		ProgressDialog->setValue(Thread->importedEntries());
-		ProgressDialog->setLabelText(qApp->translate("HistoryMigration", "Migrating old history: %1 of %2")
-				.arg(Thread->importedEntries())
-				.arg(ProgressDialog->maximum()));
+		ProgressWindow->setChatsProgress(Thread->importedChats());
+		ProgressWindow->setMessagesCount(Thread->totalMessages());
+		ProgressWindow->setMessagesProgress(Thread->importedMessages());
 	}
 }
 
@@ -127,8 +126,8 @@ void HistoryImporter::threadFinished()
 {
 	config_file.writeEntry("History", "Imported_from_0.6.5", true);
 
-	delete ProgressDialog;
-	ProgressDialog = 0;
+	delete ProgressWindow;
+	ProgressWindow = 0;
 
 	deleteLater();
 }

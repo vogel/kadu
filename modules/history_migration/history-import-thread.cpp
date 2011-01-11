@@ -35,7 +35,8 @@
 #include "history-migration-helper.h"
 
 HistoryImportThread::HistoryImportThread(Account gaduAccount, const QList<UinsList> &uinsLists, int totalEntries, QObject *parent) :
-		QThread(parent), GaduAccount(gaduAccount), UinsLists(uinsLists), Canceled(false), TotalEntries(totalEntries), ImportedEntries(0)
+		QThread(parent), GaduAccount(gaduAccount), UinsLists(uinsLists), Canceled(false), TotalEntries(totalEntries), ImportedEntries(0),
+		ImportedChats(0), TotalMessages(0), ImportedMessages(0)
 {
 }
 
@@ -55,11 +56,18 @@ void HistoryImportThread::run()
 		Chat chat = chatFromUinsList(uinsList);
 		QList<HistoryEntry> entries = HistoryMigrationHelper::historyEntries(uinsList);
 
+		ImportedMessages = 0;
+		ImportedChats++;
+		TotalMessages = entries.count();
+
 		foreach (const HistoryEntry &entry, entries)
 			if (Canceled)
 				break;
 			else
+			{
 				importEntry(chat, entry);
+				ImportedMessages++;
+			}
 	}
 }
 
