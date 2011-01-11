@@ -1,8 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
- * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
- * Copyright 2009 Piotr Galiszewski (piotrgaliszewski@gmail.com)
+ * Copyright 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -19,42 +17,37 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QVariant>
+#include "history-importer-chat-data.h"
 
-#include "configuration/xml-configuration-file.h"
-#include "misc/misc.h"
-#include "storage/storage-point.h"
-
-#include "buddy-kadu-data.h"
-
-BuddyKaduData::BuddyKaduData(StorableObject *parent) :
-		ModuleData(parent)
+HistoryImporterChatData::HistoryImporterChatData(StorableObject *parent) :
+		ModuleData(parent), Imported(false)
 {
 }
 
-BuddyKaduData::~BuddyKaduData()
+HistoryImporterChatData::~HistoryImporterChatData()
 {
 }
-
-void BuddyKaduData::load()
+void HistoryImporterChatData::load()
 {
 	if (!isValidStorage())
 		return;
 
 	StorableObject::load();
 
-	HideDescription = loadValue<bool>("HideDescription");
+	Imported = loadValue<bool>("Imported", false);
 }
 
-void BuddyKaduData::store()
+void HistoryImporterChatData::store()
 {
 	if (!isValidStorage())
 		return;
 
-	storeValue("HideDescription", HideDescription);
+	StorableObject::store();
+
+	storeValue("Imported", Imported);
 }
 
-QString BuddyKaduData::name() const
+QString HistoryImporterChatData::name() const
 {
-	return QLatin1String("kadu");
+	return QLatin1String("history-importer");
 }

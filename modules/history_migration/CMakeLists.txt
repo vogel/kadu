@@ -3,6 +3,7 @@ set (SOURCES
 
 	history-import-thread.cpp
 	history-importer.cpp
+	history-importer-chat-data.cpp
 	history-migration-actions.cpp
 	history-migration-helper.cpp
 	history-migration-module.cpp
