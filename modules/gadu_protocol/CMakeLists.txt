@@ -42,7 +42,7 @@ set (SOURCES
 	server/gadu-server-remind-password.cpp
 	server/gadu-server-unregister-account.cpp
 	server/gadu-servers-manager.cpp
-	server/token-fetcher.cpp
+	server/gadu-token-fetcher.cpp
 
 	services/gadu-avatar-service.cpp
 	services/gadu-chat-image-service.cpp
@@ -56,7 +56,6 @@ set (SOURCES
 	socket-notifiers/gadu-protocol-socket-notifiers.cpp
 	socket-notifiers/gadu-pubdir-socket-notifiers.cpp
 	socket-notifiers/gadu-socket-notifiers.cpp
-	socket-notifiers/gadu-token-socket-notifiers.cpp
 
 	gadu-account-details.cpp
 	gadu-contact-details.cpp
@@ -99,7 +98,7 @@ set (MOC_SOURCES
 	server/gadu-server-register-account.h
 	server/gadu-server-remind-password.h
 	server/gadu-server-unregister-account.h
-	server/token-fetcher.h
+	server/gadu-token-fetcher.h
 
 	services/gadu-avatar-service.h
 	services/gadu-chat-image-service.h
@@ -113,7 +112,6 @@ set (MOC_SOURCES
 	socket-notifiers/gadu-protocol-socket-notifiers.h
 	socket-notifiers/gadu-pubdir-socket-notifiers.h
 	socket-notifiers/gadu-socket-notifiers.h
-	socket-notifiers/gadu-token-socket-notifiers.h
 
 	gadu-id-validator.h
 	gadu-protocol-factory.h

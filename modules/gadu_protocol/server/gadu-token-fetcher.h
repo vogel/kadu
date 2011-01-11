@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2011 Tomasz Rostanski (rozteck@interia.pl)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -17,33 +17,33 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TOKEN_FETCHER
-#define TOKEN_FETCHER
+#ifndef GADU_TOKEN_FETCHER
+#define GADU_TOKEN_FETCHER
 
 #include <QtCore/QObject>
 #include <QtGui/QPixmap>
+#include <QtCore/QString>
 
-struct gg_http;
+class QHttp;
 
-class TokenFetcher : public QObject
+class GaduTokenFetcher : public QObject
 {
 	Q_OBJECT
 
-	gg_http *H;
-	bool AutoDelete;
+	QHttp *http;
+	QString tokenId;
 
 private slots:
-	void tokenFetchedSlot(const QString &tokenId, QPixmap tokenPixmap);
+	void tokenReceivedSlot(int id, bool error);
 
 public:
-	explicit TokenFetcher(bool autoDelete, QObject *parent = 0);
-	virtual ~TokenFetcher();
+	explicit GaduTokenFetcher(QObject *parent = 0);
+	virtual ~GaduTokenFetcher();
 
 	void fetchToken();
 
 signals:
 	void tokenFetched(const QString &tokenId, QPixmap tokenPixmap);
-
 };
 
-#endif // TOKEN_FETCHER
+#endif // GADU_TOKEN_FETCHER

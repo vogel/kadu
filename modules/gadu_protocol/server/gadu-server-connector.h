@@ -24,15 +24,11 @@
 #include <QtCore/QObject>
 #include <QtGui/QPixmap>
 
-#include <libgadu.h>
-
 #include "misc/token-reader.h"
 
 class GaduServerConnector : public QObject
 {
 	Q_OBJECT
-
-	gg_http *H;
 
 	TokenReader *Reader;
 	bool Result;
@@ -47,7 +43,7 @@ protected:
 
 public:
 	GaduServerConnector(TokenReader *reader)
-			: H(0), Reader(reader) {}
+			: Reader(reader) {}
 
 	void perform();
 	bool result() { return Result; }

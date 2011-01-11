@@ -2,6 +2,7 @@
  * %kadu copyright begin%
  * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
  * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2011 Tomasz Rostanski (rozteck@interia.pl)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -18,7 +19,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "socket-notifiers/gadu-token-socket-notifiers.h"
+#include "server/gadu-token-fetcher.h"
 
 #include "gadu-server-connector.h"
 
@@ -30,17 +31,10 @@ void GaduServerConnector::finished(bool result)
 
 void GaduServerConnector::perform()
 {
-	H = gg_token(1);
-	if (!H || H->fd <= 0)
-	{
-		tokenFetched(QString(), QPixmap());
-		return;
-	}
-
-	GaduTokenSocketNotifiers *sn = new GaduTokenSocketNotifiers();
-	connect(sn, SIGNAL(done(const QString &, const QPixmap &)),
-			this, SLOT(tokenFetched(const QString &, const QPixmap &)));
-	sn->watchFor(H);
+	GaduTokenFetcher *token = new GaduTokenFetcher(this);
+	connect(token, SIGNAL(tokenFetched(const QString &, QPixmap)),
+		this, SLOT(tokenFetched(const QString &, QPixmap)));
+	token->fetchToken();
 }
 
 void GaduServerConnector::tokenFetched(const QString &tokenId, const QPixmap &tokenPixmap)
@@ -52,10 +46,4 @@ void GaduServerConnector::tokenFetched(const QString &tokenId, const QPixmap &to
 	}
 	else
 		finished(false);
-
-	if (H)
-	{
-		delete H;
-		H = 0;
-	}
 }
