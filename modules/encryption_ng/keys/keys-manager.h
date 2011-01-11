@@ -25,9 +25,9 @@
 #include "key.h"
 
 #include "storage/simple-manager.h"
-#include "exports.h"
+#include "../encryption_exports.h"
 
-class KADUAPI KeysManager : public QObject, public SimpleManager<Key>
+class ENCRYPTIONAPI KeysManager : public QObject, public SimpleManager<Key>
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(KeysManager)
@@ -47,7 +47,7 @@ protected:
 	virtual void itemRemoved(Key item);
 
 public:
-	static KADUAPI KeysManager * instance();
+	static ENCRYPTIONAPI KeysManager * instance();
 
 	static void destroyInstance();
 

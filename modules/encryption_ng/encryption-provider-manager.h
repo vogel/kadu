@@ -26,10 +26,12 @@
 
 #include "encryption-provider.h"
 
+#include "encryption_exports.h"
+
 class Decryptor;
 class Encryptor;
 
-class EncryptionProviderManager : public EncryptionProvider
+class ENCRYPTIONAPI EncryptionProviderManager : public EncryptionProvider
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(EncryptionProviderManager)

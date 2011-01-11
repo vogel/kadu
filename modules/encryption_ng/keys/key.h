@@ -23,12 +23,12 @@
 #include "key-shared.h"
 
 #include "storage/shared-base.h"
-#include "exports.h"
+#include "../encryption_exports.h"
 
 class Contact;
 class StoragePoint;
 
-class KADUAPI Key : public SharedBase<KeyShared>
+class ENCRYPTIONAPI Key : public SharedBase<KeyShared>
 {
 	KaduSharedBaseClass(Key)
 

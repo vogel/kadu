@@ -22,9 +22,11 @@
 
 #include <QtCore/QObject>
 
+#include "encryption_exports.h"
+
 class EncryptionProvider;
 
-class Encryptor : public QObject
+class ENCRYPTIONAPI Encryptor : public QObject
 {
 	Q_OBJECT
 

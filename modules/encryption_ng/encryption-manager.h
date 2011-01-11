@@ -26,11 +26,13 @@
 #include "accounts/accounts-aware-object.h"
 #include "chat/chat.h"
 
+#include "encryption_exports.h"
+
 class ActionDescription;
 class ChatWidget;
 class KeyGenerator;
 
-class EncryptionManager : public QObject, AccountsAwareObject
+class ENCRYPTIONAPI EncryptionManager : public QObject, AccountsAwareObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(EncryptionManager)

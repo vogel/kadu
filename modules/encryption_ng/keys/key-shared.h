@@ -25,8 +25,9 @@
 #include "contacts/contact.h"
 
 #include "storage/shared.h"
+#include "../encryption_exports.h"
 
-class KADUAPI KeyShared : public QObject, public Shared
+class ENCRYPTIONAPI KeyShared : public QObject, public Shared
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(KeyShared)

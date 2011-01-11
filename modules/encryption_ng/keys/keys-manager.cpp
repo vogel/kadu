@@ -29,7 +29,7 @@
 
 KeysManager * KeysManager::Instance = 0;
 
-KeysManager * KeysManager::instance()
+ENCRYPTIONAPI KeysManager * KeysManager::instance()
 {
 	if (!Instance)
 		Instance = new KeysManager();

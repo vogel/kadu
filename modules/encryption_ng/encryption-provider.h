@@ -24,10 +24,12 @@
 
 #include "chat/chat.h"
 
+#include "encryption_exports.h"
+
 class Decryptor;
 class Encryptor;
 
-class EncryptionProvider : public QObject
+class ENCRYPTIONAPI EncryptionProvider : public QObject
 {
 	Q_OBJECT
 
