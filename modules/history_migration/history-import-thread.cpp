@@ -46,6 +46,8 @@ HistoryImportThread::~HistoryImportThread()
 
 void HistoryImportThread::run()
 {
+	History::instance()->setSyncEnabled(false);
+
 	ImportedEntries = 0;
 
 	foreach (const UinsList &uinsList, UinsLists)
@@ -68,7 +70,12 @@ void HistoryImportThread::run()
 				importEntry(chat, entry);
 				ImportedMessages++;
 			}
+
+		// force sync for every chat
+		History::instance()->forceSync();
 	}
+
+	History::instance()->setSyncEnabled(true);
 }
 
 void HistoryImportThread::cancel()
