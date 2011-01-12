@@ -269,8 +269,17 @@ void DockingManager::trayMousePressEvent(QMouseEvent * e)
 			_activateWindow(kadu);
 			return;
 		}
-		else if (kadu->isVisible() && _isActiveWindow(kadu))
+		else if (kadu->isVisible()
+#ifndef Q_WS_WIN
+				// NOTE: It won't work as expected on Windows since when you click on tray icon,
+				// the tray will become active and any other window will loose focus.
+				// See bug #1915.
+				&& _isActiveWindow(kadu)
+#endif
+				)
+		{
 			kadu->hide();
+		}
 		else
 		{
 			kadu->show();

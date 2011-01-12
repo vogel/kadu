@@ -9,6 +9,7 @@
 * gui: #1610 fixed: flashing hints over buddies list fixed (ultr)
 * gadu_protocol: #1640 fixed: no tokens when creating a new account (dorr)
 * config_wizard: #1912 fixed: Next and Cancel buttons were invisible on Windows Vista/7 (beevvy)
+* docking: #1915 fixed: minimizing Kadu to tray by clicking on tray icon didn't work on Windows (beevvy)
 
 +++ version 0.6.6-beta14.2
 * tabs: #1906 fixed: crash on tabs module load (regression from beta14) (beevvy)
