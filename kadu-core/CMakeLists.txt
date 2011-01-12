@@ -735,8 +735,8 @@ if (WIN32)
 
 	set_target_properties (kadu_c PROPERTIES COMPILE_FLAGS "-DKADU_CONSOLE")
 
-	target_link_libraries (kadu kadu_core ${QT_QTMAIN_LIBRARY} ${QT_LIBRARIES})
-	target_link_libraries (kadu_c kadu_core ${QT_LIBRARIES})
+	target_link_libraries (kadu kadu_core ${QT_QTMAIN_LIBRARY} ${QT_LIBRARIES} ws2_32)
+	target_link_libraries (kadu_c kadu_core ${QT_LIBRARIES} ws2_32)
 
 	install (TARGETS kadu_core
 		RUNTIME DESTINATION ${KADU_BIN_DIR}

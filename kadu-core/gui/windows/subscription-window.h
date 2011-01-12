@@ -26,7 +26,7 @@
 #include <QtGui/QDialog>
 
 #include "contacts/contact.h"
-#include "../../exports.h"
+#include "exports.h"
 
 class QCheckBox;
 class QLineEdit;

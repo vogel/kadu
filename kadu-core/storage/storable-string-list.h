@@ -26,7 +26,7 @@
 #include <QtCore/QStringList>
 
 #include "storage/storable-object.h"
-#include "../exports.h"
+#include "exports.h"
 
 /**
  * @addtogroup Storage
