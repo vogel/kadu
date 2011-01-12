@@ -53,10 +53,6 @@ void ConfigWizardChooseNetworkPage::createGui()
 	SetUpNew = new QRadioButton(tr("I want to create new account for Kadu"), this);
 	Ignore = new QRadioButton(tr("I don't want to set up my account for Kadu now"), this);
 
-	SetUpExisting->setEnabled(false);
-	SetUpNew->setEnabled(false);
-	Ignore->setChecked(true);
-
 	formLayout()->addRow(QString(), SetUpExisting);
 	formLayout()->addRow(QString(), SetUpNew);
 	formLayout()->addRow(QString(), Ignore);
@@ -65,6 +61,8 @@ void ConfigWizardChooseNetworkPage::createGui()
 	registerField("choose-network.existing", SetUpExisting);
 	registerField("choose-network.new", SetUpNew);
 	registerField("choose-network.ignore", Ignore);
+
+	protocolChanged(SelectProtocol->currentProtocol(), 0);
 }
 
 void ConfigWizardChooseNetworkPage::initializePage()
