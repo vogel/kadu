@@ -22,6 +22,7 @@
 
 #include <QtCore/QMutex>
 #include <QtCore/QThread>
+#include <QtCore/QWaitCondition>
 
 class SoundPlayer;
 
@@ -31,7 +32,7 @@ class SoundPlayThread : public QThread
 
 	bool End;
 	QMutex PlayingMutex;
-	QMutex NewSoundMutex;
+	QWaitCondition NewSoundToPlay;
 
 	bool Play;
 

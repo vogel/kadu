@@ -39,32 +39,32 @@ void SoundPlayThread::run()
 {
 	kdebugf();
 
-	NewSoundMutex.lock();
+	QMutex mutex;
 
 	while (!End)
 	{
-		NewSoundMutex.lock();
+		mutex.lock();
+		NewSoundToPlay.wait(&mutex);
 
 		if (End)
 		{
-			NewSoundMutex.unlock();
+			mutex.unlock();
 			break;
 		}
 
-		if (!Play)
+		if (Play)
 		{
-			NewSoundMutex.unlock();
-			continue;
+			if (Player)
+			{
+				PlayingMutex.lock();
+				Player->playSound(Path, VolumeControl, Volume);
+				PlayingMutex.unlock();
+			}
+
+			Play = false;
 		}
 
-		if (Player)
-		{
-			PlayingMutex.lock();
-			Player->playSound(Path, VolumeControl, Volume);
-			PlayingMutex.unlock();
-		}
-
-		Play = false;
+		mutex.unlock();
 	}
 
 	kdebugf2();
@@ -72,8 +72,8 @@ void SoundPlayThread::run()
 
 void SoundPlayThread::end()
 {
-	NewSoundMutex.unlock();
 	End = true;
+	NewSoundToPlay.wakeAll();
 }
 
 void SoundPlayThread::play(SoundPlayer *player, const QString &path, bool volumeControl, float volume)
@@ -81,13 +81,16 @@ void SoundPlayThread::play(SoundPlayer *player, const QString &path, bool volume
 	if (!PlayingMutex.tryLock())
 		return; // one sound is played, we ignore next one
 
-	if (Player)
-		disconnect(Player, SIGNAL(destroyed()), this, SLOT(playerDestroyed()));
+	if (Player != player)
+	{
+		if (Player)
+			disconnect(Player, SIGNAL(destroyed()), this, SLOT(playerDestroyed()));
 
-	Player = player;
+		Player = player;
 
-	if (Player)
-		connect(Player, SIGNAL(destroyed()), this, SLOT(playerDestroyed()));
+		if (Player)
+			connect(Player, SIGNAL(destroyed()), this, SLOT(playerDestroyed()));
+	}
 
 	Path = path;
 	VolumeControl = volumeControl;
@@ -96,7 +99,7 @@ void SoundPlayThread::play(SoundPlayer *player, const QString &path, bool volume
 	Play = true;
 
 	PlayingMutex.unlock();
-	NewSoundMutex.unlock();
+	NewSoundToPlay.wakeAll();
 }
 
 void SoundPlayThread::playerDestroyed()
