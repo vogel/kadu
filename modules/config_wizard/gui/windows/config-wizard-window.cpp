@@ -51,6 +51,12 @@ ConfigWizardWindow::ConfigWizardWindow(QWidget *parent) :
 	 */
 	setWizardStyle(QWizard::ClassicStyle);
 #else
+#ifdef Q_WS_WIN
+	// NOTE: Workaround for bug #1912.
+	// TODO 0.6.6: Remove this as soon as QTBUG-10478 is fixed in
+	// a release we bundle in the Windows build.
+	setWizardStyle(QWizard::ModernStyle);
+#endif
 	setMinimumSize(710, 500);
 #endif
 
