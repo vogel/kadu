@@ -9,9 +9,7 @@ set (MOC_SOURCES
 
 set (TRANSLATION_SOURCES
 	translations/echo_pl.ts
-	translations/echo_en.ts
 )
-
 
 kadu_module (echo
 	MODULE_SOURCES ${SOURCES}

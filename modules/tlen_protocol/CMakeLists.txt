@@ -51,7 +51,6 @@ set (MOC_SOURCES
 
 set (TRANSLATION_SOURCES
 #	translations/tlen_protocol_de.ts
-#	translations/tlen_protocol_en.ts
 #	translations/tlen_protocol_fr.ts
 #	translations/tlen_protocol_it.ts
 	translations/tlen_protocol_pl.ts

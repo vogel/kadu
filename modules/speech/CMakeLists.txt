@@ -16,7 +16,6 @@ set (TRANSLATION_SOURCES
 	translations/speech_fr.ts
 	translations/speech_it.ts
 	translations/speech_pl.ts
-	translations/speech_en.ts
 )
 
 set (CONFIGURATION_FILES
