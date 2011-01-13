@@ -21,17 +21,16 @@
 #define GADU_TOKEN_FETCHER
 
 #include <QtCore/QObject>
-#include <QtGui/QPixmap>
 #include <QtCore/QString>
-
-class QHttp;
+#include <QtGui/QPixmap>
+#include <QtNetwork/QHttp>
 
 class GaduTokenFetcher : public QObject
 {
 	Q_OBJECT
 
-	QHttp *http;
-	QString tokenId;
+	QHttp Http;
+	QString TokenId;
 
 private slots:
 	void tokenReceivedSlot(int id, bool error);
@@ -43,7 +42,8 @@ public:
 	void fetchToken();
 
 signals:
-	void tokenFetched(const QString &tokenId, QPixmap tokenPixmap);
+	void tokenFetched(const QString &tokenId, const QPixmap &tokenPixmap);
+
 };
 
 #endif // GADU_TOKEN_FETCHER

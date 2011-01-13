@@ -32,8 +32,8 @@ void GaduServerConnector::finished(bool result)
 void GaduServerConnector::perform()
 {
 	GaduTokenFetcher *token = new GaduTokenFetcher(this);
-	connect(token, SIGNAL(tokenFetched(const QString &, QPixmap)),
-		this, SLOT(tokenFetched(const QString &, QPixmap)));
+	connect(token, SIGNAL(tokenFetched(QString,QPixmap)),
+		this, SLOT(tokenFetched(QString,QPixmap)));
 	token->fetchToken();
 }
 

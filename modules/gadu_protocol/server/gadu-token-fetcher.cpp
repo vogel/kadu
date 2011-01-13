@@ -17,29 +17,26 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QHttp>
-#include <QUrl>
+#include <QtCore/QUrl>
 
 #include <libgadu.h>
 
 #include "debug.h"
+
 #include "gadu-token-fetcher.h"
 
 GaduTokenFetcher::GaduTokenFetcher(QObject *parent) :
 		QObject(parent)
 {
-	http = new QHttp(this);
 }
 
 GaduTokenFetcher::~GaduTokenFetcher()
 {
-	delete http;
-	http = 0;
 }
 
 void GaduTokenFetcher::fetchToken()
 {
-	tokenId = "";
+	TokenId.clear();
 
 	QHttpRequestHeader header("POST", QUrl::toPercentEncoding("/appsvc/regtoken.asp"));
 	header.setValue("Host", GG_REGISTER_HOST);
@@ -47,21 +44,21 @@ void GaduTokenFetcher::fetchToken()
 	header.setValue("Content-Type", "application/x-www-form-urlencoded");
 	header.setValue("Content-Length", "0");
 	header.setValue("Pragma", "no-cache");
-	http->setHost(GG_REGISTER_HOST, GG_REGISTER_PORT);
-	http->request(header);
-	connect(http, SIGNAL(requestFinished(int, bool)), this, SLOT(tokenReceivedSlot(int, bool)));
+	Http.setHost(GG_REGISTER_HOST, GG_REGISTER_PORT);
+	Http.request(header);
+	connect(&Http, SIGNAL(requestFinished(int, bool)), this, SLOT(tokenReceivedSlot(int, bool)));
 }
 
 void GaduTokenFetcher::tokenReceivedSlot(int id, bool error)
 {
-	Q_UNUSED(id);
-	Q_UNUSED(error);
+	Q_UNUSED(id)
+	Q_UNUSED(error)
 
-	QByteArray data = http->readAll();
+	QByteArray data = Http.readAll();
 	if (data.size() == 0)
 		return;
 
-	if (tokenId.isEmpty())
+	if (TokenId.isEmpty())
 	{
 		QStringList list = QString(data).split(QRegExp("[\r\n ]"), QString::SkipEmptyParts);
 		if (list.size() != 5)
@@ -70,17 +67,16 @@ void GaduTokenFetcher::tokenReceivedSlot(int id, bool error)
 			fetchToken();
 			return;
 		}
-		tokenId = list[3];
-		QString url = list[4];
+		TokenId = list.at(3);
+		QString url = list.at(4);
 
-		QString s = url + "?tokenid=" + tokenId;
-		http->get(s);
+		Http.get(url + "?tokenid=" + TokenId);
 	}
 	else
 	{
 		QPixmap tokenImage;
 		tokenImage.loadFromData(data);
-		emit tokenFetched(tokenId, tokenImage);
-		tokenId = "";
+		emit tokenFetched(TokenId, tokenImage);
+		TokenId.clear();
 	}
 }

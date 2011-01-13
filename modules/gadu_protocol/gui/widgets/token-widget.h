@@ -41,7 +41,7 @@ class TokenWidget : public QWidget
 	GaduTokenFetcher *Fetcher;
 
 private slots:
-	void tokenFetched(const QString &tokenId, QPixmap tokenImage);
+	void tokenFetched(const QString &tokenId, const QPixmap &tokenImage);
 	void refreshToken();
 
 public:

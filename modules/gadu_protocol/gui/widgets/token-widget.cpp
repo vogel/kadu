@@ -63,7 +63,7 @@ TokenWidget::TokenWidget(QWidget *parent) : QWidget(parent)
 	mainLayout->addWidget(TokenCode);
 
 	Fetcher = new GaduTokenFetcher(this);
-	connect(Fetcher, SIGNAL(tokenFetched(const QString &, QPixmap)), this, SLOT(tokenFetched(const QString &, QPixmap)));
+	connect(Fetcher, SIGNAL(tokenFetched(QString,QPixmap)), this, SLOT(tokenFetched(QString,QPixmap)));
 	refreshToken();
 }
 
@@ -71,7 +71,7 @@ TokenWidget::~TokenWidget()
 {
 }
 
-void TokenWidget::tokenFetched(const QString &tokenId, QPixmap tokenImage)
+void TokenWidget::tokenFetched(const QString &tokenId, const QPixmap &tokenImage)
 {
 	WaitMovie->stop();
 	TokenImage->setMovie(0);
