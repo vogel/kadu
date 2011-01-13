@@ -308,6 +308,13 @@ bool AlsaDevice::playSample(short int *sampleData, int length)
 			// don't know why it is needed when we get EINVAL, but it works...
 			continue;
 
+		if (res == 0)
+		{
+			fprintf(stderr, "invalid sample length\n");
+			fflush(stderr);
+			return false;
+		}
+
 		if (res < 0)
 		{
 			if (xrunRecovery(res) < 0)
