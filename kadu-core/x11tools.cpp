@@ -852,9 +852,9 @@ bool X11_checkFullScreen( Display *display )
 		GrabModeAsync,
 		None,
 		None,
-		CurrentTime
+		1
 	);
-	if( status != GrabSuccess )
+	if( status == AlreadyGrabbed )
 	{
 		_debug( "[D]" );
 		if( wt != None )
@@ -942,7 +942,7 @@ bool X11_checkFullScreen( Display *display )
 		_debug( "[I]" );
 		return false;
 	}
-	else
+	else if( status == GrabSuccess )
 	{
 		_debug( "[J]" );
 		XUngrabPointer( display, CurrentTime );
