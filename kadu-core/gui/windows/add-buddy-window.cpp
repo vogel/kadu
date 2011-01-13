@@ -178,11 +178,9 @@ void AddBuddyWindow::createGui()
 	layout->addWidget(selectContactWidget, 5, 1, 1, 3);
 
 	AskForAuthorization = new QCheckBox(tr("Ask contact for authorization"), this);
-	AskForAuthorization->setEnabled(false);
 	layout->addWidget(AskForAuthorization, 7, 1, 1, 3);
 
 	AllowToSeeMeCheck = new QCheckBox(tr("Allow buddy to see me when I'm available"), this);
-	AllowToSeeMeCheck->setChecked(true);
 	layout->addWidget(AllowToSeeMeCheck, 8, 1, 1, 3);
 
 	layout->setRowMinimumHeight(6, 20);
@@ -229,7 +227,7 @@ void AddBuddyWindow::createGui()
 
 	setAddContactEnabled();
 	setAccountFilter();
-	accountChanged(Account::null, MyAccount);
+	accountChanged(MyAccount, Account::null);
 	updateGui();
 }
 
