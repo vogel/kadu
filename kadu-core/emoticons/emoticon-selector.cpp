@@ -195,3 +195,13 @@ bool EmoticonSelector::event(QEvent *e)
 	}
 	return QScrollArea::event(e);
 }
+
+void EmoticonSelector::keyPressEvent(QKeyEvent *e)
+{
+	if (e->key() == Qt::Key_Escape)
+	{
+		close();
+		return;
+	}
+    QAbstractScrollArea::keyPressEvent(e);
+}

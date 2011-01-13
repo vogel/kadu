@@ -45,7 +45,8 @@ private slots:
 	void iconClicked(const QString &emoticon_string);
 
 protected:
-	bool event(QEvent *e);
+	virtual bool event(QEvent *e);
+	virtual void keyPressEvent(QKeyEvent *e);
 
 public:
 	/**
