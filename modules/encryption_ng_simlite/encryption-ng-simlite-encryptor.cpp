@@ -18,6 +18,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "misc/coding-conversion.h"
 #include "modules/encryption_ng/keys/key.h"
 #include "modules/encryption_ng/keys/keys-manager.h"
 
@@ -156,7 +157,7 @@ QByteArray EncryptioNgSimliteEncryptor::encrypt(const QByteArray &data)
 	memcpy(head.init, headIV.data(), 8);
 
 	//the actual encryption
-	QByteArray encryptedData = QByteArray((const char *)&head, sizeof(sim_message_header)) + data;
+	QByteArray encryptedData = QByteArray((const char *)&head, sizeof(sim_message_header)) + unicode2cp(QString::fromUtf8(data));
 	QCA::SecureArray encrypted = cipher.update(encryptedData);
 
 	if (!cipher.ok())

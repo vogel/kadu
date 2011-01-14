@@ -18,6 +18,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "misc/coding-conversion.h"
 #include "modules/encryption_ng/keys/key.h"
 #include "modules/encryption_ng/keys/keys-manager.h"
 
@@ -186,5 +187,5 @@ QByteArray EncryptioNgSimliteDecryptor::decrypt(const QByteArray &data, bool *ok
 
 	//the message has been decrypted! :D
 	//put it into the input/output byte array
-	return &plainText.data()[sizeof(sim_message_header)];
+	return cp2unicode(&plainText.data()[sizeof(sim_message_header)]).toUtf8();
 }
