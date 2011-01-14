@@ -17,6 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QDir>
 #include <QtCore/QFileInfo>
 #include <QtGui/QApplication>
 #include <QtGui/QCheckBox>
@@ -28,6 +29,9 @@
 #include "gui/widgets/identities-combo-box.h"
 #include "gui/windows/message-dialog.h"
 #include "gui/widgets/path-edit.h"
+
+#include "modules/history_migration/history-importer.h"
+#include "modules/history_migration/history-importer-manager.h"
 
 #include "profile-importer.h"
 
@@ -59,8 +63,7 @@ void ImportProfileWindow::createGui()
 	connect(SelectIdentity, SIGNAL(identityChanged(Identity)), this, SLOT(validate()));
 
 	ImportHistory = new QCheckBox(tr("Import history"), this);
-	ImportHistory->setChecked(false);
-	ImportHistory->setEnabled(false);
+	ImportHistory->setChecked(true);
 	layout->addRow(0, ImportHistory);
 
 	ErrorLabel = new QLabel(this);
@@ -114,7 +117,18 @@ void ImportProfileWindow::accept()
 
 	ProfileImporter importer(kaduConfFile.absoluteFilePath());
 	if (importer.import(SelectIdentity->currentIdentity()))
+	{
 		MessageDialog::exec("dialog-information", tr("Import external profile..."), tr("Profile successfully imported!"));
+
+		if (ImportHistory->isChecked())
+		{
+			MessageDialog::exec("dialog-information", tr("Import external profile..."), tr("Importing history!"));
+			HistoryImporter *hi = new HistoryImporter(importer.resultAccount(), kaduConfFile.absoluteDir().absolutePath() + "/history/");
+			HistoryImporterManager::instance()->addImporter(hi);
+
+			hi->run();
+		}
+	}
 	else
 		MessageDialog::exec("dialog-warning", tr("Import external profile..."), tr("Unable to import profile: %1").arg(importer.errorMessage()));
 
