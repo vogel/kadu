@@ -1,6 +1,0 @@
-[Module]
-Description=Kadu Profiles
-Description[pl]=Obsluga wielu kont gg
-Author=Kadu Team
-LoadByDefault=true
-Version=core
