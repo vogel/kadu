@@ -4,9 +4,10 @@
 * modules: creating static modules is again possible (WhE)
 * protocols: #1887 fixed: restored importing contact list after adding Gadu-Gadu account (beevvy)
 * gui: #1922 fixed: when adding buddy with "Add Buddy..." action from chat, Buddy ID and account should not be editable to not confuse users (beevvy)
-* profiles: #1748 half-way done: importing old profiles into new identisies, no history import yet (Vogel)
+* profiles_import: #1748 half-way done: importing old profiles into new identisies, no history import yet (Vogel)
 * core: #1895 fixed: added screensaver detection for automatic fullscreen silent mode (ultr)
 * gui: #1610 fixed: flashing hints over buddies list fixed (ultr)
+* profiles_import: #1748 done: history import added (Vogel)
 
 +++ version 0.6.6-beta14.2
 * tabs: #1906 fixed: crash on tabs module load (regression from beta14) (beevvy)
