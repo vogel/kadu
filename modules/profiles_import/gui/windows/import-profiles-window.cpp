@@ -29,6 +29,9 @@
 #include "identities/identity-manager.h"
 #include "misc/path-conversion.h"
 
+#include "modules/history_migration/history-importer.h"
+#include "modules/history_migration/history-importer-manager.h"
+
 #include "profile-data-manager.h"
 #include "profile-importer.h"
 #include "profiles-import-actions.h"
@@ -86,7 +89,9 @@ void ImportProfilesWindow::createProfileList(QGridLayout *layout)
 		ProfileCheckBoxes[profileCheckBox] = profile;
 
 		QCheckBox *historyCheckBox = new QCheckBox(tr("Import history"), this);
-		historyCheckBox->setEnabled(false);
+		historyCheckBox->setChecked(true);
+
+		HistoryCheckBoxes[profileCheckBox] = historyCheckBox;
 
 		layout->addWidget(profileCheckBox, layout->rowCount(), 0, 1, 2);
 		layout->addWidget(historyCheckBox, layout->rowCount(), 1);
@@ -100,6 +105,7 @@ void ImportProfilesWindow::accept()
 			continue;
 
 		ProfileData profile = ProfileCheckBoxes[importCheckBox];
+		bool importHistory = HistoryCheckBoxes[importCheckBox]->isChecked();
 
 		QString path = profile.Path.startsWith('/')
 				? profile.Path
@@ -111,6 +117,14 @@ void ImportProfilesWindow::accept()
 			ProfileDataManager::markImported(profile.Name);
 			MessageDialog::exec("dialog-information", tr("Import external profile..."), tr("Profile %1 successfully imported!")
 					.arg(profile.Name));
+
+			if (importHistory)
+			{
+				HistoryImporter *hi = new HistoryImporter(importer.resultAccount(), path + "/kadu/history/");
+				HistoryImporterManager::instance()->addImporter(hi);
+
+				hi->run();
+			}
 		}
 		else
 			MessageDialog::exec("dialog-warning", tr("Import profile..."), tr("Unable to import profile: %1: %2")

@@ -122,7 +122,6 @@ void ImportProfileWindow::accept()
 
 		if (ImportHistory->isChecked())
 		{
-			MessageDialog::exec("dialog-information", tr("Import external profile..."), tr("Importing history!"));
 			HistoryImporter *hi = new HistoryImporter(importer.resultAccount(), kaduConfFile.absoluteDir().absolutePath() + "/history/");
 			HistoryImporterManager::instance()->addImporter(hi);
 

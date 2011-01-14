@@ -33,6 +33,7 @@ class ImportProfilesWindow : public QDialog
 	Q_OBJECT
 
 	QMap<QCheckBox *, ProfileData> ProfileCheckBoxes;
+	QMap<QCheckBox *, QCheckBox *> HistoryCheckBoxes;
 
 	void createGui();
 	void createProfileList(QGridLayout *formLayout);
