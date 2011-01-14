@@ -32,7 +32,7 @@ class HistoryImporter : public QObject
 {
 	Q_OBJECT
 
-	Account DesctinationAccount;
+	Account DestinationAccount;
 	QString SourceDirectory;
 
 	HistoryImportThread *Thread;

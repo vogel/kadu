@@ -41,7 +41,7 @@
 #include "history-importer.h"
 
 HistoryImporter::HistoryImporter(const Account &account, const QString &path, QObject *parent) :
-		QObject(parent), DesctinationAccount(account), SourceDirectory(path), Thread(0)
+		QObject(parent), DestinationAccount(account), SourceDirectory(path), Thread(0)
 {
 	kdebugf();
 }
@@ -58,7 +58,7 @@ void HistoryImporter::run()
 	if (Thread)
 		return;
 
-	if (!DesctinationAccount || SourceDirectory.isEmpty() || !History::instance()->currentStorage())
+	if (!DestinationAccount || SourceDirectory.isEmpty() || !History::instance()->currentStorage())
 		return;
 
 	QList<UinsList> uinsLists = HistoryMigrationHelper::getUinsLists(SourceDirectory);
@@ -75,7 +75,7 @@ void HistoryImporter::run()
 
 	connect(ProgressWindow, SIGNAL(rejected()), this, SLOT(canceled()));
 
-	Thread = new HistoryImportThread(DesctinationAccount, SourceDirectory, uinsLists, totalEntries);
+	Thread = new HistoryImportThread(DestinationAccount, SourceDirectory, uinsLists, totalEntries);
 	connect(Thread, SIGNAL(finished()), this, SLOT(threadFinished()));
 
 	QTimer *updateProgressBar = new QTimer(this);
