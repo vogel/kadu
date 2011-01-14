@@ -12,7 +12,8 @@
 * docking: #1915 fixed: minimizing Kadu to tray by clicking on tray icon didn't work on Windows (beevvy)
 * profiles_import: #1748 done: history import added (Vogel)
 * profiles: module removed (Vogel)
-* encryption_ng_simplite: #1936 fixed: invalid encoding when encrypting messages between 0.6.6 and 0.6.6 (Vogel)
+* encryption_ng_simlite: #1936 fixed: invalid encoding when encrypting messages between 0.6.6 and 0.6.6 (Vogel)
+* search: #1931 fixed: double toolbars in search window (Vogel)
 
 +++ version 0.6.6-beta14.2
 * tabs: #1906 fixed: crash on tabs module load (regression from beta14) (beevvy)

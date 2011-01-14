@@ -36,6 +36,7 @@
 #include "debug.h"
 
 #include "main-window.h"
+#include <X11/X.h>
 
 MainWindow * MainWindow::findMainWindow(QWidget *widget)
 {
@@ -65,6 +66,15 @@ MainWindow::~MainWindow()
 
 void MainWindow::loadToolBarsFromConfig()
 {
+	// lame, i know
+
+	foreach (QObject *object, children())
+	{
+		QToolBar *toolBar = dynamic_cast<QToolBar *>(object);
+		if (toolBar)
+			removeToolBar(toolBar);
+	}
+
 	loadToolBarsFromConfig(Qt::TopToolBarArea);
 	loadToolBarsFromConfig(Qt::LeftToolBarArea);
 	loadToolBarsFromConfig(Qt::BottomToolBarArea);
@@ -295,12 +305,7 @@ void MainWindow::refreshToolBars()
 	if (Core::instance()->isClosing())
 		return;
 #endif
-	foreach (QObject *object, children())
-	{
-		QToolBar *toolBar = dynamic_cast<QToolBar *>(object);
-		if (toolBar)
-			removeToolBar(toolBar);
-	}
+
 	loadToolBarsFromConfig();
 }
 
