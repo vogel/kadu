@@ -60,18 +60,18 @@ bool GaduChatService::sendMessage(Chat chat, FormattedMessage &message, bool sil
 	QString plain = message.toPlain();
 	QList<Contact> contacts = chat.contacts().toContactList();
 
-	plain.replace("\r\n", "\n");
-	plain.replace('\r', '\n');
-	plain.replace(QChar::LineSeparator, "\n");
-	plain = plain.trimmed();
+// 	plain.replace("\r\n", "\n");
+// 	plain.replace('\r', '\n');
+// 	plain.replace(QChar::LineSeparator, "\n");
+// 	plain = plain.trimmed();
 
 	if (plain.isEmpty()) // for image sending
 	{
 		message.prepend(FormattedMessagePart(" ", false, false, false, QColor(0, 0, 0)));
 
-		plain.replace("\r\n", "\n");
-		plain.replace('\r', '\n');
-		plain.replace(QChar::LineSeparator, "\n");
+// 		plain.replace("\r\n", "\n");
+// 		plain.replace('\r', '\n');
+// 		plain.replace(QChar::LineSeparator, "\n");
 	}
 
 	unsigned int uinsCount = 0;
@@ -234,7 +234,7 @@ bool GaduChatService::ignoreImages(Contact sender)
 		);
 }
 
-FormattedMessage GaduChatService::createFormattedMessage(struct gg_event *e, QString &content, Contact sender)
+FormattedMessage GaduChatService::createFormattedMessage(struct gg_event *e, QByteArray &content, Contact sender)
 {
 	if (ignoreRichText(sender))
 		return GaduFormatter::createMessage(Protocol->account(), sender.id().toUInt(), content, 0, 0, false);
@@ -272,14 +272,14 @@ void GaduChatService::handleEventMsg(struct gg_event *e)
 	bool ignore = false;
 	emit filterRawIncomingMessage(chat, sender, content, ignore);
 
-	QString stringContent = QString::fromUtf8(content);
-	QString separator(QChar::LineSeparator);
+// 	QString stringContent = QString::fromUtf8(content);
+// 	QString separator(QChar::LineSeparator);
 
-	stringContent.replace("\r\n", separator);
-	stringContent.replace("\n",   separator);
-	stringContent.replace("\r",   separator);
+// 	stringContent.replace("\r\n", separator);
+// 	stringContent.replace("\n",   separator);
+// 	stringContent.replace("\r",   separator);
 
-	FormattedMessage message = createFormattedMessage(e, stringContent, sender);
+	FormattedMessage message = createFormattedMessage(e, content, sender);
 	if (message.isEmpty())
 		return;
 

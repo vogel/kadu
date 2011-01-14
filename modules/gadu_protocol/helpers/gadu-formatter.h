@@ -33,7 +33,7 @@ namespace GaduFormatter
 
 	QString createImageId(GaduProtocol::UinType sender, unsigned int size, unsigned int crc32);
 
-	FormattedMessage createMessage(Account acccount, GaduProtocol::UinType sender, const QString &content, unsigned char *formats,
+	FormattedMessage createMessage(Account acccount, GaduProtocol::UinType sender, const QByteArray &content, unsigned char *formats,
 			unsigned int size, bool receiveImages);
 
 };
