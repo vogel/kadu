@@ -250,20 +250,37 @@ void ChatEditBox::openInsertImageDialog()
 			return;
 		}
 
-		int counter = 0;
+		int tooBigCounter = 0;
+		int disconnectedCounter = 0;
 
 		foreach (const Contact &contact, CurrentChat.contacts())
 		{
-			if (contact.maximumImageSize() == 0 || contact.maximumImageSize() * 1024 < f.size())
-				counter++;
+			if (contact.currentStatus().isDisconnected())
+				disconnectedCounter++;
+			else if (contact.maximumImageSize() == 0 || contact.maximumImageSize() * 1024 < f.size())
+				tooBigCounter++;
 		}
-		if (counter == 1 && CurrentChat.contacts().count() == 1)
+
+		QString message;
+		if (1 == CurrentChat.contacts().count())
 		{
-			if (!MessageDialog::ask(QString(), tr("Kadu"), tr("This file is too big for %1.\nDo you really want to send this image?\n").arg((*CurrentChat.contacts().begin()).ownerBuddy().display())))
-				return;
+			Contact contact = *CurrentChat.contacts().begin();
+			if (tooBigCounter > 0)
+				message = tr("This file is too big for %1.\nDo you really want to send this image?").arg(contact.ownerBuddy().display());
+			else if (disconnectedCounter > 0)
+				message = tr("%1 is disconnected and cannot receive images.\nDo you really want to send this image?").arg(contact.ownerBuddy().display());
 		}
-		else if (counter > 0 &&
-			!MessageDialog::ask(QString(), tr("Kadu"), tr("This file is too big for %1 of %2 contacts.\nDo you really want to send this image?\nSome of them probably will not get it.").arg(counter).arg(CurrentChat.contacts().count())))
+		else
+		{
+			if (tooBigCounter > 0)
+				message = tr("This file is too big for %1 of %2 contacts.\n").arg(tooBigCounter).arg(CurrentChat.contacts().count());
+			if (disconnectedCounter > 0)
+				message += tr("%1 of %2 contacts are disconnected and cannot receive images.\n").arg(disconnectedCounter).arg(CurrentChat.contacts().count());
+			if (tooBigCounter > 0 || disconnectedCounter > 0)
+				message += tr("Do you really want to send this image?\nSome of them probably will not get it.");
+		}
+
+		if (!message.isEmpty() && !MessageDialog::ask(QString(), tr("Kadu"), message))
 			return;
 
 		QString path = ChatImageService::imagesPath();
