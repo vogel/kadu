@@ -18,6 +18,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <stdint.h>
+
 #include "misc/coding-conversion.h"
 #include "modules/encryption_ng/keys/key.h"
 #include "modules/encryption_ng/keys/keys-manager.h"

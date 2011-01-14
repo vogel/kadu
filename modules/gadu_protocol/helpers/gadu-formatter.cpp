@@ -111,8 +111,8 @@ unsigned char * createFormats(Account account, const FormattedMessage &message, 
 
 			if (part.isImage())
 			{
-				uint32_t size;
-				uint32_t crc32;
+				quint32 size;
+				quint32 crc32;
 
 				GaduChatImageService *gcis = dynamic_cast<GaduChatImageService *>(account.protocolHandler()->chatImageService());
 				gcis->prepareImageToSend(part.imagePath(), size, crc32);
@@ -149,8 +149,8 @@ static void appendToMessage(Account account, FormattedMessage &result, UinType s
 
 	if (format.font & GG_FONT_IMAGE)
 	{
-		uint32_t size = gg_fix32(image.size);
-		uint32_t crc32 = gg_fix32(image.crc32);
+		quint32 size = gg_fix32(image.size);
+		quint32 crc32 = gg_fix32(image.crc32);
 
 		if (size == 20 && (crc32 == 4567 || crc32 == 99)) // fake spy images
 			return;
@@ -165,7 +165,7 @@ static void appendToMessage(Account account, FormattedMessage &result, UinType s
 		if (!details)
 			return;
 
-		if (size > (uint32_t)details->maximumImageSize() * 1024)
+		if (size > (quint32)details->maximumImageSize() * 1024)
 		{
 			result << FormattedMessagePart(qApp->translate("@default", QT_TR_NOOP("###IMAGE TOO BIG###")), false, false, false, textColor);
 			return;

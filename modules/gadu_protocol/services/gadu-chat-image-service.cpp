@@ -40,7 +40,7 @@ GaduChatImageService::GaduChatImageService(GaduProtocol *protocol)
 {
 }
 
-QString GaduChatImageService::saveImage(UinType sender, uint32_t size, uint32_t crc32, const char *data)
+QString GaduChatImageService::saveImage(UinType sender, quint32 size, quint32 crc32, const char *data)
 {
 	kdebugf();
 
@@ -89,8 +89,8 @@ void GaduChatImageService::handleEventImageRequest(struct gg_event *e)
 	kdebugm(KDEBUG_INFO, "%s", qPrintable(QString("Received image request. sender: %1, size: %2, crc32: %3\n")
 		.arg(e->event.image_request.sender).arg(e->event.image_request.size).arg(e->event.image_request.crc32)));
 
-	uint32_t size = e->event.image_request.size;
-	uint32_t crc32 = e->event.image_request.crc32;
+	quint32 size = e->event.image_request.size;
+	quint32 crc32 = e->event.image_request.crc32;
 
 	if (!ImagesToSend.contains(qMakePair(size, crc32)))
 	{
@@ -129,7 +129,7 @@ void GaduChatImageService::handleEventImageReply(struct gg_event *e)
 			e->event.image_reply.size, e->event.image_reply.crc32), fileName);
 }
 
-bool GaduChatImageService::sendImageRequest(Contact contact, int size, uint32_t crc32)
+bool GaduChatImageService::sendImageRequest(Contact contact, int size, quint32 crc32)
 {
 	kdebugf();
 	GaduAccountDetails *gaduAccountDetails = dynamic_cast<GaduAccountDetails *>(Protocol->account().details());
@@ -142,7 +142,7 @@ bool GaduChatImageService::sendImageRequest(Contact contact, int size, uint32_t 
 	return 0 == gg_image_request(Protocol->gaduSession(), Protocol->uin(contact), size, crc32);
 }
 
-void GaduChatImageService::prepareImageToSend(const QString &imageFileName, uint32_t &size, uint32_t &crc32)
+void GaduChatImageService::prepareImageToSend(const QString &imageFileName, quint32 &size, quint32 &crc32)
 {
 	kdebugmf(KDEBUG_INFO, "Using file \"%s\"\n", qPrintable(imageFileName));
 

@@ -109,8 +109,8 @@ public:
 
 	void attachSendFileTransferSocket(GaduFileTransferHandler *handler);
 
-// 	void getFileTransferSocket(uint32_t ip, uint16_t port, UinType myUin, UinType peerUin, DccHandler *handler, bool request = false);
-// 	void getVoiceSocket(uint32_t ip, uint16_t port, UinType myUin, UinType peerUin, DccHandler *handler, bool request = false);
+// 	void getFileTransferSocket(quint32 ip, quint16 port, UinType myUin, UinType peerUin, DccHandler *handler, bool request = false);
+// 	void getVoiceSocket(quint32 ip, quint16 port, UinType myUin, UinType peerUin, DccHandler *handler, bool request = false);
 
 	bool dccEnabled() const;
 

@@ -30,10 +30,6 @@
 #include <QtCore/QObject>
 #include <QtGui/QIcon>
 
-#ifdef __sun__
-#include <sys/types.h>
-#endif /* __sun__ */
-
 #include "exports.h"
 
 #include "buddies/buddy.h"

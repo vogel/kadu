@@ -109,8 +109,8 @@ OSSPlayerSlots::OSSPlayerSlots(QObject *parent) : QObject(parent)
 		this, SLOT(openDevice(SoundDeviceType, int, int, SoundDevice*)), Qt::DirectConnection);
 	connect(sound_manager, SIGNAL(closeDeviceImpl(SoundDevice)),
 		this, SLOT(closeDevice(SoundDevice)));
-	connect(sound_manager, SIGNAL(playSampleImpl(SoundDevice, const int16_t*, int, bool*)),
-		this, SLOT(playSample(SoundDevice, const int16_t*, int, bool*)),
+	connect(sound_manager, SIGNAL(playSampleImpl(SoundDevice, const qint16 *, int, bool *)),
+		this, SLOT(playSample(SoundDevice, const qint16 *, int, bool *)),
 		Qt::DirectConnection);
 	connect(sound_manager, SIGNAL(setFlushingEnabledImpl(SoundDevice, bool)),
 		this, SLOT(setFlushingEnabled(SoundDevice, bool)));
@@ -126,10 +126,10 @@ OSSPlayerSlots::~OSSPlayerSlots()
 		this, SLOT(openDevice(SoundDeviceType, int, int, SoundDevice*)));
 	disconnect(sound_manager, SIGNAL(closeDeviceImpl(SoundDevice)),
 		this, SLOT(closeDevice(SoundDevice)));
-	disconnect(sound_manager, SIGNAL(playSampleImpl(SoundDevice, const int16_t*, int, bool*)),
-		this, SLOT(playSample(SoundDevice, const int16_t*, int, bool*)));
-	disconnect(sound_manager, SIGNAL(recordSampleImpl(SoundDevice, int16_t*, int, bool*)),
-		this, SLOT(recordSample(SoundDevice, int16_t*, int, bool*)));
+	disconnect(sound_manager, SIGNAL(playSampleImpl(SoundDevice, const qint16 *, int, bool *)),
+		this, SLOT(playSample(SoundDevice, const qint16 *, int, bool *)));
+	disconnect(sound_manager, SIGNAL(recordSampleImpl(SoundDevice, qint16 *, int, bool *)),
+		this, SLOT(recordSample(SoundDevice, qint16 *, int, bool *)));
 	disconnect(sound_manager, SIGNAL(setFlushingEnabledImpl(SoundDevice, bool)),
 		this, SLOT(setFlushingEnabled(SoundDevice, bool)));
 
@@ -252,7 +252,7 @@ void OSSPlayerSlots::closeDevice(SoundDevice device)
 	kdebugf2();
 }
 
-void OSSPlayerSlots::playSample(SoundDevice device, const int16_t* data, int length, bool* result)
+void OSSPlayerSlots::playSample(SoundDevice device, const qint16 *data, int length, bool *result)
 {
 	kdebugf();
 

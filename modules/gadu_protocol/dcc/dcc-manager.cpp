@@ -531,7 +531,7 @@ void DccManager::attachSendFileTransferSocket(GaduFileTransferHandler *handler)
 	}
 }
 
-/*void DccManager::getVoiceSocket(uint32_t ip, uint16_t port, UinType myUin, UinType peerUin, DccHandler *handler, bool request)
+/*void DccManager::getVoiceSocket(quint32 ip, quint16 port, UinType myUin, UinType peerUin, DccHandler *handler, bool request)
 {
 	kdebugf();
 
