@@ -122,12 +122,8 @@ void HistoryImporter::threadFinished()
 
 void HistoryImporter::canceled()
 {
-	printf("Canceled!\n");
-
 	if (Thread)
 		Thread->cancel();
 
-	printf("fire delete later\n");
 	deleteLater();
-	printf("fired delete later\n");
 }

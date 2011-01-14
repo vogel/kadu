@@ -17,9 +17,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QFile>
+
+#include "configuration/configuration-file.h"
 #include "core/core.h"
 #include "gui/actions/action-description.h"
 #include "gui/windows/kadu-window.h"
+#include "misc/path-conversion.h"
 
 #include "history-importer.h"
 #include "history-importer-manager.h"
@@ -58,6 +62,17 @@ void HistoryMigrationActions::importHistoryActionActivated(QAction *sender, bool
 	Q_UNUSED(sender)
 	Q_UNUSED(toggled)
 
+	runImportHistoryAction();
+}
+
+void HistoryMigrationActions::runImportHistoryAction()
+{
+	bool imported = config_file.readBoolEntry("History", "Imported_from_0.6.5", false);
+	if (imported || !QFile::exists(profilePath("history")))
+		return;
+
 	HistoryImporter *hi = new HistoryImporter();
 	HistoryImporterManager::instance()->addImporter(hi);
+
+	hi->run();
 }

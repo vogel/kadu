@@ -17,13 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QFile>
-
-#include "configuration/configuration-file.h"
-#include "misc/path-conversion.h"
 #include "debug.h"
 
-#include "history-importer.h"
 #include "history-importer-manager.h"
 #include "history-migration-actions.h"
 
@@ -34,13 +29,8 @@ extern "C" KADU_EXPORT int history_migration_init(bool firstLoad)
 	HistoryMigrationActions::registerActions();
 	HistoryImporterManager::createInstance();
 
-	bool imported = config_file.readBoolEntry("History", "Imported_from_0.6.5", false);
-
-	HistoryImporter *hi = new HistoryImporter();
-	HistoryImporterManager::instance()->addImporter(hi);
-
-	if (!imported && firstLoad && QFile::exists(profilePath("history")))
-		hi->run();
+	if (firstLoad)
+		HistoryMigrationActions::instance()->runImportHistoryAction();
 
 	return 0;
 }

@@ -46,6 +46,8 @@ public:
 
 	static HistoryMigrationActions * instance() { return Instance; }
 
+	void runImportHistoryAction();
+
 };
 
 #endif // HISTORY_MIGRATION_ACTIONS_H
