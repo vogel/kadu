@@ -73,14 +73,10 @@ void HistoryMigrationActions::runImportHistoryAction()
 	if (imported || !QFile::exists(profilePath("history")))
 		return;
 
-	Account gaduAccount = Account::null;
-	foreach (const Account &account, AccountManager::instance()->items())
-		if (account.protocolHandler() && account.protocolHandler()->protocolFactory()
-			&& account.protocolHandler()->protocolFactory()->name() == "gadu")
-		{
-			gaduAccount = account;
-			break;
-		}
+	QString uin = config_file.readEntry("General", "UIN");
+	Account gaduAccount = AccountManager::instance()-> byId("gadu", uin);
+	if (!gaduAccount)
+		return; // maybe message?
 
 	HistoryImporter *hi = new HistoryImporter(gaduAccount, profilePath("history/"));
 	HistoryImporterManager::instance()->addImporter(hi);
