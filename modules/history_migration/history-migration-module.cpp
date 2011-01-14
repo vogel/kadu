@@ -36,7 +36,9 @@ extern "C" KADU_EXPORT int history_migration_init(bool firstLoad)
 
 	bool imported = config_file.readBoolEntry("History", "Imported_from_0.6.5", false);
 
-	HistoryImporter *hi = HistoryImporter::instance();
+	HistoryImporter *hi = new HistoryImporter();
+	HistoryImporterManager::instance()->addImporter(hi);
+
 	if (!imported && firstLoad && QFile::exists(profilePath("history")))
 		hi->run();
 
@@ -46,8 +48,6 @@ extern "C" KADU_EXPORT int history_migration_init(bool firstLoad)
 extern "C" KADU_EXPORT void history_migration_close()
 {
 	kdebugf();
-
-	HistoryImporter::instance()->canceled();
 
 	HistoryImporterManager::destroyInstance();
 	HistoryMigrationActions::unregisterActions();

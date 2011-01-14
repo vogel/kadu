@@ -48,16 +48,16 @@ HistoryImporterManager::~HistoryImporterManager()
 void HistoryImporterManager::addImporter(HistoryImporter *importer)
 {
 	Importers.append(importer);
-	connect(importer, SIGNAL(destroyed(QObject*)), this, SIGNAL(destroyed(QObject*)));
+	connect(importer, SIGNAL(destroyed(QObject*)), this, SLOT(importerDestroyed(QObject*)));
 }
 
 void HistoryImporterManager::removeImporter(HistoryImporter *importer)
 {
 	Importers.removeAll(importer);
-	disconnect(importer, SIGNAL(destroyed(QObject*)), this, SIGNAL(destroyed(QObject*)));
+	disconnect(importer, SIGNAL(destroyed(QObject*)), this, SLOT(importerDestroyed(QObject*)));
 }
 
 void HistoryImporterManager::importerDestroyed(QObject *importer)
 {
-	Importers.removeAll(qobject_cast<HistoryImporter *>(importer));
+	Importers.removeAll(static_cast<HistoryImporter *>(importer));
 }

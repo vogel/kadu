@@ -16,6 +16,7 @@ set (MOC_SOURCES
 	history-migration-actions.h
 	history-import-thread.h
 	history-importer.h
+	history-importer-manager.h
 )
 
 set (CONFIGURATION_FILES

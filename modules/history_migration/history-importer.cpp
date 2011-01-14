@@ -40,26 +40,14 @@
 
 #include "history-importer.h"
 
-HistoryImporter * HistoryImporter::Instance = 0;
-
-HistoryImporter * HistoryImporter::instance()
-{
-	if (!Instance)
-		Instance = new HistoryImporter();
-
-	return Instance;
-}
-
-HistoryImporter::HistoryImporter() :
-		Thread(0)
+HistoryImporter::HistoryImporter(QObject *parent) :
+		QObject(parent), Thread(0)
 {
 	kdebugf();
 }
 
 HistoryImporter::~HistoryImporter()
 {
-	Instance = 0;
-
 	kdebugf();
 }
 
@@ -134,8 +122,12 @@ void HistoryImporter::threadFinished()
 
 void HistoryImporter::canceled()
 {
+	printf("Canceled!\n");
+
 	if (Thread)
 		Thread->cancel();
 
+	printf("fire delete later\n");
 	deleteLater();
+	printf("fired delete later\n");
 }

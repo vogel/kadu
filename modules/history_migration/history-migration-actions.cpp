@@ -22,6 +22,7 @@
 #include "gui/windows/kadu-window.h"
 
 #include "history-importer.h"
+#include "history-importer-manager.h"
 
 #include "history-migration-actions.h"
 
@@ -57,5 +58,6 @@ void HistoryMigrationActions::importHistoryActionActivated(QAction *sender, bool
 	Q_UNUSED(sender)
 	Q_UNUSED(toggled)
 
-	HistoryImporter::instance()->run();
+	HistoryImporter *hi = new HistoryImporter();
+	HistoryImporterManager::instance()->addImporter(hi);
 }

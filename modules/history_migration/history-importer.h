@@ -29,22 +29,17 @@ class HistoryImportWindow;
 class HistoryImporter : public QObject
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(HistoryImporter)
-
-	static HistoryImporter *Instance;
 
 	HistoryImportThread *Thread;
 	HistoryImportWindow *ProgressWindow;
-
-	HistoryImporter();
-	virtual ~HistoryImporter();
 
 private slots:
 	void updateProgressWindow();
 	void threadFinished();
 
 public:
-	static HistoryImporter * instance();
+	explicit HistoryImporter(QObject *parent = 0);
+	virtual ~HistoryImporter();
 
 public slots:
 	void run();
