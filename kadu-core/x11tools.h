@@ -77,6 +77,8 @@ std::pair<int,int> X11_getDesktopSize( Display *display );
 
 std::pair<int,int> X11_getMousePos( Display *display );
 
+bool X11_isPointerGrabbed( Display *display );
+
 bool X11_isFreeDesktopCompatible( Display *display );
 
 unsigned long X11_getDesktopsCount( Display *display, bool forceFreeDesktop = false );
