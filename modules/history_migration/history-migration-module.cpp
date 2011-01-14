@@ -19,18 +19,20 @@
 
 #include <QtCore/QFile>
 
-#include "history-importer.h"
-#include "history-migration-actions.h"
-
 #include "configuration/configuration-file.h"
 #include "misc/path-conversion.h"
 #include "debug.h"
+
+#include "history-importer.h"
+#include "history-importer-manager.h"
+#include "history-migration-actions.h"
 
 extern "C" KADU_EXPORT int history_migration_init(bool firstLoad)
 {
 	kdebugf();
 
 	HistoryMigrationActions::registerActions();
+	HistoryImporterManager::createInstance();
 
 	bool imported = config_file.readBoolEntry("History", "Imported_from_0.6.5", false);
 
@@ -47,5 +49,6 @@ extern "C" KADU_EXPORT void history_migration_close()
 
 	HistoryImporter::instance()->canceled();
 
+	HistoryImporterManager::destroyInstance();
 	HistoryMigrationActions::unregisterActions();
 }
