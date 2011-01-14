@@ -38,13 +38,15 @@ class KADUAPI GroupTabBar : public QTabBar, ConfigurationAwareObject
 	Group currentGroup;
 	BuddyList currentBuddies;
 
-	bool showAllGroup;
+	bool ShowAllGroup;
 
 	int AutoGroupTabPosition;
 
 	void updateGroup(Group group);
+	bool hasAnyUngrouppedBuddy() const;
 
 private slots:
+	void updateAutoGroupTab();
 	void currentChangedSlot(int index);
 	void groupAdded(Group group);
 	void groupRemoved(Group group);

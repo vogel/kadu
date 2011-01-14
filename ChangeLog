@@ -14,6 +14,7 @@
 * profiles: module removed (Vogel)
 * encryption_ng_simlite: #1936 fixed: invalid encoding when encrypting messages between 0.6.6 and 0.6.6 (Vogel)
 * search: #1931 fixed: double toolbars in search window (Vogel)
+* gui: #1899 fixed: do not display "Ungroupped" group when it is empty (Vogel)
 
 +++ version 0.6.6-beta14.2
 * tabs: #1906 fixed: crash on tabs module load (regression from beta14) (beevvy)
