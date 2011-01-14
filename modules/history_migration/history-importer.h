@@ -23,12 +23,17 @@
 
 #include <QtCore/QObject>
 
+#include "accounts/account.h"
+
 class HistoryImportThread;
 class HistoryImportWindow;
 
 class HistoryImporter : public QObject
 {
 	Q_OBJECT
+
+	Account DesctinationAccount;
+	QString SourceDirectory;
 
 	HistoryImportThread *Thread;
 	HistoryImportWindow *ProgressWindow;
@@ -38,7 +43,7 @@ private slots:
 	void threadFinished();
 
 public:
-	explicit HistoryImporter(QObject *parent = 0);
+	explicit HistoryImporter(const Account &account, const QString &path, QObject *parent = 0);
 	virtual ~HistoryImporter();
 
 public slots:

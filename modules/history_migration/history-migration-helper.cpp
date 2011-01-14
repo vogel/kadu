@@ -31,7 +31,6 @@
 #include <QtCore/QTextStream>
 
 #include "misc/misc.h"
-#include "misc/path-conversion.h"
 #include "debug.h"
 
 #include "history-migration-helper.h"
@@ -54,13 +53,12 @@ namespace HistoryMigrationHelper
 		return fname;
 	}
 
-	int getHistoryEntriesCount(const UinsList &uins)
+	int getHistoryEntriesCount(const QString &path, const UinsList &uins)
 	{
 		kdebugf();
 
 		int lines = 0;
 		QString filename = getFileNameByUinsList(uins);
-		QString path = profilePath("history/");
 		QByteArray buffer;
 		QFile fidx(path + filename + ".idx"), f(path + filename);
 
@@ -100,11 +98,11 @@ namespace HistoryMigrationHelper
 		return lines;
 	}
 
-	QList<UinsList> getUinsLists()
+	QList<UinsList> getUinsLists(const QString &path)
 	{
 		kdebugf();
 		QList<UinsList> entries;
-		QDir dir(profilePath("history/"), "*.idx");
+		QDir dir(path, "*.idx");
 		QStringList struins;
 		UinsList uins;
 
@@ -123,7 +121,7 @@ namespace HistoryMigrationHelper
 
 		// special case for sms: probably it won't have an index file,
 		// so only check if sms itself exists and append empty uins list
-		if (QFile::exists(profilePath("history/sms")))
+		if (QFile::exists(path + "/sms"))
 		{
 			uins.clear();
 			entries.append(uins);
@@ -133,14 +131,13 @@ namespace HistoryMigrationHelper
 		return entries;
 	}
 
-	QList<HistoryEntry> historyEntries(const UinsList &uins)
+	QList<HistoryEntry> historyEntries(const QString &path, const UinsList &uins)
 	{
 		kdebugf();
 
 		QList<HistoryEntry> entries;
 		QStringList tokens;
 		QFile f, fidx;
-		QString path = profilePath("history/");
 		QString filename, line;
 		int offs = 0;
 

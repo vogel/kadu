@@ -40,8 +40,8 @@
 
 #include "history-importer.h"
 
-HistoryImporter::HistoryImporter(QObject *parent) :
-		QObject(parent), Thread(0)
+HistoryImporter::HistoryImporter(const Account &account, const QString &path, QObject *parent) :
+		QObject(parent), DesctinationAccount(account), SourceDirectory(path), Thread(0)
 {
 	kdebugf();
 }
@@ -58,26 +58,14 @@ void HistoryImporter::run()
 	if (Thread)
 		return;
 
-	if (config_file.readBoolEntry("History", "Imported_from_0.6.5", false))
+	if (!DesctinationAccount || SourceDirectory.isEmpty() || !History::instance()->currentStorage())
 		return;
 
-	Account gaduAccount = Account::null;
-	foreach (const Account &account, AccountManager::instance()->items())
-		if (account.protocolHandler() && account.protocolHandler()->protocolFactory()
-			&& account.protocolHandler()->protocolFactory()->name() == "gadu")
-		{
-			gaduAccount = account;
-			break;
-		}
-
-	if (gaduAccount.isNull() || !History::instance()->currentStorage())
-		return;
-
-	QList<UinsList> uinsLists = HistoryMigrationHelper::getUinsLists();
+	QList<UinsList> uinsLists = HistoryMigrationHelper::getUinsLists(SourceDirectory);
 	int totalEntries = 0;
 
 	foreach (const UinsList &uinsList, uinsLists)
-		totalEntries += HistoryMigrationHelper::getHistoryEntriesCount(uinsList);
+		totalEntries += HistoryMigrationHelper::getHistoryEntriesCount(SourceDirectory, uinsList);
 
 	if (0 == totalEntries)
 		return;
@@ -87,7 +75,7 @@ void HistoryImporter::run()
 
 	connect(ProgressWindow, SIGNAL(rejected()), this, SLOT(canceled()));
 
-	Thread = new HistoryImportThread(gaduAccount, uinsLists, totalEntries);
+	Thread = new HistoryImportThread(DesctinationAccount, SourceDirectory, uinsLists, totalEntries);
 	connect(Thread, SIGNAL(finished()), this, SLOT(threadFinished()));
 
 	QTimer *updateProgressBar = new QTimer(this);

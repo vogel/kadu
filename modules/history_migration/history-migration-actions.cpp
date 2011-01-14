@@ -19,11 +19,13 @@
 
 #include <QtCore/QFile>
 
+#include "accounts/account-manager.h"
 #include "configuration/configuration-file.h"
 #include "core/core.h"
 #include "gui/actions/action-description.h"
 #include "gui/windows/kadu-window.h"
 #include "misc/path-conversion.h"
+#include "protocols/protocol.h"
 
 #include "history-importer.h"
 #include "history-importer-manager.h"
@@ -71,7 +73,16 @@ void HistoryMigrationActions::runImportHistoryAction()
 	if (imported || !QFile::exists(profilePath("history")))
 		return;
 
-	HistoryImporter *hi = new HistoryImporter();
+	Account gaduAccount = Account::null;
+	foreach (const Account &account, AccountManager::instance()->items())
+		if (account.protocolHandler() && account.protocolHandler()->protocolFactory()
+			&& account.protocolHandler()->protocolFactory()->name() == "gadu")
+		{
+			gaduAccount = account;
+			break;
+		}
+
+	HistoryImporter *hi = new HistoryImporter(gaduAccount, profilePath("history/"));
 	HistoryImporterManager::instance()->addImporter(hi);
 
 	hi->run();
