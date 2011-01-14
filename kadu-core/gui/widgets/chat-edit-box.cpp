@@ -70,8 +70,8 @@ ChatEditBox::ChatEditBox(Chat chat, QWidget *parent) :
 	else
 		loadToolBarsFromConfig(); // load new config
 
-	connect(ChatWidgetManager::instance()->actions()->colorSelector(), SIGNAL(actionCreated(Action *)),
-			this, SLOT(colorSelectorActionCreated(Action *)));
+// 	connect(ChatWidgetManager::instance()->actions()->colorSelector(), SIGNAL(actionCreated(Action *)),
+// 			this, SLOT(colorSelectorActionCreated(Action *)));
 	connect(InputBox, SIGNAL(keyPressed(QKeyEvent *,CustomInput *, bool &)),
 			this, SIGNAL(keyPressed(QKeyEvent *,CustomInput *,bool &)));
 	connect(InputBox, SIGNAL(fontChanged(QFont)), this, SLOT(fontChanged(QFont)));
@@ -82,8 +82,8 @@ ChatEditBox::ChatEditBox(Chat chat, QWidget *parent) :
 
 ChatEditBox::~ChatEditBox()
 {
-	disconnect(ChatWidgetManager::instance()->actions()->colorSelector(), SIGNAL(actionCreated(Action *)),
-			this, SLOT(colorSelectorActionCreated(Action *)));
+// 	disconnect(ChatWidgetManager::instance()->actions()->colorSelector(), SIGNAL(actionCreated(Action *)),
+// 			this, SLOT(colorSelectorActionCreated(Action *)));
 	disconnect(InputBox, SIGNAL(cursorPositionChanged()), this, SLOT(cursorPositionChanged()));
 
 	chatEditBoxes.removeAll(this);
@@ -296,17 +296,18 @@ void ChatEditBox::changeColor(const QColor &newColor)
 	QPixmap p(12, 12);
 	p.fill(CurrentColor);
 
-	Action *action = ChatWidgetManager::instance()->actions()->colorSelector()->action(this);
-	if (action)
-		action->setIcon(p);
+// 	Action *action = ChatWidgetManager::instance()->actions()->colorSelector()->action(this);
+// 	if (action)
+// 		action->setIcon(p);
 
 	InputBox->setTextColor(CurrentColor);
 }
 
 void ChatEditBox::setColorFromCurrentText(bool force)
 {
-	Action *action = ChatWidgetManager::instance()->actions()->colorSelector()->action(this);
+// 	Action *action = ChatWidgetManager::instance()->actions()->colorSelector()->action(this);
 
+	Action *action = 0;
 	if (!action || (!force && (InputBox->textColor() == CurrentColor)))
 		return;
 

@@ -221,12 +221,12 @@ ChatWidgetActions::ChatWidgetActions(QObject *parent) : QObject(parent)
 		"face-smile", tr("Insert Emoticon")
 	);
 	connect(InsertEmoticon, SIGNAL(actionCreated(Action *)), this, SLOT(insertEmoticonActionCreated(Action *)));
-
+/*
 	ColorSelector = new ActionDescription(0,
 		ActionDescription::TypeChat, "colorAction",
 		this, SLOT(colorSelectorActionActivated(QAction *, bool)),
 		"kadu_icons/change-color", tr("Change Color")
-	);
+	);*/
 
 	BuddiesListViewMenuManager::instance()->addActionDescription(OpenChat, BuddiesListViewMenuItem::MenuCategoryChat, 25);
 }

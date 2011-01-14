@@ -46,7 +46,7 @@ class ChatWidgetActions : public QObject, ConfigurationAwareObject
 	ActionDescription *OpenChat;
 	ActionDescription *OpenWith;
 	ActionDescription *InsertEmoticon;
-	ActionDescription *ColorSelector;
+// 	ActionDescription *ColorSelector;
 
 	void autoSendActionCheck();
 	void insertEmoticonsActionCheck();
@@ -85,7 +85,7 @@ public:
 	ActionDescription * send() { return Send; }
 	ActionDescription * blockUser() { return BlockUser; }
 	ActionDescription * openChatWith() { return OpenWith; }
-	ActionDescription * colorSelector() { return ColorSelector; }
+// 	ActionDescription * colorSelector() { return ColorSelector; }
 	ActionDescription * insertEmoticon() { return InsertEmoticon; }
 
 };
