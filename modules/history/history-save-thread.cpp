@@ -21,11 +21,11 @@
 
 #include "history-save-thread.h"
 
-// 10 seconds
+// 15 seconds
 #define SYNCHRONIZATION_TIMEOUT 15*1000
 
 HistorySaveThread::HistorySaveThread(History *history, QObject *parent) :
-		QThread(parent), CurrentHistory(history), Stopped(false)
+		QThread(parent), CurrentHistory(history), Enabled(true), Stopped(false)
 {
 }
 
@@ -66,6 +66,18 @@ void HistorySaveThread::sync()
 	}
 }
 
+void HistorySaveThread::forceSync()
+{
+	SomethingToSave.lock();
+
+	storeMessages();
+	storeStatusChanges();
+
+	sync();
+
+	SomethingToSave.unlock();
+}
+
 void HistorySaveThread::run()
 {
 	LastSyncTime = QDateTime::currentDateTime();
@@ -74,10 +86,13 @@ void HistorySaveThread::run()
 	{
 		SomethingToSave.lock();
 
-		storeMessages();
-		storeStatusChanges();
-		if (QDateTime::currentDateTime().addMSecs(-SYNCHRONIZATION_TIMEOUT) >= LastSyncTime)
-			sync();
+		if (Enabled)
+		{
+			storeMessages();
+			storeStatusChanges();
+			if (QDateTime::currentDateTime().addMSecs(-SYNCHRONIZATION_TIMEOUT) >= LastSyncTime)
+				sync();
+		}
 
 		WaitForSomethingToSave.wait(&SomethingToSave, SYNCHRONIZATION_TIMEOUT);
 		SomethingToSave.unlock();
@@ -86,6 +101,11 @@ void HistorySaveThread::run()
 	storeMessages();
 	storeStatusChanges();
 	sync();
+}
+
+void HistorySaveThread::setEnabled(bool enabled)
+{
+	Enabled = enabled;
 }
 
 void HistorySaveThread::newDataAvailable()

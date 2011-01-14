@@ -32,6 +32,7 @@ class HistorySaveThread : public QThread
 	Q_OBJECT
 
 	History *CurrentHistory;
+	bool Enabled;
 
 	QMutex SomethingToSave;
 	QWaitCondition WaitForSomethingToSave;
@@ -49,6 +50,10 @@ public:
 	virtual ~HistorySaveThread();
 
 	virtual void run();
+
+	void forceSync();
+
+	void setEnabled(bool enabled);
 
 	void newDataAvailable();
 	void stop();

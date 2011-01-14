@@ -1,16 +1,25 @@
 set (SOURCES
+	gui/windows/history-import-window.cpp
+
 	history-import-thread.cpp
-	history-migration.cpp
+	history-importer.cpp
+	history-importer-chat-data.cpp
+	history-importer-manager.cpp
+	history-migration-actions.cpp
 	history-migration-helper.cpp
+	history-migration-module.cpp
 )
 
 set (MOC_SOURCES
+	gui/windows/history-import-window.h
+
+	history-migration-actions.h
 	history-import-thread.h
-	history-migration.h
+	history-importer.h
+	history-importer-manager.h
 )
 
 set (CONFIGURATION_FILES
-	configuration/history-migration.ui
 )
 
 #set (TRANSLATION_SOURCES

@@ -17,33 +17,28 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef IMPORT_PROFILES_WINDOW_H
-#define IMPORT_PROFILES_WINDOW_H
+#include "debug.h"
 
-#include <QtCore/QMap>
-#include <QtGui/QDialog>
+#include "history-importer-manager.h"
+#include "history-migration-actions.h"
 
-class QCheckBox;
-class QGridLayout;
-
-struct ProfileData;
-
-class ImportProfilesWindow : public QDialog
+extern "C" KADU_EXPORT int history_migration_init(bool firstLoad)
 {
-	Q_OBJECT
+	kdebugf();
 
-	QMap<QCheckBox *, ProfileData> ProfileCheckBoxes;
-	QMap<QCheckBox *, QCheckBox *> HistoryCheckBoxes;
+	HistoryMigrationActions::registerActions();
+	HistoryImporterManager::createInstance();
 
-	void createGui();
-	void createProfileList(QGridLayout *formLayout);
+	if (firstLoad)
+		HistoryMigrationActions::instance()->runImportHistoryAction();
 
-public:
-	explicit ImportProfilesWindow(QWidget *parent = 0);
-	virtual ~ImportProfilesWindow();
+	return 0;
+}
 
-	virtual void accept();
+extern "C" KADU_EXPORT void history_migration_close()
+{
+	kdebugf();
 
-};
-
-#endif // IMPORT_PROFILES_WINDOW_H
+	HistoryImporterManager::destroyInstance();
+	HistoryMigrationActions::unregisterActions();
+}

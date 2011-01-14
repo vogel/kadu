@@ -17,33 +17,32 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef IMPORT_PROFILES_WINDOW_H
-#define IMPORT_PROFILES_WINDOW_H
+#ifndef HISTORY_IMPORT_WINDOW_H
+#define HISTORY_IMPORT_WINDOW_H
 
-#include <QtCore/QMap>
 #include <QtGui/QDialog>
 
-class QCheckBox;
-class QGridLayout;
+class QProgressBar;
 
-struct ProfileData;
-
-class ImportProfilesWindow : public QDialog
+class HistoryImportWindow : public QDialog
 {
 	Q_OBJECT
 
-	QMap<QCheckBox *, ProfileData> ProfileCheckBoxes;
-	QMap<QCheckBox *, QCheckBox *> HistoryCheckBoxes;
+	QProgressBar *ChatsProgressBar;
+	QProgressBar *MessagesProgressBar;
 
 	void createGui();
-	void createProfileList(QGridLayout *formLayout);
 
 public:
-	explicit ImportProfilesWindow(QWidget *parent = 0);
-	virtual ~ImportProfilesWindow();
+	explicit HistoryImportWindow(QWidget *parent = 0);
+	virtual ~HistoryImportWindow();
 
-	virtual void accept();
+	void setChatsCount(int count);
+	void setChatsProgress(int progress);
+
+	void setMessagesCount(int count);
+	void setMessagesProgress(int progress);
 
 };
 
-#endif // IMPORT_PROFILES_WINDOW_H
+#endif // HISTORY_IMPORT_WINDOW_H

@@ -69,8 +69,6 @@
 
 #include "history.h"
 
-
-
 void disableNonHistoryContacts(Action *action)
 {
 	kdebugf();
@@ -114,7 +112,7 @@ History * History::instance()
 }
 
 History::History() :
-		QObject(0), SaveThread(0), CurrentStorage(0), HistoryDialog(new HistoryWindow())
+		QObject(0), SyncEnabled(true), SaveThread(0), CurrentStorage(0), HistoryDialog(new HistoryWindow())
 {
 	kdebugf();
 	createActionDescriptions();
@@ -410,7 +408,10 @@ void History::crash()
 void History::startSaveThread()
 {
 	if (!SaveThread)
+	{
 		SaveThread = new HistorySaveThread(this, this);
+		SaveThread->setEnabled(SyncEnabled);
+	}
 
 	if (!SaveThread->isRunning())
 		SaveThread->start();
@@ -605,4 +606,16 @@ void History::createDefaultConfiguration()
 
 	config_file.addVariable("History", "ChatHistoryCitation", 10);
 	config_file.addVariable("History", "ChatHistoryQuotationTime", -24);
+}
+
+void History::forceSync()
+{
+	if (SaveThread)
+		SaveThread->forceSync();
+}
+
+void History::setSyncEnabled(bool syncEnabled)
+{
+	if (SaveThread)
+		SaveThread->setEnabled(syncEnabled);
 }

@@ -17,33 +17,37 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef IMPORT_PROFILES_WINDOW_H
-#define IMPORT_PROFILES_WINDOW_H
+#include "history-importer-chat-data.h"
 
-#include <QtCore/QMap>
-#include <QtGui/QDialog>
-
-class QCheckBox;
-class QGridLayout;
-
-struct ProfileData;
-
-class ImportProfilesWindow : public QDialog
+HistoryImporterChatData::HistoryImporterChatData(StorableObject *parent) :
+		ModuleData(parent), Imported(false)
 {
-	Q_OBJECT
+}
 
-	QMap<QCheckBox *, ProfileData> ProfileCheckBoxes;
-	QMap<QCheckBox *, QCheckBox *> HistoryCheckBoxes;
+HistoryImporterChatData::~HistoryImporterChatData()
+{
+}
+void HistoryImporterChatData::load()
+{
+	if (!isValidStorage())
+		return;
 
-	void createGui();
-	void createProfileList(QGridLayout *formLayout);
+	StorableObject::load();
 
-public:
-	explicit ImportProfilesWindow(QWidget *parent = 0);
-	virtual ~ImportProfilesWindow();
+	Imported = loadValue<bool>("Imported", false);
+}
 
-	virtual void accept();
+void HistoryImporterChatData::store()
+{
+	if (!isValidStorage())
+		return;
 
-};
+	StorableObject::store();
 
-#endif // IMPORT_PROFILES_WINDOW_H
+	storeValue("Imported", Imported);
+}
+
+QString HistoryImporterChatData::name() const
+{
+	return QLatin1String("history-importer");
+}

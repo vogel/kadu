@@ -17,33 +17,37 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef IMPORT_PROFILES_WINDOW_H
-#define IMPORT_PROFILES_WINDOW_H
+#ifndef HISTORY_IMPORTER_MANAGER_H
+#define HISTORY_IMPORTER_MANAGER_H
 
-#include <QtCore/QMap>
-#include <QtGui/QDialog>
+#include <QtCore/QObject>
 
-class QCheckBox;
-class QGridLayout;
+class HistoryImporter;
 
-struct ProfileData;
-
-class ImportProfilesWindow : public QDialog
+class HistoryImporterManager : public QObject
 {
 	Q_OBJECT
+	Q_DISABLE_COPY(HistoryImporterManager)
 
-	QMap<QCheckBox *, ProfileData> ProfileCheckBoxes;
-	QMap<QCheckBox *, QCheckBox *> HistoryCheckBoxes;
+	static HistoryImporterManager *Instance;
 
-	void createGui();
-	void createProfileList(QGridLayout *formLayout);
+	QList<HistoryImporter *> Importers;
+
+	HistoryImporterManager();
+	~HistoryImporterManager();
+
+private slots:
+	void importerDestroyed(QObject *importer);
 
 public:
-	explicit ImportProfilesWindow(QWidget *parent = 0);
-	virtual ~ImportProfilesWindow();
+	static void createInstance();
+	static void destroyInstance();
 
-	virtual void accept();
+	static HistoryImporterManager * instance() { return Instance; }
+
+	void addImporter(HistoryImporter *importer);
+	void removeImporter(HistoryImporter *importer);
 
 };
 
-#endif // IMPORT_PROFILES_WINDOW_H
+#endif // HISTORY_IMPORTER_MANAGER_H

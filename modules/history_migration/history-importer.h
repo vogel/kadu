@@ -21,35 +21,30 @@
 #ifndef HISTORY_IMPORTER_H
 #define HISTORY_IMPORTER_H
 
-#include "gui/windows/main-configuration-window.h"
+#include <QtCore/QObject>
 
-class QProgressDialog;
+#include "accounts/account.h"
 
 class HistoryImportThread;
+class HistoryImportWindow;
 
-class HistoryImporter : public ConfigurationUiHandler
+class HistoryImporter : public QObject
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(HistoryImporter)
 
-	static HistoryImporter *Instance;
+	Account DestinationAccount;
+	QString SourceDirectory;
 
-	MainConfigurationWindow *ConfigurationWindow;
 	HistoryImportThread *Thread;
-	QProgressDialog *ProgressDialog;
-
-	HistoryImporter();
-	virtual ~HistoryImporter();
-
-	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
+	HistoryImportWindow *ProgressWindow;
 
 private slots:
 	void updateProgressWindow();
 	void threadFinished();
-	void configurationWindowDestroyed();
 
 public:
-	static HistoryImporter * instance();
+	explicit HistoryImporter(const Account &account, const QString &path, QObject *parent = 0);
+	virtual ~HistoryImporter();
 
 public slots:
 	void run();

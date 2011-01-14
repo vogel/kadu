@@ -44,7 +44,6 @@ void BuddyKaduData::load()
 	StorableObject::load();
 
 	HideDescription = loadValue<bool>("HideDescription");
-
 }
 
 void BuddyKaduData::store()

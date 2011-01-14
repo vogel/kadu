@@ -31,11 +31,13 @@
 #include "modules/history/history.h"
 #include "status/status.h"
 
+#include "history-importer-chat-data.h"
 #include "history-import-thread.h"
 #include "history-migration-helper.h"
 
-HistoryImportThread::HistoryImportThread(Account gaduAccount, const QList<UinsList> &uinsLists, int totalEntries, QObject *parent) :
-		QThread(parent), GaduAccount(gaduAccount), UinsLists(uinsLists), Canceled(false), TotalEntries(totalEntries), ImportedEntries(0)
+HistoryImportThread::HistoryImportThread(Account gaduAccount, const QString &path, const QList<UinsList> &uinsLists, int totalEntries, QObject *parent) :
+		QThread(parent), GaduAccount(gaduAccount), Path(path), UinsLists(uinsLists), Canceled(false), TotalEntries(totalEntries), ImportedEntries(0),
+		ImportedChats(0), TotalMessages(0), ImportedMessages(0)
 {
 }
 
@@ -45,6 +47,8 @@ HistoryImportThread::~HistoryImportThread()
 
 void HistoryImportThread::run()
 {
+	History::instance()->setSyncEnabled(false);
+
 	ImportedEntries = 0;
 
 	foreach (const UinsList &uinsList, UinsLists)
@@ -52,15 +56,42 @@ void HistoryImportThread::run()
 		if (Canceled)
 			break;
 
+		ImportedChats++;
+
 		Chat chat = chatFromUinsList(uinsList);
-		QList<HistoryEntry> entries = HistoryMigrationHelper::historyEntries(uinsList);
+		// we cannot import into non-existing chat
+		// this means chat with ourself on the list
+		if (!chat || !chat.data())
+			continue;
+
+		QList<HistoryEntry> entries = HistoryMigrationHelper::historyEntries(Path, uinsList);
+
+		HistoryImporterChatData *historyImporterChatData = chat.data()->moduleStorableData<HistoryImporterChatData>("history-importer", true);
+		if (historyImporterChatData->imported())
+		{
+			ImportedEntries += entries.count();
+			continue;
+		}
+
+		ImportedMessages = 0;
+		TotalMessages = entries.count();
 
 		foreach (const HistoryEntry &entry, entries)
 			if (Canceled)
 				break;
 			else
+			{
 				importEntry(chat, entry);
+				ImportedMessages++;
+			}
+
+		historyImporterChatData->setImported(true);
+
+		// force sync for every chat
+		History::instance()->forceSync();
 	}
+
+	History::instance()->setSyncEnabled(true);
 }
 
 void HistoryImportThread::cancel()

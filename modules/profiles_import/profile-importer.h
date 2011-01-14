@@ -22,7 +22,7 @@
 
 #include <QtCore/QFile>
 
-class Identity;
+#include "accounts/account.h"
 
 class ProfileImporter : public QObject
 {
@@ -30,11 +30,13 @@ class ProfileImporter : public QObject
 
 	QString ProfileFileName;
 	QString ErrorMessage;
+	Account ResultAccount;
 
 public:
 	ProfileImporter(const QString &profileFileName);
 
 	bool import(const Identity &identity);
+	Account resultAccount() { return ResultAccount; }
 
 	QString errorMessage();
 	

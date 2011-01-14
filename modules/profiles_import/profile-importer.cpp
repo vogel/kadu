@@ -92,5 +92,7 @@ bool ProfileImporter::import(const Identity &identity)
 	}
 
 	profileFile.close();
+
+	ResultAccount = importedAccount;
 	return true;
 }

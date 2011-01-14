@@ -17,33 +17,37 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef IMPORT_PROFILES_WINDOW_H
-#define IMPORT_PROFILES_WINDOW_H
+#ifndef HISTORY_MIGRATION_ACTIONS_H
+#define HISTORY_MIGRATION_ACTIONS_H
 
-#include <QtCore/QMap>
-#include <QtGui/QDialog>
+#include <QtCore/QObject>
 
-class QCheckBox;
-class QGridLayout;
+class QAction;
 
-struct ProfileData;
+class ActionDescription;
 
-class ImportProfilesWindow : public QDialog
+class HistoryMigrationActions : public QObject
 {
 	Q_OBJECT
 
-	QMap<QCheckBox *, ProfileData> ProfileCheckBoxes;
-	QMap<QCheckBox *, QCheckBox *> HistoryCheckBoxes;
+	static HistoryMigrationActions *Instance;
 
-	void createGui();
-	void createProfileList(QGridLayout *formLayout);
+	ActionDescription *ImportHistoryActionDescription;
+
+	HistoryMigrationActions();
+	~HistoryMigrationActions();
+
+private slots:
+	void importHistoryActionActivated(QAction *sender, bool toggled);
 
 public:
-	explicit ImportProfilesWindow(QWidget *parent = 0);
-	virtual ~ImportProfilesWindow();
+	static void registerActions();
+	static void unregisterActions();
 
-	virtual void accept();
+	static HistoryMigrationActions * instance() { return Instance; }
+
+	void runImportHistoryAction();
 
 };
 
-#endif // IMPORT_PROFILES_WINDOW_H
+#endif // HISTORY_MIGRATION_ACTIONS_H

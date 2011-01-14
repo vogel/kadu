@@ -80,6 +80,7 @@ class HISTORYAPI History : public ConfigurationUiHandler, ConfigurationAwareObje
 	bool SaveChatsWithAnonymous;
 	bool SaveStatuses;
 	bool SaveOnlyStatusesWithDescription;
+	bool SyncEnabled;
 
 	QMutex UnsavedDataMutex;
 	QQueue<Message> UnsavedMessages;
@@ -159,6 +160,9 @@ public:
 	int smsCount(const QString &recipient, const QDate &date = QDate());
 
 	void deleteHistory(const Buddy &buddy);
+
+	void forceSync();
+	void setSyncEnabled(bool syncEnabled);
 
 };
 

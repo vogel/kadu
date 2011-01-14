@@ -35,23 +35,30 @@ class HistoryImportThread : public QThread
 	Q_OBJECT
 
 	Account GaduAccount;
+	QString Path;
 	QList<UinsList> UinsLists;
 
 	bool Canceled;
 	int TotalEntries;
 	int ImportedEntries;
+	int ImportedChats;
+	int TotalMessages;
+	int ImportedMessages;
 
 	Chat chatFromUinsList(const UinsList &uinsList) const;
 	void importEntry(Chat chat, const HistoryEntry &entry);
 
 public:
-	HistoryImportThread(Account gaduAccount, const QList<UinsList> &uinsLists, int totalEntries, QObject *parent = 0);
+	HistoryImportThread(Account gaduAccount, const QString &path, const QList<UinsList> &uinsLists, int totalEntries, QObject *parent = 0);
 	virtual ~HistoryImportThread();
 
 	virtual void run();
 	void cancel();
 
 	int importedEntries() { return ImportedEntries; }
+	int importedChats() { return ImportedChats; }
+	int totalMessages() { return TotalMessages; }
+	int importedMessages() { return ImportedMessages; }
 
 };
 

@@ -17,33 +17,32 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef IMPORT_PROFILES_WINDOW_H
-#define IMPORT_PROFILES_WINDOW_H
+#ifndef HISTORY_IMPORTER_CHAT_DATA_H
+#define HISTORY_IMPORTER_CHAT_DATA_H
 
-#include <QtCore/QMap>
-#include <QtGui/QDialog>
+#include "storage/module-data.h"
 
-class QCheckBox;
-class QGridLayout;
+#undef Property
+#define Property(type, name, capitalized_name) \
+	type name() { ensureLoaded(); return capitalized_name; } \
+	void set##capitalized_name(const type &name) { ensureLoaded(); capitalized_name = name; }
 
-struct ProfileData;
-
-class ImportProfilesWindow : public QDialog
+class HistoryImporterChatData : public ModuleData
 {
-	Q_OBJECT
+	bool Imported;
 
-	QMap<QCheckBox *, ProfileData> ProfileCheckBoxes;
-	QMap<QCheckBox *, QCheckBox *> HistoryCheckBoxes;
-
-	void createGui();
-	void createProfileList(QGridLayout *formLayout);
+protected:
+	virtual void load();
 
 public:
-	explicit ImportProfilesWindow(QWidget *parent = 0);
-	virtual ~ImportProfilesWindow();
+	HistoryImporterChatData(StorableObject *parent);
+	virtual ~HistoryImporterChatData();
 
-	virtual void accept();
+	virtual void store();
+	virtual QString name() const;
+
+	Property(bool, imported, Imported)
 
 };
 
-#endif // IMPORT_PROFILES_WINDOW_H
+#endif // HISTORY_IMPORTER_CHAT_DATA_H
