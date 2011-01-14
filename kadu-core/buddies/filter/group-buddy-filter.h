@@ -42,6 +42,7 @@ public:
 	void refresh();
 
 	void setAllGroupShown(bool shown);
+
 };
 
 #endif // GROUP_BUDDY_FILTER

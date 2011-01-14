@@ -66,7 +66,6 @@ private:
 	QMap<ActionDescription *, MenuAction> MenuActions;
 
 	bool Docked; // TODO: 0.7.1 it is a hack
-	QWidget *GroupBarWidget;
 	QSplitter *Split;
 
 	KaduWindowActions *Actions;

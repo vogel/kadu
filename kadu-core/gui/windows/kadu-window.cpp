@@ -122,17 +122,7 @@ void KaduWindow::createGui()
 	hboxLayout->setMargin(0);
 	hboxLayout->setSpacing(0);
 
-	/* Must create empty widget so it can fill its background. */
-	GroupBarWidget = new QWidget(this);
-	QVBoxLayout *GroupBarLayout = new QVBoxLayout(GroupBarWidget);
-	GroupBarLayout->setMargin(0);
-	GroupBarLayout->setSpacing(0);
-	GroupBarWidget->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding);
-
 	GroupBar = new GroupTabBar(this);
-
-	GroupBarLayout->addWidget(GroupBar, 0, Qt::AlignTop);
-	GroupBarWidget->setLayout(GroupBarLayout);
 
 	ContactsWidget = new BuddiesListWidget(BuddiesListWidget::FilterAtTop, hbox);
 	ContactsWidget->view()->useConfigurationColors(true);
@@ -145,11 +135,10 @@ void KaduWindow::createGui()
 
 	connect(ContactsWidget->view(), SIGNAL(chatActivated(Chat )), this, SLOT(openChatWindow(Chat )));
 
-	hboxLayout->addWidget(GroupBarWidget);
-	hboxLayout->setStretchFactor(GroupBarWidget, 1);
+	hboxLayout->addWidget(GroupBar);
+	hboxLayout->setStretchFactor(GroupBar, 1);
 	hboxLayout->addWidget(ContactsWidget);
 	hboxLayout->setStretchFactor(ContactsWidget, 100);
-	hboxLayout->setAlignment(GroupBar, Qt::AlignTop);
 
 	InfoPanel = new BuddyInfoPanel(Split);
 	connect(ContactsWidget->view(), SIGNAL(currentChanged(BuddyOrContact)), InfoPanel, SLOT(displayItem(BuddyOrContact)));
@@ -276,7 +265,7 @@ void KaduWindow::compositingEnabled()
 			CompositingEnabled = true;
 			setTransparency(true);
 			menuBar()->setAutoFillBackground(true);
-			GroupBarWidget->setAutoFillBackground(true);
+			GroupBar->setAutoFillBackground(true);
 			InfoPanel->setAutoFillBackground(true);
 			ChangeStatusButtons->setAutoFillBackground(true);
 			ContactsWidget->nameFilterWidget()->setAutoFillBackground(true);
@@ -301,7 +290,7 @@ void KaduWindow::compositingDisabled()
 	{
 		CompositingEnabled = false;
 		menuBar()->setAutoFillBackground(false);
-		GroupBarWidget->setAutoFillBackground(false);
+		GroupBar->setAutoFillBackground(false);
 		InfoPanel->setAutoFillBackground(false);
 		ChangeStatusButtons->setAutoFillBackground(false);
 		ContactsWidget->nameFilterWidget()->setAutoFillBackground(false);
