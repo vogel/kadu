@@ -174,7 +174,7 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 		ParserToken pe1, pe;
 
 		for(i = index; i < len; ++i)
-			if (searchChars.value(s[i], false))
+			if (searchChars.value(s.at(i), false))
 				break;
 
 //		this is the same, but code above is muuuuch faster
@@ -190,7 +190,7 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 				break;
 		}
 
-		char c = s[i].toAscii();
+		char c = s.at(i).toAscii();
 		if (c == '%')
 		{
 			++i;
@@ -198,7 +198,7 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 				break;
 			pe.type = ParserToken::PT_STRING;
 
-			switch (s[i].toAscii())
+			switch (s.at(i).toAscii())
 			{
 				case 's':
 					++i;
@@ -322,7 +322,7 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 			++i;
 			if (i == len)
 				break;
-			if (s[i] == '!')
+			if (s.at(i) == '!')
 			{
 				pe.type = ParserToken::PT_CHECK_ANY_NULL;
 				++i;
@@ -395,7 +395,7 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 			++i;
 			if (i == len)
 				break;
-			if (s[i] == '!' || s[i] == '~')
+			if (s.at(i) == '!' || s.at(i) == '~')
 			{
 				pe.type = ParserToken::PT_CHECK_FILE_NOT_EXISTS;
 				++i;
@@ -526,7 +526,7 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 		else if (c == '`')
 		{
 			++i;
-			if (i == len || s[i] != '{')
+			if (i == len || s.at(i) != '{')
 			{
 				pe.type = ParserToken::PT_EXECUTE;
 				parseStack.push_back(pe);
@@ -590,13 +590,14 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 			if (i == len)
 				break;
 			pe.type = ParserToken::PT_STRING;
-			pe.content = s[i++];
+			pe.content = s.at(i);
+			++i;
 			parseStack.push_back(pe);
 		}
 		else if (c == '$')
 		{
 			++i;
-			if (i == len || s[i] != '{')
+			if (i == len || s.at(i) != '{')
 			{
 				pe.type = ParserToken::PT_STRING;
 				pe.content = '$';
@@ -612,7 +613,7 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 		else if (c == '@')
 		{
 			++i;
-			if (i == len || s[i] != '{')
+			if (i == len || s.at(i) != '{')
 			{
 				pe.type = ParserToken::PT_STRING;
 				pe.content = '@';
@@ -628,7 +629,7 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 		else if (c == '#')
 		{
 			++i;
-			if (i == len || s[i] != '{')
+			if (i == len || s.at(i) != '{')
 			{
 				pe.type = ParserToken::PT_STRING;
 				pe.content = '#';

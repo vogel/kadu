@@ -158,7 +158,7 @@ void GaduImporter::importAccounts()
 	accountDetails->setState(StorableObject::StateNew);
 
 	if (!IdentityManager::instance()->items().isEmpty())
-		defaultGaduGadu.setAccountIdentity(IdentityManager::instance()->items()[0]);
+		defaultGaduGadu.setAccountIdentity(IdentityManager::instance()->items().at(0));
 
 	defaultGaduGadu.setId(config_file.readEntry("General", "UIN"));
 	defaultGaduGadu.setPassword(pwHash(config_file.readEntry("General", "Password")).toUtf8().constData());
@@ -267,7 +267,7 @@ void GaduImporter::buddyAdded(Buddy &buddy)
 		return;
 
 	// take 1st one
-	Account account = allGaduAccounts[0];
+	Account account = allGaduAccounts.at(0);
 
 	Contact contact = importGaduContact(account, buddy);
 

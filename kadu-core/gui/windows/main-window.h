@@ -87,7 +87,7 @@ public:
 	MainWindow(const QString &windowName, QWidget *parent);
 	virtual ~MainWindow();
 
-	QString windowName() { return WindowName; }
+	const QString & windowName() { return WindowName; }
 
 	virtual QMenu * createPopupMenu() { return 0; }
 

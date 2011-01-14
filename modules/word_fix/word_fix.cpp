@@ -103,7 +103,7 @@ WordFix::WordFix()
 				if (pair.count() <= 0)
 					continue;
 
-				wordsList[pair[0]] = pair[1];
+				wordsList[pair.at(0)] = pair.at(1);
 			}
 			defList.close();
 		}
@@ -117,10 +117,10 @@ WordFix::WordFix()
 		QStringList list = data.split("\t\t");
 		for (int i = 0; i < list.count(); i++)
 		{
-			if (!list[i].isEmpty())
+			if (!list.at(i).isEmpty())
 			{
-				QStringList sp = list[i].split('\t');
-				wordsList[sp[0]] = sp[1];
+				QStringList sp = list.at(i).split('\t');
+				wordsList[sp.at(0)] = sp.at(1);
 			}
 		}
 	}
@@ -207,27 +207,18 @@ void WordFix::doReplace(QString &text)
 	kdebugf();
 
 	// Make text as " "+text+" ", to match words at the start and end of text.
-	QString txt = text;
-	txt = ' ' + txt + ' ';
+	text = ' ' + text + ' ';
 
 	// Replacing
-	QString key;
-	for (int i = 0; i < wordsList.keys().count(); i++)
-	{
-		key = wordsList.keys()[i];
-		txt.replace(
-				QRegExp(
-						"[\\s\\!\\.\\,\\(\\)\\[\\]\\;\\:\\\"\\']{1}"
-						+key
-						+"[\\s\\!\\.\\,\\(\\)\\[\\]\\;\\:\\\"\\']{1}"
-					),
-				' ' + wordsList[key] + ' '
-			);
-	}
+	for (QMap<QString, QString>::const_iterator i = wordsList.constBegin(); i != wordsList.constEnd(); ++i)
+		text.replace(
+				QRegExp("[\\s\\!\\.\\,\\(\\)\\[\\]\\;\\:\\\"\\']{1}"
+						+ i.key()
+						+ "[\\s\\!\\.\\,\\(\\)\\[\\]\\;\\:\\\"\\']{1}"),
+				' ' + i.value() + ' ');
 
 	// Cutting off " " from start and end.
-	txt = txt.mid(1, txt.length()-2);
-	text = txt;
+	text = text.mid(1, text.length()-2);
 	kdebugf2();
 }
 
@@ -250,7 +241,7 @@ void WordFix::wordSelected()
 		deleteButton->setEnabled(true);
 	}
 
-	item = items[0];
+	item = items.at(0);
 	wordEdit->setText(item->text(0));
 	valueEdit->setText(item->text(1));
 
@@ -335,7 +326,7 @@ void WordFix::moveToNewValue()
 	// sprawdz czy podane slowo znajduje sie na liscie i jesli tak to umozliw edycje
 	QList<QTreeWidgetItem *> items = list->findItems(wordEdit->text(), 0, Qt::MatchExactly);
 	if (!items.isEmpty()) {
-		QTreeWidgetItem *item = items[0];
+		QTreeWidgetItem *item = items.at(0);
 		list->setCurrentItem(item);
 		valueEdit->setText(item->text(1));
 		changeButton->setEnabled(true);
@@ -410,15 +401,13 @@ void WordFix::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfig
 	list->setColumnWidth(0, 250);
 	list->setColumnWidth(1, 246 - list->verticalScrollBar()->width());
 
-	QTreeWidgetItem* item;
 	QList<QTreeWidgetItem *> items;
 
-	for (int i = 0; i < wordsList.keys().count(); i++)
+	for (QMap<QString, QString>::const_iterator i = wordsList.constBegin(); i != wordsList.constEnd(); ++i)
 	{
-		QString wordStr = wordsList.keys()[i];
-		item = new QTreeWidgetItem( list );
-		item->setText( 0, wordStr );
-		item->setText( 1, wordsList[wordStr]);
+		QTreeWidgetItem *item = new QTreeWidgetItem(list);
+		item->setText(0, i.key());
+		item->setText(1, i.value());
 		items.append(item);
 	}
 	list->insertTopLevelItems(0, items);
@@ -460,11 +449,9 @@ void WordFix::saveList()
 	kdebugf();
 
 	QStringList list;
-	for (int i = 0; i < wordsList.keys().count(); i++)
-	{
-		QString word = wordsList.keys()[i];
-		list.append(word + '\t' + wordsList[word]);
-	}
+	for (QMap<QString, QString>::const_iterator i = wordsList.constBegin(); i != wordsList.constEnd(); ++i)
+		list.append(i.key() + '\t' + i.value());
+
 	config_file.writeEntry("word_fix", "WordFix_list", list.join("\t\t"));
 
 	kdebugf2();

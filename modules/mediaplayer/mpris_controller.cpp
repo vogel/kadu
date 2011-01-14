@@ -20,8 +20,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-/* 
- * MPRIS standard implementation (used in Amarok2, Audacious, BMPx, 
+/*
+ * MPRIS standard implementation (used in Amarok2, Audacious, BMPx,
  * Dragon Player, VLC, XMMS2
  *
  * See http://mpris.org/ for more details about the standard
@@ -113,7 +113,7 @@ MPRISController::~MPRISController()
 			SLOT(trackChanged(QVariantMap)));
 }
 
-void MPRISController::statusChanged(PlayerStatus status)
+void MPRISController::statusChanged(const PlayerStatus &status)
 {
 	if (!active_)
 		active_ = true;
@@ -122,7 +122,7 @@ void MPRISController::statusChanged(PlayerStatus status)
 	mediaplayer->statusChanged();
 };
 
-void MPRISController::trackChanged(QVariantMap map)
+void MPRISController::trackChanged(const QVariantMap &map)
 {
 	active_ = true;
 	QString title = map.value("title").toString();

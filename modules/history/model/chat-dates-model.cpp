@@ -77,7 +77,7 @@ QString ChatDatesModel::fetchTitle(const QDate &date) const
 	if (messages.size() == 0)
 		return QString();
 
-	Message firstMessage = messages.first();
+	Message firstMessage = messages.at(0);
 	QTextDocument document;
 	document.setHtml(firstMessage.content());
 	FormattedMessage formatted = FormattedMessage::parse(&document);

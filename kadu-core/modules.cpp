@@ -153,10 +153,10 @@ ModulesManager::ModulesManager() : QObject(),
 
 	registerStaticModules();
 
-	foreach(const QString &i, staticModules())
+	foreach (const QString &i, staticModules())
 		if (i.right(9) == "_protocol")
 			    protocolModulesList.append(i);
-	foreach(const QString &i, installed_list)
+	foreach (const QString &i, installed_list)
 		if (i.right(9) == "_protocol")
 			    protocolModulesList.append(i);
 
@@ -221,9 +221,9 @@ void ModulesManager::loadAllModules()
 				else
 					load_module = false;
 			}
-			if (load_module)
-				if (!activateModule(i))
-					saveList = true;
+
+			if (load_module && !activateModule(i))
+				saveList = true;
 		}
 	}
 
@@ -294,7 +294,7 @@ bool ModulesManager::satisfyModuleDependencies(const ModuleInfo &module_info)
 void ModulesManager::incDependenciesUsageCount(const ModuleInfo &module_info)
 {
 	kdebugmf(KDEBUG_FUNCTION_START, "%s\n", qPrintable(module_info.description));
-	foreach(const QString &it, module_info.depends)
+	foreach (const QString &it, module_info.depends)
 	{
 		kdebugm(KDEBUG_INFO, "incUsage: %s\n", qPrintable(it));
 		moduleIncUsageCount(it);
@@ -302,8 +302,7 @@ void ModulesManager::incDependenciesUsageCount(const ModuleInfo &module_info)
 	kdebugf2();
 }
 
-void ModulesManager::registerStaticModule(const QString& module_name,
-	InitModuleFunc* init, CloseModuleFunc* close)
+void ModulesManager::registerStaticModule(const QString &module_name, InitModuleFunc *init, CloseModuleFunc *close)
 {
 	StaticModule m;
 	m.init = init;
@@ -314,18 +313,18 @@ void ModulesManager::registerStaticModule(const QString& module_name,
 QStringList ModulesManager::staticModules() const
 {
 	QStringList static_modules;
-	foreach(const QString &i, StaticModules.keys())
+	foreach (const QString &i, StaticModules.keys())
 		static_modules.append(i);
 	return static_modules;
 }
 
 QStringList ModulesManager::installedModules() const
 {
-	QDir dir(libPath("kadu/modules"), SO_PREFIX"*." SO_EXT);
+	QDir dir(libPath("kadu/modules"), SO_PREFIX "*." SO_EXT);
 	dir.setFilter(QDir::Files);
 	QStringList installed;
 	QStringList entries = dir.entryList();
-	foreach(const QString &entry, entries)
+	foreach (const QString &entry, entries)
 		installed.append(entry.mid(SO_PREFIX_LEN, entry.length() - SO_EXT_LEN - SO_PREFIX_LEN - 1));
 	return installed;
 }
@@ -333,9 +332,9 @@ QStringList ModulesManager::installedModules() const
 QStringList ModulesManager::loadedModules() const
 {
 	QStringList loaded;
-	foreach(const QString &i, Modules.keys())
-		if (Modules[i].lib)
-			loaded.append(i);
+	for (QMap<QString, Module>::const_iterator i = Modules.constBegin(); i != Modules.constEnd(); ++i)
+		if (i.value().lib)
+			loaded.append(i.key());
 	return loaded;
 }
 

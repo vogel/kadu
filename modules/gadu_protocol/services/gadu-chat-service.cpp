@@ -127,11 +127,11 @@ bool GaduChatService::sendMessage(Chat chat, FormattedMessage &message, bool sil
 	{
 		if (formatsSize)
 			messageId = gg_send_message_richtext(
-					Protocol->gaduSession(), GG_CLASS_CHAT, Protocol->uin(contacts.first()), (unsigned char *)data.data(),
+					Protocol->gaduSession(), GG_CLASS_CHAT, Protocol->uin(contacts.at(0)), (unsigned char *)data.data(),
 					formats, formatsSize);
 		else
 			messageId = gg_send_message(
-					Protocol->gaduSession(), GG_CLASS_CHAT, Protocol->uin(contacts.first()), (unsigned char *)data.data());
+					Protocol->gaduSession(), GG_CLASS_CHAT, Protocol->uin(contacts.at(0)), (unsigned char *)data.data());
 	}
 
 	delete[] formats;

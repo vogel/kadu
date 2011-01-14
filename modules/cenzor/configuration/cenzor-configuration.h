@@ -46,7 +46,7 @@ public:
 	void saveConfiguration();
 
 	bool enabled() { return Enabled; }
-	QString admonition() { return Admonition; }
+	const QString & admonition() { return Admonition; }
 	const QList<QRegExp> & swearList() { return SwearList; }
 	const QList<QRegExp> & exclusionList() { return ExclusionList; }
 

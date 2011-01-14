@@ -155,7 +155,7 @@ NotificationManager::~NotificationManager()
 	while (!Notifiers.isEmpty())
 	{
 		kdebugm(KDEBUG_WARNING, "WARNING: not unregistered notifiers found! (%u)\n", Notifiers.size());
-		unregisterNotifier(Notifiers[0]);
+		unregisterNotifier(Notifiers.at(0));
 	}
 
 #if defined(Q_WS_X11) && !defined(Q_WS_MAEMO_5)

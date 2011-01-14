@@ -95,7 +95,7 @@ void PlainConfigFile::read()
 				name = name.trimmed();
 
 				if (line.contains('=') && !name.isEmpty() && !value.isEmpty())
-					activeGroup[name]=value;
+					activeGroup[name] = value;
 			}
 		}
 		groups[activeGroupName] = activeGroup;
@@ -124,14 +124,14 @@ void PlainConfigFile::write() const
 		kdebugm(KDEBUG_INFO, "file opened '%s'\n", qPrintable(file.fileName()));
 		QTextStream stream(&file);
 		stream.setCodec(codec_latin2);
-		foreach (const QString &key, groups.keys())
+		for (QMap<QString, QMap<QString, QString> >::const_iterator i = groups.constBegin(); i != groups.constEnd(); ++i)
 		{
 //			kdebugm(KDEBUG_DUMP, ">> %s\n", (i.key()));
-			out.append(format1.arg(key));
-			foreach (const QString &dataKey, groups[key].keys())
+			out.append(format1.arg(i.key()));
+			for (QMap<QString, QString>::const_iterator j = i.value().constBegin(); j != i.value().constEnd(); ++j)
 			{
-				QString q = groups[key][dataKey];
-				out.append(format2.arg(dataKey).arg(q.replace('\n', "\\n")));
+				QString q = j.value();
+				out.append(format2.arg(j.key()).arg(q.replace('\n', "\\n")));
 //				kdebugm(KDEBUG_DUMP, ">>>>> %s %s\n", qPrintable(key()), qPrintable(q));
 			}
 			out.append("\n");
@@ -345,8 +345,12 @@ QSize PlainConfigFile::readSizeEntry(const QString &group,const QString &name, c
 	stringlist = string.split(',', QString::SkipEmptyParts);
 	if (stringlist.count() != 2)
 		return def ? *def : size;
-	w = stringlist[0].toInt(&ok); if (!ok) return def ? *def : size;
-	h = stringlist[1].toInt(&ok); if (!ok) return def ? *def : size;
+	w = stringlist.at(0).toInt(&ok);
+	if (!ok)
+		return def ? *def : size;
+	h = stringlist.at(1).toInt(&ok);
+	if (!ok)
+		return def ? *def : size;
 	size.setWidth(w);
 	size.setHeight(h);
 	return size;
@@ -368,9 +372,15 @@ QColor PlainConfigFile::readColorEntry(const QString &group,const QString &name,
 		QStringList stringlist = str.split(',', QString::SkipEmptyParts);
 		if (stringlist.count() != 3)
 			return def ? *def : col;
-		int r = stringlist[0].toInt(&ok); if (!ok) return def ? *def : col;
-		int g = stringlist[1].toInt(&ok); if (!ok) return def ? *def : col;
-		int b = stringlist[2].toInt(&ok); if (!ok) return def ? *def : col;
+		int r = stringlist.at(0).toInt(&ok);
+		if (!ok)
+			return def ? *def : col;
+		int g = stringlist.at(1).toInt(&ok);
+		if (!ok)
+			return def ? *def : col;
+		int b = stringlist.at(2).toInt(&ok);
+		if (!ok)
+			return def ? *def : col;
 		col.setRgb(r, g, b);
 		return col;
 	}
@@ -389,8 +399,8 @@ QFont PlainConfigFile::readFontEntry(const QString &group,const QString &name, c
 	stringlist = string.split(',', QString::SkipEmptyParts);
 	if (stringlist.count() < 2)
 		return def ? *def : QApplication::font();
-	font.setFamily(stringlist[0]);
-	font.setPointSize(stringlist[1].toInt(&ok));
+	font.setFamily(stringlist.at(0));
+	font.setPointSize(stringlist.at(1).toInt(&ok));
 	if (!ok)
 		return def ? *def : QApplication::font();
 	return font;
@@ -418,8 +428,12 @@ QPoint PlainConfigFile::readPointEntry(const QString &group,const QString &name,
 	stringlist = string.split(',', QString::SkipEmptyParts);
 	if (stringlist.count() != 2)
 		return def ? *def : point;
-	x = stringlist[0].toInt(&ok); if (!ok) return def ? *def : point;
-	y = stringlist[1].toInt(&ok); if (!ok) return def ? *def : point;
+	x = stringlist.at(0).toInt(&ok);
+	if (!ok)
+		return def ? *def : point;
+	y = stringlist.at(1).toInt(&ok);
+	if (!ok)
+		return def ? *def : point;
 	point.setX(x);
 	point.setY(y);
 	return point;
@@ -665,10 +679,18 @@ QRect ConfigFile::readRectEntry(const QString &group,const QString &name, const 
 	stringlist = string.split(',', QString::SkipEmptyParts);
 	if (stringlist.count() != 4)
 		return def ? *def : rect;
-	l = stringlist[0].toInt(&ok); if (!ok) return def ? *def : rect;
-	t = stringlist[1].toInt(&ok); if (!ok) return def ? *def : rect;
-	w = stringlist[2].toInt(&ok); if (!ok) return def ? *def : rect;
-	h = stringlist[3].toInt(&ok); if (!ok) return def ? *def : rect;
+	l = stringlist.at(0).toInt(&ok);
+	if (!ok)
+		return def ? *def : rect;
+	t = stringlist.at(1).toInt(&ok);
+	if (!ok)
+		return def ? *def : rect;
+	w = stringlist.at(2).toInt(&ok);
+	if (!ok)
+		return def ? *def : rect;
+	h = stringlist.at(3).toInt(&ok);
+	if (!ok)
+		return def ? *def : rect;
 	rect.setRect(l, t, w, h);
 	return rect;
 }
@@ -686,8 +708,12 @@ QSize ConfigFile::readSizeEntry(const QString &group,const QString &name, const 
 	stringlist = string.split(',', QString::SkipEmptyParts);
 	if (stringlist.count() != 2)
 		return def ? *def : size;
-	w = stringlist[0].toInt(&ok); if (!ok) return def ? *def : size;
-	h = stringlist[1].toInt(&ok); if (!ok) return def ? *def : size;
+	w = stringlist.at(0).toInt(&ok);
+	if (!ok)
+		return def ? *def : size;
+	h = stringlist.at(1).toInt(&ok);
+	if (!ok)
+		return def ? *def : size;
 	size.setWidth(w);
 	size.setHeight(h);
 	return size;
@@ -704,14 +730,21 @@ QColor ConfigFile::readColorEntry(const QString &group,const QString &name, cons
 		if (!str.contains(','))
 			return QColor(str);
 
+		// TODO 0.6.6: wtf is this comment?
 		//stary zapis kolor�w, w 0.5.0 mo�na b�dzie wywali�
 		bool ok;
 		QStringList stringlist = str.split(',', QString::SkipEmptyParts);
 		if (stringlist.count() != 3)
 			return def ? *def : col;
-		int r = stringlist[0].toInt(&ok); if (!ok) return def ? *def : col;
-		int g = stringlist[1].toInt(&ok); if (!ok) return def ? *def : col;
-		int b = stringlist[2].toInt(&ok); if (!ok) return def ? *def : col;
+		int r = stringlist.at(0).toInt(&ok);
+		if (!ok)
+			return def ? *def : col;
+		int g = stringlist.at(1).toInt(&ok);
+		if (!ok)
+			return def ? *def : col;
+		int b = stringlist.at(2).toInt(&ok);
+		if (!ok)
+			return def ? *def : col;
 		col.setRgb(r, g, b);
 		return col;
 	}
@@ -742,8 +775,12 @@ QPoint ConfigFile::readPointEntry(const QString &group,const QString &name, cons
 	stringlist = string.split(',', QString::SkipEmptyParts);
 	if (stringlist.count() != 2)
 		return def ? *def : point;
-	x = stringlist[0].toInt(&ok); if (!ok) return def ? *def : point;
-	y = stringlist[1].toInt(&ok); if (!ok) return def ? *def : point;
+	x = stringlist.at(0).toInt(&ok);
+	if (!ok)
+		return def ? *def : point;
+	y = stringlist.at(1).toInt(&ok);
+	if (!ok)
+		return def ? *def : point;
 	point.setX(x);
 	point.setY(y);
 	return point;

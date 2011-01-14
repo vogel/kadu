@@ -75,7 +75,7 @@ QVariant DescriptionModel::data(const QModelIndex &index, int role) const
 	if (index.row() < 0 || index.row() >= Manager->content().count())
 		return QVariant();
 
-	return Manager->content()[index.row()];
+	return Manager->content().at(index.row());
 }
 
 void DescriptionModel::descriptionAboutToBeAdded(const QString &description)

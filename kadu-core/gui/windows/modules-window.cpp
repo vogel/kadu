@@ -170,7 +170,7 @@ ModulesWindow::~ModulesWindow()
 QTreeWidgetItem * ModulesWindow::getSelected()
 {
 	if (lv_modules->selectedItems().count())
-		return lv_modules->selectedItems()[0];
+		return lv_modules->selectedItems().at(0);
 	else
 		return 0;
 }

@@ -17,6 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "chat/chat.h"
 #include "chat/type/chat-type-manager.h"
 #include "contacts/contact-set.h"
 
@@ -69,7 +70,7 @@ ChatType * ChatDetailsAggregate::type() const
  */
 ContactSet ChatDetailsAggregate::contacts() const
 {
-	return Chats.isEmpty() ? ContactSet() : Chats[0].contacts();
+	return Chats.isEmpty() ? ContactSet() : Chats.at(0).contacts();
 }
 
 /**
@@ -81,7 +82,7 @@ ContactSet ChatDetailsAggregate::contacts() const
  */
 QString ChatDetailsAggregate::name() const
 {
-	return Chats.isEmpty() ? QString() : Chats[0].name();
+	return Chats.isEmpty() ? QString() : Chats.at(0).name();
 }
 
 /**

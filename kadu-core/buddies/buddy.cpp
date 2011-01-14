@@ -218,7 +218,7 @@ QString Buddy::display() const
 	{
 		if (!data()->contacts().isEmpty())
 		{
-			Contact contact = data()->contacts().first();
+			Contact contact = data()->contacts().at(0);
 			if (contact)
 			{
 				Account account = contact.contactAccount();
@@ -250,7 +250,7 @@ Buddy Buddy::dummy()
 	else if (ProtocolsManager::instance()->protocolFactories().count())
 	{
 		account = Account::create();
-		ProtocolFactory *firstProto = ProtocolsManager::instance()->protocolFactories().first() ;
+		ProtocolFactory *firstProto = ProtocolsManager::instance()->protocolFactories().at(0) ;
 		account.setProtocolName(firstProto->name());
 		account.details()->setState(StorableObject::StateNew);
 	}

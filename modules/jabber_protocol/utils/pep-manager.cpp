@@ -19,7 +19,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #include "pep-manager.h"
 
 #include <QtDebug>
@@ -38,24 +38,24 @@ class PEPGetTask : public XMPP::Task
 public:
 	PEPGetTask(Task* parent, const QString& jid, const QString& node, const QString& itemID) : Task(parent), jid_(jid), node_(node) {
 		iq_ = createIQ(doc(), "get", jid_, id());
-		
+
 		QDomElement pubsub = doc()->createElement("pubsub");
 		pubsub.setAttribute("xmlns", "http://jabber.org/protocol/pubsub");
 		iq_.appendChild(pubsub);
-		
+
 		QDomElement items = doc()->createElement("items");
 		items.setAttribute("node", node);
 		pubsub.appendChild(items);
-		
+
 		QDomElement item = doc()->createElement("item");
 		item.setAttribute("id", itemID);
 		items.appendChild(item);
 	}
-	
+
 	void onGo() {
 		send(iq_);
 	}
-	
+
 	bool take(const QDomElement &x) {
 		if(!iqVerify(x, jid_, id()))
 			return false;
@@ -88,7 +88,7 @@ public:
 			return true;
 		}
 	}
-		
+
 	const QList<XMPP::PubSubItem>& items() const {
 		return items_;
 	}
@@ -96,7 +96,7 @@ public:
 	const QString& jid() const {
 		return jid_;
 	}
-	
+
 	const QString& node() const {
 		return node_;
 	}
@@ -113,15 +113,15 @@ class PEPPublishTask : public XMPP::Task
 public:
 	PEPPublishTask(Task* parent, const QString& node, const XMPP::PubSubItem& it, PEPManager::Access access) : XMPP::Task(parent), node_(node), item_(it) {
 		iq_ = createIQ(doc(), "set", QString(), id());
-		
+
 		QDomElement pubsub = doc()->createElement("pubsub");
 		pubsub.setAttribute("xmlns", "http://jabber.org/protocol/pubsub");
 		iq_.appendChild(pubsub);
-		
+
 		QDomElement publish = doc()->createElement("publish");
 		publish.setAttribute("node", node);
 		pubsub.appendChild(publish);
-		
+
 		QDomElement item = doc()->createElement("item");
 		item.setAttribute("id", it.id());
 		publish.appendChild(item);
@@ -138,7 +138,7 @@ public:
 			conf_x_field_type_value.appendChild(doc()->createTextNode("http://jabber.org/protocol/pubsub#node_config"));
 			conf_x_field_type.appendChild(conf_x_field_type_value);
 			conf_x.appendChild(conf_x_field_type);
-			
+
 			// Access model
 			QDomElement access_model = doc()->createElement("field");
 			access_model.setAttribute("var","pubsub#access_model");
@@ -151,15 +151,15 @@ public:
 				access_model_value.appendChild(doc()->createTextNode("presence"));
 			}
 			conf_x.appendChild(access_model);
-			
-			
+
+
 			conf.appendChild(conf_x);
 			pubsub.appendChild(conf);
 		}
-		
+
 		item.appendChild(it.payload());
 	}
-	
+
 	bool take(const QDomElement& x) {
 		if(!iqVerify(x, QString(), id()))
 			return false;
@@ -172,7 +172,7 @@ public:
 		}
 		return true;
 	}
-	
+
 	void onGo() {
 		send(iq_);
 	}
@@ -199,21 +199,21 @@ class PEPRetractTask : public XMPP::Task
 public:
 	PEPRetractTask(Task* parent, const QString& node, const QString& itemId) : XMPP::Task(parent), node_(node), itemId_(itemId) {
 		iq_ = createIQ(doc(), "set", QString(), id());
-		
+
 		QDomElement pubsub = doc()->createElement("pubsub");
 		pubsub.setAttribute("xmlns", "http://jabber.org/protocol/pubsub");
 		iq_.appendChild(pubsub);
-		
+
 		QDomElement retract = doc()->createElement("retract");
 		retract.setAttribute("node", node);
 		retract.setAttribute("notify", "1");
 		pubsub.appendChild(retract);
-		
+
 		QDomElement item = doc()->createElement("item");
 		item.setAttribute("id", itemId);
 		retract.appendChild(item);
 	}
-	
+
 	bool take(const QDomElement& x) {
 		if(!iqVerify(x, QString(), id()))
 			return false;
@@ -226,7 +226,7 @@ public:
 		}
 		return true;
 	}
-	
+
 	void onGo() {
 		send(iq_);
 	}
@@ -251,7 +251,7 @@ void PEPManager::publish(const QString& node, const XMPP::PubSubItem& it, Access
 {
 	if (!serverInfo_->hasPEP())
 		return;
-	
+
 	PEPPublishTask* tp = new PEPPublishTask(client_->rootTask(),node,it,access);
 	connect(tp, SIGNAL(finished()), SLOT(publishFinished()));
 	tp->go(true);
@@ -262,7 +262,7 @@ void PEPManager::retract(const QString& node, const QString& id)
 {
 	if (!serverInfo_->hasPEP())
 		return;
-	
+
 	PEPRetractTask* tp = new PEPRetractTask(client_->rootTask(),node,id);
 	// FIXME: add notification of success/failure
 	tp->go(true);
@@ -281,7 +281,7 @@ void PEPManager::publishFinished()
 	}
 }
 
-void PEPManager::get(const XMPP::Jid& jid, const QString& node, const QString& id) 
+void PEPManager::get(const XMPP::Jid& jid, const QString& node, const QString& id)
 {
 	PEPGetTask* g = new PEPGetTask(client_->rootTask(),jid.bare(),node,id);
 	connect(g, SIGNAL(finished()), SLOT(getFinished()));
@@ -302,10 +302,10 @@ void PEPManager::getFinished()
 {
 	PEPGetTask* task = (PEPGetTask*) sender();
 	if (task->success()) {
-		// Act as if the item was published. This is a convenience 
+		// Act as if the item was published. This is a convenience
 		// implementation, probably should be changed later.
 		if (!task->items().isEmpty()) {
-			emit itemPublished(task->jid(),task->node(),task->items().first());
+			emit itemPublished(task->jid(),task->node(),task->items().at(0));
 		}
 	}
 	else {

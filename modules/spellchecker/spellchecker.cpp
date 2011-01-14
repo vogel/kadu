@@ -271,13 +271,13 @@ void SpellChecker::chatCreated(ChatWidget *chat)
 void SpellChecker::configForward()
 {
 	if (!AvailableLanguagesList->selectedItems().isEmpty())
-		configForward2(AvailableLanguagesList->selectedItems()[0]);
+		configForward2(AvailableLanguagesList->selectedItems().at(0));
 }
 
 void SpellChecker::configBackward()
 {
 	if (!CheckedLanguagesList->selectedItems().isEmpty())
-		configBackward2(CheckedLanguagesList->selectedItems()[0]);
+		configBackward2(CheckedLanguagesList->selectedItems().at(0));
 }
 
 void SpellChecker::configForward2(QListWidgetItem *item)

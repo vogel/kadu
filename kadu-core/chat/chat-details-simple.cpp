@@ -76,7 +76,7 @@ void ChatDetailsSimple::load()
 			Buddy buddy = BuddyManager::instance()->byUuid(cadUuid);
 			QList<Contact> contactList = buddy.contacts(mainData()->chatAccount());
 			if (!contactList.isEmpty())
-				CurrentContact = contactList[0];
+				CurrentContact = contactList.at(0);
 		}
 	}
 }

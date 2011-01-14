@@ -56,7 +56,7 @@ public:
 
 	virtual int maxDescriptionLength() = 0;
 
-	virtual QString statusNamePrefix() { return QString(""); }
+	virtual QString statusNamePrefix() { return QString(); }
 
 	virtual void setDefaultStatus(const QString &startupStatus, bool offlineToInvisible,
 				      const QString &startupDescription, bool StartupLastDescription) = 0;

@@ -102,9 +102,9 @@ void EmotsWalker::insertString(const QString &str, int num)
 
 	// it adds string to prefix tree character after character
 	while (pos < len) {
-		child = findChild(node, str[pos]);
+		child = findChild(node, str.at(pos));
 		if (child == NULL)
-			child = insertChild(node, str[pos]);
+			child = insertChild(node, str.at(pos));
 		node = child;
 		++pos;
 	}
@@ -126,7 +126,8 @@ int EmotsWalker::checkEmotOccurrence(const QChar &c)
 	if (amountPositions < positions.size())
 	{
 		lengths[amountPositions] = 0;
-		positions[amountPositions++] = root;
+		positions[amountPositions] = root;
+		++amountPositions;
 	}
 	else
 	{
@@ -136,19 +137,20 @@ int EmotsWalker::checkEmotOccurrence(const QChar &c)
 	}
 
 	for (int i = amountPositions - 1; i >= 0; --i) {
-		next = findChild(positions[i], c);
+		next = findChild(positions.at(i), c);
 		if (next == NULL) {
-			lengths[i] = lengths[--amountPositions];
-			positions[i] = positions[amountPositions];
+			--amountPositions;
+			lengths[i] = lengths.at(amountPositions);
+			positions[i] = positions.at(amountPositions);
 		}
 		else {
 			positions[i] = next;
 			++lengths[i];
 			if (result == -1 ||
 				(next -> emotIndex >= 0 &&
-				(next -> emotIndex < result || resultLen < lengths[i])))
+				(next -> emotIndex < result || resultLen < lengths.at(i))))
 			{
-				resultLen = lengths[i];
+				resultLen = lengths.at(i);
 				result = next -> emotIndex;
 			}
 		}

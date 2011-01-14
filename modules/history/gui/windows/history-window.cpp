@@ -523,7 +523,7 @@ void HistoryWindow::dateCurrentChanged(const QModelIndex &current, const QModelI
 			if (buddy && date.isValid())
 				statuses = History::instance()->statuses(buddy, date);
 			if (buddy.contacts().size() > 0)
-				ContentBrowser->setChat(ChatManager::instance()->findChat(ContactSet(buddy.contacts()[0]), true));
+				ContentBrowser->setChat(ChatManager::instance()->findChat(ContactSet(buddy.contacts().at(0)), true));
 			ContentBrowser->appendMessages(statusesToMessages(statuses));
 			break;
 		}

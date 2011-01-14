@@ -142,9 +142,9 @@ bool EmoticonsManager::loadGGEmoticonThemePart(const QString &themeSubDirPath)
 		unsigned int i = 0;
 		bool multi = false;
 		QStringList aliases;
-		if (i < lineLength && line[i] == '*')
+		if (i < lineLength && line.at(i) == '*')
 			++i; // eat '*'
-		if (i < lineLength && line[i] == '(')
+		if (i < lineLength && line.at(i) == '(')
 		{
 			multi = true;
 			++i;
@@ -152,7 +152,7 @@ bool EmoticonsManager::loadGGEmoticonThemePart(const QString &themeSubDirPath)
 		for (;;)
 		{
 			aliases.append(getQuoted(line, i));
-			if (!multi || i >= lineLength || line[i] == ')')
+			if (!multi || i >= lineLength || line.at(i) == ')')
 				break;
 			++i; // eat ','
 		}
@@ -160,7 +160,7 @@ bool EmoticonsManager::loadGGEmoticonThemePart(const QString &themeSubDirPath)
 			++i; // eat ')'
 		++i; // eat ','
 		item.anim = themeSubDirPath + '/' + fixFileName(themeSubDirPath, getQuoted(line, i));
-		if (i < lineLength && line[i] == ',')
+		if (i < lineLength && line.at(i) == ',')
 		{
 			++i; // eat ','
 			item.stat = themeSubDirPath + '/' + fixFileName(themeSubDirPath, getQuoted(line, i));
@@ -176,7 +176,7 @@ bool EmoticonsManager::loadGGEmoticonThemePart(const QString &themeSubDirPath)
 			Aliases.push_back(item);
 		}
 
-		item.alias = aliases[0];
+		item.alias = aliases.at(0);
 		Selector.append(item);
 	}
 	theme_file.close();
@@ -257,24 +257,24 @@ void EmoticonsManager::expandEmoticons(HtmlDocument &doc, EmoticonsStyle style)
 		int lastEmot = -1;
 		// intitialize automata for checking occurrences
 		// of emots in text
-		walker -> initWalking();
+		walker->initWalking();
 		for (unsigned int j = 0, textlength = text.length(); j < textlength; ++j)
 		{
 			// find out if there is some emot occurrence when we
 			// add current character
-			int idx = walker -> checkEmotOccurrence(text[j]);
+			int idx = walker->checkEmotOccurrence(text.at(j));
 			// when some emot from dictionary is ending at current character
 			if (idx >= 0)
 			{
 				// check if there already was some occurrence, whose
 				// beginning is before beginning of currently found one
-				if (lastEmot >= 0 && lastBegin < j - Aliases[idx].alias.length() + 1)
+				if (lastEmot >= 0 && lastBegin < j - Aliases.at(idx).alias.length() + 1)
 				{
 					// if so, then replace that previous occurrence
 					// with html tag
-					QString new_text = emotTemplate.arg(Aliases[lastEmot].escapedAlias, animated ? Aliases[lastEmot].anim : Aliases[lastEmot].stat);
+					QString new_text = emotTemplate.arg(Aliases.at(lastEmot).escapedAlias, animated ? Aliases.at(lastEmot).anim : Aliases.at(lastEmot).stat);
 
-					doc.splitElement(e_i, lastBegin, Aliases[lastEmot].alias.length());
+					doc.splitElement(e_i, lastBegin, Aliases.at(lastEmot).alias.length());
 					doc.setElementValue(e_i, new_text, true);
 					// our analysis will begin directly after
 					// occurrence of previous emot
@@ -285,16 +285,16 @@ void EmoticonsManager::expandEmoticons(HtmlDocument &doc, EmoticonsStyle style)
 				{
 					// this is first occurrence in current text part
 					lastEmot = idx;
-					lastBegin = j - Aliases[lastEmot].alias.length() + 1;
+					lastBegin = j - Aliases.at(lastEmot).alias.length() + 1;
 				}
 			}
 		}
 		// this is the case, when only one emot was found in current text part
 		if (lastEmot >= 0)
 		{
-			QString new_text = emotTemplate.arg(Aliases[lastEmot].escapedAlias, animated ? Aliases[lastEmot].anim : Aliases[lastEmot].stat);
+			QString new_text = emotTemplate.arg(Aliases.at(lastEmot).escapedAlias, animated ? Aliases.at(lastEmot).anim : Aliases.at(lastEmot).stat);
 
-			doc.splitElement(e_i, lastBegin, Aliases[lastEmot].alias.length());
+			doc.splitElement(e_i, lastBegin, Aliases.at(lastEmot).alias.length());
 			doc.setElementValue(e_i, new_text, true);
 		}
 	}
@@ -310,7 +310,7 @@ int EmoticonsManager::selectorCount() const
 QString EmoticonsManager::selectorString(int emot_num) const
 {
 	if ((emot_num >= 0) && (emot_num < Selector.count()))
-		return Selector[emot_num].alias;
+		return Selector.at(emot_num).alias;
 	else
 		return QString();
 }
@@ -318,7 +318,7 @@ QString EmoticonsManager::selectorString(int emot_num) const
 QString EmoticonsManager::selectorAnimPath(int emot_num) const
 {
 	if ((emot_num >= 0) && (emot_num < Selector.count()))
-		return Selector[emot_num].anim;
+		return Selector.at(emot_num).anim;
 	else
 		return QString();
 }
@@ -326,7 +326,7 @@ QString EmoticonsManager::selectorAnimPath(int emot_num) const
 QString EmoticonsManager::selectorStaticPath(int emot_num) const
 {
 	if ((emot_num >= 0) && ((emot_num) < Selector.count()))
-		return Selector[emot_num].stat;
+		return Selector.at(emot_num).stat;
 	else
 		return QString();
 }

@@ -27,7 +27,7 @@
 
 #undef PROPERTY
 #define PROPERTY(type, name, capitalized_name) \
-	type name() const { return capitalized_name; } \
+	const type & name() const { return capitalized_name; } \
 	void set##capitalized_name(const type &name) { capitalized_name = name; }
 
 class AdiumStyle

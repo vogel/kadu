@@ -308,11 +308,11 @@ void YourAccounts::updateCurrentWidget()
 	if (1 != selection.size())
 		return;
 
-	QAction *action = selection[0].data(ActionRole).value<QAction *>();
+	QAction *action = selection.at(0).data(ActionRole).value<QAction *>();
 	if (!action)
 	{
 		MainStack->setCurrentWidget(EditStack);
-		Account account = selection[0].data(AccountRole).value<Account>();
+		Account account = selection.at(0).data(AccountRole).value<Account>();
 		if (account)
 		{
 			EditStack->setCurrentWidget(getAccountEditWidget(account));
@@ -452,11 +452,12 @@ void YourAccounts::accountSelectionChanged(const QItemSelection &selected, const
 
 void YourAccounts::accountUnregistered(Account account)
 {
-	if (EditWidgets.contains(account))
+	QMap<Account, AccountEditWidget *>::iterator i = EditWidgets.find(account);
+	if (i != EditWidgets.end())
 	{
-		EditStack->removeWidget(EditWidgets[account]);
-		EditWidgets[account]->deleteLater();
-		EditWidgets.remove(account);
+		EditStack->removeWidget(i.value());
+		i.value()->deleteLater();
+		EditWidgets.erase(i);
 	}
 }
 

@@ -83,7 +83,7 @@ void AccountShared::load()
 
 	Identity identity = IdentityManager::instance()->byUuid(loadValue<QString>("Identity"));
 	if (identity.isNull() && !IdentityManager::instance()->items().isEmpty())
-		identity = IdentityManager::instance()->items()[0];
+		identity = IdentityManager::instance()->items().at(0);
 
 	setAccountIdentity(identity);
 

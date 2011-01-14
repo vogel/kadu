@@ -131,7 +131,7 @@ void FilterWidget::filterTextChanged(const QString &s)
 		if (!selection.isEmpty())
 		{
 			qSort(selection);
-			View->scrollTo(selection.first());
+			View->scrollTo(selection.at(0));
 		}
 		// clearFocus() is needed to ensure that focus on View wiil be restored
 		// even if this function had been called at time KaduWindow was not active

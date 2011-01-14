@@ -251,7 +251,7 @@ Chat BuddiesListView::currentChat() const
 	QModelIndexList selectionList = selectedIndexes();
 	if (selectionList.count() == 1)
 	{
-		Chat chat = chatByPendingMessages(selectionList[0]);
+		Chat chat = chatByPendingMessages(selectionList.at(0));
 		if (chat)
 			return chat;
 	}

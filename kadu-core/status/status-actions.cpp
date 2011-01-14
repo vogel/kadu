@@ -55,7 +55,7 @@ void StatusActions::createActions()
 	if (statusTypes.isEmpty())
 		return;
 
-	StatusType *statusType = statusTypes.first();
+	StatusType *statusType = statusTypes.at(0);
 	if (0 == statusType)
 		return;
 

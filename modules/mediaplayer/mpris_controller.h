@@ -37,14 +37,15 @@ public:
 	explicit MPRISController(const QString &service, QObject *parent = 0);
 	virtual ~MPRISController();
 
-	PlayerStatus currentStatus() { return currentStatus_; };
-	TrackInfo    currentTrack()  { return currentTrack_;  };
-	bool         active()        { return active_;        };
-	void         getStatus();
+	const PlayerStatus & currentStatus() { return currentStatus_; };
+	const TrackInfo & currentTrack() { return currentTrack_;  };
+	bool active() { return active_; };
+	void getStatus();
 
 public slots:
-	void statusChanged(PlayerStatus status);
-	void trackChanged(QVariantMap track);
+	void statusChanged(const PlayerStatus &status);
+	void trackChanged(const QVariantMap &map);
+
 };
 
 #endif

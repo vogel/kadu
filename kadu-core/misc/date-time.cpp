@@ -54,7 +54,7 @@ QString printDateTime(const QDateTime &datetime)
 			else if (delta < 7) // less than week ago
 			{
 				ret.prepend(datetime.toString(qApp->translate("@default", "dddd at ")));
-				ret[0] = ret[0].toUpper(); // looks ugly lowercase ;)
+				ret[0] = ret.at(0).toUpper(); // looks ugly lowercase ;)
 			}
 			else if ((delta > 7) && (delta < 14))
 			{

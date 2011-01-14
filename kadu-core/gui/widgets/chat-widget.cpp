@@ -576,7 +576,7 @@ void ChatWidget::kaduRestoreGeometry()
 		return;
 
 	QList<int> vertSizes = cgd->widgetVerticalSizes();
-	if (vertSizes.count() != 2 || vertSizes[0] == 0 || vertSizes[1] == 0)
+	if (vertSizes.count() != 2 || vertSizes.at(0) == 0 || vertSizes.at(1) == 0)
 	{
 		int h = height() / 3;
 		vertSizes.clear();

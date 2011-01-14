@@ -143,7 +143,7 @@ void Weather::ShowContactWeather()
 	UserBox *userBox = kadu->userbox();
 	if (userBox != 0)
 	{
-		UserListElement user = userBox->selectedUsers().first();
+		UserListElement user = userBox->selectedUsers().at(0);
 
 		CitySearchResult result;
 		if (result.readUserWeatherData(user))

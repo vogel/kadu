@@ -63,7 +63,7 @@ ContactSet ContactSetConfigurationHelper::loadFromConfiguration(XmlConfigFile *c
 			{
 				QList<Contact> contactList = buddy.contacts(fromAccount);
 				if (!contactList.isEmpty())
-					contact = contactList[0];
+					contact = contactList.at(0);
 			}
 		}
 

@@ -106,7 +106,7 @@ void HtmlDocument::parseHtml(const QString &html)
 	int len = html.length();
 	for(unsigned int i = 0, htmllength = html.length(); i < htmllength; ++i)
 	{
-		const QChar &ch = html[i];
+		const QChar ch = html.at(i);
 		switch (ch.toAscii())
 		{
 			case '<':

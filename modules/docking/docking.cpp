@@ -362,9 +362,9 @@ void DockingManager::updateContextMenu()
 
 	if (statusContainersCount == 1)
 	{
-		new StatusMenu(StatusContainerManager::instance()->statusContainers()[0], DockMenu, true);
+		new StatusMenu(StatusContainerManager::instance()->statusContainers().at(0), DockMenu, true);
 #ifdef Q_OS_MAC
-		new StatusMenu(StatusContainerManager::instance()->statusContainers()[0], MacDockMenu, true);
+		new StatusMenu(StatusContainerManager::instance()->statusContainers().at(0), MacDockMenu, true);
 #endif
 	}
 	else

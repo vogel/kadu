@@ -35,7 +35,7 @@ EnterCityDialog::EnterCityDialog(UserListElement user, const QString &cityName)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	setCaption(tr("City search"));
-	
+
 	QWidget *ec = new QWidget(this);
 	QHBoxLayout *ecLayout = new QHBoxLayout(ec);
 	ecLayout->setSpacing( 5 );
@@ -50,13 +50,13 @@ EnterCityDialog::EnterCityDialog(UserListElement user, const QString &cityName)
 	ecLayout->addWidget(cityEdit_);
 	QPushButton *findButton = new QPushButton(icons_manager->loadIcon("LookupUserInfo"),  tr("Find"), this);
 	findButton->setDefault(true);
-	
+
 	QVBoxLayout *enterLayout = new QVBoxLayout(this);
 	enterLayout->setSpacing(5);
 	enterLayout->setMargin(5);
 	enterLayout->addWidget(ec, 0);
 	enterLayout->addWidget(findButton, 0, Qt::AlignCenter);
-	
+
 	connect(findButton, SIGNAL(clicked()), this, SLOT(findClicked()));
 }
 
@@ -86,7 +86,7 @@ SearchingCityDialog::SearchingCityDialog(UserListElement user, const QString &ci
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	setCaption(tr("City search"));
-	
+
 	progress_ = new TextProgress(this);
 	progress_->setTextFormat(Qt::PlainText);
 	progress_->setAlignment(Qt::AlignCenter | Qt::SingleLine);
@@ -101,7 +101,7 @@ SearchingCityDialog::SearchingCityDialog(UserListElement user, const QString &ci
 	searchLayout->setMargin(5);
 	searchLayout->addWidget(progress_, 0);
 	searchLayout->addWidget(cancelButton, 0, Qt::AlignCenter);
-	
+
 	connect(cancelButton, SIGNAL(clicked()), this, SLOT(cancelClicked()));
 	connect(&searchId_, SIGNAL(nextServerSearch( const QString &, const QString &)),
 			this, SLOT(nextServerSearch( const QString &, const QString &)));
@@ -119,10 +119,10 @@ void SearchingCityDialog::show()
 	{
 		// Activating progressLayout_
 		progress_->setText( tr("Retrieving city from public directory") );
-		
+
 		connect(gadu, SIGNAL(newSearchResults(SearchResults &, int, int)), this,
 				SLOT(userCitySearch(SearchResults &, int, int)));
-		
+
 		SearchRecord searchRecord;
 		searchRecord.reqUin(user_.ID("Gadu"));
 		gadu->searchInPubdir(searchRecord);
@@ -148,10 +148,10 @@ void SearchingCityDialog::userCitySearch(SearchResults &searchResults, int seq, 
 {
 	disconnect(gadu, SIGNAL(newSearchResults(SearchResults &, int, int)), this,
 		SLOT(userCitySearch(SearchResults &, int, int)));
-	
+
 	if (!searchResults.isEmpty())
 	{
-		const SearchResult& result = searchResults.first();
+		const SearchResult& result = searchResults.at(0);
 		if (!result.City.isEmpty())
 			findCity( result.City );
 		else if (!result.FamilyCity.isEmpty())
@@ -181,7 +181,7 @@ void SearchingCityDialog::nextServerSearch(const QString &city, const QString &s
 void SearchingCityDialog::searchFinished()
 {
 	const CITYSEARCHRESULTS &results = searchId_.getResult();
-	
+
 	close();
 	if (results.isEmpty())
 	{
@@ -192,7 +192,7 @@ void SearchingCityDialog::searchFinished()
 	}
 	else if (results.count() == 1)
 	{
-		const CitySearchResult &city = results.first();
+		const CitySearchResult &city = results.at(0);
 		city.writeUserWeatherData(user_);
 		ShowForecastDialog *sfd = new ShowForecastDialog(city);
 		sfd->show();
@@ -209,17 +209,17 @@ void SearchingCityDialog::searchFinished()
 void SearchingCityDialog::cancelClicked()
 {
 	kdebugf();
-	
+
 	disconnect(gadu, SIGNAL(newSearchResults(SearchResults &, int, int)), this,
 		SLOT(userCitySearch(SearchResults &, int, int)));
-	
+
 	searchId_.cancel();
-	
+
 	close();
 	EnterCityDialog *ecd = new EnterCityDialog(user_, cityName_);
 	ecd->show();
 	ecd->setFocus();
-	
+
 	kdebugf2();
 }
 
@@ -235,7 +235,7 @@ SelectCityDialog::SelectCityDialog(UserListElement user, const QString &cityName
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	setCaption(tr("City search"));
-	
+
 	QLabel *cityLabel = new QLabel(tr("Select city:"), this);
 	cityList_ = new QListWidget(this);
 	cityList_->setMinimumWidth(cityList_->fontMetrics().maxWidth() * 20);
@@ -258,13 +258,13 @@ SelectCityDialog::SelectCityDialog(UserListElement user, const QString &cityName
 	while (it != results_.end())
 	{
 		const CitySearchResult &city = *it;
-		
+
 		QString serverName = weather_global->getServerName(city.server_);
 		new QListWidgetItem(city.cityName_ + " - " + serverName, cityList_);
 		++it;
 	}
 	cityList_->setCurrentItem(cityList_->item(0));
-	
+
 	connect(okButton, SIGNAL(clicked()), this, SLOT(okClicked()));
 	connect(newSearchButton, SIGNAL(clicked()), this, SLOT(newSearchClicked()));
 	//connect( cityList_, SIGNAL(doubleClicked(QListWidgetItem*)), this, SLOT(showCity(QListWidgetItem*)) );

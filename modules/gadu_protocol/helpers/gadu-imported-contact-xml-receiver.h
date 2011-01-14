@@ -50,7 +50,7 @@ public:
 	GaduImportedContactXmlReceiver(const QXmlNamePool &xmlNamePool);
 	~GaduImportedContactXmlReceiver();
 
-	QList<Buddy> importedBuddies() { return ImportedBuddies; }
+	const QList<Buddy> & importedBuddies() { return ImportedBuddies; }
 
 };
 

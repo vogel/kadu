@@ -281,7 +281,7 @@ namespace XMPP
 		/**
 		 * Returns the JID associated with this instance.
 		 */
-		XMPP::Jid jid() const { return MyJid; }
+		const XMPP::Jid & jid() const { return MyJid; }
 
 		/**
 		 * Set flag to ignore TLS warnings. If TLS
@@ -464,13 +464,13 @@ namespace XMPP
 		 *
 		 * @param identity DiscoItem::Identity for the client.
 		 */
-		void setDiscoIdentity(DiscoItem::Identity identity) { DiscoIdentity = identity; }
+		void setDiscoIdentity(const DiscoItem::Identity &identity) { DiscoIdentity = identity; }
 
 		/**
 		 * Get the disco Identity information for this client.
 		 * @return the DiscoItem::Identity for this client.
 		 */
-		DiscoItem::Identity discoIdentity() const { return DiscoIdentity; }
+		const DiscoItem::Identity & discoIdentity() const { return DiscoIdentity; }
 
 		/**
 		 * Set timezone information. Default is UTC.

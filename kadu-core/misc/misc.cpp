@@ -85,7 +85,7 @@ QString pwHash(const QString &text)
 {
 	QString newText = text;
 	for (unsigned int i = 0, textLength = text.length(); i < textLength; ++i)
-		newText[i] = QChar(text[i].unicode() ^ i ^ 1);
+		newText[i] = QChar(text.at(i).unicode() ^ i ^ 1);
 	return newText;
 }
 
@@ -148,10 +148,18 @@ QRect stringToRect(const QString &value, const QRect *def)
 	stringlist = value.split(',', QString::SkipEmptyParts);
 	if (stringlist.count() != 4)
 		return def ? *def : rect;
-	l = stringlist[0].toInt(&ok); if (!ok) return def ? *def : rect;
-	t = stringlist[1].toInt(&ok); if (!ok) return def ? *def : rect;
-	w = stringlist[2].toInt(&ok); if (!ok) return def ? *def : rect;
-	h = stringlist[3].toInt(&ok); if (!ok) return def ? *def : rect;
+	l = stringlist.at(0).toInt(&ok);
+	if (!ok)
+		return def ? *def : rect;
+	t = stringlist.at(1).toInt(&ok);
+	if (!ok)
+		return def ? *def : rect;
+	w = stringlist.at(2).toInt(&ok);
+	if (!ok)
+		return def ? *def : rect;
+	h = stringlist.at(3).toInt(&ok);
+	if (!ok)
+		return def ? *def : rect;
 	rect.setRect(l, t, w, h);
 
 	return rect;

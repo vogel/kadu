@@ -436,7 +436,7 @@ QAction * ToolBar::actionNear(const QPoint &pos)
 	{
 		QList<QAction*> list = actionsForRow(r);
 		if (!list.isEmpty())
-			action = list.first();
+			action = list.at(0);
 	}
 	return action;
 }

@@ -275,7 +275,7 @@ void ExecNotify::run(const QStringList &args, const QString &in)
 	kdebugm(KDEBUG_INFO, "stdin: %s\n", qPrintable(in));
 #endif
 	QProcess *p = new QProcess();
-	QString cmd = args.first();
+	QString cmd = args.at(0);
 	QStringList arguments = args;
 	arguments.removeAt(0);
 	connect(p, SIGNAL(finished(int, QProcess::ExitStatus)), p, SLOT(deleteLater()));

@@ -312,7 +312,7 @@ QString BuddyShared::id(Account account)
 	QList<Contact> contactslist;
 	contactslist = contacts(account);
 	if (contactslist.count() > 0)
-		return contactslist[0].id();
+		return contactslist.at(0).id();
 
 	return QString();
 }

@@ -127,7 +127,7 @@ void StatusContainerManager::configurationUpdated()
 void StatusContainerManager::cleanStatusContainers()
 {
 	while (!StatusContainers.isEmpty())
-		unregisterStatusContainer(StatusContainers.first());
+		unregisterStatusContainer(StatusContainers.at(0));
 }
 
 void StatusContainerManager::addAllAccounts()
@@ -196,7 +196,7 @@ void StatusContainerManager::unregisterStatusContainer(StatusContainer *statusCo
 		if (StatusContainers.isEmpty())
 			setDefaultStatusContainer(0);
 		else
-			setDefaultStatusContainer(StatusContainers.first());
+			setDefaultStatusContainer(StatusContainers.at(0));
 	}
 
 	disconnect(statusContainer, SIGNAL(statusChanged()), this, SIGNAL(statusChanged()));

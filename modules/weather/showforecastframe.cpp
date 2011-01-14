@@ -313,7 +313,7 @@ void SearchAndShowForecastFrame::finished()
 		errorMessage_->setText(tr("<b>%1</b> not found.").arg(city_));
 	}
 	else
-		ShowForecastFrameBase::start(results.first());
+		ShowForecastFrameBase::start(results.at(0));
 }
 
 void SearchAndShowForecastFrame::error(QString url)

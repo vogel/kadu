@@ -124,7 +124,7 @@ void GaduContactPersonalInfoWidget::personalInfoAvailable(Buddy buddy)
 	if (buddy.contacts().isEmpty())
 		return;
 
-	Contact contact = buddy.contacts().first();
+	Contact contact = buddy.contacts().at(0);
 
 	if (MyContact.id() != contact.id())
 		return;
