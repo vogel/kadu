@@ -140,6 +140,33 @@ std::pair<int,int> X11_getMousePos( Display *display )
 
 
 
+bool X11_isPointerGrabbed( Display *display )
+{
+	int status = XGrabPointer(
+		display,
+		DefaultRootWindow( display ),
+		True,
+		ButtonReleaseMask | ButtonMotionMask | ButtonPressMask,
+		GrabModeAsync,
+		GrabModeAsync,
+		None,
+		None,
+		1
+	);
+	if( status == AlreadyGrabbed )
+		return true;
+	if( status == GrabSuccess )
+	{
+		_debug( "[GRAB]" );
+		XUngrabPointer( display, CurrentTime );
+		XFlush( display );
+	}
+	return false;
+}
+
+
+
+
 bool X11_isFreeDesktopCompatible( Display *display )
 {
 	if( X11_getDesktopsCount( display, true ) != 1 ) // _NET multiple desktops, FreeDesktop compatible
@@ -824,6 +851,8 @@ void X11_windowSetDecoration( Display *display, Window window, bool set )
 }
 
 
+
+
 bool X11_checkFullScreen( Display *display )
 {
 	_debug( "[A]" );
@@ -843,18 +872,7 @@ bool X11_checkFullScreen( Display *display )
 	_debug( "[wt=%dx%d]", X11_getWindowSize( display, wt ).first, X11_getWindowSize( display, wt ).second );
 	unsigned long currentdesktop = X11_getCurrentDesktop( display );
 	_debug( "[cD=%d]", currentdesktop );
-	int status = XGrabPointer(
-		display,
-		DefaultRootWindow( display ),
-		True,
-		ButtonReleaseMask | ButtonMotionMask | ButtonPressMask,
-		GrabModeAsync,
-		GrabModeAsync,
-		None,
-		None,
-		CurrentTime
-	);
-	if( status != GrabSuccess )
+	if( X11_isPointerGrabbed( display ) )
 	{
 		_debug( "[D]" );
 		if( wt != None )
@@ -941,12 +959,6 @@ bool X11_checkFullScreen( Display *display )
 		}
 		_debug( "[I]" );
 		return false;
-	}
-	else
-	{
-		_debug( "[J]" );
-		XUngrabPointer( display, CurrentTime );
-		XFlush( display );
 	}
 	_debug( "[Z]" );
 	return false;
