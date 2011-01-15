@@ -414,9 +414,10 @@ void BuddiesListView::mouseMoveEvent(QMouseEvent *event)
 void BuddiesListView::resizeEvent(QResizeEvent *event)
 {
 	QTreeView::resizeEvent(event);
-	doItemsLayout();
 	if (BackgroundImageMode == BackgroundStretched)
 		updateBackground();
+
+	scheduleDelayedItemsLayout();
 }
 
 void BuddiesListView::currentChanged(const QModelIndex &current, const QModelIndex &previous)

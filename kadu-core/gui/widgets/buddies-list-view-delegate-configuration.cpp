@@ -56,5 +56,5 @@ void BuddiesListViewDelegateConfiguration::configurationUpdated()
 	FontColor = config_file.readColorEntry("Look", "UserboxFgColor");
 
 	if (ListView)
-		ListView->doItemsLayout();
+		ListView->scheduleDelayedItemsLayout();
 }
