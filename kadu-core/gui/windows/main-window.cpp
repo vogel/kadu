@@ -36,7 +36,6 @@
 #include "debug.h"
 
 #include "main-window.h"
-#include <X11/X.h>
 
 MainWindow * MainWindow::findMainWindow(QWidget *widget)
 {
