@@ -57,6 +57,9 @@ QByteArray DecryptorWrapper::decrypt(const QByteArray &data, bool *ok)
 {
 	QByteArray decrypted = data;
 
+	if (ok)
+		*ok = false;
+
 	foreach (Decryptor *decryptor, Decryptors)
 	{
 		bool thisOk;
