@@ -50,6 +50,8 @@ class BuddiesListView : public QTreeView, public ActionDataSource
 {
 	Q_OBJECT
 
+	friend class BuddiesListViewDelegateConfiguration;
+
 public:
 	enum BackgroundMode
 	{
