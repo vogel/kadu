@@ -30,6 +30,7 @@
 
 #include "keys/key.h"
 #include "keys/keys-manager.h"
+#include "notify/encryption-ng-notification.h"
 #include "encryption-manager.h"
 #include "encryption-provider-manager.h"
 
@@ -164,13 +165,18 @@ void EncryptionActions::sendPublicKey(const Contact &contact)
 
 	Key key = KeysManager::instance()->byContactAndType(account.accountContact(), "simlite", ActionReturnNull);
 	if (!key)
+	{
+		EncryptionNgNotification::notifyPublicKeySendError(contact, tr("No public key available"));
 		return;
+	}
 
 	ContactSet contacts;
 	contacts.insert(contact);
 
 	Chat chat = ChatManager::instance()->findChat(contacts, true);
 	chatService->sendMessage(chat, QString::fromUtf8(key.key().data()), true);
+
+	EncryptionNgNotification::notifyPublicKeySent(contact);
 }
 
 void EncryptionActions::checkEnableEncryption(const Chat &chat, bool check)
