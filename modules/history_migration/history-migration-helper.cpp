@@ -103,19 +103,24 @@ namespace HistoryMigrationHelper
 		kdebugf();
 		QList<UinsList> entries;
 		QDir dir(path, "*.idx");
-		QStringList struins;
 		UinsList uins;
 
-		foreach (QString entry, dir.entryList())
+		foreach (const QString &entry, dir.entryList())
 		{
 			uins.clear();
 			// ignore sms.idx file, see below
-			if (entry != "sms.idx")
+			if (entry != QLatin1String("sms.idx"))
 			{
-				struins = entry.remove(entry.length() - 4, 4).split('_', QString::SkipEmptyParts);
+				QStringList struins = entry.left(entry.length() - 4).split('_', QString::SkipEmptyParts);
+				bool ok;
 				foreach (const QString &struin, struins)
-					uins.append(struin.toUInt());
-				entries.append(uins);
+				{
+					uins.append(struin.toUInt(&ok));
+					if (!ok)
+						break;
+				}
+				if (ok)
+					entries.append(uins);
 			}
 		}
 
@@ -178,17 +183,17 @@ namespace HistoryMigrationHelper
 			if (tokens.count() < 2)
 				continue;
 
-			if (tokens[0] == "chatsend")
+			if (tokens.at(0) == "chatsend")
 				entry.Type = HistoryEntry::ChatSend;
-			else if (tokens[0] == "msgsend")
+			else if (tokens.at(0) == "msgsend")
 				entry.Type = HistoryEntry::MsgSend;
-			else if (tokens[0] == "chatrcv")
+			else if (tokens.at(0) == "chatrcv")
 				entry.Type = HistoryEntry::ChatRcv;
-			else if (tokens[0] == "msgrcv")
+			else if (tokens.at(0) == "msgrcv")
 				entry.Type = HistoryEntry::MsgRcv;
-			else if (tokens[0] == "status")
+			else if (tokens.at(0) == "status")
 				entry.Type = HistoryEntry::StatusChange;
-			else if (tokens[0] == "smssend")
+			else if (tokens.at(0) == "smssend")
 				entry.Type = HistoryEntry::SmsSend;
 
 			switch (entry.Type)
@@ -197,10 +202,10 @@ namespace HistoryMigrationHelper
 				case HistoryEntry::MsgSend:
 					if (tokens.count() == 5)
 					{
-						entry.Uin = tokens[1].toUInt();
-						entry.Nick = tokens[2];
-						entry.Date.setTime_t(tokens[3].toUInt());
-						entry.Content = tokens[4];
+						entry.Uin = tokens.at(1).toUInt();
+						entry.Nick = tokens.at(2);
+						entry.Date.setTime_t(tokens.at(3).toUInt());
+						entry.Content = tokens.at(4);
 						entries.append(entry);
 					}
 					break;
@@ -208,48 +213,48 @@ namespace HistoryMigrationHelper
 				case HistoryEntry::MsgRcv:
 					if (tokens.count() == 6)
 					{
-						entry.Uin = tokens[1].toUInt();
-						entry.Nick = tokens[2];
-						entry.Date.setTime_t(tokens[3].toUInt());
-						entry.SendDate.setTime_t(tokens[4].toUInt());
-						entry.Content = tokens[5];
+						entry.Uin = tokens.at(1).toUInt();
+						entry.Nick = tokens.at(2);
+						entry.Date.setTime_t(tokens.at(3).toUInt());
+						entry.SendDate.setTime_t(tokens.at(4).toUInt());
+						entry.Content = tokens.at(5);
 						entries.append(entry);
 					}
 					break;
 				case HistoryEntry::StatusChange:
 					if (tokens.count() == 6 || tokens.count() == 7)
 					{
-						entry.Uin = tokens[1].toUInt();
-						entry.Nick = tokens[2];
-						//entry.Ip = tokens[3];
-						entry.Date.setTime_t(tokens[4].toUInt());
-						if (tokens[5] == "avail")
+						entry.Uin = tokens.at(1).toUInt();
+						entry.Nick = tokens.at(2);
+						//entry.Ip = tokens.at(3);
+						entry.Date.setTime_t(tokens.at(4).toUInt());
+						if (tokens.at(5) == "avail")
 							entry.Status = HistoryEntry::Online;
-						else if (tokens[5] == "busy")
+						else if (tokens.at(5) == "busy")
 							entry.Status = HistoryEntry::Busy;
-						else if (tokens[5] == "invisible")
+						else if (tokens.at(5) == "invisible")
 							entry.Status = HistoryEntry::Invisible;
-						else if (tokens[5] == "ffc")
+						else if (tokens.at(5) == "ffc")
 							entry.Status = HistoryEntry::FFC;
-						else if (tokens[5] == "dnd")
+						else if (tokens.at(5) == "dnd")
 							entry.Status = HistoryEntry::DND;
-						else if (tokens[5] == "notavail")
+						else if (tokens.at(5) == "notavail")
 							entry.Status = HistoryEntry::Offline;
 						if (tokens.count() == 7)
-							entry.Content = tokens[6];
+							entry.Content = tokens.at(6);
 						entries.append(entry);
 					}
 					break;
 				case HistoryEntry::SmsSend:
 					if (tokens.count() == 4 || tokens.count() == 6)
 					{
-						entry.Mobile = tokens[1];
-						entry.Date.setTime_t(tokens[2].toUInt());
-						entry.Content = tokens[3];
+						entry.Mobile = tokens.at(1);
+						entry.Date.setTime_t(tokens.at(2).toUInt());
+						entry.Content = tokens.at(3);
 						if (tokens.count() == 6)
 						{
-							entry.Nick = tokens[4];
-							entry.Uin = tokens[5].toUInt();
+							entry.Nick = tokens.at(4);
+							entry.Uin = tokens.at(5).toUInt();
 						}
 						entries.append(entry);
 					}
@@ -270,18 +275,19 @@ namespace HistoryMigrationHelper
 		kdebugf();
 		QStringList strlist;
 		QString token;
-		int idx = 0, strlength = str.length();
+		const int strlength = str.length();
+		int idx = 0;
 		bool inString = false;
 
 		int pos1, pos2;
 		while (idx < strlength)
 		{
-			const QChar &letter = str[idx];
+			const QChar letter = str.at(idx);
 			if (inString)
 			{
 				if (letter == '\\')
 				{
-					switch (str[idx + 1].toAscii())
+					switch (str.at(idx + 1).toAscii())
 					{
 						case 'n':
 							token.append('\n');
