@@ -52,10 +52,12 @@ struct HistoryEntry
 	{
 		StatusNone,
 		Online,
-		Offline,
 		Busy,
 		Invisible,
-		StatusLast = Invisible
+		FFC,
+		DND,
+		Offline,
+		StatusLast = Offline
 	};
 
 	EntryType Type;

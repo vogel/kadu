@@ -225,12 +225,16 @@ namespace HistoryMigrationHelper
 						entry.Date.setTime_t(tokens[4].toUInt());
 						if (tokens[5] == "avail")
 							entry.Status = HistoryEntry::Online;
-						else if (tokens[5] == "notavail")
-							entry.Status = HistoryEntry::Offline;
 						else if (tokens[5] == "busy")
 							entry.Status = HistoryEntry::Busy;
 						else if (tokens[5] == "invisible")
 							entry.Status = HistoryEntry::Invisible;
+						else if (tokens[5] == "ffc")
+							entry.Status = HistoryEntry::FFC;
+						else if (tokens[5] == "dnd")
+							entry.Status = HistoryEntry::DND;
+						else if (tokens[5] == "notavail")
+							entry.Status = HistoryEntry::Offline;
 						if (tokens.count() == 7)
 							entry.Content = tokens[6];
 						entries.append(entry);

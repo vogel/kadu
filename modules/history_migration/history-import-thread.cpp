@@ -133,7 +133,6 @@ void HistoryImportThread::importEntry(Chat chat, const HistoryEntry &entry)
 			msg.setReceiveDate(entry.Date);
 			msg.setType(outgoing ? Message::TypeSent : Message::TypeReceived);
 
-			// TODO 0.6.6: it's damn slow!
 			History::instance()->currentStorage()->appendMessage(msg);
 			ImportedEntries++;
 			break;
@@ -146,14 +145,20 @@ void HistoryImportThread::importEntry(Chat chat, const HistoryEntry &entry)
 				case HistoryEntry::Online:
 					statusStr = "Online";
 					break;
-				case HistoryEntry::Offline:
-					statusStr = "Offline";
-					break;
 				case HistoryEntry::Busy:
 					statusStr = "Away";
 					break;
 				case HistoryEntry::Invisible:
 					statusStr = "Invisible";
+					break;
+				case HistoryEntry::FFC:
+					statusStr = "FreeForChat";
+					break;
+				case HistoryEntry::DND:
+					statusStr = "DoNotDisturb";
+					break;
+				case HistoryEntry::Offline:
+					statusStr = "Offline";
 					break;
 				default:
 					return;
@@ -161,7 +166,6 @@ void HistoryImportThread::importEntry(Chat chat, const HistoryEntry &entry)
 
 			Status status(statusStr, entry.Content);
 			Contact contact = ContactManager::instance()->byId(GaduAccount, QString::number(entry.Uin), ActionCreateAndAdd);
-			// TODO 0.6.6: it's damn slow!
 			History::instance()->currentStorage()->appendStatus(contact, status, entry.Date);
 			ImportedEntries++;
 			break;
