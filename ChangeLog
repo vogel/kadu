@@ -17,6 +17,7 @@
 * gui: #1899 fixed: do not display "Ungroupped" group when it is empty (Vogel)
 * gui: #1724 fixed: better "cannot send image" messages (Vogel)
 * sms: #1727 fixed: removed plus gateway (Vogel)
+* gui: #1679 fixed: scrolling chat window with emoticons and images (ultr)
 
 +++ version 0.6.6-beta14.2
 * tabs: #1906 fixed: crash on tabs module load (regression from beta14) (beevvy)
