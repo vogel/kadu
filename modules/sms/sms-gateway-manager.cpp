@@ -54,14 +54,13 @@ SmsGatewayManager::~SmsGatewayManager()
 void SmsGatewayManager::load()
 {
 	QScriptEngine *engine = SmsScriptsManager::instance()->engine();
-	QScriptValue gateways = engine->evaluate("gatewayManager.items");
-	QScriptValueIterator gatewayIterator(gateways);
+	qint32 length = engine->evaluate("gatewayManager.items.length").toInt32();
 
-	while (gatewayIterator.hasNext())
+	for (qint32 i = 0; i < length; i++)
 	{
-		gatewayIterator.next();
-		QScriptValue gatewayName = engine->evaluate(QString("gatewayManager.byId('%1').name()").arg(gatewayIterator.name()));
-		SmsGateway gateway = qMakePair(gatewayIterator.name(), gatewayName.toString());
+		QScriptValue gatewayName = engine->evaluate(QString("gatewayManager.items[%1].name()").arg(i));
+		QScriptValue gatewayId = engine->evaluate(QString("gatewayManager.items[%1].id()").arg(i));
+		SmsGateway gateway = qMakePair(gatewayId.toString(), gatewayName.toString());
 
 		Items.append(gateway);
 	}

@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
+#include <stdio.h>
 #include <QtGui/QMessageBox>
 #include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QNetworkReply>
@@ -146,6 +146,7 @@ void SmsInternalSender::sendSms()
 	QScriptValueList arguments;
 	arguments.append(GatewayId);
 	arguments.append(number());
+	arguments.append(QString()); // empty sender
 	arguments.append(signature());
 	arguments.append(Message);
 	arguments.append(engine->newQObject(this));

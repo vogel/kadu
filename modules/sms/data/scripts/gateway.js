@@ -19,16 +19,19 @@
 
 GatewayManager.prototype = {
 	addItem: function(gateway) {
-		this.items[gateway.id()] = gateway;
+		this.items.push(gateway);
 	},
 
 	byId: function(gatewayId) {
-		return this.items[gatewayId];
+		for (var i in this.items)
+			if (this.items[i].id() == gatewayId)
+				return this.items[i];
+		return;
 	},
 
 	sendSms: function(gatewayId, recipient, sender, signature, content, callbackObject) {
-		if (this.items[gatewayId]) {
-			this.items[gatewayId].sendSms(recipient, sender, signature, content, callbackObject);
+		if (this.byId(gatewayId)) {
+			this.byId(gatewayId).sendSms(recipient, sender, signature, content, callbackObject);
 		} else {
 			callbackObject.failure("No valid gateway found");
 		}
@@ -36,7 +39,7 @@ GatewayManager.prototype = {
 };
 
 function GatewayManager() {
-	this.items = new Object();
+	this.items = new Array();
 	return this;
 }
 

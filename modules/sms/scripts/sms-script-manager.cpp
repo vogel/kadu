@@ -64,11 +64,11 @@ SmsScriptsManager::~SmsScriptsManager()
 
 void SmsScriptsManager::init()
 {
-	loadScript(dataPath("kadu/modules/data/sms/scripts/gateway.js"));
-
 // 	QScriptEngineDebugger* debuger = new QScriptEngineDebugger(this);
 // 	debuger->attachTo(Engine);
 // 	debuger->standardWindow()->show();
+
+	loadScript(dataPath("kadu/modules/data/sms/scripts/gateway.js"));
 
 	QDir scriptDirectory(dataPath("kadu/modules/data/sms/scripts/"));
 	if (scriptDirectory.exists())

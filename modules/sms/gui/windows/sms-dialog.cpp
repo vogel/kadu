@@ -180,6 +180,9 @@ void SmsDialog::recipientNumberChanged(const QString &number)
 	QString gatewayId = MobileNumberManager::instance()->gatewayId(RecipientEdit->text());
 	ProviderComboBox->setCurrentIndex(ProviderComboBox->findData(gatewayId));
 
+	if (-1 == ProviderComboBox->currentIndex())
+		ProviderComboBox->setCurrentIndex(0);
+
 	if (number.isEmpty())
 	{
 		RecipientComboBox->setCurrentBuddy(Buddy::null);
