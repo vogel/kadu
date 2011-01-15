@@ -42,7 +42,12 @@ HistoryImporterManager::HistoryImporterManager()
 HistoryImporterManager::~HistoryImporterManager()
 {
 	foreach (HistoryImporter *importer, Importers)
+	{
 		importer->canceled();
+		// we have to destroy the importer right now because when deleteLater triggers, the module can be already unloaded
+		disconnect(importer, SIGNAL(destroyed(QObject*)), this, SLOT(importerDestroyed(QObject*)));
+		delete importer;
+	}
 }
 
 void HistoryImporterManager::addImporter(HistoryImporter *importer)

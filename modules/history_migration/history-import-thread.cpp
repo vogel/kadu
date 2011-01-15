@@ -85,6 +85,9 @@ void HistoryImportThread::run()
 				ImportedMessages++;
 			}
 
+		if (Canceled)
+			break;
+
 		historyImporterChatData->setImported(true);
 
 		// force sync for every chat

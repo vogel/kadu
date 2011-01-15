@@ -59,7 +59,10 @@ void HistoryImporter::run()
 		return;
 
 	if (!DestinationAccount || SourceDirectory.isEmpty() || !History::instance()->currentStorage())
+	{
+		deleteLater();
 		return;
+	}
 
 	QList<UinsList> uinsLists = HistoryMigrationHelper::getUinsLists(SourceDirectory);
 	int totalEntries = 0;
@@ -68,14 +71,17 @@ void HistoryImporter::run()
 		totalEntries += HistoryMigrationHelper::getHistoryEntriesCount(SourceDirectory, uinsList);
 
 	if (0 == totalEntries)
+	{
+		deleteLater();
 		return;
+	}
 
 	ProgressWindow = new HistoryImportWindow();
 	ProgressWindow->setChatsCount(uinsLists.size());
 
 	connect(ProgressWindow, SIGNAL(rejected()), this, SLOT(canceled()));
 
-	Thread = new HistoryImportThread(DestinationAccount, SourceDirectory, uinsLists, totalEntries);
+	Thread = new HistoryImportThread(DestinationAccount, SourceDirectory, uinsLists, totalEntries, this);
 	connect(Thread, SIGNAL(finished()), this, SLOT(threadFinished()));
 
 	QTimer *updateProgressBar = new QTimer(this);
@@ -90,7 +96,7 @@ void HistoryImporter::run()
 
 void HistoryImporter::updateProgressWindow()
 {
-	if (ProgressWindow)
+	if (ProgressWindow && Thread)
 	{
 		ProgressWindow->setChatsProgress(Thread->importedChats());
 		ProgressWindow->setMessagesCount(Thread->totalMessages());
@@ -111,7 +117,19 @@ void HistoryImporter::threadFinished()
 void HistoryImporter::canceled()
 {
 	if (Thread)
+	{
+		disconnect(Thread, SIGNAL(finished()), this, SLOT(threadFinished()));
 		Thread->cancel();
+		Thread->wait(2000);
+		if (Thread->isRunning())
+		{
+			Thread->terminate();
+			Thread->wait(2000);
+		}
+	}
+
+	delete ProgressWindow;
+	ProgressWindow = 0;
 
 	deleteLater();
 }
