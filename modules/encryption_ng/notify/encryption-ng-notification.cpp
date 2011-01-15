@@ -102,10 +102,8 @@ void EncryptionNgNotification::notifyPublicKeySendError(Contact contact, const Q
 	NotificationManager::instance()->notify(notification);
 }
 
-void EncryptionNgNotification::notifyEncryptionError(Chat chat, const QString &error)
+void EncryptionNgNotification::notifyEncryptionError(const QString &error)
 {
-	Q_UNUSED(chat)
-
 	EncryptionNgNotification *notification = new EncryptionNgNotification("encryption-ng/encryptionError");
 	notification->setTitle(tr("Encryption"));
 	notification->setText(tr("Error occured during encryption: %1").arg(error));

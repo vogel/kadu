@@ -21,6 +21,7 @@
 #include "misc/coding-conversion.h"
 #include "modules/encryption_ng/keys/key.h"
 #include "modules/encryption_ng/keys/keys-manager.h"
+#include "modules/encryption_ng/notify/encryption-ng-notification.h"
 
 #include "pkcs1_certificate.h"
 
@@ -83,6 +84,7 @@ QCA::PublicKey EncryptioNgSimliteEncryptor::getPublicKey(const Key &key)
 	if (!keyData.startsWith(BEGIN_RSA_PUBLIC_KEY) || !keyData.endsWith(END_RSA_PUBLIC_KEY))
 	{
 		Valid = false;
+		EncryptionNgNotification::notifyEncryptionError(tr("Cannot use public key: not a valid RSA key"));
 		return QCA::PublicKey();
 	}
 
@@ -102,6 +104,7 @@ QCA::PublicKey EncryptioNgSimliteEncryptor::getPublicKey(const Key &key)
 	if (!decoder.ok())
 	{
 		Valid = false;
+		EncryptionNgNotification::notifyEncryptionError(tr("Cannot use public key: invalid BASE64 encoding"));
 		return QCA::PublicKey();
 	}
 
@@ -112,12 +115,14 @@ QCA::PublicKey EncryptioNgSimliteEncryptor::getPublicKey(const Key &key)
 	if (PKCS1Certificate::OK != status)
 	{
 		Valid = false;
+		EncryptionNgNotification::notifyEncryptionError(tr("Cannot use public key: invalid PKCS1 certificate"));
 		return QCA::PublicKey();
 	}
 
 	if (!publicKey.canEncrypt())
 	{
 		Valid = false;
+		EncryptionNgNotification::notifyEncryptionError(tr("Cannot use public key: this key does not allow encrypttion"));
 		return QCA::PublicKey();
 	}
 
@@ -128,7 +133,10 @@ QCA::PublicKey EncryptioNgSimliteEncryptor::getPublicKey(const Key &key)
 QByteArray EncryptioNgSimliteEncryptor::encrypt(const QByteArray &data)
 {
 	if (!Valid)
+	{
+		EncryptionNgNotification::notifyEncryptionError(tr("Cannot encrypt: valid public key not available"));
 		return data;
+	}
 
 	//generate a symmetric key for Blowfish (16 bytes in length)
 	QCA::SymmetricKey blowfishKey(16);
@@ -136,7 +144,10 @@ QByteArray EncryptioNgSimliteEncryptor::encrypt(const QByteArray &data)
 	//encrypt the symmetric key using the RSA public key
 	QCA::SecureArray encryptedBlowfishKey = EncodingKey.encrypt(blowfishKey, QCA::EME_PKCS1_OAEP);
 	if (encryptedBlowfishKey.isEmpty())
+	{
+		EncryptionNgNotification::notifyEncryptionError(tr("Cannot encrypt: valid blowfish key not available"));
 		return data;
+	}
 
 	//create an initialisation vector (8 zeros)
 	char ivec[8] = {0, 0, 0, 0, 0, 0, 0, 0};
@@ -161,12 +172,18 @@ QByteArray EncryptioNgSimliteEncryptor::encrypt(const QByteArray &data)
 	QCA::SecureArray encrypted = cipher.update(encryptedData);
 
 	if (!cipher.ok())
+	{
+		EncryptionNgNotification::notifyEncryptionError(tr("Cannot encrypt: unknown error"));
 		return data;
+	}
 
 	//output the final block
 	encrypted.append(cipher.final());
 	if (!cipher.ok())
+	{
+		EncryptionNgNotification::notifyEncryptionError(tr("Cannot encrypt: unknown error"));
 		return data;
+	}
 
 	//build the encrypted message
 	encrypted = encryptedBlowfishKey + encrypted;
@@ -177,7 +194,10 @@ QByteArray EncryptioNgSimliteEncryptor::encrypt(const QByteArray &data)
 //NOTE: this seems to break the message (and without it everything works fine)
 //	encrypted += encoder.final();
 	if (!encoder.ok())
+	{
+		EncryptionNgNotification::notifyEncryptionError(tr("Cannot encrypt: unknown error"));
 		return data;
+	}
 
 	//finally, put the encrypted message into the output QByteArray
 	return encrypted.toByteArray();

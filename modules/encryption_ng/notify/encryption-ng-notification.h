@@ -22,7 +22,6 @@
 
 #include "notify/notification.h"
 
-class Chat;
 class Contact;
 class NotifyEvent;
 
@@ -41,7 +40,7 @@ public:
 
 	static void notifyPublicKeySent(Contact contact);
 	static void notifyPublicKeySendError(Contact contact, const QString &error);
-	static void notifyEncryptionError(Chat chat, const QString &error);
+	static void notifyEncryptionError(const QString &error);
 
 	explicit EncryptionNgNotification(const QString &name);
 	virtual ~EncryptionNgNotification();
