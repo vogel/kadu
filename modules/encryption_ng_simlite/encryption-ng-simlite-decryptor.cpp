@@ -87,7 +87,7 @@ QCA::PrivateKey EncryptioNgSimliteDecryptor::getPrivateKey(const Key &key)
 		return QCA::PrivateKey();
 	}
 
-	keyData = keyData.mid(BEGIN_RSA_PRIVATE_KEY_LENGTH, keyData.length() - BEGIN_RSA_PRIVATE_KEY_LENGTH - END_RSA_PRIVATE_KEY_LENGTH);
+	keyData = keyData.mid(BEGIN_RSA_PRIVATE_KEY_LENGTH, keyData.length() - BEGIN_RSA_PRIVATE_KEY_LENGTH - END_RSA_PRIVATE_KEY_LENGTH).replace('\r', "").trimmed();
 
 	QCA::SecureArray certificate;
 
