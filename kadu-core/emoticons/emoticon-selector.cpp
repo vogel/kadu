@@ -203,5 +203,5 @@ void EmoticonSelector::keyPressEvent(QKeyEvent *e)
 		close();
 		return;
 	}
-    QAbstractScrollArea::keyPressEvent(e);
+	QAbstractScrollArea::keyPressEvent(e);
 }
