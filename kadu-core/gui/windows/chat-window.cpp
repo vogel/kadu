@@ -30,6 +30,8 @@
 #include <QtGui/QDesktopWidget>
 #include <QtGui/QVBoxLayout>
 
+#include "chat/type/chat-type.h"
+#include "chat/chat-details.h"
 #include "chat/chat-geometry-data.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact-set.h"
@@ -48,7 +50,7 @@ ChatWindow::ChatWindow(ChatWidget *chatWidget, QWidget *parent) :
 {
 	kdebugf();
 
-	setWindowRole(chatWidget->windowRole());
+	setWindowRole(chatWidget->chat().details()->type()->windowRole());
 
 #ifdef Q_OS_MAC
 	setAttribute(Qt::WA_MacBrushedMetal);

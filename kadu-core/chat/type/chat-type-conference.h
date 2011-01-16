@@ -55,6 +55,7 @@ public:
 	virtual QString displayName() const;
 	virtual QString displayNamePlural() const;
 	virtual QIcon icon() const;
+	virtual QString windowRole() const;
 
 	virtual ChatDetails * createChatDetails(ChatShared *chatData) const;
 

@@ -105,6 +105,15 @@ public:
 	virtual QIcon icon() const = 0;
 
 	/**
+	 * @author Piotr 'ultr' Dąbrowski
+	 * @short Window role for this chat type.
+	 * @return window role for this chat type.
+	 *
+	 * Kadu window role for this chat type: "kadu-chat-...".
+	 */
+	virtual QString windowRole() const = 0;
+
+	/**
 	 * @author Rafal 'Vogel' Malinowski
 	 * @short Creates new ChatDetails object for given chat type.
 	 * @return new ChatDetails object for given chat type
