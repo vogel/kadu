@@ -166,9 +166,8 @@ void OAuthParameters::sign()
 
 	QCA::MessageAuthenticationCode hmac("hmac(sha1)", QCA::SymmetricKey(key));
 	QCA::SecureArray array(baseItems.join("&").toLocal8Bit());
-	hmac.update(array);
 
-	QByteArray digest = hmac.final().toByteArray().toBase64();
+	QByteArray digest = hmac.process(array).toByteArray().toBase64();
 	setSignature(digest);
 }
 

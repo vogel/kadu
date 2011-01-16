@@ -91,7 +91,7 @@ QCA::PrivateKey EncryptioNgSimliteDecryptor::getPrivateKey(const Key &key)
 
 	QCA::SecureArray certificate;
 
-	QCA::Base64 decoder(QCA::Decode);
+	QCA::Base64 decoder;
 	decoder.setLineBreaksEnabled(true);
 	certificate = decoder.decode(keyData);
 
@@ -99,7 +99,6 @@ QCA::PrivateKey EncryptioNgSimliteDecryptor::getPrivateKey(const Key &key)
 	keyData.fill(' ', keyData.size());
 	keyData.clear();
 
-	certificate += decoder.final();
 	if (!decoder.ok())
 	{
 		Valid = false;
@@ -160,13 +159,8 @@ QByteArray EncryptioNgSimliteDecryptor::decrypt(const QByteArray &data, bool *ok
 	QCA::Cipher cipher(QString("blowfish"), QCA::Cipher::CBC, QCA::Cipher::DefaultPadding, QCA::Decode, blowfishKey, iv);
 
 	//decipher the message (put the message into the decoding cipher object)
-	QCA::SecureArray plainText = cipher.update(encryptedMessage);
+	QCA::SecureArray plainText = cipher.process(encryptedMessage);
 	if (!cipher.ok())
-		return data;
-
-	//get the last block (with its padding removed)
-	plainText.append(cipher.final());
-	if(!cipher.ok())
 		return data;
 
 	//check whether the decrypted data length is at least the size of the header -

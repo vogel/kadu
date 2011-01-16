@@ -88,14 +88,13 @@ QCA::PublicKey EncryptioNgSimliteEncryptor::getPublicKey(const Key &key)
 		return QCA::PublicKey();
 	}
 
-	keyData = keyData.mid(BEGIN_RSA_PUBLIC_KEY_LENGTH, keyData.length() - BEGIN_RSA_PUBLIC_KEY_LENGTH - END_RSA_PUBLIC_KEY_LENGTH);
+	keyData = keyData.mid(BEGIN_RSA_PUBLIC_KEY_LENGTH, keyData.length() - BEGIN_RSA_PUBLIC_KEY_LENGTH - END_RSA_PUBLIC_KEY_LENGTH).trimmed();
 
 	QCA::SecureArray certificate;
 
-	QCA::Base64 decoder(QCA::Decode);
+	QCA::Base64 decoder;
 	decoder.setLineBreaksEnabled(true);
 	certificate = decoder.decode(keyData);
-	certificate += decoder.final();
 
 	// some fake security added
 	keyData.fill(' ', keyData.size());
@@ -169,16 +168,8 @@ QByteArray EncryptioNgSimliteEncryptor::encrypt(const QByteArray &data)
 
 	//the actual encryption
 	QByteArray encryptedData = QByteArray((const char *)&head, sizeof(sim_message_header)) + unicode2cp(QString::fromUtf8(data));
-	QCA::SecureArray encrypted = cipher.update(encryptedData);
+	QCA::SecureArray encrypted = cipher.process(encryptedData);
 
-	if (!cipher.ok())
-	{
-		EncryptionNgNotification::notifyEncryptionError(tr("Cannot encrypt: unknown error"));
-		return data;
-	}
-
-	//output the final block
-	encrypted.append(cipher.final());
 	if (!cipher.ok())
 	{
 		EncryptionNgNotification::notifyEncryptionError(tr("Cannot encrypt: unknown error"));
