@@ -56,6 +56,7 @@ class KADUAPI MainWindow : public QMainWindow, public ActionDataSource
 
 private slots:
 	void toolbarUpdated();
+    void toolbarRemoved(ToolBar *toolBar);
 
 protected:
 	void loadToolBarsFromConfig();
@@ -99,6 +100,7 @@ public:
 	Buddy buddy();
 
 	void actionAdded(Action *action);
+	bool hasAction(const QString &actionName, ToolBar *exclude = 0);
 
 public slots:
 	void addTopToolbar();
