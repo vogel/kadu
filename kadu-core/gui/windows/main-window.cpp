@@ -71,7 +71,10 @@ void MainWindow::loadToolBarsFromConfig()
 	{
 		QToolBar *toolBar = dynamic_cast<QToolBar *>(object);
 		if (toolBar)
+		{
 			removeToolBar(toolBar);
+			delete toolBar;
+		}
 	}
 
 	loadToolBarsFromConfig(Qt::TopToolBarArea);
@@ -325,7 +328,7 @@ ToolBar *MainWindow::newToolbar(QWidget *parent)
 	toolBar->setAutoFillBackground(TransparencyEnabled);
 
 	connect(toolBar, SIGNAL(updated()), this, SLOT(toolbarUpdated()));
-	connect(toolBar, SIGNAL(destroyed()), this, SLOT(toolbarUpdated()));
+	connect(toolBar, SIGNAL(removed(ToolBar*)), this, SLOT(toolbarRemoved(ToolBar*)));
 
 	return toolBar;
 }
@@ -358,6 +361,18 @@ void MainWindow::actionAdded(Action *action)
 {
 	if (buddiesListView())
 		connect(buddiesListView(), SIGNAL(buddySelectionChanged()), action, SLOT(checkState()));
+}
+
+bool MainWindow::hasAction(const QString &actionName, ToolBar *exclude)
+{
+	foreach (QObject *object, children())
+	{
+		ToolBar *toolBar = qobject_cast<ToolBar *>(object);
+		if (toolBar && toolBar != exclude && toolBar->hasAction(actionName))
+			return true;
+	}
+
+	return false;
 }
 
 Contact MainWindow::contact()
@@ -418,4 +433,13 @@ void MainWindow::toolbarUpdated()
 	writeToolBarsToConfig();
 
 	ConfigurationManager::instance()->toolbarConfigurationManager()->notifyConfigurationUpdated();
+}
+
+void MainWindow::toolbarRemoved(ToolBar *toolBar)
+{
+	toolBar->hide();
+	toolBar->setParent(0); // remove it from this window
+	toolBar->deleteLater();
+
+	toolbarUpdated();
 }

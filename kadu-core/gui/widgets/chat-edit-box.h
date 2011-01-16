@@ -52,7 +52,6 @@ protected:
 
 public:
 	static void createDefaultToolbars(QDomElement parentConfig);
-	static void addAction(const QString &actionName, Qt::ToolButtonStyle style = Qt::ToolButtonIconOnly);
 
 	ChatEditBox(Chat chat, QWidget *parent = 0);
 	virtual ~ChatEditBox();

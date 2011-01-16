@@ -205,7 +205,7 @@ int ToolBar::indexOf(const QString &action)
 
 void ToolBar::addAction(const QString &actionName, Qt::ToolButtonStyle style, QAction *before)
 {
-	if (hasAction(actionName))
+	if (windowHasAction(actionName, true))
 		return;
 
 	ToolBarAction newAction;
@@ -296,7 +296,7 @@ void ToolBar::dragEnterEvent(QDragEnterEvent *event)
 				ActionDrag::decode(event, actionName, style) &&
 				(
 					(event->source() == this)
-					|| (!hasAction(actionName) && Actions::instance()->contains(actionName) && dynamic_cast<MainWindow *>(parent())->supportsActionType(Actions::instance()->value(actionName)->type()))
+					|| (!windowHasAction(actionName, false) && Actions::instance()->contains(actionName) && dynamic_cast<MainWindow *>(parent())->supportsActionType(Actions::instance()->value(actionName)->type()))
 					|| (actionName.startsWith(QLatin1String("__separator")) || actionName.startsWith(QLatin1String("__spacer")))
 				)
 			)
@@ -587,6 +587,19 @@ bool ToolBar::hasAction(const QString &action_name)
 	kdebugf2();
 }
 
+bool ToolBar::windowHasAction(const QString &action_name, bool exclude)
+{
+	QWidget *parent = parentWidget();
+	while (parent && !qobject_cast<MainWindow *>(parent))
+		parent = parent->parentWidget();
+
+	MainWindow *window = qobject_cast<MainWindow *>(parent);
+	if (!window)
+		return false;
+
+	return window->hasAction(action_name, exclude ? this : 0);
+}
+
 void ToolBar::loadFromConfig(const QDomElement &toolbar_element)
 {
 	kdebugf();
@@ -636,7 +649,7 @@ void ToolBar::loadFromConfig(const QDomElement &toolbar_element)
 		else if (actionName == "__spacer")
 			actionName += QString::number(ToolBarSpacer::token());
 
-		if (hasAction(actionName))
+		if (windowHasAction(actionName, true))
 			continue;
 
 		Qt::ToolButtonStyle buttonStyle;
@@ -712,7 +725,7 @@ QMenu * ToolBar::createContextMenu(QWidget *widget)
 			if (!supportsAction)
 				continue;
 
-			if (!hasAction(actionDescription->name()))
+			if (!windowHasAction(actionDescription->name(), false))
 			{
 				QAction *action = actionsMenu->addAction(IconsManager::instance()->iconByPath(actionDescription->iconPath()), actionDescription->text());
 				action->setData(actionDescription->name());
@@ -776,7 +789,7 @@ void ToolBar::removeToolbar()
 {
 	kdebugf();
 	if (MessageDialog::ask("dialog-warning", tr("Kadu"), tr("Do you really want to remove selected toolbar?"), this))
-		deleteLater();
+		emit removed(this); // parent window will remove this toolbar
 	kdebugf2();
 }
 

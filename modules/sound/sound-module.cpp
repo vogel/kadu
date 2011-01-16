@@ -29,6 +29,8 @@
 
 extern "C" KADU_EXPORT int sound_init(bool firstLoad)
 {
+	Q_UNUSED(firstLoad)
+
 	kdebugf();
 
 	SoundThemeManager::createInstance();
@@ -36,7 +38,7 @@ extern "C" KADU_EXPORT int sound_init(bool firstLoad)
 	SoundConfigurationUiHandler::registerConfigurationUi();
 	NotificationManager::instance()->registerNotifier(SoundNotifier::instance());
 	SoundManager::createInstance();
-	SoundActions::registerActions(firstLoad);
+	SoundActions::registerActions();
 
 	return 0;
 }

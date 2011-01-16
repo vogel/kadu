@@ -39,15 +39,12 @@
 
 SoundActions * SoundActions::Instance = 0;
 
-void SoundActions::registerActions(bool firstLoad)
+void SoundActions::registerActions()
 {
 	if (Instance)
 		return;
 
 	Instance = new SoundActions();
-
-	if (firstLoad)
-		KaduWindow::addAction("muteSoundsAction");
 }
 
 void SoundActions::unregisterActions()

@@ -32,15 +32,12 @@
 
 ScreenshotActions *ScreenshotActions::Instance = 0;
 
-void ScreenshotActions::registerActions(bool firstLoad)
+void ScreenshotActions::registerActions()
 {
 	if (Instance)
 		return;
 
 	Instance = new ScreenshotActions();
-
-	if (firstLoad)
-		ChatEditBox::addAction("ScreenShotAction");
 }
 
 void ScreenshotActions::unregisterActions()

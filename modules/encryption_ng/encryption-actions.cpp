@@ -72,10 +72,10 @@ static void checkSendKey(Action *action)
 
 EncryptionActions * EncryptionActions::Instance = 0;
 
-void EncryptionActions::registerActions(bool firstLoad)
+void EncryptionActions::registerActions()
 {
 	if (!Instance)
-		Instance = new EncryptionActions(firstLoad);
+		Instance = new EncryptionActions();
 }
 
 void EncryptionActions::unregisterActions()
@@ -84,7 +84,7 @@ void EncryptionActions::unregisterActions()
 	Instance = 0;
 }
 
-EncryptionActions::EncryptionActions(bool firstLoad)
+EncryptionActions::EncryptionActions()
 {
 	EnableEncryptionActionDescription = new ActionDescription(this,
 			ActionDescription::TypeChat, "encryptionAction",
@@ -92,9 +92,6 @@ EncryptionActions::EncryptionActions(bool firstLoad)
 			"security-high", tr("Encrypt"),
 			true, checkCanEncrypt
 	);
-
-	if (firstLoad)
-		ChatEditBox::addAction("encryptionAction");
 
 	SendPublicKeyActionDescription = new ActionDescription(this,
 		ActionDescription::TypeUser, "sendPublicKeyAction",

@@ -239,6 +239,7 @@ public:
 		o podanej nazwie znajduje się już na pasku narzędzi.
 	**/
 	bool hasAction(const QString &action_name);
+	bool windowHasAction(const QString &action_name, bool exclude);
 
 	int xOffset() { return XOffset; }
 	int yOffset() { return YOffset; }
@@ -254,6 +255,7 @@ public slots:
 
 signals:
 	void updated();
+	void removed(ToolBar *toolbar);
 
 };
 

@@ -203,14 +203,6 @@ void ChatEditBox::createDefaultToolbars(QDomElement toolbarsConfig)
 	addToolButton(toolbarConfig, "sendAction", Qt::ToolButtonTextBesideIcon);
 }
 
-void ChatEditBox::addAction(const QString &actionName, Qt::ToolButtonStyle style)
-{
-	addToolButton(findExistingToolbar("chat"), actionName, style);
-
-	foreach (ChatEditBox *chatEditBox, chatEditBoxes)
-		chatEditBox->refreshToolBars();
-}
-
 void ChatEditBox::openEmoticonSelector(const QWidget *activatingWidget)
 {
 	//emoticons_selector zawsze b�dzie NULLem gdy wchodzimy do tej funkcji

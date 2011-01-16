@@ -41,6 +41,8 @@ namespace EncryptionNg
 
 extern "C" int encryption_ng_init(bool firstLoad)
 {
+	Q_UNUSED(firstLoad)
+
 	EncryptionNg::InitObject = new QCA::Initializer();
 
 	if (!QCA::isSupported("pkey") ||
@@ -63,7 +65,7 @@ extern "C" int encryption_ng_init(bool firstLoad)
 
 	EncryptionManager::createInstance();
 	EncryptionProviderManager::createInstance();
-	EncryptionActions::registerActions(firstLoad);
+	EncryptionActions::registerActions();
 
 	return 0;
 }

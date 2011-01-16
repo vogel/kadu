@@ -30,9 +30,11 @@
 
 extern "C" int screenshot_init(bool firstLoad)
 {
+	Q_UNUSED(firstLoad)
+
 	kdebugf();
 
-	ScreenshotActions::registerActions(firstLoad);
+	ScreenshotActions::registerActions();
 	ScreenShotConfiguration::createInstance();
 	ScreenShotConfigurationUiHandler::registerConfigurationUi();
 	ScreenshotNotification::registerNotifications();
