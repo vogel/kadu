@@ -349,19 +349,22 @@ void ChatWidgetActions::moreActionsActionActivated(QAction *sender, bool toggled
 	ToolBar *toolbar = qobject_cast<ToolBar *>(parent);
 
 	QMenu menu;
+	QMenu *subMenu = new QMenu(tr("More"), &menu);
 
 	foreach (const QString &actionName, Actions::instance()->keys())
 	{
-		ActionDescription *actionDescription = Actions::instance()->value(actionName);
-		if (ActionDescription::TypeChat != actionDescription->type())
-			continue;
-
 		if (toolbar && toolbar->windowHasAction(actionName, false))
 			continue;
 
-		menu.addAction(Actions::instance()->createAction(actionName, chatEditBox));
+		ActionDescription *actionDescription = Actions::instance()->value(actionName);
+		if (ActionDescription::TypeChat == actionDescription->type())
+			menu.addAction(Actions::instance()->createAction(actionName, chatEditBox));
+		else if (ActionDescription::TypeUser == actionDescription->type())
+			subMenu->addAction(Actions::instance()->createAction(actionName, chatEditBox));
 	}
 
+	menu.addSeparator();
+	menu.addMenu(subMenu);
 	menu.exec(widget->mapToGlobal(QPoint(0, widget->height())));
 }
 
