@@ -90,7 +90,11 @@ GroupTabBar::GroupTabBar(QWidget *parent) :
 	connect(GroupManager::instance(), SIGNAL(saveGroupData()), this, SLOT(saveGroupTabsPosition()));
 
 	ShowAllGroup = config_file.readBoolEntry("Look", "ShowGroupAll", true);
-	updateAutoGroupTab();
+	if (ShowAllGroup)
+		AutoGroupTabPosition = config_file.readNumEntry("Look", "AllGroupTabPosition", 0);
+	else if (hasAnyUngrouppedBuddy())
+		AutoGroupTabPosition = config_file.readNumEntry("Look", "UngroupedGroupTabPosition", -1);
+	updateAutoGroupTab(ShowAllGroup);
 
 	if (!config_file.readBoolEntry("Look", "DisplayGroupTabs", true))
 	{
@@ -121,8 +125,23 @@ GroupTabBar::~GroupTabBar()
 
 void GroupTabBar::updateAutoGroupTab()
 {
+	saveGroupTabsPosition();
+	updateAutoGroupTab(ShowAllGroup);
+}
+
+void GroupTabBar::updateAutoGroupTab(bool oldShowAllGroup)
+{
+	bool currentWasAutoGroup = false;
+
+	if (oldShowAllGroup)
+		config_file.writeEntry("Look", "AllGroupTabPosition", AutoGroupTabPosition);
+	else
+		config_file.writeEntry("Look", "UngroupedGroupTabPosition", AutoGroupTabPosition);
+
 	if (-1 != AutoGroupTabPosition && tabData(AutoGroupTabPosition) == "AutoTab")
 	{
+		if (AutoGroupTabPosition == currentIndex())
+			currentWasAutoGroup = true;
 		removeTab(AutoGroupTabPosition);
 		AutoGroupTabPosition = -1;
 	}
@@ -134,13 +153,21 @@ void GroupTabBar::updateAutoGroupTab()
 	}
 	else if (hasAnyUngrouppedBuddy())
 	{
-		AutoGroupTabPosition = config_file.readNumEntry("Look", "UngroupedGroupTabPosition", 100);
+		AutoGroupTabPosition = config_file.readNumEntry("Look", "UngroupedGroupTabPosition", -1);
 		AutoGroupTabPosition = insertTab(AutoGroupTabPosition, tr("Ungrouped"));
-	} else
+	}
+	else
 		AutoGroupTabPosition = -1;
 
 	if (-1 != AutoGroupTabPosition)
+	{
 		setTabData(AutoGroupTabPosition, "AutoTab");
+		if (currentWasAutoGroup)
+		{
+			setCurrentIndex(AutoGroupTabPosition);
+			currentChangedSlot(AutoGroupTabPosition);
+		}
+	}
 }
 
 void GroupTabBar::addGroup(const Group &group)
@@ -381,18 +408,18 @@ void GroupTabBar::moveToGroup()
 	}
 }
 
- void GroupTabBar::saveGroupTabsPosition()
- {
-	Group group;
+void GroupTabBar::saveGroupTabsPosition()
+{
+	AutoGroupTabPosition = -1;
 	for (int i = 0; i < count(); ++i)
 	{
-		group = GroupManager::instance()->byUuid(tabData(i).toString());
+		Group group(GroupManager::instance()->byUuid(tabData(i).toString()));
 		if (group)
 			group.setTabPosition(i);
 		else
 			AutoGroupTabPosition = i;
 	}
- }
+}
 
 void GroupTabBar::configurationUpdated()
 {
@@ -413,20 +440,10 @@ void GroupTabBar::configurationUpdated()
 
 	setVisible(true);
 
-	bool show = config_file.readBoolEntry("Look", "ShowGroupAll", true);
-
-	int autoGroupOldPosition = -1;
-
-	for (int i = 0; i < count(); ++i)
-		if (tabData(i).toString() == "AutoTab")
-		{
-			autoGroupOldPosition = i;
-			break;
-		}
-
-
-	ShowAllGroup = show;
-	updateAutoGroupTab();
+	saveGroupTabsPosition();
+	bool oldShowAllGroup = ShowAllGroup;
+	ShowAllGroup = config_file.readBoolEntry("Look", "ShowGroupAll", true);
+	updateAutoGroupTab(oldShowAllGroup);
 	Filter->setAllGroupShown(ShowAllGroup);
 
 	if (AutoGroupTabPosition == currentIndex())
