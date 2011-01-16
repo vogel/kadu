@@ -34,6 +34,7 @@ class ChatWidgetActions : public QObject, ConfigurationAwareObject
 {
 	Q_OBJECT
 
+	ActionDescription *MoreActions;
 	ActionDescription *AutoSend;
 	ActionDescription *ClearChat;
 	ActionDescription *InsertImage;
@@ -58,6 +59,7 @@ private slots:
 	void sendActionCreated(Action *action);
 	void insertEmoticonActionCreated(Action *action);
 
+	void moreActionsActionActivated(QAction *sender, bool toggled);
 	void autoSendActionActivated(QAction *sender, bool toggled);
 	void clearActionActivated(QAction *sender, bool toggled);
 	void insertImageActionActivated(QAction *sender, bool toggled);

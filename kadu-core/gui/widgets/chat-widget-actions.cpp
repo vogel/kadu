@@ -23,6 +23,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtGui/QMenu>
+
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
 #include "buddies/buddy-shared.h"
@@ -38,6 +40,7 @@
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-widget.h"
 #include "gui/widgets/chat-widget-manager.h"
+#include "gui/widgets/toolbar.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/kadu-window-actions.h"
 #include "gui/windows/message-dialog.h"
@@ -136,6 +139,12 @@ static void disableNoGadu(Action *action)
 
 ChatWidgetActions::ChatWidgetActions(QObject *parent) : QObject(parent)
 {
+	MoreActions = new ActionDescription(0,
+		ActionDescription::TypeChat, "moreActionsAction",
+		this, SLOT(moreActionsActionActivated(QAction *, bool)),
+		"", tr("More..."), false
+	);
+	
 	AutoSend = new ActionDescription(0,
 		ActionDescription::TypeChat, "autoSendAction",
 		this, SLOT(autoSendActionActivated(QAction *, bool)),
@@ -311,6 +320,49 @@ void ChatWidgetActions::autoSendActionActivated(QAction *sender, bool toggled)
 	config_file.writeEntry("Chat", "AutoSend", toggled);
  	chatEditBox->setAutoSend(toggled);
 	autoSendActionCheck();
+}
+
+void ChatWidgetActions::moreActionsActionActivated(QAction *sender, bool toggled)
+{
+	Q_UNUSED(toggled)
+	Action *action = dynamic_cast<Action *>(sender);
+	if (!action)
+		return;
+
+	ChatEditBox *chatEditBox = dynamic_cast<ChatEditBox *>(sender->parent());
+	if (!chatEditBox)
+		return;
+
+	ChatWidget *chatWidget = chatEditBox->chatWidget();
+	if (!chatWidget)
+		return;
+
+	QList<QWidget *> widgets = sender->associatedWidgets();
+	if (widgets.size() == 0)
+		return;
+
+	QWidget *widget = widgets[widgets.size() - 1];
+
+	QWidget *parent = widget->parentWidget();
+	while (0 != parent && 0 == qobject_cast<ToolBar *>(parent))
+		parent = parent->parentWidget();
+	ToolBar *toolbar = qobject_cast<ToolBar *>(parent);
+
+	QMenu menu;
+
+	foreach (const QString &actionName, Actions::instance()->keys())
+	{
+		ActionDescription *actionDescription = Actions::instance()->value(actionName);
+		if (ActionDescription::TypeChat != actionDescription->type())
+			continue;
+
+		if (toolbar && toolbar->windowHasAction(actionName, false))
+			continue;
+
+		menu.addAction(Actions::instance()->createAction(actionName, chatEditBox));
+	}
+
+	menu.exec(widget->mapToGlobal(QPoint(0, widget->height())));
 }
 
 void ChatWidgetActions::clearActionActivated(QAction *sender, bool toggled)
