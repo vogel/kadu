@@ -78,6 +78,11 @@ ChatWidget::ChatWidget(Chat chat, QWidget *parent) :
 {
 	kdebugf();
 
+	if (CurrentChat.contacts().count() > 1)
+		setWindowRole("kadu-chat-conference");
+	else
+		setWindowRole("kadu-chat-simple");
+
 	setAcceptDrops(true);
 	ChatWidgetManager::instance()->registerChatWidget(this);
 
