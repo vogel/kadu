@@ -19,6 +19,8 @@
 * sms: #1727 fixed: removed plus gateway (Vogel)
 * nextinfo: module ported to Kadu 0.6.6 (ultr)
 * encryption_ng: #1933 fixed: do not turn on encryption when received unencrypted message (Vogel)
+* gui: added "more actions" action to chat toolbars (Vogel)
+* gui: #1733 fixed: new default layout of chat toolbars (Vogel)
 
 +++ version 0.6.6-beta14.2
 * tabs: #1906 fixed: crash on tabs module load (regression from beta14) (beevvy)

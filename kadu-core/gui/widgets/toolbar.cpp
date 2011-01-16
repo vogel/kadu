@@ -545,6 +545,9 @@ void ToolBar::configurationUpdated()
 {
 	QDomElement toolbarsConfig = xml_config_file->findElement(xml_config_file->rootElement(), "Toolbars");
 
+	if (!toolbarsConfig.hasAttribute("blocked"))
+		toolbarsConfig.setAttribute("blocked", "1");
+
 	if (toolbarsConfig.isNull())
 		return setMovable(false);
 

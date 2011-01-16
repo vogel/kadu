@@ -177,29 +177,19 @@ void ChatEditBox::createDefaultToolbars(QDomElement toolbarsConfig)
 {
 	QDomElement dockAreaConfig = getDockAreaConfigElement(toolbarsConfig, "chat_topDockArea");
 	QDomElement toolbarConfig = xml_config_file->createElement(dockAreaConfig, "ToolBar");
-	toolbarConfig.setAttribute("align", "right");
 
 	addToolButton(toolbarConfig, "autoSendAction");
 	addToolButton(toolbarConfig, "clearChatAction");
-	addToolButton(toolbarConfig, "insertEmoticonAction");
-#ifndef Q_WS_MAEMO_5
-	addToolButton(toolbarConfig, "whoisAction");
-	addToolButton(toolbarConfig, "insertImageAction");
-	addToolButton(toolbarConfig, "editUserAction");
+	addToolButton(toolbarConfig, "insertEmoticonAction", Qt::ToolButtonTextBesideIcon);
 
-	dockAreaConfig = getDockAreaConfigElement(toolbarsConfig, "chat_bottomDockArea");
-	toolbarConfig = xml_config_file->createElement(dockAreaConfig, "ToolBar");
-	toolbarConfig.setAttribute("x_offset", 0);
-#endif
-	addToolButton(toolbarConfig, "boldAction");
-	addToolButton(toolbarConfig, "italicAction");
-	addToolButton(toolbarConfig, "underlineAction");
-	addToolButton(toolbarConfig, "colorAction");
 #ifndef Q_WS_MAEMO_5
-	toolbarConfig = xml_config_file->createElement(dockAreaConfig, "ToolBar");
-	toolbarConfig.setAttribute("x_offset", 200);
-	toolbarConfig.setAttribute("align", "right");
+	addToolButton(toolbarConfig, "insertImageAction");
+	addToolButton(toolbarConfig, "showHistoryAction");
+	addToolButton(toolbarConfig, "encryptionAction");
+	addToolButton(toolbarConfig, "editUserAction");
 #endif
+
+	addToolButton(toolbarConfig, "__spacer1", Qt::ToolButtonTextBesideIcon);
 	addToolButton(toolbarConfig, "sendAction", Qt::ToolButtonTextBesideIcon);
 }
 
