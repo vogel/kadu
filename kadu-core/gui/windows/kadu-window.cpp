@@ -586,12 +586,6 @@ void KaduWindow::createDefaultToolbars(QDomElement parentConfig)
 #endif
 }
 
-void KaduWindow::addAction(const QString &actionName, Qt::ToolButtonStyle style)
-{
-	addToolButton(findExistingToolbar(QString()), actionName, style);
-	Core::instance()->kaduWindow()->refreshToolBars();
-}
-
 ActionDataSource * KaduWindow::actionSource()
 {
 	return buddiesListView();

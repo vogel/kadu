@@ -65,7 +65,9 @@ TabsManager *tabs_manager;
 
 extern "C" KADU_EXPORT int tabs_init(bool firstload)
 {
-	tabs_manager = new TabsManager(firstload);
+	Q_UNUSED(firstload)
+
+	tabs_manager = new TabsManager();
 	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/tabs.ui"));
 	return 0;
 }
@@ -89,7 +91,7 @@ static void disableNewTab(Action *action)
 	kdebugf2();
 }
 
-TabsManager::TabsManager(bool firstLoad) :
+TabsManager::TabsManager() :
 		NoTabs(false), ForceTabs(false), TargetTabs(-1)
 {
 	kdebugf();
@@ -142,9 +144,6 @@ TabsManager::TabsManager(bool firstLoad) :
 		"kadu_icons/tab-detach", tr("Attach Chat to Tabs"), true
 	);
 	connect(AttachToTabsActionDescription, SIGNAL(actionCreated(Action *)), this, SLOT(attachToTabsActionCreated(Action *)));
-
-	if (firstLoad)
-		ChatEditBox::addAction("attachToTabsAction");
 
 	if (config_file.readBoolEntry("Chat", "SaveOpenedWindows", true))
 		ensureLoaded(); //loadTabs();

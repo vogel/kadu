@@ -37,7 +37,7 @@ class EncryptionActions : public QObject
 	ActionDescription *EnableEncryptionActionDescription;
 	ActionDescription *SendPublicKeyActionDescription;
 
-	EncryptionActions(bool firstLoad);
+	EncryptionActions();
 	virtual ~EncryptionActions();
 
 	void sendPublicKey(const Contact &contact);
@@ -49,7 +49,7 @@ private slots:
 	void sendPublicKeyActionActivated(QAction *sender, bool toggled);
 
 public:
-	static void registerActions(bool firstLoad);
+	static void registerActions();
 	static void unregisterActions();
 
 	static EncryptionActions * instance() { return Instance; }

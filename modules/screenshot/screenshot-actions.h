@@ -54,7 +54,7 @@ private slots:
 	void takeWindowShotSlot();
 
 public:
-	static void registerActions(bool firstLoad);
+	static void registerActions();
 	static void unregisterActions();
 
 	static ScreenshotActions * instance();

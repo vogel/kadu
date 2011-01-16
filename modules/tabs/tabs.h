@@ -94,7 +94,7 @@ protected:
 	virtual void load();
 
 public:
-	explicit TabsManager(bool firstLoad);
+	explicit TabsManager();
 	virtual ~TabsManager();
 
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);

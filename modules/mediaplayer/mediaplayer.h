@@ -130,7 +130,7 @@ protected:
 	void configurationUpdated();
 
 public:
-	MediaPlayer(bool firstLoad);
+	MediaPlayer();
 	~MediaPlayer();
 
 	/*
