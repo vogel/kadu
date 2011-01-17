@@ -51,7 +51,7 @@ ChatWindow::ChatWindow(ChatWidget *chatWidget, QWidget *parent) :
 	kdebugf();
 
 	setWindowRole("kadu-chat");
-	if(chatWidget && chatWidget->chat().details() && chatWidget->chat().details()->type())
+	if (chatWidget && chatWidget->chat().details() && chatWidget->chat().details()->type())
 		setWindowRole(chatWidget->chat().details()->type()->windowRole());
 
 #ifdef Q_OS_MAC
