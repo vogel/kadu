@@ -20,11 +20,11 @@ function kadu_clearMessages()
 	node.innerHTML = "";
 }
 
-timer = null;
-shouldScroll = false;
+var kadu_timer = null;
+var kadu_shouldScroll = false;
 function kadu_appendMessage(html)
 {
-	shouldScroll = shouldScroll || document.body.scrollTop >= ( document.body.offsetHeight - window.innerHeight );
+	kadu_shouldScroll = kadu_shouldScroll || document.body.scrollTop >= ( document.body.offsetHeight - window.innerHeight );
 
 	var node = document.getElementsByTagName('body')[0];
 	var range = document.createRange();
@@ -32,13 +32,13 @@ function kadu_appendMessage(html)
 	var documentFragment = range.createContextualFragment(html);
 	node.appendChild(documentFragment);
 
-	if (shouldScroll)
+	if (kadu_shouldScroll)
 	{
 		for(var img in node.getElementsByTagName('img'))
 			img.onload = function(){ setTimeout("queueScrollToBottom();", 20); }
-		if (timer != null)
-			clearTimeout(timer);
-		timer = setTimeout("queueScrollToBottom();", 20);
+		if (kadu_timer != null)
+			clearTimeout(kadu_timer);
+		kadu_timer = setTimeout("queueScrollToBottom();", 20);
 	}
 }
 
@@ -50,7 +50,7 @@ function queueScrollToBottom()
 function scrollToBottom()
 {
 	document.body.scrollTop = document.body.offsetHeight;
-	shouldScroll = false;
+	kadu_shouldScroll = false;
 }
 
 function kadu_removeFirstMessage()
