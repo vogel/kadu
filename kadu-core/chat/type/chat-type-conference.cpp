@@ -107,13 +107,13 @@ QIcon ChatTypeConference::icon() const
 }
 
 /**
-	* @author Piotr 'ultr' Dąbrowski
-	* @short Window role for this chat type.
-	* @return window role for this chat type.
-	*
-	* Kadu window role for this chat type.
-	* For conference the role is "kadu-chat-conference".
-	*/
+ * @author Piotr 'ultr' Dąbrowski
+ * @short Window role for this chat type.
+ * @return window role for this chat type.
+ *
+ * Kadu window role for this chat type.
+ * For conference the role is "kadu-chat-conference".
+ */
 QString ChatTypeConference::windowRole() const
 {
 	return "kadu-chat-conference";

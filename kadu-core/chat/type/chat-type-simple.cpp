@@ -107,13 +107,13 @@ QIcon ChatTypeSimple::icon() const
 }
 
 /**
-	* @author Piotr 'ultr' Dąbrowski
-	* @short Window role for this chat type.
-	* @return window role for this chat type.
-	*
-	* Kadu window role for this chat type.
-	* For the simple chat the role is "kadu-chat-simple".
-	*/
+ * @author Piotr 'ultr' Dąbrowski
+ * @short Window role for this chat type.
+ * @return window role for this chat type.
+ *
+ * Kadu window role for this chat type.
+ * For the simple chat the role is "kadu-chat-simple".
+ */
 QString ChatTypeSimple::windowRole() const
 {
 	return "kadu-chat-simple";
