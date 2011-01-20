@@ -175,7 +175,7 @@ void BuddyContactsTableModel::itemUpdated(BuddyContactsTableItem *item)
 	int index = Contacts.indexOf(item);
 	if (index != -1)
 	{
-		emit dataChanged(createIndex(index, 0), createIndex(index, 2));
+		emit dataChanged(createIndex(index, 0), createIndex(index, 1));
 		emit validChanged();
 	}
 }
