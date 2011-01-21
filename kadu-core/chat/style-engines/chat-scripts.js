@@ -3,45 +3,59 @@
 //clear messages
 function adium_clearMessages()
 {
-	chatElement = document.getElementById('Chat');
+	var chatElement = document.getElementById('Chat');
 	chatElement.innerHTML = "";
 }
 
 //removes first message
 function adium_removeFirstMessage()
 {
-	chatElement = document.getElementById('Chat');
+	var chatElement = document.getElementById('Chat');
 	chatElement.removeChild(chatElement.firstChild);
 }
 
 function kadu_clearMessages()
 {
-	node = document.getElementsByTagName('body')[0];
+	var node = document.getElementsByTagName('body')[0];
 	node.innerHTML = "";
 }
 
+var kadu_timer = null;
+var kadu_shouldScroll = false;
 function kadu_appendMessage(html)
 {
-	shouldScroll = document.body.scrollTop >= (document.body.offsetHeight - (window.innerHeight * 1.2));
+	kadu_shouldScroll = kadu_shouldScroll || document.body.scrollTop >= ( document.body.offsetHeight - window.innerHeight );
 
-	node = document.getElementsByTagName('body')[0];
-	range = document.createRange();
+	var node = document.getElementsByTagName('body')[0];
+	var range = document.createRange();
 	range.selectNode(node);
-	documentFragment = range.createContextualFragment(html);
+	var documentFragment = range.createContextualFragment(html);
 	node.appendChild(documentFragment);
 
-	if (shouldScroll)
-		setTimeout("scrollToBottom()", 0);
+	if (kadu_shouldScroll)
+	{
+		for(var img in node.getElementsByTagName('img'))
+			img.onload = function(){ setTimeout("queueScrollToBottom();", 20); }
+		if (kadu_timer != null)
+			clearTimeout(kadu_timer);
+		kadu_timer = setTimeout("queueScrollToBottom();", 20);
+	}
+}
+
+function queueScrollToBottom()
+{
+	setTimeout("scrollToBottom();", 20);
 }
 
 function scrollToBottom()
 {
 	document.body.scrollTop = document.body.offsetHeight;
+	kadu_shouldScroll = false;
 }
 
 function kadu_removeFirstMessage()
 {
-	node = document.getElementsByTagName('body')[0];
+	var node = document.getElementsByTagName('body')[0];
 	node.removeChild(node.firstChild);
 }
 
