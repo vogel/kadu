@@ -21,6 +21,7 @@
 #include <QtGui/QAction>
 #include <QtGui/QMenu>
 
+#include "gui/actions/action.h"
 #include "gui/actions/action-description.h"
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-widget.h"
@@ -31,6 +32,25 @@
 #include "screenshot-actions.h"
 
 ScreenshotActions *ScreenshotActions::Instance = 0;
+
+static void disableNoChatImageService(Action *action)
+{
+	action->setEnabled(false);
+
+	ChatEditBox *chatEditBox = dynamic_cast<ChatEditBox *>(action->parent());
+	if (!chatEditBox)
+		return;
+
+	Account account = action->chat().chatAccount();
+	if (!account)
+		return;
+
+	Protocol *protocol = account.protocolHandler();
+	if (!protocol)
+		return;
+
+	action->setEnabled(protocol->chatImageService());
+}
 
 void ScreenshotActions::registerActions()
 {
@@ -59,7 +79,8 @@ ScreenshotActions::ScreenshotActions() :
 			ActionDescription::TypeChat, "ScreenShotAction",
 			this, SLOT(screenshotActionActivated(QAction *, bool)),
 			"external_modules/screenshot-camera-photo",
-			tr("ScreenShot"), false
+			tr("ScreenShot"), false,
+			disableNoChatImageService
 	);
 
 	createMenu();
