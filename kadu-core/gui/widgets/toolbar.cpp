@@ -296,7 +296,7 @@ void ToolBar::dragEnterEvent(QDragEnterEvent *event)
 				ActionDrag::decode(event, actionName, style) &&
 				(
 					(event->source() == this)
-					|| (!windowHasAction(actionName, false) && Actions::instance()->contains(actionName) && dynamic_cast<MainWindow *>(parent())->supportsActionType(Actions::instance()->value(actionName)->type()))
+					|| (Actions::instance()->contains(actionName) && dynamic_cast<MainWindow *>(parent())->supportsActionType(Actions::instance()->value(actionName)->type()))
 					|| (actionName.startsWith(QLatin1String("__separator")) || actionName.startsWith(QLatin1String("__spacer")))
 				)
 			)
