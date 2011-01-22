@@ -43,7 +43,7 @@
 #include "chat-messages-view.h"
 
 ChatMessagesView::ChatMessagesView(Chat chat, bool supportTransparency, QWidget *parent) :
-		KaduWebView(parent), CurrentChat(chat), SupportTransparency(supportTransparency), atBottom(true), manualScroll(true)
+		KaduWebView(parent), CurrentChat(chat), SupportTransparency(supportTransparency), AtBottom(true), ManualScroll(true)
 {
 	Renderer = new HtmlMessagesRenderer(CurrentChat, this);
 
@@ -61,8 +61,8 @@ ChatMessagesView::ChatMessagesView(Chat chat, bool supportTransparency, QWidget 
 
 	connectChat();
 
-	connect(this->page()->mainFrame(), SIGNAL(contentsSizeChanged(const QSize&)), this, SLOT(scrollToBottom()));
-	connect(this->page(), SIGNAL(scrollRequested(int, int, const QRect&)), this, SLOT(scrollRequested(int, int, const QRect&)));
+	connect(this->page()->mainFrame(), SIGNAL(contentsSizeChanged(const QSize &)), this, SLOT(scrollToBottom()));
+	connect(this->page(), SIGNAL(scrollRequested(int, int, const QRect &)), this, SLOT(scrollRequested(int, int, const QRect &)));
 
 	ChatStylesManager::instance()->chatViewCreated(this);
 }
@@ -196,7 +196,7 @@ void ChatMessagesView::clearMessages()
 {
 	Renderer->clearMessages();
 	emit messagesUpdated();
-	atBottom = true;
+	AtBottom = true;
 }
 
 unsigned int ChatMessagesView::countMessages()
@@ -215,9 +215,10 @@ void ChatMessagesView::scrollRequested(int dx, int dy, const QRect &rectToScroll
 {
 	Q_UNUSED(dx);
 	Q_UNUSED(rectToScroll);
-	if(manualScroll)
+
+	if (ManualScroll)
 	{
-		atBottom =
+		AtBottom =
 			(page()->mainFrame()->scrollBarValue(Qt::Vertical)      >= page()->mainFrame()->scrollBarMaximum(Qt::Vertical)) ||
 			(page()->mainFrame()->scrollBarValue(Qt::Vertical) - dy >= page()->mainFrame()->scrollBarMaximum(Qt::Vertical));
 	}
@@ -225,10 +226,10 @@ void ChatMessagesView::scrollRequested(int dx, int dy, const QRect &rectToScroll
 
 void ChatMessagesView::scrollToBottom()
 {
-	if(atBottom)
+	if (AtBottom)
 	{
-		manualScroll = false;
+		ManualScroll = false;
 		page()->mainFrame()->setScrollBarValue(Qt::Vertical, page()->mainFrame()->scrollBarMaximum(Qt::Vertical));
-		manualScroll = true;
+		ManualScroll = true;
 	}
 }
