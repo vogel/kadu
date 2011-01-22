@@ -755,3 +755,9 @@ bool BuddiesListView::hasContactSelected()
 
 	return false;
 }
+
+void BuddiesListView::hideEvent(QHideEvent *event)
+{
+	toolTipHide(false);
+	QTreeView::hideEvent(event);
+}
