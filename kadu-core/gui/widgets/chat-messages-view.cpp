@@ -5,6 +5,7 @@
  * Copyright 2008 Tomasz Rostański (rozteck@interia.pl)
  * Copyright 2009 Bartłomiej Zimoń (uzi18@o2.pl)
  * Copyright 2008, 2009, 2010 Piotr Galiszewski (piotrgaliszewski@gmail.com)
+ * Copyright 2011 Piotr Dąbrowski (ultr@ultr.pl)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -42,8 +43,7 @@
 #include "chat-messages-view.h"
 
 ChatMessagesView::ChatMessagesView(Chat chat, bool supportTransparency, QWidget *parent) :
-		KaduWebView(parent), CurrentChat(chat),
-		LastScrollValue(0), LastLine(false), SupportTransparency(supportTransparency)
+		KaduWebView(parent), CurrentChat(chat), SupportTransparency(supportTransparency), atBottom(true), manualScroll(true)
 {
 	Renderer = new HtmlMessagesRenderer(CurrentChat, this);
 
@@ -60,7 +60,9 @@ ChatMessagesView::ChatMessagesView(Chat chat, bool supportTransparency, QWidget 
 	settings()->setAttribute(QWebSettings::JavascriptEnabled, true);
 
 	connectChat();
-	connect(this, SIGNAL(loadFinished(bool)), this, SLOT(scrollToLine()));
+
+	connect(this->page()->mainFrame(), SIGNAL(contentsSizeChanged(const QSize&)), this, SLOT(scrollToBottom()));
+	connect(this->page(), SIGNAL(scrollRequested(int, int, const QRect&)), this, SLOT(scrollRequested(int, int, const QRect&)));
 
 	ChatStylesManager::instance()->chatViewCreated(this);
 }
@@ -122,7 +124,6 @@ void ChatMessagesView::pageDown()
 
 void ChatMessagesView::imageReceived(const QString &imageId, const QString &imageFileName)
 {
-	rememberScrollBarPosition();
 	Renderer->replaceLoadingImages(imageId, imageFileName);
 }
 
@@ -133,7 +134,6 @@ void ChatMessagesView::updateBackgroundsAndColors()
 
 void ChatMessagesView::repaintMessages()
 {
-	rememberScrollBarPosition();
 	Renderer->refresh();
 }
 
@@ -196,6 +196,7 @@ void ChatMessagesView::clearMessages()
 {
 	Renderer->clearMessages();
 	emit messagesUpdated();
+	atBottom = true;
 }
 
 unsigned int ChatMessagesView::countMessages()
@@ -207,30 +208,27 @@ void ChatMessagesView::messageStatusChanged(Message::Status status)
 {
 	if (!sender())
 		return;
-	rememberScrollBarPosition();
 	Renderer->messageStatusChanged(Message(sender()), status);
 }
 
-void ChatMessagesView::resizeEvent(QResizeEvent *e)
+void ChatMessagesView::scrollRequested(int dx, int dy, const QRect &rectToScroll)
 {
- 	LastScrollValue = page()->currentFrame()->scrollBarValue(Qt::Vertical);
- 	LastLine = (LastScrollValue == page()->currentFrame()->scrollBarMaximum(Qt::Vertical));
-
- 	KaduWebView::resizeEvent(e);
-
-	scrollToLine();
+	Q_UNUSED(dx);
+	Q_UNUSED(rectToScroll);
+	if(manualScroll)
+	{
+		atBottom =
+			(page()->mainFrame()->scrollBarValue(Qt::Vertical)      >= page()->mainFrame()->scrollBarMaximum(Qt::Vertical)) ||
+			(page()->mainFrame()->scrollBarValue(Qt::Vertical) - dy >= page()->mainFrame()->scrollBarMaximum(Qt::Vertical));
+	}
 }
 
-void ChatMessagesView::rememberScrollBarPosition()
+void ChatMessagesView::scrollToBottom()
 {
-	LastScrollValue = page()->currentFrame()->scrollBarValue(Qt::Vertical);
-	LastLine = (LastScrollValue == page()->currentFrame()->scrollBarMaximum(Qt::Vertical));
-}
-
-void ChatMessagesView::scrollToLine()
-{
- 	if (LastLine)
- 		page()->currentFrame()->setScrollBarValue(Qt::Vertical, page()->currentFrame()->scrollBarMaximum(Qt::Vertical));
- 	else
- 		page()->currentFrame()->setScrollBarValue(Qt::Vertical, LastScrollValue);
+	if(atBottom)
+	{
+		manualScroll = false;
+		page()->mainFrame()->setScrollBarValue(Qt::Vertical, page()->mainFrame()->scrollBarMaximum(Qt::Vertical));
+		manualScroll = true;
+	}
 }

@@ -4,6 +4,7 @@
  * Copyright 2007, 2008, 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * Copyright 2008 Michał Podsiadlik (michal@kadu.net)
  * Copyright 2008, 2009, 2010 Piotr Galiszewski (piotrgaliszewski@gmail.com)
+ * Copyright 2011 Piotr Dąbrowski (ultr@ultr.pl)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -54,19 +55,21 @@ class KADUAPI ChatMessagesView : public KaduWebView
 	void connectChat();
 	void disconnectChat();
 
-protected:
-	virtual void resizeEvent(QResizeEvent *e);
+	bool atBottom;
+	bool manualScroll;
 
 private slots:
 	void repaintMessages();
 
 	void pageUp();
 	void pageDown();
-	void scrollToLine();
 
 	void imageReceived(const QString &imageId, const QString &imageFileName);
 
 	void messageStatusChanged(Message::Status);
+
+	void scrollToBottom();
+	void scrollRequested(int dx, int dy, const QRect & rectToScroll);
 
 public:
 	ChatMessagesView(Chat chat = Chat::null, bool supportTransparency = true, QWidget *parent = 0);
@@ -85,8 +88,6 @@ public:
 	void updateBackgroundsAndColors();
 
 	void setForcePruneDisabled(bool disable);
-
-	void rememberScrollBarPosition();
 
 	Chat chat() const { return CurrentChat; }
 	void setChat(Chat chat);
