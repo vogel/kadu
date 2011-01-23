@@ -23,8 +23,8 @@
 
 #include "jabber-avatar-pep-uploader.h"
 
-#define NS_METADATA "http://www.xmpp.org/extensions/xep-0084.html#ns-metadata"
-#define NS_DATA "http://www.xmpp.org/extensions/xep-0084.html#ns-data"
+#define XMLNS_METADATA "urn:xmpp:avatar:metadata"
+#define XMLNS_DATA "urn:xmpp:avatar:data"
 
 JabberAvatarPepUploader::JabberAvatarPepUploader(Account account, QObject *parent) :
 		QObject(parent), MyAccount(account)
@@ -43,13 +43,13 @@ JabberAvatarPepUploader::~JabberAvatarPepUploader()
 
 void JabberAvatarPepUploader::publishSuccess(const QString &ns, const XMPP::PubSubItem &item)
 {
-	if (NS_METADATA != ns || item.id() != UploadedAvatarHash)
+	if (XMLNS_DATA != ns || item.id() != UploadedAvatarHash)
 		return; // not our data
 
 	QDomDocument *doc = MyProtocol->client()->client()->doc();
 
 	QDomElement metaElement = doc->createElement("metadata");
-	metaElement.setAttribute("xmlns", NS_METADATA);
+	metaElement.setAttribute("xmlns", XMLNS_METADATA);
 
 	QDomElement infoElement = doc->createElement("info");
 	infoElement.setAttribute("id", UploadedAvatarHash);
@@ -59,7 +59,7 @@ void JabberAvatarPepUploader::publishSuccess(const QString &ns, const XMPP::PubS
 	infoElement.setAttribute("type", "image/png");
 	metaElement.appendChild(infoElement);
 
-	MyProtocol->client()->pepManager()->publish(NS_METADATA, XMPP::PubSubItem(UploadedAvatarHash, metaElement));
+	MyProtocol->client()->pepManager()->publish(XMLNS_METADATA, XMPP::PubSubItem(UploadedAvatarHash, metaElement));
 
 	emit avatarUploaded(true);
 
@@ -84,12 +84,12 @@ void JabberAvatarPepUploader::doUpload(const QByteArray &data)
 	QString hash = QCA::Hash("sha1").hashToString(data);
 
 	QDomElement el = doc->createElement("data");
-	el.setAttribute("xmlns", NS_DATA);
+	el.setAttribute("xmlns", XMLNS_DATA);
 	el.appendChild(doc->createTextNode(QCA::Base64().arrayToString(data)));
 
 	UploadedAvatarHash = hash;
 
-	MyProtocol->client()->pepManager()->publish(NS_METADATA, XMPP::PubSubItem(hash, el));
+	MyProtocol->client()->pepManager()->publish(XMLNS_DATA, XMPP::PubSubItem(hash, el));
 }
 
 void JabberAvatarPepUploader::doRemove()
@@ -97,9 +97,9 @@ void JabberAvatarPepUploader::doRemove()
 	QDomDocument *doc = MyProtocol->client()->client()->doc();
 
 	QDomElement metaDataElement =  doc->createElement("metadata");
-	metaDataElement.setAttribute("xmlns", NS_METADATA);
+	metaDataElement.setAttribute("xmlns", XMLNS_METADATA);
 	metaDataElement.appendChild(doc->createElement("stop"));
-	MyProtocol->client()->pepManager()->publish(NS_METADATA, XMPP::PubSubItem("current", metaDataElement));
+	MyProtocol->client()->pepManager()->publish(XMLNS_METADATA, XMPP::PubSubItem("current", metaDataElement));
 }
 
 void JabberAvatarPepUploader::uploadAvatar(const QImage &avatar, const QByteArray &data)

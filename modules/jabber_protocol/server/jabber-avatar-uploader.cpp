@@ -72,7 +72,7 @@ void JabberAvatarUploader::uploadAvatarVCard()
 void JabberAvatarUploader::pepAvatarUploaded(bool ok)
 {
 	if (ok)
-	{
+	{	
 		emit avatarUploaded(ok, UploadingAvatar);
 		deleteLater();
 		return;
