@@ -22,14 +22,28 @@
 
 #include "contacts/contact.h"
 
+namespace XMPP
+{
+	class Jid;
+	class JT_DiscoItems;
+	class PubSubItem;
+}
+
 class JabberAvatarPepFetcher : public QObject
 {
 	Q_OBJECT
 
 	Contact MyContact;
+	XMPP::JT_DiscoItems *DiscoItems;
+	QString AvatarId;
 
 	void done();
 	void failed();
+
+private slots:
+	void discoItemsFinished();
+    void avatarMetadataQueryFinished(const XMPP::Jid &jid, const QString &node, const XMPP::PubSubItem &item);
+    void avatarDataQueryFinished(const XMPP::Jid &jid, const QString &node, const XMPP::PubSubItem &item);
 
 public:
 	explicit JabberAvatarPepFetcher(Contact contact, QObject *parent = 0);

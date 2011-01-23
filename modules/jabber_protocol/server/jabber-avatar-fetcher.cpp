@@ -32,16 +32,16 @@ JabberAvatarFetcher::JabberAvatarFetcher(Contact contact, QObject *parent) :
 
 void JabberAvatarFetcher::fetchAvatarPEP()
 {
-	JabberAvatarPepFetcher *pepUploader = new JabberAvatarPepFetcher(MyContact, this);
-	connect(pepUploader, SIGNAL(avatarFetched(Contact,bool)), this, SLOT(pepAvatarFetched(Contact,bool)));
-	pepUploader->fetchAvatar();
+	JabberAvatarPepFetcher *pepFetcher = new JabberAvatarPepFetcher(MyContact, this);
+	connect(pepFetcher, SIGNAL(avatarFetched(Contact,bool)), this, SLOT(pepAvatarFetched(Contact,bool)));
+	pepFetcher->fetchAvatar();
 }
 
 void JabberAvatarFetcher::fetchAvatarVCard()
 {
-	JabberAvatarVCardFetcher *vcardUploader = new JabberAvatarVCardFetcher(MyContact, this);
-	connect(vcardUploader, SIGNAL(avatarFetched(Contact,bool)), this, SLOT(avatarFetchedSlot(Contact,bool)));
-	vcardUploader->fetchAvatar();
+	JabberAvatarVCardFetcher *vcardFetcher = new JabberAvatarVCardFetcher(MyContact, this);
+	connect(vcardFetcher, SIGNAL(avatarFetched(Contact,bool)), this, SLOT(avatarFetchedSlot(Contact,bool)));
+	vcardFetcher->fetchAvatar();
 }
 
 void JabberAvatarFetcher::pepAvatarFetched(Contact contact, bool ok)
@@ -57,7 +57,7 @@ void JabberAvatarFetcher::pepAvatarFetched(Contact contact, bool ok)
 	fetchAvatarVCard();
 }
 
-void JabberAvatarFetcher::avatarFechedSlot(Contact contact, bool ok)
+void JabberAvatarFetcher::avatarFetchedSlot(Contact contact, bool ok)
 {
 	emit avatarFetched(contact, ok);
 	deleteLater();

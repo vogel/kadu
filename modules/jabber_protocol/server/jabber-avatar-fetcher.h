@@ -40,7 +40,7 @@ class JabberAvatarFetcher : public QObject
 
 private slots:
 	void pepAvatarFetched(Contact contact, bool ok);
-	void avatarFechedSlot(Contact contact, bool ok);
+	void avatarFetchedSlot(Contact contact, bool ok);
 
 public:
 	explicit JabberAvatarFetcher(Contact contact, QObject *parent = 0);

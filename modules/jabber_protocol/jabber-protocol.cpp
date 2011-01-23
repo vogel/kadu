@@ -270,7 +270,7 @@ void JabberProtocol::connectToServer()
 	JabberClient->setClientVersion(Core::instance()->version());
 
 	// Set caps node information
-	JabberClient->setCapsNode("http://kadu.img/caps");
+	JabberClient->setCapsNode("http://kadu.im/caps");
 	JabberClient->setCapsVersion("0.7");
 
 	JabberClient->setForceTLS(jabberAccountDetails->encryptionMode() != JabberAccountDetails::Encryption_No);
