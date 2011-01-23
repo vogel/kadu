@@ -41,12 +41,6 @@ DccSocketNotifiers::~DccSocketNotifiers()
 		Socket->destroy(Socket);
 		Socket = 0;
 	}
-
-	if (Socket7)
-	{
-		Socket7->destroy(Socket7);
-		Socket7 = 0;
-	}
 }
 
 void DccSocketNotifiers::watchFor(struct gg_dcc *socket)
@@ -54,7 +48,6 @@ void DccSocketNotifiers::watchFor(struct gg_dcc *socket)
 	kdebugmf(KDEBUG_NETWORK | KDEBUG_INFO, "%p\n", socket);
 
 	struct gg_dcc *oldSocket = Socket;
-	struct gg_dcc7 *oldSocket7 = Socket7;
 
 	Version = Dcc6;
 	Socket = socket;
@@ -68,10 +61,8 @@ void DccSocketNotifiers::watchFor(struct gg_dcc *socket)
 	else
 		GaduSocketNotifiers::watchFor(0);
 
-	if (oldSocket)
+	if (oldSocket && oldSocket != Socket)
 		oldSocket->destroy(oldSocket);
-	if (oldSocket7)
-		oldSocket7->destroy(oldSocket7);
 }
 
 void DccSocketNotifiers::watchFor(struct gg_dcc7 *socket)
@@ -79,7 +70,6 @@ void DccSocketNotifiers::watchFor(struct gg_dcc7 *socket)
 	kdebugmf(KDEBUG_NETWORK | KDEBUG_INFO, "%p\n", socket);
 
 	struct gg_dcc *oldSocket = Socket;
-	struct gg_dcc7 *oldSocket7 = Socket7;
 
 	Version = Dcc7;
 	Socket = 0;
@@ -105,8 +95,6 @@ void DccSocketNotifiers::watchFor(struct gg_dcc7 *socket)
 
 	if (oldSocket)
 		oldSocket->destroy(oldSocket);
-	if (oldSocket7)
-		oldSocket7->destroy(oldSocket7);
 }
 
 void DccSocketNotifiers::dcc7Accepted(struct gg_dcc7 *socket)
@@ -441,7 +429,10 @@ void DccSocketNotifiers::rejected()
 
 void DccSocketNotifiers::finished(bool ok)
 {
-	watchFor((struct gg_dcc *)0);
+	if (Version == Dcc7)
+		watchFor((struct gg_dcc7 *)0);
+	else
+		watchFor((struct gg_dcc *)0);
 	deleteLater();
 	emit done(ok);
 
