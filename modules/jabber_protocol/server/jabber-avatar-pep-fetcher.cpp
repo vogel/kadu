@@ -32,12 +32,14 @@
 #define NS_AVATAR_DATA "http://www.xmpp.org/extensions/xep-0084.html#ns-data"
 
 JabberAvatarPepFetcher::JabberAvatarPepFetcher(Contact contact, QObject *parent) :
-		QObject(parent), MyContact(contact)
+		QObject(parent), MyContact(contact), DiscoItems(0)
 {
 }
 
 JabberAvatarPepFetcher::~JabberAvatarPepFetcher()
 {
+	delete DiscoItems;
+	DiscoItems = 0;
 }
 
 void JabberAvatarPepFetcher::done()
