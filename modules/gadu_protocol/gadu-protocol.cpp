@@ -34,6 +34,7 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
+#include "avatars/avatar-manager.h"
 #include "chat/chat.h"
 #include "chat/message/formatted-message.h"
 #include "chat/chat-manager.h"
@@ -527,6 +528,9 @@ void GaduProtocol::cleanUpLoginParams()
 void GaduProtocol::networkConnected()
 {
 	networkStateChanged(NetworkConnected);
+
+	// fetch current avatar after connection
+	AvatarManager::instance()->updateAvatar(account().accountContact(), true);
 }
 
 void GaduProtocol::networkDisconnected(bool tryAgain, bool waitForPassword)

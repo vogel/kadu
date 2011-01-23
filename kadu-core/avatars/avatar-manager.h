@@ -44,7 +44,6 @@ class KADUAPI AvatarManager : public QObject, public SimpleManager<Avatar>, Acco
 	virtual ~AvatarManager();
 
 	bool needUpdate(const Contact &contact);
-	void updateAvatar(const Contact &contact, bool force = false);
 
 private slots:
 	void avatarDataUpdated();
@@ -71,6 +70,8 @@ public:
 
 	Avatar byBuddy(Buddy buddy, NotFoundAction action);
 	Avatar byContact(Contact contact, NotFoundAction action);
+
+	void updateAvatar(const Contact &contact, bool force = false);
 
 signals:
 	void avatarAboutToBeAdded(Avatar avatar);
