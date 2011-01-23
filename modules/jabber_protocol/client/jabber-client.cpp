@@ -425,6 +425,8 @@ void JabberClient::connect(const XMPP::Jid &jid, const QString &password, bool a
 	features << "http://jabber.org/protocol/rosterx";
 //	features << "http://jabber.org/protocol/muc";
 	features << "jabber:x:data";
+	features << "urn:xmpp:avatar:metadata+notify";
+
 	jabberClient->setFeatures(Features(features));
 
 	jabberClient->setTimeZone(timeZoneName(), timeZoneOffset());
