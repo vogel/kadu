@@ -1,8 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
- * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
- * Copyright 2009 Piotr Galiszewski (piotrgaliszewski@gmail.com)
+ * Copyright 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -19,31 +17,24 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef JABBER_AVATAR_FETCHER_H
-#define JABBER_AVATAR_FETCHER_H
-
-#include <QtCore/QBuffer>
-#include <QtGui/QPixmap>
+#ifndef JABBER_AVATAR_PEP_FETCHER_H
+#define JABBER_AVATAR_PEP_FETCHER_H
 
 #include "contacts/contact.h"
 
-class QHttp;
-
-class JabberAvatarFetcher : public QObject
+class JabberAvatarPepFetcher : public QObject
 {
 	Q_OBJECT
 
 	Contact MyContact;
 
-	void fetchAvatarPEP();
-	void fetchAvatarVCard();
-
-private slots:
-	void pepAvatarFetched(Contact contact, bool ok);
-	void avatarFechedSlot(Contact contact, bool ok);
+	void done();
+	void failed();
 
 public:
-	explicit JabberAvatarFetcher(Contact contact, QObject *parent = 0);
+	explicit JabberAvatarPepFetcher(Contact contact, QObject *parent = 0);
+	virtual ~JabberAvatarPepFetcher();
+
 	void fetchAvatar();
 
 signals:
@@ -51,4 +42,4 @@ signals:
 
 };
 
-#endif // JABBER_AVATAR_FETCHER_H
+#endif // JABBER_AVATAR_PEP_FETCHER_H

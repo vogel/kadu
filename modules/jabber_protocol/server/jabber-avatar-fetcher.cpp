@@ -19,20 +19,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QDir>
-#include <QtCore/QFile>
-#include <QtCore/QUrl>
-#include <QtNetwork/QHttp>
-#include <QtXml/QDomDocument>
-
-#include "accounts/account.h"
-#include "avatars/avatar.h"
-#include "avatars/avatar-manager.h"
-#include "misc/path-conversion.h"
-
-#include "client/jabber-client.h"
+#include "server/jabber-avatar-pep-fetcher.h"
+#include "server/jabber-avatar-vcard-fetcher.h"
 #include "jabber-protocol.h"
-#include "utils/vcard-factory.h"
 
 #include "jabber-avatar-fetcher.h"
 
@@ -41,47 +30,51 @@ JabberAvatarFetcher::JabberAvatarFetcher(Contact contact, QObject *parent) :
 {
 }
 
-void JabberAvatarFetcher::done()
+void JabberAvatarFetcher::fetchAvatarPEP()
 {
-	emit avatarFetched(MyContact, true);
+	JabberAvatarPepFetcher *pepUploader = new JabberAvatarPepFetcher(MyContact, this);
+	connect(pepUploader, SIGNAL(avatarFetched(Contact,bool)), this, SLOT(pepAvatarFetched(Contact,bool)));
+	pepUploader->fetchAvatar();
 }
 
-void JabberAvatarFetcher::failed()
+void JabberAvatarFetcher::fetchAvatarVCard()
 {
-	emit avatarFetched(MyContact, false);
+	JabberAvatarVCardFetcher *vcardUploader = new JabberAvatarVCardFetcher(MyContact, this);
+	connect(vcardUploader, SIGNAL(avatarFetched(Contact,bool)), this, SLOT(avatarFetchedSlot(Contact,bool)));
+	vcardUploader->fetchAvatar();
 }
 
-void JabberAvatarFetcher::fetchAvatar()
+void JabberAvatarFetcher::pepAvatarFetched(Contact contact, bool ok)
 {
-	JabberProtocol *jabberProtocol = dynamic_cast<JabberProtocol *>(MyContact.contactAccount().protocolHandler());
-	if (!jabberProtocol || !jabberProtocol->isConnected())
+	if (ok)
 	{
-		failed();
+		emit avatarFetched(contact, ok);
 		deleteLater();
 		return;
 	}
 
-	VCardFactory::instance()->getVCard(MyContact.id(), jabberProtocol->client()->rootTask(), this, SLOT(receivedVCard()));
+	// do a fallback to vcard
+	fetchAvatarVCard();
 }
 
-void JabberAvatarFetcher::receivedVCard()
+void JabberAvatarFetcher::avatarFechedSlot(Contact contact, bool ok)
 {
-	const XMPP::VCard *vcard = VCardFactory::instance()->vcard(MyContact.id());
-
-	if (vcard && !vcard->photo().isEmpty())
-	{
-		Avatar contactAvatar = AvatarManager::instance()->byContact(MyContact, ActionCreateAndAdd);
-		contactAvatar.setLastUpdated(QDateTime::currentDateTime());
-		contactAvatar.setNextUpdate(QDateTime::fromTime_t(QDateTime::currentDateTime().toTime_t() + 7200));
-
-		QPixmap pixmap;
-		pixmap.loadFromData(vcard->photo());
-
-		contactAvatar.setPixmap(pixmap);
-		done();
-	}
-	else
-		failed();
-
+	emit avatarFetched(contact, ok);
 	deleteLater();
+}
+
+void JabberAvatarFetcher::fetchAvatar()
+{
+	JabberProtocol *protocol = dynamic_cast<JabberProtocol *>(MyContact.contactAccount().protocolHandler());
+	if (!protocol || !protocol->client() || !protocol->client()->rootTask())
+	{
+		emit avatarFetched(MyContact, false);
+		deleteLater();
+		return;
+	}
+
+	if (protocol->client()->isPEPAvailable() && protocol->client()->pepManager())
+		fetchAvatarPEP();
+	else
+		fetchAvatarVCard();
 }
