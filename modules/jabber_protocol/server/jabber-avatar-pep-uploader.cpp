@@ -43,8 +43,16 @@ JabberAvatarPepUploader::~JabberAvatarPepUploader()
 
 void JabberAvatarPepUploader::publishSuccess(const QString &ns, const XMPP::PubSubItem &item)
 {
-	if (XMLNS_DATA != ns || item.id() != UploadedAvatarHash)
+	if ((XMLNS_DATA != ns && XMLNS_METADATA != ns) || item.id() != ItemId)
 		return; // not our data
+
+	if (UploadedAvatar.isNull()) // avatar was removed
+	{
+		emit avatarUploaded(true);
+
+		deleteLater();
+		return;
+	}
 
 	QDomDocument *doc = MyProtocol->client()->client()->doc();
 
@@ -52,14 +60,14 @@ void JabberAvatarPepUploader::publishSuccess(const QString &ns, const XMPP::PubS
 	metaElement.setAttribute("xmlns", XMLNS_METADATA);
 
 	QDomElement infoElement = doc->createElement("info");
-	infoElement.setAttribute("id", UploadedAvatarHash);
+	infoElement.setAttribute("id", ItemId);
 	infoElement.setAttribute("bytes", UploadedAvatar.numBytes());
 	infoElement.setAttribute("height", UploadedAvatar.height());
 	infoElement.setAttribute("width", UploadedAvatar.width());
 	infoElement.setAttribute("type", "image/png");
 	metaElement.appendChild(infoElement);
 
-	MyProtocol->client()->pepManager()->publish(XMLNS_METADATA, XMPP::PubSubItem(UploadedAvatarHash, metaElement));
+	MyProtocol->client()->pepManager()->publish(XMLNS_METADATA, XMPP::PubSubItem(ItemId, metaElement));
 
 	emit avatarUploaded(true);
 
@@ -87,7 +95,7 @@ void JabberAvatarPepUploader::doUpload(const QByteArray &data)
 	el.setAttribute("xmlns", XMLNS_DATA);
 	el.appendChild(doc->createTextNode(QCA::Base64().arrayToString(data)));
 
-	UploadedAvatarHash = hash;
+	ItemId = hash;
 
 	MyProtocol->client()->pepManager()->publish(XMLNS_DATA, XMPP::PubSubItem(hash, el));
 }
@@ -95,6 +103,8 @@ void JabberAvatarPepUploader::doUpload(const QByteArray &data)
 void JabberAvatarPepUploader::doRemove()
 {
 	QDomDocument *doc = MyProtocol->client()->client()->doc();
+
+	ItemId = "current";
 
 	QDomElement metaDataElement =  doc->createElement("metadata");
 	metaDataElement.setAttribute("xmlns", XMLNS_METADATA);

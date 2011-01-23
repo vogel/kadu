@@ -62,7 +62,7 @@ void JabberAvatarVCardFetcher::vcardReceived()
 {
 	const XMPP::VCard *vcard = VCardFactory::instance()->vcard(MyContact.id());
 
-	if (vcard && !vcard->photo().isEmpty())
+	if (vcard)
 	{
 		Avatar contactAvatar = AvatarManager::instance()->byContact(MyContact, ActionCreateAndAdd);
 		contactAvatar.setLastUpdated(QDateTime::currentDateTime());

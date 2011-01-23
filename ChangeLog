@@ -25,6 +25,9 @@
 * gui: #1679 fixed: scrolling chat window with emoticons and images (ultr)
 * screenshot: #1941 fixed: disable screenshot action for protocols without chat image service (Juzef)
 * gadu: download avatar from server after connection (Vogel)
+* jabber: download avatar from server after connection (Vogel)
+* jabber: PEP avatars can now be fetched for contacts (Vogel)
+* jabber: #1750 fixed: account avatar can now be removed (Vogel)
 
 +++ version 0.6.6-beta14.2
 * tabs: #1906 fixed: crash on tabs module load (regression from beta14) (beevvy)

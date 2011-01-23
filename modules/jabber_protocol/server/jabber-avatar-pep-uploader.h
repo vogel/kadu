@@ -39,7 +39,7 @@ class JabberAvatarPepUploader : public QObject
 
 	QImage UploadedAvatar;
 
-	QString UploadedAvatarHash;
+	QString ItemId;
 
 	void doUpload(const QByteArray &data);
 	void doRemove();

@@ -34,19 +34,31 @@ class KADUAPI AccountAvatarWidget : public QWidget, ProtocolsAwareObject
 {
 	Q_OBJECT
 
+	enum
+	{
+		ModeChange,
+		ModeRemove
+	} Mode;
+
 	Account MyAccount;
 	AvatarService *Service;
 
 	QLabel *AvatarLabel;
 	QMovie *WaitMovie;
-	QPushButton *ChangeAvatarButton;
+	QPushButton *ChangePhotoButton;
 
 	void createGui();
+	void setupMode();
+
+	void changeAvatar();
+	void removeAvatar();
 
 private slots:
 	void avatarUpdated();
-	void changeAvatar();
+
+	void changeButtonClicked();
 	void avatarUploaded(bool ok, QImage image);
+	void avatarRemoved(bool ok);
 	void serviceDestroyed();
 
 protected:

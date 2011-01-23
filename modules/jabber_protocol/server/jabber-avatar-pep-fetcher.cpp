@@ -54,8 +54,7 @@ void JabberAvatarPepFetcher::fetchAvatar()
 {
 	JabberProtocol *jabberProtocol = dynamic_cast<JabberProtocol *>(MyContact.contactAccount().protocolHandler());
 	if (!jabberProtocol || !jabberProtocol->isConnected() || !jabberProtocol->client() || !jabberProtocol->client()->rootTask() ||
-		!jabberProtocol->client()->isPEPAvailable() || !jabberProtocol->client()->pepManager()
-	)
+		!jabberProtocol->client()->isPEPAvailable() || !jabberProtocol->client()->pepManager())
 	{
 		failed();
 		deleteLater();
@@ -84,6 +83,7 @@ void JabberAvatarPepFetcher::discoItemsFinished()
 	{
 		failed();
 		deleteLater();
+		return;
 	}
 
 	JabberProtocol *jabberProtocol = dynamic_cast<JabberProtocol *>(MyContact.contactAccount().protocolHandler());
@@ -98,9 +98,14 @@ void JabberAvatarPepFetcher::avatarMetadataQueryFinished(const XMPP::Jid &jid, c
 		return; // not our data :(
 
 	AvatarId = item.id();
-	if (AvatarId.isEmpty())
+	if (AvatarId == "current")
 	{
-		failed();
+		Avatar contactAvatar = AvatarManager::instance()->byContact(MyContact, ActionCreateAndAdd);
+		contactAvatar.setLastUpdated(QDateTime::currentDateTime());
+		contactAvatar.setNextUpdate(QDateTime::fromTime_t(QDateTime::currentDateTime().toTime_t() + 7200));
+		contactAvatar.setPixmap(QPixmap());
+
+		done();
 		deleteLater();
 		return;
 	}
@@ -116,26 +121,23 @@ void JabberAvatarPepFetcher::avatarDataQueryFinished(const XMPP::Jid &jid, const
 	if (jid.bare() != MyContact.id() || node != XMLNS_AVATAR_DATA || item.id() != AvatarId)
 		return; // not our data :(
 
-			JabberProtocol *jabberProtocol = dynamic_cast<JabberProtocol *>(MyContact.contactAccount().protocolHandler());
+	JabberProtocol *jabberProtocol = dynamic_cast<JabberProtocol *>(MyContact.contactAccount().protocolHandler());
 	disconnect(jabberProtocol->client()->pepManager(), SIGNAL(itemPublished(XMPP::Jid,QString,XMPP::PubSubItem)), this, SLOT(avatarDataQueryFinished(XMPP::Jid,QString,XMPP::PubSubItem)));
 
 	XMPP::Base64 base64;
 	QByteArray imageData = base64.decode(item.payload().text());
 
-	if (!imageData.isEmpty())
-	{
-		Avatar contactAvatar = AvatarManager::instance()->byContact(MyContact, ActionCreateAndAdd);
-		contactAvatar.setLastUpdated(QDateTime::currentDateTime());
-		contactAvatar.setNextUpdate(QDateTime::fromTime_t(QDateTime::currentDateTime().toTime_t() + 7200));
+	Avatar contactAvatar = AvatarManager::instance()->byContact(MyContact, ActionCreateAndAdd);
+	contactAvatar.setLastUpdated(QDateTime::currentDateTime());
+	contactAvatar.setNextUpdate(QDateTime::fromTime_t(QDateTime::currentDateTime().toTime_t() + 7200));
 
-		QPixmap pixmap;
+	QPixmap pixmap;
+
+	if (!imageData.isEmpty())
 		pixmap.loadFromData(imageData);
 
-		contactAvatar.setPixmap(pixmap);
-		done();
-	}
-	else
-		failed();
+	contactAvatar.setPixmap(pixmap);
 
+	done();
 	deleteLater();
 }

@@ -77,4 +77,6 @@ void JabberAvatarVCardUploader::vcardUploaded()
 
 	emit avatarUploaded(true);
 	deleteLater();
+
+	printf("vcard uploaded\n");
 }
