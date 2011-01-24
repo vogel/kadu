@@ -181,7 +181,7 @@ void AdiumChatStyleEngine::appendChatMessage(HtmlMessagesRenderer *renderer, Mes
 	}
 
 	formattedMessageHtml = replaceKeywords(CurrentStyle.baseHref(), formattedMessageHtml, message);
-	formattedMessageHtml.replace('\n', ' ');
+	formattedMessageHtml.replace(newLineRegExp, QLatin1String(" "));
 	formattedMessageHtml.replace('\'', QLatin1String("\\'"));
 	formattedMessageHtml.replace('\\', QLatin1String("\\\\"));
 	formattedMessageHtml.prepend("<span>");
@@ -304,7 +304,7 @@ void AdiumChatStyleEngine::prepareStylePreview(Preview *preview, QString styleNa
 	preview->page()->mainFrame()->evaluateJavaScript("initStyle()");
 
 	QString outgoingHtml = replaceKeywords(style.baseHref(), style.outgoingHtml(), message);
-	outgoingHtml.replace('\n', ' ');
+	outgoingHtml.replace(newLineRegExp, QLatin1String(" "));
 	outgoingHtml.replace('\'', QLatin1String("\\'"));
 	outgoingHtml.prepend("<span>");
 	outgoingHtml.append("</span>");
@@ -312,7 +312,7 @@ void AdiumChatStyleEngine::prepareStylePreview(Preview *preview, QString styleNa
 
 	message = dynamic_cast<MessageRenderInfo *>(preview->getObjectsToParse().at(1));
 	QString incomingHtml = replaceKeywords(style.baseHref(), style.incomingHtml(), message);
-	incomingHtml.replace('\n', ' ');
+	incomingHtml.replace(newLineRegExp, QLatin1String(" "));
 	incomingHtml.replace('\'', QLatin1String("\\'"));
 	incomingHtml.prepend("<span>");
 	incomingHtml.append("</span>");

@@ -23,6 +23,7 @@
 
 #include <QtCore/QFile>
 #include <QtCore/QProcess>
+#include <QtCore/QRegExp>
 #include <QtCore/QUrl>
 #include <QtGui/QApplication>
 #include <QtGui/QDesktopServices>
@@ -47,9 +48,10 @@ QFontInfo *defaultFontInfo;
 long int startTime, beforeExecTime, endingTime, exitingTime;
 bool measureTime = false;
 
+const QRegExp newLineRegExp("(\r\n|\r|\n)");
+
 void saveWindowGeometry(const QWidget *w, const QString &section, const QString &name)
 {
-
 #if defined(Q_OS_MAC) || defined(Q_WS_MAEMO_5)
 	/* Dorr: on Mac OS X make sure the window will not be greater than desktop what
 	 * sometimes happends during widget resizing (because of bug in Qt?),

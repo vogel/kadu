@@ -9,7 +9,7 @@
 
 #include <QtCore/QVector>
 
-#include "misc.h"
+#include "misc/misc.h"
 
 #include "weather_parser.h"
 #include "weather_global.h"
@@ -277,8 +277,7 @@ QString WeatherParser::tagClean(QString str) const
 	}
 	while (start != -1 && end != -1);
 
-	str.replace('\n', ' ');
-	str.replace('\r', ' ');
+	str.replace(newLineRegExp, QLatin1String(" "));
 	str.replace("  ", " ");
 	str.replace(" ,", ",");
 	str.replace(" .", ".");

@@ -162,10 +162,8 @@ MessageRenderInfo::MessageRenderInfo(const Message &msg) :
 
 	HtmlMessageContent = MyMessage.content();
 
-	HtmlMessageContent.replace("\r\n", "<br/>");
-	HtmlMessageContent.replace('\n',   "<br/>");
-	HtmlMessageContent.replace('\r',   "<br/>");
-	HtmlMessageContent.replace(QChar::LineSeparator, "<br />");
+	HtmlMessageContent.replace(newLineRegExp, QLatin1String("<br/>"));
+	HtmlMessageContent.replace(QChar::LineSeparator, QLatin1String("<br/>"));
 
 	// compare this regexp with FormattedMessagePart::toHtml()
 	QRegExp kaduimgRegExp("<img src=\"kaduimg:///([^\"]*)\" />");

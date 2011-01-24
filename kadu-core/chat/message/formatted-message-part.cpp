@@ -24,6 +24,8 @@
 #include <QtGui/QTextBlock>
 #include <QtGui/QTextDocument>
 
+#include "misc/misc.h"
+
 #include "formatted-message-part.h"
 
 FormattedMessagePart::FormattedMessagePart(const QString &content, bool bold, bool italic, bool underline, QColor color) :
@@ -48,10 +50,8 @@ QString FormattedMessagePart::toHtml() const
 				: QString("<img src=\"file://%1\" />").arg(ImageFileName); // TODO 0.6.6: remove once we're saving sent images in imagesPath
 
 	QString result = Qt::escape(Content);
-	result.replace("\r\n", "<br/>");
-	result.replace('\n',   "<br/>");
-	result.replace('\r',   "<br/>");
-	result.replace(QChar::LineSeparator, "<br/>");
+	result.replace(newLineRegExp, QLatin1String("<br/>"));
+	result.replace(QChar::LineSeparator, QLatin1String("<br/>"));
 
 	if (!Bold && !Italic && !Underline && !Color.isValid())
 		return result;
