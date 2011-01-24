@@ -3,7 +3,7 @@
 PWD=`pwd`
 LOG=$PWD/update_ts_file.log
 
-LUPDATE=$(which lupdate-qt4) || LRELEASE=$(which lupdate) || LRELEASE=$QTDIR/bin/lupdate
+LUPDATE=$(which lupdate-qt4) || LUPDATE=$(which lupdate) || LUPDATE=$QTDIR/bin/lupdate
 
 echo "Updating kadu-core translations"
 echo > $LOG
