@@ -111,6 +111,8 @@ protected:
 
 	virtual void resizeEvent(QResizeEvent *event);
 
+	virtual void hideEvent(QHideEvent *event);
+
 protected slots:
 	virtual void currentChanged(const QModelIndex &current, const QModelIndex &previous);
 	virtual void selectionChanged( const QItemSelection &selected, const QItemSelection &deselected);
