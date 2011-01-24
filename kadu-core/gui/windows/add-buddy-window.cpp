@@ -181,6 +181,7 @@ void AddBuddyWindow::createGui()
 	layout->addWidget(AskForAuthorization, 7, 1, 1, 3);
 
 	AllowToSeeMeCheck = new QCheckBox(tr("Allow buddy to see me when I'm available"), this);
+	AllowToSeeMeCheck->setChecked(true);
 	layout->addWidget(AllowToSeeMeCheck, 8, 1, 1, 3);
 
 	layout->setRowMinimumHeight(6, 20);
