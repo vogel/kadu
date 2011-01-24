@@ -291,7 +291,6 @@ set (kadu_SRCS
 	parser/parser.cpp
 
 	protocols/connection-error-notification.cpp
-	protocols/invalid-password-notification.cpp
 	protocols/protocol.cpp
 	protocols/protocols-aware-object.cpp
 	protocols/protocols-manager.cpp
@@ -606,7 +605,6 @@ set (kadu_MOC_SRCS
 	os/qtsingleapplication/qtlocalpeer.h
 
 	protocols/connection-error-notification.h
-	protocols/invalid-password-notification.h
 	protocols/protocol.h
 	protocols/protocol-factory.h
 	protocols/protocols-manager.h

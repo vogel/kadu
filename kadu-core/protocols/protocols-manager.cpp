@@ -24,7 +24,6 @@
 #include "configuration/xml-configuration-file.h"
 #include "misc/misc.h"
 #include "protocols/connection-error-notification.h"
-#include "protocols/invalid-password-notification.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocols-aware-object.h"
 
@@ -45,13 +44,11 @@ ProtocolsManager * ProtocolsManager::instance()
 ProtocolsManager::ProtocolsManager()
 {
 	ConnectionErrorNotification::registerEvent();
-	InvalidPasswordNotification::registerEvent();
 }
 
 ProtocolsManager::~ProtocolsManager()
 {
 	ConnectionErrorNotification::unregisterEvent();
-	InvalidPasswordNotification::unregisterEvent();
 }
 
 void ProtocolsManager::registerProtocolFactory(ProtocolFactory *factory)

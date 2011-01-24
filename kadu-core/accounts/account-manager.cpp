@@ -29,9 +29,9 @@
 #include "configuration/xml-configuration-file.h"
 #include "contacts/contact-manager.h"
 #include "core/core.h"
+#include "gui/windows/password-window.h"
 #include "notify/notification-manager.h"
 #include "protocols/connection-error-notification.h"
-#include "protocols/invalid-password-notification.h"
 #include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocols-manager.h"
@@ -226,11 +226,10 @@ void AccountManager::invalidPassword(Account account)
 {
 	QMutexLocker(&mutex());
 
-	if (!InvalidPasswordNotification::activeError(account))
-	{
-		InvalidPasswordNotification *invalidPasswordNotification = new InvalidPasswordNotification(account);
-		NotificationManager::instance()->notify(invalidPasswordNotification);
-	}
+	QString message = tr("Please provide valid password for %1 (%2) account")
+			.arg(account.accountIdentity().name())
+			.arg(account.id());
+	PasswordWindow::getPassword(message, account.protocolHandler(), SLOT(login(const QString &, bool)));
 }
 
 void AccountManager::removeAccountAndBuddies(Account account)
