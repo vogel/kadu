@@ -29,6 +29,7 @@
 * jabber: PEP avatars can now be fetched for contacts (Vogel)
 * jabber: #1750 fixed: account avatar can now be removed (Vogel)
 * gadu: #1852 fixed: crash while receiving files (beevvy)
+* qt: Qt 4.6 is now required
 
 +++ version 0.6.6-beta14.2
 * tabs: #1906 fixed: crash on tabs module load (regression from beta14) (beevvy)
