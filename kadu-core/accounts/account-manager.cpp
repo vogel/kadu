@@ -53,6 +53,7 @@ AccountManager::AccountManager()
 {
 	ConfigurationManager::instance()->registerStorableObject(this);
 
+	// needed for QueuedConnection
 	qRegisterMetaType<Account>("Account");
 }
 
@@ -103,7 +104,7 @@ void AccountManager::itemRegistered(Account item)
 	/* NOTE: We need QueuedConnection here so when the protocol emits the signal, it can cleanup
 	 * itself before we do something (e.g., reset connection data after invalidPassword, so when
 	 * we try to log in after entering new password, a new connection can be estabilished instead
-	 * of giving up because alredady existing connection).
+	 * of giving up because of already existing connection).
 	 */
 	connect(item.protocolHandler(), SIGNAL(connectionError(Account, const QString &, const QString &)),
 			this, SLOT(connectionError(Account, const QString &, const QString &)), Qt::QueuedConnection);
