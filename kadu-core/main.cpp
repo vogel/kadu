@@ -88,9 +88,7 @@ static void kaduQtMessageHandler(QtMsgType type, const char *msg)
 			fprintf(stderr, "\033[31;1mCritical: %s\033[0m\n", msg);
 			fflush(stderr);
 			printBacktrace("critical error from Qt (above)");
-#if QT_VERSION != 0x040600 // TODO: remove after next Qt alpha
 			abort();
-#endif
 			break;
 		default:
 			break;
@@ -176,6 +174,10 @@ static void printQtOptions()
 
 int main(int argc, char *argv[])
 {
+	// NOTE: Qt 4.6.0 has many bugs, one of them causing Kadu to crash when downloading avatars.
+	// TODO: remove once we depend on 4.7
+	QT_REQUIRE_VERSION(argc, argv, "4.6.1")
+
 	char *d = 0;
 	int msec;
 	time_t sec;

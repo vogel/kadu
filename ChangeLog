@@ -29,7 +29,7 @@
 * jabber: PEP avatars can now be fetched for contacts (Vogel)
 * jabber: #1750 fixed: account avatar can now be removed (Vogel)
 * gadu: #1852 fixed: crash while receiving files (beevvy)
-* qt: Qt 4.6 is now required
+* qt: Qt 4.6.1 is now required
 * gui: #1928 fixed: hide tooltip over conference window' buddies list when the window is closed (ultr)
 * gui: keep chat edit box height fixed - user must maually resize (Vogel)
 * gui: all chat edit boxes have the same size now (Vogel)
