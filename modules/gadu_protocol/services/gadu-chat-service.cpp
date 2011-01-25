@@ -106,7 +106,7 @@ bool GaduChatService::sendMessage(Chat chat, FormattedMessage &message, bool sil
 	int messageId = -1;
 	if (uinsCount > 1)
 	{
-		UinType uins[uinsCount];
+		QScopedArrayPointer<UinType> uins(new UinType[uinsCount]);
 		unsigned int i = 0;
 
 		foreach (const Contact &contact, contacts)
@@ -114,11 +114,11 @@ bool GaduChatService::sendMessage(Chat chat, FormattedMessage &message, bool sil
 
 		if (formatsSize)
 			messageId = gg_send_message_confer_richtext(
-					Protocol->gaduSession(), GG_CLASS_CHAT, uinsCount, uins, (unsigned char *)data.data(),
+					Protocol->gaduSession(), GG_CLASS_CHAT, uinsCount, uins.data(), (unsigned char *)data.data(),
 					formats.data(), formatsSize);
 		else
 			messageId = gg_send_message_confer(
-					Protocol->gaduSession(), GG_CLASS_CHAT, uinsCount, uins, (unsigned char *)data.data());
+					Protocol->gaduSession(), GG_CLASS_CHAT, uinsCount, uins.data(), (unsigned char *)data.data());
 	}
 	else if (uinsCount == 1)
 	{

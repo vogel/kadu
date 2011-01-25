@@ -21,6 +21,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QScopedArrayPointer>
+
 #include "debug.h"
 
 #include "sound-file.h"
@@ -97,7 +99,7 @@ void SoundFile::loadData(const QString &path)
 #ifndef Q_OS_WIN
 void SoundFile::loadFloatSamples(SNDFILE *f)
 {
-	float buffer[Length];
+	QScopedArrayPointer<float> buffer(new float[Length]);
 	double scale;
 
 	sf_command(f, SFC_CALC_SIGNAL_MAX, &scale, sizeof(scale)) ;
@@ -106,7 +108,7 @@ void SoundFile::loadFloatSamples(SNDFILE *f)
 	else
 		scale = 32700.0 / scale;
 
-	int readcount = sf_read_float(f, buffer, Length);
+	int readcount = sf_read_float(f, buffer.data(), Length);
 	for (int m = 0; m < readcount; ++m)
 		Data[m] = (short int)(scale * buffer[m]);
 }

@@ -17,6 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QScopedArrayPointer>
+
 #include <libgadu.h>
 
 #include "protocols/protocol.h"
@@ -69,9 +71,8 @@ void GaduContactListHandler::setUpContactList(const QList<Contact> &contacts)
 	}
 
 	int count = contacts.count();
-
-	UinType uins[count];
-	char types[count];
+	QScopedArrayPointer<UinType> uins(new UinType[count]);
+	QScopedArrayPointer<char> types(new char[count]);
 
 	int i = 0;
 
@@ -82,7 +83,7 @@ void GaduContactListHandler::setUpContactList(const QList<Contact> &contacts)
 		++i;
 	}
 
-	gg_notify_ex(Protocol->gaduSession(), uins, types, count);
+	gg_notify_ex(Protocol->gaduSession(), uins.data(), types.data(), count);
 	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Userlist sent\n");
 }
 

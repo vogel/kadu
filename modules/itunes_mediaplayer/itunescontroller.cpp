@@ -1,5 +1,5 @@
 /*
- * itunescontroller.cpp 
+ * itunescontroller.cpp
  * Copyright (C) 2006  Remko Troncon
  * Modified by Tomasz "Dorregaray" Rostanski
  *
@@ -19,7 +19,7 @@
  *
  */
 
-/* 
+/*
  * Sample track information:
  *	<dict>
  *		<key>Track ID</key><integer>36</integer>
@@ -50,6 +50,7 @@
 #include <QtCore/QString>
 #include <QtCore/QTime>
 #include <QtCore/QDateTime>
+#include <QtCore/QScopedArrayPointer>
 
 #include <CoreFoundation/CoreFoundation.h>
 
@@ -67,9 +68,9 @@ static QString CFStringToQString(CFStringRef s)
 	if (s != NULL)
 	{
 		CFIndex length = CFStringGetMaximumSizeForEncoding(CFStringGetLength(s), kCFStringEncodingUTF8) + 1;
-		char buffer[length];
-		if (CFStringGetCString(s, buffer, length, kCFStringEncodingUTF8))
-			result = QString::fromUtf8(buffer);
+		QScopedArrayPointer<char> buffer(new char[length]);
+		if (CFStringGetCString(s, buffer.data(), length, kCFStringEncodingUTF8))
+			result = QString::fromUtf8(buffer.data());
 		else
 			qWarning("itunesplayer.cpp: CFString conversion failed.");
 	}
@@ -90,7 +91,7 @@ ITunesController::~ITunesController()
 	CFNotificationCenterRemoveObserver(center, this, CFSTR("com.apple.iTunes.playerInfo"), NULL);
 }
 
-Tune ITunesController::currentTune() 
+Tune ITunesController::currentTune()
 {
 	return currentTune_;
 }
@@ -99,7 +100,7 @@ void ITunesController::iTunesCallback(CFNotificationCenterRef,void* observer,CFS
 {
 	Tune tune;
 	ITunesController* controller = (ITunesController*) observer;
-	
+
 	CFStringRef cf_state = (CFStringRef) CFDictionaryGetValue(info, CFSTR("Player State"));
 	if (CFStringCompare(cf_state,CFSTR("Paused"), 0) == kCFCompareEqualTo)
 	{
@@ -112,7 +113,7 @@ void ITunesController::iTunesCallback(CFNotificationCenterRef,void* observer,CFS
 	else if (CFStringCompare(cf_state,CFSTR("Playing"), 0) == kCFCompareEqualTo)
 	{
 		tune.setState(Tune::playing);
-		
+
 		QString name = CFStringToQString((CFStringRef) CFDictionaryGetValue(info, CFSTR("Name")));
 		if (name != tune.name())
 		{
@@ -128,18 +129,18 @@ void ITunesController::iTunesCallback(CFNotificationCenterRef,void* observer,CFS
 		int track = 0;
 		if (cf_track)
 		{
-			if (!CFNumberGetValue(cf_track, kCFNumberIntType, &track)) 
+			if (!CFNumberGetValue(cf_track, kCFNumberIntType, &track))
 			{
 				qWarning("itunesplayer.cpp: Number value conversion failed.");
 			}
 		}
 		tune.setTrack(track);
-		
+
 		CFNumberRef cf_time = (CFNumberRef) CFDictionaryGetValue(info, CFSTR("Total Time"));
 		int time = 0;
 		if (cf_time)
 		{
-			if (!CFNumberGetValue(cf_time,kCFNumberIntType,&time)) 
+			if (!CFNumberGetValue(cf_time,kCFNumberIntType,&time))
 			{
 				qWarning("itunesplayer.cpp: Number value conversion failed.");
 			}

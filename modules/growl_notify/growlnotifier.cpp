@@ -34,9 +34,10 @@ extern "C" {
 #include <Growl/Growl.h>
 }
 
-#include <QtCore/QStringList>
 #include <QtCore/QBuffer>
 #include <QtCore/QDir>
+#include <QtCore/QScopedArrayPointer>
+#include <QtCore/QStringList>
 #include <QtGui/QPixmap>
 
 #include "notify/notification.h"
@@ -56,13 +57,13 @@ static CFStringRef QString2CFString(const QString& s)
 	if (s.isNull())
 		return 0;
 
-	ushort buffer[s.length()];
+	QScopedArrayPointer<ushort> buffer(new ushort[s.length()]);
 	for (int i = 0; i < s.length(); ++i)
 		buffer[i] = s[i].unicode();
 
-	CFStringRef result = CFStringCreateWithBytes( NULL,
-		(UInt8*) buffer, s.length() * sizeof(ushort),
-		kCFStringEncodingUnicode, false);
+	CFStringRef result = CFStringCreateWithBytes(NULL,
+			(UInt8 *)buffer.data(), s.length() * sizeof(ushort),
+			kCFStringEncodingUnicode, false);
 
 	return result;
 }
