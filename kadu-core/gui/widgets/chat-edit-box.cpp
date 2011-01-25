@@ -119,12 +119,6 @@ void ChatEditBox::configurationUpdated()
 	InputBox->setAutoSend(config_file.readBoolEntry("Chat", "AutoSend"));
 }
 
-void ChatEditBox::resizeEvent(QResizeEvent *e)
-{
-	QWidget::resizeEvent(e);
-	ChatEditBoxSizeManager::instance()->setCommonHeight(e->size().height());
-}
-
 void ChatEditBox::setAutoSend(bool autoSend)
 {
 	InputBox->setAutoSend(autoSend);

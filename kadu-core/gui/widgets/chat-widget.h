@@ -62,6 +62,8 @@ class KADUAPI ChatWidget : public QWidget, ConfigurationAwareObject
 	QSplitter *VerticalSplitter;
 	QSplitter *HorizontalSplitter;
 
+	bool SplittersInitialized;
+
 	QString Title;
 
 	QDateTime LastMessageTime;
@@ -80,6 +82,7 @@ private slots:
 	void connectAcknowledgeSlots();
 	void disconnectAcknowledgeSlots();
 	void commonHeightChanged(int height);
+	void verticalSplitterMoved(int pos, int index);
 
 protected:
 	virtual void keyPressEvent(QKeyEvent *e);

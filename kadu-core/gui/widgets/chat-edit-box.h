@@ -49,7 +49,6 @@ private slots:
 
 protected:
 	virtual void configurationUpdated();
-	virtual void resizeEvent(QResizeEvent *e);
 
 public:
 	static void createDefaultToolbars(QDomElement parentConfig);

@@ -75,7 +75,7 @@
 ChatWidget::ChatWidget(Chat chat, QWidget *parent) :
 		QWidget(parent), CurrentChat(chat),
 		BuddiesWidget(0), InputBox(0), HorizontalSplitter(0),
-		NewMessagesCount(0)
+		SplittersInitialized(false), NewMessagesCount(0)
 {
 	kdebugf();
 
@@ -101,7 +101,6 @@ ChatWidget::ChatWidget(Chat chat, QWidget *parent) :
 			connect(contact, SIGNAL(updated()), this, SIGNAL(iconChanged()));
 			connect(contact.ownerBuddy(), SIGNAL(buddySubscriptionChanged()), this, SIGNAL(iconChanged()));
 		}
-
 
 	connect(ChatEditBoxSizeManager::instance(), SIGNAL(commonHeightChanged(int)), this, SLOT(commonHeightChanged(int)));
 
@@ -157,6 +156,7 @@ void ChatWidget::createGui()
 	VerticalSplitter->addWidget(InputBox);
 	VerticalSplitter->setStretchFactor(1, 0);
 
+	connect(VerticalSplitter, SIGNAL(splitterMoved(int, int)), this, SLOT(verticalSplitterMoved(int, int)));
 	connect(InputBox->inputBox(), SIGNAL(sendMessage()), this, SLOT(sendMessage()));
 }
 
@@ -443,10 +443,9 @@ void ChatWidget::disconnectAcknowledgeSlots()
 
 void ChatWidget::commonHeightChanged(int height)
 {
-	QList<int> sizes = VerticalSplitter->sizes();
-	int oldHeight = sizes[1];
-	sizes[1] = height;
-	sizes[0] += oldHeight - height;
+	QList<int> sizes;
+	sizes.append(this->height() - height);
+	sizes.append(height);
 	VerticalSplitter->setSizes(sizes);
 }
 
@@ -583,19 +582,28 @@ void ChatWidget::markAllMessagesRead()
 	NewMessagesCount = 0;
 }
 
+void ChatWidget::verticalSplitterMoved(int pos, int index)
+{
+	Q_UNUSED(pos)
+	Q_UNUSED(index)
+
+	if (SplittersInitialized)
+		ChatEditBoxSizeManager::instance()->setCommonHeight(VerticalSplitter->sizes()[1]);
+}
+
 void ChatWidget::kaduRestoreGeometry()
 {
   	ChatGeometryData *cgd = chat().data()->moduleStorableData<ChatGeometryData>("chat-geometry");
-
-	if (!cgd)
-		return;
 
 	// already set up by other window, so we use this window setting
 	if (0 != ChatEditBoxSizeManager::instance()->commonHeight())
 		commonHeightChanged(ChatEditBoxSizeManager::instance()->commonHeight());
 	else
 	{
-		QList<int> vertSizes = cgd->widgetVerticalSizes();
+		QList<int> vertSizes;
+		if (cgd)
+			vertSizes = cgd->widgetVerticalSizes();
+
 		if (vertSizes.count() != 2 || vertSizes.at(0) == 0 || vertSizes.at(1) == 0)
 		{
 			int h = height() / 3;
@@ -606,12 +614,15 @@ void ChatWidget::kaduRestoreGeometry()
 		VerticalSplitter->setSizes(vertSizes);
 	}
 
-	if (HorizontalSplitter)
+
+	if (cgd && HorizontalSplitter)
 	{
 		QList<int> horizSizes = cgd->widgetHorizontalSizes();
 		if (!horizSizes.empty())
 			HorizontalSplitter->setSizes(horizSizes);
 	}
+
+	SplittersInitialized = true;
 }
 
 void ChatWidget::kaduStoreGeometry()
