@@ -31,6 +31,7 @@
 * gadu: #1852 fixed: crash while receiving files (beevvy)
 * qt: Qt 4.6 is now required
 * gui: #1928 fixed: hide tooltip over conference window' buddies list when the window is closed (ultr)
+* gui: keep chat edit box height fixed - user must maually resize (Vogel)
 
 +++ version 0.6.6-beta14.2
 * tabs: #1906 fixed: crash on tabs module load (regression from beta14) (beevvy)

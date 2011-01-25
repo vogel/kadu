@@ -146,10 +146,12 @@ void ChatWidget::createGui()
 		createContactsList();
 
 	InputBox = new ChatEditBox(CurrentChat, this);
-	InputBox->setSizePolicy(QSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored));
+	InputBox->setSizePolicy(QSizePolicy(QSizePolicy::Ignored, QSizePolicy::Fixed));
 
 	vertSplit->addWidget(horizSplit);
+	vertSplit->setStretchFactor(0, 1);
 	vertSplit->addWidget(InputBox);
+	vertSplit->setStretchFactor(1, 0);
 
 	connect(InputBox->inputBox(), SIGNAL(sendMessage()), this, SLOT(sendMessage()));
 }
