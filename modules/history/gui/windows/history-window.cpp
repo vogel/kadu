@@ -21,6 +21,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QScopedPointer>
 #include <QtGui/QDateEdit>
 #include <QtGui/QGridLayout>
 #include <QtGui/QHBoxLayout>
@@ -608,11 +609,10 @@ void HistoryWindow::showMainPopupMenu(const QPoint &pos)
 	if (!chat)
 		return;
 
-	QMenu *menu = BuddiesListViewMenuManager::instance()->menu(this, this, chat.contacts().toContactList());
-	menu->addAction(IconsManager::instance()->iconByPath("kadu_icons/clear-history"), tr("&Clear History"), this, SLOT(clearHistory()));
+	QScopedPointer<QMenu> menu(BuddiesListViewMenuManager::instance()->menu(this, this, chat.contacts().toContactList()));
+	menu->addAction(IconsManager::instance()->iconByPath("kadu_icons/clear-history"),
+			tr("&Clear History"), this, SLOT(clearHistory()));
 	menu->exec(QCursor::pos());
-
-	delete menu;
 }
 
 void HistoryWindow::showDetailsPopupMenu(const QPoint &pos)

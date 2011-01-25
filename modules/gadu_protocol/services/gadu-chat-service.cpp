@@ -22,6 +22,7 @@
  */
 
 #include <QtCore/QHash>
+#include <QtCore/QScopedArrayPointer>
 
 #include "buddies/buddy-set.h"
 #include "buddies/buddy-shared.h"
@@ -76,7 +77,7 @@ bool GaduChatService::sendMessage(Chat chat, FormattedMessage &message, bool sil
 
 	unsigned int uinsCount = 0;
 	unsigned int formatsSize = 0;
-	unsigned char *formats = GaduFormatter::createFormats(Protocol->account(), message, formatsSize);
+	QScopedArrayPointer<unsigned char> formats(GaduFormatter::createFormats(Protocol->account(), message, formatsSize));
 	bool stop = false;
 
 	kdebugmf(KDEBUG_INFO, "\n%s\n", (const char *)unicode2latin(plain));
@@ -89,16 +90,12 @@ bool GaduChatService::sendMessage(Chat chat, FormattedMessage &message, bool sil
 
 	if (stop)
 	{
-		delete[] formats;
-
 		kdebugmf(KDEBUG_FUNCTION_END, "end: filter stopped processing\n");
 		return false;
 	}
 
 	if (data.length() >= 2000)
 	{
-		delete[] formats;
-
 		MessageDialog::show("dialog-warning", tr("Kadu"), tr("Filtered message too long (%1>=%2)").arg(data.length()).arg(2000));
 		kdebugmf(KDEBUG_FUNCTION_END, "end: filtered message too long\n");
 		return false;
@@ -118,7 +115,7 @@ bool GaduChatService::sendMessage(Chat chat, FormattedMessage &message, bool sil
 		if (formatsSize)
 			messageId = gg_send_message_confer_richtext(
 					Protocol->gaduSession(), GG_CLASS_CHAT, uinsCount, uins, (unsigned char *)data.data(),
-					formats, formatsSize);
+					formats.data(), formatsSize);
 		else
 			messageId = gg_send_message_confer(
 					Protocol->gaduSession(), GG_CLASS_CHAT, uinsCount, uins, (unsigned char *)data.data());
@@ -128,13 +125,11 @@ bool GaduChatService::sendMessage(Chat chat, FormattedMessage &message, bool sil
 		if (formatsSize)
 			messageId = gg_send_message_richtext(
 					Protocol->gaduSession(), GG_CLASS_CHAT, Protocol->uin(contacts.at(0)), (unsigned char *)data.data(),
-					formats, formatsSize);
+					formats.data(), formatsSize);
 		else
 			messageId = gg_send_message(
 					Protocol->gaduSession(), GG_CLASS_CHAT, Protocol->uin(contacts.at(0)), (unsigned char *)data.data());
 	}
-
-	delete[] formats;
 
 	if (-1 == messageId)
 		return false;

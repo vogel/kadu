@@ -21,6 +21,7 @@
 
 #include <QtCore/QDir>
 #include <QtCore/QModelIndex>
+#include <QtCore/QScopedPointer>
 #include <QtCore/QTemporaryFile>
 #include <QtGui/QApplication>
 #include <QtGui/QContextMenuEvent>
@@ -337,9 +338,8 @@ void BuddiesListView::contextMenuEvent(QContextMenuEvent *event)
 	if (buddy.isNull())
 		return;
 
-	QMenu *menu = BuddiesListViewMenuManager::instance()->menu(this, this, buddy.contacts());
+	QScopedPointer<QMenu> menu(BuddiesListViewMenuManager::instance()->menu(this, this, buddy.contacts()));
 	menu->exec(event->globalPos());
-	delete menu;
 }
 
 bool BuddiesListView::shouldEventGoToFilter(QKeyEvent *event)

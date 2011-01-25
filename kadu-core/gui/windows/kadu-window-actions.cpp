@@ -904,10 +904,9 @@ void KaduWindowActions::showStatusActionActivated(QAction *sender, bool toggled)
 	if (!container)
 		container = StatusContainerManager::instance();
 
-	QMenu *menu = new QMenu();
-	new StatusMenu(container, menu);
-	menu->exec(QCursor::pos());
-	delete menu;
+	QMenu menu;
+	new StatusMenu(container, &menu);
+	menu.exec(QCursor::pos());
 }
 
 void KaduWindowActions::useProxyActionActivated(QAction *sender, bool toggled)
