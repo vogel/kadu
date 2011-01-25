@@ -675,12 +675,8 @@ void HistoryWindow::clearHistory()
 
 void HistoryWindow::selectQueryText()
 {
-#if QT_VERSION >= QT_VERSION_CHECK(4,6,0)
 	ContentBrowser->findText(QString()); // clear old selection
 	ContentBrowser->findText(Search.query(), QWebPage::HighlightAllOccurrences);
-#else
-	ContentBrowser->findText(Search.query());
-#endif
 }
 
 bool HistoryWindow::supportsActionType(ActionDescription::ActionType type)

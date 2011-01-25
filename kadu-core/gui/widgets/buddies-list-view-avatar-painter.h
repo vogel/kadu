@@ -39,11 +39,9 @@ class BuddiesListViewAvatarPainter
 
 	bool greyOut();
 
-#if QT_VERSION >= QT_VERSION_CHECK(4,6,0)
 	QString cacheKey();
 	void createCacheItem();
 	void paintFromCache(QPainter *painter);
-#endif
 
 	void doPaint(QPainter *painter, const QRect &rect);
 

@@ -21,9 +21,7 @@
 #include <QtCore/QModelIndex>
 #include <QtGui/QPainter>
 #include <QtGui/QPixmap>
-#if QT_VERSION >= QT_VERSION_CHECK(4,6,0)
-#	include<QtGui/QPixmapCache>
-#endif
+#include <QtGui/QPixmapCache>
 #include <QtGui/QStyleOptionViewItem>
 
 #include "contacts/contact.h"
@@ -46,8 +44,6 @@ bool BuddiesListViewAvatarPainter::greyOut()
 	Contact contact = Index.data(ContactRole).value<Contact>();
 	return contact.currentStatus().isDisconnected();
 }
-
-#if QT_VERSION >= QT_VERSION_CHECK(4,6,0)
 
 QString BuddiesListViewAvatarPainter::cacheKey()
 {
@@ -87,8 +83,6 @@ void BuddiesListViewAvatarPainter::paintFromCache(QPainter *painter)
 	painter->drawPixmap(AvatarRect, cached);
 }
 
-#endif
-
 void BuddiesListViewAvatarPainter::doPaint(QPainter *painter, const QRect &rect)
 {
 	QPixmap displayAvatar;
@@ -118,9 +112,5 @@ void BuddiesListViewAvatarPainter::paint(QPainter *painter)
 	if (!Configuration.showAvatars() || AvatarRect.isEmpty() || Avatar.isNull())
 		return;
 
-#if QT_VERSION >= QT_VERSION_CHECK(4,6,0)
 	paintFromCache(painter);
-#else
-	doPaint(painter, AvatarRect);
-#endif
 }
