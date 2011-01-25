@@ -32,7 +32,7 @@
 #include <QtCore/QFile>
 #include <QtCore/QMimeData>
 #include <QtCore/QPoint>
-#include <QtCore/QPointer>
+#include <QtCore/QWeakPointer>
 #include <QtCore/QString>
 #include <QtCore/QTimer>
 #include <QtCore/QUrl>
@@ -271,22 +271,22 @@ void KaduWebView::saveImage()
 		}
 	}
 
-	QPointer<QFileDialog> fd = new QFileDialog(this);
-	fd->setFileMode(QFileDialog::AnyFile);
-	fd->setAcceptMode(QFileDialog::AcceptSave);
-	fd->setDirectory(config_file.readEntry("Chat", "LastImagePath"));
-	fd->setFilter(QString("%1 (*%2)").arg(qApp->translate("ImageDialog", "Images"), fileExt));
-	fd->setLabelText(QFileDialog::FileName, imageFullPath.section('/', -1));
-	fd->setWindowTitle(tr("Save image"));
+	QWeakPointer<QFileDialog> fd = new QFileDialog(this);
+	fd.data()->setFileMode(QFileDialog::AnyFile);
+	fd.data()->setAcceptMode(QFileDialog::AcceptSave);
+	fd.data()->setDirectory(config_file.readEntry("Chat", "LastImagePath"));
+	fd.data()->setFilter(QString("%1 (*%2)").arg(qApp->translate("ImageDialog", "Images"), fileExt));
+	fd.data()->setLabelText(QFileDialog::FileName, imageFullPath.section('/', -1));
+	fd.data()->setWindowTitle(tr("Save image"));
 
 	do
 	{
-		if (fd->exec() != QFileDialog::Accepted)
+		if (fd.data()->exec() != QFileDialog::Accepted)
 			break;
-		if (fd->selectedFiles().count() < 1)
+		if (fd.data()->selectedFiles().count() < 1)
 			break;
 
-		QString file = fd->selectedFiles().at(0);
+		QString file = fd.data()->selectedFiles().at(0);
 		if (QFile::exists(file))
 		{
 			if (MessageDialog::ask(QString(), tr("Kadu"), tr("File already exists. Overwrite?")))
@@ -324,10 +324,10 @@ void KaduWebView::saveImage()
 			}
 		}
 
-		config_file.writeEntry("Chat", "LastImagePath", fd->directory().absolutePath());
+		config_file.writeEntry("Chat", "LastImagePath", fd.data()->directory().absolutePath());
 	} while (false);
 
-	delete fd;
+	delete fd.data();
 }
 
 void KaduWebView::textCopied() const

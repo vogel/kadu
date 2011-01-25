@@ -22,6 +22,7 @@
  */
 
 #include <QtCrypto>
+#include <QtCore/QWeakPointer>
 #include <QtGui/QApplication>
 #include <QtGui/QCheckBox>
 #include <QtGui/QComboBox>
@@ -34,7 +35,6 @@
 #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
 #include <QtGui/QMessageBox>
-#include <QtCore/QPointer>
 #include <QtGui/QTabWidget>
 #include <QtGui/QVBoxLayout>
 
@@ -511,24 +511,27 @@ void JabberEditAccountWidget::cancel()
 
 void JabberEditAccountWidget::removeAccount()
 {
-	QPointer<QMessageBox> messageBox = new QMessageBox(this);
-	messageBox->setWindowTitle(tr("Confirm account removal"));
-	messageBox->setText(tr("Are you sure you want to remove account %1 (%2)?")
+	QWeakPointer<QMessageBox> messageBox = new QMessageBox(this);
+	messageBox.data()->setWindowTitle(tr("Confirm account removal"));
+	messageBox.data()->setText(tr("Are you sure you want to remove account %1 (%2)?")
 			.arg(account().accountIdentity().name())
 			.arg(account().id()));
 
-	QPushButton *removeButton = messageBox->addButton(tr("Remove account"), QMessageBox::AcceptRole);
-	messageBox->addButton(QMessageBox::Cancel);
-	messageBox->setDefaultButton(QMessageBox::Cancel);
-	messageBox->exec();
+	QPushButton *removeButton = messageBox.data()->addButton(tr("Remove account"), QMessageBox::AcceptRole);
+	messageBox.data()->addButton(QMessageBox::Cancel);
+	messageBox.data()->setDefaultButton(QMessageBox::Cancel);
+	messageBox.data()->exec();
 
-	if (messageBox->clickedButton() == removeButton)
+	if (messageBox.isNull())
+		return;
+
+	if (messageBox.data()->clickedButton() == removeButton)
 	{
 		AccountManager::instance()->removeAccountAndBuddies(account());
 		deleteLater();
 	}
 
-	delete messageBox;
+	delete messageBox.data();
 }
 
 void JabberEditAccountWidget::changePasssword()

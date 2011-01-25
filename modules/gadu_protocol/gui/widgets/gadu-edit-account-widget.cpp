@@ -20,7 +20,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QPointer>
+#include <QtCore/QWeakPointer>
 #include <QtGui/QApplication>
 #include <QtGui/QCheckBox>
 #include <QtGui/QComboBox>
@@ -383,27 +383,30 @@ void GaduEditAccountWidget::loadConnectionData()
 
 void GaduEditAccountWidget::removeAccount()
 {
-	QPointer<QMessageBox> messageBox = new QMessageBox(this);
-	messageBox->setWindowTitle(tr("Confirm account removal"));
-	messageBox->setText(tr("Are you sure do you want to remove account %1 (%2)")
+	QWeakPointer<QMessageBox> messageBox = new QMessageBox(this);
+	messageBox.data()->setWindowTitle(tr("Confirm account removal"));
+	messageBox.data()->setText(tr("Are you sure do you want to remove account %1 (%2)")
 			.arg(account().accountIdentity().name())
 			.arg(account().id()));
 
-	QPushButton *removeButton = messageBox->addButton(tr("Remove account"), QMessageBox::AcceptRole);
-	QPushButton *removeAndUnregisterButton = messageBox->addButton(tr("Remove account and unregister from server"), QMessageBox::DestructiveRole);
-	messageBox->addButton(QMessageBox::Cancel);
-	messageBox->setDefaultButton(QMessageBox::Cancel);
-	messageBox->exec();
+	QPushButton *removeButton = messageBox.data()->addButton(tr("Remove account"), QMessageBox::AcceptRole);
+	QPushButton *removeAndUnregisterButton = messageBox.data()->addButton(tr("Remove account and unregister from server"), QMessageBox::DestructiveRole);
+	messageBox.data()->addButton(QMessageBox::Cancel);
+	messageBox.data()->setDefaultButton(QMessageBox::Cancel);
+	messageBox.data()->exec();
 
-	if (messageBox->clickedButton() == removeButton)
+	if (messageBox.isNull())
+		return;
+
+	if (messageBox.data()->clickedButton() == removeButton)
 	{
 		AccountManager::instance()->removeAccountAndBuddies(account());
 		deleteLater();
 	}
-	else if (messageBox->clickedButton() == removeAndUnregisterButton)
+	else if (messageBox.data()->clickedButton() == removeAndUnregisterButton)
 		(new GaduUnregisterAccountWindow(account()))->show();
 
-	delete messageBox;
+	delete messageBox.data();
 }
 
 void GaduEditAccountWidget::remindPasssword()
