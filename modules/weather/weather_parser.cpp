@@ -277,7 +277,7 @@ QString WeatherParser::tagClean(QString str) const
 	}
 	while (start != -1 && end != -1);
 
-	str.replace(newLineRegExp, QLatin1String(" "));
+	str = replacedNewLine(str, QLatin1String(" "));
 	str.replace("  ", " ");
 	str.replace(" ,", ",");
 	str.replace(" .", ".");

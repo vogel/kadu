@@ -28,14 +28,13 @@
 #include "path-conversion.h"
 
 class QRect;
-class QRegExp;
 class QWidget;
 
 // private
 extern KADUAPI long int startTime, beforeExecTime, endingTime, exitingTime;
 extern KADUAPI bool measureTime;
 
-extern KADUAPI const QRegExp newLineRegExp;
+KADUAPI QString replacedNewLine(const QString &text, const QString &newLineText);
 
 KADUAPI QString pwHash(const QString &text);
 QString translateLanguage(const QApplication *application, const QString &locale, const bool l2n);

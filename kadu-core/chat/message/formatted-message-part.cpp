@@ -49,8 +49,7 @@ QString FormattedMessagePart::toHtml() const
 				? QString("<img src=\"kaduimg:///%1\" />").arg(ImageFileName)
 				: QString("<img src=\"file://%1\" />").arg(ImageFileName); // TODO 0.6.6: remove once we're saving sent images in imagesPath
 
-	QString result = Qt::escape(Content);
-	result.replace(newLineRegExp, QLatin1String("<br/>"));
+	QString result(replacedNewLine(Qt::escape(Content), QLatin1String("<br/>")));
 	result.replace(QChar::LineSeparator, QLatin1String("<br/>"));
 
 	if (!Bold && !Italic && !Underline && !Color.isValid())

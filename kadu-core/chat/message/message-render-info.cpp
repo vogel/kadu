@@ -160,9 +160,7 @@ MessageRenderInfo::MessageRenderInfo(const Message &msg) :
 			break;
 	}
 
-	HtmlMessageContent = MyMessage.content();
-
-	HtmlMessageContent.replace(newLineRegExp, QLatin1String("<br/>"));
+	HtmlMessageContent = replacedNewLine(MyMessage.content(), QLatin1String("<br/>"));
 	HtmlMessageContent.replace(QChar::LineSeparator, QLatin1String("<br/>"));
 
 	// compare this regexp with FormattedMessagePart::toHtml()

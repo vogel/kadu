@@ -48,7 +48,11 @@ QFontInfo *defaultFontInfo;
 long int startTime, beforeExecTime, endingTime, exitingTime;
 bool measureTime = false;
 
-const QRegExp newLineRegExp("(\r\n|\r|\n)");
+QString replacedNewLine(const QString &text, const QString &newLineText)
+{
+	static const QRegExp newLineRegExp("(\r\n|\r|\n)");
+	return QString(text).replace(newLineRegExp, newLineText);
+}
 
 void saveWindowGeometry(const QWidget *w, const QString &section, const QString &name)
 {
