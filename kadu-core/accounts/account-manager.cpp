@@ -52,6 +52,8 @@ KADUAPI AccountManager * AccountManager::instance()
 AccountManager::AccountManager()
 {
 	ConfigurationManager::instance()->registerStorableObject(this);
+
+	qRegisterMetaType<Account>("Account");
 }
 
 AccountManager::~AccountManager()
@@ -97,10 +99,16 @@ void AccountManager::itemRegistered(Account item)
 	QMutexLocker(&mutex());
 
 	AccountsAwareObject::notifyAccountRegistered(item);
+
+	/* NOTE: We need QueuedConnection here so when the protocol emits the signal, it can cleanup
+	 * itself before we do something (e.g., reset connection data after invalidPassword, so when
+	 * we try to log in after entering new password, a new connection can be estabilished instead
+	 * of giving up because alredady existing connection).
+	 */
 	connect(item.protocolHandler(), SIGNAL(connectionError(Account, const QString &, const QString &)),
-			this, SLOT(connectionError(Account, const QString &, const QString &)));
+			this, SLOT(connectionError(Account, const QString &, const QString &)), Qt::QueuedConnection);
 	connect(item.protocolHandler(), SIGNAL(invalidPassword(Account)),
-			this, SLOT(invalidPassword(Account)));
+			this, SLOT(invalidPassword(Account)), Qt::QueuedConnection);
 
 	emit accountRegistered(item);
 }
