@@ -104,9 +104,6 @@ ChatWidget::ChatWidget(Chat chat, QWidget *parent) :
 
 
 	connect(ChatEditBoxSizeManager::instance(), SIGNAL(commonHeightChanged(int)), this, SLOT(commonHeightChanged(int)));
-	// already set up by other window, so we use this window setting
-	if (0 != ChatEditBoxSizeManager::instance()->commonHeight())
-		commonHeightChanged(ChatEditBoxSizeManager::instance()->commonHeight());
 
 	kdebugf2();
 }
@@ -593,16 +590,21 @@ void ChatWidget::kaduRestoreGeometry()
 	if (!cgd)
 		return;
 
-	QList<int> vertSizes = cgd->widgetVerticalSizes();
-	if (vertSizes.count() != 2 || vertSizes.at(0) == 0 || vertSizes.at(1) == 0)
+	// already set up by other window, so we use this window setting
+	if (0 != ChatEditBoxSizeManager::instance()->commonHeight())
+		commonHeightChanged(ChatEditBoxSizeManager::instance()->commonHeight());
+	else
 	{
-		int h = height() / 3;
-		vertSizes.clear();
-		vertSizes.append(h * 2);
-		vertSizes.append(h);
+		QList<int> vertSizes = cgd->widgetVerticalSizes();
+		if (vertSizes.count() != 2 || vertSizes.at(0) == 0 || vertSizes.at(1) == 0)
+		{
+			int h = height() / 3;
+			vertSizes.clear();
+			vertSizes.append(h * 2);
+			vertSizes.append(h);
+		}
+		VerticalSplitter->setSizes(vertSizes);
 	}
-
-	VerticalSplitter->setSizes(vertSizes);
 
 	if (HorizontalSplitter)
 	{
