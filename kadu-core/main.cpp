@@ -200,9 +200,8 @@ int main(int argc, char *argv[])
 #else // !Q_WS_WIN
 	WSADATA wsaData;
 
-	if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) {
-		return 1;
-	}
+	if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
+		return 2;
 #endif // !Q_WS_WIN
 	debug_mask = -2;
 
@@ -216,18 +215,30 @@ int main(int argc, char *argv[])
 		if (param == "--version")
 		{
 			printVersion();
+			//delete qApp;
+#ifdef Q_WS_WIN
+			WSACleanup();
+#endif
 			return 0;
 		}
 		else if (param == "--help")
 		{
 			printUsage();
 			printKaduOptions();
+			//delete qApp;
+#ifdef Q_WS_WIN
+			WSACleanup();
+#endif
 			return 0;
 		}
 		else if (param == "--help-qt")
 		{
 			printUsage();
 			printQtOptions();
+			//delete qApp;
+#ifdef Q_WS_WIN
+			WSACleanup();
+#endif
 			return 0;
 		}
 		else if (param == "--help-all")
@@ -235,6 +246,10 @@ int main(int argc, char *argv[])
 			printUsage();
 			printKaduOptions();
 			printQtOptions();
+			//delete qApp;
+#ifdef Q_WS_WIN
+			WSACleanup();
+#endif
 			return 0;
 		}
 		else if ((param == "--debug") && (argc > i + 1))
@@ -321,6 +336,9 @@ int main(int argc, char *argv[])
 		delete xml_config_file;
 		delete config_file_ptr;
 		//delete qApp;
+#ifdef Q_WS_WIN
+		WSACleanup();
+#endif
 
 		return 10;
 	}
@@ -347,6 +365,9 @@ int main(int argc, char *argv[])
 		delete config_file_ptr;
 		delete xml_config_file;
 		//delete qApp;
+#ifdef Q_WS_WIN
+		WSACleanup();
+#endif
 
 		return 1;
 	}
@@ -398,14 +419,14 @@ int main(int argc, char *argv[])
 	int ret = qApp->exec();
 	kdebugm(KDEBUG_INFO, "after exec\n");
 
-#ifdef Q_WS_WIN
-	WSACleanup();
-#endif
-
 	// TODO 0.6.6: it causes segfault on exit with QGtkStyle, at least
 	// on Ubuntu 10.10 (I tested it) --beevvy
 	// it's a hackish WORKAROUND!
 	//delete qApp;
+
+#ifdef Q_WS_WIN
+	WSACleanup();
+#endif
 
 	if (measureTime)
 	{
