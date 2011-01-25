@@ -49,6 +49,7 @@ private slots:
 
 protected:
 	virtual void configurationUpdated();
+    virtual void resizeEvent(QResizeEvent *e);
 
 public:
 	static void createDefaultToolbars(QDomElement parentConfig);
@@ -78,6 +79,7 @@ public:
 public slots:
 	void addEmoticon(const QString &emoticon);
 	void changeColor(const QColor &newColor);
+
 
 signals:
 	void keyPressed(QKeyEvent *e, CustomInput *sender, bool &handled);

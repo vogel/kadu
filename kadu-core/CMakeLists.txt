@@ -161,6 +161,7 @@ set (kadu_SRCS
 	gui/widgets/buddy-options-configuration-widget.cpp
 	gui/widgets/buddy-info-panel.cpp
 	gui/widgets/chat-edit-box.cpp
+	gui/widgets/chat-edit-box-size-manager.cpp
 	gui/widgets/chat-messages-view.cpp
 	gui/widgets/chat-view-network-access-manager.cpp
 	gui/widgets/chat-widget.cpp
@@ -490,6 +491,7 @@ set (kadu_MOC_SRCS
 	gui/widgets/buddy-options-configuration-widget.h
 	gui/widgets/buddy-info-panel.h
 	gui/widgets/chat-edit-box.h
+	gui/widgets/chat-edit-box-size-manager.h
 	gui/widgets/chat-messages-view.h
 	gui/widgets/chat-view-network-access-manager.h
 	gui/widgets/chat-widget.h

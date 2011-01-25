@@ -59,13 +59,14 @@ class KADUAPI ChatWidget : public QWidget, ConfigurationAwareObject
 	BuddiesListWidget *BuddiesWidget;
 	ChatEditBox *InputBox;
 
-	QSplitter *vertSplit, *horizSplit; /*!< obiekty oddzielaj�ce kontrolki od siebie */
+	QSplitter *VerticalSplitter;
+	QSplitter *HorizontalSplitter;
 
 	QString Title;
 
-	QDateTime LastMessageTime; /*!< czas ostatniej wiadomo�ci */
+	QDateTime LastMessageTime;
 
-	unsigned int NewMessagesCount; /*!< liczba nowych wiadomo�ci w oknie rozmowy */
+	unsigned int NewMessagesCount;
 	bool SelectionFromMessagesView;
 
 	void createGui();
@@ -78,6 +79,7 @@ class KADUAPI ChatWidget : public QWidget, ConfigurationAwareObject
 private slots:
 	void connectAcknowledgeSlots();
 	void disconnectAcknowledgeSlots();
+	void commonHeightChanged(int height);
 
 protected:
 	virtual void keyPressEvent(QKeyEvent *e);

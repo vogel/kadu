@@ -22,6 +22,7 @@
  */
 
 #include <QtGui/QFileDialog>
+#include <QtGui/QResizeEvent>
 #include <QtXml/QDomElement>
 
 #include "buddies/buddy-set.h"
@@ -32,6 +33,7 @@
 #include "contacts/contact-set.h"
 #include "emoticons/emoticon-selector.h"
 #include "gui/actions/action.h"
+#include "gui/widgets/chat-edit-box-size-manager.h"
 #include "gui/widgets/chat-widget-actions.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/color-selector.h"
@@ -115,6 +117,12 @@ void ChatEditBox::configurationUpdated()
 	setColorFromCurrentText(true);
 
 	InputBox->setAutoSend(config_file.readBoolEntry("Chat", "AutoSend"));
+}
+
+void ChatEditBox::resizeEvent(QResizeEvent *e)
+{
+	QWidget::resizeEvent(e);
+	ChatEditBoxSizeManager::instance()->setCommonHeight(e->size().height());
 }
 
 void ChatEditBox::setAutoSend(bool autoSend)
