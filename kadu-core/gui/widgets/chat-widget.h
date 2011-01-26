@@ -86,6 +86,8 @@ private slots:
 
 protected:
 	virtual void keyPressEvent(QKeyEvent *e);
+	virtual void resizeEvent(QResizeEvent *e);
+ 	virtual void showEvent(QShowEvent *e);
 	bool keyPressEventHandled(QKeyEvent *);
 
 	virtual void configurationUpdated();

@@ -17,6 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "configuration/configuration-file.h"
+
 #include "chat-edit-box-size-manager.h"
 
 ChatEditBoxSizeManager * ChatEditBoxSizeManager::Instance = 0;
@@ -32,10 +34,16 @@ ChatEditBoxSizeManager * ChatEditBoxSizeManager::instance()
 ChatEditBoxSizeManager::ChatEditBoxSizeManager() :
 		CommonHeight(0)
 {
+	configurationUpdated();
 }
 
 ChatEditBoxSizeManager::~ChatEditBoxSizeManager()
 {
+}
+
+void ChatEditBoxSizeManager::configurationUpdated()
+{
+	setCommonHeight(config_file.readNumEntry("Chat", "ChatEditBoxHeight", 0));
 }
 
 void ChatEditBoxSizeManager::setCommonHeight(int height)
@@ -43,6 +51,12 @@ void ChatEditBoxSizeManager::setCommonHeight(int height)
 	if (height != CommonHeight)
 	{
 		CommonHeight = height;
+		config_file.writeEntry("Chat", "ChatEditBoxHeight", CommonHeight);
 		emit commonHeightChanged(CommonHeight);
 	}
+}
+
+bool ChatEditBoxSizeManager::initialized()
+{
+	return 0 != CommonHeight;
 }

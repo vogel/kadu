@@ -22,9 +22,10 @@
 
 #include <QtCore/QObject>
 
+#include "configuration/configuration-aware-object.h"
 #include "exports.h"
 
-class KADUAPI ChatEditBoxSizeManager : public QObject
+class KADUAPI ChatEditBoxSizeManager : public QObject, ConfigurationAwareObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(ChatEditBoxSizeManager)
@@ -36,11 +37,16 @@ class KADUAPI ChatEditBoxSizeManager : public QObject
 	ChatEditBoxSizeManager();
 	virtual ~ChatEditBoxSizeManager();
 
+protected:
+	virtual void configurationUpdated();
+
 public:
 	static ChatEditBoxSizeManager * instance();
 
 	void setCommonHeight(int height);
 	int commonHeight() { return CommonHeight; }
+
+	bool initialized();
 
 signals:
 	void commonHeightChanged(int height);
