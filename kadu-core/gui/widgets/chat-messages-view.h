@@ -56,7 +56,6 @@ class KADUAPI ChatMessagesView : public KaduWebView
 	void disconnectChat();
 
 	bool AtBottom;
-	bool ManualScroll;
 
 private slots:
 	void repaintMessages();
@@ -69,7 +68,10 @@ private slots:
 	void messageStatusChanged(Message::Status);
 
 	void scrollToBottom();
-	void scrollRequested(int dx, int dy, const QRect &rectToScroll);
+
+protected:
+	virtual void mouseReleaseEvent(QMouseEvent *e);
+	virtual void wheelEvent(QWheelEvent *e);
 
 public:
 	ChatMessagesView(const Chat &chat = Chat::null, bool supportTransparency = true, QWidget *parent = 0);

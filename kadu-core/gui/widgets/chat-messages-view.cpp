@@ -43,7 +43,7 @@
 #include "chat-messages-view.h"
 
 ChatMessagesView::ChatMessagesView(const Chat &chat, bool supportTransparency, QWidget *parent) :
-		KaduWebView(parent), CurrentChat(chat), SupportTransparency(supportTransparency), AtBottom(true), ManualScroll(true)
+		KaduWebView(parent), CurrentChat(chat), SupportTransparency(supportTransparency), AtBottom(true)
 {
 	Renderer = new HtmlMessagesRenderer(CurrentChat, this);
 
@@ -62,7 +62,6 @@ ChatMessagesView::ChatMessagesView(const Chat &chat, bool supportTransparency, Q
 	connectChat();
 
 	connect(this->page()->mainFrame(), SIGNAL(contentsSizeChanged(const QSize &)), this, SLOT(scrollToBottom()));
-	connect(this->page(), SIGNAL(scrollRequested(int, int, const QRect &)), this, SLOT(scrollRequested(int, int, const QRect &)));
 
 	ChatStylesManager::instance()->chatViewCreated(this);
 }
@@ -72,6 +71,20 @@ ChatMessagesView::~ChatMessagesView()
  	ChatStylesManager::instance()->chatViewDestroyed(this);
 
 	disconnectChat();
+}
+
+void ChatMessagesView::mouseReleaseEvent(QMouseEvent *e)
+{
+	AtBottom = page()->mainFrame()->scrollBarValue(Qt::Vertical) >= page()->mainFrame()->scrollBarMaximum(Qt::Vertical);
+
+	KaduWebView::mouseReleaseEvent(e);
+}
+
+void ChatMessagesView::wheelEvent(QWheelEvent* e)
+{
+	AtBottom = page()->mainFrame()->scrollBarValue(Qt::Vertical) >= page()->mainFrame()->scrollBarMaximum(Qt::Vertical);
+
+	QWebView::wheelEvent(e);
 }
 
 void ChatMessagesView::connectChat()
@@ -211,25 +224,8 @@ void ChatMessagesView::messageStatusChanged(Message::Status status)
 	Renderer->messageStatusChanged(Message(sender()), status);
 }
 
-void ChatMessagesView::scrollRequested(int dx, int dy, const QRect &rectToScroll)
-{
-	Q_UNUSED(dx);
-	Q_UNUSED(rectToScroll);
-
-	if (ManualScroll)
-	{
-		AtBottom =
-			(page()->mainFrame()->scrollBarValue(Qt::Vertical)      >= page()->mainFrame()->scrollBarMaximum(Qt::Vertical)) ||
-			(page()->mainFrame()->scrollBarValue(Qt::Vertical) - dy >= page()->mainFrame()->scrollBarMaximum(Qt::Vertical));
-	}
-}
-
 void ChatMessagesView::scrollToBottom()
 {
 	if (AtBottom)
-	{
-		ManualScroll = false;
 		page()->mainFrame()->setScrollBarValue(Qt::Vertical, page()->mainFrame()->scrollBarMaximum(Qt::Vertical));
-		ManualScroll = true;
-	}
 }

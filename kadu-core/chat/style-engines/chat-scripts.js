@@ -31,7 +31,8 @@ function kadu_appendMessage(html)
 
 function scrollToBottom()
 {
-	document.body.scrollTop = document.body.offsetHeight;
+//	we have better implementation in C++, so we should ignore it
+//	document.body.scrollTop = document.body.offsetHeight;
 }
 
 function kadu_removeFirstMessage()
