@@ -91,7 +91,6 @@ set (kadu_SRCS
 	chat/type/chat-type-manager.cpp
 	chat/type/chat-type-simple.cpp
 
-	configuration/account-data-manager.cpp
 	configuration/config-file-data-manager.cpp
 	configuration/configuration-aware-object.cpp
 	configuration/configuration-contact-data-manager.cpp
@@ -442,7 +441,6 @@ set (kadu_MOC_SRCS
 	contacts/model/buddy-contact-model.h
 	contacts/model/contact-list-model.h
 
-	configuration/account-data-manager.h
 	configuration/config-file-data-manager.h
 	configuration/configuration-contact-data-manager.h
 	configuration/configuration-window-data-manager.h
