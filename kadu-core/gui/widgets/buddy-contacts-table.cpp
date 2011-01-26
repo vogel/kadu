@@ -201,13 +201,16 @@ void BuddyContactsTable::removeClicked()
 	if (!item)
 		return;
 
-	bool sure = MessageDialog::ask("dialog-warning", tr("Kadu"), tr("Are you sure do you want to delete this contact from buddy <b>%1</b>?").arg(MyBuddy.display()));
-	if (!sure)
-		return;
-
 	if (item->action() == BuddyContactsTableItem::ItemAdd)
+	{
 		// remove it, we don't need it anyway
 		Model->removeRow(View->currentIndex().row());
-	else
+		return;
+	}
+
+	bool sure = MessageDialog::ask("dialog-warning", tr("Kadu"),
+			tr("Are you sure do you want to delete this contact from buddy <b>%1</b>?").arg(MyBuddy.display()));
+
+	if (sure)
 		item->setAction(BuddyContactsTableItem::ItemRemove);
 }
