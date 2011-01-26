@@ -80,6 +80,13 @@ void ChatMessagesView::mouseReleaseEvent(QMouseEvent *e)
 	KaduWebView::mouseReleaseEvent(e);
 }
 
+void ChatMessagesView::resizeEvent(QResizeEvent *e)
+{
+	QWebView::resizeEvent(e);
+
+	scrollToBottom();
+}
+
 void ChatMessagesView::wheelEvent(QWheelEvent* e)
 {
 	AtBottom = page()->mainFrame()->scrollBarValue(Qt::Vertical) >= page()->mainFrame()->scrollBarMaximum(Qt::Vertical);

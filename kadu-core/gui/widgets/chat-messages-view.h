@@ -71,6 +71,7 @@ private slots:
 
 protected:
 	virtual void mouseReleaseEvent(QMouseEvent *e);
+	virtual void resizeEvent(QResizeEvent *e);
 	virtual void wheelEvent(QWheelEvent *e);
 
 public:
