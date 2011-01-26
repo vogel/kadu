@@ -43,7 +43,7 @@ class BuddyContactsTableModel : public QAbstractTableModel
 	void performItemActionDetach(BuddyContactsTableItem *);
 	void performItemActionRemove(BuddyContactsTableItem *);
 
-	void addItem(BuddyContactsTableItem *item);
+	void addItem(BuddyContactsTableItem *item, bool emitRowsInserted = true);
 
 private slots:
 	void itemUpdated(BuddyContactsTableItem *item);
@@ -60,6 +60,7 @@ public:
 	virtual int columnCount(const QModelIndex &parent = QModelIndex()) const;
 	virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
 
+	// NOTE: insertRows() always appends, ignores `row' argument.
 	virtual bool insertRows(int row, int count, const QModelIndex &parent = QModelIndex());
 	virtual bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex());
 
