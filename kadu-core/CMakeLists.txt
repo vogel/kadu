@@ -230,7 +230,6 @@ set (kadu_SRCS
 
 	gui/windows/about.cpp
 	gui/windows/add-buddy-window.cpp
-	gui/windows/buddy-data-manager.cpp
 	gui/windows/buddy-data-window.cpp
 	gui/windows/buddy-data-window-aware-object.cpp
 	gui/windows/buddy-delete-window.cpp
@@ -560,7 +559,6 @@ set (kadu_MOC_SRCS
 
 	gui/windows/about.h
 	gui/windows/add-buddy-window.h
-	gui/windows/buddy-data-manager.h
 	gui/windows/buddy-data-window.h
 	gui/windows/buddy-delete-window.h
 	gui/windows/chat-window.h

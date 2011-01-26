@@ -59,7 +59,6 @@
 #include "gui/widgets/buddy-groups-configuration-widget.h"
 #include "gui/widgets/buddy-options-configuration-widget.h"
 #include "gui/widgets/buddy-personal-info-configuration-widget.h"
-#include "gui/windows/buddy-data-manager.h"
 #include "gui/windows/buddy-data-window-aware-object.h"
 #include "gui/windows/message-dialog.h"
 #include "misc/misc.h"
