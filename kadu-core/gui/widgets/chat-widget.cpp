@@ -72,7 +72,7 @@
 
 #include "chat-widget.h"
 
-ChatWidget::ChatWidget(Chat chat, QWidget *parent) :
+ChatWidget::ChatWidget(const Chat &chat, QWidget *parent) :
 		QWidget(parent), CurrentChat(chat),
 		BuddiesWidget(0), InputBox(0), HorizontalSplitter(0),
 		SplittersInitialized(false), NewMessagesCount(0)

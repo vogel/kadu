@@ -44,7 +44,7 @@ public:
 	JabberChatService(JabberProtocol *protocol);
 
 public slots:
-	virtual bool sendMessage(Chat chat, FormattedMessage &formattedMessage, bool silent = false);
+	virtual bool sendMessage(const Chat &chat, FormattedMessage &formattedMessage, bool silent = false);
 
 };
 

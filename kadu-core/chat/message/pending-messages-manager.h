@@ -68,17 +68,17 @@ public:
 	virtual QString storageNodeName() { return QLatin1String("PendingMessages"); }
 	virtual QString storageNodeItemName() { return QLatin1String("Message"); }
 
-	bool hasPendingMessagesForContact(Contact contact);
-	bool hasPendingMessagesForBuddy(Buddy buddy);
-	bool hasPendingMessagesForChat(Chat chat);
+	bool hasPendingMessagesForContact(const Contact &contact);
+	bool hasPendingMessagesForBuddy(const Buddy &buddy);
+	bool hasPendingMessagesForChat(const Chat &chat);
 	bool hasPendingMessages();
 
-	Chat chatForBuddy(Buddy buddy);
-	Chat chatForContact(Contact contact);
+	Chat chatForBuddy(const Buddy &buddy);
+	Chat chatForContact(const Contact &contact);
 
-	QList<Message> pendingMessagesForContact(Contact contact);
-	QList<Message> pendingMessagesForBuddy(Buddy buddy);
-	QList<Message> pendingMessagesForChat(Chat chat);
+	QList<Message> pendingMessagesForContact(const Contact &contact);
+	QList<Message> pendingMessagesForBuddy(const Buddy &buddy);
+	QList<Message> pendingMessagesForChat(const Chat &chat);
 	QList<Message> pendingMessages();
 
 	Message firstPendingMessage();

@@ -60,6 +60,8 @@ class KADUAPI ChatWidgetManager : public QObject, ConfigurationAwareObject, Stor
 	void autoSendActionCheck();
 	void insertEmoticonActionEnabled();
 
+	ChatWidget * openChatWidget(const Chat &chat, bool forceActivate = false);
+
 private slots:
 	void messageReceived(const Message &message);
 	void messageSent(const Message &message);
@@ -86,23 +88,9 @@ public:
 
 	void activateChatWidget(ChatWidget *chatwidget, bool forceActivate);
 
-public slots:
-	ChatWidget * openChatWidget(Chat chat, bool forceActivate = false);
+	void openPendingMessages(const Chat &chat, bool forceActivate = false);
 
-	/**
-		\fn void openPendingMsgs(ContactList users)
-		Funkcja wpisuje zakolejkowane wiadomo�ci do okna
-		z u�ytkownikami "users"
-		\param users lista u�ytkownik�w identyfikuj�cych okno
-	**/
-	void openPendingMsgs(Chat chat, bool forceActivate = false);
-
-	/**
-		\fn void openPendingMsgs()
-		Funkcja wpisuje wszystkie zakolejkowane wiadomo�ci
-		do odpowiednich okien
-	**/
-	void openPendingMsgs(bool forceActivate = false);
+	void openPendingMessages(bool forceActivate = false);
 
 	/**
 		\fn void deletePendingMsgs(ContactList users)
@@ -110,18 +98,7 @@ public slots:
 		z u�ytkownikami "users"
 		\param users lista u�ytkownik�w identyfikuj�cych okno
 	**/
-	void deletePendingMsgs(Chat chat);
-
-	void sendMessage(Chat chat);
-
-	void closeChat(Chat chat);
-	void closeAllChats(Buddy buddy);
-
-	/**
-		\fn void closeAllWindows()
-		Funkcja zamyka wszystkie okna chat
-	**/
-	void closeAllWindows();
+	void deletePendingMessages(const Chat &chat);
 
 	/**
 		\fn int registerChatWidget(ChatWidget* chatwidget)
@@ -139,6 +116,19 @@ public slots:
 		\param chat okno kt�re b�dzie wyrejestrowane
 	**/
 	void unregisterChatWidget(ChatWidget *chatwidget);
+
+public slots:
+
+	void sendMessage(const Chat &chat);
+
+	void closeChat(const Chat &chat);
+	void closeAllChats(const Buddy &buddy);
+
+	/**
+		\fn void closeAllWindows()
+		Funkcja zamyka wszystkie okna chat
+	**/
+	void closeAllWindows();
 
 signals:
 	/**

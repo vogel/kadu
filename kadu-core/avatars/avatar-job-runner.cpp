@@ -34,7 +34,7 @@ AvatarJobRunner::~AvatarJobRunner()
 {
 }
 
-AvatarService * AvatarJobRunner::avatarService(Account account)
+AvatarService * AvatarJobRunner::avatarService(const Account &account)
 {
 	Protocol *protocol = account.protocolHandler();
 	if (!protocol)
@@ -43,7 +43,7 @@ AvatarService * AvatarJobRunner::avatarService(Account account)
 	return protocol->avatarService();
 }
 
-AvatarService * AvatarJobRunner::avatarService(Contact contact)
+AvatarService * AvatarJobRunner::avatarService(const Contact &contact)
 {
 	Account account = contact.contactAccount();
 	if (account.isNull())
@@ -52,7 +52,7 @@ AvatarService * AvatarJobRunner::avatarService(Contact contact)
 	return avatarService(account);
 }
 
-void AvatarJobRunner::runJob(Contact contact)
+void AvatarJobRunner::runJob(const Contact &contact)
 {
 	AvatarService *service = avatarService(contact);
 	if (!service)

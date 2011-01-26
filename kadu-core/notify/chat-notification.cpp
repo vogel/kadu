@@ -23,7 +23,7 @@
 
 #include "chat-notification.h"
 
-ChatNotification::ChatNotification(Chat chat, const QString &type, const QString &iconPath) :
+ChatNotification::ChatNotification(const Chat &chat, const QString &type, const QString &iconPath) :
 		AccountNotification(chat.chatAccount(), type, iconPath), CurrentChat(chat)
 {
 	addCallback(tr("Chat"), SLOT(openChat()), "openChat()");
@@ -34,5 +34,5 @@ void ChatNotification::openChat()
 {
 	close();
 			
-	ChatWidgetManager::instance()->openPendingMsgs(chat(), true);
+	ChatWidgetManager::instance()->openPendingMessages(chat(), true);
 }

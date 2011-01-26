@@ -291,7 +291,7 @@ void HintManager::processButtonPress(const QString &buttonName, Hint *hint)
 
 		case 2:
 			if (hint->chat() && config_file.readBoolEntry("Hints", "DeletePendingMsgWhenHintDeleted"))
-				ChatWidgetManager::instance()->deletePendingMsgs(hint->chat());
+				ChatWidgetManager::instance()->deletePendingMessages(hint->chat());
 
 			hint->discardNotification();
 			deleteHintAndUpdate(hint);
@@ -332,7 +332,7 @@ void HintManager::openChat(Hint *hint)
 		if ((hint->getNotification()->type() != "NewChat") && (hint->getNotification()->type() != "NewMessage"))
 			return;
 
-	ChatWidgetManager::instance()->openPendingMsgs(hint->chat(), true);
+	ChatWidgetManager::instance()->openPendingMessages(hint->chat(), true);
 
 	deleteHintAndUpdate(hint);
 

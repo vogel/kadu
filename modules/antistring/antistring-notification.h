@@ -34,9 +34,9 @@ public:
 	static void registerNotifications();
 	static void unregisterNotifications();
 
-	static void notifyStringReceived(Chat chat);
+	static void notifyStringReceived(const Chat &chat);
 
-	explicit AntistringNotification(Chat chat);
+	explicit AntistringNotification(const Chat &chat);
 	virtual ~AntistringNotification();
 };
 

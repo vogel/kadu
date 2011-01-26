@@ -161,7 +161,7 @@ QString ChatDetailsSimple::name() const
  *
  * Assigns contact to this chat.
  */
-void ChatDetailsSimple::setContact(Contact contact)
+void ChatDetailsSimple::setContact(const Contact &contact)
 {
 	CurrentContact = contact;
 }

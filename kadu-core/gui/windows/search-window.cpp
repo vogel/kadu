@@ -344,7 +344,7 @@ void SearchWindow::chatFound()
 	{
 		Chat chat = ChatManager::instance()->findChat(contacts, true);
 		if (chat)
-			ChatWidgetManager::instance()->openChatWidget(chat, true);
+			ChatWidgetManager::instance()->openPendingMessages(chat, true);
 	}
 
 }

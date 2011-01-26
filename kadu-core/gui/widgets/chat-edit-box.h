@@ -53,7 +53,7 @@ protected:
 public:
 	static void createDefaultToolbars(QDomElement parentConfig);
 
-	ChatEditBox(Chat chat, QWidget *parent = 0);
+	ChatEditBox(const Chat &chat, QWidget *parent = 0);
 	virtual ~ChatEditBox();
 
 	// TODO: remove?

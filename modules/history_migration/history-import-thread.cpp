@@ -111,7 +111,7 @@ Chat HistoryImportThread::chatFromUinsList(const UinsList &uinsList) const
 	return ChatManager::instance()->findChat(contacts);
 }
 
-void HistoryImportThread::importEntry(Chat chat, const HistoryEntry &entry)
+void HistoryImportThread::importEntry(const Chat &chat, const HistoryEntry &entry)
 {
 	switch (entry.Type)
 	{

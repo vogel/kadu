@@ -48,7 +48,7 @@ class KADUAPI ChatNameFilter : public ChatFilter
 public:
 	ChatNameFilter(QObject *parent = 0);
 
-	virtual bool acceptChat(Chat chat);
+	virtual bool acceptChat(const Chat &chat);
 
 	void setName(const QString &name);
 

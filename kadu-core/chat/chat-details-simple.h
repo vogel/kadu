@@ -60,7 +60,7 @@ public:
 	virtual ContactSet contacts() const;
 	virtual QString name() const;
 
-	void setContact(Contact contact);
+	void setContact(const Contact &contact);
 	Contact contact();
 
 };

@@ -54,7 +54,7 @@ GaduChatService::GaduChatService(GaduProtocol *protocol)
 // 		this, SLOT(ackReceived(int, uin_t, int)));
 }
 
-bool GaduChatService::sendMessage(Chat chat, FormattedMessage &message, bool silent)
+bool GaduChatService::sendMessage(const Chat &chat, FormattedMessage &message, bool silent)
 {
 	kdebugf();
 

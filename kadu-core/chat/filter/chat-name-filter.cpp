@@ -49,7 +49,7 @@ ChatNameFilter::ChatNameFilter(QObject *parent) :
  * For checking buddies name BuddyNameFilter object is used on every
  * buddy in this chat.
  */
-bool ChatNameFilter::acceptChat(Chat chat)
+bool ChatNameFilter::acceptChat(const Chat &chat)
 {
 	if (Name.isEmpty())
 		return true;

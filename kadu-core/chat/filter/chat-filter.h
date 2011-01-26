@@ -64,7 +64,7 @@ public:
 	*
 	* Returns false if chat should be filtered out.
 	*/
-	virtual bool acceptChat(Chat chat) = 0;
+	virtual bool acceptChat(const Chat &chat) = 0;
 
 signals:
 	/**

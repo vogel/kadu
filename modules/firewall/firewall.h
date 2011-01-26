@@ -76,8 +76,8 @@ class Firewall : public QObject, ConfigurationAwareObject, AccountsAwareObject
 
 	void import_0_6_5_configuration();
 
-	bool checkChat(Chat chat, Contact sender, const QString &message, bool &stop);
-	bool checkConference(Chat chat);
+	bool checkChat(const Chat &chat, const Contact &sender, const QString &message, bool &stop);
+	bool checkConference(const Chat &chat);
 	bool checkEmoticons(const QString &message);
 	bool checkFlood();
 

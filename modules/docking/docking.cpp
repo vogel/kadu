@@ -111,7 +111,7 @@ DockingManager::DockingManager() :
 	OpenChatAction = new QAction(IconsManager::instance()->iconByPath("internet-group-chat"),
 		tr("Show Pending Messages"), this);
 	connect(OpenChatAction, SIGNAL(triggered()), ChatWidgetManager::instance(),
-		SLOT(openPendingMsgs()));
+		SLOT(openPendingMessages()));
 
 	MacDockMenu = new QMenu();
 	qt_mac_set_dock_menu(MacDockMenu);
@@ -246,7 +246,7 @@ void DockingManager::trayMousePressEvent(QMouseEvent * e)
 	if (e->button() == Qt::MidButton)
 	{
 		emit mousePressMidButton();
-		ChatWidgetManager::instance()->openPendingMsgs(true);
+		ChatWidgetManager::instance()->openPendingMessages(true);
 		return;
 	}
 
@@ -259,7 +259,7 @@ void DockingManager::trayMousePressEvent(QMouseEvent * e)
 
 		if (PendingMessagesManager::instance()->hasPendingMessages() && (e->modifiers() != Qt::ControlModifier))
 		{
-			ChatWidgetManager::instance()->openPendingMsgs(true);
+			ChatWidgetManager::instance()->openPendingMessages(true);
 			return;
 		}
 

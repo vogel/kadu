@@ -42,7 +42,7 @@
 
 #include "chat-messages-view.h"
 
-ChatMessagesView::ChatMessagesView(Chat chat, bool supportTransparency, QWidget *parent) :
+ChatMessagesView::ChatMessagesView(const Chat &chat, bool supportTransparency, QWidget *parent) :
 		KaduWebView(parent), CurrentChat(chat), SupportTransparency(supportTransparency), AtBottom(true), ManualScroll(true)
 {
 	Renderer = new HtmlMessagesRenderer(CurrentChat, this);
@@ -96,7 +96,7 @@ void ChatMessagesView::disconnectChat()
 				this, SLOT(imageReceived(const QString &, const QString &)));
 }
 
-void ChatMessagesView::setChat(Chat chat)
+void ChatMessagesView::setChat(const Chat &chat)
 {
 	disconnectChat();
 	CurrentChat = chat;

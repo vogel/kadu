@@ -32,8 +32,8 @@ class KADUAPI AvatarJobRunner : public QObject
 {
 	Q_OBJECT
 
-	AvatarService * avatarService(Account account);
-	AvatarService * avatarService(Contact contact);
+	AvatarService * avatarService(const Account &account);
+	AvatarService * avatarService(const Contact &contact);
 
 private slots:
 	void avatarFetched(Contact contact, bool ok);
@@ -42,7 +42,7 @@ public:
 	explicit AvatarJobRunner(QObject *parent);
 	virtual ~AvatarJobRunner();
 
-	void runJob(Contact contact);
+	void runJob(const Contact &contact);
 
 signals:
 	void jobFinished(bool ok);

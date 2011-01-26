@@ -45,7 +45,7 @@ void FirewallNotification::unregisterNotifications()
 	FirewalledNotification = 0;
 }
 
-void FirewallNotification::notify(Chat chat, Contact sender, const QString &message)
+void FirewallNotification::notify(const Chat &chat, const Contact &sender, const QString &message)
 {
 	FirewallNotification *notification = new FirewallNotification(chat);
 	notification->setTitle(tr("Message was blocked"));
@@ -55,7 +55,7 @@ void FirewallNotification::notify(Chat chat, Contact sender, const QString &mess
 	NotificationManager::instance()->notify(notification);
 }
 
-FirewallNotification::FirewallNotification(Chat chat) :
+FirewallNotification::FirewallNotification(const Chat &chat) :
 		ChatNotification(chat, "firewallNotification", "ManageKeysWindowIcon")
 {
 }

@@ -49,7 +49,7 @@
 
 QList<ChatEditBox *> chatEditBoxes;
 
-ChatEditBox::ChatEditBox(Chat chat, QWidget *parent) :
+ChatEditBox::ChatEditBox(const Chat &chat, QWidget *parent) :
 		MainWindow("chat", parent), CurrentChat(chat)
 {
 	chatEditBoxes.append(this);

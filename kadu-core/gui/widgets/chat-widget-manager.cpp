@@ -166,7 +166,7 @@ void ChatWidgetManager::load()
 		if (!chat)
 			continue;
 
-		openPendingMsgs(chat, true);
+		openPendingMessages(chat, true);
 	}
 }
 
@@ -264,7 +264,7 @@ void ChatWidgetManager::activateChatWidget(ChatWidget *chatwidget, bool forceAct
 	emit chatWidgetOpen(chatwidget, true);
 }
 
-ChatWidget * ChatWidgetManager::openChatWidget(Chat chat, bool forceActivate)
+ChatWidget * ChatWidgetManager::openChatWidget(const Chat &chat, bool forceActivate)
 {
 	kdebugf();
 
@@ -306,7 +306,7 @@ ChatWidget * ChatWidgetManager::openChatWidget(Chat chat, bool forceActivate)
 	return chatWidget;
 }
 
-void ChatWidgetManager::deletePendingMsgs(Chat chat)
+void ChatWidgetManager::deletePendingMessages(const Chat &chat)
 {
 	kdebugf();
 
@@ -322,7 +322,7 @@ void ChatWidgetManager::deletePendingMsgs(Chat chat)
 	kdebugf2();
 }
 
-void ChatWidgetManager::openPendingMsgs(Chat chat, bool forceActivate)
+void ChatWidgetManager::openPendingMessages(const Chat &chat, bool forceActivate)
 {
 	kdebugf();
 
@@ -355,24 +355,24 @@ void ChatWidgetManager::openPendingMsgs(Chat chat, bool forceActivate)
 	kdebugf2();
 }
 
-void ChatWidgetManager::openPendingMsgs(bool forceActivate)
+void ChatWidgetManager::openPendingMessages(bool forceActivate)
 {
 	kdebugf();
 
 	Message message = PendingMessagesManager::instance()->firstPendingMessage();
 	if (message)
-		openPendingMsgs(message.messageChat(), forceActivate);
+		openPendingMessages(message.messageChat(), forceActivate);
 
 	kdebugf2();
 }
 
-void ChatWidgetManager::sendMessage(Chat chat)
+void ChatWidgetManager::sendMessage(const Chat &chat)
 {
 	kdebugf();
 
 	if (PendingMessagesManager::instance()->hasPendingMessagesForChat(chat))
 	{
-		openPendingMsgs(chat);
+		openPendingMessages(chat);
 		return;
 	}
 
@@ -382,7 +382,7 @@ void ChatWidgetManager::sendMessage(Chat chat)
 	kdebugf2();
 }
 
-void ChatWidgetManager::closeChat(Chat chat)
+void ChatWidgetManager::closeChat(const Chat &chat)
 {
 	ChatWidget *chatWidget = byChat(chat);
 	if (chatWidget)
@@ -393,7 +393,7 @@ void ChatWidgetManager::closeChat(Chat chat)
 	}
 }
 
-void ChatWidgetManager::closeAllChats(Buddy buddy)
+void ChatWidgetManager::closeAllChats(const Buddy &buddy)
 {
 	foreach (const Contact &contact, buddy.contacts())
 	{

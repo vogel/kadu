@@ -45,11 +45,11 @@ class HtmlMessagesRenderer : public QObject
 	void pruneMessages();
 
 public:
-	explicit HtmlMessagesRenderer(Chat chat, QObject *parent = 0);
+	explicit HtmlMessagesRenderer(const Chat &chat, QObject *parent = 0);
 	virtual ~HtmlMessagesRenderer();
 
 	Chat  chat() { return MyChat; }
-	void setChat(Chat chat);
+	void setChat(const Chat &chat);
 
 	QWebPage * webPage() { return MyWebPage; }
 

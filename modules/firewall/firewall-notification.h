@@ -34,9 +34,9 @@ public:
 	static void registerNotifications();
 	static void unregisterNotifications();
 
-	static void notify(Chat chat, Contact sender, const QString &message);
+	static void notify(const Chat &chat, const Contact &sender, const QString &message);
 
-	explicit FirewallNotification(Chat chat);
+	explicit FirewallNotification(const Chat &chat);
 	virtual ~FirewallNotification();
 
 };

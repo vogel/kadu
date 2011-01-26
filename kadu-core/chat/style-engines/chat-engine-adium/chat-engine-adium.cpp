@@ -324,7 +324,7 @@ void AdiumChatStyleEngine::prepareStylePreview(Preview *preview, QString styleNa
 }
 
 // Some parts of the code below are borrowed from Kopete project (http://kopete.kde.org/)
-QString AdiumChatStyleEngine::replaceKeywords(Chat chat, const QString &styleHref, const QString &style)
+QString AdiumChatStyleEngine::replaceKeywords(const Chat &chat, const QString &styleHref, const QString &style)
 {
 	if (!chat)
 		return QString();

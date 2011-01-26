@@ -104,7 +104,7 @@ void ChatManager::detailsUnloaded(Chat chat)
 		unregisterItem(chat);
 }
 
-bool ChatManager::isAccountCommon(Account account, const BuddySet &buddies)
+bool ChatManager::isAccountCommon(const Account &account, const BuddySet &buddies)
 {
 	QMutexLocker(&mutex());
 

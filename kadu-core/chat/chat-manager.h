@@ -119,7 +119,7 @@ public:
 	virtual QString storageNodeItemName() { return QLatin1String("Chat"); }
 
 	// TODO: move somewhere
-	bool isAccountCommon(Account account, const BuddySet &buddies);
+	bool isAccountCommon(const Account &account, const BuddySet &buddies);
 	Account getCommonAccount(const BuddySet &buddies);
 	Chat findChat(const BuddySet &buddies, bool create = true);
 	Chat findChat(const ContactSet &contacts, bool create = true);

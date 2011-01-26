@@ -44,7 +44,7 @@ void CenzorNotification::unregisterNotifiactions()
 	CenzoredNotification = 0;
 }
 
-void CenzorNotification::notifyCenzored(Chat chat)
+void CenzorNotification::notifyCenzored(const Chat &chat)
 {
 	CenzorNotification *notification = new CenzorNotification(chat);
 	notification->setTitle(tr("Message was cenzored"));
@@ -53,7 +53,7 @@ void CenzorNotification::notifyCenzored(Chat chat)
 	NotificationManager::instance()->notify(notification);
 }
 
-CenzorNotification::CenzorNotification(Chat chat) :
+CenzorNotification::CenzorNotification(const Chat &chat) :
 		ChatNotification(chat, "cenzorNotification", QString())
 {
 }

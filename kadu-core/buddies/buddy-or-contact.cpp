@@ -26,12 +26,12 @@ BuddyOrContact::BuddyOrContact() :
 {
 }
 
-BuddyOrContact::BuddyOrContact(Buddy buddy) :
+BuddyOrContact::BuddyOrContact(const Buddy &buddy) :
 		Type(ItemBuddy), MyBuddy(buddy), MyContact(BuddyPreferredManager::instance()->preferredContact(buddy))
 {
 }
 
-BuddyOrContact::BuddyOrContact(Contact contact) :
+BuddyOrContact::BuddyOrContact(const Contact &contact) :
 		Type(ItemContact), MyBuddy(contact.ownerBuddy()), MyContact(contact)
 {
 }
@@ -43,7 +43,7 @@ BuddyOrContact::BuddyOrContact(const BuddyOrContact &copyMe)
 	MyContact = copyMe.MyContact;
 }
 
-BuddyOrContact & BuddyOrContact::operator = (Buddy buddy)
+BuddyOrContact & BuddyOrContact::operator = (const Buddy &buddy)
 {
 	Type = ItemBuddy;
 	MyBuddy = buddy;
@@ -52,7 +52,7 @@ BuddyOrContact & BuddyOrContact::operator = (Buddy buddy)
 	return *this;
 }
 
-BuddyOrContact & BuddyOrContact::operator = (Contact contact)
+BuddyOrContact & BuddyOrContact::operator = (const Contact &contact)
 {
 	Type = ItemContact;
 	MyBuddy = contact.ownerBuddy();

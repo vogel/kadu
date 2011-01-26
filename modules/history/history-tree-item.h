@@ -38,8 +38,8 @@ public:
 	HistoryTreeItem();
 	HistoryTreeItem(const HistoryTreeItem &copyMe);
 
-	explicit HistoryTreeItem(Chat chat);
-	explicit HistoryTreeItem(Buddy buddy);
+	explicit HistoryTreeItem(const Chat &chat);
+	explicit HistoryTreeItem(const Buddy &buddy);
 	explicit HistoryTreeItem(const QString &smsRecipient);
 
 	HistoryTreeItem operator = (HistoryTreeItem &copyMe);

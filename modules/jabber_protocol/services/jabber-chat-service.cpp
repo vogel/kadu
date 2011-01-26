@@ -48,7 +48,7 @@ JabberChatService::JabberChatService(JabberProtocol *protocol)
 		this, SLOT(clientMessageReceived(const XMPP::Message &)));
 }
 
-bool JabberChatService::sendMessage(Chat chat, FormattedMessage &formattedMessage, bool silent)
+bool JabberChatService::sendMessage(const Chat &chat, FormattedMessage &formattedMessage, bool silent)
 {
 	kdebugf();
 	ContactSet contacts = chat.contacts();

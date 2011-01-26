@@ -28,7 +28,7 @@
 
 #include "html-messages-renderer.h"
 
-HtmlMessagesRenderer::HtmlMessagesRenderer(Chat chat, QObject *parent) :
+HtmlMessagesRenderer::HtmlMessagesRenderer(const Chat &chat, QObject *parent) :
 		QObject(parent), MyChat(chat), LastMessage(0), PruneEnabled(true), ForcePruneDisabled(false)
 {
 	MyWebPage = new QWebPage(this);
@@ -43,7 +43,7 @@ HtmlMessagesRenderer::~HtmlMessagesRenderer()
 	MyChatMessages.clear();
 }
 
-void HtmlMessagesRenderer::setChat(Chat chat)
+void HtmlMessagesRenderer::setChat(const Chat &chat)
 {
 	MyChat = chat;
     //TODO 0.6.6: is it good idea?

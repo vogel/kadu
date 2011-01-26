@@ -32,12 +32,12 @@ HistoryTreeItem::HistoryTreeItem(const HistoryTreeItem &copyMe) :
 {
 }
 
-HistoryTreeItem::HistoryTreeItem(Chat chat) :
+HistoryTreeItem::HistoryTreeItem(const Chat &chat) :
 		Type(HistoryTypeChat), ItemChat(chat)
 {
 }
 
-HistoryTreeItem::HistoryTreeItem(Buddy buddy) :
+HistoryTreeItem::HistoryTreeItem(const Buddy &buddy) :
 		Type(HistoryTypeStatus), ItemBuddy(buddy)
 {
 }

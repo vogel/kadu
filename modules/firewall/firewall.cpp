@@ -226,7 +226,7 @@ void Firewall::filterIncomingMessage(Chat chat, Contact sender, QString &message
 	kdebugf2();
 }
 
-bool Firewall::checkConference(Chat chat)
+bool Firewall::checkConference(const Chat &chat)
 {
 	kdebugf();
 
@@ -249,7 +249,7 @@ bool Firewall::checkConference(Chat chat)
 	return true;
 }
 
-bool Firewall::checkChat(Chat chat, Contact sender, const QString &message, bool &ignore)
+bool Firewall::checkChat(const Chat &chat, const Contact &sender, const QString &message, bool &ignore)
 {
 	kdebugf();
 

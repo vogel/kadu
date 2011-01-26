@@ -98,7 +98,7 @@ void JabberUrlHandler::openUrl(const QString &url, bool disableMenu)
 		Chat chat = ChatManager::instance()->findChat(ContactSet(contact));
 		if (chat)
 		{
-			ChatWidgetManager::instance()->openPendingMsgs(chat, true);
+			ChatWidgetManager::instance()->openPendingMessages(chat, true);
 			return;
 		}
 	}
@@ -136,5 +136,5 @@ void JabberUrlHandler::accountSelected(QAction *action)
 	Contact contact = ContactManager::instance()->byId(account, ids[1], ActionCreateAndAdd);
 	Chat chat = ChatManager::instance()->findChat(ContactSet(contact));
 	if (chat)
-		ChatWidgetManager::instance()->openPendingMsgs(chat, true);
+		ChatWidgetManager::instance()->openPendingMessages(chat, true);
 }

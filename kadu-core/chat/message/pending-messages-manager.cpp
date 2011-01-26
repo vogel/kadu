@@ -62,7 +62,7 @@ PendingMessagesManager::~PendingMessagesManager()
 }
 
 // TODO: optimize
-bool PendingMessagesManager::hasPendingMessagesForContact(Contact contact)
+bool PendingMessagesManager::hasPendingMessagesForContact(const Contact &contact)
 {
 	QMutexLocker(&mutex());
 
@@ -73,7 +73,7 @@ bool PendingMessagesManager::hasPendingMessagesForContact(Contact contact)
 	return false;
 }
 
-bool PendingMessagesManager::hasPendingMessagesForBuddy(Buddy buddy)
+bool PendingMessagesManager::hasPendingMessagesForBuddy(const Buddy &buddy)
 {
 	QMutexLocker(&mutex());
 
@@ -84,7 +84,7 @@ bool PendingMessagesManager::hasPendingMessagesForBuddy(Buddy buddy)
 	return false;
 }
 
-bool PendingMessagesManager::hasPendingMessagesForChat(Chat chat)
+bool PendingMessagesManager::hasPendingMessagesForChat(const Chat &chat)
 {
 	QMutexLocker(&mutex());
 
@@ -106,7 +106,7 @@ bool PendingMessagesManager::hasPendingMessages()
 	return false;
 }
 
-Chat PendingMessagesManager::chatForBuddy(Buddy buddy)
+Chat PendingMessagesManager::chatForBuddy(const Buddy &buddy)
 {
 	QMutexLocker(&mutex());
 
@@ -117,7 +117,7 @@ Chat PendingMessagesManager::chatForBuddy(Buddy buddy)
 	return Chat::null;
 }
 
-Chat PendingMessagesManager::chatForContact(Contact contact)
+Chat PendingMessagesManager::chatForContact(const Contact &contact)
 {
 	QMutexLocker(&mutex());
 
@@ -128,7 +128,7 @@ Chat PendingMessagesManager::chatForContact(Contact contact)
 	return Chat::null;
 }
 
-QList<Message> PendingMessagesManager::pendingMessagesForContact(Contact contact)
+QList<Message> PendingMessagesManager::pendingMessagesForContact(const Contact &contact)
 {
 	QMutexLocker(&mutex());
 
@@ -141,7 +141,7 @@ QList<Message> PendingMessagesManager::pendingMessagesForContact(Contact contact
 	return result;
 }
 
-QList<Message> PendingMessagesManager::pendingMessagesForBuddy(Buddy buddy)
+QList<Message> PendingMessagesManager::pendingMessagesForBuddy(const Buddy &buddy)
 {
 	QMutexLocker(&mutex());
 
@@ -155,7 +155,7 @@ QList<Message> PendingMessagesManager::pendingMessagesForBuddy(Buddy buddy)
 	return result;
 }
 
-QList<Message> PendingMessagesManager::pendingMessagesForChat(Chat chat)
+QList<Message> PendingMessagesManager::pendingMessagesForChat(const Chat &chat)
 {
 	QMutexLocker(&mutex());
 

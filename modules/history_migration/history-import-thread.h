@@ -46,7 +46,7 @@ class HistoryImportThread : public QThread
 	int ImportedMessages;
 
 	Chat chatFromUinsList(const UinsList &uinsList) const;
-	void importEntry(Chat chat, const HistoryEntry &entry);
+	void importEntry(const Chat &chat, const HistoryEntry &entry);
 
 public:
 	HistoryImportThread(Account gaduAccount, const QString &path, const QList<UinsList> &uinsLists, int totalEntries, QObject *parent = 0);

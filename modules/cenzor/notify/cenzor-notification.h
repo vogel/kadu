@@ -34,9 +34,9 @@ public:
 	static void registerNotifications();
 	static void unregisterNotifiactions();
 
-	static void notifyCenzored(Chat chat);
+	static void notifyCenzored(const Chat &chat);
 
-	explicit CenzorNotification(Chat chat);
+	explicit CenzorNotification(const Chat &chat);
 	virtual ~CenzorNotification();
 
 };

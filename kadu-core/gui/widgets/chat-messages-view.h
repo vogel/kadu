@@ -72,7 +72,7 @@ private slots:
 	void scrollRequested(int dx, int dy, const QRect &rectToScroll);
 
 public:
-	ChatMessagesView(Chat chat = Chat::null, bool supportTransparency = true, QWidget *parent = 0);
+	ChatMessagesView(const Chat &chat = Chat::null, bool supportTransparency = true, QWidget *parent = 0);
 	virtual ~ChatMessagesView();
 
 	HtmlMessagesRenderer * renderer() { return Renderer; }
@@ -90,7 +90,7 @@ public:
 	void setForcePruneDisabled(bool disable);
 
 	Chat chat() const { return CurrentChat; }
-	void setChat(Chat chat);
+	void setChat(const Chat &chat);
 
 	bool supportTransparency() { return SupportTransparency; }
 

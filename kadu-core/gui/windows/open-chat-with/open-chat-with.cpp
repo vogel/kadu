@@ -210,7 +210,7 @@ void OpenChatWith::openChat()
 	Chat chat = ChatManager::instance()->findChat(contacts);
 	if (chat)
 	{
-		ChatWidgetManager::instance()->openPendingMsgs(chat, true);
+		ChatWidgetManager::instance()->openPendingMessages(chat, true);
 		close();
 		return;
 	}

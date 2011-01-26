@@ -23,7 +23,7 @@
 
 #include "chat-service.h"
 
-bool ChatService::sendMessage(Chat chat, const QString &messageContent, bool silent)
+bool ChatService::sendMessage(const Chat &chat, const QString &messageContent, bool silent)
 {
 	QTextDocument document(messageContent);
 	FormattedMessage message = FormattedMessage::parse(&document);

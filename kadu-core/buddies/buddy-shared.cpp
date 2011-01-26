@@ -292,7 +292,7 @@ void BuddyShared::removeContact(Contact contact)
 	dataUpdated();
 }
 
-QList<Contact> BuddyShared::contacts(Account account)
+QList<Contact> BuddyShared::contacts(const Account &account)
 {
 	ensureLoaded();
 
@@ -313,7 +313,7 @@ QList<Contact> BuddyShared::contacts()
 	return Contacts;
 }
 
-QString BuddyShared::id(Account account)
+QString BuddyShared::id(const Account &account)
 {
 	ensureLoaded();
 
@@ -349,7 +349,7 @@ void BuddyShared::emitUpdated()
 
 // properties
 
-bool BuddyShared::isInGroup(Group group)
+bool BuddyShared::isInGroup(const Group &group)
 {
 	ensureLoaded();
 
@@ -367,7 +367,7 @@ bool BuddyShared::showInAllGroup()
 	return true;
 }
 
-void BuddyShared::addToGroup(Group group)
+void BuddyShared::addToGroup(const Group &group)
 {
 	ensureLoaded();
 
@@ -378,7 +378,7 @@ void BuddyShared::addToGroup(Group group)
 	dataUpdated();
 }
 
-void BuddyShared::removeFromGroup(Group group)
+void BuddyShared::removeFromGroup(const Group &group)
 {
 	ensureLoaded();
 

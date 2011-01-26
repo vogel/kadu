@@ -41,12 +41,12 @@ private:
 
 public:
 	BuddyOrContact();
-	BuddyOrContact(Buddy buddy);
-	BuddyOrContact(Contact contact);
+	BuddyOrContact(const Buddy &buddy);
+	BuddyOrContact(const Contact &contact);
 	BuddyOrContact(const BuddyOrContact& copyMe);
 
-	BuddyOrContact & operator = (Buddy buddy);
-	BuddyOrContact & operator = (Contact contact);
+	BuddyOrContact & operator = (const Buddy &buddy);
+	BuddyOrContact & operator = (const Contact &contact);
 	BuddyOrContact & operator = (const BuddyOrContact &copyMe);
 
 	bool operator == (const BuddyOrContact &compareTo) const;

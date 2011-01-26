@@ -37,7 +37,7 @@ void AntistringNotification::unregisterNotifications()
 	StringReceivedNotification = 0;
 }
 
-void AntistringNotification::notifyStringReceived(Chat chat)
+void AntistringNotification::notifyStringReceived(const Chat &chat)
 {
 	AntistringNotification *notification = new AntistringNotification(chat);
 	notification->setTitle(tr("Antistring"));
@@ -45,7 +45,7 @@ void AntistringNotification::notifyStringReceived(Chat chat)
 	NotificationManager::instance()->notify(notification);
 }
 
-AntistringNotification::AntistringNotification(Chat chat) :
+AntistringNotification::AntistringNotification(const Chat &chat) :
 		ChatNotification(chat, "Antistring", QString())
 {
 }
