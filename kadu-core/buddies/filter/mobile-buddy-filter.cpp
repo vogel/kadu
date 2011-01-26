@@ -36,7 +36,7 @@ void MobileBuddyFilter::setEnabled(bool enabled)
 	emit filterChanged();
 }
 
-bool MobileBuddyFilter::acceptBuddy(Buddy buddy)
+bool MobileBuddyFilter::acceptBuddy(const Buddy &buddy)
 {
 	if (!Enabled)
 		return true;

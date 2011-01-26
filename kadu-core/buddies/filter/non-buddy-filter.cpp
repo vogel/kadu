@@ -37,7 +37,7 @@ void NonBuddyFilter::setBuddy(Buddy buddy)
 	}
 }
 
-bool NonBuddyFilter::acceptBuddy(Buddy buddy)
+bool NonBuddyFilter::acceptBuddy(const Buddy &buddy)
 {
 	return buddy != CurrentBuddy;
 }

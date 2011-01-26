@@ -37,7 +37,7 @@ void AnonymousBuddyFilter::setEnabled(bool enabled)
 	emit filterChanged();
 }
 
-bool AnonymousBuddyFilter::acceptBuddy(Buddy buddy)
+bool AnonymousBuddyFilter::acceptBuddy(const Buddy &buddy)
 {
 	if (!Enabled)
 		return true;

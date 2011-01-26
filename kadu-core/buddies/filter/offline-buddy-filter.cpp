@@ -39,7 +39,7 @@ void OfflineBuddyFilter::setEnabled(bool enabled)
 	emit filterChanged();
 }
 
-bool OfflineBuddyFilter::acceptBuddy(Buddy buddy)
+bool OfflineBuddyFilter::acceptBuddy(const Buddy &buddy)
 {
 	if (!Enabled)
 		return true;

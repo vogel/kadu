@@ -41,7 +41,7 @@ void GroupBuddyFilter::setGroup(Group group)
 	emit filterChanged();
 }
 
-bool GroupBuddyFilter::acceptBuddy(Buddy buddy)
+bool GroupBuddyFilter::acceptBuddy(const Buddy &buddy)
 {
 	return CurrentGroup
 			? buddy.isInGroup(CurrentGroup)

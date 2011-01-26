@@ -37,7 +37,7 @@ public:
 	virtual ~NonAccountBuddyFilter();
 
 	void setAccount(Account account);
-	virtual bool acceptBuddy(Buddy buddy);
+	virtual bool acceptBuddy(const Buddy &buddy);
 
 };
 

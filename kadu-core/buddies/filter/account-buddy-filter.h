@@ -38,7 +38,7 @@ public:
 	explicit AccountBuddyFilter(Account account, QObject *parent = 0);
 
 	void setEnabled(bool enabled);
-	virtual bool acceptBuddy(Buddy buddy);
+	virtual bool acceptBuddy(const Buddy &buddy);
 
 };
 

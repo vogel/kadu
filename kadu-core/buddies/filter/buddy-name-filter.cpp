@@ -22,7 +22,7 @@
 
 #include "buddy-name-filter.h"
 
-bool BuddyNameFilter::acceptBuddy(Buddy buddy)
+bool BuddyNameFilter::acceptBuddy(const Buddy &buddy)
 {
 	if (Name.isEmpty())
 		return true;

@@ -39,7 +39,7 @@ void OnlineAndDescriptionBuddyFilter::setEnabled(bool enabled)
 	emit filterChanged();
 }
 
-bool OnlineAndDescriptionBuddyFilter::acceptBuddy(Buddy buddy)
+bool OnlineAndDescriptionBuddyFilter::acceptBuddy(const Buddy &buddy)
 {
 	if (!Enabled)
 		return true;

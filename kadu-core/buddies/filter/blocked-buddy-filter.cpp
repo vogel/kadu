@@ -40,7 +40,7 @@ void BlockedBuddyFilter::setEnabled(bool enabled)
 	emit filterChanged();
 }
 
-bool BlockedBuddyFilter::acceptBuddy(Buddy buddy)
+bool BlockedBuddyFilter::acceptBuddy(const Buddy &buddy)
 {
 	if (!Enabled)
 		return true;

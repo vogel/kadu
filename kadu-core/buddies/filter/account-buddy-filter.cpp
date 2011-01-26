@@ -36,7 +36,7 @@ void AccountBuddyFilter::setEnabled(bool enabled)
 	emit filterChanged();
 }
 
-bool AccountBuddyFilter::acceptBuddy(Buddy buddy)
+bool AccountBuddyFilter::acceptBuddy(const Buddy &buddy)
 {
 	if (!Enabled)
 		return true;

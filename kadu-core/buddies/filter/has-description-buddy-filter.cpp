@@ -39,7 +39,7 @@ void HasDescriptionBuddyFilter::setEnabled(bool enabled)
 	emit filterChanged();
 }
 
-bool HasDescriptionBuddyFilter::acceptBuddy(Buddy buddy)
+bool HasDescriptionBuddyFilter::acceptBuddy(const Buddy &buddy)
 {
 	if (!Enabled)
 		return true;

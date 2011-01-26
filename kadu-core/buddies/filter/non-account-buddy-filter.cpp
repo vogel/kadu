@@ -39,7 +39,7 @@ void NonAccountBuddyFilter::setAccount(Account account)
 	}
 }
 
-bool NonAccountBuddyFilter::acceptBuddy(Buddy buddy)
+bool NonAccountBuddyFilter::acceptBuddy(const Buddy &buddy)
 {
 	return CurrentAccount.isNull() || !buddy.hasContact(CurrentAccount);
 }
