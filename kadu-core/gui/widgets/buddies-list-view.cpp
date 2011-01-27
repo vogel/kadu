@@ -315,13 +315,16 @@ Chat BuddiesListView::currentChat() const
 
 void BuddiesListView::triggerActivate(const QModelIndex& index)
 {
+	// we need to fetch these 2 object first
+	// because afer calling buddyActivated or chatActivate index can became invalid
+	// because of changing filters and stuff
 	Chat chat = currentChat();
-	if (chat)
-		emit chatActivated(chat);
-
 	Buddy buddy = buddyAt(index);
+
 	if (buddy)
 		emit buddyActivated(buddy);
+	if (chat)
+		emit chatActivated(chat);
 }
 
 void BuddiesListView::setContextMenuEnabled(bool enabled)
@@ -458,7 +461,8 @@ void BuddiesListView::simpleModeChanged()
 
 void BuddiesListView::doubleClickedSlot(const QModelIndex &index)
 {
-	triggerActivate(index);
+	if (index.isValid())
+		triggerActivate(index);
 }
 
 void BuddiesListView::setBackground(const QString &backgroundColor, const QString &alternateColor, const QString &file, BackgroundMode mode)

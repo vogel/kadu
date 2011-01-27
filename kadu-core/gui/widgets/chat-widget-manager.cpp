@@ -317,8 +317,6 @@ void ChatWidgetManager::deletePendingMessages(const Chat &chat)
 		PendingMessagesManager::instance()->removeItem(message);
 	}
 
-// TODO: 0.6.6
-// 	UserBox::refreshAllLater();
 	kdebugf2();
 }
 
