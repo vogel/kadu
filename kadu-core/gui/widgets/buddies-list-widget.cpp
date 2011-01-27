@@ -28,6 +28,7 @@
 #include <QtGui/QVBoxLayout>
 
 #include "buddies/filter/buddy-name-filter.h"
+#include "buddies/filter/pending-messages-filter.h"
 #include "gui/widgets/buddies-list-view.h"
 #include "icons-manager.h"
 
@@ -46,6 +47,8 @@ BuddiesListWidget::BuddiesListWidget(FilterPosition filterPosition, QWidget *par
 		this, SLOT(nameFilterChanged(const QString &)));
 
 	View = new BuddiesListView(this);
+	View->addFilter(new PendingMessagesFilter(this));
+
 	NameFilterWidget->setView(View);
 #ifndef Q_OS_MAC
 	NameFilterWidget->hide(); // hide by default

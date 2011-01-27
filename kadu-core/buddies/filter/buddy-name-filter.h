@@ -33,7 +33,7 @@ public:
 	BuddyNameFilter(QObject *parent = 0) : AbstractBuddyFilter(parent) {}
 
 	virtual bool acceptBuddy(const Buddy &buddy);
-	virtual bool ignoreNextFilters();
+	virtual bool ignoreNextFilters(const Buddy &buddy);
 
 	void setName(const QString &name);
 

@@ -34,6 +34,7 @@
 * gui: keep chat edit box height fixed - user must maually resize (Vogel)
 * gui: all chat edit boxes have the same size now (Vogel)
 * core: #1925 fixed: disappearing StatusMenu after Kadu restart after removing an account (beevvy)
+* gui: buddies with pending messages are shown on top of buddies list and are always visible (Vogel)
 
 +++ version 0.6.6-beta14.2
 * tabs: #1906 fixed: crash on tabs module load (regression from beta14) (beevvy)

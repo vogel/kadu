@@ -45,8 +45,10 @@ bool BuddyNameFilter::acceptBuddy(const Buddy &buddy)
 	return false;
 }
 
-bool BuddyNameFilter::ignoreNextFilters()
+bool BuddyNameFilter::ignoreNextFilters(const Buddy &buddy)
 {
+	Q_UNUSED(buddy)
+
 	return !Name.isEmpty();
 }
 

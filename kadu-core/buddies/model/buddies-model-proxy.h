@@ -41,7 +41,7 @@ class BuddiesModelProxy : public QSortFilterProxyModel, public AbstractBuddiesMo
 	int compareNames(QString n1, QString n2) const;
 
 private slots:
-	void modelDestroyed();;
+	void modelDestroyed();
 
 protected:
 	virtual bool lessThan(const QModelIndex &left, const QModelIndex &right) const;

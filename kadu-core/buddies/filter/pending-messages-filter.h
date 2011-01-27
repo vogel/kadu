@@ -1,7 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
- * Copyright 2009 Bartłomiej Zimoń (uzi18@o2.pl)
+ * Copyright 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -18,32 +17,23 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ABSTRACT_BUDDY_FILTER_H
-#define ABSTRACT_BUDDY_FILTER_H
+#ifndef PENDING_MESSAGES_FILTER_H
+#define PENDING_MESSAGES_FILTER_H
 
-#include <QtCore/QObject>
+#include "buddies/filter/abstract-buddy-filter.h"
+#include "exports.h"
 
-class Buddy;
-
-class AbstractBuddyFilter : public QObject
+class PendingMessagesFilter : public AbstractBuddyFilter
 {
 	Q_OBJECT
 
 public:
-	explicit AbstractBuddyFilter(QObject *parent = 0)
-			: QObject(parent) {}
-	virtual ~AbstractBuddyFilter() {}
+	explicit PendingMessagesFilter(QObject *parent = 0);
+	virtual ~PendingMessagesFilter();
 
-	virtual bool acceptBuddy(const Buddy &buddy) = 0;
-	virtual bool ignoreNextFilters(const Buddy &buddy)
-	{
-		Q_UNUSED(buddy);
-		return false;
-	}
-
-signals:
-	void filterChanged();
+	virtual bool acceptBuddy(const Buddy &buddy);
+	virtual bool ignoreNextFilters(const Buddy &buddy);
 
 };
 
-#endif // ABSTRACT_BUDDY_FILTER_H
+#endif // PENDING_MESSAGES_FILTER_H

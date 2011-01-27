@@ -50,6 +50,7 @@ set (kadu_SRCS
 	buddies/filter/offline-buddy-filter.cpp
 	buddies/filter/online-and-description-buddy-filter.cpp
 	buddies/filter/online-buddy-filter.cpp
+	buddies/filter/pending-messages-filter.cpp
 
 	buddies/model/abstract-buddies-model.cpp
 	buddies/model/buddy-data-extractor.cpp
@@ -398,6 +399,7 @@ set (kadu_MOC_SRCS
 	buddies/filter/offline-buddy-filter.h
 	buddies/filter/online-and-description-buddy-filter.h
 	buddies/filter/online-buddy-filter.h
+	buddies/filter/pending-messages-filter.h
 
 	buddies/model/buddy-list-model.h
 	buddies/model/buddies-model.h
