@@ -44,6 +44,8 @@ struct StyleInfo
 {
 	bool global;
 	ChatStyleEngine *engine;
+
+	StyleInfo() : global(false), engine(0) {}
 };
 
 class KADUAPI ChatStylesManager : public QObject, ConfigurationAwareObject, CompositingAwareObject
@@ -105,8 +107,8 @@ protected:
 	virtual void configurationUpdated();
 
 public:
-
 	static ChatStylesManager * instance();
+
 	~ChatStylesManager();
 
 	void chatViewCreated(ChatMessagesView * view);
@@ -115,6 +117,7 @@ public:
 	void unregisterChatStyleEngine(const QString &name);
 
 	bool hasChatStyle(const QString &name) { return  AvailableStyles.contains(name); }
+	StyleInfo chatStyleInfo(const QString &name);
 
 	ChatStyleEngine * currentEngine() { return CurrentEngine; }
 
@@ -133,12 +136,17 @@ public:
 	const QString & mainStyle() { return MainStyle; }
 
 	void mainConfigurationWindowCreated(MainConfigurationWindow *window);
+	QComboBox * syntaxListCombo() { return SyntaxListCombo; }
 
 	void preparePreview(Preview *preview);
 	void addStyle(const QString &syntaxName, ChatStyleEngine *engine);
 
 public slots:
 	void syntaxUpdated(const QString &syntaxName);
+
+signals:
+	void previewSyntaxChanged(const QString &syntaxName);
+
 };
 
 #endif

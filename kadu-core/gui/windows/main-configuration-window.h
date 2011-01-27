@@ -91,6 +91,8 @@ private slots:
 	void setIconThemes();
 	void setEmoticonThemes();
 
+	void chatPreviewSyntaxChanged(const QString &syntaxName);
+
 public:
 	static MainConfigurationWindow * instance();
 	static bool hasInstance();

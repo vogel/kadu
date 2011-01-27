@@ -2,8 +2,8 @@
 	<section name="Look">
 		<tab name="Chat">
 			<group-box name="Headers and Separators">
-				<spin-box caption="Chat header separators height" config-section="Look" config-item="HeaderSeparatorHeight" min-value="0" max-value="100" />
-				<spin-box caption="Message separators height" config-section="Look" config-item="ParagraphSeparator" min-value="0" max-value="100" />
+				<spin-box caption="Chat header separators height" config-section="Look" config-item="HeaderSeparatorHeight" min-value="0" max-value="100" id="chatHeaderSeparatorsHeight" />
+				<spin-box caption="Message separators height" config-section="Look" config-item="ParagraphSeparator" min-value="0" max-value="100" id="messageSeparatorsHeight" />
 				<check-box caption="Remove chat header repetitions" config-section="Look" config-item="NoHeaderRepeat" id="noHeaderRepeat" />
 				<spin-box caption="Interval between header removal" config-section="Look" config-item="NoHeaderInterval" min-value="1" max-value="100" suffix="min" id="noHeaderInterval" />
 			</group-box>

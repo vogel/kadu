@@ -34,11 +34,12 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
-#include "chat/chat-styles-manager.h"
-#include "chat/message/message-render-info.h"
-#include "configuration/configuration-file.h"
 #include "buddies/buddy.h"
 #include "buddies/buddy-shared.h"
+#include "chat/chat-styles-manager.h"
+#include "chat/message/message-render-info.h"
+#include "chat/style-engines/chat-style-engine.h"
+#include "configuration/configuration-file.h"
 #include "contacts/contact.h"
 #include "core/core.h"
 #include "emoticons/emoticons-manager.h"
@@ -379,6 +380,10 @@ void MainConfigurationWindow::showLookChatAdvanced()
 		lookChatAdvanced->widget()->widgetById("conferenceSyntax")->setToolTip(qApp->translate("@default", SyntaxText));
 
 		connect(lookChatAdvanced, SIGNAL(destroyed()), this, SLOT(lookChatAdvancedDestroyed()));
+
+		connect(ChatStylesManager::instance(), SIGNAL(previewSyntaxChanged(QString)), this, SLOT(chatPreviewSyntaxChanged(QString)));
+		if (ChatStylesManager::instance()->syntaxListCombo())
+			chatPreviewSyntaxChanged(ChatStylesManager::instance()->syntaxListCombo()->currentText());
 	}
 
 	lookChatAdvanced->show();
@@ -387,4 +392,24 @@ void MainConfigurationWindow::showLookChatAdvanced()
 void MainConfigurationWindow::lookChatAdvancedDestroyed()
 {
 	lookChatAdvanced = 0;
+}
+
+void MainConfigurationWindow::chatPreviewSyntaxChanged(const QString &syntaxName)
+{
+	if (!lookChatAdvanced)
+		return;
+
+	StyleInfo styleInfo = ChatStylesManager::instance()->chatStyleInfo(syntaxName);
+	if (!styleInfo.engine)
+	{
+		lookChatAdvanced->deleteLater();
+		return;
+	}
+
+	bool enableKaduFeatures = styleInfo.engine->engineName() == "Kadu";
+
+	lookChatAdvanced->widget()->widgetById("chatHeaderSeparatorsHeight")->setEnabled(enableKaduFeatures);
+	lookChatAdvanced->widget()->widgetById("messageSeparatorsHeight")->setEnabled(enableKaduFeatures);
+	lookChatAdvanced->widget()->widgetById("removeServerTime")->setEnabled(enableKaduFeatures);
+	lookChatAdvanced->widget()->widgetById("maxTimeDifference")->setEnabled(enableKaduFeatures);
 }
