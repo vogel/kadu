@@ -352,7 +352,9 @@ void ChatStylesManager::mainConfigurationWindowCreated(MainConfigurationWindow *
 	QHBoxLayout *editorLayout = new QHBoxLayout(editor);
 
 	SyntaxListCombo = new QComboBox(editor);
-	SyntaxListCombo->addItems(AvailableStyles.keys());
+	QStringList styleNames = AvailableStyles.keys();
+	qSort(styleNames.begin(), styleNames.end(), caseInsensitiveLessThan);
+	SyntaxListCombo->addItems(styleNames);
 	SyntaxListCombo->setCurrentIndex(SyntaxListCombo->findText(CurrentEngine->currentStyleName()));
 	connect(SyntaxListCombo, SIGNAL(activated(const QString &)), this, SLOT(styleChangedSlot(const QString &)));
 

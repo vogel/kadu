@@ -147,6 +147,8 @@ void MainConfigurationWindow::unregisterUiHandler(ConfigurationUiHandler *uiHand
 
 void MainConfigurationWindow::instanceCreated()
 {
+	// TODO: move this to separate class, like ChatStylesConfigurationUiHandler
+	// and just register it here
 	ChatStylesManager::instance()->mainConfigurationWindowCreated(Instance);
 	foreach (const QString &uiFile, UiFiles)
 		Instance->widget()->appendUiFile(uiFile);
@@ -156,8 +158,8 @@ void MainConfigurationWindow::instanceCreated()
 			uiHandler->mainConfigurationWindowCreated(Instance);
 }
 
-MainConfigurationWindow::MainConfigurationWindow()
-	: ConfigurationWindow("MainConfiguration", tr("Kadu configuration"), "General", instanceDataManager()), lookChatAdvanced(0)
+MainConfigurationWindow::MainConfigurationWindow() :
+		ConfigurationWindow("MainConfiguration", tr("Kadu configuration"), "General", instanceDataManager()), lookChatAdvanced(0)
 {
 	setWindowRole("kadu-configuration");
 

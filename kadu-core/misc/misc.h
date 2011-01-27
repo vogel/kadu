@@ -50,4 +50,6 @@ QString intListToString(const QList<int> &in);
 
 QString fixFileName(const QString &path, const QString &fn);
 
+bool caseInsensitiveLessThan(const QString &s1, const QString &s2);
+
 #endif // MISC_H
