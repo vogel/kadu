@@ -36,8 +36,8 @@ public:
 	explicit SelectionFrameItem(QGraphicsItem *parent = 0);
 	virtual ~SelectionFrameItem();
 
-	void setSize(QSize size);
-	void setSelection(QRect selection);
+	void setSize(const QSize &size);
+	void setSelection(const QRect &selection);
 
 };
 

@@ -34,7 +34,7 @@ public:
 			: QObject(parent) {}
 	virtual ~AbstractContactFilter() {}
 
-	virtual bool acceptContact(Contact contact) = 0;
+	virtual bool acceptContact(const Contact &contact) = 0;
 
 signals:
 	void filterChanged();

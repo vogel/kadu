@@ -117,7 +117,7 @@ public: //TODO 0.6.6: it is needed in Buddy::dummy()
 	virtual Status status();
 	virtual int maxDescriptionLength();
 
-	virtual QString statusName();
+	virtual QString statusDisplayName();
 	virtual QIcon statusIcon();
 	virtual QString statusIconPath(const QString &statusType);
 	virtual QIcon statusIcon(const QString &statusType);

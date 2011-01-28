@@ -317,7 +317,7 @@ int AccountShared::maxDescriptionLength()
 		return 0;
 }
 
-QString AccountShared::statusName()
+QString AccountShared::statusDisplayName()
 {
 	return Status::name(status(), false);
 }

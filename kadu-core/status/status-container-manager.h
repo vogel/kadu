@@ -85,7 +85,7 @@ public:
 	virtual Status status();
 	bool allStatusEqual(StatusType *type);
 
-	virtual QString statusName();
+	virtual QString statusDisplayName();
 	virtual QIcon statusIcon();
 	virtual QIcon statusIcon(Status status);
 	virtual QString statusIconPath(const QString &statusType);

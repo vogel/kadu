@@ -22,7 +22,7 @@
 
 #include "contact-no-unloaded-account-filter.h"
 
-bool ContactNoUnloadedAccountFilter::acceptContact(Contact contact)
+bool ContactNoUnloadedAccountFilter::acceptContact(const Contact &contact)
 {
 	if (!Enabled)
 		return true;

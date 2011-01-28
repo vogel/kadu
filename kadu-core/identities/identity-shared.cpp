@@ -163,7 +163,7 @@ Status IdentityShared::status()
 	return account ? account.data()->status() : Status::null;
 }
 
-QString IdentityShared::statusName()
+QString IdentityShared::statusDisplayName()
 {
 	return Status::name(status(), false);
 }

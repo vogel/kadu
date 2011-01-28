@@ -78,7 +78,7 @@ public:
 	virtual ~CropImageWidget();
 
 	void setPixmap(QPixmap pixmap);
-	void setCropRect(QRect cropRect);
+	void setCropRect(const QRect &cropRect);
 
 signals:
 	void pixmapCropped(QPixmap pixmap);

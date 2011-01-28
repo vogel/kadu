@@ -39,7 +39,6 @@
 #include "buddies/buddy-shared.h"
 #include "contacts/contact.h"
 #include "contacts/contact-manager.h"
-#include "configuration/configuration-contact-data-manager.h"
 #include "gui/widgets/buddy-avatar-widget.h"
 #include "gui/widgets/buddy-contacts-table.h"
 #include "gui/windows/message-dialog.h"

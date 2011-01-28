@@ -32,12 +32,12 @@ SelectionFrameItem::~SelectionFrameItem()
 {
 }
 
-void SelectionFrameItem::setSize(QSize size)
+void SelectionFrameItem::setSize(const QSize &size)
 {
 	Size = size;
 }
 
-void SelectionFrameItem::setSelection(QRect selection)
+void SelectionFrameItem::setSelection(const QRect &selection)
 {
 	Selection = selection;
 }

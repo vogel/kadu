@@ -33,7 +33,7 @@ public:
 			: AbstractContactFilter(parent), Enabled(true) {}
 	virtual ~ContactNoUnloadedAccountFilter() {}
 
-	virtual bool acceptContact(Contact contact);
+	virtual bool acceptContact(const Contact &contact);
 
 	void setEnabled(bool enabled);
 

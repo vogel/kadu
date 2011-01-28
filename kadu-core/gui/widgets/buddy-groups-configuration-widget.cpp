@@ -25,7 +25,6 @@
 #include <QtGui/QScrollArea>
 #include <QtGui/QVBoxLayout>
 
-#include "configuration/configuration-contact-data-manager.h"
 #include "contacts/contact.h"
 #include "buddies/group.h"
 #include "buddies/group-manager.h"

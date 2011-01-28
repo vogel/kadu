@@ -55,7 +55,7 @@ void StatusButton::update()
 	setIcon(MyStatusContainer->statusIcon());
 
 	if (DisplayStatusName)
-		setText(MyStatusContainer->statusName());
+		setText(MyStatusContainer->statusDisplayName());
 	else
 	{
 		if (MainConfiguration::instance()->simpleMode())

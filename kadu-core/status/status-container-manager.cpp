@@ -236,10 +236,10 @@ Status StatusContainerManager::status()
 			: Status::null;
 }
 
-QString StatusContainerManager::statusName()
+QString StatusContainerManager::statusDisplayName()
 {
 	return DefaultStatusContainer
-			? DefaultStatusContainer->statusName()
+			? DefaultStatusContainer->statusDisplayName()
 			: tr("Offline");
 }
 

@@ -272,7 +272,7 @@ void CropImageWidget::setPixmap(QPixmap pixmap)
 	PixmapItem->setPixmap(pixmap);
 }
 
-void CropImageWidget::setCropRect(QRect cropRect)
+void CropImageWidget::setCropRect(const QRect &cropRect)
 {
 	CropRect = cropRect.normalized();
 	updateCropRectDisplay();
