@@ -278,6 +278,9 @@ set (SOURCES
 	services/jabber-contact-personal-info-service.cpp
 	services/jabber-roster-service.cpp
 	services/jabber-subscription-service.cpp
+	tasks/pep-get-task.cpp
+	tasks/pep-publish-task.cpp
+	tasks/pep-retract-task.cpp
 	utils/jid-util.cpp
 	utils/vcard-factory.cpp
 	utils/pep-manager.cpp
@@ -320,6 +323,9 @@ set (MOC_SOURCES
 	services/jabber-contact-personal-info-service.h
 	services/jabber-roster-service.h
 	services/jabber-subscription-service.h
+	tasks/pep-get-task.h
+	tasks/pep-publish-task.h
+	tasks/pep-retract-task.h
 	utils/vcard-factory.h
 	utils/pep-manager.h
 	utils/server-info-manager.h

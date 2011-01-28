@@ -20,93 +20,20 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "pep-manager.h"
+#include <QtCore/QtDebug>
 
-#include <QtDebug>
-#include "xmpp_xmlcommon.h"
-#include "xmpp_tasks.h"
-#include "server-info-manager.h"
+#include "iris/xmpp_tasks.h"
+#include "iris/xmpp_xmlcommon.h"
+#include "tasks/pep-get-task.h"
+#include "utils/server-info-manager.h"
+
+#include "pep-manager.h"
 
 // TODO: Get affiliations upon startup, and only create nodes based on that.
 // (subscriptions is not accurate, since one doesn't subscribe to the
 // avatar data node)
 
 // -----------------------------------------------------------------------------
-
-class PEPGetTask : public XMPP::Task
-{
-public:
-	PEPGetTask(Task* parent, const QString& jid, const QString& node, const QString& itemID) : Task(parent), jid_(jid), node_(node) {
-		iq_ = createIQ(doc(), "get", jid_, id());
-
-		QDomElement pubsub = doc()->createElement("pubsub");
-		pubsub.setAttribute("xmlns", "http://jabber.org/protocol/pubsub");
-		iq_.appendChild(pubsub);
-
-		QDomElement items = doc()->createElement("items");
-		items.setAttribute("node", node);
-		pubsub.appendChild(items);
-
-		QDomElement item = doc()->createElement("item");
-		item.setAttribute("id", itemID);
-		items.appendChild(item);
-	}
-
-	void onGo() {
-		send(iq_);
-	}
-
-	bool take(const QDomElement &x) {
-		if(!iqVerify(x, jid_, id()))
-			return false;
-
-		if(x.attribute("type") == "result") {
-			bool found;
-			// FIXME Check namespace...
-			QDomElement e = findSubTag(x, "pubsub", &found);
-			if (found) {
-				QDomElement i = findSubTag(e, "items", &found);
-				if (found) {
-					for(QDomNode n1 = i.firstChild(); !n1.isNull(); n1 = n1.nextSibling()) {
-						QDomElement e1 = n1.toElement();
-						if (!e1.isNull() && e1.tagName() == "item") {
-							for(QDomNode n2 = e1.firstChild(); !n2.isNull(); n2 = n2.nextSibling()) {
-								QDomElement e2 = n2.toElement();
-								if (!e2.isNull()) {
-									items_ += XMPP::PubSubItem(e1.attribute("id"),e2);
-								}
-							}
-						}
-					}
-				}
-			}
-			setSuccess();
-			return true;
-		}
-		else {
-			setError(x);
-			return true;
-		}
-	}
-
-	const QList<XMPP::PubSubItem>& items() const {
-		return items_;
-	}
-
-	const QString& jid() const {
-		return jid_;
-	}
-
-	const QString& node() const {
-		return node_;
-	}
-
-private:
-	QDomElement iq_;
-	QString jid_;
-	QString node_;
-	QList<XMPP::PubSubItem> items_;
-};
 
 class PEPPublishTask : public XMPP::Task
 {
