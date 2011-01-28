@@ -43,56 +43,40 @@ void ImageLink::destroyInstance()
 
 ImageLink::ImageLink()
 {
-	kdebugf();
 	triggerAllAccountsRegistered();
-	kdebugf2();
 }
 
 ImageLink::~ImageLink()
 {
-	kdebugf();
-	kdebugf2();
 }
 
 void ImageLink::accountRegistered(Account account)
 {
-	kdebugf();
 	Protocol *protocol = account.protocolHandler();
 	
 	if (!protocol)
-	{
-		kdebugf2();
 		return;
-	}
 	
 	ChatService *chatService = protocol->chatService();
 	
 	if (chatService)
 		connect(chatService, SIGNAL(filterIncomingMessage(Chat, Contact, QString &, time_t, bool &)),
 		        this, SLOT(filterIncomingMessage(Chat, Contact, QString &, time_t, bool &)));
-	
-	kdebugf2();
 }
 
 
 void ImageLink::accountUnregistered(Account account)
 {
-	kdebugf();
 	Protocol *protocol = account.protocolHandler();
 	
 	if (!protocol)
-	{
-		kdebugf2();
 		return;
-	}
 	
 	ChatService *chatService = protocol->chatService();
 	
 	if (chatService)
 		disconnect(chatService, SIGNAL(filterIncomingMessage(Chat, Contact, QString &, time_t, bool &)),
 		           this, SLOT(filterIncomingMessage(Chat, Contact, QString &, time_t, bool &)));
-	
-	kdebugf2();
 }
 
 void ImageLink::filterIncomingMessage(Chat chat, Contact sender, QString &message, time_t time, bool &ignore)
@@ -100,6 +84,7 @@ void ImageLink::filterIncomingMessage(Chat chat, Contact sender, QString &messag
 	Q_UNUSED(time)
 	Q_UNUSED(ignore)
 	Q_UNUSED(sender)
+
 	QRegExp yt;
 	QStringList list;
 	kdebugf();
@@ -151,7 +136,7 @@ void ImageLink::filterIncomingMessage(Chat chat, Contact sender, QString &messag
 	kdebugf2();
 }
 
-void ImageLink::showObject(QString video, int mode, ChatWidget *widget)
+void ImageLink::showObject(const QString &video, int mode, ChatWidget *widget)
 {
 	if (!widget) return;
 	
@@ -165,16 +150,18 @@ void ImageLink::showObject(QString video, int mode, ChatWidget *widget)
 		autoplaystr.setNum(0);
 
 	if (mode == 1)
-		messageStr = QString("<object width=\"%2\" height=\"%3\"><embed src=\"http://www.youtube.com/v/%1&autoplay=%4 \" type=\"application/x-shockwave-flash\" allowscriptaccess=\"always\" allowfullscreen=\"true\" width=\"%2\" height=\"%3\"></embed></object>").arg(video.remove("?v=")).arg(tmp.setNum(width)).arg(tmp2.setNum(height)).arg(autoplaystr);
+	{
+		QString url = video;
+		url = url.remove("?v=");
+		messageStr = QString("<object width=\"%2\" height=\"%3\"><embed src=\"http://www.youtube.com/v/%1&autoplay=%4 \" type=\"application/x-shockwave-flash\" allowscriptaccess=\"always\" allowfullscreen=\"true\" width=\"%2\" height=\"%3\"></embed></object>").arg(url).arg(tmp.setNum(width)).arg(tmp2.setNum(height)).arg(autoplaystr);
+	}
 	else
 		messageStr = QString("<img src=\"%1\">").arg(video);
-		
+
 	Message render = Message::create();
-	
-	
+
 	Chat chat = widget->chat();
-	
-	if (!chat.isNull())
+	if (chat)
 	{
 		render.setMessageChat(chat);
 		render.setType(Message::TypeSystem);

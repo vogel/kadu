@@ -28,7 +28,6 @@
 
 #include "configuration/image-link-configuration.h"
 
-class ContactSet;
 class ChatWidget;
 
 class ImageLink : public QObject, AccountsAwareObject
@@ -45,7 +44,10 @@ class ImageLink : public QObject, AccountsAwareObject
 	ImageLink();
 	virtual ~ImageLink();
 
-	void showObject(QString,int,ChatWidget *widget);
+	void showObject(const QString &video, int mode, ChatWidget *widget);
+
+private slots:
+	void filterIncomingMessage(Chat chat, Contact sender, QString &msg, time_t time, bool &ignore);
 
 protected:
 	virtual void accountRegistered(Account account);
@@ -55,9 +57,6 @@ public:
 	static void createInstance();
 	static void destroyInstance();
 	static ImageLink * instance() { return Instance; }
-
-public slots:
-	void filterIncomingMessage(Chat chat, Contact sender, QString &msg, time_t time, bool &ignore);
 
 };
 
