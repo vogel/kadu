@@ -145,7 +145,7 @@ Account IdentityShared::bestAccount()
 
 	Status resultStatus = Status::null;
 	foreach (const Account &account, Accounts)
-		if (account.data())
+		if (account.details() && account.data())
 		{
 			if (resultStatus == Status::null || account.data()->status() < resultStatus)
 			{
