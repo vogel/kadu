@@ -40,68 +40,68 @@ PEPManager::PEPManager(XMPP::Client *client, ServerInfoManager *serverInfo, QObj
 	connect(client_, SIGNAL(messageReceived(const Message &)), SLOT(messageReceived(const Message &)));
 }
 
-void PEPManager::publish(const QString& node, const XMPP::PubSubItem& it, Access access)
+PEPManager::~PEPManager()
+{
+}
+
+void PEPManager::publish(const QString &node, const XMPP::PubSubItem &it, Access access)
 {
 	if (!serverInfo_->hasPEP())
 		return;
 
-	PEPPublishTask* tp = new PEPPublishTask(client_->rootTask(),node,it,access);
+	PEPPublishTask *tp = new PEPPublishTask(client_->rootTask(), node, it, access);
 	connect(tp, SIGNAL(finished()), SLOT(publishFinished()));
 	tp->go(true);
 }
 
 
-void PEPManager::retract(const QString& node, const QString& id)
+void PEPManager::retract(const QString &node, const QString &id)
 {
 	if (!serverInfo_->hasPEP())
 		return;
 
-	PEPRetractTask* tp = new PEPRetractTask(client_->rootTask(),node,id);
+	PEPRetractTask* tp = new PEPRetractTask(client_->rootTask(), node, id);
 	// FIXME: add notification of success/failure
 	tp->go(true);
 }
 
-
 void PEPManager::publishFinished()
 {
-	PEPPublishTask* task = (PEPPublishTask*) sender();
-	if (task->success()) {
-		emit publish_success(task->node(),task->item());
-	}
-	else {
-		qWarning() << QString("[%3] PEP Publish failed: '%1' (%2)").arg(task->statusString()).arg(QString::number(task->statusCode())).arg(client_->jid().full());
-		emit publish_error(task->node(),task->item());
-	}
+	PEPPublishTask *task = qobject_cast<PEPPublishTask *>(sender());
+	if (!task)
+		return;
+
+	if (task->success())
+		emit publish_success(task->node(), task->item());
+	else
+		emit publish_error(task->node(), task->item());
 }
 
-void PEPManager::get(const XMPP::Jid& jid, const QString& node, const QString& id)
+void PEPManager::get(const XMPP::Jid &jid, const QString &node, const QString &id)
 {
-	PEPGetTask* g = new PEPGetTask(client_->rootTask(),jid.bare(),node,id);
+	PEPGetTask* g = new PEPGetTask(client_->rootTask(), jid.bare(), node, id);
 	connect(g, SIGNAL(finished()), SLOT(getFinished()));
 	g->go(true);
 }
 
 void PEPManager::messageReceived(const Message &m)
 {
-	foreach (const XMPP::PubSubRetraction &i, m.pubsubRetractions()) {
-		emit itemRetracted(m.from(),m.pubsubNode(), i);
-	}
-	foreach (const XMPP::PubSubItem &i, m.pubsubItems()) {
-		emit itemPublished(m.from(),m.pubsubNode(),i);
-	}
+	foreach (const XMPP::PubSubRetraction &i, m.pubsubRetractions())
+		emit itemRetracted(m.from(), m.pubsubNode(), i);
+	foreach (const XMPP::PubSubItem &i, m.pubsubItems())
+		emit itemPublished(m.from(), m.pubsubNode(), i);
 }
 
 void PEPManager::getFinished()
 {
-	PEPGetTask* task = (PEPGetTask*) sender();
+	PEPGetTask *task = qobject_cast<PEPGetTask *>(sender());
+	if (!task)
+		return;
+
 	if (task->success()) {
 		// Act as if the item was published. This is a convenience
 		// implementation, probably should be changed later.
-		if (!task->items().isEmpty()) {
+		if (!task->items().isEmpty())
 			emit itemPublished(task->jid(),task->node(),task->items().at(0));
-		}
-	}
-	else {
-		qWarning() << QString("[%3] PEP Get failed: '%1' (%2)").arg(task->statusString()).arg(QString::number(task->statusCode())).arg(client_->jid().full());
 	}
 }

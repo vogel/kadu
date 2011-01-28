@@ -24,11 +24,14 @@
 
 #include <QObject>
 
-#include "xmpp_tasks.h"
+#include "iris/xmpp_message.h"
 
-class PubSubSubscription;
-class QString;
 class ServerInfoManager;
+
+namespace XMPP
+{
+	class Client;
+}
 
 class PEPManager : public QObject
 {
@@ -36,6 +39,14 @@ class PEPManager : public QObject
 
 	// a workaround to Qt's MOC not doing really well when mixing namespaces
 	typedef XMPP::Message Message;
+
+	XMPP::Client *client_;
+	ServerInfoManager *serverInfo_;
+
+protected slots:
+	void messageReceived(const Message &m);
+	void getFinished();
+	void publishFinished();
 
 public:
 	enum Access {
@@ -45,25 +56,18 @@ public:
 	};
 
 	PEPManager(XMPP::Client *client, ServerInfoManager *serverInfo, QObject *parent = 0);
+	virtual ~PEPManager();
 
-	void publish(const QString& node, const XMPP::PubSubItem&, Access = DefaultAccess);
-	void retract(const QString& node, const QString& id);
-	void get(const XMPP::Jid& jid, const QString& node, const QString& id);
+	void publish(const QString &node, const XMPP::PubSubItem &, Access = DefaultAccess);
+	void retract(const QString &node, const QString &id);
+	void get(const XMPP::Jid &jid, const QString &node, const QString &id);
 
 signals:
-	void publish_success(const QString&, const XMPP::PubSubItem&);
-	void publish_error(const QString&, const XMPP::PubSubItem&);
-	void itemPublished(const XMPP::Jid& jid, const QString& node, const XMPP::PubSubItem&);
-	void itemRetracted(const XMPP::Jid& jid, const QString& node, const XMPP::PubSubRetraction&);
+	void publish_success(const QString &, const XMPP::PubSubItem &);
+	void publish_error(const QString &, const XMPP::PubSubItem &);
+	void itemPublished(const XMPP::Jid &jid, const QString & node, const XMPP::PubSubItem &);
+	void itemRetracted(const XMPP::Jid &jid, const QString & node, const XMPP::PubSubRetraction &);
 
-protected slots:
-	void messageReceived(const Message &m);
-	void getFinished();
-	void publishFinished();
-
-private:
-	XMPP::Client* client_;
-	ServerInfoManager* serverInfo_;
 };
 
 #endif // PEP_MANAGER_H

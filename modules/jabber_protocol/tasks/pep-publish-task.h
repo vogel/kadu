@@ -24,13 +24,9 @@
 
 #include <QtXml/QDomElement>
 
+#include "iris/xmpp_pubsubitem.h"
 #include "iris/xmpp_task.h"
 #include "utils/pep-manager.h"
-
-namespace XMPP
-{
-	class PubSubItem;
-}
 
 class PEPPublishTask : public XMPP::Task
 {

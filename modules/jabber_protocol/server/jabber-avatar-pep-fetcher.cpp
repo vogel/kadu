@@ -21,6 +21,7 @@
 
 #include "avatars/avatar-manager.h"
 
+#include "iris/xmpp_tasks.h"
 #include "utils/pep-manager.h"
 #include "base64.h"
 #include "jabber-protocol.h"
