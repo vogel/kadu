@@ -18,6 +18,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QCoreApplication>
 #include <QtCore/QtAlgorithms>
 
 #include "status/status-group-manager.h"
@@ -42,14 +43,13 @@ StatusTypeManager::StatusTypeManager()
 	StatusGroup *invisible = StatusGroupManager::instance()->statusGroup("Invisible");
 	StatusGroup *offline = StatusGroupManager::instance()->statusGroup("Offline");
 
-	// TODO: 0.6.6 add translation of second strings
-	registerStatusType("FreeForChat", "Free for chat", "free_for_chat", online, 0);
-	registerStatusType("Online", "Online", "online", online, 20);
-	registerStatusType("Away", "Away", "away", busy, 0);
-	registerStatusType("NotAvailable", "Not available", "not_available", busy, 20);
-	registerStatusType("DoNotDisturb", "Do not disturb", "do_not_disturb", busy, 40);
-	registerStatusType("Invisible", "Invisible", "invisible", invisible, 0);
-	registerStatusType("Offline", "Offline", "offline", offline, 0);
+	registerStatusType("FreeForChat", qApp->translate("@default", "Free for chat"), "free_for_chat", online, 0);
+	registerStatusType("Online", qApp->translate("@default", "Online"), "online", online, 20);
+	registerStatusType("Away", qApp->translate("@default", "Away"), "away", busy, 0);
+	registerStatusType("NotAvailable", qApp->translate("@default", "Not available"), "not_available", busy, 20);
+	registerStatusType("DoNotDisturb", qApp->translate("@default", "Do not disturb"), "do_not_disturb", busy, 40);
+	registerStatusType("Invisible", qApp->translate("@default", "Invisible"), "invisible", invisible, 0);
+	registerStatusType("Offline", qApp->translate("@default", "Offline"), "offline", offline, 0);
 }
 
 StatusTypeManager::~StatusTypeManager()
