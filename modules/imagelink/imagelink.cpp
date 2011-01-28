@@ -119,7 +119,7 @@ void ImageLink::filterIncomingMessage(Chat chat, Contact sender, QString &messag
 		if (yt.matchedLength() > 0)
 		{
 			{
-				ChatWidgetManager::instance()->openChatWidget(chat, false);
+				ChatWidgetManager::instance()->openPendingMessages(chat, false);
 				ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(chat);
 				showObject(list[0], 0, chatWidget);
 			}
@@ -134,7 +134,7 @@ void ImageLink::filterIncomingMessage(Chat chat, Contact sender, QString &messag
 		
 		if (yt.matchedLength() > 0)
 		{
-			ChatWidgetManager::instance()->openChatWidget(chat, false);
+			ChatWidgetManager::instance()->openPendingMessages(chat, false);
 			ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(chat);
 			showObject(list[1], 1, chatWidget);
 		}
@@ -147,7 +147,7 @@ void ImageLink::filterIncomingMessage(Chat chat, Contact sender, QString &messag
 			
 			if (yt.matchedLength() > 0)
 			{
-				ChatWidgetManager::instance()->openChatWidget(chat, false);
+				ChatWidgetManager::instance()->openPendingMessages(chat, false);
 				ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(chat);
 				showObject(list[1], 1, chatWidget);
 			}
@@ -189,6 +189,6 @@ void ImageLink::showObject(QString video, int mode, ChatWidget *widget)
 		render.setContent(messageStr);
 		render.setReceiveDate(QDateTime::currentDateTime());
 		render.setSendDate(QDateTime::currentDateTime());
-		widget->chatMessageView()->appendMessage(render);
+		widget->chatMessagesView()->appendMessage(render);
 	}
 }
