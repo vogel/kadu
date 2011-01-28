@@ -367,7 +367,7 @@ void NotificationManager::contactStatusChanged(Contact contact, Status oldStatus
 			!oldStatus.isDisconnected())
 		return;
 
-	QString changedTo = "/To" + Status::name(status, false);
+	QString changedTo = "/To" + status.type();
 
 	ContactSet contacts(contact);
 

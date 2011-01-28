@@ -113,11 +113,11 @@ StatusChangedNotification::StatusChangedNotification(const QString &toStatus, co
 
 	if (!status.description().isNull())
 		setText(QString(tr("<b>%1</b> changed status to <i>%2</i><br/> <small>%3</small>")).arg(Qt::escape(contact.ownerBuddy().display()),
-				qApp->translate("@default", Status::name(status, false).toAscii().data()),
+				status.displayName(),
 				Qt::escape(status.description())));
 	else
 		setText(QString(tr("<b>%1</b> changed status to <i>%2</i>")).arg(Qt::escape(contact.ownerBuddy().display()),
-				qApp->translate("@default", Status::name(status, false).toAscii().data())));
+				status.displayName()));
 
 	setTitle(tr("Status changed"));
 }

@@ -165,7 +165,7 @@ Status IdentityShared::status()
 
 QString IdentityShared::statusDisplayName()
 {
-	return Status::name(status(), false);
+	return status().displayName();
 }
 
 QIcon IdentityShared::statusIcon()

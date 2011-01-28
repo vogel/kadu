@@ -31,13 +31,10 @@
 
 class KADUAPI Status
 {
-public:
-	static QString name(const Status &status, bool fullName = true);
-
-private:
 	QString Type;
 	QString Group;
 	QString Description;
+	QString DisplayName;
 
 public:
 	static Status null;
@@ -50,6 +47,8 @@ public:
 	void setType(const QString &type);
 
 	const QString & group() const { return Group; }
+
+	const QString & displayName() const { return DisplayName; };
 
 	const QString & description() const { return Description; }
 	void setDescription(const QString &description) { Description = description; }

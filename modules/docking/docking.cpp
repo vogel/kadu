@@ -229,8 +229,7 @@ void DockingManager::defaultToolTip()
 		Status status = AccountManager::instance()->status();
 
 		QString tiptext;
-		tiptext.append(tr("Current status:\n%1")
-			.arg(qApp->translate("@default", Status::name(status).toLocal8Bit().data())));
+		tiptext.append(tr("Current status:\n%1").arg(status.displayName()));
 
 		if (!status.description().isEmpty())
 			tiptext.append(tr("\n\nDescription:\n%2").arg(status.description()));

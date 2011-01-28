@@ -35,7 +35,8 @@ Status::Status(const QString &type, const QString &description) :
 }
 
 Status::Status(const Status& copyme) :
-		Type(copyme.Type), Group(copyme.Group), Description(copyme.Description)
+		Type(copyme.Type), Group(copyme.Group), Description(copyme.Description),
+		DisplayName(copyme.DisplayName)
 {
 }
 
@@ -45,7 +46,9 @@ Status::~Status()
 
 void Status::setType(const QString& type)
 {
-	Group= "Offline";
+	Group = "Offline";
+	DisplayName = "Offline";
+
 	Type = type;
 
 	StatusType *statusType = StatusTypeManager::instance()->statusType(Type);
@@ -54,15 +57,12 @@ void Status::setType(const QString& type)
 		Type = "Offline";
 		return;
 	}
+	else
+		DisplayName = statusType->displayName();
 
 	StatusGroup *statusGroup = statusType->statusGroup();
 	if (statusGroup)
-		Group= statusGroup->name();
-}
-
-QString Status::name(const Status &status, bool fullName)
-{
-	return status.Type + ((fullName && !status.Description.isEmpty()) ? "WithDescription" : QString());
+		Group = statusGroup->name();
 }
 
 bool Status::isDisconnected() const

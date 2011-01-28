@@ -319,7 +319,7 @@ int AccountShared::maxDescriptionLength()
 
 QString AccountShared::statusDisplayName()
 {
-	return Status::name(status(), false);
+	return status().displayName();
 }
 
 QIcon AccountShared::statusIcon()

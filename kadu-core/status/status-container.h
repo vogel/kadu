@@ -46,7 +46,7 @@ public:
 
 	virtual void setDescription(const QString &description) = 0;
 
-	virtual QString statusName() = 0;
+	virtual QString statusDisplayName() = 0;
 	virtual QIcon statusIcon() = 0;
 	virtual QIcon statusIcon(Status status) = 0;
 	virtual QString statusIconPath(const QString &statusType) = 0;
