@@ -23,8 +23,8 @@
 #include <QtCore/QObject>
 
 #include "accounts/accounts-aware-object.h"
+#include "chat/chat.h"
 #include "contacts/contact.h"
-#include "protocols/protocol.h"
 
 #include "configuration/image-link-configuration.h"
 
@@ -41,12 +41,13 @@ class ImageLink : public QObject, AccountsAwareObject
 	QRegExp ImageRegExp;
 	QRegExp YouTubeRegExp;
 
-	QMap<Account, Status> AccountStatus;
-
 	ImageLink();
 	virtual ~ImageLink();
 
-	void showObject(const QString &video, int mode, ChatWidget *widget);
+	QString getImageCode(const QString &image);
+	QString getVideoCode(const QString &video);
+
+	void insertCodeIntoChatWindow(Chat chat, Contact sender, const QString& code);
 
 private slots:
 	void filterIncomingMessage(Chat chat, Contact sender, QString &msg, time_t time, bool &ignore);

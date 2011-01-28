@@ -88,70 +88,64 @@ void ImageLink::filterIncomingMessage(Chat chat, Contact sender, QString &messag
 	Q_UNUSED(ignore)
 	Q_UNUSED(sender)
 
-	QStringList list;
-	
 	if (Configuration.showImages())
 	{
 		ImageRegExp.indexIn(message);
-		list = ImageRegExp.capturedTexts();
+		QStringList list = ImageRegExp.capturedTexts();
 		
-		if (ImageRegExp.matchedLength() > 0)
-		{
-			ChatWidgetManager::instance()->openPendingMessages(chat, false);
-			ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(chat);
-			showObject(list[0], 0, chatWidget);
-		}
+		if (ImageRegExp.matchedLength() > 0 && list.size() > 0)
+			insertCodeIntoChatWindow(chat, sender, getImageCode(list[0]));
 	}
 
 	if (Configuration.showVideos())
 	{
 		YouTubeRegExp.indexIn(message);
-		list = YouTubeRegExp.capturedTexts();
+		QStringList list = YouTubeRegExp.capturedTexts();
 		
-		if (YouTubeRegExp.matchedLength() > 0)
-		{
-			ChatWidgetManager::instance()->openPendingMessages(chat, false);
-			ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(chat);
-			showObject(list[1], 1, chatWidget);
-		}
+		if (YouTubeRegExp.matchedLength() > 0 && list.size() > 1)
+			insertCodeIntoChatWindow(chat, sender, getVideoCode(list[1]));
 	}
 	
 	kdebugf2();
 }
 
-void ImageLink::showObject(const QString &video, int mode, ChatWidget *widget)
+QString ImageLink::getImageCode(const QString &image)
 {
-	if (!widget) return;
-	
-	int	width = (widget->width()) / 3;
-	int height = (widget->height()) / 3;
-	QString messageStr, tmp, tmp2, autoplaystr;
-	
-	if (Configuration.autoStartVideos())
-		autoplaystr.setNum(1);
-	else
-		autoplaystr.setNum(0);
+	return QString("<img src=\"%1\">").arg(image);
+}
 
-	if (mode == 1)
-	{
-		QString url = video;
-		url = url.remove("?v=");
-		messageStr = QString("<object width=\"%2\" height=\"%3\"><embed src=\"http://www.youtube.com/v/%1&autoplay=%4 \" type=\"application/x-shockwave-flash\" allowscriptaccess=\"always\" allowfullscreen=\"true\" width=\"%2\" height=\"%3\"></embed></object>").arg(url).arg(tmp.setNum(width)).arg(tmp2.setNum(height)).arg(autoplaystr);
-	}
-	else
-		messageStr = QString("<img src=\"%1\">").arg(video);
+QString ImageLink::getVideoCode(const QString &video)
+{
+	QString url = video;
+	url = url.remove("?v=");
+	return QString(
+		"<object width=\"33%\" height=\"33%\">"
+			"<embed "
+				"src=\"http://www.youtube.com/v/%1&autoplay=%2 \" "
+				"type=\"application/x-shockwave-flash\" "
+				"allowscriptaccess=\"always\" "
+				"allowfullscreen=\"true\" "
+				"width=\"%2\" "
+				"height=\"%3\">"
+			"</embed>"
+		"</object>").arg(url).arg(Configuration.autoStartVideos() ? "1" : "0");
+}
+
+void ImageLink::insertCodeIntoChatWindow(Chat chat, Contact sender, const QString &code)
+{
+	ChatWidgetManager::instance()->openPendingMessages(chat, false);
+	ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(chat);
+
+	if (!chatWidget)
+		return;
 
 	Message render = Message::create();
+	render.setMessageChat(chat);
+	render.setType(Message::TypeReceived);
+	render.setMessageSender(sender);
+	render.setContent(code);
+	render.setReceiveDate(QDateTime::currentDateTime());
+	render.setSendDate(QDateTime::currentDateTime());
 
-	Chat chat = widget->chat();
-	if (chat)
-	{
-		render.setMessageChat(chat);
-		render.setType(Message::TypeSystem);
-		render.setMessageSender(chat.contacts().toContact());
-		render.setContent(messageStr);
-		render.setReceiveDate(QDateTime::currentDateTime());
-		render.setSendDate(QDateTime::currentDateTime());
-		widget->chatMessagesView()->appendMessage(render);
-	}
+	chatWidget->chatMessagesView()->appendMessage(render);
 }
