@@ -96,7 +96,6 @@ void AccountAvatarWidget::protocolRegistered(ProtocolFactory *protocolFactory)
 	{
 		disconnect(Service, SIGNAL(destroyed()), this, SLOT(serviceDestroyed()));
 		disconnect(Service, SIGNAL(avatarUploaded(bool, QImage)), this, SLOT(avatarUploaded(bool, QImage)));
-		disconnect(Service, SIGNAL(avatarRemoved(bool)), this, SLOT(avatarRemoved(bool)));
 	}
 
 	Protocol *protocol = MyAccount.protocolHandler();
@@ -109,7 +108,6 @@ void AccountAvatarWidget::protocolRegistered(ProtocolFactory *protocolFactory)
 	if (Service)
 	{
 		connect(Service, SIGNAL(avatarUploaded(bool, QImage)), this, SLOT(avatarUploaded(bool, QImage)));
-		connect(Service, SIGNAL(avatarRemoved(bool)), this, SLOT(avatarRemoved(bool)));
 		connect(Service, SIGNAL(destroyed()), this, SLOT(serviceDestroyed()));
 	}
 }
@@ -172,17 +170,6 @@ void AccountAvatarWidget::avatarUploaded(bool ok, QImage image)
 {
 	if (ok)
 		AvatarManager::instance()->byContact(MyAccount.accountContact(), ActionCreateAndAdd).setPixmap(QPixmap::fromImage(image));
-
-	avatarUpdated();
-	ChangePhotoButton->setEnabled(true);
-}
-
-void AccountAvatarWidget::avatarRemoved(bool ok)
-{
-	printf("Avatar removed: %d\n", ok);
-
-// 	if (ok)
-		AvatarManager::instance()->byContact(MyAccount.accountContact(), ActionCreateAndAdd).setPixmap(QPixmap());
 
 	avatarUpdated();
 	ChangePhotoButton->setEnabled(true);

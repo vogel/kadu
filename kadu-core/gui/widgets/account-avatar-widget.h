@@ -58,7 +58,6 @@ private slots:
 
 	void changeButtonClicked();
 	void avatarUploaded(bool ok, QImage image);
-	void avatarRemoved(bool ok);
 	void serviceDestroyed();
 
 protected:
