@@ -27,47 +27,44 @@
 #include "contacts/contact.h"
 #include "protocols/protocol.h"
 
-
 class ContactSet;
 class ChatWidget;
 class ImageLink;
 class ConfigurationUiHandler;
 
-
-
 class ImageLink : public QObject, AccountsAwareObject, ConfigurationAwareObject 
 {
 	Q_OBJECT
+	Q_DISABLE_COPY(ImageLink)
 
-	QMap<Account,Status> AccountStatus;
+	static ImageLink *Instance;
 
-	
+	QMap<Account, Status> AccountStatus;
+
 	void createDefaultConfiguration();
 	
 	bool config_show_yt;
 	bool config_show_image;
 	bool config_autostart;
 
+	ImageLink();
+	virtual ~ImageLink();
+
 	void showObject(QString,int,ChatWidget *widget);
-	
+
 protected:
 	virtual void accountRegistered(Account account);
 	virtual void accountUnregistered(Account account);
 	virtual void configurationUpdated();
-	
+
 public:
-
-	ImageLink();
-
-	~ImageLink();
-
+	static void createInstance();
+	static void destroyInstance();
+	static ImageLink * instance() { return Instance; }
 
 public slots:
-
 	void filterIncomingMessage(Chat chat, Contact sender, QString &msg, time_t time, bool &ignore);
 
 };
 
-extern ImageLink *imageLink;
-
-#endif
+#endif // IMAGELINK_H

@@ -27,8 +27,19 @@
 
 #include "imagelink.h"
 
-ImageLink *imageLink;
+ImageLink * ImageLink::Instance = 0;
 
+void ImageLink::createInstance()
+{
+	if (!Instance)
+		Instance = new ImageLink();
+}
+
+void ImageLink::destroyInstance()
+{
+	delete Instance;
+	Instance = 0;
+}
 
 ImageLink::ImageLink()
 {
