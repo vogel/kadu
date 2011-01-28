@@ -37,7 +37,6 @@ private slots:
 
 protected:
 	virtual void closeEvent(QCloseEvent *e);
-	virtual void keyPressEvent(QKeyEvent *e);
 	virtual void mousePressEvent(QMouseEvent *e);
 	virtual void mouseReleaseEvent(QMouseEvent *e);
 

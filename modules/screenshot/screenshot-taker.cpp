@@ -79,17 +79,6 @@ void ScreenshotTaker::closeEvent(QCloseEvent *e)
 	QWidget::closeEvent(e);
 }
 
-void ScreenshotTaker::keyPressEvent(QKeyEvent *e)
-{
-	if (e->key() == Qt::Key_Escape)
-	{
-		e->accept();
-		close();
-	}
-	else
-		QWidget::keyPressEvent(e);
-}
-
 void ScreenshotTaker::mousePressEvent(QMouseEvent *e)
 {
 	Q_UNUSED(e)

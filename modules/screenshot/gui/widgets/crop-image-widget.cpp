@@ -193,6 +193,17 @@ void CropImageWidget::updateToolBoxFileSizeHint()
 		ToolBox->setFileSize(QString::number(ceil(1.0 * buffer.size() / 1024.0)) + " KiB");
 }
 
+void CropImageWidget::keyPressEvent(QKeyEvent *e)
+{
+	if (e->key() == Qt::Key_Escape)
+	{
+		emit canceled();
+		e->accept();
+	}
+	else
+		QWidget::keyPressEvent(e);
+}
+
 void CropImageWidget::mousePressEvent(QMouseEvent *event)
 {
 	QGraphicsView::mousePressEvent(event);

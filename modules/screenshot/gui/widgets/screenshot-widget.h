@@ -44,9 +44,6 @@ class ScreenshotWidget : public QWidget
 private slots:
 	void pixmapCapturedSlot(QPixmap pixmap);
 	void canceled();
-	
-protected:
-	void keyPressEvent(QKeyEvent *e);
 
 public:
 	explicit ScreenshotWidget(QWidget *parent = 0);
