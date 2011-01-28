@@ -1,5 +1,4 @@
 /*
- * pepmanager.h - Classes for PEP
  * Copyright (C) 2006  Remko Troncon
  *
  * %kadu copyright begin%
@@ -20,8 +19,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PEPMANAGER_H
-#define PEPMANAGER_H
+#ifndef PEP_MANAGER_H
+#define PEP_MANAGER_H
 
 #include <QObject>
 
@@ -67,4 +66,4 @@ private:
 	ServerInfoManager* serverInfo_;
 };
 
-#endif
+#endif // PEP_MANAGER_H

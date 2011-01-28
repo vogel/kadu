@@ -1,5 +1,4 @@
 /*
- * pepmanager.cpp - Classes for PEP
  * Copyright (C) 2006  Remko Troncon
  *
  * %kadu copyright begin%
