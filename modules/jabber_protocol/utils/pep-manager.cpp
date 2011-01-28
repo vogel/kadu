@@ -25,6 +25,7 @@
 #include "iris/xmpp_tasks.h"
 #include "iris/xmpp_xmlcommon.h"
 #include "tasks/pep-get-task.h"
+#include "tasks/pep-publish-task.h"
 #include "utils/server-info-manager.h"
 
 #include "pep-manager.h"
@@ -34,89 +35,6 @@
 // avatar data node)
 
 // -----------------------------------------------------------------------------
-
-class PEPPublishTask : public XMPP::Task
-{
-public:
-	PEPPublishTask(Task* parent, const QString& node, const XMPP::PubSubItem& it, PEPManager::Access access) : XMPP::Task(parent), node_(node), item_(it) {
-		iq_ = createIQ(doc(), "set", QString(), id());
-
-		QDomElement pubsub = doc()->createElement("pubsub");
-		pubsub.setAttribute("xmlns", "http://jabber.org/protocol/pubsub");
-		iq_.appendChild(pubsub);
-
-		QDomElement publish = doc()->createElement("publish");
-		publish.setAttribute("node", node);
-		pubsub.appendChild(publish);
-
-		QDomElement item = doc()->createElement("item");
-		item.setAttribute("id", it.id());
-		publish.appendChild(item);
-
-		if (access != PEPManager::DefaultAccess) {
-			QDomElement conf = doc()->createElement("configure");
-			QDomElement conf_x = doc()->createElementNS("jabber:x:data","x");
-
-			// Form type
-			QDomElement conf_x_field_type = doc()->createElement("field");
-			conf_x_field_type.setAttribute("var","FORM_TYPE");
-			conf_x_field_type.setAttribute("type","hidden");
-			QDomElement conf_x_field_type_value = doc()->createElement("value");
-			conf_x_field_type_value.appendChild(doc()->createTextNode("http://jabber.org/protocol/pubsub#node_config"));
-			conf_x_field_type.appendChild(conf_x_field_type_value);
-			conf_x.appendChild(conf_x_field_type);
-
-			// Access model
-			QDomElement access_model = doc()->createElement("field");
-			access_model.setAttribute("var","pubsub#access_model");
-			QDomElement access_model_value = doc()->createElement("value");
-			access_model.appendChild(access_model_value);
-			if (access == PEPManager::PublicAccess) {
-				access_model_value.appendChild(doc()->createTextNode("open"));
-			}
-			else if (access == PEPManager::PresenceAccess) {
-				access_model_value.appendChild(doc()->createTextNode("presence"));
-			}
-			conf_x.appendChild(access_model);
-
-
-			conf.appendChild(conf_x);
-			pubsub.appendChild(conf);
-		}
-
-		item.appendChild(it.payload());
-	}
-
-	bool take(const QDomElement& x) {
-		if(!iqVerify(x, QString(), id()))
-			return false;
-
-		if(x.attribute("type") == "result") {
-			setSuccess();
-		}
-		else {
-			setError(x);
-		}
-		return true;
-	}
-
-	void onGo() {
-		send(iq_);
-	}
-
-	const XMPP::PubSubItem& item() const {
-		return item_;
-	}
-
-	const QString& node() const {
-		return node_;
-	}
-
-private:
-	QDomElement iq_;
-	QString node_;
-	XMPP::PubSubItem item_;
-};
 
 
 // -----------------------------------------------------------------------------
