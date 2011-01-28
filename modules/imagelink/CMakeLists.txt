@@ -8,7 +8,7 @@ set (MOC_SOURCES
 )
 
 set (CONFIGURATION_FILES
-	configuration/imagelink.ui
+	data/configuration/imagelink.ui
 )
 
 set (TRANSLATION_SOURCES
