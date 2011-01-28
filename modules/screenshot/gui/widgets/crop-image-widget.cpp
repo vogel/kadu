@@ -60,6 +60,7 @@ CropImageWidget::CropImageWidget(QWidget *parent) :
 
 	ToolBox = new ScreenshotToolBox();
 	connect(ToolBox, SIGNAL(crop()), this, SLOT(crop()));
+	connect(ToolBox, SIGNAL(cancel()), this, SIGNAL(canceled()));
 
 	ToolBoxTimer = new QTimer(this);
 	connect(ToolBoxTimer, SIGNAL(timeout()), this, SLOT(updateToolBoxFileSizeHint()));

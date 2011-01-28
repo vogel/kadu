@@ -44,9 +44,13 @@ ScreenshotToolBox::ScreenshotToolBox(QWidget *parent) :
 	QPushButton *cropButton = new QPushButton(tr("Crop"), this);
 	connect(cropButton, SIGNAL(clicked(bool)), this, SIGNAL(crop()));
 
+	QPushButton *cancelButton = new QPushButton(tr("Cancel"), this);
+	connect(cancelButton, SIGNAL(clicked(bool)), this, SIGNAL(cancel()));
+
 	layout->addWidget(GeometryLabel);
 	layout->addWidget(FileSizeLabel);
 	layout->addWidget(cropButton);
+	layout->addWidget(cancelButton);
 }
 
 ScreenshotToolBox::~ScreenshotToolBox()

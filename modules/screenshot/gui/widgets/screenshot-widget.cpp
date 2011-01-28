@@ -48,6 +48,7 @@ ScreenshotWidget::ScreenshotWidget(QWidget *parent) :
 
 	CropWidget = new CropImageWidget(this);
 	connect(CropWidget, SIGNAL(pixmapCropped(QPixmap)), this, SLOT(pixmapCapturedSlot(QPixmap)));
+	connect(CropWidget, SIGNAL(canceled()), this, SLOT(canceled()));
 	layout->addWidget(CropWidget);
 }
 
@@ -86,5 +87,11 @@ void ScreenshotWidget::pixmapCapturedSlot(QPixmap pixmap)
 	hide();
 
 	emit pixmapCaptured(pixmap);
+	deleteLater();
+}
+
+void ScreenshotWidget::canceled()
+{
+	hide();
 	deleteLater();
 }

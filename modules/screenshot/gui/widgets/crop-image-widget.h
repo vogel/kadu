@@ -80,6 +80,7 @@ public:
 
 signals:
 	void pixmapCropped(QPixmap pixmap);
+	void canceled();
 
 };
 

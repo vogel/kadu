@@ -41,6 +41,7 @@ public:
 
 signals:
 	void crop();
+	void cancel();
 
 };
 
