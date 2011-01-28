@@ -94,7 +94,6 @@ set (kadu_SRCS
 
 	configuration/config-file-data-manager.cpp
 	configuration/configuration-aware-object.cpp
-	configuration/configuration-contact-data-manager.cpp
 	configuration/configuration-file.cpp
 	configuration/configuration-manager.cpp
 	configuration/main-configuration.cpp
@@ -444,7 +443,6 @@ set (kadu_MOC_SRCS
 	contacts/model/contact-list-model.h
 
 	configuration/config-file-data-manager.h
-	configuration/configuration-contact-data-manager.h
 	configuration/configuration-window-data-manager.h
 	configuration/main-configuration.h
 	configuration/notifier-configuration-data-manager.h
