@@ -25,7 +25,7 @@
 #include "debug.h"
 #include "gui/widgets/chat-widget-manager.h"
 
-#include "imagelink.h"
+#include "image-link.h"
 
 ImageLink * ImageLink::Instance = 0;
 

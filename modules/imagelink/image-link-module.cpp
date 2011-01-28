@@ -21,20 +21,20 @@
 #include "gui/windows/main-configuration-window.h"
 #include "misc/path-conversion.h"
 
-#include "imagelink.h"
+#include "image-link.h"
 
 extern "C" KADU_EXPORT int imagelink_init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
 	ImageLink::createInstance();
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/imagelink.ui"));
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/image-link.ui"));
 
 	return 0;
 }
 
 extern "C" KADU_EXPORT void imagelink_close()
 {
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/imagelink.ui"));
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/image-link.ui"));
 	ImageLink::destroyInstance();
 }

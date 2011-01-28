@@ -1,6 +1,6 @@
 <configuration-ui>
 	<section name="Chat">
-		<tab name="General">
+		<tab name="Imagelink">
 			<group-box name="Imagelink">
 				<check-box caption="Show YouTube movies in chat window" config-section="Imagelink" config-item="show_yt" />
 				<check-box caption="Autoplay movies" config-section="Imagelink" config-item="autoplay" />

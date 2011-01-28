@@ -1,16 +1,16 @@
 set (SOURCES
 	configuration/image-link-configuration.cpp
 
-	imagelink.cpp
-	imagelink-module.cpp
+	image-link.cpp
+	image-link-module.cpp
 )
 
 set (MOC_SOURCES
-	imagelink.h
+	image-link.h
 )
 
 set (CONFIGURATION_FILES
-	data/configuration/imagelink.ui
+	data/configuration/image-link.ui
 )
 
 set (TRANSLATION_SOURCES

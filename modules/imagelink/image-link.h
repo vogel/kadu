@@ -17,8 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef IMAGELINK_H
-#define IMAGELINK_H
+#ifndef IMAGE_LINK_H
+#define IMAGE_LINK_H
 
 #include <QtCore/QObject>
 
@@ -63,4 +63,4 @@ public:
 
 };
 
-#endif // IMAGELINK_H
+#endif // IMAGE_LINK_H
