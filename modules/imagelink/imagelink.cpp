@@ -44,8 +44,6 @@ void ImageLink::destroyInstance()
 ImageLink::ImageLink()
 {
 	kdebugf();
-	createDefaultConfiguration();
-	configurationUpdated();
 	triggerAllAccountsRegistered();
 	kdebugf2();
 }
@@ -97,21 +95,6 @@ void ImageLink::accountUnregistered(Account account)
 	kdebugf2();
 }
 
-void ImageLink::configurationUpdated()
-{
-	config_show_yt = config_file.readBoolEntry("Imagelink", "show_yt", true);
-	config_show_image = config_file.readBoolEntry("Imagelink", "show_image", true);
-	config_autostart = config_file.readBoolEntry("Imagelink", "autoplay", true);
-}
-
-void ImageLink::createDefaultConfiguration()
-{
-	config_file.addVariable("Imagelink", "show_yt", true);
-	config_file.addVariable("Imagelink", "show_image", true);
-	config_file.addVariable("Imagelink", "autoplay", true);
-}
-
-
 void ImageLink::filterIncomingMessage(Chat chat, Contact sender, QString &message, time_t time, bool &ignore)
 {
 	Q_UNUSED(time)
@@ -121,7 +104,7 @@ void ImageLink::filterIncomingMessage(Chat chat, Contact sender, QString &messag
 	QStringList list;
 	kdebugf();
 	
-	if (config_show_image)
+	if (Configuration.showImages())
 	{
 		yt = QRegExp("(http://.*.gif|.*.jpg|.*.png)");
 		yt.indexIn(message);
@@ -137,7 +120,7 @@ void ImageLink::filterIncomingMessage(Chat chat, Contact sender, QString &messag
 		}
 	}
 	
-	if (config_show_yt)
+	if (Configuration.showVideos())
 	{
 		yt = QRegExp("http://www.youtube.com/watch(.*)&");
 		yt.indexIn(message);
@@ -176,12 +159,11 @@ void ImageLink::showObject(QString video, int mode, ChatWidget *widget)
 	int height = (widget->height()) / 3;
 	QString messageStr, tmp, tmp2, autoplaystr;
 	
-	if (config_autostart)
+	if (Configuration.autoStartVideos())
 		autoplaystr.setNum(1);
-		
 	else
 		autoplaystr.setNum(0);
-		
+
 	if (mode == 1)
 		messageStr = QString("<object width=\"%2\" height=\"%3\"><embed src=\"http://www.youtube.com/v/%1&autoplay=%4 \" type=\"application/x-shockwave-flash\" allowscriptaccess=\"always\" allowfullscreen=\"true\" width=\"%2\" height=\"%3\"></embed></object>").arg(video.remove("?v=")).arg(tmp.setNum(width)).arg(tmp2.setNum(height)).arg(autoplaystr);
 	else

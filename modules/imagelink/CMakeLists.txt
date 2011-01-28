@@ -1,4 +1,6 @@
 set (SOURCES
+	configuration/image-link-configuration.cpp
+
 	imagelink.cpp
 	imagelink-module.cpp
 )

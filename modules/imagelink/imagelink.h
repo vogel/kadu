@@ -23,29 +23,24 @@
 #include <QtCore/QObject>
 
 #include "accounts/accounts-aware-object.h"
-#include "configuration/configuration-aware-object.h"
 #include "contacts/contact.h"
 #include "protocols/protocol.h"
 
+#include "configuration/image-link-configuration.h"
+
 class ContactSet;
 class ChatWidget;
-class ImageLink;
-class ConfigurationUiHandler;
 
-class ImageLink : public QObject, AccountsAwareObject, ConfigurationAwareObject 
+class ImageLink : public QObject, AccountsAwareObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(ImageLink)
 
 	static ImageLink *Instance;
 
-	QMap<Account, Status> AccountStatus;
+	ImageLinkConfiguration Configuration;
 
-	void createDefaultConfiguration();
-	
-	bool config_show_yt;
-	bool config_show_image;
-	bool config_autostart;
+	QMap<Account, Status> AccountStatus;
 
 	ImageLink();
 	virtual ~ImageLink();
@@ -55,7 +50,6 @@ class ImageLink : public QObject, AccountsAwareObject, ConfigurationAwareObject
 protected:
 	virtual void accountRegistered(Account account);
 	virtual void accountUnregistered(Account account);
-	virtual void configurationUpdated();
 
 public:
 	static void createInstance();
