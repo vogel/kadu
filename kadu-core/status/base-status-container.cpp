@@ -89,7 +89,7 @@ void BaseStatusContainer::storeStatus(Status status)
 		return;
 
 	MyStorableObject->storeValue("LastStatusDescription", status.description());
-	MyStorableObject->storeValue("LastStatusName", Status::name(status, false));
+	MyStorableObject->storeValue("LastStatusName", status.type());
 }
 
 void BaseStatusContainer::disconnectStatus(bool disconnectWithCurrentDescription,
