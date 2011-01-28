@@ -38,6 +38,8 @@ class ImageLink : public QObject, AccountsAwareObject
 	static ImageLink *Instance;
 
 	ImageLinkConfiguration Configuration;
+	QRegExp ImageRegExp;
+	QRegExp YouTubeRegExp;
 
 	QMap<Account, Status> AccountStatus;
 

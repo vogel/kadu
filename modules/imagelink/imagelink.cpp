@@ -43,6 +43,9 @@ void ImageLink::destroyInstance()
 
 ImageLink::ImageLink()
 {
+	ImageRegExp = QRegExp("http://.*(.gif|.*.jpg|.*.png)");
+	YouTubeRegExp = QRegExp("http://www.youtube.com/watch(.*)&?");
+
 	triggerAllAccountsRegistered();
 }
 
@@ -85,51 +88,31 @@ void ImageLink::filterIncomingMessage(Chat chat, Contact sender, QString &messag
 	Q_UNUSED(ignore)
 	Q_UNUSED(sender)
 
-	QRegExp yt;
 	QStringList list;
-	kdebugf();
 	
 	if (Configuration.showImages())
 	{
-		yt = QRegExp("(http://.*.gif|.*.jpg|.*.png)");
-		yt.indexIn(message);
-		list = yt.capturedTexts();
+		ImageRegExp.indexIn(message);
+		list = ImageRegExp.capturedTexts();
 		
-		if (yt.matchedLength() > 0)
+		if (ImageRegExp.matchedLength() > 0)
 		{
-			{
-				ChatWidgetManager::instance()->openPendingMessages(chat, false);
-				ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(chat);
-				showObject(list[0], 0, chatWidget);
-			}
+			ChatWidgetManager::instance()->openPendingMessages(chat, false);
+			ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(chat);
+			showObject(list[0], 0, chatWidget);
 		}
 	}
-	
+
 	if (Configuration.showVideos())
 	{
-		yt = QRegExp("http://www.youtube.com/watch(.*)&");
-		yt.indexIn(message);
-		list = yt.capturedTexts();
+		YouTubeRegExp.indexIn(message);
+		list = YouTubeRegExp.capturedTexts();
 		
-		if (yt.matchedLength() > 0)
+		if (YouTubeRegExp.matchedLength() > 0)
 		{
 			ChatWidgetManager::instance()->openPendingMessages(chat, false);
 			ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(chat);
 			showObject(list[1], 1, chatWidget);
-		}
-		
-		else
-		{
-			yt = QRegExp("http://www.youtube.com/watch(.*)");
-			yt.indexIn(message);
-			list = yt.capturedTexts();
-			
-			if (yt.matchedLength() > 0)
-			{
-				ChatWidgetManager::instance()->openPendingMessages(chat, false);
-				ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(chat);
-				showObject(list[1], 1, chatWidget);
-			}
 		}
 	}
 	
