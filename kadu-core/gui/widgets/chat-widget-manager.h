@@ -63,7 +63,6 @@ class KADUAPI ChatWidgetManager : public QObject, ConfigurationAwareObject, Stor
 	ChatWidget * openChatWidget(const Chat &chat, bool forceActivate = false);
 
 private slots:
-	void messageReceived(const Message &message);
 	void messageSent(const Message &message);
 
 protected:
@@ -118,6 +117,8 @@ public:
 	void unregisterChatWidget(ChatWidget *chatwidget);
 
 public slots:
+	// for imagelink module
+	void messageReceived(const Message &message);
 
 	void sendMessage(const Chat &chat);
 

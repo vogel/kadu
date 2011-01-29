@@ -346,8 +346,6 @@ void ChatWidgetManager::openPendingMessages(const Chat &chat, bool forceActivate
 		// TODO: Lame API
 		if (!chatWidget->countMessages())
 			chatWidget->appendMessages(messages, true);
-// TODO: 0.6.6
-// 		UserBox::refreshAllLater();
 	}
 
 	kdebugf2();
@@ -416,8 +414,6 @@ void ChatWidgetManager::messageReceived(const Message &message)
 	kdebugf();
 
 	Chat chat = message.messageChat();
-	ContactSet contacts = chat.contacts();
-
 	ChatWidget *chatWidget = byChat(chat);
 	if (chatWidget)
 	{

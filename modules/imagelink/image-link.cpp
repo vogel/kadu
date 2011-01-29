@@ -133,19 +133,17 @@ QString ImageLink::getVideoCode(const QString &video)
 
 void ImageLink::insertCodeIntoChatWindow(Chat chat, Contact sender, const QString &code)
 {
-	ChatWidgetManager::instance()->openPendingMessages(chat, false);
+	Message message = Message::create();
+	message.setMessageChat(chat);
+	message.setType(Message::TypeReceived);
+	message.setMessageSender(sender);
+	message.setContent(code);
+	message.setReceiveDate(QDateTime::currentDateTime());
+	message.setSendDate(QDateTime::currentDateTime());
+
 	ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(chat);
-
 	if (!chatWidget)
-		return;
-
-	Message render = Message::create();
-	render.setMessageChat(chat);
-	render.setType(Message::TypeReceived);
-	render.setMessageSender(sender);
-	render.setContent(code);
-	render.setReceiveDate(QDateTime::currentDateTime());
-	render.setSendDate(QDateTime::currentDateTime());
-
-	chatWidget->chatMessagesView()->appendMessage(render);
+		ChatWidgetManager::instance()->messageReceived(message);
+	else
+		chatWidget->chatMessagesView()->appendMessage(message);
 }
