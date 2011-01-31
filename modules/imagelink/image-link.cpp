@@ -125,8 +125,8 @@ QString ImageLink::getVideoCode(const QString &video)
 				"type=\"application/x-shockwave-flash\" "
 				"allowscriptaccess=\"always\" "
 				"allowfullscreen=\"true\" "
-				"width=\"%2\" "
-				"height=\"%3\">"
+				"width=\"33%\" "
+				"height=\"33%\">"
 			"</embed>"
 		"</object>").arg(url).arg(Configuration.autoStartVideos() ? "1" : "0");
 }
