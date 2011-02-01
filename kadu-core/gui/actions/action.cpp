@@ -94,6 +94,14 @@ Chat Action::chat()
 		return Chat::null;
 }
 
+StatusContainer * Action::statusContainer()
+{
+	if (DataSource)
+		return DataSource->statusContainer();
+	else
+		return 0;
+}
+
 ActionDataSource * Action::dataSource()
 {
 	return DataSource;

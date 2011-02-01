@@ -211,15 +211,8 @@ void DockingManager::pendingMessageDeleted()
 	MacDockingHelper::instance()->stopBounce();
 #endif
 	if (!PendingMessagesManager::instance()->hasPendingMessages())
-	{
-		Account account = AccountManager::instance()->defaultAccount();
-		if (account.isNull() || !account.protocolHandler())
-			return;
-
-		const Status &stat = account.protocolHandler()->status();
 		if (CurrentDocker)
-			CurrentDocker->changeTrayIcon(StatusContainerManager::instance()->statusIcon(stat));
-	}
+			CurrentDocker->changeTrayIcon(StatusContainerManager::instance()->statusIcon());
 }
 
 void DockingManager::defaultToolTip()

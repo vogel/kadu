@@ -154,6 +154,7 @@ public:
 	virtual BuddySet buddies();
 	virtual ContactSet contacts();
 	virtual Chat chat();
+    virtual StatusContainer * statusContainer();
 	virtual bool hasContactSelected();
 
 signals:

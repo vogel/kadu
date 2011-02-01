@@ -60,6 +60,7 @@ public:
 signals:
 	void statusActionTriggered(QAction *);
 	void changeDescriptionActionTriggered(bool);
+
 };
 
 #endif // STATUS_ACTIONS_H

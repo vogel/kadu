@@ -377,10 +377,14 @@ void KaduWindowActions::statusChanged(StatusContainer *container, Status status)
 	if (!container)
 		return;
 
-	// TODO: 0.6.6, this really SUXX
 	QIcon icon = container->statusIcon(status).pixmap(16, 16);
 	foreach (Action *action, ShowStatus->actions())
-		action->setIcon(icon);
+		if (action->statusContainer() == container)
+			action->setIcon(icon);
+
+	
+	if (container == StatusContainerManager::instance()->defaultStatusContainer() && container != StatusContainerManager::instance())
+		statusChanged(StatusContainerManager::instance(), status);
 }
 
 void KaduWindowActions::inactiveUsersActionCreated(Action *action)
@@ -457,10 +461,9 @@ void KaduWindowActions::editUserActionCreated(Action *action)
 
 void KaduWindowActions::showStatusActionCreated(Action *action)
 {
-	Account account = AccountManager::instance()->defaultAccount();
-
-	if (account.protocolHandler())
-		action->setIcon(account.protocolHandler()->statusIcon().pixmap(16,16));
+	StatusContainer *statusContainer = action->statusContainer();
+	if (statusContainer)
+		action->setIcon(statusContainer->statusIcon().pixmap(16,16));
 }
 
 void KaduWindowActions::useProxyActionCreated(Action *action)

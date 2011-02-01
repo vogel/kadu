@@ -36,6 +36,7 @@ class Chat;
 class Contact;
 class ContactSet;
 class MainWindow;
+class StatusContainer;
 
 class KADUAPI Action : public QAction
 {
@@ -62,6 +63,8 @@ public:
 	BuddySet buddies();
 
 	Chat chat();
+
+	StatusContainer * statusContainer();
 	
 	ActionDataSource *dataSource();	
 

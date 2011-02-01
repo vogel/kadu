@@ -57,6 +57,7 @@
 #include "gui/widgets/status-buttons.h"
 #include "gui/widgets/status-menu.h"
 #include "notify/notification-manager.h"
+#include "status/status-container-manager.h"
 #include "activate.h"
 
 #include "misc/misc.h"
@@ -436,7 +437,7 @@ BuddiesListView * KaduWindow::buddiesListView()
 
 StatusContainer * KaduWindow::statusContainer()
 {
-	return 0;
+	return StatusContainerManager::instance();
 }
 
 ContactSet KaduWindow::contacts()

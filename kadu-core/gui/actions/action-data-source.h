@@ -23,6 +23,7 @@
 class BuddySet;
 class Chat;
 class ContactSet;
+class StatusContainer;
 
 class ActionDataSource
 {
@@ -30,8 +31,9 @@ public:
 	virtual ContactSet contacts() = 0;
 	virtual BuddySet buddies() = 0;
 	virtual Chat chat() = 0;
+	virtual StatusContainer * statusContainer() = 0;
 
-	// for now this is a hack for "delete buddy" acction
+	// for now this is a hack for "delete buddy" action
 	// i don't know real solution, but this is ok now
 	virtual bool hasContactSelected() = 0;
 

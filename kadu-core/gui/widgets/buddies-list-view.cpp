@@ -751,6 +751,11 @@ Chat BuddiesListView::chat()
 	return currentChat();
 }
 
+StatusContainer * BuddiesListView::statusContainer()
+{
+	return currentChat().chatAccount().statusContainer();
+}
+
 bool BuddiesListView::hasContactSelected()
 {
 	QModelIndexList selectionList = selectedIndexes();
