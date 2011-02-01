@@ -22,9 +22,11 @@
 
 #include <QtCore/QObject>
 
+#include "history_migration_exports.h"
+
 class HistoryImporter;
 
-class HistoryImporterManager : public QObject
+class HISTORY_MIGRATION_API HistoryImporterManager : public QObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(HistoryImporterManager)

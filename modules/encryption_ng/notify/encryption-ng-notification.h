@@ -22,10 +22,12 @@
 
 #include "notify/notification.h"
 
+#include "../encryption_exports.h"
+
 class Contact;
 class NotifyEvent;
 
-class EncryptionNgNotification : public Notification
+class ENCRYPTIONAPI EncryptionNgNotification : public Notification
 {
 	Q_OBJECT
 

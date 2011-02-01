@@ -33,6 +33,7 @@ kadu_module (history_migration
 	#TODO: make it more general, eg. gadu_protocol,history_storage
 	MODULE_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 	MODULE_DEPENDENCIES gadu_protocol sql_history
+	MODULE_BUILDDEF HISTORY_MIGRATION_BUILD
 )
 
 if (MINGW)

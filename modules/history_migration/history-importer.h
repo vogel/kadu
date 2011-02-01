@@ -25,10 +25,12 @@
 
 #include "accounts/account.h"
 
+#include "history_migration_exports.h"
+
 class HistoryImportThread;
 class HistoryImportWindow;
 
-class HistoryImporter : public QObject
+class HISTORY_MIGRATION_API HistoryImporter : public QObject
 {
 	Q_OBJECT
 
