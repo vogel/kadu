@@ -351,12 +351,12 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 	DeleteUsers->setShortcut("kadu_deleteuser");
 	BuddiesListViewMenuManager::instance()->addActionDescription(DeleteUsers, BuddiesListViewMenuItem::MenuCategoryManagement, 1000);
 
-	ShowStatus = new ActionDescription(this,
+	ChangeStatus = new ActionDescription(this,
 		ActionDescription::TypeGlobal, "openStatusAction",
-		this, SLOT(showStatusActionActivated(QAction *, bool)),
+		this, SLOT(changeStatusActionActivated(QAction *, bool)),
 		"kadu_icons/change-status", tr("Change Status")
 	);
-	connect(ShowStatus, SIGNAL(actionCreated(Action *)), this, SLOT(showStatusActionCreated(Action *)));
+	connect(ChangeStatus, SIGNAL(actionCreated(Action *)), this, SLOT(changeStatusActionCreated(Action *)));
 
 	UseProxy = new ActionDescription(this,
 		ActionDescription::TypeGlobal, "useProxyAction",
@@ -366,6 +366,8 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 	connect(UseProxy, SIGNAL(actionCreated(Action *)), this, SLOT(useProxyActionCreated(Action *)));
 
 	connect(StatusChangerManager::instance(), SIGNAL(statusChanged(StatusContainer *, Status)), this, SLOT(statusChanged(StatusContainer *, Status)));
+	foreach (StatusContainer *statusContainer, StatusContainerManager::instance()->statusContainers())
+		statusChanged(statusContainer, StatusChangerManager::instance()->status(statusContainer));
 }
 
 KaduWindowActions::~KaduWindowActions()
@@ -378,11 +380,10 @@ void KaduWindowActions::statusChanged(StatusContainer *container, Status status)
 		return;
 
 	QIcon icon = container->statusIcon(status).pixmap(16, 16);
-	foreach (Action *action, ShowStatus->actions())
+	foreach (Action *action, ChangeStatus->actions())
 		if (action->statusContainer() == container)
 			action->setIcon(icon);
 
-	
 	if (container == StatusContainerManager::instance()->defaultStatusContainer() && container != StatusContainerManager::instance())
 		statusChanged(StatusContainerManager::instance(), status);
 }
@@ -459,11 +460,14 @@ void KaduWindowActions::editUserActionCreated(Action *action)
 	}
 }
 
-void KaduWindowActions::showStatusActionCreated(Action *action)
+void KaduWindowActions::changeStatusActionCreated(Action *action)
 {
 	StatusContainer *statusContainer = action->statusContainer();
 	if (statusContainer)
-		action->setIcon(statusContainer->statusIcon().pixmap(16,16));
+	{
+		Status status = StatusChangerManager::instance()->status(statusContainer);
+		action->setIcon(statusContainer->statusIcon(status).pixmap(16,16));
+	}
 }
 
 void KaduWindowActions::useProxyActionCreated(Action *action)
@@ -895,21 +899,21 @@ void KaduWindowActions::editUserActionActivated(ActionDataSource *source)
 	kdebugf2();
 }
 
-void KaduWindowActions::showStatusActionActivated(QAction *sender, bool toggled)
+void KaduWindowActions::changeStatusActionActivated(QAction *sender, bool toggled)
 {
 	Q_UNUSED(toggled)
 
-	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
-	if (!window)
+	Action *action = dynamic_cast<Action *>(sender);
+	if (!action)
 		return;
 
-	StatusContainer *container = window->statusContainer();
+	StatusContainer *container = action->statusContainer();
 	if (!container)
-		container = StatusContainerManager::instance();
+		return;
 
-	QMenu menu;
-	new StatusMenu(container, &menu);
-	menu.exec(QCursor::pos());
+	QScopedPointer<QMenu> menu(new QMenu());
+	new StatusMenu(container, menu.data());
+	menu->exec(QCursor::pos());
 }
 
 void KaduWindowActions::useProxyActionActivated(QAction *sender, bool toggled)

@@ -156,6 +156,8 @@ void StatusContainerManager::setDefaultStatusContainer(StatusContainer *defaultS
 
 	if (DefaultStatusContainer)
 		connect(DefaultStatusContainer, SIGNAL(statusChanged()), this, SIGNAL(statusChanged()));
+
+	emit statusChanged();
 }
 
 void StatusContainerManager::simpleModeChanged()
