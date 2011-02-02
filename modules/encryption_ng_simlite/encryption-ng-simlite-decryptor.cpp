@@ -127,6 +127,9 @@ QCA::PrivateKey EncryptioNgSimliteDecryptor::getPrivateKey(const Key &key)
 
 QByteArray EncryptioNgSimliteDecryptor::decrypt(const QByteArray &data, bool *ok)
 {
+	if (ok)
+		*ok = false;
+
 	if (!Valid)
 		return data;
 
