@@ -56,12 +56,12 @@ ImageLink::~ImageLink()
 void ImageLink::accountRegistered(Account account)
 {
 	Protocol *protocol = account.protocolHandler();
-	
+
 	if (!protocol)
 		return;
-	
+
 	ChatService *chatService = protocol->chatService();
-	
+
 	if (chatService)
 		connect(chatService, SIGNAL(filterIncomingMessage(Chat, Contact, QString &, time_t, bool &)),
 		        this, SLOT(filterIncomingMessage(Chat, Contact, QString &, time_t, bool &)));
@@ -71,12 +71,12 @@ void ImageLink::accountRegistered(Account account)
 void ImageLink::accountUnregistered(Account account)
 {
 	Protocol *protocol = account.protocolHandler();
-	
+
 	if (!protocol)
 		return;
-	
+
 	ChatService *chatService = protocol->chatService();
-	
+
 	if (chatService)
 		disconnect(chatService, SIGNAL(filterIncomingMessage(Chat, Contact, QString &, time_t, bool &)),
 		           this, SLOT(filterIncomingMessage(Chat, Contact, QString &, time_t, bool &)));
@@ -92,7 +92,7 @@ void ImageLink::filterIncomingMessage(Chat chat, Contact sender, QString &messag
 	{
 		ImageRegExp.indexIn(message);
 		QStringList list = ImageRegExp.capturedTexts();
-		
+
 		if (ImageRegExp.matchedLength() > 0 && list.size() > 0)
 			insertCodeIntoChatWindow(chat, sender, getImageCode(list[0]));
 	}
@@ -101,11 +101,11 @@ void ImageLink::filterIncomingMessage(Chat chat, Contact sender, QString &messag
 	{
 		YouTubeRegExp.indexIn(message);
 		QStringList list = YouTubeRegExp.capturedTexts();
-		
+
 		if (YouTubeRegExp.matchedLength() > 0 && list.size() > 1)
 			insertCodeIntoChatWindow(chat, sender, getVideoCode(list[1]));
 	}
-	
+
 	kdebugf2();
 }
 
@@ -116,8 +116,8 @@ QString ImageLink::getImageCode(const QString &image)
 
 QString ImageLink::getVideoCode(const QString &video)
 {
-	QString url = video;
-	url = url.remove("?v=");
+	QString url(video);
+	url.remove("?v=");
 	return QString(
 		"<object width=\"33%\" height=\"33%\">"
 			"<embed "
