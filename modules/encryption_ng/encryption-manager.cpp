@@ -176,6 +176,8 @@ void EncryptionManager::chatWidgetDestroying(ChatWidget *chatWidget)
 		return;
 
 	EncryptionChatData *encryptionChatData = chat.data()->moduleStorableData<EncryptionChatData>("encryption-ng");
+	if (!encryptionChatData)
+		return;
 
 	// free some memory, these objects will be recreated when needed
 	if (encryptionChatData->decryptor())
