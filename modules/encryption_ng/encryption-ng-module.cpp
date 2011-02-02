@@ -63,18 +63,18 @@ extern "C" int encryption_ng_init(bool firstLoad)
 	EncryptionNgConfiguration::createInstance();
 	EncryptionNgConfigurationUiHandler::registerConfigurationUi();
 
-	EncryptionManager::createInstance();
 	EncryptionProviderManager::createInstance();
 	EncryptionActions::registerActions();
+	EncryptionManager::createInstance();
 
 	return 0;
 }
 
 extern "C" void encryption_ng_close()
 {
+	EncryptionManager::destroyInstance();
 	EncryptionActions::unregisterActions();
 	EncryptionProviderManager::destroyInstance();
-	EncryptionManager::destroyInstance();
 
 	EncryptionNgConfigurationUiHandler::unregisterConfigurationUi();
 	EncryptionNgConfiguration::destroyInstance();

@@ -46,12 +46,15 @@ void EncryptionManager::destroyInstance()
 EncryptionManager::EncryptionManager() :
 		Generator(0)
 {
-	triggerAllAccountsRegistered();
+	foreach (ChatWidget *chatWidget, ChatWidgetManager::instance()->chats())
+		chatWidgetCreated(chatWidget);
 
 	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetCreated(ChatWidget*)),
 			this, SLOT(chatWidgetCreated(ChatWidget*)));
 	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetDestroying(ChatWidget*)),
 			this, SLOT(chatWidgetDestroying(ChatWidget*)));
+
+	triggerAllAccountsRegistered();
 }
 
 EncryptionManager::~EncryptionManager()
@@ -62,6 +65,9 @@ EncryptionManager::~EncryptionManager()
 			this, SLOT(chatWidgetCreated(ChatWidget*)));
 	disconnect(ChatWidgetManager::instance(), SIGNAL(chatWidgetDestroying(ChatWidget*)),
 			this, SLOT(chatWidgetDestroying(ChatWidget*)));
+
+	foreach (ChatWidget *chatWidget, ChatWidgetManager::instance()->chats())
+		chatWidgetDestroying(chatWidget);
 }
 
 void EncryptionManager::accountRegistered(Account account)
