@@ -1,4 +1,5 @@
 +++ version 0.6.6-beta16
+* gadu: fixed invalid encoding and invalid formatting in some received messages, especially from GG10 (still not compatible with Infobot) (beevvy)
 
 +++ version 0.6.6-beta15
 * url-handlers: #1908 fixed: links containing HTML entities were not escaped (beevvy)

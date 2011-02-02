@@ -141,7 +141,7 @@ unsigned char * createFormats(Account account, const FormattedMessage &message, 
 	return result;
 }
 
-static void appendToMessage(Account account, FormattedMessage &result, UinType sender, const QByteArray &content,
+static void appendToMessage(Account account, FormattedMessage &result, UinType sender, const QString &content,
 		struct gg_msg_richtext_format &format,
 		struct gg_msg_richtext_color &color, struct gg_msg_richtext_image &image, bool receiveImages)
 {
@@ -190,8 +190,8 @@ static void appendToMessage(Account account, FormattedMessage &result, UinType s
 			textColor.setBlue(color.blue);
 		}
 
-		result << FormattedMessagePart(QString::fromUtf8(content),
-				format.font & GG_FONT_BOLD, format.font & GG_FONT_ITALIC, format.font & GG_FONT_UNDERLINE, textColor);
+		result << FormattedMessagePart(content, format.font & GG_FONT_BOLD,
+				format.font & GG_FONT_ITALIC, format.font & GG_FONT_UNDERLINE, textColor);
 	}
 }
 
@@ -205,7 +205,7 @@ QString createImageId(unsigned int sender, unsigned int size, unsigned int crc32
 		.arg(crc32);
 }
 
-FormattedMessage createMessage(Account account, UinType sender, const QByteArray &content,
+FormattedMessage createMessage(Account account, UinType sender, const QString &content,
 		unsigned char *formats, unsigned int size, bool receiveImages)
 {
 	FormattedMessage result;
@@ -235,7 +235,7 @@ FormattedMessage createMessage(Account account, UinType sender, const QByteArray
 		textPosition = gg_fix16(format.position);
 
 		if (first && format.position > 0)
-			result << FormattedMessagePart(QString::fromUtf8(content.left(textPosition)), false, false, false, QColor());
+			result << FormattedMessagePart(content.left(textPosition), false, false, false, QColor());
 
 		if (format.font & GG_FONT_IMAGE)
 		{

@@ -229,12 +229,12 @@ bool GaduChatService::ignoreImages(Contact sender)
 		);
 }
 
-FormattedMessage GaduChatService::createFormattedMessage(struct gg_event *e, QByteArray &content, Contact sender)
+FormattedMessage GaduChatService::createFormattedMessage(struct gg_event *e, const QByteArray &content, Contact sender)
 {
 	if (ignoreRichText(sender))
-		return GaduFormatter::createMessage(Protocol->account(), sender.id().toUInt(), content, 0, 0, false);
+		return GaduFormatter::createMessage(Protocol->account(), sender.id().toUInt(), QString::fromUtf8(content), 0, 0, false);
 	else
-		return GaduFormatter::createMessage(Protocol->account(), sender.id().toUInt(), content,
+		return GaduFormatter::createMessage(Protocol->account(), sender.id().toUInt(), QString::fromUtf8(content),
 				(unsigned char *)e->event.msg.formats, e->event.msg.formats_length, !ignoreImages(sender));
 }
 
