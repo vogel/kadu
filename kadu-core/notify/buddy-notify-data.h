@@ -38,7 +38,7 @@ protected:
 	virtual void load();
 
 public:
-	BuddyNotifyData(StorableObject *parent);
+	BuddyNotifyData(const QString &moduleName, StorableObject *parent);
 	virtual ~BuddyNotifyData();
 
 	virtual void store();

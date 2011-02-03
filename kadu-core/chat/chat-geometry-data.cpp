@@ -26,8 +26,8 @@
 
 #include "chat-geometry-data.h"
 
-ChatGeometryData::ChatGeometryData(StorableObject *parent)
-		: ModuleData(parent)
+ChatGeometryData::ChatGeometryData(const QString &moduleName, StorableObject *parent)
+		: ModuleData(moduleName, parent)
 {
 }
 

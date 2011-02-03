@@ -35,7 +35,7 @@ protected:
 	virtual void load();
 
 public:
-	BuddyFirewallData(StorableObject *parent);
+	BuddyFirewallData(const QString &moduleName, StorableObject* parent);
 	virtual ~BuddyFirewallData();
 
 	virtual void store();

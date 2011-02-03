@@ -31,9 +31,15 @@
  * ModuleData nodes are distinguished by 'name' attribute (that is set by @link<storageNodeName>
  * storageNodeName @endlink method.
  */
-ModuleData::ModuleData(StorableObject *storageParent) :
-		CurrentStorageParent(storageParent)
+ModuleData::ModuleData(const QString &moduleName, StorableObject *storageParent) :
+		ModuleName(moduleName), CurrentStorageParent(storageParent)
 {
+}
+
+ModuleData::~ModuleData()
+{
+	if (CurrentStorageParent)
+		CurrentStorageParent->moduleDataDestroyed(ModuleName, this);
 }
 
 /**

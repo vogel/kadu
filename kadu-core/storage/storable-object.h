@@ -38,6 +38,8 @@
 	type getMethodName() { ensureLoaded(); return fieldName; } \
 	void setMethodName(type value) { ensureLoaded(); fieldName = value; }
 
+class ModuleData;
+
 /**
  * @addtogroup Storage
  * @{
@@ -132,8 +134,11 @@ public:
 private:
 	QSharedPointer<StoragePoint> Storage;
 	StorableObjectState State;
-	QMap<QString, StorableObject *> ModulesStorableData;
+	QMap<QString, ModuleData *> ModulesStorableData;
 	QMap<QString, void *> ModulesData;
+
+	friend class ModuleData;
+	void moduleDataDestroyed(const QString &moduleName, ModuleData *moduleData);
 
 protected:
 	virtual QSharedPointer<StoragePoint> createStoragePoint();
@@ -313,7 +318,7 @@ template<class T>
 		if (!storagePoint)
 			return 0;
 
-		T *result = new T(this);
+		T *result = new T(module, this);
 		result->setState(StateNew);
 		result->setStorage(storagePoint);
 		ModulesStorableData.insert(module, result);
@@ -346,19 +351,7 @@ template<class T>
 		return result;
 	}
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Removes non-storable module data from object.
-	 * @param module name of module data to be removed
-	 *
-	 * Removed module data for given key. Caller is responsible for freeing
-	 * memory used by this module data.
-	 */
-	void removeModuleData(const QString &module)
-	{
-		if (ModulesData.contains(module))
-			ModulesData.remove(module);
-	}
+	void removeModuleData(const QString &module);
 
 	void storeValue(const QString &name, const QVariant value);
 	void storeAttribute(const QString &name, const QVariant value);

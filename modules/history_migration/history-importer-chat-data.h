@@ -35,7 +35,7 @@ protected:
 	virtual void load();
 
 public:
-	HistoryImporterChatData(StorableObject *parent);
+	HistoryImporterChatData(const QString &moduleName, StorableObject *parent);
 	virtual ~HistoryImporterChatData();
 
 	virtual void store();

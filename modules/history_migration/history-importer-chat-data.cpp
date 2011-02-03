@@ -19,8 +19,8 @@
 
 #include "history-importer-chat-data.h"
 
-HistoryImporterChatData::HistoryImporterChatData(StorableObject *parent) :
-		ModuleData(parent), Imported(false)
+HistoryImporterChatData::HistoryImporterChatData(const QString &moduleName, StorableObject *parent) :
+		ModuleData(moduleName, parent), Imported(false)
 {
 }
 

@@ -39,7 +39,7 @@ protected:
 	virtual void load();
 
 public:
-	ChatGeometryData(StorableObject *parent);
+	ChatGeometryData(const QString &moduleName, StorableObject *parent);
 	virtual ~ChatGeometryData();
 
 	virtual void store();
@@ -49,6 +49,7 @@ public:
 	// TODO 0.8: remove
 	Property(QList<int>, widgetVerticalSizes, WidgetVerticalSizes)
 	Property(QList<int>, widgetHorizontalSizes, WidgetHorizontalSizes)
+
 };
 
 #endif // CHAT_GEOMETRY_DATA_H

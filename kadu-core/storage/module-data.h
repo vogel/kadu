@@ -46,10 +46,12 @@
  */
 class KADUAPI ModuleData : public NamedStorableObject
 {
+	QString ModuleName;
 	StorableObject *CurrentStorageParent;
 
 public:
-	ModuleData(StorableObject *storageParent);
+	ModuleData(const QString &moduleName, StorableObject *storageParent);
+	virtual ~ModuleData();
 
 	virtual StorableObject * storageParent();
 	virtual QString storageNodeName();

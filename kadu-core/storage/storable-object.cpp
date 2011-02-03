@@ -21,6 +21,8 @@
 
 #include <QtCore/QtAlgorithms>
 
+#include "storage/module-data.h"
+
 #include "storable-object.h"
 
 /**
@@ -133,7 +135,7 @@ void StorableObject::store()
 {
 	ensureLoaded();
 
-	foreach (StorableObject *moduleData, ModulesStorableData)
+	foreach (ModuleData *moduleData, ModulesStorableData)
 		moduleData->store();
 }
 
@@ -209,6 +211,40 @@ void StorableObject::removeFromStorage()
 
 	Storage->point().parentNode().removeChild(Storage->point());
 	Storage.clear();;
+}
+
+/**
+ * @author Rafal 'Vogel' Malinowski
+ * @short Removes non-storable module data from object.
+ * @param module name of module data to be removed
+ *
+ * Removed module data for given key. Caller is responsible for freeing
+ * memory used by this module data.
+ */
+void StorableObject::removeModuleData(const QString& module)
+{
+	if (ModulesData.contains(module))
+		ModulesData.remove(module);
+}
+
+/**
+ * @author Rafal 'Vogel' Malinowski
+ * @short Called when ModuleData is destroyed, to remove it from this object.
+ * @param moduleName name of ModuleData
+ * @param moduleData destroyed object
+ *
+ * Method is called by ModuleData class in its destructor, so it can be removed
+ * from this object.
+ */
+void StorableObject::moduleDataDestroyed(const QString &moduleName, ModuleData *moduleData)
+{
+	if (ModulesData.contains(moduleName) && ModulesData.value(moduleName) == moduleData)
+		ModulesData.remove(moduleName);
+	if (ModulesStorableData.contains(moduleName) && ModulesStorableData.value(moduleName) == moduleData)
+	{
+		ModulesStorableData.value(moduleName)->store();
+		ModulesStorableData.remove(moduleName);
+	}
 }
 
 /**

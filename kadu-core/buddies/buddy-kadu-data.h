@@ -38,7 +38,7 @@ protected:
 	virtual void load();
 
 public:
-	BuddyKaduData(StorableObject *parent);
+	BuddyKaduData(const QString &moduleName, StorableObject *parent);
 	virtual ~BuddyKaduData();
 
 	virtual void store();

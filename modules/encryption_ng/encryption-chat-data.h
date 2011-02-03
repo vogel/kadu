@@ -53,7 +53,7 @@ protected:
 	virtual void load();
 
 public:
-	explicit EncryptionChatData(StorableObject *parent = 0);
+	explicit EncryptionChatData(const QString &moduleName, StorableObject *parent = 0);
 	virtual ~EncryptionChatData();
 
 	virtual void store();
