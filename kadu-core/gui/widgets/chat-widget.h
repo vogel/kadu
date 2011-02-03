@@ -81,6 +81,7 @@ class KADUAPI ChatWidget : public QWidget, ConfigurationAwareObject
 private slots:
 	void connectAcknowledgeSlots();
 	void disconnectAcknowledgeSlots();
+	void setUpVerticalSizes();
 	void commonHeightChanged(int height);
 	void verticalSplitterMoved(int pos, int index);
 

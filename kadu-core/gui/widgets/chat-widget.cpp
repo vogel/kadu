@@ -618,7 +618,12 @@ void ChatWidget::kaduStoreGeometry()
 void ChatWidget::showEvent(QShowEvent *e)
 {
 	QWidget::showEvent(e);
+	if (!SplittersInitialized)
+		QMetaObject::invokeMethod(this, "setUpVerticalSizes", Qt::QueuedConnection);
+}
 
+void ChatWidget::setUpVerticalSizes()
+{
 	// now we can accept this signal
 	connect(ChatEditBoxSizeManager::instance(), SIGNAL(commonHeightChanged(int)), this, SLOT(commonHeightChanged(int)));
 
