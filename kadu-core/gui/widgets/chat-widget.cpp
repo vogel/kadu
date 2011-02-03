@@ -588,7 +588,7 @@ void ChatWidget::verticalSplitterMoved(int pos, int index)
 	Q_UNUSED(index)
 
 	if (SplittersInitialized)
-		ChatEditBoxSizeManager::instance()->setCommonHeight(VerticalSplitter->sizes()[1]);
+		ChatEditBoxSizeManager::instance()->setCommonHeight(VerticalSplitter->sizes().at(1));
 }
 
 void ChatWidget::kaduRestoreGeometry()
@@ -651,6 +651,7 @@ void ChatWidget::setUpVerticalSizes()
 	}
 	VerticalSplitter->setSizes(vertSizes);
 	SplittersInitialized = true;
+	ChatEditBoxSizeManager::instance()->setCommonHeight(vertSizes.at(1));
 }
 
 void ChatWidget::commonHeightChanged(int commonHeight)
@@ -660,15 +661,15 @@ void ChatWidget::commonHeightChanged(int commonHeight)
 	int sum = 0;
 	if (2 == sizes.count())
 	{
-		if (sizes[1] == commonHeight)
+		if (sizes.at(1) == commonHeight)
 			return;
-		sum = sizes[0] + sizes[1];
+		sum = sizes.at(0) + sizes.at(1);
 	}
 	else
 		sum = height();
 
 	if (sum < commonHeight)
-		commonHeight = sum/3;
+		commonHeight = sum / 3;
 
 	sizes.clear();
 	sizes.append(sum - commonHeight);
