@@ -31,6 +31,7 @@ class QCheckBox;
 class QLabel;
 class QLineEdit;
 class QRegExpValidator;
+class QScrollArea;
 
 class AccountsComboBox;
 class GroupsComboBox;
@@ -41,6 +42,7 @@ class AddBuddyWindow : public QDialog
 {
 	Q_OBJECT
 
+	QScrollArea *scrollArea;
 	QLabel *UserNameLabel;
 	QLineEdit *UserNameEdit;
 	QAction *MobileAccountAction; // TODO: hack
@@ -75,9 +77,10 @@ class AddBuddyWindow : public QDialog
 	bool addMobile();
 
 	void askForAuthorization(Contact contact);
+	void resizeEvent(QResizeEvent * event);
 
 private slots:
-    void accountChanged(Account account, Account lastAccount);
+	void accountChanged(Account account, Account lastAccount);
 	void updateGui();
 	void setAddContactEnabled();
 	void setAccountFilter();
