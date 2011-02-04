@@ -27,9 +27,11 @@
 #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
 #include <QtGui/QPushButton>
+#ifdef Q_WS_MAEMO_5
+# include <QtGui/QResizeEvent>
+# include <QtGui/QScrollArea>
+#endif
 #include <QtGui/QSortFilterProxyModel>
-#include <QtGui/QResizeEvent>
-#include <QtGui/QScrollArea>
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
@@ -53,7 +55,6 @@
 #include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
 #include "icons-manager.h"
-#include "gui/widgets/configuration/kadu-scroll-area.h"
 
 #include "add-buddy-window.h"
 
@@ -84,25 +85,31 @@ AddBuddyWindow::~AddBuddyWindow()
 	saveWindowGeometry(this, "General", "AddBuddyWindowGeometry");
 }
 
-void AddBuddyWindow::resizeEvent(QResizeEvent * event)
+#ifdef Q_WS_MAEMO_5
+void AddBuddyWindow::resizeEvent(QResizeEvent *event)
 {
-	scrollArea->resize(event->size());
+	ScrollArea->resize(event->size());
 }
+#endif
 
 void AddBuddyWindow::createGui()
 {
 	loadWindowGeometry(this, "General", "AddBuddyWindowGeometry", 0, 50, 425, 430);
 
+#ifdef Q_WS_MAEMO_5
 	QWidget *mainWidget = new QWidget(this);
 
-	scrollArea = new QScrollArea(this);
-	scrollArea->setFrameStyle(QFrame::NoFrame);
-	scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
-	scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
-	scrollArea->setWidget(mainWidget);
-	scrollArea->setWidgetResizable(true);
+	ScrollArea = new QScrollArea(this);
+	ScrollArea->setFrameStyle(QFrame::NoFrame);
+	ScrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+	ScrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+	ScrollArea->setWidget(mainWidget);
+	ScrollArea->setWidgetResizable(true);
 
 	QGridLayout *layout = new QGridLayout(mainWidget);
+#else
+	QGridLayout *layout = new QGridLayout(this);
+#endif
 
 	UserNameEdit = new QLineEdit(this);
 
@@ -230,8 +237,10 @@ void AddBuddyWindow::createGui()
 		layout->setColumnMinimumWidth(0, 140);
 	layout->setColumnMinimumWidth(1, 200);
 
-	//setFixedHeight(layout->minimumSize().height());
-	//setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
+#ifndef Q_WS_MAEMO_5
+	setFixedHeight(layout->minimumSize().height());
+	setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
+#endif
 
 	connect(AccountCombo, SIGNAL(accountChanged(Account, Account)), this, SLOT(accountChanged(Account, Account)));
 	connect(AccountCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(updateGui()));

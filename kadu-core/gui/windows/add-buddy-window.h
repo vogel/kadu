@@ -42,7 +42,9 @@ class AddBuddyWindow : public QDialog
 {
 	Q_OBJECT
 
-	QScrollArea *scrollArea;
+#ifdef Q_WS_MAEMO_5
+	QScrollArea *ScrollArea;
+#endif
 	QLabel *UserNameLabel;
 	QLineEdit *UserNameEdit;
 	QAction *MobileAccountAction; // TODO: hack
@@ -77,7 +79,10 @@ class AddBuddyWindow : public QDialog
 	bool addMobile();
 
 	void askForAuthorization(Contact contact);
-	void resizeEvent(QResizeEvent * event);
+
+#ifdef Q_WS_MAEMO_5
+	void resizeEvent(QResizeEvent *event);
+#endif
 
 private slots:
 	void accountChanged(Account account, Account lastAccount);
