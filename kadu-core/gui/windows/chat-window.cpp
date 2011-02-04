@@ -146,7 +146,7 @@ void ChatWindow::setDefaultGeometry()
 
 void ChatWindow::kaduRestoreGeometry()
 {
-	ChatGeometryData *cgd = currentChatWidget->chat().data()->moduleStorableData<ChatGeometryData>("chat-geometry");
+	ChatGeometryData *cgd = currentChatWidget->chat().data()->moduleStorableData<ChatGeometryData>("chat-geometry", ChatWidgetManager::instance(), false);
 
 	if (!cgd || !cgd->windowGeometry().isValid())
 		setDefaultGeometry();
@@ -165,7 +165,7 @@ void ChatWindow::kaduStoreGeometry()
 {
 	currentChatWidget->kaduStoreGeometry();
 
-	ChatGeometryData *cgd = currentChatWidget->chat().data()->moduleStorableData<ChatGeometryData>("chat-geometry", true);
+	ChatGeometryData *cgd = currentChatWidget->chat().data()->moduleStorableData<ChatGeometryData>("chat-geometry", ChatWidgetManager::instance(), true);
 	if (!cgd)
 		return;
 

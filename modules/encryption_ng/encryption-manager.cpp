@@ -102,7 +102,7 @@ void EncryptionManager::accountUnregistered(Account account)
 
 bool EncryptionManager::setEncryptionEnabled(const Chat &chat, bool enable)
 {
-	EncryptionChatData *encryptionChatData = chat.data()->moduleStorableData<EncryptionChatData>("encryption-ng", true);
+	EncryptionChatData *encryptionChatData = chat.data()->moduleStorableData<EncryptionChatData>("encryption-ng", this, true);
 	if (enable)
 	{
 		// just in case release previous one
@@ -138,7 +138,7 @@ void EncryptionManager::filterRawIncomingMessage(Chat chat, Contact sender, QByt
 	if (!chat)
 		return;
 
-	EncryptionChatData *encryptionChatData = chat.data()->moduleStorableData<EncryptionChatData>("encryption-ng", true);
+	EncryptionChatData *encryptionChatData = chat.data()->moduleStorableData<EncryptionChatData>("encryption-ng", this, true);
 	if (!encryptionChatData)
 		return;
 
@@ -159,7 +159,7 @@ void EncryptionManager::filterRawOutgoingMessage(Chat chat, QByteArray &message,
 	if (!chat)
 		return;
 
-	EncryptionChatData *encryptionChatData = chat.data()->moduleStorableData<EncryptionChatData>("encryption-ng");
+	EncryptionChatData *encryptionChatData = chat.data()->moduleStorableData<EncryptionChatData>("encryption-ng", this, false);
 	if (encryptionChatData && encryptionChatData->encryptor())
 		message = encryptionChatData->encryptor()->encrypt(message);
 }
@@ -170,7 +170,7 @@ void EncryptionManager::chatWidgetCreated(ChatWidget *chatWidget)
 	if (!chat.data())
 		return;
 
-	EncryptionChatData *encryptionChatData = chat.data()->moduleStorableData<EncryptionChatData>("encryption-ng", true);
+	EncryptionChatData *encryptionChatData = chat.data()->moduleStorableData<EncryptionChatData>("encryption-ng", this, true);
 	if (encryptionChatData->encrypt())
 		setEncryptionEnabled(chat, true);
 }
@@ -181,7 +181,7 @@ void EncryptionManager::chatWidgetDestroying(ChatWidget *chatWidget)
 	if (!chat.data())
 		return;
 
-	EncryptionChatData *encryptionChatData = chat.data()->moduleStorableData<EncryptionChatData>("encryption-ng");
+	EncryptionChatData *encryptionChatData = chat.data()->moduleStorableData<EncryptionChatData>("encryption-ng", this, false);
 	if (!encryptionChatData)
 		return;
 

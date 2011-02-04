@@ -32,13 +32,15 @@
 
 class BuddyNotifyData : public ModuleData
 {
+	Q_OBJECT
+
 	bool Notify;
 
 protected:
 	virtual void load();
 
 public:
-	BuddyNotifyData(const QString &moduleName, StorableObject *parent);
+	BuddyNotifyData(const QString &moduleName, StorableObject *parent, QObject *qobjectParent);
 	virtual ~BuddyNotifyData();
 
 	virtual void store();

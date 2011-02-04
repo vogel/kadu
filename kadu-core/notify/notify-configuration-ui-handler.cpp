@@ -163,7 +163,7 @@ void NotifyConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurat
 		{
 			BuddyNotifyData *bnd = 0;
 			if (buddy.data())
-				bnd = buddy.data()->moduleStorableData<BuddyNotifyData>("notify");
+				bnd = buddy.data()->moduleStorableData<BuddyNotifyData>("notify", NotificationManager::instance(), false);
 
 			if (!bnd || !bnd->notify())
 				allUsers->addItem(buddy.display());
@@ -258,7 +258,7 @@ void NotifyConfigurationUiHandler::configurationWindowApplied()
 
 		BuddyNotifyData *bnd = 0;
 		if (buddy.data())
-			bnd = buddy.data()->moduleStorableData<BuddyNotifyData>("notify", true);
+			bnd = buddy.data()->moduleStorableData<BuddyNotifyData>("notify", NotificationManager::instance(), true);
 		if (!bnd)
 			continue;
 
@@ -275,7 +275,7 @@ void NotifyConfigurationUiHandler::configurationWindowApplied()
 
 		BuddyNotifyData *bnd = 0;
 		if (buddy.data())
-			bnd = buddy.data()->moduleStorableData<BuddyNotifyData>("notify", true);
+			bnd = buddy.data()->moduleStorableData<BuddyNotifyData>("notify", NotificationManager::instance(), true);
 		if (!bnd)
 			continue;
 

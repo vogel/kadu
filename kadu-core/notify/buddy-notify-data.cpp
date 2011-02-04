@@ -29,8 +29,8 @@
 
 #include "buddy-notify-data.h"
 
-BuddyNotifyData::BuddyNotifyData(const QString &moduleName, StorableObject *parent)
-		: ModuleData(moduleName, parent), Notify(false)
+BuddyNotifyData::BuddyNotifyData(const QString &moduleName, StorableObject *parent, QObject *qobjectParent)
+		: ModuleData(moduleName, parent, qobjectParent), Notify(false)
 {
 }
 

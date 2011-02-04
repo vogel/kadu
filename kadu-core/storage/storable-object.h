@@ -132,6 +132,7 @@ public:
 	};
 
 private:
+	bool Destroying;
 	QSharedPointer<StoragePoint> Storage;
 	StorableObjectState State;
 	QMap<QString, ModuleData *> ModulesStorableData;
@@ -301,6 +302,7 @@ template<class T>
 	 * @short Loads storable ModuleData data from XML node (as subnode).
 	 * @param T type of returned value (must be class that inherits from @link ModuleData @endlink)
 	 * @param module name of module to be loaded
+	 * @param qobjectParent QObject parent of new object, it will be responsible for deleting data on module unloading
 	 * @param create when true this method can create new ModuleData (if non present)
 	 * @return value of XML subnode, as an object
 	 *
@@ -309,7 +311,7 @@ template<class T>
 	 * create new object with default values.
 	 */
 template<class T>
-	T * moduleStorableData(const QString &module, bool create = false)
+	T * moduleStorableData(const QString &module, QObject *qobjectParent, bool create)
 	{
 		if (ModulesStorableData.contains(module))
 			return dynamic_cast<T *>(ModulesStorableData[module]);
@@ -318,7 +320,7 @@ template<class T>
 		if (!storagePoint)
 			return 0;
 
-		T *result = new T(module, this);
+		T *result = new T(module, this, qobjectParent);
 		result->setState(StateNew);
 		result->setStorage(storagePoint);
 		ModulesStorableData.insert(module, result);

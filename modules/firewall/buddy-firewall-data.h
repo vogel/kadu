@@ -29,13 +29,15 @@
 
 class BuddyFirewallData : public ModuleData
 {
+	Q_OBJECT
+
 	bool SecuredSending;
 
 protected:
 	virtual void load();
 
 public:
-	BuddyFirewallData(const QString &moduleName, StorableObject* parent);
+	BuddyFirewallData(const QString &moduleName, StorableObject *parent, QObject *qobjectParent);
 	virtual ~BuddyFirewallData();
 
 	virtual void store();

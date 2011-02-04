@@ -201,7 +201,7 @@ void NotificationManager::notifyAboutUserActionActivated(QAction *sender, bool t
 	{
 		BuddyNotifyData *bnd = 0;
 		if (buddy.data())
-			bnd = buddy.data()->moduleStorableData<BuddyNotifyData>("notify");
+			bnd = buddy.data()->moduleStorableData<BuddyNotifyData>("notify", this, false);
 
 		if (!bnd || !bnd->notify())
 		{
@@ -223,7 +223,7 @@ void NotificationManager::notifyAboutUserActionActivated(QAction *sender, bool t
 
 		BuddyNotifyData *bnd = 0;
 		if (buddy.data())
-			bnd = buddy.data()->moduleStorableData<BuddyNotifyData>("notify", true);
+			bnd = buddy.data()->moduleStorableData<BuddyNotifyData>("notify", this, true);
 		if (!bnd)
 			continue;
 
@@ -341,7 +341,7 @@ void NotificationManager::contactStatusChanged(Contact contact, Status oldStatus
 
 	bool notify_contact = true;
 	BuddyNotifyData *bnd = 0;
-	bnd = contact.ownerBuddy().data()->moduleStorableData<BuddyNotifyData>("notify");
+	bnd = contact.ownerBuddy().data()->moduleStorableData<BuddyNotifyData>("notify", this, false);
 
 	if (!bnd || !bnd->notify())
 		notify_contact = false;
@@ -543,7 +543,7 @@ void NotificationManager::groupUpdated()
 
 		BuddyNotifyData *bnd = 0;
 		if (buddy.data())
-			buddy.data()->moduleStorableData<BuddyNotifyData>("notify", true);
+			buddy.data()->moduleStorableData<BuddyNotifyData>("notify", this, true);
 		if (!bnd)
 			continue;
 
@@ -658,7 +658,7 @@ void checkNotify(Action *action)
 	{
 		BuddyNotifyData *bnd = 0;
 		if (buddy.data())
-			bnd = buddy.data()->moduleStorableData<BuddyNotifyData>("notify");
+			bnd = buddy.data()->moduleStorableData<BuddyNotifyData>("notify", NotificationManager::instance(), false);
 
 		if (!bnd || !bnd->notify())
 		{

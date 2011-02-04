@@ -32,13 +32,15 @@
 
 class BuddyKaduData : public ModuleData
 {
+	Q_OBJECT
+
 	bool HideDescription;
 
 protected:
 	virtual void load();
 
 public:
-	BuddyKaduData(const QString &moduleName, StorableObject *parent);
+	BuddyKaduData(const QString &moduleName, StorableObject *parent, QObject *qobjectParent);
 	virtual ~BuddyKaduData();
 
 	virtual void store();

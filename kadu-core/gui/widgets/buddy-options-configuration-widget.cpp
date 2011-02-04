@@ -27,10 +27,10 @@
 #include "buddies/buddy-shared.h"
 #include "configuration/configuration-file.h"
 #include "notify/buddy-notify-data.h"
+#include "notify/notification-manager.h"
 #include "protocols/protocol.h"
 
 #include "buddy-options-configuration-widget.h"
-
 
 BuddyOptionsConfigurationWidget::BuddyOptionsConfigurationWidget(Buddy &buddy, QWidget *parent) :
 		QWidget(parent), MyBuddy(buddy)
@@ -65,7 +65,7 @@ void BuddyOptionsConfigurationWidget::createGui()
 	NotifyCheckBox = new QCheckBox(tr("Notify when buddy's status changes"), this);
 	BuddyNotifyData *bnd = 0;
 	if (MyBuddy.data())
-		bnd = MyBuddy.data()->moduleStorableData<BuddyNotifyData>("notify", false);
+		bnd = MyBuddy.data()->moduleStorableData<BuddyNotifyData>("notify", NotificationManager::instance(), false);
 	if (bnd)
 		NotifyCheckBox->setChecked(bnd->notify());
 
@@ -74,7 +74,7 @@ void BuddyOptionsConfigurationWidget::createGui()
 	HideDescriptionCheckBox = new QCheckBox(tr("Hide description"), this);
 	BuddyKaduData *ckd = 0;
 	if (MyBuddy.data())
-		ckd = MyBuddy.data()->moduleStorableData<BuddyKaduData>("kadu", false);
+		ckd = MyBuddy.data()->moduleStorableData<BuddyKaduData>("kadu", 0, false);
 	if (ckd)
 		HideDescriptionCheckBox->setChecked(ckd->hideDescription());
 
@@ -92,8 +92,8 @@ void BuddyOptionsConfigurationWidget::save()
 	BuddyKaduData *ckd = 0;
 	if (MyBuddy.data())
 	{
-		bnd = MyBuddy.data()->moduleStorableData<BuddyNotifyData>("notify", true);;
-		ckd = MyBuddy.data()->moduleStorableData<BuddyKaduData>("kadu", true);
+		bnd = MyBuddy.data()->moduleStorableData<BuddyNotifyData>("notify", NotificationManager::instance(), true);
+		ckd = MyBuddy.data()->moduleStorableData<BuddyKaduData>("kadu", 0, true);
 	}
 	if (bnd)
 	{

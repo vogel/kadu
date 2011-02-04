@@ -99,7 +99,7 @@ void FirewallConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigur
 		{
 			BuddyFirewallData *bfd = 0;
 			if (buddy.data())
-				bfd = buddy.data()->moduleStorableData<BuddyFirewallData>("firewall-secured-sending");
+				bfd = buddy.data()->moduleStorableData<BuddyFirewallData>("firewall-secured-sending", Firewall::instance(), false);
 
 			if (!bfd || !bfd->securedSending())
 				AllList->addItem(buddy.display());
@@ -237,7 +237,7 @@ void FirewallConfigurationUiHandler::configurationApplied()
 
 		BuddyFirewallData *bfd = 0;
 		if (buddy.data())
-			bfd = buddy.data()->moduleStorableData<BuddyFirewallData>("firewall-secured-sending", true);
+			bfd = buddy.data()->moduleStorableData<BuddyFirewallData>("firewall-secured-sending", Firewall::instance(), true);
 		if (!bfd)
 			continue;
 
@@ -254,7 +254,7 @@ void FirewallConfigurationUiHandler::configurationApplied()
 
 		BuddyFirewallData *bfd = 0;
 		if (buddy.data())
-			bfd = buddy.data()->moduleStorableData<BuddyFirewallData>("firewall-secured-sending", true);
+			bfd = buddy.data()->moduleStorableData<BuddyFirewallData>("firewall-secured-sending", Firewall::instance(), true);
 		if (!bfd)
 			continue;
 

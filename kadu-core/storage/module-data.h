@@ -44,13 +44,15 @@
  * This class represents data that every module can add to all important objects in
  * project Kadu.
  */
-class KADUAPI ModuleData : public NamedStorableObject
+class KADUAPI ModuleData : public QObject, public NamedStorableObject
 {
+	Q_OBJECT
+
 	QString ModuleName;
 	StorableObject *CurrentStorageParent;
 
 public:
-	ModuleData(const QString &moduleName, StorableObject *storageParent);
+	ModuleData(const QString &moduleName, StorableObject *storageParent, QObject *qobjectParent);
 	virtual ~ModuleData();
 
 	virtual StorableObject * storageParent();

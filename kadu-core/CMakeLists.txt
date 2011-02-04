@@ -376,6 +376,7 @@ set (kadu_MOC_SRCS
 	avatars/avatar-shared.h
 
 	buddies/buddy-additional-data-delete-handler-manager.h
+	buddies/buddy-kadu-data.h
 	buddies/buddy-shared.h
 	buddies/buddy-manager.h
 	buddies/group-manager.h
@@ -406,6 +407,7 @@ set (kadu_MOC_SRCS
 	chat/chat-details-aggregate.h
 	chat/chat-details-conference.h
 	chat/chat-details-simple.h
+	chat/chat-geometry-data.h
 
 	chat/aggregate-chat-manager.h
 	chat/chat-manager.h
@@ -587,6 +589,7 @@ set (kadu_MOC_SRCS
 	misc/syntax-list.h
 
 	notify/account-notification.h
+	notify/buddy-notify-data.h
 	notify/chat-notification.h
 	notify/new-message-notification.h
 	notify/notification.h
@@ -626,6 +629,8 @@ set (kadu_MOC_SRCS
 	status/status-changer-manager.h
 	status/status-container.h
 	status/status-container-manager.h
+
+	storage/module-data.h
 
 	themes/emoticon-theme-manager.h
 	themes/icon-theme-manager.h

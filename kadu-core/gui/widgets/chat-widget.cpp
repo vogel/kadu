@@ -593,7 +593,7 @@ void ChatWidget::verticalSplitterMoved(int pos, int index)
 
 void ChatWidget::kaduRestoreGeometry()
 {
-	ChatGeometryData *cgd = chat().data()->moduleStorableData<ChatGeometryData>("chat-geometry");
+	ChatGeometryData *cgd = chat().data()->moduleStorableData<ChatGeometryData>("chat-geometry", ChatWidgetManager::instance(), false);
 
 	if (cgd && HorizontalSplitter)
 	{
@@ -605,7 +605,7 @@ void ChatWidget::kaduRestoreGeometry()
 
 void ChatWidget::kaduStoreGeometry()
 {
-  	ChatGeometryData *cgd = chat().data()->moduleStorableData<ChatGeometryData>("chat-geometry", true);
+  	ChatGeometryData *cgd = chat().data()->moduleStorableData<ChatGeometryData>("chat-geometry", ChatWidgetManager::instance(), true);
 	if (!cgd)
 		return;
 
@@ -635,7 +635,7 @@ void ChatWidget::setUpVerticalSizes()
 		return;
 	}
 
-	ChatGeometryData *cgd = chat().data()->moduleStorableData<ChatGeometryData>("chat-geometry");
+	ChatGeometryData *cgd = chat().data()->moduleStorableData<ChatGeometryData>("chat-geometry", ChatWidgetManager::instance(), false);
 	// no window has set up common height yet, so we use this data
 	QList<int> vertSizes;
 	if (cgd)

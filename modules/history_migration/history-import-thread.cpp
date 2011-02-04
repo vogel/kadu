@@ -32,6 +32,7 @@
 #include "status/status.h"
 
 #include "history-importer-chat-data.h"
+#include "history-importer-manager.h"
 #include "history-import-thread.h"
 #include "history-migration-helper.h"
 
@@ -66,7 +67,7 @@ void HistoryImportThread::run()
 
 		QList<HistoryEntry> entries = HistoryMigrationHelper::historyEntries(Path, uinsList);
 
-		HistoryImporterChatData *historyImporterChatData = chat.data()->moduleStorableData<HistoryImporterChatData>("history-importer", true);
+		HistoryImporterChatData *historyImporterChatData = chat.data()->moduleStorableData<HistoryImporterChatData>("history-importer", HistoryImporterManager::instance(), true);
 		if (historyImporterChatData->imported())
 		{
 			ImportedEntries += entries.count();

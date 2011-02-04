@@ -31,6 +31,8 @@
 
 class ChatGeometryData : public ModuleData
 {
+	Q_OBJECT
+
 	QRect WindowGeometry;
 	QList<int> WidgetVerticalSizes;
 	QList<int> WidgetHorizontalSizes;
@@ -39,7 +41,7 @@ protected:
 	virtual void load();
 
 public:
-	ChatGeometryData(const QString &moduleName, StorableObject *parent);
+	ChatGeometryData(const QString &moduleName, StorableObject *parent, QObject *qobjectParent);
 	virtual ~ChatGeometryData();
 
 	virtual void store();

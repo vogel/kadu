@@ -25,8 +25,8 @@
 
 #include "encryption-chat-data.h"
 
-EncryptionChatData::EncryptionChatData(const QString &moduleName, StorableObject *parent) :
-		ModuleData(moduleName, parent), ChatEncryptor(0), ChatDecryptor(0)
+EncryptionChatData::EncryptionChatData(const QString &moduleName, StorableObject *parent, QObject *qobjectParent) :
+		ModuleData(moduleName, parent, qobjectParent), ChatEncryptor(0), ChatDecryptor(0)
 {
 }
 

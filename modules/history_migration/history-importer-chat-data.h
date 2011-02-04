@@ -29,13 +29,15 @@
 
 class HistoryImporterChatData : public ModuleData
 {
+	Q_OBJECT
+
 	bool Imported;
 
 protected:
 	virtual void load();
 
 public:
-	HistoryImporterChatData(const QString &moduleName, StorableObject *parent);
+	HistoryImporterChatData(const QString &moduleName, StorableObject *parent, QObject *qobjectParent);
 	virtual ~HistoryImporterChatData();
 
 	virtual void store();

@@ -16,6 +16,7 @@ set (MOC_SOURCES
 	history-migration-actions.h
 	history-import-thread.h
 	history-importer.h
+	history-importer-chat-data.h
 	history-importer-manager.h
 )
 

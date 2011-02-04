@@ -33,12 +33,14 @@
  * (invalid) @link<StorableObject::storage storage point @endlink.
  */
 StorableObject::StorableObject() :
-		State(StateNew)
+		Destroying(false), State(StateNew)
 {
 }
 
 StorableObject::~StorableObject()
 {
+	Destroying = true;
+
 	qDeleteAll(ModulesStorableData);
 	// TODO: 0.6.6, memory leak
 // 	foreach (void *moduleData, ModulesData)
@@ -240,9 +242,11 @@ void StorableObject::moduleDataDestroyed(const QString &moduleName, ModuleData *
 {
 	if (ModulesData.contains(moduleName) && ModulesData.value(moduleName) == moduleData)
 		ModulesData.remove(moduleName);
+
 	if (ModulesStorableData.contains(moduleName) && ModulesStorableData.value(moduleName) == moduleData)
 	{
-		ModulesStorableData.value(moduleName)->store();
+		if (!Destroying)
+			moduleData->store();
 		ModulesStorableData.remove(moduleName);
 	}
 }

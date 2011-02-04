@@ -34,7 +34,7 @@
 class Decryptor;
 class Encryptor;
 
-class EncryptionChatData : public QObject, public ModuleData
+class EncryptionChatData : public ModuleData
 {
 	Q_OBJECT
 
@@ -53,7 +53,7 @@ protected:
 	virtual void load();
 
 public:
-	explicit EncryptionChatData(const QString &moduleName, StorableObject *parent = 0);
+	explicit EncryptionChatData(const QString &moduleName, StorableObject *parent, QObject *qobjectParent);
 	virtual ~EncryptionChatData();
 
 	virtual void store();

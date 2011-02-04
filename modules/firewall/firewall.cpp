@@ -469,7 +469,7 @@ void Firewall::filterOutgoingMessage(Chat chat, QString &msg, bool &stop)
 
 			BuddyFirewallData *bfd = 0;
 			if (buddy.data())
-				bfd = buddy.data()->moduleStorableData<BuddyFirewallData>("firewall-secured-sending");
+				bfd = buddy.data()->moduleStorableData<BuddyFirewallData>("firewall-secured-sending", Firewall::instance(), false);
 
 			if (!bfd || !bfd->securedSending())
 				return;
@@ -534,7 +534,7 @@ void Firewall::import_0_6_5_configuration()
 
 		BuddyFirewallData *bfd = 0;
 		if (buddy.data())
-			bfd = buddy.data()->moduleStorableData<BuddyFirewallData>("firewall-secured-sending", true);
+			bfd = buddy.data()->moduleStorableData<BuddyFirewallData>("firewall-secured-sending", Firewall::instance(), true);
 		if (!bfd)
 			continue;
 

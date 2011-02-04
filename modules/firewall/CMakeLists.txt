@@ -7,6 +7,7 @@ set (SOURCES
 )
 
 set (MOC_SOURCES
+	buddy-firewall-data.h
 	firewall-configuration-ui-handler.h
 	firewall-notification.h
 	firewall.h

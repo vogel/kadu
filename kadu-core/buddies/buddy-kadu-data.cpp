@@ -27,8 +27,8 @@
 
 #include "buddy-kadu-data.h"
 
-BuddyKaduData::BuddyKaduData(const QString &moduleName, StorableObject *parent) :
-		ModuleData(moduleName, parent)
+BuddyKaduData::BuddyKaduData(const QString &moduleName, StorableObject *parent, QObject *qobjectParent) :
+		ModuleData(moduleName, parent, qobjectParent)
 {
 }
 
