@@ -99,7 +99,7 @@ void SoundConfigurationUiHandler::connectWidgets()
 
 void SoundConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
-	connect(mainConfigurationWindow, SIGNAL(destroyed(QObject*)), this, SLOT(configurationWindowDestroyed()));
+	connect(mainConfigurationWindow, SIGNAL(destroyed()), this, SLOT(configurationWindowDestroyed()));
 
 	connect(mainConfigurationWindow, SIGNAL(configurationWindowApplied()), this, SLOT(configurationWindowApplied()));
 

@@ -48,7 +48,7 @@ void SimpleViewConfigUi::mainConfigurationWindowCreated(MainConfigurationWindow 
 {
 	Q_UNUSED(mainConfigurationWindow)
 	/* Keep this code for further use:
-	connect(mainConfigurationWindow, SIGNAL(destroyed(QObject *)), this, SLOT(mainConfigurationWindowDestroyed()));
+	connect(mainConfigurationWindow, SIGNAL(destroyed()), this, SLOT(mainConfigurationWindowDestroyed()));
 	*/
 }
 

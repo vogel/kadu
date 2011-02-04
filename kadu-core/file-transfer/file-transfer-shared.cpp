@@ -159,5 +159,6 @@ void FileTransferShared::emitUpdated()
 
 void FileTransferShared::handlerDestroyed()
 {
-	setHandler(0);
+	Handler = 0;
+	dataUpdated();
 }

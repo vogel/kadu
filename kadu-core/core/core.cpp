@@ -462,7 +462,7 @@ void Core::createGui()
 {
 	Window = new KaduWindow(0);
 	Window->setWindowIcon(QApplication::windowIcon());
-	connect(Window, SIGNAL(destroyed(QObject *)), this, SLOT(kaduWindowDestroyed()));
+	connect(Window, SIGNAL(destroyed()), this, SLOT(kaduWindowDestroyed()));
 
 	// initialize file transfers
 	FileTransferManager::instance();

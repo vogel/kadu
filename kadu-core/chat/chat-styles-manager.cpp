@@ -415,7 +415,7 @@ void ChatStylesManager::preparePreview(Preview *preview)
 	details->setContact(BuddyPreferredManager::instance()->preferredContact(example));
 	chat.setDetails(details);
 
-	connect(preview, SIGNAL(destroyed(QObject *)), chat, SLOT(deleteLater()));
+	connect(preview, SIGNAL(destroyed()), chat, SLOT(deleteLater()));
 
 	Message messageSent = Message::create();
 	messageSent.setMessageChat(chat);

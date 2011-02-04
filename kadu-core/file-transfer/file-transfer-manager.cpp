@@ -66,7 +66,7 @@ FileTransferManager::~FileTransferManager()
 {
 	if (Window)
 	{
-		disconnect(Window, SIGNAL(destroyed(QObject *)), this, SLOT(fileTransferWindowDestroyed()));
+		disconnect(Window, SIGNAL(destroyed()), this, SLOT(fileTransferWindowDestroyed()));
 		delete Window;
 		Window = 0;
 	}
@@ -225,7 +225,7 @@ void FileTransferManager::showFileTransferWindow()
 	if (!Window)
 	{
 		Window = new FileTransferWindow();
-		connect(Window, SIGNAL(destroyed(QObject *)), this, SLOT(fileTransferWindowDestroyed()));
+		connect(Window, SIGNAL(destroyed()), this, SLOT(fileTransferWindowDestroyed()));
 	}
 	Window->show();
 }
@@ -236,7 +236,7 @@ void FileTransferManager::hideFileTransferWindow()
 
 	if (Window)
 	{
-		disconnect(Window, SIGNAL(destroyed(QObject *)), this, SLOT(fileTransferWindowDestroyed()));
+		disconnect(Window, SIGNAL(destroyed()), this, SLOT(fileTransferWindowDestroyed()));
 		delete Window;
 		Window = 0;
 	}

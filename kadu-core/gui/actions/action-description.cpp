@@ -53,10 +53,6 @@ ActionDescription::~ActionDescription()
 
 void ActionDescription::actionDestroyed(QObject *action)
 {
-	Action *kaduAction = static_cast<Action *>(action);
-	if (!kaduAction)
-		return;
-
 	MainWindow *kaduMainWindow = static_cast<MainWindow *>(action->parent());
 	if (!kaduMainWindow)
 		return;

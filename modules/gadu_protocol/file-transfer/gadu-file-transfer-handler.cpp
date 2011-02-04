@@ -74,7 +74,7 @@ void GaduFileTransferHandler::setFileTransferNotifiers(DccSocketNotifiers *socke
 		transfer().setTransferredSize(SocketNotifiers->transferredFileSize());
 		transfer().setTransferStatus(StatusTransfer);
 
-		connect(SocketNotifiers, SIGNAL(destroyed(QObject *)), this, SLOT(socketNotifiersDeleted()));
+		connect(SocketNotifiers, SIGNAL(destroyed()), this, SLOT(socketNotifiersDeleted()));
 
 		SocketNotifiers->setGaduFileTransferHandler(this);
 	}

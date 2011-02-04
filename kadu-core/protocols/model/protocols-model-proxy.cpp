@@ -49,13 +49,13 @@ ProtocolsModelProxy::~ProtocolsModelProxy()
 void ProtocolsModelProxy::setSourceModel(QAbstractItemModel *sourceModel)
 {
 	if (SourceProtocolModel)
-		disconnect(SourceProtocolModel, SIGNAL(destroyed(QObject *)), this, SLOT(modelDestroyed()));
+		disconnect(SourceProtocolModel, SIGNAL(destroyed()), this, SLOT(modelDestroyed()));
 
 	SourceProtocolModel = qobject_cast<ProtocolsModel *>(sourceModel);
 	QSortFilterProxyModel::setSourceModel(SourceProtocolModel);
 
 	if (SourceProtocolModel)
-		connect(SourceProtocolModel, SIGNAL(destroyed(QObject *)), this, SLOT(modelDestroyed()));
+		connect(SourceProtocolModel, SIGNAL(destroyed()), this, SLOT(modelDestroyed()));
 
 	setDynamicSortFilter(true);
 	sort(0);
