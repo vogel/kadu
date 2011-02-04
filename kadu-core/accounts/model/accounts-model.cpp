@@ -27,7 +27,7 @@
 #include "accounts-model.h"
 
 AccountsModel::AccountsModel(QObject *parent) :
-		QAbstractListModel(parent)
+		QAbstractListModel(parent), IncludeIdInDisplay(false)
 {
 	connect(AccountManager::instance(), SIGNAL(accountUpdated(Account)),
 			this, SLOT(accountUpdated(Account)));
@@ -57,7 +57,7 @@ AccountsModel::~AccountsModel()
 
 int AccountsModel::columnCount(const QModelIndex &parent) const
 {
-	return parent.isValid() ? 0 : 2;
+	return parent.isValid() ? 0 : 1;
 }
 
 int AccountsModel::rowCount(const QModelIndex &parent) const
@@ -73,13 +73,11 @@ QVariant AccountsModel::data(const QModelIndex &index, int role) const
 
 	switch (role)
 	{
-		// TODO: 0.6.6 make it pretty
 		case Qt::DisplayRole:
-			if (index.column() == 0) // long or shor name?
-				return acc.accountIdentity().name();
-			else
+			if (IncludeIdInDisplay)
 				return QString("%1 (%2)").arg(acc.accountIdentity().name(), acc.id());
-
+			else
+				return acc.accountIdentity().name();
 		case Qt::DecorationRole:
 			return acc.protocolHandler()
 					? acc.protocolHandler()->icon()
@@ -160,4 +158,13 @@ void AccountsModel::accountUnregistered(Account account)
 	Q_UNUSED(account)
 
 	endRemoveRows();
+}
+
+void AccountsModel::setIncludeIdInDisplay(bool includeIdInDisplay)
+{
+	if (IncludeIdInDisplay == includeIdInDisplay)
+		return;
+
+	IncludeIdInDisplay = includeIdInDisplay;
+	emit dataChanged(index(0, 0), index(rowCount() - 1, 0));
 }

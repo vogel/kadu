@@ -27,9 +27,9 @@
 AccountsComboBox::AccountsComboBox(bool includeSelectAccount, QWidget *parent) :
 		KaduComboBox<Account>(parent), IncludeSelectAccount(includeSelectAccount)
 {
-	AccountsModel *accountsModel = new AccountsModel(this);
+	Model = new AccountsModel(this);
 
-	setUpModel(accountsModel, new AccountsProxyModel(this));
+	setUpModel(Model, new AccountsProxyModel(this));
 
 	connect(model(), SIGNAL(rowsAboutToBeRemoved(const QModelIndex &, int, int)),
 			this, SLOT(updateValueBeforeChange()));
@@ -50,6 +50,11 @@ void AccountsComboBox::setCurrentAccount(Account account)
 Account AccountsComboBox::currentAccount()
 {
 	return currentValue();
+}
+
+void AccountsComboBox::setIncludeIdInDisplay(bool includeIdInDisplay)
+{
+	Model->setIncludeIdInDisplay(includeIdInDisplay);
 }
 
 void AccountsComboBox::currentIndexChangedSlot(int index)

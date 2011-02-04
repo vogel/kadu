@@ -24,11 +24,13 @@
 #include "gui/widgets/kadu-combo-box.h"
 
 class AbstractAccountFilter;
+class AccountsModel;
 
 class AccountsComboBox : public KaduComboBox<Account>
 {
 	Q_OBJECT
 
+	AccountsModel *Model;
 	bool IncludeSelectAccount;
 
 private slots:
@@ -47,6 +49,8 @@ public:
 
 	void setCurrentAccount(Account account);
 	Account currentAccount();
+
+	void setIncludeIdInDisplay(bool includeIdInDisplay);
 
 	void addFilter(AbstractAccountFilter *filter);
 	void removeFilter(AbstractAccountFilter *filter);

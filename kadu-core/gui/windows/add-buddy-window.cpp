@@ -129,7 +129,7 @@ void AddBuddyWindow::createGui()
 	}
 
 	AccountCombo = new AccountsComboBox(MyBuddy.isNull(), this);
-	AccountCombo->setModelColumn(1); // use long account name
+	AccountCombo->setIncludeIdInDisplay(true);
 
 	AccountComboIdFilter = new IdValidityFilter(AccountCombo);
 	AccountCombo->addFilter(AccountComboIdFilter);
@@ -145,7 +145,7 @@ void AddBuddyWindow::createGui()
 
 		if (ForceBuddyAccount)
 		{
-			// NOTE: keep "%2 (%3)" consistent with AccountsModel::data() for DisplayRole, column 1
+			// NOTE: keep "%2 (%3)" consistent with AccountsModel::data() for DisplayRole, when IncludeIdInDisplay is true
 			// TODO 0.8: remove such code duplication
 			addingBuddyDescription->setText(addingBuddyDescription->text() + ' ' + tr("%1 account <b>%2 (%3)</b>")
 					.arg(MyAccount.protocolHandler()->protocolFactory()->displayName(),
