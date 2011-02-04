@@ -27,9 +27,6 @@
 GroupBuddyFilter::GroupBuddyFilter(QObject *parent) :
 		AbstractBuddyFilter(parent), CurrentGroup(Group::null), AllGroupShown(true)
 {
-	// TODO: 0.6.6 hack, it should go thought the model itself
-	connect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy &)),
-			this, SIGNAL(filterChanged()));
 }
 
 void GroupBuddyFilter::setGroup(Group group)

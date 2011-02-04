@@ -41,7 +41,7 @@ private slots:
 	void buddyAboutToBeRemoved(Buddy &buddy);
 	void buddyRemoved(Buddy &buddy);
 
-	void buddyUpdated();
+	void buddyUpdated(Buddy &buddy);
 
 	void contactAboutToBeAttached(Contact contact);
 	void contactAttached(Contact contact);
