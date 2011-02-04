@@ -29,7 +29,7 @@
 #include "buddy-contact-model.h"
 
 BuddyContactModel::BuddyContactModel(Buddy buddy, QObject *parent) :
-		QAbstractListModel(parent), SourceBuddy(buddy)
+		QAbstractListModel(parent), SourceBuddy(buddy), IncludeIdentityInDisplay(false)
 {
 	connect(SourceBuddy, SIGNAL(contactAboutToBeAdded(Contact)),
 			this, SLOT(contactAboutToBeAdded(Contact)));
@@ -55,7 +55,7 @@ BuddyContactModel::~BuddyContactModel()
 
 int BuddyContactModel::columnCount(const QModelIndex &parent) const
 {
-	return parent.isValid() ? 0 : 2;
+	return parent.isValid() ? 0 : 1;
 }
 
 int BuddyContactModel::rowCount(const QModelIndex &parent) const
@@ -72,10 +72,10 @@ QVariant BuddyContactModel::data(const QModelIndex &index, int role) const
 	switch (role)
 	{
 		case Qt::DisplayRole:
-			if (index.column() == 0) // long or shor name?
-				return data.id();
-			else
+			if (IncludeIdentityInDisplay)
 				return QString("%1 (%2)").arg(data.id()).arg(data.contactAccount().accountIdentity().name());
+			else
+				return data.id();
 
 		case Qt::DecorationRole:
 			return data.contactAccount().protocolHandler()
@@ -148,4 +148,13 @@ void BuddyContactModel::contactRemoved(Contact data)
 	Q_UNUSED(data)
 
 	endRemoveRows();
+}
+
+void BuddyContactModel::setIncludeIdentityInDisplay(bool includeIdentityInDisplay)
+{
+	if (IncludeIdentityInDisplay == includeIdentityInDisplay)
+		return;
+
+	IncludeIdentityInDisplay = includeIdentityInDisplay;
+	emit dataChanged(index(0, 0), index(rowCount() - 1, 0));
 }

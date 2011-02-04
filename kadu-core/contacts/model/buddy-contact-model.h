@@ -33,6 +33,7 @@ class BuddyContactModel : public QAbstractListModel
 	Q_OBJECT
 
 	Buddy SourceBuddy;
+	bool IncludeIdentityInDisplay;
 
 private slots:
 	void contactAboutToBeAdded(Contact data);
@@ -53,6 +54,8 @@ public:
 	Contact contact(const QModelIndex &index) const;
 	int contactIndex(Contact data);
 	QModelIndex contactModelIndex(Contact data);
+
+	void setIncludeIdentityInDisplay(bool includeIdentityInDisplay);
 
 };
 
