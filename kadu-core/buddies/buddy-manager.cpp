@@ -151,9 +151,8 @@ void BuddyManager::mergeBuddies(Buddy destination, Buddy source)
 
 	source.setAnonymous(true);
 	removeItem(source);
-
-	source.data()->setUuid(destination.uuid()); // just for case
-// 	source.data() setData(destination.data()); // TODO: 0.6.6 tricky merge, this should work well ;)
+	// each item that stores pointer to "source" will now use the same uuid as "destination"
+	source.data()->setUuid(destination.uuid());
 
 	ConfigurationManager::instance()->flush();
 }
