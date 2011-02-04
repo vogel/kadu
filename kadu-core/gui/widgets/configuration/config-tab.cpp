@@ -48,6 +48,13 @@ ConfigTab::ConfigTab(const QString &name, ConfigSection *configSection, QWidget 
 
 ConfigTab::~ConfigTab()
 {
+	/* NOTE: It's needed to call ConfigSection::configTabDestroyed before this
+	 * ConfigSection will be destroyed. If we relied on QObject to send this signal,
+	 * it'd be called after destroying all ConfigTab data but we need that data.
+	 */
+	blockSignals(false);
+	emit destroyed(this);
+
 	// qDeleteAll() won't work here because of connection to destroyed() signal
 	foreach (const ConfigGroupBox *cgb, MyConfigGroupBoxes)
 	{
@@ -61,6 +68,9 @@ ConfigTab::~ConfigTab()
 
 void ConfigTab::configGroupBoxDestroyed(QObject *obj)
 {
+	// see ConfigGroupBox::~ConfigGroupBox()
+	disconnect(obj, SIGNAL(destroyed(QObject *)), this, SLOT(configGroupBoxDestroyed(QObject *)));
+
 	MyConfigGroupBoxes.remove(static_cast<ConfigGroupBox *>(obj)->name());
 
 	if (MyConfigGroupBoxes.count() == 0)

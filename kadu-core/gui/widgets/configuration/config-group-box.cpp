@@ -39,6 +39,13 @@ ConfigGroupBox::ConfigGroupBox(const QString &name, ConfigTab *configTab, QGroup
 
 ConfigGroupBox::~ConfigGroupBox()
 {
+	/* NOTE: It's needed to call ConfigTab::configGroupBoxDestroyed() before this
+	 * ConfigSection will be destroyed. If we relied on QObject to send this signal,
+	 * it'd be called after destroying all ConfigGroupBox data but we need that data.
+	 */
+	blockSignals(false);
+	emit destroyed(this);
+
 	delete GroupBox;
 	GroupBox = 0;
 }

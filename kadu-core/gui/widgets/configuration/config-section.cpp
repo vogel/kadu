@@ -47,6 +47,13 @@ ConfigSection::ConfigSection(const QString &name, ConfigurationWidget *configura
 
 ConfigSection::~ConfigSection()
 {
+	/* NOTE: It's needed to call ConfigurationWidget::configSectionDestroyed() before this
+	 * ConfigSection will be destroyed. If we relied on QObject to send this signal,
+	 * it'd be called after destroying all ConfigSection data but we need that data.
+	 */
+	blockSignals(false);
+	emit destroyed(this);
+
 	config_file.writeEntry("General", "ConfigurationWindow_" + MyConfigurationWidget->name() + '_' + Name,
 			TabWidget->tabText(TabWidget->currentIndex()));
 
@@ -108,6 +115,9 @@ ConfigTab * ConfigSection::configTab(const QString &name, bool create)
 
 void ConfigSection::configTabDestroyed(QObject *obj)
 {
+	// see ConfigTab::~ConfigTab()
+	disconnect(obj, SIGNAL(destroyed(QObject *)), this, SLOT(configGroupBoxDestroyed(QObject *)));
+
 	QMap<QString, ConfigTab *>::iterator i = ConfigTabs.find(static_cast<ConfigTab *>(obj)->name());
 
 	if (TabWidget)
