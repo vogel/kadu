@@ -113,5 +113,7 @@ void ConfigWizardSetUpAccountPage::accountWidgetDestroyed()
 {
 	AccountWidget = 0;
 
-	static_cast<QWizard *>(parentWidget())->back();
+	QWizard *wizard = qobject_cast<QWizard *>(parentWidget());
+	if (wizard)
+		wizard->back();
 }

@@ -223,7 +223,7 @@ void Speech::notify(Notification *notification)
 	QString text;
 	QString sex = "Male";
 
-	ChatNotification *chatNotification = dynamic_cast<ChatNotification *>(notification);
+	ChatNotification *chatNotification = qobject_cast<ChatNotification *>(notification);
 	Chat chat = chatNotification ? chatNotification->chat() : Chat::null;
 
 	// TODO:

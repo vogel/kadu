@@ -26,7 +26,7 @@
 BuddiesListViewDelegateConfiguration::BuddiesListViewDelegateConfiguration(QObject *listView) :
 		ShowAccountName(true)
 {
-	ListView = dynamic_cast<BuddiesListView *>(listView);
+	ListView = qobject_cast<BuddiesListView *>(listView);
 
 	DefaultAvatarSize = QSize(32, 32);
 	MessagePixmap = IconsManager::instance()->iconByPath("protocols/common/message").pixmap(16, 16);

@@ -390,7 +390,7 @@ void KaduWindowActions::statusChanged(StatusContainer *container, Status status)
 
 void KaduWindowActions::inactiveUsersActionCreated(Action *action)
 {
-	MainWindow *window = qobject_cast<MainWindow *>(action->parent());
+	MainWindow *window = qobject_cast<MainWindow *>(action->parentWidget());
 	if (!window)
 		return;
 	if (!window->buddiesListView())
@@ -408,7 +408,7 @@ void KaduWindowActions::inactiveUsersActionCreated(Action *action)
 
 void KaduWindowActions::descriptionUsersActionCreated(Action *action)
 {
-	MainWindow *window = qobject_cast<MainWindow *>(action->parent());
+	MainWindow *window = qobject_cast<MainWindow *>(action->parentWidget());
 	if (!window)
 		return;
 	if (!window->buddiesListView())
@@ -432,7 +432,7 @@ void KaduWindowActions::showDescriptionsActionCreated(Action *action)
 
 void KaduWindowActions::onlineAndDescUsersActionCreated(Action *action)
 {
-	MainWindow *window = qobject_cast<MainWindow *>(action->parent());
+	MainWindow *window = qobject_cast<MainWindow *>(action->parentWidget());
 	if (!window)
 		return;
 	if (!window->buddiesListView())
@@ -482,7 +482,7 @@ void KaduWindowActions::showInfoPanelActionCreated(Action *action)
 
 void KaduWindowActions::showBlockedActionCreated(Action *action)
 {
-	MainWindow *window = qobject_cast<MainWindow *>(action->parent());
+	MainWindow *window = qobject_cast<MainWindow *>(action->parentWidget());
 	if (!window)
 		return;
 	if (!window->buddiesListView())
@@ -538,7 +538,7 @@ void KaduWindowActions::addUserActionActivated(QAction *sender, bool toggled)
 
 	kdebugf();
 
-	Action *action = dynamic_cast<Action *>(sender);
+	Action *action = qobject_cast<Action *>(sender);
 	if (!action)
 		return;
 
@@ -558,7 +558,7 @@ void KaduWindowActions::mergeContactActionActivated(QAction *sender, bool toggle
 
 	kdebugf();
 
-	Action *action = dynamic_cast<Action *>(sender);
+	Action *action = qobject_cast<Action *>(sender);
 	if (!action)
 		return;
 
@@ -679,7 +679,7 @@ void KaduWindowActions::writeEmailActionActivated(QAction *sender, bool toggled)
 
 	kdebugf();
 
-	Action *action = dynamic_cast<Action *>(sender);
+	Action *action = qobject_cast<Action *>(sender);
 	if (!action)
 		return;
 
@@ -699,7 +699,7 @@ void KaduWindowActions::copyDescriptionActionActivated(QAction *sender, bool tog
 
 	kdebugf();
 
-	Action *action = dynamic_cast<Action *>(sender);
+	Action *action = qobject_cast<Action *>(sender);
 	if (!action)
 		return;
 
@@ -724,7 +724,7 @@ void KaduWindowActions::openDescriptionLinkActionActivated(QAction *sender, bool
 
 	kdebugf();
 
-	Action *action = dynamic_cast<Action *>(sender);
+	Action *action = qobject_cast<Action *>(sender);
 	if (!action)
 		return;
 
@@ -751,7 +751,7 @@ void KaduWindowActions::copyPersonalInfoActionActivated(QAction *sender, bool to
 
 	kdebugf();
 
-	Action *action = dynamic_cast<Action *>(sender);
+	Action *action = qobject_cast<Action *>(sender);
 	if (!action)
 		return;
 
@@ -778,7 +778,7 @@ void KaduWindowActions::lookupInDirectoryActionActivated(QAction *sender, bool t
 
 	kdebugf();
 
-	Action *action = dynamic_cast<Action *>(sender);
+	Action *action = qobject_cast<Action *>(sender);
 	if (!action)
 		return;
 
@@ -799,7 +799,7 @@ void KaduWindowActions::deleteUsersActionActivated(QAction *sender, bool toggled
 
 	kdebugf();
 
-	Action *action = dynamic_cast<Action *>(sender);
+	Action *action = qobject_cast<Action *>(sender);
 	if (!action)
 		return;
 
@@ -843,11 +843,11 @@ void KaduWindowActions::showDescriptionsActionActivated(QAction *sender, bool to
 {
 	config_file.writeEntry("Look", "ShowDesc", toggled);
 
-	Action *action = dynamic_cast<Action *>(sender);
+	Action *action = qobject_cast<Action *>(sender);
 	if (!action)
 		return;
 
-	MainWindow *window = qobject_cast<MainWindow *>(action->parent());
+	MainWindow *window = qobject_cast<MainWindow *>(action->parentWidget());
 	if (!window)
 		return;
 	if (!window->buddiesListView())
@@ -874,7 +874,7 @@ void KaduWindowActions::editUserActionActivated(QAction *sender, bool toggled)
 
 	kdebugf();
 
-	Action *action = dynamic_cast<Action *>(sender);
+	Action *action = qobject_cast<Action *>(sender);
 	if (!action)
 		return;
 
@@ -903,7 +903,7 @@ void KaduWindowActions::changeStatusActionActivated(QAction *sender, bool toggle
 {
 	Q_UNUSED(toggled)
 
-	Action *action = dynamic_cast<Action *>(sender);
+	Action *action = qobject_cast<Action *>(sender);
 	if (!action)
 		return;
 

@@ -63,8 +63,8 @@ void DesktopDockConfigurationUiHandler::mainConfigurationWindowCreated(MainConfi
 	connect(mainConfigurationWindow->widget()->widgetById("desktop_docking/move"), SIGNAL(clicked()),
 			DesktopDock::instance()->dockWindow(), SLOT(startMoving()));
 
-	XSpinBox = dynamic_cast<QSpinBox *>(mainConfigurationWindow->widget()->widgetById("desktop_docking/x"));
-	YSpinBox = dynamic_cast<QSpinBox *>(mainConfigurationWindow->widget()->widgetById("desktop_docking/y"));
+	XSpinBox = static_cast<QSpinBox *>(mainConfigurationWindow->widget()->widgetById("desktop_docking/x"));
+	YSpinBox = static_cast<QSpinBox *>(mainConfigurationWindow->widget()->widgetById("desktop_docking/y"));
 
 	connect(DesktopDock::instance()->dockWindow(), SIGNAL(dropped(QPoint)),
 			this, SLOT(dockWindowDropped(QPoint)));

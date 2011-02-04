@@ -165,15 +165,15 @@ void AutoAway::checkIdleTime()
 
 void AutoAway::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
-	autoAwaySpinBox = dynamic_cast<QSpinBox *>(mainConfigurationWindow->widget()->widgetById("autoaway/autoAway"));
-	autoExtendedAwaySpinBox = dynamic_cast<QSpinBox *>(mainConfigurationWindow->widget()->widgetById("autoaway/autoExtendedAway"));
-	autoInvisibleSpinBox = dynamic_cast<QSpinBox *>(mainConfigurationWindow->widget()->widgetById("autoaway/autoInvisible"));
-	autoOfflineSpinBox = dynamic_cast<QSpinBox *>(mainConfigurationWindow->widget()->widgetById("autoaway/autoOffline"));
-	autoRefreshSpinBox = dynamic_cast<QSpinBox *>(mainConfigurationWindow->widget()->widgetById("autoaway/autoRefresh"));
+	autoAwaySpinBox = static_cast<QSpinBox *>(mainConfigurationWindow->widget()->widgetById("autoaway/autoAway"));
+	autoExtendedAwaySpinBox = static_cast<QSpinBox *>(mainConfigurationWindow->widget()->widgetById("autoaway/autoExtendedAway"));
+	autoInvisibleSpinBox = static_cast<QSpinBox *>(mainConfigurationWindow->widget()->widgetById("autoaway/autoInvisible"));
+	autoOfflineSpinBox = static_cast<QSpinBox *>(mainConfigurationWindow->widget()->widgetById("autoaway/autoOffline"));
+	autoRefreshSpinBox = static_cast<QSpinBox *>(mainConfigurationWindow->widget()->widgetById("autoaway/autoRefresh"));
 
-	descriptionTextLineEdit = dynamic_cast<QLineEdit *>(mainConfigurationWindow->widget()->widgetById("autoaway/descriptionText"));
+	descriptionTextLineEdit = static_cast<QLineEdit *>(mainConfigurationWindow->widget()->widgetById("autoaway/descriptionText"));
 
-	parseStatusCheckBox = dynamic_cast<QCheckBox *>(mainConfigurationWindow->widget()->widgetById("autoaway/enableParseStatus"));
+	parseStatusCheckBox = static_cast<QCheckBox *>(mainConfigurationWindow->widget()->widgetById("autoaway/enableParseStatus"));
 
 	connect(mainConfigurationWindow->widget()->widgetById("autoaway/enableAutoAway"), SIGNAL(toggled(bool)), autoAwaySpinBox, SLOT(setEnabled(bool)));
 	connect(mainConfigurationWindow->widget()->widgetById("autoaway/enableAutoExtendedAway"), SIGNAL(toggled(bool)), autoExtendedAwaySpinBox, SLOT(setEnabled(bool)));

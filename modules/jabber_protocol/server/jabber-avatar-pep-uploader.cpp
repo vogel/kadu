@@ -29,7 +29,7 @@
 JabberAvatarPepUploader::JabberAvatarPepUploader(Account account, QObject *parent) :
 		QObject(parent), MyAccount(account)
 {
-	MyProtocol = dynamic_cast<JabberProtocol *>(account.protocolHandler());
+	MyProtocol = qobject_cast<JabberProtocol *>(account.protocolHandler());
 
 	connect(MyProtocol->client(),SIGNAL(publishSuccess(const QString&, const XMPP::PubSubItem&)),
 		this, SLOT(publishSuccess(const QString&,const XMPP::PubSubItem&)));

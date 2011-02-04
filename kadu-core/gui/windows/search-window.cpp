@@ -328,7 +328,7 @@ QTreeWidgetItem * SearchWindow::selectedItem()
 	else if (results->children().count() == 1)
 		return dynamic_cast<QTreeWidgetItem *>(results->children().at(0));
 	else
-		return NULL;
+		return 0;
 }
 
 void SearchWindow::addFound()
@@ -666,7 +666,7 @@ void SearchActionsSlots::firstSearchActionActivated(QAction *sender, bool toggle
 {
 	Q_UNUSED(toggled)
 
-	SearchWindow *search = dynamic_cast<SearchWindow *>(sender->parent());
+	SearchWindow *search = qobject_cast<SearchWindow *>(sender->parent());
 	if (search)
 		search->firstSearch();
 }
@@ -693,7 +693,7 @@ void SearchWindow::setActionState(ActionDescription *actionDescription, bool too
 
 void SearchActionsSlots::firstSearchActionCreated(Action *action)
 {
-	SearchWindow *search = dynamic_cast<SearchWindow *>(action->parent());
+	SearchWindow *search = qobject_cast<SearchWindow *>(action->parent());
 
 	if (!search || !search->r_pers || search->searching || (search->r_pers->isChecked() && search->isPersonalDataEmpty()) || (search->r_uin->isChecked() && search->e_uin->text().isEmpty()))
 		action->setEnabled(false);
@@ -701,7 +701,7 @@ void SearchActionsSlots::firstSearchActionCreated(Action *action)
 
 void SearchActionsSlots::nextResultsActionCreated(Action *action)
 {
-	SearchWindow *search = dynamic_cast<SearchWindow *>(action->parent());
+	SearchWindow *search = qobject_cast<SearchWindow *>(action->parent());
 
 	if (!search || !search->r_uin || search->searching || search->r_uin->isChecked() || search->isPersonalDataEmpty())
 		action->setEnabled(false);
@@ -710,7 +710,7 @@ void SearchActionsSlots::nextResultsActionCreated(Action *action)
 
 void SearchActionsSlots::stopSearchActionCreated(Action *action)
 {
-	SearchWindow *search = dynamic_cast<SearchWindow *>(action->parent());
+	SearchWindow *search = qobject_cast<SearchWindow *>(action->parent());
 
 	if (!search || !search->searching)
 		action->setEnabled(false);
@@ -718,14 +718,14 @@ void SearchActionsSlots::stopSearchActionCreated(Action *action)
 
 void SearchActionsSlots::clearResultsActionCreated(Action *action)
 {
-	SearchWindow *search = dynamic_cast<SearchWindow *>(action->parent());
+	SearchWindow *search = qobject_cast<SearchWindow *>(action->parent());
 	if (!search || !search->results || !search->results->topLevelItemCount())
 		action->setEnabled(false);
 }
 
 void SearchActionsSlots::actionsFoundActionCreated(Action *action)
 {
-	SearchWindow *search = dynamic_cast<SearchWindow *>(action->parent());
+	SearchWindow *search = qobject_cast<SearchWindow *>(action->parent());
 
 	if (!search || !search->results || search->results->selectedItems().count() == 0)
 		action->setEnabled(false);
@@ -735,7 +735,7 @@ void SearchActionsSlots::nextResultsActionActivated(QAction *sender, bool toggle
 {
 	Q_UNUSED(toggled)
 
-	SearchWindow *search = dynamic_cast<SearchWindow *>(sender->parent());
+	SearchWindow *search = qobject_cast<SearchWindow *>(sender->parent());
 	if (search)
 		search->nextSearch();
 }
@@ -744,7 +744,7 @@ void SearchActionsSlots::stopSearchActionActivated(QAction *sender, bool toggled
 {
 	Q_UNUSED(toggled)
 
-	SearchWindow *search = dynamic_cast<SearchWindow *>(sender->parent());
+	SearchWindow *search = qobject_cast<SearchWindow *>(sender->parent());
 	if (search)
 		search->stopSearch();
 }
@@ -753,7 +753,7 @@ void SearchActionsSlots::clearResultsActionActivated(QAction *sender, bool toggl
 {
 	Q_UNUSED(toggled)
 
-	SearchWindow *search = dynamic_cast<SearchWindow *>(sender->parent());
+	SearchWindow *search = qobject_cast<SearchWindow *>(sender->parent());
 	if (search)
 		search->clearResults();
 }
@@ -762,7 +762,7 @@ void SearchActionsSlots::addFoundActionActivated(QAction *sender, bool toggled)
 {
 	Q_UNUSED(toggled)
 
-	SearchWindow *search = dynamic_cast<SearchWindow *>(sender->parent());
+	SearchWindow *search = qobject_cast<SearchWindow *>(sender->parent());
 	if (search)
 		search->addFound();
 }
@@ -771,7 +771,7 @@ void SearchActionsSlots::chatFoundActionActivated(QAction *sender, bool toggled)
 {
 	Q_UNUSED(toggled)
 
-	SearchWindow *search = dynamic_cast<SearchWindow *>(sender->parent());
+	SearchWindow *search = qobject_cast<SearchWindow *>(sender->parent());
 	if (search)
 		search->chatFound();
 }

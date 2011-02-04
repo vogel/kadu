@@ -56,7 +56,7 @@ Avatar::Avatar(AvatarShared *data) :
 
 Avatar::Avatar(QObject *data)
 {
-	AvatarShared *shared = dynamic_cast<AvatarShared *>(data);
+	AvatarShared *shared = qobject_cast<AvatarShared *>(data);
 	if (shared)
 		setData(shared);
 }

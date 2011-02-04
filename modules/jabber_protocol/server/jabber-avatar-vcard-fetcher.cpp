@@ -47,7 +47,7 @@ void JabberAvatarVCardFetcher::failed()
 
 void JabberAvatarVCardFetcher::fetchAvatar()
 {
-	JabberProtocol *jabberProtocol = dynamic_cast<JabberProtocol *>(MyContact.contactAccount().protocolHandler());
+	JabberProtocol *jabberProtocol = qobject_cast<JabberProtocol *>(MyContact.contactAccount().protocolHandler());
 	if (!jabberProtocol || !jabberProtocol->isConnected())
 	{
 		failed();

@@ -53,7 +53,7 @@ Message::Message(MessageShared *data) :
 
 Message::Message(QObject *data)
 {
-	MessageShared *shared = dynamic_cast<MessageShared *>(data);
+	MessageShared *shared = qobject_cast<MessageShared *>(data);
 	if (shared)
 		setData(shared);
 }

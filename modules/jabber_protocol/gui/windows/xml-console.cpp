@@ -32,7 +32,7 @@ XmlConsole::XmlConsole(Account account) :
 	setAttribute(Qt::WA_DeleteOnClose);
 	setWindowTitle(tr("XML Console"));
 
-	JabberProtocol *protocol = dynamic_cast<JabberProtocol *>(account.protocolHandler());
+	JabberProtocol *protocol = qobject_cast<JabberProtocol *>(account.protocolHandler());
 	if (protocol)
 	{
 		createGui();

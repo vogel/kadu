@@ -51,7 +51,7 @@ void ProtocolsModelProxy::setSourceModel(QAbstractItemModel *sourceModel)
 	if (SourceProtocolModel)
 		disconnect(SourceProtocolModel, SIGNAL(destroyed(QObject *)), this, SLOT(modelDestroyed()));
 
-	SourceProtocolModel = dynamic_cast<ProtocolsModel *>(sourceModel);
+	SourceProtocolModel = qobject_cast<ProtocolsModel *>(sourceModel);
 	QSortFilterProxyModel::setSourceModel(SourceProtocolModel);
 
 	if (SourceProtocolModel)

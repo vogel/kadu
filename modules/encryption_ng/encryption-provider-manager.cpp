@@ -123,7 +123,7 @@ void EncryptionProviderManager::releaseDecryptor(const Chat &chat, Decryptor *de
 {
 	Q_UNUSED(chat)
 
-	DecryptorWrapper *decryptorWrapper = dynamic_cast<DecryptorWrapper *>(decryptor);
+	DecryptorWrapper *decryptorWrapper = qobject_cast<DecryptorWrapper *>(decryptor);
 	if (!decryptorWrapper)
 		return;
 

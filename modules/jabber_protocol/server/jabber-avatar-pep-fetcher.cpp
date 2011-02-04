@@ -55,7 +55,7 @@ void JabberAvatarPepFetcher::failed()
 
 void JabberAvatarPepFetcher::fetchAvatar()
 {
-	JabberProtocol *jabberProtocol = dynamic_cast<JabberProtocol *>(MyContact.contactAccount().protocolHandler());
+	JabberProtocol *jabberProtocol = qobject_cast<JabberProtocol *>(MyContact.contactAccount().protocolHandler());
 	if (!jabberProtocol || !jabberProtocol->isConnected() || !jabberProtocol->client() || !jabberProtocol->client()->rootTask() ||
 		!jabberProtocol->client()->isPEPAvailable() || !jabberProtocol->client()->pepManager())
 	{
@@ -89,10 +89,12 @@ void JabberAvatarPepFetcher::discoItemsFinished()
 		return;
 	}
 
-	JabberProtocol *jabberProtocol = dynamic_cast<JabberProtocol *>(MyContact.contactAccount().protocolHandler());
-
-	connect(jabberProtocol->client()->pepManager(), SIGNAL(itemPublished(XMPP::Jid,QString,XMPP::PubSubItem)), this, SLOT(avatarMetadataQueryFinished(XMPP::Jid,QString,XMPP::PubSubItem)));
-	jabberProtocol->client()->pepManager()->get(MyContact.id(), XMLNS_AVATAR_METADATA, "");
+	JabberProtocol *jabberProtocol = qobject_cast<JabberProtocol *>(MyContact.contactAccount().protocolHandler());
+	if (jabberProtocol)
+	{
+		connect(jabberProtocol->client()->pepManager(), SIGNAL(itemPublished(XMPP::Jid,QString,XMPP::PubSubItem)), this, SLOT(avatarMetadataQueryFinished(XMPP::Jid,QString,XMPP::PubSubItem)));
+		jabberProtocol->client()->pepManager()->get(MyContact.id(), XMLNS_AVATAR_METADATA, "");
+	}
 }
 
 void JabberAvatarPepFetcher::avatarMetadataQueryFinished(const XMPP::Jid &jid, const QString &node, const XMPP::PubSubItem &item)
@@ -113,10 +115,13 @@ void JabberAvatarPepFetcher::avatarMetadataQueryFinished(const XMPP::Jid &jid, c
 		return;
 	}
 
-	JabberProtocol *jabberProtocol = dynamic_cast<JabberProtocol *>(MyContact.contactAccount().protocolHandler());
-	disconnect(jabberProtocol->client()->pepManager(), SIGNAL(itemPublished(XMPP::Jid,QString,XMPP::PubSubItem)), this, SLOT(avatarMetadataQueryFinished(XMPP::Jid,QString,XMPP::PubSubItem)));
-	connect(jabberProtocol->client()->pepManager(), SIGNAL(itemPublished(XMPP::Jid,QString,XMPP::PubSubItem)), this, SLOT(avatarDataQueryFinished(XMPP::Jid,QString,XMPP::PubSubItem)));
-	jabberProtocol->client()->pepManager()->get(MyContact.id(), XMLNS_AVATAR_DATA, item.id());
+	JabberProtocol *jabberProtocol = qobject_cast<JabberProtocol *>(MyContact.contactAccount().protocolHandler());
+	if (jabberProtocol)
+	{
+		disconnect(jabberProtocol->client()->pepManager(), SIGNAL(itemPublished(XMPP::Jid,QString,XMPP::PubSubItem)), this, SLOT(avatarMetadataQueryFinished(XMPP::Jid,QString,XMPP::PubSubItem)));
+		connect(jabberProtocol->client()->pepManager(), SIGNAL(itemPublished(XMPP::Jid,QString,XMPP::PubSubItem)), this, SLOT(avatarDataQueryFinished(XMPP::Jid,QString,XMPP::PubSubItem)));
+		jabberProtocol->client()->pepManager()->get(MyContact.id(), XMLNS_AVATAR_DATA, item.id());
+	}
 }
 
 void JabberAvatarPepFetcher::avatarDataQueryFinished(const XMPP::Jid &jid, const QString &node, const XMPP::PubSubItem &item)
@@ -124,8 +129,9 @@ void JabberAvatarPepFetcher::avatarDataQueryFinished(const XMPP::Jid &jid, const
 	if (jid.bare() != MyContact.id() || node != XMLNS_AVATAR_DATA || item.id() != AvatarId)
 		return; // not our data :(
 
-	JabberProtocol *jabberProtocol = dynamic_cast<JabberProtocol *>(MyContact.contactAccount().protocolHandler());
-	disconnect(jabberProtocol->client()->pepManager(), SIGNAL(itemPublished(XMPP::Jid,QString,XMPP::PubSubItem)), this, SLOT(avatarDataQueryFinished(XMPP::Jid,QString,XMPP::PubSubItem)));
+	JabberProtocol *jabberProtocol = qobject_cast<JabberProtocol *>(MyContact.contactAccount().protocolHandler());
+	if (jabberProtocol)
+		disconnect(jabberProtocol->client()->pepManager(), SIGNAL(itemPublished(XMPP::Jid,QString,XMPP::PubSubItem)), this, SLOT(avatarDataQueryFinished(XMPP::Jid,QString,XMPP::PubSubItem)));
 
 	XMPP::Base64 base64;
 	QByteArray imageData = base64.decode(item.payload().text());

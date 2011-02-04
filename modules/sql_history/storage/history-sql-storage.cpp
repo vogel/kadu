@@ -243,7 +243,7 @@ QString HistorySqlStorage::chatWhere(const Chat &chat)
 	if (!details)
 		return QLatin1String("false");
 
-	ChatDetailsAggregate *aggregate = dynamic_cast<ChatDetailsAggregate *>(details);
+	ChatDetailsAggregate *aggregate = qobject_cast<ChatDetailsAggregate *>(details);
 	if (!aggregate)
 		return QString("chat = '%1'").arg(chat.uuid().toString());
 

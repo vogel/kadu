@@ -47,7 +47,7 @@ HintsConfigurationWidget::HintsConfigurationWidget(QWidget *parent)
 	layout->addWidget(preview);
 	layout->addWidget(configureButton);
 
-	dynamic_cast<NotifyGroupBox *>(parent)->addWidget(this);
+	static_cast<NotifyGroupBox *>(parent)->addWidget(this);
 }
 
 void HintsConfigurationWidget::saveNotifyConfigurations()

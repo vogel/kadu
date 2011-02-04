@@ -72,7 +72,7 @@ void JabberAvatarUploader::uploadAvatarVCard()
 void JabberAvatarUploader::pepAvatarUploaded(bool ok)
 {
 	if (ok)
-	{	
+	{
 		emit avatarUploaded(ok, UploadingAvatar);
 		deleteLater();
 		return;
@@ -90,7 +90,7 @@ void JabberAvatarUploader::avatarUploadedSlot(bool ok)
 
 void JabberAvatarUploader::uploadAvatar(QImage avatar)
 {
-	JabberProtocol *protocol = dynamic_cast<JabberProtocol *>(MyAccount.protocolHandler());
+	JabberProtocol *protocol = qobject_cast<JabberProtocol *>(MyAccount.protocolHandler());
 	if (!protocol || !protocol->client() || !protocol->client()->rootTask())
 	{
 		deleteLater();

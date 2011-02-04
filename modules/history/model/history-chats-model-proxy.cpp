@@ -86,7 +86,7 @@ bool HistoryChatsModelProxy::lessThan(const QModelIndex &left, const QModelIndex
 void HistoryChatsModelProxy::setSourceModel(QAbstractItemModel *sourceModel)
 {
 	QSortFilterProxyModel::setSourceModel(sourceModel);
-	Model = dynamic_cast<HistoryChatsModel *>(sourceModel);
+	Model = qobject_cast<HistoryChatsModel *>(sourceModel);
 }
 
 void HistoryChatsModelProxy::addFilter(ChatFilter *filter)

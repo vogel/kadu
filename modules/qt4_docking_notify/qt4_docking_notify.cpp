@@ -108,7 +108,7 @@ QString Qt4Notify::parseText(const QString &text, Notification *notification, co
 {
 	QString ret;
 
-	ChatNotification *chatNotification = dynamic_cast<ChatNotification *>(notification);
+	ChatNotification *chatNotification = qobject_cast<ChatNotification *>(notification);
 	chat = chatNotification ? chatNotification->chat() : Chat();
 
 	if (!text.isEmpty())

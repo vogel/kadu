@@ -65,7 +65,7 @@ void JabberAvatarFetcher::avatarFetchedSlot(Contact contact, bool ok)
 
 void JabberAvatarFetcher::fetchAvatar()
 {
-	JabberProtocol *protocol = dynamic_cast<JabberProtocol *>(MyContact.contactAccount().protocolHandler());
+	JabberProtocol *protocol = qobject_cast<JabberProtocol *>(MyContact.contactAccount().protocolHandler());
 	if (!protocol || !protocol->client() || !protocol->client()->rootTask())
 	{
 		emit avatarFetched(MyContact, false);

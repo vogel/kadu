@@ -193,7 +193,7 @@ void TabWidget::dragEnterEvent(QDragEnterEvent* e)
 {
 	kdebugf();
 	// Akceptujemu dnd jezeli pochodzi on z UserBox'a lub paska kart
-// 	if ((UlesDrag::canDecode(e) && (dynamic_cast<ContactsListWidget *>(e->source()))))
+// 	if ((UlesDrag::canDecode(e) && (qobject_cast<ContactsListWidget *>(e->source()))))
 // 		e->acceptProposedAction();
 // 	else
 		e->ignore();
@@ -207,7 +207,7 @@ void TabWidget::dropEvent(QDropEvent* e)
 	QStringList ules;
 
 	// Jezeli dnd pochodzil z userboxa probujemy dodac nowa karte
-	if (dynamic_cast<BuddiesListWidget *>(e->source()) && false)/*UlesDrag::decode(e, ules))*/
+	if (qobject_cast<BuddiesListWidget *>(e->source()) && false)/*UlesDrag::decode(e, ules))*/
 	{
 		if (tabBar()->tabAt(e->pos()) != -1)
 		// Jezeli w miejscu upuszczenia jest karta, dodajemy na jej pozycji
@@ -226,7 +226,7 @@ void TabWidget::changeEvent(QEvent *event)
 	if (event->type() == QEvent::ActivationChange)
 	{
 		kdebugf();
-		ChatWidget *chat = dynamic_cast<ChatWidget *>(currentWidget());
+		ChatWidget *chat = static_cast<ChatWidget *>(currentWidget());
 		if (chat && _isActiveWindow(this))
 		{
 			chat->markAllMessagesRead();

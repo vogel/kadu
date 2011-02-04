@@ -33,7 +33,7 @@ QMap<Account, QStringList> ConnectionErrorNotification::ActiveErrors;
 
 static QString getErrorMessage(const QObject * const object)
 {
-	const ConnectionErrorNotification * const connectionErrorNotification = dynamic_cast<const ConnectionErrorNotification * const>(object);
+	const ConnectionErrorNotification * const connectionErrorNotification = qobject_cast<const ConnectionErrorNotification * const>(object);
 	if (connectionErrorNotification)
 		return connectionErrorNotification->errorMessage();
 	else
@@ -42,7 +42,7 @@ static QString getErrorMessage(const QObject * const object)
 
 static QString getErrorServer(const QObject * const object)
 {
-	const ConnectionErrorNotification * const connectionErrorNotification = dynamic_cast<const ConnectionErrorNotification * const>(object);
+	const ConnectionErrorNotification * const connectionErrorNotification = qobject_cast<const ConnectionErrorNotification * const>(object);
 	if (connectionErrorNotification)
 		return connectionErrorNotification->errorServer();
 	else

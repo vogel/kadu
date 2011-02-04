@@ -54,7 +54,7 @@
 
 static void disableEmptyTextBox(Action *action)
 {
-	ChatEditBox *chatEditBox = dynamic_cast<ChatEditBox *>(action->parent());
+	ChatEditBox *chatEditBox = qobject_cast<ChatEditBox *>(action->parent());
 	if (!chatEditBox)
 	{
 		action->setEnabled(false);
@@ -66,7 +66,7 @@ static void disableEmptyTextBox(Action *action)
 
 static void disableEmptyMessages(Action *action)
 {
-	ChatEditBox *chatEditBox = dynamic_cast<ChatEditBox *>(action->parent());
+	ChatEditBox *chatEditBox = qobject_cast<ChatEditBox *>(action->parent());
 	if (!chatEditBox)
 	{
 		action->setEnabled(false);
@@ -80,7 +80,7 @@ static void disableNoChatImageService(Action *action)
 {
 	action->setEnabled(false);
 
-	ChatEditBox *chatEditBox = dynamic_cast<ChatEditBox *>(action->parent());
+	ChatEditBox *chatEditBox = qobject_cast<ChatEditBox *>(action->parent());
 	if (!chatEditBox)
 		return;
 
@@ -144,7 +144,7 @@ ChatWidgetActions::ChatWidgetActions(QObject *parent) : QObject(parent)
 		this, SLOT(moreActionsActionActivated(QAction *, bool)),
 		"", tr("More..."), false
 	);
-	
+
 	AutoSend = new ActionDescription(0,
 		ActionDescription::TypeChat, "autoSendAction",
 		this, SLOT(autoSendActionActivated(QAction *, bool)),
@@ -257,7 +257,7 @@ void ChatWidgetActions::autoSendActionCreated(Action *action)
 
 void ChatWidgetActions::clearChatActionCreated(Action *action)
 {
-	ChatEditBox *chatEditBox = dynamic_cast<ChatEditBox *>(action->parent());
+	ChatEditBox *chatEditBox = qobject_cast<ChatEditBox *>(action->parent());
 	if (!chatEditBox)
 		return;
 
@@ -266,7 +266,7 @@ void ChatWidgetActions::clearChatActionCreated(Action *action)
 
 void ChatWidgetActions::sendActionCreated(Action *action)
 {
-	ChatEditBox *chatEditBox = dynamic_cast<ChatEditBox *>(action->parent());
+	ChatEditBox *chatEditBox = qobject_cast<ChatEditBox *>(action->parent());
 	if (!chatEditBox)
 		return;
 
@@ -313,7 +313,7 @@ void ChatWidgetActions::autoSendActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
 
-	ChatEditBox *chatEditBox = dynamic_cast<ChatEditBox *>(sender->parent());
+	ChatEditBox *chatEditBox = qobject_cast<ChatEditBox *>(sender->parent());
 	if (!chatEditBox)
 		return;
 
@@ -325,11 +325,11 @@ void ChatWidgetActions::autoSendActionActivated(QAction *sender, bool toggled)
 void ChatWidgetActions::moreActionsActionActivated(QAction *sender, bool toggled)
 {
 	Q_UNUSED(toggled)
-	Action *action = dynamic_cast<Action *>(sender);
+	Action *action = qobject_cast<Action *>(sender);
 	if (!action)
 		return;
 
-	ChatEditBox *chatEditBox = dynamic_cast<ChatEditBox *>(sender->parent());
+	ChatEditBox *chatEditBox = qobject_cast<ChatEditBox *>(sender->parent());
 	if (!chatEditBox)
 		return;
 
@@ -374,7 +374,7 @@ void ChatWidgetActions::clearActionActivated(QAction *sender, bool toggled)
 
 	kdebugf();
 
-	ChatEditBox *chatEditBox = dynamic_cast<ChatEditBox *>(sender->parent());
+	ChatEditBox *chatEditBox = qobject_cast<ChatEditBox *>(sender->parent());
 	if (!chatEditBox)
 		return;
 
@@ -391,7 +391,7 @@ void ChatWidgetActions::insertImageActionActivated(QAction *sender, bool toggled
 
 	kdebugf();
 
-	ChatEditBox *chatEditBox = dynamic_cast<ChatEditBox *>(sender->parent());
+	ChatEditBox *chatEditBox = qobject_cast<ChatEditBox *>(sender->parent());
 	if (!chatEditBox)
 		return;
 
@@ -404,7 +404,7 @@ void ChatWidgetActions::boldActionActivated(QAction *sender, bool toggled)
 
 	kdebugf();
 
-	ChatEditBox *chatEditBox = dynamic_cast<ChatEditBox *>(sender->parent());
+	ChatEditBox *chatEditBox = qobject_cast<ChatEditBox *>(sender->parent());
 	if (!chatEditBox)
 		return;
 
@@ -419,7 +419,7 @@ void ChatWidgetActions::italicActionActivated(QAction *sender, bool toggled)
 
 	kdebugf();
 
-	ChatEditBox *chatEditBox = dynamic_cast<ChatEditBox *>(sender->parent());
+	ChatEditBox *chatEditBox = qobject_cast<ChatEditBox *>(sender->parent());
 	if (!chatEditBox)
 		return;
 
@@ -434,7 +434,7 @@ void ChatWidgetActions::underlineActionActivated(QAction *sender, bool toggled)
 
 	kdebugf();
 
-	ChatEditBox *chatEditBox = dynamic_cast<ChatEditBox *>(sender->parent());
+	ChatEditBox *chatEditBox = qobject_cast<ChatEditBox *>(sender->parent());
 	if (!chatEditBox)
 		return;
 
@@ -449,7 +449,7 @@ void ChatWidgetActions::sendActionActivated(QAction *sender, bool toggled)
 
 	kdebugf();
 
-	ChatEditBox *chatEditBox = dynamic_cast<ChatEditBox *>(sender->parent());
+	ChatEditBox *chatEditBox = qobject_cast<ChatEditBox *>(sender->parent());
 	if (!chatEditBox)
 		return;
 
@@ -466,7 +466,7 @@ void ChatWidgetActions::whoisActionActivated(QAction *sender, bool toggled)
 
 	kdebugf();
 
-	Action *action = dynamic_cast<Action *>(sender);
+	Action *action = qobject_cast<Action *>(sender);
 	if (!action)
 		return;
 
@@ -490,7 +490,7 @@ void ChatWidgetActions::blockUserActionActivated(QAction *sender, bool toggled)
 
 	kdebugf();
 
-	Action *action = dynamic_cast<Action *>(sender);
+	Action *action = qobject_cast<Action *>(sender);
 	if (!action)
 		return;
 
@@ -536,7 +536,7 @@ void ChatWidgetActions::openChatActionActivated(QAction *sender, bool toggled)
 
 	kdebugf();
 
-	Action *action = dynamic_cast<Action *>(sender);
+	Action *action = qobject_cast<Action *>(sender);
 	if (!action)
 		return;
 
@@ -553,7 +553,7 @@ void ChatWidgetActions::openChatWithActionActivated(QAction *sender, bool toggle
 
 	kdebugf();
 
-	Action *action = dynamic_cast<Action *>(sender);
+	Action *action = qobject_cast<Action *>(sender);
 	if (!action)
 		return;
 
@@ -566,7 +566,7 @@ void ChatWidgetActions::colorSelectorActionActivated(QAction *sender, bool toggl
 {
 	Q_UNUSED(toggled)
 
-	ChatEditBox *chatEditBox = dynamic_cast<ChatEditBox *>(sender->parent());
+	ChatEditBox *chatEditBox = qobject_cast<ChatEditBox *>(sender->parent());
 	if (!chatEditBox)
 		return;
 
@@ -581,7 +581,7 @@ void ChatWidgetActions::insertEmoticonActionActivated(QAction *sender, bool togg
 {
 	Q_UNUSED(toggled)
 
-	ChatEditBox *chatEditBox = dynamic_cast<ChatEditBox *>(sender->parent());
+	ChatEditBox *chatEditBox = qobject_cast<ChatEditBox *>(sender->parent());
 	if (!chatEditBox)
 		return;
 

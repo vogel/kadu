@@ -64,7 +64,7 @@ FileTransfer::FileTransfer(FileTransferShared *data) :
 
 FileTransfer::FileTransfer(QObject *data)
 {
-	FileTransferShared *shared = dynamic_cast<FileTransferShared *>(data);
+	FileTransferShared *shared = qobject_cast<FileTransferShared *>(data);
 	if (shared)
 		setData(shared);
 }

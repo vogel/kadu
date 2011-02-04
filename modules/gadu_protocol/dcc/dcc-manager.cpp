@@ -95,7 +95,7 @@ void DccManager::mainConfigurationWindowCreated(MainConfigurationWindow *mainCon
 
 	QWidget *ipAutotetect = mainConfigurationWindow->widgetById("dcc/ipAutodetect");
 	ipAddress = mainConfigurationWindow->widgetById("dcc/ipAddress");
-	forwarding = dynamic_cast<QCheckBox *>(mainConfigurationWindow->widgetById("dcc/forwarding"));
+	forwarding = static_cast<QCheckBox *>(mainConfigurationWindow->widgetById("dcc/forwarding"));
 	forwardingExternalIp = mainConfigurationWindow->widgetById("dcc/forwardingExternalIp");
 	forwardingExternalPort = mainConfigurationWindow->widgetById("dcc/forwardingExternalPort");
 	forwardingLocalPort = mainConfigurationWindow->widgetById("dcc/forwardingLocalPort");
@@ -179,7 +179,7 @@ void DccManager::onIpAutotetectToggled(bool toggled)
 
 void DccManager::configurationUpdated()
 {
-// 		GaduAccount *account = dynamic_cast<GaduAccount *>(Protocol->account());
+// 		GaduAccount *account = qobject_cast<GaduAccount *>(Protocol->account());
 // 		if (!account)
 // 				return;
 // 		account->loadConfiguration(xml_config_file);
@@ -230,7 +230,7 @@ void DccManager::disconnectSocketNotifiers(DccSocketNotifiers *notifiers)
 
 void DccManager::socketNotifiersDestroyed(QObject *socketNotifiers)
 {
-	SocketNotifiers.removeAll(dynamic_cast<DccSocketNotifiers *>(socketNotifiers));
+	SocketNotifiers.removeAll(static_cast<DccSocketNotifiers *>(socketNotifiers));
 }
 
 void DccManager::connectionRequestReceived(Contact contact)
@@ -304,7 +304,7 @@ void DccManager::needIncomingFileTransferAccept(DccSocketNotifiers *socket)
 	fileTransfer.setRemoteFileName(socket->remoteFileName());
 	fileTransfer.createHandler();
 
-	GaduFileTransferHandler *handler = dynamic_cast<GaduFileTransferHandler *>(fileTransfer.handler());
+	GaduFileTransferHandler *handler = qobject_cast<GaduFileTransferHandler *>(fileTransfer.handler());
 	if (handler)
 		handler->setFileTransferNotifiers(socket);
 
@@ -431,10 +431,7 @@ void DccManager::handleEventDcc7Error(struct gg_event *e)
 
 void DccManager::fileTransferHandlerDestroyed(QObject *object)
 {
-	GaduFileTransferHandler *handler = qobject_cast<GaduFileTransferHandler *>(object);
-
-	if (handler)
-		WaitingFileTransfers.removeAll(handler);
+	WaitingFileTransfers.removeAll(static_cast<GaduFileTransferHandler *>(object));
 }
 
 void DccManager::attachSendFileTransferSocket6(UinType uin, Contact contact, GaduFileTransferHandler *handler)

@@ -132,7 +132,7 @@ void GrowlNotify::notify(Notification *notification)
 
 //	if (showAvatar)
 	{
-		ChatNotification *chatNotification = dynamic_cast<ChatNotification *>(notification);
+		ChatNotification *chatNotification = qobject_cast<ChatNotification *>(notification);
 		if (chatNotification)
 		{
 			Avatar avatar = //chatNotification->account().accountContact().contactAvatar();

@@ -40,14 +40,14 @@ HintsConfigurationWindow::HintsConfigurationWindow(const QString &eventName, Not
 	widget()->appendUiFile(dataPath("kadu/modules/configuration/hints-notifier.ui"));
 
 	widget()->widgetById("syntax")->setToolTip(tr(MainConfigurationWindow::SyntaxTextNotify));
-	dynamic_cast<QSpinBox *>(widget()->widgetById("timeout"))->setSpecialValueText(tr("Don't hide"));
+	static_cast<QSpinBox *>(widget()->widgetById("timeout"))->setSpecialValueText(tr("Don't hide"));
 
-	preview = dynamic_cast<QLabel *>(widget()->widgetById("preview"));
+	preview = static_cast<QLabel *>(widget()->widgetById("preview"));
 
-	connect(dynamic_cast<ConfigSelectFont *>(widget()->widgetById("font")), SIGNAL(fontChanged(QFont)),
+	connect(static_cast<ConfigSelectFont *>(widget()->widgetById("font")), SIGNAL(fontChanged(QFont)),
 			this, SLOT(fontChanged(QFont)));
-	connect(dynamic_cast<ConfigColorButton *>(widget()->widgetById("fgcolor")), SIGNAL(changed(const QColor &)), this, SLOT(foregroundColorChanged(const QColor &)));
-	connect(dynamic_cast<ConfigColorButton *>(widget()->widgetById("bgcolor")), SIGNAL(changed(const QColor &)), this, SLOT(backgroundColorChanged(const QColor &)));
+	connect(static_cast<ConfigColorButton *>(widget()->widgetById("fgcolor")), SIGNAL(changed(const QColor &)), this, SLOT(foregroundColorChanged(const QColor &)));
+	connect(static_cast<ConfigColorButton *>(widget()->widgetById("bgcolor")), SIGNAL(changed(const QColor &)), this, SLOT(backgroundColorChanged(const QColor &)));
 
 	dataManager->configurationWindowCreated(this);
 

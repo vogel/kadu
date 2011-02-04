@@ -59,7 +59,7 @@ const QFont & SelectFont::font() const
 void SelectFont::onClick()
 {
 	bool ok;
-	QFont f = QFontDialog::getFont(&ok, currentFont, dynamic_cast<QWidget *>(parent()));
+	QFont f = QFontDialog::getFont(&ok, currentFont, parentWidget());
 
 	if (ok)
 		setFont(f);

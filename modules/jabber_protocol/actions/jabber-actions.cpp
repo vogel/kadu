@@ -88,11 +88,7 @@ Contact JabberActions::contactFromAction(QAction *action)
 
 JabberSubscriptionService * JabberActions::subscriptionServiceFromContact(const Contact& contact)
 {
-	Protocol *protocolHandler = contact.contactAccount().protocolHandler();
-	if (!protocolHandler)
-		return 0;
-
-	JabberProtocol *jabberProtocolHandler = qobject_cast<JabberProtocol *>(protocolHandler);
+	JabberProtocol *jabberProtocolHandler = qobject_cast<JabberProtocol *>(contact.contactAccount().protocolHandler());
 	if (!jabberProtocolHandler)
 		return 0;
 

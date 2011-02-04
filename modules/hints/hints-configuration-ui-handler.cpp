@@ -45,9 +45,9 @@ HintsConfigurationUiHandler::HintsConfigurationUiHandler(const QString &style, Q
 	AdvancedWindow(0), overUserConfigurationWindow(0)
 {
 #ifdef Q_OS_MAC
-	previewHintsFrame = new QFrame(dynamic_cast<QWidget *>(parent), Qt::FramelessWindowHint | Qt::SplashScreen | Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint |Qt::MSWindowsOwnDC);
+	previewHintsFrame = new QFrame(qobject_cast<QWidget *>(parent), Qt::FramelessWindowHint | Qt::SplashScreen | Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint |Qt::MSWindowsOwnDC);
 #else
-	previewHintsFrame = new QFrame(dynamic_cast<QWidget *>(parent), Qt::FramelessWindowHint | Qt::Tool | Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint |Qt::MSWindowsOwnDC);
+	previewHintsFrame = new QFrame(qobject_cast<QWidget *>(parent), Qt::FramelessWindowHint | Qt::Tool | Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint |Qt::MSWindowsOwnDC);
 #endif
 	previewHintsFrame->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
@@ -115,28 +115,28 @@ void HintsConfigurationUiHandler::showAdvanced()
 		AdvancedWindow = new ConfigurationWindow("HintsAdvanced", tr("Advenced hints's configuration"), "Notification", MainConfigurationWindow::instanceDataManager());
 		AdvancedWindow->widget()->appendUiFile(dataPath("kadu/modules/configuration/hints-advanced.ui"));
 
-		newHintUnder = dynamic_cast<QComboBox *>(AdvancedWindow->widget()->widgetById("hints/newHintUnder"));
+		newHintUnder = static_cast<QComboBox *>(AdvancedWindow->widget()->widgetById("hints/newHintUnder"));
 
-		ownPosition = dynamic_cast<QCheckBox *>(AdvancedWindow->widget()->widgetById("hints/ownPosition"));
+		ownPosition = static_cast<QCheckBox *>(AdvancedWindow->widget()->widgetById("hints/ownPosition"));
 		connect(ownPosition, SIGNAL(toggled(bool)), AdvancedWindow->widget()->widgetById("hints/ownPositionX"), SLOT(setEnabled(bool)));
 		connect(ownPosition, SIGNAL(toggled(bool)), AdvancedWindow->widget()->widgetById("hints/ownPositionY"), SLOT(setEnabled(bool)));
 		connect(ownPosition, SIGNAL(toggled(bool)), AdvancedWindow->widget()->widgetById("hints/ownPositionCorner"), SLOT(setEnabled(bool)));
 		connect(ownPosition, SIGNAL(toggled(bool)), this, SLOT(updateHintsPreview()));
 
-		minimumWidth = dynamic_cast<QSpinBox *>(AdvancedWindow->widget()->widgetById("hints/minimumWidth"));
-		maximumWidth = dynamic_cast<QSpinBox *>(AdvancedWindow->widget()->widgetById("hints/maximumWidth"));
+		minimumWidth = static_cast<QSpinBox *>(AdvancedWindow->widget()->widgetById("hints/minimumWidth"));
+		maximumWidth = static_cast<QSpinBox *>(AdvancedWindow->widget()->widgetById("hints/maximumWidth"));
 		connect(minimumWidth, SIGNAL(valueChanged(int)), this, SLOT(minimumWidthChanged(int)));
 		connect(maximumWidth, SIGNAL(valueChanged(int)), this, SLOT(maximumWidthChanged(int)));
 
-		xPosition = dynamic_cast<QSpinBox *>(AdvancedWindow->widget()->widgetById("hints/ownPositionX"));
+		xPosition = static_cast<QSpinBox *>(AdvancedWindow->widget()->widgetById("hints/ownPositionX"));
 		connect(xPosition, SIGNAL(valueChanged(int)), this, SLOT(updateHintsPreview()));
-		yPosition = dynamic_cast<QSpinBox *>(AdvancedWindow->widget()->widgetById("hints/ownPositionY"));
+		yPosition = static_cast<QSpinBox *>(AdvancedWindow->widget()->widgetById("hints/ownPositionY"));
 		connect(yPosition, SIGNAL(valueChanged(int)), this, SLOT(updateHintsPreview()));
 
-		ownPositionCorner = dynamic_cast<QComboBox *>(AdvancedWindow->widget()->widgetById("hints/ownPositionCorner"));
+		ownPositionCorner = static_cast<QComboBox *>(AdvancedWindow->widget()->widgetById("hints/ownPositionCorner"));
 		connect(ownPositionCorner, SIGNAL(currentIndexChanged(int)), this, SLOT(updateHintsPreview()));
 
-		QPushButton *previewButton = dynamic_cast<QPushButton *>(AdvancedWindow->widget()->widgetById("hints/preview"));
+		QPushButton *previewButton = static_cast<QPushButton *>(AdvancedWindow->widget()->widgetById("hints/preview"));
 		connect(previewButton, SIGNAL(clicked()), this, SLOT(addHintsPreview()));
 
 		connect(AdvancedWindow, SIGNAL(destroyed()), this, SLOT(advancedDestroyed()));
@@ -159,7 +159,7 @@ void HintsConfigurationUiHandler::addHintsPreview()
 	previewHints.append(previewHint);
 
 	setPreviewLayoutDirection();
-	previewHintsLayout->addWidget(static_cast<QWidget *>(previewHint));
+	previewHintsLayout->addWidget(previewHint);
 
 	connect(previewHint, SIGNAL(leftButtonClicked(Hint *)), this, SLOT(deleteHintsPreview(Hint *)));
 	connect(previewHint, SIGNAL(rightButtonClicked(Hint *)), this, SLOT(deleteAllHintsPreview()));
@@ -274,7 +274,7 @@ void HintsConfigurationUiHandler::updateHintsPreview()
 void HintsConfigurationUiHandler::deleteHintsPreview(Hint *hint)
 {
 	previewHints.removeAll(hint);
-	previewHintsLayout->removeWidget(static_cast<QWidget *>(hint));
+	previewHintsLayout->removeWidget(hint);
 	hint->deleteLater();
 
 	foreach (Hint *h, previewHints)
@@ -293,7 +293,7 @@ void HintsConfigurationUiHandler::deleteAllHintsPreview()
 		if (h->getNotification()->type() == "Preview")
 		{
 			previewHints.removeAll(h);
-			previewHintsLayout->removeWidget(static_cast<QWidget *>(h));
+			previewHintsLayout->removeWidget(h);
 			h->deleteLater();
 		}
 	}

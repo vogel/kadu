@@ -388,7 +388,7 @@ void DockingManager::updateContextMenu()
 void DockingManager::containerStatusChanged()
 {
 	StatusContainer *container;
-	if (sender() && (container = dynamic_cast<StatusContainer *>(sender())) && StatusContainerMenus[container])
+	if (sender() && (container = qobject_cast<StatusContainer *>(sender())) && StatusContainerMenus[container])
 		StatusContainerMenus[container]->setIcon(container->statusIcon());
 }
 

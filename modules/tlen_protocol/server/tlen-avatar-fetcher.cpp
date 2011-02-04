@@ -39,7 +39,7 @@ TlenAvatarFetcher::TlenAvatarFetcher(Contact contact, QObject *parent) :
 
 void TlenAvatarFetcher::fetchAvatar()
 {
-	tlen * tlenClient = (dynamic_cast <TlenProtocol *> (MyContact.contactAccount().protocolHandler()))->client();
+	tlen * tlenClient = (static_cast<TlenProtocol *>(MyContact.contactAccount().protocolHandler()))->client();
 	if (!tlenClient)
 		return;
 

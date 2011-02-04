@@ -67,7 +67,7 @@ void PEPManager::retract(const QString &node, const QString &id)
 
 void PEPManager::publishFinished()
 {
-	PEPPublishTask *task = qobject_cast<PEPPublishTask *>(sender());
+	PEPPublishTask *task = static_cast<PEPPublishTask *>(sender());
 	if (!task)
 		return;
 
@@ -94,7 +94,7 @@ void PEPManager::messageReceived(const Message &m)
 
 void PEPManager::getFinished()
 {
-	PEPGetTask *task = qobject_cast<PEPGetTask *>(sender());
+	PEPGetTask *task = static_cast<PEPGetTask *>(sender());
 	if (!task)
 		return;
 

@@ -51,7 +51,7 @@ Key::Key(KeyShared *data) :
 
 Key::Key(QObject *data)
 {
-	KeyShared *shared = dynamic_cast<KeyShared *>(data);
+	KeyShared *shared = qobject_cast<KeyShared *>(data);
 	if (shared)
 		setData(shared);
 }

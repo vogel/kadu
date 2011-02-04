@@ -96,7 +96,7 @@ Chat::Chat(ChatShared *data) :
  */
 Chat::Chat(QObject *data)
 {
-	ChatShared *shared = dynamic_cast<ChatShared *>(data);
+	ChatShared *shared = qobject_cast<ChatShared *>(data);
 	if (shared)
 		setData(shared);
 }

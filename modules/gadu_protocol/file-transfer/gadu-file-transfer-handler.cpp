@@ -65,7 +65,7 @@ void GaduFileTransferHandler::setFileTransferNotifiers(DccSocketNotifiers *socke
 		socketNotAvailable();
 		return;
 	}
-	
+
 	SocketNotifiers = socketNotifiers;
 	if (SocketNotifiers)
 	{
@@ -119,7 +119,7 @@ void GaduFileTransferHandler::send()
 		return; // TODO: notify
 	}
 
-	GaduProtocol *gaduProtocol = dynamic_cast<GaduProtocol *>(account.protocolHandler());
+	GaduProtocol *gaduProtocol = qobject_cast<GaduProtocol *>(account.protocolHandler());
 	if (!gaduProtocol || !gaduProtocol->gaduContactDetails(contact))
 	{
 		transfer().setTransferStatus(StatusNotConnected);

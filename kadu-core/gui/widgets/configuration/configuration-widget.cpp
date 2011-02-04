@@ -273,7 +273,7 @@ QList<ConfigWidget *> ConfigurationWidget::processUiGroupBoxFromDom(QDomNode gro
 	}
 
 	if (!groupBoxId.isEmpty())
-		Widgets[groupBoxId] = dynamic_cast<QWidget *>(configGroupBoxWidget->widget());
+		Widgets[groupBoxId] = configGroupBoxWidget->widget();
 
 	const QDomNodeList &children = groupBoxElement.childNodes();
 	int length = children.length();

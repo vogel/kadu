@@ -38,7 +38,7 @@ JabberChatStateService::JabberChatStateService(JabberProtocol *parent) :
 	foreach (const Chat &chat, ChatManager::instance()->items())
 	{
 		ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(chat);
-		if (chatWidget && ParentProtocol == dynamic_cast<JabberProtocol *>(chat.chatAccount().protocolHandler()))
+		if (chatWidget && ParentProtocol == qobject_cast<JabberProtocol *>(chat.chatAccount().protocolHandler()))
 			ChatStateMap.insert(chatWidget, new ChatState(chatWidget));
 	}
 
@@ -48,7 +48,7 @@ JabberChatStateService::JabberChatStateService(JabberProtocol *parent) :
 
 void JabberChatStateService::chatWidgetCreated(ChatWidget *chatWidget)
 {
-	if (ParentProtocol == dynamic_cast<JabberProtocol *>(chatWidget->chat().chatAccount().protocolHandler()))
+	if (ParentProtocol == qobject_cast<JabberProtocol *>(chatWidget->chat().chatAccount().protocolHandler()))
 		ChatStateMap.insert(chatWidget, new ChatState(chatWidget));
 }
 
@@ -69,7 +69,7 @@ ChatState::ChatState(ChatWidget *chatWidget) :
 	connect(ObservedChatWidget->getChatEditBox()->inputBox(), SIGNAL(textChanged()),
 			this, SLOT(setComposing()));
 
-	Protocol = dynamic_cast<JabberProtocol *>(ObservedChatWidget->chat().chatAccount().protocolHandler());
+	Protocol = qobject_cast<JabberProtocol *>(ObservedChatWidget->chat().chatAccount().protocolHandler());
 	if (Protocol)
 	{
 		connect(Protocol->client(), SIGNAL(messageReceived(const XMPP::Message &)),

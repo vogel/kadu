@@ -31,7 +31,7 @@
 JabberAvatarVCardUploader::JabberAvatarVCardUploader(Account account, QObject *parent) :
 		QObject(parent), MyAccount(account)
 {
-	MyProtocol = dynamic_cast<JabberProtocol *>(account.protocolHandler());
+	MyProtocol = qobject_cast<JabberProtocol *>(account.protocolHandler());
 }
 
 JabberAvatarVCardUploader::~JabberAvatarVCardUploader()
@@ -47,7 +47,7 @@ void JabberAvatarVCardUploader::uploadAvatar(const QByteArray &data)
 
 void JabberAvatarVCardUploader::vcardReceived()
 {
-	XMPP::JT_VCard *task = dynamic_cast<XMPP::JT_VCard *>(sender());
+	XMPP::JT_VCard *task = qobject_cast<XMPP::JT_VCard *>(sender());
 
 	if (!task || !task->success())
 	{
@@ -66,7 +66,7 @@ void JabberAvatarVCardUploader::vcardReceived()
 
 void JabberAvatarVCardUploader::vcardUploaded()
 {
-	XMPP::JT_VCard *task = dynamic_cast<XMPP::JT_VCard *>(sender());
+	XMPP::JT_VCard *task = qobject_cast<XMPP::JT_VCard *>(sender());
 	if (!task || !task->success())
 	{
 		emit avatarUploaded(false);

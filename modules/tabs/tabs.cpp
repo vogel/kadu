@@ -164,7 +164,7 @@ TabsManager::~TabsManager()
 	// jesli kadu nie konczy dzialania to znaczy ze modul zostal tylko wyladowany wiec odlaczamy rozmowy z kart
 	if (!Core::instance()->isClosing())
 		for (int i = TabDialog->count() - 1; i >= 0; i--)
-			detachChat(dynamic_cast<ChatWidget *>(TabDialog->widget(i)));
+			detachChat(static_cast<ChatWidget *>(TabDialog->widget(i)));
 	else if (config_file.readBoolEntry("Chat", "SaveOpenedWindows", true))// saveTabs()
 		store();
 
@@ -286,7 +286,7 @@ void TabsManager::onTabChange(int index)
 	if (index < 0)
 		return;
 
-	ChatWidget *chat = dynamic_cast<ChatWidget *>(TabDialog->widget(index));
+	ChatWidget *chat = static_cast<ChatWidget *>(TabDialog->widget(index));
 
 	TabDialog->setWindowTitle(chat->title());
 	TabDialog->setWindowIcon(chat->icon());
@@ -336,7 +336,7 @@ void TabsManager::onNewTab(QAction *sender, bool toggled)
 
 	kdebugf();
 
-	Action *action = dynamic_cast<Action *>(sender);
+	Action *action = qobject_cast<Action *>(sender);
 	if (!action)
 		return;
 
@@ -426,11 +426,11 @@ void TabsManager::onTimer()
 	static bool msg, wasactive = 1;
 
 	bool tabsActive = _isActiveWindow(TabDialog);
-	ChatWidget *currentChat = dynamic_cast<ChatWidget *>(TabDialog->currentWidget());
+	ChatWidget *currentChat = static_cast<ChatWidget *>(TabDialog->currentWidget());
 	// sprawdzaj wszystkie okna ktore sa w tabach
 	for (int i = TabDialog->count() -1; i >= 0; i--)
 	{
-		chat = dynamic_cast<ChatWidget *>(TabDialog->widget(i));
+		chat = static_cast<ChatWidget *>(TabDialog->widget(i));
 
 		// czy trzeba cos robia ?
 		if (ChatsWithNewMessages.contains(chat))
@@ -507,7 +507,7 @@ void TabsManager::onTimer()
 
 void TabsManager::onTabAttach(QAction *sender, bool toggled)
 {
-	ChatEditBox *chatEditBox = dynamic_cast<ChatEditBox *>(sender->parent());
+	ChatEditBox *chatEditBox = qobject_cast<ChatEditBox *>(sender->parent());
 	if (!chatEditBox)
 		return;
 
@@ -529,7 +529,7 @@ void TabsManager::onTabAttach(QAction *sender, bool toggled)
 void TabsManager::onContextMenu(QWidget *w, const QPoint &pos)
 {
 	kdebugf();
-	SelectedChat = dynamic_cast<ChatWidget *>(w);
+	SelectedChat = qobject_cast<ChatWidget *>(w);
 	Menu->popup(pos);
 	kdebugf2();
 }
@@ -557,7 +557,7 @@ void TabsManager::onMenuActionDetach()
 void TabsManager::onMenuActionDetachAll()
 {
 	for (int i = TabDialog->count()-1; i >= 0; --i)
-		detachChat(dynamic_cast<ChatWidget *>(TabDialog->widget(i)));
+		detachChat(static_cast<ChatWidget *>(TabDialog->widget(i)));
 }
 
 void TabsManager::onMenuActionClose()
@@ -573,7 +573,7 @@ void TabsManager::onMenuActionCloseAll()
 
 void TabsManager::attachToTabsActionCreated(Action *action)
 {
-	ChatEditBox *chatEditBox = dynamic_cast<ChatEditBox *>(action->parent());
+	ChatEditBox *chatEditBox = qobject_cast<ChatEditBox *>(action->parent());
 	if (!chatEditBox)
 		return;
 

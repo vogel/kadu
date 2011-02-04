@@ -56,7 +56,7 @@ void BuddyContactsTableDelegate::updateEditorGeometry(QWidget *editor, const QSt
 
 void BuddyContactsTableDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const
 {
-	AccountsComboBox *accountsComboBox = dynamic_cast<AccountsComboBox *>(editor);
+	AccountsComboBox *accountsComboBox = qobject_cast<AccountsComboBox *>(editor);
 	if (!accountsComboBox)
 	{
 		QStyledItemDelegate::setEditorData(editor, index);
@@ -68,7 +68,7 @@ void BuddyContactsTableDelegate::setEditorData(QWidget *editor, const QModelInde
 
 void BuddyContactsTableDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
 {
-	AccountsComboBox *accountsComboBox = dynamic_cast<AccountsComboBox *>(editor);
+	AccountsComboBox *accountsComboBox = qobject_cast<AccountsComboBox *>(editor);
 	if (!accountsComboBox)
 	{
 		QStyledItemDelegate::setModelData(editor, model, index);

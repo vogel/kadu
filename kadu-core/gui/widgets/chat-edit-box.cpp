@@ -164,11 +164,11 @@ BuddySet ChatEditBox::buddies()
 
 ChatWidget * ChatEditBox::chatWidget()
 {
-	ChatWidget *result = dynamic_cast<ChatWidget *>(parent());
+	ChatWidget *result = qobject_cast<ChatWidget *>(parentWidget());
 	if (result)
 		return result;
 
-	result = dynamic_cast<ChatWidget *>(parent()->parent());
+	result = qobject_cast<ChatWidget *>(parent()->parent());
 	if (result)
 		return result;
 

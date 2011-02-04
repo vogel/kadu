@@ -25,7 +25,7 @@
 
 static QString getAccountName(const QObject * const object)
 {
-	const AccountNotification * const notification = dynamic_cast<const AccountNotification * const>(object);
+	const AccountNotification * const notification = qobject_cast<const AccountNotification * const>(object);
 	return notification && !notification->account().isNull()
 			? notification->account().accountIdentity().name()
 			: QString();
@@ -33,7 +33,7 @@ static QString getAccountName(const QObject * const object)
 
 static QString getProtocolName(const QObject * const object)
 {
-	const AccountNotification * const notification = dynamic_cast<const AccountNotification * const>(object);
+	const AccountNotification * const notification = qobject_cast<const AccountNotification * const>(object);
 	return notification &&
 			!notification->account().isNull() &&
 			notification->account().protocolHandler() &&

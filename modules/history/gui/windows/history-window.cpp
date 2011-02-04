@@ -251,7 +251,7 @@ void HistoryWindow::updateData()
 		Chat aggregate = AggregateChatManager::instance()->aggregateChat(chat);
 		if (aggregate)
 		{
-			ChatDetailsAggregate *details = dynamic_cast<ChatDetailsAggregate *>(aggregate.details());
+			ChatDetailsAggregate *details = qobject_cast<ChatDetailsAggregate *>(aggregate.details());
 
 			if (details)
 				foreach (const Chat &usedChat, details->chats())

@@ -108,10 +108,10 @@ void SmsConfigurationUiHandler::onSmsBuildInCheckToggle(bool value)
 
 void SmsConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
-	useBuiltIn = dynamic_cast<QCheckBox *>(mainConfigurationWindow->widget()->widgetById("sms/useBuildInApp"));
-	customApp = dynamic_cast<QLineEdit *>(mainConfigurationWindow->widget()->widgetById("sms/customApp"));
-	useCustomString = dynamic_cast<QCheckBox *>(mainConfigurationWindow->widget()->widgetById("sms/useCustomString"));
-	customString = dynamic_cast<QLineEdit *>(mainConfigurationWindow->widget()->widgetById("sms/customString"));
+	useBuiltIn = static_cast<QCheckBox *>(mainConfigurationWindow->widget()->widgetById("sms/useBuildInApp"));
+	customApp = static_cast<QLineEdit *>(mainConfigurationWindow->widget()->widgetById("sms/customApp"));
+	useCustomString = static_cast<QCheckBox *>(mainConfigurationWindow->widget()->widgetById("sms/useCustomString"));
+	customString = static_cast<QLineEdit *>(mainConfigurationWindow->widget()->widgetById("sms/customString"));
 
 	connect(useBuiltIn, SIGNAL(toggled(bool)), this, SLOT(onSmsBuildInCheckToggle(bool)));
 	connect(useCustomString, SIGNAL(toggled(bool)), customString, SLOT(setEnabled(bool)));

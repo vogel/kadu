@@ -240,7 +240,7 @@ void KaduChatStyleEngine::prepareStylePreview(Preview *preview, QString styleNam
 		MessageRenderInfo *message;
 		for (int i = 0; i < count; i++)
 		{
-			message = dynamic_cast<MessageRenderInfo *>(preview->getObjectsToParse().at(i));
+			message = qobject_cast<MessageRenderInfo *>(preview->getObjectsToParse().at(i));
 			Contact sender = message->message().messageSender();
 			text += Parser::parse(content, BuddyOrContact(sender), message);
 		}

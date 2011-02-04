@@ -135,7 +135,7 @@ void ChatWidgetManager::closeAllWindows()
 	QHash<Chat, ChatWidget *>::iterator i = Chats.begin();
 	while (i != Chats.end())
 	{
-		ChatWindow *window = dynamic_cast<ChatWindow *>(i.value()->window());
+		ChatWindow *window = qobject_cast<ChatWindow *>(i.value()->window());
 		if (window)
 		{
 			i = Chats.erase(i);
@@ -183,7 +183,7 @@ void ChatWidgetManager::store()
 		foreach (const Chat &chat, Chats.keys())
 		{
 			if (chat.isNull() || chat.chatAccount().isNull() || !chat.chatAccount().protocolHandler()
-				|| !chat.chatAccount().protocolHandler()->protocolFactory() || !dynamic_cast<ChatWindow *>(Chats.value(chat)->window()))
+				|| !chat.chatAccount().protocolHandler()->protocolFactory() || !qobject_cast<ChatWindow *>(Chats.value(chat)->window()))
 					continue;
 
 			StringList.append(chat.uuid().toString());

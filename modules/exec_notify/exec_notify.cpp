@@ -78,7 +78,7 @@ ExecConfigurationWidget::ExecConfigurationWidget(QWidget *parent)
 	QHBoxLayout *layout = new QHBoxLayout(this);
 	layout->addWidget(commandLineEdit);
 
-	dynamic_cast<NotifyGroupBox *>(parent)->addWidget(this);
+	static_cast<NotifyGroupBox *>(parent)->addWidget(this);
 }
 
 ExecConfigurationWidget::~ExecConfigurationWidget()
@@ -243,7 +243,7 @@ void ExecNotify::notify(Notification *notification)
 	QStringList s = mySplit(' ', syntax);
 	QStringList result;
 
-	ChatNotification *chatNotification = dynamic_cast<ChatNotification *>(notification);
+	ChatNotification *chatNotification = qobject_cast<ChatNotification *>(notification);
 	if (chatNotification)
 	{
 		ContactSet contacts = chatNotification->chat().contacts();

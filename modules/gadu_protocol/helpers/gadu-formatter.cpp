@@ -114,7 +114,7 @@ unsigned char * createFormats(Account account, const FormattedMessage &message, 
 				quint32 size;
 				quint32 crc32;
 
-				GaduChatImageService *gcis = dynamic_cast<GaduChatImageService *>(account.protocolHandler()->chatImageService());
+				GaduChatImageService *gcis = static_cast<GaduChatImageService *>(account.protocolHandler()->chatImageService());
 				gcis->prepareImageToSend(part.imagePath(), size, crc32);
 
 				image.unknown1 = 0x0109;
@@ -172,10 +172,10 @@ static void appendToMessage(Account account, FormattedMessage &result, UinType s
 		}
 
 		// TODO: fix
-		GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(account.protocolHandler());
+		GaduProtocol *gadu = qobject_cast<GaduProtocol *>(account.protocolHandler());
 		if (gadu)
 		{
-			dynamic_cast<GaduChatImageService *>(gadu->chatImageService())->
+			static_cast<GaduChatImageService *>(gadu->chatImageService())->
 					sendImageRequest(ContactManager::instance()->byId(account, QString::number(sender)), size, crc32);
 
 			result << FormattedMessagePart(createImageId(sender, size, crc32));

@@ -201,7 +201,7 @@ void AutoResponder::chatOpenedClosed(ChatWidget *chatWidget, bool activate)
 
 void AutoResponder::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
-	autoRespondTextLineEdit = dynamic_cast<QLineEdit *>(mainConfigurationWindow->widget()->widgetById("autoresponder/autoRespondText"));
+	autoRespondTextLineEdit = static_cast<QLineEdit *>(mainConfigurationWindow->widget()->widgetById("autoresponder/autoRespondText"));
 	autoRespondTextLineEdit->setToolTip(qApp->translate("@default", MainConfigurationWindow::SyntaxText));
 }
 

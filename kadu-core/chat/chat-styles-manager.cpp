@@ -392,7 +392,7 @@ void ChatStylesManager::mainConfigurationWindowCreated(MainConfigurationWindow *
 	groupBox->addWidgets(new QLabel(qApp->translate("@default", "Style variant") + ':'), VariantListCombo);
 	groupBox->addWidgets(new QLabel(qApp->translate("@default", "Preview") + ':'), EnginePreview);
 
-	TurnOnTransparency = dynamic_cast<QCheckBox *>(window->widget()->widgetById("useTransparency"));
+	TurnOnTransparency = static_cast<QCheckBox *>(window->widget()->widgetById("useTransparency"));
 	TurnOnTransparency->setEnabled(CompositingEnabled);
 }
 

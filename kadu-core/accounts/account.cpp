@@ -66,7 +66,7 @@ Account::Account(AccountShared *data) :
 
 Account::Account(QObject *data)
 {
-	AccountShared *shared = dynamic_cast<AccountShared *>(data);
+	AccountShared *shared = qobject_cast<AccountShared *>(data);
 	if (shared)
 		setData(shared);
 }

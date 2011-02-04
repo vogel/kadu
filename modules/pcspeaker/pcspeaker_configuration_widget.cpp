@@ -41,7 +41,7 @@ PCSpeakerConfigurationWidget::PCSpeakerConfigurationWidget(QWidget *parent)
 	layout->addWidget(testButton);
 	layout->addWidget(soundEdit);
 
-	dynamic_cast<NotifyGroupBox *>(parent)->addWidget(this);
+	static_cast<NotifyGroupBox *>(parent)->addWidget(this);
 }
 
 PCSpeakerConfigurationWidget::~PCSpeakerConfigurationWidget()

@@ -54,7 +54,7 @@ Identity::Identity(IdentityShared *data) :
 
 Identity::Identity(QObject *data)
 {
-	IdentityShared *shared = dynamic_cast<IdentityShared *>(data);
+	IdentityShared *shared = qobject_cast<IdentityShared *>(data);
 	if (shared)
 		setData(shared);
 }

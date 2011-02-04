@@ -93,7 +93,7 @@ void FileTransferActions::sendFileActionActivated(QAction *sender, bool toggled)
 
 	kdebugf();
 
-	Action *action = dynamic_cast<Action *>(sender);
+	Action *action = qobject_cast<Action *>(sender);
 	if (!action)
 		return;
 

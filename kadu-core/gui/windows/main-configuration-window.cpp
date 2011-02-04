@@ -179,9 +179,9 @@ MainConfigurationWindow::MainConfigurationWindow() :
 	((QWidget *)(widget()->widgetById("notify/fullscreenSilentMode")))->hide();
 #endif
 
-	onStartupSetLastDescription = dynamic_cast<QCheckBox *>(widget()->widgetById("onStartupSetLastDescription"));
-	QLineEdit *disconnectDescription = dynamic_cast<QLineEdit *>(widget()->widgetById("disconnectDescription"));
-	QLineEdit *onStartupSetDescription = dynamic_cast<QLineEdit *>(widget()->widgetById("onStartupSetDescription"));
+	onStartupSetLastDescription = static_cast<QCheckBox *>(widget()->widgetById("onStartupSetLastDescription"));
+	QLineEdit *disconnectDescription = static_cast<QLineEdit *>(widget()->widgetById("disconnectDescription"));
+	QLineEdit *onStartupSetDescription = static_cast<QLineEdit *>(widget()->widgetById("onStartupSetDescription"));
 
 	Account account = AccountManager::instance()->defaultAccount();
 	if (!account.isNull() && account.protocolHandler())
@@ -205,9 +205,9 @@ MainConfigurationWindow::MainConfigurationWindow() :
 
 	connect(widget()->widgetById("displayGroupTabs"), SIGNAL(toggled(bool)), widget()->widgetById("showGroupAll"), SLOT(setEnabled(bool)));
 
-	emoticonsStyleComboBox = dynamic_cast<ConfigComboBox *>(widget()->widgetById("emoticonsStyle"));
-	emoticonsThemeComboBox = dynamic_cast<ConfigComboBox *>(widget()->widgetById("emoticonsTheme"));
-	emoticonsScalingComboBox = dynamic_cast<ConfigComboBox *>(widget()->widgetById("emoticonsScaling"));
+	emoticonsStyleComboBox = static_cast<ConfigComboBox *>(widget()->widgetById("emoticonsStyle"));
+	emoticonsThemeComboBox = static_cast<ConfigComboBox *>(widget()->widgetById("emoticonsTheme"));
+	emoticonsScalingComboBox = static_cast<ConfigComboBox *>(widget()->widgetById("emoticonsScaling"));
 	connect(emoticonsThemeComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(onChangeEmoticonsTheme(int)));
 	connect(widget()->widgetById("emoticonsPaths"), SIGNAL(changed()), this, SLOT(setEmoticonThemes()));
 
@@ -215,17 +215,17 @@ MainConfigurationWindow::MainConfigurationWindow() :
 	connect(showInformationPanel, SIGNAL(toggled(bool)), widget()->widgetById("showVerticalScrollbar"), SLOT(setEnabled(bool)));
 	connect(showInformationPanel, SIGNAL(toggled(bool)), widget()->widgetById("showEmoticonsInPanel"), SLOT(setEnabled(bool)));
 
-	ConfigCheckBox *useDefaultBrowserCheckbox = dynamic_cast<ConfigCheckBox *>(widget()->widgetById("useDefaultBrowser"));
-	ConfigLineEdit *browserCommandLineEdit = dynamic_cast<ConfigLineEdit *>(widget()->widgetById("browserPath"));
+	ConfigCheckBox *useDefaultBrowserCheckbox = static_cast<ConfigCheckBox *>(widget()->widgetById("useDefaultBrowser"));
+	ConfigLineEdit *browserCommandLineEdit = static_cast<ConfigLineEdit *>(widget()->widgetById("browserPath"));
 	connect(useDefaultBrowserCheckbox, SIGNAL(toggled(bool)), browserCommandLineEdit, SLOT(setDisabled(bool)));
 
-	ConfigCheckBox *useDefaultEMailCheckbox = dynamic_cast<ConfigCheckBox *>(widget()->widgetById("useDefaultEMail"));
-	ConfigLineEdit *mailCommandLineEdit = dynamic_cast<ConfigLineEdit *>(widget()->widgetById("mailPath"));
+	ConfigCheckBox *useDefaultEMailCheckbox = static_cast<ConfigCheckBox *>(widget()->widgetById("useDefaultEMail"));
+	ConfigLineEdit *mailCommandLineEdit = static_cast<ConfigLineEdit *>(widget()->widgetById("mailPath"));
 	connect(useDefaultEMailCheckbox, SIGNAL(toggled(bool)), mailCommandLineEdit, SLOT(setDisabled(bool)));
 
 	connect(widget()->widgetById("lookChatAdvanced"), SIGNAL(clicked()), this, SLOT(showLookChatAdvanced()));
 
-	Preview *infoPanelSyntaxPreview = dynamic_cast<Preview *>(widget()->widgetById("infoPanelSyntaxPreview"));
+	Preview *infoPanelSyntaxPreview = static_cast<Preview *>(widget()->widgetById("infoPanelSyntaxPreview"));
 	infoPanelSyntaxPreview->setResetBackgroundColor(config_file.readEntry("Look", "InfoPanelBgColor"));
 	connect(infoPanelSyntaxPreview, SIGNAL(needFixup(QString &)), Core::instance()->kaduWindow()->infoPanel(), SLOT(styleFixup(QString &)));
 	connect(widget()->widgetById("infoPanelSyntax"), SIGNAL(syntaxChanged(const QString &)), infoPanelSyntaxPreview, SLOT(syntaxChanged(const QString &)));
@@ -241,10 +241,10 @@ MainConfigurationWindow::MainConfigurationWindow() :
 	connect(useUserboxBackground, SIGNAL(toggled(bool)), widget()->widgetById("userboxBackgroundDisplayStyle"), SLOT(setEnabled(bool)));
 
 	widget()->widgetById("parseStatus")->setToolTip(qApp->translate("@default", SyntaxText));
-	(dynamic_cast<ConfigSyntaxEditor *>(widget()->widgetById("infoPanelSyntax")))->setSyntaxHint(qApp->translate("@default", SyntaxText));
+	(static_cast<ConfigSyntaxEditor *>(widget()->widgetById("infoPanelSyntax")))->setSyntaxHint(qApp->translate("@default", SyntaxText));
 
-	userboxTransparency = dynamic_cast<QCheckBox *>(widget()->widgetById("userboxTransparency"));
-	userboxAlpha = dynamic_cast<QSlider *>(widget()->widgetById("userboxAlpha"));
+	userboxTransparency = static_cast<QCheckBox *>(widget()->widgetById("userboxTransparency"));
+	userboxAlpha = static_cast<QSlider *>(widget()->widgetById("userboxAlpha"));
 	connect(userboxTransparency, SIGNAL(toggled(bool)), widget()->widgetById("userboxAlpha"), SLOT(setEnabled(bool)));
 
 	buddyColors = new BuddyListBackgroundColorsWidget(this);
@@ -292,15 +292,15 @@ void MainConfigurationWindow::onChangeStartupStatus(int index)
 
 void MainConfigurationWindow::setLanguages()
 {
-	ConfigComboBox *languages = dynamic_cast<ConfigComboBox *>(widget()->widgetById("languages"));
+	ConfigComboBox *languages = static_cast<ConfigComboBox *>(widget()->widgetById("languages"));
 
 	languages->setItems(LanguagesManager::languageValues(), LanguagesManager::languageNames());
 }
 
 void MainConfigurationWindow::setIconThemes()
 {
-	ConfigComboBox *iconThemes = dynamic_cast<ConfigComboBox *>(widget()->widgetById("iconThemes"));
-	IconsManager::instance()->themeManager()->loadThemes((dynamic_cast<PathListEdit *>(widget()->widgetById("iconPaths")))->pathList());
+	ConfigComboBox *iconThemes = static_cast<ConfigComboBox *>(widget()->widgetById("iconThemes"));
+	IconsManager::instance()->themeManager()->loadThemes((static_cast<PathListEdit *>(widget()->widgetById("iconPaths")))->pathList());
 
 	(void)QT_TRANSLATE_NOOP("@default", "default");
 	QList<Theme> themes = IconsManager::instance()->themeManager()->themes();
@@ -319,8 +319,8 @@ void MainConfigurationWindow::setIconThemes()
 
 void MainConfigurationWindow::setEmoticonThemes()
 {
-	ConfigComboBox *emoticonsThemes = dynamic_cast<ConfigComboBox *>(widget()->widgetById("emoticonsTheme"));
-	EmoticonsManager::instance()->themeManager()->loadThemes((dynamic_cast<PathListEdit *>(widget()->widgetById("emoticonsPaths")))->pathList());
+	ConfigComboBox *emoticonsThemes = static_cast<ConfigComboBox *>(widget()->widgetById("emoticonsTheme"));
+	EmoticonsManager::instance()->themeManager()->loadThemes((static_cast<PathListEdit *>(widget()->widgetById("emoticonsPaths")))->pathList());
 
 	(void)QT_TRANSLATE_NOOP("@default", "default");
 	QList<Theme> themes = EmoticonsManager::instance()->themeManager()->themes();
@@ -351,7 +351,7 @@ void MainConfigurationWindow::setToolTipClasses()
 		values << toolTipClass;
 	}
 
-	dynamic_cast<ConfigComboBox *>(widget()->widgetById("toolTipClasses"))->setItems(values, captions);
+	static_cast<ConfigComboBox *>(widget()->widgetById("toolTipClasses"))->setItems(values, captions);
 }
 
 void MainConfigurationWindow::onChangeEmoticonsTheme(int index)

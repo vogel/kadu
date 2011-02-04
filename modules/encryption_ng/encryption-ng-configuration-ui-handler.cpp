@@ -66,13 +66,13 @@ EncryptionNgConfigurationUiHandler::~EncryptionNgConfigurationUiHandler()
 
 void EncryptionNgConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
-	GenerateKeys = dynamic_cast<ConfigActionButton *>(mainConfigurationWindow->widget()->widgetById("encryption-ng/generateKeys"));
+	GenerateKeys = static_cast<ConfigActionButton *>(mainConfigurationWindow->widget()->widgetById("encryption-ng/generateKeys"));
 	connect(GenerateKeys, SIGNAL(clicked()), this, SLOT(generateKeysClicked()));
 }
 
 void EncryptionNgConfigurationUiHandler::generateKeysClicked()
 {
-	QMenu menu;	
+	QMenu menu;
 
 	foreach (const Account &account, AccountManager::instance()->items())
 		if (account.protocolHandler())

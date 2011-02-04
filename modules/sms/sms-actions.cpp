@@ -102,7 +102,7 @@ void SmsActions::sendSmsActionActivated(QAction *sender, bool toggled)
 {
 	Q_UNUSED(toggled)
 
-	Action *action = dynamic_cast<Action *>(sender);
+	Action *action = qobject_cast<Action *>(sender);
 	QString mobile = action ? action->buddy().mobile() : QString();
 	newSms(mobile);
 }

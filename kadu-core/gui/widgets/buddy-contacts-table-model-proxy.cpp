@@ -38,7 +38,7 @@ bool BuddyContactsTableModelProxy::filterAcceptsRow(int sourceRow, const QModelI
 {
 	Q_UNUSED(sourceParent)
 
-	BuddyContactsTableModel *model = dynamic_cast<BuddyContactsTableModel *>(sourceModel());
+	BuddyContactsTableModel *model = qobject_cast<BuddyContactsTableModel *>(sourceModel());
 	if (!model)
 		return false;
 

@@ -27,8 +27,7 @@
 #include <QtCore/QVariant>
 
 #include "configuration/xml-configuration-file.h"
-
-#include "storage-point.h"
+#include "storage/storage-point.h"
 
 #include "exports.h"
 
@@ -314,7 +313,7 @@ template<class T>
 	T * moduleStorableData(const QString &module, QObject *qobjectParent, bool create)
 	{
 		if (ModulesStorableData.contains(module))
-			return dynamic_cast<T *>(ModulesStorableData[module]);
+			return qobject_cast<T *>(ModulesStorableData[module]);
 
 		QSharedPointer<StoragePoint> storagePoint(storagePointForModuleData(module, create));
 		if (!storagePoint)

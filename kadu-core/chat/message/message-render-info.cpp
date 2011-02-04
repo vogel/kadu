@@ -47,7 +47,7 @@ QString formatMessage(const QString& text)
 
 static QString getMessage(const QObject * const object)
 {
-	const MessageRenderInfo * const messageRenderInfo = dynamic_cast<const MessageRenderInfo * const>(object);
+	const MessageRenderInfo * const messageRenderInfo = qobject_cast<const MessageRenderInfo * const>(object);
 	if (messageRenderInfo)
 		return formatMessage(messageRenderInfo->htmlMessageContent());
 	else
@@ -56,7 +56,7 @@ static QString getMessage(const QObject * const object)
 
 static QString getBackgroundColor(const QObject * const object)
 {
-	const MessageRenderInfo * const messageRenderInfo = dynamic_cast<const MessageRenderInfo * const>(object);
+	const MessageRenderInfo * const messageRenderInfo = qobject_cast<const MessageRenderInfo * const>(object);
 	if (messageRenderInfo)
 		return messageRenderInfo->backgroundColor();
 	else
@@ -65,7 +65,7 @@ static QString getBackgroundColor(const QObject * const object)
 
 static QString getFontColor(const QObject * const object)
 {
-	const MessageRenderInfo * const messageRenderInfo = dynamic_cast<const MessageRenderInfo * const>(object);
+	const MessageRenderInfo * const messageRenderInfo = qobject_cast<const MessageRenderInfo * const>(object);
 	if (messageRenderInfo)
 		return messageRenderInfo->fontColor();
 	else
@@ -74,7 +74,7 @@ static QString getFontColor(const QObject * const object)
 
 static QString getNickColor(const QObject * const object)
 {
-	const MessageRenderInfo * const messageRenderInfo = dynamic_cast<const MessageRenderInfo * const>(object);
+	const MessageRenderInfo * const messageRenderInfo = qobject_cast<const MessageRenderInfo * const>(object);
 	if (messageRenderInfo)
 		return messageRenderInfo->nickColor();
 	else
@@ -83,7 +83,7 @@ static QString getNickColor(const QObject * const object)
 
 static QString getSentDate(const QObject * const object)
 {
-	const MessageRenderInfo * const messageRenderInfo = dynamic_cast<const MessageRenderInfo * const>(object);
+	const MessageRenderInfo * const messageRenderInfo = qobject_cast<const MessageRenderInfo * const>(object);
 	if (messageRenderInfo && messageRenderInfo->showServerTime())
 		return printDateTime(messageRenderInfo->message().sendDate());
 	else
@@ -92,7 +92,7 @@ static QString getSentDate(const QObject * const object)
 
 static QString getReceivedDate(const QObject * const object)
 {
-	const MessageRenderInfo * const messageRenderInfo = dynamic_cast<const MessageRenderInfo * const>(object);
+	const MessageRenderInfo * const messageRenderInfo = qobject_cast<const MessageRenderInfo * const>(object);
 	if (messageRenderInfo)
 		return printDateTime(messageRenderInfo->message().receiveDate());
 	else
@@ -101,8 +101,11 @@ static QString getReceivedDate(const QObject * const object)
 
 static QString getSeparator(const QObject * const object)
 {
-	int separatorSize = dynamic_cast<const MessageRenderInfo * const>(object)->separatorSize();
+	const MessageRenderInfo * const messageRenderInfo = qobject_cast<const MessageRenderInfo * const>(object);
+	if (!messageRenderInfo)
+		return QString();
 
+	int separatorSize = messageRenderInfo->separatorSize();
 	if (separatorSize)
 		return "<div style=\"margin: 0; margin-top:" + QString::number(separatorSize) + "px\"></div>";
 	else

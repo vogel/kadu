@@ -176,7 +176,7 @@ SingleWindow::~SingleWindow()
 	{
 		for (int i = tabs->count()-1; i >= 0; --i)
 		{
-			ChatWidget* chat = dynamic_cast<ChatWidget *>(tabs->widget(i));
+			ChatWidget *chat = static_cast<ChatWidget *>(tabs->widget(i));
 			Chat oldchat = chat->chat();
 			tabs->removeTab(i);
 			delete chat;
@@ -220,7 +220,7 @@ void SingleWindow::onOpenChat(ChatWidget *w)
 
 void SingleWindow::closeTab(int index)
 {
-	ChatWidget* w = dynamic_cast<ChatWidget *>(tabs->widget(index));
+	ChatWidget *w = static_cast<ChatWidget *>(tabs->widget(index));
 
 	disconnect(w, SIGNAL(messageReceived(Chat)), this, SLOT(onNewMessage(Chat)));
 	disconnect(w->edit(), SIGNAL(keyPressed(QKeyEvent *, CustomInput *, bool &)),

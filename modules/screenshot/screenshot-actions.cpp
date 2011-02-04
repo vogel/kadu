@@ -37,7 +37,7 @@ static void disableNoChatImageService(Action *action)
 {
 	action->setEnabled(false);
 
-	ChatEditBox *chatEditBox = dynamic_cast<ChatEditBox *>(action->parent());
+	ChatEditBox *chatEditBox = qobject_cast<ChatEditBox *>(action->parent());
 	if (!chatEditBox)
 		return;
 
@@ -106,7 +106,7 @@ void ScreenshotActions::screenshotActionActivated(QAction *sender, bool toggled)
 
 	kdebugf();
 
-	ChatEditBox *chatEditBox = dynamic_cast<ChatEditBox *>(sender->parent());
+	ChatEditBox *chatEditBox = qobject_cast<ChatEditBox *>(sender->parent());
 	if (!chatEditBox)
 		return;
 

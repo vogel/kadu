@@ -232,7 +232,7 @@ void HintManager::deleteHint(Hint *hint)
 	kdebugf();
 
 	hints.removeAll(hint);
-	layout->removeWidget(static_cast<QWidget *>(hint));
+	layout->removeWidget(hint);
 	hint->deleteLater();
 
 	if (hints.isEmpty())
@@ -392,7 +392,7 @@ Hint *HintManager::addHint(Notification *notification)
 	hints.append(hint);
 
 	setLayoutDirection();
-	layout->addWidget(static_cast<QWidget *>(hint));
+	layout->addWidget(hint);
 
 	connect(hint, SIGNAL(leftButtonClicked(Hint *)), this, SLOT(leftButtonSlot(Hint *)));
 	connect(hint, SIGNAL(rightButtonClicked(Hint *)), this, SLOT(rightButtonSlot(Hint *)));
@@ -539,7 +539,7 @@ void HintManager::notify(Notification *notification)
 {
 	kdebugf();
 
-	ChatNotification *chatNotification = dynamic_cast<ChatNotification *>(notification);
+	ChatNotification *chatNotification = qobject_cast<ChatNotification *>(notification);
 	//TODO 0.6.6: hack
 	if (!chatNotification || notification->type().contains("StatusChanged"))
 	{
@@ -565,7 +565,7 @@ void HintManager::notify(Notification *notification)
 
 void HintManager::notificationClosed(Notification *notification)
 {
-	ChatNotification *chatNotification = dynamic_cast<ChatNotification *>(notification);
+	ChatNotification *chatNotification = qobject_cast<ChatNotification *>(notification);
 	if (!chatNotification)
 		return;
 

@@ -272,7 +272,7 @@ void MediaPlayer::mediaPlayerMenuActivated(QAction *sender, bool toggled)
 {
 	Q_UNUSED(toggled)
 
-	ChatEditBox *chatEditBox = dynamic_cast<ChatEditBox *>(sender->parent());
+	ChatEditBox *chatEditBox = qobject_cast<ChatEditBox *>(sender->parent());
 	if (!chatEditBox)
 		return;
 

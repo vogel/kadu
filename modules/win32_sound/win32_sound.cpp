@@ -120,7 +120,7 @@ WIN32PlayerSlots::WIN32PlayerSlots()
 			}
 		} );
 	}
-	
+
 	kdebugf2();
 }
 
@@ -241,8 +241,8 @@ void WIN32PlayerSlots::createDefaultConfiguration()
 
 void WIN32PlayerSlots::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
-	ConfigComboBox *in=dynamic_cast<ConfigComboBox*>(mainConfigurationWindow->widget()->widgetById("win32sound/in"));
-	ConfigComboBox *out=dynamic_cast<ConfigComboBox*>(mainConfigurationWindow->widget()->widgetById("win32sound/out"));
+	ConfigComboBox *in = static_cast<ConfigComboBox *>(mainConfigurationWindow->widget()->widgetById("win32sound/in"));
+	ConfigComboBox *out = static_cast<ConfigComboBox *>(mainConfigurationWindow->widget()->widgetById("win32sound/out"));
 	in->setItems(inValues, inNames);
 	out->setItems(outValues, outNames);
 }

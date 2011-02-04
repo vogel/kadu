@@ -61,16 +61,16 @@ SpeechConfigurationUiHandler::SpeechConfigurationUiHandler()
 
 void SpeechConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
-	frequencySlider = dynamic_cast<QSlider *>(mainConfigurationWindow->widget()->widgetById("speech/frequency"));
-	tempoSlider = dynamic_cast<QSlider *>(mainConfigurationWindow->widget()->widgetById("speech/tempo"));
-	baseFrequencySlider = dynamic_cast<QSlider *>(mainConfigurationWindow->widget()->widgetById("speech/baseFrequency"));
-	melodyCheckBox = dynamic_cast<QCheckBox *>(mainConfigurationWindow->widget()->widgetById("spech/melody"));
+	frequencySlider = static_cast<QSlider *>(mainConfigurationWindow->widget()->widgetById("speech/frequency"));
+	tempoSlider = static_cast<QSlider *>(mainConfigurationWindow->widget()->widgetById("speech/tempo"));
+	baseFrequencySlider = static_cast<QSlider *>(mainConfigurationWindow->widget()->widgetById("speech/baseFrequency"));
+	melodyCheckBox = static_cast<QCheckBox *>(mainConfigurationWindow->widget()->widgetById("spech/melody"));
 
-	programSelectFile = dynamic_cast<SelectFile *>(mainConfigurationWindow->widget()->widgetById("speech/program"));;
+	programSelectFile = static_cast<SelectFile *>(mainConfigurationWindow->widget()->widgetById("speech/program"));;
 
-	soundSystemComboBox = dynamic_cast<ConfigComboBox *>(mainConfigurationWindow->widget()->widgetById("speech/soundSystem"));
-	dspDeviceLineEdit = dynamic_cast<QLineEdit *>(mainConfigurationWindow->widget()->widgetById("speech/dspDevice"));
-	klattSyntCheckBox = dynamic_cast<QCheckBox *>(mainConfigurationWindow->widget()->widgetById("speech/klattSynt"));
+	soundSystemComboBox = static_cast<ConfigComboBox *>(mainConfigurationWindow->widget()->widgetById("speech/soundSystem"));
+	dspDeviceLineEdit = static_cast<QLineEdit *>(mainConfigurationWindow->widget()->widgetById("speech/dspDevice"));
+	klattSyntCheckBox = static_cast<QCheckBox *>(mainConfigurationWindow->widget()->widgetById("speech/klattSynt"));
 
 	connect(soundSystemComboBox, SIGNAL(activated(int)), this, SLOT(soundSystemChanged(int)));
 	connect(mainConfigurationWindow->widget()->widgetById("speech/test"), SIGNAL(clicked()), this, SLOT(testSpeech()));

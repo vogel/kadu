@@ -73,7 +73,7 @@ void ScreenShotConfigurationUiHandler::mainConfigurationWindowCreated(MainConfig
 	foreach (const QByteArray &opt, byteArrayOpts)
 		opts.append(QString(opt));
 
-	ConfigComboBox *formats = dynamic_cast<ConfigComboBox *>(mainConfigurationWindow->widget()->widgetById("screenshot/formats"));
+	ConfigComboBox *formats = static_cast<ConfigComboBox *>(mainConfigurationWindow->widget()->widgetById("screenshot/formats"));
 	if (formats)
 		formats->setItems(opts, opts);
 }

@@ -122,7 +122,7 @@ void EncryptionActions::canEncryptChanged(const Chat &chat)
 
 void EncryptionActions::enableEncryptionActionActivated(QAction *sender, bool toggled)
 {
-	Action *action = dynamic_cast<Action *>(sender);
+	Action *action = qobject_cast<Action *>(sender);
 	if (!action)
 		return;
 
@@ -141,7 +141,7 @@ void EncryptionActions::sendPublicKeyActionActivated(QAction *sender, bool toggl
 {
 	Q_UNUSED(toggled)
 
-	Action *action = dynamic_cast<Action *>(sender);
+	Action *action = qobject_cast<Action *>(sender);
 	if (!action)
 		return;
 

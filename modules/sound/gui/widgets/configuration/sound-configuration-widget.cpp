@@ -43,7 +43,7 @@ SoundConfigurationWidget::SoundConfigurationWidget(QWidget *parent) :
 	layout->addWidget(testButton);
 	layout->addWidget(SoundFileSelectFile);
 
-	dynamic_cast<NotifyGroupBox *>(parent)->addWidget(this);
+	static_cast<NotifyGroupBox *>(parent)->addWidget(this);
 }
 
 SoundConfigurationWidget::~SoundConfigurationWidget()

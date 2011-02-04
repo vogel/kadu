@@ -115,8 +115,8 @@ void SoundConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurati
 
 	connect(mainConfigurationWindow->widget()->widgetById("sound/testPlay"), SIGNAL(clicked()), SoundManager::instance(), SLOT(testSoundPlaying()));
 
-	ThemesComboBox = dynamic_cast<ConfigComboBox *>(mainConfigurationWindow->widget()->widgetById("sound/themes"));
-	ThemesPaths = dynamic_cast<PathListEdit *>(mainConfigurationWindow->widget()->widgetById("soundPaths"));
+	ThemesComboBox = static_cast<ConfigComboBox *>(mainConfigurationWindow->widget()->widgetById("sound/themes"));
+	ThemesPaths = static_cast<PathListEdit *>(mainConfigurationWindow->widget()->widgetById("soundPaths"));
 	//connect(ThemesPaths, SIGNAL(changed()), SoundManager::instance(), SLOT(setSoundThemes()));
 
 	setSoundThemes();

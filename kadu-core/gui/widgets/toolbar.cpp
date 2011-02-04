@@ -56,12 +56,12 @@ public:
 
 	virtual bool eventFilter(QObject *o, QEvent *e)
 	{
-		QToolButton *button = dynamic_cast<QToolButton *>(o);
+		QToolButton *button = qobject_cast<QToolButton *>(o);
 		if (!button)
 			return false;
 		if (button->isEnabled())
 			return false;
-		ToolBar *toolbar = dynamic_cast<ToolBar *>(button->parent());
+		ToolBar *toolbar = qobject_cast<ToolBar *>(button->parentWidget());
 		if (!toolbar)
 			return false;
 
@@ -147,21 +147,24 @@ QToolButton * ToolBar::createPushButton(QAction *before, ToolBarAction &action)
 	if (!Actions::instance()->contains(action.actionName))
 		return 0;
 
-	MainWindow *kaduMainWindow = dynamic_cast<MainWindow *>(parent());
+	MainWindow *kaduMainWindow = qobject_cast<MainWindow *>(parentWidget());
 	if (!kaduMainWindow)
 		return 0;
 
 	if (!kaduMainWindow->supportsActionType(Actions::instance()->value(action.actionName)->type()))
 		return 0;
 
-	action.action = Actions::instance()->createAction(action.actionName, dynamic_cast<MainWindow *>(parent()));
+	action.action = Actions::instance()->createAction(action.actionName, kaduMainWindow);
 	insertAction(before, action.action);
 
-	QToolButton *button = dynamic_cast<QToolButton *>(widgetForAction(action.action));
+	QToolButton *button = qobject_cast<QToolButton *>(widgetForAction(action.action));
 	action.widget = button;
-	connect(button, SIGNAL(pressed()), this, SLOT(widgetPressed()));
-	button->installEventFilter(watcher);
-	button->setToolButtonStyle(action.style);
+	if (button)
+	{
+		connect(button, SIGNAL(pressed()), this, SLOT(widgetPressed()));
+		button->installEventFilter(watcher);
+		button->setToolButtonStyle(action.style);
+	}
 
 	return button;
 }
@@ -286,20 +289,20 @@ void ToolBar::dragMoveEvent(QDragMoveEvent *event)
 void ToolBar::dragEnterEvent(QDragEnterEvent *event)
 {
 	kdebugf();
-	ToolBar *source = dynamic_cast<ToolBar*>(event->source());
+	ToolBar *source = qobject_cast<ToolBar*>(event->source());
 	if (source)
 	{
 		QString actionName;
 		Qt::ToolButtonStyle style;
 
-		if (
-				ActionDrag::decode(event, actionName, style) &&
-				(
-					(event->source() == this)
-					|| (Actions::instance()->contains(actionName) && dynamic_cast<MainWindow *>(parent())->supportsActionType(Actions::instance()->value(actionName)->type()))
-					|| (actionName.startsWith(QLatin1String("__separator")) || actionName.startsWith(QLatin1String("__spacer")))
-				)
-			)
+		MainWindow *mainWindow = 0;
+		if (ActionDrag::decode(event, actionName, style) &&
+				(event->source() == this ||
+				(Actions::instance()->contains(actionName) &&
+					(mainWindow = qobject_cast<MainWindow *>(parentWidget())) &&
+					mainWindow->supportsActionType(Actions::instance()->value(actionName)->type())) ||
+				actionName.startsWith(QLatin1String("__separator")) ||
+				actionName.startsWith(QLatin1String("__spacer"))))
 		{
 			dragging = true;
 			updateDropMarker();
@@ -329,7 +332,7 @@ void ToolBar::leaveEvent(QEvent *event)
 void ToolBar::dropEvent(QDropEvent *event)
 {
 	kdebugf();
-	ToolBar *source = dynamic_cast<ToolBar*>(event->source());
+	ToolBar *source = qobject_cast<ToolBar*>(event->source());
 
 	dragging = false;
 	updateDropMarker();
@@ -350,10 +353,9 @@ void ToolBar::dropEvent(QDropEvent *event)
 
 	QAction *before = findActionToDropBefore(event->pos());
 
-	ToolBar *source_toolbar = dynamic_cast<ToolBar*>(event->source());
-	if (source_toolbar != this)
+	if (source != this)
 	{
-		source_toolbar->deleteAction(actionName);
+		source->deleteAction(actionName);
 		addAction(actionName, style, before);
 	}
 	else
@@ -376,7 +378,7 @@ bool ToolBar::event(QEvent *event)
 
 Qt::ToolBarArea ToolBar::toolBarArea()
 {
-	QMainWindow *mainWindow = dynamic_cast<QMainWindow *>(parent());
+	QMainWindow *mainWindow = qobject_cast<QMainWindow *>(parentWidget());
 	if (!mainWindow)
 		return Qt::NoToolBarArea;
 	if (isFloating())
@@ -676,9 +678,9 @@ QMenu * ToolBar::createContextMenu(QWidget *widget)
 {
 	currentWidget = widget;
 
-	QToolButton *button = dynamic_cast<QToolButton *>(widget);
-	ToolBarSeparator *separator = dynamic_cast<ToolBarSeparator *>(widget);
-	ToolBarSpacer *spacer = dynamic_cast<ToolBarSpacer *>(widget);
+	QToolButton *button = qobject_cast<QToolButton *>(widget);
+	ToolBarSeparator *separator = button ? 0 : qobject_cast<ToolBarSeparator *>(widget);
+	ToolBarSpacer *spacer = (button || separator) ? 0 : qobject_cast<ToolBarSpacer *>(widget);
 
 	QMenu *menu = new QMenu(this);
 
@@ -688,7 +690,7 @@ QMenu * ToolBar::createContextMenu(QWidget *widget)
 
 		if (button)
 		{
-			QMenu *textPositionMenu = new QMenu(tr("Text position"), this);
+			QMenu *textPositionMenu = new QMenu(tr("Text position"), menu);
 			IconsOnly = textPositionMenu->addAction(tr( "Icon only"), this, SLOT(slotContextIcons()));
 			IconsOnly->setChecked(true);
 			TextOnly = textPositionMenu->addAction(tr("Text only"), this, SLOT(slotContextText()));
@@ -705,20 +707,18 @@ QMenu * ToolBar::createContextMenu(QWidget *widget)
 
 		if (button)
 			menu->addAction(tr("Remove this button"), this, SLOT(removeButton()));
-		if (separator)
+		else if (separator)
 			menu->addAction(tr("Remove this separator"), this, SLOT(removeSeparator()));
-		if (spacer)
+		else if (spacer)
 			menu->addAction(tr("Remove this expandable spacer"), this, SLOT(removeSpacer()));
 
 		menu->addSeparator();
 
-		QMenu *actionsMenu = new QMenu(tr("Add new button"), this);
+		QMenu *actionsMenu = new QMenu(tr("Add new button"), menu);
 		foreach (ActionDescription *actionDescription, Actions::instance()->values())
 		{
 			bool supportsAction;
-			MainWindow *kaduMainWindow = 0;
-			if (parent())
-				kaduMainWindow = dynamic_cast<MainWindow *>(parent());
+			MainWindow *kaduMainWindow = qobject_cast<MainWindow *>(parentWidget());
 
 			if (kaduMainWindow)
 				supportsAction = kaduMainWindow->supportsActionType(actionDescription->type());
@@ -817,7 +817,7 @@ void ToolBar::setBlockToolbars(bool checked)
 
 void ToolBar::removeButton()
 {
-	QToolButton *currentButton = dynamic_cast<QToolButton *>(currentWidget);
+	QToolButton *currentButton = qobject_cast<QToolButton *>(currentWidget);
 	if (!currentButton)
 		return;
 	foreach (const ToolBarAction &toolBarAction, ToolBarActions)
@@ -834,7 +834,7 @@ void ToolBar::removeButton()
 
 void ToolBar::removeSeparator()
 {
-	ToolBarSeparator *currentSeparator = dynamic_cast<ToolBarSeparator *>(currentWidget);
+	ToolBarSeparator *currentSeparator = qobject_cast<ToolBarSeparator *>(currentWidget);
 	if (!currentSeparator)
 		return;
 	foreach (const ToolBarAction &toolBarAction, ToolBarActions)
@@ -850,7 +850,7 @@ void ToolBar::removeSeparator()
 
 void ToolBar::removeSpacer()
 {
-	ToolBarSpacer *currentSpacer = dynamic_cast<ToolBarSpacer *>(currentWidget);
+	ToolBarSpacer *currentSpacer = qobject_cast<ToolBarSpacer *>(currentWidget);
 	if (!currentSpacer)
 		return;
 	foreach (const ToolBarAction &toolBarAction, ToolBarActions)
@@ -879,7 +879,7 @@ void ToolBar::deleteAction(const QString &actionName)
 
 void ToolBar::slotContextIcons()
 {
-	QToolButton *currentButton = dynamic_cast<QToolButton *>(currentWidget);
+	QToolButton *currentButton = qobject_cast<QToolButton *>(currentWidget);
 	if (!currentButton)
 		return;
 
@@ -898,7 +898,7 @@ void ToolBar::slotContextIcons()
 
 void ToolBar::slotContextText()
 {
-	QToolButton *currentButton = dynamic_cast<QToolButton *>(currentWidget);
+	QToolButton *currentButton = qobject_cast<QToolButton *>(currentWidget);
 	if (!currentButton)
 		return;
 
@@ -917,7 +917,7 @@ void ToolBar::slotContextText()
 
 void ToolBar::slotContextTextUnder()
 {
-	QToolButton *currentButton = dynamic_cast<QToolButton *>(currentWidget);
+	QToolButton *currentButton = qobject_cast<QToolButton *>(currentWidget);
 	if (!currentButton)
 		return;
 
@@ -936,7 +936,7 @@ void ToolBar::slotContextTextUnder()
 
 void ToolBar::slotContextTextRight()
 {
-	QToolButton *currentButton = dynamic_cast<QToolButton *>(currentWidget);
+	QToolButton *currentButton = qobject_cast<QToolButton *>(currentWidget);
 	if (!currentButton)
 		return;
 
@@ -955,7 +955,7 @@ void ToolBar::slotContextTextRight()
 
 void ToolBar::slotContextAboutToShow()
 {
-	QToolButton *currentButton = dynamic_cast<QToolButton *>(currentWidget);
+	QToolButton *currentButton = qobject_cast<QToolButton *>(currentWidget);
 	if (!currentButton)
 		return;
 	// Check the actions that should be checked

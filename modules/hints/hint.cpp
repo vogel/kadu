@@ -55,7 +55,7 @@ Hint::Hint(QWidget *parent, Notification *notification)
 
 	notification->acquire();
 
-	ChatNotification *chatNotification = dynamic_cast<ChatNotification *>(notification);
+	ChatNotification *chatNotification = qobject_cast<ChatNotification *>(notification);
 	CurrentChat = chatNotification ? chatNotification->chat() : Chat::null;
 
 	if (!notification->details().isEmpty())

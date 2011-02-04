@@ -70,7 +70,7 @@ Buddy::Buddy(BuddyShared *data) :
 
 Buddy::Buddy(QObject *data)
 {
-	BuddyShared *shared = dynamic_cast<BuddyShared *>(data);
+	BuddyShared *shared = qobject_cast<BuddyShared *>(data);
 	if (shared)
 		setData(shared);
 }

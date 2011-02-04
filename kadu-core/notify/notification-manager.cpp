@@ -190,7 +190,7 @@ void NotificationManager::notifyAboutUserActionActivated(QAction *sender, bool t
 
 	kdebugf();
 
-	Action *action = dynamic_cast<Action *>(sender);
+	Action *action = qobject_cast<Action *>(sender);
 	if (!action)
 		return;
 

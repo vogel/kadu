@@ -341,7 +341,7 @@ void YourAccounts::updateCurrentWidget()
 	if (widget)
 		CreateAddStack->setCurrentWidget(widget);
 
-	CurrentWidget = dynamic_cast<ModalConfigurationWidget *>(widget);
+	CurrentWidget = qobject_cast<ModalConfigurationWidget *>(widget);
 }
 
 bool YourAccounts::canChangeWidget()

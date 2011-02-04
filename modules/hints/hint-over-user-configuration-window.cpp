@@ -52,12 +52,12 @@ HintOverUserConfigurationWindow::HintOverUserConfigurationWindow(Buddy exampleBu
 	connect(this, SIGNAL(configurationWindowApplied()), this, SLOT(configurationWindowApplied()));
 	widget()->appendUiFile(dataPath("kadu/modules/configuration/hint-over-user.ui"));
 
-	connect(dynamic_cast<ConfigSelectFont *>(widget()->widgetById("font")), SIGNAL(fontChanged(QFont)),
+	connect(static_cast<ConfigSelectFont *>(widget()->widgetById("font")), SIGNAL(fontChanged(QFont)),
 			this, SLOT(fontChanged(QFont)));
-	connect(dynamic_cast<ConfigColorButton *>(widget()->widgetById("fgcolor")), SIGNAL(changed(const QColor &)), this, SLOT(foregroundColorChanged(const QColor &)));
-	connect(dynamic_cast<ConfigColorButton *>(widget()->widgetById("bgcolor")), SIGNAL(changed(const QColor &)), this, SLOT(backgroundColorChanged(const QColor &)));
-	connect(dynamic_cast<ConfigColorButton *>(widget()->widgetById("bdcolor")), SIGNAL(changed(const QColor &)), this, SLOT(borderColorChanged(const QColor &)));
-	connect(dynamic_cast<ConfigSpinBox *>(widget()->widgetById("bdwidth")), SIGNAL(valueChanged(int)), this, SLOT(borderWidthChanged(int)));
+	connect(static_cast<ConfigColorButton *>(widget()->widgetById("fgcolor")), SIGNAL(changed(const QColor &)), this, SLOT(foregroundColorChanged(const QColor &)));
+	connect(static_cast<ConfigColorButton *>(widget()->widgetById("bgcolor")), SIGNAL(changed(const QColor &)), this, SLOT(backgroundColorChanged(const QColor &)));
+	connect(static_cast<ConfigColorButton *>(widget()->widgetById("bdcolor")), SIGNAL(changed(const QColor &)), this, SLOT(borderColorChanged(const QColor &)));
+	connect(static_cast<ConfigSpinBox *>(widget()->widgetById("bdwidth")), SIGNAL(valueChanged(int)), this, SLOT(borderWidthChanged(int)));
 
 	ConfigGroupBox *groupBox = widget()->configGroupBox("Look", "Buddy List", "Hint Over Buddy");
 

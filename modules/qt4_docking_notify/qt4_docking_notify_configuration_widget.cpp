@@ -47,7 +47,7 @@ Qt4NotifyConfigurationWidget::Qt4NotifyConfigurationWidget(QWidget *parent)
 	QHBoxLayout *layout = new QHBoxLayout(this);
 	layout->addWidget(configureButton);
 
-	dynamic_cast<NotifyGroupBox *>(parent)->addWidget(this);
+	static_cast<NotifyGroupBox *>(parent)->addWidget(this);
 }
 
 void Qt4NotifyConfigurationWidget::saveNotifyConfigurations()

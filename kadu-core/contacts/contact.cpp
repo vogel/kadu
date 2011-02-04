@@ -61,7 +61,7 @@ Contact::Contact(ContactShared *data) :
 
 Contact::Contact(QObject *data)
 {
-	ContactShared *shared = dynamic_cast<ContactShared *>(data);
+	ContactShared *shared = qobject_cast<ContactShared *>(data);
 	if (shared)
 		setData(shared);
 }

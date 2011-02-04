@@ -56,7 +56,7 @@ Group::Group(GroupShared *data) :
 
 Group::Group(QObject *data)
 {
-	GroupShared *shared = dynamic_cast<GroupShared *>(data);
+	GroupShared *shared = qobject_cast<GroupShared *>(data);
 	if (shared)
 		setData(shared);
 }

@@ -123,7 +123,7 @@ void BuddiesListViewDelegate::paint(QPainter *painter, const QStyleOptionViewIte
 {
 	QStyleOptionViewItemV4 options = getOptions(index, option);
 
-	const QAbstractItemView *widget = dynamic_cast<const QAbstractItemView *>(options.widget);
+	const QAbstractItemView *widget = qobject_cast<const QAbstractItemView *>(options.widget);
 	if (!widget)
 		return;
 

@@ -44,7 +44,7 @@ BuddiesListViewItemPainter::BuddiesListViewItemPainter(const BuddiesListViewDele
 		DescriptionFontMetrics(Configuration.descriptionFont()),
 		DescriptionDocument(0)
 {
-	Widget = dynamic_cast<const QTreeView *>(option.widget);
+	Widget = static_cast<const QTreeView *>(option.widget);
 
 	QStyle *style = Widget->style();
 
