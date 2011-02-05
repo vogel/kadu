@@ -521,14 +521,6 @@ void KaduWindowActions::exitKaduActionActivated(QAction *sender, bool toggled)
 
 	kdebugf();
 
-	// TODO: 0.6.6
-	//if (measureTime)
-	//{
-	//	time_t sec;
-	//	int msec;
-	//	getTime(&sec, &msec);
-	//	endingTime = (sec % 1000) * 1000 + msec;
-	//}
 	qApp->quit();
 }
 

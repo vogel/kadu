@@ -195,16 +195,8 @@ void ChatWidget::createContactsList()
 
 void ChatWidget::configurationUpdated()
 {
-/* TODO: 0.6.6
-	if (ContactsWidget)
-	{
-		ContactsWidget->viewport()->setStyleSheet(QString("QWidget {background-color:%1}").arg(config_file.readColorEntry("Look","UserboxBgColor").name()));
-		ContactsWidget->setStyleSheet(QString("QFrame {color:%1}").arg(config_file.readColorEntry("Look","UserboxFgColor").name()));
-		ContactsWidget->Q3ListBox::setFont(config_file.readFontEntry("Look","UserboxFont"));
-	}*/
-
 	InputBox->inputBox()->setFont(config_file.readFontEntry("Look","ChatFont"));
- 	InputBox->inputBox()->viewport()->setStyleSheet(QString("background-color: %1").arg(config_file.readColorEntry("Look", "ChatTextBgColor").name()));
+	InputBox->inputBox()->viewport()->setStyleSheet(QString("background-color: %1").arg(config_file.readColorEntry("Look", "ChatTextBgColor").name()));
 
 	refreshTitle();
 }
