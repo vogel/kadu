@@ -370,7 +370,8 @@ bool ToolBar::event(QEvent *event)
 {
 	bool result = QToolBar::event(event);
 
-	if (QEvent::MouseButtonRelease == event->type() && result)
+	// this is for toolbar dragging
+	if (result && QEvent::MouseButtonRelease == event->type() && static_cast<QMouseEvent *>(event)->button() == Qt::LeftButton)
 		emitUpdated();
 
 	return result;
