@@ -22,10 +22,11 @@
 #define STATUS_CONTAINER_H
 
 #include "status/status.h"
+#include "exports.h"
 
 class StatusType;
 
-class StatusContainer : public QObject
+class KADUAPI StatusContainer : public QObject
 {
 	Q_OBJECT
 

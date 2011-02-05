@@ -26,12 +26,13 @@
 #include <QtGui/QWidget>
 
 #include "gui/widgets/filter-widget.h"
+#include "exports.h"
 
 class BuddyNameFilter;
 class BuddiesListView;
 class MainWindow;
 
-class BuddiesListWidget : public QWidget
+class KADUAPI BuddiesListWidget : public QWidget
 {
 	Q_OBJECT
 
