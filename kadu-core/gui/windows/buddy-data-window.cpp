@@ -98,6 +98,9 @@ BuddyDataWindow::BuddyDataWindow(const Buddy &buddy, QWidget *parent) :
 	loadWindowGeometry(this, "General", "ManageUsersDialogGeometry", 0, 50, 425, 500);
 
 	BuddyDataWindowAwareObject::notifyBuddyDataWindowCreated(this);
+
+	connect(BuddyManager::instance(), SIGNAL(buddyRemoved(Buddy&)),
+			this, SLOT(buddyRemoved(Buddy&)));
 }
 
 BuddyDataWindow::~BuddyDataWindow()
@@ -202,6 +205,12 @@ void BuddyDataWindow::updateBuddyAndClose()
 		updateBuddy();
 		close();
 	}
+}
+
+void BuddyDataWindow::buddyRemoved(Buddy &buddy)
+{
+	if (buddy == MyBuddy)
+		close();
 }
 
 void BuddyDataWindow::keyPressEvent(QKeyEvent *event)

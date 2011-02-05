@@ -91,6 +91,7 @@ private slots:
 
 	void updateBuddy();
 	void updateBuddyAndClose();
+	void buddyRemoved(Buddy &buddy);
 
 protected:
 	virtual void keyPressEvent(QKeyEvent *event);
