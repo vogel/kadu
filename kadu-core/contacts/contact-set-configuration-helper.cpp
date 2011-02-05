@@ -31,7 +31,7 @@
 
 #include "contact-set-configuration-helper.h"
 
-ContactSet ContactSetConfigurationHelper::loadFromConfiguration(StorableObject *parent, const QString &nodeName, Account fromAccount)
+ContactSet ContactSetConfigurationHelper::loadFromConfiguration(StorableObject *parent, const QString &nodeName)
 {
 	if (!parent->isValidStorage())
 		return ContactSet();
@@ -39,10 +39,10 @@ ContactSet ContactSetConfigurationHelper::loadFromConfiguration(StorableObject *
 	XmlConfigFile *configurationStorage = parent->storage()->storage();
 	QDomElement contactSetNode = configurationStorage->getNode(parent->storage()->point(), nodeName);
 
-	return loadFromConfiguration(configurationStorage, contactSetNode, fromAccount);
+	return loadFromConfiguration(configurationStorage, contactSetNode);
 }
 
-ContactSet ContactSetConfigurationHelper::loadFromConfiguration(XmlConfigFile *configurationStorage, QDomElement contactSetNode, Account fromAccount)
+ContactSet ContactSetConfigurationHelper::loadFromConfiguration(XmlConfigFile *configurationStorage, QDomElement contactSetNode)
 {
 	ContactSet result;
 
@@ -50,23 +50,6 @@ ContactSet ContactSetConfigurationHelper::loadFromConfiguration(XmlConfigFile *c
 	foreach (const QDomElement &contactElement, contactElements)
 	{
 		Contact contact = ContactManager::instance()->byUuid(contactElement.text());
-		// TODO: 0.6.6 this only for compatibility with previous builds of 0.6.6
-		if (contact.isNull())
-		{
-			Buddy buddy = BuddyManager::instance()->byUuid(contactElement.text());
-			if (buddy.isNull())
-				continue;
-
-			if (fromAccount.isNull())
-				contact = BuddyPreferredManager::instance()->preferredContact(buddy);
-			else
-			{
-				QList<Contact> contactList = buddy.contacts(fromAccount);
-				if (!contactList.isEmpty())
-					contact = contactList.at(0);
-			}
-		}
-
 		if (!contact.isNull())
 			result.insert(contact);
 	}

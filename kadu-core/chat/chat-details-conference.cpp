@@ -57,7 +57,7 @@ void ChatDetailsConference::load()
 
 	ChatDetails::load();
 
-	Contacts = ContactSetConfigurationHelper::loadFromConfiguration(this, "Contacts", mainData()->chatAccount());
+	Contacts = ContactSetConfigurationHelper::loadFromConfiguration(this, "Contacts");
 }
 
 /**
