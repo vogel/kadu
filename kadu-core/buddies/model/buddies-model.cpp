@@ -57,6 +57,8 @@ BuddiesModel::BuddiesModel(QObject *parent) :
 			this, SLOT(contactAboutToBeDetached(Contact)));
 	connect(cm, SIGNAL(contactDetached(Contact)),
 			this, SLOT(contactDetached(Contact)));
+	connect(cm, SIGNAL(contactUpdated(Contact&)),
+			   this, SLOT(contactUpdated(Contact&)));
 }
 
 BuddiesModel::~BuddiesModel()
@@ -84,6 +86,8 @@ BuddiesModel::~BuddiesModel()
 			this, SLOT(contactAboutToBeDetached(Contact)));
 	disconnect(cm, SIGNAL(contactDetached(Contact)),
 			this, SLOT(contactDetached(Contact)));
+	disconnect(cm, SIGNAL(contactUpdated(Contact&)),
+			   this, SLOT(contactUpdated(Contact&)));
 }
 
 int BuddiesModel::rowCount(const QModelIndex &parent) const
@@ -163,14 +167,10 @@ void BuddiesModel::contactAttached(Contact contact)
 		return;
 
 	endInsertRows();
-
-	connect(contact, SIGNAL(updated()), this, SLOT(contactUpdated()));
 }
 
 void BuddiesModel::contactAboutToBeDetached(Contact contact)
 {
-	disconnect(contact, SIGNAL(updated()), this, SLOT(contactUpdated()));
-
 	Buddy buddy = contact.ownerBuddy();
 
 	QModelIndex index = indexForValue(buddy);
@@ -192,14 +192,19 @@ void BuddiesModel::contactDetached(Contact contact)
 	endRemoveRows();
 }
 
-void BuddiesModel::contactUpdated()
+void BuddiesModel::contactUpdated(Contact &contact)
 {
-	Contact contact(sender());
 	if (!contact)
 		return;
 
 	Buddy buddy = contact.ownerBuddy();
+	if (!buddy)
+		return;
 
-	QModelIndex contactIndex = index(buddy.contacts().indexOf(contact), 0, indexForValue(buddy));
+	QModelIndex indexOfBuddy = indexForValue(buddy);
+	if (!indexOfBuddy.isValid())
+		return;
+
+	QModelIndex contactIndex = index(buddy.contacts().indexOf(contact), 0, indexOfBuddy);
 	emit dataChanged(contactIndex, contactIndex);
 }

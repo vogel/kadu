@@ -48,7 +48,7 @@ private slots:
 	void contactAboutToBeDetached(Contact contact);
 	void contactDetached(Contact contact);
 
-	void contactUpdated();
+	void contactUpdated(Contact &contact);
 
 public:
 	explicit BuddiesModel(QObject *parent = 0);
