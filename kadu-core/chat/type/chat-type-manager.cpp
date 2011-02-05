@@ -41,7 +41,6 @@ ChatTypeManager * ChatTypeManager::instance()
 
 ChatTypeManager::ChatTypeManager()
 {
-	// TODO: 0.6.6 fix icons
 	addChatType(new ChatTypeSimple());
 	addChatType(new ChatTypeConference());
 }
