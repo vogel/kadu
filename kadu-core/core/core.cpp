@@ -340,7 +340,8 @@ void Core::init()
 	setIcon(IconsManager::instance()->iconByPath(QLatin1String("protocols/common/offline")));
 	QTimer::singleShot(15000, this, SLOT(deleteOldConfigurationFiles()));
 
-	NotificationManager::instance(); // TODO: 0.6.6
+	// TODO: add some life-cycle management
+	NotificationManager::instance();
 
 	AccountManager::instance()->ensureLoaded();
 	BuddyManager::instance()->ensureLoaded();
