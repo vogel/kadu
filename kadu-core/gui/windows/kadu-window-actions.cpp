@@ -930,8 +930,3 @@ void KaduWindowActions::configurationUpdated()
 		ShowBlockedBuddies->action(Core::instance()->kaduWindow())->trigger();
 
 }
-
-// void Kadu::setProxyActionsStatus() TODO: 0.6.6
-// {
-// 	setProxyActionsStatus(config_file.readBoolEntry("Network", "UseProxy", false));
-// }
