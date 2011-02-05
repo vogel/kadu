@@ -71,7 +71,6 @@
 					config-item="IgnoreAnonymousUsersInConferences" id="ignoreMessagesFromAnonymousInConferences" />
 				<check-box caption="Ignore richtext from anonymous users" config-section="Chat" config-item="IgnoreAnonymousRichtext"
 					tool-tip="Displays messages from anonymous users without formatting (colors, images, font weight...)." />
-				<!-- <check-box caption="Always show anonymous contacts with messages" config-section="General" config-item="ShowAnonymousWithMsgs" /> -->
 			</group-box>
 		</tab>
 	</section>

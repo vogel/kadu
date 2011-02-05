@@ -594,16 +594,4 @@ void KaduWindow::setDocked(bool docked)
 {
 	Docked = docked;
 	qApp->setQuitOnLastWindowClosed(!Docked);
-
-// TODO: 0.6.6
-// 	if (config_file.readBoolEntry("General", "ShowAnonymousWithMsgs") || !Docked || dontHideOnClose)
-// 	{
-// 	Userbox->removeNegativeFilter(anonymousUsers);
-// 	Userbox->applyNegativeFilter(anonymousUsersWithoutMessages);
-// 	}
-// 	else
-// 	{
-// 		Userbox->removeNegativeFilter(anonymousUsersWithoutMessages);
-// 		Userbox->applyNegativeFilter(anonymousUsers);
-// 	}
 }
