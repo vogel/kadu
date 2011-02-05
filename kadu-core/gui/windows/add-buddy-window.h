@@ -48,6 +48,7 @@ class AddBuddyWindow : public QDialog
 	QLabel *UserNameLabel;
 	QLineEdit *UserNameEdit;
 	QAction *MobileAccountAction; // TODO: hack
+	QAction *EmailAccountAction; // TODO: hack
 	AccountsComboBox *AccountCombo;
 	IdValidityFilter *AccountComboIdFilter;
 	GroupsComboBox *GroupCombo;
@@ -64,19 +65,23 @@ class AddBuddyWindow : public QDialog
 	bool ForceBuddyAccount;
 
 	void createGui();
-	void addMobileAccountToComboBox();
+	void addFakeAccountsToComboBox();
 	void displayErrorMessage(const QString &message);
 
 	bool isMobileAccount();
+	bool isEmailAccount();
 
 	void updateAccountGui();
 	void updateMobileGui();
+	void updateEmailGui();
 
 	void validateData();
 	void validateMobileData();
+	void validateEmailData();
 
 	bool addContact();
 	bool addMobile();
+	bool addEmail();
 
 	void askForAuthorization(Contact contact);
 

@@ -6,6 +6,7 @@
 * encryption_ng, encryption_ng_simlite: fixed modules loading on Windows (beevvy)
 * gui: close buddy data window when buddy is removed (Vogel)
 * gui: fix email action for non-contacts buddies (Vogel)
+* gui: added fake email account to new buddy window, similar to fake mobile account (vogel)
 
 +++ version 0.6.6-beta15
 * url-handlers: #1908 fixed: links containing HTML entities were not escaped (beevvy)

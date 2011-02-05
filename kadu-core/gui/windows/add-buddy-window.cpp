@@ -54,12 +54,13 @@
 #include "protocols/services/roster-service.h"
 #include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
+#include "url-handlers/url-handler-manager.h"
 #include "icons-manager.h"
 
 #include "add-buddy-window.h"
 
 AddBuddyWindow::AddBuddyWindow(QWidget *parent, const Buddy &buddy, bool forceBuddyAccount) :
-		QDialog(parent, Qt::Window), UserNameLabel(0), UserNameEdit(0), MobileAccountAction(0),
+		QDialog(parent, Qt::Window), UserNameLabel(0), UserNameEdit(0), MobileAccountAction(0), EmailAccountAction(0),
 		AccountCombo(0), AccountComboIdFilter(0), GroupCombo(0), DisplayNameEdit(0), MergeBuddy(0),
 		SelectBuddy(0), AskForAuthorization(0), AllowToSeeMeCheck(0), ErrorLabel(0), AddContactButton(0),
 		MyBuddy(buddy), ForceBuddyAccount(forceBuddyAccount)
@@ -77,7 +78,7 @@ AddBuddyWindow::AddBuddyWindow(QWidget *parent, const Buddy &buddy, bool forceBu
 
 	createGui();
 	if (!MyBuddy)
-		addMobileAccountToComboBox();
+		addFakeAccountsToComboBox();
 }
 
 AddBuddyWindow::~AddBuddyWindow()
@@ -258,12 +259,15 @@ void AddBuddyWindow::createGui()
 	updateGui();
 }
 
-void AddBuddyWindow::addMobileAccountToComboBox()
+void AddBuddyWindow::addFakeAccountsToComboBox()
 {
 	ActionsProxyModel *actionsModel = AccountCombo->actionsModel();
 
 	MobileAccountAction = new QAction(IconsManager::instance()->iconByPath("phone"), tr("Mobile"), AccountCombo);
 	actionsModel->addAfterAction(MobileAccountAction);
+
+	EmailAccountAction = new QAction(IconsManager::instance()->iconByPath("mail-message-new"), tr("E-mail"), AccountCombo);
+	actionsModel->addAfterAction(EmailAccountAction);
 }
 
 void AddBuddyWindow::displayErrorMessage(const QString &message)
@@ -279,6 +283,11 @@ void AddBuddyWindow::setGroup(Group group)
 bool AddBuddyWindow::isMobileAccount()
 {
 	return (MobileAccountAction && AccountCombo->data(ActionRole).value<QAction *>() == MobileAccountAction);
+}
+
+bool AddBuddyWindow::isEmailAccount()
+{
+	return (EmailAccountAction && AccountCombo->data(ActionRole).value<QAction *>() == EmailAccountAction);
 }
 
 void AddBuddyWindow::accountChanged(Account account, Account lastAccount)
@@ -328,10 +337,21 @@ void AddBuddyWindow::updateMobileGui()
 	AllowToSeeMeCheck->setEnabled(false);
 }
 
+void AddBuddyWindow::updateEmailGui()
+{
+	UserNameLabel->setText(tr("E-mail address:"));
+	MergeBuddy->setChecked(false);
+	MergeBuddy->setEnabled(false);
+	SelectBuddy->setCurrentBuddy(Buddy::null);
+	AllowToSeeMeCheck->setEnabled(false);
+}
+
 void AddBuddyWindow::updateGui()
 {
 	if (isMobileAccount())
 		updateMobileGui();
+	else if (isEmailAccount())
+		updateEmailGui();
 	else
 		updateAccountGui();
 }
@@ -407,10 +427,30 @@ void AddBuddyWindow::validateMobileData()
 	displayErrorMessage(QString());
 }
 
+void AddBuddyWindow::validateEmailData()
+{
+	if (!UrlHandlerManager::instance()->mailRegExp().exactMatch(UserNameEdit->text()))
+	{
+		displayErrorMessage(tr("Entered e-mail is invalid"));
+		return;
+	}
+
+	if (MergeBuddy->isChecked())
+	{
+		displayErrorMessage(tr("Merging e-mail with buddy is not supported. Please use edit buddy window."));
+		return;
+	}
+
+	AddContactButton->setEnabled(true);
+	displayErrorMessage(QString());
+}
+
 void AddBuddyWindow::setAddContactEnabled()
 {
 	if (isMobileAccount())
 		validateMobileData();
+	else if (isEmailAccount())
+		validateEmailData();
 	else
 		validateData();
 }
@@ -480,12 +520,28 @@ bool AddBuddyWindow::addMobile()
 	return true;
 }
 
+bool AddBuddyWindow::addEmail()
+{
+	Buddy buddy = Buddy::create();
+	buddy.data()->setState(StorableObject::StateNew);
+	buddy.setAnonymous(false);
+	buddy.setEmail(UserNameEdit->text());
+	buddy.setDisplay(DisplayNameEdit->text().isEmpty() ? UserNameEdit->text() : DisplayNameEdit->text());
+	buddy.addToGroup(GroupCombo->currentGroup());
+
+	BuddyManager::instance()->addItem(buddy);
+
+	return true;
+}
+
 void AddBuddyWindow::accept()
 {
 	bool ok;
 
 	if (isMobileAccount())
 		ok = addMobile();
+	else if (isEmailAccount())
+		ok = addEmail();
 	else
 		ok = addContact();
 
