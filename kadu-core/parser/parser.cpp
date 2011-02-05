@@ -212,7 +212,11 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 				case 'q':
 					++i;
 					if (contact)
-						pe.content = "" ; // ule.status("Gadu").pixmapName(); TODO: 0.6.6
+					{
+						StatusContainer *container = contact.contactAccount().statusContainer();
+						if (container)
+							pe.content = container->statusIconPath(contact.currentStatus().type());
+					}
 					break;
 				case 'd':
 					++i;
