@@ -376,9 +376,6 @@ void KaduWindow::storeConfiguration()
 	}
 	if (config_file.readBoolEntry("Look", "ShowStatusButton"))
 		config_file.writeEntry("General", "UserBoxHeight", ContactsWidget->size().height());
-
-// TODO: 0.6.6
-//	config_file.writeEntry("General", "DefaultDescription", defaultdescriptions.join("<-->"));
 }
 
 void KaduWindow::closeEvent(QCloseEvent *e)
@@ -401,10 +398,6 @@ void KaduWindow::keyPressEvent(QKeyEvent *e)
 			hide();
 		}
 	}
-	// TODO: 0.6.6 THIS SUXX
-	// after action moving this could be restored
-	// else if (HotKey::shortCut(e,"ShortCuts", "kadu_deleteuser"))
-	//	deleteUsersActionDescription->createAction(this)->trigger();
 	else if (e->matches(QKeySequence::Copy))
 		InfoPanel->pageAction(QWebPage::Copy)->trigger();
 
