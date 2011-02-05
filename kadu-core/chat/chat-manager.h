@@ -91,6 +91,10 @@ class KADUAPI ChatManager : public QObject, public Manager<Chat>
 	ChatManager();
 	virtual ~ChatManager();
 
+	friend class DetailsHolder<ChatShared, ChatDetails, ChatManager>;
+	void detailsLoaded(Chat chat);
+	void detailsUnloaded(Chat chat);
+
 protected:
 	virtual void itemAboutToBeRegistered(Chat item);
 	virtual void itemRegistered(Chat item);
@@ -121,12 +125,9 @@ public:
 	// TODO: move somewhere
 	bool isAccountCommon(const Account &account, const BuddySet &buddies);
 	Account getCommonAccount(const BuddySet &buddies);
+
 	Chat findChat(const BuddySet &buddies, bool create = true);
 	Chat findChat(const ContactSet &contacts, bool create = true);
-
-	// TODO: hide it someway...
-	void detailsLoaded(Chat chat);
-	void detailsUnloaded(Chat chat);
 
 signals:
 	/**

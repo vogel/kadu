@@ -45,6 +45,10 @@ class KADUAPI AccountManager : public QObject, public Manager<Account>
 	AccountManager();
 	virtual ~AccountManager();
 
+	friend class DetailsHolder<AccountShared, AccountDetails, AccountManager>;
+	void detailsLoaded(Account account);
+	void detailsUnloaded(Account account);
+
 private slots:
 	void accountDataUpdated();
 	void connectionError(Account account, const QString &server, const QString &message);
@@ -65,10 +69,6 @@ public:
 
 	virtual QString storageNodeName() { return QLatin1String("Accounts"); }
 	virtual QString storageNodeItemName() { return QLatin1String("Account"); }
-
-	// TODO: hide it someway...
-	void detailsLoaded(Account account);
-	void detailsUnloaded(Account account);
 
 	Account defaultAccount();
 

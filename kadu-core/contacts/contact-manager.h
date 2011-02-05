@@ -43,6 +43,10 @@ class KADUAPI ContactManager : public QObject, public Manager<Contact>
 	ContactManager();
 	virtual ~ContactManager();
 
+	friend class DetailsHolder<ContactShared, ContactDetails, ContactManager>;
+	void detailsLoaded(Contact item);
+	void detailsUnloaded(Contact item);
+
 private slots:
 	void contactDataUpdated();
 	void idChanged(const QString &oldId);
@@ -64,10 +68,6 @@ public:
 
 	virtual QString storageNodeName() { return QLatin1String("Contacts"); }
 	virtual QString storageNodeItemName() { return QLatin1String("Contact"); }
-
-	// TODO: 0.6.6, hide it
-	void detailsLoaded(Contact item);
-	void detailsUnloaded(Contact item);
 
 	Contact byId(Account account, const QString &id, NotFoundAction = ActionCreate);
 	QList<Contact> contacts(Account account);
