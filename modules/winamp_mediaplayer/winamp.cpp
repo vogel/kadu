@@ -11,6 +11,7 @@
 #include <QtCore/QStringList>
 
 #include "debug.h"
+#include "exports.h"
 #include "../mediaplayer/mediaplayer.h"
 #include "winamp.h"
 
@@ -27,9 +28,10 @@
 
 WinampMediaPlayer * winamp = 0;
 
-// Kadu initializing functions
-extern "C" KADU_EXPORT int winamp_mediaplayer_init()
+extern "C" KADU_EXPORT int winamp_mediaplayer_init(bool firstLoad)
 {
+	Q_UNUSED(firstLoad)
+
 	winamp = new WinampMediaPlayer();
 	bool res = mediaplayer->registerMediaPlayer((PlayerInfo*)winamp, (PlayerCommands*)winamp);
 	return res ? 0 : 1;

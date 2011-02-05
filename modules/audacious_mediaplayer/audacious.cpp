@@ -28,19 +28,22 @@
 #include <QtCore/QDateTime>
 
 #include "debug.h"
+#include "exports.h"
 #include "../mediaplayer/mediaplayer.h"
 #include "../mediaplayer/mpris_mediaplayer.h"
 
 MPRISMediaPlayer* audacious;
 
-extern "C" int audacious_mediaplayer_init()
+extern "C" KADU_EXPORT int audacious_mediaplayer_init(bool firstLoad)
 {
+	Q_UNUSED(firstLoad)
+
 	audacious = new MPRISMediaPlayer("Audacious", "org.mpris.audacious");
 	bool res = mediaplayer->registerMediaPlayer(audacious, audacious);
 	return res ? 0 : 1;
 }
 
-extern "C" void audacious_mediaplayer_close()
+extern "C" KADU_EXPORT void audacious_mediaplayer_close()
 {
 	mediaplayer->unregisterMediaPlayer();
 	delete audacious;

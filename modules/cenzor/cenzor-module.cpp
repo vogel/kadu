@@ -18,13 +18,16 @@
  */
 
 #include "gui/windows/main-configuration-window.h"
+#include "exports.h"
 
 #include "configuration/gui/cenzor-configuration-ui-handler.h"
 #include "notify/cenzor-notification.h"
 #include "cenzor.h"
 
-extern "C" int cenzor_init()
+extern "C" KADU_EXPORT int cenzor_init(bool firstLoad)
 {
+	Q_UNUSED(firstLoad)
+
 	Cenzor::createInstance();
 	CenzorNotification::registerNotifications();
 	CenzorConfigurationUiHandler::registerConfigurationUi();
@@ -32,7 +35,7 @@ extern "C" int cenzor_init()
 	return 0;
 }
 
-extern "C" void cenzor_close()
+extern "C" KADU_EXPORT void cenzor_close()
 {
 	CenzorConfigurationUiHandler::unregisterConfigurationUi();
 	CenzorNotification::unregisterNotifiactions();

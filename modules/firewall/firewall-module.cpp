@@ -17,11 +17,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "exports.h"
+
 #include "firewall-configuration-ui-handler.h"
 #include "firewall-notification.h"
 #include "firewall.h"
 
-extern "C" int firewall_init(bool firstLoad)
+extern "C" KADU_EXPORT int firewall_init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
@@ -32,7 +34,7 @@ extern "C" int firewall_init(bool firstLoad)
 	return 0;
 }
 
-extern "C" void firewall_close()
+extern "C" KADU_EXPORT void firewall_close()
 {
 	FirewallConfigurationUiHandler::unregisterUiHandler();
 	FirewallNotification::unregisterNotifications();

@@ -19,8 +19,9 @@
 #include "speech-configuration-ui-handler.h"
 #include "speech.h"
 #include "debug.h"
+#include "exports.h"
 
-extern "C" int speech_init(bool firstLoad)
+extern "C" KADU_EXPORT int speech_init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
@@ -33,7 +34,7 @@ extern "C" int speech_init(bool firstLoad)
 	return 0;
 }
 
-extern "C" void speech_close()
+extern "C" KADU_EXPORT void speech_close()
 {
 	kdebugf();
 

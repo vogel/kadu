@@ -28,19 +28,22 @@
 #include <QtCore/QDateTime>
 
 #include "debug.h"
+#include "exports.h"
 #include "../mediaplayer/mediaplayer.h"
 #include "../mediaplayer/mpris_mediaplayer.h"
 
 MPRISMediaPlayer* vlc;
 
-extern "C" int vlc_mediaplayer_init()
+extern "C" KADU_EXPORT int vlc_mediaplayer_init(bool firstLoad)
 {
+	Q_UNUSED(firstLoad)
+
 	vlc = new MPRISMediaPlayer("VLC", "org.mpris.vlc");
 	bool res = mediaplayer->registerMediaPlayer(vlc, vlc);
 	return res ? 0 : 1;
 }
 
-extern "C" void vlc_mediaplayer_close()
+extern "C" KADU_EXPORT void vlc_mediaplayer_close()
 {
 	mediaplayer->unregisterMediaPlayer();
 	delete vlc;

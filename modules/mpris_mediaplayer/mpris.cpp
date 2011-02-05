@@ -23,12 +23,15 @@
 #include "configuration/configuration-file.h"
 #include "misc/path-conversion.h"
 #include "debug.h"
+#include "exports.h"
 #include "mpris.h"
 
 MprisPlayer* mpris;
 
-extern "C" int mpris_mediaplayer_init()
+extern "C" KADU_EXPORT int mpris_mediaplayer_init(bool firstLoad)
 {
+	Q_UNUSED(firstLoad)
+
 	mpris = new MprisPlayer("MPRIS", QString());
 
 	MainConfigurationWindow::registerUiFile(
@@ -38,7 +41,7 @@ extern "C" int mpris_mediaplayer_init()
 	return res ? 0 : 1;
 }
 
-extern "C" void mpris_mediaplayer_close()
+extern "C" KADU_EXPORT void mpris_mediaplayer_close()
 {
 	MainConfigurationWindow::unregisterUiFile(
 		dataPath("kadu/modules/configuration/mpris_mediaplayer.ui"));

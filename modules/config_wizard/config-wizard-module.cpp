@@ -22,8 +22,9 @@
 #include "config-wizard-configuration-ui-handler.h"
 
 #include "debug.h"
+#include "exports.h"
 
-extern "C" int config_wizard_init(bool firstLoad)
+extern "C" KADU_EXPORT int config_wizard_init(bool firstLoad)
 {
 	kdebugf();
 	
@@ -35,7 +36,7 @@ extern "C" int config_wizard_init(bool firstLoad)
 	return 0;
 }
 
-extern "C" void config_wizard_close()
+extern "C" KADU_EXPORT void config_wizard_close()
 {
 	kdebugf();
 

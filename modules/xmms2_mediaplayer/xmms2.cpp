@@ -28,19 +28,22 @@
 #include <QtCore/QDateTime>
 
 #include "debug.h"
+#include "exports.h"
 #include "../mediaplayer/mediaplayer.h"
 #include "../mediaplayer/mpris_mediaplayer.h"
 
 MPRISMediaPlayer* xmms2;
 
-extern "C" int xmms2_mediaplayer_init()
+extern "C" KADU_EXPORT int xmms2_mediaplayer_init(bool firstLoad)
 {
+	Q_UNUSED(firstLoad)
+
 	xmms2 = new MPRISMediaPlayer("XMMS2", "org.mpris.xmms2");
 	bool res = mediaplayer->registerMediaPlayer(xmms2, xmms2);
 	return res ? 0 : 1;
 }
 
-extern "C" void xmms2_mediaplayer_close()
+extern "C" KADU_EXPORT void xmms2_mediaplayer_close()
 {
 	mediaplayer->unregisterMediaPlayer();
 	delete xmms2;

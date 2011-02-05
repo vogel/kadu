@@ -32,6 +32,7 @@
 #include "configuration/configuration-file.h"
 #include "core/core.h"
 #include "debug.h"
+#include "exports.h"
 
 #include "qt4_docking.h"
 
@@ -40,7 +41,7 @@
  * @{
  */
 
-extern "C" int qt4_docking_init(bool firstLoad)
+extern "C" KADU_EXPORT int qt4_docking_init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
@@ -50,7 +51,7 @@ extern "C" int qt4_docking_init(bool firstLoad)
 	return 0;
 }
 
-extern "C" void qt4_docking_close()
+extern "C" KADU_EXPORT void qt4_docking_close()
 {
 	if (!Core::instance()->isClosing())
 		DockingManager::instance()->setDocker(0);

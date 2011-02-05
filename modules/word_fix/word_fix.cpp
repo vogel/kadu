@@ -48,8 +48,10 @@
 
 WordFix *wordFix;
 
-extern "C" KADU_EXPORT int word_fix_init()
+extern "C" KADU_EXPORT int word_fix_init(bool firstLoad)
 {
+	Q_UNUSED(firstLoad)
+
 	kdebugf();
 	wordFix = new WordFix();
 	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/word_fix.ui"));

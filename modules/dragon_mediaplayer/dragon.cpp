@@ -28,19 +28,22 @@
 #include <QtCore/QDateTime>
 
 #include "debug.h"
+#include "exports.h"
 #include "../mediaplayer/mediaplayer.h"
 #include "../mediaplayer/mpris_mediaplayer.h"
 
 MPRISMediaPlayer* dragon;
 
-extern "C" int dragon_mediaplayer_init()
+extern "C" KADU_EXPORT int dragon_mediaplayer_init(bool firstLoad)
 {
+	Q_UNUSED(firstLoad)
+
 	dragon = new MPRISMediaPlayer("Dragon Player", "org.kde.dragon.player");
 	bool res = mediaplayer->registerMediaPlayer(dragon, dragon);
 	return res ? 0 : 1;
 }
 
-extern "C" void dragon_mediaplayer_close()
+extern "C" KADU_EXPORT void dragon_mediaplayer_close()
 {
 	mediaplayer->unregisterMediaPlayer();
 	delete dragon;

@@ -30,6 +30,7 @@
 #include "config_file.h"
 #include "chat/chat_manager-old.h"
 #include "debug.h"
+#include "exports.h"
 #include "misc/misc.h"
 #include "../gadu_protocol/gadu.h"
 
@@ -37,8 +38,10 @@
 
 Split *split;
 
-extern "C" int split_messages_init()
+extern "C" KADU_EXPORT int split_messages_init(bool firstLoad)
 {
+	Q_UNUSED(firstLoad)
+
 	kdebugf();
 
 	split = new Split();
@@ -49,7 +52,7 @@ extern "C" int split_messages_init()
 }
 
 
-extern "C" void split_messages_close()
+extern "C" KADU_EXPORT void split_messages_close()
 {
 	kdebugf();
 

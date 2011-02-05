@@ -22,6 +22,7 @@
 #include <xmms/xmmsctrl.h>
 
 #include "debug.h"
+#include "exports.h"
 #include "../mediaplayer/mediaplayer.h"
 #include "xmms.h"
 
@@ -33,15 +34,16 @@ const char CODE_ISO8859_2[] = {0xb1, 0xb6, 0xbc, 0xa1, 0xa6, 0xac};
 
 XmmsMediaPlayer *xmms_mediaplayer_session;
 
-// Kadu initializing functions
-extern "C" int xmms_mediaplayer_init()
+extern "C" KADU_EXPORT int xmms_mediaplayer_init(bool firstLoad)
 {
+	Q_UNUSED(firstLoad)
+
 	xmms_mediaplayer_session = new XmmsMediaPlayer();
 	bool res = mediaplayer->registerMediaPlayer(xmms_mediaplayer_session, xmms_mediaplayer_session);
 	return res ? 0 : 1;
 }
 
-extern "C" void xmms_mediaplayer_close()
+extern "C" KADU_EXPORT void xmms_mediaplayer_close()
 {
 	mediaplayer->unregisterMediaPlayer();
 	delete xmms_mediaplayer_session;

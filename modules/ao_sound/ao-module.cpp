@@ -18,12 +18,13 @@
  */
 
 #include "debug.h"
+#include "exports.h"
 
 #include "modules/sound/sound-manager.h"
 
 #include "ao-player.h"
 
-extern "C" int ao_sound_init(bool firstLoad)
+extern "C" KADU_EXPORT int ao_sound_init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
@@ -36,7 +37,7 @@ extern "C" int ao_sound_init(bool firstLoad)
 	return 0;
 }
 
-extern "C" void ao_sound_close()
+extern "C" KADU_EXPORT void ao_sound_close()
 {
 	kdebugf();
 

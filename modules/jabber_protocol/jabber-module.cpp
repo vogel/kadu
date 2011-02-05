@@ -19,8 +19,10 @@
 
 #include "jabber-protocol.h"
 
-extern "C" KADU_EXPORT int jabber_protocol_init()
+extern "C" KADU_EXPORT int jabber_protocol_init(bool firstLoad)
 {
+	Q_UNUSED(firstLoad)
+
 	return JabberProtocol::initModule();
 }
 

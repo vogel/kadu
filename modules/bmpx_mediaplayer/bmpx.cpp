@@ -28,19 +28,22 @@
 #include <QtCore/QDateTime>
 
 #include "debug.h"
+#include "exports.h"
 #include "../mediaplayer/mediaplayer.h"
 #include "../mediaplayer/mpris_mediaplayer.h"
 
 MPRISMediaPlayer* bmpx;
 
-extern "C" int bmpx_mediaplayer_init()
+extern "C" KADU_EXPORT int bmpx_mediaplayer_init(bool firstLoad)
 {
+	Q_UNUSED(firstLoad)
+
 	bmpx = new MPRISMediaPlayer("BMPx", "org.mpris.bmp");
 	bool res = mediaplayer->registerMediaPlayer(bmpx, bmpx);
 	return res ? 0 : 1;
 }
 
-extern "C" void bmpx_mediaplayer_close()
+extern "C" KADU_EXPORT void bmpx_mediaplayer_close()
 {
 	mediaplayer->unregisterMediaPlayer();
 	delete bmpx;

@@ -20,6 +20,7 @@
  */
 
 #include "debug.h"
+#include "exports.h"
 
 #include "configuration/gui/screenshot-configuration-ui-handler.h"
 #include "configuration/screen-shot-configuration.h"
@@ -28,7 +29,7 @@
 
 #include "screenshot.h"
 
-extern "C" int screenshot_init(bool firstLoad)
+extern "C" KADU_EXPORT int screenshot_init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
@@ -42,7 +43,7 @@ extern "C" int screenshot_init(bool firstLoad)
 	return 0;
 }
 
-extern "C" void screenshot_close()
+extern "C" KADU_EXPORT void screenshot_close()
 {
 	kdebugf();
 

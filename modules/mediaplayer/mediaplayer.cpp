@@ -99,7 +99,6 @@ MediaPlayer *mediaplayer;
 
 const char *mediaPlayerOsdHint = "MediaPlayerOsd";
 
-// Kadu initializing functions
 extern "C" KADU_EXPORT int mediaplayer_init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)

@@ -23,6 +23,7 @@
 #include <QtCore/QDateTime>
 
 #include "debug.h"
+#include "exports.h"
 #include "../mediaplayer/mediaplayer.h"
 
 #include "itunes.h"
@@ -30,14 +31,16 @@
 
 ITunesMediaPlayer* iTunes;
 
-extern "C" int itunes_mediaplayer_init()
+extern "C" KADU_EXPORT int itunes_mediaplayer_init(bool firstLoad)
 {
+	Q_UNUSED(firstLoad)
+
 	iTunes = new ITunesMediaPlayer();
 	bool res = mediaplayer->registerMediaPlayer(iTunes, iTunes);
 	return res ? 0 : 1;
 }
 
-extern "C" void itunes_mediaplayer_close()
+extern "C" KADU_EXPORT void itunes_mediaplayer_close()
 {
 	mediaplayer->unregisterMediaPlayer();
 	delete iTunes;

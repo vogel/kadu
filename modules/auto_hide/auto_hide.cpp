@@ -37,8 +37,10 @@
 
 #include "auto_hide.h"
 
-extern "C" KADU_EXPORT int auto_hide_init()
+extern "C" KADU_EXPORT int auto_hide_init(bool firstLoad)
 {
+	Q_UNUSED(firstLoad)
+
 	kdebugf();
 
 	autoHide = new AutoHide();

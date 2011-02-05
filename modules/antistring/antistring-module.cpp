@@ -21,8 +21,10 @@
 #include "antistring-configuration-ui-handler.h"
 #include "antistring-notification.h"
 
-extern "C" KADU_EXPORT int antistring_init()
+extern "C" KADU_EXPORT int antistring_init(bool firstLoad)
 {
+	Q_UNUSED(firstLoad)
+
 	Antistring::createInstance();
 	AntistringConfigurationUiHandler::registerUiHandler();
 	AntistringNotification::registerNotifications();

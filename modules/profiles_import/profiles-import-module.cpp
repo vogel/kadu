@@ -19,13 +19,14 @@
 
 #include "core/core.h"
 #include "gui/windows/kadu-window.h"
+#include "exports.h"
 
 #include "gui/windows/import-profiles-window.h"
 #include "profile-data-manager.h"
 
 #include "profiles-import-actions.h"
 
-extern "C" int profiles_import_init(bool firstLoad)
+extern "C" KADU_EXPORT int profiles_import_init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
@@ -37,7 +38,7 @@ extern "C" int profiles_import_init(bool firstLoad)
 	return 0;
 }
 
-extern "C" void profiles_import_close()
+extern "C" KADU_EXPORT void profiles_import_close()
 {
 	ProfilesImportActions::unregisterActions();
 }

@@ -19,19 +19,22 @@
  */
 
 #include "../mediaplayer/mediaplayer.h"
+#include "exports.h"
 
 #include "mpd_mediaplayer.h"
 
 MPDMediaPlayer* mpd = NULL;
 
-extern "C" int mpd_mediaplayer_init()
+extern "C" KADU_EXPORT int mpd_mediaplayer_init(bool firstLoad)
 {
+	Q_UNUSED(firstLoad)
+
 	mpd = new MPDMediaPlayer();
 	bool res = mediaplayer->registerMediaPlayer(mpd, mpd);
 	return res ? 0 : 1;
 }
 
-extern "C" void mpd_mediaplayer_close()
+extern "C" KADU_EXPORT void mpd_mediaplayer_close()
 {
 	mediaplayer->unregisterMediaPlayer();
 	delete mpd;

@@ -23,8 +23,10 @@
 #include "autostatus.h"
 #include "autostatus-actions.h"
 
-extern "C" KADU_EXPORT int autostatus_init()
+extern "C" KADU_EXPORT int autostatus_init(bool firstLoad)
 {
+	Q_UNUSED(firstLoad)
+
 	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/autostatus.ui"));
 	Autostatus::createInstance();
 	AutostatusActions::createInstance();

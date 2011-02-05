@@ -32,6 +32,7 @@
 #include <QtCore/QStringList>
 
 #include "debug.h"
+#include "exports.h"
 #include "../mediaplayer/mediaplayer.h"
 #include "amarok.h"
 
@@ -39,16 +40,17 @@
 
 AmarokMediaPlayer* amarok;
 
-// Kadu initializing functions
-extern "C" int amarok1_mediaplayer_init()
+extern "C" KADU_EXPORT int amarok1_mediaplayer_init(bool firstLoad)
 {
+	Q_UNUSED(firstLoad)
+
 	amarok = new AmarokMediaPlayer();
 	bool res = mediaplayer->registerMediaPlayer(amarok, amarok);
 	mediaplayer->setInterval(5);
 	return res ? 0 : 1;
 }
 
-extern "C" void amarok1_mediaplayer_close()
+extern "C" KADU_EXPORT void amarok1_mediaplayer_close()
 {
 	mediaplayer->unregisterMediaPlayer();
 	delete amarok;

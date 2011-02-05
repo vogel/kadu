@@ -26,6 +26,7 @@
 #include <QtCore/QStringList>
 
 #include "debug.h"
+#include "exports.h"
 #include "../mediaplayer/mediaplayer.h"
 #include "falf.h"
 
@@ -33,15 +34,16 @@
 
 FalfMediaPlayer * falf = 0;
 
-// Kadu initializing functions
-extern "C" int falf_mediaplayer_init()
+extern "C" KADU_EXPORT int falf_mediaplayer_init(bool firstLoad)
 {
+	Q_UNUSED(firstLoad)
+
 	falf = new FalfMediaPlayer();
 	bool res = mediaplayer->registerMediaPlayer(falf, 0);
 	return res ? 0 : 1;
 }
 
-extern "C" void falf_mediaplayer_close()
+extern "C" KADU_EXPORT void falf_mediaplayer_close()
 {
 	mediaplayer->unregisterMediaPlayer();
 	delete falf;

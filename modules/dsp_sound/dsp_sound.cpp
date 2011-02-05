@@ -38,6 +38,7 @@
 #include "../sound/sound-file.h"
 #include "configuration/configuration-file.h"
 #include "debug.h"
+#include "exports.h"
 
 #include "dsp_sound.h"
 
@@ -45,7 +46,7 @@
  * @ingroup dsp_sound
  * @{
  */
-extern "C" int dsp_sound_init(bool firstLoad)
+extern "C" KADU_EXPORT int dsp_sound_init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
@@ -58,7 +59,7 @@ extern "C" int dsp_sound_init(bool firstLoad)
 	return 0;
 }
 
-extern "C" void dsp_sound_close()
+extern "C" KADU_EXPORT void dsp_sound_close()
 {
 	kdebugf();
 

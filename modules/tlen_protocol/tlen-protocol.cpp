@@ -60,8 +60,10 @@
 
 #include "exports.h"
 
-extern "C" KADU_EXPORT int tlen_protocol_init()
+extern "C" KADU_EXPORT int tlen_protocol_init(bool firstLoad)
 {
+	Q_UNUSED(firstLoad)
+
 	return TlenProtocol::initModule();
 }
 

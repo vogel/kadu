@@ -28,19 +28,22 @@
 #include <QtCore/QDateTime>
 
 #include "debug.h"
+#include "exports.h"
 #include "../mediaplayer/mediaplayer.h"
 #include "../mediaplayer/mpris_mediaplayer.h"
 
 MPRISMediaPlayer* amarok2;
 
-extern "C" int amarok2_mediaplayer_init()
+extern "C" KADU_EXPORT int amarok2_mediaplayer_init(bool firstLoad)
 {
+	Q_UNUSED(firstLoad)
+
 	amarok2 = new MPRISMediaPlayer("Amarok", "org.kde.amarok");
 	bool res = mediaplayer->registerMediaPlayer(amarok2, amarok2);
 	return res ? 0 : 1;
 }
 
-extern "C" void amarok2_mediaplayer_close()
+extern "C" KADU_EXPORT void amarok2_mediaplayer_close()
 {
 	mediaplayer->unregisterMediaPlayer();
 	delete amarok2;

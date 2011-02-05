@@ -37,8 +37,10 @@
 
 FileDescription *file_desc;
 
-extern "C" KADU_EXPORT int filedesc_init()
+extern "C" KADU_EXPORT int filedesc_init(bool firstLoad)
 {
+	Q_UNUSED(firstLoad)
+
 	file_desc = new FileDescription();
 
 	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/filedesc.ui"));

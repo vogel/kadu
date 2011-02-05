@@ -32,14 +32,17 @@
 #include "gui/windows/kadu-window.h"
 #include "misc/path-conversion.h"
 #include "debug.h"
+#include "exports.h"
 
 #include "infos.h"
 #include "infos_dialog.h"
 
 Infos *lastSeen;
 
-extern "C" KADU_EXPORT int last_seen_init()
+extern "C" KADU_EXPORT int last_seen_init(bool firstLoad)
 {
+	Q_UNUSED(firstLoad)
+
 	kdebugf();
 
 	lastSeen = new Infos();

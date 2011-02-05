@@ -25,12 +25,13 @@
 #include "gui/windows/main-configuration-window.h"
 #include "misc/path-conversion.h"
 #include "debug.h"
+#include "exports.h"
 
 #include "modules/sound/sound-manager.h"
 
 #include "alsa-player.h"
 
-extern "C" int alsa_sound_init(bool firstLoad)
+extern "C" KADU_EXPORT int alsa_sound_init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
@@ -45,7 +46,7 @@ extern "C" int alsa_sound_init(bool firstLoad)
 	return 0;
 }
 
-extern "C" void alsa_sound_close()
+extern "C" KADU_EXPORT void alsa_sound_close()
 {
 	kdebugf();
 
