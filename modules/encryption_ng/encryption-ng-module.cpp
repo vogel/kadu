@@ -25,6 +25,7 @@
 
 #include "gui/windows/message-dialog.h"
 #include "misc/path-conversion.h"
+#include "exports.h"
 
 #include "configuration/encryption-ng-configuration.h"
 #include "keys/keys-manager.h"
@@ -39,7 +40,7 @@ namespace EncryptionNg
 	static QCA::Initializer *InitObject;
 }
 
-extern "C" int encryption_ng_init(bool firstLoad)
+extern "C" KADU_EXPORT int encryption_ng_init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
@@ -70,7 +71,7 @@ extern "C" int encryption_ng_init(bool firstLoad)
 	return 0;
 }
 
-extern "C" void encryption_ng_close()
+extern "C" KADU_EXPORT void encryption_ng_close()
 {
 	EncryptionManager::destroyInstance();
 	EncryptionActions::unregisterActions();

@@ -19,12 +19,13 @@
 
 #include "modules/encryption_ng/encryption-manager.h"
 #include "modules/encryption_ng/encryption-provider-manager.h"
+#include "exports.h"
 
 #include "encryption-ng-simlite-key-generator.h"
 #include "encryption-ng-simlite-key-importer.h"
 #include "encryption-ng-simlite-provider.h"
 
-extern "C" int encryption_ng_simlite_init(bool firstLoad)
+extern "C" KADU_EXPORT int encryption_ng_simlite_init(bool firstLoad)
 {
 	if (firstLoad)
 		EncryptioNgSimliteKeyImporter::createInstance();
@@ -38,7 +39,7 @@ extern "C" int encryption_ng_simlite_init(bool firstLoad)
 	return 0;
 }
 
-extern "C" void encryption_ng_simlite_close()
+extern "C" KADU_EXPORT void encryption_ng_simlite_close()
 {
 	EncryptionProviderManager::instance()->unregisterProvider(EncryptioNgSimliteProvider::instance());
 	EncryptioNgSimliteProvider::destroyInstance();

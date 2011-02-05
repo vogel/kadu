@@ -3,6 +3,7 @@
 * encryption_ng: fixed possible crash when closing chat (beevvy)
 * encryption_ng_simlite: #1933 really fixed: do not turn on encryption if received unencrypted message (beevvy)
 * gui: fixed way too high chat edit box on clean installation (beevvy)
+* encryption_ng, encryption_ng_simlite: fixed modules loading on Windows (beevvy)
 
 +++ version 0.6.6-beta15
 * url-handlers: #1908 fixed: links containing HTML entities were not escaped (beevvy)
