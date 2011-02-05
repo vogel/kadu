@@ -315,9 +315,9 @@ void MainWindow::contextMenuEvent(QContextMenuEvent *event)
 {
 	if (!ToolBar::isBlockToolbars())
 	{
-		QMenu *menu = new QMenu(this);
-		menu->addAction(tr("Create new toolbar"), this, SLOT(addTopToolbar()));
-		menu->exec(event->globalPos());
+		QMenu menu;
+		menu.addAction(tr("Create new toolbar"), this, SLOT(addTopToolbar()));
+		menu.exec(event->globalPos());
 	}
 }
 
