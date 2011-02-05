@@ -57,7 +57,9 @@
 #include "gui/widgets/status-buttons.h"
 #include "gui/widgets/status-menu.h"
 #include "notify/notification-manager.h"
+#include "os/generic/url-opener.h"
 #include "status/status-container-manager.h"
+#include "url-handlers/url-handler-manager.h"
 #include "activate.h"
 
 #include "misc/misc.h"
@@ -134,7 +136,8 @@ void KaduWindow::createGui()
 	ContactsWidget->view()->addFilter(anonymousFilter);
 	ContactsWidget->view()->setContextMenuEnabled(true);
 
-	connect(ContactsWidget->view(), SIGNAL(chatActivated(Chat )), this, SLOT(openChatWindow(Chat )));
+	connect(ContactsWidget->view(), SIGNAL(chatActivated(Chat)), this, SLOT(openChatWindow(Chat)));
+	connect(ContactsWidget->view(), SIGNAL(buddyActivated(Buddy)), this, SLOT(buddyActivated(Buddy)));
 
 	hboxLayout->addWidget(GroupBar);
 	hboxLayout->setStretchFactor(GroupBar, 1);
@@ -314,11 +317,13 @@ void KaduWindow::openChatWindow(Chat chat)
 		ChatWidgetManager::instance()->sendMessage(chat);
 		return;
 	}
+}
 
-// TODO: 0.6.6
-// 	contact = *contacts.begin();
-// 	if (contact.mobile().isEmpty() && !contact.email().isEmpty())
-// 		openMailClient(contact.email());
+void KaduWindow::buddyActivated(const Buddy &buddy)
+{
+	if (buddy.contacts().isEmpty() && buddy.mobile().isEmpty() && !buddy.email().isEmpty())
+		if (buddy.email().indexOf(UrlHandlerManager::instance()->mailRegExp()) == 0)
+			UrlOpener::openEmail(buddy.email());
 }
 
 void KaduWindow::createRecentChatsMenu()

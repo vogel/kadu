@@ -5,6 +5,7 @@
 * gui: fixed way too high chat edit box on clean installation (beevvy)
 * encryption_ng, encryption_ng_simlite: fixed modules loading on Windows (beevvy)
 * gui: close buddy data window when buddy is removed (Vogel)
+* gui: fix email action for non-contacts buddies (Vogel)
 
 +++ version 0.6.6-beta15
 * url-handlers: #1908 fixed: links containing HTML entities were not escaped (beevvy)

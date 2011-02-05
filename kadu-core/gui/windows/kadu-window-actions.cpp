@@ -127,24 +127,10 @@ void disableNoDescriptionUrl(Action *action)
 
 void disableNoEMail(Action *action)
 {
-	kdebugf();
+	const Buddy &buddy = action->buddy();
+	bool hasMail = !buddy.email().isEmpty() && buddy.email().indexOf(UrlHandlerManager::instance()->mailRegExp()) == 0;
 
-	if (action->contacts().count() != 1)
-	{
-		action->setEnabled(false);
-		return;
-	}
-
-	const Buddy buddy = action->contact().ownerBuddy();
-
-	if (buddy.email().isEmpty() || buddy.email().indexOf(UrlHandlerManager::instance()->mailRegExp()) < 0)
-	{
-		action->setEnabled(false);
-		return;
-	}
-
-	action->setEnabled(true);
-	kdebugf2();
+	action->setEnabled(hasMail);
 }
 
 void disableIfContactSelected(Action *action)

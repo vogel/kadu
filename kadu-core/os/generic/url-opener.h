@@ -22,19 +22,14 @@
 #define URL_OPENER_H
 
 #include <QtCore/QString>
+
 #include "exports.h"
 
-class KADUAPI UrlOpener
+namespace UrlOpener
 {
-	UrlOpener();
-	UrlOpener(const UrlOpener &);
-
-	static bool KADUAPI openUrl(const QString &urlForDesktopServices, const QString &urlForApplication, const QString &application);
-
-public:
-	static void KADUAPI openUrl(const QString &url);
-	static void KADUAPI openEmail(const QString &email);
-
+	bool KADUAPI openUrl(const QString &urlForDesktopServices, const QString &urlForApplication, const QString &application);
+	void KADUAPI openUrl(const QString &url);
+	void KADUAPI openEmail(const QString &email);
 };
 
 #endif // URL_OPENER_H

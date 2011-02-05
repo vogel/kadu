@@ -113,6 +113,7 @@ private:
 
 private slots:
 	void openChatWindow(Chat chat);
+	void buddyActivated(const Buddy &buddy);
 
 	void createRecentChatsMenu();
 	void openRecentChats(QAction *action);

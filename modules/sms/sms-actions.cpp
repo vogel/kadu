@@ -80,7 +80,6 @@ SmsActions::~SmsActions()
 	disconnect(Core::instance()->kaduWindow()->buddiesListView(), SIGNAL(buddyActivated(Buddy)),
 			this, SLOT(buddyActivated(Buddy)));
 
-
 	BuddiesListViewMenuManager::instance()->removeActionDescription(sendSmsActionDescription);
 	Core::instance()->kaduWindow()->removeMenuActionDescription(sendSmsActionDescription);
 }
