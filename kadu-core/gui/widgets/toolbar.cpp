@@ -674,6 +674,11 @@ void ToolBar::loadFromConfig(const QDomElement &toolbar_element)
 	kdebugf2();
 }
 
+bool actionTextLessThan(QAction *a1, QAction *a2)
+{
+	return a1->text().toLower() < a2->text().toLower();
+}
+
 QMenu * ToolBar::createContextMenu(QWidget *widget)
 {
 	currentWidget = widget;
@@ -715,6 +720,7 @@ QMenu * ToolBar::createContextMenu(QWidget *widget)
 		menu->addSeparator();
 
 		QMenu *actionsMenu = new QMenu(tr("Add new button"), menu);
+		QList<QAction *> actions;
 		foreach (ActionDescription *actionDescription, Actions::instance()->values())
 		{
 			bool supportsAction;
@@ -730,10 +736,16 @@ QMenu * ToolBar::createContextMenu(QWidget *widget)
 
 			if (!windowHasAction(actionDescription->name(), false))
 			{
-				QAction *action = actionsMenu->addAction(IconsManager::instance()->iconByPath(actionDescription->iconPath()), actionDescription->text());
+				QAction *action = new QAction(IconsManager::instance()->iconByPath(actionDescription->iconPath()), actionDescription->text(), actionsMenu);
 				action->setData(actionDescription->name());
+
+				actions.append(action);
 			}
 		}
+
+		qSort(actions.begin(), actions.end(), actionTextLessThan);
+		foreach (QAction *action, actions)
+			actionsMenu->addAction(action);
 
 		if (actionsMenu->isEmpty())
 			actionsMenu->addAction(tr("No items to add found"))->setEnabled(false);
