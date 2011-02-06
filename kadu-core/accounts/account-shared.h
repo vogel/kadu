@@ -65,6 +65,8 @@ private:
 	short int MaximumImageSize;
 
 	bool PrivateStatus;
+	// TODO: hack, remove at some time
+	bool Removing;
 
 	void useProtocolFactory(ProtocolFactory *factory);
 
@@ -109,6 +111,7 @@ public: //TODO 0.6.6: it is needed in Buddy::dummy()
 	KaduShared_Property(QString, password, Password)
 	KaduShared_Property(AccountProxySettings, proxySettings, ProxySettings)
 	KaduShared_PropertyRead(bool, privateStatus, PrivateStatus)
+	KaduShared_Property(bool, removing, Removing)
 
 	// StatusContainer implementation
 

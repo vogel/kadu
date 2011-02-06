@@ -130,8 +130,7 @@ void JabberRosterService::contactUpdated(const XMPP::RosterItem &item)
 }
 
 void JabberRosterService::contactDeleted(const XMPP::RosterItem &item)
-{
-	kdebug("Deleting contact %s", qPrintable(item.jid().bare()));
+{	kdebug("Deleting contact %s", qPrintable(item.jid().bare()));
 
 	Contact contact = ContactManager::instance()->byId(Protocol->account(), item.jid().bare(), ActionReturnNull);
 	BuddyManager::instance()->clearOwnerAndRemoveEmptyBuddy(contact);
@@ -169,6 +168,10 @@ void JabberRosterService::downloadRoster()
 
 void JabberRosterService::addContact(const Contact &contact)
 {
+	// disable roster actions when we are removing account from kadu
+	if (Protocol->account().removing())
+		return;
+
 	if (!Protocol->isConnected() || contact.contactAccount() != Protocol->account() || contact.ownerBuddy().isAnonymous())
 		return;
 
@@ -189,6 +192,10 @@ void JabberRosterService::addContact(const Contact &contact)
 
 void JabberRosterService::removeContact(const Contact &contact)
 {
+	// disable roster actions when we are removing account from kadu
+	if (Protocol->account().removing())
+		return;
+
 	if (!Protocol->isConnected() || contact.contactAccount() != Protocol->account())
 		return;
 

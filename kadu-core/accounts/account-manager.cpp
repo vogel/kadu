@@ -243,6 +243,8 @@ void AccountManager::invalidPassword(Account account)
 
 void AccountManager::removeAccountAndBuddies(Account account)
 {
+	account.setRemoving(true);
+
 	QList<Contact> contacts = ContactManager::instance()->contacts(account);
 	foreach (const Contact &contact, contacts)
 		BuddyManager::instance()->clearOwnerAndRemoveEmptyBuddy(contact);
