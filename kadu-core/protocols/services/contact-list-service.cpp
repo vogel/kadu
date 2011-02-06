@@ -40,6 +40,8 @@ Buddy ContactListService::mergeBuddy(Buddy oneBuddy)
 {
 	Buddy buddy;
 	QList<Contact> oneBuddyContacts = oneBuddy.contacts(CurrentProtocol->account());
+	if (oneBuddy.display().isEmpty())
+		oneBuddy.setDisplay(oneBuddy.uuid().toString());
 
 	if (oneBuddyContacts.count() > 0)
 	{
@@ -70,21 +72,11 @@ Buddy ContactListService::mergeBuddy(Buddy oneBuddy)
 	}
 	else
 	{
-		// THIS WORKS NICE
-		// find one by display, but what if display().isEmpty()?
+		// display is never null, we set it above, so buddy is never null
 		buddy = BuddyManager::instance()->byDisplay(oneBuddy.display(), ActionCreateAndAdd);
-		if (buddy.isNull())
-		{
-			// not found so add new one
-			buddy = Buddy::create();
-			// TODO: 0.6.6
-			// maybe just ignore?
-			buddy.setDisplay(buddy.uuid().toString());
-		}
 	}
 
-	// TODO 0.6.6: update rest data, consider to add some logic here
-	// TODO 0.6.6: consider to find contact by some data if no contacts inside buddy
+	// if this buddy really should be merged with another, this is user's job!
 	buddy.setFirstName(oneBuddy.firstName());
 	buddy.setLastName(oneBuddy.lastName());
 	buddy.setNickName(oneBuddy.nickName());
