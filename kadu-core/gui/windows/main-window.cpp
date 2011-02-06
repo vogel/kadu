@@ -303,10 +303,10 @@ void MainWindow::writeToolBarsToConfig(Qt::ToolBarArea area)
 
 void MainWindow::refreshToolBars()
 {
-#ifdef Q_OS_MAC
+	// We don't need it when closing.
+	// BTW, on Mac it caused crashes on exit. TODO: check out why, as there is probably a bug somewhere.
 	if (Core::instance()->isClosing())
 		return;
-#endif
 
 	loadToolBarsFromConfig();
 }
