@@ -9,6 +9,7 @@
 * gui: added fake email account to new buddy window, similar to fake mobile account (Vogel)
 * gui: sort "Add button" actions in toolbar menu by name (Vogel)
 * gui: fixed crash on Windows after right clicking on a toolbar (WhE, beevvy)
+* avatars: added timeout to avatar jobs, so buggy servers do not stop avatar fetching (Vogel)
 
 +++ version 0.6.6-beta15
 * url-handlers: #1908 fixed: links containing HTML entities were not escaped (beevvy)

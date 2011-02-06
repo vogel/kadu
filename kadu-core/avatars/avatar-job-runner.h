@@ -22,33 +22,39 @@
 
 #include <QtCore/QObject>
 
+#include "contacts/contact.h"
+
 #include "exports.h"
+
+class QTimer;
 
 class Account;
 class AvatarService;
-class Contact;
 
 class KADUAPI AvatarJobRunner : public QObject
 {
 	Q_OBJECT
+
+	Contact MyContact;
+
+	QTimer *Timer;
 
 	AvatarService * avatarService(const Account &account);
 	AvatarService * avatarService(const Contact &contact);
 
 private slots:
 	void avatarFetched(Contact contact, bool ok);
+	void timeout();
 
 public:
-	explicit AvatarJobRunner(QObject *parent);
+	explicit AvatarJobRunner(const Contact &contact, QObject *parent);
 	virtual ~AvatarJobRunner();
 
-	void runJob(const Contact &contact);
+	void runJob();
 
 signals:
 	void jobFinished(bool ok);
 
 };
-
-#include "contacts/contact.h" // for MOC
 
 #endif // AVATAR_JOB_RUNNER_H

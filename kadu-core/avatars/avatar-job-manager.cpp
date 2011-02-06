@@ -66,9 +66,9 @@ void AvatarJobManager::runJob()
 	IsJobRunning = true;
 
 	Contact contact = nextJob();
-	AvatarJobRunner *runner = new AvatarJobRunner(this);
+	AvatarJobRunner *runner = new AvatarJobRunner(contact, this);
 	connect(runner, SIGNAL(jobFinished(bool)), this, SLOT(jobFinished()));
-	runner->runJob(contact);
+	runner->runJob();
 }
 
 void AvatarJobManager::jobFinished()

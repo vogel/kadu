@@ -17,6 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QTimer>
+
 #include "avatars/avatar.h"
 #include "avatars/avatar-manager.h"
 #include "contacts/contact.h"
@@ -25,8 +27,8 @@
 
 #include "avatar-job-runner.h"
 
-AvatarJobRunner::AvatarJobRunner(QObject *parent) :
-		QObject(parent)
+AvatarJobRunner::AvatarJobRunner(const Contact &contact, QObject *parent) :
+		QObject(parent), MyContact(contact), Timer(0)
 {
 }
 
@@ -52,21 +54,40 @@ AvatarService * AvatarJobRunner::avatarService(const Contact &contact)
 	return avatarService(account);
 }
 
-void AvatarJobRunner::runJob(const Contact &contact)
+void AvatarJobRunner::runJob()
 {
-	AvatarService *service = avatarService(contact);
+	AvatarService *service = avatarService(MyContact);
 	if (!service)
 		return;
 
 	connect(service, SIGNAL(avatarFetched(Contact,bool)),
 			this, SLOT(avatarFetched(Contact,bool)));
-	service->fetchAvatar(contact);
+	service->fetchAvatar(MyContact);
+
+	Timer = new QTimer(this);
+	connect(Timer, SIGNAL(timeout()), this, SLOT(timeout()));
+	Timer->start(15000);
 }
 
 void AvatarJobRunner::avatarFetched(Contact contact, bool ok)
 {
-	Q_UNUSED(contact)
+	if (MyContact == contact)
+	{
+		if (Timer)
+			Timer->stop();
 
-	emit jobFinished(ok);
+		emit jobFinished(ok);
+		deleteLater();
+	}
+}
+
+void AvatarJobRunner::timeout()
+{
+	AvatarService *service = avatarService(MyContact);
+	if (service)
+		disconnect(service, SIGNAL(avatarFetched(Contact,bool)),
+				this, SLOT(avatarFetched(Contact,bool)));
+
+	emit jobFinished(false);
 	deleteLater();
 }
