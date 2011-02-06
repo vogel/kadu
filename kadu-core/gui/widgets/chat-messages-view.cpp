@@ -185,9 +185,7 @@ void ChatMessagesView::appendMessages(const QList<Message> &messages)
 
 	QList<MessageRenderInfo *> rendererMessages;
 
-#if (QT_VERSION >= 0x040700)
 	rendererMessages.reserve(messages.size());
-#endif
 
 	foreach (const Message &message, messages)
 	{
