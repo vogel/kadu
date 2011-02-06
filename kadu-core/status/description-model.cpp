@@ -21,11 +21,6 @@
 
 #include "description-model.h"
 
-// TODO: 0.6.6
-// 	while (defaultdescriptions.count() > config_file.readNumEntry("General", "NumberOfDescriptions"))
-// 		defaultdescriptions.pop_back();
-// 	Description->setMaxVisibleItems(30);
-
 DescriptionModel::DescriptionModel(DescriptionManager *manager) :
 		Manager(manager)
 {

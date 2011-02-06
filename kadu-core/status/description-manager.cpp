@@ -38,6 +38,8 @@ DescriptionManager::DescriptionManager()
 {
 	ConfigurationManager::instance()->registerStorableObject(this);
 
+	configurationUpdated();
+
 	if (xml_config_file->getNode("Descriptions", XmlConfigFile::ModeFind).isNull())
 		import();
 	else
@@ -77,7 +79,21 @@ void DescriptionManager::import()
 	StringList.append(config_file.readEntry("General", "DefaultDescription").split("<-->", QString::SkipEmptyParts));
 	StringList.removeDuplicates();
 
+	truncate();
+
 	store();
+}
+
+void DescriptionManager::truncate()
+{
+	while (!StringList.isEmpty() && StringList.size() > MaxNumberOfDescriptions)
+		removeDescription(StringList.last());
+}
+
+void DescriptionManager::configurationUpdated()
+{
+	MaxNumberOfDescriptions = config_file.readNumEntry("General", "NumberOfDescriptions");
+	truncate();
 }
 
 void DescriptionManager::addDescription(const QString &description)
@@ -91,6 +107,8 @@ void DescriptionManager::addDescription(const QString &description)
 	emit descriptionAboutToBeAdded(description);
 	StringList.prepend(description);
 	emit descriptionAdded(description);
+
+	truncate();
 }
 
 void DescriptionManager::removeDescription(const QString& description)

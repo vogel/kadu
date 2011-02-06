@@ -20,21 +20,28 @@
 #ifndef DESCRIPTION_MANAGER_H
 #define DESCRIPTION_MANAGER_H
 
+#include "configuration/configuration-aware-object.h"
 #include "storage/storable-string-list.h"
 
 class DescriptionModel;
 
-class KADUAPI DescriptionManager : public QObject, public StorableStringList
+class KADUAPI DescriptionManager : public QObject, public StorableStringList, private ConfigurationAwareObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(DescriptionManager)
 
 	static DescriptionManager *Instance;
 
+	quint16 MaxNumberOfDescriptions;
+
 	DescriptionManager();
 	virtual ~DescriptionManager();
 
 	void import();
+	void truncate();
+
+protected:
+	virtual void configurationUpdated();
 
 public:
 	static DescriptionManager * instance();
