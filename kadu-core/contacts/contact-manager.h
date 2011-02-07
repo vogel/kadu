@@ -43,7 +43,7 @@ class KADUAPI ContactManager : public QObject, public Manager<Contact>
 	ContactManager();
 	virtual ~ContactManager();
 
-	friend class DetailsHolder<ContactShared, ContactDetails, ContactManager>;
+	friend class ContactShared;
 	void detailsLoaded(Contact item);
 	void detailsUnloaded(Contact item);
 

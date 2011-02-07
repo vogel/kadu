@@ -36,13 +36,12 @@
 #include "storage/shared.h"
 
 class AccountDetails;
-class AccountManager;
 class Buddy;
 class Protocol;
 class ProtocolFactory;
 class StatusType;
 
-class KADUAPI AccountShared : public BaseStatusContainer, public Shared, public DetailsHolder<AccountShared, AccountDetails, AccountManager>, ProtocolsAwareObject
+class KADUAPI AccountShared : public BaseStatusContainer, public Shared, public DetailsHolder<AccountDetails>, ProtocolsAwareObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(AccountShared)
@@ -76,6 +75,7 @@ protected:
 
 	virtual void detailsAdded();
 	virtual void detailsAboutToBeRemoved();
+	virtual void detailsRemoved();
 	virtual void protocolUnregistered(ProtocolFactory *protocolHandler);
 
 	virtual void doSetStatus(Status newStatus);

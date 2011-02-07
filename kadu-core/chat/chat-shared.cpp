@@ -243,6 +243,8 @@ void ChatShared::chatTypeUnregistered(ChatType *chatType)
 void ChatShared::detailsAdded()
 {
 	details()->ensureLoaded();
+
+	ChatManager::instance()->detailsLoaded(this);
 }
 
 /**
@@ -254,6 +256,11 @@ void ChatShared::detailsAdded()
 void ChatShared::detailsAboutToBeRemoved()
 {
 	details()->store();
+}
+
+void ChatShared::detailsRemoved()
+{
+	ChatManager::instance()->detailsUnloaded(this);
 }
 
 /**

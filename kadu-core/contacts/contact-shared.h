@@ -33,9 +33,7 @@
 #include "storage/details-holder.h"
 #include "storage/shared.h"
 
-class ContactManager;
-
-class KADUAPI ContactShared : public QObject, public Shared, public DetailsHolder<ContactShared, ContactDetails, ContactManager>, ProtocolsAwareObject
+class KADUAPI ContactShared : public QObject, public Shared, public DetailsHolder<ContactDetails>, ProtocolsAwareObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(ContactShared)

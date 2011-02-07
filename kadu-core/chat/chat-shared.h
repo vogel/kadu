@@ -31,7 +31,6 @@
 class BuddySet;
 class Chat;
 class ChatDetails;
-class ChatManager;
 class ContactSet;
 
 /**
@@ -49,7 +48,7 @@ class ContactSet;
  * and attached to objects of this class using @link setDetails @endlink and @link details @endlink
  * methods of @link DetailsHolder @endlink class.
  */
-class KADUAPI ChatShared : public QObject, public Shared, public DetailsHolder<ChatShared, ChatDetails, ChatManager>, ChatTypeAwareObject
+class KADUAPI ChatShared : public QObject, public Shared, public DetailsHolder<ChatDetails>, ChatTypeAwareObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(ChatShared)
@@ -68,6 +67,7 @@ protected:
 
 	virtual void detailsAdded();
 	virtual void detailsAboutToBeRemoved();
+	virtual void detailsRemoved();
 
 public:
 	static ChatShared * loadStubFromStorage(const QSharedPointer<StoragePoint> &storagePoint);

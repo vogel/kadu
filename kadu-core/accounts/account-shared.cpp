@@ -227,11 +227,18 @@ void AccountShared::protocolUnregistered(ProtocolFactory* factory)
 void AccountShared::detailsAdded()
 {
 	details()->ensureLoaded();
+
+	AccountManager::instance()->detailsLoaded(this);
 }
 
 void AccountShared::detailsAboutToBeRemoved()
 {
 	details()->store();
+}
+
+void AccountShared::detailsRemoved()
+{
+	AccountManager::instance()->detailsUnloaded(this);
 }
 
 void AccountShared::setAccountIdentity(Identity accountIdentity)

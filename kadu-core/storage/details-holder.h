@@ -54,7 +54,7 @@
  *
  * First template parameter allows object to be properly casted.
  */
-template <class Class, class DetailsClass, class ManagerClass>
+template <class DetailsClass>
 class DetailsHolder
 {
 	DetailsClass *Details;
@@ -81,7 +81,6 @@ class DetailsHolder
 			return;
 
 		detailsAdded();
-		ManagerClass::instance()->detailsLoaded((Class *)this);
 		afterDetailsAdded();
 	}
 
@@ -105,9 +104,8 @@ class DetailsHolder
 		detailsAboutToBeRemoved();
 		delete Details;
 		Details = 0;
-		detailsRemoved();
 
-		ManagerClass::instance()->detailsUnloaded((Class *)this);
+		detailsRemoved();
 		afterDetailsRemoved();
 	}
 

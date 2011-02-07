@@ -45,7 +45,7 @@ class KADUAPI AccountManager : public QObject, public Manager<Account>
 	AccountManager();
 	virtual ~AccountManager();
 
-	friend class DetailsHolder<AccountShared, AccountDetails, AccountManager>;
+	friend class AccountShared;
 	void detailsLoaded(Account account);
 	void detailsUnloaded(Account account);
 

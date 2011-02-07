@@ -262,6 +262,8 @@ void ContactShared::detailsAdded()
 	details()->ensureLoaded();
 
 	dataUpdated();
+
+	ContactManager::instance()->detailsLoaded(this);
 }
 
 void ContactShared::afterDetailsAdded()
@@ -280,6 +282,8 @@ void ContactShared::detailsAboutToBeRemoved()
 
 void ContactShared::detailsRemoved()
 {
+	ContactManager::instance()->detailsUnloaded(this);
+
 	dataUpdated();
 }
 
