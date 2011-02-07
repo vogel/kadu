@@ -91,21 +91,3 @@ void BaseStatusContainer::storeStatus(Status status)
 	MyStorableObject->storeValue("LastStatusDescription", status.description());
 	MyStorableObject->storeValue("LastStatusName", status.type());
 }
-
-void BaseStatusContainer::disconnectStatus(bool disconnectWithCurrentDescription,
-		const QString &disconnectDescription)
-{
-	if (status().type() == "Offline")
-		return;
-
-	Status disconnectStatus;
-	disconnectStatus.setType("Offline");
-	QString description;
-	if (disconnectWithCurrentDescription)
-		description = status().description();
-	else
-		description = disconnectDescription;
-
-	disconnectStatus.setDescription(description);
-	doSetStatus(disconnectStatus); // this does not stores status to configuration
-}

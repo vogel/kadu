@@ -153,6 +153,25 @@ void AccountShared::emitUpdated()
 	emit updated();
 }
 
+void AccountShared::setDisconnectStatus()
+{
+	if (status().type() == "Offline")
+		return;
+
+	bool disconnectWithCurrentDescription = config_file.readBoolEntry("General", "DisconnectWithCurrentDescription");
+	QString disconnectDescription = config_file.readEntry("General", "DisconnectDescription");
+
+	Status disconnectStatus;
+	disconnectStatus.setType("Offline");
+
+	if (disconnectWithCurrentDescription)
+		disconnectStatus.setDescription(status().description());
+	else
+		disconnectStatus.setDescription(disconnectDescription);
+
+	doSetStatus(disconnectStatus); // this does not store status
+}
+
 void AccountShared::useProtocolFactory(ProtocolFactory *factory)
 {
 	Protocol *oldProtocolHandler = ProtocolHandler;
@@ -165,11 +184,8 @@ void AccountShared::useProtocolFactory(ProtocolFactory *factory)
 		disconnect(ProtocolHandler, SIGNAL(connected(Account)), this, SIGNAL(connected()));
 		disconnect(ProtocolHandler, SIGNAL(disconnected(Account)), this, SIGNAL(disconnected()));
 
-		bool disconnectWithCurrentDescription = config_file.readBoolEntry("General", "DisconnectWithCurrentDescription");
-		QString disconnectDescription = config_file.readEntry("General", "DisconnectDescription");
-
 		storeStatus(status());
-		disconnectStatus(disconnectWithCurrentDescription, disconnectDescription);
+		setDisconnectStatus();
 	}
 
 	if (!factory)

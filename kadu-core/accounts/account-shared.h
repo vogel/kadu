@@ -67,6 +67,7 @@ private:
 	// TODO: hack, remove at some time
 	bool Removing;
 
+	void setDisconnectStatus();
 	void useProtocolFactory(ProtocolFactory *factory);
 
 protected:

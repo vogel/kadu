@@ -110,8 +110,6 @@ public:
 	}
 
 	virtual void storeStatus(Status status);
-	virtual void disconnectStatus(bool disconnectWithCurrentDescription,
-						  const QString &disconnectDescription);
 
 signals:
 	void statusContainerAboutToBeRegistered(StatusContainer *);

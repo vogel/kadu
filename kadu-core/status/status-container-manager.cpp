@@ -299,13 +299,3 @@ void StatusContainerManager::storeStatus(Status status)
 	foreach (StatusContainer *statusContainer, StatusContainers)
 		statusContainer->storeStatus(status);
 }
-
-void StatusContainerManager::disconnectStatus(bool disconnectWithCurrentDescription, const QString& disconnectDescription)
-{
-	// TODO: 0.6.6
-	Q_UNUSED(disconnectWithCurrentDescription)
-	Q_UNUSED(disconnectDescription)
-
-	foreach (StatusContainer *statusContainer, StatusContainers)
-		statusContainer->disconnectStatus(DisconnectWithCurrentDescription, DisconnectDescription);
-}
