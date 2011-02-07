@@ -77,12 +77,13 @@ protected:
 	virtual void detailsAdded();
 	virtual void detailsAboutToBeRemoved();
 	virtual void detailsRemoved();
+
+	virtual void protocolRegistered(ProtocolFactory *protocolHandler);
 	virtual void protocolUnregistered(ProtocolFactory *protocolHandler);
 
 	virtual void doSetStatus(Status newStatus);
 
-public: //TODO 0.6.6: it is needed in Buddy::dummy()
-	virtual void protocolRegistered(ProtocolFactory *protocolHandler);
+public:
 
 	static AccountShared * loadStubFromStorage(const QSharedPointer<StoragePoint> &storagePoint);
 	static AccountShared * loadFromStorage(const QSharedPointer<StoragePoint> &storagePoint);
