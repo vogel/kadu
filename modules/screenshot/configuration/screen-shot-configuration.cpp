@@ -43,18 +43,12 @@ void ScreenShotConfiguration::destroyInstance()
 
 ScreenShotConfiguration::ScreenShotConfiguration()
 {
+	createDefaultConfiguration();
 	configurationUpdated();
-
-	if (FileFormat.isEmpty())
-	{
-		createDefaultConfiguration();
-		configurationUpdated();
-	}
 }
 
 ScreenShotConfiguration::~ScreenShotConfiguration()
 {
-
 }
 
 void ScreenShotConfiguration::createDefaultConfiguration()
@@ -71,7 +65,7 @@ void ScreenShotConfiguration::createDefaultConfiguration()
 
 void ScreenShotConfiguration::configurationUpdated()
 {
-	FileFormat = config_file.readEntry("ScreenShot", "fileFormat", QString());
+	FileFormat = config_file.readEntry("ScreenShot", "fileFormat", "PNG");
 	UseShortJpgExtension = config_file.readBoolEntry("ScreenShot", "use_short_jpg", true);
 	Quality = config_file.readNumEntry("ScreenShot", "quality", -1);
 	ImagePath = config_file.readEntry("ScreenShot", "path", profilePath("images/"));

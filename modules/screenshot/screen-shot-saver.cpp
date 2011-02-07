@@ -58,13 +58,10 @@ QString ScreenShotSaver::saveScreenShot(QPixmap pixmap)
 	if (path.isEmpty())
 		return QString();
 
-	// TODO: 0.6.6, fix
-	const char *format = ScreenShotConfiguration::instance()->fileFormat().toAscii();
 	int quality = ScreenShotConfiguration::instance()->quality();
-	Q_UNUSED(format)
-	Q_UNUSED(quality)
 
-	if (!pixmap.save(path, "PNG"))
+	// do not extract qPrintable... to variable
+	if (!pixmap.save(path, qPrintable(ScreenShotConfiguration::instance()->fileFormat()), quality))
 	{
 		MessageDialog::show("dialog-warning", tr("Kadu"), tr("Can't write file %1.\nAccess denied or other problem!").arg(path));
 		return QString();
