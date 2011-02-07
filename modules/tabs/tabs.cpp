@@ -114,9 +114,6 @@ TabsManager::TabsManager() :
 	connect(TabDialog, SIGNAL(currentChanged(int)), this, SLOT(onTabChange(int)));
 	connect(TabDialog, SIGNAL(contextMenu(QWidget *, const QPoint &)),
 			this, SLOT(onContextMenu(QWidget *, const QPoint &)));
-	// TODO: 0.6.6 - implement ContactList ContactManager::byAltNicks(QString)
-	//connect(tabdialog, SIGNAL(openTab(QStringList, int)),
-	//		this, SLOT(openTabWith(QStringList, int)));
 
 	loadWindowGeometry(TabDialog, "Chat", "TabWindowsGeometry", 30, 30, 400, 400);
 

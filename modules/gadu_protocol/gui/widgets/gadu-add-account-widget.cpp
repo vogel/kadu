@@ -129,8 +129,7 @@ void GaduAddAccountWidget::resetGui()
 void GaduAddAccountWidget::apply()
 {
 	Account gaduAccount = Account::create();
-	// TODO: 0.6.6 set protocol after details because of crash
-	//gaduAccount.setProtocolName("gadu");
+
 	gaduAccount.setAccountIdentity(Identity->currentIdentity());
 	gaduAccount.setProtocolName("gadu");
 	gaduAccount.setId(AccountId->text());

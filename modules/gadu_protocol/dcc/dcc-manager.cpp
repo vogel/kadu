@@ -123,7 +123,7 @@ void DccManager::setUpDcc()
 	{
 		kdebugmf(KDEBUG_NETWORK | KDEBUG_INFO, "Couldn't bind DCC socket.\n");
 
-		// TODO: 0.6.6
+		// TODO
 		// MessageDialog::msg(tr("Couldn't create DCC socket.\nDirect connections disabled."), true, "dialog-warning");
 		kdebugf2();
 		return;
@@ -215,7 +215,7 @@ void DccManager::connectSocketNotifiers(DccSocketNotifiers *notifiers)
 {
 	connect(notifiers, SIGNAL(destroyed(QObject *)),
 			this, SLOT(socketNotifiersDestroyed(QObject *)));
-// 	TODO: 0.6.6 signal never emitted
+// 	TODO: signal never emitted
 // 	connect(notifiers, SIGNAL(incomingConnection(struct gg_dcc *)),
 // 			this, SLOT(dccIncomingConnection(struct gg_dcc *)));
 }

@@ -116,7 +116,7 @@ void DccSocketNotifiers::dcc7Rejected(struct gg_dcc7 *socket)
 	disconnect(Protocol->socketNotifiers(), SIGNAL(dcc7Accepted(struct gg_dcc7 *)), this, SLOT(dcc7Accepted(struct gg_dcc7 *)));
 	disconnect(Protocol->socketNotifiers(), SIGNAL(dcc7Rejected(struct gg_dcc7 *)), this, SLOT(dcc7Rejected(struct gg_dcc7 *)));
 
-// TODO: 0.6.6 emit finished
+// TODO: emit finished
 }
 
 bool DccSocketNotifiers::checkRead()
@@ -153,7 +153,7 @@ void DccSocketNotifiers::handleEventDccClientAccept(struct gg_event *e)
 
 	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "uin:%u peer_uin:%u\n", Socket->uin, Socket->peer_uin);
 
-	// TODO: make async TODO: 0.6.6
+	// TODO: make async
 	if (!Manager->acceptConnection(Socket->uin, Socket->peer_uin, Socket->remote_addr))
 	{
 		done(false);
@@ -170,7 +170,7 @@ void DccSocketNotifiers::handleEventDccCallback(struct gg_event *e)
 	GaduFileTransferHandler *handler = Manager->findFileTransferHandler(this);
 	if (handler)
 	{
-		gg_dcc_set_type(Socket, GG_SESSION_DCC_SEND); // TODO: 0.6.6 for voice it wont look that way
+		gg_dcc_set_type(Socket, GG_SESSION_DCC_SEND); // TODO: for voice it wont look that way
 		handler->setFileTransferNotifiers(this);
 		return;
 	}

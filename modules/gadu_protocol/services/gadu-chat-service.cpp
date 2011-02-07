@@ -49,7 +49,7 @@
 GaduChatService::GaduChatService(GaduProtocol *protocol)
 	: ChatService(protocol), Protocol(protocol)
 {
-	// TODO: 0.6.6
+	// TODO
 // 	connect(protocol->socketNotifiers(), SIGNAL(ackReceived(int, uin_t, int)),
 // 		this, SLOT(ackReceived(int, uin_t, int)));
 }
@@ -61,19 +61,8 @@ bool GaduChatService::sendMessage(const Chat &chat, FormattedMessage &message, b
 	QString plain = message.toPlain();
 	QList<Contact> contacts = chat.contacts().toContactList();
 
-// 	plain.replace("\r\n", "\n");
-// 	plain.replace('\r', '\n');
-// 	plain.replace(QChar::LineSeparator, "\n");
-// 	plain = plain.trimmed();
-
 	if (plain.isEmpty()) // for image sending
-	{
 		message.prepend(FormattedMessagePart(" ", false, false, false, QColor(0, 0, 0)));
-
-// 		plain.replace("\r\n", "\n");
-// 		plain.replace('\r', '\n');
-// 		plain.replace(QChar::LineSeparator, "\n");
-	}
 
 	unsigned int uinsCount = 0;
 	unsigned int formatsSize = 0;
