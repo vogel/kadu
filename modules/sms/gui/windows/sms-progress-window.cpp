@@ -45,7 +45,7 @@ SmsProgressWindow::SmsProgressWindow(SmsSender *sender, QWidget *parent) :
 	Sender->setParent(this);
 	Sender->setTokenReader(this);
 
-	setState(ProgressIcon::StateInProgress, tr("Sending SMS in progress."));
+	setState(ProgressIcon::StateInProgress, tr("Sending SMS in progress."), true);
 }
 
 SmsProgressWindow::~SmsProgressWindow()

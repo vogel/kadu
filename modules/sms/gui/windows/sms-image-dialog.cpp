@@ -19,11 +19,10 @@
 #include <QtNetwork/QNetworkReply>
 #include <QtNetwork/QNetworkRequest>
 
+#include "gui/windows/message-dialog.h"
 #include "icons-manager.h"
 
 #include "sms-image-dialog.h"
-
-#include <stdio.h>
 
 SmsImageDialog::SmsImageDialog(const QString &tokenImageUrl, QScriptValue callbackObject, QScriptValue callbackMethod, QWidget *parent) :
 		QDialog(parent), CallbackObject(callbackObject), CallbackMethod(callbackMethod)
@@ -88,7 +87,8 @@ void SmsImageDialog::tokenImageDownloaded()
 {
 	if (QNetworkReply::NoError != TokenNetworkReply->error())
 	{
-		reject(); // TODO: 0.6.6 display some message here
+		MessageDialog::exec("dialog-error", tr("SMS"), tr("Unable to fetch required token"));
+		reject();
 		return;
 	}
 

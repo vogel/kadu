@@ -14,6 +14,7 @@
 * jabber: do not clean roster on account removal (Vogel)
 * gui: restored max saved descriptions functionality (Vogel)
 * screenshot: fixed format/quality settings (Vogel)
+* sms: sms progress window can now be closed at any time (Vogel)
 
 +++ version 0.6.6-beta15
 * url-handlers: #1908 fixed: links containing HTML entities were not escaped (beevvy)

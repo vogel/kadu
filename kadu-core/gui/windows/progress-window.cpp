@@ -81,9 +81,14 @@ void ProgressWindow::closeEvent(QCloseEvent *e)
 		QDialog::closeEvent(e);
 }
 
-void ProgressWindow::setState(ProgressIcon::ProgressState state, const QString &text)
+void ProgressWindow::setState(ProgressIcon::ProgressState state, const QString &text, bool enableClosingInProgress)
 {
-	enableClosing(ProgressIcon::StateInProgress != state);
+	if (ProgressIcon::StateInProgress != state)
+		CloseButton->setText(tr("Close"));
+	else
+		CloseButton->setText(tr("Cancel"));
+
+	enableClosing(enableClosingInProgress || (ProgressIcon::StateInProgress != state));
 	Progress->setState(state, text);
 }
 

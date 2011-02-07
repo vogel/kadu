@@ -45,7 +45,7 @@ protected:
 
 	QWidget * container() { return Container; }
 
-	void setState(ProgressIcon::ProgressState state, const QString &text);
+	void setState(ProgressIcon::ProgressState state, const QString &text, bool enableClosingInProgress = false);
 	void setText(const QString &text);
 
 public:
