@@ -189,7 +189,12 @@ void KaduWindow::createKaduMenu()
 	RecentChatsMenu = new QMenu(this);
 	RecentChatsMenu->setIcon(IconsManager::instance()->iconByPath("internet-group-chat"));
 	RecentChatsMenu->setTitle(tr("Recent chats"));
-	connect(KaduMenu, SIGNAL(aboutToShow()), this, SLOT(createRecentChatsMenu()));
+	RecentChatsMenuNeedsUpdate = true;
+	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetCreated()), this, SLOT(invalidateRecentChatsMenu()));
+	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetDestroying()), this, SLOT(invalidateRecentChatsMenu()));
+	connect(RecentChatManager::instance(), SIGNAL(recentChatAdded()), this, SLOT(invalidateRecentChatsMenu()));
+	connect(RecentChatManager::instance(), SIGNAL(recentChatRemoved()), this, SLOT(invalidateRecentChatsMenu()));
+	connect(KaduMenu, SIGNAL(aboutToShow()), this, SLOT(updateRecentChatsMenu()));
 	connect(RecentChatsMenu, SIGNAL(triggered(QAction *)), this, SLOT(openRecentChats(QAction *)));
 
 	insertMenuActionDescription(Actions->Configuration, MenuKadu);
@@ -326,26 +331,31 @@ void KaduWindow::buddyActivated(const Buddy &buddy)
 			UrlOpener::openEmail(buddy.email());
 }
 
-void KaduWindow::createRecentChatsMenu()
+void KaduWindow::invalidateRecentChatsMenu()
+{
+	RecentChatsMenuNeedsUpdate = true;
+}
+
+void KaduWindow::updateRecentChatsMenu()
 {
 	kdebugf();
 
+	if (!RecentChatsMenuNeedsUpdate)
+		return;
+
 	RecentChatsMenu->clear();
 
-	QList<Chat> recentChats = RecentChatManager::instance()->recentChats();
-	bool addedAnyChat = false;
-	foreach (const Chat chat, recentChats)
+	foreach (const Chat &chat, RecentChatManager::instance()->recentChats())
 		if (!ChatWidgetManager::instance()->byChat(chat))
 		{
 			ChatType *type = ChatTypeManager::instance()->chatType(chat.type());
-			QAction *action = new QAction(type ? type->icon() : QIcon(), chat.name(), this);
+			QAction *action = new QAction(type ? type->icon() : QIcon(), chat.name(), RecentChatsMenu);
 			action->setData(QVariant::fromValue<Chat>(chat));
 			RecentChatsMenu->addAction(action);
-
-			addedAnyChat = true;
 		}
 
-	RecentChatsMenuAction->setEnabled(addedAnyChat);
+	RecentChatsMenuAction->setEnabled(!RecentChatsMenu->actions().isEmpty());
+	RecentChatsMenuNeedsUpdate = false;
 
 	kdebugf2();
 }
