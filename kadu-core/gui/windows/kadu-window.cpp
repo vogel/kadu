@@ -513,8 +513,8 @@ void KaduWindow::insertMenuActionDescription(ActionDescription *actionDescriptio
 	kdebugf();
 	if (!actionDescription)
 		return;
-	Action *action = actionDescription->createAction(this, this);
 
+	Action *action = actionDescription->createAction(this, this);
 	QMenu *menu = 0;
 
 	switch (type)
@@ -530,29 +530,32 @@ void KaduWindow::insertMenuActionDescription(ActionDescription *actionDescriptio
 			break;
 		case MenuHelp:
 			menu = HelpMenu;
+			break;
 	}
 
 	if (!menu)
 		return;
 
 	QList<QAction *> menuActions = menu->actions();
-	if (pos >= menuActions.count() - 1 || pos == -1)
+	if (pos < 0 || pos >= menuActions.count())
 		menu->addAction(action);
 	else
-		menu->insertAction(menuActions[pos], action);
+		menu->insertAction(menuActions.at(pos), action);
 
-	MenuActions[actionDescription] = MenuAction(action, type);
+	MenuActions.insert(actionDescription, MenuAction(action, type));
 }
 
 void KaduWindow::removeMenuActionDescription(ActionDescription *actionDescription)
 {
 	if (!actionDescription)
 		return;
-	Action *action = MenuActions[actionDescription].first;
 
-	if (!action)
+	QMap<ActionDescription *, MenuAction>::iterator it = MenuActions.find(actionDescription);
+	if (it == MenuActions.end())
 		return;
-	switch (MenuActions[actionDescription].second)
+
+	Action *action = it.value().first;
+	switch (it.value().second)
 	{
 		case MenuKadu:
 			KaduMenu->removeAction(action);
@@ -565,8 +568,11 @@ void KaduWindow::removeMenuActionDescription(ActionDescription *actionDescriptio
 			break;
 		case MenuHelp:
 			HelpMenu->removeAction(action);
+			break;
 	}
-	MenuActions.remove(actionDescription);
+
+	MenuActions.erase(it);
+	delete action;
 }
 
 void KaduWindow::createDefaultToolbars(QDomElement parentConfig)
