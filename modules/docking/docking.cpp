@@ -41,7 +41,7 @@
 #endif
 
 #ifdef Q_WS_X11
-#include "x11tools.h"
+#include "os/x11tools.h"
 // TODO: hack :/
 #undef Status
 #endif

@@ -68,8 +68,8 @@
 #include "status-changed-notification.h"
 
 #ifdef Q_WS_X11
-#include "x11tools.h" // this should be included as last one,
-#undef Status         // and Status defined by Xlib.h must be undefined
+#include "os/x11tools.h" // this should be included as last one,
+#undef Status            // and Status defined by Xlib.h must be undefined
 #endif
 
 #define FULLSCREENCHECKTIMER_INTERVAL 2000 /*ms*/
