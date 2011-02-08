@@ -42,7 +42,9 @@
 #include "gui/widgets/buddies-list-view.h"
 #include "gui/widgets/buddies-list-widget.h"
 #include "gui/widgets/configuration/configuration-widget.h"
+#include "gui/widgets/configuration/config-combo-box.h"
 #include "gui/widgets/configuration/config-group-box.h"
+#include "gui/widgets/configuration/config-line-edit.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-dialog.h"
 #include "gui/hot-key.h"
@@ -66,7 +68,7 @@ void SmsConfigurationUiHandler::registerConfigurationUi()
 	{
 		Instance = new SmsConfigurationUiHandler();
 		MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/sms.ui"));
-		MainConfigurationWindow::registerUiHandler(smsConfigurationUiHandler);
+		MainConfigurationWindow::registerUiHandler(Instance);
 	}
 }
 
@@ -75,7 +77,7 @@ void SmsConfigurationUiHandler::unregisterConfigurationUi()
 	if (Instance)
 	{
 		MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/sms.ui"));
-		MainConfigurationWindow::unregisterUiHandler(smsConfigurationUiHandler);
+		MainConfigurationWindow::unregisterUiHandler(Instance);
 		delete Instance;
 		Instance = 0;
 	}
@@ -106,6 +108,28 @@ void SmsConfigurationUiHandler::onSmsBuildInCheckToggle(bool value)
 	}
 }
 
+void SmsConfigurationUiHandler::onEraGatewayChanged(int index)
+{
+	Q_UNUSED(index)
+
+	QString gateway = EraGatewayComboBox->currentItemValue();
+
+	if (gateway == "Sponsored")
+	{
+	    EraSponsoredUser->show();
+	    EraSponsoredPassword->show();
+	    EraOmnixUser->hide();
+	    EraOmnixPassword->hide();
+	}
+	else
+	{
+	    EraSponsoredUser->hide();
+	    EraSponsoredPassword->hide();
+	    EraOmnixUser->show();
+	    EraOmnixPassword->show();
+	}
+}
+
 void SmsConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
 	useBuiltIn = static_cast<QCheckBox *>(mainConfigurationWindow->widget()->widgetById("sms/useBuildInApp"));
@@ -116,6 +140,16 @@ void SmsConfigurationUiHandler::mainConfigurationWindowCreated(MainConfiguration
 	connect(useBuiltIn, SIGNAL(toggled(bool)), this, SLOT(onSmsBuildInCheckToggle(bool)));
 	connect(useCustomString, SIGNAL(toggled(bool)), customString, SLOT(setEnabled(bool)));
 
+	EraGatewayComboBox = static_cast<ConfigComboBox *>(mainConfigurationWindow->widget()->widgetById("default_sms/eraGateway"));
+	connect(EraGatewayComboBox, SIGNAL(activated(int)), this, SLOT(onEraGatewayChanged(int)));
+
+	EraSponsoredUser = static_cast<ConfigLineEdit *>(mainConfigurationWindow->widget()->widgetById("default_sms/sponsoredUser"));
+	EraSponsoredPassword = static_cast<ConfigLineEdit *>(mainConfigurationWindow->widget()->widgetById("default_sms/sponsoredPassword"));
+	EraOmnixUser = static_cast<ConfigLineEdit *>(mainConfigurationWindow->widget()->widgetById("default_sms/multimediaUser"));
+	EraOmnixPassword = static_cast<ConfigLineEdit *>(mainConfigurationWindow->widget()->widgetById("default_sms/multimediaPassword"));
+
+	EraSponsoredPassword->setEchoMode(QLineEdit::Password);
+	EraOmnixPassword->setEchoMode(QLineEdit::Password);
 }
 
 void SmsConfigurationUiHandler::createDefaultConfiguration()
@@ -127,5 +161,3 @@ void SmsConfigurationUiHandler::createDefaultConfiguration()
 
 	config_file.addVariable("ShortCuts", "kadu_sendsms", "Ctrl+S");
 }
-
-SmsConfigurationUiHandler *smsConfigurationUiHandler;

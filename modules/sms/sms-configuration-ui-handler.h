@@ -43,6 +43,9 @@
 
 #include "sms_exports.h"
 
+class ConfigComboBox;
+class ConfigLineEdit;
+
 class QCheckBox;
 class QComboBox;
 class QListWidget;
@@ -59,23 +62,26 @@ class SMSAPI SmsConfigurationUiHandler : public ConfigurationUiHandler
 	QLineEdit *customApp;
 	QCheckBox *useCustomString;
 	QLineEdit *customString;
+	ConfigComboBox *EraGatewayComboBox;
+	ConfigLineEdit *EraSponsoredUser;
+	ConfigLineEdit *EraSponsoredPassword;
+	ConfigLineEdit *EraOmnixUser;
+	ConfigLineEdit *EraOmnixPassword;
 
 	void createDefaultConfiguration();
 
 	SmsConfigurationUiHandler();
 	virtual ~SmsConfigurationUiHandler();
 
+private slots:
+	void onSmsBuildInCheckToggle(bool);
+	void onEraGatewayChanged(int);
+
 public:
 	static void registerConfigurationUi();
 	static void unregisterConfigurationUi();
 
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
-
-public slots:
-	void onSmsBuildInCheckToggle(bool);
-
 };
-
-extern SMSAPI SmsConfigurationUiHandler *smsConfigurationUiHandler;
 
 #endif // SMS_CONFIGURATION_UI_HANDLER_H
