@@ -99,7 +99,7 @@ public:
 	virtual void store();
 
 	void addRecentChat(Chat chat, QDateTime datetime = QDateTime::currentDateTime());
-	QList<Chat> recentChats();
+	const QList<Chat> & recentChats();
 
 signals:
 	/**

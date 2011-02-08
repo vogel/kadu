@@ -143,7 +143,7 @@ void RecentChatManager::store()
  *
  * Returns list of recent chats sorted from most recent to least recent.
  */
-QList<Chat> RecentChatManager::recentChats()
+const QList<Chat> & RecentChatManager::recentChats()
 {
 	ensureLoaded();
 	return RecentChats;
@@ -166,7 +166,15 @@ void RecentChatManager::addRecentChat(Chat chat, QDateTime datetime)
 		return;
 
 	ensureLoaded();
+
+	if (!RecentChats.isEmpty() && RecentChats.at(0) == chat)
+		return;
+
 	removeRecentChat(chat);
+
+	// limit
+	while (RecentChats.count() >= MAX_RECENT_CHAT_COUNT)
+		removeRecentChat(RecentChats.last());
 
 	QDateTime *recentChatData = chat.data()->moduleData<QDateTime>("recent-chat", true);
 	*recentChatData = datetime;
@@ -174,10 +182,6 @@ void RecentChatManager::addRecentChat(Chat chat, QDateTime datetime)
 	emit recentChatAboutToBeAdded(chat);
 	RecentChats.prepend(chat);
 	emit recentChatAdded(chat);
-
-	// limit
-	while (RecentChats.count() > MAX_RECENT_CHAT_COUNT)
-		removeRecentChat(RecentChats.last());
 }
 
 /**
@@ -233,20 +237,10 @@ void RecentChatManager::cleanUp()
 
 	QDateTime now = QDateTime::currentDateTime();
 
-	QList<Chat> toRemove;
 	foreach (const Chat &chat, RecentChats)
 	{
 		QDateTime *recentChatData = chat.data()->moduleData<QDateTime>("recent-chat");
-		if (!recentChatData)
-		{
-			toRemove.append(chat);
-			continue;
-		}
-
-		if (recentChatData->addSecs(secs) < now)
-			toRemove.append(chat);
+		if (!recentChatData || recentChatData->addSecs(secs) < now)
+			removeRecentChat(chat);
 	}
-
-	foreach (const Chat &chat, toRemove)
-		removeRecentChat(chat);
 }
