@@ -267,6 +267,13 @@ void GaduEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
 
 	connect(useDefaultServers, SIGNAL(toggled(bool)), this, SLOT(dataChanged()));
 	connect(ipAddresses, SIGNAL(textEdited(QString)), this, SLOT(dataChanged()));
+
+#ifdef GADU_HAVE_TLS
+	UseTlsEncryption = new QCheckBox(tr("Use encrypted connection"), this);
+	generalLayout->addWidget(UseTlsEncryption, 2, 0, 1, 4);
+
+	connect(UseTlsEncryption, SIGNAL(toggled(bool)), ipAddresses, SLOT(dataChanged()));
+#endif
 }
 
 void GaduEditAccountWidget::apply()
@@ -283,6 +290,10 @@ void GaduEditAccountWidget::apply()
 		Details->setMaximumImageSize(MaximumImageSize->value());
 		Details->setReceiveImagesDuringInvisibility(ReceiveImagesDuringInvisibility->isChecked());
 		Details->setMaximumImageRequests(MaximumImageRequests->value());
+
+#ifdef GADU_HAVE_TLS
+		Details->setTlsEncryption(UseTlsEncryption->isChecked());
+#endif
 	}
 
 	Proxy->apply();
@@ -332,6 +343,9 @@ void GaduEditAccountWidget::dataChanged()
 		&& Details->maximumImageRequests() == MaximumImageRequests->value()
 		&& config_file.readBoolEntry("Network", "isDefServers", true) == useDefaultServers->isChecked()
 		&& config_file.readEntry("Network", "Server") == ipAddresses->text()
+#ifdef GADU_HAVE_TLS
+		&& Details->tlsEncryption() == UseTlsEncryption->isChecked()
+#endif
 		&& StateNotChanged == Proxy->state()
 		&& !gpiw->isModified())
 	{
@@ -370,6 +384,10 @@ void GaduEditAccountWidget::loadAccountData()
 		MaximumImageSize->setValue(details->maximumImageSize());
 		ReceiveImagesDuringInvisibility->setChecked(details->receiveImagesDuringInvisibility());
 		MaximumImageRequests->setValue(details->maximumImageRequests());
+
+#ifdef GADU_HAVE_TLS
+		UseTlsEncryption->setChecked(Details->tlsEncryption());
+#endif
 	}
 
 	useDefaultServers->setChecked(config_file.readBoolEntry("Network", "isDefServers", true));

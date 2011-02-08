@@ -64,6 +64,7 @@
 #include "helpers/gadu-importer.h"
 #include "gadu-account-details.h"
 #include "gadu-contact-details.h"
+#include "gadu-features.h"
 #include "gadu-id-validator.h"
 #include "gadu-protocol-factory.h"
 #ifndef Q_OS_WIN
@@ -508,7 +509,12 @@ void GaduProtocol::setupLoginParams()
 	if (Dcc)
 		Dcc->setUpExternalAddress(GaduLoginParams);
 
+#ifdef GADU_HAVE_TLS
+	GaduLoginParams.tls = gaduAccountDetails->tlsEncryption() ? 1 : 0;
+#else
 	GaduLoginParams.tls = 0;
+#endif
+
 	GaduLoginParams.image_size = gaduAccountDetails->maximumImageSize();
 }
 

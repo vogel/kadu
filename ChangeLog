@@ -15,6 +15,7 @@
 * gui: restored max saved descriptions functionality (Vogel)
 * screenshot: fixed format/quality settings (Vogel)
 * sms: sms progress window can now be closed at any time (Vogel)
+* gadu: added TLS encryption support for users of new libgadu 1.10 (Vogel)
 
 +++ version 0.6.6-beta15
 * url-handlers: #1908 fixed: links containing HTML entities were not escaped (beevvy)

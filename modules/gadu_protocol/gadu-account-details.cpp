@@ -62,7 +62,10 @@ void GaduAccountDetails::load()
 	ReceiveImagesDuringInvisibility = loadValue<bool>("ReceiveImagesDuringInvisibility", true);
 	MaximumImageRequests = loadValue<short int>("MaximumImageRequests", 10);
 	InitialRosterImport = loadValue<bool>("InitialRosterImport", false);
-	
+
+#ifdef GADU_HAVE_TLS
+	TlsEncryption = loadValue<bool>("TlsEncryption", true);
+#endif
 
 	QHostAddress host;
 	if (!host.setAddress(loadValue<QString>("DccExternalIp")))
@@ -91,7 +94,11 @@ void GaduAccountDetails::store()
 	storeValue("ReceiveImagesDuringInvisibility", ReceiveImagesDuringInvisibility);
 	storeValue("MaximumImageRequests", MaximumImageRequests);
 	storeValue("InitialRosterImport", InitialRosterImport);
-	
+
+#ifdef GADU_HAVE_TLS
+	storeValue("TlsEncryption", TlsEncryption);
+#endif
+
 }
 
 void GaduAccountDetails::import_0_6_5_LastStatus()
