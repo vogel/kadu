@@ -109,7 +109,7 @@ QString getUptime(int mode)
 {
 	QString uptime('0');
 
-#ifdef Q_OS_LINUX //TODO 0.6.6: find more portable way to get system uptime
+#ifdef Q_OS_LINUX //TODO find more portable way to get system uptime
 	time_t upTime = 0;
 	FILE *f;
 	double duptime = 0;

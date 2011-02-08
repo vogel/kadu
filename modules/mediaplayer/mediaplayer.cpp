@@ -191,23 +191,8 @@ MediaPlayer::MediaPlayer()
 		"audio-volume-low", tr("Volume Down"), false
 	);
 
-	//TODO 0.6.6: remove this?
-
-	// MediaPlayer statuses menu item
-//	bool menuPos = config_file.readBoolEntry("MediaPlayer", "dockMenu", false);
-//	if (menuPos)
-//	{
-//		mediaplayerStatus = new QAction(tr("Enable MediaPlayer statuses"), this);
-//		mediaplayerStatus->setCheckable(true);
-//		connect(mediaplayerStatus, SIGNAL(toggled(bool)), this, SLOT(toggleStatuses(bool)));
-		// TODO
-		//dockMenu->addAction(mediaplayerStatus);
-//	}
-//	else
-//	{
 	Core::instance()->kaduWindow()->insertMenuActionDescription(enableMediaPlayerStatuses, KaduWindow::MenuKadu, 7);
 	mediaplayerStatus = NULL;
-//	}
 
 	// Initial values of some object variables
 	winKeyPressed = false;
@@ -536,7 +521,7 @@ void MediaPlayer::putPlayList(int ident)
 	for (uint cnt = 0; cnt < lgt; cnt++)
 	{
 		str = QString::number((cnt + 1)) + ". " + list[cnt] + " (" + formatLength(getLength(cnt)) + ")\n";
-		// TODO 0.6.6: to remove? - spliting in protocol!!
+		// TODO to remove? - spliting in protocol!!
 		if ((chat->edit()->document()->toPlainText().length() + str.length()) >= 2000)
 			chat->sendMessage();
 

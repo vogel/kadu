@@ -228,7 +228,7 @@ SearchWindow::SearchWindow(QWidget *parent, Buddy buddy) :
 	{
 		foreach (const Account &a, AccountManager::instance()->items())
 		{
-			// TODO 0.6.6: !!!
+			// TODO
 			if (a.protocolHandler()->isConnected() && a.protocolHandler()->protocolFactory()->name() == "gadu")
 			{
 				CurrentAccount = a;

@@ -726,28 +726,7 @@ QColor ConfigFile::readColorEntry(const QString &group,const QString &name, cons
 	if (str.isNull())
 		return def ? *def : col;
 	else
-	{
-		if (!str.contains(','))
-			return QColor(str);
-
-		// TODO 0.6.6: wtf is this comment?
-		//stary zapis kolor�w, w 0.5.0 mo�na b�dzie wywali�
-		bool ok;
-		QStringList stringlist = str.split(',', QString::SkipEmptyParts);
-		if (stringlist.count() != 3)
-			return def ? *def : col;
-		int r = stringlist.at(0).toInt(&ok);
-		if (!ok)
-			return def ? *def : col;
-		int g = stringlist.at(1).toInt(&ok);
-		if (!ok)
-			return def ? *def : col;
-		int b = stringlist.at(2).toInt(&ok);
-		if (!ok)
-			return def ? *def : col;
-		col.setRgb(r, g, b);
-		return col;
-	}
+		return QColor(str);
 }
 
 

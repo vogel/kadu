@@ -372,7 +372,7 @@ void NotificationManager::contactStatusChanged(Contact contact, Status oldStatus
 	ContactSet contacts(contact);
 
 	StatusChangedNotification *statusChangedNotification;
-	statusChangedNotification = new StatusChangedNotification(changedTo, contacts);
+	statusChangedNotification = new StatusChangedNotification(changedTo, contact);
 
 	notify(statusChangedNotification);
 

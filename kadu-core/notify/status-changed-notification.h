@@ -44,7 +44,7 @@ public:
 	static void registerEvents();
 	static void unregisterEvents();
 
-	StatusChangedNotification(const QString &toStatus, const ContactSet &contacts);
+	StatusChangedNotification(const QString &toStatus, const Contact &contact);
 	virtual ~StatusChangedNotification() {}
 
 };

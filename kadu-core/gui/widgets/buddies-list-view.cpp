@@ -477,7 +477,7 @@ void BuddiesListView::setBackground(const QString &backgroundColor, const QStrin
 
 void BuddiesListView::updateBackground()
 {
-	// TODO 0.6.6 fix image "Stretched" + update on resize event - write image into resource tree
+	// TODO fix image "Stretched" + update on resize event - write image into resource tree
 	QString style;
 	style.append("QTreeView::branch:has-siblings:!adjoins-item { border-image: none; image: none }");
 	style.append("QTreeView::branch:has-siblings:adjoins-item { border-image: none; image: none }");

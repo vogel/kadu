@@ -132,13 +132,5 @@ void ConfigSection::configTabDestroyed(QObject *obj)
 
 void ConfigSection::iconThemeChanged()
 {
-	// TODO 0.6.6: why not just simply call ListWidgetItem->setIcon() instead of creating new widget?
-
-	QListWidget *listWidget = ListWidgetItem->listWidget();
-	bool current = ListWidgetItem->isSelected();
-	delete ListWidgetItem;
-
-	ListWidgetItem = new QListWidgetItem(IconsManager::instance()->iconByPath(IconPath).pixmap(32, 32), Name, listWidget);
-	if (current)
-		listWidget->setCurrentItem(ListWidgetItem);
+	ListWidgetItem->setIcon(IconsManager::instance()->iconByPath(IconPath).pixmap(32, 32));
 }

@@ -62,18 +62,14 @@ void ChatDetailsSimple::load()
 	ChatDetails::load();
 
 	QString cadUuid = loadValue<QString>("Contact");
-	if (cadUuid.isNull())
+
+	CurrentContact = ContactManager::instance()->byUuid(cadUuid);
+	if (!CurrentContact)
 	{
-		CurrentContact = ContactManager::instance()->byUuid(loadValue<QString>("ContactAccountData"));
-		removeValue("ContactAccountData");
-	}
-	else
-	{
-		CurrentContact = ContactManager::instance()->byUuid(cadUuid);
-		if (CurrentContact.isNull())
+		// import from old 0.6.6 releases
+		Buddy buddy = BuddyManager::instance()->byUuid(cadUuid);
+		if (buddy)
 		{
-			// TODO 0.6.6 how it works?
-			Buddy buddy = BuddyManager::instance()->byUuid(cadUuid);
 			QList<Contact> contactList = buddy.contacts(mainData()->chatAccount());
 			if (!contactList.isEmpty())
 				CurrentContact = contactList.at(0);

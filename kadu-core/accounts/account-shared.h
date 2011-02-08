@@ -84,7 +84,6 @@ protected:
 	virtual void doSetStatus(Status newStatus);
 
 public:
-
 	static AccountShared * loadStubFromStorage(const QSharedPointer<StoragePoint> &storagePoint);
 	static AccountShared * loadFromStorage(const QSharedPointer<StoragePoint> &storagePoint);
 

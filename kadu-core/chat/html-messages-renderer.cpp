@@ -46,7 +46,6 @@ HtmlMessagesRenderer::~HtmlMessagesRenderer()
 void HtmlMessagesRenderer::setChat(const Chat &chat)
 {
 	MyChat = chat;
-    //TODO 0.6.6: is it good idea?
 	clearMessages();
 	refresh();
 }
