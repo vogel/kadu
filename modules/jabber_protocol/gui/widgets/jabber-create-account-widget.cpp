@@ -136,15 +136,15 @@ void JabberCreateAccountWidget::createGui(bool showButtons)
 
 	OptionsWidget = new QWidget(this);
 	QHBoxLayout *optionsLayout = new QHBoxLayout((OptionsWidget));
-	QGroupBox *ConnectionOptions = new QGroupBox(OptionsWidget);
-	optionsLayout->addWidget(ConnectionOptions);
-	ConnectionOptions->setTitle(tr("Connection settings"));
+	QGroupBox *connectionOptions = new QGroupBox(OptionsWidget);
+	optionsLayout->addWidget(connectionOptions);
+	connectionOptions->setTitle(tr("Connection settings"));
 
-	QVBoxLayout *vboxLayout2 = new QVBoxLayout(ConnectionOptions);
+	QVBoxLayout *vboxLayout2 = new QVBoxLayout(connectionOptions);
 	vboxLayout2->setSpacing(6);
 	vboxLayout2->setMargin(9);
 
-	CustomHostPort = new QCheckBox(ConnectionOptions);
+	CustomHostPort = new QCheckBox(connectionOptions);
 	CustomHostPort->setText(tr("Manually Specify Server Host/Port") + ':');
 	vboxLayout2->addWidget(CustomHostPort);
 	connect(CustomHostPort, SIGNAL(toggled(bool)), SLOT(hostToggled(bool)));
@@ -153,18 +153,18 @@ void JabberCreateAccountWidget::createGui(bool showButtons)
 	HostPortLayout->setSpacing(6);
 	HostPortLayout->setMargin(0);
 
-	CustomHostLabel = new QLabel(ConnectionOptions);
+	CustomHostLabel = new QLabel(connectionOptions);
 	CustomHostLabel->setText(tr("Host") + ':');
 	HostPortLayout->addWidget(CustomHostLabel);
 
-	CustomHost = new QLineEdit(ConnectionOptions);
+	CustomHost = new QLineEdit(connectionOptions);
 	HostPortLayout->addWidget(CustomHost);
 
-	CustomPortLabel = new QLabel(ConnectionOptions);
+	CustomPortLabel = new QLabel(connectionOptions);
 	CustomPortLabel->setText(tr("Port") + ':');
 	HostPortLayout->addWidget(CustomPortLabel);
 
-	CustomPort = new QLineEdit(ConnectionOptions);
+	CustomPort = new QLineEdit(connectionOptions);
 	CustomPort->setMinimumSize(QSize(56, 0));
 	CustomPort->setMaximumSize(QSize(56, 32767));
 	CustomPort->setText(QString::number(port_));
@@ -175,11 +175,11 @@ void JabberCreateAccountWidget::createGui(bool showButtons)
 	QHBoxLayout *EncryptionLayout = new QHBoxLayout();
 	EncryptionLayout->setSpacing(6);
 	EncryptionLayout->setMargin(0);
-	EncryptionModeLabel = new QLabel(ConnectionOptions);
+	EncryptionModeLabel = new QLabel(connectionOptions);
 	EncryptionModeLabel->setText(tr("Encrypt connection") + ':');
 	EncryptionLayout->addWidget(EncryptionModeLabel);
 
-	EncryptionMode = new QComboBox(ConnectionOptions);
+	EncryptionMode = new QComboBox(connectionOptions);
 	EncryptionMode->addItem(tr("Always"), 0);
 	EncryptionMode->addItem(tr("When available"), 1);
 	EncryptionMode->addItem(tr("Legacy SSL"), 2);
@@ -190,7 +190,7 @@ void JabberCreateAccountWidget::createGui(bool showButtons)
 	EncryptionLayout->addItem(spacerItem);
 	vboxLayout2->addLayout(EncryptionLayout);
 
-	LegacySSLProbe = new QCheckBox(ConnectionOptions);
+	LegacySSLProbe = new QCheckBox(connectionOptions);
 	LegacySSLProbe->setText(tr("Probe legacy SSL port"));
 	vboxLayout2->addWidget(LegacySSLProbe);
 
@@ -268,7 +268,11 @@ void JabberCreateAccountWidget::dataChanged()
 			&& ReNewPassword->text().isEmpty()
 			&& RememberPassword->isChecked()
 			&& !IdentityCombo->currentIdentity()
-			&& !OptionsWidget->isVisible() /*TODO 0.6.6: do correct check here*/)
+			&& !CustomHostPort->isChecked()
+			&& CustomHost->text().isEmpty()
+			&& CustomPort->text().toUInt() == port_
+			&& EncryptionMode->currentIndex() == 1
+			&& LegacySSLProbe->isChecked())
 		setState(StateNotChanged);
 	else
 		setState(valid ? StateChangedDataValid : StateChangedDataInvalid);
