@@ -19,7 +19,9 @@
  */
 
 #include "chat/chat-manager.h"
+#include "chat/message/message.h"
 #include "configuration/configuration-file.h"
+#include "core/core.h"
 
 #include "recent-chat-manager.h"
 
@@ -49,6 +51,11 @@ RecentChatManager::RecentChatManager()
 	connect(&CleanUpTimer, SIGNAL(timeout()), this, SLOT(cleanUp()));
 
 	configurationUpdated();
+
+	connect(Core::instance(), SIGNAL(messageReceived(Message)),
+			this, SLOT(onNewMessage(Message)));
+	connect(Core::instance(), SIGNAL(messageSent(Message)),
+			this, SLOT(onNewMessage(Message)));
 }
 
 RecentChatManager::~RecentChatManager()
@@ -243,4 +250,16 @@ void RecentChatManager::cleanUp()
 		if (!recentChatData || recentChatData->addSecs(secs) < now)
 			removeRecentChat(chat);
 	}
+}
+
+/**
+ * @author Bartosz 'beevvy' Brachaczek
+ * @short Adds given message's chat to the list.
+ *
+ * Called every time a new message is sent or received. Adds that message's
+ * chat to the list with addRecentChat method.
+ */
+void RecentChatManager::onNewMessage(const Message &message)
+{
+	addRecentChat(message.messageChat());
 }

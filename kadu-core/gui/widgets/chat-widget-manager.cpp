@@ -234,9 +234,6 @@ void ChatWidgetManager::unregisterChatWidget(ChatWidget *chatwidget)
 
 	Chats.remove(chatwidget->chat());
 
-	if (chatwidget->countMessages())
-		RecentChatManager::instance()->addRecentChat(chatwidget->chat());
-
 	if (chatwidget->chat().contacts().count() == 1)
 	{
 		Contact contact = chatwidget->chat().contacts().toContact();
