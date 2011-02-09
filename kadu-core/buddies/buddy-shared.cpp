@@ -226,6 +226,8 @@ void BuddyShared::store()
 
 bool BuddyShared::shouldStore()
 {
+	ensureLoaded();
+
     return UuidStorableObject::shouldStore() && !isAnonymous();
 }
 
@@ -385,7 +387,9 @@ void BuddyShared::removeFromGroup(const Group &group)
 	dataUpdated();
 }
 
-bool BuddyShared::isEmpty() const
+bool BuddyShared::isEmpty()
 {
+	ensureLoaded();
+
 	return Contacts.isEmpty() && HomePhone.isEmpty() && Mobile.isEmpty() && Website.isEmpty() && Email.isEmpty();
 }

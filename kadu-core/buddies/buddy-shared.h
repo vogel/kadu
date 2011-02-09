@@ -120,7 +120,7 @@ public:
 	void addToGroup(const Group &group);
 	void removeFromGroup(const Group &group);
 
-	bool isEmpty() const;
+	bool isEmpty();
 
 	KaduShared_Property(Avatar, buddyAvatar, BuddyAvatar)
 	KaduShared_Property(QString, display, Display)

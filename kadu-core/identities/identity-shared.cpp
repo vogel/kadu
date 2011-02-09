@@ -97,6 +97,8 @@ void IdentityShared::aboutToBeRemoved()
 
 void IdentityShared::addAccount(Account account)
 {
+	ensureLoaded();
+
 	Accounts.append(account);
 	connect(account, SIGNAL(statusChanged()), this, SIGNAL(statusChanged()));
 
@@ -105,6 +107,8 @@ void IdentityShared::addAccount(Account account)
 
 void IdentityShared::removeAccount(Account account)
 {
+	ensureLoaded();
+
 	Accounts.removeAll(account);
 	disconnect(account, SIGNAL(statusChanged()), this, SIGNAL(statusChanged()));
 
@@ -113,11 +117,15 @@ void IdentityShared::removeAccount(Account account)
 
 bool IdentityShared::hasAccount(Account account)
 {
+	ensureLoaded();
+
 	return Accounts.contains(account);
 }
 
 bool IdentityShared::hasAnyAccountWithDetails()
 {
+	ensureLoaded();
+
 	foreach (const Account &account, Accounts)
 		if (account.details())
 			return true;
@@ -127,11 +135,15 @@ bool IdentityShared::hasAnyAccountWithDetails()
 
 bool IdentityShared::isEmpty()
 {
+	ensureLoaded();
+
 	return Accounts.isEmpty();
 }
 
 void IdentityShared::doSetStatus(Status status)
 {
+	ensureLoaded();
+
 	foreach (const Account &account, Accounts)
 		if (account)
 			account.data()->setStatus(status);
@@ -139,6 +151,8 @@ void IdentityShared::doSetStatus(Status status)
 
 Account IdentityShared::bestAccount()
 {
+	ensureLoaded();
+
 	Account result = Account::null;
 	if (Accounts.isEmpty())
 		return result;

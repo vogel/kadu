@@ -139,6 +139,8 @@ void AccountShared::store()
 
 bool AccountShared::shouldStore()
 {
+	ensureLoaded();
+
 	return UuidStorableObject::shouldStore() &&
 			!Id.isEmpty();
 }

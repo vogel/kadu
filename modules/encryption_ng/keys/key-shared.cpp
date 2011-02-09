@@ -127,6 +127,8 @@ void KeyShared::store()
 
 bool KeyShared::shouldStore()
 {
+	ensureLoaded();
+
 	return UuidStorableObject::shouldStore() && !Key.isEmpty() && KeyContact;
 }
 

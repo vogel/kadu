@@ -97,6 +97,8 @@ void MessageShared::store()
 
 bool MessageShared::shouldStore()
 {
+	ensureLoaded();
+
 	// only store pending messages
 	// all other messages are stored by history module
 	return UuidStorableObject::shouldStore()

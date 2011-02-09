@@ -65,7 +65,6 @@ QString AvatarShared::storageNodeName()
 
 QString AvatarShared::filePath()
 {
-	ensureLoaded();
 	return FilePath.isEmpty() ? AvatarsDir + uuid() : FilePath;
 }
 
@@ -73,6 +72,8 @@ void AvatarShared::setFilePath(const QString& filePath)
 {
 	if (FilePath != filePath)
 	{
+		ensureLoaded();
+
 		FilePath = filePath;
 		Pixmap.load(filePath);
 		dataUpdated();
@@ -116,6 +117,8 @@ void AvatarShared::store()
 
 bool AvatarShared::shouldStore()
 {
+	ensureLoaded();
+
 	return UuidStorableObject::shouldStore() && !Pixmap.isNull();
 }
 
