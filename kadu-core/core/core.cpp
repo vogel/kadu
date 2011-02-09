@@ -467,20 +467,15 @@ void Core::createGui()
 
 	// initialize file transfers
 	FileTransferManager::instance();
-
-	/* That method is meant to be called before the event loop starts
-	 * (QCoreApplication::exec()), so this shot should assure that
-	 * showMainWindow() is called immediately after qApp->exec()
-	 * to let docking module call setShowMainWindowOnStart() before
-	 * ShowMainWindowOnStart is used.
-	 */
-	QTimer::singleShot(0, this, SLOT(showMainWindow()));
 }
 
 void Core::showMainWindow()
 {
 	if (ShowMainWindowOnStart)
 		Window->show();
+
+	// after first call which has to be placed in main(), this method should always show Window
+	ShowMainWindowOnStart = true;
 }
 
 void Core::setShowMainWindowOnStart(bool show)
