@@ -30,7 +30,8 @@ XmlConsole::XmlConsole(Account account) :
 		WatchedAccount(account)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
-	setWindowTitle(tr("XML Console"));
+	setWindowTitle(tr("XML Console - %1").arg(WatchedAccount.id()));
+	setWindowRole("kadu-xml-console");
 
 	JabberProtocol *protocol = qobject_cast<JabberProtocol *>(account.protocolHandler());
 	if (protocol)
@@ -51,11 +52,11 @@ void XmlConsole::createGui()
 	Viewer->setUndoRedoEnabled(false);
 	Viewer->setReadOnly(true);
 	Viewer->setAcceptRichText(false);
-	Viewer->setStyleSheet(QString("QTextEdit {background-color: black}"));
+	Viewer->viewport()->setStyleSheet("background-color: black");
 
 	mainLayout->addWidget(Viewer);
 
-	resize(560,400);
+	resize(560, 400);
 }
 
 void XmlConsole::xmlIncomingSlot(const QString &str)
