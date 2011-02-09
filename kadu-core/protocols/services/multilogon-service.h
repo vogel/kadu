@@ -37,6 +37,10 @@ public:
 	virtual const QList<MultilogonSession *> & sessions() const = 0;
 	virtual void killSession(MultilogonSession *session) = 0;
 
+signals:
+	void multilogonSessionConnected(MultilogonSession *session);
+	void multilogonSessionDisconnected(MultilogonSession *session);
+
 };
 
 #endif // MULTILOGON_SERVICE_H

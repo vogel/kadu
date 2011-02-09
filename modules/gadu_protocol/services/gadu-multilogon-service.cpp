@@ -80,7 +80,11 @@ void GaduMultilogonService::addNewSessions(const gg_event_multilogon_info &multi
 	// but anyone will ever have that many?
 	for (int i = 0; i < multilogonInfo.count; i++)
 		if (!containsSession(multilogonInfo.sessions[i]))
-			Sessions.append(new GaduMultilogonSession(multilogonInfo.sessions[i]));
+		{
+			GaduMultilogonSession *session = new GaduMultilogonSession(multilogonInfo.sessions[i]);
+			Sessions.append(session);
+			emit multilogonSessionConnected(session);
+		}
 }
 
 void GaduMultilogonService::removeOldSessions(const gg_event_multilogon_info &multilogonInfo)
@@ -95,6 +99,7 @@ void GaduMultilogonService::removeOldSessions(const gg_event_multilogon_info &mu
 
 		if (!containsSession(multilogonInfo, gaduSession->id()))
 		{
+			emit multilogonSessionDisconnected(gaduSession);
 			delete gaduSession;
 			i = Sessions.erase(i);
 		}
