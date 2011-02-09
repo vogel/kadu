@@ -338,6 +338,7 @@ void Core::init()
 	new Updates(this);
 
 	setIcon(IconsManager::instance()->iconByPath(QLatin1String("protocols/common/offline")));
+	connect(IconsManager::instance(), SIGNAL(themeChanged()), this, SLOT(statusChanged()));
 	QTimer::singleShot(15000, this, SLOT(deleteOldConfigurationFiles()));
 
 	// TODO: add some life-cycle management
