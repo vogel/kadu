@@ -227,19 +227,8 @@ FormattedMessage GaduChatService::createFormattedMessage(struct gg_event *e, con
 				(unsigned char *)e->event.msg.formats, e->event.msg.formats_length, !ignoreImages(sender));
 }
 
-void GaduChatService::handleEventMsg(struct gg_event *e)
+void GaduChatService::handleMsg(Contact sender, ContactSet recipients, Message::Type type, gg_event *e)
 {
-	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "recipients_count: %d\n", e->event.msg.recipients_count);
-
-	if (isSystemMessage(e))
-		return;
-
-	Contact sender = getSender(e);
-	if (ignoreSender(e, sender.ownerBuddy()))
-		return;
-
-	ContactSet recipients = getRecipients(e);
-
 	ContactSet conference = recipients;
 	conference += sender;
 
@@ -256,13 +245,6 @@ void GaduChatService::handleEventMsg(struct gg_event *e)
 	bool ignore = false;
 	emit filterRawIncomingMessage(chat, sender, content, ignore);
 
-// 	QString stringContent = QString::fromUtf8(content);
-// 	QString separator(QChar::LineSeparator);
-
-// 	stringContent.replace("\r\n", separator);
-// 	stringContent.replace("\n",   separator);
-// 	stringContent.replace("\r",   separator);
-
 	FormattedMessage message = createFormattedMessage(e, content, sender);
 	if (message.isEmpty())
 		return;
@@ -277,14 +259,50 @@ void GaduChatService::handleEventMsg(struct gg_event *e)
 
 	Message msg = Message::create();
 	msg.setMessageChat(chat);
-	msg.setType(Message::TypeReceived);
+	msg.setType(type);
 	msg.setMessageSender(sender);
-	msg.setStatus(Message::StatusReceived);
+	msg.setStatus(Message::TypeReceived == type ? Message::StatusReceived : Message::StatusSent);
 	msg.setContent(message.toHtml());
 	msg.setSendDate(time);
 	msg.setReceiveDate(QDateTime::currentDateTime());
-	emit messageReceived(msg);
+
+	if (Message::TypeReceived == type)
+		emit messageReceived(msg);
+	else
+		emit messageSent(msg);
 }
+
+void GaduChatService::handleEventMsg(struct gg_event *e)
+{
+	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "recipients_count: %d\n", e->event.msg.recipients_count);
+
+	if (isSystemMessage(e))
+		return;
+
+	Contact sender = getSender(e);
+	if (ignoreSender(e, sender.ownerBuddy()))
+		return;
+
+	ContactSet recipients = getRecipients(e);
+
+	handleMsg(sender, recipients, Message::TypeReceived, e);
+}
+
+#ifdef GADU_HAVE_MULTILOGON
+void GaduChatService::handleEventMultilogonMsg(gg_event *e)
+{
+	// warning: this may be not intuitive code
+
+	// we are sender
+	Contact sender = Protocol->account().accountContact();
+
+	// e.sender + e.recipeints are real recipients
+	ContactSet recipients = getRecipients(e);
+	recipients.insert(getSender(e));
+
+	handleMsg(sender, recipients, Message::TypeSent, e);
+}
+#endif
 
 void GaduChatService::handleEventAck(struct gg_event *e)
 {

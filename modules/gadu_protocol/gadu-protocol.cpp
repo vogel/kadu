@@ -501,6 +501,11 @@ void GaduProtocol::setupLoginParams()
 	GaduLoginParams.protocol_version = GG_DEFAULT_PROTOCOL_VERSION;
 	GaduLoginParams.client_version = (char *)GG_DEFAULT_CLIENT_VERSION;
 	GaduLoginParams.protocol_features = GG_FEATURE_DND_FFC; // enable new statuses
+
+#ifdef GADU_HAVE_MULTILOGON
+	GaduLoginParams.protocol_features |= GG_FEATURE_MULTILOGON;
+#endif
+
 	GaduLoginParams.encoding = GG_ENCODING_UTF8;
 
 	GaduLoginParams.has_audio = false; // gaduAccountDetails->allowDcc();

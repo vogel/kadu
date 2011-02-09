@@ -25,8 +25,10 @@
 // libgadu 1.10 has it
 #ifdef GG_FEATURE_MULTILOGON
 #	define GADU_HAVE_TLS
+#	define GADU_HAVE_MULTILOGON
 #else
 #	undef GADU_HAVE_TLS
+#	undef GADU_HAVE_MULTILOGON
 #endif
 
 #endif // GADU_FEATURES_H
