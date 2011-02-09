@@ -43,15 +43,8 @@ class JabberServerRegisterAccount : public QObject
 	QString Jid;
 	MiniClient *Client;
 
-	// Account settings
-	XMPP::Jid jid_, server_;
 	//UserAccount::SSLFlag ssl_;
-	bool opt_host_, legacy_ssl_probe_;
 	bool isOld_;
-	QString host_;
-	int port_;
-	QString pass_;
-	QString proxy_;
 
 	XMPP::XData fields;
 
@@ -59,7 +52,7 @@ class JabberServerRegisterAccount : public QObject
 	XMPP::XData convertToXData(const XMPP::Form& form);
 
 public:
-	JabberServerRegisterAccount(const QString &server, const QString &username, const QString &password, bool legacySSLProbe, bool legacySSL, bool forceSSL, const QString &host, int port);
+	JabberServerRegisterAccount(const QString &server, const QString &username, const QString &password, bool legacySSLProbe, bool legacySSL, bool forceSSL, const QString &host, quint16 port);
 
 	void performAction();
 
@@ -69,7 +62,6 @@ public:
 	MiniClient * client() { return Client; };
 
 private slots:
-
 	void clientHandshaken();
 	void clientError();
 	void actionFinished();

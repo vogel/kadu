@@ -53,7 +53,7 @@ JabberCreateAccountWidget::JabberCreateAccountWidget(bool showButtons, QWidget *
 	// Initialize settings
 	ssl_ = 0;
 	legacy_ssl_probe_ = true;
-	port_ = 5222;
+	port_ = 5222U;
 
 	createGui(showButtons);
 	resetGui();
@@ -292,7 +292,7 @@ void JabberCreateAccountWidget::apply()
 	legacy_ssl_probe_ = LegacySSLProbe->isChecked();
 	opt_host_ = CustomHostPort->isChecked();
 	host_ = CustomHost->text();
-	port_ = CustomPort->text().toInt();
+	port_ = CustomPort->text().toUInt();
 
 	JabberServerRegisterAccount *jsra = new JabberServerRegisterAccount(Domain->currentText(), Username->text(), NewPassword->text(), legacy_ssl_probe_, ssl_ == 2, ssl_ == 0, opt_host_ ? host_ : QString(), port_);
 

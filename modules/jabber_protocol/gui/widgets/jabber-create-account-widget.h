@@ -72,7 +72,7 @@ class JabberCreateAccountWidget : public AccountCreateWidget
 	int ssl_;
 	bool opt_host_, legacy_ssl_probe_;
 	QString host_;
-	int port_;
+	quint16 port_;
 	bool ShowConnectionOptions;
 
 	void createGui(bool showButtons);

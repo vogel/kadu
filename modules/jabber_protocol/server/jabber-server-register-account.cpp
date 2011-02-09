@@ -25,8 +25,8 @@
 #include "gui/windows/message-dialog.h"
 #include "jabber-server-register-account.h"
 
-JabberServerRegisterAccount::JabberServerRegisterAccount(const QString &server, const QString &username, const QString &password, bool legacySSLProbe, bool legacySSL, bool forceSSL, const QString &host, int port)
-	: QObject(), Result(0), Server(server), Username(username), Password(password), Jid(QString())
+JabberServerRegisterAccount::JabberServerRegisterAccount(const QString &server, const QString &username, const QString &password, bool legacySSLProbe, bool legacySSL, bool forceSSL, const QString &host, quint16 port)
+	: QObject(), Result(0), Server(server), Username(username), Password(password)
 {
 	Client = new MiniClient;
 	connect(Client, SIGNAL(handshaken()), SLOT(clientHandshaken()));

@@ -76,12 +76,12 @@ void MiniClient::reset()
 	conn = 0;
 }
 
-void MiniClient::connectToServer(const Jid &jid, bool legacy_ssl_probe, bool legacy_ssl, bool forcessl, const QString &_host, int _port/*, ProxyManager *pm, QString proxy, QString *_pass*/)
+void MiniClient::connectToServer(const Jid &jid, bool legacy_ssl_probe, bool legacy_ssl, bool forcessl, const QString &_host, quint16 _port/*, ProxyManager *pm, QString proxy, QString *_pass*/)
 {
 	j = jid;
 
 	QString host;
-	int port = -1;
+	quint16 port = -1;
 	bool useHost = false;
 	force_ssl = forcessl;
 	if(!_host.isEmpty()) {
