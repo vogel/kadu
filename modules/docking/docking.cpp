@@ -105,6 +105,8 @@ DockingManager::DockingManager() :
 
 	connect(Core::instance(), SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(searchingForTrayPosition(QPoint&)));
 
+	connect(IconsManager::instance(), SIGNAL(themeChanged()), this, SLOT(iconThemeChanged()));
+
 	DockMenu = new QMenu();
 
 #ifdef Q_OS_MAC
@@ -390,6 +392,16 @@ void DockingManager::containerStatusChanged()
 	StatusContainer *container;
 	if (sender() && (container = qobject_cast<StatusContainer *>(sender())) && StatusContainerMenus[container])
 		StatusContainerMenus[container]->setIcon(container->statusIcon());
+}
+
+void DockingManager::iconThemeChanged()
+{
+	QMapIterator<StatusContainer *, QAction *> i(StatusContainerMenus);
+	while (i.hasNext())
+	{
+		i.next();
+		i.value()->setIcon(i.key()->statusIcon());
+	}
 }
 
 void DockingManager::statusContainerRegistered(StatusContainer *statusContainer)

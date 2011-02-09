@@ -80,6 +80,7 @@ private slots:
 	void pendingMessageAdded();
 	void pendingMessageDeleted();
 	void searchingForTrayPosition(QPoint &point);
+	void iconThemeChanged();
 
 	void containerStatusChanged();
 
