@@ -269,6 +269,8 @@ set (kadu_SRCS
 
 	model/actions-proxy-model.cpp
 
+	multilogon/multilogon-session.cpp
+
 	notify/account-notification.cpp
 	notify/buddy-notify-data.cpp
 	notify/chat-notification.cpp
@@ -615,6 +617,7 @@ set (kadu_MOC_SRCS
 	protocols/services/contact-list-service.h
 	protocols/services/contact-personal-info-service.h
 	protocols/services/file-transfer-service.h
+	protocols/services/multilogon-service.h
 	protocols/services/personal-info-service.h
 	protocols/services/roster-service.h
 	protocols/services/search-service.h

@@ -49,6 +49,7 @@ class ContactListService;
 class ContactSet;
 class FileTransferService;
 class Message;
+class MultilogonService;
 class PersonalInfoService;
 class ContactPersonalInfoService;
 class ProtocolFactory;
@@ -100,6 +101,7 @@ public:
 	virtual ChatService * chatService() { return 0; }
 	virtual ContactListService * contactListService() { return 0; }
 	virtual FileTransferService * fileTransferService() { return 0; }
+	virtual MultilogonService * multilogonService() { return 0; }
 	virtual PersonalInfoService * personalInfoService() { return 0; }
 	virtual ContactPersonalInfoService * contactPersonalInfoService() { return 0; }
 	virtual RosterService * rosterService() { return 0; }
