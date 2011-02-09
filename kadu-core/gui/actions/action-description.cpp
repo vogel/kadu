@@ -78,7 +78,8 @@ Action * ActionDescription::createAction(ActionDataSource *dataSource, QObject *
 	MappedActions[dataSource] = result;
 
 	connect(result, SIGNAL(destroyed(QObject *)), this, SLOT(actionDestroyed(QObject *)));
-	connect(result, SIGNAL(triggered(QAction *, bool)), Object, Slot);
+	if (Object && Slot)
+		connect(result, SIGNAL(triggered(QAction *, bool)), Object, Slot);
 
 	emit actionCreated(result);
 
