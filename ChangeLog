@@ -19,6 +19,7 @@
 * gadu: better multilogon support for users of new libgadu 1.10 - all sent messages are shared (Vogel)
 * core: restored flushing configuration when setting status (beevvy)
 * jabber: added "Show XML Console for Account" submenu to Tools menu (beevvy)
+* gui: update icons after changing icon theme (WhE)
 
 +++ version 0.6.6-beta15
 * url-handlers: #1908 fixed: links containing HTML entities were not escaped (beevvy)

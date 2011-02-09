@@ -102,6 +102,8 @@ ChatWidget::ChatWidget(const Chat &chat, QWidget *parent) :
 			connect(contact.ownerBuddy(), SIGNAL(buddySubscriptionChanged()), this, SIGNAL(iconChanged()));
 		}
 
+	connect(IconsManager::instance(), SIGNAL(themeChanged()), this, SIGNAL(iconChanged()));
+
 	kdebugf2();
 }
 

@@ -536,11 +536,10 @@ void TabsManager::makePopupMenu()
 	kdebugf();
 
 	Menu = new QMenu();
-	//menu->setCheckable(true);
-	Menu->addAction(IconsManager::instance()->iconByPath("kadu_icons/tab-detach"), tr("Detach"), this, SLOT(onMenuActionDetach()));
+	DetachTabMenuAction = Menu->addAction(IconsManager::instance()->iconByPath("kadu_icons/tab-detach"), tr("Detach"), this, SLOT(onMenuActionDetach()));
 	Menu->addAction(tr("Detach all"), this, SLOT(onMenuActionDetachAll()));
 	Menu->addSeparator();
-	Menu->addAction(IconsManager::instance()->iconByPath("kadu_icons/tab-close"), tr("Close"), this, SLOT(onMenuActionClose()));
+	CloseTabMenuAction = Menu->addAction(IconsManager::instance()->iconByPath("kadu_icons/tab-close"), tr("Close"), this, SLOT(onMenuActionClose()));
 	Menu->addAction(tr("Close all"), this, SLOT(onMenuActionCloseAll()));
 
 	kdebugf2();
@@ -710,10 +709,8 @@ void TabsManager::configurationUpdated()
 	*/
 	TabDialog->configurationUpdated();
 
-	//uaktualniamy ikonki w menu kontekstowym pod PPM na karcie
-	// TODO : to remove ?
-	//menu->changeItem(0, IconsManager::instance()->loadIcon("TabsDetached"), tr("Detach"));
-	//menu->changeItem(2, IconsManager::instance()->loadIcon("TabsClose"), tr("Close"));
+	DetachTabMenuAction->setIcon(IconsManager::instance()->iconByPath("kadu_icons/tab-detach"));
+	CloseTabMenuAction->setIcon(IconsManager::instance()->iconByPath("kadu_icons/tab-close"));
 
 	kdebugf2();
 }

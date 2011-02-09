@@ -41,6 +41,7 @@
 
 #include "tabwidget.h"
 
+class QAction;
 class QMenu;
 class Action;
 class ActionDescription;
@@ -66,6 +67,8 @@ class TabsManager : public ConfigurationUiHandler, ConfigurationAwareObject, Sto
 	void makePopupMenu();
 	ChatWidget *SelectedChat;
 	QMenu *Menu;
+	QAction *DetachTabMenuAction;
+	QAction *CloseTabMenuAction;
 
 	QString formatTabName(ChatWidget *chatWidget);
 
