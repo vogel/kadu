@@ -56,7 +56,7 @@ void SmsGatewayManager::load()
 	QScriptEngine *engine = SmsScriptsManager::instance()->engine();
 	qint32 length = engine->evaluate("gatewayManager.items.length").toInt32();
 
-	for (qint32 i = 0; i < length; i++)
+	for (qint32 i = 0; i < length; ++i)
 	{
 		QScriptValue gatewayName = engine->evaluate(QString("gatewayManager.items[%1].name()").arg(i));
 		QScriptValue gatewayId = engine->evaluate(QString("gatewayManager.items[%1].id()").arg(i));

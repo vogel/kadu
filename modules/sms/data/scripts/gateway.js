@@ -29,9 +29,9 @@ GatewayManager.prototype = {
 		return;
 	},
 
-	sendSms: function(gatewayId, recipient, sender, signature, content, callbackObject) {
+	sendSms: function(gatewayId, recipient, signature, content, callbackObject) {
 		if (this.byId(gatewayId)) {
-			this.byId(gatewayId).sendSms(recipient, sender, signature, content, callbackObject);
+			this.byId(gatewayId).sendSms(recipient, signature, content, callbackObject);
 		} else {
 			callbackObject.failure("No valid gateway found");
 		}

@@ -138,15 +138,13 @@ void SmsInternalSender::sendSms()
 {
 	emit gatewayAssigned(number(), GatewayId);
 
-	QScriptEngine* engine = SmsScriptsManager::instance()->engine();
+	QScriptEngine *engine = SmsScriptsManager::instance()->engine();
 
 	QScriptValue jsGatewayManagerObject = engine->evaluate("gatewayManager");
 	QScriptValue jsSendSms = jsGatewayManagerObject.property("sendSms");
-
 	QScriptValueList arguments;
 	arguments.append(GatewayId);
 	arguments.append(number());
-	arguments.append(QString()); // empty sender
 	arguments.append(signature());
 	arguments.append(Message);
 	arguments.append(engine->newQObject(this));
