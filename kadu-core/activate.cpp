@@ -7,7 +7,7 @@
 	#include <QtGui/QX11Info>
 
 	#include "configuration/configuration-file.h"
-	#include "x11tools.h"
+	#include "os/x11tools.h"
 
 	bool _isActiveWindow( QWidget *window )
 	{

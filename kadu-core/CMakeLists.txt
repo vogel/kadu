@@ -347,7 +347,7 @@ set (kadu_SRCS
 if (UNIX AND NOT APPLE)
 	set (kadu_SRCS
 		${kadu_SRCS}
-		x11tools.cpp
+		os/x11tools.cpp
 	)
 endif (UNIX AND NOT APPLE)
 if (NOT WIN32)
