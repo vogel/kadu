@@ -190,6 +190,7 @@ void KaduWindow::createKaduMenu()
 	RecentChatsMenu->setIcon(IconsManager::instance()->iconByPath("internet-group-chat"));
 	RecentChatsMenu->setTitle(tr("Recent chats"));
 	RecentChatsMenuNeedsUpdate = true;
+	connect(IconsManager::instance(), SIGNAL(themeChanged()), this, SLOT(iconThemeChanged()));
 	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetCreated(ChatWidget*)), this, SLOT(invalidateRecentChatsMenu()));
 	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetDestroying(ChatWidget*)), this, SLOT(invalidateRecentChatsMenu()));
 	connect(RecentChatManager::instance(), SIGNAL(recentChatAdded(Chat)), this, SLOT(invalidateRecentChatsMenu()));
@@ -365,6 +366,11 @@ void KaduWindow::openRecentChats(QAction *action)
 	kdebugf();
 	ChatWidgetManager::instance()->openPendingMessages(action->data().value<Chat>(), true);
 	kdebugf2();
+}
+
+void KaduWindow::iconThemeChanged()
+{
+	RecentChatsMenu->setIcon(IconsManager::instance()->iconByPath("internet-group-chat"));
 }
 
 void KaduWindow::storeConfiguration()

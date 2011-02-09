@@ -120,6 +120,8 @@ private slots:
 	void updateRecentChatsMenu();
 	void openRecentChats(QAction *action);
 
+	void iconThemeChanged();
+
 protected:
 	virtual void closeEvent(QCloseEvent *);
 	virtual void keyPressEvent(QKeyEvent *);
