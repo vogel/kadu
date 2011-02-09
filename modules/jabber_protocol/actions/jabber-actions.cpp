@@ -28,7 +28,7 @@
 
 #include "jabber-actions.h"
 
-void disableNoRosterContact(Action *action)
+static void disableNoRosterContact(Action *action)
 {
 	action->setEnabled(false);
 
@@ -63,14 +63,14 @@ void JabberActions::unregisterActions()
 JabberActions::JabberActions()
 {
 	ResendSubscription = new ActionDescription(this, ActionDescription::TypeUser, "rosterResendSubscription",
-			this, SLOT(resendSubscriptionActionActivated(QAction*,bool)), "", tr("Resend Subscription"), false,
-			disableNoRosterContact);
+			this, SLOT(resendSubscriptionActionActivated(QAction*)), QString(), tr("Resend Subscription"),
+			false, disableNoRosterContact);
 	RemoveSubscription = new ActionDescription(this, ActionDescription::TypeUser, "rosterRemoveSubscription",
-			this, SLOT(removeSubscriptionActionActivated(QAction*,bool)), "", tr("Remove Subscription"), false,
-			disableNoRosterContact);
+			this, SLOT(removeSubscriptionActionActivated(QAction*)), QString(), tr("Remove Subscription"),
+			false, disableNoRosterContact);
 	AskForSubscription = new ActionDescription(this, ActionDescription::TypeUser, "rosterAskForSubscription",
-			this, SLOT(askForSubscriptionActionActivated(QAction*,bool)), "", tr("Ask for Subscription"), false,
-			disableNoRosterContact);
+			this, SLOT(askForSubscriptionActionActivated(QAction*)), QString(), tr("Ask for Subscription"),
+			false, disableNoRosterContact);
 }
 
 JabberActions::~JabberActions()
@@ -95,10 +95,8 @@ JabberSubscriptionService * JabberActions::subscriptionServiceFromContact(const 
 	return jabberProtocolHandler->subscriptionService();
 }
 
-void JabberActions::resendSubscriptionActionActivated(QAction *sender, bool toggled)
+void JabberActions::resendSubscriptionActionActivated(QAction *sender)
 {
-	Q_UNUSED(toggled)
-
 	Contact contact = contactFromAction(sender);
 	if (!contact)
 		return;
@@ -110,10 +108,8 @@ void JabberActions::resendSubscriptionActionActivated(QAction *sender, bool togg
 	subscriptionService->resendSubscription(contact);
 }
 
-void JabberActions::removeSubscriptionActionActivated(QAction *sender, bool toggled)
+void JabberActions::removeSubscriptionActionActivated(QAction *sender)
 {
-	Q_UNUSED(toggled)
-
 	Contact contact = contactFromAction(sender);
 	if (!contact)
 		return;
@@ -125,10 +121,8 @@ void JabberActions::removeSubscriptionActionActivated(QAction *sender, bool togg
 	subscriptionService->removeSubscription(contact);
 }
 
-void JabberActions::askForSubscriptionActionActivated(QAction *sender, bool toggled)
+void JabberActions::askForSubscriptionActionActivated(QAction *sender)
 {
-	Q_UNUSED(toggled)
-
 	Contact contact = contactFromAction(sender);
 	if (!contact)
 		return;

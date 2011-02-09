@@ -45,9 +45,9 @@ class JabberActions : QObject
 	virtual ~JabberActions();
 
 private slots:
-	void resendSubscriptionActionActivated(QAction *sender, bool toggled);
-	void removeSubscriptionActionActivated(QAction *sender, bool toggled);
-	void askForSubscriptionActionActivated(QAction *sender, bool toggled);
+	void resendSubscriptionActionActivated(QAction *sender);
+	void removeSubscriptionActionActivated(QAction *sender);
+	void askForSubscriptionActionActivated(QAction *sender);
 
 public:
 	static void registerActions();
