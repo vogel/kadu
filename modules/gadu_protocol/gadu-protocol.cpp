@@ -235,6 +235,7 @@ GaduProtocol::GaduProtocol(Account account, ProtocolFactory *factory) :
 	CurrentFileTransferService = new GaduFileTransferService(this);
 	CurrentPersonalInfoService = new GaduPersonalInfoService(this);
 	CurrentSearchService = new GaduSearchService(this);
+	CurrentMultilogonService = new GaduMultilogonService(this);
 
 	ContactListHandler = 0;
 

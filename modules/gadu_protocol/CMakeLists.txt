@@ -48,10 +48,13 @@ set (SOURCES
 	services/gadu-chat-image-service.cpp
 	services/gadu-chat-service.cpp
 	services/gadu-contact-list-service.cpp
-	services/gadu-file-transfer-service.cpp
-	services/gadu-personal-info-service.cpp
 	services/gadu-contact-personal-info-service.cpp
+	services/gadu-file-transfer-service.cpp
+	services/gadu-multilogon-service.cpp
+	services/gadu-personal-info-service.cpp
 	services/gadu-search-service.cpp
+
+	services/multilogon/gadu-multilogon-session.cpp
 
 	socket-notifiers/gadu-protocol-socket-notifiers.cpp
 	socket-notifiers/gadu-pubdir-socket-notifiers.cpp
@@ -104,9 +107,10 @@ set (MOC_SOURCES
 	services/gadu-chat-image-service.h
 	services/gadu-chat-service.h
 	services/gadu-contact-list-service.h
-	services/gadu-file-transfer-service.h
-	services/gadu-personal-info-service.h
 	services/gadu-contact-personal-info-service.h
+	services/gadu-file-transfer-service.h
+	services/gadu-multilogon-service.h
+	services/gadu-personal-info-service.h
 	services/gadu-search-service.h
 
 	socket-notifiers/gadu-protocol-socket-notifiers.h

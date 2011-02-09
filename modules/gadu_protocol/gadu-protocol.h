@@ -34,6 +34,7 @@
 #include "services/gadu-contact-list-service.h"
 #include "services/gadu-contact-personal-info-service.h"
 #include "services/gadu-file-transfer-service.h"
+#include "services/gadu-multilogon-service.h"
 #include "services/gadu-personal-info-service.h"
 #include "services/gadu-search-service.h"
 
@@ -83,6 +84,7 @@ private:
 	GaduFileTransferService *CurrentFileTransferService;
 	GaduPersonalInfoService *CurrentPersonalInfoService;
 	GaduSearchService *CurrentSearchService;
+	GaduMultilogonService *CurrentMultilogonService;
 
 	GaduContactListHandler *ContactListHandler;
 
@@ -148,6 +150,7 @@ public:
 	virtual FileTransferService * fileTransferService() { return CurrentFileTransferService; }
 	virtual PersonalInfoService * personalInfoService() { return CurrentPersonalInfoService; }
 	virtual SearchService * searchService() { return CurrentSearchService; }
+    virtual MultilogonService * multilogonService() { return CurrentMultilogonService; }
 
 	virtual bool contactsListReadOnly() { return false; }
 	virtual bool supportsPrivateStatus() { return true; }
