@@ -31,7 +31,7 @@ class GaduMultilogonSession : public MultilogonSession
 	gg_multilogon_id_t Id;
 
 public:
-	GaduMultilogonSession(gg_multilogon_session *session);
+	GaduMultilogonSession(const gg_multilogon_session &session);
 	virtual ~GaduMultilogonSession();
 
 	gg_multilogon_id_t id();

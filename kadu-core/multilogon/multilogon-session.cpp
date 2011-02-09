@@ -37,32 +37,22 @@ void MultilogonSession::setRemoteAddres(const QHostAddress &remoteAddress)
 	RemoteAddress = remoteAddress;
 }
 
-void MultilogonSession::setRemoteStatus(const Status &status)
-{
-	RemoteStatus = status;
-}
-
 void MultilogonSession::setLogonTime(const QDateTime &logonTime)
 {
 	LogonTime = logonTime;
 }
 
-QString MultilogonSession::getName()
+QString MultilogonSession::name()
 {
 	return Name;
 }
 
-QHostAddress MultilogonSession::getRemoteAddress()
+QHostAddress MultilogonSession::remoteAddress()
 {
 	return RemoteAddress;
 }
 
-Status MultilogonSession::getRemoteStatus()
-{
-	return RemoteStatus;
-}
-
-QDateTime MultilogonSession::getLogonTime()
+QDateTime MultilogonSession::logonTime()
 {
 	return LogonTime;
 }

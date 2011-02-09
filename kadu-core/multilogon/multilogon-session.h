@@ -24,7 +24,6 @@
 #include <QtCore/QObject>
 #include <QtNetwork/QHostAddress>
 
-#include "status/status.h"
 #include "exports.h"
 
 class KADUAPI MultilogonSession
@@ -33,23 +32,20 @@ class KADUAPI MultilogonSession
 
 	QString Name;
 	QHostAddress RemoteAddress;
-	Status RemoteStatus;
 	QDateTime LogonTime;
 
 protected:
 	void setName(const QString &name);
 	void setRemoteAddres(const QHostAddress &remoteAddress);
-	void setRemoteStatus(const Status &status);
 	void setLogonTime(const QDateTime &logonTime);
 
 public:
 	MultilogonSession();
 	virtual ~MultilogonSession();
 
-	QString getName();
-	QHostAddress getRemoteAddress();
-	Status getRemoteStatus();
-	QDateTime getLogonTime();
+	QString name();
+	QHostAddress remoteAddress();
+	QDateTime logonTime();
 
 };
 

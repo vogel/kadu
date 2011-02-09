@@ -17,27 +17,21 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "gadu-protocol.h"
-
 #include "gadu-multilogon-session.h"
 
 #ifdef GADU_HAVE_MULTILOGON
 
-GaduMultilogonSession::GaduMultilogonSession(gg_multilogon_session *session)
+GaduMultilogonSession::GaduMultilogonSession(const gg_multilogon_session &session)
 {
-	QString statusType = GaduProtocol::statusTypeFromGaduStatus(session->status_flags);
-
-	Id = session->id;
-	setName(session->name);
+	Id = session.id;
+	setName(session.name);
 
 	QHostAddress remoteAddress;
-	remoteAddress.setAddress(session->remote_addr);
+	remoteAddress.setAddress(session.remote_addr);
 	setRemoteAddres(remoteAddress);
 
-	setRemoteStatus(Status(statusType));
-
 	QDateTime logonTime;
-	logonTime.setTime_t(session->logon_time);
+	logonTime.setTime_t(session.logon_time);
 	setLogonTime(logonTime);
 }
 

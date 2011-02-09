@@ -20,11 +20,23 @@
 #ifndef GADU_MULTILOGON_SERVICE_H
 #define GADU_MULTILOGON_SERVICE_H
 
+#include <libgadu.h>
+
 #include "protocols/services/multilogon-service.h"
 
 class GaduMultilogonService : public MultilogonService
 {
 	Q_OBJECT
+
+	QList<MultilogonSession *> Sessions;
+
+	friend class GaduProtocolSocketNotifiers;
+	void handleEventMultilogonInfo(struct gg_event *e);
+
+	bool containsSession(const gg_multilogon_session &session);
+	bool containsSession(const gg_event_multilogon_info &multilogonInfo, const gg_multilogon_id_t &id);
+	void addNewSessions(const gg_event_multilogon_info &multilogonInfo);
+	void removeOldSessions(const gg_event_multilogon_info &multilogonInfo);
 
 public:
 	explicit GaduMultilogonService(QObject *parent = 0);

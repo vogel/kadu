@@ -130,6 +130,11 @@ void GaduProtocolSocketNotifiers::handleEventMultilogonMsg(struct gg_event *e)
 {
 	CurrentProtocol->CurrentChatService->handleEventMultilogonMsg(e);
 }
+
+void GaduProtocolSocketNotifiers::handleEventMultilogonInfo(gg_event* e)
+{
+	CurrentProtocol->CurrentMultilogonService->handleEventMultilogonInfo(e);
+}
 #endif
 
 void GaduProtocolSocketNotifiers::handleEventNotify(struct gg_event *e)
@@ -253,6 +258,10 @@ void GaduProtocolSocketNotifiers::socketEvent()
 #ifdef GADU_HAVE_MULTILOGON
 		case GG_EVENT_MULTILOGON_MSG:
 			handleEventMultilogonMsg(e);
+			break;
+
+		case GG_EVENT_MULTILOGON_INFO:
+			handleEventMultilogonInfo(e);
 			break;
 #endif
 
