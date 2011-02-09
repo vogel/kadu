@@ -190,10 +190,10 @@ void KaduWindow::createKaduMenu()
 	RecentChatsMenu->setIcon(IconsManager::instance()->iconByPath("internet-group-chat"));
 	RecentChatsMenu->setTitle(tr("Recent chats"));
 	RecentChatsMenuNeedsUpdate = true;
-	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetCreated()), this, SLOT(invalidateRecentChatsMenu()));
-	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetDestroying()), this, SLOT(invalidateRecentChatsMenu()));
-	connect(RecentChatManager::instance(), SIGNAL(recentChatAdded()), this, SLOT(invalidateRecentChatsMenu()));
-	connect(RecentChatManager::instance(), SIGNAL(recentChatRemoved()), this, SLOT(invalidateRecentChatsMenu()));
+	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetCreated(ChatWidget*)), this, SLOT(invalidateRecentChatsMenu()));
+	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetDestroying(ChatWidget*)), this, SLOT(invalidateRecentChatsMenu()));
+	connect(RecentChatManager::instance(), SIGNAL(recentChatAdded(Chat)), this, SLOT(invalidateRecentChatsMenu()));
+	connect(RecentChatManager::instance(), SIGNAL(recentChatRemoved(Chat)), this, SLOT(invalidateRecentChatsMenu()));
 	connect(KaduMenu, SIGNAL(aboutToShow()), this, SLOT(updateRecentChatsMenu()));
 	connect(RecentChatsMenu, SIGNAL(triggered(QAction *)), this, SLOT(openRecentChats(QAction *)));
 
