@@ -275,6 +275,7 @@ set (kadu_SRCS
 	notify/buddy-notify-data.cpp
 	notify/chat-notification.cpp
 	notify/new-message-notification.cpp
+	notify/multilogon-notification.cpp
 	notify/notification.cpp
 	notify/notification-manager.cpp
 	notify/notifier.cpp
@@ -594,6 +595,7 @@ set (kadu_MOC_SRCS
 	notify/buddy-notify-data.h
 	notify/chat-notification.h
 	notify/new-message-notification.h
+	notify/multilogon-notification.h
 	notify/notification.h
 	notify/notification-manager.h
 	notify/notifier.h

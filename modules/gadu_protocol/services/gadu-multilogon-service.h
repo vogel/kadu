@@ -22,6 +22,7 @@
 
 #include <libgadu.h>
 
+#include "accounts/account.h"
 #include "protocols/services/multilogon-service.h"
 
 #include "gadu-features.h"
@@ -32,6 +33,7 @@ class GaduMultilogonService : public MultilogonService
 {
 	Q_OBJECT
 
+	Account MyAccount;
 	QList<MultilogonSession *> Sessions;
 
 	friend class GaduProtocolSocketNotifiers;
@@ -43,7 +45,7 @@ class GaduMultilogonService : public MultilogonService
 	void removeOldSessions(const gg_event_multilogon_info &multilogonInfo);
 
 public:
-	explicit GaduMultilogonService(QObject *parent = 0);
+	explicit GaduMultilogonService(Account account, QObject *parent = 0);
 	virtual ~GaduMultilogonService();
 
 	virtual const QList<MultilogonSession *> & sessions() const;

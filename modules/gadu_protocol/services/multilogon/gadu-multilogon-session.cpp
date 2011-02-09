@@ -21,7 +21,8 @@
 
 #ifdef GADU_HAVE_MULTILOGON
 
-GaduMultilogonSession::GaduMultilogonSession(const gg_multilogon_session &session)
+GaduMultilogonSession::GaduMultilogonSession(Account account, const gg_multilogon_session &session) :
+		MultilogonSession(account)
 {
 	Id = session.id;
 	setName(session.name);

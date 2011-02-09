@@ -17,39 +17,33 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MULTILOGON_SESSION_H
-#define MULTILOGON_SESSION_H
+#ifndef MULTILOGON_NOTIFICATION_H
+#define MULTILOGON_NOTIFICATION_H
 
-#include <QtCore/QDateTime>
-#include <QtCore/QObject>
-#include <QtNetwork/QHostAddress>
+#include "notify/notification-manager.h"
+#include "notify/account-notification.h"
 
-#include "accounts/account.h"
-#include "exports.h"
+class MultilogonSession;
+class NotifyEvent;
 
-class KADUAPI MultilogonSession
+class MultilogonNotification : public AccountNotification
 {
-	Q_DISABLE_COPY(MultilogonSession)
+	Q_OBJECT
 
-	Account MyAccount;
-	QString Name;
-	QHostAddress RemoteAddress;
-	QDateTime LogonTime;
+	static NotifyEvent *MultilogonSessionNotifyEvent;
+	static NotifyEvent *MultilogonSessionConnectedNotifyEvent;
+	static NotifyEvent *MultilogonSessionDisconnectedNotifyEvent;
 
-protected:
-	void setName(const QString &name);
-	void setRemoteAddres(const QHostAddress &remoteAddress);
-	void setLogonTime(const QDateTime &logonTime);
+	MultilogonNotification(Account account, const QString &type);
+	virtual ~MultilogonNotification();
 
 public:
-	MultilogonSession(Account account);
-	virtual ~MultilogonSession();
+	static void registerEvents();
+	static void unregisterEvents();
 
-	Account account() const;
-	const QString & name() const;
-	const QHostAddress & remoteAddress() const;
-	const QDateTime & logonTime() const;
+	static void notifyMultilogonSessionConnected(MultilogonSession *session);
+	static void notifyMultilogonSessionDisonnected(MultilogonSession *session);
 
 };
 
-#endif // MULTILOGON_SESSION_H
+#endif // MULTILOGON_NOTIFICATION_H

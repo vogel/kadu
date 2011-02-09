@@ -54,10 +54,13 @@
 #include "gui/windows/main-configuration-window.h"
 #include "gui/windows/main-window.h"
 #include "gui/windows/message-dialog.h"
+#include "multilogon/multilogon-session.h"
 #include "notify/buddy-notify-data.h"
+#include "notify/multilogon-notification.h"
 #include "notify/notifier.h"
 #include "notify/notify-configuration-ui-handler.h"
 #include "notify/window-notifier.h"
+#include "protocols/services/multilogon-service.h"
 #include "status/status-container-manager.h"
 
 #include "activate.h"
@@ -85,6 +88,7 @@ NotificationManager * NotificationManager::instance()
 
 		MessageNotification::registerEvents();
 		StatusChangedNotification::registerEvents();
+		MultilogonNotification::registerEvents();
 	}
 
 	return Instance;
@@ -149,6 +153,7 @@ NotificationManager::~NotificationManager()
 
 	StatusChangedNotification::unregisterEvents();
 	MessageNotification::unregisterEvents();
+	MultilogonNotification::unregisterEvents();
 
 	triggerAllAccountsUnregistered();
 
@@ -283,9 +288,16 @@ void NotificationManager::accountRegistered(Account account)
 
 	ChatService *chatService = protocol->chatService();
 	if (chatService)
-	{
 		connect(chatService, SIGNAL(messageReceived(const Message &)),
 				this, SLOT(messageReceived(const Message &)));
+
+	MultilogonService *multilogonService = protocol->multilogonService();
+	if (multilogonService)
+	{
+		connect(multilogonService, SIGNAL(multilogonSessionConnected(MultilogonSession*)),
+				this, SLOT(multilogonSessionConnected(MultilogonSession*)));
+		connect(multilogonService, SIGNAL(multilogonSessionDisconnected(MultilogonSession*)),
+				this, SLOT(multilogonSessionDisconnected(MultilogonSession*)));
 	}
 }
 
@@ -302,9 +314,16 @@ void NotificationManager::accountUnregistered(Account account)
 
 	ChatService *chatService = protocol->chatService();
 	if (chatService)
-	{
 		disconnect(chatService, SIGNAL(messageReceived(const Message &)),
 				this, SLOT(messageReceived(const Message &)));
+
+	MultilogonService *multilogonService = protocol->multilogonService();
+	if (multilogonService)
+	{
+		disconnect(multilogonService, SIGNAL(multilogonSessionConnected(MultilogonSession*)),
+				this, SLOT(multilogonSessionConnected(MultilogonSession*)));
+		disconnect(multilogonService, SIGNAL(multilogonSessionDisconnected(MultilogonSession*)),
+				this, SLOT(multilogonSessionDisconnected(MultilogonSession*)));
 	}
 }
 
@@ -390,6 +409,16 @@ void NotificationManager::messageReceived(const Message &message)
 		notify(new MessageNotification(MessageNotification::NewMessage, message));
 
 	kdebugf2();
+}
+
+void NotificationManager::multilogonSessionConnected(MultilogonSession *session)
+{
+	MultilogonNotification::notifyMultilogonSessionConnected(session);
+}
+
+void NotificationManager::multilogonSessionDisconnected(MultilogonSession *session)
+{
+	MultilogonNotification::notifyMultilogonSessionDisonnected(session);
 }
 
 void NotificationManager::registerNotifyEvent(NotifyEvent *notifyEvent)

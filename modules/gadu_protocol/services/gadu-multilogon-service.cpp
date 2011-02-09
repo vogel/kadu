@@ -34,8 +34,8 @@ static bool operator == (const gg_multilogon_id_t &left, const gg_multilogon_id_
 	return true;
 }
 
-GaduMultilogonService::GaduMultilogonService(QObject *parent) :
-		MultilogonService(parent)
+GaduMultilogonService::GaduMultilogonService(Account account, QObject *parent) :
+		MultilogonService(parent), MyAccount(account)
 {
 }
 
@@ -81,7 +81,7 @@ void GaduMultilogonService::addNewSessions(const gg_event_multilogon_info &multi
 	for (int i = 0; i < multilogonInfo.count; i++)
 		if (!containsSession(multilogonInfo.sessions[i]))
 		{
-			GaduMultilogonSession *session = new GaduMultilogonSession(multilogonInfo.sessions[i]);
+			GaduMultilogonSession *session = new GaduMultilogonSession(MyAccount, multilogonInfo.sessions[i]);
 			Sessions.append(session);
 			emit multilogonSessionConnected(session);
 		}

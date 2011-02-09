@@ -19,7 +19,8 @@
 
 #include "multilogon-session.h"
 
-MultilogonSession::MultilogonSession()
+MultilogonSession::MultilogonSession(Account account) :
+		MyAccount(account)
 {
 }
 
@@ -40,6 +41,11 @@ void MultilogonSession::setRemoteAddres(const QHostAddress &remoteAddress)
 void MultilogonSession::setLogonTime(const QDateTime &logonTime)
 {
 	LogonTime = logonTime;
+}
+
+Account MultilogonSession::account() const
+{
+	return MyAccount;
 }
 
 const QString & MultilogonSession::name() const
