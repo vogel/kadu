@@ -50,6 +50,7 @@ class StatusActions : public QObject
 
 private slots:
 	void statusChanged();
+	void iconThemeChanged();
 
 public:
 	explicit StatusActions(StatusContainer *statusContainer, QObject *parent, bool commonStatusIcons = false);

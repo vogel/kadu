@@ -26,6 +26,7 @@
 #include "status/status-container-manager.h"
 #include "status/status-group.h"
 #include "status/status-type.h"
+#include "icons-manager.h"
 
 #include "status-actions.h"
 
@@ -40,6 +41,8 @@ StatusActions::StatusActions(StatusContainer *statusContainer, QObject *parent, 
 
 	statusChanged();
 	connect(MyStatusContainer, SIGNAL(statusChanged()), this, SLOT(statusChanged()));
+
+	connect(IconsManager::instance(), SIGNAL(themeChanged()), this, SLOT(iconThemeChanged()));
 }
 
 StatusActions::~StatusActions()
@@ -145,4 +148,19 @@ void StatusActions::statusChanged()
 
 // 	ChangeStatusToOfflineDesc->setEnabled(index != 6);
 // 	ChangeStatusToOffline->setEnabled(index != 7);
+}
+
+void StatusActions::iconThemeChanged()
+{
+	foreach (QAction *action, ChangeStatusActionGroup->actions())
+	{
+		StatusType *statusType = action->data().value<StatusType *>();
+		if (!statusType)
+			continue;
+
+		if (!CommonStatusIcons)
+			action->setIcon(MyStatusContainer->statusIcon(statusType->name()));
+		else
+			action->setIcon(StatusContainerManager::instance()->statusIcon(statusType->name()));
+	}
 }
