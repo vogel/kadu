@@ -33,7 +33,8 @@ class GaduMultilogonSession : public MultilogonSession
 #endif // GADU_HAVE_MULTILOGON
 
 public:
-	GaduMultilogonSession(Account account, QObject *parent = 0);
+	explicit GaduMultilogonSession(Account account, QObject *parent = 0);
+	virtual ~GaduMultilogonSession();
 
 #ifdef GADU_HAVE_MULTILOGON
 	GaduMultilogonSession(Account account, const gg_multilogon_session &session, QObject *parent = 0);
