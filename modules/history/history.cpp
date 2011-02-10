@@ -133,6 +133,10 @@ History::~History()
 	kdebugf();
 	stopSaveThread();
 	deleteActionDescriptions();
+
+	delete HistoryDialog;
+	HistoryDialog = 0;
+
 	kdebugf2();
 }
 
