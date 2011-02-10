@@ -42,17 +42,17 @@ void MultilogonSession::setLogonTime(const QDateTime &logonTime)
 	LogonTime = logonTime;
 }
 
-QString MultilogonSession::name()
+const QString & MultilogonSession::name() const
 {
 	return Name;
 }
 
-QHostAddress MultilogonSession::remoteAddress()
+const QHostAddress & MultilogonSession::remoteAddress() const
 {
 	return RemoteAddress;
 }
 
-QDateTime MultilogonSession::logonTime()
+const QDateTime & MultilogonSession::logonTime() const
 {
 	return LogonTime;
 }

@@ -34,7 +34,7 @@ public:
 	GaduMultilogonSession(const gg_multilogon_session &session);
 	virtual ~GaduMultilogonSession();
 
-	gg_multilogon_id_t id();
+	const gg_multilogon_id_t & id() const;
 
 };
 

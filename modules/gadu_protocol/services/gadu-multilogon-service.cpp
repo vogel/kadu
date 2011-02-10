@@ -25,7 +25,7 @@
 
 #ifdef GADU_HAVE_MULTILOGON
 
-bool operator == (const gg_multilogon_id_t &left, const gg_multilogon_id_t &right)
+static bool operator == (const gg_multilogon_id_t &left, const gg_multilogon_id_t &right)
 {
 	for (int i = 0; i < 8; i++)
 		if (left.id[i] != right.id[i])

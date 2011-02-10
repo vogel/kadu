@@ -39,7 +39,7 @@ GaduMultilogonSession::~GaduMultilogonSession()
 {
 }
 
-gg_multilogon_id_t GaduMultilogonSession::id()
+const gg_multilogon_id_t & GaduMultilogonSession::id() const
 {
 	return Id;
 }

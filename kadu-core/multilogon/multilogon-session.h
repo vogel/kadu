@@ -43,9 +43,9 @@ public:
 	MultilogonSession();
 	virtual ~MultilogonSession();
 
-	QString name();
-	QHostAddress remoteAddress();
-	QDateTime logonTime();
+	const QString & name() const;
+	const QHostAddress & remoteAddress() const;
+	const QDateTime & logonTime() const;
 
 };
 
