@@ -19,6 +19,8 @@
 
 #include "multilogon/multilogon-session.h"
 #include "notify/notify-event.h"
+#include "protocols/services/multilogon-service.h"
+#include "protocols/protocol.h"
 
 #include "multilogon-notification.h"
 
@@ -62,18 +64,41 @@ void MultilogonNotification::unregisterEvents()
 	MultilogonSessionDisconnectedNotifyEvent = 0;
 }
 
-MultilogonNotification::MultilogonNotification(Account account, const QString &type) :
-		AccountNotification(account, type, QString())
+MultilogonNotification::MultilogonNotification(MultilogonSession *session, const QString &type, bool addKillCallback) :
+		AccountNotification(session->account(), type, QString()), Session(session)
 {
+	if (addKillCallback)
+	{
+		addCallback(tr("Ignore"), SLOT(callbackDiscard()), "callbackDiscard()");
+		addCallback(tr("Close session"), SLOT(killSession()), "killSession()");
+	}
 }
 
 MultilogonNotification::~MultilogonNotification()
 {
 }
 
+void MultilogonNotification::killSession()
+{
+	printf("got clicked!!!\n");
+
+	if (!Session)
+		return;
+
+	Protocol *protocolHandler = Session->account().protocolHandler();
+	if (!protocolHandler)
+		return;
+
+	MultilogonService *multilogonService = protocolHandler->multilogonService();
+	if (!multilogonService)
+		return;
+
+	multilogonService->killSession(Session);
+}
+
 void MultilogonNotification::notifyMultilogonSessionConnected(MultilogonSession *session)
 {
-	MultilogonNotification *notification = new MultilogonNotification(session->account(), "multilogon/sessionConnected");
+	MultilogonNotification *notification = new MultilogonNotification(session, "multilogon/sessionConnected", true);
 	notification->setTitle(tr("Multilogon"));
 	notification->setText(tr("Multilogon session connected from %1 at %2 with %3 for %4 account")
 			.arg(session->remoteAddress().toString())
@@ -86,7 +111,7 @@ void MultilogonNotification::notifyMultilogonSessionConnected(MultilogonSession 
 
 void MultilogonNotification::notifyMultilogonSessionDisonnected(MultilogonSession *session)
 {
-	MultilogonNotification *notification = new MultilogonNotification(session->account(), "multilogon/sessionConnected");
+	MultilogonNotification *notification = new MultilogonNotification(session, "multilogon/sessionConnected", false);
 	notification->setTitle(tr("Multilogon"));
 	notification->setText(tr("Multilogon session disconnected from %1 at %2 with %3 for %4 account")
 			.arg(session->remoteAddress().toString())

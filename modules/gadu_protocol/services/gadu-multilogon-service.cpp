@@ -19,7 +19,10 @@
 
 #include <libgadu.h>
 
+#include "protocols/protocol.h"
+
 #include "services/multilogon/gadu-multilogon-session.h"
+#include "gadu-protocol.h"
 
 #include "gadu-multilogon-service.h"
 
@@ -50,7 +53,14 @@ const QList<MultilogonSession *> & GaduMultilogonService::sessions() const
 
 void GaduMultilogonService::killSession(MultilogonSession *session)
 {
-	Q_UNUSED(session)
+	GaduProtocol *gaduProtocolHandler = dynamic_cast<GaduProtocol *>(MyAccount.protocolHandler());
+	if (!gaduProtocolHandler || !gaduProtocolHandler->gaduSession())
+		return;
+
+	GaduMultilogonSession *gaduSession = dynamic_cast<GaduMultilogonSession *>(session);
+	// why i cant do that?
+// 	if (gaduSession)
+// 		gg_multilogon_disconnect(gaduProtocolHandler->gaduSession(), gaduSession->id());
 }
 
 bool GaduMultilogonService::containsSession(const gg_multilogon_session &session)

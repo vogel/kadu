@@ -34,8 +34,13 @@ class MultilogonNotification : public AccountNotification
 	static NotifyEvent *MultilogonSessionConnectedNotifyEvent;
 	static NotifyEvent *MultilogonSessionDisconnectedNotifyEvent;
 
-	MultilogonNotification(Account account, const QString &type);
+	MultilogonSession *Session;
+
+	MultilogonNotification(MultilogonSession *session, const QString &type, bool addKillCallback);
 	virtual ~MultilogonNotification();
+
+private slots:
+	void killSession();
 
 public:
 	static void registerEvents();
