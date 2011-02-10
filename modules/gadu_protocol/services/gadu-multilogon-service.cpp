@@ -65,10 +65,7 @@ void GaduMultilogonService::killSession(MultilogonSession *session)
 
 	GaduMultilogonSession *gaduSession = dynamic_cast<GaduMultilogonSession *>(session);
 	if (gaduSession)
-	{
-		// this crashed module during loading, WTF?
-// 		gg_multilogon_disconnect(gaduProtocolHandler->gaduSession(), gaduSession->id());
-	}
+		gg_multilogon_disconnect(gaduProtocolHandler->gaduSession(), gaduSession->id());
 #endif // GADU_HAVE_MULTILOGON
 }
 
