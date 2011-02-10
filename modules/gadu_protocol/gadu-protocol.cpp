@@ -235,7 +235,7 @@ GaduProtocol::GaduProtocol(Account account, ProtocolFactory *factory) :
 	CurrentPersonalInfoService = new GaduPersonalInfoService(this);
 	CurrentSearchService = new GaduSearchService(this);
 #ifdef GADU_HAVE_MULTILOGON
-	CurrentMultilogonService = new GaduMultilogonService(this);
+	CurrentMultilogonService = new GaduMultilogonService(account, this);
 #endif // GADU_HAVE_MULTILOGON
 
 	ContactListHandler = 0;

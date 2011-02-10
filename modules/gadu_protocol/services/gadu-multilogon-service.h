@@ -27,8 +27,6 @@
 
 #include "gadu-features.h"
 
-#ifdef GADU_HAVE_MULTILOGON
-
 class GaduMultilogonService : public MultilogonService
 {
 	Q_OBJECT
@@ -36,6 +34,7 @@ class GaduMultilogonService : public MultilogonService
 	Account MyAccount;
 	QList<MultilogonSession *> Sessions;
 
+#ifdef GADU_HAVE_MULTILOGON
 	friend class GaduProtocolSocketNotifiers;
 	void handleEventMultilogonInfo(struct gg_event *e);
 
@@ -43,6 +42,7 @@ class GaduMultilogonService : public MultilogonService
 	bool containsSession(const gg_event_multilogon_info &multilogonInfo, const gg_multilogon_id_t &id);
 	void addNewSessions(const gg_event_multilogon_info &multilogonInfo);
 	void removeOldSessions(const gg_event_multilogon_info &multilogonInfo);
+#endif // GADU_HAVE_MULTILOGON
 
 public:
 	explicit GaduMultilogonService(Account account, QObject *parent = 0);
@@ -52,7 +52,5 @@ public:
 	virtual void killSession(MultilogonSession *session);
 
 };
-
-#endif // GADU_HAVE_MULTILOGON
 
 #endif // GADU_MULTILOGON_SERVICE_H

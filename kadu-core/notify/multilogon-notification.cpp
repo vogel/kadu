@@ -80,8 +80,6 @@ MultilogonNotification::~MultilogonNotification()
 
 void MultilogonNotification::killSession()
 {
-	printf("got clicked!!!\n");
-
 	if (!Session)
 		return;
 
