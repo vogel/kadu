@@ -88,19 +88,18 @@ void GaduMultilogonService::removeOldSessions(const gg_event_multilogon_info &mu
 	// this does not scale above 100 connections
 	// but anyone will ever have that many?
 	QList<MultilogonSession *>::iterator i = Sessions.begin();
-	QList<MultilogonSession *>::iterator end = Sessions.end();
 
-	while (i != end)
+	while (i != Sessions.end())
 	{
-		GaduMultilogonSession *gaduSession = dynamic_cast<GaduMultilogonSession *>(*i);
+		GaduMultilogonSession *gaduSession = static_cast<GaduMultilogonSession *>(*i);
 
-		if (gaduSession && !containsSession(multilogonInfo, gaduSession->id()))
+		if (!containsSession(multilogonInfo, gaduSession->id()))
 		{
 			delete gaduSession;
-			Sessions.erase(i);
+			i = Sessions.erase(i);
 		}
-
-		++i;
+		else
+			++i;
 	}
 }
 
