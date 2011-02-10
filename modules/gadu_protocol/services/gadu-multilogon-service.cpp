@@ -23,6 +23,8 @@
 
 #include "gadu-multilogon-service.h"
 
+#ifdef GADU_HAVE_MULTILOGON
+
 bool operator == (const gg_multilogon_id_t &left, const gg_multilogon_id_t &right)
 {
 	for (int i = 0; i < 8; i++)
@@ -91,7 +93,7 @@ void GaduMultilogonService::removeOldSessions(const gg_event_multilogon_info &mu
 	while (i != end)
 	{
 		GaduMultilogonSession *gaduSession = dynamic_cast<GaduMultilogonSession *>(*i);
-	
+
 		if (gaduSession && !containsSession(multilogonInfo, gaduSession->id()))
 		{
 			delete gaduSession;
@@ -107,3 +109,5 @@ void GaduMultilogonService::handleEventMultilogonInfo(gg_event *e)
 	addNewSessions(e->event.multilogon_info);
 	removeOldSessions(e->event.multilogon_info);
 }
+
+#endif // GADU_HAVE_MULTILOGON

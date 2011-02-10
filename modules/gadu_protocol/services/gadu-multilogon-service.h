@@ -24,6 +24,10 @@
 
 #include "protocols/services/multilogon-service.h"
 
+#include "gadu-features.h"
+
+#ifdef GADU_HAVE_MULTILOGON
+
 class GaduMultilogonService : public MultilogonService
 {
 	Q_OBJECT
@@ -46,5 +50,7 @@ public:
 	virtual void killSession(MultilogonSession *session);
 
 };
+
+#endif // GADU_HAVE_MULTILOGON
 
 #endif // GADU_MULTILOGON_SERVICE_H

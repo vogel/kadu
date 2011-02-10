@@ -40,6 +40,7 @@
 
 #include "server/gadu-servers-manager.h"
 #include "gadu-exports.h"
+#include "gadu-features.h"
 #include "gadu-search-record.h"
 #include "gadu-search-result.h"
 
@@ -84,7 +85,9 @@ private:
 	GaduFileTransferService *CurrentFileTransferService;
 	GaduPersonalInfoService *CurrentPersonalInfoService;
 	GaduSearchService *CurrentSearchService;
+#ifdef GADU_HAVE_MULTILOGON
 	GaduMultilogonService *CurrentMultilogonService;
+#endif // GADU_HAVE_MULTILOGON
 
 	GaduContactListHandler *ContactListHandler;
 
@@ -150,7 +153,9 @@ public:
 	virtual FileTransferService * fileTransferService() { return CurrentFileTransferService; }
 	virtual PersonalInfoService * personalInfoService() { return CurrentPersonalInfoService; }
 	virtual SearchService * searchService() { return CurrentSearchService; }
+#ifdef GADU_HAVE_MULTILOGON
     virtual MultilogonService * multilogonService() { return CurrentMultilogonService; }
+#endif // GADU_HAVE_MULTILOGON
 
 	virtual bool contactsListReadOnly() { return false; }
 	virtual bool supportsPrivateStatus() { return true; }

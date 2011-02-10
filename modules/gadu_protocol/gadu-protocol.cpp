@@ -64,7 +64,6 @@
 #include "helpers/gadu-importer.h"
 #include "gadu-account-details.h"
 #include "gadu-contact-details.h"
-#include "gadu-features.h"
 #include "gadu-id-validator.h"
 #include "gadu-protocol-factory.h"
 #ifndef Q_OS_WIN
@@ -235,7 +234,9 @@ GaduProtocol::GaduProtocol(Account account, ProtocolFactory *factory) :
 	CurrentFileTransferService = new GaduFileTransferService(this);
 	CurrentPersonalInfoService = new GaduPersonalInfoService(this);
 	CurrentSearchService = new GaduSearchService(this);
+#ifdef GADU_HAVE_MULTILOGON
 	CurrentMultilogonService = new GaduMultilogonService(this);
+#endif // GADU_HAVE_MULTILOGON
 
 	ContactListHandler = 0;
 
@@ -360,7 +361,7 @@ void GaduProtocol::login(const QString &password, bool permanent)
 		setStatus(newstat);
 		return;
 	}
-  
+
 	account().setPassword(password);
 	account().setRememberPassword(permanent);
 	account().setHasPassword(!password.isEmpty());
