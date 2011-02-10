@@ -155,7 +155,7 @@ void SimpleView::simpleViewToggle(bool activate)
 			KaduWindowHandle->menuBar()->hide();
 
 			/* GroupBar */
-			GroupTabBarHandle->hide();
+			GroupTabBarHandle->setVisible(false);
 
 			/* Filter */
 			/* Note: filter hides/shows now automatically.
@@ -208,7 +208,8 @@ void SimpleView::simpleViewToggle(bool activate)
 			 */
 
 			/* GroupBar */
-			GroupTabBarHandle->show();
+			if (config_file.readBoolEntry("Look", "DisplayGroupTabs"))
+				GroupTabBarHandle->setVisible(true);
 
 			/* Menu bar */
 			KaduWindowHandle->menuBar()->show();
