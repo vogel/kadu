@@ -788,14 +788,27 @@ void HistoryWindow::keyPressEvent(QKeyEvent *e)
 ContactSet HistoryWindow::contacts()
 {
 	Chat chat = ChatsTree->currentIndex().data(ChatRole).value<Chat>();
-	if (!chat)
-		return ContactSet();
-	return chat.contacts();
+	if (chat)
+		return chat.contacts();
+
+	ContactSet contacts = ContactSet();
+	Buddy buddy = ChatsTree->currentIndex().data(BuddyRole).value<Buddy>();
+	if (buddy)
+	{
+		foreach (const Contact &contact, buddy.contacts())
+			contacts += contact;
+	}
+	return contacts;
 }
 
 BuddySet HistoryWindow::buddies()
 {
 	return contacts().toBuddySet();
+}
+
+Chat HistoryWindow::chat()
+{
+	return ChatsTree->currentIndex().data(ChatRole).value<Chat>();
 }
 
 void HistoryWindow::dateFilteringEnabled(int state)

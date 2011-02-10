@@ -134,10 +134,10 @@ public:
 	virtual bool supportsActionType(ActionDescription::ActionType type);
 	virtual ContactSet contacts();
 	virtual BuddySet buddies();
+	virtual Chat chat();
 	virtual ChatWidget * chatWidget() { return 0; }
 	virtual BuddiesListView * buddiesListView() { return 0; }
 	virtual StatusContainer* statusContainer() { return 0; }
-	virtual Chat chat() { return Chat::null; }
 	virtual bool hasContactSelected() { return false; } // we can select only buddies here
 
 	void show(const Chat &chat);

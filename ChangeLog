@@ -22,6 +22,7 @@
 * gui: update icons after changing icon theme (WhE)
 * history: allow removing statuses and smses history in history window (WhE)
 * history: allow removing history for givn date (WhE)
+* history: allow opening chats from history windows (WhE)
 
 +++ version 0.6.6-beta15
 * url-handlers: #1908 fixed: links containing HTML entities were not escaped (beevvy)
