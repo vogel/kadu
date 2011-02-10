@@ -91,7 +91,7 @@ class KADUAPI NotificationManager : public QObject, AccountsAwareObject, Configu
 
 private slots:
 	void messageReceived(const Message &message);
-    void multilogonSessionConnected(MultilogonSession *session);
+	void multilogonSessionConnected(MultilogonSession *session);
 	void multilogonSessionDisconnected(MultilogonSession *session);
 
 	void statusChanged();
