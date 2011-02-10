@@ -234,7 +234,7 @@ int main(int argc, char *argv[])
 		if (param == "--version")
 		{
 			printVersion();
-			//delete qApp;
+			delete qApp;
 #ifdef Q_WS_WIN
 			WSACleanup();
 #endif
@@ -244,7 +244,7 @@ int main(int argc, char *argv[])
 		{
 			printUsage();
 			printKaduOptions();
-			//delete qApp;
+			delete qApp;
 #ifdef Q_WS_WIN
 			WSACleanup();
 #endif
@@ -254,7 +254,7 @@ int main(int argc, char *argv[])
 		{
 			printUsage();
 			printQtOptions();
-			//delete qApp;
+			delete qApp;
 #ifdef Q_WS_WIN
 			WSACleanup();
 #endif
@@ -265,7 +265,7 @@ int main(int argc, char *argv[])
 			printUsage();
 			printKaduOptions();
 			printQtOptions();
-			//delete qApp;
+			delete qApp;
 #ifdef Q_WS_WIN
 			WSACleanup();
 #endif
@@ -354,7 +354,7 @@ int main(int argc, char *argv[])
 
 		delete xml_config_file;
 		delete config_file_ptr;
-		//delete qApp;
+		delete qApp;
 #ifdef Q_WS_WIN
 		WSACleanup();
 #endif
@@ -383,7 +383,7 @@ int main(int argc, char *argv[])
 
 		delete config_file_ptr;
 		delete xml_config_file;
-		//delete qApp;
+		delete qApp;
 #ifdef Q_WS_WIN
 		WSACleanup();
 #endif
@@ -441,10 +441,7 @@ int main(int argc, char *argv[])
 	int ret = qApp->exec();
 	kdebugm(KDEBUG_INFO, "after exec\n");
 
-	// TODO 0.6.6: it causes segfault on exit with QGtkStyle, at least
-	// on Ubuntu 10.10 (I tested it) --beevvy
-	// it's a hackish WORKAROUND!
-	//delete qApp;
+	delete qApp;
 
 #ifdef Q_WS_WIN
 	WSACleanup();
