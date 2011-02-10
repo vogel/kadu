@@ -114,7 +114,9 @@ private slots:
 	void dateFilteringEnabled(int state);
 
 	void openChat();
-	void clearHistory();
+	void clearChatHistory();
+	void clearStatusHistory();
+	void clearSmsHistory();
 	void selectQueryText();
 
 protected:

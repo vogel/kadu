@@ -605,13 +605,53 @@ void HistoryWindow::toDateChanged(const QDate &date)
 
 void HistoryWindow::showMainPopupMenu(const QPoint &pos)
 {
-	Chat chat = ChatsTree->indexAt(pos).data(ChatRole).value<Chat>();
-	if (!chat)
-		return;
+	QScopedPointer<QMenu> menu;
 
-	QScopedPointer<QMenu> menu(BuddiesListViewMenuManager::instance()->menu(this, this, chat.contacts().toContactList()));
-	menu->addAction(IconsManager::instance()->iconByPath("kadu_icons/clear-history"),
-			tr("&Clear History"), this, SLOT(clearHistory()));
+	HistoryTreeItem treeItem = ChatsTree->indexAt(pos).data(HistoryItemRole).value<HistoryTreeItem>();
+	switch (treeItem.type())
+	{
+		case HistoryTypeChat:
+		{
+			Chat chat = treeItem.chat();
+			if (!chat)
+				return;
+
+			menu.reset(BuddiesListViewMenuManager::instance()->menu(this, this, chat.contacts().toContactList()));
+			menu->addAction(IconsManager::instance()->iconByPath("kadu_icons/clear-history"),
+					tr("&Clear Chats' History"), this, SLOT(clearChatHistory()));
+
+			break;
+		}
+
+		case HistoryTypeStatus:
+		{
+			Buddy buddy = treeItem.buddy();
+			if (!buddy || buddy.contacts().size() == 0)
+				return;
+
+			menu.reset(BuddiesListViewMenuManager::instance()->menu(this, this, buddy.contacts()));
+			menu->addAction(IconsManager::instance()->iconByPath("kadu_icons/clear-history"),
+					tr("&Clear Statuses' History"), this, SLOT(clearStatusHistory()));
+
+			break;
+		}
+
+		case HistoryTypeSms:
+		{
+			QString recipient = treeItem.smsRecipient();
+			if (recipient.isEmpty())
+				return;
+
+			menu.reset(new QMenu(this));
+			menu->addAction(IconsManager::instance()->iconByPath("kadu_icons/clear-history"),
+					tr("&Clear Smses' History"), this, SLOT(clearSmsHistory()));
+			break;
+		}
+
+		default:
+			return;
+	}
+
 	menu->exec(QCursor::pos());
 }
 
@@ -661,7 +701,7 @@ void HistoryWindow::openChat()
 	kdebugf2();
 }
 
-void HistoryWindow::clearHistory()
+void HistoryWindow::clearChatHistory()
 {
 	kdebugf();
 	Chat chat = ChatsTree->currentIndex().data(ChatRole).value<Chat>();
@@ -669,6 +709,30 @@ void HistoryWindow::clearHistory()
 		return;
 
 	History::instance()->currentStorage()->clearChatHistory(chat);
+	updateData();
+	kdebugf2();
+}
+
+void HistoryWindow::clearStatusHistory()
+{
+	kdebugf();
+	Buddy buddy = ChatsTree->currentIndex().data(BuddyRole).value<Buddy>();
+	if (!buddy)
+		return;
+
+	History::instance()->currentStorage()->clearStatusHistory(buddy);
+	updateData();
+	kdebugf2();
+}
+
+void HistoryWindow::clearSmsHistory()
+{
+	kdebugf();
+	QString recipient = ChatsTree->currentIndex().data(Qt::DisplayRole).toString();
+	if (recipient.isEmpty())
+		return;
+
+	History::instance()->currentStorage()->clearSmsHistory(recipient);
 	updateData();
 	kdebugf2();
 }

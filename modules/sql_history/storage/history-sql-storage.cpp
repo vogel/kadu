@@ -364,6 +364,32 @@ void HistorySqlStorage::clearChatHistory(const Chat &chat)
 	DatabaseMutex.unlock();
 }
 
+void HistorySqlStorage::clearStatusHistory(const Buddy &buddy)
+{
+	DatabaseMutex.lock();
+
+	QSqlQuery query(Database);
+	QString queryString = "DELETE FROM kadu_statuses WHERE " + buddyContactsWhere(buddy);
+	query.prepare(queryString);
+
+	executeQuery(query);
+
+	DatabaseMutex.unlock();
+}
+
+void HistorySqlStorage::clearSmsHistory(const QString &recipient)
+{
+	DatabaseMutex.lock();
+
+	QSqlQuery query(Database);
+	QString queryString = "DELETE FROM kadu_sms WHERE receipient = '%1'";
+	query.prepare(queryString.arg(recipient));
+
+	executeQuery(query);
+
+	DatabaseMutex.unlock();
+}
+
 void HistorySqlStorage::deleteHistory(const Buddy &buddy)
 {
 	DatabaseMutex.lock();
