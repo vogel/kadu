@@ -587,9 +587,11 @@ set (kadu_MOC_SRCS
 	identities/identity-manager.h
 	identities/identity-shared.h
 
+	misc/syntax-list.h
+
 	model/actions-proxy-model.h
 
-	misc/syntax-list.h
+	multilogon/multilogon-session.h
 
 	notify/account-notification.h
 	notify/buddy-notify-data.h

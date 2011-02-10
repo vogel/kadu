@@ -27,8 +27,9 @@
 #include "accounts/account.h"
 #include "exports.h"
 
-class KADUAPI MultilogonSession
+class KADUAPI MultilogonSession : public QObject
 {
+	Q_OBJECT
 	Q_DISABLE_COPY(MultilogonSession)
 
 	Account MyAccount;
@@ -42,7 +43,7 @@ protected:
 	void setLogonTime(const QDateTime &logonTime);
 
 public:
-	MultilogonSession(Account account);
+	MultilogonSession(Account account, QObject *parent = 0);
 	virtual ~MultilogonSession();
 
 	Account account() const;

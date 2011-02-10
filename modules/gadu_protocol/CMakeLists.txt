@@ -113,6 +113,8 @@ set (MOC_SOURCES
 	services/gadu-personal-info-service.h
 	services/gadu-search-service.h
 
+	services/multilogon/gadu-multilogon-session.h
+
 	socket-notifiers/gadu-protocol-socket-notifiers.h
 	socket-notifiers/gadu-pubdir-socket-notifiers.h
 	socket-notifiers/gadu-socket-notifiers.h

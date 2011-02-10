@@ -24,20 +24,24 @@
 
 #include "gadu-features.h"
 
-#ifdef GADU_HAVE_MULTILOGON
-
 class GaduMultilogonSession : public MultilogonSession
 {
+	Q_OBJECT
+
+#ifdef GADU_HAVE_MULTILOGON
 	gg_multilogon_id_t Id;
+#endif // GADU_HAVE_MULTILOGON
 
 public:
-	GaduMultilogonSession(Account account, const gg_multilogon_session &session);
+	GaduMultilogonSession(Account account, QObject *parent = 0);
+
+#ifdef GADU_HAVE_MULTILOGON
+	GaduMultilogonSession(Account account, const gg_multilogon_session &session, QObject *parent = 0);
 	virtual ~GaduMultilogonSession();
 
 	const gg_multilogon_id_t & id() const;
+#endif // GADU_HAVE_MULTILOGON
 
 };
-
-#endif // GADU_HAVE_MULTILOGON
 
 #endif // GADU_MULTILOGON_SESSION_H

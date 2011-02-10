@@ -19,10 +19,19 @@
 
 #include "gadu-multilogon-session.h"
 
+GaduMultilogonSession::GaduMultilogonSession(Account account, QObject *parent) :
+		MultilogonSession(account, parent)
+{
+}
+
+GaduMultilogonSession::~GaduMultilogonSession()
+{
+}
+
 #ifdef GADU_HAVE_MULTILOGON
 
-GaduMultilogonSession::GaduMultilogonSession(Account account, const gg_multilogon_session &session) :
-		MultilogonSession(account)
+GaduMultilogonSession::GaduMultilogonSession(Account account, const gg_multilogon_session &session, QObject *parent) :
+		MultilogonSession(account, parent)
 {
 	Id = session.id;
 	setName(session.name);
@@ -34,10 +43,6 @@ GaduMultilogonSession::GaduMultilogonSession(Account account, const gg_multilogo
 	QDateTime logonTime;
 	logonTime.setTime_t(session.logon_time);
 	setLogonTime(logonTime);
-}
-
-GaduMultilogonSession::~GaduMultilogonSession()
-{
 }
 
 const gg_multilogon_id_t & GaduMultilogonSession::id() const

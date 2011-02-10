@@ -19,8 +19,8 @@
 
 #include "multilogon-session.h"
 
-MultilogonSession::MultilogonSession(Account account) :
-		MyAccount(account)
+MultilogonSession::MultilogonSession(Account account, QObject *parent) :
+		QObject(parent), MyAccount(account)
 {
 }
 
