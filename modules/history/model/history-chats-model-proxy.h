@@ -22,6 +22,7 @@
 
 #include <QtGui/QSortFilterProxyModel>
 
+class AbstractBuddyFilter;
 class Buddy;
 class Chat;
 class ChatFilter;
@@ -33,7 +34,8 @@ class HistoryChatsModelProxy : public QSortFilterProxyModel
 	Q_OBJECT
 
 	HistoryChatsModel *Model;
-	QList<ChatFilter *> Filters;
+	QList<ChatFilter *> ChatFilters;
+	QList<AbstractBuddyFilter *> BuddyFilters;
 
 	bool BrokenStringCompare;
 	int compareNames(QString n1, QString n2) const;
@@ -47,8 +49,11 @@ public:
 
 	virtual void setSourceModel(QAbstractItemModel *sourceModel);
 
-	void addFilter(ChatFilter *filter);
-	void removeFilter(ChatFilter *filter);
+	void addChatFilter(ChatFilter *filter);
+	void removeChatFilter(ChatFilter *filter);
+
+	void addBuddyFilter(AbstractBuddyFilter *filter);
+	void removeBuddyFilter(AbstractBuddyFilter *filter);
 
 	QModelIndex chatTypeIndex(ChatType *type) const;
 	QModelIndex chatIndex(const Chat &chat) const;

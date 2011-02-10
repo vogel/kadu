@@ -36,6 +36,7 @@
 #include "modules/history/history.h"
 #include "modules/history/history_exports.h"
 
+class BuddyNameFilter;
 class BuddyStatusDatesModel;
 class ChatDatesModel;
 class ChatNameFilter;
@@ -59,6 +60,7 @@ class HistoryWindow : public MainWindow
 	QTreeView *DetailsListView;
 	HistoryChatsModel *ChatsModel;
 	HistoryChatsModelProxy *ChatsModelProxy;
+	BuddyNameFilter *StatusBuddyNameFilter;
 	ChatNameFilter *NameFilter;
 
 	ChatDatesModel *MyChatDatesModel;

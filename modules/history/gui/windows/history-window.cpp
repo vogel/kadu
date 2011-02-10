@@ -34,6 +34,7 @@
 #include <QtGui/QStatusBar>
 #include <QtGui/QVBoxLayout>
 
+#include "buddies/filter/buddy-name-filter.h"
 #include "buddies/model/buddies-model-base.h"
 #include "chat/chat-details-aggregate.h"
 #include "chat/chat-manager.h"
@@ -163,8 +164,11 @@ void HistoryWindow::createChatTree(QWidget *parent)
 	ChatsModelProxy = new HistoryChatsModelProxy(this);
 	ChatsModelProxy->setSourceModel(ChatsModel);
 
+	StatusBuddyNameFilter = new BuddyNameFilter(this);
+	ChatsModelProxy->addBuddyFilter(StatusBuddyNameFilter);
+
 	NameFilter = new ChatNameFilter(this);
-	ChatsModelProxy->addFilter(NameFilter);
+	ChatsModelProxy->addChatFilter(NameFilter);
 
 	ChatsTree->setModel(ChatsModelProxy);
 	ChatsModelProxy->sort(1);
@@ -577,6 +581,7 @@ QList<Message> HistoryWindow::statusesToMessages(const QList<TimedStatus> &statu
 void HistoryWindow::filterLineChanged(const QString &filterText)
 {
 	NameFilter->setName(filterText);
+	StatusBuddyNameFilter->setName(filterText);
 }
 
 void HistoryWindow::searchTextChanged(const QString &searchText)

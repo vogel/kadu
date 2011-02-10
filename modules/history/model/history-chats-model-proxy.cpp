@@ -17,6 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "buddies/filter/abstract-buddy-filter.h"
 #include "chat/filter/chat-filter.h"
 #include "chat/type/chat-type.h"
 #include "chat/chat.h"
@@ -45,17 +46,26 @@ int HistoryChatsModelProxy::compareNames(QString n1, QString n2) const
 
 bool HistoryChatsModelProxy::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
 {
-	if (0 == Filters.size())
-		return true;
-
 	QModelIndex sourceChild = sourceParent.child(sourceRow, 0);
 	Chat chat = sourceChild.data(ChatRole).value<Chat>();
-	if (!chat)
-		return true;
+	if (chat)
+	{
+		foreach (ChatFilter *filter, ChatFilters)
+			if (!filter->acceptChat(chat))
+				return false;
 
-	foreach (ChatFilter *filter, Filters)
-		if (!filter->acceptChat(chat))
-			return false;
+		return true;
+	}
+
+	Buddy buddy = sourceChild.data(BuddyRole).value<Buddy>();
+	if (buddy)
+	{
+		foreach (AbstractBuddyFilter *filter, BuddyFilters)
+			if (!filter->acceptBuddy(buddy))
+				return false;
+
+		return true;
+	}
 
 	return true;
 }
@@ -89,23 +99,45 @@ void HistoryChatsModelProxy::setSourceModel(QAbstractItemModel *sourceModel)
 	Model = qobject_cast<HistoryChatsModel *>(sourceModel);
 }
 
-void HistoryChatsModelProxy::addFilter(ChatFilter *filter)
+void HistoryChatsModelProxy::addChatFilter(ChatFilter *filter)
 {
 	if (!filter)
 		return;
 
-	Filters.append(filter);
+	ChatFilters.append(filter);
 	connect(filter, SIGNAL(filterChanged()), this, SLOT(invalidate()));
 
 	invalidateFilter();
 }
 
-void HistoryChatsModelProxy::removeFilter(ChatFilter *filter)
+void HistoryChatsModelProxy::removeChatFilter(ChatFilter *filter)
 {
 	if (!filter)
 		return;
 
-	Filters.removeAll(filter);
+	ChatFilters.removeAll(filter);
+	disconnect(filter, SIGNAL(filterChanged()), this, SLOT(invalidate()));
+
+	invalidateFilter();
+}
+
+void HistoryChatsModelProxy::addBuddyFilter(AbstractBuddyFilter *filter)
+{
+	if (!filter)
+		return;
+
+	BuddyFilters.append(filter);
+	connect(filter, SIGNAL(filterChanged()), this, SLOT(invalidate()));
+
+	invalidateFilter();
+}
+
+void HistoryChatsModelProxy::removeBuddyFilter(AbstractBuddyFilter *filter)
+{
+	if (!filter)
+		return;
+
+	BuddyFilters.removeAll(filter);
 	disconnect(filter, SIGNAL(filterChanged()), this, SLOT(invalidate()));
 
 	invalidateFilter();
