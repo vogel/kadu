@@ -42,6 +42,9 @@ class GaduMultilogonService : public MultilogonService
 	bool containsSession(const gg_event_multilogon_info &multilogonInfo, const gg_multilogon_id_t &id);
 	void addNewSessions(const gg_event_multilogon_info &multilogonInfo);
 	void removeOldSessions(const gg_event_multilogon_info &multilogonInfo);
+
+	friend class GaduProtocol;
+	void removeAllSessions();
 #endif // GADU_HAVE_MULTILOGON
 
 public:

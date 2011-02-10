@@ -132,4 +132,17 @@ void GaduMultilogonService::handleEventMultilogonInfo(gg_event *e)
 	removeOldSessions(e->event.multilogon_info);
 }
 
+void GaduMultilogonService::removeAllSessions()
+{
+	QList<MultilogonSession *>::iterator i = Sessions.begin();
+
+	while (i != Sessions.end())
+	{
+		GaduMultilogonSession *gaduSession = static_cast<GaduMultilogonSession *>(*i);
+		emit multilogonSessionDisconnected(gaduSession);
+		delete gaduSession;
+		i = Sessions.erase(i);
+	}
+}
+
 #endif // GADU_HAVE_MULTILOGON
