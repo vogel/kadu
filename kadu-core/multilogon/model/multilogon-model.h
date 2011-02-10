@@ -17,40 +17,29 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MULTILOGON_WINDOW_H
-#define MULTILOGON_WINDOW_H
+#ifndef MULTILOGON_MODEL_H
+#define MULTILOGON_MODEL_H
 
-#include <QtGui/QWidget>
+#include <QtCore/QAbstractTableModel>
 
-#include "accounts/account.h"
-#include "exports.h"
+class MultilogonService;
 
-class QTableView;
-
-class KADUAPI MultilogonWindow : public QWidget
+class MultilogonModel : public QAbstractTableModel
 {
 	Q_OBJECT
 
-	static MultilogonWindow *Instance;
-
-	QTableView *SessionsTable;
-
-	explicit MultilogonWindow(QWidget *parent = 0);
-    virtual ~MultilogonWindow();
-
-	void createGui();
-
-private slots:
-	void accountChanged(const Account &newAccount);
-
-protected:
-	virtual void keyPressEvent(QKeyEvent *e);
+	MultilogonService *Service;
 
 public:
-	static KADUAPI MultilogonWindow * instance();
+	explicit MultilogonModel(MultilogonService *service, QObject *parent);
+	virtual ~MultilogonModel();
 
-	void show();
+	virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
+	virtual int columnCount(const QModelIndex &parent = QModelIndex()) const;
+
+	virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+	virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 
 };
 
-#endif // MULTILOGON_WINDOW_H
+#endif // MULTILOGON_MODEL_H

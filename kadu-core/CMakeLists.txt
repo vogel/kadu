@@ -271,6 +271,8 @@ set (kadu_SRCS
 
 	model/actions-proxy-model.cpp
 
+	multilogon/model/multilogon-model.cpp
+
 	multilogon/multilogon-session.cpp
 
 	notify/account-notification.cpp
@@ -594,6 +596,8 @@ set (kadu_MOC_SRCS
 	misc/syntax-list.h
 
 	model/actions-proxy-model.h
+
+	multilogon/model/multilogon-model.h
 
 	multilogon/multilogon-session.h
 

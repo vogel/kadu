@@ -28,6 +28,9 @@
 #include "accounts/filter/have-multilogon-filter.h"
 #include "gui/widgets/accounts-combo-box.h"
 #include "misc/misc.h"
+#include "multilogon/model/multilogon-model.h"
+#include "protocols/protocol.h"
+#include "protocols/services/multilogon-service.h"
 #include "activate.h"
 #include "icons-manager.h"
 
@@ -84,9 +87,12 @@ void MultilogonWindow::createGui()
 	accounts->setIncludeIdInDisplay(true);
 	selectAccountLayout->addWidget(accounts);
 
+	connect(accounts, SIGNAL(accountChanged(Account)), this, SLOT(accountChanged(Account)));
+
 	layout->addWidget(selectAccountWidget);
 
-	layout->addWidget(new QTableView(this));
+	SessionsTable = new QTableView(this);
+	layout->addWidget(SessionsTable);
 
 	QDialogButtonBox *buttons = new QDialogButtonBox(this);
 	QPushButton *killSessionButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCloseButton),
@@ -98,6 +104,8 @@ void MultilogonWindow::createGui()
 	buttons->addButton(closeButton, QDialogButtonBox::RejectRole);
 
 	layout->addWidget(buttons);
+
+	accountChanged(accounts->currentAccount());
 }
 
 void MultilogonWindow::keyPressEvent(QKeyEvent *e)
@@ -109,4 +117,21 @@ void MultilogonWindow::keyPressEvent(QKeyEvent *e)
 	}
 	else
 		QWidget::keyPressEvent(e);
+}
+
+void MultilogonWindow::accountChanged(const Account &newAccount)
+{
+	QAbstractItemModel *model = SessionsTable->model();
+	if (model)
+		delete model;
+
+	Protocol *protocol = newAccount.protocolHandler();
+	if (!protocol)
+		return;
+
+	MultilogonService *service = protocol->multilogonService();
+	if (!service)
+		return;
+
+	SessionsTable->setModel(new MultilogonModel(service, this));
 }
