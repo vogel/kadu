@@ -23,6 +23,7 @@
 #include <QtCore/QRect>
 
 #include "configuration/configuration-aware-object.h"
+#include "gui/widgets/group-tab-bar.h"
 #include "os/generic/compositing-aware-object.h"
 
 class QAction;
@@ -54,7 +55,7 @@ class SimpleView :
 	KaduWindow *KaduWindowHandle;
 	MainWindow *MainWindowHandle;
 	BuddiesListWidget *BuddiesListWidgetHandle;
-	QWidget *GroupBarWidgetHandle;
+	GroupTabBar *GroupTabBarHandle;
 	StatusButtons *StatusButtonsHandle;
 
 	SimpleView();
