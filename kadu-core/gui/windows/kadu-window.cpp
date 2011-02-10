@@ -239,6 +239,8 @@ void KaduWindow::createToolsMenu()
 	ToolsMenu = new QMenu(this);
 	ToolsMenu->setTitle(tr("&Tools"));
 
+	insertMenuActionDescription(Actions->ShowMultilogons, MenuTools);
+
 	menuBar()->addMenu(ToolsMenu);
 }
 

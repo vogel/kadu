@@ -58,6 +58,7 @@
 #include "gui/windows/main-configuration-window.h"
 #include "gui/windows/merge-buddies-window.h"
 #include "gui/windows/message-dialog.h"
+#include "gui/windows/multilogon-window.h"
 #include "gui/windows/search-window.h"
 #include "gui/windows/your-accounts.h"
 #include "misc/misc.h"
@@ -152,6 +153,12 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 		ActionDescription::TypeMainMenu, "yourAccountsAction",
 		this, SLOT(yourAccountsActionActivated(QAction *, bool)),
 		"x-office-address-book", tr("Your Accounts...")
+	);
+
+	ShowMultilogons = new ActionDescription(this,
+		ActionDescription::TypeMainMenu, "showMultilogonsAction",
+		this, SLOT(showMultilogonsActionActivated(QAction *, bool)),
+		"", tr("Multilogons...")
 	);
 
 	ManageModules = new ActionDescription(this,
@@ -498,6 +505,14 @@ void KaduWindowActions::yourAccountsActionActivated(QAction *sender, bool toggle
 	Q_UNUSED(toggled)
 
 	YourAccounts::instance()->show();
+}
+
+void KaduWindowActions::showMultilogonsActionActivated(QAction *sender, bool toggled)
+{
+	Q_UNUSED(sender)
+	Q_UNUSED(toggled)
+
+	MultilogonWindow::instance()->show();
 }
 
 void KaduWindowActions::exitKaduActionActivated(QAction *sender, bool toggled)
