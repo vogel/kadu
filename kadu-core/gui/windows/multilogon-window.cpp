@@ -17,40 +17,17 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QAction>
-#include <QtGui/QComboBox>
 #include <QtGui/QDialogButtonBox>
-#include <QtGui/QFormLayout>
-#include <QtGui/QGridLayout>
-#include <QtGui/QGroupBox>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QKeyEvent>
 #include <QtGui/QLabel>
-#include <QtGui/QListView>
-#include <QtGui/QMessageBox>
 #include <QtGui/QPushButton>
-#include <QtGui/QStackedWidget>
 #include <QtGui/QVBoxLayout>
-#ifdef Q_WS_MAEMO_5
-#include <QtGui/QScrollArea>
-#endif
+#include <QtGui/QTableView>
 
-#include "accounts/account-manager.h"
-#include "accounts/model/accounts-model.h"
-#include "gui/widgets/account-add-widget.h"
-#include "gui/widgets/account-create-widget.h"
-#include "gui/widgets/account-edit-widget.h"
-#include "gui/widgets/modal-configuration-widget.h"
-#include "gui/widgets/protocols-combo-box.h"
-#include "gui/windows/message-dialog.h"
+#include "accounts/filter/have-multilogon-filter.h"
+#include "gui/widgets/accounts-combo-box.h"
 #include "misc/misc.h"
-#include "model/actions-proxy-model.h"
-#include "model/roles.h"
-#include "protocols/protocol.h"
-#include "protocols/protocol-factory.h"
-#include "protocols/protocols-manager.h"
-#include "protocols/filter/can-register-protocol-filter.h"
-
 #include "activate.h"
 #include "icons-manager.h"
 
@@ -95,6 +72,32 @@ void MultilogonWindow::show()
 
 void MultilogonWindow::createGui()
 {
+	QVBoxLayout *layout = new QVBoxLayout(this);
+
+	QWidget *selectAccountWidget = new QWidget(this);
+	QHBoxLayout *selectAccountLayout = new QHBoxLayout(selectAccountWidget);
+
+	selectAccountLayout->addWidget(new QLabel(tr("Account:"), selectAccountWidget));
+
+	AccountsComboBox *accounts = new AccountsComboBox(true, selectAccountWidget);
+	accounts->addFilter(new HaveMultilogonFilter(accounts));
+	accounts->setIncludeIdInDisplay(true);
+	selectAccountLayout->addWidget(accounts);
+
+	layout->addWidget(selectAccountWidget);
+
+	layout->addWidget(new QTableView(this));
+
+	QDialogButtonBox *buttons = new QDialogButtonBox(this);
+	QPushButton *killSessionButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCloseButton),
+			tr("Disconnect session"), buttons);
+	QPushButton *closeButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton),
+			tr("Close"), buttons);
+
+	buttons->addButton(killSessionButton, QDialogButtonBox::DestructiveRole);
+	buttons->addButton(closeButton, QDialogButtonBox::RejectRole);
+
+	layout->addWidget(buttons);
 }
 
 void MultilogonWindow::keyPressEvent(QKeyEvent *e)

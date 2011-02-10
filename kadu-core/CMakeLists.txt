@@ -6,6 +6,7 @@ set (kadu_SRCS
 	accounts/account-shared.cpp
 	accounts/accounts-aware-object.cpp
 
+	accounts/filter/have-multilogon-filter.cpp
 	accounts/filter/id-validity-filter.cpp
 	accounts/filter/protocol-filter.cpp
 	accounts/filter/writeable-contacts-list-filter.cpp
@@ -367,6 +368,7 @@ set (kadu_MOC_SRCS
 	accounts/account-shared.h
 
 	accounts/filter/abstract-account-filter.h
+	accounts/filter/have-multilogon-filter.h
 	accounts/filter/id-validity-filter.h
 	accounts/filter/protocol-filter.h
 	accounts/filter/writeable-contacts-list-filter.h
