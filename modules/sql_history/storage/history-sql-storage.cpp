@@ -351,39 +351,58 @@ void HistorySqlStorage::appendSms(const QString &recipient, const QString &conte
 	kdebugf2();
 }
 
-void HistorySqlStorage::clearChatHistory(const Chat &chat)
+void HistorySqlStorage::clearChatHistory(const Chat &chat, const QDate &date)
 {
 	DatabaseMutex.lock();
 
 	QSqlQuery query(Database);
 	QString queryString = "DELETE FROM kadu_messages WHERE " + chatWhere(chat);
+	if (!date.isNull())
+		queryString += " AND date(receive_time) = date(:date)";
+
 	query.prepare(queryString);
+
+	if (!date.isNull())
+		query.bindValue(":date", date.toString(Qt::ISODate));
 
 	executeQuery(query);
 
 	DatabaseMutex.unlock();
 }
 
-void HistorySqlStorage::clearStatusHistory(const Buddy &buddy)
+void HistorySqlStorage::clearStatusHistory(const Buddy &buddy, const QDate &date)
 {
 	DatabaseMutex.lock();
 
 	QSqlQuery query(Database);
 	QString queryString = "DELETE FROM kadu_statuses WHERE " + buddyContactsWhere(buddy);
+	if (!date.isNull())
+		queryString += " AND date(set_time) = date(:date)";
+
 	query.prepare(queryString);
+
+	if (!date.isNull())
+		query.bindValue(":date", date.toString(Qt::ISODate));
 
 	executeQuery(query);
 
 	DatabaseMutex.unlock();
 }
 
-void HistorySqlStorage::clearSmsHistory(const QString &recipient)
+void HistorySqlStorage::clearSmsHistory(const QString &recipient, const QDate &date)
 {
 	DatabaseMutex.lock();
 
 	QSqlQuery query(Database);
-	QString queryString = "DELETE FROM kadu_sms WHERE receipient = '%1'";
-	query.prepare(queryString.arg(recipient));
+	QString queryString = "DELETE FROM kadu_sms WHERE receipient = :receipient";
+	if (!date.isNull())
+		queryString += " AND date(send_time) = date(:date)";
+
+	query.prepare(queryString);
+
+	query.bindValue(":receipient", recipient);
+	if (!date.isNull())
+		query.bindValue(":date", date.toString(Qt::ISODate));
 
 	executeQuery(query);
 

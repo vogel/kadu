@@ -117,6 +117,8 @@ private slots:
 	void clearChatHistory();
 	void clearStatusHistory();
 	void clearSmsHistory();
+	void removeHistoryEntriesPerDate();
+
 	void selectQueryText();
 
 protected:

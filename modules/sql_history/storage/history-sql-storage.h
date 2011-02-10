@@ -100,9 +100,9 @@ public:
 
 	void sync();
 
-	virtual void clearChatHistory(const Chat &chat);
-	virtual void clearSmsHistory(const QString &recipient);
-	virtual void clearStatusHistory(const Buddy &buddy);
+	virtual void clearChatHistory(const Chat &chat, const QDate &date = QDate());
+	virtual void clearSmsHistory(const QString &recipient, const QDate &date = QDate());
+	virtual void clearStatusHistory(const Buddy &buddy, const QDate &date = QDate());
 	virtual void deleteHistory(const Buddy &buddy);
 
 };

@@ -82,9 +82,9 @@ HistoryWindow::HistoryWindow(QWidget *parent) :
 	connectGui();
 
 	loadWindowGeometry(this, "History", "HistoryWindowGeometry", 200, 200, 750, 500);
-//TODO 0.6.6:
+
 	DetailsPopupMenu = new QMenu(this);
-//	DetailsPopupMenu->addAction(IconsManager::instance()->loadIcon("ClearHistory"), tr("&Remove entries"), this, SLOT(removeHistoryEntriesPerDate()));
+	DetailsPopupMenu->addAction(IconsManager::instance()->iconByPath("kadu_icons/clear-history"), tr("&Remove entries"), this, SLOT(removeHistoryEntriesPerDate()));
 
 	kdebugf2();
 }
@@ -657,17 +657,22 @@ void HistoryWindow::showMainPopupMenu(const QPoint &pos)
 
 void HistoryWindow::showDetailsPopupMenu(const QPoint &pos)
 {
-	bool isValid = true;
-	Chat chat = DetailsListView->indexAt(pos).data(ChatRole).value<Chat>();
 	QDate date = DetailsListView->indexAt(pos).data(DateRole).value<QDate>();
+	if (!date.isValid())
+		return;
 
-	if (!chat || !date.isValid())
-		isValid = false;
+	bool isValid = false;
 
-	foreach (QAction *action, DetailsPopupMenu->actions())
-		action->setEnabled(isValid);
+	HistoryTreeItem treeItem = DetailsListView->indexAt(pos).data(HistoryItemRole).value<HistoryTreeItem>();
+	if (treeItem.type() == HistoryTypeChat && treeItem.chat())
+		isValid = true;
+	else if (treeItem.type() == HistoryTypeStatus && treeItem.buddy() && treeItem.buddy().contacts().size() > 0)
+		isValid = true;
+	else if (treeItem.type() == HistoryTypeSms && !treeItem.smsRecipient().isEmpty())
+		isValid = true;
 
-	DetailsPopupMenu->exec(QCursor::pos());
+	if (isValid)
+		DetailsPopupMenu->exec(QCursor::pos());
 }
 
 void HistoryWindow::show(const Chat &chat)
@@ -735,6 +740,23 @@ void HistoryWindow::clearSmsHistory()
 	History::instance()->currentStorage()->clearSmsHistory(recipient);
 	updateData();
 	kdebugf2();
+}
+
+void HistoryWindow::removeHistoryEntriesPerDate()
+{
+	QDate date = DetailsListView->currentIndex().data(DateRole).value<QDate>();
+	if (!date.isValid())
+		return;
+
+	HistoryTreeItem treeItem = DetailsListView->currentIndex().data(HistoryItemRole).value<HistoryTreeItem>();
+	if (treeItem.type() == HistoryTypeChat && treeItem.chat())
+		History::instance()->currentStorage()->clearChatHistory(treeItem.chat(), date);
+	else if (treeItem.type() == HistoryTypeStatus && treeItem.buddy() && treeItem.buddy().contacts().size() > 0)
+		History::instance()->currentStorage()->clearStatusHistory(treeItem.buddy(), date);
+	else if (treeItem.type() == HistoryTypeSms && !treeItem.smsRecipient().isEmpty())
+		History::instance()->currentStorage()->clearSmsHistory(treeItem.smsRecipient(), date);
+
+	selectHistoryItem(ChatsTree->currentIndex().data(HistoryItemRole).value<HistoryTreeItem>());
 }
 
 void HistoryWindow::selectQueryText()

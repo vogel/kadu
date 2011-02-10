@@ -71,9 +71,9 @@ public:
 	virtual void appendSms(const QString &recipient, const QString &content, const QDateTime &time = QDateTime::currentDateTime()) = 0;
 	virtual void sync() = 0;
 
-	virtual void clearChatHistory(const Chat &chat) = 0;
-	virtual void clearSmsHistory(const QString &recipient) = 0;
-	virtual void clearStatusHistory(const Buddy &buddy) = 0;
+	virtual void clearChatHistory(const Chat &chat, const QDate &date = QDate()) = 0;
+	virtual void clearSmsHistory(const QString &recipient, const QDate &date = QDate()) = 0;
+	virtual void clearStatusHistory(const Buddy &buddy, const QDate &date = QDate()) = 0;
 	virtual void deleteHistory(const Buddy &buddy) = 0;
 
 };
