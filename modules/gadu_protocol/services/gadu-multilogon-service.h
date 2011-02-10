@@ -46,7 +46,7 @@ public:
 	explicit GaduMultilogonService(QObject *parent = 0);
 	virtual ~GaduMultilogonService();
 
-	virtual QList<MultilogonSession *> sessions();
+	virtual const QList<MultilogonSession *> & sessions() const;
 	virtual void killSession(MultilogonSession *session);
 
 };

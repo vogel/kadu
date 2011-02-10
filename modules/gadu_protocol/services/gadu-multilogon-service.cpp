@@ -43,9 +43,9 @@ GaduMultilogonService::~GaduMultilogonService()
 {
 }
 
-QList<MultilogonSession *> GaduMultilogonService::sessions()
+const QList<MultilogonSession *> & GaduMultilogonService::sessions() const
 {
-	return QList<MultilogonSession *>();
+	return Sessions;
 }
 
 void GaduMultilogonService::killSession(MultilogonSession *session)

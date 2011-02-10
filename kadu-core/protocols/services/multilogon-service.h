@@ -34,7 +34,7 @@ public:
 	explicit MultilogonService(QObject *parent = 0) : QObject(parent) {}
 	virtual ~MultilogonService() {}
 
-	virtual QList<MultilogonSession *> sessions() = 0;
+	virtual const QList<MultilogonSession *> & sessions() const = 0;
 	virtual void killSession(MultilogonSession *session) = 0;
 
 };
