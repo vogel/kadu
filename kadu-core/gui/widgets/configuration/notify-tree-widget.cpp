@@ -91,6 +91,9 @@ NotifyTreeWidget::NotifyTreeWidget(NotifyConfigurationUiHandler *uiHandler, QWid
 	header()->setResizeMode(1, QHeaderView::Fixed);
 
 	refresh();
+
+	foreach (NotifyTreeWidgetItem *item, TreeItems.values())
+		expandItem(item);
 }
 
 void NotifyTreeWidget::refresh()
