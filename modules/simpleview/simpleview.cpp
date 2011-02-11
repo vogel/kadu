@@ -19,20 +19,17 @@
 #include <QtGui/QMenu>
 #include <QtGui/QMenuBar>
 #include <QtGui/QToolBar>
-#include <QtGui/QTabBar>
-#include <QtGui/QSplitter>
 
 #include "core/core.h"
 #include "configuration/configuration-file.h"
-#include "misc/path-conversion.h"
 #include "gui/hot-key.h"
 #include "gui/widgets/buddies-list-view.h"
 #include "gui/widgets/buddies-list-widget.h"
 #include "gui/widgets/buddy-info-panel.h"
-#include "gui/widgets/group-tab-bar.h"
 #include "gui/widgets/status-buttons.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/main-window.h"
+#include "misc/path-conversion.h"
 
 #include "modules/docking/docking.h"
 #include "simpleview-config-ui.h"
@@ -44,7 +41,6 @@ SimpleView::SimpleView() :
 	SimpleViewActive(false)
 {
 	BuddiesListView *buddiesListViewHandle;
-	GroupTabBar *groupBarTabHandle;
 
 	SimpleViewConfigUi::createInstance();
 
@@ -60,8 +56,7 @@ SimpleView::SimpleView() :
 	MainWindowHandle = KaduWindowHandle->findMainWindow(KaduWindowHandle);
 	buddiesListViewHandle = MainWindowHandle->buddiesListView();
 	BuddiesListWidgetHandle = qobject_cast<BuddiesListWidget *>(buddiesListViewHandle->parentWidget());
-	groupBarTabHandle = KaduWindowHandle->findChild<GroupTabBar *>();
-	GroupBarWidgetHandle = groupBarTabHandle->parentWidget();
+	GroupTabBarHandle = KaduWindowHandle->findChild<GroupTabBar *>();
 	StatusButtonsHandle = KaduWindowHandle->findChild<StatusButtons *>();
 
 	configurationUpdated();
@@ -109,9 +104,7 @@ void SimpleView::simpleViewToggle(bool activate)
 	 *   +-QSplitter (Split)
 	 *     +-QWidget (hbox)
 	 *     |=QHBoxLayout (hboxLayout)
-	 *     |+-QWidget (GroupBarWidget)
-	 *     |  =QVBoxLayout (GroupBarLayout)
-	 *     |  +-GroupTabBar (GroupBar)
+	 *     |+-GroupTabBar (GroupBar)
 	 *     |+-BuddiesListWidget (ContactsWidget)
 	 *     |  =QVBoxLayout (layout)
 	 *     |  +-BuddiesListView (ContactsWidget->view())
@@ -162,7 +155,7 @@ void SimpleView::simpleViewToggle(bool activate)
 			KaduWindowHandle->menuBar()->hide();
 
 			/* GroupBar */
-			GroupBarWidgetHandle->hide();
+			GroupTabBarHandle->setVisible(false);
 
 			/* Filter */
 			/* Note: filter hides/shows now automatically.
@@ -215,7 +208,8 @@ void SimpleView::simpleViewToggle(bool activate)
 			 */
 
 			/* GroupBar */
-			GroupBarWidgetHandle->show();
+			if (config_file.readBoolEntry("Look", "DisplayGroupTabs"))
+				GroupTabBarHandle->setVisible(true);
 
 			/* Menu bar */
 			KaduWindowHandle->menuBar()->show();
