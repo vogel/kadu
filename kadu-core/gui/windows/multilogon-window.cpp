@@ -89,6 +89,7 @@ void MultilogonWindow::createGui()
 	Accounts->addFilter(new HaveMultilogonFilter(Accounts));
 	Accounts->setIncludeIdInDisplay(true);
 	selectAccountLayout->addWidget(Accounts);
+	selectAccountLayout->addStretch(1);
 
 	connect(Accounts, SIGNAL(accountChanged(Account)), this, SLOT(accountChanged()));
 
