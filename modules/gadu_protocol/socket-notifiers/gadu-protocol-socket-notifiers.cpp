@@ -43,8 +43,8 @@
 #include "gadu-protocol-socket-notifiers.h"
 
 GaduProtocolSocketNotifiers::GaduProtocolSocketNotifiers(Account account, GaduProtocol *protocol) :
-	GaduSocketNotifiers(protocol), CurrentAccount(account), CurrentProtocol(protocol), Sess(0),
-		Timeout(config_file.readUnsignedNumEntry("Network", "TimeoutInMs"))
+		GaduSocketNotifiers(protocol), CurrentAccount(account), CurrentProtocol(protocol), Sess(0),
+		Timeout(15000)
 {
 }
 

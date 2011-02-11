@@ -269,7 +269,6 @@ void Core::createDefaultConfiguration()
 	config_file.addVariable("Network", "DefaultPort", 0);
 	config_file.addVariable("Network", "isDefServers", true);
 	config_file.addVariable("Network", "Server", QString());
-	config_file.addVariable("Network", "TimeoutInMs", 5000);
 	config_file.addVariable("Network", "UseProxy", false);
 
 #ifdef Q_OS_MAC

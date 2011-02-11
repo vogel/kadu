@@ -84,14 +84,14 @@ extern "C" KADU_EXPORT int gadu_protocol_init(bool firstLoad)
 	if (ProtocolsManager::instance()->hasProtocolFactory("gadu"))
 		return 0;
 
-	gg_debug_level = debug_mask | ~255;
+	gg_debug_level = ~1;
 
 	gg_proxy_host = 0;
 	gg_proxy_username = 0;
 	gg_proxy_password = 0;
 
 #ifndef DEBUG_ENABLED
-	gg_debug_level = 1;
+	gg_debug_level = ~1;
 #endif
 #ifndef Q_OS_WIN
 	gg_global_set_custom_resolver(gadu_resolver_start, gadu_resolver_cleanup);
@@ -724,8 +724,6 @@ void GaduProtocol::socketConnSuccess()
 {
 	kdebugf();
 
-	sendUserList();
-
 	GaduServersManager::instance()->markServerAsGood(ActiveServer);
 
 	PingTimer = new QTimer(0);
@@ -734,6 +732,8 @@ void GaduProtocol::socketConnSuccess()
 
 	statusChanged(nextStatus());
 	networkConnected();
+
+	sendUserList();
 
 	GaduAccountDetails *details = dynamic_cast<GaduAccountDetails *>(account().details());
 

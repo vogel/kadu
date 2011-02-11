@@ -50,6 +50,9 @@ GaduContactListHandler::~GaduContactListHandler()
 
 void GaduContactListHandler::setUpContactList(const QList<Contact> &contacts)
 {
+	if (::Protocol::NetworkConnected != Protocol->state())
+		return;
+
 	/*
 	 * it looks like gadu-gadu now stores contact list mask (offlineto, blocked, normal)
 	 * on server, so need to remove this mask and send a new one for each contact, so
@@ -94,6 +97,9 @@ void GaduContactListHandler::updateContactEntry(Contact contact)
 
 void GaduContactListHandler::addContactEntry(UinType uin, int type)
 {
+	if (::Protocol::NetworkConnected != Protocol->state())
+		return;
+
 	if (!uin || Protocol->account().id() == QString::number(uin))
 		return;
 
@@ -116,6 +122,9 @@ void GaduContactListHandler::addContactEntry(Contact contact)
 void GaduContactListHandler::removeContactEntry(UinType uin)
 {
 	if (!uin)
+		return;
+
+	if (::Protocol::NetworkConnected != Protocol->state())
 		return;
 
 	gg_session *session = Protocol->gaduSession();
