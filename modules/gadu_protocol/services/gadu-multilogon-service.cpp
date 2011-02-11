@@ -100,6 +100,7 @@ void GaduMultilogonService::addNewSessions(const gg_event_multilogon_info &multi
 		if (!containsSession(multilogonInfo.sessions[i]))
 		{
 			GaduMultilogonSession *session = new GaduMultilogonSession(MyAccount, multilogonInfo.sessions[i]);
+			emit multilogonSessionAboutToBeConnected(session);
 			Sessions.append(session);
 			emit multilogonSessionConnected(session);
 		}
@@ -117,9 +118,10 @@ void GaduMultilogonService::removeOldSessions(const gg_event_multilogon_info &mu
 
 		if (!containsSession(multilogonInfo, gaduSession->id()))
 		{
+			emit multilogonSessionAboutToBeDisconnected(gaduSession);
+			i = Sessions.erase(i);
 			emit multilogonSessionDisconnected(gaduSession);
 			delete gaduSession;
-			i = Sessions.erase(i);
 		}
 		else
 			++i;
@@ -139,9 +141,10 @@ void GaduMultilogonService::removeAllSessions()
 	while (i != Sessions.end())
 	{
 		GaduMultilogonSession *gaduSession = static_cast<GaduMultilogonSession *>(*i);
+		emit multilogonSessionAboutToBeDisconnected(gaduSession);
+		i = Sessions.erase(i);
 		emit multilogonSessionDisconnected(gaduSession);
 		delete gaduSession;
-		i = Sessions.erase(i);
 	}
 }
 

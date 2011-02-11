@@ -38,7 +38,9 @@ public:
 	virtual void killSession(MultilogonSession *session) = 0;
 
 signals:
+	void multilogonSessionAboutToBeConnected(MultilogonSession *session);
 	void multilogonSessionConnected(MultilogonSession *session);
+	void multilogonSessionAboutToBeDisconnected(MultilogonSession *session);
 	void multilogonSessionDisconnected(MultilogonSession *session);
 
 };

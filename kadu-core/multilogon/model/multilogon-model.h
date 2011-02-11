@@ -23,12 +23,19 @@
 #include <QtCore/QAbstractTableModel>
 
 class MultilogonService;
+class MultilogonSession;
 
 class MultilogonModel : public QAbstractTableModel
 {
 	Q_OBJECT
 
 	MultilogonService *Service;
+
+private slots:
+	void multilogonSessionAboutToBeConnected(MultilogonSession *session);
+	void multilogonSessionConnected(MultilogonSession *session);
+	void multilogonSessionAboutToBeDisconnected(MultilogonSession *session);
+	void multilogonSessionDisconnected(MultilogonSession *session);
 
 public:
 	explicit MultilogonModel(MultilogonService *service, QObject *parent);

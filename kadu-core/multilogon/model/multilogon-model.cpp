@@ -25,6 +25,17 @@
 MultilogonModel::MultilogonModel(MultilogonService *service, QObject *parent) :
 		QAbstractTableModel(parent), Service(service)
 {
+	if (Service)
+	{
+		connect(Service, SIGNAL(multilogonSessionAboutToBeConnected(MultilogonSession*)),
+				this, SLOT(multilogonSessionAboutToBeConnected(MultilogonSession*)));
+		connect(Service, SIGNAL(multilogonSessionConnected(MultilogonSession*)),
+				this, SLOT(multilogonSessionConnected(MultilogonSession*)));
+		connect(Service, SIGNAL(multilogonSessionAboutToBeDisconnected(MultilogonSession*)),
+				this, SLOT(multilogonSessionAboutToBeDisconnected(MultilogonSession*)));
+		connect(Service, SIGNAL(multilogonSessionDisconnected(MultilogonSession*)),
+				this, SLOT(multilogonSessionDisconnected(MultilogonSession*)));
+	}
 }
 
 MultilogonModel::~MultilogonModel()
@@ -87,4 +98,35 @@ QVariant MultilogonModel::data(const QModelIndex &index, int role) const
 	}
 
 	return QVariant();
+}
+
+void MultilogonModel::multilogonSessionAboutToBeConnected(MultilogonSession *session)
+{
+	Q_UNUSED(session)
+
+	int row = rowCount();
+	beginInsertRows(QModelIndex(), row, row);
+}
+
+void MultilogonModel::multilogonSessionConnected(MultilogonSession *session)
+{
+	Q_UNUSED(session)
+
+	endInsertRows();
+}
+
+void MultilogonModel::multilogonSessionAboutToBeDisconnected(MultilogonSession *session)
+{
+	int row = Service->sessions().indexOf(session);
+	if (-1 == row)
+		return;
+
+	beginRemoveRows(QModelIndex(), row, row);
+}
+
+void MultilogonModel::multilogonSessionDisconnected(MultilogonSession *session)
+{
+	Q_UNUSED(session)
+
+	endRemoveRows();
 }
