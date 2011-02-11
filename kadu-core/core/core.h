@@ -87,6 +87,7 @@ public:
 	void showMainWindow();
 	KaduWindow * kaduWindow();
 
+	void initialized();
 	void setIcon(const QIcon &icon);
 
 public slots:

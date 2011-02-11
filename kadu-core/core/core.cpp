@@ -349,6 +349,11 @@ void Core::init()
 	AvatarManager::instance(); // initialize that
 }
 
+void Core::initialized()
+{
+	StatusContainerManager::instance()->setAllowSetDefaultStatus(true);
+}
+
 void Core::storeConfiguration()
 {
 	xml_config_file->makeBackup();

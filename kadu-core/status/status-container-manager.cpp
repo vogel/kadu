@@ -42,7 +42,7 @@ KADUAPI StatusContainerManager * StatusContainerManager::instance()
 }
 
 StatusContainerManager::StatusContainerManager() :
-		StatusContainer(0), DefaultStatusContainer(0)
+		StatusContainer(0), AllowSetDefaultStatus(false), DefaultStatusContainer(0)
 {
 	configurationUpdated();
 
@@ -181,7 +181,8 @@ void StatusContainerManager::registerStatusContainer(StatusContainer *statusCont
 
 	connect(statusContainer, SIGNAL(statusChanged()), this, SIGNAL(statusChanged()));
 
-	statusContainer->setDefaultStatus(StartupStatus, OfflineToInvisible, StartupDescription, StartupLastDescription);
+	if (AllowSetDefaultStatus)
+		statusContainer->setDefaultStatus(StartupStatus, OfflineToInvisible, StartupDescription, StartupLastDescription);
 
 	emitStatusContainerUpdated();
 }
@@ -204,6 +205,17 @@ void StatusContainerManager::unregisterStatusContainer(StatusContainer *statusCo
 	disconnect(statusContainer, SIGNAL(statusChanged()), this, SIGNAL(statusChanged()));
 
 	emitStatusContainerUpdated();
+}
+
+void StatusContainerManager::setAllowSetDefaultStatus(bool allowSetDefaultStatus)
+{
+	if (AllowSetDefaultStatus == allowSetDefaultStatus)
+		return;
+
+	AllowSetDefaultStatus = allowSetDefaultStatus;
+	if (AllowSetDefaultStatus)
+		foreach (StatusContainer *statusContainer, StatusContainers)
+			statusContainer->setDefaultStatus(StartupStatus, OfflineToInvisible, StartupDescription, StartupLastDescription);
 }
 
 bool StatusContainerManager::allStatusEqual(StatusType *type)

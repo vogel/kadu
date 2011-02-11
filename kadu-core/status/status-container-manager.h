@@ -34,6 +34,8 @@ class KADUAPI StatusContainerManager : public StatusContainer,
 
 	static StatusContainerManager *Instance;
 
+	bool AllowSetDefaultStatus;
+
 	StatusContainerManager();
 	virtual ~StatusContainerManager();
 
@@ -110,6 +112,8 @@ public:
 	}
 
 	virtual void storeStatus(Status status);
+
+	void setAllowSetDefaultStatus(bool allowSetDefaultStatus);
 
 signals:
 	void statusContainerAboutToBeRegistered(StatusContainer *);

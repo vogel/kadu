@@ -437,6 +437,7 @@ int main(int argc, char *argv[])
 
 	// it has to be called after loading modules (docking might want to block showing the window)
 	Core::instance()->showMainWindow();
+	Core::instance()->initialized();
 
 	int ret = qApp->exec();
 	kdebugm(KDEBUG_INFO, "after exec\n");
