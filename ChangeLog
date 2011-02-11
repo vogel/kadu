@@ -25,7 +25,7 @@
 * history: allow opening chats from history windows (WhE)
 * history: add filtering of status buddies in history window (WhE)
 * gadu: added full multilogon support - with possibility to kill other sessions (Vogel)
-* gadu: fixed connecting with HUB - added bigger timeout (Vogel)
+* gadu: fixed connecting with HUB (Vogel)
 
 +++ version 0.6.6-beta15
 * url-handlers: #1908 fixed: links containing HTML entities were not escaped (beevvy)

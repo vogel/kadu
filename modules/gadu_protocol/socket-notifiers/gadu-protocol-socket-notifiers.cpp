@@ -240,11 +240,8 @@ void GaduProtocolSocketNotifiers::socketEvent()
 		return;
 	}
 
-	if (GG_STATE_CONNECTING_HUB == Sess->state || GG_STATE_CONNECTING_GG == Sess->state)
-	{
-		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "changing QSocketNotifiers.\n");
-		watchFor(Sess); // maybe fd has changed
-	}
+	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "changing QSocketNotifiers.\n");
+	watchFor(Sess); // maybe fd has changed, we need to check always
 
 	dumpConnectionState();
 	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "event: %d\n", e->type);
