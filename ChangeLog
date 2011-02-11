@@ -21,9 +21,10 @@
 * jabber: added "Show XML Console for Account" submenu to Tools menu (beevvy)
 * gui: update icons after changing icon theme (WhE)
 * history: allow removing statuses and smses history in history window (WhE)
-* history: allow removing history for givn date (WhE)
+* history: allow removing history for given date (WhE)
 * history: allow opening chats from history windows (WhE)
 * history: add filtering of status buddies in history window (WhE)
+* gadu: added full multilogon support - with possibility to kill other sessions (Vogel)
 
 +++ version 0.6.6-beta15
 * url-handlers: #1908 fixed: links containing HTML entities were not escaped (beevvy)
