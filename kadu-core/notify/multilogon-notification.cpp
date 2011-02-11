@@ -70,7 +70,7 @@ MultilogonNotification::MultilogonNotification(MultilogonSession *session, const
 	if (addKillCallback)
 	{
 		addCallback(tr("Ignore"), SLOT(callbackDiscard()), "callbackDiscard()");
-		addCallback(tr("Close session"), SLOT(killSession()), "killSession()");
+		addCallback(tr("Disconnect session"), SLOT(killSession()), "killSession()");
 
 		connect(session, SIGNAL(destroyed()), this, SLOT(callbackDiscard()));
 	}
