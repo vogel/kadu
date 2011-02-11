@@ -68,7 +68,7 @@ class KADUAPI Manager : public StorableObject
 {
 	QMutex Mutex;
 
-	QList<Item> Items;
+	QHash<QString, Item> Items;
 	QList<Item> ItemsWithDetails;
 
 protected:
@@ -238,7 +238,7 @@ protected:
 
 		if (ItemsWithDetails.contains(item))
 			return;
-		if (!Items.contains(item))
+		if (!Items.contains(item.uuid().toString()))
 			return;
 
 		itemAboutToBeRegistered(item);
@@ -262,7 +262,7 @@ protected:
 
 		if (!ItemsWithDetails.contains(item))
 			return;
-		if (!Items.contains(item))
+		if (!Items.contains(item.uuid().toString()))
 			return;
 
 		itemAboutToBeUnregisterd(item);
@@ -293,7 +293,7 @@ protected:
 			return;
 
 		QList<QDomElement> itemElements = storage()->storage()->getNodes(itemsNode, storageNodeItemName());
-		foreach (QDomElement itemElement, itemElements)
+		foreach (const QDomElement &itemElement, itemElements)
 		{
 			QSharedPointer<StoragePoint> storagePoint(new StoragePoint(storage()->storage(), itemElement));
 
@@ -369,9 +369,8 @@ public:
 		if (uuid.isNull())
 			return Item::null;
 
-		foreach (Item item, Items)
-			if (item.uuid() == uuid)
-				return item;
+		if (Items.contains(uuid.toString()))
+			return Items.value(uuid.toString());
 
 		return Item::null;
 	}
@@ -421,7 +420,7 @@ public:
 	 *
 	 * Return list of all items.
 	 */
-	const QList<Item> allItems()
+	const QHash<QString, Item> & allItems()
 	{
 		(void) QMutexLocker(&Mutex);
 
@@ -436,7 +435,7 @@ public:
 	 *
 	 * Return list of registered items.
 	 */
-	const QList<Item> items()
+	const QList<Item> & items()
 	{
 		(void) QMutexLocker(&Mutex);
 
@@ -459,12 +458,12 @@ public:
 
 		ensureLoaded();
 
-		if (Items.contains(item))
+		if (Items.contains(item.uuid().toString()))
 			return;
 
 		itemAboutToBeAdded(item);
 
-		Items.append(item);
+		Items.insert(item.uuid().toString(), item);
 
 		itemAdded(item);
 
@@ -489,14 +488,14 @@ public:
 
 		ensureLoaded();
 
-		if (!Items.contains(item))
+		if (!Items.contains(item.uuid().toString()))
 			return;
 
 		itemAboutToBeRemoved(item);
 
 		if (item.details())
 			unregisterItem(item);
-		Items.removeAll(item);
+		Items.remove(item.uuid().toString());
 
 		item.remove();
 

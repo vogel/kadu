@@ -274,7 +274,7 @@ void ContactShared::afterDetailsAdded()
 void ContactShared::detailsAboutToBeRemoved()
 {
 	// do not store contacts that are not in contact manager
-	if (ContactManager::instance()->allItems().contains(this))
+	if (ContactManager::instance()->allItems().contains(uuid().toString()))
 		details()->store();
 
 	detach(OwnerBuddy, true);

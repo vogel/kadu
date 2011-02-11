@@ -192,7 +192,7 @@ protected:
 			return;
 
 		QList<QDomElement> itemElements = storage()->storage()->getNodes(itemsNode, storageNodeItemName());
-		foreach (QDomElement itemElement, itemElements)
+		foreach (const QDomElement &itemElement, itemElements)
 		{
 			QSharedPointer<StoragePoint> storagePoint(new StoragePoint(storage()->storage(), itemElement));
 			QUuid uuid = storagePoint->point().attribute("uuid");
@@ -265,7 +265,7 @@ public:
 		if (uuid.isNull())
 			return Item::null;
 
-		foreach (Item item, Items)
+		foreach (const Item &item, Items)
 			if (item.uuid() == uuid)
 				return item;
 
@@ -313,7 +313,7 @@ public:
 	 *
 	 * Return list of items.
 	 */
-	const QList<Item> items()
+	const QList<Item> & items()
 	{
 		(void) QMutexLocker(&Mutex);
 
