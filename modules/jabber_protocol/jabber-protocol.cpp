@@ -323,7 +323,7 @@ void JabberProtocol::rosterDownloaded(bool success)
 	* information in that case either). */
 	kdebug("Setting initial presence...\n");
 
-	changeStatus();
+	changeStatus(true);
 }
 
 // disconnect or stop reconnecting
@@ -470,8 +470,13 @@ void JabberProtocol::contactIdChanged(Contact contact, const QString &oldId)
 
 void JabberProtocol::changeStatus()
 {
+	changeStatus(false);
+}
+
+void JabberProtocol::changeStatus(bool force)
+{
 	Status newStatus = nextStatus();
-	if (IrisStatusAdapter::statusesEqual(newStatus, status()))
+	if (!force && IrisStatusAdapter::statusesEqual(newStatus, status()))
 		return;
 
 	if (newStatus.isDisconnected() && status().isDisconnected())
