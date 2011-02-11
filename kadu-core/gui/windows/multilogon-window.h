@@ -30,6 +30,7 @@ class QTableView;
 
 class AccountsComboBox;
 class MultilogonService;
+class MultilogonSession;
 
 class KADUAPI MultilogonWindow : public QWidget
 {
@@ -47,9 +48,11 @@ class KADUAPI MultilogonWindow : public QWidget
 	void createGui();
 
 	MultilogonService * multilogonService();
+	MultilogonSession * multilogonSession();
 
 private slots:
 	void accountChanged();
+	void selectionChanged();
 	void killSession();
 
 protected:

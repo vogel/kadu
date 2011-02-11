@@ -108,6 +108,7 @@ void MultilogonWindow::createGui()
 	QPushButton *closeButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton),
 			tr("Close"), buttons);
 
+	KillSessionButton->setEnabled(false);
 	connect(KillSessionButton, SIGNAL(clicked()), this, SLOT(killSession()));
 	connect(closeButton, SIGNAL(clicked()), this, SLOT(close()));
 
@@ -139,6 +140,16 @@ MultilogonService * MultilogonWindow::multilogonService()
 	return protocol->multilogonService();
 }
 
+MultilogonSession * MultilogonWindow::multilogonSession()
+{
+	QItemSelectionModel *selectionModel = SessionsTable->selectionModel();
+	if (!selectionModel)
+		return 0;
+
+	QModelIndex index = selectionModel->currentIndex();
+	return index.data(MultilogonSessionRole).value<MultilogonSession *>();
+}
+
 void MultilogonWindow::accountChanged()
 {
 	QAbstractItemModel *model = SessionsTable->model();
@@ -150,6 +161,14 @@ void MultilogonWindow::accountChanged()
 		return;
 
 	SessionsTable->setModel(new MultilogonModel(service, this));
+
+	connect(SessionsTable->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),
+			this, SLOT(selectionChanged()));
+}
+
+void MultilogonWindow::selectionChanged()
+{
+	KillSessionButton->setEnabled(0 != multilogonSession());
 }
 
 void MultilogonWindow::killSession()
@@ -158,15 +177,7 @@ void MultilogonWindow::killSession()
 	if (!service)
 		return;
 
-	QItemSelectionModel *selectionModel = SessionsTable->selectionModel();
-	if (!selectionModel)
-		return;
-
-	QModelIndex index = selectionModel->currentIndex();
-	MultilogonSession *multilogonSession = index.data(MultilogonSessionRole).value<MultilogonSession *>();
-
-	if (!multilogonSession)
-		return;
-
-	service->killSession(multilogonSession);
+	MultilogonSession *session = multilogonSession();
+	if (session)
+		service->killSession(session);
 }

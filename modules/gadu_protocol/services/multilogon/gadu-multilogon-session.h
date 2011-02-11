@@ -38,7 +38,6 @@ public:
 
 #ifdef GADU_HAVE_MULTILOGON
 	GaduMultilogonSession(Account account, const gg_multilogon_session &session, QObject *parent = 0);
-	virtual ~GaduMultilogonSession();
 
 	const gg_multilogon_id_t & id() const;
 #endif // GADU_HAVE_MULTILOGON
