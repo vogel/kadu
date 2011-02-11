@@ -21,6 +21,7 @@
 #include "protocols/services/multilogon-service.h"
 
 #include "multilogon-model.h"
+#include <model/roles.h>
 
 MultilogonModel::MultilogonModel(MultilogonService *service, QObject *parent) :
 		QAbstractTableModel(parent), Service(service)
@@ -76,7 +77,7 @@ QVariant MultilogonModel::headerData(int section, Qt::Orientation orientation, i
 
 QVariant MultilogonModel::data(const QModelIndex &index, int role) const
 {
-	if (index.parent().isValid() || Qt::DisplayRole != role || !Service)
+	if (index.parent().isValid() || !Service)
 		return QVariant();
 
 	int row = index.row();
@@ -85,6 +86,12 @@ QVariant MultilogonModel::data(const QModelIndex &index, int role) const
 
 	MultilogonSession *session = Service->sessions().at(row);
 	if (!session)
+		return QVariant();
+
+	if (role == MultilogonSessionRole)
+		return QVariant::fromValue(session);
+
+	if (Qt::DisplayRole != role)
 		return QVariant();
 
 	switch (index.column())

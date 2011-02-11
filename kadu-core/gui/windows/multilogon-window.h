@@ -25,7 +25,11 @@
 #include "accounts/account.h"
 #include "exports.h"
 
+class QPushButton;
 class QTableView;
+
+class AccountsComboBox;
+class MultilogonService;
 
 class KADUAPI MultilogonWindow : public QWidget
 {
@@ -33,15 +37,20 @@ class KADUAPI MultilogonWindow : public QWidget
 
 	static MultilogonWindow *Instance;
 
+	AccountsComboBox *Accounts;
 	QTableView *SessionsTable;
+	QPushButton *KillSessionButton;
 
 	explicit MultilogonWindow(QWidget *parent = 0);
     virtual ~MultilogonWindow();
 
 	void createGui();
 
+	MultilogonService * multilogonService();
+
 private slots:
-	void accountChanged(const Account &newAccount);
+	void accountChanged();
+	void killSession();
 
 protected:
 	virtual void keyPressEvent(QKeyEvent *e);

@@ -19,6 +19,7 @@
 
 #include <QtGui/QDialogButtonBox>
 #include <QtGui/QHBoxLayout>
+#include <QtGui/QHeaderView>
 #include <QtGui/QKeyEvent>
 #include <QtGui/QLabel>
 #include <QtGui/QPushButton>
@@ -28,6 +29,8 @@
 #include "accounts/filter/have-multilogon-filter.h"
 #include "gui/widgets/accounts-combo-box.h"
 #include "misc/misc.h"
+#include "model/roles.h"
+#include "multilogon/multilogon-session.h"
 #include "multilogon/model/multilogon-model.h"
 #include "protocols/protocol.h"
 #include "protocols/services/multilogon-service.h"
@@ -82,30 +85,38 @@ void MultilogonWindow::createGui()
 
 	selectAccountLayout->addWidget(new QLabel(tr("Account:"), selectAccountWidget));
 
-	AccountsComboBox *accounts = new AccountsComboBox(true, selectAccountWidget);
-	accounts->addFilter(new HaveMultilogonFilter(accounts));
-	accounts->setIncludeIdInDisplay(true);
-	selectAccountLayout->addWidget(accounts);
+	Accounts = new AccountsComboBox(true, selectAccountWidget);
+	Accounts->addFilter(new HaveMultilogonFilter(Accounts));
+	Accounts->setIncludeIdInDisplay(true);
+	selectAccountLayout->addWidget(Accounts);
 
-	connect(accounts, SIGNAL(accountChanged(Account)), this, SLOT(accountChanged(Account)));
+	connect(Accounts, SIGNAL(accountChanged(Account)), this, SLOT(accountChanged()));
 
 	layout->addWidget(selectAccountWidget);
 
 	SessionsTable = new QTableView(this);
+	SessionsTable->setSelectionBehavior(QAbstractItemView::SelectRows);
+	SessionsTable->setSelectionMode(QAbstractItemView::SingleSelection);
+	SessionsTable->setSortingEnabled(true);
+	SessionsTable->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
+	SessionsTable->horizontalHeader()->setStretchLastSection(true);
 	layout->addWidget(SessionsTable);
 
 	QDialogButtonBox *buttons = new QDialogButtonBox(this);
-	QPushButton *killSessionButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCloseButton),
+	KillSessionButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCloseButton),
 			tr("Disconnect session"), buttons);
 	QPushButton *closeButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton),
 			tr("Close"), buttons);
 
-	buttons->addButton(killSessionButton, QDialogButtonBox::DestructiveRole);
+	connect(KillSessionButton, SIGNAL(clicked()), this, SLOT(killSession()));
+	connect(closeButton, SIGNAL(clicked()), this, SLOT(close()));
+
+	buttons->addButton(KillSessionButton, QDialogButtonBox::DestructiveRole);
 	buttons->addButton(closeButton, QDialogButtonBox::RejectRole);
 
 	layout->addWidget(buttons);
 
-	accountChanged(accounts->currentAccount());
+	accountChanged();
 }
 
 void MultilogonWindow::keyPressEvent(QKeyEvent *e)
@@ -119,19 +130,43 @@ void MultilogonWindow::keyPressEvent(QKeyEvent *e)
 		QWidget::keyPressEvent(e);
 }
 
-void MultilogonWindow::accountChanged(const Account &newAccount)
+MultilogonService * MultilogonWindow::multilogonService()
+{
+	Protocol *protocol = Accounts->currentAccount().protocolHandler();
+	if (!protocol)
+		return 0;
+
+	return protocol->multilogonService();
+}
+
+void MultilogonWindow::accountChanged()
 {
 	QAbstractItemModel *model = SessionsTable->model();
 	if (model)
 		delete model;
 
-	Protocol *protocol = newAccount.protocolHandler();
-	if (!protocol)
-		return;
-
-	MultilogonService *service = protocol->multilogonService();
+	MultilogonService *service = multilogonService();
 	if (!service)
 		return;
 
 	SessionsTable->setModel(new MultilogonModel(service, this));
+}
+
+void MultilogonWindow::killSession()
+{
+	MultilogonService *service = multilogonService();
+	if (!service)
+		return;
+
+	QItemSelectionModel *selectionModel = SessionsTable->selectionModel();
+	if (!selectionModel)
+		return;
+
+	QModelIndex index = selectionModel->currentIndex();
+	MultilogonSession *multilogonSession = index.data(MultilogonSessionRole).value<MultilogonSession *>();
+
+	if (!multilogonSession)
+		return;
+
+	service->killSession(multilogonSession);
 }

@@ -41,5 +41,6 @@ const int GroupRole = KaduRoles + 13;
 const int HistoryItemRole = KaduRoles + 14;
 const int IdentityRole = KaduRoles + 15;
 const int ItemTypeRole = KaduRoles + 16;
+const int MultilogonSessionRole = KaduRoles + 17;
 
 #endif // ROLES_H

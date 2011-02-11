@@ -53,4 +53,6 @@ public:
 
 };
 
+Q_DECLARE_METATYPE(MultilogonSession *)
+
 #endif // MULTILOGON_SESSION_H
