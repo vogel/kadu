@@ -461,6 +461,10 @@ QList<Chat> HistorySqlStorage::chats(const HistorySearchParameters &search)
 	QList<Chat> chats;
 
 	executeQuery(query);
+#if (QT_VERSION >= 0x040700)
+	chats.reserve(query.size());
+#endif
+
 	while (query.next())
 	{
 		Chat chat = ChatManager::instance()->byUuid(query.value(0).toString());
@@ -503,6 +507,9 @@ QList<QDate> HistorySqlStorage::chatDates(const Chat &chat, const HistorySearchP
 
 	QList<QDate> dates;
 	executeQuery(query);
+#if (QT_VERSION >= 0x040700)
+	dates.reserve(query.size());
+#endif
 
 	while (query.next())
 	{
@@ -597,6 +604,9 @@ QList<Message> HistorySqlStorage::messagesBackTo(const Chat &chat, const QDateTi
 
 	// se comment above
 	QList<Message> inverted;
+#if (QT_VERSION >= 0x040700)
+	inverted.reserve(result.size());
+#endif
 	for (int i = result.size() - 1; i >= 0; --i)
 		inverted.append(result.at(i));
 	return inverted;
@@ -653,6 +663,10 @@ QList<QString> HistorySqlStorage::smsRecipientsList(const HistorySearchParameter
 	QList<QString> recipients;
 
 	executeQuery(query);
+#if (QT_VERSION >= 0x040700)
+	recipients.reserve(query.size());
+#endif
+
 	while (query.next())
 		recipients.append(query.value(0).toString());
 
@@ -692,6 +706,9 @@ QList<QDate> HistorySqlStorage::datesForSmsRecipient(const QString &recipient, c
 
 	QList<QDate> dates;
 	executeQuery(query);
+#if (QT_VERSION >= 0x040700)
+	dates.reserve(query.size());
+#endif
 
 	while (query.next())
 	{
@@ -836,6 +853,9 @@ QList<QDate> HistorySqlStorage::datesForStatusBuddy(const Buddy &buddy, const Hi
 	QList<QDate> dates;
 
 	executeQuery(query);
+#if (QT_VERSION >= 0x040700)
+	dates.reserve(query.size());
+#endif
 
 	while (query.next())
 	{
@@ -924,7 +944,9 @@ void HistorySqlStorage::executeQuery(QSqlQuery query)
 QList<Message> HistorySqlStorage::messagesFromQuery(QSqlQuery query)
 {
 	QList<Message> messages;
-
+#if (QT_VERSION >= 0x040700)
+	messages.reserve(query.size());
+#endif
 	while (query.next())
 	{
 		bool outgoing = QVariant(query.value(5).toString().split('=').last()).toBool();
@@ -958,7 +980,9 @@ QList<Message> HistorySqlStorage::messagesFromQuery(QSqlQuery query)
 QList<TimedStatus> HistorySqlStorage::statusesFromQuery(QSqlQuery query)
 {
 	QList<TimedStatus> statuses;
-
+#if (QT_VERSION >= 0x040700)
+	statuses.reserve(query.size());
+#endif
 	while (query.next())
 	{
 		// ignore non-existing contacts
@@ -981,6 +1005,9 @@ QList<TimedStatus> HistorySqlStorage::statusesFromQuery(QSqlQuery query)
 QList<Message> HistorySqlStorage::smsFromQuery(QSqlQuery query)
 {
 	QList<Message> messages;
+#if (QT_VERSION >= 0x040700)
+	messages.reserve(query.size());
+#endif
 
 	while (query.next())
 	{
