@@ -4,7 +4,6 @@
 #include "chat/chat.h"
 #include "gui/windows/main-configuration-window.h"
 #include "notify/notifier.h"
-#include "../qt4_docking/qt4_docking.h"
 
 #include "qt4_docking_notify_configuration_widget.h"
 
@@ -38,7 +37,6 @@ public slots:
 };
 
 extern Qt4Notify *qt4_notify;
-extern Qt4TrayIcon* qt4_tray_icon;
 
 /** @} */
 

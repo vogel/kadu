@@ -33,8 +33,9 @@
 #include "gui/windows/message-dialog.h"
 #include "configuration/configuration-file.h"
 #include "parser/parser.h"
-
 #include "debug.h"
+
+#include "modules/qt4_docking/qt4_docking.h"
 
 #include "qt4_docking_notify.h"
 
