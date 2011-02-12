@@ -36,7 +36,8 @@ void FormattedMessage::parseImages(FormattedMessage &message, const QString &mes
 	int lastPos = -1;
 	int pos = 0;
 
-	while ((pos = ImageRegExp.indexIn(messageString, pos)) != -1) {
+	while ((pos = ImageRegExp.indexIn(messageString, pos)) != -1)
+	{
 		if (lastPos != pos)
 		{
 			partContent = messageString.mid(lastPos, pos - lastPos);
@@ -113,7 +114,7 @@ FormattedMessage::~FormattedMessage()
 {
 }
 
-QList<FormattedMessagePart> FormattedMessage::parts() const
+const QList<FormattedMessagePart> & FormattedMessage::parts() const
 {
 	return Parts;
 }

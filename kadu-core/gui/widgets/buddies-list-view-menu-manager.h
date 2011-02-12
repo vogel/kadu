@@ -61,7 +61,7 @@ public:
 	void addListActionDescription(ActionDescription *actionDescription, BuddiesListViewMenuItem::BuddiesListViewMenuCategory category, int priority);
 	void removeListActionDescription(ActionDescription *actionDescription);
 
-	QMenu * menu(QWidget *parent, ActionDataSource *actionDataSource, QList<Contact> contacts);
+	QMenu * menu(QWidget *parent, ActionDataSource *actionDataSource, const QList<Contact> &contacts);
 
 };
 

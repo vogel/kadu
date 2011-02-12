@@ -105,18 +105,6 @@ const QList<ChatType *> & ChatTypeManager::chatTypes() const
 
 /**
  * @author Rafal 'Vogel' Malinowski
- * @short Returns list of all registered chat types.
- * @return list of all registered chat types
- *
- * Returns list of all registered chat types.
- */
-QList<ChatType *> ChatTypeManager::chatTypes()
-{
-	return ChatTypes;
-}
-
-/**
- * @author Rafal 'Vogel' Malinowski
  * @short Returns chat type with given internal name.
  * @param name internal name of chat type to return.
  * @return chat type with given internal name

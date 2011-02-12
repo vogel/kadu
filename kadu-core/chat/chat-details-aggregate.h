@@ -55,8 +55,8 @@ public:
 	virtual ContactSet contacts() const;
 	virtual QString name() const;
 
-	void setChats(QList<Chat> chats);
-	QList<Chat> chats();
+	void setChats(const QList<Chat> &chats);
+	const QList<Chat> & chats() const;
 
 };
 

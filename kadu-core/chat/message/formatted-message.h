@@ -80,7 +80,7 @@ public:
 	 * Returns all parts that composes this message.
 	 * @return All parts that composes this message.
 	 */
-	QList<FormattedMessagePart> parts() const;
+	const QList<FormattedMessagePart> & parts() const;
 
 	/**
 	 * Prepend a new part to message.

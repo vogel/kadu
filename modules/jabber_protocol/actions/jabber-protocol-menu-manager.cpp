@@ -47,7 +47,7 @@ JabberProtocolMenuManager::~JabberProtocolMenuManager()
 	RosterActions.clear();
 }
 
-QList<ActionDescription *> JabberProtocolMenuManager::protocolActions()
+const QList<ActionDescription *> & JabberProtocolMenuManager::protocolActions() const
 {
 	return RosterActions;
 }

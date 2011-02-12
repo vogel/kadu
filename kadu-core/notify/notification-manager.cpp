@@ -474,12 +474,12 @@ void NotificationManager::unregisterNotifier(Notifier *notifier)
 	kdebugf2();
 }
 
-QList<Notifier *> NotificationManager::notifiers()
+const QList<Notifier *> & NotificationManager::notifiers() const
 {
 	return Notifiers;
 }
 
-QList<NotifyEvent *> NotificationManager::notifyEvents()
+const QList<NotifyEvent *> & NotificationManager::notifyEvents() const
 {
 	return NotifyEvents;
 }

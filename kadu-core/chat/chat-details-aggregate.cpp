@@ -91,7 +91,7 @@ QString ChatDetailsAggregate::name() const
  *
  * Assigns aggregate chats to this chat.
  */
-void ChatDetailsAggregate::setChats(QList<Chat> chats)
+void ChatDetailsAggregate::setChats(const QList<Chat> &chats)
 {
 	Chats = chats;
 }
@@ -102,7 +102,7 @@ void ChatDetailsAggregate::setChats(QList<Chat> chats)
  *
  * Returns assigned aggregate chats to this chat.
  */
-QList<Chat> ChatDetailsAggregate::chats()
+const QList<Chat> & ChatDetailsAggregate::chats() const
 {
 	return Chats;
 }

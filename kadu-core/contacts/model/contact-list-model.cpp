@@ -21,7 +21,7 @@
 
 #include "contact-list-model.h"
 
-ContactListModel::ContactListModel(QList<Contact> list, QObject *parent) :
+ContactListModel::ContactListModel(const QList<Contact> &list, QObject *parent) :
 		QAbstractItemModel(parent), List(list)
 {
 }

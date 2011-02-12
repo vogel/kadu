@@ -34,7 +34,7 @@ class ContactListModel : public QAbstractItemModel, public AbstractBuddiesModel
 	QList<Contact> List;
 
 public:
-	explicit ContactListModel(QList<Contact> list, QObject *parent = 0);
+	explicit ContactListModel(const QList<Contact> &list, QObject *parent = 0);
 	virtual ~ContactListModel();
 
 	virtual QModelIndex index(int row, int column, const QModelIndex& parent = QModelIndex()) const;

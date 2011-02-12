@@ -64,7 +64,7 @@ public:
 	virtual void releaseEncryptor(const Chat &chat, Encryptor *encryptor);
 	virtual void releaseDecryptor(const Chat &chat, Decryptor *decryptor);
 
-	QList<EncryptionProvider *> providers() { return Providers; }
+	const QList<EncryptionProvider *> & providers() const { return Providers; }
 
 signals:
 	void providerRegistered(EncryptionProvider *provider);

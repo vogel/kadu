@@ -43,7 +43,7 @@ public:
 
 	virtual QByteArray decrypt(const QByteArray &data, bool *ok = 0);
 
-	QList<Decryptor *> decryptors() { return Decryptors; }
+	const QList<Decryptor *> & decryptors() const { return Decryptors; }
 
 	void addDecryptor(Decryptor *decryptor);
 	void removeDecryptor(Decryptor *decryptor);

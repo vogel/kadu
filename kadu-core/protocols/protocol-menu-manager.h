@@ -28,7 +28,7 @@ class ActionDescription;
 class KADUAPI ProtocolMenuManager
 {
 public:
-	virtual QList<ActionDescription *> protocolActions() = 0;
+	virtual const QList<ActionDescription *> & protocolActions() const = 0;
 
 };
 

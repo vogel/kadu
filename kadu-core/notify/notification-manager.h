@@ -126,8 +126,8 @@ public:
 	void registerNotifyEvent(NotifyEvent *notifyEvent);
 	void unregisterNotifyEvent(NotifyEvent *notifyEvent);
 
-	QList<Notifier *> notifiers();
-	QList<NotifyEvent *> notifyEvents();
+	const QList<Notifier *> & notifiers() const;
+	const QList<NotifyEvent *> & notifyEvents() const;
 
 	bool notifyAboutAll() { return NotifyAboutAll; }
 

@@ -60,7 +60,6 @@ public:
 	void removeChatType(ChatType *chatType);
 
 	const QList<ChatType *> & chatTypes() const;
-	QList<ChatType *> chatTypes();
 	ChatType * chatType(const QString &name);
 
 signals:
