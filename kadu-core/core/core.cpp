@@ -138,7 +138,6 @@ void Core::createDefaultConfiguration()
 {
 	QWidget w;
 
-	config_file.addVariable("Chat", "ActivateWithNewMessages", false);
 	config_file.addVariable("Chat", "AutoSend", true);
 	config_file.addVariable("Chat", "BlinkChatTitle", true);
 	config_file.addVariable("Chat", "ChatCloseTimer", true);
