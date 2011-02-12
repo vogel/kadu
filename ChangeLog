@@ -30,6 +30,7 @@
 * gui: #1942 fixed: during filtering anonymous contacts are shown on the list (WhE)
 * history_migration: #1938 fixed: crash when storing Chat data if the module was unloaded after importing history (WhE)
 * hints: #1784 fixed: setting border color and border width doesn't work (WhE)
+* core: #1855 fixed: removed non-working and unneeded config option ActivateWithNewMessages (Juzef)
 
 +++ version 0.6.6-beta15
 * url-handlers: #1908 fixed: links containing HTML entities were not escaped (beevvy)
