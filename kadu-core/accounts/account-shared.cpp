@@ -28,6 +28,7 @@
 #include "misc/misc.h"
 #include "protocols/protocol.h"
 #include "protocols/protocols-manager.h"
+#include "status/status-changer-manager.h"
 
 #include "account-shared.h"
 
@@ -186,7 +187,7 @@ void AccountShared::useProtocolFactory(ProtocolFactory *factory)
 		disconnect(ProtocolHandler, SIGNAL(connected(Account)), this, SIGNAL(connected()));
 		disconnect(ProtocolHandler, SIGNAL(disconnected(Account)), this, SIGNAL(disconnected()));
 
-		storeStatus(status());
+		storeStatus(StatusChangerManager::instance()->manuallySetStatus(this));
 		setDisconnectStatus();
 	}
 

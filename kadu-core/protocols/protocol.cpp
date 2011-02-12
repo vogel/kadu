@@ -87,7 +87,7 @@ Status Protocol::status() const
 
 Status Protocol::nextStatus() const
 {
-	return StatusChangerManager::instance()->status(account().statusContainer());
+	return StatusChangerManager::instance()->realStatus(account().statusContainer());
 }
 
 void Protocol::statusChanged(StatusContainer *container, Status status)

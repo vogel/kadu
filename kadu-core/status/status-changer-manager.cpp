@@ -88,10 +88,10 @@ void StatusChangerManager::statusChanged(StatusContainer *container)
 
 	kdebugf();
 
-	Status status = Statuses[container];
+	Status status = Statuses.value(container);
 	for (int i = 0; i < StatusChangers.count(); i++)
 		StatusChangers.at(i)->changeStatus(container, status);
-	RealStatuses[container] = status;
+	RealStatuses.insert(container, status);
 
 	emit statusChanged(container, status);
 
@@ -102,16 +102,23 @@ void StatusChangerManager::setStatus(StatusContainer *statusContainer, Status st
 {
 	if (statusContainer)
 	{
-		Statuses[statusContainer] = status;
+		Statuses.insert(statusContainer, status);
 		statusChanged(statusContainer);
 	}
 }
 
-Status StatusChangerManager::status(StatusContainer *statusContainer)
+Status StatusChangerManager::realStatus(StatusContainer *statusContainer)
 {
 	if (RealStatuses.contains(statusContainer))
-		return RealStatuses[statusContainer];
+		return RealStatuses.value(statusContainer);
 	if (Statuses.contains(statusContainer))
-		return Statuses[statusContainer];
+		return Statuses.value(statusContainer);
+	return Status("Offline");
+}
+
+Status StatusChangerManager::manuallySetStatus(StatusContainer *statusContainer)
+{
+	if (RealStatuses.contains(statusContainer))
+		return RealStatuses.value(statusContainer);
 	return Status("Offline");
 }

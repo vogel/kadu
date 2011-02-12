@@ -52,7 +52,8 @@ public:
 	void unregisterStatusChanger(StatusChanger *statusChanger);
 
 	void setStatus(StatusContainer *statusContainer, Status status);
-	Status status(StatusContainer *statusContainer);
+	Status realStatus(StatusContainer *statusContainer);
+	Status manuallySetStatus(StatusContainer *statusContainer);
 
 signals:
 	void statusChanged(StatusContainer *container, Status status);

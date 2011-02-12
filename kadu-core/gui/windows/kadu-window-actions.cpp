@@ -360,7 +360,7 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 
 	connect(StatusChangerManager::instance(), SIGNAL(statusChanged(StatusContainer *, Status)), this, SLOT(statusChanged(StatusContainer *, Status)));
 	foreach (StatusContainer *statusContainer, StatusContainerManager::instance()->statusContainers())
-		statusChanged(statusContainer, StatusChangerManager::instance()->status(statusContainer));
+		statusChanged(statusContainer, StatusChangerManager::instance()->realStatus(statusContainer));
 }
 
 KaduWindowActions::~KaduWindowActions()
@@ -458,7 +458,7 @@ void KaduWindowActions::changeStatusActionCreated(Action *action)
 	StatusContainer *statusContainer = action->statusContainer();
 	if (statusContainer)
 	{
-		Status status = StatusChangerManager::instance()->status(statusContainer);
+		Status status = StatusChangerManager::instance()->realStatus(statusContainer);
 		action->setIcon(statusContainer->statusIcon(status).pixmap(16,16));
 	}
 }
