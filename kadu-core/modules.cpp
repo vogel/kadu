@@ -150,6 +150,12 @@ ModulesManager::ModulesManager() : QObject(),
 		loaded_list.append("encryption_ng");
 		loaded_list.append("encryption_ng_simlite");
 	}
+	if (loaded_list.contains("osd_hints"))
+	{
+		loaded_list.removeAll("osd_hints");
+		if (!loaded_list.contains("hints"))
+			loaded_list.append("hints");
+	}
 
 	registerStaticModules();
 
