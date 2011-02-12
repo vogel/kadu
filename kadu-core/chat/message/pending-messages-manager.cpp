@@ -199,7 +199,7 @@ void PendingMessagesManager::itemAboutToBeAdded(Message message)
 
 void PendingMessagesManager::itemAdded(Message message)
 {
-	BuddyPreferredManager::instance()->updatePreferred(message.messageSender().ownerBuddy());
+//	BuddyPreferredManager::instance()->updatePreferred(message.messageSender().ownerBuddy());
 	emit messageAdded(message);
 }
 
@@ -210,6 +210,6 @@ void PendingMessagesManager::itemAboutToBeRemoved(Message message)
 
 void PendingMessagesManager::itemRemoved(Message message)
 {
-	BuddyPreferredManager::instance()->updatePreferred(message.messageSender().ownerBuddy());
+//	BuddyPreferredManager::instance()->updatePreferred(message.messageSender().ownerBuddy());
 	emit messageRemoved(message);
 }

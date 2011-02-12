@@ -234,11 +234,11 @@ void ChatWidgetManager::unregisterChatWidget(ChatWidget *chatwidget)
 
 	Chats.remove(chatwidget->chat());
 
-	if (chatwidget->chat().contacts().count() == 1)
-	{
-		Contact contact = chatwidget->chat().contacts().toContact();
-		BuddyPreferredManager::instance()->updatePreferred(contact.ownerBuddy());
-	}
+//	if (chatwidget->chat().contacts().count() == 1)
+//	{
+//		Contact contact = chatwidget->chat().contacts().toContact();
+//		BuddyPreferredManager::instance()->updatePreferred(contact.ownerBuddy());
+//	}
 
 	emit chatWidgetDestroying(chatwidget);
 }
@@ -291,11 +291,11 @@ ChatWidget * ChatWidgetManager::openChatWidget(const Chat &chat, bool forceActiv
 		chatWidget->makeActive();
 	}
 
-	if (chatWidget->chat().contacts().count() == 1)
-	{
-		Contact contact = chatWidget->chat().contacts().toContact();
-		BuddyPreferredManager::instance()->updatePreferred(contact.ownerBuddy());
-	}
+//	if (chatWidget->chat().contacts().count() == 1)
+//	{
+//		Contact contact = chatWidget->chat().contacts().toContact();
+//		BuddyPreferredManager::instance()->updatePreferred(contact.ownerBuddy());
+//	}
 
 	emit chatWidgetCreated(chatWidget);
 // TODO: remove, it is so stupid ...
