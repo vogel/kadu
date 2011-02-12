@@ -38,7 +38,6 @@ SelectBuddyComboBox::SelectBuddyComboBox(QWidget *parent) :
 	static_cast<BuddiesModelProxy *>(SourceProxyModel)->setSortByStatus(false);
 
 	AnonymousBuddyFilter *anonymousFilter = new AnonymousBuddyFilter(this);
-	anonymousFilter->setEnabled(true);
 	addFilter(anonymousFilter);
 
 	connect(Popup, SIGNAL(buddySelected(Buddy)), this, SLOT(setCurrentBuddy(Buddy)));

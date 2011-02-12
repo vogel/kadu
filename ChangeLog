@@ -27,6 +27,7 @@
 * gadu: added full multilogon support - with possibility to kill other sessions (Vogel)
 * gadu: fixed connecting with HUB (Vogel)
 * status: #1869 fixed: Sometimes statuses set by autoaway are stored in configuration on exit (WhE)
+* gui: #1942 fixed: during filtering anonymous contacts are shown on the list (WhE)
 
 +++ version 0.6.6-beta15
 * url-handlers: #1908 fixed: links containing HTML entities were not escaped (beevvy)

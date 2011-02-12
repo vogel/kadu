@@ -44,23 +44,5 @@ bool AnonymousWithoutMessagesBuddyFilter::acceptBuddy(const Buddy &buddy)
 	if (!Enabled)
 		return true;
 
-// 	Account *preferredAccount = contact.preferredAccount();
-// 	if (!preferredAccount)
-// 		return false;
-
-// TODO:
-
-// 	Contact contact = elem.toContact(AccountManager::instance()->defaultAccount());
-// 	if (withoutMessages(contact))
-// 		addUser(elem, massively, last);
-// 	else
-// 		removeUser(elem, massively, last);
-//
-// 	removeUser(UserListElement::fromContact(elem, AccountManager::instance()->defaultAccount()));
-//
-// 	UserListElement elem = UserListElement::fromContact(contact, AccountManager::instance()->defaultAccount());
-// 	if (elem.isAnonymous() && withoutMessages(contact))
-// 		addUser(elem);
-
 	return !buddy.isAnonymous() || PendingMessagesManager::instance()->hasPendingMessagesForBuddy(buddy);
 }

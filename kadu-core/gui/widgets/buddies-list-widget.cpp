@@ -27,6 +27,7 @@
 #include <QtGui/QLineEdit>
 #include <QtGui/QVBoxLayout>
 
+#include "buddies/filter/anonymous-buddy-filter.h"
 #include "buddies/filter/buddy-name-filter.h"
 #include "buddies/filter/pending-messages-filter.h"
 #include "gui/widgets/buddies-list-view.h"
@@ -48,6 +49,8 @@ BuddiesListWidget::BuddiesListWidget(FilterPosition filterPosition, QWidget *par
 
 	View = new BuddiesListView(this);
 	View->addFilter(new PendingMessagesFilter(this));
+
+	View->addFilter(new AnonymousBuddyFilter(this));
 
 	NameFilterWidget->setView(View);
 #ifndef Q_OS_MAC

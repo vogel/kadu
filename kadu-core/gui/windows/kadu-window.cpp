@@ -34,7 +34,6 @@
 #include "buddies/buddy-set.h"
 #include "buddies/buddy-shared.h"
 #include "buddies/model/buddies-model.h"
-#include "buddies/filter/anonymous-without-messages-buddy-filter.h"
 #include "buddies/filter/group-buddy-filter.h"
 #include "chat/type/chat-type-manager.h"
 #include "chat/chat-manager.h"
@@ -131,9 +130,6 @@ void KaduWindow::createGui()
 	ContactsWidget->view()->useConfigurationColors(true);
 	ContactsWidget->view()->setModel(new BuddiesModel(this));
 	ContactsWidget->view()->addFilter(GroupBar->filter());
-	AnonymousWithoutMessagesBuddyFilter *anonymousFilter = new AnonymousWithoutMessagesBuddyFilter(this);
-	anonymousFilter->setEnabled(true);
-	ContactsWidget->view()->addFilter(anonymousFilter);
 	ContactsWidget->view()->setContextMenuEnabled(true);
 
 	connect(ContactsWidget->view(), SIGNAL(chatActivated(Chat)), this, SLOT(openChatWindow(Chat)));
