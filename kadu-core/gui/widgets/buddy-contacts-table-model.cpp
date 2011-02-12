@@ -48,10 +48,13 @@ void BuddyContactsTableModel::save()
 {
 	buddyFromContacts();
 
-	beginRemoveRows(QModelIndex(), 0, Contacts.count() - 1);
-	qDeleteAll(Contacts);
-	Contacts.clear();
-	endRemoveRows();
+	if (!Contacts.isEmpty())
+	{
+		beginRemoveRows(QModelIndex(), 0, Contacts.count() - 1);
+		qDeleteAll(Contacts);
+		Contacts.clear();
+		endRemoveRows();
+	}
 
 	contactsFromBuddy();
 }
@@ -72,7 +75,7 @@ void BuddyContactsTableModel::contactsFromBuddy()
 	else
 		CurrentMaxPriority = ModelBuddy.contacts().last().priority();
 
-	if (Contacts.count() > 0)
+	if (!Contacts.isEmpty())
 	{
 		beginRemoveRows(QModelIndex(), 0, Contacts.count() - 1);
 		qDeleteAll(Contacts);
@@ -80,10 +83,13 @@ void BuddyContactsTableModel::contactsFromBuddy()
 		endRemoveRows();
 	}
 
-	beginInsertRows(QModelIndex(), 0, ModelBuddy.contacts().count() - 1);
-	foreach (const Contact &contact, ModelBuddy.contacts())
-		addItem(new BuddyContactsTableItem(contact, this), false);
-	endInsertRows();
+	if (!ModelBuddy.contacts().isEmpty())
+	{
+		beginInsertRows(QModelIndex(), 0, ModelBuddy.contacts().count() - 1);
+		foreach (const Contact &contact, ModelBuddy.contacts())
+			addItem(new BuddyContactsTableItem(contact, this), false);
+		endInsertRows();
+	}
 }
 
 void BuddyContactsTableModel::buddyFromContacts()
@@ -205,6 +211,9 @@ bool BuddyContactsTableModel::insertRows(int row, int count, const QModelIndex &
 {
 	Q_UNUSED(row)
 
+	if (count <= 0)
+		return (count == 0);
+
 	beginInsertRows(parent, Contacts.count(), Contacts.count() + count - 1);
 	for (int i = 0; i < count; i++)
 	{
@@ -222,6 +231,9 @@ bool BuddyContactsTableModel::insertRows(int row, int count, const QModelIndex &
 
 bool BuddyContactsTableModel::removeRows(int row, int count, const QModelIndex &parent)
 {
+	if (count <= 0)
+		return (count == 0);
+
 	beginRemoveRows(parent, row, row + count - 1);
 
 	for (int i = 0; i < count; i++)
