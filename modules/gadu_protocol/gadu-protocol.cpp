@@ -359,6 +359,7 @@ void GaduProtocol::login(const QString &password, bool permanent)
 		Status newstat = status();
 		newstat.setType("Offline");
 		setStatus(newstat);
+		statusChanged(newstat);
 		return;
 	}
 
@@ -385,6 +386,7 @@ void GaduProtocol::login()
 	{
 		MessageDialog::show("dialog-warning", tr("Kadu"), tr("UIN not set!"));
 		setStatus(Status());
+		statusChanged(Status());
 		kdebugmf(KDEBUG_FUNCTION_END, "end: gadu UIN not set\n");
 		return;
 	}
@@ -585,7 +587,10 @@ void GaduProtocol::networkDisconnected(bool tryAgain, bool waitForPassword)
 		QTimer::singleShot(1000, this, SLOT(login())); // try again after one second
 	else if (!nextStatus().isDisconnected())
 		if (!waitForPassword)
+		{
 			setStatus(Status());
+			statusChanged(Status());
+		}
 }
 
 void GaduProtocol::sendUserList()

@@ -218,6 +218,7 @@ void JabberProtocol::login(const QString &password, bool permanent)
 		Status newstat = status();
 		newstat.setType("Offline");
 		setStatus(newstat);
+		statusChanged(newstat);
 		return;
 	}
 
@@ -251,6 +252,7 @@ void JabberProtocol::connectToServer()
 	{
 		MessageDialog::show("dialog-warning", tr("Kadu"), tr("XMPP username is not set!"));
 		setStatus(Status());
+		statusChanged(Status());
 		kdebugmf(KDEBUG_FUNCTION_END, "end: XMPP username is not set\n");
 		return;
 	}
