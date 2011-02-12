@@ -48,6 +48,12 @@ HistoryImportThread::~HistoryImportThread()
 
 void HistoryImportThread::run()
 {
+	// we have to use this guard as a parent for HistoryImporterChatData
+	// without this there is a backtrace:
+	// "Warning: QObject: Cannot create children for a parent that is in a different thread."
+	// and Kadu is crashing as in http://kadu.net/mantis/view.php?id=1938
+	QObject *guard = new QObject();
+
 	History::instance()->setSyncEnabled(false);
 
 	ImportedEntries = 0;
@@ -67,7 +73,8 @@ void HistoryImportThread::run()
 
 		QList<HistoryEntry> entries = HistoryMigrationHelper::historyEntries(Path, uinsList);
 
-		HistoryImporterChatData *historyImporterChatData = chat.data()->moduleStorableData<HistoryImporterChatData>("history-importer", HistoryImporterManager::instance(), true);
+		// guard as a parent. See above
+		HistoryImporterChatData *historyImporterChatData = chat.data()->moduleStorableData<HistoryImporterChatData>("history-importer", guard, true);
 		if (historyImporterChatData->imported())
 		{
 			ImportedEntries += entries.count();
@@ -90,10 +97,13 @@ void HistoryImportThread::run()
 			break;
 
 		historyImporterChatData->setImported(true);
-
+		historyImporterChatData->store();
 		// force sync for every chat
 		History::instance()->forceSync();
 	}
+
+	// delete guard, so HistoryImporterChatData is properly destroyed
+	delete guard;
 
 	History::instance()->setSyncEnabled(true);
 }
