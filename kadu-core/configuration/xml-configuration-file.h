@@ -47,9 +47,9 @@ private:
 	bool isElementNamed(const QDomElement &element, const QString &name);
 	bool isElementUuid(const QDomElement &element, const QString &uuid);
 
-	void removeNodes(QDomElement parentNode, QList<QDomElement> elements);
-	void removeUuidNodes(QDomElement parentNode, QList<QDomElement> elements, const QString &uuid);
-	void removeNamedNodes(QDomElement parentNode, QList<QDomElement> elements, const QString &name);
+	void removeNodes(QDomElement parentNode, const QList<QDomElement> &elements);
+	void removeUuidNodes(QDomElement parentNode, const QList<QDomElement> &elements, const QString &uuid);
+	void removeNamedNodes(QDomElement parentNode, const QList<QDomElement> &elements, const QString &name);
 
 public:
 	/**
@@ -88,26 +88,26 @@ public:
 		Zwraca pierwszy element lub element typu null jesli nie znajdzie.
 	**/
 
-	QDomElement findElement(QDomElement parent, const QString &tag_name) const;
+	QDomElement findElement(const QDomElement &parent, const QString &tag_name) const;
 
 	/**
 		Zwraca pierwszy element ktorego dany atrybut ma dana wartosc
 		lub element typu null jesli nie znajdzie.
 	**/
-	QDomElement findElementByProperty(QDomElement parent, const QString &tag_name,
+	QDomElement findElementByProperty(const QDomElement &parent, const QString &tag_name,
 		const QString &property_name, const QString &property_value) const;
 
 	/**
 		Zwraca pierwszy element lub dodaje nowy i przypisuje do rodzica.
 	**/
-	QDomElement accessElement(QDomElement parent, const QString &tag_name);
+	QDomElement accessElement(const QDomElement &parent, const QString &tag_name);
 
 	/**
 		Zwraca pierwszy element ktorego dany atrybut ma dana wartosc
 		lub dodaje nowy i przypisuje do rodzica (ustawia rowniez zadany
 		atrybut na zadana wartosc).
 	**/
-	QDomElement accessElementByProperty(QDomElement parent, const QString &tag_name,
+	QDomElement accessElementByProperty(const QDomElement &parent, const QString &tag_name,
 		const QString &property_name, const QString &property_value);
 
 	/**
@@ -116,7 +116,7 @@ public:
 	void removeChildren(QDomElement parent);
 
 	bool hasNode(const QString &nodeTagName);
-	bool hasNode(QDomElement parentNode, const QString &nodeTagName);
+	bool hasNode(const QDomElement &parentNode, const QString &nodeTagName);
 
 	QDomElement getNode(const QString &nodeTagName, GetNodeMode getMode = ModeGet);
 	QDomElement getNamedNode(const QString &nodeTagName, const QString &nodeName, GetNodeMode getMode = ModeGet);
@@ -125,13 +125,13 @@ public:
 	QDomElement getNamedNode(QDomElement parentNode, const QString &nodeTagName, const QString &nodeName, GetNodeMode getMode = ModeGet);
 	QDomElement getUuidNode(QDomElement parentNode, const QString &uuidTagName, const QString &nodeUuid, GetNodeMode getMode = ModeGet);
 
-	QList<QDomElement> getNodes(QDomElement parent, const QString &nodeTagName);
+	QList<QDomElement> getNodes(const QDomElement &parent, const QString &nodeTagName);
 
-	void appendTextNode(QDomElement parentNode, const QString &nodeTagName, const QString &nodeContent);
-	void createTextNode(QDomElement parentNode, const QString &nodeTagName, const QString &nodeContent);
-	void createNamedTextNode(QDomElement parentNode, const QString &nodeTagName, const QString &nodeName,
+	void appendTextNode(const QDomElement &parentNode, const QString &nodeTagName, const QString &nodeContent);
+	void createTextNode(const QDomElement &parentNode, const QString &nodeTagName, const QString &nodeContent);
+	void createNamedTextNode(const QDomElement &parentNode, const QString &nodeTagName, const QString &nodeName,
 			const QString &nodeContent);
-	QString getTextNode(QDomElement parentNode, const QString &nodeTagName, const QString &defaultValue = QString());
+	QString getTextNode(const QDomElement &parentNode, const QString &nodeTagName, const QString &defaultValue = QString());
 
 	void removeNode(QDomElement parentNode, const QString &nodeTagName);
 

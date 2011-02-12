@@ -168,7 +168,7 @@ QDomElement XmlConfigFile::createElement(QDomElement parent, const QString& tag_
 	return elem;
 }
 
-QDomElement XmlConfigFile::findElement(QDomElement parent, const QString& tag_name) const
+QDomElement XmlConfigFile::findElement(const QDomElement &parent, const QString& tag_name) const
 {
 	for (QDomNode n = parent.firstChild(); !n.isNull(); n = n.nextSibling())
 	{
@@ -181,8 +181,8 @@ QDomElement XmlConfigFile::findElement(QDomElement parent, const QString& tag_na
 	return QDomNode().toElement();
 }
 
-QDomElement XmlConfigFile::findElementByProperty(QDomElement parent, const QString& tag_name,
-	const QString& property_name, const QString& property_value) const
+QDomElement XmlConfigFile::findElementByProperty(const QDomElement &parent, const QString &tag_name,
+	const QString &property_name, const QString &property_value) const
 {
 //	kdebugf();
 	for (QDomNode n = parent.firstChild(); !n.isNull(); n = n.nextSibling())
@@ -207,7 +207,7 @@ QDomElement XmlConfigFile::findElementByProperty(QDomElement parent, const QStri
 	return QDomNode().toElement();
 }
 
-QDomElement XmlConfigFile::accessElement(QDomElement parent, const QString& tag_name)
+QDomElement XmlConfigFile::accessElement(const QDomElement &parent, const QString& tag_name)
 {
 	const QDomElement &elem = findElement(parent, tag_name);
 	if (elem.isNull())
@@ -216,7 +216,7 @@ QDomElement XmlConfigFile::accessElement(QDomElement parent, const QString& tag_
 		return elem;
 }
 
-QDomElement XmlConfigFile::accessElementByProperty(QDomElement parent, const QString& tag_name,
+QDomElement XmlConfigFile::accessElementByProperty(const QDomElement &parent, const QString& tag_name,
 	const QString& property_name, const QString& property_value)
 {
 	QDomElement elem = findElementByProperty(parent, tag_name,
@@ -238,22 +238,22 @@ void XmlConfigFile::removeChildren(QDomElement parent)
 	}
 }
 
-void XmlConfigFile::removeNodes(QDomElement parentNode, QList<QDomElement> elements)
+void XmlConfigFile::removeNodes(QDomElement parentNode, const QList<QDomElement> &elements)
 {
-	foreach (QDomElement element, elements)
+	foreach (const QDomElement &element, elements)
 		parentNode.removeChild(element);
 }
 
-void XmlConfigFile::removeNamedNodes(QDomElement parentNode, QList<QDomElement> elements, const QString &name)
+void XmlConfigFile::removeNamedNodes(QDomElement parentNode, const QList<QDomElement> &elements, const QString &name)
 {
-	foreach (QDomElement element, elements)
+	foreach (const QDomElement &element, elements)
 		if (isElementNamed(element, name))
 			parentNode.removeChild(element);
 }
 
-void XmlConfigFile::removeUuidNodes(QDomElement parentNode, QList<QDomElement> elements, const QString &uuid)
+void XmlConfigFile::removeUuidNodes(QDomElement parentNode, const QList<QDomElement> &elements, const QString &uuid)
 {
-	foreach (QDomElement element, elements)
+	foreach (const QDomElement &element, elements)
 		if (isElementUuid(element, uuid))
 			parentNode.removeChild(element);
 }
@@ -273,7 +273,7 @@ bool XmlConfigFile::hasNode(const QString &nodeTagName)
 	return !getNode(nodeTagName, ModeFind).isNull();
 }
 
-bool XmlConfigFile::hasNode(QDomElement parentNode, const QString &nodeTagName)
+bool XmlConfigFile::hasNode(const QDomElement &parentNode, const QString &nodeTagName)
 {
 	return !getNode(parentNode, nodeTagName, ModeFind).isNull();
 }
@@ -323,7 +323,7 @@ QDomElement XmlConfigFile::getNamedNode(QDomElement parentNode, const QString &n
 	if (ModeCreate == getMode)
 		removeNamedNodes(parentNode, nodes, nodeName);
 
-	foreach (QDomElement element, nodes)
+	foreach (const QDomElement &element, nodes)
 		if (isElementNamed(element, nodeName))
 			return element;
 
@@ -348,7 +348,7 @@ QDomElement XmlConfigFile::getUuidNode(QDomElement parentNode, const QString &no
 	if (ModeCreate == getMode)
 		removeUuidNodes(parentNode, nodes, nodeUuid);
 
-	foreach (QDomElement element, nodes)
+	foreach (const QDomElement &element, nodes)
 		if (isElementUuid(element, nodeUuid))
 			return element;
 
@@ -362,7 +362,7 @@ QDomElement XmlConfigFile::getUuidNode(QDomElement parentNode, const QString &no
 	return result;
 }
 
-QList<QDomElement> XmlConfigFile::getNodes(QDomElement parent, const QString &nodeTagName)
+QList<QDomElement> XmlConfigFile::getNodes(const QDomElement &parent, const QString &nodeTagName)
 {
 	QDomNodeList nodes = parent.childNodes();
 	QList<QDomElement> result;
@@ -381,26 +381,26 @@ QList<QDomElement> XmlConfigFile::getNodes(QDomElement parent, const QString &no
 	return result;
 }
 
-void XmlConfigFile::appendTextNode(QDomElement parentNode, const QString &nodeTagName, const QString &nodeContent)
+void XmlConfigFile::appendTextNode(const QDomElement &parentNode, const QString &nodeTagName, const QString &nodeContent)
 {
 	QDomElement element = getNode(parentNode, nodeTagName, ModeAppend);
 	element.appendChild(DomDocument.createTextNode(nodeContent));
 }
 
-void XmlConfigFile::createTextNode(QDomElement parentNode, const QString &nodeTagName, const QString &nodeContent)
+void XmlConfigFile::createTextNode(const QDomElement &parentNode, const QString &nodeTagName, const QString &nodeContent)
 {
 	QDomElement element = getNode(parentNode, nodeTagName, ModeCreate);
 	element.appendChild(DomDocument.createTextNode(nodeContent));
 }
 
-void XmlConfigFile::createNamedTextNode(QDomElement parentNode, const QString &nodeTagName,
+void XmlConfigFile::createNamedTextNode(const QDomElement &parentNode, const QString &nodeTagName,
 		const QString &nodeName, const QString &nodeContent)
 {
 	QDomElement element = getNamedNode(parentNode, nodeTagName, nodeName, ModeCreate);
 	element.appendChild(DomDocument.createTextNode(nodeContent));
 }
 
-QString XmlConfigFile::getTextNode(QDomElement parentNode, const QString &nodeTagName, const QString &defaultValue)
+QString XmlConfigFile::getTextNode(const QDomElement &parentNode, const QString &nodeTagName, const QString &defaultValue)
 {
 	QDomElement element = getNode(parentNode, nodeTagName, ModeFind);
 	if (element.isNull())
