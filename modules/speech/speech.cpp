@@ -52,13 +52,13 @@ Speech * Speech::instance()
 	return Instance;
 }
 
-bool isFemale(QString s)
+bool isFemale(const QString &s)
 {
 	return s.endsWith('a', Qt::CaseInsensitive);
 }
 
 Speech::Speech() :
-		Notifier("Speech", "Read a text", QIcon()), lastSpeech()
+		Notifier("Speech", "Read a text", QString()), lastSpeech()
 {
 	kdebugf();
 

@@ -64,7 +64,7 @@ extern "C" KADU_EXPORT void kde_notify_close()
 }
 
 KdeNotify::KdeNotify(QObject *parent) :
-		Notifier("KNotify", tr("KDE4 notifications"), IconsManager::instance()->iconByPath("kadu_icons/notify-hints"), parent),
+		Notifier("KNotify", tr("KDE4 notifications"), "kadu_icons/notify-hints", parent),
 		UseFreedesktopStandard(false)
 {
 	kdebugf();

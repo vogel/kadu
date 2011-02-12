@@ -19,7 +19,7 @@
 * gadu: better multilogon support for users of new libgadu 1.10 - all sent messages are shared (Vogel)
 * core: restored flushing configuration when setting status (beevvy)
 * jabber: added "Show XML Console for Account" submenu to Tools menu (beevvy)
-* gui: update icons after changing icon theme (WhE)
+* gui: #1901 fixed: update icons after changing icon theme (WhE)
 * history: allow removing statuses and smses history in history window (WhE)
 * history: allow removing history for given date (WhE)
 * history: allow opening chats from history windows (WhE)

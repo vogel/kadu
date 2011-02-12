@@ -44,7 +44,7 @@ SoundNotifier * SoundNotifier::instance()
 }
 
 SoundNotifier::SoundNotifier() :
-		Notifier("Sound", "Play a sound", IconsManager::instance()->iconByPath("audio-volume-high"))
+		Notifier("Sound", "Play a sound", "audio-volume-high")
 {
 }
 

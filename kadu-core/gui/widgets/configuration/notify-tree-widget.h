@@ -82,12 +82,14 @@ protected:
 public:
 	NotifyTreeWidget(NotifyConfigurationUiHandler *uiHandler, QWidget *parent);
 
-	void refresh();
-
 	QString currentEvent();
 
 	void notifierChecked(Notifier *notifier, bool checked);
 	void useCustomSettingsChecked(bool checked);
+
+public slots:
+	void refresh();
+
 };
 
 #endif //NOTIFY_TREE_WIDGET_H

@@ -38,6 +38,7 @@ class KADUAPI NotifyGroupBox : public QWidget
 
 private slots:
 	void toggledSlot(bool toggled);
+	void iconThemeChanged();
 
 public:
 	NotifyGroupBox(Notifier *Notificator, const QString &caption, QWidget *parent = 0);

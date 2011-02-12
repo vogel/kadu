@@ -57,16 +57,16 @@ public:
 private:
 	QString Name;
 	QString Description;
-	QIcon Icon;
+	QString IconPath;
 
 
 public:
-	explicit Notifier(const QString name, QString description, QIcon icon, QObject *parent = 0);
+	explicit Notifier(const QString &name, const QString &description, const QString &iconPath, QObject *parent = 0);
 	virtual ~Notifier();
 
 	const QString & name() const { return Name; }
 	const QString & description() const { return Description; }
-	QIcon & icon() { return Icon; }
+	QIcon icon() const;
 
 
 	virtual CallbackCapacity callbackCapacity();

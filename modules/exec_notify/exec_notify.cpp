@@ -106,9 +106,8 @@ void ExecConfigurationWidget::switchToEvent(const QString &event)
 		commandLineEdit->setText(config_file.readEntry("Exec Notify", event + "Cmd"));
 }
 
-//TODO 0.6.6 icon:
 ExecNotify::ExecNotify(QObject *parent) :
-		Notifier("Exec", "Run command", IconsManager::instance()->iconByPath("external_modules/execnotify"), parent)
+		Notifier("Exec", "Run command", "external_modules/execnotify", parent)
 {
 	kdebugf();
 
