@@ -47,8 +47,10 @@ MiniDumpWriteDump_t MiniDumpWriteDump_f;
 
 #define WM_OPEN_CHAT WM_USER+1
 
-LONG WINAPI exception_handler(struct _EXCEPTION_POINTERS* e)
+LONG WINAPI exception_handler(struct _EXCEPTION_POINTERS *e)
 {
+	Q_UNUSED(e)
+
 	CrashAwareObject::notifyCrash();
 
 #ifdef _MSC_VER
