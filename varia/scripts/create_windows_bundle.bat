@@ -161,5 +161,6 @@ xcopy %QCA_DIR%qca2.dll %DESTINATION%\ /C /H /R /Y /Q
 
 ECHO Copying QCA Plugins
 xcopy %QCA_OSSL_DIR%qca-ossl2.dll  %DESTINATION%\plugins\crypto\ /C /H /R /Y /Q
+xcopy %QCA_OSSL_DIR%qca-gnupg2.dll %DESTINATION%\plugins\crypto\ /C /H /R /Y /Q
 
 ECHO Done
