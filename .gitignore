@@ -1,4 +1,8 @@
 *~
 *.kdev4
-.kdev4
-build
+build*
+
+kadu-core/final.cpp
+kadu-core/includes
+kadu-core/kadu_rc.o
+kadu-core/regerate_final.bat
