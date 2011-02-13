@@ -187,17 +187,9 @@ Contact ContactManager::byId(Account account, const QString &id, NotFoundAction 
 	if (action == ActionCreateAndAdd)
 		addItem(contact);
 
-	Protocol *protocolHandler = account.protocolHandler();
-	if (!protocolHandler)
-		return contact;
-
-	ProtocolFactory *factory = protocolHandler->protocolFactory();
-	if (!factory)
-		return contact;
-
-	ContactDetails *details = factory->createContactDetails(contact);
-	details->setState(StateNew);
-	contact.setDetails(details);
+	ContactDetails *details = contact.details();
+	if (details)
+		details->setState(StateNew);
 
 	Buddy buddy = Buddy::create();
 	contact.setOwnerBuddy(buddy);
