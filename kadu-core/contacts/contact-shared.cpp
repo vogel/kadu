@@ -79,6 +79,7 @@ void ContactShared::load()
 	Shared::load();
 
 	Id = loadValue<QString>("Id");
+
 	Priority = loadValue<int>("Priority", -1);
 
 	ContactAccount = AccountManager::instance()->byUuid(loadValue<QString>("Account"));
@@ -238,6 +239,9 @@ void ContactShared::protocolRegistered(ProtocolFactory *protocolFactory)
 {
 	ensureLoaded();
 
+	if (Id.isEmpty())
+		return;
+
 	if (ContactAccount.protocolName() != protocolFactory->name())
 		return;
 
@@ -250,6 +254,9 @@ void ContactShared::protocolRegistered(ProtocolFactory *protocolFactory)
 void ContactShared::protocolUnregistered(ProtocolFactory *protocolFactory)
 {
 	ensureLoaded();
+
+	if (Id.isEmpty())
+		return;
 
 	if (ContactAccount.protocolName() != protocolFactory->name())
 		return;

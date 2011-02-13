@@ -324,7 +324,7 @@ void GaduEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
 	UseTlsEncryption = new QCheckBox(tr("Use encrypted connection"), this);
 	generalLayout->addWidget(UseTlsEncryption, 2, 0, 1, 4);
 
-	connect(UseTlsEncryption, SIGNAL(toggled(bool)), ipAddresses, SLOT(dataChanged()));
+	connect(UseTlsEncryption, SIGNAL(toggled(bool)), this, SLOT(dataChanged()));
 #endif
 }
 
