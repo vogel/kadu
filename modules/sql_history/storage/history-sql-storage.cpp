@@ -937,7 +937,7 @@ void HistorySqlStorage::executeQuery(QSqlQuery query)
 // 			after.time().msec() - before.time().msec());
 
 
-	kdebug("db query: %s\n", qPrintable(query.executedQuery()));
+	kdebugm(KDEBUG_INFO, "db query: %s\n", qPrintable(query.executedQuery()));
 }
 
 
