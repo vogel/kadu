@@ -442,7 +442,10 @@ int main(int argc, char *argv[])
 	int ret = qApp->exec();
 	kdebugm(KDEBUG_INFO, "after exec\n");
 
-	delete qApp;
+	// On some systems it leads to crash with sms module.
+	// Reproducible by simply calling "delete new QScriptEngine();" in a module,
+	// so it's probably a bug in Qt. Sigh.
+	//delete qApp;
 
 #ifdef Q_WS_WIN
 	WSACleanup();
