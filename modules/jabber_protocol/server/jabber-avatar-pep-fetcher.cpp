@@ -39,8 +39,12 @@ JabberAvatarPepFetcher::JabberAvatarPepFetcher(Contact contact, QObject *parent)
 
 JabberAvatarPepFetcher::~JabberAvatarPepFetcher()
 {
-	delete DiscoItems;
-	DiscoItems = 0;
+	if (DiscoItems)
+	{
+		disconnect(DiscoItems, SIGNAL(destroyed()), this, SLOT(discoItemsDestroyed()));
+		delete DiscoItems;
+		DiscoItems = 0;
+	}
 }
 
 void JabberAvatarPepFetcher::done()
