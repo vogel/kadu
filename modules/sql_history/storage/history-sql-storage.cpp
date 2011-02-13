@@ -191,16 +191,19 @@ void HistorySqlStorage::initIndexes()
 	query.prepare("CREATE INDEX IF NOT EXISTS kadu_messages_chat ON kadu_messages (chat)");
 	executeQuery(query);
 
-	query.prepare("CREATE INDEX IF NOT EXISTS kadu_messages_chat_receive_time ON kadu_messages (chat, receive_time)");
+	query.prepare("CREATE INDEX IF NOT EXISTS kadu_messages_chat_receive_time_rowid ON kadu_messages (chat, receive_time, rowid)");
+	executeQuery(query);
+
+	query.prepare("DROP INDEX IF EXISTS kadu_messages_chat_receive_time");
 	executeQuery(query);
 
 	query.prepare("CREATE INDEX IF NOT EXISTS kadu_messages_chat_receive_time_date ON kadu_messages (chat, date(receive_time))");
 	executeQuery(query);
 
-	query.prepare("CREATE INDEX IF NOT EXISTS kadu_messages_chat_receive_time_send_time ON kadu_messages (chat, receive_time, send_time)");
+	query.prepare("DROP INDEX IF NOT EXISTS kadu_messages_chat_receive_time_send_time");
 	executeQuery(query);
 
-	query.prepare("CREATE INDEX IF NOT EXISTS kadu_messages_chat_receive_time_date_send_time ON kadu_messages (chat, date(receive_time), send_time)");
+	query.prepare("DROP INDEX IF NOT EXISTS kadu_messages_chat_receive_time_date_send_time");
 	executeQuery(query);
 
 	query.prepare("CREATE INDEX IF NOT EXISTS kadu_statuses_contact ON kadu_statuses (contact)");
@@ -533,7 +536,7 @@ QList<Message> HistorySqlStorage::messages(const Chat &chat, const QDate &date, 
 	QString queryString = "SELECT chat, sender, content, send_time, receive_time, attributes FROM kadu_messages WHERE " + chatWhere(chat);
 	if (!date.isNull())
 		queryString += " AND date(receive_time) = date(:date)";
-	queryString += " ORDER BY receive_time ASC, send_time ASC";
+	queryString += " ORDER BY receive_time ASC, rowid ASC";
 	if (0 != limit)
 		queryString += " LIMIT :limit";
 
@@ -564,7 +567,7 @@ QList<Message> HistorySqlStorage::messagesSince(const Chat &chat, const QDate &d
 
 	QSqlQuery query(Database);
 	QString queryString = "SELECT chat, sender, content, send_time, receive_time, attributes FROM kadu_messages WHERE " + chatWhere(chat) +
-			" AND date(receive_time) >= date(:date) ORDER BY receive_time ASC, send_time ASC";
+			" AND date(receive_time) >= date(:date) ORDER BY receive_time ASC, rowid ASC";
 	query.prepare(queryString);
 
 	query.bindValue(":chat", chat.uuid().toString());
@@ -589,7 +592,7 @@ QList<Message> HistorySqlStorage::messagesBackTo(const Chat &chat, const QDateTi
 	// we want last *limit* messages, so we have to invert sorting here
 	// it is reverted back manually below
 	QString queryString = "SELECT chat, sender, content, send_time, receive_time, attributes FROM kadu_messages WHERE " + chatWhere(chat) +
-			" AND datetime(receive_time) >= datetime(:date) ORDER BY receive_time DESC, send_time DESC LIMIT :limit";
+			" AND datetime(receive_time) >= datetime(:date) ORDER BY receive_time DESC, rowid DESC LIMIT :limit";
 	query.prepare(queryString);
 
 	query.bindValue(":chat", chat.uuid().toString());
