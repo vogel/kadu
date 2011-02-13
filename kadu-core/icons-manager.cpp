@@ -95,7 +95,7 @@ QString IconsManager::iconPathAllowEmpty(const QString &path, const QString &siz
 		else
 			protocolpath = localProtocolPath;
 		QString path2 = QString("protocols/%1").arg(protocolpath);
-		return iconPath(path2, size, name);
+		return iconPathAllowEmpty(path2, size, name);
 	}
 
 	return QString();
