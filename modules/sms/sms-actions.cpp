@@ -67,7 +67,7 @@ SmsActions::SmsActions()
 
 	sendSmsActionDescription = new ActionDescription(this,
 		ActionDescription::TypeGlobal, "sendSmsAction",
-		this, SLOT(sendSmsActionActivated(QAction *, bool)),
+		this, SLOT(sendSmsActionActivated(QAction *)),
 		"phone", tr("Send SMS...")
 	);
 	sendSmsActionDescription->setShortcut("kadu_sendsms");
@@ -84,10 +84,10 @@ SmsActions::~SmsActions()
 	Core::instance()->kaduWindow()->removeMenuActionDescription(sendSmsActionDescription);
 }
 
-void SmsActions::newSms(QString nick)
+void SmsActions::newSms(const QString &mobile)
 {
 	SmsDialog *smsDialog = new SmsDialog();
-	smsDialog->setRecipient(nick);
+	smsDialog->setRecipient(mobile);
 	smsDialog->show();
 }
 
@@ -97,11 +97,11 @@ void SmsActions::buddyActivated(Buddy buddy)
 		newSms(buddy.mobile());
 }
 
-void SmsActions::sendSmsActionActivated(QAction *sender, bool toggled)
+void SmsActions::sendSmsActionActivated(QAction *sender)
 {
-	Q_UNUSED(toggled)
-
 	Action *action = qobject_cast<Action *>(sender);
-	QString mobile = action ? action->buddy().mobile() : QString();
-	newSms(mobile);
+	if (!action)
+		return;
+
+	newSms(action->buddy().mobile());
 }

@@ -104,8 +104,6 @@ void SmsProgressWindow::tokenValueEntered()
 	TokenEdit = 0;
 	TokenAcceptButton->deleteLater();
 	TokenAcceptButton = 0;
-
-	container()->layout()->invalidate();
 }
 
 void SmsProgressWindow::sendingFailed(const QString &errorMessage)
@@ -118,5 +116,5 @@ void SmsProgressWindow::sendingSucceed(const QString &message)
 	if (History::instance()->currentStorage())
 		History::instance()->currentStorage()->appendSms(Sender->number(), message);
 
-	setState(ProgressIcon::StateFinished, tr("Sms sent successfully"));
+	setState(ProgressIcon::StateFinished, tr("SMS sent successfully"));
 }

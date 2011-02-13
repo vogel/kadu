@@ -79,6 +79,6 @@ void SmsExternalSender::processFinished()
 	else
 		emit failed(tr("The process exited abnormally. The SMS may not be sent"));
 
-	delete Process;
+	Process->deleteLater();
 	Process = 0;
 }

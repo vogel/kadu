@@ -57,6 +57,8 @@ SmsDialog::SmsDialog(QWidget* parent) :
 	createGui();
 	configurationUpdated();
 
+	loadWindowGeometry(this, "Sms", "SmsDialogGeometry", 200, 200, 400, 250);
+
 	RecipientEdit->setFocus();
 
 	ModulesManager::instance()->moduleIncUsageCount("sms");
@@ -151,8 +153,6 @@ void SmsDialog::createGui()
 	buttons->addButton(closeButton, QDialogButtonBox::DestructiveRole);
 
 	resize(400, 250);
-
-	loadWindowGeometry(this, "Sms", "SmsDialogGeometry", 200, 200, 400, 250);
 }
 
 void SmsDialog::configurationUpdated()
@@ -165,7 +165,8 @@ void SmsDialog::setRecipient(const QString &phone)
 	kdebugf();
 
 	RecipientEdit->setText(phone);
-	ContentEdit->setFocus();
+	if (!phone.isEmpty())
+		ContentEdit->setFocus();
 
 	kdebugf2();
 }
@@ -231,7 +232,7 @@ void SmsDialog::sendSms()
 		if (config_file.readEntry("SMS", "SmsApp").isEmpty())
 		{
 			MessageDialog::show("dialog-warning", tr("Kadu"),
-					tr("Sms application was not specified. Visit the configuration section"), QMessageBox::Ok, this);
+					tr("SMS application was not specified. Visit the configuration section"), QMessageBox::Ok, this);
 			kdebugm(KDEBUG_WARNING, "SMS application NOT specified. Exit.\n");
 			return;
 		}

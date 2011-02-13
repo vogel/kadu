@@ -45,8 +45,8 @@ class SmsActions : public QObject
 
 private slots:
 	void buddyActivated(Buddy buddy);
-	void sendSmsActionActivated(QAction *sender, bool toggled);
-	void newSms(QString mobile);
+	void sendSmsActionActivated(QAction *sender);
+	void newSms(const QString &mobile);
 
 public:
 	static void registerActions(bool firstLoad);
