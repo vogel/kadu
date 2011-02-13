@@ -476,11 +476,8 @@ void GaduProtocol::setupDcc()
 	}
 	else
 	{
-		if (Dcc)
-		{
-			delete Dcc;
-			Dcc = 0;
-		}
+		delete Dcc;
+		Dcc = 0;
 	}
 }
 
