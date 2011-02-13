@@ -56,7 +56,9 @@ private slots:
 	void buddyAdded(Buddy &buddy);
 
 public:
-	static GaduImporter * instance();
+	static GADUAPI GaduImporter * instance() { return Instance; }
+	static void createInstance();
+	static void destroyInstance();
 
 	static Account import065Account(QXmlQuery &xmlQuery);
 	static QList<Buddy> import065Buddies(Account account, QXmlQuery &xmlQuery);

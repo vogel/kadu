@@ -45,6 +45,12 @@ SmsScriptsManager * SmsScriptsManager::instance()
 	return Instance;
 }
 
+void SmsScriptsManager::destroyInstance()
+{
+	delete Instance;
+	Instance = 0;
+}
+
 SmsScriptsManager::SmsScriptsManager()
 {
 	Engine = new QScriptEngine(this);

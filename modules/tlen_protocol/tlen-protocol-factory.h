@@ -36,7 +36,9 @@ class TlenProtocolFactory : public ProtocolFactory
 	TlenProtocolFactory();
 
 public:
-	static TlenProtocolFactory * instance();
+	static TlenProtocolFactory * instance() { return Instance; }
+	static void createInstance();
+	static void destroyInstance();
 
 	virtual Protocol * createProtocolHandler(Account account);
 	virtual AccountDetails * createAccountDetails(AccountShared *accountShared);

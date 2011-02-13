@@ -104,9 +104,10 @@ extern "C" KADU_EXPORT int gadu_protocol_init(bool firstLoad)
 	ProtocolsManager::instance()->registerProtocolFactory(GaduProtocolFactory::instance());
 	UrlHandlerManager::instance()->registerUrlHandler("Gadu", new GaduUrlHandler());
 
+	GaduImporter::createInstance();
+
 	if (AccountManager::instance()->allItems().isEmpty())
 		GaduImporter::instance()->importAccounts();
-
 	GaduImporter::instance()->importContacts();
 
 	return 0;
@@ -114,6 +115,8 @@ extern "C" KADU_EXPORT int gadu_protocol_init(bool firstLoad)
 
 extern "C" KADU_EXPORT void gadu_protocol_close()
 {
+	GaduImporter::destroyInstance();
+
 	UrlHandlerManager::instance()->unregisterUrlHandler("Gadu");
 	ProtocolsManager::instance()->unregisterProtocolFactory(GaduProtocolFactory::instance());
 

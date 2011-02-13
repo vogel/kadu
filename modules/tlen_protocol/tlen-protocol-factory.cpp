@@ -35,14 +35,18 @@
 
 #include "tlen-protocol-factory.h"
 
-TlenProtocolFactory *TlenProtocolFactory::Instance = 0;
+TlenProtocolFactory * TlenProtocolFactory::Instance = 0;
 
-TlenProtocolFactory * TlenProtocolFactory::instance()
+void TlenProtocolFactory::createInstance()
 {
 	if (!Instance)
 		Instance = new TlenProtocolFactory();
+}
 
-	return Instance;
+void TlenProtocolFactory::destroyInstance()
+{
+	delete Instance;
+	Instance = 0;
 }
 
 TlenProtocolFactory::TlenProtocolFactory()

@@ -21,6 +21,7 @@
 #include "sms-actions.h"
 #include "sms-configuration-ui-handler.h"
 #include "sms-gateway-manager.h"
+#include "scripts/sms-script-manager.h"
 
 extern "C" KADU_EXPORT int sms_init(bool firstLoad)
 {
@@ -32,6 +33,7 @@ extern "C" KADU_EXPORT int sms_init(bool firstLoad)
 
 extern "C" KADU_EXPORT void sms_close()
 {
+	SmsScriptsManager::destroyInstance();
 	SmsGatewayManager::destroyInstance();
 	MobileNumberManager::destroyInstance();
 	SmsActions::unregisterActions();

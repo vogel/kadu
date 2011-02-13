@@ -78,6 +78,8 @@ int TlenProtocol::initModule()
 
 	if (ProtocolsManager::instance()->hasProtocolFactory("tlen"))
 		return 0;
+	
+	TlenProtocolFactory::createInstance();
 
 	ProtocolsManager::instance()->registerProtocolFactory(TlenProtocolFactory::instance());
 
@@ -90,6 +92,8 @@ void TlenProtocol::closeModule()
 	kdebugf();
 
 	ProtocolsManager::instance()->unregisterProtocolFactory(TlenProtocolFactory::instance());
+	
+	TlenProtocolFactory::destroyInstance();
 
 	kdebugf2();
 }

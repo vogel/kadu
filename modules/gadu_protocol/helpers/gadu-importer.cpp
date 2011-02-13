@@ -50,13 +50,18 @@ GaduImporter * GaduImporter::Instance;
 const QString GaduImporter::EntryQuery("/Kadu/Deprecated/ConfigFile[ends-with(@name,'kadu.conf')]/Group[@name='%1']/Entry[@name='%2']/@value/string()");
 const QString GaduImporter::ContactsQuery("/Kadu/Contacts/Contact");
 
-GaduImporter * GaduImporter::instance()
+void GaduImporter::createInstance()
 {
-	if (0 == Instance)
+	if (!Instance)
 		Instance = new GaduImporter();
-
-	return Instance;
 }
+
+void GaduImporter::destroyInstance()
+{
+	delete Instance;
+	Instance = 0;
+}
+
 bool GaduImporter::alreadyImported()
 {
 	QDomElement node = xml_config_file->getNode("Accounts", XmlConfigFile::ModeFind);

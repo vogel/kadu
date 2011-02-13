@@ -47,6 +47,7 @@ class SmsScriptsManager : public QObject
 
 public:
 	static SmsScriptsManager * instance();
+	static void destroyInstance();
 
 	void loadScript(const QString &fileName);
 
