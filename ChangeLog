@@ -10,7 +10,7 @@
 * gui: sort "Add button" actions in toolbar menu by name (Vogel)
 * gui: #1923 fixed: crash on Windows after right clicking on a toolbar (WhE, beevvy)
 * avatars: added timeout to avatar jobs, so buggy servers do not stop avatar fetching (Vogel)
-* sql-history: #1860 fixed: fixed messages sorting in some cases (Vogel)
+* sql-history: #1860, #1805 fixed: fixed messages sorting in some cases (Vogel)
 * jabber: #1926 fixed: do not clean roster on account removal (Vogel)
 * gui: restored max saved descriptions functionality (Vogel)
 * screenshot: fixed format/quality settings (Vogel)
