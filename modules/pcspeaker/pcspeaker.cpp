@@ -124,7 +124,7 @@ extern "C" KADU_EXPORT void pcspeaker_close()
 }
 
 
-PCSpeaker::PCSpeaker() : Notifier("PC Speaker", "PC Speaker", IconsManager::instance()->iconByPath("audio-volume-low"), NULL)
+PCSpeaker::PCSpeaker() : Notifier("PC Speaker", "PC Speaker", "audio-volume-low")
 {
 	NotificationManager::instance()->registerNotifier(this);
 	createDefaultConfiguration();
