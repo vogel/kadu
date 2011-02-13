@@ -62,6 +62,16 @@ class GaduEditAccountWidget : public AccountEditWidget
 	QCheckBox *useDefaultServers;
 	QLineEdit *ipAddresses;
 
+	QCheckBox *AllowFileTransfers;
+	QCheckBox *FileTransfersAutodetectIp;
+	QLineEdit *FileTransfersIp;
+	QLineEdit *FileTransfersPort;
+	QLineEdit *FileTransfersExternalIp;
+	QLineEdit *FileTransfersExternalPort;
+	QLineEdit *FileTransfersLocalPort;
+	QCheckBox *RemoveCompletedFileTransfers;
+	QCheckBox *FileTransfersPortForwarding;
+
 #ifdef GADU_HAVE_TLS
 	QCheckBox *UseTlsEncryption;
 #endif
@@ -75,6 +85,7 @@ class GaduEditAccountWidget : public AccountEditWidget
 	void createPersonalInfoTab(QTabWidget *);
 	void createBuddiesTab(QTabWidget *);
 	void createConnectionTab(QTabWidget *);
+	void createDCCTab(QTabWidget *);
 	void createOptionsTab(QTabWidget *);
 
 	void loadAccountData();

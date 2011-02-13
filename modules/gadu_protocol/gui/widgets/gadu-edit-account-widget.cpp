@@ -87,6 +87,7 @@ void GaduEditAccountWidget::createGui()
 	createPersonalInfoTab(tabWidget);
 	createBuddiesTab(tabWidget);
 	createConnectionTab(tabWidget);
+	createDCCTab(tabWidget);
 	createOptionsTab(tabWidget);
 
 	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
@@ -191,6 +192,57 @@ void GaduEditAccountWidget::createConnectionTab(QTabWidget *tabWidget)
 	layout->addStretch(100);
 }
 
+void GaduEditAccountWidget::createDCCTab(QTabWidget *tabWidget)
+{
+	QWidget *dccTab = new QWidget(this);
+	tabWidget->addTab(dccTab, tr("File transfers"));
+
+	QVBoxLayout *layout = new QVBoxLayout(dccTab);
+
+	QGroupBox *general = new QGroupBox(tr("General"), this);
+	QFormLayout *generalLayout = new QFormLayout(general);
+	layout->addWidget(general);
+
+	AllowFileTransfers = new QCheckBox(tr("Allow file transfers"), this);
+	generalLayout->addRow(AllowFileTransfers);
+
+	RemoveCompletedFileTransfers = new QCheckBox(tr("Remove completed file transfers"), this);
+	generalLayout->addRow(RemoveCompletedFileTransfers);
+
+	FileTransfersPortForwarding = new QCheckBox(tr("Use port forwarding for file transfers"), this);
+	generalLayout->addRow(FileTransfersPortForwarding);
+
+	FileTransfersAutodetectIp = new QCheckBox(tr("Autodected IP for file transfers"), this);
+	generalLayout->addRow(FileTransfersAutodetectIp);
+
+	FileTransfersIp = new QLineEdit(this);
+	generalLayout->addRow(new QLabel(tr("IP for file transfers:"), this), FileTransfersIp);
+
+	FileTransfersPort = new QLineEdit(this);
+	generalLayout->addRow(new QLabel(tr("Port for file transfers:"), this), FileTransfersPort);
+
+	FileTransfersExternalIp = new QLineEdit(this);
+	generalLayout->addRow(new QLabel(tr("External IP for file transfers:"), this), FileTransfersExternalIp);
+
+	FileTransfersExternalPort = new QLineEdit(this);
+	generalLayout->addRow(new QLabel(tr("External port for file transfers:"), this), FileTransfersExternalPort);
+
+	FileTransfersLocalPort = new QLineEdit(this);
+	generalLayout->addRow(new QLabel(tr("Local port for file transfers:"), this), FileTransfersLocalPort);
+
+	connect(AllowFileTransfers, SIGNAL(toggled(bool)), this, SLOT(dataChanged()));
+	connect(RemoveCompletedFileTransfers, SIGNAL(toggled(bool)), this, SLOT(dataChanged()));
+	connect(FileTransfersPortForwarding, SIGNAL(toggled(bool)), this, SLOT(dataChanged()));
+	connect(FileTransfersAutodetectIp, SIGNAL(toggled(bool)), this, SLOT(dataChanged()));
+	connect(FileTransfersIp, SIGNAL(textEdited(QString)), this, SLOT(dataChanged()));
+	connect(FileTransfersPort, SIGNAL(textEdited(QString)), this, SLOT(dataChanged()));
+	connect(FileTransfersExternalIp, SIGNAL(textEdited(QString)), this, SLOT(dataChanged()));
+	connect(FileTransfersExternalPort, SIGNAL(textEdited(QString)), this, SLOT(dataChanged()));
+	connect(FileTransfersLocalPort, SIGNAL(textEdited(QString)), this, SLOT(dataChanged()));
+
+	layout->addStretch(100);
+}
+
 void GaduEditAccountWidget::createOptionsTab(QTabWidget *tabWidget)
 {
 	QWidget *optionsTab = new QWidget(this);
@@ -291,6 +343,23 @@ void GaduEditAccountWidget::apply()
 		Details->setReceiveImagesDuringInvisibility(ReceiveImagesDuringInvisibility->isChecked());
 		Details->setMaximumImageRequests(MaximumImageRequests->value());
 
+		Details->setAllowDcc(AllowFileTransfers->isChecked());
+		Details->setDccIpDetect(FileTransfersAutodetectIp->isChecked());
+
+		QHostAddress hostAddress;
+		hostAddress.setAddress(FileTransfersIp->text());
+		
+		Details->setDccIP(hostAddress);
+		Details->setDccPort(FileTransfersPort->text().toUInt());
+
+		hostAddress.setAddress(FileTransfersExternalIp->text());
+		Details->setDccExternalIP(hostAddress);
+
+		Details->setDccExternalPort(FileTransfersExternalPort->text().toUInt());
+		Details->setDccLocalPort(FileTransfersLocalPort->text().toUInt());
+		Details->setRemoveCompletedTransfers(RemoveCompletedFileTransfers->isChecked());
+		Details->setDccForwarding(FileTransfersPortForwarding->isChecked());
+
 #ifdef GADU_HAVE_TLS
 		Details->setTlsEncryption(UseTlsEncryption->isChecked());
 #endif
@@ -332,6 +401,11 @@ void GaduEditAccountWidget::resetState()
 
 void GaduEditAccountWidget::dataChanged()
 {
+	QHostAddress fileTransfersIp;
+	fileTransfersIp.setAddress(FileTransfersIp->text());
+
+	QHostAddress fileTransfersExternalIp;
+	fileTransfersExternalIp.setAddress(FileTransfersExternalIp->text());
 
 	if (account().accountIdentity() == Identities->currentIdentity()
 		&& account().id() == AccountId->text()
@@ -341,6 +415,17 @@ void GaduEditAccountWidget::dataChanged()
 		&& Details->maximumImageSize() == MaximumImageSize->value()
 		&& Details->receiveImagesDuringInvisibility() == ReceiveImagesDuringInvisibility->isChecked()
 		&& Details->maximumImageRequests() == MaximumImageRequests->value()
+
+		&& Details->allowDcc() == AllowFileTransfers->isChecked()
+		&& Details->dccIpDetect() == FileTransfersAutodetectIp->isChecked()
+		&& Details->dccIP() == fileTransfersIp
+		&& Details->dccPort() == FileTransfersPort->text().toInt()
+		&& Details->dccExternalIP() == fileTransfersExternalIp
+		&& Details->dccExternalPort() == FileTransfersExternalPort->text().toInt()
+		&& Details->dccLocalPort() == FileTransfersLocalPort->text().toInt()
+		&& Details->removeCompletedTransfers() == RemoveCompletedFileTransfers->isChecked()
+		&& Details->dccForwarding() == FileTransfersPortForwarding->isChecked()
+		
 		&& config_file.readBoolEntry("Network", "isDefServers", true) == useDefaultServers->isChecked()
 		&& config_file.readEntry("Network", "Server") == ipAddresses->text()
 #ifdef GADU_HAVE_TLS
@@ -385,8 +470,18 @@ void GaduEditAccountWidget::loadAccountData()
 		ReceiveImagesDuringInvisibility->setChecked(details->receiveImagesDuringInvisibility());
 		MaximumImageRequests->setValue(details->maximumImageRequests());
 
+		AllowFileTransfers->setChecked(details->allowDcc());
+		FileTransfersAutodetectIp->setChecked(details->dccIpDetect());
+		FileTransfersIp->setText(details->dccIP().toString());
+		FileTransfersPort->setText(QString::number(details->dccPort()));
+		FileTransfersExternalIp->setText(details->dccExternalIP().toString());
+		FileTransfersExternalPort->setText(QString::number(details->dccExternalPort()));
+		FileTransfersLocalPort->setText(QString::number(details->dccLocalPort()));
+		RemoveCompletedFileTransfers->setChecked(details->removeCompletedTransfers());
+		FileTransfersPortForwarding->setChecked(details->dccForwarding());
+
 #ifdef GADU_HAVE_TLS
-		UseTlsEncryption->setChecked(Details->tlsEncryption());
+		UseTlsEncryption->setChecked(details->tlsEncryption());
 #endif
 	}
 
