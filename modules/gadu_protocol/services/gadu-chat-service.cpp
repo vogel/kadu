@@ -364,14 +364,14 @@ void GaduChatService::removeTimeoutUndeliveredMessages()
 	QDateTime now;
 	QList<int> toRemove;
 
-	QHash<int, Message>::const_iterator message = UndeliveredMessages.constBegin();
-	QHash<int, Message>::const_iterator end = UndeliveredMessages.constEnd();
+	QHash<int, Message>::iterator message = UndeliveredMessages.begin();
+	QHash<int, Message>::iterator end = UndeliveredMessages.end();
 	for (; message != end; ++message)
 	{
 		if (message.value().sendDate().addSecs(MAX_DELIVERY_TIME) < now)
 		{
 			toRemove.append(message.key());
-			UndeliveredMessages[message.key()].setStatus(Message::StatusWontDeliver);
+			message.value().setStatus(Message::StatusWontDeliver);
 		}
 	}
 
