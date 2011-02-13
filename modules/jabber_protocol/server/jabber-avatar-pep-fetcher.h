@@ -41,6 +41,7 @@ class JabberAvatarPepFetcher : public QObject
 	void failed();
 
 private slots:
+	void discoItemsDestroyed();
 	void discoItemsFinished();
 	void avatarMetadataQueryFinished(const XMPP::Jid &jid, const QString &node, const XMPP::PubSubItem &item);
 	void avatarDataQueryFinished(const XMPP::Jid &jid, const QString &node, const XMPP::PubSubItem &item);

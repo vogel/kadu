@@ -65,9 +65,16 @@ void JabberAvatarPepFetcher::fetchAvatar()
 	}
 
 	DiscoItems = new XMPP::JT_DiscoItems(jabberProtocol->client()->rootTask());
+	connect(DiscoItems, SIGNAL(destroyed()), this, SLOT(discoItemsDestroyed()));
 	connect(DiscoItems, SIGNAL(finished()), this, SLOT(discoItemsFinished()));
 	DiscoItems->get(MyContact.id());
 	DiscoItems->go();
+}
+
+void JabberAvatarPepFetcher::discoItemsDestroyed()
+{
+	DiscoItems = 0;
+	deleteLater();
 }
 
 void JabberAvatarPepFetcher::discoItemsFinished()
