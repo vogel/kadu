@@ -33,6 +33,7 @@
 * core: #1855 fixed: removed non-working and unneeded config option ActivateWithNewMessages (Juzef)
 * protocols: #1910 fixed: after cancelling of connecting to server, status is not changed to "Offline" (WhE)
 * sms: #1945 fixed: crash when confirming token by pressing Return (beevvy)
+* gui: #1917 fixed: show an information that restart is needed to language settings change take effect (WhE)
 
 +++ version 0.6.6-beta15
 * url-handlers: #1908 fixed: links containing HTML entities were not escaped (beevvy)
