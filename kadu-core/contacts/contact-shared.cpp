@@ -239,9 +239,6 @@ void ContactShared::protocolRegistered(ProtocolFactory *protocolFactory)
 {
 	ensureLoaded();
 
-	if (Id.isEmpty())
-		return;
-
 	if (ContactAccount.protocolName() != protocolFactory->name())
 		return;
 

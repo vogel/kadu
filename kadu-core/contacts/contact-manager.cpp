@@ -181,8 +181,8 @@ Contact ContactManager::byId(Account account, const QString &id, NotFoundAction 
 		return Contact::null;
 
 	Contact contact = Contact::create();
-	contact.setContactAccount(account);
 	contact.setId(id);
+	contact.setContactAccount(account);
 
 	if (action == ActionCreateAndAdd)
 		addItem(contact);
