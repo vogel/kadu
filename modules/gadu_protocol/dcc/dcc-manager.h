@@ -40,32 +40,16 @@ class GaduContact;
 class GaduFileTransferHandler;
 class GaduProtocol;
 
-enum DccVersion
-{
-	DccUnknown,
-	Dcc6,
-	Dcc7
-};
-
 class DccManager : public QObject
 {
 	Q_OBJECT
 
 	GaduProtocol *Protocol;
 
-	DccSocketNotifiers *MainSocketNotifiers;
 	QList<DccSocketNotifiers *> SocketNotifiers;
 	QList<GaduFileTransferHandler *> WaitingFileTransfers;
 
 	bool DccEnabled;
-	QHostAddress DccExternalIP;
-	unsigned int DccExternalPort;
-/*
-	QWidget *ipAddress;
-	QCheckBox *forwarding;
-	QWidget *forwardingExternalIp;
-	QWidget *forwardingExternalPort;
-	QWidget *forwardingLocalPort;*/
 
 	void setUpDcc();
 	void closeDcc();
@@ -75,24 +59,8 @@ class DccManager : public QObject
 
 	GaduFileTransferHandler * findFileTransferHandler(DccSocketNotifiers *notifiers);
 
-	friend class DccSocketNotifiers;
-	void handleEventDccNew(struct gg_event *e);
-
-	void connectionRequestReceived(Contact contact);
 	bool acceptConnection(UinType uin, UinType peerUin, unsigned int peerAddr);
 	void needIncomingFileTransferAccept(DccSocketNotifiers *socket);
-
-	friend class GaduProtocolSocketNotifiers;
-	void handleEventDcc7New(struct gg_event *e);
-	void handleEventDcc7Accept(struct gg_event *e);
-	void handleEventDcc7Reject(struct gg_event *e);
-	void handleEventDcc7Pending(struct gg_event *e);
-	void handleEventDcc7Error(struct gg_event *e);
-
-// 	void onIpAutotetectToggled(bool toggled);
-
-	void attachSendFileTransferSocket6(UinType uin, Contact contact, GaduFileTransferHandler *handler);
-	void attachSendFileTransferSocket7(Contact contact, GaduFileTransferHandler *handler);
 
 private slots:
 	void socketNotifiersDestroyed(QObject *socketNotifiers);
@@ -105,12 +73,15 @@ public:
 	DccManager(GaduProtocol *protocol);
 	virtual ~DccManager();
 
-	void setUpExternalAddress(gg_login_params &loginParams);
+	void handleEventDcc7New(struct gg_event *e);
+	void handleEventDcc7Accept(struct gg_event *e);
+	void handleEventDcc7Reject(struct gg_event *e);
+	void handleEventDcc7Pending(struct gg_event *e);
+	void handleEventDcc7Error(struct gg_event *e);
 
 	void attachSendFileTransferSocket(GaduFileTransferHandler *handler);
 
 // 	void getFileTransferSocket(quint32 ip, quint16 port, UinType myUin, UinType peerUin, DccHandler *handler, bool request = false);
-// 	void getVoiceSocket(quint32 ip, quint16 port, UinType myUin, UinType peerUin, DccHandler *handler, bool request = false);
 
 	bool dccEnabled() const;
 

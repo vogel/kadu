@@ -516,9 +516,6 @@ void GaduProtocol::setupLoginParams()
 	GaduLoginParams.has_audio = false; // gaduAccountDetails->allowDcc();
 	GaduLoginParams.last_sysmsg = config_file.readNumEntry("General", "SystemMsgIndex", 1389);
 
-	if (Dcc)
-		Dcc->setUpExternalAddress(GaduLoginParams);
-
 #ifdef GADU_HAVE_TLS
 	GaduLoginParams.tls = gaduAccountDetails->tlsEncryption() ? 1 : 0;
 #else

@@ -37,9 +37,6 @@ public:
 
 	GaduProtocol::UinType uin();
 
-	unsigned int gaduProtocolVersion() { return GaduProtocolVersion; }
-	void setGaduProtocolVersion(unsigned int gaduProtocolVersion) { GaduProtocolVersion = gaduProtocolVersion; }
-
 };
 
 #endif // GADU_CONTACT_ACCOUNT_DATA

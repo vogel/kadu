@@ -57,7 +57,7 @@
 
 
 DccManager::DccManager(GaduProtocol *protocol) :
-		QObject(protocol), Protocol(protocol), MainSocketNotifiers(0)
+		QObject(protocol), Protocol(protocol)
 {
 	kdebugf();
 
@@ -75,107 +75,15 @@ DccManager::~DccManager()
 	kdebugf2();
 }
 
-void DccManager::setUpExternalAddress(gg_login_params &loginParams)
-{
-	bool haveExternalDcc = !DccExternalIP.isNull() && DccExternalPort > 1023;
-	loginParams.external_addr = haveExternalDcc ? htonl(DccExternalIP.toIPv4Address()) : 0;
-	loginParams.external_port = haveExternalDcc ? DccExternalPort : 0;
-}
-
-
-/*
-void DccManager::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
-{
-	QWidget *allowDCC = mainConfigurationWindow->widgetById("dcc/AllowDCC");
-	QWidget *fileTransfers = mainConfigurationWindow->widgetById("dcc/fileTransfers");
-	QWidget *ip = mainConfigurationWindow->widgetById("dcc/ip");
-
-	connect(allowDCC, SIGNAL(toggled(bool)), fileTransfers, SLOT(setEnabled(bool)));
-	connect(allowDCC, SIGNAL(toggled(bool)), ip, SLOT(setEnabled(bool)));
-
-	QWidget *ipAutotetect = mainConfigurationWindow->widgetById("dcc/ipAutodetect");
-	ipAddress = mainConfigurationWindow->widgetById("dcc/ipAddress");
-	forwarding = static_cast<QCheckBox *>(mainConfigurationWindow->widgetById("dcc/forwarding"));
-	forwardingExternalIp = mainConfigurationWindow->widgetById("dcc/forwardingExternalIp");
-	forwardingExternalPort = mainConfigurationWindow->widgetById("dcc/forwardingExternalPort");
-	forwardingLocalPort = mainConfigurationWindow->widgetById("dcc/forwardingLocalPort");
-
-	connect(forwarding, SIGNAL(toggled(bool)), forwardingExternalIp, SLOT(setEnabled(bool)));
-	connect(forwarding, SIGNAL(toggled(bool)), forwardingExternalPort, SLOT(setEnabled(bool)));
-	connect(forwarding, SIGNAL(toggled(bool)), forwardingLocalPort, SLOT(setEnabled(bool)));
-
-	connect(ipAutotetect, SIGNAL(toggled(bool)), ipAddress, SLOT(setDisabled(bool)));
-	connect(ipAutotetect, SIGNAL(toggled(bool)), this, SLOT(onIpAutotetectToggled(bool)));
-}*/
-
 void DccManager::setUpDcc()
 {
 	kdebugf();
 
 	WaitingFileTransfers.clear();
-
-	GaduAccountDetails *gaduAccountDetails = dynamic_cast<GaduAccountDetails *>(Protocol->account().details());
-	if (!gaduAccountDetails)
-		return;
-
-	struct gg_dcc *socket = gg_dcc_socket_create(gaduAccountDetails->uin(), gaduAccountDetails->dccLocalPort());
-	if (!socket)
-	{
-		kdebugmf(KDEBUG_NETWORK | KDEBUG_INFO, "Couldn't bind DCC socket.\n");
-
-		// TODO
-		// MessageDialog::msg(tr("Couldn't create DCC socket.\nDirect connections disabled."), true, "dialog-warning");
-		kdebugf2();
-		return;
-	}
-
-	MainSocketNotifiers = new DccSocketNotifiers(Protocol, this);
-	SocketNotifiers.clear();
-
-	QHostAddress DCCIP;
-
-	if (gaduAccountDetails->dccIpDetect())
-		DCCIP.setAddress("255.255.255.255");
-	else
-		DCCIP = gaduAccountDetails->dccIP();
-
-	QHostAddress ext_ip;
-
-	bool forwarding = gaduAccountDetails->dccForwarding() && !gaduAccountDetails->dccExternalIP().isNull();
-
-	DccExternalIP = forwarding ? ext_ip : QHostAddress();
-	DccExternalPort = forwarding ? gaduAccountDetails->dccExternalPort() : 0;
-
-	gg_dcc_ip = htonl(DCCIP.toIPv4Address());
-	gg_dcc_port = socket->port;
-
-	kdebugmf(KDEBUG_NETWORK | KDEBUG_INFO, "DCC_IP=%s gg_dcc_port=%d\n", qPrintable(DCCIP.toString()), gg_dcc_port);
-
 	DccEnabled = true;
-
-	connectSocketNotifiers(MainSocketNotifiers);
-	MainSocketNotifiers->watchFor(socket);
 
 	kdebugf2();
 }
-/*
-void DccManager::onIpAutotetectToggled(bool toggled)
-{
-	forwarding->setEnabled(!toggled);
-
-	if (toggled)
-	{
-		forwardingExternalIp->setEnabled(false);
-		forwardingExternalPort->setEnabled(false);
-		forwardingLocalPort->setEnabled(false);
-	}
-	else
-	{
-		forwardingExternalIp->setEnabled(forwarding->isChecked());
-		forwardingExternalPort->setEnabled(forwarding->isChecked());
-		forwardingLocalPort->setEnabled(forwarding->isChecked());
-	}
-}*/
 
 void DccManager::configurationUpdated()
 {
@@ -204,8 +112,6 @@ void DccManager::closeDcc()
 {
 	kdebugf();
 
-	gg_dcc_ip = 0;
-	gg_dcc_port = 0;
 	DccEnabled = false;
 
 	kdebugf2();
@@ -231,29 +137,6 @@ void DccManager::disconnectSocketNotifiers(DccSocketNotifiers *notifiers)
 void DccManager::socketNotifiersDestroyed(QObject *socketNotifiers)
 {
 	SocketNotifiers.removeAll(static_cast<DccSocketNotifiers *>(socketNotifiers));
-}
-
-void DccManager::connectionRequestReceived(Contact contact)
-{
-	kdebugf();
-
-	if (contact.isNull())
-		return;
-
-	GaduContactDetails *details = Protocol->gaduContactDetails(contact);
-	if (!details)
-		return;
-
-	struct gg_dcc *dcc = gg_dcc_get_file(htonl(contact.address().toIPv4Address()), contact.port(), details->uin(), details->uin());
-	if (!dcc)
-		return;
-
-	DccSocketNotifiers *dccSocketNotifiers = new DccSocketNotifiers(Protocol, this);
-	SocketNotifiers << dccSocketNotifiers;
-	connectSocketNotifiers(dccSocketNotifiers);
-	dccSocketNotifiers->watchFor(dcc);
-
-	kdebugf2();
 }
 
 bool DccManager::acceptConnection(UinType uin, UinType peerUin, unsigned int peerAddr)
@@ -327,17 +210,6 @@ GaduFileTransferHandler * DccManager::findFileTransferHandler(DccSocketNotifiers
 	return 0;
 }
 
-void DccManager::handleEventDccNew(struct gg_event *e) {
-	kdebugmf(KDEBUG_NETWORK | KDEBUG_INFO, "GG_EVENT_DCC_NEW\n");
-
-	DccSocketNotifiers *newSocketNotifiers = new DccSocketNotifiers(Protocol, this);
-	SocketNotifiers << newSocketNotifiers;
-	connectSocketNotifiers(newSocketNotifiers);
-	newSocketNotifiers->watchFor(e->event.dcc_new);
-
-	e->event.dcc_new = 0;
-}
-
 void DccManager::handleEventDcc7New(struct gg_event *e)
 {
 	kdebugf();
@@ -380,7 +252,7 @@ void DccManager::handleEventDcc7Accept(struct gg_event *e)
 
 	foreach (DccSocketNotifiers *socketNotifiers, SocketNotifiers)
 	{
-		if (socketNotifiers->Socket7 == e->event.dcc7_accept.dcc7)
+		if (socketNotifiers->hasSocket(e->event.dcc7_accept.dcc7))
 		{
 			socketNotifiers->handleEventDcc7Accept(e);
 			return;
@@ -394,7 +266,7 @@ void DccManager::handleEventDcc7Reject(struct gg_event *e)
 
 	foreach (DccSocketNotifiers *socketNotifiers, SocketNotifiers)
 	{
-		if (socketNotifiers->Socket7 == e->event.dcc7_accept.dcc7)
+		if (socketNotifiers->hasSocket(e->event.dcc7_accept.dcc7))
 		{
 			socketNotifiers->handleEventDcc7Reject(e);
 			return;
@@ -434,42 +306,9 @@ void DccManager::fileTransferHandlerDestroyed(QObject *object)
 	WaitingFileTransfers.removeAll(static_cast<GaduFileTransferHandler *>(object));
 }
 
-void DccManager::attachSendFileTransferSocket6(UinType uin, Contact contact, GaduFileTransferHandler *handler)
+void DccManager::attachSendFileTransferSocket(GaduFileTransferHandler *handler)
 {
-	kdebugf();
-
-	if (contact.isNull())
-		return;
-
-	GaduContactDetails *details = Protocol->gaduContactDetails(contact);
-	if (!details)
-		return;
-
-	int port = contact.port();
-	if (port >= 10)
-	{
-		struct gg_dcc *socket = gg_dcc_send_file(htonl(contact.address().toIPv4Address()), port, uin, details->uin());
-		if (socket)
-		{
-			DccSocketNotifiers *fileTransferNotifiers = new DccSocketNotifiers(Protocol, this);
-			handler->setFileTransferNotifiers(fileTransferNotifiers);
-			fileTransferNotifiers->watchFor(socket);
-			return;
-		}
-	}
-
-	kdebugmf(KDEBUG_INFO | KDEBUG_NETWORK, "needs callback\n");
-
-// startTimeOut
-	connect(handler, SIGNAL(destroyed(QObject *)), this, SLOT(fileTransferHandlerDestroyed(QObject *)));
-	WaitingFileTransfers << handler;
-	gg_dcc_request(Protocol->gaduSession(), details->uin());
-}
-
-void DccManager::attachSendFileTransferSocket7(Contact contact, GaduFileTransferHandler *handler)
-{
-	kdebugf();
-
+	Contact contact = handler->transfer().peer();
 	if (contact.isNull())
 		return;
 
@@ -493,62 +332,3 @@ void DccManager::attachSendFileTransferSocket7(Contact contact, GaduFileTransfer
 	else
 		handler->socketNotAvailable();
 }
-
-void DccManager::attachSendFileTransferSocket(GaduFileTransferHandler *handler)
-{
-	Contact contact = handler->transfer().peer();
-	if (contact.isNull())
-		return;
-
-	GaduContactDetails *details = Protocol->gaduContactDetails(contact);
-	if (!details)
-		return;
-
-	GaduAccountDetails *account = dynamic_cast<GaduAccountDetails *>(Protocol->account().details());
-	if (!account)
-		return;
-
-	DccVersion version = (details->gaduProtocolVersion() & 0x0000ffff) >= 0x29
-		? Dcc7
-		: Dcc6;
-
-	switch (version)
-	{
-		case Dcc6:
-			attachSendFileTransferSocket6(account->uin(), contact, handler);
-			break;
-
-		case Dcc7:
-			attachSendFileTransferSocket7(contact, handler);
-			break;
-
-		case DccUnknown:
-			// do nothing
-			break;
-	}
-}
-
-/*void DccManager::getVoiceSocket(quint32 ip, quint16 port, UinType myUin, UinType peerUin, DccHandler *handler, bool request)
-{
-	kdebugf();
-
-	if ((port >= 10) && !request)
-	{
-
-		struct gg_dcc *sock = gg_dcc_voice_chat(htonl(ip), port, myUin, peerUin);
-
-		if (sock)
-		{
-			DccSocket *result = new DccSocket(this, sock);
-			result->setHandler(handler);
-			return;
-		}
-	}
-
-	startTimeout();
-	requests.insert(peerUin, handler);
-	Protocol->dccRequest(peerUin);
-
-	kdebugf2();
-}*/
-

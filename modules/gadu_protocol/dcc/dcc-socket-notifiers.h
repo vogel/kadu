@@ -50,35 +50,19 @@ class /*GADU_LOCAL*/ DccSocketNotifiers : public GaduSocketNotifiers
 
 	GaduProtocol *Protocol;
 
-	friend class DccManager;
 	DccManager *Manager;
 
 	GaduFileTransferHandler *FileTransferHandler;
 
-	DccVersion Version;
-	struct gg_dcc *Socket;
 	struct gg_dcc7 *Socket7;
-	int *DccCheckField;
 
 	void accepted();
 	void rejected();
 	void finished(bool ok);
 
-	void handleEventDccError(struct gg_event *e);
-	void handleEventDccDone(struct gg_event *e);
-	void handleEventDccClientAccept(struct gg_event *e);
-	void handleEventDccCallback(struct gg_event *e);
-	void handleEventDccNeedFileInfo(struct gg_event *e);
-	void handleEventDccNeedFileAck(struct gg_event *e);
-	void handleEventDccNeedVoiceAck(struct gg_event *e);
-	void handleEventDccVoiceData(struct gg_event *e);
-
-	void handleEventDcc7Accept(struct gg_event *e);
-	void handleEventDcc7Reject(struct gg_event *e);
 	void handleEventDcc7Connected(struct gg_event *e);
 	void handleEventDcc7Error(struct gg_event *e);
 	void handleEventDcc7Done(struct gg_event *e);
-	void handleEventDcc7Pending(struct gg_event *e);
 
 private slots:
 	void dcc7Accepted(struct gg_dcc7 *);
@@ -95,14 +79,15 @@ protected:
 	virtual void connectionTimeout();
 
 public:
-	DccSocketNotifiers(GaduProtocol *protocol, DccManager *manager) :
-			GaduSocketNotifiers(manager), Protocol(protocol),
-			Manager(manager), FileTransferHandler(0), Version(DccUnknown),
-			Socket(0), Socket7(0), DccCheckField(0) {}
-	~DccSocketNotifiers();
+	DccSocketNotifiers(GaduProtocol *protocol, DccManager *manager);
+	virtual ~DccSocketNotifiers();
 
-	void watchFor(struct gg_dcc *socket);
 	void watchFor(struct gg_dcc7 *socket);
+	bool hasSocket(struct gg_dcc7 *socket);
+
+	void handleEventDcc7Accept(struct gg_event *e);
+	void handleEventDcc7Reject(struct gg_event *e);
+	void handleEventDcc7Pending(struct gg_event *e);
 
 	UinType peerUin();
 
