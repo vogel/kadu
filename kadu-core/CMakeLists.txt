@@ -635,6 +635,7 @@ set (kadu_MOC_SRCS
 	protocols/services/personal-info-service.h
 	protocols/services/roster-service.h
 	protocols/services/search-service.h
+	protocols/services/typing-notification-service.h
 
 	qt/long-validator.h
 
