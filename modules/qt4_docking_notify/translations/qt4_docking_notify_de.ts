@@ -4,59 +4,79 @@
 <context>
     <name>@default</name>
     <message>
-        <location filename="../qt4_docking_notify.cpp" line="59"/>
+        <location filename="../.configuration-ui-translations.cpp" line="4"/>
+        <source>Notify</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../.configuration-ui-translations.cpp" line="7"/>
+        <source>Notification</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../.configuration-ui-translations.cpp" line="10"/>
         <source>Tray Icon Balloon</source>
         <translation>Sprechblase im Systemabschnitt der Kontrolleiste</translation>
+    </message>
+    <message>
+        <location filename="../.configuration-ui-translations.cpp" line="13"/>
+        <source>Timeout</source>
+        <translation type="unfinished">Timeout</translation>
+    </message>
+    <message>
+        <location filename="../.configuration-ui-translations.cpp" line="16"/>
+        <source>Notification icon</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../.configuration-ui-translations.cpp" line="19"/>
+        <source>No icon</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../.configuration-ui-translations.cpp" line="22"/>
+        <source>Information</source>
+        <translation type="unfinished">Info</translation>
+    </message>
+    <message>
+        <location filename="../.configuration-ui-translations.cpp" line="25"/>
+        <source>Warning</source>
+        <translation type="unfinished">Warnung</translation>
+    </message>
+    <message>
+        <location filename="../.configuration-ui-translations.cpp" line="28"/>
+        <source>Critical</source>
+        <translation type="unfinished">Fehler</translation>
+    </message>
+    <message>
+        <location filename="../.configuration-ui-translations.cpp" line="32"/>
+        <source>Title</source>
+        <translation type="unfinished">Titel</translation>
+    </message>
+    <message>
+        <location filename="../.configuration-ui-translations.cpp" line="35"/>
+        <source>Syntax</source>
+        <translation type="unfinished">Syntax</translation>
     </message>
 </context>
 <context>
     <name>Qt4NotifyConfigurationWidget</name>
     <message>
-        <location filename="../qt4_docking_notify_configuration_widget.cpp" line="26"/>
+        <location filename="../qt4_docking_notify_configuration_widget.cpp" line="44"/>
+        <source>Configure</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qt4_docking_notify_configuration_widget.cpp" line="67"/>
+        <source>Tray icon balloon&apos;s look configuration</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qt4_docking_notify_configuration_widget.cpp" line="74"/>
         <source>
 %&amp;t - title (eg. New message) %&amp;m - notification text (eg. Message from Jim), %&amp;d - details (eg. message quotation),
 %&amp;i - notification icon</source>
         <translation>%&amp;t - Titel (z.B. Neue Nachricht) %&amp;m - Inhalt (z.B. Nachricht von neo), %&amp;d - Details (z.B: Nachrichteninhalt),%&amp;i - Smiley</translation>
-    </message>
-    <message>
-        <location filename="../qt4_docking_notify_configuration_widget.cpp" line="40"/>
-        <source>NoIcon</source>
-        <translation>Kein Symbol</translation>
-    </message>
-    <message>
-        <location filename="../qt4_docking_notify_configuration_widget.cpp" line="40"/>
-        <source>Information</source>
-        <translation>Info</translation>
-    </message>
-    <message>
-        <location filename="../qt4_docking_notify_configuration_widget.cpp" line="40"/>
-        <source>Warning</source>
-        <translation>Warnung</translation>
-    </message>
-    <message>
-        <location filename="../qt4_docking_notify_configuration_widget.cpp" line="40"/>
-        <source>Critical</source>
-        <translation>Fehler</translation>
-    </message>
-    <message>
-        <location filename="../qt4_docking_notify_configuration_widget.cpp" line="50"/>
-        <source>Timeout</source>
-        <translation>Timeout</translation>
-    </message>
-    <message>
-        <location filename="../qt4_docking_notify_configuration_widget.cpp" line="52"/>
-        <source>Notification Icon</source>
-        <translation>Symbol der Benachrichtigung</translation>
-    </message>
-    <message>
-        <location filename="../qt4_docking_notify_configuration_widget.cpp" line="54"/>
-        <source>Title</source>
-        <translation>Titel</translation>
-    </message>
-    <message>
-        <location filename="../qt4_docking_notify_configuration_widget.cpp" line="56"/>
-        <source>Syntax</source>
-        <translation>Syntax</translation>
     </message>
 </context>
 </TS>

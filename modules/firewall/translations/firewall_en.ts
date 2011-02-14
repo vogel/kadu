@@ -1,4 +1,6 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0">
 <context>
     <name>@default</name>
     <message>
@@ -11,10 +13,6 @@
     </message>
     <message>
         <source>Notify</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Enable notification</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -141,10 +139,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>conference</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>flooding DoS attack with emoticons!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -193,10 +187,24 @@ I&apos;m a busy person and I don&apos;t have time for stupid chats. Find another
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>      DATA AND TIME      ::   UIN   :: MESSAGE
+        <source>This message has been generated AUTOMATICALLY!
+
+I&apos;m a busy person and I don&apos;t have time for stupid chats with the persons hiding itself. If you want to talk with me change the status to Online or Busy first.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Chat with invisible anonim ignored.
 </source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>      DATA AND TIME      ::   ID      :: MESSAGE
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>FirewallConfigurationUiHandler</name>
     <message>
         <source>Move to &apos;Secured&apos;</source>
         <translation type="unfinished"></translation>
@@ -214,10 +222,6 @@ I&apos;m a busy person and I don&apos;t have time for stupid chats. Find another
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Message:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>This message will be send to unknown person.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -227,6 +231,21 @@ I&apos;m a busy person and I don&apos;t have time for stupid chats. Find another
     </message>
     <message>
         <source>Answer:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Message:</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>FirewallNotification</name>
+    <message>
+        <source>Message was blocked</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%u writes</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

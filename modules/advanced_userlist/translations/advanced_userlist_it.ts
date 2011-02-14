@@ -1,4 +1,6 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0">
 <context>
     <name>@default</name>
     <message>
@@ -6,12 +8,12 @@
         <translation>Aspetto</translation>
     </message>
     <message>
-        <source>Userbox</source>
-        <translation>Lista contatti</translation>
-    </message>
-    <message>
         <source>Sorting</source>
         <translation>Ordinare</translation>
+    </message>
+    <message>
+        <source>Buddy List</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

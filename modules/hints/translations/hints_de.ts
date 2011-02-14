@@ -12,18 +12,6 @@
         <translation>Aussehen</translation>
     </message>
     <message>
-        <source>Userbox</source>
-        <translation>Kontakt-Liste</translation>
-    </message>
-    <message>
-        <source>General</source>
-        <translation>Allgemein</translation>
-    </message>
-    <message>
-        <source>Hints over userlist</source>
-        <translation>Hinweise über der Kontakt-Liste</translation>
-    </message>
-    <message>
         <source>Notifications</source>
         <translation>Benachrichtigungen</translation>
     </message>
@@ -88,10 +76,6 @@
         <translation>Maximale Breite</translation>
     </message>
     <message>
-        <source>Set for all</source>
-        <translation>Für alle setzen</translation>
-    </message>
-    <message>
         <source>Hints position preview</source>
         <translation>Vorschau der Hinweis-Position</translation>
     </message>
@@ -114,10 +98,6 @@
     <message>
         <source>Font</source>
         <translation>Schriftart</translation>
-    </message>
-    <message>
-        <source>Mouse buttons</source>
-        <translation>Maustasten</translation>
     </message>
     <message>
         <source>Left button</source>
@@ -148,10 +128,6 @@
         <translation>Rechte Taste</translation>
     </message>
     <message>
-        <source>New chat/message</source>
-        <translation>Neues Chat / neue Nachricht</translation>
-    </message>
-    <message>
         <source>Show message content in hint</source>
         <translation>Zeige Nachrichteninhalt im Hinweis</translation>
     </message>
@@ -167,6 +143,74 @@
         <source>&apos;Open chat&apos; works on all events</source>
         <translation>&apos;Öffne Chat-Fenster&apos;  funktioniert mit allen Ereignissen</translation>
     </message>
+    <message>
+        <source>Buddy List</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hint Over Buddy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Border color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Border width</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transparency</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mouse Buttons</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Syntax</source>
+        <translation type="unfinished">Syntax</translation>
+    </message>
+    <message>
+        <source>Icon size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>16px</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>22px</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>32px</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>48px</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>64px</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show buttons only when necessary</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New Chat/Message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Advanced</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Advanced...</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>HintManager</name>
@@ -174,9 +218,31 @@
         <source>[&lt;i&gt;%s&lt;/i&gt;&lt;br/&gt;][&lt;br/&gt;&lt;b&gt;Description:&lt;/b&gt;&lt;br/&gt;%d&lt;br/&gt;&lt;br/&gt;][&lt;i&gt;Mobile:&lt;/i&gt; &lt;b&gt;%m&lt;/b&gt;&lt;br/&gt;]</source>
         <translation>[&lt;i&gt;%s&lt;/i&gt;&lt;br/&gt;][&lt;br/&gt;&lt;b&gt;Beschreibung:&lt;/b&gt;&lt;br/&gt;%d&lt;br/&gt;&lt;br/&gt;][&lt;i&gt;Handy:&lt;/i&gt; &lt;b&gt;%m&lt;/b&gt;&lt;br/&gt;]</translation>
     </message>
+</context>
+<context>
+    <name>HintOverUserConfigurationWindow</name>
     <message>
-        <source>Dont hide</source>
-        <translation>Nicht verstecken</translation>
+        <source>Hint Over Buddy Configuration</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Update preview</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Syntax</source>
+        <translation type="unfinished">Syntax</translation>
+    </message>
+</context>
+<context>
+    <name>HintsConfigurationUiHandler</name>
+    <message>
+        <source>Configure</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Advenced hints&apos;s configuration</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -186,32 +252,19 @@
         <translation>&lt;b&gt;Vorschau&lt;/b&gt; Text</translation>
     </message>
     <message>
-        <source>Font</source>
-        <translation>Schriftart</translation>
+        <source>Configure</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>HintsConfigurationWindow</name>
+    <message>
+        <source>Hints configuration</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Font color</source>
-        <translation>Schriftfarbe</translation>
-    </message>
-    <message>
-        <source>Background color</source>
-        <translation>Hintergrundfarbe</translation>
-    </message>
-    <message>
-        <source>Timeout</source>
-        <translation>Timeout</translation>
-    </message>
-    <message>
-        <source>Syntax</source>
-        <translation>Syntax</translation>
-    </message>
-    <message>
-        <source>Uncheck &apos;Set to all&apos; in &apos;Hints&apos; page to edit these values</source>
-        <translation>Enfernen Sie die Auswahl bei &apos;Setze für alle&apos; in &apos;Hinweise&apos;, um den Inhalt der Hinweise ändern zu können</translation>
-    </message>
-    <message>
-        <source>Dont hide</source>
-        <translation>Nicht verstecken</translation>
+        <source>Don&apos;t hide</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

@@ -2,13 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.0" language="de_DE">
 <context>
-    <name></name>
-    <message>
-        <source>Chat</source>
-        <translation>Chat</translation>
-    </message>
-</context>
-<context>
     <name>@default</name>
     <message>
         <source>Messages</source>
@@ -21,6 +14,10 @@
     <message>
         <source>Split too long messages</source>
         <translation>Zu lange Nachrichten aufteilen</translation>
+    </message>
+    <message>
+        <source>Chat</source>
+        <translation type="unfinished">Chat</translation>
     </message>
 </context>
 </TS>

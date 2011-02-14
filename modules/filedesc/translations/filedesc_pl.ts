@@ -1,4 +1,6 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0">
 <context>
     <name>@default</name>
     <message>
@@ -24,6 +26,14 @@
     <message>
         <source>Allows you to set some custom description manualy, until file contents doesn&apos;t change</source>
         <translation>Pozwala na ustawienie dowolnego opisu ręcznie, dopóki zawartość pliku nie ulegnie zmianie</translation>
+    </message>
+    <message>
+        <source>Status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>FileDesc</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

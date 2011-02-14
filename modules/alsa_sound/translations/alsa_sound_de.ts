@@ -12,12 +12,12 @@
         <translation>Klang</translation>
     </message>
     <message>
-        <source>Output device</source>
-        <translation>Ausgabe-Gerät</translation>
-    </message>
-    <message>
         <source>ALSA device</source>
         <translation>ALSA-Gerät</translation>
+    </message>
+    <message>
+        <source>Output Device</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

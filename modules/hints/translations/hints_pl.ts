@@ -145,11 +145,11 @@
     </message>
     <message>
         <source>Buddy List</source>
-		<translation>Lista znajomych</translation>
+        <translation>Lista znajomych</translation>
     </message>
     <message>
         <source>Hint Over Buddy</source>
-		<translation>Dymek nad listą znajomych</translation>
+        <translation>Dymek nad listą znajomych</translation>
     </message>
     <message>
         <source>Border color</source>
@@ -195,6 +195,22 @@
         <source>New Chat/Message</source>
         <translation>Nowa rozmowa lub wiadomość</translation>
     </message>
+    <message>
+        <source>16px</source>
+        <translation type="unfinished">64px {16p?}</translation>
+    </message>
+    <message>
+        <source>48px</source>
+        <translation type="unfinished">64px {48p?}</translation>
+    </message>
+    <message>
+        <source>Advanced</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Advanced...</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>HintManager</name>
@@ -207,7 +223,7 @@
     <name>HintOverUserConfigurationWindow</name>
     <message>
         <source>Hint Over Buddy Configuration</source>
-		<translation>Dymek nad listą znajomych</translation>
+        <translation>Dymek nad listą znajomych</translation>
     </message>
     <message>
         <source>Update preview</source>
@@ -223,6 +239,10 @@
     <message>
         <source>Configure</source>
         <translation>Konfiguruj</translation>
+    </message>
+    <message>
+        <source>Advenced hints&apos;s configuration</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -243,8 +263,8 @@
         <translation>Konfiguracja dymków</translation>
     </message>
     <message>
-        <source>Dont hide</source>
-        <translation>Nie ukrywaj</translation>
+        <source>Don&apos;t hide</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

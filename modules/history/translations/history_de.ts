@@ -4,268 +4,257 @@
 <context>
     <name>@default</name>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="53"/>
+        <location filename="../.configuration-ui-translations.cpp" line="4"/>
+        <location filename="../.configuration-ui-translations.cpp" line="55"/>
         <source>Chat</source>
         <translation>Chat</translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="6"/>
+        <location filename="../.configuration-ui-translations.cpp" line="7"/>
         <source>History</source>
         <translation>Verlauf</translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="9"/>
+        <location filename="../.configuration-ui-translations.cpp" line="10"/>
+        <source>Chats History</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../.configuration-ui-translations.cpp" line="18"/>
+        <source>Save chats with anonymous users</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../.configuration-ui-translations.cpp" line="22"/>
+        <source>Status Changes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../.configuration-ui-translations.cpp" line="30"/>
+        <source>Save status only with description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../.configuration-ui-translations.cpp" line="34"/>
+        <source>Quotation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../.configuration-ui-translations.cpp" line="37"/>
+        <source>Quote message in chat window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../.configuration-ui-translations.cpp" line="40"/>
+        <source>Don&apos;t quote messages older than</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../.configuration-ui-translations.cpp" line="52"/>
         <source>General</source>
         <translation>Allgemein</translation>
     </message>
     <message>
+        <location filename="../.configuration-ui-translations.cpp" line="13"/>
+        <location filename="../.configuration-ui-translations.cpp" line="15"/>
         <source>Save messages in history</source>
         <translation>Im Verlauf speichern</translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="18"/>
-        <source>Status changes</source>
-        <translation>Zustandänderungen</translation>
-    </message>
-    <message>
-        <source>Show status changes</source>
-        <translation>Zustandänderungen anzeigen</translation>
-    </message>
-    <message>
-        <source>Show status changes in history</source>
-        <translation>Zustandänderungen im Verlauf</translation>
-    </message>
-    <message>
+        <location filename="../.configuration-ui-translations.cpp" line="25"/>
         <source>Save status changes</source>
         <translation>Zustandänderungen speichern</translation>
     </message>
     <message>
+        <location filename="../.configuration-ui-translations.cpp" line="27"/>
         <source>Save status changes in history</source>
         <translation>Zustandänderungen werden im Verlauf gespeichert</translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="32"/>
-        <source>Citation</source>
-        <translation>Zitieren</translation>
-    </message>
-    <message>
-        <location filename="../.configuration-ui-translations.cpp" line="35"/>
-        <source>Message citation in chat window</source>
-        <translation>Im Chat-Fenster zitieren</translation>
-    </message>
-    <message>
-        <location filename="../.configuration-ui-translations.cpp" line="38"/>
-        <source>Don&apos;t cite messages older than</source>
-        <translation>Nur Nachrichen zitieren, die ncht älter sind als</translation>
-    </message>
-    <message>
-        <location filename="../.configuration-ui-translations.cpp" line="41"/>
+        <location filename="../.configuration-ui-translations.cpp" line="43"/>
         <source>.</source>
         <translation>.</translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="47"/>
+        <location filename="../.configuration-ui-translations.cpp" line="49"/>
         <source>Shortcuts</source>
         <translation>Tastenkürzel</translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="56"/>
+        <location filename="../.configuration-ui-translations.cpp" line="58"/>
         <source>View history</source>
         <translation>Verlauf zeigen</translation>
     </message>
 </context>
 <context>
-    <name>HistoryDialog</name>
+    <name>BuddyStatusDatesModel</name>
     <message>
-        <location filename="../history_dialog.cpp" line="77"/>
-        <source>History</source>
-        <translation>Verlauf</translation>
+        <location filename="../model/buddy-status-dates-model.cpp" line="62"/>
+        <source>Date</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../history_dialog.cpp" line="98"/>
-        <source>&amp;Find</source>
-        <translation>&amp;Suchen</translation>
-    </message>
-    <message>
-        <location filename="../history_dialog.cpp" line="99"/>
-        <source>Find &amp;next</source>
-        <translation>&amp;Nächsten finden</translation>
-    </message>
-    <message>
-        <location filename="../history_dialog.cpp" line="100"/>
-        <source>Find &amp;previous</source>
-        <translation>&amp;Vorherigen finden</translation>
-    </message>
-    <message>
-        <location filename="../history_dialog.cpp" line="216"/>
-        <source>Online</source>
-        <translation>Erreichbar</translation>
-    </message>
-    <message>
-        <location filename="../history_dialog.cpp" line="220"/>
-        <source>Busy</source>
-        <translation>Beschäftigt</translation>
-    </message>
-    <message>
-        <location filename="../history_dialog.cpp" line="224"/>
-        <source>Invisible</source>
-        <translation>Unsichtbar</translation>
-    </message>
-    <message>
-        <location filename="../history_dialog.cpp" line="228"/>
-        <source>Offline</source>
-        <translation>Offline</translation>
-    </message>
-    <message>
-        <location filename="../history_dialog.cpp" line="84"/>
-        <source>Uins</source>
-        <translation>Nummern GG</translation>
-    </message>
-    <message>
-        <location filename="../history_dialog.cpp" line="91"/>
-        <source>Show status changes</source>
-        <translation>Zeige Zustandänderungen</translation>
-    </message>
-    <message>
-        <location filename="../history_dialog.cpp" line="231"/>
-        <source>Unknown</source>
-        <translation>Unbekannt</translation>
+        <location filename="../model/buddy-status-dates-model.cpp" line="63"/>
+        <source>Length</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>HistoryManager</name>
+    <name>ChatDatesModel</name>
     <message>
-        <location filename="../history.cpp" line="324"/>
-        <source>Clear history?</source>
-        <translation>Verlauf leeren?</translation>
+        <location filename="../model/chat-dates-model.cpp" line="65"/>
+        <source>Chat</source>
+        <translation type="unfinished">Chat</translation>
     </message>
     <message>
-        <location filename="../history.cpp" line="325"/>
-        <source>Yes</source>
-        <translation>Ja</translation>
+        <location filename="../model/chat-dates-model.cpp" line="66"/>
+        <source>Title</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../history.cpp" line="325"/>
-        <source>No</source>
-        <translation>No</translation>
+        <location filename="../model/chat-dates-model.cpp" line="67"/>
+        <source>Date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../model/chat-dates-model.cpp" line="68"/>
+        <source>Length</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>HistoryModule</name>
+    <name>History</name>
     <message>
-        <location filename="../sql_history.cpp" line="75"/>
-        <source>Show history</source>
-        <translation>Verlauf zeigen</translation>
+        <location filename="../history.cpp" line="148"/>
+        <source>View Chat History</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../sql_history.cpp" line="335"/>
-        <source>History</source>
-        <translation>Verlauf</translation>
-    </message>
-    <message>
-        <location filename="../sql_history.cpp" line="336"/>
+        <location filename="../history.cpp" line="157"/>
         <source>Clear History</source>
-        <translation>Verlauf leeren</translation>
+        <translation type="unfinished">Verlauf leeren</translation>
     </message>
     <message>
-        <location filename="../sql_history.cpp" line="140"/>
+        <location filename="../history.cpp" line="202"/>
+        <source>Show last %1 messages</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../history.cpp" line="206"/>
+        <source>Show messages since yesterday</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../history.cpp" line="207"/>
+        <source>Show messages from last 7 days</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../history.cpp" line="208"/>
+        <source>Show messages from last 30 days</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../history.cpp" line="209"/>
+        <source>Show whole history</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../history.cpp" line="448"/>
         <source>%1 day(s) %2 hour(s)</source>
-        <translation>Tage: %1 Stunden: %2</translation>
-    </message>
-    <message>
-        <location filename="../sql_history.cpp" line="354"/>
-        <source>The following users were deleted:
-%0Do you want to remove history as well?</source>
-        <translation>Folgende Kontakte wurden entfernt:
-%0Soll auch der Verlauf bereinigt werden?</translation>
+        <translation type="unfinished">Tage: %1 Stunden: %2</translation>
     </message>
 </context>
 <context>
-    <name>HistorySearchDialog</name>
+    <name>HistoryChatsModel</name>
     <message>
-        <location filename="../history_search_dialog.cpp" line="39"/>
-        <source>Search history</source>
-        <translation>Verlauf durchsuchen</translation>
+        <location filename="../model/history-chats-model.cpp" line="165"/>
+        <source>Statuses</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../history_search_dialog.cpp" line="67"/>
-        <source>&amp;From:</source>
-        <translation>&amp;Von:</translation>
+        <location filename="../model/history-chats-model.cpp" line="195"/>
+        <source>SMSes</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>HistoryWindow</name>
+    <message>
+        <location filename="../gui/windows/history-window.cpp" line="79"/>
+        <source>History</source>
+        <translation type="unfinished">Verlauf</translation>
     </message>
     <message>
-        <location filename="../history_search_dialog.cpp" line="90"/>
-        <source>day</source>
-        <translation>Tag</translation>
+        <location filename="../gui/windows/history-window.cpp" line="88"/>
+        <source>&amp;Remove entries</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../history_search_dialog.cpp" line="93"/>
-        <source>month</source>
-        <translation>Monat</translation>
+        <location filename="../gui/windows/history-window.cpp" line="185"/>
+        <source>Search</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../history_search_dialog.cpp" line="96"/>
-        <source>year</source>
-        <translation>Jahr</translation>
+        <location filename="../gui/windows/history-window.cpp" line="191"/>
+        <source>by date</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../history_search_dialog.cpp" line="99"/>
-        <source>hour</source>
-        <translation>Stunde</translation>
+        <location filename="../gui/windows/history-window.cpp" line="195"/>
+        <source>From</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../history_search_dialog.cpp" line="102"/>
-        <source>minute</source>
-        <translation>Minute</translation>
+        <location filename="../gui/windows/history-window.cpp" line="205"/>
+        <source>To</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../history_search_dialog.cpp" line="86"/>
-        <source>&amp;To:</source>
-        <translation>&amp;Bis:</translation>
+        <location filename="../gui/windows/history-window.cpp" line="627"/>
+        <source>&amp;Clear Chat History</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../history_search_dialog.cpp" line="104"/>
-        <source>Find Criteria</source>
-        <translation>Suchkriterien</translation>
+        <location filename="../gui/windows/history-window.cpp" line="641"/>
+        <source>&amp;Clear Status History</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../history_search_dialog.cpp" line="105"/>
-        <source>&amp;Pattern</source>
-        <translation>&amp;Muster</translation>
+        <location filename="../gui/windows/history-window.cpp" line="654"/>
+        <source>&amp;Clear SMS History</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../history_search_dialog.cpp" line="106"/>
-        <source>&amp;Status</source>
-        <translation>&amp;Zustand</translation>
+        <location filename="../gui/windows/history-window.cpp" line="689"/>
+        <source>Kadu</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../history_search_dialog.cpp" line="112"/>
-        <source>Pattern</source>
-        <translation>Muster</translation>
+        <location filename="../gui/windows/history-window.cpp" line="689"/>
+        <source>There is no history storage module loaded!</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>QApplication</name>
+    <message>
+        <location filename="../buddy-history-delete-handler.cpp" line="63"/>
+        <source>Chat history</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SmsDatesModel</name>
+    <message>
+        <location filename="../model/sms-dates-model.cpp" line="62"/>
+        <source>Date</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../history_search_dialog.cpp" line="114"/>
-        <source>Status</source>
-        <translation>Zustand</translation>
-    </message>
-    <message>
-        <location filename="../history_search_dialog.cpp" line="119"/>
-        <source>&amp;Reverse find</source>
-        <translation>&amp;Rückwärtssuchen</translation>
-    </message>
-    <message>
-        <location filename="../history_search_dialog.cpp" line="121"/>
-        <source>&amp;Find</source>
-        <translation>&amp;Finden</translation>
-    </message>
-    <message>
-        <location filename="../history_search_dialog.cpp" line="122"/>
-        <source>Reset</source>
-        <translation>Leeren</translation>
-    </message>
-    <message>
-        <location filename="../history_search_dialog.cpp" line="123"/>
-        <source>&amp;Cancel</source>
-        <translation>&amp;Abbrechen</translation>
+        <location filename="../model/sms-dates-model.cpp" line="63"/>
+        <source>Length</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

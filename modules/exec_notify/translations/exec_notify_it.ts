@@ -1,16 +1,4 @@
-<!DOCTYPE TS><TS>
-<context>
-    <name>@default</name>
-    <message>
-        <source>Exec</source>
-        <translation>Avvia</translation>
-    </message>
-</context>
-<context>
-    <name>ExecConfigurationWidget</name>
-    <message>
-        <source>Command</source>
-        <translation>Comando</translation>
-    </message>
-</context>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0">
 </TS>

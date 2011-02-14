@@ -1,4 +1,6 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0">
 <context>
     <name>@default</name>
     <message>
@@ -54,9 +56,36 @@ Arguments should be separated with spaces. %n argument is converted to number, %
         <source>Send SMS</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>SMS Era Gateway</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sponsored</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OmnixMultimedia</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User ID (48xxxxxxxxx)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Password</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
-    <name>Sms</name>
+    <name>SmsActions</name>
+    <message>
+        <source>Send SMS...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SmsDialog</name>
     <message>
         <source>Send SMS</source>
         <translation type="unfinished"></translation>
@@ -66,7 +95,15 @@ Arguments should be separated with spaces. %n argument is converted to number, %
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Contact</source>
+        <source>Select automatically</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>GSM provider</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Content</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -82,50 +119,30 @@ Arguments should be separated with spaces. %n argument is converted to number, %
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Sms application was not specified. Visit the configuration section</source>
+        <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Clear</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Kadu</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SMS application was not specified. Visit the configuration section</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SmsExternalSender</name>
     <message>
         <source>Could not spawn child process. Check if the program is functional</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>The process exited normally. The SMS should be on its way</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>The process exited abnormally. The SMS may not be sent</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>The SMS was sent and should be on its way.
-Do you want to send next message?</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>SmsConfigurationUiHandler</name>
-    <message>
-        <source>Send SMS</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Up</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Down</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Gateways priorites</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>SmsGateway</name>
-    <message>
-        <source>Network error. Provider gateway page is probably unavailable</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -143,9 +160,17 @@ Do you want to send next message?</source>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>SMS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to fetch required token</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
-    <name>SmsSender</name>
+    <name>SmsInternalSender</name>
     <message>
         <source>Mobile number is incorrect</source>
         <translation type="unfinished"></translation>
@@ -155,7 +180,26 @@ Do you want to send next message?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Mobile number is incorrect or gateway is not available</source>
+        <source>Automatic gateway selection is not available. Please select SMS gateway manually.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SmsProgressWindow</name>
+    <message>
+        <source>Sending SMS in progress.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enter text from the picture:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ok</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SMS sent successfully</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

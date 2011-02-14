@@ -15,5 +15,13 @@
         <source>Usually: org.mpris.&lt;player name&gt; (eg. org.mpris.audacious) but for amarok is org.kde.amarok</source>
         <translation>Üblicherweise: org.mpris.&lt;Programmname&gt; (np. org.mpris.audacious) aber für amarok org.kde.amarok</translation>
     </message>
+    <message>
+        <source>MediaPlayer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>General</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>

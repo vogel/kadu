@@ -27,5 +27,13 @@
         <source>Allows you to set some custom description manualy, until file contents doesn&apos;t change</source>
         <translation>Erlaubt es, eine Beschreibung per Hand zu setzen, solange der Inhalt der Datei unverändert bleibt</translation>
     </message>
+    <message>
+        <source>Status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>FileDesc</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>

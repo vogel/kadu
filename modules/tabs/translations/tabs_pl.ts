@@ -1,4 +1,6 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0">
 <context>
     <name>@default</name>
     <message>
@@ -46,32 +48,32 @@
         <translation>Zamykanie kart przyciskiem z paska tytułowego</translation>
     </message>
     <message>
-        <source>Show &quot;New Tab&quot; button</source>
-        <translation>Pokaż przycisk otwierania nowej karty</translation>
-    </message>
-    <message>
-        <source>Show &quot;Close current Tab&quot; button</source>
-        <translation>Pokaż przycisk zamykania aktywnej karty</translation>
-    </message>
-    <message>
         <source>&lt;nobr&gt;&lt;b&gt;Warning: This option has know bug!&lt;/b&gt;&lt;/nobr&gt;&lt;br&gt;If there is open more than one tab then exiting from KDE will be stopped by this module.</source>
         <translation>&lt;nobr&gt;&lt;b&gt;Ostrzeżenie: Ta opcja zawiera znany błąd!&lt;/b&gt;&lt;/nobr&gt;&lt;br&gt;Jeśli jest otwarta więcej niż jedna karta to próba wyjścia z KDE zostanie przerwana przez ten moduł.</translation>
     </message>
     <message>
-        <source>Close button on each tab</source>
-        <translation>Pokaż przycisk zamykania na kartach</translation>
+        <source>Chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>General</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Look</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show Close button on each tab</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shortcuts</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>TabsManager</name>
-    <message>
-        <source>Open in new tab</source>
-        <translation>Otwórz w nowej karcie</translation>
-    </message>
-    <message>
-        <source>Open in new window</source>
-        <translation>Otwórz w nowym oknie</translation>
-    </message>
     <message>
         <source>NEW MESSAGE(S)</source>
         <translation>-&gt; COŚ NOWEGO &lt;-</translation>
@@ -93,16 +95,20 @@
         <translation>Zamknij wszystkie</translation>
     </message>
     <message>
-        <source>Attach chat to tabs</source>
-        <translation>Dołącz rozmowę do kart</translation>
-    </message>
-    <message>
-        <source>Detach chat from tabs</source>
-        <translation>Odłącz rozmowę od kart</translation>
-    </message>
-    <message>
         <source>Conference [%1]</source>
         <translation>Konferencja [%1]</translation>
+    </message>
+    <message>
+        <source>Chat in New Window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Chat in New Tab</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Attach Chat to Tabs</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

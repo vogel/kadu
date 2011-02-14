@@ -2,6 +2,21 @@
 <!DOCTYPE TS>
 <TS version="2.0" language="de_DE">
 <context>
+    <name>@default</name>
+    <message>
+        <source>Words fix</source>
+        <translation>Wort-Korrentor</translation>
+    </message>
+    <message>
+        <source>Enable word fix</source>
+        <translation>Korrektur einschalten</translation>
+    </message>
+    <message>
+        <source>Chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>WordFix</name>
     <message>
         <source>A word to be replaced</source>
@@ -30,17 +45,6 @@
     <message>
         <source>Replace with</source>
         <translation>Ersetzen mit</translation>
-    </message>
-</context>
-<context>
-    <name>@default</name>
-    <message>
-        <source>Words fix</source>
-        <translation>Wort-Korrentor</translation>
-    </message>
-    <message>
-        <source>Enable word fix</source>
-        <translation>Korrektur einschalten</translation>
     </message>
 </context>
 </TS>

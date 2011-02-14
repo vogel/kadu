@@ -27,8 +27,8 @@
 <context>
     <name>AutoHide</name>
     <message>
-        <source>Dont hide</source>
-        <translation>Nie ukrywaj</translation>
+        <source>Don&apos;t hide</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

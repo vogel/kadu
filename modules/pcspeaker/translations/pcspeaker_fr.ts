@@ -1,4 +1,6 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0">
 <context>
     <name>@default</name>
     <message>
@@ -27,7 +29,7 @@
     </message>
     <message>
         <source>Test</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Test</translation>
     </message>
     <message>
         <source>On chat play</source>
@@ -48,14 +50,6 @@
 </context>
 <context>
     <name>PCSpeakerConfigurationWidget</name>
-    <message>
-        <source>On notify play</source>
-        <translation type="obsolete">Przy powiadomieniu odegraj</translation>
-    </message>
-    <message>
-        <source>Test</source>
-        <translation type="obsolete">Test</translation>
-    </message>
     <message>
         <source>Put the played sounds separate by space, _ for pause, eg. D2 C1# G0</source>
         <translation type="unfinished"></translation>

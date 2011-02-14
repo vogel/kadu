@@ -1,4 +1,6 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0">
 <context>
     <name>@default</name>
     <message>
@@ -50,6 +52,14 @@
 
 Description:
 %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show Pending Messages</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Exit Kadu</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

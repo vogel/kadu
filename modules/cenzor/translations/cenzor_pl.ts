@@ -1,50 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS><TS version="1.1" language="pl">
-<defaultcodec></defaultcodec>
+<!DOCTYPE TS>
+<TS version="2.0" language="pl">
 <context>
-    <name>Cenzor</name>
+    <name>CenzorNotification</name>
     <message>
-        <source>Add</source>
-        <translation>Dodaj</translation>
-    </message>
-    <message>
-        <source>Change</source>
-        <translation>Zmień</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation>Usuń</translation>
+        <source>Message was cenzored</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Your interlocutor used obscene word and became admonished</source>
-        <translation>Twój rozmówca Przeklina i został upomniany</translation>
-    </message>
-    <message>
-        <source>Cenzor: Watch your mouth!! &lt;nonono&gt;</source>
-        <translation>Cenzor: Licz się ze słowami!! &lt;nonono&gt;</translation>
+        <translation type="unfinished">Twój rozmówca Przeklina i został upomniany</translation>
     </message>
 </context>
 <context>
-    <name>@default</name>
+    <name>ListEditWidget</name>
     <message>
-        <source>Enable cenzor</source>
-        <translation>Włącz cenzora</translation>
+        <source>Add</source>
+        <translation type="unfinished">Dodaj</translation>
     </message>
     <message>
-        <source>Admonition:</source>
-        <translation>Pouczenie:</translation>
+        <source>Change</source>
+        <translation type="unfinished">Zmień</translation>
     </message>
     <message>
-        <source>Swearwords</source>
-        <translation>Przekleństwa</translation>
-    </message>
-    <message>
-        <source>Exclusions</source>
-        <translation>Wyjątki</translation>
-    </message>
-    <message>
-        <source>Admonition</source>
-        <translation>Pouczenie</translation>
+        <source>Delete</source>
+        <translation type="unfinished">Usuń</translation>
     </message>
 </context>
 </TS>

@@ -1,4 +1,6 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0">
 <context>
     <name>@default</name>
     <message>
@@ -6,15 +8,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Autoresponder</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Options</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Autoanswer text</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -23,10 +17,6 @@
     </message>
     <message>
         <source>Respond to conferences</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Choose status</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -39,6 +29,18 @@
     </message>
     <message>
         <source>Status available</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Auto Responder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Auto answer text</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose Status</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

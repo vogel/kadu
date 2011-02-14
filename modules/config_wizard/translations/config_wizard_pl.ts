@@ -21,110 +21,26 @@
     </message>
 </context>
 <context>
-    <name>ConfigWizardApplicationsAndSoundPage</name>
+    <name>ConfigWizardChooseNetworkPage</name>
     <message>
-        <source>&lt;p&gt;Please specify the default browser and e-mail program to be used with Kadu.&lt;/p&gt;&lt;p&gt;Kadu will use these programs to open links from chat messages and user descriptions.&lt;/p&gt;&lt;p&gt;Also, please select your sound driver for sound notifications.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Proszę ustawić programy do współpracy Kadu ze stronami WWW i pocztą e-mail.&lt;/p&gt;&lt;p&gt;Kadu będzie ich używac do otwierania linków z wiadomości i opisów użytkowników.&lt;/p&gt;&lt;p&gt;Proszę wybrać także  odpowiedni system dźwięku dla powiadomień sygnałami dźwiękowymi.&lt;/p&gt;</translation>
+        <source>&lt;h3&gt;Account Setup&lt;/h3&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&lt;h3&gt;Applications and sound&lt;/h3&gt;</source>
-        <translation>&lt;h3&gt;Aplikacje i dźwięki&lt;/h3&gt;</translation>
+        <source>IM Network</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&lt;b&gt;Web and E-Mail&lt;/b&gt;</source>
-        <translation>&lt;b&gt;Przeglądarka WWW i klient pocztyl&lt;/b&gt;</translation>
+        <source>I want to set up existing account for Kadu</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Web Browser</source>
-        <translation>Wybierz przeglądarkę</translation>
+        <source>I want to create new account for Kadu</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Web Browser Executable</source>
-        <translation>Własny wybór</translation>
-    </message>
-    <message>
-        <source>E-Mail Application</source>
-        <translation>Wybierz swojego klienta e-mail</translation>
-    </message>
-    <message>
-        <source>E-Mail Application Executable</source>
-        <translation>Własny wybór</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Sound&lt;/b&gt;</source>
-        <translation>&lt;b&gt;Dźwięki&lt;/b&gt;</translation>
-    </message>
-    <message>
-        <source>Sound driver</source>
-        <translation>System dźwiękowy</translation>
-    </message>
-    <message>
-        <source>Test ...</source>
-        <translation>Test dźwięku...</translation>
-    </message>
-    <message>
-        <source>- Select Browser -</source>
-        <translation>- Wybierz przeglądarkę -</translation>
-    </message>
-    <message>
-        <source>Konqueror</source>
-        <translation>Konqueror</translation>
-    </message>
-    <message>
-        <source>Opera</source>
-        <translation>Opera</translation>
-    </message>
-    <message>
-        <source>Opera (new tab)</source>
-        <translation>Opera (nowa karta)</translation>
-    </message>
-    <message>
-        <source>SeaMonkey</source>
-        <translation>SeaMonkey</translation>
-    </message>
-    <message>
-        <source>Mozilla</source>
-        <translation>Mozilla</translation>
-    </message>
-    <message>
-        <source>Mozilla Firefox</source>
-        <translation>Mozilla Firefox</translation>
-    </message>
-    <message>
-        <source>Dillo</source>
-        <translation>Dillo</translation>
-    </message>
-    <message>
-        <source>Galeon</source>
-        <translation>Galeon</translation>
-    </message>
-    <message>
-        <source>Safari</source>
-        <translation>Safari</translation>
-    </message>
-    <message>
-        <source>Camino</source>
-        <translation>Camino</translation>
-    </message>
-    <message>
-        <source>- Select E-Mail Application -</source>
-        <translation>- Wybierz klienta poczty -</translation>
-    </message>
-    <message>
-        <source>KMail</source>
-        <translation>KMail</translation>
-    </message>
-    <message>
-        <source>Thunderbird</source>
-        <translation>Thunderbird</translation>
-    </message>
-    <message>
-        <source>Evolution</source>
-        <translation>Evolution</translation>
-    </message>
-    <message>
-        <source>Not found</source>
-        <translation>Nie znaleziono</translation>
+        <source>I don&apos;t want to set up my account for Kadu now</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -167,6 +83,13 @@
     <message>
         <source>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;for advanced users only&lt;/i&gt;&lt;/font&gt;</source>
         <translation>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;tylko dla zaawansowanych użytkowników&lt;/i&gt;&lt;/font&gt;</translation>
+    </message>
+</context>
+<context>
+    <name>ConfigWizardSetUpAccountPage</name>
+    <message>
+        <source>&lt;h3&gt;Account Setup&lt;/h3&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

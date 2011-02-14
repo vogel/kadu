@@ -2,10 +2,10 @@
 <!DOCTYPE TS>
 <TS version="2.0" language="de_DE">
 <context>
-    <name>Autostatus</name>
+    <name>AutostatusActions</name>
     <message>
         <source>&amp;Autostatus</source>
-        <translation>&amp;Auto-Zustand</translation>
+        <translation type="unfinished">&amp;Auto-Zustand</translation>
     </message>
 </context>
 </TS>

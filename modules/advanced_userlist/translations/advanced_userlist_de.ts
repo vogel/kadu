@@ -8,12 +8,12 @@
         <translation>Aussehen</translation>
     </message>
     <message>
-        <source>Userbox</source>
-        <translation>Kontakte-Bereich</translation>
-    </message>
-    <message>
         <source>Sorting</source>
         <translation>Sortierung</translation>
+    </message>
+    <message>
+        <source>Buddy List</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

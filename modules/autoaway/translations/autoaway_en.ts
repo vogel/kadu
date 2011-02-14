@@ -1,4 +1,6 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0">
 <context>
     <name>@default</name>
     <message>
@@ -62,11 +64,19 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Autorefresh status</source>
+        <source>Parse AutoStatus</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Parse AutoStatus</source>
+        <source>Enable auto extended away</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set status to extended away after</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Auto refresh status</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

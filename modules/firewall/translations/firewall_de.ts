@@ -16,10 +16,6 @@
         <translation>Notify</translation>
     </message>
     <message>
-        <source>Enable notification</source>
-        <translation>Benachrichtigungen einschalten</translation>
-    </message>
-    <message>
         <source>Notification syntax</source>
         <translation>Benachrichtigung-Syntax</translation>
     </message>
@@ -143,10 +139,6 @@
         <translation>Ich will etwas</translation>
     </message>
     <message>
-        <source>conference</source>
-        <translation>Konferenz</translation>
-    </message>
-    <message>
         <source>flooding DoS attack with emoticons!</source>
         <translation>Überflutung-Attake mit Smilies!</translation>
     </message>
@@ -197,41 +189,66 @@ Ich bin sehr beschäftigt und mag von dummen gelaber nicht gestört werden. Such
         <translation>%u schreibt</translation>
     </message>
     <message>
-        <source>      DATA AND TIME      ::   UIN   :: MESSAGE
-</source>
-        <translation>   DATUM UND ZEIT      ::   UIN   :: Nachricht</translation>
+        <source>This message has been generated AUTOMATICALLY!
+
+I&apos;m a busy person and I don&apos;t have time for stupid chats with the persons hiding itself. If you want to talk with me change the status to Online or Busy first.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Chat with invisible anonim ignored.
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>      DATA AND TIME      ::   ID      :: MESSAGE
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>FirewallConfigurationUiHandler</name>
+    <message>
         <source>Move to &apos;Secured&apos;</source>
-        <translation>Verschiebe nach &apos;geschützt&apos;</translation>
+        <translation type="unfinished">Verschiebe nach &apos;geschützt&apos;</translation>
     </message>
     <message>
         <source>All</source>
-        <translation>Alle</translation>
+        <translation type="unfinished">Alle</translation>
     </message>
     <message>
         <source>Move to &apos;All&apos;</source>
-        <translation>Verschiebe nach &apos;Alle&apos;</translation>
+        <translation type="unfinished">Verschiebe nach &apos;Alle&apos;</translation>
     </message>
     <message>
         <source>Secured</source>
-        <translation>Geschützt</translation>
-    </message>
-    <message>
-        <source>Message:</source>
-        <translation>Nachricht:</translation>
+        <translation type="unfinished">Geschützt</translation>
     </message>
     <message>
         <source>This message will be send to unknown person.</source>
-        <translation>Diese Nachricht wird an eine unbekannte Person gesendet.</translation>
+        <translation type="unfinished">Diese Nachricht wird an eine unbekannte Person gesendet.</translation>
     </message>
     <message>
         <source>Right answer for question above - you can use regexp.</source>
-        <translation>Die richtige Antwort auf die Frage oben - Sie können auch Reguläre Ausdrücke benutzen.</translation>
+        <translation type="unfinished">Die richtige Antwort auf die Frage oben - Sie können auch Reguläre Ausdrücke benutzen.</translation>
     </message>
     <message>
         <source>Answer:</source>
-        <translation>Antwort:</translation>
+        <translation type="unfinished">Antwort:</translation>
+    </message>
+    <message>
+        <source>Message:</source>
+        <translation type="unfinished">Nachricht:</translation>
+    </message>
+</context>
+<context>
+    <name>FirewallNotification</name>
+    <message>
+        <source>Message was blocked</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%u writes</source>
+        <translation type="unfinished">%u schreibt</translation>
     </message>
 </context>
 </TS>

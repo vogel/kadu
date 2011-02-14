@@ -7,6 +7,10 @@
         <source>Image size is bigger than maximal image size for this chat.</source>
         <translation>Rozmiar obrazka większy niż maksymalny rozmiar dla tej rozmowy.</translation>
     </message>
+    <message>
+        <source>Kadu</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ScreenShotSaver</name>
@@ -25,6 +29,10 @@ Brak dostępu lub inny problem!</translation>
 It should be bigger.</source>
         <translation>Zrzut ekranu %1 ma zerowy rozmiar!
 Powinien być większy.</translation>
+    </message>
+    <message>
+        <source>Kadu</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -67,12 +75,16 @@ Powinien być większy.</translation>
 <context>
     <name>ScreenshotToolBox</name>
     <message>
-        <source>0 KB</source>
-        <translation>0 KB</translation>
-    </message>
-    <message>
         <source>Crop</source>
         <translation>Przytnij</translation>
+    </message>
+    <message>
+        <source>0 KiB</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

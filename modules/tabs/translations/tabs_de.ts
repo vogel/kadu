@@ -48,32 +48,32 @@
         <translation>Reiter mit dem Knopf aus der Titelleiste schließen</translation>
     </message>
     <message>
-        <source>Show &quot;New Tab&quot; button</source>
-        <translation>Zeige Knopf &quot;Neuer Reiter&quot;</translation>
-    </message>
-    <message>
-        <source>Show &quot;Close current Tab&quot; button</source>
-        <translation>Zeige Knopf &quot;Aktuellen Reiter schließen&quot;</translation>
-    </message>
-    <message>
         <source>&lt;nobr&gt;&lt;b&gt;Warning: This option has know bug!&lt;/b&gt;&lt;/nobr&gt;&lt;br&gt;If there is open more than one tab then exiting from KDE will be stopped by this module.</source>
         <translation>&lt;nobr&gt;&lt;b&gt;Achtung: Diese Option hat einen Bug&lt;/b&gt;&lt;/nobr&gt;&lt;br&gt;Wenn mehr als ein Reiter offen ist, wird der Versuch, KDE zu verlassen durch dieses Modul unterbrochen.</translation>
     </message>
     <message>
-        <source>Close button on each tab</source>
-        <translation>&quot;Schließen&quot;-Knopf auf jedem Reiter</translation>
+        <source>Chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>General</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Look</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show Close button on each tab</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shortcuts</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>TabsManager</name>
-    <message>
-        <source>Open in new tab</source>
-        <translation>In neuem Reiter öffnen</translation>
-    </message>
-    <message>
-        <source>Open in new window</source>
-        <translation>In neuem Fenster öffnen</translation>
-    </message>
     <message>
         <source>NEW MESSAGE(S)</source>
         <translation>-&gt;Neue Nachrichten&lt;-</translation>
@@ -95,16 +95,20 @@
         <translation>Alle schließen</translation>
     </message>
     <message>
-        <source>Attach chat to tabs</source>
-        <translation>Chat an die Reiter anhängen</translation>
-    </message>
-    <message>
-        <source>Detach chat from tabs</source>
-        <translation>Chat vom Reiter abtrennen</translation>
-    </message>
-    <message>
         <source>Conference [%1]</source>
         <translation>Konferenz [%1]</translation>
+    </message>
+    <message>
+        <source>Chat in New Window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Chat in New Tab</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Attach Chat to Tabs</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

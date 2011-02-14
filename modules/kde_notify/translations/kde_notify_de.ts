@@ -15,20 +15,24 @@
         <source>Number of quoted characters</source>
         <translation>Anzahl de zu zitierenden Zeichen</translation>
     </message>
+    <message>
+        <source>Notifications</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>KNotify</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>General</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>KdeNotify</name>
     <message>
-        <source>View</source>
-        <translation>Zeigen</translation>
-    </message>
-    <message>
-        <source>Chat</source>
-        <translation>Chat</translation>
-    </message>
-    <message>
-        <source>Ignore</source>
-        <translation>Ignorieren</translation>
+        <source>KDE4 notifications</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

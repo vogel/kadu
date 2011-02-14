@@ -57,80 +57,94 @@ Argumente werder durch Leerzeichen getrennt. %n Argumente werden in Nummer, %m i
         <source>Send SMS</source>
         <translation>Sende SMS</translation>
     </message>
+    <message>
+        <source>SMS Era Gateway</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sponsored</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OmnixMultimedia</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User ID (48xxxxxxxxx)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Password</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
-    <name>Sms</name>
+    <name>SmsActions</name>
     <message>
-        <source>Recipient</source>
-        <translation>Empfänger</translation>
+        <source>Send SMS...</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>SmsDialog</name>
     <message>
         <source>Send SMS</source>
-        <translation>Sende SMS</translation>
+        <translation type="unfinished">Sende SMS</translation>
     </message>
     <message>
-        <source>Sms application was not specified. Visit the configuration section</source>
-        <translation>Programm zum Verschicken von SMS nicht angegeben. Schauen Sie in den Einstellungen nach</translation>
+        <source>Recipient</source>
+        <translation type="unfinished">Empfänger</translation>
     </message>
     <message>
-        <source>Could not spawn child process. Check if the program is functional</source>
-        <translation>Konnte das SMS-Programm nicht starten</translation>
+        <source>Select automatically</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>The process exited normally. The SMS should be on its way</source>
-        <translation>Das Versenden ist gelungen. Die SMS ist unterwegs</translation>
+        <source>GSM provider</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>The process exited abnormally. The SMS may not be sent</source>
-        <translation>Versenden unerwartet beendet. Die SMS wurde wahrscheinlich nicht versandt</translation>
-    </message>
-    <message>
-        <source>Contact</source>
-        <translation>Kontakt</translation>
+        <source>Content</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Signature</source>
-        <translation>Unterschrift</translation>
+        <translation type="unfinished">Unterschrift</translation>
     </message>
     <message>
         <source>Save SMS in history</source>
-        <translation>SMS im Verlauf speichern</translation>
-    </message>
-    <message>
-        <source>The SMS was sent and should be on its way.
-Do you want to send next message?</source>
-        <translation>Die SMS wurde gesendet und ist auf dem Weg
-Wollen Sie eine weitere Nachricht senden?</translation>
+        <translation type="unfinished">SMS im Verlauf speichern</translation>
     </message>
     <message>
         <source>&amp;Send</source>
-        <translation>&amp;Senden</translation>
+        <translation type="unfinished">&amp;Senden</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clear</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Kadu</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SMS application was not specified. Visit the configuration section</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>SmsConfigurationUiHandler</name>
+    <name>SmsExternalSender</name>
     <message>
-        <source>Send SMS</source>
-        <translation>Sende SMS</translation>
+        <source>Could not spawn child process. Check if the program is functional</source>
+        <translation type="unfinished">Konnte das SMS-Programm nicht starten</translation>
     </message>
     <message>
-        <source>Up</source>
-        <translation>nach oben</translation>
-    </message>
-    <message>
-        <source>Down</source>
-        <translation>nach unten</translation>
-    </message>
-    <message>
-        <source>Gateways priorites</source>
-        <translation>Priorität der Gateways</translation>
-    </message>
-</context>
-<context>
-    <name>SmsGateway</name>
-    <message>
-        <source>Network error. Provider gateway page is probably unavailable</source>
-        <translation>Der angegebene SMS-Gateway ist wahrscheinlich nicht erreichbar</translation>
+        <source>The process exited abnormally. The SMS may not be sent</source>
+        <translation type="unfinished">Versenden unerwartet beendet. Die SMS wurde wahrscheinlich nicht versandt</translation>
     </message>
 </context>
 <context>
@@ -147,20 +161,47 @@ Wollen Sie eine weitere Nachricht senden?</translation>
         <source>Cancel</source>
         <translation>Abbrechen</translation>
     </message>
-</context>
-<context>
-    <name>SmsSender</name>
     <message>
-        <source>Mobile number is incorrect</source>
-        <translation>Falsche Telefonnummer</translation>
+        <source>SMS</source>
+        <translation type="unfinished">SMS</translation>
     </message>
     <message>
-        <source>Mobile number is incorrect or gateway is not available</source>
-        <translation>Die Nummer des Handys ist falsch oder gateway ist unerreichbar</translation>
+        <source>Unable to fetch required token</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SmsInternalSender</name>
+    <message>
+        <source>Mobile number is incorrect</source>
+        <translation type="unfinished">Falsche Telefonnummer</translation>
     </message>
     <message>
         <source>Signature can&apos;t be empty</source>
-        <translation>Unterschrift darf nicht leer sein</translation>
+        <translation type="unfinished">Unterschrift darf nicht leer sein</translation>
+    </message>
+    <message>
+        <source>Automatic gateway selection is not available. Please select SMS gateway manually.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SmsProgressWindow</name>
+    <message>
+        <source>Sending SMS in progress.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enter text from the picture:</source>
+        <translation type="unfinished">Lese den Text vom Bild ab und gib ihn hier ein:</translation>
+    </message>
+    <message>
+        <source>Ok</source>
+        <translation type="unfinished">Ok</translation>
+    </message>
+    <message>
+        <source>SMS sent successfully</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

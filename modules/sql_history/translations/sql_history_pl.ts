@@ -84,4 +84,19 @@
         <translation>Prefix dla nazw tablic</translation>
     </message>
 </context>
+<context>
+    <name>HistorySqlStorage</name>
+    <message>
+        <location filename="../storage/history-sql-storage.cpp" line="83"/>
+        <location filename="../storage/history-sql-storage.cpp" line="106"/>
+        <source>Kadu</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../storage/history-sql-storage.cpp" line="84"/>
+        <source>It seems your Qt library does not provide support for selected database.
+ Please select another driver in configuration window or install Qt with %1 plugin.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
 </TS>

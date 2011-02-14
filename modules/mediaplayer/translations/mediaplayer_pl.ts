@@ -147,10 +147,6 @@ Control+ Enter/Backspace/Left/Right/Up/Down.Win+ Enter/Backspace/Left/Right/Up/D
         <translation>%1 nie jest uruchomiony!</translation>
     </message>
     <message>
-        <source>More than 1/10 of titles you&apos;re trying to send are empty.&lt;br&gt;Perhaps %1 havn&apos;t read all titles yet, give its some more time.&lt;br&gt;Do you want to send playlist anyway?</source>
-        <translation>Więcej  niż 1/10 tytułów, które próbujesz wysłać, jest pusta.&lt;br&gt;Być może %1 nie odczytał jeszcze wszystkich tytułów. Zaleca się odczekanie chwili.&lt;br&gt;Wysłać listę mimo to?</translation>
-    </message>
-    <message>
         <source>You&apos;re trying to send %1 entries of %2 playlist.&lt;br&gt;It will be split and sent in few messages&lt;br&gt;Are you sure to do that?</source>
         <translation>Próbujesz wysłać %1 wpisów z listy odtwarzania %2.&lt;br&gt;Wpisy zostaną podzielone na kilka wiadomości.&lt;br&gt;Na pewno wysłac?</translation>
     </message>
@@ -197,6 +193,14 @@ Control+ Enter/Backspace/Left/Right/Up/Down.Win+ Enter/Backspace/Left/Right/Up/D
     <message>
         <source>Pause</source>
         <translation>Pauza</translation>
+    </message>
+    <message>
+        <source>Kadu</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>More than 1/10 of titles you&apos;re trying to send are empty.&lt;br&gt;Perhaps %1 hasn&apos;t read all titles yet, give its some more time.&lt;br&gt;Do you want to send playlist anyway?</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

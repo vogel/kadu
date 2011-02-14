@@ -1,4 +1,6 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0">
 <context>
     <name>@default</name>
     <message>
@@ -10,11 +12,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Output device</source>
+        <source>ALSA device</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>ALSA device</source>
+        <source>Output Device</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

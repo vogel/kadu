@@ -11,5 +11,19 @@
         <source>Enable ParserExtender</source>
         <translation>DIe Parser-Erweiterung einschalten</translation>
     </message>
+    <message>
+        <source>Kadu</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Advanced</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Additional KaduParser Tags: 
+#{time}, #(time-long), #{date}, #{date-long}, #{start}, #{start-long}, 
+{uptime}, #{uptime-long}, #{kuptime}, {kuptime-long}.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>
