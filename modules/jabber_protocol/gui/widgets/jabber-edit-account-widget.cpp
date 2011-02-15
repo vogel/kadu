@@ -312,11 +312,11 @@ void JabberEditAccountWidget::createOptionsTab(QTabWidget *tabWidget)
 	QGroupBox *notifications = new QGroupBox(tr("Notifications"), this);
 
 	QVBoxLayout *notificationsLayout = new QVBoxLayout(notifications);
-	SendTypingNotification = new QCheckBox(tr("Send typing notifications"));
+	SendTypingNotification = new QCheckBox(tr("Send composing events"));
 	connect(SendTypingNotification, SIGNAL(clicked()), this, SLOT(dataChanged()));
 	notificationsLayout->addWidget(SendTypingNotification);
 
-	SendGoneNotification = new QCheckBox(tr("Send gone notifications (closing the window)"));
+	SendGoneNotification = new QCheckBox(tr("Send inactivity events (end/suspend conversation)"));
 	connect(SendGoneNotification, SIGNAL(clicked()), this, SLOT(dataChanged()));
 	notificationsLayout->addWidget(SendGoneNotification);
 
