@@ -23,7 +23,7 @@
 * history: allow removing statuses and smses history in history window (WhE)
 * history: allow removing history for given date (WhE)
 * history: allow opening chats from history windows (WhE)
-* history: add filtering of status buddies in history window (WhE)
+* history: added filtering of status buddies in history window (WhE)
 * gadu: added full multilogon support - with possibility to kill other sessions (Vogel)
 * gadu: fixed connecting with HUB (Vogel)
 * status: #1869 fixed: Sometimes statuses set by autoaway are stored in configuration on exit (WhE)
@@ -37,6 +37,7 @@
 * icons: #1955 fixed: wrong "?" icons for Kadu for example in taskbar (ultr)
 * gadu: drop DCCv6 support, even GG servers doen't support it now (Vogel)
 * gui: #1943 fixed: fixed crashes in Search Window; rewritten some parts of it (beevvy)
+* gadu: added typing notifications support (WhE)
 
 +++ version 0.6.6-beta15
 * url-handlers: #1908 fixed: links containing HTML entities were not escaped (beevvy)
