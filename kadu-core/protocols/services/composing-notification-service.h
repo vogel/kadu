@@ -35,8 +35,8 @@ public:
 	ComposingNotificationService(QObject *parent = 0) : QObject(parent) {}
 
 public slots:
-	virtual bool composingStarted(const Chat &chat) = 0;
-	virtual bool composingStopped(const Chat &chat) = 0;
+	virtual void composingStarted(const Chat &chat) = 0;
+	virtual void composingStopped(const Chat &chat) = 0;
 
 signals:
 	void contactStartedComposing(const Contact &contact);
