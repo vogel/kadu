@@ -74,7 +74,11 @@ class GaduEditAccountWidget : public AccountEditWidget
 
 #ifdef GADU_HAVE_TLS
 	QCheckBox *UseTlsEncryption;
-#endif
+#endif // GADU_HAVE_TLS
+
+#ifdef GADU_HAVE_TYPING_NOTIFY
+	QCheckBox *SendTypingNotification;
+#endif // GADU_HAVE_TYPING_NOTIFY
 
 	QPushButton *ApplyButton;
 	QPushButton *CancelButton;

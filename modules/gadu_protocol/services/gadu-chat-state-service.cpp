@@ -21,6 +21,7 @@
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
 
+#include "gadu-account-details.h"
 #include "gadu-protocol.h"
 
 #include "gadu-chat-state-service.h"
@@ -48,7 +49,16 @@ void GaduChatStateService::handleEventTypingNotify(struct gg_event *e)
 
 bool GaduChatStateService::shouldSendEvent()
 {
-		return true;
+#ifdef GADU_HAVE_TYPING_NOTIFY
+	GaduAccountDetails *gaduAccountDetails = dynamic_cast<GaduAccountDetails *>(Protocol->account().details());
+	if (!gaduAccountDetails)
+		return false;
+
+	if (!gaduAccountDetails->sendTypingNotification())
+		return false;
+#endif // GADU_HAVE_TYPING_NOTIFY
+
+	return true;
 }
 
 void GaduChatStateService::composingStarted(const Chat &chat)

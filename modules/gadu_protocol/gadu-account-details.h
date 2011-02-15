@@ -49,6 +49,10 @@ class GaduAccountDetails : public AccountDetails
 	PROPERTY_DEC(bool, TlsEncryption)
 #endif
 
+#ifdef GADU_HAVE_TYPING_NOTIFY
+	PROPERTY_DEC(bool, SendTypingNotification)
+#endif // GADU_HAVE_TYPING_NOTIFY
+
 	GaduOpenChatWithRunner *OpenChatRunner;
 
 protected:
@@ -78,7 +82,11 @@ public:
 
 #ifdef GADU_HAVE_TLS
 	PROPERTY_DEF(bool, tlsEncryption, setTlsEncryption, TlsEncryption)
-#endif
+#endif // GADU_HAVE_TLS
+
+#ifdef GADU_HAVE_TYPING_NOTIFY
+	PROPERTY_DEF(bool, sendTypingNotification, setSendTypingNotification, SendTypingNotification)
+#endif // GADU_HAVE_TYPING_NOTIFY
 
 	void import_0_6_5_LastStatus();
 

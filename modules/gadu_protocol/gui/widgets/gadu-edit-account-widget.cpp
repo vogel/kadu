@@ -290,6 +290,18 @@ void GaduEditAccountWidget::createOptionsTab(QTabWidget *tabWidget)
 	statusLayout->addRow(PrivateStatus);
 
 	layout->addWidget(status);
+
+#ifdef GADU_HAVE_TYPING_NOTIFY
+	QGroupBox *notifications = new QGroupBox(tr("Notifications"), this);
+
+	QVBoxLayout *notificationsLayout = new QVBoxLayout(notifications);
+	SendTypingNotification = new QCheckBox(tr("Send composing events"));
+	connect(SendTypingNotification, SIGNAL(clicked()), this, SLOT(dataChanged()));
+	notificationsLayout->addWidget(SendTypingNotification);
+
+	layout->addWidget(notifications);
+#endif // GADU_HAVE_TYPING_NOTIFY
+
 	layout->addStretch(100);
 }
 
@@ -362,7 +374,12 @@ void GaduEditAccountWidget::apply()
 
 #ifdef GADU_HAVE_TLS
 		Details->setTlsEncryption(UseTlsEncryption->isChecked());
-#endif
+#endif // GADU_HAVE_TLS
+
+#ifdef GADU_HAVE_TYPING_NOTIFY
+		Details->setSendTypingNotification(SendTypingNotification->isChecked());
+#endif // GADU_HAVE_TYPING_NOTIFY
+
 	}
 
 	Proxy->apply();
@@ -431,6 +448,9 @@ void GaduEditAccountWidget::dataChanged()
 #ifdef GADU_HAVE_TLS
 		&& Details->tlsEncryption() == UseTlsEncryption->isChecked()
 #endif
+#ifdef GADU_HAVE_TYPING_NOTIFY
+		&& Details->sendTypingNotification() == SendTypingNotification->isChecked()
+#endif // GADU_HAVE_TYPING_NOTIFY
 		&& StateNotChanged == Proxy->state()
 		&& !gpiw->isModified())
 	{
@@ -483,6 +503,11 @@ void GaduEditAccountWidget::loadAccountData()
 #ifdef GADU_HAVE_TLS
 		UseTlsEncryption->setChecked(details->tlsEncryption());
 #endif
+
+#ifdef GADU_HAVE_TYPING_NOTIFY
+		SendTypingNotification->setChecked(details->sendTypingNotification());
+#endif // GADU_HAVE_TYPING_NOTIFY
+
 	}
 
 	useDefaultServers->setChecked(config_file.readBoolEntry("Network", "isDefServers", true));

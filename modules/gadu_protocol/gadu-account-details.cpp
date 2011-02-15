@@ -63,9 +63,13 @@ void GaduAccountDetails::load()
 	MaximumImageRequests = loadValue<short int>("MaximumImageRequests", 10);
 	InitialRosterImport = loadValue<bool>("InitialRosterImport", false);
 
+#ifdef GADU_HAVE_TYPING_NOTIFY
+	SendTypingNotification = loadValue<bool>("SendTypingNotification", true);
+#endif // GADU_HAVE_TYPING_NOTIFY
+
 #ifdef GADU_HAVE_TLS
 	TlsEncryption = loadValue<bool>("TlsEncryption", true);
-#endif
+#endif // GADU_HAVE_TLS
 
 	QHostAddress host;
 	if (!host.setAddress(loadValue<QString>("DccExternalIp")))
@@ -99,6 +103,9 @@ void GaduAccountDetails::store()
 	storeValue("TlsEncryption", TlsEncryption);
 #endif
 
+#ifdef GADU_HAVE_TYPING_NOTIFY
+	storeValue("SendTypingNotification", SendTypingNotification);
+#endif // GADU_HAVE_TYPING_NOTIFY
 }
 
 void GaduAccountDetails::import_0_6_5_LastStatus()
