@@ -111,8 +111,8 @@ ChatWidget::ChatWidget(const Chat &chat, QWidget *parent) :
 
 		ChatStateService *chatStateService = currentProtocol()->chatStateService();
 		if (chatStateService)
-			connect(chatStateService, SIGNAL(contactActivityChanged(ChatStateService::ContactActivity,Contact)),
-					this, SLOT(contactActivityChanged(ChatStateService::ContactActivity,Contact)));
+			connect(chatStateService, SIGNAL(contactActivityChanged(ChatStateService::ContactActivity, const Contact &)),
+					this, SLOT(contactActivityChanged(ChatStateService::ContactActivity, const Contact &)));
 	}
 	connect(IconsManager::instance(), SIGNAL(themeChanged()), this, SIGNAL(iconChanged()));
 
@@ -122,12 +122,14 @@ ChatWidget::ChatWidget(const Chat &chat, QWidget *parent) :
 ChatWidget::~ChatWidget()
 {
 	kdebugf();
-
-	ChatStateService *chatStateService = currentProtocol()->chatStateService();
-	if (chatStateService)
-		chatStateService->chatWidgetClosed(CurrentChat);
+	ComposingTimer.stop();
 
 	ChatWidgetManager::instance()->unregisterChatWidget(this);
+
+	if (!currentProtocol() || !currentProtocol()->chatStateService())
+		return;
+
+	currentProtocol()->chatStateService()->chatWidgetClosed(CurrentChat);
 
 //	disconnectAcknowledgeSlots();
 
@@ -731,7 +733,7 @@ void ChatWidget::contactActivityChanged(ChatStateService::ContactActivity state,
 
 	CurrentContactActivity = state;
 
-	if (CurrentContactActivity == ChatStateService::StateGone)
+	if (CurrentContactActivity != ChatStateService::StateGone)
 		refreshTitle();
 	else
 	{

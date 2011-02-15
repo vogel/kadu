@@ -44,7 +44,7 @@ public:
 
 	ChatStateService(QObject *parent = 0) : QObject(parent) {}
 
-public slots:
+public:
 	virtual void composingStarted(const Chat &chat) = 0;
 	virtual void composingStopped(const Chat &chat) = 0;
 
@@ -53,7 +53,7 @@ public slots:
 	virtual void chatWidgetDeactivated(const Chat &chat) = 0;
 
 signals:
-	void contactActivityChanged(ContactActivity state, const Contact &contact);
+	void contactActivityChanged(ChatStateService::ContactActivity state, const Contact &contact);
 };
 
 #endif // CHAT_STATE_SERVICE_H

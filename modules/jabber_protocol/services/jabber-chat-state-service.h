@@ -21,68 +21,60 @@
 #ifndef JABBER_CHAT_STATE_SERVICE_H
 #define JABBER_CHAT_STATE_SERVICE_H
 
-#include <QtCore/QTimer>
+#include <QtCore/QHash>
+
+#include "chat/chat.h"
 
 #include "xmpp_message.h"
 
-#include "protocols/protocol.h"
+#include "protocols/services/chat-state-service.h"
 
-class ChatWidget;
+class Chat;
 class JabberProtocol;
 
-class ChatState : public QObject
+class JabberChatStateService : public ChatStateService
 {
 	Q_OBJECT
 
-	ChatWidget *ObservedChatWidget;
-	JabberProtocol *Protocol;
-	// Message Events & Chat States
-	QTimer *ComposingTimer;
-	bool IsComposing;
-	bool UserRequestedEvents;
-	QString EventId;
-	XMPP::ChatState ContactChatState;
-	XMPP::ChatState LastChatState;
+	struct ChatInfo
+	{
+		bool UserRequestedEvents;
+		QString EventId;
 
-	void setContactChatState(XMPP::ChatState state);
-	void updateChatTitle();
-	bool shouldSendEvent(XMPP::ChatState state);
+		XMPP::ChatState ContactChatState;
+		XMPP::ChatState LastChatState;
+
+		ChatInfo()
+		{
+			ContactChatState = XMPP::StateNone;
+			LastChatState = XMPP::StateNone;
+			UserRequestedEvents = false;
+		}
+	};
+
+	QHash<Chat, ChatInfo> ChatInfos;
+
+	JabberProtocol *Protocol;
+
+	bool shouldSendEvent(const Chat &chat);
+
+	void setChatState(const Chat &chat, XMPP::ChatState state);
+
+	static ContactActivity xmppStateToContactState(XMPP::ChatState state);
 
 private slots:
-	void setComposing();
-	void resetComposing();
-	void checkComposing();
-	void updateIsComposing(bool b);
-	void setChatState(XMPP::ChatState state);
 	void incomingMessage(const XMPP::Message &m);
 	void messageAboutToSend(XMPP::Message &message);
-
-
-public:
-	explicit ChatState(ChatWidget *chatWidget);
-
-	void chatClosed();
-
-signals:
-	/**
-	 * Signals if user (re)started/stopped composing
-	 */
-	void composing(bool);
-};
-
-class JabberChatStateService : public QObject
-{
-	Q_OBJECT
-
-	JabberProtocol *ParentProtocol;
-	QMap<ChatWidget *, ChatState *> ChatStateMap;
 
 public:
 	JabberChatStateService(JabberProtocol *parent);
 
-private slots:
-	void chatWidgetCreated(ChatWidget *chat);
-	void chatWidgetDestroying(ChatWidget *chat);
+	virtual void composingStarted(const Chat &chat);
+	virtual void composingStopped(const Chat &chat);
+
+	virtual void chatWidgetClosed(const Chat &chat);
+	virtual void chatWidgetActivated(const Chat &chat);
+	virtual void chatWidgetDeactivated(const Chat &chat);
 };
 
 #endif // JABBER_CHAT_STATE_SERVICE_H

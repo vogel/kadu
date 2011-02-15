@@ -19,191 +19,92 @@
  */
 
 #include "chat/chat-manager.h"
+#include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
-#include "gui/widgets/chat-edit-box.h"
-#include "gui/widgets/chat-widget-manager.h"
-#include "gui/widgets/custom-input.h"
-#include "gui/windows/message-dialog.h"
-
-#include "jabber-account-details.h"
 #include "jabber-protocol.h"
 
 #include "jabber-chat-state-service.h"
 
-// TODO 0.8.0: Review and cleanup
-
 JabberChatStateService::JabberChatStateService(JabberProtocol *parent) :
-		ParentProtocol(parent)
+		Protocol(parent)
 {
-	foreach (const Chat &chat, ChatManager::instance()->items())
-	{
-		ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(chat);
-		if (chatWidget && ParentProtocol == qobject_cast<JabberProtocol *>(chat.chatAccount().protocolHandler()))
-			ChatStateMap.insert(chatWidget, new ChatState(chatWidget));
-	}
-
-	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetCreated(ChatWidget *)), this, SLOT(chatWidgetCreated(ChatWidget *)));
-	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetDestroying(ChatWidget *)), this, SLOT(chatWidgetDestroying(ChatWidget *)));
+	connect(Protocol->client(), SIGNAL(messageReceived(const XMPP::Message &)),
+			this, SLOT(incomingMessage(const XMPP::Message &)));
+	connect(Protocol->client(), SIGNAL(messageAboutToSend(XMPP::Message &)),
+			this, SLOT(messageAboutToSend(XMPP::Message &)));
 }
 
-void JabberChatStateService::chatWidgetCreated(ChatWidget *chatWidget)
+bool JabberChatStateService::shouldSendEvent(const Chat &chat)
 {
-	if (ParentProtocol == qobject_cast<JabberProtocol *>(chatWidget->chat().chatAccount().protocolHandler()))
-		ChatStateMap.insert(chatWidget, new ChatState(chatWidget));
-}
-
-void JabberChatStateService::chatWidgetDestroying(ChatWidget *chatWidget)
-{
-	if (ChatStateMap.contains(chatWidget))
-	{
-		ChatState *state = ChatStateMap.value(chatWidget);
-		state->chatClosed();
-		ChatStateMap.remove(chatWidget);
-		state->deleteLater();
-	}
-}
-
-ChatState::ChatState(ChatWidget *chatWidget) :
-		ObservedChatWidget(chatWidget)
-{
-	connect(ObservedChatWidget->getChatEditBox()->inputBox(), SIGNAL(textChanged()),
-			this, SLOT(setComposing()));
-
-	Protocol = qobject_cast<JabberProtocol *>(ObservedChatWidget->chat().chatAccount().protocolHandler());
-	if (Protocol)
-	{
-		connect(Protocol->client(), SIGNAL(messageReceived(const XMPP::Message &)),
-				this, SLOT(incomingMessage(const XMPP::Message &)));
-		connect(Protocol->client(), SIGNAL(messageAboutToSend(XMPP::Message &)),
-				this, SLOT(messageAboutToSend(XMPP::Message &)));
-	}
-
-	// Message events
-	ContactChatState = XMPP::StateNone;
-	LastChatState = XMPP::StateNone;
-	UserRequestedEvents = false;
-	IsComposing = false;
-	ComposingTimer = 0;
-
-	connect(this, SIGNAL(composing(bool)), this, SLOT(updateIsComposing(bool)));
-}
-
-
-/**
- * Records that the user is composing
- */
-void ChatState::setComposing()
-{
-	if (!ComposingTimer)
-	{
-		/* User (re)starts composing */
-		ComposingTimer = new QTimer(this);
-		connect(ComposingTimer, SIGNAL(timeout()), SLOT(checkComposing()));
-		ComposingTimer->start(2000); // FIXME: magic number
-		emit composing(true);
-	}
-	IsComposing = true;
-}
-
-/**
- * Checks if the user is still composing
- */
-void ChatState::checkComposing()
-{
-	if (!IsComposing)
-	{
-		// User stopped composing
-		ComposingTimer->deleteLater();
-		ComposingTimer = 0;
-		emit composing(false);
-	}
-	IsComposing = false; // Reset composing
-}
-
-void ChatState::resetComposing()
-{
-	if (ComposingTimer)
-	{
-		delete ComposingTimer;
-		ComposingTimer = 0;
-	}
-
-	IsComposing = false;
-}
-
-void ChatState::updateIsComposing(bool b)
-{
-	setChatState(b ? XMPP::StateComposing : XMPP::StatePaused);
-}
-
-bool ChatState::shouldSendEvent(XMPP::ChatState state)
-{
-	if (!UserRequestedEvents && ContactChatState != XMPP::StateNone)
+	ChatInfo &info = ChatInfos[chat];
+	if (!info.UserRequestedEvents && info.ContactChatState == XMPP::StateNone)
 		return false;
 
-	JabberAccountDetails *jabberAccountDetails = dynamic_cast<JabberAccountDetails *>(ObservedChatWidget->chat().chatAccount().details());
+	JabberAccountDetails *jabberAccountDetails = dynamic_cast<JabberAccountDetails *>(Protocol->account().details());
 	if (!jabberAccountDetails)
 		return false;
 
-	if (state == XMPP::StateGone && !jabberAccountDetails->sendGoneNotification())
+	if (!jabberAccountDetails->sendTypingNotification())
 		return false;
 
-	if ((state == XMPP::StateComposing || state == XMPP::StatePaused) && !jabberAccountDetails->sendTypingNotification())
+	// Don't send to offline resource
+	Contact contact = chat.contacts().toContact();
+	if (contact.currentStatus().isDisconnected())
+	{
+		info.UserRequestedEvents = false;
+		info.LastChatState = XMPP::StateNone;
 		return false;
+	}
 
 	return true;
 }
 
-void ChatState::setChatState(XMPP::ChatState state)
+void JabberChatStateService::setChatState(const Chat &chat, XMPP::ChatState state)
 {
-	if (!shouldSendEvent(state))
+	if (!shouldSendEvent(chat))
 		return;
 
-	// Don't send to offline resource
-	Contact contact = ObservedChatWidget->chat().contacts().toContact();
-	if (contact.currentStatus().isDisconnected())
-	{
-		UserRequestedEvents = false;
-		LastChatState = XMPP::StateNone;
-		return;
-	}
+	JabberAccountDetails *jabberAccountDetails = dynamic_cast<JabberAccountDetails *>(Protocol->account().details());
+	if (!jabberAccountDetails->sendGoneNotification() && (state == XMPP::StateGone || state == XMPP::StateInactive))
+		state = XMPP::StatePaused;
 
+	ChatInfo &info = ChatInfos[chat];
 	//this isn't a valid transition, so don't send it, and don't update laststate
-	if (LastChatState == XMPP::StateNone && (state != XMPP::StateActive && state != XMPP::StateComposing && state != XMPP::StateGone))
+	if (info.LastChatState == XMPP::StateNone && (state != XMPP::StateActive && state != XMPP::StateComposing && state != XMPP::StateGone))
 		return;
 
 	// Check if we should send a message
-	if (state == LastChatState || state == XMPP::StateActive || (LastChatState == XMPP::StateActive && state == XMPP::StatePaused))
+	if (state == info.LastChatState || state == XMPP::StateActive || (info.LastChatState == XMPP::StateActive && state == XMPP::StatePaused))
 	{
-		LastChatState = state;
+		info.LastChatState = state;
 		return;
 	}
 
 	// Build event message
-	XMPP::Message m(ObservedChatWidget->chat().contacts().toContact().id());
-	if (UserRequestedEvents)
+	XMPP::Message m(chat.contacts().toContact().id());
+	if (info.UserRequestedEvents)
 	{
-		m.setEventId(EventId);
+		m.setEventId(info.EventId);
 		if (state == XMPP::StateComposing)
 			m.addEvent(XMPP::ComposingEvent);
-		else if (LastChatState == XMPP::StateComposing)
+		else if (info.LastChatState == XMPP::StateComposing)
 			m.addEvent(XMPP::CancelEvent);
 	}
 
-	if (ContactChatState != XMPP::StateNone)
+	if (info.ContactChatState != XMPP::StateNone)
 	{
-		if (LastChatState != XMPP::StateGone)
+		if (info.LastChatState != XMPP::StateGone)
 		{
-			if ((state == XMPP::StateInactive && LastChatState == XMPP::StateComposing)
-				|| (state == XMPP::StateComposing && LastChatState == XMPP::StateInactive))
-				{
+			if ((state == XMPP::StateInactive && info.LastChatState == XMPP::StateComposing)
+				|| (state == XMPP::StateComposing && info.LastChatState == XMPP::StateInactive))
+			{
 				// First go to the paused state
-				XMPP::Message tm(ObservedChatWidget->chat().contacts().toContact().id());
-				m.setType("chat");
-				m.setChatState(XMPP::StatePaused);
+				XMPP::Message tm(chat.contacts().toContact().id());
+				tm.setType("chat");
+				tm.setChatState(XMPP::StatePaused);
 
 				if (Protocol->isConnected())
-					Protocol->client()->client()->sendMessage(m);
+					Protocol->client()->client()->sendMessage(tm);
 			}
 			m.setChatState(state);
 		}
@@ -218,99 +119,108 @@ void ChatState::setChatState(XMPP::ChatState state)
 	}
 
 	// Save last state
-	if (LastChatState != XMPP::StateGone || state == XMPP::StateActive)
-		LastChatState = state;
+	if (info.LastChatState != XMPP::StateGone || state == XMPP::StateActive)
+		info.LastChatState = state;
 }
 
-void ChatState::incomingMessage(const XMPP::Message &m)
+ChatStateService::ContactActivity JabberChatStateService::xmppStateToContactState(XMPP::ChatState state)
 {
-	if (m.from().bare() != (*ObservedChatWidget->chat().contacts().constBegin()).id())
-		return;
+	switch (state)
+	{
+		case XMPP::StateNone:
+			return StateNone;
+		case XMPP::StateActive:
+			return StateActive;
+		case XMPP::StateComposing:
+			return StateComposing;
+		case XMPP::StatePaused:
+			return StatePaused;
+		case XMPP::StateInactive:
+			return StateInactive;
+		case XMPP::StateGone:
+			return StateGone;
+		default:
+			return StateNone;
+	}
+}
 
-	if (m.body().isEmpty())
+void JabberChatStateService::incomingMessage(const XMPP::Message &msg)
+{
+	Contact contact = ContactManager::instance()->byId(Protocol->account(), msg.from().bare(), ActionCreateAndAdd);
+	Chat chat = ChatManager::instance()->findChat(ContactSet(contact), true);
+	ChatInfo &info = ChatInfos[chat];
+
+	if (msg.body().isEmpty())
 	{
 		// Event message
-		if (m.containsEvent(XMPP::CancelEvent))
-			setContactChatState(XMPP::StatePaused);
-		else if (m.containsEvent(XMPP::ComposingEvent))
-			setContactChatState(XMPP::StateComposing);
+		if (msg.containsEvent(XMPP::CancelEvent))
+		{
+			info.ContactChatState = XMPP::StatePaused;
+			emit contactActivityChanged(StatePaused, contact);
+		}
+		else if (msg.containsEvent(XMPP::ComposingEvent))
+		{
+			info.ContactChatState = XMPP::StateComposing;
+			emit contactActivityChanged(StateComposing, contact);
+		}
 
-		if (m.chatState() != XMPP::StateNone)
-			setContactChatState(m.chatState());
+		if (msg.chatState() != XMPP::StateNone)
+		{
+			info.ContactChatState = msg.chatState();
+			emit contactActivityChanged(xmppStateToContactState(msg.chatState()), contact);
+		}
 	}
 	else
 	{
 		// Normal message
-		// Check if user requests event messages
-		UserRequestedEvents = m.containsEvent(XMPP::ComposingEvent);
+		// Check if user requests event messages XEP22
+		info.UserRequestedEvents = msg.containsEvent(XMPP::ComposingEvent);
 
-		if (!m.eventId().isEmpty())
-			EventId = m.eventId();
+		if (!msg.eventId().isEmpty())
+			info.EventId = msg.eventId();
 
-		if (m.containsEvents() || m.chatState() != XMPP::StateNone)
-			setContactChatState(XMPP::StateActive);
+		if (msg.containsEvents() || msg.chatState() != XMPP::StateNone)
+		{
+			info.ContactChatState = XMPP::StateActive;
+			emit contactActivityChanged(StateActive, contact);
+		}
 		else
-			setContactChatState(XMPP::StateNone);
+		{
+			info.ContactChatState = XMPP::StateNone;
+			emit contactActivityChanged(StateNone, contact);
+		}
 	}
 }
 
-void ChatState::setContactChatState(XMPP::ChatState state)
-{
-	ContactChatState = state;
-	if (state == XMPP::StateGone)
-	{
-		Contact contact = ObservedChatWidget->chat().contacts().toContact();
-		QString msg = "[ " + tr("%1 ended the conversation").arg(contact.ownerBuddy().display()) + " ]";
-		Message message = Message::create();
-		message.setMessageChat(ObservedChatWidget->chat());
-		message.setType(Message::TypeSystem);
-		message.setMessageSender(contact);
-		message.setContent(msg);
-		message.setSendDate(QDateTime::currentDateTime());
-		message.setReceiveDate(QDateTime::currentDateTime());
-
-		ObservedChatWidget->chatMessagesView()->appendMessage(message);
-	}
-	else
-	{
-		// Activate ourselves
-		if (LastChatState == XMPP::StateGone)
-			setChatState(XMPP::StateActive);
-	}
-
-	updateChatTitle();
-}
-
-void ChatState::messageAboutToSend(XMPP::Message &message)
+void JabberChatStateService::messageAboutToSend(XMPP::Message &message)
 {
 	message.addEvent(XMPP::ComposingEvent);
-	setChatState(XMPP::StateActive);
+	message.setChatState(XMPP::StateActive);
 }
 
-void ChatState::updateChatTitle()
+void JabberChatStateService::composingStarted(const Chat &chat)
 {
-	ObservedChatWidget->refreshTitle();
-	QString cap = ObservedChatWidget->title();
-
-	if (ContactChatState == XMPP::StateComposing)
-	{
-		cap = tr("%1 (Composing ...)").arg(cap);
-		ObservedChatWidget->setTitle(cap);
-	}
-	else if (ContactChatState == XMPP::StateInactive)
-	{
-		cap = tr("%1 (Inactive)").arg(cap);
-		ObservedChatWidget->setTitle(cap);
-	}
+	setChatState(chat, XMPP::StateComposing);
 }
 
-void ChatState::chatClosed()
+void JabberChatStateService::composingStopped(const Chat &chat)
 {
-	// Reset 'contact is composing' & cancel own composing event
-	resetComposing();
-	setChatState(XMPP::StateGone);
+	setChatState(chat, XMPP::StatePaused);
+}
 
-	if (ContactChatState == XMPP::StateComposing || ContactChatState == XMPP::StateInactive)
-		setContactChatState(XMPP::StatePaused);
+void JabberChatStateService::chatWidgetClosed(const Chat &chat)
+{
+	setChatState(chat, XMPP::StateGone);
+	ChatInfos.remove(chat);
+}
+
+void JabberChatStateService::chatWidgetActivated(const Chat &chat)
+{
+	setChatState(chat, XMPP::StateActive);
+}
+
+void JabberChatStateService::chatWidgetDeactivated(const Chat &chat)
+{
+	setChatState(chat, XMPP::StateInactive);
 }
 

@@ -108,13 +108,10 @@ public:
 
 	virtual AvatarService * avatarService() { return CurrentAvatarService; }
 	virtual ChatService * chatService() { return CurrentChatService; }
-	virtual ChatImageService * chatImageService() { return 0; }
-	virtual ContactListService * contactListService() { return 0; }
+	virtual ChatStateService *chatStateService() { return CurrentChatStateService; }
 	virtual ContactPersonalInfoService * contactPersonalInfoService() { return CurrentContactPersonalInfoService; }
-	virtual FileTransferService * fileTransferService() { return 0; }
 	virtual PersonalInfoService * personalInfoService() { return CurrentPersonalInfoService; }
 	virtual RosterService * rosterService() { return CurrentRosterService; }
-	virtual SearchService * searchService() { return 0; }
 	JabberSubscriptionService * subscriptionService() { return CurrentSubscriptionService; }
 
 	JabberContactDetails * jabberContactDetails(Contact contact) const;
