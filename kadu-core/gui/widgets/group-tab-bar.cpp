@@ -260,7 +260,7 @@ void GroupTabBar::contextMenuEvent(QContextMenuEvent *event)
 	menu.addAction(tr("Rename Group"), this, SLOT(renameGroup()))->setEnabled(tabIndex != -1 && currentGroup);
 	menu.addSeparator();
 	menu.addAction(tr("Delete Group"), this, SLOT(deleteGroup()))->setEnabled(tabIndex != -1 && currentGroup);
-	menu.addAction(tr("Add New Group"), this, SLOT(createNewGroup()));
+	menu.addAction(tr("Add Group"), this, SLOT(createNewGroup()));
 	menu.addSeparator();
 	menu.addAction(tr("Properties"), this, SLOT(groupProperties()))->setEnabled(tabIndex != -1 && currentGroup);
 
