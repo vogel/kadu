@@ -95,9 +95,6 @@ private:
 
 	GaduContactListHandler *ContactListHandler;
 
-	friend class DccManager;
-	DccManager *Dcc;
-
 	GaduServersManager::GaduServer ActiveServer;
 
 	struct gg_login_params GaduLoginParams;
@@ -109,10 +106,11 @@ private:
 	QTimer *PingTimer;
 
 	void setupProxy();
-	void setupDcc();
 	void setupLoginParams();
 	void cleanUpLoginParams();
 	void cleanUpProxySettings();
+
+	void setUpFileTransferService(bool forceClose = false);
 
 	void networkConnected();
 	void networkDisconnected(bool tryAgain, bool waitForPassword);
@@ -127,6 +125,8 @@ private:
 	void changeStatus(bool force);
 
 private slots:
+	void accountUpdated();
+
 	void login();
 
 	void connectionTimeoutTimerSlot();
@@ -177,7 +177,6 @@ public:
 
 	gg_session * gaduSession() { return GaduSession; }
 	GaduProtocolSocketNotifiers * socketNotifiers() { return SocketNotifiers; }
-	DccManager * dccManager() { return Dcc; }
 
 public slots:
 	virtual void login(const QString &password, bool permanent);

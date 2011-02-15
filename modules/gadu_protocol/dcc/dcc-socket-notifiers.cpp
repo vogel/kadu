@@ -34,98 +34,56 @@
 #define dup(x) x
 #endif
 
-DccSocketNotifiers::DccSocketNotifiers(GaduProtocol* protocol, DccManager* manager) :
-		GaduSocketNotifiers(manager), Protocol(protocol),
-		Manager(manager), FileTransferHandler(0), Socket7(0)
+DccSocketNotifiers::DccSocketNotifiers(struct gg_dcc7 *socket, QObject *parent) :
+		GaduSocketNotifiers(parent), FileTransferHandler(0), Socket7(socket)
 {
-
 }
 
 DccSocketNotifiers::~DccSocketNotifiers()
 {
-	if (Socket7)
-	{
-		gg_dcc7_free(Socket7);
-		Socket7 = 0;
-	}
+	gg_dcc7_free(Socket7);
+	Socket7 = 0;
 }
 
-void DccSocketNotifiers::watchFor(struct gg_dcc7 *socket)
+void DccSocketNotifiers::start()
 {
-	kdebugmf(KDEBUG_NETWORK | KDEBUG_INFO, "%p\n", socket);
+	watchFor();
+}
 
-	Socket7 = socket;
-
-	if (Socket7)
-	{
-		if (-1 == Socket7->fd) // wait for accept/reject
-		{
-			connect(Protocol->socketNotifiers(), SIGNAL(dcc7Accepted(struct gg_dcc7 *)),
-					this, SLOT(dcc7Accepted(struct gg_dcc7 *)));
-			connect(Protocol->socketNotifiers(), SIGNAL(dcc7Rejected(struct gg_dcc7 *)),
-					this, SLOT(dcc7Rejected(struct gg_dcc7 *)));
-			return;
-		}
-
+void DccSocketNotifiers::watchFor()
+{
+	if (-1 == Socket7->fd)
 		GaduSocketNotifiers::watchFor(Socket7->fd);
-	}
 	else
 		GaduSocketNotifiers::watchFor(0);
 }
 
-bool DccSocketNotifiers::hasSocket(gg_dcc7 *socket)
-{
-	return socket == Socket7;
-}
-
-void DccSocketNotifiers::dcc7Accepted(struct gg_dcc7 *socket)
-{
-	if (Socket7 != socket)
-		return;
-
-	disconnect(Protocol->socketNotifiers(), SIGNAL(dcc7Accepted(struct gg_dcc7 *)), this, SLOT(dcc7Accepted(struct gg_dcc7 *)));
-	disconnect(Protocol->socketNotifiers(), SIGNAL(dcc7Rejected(struct gg_dcc7 *)), this, SLOT(dcc7Rejected(struct gg_dcc7 *)));
-
-	watchFor(Socket7);
-}
-
-void DccSocketNotifiers::dcc7Rejected(struct gg_dcc7 *socket)
-{
-	if (Socket7 != socket)
-		return;
-
-	disconnect(Protocol->socketNotifiers(), SIGNAL(dcc7Accepted(struct gg_dcc7 *)), this, SLOT(dcc7Accepted(struct gg_dcc7 *)));
-	disconnect(Protocol->socketNotifiers(), SIGNAL(dcc7Rejected(struct gg_dcc7 *)), this, SLOT(dcc7Rejected(struct gg_dcc7 *)));
-
-// TODO: emit finished
-}
-
 bool DccSocketNotifiers::checkRead()
 {
-	return Socket7 && (Socket7->check & GG_CHECK_READ);
+	return Socket7->check & GG_CHECK_READ;
 }
 
 bool DccSocketNotifiers::checkWrite()
 {
-	return Socket7 && (Socket7->check & GG_CHECK_WRITE);
+	return Socket7->check & GG_CHECK_WRITE;
 }
 
 void DccSocketNotifiers::handleEventDcc7Accept(struct gg_event *e)
 {
 	Q_UNUSED(e)
 
-	kdebugf();
-
-	accepted();
+	if (FileTransferHandler)
+		FileTransferHandler->transfer().setTransferStatus(StatusTransfer);
+	watchFor();
 }
 
 void DccSocketNotifiers::handleEventDcc7Reject(struct gg_event *e)
 {
 	Q_UNUSED(e)
 
-	kdebugf();
-
-	rejected();
+	if (FileTransferHandler)
+		FileTransferHandler->transfer().setTransferStatus(StatusRejected);
+	deleteLater();
 }
 
 void DccSocketNotifiers::handleEventDcc7Connected(struct gg_event *e)
@@ -134,7 +92,7 @@ void DccSocketNotifiers::handleEventDcc7Connected(struct gg_event *e)
 
 	kdebugf();
 
-	watchFor(Socket7); // socket may change
+	watchFor(); // socket may change
 }
 
 void DccSocketNotifiers::handleEventDcc7Error(struct gg_event *e)
@@ -161,7 +119,7 @@ void DccSocketNotifiers::handleEventDcc7Pending(struct gg_event *e)
 
 	kdebugf();
 
-	watchFor(Socket7); // socket may change
+	watchFor(); // socket may change
 }
 
 void DccSocketNotifiers::socketEvent()
@@ -248,23 +206,9 @@ void DccSocketNotifiers::connectionTimeout()
 	finished(false);
 }
 
-void DccSocketNotifiers::accepted()
-{
-	if (FileTransferHandler)
-		FileTransferHandler->transfer().setTransferStatus(StatusTransfer);
-	watchFor(Socket7);
-}
-
-void DccSocketNotifiers::rejected()
-{
-	if (FileTransferHandler)
-		FileTransferHandler->transfer().setTransferStatus(StatusRejected);
-	deleteLater();
-}
-
 void DccSocketNotifiers::finished(bool ok)
 {
-	watchFor(0);
+	GaduSocketNotifiers::watchFor(0);
 	deleteLater();
 	emit done(ok);
 
@@ -314,7 +258,7 @@ bool DccSocketNotifiers::acceptFileTransfer(const QFile &file)
 	gg_dcc7_accept(Socket7, Socket7->offset);
 	if (FileTransferHandler)
 		FileTransferHandler->transfer().setTransferStatus(StatusTransfer);
-	watchFor(Socket7); // descriptor may be changed
+	watchFor(); // descriptor may be changed
 
 	return true;
 }
@@ -323,5 +267,5 @@ void DccSocketNotifiers::rejectFileTransfer()
 {
 	kdebugf();
 
-	gg_dcc7_reject(Socket7, Socket7->offset);
+	gg_dcc7_reject(Socket7, GG_DCC7_REJECT_USER);
 }

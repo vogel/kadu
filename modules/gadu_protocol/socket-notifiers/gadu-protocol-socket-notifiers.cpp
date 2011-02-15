@@ -38,8 +38,6 @@
 #include "debug.h"
 #include "misc/misc.h"
 
-#include "dcc/dcc-manager.h"
-
 #include "gadu-protocol-socket-notifiers.h"
 
 GaduProtocolSocketNotifiers::GaduProtocolSocketNotifiers(Account account, GaduProtocol *protocol) :
@@ -321,58 +319,58 @@ void GaduProtocolSocketNotifiers::socketEvent()
 			break;
 
 		case GG_EVENT_DCC7_NEW:
-			if (!CurrentProtocol->Dcc)
+			if (!CurrentProtocol->CurrentFileTransferService)
 			{
 				gg_dcc7_reject(e->event.dcc7_new, GG_DCC7_REJECT_USER);
 				gg_dcc7_free(e->event.dcc7_new);
 				e->event.dcc7_new = NULL;
 			}
 			else
-				CurrentProtocol->Dcc->handleEventDcc7New(e);
+				CurrentProtocol->CurrentFileTransferService->handleEventDcc7New(e);
 			break;
 
 		case GG_EVENT_DCC7_ACCEPT:
-			if (!CurrentProtocol->Dcc)
+			if (!CurrentProtocol->CurrentFileTransferService)
 			{
 				gg_dcc7_reject(e->event.dcc7_new, GG_DCC7_REJECT_USER);
 				gg_dcc7_free(e->event.dcc7_new);
 				e->event.dcc7_new = NULL;
 			}
 			else
-				CurrentProtocol->Dcc->handleEventDcc7Accept(e);
+				CurrentProtocol->CurrentFileTransferService->handleEventDcc7Accept(e);
 			break;
 
 		case GG_EVENT_DCC7_REJECT:
-			if (!CurrentProtocol->Dcc)
+			if (!CurrentProtocol->CurrentFileTransferService)
 			{
 				gg_dcc7_reject(e->event.dcc7_new, GG_DCC7_REJECT_USER);
 				gg_dcc7_free(e->event.dcc7_new);
 				e->event.dcc7_new = NULL;
 			}
 			else
-				CurrentProtocol->Dcc->handleEventDcc7Reject(e);
+				CurrentProtocol->CurrentFileTransferService->handleEventDcc7Reject(e);
 			break;
 
 		case GG_EVENT_DCC7_ERROR:
-			if (!CurrentProtocol->Dcc)
+			if (!CurrentProtocol->CurrentFileTransferService)
 			{
 				gg_dcc7_reject(e->event.dcc7_new, GG_DCC7_REJECT_USER);
 				gg_dcc7_free(e->event.dcc7_new);
 				e->event.dcc7_new = NULL;
 			}
 			else
-				CurrentProtocol->Dcc->handleEventDcc7Error(e);
+				CurrentProtocol->CurrentFileTransferService->handleEventDcc7Error(e);
 			break;
 
 		case GG_EVENT_DCC7_PENDING:
-			if (!CurrentProtocol->Dcc)
+			if (!CurrentProtocol->CurrentFileTransferService)
 			{
 				gg_dcc7_reject(e->event.dcc7_new, GG_DCC7_REJECT_USER);
 				gg_dcc7_free(e->event.dcc7_new);
 				e->event.dcc7_new = NULL;
 			}
 			else
-				CurrentProtocol->Dcc->handleEventDcc7Pending(e);
+				CurrentProtocol->CurrentFileTransferService->handleEventDcc7Pending(e);
 			break;
 	}
 

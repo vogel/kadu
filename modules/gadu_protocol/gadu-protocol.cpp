@@ -34,6 +34,7 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
+#include "accounts/account-shared.h"
 #include "avatars/avatar-manager.h"
 #include "chat/chat.h"
 #include "chat/message/formatted-message.h"
@@ -54,7 +55,6 @@
 #include "icons-manager.h"
 #include "misc/misc.h"
 
-#include "dcc/dcc-manager.h"
 #include "helpers/gadu-formatter.h"
 #include "server/gadu-contact-list-handler.h"
 #include "server/gadu-servers-manager.h"
@@ -223,7 +223,7 @@ Buddy GaduProtocol::searchResultToBuddy(gg_pubdir50_t res, int number)
 }
 
 GaduProtocol::GaduProtocol(Account account, ProtocolFactory *factory) :
-		Protocol(account, factory), Dcc(0),
+		Protocol(account, factory), CurrentFileTransferService(0),
 		ActiveServer(), GaduLoginParams(), GaduSession(0), PingTimer(0)
 {
 	kdebugf();
@@ -235,7 +235,6 @@ GaduProtocol::GaduProtocol(Account account, ProtocolFactory *factory) :
 	CurrentChatService = new GaduChatService(this);
 	CurrentContactListService = new GaduContactListService(this);
 	CurrentContactPersonalInfoService = new GaduContactPersonalInfoService(this);
-	CurrentFileTransferService = new GaduFileTransferService(this);
 	CurrentPersonalInfoService = new GaduPersonalInfoService(this);
 	CurrentSearchService = new GaduSearchService(this);
 #ifdef GADU_HAVE_MULTILOGON
@@ -256,6 +255,7 @@ GaduProtocol::GaduProtocol(Account account, ProtocolFactory *factory) :
 			this, SLOT(contactAboutToBeDetached(Contact)));
 	connect(ContactManager::instance(), SIGNAL(contactIdChanged(Contact, const QString &)),
 			this, SLOT(contactIdChanged(Contact, const QString &)));
+	connect(account, SIGNAL(updated()), this, SLOT(accountUpdated()));
 
 	kdebugf2();
 }
@@ -274,6 +274,7 @@ GaduProtocol::~GaduProtocol()
 			this, SLOT(contactAboutToBeDetached(Contact)));
 	disconnect(ContactManager::instance(), SIGNAL(contactIdChanged(Contact, const QString &)),
 			this, SLOT(contactIdChanged(Contact, const QString &)));
+	disconnect(account(), SIGNAL(updated()), this, SLOT(accountUpdated()));
 
 	networkDisconnected(false, false);
 
@@ -376,6 +377,11 @@ void GaduProtocol::login(const QString &password, bool permanent)
 	login();
 }
 
+void GaduProtocol::accountUpdated()
+{
+	setUpFileTransferService();
+}
+
 void GaduProtocol::login()
 {
 	kdebugf();
@@ -409,7 +415,6 @@ void GaduProtocol::login()
 	networkStateChanged(NetworkConnecting);
 
 	setupProxy();
-	setupDcc();
 	setupLoginParams();
 
 	GaduSession = gg_login(&GaduLoginParams);
@@ -465,24 +470,6 @@ void GaduProtocol::setupProxy()
 	}
 }
 
-void GaduProtocol::setupDcc()
-{
-	GaduAccountDetails *gaduAccountDetails = dynamic_cast<GaduAccountDetails *>(account().details());
-	if (!gaduAccountDetails)
-		return;
-
-	if (gaduAccountDetails->allowDcc())
-	{
-		if (!Dcc)
-			Dcc = new DccManager(this);
-	}
-	else
-	{
-		delete Dcc;
-		Dcc = 0;
-	}
-}
-
 void GaduProtocol::setupLoginParams()
 {
 	memset(&GaduLoginParams, 0, sizeof(GaduLoginParams));
@@ -519,7 +506,7 @@ void GaduProtocol::setupLoginParams()
 
 	GaduLoginParams.encoding = GG_ENCODING_UTF8;
 
-	GaduLoginParams.has_audio = false; // gaduAccountDetails->allowDcc();
+	GaduLoginParams.has_audio = false;
 	GaduLoginParams.last_sysmsg = config_file.readNumEntry("General", "SystemMsgIndex", 1389);
 
 #ifdef GADU_HAVE_TLS
@@ -544,12 +531,39 @@ void GaduProtocol::cleanUpLoginParams()
 	}
 }
 
+void GaduProtocol::setUpFileTransferService(bool forceClose)
+{
+	bool close = forceClose;
+	if (!close)
+		close = NetworkConnected != state();
+	if (!close)
+	{
+		GaduAccountDetails *gaduAccountDetails = dynamic_cast<GaduAccountDetails *>(account().details());
+		if (!gaduAccountDetails)
+			close = true;
+		else
+			close = !gaduAccountDetails->allowDcc();
+	}
+
+	if (close)
+	{
+		delete CurrentFileTransferService;
+		CurrentFileTransferService = 0;
+	}
+	else
+		if (!CurrentFileTransferService)
+			CurrentFileTransferService = new GaduFileTransferService(this);
+}
+
 void GaduProtocol::networkConnected()
 {
 	networkStateChanged(NetworkConnected);
 
 	// fetch current avatar after connection
 	AvatarManager::instance()->updateAvatar(account().accountContact(), true);
+
+	// set up DCC if needed
+	setUpFileTransferService();
 }
 
 void GaduProtocol::networkDisconnected(bool tryAgain, bool waitForPassword)
@@ -557,11 +571,7 @@ void GaduProtocol::networkDisconnected(bool tryAgain, bool waitForPassword)
 	if (!tryAgain)
 		networkStateChanged(NetworkDisconnected);
 
-	if (Dcc)
-	{
-		delete Dcc;
-		Dcc = 0;
-	}
+	setUpFileTransferService(true);
 
 	if (PingTimer)
 	{

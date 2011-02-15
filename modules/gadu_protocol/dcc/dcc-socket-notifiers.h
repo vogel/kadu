@@ -26,7 +26,6 @@
 
 #include "buddies/buddy.h"
 
-#include "dcc/dcc-manager.h"
 #include "socket-notifiers/gadu-socket-notifiers.h"
 #include "gadu-protocol.h"
 
@@ -48,13 +47,11 @@ class /*GADU_LOCAL*/ DccSocketNotifiers : public GaduSocketNotifiers
 {
 	Q_OBJECT
 
-	GaduProtocol *Protocol;
-
-	DccManager *Manager;
-
 	GaduFileTransferHandler *FileTransferHandler;
 
 	struct gg_dcc7 *Socket7;
+
+	void watchFor();
 
 	void accepted();
 	void rejected();
@@ -64,13 +61,7 @@ class /*GADU_LOCAL*/ DccSocketNotifiers : public GaduSocketNotifiers
 	void handleEventDcc7Error(struct gg_event *e);
 	void handleEventDcc7Done(struct gg_event *e);
 
-private slots:
-	void dcc7Accepted(struct gg_dcc7 *);
-	void dcc7Rejected(struct gg_dcc7 *);
-
 protected:
-	DccManager * manager() { return Manager; }
-
 	virtual bool checkRead();
 	virtual bool checkWrite();
 	virtual void socketEvent();
@@ -79,11 +70,10 @@ protected:
 	virtual void connectionTimeout();
 
 public:
-	DccSocketNotifiers(GaduProtocol *protocol, DccManager *manager);
+	explicit DccSocketNotifiers(struct gg_dcc7 *socket, QObject *parent = 0);
 	virtual ~DccSocketNotifiers();
 
-	void watchFor(struct gg_dcc7 *socket);
-	bool hasSocket(struct gg_dcc7 *socket);
+	void start();
 
 	void handleEventDcc7Accept(struct gg_event *e);
 	void handleEventDcc7Reject(struct gg_event *e);
@@ -101,9 +91,6 @@ public:
 
 signals:
 	void done(bool ok);
-
-	void incomingConnection(struct gg_dcc *incomingConnection);
-	void callbackReceived(DccSocketNotifiers *);
 
 };
 

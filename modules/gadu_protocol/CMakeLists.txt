@@ -1,7 +1,6 @@
 set (LIBGADU_MIN_VERSION "1.9.0")
 
 set (SOURCES
-	dcc/dcc-manager.cpp
 	dcc/dcc-socket-notifiers.cpp
 
 	file-transfer/gadu-file-transfer-handler.cpp
@@ -71,7 +70,6 @@ set (SOURCES
 )
 
 set (MOC_SOURCES
-	dcc/dcc-manager.h
 	dcc/dcc-socket-notifiers.h
 
 	file-transfer/gadu-file-transfer-handler.h

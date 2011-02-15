@@ -18,7 +18,6 @@
  */
 
 #include "accounts/account.h"
-#include "dcc/dcc-manager.h"
 #include "dcc/dcc-socket-notifiers.h"
 #include "gadu-contact-details.h"
 #include "gadu-protocol.h"
@@ -130,8 +129,8 @@ void GaduFileTransferHandler::send()
 	transfer().setTransferStatus(StatusWaitingForConnection);
 	WaitingForSocketNotifiers = true;
 
-	if (gaduProtocol->dccManager())
-		gaduProtocol->dccManager()->attachSendFileTransferSocket(this);
+	if (gaduProtocol->fileTransferService())
+		dynamic_cast<GaduFileTransferService *>(gaduProtocol->fileTransferService())->attachSendFileTransferSocket(this);
 }
 
 void GaduFileTransferHandler::stop()
