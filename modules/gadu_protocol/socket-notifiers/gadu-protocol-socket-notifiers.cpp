@@ -125,7 +125,14 @@ void GaduProtocolSocketNotifiers::handleEventMultilogonInfo(gg_event* e)
 {
 	CurrentProtocol->CurrentMultilogonService->handleEventMultilogonInfo(e);
 }
-#endif
+#endif // GADU_HAVE_MULTILOGON
+
+#ifdef GADU_HAVE_TYPING_NOTIFY
+void GaduProtocolSocketNotifiers::handleEventTypingNotify(struct gg_event *e)
+{
+	CurrentProtocol->CurrentChatStateService->handleEventTypingNotify(e);
+}
+#endif // GADU_HAVE_TYPING_NOTIFY
 
 void GaduProtocolSocketNotifiers::handleEventNotify(struct gg_event *e)
 {
@@ -250,7 +257,13 @@ void GaduProtocolSocketNotifiers::socketEvent()
 		case GG_EVENT_MULTILOGON_INFO:
 			handleEventMultilogonInfo(e);
 			break;
-#endif
+#endif // GADU_HAVE_MULTILOGON
+
+#ifdef GADU_HAVE_TYPING_NOTIFY
+		case GG_EVENT_TYPING_NOTIFICATION:
+			handleEventTypingNotify(e);
+			break;
+#endif // GADU_HAVE_TYPING_NOTIFY
 
 		case GG_EVENT_NOTIFY:
 		case GG_EVENT_NOTIFY_DESCR:

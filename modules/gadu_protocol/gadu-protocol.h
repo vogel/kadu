@@ -31,6 +31,7 @@
 #include "services/gadu-avatar-service.h"
 #include "services/gadu-chat-image-service.h"
 #include "services/gadu-chat-service.h"
+#include "services/gadu-chat-state-service.h"
 #include "services/gadu-contact-list-service.h"
 #include "services/gadu-contact-personal-info-service.h"
 #include "services/gadu-file-transfer-service.h"
@@ -87,7 +88,10 @@ private:
 	GaduSearchService *CurrentSearchService;
 #ifdef GADU_HAVE_MULTILOGON
 	GaduMultilogonService *CurrentMultilogonService;
-#endif // GADU_HAVE_MULTILOGON
+#endif // GADU_HAVE_TYPING_NOTIFY
+#ifdef GADU_HAVE_TYPING_NOTIFY
+	GaduChatStateService *CurrentChatStateService;
+#endif // GADU_HAVE_TYPING_NOTIFY
 
 	GaduContactListHandler *ContactListHandler;
 
@@ -156,7 +160,9 @@ public:
 #ifdef GADU_HAVE_MULTILOGON
     virtual MultilogonService * multilogonService() { return CurrentMultilogonService; }
 #endif // GADU_HAVE_MULTILOGON
-
+#ifdef GADU_HAVE_TYPING_NOTIFY
+	virtual GaduChatStateService * chatStateService()  { return CurrentChatStateService; }
+#endif // GADU_HAVE_TYPING_NOTIFY
 	virtual bool contactsListReadOnly() { return false; }
 	virtual bool supportsPrivateStatus() { return true; }
 

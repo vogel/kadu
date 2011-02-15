@@ -64,7 +64,11 @@ class GADU_LOCAL GaduProtocolSocketNotifiers : public GaduSocketNotifiers
 #ifdef GADU_HAVE_MULTILOGON
 	void handleEventMultilogonMsg(struct gg_event *e);
 	void handleEventMultilogonInfo(struct gg_event *e);
-#endif
+#endif // GADU_HAVE_MULTILOGON
+
+#ifdef GADU_HAVE_TYPING_NOTIFY
+	void handleEventTypingNotify(struct gg_event *e);
+#endif // GADU_HAVE_TYPING_NOTIFY
 
 protected:
 	virtual bool checkRead();

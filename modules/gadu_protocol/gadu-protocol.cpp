@@ -241,7 +241,9 @@ GaduProtocol::GaduProtocol(Account account, ProtocolFactory *factory) :
 #ifdef GADU_HAVE_MULTILOGON
 	CurrentMultilogonService = new GaduMultilogonService(account, this);
 #endif // GADU_HAVE_MULTILOGON
-
+#ifdef GADU_HAVE_TYPING_NOTIFY
+	CurrentChatStateService = new GaduChatStateService(this);
+#endif // GADU_HAVE_TYPING_NOTIFY
 	ContactListHandler = 0;
 
 	connect(BuddyManager::instance(), SIGNAL(buddySubscriptionChanged(Buddy &)),
@@ -509,7 +511,11 @@ void GaduProtocol::setupLoginParams()
 
 #ifdef GADU_HAVE_MULTILOGON
 	GaduLoginParams.protocol_features |= GG_FEATURE_MULTILOGON;
-#endif
+#endif // GADU_HAVE_MULTILOGON
+
+#ifdef GADU_HAVE_TYPING_NOTIFY
+	GaduLoginParams.protocol_features |=GG_FEATURE_TYPING_NOTIFICATION;
+#endif // GADU_HAVE_TYPING_NOTIFY
 
 	GaduLoginParams.encoding = GG_ENCODING_UTF8;
 

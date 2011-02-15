@@ -47,6 +47,7 @@ set (SOURCES
 	services/gadu-avatar-service.cpp
 	services/gadu-chat-image-service.cpp
 	services/gadu-chat-service.cpp
+	services/gadu-chat-state-service.cpp
 	services/gadu-contact-list-service.cpp
 	services/gadu-contact-personal-info-service.cpp
 	services/gadu-file-transfer-service.cpp
@@ -106,6 +107,7 @@ set (MOC_SOURCES
 	services/gadu-avatar-service.h
 	services/gadu-chat-image-service.h
 	services/gadu-chat-service.h
+	services/gadu-chat-state-service.h
 	services/gadu-contact-list-service.h
 	services/gadu-contact-personal-info-service.h
 	services/gadu-file-transfer-service.h
