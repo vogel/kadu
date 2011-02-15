@@ -45,7 +45,7 @@ DccSocketNotifiers::~DccSocketNotifiers()
 {
 	if (Socket7)
 	{
-		Socket7->destroy(Socket7);
+		gg_dcc7_free(Socket7);
 		Socket7 = 0;
 	}
 }
