@@ -224,7 +224,8 @@ void RecentChatManager::removeRecentChat(Chat chat)
 void RecentChatManager::configurationUpdated()
 {
 	CleanUpTimer.stop();
-	if (config_file.readNumEntry("Chat", "RecentChatsTimeout") > 0)
+	RecentChatsTimeout = config_file.readNumEntry("Chat", "RecentChatsTimeout") * 60;
+	if (RecentChatsTimeout > 0)
 		CleanUpTimer.start();
 }
 
@@ -237,9 +238,7 @@ void RecentChatManager::configurationUpdated()
  */
 void RecentChatManager::cleanUp()
 {
-	int secs = config_file.readNumEntry("Chat", "RecentChatsTimeout") * 60;
-
-	if (secs <= 0)
+	if (RecentChatsTimeout <= 0)
 		return;
 
 	QDateTime now = QDateTime::currentDateTime();
@@ -247,7 +246,7 @@ void RecentChatManager::cleanUp()
 	foreach (const Chat &chat, RecentChats)
 	{
 		QDateTime *recentChatData = chat.data()->moduleData<QDateTime>("recent-chat");
-		if (!recentChatData || recentChatData->addSecs(secs) < now)
+		if (!recentChatData || recentChatData->addSecs(RecentChatsTimeout) < now)
 			removeRecentChat(chat);
 	}
 }

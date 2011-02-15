@@ -62,6 +62,8 @@ class KADUAPI RecentChatManager : public QObject, public StorableObject, private
 	QList<Chat> RecentChats;
 	QTimer CleanUpTimer;
 
+	int RecentChatsTimeout;
+
 	RecentChatManager();
 	virtual ~RecentChatManager();
 
