@@ -17,8 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TYPING_NOTIFICATION_SERVICE_H
-#define TYPING_NOTIFICATION_SERVICE_H
+#ifndef COMPOSING_NOTIFICATION_SERVICE_H
+#define COMPOSING_NOTIFICATION_SERVICE_H
 
 #include <QtCore/QObject>
 
@@ -27,21 +27,21 @@
 class Chat;
 class Contact;
 
-class KADUAPI TypingNotificationService : public QObject
+class KADUAPI ComposingNotificationService : public QObject
 {
 	Q_OBJECT
 
 public:
-	TypingNotificationService(QObject *parent = 0) : QObject(parent) {}
+	ComposingNotificationService(QObject *parent = 0) : QObject(parent) {}
 
 public slots:
-	virtual bool typingStarted(const Chat &chat) = 0;
-	virtual bool typingStopped(const Chat &chat) = 0;
+	virtual bool composingStarted(const Chat &chat) = 0;
+	virtual bool composingStopped(const Chat &chat) = 0;
 
 signals:
-	void contactStartedTyping(const Contact &contact);
-	void contactStoppedTyping(const Contact &contact);
+	void contactStartedComposing(const Contact &contact);
+	void contactStoppedComposing(const Contact &contact);
 
 };
 
-#endif // TYPING_NOTIFICATION_SERVICE_H
+#endif // COMPOSING_NOTIFICATION_SERVICE_H

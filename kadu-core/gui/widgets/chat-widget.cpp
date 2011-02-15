@@ -62,7 +62,7 @@
 #include "gui/windows/message-dialog.h"
 #include "parser/parser.h"
 #include "protocols/protocol.h"
-#include "protocols/services/typing-notification-service.h"
+#include "protocols/services/composing-notification-service.h"
 
 #include "activate.h"
 #include "chat-edit-box.h"
@@ -87,7 +87,7 @@ ChatWidget::ChatWidget(const Chat &chat, QWidget *parent) :
 	configurationUpdated();
 
 	ComposingTimer.setInterval(2 * 1000);
-	connect(&ComposingTimer, SIGNAL(timeout()), this, SLOT(checkTyping()));
+	connect(&ComposingTimer, SIGNAL(timeout()), this, SLOT(checkComposing()));
 
 	connect(edit(), SIGNAL(textChanged()), this, SLOT(updateComposing()));
 
@@ -683,10 +683,10 @@ void ChatWidget::checkComposing()
 	{
 		ComposingTimer.stop();
 
-		TypingNotificationService *typingService = currentProtocol()->typingNotificationService();
-		if (!typingService)
+		ComposingNotificationService *composingService = currentProtocol()->composingNotificationService();
+		if (!composingService)
 			return;
-		typingService->typingStopped(chat());
+		composingService->composingStopped(chat());
 	}
 
 	IsComposing = false;
@@ -698,10 +698,10 @@ void ChatWidget::updateComposing()
 	{
 		ComposingTimer.start();
 
-		TypingNotificationService *typingService = currentProtocol()->typingNotificationService();
-		if (!typingService)
+		ComposingNotificationService *composingService = currentProtocol()->composingNotificationService();
+		if (!composingService)
 			return;
-		typingService->typingStarted(chat());
+		composingService->composingStarted(chat());
 	}
 	IsComposing = true;
 }
