@@ -123,6 +123,10 @@ ChatWidget::~ChatWidget()
 {
 	kdebugf();
 
+	ChatStateService *chatStateService = currentProtocol()->chatStateService();
+	if (chatStateService)
+		chatStateService->chatWidgetClosed(CurrentChat);
+
 	ChatWidgetManager::instance()->unregisterChatWidget(this);
 
 //	disconnectAcknowledgeSlots();
