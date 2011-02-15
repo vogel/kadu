@@ -62,7 +62,6 @@
 #include "gui/windows/message-dialog.h"
 #include "parser/parser.h"
 #include "protocols/protocol.h"
-#include "protocols/services/chat-state-service.h"
 
 #include "activate.h"
 #include "chat-edit-box.h"
@@ -76,7 +75,8 @@
 ChatWidget::ChatWidget(const Chat &chat, QWidget *parent) :
 		QWidget(parent), CurrentChat(chat),
 		BuddiesWidget(0), InputBox(0), HorizontalSplitter(0),
-		IsComposing(false), SplittersInitialized(false), NewMessagesCount(0)
+		IsComposing(false), CurrentContactActivity(ChatStateService::StateNone),
+		SplittersInitialized(false), NewMessagesCount(0)
 {
 	kdebugf();
 
@@ -99,6 +99,7 @@ ChatWidget::ChatWidget(const Chat &chat, QWidget *parent) :
 
 	// icon for conference never changes
 	if (CurrentChat.contacts().count() == 1)
+	{
 		foreach (const Contact &contact, CurrentChat.contacts())
 		{
 			// actually we only need to send iconChanged() on CurrentStatus update
@@ -108,6 +109,11 @@ ChatWidget::ChatWidget(const Chat &chat, QWidget *parent) :
 			connect(contact.ownerBuddy(), SIGNAL(buddySubscriptionChanged()), this, SIGNAL(iconChanged()));
 		}
 
+		ChatStateService *chatStateService = currentProtocol()->chatStateService();
+		if (chatStateService)
+			connect(chatStateService, SIGNAL(contactActivityChanged(ChatStateService::ContactActivity,Contact)),
+					this, SLOT(contactActivityChanged(ChatStateService::ContactActivity,Contact)));
+	}
 	connect(IconsManager::instance(), SIGNAL(themeChanged()), this, SIGNAL(iconChanged()));
 
 	kdebugf2();
@@ -295,6 +301,11 @@ void ChatWidget::refreshTitle()
 		}
 		else
 			title = Parser::parse(config_file.readEntry("Look", "ChatContents"), BuddyOrContact(contact), false);
+
+		if (CurrentContactActivity == ChatStateService::StateComposing)
+			title = tr("%1 (Composing...)").arg(title);
+		else if (CurrentContactActivity == ChatStateService::StateInactive)
+			title = tr("%1 (Inactive)").arg(title);
 	}
 
 	title.replace("<br/>", " ");
@@ -704,6 +715,33 @@ void ChatWidget::updateComposing()
 		chatStateService->composingStarted(chat());
 	}
 	IsComposing = true;
+}
+
+void ChatWidget::contactActivityChanged(ChatStateService::ContactActivity state, const Contact &contact)
+{
+	if (!CurrentChat.contacts().contains(contact))
+		return;
+
+	if (CurrentContactActivity == state)
+		return;
+
+	CurrentContactActivity = state;
+
+	if (CurrentContactActivity == ChatStateService::StateGone)
+		refreshTitle();
+	else
+	{
+		QString msg = "[ " + tr("%1 ended the conversation").arg(contact.ownerBuddy().display()) + " ]";
+		Message message = Message::create();
+		message.setMessageChat(CurrentChat);
+		message.setType(Message::TypeSystem);
+		message.setMessageSender(contact);
+		message.setContent(msg);
+		message.setSendDate(QDateTime::currentDateTime());
+		message.setReceiveDate(QDateTime::currentDateTime());
+
+		MessagesView->appendMessage(message);
+	}
 }
 
 void ChatWidget::leaveConference()

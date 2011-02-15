@@ -38,6 +38,7 @@
 #include "gui/widgets/buddies-list-widget.h"
 #include "gui/widgets/chat-messages-view.h"
 #include "protocols/services/chat-service.h"
+#include "protocols/services/chat-state-service.h"
 #include "exports.h"
 
 class QSplitter;
@@ -65,6 +66,7 @@ class KADUAPI ChatWidget : public QWidget, ConfigurationAwareObject
 
 	QTimer ComposingTimer;
 	bool IsComposing;
+	ChatStateService::ContactActivity CurrentContactActivity;
 
 	bool SplittersInitialized;
 
@@ -92,6 +94,7 @@ private slots:
 
 	void checkComposing();
 	void updateComposing();
+	void contactActivityChanged(ChatStateService::ContactActivity state, const Contact &contact);
 
 protected:
 	virtual void keyPressEvent(QKeyEvent *e);

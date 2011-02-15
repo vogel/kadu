@@ -35,8 +35,10 @@ public:
 	enum ContactActivity
 	{
 		StateActive,
-		StateInactive,
 		StateComposing,
+		StateGone,
+		StateInactive,
+		StateNone,
 		StatePaused
 	};
 
