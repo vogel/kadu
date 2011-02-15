@@ -19,6 +19,7 @@
 
 #include "contacts/contact.h"
 #include "contacts/contact-manager.h"
+#include "contacts/contact-set.h"
 
 #include "gadu-protocol.h"
 
@@ -33,7 +34,7 @@ GaduChatStateService::GaduChatStateService(GaduProtocol *parent) :
 #ifdef GADU_HAVE_TYPING_NOTIFY
 void GaduChatStateService::handleEventTypingNotify(struct gg_event *e)
 {
-	Contact contact = ContactManager::instance()->byId(Protocol->account(), QString::number(e->event.typing_notification.uin, ActionReturnNull));
+	Contact contact = ContactManager::instance()->byId(Protocol->account(), QString::number(e->event.typing_notification.uin), ActionReturnNull);
 	if (!contact)
 		return;
 
@@ -52,12 +53,40 @@ bool GaduChatStateService::shouldSendEvent()
 
 void GaduChatStateService::composingStarted(const Chat &chat)
 {
+#ifdef GADU_HAVE_TYPING_NOTIFY
+	if (!shouldSendEvent())
+		return;
+
+	Contact contact = chat.contacts().toContact();
+	if (!contact)
+		return;
+
+	if (!Protocol->gaduSession())
+		return;
+
+	gg_typing_notification(Protocol->gaduSession(), Protocol->uin(contact), 0x0001);
+#else
 	Q_UNUSED(chat)
+#endif // GADU_HAVE_TYPING_NOTIFY
 }
 
 void GaduChatStateService::composingStopped(const Chat &chat)
 {
+#ifdef GADU_HAVE_TYPING_NOTIFY
+	if (!shouldSendEvent())
+		return;
+
+	Contact contact = chat.contacts().toContact();
+	if (!contact)
+		return;
+
+	if (!Protocol->gaduSession())
+		return;
+
+	gg_typing_notification(Protocol->gaduSession(), Protocol->uin(contact), 0x0000);
+#else
 	Q_UNUSED(chat)
+#endif // GADU_HAVE_TYPING_NOTIFY
 }
 
 void GaduChatStateService::chatWidgetClosed(const Chat &chat)
