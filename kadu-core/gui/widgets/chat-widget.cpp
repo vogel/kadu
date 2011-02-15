@@ -700,10 +700,10 @@ void ChatWidget::checkComposing()
 	{
 		ComposingTimer.stop();
 
-		ChatStateService *chatStateService = currentProtocol()->chatStateService();
-		if (!chatStateService)
+		if (!currentProtocol() || !currentProtocol()->chatStateService())
 			return;
-		chatStateService->composingStopped(chat());
+
+		currentProtocol()->chatStateService()->composingStopped(chat());
 	}
 
 	IsComposing = false;
@@ -713,12 +713,12 @@ void ChatWidget::updateComposing()
 {
 	if (!ComposingTimer.isActive())
 	{
-		ComposingTimer.start();
-
-		ChatStateService *chatStateService = currentProtocol()->chatStateService();
-		if (!chatStateService)
+		if (!currentProtocol() || !currentProtocol()->chatStateService())
 			return;
-		chatStateService->composingStarted(chat());
+
+		currentProtocol()->chatStateService()->composingStarted(chat());
+
+		ComposingTimer.start();
 	}
 	IsComposing = true;
 }
