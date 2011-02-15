@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="pl_PL">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.0">
 <context>
     <name>@default</name>
     <message>
@@ -128,6 +126,10 @@
         <translation>Prawy</translation>
     </message>
     <message>
+        <source>&apos;Open chat&apos; works on all events</source>
+        <translation>&apos;Otwórz rozmowę&apos; działa z każdym zdarzeniem</translation>
+    </message>
+    <message>
         <source>Show message content in hint</source>
         <translation>Pokaż treść wiadomości w dymku</translation>
     </message>
@@ -138,10 +140,6 @@
     <message>
         <source>Delete pending message when user deletes hint</source>
         <translation>Usuń oczekujące wiadomości przy usuwaniu dymka</translation>
-    </message>
-    <message>
-        <source>&apos;Open chat&apos; works on all events</source>
-        <translation>&apos;Otwórz rozmowę&apos; działa z każdym zdarzeniem</translation>
     </message>
     <message>
         <source>Buddy List</source>
@@ -160,8 +158,24 @@
         <translation>Szerokość ramki</translation>
     </message>
     <message>
+        <source>Transparency</source>
+        <translation>Przezroczystość</translation>
+    </message>
+    <message>
+        <source>Mouse Buttons</source>
+        <translation>Przyciski myszy</translation>
+    </message>
+    <message>
+        <source>Syntax</source>
+        <translation>Składnia</translation>
+    </message>
+    <message>
         <source>Icon size</source>
         <translation>Rozmiar ikon</translation>
+    </message>
+    <message>
+        <source>16px</source>
+        <translation>16px</translation>
     </message>
     <message>
         <source>22px</source>
@@ -172,44 +186,28 @@
         <translation>32px</translation>
     </message>
     <message>
+        <source>48px</source>
+        <translation>48px</translation>
+    </message>
+    <message>
         <source>64px</source>
         <translation>64px</translation>
-    </message>
-    <message>
-        <source>Transparency</source>
-        <translation>Przezroczystość</translation>
-    </message>
-    <message>
-        <source>Syntax</source>
-        <translation>Składnia</translation>
     </message>
     <message>
         <source>Show buttons only when necessary</source>
         <translation>Pokaż przyciski tylko gdy konieczne</translation>
     </message>
     <message>
-        <source>Mouse Buttons</source>
-        <translation>Przyciski myszy</translation>
-    </message>
-    <message>
         <source>New Chat/Message</source>
         <translation>Nowa rozmowa lub wiadomość</translation>
     </message>
     <message>
-        <source>16px</source>
-        <translation type="unfinished">64px {16p?}</translation>
-    </message>
-    <message>
-        <source>48px</source>
-        <translation type="unfinished">64px {48p?}</translation>
-    </message>
-    <message>
         <source>Advanced</source>
-        <translation type="unfinished"></translation>
+        <translation>Zaawansowane</translation>
     </message>
     <message>
         <source>Advanced...</source>
-        <translation type="unfinished"></translation>
+        <translation>Zaawansowane...</translation>
     </message>
 </context>
 <context>
@@ -242,7 +240,7 @@
     </message>
     <message>
         <source>Advenced hints&apos;s configuration</source>
-        <translation type="unfinished"></translation>
+        <translation>Zaawansowana konfiguracja dymków</translation>
     </message>
 </context>
 <context>
@@ -264,7 +262,7 @@
     </message>
     <message>
         <source>Don&apos;t hide</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie ukrywaj</translation>
     </message>
 </context>
 </TS>

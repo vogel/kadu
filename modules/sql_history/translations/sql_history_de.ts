@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="de_DE">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="de" version="2.0">
 <context>
     <name>@default</name>
     <message>
@@ -36,22 +34,22 @@
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="22"/>
         <source>Choose type of databse, in which data should be stored</source>
-        <translation type="unfinished"></translation>
+        <translation>Wählen Sie den Typ der Datenbank an, in denen Daten gespeichert werden sollen</translation>
     </message>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="25"/>
         <source>SQLite</source>
-        <translation type="unfinished"></translation>
+        <translation>SQLite</translation>
     </message>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="28"/>
         <source>MySQL</source>
-        <translation type="unfinished"></translation>
+        <translation>MySQL</translation>
     </message>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="31"/>
         <source>PostgreSQL</source>
-        <translation type="unfinished"></translation>
+        <translation>PostgreSQL</translation>
     </message>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="35"/>
@@ -66,17 +64,17 @@
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="41"/>
         <source>Database name</source>
-        <translation type="unfinished"></translation>
+        <translation>Datenbanknamen</translation>
     </message>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="44"/>
         <source>User name</source>
-        <translation type="unfinished"></translation>
+        <translation>Benutzername</translation>
     </message>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="47"/>
         <source>Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Passwort</translation>
     </message>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="50"/>
@@ -90,13 +88,14 @@
         <location filename="../storage/history-sql-storage.cpp" line="83"/>
         <location filename="../storage/history-sql-storage.cpp" line="106"/>
         <source>Kadu</source>
-        <translation type="unfinished"></translation>
+        <translation>Kadu</translation>
     </message>
     <message>
         <location filename="../storage/history-sql-storage.cpp" line="84"/>
         <source>It seems your Qt library does not provide support for selected database.
  Please select another driver in configuration window or install Qt with %1 plugin.</source>
-        <translation type="unfinished"></translation>
+        <translation>Es scheint, Ihr Qt-Library bietet keine Unterstützung für ausgewählte Datenbank.
+Bitte wählen Sie einen anderen Treiber in Konfigurationsfenster oder installieren Sie Qt mit %1 Plugin.</translation>
     </message>
 </context>
 </TS>

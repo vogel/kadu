@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="fr" version="2.0">
 <context>
     <name>@default</name>
     <message>
@@ -128,6 +126,10 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>&apos;Open chat&apos; works on all events</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Show message content in hint</source>
         <translation type="unfinished"></translation>
     </message>
@@ -137,10 +139,6 @@
     </message>
     <message>
         <source>Delete pending message when user deletes hint</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&apos;Open chat&apos; works on all events</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

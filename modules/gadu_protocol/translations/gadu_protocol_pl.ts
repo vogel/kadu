@@ -1,14 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="pl_PL">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.0">
 <context>
     <name>@default</name>
-    <message>
-        <location filename="../.configuration-ui-translations.cpp" line="10"/>
-        <location filename="../.configuration-ui-translations.cpp" line="44"/>
-        <source>General</source>
-        <translation>Ogólne</translation>
-    </message>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="4"/>
         <source>Accounts</source>
@@ -18,6 +10,12 @@
         <location filename="../.configuration-ui-translations.cpp" line="7"/>
         <source>Account</source>
         <translation>Konto</translation>
+    </message>
+    <message>
+        <location filename="../.configuration-ui-translations.cpp" line="10"/>
+        <location filename="../.configuration-ui-translations.cpp" line="44"/>
+        <source>General</source>
+        <translation>Ogólne</translation>
     </message>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="13"/>
@@ -115,6 +113,11 @@
     <name>DccManager</name>
     <message>
         <location filename="../dcc/dcc-manager.cpp" line="289"/>
+        <source>Kadu</source>
+        <translation>Kadu</translation>
+    </message>
+    <message>
+        <location filename="../dcc/dcc-manager.cpp" line="289"/>
         <source>%1 is asking for direct connection but his/her
 IP address (%2) differs from what GG server returned
 as his/her IP address (%3). It may be spoofing
@@ -124,11 +127,6 @@ adres IP (%2) różni się od tego jaki zwrócił serwer GG
 jako jego / jej adres IP: (%3). To może być próba podszycia
 się albo on / ona ma przekierowanie portów.
 Kontynuować połączenie?</translation>
-    </message>
-    <message>
-        <location filename="../dcc/dcc-manager.cpp" line="289"/>
-        <source>Kadu</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -149,20 +147,14 @@ Kontynuować połączenie?</translation>
         <translation>Zapamiętaj hasło</translation>
     </message>
     <message>
-        <location filename="../gui/widgets/gadu-add-account-widget.cpp" line="161"/>
-        <location filename="../gui/widgets/gadu-add-account-widget.cpp" line="166"/>
-        <source>Forgot Your Password?</source>
-        <translation>Zapomniałeś hasła?</translation>
-    </message>
-    <message>
         <location filename="../gui/widgets/gadu-add-account-widget.cpp" line="92"/>
         <source>Account Identity</source>
-        <translation>Identyfikacja konta</translation>
+		<translation>Tożsamość konta</translation>
     </message>
     <message>
         <location filename="../gui/widgets/gadu-add-account-widget.cpp" line="94"/>
         <source>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Select or enter the identity that will be associated with this account.&lt;/i&gt;&lt;/font&gt;</source>
-        <translation>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Wybierz lub wprowadź identyfikację z która będzie skojarzone konto.&lt;/i&gt;&lt;/font&gt;</translation>
+		<translation>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Wybierz lub wprowadź identyfikację z która będzie skojarzone konto.&lt;/i&gt;&lt;/font&gt;</translation>
     </message>
     <message>
         <location filename="../gui/widgets/gadu-add-account-widget.cpp" line="105"/>
@@ -173,6 +165,12 @@ Kontynuować połączenie?</translation>
         <location filename="../gui/widgets/gadu-add-account-widget.cpp" line="106"/>
         <source>Cancel</source>
         <translation>Anuluj</translation>
+    </message>
+    <message>
+        <location filename="../gui/widgets/gadu-add-account-widget.cpp" line="161"/>
+        <location filename="../gui/widgets/gadu-add-account-widget.cpp" line="166"/>
+        <source>Forgot Your Password?</source>
+        <translation>Zapomniałeś hasła?</translation>
     </message>
 </context>
 <context>
@@ -242,19 +240,19 @@ Kontynuować połączenie?</translation>
     </message>
     <message>
         <location filename="../gui/windows/gadu-change-password-window.cpp" line="150"/>
+        <location filename="../gui/windows/gadu-change-password-window.cpp" line="175"/>
+        <location filename="../gui/windows/gadu-change-password-window.cpp" line="183"/>
+        <source>Kadu</source>
+        <translation>Kadu</translation>
+    </message>
+    <message>
+        <location filename="../gui/windows/gadu-change-password-window.cpp" line="150"/>
         <source>Error data typed in required fields.
 
 Passwords typed in both fields (&quot;Password&quot; and &quot;Retype Password&quot;) should be the same!</source>
         <translation>Błąd w wymaganych danych.
 
 Nowe hasło wprowadzone w polu &quot;Nowe hasło&quot; nie jest identyczne z zawartością pola &quot;Powtórz nowe hasło&quot;!</translation>
-    </message>
-    <message>
-        <location filename="../gui/windows/gadu-change-password-window.cpp" line="150"/>
-        <location filename="../gui/windows/gadu-change-password-window.cpp" line="175"/>
-        <location filename="../gui/windows/gadu-change-password-window.cpp" line="183"/>
-        <source>Kadu</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/windows/gadu-change-password-window.cpp" line="175"/>
@@ -264,20 +262,20 @@ Nowe hasło wprowadzone w polu &quot;Nowe hasło&quot; nie jest identyczne z zaw
     <message>
         <location filename="../gui/windows/gadu-change-password-window.cpp" line="183"/>
         <source>An error has occurred. Please try again later.</source>
-        <translation type="unfinished"></translation>
+        <translation>Wystąpił błąd. Proszę spróbować później</translation>
     </message>
 </context>
 <context>
     <name>GaduChatService</name>
     <message>
         <location filename="../services/gadu-chat-service.cpp" line="88"/>
-        <source>Filtered message too long (%1&gt;=%2)</source>
-        <translation>Wiadomość zbyt długa (%1&gt;=%2)</translation>
+        <source>Kadu</source>
+        <translation>Kadu</translation>
     </message>
     <message>
         <location filename="../services/gadu-chat-service.cpp" line="88"/>
-        <source>Kadu</source>
-        <translation type="unfinished"></translation>
+        <source>Filtered message too long (%1&gt;=%2)</source>
+        <translation>Wiadomość zbyt długa (%1&gt;=%2)</translation>
     </message>
 </context>
 <context>
@@ -285,67 +283,67 @@ Nowe hasło wprowadzone w polu &quot;Nowe hasło&quot; nie jest identyczne z zaw
     <message>
         <location filename="../gui/widgets/gadu-contact-personal-info-widget.cpp" line="71"/>
         <source>First Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Imię</translation>
     </message>
     <message>
         <location filename="../gui/widgets/gadu-contact-personal-info-widget.cpp" line="74"/>
         <source>Last Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nazwisko</translation>
     </message>
     <message>
         <location filename="../gui/widgets/gadu-contact-personal-info-widget.cpp" line="77"/>
         <source>Nickname</source>
-        <translation type="unfinished"></translation>
+		<translation>Pseudonim</translation>
     </message>
     <message>
         <location filename="../gui/widgets/gadu-contact-personal-info-widget.cpp" line="80"/>
-        <source>Gender</source>
-        <translation type="unfinished"></translation>
+		<source>Gender</source>
+        <translation>Płeć</translation>
     </message>
     <message>
         <location filename="../gui/widgets/gadu-contact-personal-info-widget.cpp" line="83"/>
         <source>Birthdate</source>
-        <translation type="unfinished"></translation>
+        <translation>Data urodzenia</translation>
     </message>
     <message>
         <location filename="../gui/widgets/gadu-contact-personal-info-widget.cpp" line="86"/>
         <source>City</source>
-        <translation type="unfinished">Miejscowość</translation>
+        <translation>Miasto</translation>
     </message>
     <message>
         <location filename="../gui/widgets/gadu-contact-personal-info-widget.cpp" line="89"/>
         <source>State/Province</source>
-        <translation type="unfinished"></translation>
+        <translation>Stan/Region</translation>
     </message>
     <message>
         <location filename="../gui/widgets/gadu-contact-personal-info-widget.cpp" line="92"/>
         <source>IP Address</source>
-        <translation type="unfinished"></translation>
+        <translation>Adres IP</translation>
     </message>
     <message>
         <location filename="../gui/widgets/gadu-contact-personal-info-widget.cpp" line="95"/>
         <source>Port</source>
-        <translation type="unfinished"></translation>
+        <translation>Port</translation>
     </message>
     <message>
         <location filename="../gui/widgets/gadu-contact-personal-info-widget.cpp" line="98"/>
         <source>DNS Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nazwa DNS</translation>
     </message>
     <message>
         <location filename="../gui/widgets/gadu-contact-personal-info-widget.cpp" line="101"/>
         <source>Protocol Version</source>
-        <translation type="unfinished"></translation>
+        <translation>Wersja protokołu</translation>
     </message>
     <message>
         <location filename="../gui/widgets/gadu-contact-personal-info-widget.cpp" line="139"/>
         <source>Female</source>
-        <translation type="unfinished">Kobieta</translation>
+        <translation>Kobieta</translation>
     </message>
     <message>
         <location filename="../gui/widgets/gadu-contact-personal-info-widget.cpp" line="142"/>
         <source>Male</source>
-        <translation type="unfinished">Mężczyzna</translation>
+        <translation>Mężczyzna</translation>
     </message>
 </context>
 <context>
@@ -373,12 +371,12 @@ Nowe hasło wprowadzone w polu &quot;Nowe hasło&quot; nie jest identyczne z zaw
     <message>
         <location filename="../gui/widgets/gadu-create-account-widget.cpp" line="93"/>
         <source>Account Identity</source>
-        <translation>Identyfikacja konta</translation>
+		<translation>Tożsamość konta</translation>
     </message>
     <message>
         <location filename="../gui/widgets/gadu-create-account-widget.cpp" line="95"/>
         <source>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Select or enter the identity that will be associated with this account.&lt;/i&gt;&lt;/font&gt;</source>
-        <translation>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Wybierz lub wprowadź identyfikację z która będzie skojarzone konto.&lt;/i&gt;&lt;/font&gt;</translation>
+		<translation>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Wybierz lub wprowadź identyfikację z która będzie skojarzone konto.&lt;/i&gt;&lt;/font&gt;</translation>
     </message>
     <message>
         <location filename="../gui/widgets/gadu-create-account-widget.cpp" line="103"/>
@@ -402,16 +400,16 @@ Nowe hasło wprowadzone w polu &quot;Nowe hasło&quot; nie jest identyczne z zaw
     </message>
     <message>
         <location filename="../gui/widgets/gadu-create-account-widget.cpp" line="168"/>
+        <source>Kadu</source>
+        <translation>Kadu</translation>
+    </message>
+    <message>
+        <location filename="../gui/widgets/gadu-create-account-widget.cpp" line="168"/>
         <source>Error data typed in required fields.
 
 Passwords typed in both fields (&quot;Password&quot; and &quot;Retype Password&quot;) should be the same!</source>
         <translation>Błędne dane w  wymaganych polach.
 Hasła  muszą być identyczne w obu polach!</translation>
-    </message>
-    <message>
-        <location filename="../gui/widgets/gadu-create-account-widget.cpp" line="168"/>
-        <source>Kadu</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -459,12 +457,12 @@ Hasła  muszą być identyczne w obu polach!</translation>
     <message>
         <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="148"/>
         <source>Account Identity</source>
-        <translation>Identyfikacja konta</translation>
+		<translation>Tożsamość konta</translation>
     </message>
     <message>
         <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="150"/>
         <source>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Select or enter the identity that will be associated with this account.&lt;/i&gt;&lt;/font&gt;</source>
-        <translation>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Wybierz lub wprowadź identyfikację z która będzie skojarzone konto.&lt;/i&gt;&lt;/font&gt;</translation>
+		<translation>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Wybierz lub wprowadź identyfikację z która będzie skojarzone konto.&lt;/i&gt;&lt;/font&gt;</translation>
     </message>
     <message>
         <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="159"/>
@@ -496,12 +494,12 @@ Hasła  muszą być identyczne w obu polach!</translation>
     <message>
         <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="198"/>
         <source>File transfers</source>
-        <translation type="unfinished"></translation>
+        <translation>Transfery plików</translation>
     </message>
     <message>
         <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="206"/>
         <source>Allow file transfers</source>
-        <translation type="unfinished">Zezwól na transfery plików</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="209"/>
@@ -586,7 +584,7 @@ Hasła  muszą być identyczne w obu polach!</translation>
     <message>
         <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="283"/>
         <source>Status</source>
-        <translation type="unfinished"></translation>
+        <translation>Status</translation>
     </message>
     <message>
         <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="286"/>
@@ -611,7 +609,7 @@ Hasła  muszą być identyczne w obu polach!</translation>
     <message>
         <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="324"/>
         <source>Use encrypted connection</source>
-        <translation type="unfinished"></translation>
+        <translation>Używaj szyfrowanego połączenia</translation>
     </message>
     <message>
         <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="500"/>
@@ -639,12 +637,12 @@ Hasła  muszą być identyczne w obu polach!</translation>
     <message>
         <location filename="../helpers/gadu-formatter.cpp" line="160"/>
         <source>###IMAGE BLOCKED###</source>
-        <translation type="unfinished">###OBRAZEK ZABLOKOWANY###</translation>
+        <translation>###OBRAZEK ZABLOKOWANY###</translation>
     </message>
     <message>
         <location filename="../helpers/gadu-formatter.cpp" line="170"/>
         <source>###IMAGE TOO BIG###</source>
-        <translation type="unfinished">###OBRAZEK ZA DUŻY###</translation>
+        <translation>###OBRAZEK ZBYT DUŻY###</translation>
     </message>
 </context>
 <context>
@@ -709,14 +707,14 @@ Hasła  muszą być identyczne w obu polach!</translation>
     <name>GaduProtocol</name>
     <message>
         <location filename="../gadu-protocol.cpp" line="391"/>
-        <source>UIN not set!</source>
-        <translation>Numer Gadu-Gadu nie jest ustawiony!</translation>
+        <location filename="../gadu-protocol.cpp" line="657"/>
+        <source>Kadu</source>
+        <translation>Kadu</translation>
     </message>
     <message>
         <location filename="../gadu-protocol.cpp" line="391"/>
-        <location filename="../gadu-protocol.cpp" line="657"/>
-        <source>Kadu</source>
-        <translation type="unfinished"></translation>
+        <source>UIN not set!</source>
+        <translation>Numer Gadu-Gadu nie jest ustawiony!</translation>
     </message>
     <message>
         <location filename="../gadu-protocol.cpp" line="400"/>
@@ -754,11 +752,6 @@ Hasła  muszą być identyczne w obu polach!</translation>
         <translation>Połączenie niemożliwe, połączenie przerwane w czasie zapisu</translation>
     </message>
     <message>
-        <location filename="../gadu-protocol.cpp" line="701"/>
-        <source>Disconnection has occurred</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../gadu-protocol.cpp" line="679"/>
         <source>Unable to connect, error of negotiation TLS</source>
         <translation>Połączenie niemożliwe, błąd negocjacji TLS</translation>
@@ -784,13 +777,18 @@ Hasła  muszą być identyczne w obu polach!</translation>
         <source>Connection timeout!</source>
         <translation>Przekroczenie czasu połączenia!</translation>
     </message>
+    <message>
+        <location filename="../gadu-protocol.cpp" line="701"/>
+        <source>Disconnection has occurred</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>GaduProtocolFactory</name>
     <message>
         <location filename="../gadu-protocol-factory.cpp" line="111"/>
         <source>Gadu-Gadu number:</source>
-        <translation type="unfinished"></translation>
+        <translation>Numer Gadu-Gadu:</translation>
     </message>
 </context>
 <context>
@@ -837,14 +835,14 @@ Hasła  muszą być identyczne w obu polach!</translation>
     </message>
     <message>
         <location filename="../gui/windows/gadu-remind-password-window.cpp" line="139"/>
-        <source>Your password has been send on your email</source>
-        <translation>Twoje hasło zostało wysłane na maila</translation>
+        <location filename="../gui/windows/gadu-remind-password-window.cpp" line="143"/>
+        <source>Kadu</source>
+        <translation>Kadu</translation>
     </message>
     <message>
         <location filename="../gui/windows/gadu-remind-password-window.cpp" line="139"/>
-        <location filename="../gui/windows/gadu-remind-password-window.cpp" line="143"/>
-        <source>Kadu</source>
-        <translation type="unfinished"></translation>
+        <source>Your password has been send on your email</source>
+        <translation>Twoje hasło zostało wysłane na maila</translation>
     </message>
     <message>
         <location filename="../gui/windows/gadu-remind-password-window.cpp" line="143"/>
@@ -906,14 +904,14 @@ Hasła  muszą być identyczne w obu polach!</translation>
     </message>
     <message>
         <location filename="../gui/windows/gadu-unregister-account-window.cpp" line="153"/>
-        <source>Unregistation was successful. Now you don&apos;t have any GG number :(</source>
-        <translation>Wyrejestrowanie przebiegło prawidłowo. Teraz już nie masz numeru GG :(</translation>
+        <location filename="../gui/windows/gadu-unregister-account-window.cpp" line="159"/>
+        <source>Kadu</source>
+        <translation>Kadu</translation>
     </message>
     <message>
         <location filename="../gui/windows/gadu-unregister-account-window.cpp" line="153"/>
-        <location filename="../gui/windows/gadu-unregister-account-window.cpp" line="159"/>
-        <source>Kadu</source>
-        <translation type="unfinished"></translation>
+        <source>Unregistation was successful. Now you don&apos;t have any GG number :(</source>
+        <translation>Wyrejestrowanie przebiegło prawidłowo. Teraz już nie masz numeru GG :(</translation>
     </message>
     <message>
         <location filename="../gui/windows/gadu-unregister-account-window.cpp" line="159"/>
@@ -940,7 +938,7 @@ Teraz możesz dodać znajomych do listy kontaktów.</translation>
     <message>
         <location filename="../gui/windows/gadu-wait-for-account-register-window.cpp" line="62"/>
         <source>An error has occurred during registration. Please try again later.</source>
-        <translation type="unfinished"></translation>
+        <translation>Wystąpił błąd podczas rejestracji. Proszę spróbować później.</translation>
     </message>
 </context>
 </TS>

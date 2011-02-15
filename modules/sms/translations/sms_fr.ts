@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="fr" version="2.0">
 <context>
     <name>@default</name>
     <message>
@@ -36,7 +34,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Check this box if your sms application doesn&apos;t understand arguments: number &amp;message&amp;
+        <source>Check this box if your sms application doesn't understand arguments: number &amp;message&amp;
 Arguments should be separated with spaces. %n argument is converted to number, %m to message</source>
         <translation type="unfinished"></translation>
     </message>
@@ -54,7 +52,7 @@ Arguments should be separated with spaces. %n argument is converted to number, %
     </message>
     <message>
         <source>Send SMS</source>
-        <translation type="unfinished">Envoie SMS</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>SMS Era Gateway</source>
@@ -88,11 +86,11 @@ Arguments should be separated with spaces. %n argument is converted to number, %
     <name>SmsDialog</name>
     <message>
         <source>Send SMS</source>
-        <translation type="unfinished">Envoie SMS</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Recipient</source>
-        <translation type="unfinished">Destinataire</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Select automatically</source>
@@ -108,11 +106,11 @@ Arguments should be separated with spaces. %n argument is converted to number, %
     </message>
     <message>
         <source>Signature</source>
-        <translation type="unfinished">Signature</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Save SMS in history</source>
-        <translation type="unfinished">Enregistre SMS dans l&apos;historique</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&amp;Send</source>
@@ -139,12 +137,11 @@ Arguments should be separated with spaces. %n argument is converted to number, %
     <name>SmsExternalSender</name>
     <message>
         <source>Could not spawn child process. Check if the program is functional</source>
-        <translation type="unfinished">N&apos;a pas pu engendrer le processus d&apos;enfant. Contrôlez si le programme
-est fonctionnel</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>The process exited abnormally. The SMS may not be sent</source>
-        <translation type="unfinished">Processus terminé anormallement. SMS n&apos;a pas été envoyé</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -174,11 +171,11 @@ est fonctionnel</translation>
     <name>SmsInternalSender</name>
     <message>
         <source>Mobile number is incorrect</source>
-        <translation type="unfinished">Numéro de télephone incorrect</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Signature can&apos;t be empty</source>
-        <translation type="unfinished">Le champ de la signature ne doit pas être vide</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Automatic gateway selection is not available. Please select SMS gateway manually.</source>
@@ -193,11 +190,11 @@ est fonctionnel</translation>
     </message>
     <message>
         <source>Enter text from the picture:</source>
-        <translation type="unfinished">Veuillez reproduire le texte d&apos;image:</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Ok</source>
-        <translation type="unfinished">OK</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>SMS sent successfully</source>

@@ -1,25 +1,27 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="pl">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.0">
 <context>
     <name>ScreenShot</name>
     <message>
-        <source>Image size is bigger than maximal image size for this chat.</source>
-        <translation>Rozmiar obrazka większy niż maksymalny rozmiar dla tej rozmowy.</translation>
+        <source>Kadu</source>
+        <translation>Kadu</translation>
     </message>
     <message>
-        <source>Kadu</source>
-        <translation type="unfinished"></translation>
+        <source>Image size is bigger than maximal image size for this chat.</source>
+        <translation>Rozmiar obrazka większy niż maksymalny rozmiar dla tej rozmowy.</translation>
     </message>
 </context>
 <context>
     <name>ScreenShotSaver</name>
     <message>
+        <source>Kadu</source>
+        <translation>Kadu</translation>
+    </message>
+    <message>
         <source>Unable to create direcotry %1 for storing screenshots!</source>
         <translation>Nie można utworzyć katalogu %1 dla zapisywania zrzutów ekranu!</translation>
     </message>
     <message>
-        <source>Can&apos;t write file %1.
+        <source>Can't write file %1.
 Access denied or other problem!</source>
         <translation>Nie można pisać do pliku %1.
 Brak dostępu lub inny problem!</translation>
@@ -29,10 +31,6 @@ Brak dostępu lub inny problem!</translation>
 It should be bigger.</source>
         <translation>Zrzut ekranu %1 ma zerowy rozmiar!
 Powinien być większy.</translation>
-    </message>
-    <message>
-        <source>Kadu</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -75,16 +73,16 @@ Powinien być większy.</translation>
 <context>
     <name>ScreenshotToolBox</name>
     <message>
+        <source>0 KiB</source>
+        <translation>0 KiB</translation>
+    </message>
+    <message>
         <source>Crop</source>
         <translation>Przytnij</translation>
     </message>
     <message>
-        <source>0 KiB</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Anuluj</translation>
     </message>
 </context>
 </TS>

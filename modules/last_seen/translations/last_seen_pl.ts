@@ -1,30 +1,23 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="pl_PL">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.0">
 <context>
     <name>Infos</name>
     <message>
         <location filename="../infos.cpp" line="121"/>
         <source>&amp;Show infos about buddies...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Pokaż informacje o znajomych...</translation>
     </message>
 </context>
 <context>
     <name>InfosDialog</name>
     <message>
-        <location filename="../infos_dialog.cpp" line="100"/>
-        <source>&amp;Close</source>
-        <translation>&amp;Zamknij</translation>
-    </message>
-    <message>
         <location filename="../infos_dialog.cpp" line="44"/>
         <source>Buddies Information</source>
-        <translation type="unfinished"></translation>
+        <translation>Informacje o znajomych</translation>
     </message>
     <message>
         <location filename="../infos_dialog.cpp" line="57"/>
         <source>Buddy</source>
-        <translation type="unfinished"></translation>
+        <translation>Znajomy</translation>
     </message>
     <message>
         <location filename="../infos_dialog.cpp" line="58"/>
@@ -65,6 +58,11 @@
         <location filename="../infos_dialog.cpp" line="65"/>
         <source>Last time seen on</source>
         <translation>Ostatnio widziany</translation>
+    </message>
+    <message>
+        <location filename="../infos_dialog.cpp" line="100"/>
+        <source>&amp;Close</source>
+        <translation>&amp;Zamknij</translation>
     </message>
 </context>
 </TS>

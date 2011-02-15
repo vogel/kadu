@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="de_DE">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="de" version="2.0">
 <context>
     <name>@default</name>
     <message>
@@ -20,6 +18,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../.configuration-ui-translations.cpp" line="13"/>
+        <location filename="../.configuration-ui-translations.cpp" line="15"/>
+        <source>Save messages in history</source>
+        <translation>Im Verlauf speichern</translation>
+    </message>
+    <message>
         <location filename="../.configuration-ui-translations.cpp" line="18"/>
         <source>Save chats with anonymous users</source>
         <translation type="unfinished"></translation>
@@ -28,6 +32,16 @@
         <location filename="../.configuration-ui-translations.cpp" line="22"/>
         <source>Status Changes</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../.configuration-ui-translations.cpp" line="25"/>
+        <source>Save status changes</source>
+        <translation>Zustandänderungen speichern</translation>
+    </message>
+    <message>
+        <location filename="../.configuration-ui-translations.cpp" line="27"/>
+        <source>Save status changes in history</source>
+        <translation>Zustandänderungen werden im Verlauf gespeichert</translation>
     </message>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="30"/>
@@ -50,27 +64,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="52"/>
-        <source>General</source>
-        <translation>Allgemein</translation>
-    </message>
-    <message>
-        <location filename="../.configuration-ui-translations.cpp" line="13"/>
-        <location filename="../.configuration-ui-translations.cpp" line="15"/>
-        <source>Save messages in history</source>
-        <translation>Im Verlauf speichern</translation>
-    </message>
-    <message>
-        <location filename="../.configuration-ui-translations.cpp" line="25"/>
-        <source>Save status changes</source>
-        <translation>Zustandänderungen speichern</translation>
-    </message>
-    <message>
-        <location filename="../.configuration-ui-translations.cpp" line="27"/>
-        <source>Save status changes in history</source>
-        <translation>Zustandänderungen werden im Verlauf gespeichert</translation>
-    </message>
-    <message>
         <location filename="../.configuration-ui-translations.cpp" line="43"/>
         <source>.</source>
         <translation>.</translation>
@@ -79,6 +72,11 @@
         <location filename="../.configuration-ui-translations.cpp" line="49"/>
         <source>Shortcuts</source>
         <translation>Tastenkürzel</translation>
+    </message>
+    <message>
+        <location filename="../.configuration-ui-translations.cpp" line="52"/>
+        <source>General</source>
+        <translation>Allgemein</translation>
     </message>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="58"/>
@@ -104,7 +102,7 @@
     <message>
         <location filename="../model/chat-dates-model.cpp" line="65"/>
         <source>Chat</source>
-        <translation type="unfinished">Chat</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../model/chat-dates-model.cpp" line="66"/>
@@ -132,7 +130,7 @@
     <message>
         <location filename="../history.cpp" line="157"/>
         <source>Clear History</source>
-        <translation type="unfinished">Verlauf leeren</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../history.cpp" line="202"/>
@@ -162,7 +160,7 @@
     <message>
         <location filename="../history.cpp" line="448"/>
         <source>%1 day(s) %2 hour(s)</source>
-        <translation type="unfinished">Tage: %1 Stunden: %2</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -183,7 +181,7 @@
     <message>
         <location filename="../gui/windows/history-window.cpp" line="79"/>
         <source>History</source>
-        <translation type="unfinished">Verlauf</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/windows/history-window.cpp" line="88"/>

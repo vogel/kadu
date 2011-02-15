@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="fr" version="2.0">
 <context>
     <name>@default</name>
     <message>
@@ -72,6 +70,10 @@ Attention danger!
     </message>
     <message>
         <source>Interval between header removal</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hide server time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -180,7 +182,7 @@ Attention danger!
     </message>
     <message>
         <source>Status</source>
-        <translation type="unfinished">Statut</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>On startup, set</source>
@@ -360,7 +362,7 @@ Attention danger!
     </message>
     <message>
         <source>Static</source>
-        <translation type="unfinished">Statique</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Emoticons theme</source>
@@ -484,7 +486,7 @@ Attention danger!
     </message>
     <message>
         <source>Configuration</source>
-        <translation type="unfinished">Configuration</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Manage modules</source>
@@ -624,14 +626,14 @@ Attention danger!
     </message>
     <message>
         <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
-%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist
+%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn't have us in userlist
 %h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size, %z - gender (0/1/2)
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
-%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist
+%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn't have us in userlist
 %h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size, %z - gender (0/1/2),
 #{protocol} - protocol that triggered event,
 #{event} - name of event,
@@ -655,12 +657,24 @@ Attention danger!
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Connection error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Notifications</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>General</source>
-        <translation type="unfinished">Géneral</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Event</source>
@@ -711,18 +725,6 @@ Attention danger!
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Connection error</source>
-        <translation type="unfinished">Erreur de connexion</translation>
-    </message>
-    <message>
-        <source>New chat</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>New message</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Multilogon</source>
         <translation type="unfinished"></translation>
     </message>
@@ -739,7 +741,7 @@ Attention danger!
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>This option will supersede tooltips with users&apos; status
+        <source>This option will supersede tooltips with users' status
  changes upon establishing connection to the server</source>
         <translation type="unfinished"></translation>
     </message>
@@ -801,11 +803,11 @@ Attention danger!
     </message>
     <message>
         <source>DNS name</source>
-        <translation type="unfinished">Nom DNS</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Protocol version</source>
-        <translation type="unfinished">Version de protocole</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Display</source>
@@ -813,7 +815,7 @@ Attention danger!
     </message>
     <message>
         <source>First name</source>
-        <translation type="unfinished">Prénom</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Last name</source>
@@ -825,7 +827,7 @@ Attention danger!
     </message>
     <message>
         <source>City</source>
-        <translation type="unfinished">Ville</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Family city</source>
@@ -845,15 +847,15 @@ Attention danger!
     </message>
     <message>
         <source>Email</source>
-        <translation type="unfinished">E-mail</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Birth year</source>
-        <translation type="unfinished">Année de naissance</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Gender</source>
-        <translation type="unfinished">Genre</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>File Transfers and Voice Chats</source>
@@ -916,16 +918,12 @@ Attention danger!
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Hide server time</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Window Title</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Nickname</source>
-        <translation type="unfinished">Pseudo</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Enter a nickname for your account.</source>
@@ -1156,7 +1154,7 @@ Attention danger!
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>This option will supersede tooltips with buddies&apos; status
+        <source>This option will supersede tooltips with buddies' status
 changes upon establishing connection to the server</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1174,7 +1172,7 @@ changes upon establishing connection to the server</source>
     </message>
     <message>
         <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
-%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist
+%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn't have us in userlist
 %h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size, %z - gender (0/1/2)
 #{message} - message content,
 #{backgroundColor} - background color of message,
@@ -1183,7 +1181,7 @@ changes upon establishing connection to the server</source>
 #{sentDate} - when message was sent,
 #{receivedDate} - when message was received,
 #{separator} - separator between messages,
-&lt;kadu:header&gt;text&lt;/kadu:header&gt; - text will not be displayed in &apos;Remove repeated headers&apos; mode
+&lt;kadu:header&gt;text&lt;/kadu:header&gt; - text will not be displayed in 'Remove repeated headers' mode
 </source>
         <translation type="unfinished"></translation>
     </message>
@@ -1290,11 +1288,11 @@ changes upon establishing connection to the server</source>
     </message>
     <message>
         <source>Cannot import user list from server in offline mode</source>
-        <translation type="unfinished">Impossible d&apos;importer la liste de contacts du serveur sans connexion</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Cannot export user list to server in offline mode</source>
-        <translation type="unfinished">Impossible d&apos;exporter la liste de contacts sur le serveur sans connection</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Contacts list couldn&apos;t be downloaded. Please check that account %0 is connected.</source>
@@ -1302,13 +1300,12 @@ changes upon establishing connection to the server</source>
     </message>
     <message>
         <source>Your userlist has been successfully exported to server</source>
-        <translation type="unfinished">Exportation de la liste de conacts sur serveur reussie</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>The application encountered an internal error
 The export was unsuccessful</source>
-        <translation type="unfinished">Erreur interne
-Exportation de la liste de contact sur le serveur non reussie</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Select file</source>
@@ -1377,11 +1374,11 @@ Exportation de la liste de contact sur le serveur non reussie</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Annule</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Mobile</source>
-        <translation type="unfinished">Téléphone mobile</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>E-mail</source>
@@ -1553,15 +1550,15 @@ Exportation de la liste de contact sur le serveur non reussie</translation>
     </message>
     <message>
         <source>General</source>
-        <translation type="unfinished">Géneral</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Groups</source>
-        <translation type="unfinished">Groupes</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Personal Information</source>
-        <translation type="unfinished">Données personnelles</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Options</source>
@@ -1569,15 +1566,15 @@ Exportation de la liste de contact sur le serveur non reussie</translation>
     </message>
     <message>
         <source>OK</source>
-        <translation type="unfinished">OK</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Apply</source>
-        <translation type="unfinished">Appliquez</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Annule</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1592,11 +1589,11 @@ Exportation de la liste de contact sur le serveur non reussie</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation type="unfinished">Efface</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Annule</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1619,7 +1616,7 @@ Exportation de la liste de contact sur le serveur non reussie</translation>
     </message>
     <message>
         <source>Mobile</source>
-        <translation type="unfinished">Téléphone mobile</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>E-Mail</source>
@@ -1667,11 +1664,11 @@ Exportation de la liste de contact sur le serveur non reussie</translation>
     <name>ChatEditBox</name>
     <message>
         <source>Insert image</source>
-        <translation type="unfinished">Insère l&apos;image</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Images</source>
-        <translation type="unfinished">Les images</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Kadu</source>
@@ -1679,11 +1676,11 @@ Exportation de la liste de contact sur le serveur non reussie</translation>
     </message>
     <message>
         <source>This file is not readable</source>
-        <translation type="unfinished">Fichier illisible</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>This file is too big (%1 &gt;= %2)</source>
-        <translation type="unfinished">Fichier trop gros (%1 &gt;= %2)</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>This file is too big for %1.
@@ -1730,7 +1727,7 @@ Some of them probably will not get it.</source>
     </message>
     <message>
         <source>Delete</source>
-        <translation type="unfinished">Efface</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Your message</source>
@@ -1788,11 +1785,11 @@ conference</source>
     </message>
     <message>
         <source>Chat window will be cleared. Continue?</source>
-        <translation type="unfinished">La fenêtre du message sera effacée. Voulez vous continuer?</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Cannot send message while being offline.</source>
-        <translation type="unfinished">Ne peut pas envoyer le message tout en étant hors ligne.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>All messages received in this conference will be ignored
@@ -1828,19 +1825,19 @@ from now on. Are you sure you want to leave this conference?</source>
     </message>
     <message>
         <source>Bold</source>
-        <translation type="unfinished">Surligné</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Italic</source>
-        <translation type="unfinished">Italique</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Underline</source>
-        <translation type="unfinished">Souligné</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&amp;Send</source>
-        <translation type="unfinished">&amp;Envoie</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Search this User in Directory</source>
@@ -1852,7 +1849,7 @@ from now on. Are you sure you want to leave this conference?</source>
     </message>
     <message>
         <source>&amp;Chat</source>
-        <translation type="unfinished">&amp;Discussion</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Open Chat with...</source>
@@ -1864,7 +1861,7 @@ from now on. Are you sure you want to leave this conference?</source>
     </message>
     <message>
         <source>Insert emoticon - enable in configuration</source>
-        <translation type="unfinished">Insère l&apos;emotion - Active dans la configuration</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>More</source>
@@ -1875,18 +1872,18 @@ from now on. Are you sure you want to leave this conference?</source>
     <name>ChatWidgetManager</name>
     <message>
         <source>Insert emoticon - enable in configuration</source>
-        <translation type="unfinished">Insère l&apos;emotion - Active dans la configuration</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Insert emoticon</source>
-        <translation type="unfinished">Insère icône d&apos;emotion</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>ChatWindow</name>
     <message>
         <source>New message received, close window anyway?</source>
-        <translation type="unfinished">Nouvel message reçu, voulez vous fermer la fenêtre?</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Kadu</source>
@@ -1919,22 +1916,22 @@ from now on. Are you sure you want to leave this conference?</source>
     <name>ConfigurationWindow</name>
     <message>
         <source>Ok</source>
-        <translation type="unfinished">OK</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Apply</source>
-        <translation type="unfinished">Appliquez</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Annule</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>ConnectionErrorNotification</name>
     <message>
         <source>Connection error</source>
-        <translation type="unfinished">Erreur de connexion</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&lt;b&gt;Connection error:&lt;/b&gt; %1</source>
@@ -2074,7 +2071,7 @@ This is probably a next part of &lt;b&gt;%5&lt;/b&gt;
     </message>
     <message>
         <source>Remove</source>
-        <translation type="unfinished">Efface</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>File &lt;b&gt;%1&lt;/b&gt;&lt;br /&gt; to &lt;b&gt;%2&lt;/b&gt;&lt;br /&gt;on account &lt;b&gt;%3&lt;/b&gt;</source>
@@ -2151,15 +2148,15 @@ This is probably a next part of &lt;b&gt;%5&lt;/b&gt;
     </message>
     <message>
         <source>&apos;%1&apos; is prohibited</source>
-        <translation type="unfinished">&apos;%1&apos; est interdit</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Numbers are prohibited</source>
-        <translation type="unfinished">Les numéros sont interdit</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>All</source>
-        <translation type="unfinished">Tous</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Group name %1 is prohibited</source>
@@ -2182,7 +2179,7 @@ This is probably a next part of &lt;b&gt;%5&lt;/b&gt;
     </message>
     <message>
         <source>Notify about status changes</source>
-        <translation type="unfinished">Renseigne sur le changement de statut</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Offline for this group</source>
@@ -2218,15 +2215,15 @@ This is probably a next part of &lt;b&gt;%5&lt;/b&gt;
     </message>
     <message>
         <source>Ok</source>
-        <translation type="unfinished">OK</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Apply</source>
-        <translation type="unfinished">Appliquez</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Annule</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Choose an icon</source>
@@ -2241,7 +2238,7 @@ This is probably a next part of &lt;b&gt;%5&lt;/b&gt;
     <name>GroupTabBar</name>
     <message>
         <source>All</source>
-        <translation type="unfinished">Tous</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Ungrouped</source>
@@ -2404,7 +2401,7 @@ This is probably a next part of &lt;b&gt;%5&lt;/b&gt;
     <name>KaduWindow</name>
     <message>
         <source>General</source>
-        <translation type="unfinished">Géneral</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Recent chats</source>
@@ -2573,7 +2570,7 @@ This is probably a next part of &lt;b&gt;%5&lt;/b&gt;
     <name>MainConfigurationWindow</name>
     <message>
         <source>None</source>
-        <translation type="unfinished">Sans icône d&apos;emotion</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Kadu configuration</source>
@@ -2588,7 +2585,7 @@ This is probably a next part of &lt;b&gt;%5&lt;/b&gt;
     <name>MainWindow</name>
     <message>
         <source>Create new toolbar</source>
-        <translation type="unfinished">Créez un nouveau barre d&apos;outil</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2607,7 +2604,7 @@ This is probably a next part of &lt;b&gt;%5&lt;/b&gt;
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Annule</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2634,7 +2631,7 @@ This is probably a next part of &lt;b&gt;%5&lt;/b&gt;
     <message>
         <source>Cannot load %1 module library.:
 %2</source>
-        <translation>Je n&apos;arrive pas à charger le module de la bibliothèque %1:
+        <translation>Je n'arrive pas à charger le module de la bibliothèque %1:
 %2</translation>
     </message>
     <message>
@@ -2807,15 +2804,15 @@ You can load (or unload) them by double-clicking on their names.</source>
 <context>
     <name>NotificationManager</name>
     <message>
-        <source>Unable to find notifier for %1 event</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Notify About Buddy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Enable Notifications</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to find notifier for %1 event</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2865,7 +2862,7 @@ You can load (or unload) them by double-clicking on their names.</source>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation type="unfinished">&amp;Annule</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&amp;Ok</source>
@@ -2880,49 +2877,49 @@ You can load (or unload) them by double-clicking on their names.</source>
     </message>
     <message>
         <source>Ok</source>
-        <translation type="unfinished">OK</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Annule</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>PathListEdit</name>
     <message>
         <source>Select</source>
-        <translation type="unfinished">Choisir</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>PathListEditWindow</name>
     <message>
         <source>Select paths</source>
-        <translation type="unfinished">Selectionne le chemin</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Add</source>
-        <translation type="unfinished">Ajoute</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Change</source>
-        <translation type="unfinished">Change</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Remove</source>
-        <translation type="unfinished">Efface</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>OK</source>
-        <translation type="unfinished">OK</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation type="unfinished">&amp;Annule</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Choose a directory</source>
-        <translation type="unfinished">Selectionne le catalogue</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2937,7 +2934,7 @@ You can load (or unload) them by double-clicking on their names.</source>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Annule</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2993,19 +2990,19 @@ You can load (or unload) them by double-clicking on their names.</source>
     </message>
     <message>
         <source>Nickname</source>
-        <translation type="unfinished">Pseudo</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Gender</source>
-        <translation type="unfinished">Genre</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Male</source>
-        <translation type="unfinished">Homme</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Female</source>
-        <translation type="unfinished">Femme</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Name</source>
@@ -3021,19 +3018,19 @@ You can load (or unload) them by double-clicking on their names.</source>
     </message>
     <message>
         <source>from</source>
-        <translation type="unfinished">de</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>to</source>
-        <translation type="unfinished">à</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>City</source>
-        <translation type="unfinished">Ville</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Only active users</source>
-        <translation type="unfinished">Seulement les utilisateurs actifs</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Uin</source>
@@ -3041,39 +3038,39 @@ You can load (or unload) them by double-clicking on their names.</source>
     </message>
     <message>
         <source>Search criteria</source>
-        <translation type="unfinished">Critères de recherche</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&amp;Personal data</source>
-        <translation type="unfinished">&amp;Données personnelles</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Search using the personal data typed above (name, nickname)...</source>
-        <translation type="unfinished">Cherche en utilisant les données personnelles inscrites plus haut(nom, pseudo)...</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&amp;Uin number</source>
-        <translation type="unfinished">&amp;Numéro GG</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Search for this UIN exclusively</source>
-        <translation type="unfinished">Cherche ce numéro VIN de GG</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Status</source>
-        <translation type="unfinished">Statut</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Birth year</source>
-        <translation type="unfinished">Année de naissance</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&amp;Search</source>
-        <translation type="unfinished">&amp;Cherche</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&amp;Next results</source>
-        <translation type="unfinished">&amp;Résultat suivant</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Stop</source>
@@ -3089,7 +3086,7 @@ You can load (or unload) them by double-clicking on their names.</source>
     </message>
     <message>
         <source>&amp;Chat</source>
-        <translation type="unfinished">&amp;Discussion</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Kadu</source>
@@ -3105,15 +3102,15 @@ You can load (or unload) them by double-clicking on their names.</source>
     </message>
     <message>
         <source>Searching...</source>
-        <translation type="unfinished">Recherche...</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Done searching</source>
-        <translation type="unfinished">Recherche terminée</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>There were no results of your search</source>
-        <translation type="unfinished">Pas de résultat de recherche</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3127,7 +3124,7 @@ You can load (or unload) them by double-clicking on their names.</source>
     <name>SelectFile</name>
     <message>
         <source>Insert image</source>
-        <translation type="unfinished">Insère l&apos;image</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Select File</source>
@@ -3139,7 +3136,7 @@ You can load (or unload) them by double-clicking on their names.</source>
     </message>
     <message>
         <source>Images</source>
-        <translation type="unfinished">Les images</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3159,10 +3156,6 @@ You can load (or unload) them by double-clicking on their names.</source>
 <context>
     <name>StatusChangedNotification</name>
     <message>
-        <source>Status changed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&lt;b&gt;%1&lt;/b&gt; changed status to &lt;i&gt;%2&lt;/i&gt;&lt;br/&gt; &lt;small&gt;%3&lt;/small&gt;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3170,16 +3163,20 @@ You can load (or unload) them by double-clicking on their names.</source>
         <source>&lt;b&gt;%1&lt;/b&gt; changed status to &lt;i&gt;%2&lt;/i&gt;</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Status changed</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>StatusContainerManager</name>
     <message>
         <source>All</source>
-        <translation type="unfinished">Tous</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Offline</source>
-        <translation type="unfinished">Hors ligne</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3225,7 +3222,7 @@ You can load (or unload) them by double-clicking on their names.</source>
     </message>
     <message>
         <source>Delete</source>
-        <translation type="unfinished">Efface</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Unable to remove syntax: %1</source>
@@ -3248,7 +3245,7 @@ You can load (or unload) them by double-clicking on their names.</source>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Annule</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>New syntax name</source>
@@ -3283,14 +3280,14 @@ You can load (or unload) them by double-clicking on their names.</source>
     <name>ThemeManager</name>
     <message>
         <source>None</source>
-        <translation type="unfinished">Sans icône d&apos;emotion</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>ToolBar</name>
     <message>
         <source>Remove this toolbar</source>
-        <translation type="unfinished">Veuillez effacer le barre d&apos;outil</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Add new button</source>
@@ -3318,11 +3315,11 @@ You can load (or unload) them by double-clicking on their names.</source>
     </message>
     <message>
         <source>Remove this button</source>
-        <translation type="unfinished">Effassez le bouton</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Create new toolbar</source>
-        <translation type="unfinished">Créez un nouveau barre d&apos;outil</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Block toolbars</source>
@@ -3377,7 +3374,7 @@ You can load (or unload) them by double-clicking on their names.</source>
     </message>
     <message>
         <source>Ok</source>
-        <translation type="unfinished">OK</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3388,7 +3385,7 @@ You can load (or unload) them by double-clicking on their names.</source>
     </message>
     <message>
         <source>Could not spawn Web browser process. Check if the Web browser is functional</source>
-        <translation type="unfinished">Impossible d&apos;ouvrir le navigateur. Veuillez controler si le navigateur est en fonction.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Could not spawn Mail client process. Check if the Mail client is functional</source>
@@ -3399,7 +3396,7 @@ You can load (or unload) them by double-clicking on their names.</source>
     <name>WindowNotifierWindow</name>
     <message>
         <source>OK</source>
-        <translation type="unfinished">OK</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

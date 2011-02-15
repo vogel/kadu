@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="pl_PL">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.0">
 <context>
     <name>@default</name>
     <message>
@@ -36,7 +34,7 @@
         <translation>Używaj własnych argumentów SMS</translation>
     </message>
     <message>
-        <source>Check this box if your sms application doesn&apos;t understand arguments: number &amp;message&amp;
+        <source>Check this box if your sms application doesn't understand arguments: number &amp;message&amp;
 Arguments should be separated with spaces. %n argument is converted to number, %m to message</source>
         <translation>Zaznacz to okienko jeżeli aplikacja SMS nie rozpoznaje argumentów: numer &amp;wiadomość&amp;
 Argumenty powinny być oddzielone spacjami. %n jest zamieniane na numer, %m na wiadomość</translation>
@@ -59,23 +57,23 @@ Argumenty powinny być oddzielone spacjami. %n jest zamieniane na numer, %m na w
     </message>
     <message>
         <source>SMS Era Gateway</source>
-        <translation type="unfinished"></translation>
+        <translation>Bramka SMS Era</translation>
     </message>
     <message>
         <source>Sponsored</source>
-        <translation type="unfinished"></translation>
+        <translation>Sponsorowana</translation>
     </message>
     <message>
         <source>OmnixMultimedia</source>
-        <translation type="unfinished"></translation>
+        <translation>OmnixMultimedia</translation>
     </message>
     <message>
         <source>User ID (48xxxxxxxxx)</source>
-        <translation type="unfinished"></translation>
+        <translation>ID użytkownika (48xxxxxxxxx)</translation>
     </message>
     <message>
         <source>Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Hasło</translation>
     </message>
 </context>
 <context>
@@ -89,51 +87,51 @@ Argumenty powinny być oddzielone spacjami. %n jest zamieniane na numer, %m na w
     <name>SmsDialog</name>
     <message>
         <source>Send SMS</source>
-        <translation type="unfinished">Wyślij SMS</translation>
+        <translation>Wyślij SMS</translation>
     </message>
     <message>
         <source>Recipient</source>
-        <translation type="unfinished"></translation>
+        <translation>Odbiorca</translation>
     </message>
     <message>
         <source>Select automatically</source>
-        <translation type="unfinished"></translation>
+        <translation>Wybierz automatycznie</translation>
     </message>
     <message>
         <source>GSM provider</source>
-        <translation type="unfinished"></translation>
+        <translation>Operator GSM</translation>
     </message>
     <message>
         <source>Content</source>
-        <translation type="unfinished"></translation>
+        <translation>Treść</translation>
     </message>
     <message>
         <source>Signature</source>
-        <translation type="unfinished"></translation>
+        <translation>Podpis</translation>
     </message>
     <message>
         <source>Save SMS in history</source>
-        <translation type="unfinished"></translation>
+        <translation>Zapisz SMS w historii</translation>
     </message>
     <message>
         <source>&amp;Send</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Wyślij</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Zamknij</translation>
     </message>
     <message>
         <source>Clear</source>
-        <translation type="unfinished"></translation>
+        <translation>Wyczyść</translation>
     </message>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished"></translation>
+        <translation>Kadu</translation>
     </message>
     <message>
         <source>SMS application was not specified. Visit the configuration section</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie określono aplikacji SMS. Sprawdź konfigurację</translation>
     </message>
 </context>
 <context>
@@ -151,23 +149,23 @@ Argumenty powinny być oddzielone spacjami. %n jest zamieniane na numer, %m na w
     <name>SmsImageDialog</name>
     <message>
         <source>Enter text from the picture:</source>
-        <translation type="unfinished"></translation>
+        <translation>Przepisz tekst z obrazka:</translation>
     </message>
     <message>
         <source>Ok</source>
-        <translation type="unfinished"></translation>
+        <translation>Ok</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Anuluj</translation>
     </message>
     <message>
         <source>SMS</source>
-        <translation type="unfinished">SMS</translation>
+        <translation>SMS</translation>
     </message>
     <message>
         <source>Unable to fetch required token</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie udało się pobrać wymaganego tokena</translation>
     </message>
 </context>
 <context>
@@ -189,19 +187,19 @@ Argumenty powinny być oddzielone spacjami. %n jest zamieniane na numer, %m na w
     <name>SmsProgressWindow</name>
     <message>
         <source>Sending SMS in progress.</source>
-        <translation type="unfinished"></translation>
+        <translation>Trwa wysyłanie SMSa.</translation>
     </message>
     <message>
         <source>Enter text from the picture:</source>
-        <translation type="unfinished"></translation>
+        <translation>Przepisz tekst z obrazka:</translation>
     </message>
     <message>
         <source>Ok</source>
-        <translation type="unfinished"></translation>
+        <translation>Ok</translation>
     </message>
     <message>
         <source>SMS sent successfully</source>
-        <translation type="unfinished"></translation>
+        <translation>SMS został pomyślnie wysłany</translation>
     </message>
 </context>
 </TS>

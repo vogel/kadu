@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="de_DE">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="de" version="2.0">
 <context>
     <name>@default</name>
     <message>
@@ -21,7 +19,7 @@
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="13"/>
         <source>Timeout</source>
-        <translation type="unfinished">Timeout</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="16"/>
@@ -36,27 +34,27 @@
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="22"/>
         <source>Information</source>
-        <translation type="unfinished">Info</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="25"/>
         <source>Warning</source>
-        <translation type="unfinished">Warnung</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="28"/>
         <source>Critical</source>
-        <translation type="unfinished">Fehler</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="32"/>
         <source>Title</source>
-        <translation type="unfinished">Titel</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="35"/>
         <source>Syntax</source>
-        <translation type="unfinished">Syntax</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

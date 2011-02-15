@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="it" version="2.0">
 <context>
     <name>@default</name>
     <message>
@@ -36,7 +34,7 @@
         <translation>Usa stringa personalizzata SMS</translation>
     </message>
     <message>
-        <source>Check this box if your sms application doesn&apos;t understand arguments: number &amp;message&amp;
+        <source>Check this box if your sms application doesn't understand arguments: number &amp;message&amp;
 Arguments should be separated with spaces. %n argument is converted to number, %m to message</source>
         <translation>Segna questo campo se il tuo programma non capisce i parametri : numero_tel_cell &amp;il messaggio&amp;
 e scrivi la stringa corretta. I parametri devono essere separati da spazio. Il parametro %n è il numero di cellulare, %m è il messaggio</translation>
@@ -89,11 +87,11 @@ e scrivi la stringa corretta. I parametri devono essere separati da spazio. Il p
     <name>SmsDialog</name>
     <message>
         <source>Send SMS</source>
-        <translation type="unfinished">Manda SMS</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Recipient</source>
-        <translation type="unfinished">Destinatario</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Select automatically</source>
@@ -109,15 +107,15 @@ e scrivi la stringa corretta. I parametri devono essere separati da spazio. Il p
     </message>
     <message>
         <source>Signature</source>
-        <translation type="unfinished">Firma</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Save SMS in history</source>
-        <translation type="unfinished">Salva SMS nello storico</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&amp;Send</source>
-        <translation type="unfinished">&amp;Manda</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Close</source>
@@ -140,11 +138,11 @@ e scrivi la stringa corretta. I parametri devono essere separati da spazio. Il p
     <name>SmsExternalSender</name>
     <message>
         <source>Could not spawn child process. Check if the program is functional</source>
-        <translation type="unfinished">Problemi di avvio del programa SMS.  Verificare corretta funzionalità del programma</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>The process exited abnormally. The SMS may not be sent</source>
-        <translation type="unfinished">Il processo SMS terminato con errore. Lo SMS non può essere trasmesso</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -163,7 +161,7 @@ e scrivi la stringa corretta. I parametri devono essere separati da spazio. Il p
     </message>
     <message>
         <source>SMS</source>
-        <translation type="unfinished">SMS</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Unable to fetch required token</source>
@@ -174,11 +172,11 @@ e scrivi la stringa corretta. I parametri devono essere separati da spazio. Il p
     <name>SmsInternalSender</name>
     <message>
         <source>Mobile number is incorrect</source>
-        <translation type="unfinished">Il numero di telefono errato</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Signature can&apos;t be empty</source>
-        <translation type="unfinished">Campo firma non puo essere vuoto</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Automatic gateway selection is not available. Please select SMS gateway manually.</source>
@@ -193,11 +191,11 @@ e scrivi la stringa corretta. I parametri devono essere separati da spazio. Il p
     </message>
     <message>
         <source>Enter text from the picture:</source>
-        <translation type="unfinished">Inserire il testo dall&apos;immagine:</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Ok</source>
-        <translation type="unfinished">Ok</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>SMS sent successfully</source>

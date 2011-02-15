@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="de_DE">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="de" version="2.0">
 <context>
     <name>Infos</name>
     <message>
@@ -11,11 +9,6 @@
 </context>
 <context>
     <name>InfosDialog</name>
-    <message>
-        <location filename="../infos_dialog.cpp" line="100"/>
-        <source>&amp;Close</source>
-        <translation>&amp;Schließen</translation>
-    </message>
     <message>
         <location filename="../infos_dialog.cpp" line="44"/>
         <source>Buddies Information</source>
@@ -65,6 +58,11 @@
         <location filename="../infos_dialog.cpp" line="65"/>
         <source>Last time seen on</source>
         <translation>Zuletzt gesehen</translation>
+    </message>
+    <message>
+        <location filename="../infos_dialog.cpp" line="100"/>
+        <source>&amp;Close</source>
+        <translation>&amp;Schließen</translation>
     </message>
 </context>
 </TS>

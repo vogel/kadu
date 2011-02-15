@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="pl_PL">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.0">
 <context>
     <name>HistoryImportWindow</name>
     <message>
@@ -24,7 +22,7 @@
     <message>
         <location filename="../history-migration-actions.cpp" line="52"/>
         <source>Import history...</source>
-        <translation type="unfinished"></translation>
+        <translation>Importuj historię...</translation>
     </message>
 </context>
 </TS>

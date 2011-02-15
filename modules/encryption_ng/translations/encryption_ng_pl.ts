@@ -1,17 +1,15 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="pl_PL">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.0">
 <context>
     <name>EncryptionActions</name>
     <message>
         <location filename="../encryption-actions.cpp" line="92"/>
         <source>Encrypt</source>
-        <translation type="unfinished"></translation>
+        <translation>Szyfruj</translation>
     </message>
     <message>
         <location filename="../encryption-actions.cpp" line="99"/>
         <source>Send My Public Key</source>
-        <translation type="unfinished"></translation>
+        <translation>Wyślij mój klucz publiczny</translation>
     </message>
     <message>
         <location filename="../encryption-actions.cpp" line="166"/>
@@ -27,7 +25,7 @@
         <location filename="../encryption-ng-configuration-ui-handler.cpp" line="112"/>
         <location filename="../encryption-ng-configuration-ui-handler.cpp" line="114"/>
         <source>Encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>Szyfrowanie</translation>
     </message>
     <message>
         <location filename="../encryption-ng-configuration-ui-handler.cpp" line="103"/>

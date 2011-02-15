@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="it" version="2.0">
 <context>
     <name>@default</name>
     <message>
@@ -18,6 +16,10 @@
 </context>
 <context>
     <name>AdvancedUserList</name>
+    <message>
+        <source>Number of pending messages</source>
+        <translation>Numero di messaggi che aspettano</translation>
+    </message>
     <message>
         <source>Priorities</source>
         <translation>Priorità</translation>
@@ -37,10 +39,6 @@
     <message>
         <source>Sorting functions</source>
         <translation>Funzioni di ordinare</translation>
-    </message>
-    <message>
-        <source>Number of pending messages</source>
-        <translation>Numero di messaggi che aspettano</translation>
     </message>
 </context>
 </TS>

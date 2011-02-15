@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="pl_PL">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.0">
 <context>
     <name>CertificateDisplayDialog</name>
     <message>
@@ -109,17 +107,17 @@
     <message>
         <location filename="../services/jabber-chat-state-service.cpp" line="263"/>
         <source>%1 ended the conversation</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 zakończył rozmowę</translation>
     </message>
     <message>
         <location filename="../services/jabber-chat-state-service.cpp" line="297"/>
         <source>%1 (Composing ...)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (Pisze ...)</translation>
     </message>
     <message>
         <location filename="../services/jabber-chat-state-service.cpp" line="302"/>
         <source>%1 (Inactive)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (Nieaktywny)</translation>
     </message>
 </context>
 <context>
@@ -127,7 +125,7 @@
     <message>
         <location filename="../facebook-protocol-factory.cpp" line="76"/>
         <source>Facebook ID:</source>
-        <translation type="unfinished"></translation>
+        <translation>ID konta Facebook:</translation>
     </message>
 </context>
 <context>
@@ -135,7 +133,7 @@
     <message>
         <location filename="../gtalk-protocol-factory.cpp" line="68"/>
         <source>Gmail/Google Talk ID:</source>
-        <translation type="unfinished"></translation>
+        <translation>ID konta Gmail/Google Talk</translation>
     </message>
 </context>
 <context>
@@ -148,22 +146,22 @@
     <message>
         <location filename="../libiris/src/irisnet/noncore/cutestuff/httpconnect.cpp" line="324"/>
         <source>Host not found</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie znaleziono serwera</translation>
     </message>
     <message>
         <location filename="../libiris/src/irisnet/noncore/cutestuff/httpconnect.cpp" line="328"/>
         <source>Access denied</source>
-        <translation type="unfinished"></translation>
+        <translation>Odmowa dostępu</translation>
     </message>
     <message>
         <location filename="../libiris/src/irisnet/noncore/cutestuff/httpconnect.cpp" line="332"/>
         <source>Connection refused</source>
-        <translation type="unfinished"></translation>
+        <translation>Połączenie odrzucone</translation>
     </message>
     <message>
         <location filename="../libiris/src/irisnet/noncore/cutestuff/httpconnect.cpp" line="336"/>
         <source>Invalid reply</source>
-        <translation type="unfinished"></translation>
+        <translation>Nieprawidłowa odpowiedź</translation>
     </message>
 </context>
 <context>
@@ -171,27 +169,27 @@
     <message>
         <location filename="../libiris/src/irisnet/noncore/cutestuff/httppoll.cpp" line="909"/>
         <source>Authentication failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Uwierzytelnianie nie powiodło się</translation>
     </message>
     <message>
         <location filename="../libiris/src/irisnet/noncore/cutestuff/httppoll.cpp" line="913"/>
         <source>Host not found</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie znaleziono hosta</translation>
     </message>
     <message>
         <location filename="../libiris/src/irisnet/noncore/cutestuff/httppoll.cpp" line="917"/>
         <source>Access denied</source>
-        <translation type="unfinished"></translation>
+        <translation>Brak dostępu</translation>
     </message>
     <message>
         <location filename="../libiris/src/irisnet/noncore/cutestuff/httppoll.cpp" line="921"/>
         <source>Connection refused</source>
-        <translation type="unfinished"></translation>
+        <translation>Połączenie odrzucone</translation>
     </message>
     <message>
         <location filename="../libiris/src/irisnet/noncore/cutestuff/httppoll.cpp" line="925"/>
         <source>Invalid reply</source>
-        <translation type="unfinished"></translation>
+        <translation>Nieprawidłowa odpowiedź</translation>
     </message>
 </context>
 <context>
@@ -199,27 +197,27 @@
     <message>
         <location filename="../libiris/src/irisnet/noncore/cutestuff/httppoll.cpp" line="626"/>
         <source>Authentication failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Uwierzytelnianie nie powiodło się</translation>
     </message>
     <message>
         <location filename="../libiris/src/irisnet/noncore/cutestuff/httppoll.cpp" line="630"/>
         <source>Host not found</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie znaleziono hosta</translation>
     </message>
     <message>
         <location filename="../libiris/src/irisnet/noncore/cutestuff/httppoll.cpp" line="634"/>
         <source>Access denied</source>
-        <translation type="unfinished"></translation>
+        <translation>Brak dostępu</translation>
     </message>
     <message>
         <location filename="../libiris/src/irisnet/noncore/cutestuff/httppoll.cpp" line="638"/>
         <source>Connection refused</source>
-        <translation type="unfinished"></translation>
+        <translation>Połączenie odrzucone</translation>
     </message>
     <message>
         <location filename="../libiris/src/irisnet/noncore/cutestuff/httppoll.cpp" line="642"/>
         <source>Invalid reply</source>
-        <translation type="unfinished"></translation>
+        <translation>Nieprawidłowa odpowiedź</translation>
     </message>
 </context>
 <context>
@@ -227,22 +225,22 @@
     <message>
         <location filename="../actions/jabber-actions.cpp" line="72"/>
         <source>Show XML Console for Account</source>
-        <translation type="unfinished"></translation>
+        <translation>Otwórz Konsolę XML</translation>
     </message>
     <message>
         <location filename="../actions/jabber-actions.cpp" line="89"/>
         <source>Resend Subscription</source>
-        <translation type="unfinished"></translation>
+        <translation>Ponów Subskrypcję</translation>
     </message>
     <message>
         <location filename="../actions/jabber-actions.cpp" line="92"/>
         <source>Remove Subscription</source>
-        <translation type="unfinished"></translation>
+        <translation>Anuluj Subskrypcję</translation>
     </message>
     <message>
         <location filename="../actions/jabber-actions.cpp" line="95"/>
         <source>Ask for Subscription</source>
-        <translation type="unfinished"></translation>
+        <translation>Poproś o Subskrypcję</translation>
     </message>
 </context>
 <context>
@@ -265,12 +263,12 @@
     <message>
         <location filename="../gui/widgets/jabber-add-account-widget.cpp" line="109"/>
         <source>Account Identity</source>
-        <translation>Identyfikacja konta</translation>
+		<translation>Tożsamość konta</translation>
     </message>
     <message>
         <location filename="../gui/widgets/jabber-add-account-widget.cpp" line="111"/>
         <source>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Select or enter the identity that will be associated with this account.&lt;/i&gt;&lt;/font&gt;</source>
-        <translation>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Wybierz lub wprowadź identyfikację z która będzie skojarzone konto.&lt;/i&gt;&lt;/font&gt;</translation>
+		<translation>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Wybierz lub wprowadź tożsamość z która będzie skojarzone konto.&lt;/i&gt;&lt;/font&gt;</translation>
     </message>
     <message>
         <location filename="../gui/widgets/jabber-add-account-widget.cpp" line="122"/>
@@ -330,19 +328,19 @@
     </message>
     <message>
         <location filename="../gui/windows/jabber-change-password-window.cpp" line="126"/>
+        <location filename="../gui/windows/jabber-change-password-window.cpp" line="151"/>
+        <location filename="../gui/windows/jabber-change-password-window.cpp" line="159"/>
+        <source>Kadu</source>
+        <translation>Kadu</translation>
+    </message>
+    <message>
+        <location filename="../gui/windows/jabber-change-password-window.cpp" line="126"/>
         <source>Invalid data entered in required fields.
 
 Password entered in both fields (&quot;Password&quot; and &quot;Retype password&quot;) should be the same!</source>
         <translation>Błąd w wymaganych danych.
 
 Nowe hasło wprowadzone w polu &quot;Nowe hasło&quot; nie jest identyczne z zawartością pola &quot;Powtórz nowe hasło&quot;!</translation>
-    </message>
-    <message>
-        <location filename="../gui/windows/jabber-change-password-window.cpp" line="126"/>
-        <location filename="../gui/windows/jabber-change-password-window.cpp" line="151"/>
-        <location filename="../gui/windows/jabber-change-password-window.cpp" line="159"/>
-        <source>Kadu</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/windows/jabber-change-password-window.cpp" line="151"/>
@@ -352,7 +350,7 @@ Nowe hasło wprowadzone w polu &quot;Nowe hasło&quot; nie jest identyczne z zaw
     <message>
         <location filename="../gui/windows/jabber-change-password-window.cpp" line="159"/>
         <source>An error has occurred. Please try again later.</source>
-        <translation type="unfinished"></translation>
+        <translation>Wystąpił błąd. Spróbuj ponownie później.</translation>
     </message>
 </context>
 <context>
@@ -360,37 +358,37 @@ Nowe hasło wprowadzone w polu &quot;Nowe hasło&quot; nie jest identyczne z zaw
     <message>
         <location filename="../gui/widgets/jabber-contact-personal-info-widget.cpp" line="76"/>
         <source>Full Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Imię i Nazwisko</translation>
     </message>
     <message>
         <location filename="../gui/widgets/jabber-contact-personal-info-widget.cpp" line="79"/>
         <source>Family Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nazwisko Rodowe</translation>
     </message>
     <message>
         <location filename="../gui/widgets/jabber-contact-personal-info-widget.cpp" line="82"/>
         <source>Nickname</source>
-        <translation type="unfinished"></translation>
+        <translation>Pseudonim</translation>
     </message>
     <message>
         <location filename="../gui/widgets/jabber-contact-personal-info-widget.cpp" line="85"/>
         <source>Birthdate</source>
-        <translation type="unfinished"></translation>
+        <translation>Data Urodzenia</translation>
     </message>
     <message>
         <location filename="../gui/widgets/jabber-contact-personal-info-widget.cpp" line="88"/>
         <source>City</source>
-        <translation type="unfinished">Miejscowość</translation>
+        <translation> Miasto</translation>
     </message>
     <message>
         <location filename="../gui/widgets/jabber-contact-personal-info-widget.cpp" line="91"/>
         <source>E-Mail</source>
-        <translation type="unfinished"></translation>
+        <translation>E-Mail</translation>
     </message>
     <message>
         <location filename="../gui/widgets/jabber-contact-personal-info-widget.cpp" line="95"/>
         <source>Website</source>
-        <translation type="unfinished"></translation>
+        <translation>Strona WWW</translation>
     </message>
 </context>
 <context>
@@ -418,12 +416,12 @@ Nowe hasło wprowadzone w polu &quot;Nowe hasło&quot; nie jest identyczne z zaw
     <message>
         <location filename="../gui/widgets/jabber-create-account-widget.cpp" line="112"/>
         <source>Account Identity</source>
-        <translation>Identyfikacja konta</translation>
+		<translation>Tożsamość konta</translation>
     </message>
     <message>
         <location filename="../gui/widgets/jabber-create-account-widget.cpp" line="114"/>
         <source>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Select or enter the identity that will be associated with this account.&lt;/i&gt;&lt;/font&gt;</source>
-        <translation>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Wybierz lub wprowadź identyfikację z która będzie skojarzone konto.&lt;/i&gt;&lt;/font&gt;</translation>
+		<translation>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Wybierz lub wprowadź tożsamość z która będzie skojarzone konto.&lt;/i&gt;&lt;/font&gt;</translation>
     </message>
     <message>
         <location filename="../gui/widgets/jabber-create-account-widget.cpp" line="121"/>
@@ -490,17 +488,17 @@ Nowe hasło wprowadzone w polu &quot;Nowe hasło&quot; nie jest identyczne z zaw
         <location filename="../gui/widgets/jabber-create-account-widget.cpp" line="243"/>
         <location filename="../gui/widgets/jabber-create-account-widget.cpp" line="285"/>
         <source>Kadu</source>
-        <translation type="unfinished"></translation>
+        <translation>Kadu</translation>
     </message>
     <message>
         <location filename="../gui/widgets/jabber-create-account-widget.cpp" line="221"/>
         <source>Cannot enable secure connection. SSL/TLS plugin not found.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie można ustanowić bezpiecznego połączenia. Brak wtyczki SSL/TLS.</translation>
     </message>
     <message>
         <location filename="../gui/widgets/jabber-create-account-widget.cpp" line="243"/>
         <source>Legacy secure connection (SSL) is only available in combination with manual host/port.</source>
-        <translation type="unfinished"></translation>
+        <translation>Bezpieczne połączenie (SSL) jest dostępne tylko przy ręcznym ustawieniu hosta/portu.</translation>
     </message>
     <message>
         <location filename="../gui/widgets/jabber-create-account-widget.cpp" line="285"/>
@@ -552,12 +550,12 @@ Nowe hasło wprowadzone w polu &quot;Nowe hasło&quot; nie jest identyczne z zaw
     <message>
         <location filename="../gui/widgets/jabber-edit-account-widget.cpp" line="131"/>
         <source>Account Identity</source>
-        <translation>Identyfikacja konta</translation>
+		<translation>Tożsamość konta</translation>
     </message>
     <message>
         <location filename="../gui/widgets/jabber-edit-account-widget.cpp" line="133"/>
         <source>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Select or enter the identity that will be associated with this account.&lt;/i&gt;&lt;/font&gt;</source>
-        <translation>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Wybierz lub wprowadź identyfikację z która będzie skojarzone konto.&lt;/i&gt;&lt;/font&gt;</translation>
+		<translation>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Wybierz lub wprowadź tożsamość z która będzie skojarzone konto.&lt;/i&gt;&lt;/font&gt;</translation>
     </message>
     <message>
         <location filename="../gui/widgets/jabber-edit-account-widget.cpp" line="142"/>
@@ -635,7 +633,7 @@ Nowe hasło wprowadzone w polu &quot;Nowe hasło&quot; nie jest identyczne z zaw
     <message>
         <location filename="../gui/widgets/jabber-edit-account-widget.cpp" line="249"/>
         <source>Over encrypted connection</source>
-        <translation type="unfinished"></translation>
+        <translation>Przy szyfrowanym połączeniu</translation>
     </message>
     <message>
         <location filename="../gui/widgets/jabber-edit-account-widget.cpp" line="259"/>
@@ -643,46 +641,15 @@ Nowe hasło wprowadzone w polu &quot;Nowe hasło&quot; nie jest identyczne z zaw
         <translation>Opcje</translation>
     </message>
     <message>
-        <location filename="../gui/widgets/jabber-edit-account-widget.cpp" line="272"/>
-        <source>Use hostname as a resource</source>
-        <translation>Użyj nazwy hosta jako zasobu</translation>
-    </message>
-    <message>
-        <location filename="../gui/widgets/jabber-edit-account-widget.cpp" line="312"/>
-        <source>Notifications</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/widgets/jabber-edit-account-widget.cpp" line="315"/>
-        <source>Send typing notifications</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/widgets/jabber-edit-account-widget.cpp" line="319"/>
-        <source>Send gone notifications (closing the window)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/widgets/jabber-edit-account-widget.cpp" line="349"/>
-        <location filename="../gui/widgets/jabber-edit-account-widget.cpp" line="361"/>
-        <source>Kadu</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/widgets/jabber-edit-account-widget.cpp" line="349"/>
-        <source>Cannot enable secure connection. SSL/TLS plugin not found.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/widgets/jabber-edit-account-widget.cpp" line="503"/>
-        <source>Are you sure you want to remove account %1 (%2)?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../gui/widgets/jabber-edit-account-widget.cpp" line="265"/>
         <location filename="../gui/widgets/jabber-edit-account-widget.cpp" line="278"/>
         <source>Resource</source>
         <translation>Zasób</translation>
+    </message>
+    <message>
+        <location filename="../gui/widgets/jabber-edit-account-widget.cpp" line="272"/>
+        <source>Use hostname as a resource</source>
+        <translation>Użyj nazwy hosta jako zasobu</translation>
     </message>
     <message>
         <location filename="../gui/widgets/jabber-edit-account-widget.cpp" line="286"/>
@@ -696,6 +663,32 @@ Nowe hasło wprowadzone w polu &quot;Nowe hasło&quot; nie jest identyczne z zaw
         <translation>Serwer proxy dla transmisji danych</translation>
     </message>
     <message>
+        <location filename="../gui/widgets/jabber-edit-account-widget.cpp" line="312"/>
+        <source>Notifications</source>
+        <translation>Powiadomienia</translation>
+    </message>
+    <message>
+        <location filename="../gui/widgets/jabber-edit-account-widget.cpp" line="315"/>
+        <source>Send typing notifications</source>
+        <translation>Powiadamiaj rozmówcę o komponowaniu wiadomości</translation>
+    </message>
+    <message>
+        <location filename="../gui/widgets/jabber-edit-account-widget.cpp" line="319"/>
+        <source>Send gone notifications (closing the window)</source>
+        <translation>Powiadamiaj rozmówcę o zakończeniu rozmowy (po zamknięciu okna)</translation>
+    </message>
+    <message>
+        <location filename="../gui/widgets/jabber-edit-account-widget.cpp" line="349"/>
+        <location filename="../gui/widgets/jabber-edit-account-widget.cpp" line="361"/>
+        <source>Kadu</source>
+        <translation>Kadu</translation>
+    </message>
+    <message>
+        <location filename="../gui/widgets/jabber-edit-account-widget.cpp" line="349"/>
+        <source>Cannot enable secure connection. SSL/TLS plugin not found.</source>
+        <translation>Nie można ustanowić bezpiecznego połączenia. Brak wtyczki SSL/TLS.</translation>
+    </message>
+    <message>
         <location filename="../gui/widgets/jabber-edit-account-widget.cpp" line="361"/>
         <source>Legacy SSL is only available in combination with manual host/port.</source>
         <translation>Legacy SSL jest dostępny tylko w połączeniu z ręczną konfiguracją hosta/portu.</translation>
@@ -706,6 +699,11 @@ Nowe hasło wprowadzone w polu &quot;Nowe hasło&quot; nie jest identyczne z zaw
         <translation>Potwierdź usunięcie konta</translation>
     </message>
     <message>
+        <location filename="../gui/widgets/jabber-edit-account-widget.cpp" line="503"/>
+        <source>Are you sure you want to remove account %1 (%2)?</source>
+        <translation>Czy na pewno chcesz usunąć konto %1 (%2)?</translation>
+    </message>
+    <message>
         <location filename="../gui/widgets/jabber-edit-account-widget.cpp" line="507"/>
         <source>Remove account</source>
         <translation>Usuń konto</translation>
@@ -714,14 +712,14 @@ Nowe hasło wprowadzone w polu &quot;Nowe hasło&quot; nie jest identyczne z zaw
 <context>
     <name>JabberPersonalInfoWidget</name>
     <message>
+        <location filename="../gui/widgets/jabber-personal-info-widget.cpp" line="79"/>
+        <source>Full name</source>
+        <translation>Imię i nazwisko</translation>
+    </message>
+    <message>
         <location filename="../gui/widgets/jabber-personal-info-widget.cpp" line="80"/>
         <source>Nick</source>
         <translation>Pseudonim</translation>
-    </message>
-    <message>
-        <location filename="../gui/widgets/jabber-personal-info-widget.cpp" line="79"/>
-        <source>Full name</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/widgets/jabber-personal-info-widget.cpp" line="81"/>
@@ -741,12 +739,12 @@ Nowe hasło wprowadzone w polu &quot;Nowe hasło&quot; nie jest identyczne z zaw
     <message>
         <location filename="../gui/widgets/jabber-personal-info-widget.cpp" line="84"/>
         <source>E-Mail</source>
-        <translation type="unfinished"></translation>
+        <translation>E-Mail</translation>
     </message>
     <message>
         <location filename="../gui/widgets/jabber-personal-info-widget.cpp" line="85"/>
         <source>Website</source>
-        <translation type="unfinished"></translation>
+        <translation>Strona WWW</translation>
     </message>
 </context>
 <context>
@@ -754,12 +752,12 @@ Nowe hasło wprowadzone w polu &quot;Nowe hasło&quot; nie jest identyczne z zaw
     <message>
         <location filename="../jabber-protocol.cpp" line="253"/>
         <source>Kadu</source>
-        <translation type="unfinished"></translation>
+        <translation>Kadu</translation>
     </message>
     <message>
         <location filename="../jabber-protocol.cpp" line="253"/>
         <source>XMPP username is not set!</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie podano nazwy użytkownika XMPP!</translation>
     </message>
     <message>
         <location filename="../jabber-protocol.cpp" line="262"/>
@@ -772,21 +770,21 @@ Nowe hasło wprowadzone w polu &quot;Nowe hasło&quot; nie jest identyczne z zaw
     <message>
         <location filename="../jabber-protocol-factory.cpp" line="119"/>
         <source>User JID:</source>
-        <translation type="unfinished"></translation>
+        <translation>JID Użytkownika:</translation>
     </message>
 </context>
 <context>
     <name>JabberServerRegisterAccount</name>
     <message>
         <location filename="../server/jabber-server-register-account.cpp" line="88"/>
-        <source>This server does not support registration</source>
-        <translation>Ten serwer nie wspiera rejestracji</translation>
+        <location filename="../server/jabber-server-register-account.cpp" line="147"/>
+        <source>Kadu</source>
+        <translation>Kadu</translation>
     </message>
     <message>
         <location filename="../server/jabber-server-register-account.cpp" line="88"/>
-        <location filename="../server/jabber-server-register-account.cpp" line="147"/>
-        <source>Kadu</source>
-        <translation type="unfinished"></translation>
+        <source>This server does not support registration</source>
+        <translation>Ten serwer nie wspiera rejestracji</translation>
     </message>
     <message>
         <location filename="../server/jabber-server-register-account.cpp" line="147"/>
@@ -800,23 +798,23 @@ Powód: %1</translation>
     <name>JabberSubscriptionService</name>
     <message>
         <location filename="../services/jabber-subscription-service.cpp" line="52"/>
+        <source>Kadu</source>
+        <translation>Kadu</translation>
+    </message>
+    <message>
+        <location filename="../services/jabber-subscription-service.cpp" line="52"/>
         <source>The user %1 removed subscription to you. You will no longer be able to view his/her online/offline status. Do you want to delete the contact?</source>
         <translation>Użytkownik %1 usunął subskrypcję dla Ciebie. Nie będziesz więcej mógł widzieć jego/jej statusu. Czy chcesz usunąć ten kontakt?</translation>
     </message>
     <message>
-        <location filename="../services/jabber-subscription-service.cpp" line="52"/>
-        <source>Kadu</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../services/jabber-subscription-service.cpp" line="96"/>
         <source>Kadu - authorize user?</source>
-        <translation type="unfinished"></translation>
+        <translation>Kadu - czy autoryzować użytkownika?</translation>
     </message>
     <message>
         <location filename="../services/jabber-subscription-service.cpp" line="96"/>
         <source>The user %1 (%2) is asking for subscription from you. He will be able to view your online/offline status. Do you want to authorize the contact?</source>
-        <translation type="unfinished"></translation>
+        <translation>Użytkownik %1 (%2) prosi Cię o subskrypcję, aby móc widzieć Twój aktualny status. Czy chcesz autoryzować kontakt?</translation>
     </message>
 </context>
 <context>
@@ -824,19 +822,21 @@ Powód: %1</translation>
     <message>
         <location filename="../gui/windows/jabber-wait-for-account-register-window.cpp" line="43"/>
         <source>Plase wait. New XMPP account is being registered.</source>
-        <translation type="unfinished"></translation>
+        <translation>Proszę czekać.  Trwa rejestracja nowego konta XMPP.</translation>
     </message>
     <message>
         <location filename="../gui/windows/jabber-wait-for-account-register-window.cpp" line="55"/>
         <source>Registration was successful. Your new XMPP username is %1.
 Store it in a safe place along with the password.
 Now please add your friends to the buddy list.</source>
-        <translation type="unfinished"></translation>
+        <translation>Rejestracja przebiegła pomyślnie. Twoja nowa nazwa użytownika XMPP to %1.
+Zachowaj ją wraz z hasłem w bezpiecznym miejscu.
+Teraz możesz dodać przyjaciół do listy kontaktów.</translation>
     </message>
     <message>
         <location filename="../gui/windows/jabber-wait-for-account-register-window.cpp" line="63"/>
         <source>An error has occurred during registration. Please try again later.</source>
-        <translation type="unfinished"></translation>
+        <translation>Wystąpił błąd w trakcie rejestracji. Spróbuj ponownie później.</translation>
     </message>
 </context>
 <context>
@@ -915,67 +915,67 @@ Szczegóły: %1</translation>
     <message>
         <location filename="../libiris/tools/xmpptest/xmpptest.cpp" line="86"/>
         <source>No certificate presented.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie otrzymano certyfikatu.</translation>
     </message>
     <message>
         <location filename="../libiris/tools/xmpptest/xmpptest.cpp" line="91"/>
         <source>Hostname mismatch.</source>
-        <translation type="unfinished"></translation>
+        <translation>Niezgodność nazw hostów.</translation>
     </message>
     <message>
         <location filename="../libiris/tools/xmpptest/xmpptest.cpp" line="94"/>
         <source>Invalid Certificate.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nieprawidłowy Certyfikat.</translation>
     </message>
     <message>
         <location filename="../libiris/tools/xmpptest/xmpptest.cpp" line="123"/>
         <source>General validation error.</source>
-        <translation type="unfinished"></translation>
+        <translation>Błąd walidacji.</translation>
     </message>
     <message>
         <location filename="../libiris/src/xmpp/xmpp-im/types.cpp" line="2754"/>
         <source>Username</source>
-        <translation type="unfinished">Nazwa użytkownika</translation>
+        <translation>Nazwa użytkownika</translation>
     </message>
     <message>
         <location filename="../libiris/src/xmpp/xmpp-im/types.cpp" line="2755"/>
         <source>Nickname</source>
-        <translation type="unfinished"></translation>
+        <translation>Pseudonim</translation>
     </message>
     <message>
         <location filename="../libiris/src/xmpp/xmpp-im/types.cpp" line="2756"/>
         <source>Password</source>
-        <translation type="unfinished">Hasło</translation>
+        <translation>Hasło</translation>
     </message>
     <message>
         <location filename="../libiris/src/xmpp/xmpp-im/types.cpp" line="2757"/>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nazwa</translation>
     </message>
     <message>
         <location filename="../libiris/src/xmpp/xmpp-im/types.cpp" line="2758"/>
         <source>First Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Imi</translation>
     </message>
     <message>
         <location filename="../libiris/src/xmpp/xmpp-im/types.cpp" line="2759"/>
         <source>Last Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nazwisko</translation>
     </message>
     <message>
         <location filename="../libiris/src/xmpp/xmpp-im/types.cpp" line="2760"/>
         <source>E-mail</source>
-        <translation type="unfinished"></translation>
+        <translation>E-mail</translation>
     </message>
     <message>
         <location filename="../libiris/src/xmpp/xmpp-im/types.cpp" line="2761"/>
         <source>Address</source>
-        <translation type="unfinished"></translation>
+        <translation>Adres</translation>
     </message>
     <message>
         <location filename="../libiris/src/xmpp/xmpp-im/types.cpp" line="2762"/>
         <source>City</source>
-        <translation type="unfinished">Miejscowość</translation>
+        <translation>Miasto</translation>
     </message>
     <message>
         <location filename="../libiris/src/xmpp/xmpp-im/types.cpp" line="2763"/>
@@ -990,7 +990,7 @@ Szczegóły: %1</translation>
     <message>
         <location filename="../libiris/src/xmpp/xmpp-im/types.cpp" line="2765"/>
         <source>Phone</source>
-        <translation type="unfinished"></translation>
+        <translation>Telefon</translation>
     </message>
     <message>
         <location filename="../libiris/src/xmpp/xmpp-im/types.cpp" line="2766"/>
@@ -1000,7 +1000,7 @@ Szczegóły: %1</translation>
     <message>
         <location filename="../libiris/src/xmpp/xmpp-im/types.cpp" line="2767"/>
         <source>Date</source>
-        <translation type="unfinished"></translation>
+        <translation>Data</translation>
     </message>
     <message>
         <location filename="../libiris/src/xmpp/xmpp-im/types.cpp" line="2768"/>
@@ -1051,7 +1051,7 @@ Copyright (C) 2003 Justin Karneges</source>
         <location filename="../libiris/tools/xmpptest/xmpptest.cpp" line="492"/>
         <location filename="../libiris/tools/xmpptest/xmpptest.cpp" line="500"/>
         <source>Error</source>
-        <translation type="unfinished">Błąd</translation>
+        <translation>Błąd</translation>
     </message>
     <message>
         <location filename="../libiris/tools/xmpptest/xmpptest.cpp" line="336"/>
@@ -1112,12 +1112,12 @@ Please correct and try again.</source>
     <message>
         <location filename="../libiris/tools/xmpptest/xmpptest.cpp" line="655"/>
         <source>Password</source>
-        <translation type="unfinished">Hasło</translation>
+        <translation>Hasło</translation>
     </message>
     <message>
         <location filename="../libiris/tools/xmpptest/xmpptest.cpp" line="655"/>
         <source>Enter the password for %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Podaj hasło dla %1</translation>
     </message>
 </context>
 <context>
@@ -1199,173 +1199,174 @@ Please correct and try again.</source>
     <message>
         <location filename="../client/jabber-client.cpp" line="551"/>
         <source>Server Authentication</source>
-        <translation type="unfinished">Autentykacja serwera</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../client/jabber-client.cpp" line="649"/>
         <source>The server does not support TLS encryption.</source>
-        <translation type="unfinished">Serwer nie wspiera szyfrowania TLS.</translation>
+        <translation>Serwer nie wspiera szyfrowania TLS.</translation>
     </message>
     <message>
         <location filename="../client/jabber-client.cpp" line="678"/>
         <source>There was an error communicating with the server.
 Details: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Wystąpił błąd w komunikacji z serwerem.
+Szczegóły: %1</translation>
     </message>
     <message>
         <location filename="../client/jabber-client.cpp" line="880"/>
         <source>Disconnected</source>
-        <translation type="unfinished"></translation>
+        <translation>Rozłączony</translation>
     </message>
     <message>
         <location filename="../client/jabber-client.cpp" line="885"/>
         <source>XML Parsing Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Błąd Parsowania XML</translation>
     </message>
     <message>
         <location filename="../client/jabber-client.cpp" line="890"/>
         <source>XMPP Protocol Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Błąd Protokołu XMPP</translation>
     </message>
     <message>
         <location filename="../client/jabber-client.cpp" line="910"/>
         <source>Generic stream error</source>
-        <translation type="unfinished"></translation>
+        <translation>Błąd strumienia</translation>
     </message>
     <message>
         <location filename="../client/jabber-client.cpp" line="913"/>
         <source>Conflict(remote login replacing this one)</source>
-        <translation type="unfinished"></translation>
+        <translation>Konflikt (zdalne logowanie zastępuje bieżące)</translation>
     </message>
     <message>
         <location filename="../client/jabber-client.cpp" line="917"/>
         <source>Timed out from inactivity</source>
-        <translation type="unfinished"></translation>
+        <translation>Przekroczono limit czasu z powodu nieaktywności</translation>
     </message>
     <message>
         <location filename="../client/jabber-client.cpp" line="919"/>
         <source>Internal server error</source>
-        <translation type="unfinished"></translation>
+        <translation>Wewnętrzny błąd serwera</translation>
     </message>
     <message>
         <location filename="../client/jabber-client.cpp" line="921"/>
         <source>Invalid XML</source>
-        <translation type="unfinished"></translation>
+        <translation>Nieprawidłowy XML</translation>
     </message>
     <message>
         <location filename="../client/jabber-client.cpp" line="924"/>
         <source>Policy violation</source>
-        <translation type="unfinished"></translation>
+        <translation>Naruszenie zasad</translation>
     </message>
     <message>
         <location filename="../client/jabber-client.cpp" line="929"/>
         <source>Server out of resources</source>
-        <translation type="unfinished"></translation>
+        <translation>Serwer wyczerpał zasoby</translation>
     </message>
     <message>
         <location filename="../client/jabber-client.cpp" line="934"/>
         <source>Server is shutting down</source>
-        <translation type="unfinished"></translation>
+        <translation>Serwer został wyłączony</translation>
     </message>
     <message>
         <location filename="../client/jabber-client.cpp" line="936"/>
         <source>XMPP Stream Error: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Błąd Strumienia XMPP: %1</translation>
     </message>
     <message>
         <location filename="../client/jabber-client.cpp" line="944"/>
         <source>Unable to connect to server</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie można połączyć się z serwerem</translation>
     </message>
     <message>
         <location filename="../client/jabber-client.cpp" line="946"/>
         <source>Host not found</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie odnaleziono hosta</translation>
     </message>
     <message>
         <location filename="../client/jabber-client.cpp" line="948"/>
         <source>Error connecting to proxy</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie można połączyć się z serwerem proxy</translation>
     </message>
     <message>
         <location filename="../client/jabber-client.cpp" line="950"/>
         <source>Error during proxy negotiation</source>
-        <translation type="unfinished"></translation>
+        <translation>Błąd podczas negocjacji proxy</translation>
     </message>
     <message>
         <location filename="../client/jabber-client.cpp" line="953"/>
         <source>Proxy authentication failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Uwierzytelnianie serwera proxy nie powiodło się</translation>
     </message>
     <message>
         <location filename="../client/jabber-client.cpp" line="957"/>
         <source>Socket/stream error</source>
-        <translation type="unfinished"></translation>
+        <translation>Błąd strumienia/portu</translation>
     </message>
     <message>
         <location filename="../client/jabber-client.cpp" line="958"/>
         <source>Connection Error: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Błąd Połączenia: %1</translation>
     </message>
     <message>
         <location filename="../client/jabber-client.cpp" line="966"/>
         <source>Host no longer hosted</source>
-        <translation type="unfinished"></translation>
+        <translation>Host nie jest już utrzymywany</translation>
     </message>
     <message>
         <location filename="../client/jabber-client.cpp" line="968"/>
         <source>Host unknown</source>
-        <translation type="unfinished"></translation>
+        <translation>Nieznany host</translation>
     </message>
     <message>
         <location filename="../client/jabber-client.cpp" line="971"/>
         <source>A required remote connection failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Wymagane zdalne połączenie nie powiodło się</translation>
     </message>
     <message>
         <location filename="../client/jabber-client.cpp" line="975"/>
         <source>See other host: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Użyj innego hosta: %1</translation>
     </message>
     <message>
         <location filename="../client/jabber-client.cpp" line="977"/>
         <source>Server does not support proper XMPP version</source>
-        <translation type="unfinished"></translation>
+        <translation>Serwer nie wspiera wymaganej wersji XMPP</translation>
     </message>
     <message>
         <location filename="../client/jabber-client.cpp" line="978"/>
         <source>Stream Negotiation Error: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Błąd Negocjacji Strumienia: %1</translation>
     </message>
     <message>
         <location filename="../client/jabber-client.cpp" line="985"/>
         <source>Server rejected STARTTLS</source>
-        <translation type="unfinished"></translation>
+        <translation>Serwer odrzucił STARTTLS</translation>
     </message>
     <message>
         <location filename="../client/jabber-client.cpp" line="990"/>
         <source>TLS handshake error</source>
-        <translation type="unfinished"></translation>
+        <translation>Błąd uzgadniania TLS</translation>
     </message>
     <message>
         <location filename="../client/jabber-client.cpp" line="992"/>
         <source>Broken security layer (TLS)</source>
-        <translation type="unfinished"></translation>
+        <translation>Niesprawna warstwa zabezpieczeń (TLS)</translation>
     </message>
     <message>
         <location filename="../client/jabber-client.cpp" line="1001"/>
         <source>Unable to login</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie można się zalogować</translation>
     </message>
     <message>
         <location filename="../client/jabber-client.cpp" line="1004"/>
         <source>No appropriate mechanism available for given security settings(e.g. SASL library too weak, or plaintext authentication not enabled)</source>
-        <translation type="unfinished"></translation>
+        <translation>Brak odpowiedniego mechanizmu dla wybranych ustawień zabezpieczeń (np. zbyt słaba biblioteka SASL lub niewłączona autoryzacja otwartym tekstem)</translation>
     </message>
     <message>
         <location filename="../client/jabber-client.cpp" line="1008"/>
         <source>Bad server response</source>
-        <translation type="unfinished"></translation>
+        <translation>Błędna odpowiedź serwera</translation>
     </message>
     <message>
         <location filename="../client/jabber-client.cpp" line="1010"/>
@@ -1400,27 +1401,27 @@ Details: %1</source>
     <message>
         <location filename="../client/jabber-client.cpp" line="1022"/>
         <source>Not authorized</source>
-        <translation type="unfinished"></translation>
+        <translation>Nieautoryzowany</translation>
     </message>
     <message>
         <location filename="../client/jabber-client.cpp" line="1024"/>
         <source>Temporary auth failure</source>
-        <translation type="unfinished"></translation>
+        <translation>Chwilowy problem przy uwierzytelnianiu</translation>
     </message>
     <message>
         <location filename="../client/jabber-client.cpp" line="1026"/>
         <source>Authentication error: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Błąd uwierzytelniania: %1</translation>
     </message>
     <message>
         <location filename="../client/jabber-client.cpp" line="1029"/>
         <source>Broken security layer (SASL)</source>
-        <translation type="unfinished"></translation>
+        <translation>Niesprawna warstwa zabezpieczeń (SASL)</translation>
     </message>
     <message>
         <location filename="../client/jabber-client.cpp" line="1031"/>
         <source>None</source>
-        <translation type="unfinished"></translation>
+        <translation>Żaden</translation>
     </message>
 </context>
 <context>
@@ -1438,7 +1439,7 @@ Details: %1</source>
     <message>
         <location filename="../libiris/src/xmpp/xmpp-core/xmpp_stanza.cpp" line="250"/>
         <source>Conflict</source>
-        <translation type="unfinished"></translation>
+        <translation>Konflikt</translation>
     </message>
     <message>
         <location filename="../libiris/src/xmpp/xmpp-core/xmpp_stanza.cpp" line="250"/>
@@ -1448,7 +1449,7 @@ Details: %1</source>
     <message>
         <location filename="../libiris/src/xmpp/xmpp-core/xmpp_stanza.cpp" line="251"/>
         <source>Feature not implemented</source>
-        <translation type="unfinished"></translation>
+        <translation>Funkcjonalność niezaimplementowana</translation>
     </message>
     <message>
         <location filename="../libiris/src/xmpp/xmpp-core/xmpp_stanza.cpp" line="251"/>
@@ -1478,7 +1479,7 @@ Details: %1</source>
     <message>
         <location filename="../libiris/src/xmpp/xmpp-core/xmpp_stanza.cpp" line="254"/>
         <source>Internal server error</source>
-        <translation type="unfinished"></translation>
+        <translation>Błąd wewnętrzny serwera</translation>
     </message>
     <message>
         <location filename="../libiris/src/xmpp/xmpp-core/xmpp_stanza.cpp" line="254"/>
@@ -1508,7 +1509,7 @@ Details: %1</source>
     <message>
         <location filename="../libiris/src/xmpp/xmpp-core/xmpp_stanza.cpp" line="257"/>
         <source>Not acceptable</source>
-        <translation type="unfinished"></translation>
+        <translation>Nieakceptowalny</translation>
     </message>
     <message>
         <location filename="../libiris/src/xmpp/xmpp-core/xmpp_stanza.cpp" line="257"/>
@@ -1518,7 +1519,7 @@ Details: %1</source>
     <message>
         <location filename="../libiris/src/xmpp/xmpp-core/xmpp_stanza.cpp" line="258"/>
         <source>Not allowed</source>
-        <translation type="unfinished"></translation>
+        <translation>Niedozwolony</translation>
     </message>
     <message>
         <location filename="../libiris/src/xmpp/xmpp-core/xmpp_stanza.cpp" line="258"/>
@@ -1528,7 +1529,7 @@ Details: %1</source>
     <message>
         <location filename="../libiris/src/xmpp/xmpp-core/xmpp_stanza.cpp" line="259"/>
         <source>Not authorized</source>
-        <translation type="unfinished"></translation>
+        <translation>Nieautoryzowany</translation>
     </message>
     <message>
         <location filename="../libiris/src/xmpp/xmpp-core/xmpp_stanza.cpp" line="259"/>
@@ -1538,7 +1539,7 @@ Details: %1</source>
     <message>
         <location filename="../libiris/src/xmpp/xmpp-core/xmpp_stanza.cpp" line="260"/>
         <source>Payment required</source>
-        <translation type="unfinished"></translation>
+        <translation>Wymagana płatność</translation>
     </message>
     <message>
         <location filename="../libiris/src/xmpp/xmpp-core/xmpp_stanza.cpp" line="260"/>
@@ -1548,12 +1549,12 @@ Details: %1</source>
     <message>
         <location filename="../libiris/src/xmpp/xmpp-core/xmpp_stanza.cpp" line="261"/>
         <source>Recipient unavailable</source>
-        <translation type="unfinished"></translation>
+        <translation>Odbiorca nieosiągalny</translation>
     </message>
     <message>
         <location filename="../libiris/src/xmpp/xmpp-core/xmpp_stanza.cpp" line="261"/>
         <source>The intended recipient is temporarily unavailable.</source>
-        <translation type="unfinished"></translation>
+        <translation>Odbiorca jest czasowo niedostępny.</translation>
     </message>
     <message>
         <location filename="../libiris/src/xmpp/xmpp-core/xmpp_stanza.cpp" line="262"/>
@@ -1568,7 +1569,7 @@ Details: %1</source>
     <message>
         <location filename="../libiris/src/xmpp/xmpp-core/xmpp_stanza.cpp" line="263"/>
         <source>Registration required</source>
-        <translation type="unfinished"></translation>
+        <translation>Wymagana rejestracja</translation>
     </message>
     <message>
         <location filename="../libiris/src/xmpp/xmpp-core/xmpp_stanza.cpp" line="263"/>
@@ -1578,7 +1579,7 @@ Details: %1</source>
     <message>
         <location filename="../libiris/src/xmpp/xmpp-core/xmpp_stanza.cpp" line="264"/>
         <source>Remote server not found</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie odnaleziono serwera</translation>
     </message>
     <message>
         <location filename="../libiris/src/xmpp/xmpp-core/xmpp_stanza.cpp" line="264"/>
@@ -1608,7 +1609,7 @@ Details: %1</source>
     <message>
         <location filename="../libiris/src/xmpp/xmpp-core/xmpp_stanza.cpp" line="267"/>
         <source>Service unavailable</source>
-        <translation type="unfinished"></translation>
+        <translation>Usługa niedostępna</translation>
     </message>
     <message>
         <location filename="../libiris/src/xmpp/xmpp-core/xmpp_stanza.cpp" line="267"/>
@@ -1618,7 +1619,7 @@ Details: %1</source>
     <message>
         <location filename="../libiris/src/xmpp/xmpp-core/xmpp_stanza.cpp" line="268"/>
         <source>Subscription required</source>
-        <translation type="unfinished"></translation>
+        <translation>Wymagana subskrypcja</translation>
     </message>
     <message>
         <location filename="../libiris/src/xmpp/xmpp-core/xmpp_stanza.cpp" line="268"/>
@@ -1628,7 +1629,7 @@ Details: %1</source>
     <message>
         <location filename="../libiris/src/xmpp/xmpp-core/xmpp_stanza.cpp" line="269"/>
         <source>Undefined condition</source>
-        <translation type="unfinished"></translation>
+        <translation>Nieokreślony warunek</translation>
     </message>
     <message>
         <location filename="../libiris/src/xmpp/xmpp-core/xmpp_stanza.cpp" line="269"/>
@@ -1638,12 +1639,12 @@ Details: %1</source>
     <message>
         <location filename="../libiris/src/xmpp/xmpp-core/xmpp_stanza.cpp" line="270"/>
         <source>Unexpected request</source>
-        <translation type="unfinished"></translation>
+        <translation>Niespodziewane żądanie</translation>
     </message>
     <message>
         <location filename="../libiris/src/xmpp/xmpp-core/xmpp_stanza.cpp" line="270"/>
         <source>The recipient or server understood the request but was not expecting it at this time (e.g., the request was out of order).</source>
-        <translation type="unfinished"></translation>
+        <translation>Odbiorca lub serwer przyjął żądanie, ale nie mógł obsłużyć go w tej chwili (np. żądanie dotarło poza właściwą kolejnością).</translation>
     </message>
 </context>
 <context>
@@ -1651,7 +1652,7 @@ Details: %1</source>
     <message>
         <location filename="../libiris/src/xmpp/xmpp-im/xmpp_task.cpp" line="165"/>
         <source>Disconnected</source>
-        <translation type="unfinished"></translation>
+        <translation>Rozłączony</translation>
     </message>
 </context>
 <context>
@@ -1659,7 +1660,7 @@ Details: %1</source>
     <message>
         <location filename="../gui/windows/xml-console.cpp" line="33"/>
         <source>XML Console - %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Konsola XML - %1</translation>
     </message>
 </context>
 </TS>

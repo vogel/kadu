@@ -1,11 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="de_DE">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="de" version="2.0">
 <context>
     <name>@default</name>
     <message>
         <source>Firewall</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>General</source>
@@ -209,35 +207,35 @@ I&apos;m a busy person and I don&apos;t have time for stupid chats with the pers
     <name>FirewallConfigurationUiHandler</name>
     <message>
         <source>Move to &apos;Secured&apos;</source>
-        <translation type="unfinished">Verschiebe nach &apos;geschützt&apos;</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>All</source>
-        <translation type="unfinished">Alle</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Move to &apos;All&apos;</source>
-        <translation type="unfinished">Verschiebe nach &apos;Alle&apos;</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Secured</source>
-        <translation type="unfinished">Geschützt</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>This message will be send to unknown person.</source>
-        <translation type="unfinished">Diese Nachricht wird an eine unbekannte Person gesendet.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Right answer for question above - you can use regexp.</source>
-        <translation type="unfinished">Die richtige Antwort auf die Frage oben - Sie können auch Reguläre Ausdrücke benutzen.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Answer:</source>
-        <translation type="unfinished">Antwort:</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Message:</source>
-        <translation type="unfinished">Nachricht:</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -248,7 +246,7 @@ I&apos;m a busy person and I don&apos;t have time for stupid chats with the pers
     </message>
     <message>
         <source>%u writes</source>
-        <translation type="unfinished">%u schreibt</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

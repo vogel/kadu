@@ -1,17 +1,15 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="pl_PL">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.0">
 <context>
     <name>@default</name>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="4"/>
         <source>Server Monitor</source>
-        <translation type="unfinished"></translation>
+        <translation>Monitor serwerów</translation>
     </message>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="7"/>
         <source>General</source>
-        <translation type="unfinished"></translation>
+        <translation>Ogólne</translation>
     </message>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="10"/>
@@ -21,17 +19,17 @@
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="13"/>
         <source>Watch gadu-gadu servers</source>
-        <translation type="unfinished"></translation>
+        <translation>Obserwuj serwery Gadu-Gadu</translation>
     </message>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="16"/>
         <source>Server list</source>
-        <translation type="unfinished"></translation>
+        <translation>Lista serwerów</translation>
     </message>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="20"/>
         <source>General Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Ogólne ustawienia</translation>
     </message>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="23"/>
@@ -41,7 +39,7 @@
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="26"/>
         <source>Auto refresh list</source>
-        <translation type="unfinished"></translation>
+        <translation>Automatycznie odświeżaj listę</translation>
     </message>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="29"/>
@@ -62,7 +60,7 @@
     <message>
         <location filename="../server-monitor-window.cpp" line="46"/>
         <source>Refresh</source>
-        <translation type="unfinished"></translation>
+        <translation>Odśwież</translation>
     </message>
     <message>
         <location filename="../server-monitor-window.cpp" line="53"/>
@@ -73,7 +71,7 @@
     <message>
         <location filename="../server-monitor-window.cpp" line="60"/>
         <source>Server monitor</source>
-        <translation type="unfinished"></translation>
+        <translation>Monitor serwerów</translation>
     </message>
     <message>
         <location filename="../server-monitor-window.cpp" line="104"/>
@@ -97,12 +95,12 @@ Unavailable	%2</source>
     <message>
         <location filename="../server-status-widget.cpp" line="118"/>
         <source>Online</source>
-        <translation type="unfinished"></translation>
+        <translation>Dostępny</translation>
     </message>
     <message>
         <location filename="../server-status-widget.cpp" line="121"/>
         <source>Unavailable</source>
-        <translation type="unfinished"></translation>
+        <translation>Niedostępny</translation>
     </message>
     <message>
         <location filename="../server-status-widget.cpp" line="124"/>

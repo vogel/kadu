@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="pl">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.0">
 <context>
     <name>@default</name>
     <message>
@@ -15,9 +13,9 @@
         <translation>Historia</translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="52"/>
-        <source>General</source>
-        <translation>Ogólne</translation>
+        <location filename="../.configuration-ui-translations.cpp" line="10"/>
+        <source>Chats History</source>
+        <translation>Historia rozmów</translation>
     </message>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="13"/>
@@ -26,9 +24,29 @@
         <translation>Zapisuj wiadomości w historii</translation>
     </message>
     <message>
+        <location filename="../.configuration-ui-translations.cpp" line="18"/>
+        <source>Save chats with anonymous users</source>
+        <translation>Zapisuj rozmowy z anonimami</translation>
+    </message>
+    <message>
         <location filename="../.configuration-ui-translations.cpp" line="22"/>
         <source>Status Changes</source>
         <translation>Zmiany statusów</translation>
+    </message>
+    <message>
+        <location filename="../.configuration-ui-translations.cpp" line="25"/>
+        <source>Save status changes</source>
+        <translation>Zapisuj zmiany statusów</translation>
+    </message>
+    <message>
+        <location filename="../.configuration-ui-translations.cpp" line="27"/>
+        <source>Save status changes in history</source>
+        <translation>Zapisuje zmiany statusów w historii</translation>
+    </message>
+    <message>
+        <location filename="../.configuration-ui-translations.cpp" line="30"/>
+        <source>Save status only with description</source>
+        <translation>Zapisuj tylko statusy z opisem</translation>
     </message>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="34"/>
@@ -46,39 +64,19 @@
         <translation>Nie cytuj historii starszej niż</translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="25"/>
-        <source>Save status changes</source>
-        <translation>Zapisuj zmiany statusów</translation>
-    </message>
-    <message>
-        <location filename="../.configuration-ui-translations.cpp" line="27"/>
-        <source>Save status changes in history</source>
-        <translation>Zapisuje zmiany statusów w historii</translation>
-    </message>
-    <message>
         <location filename="../.configuration-ui-translations.cpp" line="43"/>
         <source>.</source>
         <translation>.</translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="10"/>
-        <source>Chats History</source>
-        <translation>Historia rozmów</translation>
-    </message>
-    <message>
-        <location filename="../.configuration-ui-translations.cpp" line="18"/>
-        <source>Save chats with anonymous users</source>
-        <translation>Zapisuj rozmowy z anonimami</translation>
-    </message>
-    <message>
-        <location filename="../.configuration-ui-translations.cpp" line="30"/>
-        <source>Save status only with description</source>
-        <translation>Zapisuj tylko statusy z opisem</translation>
-    </message>
-    <message>
         <location filename="../.configuration-ui-translations.cpp" line="49"/>
         <source>Shortcuts</source>
         <translation>Skróty</translation>
+    </message>
+    <message>
+        <location filename="../.configuration-ui-translations.cpp" line="52"/>
+        <source>General</source>
+        <translation>Ogólne</translation>
     </message>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="58"/>
@@ -175,7 +173,7 @@
     <message>
         <location filename="../model/history-chats-model.cpp" line="195"/>
         <source>SMSes</source>
-        <translation type="unfinished"></translation>
+        <translation>SMSy</translation>
     </message>
 </context>
 <context>
@@ -188,7 +186,7 @@
     <message>
         <location filename="../gui/windows/history-window.cpp" line="88"/>
         <source>&amp;Remove entries</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Usuń wpisy</translation>
     </message>
     <message>
         <location filename="../gui/windows/history-window.cpp" line="185"/>
@@ -213,22 +211,22 @@
     <message>
         <location filename="../gui/windows/history-window.cpp" line="627"/>
         <source>&amp;Clear Chat History</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Wyczyść historię rozmów</translation>
     </message>
     <message>
         <location filename="../gui/windows/history-window.cpp" line="641"/>
         <source>&amp;Clear Status History</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Wyczyść historię statusów</translation>
     </message>
     <message>
         <location filename="../gui/windows/history-window.cpp" line="654"/>
         <source>&amp;Clear SMS History</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Wyczyść historię SMSów</translation>
     </message>
     <message>
         <location filename="../gui/windows/history-window.cpp" line="689"/>
         <source>Kadu</source>
-        <translation type="unfinished"></translation>
+        <translation>Kadu</translation>
     </message>
     <message>
         <location filename="../gui/windows/history-window.cpp" line="689"/>

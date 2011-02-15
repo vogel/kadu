@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="de_DE">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="de" version="2.0">
 <context>
     <name>ScreenShot</name>
     <message>
@@ -20,49 +18,47 @@
     </message>
     <message>
         <source>Unable to create direcotry %1 for storing screenshots!</source>
-        <translation type="unfinished">Kann das Verzeichnis %1 für Bildschirmfotos nicht erstellen!</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Can&apos;t write file %1.
+        <source>Can't write file %1.
 Access denied or other problem!</source>
-        <translation type="unfinished">Kann die Datei %1 nicht schreiben.
-Zugriff verweigert oder ein anderes Problem ist aufgetreten!</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Screenshot %1 has 0 size!
 It should be bigger.</source>
-        <translation type="unfinished">Bildschirmaufnahme %1 hat die Größe 0!
-Es sollte aber größer sein.</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>ScreenshotActions</name>
     <message>
         <source>ScreenShot</source>
-        <translation type="unfinished">Bildschirmfoto</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Simple shot</source>
-        <translation type="unfinished">Einfache Aufnahme</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>With chat window hidden</source>
-        <translation type="unfinished">Ohne das Chat-Fenster</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Window shot</source>
-        <translation type="unfinished">Fenster-Aufnahme</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>ScreenshotNotification</name>
     <message>
         <source>ScreenShot size limit</source>
-        <translation type="unfinished">Bildgrößenlimit erreicht</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Images size limit exceed: %1 KB</source>
-        <translation type="unfinished">Bildgrößenlimit erreicht: %1 KB</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

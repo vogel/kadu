@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="pl">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.0">
 <context>
     <name>@default</name>
     <message>
@@ -90,13 +88,14 @@
         <location filename="../storage/history-sql-storage.cpp" line="83"/>
         <location filename="../storage/history-sql-storage.cpp" line="106"/>
         <source>Kadu</source>
-        <translation type="unfinished"></translation>
+        <translation>Kadu</translation>
     </message>
     <message>
         <location filename="../storage/history-sql-storage.cpp" line="84"/>
         <source>It seems your Qt library does not provide support for selected database.
  Please select another driver in configuration window or install Qt with %1 plugin.</source>
-        <translation type="unfinished"></translation>
+        <translation>Zainstalowana biblioteka Qt nie wspiera wybranego typu bazy danych.
+Proszę wybrać inny typ bazy danych w oknie konfiguracji lub zainstalować bibliotekę Qt z pluginem %1.</translation>
     </message>
 </context>
 </TS>

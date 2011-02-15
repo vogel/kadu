@@ -1,17 +1,15 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="pl_PL">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.0">
 <context>
     <name>@default</name>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="4"/>
         <source>MediaPlayer</source>
-        <translation type="unfinished"></translation>
+        <translation>MediaPlayer</translation>
     </message>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="7"/>
         <source>General</source>
-        <translation type="unfinished"></translation>
+        <translation>Ogólne</translation>
     </message>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="10"/>
@@ -31,7 +29,7 @@
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="18"/>
         <source>Port</source>
-        <translation type="unfinished"></translation>
+        <translation>Port</translation>
     </message>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="20"/>

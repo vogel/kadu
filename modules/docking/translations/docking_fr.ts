@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="fr" version="2.0">
 <context>
     <name>@default</name>
     <message>
@@ -43,6 +41,11 @@
 <context>
     <name>DockingManager</name>
     <message>
+        <source>Current status:
+%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>
 
 Description:
@@ -51,11 +54,6 @@ Description:
 
 Description:
 %2</translation>
-    </message>
-    <message>
-        <source>Current status:
-%1</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Show Pending Messages</source>

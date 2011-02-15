@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="it" version="2.0">
 <context>
     <name>@default</name>
     <message>
@@ -128,6 +126,10 @@
         <translation>Bottone dx</translation>
     </message>
     <message>
+        <source>&apos;Open chat&apos; works on all events</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Show message content in hint</source>
         <translation>Mostra il contenuto del messaggio nel suggerimento</translation>
     </message>
@@ -138,10 +140,6 @@
     <message>
         <source>Delete pending message when user deletes hint</source>
         <translation>Cancella messaggio pendente quando utente cancella il fumetto</translation>
-    </message>
-    <message>
-        <source>&apos;Open chat&apos; works on all events</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Buddy List</source>
@@ -169,7 +167,7 @@
     </message>
     <message>
         <source>Syntax</source>
-        <translation type="unfinished">Sintasso</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Icon size</source>
@@ -231,7 +229,7 @@
     </message>
     <message>
         <source>Syntax</source>
-        <translation type="unfinished">Sintasso</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
