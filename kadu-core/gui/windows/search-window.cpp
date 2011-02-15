@@ -31,6 +31,7 @@
 #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
 #include <QtGui/QRadioButton>
+#include <QtGui/QStatusBar>
 #include <QtGui/QTreeWidget>
 #include <QtGui/QTreeWidgetItem>
 
@@ -44,199 +45,62 @@
 #include "core/core.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/windows/add-buddy-window.h"
+#include "gui/windows/kadu-window.h"
 #include "gui/windows/message-dialog.h"
+#include "gui/windows/search-window-actions.h"
 #include "misc/misc.h"
 #include "gui/widgets/toolbar.h"
 #include "protocols/protocol.h"
+#include "protocols/protocol-factory.h"
 #include "protocols/services/search-service.h"
-#include "debug.h"
+#include "qt/long-validator.h"
 
 #include "search-window.h"
-#include <protocols/protocol-factory.h>
 
-SearchActionsSlots *SearchWindow::searchActionsSlot = 0;
+void SearchWindow::createDefaultToolbars(const QDomElement &toolbarsConfig)
+{
+	QDomElement dockAreaConfig = getDockAreaConfigElement(toolbarsConfig, "search_bottomDockArea");
+	QDomElement toolbarConfig = xml_config_file->createElement(dockAreaConfig, "ToolBar");
 
-ActionDescription *SearchWindow::firstSearchAction;
-ActionDescription *SearchWindow::nextResultsAction;
-ActionDescription *SearchWindow::stopSearchAction;
-ActionDescription *SearchWindow::clearResultsAction;
-ActionDescription *SearchWindow::addFoundAction;
-ActionDescription *SearchWindow::chatFoundAction;
+	addToolButton(toolbarConfig, "FirstSearch", Qt::ToolButtonTextUnderIcon);
+	addToolButton(toolbarConfig, "NextResults", Qt::ToolButtonTextUnderIcon);
+	addToolButton(toolbarConfig, "StopSearch", Qt::ToolButtonTextUnderIcon);
+	addToolButton(toolbarConfig, "clearSearchAction", Qt::ToolButtonTextUnderIcon);
+	addToolButton(toolbarConfig, "addSearchedAction", Qt::ToolButtonTextUnderIcon);
+	addToolButton(toolbarConfig, "chatSearchedAction", Qt::ToolButtonTextUnderIcon);
+}
 
 SearchWindow::SearchWindow(QWidget *parent, Buddy buddy) :
 		MainWindow("search", parent),
-		only_active(0), e_uin(0), e_name(0), e_nick(0), e_byrFrom(0), e_byrTo(0), e_surname(0),
-		c_gender(0), e_city(0), results(0), progress(0), r_uin(0), r_pers(0),
-		seq(0), selectedUsers(BuddySet()), CurrentSearchCriteria(BuddySearchCriteria()),
-		searchhidden(false), searching(false), workaround(false)
+		CurrentSearchService(0), UinEdit(0), FirstNameEdit(0), LastNameEdit(0), NickNameEdit(0),
+		StartBirthYearEdit(0), EndBirthYearEdit(0), CityEdit(0),
+		GenderComboBox(0), OnlyActiveCheckBox(0), UinRadioButton(0), PersonalDataRadioButton(0),
+		ResultsListWidget(0), SearchInProgress(false), DoNotTransferFocus(false)
 {
-	kdebugf();
-
 	setWindowRole("kadu-search");
 
 	setAttribute(Qt::WA_DeleteOnClose);
-	setWindowTitle(tr("Search user in directory"));
-
-	initModule();
-
-	QWidget *centralWidget = new QWidget(this);
-
-	QLabel *l_name;
-	QLabel *l_nick;
-	QLabel *l_byr;
-	QLabel *l_byrFrom;
-	QLabel *l_byrTo;
-	QLabel *l_surname;
-	QLabel *l_gender;
-	QLabel *l_city;
-	QLabel *l_uin;
-
-	l_nick = new QLabel(tr("Nickname"), centralWidget);
-	e_nick = new QLineEdit(centralWidget);
-	connect(e_nick, SIGNAL(textChanged(const QString &)), this, SLOT(personalDataTyped()));
-	connect(e_nick, SIGNAL(returnPressed()), this, SLOT(firstSearch()));
-
-	l_gender = new QLabel(tr("Gender"), centralWidget);
-	c_gender = new QComboBox(centralWidget);
-	c_gender->insertItem(0, " ");
-	c_gender->insertItem(1, tr("Male"));
-	c_gender->insertItem(2, tr("Female"));
-	connect(c_gender, SIGNAL(activated(const QString &)), this, SLOT(personalDataTyped()));
-
-	l_name = new QLabel(tr("Name"), centralWidget);
-	e_name = new QLineEdit(centralWidget);
-	connect(e_name, SIGNAL(textChanged(const QString &)), this, SLOT(personalDataTyped()));
-	connect(e_name, SIGNAL(returnPressed()), this, SLOT(firstSearch()));
-
-	l_surname = new QLabel(tr("Surname"), centralWidget);
-	e_surname = new QLineEdit(centralWidget);
-	connect(e_surname, SIGNAL(textChanged(const QString &)), this, SLOT(personalDataTyped()));
-	connect(e_surname, SIGNAL(returnPressed()), this, SLOT(firstSearch()));
-
-	l_byr = new QLabel(tr("Birthyear"), centralWidget);
-	l_byrFrom = new QLabel(tr("from"), centralWidget);
-	e_byrFrom = new QLineEdit(centralWidget);
-	e_byrFrom->setMaxLength(4);
-	e_byrFrom->setValidator(new QIntValidator(1, 2100, this));
-	connect(e_byrFrom, SIGNAL(textChanged(const QString &)), this, SLOT(personalDataTyped()));
-	connect(e_byrFrom, SIGNAL(textChanged(const QString &)), this, SLOT(byrFromDataTyped()));
-	connect(e_byrFrom, SIGNAL(returnPressed()), this, SLOT(firstSearch()));
-	l_byrTo = new QLabel(tr("to"), centralWidget);
-	e_byrTo = new QLineEdit(centralWidget);
-	e_byrTo->setEnabled(false);
-	e_byrTo->setMaxLength(4);
-	e_byrTo->setValidator(new QIntValidator(1, 2100, centralWidget));
-	connect(e_byrTo, SIGNAL(textChanged(const QString &)), this, SLOT(personalDataTyped()));
-	connect(e_byrTo, SIGNAL(returnPressed()), this, SLOT(firstSearch()));
-
-	l_city = new QLabel(tr("City"), centralWidget);
-	e_city = new QLineEdit(centralWidget);
-	connect(e_city, SIGNAL(textChanged(const QString &)), this, SLOT(personalDataTyped()));
-	connect(e_city, SIGNAL(returnPressed()), this, SLOT(firstSearch()));
-
-	only_active = new QCheckBox(tr("Only active users"), centralWidget);
-	connect(only_active, SIGNAL(clicked()), this, SLOT(personalDataTyped()));
-
-	QGroupBox *qgrp1 = new QGroupBox(tr("Uin"), centralWidget);
-	QHBoxLayout *uinLayout = new QHBoxLayout(qgrp1);
-	l_uin = new QLabel(tr("Uin"),qgrp1);
-	e_uin = new QLineEdit(qgrp1);
-	e_uin->setMaxLength(9);
-	e_uin->setValidator(new QIntValidator(1, 999999999, centralWidget));
-	connect(e_uin, SIGNAL(textChanged(const QString &)), this, SLOT(uinTyped()));
-	connect(e_uin, SIGNAL(returnPressed()), this, SLOT(firstSearch()));
-	uinLayout->addWidget(l_uin);
-	uinLayout->addWidget(e_uin);
-
-	progress = new QLabel(centralWidget);
-
-	results = new QTreeWidget(centralWidget);
-	connect(results, SIGNAL(itemSelectionChanged()), this, SLOT(selectionChanged()));
-
-	QGroupBox * btngrp = new QGroupBox(tr("Search criteria"), centralWidget);
-	QButtonGroup *buttonGroup = new QButtonGroup(btngrp);
-	QHBoxLayout *btngrpLayout = new QHBoxLayout(btngrp);
-	r_pers = new QRadioButton(tr("&Personal data"), btngrp);
-	r_pers->setChecked(true);
-	connect(r_pers, SIGNAL(toggled(bool)), this, SLOT(persClicked()));
-	r_pers->setToolTip(tr("Search using the personal data typed above (name, nickname)..."));
-
-	r_uin = new QRadioButton(tr("&Uin number"), btngrp);
-	connect(r_uin, SIGNAL(toggled(bool)), this, SLOT(uinClicked()));
-	r_uin->setToolTip(tr("Search for this UIN exclusively"));
-
-	buttonGroup->addButton(r_pers);
-	buttonGroup->addButton(r_uin);
-
-	btngrpLayout->addWidget(r_pers);
-	btngrpLayout->addWidget(r_uin);
-
-	QGridLayout * grid = new QGridLayout(centralWidget);
-
-	grid->addWidget(l_nick, 1, 0, Qt::AlignRight);
-	grid->addWidget(e_nick, 1, 1);
-	grid->addWidget(l_name, 1, 3, Qt::AlignRight);
-	grid->addWidget(e_name, 1, 4);
-	grid->addWidget(l_byr, 1, 6, Qt::AlignRight);
-	grid->addWidget(l_byrFrom, 1, 7, Qt::AlignRight);
-	grid->addWidget(e_byrFrom, 1, 8);
-	grid->addWidget(l_city, 1, 10, Qt::AlignRight);
-	grid->addWidget(e_city, 1, 11);
-
-	grid->addWidget(l_gender, 2, 0, Qt::AlignRight);
-	grid->addWidget(c_gender, 2, 1);
-	grid->addWidget(l_surname, 2, 3, Qt::AlignRight);
-	grid->addWidget(e_surname, 2, 4);
-	grid->addWidget(l_byrTo, 2, 7, Qt::AlignRight);
-	grid->addWidget(e_byrTo, 2, 8);
-	grid->addWidget(only_active, 2, 10, 1, 2);
-
-	grid->addWidget(qgrp1, 3, 0, 1, 4);
-	grid->addWidget(btngrp, 3, 4, 1, 8);
-	grid->addWidget(results, 5, 0, 1, 12);
-	grid->addWidget(progress, 6, 0, 1, 2);
-
-	QStringList headers;
-	headers << tr("Status") << tr("Uin") << tr("Name") << tr("City") << tr("Nickname") << tr("Birth year");
-	results->setHeaderLabels(headers);
-	results->setSortingEnabled(true);
-	results->setAllColumnsShowFocus(true);
-	results->setSelectionMode(QAbstractItemView::SingleSelection);
-	results->setIndentation(false);
-
-	setCentralWidget(centralWidget);
-
-	if (loadOldToolBarsFromConfig("searchDockArea", Qt::BottomToolBarArea))
-		writeToolBarsToConfig(); // port old config
-	else
-		loadToolBarsFromConfig(); // load new config
-
- 	setActionState(stopSearchAction, false);
- 	setActionState(firstSearchAction, false);
- 	setActionState(nextResultsAction,false);
- 	setActionState(clearResultsAction, false);
- 	setActionState(addFoundAction, false);
- 	setActionState(chatFoundAction, false);
-
-	loadWindowGeometry(this, "General", "SearchWindowGeometry", 0, 50, 800, 350);
+	setWindowTitle(tr("Search User in Directory"));
 
 	if (buddy)
 	{
 		CurrentAccount = BuddyPreferredManager::instance()->preferredAccount(buddy);
+
+		CurrentSearchCriteria.SearchBuddy = buddy;
 	}
 	else
 	{
-		foreach (const Account &a, AccountManager::instance()->items())
-		{
-			// TODO
-			if (a.protocolHandler()->isConnected() && a.protocolHandler()->protocolFactory()->name() == "gadu")
+		// TODO choose proper account
+		foreach (const Account &account, AccountManager::instance()->items())
+			if (account.protocolHandler() && account.protocolHandler()->isConnected() &&
+					account.protocolHandler()->searchService())
 			{
-				CurrentAccount = a;
+				CurrentAccount = account;
 				break;
 			}
-		}
+		
 		if (CurrentAccount.isNull())
-			CurrentAccount = AccountManager::instance()->items().at(0);
+			CurrentAccount = AccountManager::instance()->defaultAccount();
 	}
 
 	if (CurrentAccount.protocolHandler())
@@ -245,346 +109,149 @@ SearchWindow::SearchWindow(QWidget *parent, Buddy buddy) :
 	if (CurrentSearchService)
 		connect(CurrentSearchService, SIGNAL(newResults(BuddyList)), this, SLOT(newSearchResults(BuddyList)));
 
-	if (!buddy.isNull())
+	createGui();
+
+	if (loadOldToolBarsFromConfig("searchDockArea", Qt::BottomToolBarArea))
+		writeToolBarsToConfig();
+	else
+		loadToolBarsFromConfig();
+
+	if (CurrentSearchCriteria.SearchBuddy)
 	{
-		CurrentSearchCriteria.SearchBuddy = buddy;
-		QList<Contact> contactslist = buddy.contacts(CurrentAccount);
-		Contact contact = contactslist.isEmpty() ? Contact::null : contactslist.at(0);
-		e_uin->insert(contact.id());
+		QList<Contact> contacts = CurrentSearchCriteria.SearchBuddy.contacts(CurrentAccount);
+		Contact contact = contacts.isEmpty() ? Contact::null : contacts.at(0);
+		if (contact)
+			// it should call uinTyped() slot
+			UinEdit->insert(contact.id());
 	}
 
-	kdebugf2();
+	if (UinEdit->text().isEmpty())
+		personalDataTyped();
+
+	loadWindowGeometry(this, "General", "SearchWindowGeometry", 0, 50, 800, 350);
 }
 
 SearchWindow::~SearchWindow()
 {
-	kdebugf();
  	saveWindowGeometry(this, "General", "SearchWindowGeometry");
-	closeModule();
-	kdebugf2();
 }
 
-void SearchWindow::initModule()
+void SearchWindow::createGui()
 {
-	kdebugf();
-
-	searchActionsSlot = new SearchActionsSlots();
-
-	firstSearchAction = new ActionDescription(searchActionsSlot,
-		ActionDescription::TypeSearch, "firstSearchAction",
-		searchActionsSlot, SLOT(firstSearchActionActivated(QAction *, bool)),
-		"edit-find", tr("&Search")
-	);
-	QObject::connect(firstSearchAction, SIGNAL(actionCreated(Action *)), searchActionsSlot, SLOT(firstSearchActionCreated(Action *)));
-
-	nextResultsAction = new ActionDescription(searchActionsSlot,
-		ActionDescription::TypeSearch, "nextResultsAction",
-		searchActionsSlot, SLOT(nextResultsActionActivated(QAction *, bool)),
-		"go-next", tr("&Next results")
-	);
-	QObject::connect(nextResultsAction, SIGNAL(actionCreated(Action *)), searchActionsSlot, SLOT(nextResultsActionCreated(Action *)));
-
-	stopSearchAction = new ActionDescription(searchActionsSlot,
-		ActionDescription::TypeSearch, "stopSearchAction",
-		searchActionsSlot, SLOT(stopSearchActionActivated(QAction *, bool)),
-		"dialog-cancel", tr("Stop")
-	);
-	QObject::connect(stopSearchAction, SIGNAL(actionCreated(Action *)), searchActionsSlot, SLOT(stopSearchActionCreated(Action *)));
-
-	clearResultsAction = new ActionDescription(searchActionsSlot,
-		ActionDescription::TypeSearch, "clearSearchAction",
-		searchActionsSlot, SLOT(clearResultsActionActivated(QAction *, bool)),
-		"edit-clear", tr("Clear results")
-	);
-	QObject::connect(clearResultsAction, SIGNAL(actionCreated(Action *)), searchActionsSlot, SLOT(clearResultsActionCreated(Action *)));
-
-	addFoundAction = new ActionDescription(searchActionsSlot,
-		ActionDescription::TypeSearch, "addSearchedAction",
-		searchActionsSlot, SLOT(addFoundActionActivated(QAction *, bool)),
-		"contact-new", tr("Add selected user")
-	);
-	QObject::connect(addFoundAction, SIGNAL(actionCreated(Action *)), searchActionsSlot, SLOT(actionsFoundActionCreated(Action *)));
-
-	chatFoundAction = new ActionDescription(searchActionsSlot,
-		ActionDescription::TypeSearch, "chatSearchedAction",
-		searchActionsSlot, SLOT(chatFoundActionActivated(QAction *, bool)),
-		"internet-group-chat", tr("&Chat")
-	);
-	QObject::connect(chatFoundAction, SIGNAL(actionCreated(Action *)), searchActionsSlot, SLOT(actionsFoundActionCreated(Action *)));
-
-	kdebugf2();
-}
-
-void SearchWindow::closeModule()
-{
-	delete searchActionsSlot;
-	searchActionsSlot = 0;
-}
-
-QTreeWidgetItem * SearchWindow::selectedItem()
-{
-	if (results->selectedItems().count())
-		return results->selectedItems().at(0);
-	else if (results->children().count() == 1)
-		return dynamic_cast<QTreeWidgetItem *>(results->children().at(0));
-	else
-		return 0;
-}
-
-void SearchWindow::addFound()
-{
-	foreach (const Buddy &buddy, selected().toBuddySet().toList())
-		(new AddBuddyWindow(this, buddy))->show();
-}
-
-void SearchWindow::chatFound()
-{
-	ContactSet contacts = selected();
-	if (contacts.count() > 0)
-	{
-		Chat chat = ChatManager::instance()->findChat(contacts, true);
-		if (chat)
-			ChatWidgetManager::instance()->openPendingMessages(chat, true);
-	}
-
-}
-
-// TODO: return real list
-ContactSet SearchWindow::selected()
-{
-	ContactSet result;
-
-	QTreeWidgetItem *selected = selectedItem();
-
-	if (!selected)
-		return result;
-
-	QString uin = selected->text(1);
-	QString firstname = selected->text(2);
-	QString nickname = selected->text(4);
-
-	QString altnick;
-	if (!nickname.isEmpty()) // Build altnick. Trying user nick first.
-		altnick = nickname;
-	else if (!firstname.isEmpty()) // If nick is empty, try firstname.
-		altnick = firstname;
-	else
-		altnick = uin; // If above are empty, use uin.
-
-	Contact contact = ContactManager::instance()->byId(CurrentAccount, uin, ActionCreateAndAdd);
-	Buddy e = contact.ownerBuddy();
-
-	if (e.isAnonymous())
-	{
-		e.setFirstName(firstname);
-		e.setNickName(nickname);
-		e.setDisplay(altnick);
-	}
-
-	result.insert(contact);
-	return result;
-}
-
-void SearchWindow::clearResults()
-{
-	results->clear();
-
- 	setActionState(addFoundAction, false);
- 	setActionState(clearResultsAction, false);
- 	setActionState(chatFoundAction, false);
-}
-
-void SearchWindow::stopSearch()
-{
-	kdebugf();
-
-	CurrentSearchService->stop();
-
-	setActionState(stopSearchAction, false);
-
-	if ((r_pers->isChecked() && !isPersonalDataEmpty()) || (r_uin->isChecked() && !e_uin->text().isEmpty()))
-		setActionState(firstSearchAction, true);
-	if (!results->selectedItems().isEmpty())
-	{
-		if (r_pers->isChecked() && !isPersonalDataEmpty())
-			setActionState(nextResultsAction, true);
-
-		setActionState(addFoundAction, true);
-		setActionState(chatFoundAction, true);
-	}
-	if (results->topLevelItemCount() > 0)
-		setActionState(clearResultsAction, true);
-
-	kdebugf2();
-}
-
-void SearchWindow::firstSearch()
-{
-	kdebugf();
-
-	if (r_pers->isChecked() && isPersonalDataEmpty())
-		return;
-
-	if (!CurrentSearchService)
-	{
-		MessageDialog::show("dialog-error", tr("Kadu"), tr("We don't offer contacts search feature yet for this network"), QMessageBox::Ok, this);
-		kdebugf2();
-		return;
-	}
-
-	if (!CurrentAccount.protocolHandler()->isConnected())
-	{
-		MessageDialog::show("dialog-error", tr("Kadu"), tr("Cannot search contacts in offline mode"), QMessageBox::Ok, this);
-		kdebugf2();
-		return;
-	}
-
-	if (!results->children().isEmpty())
-		clearResults();
-
-	if (searching)
-		CurrentSearchService->stop();
-
-	CurrentSearchCriteria.clearData();
-
-	if (r_pers->isChecked())
-	{
-		CurrentSearchCriteria.reqFirstName(e_name->text());
-		CurrentSearchCriteria.reqLastName(e_surname->text());
-		CurrentSearchCriteria.reqNickName(e_nick->text());
-		CurrentSearchCriteria.reqCity(e_city->text());
-		if (((e_byrTo->text().isEmpty()) && (!e_byrFrom->text().isEmpty()))
-		    || ((e_byrTo->text().toUShort()) < (e_byrFrom->text().toUShort())))
-			e_byrTo->setText(e_byrFrom->text());
-		CurrentSearchCriteria.reqBirthYear(e_byrFrom->text(), e_byrTo->text());
-
-		switch (c_gender->currentIndex())
-		{
-			case 1:
-				CurrentSearchCriteria.reqGender(false);
-				break;
-			case 2:
-				CurrentSearchCriteria.reqGender(true);
-				break;
-		}
-
-		if (only_active->isChecked())
-			CurrentSearchCriteria.reqActive();
-	}
-	else if (r_uin->isChecked())
-		CurrentSearchCriteria.reqUin(CurrentAccount, e_uin->text());
-
-	searching = true;
-
- 	setActionState(stopSearchAction, true);
- 	setActionState(firstSearchAction, false);
- 	setActionState(nextResultsAction, false);
- 	setActionState(addFoundAction, false);
- 	setActionState(chatFoundAction, false);
-
-	CurrentSearchService->searchFirst(CurrentSearchCriteria);
-
-	progress->setText(tr("Searching..."));
-
-	kdebugf2();
-}
-
-void SearchWindow::nextSearch()
-{
-	kdebugf();
-
-	if (!CurrentAccount.protocolHandler()->isConnected())
-		return;
-
-	searching = true;
-
- 	setActionState(stopSearchAction, true);
- 	setActionState(firstSearchAction, false);
- 	setActionState(nextResultsAction, false);
- 	setActionState(addFoundAction, false);
-	setActionState(chatFoundAction, false);
-
-	CurrentSearchService->searchNext();
-
-	progress->setText(tr("Searching..."));
-
-	kdebugf2();
-}
-
-void SearchWindow::newSearchResults(const BuddyList &buddies)
-{
-	kdebugf();
-
-	QTreeWidgetItem *qlv = 0;
-	QIcon pix;
-
-	foreach (const Buddy &buddy, buddies)
-	{
-		QList<Contact> contactslist = buddy.contacts(CurrentAccount);
-		Contact contact = contactslist.isEmpty() ? Contact::null : contactslist.at(0);
-		QList <QTreeWidgetItem *> items = results->findItems(contact.id(), Qt::MatchExactly, 1);
-		if (items.count())
-			qlv = items.at(0);
-		pix = contact.contactAccount().data()->statusIcon(contact.currentStatus()).pixmap(16, 16);
-
-		if (qlv)
-		{
-			qlv->setText(1, contact.id());
-			qlv->setText(2, buddy.firstName());
-			qlv->setText(3, buddy.city());
-			qlv->setText(4, buddy.nickName());
-			qlv->setText(5, buddy.familyCity());
-		}
-		else
-		{
-			QStringList strings;
-			strings << QString() << contact.id() << buddy.firstName() << buddy.city() << buddy.nickName() << QString::number(buddy.birthYear());
-			qlv = new QTreeWidgetItem(results, strings);
-			qlv->setIcon(0, pix);
-			qlv = 0;
-		}
-	}
-
-	progress->setText(tr("Done searching"));
-
-	if ((r_pers->isChecked() && !isPersonalDataEmpty()) || (r_uin->isChecked() && !e_uin->text().isEmpty()))
-		setActionState(firstSearchAction, true);
-	setActionState(stopSearchAction, false);
-
-	if (buddies.isEmpty())
-	{
-		kdebugmf(KDEBUG_INFO, "No results. Exit.\n");
-		MessageDialog::show("dialog-information", tr("Kadu"), tr("There were no results of your search"), QMessageBox::Ok, this);
-	}
-	else
-	{
-		if (r_pers->isChecked() && !isPersonalDataEmpty())
-			setActionState(nextResultsAction, true);
-
-		if (results->topLevelItemCount() > 0)
-			setActionState(clearResultsAction, true);
-	}
-
-	if (!results->selectedItems().isEmpty())
-	{
-		setActionState(addFoundAction, true);
-		setActionState(chatFoundAction, true);
-	}
-
-	searching = false;
-
-	kdebugf2();
-}
-
-void SearchWindow::closeEvent(QCloseEvent * e)
-{
-	QWidget::closeEvent(e);
-}
-
-void SearchWindow::resizeEvent(QResizeEvent *e)
-{
-	QWidget::resizeEvent(e);
-//	results->triggerUpdate();//workaround for bug in Qt, which do not refresh results properly
+	QWidget *centralWidget = new QWidget(this);
+	QGridLayout *layout = new QGridLayout(centralWidget);
+
+	QGroupBox *searchCriteriaGroupBox = new QGroupBox(tr("Search Criteria"), centralWidget);
+	QButtonGroup *searchCriteriaButtonGroup = new QButtonGroup(searchCriteriaGroupBox);
+	QHBoxLayout *searchCriteriaLayout = new QHBoxLayout(searchCriteriaGroupBox);
+
+	UinRadioButton = new QRadioButton(tr("&Uin number"), searchCriteriaGroupBox);
+	connect(UinRadioButton, SIGNAL(toggled(bool)), this, SLOT(uinToggled(bool)));
+	UinRadioButton->setToolTip(tr("Search for this uin exclusively"));
+	searchCriteriaButtonGroup->addButton(UinRadioButton);
+	searchCriteriaLayout->addWidget(UinRadioButton);
+
+	PersonalDataRadioButton = new QRadioButton(tr("&Personal data"), searchCriteriaGroupBox);
+	connect(PersonalDataRadioButton, SIGNAL(toggled(bool)), this, SLOT(personalDataToggled(bool)));
+	PersonalDataRadioButton->setToolTip(tr("Search using the personal data typed above (name, nickname, etc.)"));
+	searchCriteriaButtonGroup->addButton(PersonalDataRadioButton);
+	searchCriteriaLayout->addWidget(PersonalDataRadioButton);
+
+	layout->addWidget(searchCriteriaGroupBox, 0, 0);
+
+	QGroupBox *uinGroupBox = new QGroupBox(tr("Uin Number"), centralWidget);
+	QHBoxLayout *uinLayout = new QHBoxLayout(uinGroupBox);
+	QLabel *uinLabel = new QLabel(tr("Uin:"), uinGroupBox);
+	UinEdit = new QLineEdit(uinGroupBox);
+	// TODO proper validator (this one is taken from GaduIdValidator)
+	UinEdit->setValidator(new LongValidator(1LL, 3999999999LL, UinEdit));
+	connect(UinEdit, SIGNAL(textChanged(QString)), this, SLOT(uinTyped()));
+	connect(UinEdit, SIGNAL(returnPressed()), this, SLOT(firstSearch()));
+	uinLayout->addWidget(uinLabel);
+	uinLayout->addWidget(UinEdit);
+
+	layout->addWidget(uinGroupBox, 1, 0);
+
+	QGroupBox *personalDataGroupBox = new QGroupBox(tr("Personal Data"), centralWidget);
+	QGridLayout *personalDataLayout = new QGridLayout(personalDataGroupBox);
+
+	QLabel *nickLabel = new QLabel(tr("Nick:"), personalDataGroupBox);
+	NickNameEdit = new QLineEdit(personalDataGroupBox);
+	connect(NickNameEdit, SIGNAL(textChanged(QString)), this, SLOT(personalDataTyped()));
+	connect(NickNameEdit, SIGNAL(returnPressed()), this, SLOT(firstSearch()));
+	personalDataLayout->addWidget(nickLabel, 0, 0, Qt::AlignRight);
+	personalDataLayout->addWidget(NickNameEdit, 0, 1);
+
+	QLabel *genderLabel = new QLabel(tr("Gender:"), personalDataGroupBox);
+	GenderComboBox = new QComboBox(personalDataGroupBox);
+	GenderComboBox->insertItem(0, QString());
+	GenderComboBox->insertItem(1, tr("Male"));
+	GenderComboBox->insertItem(2, tr("Female"));
+	connect(GenderComboBox, SIGNAL(activated(int)), this, SLOT(personalDataTyped()));
+	personalDataLayout->addWidget(genderLabel, 1, 0, Qt::AlignRight);
+	personalDataLayout->addWidget(GenderComboBox, 1, 1);
+
+	QLabel *firstNameLabel = new QLabel(tr("First name:"), personalDataGroupBox);
+	FirstNameEdit = new QLineEdit(personalDataGroupBox);
+	connect(FirstNameEdit, SIGNAL(textChanged(const QString &)), this, SLOT(personalDataTyped()));
+	connect(FirstNameEdit, SIGNAL(returnPressed()), this, SLOT(firstSearch()));
+	personalDataLayout->addWidget(firstNameLabel, 0, 2, Qt::AlignRight);
+	personalDataLayout->addWidget(FirstNameEdit, 0, 3);
+
+	QLabel *lastNameLabel = new QLabel(tr("Last name:"), personalDataGroupBox);
+	LastNameEdit = new QLineEdit(personalDataGroupBox);
+	connect(LastNameEdit, SIGNAL(textChanged(QString)), this, SLOT(personalDataTyped()));
+	connect(LastNameEdit, SIGNAL(returnPressed()), this, SLOT(firstSearch()));
+	personalDataLayout->addWidget(lastNameLabel, 1, 2, Qt::AlignRight);
+	personalDataLayout->addWidget(LastNameEdit, 1, 3);
+
+	QLabel *startBirthYearLabel = new QLabel(tr("Birth year from:"), personalDataGroupBox);
+	StartBirthYearEdit = new QLineEdit(personalDataGroupBox);
+	StartBirthYearEdit->setValidator(new QIntValidator(1, 2100, StartBirthYearEdit));
+	connect(StartBirthYearEdit, SIGNAL(textChanged(QString)), this, SLOT(endBirthYearTyped()));
+	connect(StartBirthYearEdit, SIGNAL(textChanged(QString)), this, SLOT(personalDataTyped()));
+	connect(StartBirthYearEdit, SIGNAL(returnPressed()), this, SLOT(firstSearch()));
+	personalDataLayout->addWidget(startBirthYearLabel, 2, 0, Qt::AlignRight);
+	personalDataLayout->addWidget(StartBirthYearEdit, 2, 1);
+
+	QLabel *endBirthYearLabel = new QLabel(tr("to:"), personalDataGroupBox);
+	EndBirthYearEdit = new QLineEdit(personalDataGroupBox);
+	EndBirthYearEdit->setEnabled(false);
+	EndBirthYearEdit->setValidator(new QIntValidator(1, 2100, EndBirthYearEdit));
+	connect(EndBirthYearEdit, SIGNAL(textChanged(QString)), this, SLOT(personalDataTyped()));
+	connect(EndBirthYearEdit, SIGNAL(returnPressed()), this, SLOT(firstSearch()));
+	personalDataLayout->addWidget(endBirthYearLabel, 3, 0, Qt::AlignRight);
+	personalDataLayout->addWidget(EndBirthYearEdit, 3, 1);
+
+	QLabel *cityLabel = new QLabel(tr("City:"), personalDataGroupBox);
+	CityEdit = new QLineEdit(personalDataGroupBox);
+	connect(CityEdit, SIGNAL(textChanged(QString)), this, SLOT(personalDataTyped()));
+	connect(CityEdit, SIGNAL(returnPressed()), this, SLOT(firstSearch()));
+	personalDataLayout->addWidget(cityLabel, 2, 2, Qt::AlignRight);
+	personalDataLayout->addWidget(CityEdit, 2, 3);
+
+	OnlyActiveCheckBox = new QCheckBox(tr("Search only for active users"), personalDataGroupBox);
+	connect(OnlyActiveCheckBox, SIGNAL(clicked()), this, SLOT(personalDataTyped()));
+	personalDataLayout->addWidget(OnlyActiveCheckBox, 3, 2, 1, 2);
+
+	layout->addWidget(personalDataGroupBox, 0, 1, 2, 1);
+	layout->setColumnStretch(1, 100);
+
+	ResultsListWidget = new QTreeWidget(centralWidget);
+	QStringList headers;
+	headers << tr("Status") << tr("Uin") << tr("First Name") << tr("City") << tr("Nickname") << tr("Birth Year");
+	ResultsListWidget->setHeaderLabels(headers);
+	ResultsListWidget->setSortingEnabled(true);
+	ResultsListWidget->setAllColumnsShowFocus(true);
+	ResultsListWidget->setSelectionMode(QAbstractItemView::SingleSelection);
+	ResultsListWidget->setIndentation(false);
+	connect(ResultsListWidget, SIGNAL(itemSelectionChanged()), this, SLOT(selectionChanged()));
+	layout->addWidget(ResultsListWidget, 2, 0, 1, -1);
+	layout->setRowStretch(2, 100);
+
+	setCentralWidget(centralWidget);
+
+	statusBar()->showMessage(tr("Ready"));
 }
 
 void SearchWindow::keyPressEvent(QKeyEvent *e)
@@ -598,180 +265,328 @@ void SearchWindow::keyPressEvent(QKeyEvent *e)
 		QWidget::keyPressEvent(e);
 }
 
-void SearchWindow::uinTyped(void)
+QTreeWidgetItem * SearchWindow::selectedItem() const
 {
-	r_uin->setChecked(true);
-
- 	setActionState(firstSearchAction, !e_uin->text().isEmpty());
+	if (!ResultsListWidget->selectedItems().isEmpty())
+		return ResultsListWidget->selectedItems().at(0);
+	else if (ResultsListWidget->children().count() == 1)
+		return dynamic_cast<QTreeWidgetItem *>(ResultsListWidget->children().at(0));
+	else
+		return 0;
 }
 
-void SearchWindow::personalDataTyped(void)
+// TODO: return real list
+ContactSet SearchWindow::selectedContacts() const
 {
-	workaround = true;
-	r_pers->setChecked(true);
-	workaround = false;
+	ContactSet result;
 
- 	setActionState(firstSearchAction, !isPersonalDataEmpty());
- 	setActionState(nextResultsAction, false);
+	QTreeWidgetItem *selected = selectedItem();
+
+	if (!selected)
+		return result;
+
+	QString uin = selected->text(1);
+	QString firstName = selected->text(2);
+	QString nickName = selected->text(4);
+
+	QString altNick;
+	if (!nickName.isEmpty())
+		altNick = nickName;
+	else if (!firstName.isEmpty())
+		altNick = firstName;
+	else
+		altNick = uin;
+
+	Contact contact = ContactManager::instance()->byId(CurrentAccount, uin, ActionCreateAndAdd);
+	Buddy buddy = contact.ownerBuddy();
+
+	if (buddy.isAnonymous())
+	{
+		buddy.setFirstName(firstName);
+		buddy.setNickName(nickName);
+		buddy.setDisplay(altNick);
+	}
+
+	result.insert(contact);
+	return result;
 }
 
-void SearchWindow::byrFromDataTyped(void)
+void SearchWindow::addFound()
 {
-	bool b = e_byrFrom->text().isEmpty();
-	e_byrTo->setEnabled(!b);
-	if (b)
-		e_byrTo->clear();
+	foreach (const Buddy &buddy, selectedContacts().toBuddySet())
+		(new AddBuddyWindow(Core::instance()->kaduWindow(), buddy))->show();
 }
 
-void SearchWindow::persClicked()
+void SearchWindow::chatFound()
 {
- 	only_active->setEnabled(true);
- 	only_active->setChecked(false);
-	if (!workaround)
-		e_nick->setFocus();
-
- 	setActionState(firstSearchAction, !isPersonalDataEmpty());
+	ContactSet contacts = selectedContacts();
+	if (!contacts.isEmpty())
+	{
+		Chat chat = ChatManager::instance()->findChat(contacts, true);
+		if (chat)
+			ChatWidgetManager::instance()->openPendingMessages(chat, true);
+	}
 }
 
-void SearchWindow::uinClicked()
+void SearchWindow::clearResults()
 {
- 	only_active->setEnabled(false);
-	if (!workaround)
-		e_uin->setFocus();
+	ResultsListWidget->clear();
 
- 	setActionState(firstSearchAction, !e_uin->text().isEmpty());
- 	setActionState(nextResultsAction, false);
+	setActionEnabled(SearchWindowActions::instance()->AddFound, false);
+	setActionEnabled(SearchWindowActions::instance()->ClearResults, false);
+	setActionEnabled(SearchWindowActions::instance()->ChatFound, false);
+}
+
+void SearchWindow::stopSearch()
+{
+	CurrentSearchService->stop();
+
+	setActionEnabled(SearchWindowActions::instance()->StopSearch, false);
+
+	if ((PersonalDataRadioButton->isChecked() && !isPersonalDataEmpty()) ||
+			(UinRadioButton->isChecked() && !UinEdit->text().isEmpty()))
+		setActionEnabled(SearchWindowActions::instance()->FirstSearch, true);
+	
+	if (!ResultsListWidget->selectedItems().isEmpty())
+	{
+		if (PersonalDataRadioButton->isChecked() && !isPersonalDataEmpty())
+			setActionEnabled(SearchWindowActions::instance()->NextResults, true);
+
+		setActionEnabled(SearchWindowActions::instance()->AddFound, true);
+		setActionEnabled(SearchWindowActions::instance()->ChatFound, true);
+	}
+	
+	if (ResultsListWidget->topLevelItemCount() > 0)
+		setActionEnabled(SearchWindowActions::instance()->ClearResults, true);
+}
+
+void SearchWindow::firstSearch()
+{
+	if (PersonalDataRadioButton->isChecked() && isPersonalDataEmpty())
+		return;
+
+	if (!CurrentAccount)
+	{
+		MessageDialog::show("dialog-error", windowTitle(),
+				tr("To be able to search you have to set up an account first."), QMessageBox::Ok, this);
+		return;
+	}
+
+	if (!CurrentSearchService)
+	{
+		MessageDialog::show("dialog-error", windowTitle(),
+				tr("We don't offer contacts search feature for your network yet."), QMessageBox::Ok, this);
+		return;
+	}
+
+	if (!CurrentAccount.protocolHandler() || !CurrentAccount.protocolHandler()->isConnected())
+	{
+		MessageDialog::show("dialog-error", windowTitle(),
+				tr("Cannot search contacts in offline mode."), QMessageBox::Ok, this);
+		return;
+	}
+
+	if (!ResultsListWidget->children().isEmpty())
+		clearResults();
+
+	if (SearchInProgress)
+		CurrentSearchService->stop();
+
+	CurrentSearchCriteria.clearData();
+
+	if (PersonalDataRadioButton->isChecked())
+	{
+		CurrentSearchCriteria.reqFirstName(FirstNameEdit->text());
+		CurrentSearchCriteria.reqLastName(LastNameEdit->text());
+		CurrentSearchCriteria.reqNickName(NickNameEdit->text());
+		CurrentSearchCriteria.reqCity(CityEdit->text());
+		if (((EndBirthYearEdit->text().isEmpty()) && (!StartBirthYearEdit->text().isEmpty()))
+				|| ((EndBirthYearEdit->text().toInt()) < (StartBirthYearEdit->text().toInt())))
+			EndBirthYearEdit->setText(StartBirthYearEdit->text());
+		CurrentSearchCriteria.reqBirthYear(StartBirthYearEdit->text(), EndBirthYearEdit->text());
+
+		switch (GenderComboBox->currentIndex())
+		{
+			case 1:
+				CurrentSearchCriteria.reqGender(false);
+				break;
+			case 2:
+				CurrentSearchCriteria.reqGender(true);
+				break;
+		}
+
+		if (OnlyActiveCheckBox->isChecked())
+			CurrentSearchCriteria.reqActive();
+	}
+	else if (UinRadioButton->isChecked())
+		CurrentSearchCriteria.reqUin(CurrentAccount, UinEdit->text());
+
+	SearchInProgress = true;
+
+	setActionEnabled(SearchWindowActions::instance()->StopSearch, true);
+	setActionEnabled(SearchWindowActions::instance()->FirstSearch, false);
+	setActionEnabled(SearchWindowActions::instance()->NextResults, false);
+	setActionEnabled(SearchWindowActions::instance()->AddFound, false);
+	setActionEnabled(SearchWindowActions::instance()->ChatFound, false);
+
+	CurrentSearchService->searchFirst(CurrentSearchCriteria);
+
+	statusBar()->showMessage(tr("Searching..."));
+}
+
+void SearchWindow::nextSearch()
+{
+	if (!CurrentAccount.protocolHandler() || !CurrentAccount.protocolHandler()->isConnected())
+		return;
+
+	SearchInProgress = true;
+
+	setActionEnabled(SearchWindowActions::instance()->StopSearch, true);
+	setActionEnabled(SearchWindowActions::instance()->FirstSearch, false);
+	setActionEnabled(SearchWindowActions::instance()->NextResults, false);
+	setActionEnabled(SearchWindowActions::instance()->AddFound, false);
+	setActionEnabled(SearchWindowActions::instance()->ChatFound, false);
+
+	CurrentSearchService->searchNext();
+
+	statusBar()->showMessage(tr("Searching..."));
+}
+
+void SearchWindow::newSearchResults(const BuddyList &buddies)
+{
+	foreach (const Buddy &buddy, buddies)
+	{
+		QList<Contact> contacts = buddy.contacts(CurrentAccount);
+		Contact contact = contacts.isEmpty() ? Contact::null : contacts.at(0);
+		QList<QTreeWidgetItem *> items = ResultsListWidget->findItems(contact.id(), Qt::MatchExactly, 1);
+		QTreeWidgetItem *treeItem = items.isEmpty() ? 0 : items.at(0);
+
+		if (treeItem)
+		{
+			treeItem->setText(1, contact.id());
+			treeItem->setText(2, buddy.firstName());
+			treeItem->setText(3, buddy.city());
+			treeItem->setText(4, buddy.nickName());
+			treeItem->setText(5, QString::number(buddy.birthYear()));
+		}
+		else
+		{
+			QStringList strings;
+			strings << QString() << contact.id() << buddy.firstName()
+					<< buddy.city() << buddy.nickName() << QString::number(buddy.birthYear());
+			treeItem = new QTreeWidgetItem(ResultsListWidget, strings);
+			treeItem->setIcon(0, contact.contactAccount().data()->statusIcon(contact.currentStatus()).pixmap(16, 16));
+		}
+	}
+
+	statusBar()->showMessage(tr("Done searching"));
+
+	if ((PersonalDataRadioButton->isChecked() && !isPersonalDataEmpty()) ||
+			(UinRadioButton->isChecked() && !UinEdit->text().isEmpty()))
+		setActionEnabled(SearchWindowActions::instance()->FirstSearch, true);
+
+	setActionEnabled(SearchWindowActions::instance()->StopSearch, false);
+
+	if (buddies.isEmpty())
+		MessageDialog::show("dialog-information", windowTitle(),
+				tr("There were no results of your search."), QMessageBox::Ok, this);
+	else
+	{
+		if (PersonalDataRadioButton->isChecked() && !isPersonalDataEmpty())
+			setActionEnabled(SearchWindowActions::instance()->NextResults, true);
+
+		if (ResultsListWidget->topLevelItemCount() > 0)
+			setActionEnabled(SearchWindowActions::instance()->ClearResults, true);
+	}
+
+	if (!ResultsListWidget->selectedItems().isEmpty())
+	{
+		setActionEnabled(SearchWindowActions::instance()->AddFound, true);
+		setActionEnabled(SearchWindowActions::instance()->ChatFound, true);
+	}
+
+	SearchInProgress = false;
+}
+
+void SearchWindow::uinTyped()
+{
+	UinRadioButton->setChecked(true);
+
+	setActionEnabled(SearchWindowActions::instance()->FirstSearch, !UinEdit->text().isEmpty());
+}
+
+void SearchWindow::personalDataTyped()
+{
+	// do not transfer focus if called by a signal from widget (i.e., user typed something)
+	if (sender() && sender()->isWidgetType())
+	{
+		DoNotTransferFocus = true;
+		PersonalDataRadioButton->setChecked(true);
+		DoNotTransferFocus = false;
+	}
+	else
+		PersonalDataRadioButton->setChecked(true);
+
+	setActionEnabled(SearchWindowActions::instance()->FirstSearch, !isPersonalDataEmpty());
+	setActionEnabled(SearchWindowActions::instance()->NextResults, false);
+}
+
+void SearchWindow::endBirthYearTyped()
+{
+	if (StartBirthYearEdit->text().isEmpty())
+	{
+		EndBirthYearEdit->setEnabled(false);
+		EndBirthYearEdit->clear();
+	}
+	else
+		EndBirthYearEdit->setEnabled(true);
+}
+
+void SearchWindow::personalDataToggled(bool toggled)
+{
+	if (!toggled)
+		return;
+
+	OnlyActiveCheckBox->setEnabled(true);
+	OnlyActiveCheckBox->setChecked(false);
+	if (!DoNotTransferFocus)
+		NickNameEdit->setFocus();
+
+	setActionEnabled(SearchWindowActions::instance()->FirstSearch, !isPersonalDataEmpty());
+}
+
+void SearchWindow::uinToggled(bool toggled)
+{
+	if (!toggled)
+		return;
+
+	OnlyActiveCheckBox->setEnabled(false);
+	UinEdit->setFocus();
+
+	setActionEnabled(SearchWindowActions::instance()->FirstSearch, !UinEdit->text().isEmpty());
+	setActionEnabled(SearchWindowActions::instance()->NextResults, false);
 }
 
 bool SearchWindow::isPersonalDataEmpty() const
 {
-	return
-		e_name->text().isEmpty() &&
-		e_nick->text().isEmpty() &&
-		e_byrFrom->text().isEmpty() &&
-		e_surname->text().isEmpty() &&
-		c_gender->currentIndex() == 0 &&
-		e_city->text().isEmpty();
+	return FirstNameEdit->text().isEmpty() &&
+			NickNameEdit->text().isEmpty() &&
+			StartBirthYearEdit->text().isEmpty() &&
+			LastNameEdit->text().isEmpty() &&
+			GenderComboBox->currentIndex() == 0 &&
+			CityEdit->text().isEmpty();
 }
 
 void SearchWindow::selectionChanged()
 {
-	//kdebugmf(KDEBUG_FUNCTION_START, "%p\n", );
- 	bool enableActions = results->selectedItems().count() > 0;
- 	setActionState(addFoundAction, enableActions);
- 	setActionState(chatFoundAction, enableActions);
+	bool enableActions = !ResultsListWidget->selectedItems().isEmpty();
+	setActionEnabled(SearchWindowActions::instance()->AddFound, enableActions);
+	setActionEnabled(SearchWindowActions::instance()->ChatFound, enableActions);
 }
 
-void SearchActionsSlots::firstSearchActionActivated(QAction *sender, bool toggled)
-{
-	Q_UNUSED(toggled)
-
-	SearchWindow *search = qobject_cast<SearchWindow *>(sender->parent());
-	if (search)
-		search->firstSearch();
-}
-
-void SearchWindow::createDefaultToolbars(QDomElement toolbarsConfig)
-{
-	QDomElement dockAreaConfig = getDockAreaConfigElement(toolbarsConfig, "search_bottomDockArea");
-	QDomElement toolbarConfig = xml_config_file->createElement(dockAreaConfig, "ToolBar");
-
-	addToolButton(toolbarConfig, "firstSearchAction", Qt::ToolButtonTextUnderIcon);
-	addToolButton(toolbarConfig, "nextResultsAction", Qt::ToolButtonTextUnderIcon);
-	addToolButton(toolbarConfig, "stopSearchAction", Qt::ToolButtonTextUnderIcon);
-	addToolButton(toolbarConfig, "clearSearchAction", Qt::ToolButtonTextUnderIcon);
-	addToolButton(toolbarConfig, "addSearchedAction", Qt::ToolButtonTextUnderIcon);
-	addToolButton(toolbarConfig, "chatSearchedAction", Qt::ToolButtonTextUnderIcon);
-}
-
-void SearchWindow::setActionState(ActionDescription *actionDescription, bool toogle)
+void SearchWindow::setActionEnabled(ActionDescription *actionDescription, bool enable)
 {
 	Action *action = actionDescription->action(this);
 	if (action)
-		action->setEnabled(toogle);
-}
-
-void SearchActionsSlots::firstSearchActionCreated(Action *action)
-{
-	SearchWindow *search = qobject_cast<SearchWindow *>(action->parent());
-
-	if (!search || !search->r_pers || search->searching || (search->r_pers->isChecked() && search->isPersonalDataEmpty()) || (search->r_uin->isChecked() && search->e_uin->text().isEmpty()))
-		action->setEnabled(false);
-}
-
-void SearchActionsSlots::nextResultsActionCreated(Action *action)
-{
-	SearchWindow *search = qobject_cast<SearchWindow *>(action->parent());
-
-	if (!search || !search->r_uin || search->searching || search->r_uin->isChecked() || search->isPersonalDataEmpty())
-		action->setEnabled(false);
-
-}
-
-void SearchActionsSlots::stopSearchActionCreated(Action *action)
-{
-	SearchWindow *search = qobject_cast<SearchWindow *>(action->parent());
-
-	if (!search || !search->searching)
-		action->setEnabled(false);
-}
-
-void SearchActionsSlots::clearResultsActionCreated(Action *action)
-{
-	SearchWindow *search = qobject_cast<SearchWindow *>(action->parent());
-	if (!search || !search->results || !search->results->topLevelItemCount())
-		action->setEnabled(false);
-}
-
-void SearchActionsSlots::actionsFoundActionCreated(Action *action)
-{
-	SearchWindow *search = qobject_cast<SearchWindow *>(action->parent());
-
-	if (!search || !search->results || search->results->selectedItems().count() == 0)
-		action->setEnabled(false);
-}
-
-void SearchActionsSlots::nextResultsActionActivated(QAction *sender, bool toggled)
-{
-	Q_UNUSED(toggled)
-
-	SearchWindow *search = qobject_cast<SearchWindow *>(sender->parent());
-	if (search)
-		search->nextSearch();
-}
-
-void SearchActionsSlots::stopSearchActionActivated(QAction *sender, bool toggled)
-{
-	Q_UNUSED(toggled)
-
-	SearchWindow *search = qobject_cast<SearchWindow *>(sender->parent());
-	if (search)
-		search->stopSearch();
-}
-
-void SearchActionsSlots::clearResultsActionActivated(QAction *sender, bool toggled)
-{
-	Q_UNUSED(toggled)
-
-	SearchWindow *search = qobject_cast<SearchWindow *>(sender->parent());
-	if (search)
-		search->clearResults();
-}
-
-void SearchActionsSlots::addFoundActionActivated(QAction *sender, bool toggled)
-{
-	Q_UNUSED(toggled)
-
-	SearchWindow *search = qobject_cast<SearchWindow *>(sender->parent());
-	if (search)
-		search->addFound();
-}
-
-void SearchActionsSlots::chatFoundActionActivated(QAction *sender, bool toggled)
-{
-	Q_UNUSED(toggled)
-
-	SearchWindow *search = qobject_cast<SearchWindow *>(sender->parent());
-	if (search)
-		search->chatFound();
+		action->setEnabled(enable);
 }

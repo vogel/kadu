@@ -36,6 +36,7 @@
 * gui: #1917 fixed: show an information that restart is needed to language settings change take effect (WhE)
 * icons: #1955 fixed: wrong "?" icons for Kadu for example in taskbar (ultr)
 * gadu: drop DCCv6 support, even GG servers doen't support it now (Vogel)
+* gui: #1943 fixed: fixed crashes in Search Window; rewritten some parts of it (beevvy)
 
 +++ version 0.6.6-beta15
 * url-handlers: #1908 fixed: links containing HTML entities were not escaped (beevvy)

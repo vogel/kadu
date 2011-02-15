@@ -247,6 +247,7 @@ set (kadu_SRCS
 	gui/windows/password-window.cpp
 	gui/windows/progress-window.cpp
 	gui/windows/search-window.cpp
+	gui/windows/search-window-actions.cpp
 	gui/windows/subscription-window.cpp
 	gui/windows/syntax-editor-window.cpp
 	gui/windows/updates-dialog.cpp
@@ -580,6 +581,7 @@ set (kadu_MOC_SRCS
 	gui/windows/password-window.h
 	gui/windows/progress-window.h
 	gui/windows/search-window.h
+	gui/windows/search-window-actions.h
 	gui/windows/subscription-window.h
 	gui/windows/syntax-editor-window.h
 	gui/windows/updates-dialog.h

@@ -36,103 +36,66 @@ class QLineEdit;
 class QRadioButton;
 class QTreeWidget;
 class QTreeWidgetItem;
+
 class SearchService;
-
-// TODO: a better name
-class SearchActionsSlots : public QObject
-{
-	Q_OBJECT
-
-public slots:
-	void firstSearchActionCreated(Action *action);
-	void nextResultsActionCreated(Action *action);
-	void stopSearchActionCreated(Action *action);
-	void clearResultsActionCreated(Action *action);
-	void actionsFoundActionCreated(Action *action);
-
-	void firstSearchActionActivated(QAction *sender, bool toggled);
-	void nextResultsActionActivated(QAction *sender, bool toggled);
-	void stopSearchActionActivated(QAction *sender, bool toggled);
-	void clearResultsActionActivated(QAction *sender, bool toggled);
-	void addFoundActionActivated(QAction *sender, bool toggled);
-	void chatFoundActionActivated(QAction *sender, bool toggled);
-
-};
 
 class KADUAPI SearchWindow : public MainWindow
 {
 	Q_OBJECT
 
-	friend class SearchActionsSlots;
-	static SearchActionsSlots *searchActionsSlot;
+	friend class SearchWindowActions;
 
-	static ActionDescription *firstSearchAction;
-	static ActionDescription *nextResultsAction;
-	static ActionDescription *stopSearchAction;
-	static ActionDescription *clearResultsAction;
-	static ActionDescription *addFoundAction;
-	static ActionDescription *chatFoundAction;
-
-	SearchService *CurrentSearchService;
-
-	QCheckBox *only_active;
-	QLineEdit *e_uin;
-	QLineEdit *e_name;
-	QLineEdit *e_nick;
-	QLineEdit *e_byrFrom;
-	QLineEdit *e_byrTo;
-	QLineEdit *e_surname;
-	QComboBox *c_gender;
-	QLineEdit *e_city;
-	QTreeWidget *results;
-	QLabel *progress;
-	QRadioButton *r_uin;
-	QRadioButton *r_pers;
 	Account CurrentAccount;
-	quint32 seq;
-	BuddySet selectedUsers;
+	SearchService *CurrentSearchService;
 
 	BuddySearchCriteria CurrentSearchCriteria;
 
-	bool searchhidden;
-	bool searching;
-	bool workaround; // TODO: remove
+	QLineEdit *UinEdit;
+	QLineEdit *FirstNameEdit;
+	QLineEdit *LastNameEdit;
+	QLineEdit *NickNameEdit;
+	QLineEdit *StartBirthYearEdit;
+	QLineEdit *EndBirthYearEdit;
+	QLineEdit *CityEdit;
+	QComboBox *GenderComboBox;
+	QCheckBox *OnlyActiveCheckBox;
+	QRadioButton *UinRadioButton;
+	QRadioButton *PersonalDataRadioButton;
+	QTreeWidget *ResultsListWidget;
+
+	bool SearchInProgress;
+	bool DoNotTransferFocus; // TODO: remove
+	
+	void createGui();
+
+	QTreeWidgetItem * selectedItem() const;
+	ContactSet selectedContacts() const;
 
 	bool isPersonalDataEmpty() const;
 
-	ContactSet selected();
-
-	QTreeWidgetItem * selectedItem();
-
-	void setActionState(ActionDescription *action, bool toogle);
+	void setActionEnabled(ActionDescription *actionDescription, bool enable);
 
 private slots:
-	void uinTyped(void);
-	void personalDataTyped(void);
-	void byrFromDataTyped(void);
-	void persClicked();
-	void uinClicked();
+	void uinTyped();
+	void personalDataTyped();
+	void endBirthYearTyped();
+	void personalDataToggled(bool toggled);
+	void uinToggled(bool toggled);
 	void selectionChanged();
+	void newSearchResults(const BuddyList &buddies);
 
 protected:
-
-	virtual void closeEvent(QCloseEvent *e);
-	virtual void resizeEvent(QResizeEvent *e);
 	virtual void keyPressEvent(QKeyEvent *e);
 
 public:
+	static void createDefaultToolbars(const QDomElement &toolbarsConfig);
 
-	SearchWindow(QWidget *parent=0, Buddy buddy = Buddy::null);
-	~SearchWindow(void);
+	explicit SearchWindow(QWidget *parent = 0, Buddy buddy = Buddy::null);
+	virtual ~SearchWindow();
 
-	static void createDefaultToolbars(QDomElement parentConfig);
-
-	static void initModule();
-	static void closeModule();
-
-	virtual bool supportsActionType(ActionDescription::ActionType type) { return type & ActionDescription::TypeSearch; }
-	virtual BuddiesListView* buddiesListView() { return 0; }
-	virtual StatusContainer* statusContainer() { return 0; }
+	virtual bool supportsActionType(ActionDescription::ActionType type) { return (type & ActionDescription::TypeSearch); }
+	virtual BuddiesListView * buddiesListView() { return 0; }
+	virtual StatusContainer * statusContainer() { return 0; }
 	virtual ContactSet contacts() { return ContactSet(); }
 	virtual BuddySet buddies() { return BuddySet(); }
 	virtual Chat chat() { return Chat::null; }
@@ -146,9 +109,8 @@ public:
 	void chatFound();
 
 public slots:
-	void newSearchResults(const BuddyList &buddies);
 	void firstSearch();
+
 };
 
-#endif
-
+#endif // SEARCH_WINDOW_H
