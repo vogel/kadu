@@ -318,6 +318,7 @@ void JabberEditAccountWidget::createOptionsTab(QTabWidget *tabWidget)
 
 	SendGoneNotification = new QCheckBox(tr("Send inactivity events (end/suspend conversation)"));
 	connect(SendGoneNotification, SIGNAL(clicked()), this, SLOT(dataChanged()));
+	connect(SendTypingNotification, SIGNAL(toggled(bool)), SendGoneNotification, SLOT(setEnabled(bool)));
 	notificationsLayout->addWidget(SendGoneNotification);
 
 	layout->addWidget(notifications);
