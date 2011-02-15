@@ -72,6 +72,10 @@ private:
 
 protected:
 	virtual void load();
+
+	// TODO: 0.11, fix this
+	// hack, changing details does not trigger this
+	friend class GaduEditAccountWidget;
 	void emitUpdated();
 
 	virtual void detailsAdded();

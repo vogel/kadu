@@ -60,7 +60,8 @@ private slots:
 	void socketNotifiersDestroyed(QObject *socketNotifiers);
 
 public:
-	GaduFileTransferService(GaduProtocol *protocol);
+	explicit GaduFileTransferService(GaduProtocol *protocol);
+	virtual ~GaduFileTransferService();
 
 	virtual FileTransferHandler * createFileTransferHandler(FileTransfer fileTransfer);
 

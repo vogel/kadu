@@ -332,6 +332,10 @@ void GaduEditAccountWidget::apply()
 	ConfigurationManager::instance()->flush();
 
 	resetState();
+
+	// TODO: 0.11, fix this
+	// hack, changing details does not trigger this
+	account().data()->emitUpdated();
 }
 
 void GaduEditAccountWidget::cancel()
