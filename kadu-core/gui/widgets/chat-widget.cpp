@@ -62,7 +62,7 @@
 #include "gui/windows/message-dialog.h"
 #include "parser/parser.h"
 #include "protocols/protocol.h"
-#include "protocols/services/composing-notification-service.h"
+#include "protocols/services/chat-state-service.h"
 
 #include "activate.h"
 #include "chat-edit-box.h"
@@ -683,10 +683,10 @@ void ChatWidget::checkComposing()
 	{
 		ComposingTimer.stop();
 
-		ComposingNotificationService *composingService = currentProtocol()->composingNotificationService();
-		if (!composingService)
+		ChatStateService *chatStateService = currentProtocol()->chatStateService();
+		if (!chatStateService)
 			return;
-		composingService->composingStopped(chat());
+		chatStateService->composingStopped(chat());
 	}
 
 	IsComposing = false;
@@ -698,10 +698,10 @@ void ChatWidget::updateComposing()
 	{
 		ComposingTimer.start();
 
-		ComposingNotificationService *composingService = currentProtocol()->composingNotificationService();
-		if (!composingService)
+		ChatStateService *chatStateService = currentProtocol()->chatStateService();
+		if (!chatStateService)
 			return;
-		composingService->composingStarted(chat());
+		chatStateService->composingStarted(chat());
 	}
 	IsComposing = true;
 }

@@ -45,7 +45,7 @@ class AccountShared;
 class AvatarService;
 class ChatImageService;
 class ChatService;
-class ComposingNotificationService;
+class ChatStateService;
 class ContactListService;
 class ContactPersonalInfoService;
 class ContactSet;
@@ -100,7 +100,7 @@ public:
 	virtual AvatarService * avatarService() { return 0; }
 	virtual ChatImageService * chatImageService() { return 0; }
 	virtual ChatService * chatService() { return 0; }
-	virtual ComposingNotificationService * composingNotificationService() { return 0; }
+	virtual ChatStateService * chatStateService() { return 0; }
 	virtual ContactPersonalInfoService * contactPersonalInfoService() { return 0; }
 	virtual ContactListService * contactListService() { return 0; }
 	virtual FileTransferService * fileTransferService() { return 0; }

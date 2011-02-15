@@ -628,7 +628,7 @@ set (kadu_MOC_SRCS
 	protocols/services/avatar-service.h
 	protocols/services/chat-image-service.h
 	protocols/services/chat-service.h
-	protocols/services/composing-notification-service.h
+	protocols/services/chat-state-service.h
 	protocols/services/contact-list-service.h
 	protocols/services/contact-personal-info-service.h
 	protocols/services/file-transfer-service.h

@@ -17,8 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef COMPOSING_NOTIFICATION_SERVICE_H
-#define COMPOSING_NOTIFICATION_SERVICE_H
+#ifndef CHAT_STATE_SERVICE_H
+#define CHAT_STATE_SERVICE_H
 
 #include <QtCore/QObject>
 
@@ -27,21 +27,31 @@
 class Chat;
 class Contact;
 
-class KADUAPI ComposingNotificationService : public QObject
+class KADUAPI ChatStateService : public QObject
 {
 	Q_OBJECT
 
 public:
-	ComposingNotificationService(QObject *parent = 0) : QObject(parent) {}
+	enum ContactActivity
+	{
+		StateActive,
+		StateInactive,
+		StateComposing,
+		StatePaused
+	};
+
+	ChatStateService(QObject *parent = 0) : QObject(parent) {}
 
 public slots:
 	virtual void composingStarted(const Chat &chat) = 0;
 	virtual void composingStopped(const Chat &chat) = 0;
 
-signals:
-	void contactStartedComposing(const Contact &contact);
-	void contactStoppedComposing(const Contact &contact);
+	virtual void chatWidgetClosed(const Chat &chat) = 0;
+	virtual void chatWidgetActivated(const Chat &chat) = 0;
+	virtual void chatWidgetDeactivated(const Chat &chat) = 0;
 
+signals:
+	void contactActivityChanged(ContactActivity state, const Contact &contact);
 };
 
-#endif // COMPOSING_NOTIFICATION_SERVICE_H
+#endif // CHAT_STATE_SERVICE_H
