@@ -103,15 +103,9 @@ Account GaduImporter::import065Account(QXmlQuery &xmlQuery)
 	result.setPrivateStatus(readEntry(xmlQuery, "General", "PrivateStatus").toBool());
 	accountDetails->setAllowDcc(readEntry(xmlQuery, "Network", "AllowDCC").toBool());
 
-	accountDetails->setDccExternalPort(readEntry(xmlQuery, "Network", "ExternalPort").toUInt());
-	accountDetails->setDccPort(readEntry(xmlQuery, "Network", "ExternalPort").toUInt());
-	accountDetails->setDccIpDetect(readEntry(xmlQuery, "Network", "DccIpDetect").toBool());
-	accountDetails->setDccLocalPort(readEntry(xmlQuery, "Network", "LocalPort").toUInt());
-	accountDetails->setDccForwarding(readEntry(xmlQuery, "Network", "DccForwarding").toBool());
 	accountDetails->setMaximumImageSize(readEntry(xmlQuery, "Chat", "MaxImageSize", 255).toUInt());
 	accountDetails->setReceiveImagesDuringInvisibility(readEntry(xmlQuery, "Chat", "ReceiveImagesDuringInvisibility").toBool());
 	accountDetails->setMaximumImageRequests(readEntry(xmlQuery, "Chat", "MaxImageRequests").toUInt());
-	accountDetails->setRemoveCompletedTransfers(readEntry(xmlQuery, "Network", "RemoveCompletedTransfers").toBool());
 
 	AccountProxySettings proxySettings;
 	proxySettings.setEnabled(readEntry(xmlQuery, "Network", "UseProxy").toBool());
@@ -172,23 +166,9 @@ void GaduImporter::importAccounts()
 	defaultGaduGadu.setPrivateStatus(config_file.readBoolEntry("General", "PrivateStatus"));
 	accountDetails->setAllowDcc(config_file.readBoolEntry("Network", "AllowDCC"));
 
-	QHostAddress host;
-	if (!host.setAddress(config_file.readEntry("Network", "DccIP")))
-		host.setAddress("0.0.0.0");
-	accountDetails->setDccIP(host);
-	if (!host.setAddress(config_file.readEntry("Network", "ExternalIP")))
-		host.setAddress("0.0.0.0");
-	accountDetails->setDccExternalIP(host);
-
-	accountDetails->setDccExternalPort(config_file.readNumEntry("Network", "ExternalPort"));
-	accountDetails->setDccPort(config_file.readNumEntry("Network", "ExternalPort"));
-	accountDetails->setDccIpDetect(config_file.readBoolEntry("Network", "DccIpDetect"));
-	accountDetails->setDccLocalPort(config_file.readNumEntry("Network", "LocalPort"));
-	accountDetails->setDccForwarding(config_file.readBoolEntry("Network", "DccForwarding"));
 	accountDetails->setMaximumImageSize(config_file.readNumEntry("Chat", "MaxImageSize", 255));
 	accountDetails->setReceiveImagesDuringInvisibility(config_file.readBoolEntry("Chat", "ReceiveImagesDuringInvisibility"));
 	accountDetails->setMaximumImageRequests(config_file.readNumEntry("Chat", "MaxImageRequests"));
-	accountDetails->setRemoveCompletedTransfers(config_file.readBoolEntry("Network", "RemoveCompletedTransfers"));
 
 	AccountProxySettings proxySettings;
 	proxySettings.setEnabled(config_file.readBoolEntry("Network", "UseProxy"));
