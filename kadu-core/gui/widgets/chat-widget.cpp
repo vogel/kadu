@@ -62,6 +62,7 @@
 #include "gui/windows/message-dialog.h"
 #include "parser/parser.h"
 #include "protocols/protocol.h"
+#include "protocols/services/typing-notification-service.h"
 
 #include "activate.h"
 #include "chat-edit-box.h"
@@ -75,7 +76,7 @@
 ChatWidget::ChatWidget(const Chat &chat, QWidget *parent) :
 		QWidget(parent), CurrentChat(chat),
 		BuddiesWidget(0), InputBox(0), HorizontalSplitter(0),
-		SplittersInitialized(false), NewMessagesCount(0)
+		IsComposing(false), SplittersInitialized(false), NewMessagesCount(0)
 {
 	kdebugf();
 
@@ -84,6 +85,11 @@ ChatWidget::ChatWidget(const Chat &chat, QWidget *parent) :
 
 	createGui();
 	configurationUpdated();
+
+	ComposingTimer.setInterval(2 * 1000);
+	connect(&ComposingTimer, SIGNAL(timeout()), this, SLOT(checkTyping()));
+
+	connect(edit(), SIGNAL(textChanged()), this, SLOT(updateComposing()));
 
 	foreach (const Contact &contact, CurrentChat.contacts())
 	{
@@ -669,6 +675,35 @@ void ChatWidget::commonHeightChanged(int commonHeight)
 	sizes.append(sum - commonHeight);
 	sizes.append(commonHeight);
 	VerticalSplitter->setSizes(sizes);
+}
+
+void ChatWidget::checkComposing()
+{
+	if (!IsComposing)
+	{
+		ComposingTimer.stop();
+
+		TypingNotificationService *typingService = currentProtocol()->typingNotificationService();
+		if (!typingService)
+			return;
+		typingService->typingStopped(chat());
+	}
+
+	IsComposing = false;
+}
+
+void ChatWidget::updateComposing()
+{
+	if (!ComposingTimer.isActive())
+	{
+		ComposingTimer.start();
+
+		TypingNotificationService *typingService = currentProtocol()->typingNotificationService();
+		if (!typingService)
+			return;
+		typingService->typingStarted(chat());
+	}
+	IsComposing = true;
 }
 
 void ChatWidget::leaveConference()

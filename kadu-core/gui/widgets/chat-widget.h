@@ -27,6 +27,7 @@
 
 #include <QtCore/QDateTime>
 #include <QtCore/QList>
+#include <QtCore/QTimer>
 #include <QtGui/QIcon>
 #include <QtGui/QWidget>
 
@@ -62,6 +63,9 @@ class KADUAPI ChatWidget : public QWidget, ConfigurationAwareObject
 	QSplitter *VerticalSplitter;
 	QSplitter *HorizontalSplitter;
 
+	QTimer ComposingTimer;
+	bool IsComposing;
+
 	bool SplittersInitialized;
 
 	QString Title;
@@ -81,9 +85,13 @@ class KADUAPI ChatWidget : public QWidget, ConfigurationAwareObject
 private slots:
 	void connectAcknowledgeSlots();
 	void disconnectAcknowledgeSlots();
+
 	void setUpVerticalSizes();
 	void commonHeightChanged(int height);
 	void verticalSplitterMoved(int pos, int index);
+
+	void checkComposing();
+	void updateComposing();
 
 protected:
 	virtual void keyPressEvent(QKeyEvent *e);
