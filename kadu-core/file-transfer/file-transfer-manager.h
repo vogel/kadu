@@ -49,9 +49,15 @@ class KADUAPI FileTransferManager : public QObject, public SimpleManager<FileTra
 
 	FileTransfer byPeerAndRemoteFileName(Contact peer, const QString &remoteFileName);
 
+	void addFileTransferService(Account account);
+	void removeFileTransferService(Account account);
+
 private slots:
 	void fileTransferWindowDestroyed();
 	void incomingFileTransfer(FileTransfer fileTransfer);
+
+	void fileTransferServiceRegistered();
+	void fileTransferServiceUnregistered();
 
 protected:
 	virtual void accountRegistered(Account account);

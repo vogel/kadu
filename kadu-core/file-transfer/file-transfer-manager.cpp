@@ -76,10 +76,8 @@ FileTransferManager::~FileTransferManager()
 	NewFileTransferNotification::unregisterEvents();
 }
 
-void FileTransferManager::accountRegistered(Account account)
+void FileTransferManager::addFileTransferService(Account account)
 {
-	QMutexLocker(&mutex());
-
 	Protocol *protocol = account.protocolHandler();
 	if (!protocol)
 		return;
@@ -92,10 +90,8 @@ void FileTransferManager::accountRegistered(Account account)
 			this, SLOT(incomingFileTransfer(FileTransfer)));
 }
 
-void FileTransferManager::accountUnregistered(Account account)
+void FileTransferManager::removeFileTransferService(Account account)
 {
-	QMutexLocker(&mutex());
-
 	Protocol *protocol = account.protocolHandler();
 	if (!protocol)
 		return;
@@ -106,6 +102,36 @@ void FileTransferManager::accountUnregistered(Account account)
 
 	disconnect(service, SIGNAL(incomingFileTransfer(FileTransfer)),
 			this, SLOT(incomingFileTransfer(FileTransfer)));
+}
+
+void FileTransferManager::fileTransferServiceRegistered()
+{
+	addFileTransferService(sender());
+}
+
+void FileTransferManager::fileTransferServiceUnregistered()
+{
+	removeFileTransferService(sender());
+}
+
+void FileTransferManager::accountRegistered(Account account)
+{
+	QMutexLocker(&mutex());
+
+	connect(account, SIGNAL(fileTransferServiceRegistered()), this, SLOT(fileTransferServiceRegistered()));
+	connect(account, SIGNAL(fileTransferServiceUnregistered()), this, SLOT(fileTransferServiceUnregistered()));
+
+	addFileTransferService(account);
+}
+
+void FileTransferManager::accountUnregistered(Account account)
+{
+	QMutexLocker(&mutex());
+
+	disconnect(account, SIGNAL(fileTransferServiceRegistered()), this, SLOT(fileTransferServiceRegistered()));
+	disconnect(account, SIGNAL(fileTransferServiceUnregistered()), this, SLOT(fileTransferServiceUnregistered()));
+
+	removeFileTransferService(account);
 }
 
 void FileTransferManager::cleanUp()

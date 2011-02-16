@@ -395,3 +395,11 @@ QList<StatusType *> AccountShared::supportedStatusTypes()
 	else
 		return QList<StatusType *>();
 }
+
+void AccountShared::fileTransferServiceChanged(FileTransferService *service)
+{
+	if (service)
+		emit fileTransferServiceRegistered();
+	else
+		emit fileTransferServiceUnregistered();
+}

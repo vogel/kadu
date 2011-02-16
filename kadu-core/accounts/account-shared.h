@@ -37,6 +37,7 @@
 
 class AccountDetails;
 class Buddy;
+class FileTransferService;
 class Protocol;
 class ProtocolFactory;
 class StatusType;
@@ -136,6 +137,10 @@ public:
 
 	virtual void setPrivateStatus(bool isPrivate);
 
+	// TODO: 0.11, find better API
+	// this is only for GG now
+    void fileTransferServiceChanged(FileTransferService *service);
+
 signals:
 	void buddyStatusChanged(Contact contact, Status oldStatus);
 	void protocolLoaded();
@@ -145,6 +150,11 @@ signals:
 	void disconnected();
 
 	void updated();
+
+	// TODO: 0.11, find better API
+	// this is only for GG now
+	void fileTransferServiceRegistered();
+	void fileTransferServiceUnregistered();
 
 };
 

@@ -549,10 +549,14 @@ void GaduProtocol::setUpFileTransferService(bool forceClose)
 	{
 		delete CurrentFileTransferService;
 		CurrentFileTransferService = 0;
+		account().data()->fileTransferServiceChanged(0);
 	}
 	else
 		if (!CurrentFileTransferService)
+		{
 			CurrentFileTransferService = new GaduFileTransferService(this);
+			account().data()->fileTransferServiceChanged(CurrentFileTransferService);
+		}
 }
 
 void GaduProtocol::networkConnected()
