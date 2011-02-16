@@ -137,6 +137,8 @@ void DccSocketNotifiers::socketEvent()
 		return;
 	}
 
+	watchFor();
+
 	kdebugmf(KDEBUG_NETWORK | KDEBUG_INFO, "dcc event: %d\n", e->type);
 
 	switch (e->type)
