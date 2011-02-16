@@ -14,6 +14,9 @@ set (CONFIGURATION_FILES
 )
 
 set (TRANSLATION_SOURCES
+	translations/imagelink_de.ts
+	translations/imagelink_fr.ts
+	translations/imagelink_it.ts
 	translations/imagelink_pl.ts
 )
 

@@ -332,7 +332,7 @@ Status AccountShared::status()
 	if (ProtocolHandler)
 		return ProtocolHandler->status();
 	else
-		return Status::null;
+		return Status();
 }
 
 int AccountShared::maxDescriptionLength()

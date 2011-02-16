@@ -157,11 +157,11 @@ Account IdentityShared::bestAccount()
 	if (Accounts.isEmpty())
 		return result;
 
-	Status resultStatus = Status::null;
+	Status resultStatus;
 	foreach (const Account &account, Accounts)
 		if (account.details() && account.data())
 		{
-			if (resultStatus == Status::null || account.data()->status() < resultStatus)
+			if (resultStatus == Status() || account.data()->status() < resultStatus)
 			{
 				result = account;
 				resultStatus = account.data()->status();
@@ -174,7 +174,7 @@ Account IdentityShared::bestAccount()
 Status IdentityShared::status()
 {
 	Account account = bestAccount();
-	return account ? account.data()->status() : Status::null;
+	return account ? account.data()->status() : Status();
 }
 
 QString IdentityShared::statusDisplayName()

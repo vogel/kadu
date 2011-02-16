@@ -7,6 +7,9 @@ set (MOC_SOURCES
 )
 
 set (TRANSLATION_SOURCES
+	translations/auto_hide_de.ts
+	translations/auto_hide_fr.ts
+	translations/auto_hide_it.ts
 	translations/auto_hide_pl.ts
 )
 

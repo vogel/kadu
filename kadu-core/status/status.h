@@ -37,8 +37,6 @@ class KADUAPI Status
 	QString DisplayName;
 
 public:
-	static Status null;
-
 	explicit Status(const QString &type = QString(), const QString &description = QString());
 	Status(const Status &copyme);
 	~Status();

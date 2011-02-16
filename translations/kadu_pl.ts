@@ -1212,10 +1212,6 @@ znajomych po połączeniu się z serwerem</translation>
         <translation>Wariant stylu</translation>
     </message>
     <message>
-        <source>Free for chat</source>
-        <translation>Chętny do rozmowy</translation>
-    </message>
-    <message>
         <source>Away</source>
         <translation>Zaraz wracam</translation>
     </message>
@@ -1226,6 +1222,10 @@ znajomych po połączeniu się z serwerem</translation>
     <message>
         <source>Do not disturb</source>
         <translation>Nie przeszkadzać</translation>
+    </message>
+    <message>
+        <source>Free for chat</source>
+        <translation type="unfinished">Chętny do rozmowy</translation>
     </message>
 </context>
 <context>
@@ -2369,15 +2369,15 @@ Jest to prawdopodobnie dalsza część pliku &lt;b&gt;%5&lt;/b&gt;
     </message>
     <message>
         <source>New Identity</source>
-        <translation>Nowa identyfikacja</translation>
+		<translation>Nowa tożsamość</translation>
     </message>
     <message>
         <source>Please enter the name for the new identity:</source>
-        <translation>Podaj nazwę dla nowej identyfikacji:</translation>
+		<translation>Podaj nazwę dla nowej tożsamości:</translation>
     </message>
     <message>
         <source> - Select identity - </source>
-        <translation> - Wybierz identyfikację - </translation>
+		<translation> - Wybierz tożsamość - </translation>
     </message>
 </context>
 <context>

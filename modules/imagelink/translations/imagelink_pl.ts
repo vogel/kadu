@@ -5,23 +5,23 @@
     <name>@default</name>
     <message>
         <source>Chat</source>
-		<translation>Rozmowa</translation>
+        <translation>Rozmowa</translation>
     </message>
     <message>
         <source>Imagelink</source>
-		<translation>Imagelink</translation>
+        <translation>Imagelink</translation>
     </message>
     <message>
         <source>Show YouTube movies in chat window</source>
-		<translation>Pokaż filmy z YouTube w oknie rozmowy</translation>
+        <translation>Pokaż filmy z YouTube w oknie rozmowy</translation>
     </message>
     <message>
         <source>Autoplay movies</source>
-		<translation>Automatycznie odtwarzaj filmy</translation>
+        <translation>Automatycznie odtwarzaj filmy</translation>
     </message>
     <message>
         <source>Show images in chat window</source>
-		<translation>Pokaż obrazki w oknie rozmowy</translation>
+        <translation>Pokaż obrazki w oknie rozmowy</translation>
     </message>
 </context>
 </TS>

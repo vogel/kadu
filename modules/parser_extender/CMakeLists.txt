@@ -3,6 +3,9 @@ set (SOURCES
 )
 
 set (TRANSLATION_SOURCES
+	translations/parser_extender_de.ts
+	translations/parser_extender_fr.ts
+	translations/parser_extender_it.ts
 	translations/parser_extender_pl.ts
 )
 

@@ -26,8 +26,6 @@
 
 #include <stdio.h>
 
-Status Status::null("Offline");
-
 Status::Status(const QString &type, const QString &description) :
 		Description(description)
 {

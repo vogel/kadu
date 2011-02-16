@@ -137,10 +137,10 @@ bool BuddiesModelProxy::lessThan(const QModelIndex &left, const QModelIndex &rig
 
 		Status leftStatus = !leftContact.isNull()
 				? leftContact.currentStatus()
-				: Status::null;
+				: Status();
 		Status rightStatus = !rightContact.isNull()
 				? rightContact.currentStatus()
-				: Status::null;
+				: Status();
 
 		if (leftStatus.isDisconnected() && !rightStatus.isDisconnected())
 			return false;

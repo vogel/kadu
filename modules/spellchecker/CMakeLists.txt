@@ -9,6 +9,9 @@ set (MOC_SOURCES
 )
 
 set (TRANSLATION_SOURCES
+	translations/spellchecker_de.ts
+	translations/spellchecker_fr.ts
+	translations/spellchecker_it.ts
 	translations/spellchecker_pl.ts
 )
 

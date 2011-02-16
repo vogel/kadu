@@ -23,14 +23,17 @@ set (MOC_SOURCES
 set (CONFIGURATION_FILES
 )
 
-#set (TRANSLATION_SOURCES
-#	translations/history_migration_pl.ts
-#)
+set (TRANSLATION_SOURCES
+	translations/history_migration_de.ts
+	translations/history_migration_fr.ts
+	translations/history_migration_it.ts
+	translations/history_migration_pl.ts
+)
 
 kadu_module (history_migration
 	MODULE_SOURCES ${SOURCES}
 	MODULE_MOC_SOURCES ${MOC_SOURCES}
-	#MODULE_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
+	MODULE_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
 	#TODO: make it more general, eg. gadu_protocol,history_storage
 	MODULE_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 	MODULE_DEPENDENCIES gadu_protocol sql_history

@@ -9,6 +9,9 @@ set (MOC_SOURCES
 )
 
 set (TRANSLATION_SOURCES
+	translations/qt4_docking_notify_de.ts
+	translations/qt4_docking_notify_fr.ts
+	translations/qt4_docking_notify_it.ts
 	translations/qt4_docking_notify_pl.ts
 )
 

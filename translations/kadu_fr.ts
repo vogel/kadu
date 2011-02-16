@@ -1192,10 +1192,6 @@ changes upon establishing connection to the server</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Free for chat</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Away</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1205,6 +1201,10 @@ changes upon establishing connection to the server</source>
     </message>
     <message>
         <source>Do not disturb</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Free for chat</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

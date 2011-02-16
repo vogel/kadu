@@ -247,7 +247,7 @@ Status StatusContainerManager::status()
 {
 	return DefaultStatusContainer
 			? DefaultStatusContainer->status()
-			: Status::null;
+			: Status();
 }
 
 QString StatusContainerManager::statusDisplayName()

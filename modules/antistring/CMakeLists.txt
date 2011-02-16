@@ -13,6 +13,9 @@ set (MOC_SOURCES
 )
 
 set (TRANSLATION_SOURCES
+	translations/antistring_de.ts
+	translations/antistring_fr.ts
+	translations/antistring_it.ts
 	translations/antistring_pl.ts
 )
 

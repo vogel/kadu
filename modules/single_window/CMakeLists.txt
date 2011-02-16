@@ -7,6 +7,9 @@ set (MOC_SOURCES
 )
 
 set (TRANSLATION_SOURCES
+	translations/single_window_de.ts
+	translations/single_window_fr.ts
+	translations/single_window_it.ts
 	translations/single_window_pl.ts
 )
 

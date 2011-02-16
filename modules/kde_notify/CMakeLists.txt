@@ -9,6 +9,9 @@ set (MOC_SOURCES
 )
 
 set (TRANSLATION_SOURCES
+	translations/kde_notify_de.ts
+	translations/kde_notify_fr.ts
+	translations/kde_notify_it.ts
 	translations/kde_notify_pl.ts
 )
 

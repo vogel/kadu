@@ -11,7 +11,10 @@ set (MOC_SOURCES
 )
 
 set (TRANSLATION_SOURCES
-	translations/server-monitor_pl.ts
+	translations/server_monitor_de.ts
+	translations/server_monitor_fr.ts
+	translations/server_monitor_it.ts
+	translations/server_monitor_pl.ts
 )
 
 set (CONFIGURATION_FILES

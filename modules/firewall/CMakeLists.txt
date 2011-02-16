@@ -14,6 +14,9 @@ set (MOC_SOURCES
 )
 
 set (TRANSLATION_SOURCES
+	translations/firewall_de.ts
+	translations/firewall_fr.ts
+	translations/firewall_it.ts
 	translations/firewall_pl.ts
 )
 
