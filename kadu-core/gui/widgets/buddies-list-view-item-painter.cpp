@@ -84,6 +84,9 @@ QColor BuddiesListViewItemPainter::textColor() const
 
 bool BuddiesListViewItemPainter::useBold() const
 {
+	if (showMessagePixmap())
+		return true;
+
 	if (!Configuration.showBold())
 		return false;
 
