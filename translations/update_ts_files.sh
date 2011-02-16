@@ -11,7 +11,7 @@ echo > $LOG
 # empty fake file
 echo > ../kadu-core/.configuration-ui-translations.cpp
 for i in `ls ../varia/configuration/*.ui`; do
-	saxon8 $i configuration-ui.xsl >> ../kadu-core/.configuration-ui-translations.cpp 2>> $LOG
+	saxon-xslt $i configuration-ui.xsl >> ../kadu-core/.configuration-ui-translations.cpp 2>> $LOG
 done
 
 # all .cpp files in kadu_core subdirectories
@@ -44,7 +44,18 @@ for module in *; do
 		pushd configuration >> $LOG 2>&1
 		echo > ../.configuration-ui-translations.cpp
 		for i in *.ui; do
-			saxon8 $i ../../../translations/configuration-ui.xsl >> ../.configuration-ui-translations.cpp 2>> $LOG
+			saxon-xslt $i ../../../translations/configuration-ui.xsl >> ../.configuration-ui-translations.cpp 2>> $LOG
+		done
+		popd >> $LOG 2>&1
+	fi
+
+	if [ -d data/configuration ]; then
+		UI_TRANS=.configuration-ui-translations.cpp
+
+		pushd data/configuration >> $LOG 2>&1
+		echo > ../.configuration-ui-translations.cpp
+		for i in *.ui; do
+			saxon-xslt $i ../../../../translations/configuration-ui.xsl >> ../../.configuration-ui-translations.cpp 2>> $LOG
 		done
 		popd >> $LOG 2>&1
 	fi
