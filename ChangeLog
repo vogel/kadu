@@ -1,3 +1,5 @@
++++ version 0.6.6-beta17
+
 +++ version 0.6.6-beta16
 * gadu: fixed invalid encoding and invalid formatting in some received messages, especially from GG10 (still not compatible with Infobot) (beevvy)
 * encryption_ng: fixed possible crash when closing chat (beevvy)
