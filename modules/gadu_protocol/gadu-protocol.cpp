@@ -487,7 +487,13 @@ void GaduProtocol::setupLoginParams()
 	if (!nextStatus().description().isEmpty())
 		GaduLoginParams.status_descr = strdup(nextStatus().description().toUtf8());
 
-	ActiveServer = GaduServersManager::instance()->getServer();
+#ifdef GADU_HAVE_TLS
+	GaduLoginParams.tls = gaduAccountDetails->tlsEncryption() ? 1 : 0;
+#else
+	GaduLoginParams.tls = 0;
+#endif
+
+	ActiveServer = GaduServersManager::instance()->getServer(1 == GaduLoginParams.tls);
 	bool haveServer = !ActiveServer.first.isNull();
 	GaduLoginParams.server_addr = haveServer ? htonl(ActiveServer.first.toIPv4Address()) : 0;
 	GaduLoginParams.server_port = haveServer ? ActiveServer.second : 0;
@@ -508,12 +514,6 @@ void GaduProtocol::setupLoginParams()
 
 	GaduLoginParams.has_audio = false;
 	GaduLoginParams.last_sysmsg = config_file.readNumEntry("General", "SystemMsgIndex", 1389);
-
-#ifdef GADU_HAVE_TLS
-	GaduLoginParams.tls = gaduAccountDetails->tlsEncryption() ? 1 : 0;
-#else
-	GaduLoginParams.tls = 0;
-#endif
 
 	GaduLoginParams.image_size = gaduAccountDetails->maximumImageSize();
 }

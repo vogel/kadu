@@ -137,7 +137,7 @@ void GaduServersManager::buildServerList()
 	AllPorts.clear();
 
 	int LastGoodPort = config_file.readNumEntry("Network", "LastServerPort",
-			config_file.readNumEntry("Network", "DefaultPort", 8074));
+			config_file.readNumEntry("Network", "DefaultPort", 443));
 
 	if (8074 == LastGoodPort || 443 == LastGoodPort)
 		AllPorts << LastGoodPort;
@@ -159,16 +159,20 @@ void GaduServersManager::configurationUpdated()
 	buildServerList();
 }
 
-GaduServersManager::GaduServer GaduServersManager::getServer()
+GaduServersManager::GaduServer GaduServersManager::getServer(bool onlyTls)
 {
 	if (0 == GoodServers.count())
 	{
 		GoodServers = BadServers;
 		BadServers.clear();
+		return GaduServer(QHostAddress(), 0);
 	}
 
-	if (0 == GoodServers.count())
-		return GaduServer(QHostAddress(), 0);
+	if (onlyTls && GoodServers[0].second != 443 && GoodServers[0].second != 0)
+	{
+		markServerAsBad(GoodServers[0]);
+		return getServer(true);
+	}
 
 	return GoodServers[0];
 }

@@ -61,7 +61,7 @@ public:
 	static GaduServersManager * instance() { return Instance; }
 
 	const QList<GaduServer> & getServersList();
-	QPair<QHostAddress, int> getServer();
+	QPair<QHostAddress, int> getServer(bool onlyTls);
 	void markServerAsGood(GaduServer server);
 	void markServerAsBad(GaduServer server);
 
