@@ -18,8 +18,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QCoreApplication>
 #include <QtCore/QtAlgorithms>
+#include <QtGui/QApplication>
 
 #include "status/status-group-manager.h"
 #include "status/status-type.h"

@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="de" version="2.0">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="de">
 <context>
     <name>@default</name>
     <message>
@@ -102,7 +104,7 @@
     <message>
         <location filename="../model/chat-dates-model.cpp" line="65"/>
         <source>Chat</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Chat</translation>
     </message>
     <message>
         <location filename="../model/chat-dates-model.cpp" line="66"/>
@@ -181,7 +183,7 @@
     <message>
         <location filename="../gui/windows/history-window.cpp" line="79"/>
         <source>History</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Verlauf</translation>
     </message>
     <message>
         <location filename="../gui/windows/history-window.cpp" line="88"/>

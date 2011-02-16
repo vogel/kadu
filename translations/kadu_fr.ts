@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="fr" version="2.0">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="fr">
 <context>
     <name>@default</name>
     <message>
@@ -362,7 +364,7 @@ Attention danger!
     </message>
     <message>
         <source>Static</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Statique</translation>
     </message>
     <message>
         <source>Emoticons theme</source>
@@ -626,14 +628,14 @@ Attention danger!
     </message>
     <message>
         <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
-%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn't have us in userlist
+%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist
 %h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size, %z - gender (0/1/2)
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
-%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn't have us in userlist
+%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist
 %h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size, %z - gender (0/1/2),
 #{protocol} - protocol that triggered event,
 #{event} - name of event,
@@ -741,7 +743,7 @@ Attention danger!
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>This option will supersede tooltips with users' status
+        <source>This option will supersede tooltips with users&apos; status
  changes upon establishing connection to the server</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1154,7 +1156,7 @@ Attention danger!
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>This option will supersede tooltips with buddies' status
+        <source>This option will supersede tooltips with buddies&apos; status
 changes upon establishing connection to the server</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1172,7 +1174,7 @@ changes upon establishing connection to the server</source>
     </message>
     <message>
         <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
-%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn't have us in userlist
+%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist
 %h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size, %z - gender (0/1/2)
 #{message} - message content,
 #{backgroundColor} - background color of message,
@@ -1181,7 +1183,7 @@ changes upon establishing connection to the server</source>
 #{sentDate} - when message was sent,
 #{receivedDate} - when message was received,
 #{separator} - separator between messages,
-&lt;kadu:header&gt;text&lt;/kadu:header&gt; - text will not be displayed in 'Remove repeated headers' mode
+&lt;kadu:header&gt;text&lt;/kadu:header&gt; - text will not be displayed in &apos;Remove repeated headers&apos; mode
 </source>
         <translation type="unfinished"></translation>
     </message>
@@ -1668,7 +1670,7 @@ The export was unsuccessful</source>
     </message>
     <message>
         <source>Images</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Les images</translation>
     </message>
     <message>
         <source>Kadu</source>
@@ -1802,6 +1804,18 @@ from now on. Are you sure you want to leave this conference?</source>
     </message>
     <message>
         <source>Account:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 (Composing...)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 (Inactive)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 ended the conversation</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2257,10 +2271,6 @@ This is probably a next part of &lt;b&gt;%5&lt;/b&gt;
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Add New Group</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Properties</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2291,6 +2301,10 @@ This is probably a next part of &lt;b&gt;%5&lt;/b&gt;
     <message>
         <source>Selected group:
 %0 will be deleted. Are you sure?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add Group</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2631,7 +2645,7 @@ This is probably a next part of &lt;b&gt;%5&lt;/b&gt;
     <message>
         <source>Cannot load %1 module library.:
 %2</source>
-        <translation>Je n'arrive pas à charger le module de la bibliothèque %1:
+        <translation>Je n&apos;arrive pas à charger le module de la bibliothèque %1:
 %2</translation>
     </message>
     <message>
@@ -2862,7 +2876,7 @@ You can load (or unload) them by double-clicking on their names.</source>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;Annule</translation>
     </message>
     <message>
         <source>&amp;Ok</source>
@@ -2888,7 +2902,7 @@ You can load (or unload) them by double-clicking on their names.</source>
     <name>PathListEdit</name>
     <message>
         <source>Select</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Choisir</translation>
     </message>
 </context>
 <context>
@@ -2915,7 +2929,7 @@ You can load (or unload) them by double-clicking on their names.</source>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;Annule</translation>
     </message>
     <message>
         <source>Choose a directory</source>
@@ -2985,15 +2999,7 @@ You can load (or unload) them by double-clicking on their names.</source>
 <context>
     <name>SearchWindow</name>
     <message>
-        <source>Search user in directory</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Nickname</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Gender</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3005,31 +3011,7 @@ You can load (or unload) them by double-clicking on their names.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Surname</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Birthyear</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>from</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>to</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>City</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Only active users</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3037,15 +3019,7 @@ You can load (or unload) them by double-clicking on their names.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Search criteria</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Personal data</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Search using the personal data typed above (name, nickname)...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3053,17 +3027,108 @@ You can load (or unload) them by double-clicking on their names.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Search for this UIN exclusively</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Status</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Birth year</source>
+        <source>Searching...</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Done searching</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search User in Directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search Criteria</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search for this uin exclusively</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search using the personal data typed above (name, nickname, etc.)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Uin Number</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Uin:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Personal Data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Nick:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Gender:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>First name:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Last name:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Birth year from:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>to:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>City:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search only for active users</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>First Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Birth Year</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ready</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>To be able to search you have to set up an account first.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>We don&apos;t offer contacts search feature for your network yet.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cannot search contacts in offline mode.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>There were no results of your search.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SearchWindowActions</name>
     <message>
         <source>&amp;Search</source>
         <translation type="unfinished"></translation>
@@ -3086,30 +3151,6 @@ You can load (or unload) them by double-clicking on their names.</source>
     </message>
     <message>
         <source>&amp;Chat</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Kadu</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>We don&apos;t offer contacts search feature yet for this network</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cannot search contacts in offline mode</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Searching...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Done searching</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>There were no results of your search</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3136,7 +3177,7 @@ You can load (or unload) them by double-clicking on their names.</source>
     </message>
     <message>
         <source>Images</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Les images</translation>
     </message>
 </context>
 <context>
@@ -3176,7 +3217,7 @@ You can load (or unload) them by double-clicking on their names.</source>
     </message>
     <message>
         <source>Offline</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Hors ligne</translation>
     </message>
 </context>
 <context>

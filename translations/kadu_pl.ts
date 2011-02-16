@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.0">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="pl">
 <context>
     <name>@default</name>
     <message>
@@ -625,7 +627,7 @@ To poważne zagrożenie bezpieczeństwa!</translation>
     </message>
     <message>
         <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
-%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn't have us in userlist
+%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist
 %h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size, %z - gender (0/1/2)
 </source>
         <translation>Składnia: %s - status, %d - opis, %i - ip, %n - pseudonim, %a - nazwa wyświetlana, %f - imię
@@ -635,7 +637,7 @@ To poważne zagrożenie bezpieczeństwa!</translation>
     </message>
     <message>
         <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
-%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn't have us in userlist
+%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist
 %h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size, %z - gender (0/1/2),
 #{protocol} - protocol that triggered event,
 #{event} - name of event,
@@ -748,7 +750,7 @@ To poważne zagrożenie bezpieczeństwa!</translation>
         <translation>Ignoruj zmiany statusu z dostępnego na zaraz wracam</translation>
     </message>
     <message>
-        <source>This option will supersede tooltips with users' status
+        <source>This option will supersede tooltips with users&apos; status
  changes upon establishing connection to the server</source>
         <translation>Ta opcja wyłączy powiadomienia o zmianie statusu użytkowników
 po połączeniu się z serwerem</translation>
@@ -1162,7 +1164,7 @@ po połączeniu się z serwerem</translation>
         <translation>Zmiana statusu</translation>
     </message>
     <message>
-        <source>This option will supersede tooltips with buddies' status
+        <source>This option will supersede tooltips with buddies&apos; status
 changes upon establishing connection to the server</source>
         <translation>Ta opcja spowoduje nie wyświetlenie dymków o zmianie statusu
 znajomych po połączeniu się z serwerem</translation>
@@ -1181,7 +1183,7 @@ znajomych po połączeniu się z serwerem</translation>
     </message>
     <message>
         <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
-%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn't have us in userlist
+%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist
 %h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size, %z - gender (0/1/2)
 #{message} - message content,
 #{backgroundColor} - background color of message,
@@ -1190,7 +1192,7 @@ znajomych po połączeniu się z serwerem</translation>
 #{sentDate} - when message was sent,
 #{receivedDate} - when message was received,
 #{separator} - separator between messages,
-&lt;kadu:header&gt;text&lt;/kadu:header&gt; - text will not be displayed in 'Remove repeated headers' mode
+&lt;kadu:header&gt;text&lt;/kadu:header&gt; - text will not be displayed in &apos;Remove repeated headers&apos; mode
 </source>
         <translation>Składnia: %s - status, %d - opis, %i - adres IP, %n - nazwa kontaktu, %a - alternatywna nazwa kontaktu, %f - imię
 %r - nazwisko, %m - telefon komórkowy, %u - numer GG, %g - grupa, %o - zwraca spację jeśli kontakt nie ma nas na liście znajomych
@@ -1831,6 +1833,18 @@ zostaną zignorowane. Czy na pewno chcesz opuścić konferencję?</translation>
         <source>Account:</source>
         <translation>Konto:</translation>
     </message>
+    <message>
+        <source>%1 (Composing...)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 (Inactive)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 ended the conversation</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ChatWidgetActions</name>
@@ -2290,10 +2304,6 @@ Jest to prawdopodobnie dalsza część pliku &lt;b&gt;%5&lt;/b&gt;
         <translation>Usuń grupę</translation>
     </message>
     <message>
-        <source>Add New Group</source>
-        <translation>Dodaj grupę</translation>
-    </message>
-    <message>
         <source>Properties</source>
         <translation>Dane grupy</translation>
     </message>
@@ -2326,6 +2336,10 @@ Jest to prawdopodobnie dalsza część pliku &lt;b&gt;%5&lt;/b&gt;
 %0 will be deleted. Are you sure?</source>
         <translation>Wybrana grupa:
 %0 zostanie usunięta. Jesteś pewien?</translation>
+    </message>
+    <message>
+        <source>Add Group</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3024,16 +3038,8 @@ Jeśli zechcesz włączyć (lub wyłączyć) któryś z nich, wystarczy dwukrotn
 <context>
     <name>SearchWindow</name>
     <message>
-        <source>Search user in directory</source>
-        <translation>Znajdź kontakt w katalogu</translation>
-    </message>
-    <message>
         <source>Nickname</source>
         <translation>Pseudonim</translation>
-    </message>
-    <message>
-        <source>Gender</source>
-        <translation>Płeć</translation>
     </message>
     <message>
         <source>Male</source>
@@ -3044,100 +3050,24 @@ Jeśli zechcesz włączyć (lub wyłączyć) któryś z nich, wystarczy dwukrotn
         <translation>Kobieta</translation>
     </message>
     <message>
-        <source>Name</source>
-        <translation>Imię</translation>
-    </message>
-    <message>
-        <source>Surname</source>
-        <translation>Nazwisko</translation>
-    </message>
-    <message>
-        <source>Birthyear</source>
-        <translation>Rok urodzenia</translation>
-    </message>
-    <message>
-        <source>from</source>
-        <translation>od</translation>
-    </message>
-    <message>
-        <source>to</source>
-        <translation>do</translation>
-    </message>
-    <message>
         <source>City</source>
         <translation>Miejscowość</translation>
-    </message>
-    <message>
-        <source>Only active users</source>
-        <translation>Tylko aktywni użytkownicy</translation>
     </message>
     <message>
         <source>Uin</source>
         <translation>Identyfikator w sieci</translation>
     </message>
     <message>
-        <source>Search criteria</source>
-        <translation>Kryteria wyszukiwania</translation>
-    </message>
-    <message>
         <source>&amp;Personal data</source>
         <translation>&amp;Dane osobiste</translation>
-    </message>
-    <message>
-        <source>Search using the personal data typed above (name, nickname)...</source>
-        <translation>Wyszukuj na podstawie danych osobistych podanych powyżej (nazwa, pseudonim)...</translation>
     </message>
     <message>
         <source>&amp;Uin number</source>
         <translation>&amp;Identyfikator w sieci</translation>
     </message>
     <message>
-        <source>Search for this UIN exclusively</source>
-        <translation>Wyszukuj wyłącznie tego identyfikatora</translation>
-    </message>
-    <message>
         <source>Status</source>
         <translation>Status</translation>
-    </message>
-    <message>
-        <source>Birth year</source>
-        <translation>Rok urodzenia</translation>
-    </message>
-    <message>
-        <source>&amp;Search</source>
-        <translation>&amp;Szukaj</translation>
-    </message>
-    <message>
-        <source>&amp;Next results</source>
-        <translation>&amp;Następne wyniki</translation>
-    </message>
-    <message>
-        <source>Stop</source>
-        <translation>Zatrzymaj</translation>
-    </message>
-    <message>
-        <source>Clear results</source>
-        <translation>Wyczyść rezultaty</translation>
-    </message>
-    <message>
-        <source>Add selected user</source>
-        <translation>Dodaj wybrany kontakt</translation>
-    </message>
-    <message>
-        <source>&amp;Chat</source>
-        <translation>&amp;Rozmowa</translation>
-    </message>
-    <message>
-        <source>Kadu</source>
-        <translation>Kadu</translation>
-    </message>
-    <message>
-        <source>We don&apos;t offer contacts search feature yet for this network</source>
-        <translation>Nie oferujemy jeszcze wyszukiwania kontaktów dla tej sieci</translation>
-    </message>
-    <message>
-        <source>Cannot search contacts in offline mode</source>
-        <translation>Nie można szukać kontaktów w trybie &quot;niedostępny&quot;</translation>
     </message>
     <message>
         <source>Searching...</source>
@@ -3148,8 +3078,119 @@ Jeśli zechcesz włączyć (lub wyłączyć) któryś z nich, wystarczy dwukrotn
         <translation>Wyszukiwanie zakończone</translation>
     </message>
     <message>
-        <source>There were no results of your search</source>
-        <translation>Nie było żadnych wyników Twojego wyszukiwania</translation>
+        <source>Search User in Directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search Criteria</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search for this uin exclusively</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search using the personal data typed above (name, nickname, etc.)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Uin Number</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Uin:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Personal Data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Nick:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Gender:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>First name:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Last name:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Birth year from:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>to:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>City:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search only for active users</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>First Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Birth Year</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ready</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>To be able to search you have to set up an account first.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>We don&apos;t offer contacts search feature for your network yet.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cannot search contacts in offline mode.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>There were no results of your search.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SearchWindowActions</name>
+    <message>
+        <source>&amp;Search</source>
+        <translation type="unfinished">&amp;Szukaj</translation>
+    </message>
+    <message>
+        <source>&amp;Next results</source>
+        <translation type="unfinished">&amp;Następne wyniki</translation>
+    </message>
+    <message>
+        <source>Stop</source>
+        <translation type="unfinished">Zatrzymaj</translation>
+    </message>
+    <message>
+        <source>Clear results</source>
+        <translation type="unfinished">Wyczyść rezultaty</translation>
+    </message>
+    <message>
+        <source>Add selected user</source>
+        <translation type="unfinished">Dodaj wybrany kontakt</translation>
+    </message>
+    <message>
+        <source>&amp;Chat</source>
+        <translation type="unfinished">&amp;Rozmowa</translation>
     </message>
 </context>
 <context>

@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="de" version="2.0">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="de">
 <context>
     <name>@default</name>
     <message>
@@ -34,7 +36,7 @@
         <translation>Benutze eigene SMS-Zeichenkette</translation>
     </message>
     <message>
-        <source>Check this box if your sms application doesn't understand arguments: number &amp;message&amp;
+        <source>Check this box if your sms application doesn&apos;t understand arguments: number &amp;message&amp;
 Arguments should be separated with spaces. %n argument is converted to number, %m to message</source>
         <translation>Markieren Sie hier, wenn Ihr Programm für SMS die Agrumente nicht versteht: Nummer &amp;Nachricht&amp;
 Argumente werder durch Leerzeichen getrennt. %n Argumente werden in Nummer, %m in Nachricht umgewandelt</translation>
@@ -87,7 +89,7 @@ Argumente werder durch Leerzeichen getrennt. %n Argumente werden in Nummer, %m i
     <name>SmsDialog</name>
     <message>
         <source>Send SMS</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Sende SMS</translation>
     </message>
     <message>
         <source>Recipient</source>
@@ -161,7 +163,7 @@ Argumente werder durch Leerzeichen getrennt. %n Argumente werden in Nummer, %m i
     </message>
     <message>
         <source>SMS</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">SMS</translation>
     </message>
     <message>
         <source>Unable to fetch required token</source>
@@ -191,11 +193,11 @@ Argumente werder durch Leerzeichen getrennt. %n Argumente werden in Nummer, %m i
     </message>
     <message>
         <source>Enter text from the picture:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Lese den Text vom Bild ab und gib ihn hier ein:</translation>
     </message>
     <message>
         <source>Ok</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ok</translation>
     </message>
     <message>
         <source>SMS sent successfully</source>

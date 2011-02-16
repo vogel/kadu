@@ -1,4 +1,39 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.0">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="pl">
+<context>
+    <name>@default</name>
+    <message>
+        <location filename="../.configuration-ui-translations.cpp" line="4"/>
+        <source>Chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../.configuration-ui-translations.cpp" line="7"/>
+        <source>Encryption</source>
+        <translation type="unfinished">Szyfrowanie</translation>
+    </message>
+    <message>
+        <location filename="../.configuration-ui-translations.cpp" line="10"/>
+        <source>General</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../.configuration-ui-translations.cpp" line="13"/>
+        <source>Encrypt by default</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../.configuration-ui-translations.cpp" line="16"/>
+        <source>Encrypt after receive encrypted message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../.configuration-ui-translations.cpp" line="19"/>
+        <source>Generate keys</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
 <context>
     <name>EncryptionActions</name>
     <message>
@@ -55,7 +90,7 @@
         <location filename="../notify/encryption-ng-notification.cpp" line="100"/>
         <location filename="../notify/encryption-ng-notification.cpp" line="108"/>
         <source>Encryption</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Szyfrowanie</translation>
     </message>
     <message>
         <location filename="../notify/encryption-ng-notification.cpp" line="93"/>
@@ -84,7 +119,7 @@ Do you want to save it?</source>
     <message>
         <location filename="../encryption-provider-manager.cpp" line="158"/>
         <source>Encryption</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Szyfrowanie</translation>
     </message>
 </context>
 <context>
@@ -92,7 +127,7 @@ Do you want to save it?</source>
     <message>
         <location filename="../encryption-ng-module.cpp" line="53"/>
         <source>Encryption</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Szyfrowanie</translation>
     </message>
     <message>
         <location filename="../encryption-ng-module.cpp" line="54"/>

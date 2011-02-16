@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="it" version="2.0">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="it">
 <context>
     <name>@default</name>
     <message>
@@ -625,14 +627,14 @@ E un rischio per la sicurezza!</translation>
     </message>
     <message>
         <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
-%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn't have us in userlist
+%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist
 %h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size, %z - gender (0/1/2)
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
-%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn't have us in userlist
+%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist
 %h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size, %z - gender (0/1/2),
 #{protocol} - protocol that triggered event,
 #{event} - name of event,
@@ -740,7 +742,7 @@ E un rischio per la sicurezza!</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>This option will supersede tooltips with users' status
+        <source>This option will supersede tooltips with users&apos; status
  changes upon establishing connection to the server</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1153,7 +1155,7 @@ E un rischio per la sicurezza!</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>This option will supersede tooltips with buddies' status
+        <source>This option will supersede tooltips with buddies&apos; status
 changes upon establishing connection to the server</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1171,7 +1173,7 @@ changes upon establishing connection to the server</source>
     </message>
     <message>
         <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
-%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn't have us in userlist
+%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist
 %h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size, %z - gender (0/1/2)
 #{message} - message content,
 #{backgroundColor} - background color of message,
@@ -1180,7 +1182,7 @@ changes upon establishing connection to the server</source>
 #{sentDate} - when message was sent,
 #{receivedDate} - when message was received,
 #{separator} - separator between messages,
-&lt;kadu:header&gt;text&lt;/kadu:header&gt; - text will not be displayed in 'Remove repeated headers' mode
+&lt;kadu:header&gt;text&lt;/kadu:header&gt; - text will not be displayed in &apos;Remove repeated headers&apos; mode
 </source>
         <translation type="unfinished"></translation>
     </message>
@@ -1283,7 +1285,7 @@ changes upon establishing connection to the server</source>
     </message>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Kadu</translation>
     </message>
     <message>
         <source>Cannot import user list from server in offline mode</source>
@@ -1373,7 +1375,7 @@ The export was unsuccessful</source>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Annulla</translation>
     </message>
     <message>
         <source>Mobile</source>
@@ -1523,7 +1525,7 @@ The export was unsuccessful</source>
     </message>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Kadu</translation>
     </message>
     <message>
         <source>Are you sure do you want to delete this contact from buddy &lt;b&gt;%1&lt;/b&gt;?</source>
@@ -1538,7 +1540,7 @@ The export was unsuccessful</source>
     </message>
     <message>
         <source>Account</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Conto</translation>
     </message>
 </context>
 <context>
@@ -1549,7 +1551,7 @@ The export was unsuccessful</source>
     </message>
     <message>
         <source>General</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Generale</translation>
     </message>
     <message>
         <source>Groups</source>
@@ -1561,19 +1563,19 @@ The export was unsuccessful</source>
     </message>
     <message>
         <source>Options</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Opzioni</translation>
     </message>
     <message>
         <source>OK</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">OK</translation>
     </message>
     <message>
         <source>Apply</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Applica</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Annulla</translation>
     </message>
 </context>
 <context>
@@ -1588,11 +1590,11 @@ The export was unsuccessful</source>
     </message>
     <message>
         <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Elimina</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Annulla</translation>
     </message>
 </context>
 <context>
@@ -1663,15 +1665,15 @@ The export was unsuccessful</source>
     <name>ChatEditBox</name>
     <message>
         <source>Insert image</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Inserisci immagine</translation>
     </message>
     <message>
         <source>Images</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Immagini</translation>
     </message>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Kadu</translation>
     </message>
     <message>
         <source>This file is not readable</source>
@@ -1711,7 +1713,7 @@ Some of them probably will not get it.</source>
     <name>ChatNotification</name>
     <message>
         <source>Chat</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Chat</translation>
     </message>
     <message>
         <source>Ignore</source>
@@ -1722,11 +1724,11 @@ Some of them probably will not get it.</source>
     <name>ChatStylesManager</name>
     <message>
         <source>Edit</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Cambiare</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Elimina</translation>
     </message>
     <message>
         <source>Your message</source>
@@ -1738,7 +1740,7 @@ Some of them probably will not get it.</source>
     </message>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Kadu</translation>
     </message>
     <message>
         <source>Unable to remove style: %1</source>
@@ -1760,7 +1762,7 @@ Some of them probably will not get it.</source>
     <name>ChatTypeSimple</name>
     <message>
         <source>Chat</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Chat</translation>
     </message>
     <message>
         <source>Chats</source>
@@ -1798,10 +1800,22 @@ from now on. Are you sure you want to leave this conference?</source>
     </message>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Kadu</translation>
     </message>
     <message>
         <source>Account:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 (Composing...)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 (Inactive)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 ended the conversation</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1887,7 +1901,7 @@ from now on. Are you sure you want to leave this conference?</source>
     </message>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Kadu</translation>
     </message>
 </context>
 <context>
@@ -1946,7 +1960,7 @@ from now on. Are you sure you want to leave this conference?</source>
     <name>ContactListService</name>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Kadu</translation>
     </message>
     <message>
         <source>Following contacts from your list were not found on server: &lt;b&gt;%0&lt;/b&gt;.
@@ -2035,7 +2049,7 @@ Do you want to remove them from contacts list?</source>
     </message>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Kadu</translation>
     </message>
     <message>
         <source>Could not open file. Select another one.</source>
@@ -2071,7 +2085,7 @@ This is probably a next part of &lt;b&gt;%5&lt;/b&gt;
     </message>
     <message>
         <source>Remove</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Rimuovi</translation>
     </message>
     <message>
         <source>File &lt;b&gt;%1&lt;/b&gt;&lt;br /&gt; to &lt;b&gt;%2&lt;/b&gt;&lt;br /&gt;on account &lt;b&gt;%3&lt;/b&gt;</source>
@@ -2083,7 +2097,7 @@ This is probably a next part of &lt;b&gt;%5&lt;/b&gt;
     </message>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Kadu</translation>
     </message>
     <message>
         <source>Are you sure you want to remove this transfer?</source>
@@ -2144,7 +2158,7 @@ This is probably a next part of &lt;b&gt;%5&lt;/b&gt;
     <name>GroupManager</name>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Kadu</translation>
     </message>
     <message>
         <source>&apos;%1&apos; is prohibited</source>
@@ -2175,7 +2189,7 @@ This is probably a next part of &lt;b&gt;%5&lt;/b&gt;
     </message>
     <message>
         <source>Behaviour</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Conservazione</translation>
     </message>
     <message>
         <source>Notify about status changes</source>
@@ -2199,7 +2213,7 @@ This is probably a next part of &lt;b&gt;%5&lt;/b&gt;
     </message>
     <message>
         <source>Look</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Aspetto</translation>
     </message>
     <message>
         <source>Use custom icon</source>
@@ -2215,15 +2229,15 @@ This is probably a next part of &lt;b&gt;%5&lt;/b&gt;
     </message>
     <message>
         <source>Ok</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ok</translation>
     </message>
     <message>
         <source>Apply</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Applica</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Annulla</translation>
     </message>
     <message>
         <source>Choose an icon</source>
@@ -2257,12 +2271,8 @@ This is probably a next part of &lt;b&gt;%5&lt;/b&gt;
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Add New Group</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Properties</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Proprietà</translation>
     </message>
     <message>
         <source>New Group</source>
@@ -2286,11 +2296,15 @@ This is probably a next part of &lt;b&gt;%5&lt;/b&gt;
     </message>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Kadu</translation>
     </message>
     <message>
         <source>Selected group:
 %0 will be deleted. Are you sure?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add Group</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2386,7 +2400,7 @@ This is probably a next part of &lt;b&gt;%5&lt;/b&gt;
     </message>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Kadu</translation>
     </message>
     <message>
         <source>Cannot save this image</source>
@@ -2401,7 +2415,7 @@ This is probably a next part of &lt;b&gt;%5&lt;/b&gt;
     <name>KaduWindow</name>
     <message>
         <source>General</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Generale</translation>
     </message>
     <message>
         <source>Recent chats</source>
@@ -2604,7 +2618,7 @@ This is probably a next part of &lt;b&gt;%5&lt;/b&gt;
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Annulla</translation>
     </message>
 </context>
 <context>
@@ -2650,7 +2664,7 @@ Possibile incompatibilità con Kadu.</translation>
     </message>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Kadu</translation>
     </message>
     <message>
         <source>Module %1 cannot be deactivated because it is being used by the following modules:%2</source>
@@ -2817,7 +2831,7 @@ You can load (or unload) them by double-clicking on their names.</source>
     </message>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Kadu</translation>
     </message>
 </context>
 <context>
@@ -2847,7 +2861,7 @@ You can load (or unload) them by double-clicking on their names.</source>
     <name>NotifyTreeWidget</name>
     <message>
         <source>Event</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Evento</translation>
     </message>
     <message>
         <source>Notification</source>
@@ -2877,11 +2891,11 @@ You can load (or unload) them by double-clicking on their names.</source>
     </message>
     <message>
         <source>Ok</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ok</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Annulla</translation>
     </message>
 </context>
 <context>
@@ -2934,7 +2948,7 @@ You can load (or unload) them by double-clicking on their names.</source>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Annulla</translation>
     </message>
 </context>
 <context>
@@ -2985,15 +2999,7 @@ You can load (or unload) them by double-clicking on their names.</source>
 <context>
     <name>SearchWindow</name>
     <message>
-        <source>Search user in directory</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Nickname</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Gender</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3005,31 +3011,7 @@ You can load (or unload) them by double-clicking on their names.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Surname</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Birthyear</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>from</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>to</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>City</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Only active users</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3037,15 +3019,7 @@ You can load (or unload) them by double-clicking on their names.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Search criteria</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Personal data</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Search using the personal data typed above (name, nickname)...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3053,17 +3027,108 @@ You can load (or unload) them by double-clicking on their names.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Search for this UIN exclusively</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Status</source>
+        <translation type="unfinished">Status</translation>
+    </message>
+    <message>
+        <source>Searching...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Birth year</source>
+        <source>Done searching</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Search User in Directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search Criteria</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search for this uin exclusively</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search using the personal data typed above (name, nickname, etc.)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Uin Number</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Uin:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Personal Data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Nick:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Gender:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>First name:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Last name:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Birth year from:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>to:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>City:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search only for active users</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>First Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Birth Year</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ready</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>To be able to search you have to set up an account first.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>We don&apos;t offer contacts search feature for your network yet.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cannot search contacts in offline mode.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>There were no results of your search.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SearchWindowActions</name>
     <message>
         <source>&amp;Search</source>
         <translation type="unfinished"></translation>
@@ -3086,30 +3151,6 @@ You can load (or unload) them by double-clicking on their names.</source>
     </message>
     <message>
         <source>&amp;Chat</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Kadu</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>We don&apos;t offer contacts search feature yet for this network</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cannot search contacts in offline mode</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Searching...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Done searching</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>There were no results of your search</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3136,7 +3177,7 @@ You can load (or unload) them by double-clicking on their names.</source>
     </message>
     <message>
         <source>Images</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Immagini</translation>
     </message>
 </context>
 <context>
@@ -3176,7 +3217,7 @@ You can load (or unload) them by double-clicking on their names.</source>
     </message>
     <message>
         <source>Offline</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Fuori linea</translation>
     </message>
 </context>
 <context>
@@ -3230,7 +3271,7 @@ You can load (or unload) them by double-clicking on their names.</source>
     </message>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Kadu</translation>
     </message>
 </context>
 <context>
@@ -3273,14 +3314,14 @@ You can load (or unload) them by double-clicking on their names.</source>
     </message>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Kadu</translation>
     </message>
 </context>
 <context>
     <name>ThemeManager</name>
     <message>
         <source>None</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Senza emoticon</translation>
     </message>
 </context>
 <context>
@@ -3347,7 +3388,7 @@ You can load (or unload) them by double-clicking on their names.</source>
     </message>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Kadu</translation>
     </message>
     <message>
         <source>Do you really want to remove selected toolbar?</source>
@@ -3374,14 +3415,14 @@ You can load (or unload) them by double-clicking on their names.</source>
     </message>
     <message>
         <source>Ok</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ok</translation>
     </message>
 </context>
 <context>
     <name>UrlOpener</name>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Kadu</translation>
     </message>
     <message>
         <source>Could not spawn Web browser process. Check if the Web browser is functional</source>
@@ -3396,7 +3437,7 @@ You can load (or unload) them by double-clicking on their names.</source>
     <name>WindowNotifierWindow</name>
     <message>
         <source>OK</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">OK</translation>
     </message>
 </context>
 <context>
@@ -3443,7 +3484,7 @@ You can load (or unload) them by double-clicking on their names.</source>
     </message>
     <message>
         <source>Account</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Conto</translation>
     </message>
     <message>
         <source>You have unsaved changes in current account.&lt;br /&gt;Do you want to return to editing?</source>

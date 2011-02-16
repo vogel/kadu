@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="fr" version="2.0">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="fr">
 <context>
     <name>CertificateDisplayDialog</name>
     <message>
@@ -99,24 +101,6 @@
     <message>
         <location filename="../certificates/certificate-display-dialog.cpp" line="198"/>
         <source>Email:</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>ChatState</name>
-    <message>
-        <location filename="../services/jabber-chat-state-service.cpp" line="263"/>
-        <source>%1 ended the conversation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../services/jabber-chat-state-service.cpp" line="297"/>
-        <source>%1 (Composing ...)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../services/jabber-chat-state-service.cpp" line="302"/>
-        <source>%1 (Inactive)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -664,42 +648,42 @@ Password entered in both fields (&quot;New password&quot; and &quot;Retype passw
     </message>
     <message>
         <location filename="../gui/widgets/jabber-edit-account-widget.cpp" line="315"/>
-        <source>Send typing notifications</source>
+        <source>Send composing events</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/widgets/jabber-edit-account-widget.cpp" line="319"/>
-        <source>Send gone notifications (closing the window)</source>
+        <source>Send inactivity events (end/suspend conversation)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/widgets/jabber-edit-account-widget.cpp" line="349"/>
-        <location filename="../gui/widgets/jabber-edit-account-widget.cpp" line="361"/>
+        <location filename="../gui/widgets/jabber-edit-account-widget.cpp" line="350"/>
+        <location filename="../gui/widgets/jabber-edit-account-widget.cpp" line="362"/>
         <source>Kadu</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/widgets/jabber-edit-account-widget.cpp" line="349"/>
+        <location filename="../gui/widgets/jabber-edit-account-widget.cpp" line="350"/>
         <source>Cannot enable secure connection. SSL/TLS plugin not found.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/widgets/jabber-edit-account-widget.cpp" line="361"/>
+        <location filename="../gui/widgets/jabber-edit-account-widget.cpp" line="362"/>
         <source>Legacy SSL is only available in combination with manual host/port.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/widgets/jabber-edit-account-widget.cpp" line="502"/>
+        <location filename="../gui/widgets/jabber-edit-account-widget.cpp" line="503"/>
         <source>Confirm account removal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/widgets/jabber-edit-account-widget.cpp" line="503"/>
+        <location filename="../gui/widgets/jabber-edit-account-widget.cpp" line="504"/>
         <source>Are you sure you want to remove account %1 (%2)?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/widgets/jabber-edit-account-widget.cpp" line="507"/>
+        <location filename="../gui/widgets/jabber-edit-account-widget.cpp" line="508"/>
         <source>Remove account</source>
         <translation type="unfinished"></translation>
     </message>

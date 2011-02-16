@@ -1804,6 +1804,18 @@ from now on. Are you sure you want to leave this conference?</source>
         <source>Account:</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>%1 (Composing...)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 (Inactive)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 ended the conversation</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ChatWidgetActions</name>
@@ -2257,10 +2269,6 @@ This is probably a next part of &lt;b&gt;%5&lt;/b&gt;
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Add New Group</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Properties</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2291,6 +2299,10 @@ This is probably a next part of &lt;b&gt;%5&lt;/b&gt;
     <message>
         <source>Selected group:
 %0 will be deleted. Are you sure?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add Group</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2983,15 +2995,7 @@ You can load (or unload) them by double-clicking on their names.</source>
 <context>
     <name>SearchWindow</name>
     <message>
-        <source>Search user in directory</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Nickname</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Gender</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3003,31 +3007,7 @@ You can load (or unload) them by double-clicking on their names.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Surname</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Birthyear</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>from</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>to</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>City</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Only active users</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3035,15 +3015,7 @@ You can load (or unload) them by double-clicking on their names.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Search criteria</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Personal data</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Search using the personal data typed above (name, nickname)...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3051,17 +3023,108 @@ You can load (or unload) them by double-clicking on their names.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Search for this UIN exclusively</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Status</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Birth year</source>
+        <source>Searching...</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Done searching</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search User in Directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search Criteria</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search for this uin exclusively</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search using the personal data typed above (name, nickname, etc.)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Uin Number</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Uin:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Personal Data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Nick:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Gender:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>First name:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Last name:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Birth year from:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>to:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>City:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search only for active users</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>First Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Birth Year</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ready</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>To be able to search you have to set up an account first.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>We don&apos;t offer contacts search feature for your network yet.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cannot search contacts in offline mode.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>There were no results of your search.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SearchWindowActions</name>
     <message>
         <source>&amp;Search</source>
         <translation type="unfinished"></translation>
@@ -3084,30 +3147,6 @@ You can load (or unload) them by double-clicking on their names.</source>
     </message>
     <message>
         <source>&amp;Chat</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Kadu</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>We don&apos;t offer contacts search feature yet for this network</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cannot search contacts in offline mode</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Searching...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Done searching</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>There were no results of your search</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

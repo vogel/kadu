@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="fr" version="2.0">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="fr">
 <context>
     <name>@default</name>
     <message>
@@ -34,7 +36,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Check this box if your sms application doesn't understand arguments: number &amp;message&amp;
+        <source>Check this box if your sms application doesn&apos;t understand arguments: number &amp;message&amp;
 Arguments should be separated with spaces. %n argument is converted to number, %m to message</source>
         <translation type="unfinished"></translation>
     </message>
@@ -190,11 +192,11 @@ Arguments should be separated with spaces. %n argument is converted to number, %
     </message>
     <message>
         <source>Enter text from the picture:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Veuillez reproduire le texte d&apos;image:</translation>
     </message>
     <message>
         <source>Ok</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">OK</translation>
     </message>
     <message>
         <source>SMS sent successfully</source>

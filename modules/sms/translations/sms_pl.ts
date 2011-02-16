@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.0">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="pl">
 <context>
     <name>@default</name>
     <message>
@@ -34,7 +36,7 @@
         <translation>Używaj własnych argumentów SMS</translation>
     </message>
     <message>
-        <source>Check this box if your sms application doesn't understand arguments: number &amp;message&amp;
+        <source>Check this box if your sms application doesn&apos;t understand arguments: number &amp;message&amp;
 Arguments should be separated with spaces. %n argument is converted to number, %m to message</source>
         <translation>Zaznacz to okienko jeżeli aplikacja SMS nie rozpoznaje argumentów: numer &amp;wiadomość&amp;
 Argumenty powinny być oddzielone spacjami. %n jest zamieniane na numer, %m na wiadomość</translation>

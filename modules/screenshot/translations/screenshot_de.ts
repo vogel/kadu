@@ -1,4 +1,81 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="de" version="2.0">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="de">
+<context>
+    <name>@default</name>
+    <message>
+        <source>Screenshot</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>General</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>General Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>File format</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select image format, which screenshots will be stored and sent in.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Force .jpg extension for JPEG format</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Forces to use short .jpg extension for files in JPEG format. Some other instant messagers needs it.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Screenshots quality</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>-1 for autodetection, 0 for best file compression, 100 for best image quality.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Paste [IMAGE] clause automatically</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>When enabled, module will automatically paste ready to send [IMAGE] clause in chat window.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Screenshots directory path</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Screenshots filename prefix</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable directory size control</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>When enabled, module will check for shots directory size and warn you if it gets size specified below.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Maximum directory size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Define, how many kbytes can shots take in the directory before module will warn you.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
 <context>
     <name>ScreenShot</name>
     <message>
@@ -21,7 +98,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Can't write file %1.
+        <source>Can&apos;t write file %1.
 Access denied or other problem!</source>
         <translation type="unfinished"></translation>
     </message>

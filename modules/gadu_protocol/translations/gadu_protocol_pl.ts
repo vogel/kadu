@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.0">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="pl">
 <context>
     <name>@default</name>
     <message>
@@ -110,26 +112,6 @@
     </message>
 </context>
 <context>
-    <name>DccManager</name>
-    <message>
-        <location filename="../dcc/dcc-manager.cpp" line="289"/>
-        <source>Kadu</source>
-        <translation>Kadu</translation>
-    </message>
-    <message>
-        <location filename="../dcc/dcc-manager.cpp" line="289"/>
-        <source>%1 is asking for direct connection but his/her
-IP address (%2) differs from what GG server returned
-as his/her IP address (%3). It may be spoofing
-or he/she has port forwarding. Continue connection?</source>
-        <translation>%1 prosi o bezpośrednie połączenie ale jego / jej
-adres IP (%2) różni się od tego jaki zwrócił serwer GG
-jako jego / jej adres IP: (%3). To może być próba podszycia
-się albo on / ona ma przekierowanie portów.
-Kontynuować połączenie?</translation>
-    </message>
-</context>
-<context>
     <name>GaduAddAccountWidget</name>
     <message>
         <location filename="../gui/widgets/gadu-add-account-widget.cpp" line="75"/>
@@ -149,12 +131,12 @@ Kontynuować połączenie?</translation>
     <message>
         <location filename="../gui/widgets/gadu-add-account-widget.cpp" line="92"/>
         <source>Account Identity</source>
-		<translation>Tożsamość konta</translation>
+        <translation>Tożsamość konta</translation>
     </message>
     <message>
         <location filename="../gui/widgets/gadu-add-account-widget.cpp" line="94"/>
         <source>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Select or enter the identity that will be associated with this account.&lt;/i&gt;&lt;/font&gt;</source>
-		<translation>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Wybierz lub wprowadź identyfikację z która będzie skojarzone konto.&lt;/i&gt;&lt;/font&gt;</translation>
+        <translation>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Wybierz lub wprowadź identyfikację z która będzie skojarzone konto.&lt;/i&gt;&lt;/font&gt;</translation>
     </message>
     <message>
         <location filename="../gui/widgets/gadu-add-account-widget.cpp" line="105"/>
@@ -293,11 +275,11 @@ Nowe hasło wprowadzone w polu &quot;Nowe hasło&quot; nie jest identyczne z zaw
     <message>
         <location filename="../gui/widgets/gadu-contact-personal-info-widget.cpp" line="77"/>
         <source>Nickname</source>
-		<translation>Pseudonim</translation>
+        <translation>Pseudonim</translation>
     </message>
     <message>
         <location filename="../gui/widgets/gadu-contact-personal-info-widget.cpp" line="80"/>
-		<source>Gender</source>
+        <source>Gender</source>
         <translation>Płeć</translation>
     </message>
     <message>
@@ -371,12 +353,12 @@ Nowe hasło wprowadzone w polu &quot;Nowe hasło&quot; nie jest identyczne z zaw
     <message>
         <location filename="../gui/widgets/gadu-create-account-widget.cpp" line="93"/>
         <source>Account Identity</source>
-		<translation>Tożsamość konta</translation>
+        <translation>Tożsamość konta</translation>
     </message>
     <message>
         <location filename="../gui/widgets/gadu-create-account-widget.cpp" line="95"/>
         <source>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Select or enter the identity that will be associated with this account.&lt;/i&gt;&lt;/font&gt;</source>
-		<translation>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Wybierz lub wprowadź identyfikację z która będzie skojarzone konto.&lt;/i&gt;&lt;/font&gt;</translation>
+        <translation>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Wybierz lub wprowadź identyfikację z która będzie skojarzone konto.&lt;/i&gt;&lt;/font&gt;</translation>
     </message>
     <message>
         <location filename="../gui/widgets/gadu-create-account-widget.cpp" line="103"/>
@@ -415,219 +397,183 @@ Hasła  muszą być identyczne w obu polach!</translation>
 <context>
     <name>GaduEditAccountWidget</name>
     <message>
-        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="95"/>
+        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="94"/>
         <source>Apply</source>
         <translation>Zastosuj</translation>
     </message>
     <message>
-        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="98"/>
+        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="97"/>
         <source>Cancel</source>
         <translation>Anuluj</translation>
     </message>
     <message>
-        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="101"/>
+        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="100"/>
         <source>Delete account</source>
         <translation>Usuń konto</translation>
     </message>
     <message>
-        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="124"/>
+        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="123"/>
         <source>Gadu-Gadu number</source>
         <translation>Numer Gadu-Gadu</translation>
     </message>
     <message>
-        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="129"/>
+        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="128"/>
         <source>Password</source>
         <translation>Hasło</translation>
     </message>
     <message>
-        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="131"/>
+        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="130"/>
         <source>Remember password</source>
         <translation>Zapamiętaj hasło</translation>
     </message>
     <message>
-        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="136"/>
+        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="135"/>
         <source>Forgot Your Password?</source>
         <translation>Zapomniałeś hasła?</translation>
     </message>
     <message>
-        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="141"/>
+        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="140"/>
         <source>Change Your Password</source>
         <translation>Zmień hasło</translation>
     </message>
     <message>
-        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="148"/>
+        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="147"/>
         <source>Account Identity</source>
-		<translation>Tożsamość konta</translation>
+        <translation>Tożsamość konta</translation>
     </message>
     <message>
-        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="150"/>
+        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="149"/>
         <source>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Select or enter the identity that will be associated with this account.&lt;/i&gt;&lt;/font&gt;</source>
-		<translation>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Wybierz lub wprowadź identyfikację z która będzie skojarzone konto.&lt;/i&gt;&lt;/font&gt;</translation>
+        <translation>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Wybierz lub wprowadź identyfikację z która będzie skojarzone konto.&lt;/i&gt;&lt;/font&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="159"/>
-        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="202"/>
-        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="298"/>
+        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="158"/>
+        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="258"/>
         <source>General</source>
         <translation>Ogólne</translation>
     </message>
     <message>
-        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="166"/>
+        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="165"/>
         <source>Personal info</source>
         <translation>Informacje osobiste</translation>
     </message>
     <message>
-        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="177"/>
+        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="176"/>
         <source>Buddies</source>
         <translation>Znajomi</translation>
     </message>
     <message>
-        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="183"/>
+        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="182"/>
         <source>Connection</source>
         <translation>Połączenie</translation>
     </message>
     <message>
-        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="188"/>
+        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="187"/>
         <source>Proxy</source>
         <translation>Serwer proxy</translation>
     </message>
     <message>
-        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="198"/>
-        <source>File transfers</source>
-        <translation>Transfery plików</translation>
-    </message>
-    <message>
-        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="206"/>
+        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="277"/>
         <source>Allow file transfers</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Zezwól na transfery plików</translation>
     </message>
     <message>
-        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="209"/>
-        <source>Remove completed file transfers</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="212"/>
-        <source>Use port forwarding for file transfers</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="215"/>
-        <source>Autodected IP for file transfers</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="219"/>
-        <source>IP for file transfers:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="222"/>
-        <source>Port for file transfers:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="225"/>
-        <source>External IP for file transfers:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="228"/>
-        <source>External port for file transfers:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="231"/>
-        <source>Local port for file transfers:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="249"/>
+        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="197"/>
         <source>Options</source>
         <translation>Opcje</translation>
     </message>
     <message>
-        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="253"/>
+        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="201"/>
         <source>Images</source>
         <translation>Obrazki</translation>
     </message>
     <message>
-        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="261"/>
+        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="209"/>
         <source>Maximum image size that we want to receive</source>
         <translation>Maksymalny rozmiar obrazka</translation>
     </message>
     <message>
-        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="264"/>
+        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="212"/>
         <source>Maximum image size for chat</source>
         <translation>Maksymalny rozmiar obrazka dla rozmowy</translation>
     </message>
     <message>
-        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="266"/>
+        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="214"/>
         <source>Receive images during invisibility</source>
         <translation>Odbieraj obrazki także gdy jestem ukryty</translation>
     </message>
     <message>
-        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="267"/>
+        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="215"/>
         <source>Receiving images during invisibility is allowed</source>
         <translation>Odbieranie obrazków w trybie ukrytym jest włączone</translation>
     </message>
     <message>
-        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="276"/>
+        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="224"/>
         <source>Define limit of images received per minute</source>
         <translation>Zdefiniuj maksymalną dozwoloną liczbę obrazków na minutę</translation>
     </message>
     <message>
-        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="279"/>
+        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="227"/>
         <source>Limit numbers of image received per minute</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="283"/>
+        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="231"/>
         <source>Status</source>
         <translation>Status</translation>
     </message>
     <message>
-        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="286"/>
+        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="234"/>
         <source>Show my status to everyone</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="287"/>
+        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="235"/>
         <source>When disabled, you&apos;re visible only to buddies on your list</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="304"/>
+        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="243"/>
+        <source>Notifications</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="246"/>
+        <source>Send composing events</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="264"/>
         <source>Use default servers</source>
         <translation>Użyj domyślnych serwerów</translation>
     </message>
     <message>
-        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="307"/>
+        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="267"/>
         <source>IP addresses</source>
         <translation>Adres IP</translation>
     </message>
     <message>
-        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="324"/>
+        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="288"/>
         <source>Use encrypted connection</source>
         <translation>Używaj szyfrowanego połączenia</translation>
     </message>
     <message>
-        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="500"/>
+        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="444"/>
         <source>Confirm account removal</source>
         <translation>Potwierdź usunięcie konta</translation>
     </message>
     <message>
-        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="501"/>
+        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="445"/>
         <source>Are you sure do you want to remove account %1 (%2)</source>
         <translation>Czy na pewno chcesz usunąć konto %1 (%2)</translation>
     </message>
     <message>
-        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="505"/>
+        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="449"/>
         <source>Remove account</source>
         <translation>Usuń konto</translation>
     </message>
     <message>
-        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="506"/>
+        <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="450"/>
         <source>Remove account and unregister from server</source>
         <translation>Usuń konto i wyrejestruj z serwera</translation>
     </message>
@@ -706,79 +652,79 @@ Hasła  muszą być identyczne w obu polach!</translation>
 <context>
     <name>GaduProtocol</name>
     <message>
-        <location filename="../gadu-protocol.cpp" line="391"/>
-        <location filename="../gadu-protocol.cpp" line="657"/>
+        <location filename="../gadu-protocol.cpp" line="399"/>
+        <location filename="../gadu-protocol.cpp" line="674"/>
         <source>Kadu</source>
         <translation>Kadu</translation>
     </message>
     <message>
-        <location filename="../gadu-protocol.cpp" line="391"/>
+        <location filename="../gadu-protocol.cpp" line="399"/>
         <source>UIN not set!</source>
         <translation>Numer Gadu-Gadu nie jest ustawiony!</translation>
     </message>
     <message>
-        <location filename="../gadu-protocol.cpp" line="400"/>
+        <location filename="../gadu-protocol.cpp" line="408"/>
         <source>Please provide password for %1 (%2) account</source>
         <translation>Wprowadź hasło dla konta %1 (%2)</translation>
     </message>
     <message>
-        <location filename="../gadu-protocol.cpp" line="646"/>
+        <location filename="../gadu-protocol.cpp" line="663"/>
         <source>Unable to connect, server has not been found</source>
         <translation>Połączenie niemożliwe, serwer nie znaleziony</translation>
     </message>
     <message>
-        <location filename="../gadu-protocol.cpp" line="650"/>
+        <location filename="../gadu-protocol.cpp" line="667"/>
         <source>Unable to connect</source>
         <translation>Połączenie niemożliwe</translation>
     </message>
     <message>
-        <location filename="../gadu-protocol.cpp" line="654"/>
+        <location filename="../gadu-protocol.cpp" line="671"/>
         <source>Please change your email in &quot;Change password / email&quot; window. Leave new password field blank.</source>
         <translation>Zmień swój e-mail w oknie &quot;Zmień hasło / e-mai&quot;. Pole nowe hasło pozostaw puste.</translation>
     </message>
     <message>
-        <location filename="../gadu-protocol.cpp" line="661"/>
+        <location filename="../gadu-protocol.cpp" line="678"/>
         <source>Unable to connect, server has returned unknown data</source>
         <translation>Połączenie niemożliwe, serwer odpowiedział nieznanymi danymi</translation>
     </message>
     <message>
-        <location filename="../gadu-protocol.cpp" line="665"/>
+        <location filename="../gadu-protocol.cpp" line="682"/>
         <source>Unable to connect, connection break during reading</source>
         <translation>Połączenie niemożliwe, połączenie przerwane w czasie odczytu</translation>
     </message>
     <message>
-        <location filename="../gadu-protocol.cpp" line="669"/>
+        <location filename="../gadu-protocol.cpp" line="686"/>
         <source>Unable to connect, connection break during writing</source>
         <translation>Połączenie niemożliwe, połączenie przerwane w czasie zapisu</translation>
     </message>
     <message>
-        <location filename="../gadu-protocol.cpp" line="679"/>
+        <location filename="../gadu-protocol.cpp" line="696"/>
         <source>Unable to connect, error of negotiation TLS</source>
         <translation>Połączenie niemożliwe, błąd negocjacji TLS</translation>
     </message>
     <message>
-        <location filename="../gadu-protocol.cpp" line="683"/>
+        <location filename="../gadu-protocol.cpp" line="700"/>
         <source>Too many connection attempts with bad password!</source>
         <translation>Zbyt wiele połączeń z użyciem błędnego hasła!</translation>
     </message>
     <message>
-        <location filename="../gadu-protocol.cpp" line="688"/>
+        <location filename="../gadu-protocol.cpp" line="705"/>
         <source>Unable to connect, servers are down</source>
         <translation>Połączenie nie możliwe, serwery są niedostępne</translation>
     </message>
     <message>
-        <location filename="../gadu-protocol.cpp" line="692"/>
-        <location filename="../gadu-protocol.cpp" line="706"/>
+        <location filename="../gadu-protocol.cpp" line="709"/>
+        <location filename="../gadu-protocol.cpp" line="723"/>
         <source>Connection broken</source>
         <translation>Zerwane połączenie</translation>
     </message>
     <message>
-        <location filename="../gadu-protocol.cpp" line="697"/>
+        <location filename="../gadu-protocol.cpp" line="714"/>
         <source>Connection timeout!</source>
         <translation>Przekroczenie czasu połączenia!</translation>
     </message>
     <message>
-        <location filename="../gadu-protocol.cpp" line="701"/>
+        <location filename="../gadu-protocol.cpp" line="718"/>
         <source>Disconnection has occurred</source>
         <translation type="unfinished"></translation>
     </message>
