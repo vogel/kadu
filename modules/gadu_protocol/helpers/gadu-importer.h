@@ -56,7 +56,7 @@ private slots:
 	void buddyAdded(Buddy &buddy);
 
 public:
-	static GADUAPI GaduImporter * instance() { return Instance; }
+	static GaduImporter * instance() { return Instance; }
 	static void createInstance();
 	static void destroyInstance();
 
