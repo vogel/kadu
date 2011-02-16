@@ -642,7 +642,7 @@ void KaduWindowActions::translateActionActivated(QAction *sender, bool toggled)
 	Q_UNUSED(sender)
 	Q_UNUSED(toggled)
 
-	UrlOpener::openUrl("http://www.kadu.net/forum/viewforum.php?f=19");
+	UrlOpener::openUrl("http://www.transifex.net/projects/p/kadu/");
 }
 
 void KaduWindowActions::showInfoPanelActionActivated(QAction *sender, bool toggled)
