@@ -52,7 +52,7 @@ void DccSocketNotifiers::start()
 
 void DccSocketNotifiers::watchFor()
 {
-	if (-1 == Socket7->fd)
+	if (-1 != Socket7->fd)
 		GaduSocketNotifiers::watchFor(Socket7->fd);
 	else
 		GaduSocketNotifiers::watchFor(0);
