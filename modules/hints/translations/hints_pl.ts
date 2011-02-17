@@ -244,6 +244,10 @@
         <source>Advenced hints&apos;s configuration</source>
         <translation>Zaawansowana konfiguracja dymków</translation>
     </message>
+	<message>
+		<source>Hint over buddy list: </source>
+		<translation>Dymek nad listą znajomych</translation>
+	</message>
 </context>
 <context>
     <name>HintsConfigurationWidget</name>

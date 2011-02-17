@@ -105,7 +105,7 @@ void HintsConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurati
 	lay->addWidget(overUserConfigurationPreview);
 	lay->addWidget(configureOverUserHint);
 
-	toolTipBox->addWidgets(new QLabel("Hint over buddy list: "), configureHint);
+	toolTipBox->addWidgets(new QLabel(tr("Hint over buddy list: ")), configureHint);
 }
 
 void HintsConfigurationUiHandler::showAdvanced()

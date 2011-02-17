@@ -244,6 +244,10 @@
         <source>Advenced hints&apos;s configuration</source>
         <translation type="unfinished"></translation>
     </message>
+	<message>
+		<source>Hint over buddy list: </source>
+		<translation type="unfinished"></translation>
+	</message>
 </context>
 <context>
     <name>HintsConfigurationWidget</name>
