@@ -1,3 +1,5 @@
++++ version 0.6.6-beta18
+
 +++ version 0.6.6-beta17
 * gui: always use bold font on buddies with new messages (Vogel)
 * gadu: #1966 fixed: use only 443 port when connecting with TLS (Vogel)
