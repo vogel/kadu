@@ -251,3 +251,9 @@ void AccountManager::removeAccountAndBuddies(Account account)
 
 	removeItem(account);
 }
+
+void AccountManager::loaded()
+{
+	foreach (const Account &account, allItems())
+		account.accountContact().setOwnerBuddy(Core::instance()->myself());
+}

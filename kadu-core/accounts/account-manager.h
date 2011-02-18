@@ -49,6 +49,8 @@ class KADUAPI AccountManager : public QObject, public Manager<Account>
 	void detailsLoaded(Account account);
 	void detailsUnloaded(Account account);
 
+	virtual void loaded();
+
 private slots:
 	void accountDataUpdated();
 	void connectionError(Account account, const QString &server, const QString &message);

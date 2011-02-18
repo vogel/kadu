@@ -293,6 +293,9 @@ protected:
 			return;
 
 		QList<QDomElement> itemElements = storage()->storage()->getNodes(itemsNode, storageNodeItemName());
+#if (QT_VERSION >= 0x040700)
+		Items.reserve(itemElements.count());
+#endif
 		foreach (const QDomElement &itemElement, itemElements)
 		{
 			QSharedPointer<StoragePoint> storagePoint(new StoragePoint(storage()->storage(), itemElement));
@@ -304,6 +307,8 @@ protected:
 				addItem(item);
 			}
 		}
+
+		loaded();
 	}
 
 public:

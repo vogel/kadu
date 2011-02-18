@@ -1,6 +1,7 @@
 +++ version 0.6.6-beta17
 * gui: always use bold font on buddies with new messages (Vogel)
 * gadu: #1966 fixed: use only 443 port when connecting with TLS (Vogel)
+* core: fix serious regression from beta16, when Kadu sometimes lost some contacts after upgrade to beta16 (WhE)
 
 +++ version 0.6.6-beta16
 * gadu: fixed invalid encoding and invalid formatting in some received messages, especially from GG10 (still not compatible with Infobot) (beevvy)

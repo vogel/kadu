@@ -68,7 +68,7 @@ public:
 	 * This method sets new unique ID for this object. Unique ID is
 	 * represented by object of type QUuid.
 	 */
-	void setUuid(const QUuid uuid) { Uuid = uuid; }
+	void setUuid(const QUuid &uuid) { Uuid = uuid; }
 
 	virtual bool shouldStore();
 
