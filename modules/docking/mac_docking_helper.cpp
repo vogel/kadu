@@ -1,6 +1,7 @@
 /*
  * %kadu copyright begin%
- * Copyright 2010 Tomasz Rostański (rozteck@interia.pl)
+ * Copyright 2010, 2011 Tomasz Rostański (rozteck@interia.pl)
+ * Copyright 2011 Vertex
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -21,19 +22,15 @@
 #include <QtGui/QIcon>
 
 #include "ApplicationServices/ApplicationServices.h"
-#include "Carbon/Carbon.h"
+#include <Cocoa/Cocoa.h>
 
 #include "mac_docking_helper.h"
-
-#define DOCK_FONT_NAME "LucidaGrande-Bold"
-#define DOCK_FONT_SIZE 24
 
 MacDockingHelper *MacDockingHelper::Instance = 0;
 
 MacDockingHelper::MacDockingHelper(QObject *parent) : QObject(parent)
 {
 	isBouncing = false;
-	isOverlayed = false;
 }
 
 MacDockingHelper::~MacDockingHelper()
@@ -44,91 +41,45 @@ MacDockingHelper::~MacDockingHelper()
 
 void MacDockingHelper::startBounce()
 {
-	/* The following code is taken from PSI mac_dock sources */
 	if (!isBouncing)
 	{
-		bounceRec.qType = nmType;
-		bounceRec.nmMark = 1;
-		bounceRec.nmIcon = NULL;
-		bounceRec.nmSound = NULL;
-		bounceRec.nmStr = NULL;
-		bounceRec.nmResp = NULL;
-		bounceRec.nmRefCon = 0;
-		NMInstall(&bounceRec);
+		currentAttentionRequest = [NSApp requestUserAttention:NSCriticalRequest];
 		isBouncing = true;
 	}
 }
 
 void MacDockingHelper::stopBounce()
 {
-	/* The following code is taken from PSI mac_dock sources */
 	if (isBouncing)
 	{
-		NMRemove(&bounceRec);
+		[NSApp cancelUserAttentionRequest:currentAttentionRequest];
 		isBouncing = false;
 	}
 }
 
 void MacDockingHelper::removeOverlay()
 {
-	if (isOverlayed)
-	{
-		isOverlayed = false;
-
-		CGContextRef context = BeginCGContextForApplicationDockTile();
-		CGContextRestoreGState(context);
-		CGContextFlush(context);
-		EndCGContextForApplicationDockTile(context);
-
-		qApp->setWindowIcon(qApp->windowIcon());
-		//RestoreApplicationDockTileImage();
-	}
+	[[[NSApplication sharedApplication] dockTile]setBadgeLabel:nil];
+	qApp->setWindowIcon(qApp->windowIcon());
 }
 
-void MacDockingHelper::overlay(const QString& text)
+void MacDockingHelper::overlay(const NSInteger count)
 {
-	/* The following code is taken from PSI mac_dock sources */
+	QPixmap pixmap = qApp->windowIcon().pixmap(128, 128);
+	CGImageRef image = pixmap.toMacCGImageRef();
 
-	CGContextRef context = BeginCGContextForApplicationDockTile();
-
-	if (!isOverlayed)
+	NSRect imageRect = NSMakeRect(0.0, 0.0, CGImageGetWidth(image), CGImageGetHeight(image));
+	NSImage *newImage = 0;
+	newImage = [[NSImage alloc] initWithSize:imageRect.size];
+	[newImage lockFocus];
 	{
-		CGContextSaveGState(context);
-		isOverlayed = true;
-
-		// Add some subtle drop down shadow
-		CGSize s = { 2.0, -4.0 };
-		CGContextSetShadow(context, s, 5.0);
+		CGContextRef imageContext = (CGContextRef)[[NSGraphicsContext currentContext] graphicsPort];
+		CGContextDrawImage(imageContext, *(CGRect *)&imageRect, image);
 	}
+	[newImage unlockFocus];
+	CFRelease(image);
 
-	// Draw a circle
-	CGContextBeginPath(context);
-	CGContextAddArc(context, 95.0, 95.0, 25.0, 0.0, 2 * M_PI, true);
-	CGContextClosePath(context);
-	CGContextSetRGBFillColor(context, 1, 0.0, 0.0, 1);
-	CGContextFillPath(context);
-
-	// Set the clipping path to the same circle
-	CGContextBeginPath(context);
-	CGContextAddArc(context, 95.0, 95.0, 25.0, 0.0, 2 * M_PI, true);
-	CGContextClip(context);
-
-	// Select the appropriate font
-	CGContextSelectFont(context,DOCK_FONT_NAME, DOCK_FONT_SIZE, kCGEncodingMacRoman);
-	CGContextSetRGBFillColor(context, 1, 1, 1, 1);
-
-	// Draw the text invisible
-	CGPoint begin = CGContextGetTextPosition(context);
-	CGContextSetTextDrawingMode(context, kCGTextInvisible);
-	CGContextShowTextAtPoint(context, begin.x, begin.y, text.toStdString().c_str(), text.length());
-	CGPoint end = CGContextGetTextPosition(context);
-
-	// Draw the text
-	CGContextSetTextDrawingMode(context, kCGTextFill);
-	CGContextShowTextAtPoint(context, 95 - (end.x - begin.x)/2, 95 - 8, text.toStdString().c_str(), text.length());
-
-	// Cleanup
-	CGContextFlush(context);
-	EndCGContextForApplicationDockTile(context);
+	[NSApp setApplicationIconImage:newImage];
+	[newImage release];
+	[[[NSApplication sharedApplication] dockTile]setBadgeLabel:[NSString stringWithFormat:@"%d", count]];
 }
-

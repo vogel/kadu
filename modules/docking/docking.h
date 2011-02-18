@@ -9,6 +9,7 @@
  * Copyright 2008, 2009, 2010 Piotr Galiszewski (piotrgaliszewski@gmail.com)
  * Copyright 2005 Paweł Płuciennik (pawel_p@kadu.net)
  * Copyright 2002, 2003 Dariusz Jagodzik (mast3r@kadu.net)
+ * Copyright 2010, 2011 Tomasz Rostański (rozteck@interia.pl)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -54,7 +55,6 @@ class DOCKINGAPI DockingManager : public QObject, ConfigurationAwareObject, Stat
 
 	QMenu *DockMenu;
  #ifdef Q_OS_MAC
-	QAction *OpenChatAction;
 	QMenu *MacDockMenu;
  #endif
 	QAction *CloseKaduAction;

@@ -13,7 +13,7 @@
  * Copyright 2008, 2009, 2010 Piotr Galiszewski (piotrgaliszewski@gmail.com)
  * Copyright 2004, 2005 Paweł Płuciennik (pawel_p@kadu.net)
  * Copyright 2002, 2003 Dariusz Jagodzik (mast3r@kadu.net)
- * Copyright 2010 Tomasz Rostański (rozteck@interia.pl)
+ * Copyright 2010, 2011 Tomasz Rostański (rozteck@interia.pl)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -110,11 +110,6 @@ DockingManager::DockingManager() :
 	DockMenu = new QMenu();
 
 #ifdef Q_OS_MAC
-	OpenChatAction = new QAction(IconsManager::instance()->iconByPath("internet-group-chat"),
-		tr("Show Pending Messages"), this);
-	connect(OpenChatAction, SIGNAL(triggered()), ChatWidgetManager::instance(),
-		SLOT(openPendingMessages()));
-
 	MacDockMenu = new QMenu();
 	qt_mac_set_dock_menu(MacDockMenu);
 #endif
@@ -200,7 +195,7 @@ void DockingManager::pendingMessageAdded()
 {
 	changeIcon();
 #ifdef Q_OS_MAC
-	MacDockingHelper::instance()->overlay(QString::number(PendingMessagesManager::instance()->pendingMessages().count()));
+	MacDockingHelper::instance()->overlay(PendingMessagesManager::instance()->pendingMessages().count());
 	if (!NotificationManager::instance()->silentMode())
 		MacDockingHelper::instance()->startBounce();
 #endif
@@ -346,7 +341,6 @@ void DockingManager::updateContextMenu()
 	DockMenu->clear();
 #ifdef Q_OS_MAC
 	MacDockMenu->clear();
-	DockMenu->addAction(OpenChatAction);
 #endif
 
 	qDeleteAll(StatusContainerMenus.values());
