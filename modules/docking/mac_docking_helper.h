@@ -1,7 +1,7 @@
 /*
  * %kadu copyright begin%
  * Copyright 2010, 2011 Tomasz Rostaski (rozteck@interia.pl)
- * Copyright 2011 Vertex
+ * Copyright 2011 Adam "Vertex" Makświej (vertexbz@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
