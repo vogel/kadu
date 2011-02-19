@@ -172,8 +172,6 @@ bool EmoticonsManager::loadGGEmoticonThemePart(const QString &themeSubDirPath)
 		foreach (const QString &alias, aliases)
 		{
 			item.alias = alias;
-			item.escapedAlias = alias;
-			HtmlDocument::escapeText(item.escapedAlias);
 			Aliases.push_back(item);
 		}
 

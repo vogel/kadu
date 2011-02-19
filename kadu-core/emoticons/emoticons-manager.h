@@ -57,7 +57,6 @@ class KADUAPI EmoticonsManager : public QObject
 	struct EmoticonsListItem
 	{
 		QString alias;
-		QString escapedAlias;
 		QString anim;
 		QString stat;
 		EmoticonsListItem();
