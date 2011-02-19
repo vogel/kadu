@@ -602,7 +602,12 @@ void GaduProtocol::networkDisconnected(bool tryAgain, bool waitForPassword)
 #endif // GADU_HAVE_MULTILOGON
 
 	if (tryAgain && !nextStatus().isDisconnected()) // user still wants to login
+	{
+		networkStateChanged(NetworkConnecting);
+		statusChanged(Status());
+
 		QTimer::singleShot(1000, this, SLOT(login())); // try again after one second
+	}
 	else if (!nextStatus().isDisconnected())
 		if (!waitForPassword)
 		{
