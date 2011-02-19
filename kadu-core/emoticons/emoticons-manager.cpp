@@ -252,12 +252,12 @@ void EmoticonsManager::expandEmoticons(HtmlDocument &doc, EmoticonsStyle style)
 		QString text = doc.elementText(e_i).toLower();
 		// variables storing position of last occurrence
 		// of emot matching current emots dictionary
-		unsigned int lastBegin = 10000;
+		int lastBegin = -1;
 		int lastEmot = -1;
 		// intitialize automata for checking occurrences
 		// of emots in text
 		walker->initWalking();
-		for (unsigned int j = 0, textlength = text.length(); j < textlength; ++j)
+		for (int j = 0, textlength = text.length(); j < textlength; ++j)
 		{
 			// find out if there is some emot occurrence when we
 			// add current character
@@ -267,7 +267,7 @@ void EmoticonsManager::expandEmoticons(HtmlDocument &doc, EmoticonsStyle style)
 			{
 				// check if there already was some occurrence, whose
 				// beginning is before beginning of currently found one
-				if (lastEmot >= 0 && lastBegin < j - Aliases.at(idx).alias.length() + 1)
+				if (lastEmot >= 0 && lastBegin >= 0 && lastBegin < j - Aliases.at(idx).alias.length() + 1)
 				{
 					// if so, then replace that previous occurrence
 					// with html tag
