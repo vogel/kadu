@@ -23,9 +23,11 @@
 
 #include <QtCore/QObject>
 
+#include "exports.h"
+
 class Buddy;
 
-class AbstractBuddyFilter : public QObject
+class KADUAPI AbstractBuddyFilter : public QObject
 {
 	Q_OBJECT
 
