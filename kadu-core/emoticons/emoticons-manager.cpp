@@ -29,6 +29,7 @@
 #include <QtCore/QDir>
 #include <QtCore/QFile>
 #include <QtCore/QTextStream>
+#include <QtGui/QTextDocument>
 
 #include "configuration/configuration-file.h"
 #include "emoticons/emots-walker.h"
@@ -272,10 +273,10 @@ void EmoticonsManager::expandEmoticons(HtmlDocument &doc, EmoticonsStyle style)
 				{
 					// if so, then replace that previous occurrence
 					// with html tag
-					QString new_text = emotTemplate.arg(Aliases.at(lastEmot).escapedAlias, animated ? Aliases.at(lastEmot).anim : Aliases.at(lastEmot).stat);
-
 					doc.splitElement(e_i, lastBegin, Aliases.at(lastEmot).alias.length());
+					QString new_text = emotTemplate.arg(Qt::escape(doc.elementText(e_i)), animated ? Aliases.at(lastEmot).anim : Aliases.at(lastEmot).stat);
 					doc.setElementValue(e_i, new_text, true);
+
 					// our analysis will begin directly after
 					// occurrence of previous emot
 					lastEmot = -1;
@@ -292,9 +293,8 @@ void EmoticonsManager::expandEmoticons(HtmlDocument &doc, EmoticonsStyle style)
 		// this is the case, when only one emot was found in current text part
 		if (lastEmot >= 0)
 		{
-			QString new_text = emotTemplate.arg(Aliases.at(lastEmot).escapedAlias, animated ? Aliases.at(lastEmot).anim : Aliases.at(lastEmot).stat);
-
 			doc.splitElement(e_i, lastBegin, Aliases.at(lastEmot).alias.length());
+			QString new_text = emotTemplate.arg(Qt::escape(doc.elementText(e_i)), animated ? Aliases.at(lastEmot).anim : Aliases.at(lastEmot).stat);
 			doc.setElementValue(e_i, new_text, true);
 		}
 	}
