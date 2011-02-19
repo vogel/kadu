@@ -302,6 +302,9 @@ void History::chatCreated(ChatWidget *chatWidget)
 	QDateTime backTo = QDateTime::currentDateTime().addSecs(config_file.readNumEntry("History", "ChatHistoryQuotationTime", -744)*3600);
 	messages = CurrentStorage->messagesBackTo(chat ? chat : chatWidget->chat(), backTo, chatHistoryQuotation);
 
+	if (messages.isEmpty())
+		return;
+
 	chatMessagesView->appendMessages(messages);
 
 	kdebugf2();
