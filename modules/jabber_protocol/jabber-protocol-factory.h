@@ -54,7 +54,7 @@ public:
 	virtual QString defaultServer();
 
 	virtual QString name() { return "jabber"; }
-	virtual QString displayName() { return "Jabber"; }
+	virtual QString displayName() { return "Jabber/XMPP"; }
 
 	virtual QIcon icon();
 	virtual QString iconPath();
