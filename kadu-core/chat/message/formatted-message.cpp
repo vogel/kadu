@@ -19,44 +19,49 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QFileInfo>
+#include <QtCore/QRegExp>
 #include <QtGui/QTextBlock>
 #include <QtGui/QTextDocument>
 
+#include "protocols/services/chat-image-service.h"
 #include "html_document.h"
 #include "icons-manager.h"
 
 #include "formatted-message.h"
 
-QRegExp FormattedMessage::ImageRegExp("\\[IMAGE ([^\\]]+)\\]");
-
 void FormattedMessage::parseImages(FormattedMessage &message, const QString &messageString, bool b, bool i, bool u, QColor color)
 {
-	QString partContent;
+	static QRegExp imageRegExp("\\[IMAGE ([^\\]]+)\\]");
 
 	int lastPos = -1;
 	int pos = 0;
 
-	while ((pos = ImageRegExp.indexIn(messageString, pos)) != -1)
+	while ((pos = imageRegExp.indexIn(messageString, pos)) != -1)
 	{
 		if (lastPos != pos)
 		{
-			partContent = messageString.mid(lastPos, pos - lastPos);
-			message << FormattedMessagePart(partContent, b, i, u, color);
+			if (lastPos == -1)
+				message << FormattedMessagePart(messageString.left(pos), b, i, u, color);
+			else
+				message << FormattedMessagePart(messageString.mid(lastPos, pos - lastPos), b, i, u, color);
 		}
 
-		QString filePath = ImageRegExp.cap(1);
-		if (!filePath.isEmpty())
+		QString filePath = imageRegExp.cap(1);
+		QFileInfo fileInfo(filePath);
+		if (fileInfo.isAbsolute() && fileInfo.exists() && fileInfo.isFile())
 			message << FormattedMessagePart(filePath);
+		else
+			message << FormattedMessagePart(messageString.mid(pos, imageRegExp.matchedLength()), b, i, u, color);
 
-		pos += ImageRegExp.matchedLength();
+		pos += imageRegExp.matchedLength();
 		lastPos = pos;
 	}
 
-	if (lastPos != messageString.length())
-	{
-		partContent = messageString.mid(lastPos, messageString.length() - lastPos);
-		message << FormattedMessagePart(partContent, b, i, u, color);
-	}
+	if (lastPos == -1)
+		message << FormattedMessagePart(messageString, b, i, u, color);
+	else if (lastPos != messageString.length())
+		message << FormattedMessagePart(messageString.mid(lastPos, messageString.length() - lastPos), b, i, u, color);
 }
 
 FormattedMessage FormattedMessage::parse(const QTextDocument *document)
@@ -77,7 +82,7 @@ FormattedMessage FormattedMessage::parse(const QTextDocument *document)
 				continue;
 
 			if (!firstParagraph && firstFragment)
-				text = QString("\n") + fragment.text();
+				text = '\n' + fragment.text();
 			else
 				text = fragment.text();
 

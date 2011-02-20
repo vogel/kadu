@@ -22,7 +22,6 @@
 #define FORMATTED_MESSAGE_H
 
 #include <QtCore/QList>
-#include <QtCore/QRegExp>
 #include <QtGui/QColor>
 
 #include "protocols/protocol.h"
@@ -46,7 +45,6 @@ class QTextDocument;
  */
 class KADUAPI FormattedMessage
 {
-	static QRegExp ImageRegExp;
 	static void parseImages(FormattedMessage &message, const QString &messageString, bool b, bool i, bool u, QColor color);
 
 	QList<FormattedMessagePart> Parts;
