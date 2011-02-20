@@ -106,21 +106,12 @@ void JabberChatService::clientMessageReceived(const XMPP::Message &msg)
 {
 	kdebugf();
 
-	// skip empty messages, but not if the message contains a data form
-	if(msg.body().isEmpty() && msg.urlList().isEmpty() && msg.invite().isEmpty() && !msg.containsEvents() && msg.chatState() == XMPP::StateNone
-		&& msg.subject().isEmpty() && msg.rosterExchangeItems().isEmpty() && msg.mucInvites().isEmpty() &&  msg.getForm().fields().empty())
-		return;
-
-	// TODO zapobiega otwieraniu okienka z pusta wiadomoscia
-	if ((XMPP::StateNone != msg.chatState()) && msg.body().isEmpty())
+	// skip empty messages
+	if (msg.body().isEmpty())
 		return;
 
 	// skip messages with type error == Cancel (fixes mantis #1642)
-	if (msg.type () == "error")
-		return;
-
-	// dalej obslugujemy juz tylko wiadomosci
-	if (msg.containsEvents() && msg.body().isEmpty())
+	if (msg.type() == "error")
 		return;
 
 	Contact contact = ContactManager::instance()->byId(Protocol->account(), msg.from().bare(), ActionCreateAndAdd);
