@@ -421,6 +421,7 @@ void JabberClient::connect(const XMPP::Jid &jid, const QString &password, bool a
 	jabberClient->setIdentity(identity);
 
 	QStringList features;
+	features << "http://jabber.org/protocol/chatstates";
 //	features << "http://jabber.org/protocol/commands";
 	features << "http://jabber.org/protocol/rosterx";
 //	features << "http://jabber.org/protocol/muc";
