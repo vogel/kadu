@@ -50,7 +50,7 @@ SimpleView::SimpleView() :
 	DockAction = new QAction(IconsManager::instance()->iconByPath("view-refresh"), tr("Simple view"), this);
 	DockAction->setCheckable(true);
 	connect(DockAction, SIGNAL(triggered(bool)), this, SLOT(simpleViewToggle(bool)));
-	DockingManager::instance()->dockMenu()->insertAction(DockingManager::instance()->dockMenu()->actions().last(), DockAction);
+	DockingManager::instance()->registerModuleAction(DockAction);
 
 	KaduWindowHandle = Core::instance()->kaduWindow();
 	MainWindowHandle = KaduWindowHandle->findMainWindow(KaduWindowHandle);
@@ -73,7 +73,7 @@ SimpleView::~SimpleView()
 	simpleViewToggle(false);
 
 	if (!Core::instance()->isClosing())
-		DockingManager::instance()->dockMenu()->removeAction(DockAction);
+		DockingManager::instance()->unregisterModuleAction(DockAction);
 
 	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/simpleview.ui"));
 	MainConfigurationWindow::unregisterUiHandler(SimpleViewConfigUi::instance());

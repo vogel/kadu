@@ -388,6 +388,13 @@ void DockingManager::updateContextMenu()
 		}
 	}
 
+	if (!ModulesActions.isEmpty())
+	{
+		foreach (QAction *action, ModulesActions)
+			DockMenu->addAction(action);
+
+		DockMenu->addSeparator();
+	}
 	DockMenu->addAction(CloseKaduAction);
 }
 
@@ -445,6 +452,25 @@ void DockingManager::createDefaultConfiguration()
 	config_file.addVariable("General", "RunDocked", false);
 	config_file.addVariable("General", "ShowTooltipInTray", true);
 	config_file.addVariable("Look", "NewMessageIcon", 0);
+}
+
+void DockingManager::registerModuleAction(QAction *action)
+{
+	if (ModulesActions.contains(action))
+		return;
+
+	ModulesActions.append(action);
+	updateContextMenu();
+}
+
+void DockingManager::unregisterModuleAction(QAction *action)
+{
+	if (!ModulesActions.contains(action))
+		return;
+
+	ModulesActions.removeAll(action);
+
+	updateContextMenu();
 }
 
 #ifdef Q_OS_MAC

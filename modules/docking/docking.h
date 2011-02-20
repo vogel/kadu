@@ -60,6 +60,8 @@ class DOCKINGAPI DockingManager : public QObject, ConfigurationAwareObject, Stat
 	QAction *CloseKaduAction;
 	QAction *containersSeparator;
 
+	QList<QAction *> ModulesActions;
+
 	QMap<StatusContainer *, QAction *> StatusContainerMenus;
 
 	enum IconType {BlinkingEnvelope = 0, StaticEnvelope = 1, AnimatedEnvelope = 2} newMessageIcon;
@@ -104,6 +106,9 @@ public:
 	void showMinimizedChats();
 	void dockIconClicked();
 #endif
+
+	void registerModuleAction(QAction *action);
+	void unregisterModuleAction(QAction *action);
 
 signals:
 	void mousePressMidButton();
