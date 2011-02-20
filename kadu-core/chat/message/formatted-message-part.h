@@ -57,7 +57,7 @@ class KADUAPI FormattedMessagePart
 	QColor Color;
 
 	bool IsImage;
-	QString ImageFileName;
+	QString ImagePath;
 
 public:
 	/**
@@ -74,7 +74,7 @@ public:
 	 * Creates image message part (ready or to-be-received).
 	 * @arg imagePath local image path
 	 */
-	explicit FormattedMessagePart(const QString &imageFileName);
+	explicit FormattedMessagePart(const QString &imagePath);
 	virtual ~FormattedMessagePart();
 
 	bool isImage() const { return IsImage; }
@@ -86,8 +86,7 @@ public:
 	bool underline() const { return Underline; }
 	const QColor & color() const { return Color; }
 
-	// TODO 0.6.6: rename to imageFileName once we're saving sent images in imagesPath
-	const QString & imagePath() const { return ImageFileName; }
+	QString imagePath() const;
 
 	/**
 	 * Converts message part to HTML - either formatted text or image.
