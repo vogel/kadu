@@ -423,6 +423,7 @@ void JabberClient::connect(const XMPP::Jid &jid, const QString &password, bool a
 	QStringList features;
 	features << "http://jabber.org/protocol/disco#info"
 	<< "http://jabber.org/protocol/chatstates"
+	<< "http://jabber.org/protocol/xhtml-im" // read only support
 	<< "jabber:iq:version"
 	<< "jabber:x:data"
 	<< "urn:xmpp:avatar:data"

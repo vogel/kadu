@@ -121,24 +121,35 @@ void JabberChatService::clientMessageReceived(const XMPP::Message &msg)
 	bool ignore = false;
 
 	time_t msgtime = msg.timeStamp().toTime_t();
+
 	QByteArray body = msg.body().toUtf8();
+
 	emit filterRawIncomingMessage(chat, contact, body, ignore);
+	if (ignore)
+		return;
 
-	FormattedMessage formattedMessage(QString::fromUtf8(body));
-
-	QString plain = formattedMessage.toPlain();
+	QString plain = QString::fromUtf8(body);
 
 	emit filterIncomingMessage(chat, contact, plain, msgtime, ignore);
 	if (ignore)
 		return;
 
-	HtmlDocument::escapeText(plain);
-
 	Message message = Message::create();
+	if (msg.containsHTML() && !msg.html().text().isEmpty())
+	{
+		QString html = msg.html().toString("span");
+		html.remove("\n");
+		message.setContent(html);
+	}
+	else
+	{
+		HtmlDocument::escapeText(plain);
+		message.setContent(plain);
+	}
+
 	message.setMessageChat(chat);
 	message.setType(Message::TypeReceived);
 	message.setMessageSender(contact);
-	message.setContent(plain);
 	message.setSendDate(msg.timeStamp());
 	message.setReceiveDate(QDateTime::currentDateTime());
 
