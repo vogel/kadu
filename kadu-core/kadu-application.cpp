@@ -40,50 +40,10 @@
 #include "os/generic/compositing-aware-object.h"
 #endif // Q_WS_X11 && !Q_WS_MAEMO_5
 
-#ifdef Q_OS_MAC
-#include "core/core.h"
-#include "gui/windows/kadu-window.h"
-#include "gui/widgets/chat-widget-manager.h"
-#include "chat/message/pending-messages-manager.h"
-
-static OSStatus appleEventProcessor(const AppleEvent *ae, AppleEvent *event, long handlerRefCon)
-{
-	Q_UNUSED(event)
-	Q_UNUSED(handlerRefCon)
-
-	OSType aeID = typeWildCard;
-	OSType aeClass = typeWildCard;
-
-	AEGetAttributePtr(ae, keyEventClassAttr, typeType, 0, &aeClass, sizeof(aeClass), 0);
-	AEGetAttributePtr(ae, keyEventIDAttr, typeType, 0, &aeID, sizeof(aeID), 0);
-
-	if (aeClass == kCoreEventClass)
-	{
-		if (aeID == kAEReopenApplication)
-		{
-			if (PendingMessagesManager::instance()->hasPendingMessages())
-				ChatWidgetManager::instance()->openPendingMessages(true);
-			else
-				Core::instance()->kaduWindow()->show();
-		}
-		return noErr;
-	}
-
-	return eventNotHandledErr;
-}
-#endif // Q_OS_MAC
-
 KaduApplication::KaduApplication(int &argc, char *argv[]) :
 		QApplication(argc, argv)
 {
 	setApplicationName("Kadu");
-
-#ifdef Q_OS_MAC
-	/* Install Reopen Application Event (Dock Clicked) */
-	m_appleEventProcessorUPP = AEEventHandlerUPP(appleEventProcessor);
-	AEInstallEventHandler(kCoreEventClass, kAEReopenApplication,
-		m_appleEventProcessorUPP, (long) this, true);
-#endif // Q_OS_MAC
 
 #if defined(Q_WS_X11) && !defined(Q_WS_MAEMO_5)
 	xfixes_event_base = -1;

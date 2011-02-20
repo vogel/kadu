@@ -100,6 +100,11 @@ public:
 
 	void setDocker(Docker *docker);
 
+#ifdef Q_OS_MAC
+	void showMinimizedChats();
+	void dockIconClicked();
+#endif
+
 signals:
 	void mousePressMidButton();
 	void mousePressLeftButton();

@@ -1,8 +1,9 @@
 /*
  * %kadu copyright begin%
  * Copyright 2010, 2011 Tomasz Rostaski (rozteck@interia.pl)
- * Copyright 2011 Adam "Vertex" Makświej (vertexbz@gmail.com)
  * %kadu copyright end%
+ *
+ * Copyright 2011 Adam "Vertex" Makświej (vertexbz@gmail.com)
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -29,6 +30,7 @@ typedef long NSInteger;
 typedef int NSInteger;
 #endif
 
+struct MacDockingHelperStruct;
 class MacDockingHelper : public QObject
 {
 	Q_OBJECT
@@ -37,8 +39,10 @@ private:
 	static MacDockingHelper *Instance;
 	NSInteger currentAttentionRequest;
 	bool isBouncing;
+	MacDockingHelperStruct *d;
 	MacDockingHelper(QObject *parent = 0);
 	~MacDockingHelper();
+	void showMinimizedChats();
 
 public:
 	static MacDockingHelper *instance()
@@ -47,6 +51,15 @@ public:
 			Instance = new MacDockingHelper();
 		return Instance;
 	};
+	static void destroyInstance()
+	{
+		if (Instance)
+		{
+			delete Instance;
+			Instance = 0;
+		}
+	};
+
 	void startBounce();
 	void stopBounce();
 	void removeOverlay();

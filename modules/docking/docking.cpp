@@ -16,6 +16,8 @@
  * Copyright 2010, 2011 Tomasz Rostański (rozteck@interia.pl)
  * %kadu copyright end%
  *
+ * Copyright 2011 Adam "Vertex" Makświej (vertexbz@gmail.com)
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; either version 2 of
@@ -76,10 +78,16 @@ void DockingManager::createInstance()
 {
 	if (!Instance)
 		Instance = new DockingManager();
+#ifdef Q_OS_MAC
+	MacDockingHelper::instance();
+#endif
 }
 
 void DockingManager::destroyInstance()
 {
+#ifdef Q_OS_MAC
+	MacDockingHelper::destroyInstance();
+#endif
 	delete Instance;
 	Instance = 0;
 }
@@ -204,7 +212,7 @@ void DockingManager::pendingMessageAdded()
 void DockingManager::pendingMessageDeleted()
 {
 #ifdef Q_OS_MAC
-	MacDockingHelper::instance()->removeOverlay();
+	MacDockingHelper::instance()->overlay(PendingMessagesManager::instance()->pendingMessages().count());
 	MacDockingHelper::instance()->stopBounce();
 #endif
 	if (!PendingMessagesManager::instance()->hasPendingMessages())
@@ -324,6 +332,7 @@ void DockingManager::setDocker(Docker *docker)
 	{
 		changeIcon();
 		defaultToolTip();
+#ifndef Q_OS_MAC
 		if (config_file.readBoolEntry("General", "RunDocked"))
 			Core::instance()->setShowMainWindowOnStart(false);
 		Core::instance()->kaduWindow()->setDocked(true);
@@ -333,6 +342,7 @@ void DockingManager::setDocker(Docker *docker)
  		if (!Core::instance()->isClosing())
 			Core::instance()->kaduWindow()->show();
 		Core::instance()->kaduWindow()->setDocked(false);
+#endif
 	}
 }
 
@@ -436,3 +446,42 @@ void DockingManager::createDefaultConfiguration()
 	config_file.addVariable("General", "ShowTooltipInTray", true);
 	config_file.addVariable("Look", "NewMessageIcon", 0);
 }
+
+#ifdef Q_OS_MAC
+void DockingManager::showMinimizedChats()
+{
+	foreach (ChatWidget *chat, ChatWidgetManager::instance()->chats())
+	{
+		ChatWidgetManager::instance()->activateChatWidget(chat, false);
+	}
+}
+
+void DockingManager::dockIconClicked()
+{
+	QWidget *kadu = Core::instance()->kaduWindow();
+
+	if (PendingMessagesManager::instance()->hasPendingMessages())
+	{
+		ChatWidgetManager::instance()->openPendingMessages(true);
+		return;
+	}
+
+	if (kadu->isMinimized())
+	{
+		kadu->showNormal();
+		showMinimizedChats();
+		return;
+	}
+	else if (kadu->isVisible())
+	{
+		//raczej nie bedziemy ukrywac okna klikajac ikonke w docku
+		//kadu->hide();
+	}
+	else
+	{
+		kadu->show();
+		showMinimizedChats();
+	}
+	return;
+}
+#endif

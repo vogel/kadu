@@ -1,8 +1,9 @@
 /*
  * %kadu copyright begin%
  * Copyright 2010, 2011 Tomasz Rostański (rozteck@interia.pl)
- * Copyright 2011 Adam "Vertex" Makświej (vertexbz@gmail.com)s
  * %kadu copyright end%
+ *
+ * Copyright 2011 Adam "Vertex" Makświej (vertexbz@gmail.com)
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -20,23 +21,74 @@
 
 #include <QtGui/QApplication>
 #include <QtGui/QIcon>
-
-#include "ApplicationServices/ApplicationServices.h"
 #include <Cocoa/Cocoa.h>
 
+#include "ApplicationServices/ApplicationServices.h"
 #include "mac_docking_helper.h"
+#include "core/core.h"
+#include "gui/windows/kadu-window.h"
+#include "configuration/configuration-file.h"
+#include "docking.h"
+
+@interface MacDockingHelperObjC : NSObject {
+}
+
+- (id) init;
+- (void) appReopen:(NSAppleEventDescriptor *)event withReplyEvent:(NSAppleEventDescriptor *)replyEvent;
+@end
+
+@implementation MacDockingHelperObjC
+- (id) init
+{
+	NSAutoreleasePool *pool = [NSAutoreleasePool new];
+	[super init];
+	[[NSAppleEventManager sharedAppleEventManager] setEventHandler:self
+		andSelector:@selector(appReopen:withReplyEvent:)
+		forEventClass:kCoreEventClass
+		andEventID:kAEReopenApplication];
+	[pool release];
+	return self;
+}
+
+- (void) dealloc
+{
+	NSAutoreleasePool *pool = [NSAutoreleasePool new];
+	[[NSAppleEventManager sharedAppleEventManager] removeEventHandlerForEventClass:kCoreEventClass
+		andEventID:kAEReopenApplication];
+	[pool release];
+	[super dealloc];
+}
+
+- (void) appReopen:(NSAppleEventDescriptor *)event withReplyEvent:(NSAppleEventDescriptor *)replyEvent
+{
+	Q_UNUSED(event)
+	Q_UNUSED(replyEvent)
+	DockingManager::instance()->dockIconClicked();
+}
+@end
+
+struct MacDockingHelperStruct { MacDockingHelperObjC * macDockingHelperObjC; };
 
 MacDockingHelper *MacDockingHelper::Instance = 0;
 
-MacDockingHelper::MacDockingHelper(QObject *parent) : QObject(parent)
+MacDockingHelper::MacDockingHelper(QObject *parent) : QObject(parent) , d( new MacDockingHelperStruct )
 {
 	isBouncing = false;
+	d->macDockingHelperObjC = [[MacDockingHelperObjC alloc] init];
+	if (config_file.readBoolEntry("General", "RunDocked"))
+		Core::instance()->setShowMainWindowOnStart(false);
+	Core::instance()->kaduWindow()->setDocked(true);
 }
 
 MacDockingHelper::~MacDockingHelper()
 {
 	stopBounce();
 	removeOverlay();
+	if (!Core::instance()->isClosing())
+		Core::instance()->kaduWindow()->show();
+	Core::instance()->kaduWindow()->setDocked(false);
+	[d->macDockingHelperObjC release];
+	delete d;
 }
 
 void MacDockingHelper::startBounce()
@@ -65,6 +117,10 @@ void MacDockingHelper::removeOverlay()
 
 void MacDockingHelper::overlay(const NSInteger count)
 {
+	if (count == 0) {
+		removeOverlay();
+		return;
+	}
 	QPixmap pixmap = qApp->windowIcon().pixmap(128, 128);
 	CGImageRef image = pixmap.toMacCGImageRef();
 
