@@ -7,6 +7,7 @@
 * gui: #1903 fixed: Invalid icon of "Change Status" action (Vogel, WhE)
 * jabber: #1988 fixed: "Send inactivity events" options is always active after opening "Your accounts" window (WhE)
 * gadu: #1967 fixed: multilogon ips are displayed improperly (Vogel)
+* chat: #1819 fixed: properly display system messages in Satin style (Vogel)
 
 +++ version 0.6.6-beta17
 * gui: always use bold font on buddies with new messages (Vogel)
