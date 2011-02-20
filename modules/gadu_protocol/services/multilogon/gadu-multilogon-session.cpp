@@ -17,6 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "netinet/in.h"
+
 #include "gadu-multilogon-session.h"
 
 GaduMultilogonSession::GaduMultilogonSession(Account account, QObject *parent) :
@@ -37,7 +39,7 @@ GaduMultilogonSession::GaduMultilogonSession(Account account, const gg_multilogo
 	setName(session.name);
 
 	QHostAddress remoteAddress;
-	remoteAddress.setAddress(session.remote_addr);
+	remoteAddress.setAddress(ntohl(session.remote_addr));
 	setRemoteAddres(remoteAddress);
 
 	QDateTime logonTime;
