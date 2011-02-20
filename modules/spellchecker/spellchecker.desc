@@ -1,4 +1,5 @@
 [Module]
 Description=Checker of spelling mistakes
+Description[pl]=Sprawdza b³êdy pisowni
 Author=nazgul,Googie,Kadu Team
 Version=core

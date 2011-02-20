@@ -1,6 +1,6 @@
 [Module]
 Description=FALF media player support module
-Description[pl]=Modul obslugi odtwarzacza FALF
+Description[pl]=Modu³ obs³ugi odtwarzacza FALF
 Author=amdfanatyk
 Provides=media_player
 Conflicts=media_player

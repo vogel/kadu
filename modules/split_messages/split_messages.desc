@@ -1,6 +1,6 @@
 [Module]
 Description=Automatically split too long messages
-Description[pl]=Automatyczne dzielenie zbyt dlugich wiadomosci
+Description[pl]=Automatyczne dzielenie zbyt d³ugich wiadomo¶ci
 Author=PK Team, Dorregaray
 LoadByDefault=false
 Version=0.3.1

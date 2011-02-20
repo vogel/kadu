@@ -1,6 +1,6 @@
 [Module]
 Description=Notification by qt4_docking module
-Description[pl]=Modu³ powiadamiania u¿ytkownika o zdarzeniach przy pomocy modulu qt4_docking
+Description[pl]=Modu³ powiadamiania u¿ytkownika o zdarzeniach przy pomocy modu³u qt4_docking
 Author=Kadu Team
 Dependencies=qt4_docking
 Provides=notify_method

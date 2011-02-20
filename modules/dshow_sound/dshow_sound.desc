@@ -1,6 +1,6 @@
 [Module]
 Description=Direct Show sound module
-Description[pl]=ModuÅ‚ obsÅ‚ugi dzwiÄ™ku uÅ¼ywajÄ…cy Direct Show
+Description[pl]=Modu³ obs³ugi d¼wiêku u¿ywaj±cy Direct Show
 Author=Kadu Team
 Dependencies=sound
 Provides=sound_driver

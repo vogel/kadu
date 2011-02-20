@@ -1,6 +1,6 @@
 [Module]
 Description=Extends Kadu Parser
-Description[pl]=Rozszerza mozliwosci Parsera Kadu
+Description[pl]=Rozszerza mo¿liwo¶ci Parsera Kadu
 Author=Dorregaray
 LoadByDefault=false
 Version=0.2

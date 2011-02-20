@@ -1,5 +1,6 @@
 [Module]
 Description=Server Monitor Module
+Description[pl]=Modu³ monitoruj±cy dostêpno¶æ serwerów
 Author=Jan Ziemkiewicz
 Dependencies=gadu_protocol
 Version=0.1

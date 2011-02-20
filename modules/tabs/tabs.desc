@@ -1,6 +1,6 @@
 [Module]
 Description=Tabbed chat dialog module
-Description[pl]=Moduï¿½ okna rozmowy z kartami
+Description[pl]=Modu³ okna rozmowy z kartami
 Author=Michal Podsiadlik, Kadu Team
 LoadByDefault=true
 Version=core

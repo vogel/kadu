@@ -1,6 +1,6 @@
 [Module]
 Description=Idle Timer
-Description[pl]=Wykrywanie bezczynnosci
+Description[pl]=Wykrywanie bezczynno¶ci
 Author=Kadu Team
 Base=true
 LoadByDefault=false

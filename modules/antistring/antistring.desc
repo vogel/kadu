@@ -1,6 +1,6 @@
 [Module]
 Description=Antistring
-Description[pl]=Ochrona przed lancuszkami
+Description[pl]=Ochrona przed ³añcuszkami
 Author=PK Team, Dorregaray
 LoadByDefault=false
 Version=0.3

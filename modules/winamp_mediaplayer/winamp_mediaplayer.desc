@@ -1,7 +1,7 @@
 [Module]
-Description=WinAMP media player support module
-Description[pl]=Modul obslugi odtwarzacza WinAMP
-Author=Micha≈Ç Podsiadlik <michal@kadu.net>
+Description=Winamp media player support module
+Description[pl]=Modul obs≥ugi odtwarzacza Winamp
+Author=Micha≥ Podsiadlik <michal@kadu.net>
 Provides=media_player
 Conflicts=media_player
 Dependencies=mediaplayer

@@ -1,6 +1,6 @@
 [Module]
-Description=Amarok 2.x media player support module
-Description[pl]=Modu³ obs³ugi odtwarzacza Amarok 2.x
+Description=Dragon Player media player support module
+Description[pl]=Modu³ obs³ugi odtwarzacza Dragon Player
 Author=Kadu Team
 Provides=media_player
 Conflicts=media_player
