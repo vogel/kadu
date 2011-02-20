@@ -57,7 +57,7 @@ endif (NOT KADU_VERSION)
 
 if (WIN32)
 	# Add more version info to files
-	string (REGEX REPLACE "(.+)\\.(.+)\\.(.+)[.-].*" "\\1, \\2, \\3" NUMERIC_VERSION ${KADU_VERSION})
+	string (REGEX REPLACE "(.+)\\.(.+)\\.(.+)[.-].*" "\\1, \\2, \\3, 0" NUMERIC_VERSION ${KADU_VERSION})
 	set (PACKAGE_VERSION ${KADU_VERSION})
 
 	# package
@@ -179,6 +179,8 @@ macro (kadu_module)
 	if (WIN32)
 		include_directories (${CMAKE_SOURCE_DIR}/modules)
 
+		# opisy .desc sa w iso-8859-2
+		set (CMAKE_RC_FLAGS "-c 28592")
 		# wygeneruj plik z wersja modulu
 		if (${${MODULE_NAME}} STREQUAL SHARED)
 			set (MODULE_SOURCES ${MODULE_SOURCES} ${MODULE_NAME}.rc)
