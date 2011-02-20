@@ -1,5 +1,6 @@
 +++ version 0.6.6-beta18
 * chat: #1963 fixed: crash on opening chats, when citing from history is greater than message prunning setting (WhE)
+* jabber: #1972: Kadu sends invalid version string in capabilities information - XEP-0115: Entity Capabilities (WhE)
 
 +++ version 0.6.6-beta17
 * gui: always use bold font on buddies with new messages (Vogel)

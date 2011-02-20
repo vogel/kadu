@@ -166,6 +166,9 @@ namespace XMPP
 		 */
 		void setFileTransfersEnabled(bool flag, const QString &localAddress = QString());
 
+		// TODO 0.10: move this to proper place:
+		QString calculateCapsVersion(const DiscoItem::Identity &identity, const QStringList &features);
+
 	private slots:
 		/* S5B server object has been destroyed. */
 		void slotS5BServerGone();
