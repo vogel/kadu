@@ -19,6 +19,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QDir>
+#include <QtCore/QFile>
 #include <QtCore/QFileInfo>
 #include <QtCore/QRegExp>
 #include <QtGui/QTextBlock>
@@ -29,6 +31,27 @@
 #include "icons-manager.h"
 
 #include "formatted-message.h"
+
+QString FormattedMessage::saveInImagesPath(const QString &filePath)
+{
+	QFileInfo fileInfo(filePath);
+	if (!fileInfo.exists())
+		return filePath;
+
+	QFileInfo imagesPathInfo(ChatImageService::imagesPath());
+	if (!imagesPathInfo.isDir() && !QDir().mkdir(imagesPathInfo.absolutePath()))
+		return filePath;
+
+	// if already in imagesPath, it'd be a waste to copy it in the same dir
+	if (fileInfo.absolutePath() == imagesPathInfo.absolutePath())
+		return fileInfo.fileName();
+
+	QString copyFileName = QUuid::createUuid().toString();
+	if (QFile::copy(filePath, imagesPathInfo.absolutePath() + '/' + copyFileName))
+		return copyFileName;
+
+	return filePath;
+}
 
 void FormattedMessage::parseImages(FormattedMessage &message, const QString &messageString, bool b, bool i, bool u, QColor color)
 {
@@ -50,7 +73,7 @@ void FormattedMessage::parseImages(FormattedMessage &message, const QString &mes
 		QString filePath = imageRegExp.cap(1);
 		QFileInfo fileInfo(filePath);
 		if (fileInfo.isAbsolute() && fileInfo.exists() && fileInfo.isFile())
-			message << FormattedMessagePart(filePath);
+			message << FormattedMessagePart(saveInImagesPath(filePath));
 		else
 			message << FormattedMessagePart(messageString.mid(pos, imageRegExp.matchedLength()), b, i, u, color);
 

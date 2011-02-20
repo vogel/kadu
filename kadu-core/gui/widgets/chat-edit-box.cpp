@@ -267,14 +267,6 @@ void ChatEditBox::openInsertImageDialog()
 		if (!message.isEmpty() && !MessageDialog::ask(QString(), tr("Kadu"), message))
 			return;
 
-		QString path = ChatImageService::imagesPath();
-		if (QFileInfo(path).isDir() ||QDir().mkdir(path))
-		{
-			QString copyFilePath = path + QUuid::createUuid().toString();
-			if (QFile::copy(selectedFile, copyFilePath))
-				selectedFile = copyFilePath;
-		}
-
 		InputBox->insertPlainText(QString("[IMAGE %1]").arg(selectedFile));
 	}
 }
