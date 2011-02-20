@@ -421,12 +421,13 @@ void JabberClient::connect(const XMPP::Jid &jid, const QString &password, bool a
 	jabberClient->setIdentity(identity);
 
 	QStringList features;
-	features << "http://jabber.org/protocol/chatstates";
-//	features << "http://jabber.org/protocol/commands";
-	features << "http://jabber.org/protocol/rosterx";
-	features << "jabber:iq:version";
-	features << "jabber:x:data";
-	features << "urn:xmpp:avatar:metadata+notify";
+	features << "http://jabber.org/protocol/disco#info"
+	<< "http://jabber.org/protocol/chatstates"
+	<< "jabber:iq:version"
+	<< "jabber:x:data"
+	<< "urn:xmpp:avatar:data"
+	<< "urn:xmpp:avatar:metadata"
+	<< "urn:xmpp:avatar:metadata+notify";
 
 	jabberClient->setFeatures(Features(features));
 
