@@ -172,8 +172,7 @@ MessageRenderInfo::MessageRenderInfo(const Message &msg) :
 	while ((pos = kaduimgRegExp.indexIn(HtmlMessageContent, pos)) != -1)
 	{
 		QString imgId = kaduimgRegExp.cap(1);
-		// TODO 0.6.6: remove the first condition before RC release (will break compatibility with sent images saved in history by beta11)
-		if (!imgId.startsWith('/') && !QFile(ChatImageService::imagesPath() + imgId).exists())
+		if (!QFile(ChatImageService::imagesPath() + imgId).exists())
 			HtmlMessageContent.replace(kaduimgRegExp.cap(0), loadingImageHtml(imgId));
 		else
 			pos += kaduimgRegExp.matchedLength();

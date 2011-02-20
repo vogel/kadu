@@ -247,10 +247,8 @@ void KaduWebView::saveImage()
 	kdebugf();
 
 	QUrl imageUrl = page()->currentFrame()->hitTestContent(ContextMenuPos).imageUrl();
-	QString imageFullPath = imageUrl.scheme() == "kaduimg"
-			? (imageUrl.path().startsWith("//") // TODO 0.6.6: remove before RC release (will break compatibility with sent images saved in history by beta11)
-				? imageUrl.path()
-				: ChatImageService::imagesPath() + imageUrl.path())
+	QString imageFullPath = (imageUrl.scheme() == "kaduimg")
+			? ChatImageService::imagesPath() + imageUrl.path()
 			: imageUrl.toLocalFile();
 	if (imageFullPath.isEmpty())
 		return;
