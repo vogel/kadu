@@ -235,6 +235,9 @@ const QIcon & IconsManager::iconByPath(const QString &path, bool allowEmpty)
 			}
 
 			if (icon.isNull() && !allowEmpty)
+				icon = buildSvgIcon("kadu_icons/0");
+
+			if (icon.isNull() && !allowEmpty)
 				icon = buildPngIcon("kadu_icons/0");
 
 		}

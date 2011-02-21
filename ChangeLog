@@ -12,6 +12,7 @@
 * gui: #1886 fixed: removed unused proxy configuration widgets (Vogel)
 * jabber: #1914 fixed: added information about Facebook username (Vogel)
 * status: #1845 fixed: if Identity has a connected Gadu-Gadu account, always use its status (i.e., status icon, status menu, etc.) (beevvy, WhE)
+* icons: #1989 fixed: Oxygen's dialog-warning icons works again (ultr)
 
 +++ version 0.6.6-beta17
 * gui: always use bold font on buddies with new messages (Vogel)
