@@ -394,7 +394,11 @@ void Core::statusChanged()
 {
 	kdebugf();
 
-	setIcon(StatusContainerManager::instance()->statusIcon());
+	Account account = AccountManager::instance()->defaultAccount();
+	if (account.isNull() || !account.protocolHandler())
+		setIcon(StatusContainerManager::instance()->statusIcon());
+	else
+		setIcon(StatusContainerManager::instance()->statusIcon(account.protocolHandler()->status()));
 }
 
 void Core::kaduWindowDestroyed()

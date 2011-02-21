@@ -186,10 +186,9 @@ void DockingManager::changeIcon()
 				if (account.isNull() || !account.protocolHandler())
 					return;
 
-				const Status &stat = account.protocolHandler()->status();
-
 				if (CurrentDocker)
-					CurrentDocker->changeTrayIcon(StatusContainerManager::instance()->statusIcon(stat));
+					CurrentDocker->changeTrayIcon(
+							StatusContainerManager::instance()->statusIcon(account.protocolHandler()->status()));
 
 				icon_timer->setSingleShot(true);
 				icon_timer->start(500);
@@ -217,7 +216,7 @@ void DockingManager::pendingMessageDeleted()
 #endif
 	if (!PendingMessagesManager::instance()->hasPendingMessages())
 		if (CurrentDocker)
-			CurrentDocker->changeTrayIcon(StatusContainerManager::instance()->statusIcon());
+			CurrentDocker->changeTrayIcon(defaultPixmap());
 }
 
 void DockingManager::defaultToolTip()
@@ -312,7 +311,6 @@ void DockingManager::searchingForTrayPosition(QPoint &point)
 {
 	if (CurrentDocker)
 		point = CurrentDocker->trayPosition();
-
 }
 
 QIcon DockingManager::defaultPixmap()
