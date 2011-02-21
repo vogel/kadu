@@ -202,7 +202,7 @@ void Core::createDefaultConfiguration()
 	config_file.addVariable("General", "LookChatAdvanced_Geometry", "50, 50, 620, 540");
 
 	config_file.addVariable("Look", "AlignUserboxIconsTop", true);
-	config_file.addVariable("Look", "AvatarBorder", true);
+	config_file.addVariable("Look", "AvatarBorder", false);
 	config_file.addVariable("Look", "AvatarGreyOut", true);
 	config_file.addVariable("Look", "ChatContents", QString());
 	config_file.addVariable("Look", "ChatFont", qApp->font());
