@@ -156,6 +156,12 @@ Account AccountManager::defaultAccount()
 	QMutexLocker(&mutex());
 
 	ensureLoaded();
+
+	// TODO: hack
+	foreach (const Account &account, items())
+		if (account.protocolName() == "gadu")
+			return account;
+
 	return byIndex(0);
 }
 

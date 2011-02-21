@@ -161,7 +161,10 @@ Account IdentityShared::bestAccount()
 	foreach (const Account &account, Accounts)
 		if (account.details() && account.data())
 		{
-			if (resultStatus == Status() || account.data()->status() < resultStatus)
+			// TODO: hack
+			if (resultStatus == Status() || account.data()->status() < resultStatus ||
+					(account.data()->status() == resultStatus &&
+					account.protocolName() == "gadu" && result.protocolName() != "gadu"))
 			{
 				result = account;
 				resultStatus = account.data()->status();
