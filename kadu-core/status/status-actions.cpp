@@ -139,6 +139,9 @@ void StatusActions::statusChanged()
 		if (!statusType)
 			continue;
 
+		if (!CommonStatusIcons)
+			action->setIcon(MyStatusContainer->statusIcon(statusType->name()));
+
 		// For 'All xxx' status menu items - check only if all accounts have the same status
 		if (StatusContainerManager::instance() == MyStatusContainer)
 			action->setChecked(StatusContainerManager::instance()->allStatusEqual(statusType));
