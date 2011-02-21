@@ -96,7 +96,7 @@ KaduWindow::KaduWindow(QWidget *parent) :
 
 	configurationUpdated();
 
-	loadWindowGeometry(this, "General", "Geometry", 0, 50, 255, 565);
+	loadWindowGeometry(this, "General", "Geometry", 0, 50, 400, 650);
 
 #if defined(Q_OS_MAC)
 	/* Dorr: workaround for Qt window geometry bug when unified toolbars enabled */
