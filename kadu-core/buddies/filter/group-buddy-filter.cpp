@@ -54,5 +54,9 @@ void GroupBuddyFilter::refresh()
 
 void GroupBuddyFilter::setAllGroupShown(bool shown)
 {
+	if (AllGroupShown == shown)
+		return;
+
 	AllGroupShown = shown;
+	emit filterChanged();
 }
