@@ -211,7 +211,7 @@ Status AccountManager::status()
 	QMutexLocker(&mutex());
 
 	Account account = defaultAccount();
-	return !account.isNull()
+	return account.statusContainer()
 			? account.statusContainer()->status()
 			: Status();
 }
