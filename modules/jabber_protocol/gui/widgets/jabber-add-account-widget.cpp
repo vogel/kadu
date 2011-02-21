@@ -86,6 +86,16 @@ void JabberAddAccountWidget::createGui(bool showButtons)
 	{
 		Domain->setVisible(false);
 		AtLabel->setVisible(false);
+
+		QString toolTip = Factory->whatIsMyUsername();
+		if (!toolTip.isEmpty())
+		{
+			QLabel *whatIsMyUsernameLabel = new QLabel(tr("<a href='#'>What is my username?</a>"), this);
+			whatIsMyUsernameLabel->setTextInteractionFlags(Qt::LinksAccessibleByMouse);
+			jidLayout->addWidget(whatIsMyUsernameLabel, 0, 2, Qt::AlignRight);
+
+			connect(whatIsMyUsernameLabel, SIGNAL(linkActivated(QString)), this, SLOT(showWhatIsMyUsername()));
+		}
 	}
 	else
 	{
@@ -196,4 +206,9 @@ void JabberAddAccountWidget::resetGui()
 
 	IdentityManager::instance()->removeUnused();
 	setState(StateNotChanged);
+}
+
+void JabberAddAccountWidget::showWhatIsMyUsername()
+{
+	MessageDialog::exec("dialog-information", Factory->displayName(), Factory->whatIsMyUsername());
 }

@@ -43,6 +43,7 @@ public:
 	virtual QString idLabel();
 	virtual bool allowChangeServer();
 	virtual QString defaultServer();
+	virtual QString whatIsMyUsername();
 
 	virtual QString name() { return "facebook"; }
 	virtual QString displayName() { return "Facebook"; }

@@ -57,6 +57,7 @@ class JabberAddAccountWidget : public AccountAddWidget
 
 private slots:
 	void dataChanged();
+	void showWhatIsMyUsername();
 
 public:
 	explicit JabberAddAccountWidget(JabberProtocolFactory *factory, bool showButtons, QWidget *parent = 0);

@@ -52,6 +52,7 @@ public:
 	virtual QValidator::State validateId(QString id);
 	virtual bool allowChangeServer();
 	virtual QString defaultServer();
+	virtual QString whatIsMyUsername() { return QString(); }
 
 	virtual QString name() { return "jabber"; }
 	virtual QString displayName() { return "Jabber/XMPP"; }
