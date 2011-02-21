@@ -71,7 +71,6 @@ class KaduWindowActions : QObject, ConfigurationAwareObject
 	ActionDescription *OnlineAndDescriptionUsers;
 	ActionDescription *EditUser;
 	ActionDescription *ChangeStatus;
-	ActionDescription *UseProxy;
 
 private slots:
 	void statusChanged(StatusContainer *container, Status status);
@@ -82,7 +81,6 @@ private slots:
 	void onlineAndDescUsersActionCreated(Action *action);
 	void editUserActionCreated(Action *action);
 	void changeStatusActionCreated(Action *action);
-	void useProxyActionCreated(Action *action);
 	void showInfoPanelActionCreated(Action *action);
 	void showBlockedActionCreated(Action *action);
 
@@ -116,7 +114,6 @@ private slots:
 	void onlineAndDescUsersActionActivated(QAction *sender, bool toggled);
 	void editUserActionActivated(QAction *sender, bool toggled);
 	void changeStatusActionActivated(QAction *sender, bool toggled);
-	void useProxyActionActivated(QAction *sender, bool toggled);
 
 protected:
 	virtual void configurationUpdated();

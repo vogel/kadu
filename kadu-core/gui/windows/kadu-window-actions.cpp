@@ -351,13 +351,6 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 	);
 	connect(ChangeStatus, SIGNAL(actionCreated(Action *)), this, SLOT(changeStatusActionCreated(Action *)));
 
-	UseProxy = new ActionDescription(this,
-		ActionDescription::TypeGlobal, "useProxyAction",
-		this, SLOT(useProxyActionActivated(QAction *, bool)),
-		"kadu_icons/use-proxy", tr("Use Proxy"), true
-	);
-	connect(UseProxy, SIGNAL(actionCreated(Action *)), this, SLOT(useProxyActionCreated(Action *)));
-
 	connect(StatusChangerManager::instance(), SIGNAL(statusChanged(StatusContainer *, Status)), this, SLOT(statusChanged(StatusContainer *, Status)));
 	foreach (StatusContainer *statusContainer, StatusContainerManager::instance()->statusContainers())
 		statusChanged(statusContainer, StatusChangerManager::instance()->realStatus(statusContainer));
@@ -461,11 +454,6 @@ void KaduWindowActions::changeStatusActionCreated(Action *action)
 		Status status = StatusChangerManager::instance()->realStatus(statusContainer);
 		action->setIcon(statusContainer->statusIcon(status).pixmap(16,16));
 	}
-}
-
-void KaduWindowActions::useProxyActionCreated(Action *action)
-{
-	action->setChecked(config_file.readBoolEntry("Network", "UseProxy", false));
 }
 
 void KaduWindowActions::showInfoPanelActionCreated(Action *action)
@@ -907,16 +895,6 @@ void KaduWindowActions::changeStatusActionActivated(QAction *sender, bool toggle
 	QScopedPointer<QMenu> menu(new QMenu());
 	new StatusMenu(container, menu.data());
 	menu->exec(QCursor::pos());
-}
-
-void KaduWindowActions::useProxyActionActivated(QAction *sender, bool toggled)
-{
-	Q_UNUSED(sender)
-
-	config_file.writeEntry("Network", "UseProxy", toggled);
-
-	foreach (Action *action, UseProxy->actions())
-		action->setChecked(toggled);
 }
 
 void KaduWindowActions::configurationUpdated()

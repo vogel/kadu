@@ -9,6 +9,7 @@
 * gadu: #1967 fixed: multilogon ips are displayed improperly (Vogel)
 * chat: #1819 fixed: properly display system messages in Satin style (Vogel)
 * history: #1564 fixed: save contacts statuses after login (Vogel)
+* gui: #1886 fixed: removed unused proxy configuration widgets (Vogel)
 
 +++ version 0.6.6-beta17
 * gui: always use bold font on buddies with new messages (Vogel)

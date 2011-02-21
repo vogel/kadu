@@ -55,11 +55,6 @@ void ConfigWizardProfilePage::createGui()
 	NickNameEdit->setMaximumWidth(300);
 
 	formLayout()->addRow(tr("Nickname") + ':', NickNameEdit);
-
-	QPushButton *proxyConnectionButton = new QPushButton(tr("Configure..."));
-
-	formLayout()->addRow(tr("Proxy connection settings") + ':', proxyConnectionButton);
-	formLayout()->addRow(QString(), new QLabel(tr("<font size='-1'><i>for advanced users only</i></font>"), this));
 }
 
 void ConfigWizardProfilePage::setLanguages()
