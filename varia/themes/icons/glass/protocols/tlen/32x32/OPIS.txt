@@ -1,3 +1,0 @@
-32x32 do wykorzystania w Your Accounts oknie. 
-- siec ladowana przy starcie -> online
-- siec wylaczana przy starcie programu -> offline
