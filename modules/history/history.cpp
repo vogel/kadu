@@ -362,8 +362,11 @@ void History::enqueueMessage(const Message &message)
 	SaveThread->newDataAvailable();
 }
 
-void History::contactStatusChanged(Contact contact, Status status)
+void History::contactStatusChanged(Contact contact, Status oldStatus)
 {
+	Q_UNUSED(oldStatus)
+
+	Status status = contact.currentStatus();
 	if (!CurrentStorage || !SaveStatuses)
 		return;
 

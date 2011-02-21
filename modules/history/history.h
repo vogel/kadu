@@ -119,7 +119,7 @@ private slots:
 	void accountUnregistered(Account);
 
 	void enqueueMessage(const Message &);
-	void contactStatusChanged(Contact contact, Status status);
+	void contactStatusChanged(Contact contact, Status oldStatus);
 
 	void showHistoryActionActivated(QAction *sender, bool toggled);
 	void showMoreMessages(QAction *action);
