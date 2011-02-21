@@ -17,7 +17,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "netinet/in.h"
+#ifdef Q_OS_WIN
+#include <winsock2.h>
+#else
+#include <arpa/inet.h>
+#endif
 
 #include "gadu-multilogon-session.h"
 
