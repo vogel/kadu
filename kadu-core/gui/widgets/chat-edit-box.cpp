@@ -228,12 +228,6 @@ void ChatEditBox::openInsertImageDialog()
 			return;
 		}
 
-		if (f.size() >= (1 << 18)) // 256kB
-		{
-			MessageDialog::show("dialog-warning", tr("Kadu"), tr("This file is too big (%1 >= %2)").arg(f.size()).arg(1<<18), QMessageBox::Ok, this);
-			return;
-		}
-
 		int tooBigCounter = 0;
 		int disconnectedCounter = 0;
 
@@ -264,8 +258,11 @@ void ChatEditBox::openInsertImageDialog()
 				message += tr("Do you really want to send this image?\nSome of them probably will not get it.");
 		}
 
-		if (!message.isEmpty() && !MessageDialog::ask(QString(), tr("Kadu"), message))
+		if (!message.isEmpty() && !MessageDialog::ask("dialog-question", tr("Kadu"), message))
 			return;
+
+		if (f.size() >= (1 << 18)) // 256kB
+			MessageDialog::show("dialog-warning", tr("Kadu"), tr("This file is too big (%1 >= %2)").arg(f.size()).arg(1<<18), QMessageBox::Ok, this);
 
 		InputBox->insertPlainText(QString("[IMAGE %1]").arg(selectedFile));
 	}
