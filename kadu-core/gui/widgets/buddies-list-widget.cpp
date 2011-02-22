@@ -50,7 +50,8 @@ BuddiesListWidget::BuddiesListWidget(FilterPosition filterPosition, QWidget *par
 	View = new BuddiesListView(this);
 	View->addFilter(new PendingMessagesFilter(this));
 
-	View->addFilter(new AnonymousBuddyFilter(this));
+	AnonymousFilter = new AnonymousBuddyFilter(this);
+	View->addFilter(AnonymousFilter);
 
 	NameFilterWidget->setView(View);
 #ifndef Q_OS_MAC
@@ -78,6 +79,11 @@ BuddiesListWidget::~BuddiesListWidget()
 void BuddiesListWidget::clearFilter()
 {
 	NameFilterWidget->setFilter(QString());
+}
+
+void BuddiesListWidget::setShowAnonymous(bool show)
+{
+	AnonymousFilter->setEnabled(!show);
 }
 
 void BuddiesListWidget::nameFilterChanged(const QString &filter)
