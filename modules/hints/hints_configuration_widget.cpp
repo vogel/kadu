@@ -72,10 +72,10 @@ void HintsConfigurationWidget::showConfigurationWindow()
 
 void HintsConfigurationWidget::updatePreview()
 {
-	preview->setFont(config_file.readFontEntry("Hints", "Event_" + currentNotifyEvent + "_font"));
+	preview->setFont(config_file.readFontEntry("Hints", "Event_" + currentNotifyEvent + "_font", &qApp->font()));
 
-	QColor bcolor = config_file.readColorEntry("Hints", "Event_" + currentNotifyEvent + "_bgcolor");
-	QColor fcolor = config_file.readColorEntry("Hints", "Event_" + currentNotifyEvent + "_fgcolor");
+	QColor bcolor = config_file.readColorEntry("Hints", "Event_" + currentNotifyEvent + "_bgcolor", &qApp->palette().background().color());
+	QColor fcolor = config_file.readColorEntry("Hints", "Event_" + currentNotifyEvent + "_fgcolor", &qApp->palette().foreground().color());
 	QString style = QString("QWidget {color:%1; background-color:%2}").arg(fcolor.name(), bcolor.name());
 	preview->setStyleSheet(style);
 }
