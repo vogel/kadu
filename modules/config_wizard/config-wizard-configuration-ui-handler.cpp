@@ -74,7 +74,8 @@ void ConfigWizardConfigurationUiHandler::showConfigWizard()
 	kdebugf();
 
 	ConfigWizardWindow *wizard = new ConfigWizardWindow();
-	wizard->show();
+	// we have to delay it a bit to show after main window to have focus on startup
+	QMetaObject::invokeMethod(wizard, "show", Qt::QueuedConnection);
 }
 
 void ConfigWizardConfigurationUiHandler::showConfigWizardSlot()
