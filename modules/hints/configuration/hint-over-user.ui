@@ -9,7 +9,7 @@
 				<color-button caption="Border color" config-section="Hints" config-item="HintOverUser_bdcolor" id="bdcolor"/>
 				<spin-box caption="Border width" config-section="Hints" config-item="HintOverUser_borderWidth" min-value="1" max-value="10" step="1" suffix=" px" id="bdwidth"/>
 				<spin-box caption="Transparency" config-section="Hints" config-item="HintOverUser_transparency"
-						min-value="0" max-value="100" step="1" suffix=" %" />
+						min-value="0" max-value="100" step="1" suffix="%" />
 			</group-box>
 		</tab>
 	</section>

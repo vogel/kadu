@@ -9,7 +9,7 @@
                         <group-box name="General Settings">
 	                	<check-box caption="Show reset button" config-section="serverMonitor" config-item="showResetButton" />
 				<check-box caption="Auto refresh list" config-section="serverMonitor" config-item="autorefresh" />
-				<spin-box caption="Refresh interval" config-section="serverMonitor" config-item="timerInterval" suffix=" min." min-value="1" max-value="300" />
+				<spin-box caption="Refresh interval" config-section="serverMonitor" config-item="timerInterval" suffix="%n minute(s)" min-value="1" max-value="300" />
 			</group-box>
                 </tab>
         </section>

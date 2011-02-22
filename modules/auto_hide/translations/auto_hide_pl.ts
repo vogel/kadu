@@ -28,6 +28,15 @@
         <source>Autohide idle time</source>
         <translation>Czas bezczynności</translation>
     </message>
+    <message numerus="yes">
+        <location filename="../.configuration-ui-translations.cpp" line="18"/>
+        <source>%n second(s)</source>
+        <translation>
+            <numerusform>%n sekunda</numerusform>
+            <numerusform>%n sekundy</numerusform>
+            <numerusform>%n sekund</numerusform>
+        </translation>
+    </message>
 </context>
 <context>
     <name>AutoHide</name>

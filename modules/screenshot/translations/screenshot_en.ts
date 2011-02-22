@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0">
+<TS version="2.0" language="en_US">
 <context>
     <name>@default</name>
     <message>
@@ -73,6 +73,10 @@
     </message>
     <message>
         <source>Define, how many kbytes can shots take in the directory before module will warn you.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> kB</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

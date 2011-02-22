@@ -3,7 +3,7 @@
 	<section name="Notifications">
 		<tab name="KNotify">
 			<group-box name="General">
-				<spin-box caption="Timeout" config-section="KDENotify" config-item="Timeout" id="knotify/timeout" min-value="0" max-value="3600" suffix=" s"/>
+				<spin-box caption="Timeout" config-section="KDENotify" config-item="Timeout" id="knotify/timeout" min-value="0" max-value="3600" suffix="%n second(s)"/>
 				<check-box caption="Show message content in hint" config-section="KDENotify" config-item="ShowContentMessage" id="kdenotify/showContent" />
 				<spin-box caption="Number of quoted characters" config-section="KDENotify" config-item="CiteSign" min-value="1" max-value="2000" id="kdenotify/showContentCount" />
 			</group-box>

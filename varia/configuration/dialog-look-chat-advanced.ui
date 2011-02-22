@@ -5,12 +5,12 @@
 				<spin-box caption="Chat header separators height" config-section="Look" config-item="HeaderSeparatorHeight" min-value="0" max-value="100" id="chatHeaderSeparatorsHeight" />
 				<spin-box caption="Message separators height" config-section="Look" config-item="ParagraphSeparator" min-value="0" max-value="100" id="messageSeparatorsHeight" />
 				<check-box caption="Remove chat header repetitions" config-section="Look" config-item="NoHeaderRepeat" id="noHeaderRepeat" />
-				<spin-box caption="Interval between header removal" config-section="Look" config-item="NoHeaderInterval" min-value="1" max-value="100" suffix="min" id="noHeaderInterval" />
+				<spin-box caption="Interval between header removal" config-section="Look" config-item="NoHeaderInterval" min-value="1" max-value="100" suffix="%n minute(s)" id="noHeaderInterval" />
 			</group-box>
 
 			<group-box name="Server Time">
 				<check-box caption="Hide server time" config-section="Look" config-item="NoServerTime" id="removeServerTime" />
-				<spin-box caption="Maximum time difference" config-section="Look" config-item="NoServerTimeDiff" min-value="1" max-value="600" suffix="s" id="maxTimeDifference" />
+				<spin-box caption="Maximum time difference" config-section="Look" config-item="NoServerTimeDiff" min-value="1" max-value="600" suffix="%n second(s)" id="maxTimeDifference" />
 			</group-box>
 
 <!-- 			<group-box name="Background"> -->

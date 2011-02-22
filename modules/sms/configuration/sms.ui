@@ -9,7 +9,7 @@
 				<check-box caption="Use built-in SMS application" config-section="SMS" config-item="BuiltInApp" id="sms/useBuildInApp" />
 				<line-edit caption="Custom SMS application" config-section="SMS" config-item="SmsApp" id="sms/customApp" />
 				<check-box caption="Use SMS custom string" config-section="SMS" config-item="UseCustomString" id="sms/useCustomString"
-					tool-tip="Check this box if your sms application doesn't understand arguments: number &amp;message&amp;\nArguments should be separated with spaces. %n argument is converted to number, %m to message" />
+					tool-tip="Check this box if your sms application doesn't understand arguments: number &amp;message&amp;\nArguments should be separated with spaces. %k argument is converted to number, %m to message" />
 				<line-edit caption="SMS custom string" config-section="SMS" config-item="SmsString" id="sms/customString" />
 			</group-box>
 			<group-box name="Gateways">

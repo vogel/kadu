@@ -36,11 +36,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Check this box if your sms application doesn&apos;t understand arguments: number &amp;message&amp;
-Arguments should be separated with spaces. %n argument is converted to number, %m to message</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>SMS custom string</source>
         <translation type="unfinished"></translation>
     </message>
@@ -74,6 +69,11 @@ Arguments should be separated with spaces. %n argument is converted to number, %
     </message>
     <message>
         <source>Password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Check this box if your sms application doesn&apos;t understand arguments: number &amp;message&amp;
+Arguments should be separated with spaces. %k argument is converted to number, %m to message</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

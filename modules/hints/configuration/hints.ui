@@ -13,7 +13,7 @@
 					<item value="64" caption="64px" />
 				</combo-box>
 				<spin-box caption="Transparency" config-section="Hints" config-item="AllEvents_transparency"
-						min-value="0" max-value="100" step="1" suffix=" %" />
+						min-value="0" max-value="100" step="1" suffix="%" />
 				<check-box caption="Show buttons only when necessary" config-section="Hints" config-item="ShowOnlyNecessaryButtons" />
 			</group-box>
 			<group-box name="New Chat/Message">

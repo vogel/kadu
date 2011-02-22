@@ -7,7 +7,7 @@
 				<select-font caption="Font" config-section="Hints" config-item="_font" id="font" />
 				<color-button caption="Font color" config-section="Hints" config-item="_fgcolor" id="fgcolor" />
 				<color-button caption="Background color" config-section="Hints" config-item="_bgcolor" id="bgcolor" />
-				<spin-box caption="Timeout" config-section="Hints" config-item="_timeout" id="timeout" min-value="0" max-value="3600" suffix=" s"/>
+				<spin-box caption="Timeout" config-section="Hints" config-item="_timeout" id="timeout" min-value="0" max-value="3600" suffix="%n second(s)"/>
 				<line-edit caption="Syntax" config-section="Hints" config-item="_syntax" id="syntax"/>
 			</group-box>
 		</tab>

@@ -41,12 +41,21 @@
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="26"/>
         <source>Auto refresh list</source>
-		<translation>Automatycznie aktualizuj listę</translation>
+        <translation>Automatycznie aktualizuj listę</translation>
     </message>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="29"/>
         <source>Refresh interval</source>
-		<translation>Częstotliwość odświeżania</translation>
+        <translation>Częstotliwość odświeżania</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../.configuration-ui-translations.cpp" line="31"/>
+        <source>%n minute(s)</source>
+        <translation>
+            <numerusform>%n minuta</numerusform>
+            <numerusform>%n minuty</numerusform>
+            <numerusform>%n minut</numerusform>
+        </translation>
     </message>
 </context>
 <context>
@@ -79,7 +88,7 @@
         <location filename="../server-monitor-window.cpp" line="104"/>
         <source>Available	%1
 Unavailable	%2</source>
-		<translation>Dostępne	%1
+        <translation>Dostępne	%1
 Niedostępne %2</translation>
     </message>
     <message>

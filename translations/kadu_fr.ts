@@ -1207,6 +1207,31 @@ changes upon establishing connection to the server</source>
         <source>Free for chat</source>
         <translation type="unfinished"></translation>
     </message>
+    <message numerus="yes">
+        <source>%n minute(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n second(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>never remove recent chats</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <source>[for] %n minute(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -1626,6 +1651,14 @@ The export was unsuccessful</source>
     </message>
     <message>
         <source>Website</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Prefer the most available contact</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;p&gt;When enabled and one of this buddy&apos;s contacts has higher status (i.e., more available) than the others, that contact will be considered preferred regardless of its priority&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

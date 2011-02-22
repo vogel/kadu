@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0">
+<TS version="2.0" language="en_US">
 <context>
     <name>@default</name>
     <message>
@@ -130,6 +130,13 @@
     <message>
         <source>You must confirm each message sent to these people</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <source>%n millisecond(s)</source>
+        <translation>
+            <numerusform>%n millisecond</numerusform>
+            <numerusform>%n milliseconds</numerusform>
+        </translation>
     </message>
 </context>
 <context>

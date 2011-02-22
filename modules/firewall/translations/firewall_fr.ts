@@ -131,6 +131,13 @@
         <source>You must confirm each message sent to these people</source>
         <translation type="unfinished"></translation>
     </message>
+    <message numerus="yes">
+        <source>%n millisecond(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
 </context>
 <context>
     <name>Firewall</name>

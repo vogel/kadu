@@ -40,7 +40,7 @@ QStringList SmsExternalSender::buildProgramArguments(const QString &message)
 	if (config_file.readBoolEntry("SMS", "UseCustomString"))
 	{
 		programArguments = config_file.readEntry("SMS", "SmsString").split(' ');
-		programArguments.replaceInStrings("%n", number());
+		programArguments.replaceInStrings("%k", number());
 		programArguments.replaceInStrings("%m", message);
 	}
 	else

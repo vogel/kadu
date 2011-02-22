@@ -5,7 +5,7 @@
     <name>@default</name>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="4"/>
-        <location filename="../.configuration-ui-translations.cpp" line="19"/>
+        <location filename="../.configuration-ui-translations.cpp" line="21"/>
         <source>Status</source>
         <translation type="unfinished"></translation>
     </message>
@@ -29,18 +29,26 @@
         <source>Time</source>
         <translation type="unfinished"></translation>
     </message>
+    <message numerus="yes">
+        <location filename="../.configuration-ui-translations.cpp" line="18"/>
+        <source>%n second(s)</source>
+        <translation>
+            <numerusform>%n second</numerusform>
+            <numerusform>%n seconds</numerusform>
+        </translation>
+    </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="22"/>
+        <location filename="../.configuration-ui-translations.cpp" line="24"/>
         <source>Online</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="25"/>
+        <location filename="../.configuration-ui-translations.cpp" line="27"/>
         <source>Busy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="28"/>
+        <location filename="../.configuration-ui-translations.cpp" line="30"/>
         <source>Invisible</source>
         <translation type="unfinished"></translation>
     </message>

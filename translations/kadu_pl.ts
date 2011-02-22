@@ -1227,6 +1227,34 @@ znajomych po połączeniu się z serwerem</translation>
         <source>Free for chat</source>
         <translation>Chętny do rozmowy</translation>
     </message>
+    <message numerus="yes">
+        <source>%n minute(s)</source>
+        <translation>
+            <numerusform>%n minuta</numerusform>
+            <numerusform>%n minuty</numerusform>
+            <numerusform>%n minut</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n second(s)</source>
+        <translation>
+            <numerusform>%n sekunda</numerusform>
+            <numerusform>%n sekundy</numerusform>
+            <numerusform>%n sekund</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>never remove recent chats</source>
+        <translation>nigdy nie czyść ostatnich rozmów</translation>
+    </message>
+    <message numerus="yes">
+        <source>[for] %n minute(s)</source>
+        <translation>
+            <numerusform>[przez] %n minutę</numerusform>
+            <numerusform>[przez] %n minuty</numerusform>
+            <numerusform>[przez] %n minut</numerusform>
+        </translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -1648,6 +1676,14 @@ Eksport listy kontaktów na serwer się nie powiódł</translation>
     <message>
         <source>Website</source>
         <translation>Strona internetowa</translation>
+    </message>
+    <message>
+        <source>Prefer the most available contact</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;p&gt;When enabled and one of this buddy&apos;s contacts has higher status (i.e., more available) than the others, that contact will be considered preferred regardless of its priority&lt;/p&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2369,15 +2405,15 @@ Jest to prawdopodobnie dalsza część pliku &lt;b&gt;%5&lt;/b&gt;
     </message>
     <message>
         <source>New Identity</source>
-		<translation>Nowa tożsamość</translation>
+        <translation>Nowa tożsamość</translation>
     </message>
     <message>
         <source>Please enter the name for the new identity:</source>
-		<translation>Podaj nazwę dla nowej tożsamości:</translation>
+        <translation>Podaj nazwę dla nowej tożsamości:</translation>
     </message>
     <message>
         <source> - Select identity - </source>
-		<translation> - Wybierz tożsamość - </translation>
+        <translation> - Wybierz tożsamość - </translation>
     </message>
 </context>
 <context>

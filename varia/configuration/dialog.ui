@@ -294,7 +294,7 @@
 				<check-box caption="Save opened windows on exit" config-section="Chat" config-item="SaveOpenedWindows"
 					tool-tip="Save opened chat windows when exiting" />
 				<spin-box caption="Remember recent chats for" config-section="Chat" config-item="RecentChatsTimeout" min-value="0"
-					max-value="1000000" suffix=" min." special-value="never remove recent chats" id="recentChatsTimeout" tool-tip="" />
+					max-value="1000000" suffix="[for] %n minute(s)" special-value="never remove recent chats" id="recentChatsTimeout" tool-tip="" />
 				<check-box caption="Clear recent chats list on exit" config-section="Chat" config-item="RecentChatsClear" id="recentChatsClear"
 					tool-tip="" />
 			</group-box>
@@ -302,7 +302,7 @@
 				<check-box caption="Block window close on new message" config-section="Chat" config-item="ChatCloseTimer" id="chatCloseTimer"
 					tool-tip="Block chat window when a new message arrives" />
 				<spin-box caption="Max time to block window close" config-section="Chat" config-item="ChatCloseTimerPeriod" min-value="1"
-					max-value="30" suffix=" s." id="chatCloseTimerPeriod" tool-tip="Max time to block window close" />
+					max-value="30" suffix="%n second(s)" id="chatCloseTimerPeriod" tool-tip="Max time to block window close" />
 			</group-box>
 		</tab>
 

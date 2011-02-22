@@ -36,12 +36,6 @@
         <translation>Używaj własnych argumentów SMS</translation>
     </message>
     <message>
-        <source>Check this box if your sms application doesn&apos;t understand arguments: number &amp;message&amp;
-Arguments should be separated with spaces. %n argument is converted to number, %m to message</source>
-        <translation>Zaznacz to okienko jeżeli aplikacja SMS nie rozpoznaje argumentów: numer &amp;wiadomość&amp;
-Argumenty powinny być oddzielone spacjami. %n jest zamieniane na numer, %m na wiadomość</translation>
-    </message>
-    <message>
         <source>SMS custom string</source>
         <translation>Argumenty SMS</translation>
     </message>
@@ -76,6 +70,11 @@ Argumenty powinny być oddzielone spacjami. %n jest zamieniane na numer, %m na w
     <message>
         <source>Password</source>
         <translation>Hasło</translation>
+    </message>
+    <message>
+        <source>Check this box if your sms application doesn&apos;t understand arguments: number &amp;message&amp;
+Arguments should be separated with spaces. %k argument is converted to number, %m to message</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

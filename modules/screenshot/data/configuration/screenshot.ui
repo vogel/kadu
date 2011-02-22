@@ -17,7 +17,7 @@
 				<line-edit caption="Screenshots filename prefix" config-section="ScreenShot" config-item="filenamePrefix" />
 				<check-box caption="Enable directory size control" config-section="ScreenShot" config-item="dir_size_warns" id="screenshot/enableSizeLimit"
 						   tool-tip="When enabled, module will check for shots directory size and warn you if it gets size specified below." />
-				<spin-box caption="Maximum directory size" config-section="ScreenShot" config-item="dir_size_limit" min-value="10" max-value="500000" step="50" suffix="kB" id="screenshot/sizeLimit"
+				<spin-box caption="Maximum directory size" config-section="ScreenShot" config-item="dir_size_limit" min-value="10" max-value="500000" step="50" suffix=" kB" id="screenshot/sizeLimit"
 						  tool-tip="Define, how many kbytes can shots take in the directory before module will warn you." />
 			</group-box>
 		</tab>

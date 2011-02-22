@@ -23,13 +23,21 @@
         <source>Timeout</source>
         <translation>Timeout</translation>
     </message>
+    <message numerus="yes">
+        <location filename="../.configuration-ui-translations.cpp" line="15"/>
+        <source>%n second(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="16"/>
+        <location filename="../.configuration-ui-translations.cpp" line="18"/>
         <source>Show message content in hint</source>
         <translation>Zeige Nachrichteninhalt in der Sprechblase</translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="19"/>
+        <location filename="../.configuration-ui-translations.cpp" line="21"/>
         <source>Number of quoted characters</source>
         <translation>Anzahl de zu zitierenden Zeichen</translation>
     </message>

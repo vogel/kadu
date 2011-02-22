@@ -75,6 +75,10 @@
         <source>Define, how many kbytes can shots take in the directory before module will warn you.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source> kB</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ScreenShot</name>

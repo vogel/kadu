@@ -23,38 +23,46 @@
         <source>Timeout</source>
         <translation type="unfinished"></translation>
     </message>
+    <message numerus="yes">
+        <location filename="../.configuration-ui-translations.cpp" line="15"/>
+        <source>%n second(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="16"/>
+        <location filename="../.configuration-ui-translations.cpp" line="18"/>
         <source>Notification icon</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="19"/>
+        <location filename="../.configuration-ui-translations.cpp" line="21"/>
         <source>No icon</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="22"/>
+        <location filename="../.configuration-ui-translations.cpp" line="24"/>
         <source>Information</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="25"/>
+        <location filename="../.configuration-ui-translations.cpp" line="27"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="28"/>
+        <location filename="../.configuration-ui-translations.cpp" line="30"/>
         <source>Critical</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="32"/>
+        <location filename="../.configuration-ui-translations.cpp" line="34"/>
         <source>Title</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="35"/>
+        <location filename="../.configuration-ui-translations.cpp" line="37"/>
         <source>Syntax</source>
         <translation type="unfinished"></translation>
     </message>

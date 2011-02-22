@@ -2,22 +2,22 @@
 	<section name="Status">
 		<tab name="Autoaway">
 			<group-box name="Autoaway">
-				<spin-box caption="Check idle every" config-section="General" config-item="AutoAwayCheckTime" min-value="1" max-value="10000" step="5" suffix=" s" />
+				<spin-box caption="Check idle every" config-section="General" config-item="AutoAwayCheckTime" min-value="1" max-value="10000" step="5" suffix="[every] %n second(s)" />
 				<check-box caption="Enable autoaway" config-section="General" config-item="AutoAway"
 					id="autoaway/enableAutoAway" />
-				<spin-box caption="Set status to away after" config-section="General" config-item="AutoAwayTime" min-value="1" max-value="10000" suffix=" s"
+				<spin-box caption="Set status to away after" config-section="General" config-item="AutoAwayTime" min-value="1" max-value="10000" suffix="[after] %n second(s)"
 					id="autoaway/autoAway" />
 				<check-box caption="Enable auto extended away" config-section="General" config-item="AutoExtendedAway"
 					id="autoaway/enableAutoExtendedAway" />
-				<spin-box caption="Set status to extended away after" config-section="General" config-item="AutoExtendedAwayTime" min-value="1" max-value="10000" suffix=" s"
+				<spin-box caption="Set status to extended away after" config-section="General" config-item="AutoExtendedAwayTime" min-value="1" max-value="10000" suffix="[after] %n second(s)"
 					id="autoaway/autoExtendedAway" />
 				<check-box caption="Enable autoinvisible" config-section="General" config-item="AutoInvisible"
 					id="autoaway/enableAutoInvisible" />
-				<spin-box caption="Set status to invisible after" config-section="General" config-item="AutoInvisibleTime" min-value="1" max-value="10000" suffix=" s"
+				<spin-box caption="Set status to invisible after" config-section="General" config-item="AutoInvisibleTime" min-value="1" max-value="10000" suffix="[after] %n second(s)"
 					id="autoaway/autoInvisible" />
 				<check-box caption="Enable autodisconnect" config-section="General" config-item="AutoDisconnect"
 					id="autoaway/enableAutoOffline" />
-				<spin-box caption="Disconnect after" config-section="General" config-item="AutoDisconnectTime" min-value="1" max-value="10000" suffix=" s"
+				<spin-box caption="Disconnect after" config-section="General" config-item="AutoDisconnectTime" min-value="1" max-value="10000" suffix="[after] %n second(s)"
 					id="autoaway/autoOffline" />
 			</group-box>
 
@@ -29,9 +29,9 @@
 					<item value="3" caption="Add at the back" />
 				</combo-box>
 				<line-edit caption="New description" config-section="General" config-item="AutoStatusText" id="autoaway/descriptionText" />
-				<spin-box caption="Auto refresh status" config-section="General" config-item="AutoRefreshStatusTime" min-value="0" max-value="10000" suffix=" s"
+				<spin-box caption="Auto refresh status" config-section="General" config-item="AutoRefreshStatusTime" min-value="0" max-value="10000" suffix="%n second(s)"
 					id="autoaway/autoRefresh" />
-				<check-box caption="Parse AutoStatus" config-section="General" config-item="AutoParseStatus" suffix=" s"
+				<check-box caption="Parse AutoStatus" config-section="General" config-item="AutoParseStatus" suffix="%n second(s)"
 					id="autoaway/enableParseStatus" />
 			</group-box>
 		</tab>

@@ -5,7 +5,7 @@
     <name>HistoryImportWindow</name>
     <message>
         <location filename="../gui/windows/history-import-window.cpp" line="41"/>
-		<source>History is now being imported into new format. Please wait until this task is finished.</source>
+        <source>History is now being imported into new format. Please wait until this task is finished.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

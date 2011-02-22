@@ -3,7 +3,7 @@
 	<section name="Notify">
 		<tab name="Notification">
 			<group-box name="Tray Icon Balloon">
-				<spin-box caption="Timeout" config-section="Qt4DockingNotify" config-item="_timeout" min-value="1" max-value="100" suffix=" s." />
+				<spin-box caption="Timeout" config-section="Qt4DockingNotify" config-item="_timeout" min-value="1" max-value="100" suffix="%n second(s)" />
 				<combo-box caption="Notification icon" config-section="Qt4DockingNotify" config-item="_icon" save-index="true">
 					<item value="0" caption="No icon" />
 					<item value="1" caption="Information" />

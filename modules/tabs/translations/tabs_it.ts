@@ -5,13 +5,13 @@
     <name>@default</name>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="4"/>
-        <location filename="../.configuration-ui-translations.cpp" line="52"/>
+        <location filename="../.configuration-ui-translations.cpp" line="54"/>
         <source>Chat</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="7"/>
-        <location filename="../.configuration-ui-translations.cpp" line="55"/>
+        <location filename="../.configuration-ui-translations.cpp" line="57"/>
         <source>Tabs</source>
         <translation type="unfinished"></translation>
     </message>
@@ -31,62 +31,67 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="19"/>
+        <location filename="../.configuration-ui-translations.cpp" line="18"/>
+        <source>Always use tabs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../.configuration-ui-translations.cpp" line="21"/>
         <source>Tabs at the bottom of the window</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="22"/>
+        <location filename="../.configuration-ui-translations.cpp" line="24"/>
         <source>Auto tab change</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="25"/>
+        <location filename="../.configuration-ui-translations.cpp" line="27"/>
         <source>Conferences in tabs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="28"/>
+        <location filename="../.configuration-ui-translations.cpp" line="30"/>
         <source>Closing tabs using button from titlebar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="30"/>
+        <location filename="../.configuration-ui-translations.cpp" line="32"/>
         <source>&lt;nobr&gt;&lt;b&gt;Warning: This option has know bug!&lt;/b&gt;&lt;/nobr&gt;&lt;br&gt;If there is open more than one tab then exiting from KDE will be stopped by this module.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="34"/>
+        <location filename="../.configuration-ui-translations.cpp" line="36"/>
         <source>Look</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="43"/>
+        <location filename="../.configuration-ui-translations.cpp" line="45"/>
         <source>Show Close button on each tab</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="49"/>
+        <location filename="../.configuration-ui-translations.cpp" line="51"/>
         <source>Shortcuts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="58"/>
+        <location filename="../.configuration-ui-translations.cpp" line="60"/>
         <source>Move tab left</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="61"/>
+        <location filename="../.configuration-ui-translations.cpp" line="63"/>
         <source>Move tab right</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="64"/>
+        <location filename="../.configuration-ui-translations.cpp" line="66"/>
         <source>Switch to previous tab</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="67"/>
+        <location filename="../.configuration-ui-translations.cpp" line="69"/>
         <source>Switch to next tab</source>
         <translation type="unfinished"></translation>
     </message>

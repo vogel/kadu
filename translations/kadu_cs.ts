@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="cs" version="2.0">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="cs">
 <context>
     <name>@default</name>
     <message>
@@ -625,7 +627,7 @@ Je to vysoce bezpečnostně rizikové!</translation>
     </message>
     <message>
         <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
-%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn't have us in userlist
+%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist
 %h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size, %z - gender (0/1/2)
 </source>
         <translation>Skladba: %s - stav, %d - popis, %i - ip, %n - přezdívka, %a - stará přezdívka, %f - křestní jméno
@@ -635,7 +637,7 @@ Je to vysoce bezpečnostně rizikové!</translation>
     </message>
     <message>
         <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
-%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn't have us in userlist
+%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist
 %h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size, %z - gender (0/1/2),
 #{protocol} - protocol that triggered event,
 #{event} - name of event,
@@ -748,7 +750,7 @@ Je to vysoce bezpečnostně rizikové!</translation>
         <translation>Přehlížet změny stavů z dostupný/zaneprázdněný na zaneprázdněný/dostupný</translation>
     </message>
     <message>
-        <source>This option will supersede tooltips with users' status
+        <source>This option will supersede tooltips with users&apos; status
  changes upon establishing connection to the server</source>
         <translation>Tato volba nahradí nástrojové rady změnami uživatelského stavu
 ihned po zřízení spojení se serverem</translation>
@@ -1162,7 +1164,7 @@ ihned po zřízení spojení se serverem</translation>
         <translation>Změna stavu</translation>
     </message>
     <message>
-        <source>This option will supersede tooltips with buddies' status
+        <source>This option will supersede tooltips with buddies&apos; status
 changes upon establishing connection to the server</source>
         <translation>Tato volba nahradí nástrojové rady změnami změnami ve stavu kamarádů
 ihned po zřízení spojení se serverem</translation>
@@ -1181,7 +1183,7 @@ ihned po zřízení spojení se serverem</translation>
     </message>
     <message>
         <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
-%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn't have us in userlist
+%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist
 %h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size, %z - gender (0/1/2)
 #{message} - message content,
 #{backgroundColor} - background color of message,
@@ -1190,7 +1192,7 @@ ihned po zřízení spojení se serverem</translation>
 #{sentDate} - when message was sent,
 #{receivedDate} - when message was received,
 #{separator} - separator between messages,
-&lt;kadu:header&gt;text&lt;/kadu:header&gt; - text will not be displayed in 'Remove repeated headers' mode
+&lt;kadu:header&gt;text&lt;/kadu:header&gt; - text will not be displayed in &apos;Remove repeated headers&apos; mode
 </source>
         <translation>Skladba: %s - stav, %d - popis, %i - ip, %n - přezdívka, %a - stará přezdívka, %f - křestní jméno
 %r - příjmení, %m - přenosný telefon, %u - uin, %g - skupina, %o - vrátit _volné místo_ pokud nás uživatel nemá v seznamu uživatelů
@@ -1202,7 +1204,7 @@ ihned po zřízení spojení se serverem</translation>
 #{sentDate} - čas poslání zprávy,
 #{receivedDate} - čas přijetí zprávy,
 #{separator} - oddělovač mezi zprávami,
-&lt;kadu:header&gt;text&lt;/kadu:header&gt; - text nebude zobrazen v režimu 'Odstranit opakující se hlavičky'
+&lt;kadu:header&gt;text&lt;/kadu:header&gt; - text nebude zobrazen v režimu &apos;Odstranit opakující se hlavičky&apos;
 </translation>
     </message>
     <message>
@@ -1224,6 +1226,34 @@ ihned po zřízení spojení se serverem</translation>
     <message>
         <source>Free for chat</source>
         <translation>Mající čas na rozhovor</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n minute(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n second(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>never remove recent chats</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <source>[for] %n minute(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
     </message>
 </context>
 <context>
@@ -1646,6 +1676,14 @@ Vyvedení nebylo úspěšné</translation>
     <message>
         <source>Website</source>
         <translation>Stránky</translation>
+    </message>
+    <message>
+        <source>Prefer the most available contact</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;p&gt;When enabled and one of this buddy&apos;s contacts has higher status (i.e., more available) than the others, that contact will be considered preferred regardless of its priority&lt;/p&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2585,10 +2623,6 @@ Sloučit kamarády...</translation>
     <message>
         <source>Change Status</source>
         <translation>Změnit stav</translation>
-    </message>
-    <message>
-        <source>Use Proxy</source>
-        <translation>Použít proxy</translation>
     </message>
     <message>
         <source>New Group</source>

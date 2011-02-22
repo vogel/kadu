@@ -37,7 +37,7 @@
         <location filename="../.configuration-ui-translations.cpp" line="24"/>
         <location filename="../.configuration-ui-translations.cpp" line="30"/>
         <source>Log</source>
-		<translation>Logowanie</translation>
+        <translation>Logowanie</translation>
     </message>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="27"/>

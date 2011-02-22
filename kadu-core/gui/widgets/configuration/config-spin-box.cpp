@@ -2,6 +2,7 @@
  * %kadu copyright begin%
  * Copyright 2008, 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * Copyright 2009 Piotr Galiszewski (piotrgaliszewski@gmail.com)
+ * Copyright 2011 Piotr Dąbrowski (ultr@ultr.pl)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -28,7 +29,7 @@
 #include "debug.h"
 
 ConfigSpinBox::ConfigSpinBox(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip, const QString &specialValue,
-		int minValue, int maxValue, int step, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
+		int minValue, int maxValue, int step, QString suffix, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
 	: QSpinBox(parentConfigGroupBox->widget()), ConfigWidgetValue(section, item, widgetCaption, toolTip, parentConfigGroupBox, dataManager),
 		label(0)
 {
@@ -37,15 +38,19 @@ ConfigSpinBox::ConfigSpinBox(const QString &section, const QString &item, const 
 	setMinimum(minValue);
 	setMaximum(maxValue);
 	setSingleStep(step);
+	Suffix = suffix;
+	connect(this, SIGNAL(valueChanged(int)), this, SLOT(onValueChanged(int)));
 }
 
 ConfigSpinBox::ConfigSpinBox(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
 	: QSpinBox(parentConfigGroupBox->widget()), ConfigWidgetValue(parentConfigGroupBox, dataManager), label(0)
 {
+	connect(this, SIGNAL(valueChanged(int)), this, SLOT(onValueChanged(int)));
 }
 
 ConfigSpinBox::~ConfigSpinBox()
 {
+	disconnect(this, SIGNAL(valueChanged(int)), this, SLOT(onValueChanged(int)));
 	if (label)
 		delete label;
 }
@@ -96,8 +101,8 @@ bool ConfigSpinBox::fromDomElement(QDomElement domElement)
 	QString minValue = domElement.attribute("min-value");
 	QString maxValue = domElement.attribute("max-value");
 	QString step = domElement.attribute("step");
-	setSuffix(domElement.attribute("suffix"));
 	QString specialValue = domElement.attribute("special-value");
+	Suffix = domElement.attribute("suffix");
 
 	if (!specialValue.isEmpty())
 		setSpecialValueText(qApp->translate("@default", specialValue.toAscii().data()));
@@ -117,4 +122,17 @@ bool ConfigSpinBox::fromDomElement(QDomElement domElement)
 		setSingleStep(1);
 
 	return ConfigWidgetValue::fromDomElement(domElement);
+}
+
+void ConfigSpinBox::onValueChanged(int i)
+{
+	QString suffix = Suffix;
+	if (Suffix.contains("%n"))
+	{
+		suffix = qApp->translate("@default", Suffix.toAscii().data(), 0, QCoreApplication::CodecForTr, i);
+		QRegExp rx(QString("^.*%1").arg(i));
+		rx.setMinimal(true);
+		suffix.remove(rx);
+	}
+	setSuffix(suffix);
 }

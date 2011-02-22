@@ -33,7 +33,7 @@
 		<tab name="DoS attack">
 			<group-box name="General">
 				<check-box caption="Protect against flooding DoS attack" config-section="Firewall" config-item="dos" tool-tip="Attack caused by many messages, sent in short time." id="firewall/dos" />
-				<spin-box caption="Min delay between two messages" config-section="Firewall" config-item="dos_interval" min-value="100" max-value="1500" step="100" suffix=" ms" id="firewall/dos_interval" />
+				<spin-box caption="Min delay between two messages" config-section="Firewall" config-item="dos_interval" min-value="100" max-value="1500" step="100" suffix="%n millisecond(s)" id="firewall/dos_interval" />
 			</group-box>
 
 			<group-box name="Emoticons DoS attack">

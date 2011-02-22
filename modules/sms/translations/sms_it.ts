@@ -36,12 +36,6 @@
         <translation>Usa stringa personalizzata SMS</translation>
     </message>
     <message>
-        <source>Check this box if your sms application doesn&apos;t understand arguments: number &amp;message&amp;
-Arguments should be separated with spaces. %n argument is converted to number, %m to message</source>
-        <translation>Segna questo campo se il tuo programma non capisce i parametri : numero_tel_cell &amp;il messaggio&amp;
-e scrivi la stringa corretta. I parametri devono essere separati da spazio. Il parametro %n è il numero di cellulare, %m è il messaggio</translation>
-    </message>
-    <message>
         <source>SMS custom string</source>
         <translation>Stringa personalizzata SMS</translation>
     </message>
@@ -75,6 +69,11 @@ e scrivi la stringa corretta. I parametri devono essere separati da spazio. Il p
     </message>
     <message>
         <source>Password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Check this box if your sms application doesn&apos;t understand arguments: number &amp;message&amp;
+Arguments should be separated with spaces. %k argument is converted to number, %m to message</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

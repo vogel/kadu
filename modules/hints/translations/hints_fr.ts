@@ -211,11 +211,26 @@
         <source>Advanced...</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source> px</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <source>%n second(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
 </context>
 <context>
     <name>HintManager</name>
     <message>
-        <source>[&lt;i&gt;%s&lt;/i&gt;&lt;br/&gt;][&lt;br/&gt;&lt;b&gt;Description:&lt;/b&gt;&lt;br/&gt;%d&lt;br/&gt;&lt;br/&gt;][&lt;i&gt;Mobile:&lt;/i&gt; &lt;b&gt;%m&lt;/b&gt;&lt;br/&gt;]</source>
+        <source>&lt;table&gt;&lt;tr&gt;&lt;td align=&quot;left&quot; valign=&quot;top&quot;&gt;&lt;imgstyle=&quot;max-width:64px; max-height:64px;&quot;src=&quot;{#{avatarPath} #{avatarPath}}{~#{avatarPath} @{kadu_icons/64x64/kadu.png}}&quot;&gt;&lt;/td&gt;&lt;td width=&quot;100%&quot;&gt;&lt;div&gt;[&lt;b&gt;%a&lt;/b&gt;][&amp;nbsp;&lt;b&gt;(%g)&lt;/b&gt;]&lt;/div&gt;[&lt;div&gt;&lt;img align=&quot;left&quot; valign=&quot;middle&quot; height=&quot;16&quot; width=&quot;16&quot; src=&quot;file:///#{statusIconPath}&quot;&gt;&amp;nbsp;&amp;nbsp;%u&lt;/div&gt;][&lt;div&gt;&lt;img align=&quot;left&quot; valign=&quot;middle&quot; height=&quot;16&quot; width=&quot;16&quot; src=&quot;file:///@{16x16/phone.png}&quot;&gt;&amp;nbsp;&amp;nbsp;%m&lt;/div&gt;][&lt;div&gt;&lt;img align=&quot;left&quot; valign=&quot;middle&quot; height=&quot;16&quot; width=&quot;16&quot; src=&quot;file:///@{16x16/mail-message-new.png}&quot;&gt;&amp;nbsp;&amp;nbsp;%e&lt;/div&gt;][&lt;div&gt;&lt;img align=&quot;left&quot; valign=&quot;middle&quot; height=&quot;16&quot; width=&quot;16&quot; src=&quot;file:///@{kadu_icons/kadu-blocking.png}&quot;&gt;&amp;nbsp;%oNie ma ciÄ na liÅcie&lt;/div&gt;]&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;[&lt;hr&gt;&lt;b&gt;%s&lt;/b&gt;][&lt;b&gt;:&lt;/b&gt;&lt;br&gt;&lt;small&gt;%d&lt;/small&gt;]</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -16,8 +16,8 @@
         <translation>Kreator konfiguracji</translation>
     </message>
     <message>
-		<source>Start Configuration Wizard…</source>
-		<translation>Uruchom kreatora konfiguracji…</translation>
+        <source>Start Configuration Wizardâ¦</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -32,7 +32,7 @@
     </message>
     <message>
         <source>I want to set up existing account for Kadu</source>
-		<translation>Chcę dodać istniejące konto</translation>
+        <translation>Chcę dodać istniejące konto</translation>
     </message>
     <message>
         <source>I want to create new account for Kadu</source>

@@ -69,15 +69,39 @@
     </message>
     <message>
         <source>Enable auto extended away</source>
-		<translation>Włącz auto-nieobecny</translation>
+        <translation>Włącz auto-nieobecny</translation>
     </message>
     <message>
         <source>Set status to extended away after</source>
-		<translation>Ustaw status na &apos;Nieobecny&apos; po</translation>
+        <translation>Ustaw status na &apos;Nieobecny&apos; po</translation>
     </message>
     <message>
         <source>Auto refresh status</source>
         <translation>Automatycznie odświeżaj status</translation>
+    </message>
+    <message numerus="yes">
+        <source>[every] %n second(s)</source>
+        <translation>
+            <numerusform>[co] %n sekundę</numerusform>
+            <numerusform>[co] %n sekundy</numerusform>
+            <numerusform>[co] %n sekund</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>[after] %n second(s)</source>
+        <translation>
+            <numerusform>[po] %n sekundzie</numerusform>
+            <numerusform>[po] %n sekundach</numerusform>
+            <numerusform>[po] %n sekundach</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n second(s)</source>
+        <translation>
+            <numerusform>%n sekunda</numerusform>
+            <numerusform>%n sekundy</numerusform>
+            <numerusform>%n sekund</numerusform>
+        </translation>
     </message>
 </context>
 <context>

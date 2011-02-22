@@ -9,16 +9,16 @@
 					<item value="2" caption="On bottom" />
 				</combo-box>
 				<check-box caption="Own hints position" config-section="Hints" config-item="UseUserPosition" id="hints/ownPosition" />
-				<spin-box caption="X" config-section="Hints" config-item="HintsPositionX" min-value="-10240" max-value="10240" id="hints/ownPositionX" suffix="px" />
-				<spin-box caption="Y" config-section="Hints" config-item="HintsPositionY" min-value="-10240" max-value="10240" id="hints/ownPositionY" suffix="px" />
+				<spin-box caption="X" config-section="Hints" config-item="HintsPositionX" min-value="-10240" max-value="10240" id="hints/ownPositionX" suffix=" px" />
+				<spin-box caption="Y" config-section="Hints" config-item="HintsPositionY" min-value="-10240" max-value="10240" id="hints/ownPositionY" suffix=" px" />
 				<combo-box caption="Corner" config-section="Hints" config-item="Corner" id="hints/ownPositionCorner">
 					<item value="0" caption="Top left" />
 					<item value="1" caption="Top right" />
 					<item value="2" caption="Bottom left" />
 					<item value="3" caption="Bottom right" />
 				</combo-box>
-				<spin-box caption="Minimum width" config-section="Hints" config-item="MinimumWidth" min-value="0" max-value="10240" id="hints/minimumWidth" suffix="px" />
-				<spin-box caption="Maximum width" config-section="Hints" config-item="MaximumWidth" min-value="0" max-value="10240" id="hints/maximumWidth" suffix="px" />
+				<spin-box caption="Minimum width" config-section="Hints" config-item="MinimumWidth" min-value="0" max-value="10240" id="hints/minimumWidth" suffix=" px" />
+				<spin-box caption="Maximum width" config-section="Hints" config-item="MaximumWidth" min-value="0" max-value="10240" id="hints/maximumWidth" suffix=" px" />
 				<action-button caption="Hints position preview" id="hints/preview" />
 			</group-box>
 			<group-box name="Mouse Buttons">

@@ -44,12 +44,12 @@
     <message>
         <location filename="../gui/widgets/tlen-add-account-widget.cpp" line="87"/>
         <source>Account identity</source>
-		<translation>Tożsamość konta</translation>
+        <translation>Tożsamość konta</translation>
     </message>
     <message>
         <location filename="../gui/widgets/tlen-add-account-widget.cpp" line="89"/>
         <source>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Select or enter the identity that will be associated with this account.&lt;/i&gt;&lt;/font&gt;</source>
-		<translation>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Wybierz lub wprowadź tożsamość z która będzie skojarzone konto.&lt;/i&gt;&lt;/font&gt;</translation>
+        <translation>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Wybierz lub wprowadź tożsamość z która będzie skojarzone konto.&lt;/i&gt;&lt;/font&gt;</translation>
     </message>
     <message>
         <location filename="../gui/widgets/tlen-add-account-widget.cpp" line="99"/>

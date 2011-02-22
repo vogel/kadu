@@ -131,12 +131,12 @@
     <message>
         <location filename="../gui/widgets/gadu-add-account-widget.cpp" line="92"/>
         <source>Account Identity</source>
-		<translation>Tożsamość konta</translation>
+        <translation>Tożsamość konta</translation>
     </message>
     <message>
         <location filename="../gui/widgets/gadu-add-account-widget.cpp" line="94"/>
         <source>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Select or enter the identity that will be associated with this account.&lt;/i&gt;&lt;/font&gt;</source>
-		<translation>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Wybierz lub wprowadź tożsamość z która będzie skojarzone konto.&lt;/i&gt;&lt;/font&gt;</translation>
+        <translation>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Wybierz lub wprowadź tożsamość z która będzie skojarzone konto.&lt;/i&gt;&lt;/font&gt;</translation>
     </message>
     <message>
         <location filename="../gui/widgets/gadu-add-account-widget.cpp" line="105"/>
@@ -275,7 +275,7 @@ Nowe hasło wprowadzone w polu &quot;Nowe hasło&quot; nie jest identyczne z zaw
     <message>
         <location filename="../gui/widgets/gadu-contact-personal-info-widget.cpp" line="77"/>
         <source>Nickname</source>
-		<translation>Pseudonim</translation>
+        <translation>Pseudonim</translation>
     </message>
     <message>
         <location filename="../gui/widgets/gadu-contact-personal-info-widget.cpp" line="80"/>
@@ -353,12 +353,12 @@ Nowe hasło wprowadzone w polu &quot;Nowe hasło&quot; nie jest identyczne z zaw
     <message>
         <location filename="../gui/widgets/gadu-create-account-widget.cpp" line="93"/>
         <source>Account Identity</source>
-		<translation>Tożsamość konta</translation>
+        <translation>Tożsamość konta</translation>
     </message>
     <message>
         <location filename="../gui/widgets/gadu-create-account-widget.cpp" line="95"/>
         <source>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Select or enter the identity that will be associated with this account.&lt;/i&gt;&lt;/font&gt;</source>
-		<translation>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Wybierz lub wprowadź tożsamość z która będzie skojarzone konto.&lt;/i&gt;&lt;/font&gt;</translation>
+        <translation>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Wybierz lub wprowadź tożsamość z która będzie skojarzone konto.&lt;/i&gt;&lt;/font&gt;</translation>
     </message>
     <message>
         <location filename="../gui/widgets/gadu-create-account-widget.cpp" line="103"/>
@@ -439,12 +439,12 @@ Hasła  muszą być identyczne w obu polach!</translation>
     <message>
         <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="147"/>
         <source>Account Identity</source>
-		<translation>Tożsamość konta</translation>
+        <translation>Tożsamość konta</translation>
     </message>
     <message>
         <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="149"/>
         <source>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Select or enter the identity that will be associated with this account.&lt;/i&gt;&lt;/font&gt;</source>
-		<translation>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Wybierz lub wprowadź tożsamość z która będzie skojarzone konto.&lt;/i&gt;&lt;/font&gt;</translation>
+        <translation>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Wybierz lub wprowadź tożsamość z która będzie skojarzone konto.&lt;/i&gt;&lt;/font&gt;</translation>
     </message>
     <message>
         <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="158"/>

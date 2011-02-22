@@ -131,6 +131,13 @@
         <source>You must confirm each message sent to these people</source>
         <translation>Sie müssen jede nachricht bestätitgen, die Sie an diese Personen senden wollen</translation>
     </message>
+    <message numerus="yes">
+        <source>%n millisecond(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
 </context>
 <context>
     <name>Firewall</name>

@@ -23,38 +23,47 @@
         <source>Timeout</source>
         <translation>Czas zaniku</translation>
     </message>
+    <message numerus="yes">
+        <location filename="../.configuration-ui-translations.cpp" line="15"/>
+        <source>%n second(s)</source>
+        <translation>
+            <numerusform>%n sekunda</numerusform>
+            <numerusform>%n sekundy</numerusform>
+            <numerusform>%n sekund</numerusform>
+        </translation>
+    </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="16"/>
+        <location filename="../.configuration-ui-translations.cpp" line="18"/>
         <source>Notification icon</source>
         <translation>Ikona powiadomienia</translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="19"/>
+        <location filename="../.configuration-ui-translations.cpp" line="21"/>
         <source>No icon</source>
         <translation>Bez ikony</translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="22"/>
+        <location filename="../.configuration-ui-translations.cpp" line="24"/>
         <source>Information</source>
         <translation>Informacja</translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="25"/>
+        <location filename="../.configuration-ui-translations.cpp" line="27"/>
         <source>Warning</source>
         <translation>Ostrzeżenie</translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="28"/>
+        <location filename="../.configuration-ui-translations.cpp" line="30"/>
         <source>Critical</source>
         <translation>Błąd</translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="32"/>
+        <location filename="../.configuration-ui-translations.cpp" line="34"/>
         <source>Title</source>
         <translation>Tytuł</translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="35"/>
+        <location filename="../.configuration-ui-translations.cpp" line="37"/>
         <source>Syntax</source>
         <translation>Treść</translation>
     </message>

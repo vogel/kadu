@@ -114,7 +114,7 @@
         <location filename="../encryption-provider-manager.cpp" line="157"/>
         <source>Buddy %1 is sending you his public key.
 Do you want to save it?</source>
-		<translation>Znajomy %1 przysłał Ci swój klucz publiczny.
+        <translation>Znajomy %1 przysłał Ci swój klucz publiczny.
 Chcesz go zapisać?</translation>
     </message>
     <message>

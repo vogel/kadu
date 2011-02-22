@@ -41,7 +41,7 @@
     <message>
         <location filename="../certificates/certificate-display-dialog.cpp" line="158"/>
         <source>The certificate is NOT valid!</source>
-		<translation>Certyfikat NIE jest ważny!</translation>
+        <translation>Certyfikat NIE jest ważny!</translation>
     </message>
     <message>
         <location filename="../certificates/certificate-display-dialog.cpp" line="158"/>
@@ -114,7 +114,7 @@
     <message>
         <location filename="../facebook-protocol-factory.cpp" line="91"/>
         <source>Your username is available at &lt;a href=&apos;https://www.facebook.com/editaccount.php?settings&apos;&gt;https://www.facebook.com/editaccount.php?settings&lt;/a&gt; under Username field. If this field is empty, you can choose your Username and enter it there.</source>
-		<translation>Nazwa użytkownika jest dostępna po adresem &lt;a href=&apos;https://www.facebook.com/editaccount.php?settings&apos;&gt;https://www.facebook.com/editaccount.php?settings&lt;/a&gt; w polu Nazwa użytkownika.  Jeśli to pole jest puste, możesz wprowadzić tam wybraną nazwę.</translation>
+        <translation>Nazwa użytkownika jest dostępna po adresem &lt;a href=&apos;https://www.facebook.com/editaccount.php?settings&apos;&gt;https://www.facebook.com/editaccount.php?settings&lt;/a&gt; w polu Nazwa użytkownika.  Jeśli to pole jest puste, możesz wprowadzić tam wybraną nazwę.</translation>
     </message>
 </context>
 <context>
@@ -237,7 +237,7 @@
     <message>
         <location filename="../gui/widgets/jabber-add-account-widget.cpp" line="93"/>
         <source>&lt;a href=&apos;#&apos;&gt;What is my username?&lt;/a&gt;</source>
-		<translation>&lt;a href=&apos;#&apos;&gt;Jaka jest moja nazwa użytkownika?&lt;/a&gt;</translation>
+        <translation>&lt;a href=&apos;#&apos;&gt;Jaka jest moja nazwa użytkownika?&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../gui/widgets/jabber-add-account-widget.cpp" line="107"/>
@@ -257,12 +257,12 @@
     <message>
         <location filename="../gui/widgets/jabber-add-account-widget.cpp" line="119"/>
         <source>Account Identity</source>
-		<translation>Tożsamość konta</translation>
+        <translation>Tożsamość konta</translation>
     </message>
     <message>
         <location filename="../gui/widgets/jabber-add-account-widget.cpp" line="121"/>
         <source>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Select or enter the identity that will be associated with this account.&lt;/i&gt;&lt;/font&gt;</source>
-		<translation>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Wybierz lub wprowadź tożsamość z która będzie skojarzone konto.&lt;/i&gt;&lt;/font&gt;</translation>
+        <translation>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Wybierz lub wprowadź tożsamość z która będzie skojarzone konto.&lt;/i&gt;&lt;/font&gt;</translation>
     </message>
     <message>
         <location filename="../gui/widgets/jabber-add-account-widget.cpp" line="132"/>
@@ -410,12 +410,12 @@ Nowe hasło wprowadzone w polu &quot;Nowe hasło&quot; nie jest identyczne z zaw
     <message>
         <location filename="../gui/widgets/jabber-create-account-widget.cpp" line="112"/>
         <source>Account Identity</source>
-		<translation>Tożsamość konta</translation>
+        <translation>Tożsamość konta</translation>
     </message>
     <message>
         <location filename="../gui/widgets/jabber-create-account-widget.cpp" line="114"/>
         <source>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Select or enter the identity that will be associated with this account.&lt;/i&gt;&lt;/font&gt;</source>
-		<translation>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Wybierz lub wprowadź tożsamość z która będzie skojarzone konto.&lt;/i&gt;&lt;/font&gt;</translation>
+        <translation>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Wybierz lub wprowadź tożsamość z która będzie skojarzone konto.&lt;/i&gt;&lt;/font&gt;</translation>
     </message>
     <message>
         <location filename="../gui/widgets/jabber-create-account-widget.cpp" line="121"/>
@@ -544,12 +544,12 @@ Nowe hasło wprowadzone w polu &quot;Nowe hasło&quot; nie jest identyczne z zaw
     <message>
         <location filename="../gui/widgets/jabber-edit-account-widget.cpp" line="131"/>
         <source>Account Identity</source>
-		<translation>Tożsamość konta</translation>
+        <translation>Tożsamość konta</translation>
     </message>
     <message>
         <location filename="../gui/widgets/jabber-edit-account-widget.cpp" line="133"/>
         <source>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Select or enter the identity that will be associated with this account.&lt;/i&gt;&lt;/font&gt;</source>
-		<translation>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Wybierz lub wprowadź tożsamość z która będzie skojarzone konto.&lt;/i&gt;&lt;/font&gt;</translation>
+        <translation>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Wybierz lub wprowadź tożsamość z która będzie skojarzone konto.&lt;/i&gt;&lt;/font&gt;</translation>
     </message>
     <message>
         <location filename="../gui/widgets/jabber-edit-account-widget.cpp" line="142"/>
@@ -669,7 +669,7 @@ Nowe hasło wprowadzone w polu &quot;Nowe hasło&quot; nie jest identyczne z zaw
     <message>
         <location filename="../gui/widgets/jabber-edit-account-widget.cpp" line="319"/>
         <source>Send inactivity events (end/suspend conversation)</source>
-		<translation>Wysyłaj powiadomienia o braku aktywności (zakończenia/zawieszenia rozmowy)</translation>
+        <translation>Wysyłaj powiadomienia o braku aktywności (zakończenia/zawieszenia rozmowy)</translation>
     </message>
     <message>
         <location filename="../gui/widgets/jabber-edit-account-widget.cpp" line="351"/>
@@ -1119,7 +1119,7 @@ Please correct and try again.</source>
     <message>
         <location filename="../libiris/src/xmpp/xmpp-core/stream.cpp" line="782"/>
         <source>Offered mechanisms: </source>
-		<translation>Dostępne mechanizmy:</translation>
+        <translation>Dostępne mechanizmy:</translation>
     </message>
 </context>
 <context>
@@ -1152,7 +1152,7 @@ Please correct and try again.</source>
     <message>
         <location filename="../libiris/src/xmpp/xmpp-im/xmpp_features.cpp" line="186"/>
         <source>Gateway</source>
-		<translation type="unfinished"></translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../libiris/src/xmpp/xmpp-im/xmpp_features.cpp" line="187"/>
@@ -1162,17 +1162,17 @@ Please correct and try again.</source>
     <message>
         <location filename="../libiris/src/xmpp/xmpp-im/xmpp_features.cpp" line="188"/>
         <source>VCard</source>
-		<translation>VCard</translation>
+        <translation>VCard</translation>
     </message>
     <message>
         <location filename="../libiris/src/xmpp/xmpp-im/xmpp_features.cpp" line="189"/>
         <source>Execute command</source>
-		<translation>Wykonaj polecenie</translation>
+        <translation>Wykonaj polecenie</translation>
     </message>
     <message>
         <location filename="../libiris/src/xmpp/xmpp-im/xmpp_features.cpp" line="192"/>
         <source>Add to roster</source>
-		<translation>Dodaj do rostera</translation>
+        <translation>Dodaj do rostera</translation>
     </message>
 </context>
 <context>
@@ -1188,12 +1188,12 @@ Please correct and try again.</source>
     <message>
         <location filename="../client/jabber-client.cpp" line="252"/>
         <source>SSL support could not be initialized for account %1. This is most likely because the QCA TLS plugin is not installed on your system.</source>
-		<translation>Nie można zainicjalizować obsługi SSL dla konta %1. Sprawdź, czy wtyczka QCA TLS jest zainstalowana w Twoim systemie.</translation>
+        <translation>Nie można zainicjalizować obsługi SSL dla konta %1. Sprawdź, czy wtyczka QCA TLS jest zainstalowana w Twoim systemie.</translation>
     </message>
     <message>
         <location filename="../client/jabber-client.cpp" line="557"/>
         <source>Server Authentication</source>
-		<translation>Autentykacja serwera</translation>
+        <translation>Autentykacja serwera</translation>
     </message>
     <message>
         <location filename="../client/jabber-client.cpp" line="655"/>
@@ -1370,17 +1370,17 @@ Szczegóły: %1</translation>
     <message>
         <location filename="../client/jabber-client.cpp" line="1019"/>
         <source>Encryption required for chosen SASL mechanism</source>
-		<translation>Wybrany mechanizm SASL wymaga szyfrowania</translation>
+        <translation>Wybrany mechanizm SASL wymaga szyfrowania</translation>
     </message>
     <message>
         <location filename="../client/jabber-client.cpp" line="1021"/>
         <source>Invalid account information</source>
-		<translation>Nieprawidłowe informacje o koncie</translation>
+        <translation>Nieprawidłowe informacje o koncie</translation>
     </message>
     <message>
         <location filename="../client/jabber-client.cpp" line="1023"/>
         <source>Invalid SASL mechanism</source>
-		<translation>Nieprawidłowy mechanizm SASL</translation>
+        <translation>Nieprawidłowy mechanizm SASL</translation>
     </message>
     <message>
         <location filename="../client/jabber-client.cpp" line="1025"/>
