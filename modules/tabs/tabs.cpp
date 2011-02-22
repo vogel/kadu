@@ -115,7 +115,7 @@ TabsManager::TabsManager() :
 	connect(TabDialog, SIGNAL(contextMenu(QWidget *, const QPoint &)),
 			this, SLOT(onContextMenu(QWidget *, const QPoint &)));
 
-	loadWindowGeometry(TabDialog, "Chat", "TabWindowsGeometry", 30, 30, 400, 400);
+	loadWindowGeometry(TabDialog, "Chat", "TabWindowsGeometry", 30, 30, 550, 400);
 
 	// sygnal wysylany po aktywacji chata. Jest odbierany przez m.in hint-managera (po aktywacji chata znikaja dymki))
 	connect(this, SIGNAL(chatWidgetActivated(ChatWidget *)),

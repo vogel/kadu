@@ -91,7 +91,24 @@ HintManager::HintManager(QWidget *parent) :
 	connect(hint_timer, SIGNAL(timeout()), this, SLOT(oneSecond()));
 	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetActivated(ChatWidget *)), this, SLOT(chatWidgetActivated(ChatWidget *)));
 
-	const QString default_hints_syntax(QT_TRANSLATE_NOOP("HintManager", "[<i>%s</i><br/>][<br/><b>Description:</b><br/>%d<br/><br/>][<i>Mobile:</i> <b>%m</b><br/>]"));
+	const QString default_hints_syntax(QT_TRANSLATE_NOOP("HintManager", "<table>"
+"<tr>"
+"<td align=\"left\" valign=\"top\">"
+"<img"
+"style=\"max-width:64px; max-height:64px;\""
+"src=\"{#{avatarPath} #{avatarPath}}{~#{avatarPath} @{kadu_icons/64x64/kadu.png}}\""
+">"
+"</td>"
+"<td width=\"100%\">"
+"<div>[<b>%a</b>][&nbsp;<b>(%g)</b>]</div>"
+"[<div><img align=\"left\" valign=\"middle\" height=\"16\" width=\"16\" src=\"file:///#{statusIconPath}\">&nbsp;&nbsp;%u</div>]"
+"[<div><img align=\"left\" valign=\"middle\" height=\"16\" width=\"16\" src=\"file:///@{16x16/phone.png}\">&nbsp;&nbsp;%m</div>]"
+"[<div><img align=\"left\" valign=\"middle\" height=\"16\" width=\"16\" src=\"file:///@{16x16/mail-message-new.png}\">&nbsp;&nbsp;%e</div>]"
+"[<div><img align=\"left\" valign=\"middle\" height=\"16\" width=\"16\" src=\"file:///@{kadu_icons/kadu-blocking.png}\">&nbsp;%oNie ma cię na liście</div>]"
+"</td>"
+"</tr>"
+"</table>"
+"[<hr><b>%s</b>][<b>:</b><br><small>%d</small>]"));
 	if (config_file.readEntry("Hints", "MouseOverUserSyntax") == default_hints_syntax || config_file.readEntry("Hints", "MouseOverUserSyntax").isEmpty())
 		config_file.writeEntry("Hints", "MouseOverUserSyntax", tr(default_hints_syntax.toAscii()));
 

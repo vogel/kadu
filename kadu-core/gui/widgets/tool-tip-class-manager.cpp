@@ -33,9 +33,10 @@ ToolTipClassManager * ToolTipClassManager::instance()
 	return Instance;
 }
 
-ToolTipClassManager::ToolTipClassManager()
-	: CurrentToolTipClass(0)
+ToolTipClassManager::ToolTipClassManager() :
+		CurrentToolTipClass(0)
 {
+	config_file.addVariable("Look", "UserboxToolTipStyle", "Hints");
 	configurationUpdated();
 }
 
@@ -107,5 +108,5 @@ bool ToolTipClassManager::hideToolTip()
 
 void ToolTipClassManager::configurationUpdated()
 {
-	useToolTipClass(config_file.readEntry("Look", "UserboxToolTipStyle", "hints"));
+	useToolTipClass(config_file.readEntry("Look", "UserboxToolTipStyle", "Hints"));
 }
