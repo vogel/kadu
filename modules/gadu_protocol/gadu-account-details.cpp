@@ -60,7 +60,7 @@ void GaduAccountDetails::load()
 #endif // GADU_HAVE_TYPING_NOTIFY
 
 #ifdef GADU_HAVE_TLS
-	TlsEncryption = loadValue<bool>("TlsEncryption", true);
+	TlsEncryption = loadValue<bool>("TlsEncryption", false);
 #endif // GADU_HAVE_TLS
 }
 
