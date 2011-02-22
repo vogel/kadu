@@ -108,7 +108,6 @@ void BuddyShared::importConfiguration()
 	ImportProperty(HomePhone, home_phone)
 	ImportProperty(Mobile, mobile)
 	ImportProperty(Email, email)
-
 }
 
 void BuddyShared::load()
@@ -176,6 +175,7 @@ void BuddyShared::load()
 	Blocked = loadValue<bool>("Blocked", false);
 	OfflineTo = loadValue<bool>("OfflineTo", false);
 	Gender = (BuddyGender)loadValue<int>("Gender", 0);
+	PreferHigherStatuses = loadValue<bool>("PreferHigherStatuses", true);
 }
 
 void BuddyShared::store()
@@ -213,6 +213,7 @@ void BuddyShared::store()
 	storeValue("Blocked", Blocked);
 	storeValue("OfflineTo", OfflineTo);
 	storeValue("Gender", (int)Gender);
+	storeValue("PreferHigherStatuses", PreferHigherStatuses);
 
 	if (Groups.count())
 	{
@@ -264,7 +265,7 @@ void BuddyShared::addContact(Contact contact)
 	if (contact.priority() == -1)
 	{
 		int last = Contacts.count() > 1
-				? Contacts[Contacts.count() - 1].priority()
+				? Contacts.at(Contacts.count() - 1).priority()
 				: 0;
 		contact.setPriority(last);
 	}
@@ -361,7 +362,7 @@ bool BuddyShared::showInAllGroup()
 {
 	ensureLoaded();
 
-	foreach (const Group group, Groups)
+	foreach (const Group &group, Groups)
 		if (!group.isNull() && !group.showInAllGroup())
 			return false;
 

@@ -114,6 +114,7 @@ public:
 	KaduSharedBase_Property(unsigned short, birthYear, BirthYear)
 	KaduSharedBase_Property(BuddyGender, gender, Gender)
 	KaduSharedBase_Property(QList<Group>, groups, Groups)
+	KaduSharedBase_Property(bool, preferHigherStatuses, PreferHigherStatuses)
 	KaduSharedBase_PropertyBool(Anonymous)
 	KaduSharedBase_PropertyBool(Ignored)
 	KaduSharedBase_PropertyBool(Blocked)

@@ -76,6 +76,7 @@ class KADUAPI BuddyShared : public QObject, public Shared
 	unsigned short BirthYear;
 	BuddyGender Gender;
 	QList<Group> Groups;
+	bool PreferHigherStatuses;
 
 	bool Anonymous;
 	bool Blocked;
@@ -137,6 +138,7 @@ public:
 	KaduShared_Property(unsigned short, birthYear, BirthYear)
 	KaduShared_Property(BuddyGender, gender, Gender)
 	KaduShared_Property(QList<Group>, groups, Groups)
+	KaduShared_Property(bool, preferHigherStatuses, PreferHigherStatuses)
 	BuddyShared_PropertySubscription(Anonymous)
 	BuddyShared_PropertySubscription(Blocked)
 	BuddyShared_PropertySubscription(OfflineTo)

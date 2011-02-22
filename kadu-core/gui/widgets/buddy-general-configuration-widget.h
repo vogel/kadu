@@ -31,6 +31,7 @@
 
 #include "exports.h"
 
+class QCheckBox;
 class QLineEdit;
 
 class BuddyAvatarWidget;
@@ -50,6 +51,7 @@ class KADUAPI BuddyGeneralConfigurationWidget : public QWidget
 
 	BuddyAvatarWidget *AvatarWidget;
 	BuddyContactsTable *ContactsTable;
+	QCheckBox *PreferHigherStatusCheck;
 
 	Buddy MyBuddy;
 

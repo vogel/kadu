@@ -51,6 +51,7 @@ public:
 	Contact preferredContact(const Buddy &buddy, bool includechats = true);
 	Account preferredAccount(const Buddy &buddy, bool includechats = true);
 
+	Contact preferredContactByPriority(const Buddy &buddy, const Account &account = Account::null);
 	Contact preferredContactByPendingMessages(const Buddy &buddy, const Account &account = Account::null);
 	Contact preferredContactByChatWidgets(const Buddy &buddy, const Account &account = Account::null);
 	Contact preferredContactByStatus(const Buddy &buddy, const Account &account = Account::null);

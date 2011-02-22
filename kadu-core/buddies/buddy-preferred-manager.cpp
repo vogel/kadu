@@ -50,6 +50,9 @@ Contact BuddyPreferredManager::preferredContact(const Buddy &buddy, const Accoun
 	if (!buddy || buddy.contacts().isEmpty())
 		return Contact::null;
 
+	if (!buddy.preferHigherStatuses())
+		return preferredContactByPriority(buddy, account);
+
 // 	if (!includechats)
 		return preferredContactByStatus(buddy, account);
 /*
@@ -72,6 +75,18 @@ Contact BuddyPreferredManager::preferredContact(const Buddy &buddy, const Accoun
 	contact = preferredContactByStatus(buddy, account);
 
 	return contact;*/
+}
+
+Contact BuddyPreferredManager::preferredContactByPriority(const Buddy &buddy, const Account &account)
+{
+	if (account.isNull())
+		return buddy.contacts().at(0);
+
+	foreach (const Contact &contact, buddy.contacts())
+		if (contact.contactAccount() == account)
+			return contact;
+
+	return Contact::null;
 }
 
 Contact BuddyPreferredManager::preferredContact(const Buddy &buddy, bool includechats)

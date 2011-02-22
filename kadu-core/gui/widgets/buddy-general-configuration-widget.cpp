@@ -20,6 +20,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtGui/QCheckBox>
 #include <QtGui/QDialogButtonBox>
 #include <QtGui/QFileDialog>
 #include <QtGui/QFormLayout>
@@ -83,11 +84,18 @@ void BuddyGeneralConfigurationWidget::createGui()
 	AvatarWidget = new BuddyAvatarWidget(MyBuddy, nameWidget);
 	nameLayout->addWidget(AvatarWidget);
 
-	QGroupBox *contactsBox = new QGroupBox(tr("Buddy contacts"));
+	QGroupBox *contactsBox = new QGroupBox(tr("Buddy contacts"), this);
 	QVBoxLayout *contactsLayout = new QVBoxLayout(contactsBox);
 	ContactsTable = new BuddyContactsTable(MyBuddy, contactsBox);
 	connect(ContactsTable, SIGNAL(validChanged()), this, SIGNAL(validChanged()));
-	contactsLayout ->addWidget(ContactsTable);
+	contactsLayout->addWidget(ContactsTable);
+
+	PreferHigherStatusCheck = new QCheckBox(tr("Prefer the most available contact"), contactsBox);
+	PreferHigherStatusCheck->setToolTip(tr(
+			"<p>When enabled and one of this buddy's contacts has higher status (i.e., more available) "
+			"than the others, that contact will be considered preferred regardless of its priority</p>"));
+	PreferHigherStatusCheck->setChecked(MyBuddy.preferHigherStatuses());
+	contactsLayout->addWidget(PreferHigherStatusCheck);
 
 	layout->addWidget(contactsBox);
 
@@ -134,6 +142,7 @@ void BuddyGeneralConfigurationWidget::save()
 	MyBuddy.setMobile(MobileEdit->text());
 	MyBuddy.setEmail(EmailEdit->text());
 	MyBuddy.setWebsite(WebsiteEdit->text());
+	MyBuddy.setPreferHigherStatuses(PreferHigherStatusCheck->isChecked());
 
 	QPixmap avatar = AvatarWidget->avatarPixmap();
 	if (!AvatarWidget->buddyAvatar() || avatar.isNull())
