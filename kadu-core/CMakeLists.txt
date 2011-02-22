@@ -336,10 +336,6 @@ set (kadu_SRCS
 	themes/theme.cpp
 	themes/theme-manager.cpp
 
-	url-handlers/mail-url-handler.cpp
-	url-handlers/standard-url-handler.cpp
-	url-handlers/url-handler-manager.cpp
-
 	activate.cpp
 	debug.cpp
 	dnshandler.cpp
@@ -694,7 +690,14 @@ endif (UNIX AND NOT APPLE)
 
 qt_wrap_cpp (kadu MOC_FILES ${kadu_MOC_SRCS})
 
-link_directories (modules)
+add_subdirectory (
+	url-handlers
+)
+
+link_directories (
+	modules
+	url-handlers
+)
 
 if (WIN32)
 	message (STATUS "Copying headers")
@@ -765,10 +768,15 @@ if (WIN32)
 	)
 else (WIN32)
 	add_executable (kadu main.cpp main_unix.cpp os/qtsingleapplication/qtlockedfile_unix.cpp ${kadu_SRCS} ${MOC_FILES})
+
+	add_dependencies (kadu
+		url-handlers
+	)
+
 	set_target_properties (kadu PROPERTIES ENABLE_EXPORTS ON)
 	set_target_properties (kadu PROPERTIES COMPILE_FLAGS "-DKADULIB")
 
-	target_link_libraries (kadu ${STATIC_MODULES} ${QT_LIBRARIES} ${CMAKE_DL_LIBS})
+	target_link_libraries (kadu ${STATIC_MODULES} ${QT_LIBRARIES} ${CMAKE_DL_LIBS} url-handlers)
 
 	if (UNIX AND NOT APPLE)
 		target_link_libraries (kadu ${X11_X11_LIB})
