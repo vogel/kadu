@@ -47,6 +47,14 @@ QString FormattedMessage::saveInImagesPath(const QString &filePath)
 		return fileInfo.fileName();
 
 	QString copyFileName = QUuid::createUuid().toString();
+	// Make this file name less exotic. First, get rid of '{' and '}' on edges.
+	if (copyFileName.length() > 2)
+		copyFileName = copyFileName.mid(1, copyFileName.length() - 2);
+	// Second, try to add extension.
+	QString ext = fileInfo.completeSuffix();
+	if (!ext.isEmpty())
+		copyFileName += '.' + ext;
+
 	if (QFile::copy(filePath, imagesPathInfo.absolutePath() + '/' + copyFileName))
 		return copyFileName;
 
