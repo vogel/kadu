@@ -27,9 +27,9 @@
 #include "protocols/protocol.h"
 
 #include "identity-shared.h"
-#include <status/status-type-manager.h>
-#include <status/status-type.h>
-#include <status/status-group.h>
+#include "status/status-type-manager.h"
+#include "status/status-type.h"
+#include "status/status-group.h"
 
 IdentityShared * IdentityShared::loadStubFromStorage(const QSharedPointer<StoragePoint> &storagePoint)
 {
@@ -153,7 +153,7 @@ Account IdentityShared::bestAccount()
 {
 	ensureLoaded();
 
-	Account result = Account::null;
+	Account result;
 	if (Accounts.isEmpty())
 		return result;
 
@@ -162,7 +162,7 @@ Account IdentityShared::bestAccount()
 		if (account.details() && account.data())
 		{
 			// TODO: hack
-			if (resultStatus == Status() || account.data()->status() < resultStatus ||
+			if (result.isNull() || account.data()->status() < resultStatus ||
 					(account.data()->status() == resultStatus &&
 					account.protocolName() == "gadu" && result.protocolName() != "gadu"))
 			{
