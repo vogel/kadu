@@ -44,7 +44,7 @@ class KADUAPI KaduWebView : public QWebView
 	QPoint DragStartPosition;
 	QTimer *RefreshTimer;
 
-	static void convertClipboardHtmlImages(QClipboard::Mode mode);
+	static void convertClipboardHtml(QClipboard::Mode mode);
 
 private slots:
 	void hyperlinkClicked(const QUrl &anchor) const;

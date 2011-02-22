@@ -190,7 +190,7 @@ void KaduWebView::mouseReleaseEvent(QMouseEvent *e)
 
 #ifdef Q_WS_X11
 	if (!page()->selectedText().isEmpty())
-		convertClipboardHtmlImages(QClipboard::Selection);
+		convertClipboardHtml(QClipboard::Selection);
 #endif
 }
 
@@ -330,16 +330,23 @@ void KaduWebView::saveImage()
 
 void KaduWebView::textCopied() const
 {
-	convertClipboardHtmlImages(QClipboard::Clipboard);
+	convertClipboardHtml(QClipboard::Clipboard);
 }
 
 // taken from Psi+'s webkit patch, SVN rev. 2638, and slightly modified
-void KaduWebView::convertClipboardHtmlImages(QClipboard::Mode mode)
+void KaduWebView::convertClipboardHtml(QClipboard::Mode mode)
 {
+	static QRegExp emotsRegExpApos("<img[^>]+title\\s*=\\s*'([^']+)'[^>]*>");
+	static QRegExp emotsRegExpQuot("<img[^>]+title\\s*=\\s*\"([^\"]+)\"[^>]*>");
+	static QRegExp linksRegExpApos("<a[^>]+href\\s*=\\s*'([^']+)'[^>]*>[^<]*<[^>]*>");
+	static QRegExp linksRegExpQuot("<a[^>]+href\\s*=\\s*\"([^\"]+)\"[^>]*>[^<]*<[^>]*>");
+
 	QClipboard *cb = QApplication::clipboard();
 	QString html = cb->mimeData(mode)->html();
-	html.replace(QRegExp("<img[^>]+title\\s*=\\s*'([^']+)'[^>]*>"), "\\1");
-	html.replace(QRegExp("<img[^>]+title\\s*=\\s*\"([^\"]+)\"[^>]*>"), "\\1");
+	html.replace(emotsRegExpApos, QLatin1String("\\1"));
+	html.replace(emotsRegExpQuot, QLatin1String("\\1"));
+	html.replace(linksRegExpApos, QLatin1String("<a href='\\1'>\\1</a>"));
+	html.replace(linksRegExpQuot, QLatin1String("<a href=\"\\1\">\\1</a>"));
 	QTextDocument htmlToPlainTextConverter;
 	htmlToPlainTextConverter.setHtml(html);
 	QMimeData *data = new QMimeData();
