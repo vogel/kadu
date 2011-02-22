@@ -107,5 +107,5 @@ bool ToolTipClassManager::hideToolTip()
 
 void ToolTipClassManager::configurationUpdated()
 {
-	useToolTipClass(config_file.readEntry("Look", "UserboxToolTipStyle"));
+	useToolTipClass(config_file.readEntry("Look", "UserboxToolTipStyle", "hints"));
 }

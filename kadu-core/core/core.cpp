@@ -198,7 +198,7 @@ void Core::createDefaultConfiguration()
 	config_file.addVariable("General", "StartupStatusInvisibleWhenLastWasOffline", true);
 	config_file.addVariable("General", "UserBoxHeight", 300);
 	config_file.addVariable("General", "WindowActivationMethod", 0);
-	config_file.addVariable("General", "MainConfiguration_Geometry", "50, 50, 790, 480");
+	config_file.addVariable("General", "MainConfiguration_Geometry", "50, 50, 790, 580");
 	config_file.addVariable("General", "LookChatAdvanced_Geometry", "50, 50, 620, 540");
 
 	config_file.addVariable("Look", "AlignUserboxIconsTop", true);
@@ -223,10 +223,10 @@ void Core::createDefaultConfiguration()
 	config_file.addVariable("Look", "InfoPanelFgColor", w.palette().text().color());
 	config_file.addVariable("Look", "InfoPanelBgFilled", false);
 	config_file.addVariable("Look", "InfoPanelBgColor", w.palette().base().color());
-	config_file.addVariable("Look", "InfoPanelSyntaxFile", "default");
+	config_file.addVariable("Look", "InfoPanelSyntaxFile", "ultr");
 	config_file.addVariable("Look", "NiceDateFormat", true);
 	config_file.addVariable("Look", "NoHeaderInterval", 30);
-	config_file.addVariable("Look", "NoHeaderRepeat", false);
+	config_file.addVariable("Look", "NoHeaderRepeat", true);
 	config_file.addVariable("Look", "NoServerTime", true);
 	config_file.addVariable("Look", "NoServerTimeDiff", 60);
 	config_file.addVariable("Look", "PanelFont", qApp->font());

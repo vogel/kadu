@@ -168,7 +168,7 @@ void ChatStylesManager::configurationUpdated()
 		"	padding: 3px;"
 		"}").arg(fontStyle, fontWeight, fontSize, fontFamily, textDecoration, QString::number(ParagraphSeparator), backgroundColor);
 
-	CfgNoHeaderRepeat = config_file.readBoolEntry("Look", "NoHeaderRepeat");
+	CfgNoHeaderRepeat = config_file.readBoolEntry("Look", "NoHeaderRepeat", true);
 
 	// headers removal stuff
 	if (CfgNoHeaderRepeat)

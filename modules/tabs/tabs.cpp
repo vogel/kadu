@@ -768,10 +768,10 @@ void TabsManager::closeChat()
 
 void TabsManager::createDefaultConfiguration()
 {
-	config_file.addVariable("ShortCuts", "MoveTabLeft", "Ctrl+Shift+Left");
-	config_file.addVariable("ShortCuts", "MoveTabRight", "Ctrl+Shift+Right");
-	config_file.addVariable("ShortCuts", "SwitchTabLeft", "Shift+Left");
-	config_file.addVariable("ShortCuts", "SwitchTabRight", "Shift+Right");
+	config_file.addVariable("ShortCuts", "MoveTabLeft", "Ctrl+Alt+Left");
+	config_file.addVariable("ShortCuts", "MoveTabRight", "Ctrl+Alt+Right");
+	config_file.addVariable("ShortCuts", "SwitchTabLeft", "Alt+Left");
+	config_file.addVariable("ShortCuts", "SwitchTabRight", "Alt+Right");
 	config_file.addVariable("Chat", "ConferencesInTabs", "true");
 	config_file.addVariable("Chat", "TabsBelowChats", "false");
 	config_file.addVariable("Chat", "AutoTabChange", "false");
