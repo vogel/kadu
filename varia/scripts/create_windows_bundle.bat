@@ -120,6 +120,7 @@ xcopy %QT_DIR%..\plugins\imageformats\qtiff%QT_DEBUG_SUFFIX%4.dll   %DESTINATION
 xcopy %QT_DIR%..\plugins\sqldrivers\qsqlite%QT_DEBUG_SUFFIX%4.dll   %DESTINATION%\plugins\sqldrivers\   /C /H /R /Y /Q
 
 ECHO Copying Qt translations
+xcopy %QT_TRANSLATIONS_DIR%qt_cs.qm %DESTINATION%\translations\  /C /H /R /Y /Q
 xcopy %QT_TRANSLATIONS_DIR%qt_de.qm %DESTINATION%\translations\  /C /H /R /Y /Q
 xcopy %QT_TRANSLATIONS_DIR%qt_fr.qm %DESTINATION%\translations\  /C /H /R /Y /Q
 xcopy %QT_TRANSLATIONS_DIR%qt_it.qm %DESTINATION%\translations\  /C /H /R /Y /Q
