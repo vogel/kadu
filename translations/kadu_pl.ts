@@ -1679,11 +1679,11 @@ Eksport listy kontaktów na serwer się nie powiódł</translation>
     </message>
     <message>
         <source>Prefer the most available contact</source>
-        <translation type="unfinished"></translation>
+        <translation>Preferuj najbardziej dostępny kontakt</translation>
     </message>
     <message>
         <source>&lt;p&gt;When enabled and one of this buddy&apos;s contacts has higher status (i.e., more available) than the others, that contact will be considered preferred regardless of its priority&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;Gdy włączone, a jeden z kontaktów tego znajomego ma wyższy status (czyli bardziej dostępny) od pozostałych kontaktów, będzie on preferowany bez względu na priorytet&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
