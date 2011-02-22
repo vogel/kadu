@@ -16,8 +16,8 @@
         <translation>Kreator konfiguracji</translation>
     </message>
     <message>
-        <source>Start Configuration Wizardâ¦</source>
-        <translation type="unfinished"></translation>
+		<source>Start Configuration Wizard...</source>
+		<translation>Uruchom kreator konfiguracji...</translation>
     </message>
 </context>
 <context>

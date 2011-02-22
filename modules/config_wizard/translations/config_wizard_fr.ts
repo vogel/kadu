@@ -16,7 +16,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Start Configuration Wizardâ¦</source>
+		<source>Start Configuration Wizard...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

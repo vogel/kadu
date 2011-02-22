@@ -33,7 +33,7 @@
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="18"/>
         <source>Always use tabs</source>
-        <translation type="unfinished"></translation>
+		<translation>Zawsze używaj kart</translation>
     </message>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="21"/>

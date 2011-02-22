@@ -3,7 +3,7 @@
 	<section name="Kadu">
 		<tab name="General">
 			<group-box name="Config Wizard">
-				<action-button caption="Start Configuration Wizard…" id="config-wizard/start" />
+				<action-button caption="Start Configuration Wizard..." id="config-wizard/start" />
 			</group-box>
 		</tab>
 	</section>

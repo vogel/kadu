@@ -104,7 +104,7 @@ HintManager::HintManager(QWidget *parent) :
 "[<div><img align=\"left\" valign=\"middle\" height=\"16\" width=\"16\" src=\"file:///#{statusIconPath}\">&nbsp;&nbsp;%u</div>]"
 "[<div><img align=\"left\" valign=\"middle\" height=\"16\" width=\"16\" src=\"file:///@{16x16/phone.png}\">&nbsp;&nbsp;%m</div>]"
 "[<div><img align=\"left\" valign=\"middle\" height=\"16\" width=\"16\" src=\"file:///@{16x16/mail-message-new.png}\">&nbsp;&nbsp;%e</div>]"
-"[<div><img align=\"left\" valign=\"middle\" height=\"16\" width=\"16\" src=\"file:///@{kadu_icons/kadu-blocking.png}\">&nbsp;%oNie ma cię na liście</div>]"
+"[<div><img align=\"left\" valign=\"middle\" height=\"16\" width=\"16\" src=\"file:///@{kadu_icons/kadu-blocking.png}\">&nbsp;%oDoesn't have you on the list</div>]"
 "</td>"
 "</tr>"
 "</table>"
