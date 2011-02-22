@@ -16,6 +16,7 @@
 * gui: copying folded links from chat view now copies the entire links, not their folded versions (beevvy)
 * buddies: added possibility to choose preferred contact only by priority, regardless of its status (off by default) (beevvy)
 * gadu: fixed resolver to work with more than one gadu account (beevvy)
+* gui: #1999 fixed: display avatar for dummy buddy when using default icon style (Vogel)
 
 +++ version 0.6.6-beta17
 * gui: always use bold font on buddies with new messages (Vogel)
