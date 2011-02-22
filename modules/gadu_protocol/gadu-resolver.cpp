@@ -41,45 +41,51 @@
 
 #include "gadu-resolver.h"
 
-GaduResolver *resolver = 0;
-
-GaduResolver::GaduResolver(QObject *parent) :
-		QObject(parent)
+GaduResolver::GaduResolver(gadu_resolver_data *data, QObject *parent) :
+		QObject(parent), LookupId(-1), Data(data)
 {
-	timer = new QTimer(this);
-	connect(timer, SIGNAL(timeout()), this, SLOT(abort()));
-	id = -1;
+	Timer = new QTimer(this);
+	connect(Timer, SIGNAL(timeout()), this, SLOT(abort()));
 }
 
 GaduResolver::~GaduResolver()
 {
-	if (timer->isActive())
-		abort();
+	reset();
+}
+
+void GaduResolver::reset()
+{
+	if (Timer->isActive())
+		Timer->stop();
+
+	if (LookupId >= 0)
+	{
+		QHostInfo::abortHostLookup(LookupId);
+		LookupId = -1;
+	}
 }
 
 void GaduResolver::abort()
 {
-	if (id < 0)
-		return;
+	reset();
 
-	if (timer->isActive())
-		timer->stop();
-
-	QHostInfo::abortHostLookup(id);
+	deleteLater();
 }
 
 void GaduResolver::resolve(const QString &hostname)
 {
-	timer->start(10000);
-	id = QHostInfo::lookupHost(hostname, this, SLOT(resolved(QHostInfo)));
+	reset();
+
+	Timer->start(10000);
+	LookupId = QHostInfo::lookupHost(hostname, this, SLOT(resolved(QHostInfo)));
 }
 
 void GaduResolver::resolved(const QHostInfo &host)
 {
 	struct in_addr addr;
 
-	if (timer->isActive())
-		timer->stop();
+	if (Timer->isActive())
+		Timer->stop();
 
 	if (host.error() == QHostInfo::NoError)
 	{
@@ -92,58 +98,43 @@ void GaduResolver::resolved(const QHostInfo &host)
 		addr.s_addr = INADDR_NONE;
 	}
 
-	if (write(data->wfd, &addr, sizeof(addr)) != sizeof(addr))
+	if (write(Data->wfd, &addr, sizeof(addr)) != sizeof(addr))
 	{
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Writing to pipe failed\n");
 	}
-}
 
-void GaduResolver::setData(gadu_resolver_data *data)
-{
-	this->data = data;
-}
+	LookupId = -1;
 
-gadu_resolver_data *GaduResolver::getData()
-{
-	return this->data;
+	deleteLater();
 }
 
 void gadu_resolver_cleanup(void **priv_data, int force)
 {
 	Q_UNUSED(force)
 
-	struct gadu_resolver_data *data = 0;
-
-	if (resolver != NULL)
-	{
-		delete resolver;
-		resolver = 0;
-	}
-
-	if (priv_data == NULL || *priv_data == 0)
+	if (!priv_data || !*priv_data)
 	{
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "data is null. nothing to do\n");
 		return;
 	}
 
-	data = (struct gadu_resolver_data *)*priv_data;
-	*priv_data = NULL;
+	struct gadu_resolver_data *data = static_cast<struct gadu_resolver_data *>(*priv_data);
+	*priv_data = 0;
 
 	if (data->wfd != -1)
 	{
 		close(data->wfd);
 		data->wfd = -1;
 	}
-	free(data);
+	delete data;
 }
 
 int gadu_resolver_start(int *fd, void **priv_data, const char *hostname)
 {
 	int pipes[2];
-	struct gadu_resolver_data *data = 0;
 
 #ifdef Q_OS_WIN
-	if (_pipe (pipes, 256, 0) == -1)
+	if (_pipe(pipes, 256, 0) == -1)
 #else
 	if (pipe(pipes) == -1)
 #endif
@@ -152,8 +143,8 @@ int gadu_resolver_start(int *fd, void **priv_data, const char *hostname)
 		return -1;
 	}
 
-	data = (struct gadu_resolver_data *)malloc(sizeof(struct gadu_resolver_data));
-	if (data == NULL)
+	struct gadu_resolver_data *data = new struct gadu_resolver_data;
+	if (!data)
 	{
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Unable to allocate data\n");
 		return -1;
@@ -162,8 +153,7 @@ int gadu_resolver_start(int *fd, void **priv_data, const char *hostname)
 	data->rfd = pipes[0];
 	data->wfd = pipes[1];
 
-	resolver = new GaduResolver();
-	resolver->setData(data);
+	GaduResolver *resolver = new GaduResolver(data);
 	resolver->resolve(QString(hostname));
 
 	*fd = pipes[0];

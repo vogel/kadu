@@ -36,25 +36,23 @@ class GaduResolver : public QObject
 {
 	Q_OBJECT
 
-	QTimer *timer;
-	int id;
-	gadu_resolver_data *data;
+	QTimer *Timer;
+	int LookupId;
+	gadu_resolver_data *Data;
+
+	void reset();
 
 private slots:
 	void abort();
 	void resolved(const QHostInfo &host);
 
 public:
-	explicit GaduResolver(QObject *parent = 0);
+	explicit GaduResolver(gadu_resolver_data *data, QObject *parent = 0);
 	virtual ~GaduResolver();
 
 	void resolve(const QString &hostname);
-	void setData(gadu_resolver_data *);
-	gadu_resolver_data * getData();
 
 };
-
-extern GaduResolver *resolver;
 
 int gadu_resolver_start(int *fd, void **priv_data, const char *hostname);
 void gadu_resolver_cleanup(void **priv_data, int force);
