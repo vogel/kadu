@@ -48,6 +48,8 @@ public:
 	explicit HistoryImporter(const Account &account, const QString &path, QObject *parent = 0);
 	virtual ~HistoryImporter();
 
+	const QString & sourceDirectory() const { return SourceDirectory; }
+
 public slots:
 	void run();
 	void canceled();

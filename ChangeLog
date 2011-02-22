@@ -18,6 +18,7 @@
 * gadu: fixed resolver to work with more than one gadu account (beevvy)
 * gui: #1999 fixed: display avatar for dummy buddy when using default icon style (Vogel)
 * gui: #1994 fixed: add break-word to CSS styles for Satin (Vogel)
+* history_migration: #1990 fixed: running simultaneously more than one history import for the same history is possible (WhE)
 
 +++ version 0.6.6-beta17
 * gui: always use bold font on buddies with new messages (Vogel)

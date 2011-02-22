@@ -56,6 +56,17 @@ void HistoryImporterManager::addImporter(HistoryImporter *importer)
 	connect(importer, SIGNAL(destroyed(QObject*)), this, SLOT(importerDestroyed(QObject*)));
 }
 
+bool HistoryImporterManager::containsImporter(const QString &path)
+{
+	foreach (HistoryImporter *importer, Importers)
+	{
+		if (importer->sourceDirectory() == path)
+			return true;
+	}
+
+	return false;
+}
+
 void HistoryImporterManager::removeImporter(HistoryImporter *importer)
 {
 	Importers.removeAll(importer);

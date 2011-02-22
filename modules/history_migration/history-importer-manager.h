@@ -47,6 +47,8 @@ public:
 
 	static HistoryImporterManager * instance() { return Instance; }
 
+	bool containsImporter(const QString &path);
+
 	void addImporter(HistoryImporter *importer);
 	void removeImporter(HistoryImporter *importer);
 

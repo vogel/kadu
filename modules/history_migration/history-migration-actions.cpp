@@ -78,6 +78,9 @@ void HistoryMigrationActions::runImportHistoryAction()
 	if (!gaduAccount)
 		return; // maybe message?
 
+	if (HistoryImporterManager::instance()->containsImporter(profilePath("history/")))
+		return;
+
 	HistoryImporter *hi = new HistoryImporter(gaduAccount, profilePath("history/"));
 	HistoryImporterManager::instance()->addImporter(hi);
 
