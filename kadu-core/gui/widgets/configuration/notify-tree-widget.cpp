@@ -154,7 +154,7 @@ void NotifyTreeWidget::notifierChecked(Notifier *notifier, bool checked)
 
 void NotifyTreeWidget::useCustomSettingsChecked(bool checked)
 {
-    	NotifyTreeWidgetItem *item = dynamic_cast<NotifyTreeWidgetItem *>(currentItem());
+   	NotifyTreeWidgetItem *item = dynamic_cast<NotifyTreeWidgetItem *>(currentItem());
 	if (item)
 		item->useCustomSettingsChecked(checked);
 }

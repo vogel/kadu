@@ -616,7 +616,7 @@ QString NotificationManager::notifyConfigurationKey(const QString &eventType)
 		if (-1 == slashPosition)
 			return event;
 
-		if (config_file.readBoolEntry("Notify", event + "_UseCustomSettings"))
+		if (config_file.readBoolEntry("Notify", event + "_UseCustomSettings", false))
 			return event;
 
 		event = event.left(slashPosition);

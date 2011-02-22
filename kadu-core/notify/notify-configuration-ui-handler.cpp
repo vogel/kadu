@@ -72,7 +72,6 @@ void NotifyConfigurationUiHandler::addConfigurationWidget(Notifier *notifier)
 	NotifyGroupBox *configurationGroupBox = new NotifyGroupBox(notifier,
 			qApp->translate("@default", notifier->description().toAscii().data()), notificationsGroupBox->widget());
 	connect(configurationGroupBox, SIGNAL(toggled(Notifier *, bool)), this, SLOT(notifierToggled(Notifier *, bool)));
-	connect(useCustomSettingsCheckBox, SIGNAL(toggled(bool)), configurationGroupBox, SLOT(setVisible(bool)));
 	if (!NotifierGui.contains(notifier))
 		NotifierGui.insert(notifier, NotifierConfigurationGuiItem());
 
@@ -127,7 +126,7 @@ void NotifyConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurat
 
 		NotifyEventConfigurationItem item;
 		item.event = notifyEvent;
-		item.useCustomSettings = config_file.readBoolEntry("Notify", eventName + "_UseCustomSettings", true);
+		item.useCustomSettings = config_file.readBoolEntry("Notify", eventName + "_UseCustomSettings", false);
 
 		NotifyEvents[eventName] = item;
 	}
@@ -190,7 +189,7 @@ void NotifyConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurat
 	connect(notifyTreeWidget, SIGNAL(itemSelectionChanged()), this, SLOT(eventSwitched()));
 
 	useCustomSettingsCheckBox = new QCheckBox(tr("Use custom settings"));
-	connect(useCustomSettingsCheckBox, SIGNAL(clicked(bool)), this, SLOT(customSettingsCheckBoxToggled(bool)));
+	connect(useCustomSettingsCheckBox, SIGNAL(toggled(bool)), this, SLOT(customSettingsCheckBoxToggled(bool)));
 	notificationsGroupBox->addWidget(useCustomSettingsCheckBox, true);
 
 	foreach (Notifier *notifier, NotificationManager::instance()->notifiers())
@@ -228,7 +227,7 @@ void NotifyConfigurationUiHandler::notifyEventRegistered(NotifyEvent *notifyEven
 		NotifyEventConfigurationItem item;
 		item.event = notifyEvent;
 		if (!notifyEvent->category().isEmpty())
-			item.useCustomSettings = config_file.readBoolEntry("Notify", eventName + "_UseCustomSettings", true);
+			item.useCustomSettings = config_file.readBoolEntry("Notify", eventName + "_UseCustomSettings", false);
 		else
 			item.useCustomSettings = true;
 
@@ -347,6 +346,7 @@ void NotifyConfigurationUiHandler::eventSwitched()
 
 	useCustomSettingsCheckBox->setVisible(!NotifyEvents[CurrentEvent].event->category().isEmpty());
 	useCustomSettingsCheckBox->setChecked(NotifyEvents[CurrentEvent].useCustomSettings);
+	customSettingsCheckBoxToggled(useCustomSettingsCheckBox->isHidden() || NotifyEvents[CurrentEvent].useCustomSettings);
 
 	foreach (Notifier *notifier, NotificationManager::instance()->notifiers())
 	{
@@ -382,4 +382,8 @@ void NotifyConfigurationUiHandler::customSettingsCheckBoxToggled(bool toggled)
 	NotifyEvents[CurrentEvent].useCustomSettings = toggled;
 
 	notifyTreeWidget->useCustomSettingsChecked(toggled);
+
+	foreach (const NotifierConfigurationGuiItem &guiItem, NotifierGui)
+		if (guiItem.ConfigurationGroupBox)
+			guiItem.ConfigurationGroupBox->setVisible(toggled);
 }
