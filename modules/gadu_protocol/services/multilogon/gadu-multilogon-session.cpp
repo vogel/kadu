@@ -17,6 +17,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+// for Q_OS_WIN macro
+#include <QtCore/QtGlobal>
+
 #ifdef Q_OS_WIN
 #include <winsock2.h>
 #else
