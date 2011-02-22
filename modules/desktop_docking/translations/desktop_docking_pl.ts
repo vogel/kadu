@@ -5,43 +5,43 @@
     <name>@default</name>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished"></translation>
+        <translation>Kadu</translation>
     </message>
     <message>
         <source>Tray</source>
-        <translation type="unfinished"></translation>
+        <translation>Tacka systemowa</translation>
     </message>
     <message>
         <source>Desktop Docking</source>
-        <translation type="unfinished"></translation>
+        <translation>Dokowanie na pulpicie</translation>
     </message>
     <message>
         <source>Horizontal position</source>
-        <translation type="unfinished"></translation>
+        <translation>Pozycja pozioma</translation>
     </message>
     <message>
         <source>Vertical position</source>
-        <translation type="unfinished"></translation>
+        <translation>Pozycja pionowa</translation>
     </message>
     <message>
         <source>Transparent</source>
-        <translation type="unfinished"></translation>
+        <translation>Przezroczystość</translation>
     </message>
     <message>
         <source>Background color</source>
-        <translation type="unfinished"></translation>
+        <translation>Kolor tła</translation>
     </message>
     <message>
         <source>Enable Move entry in docklet&apos;s menu</source>
-        <translation type="unfinished"></translation>
+        <translation>Pokaż element &apos;Przesuń&apos; w menu ikony</translation>
     </message>
     <message>
         <source>Move</source>
-        <translation type="unfinished">Przesuń</translation>
+        <translation>Przesuń</translation>
     </message>
     <message>
         <source>Enable icon moving on desktop. After pressing move cursor over docking icon and then move. Press any mouse key when the icon is in right place.</source>
-        <translation type="unfinished"></translation>
+        <translation>Zezwól na przesuwanie ikony po pulpicie. Po wciśnięciu przycisku myszy zacznj przesuwać kursor. Naciśnij przycisk myszy gdy ikona znajdzie się na pożądanej pozycji.</translation>
     </message>
 </context>
 <context>

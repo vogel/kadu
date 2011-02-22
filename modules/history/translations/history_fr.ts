@@ -160,7 +160,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../history.cpp" line="448"/>
+        <location filename="../history.cpp" line="454"/>
         <source>%1 day(s) %2 hour(s)</source>
         <translation type="unfinished"></translation>
     </message>

@@ -111,6 +111,11 @@
         <source>Facebook ID:</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../facebook-protocol-factory.cpp" line="91"/>
+        <source>Your username is available at &lt;a href=&apos;https://www.facebook.com/editaccount.php?settings&apos;&gt;https://www.facebook.com/editaccount.php?settings&lt;/a&gt; under Username field. If this field is empty, you can choose your Username and enter it there.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>GTalkProtocolFactory</name>
@@ -230,37 +235,42 @@
 <context>
     <name>JabberAddAccountWidget</name>
     <message>
-        <location filename="../gui/widgets/jabber-add-account-widget.cpp" line="97"/>
+        <location filename="../gui/widgets/jabber-add-account-widget.cpp" line="93"/>
+        <source>&lt;a href=&apos;#&apos;&gt;What is my username?&lt;/a&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/widgets/jabber-add-account-widget.cpp" line="107"/>
         <source>Username</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/widgets/jabber-add-account-widget.cpp" line="102"/>
+        <location filename="../gui/widgets/jabber-add-account-widget.cpp" line="112"/>
         <source>Password</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/widgets/jabber-add-account-widget.cpp" line="104"/>
+        <location filename="../gui/widgets/jabber-add-account-widget.cpp" line="114"/>
         <source>Remember Password</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/widgets/jabber-add-account-widget.cpp" line="109"/>
+        <location filename="../gui/widgets/jabber-add-account-widget.cpp" line="119"/>
         <source>Account Identity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/widgets/jabber-add-account-widget.cpp" line="111"/>
+        <location filename="../gui/widgets/jabber-add-account-widget.cpp" line="121"/>
         <source>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Select or enter the identity that will be associated with this account.&lt;/i&gt;&lt;/font&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/widgets/jabber-add-account-widget.cpp" line="122"/>
+        <location filename="../gui/widgets/jabber-add-account-widget.cpp" line="132"/>
         <source>Add Account</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/widgets/jabber-add-account-widget.cpp" line="123"/>
+        <location filename="../gui/widgets/jabber-add-account-widget.cpp" line="133"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
@@ -657,33 +667,33 @@ Password entered in both fields (&quot;New password&quot; and &quot;Retype passw
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/widgets/jabber-edit-account-widget.cpp" line="350"/>
-        <location filename="../gui/widgets/jabber-edit-account-widget.cpp" line="362"/>
+        <location filename="../gui/widgets/jabber-edit-account-widget.cpp" line="351"/>
+        <location filename="../gui/widgets/jabber-edit-account-widget.cpp" line="363"/>
         <source>Kadu</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/widgets/jabber-edit-account-widget.cpp" line="350"/>
+        <location filename="../gui/widgets/jabber-edit-account-widget.cpp" line="351"/>
         <source>Cannot enable secure connection. SSL/TLS plugin not found.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/widgets/jabber-edit-account-widget.cpp" line="362"/>
+        <location filename="../gui/widgets/jabber-edit-account-widget.cpp" line="363"/>
         <source>Legacy SSL is only available in combination with manual host/port.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/widgets/jabber-edit-account-widget.cpp" line="503"/>
+        <location filename="../gui/widgets/jabber-edit-account-widget.cpp" line="504"/>
         <source>Confirm account removal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/widgets/jabber-edit-account-widget.cpp" line="504"/>
+        <location filename="../gui/widgets/jabber-edit-account-widget.cpp" line="505"/>
         <source>Are you sure you want to remove account %1 (%2)?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/widgets/jabber-edit-account-widget.cpp" line="508"/>
+        <location filename="../gui/widgets/jabber-edit-account-widget.cpp" line="509"/>
         <source>Remove account</source>
         <translation type="unfinished"></translation>
     </message>
@@ -908,77 +918,77 @@ Details: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libiris/src/xmpp/xmpp-im/types.cpp" line="2754"/>
+        <location filename="../libiris/src/xmpp/xmpp-im/types.cpp" line="2764"/>
         <source>Username</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libiris/src/xmpp/xmpp-im/types.cpp" line="2755"/>
+        <location filename="../libiris/src/xmpp/xmpp-im/types.cpp" line="2765"/>
         <source>Nickname</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libiris/src/xmpp/xmpp-im/types.cpp" line="2756"/>
+        <location filename="../libiris/src/xmpp/xmpp-im/types.cpp" line="2766"/>
         <source>Password</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libiris/src/xmpp/xmpp-im/types.cpp" line="2757"/>
+        <location filename="../libiris/src/xmpp/xmpp-im/types.cpp" line="2767"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libiris/src/xmpp/xmpp-im/types.cpp" line="2758"/>
+        <location filename="../libiris/src/xmpp/xmpp-im/types.cpp" line="2768"/>
         <source>First Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libiris/src/xmpp/xmpp-im/types.cpp" line="2759"/>
+        <location filename="../libiris/src/xmpp/xmpp-im/types.cpp" line="2769"/>
         <source>Last Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libiris/src/xmpp/xmpp-im/types.cpp" line="2760"/>
+        <location filename="../libiris/src/xmpp/xmpp-im/types.cpp" line="2770"/>
         <source>E-mail</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libiris/src/xmpp/xmpp-im/types.cpp" line="2761"/>
+        <location filename="../libiris/src/xmpp/xmpp-im/types.cpp" line="2771"/>
         <source>Address</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libiris/src/xmpp/xmpp-im/types.cpp" line="2762"/>
+        <location filename="../libiris/src/xmpp/xmpp-im/types.cpp" line="2772"/>
         <source>City</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libiris/src/xmpp/xmpp-im/types.cpp" line="2763"/>
+        <location filename="../libiris/src/xmpp/xmpp-im/types.cpp" line="2773"/>
         <source>State</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libiris/src/xmpp/xmpp-im/types.cpp" line="2764"/>
+        <location filename="../libiris/src/xmpp/xmpp-im/types.cpp" line="2774"/>
         <source>Zipcode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libiris/src/xmpp/xmpp-im/types.cpp" line="2765"/>
+        <location filename="../libiris/src/xmpp/xmpp-im/types.cpp" line="2775"/>
         <source>Phone</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libiris/src/xmpp/xmpp-im/types.cpp" line="2766"/>
+        <location filename="../libiris/src/xmpp/xmpp-im/types.cpp" line="2776"/>
         <source>URL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libiris/src/xmpp/xmpp-im/types.cpp" line="2767"/>
+        <location filename="../libiris/src/xmpp/xmpp-im/types.cpp" line="2777"/>
         <source>Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libiris/src/xmpp/xmpp-im/types.cpp" line="2768"/>
+        <location filename="../libiris/src/xmpp/xmpp-im/types.cpp" line="2778"/>
         <source>Misc</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1159,7 +1169,7 @@ Please correct and try again.</source>
 <context>
     <name>XMPP::JT_VCard</name>
     <message>
-        <location filename="../libiris/src/xmpp/xmpp-im/xmpp_tasks.cpp" line="1068"/>
+        <location filename="../libiris/src/xmpp/xmpp-im/xmpp_tasks.cpp" line="1070"/>
         <source>No VCard available</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1167,233 +1177,233 @@ Please correct and try again.</source>
 <context>
     <name>XMPP::JabberClient</name>
     <message>
-        <location filename="../client/jabber-client.cpp" line="251"/>
+        <location filename="../client/jabber-client.cpp" line="252"/>
         <source>SSL support could not be initialized for account %1. This is most likely because the QCA TLS plugin is not installed on your system.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../client/jabber-client.cpp" line="551"/>
+        <location filename="../client/jabber-client.cpp" line="557"/>
         <source>Server Authentication</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../client/jabber-client.cpp" line="649"/>
+        <location filename="../client/jabber-client.cpp" line="655"/>
         <source>The server does not support TLS encryption.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../client/jabber-client.cpp" line="678"/>
+        <location filename="../client/jabber-client.cpp" line="684"/>
         <source>There was an error communicating with the server.
 Details: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../client/jabber-client.cpp" line="880"/>
+        <location filename="../client/jabber-client.cpp" line="887"/>
         <source>Disconnected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../client/jabber-client.cpp" line="885"/>
+        <location filename="../client/jabber-client.cpp" line="892"/>
         <source>XML Parsing Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../client/jabber-client.cpp" line="890"/>
+        <location filename="../client/jabber-client.cpp" line="897"/>
         <source>XMPP Protocol Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../client/jabber-client.cpp" line="910"/>
+        <location filename="../client/jabber-client.cpp" line="917"/>
         <source>Generic stream error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../client/jabber-client.cpp" line="913"/>
+        <location filename="../client/jabber-client.cpp" line="920"/>
         <source>Conflict(remote login replacing this one)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../client/jabber-client.cpp" line="917"/>
+        <location filename="../client/jabber-client.cpp" line="924"/>
         <source>Timed out from inactivity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../client/jabber-client.cpp" line="919"/>
+        <location filename="../client/jabber-client.cpp" line="926"/>
         <source>Internal server error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../client/jabber-client.cpp" line="921"/>
+        <location filename="../client/jabber-client.cpp" line="928"/>
         <source>Invalid XML</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../client/jabber-client.cpp" line="924"/>
+        <location filename="../client/jabber-client.cpp" line="931"/>
         <source>Policy violation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../client/jabber-client.cpp" line="929"/>
+        <location filename="../client/jabber-client.cpp" line="936"/>
         <source>Server out of resources</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../client/jabber-client.cpp" line="934"/>
+        <location filename="../client/jabber-client.cpp" line="941"/>
         <source>Server is shutting down</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../client/jabber-client.cpp" line="936"/>
+        <location filename="../client/jabber-client.cpp" line="943"/>
         <source>XMPP Stream Error: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../client/jabber-client.cpp" line="944"/>
+        <location filename="../client/jabber-client.cpp" line="951"/>
         <source>Unable to connect to server</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../client/jabber-client.cpp" line="946"/>
+        <location filename="../client/jabber-client.cpp" line="953"/>
         <source>Host not found</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../client/jabber-client.cpp" line="948"/>
+        <location filename="../client/jabber-client.cpp" line="955"/>
         <source>Error connecting to proxy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../client/jabber-client.cpp" line="950"/>
+        <location filename="../client/jabber-client.cpp" line="957"/>
         <source>Error during proxy negotiation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../client/jabber-client.cpp" line="953"/>
+        <location filename="../client/jabber-client.cpp" line="960"/>
         <source>Proxy authentication failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../client/jabber-client.cpp" line="957"/>
+        <location filename="../client/jabber-client.cpp" line="964"/>
         <source>Socket/stream error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../client/jabber-client.cpp" line="958"/>
+        <location filename="../client/jabber-client.cpp" line="965"/>
         <source>Connection Error: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../client/jabber-client.cpp" line="966"/>
+        <location filename="../client/jabber-client.cpp" line="973"/>
         <source>Host no longer hosted</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../client/jabber-client.cpp" line="968"/>
+        <location filename="../client/jabber-client.cpp" line="975"/>
         <source>Host unknown</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../client/jabber-client.cpp" line="971"/>
+        <location filename="../client/jabber-client.cpp" line="978"/>
         <source>A required remote connection failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../client/jabber-client.cpp" line="975"/>
+        <location filename="../client/jabber-client.cpp" line="982"/>
         <source>See other host: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../client/jabber-client.cpp" line="977"/>
+        <location filename="../client/jabber-client.cpp" line="984"/>
         <source>Server does not support proper XMPP version</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../client/jabber-client.cpp" line="978"/>
+        <location filename="../client/jabber-client.cpp" line="985"/>
         <source>Stream Negotiation Error: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../client/jabber-client.cpp" line="985"/>
+        <location filename="../client/jabber-client.cpp" line="992"/>
         <source>Server rejected STARTTLS</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../client/jabber-client.cpp" line="990"/>
+        <location filename="../client/jabber-client.cpp" line="997"/>
         <source>TLS handshake error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../client/jabber-client.cpp" line="992"/>
+        <location filename="../client/jabber-client.cpp" line="999"/>
         <source>Broken security layer (TLS)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../client/jabber-client.cpp" line="1001"/>
+        <location filename="../client/jabber-client.cpp" line="1008"/>
         <source>Unable to login</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../client/jabber-client.cpp" line="1004"/>
+        <location filename="../client/jabber-client.cpp" line="1011"/>
         <source>No appropriate mechanism available for given security settings(e.g. SASL library too weak, or plaintext authentication not enabled)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../client/jabber-client.cpp" line="1008"/>
+        <location filename="../client/jabber-client.cpp" line="1015"/>
         <source>Bad server response</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../client/jabber-client.cpp" line="1010"/>
+        <location filename="../client/jabber-client.cpp" line="1017"/>
         <source>Server failed mutual authentication</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../client/jabber-client.cpp" line="1012"/>
+        <location filename="../client/jabber-client.cpp" line="1019"/>
         <source>Encryption required for chosen SASL mechanism</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../client/jabber-client.cpp" line="1014"/>
+        <location filename="../client/jabber-client.cpp" line="1021"/>
         <source>Invalid account information</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../client/jabber-client.cpp" line="1016"/>
+        <location filename="../client/jabber-client.cpp" line="1023"/>
         <source>Invalid SASL mechanism</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../client/jabber-client.cpp" line="1018"/>
+        <location filename="../client/jabber-client.cpp" line="1025"/>
         <source>Invalid realm</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../client/jabber-client.cpp" line="1020"/>
+        <location filename="../client/jabber-client.cpp" line="1027"/>
         <source>SASL mechanism too weak for this account</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../client/jabber-client.cpp" line="1022"/>
+        <location filename="../client/jabber-client.cpp" line="1029"/>
         <source>Not authorized</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../client/jabber-client.cpp" line="1024"/>
+        <location filename="../client/jabber-client.cpp" line="1031"/>
         <source>Temporary auth failure</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../client/jabber-client.cpp" line="1026"/>
+        <location filename="../client/jabber-client.cpp" line="1033"/>
         <source>Authentication error: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../client/jabber-client.cpp" line="1029"/>
+        <location filename="../client/jabber-client.cpp" line="1036"/>
         <source>Broken security layer (SASL)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../client/jabber-client.cpp" line="1031"/>
+        <location filename="../client/jabber-client.cpp" line="1038"/>
         <source>None</source>
         <translation type="unfinished"></translation>
     </message>

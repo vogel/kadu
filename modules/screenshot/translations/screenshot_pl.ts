@@ -5,75 +5,75 @@
     <name>@default</name>
     <message>
         <source>Screenshot</source>
-        <translation type="unfinished"></translation>
+        <translation>Screenshot</translation>
     </message>
     <message>
         <source>General</source>
-        <translation type="unfinished"></translation>
+        <translation>Ogólne</translation>
     </message>
     <message>
         <source>General Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Ogólne ustawienia</translation>
     </message>
     <message>
         <source>File format</source>
-        <translation type="unfinished"></translation>
+        <translation>Format pliku</translation>
     </message>
     <message>
         <source>Select image format, which screenshots will be stored and sent in.</source>
-        <translation type="unfinished"></translation>
+        <translation>Wybierz format obrazka, w jakim ma zostać zapisany zrzut.</translation>
     </message>
     <message>
         <source>Force .jpg extension for JPEG format</source>
-        <translation type="unfinished"></translation>
+        <translation>Wymuś rozszerzenie .jpg dla formatu JPEG</translation>
     </message>
     <message>
         <source>Forces to use short .jpg extension for files in JPEG format. Some other instant messagers needs it.</source>
-        <translation type="unfinished"></translation>
+        <translation>Wymusza użycie krótkiego rozszerzenia .jpg dla plików w formacie JPEG. Niektóre komunikatory tego wymagają.</translation>
     </message>
     <message>
         <source>Screenshots quality</source>
-        <translation type="unfinished"></translation>
+        <translation>Jakość obrazka</translation>
     </message>
     <message>
         <source>-1 for autodetection, 0 for best file compression, 100 for best image quality.</source>
-        <translation type="unfinished"></translation>
+        <translation>-1 to autodetekcja, 0 to najlepsza kompresja, 100 to najlepsza jakość.</translation>
     </message>
     <message>
         <source>Paste [IMAGE] clause automatically</source>
-        <translation type="unfinished"></translation>
+        <translation>Wklejaj polecenie [IMAGE] automatycznie</translation>
     </message>
     <message>
         <source>When enabled, module will automatically paste ready to send [IMAGE] clause in chat window.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kiedy włączone, moduł automatycznie wklei polecenie [IMAGE] do okna rozmowy, aby było gotowe do wysłania.</translation>
     </message>
     <message>
         <source>Directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Katalog</translation>
     </message>
     <message>
         <source>Screenshots directory path</source>
-        <translation type="unfinished"></translation>
+        <translation>Ścieżka do katalogu ze zrzutami</translation>
     </message>
     <message>
         <source>Screenshots filename prefix</source>
-        <translation type="unfinished"></translation>
+        <translation>Prefiks nazwy pliku zrzutów ekranu</translation>
     </message>
     <message>
         <source>Enable directory size control</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontroluj rozmiar katalogu</translation>
     </message>
     <message>
         <source>When enabled, module will check for shots directory size and warn you if it gets size specified below.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kiedy włączone, moduł będzie sprawdzał rozmiar katalogu zrzutów i ostrzeże cię, jeśli będzie on większy niż ten podany niżej.</translation>
     </message>
     <message>
         <source>Maximum directory size</source>
-        <translation type="unfinished"></translation>
+        <translation>Maksymalny rozmiar katalogu</translation>
     </message>
     <message>
         <source>Define, how many kbytes can shots take in the directory before module will warn you.</source>
-        <translation type="unfinished"></translation>
+        <translation>Określa, ile kilobajtów mogą zajmować zrzuty w katalogu, zanim moduł cię ostrzeże.</translation>
     </message>
 </context>
 <context>

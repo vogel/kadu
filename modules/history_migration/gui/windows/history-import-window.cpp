@@ -38,7 +38,7 @@ void HistoryImportWindow::createGui()
 	QFormLayout *layout = new QFormLayout(this);
 
 	QLabel *description = new QLabel(this);
-	description->setText(tr("History is new being imported into new format. Please wait until this task is finished."));
+	description->setText(tr("History is now being imported into new format. Please wait until this task is finished."));
 	layout->addRow(description);
 
 	ChatsProgressBar = new QProgressBar(this);

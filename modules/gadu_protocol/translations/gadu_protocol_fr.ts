@@ -649,7 +649,7 @@ Passwords typed in both fields (&quot;Password&quot; and &quot;Retype Password&q
     <name>GaduProtocol</name>
     <message>
         <location filename="../gadu-protocol.cpp" line="399"/>
-        <location filename="../gadu-protocol.cpp" line="674"/>
+        <location filename="../gadu-protocol.cpp" line="679"/>
         <source>Kadu</source>
         <translation type="unfinished"></translation>
     </message>
@@ -664,63 +664,63 @@ Passwords typed in both fields (&quot;Password&quot; and &quot;Retype Password&q
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gadu-protocol.cpp" line="663"/>
+        <location filename="../gadu-protocol.cpp" line="668"/>
         <source>Unable to connect, server has not been found</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gadu-protocol.cpp" line="667"/>
+        <location filename="../gadu-protocol.cpp" line="672"/>
         <source>Unable to connect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gadu-protocol.cpp" line="671"/>
+        <location filename="../gadu-protocol.cpp" line="676"/>
         <source>Please change your email in &quot;Change password / email&quot; window. Leave new password field blank.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gadu-protocol.cpp" line="678"/>
+        <location filename="../gadu-protocol.cpp" line="683"/>
         <source>Unable to connect, server has returned unknown data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gadu-protocol.cpp" line="682"/>
+        <location filename="../gadu-protocol.cpp" line="687"/>
         <source>Unable to connect, connection break during reading</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gadu-protocol.cpp" line="686"/>
+        <location filename="../gadu-protocol.cpp" line="691"/>
         <source>Unable to connect, connection break during writing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gadu-protocol.cpp" line="696"/>
+        <location filename="../gadu-protocol.cpp" line="701"/>
         <source>Unable to connect, error of negotiation TLS</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gadu-protocol.cpp" line="700"/>
+        <location filename="../gadu-protocol.cpp" line="705"/>
         <source>Too many connection attempts with bad password!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gadu-protocol.cpp" line="705"/>
+        <location filename="../gadu-protocol.cpp" line="710"/>
         <source>Unable to connect, servers are down</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gadu-protocol.cpp" line="709"/>
-        <location filename="../gadu-protocol.cpp" line="723"/>
+        <location filename="../gadu-protocol.cpp" line="714"/>
+        <location filename="../gadu-protocol.cpp" line="728"/>
         <source>Connection broken</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gadu-protocol.cpp" line="714"/>
+        <location filename="../gadu-protocol.cpp" line="719"/>
         <source>Connection timeout!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gadu-protocol.cpp" line="718"/>
+        <location filename="../gadu-protocol.cpp" line="723"/>
         <source>Disconnection has occurred</source>
         <translation type="unfinished"></translation>
     </message>

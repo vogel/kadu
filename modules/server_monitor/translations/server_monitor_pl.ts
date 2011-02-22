@@ -16,7 +16,7 @@
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="10"/>
         <source>Server List Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Ustawienia listy serwerów</translation>
     </message>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="13"/>
@@ -36,17 +36,17 @@
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="23"/>
         <source>Show reset button</source>
-        <translation type="unfinished"></translation>
+        <translation>Pokaż przycisk odświeżania</translation>
     </message>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="26"/>
         <source>Auto refresh list</source>
-        <translation>Automatycznie odświeżaj listę</translation>
+		<translation>Automatycznie aktualizuj listę</translation>
     </message>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="29"/>
         <source>Refresh interval</source>
-        <translation type="unfinished"></translation>
+		<translation>Częstotliwość odświeżania</translation>
     </message>
 </context>
 <context>
@@ -54,7 +54,7 @@
     <message>
         <location filename="../server-monitor.cpp" line="82"/>
         <source>Server&apos;s Monitor</source>
-        <translation type="unfinished"></translation>
+        <translation>Monitor serwerów</translation>
     </message>
 </context>
 <context>
@@ -68,7 +68,7 @@
         <location filename="../server-monitor-window.cpp" line="53"/>
         <location filename="../server-monitor-window.cpp" line="155"/>
         <source>No information available</source>
-        <translation type="unfinished"></translation>
+        <translation>Brak dostępnych informacji</translation>
     </message>
     <message>
         <location filename="../server-monitor-window.cpp" line="60"/>
@@ -79,12 +79,13 @@
         <location filename="../server-monitor-window.cpp" line="104"/>
         <source>Available	%1
 Unavailable	%2</source>
-        <translation type="unfinished"></translation>
+		<translation>Dostępne	%1
+Niedostępne %2</translation>
     </message>
     <message>
         <location filename="../server-monitor-window.cpp" line="153"/>
         <source>Cannot read server list!</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie można odczytać listy serwerów!</translation>
     </message>
 </context>
 <context>
@@ -92,7 +93,7 @@ Unavailable	%2</source>
     <message>
         <location filename="../server-status-widget.cpp" line="107"/>
         <source>Server %1 changed status to %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Serwer %1 zmienił status na %2</translation>
     </message>
     <message>
         <location filename="../server-status-widget.cpp" line="118"/>
@@ -107,12 +108,12 @@ Unavailable	%2</source>
     <message>
         <location filename="../server-status-widget.cpp" line="124"/>
         <source>Unknown</source>
-        <translation type="unfinished"></translation>
+        <translation>Nieznany</translation>
     </message>
     <message>
         <location filename="../server-status-widget.cpp" line="127"/>
         <source>Empty</source>
-        <translation type="unfinished"></translation>
+        <translation>Pusty</translation>
     </message>
 </context>
 </TS>

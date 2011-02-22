@@ -6,37 +6,37 @@
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="4"/>
         <source>Chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Rozmowa</translation>
     </message>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="7"/>
         <source>Cenzor</source>
-        <translation type="unfinished"></translation>
+        <translation>Cenzor</translation>
     </message>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="10"/>
         <source>General</source>
-        <translation type="unfinished"></translation>
+        <translation>Ogólne</translation>
     </message>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="13"/>
         <source>Enable cenzor</source>
-        <translation type="unfinished"></translation>
+        <translation>Włącz cenzora</translation>
     </message>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="16"/>
         <source>Admonition</source>
-        <translation type="unfinished"></translation>
+        <translation>Pouczenie</translation>
     </message>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="21"/>
         <source>Swearwords</source>
-        <translation type="unfinished"></translation>
+        <translation>Przekleństwa</translation>
     </message>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="25"/>
         <source>Exclusions</source>
-        <translation type="unfinished"></translation>
+        <translation>Wyjątki</translation>
     </message>
 </context>
 <context>

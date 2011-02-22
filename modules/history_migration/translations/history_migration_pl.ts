@@ -5,18 +5,18 @@
     <name>HistoryImportWindow</name>
     <message>
         <location filename="../gui/windows/history-import-window.cpp" line="41"/>
-        <source>History is new being imported into new format. Please wait until this task is finished.</source>
-        <translation type="unfinished"></translation>
+		<source>History is now being imported into new format. Please wait until this task is finished.</source>
+		<translation>Trwa import historii do nowego formatu. Proszę czekać...</translation>
     </message>
     <message>
         <location filename="../gui/windows/history-import-window.cpp" line="45"/>
         <source>Chats progress:</source>
-        <translation type="unfinished"></translation>
+        <translation>Postęp importu rozmów:</translation>
     </message>
     <message>
         <location filename="../gui/windows/history-import-window.cpp" line="48"/>
         <source>Messages progress:</source>
-        <translation type="unfinished"></translation>
+        <translation>Postęp importu wiadomości:</translation>
     </message>
 </context>
 <context>

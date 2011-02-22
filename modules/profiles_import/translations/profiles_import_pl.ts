@@ -54,7 +54,8 @@
         <location filename="../gui/windows/import-profile-window.cpp" line="114"/>
         <source>This directory is not a Kadu profile directory.
 File kadu.conf.xml not found</source>
-        <translation type="unfinished"></translation>
+        <translation>Ten katalog nie zawiera poprawnego profilu Kadu.
+Plik kadu.conf.xml nie został odnaleziony</translation>
     </message>
     <message>
         <location filename="../gui/windows/import-profile-window.cpp" line="121"/>
@@ -64,7 +65,7 @@ File kadu.conf.xml not found</source>
     <message>
         <location filename="../gui/windows/import-profile-window.cpp" line="132"/>
         <source>Unable to import profile: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie można zaimportować profilu: %1</translation>
     </message>
 </context>
 <context>
@@ -72,7 +73,7 @@ File kadu.conf.xml not found</source>
     <message>
         <location filename="../gui/windows/import-profiles-window.cpp" line="59"/>
         <source>&lt;p&gt;Current version of Kadu does not support user profiles.&lt;br /&gt;Instead, multiple account are supported in one instances of kadu.&lt;/p&gt;&lt;p&gt;Please select profiles that you would like to import as&lt;br /&gt;account into this instance of Kadu.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt; Aktualna wersja Kadu nie obsługuje profili użytkowników.&lt;br /&gt;Zamiast tego, wiele kont jest obsługiwanych w jednej instancji Kadu. &lt;/p&gt;&lt;p&gt; Proszę wybrać profile, które chcesz zaimportować jako&lt;br /&gt;konta do tej instancji Kadu. &lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../gui/windows/import-profiles-window.cpp" line="69"/>
@@ -97,7 +98,7 @@ File kadu.conf.xml not found</source>
     <message>
         <location filename="../gui/windows/import-profiles-window.cpp" line="118"/>
         <source>Profile %1 successfully imported!</source>
-        <translation type="unfinished"></translation>
+        <translation>Import profilu %1 zakończony sukcesem!</translation>
     </message>
     <message>
         <location filename="../gui/windows/import-profiles-window.cpp" line="130"/>
@@ -107,7 +108,7 @@ File kadu.conf.xml not found</source>
     <message>
         <location filename="../gui/windows/import-profiles-window.cpp" line="130"/>
         <source>Unable to import profile: %1: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie można zaimportować profilu: %1: %2</translation>
     </message>
 </context>
 <context>
@@ -115,7 +116,7 @@ File kadu.conf.xml not found</source>
     <message>
         <location filename="../profile-importer.cpp" line="47"/>
         <source>Unable to open profile file [%1].</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie można otworzyć pliku profilu: [%1].</translation>
     </message>
     <message>
         <location filename="../profile-importer.cpp" line="59"/>

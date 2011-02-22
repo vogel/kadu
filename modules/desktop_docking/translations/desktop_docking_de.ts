@@ -5,43 +5,43 @@
     <name>@default</name>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished"></translation>
+        <translation>Kadu</translation>
     </message>
     <message>
         <source>Tray</source>
-        <translation type="unfinished"></translation>
+        <translation>Papierkorb</translation>
     </message>
     <message>
         <source>Desktop Docking</source>
-        <translation type="unfinished"></translation>
+        <translation>Desktop Docking</translation>
     </message>
     <message>
         <source>Horizontal position</source>
-        <translation type="unfinished"></translation>
+        <translation>Horizontale Position</translation>
     </message>
     <message>
         <source>Vertical position</source>
-        <translation type="unfinished"></translation>
+        <translation>Vertikale Position</translation>
     </message>
     <message>
         <source>Transparent</source>
-        <translation type="unfinished"></translation>
+        <translation>Transparent</translation>
     </message>
     <message>
         <source>Background color</source>
-        <translation type="unfinished"></translation>
+        <translation>Hintergrundfarbe</translation>
     </message>
     <message>
         <source>Enable Move entry in docklet&apos;s menu</source>
-        <translation type="unfinished"></translation>
+        <translation>Verschiebung eines Eintrages im Docklet Menü ermöglichen</translation>
     </message>
     <message>
         <source>Move</source>
-        <translation type="unfinished">Bewegen</translation>
+        <translation>Bewegen</translation>
     </message>
     <message>
         <source>Enable icon moving on desktop. After pressing move cursor over docking icon and then move. Press any mouse key when the icon is in right place.</source>
-        <translation type="unfinished"></translation>
+        <translation>Verschiebung eines Icons auf dem Desktop ermöglichen. Nach Drücken bewege den Mauszeiger über das angedockte Icon und bewege es anschließend. Drücke irgendeine Maustaste wenn das Icon am gewünschten Platz ist.</translation>
     </message>
 </context>
 <context>

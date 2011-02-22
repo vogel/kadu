@@ -2562,10 +2562,6 @@ This is probably a next part of &lt;b&gt;%5&lt;/b&gt;
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Use Proxy</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>New Group</source>
         <translation type="unfinished"></translation>
     </message>

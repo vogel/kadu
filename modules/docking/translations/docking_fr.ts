@@ -58,10 +58,6 @@ Description:
 %2</translation>
     </message>
     <message>
-        <source>Show Pending Messages</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Exit Kadu</source>
         <translation type="unfinished"></translation>
     </message>

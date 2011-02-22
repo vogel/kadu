@@ -6,32 +6,32 @@
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="4"/>
         <source>Chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Rozmowa</translation>
     </message>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="7"/>
         <source>Encryption</source>
-        <translation type="unfinished">Szyfrowanie</translation>
+        <translation>Szyfrowanie</translation>
     </message>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="10"/>
         <source>General</source>
-        <translation type="unfinished"></translation>
+        <translation>Ogólne</translation>
     </message>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="13"/>
         <source>Encrypt by default</source>
-        <translation type="unfinished"></translation>
+        <translation>Domyślnie szyfruj</translation>
     </message>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="16"/>
         <source>Encrypt after receive encrypted message</source>
-        <translation type="unfinished"></translation>
+        <translation>Szyfruj po otrzymaniu zaszyfrowanej wiadomości</translation>
     </message>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="19"/>
         <source>Generate keys</source>
-        <translation type="unfinished"></translation>
+        <translation>Generuj klucze</translation>
     </message>
 </context>
 <context>
@@ -49,7 +49,7 @@
     <message>
         <location filename="../encryption-actions.cpp" line="166"/>
         <source>No public key available</source>
-        <translation type="unfinished"></translation>
+        <translation>Brak klucza publicznego</translation>
     </message>
 </context>
 <context>
@@ -65,22 +65,22 @@
     <message>
         <location filename="../encryption-ng-configuration-ui-handler.cpp" line="103"/>
         <source>Cannot generate keys. Check if encryption_simlite module is loaded</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie można wygenerować kluczy. Sprawdź czy moduł encryption_simlite jest załadowany</translation>
     </message>
     <message>
         <location filename="../encryption-ng-configuration-ui-handler.cpp" line="108"/>
         <source>Keys exist. Do you want to overwrite them?</source>
-        <translation type="unfinished"></translation>
+        <translation>Klucze istnieją. Czy chcesz je nadpisać?</translation>
     </message>
     <message>
         <location filename="../encryption-ng-configuration-ui-handler.cpp" line="112"/>
         <source>Keys have been generated</source>
-        <translation type="unfinished"></translation>
+        <translation>Klucze zostały wygenerowane</translation>
     </message>
     <message>
         <location filename="../encryption-ng-configuration-ui-handler.cpp" line="114"/>
         <source>Error generating keys</source>
-        <translation type="unfinished"></translation>
+        <translation>Błąd generowania kluczy</translation>
     </message>
 </context>
 <context>
@@ -90,22 +90,22 @@
         <location filename="../notify/encryption-ng-notification.cpp" line="100"/>
         <location filename="../notify/encryption-ng-notification.cpp" line="108"/>
         <source>Encryption</source>
-        <translation type="unfinished">Szyfrowanie</translation>
+        <translation>Szyfrowanie</translation>
     </message>
     <message>
         <location filename="../notify/encryption-ng-notification.cpp" line="93"/>
         <source>Public key has been send to: %1 (%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>Klucz publiczny został wysłany do: %1 (%2)</translation>
     </message>
     <message>
         <location filename="../notify/encryption-ng-notification.cpp" line="101"/>
         <source>Error &quot;%3&quot; during sending public key to: %1 (%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>Wystąpił błąd &quot;%3&quot; podczas wysyłania klucza publicznego do: %1 (%2)</translation>
     </message>
     <message>
         <location filename="../notify/encryption-ng-notification.cpp" line="109"/>
         <source>Error occured during encryption: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Wystąpił błąd podczas szyfrowania: %1</translation>
     </message>
 </context>
 <context>
@@ -114,12 +114,13 @@
         <location filename="../encryption-provider-manager.cpp" line="157"/>
         <source>Buddy %1 is sending you his public key.
 Do you want to save it?</source>
-        <translation type="unfinished"></translation>
+		<translation>Znajomy %1 przysłał Ci swój klucz publiczny.
+Chcesz go zapisać?</translation>
     </message>
     <message>
         <location filename="../encryption-provider-manager.cpp" line="158"/>
         <source>Encryption</source>
-        <translation type="unfinished">Szyfrowanie</translation>
+        <translation>Szyfrowanie</translation>
     </message>
 </context>
 <context>
@@ -127,12 +128,12 @@ Do you want to save it?</source>
     <message>
         <location filename="../encryption-ng-module.cpp" line="53"/>
         <source>Encryption</source>
-        <translation type="unfinished">Szyfrowanie</translation>
+        <translation>Szyfrowanie</translation>
     </message>
     <message>
         <location filename="../encryption-ng-module.cpp" line="54"/>
         <source>The QCA OSSL plugin for libqca2 is not present!</source>
-        <translation type="unfinished"></translation>
+        <translation>Wtyczka QCA OSSL dla libqca2 nie jest dostępna!</translation>
     </message>
 </context>
 </TS>

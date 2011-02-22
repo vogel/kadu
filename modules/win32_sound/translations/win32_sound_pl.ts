@@ -16,17 +16,17 @@
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="12"/>
         <source>Sound devices</source>
-        <translation type="unfinished"></translation>
+        <translation>Urządzenia dźwiękowe</translation>
     </message>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="15"/>
         <source>Playback device</source>
-        <translation type="unfinished"></translation>
+        <translation>Urządzenie odgrywające</translation>
     </message>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="18"/>
         <source>Recording device</source>
-        <translation type="unfinished"></translation>
+        <translation>Urządzenie nagrywające</translation>
     </message>
 </context>
 <context>
@@ -35,7 +35,7 @@
         <location filename="../win32_sound.cpp" line="84"/>
         <location filename="../win32_sound.cpp" line="105"/>
         <source>Default</source>
-        <translation type="unfinished"></translation>
+        <translation>Domyślne</translation>
     </message>
 </context>
 </TS>

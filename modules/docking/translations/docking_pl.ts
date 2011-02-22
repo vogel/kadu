@@ -59,10 +59,6 @@ Opis:
 %2</translation>
     </message>
     <message>
-        <source>Show Pending Messages</source>
-        <translation>Wyświetl oczekujące wiadomości</translation>
-    </message>
-    <message>
         <source>&amp;Exit Kadu</source>
         <translation>&amp;Zakończ Kadu</translation>
     </message>

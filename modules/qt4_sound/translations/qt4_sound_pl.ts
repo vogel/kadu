@@ -11,7 +11,7 @@
     <message>
         <location filename="../qt4_sound.cpp" line="47"/>
         <source>QSound API is not available on this platform</source>
-        <translation type="unfinished"></translation>
+        <translation>API QSound nie jest dostępne na tej platformie</translation>
     </message>
 </context>
 </TS>

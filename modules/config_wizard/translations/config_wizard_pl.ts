@@ -16,31 +16,31 @@
         <translation>Kreator konfiguracji</translation>
     </message>
     <message>
-        <source>Start Configuration Wizardâ¦</source>
-        <translation>Uruchom kreatora konfiguracji</translation>
+		<source>Start Configuration Wizard…</source>
+		<translation>Uruchom kreatora konfiguracji…</translation>
     </message>
 </context>
 <context>
     <name>ConfigWizardChooseNetworkPage</name>
     <message>
         <source>&lt;h3&gt;Account Setup&lt;/h3&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;h3&gt;Tworzenie konta&lt;/h3&gt;</translation>
     </message>
     <message>
         <source>IM Network</source>
-        <translation type="unfinished"></translation>
+        <translation>Sieć</translation>
     </message>
     <message>
         <source>I want to set up existing account for Kadu</source>
-        <translation type="unfinished"></translation>
+		<translation>Chcę dodać istniejące konto</translation>
     </message>
     <message>
         <source>I want to create new account for Kadu</source>
-        <translation type="unfinished"></translation>
+        <translation>Chcę zarejestrować nowe konto</translation>
     </message>
     <message>
         <source>I don&apos;t want to set up my account for Kadu now</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie chcę teraz dodawać konta</translation>
     </message>
 </context>
 <context>
@@ -72,24 +72,12 @@
         <source>Nickname</source>
         <translation>Nick</translation>
     </message>
-    <message>
-        <source>Configure...</source>
-        <translation>Konfiguruj...</translation>
-    </message>
-    <message>
-        <source>Proxy connection settings</source>
-        <translation>Ustawienia serwera proxy</translation>
-    </message>
-    <message>
-        <source>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;for advanced users only&lt;/i&gt;&lt;/font&gt;</source>
-        <translation>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;tylko dla zaawansowanych użytkowników&lt;/i&gt;&lt;/font&gt;</translation>
-    </message>
 </context>
 <context>
     <name>ConfigWizardSetUpAccountPage</name>
     <message>
         <source>&lt;h3&gt;Account Setup&lt;/h3&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;h3&gt;Tworzenie konta&lt;/h3&gt;</translation>
     </message>
 </context>
 <context>

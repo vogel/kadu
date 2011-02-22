@@ -131,7 +131,7 @@
     <message>
         <location filename="../gui/widgets/gadu-add-account-widget.cpp" line="92"/>
         <source>Account Identity</source>
-        <translation>Tożsamość konta</translation>
+		<translation>Tożsamość konta</translation>
     </message>
     <message>
         <location filename="../gui/widgets/gadu-add-account-widget.cpp" line="94"/>
@@ -275,7 +275,7 @@ Nowe hasło wprowadzone w polu &quot;Nowe hasło&quot; nie jest identyczne z zaw
     <message>
         <location filename="../gui/widgets/gadu-contact-personal-info-widget.cpp" line="77"/>
         <source>Nickname</source>
-        <translation>Pseudonim</translation>
+		<translation>Pseudonim</translation>
     </message>
     <message>
         <location filename="../gui/widgets/gadu-contact-personal-info-widget.cpp" line="80"/>
@@ -353,7 +353,7 @@ Nowe hasło wprowadzone w polu &quot;Nowe hasło&quot; nie jest identyczne z zaw
     <message>
         <location filename="../gui/widgets/gadu-create-account-widget.cpp" line="93"/>
         <source>Account Identity</source>
-        <translation>Tożsamość konta</translation>
+		<translation>Tożsamość konta</translation>
     </message>
     <message>
         <location filename="../gui/widgets/gadu-create-account-widget.cpp" line="95"/>
@@ -439,7 +439,7 @@ Hasła  muszą być identyczne w obu polach!</translation>
     <message>
         <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="147"/>
         <source>Account Identity</source>
-        <translation>Tożsamość konta</translation>
+		<translation>Tożsamość konta</translation>
     </message>
     <message>
         <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="149"/>
@@ -475,7 +475,7 @@ Hasła  muszą być identyczne w obu polach!</translation>
     <message>
         <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="277"/>
         <source>Allow file transfers</source>
-        <translation type="unfinished">Zezwól na transfery plików</translation>
+        <translation>Zezwól na transfery plików</translation>
     </message>
     <message>
         <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="197"/>
@@ -515,7 +515,7 @@ Hasła  muszą być identyczne w obu polach!</translation>
     <message>
         <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="227"/>
         <source>Limit numbers of image received per minute</source>
-        <translation type="unfinished"></translation>
+        <translation>Limit liczby obrazków odbieranych w ciągu minuty</translation>
     </message>
     <message>
         <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="231"/>
@@ -525,22 +525,22 @@ Hasła  muszą być identyczne w obu polach!</translation>
     <message>
         <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="234"/>
         <source>Show my status to everyone</source>
-        <translation type="unfinished"></translation>
+        <translation>Pokaż wszystkim mój status</translation>
     </message>
     <message>
         <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="235"/>
         <source>When disabled, you&apos;re visible only to buddies on your list</source>
-        <translation type="unfinished"></translation>
+        <translation>Gdy wyłączone, jesteś widoczny tylko dla znajomych z twojej listy</translation>
     </message>
     <message>
         <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="243"/>
         <source>Notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Powiadomienia</translation>
     </message>
     <message>
         <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="246"/>
         <source>Send composing events</source>
-        <translation type="unfinished"></translation>
+        <translation>Wysyłaj powiadomienia o pisaniu</translation>
     </message>
     <message>
         <location filename="../gui/widgets/gadu-edit-account-widget.cpp" line="264"/>
@@ -653,7 +653,7 @@ Hasła  muszą być identyczne w obu polach!</translation>
     <name>GaduProtocol</name>
     <message>
         <location filename="../gadu-protocol.cpp" line="399"/>
-        <location filename="../gadu-protocol.cpp" line="674"/>
+        <location filename="../gadu-protocol.cpp" line="679"/>
         <source>Kadu</source>
         <translation>Kadu</translation>
     </message>
@@ -668,65 +668,65 @@ Hasła  muszą być identyczne w obu polach!</translation>
         <translation>Wprowadź hasło dla konta %1 (%2)</translation>
     </message>
     <message>
-        <location filename="../gadu-protocol.cpp" line="663"/>
+        <location filename="../gadu-protocol.cpp" line="668"/>
         <source>Unable to connect, server has not been found</source>
         <translation>Połączenie niemożliwe, serwer nie znaleziony</translation>
     </message>
     <message>
-        <location filename="../gadu-protocol.cpp" line="667"/>
+        <location filename="../gadu-protocol.cpp" line="672"/>
         <source>Unable to connect</source>
         <translation>Połączenie niemożliwe</translation>
     </message>
     <message>
-        <location filename="../gadu-protocol.cpp" line="671"/>
+        <location filename="../gadu-protocol.cpp" line="676"/>
         <source>Please change your email in &quot;Change password / email&quot; window. Leave new password field blank.</source>
         <translation>Zmień swój e-mail w oknie &quot;Zmień hasło / e-mai&quot;. Pole nowe hasło pozostaw puste.</translation>
     </message>
     <message>
-        <location filename="../gadu-protocol.cpp" line="678"/>
+        <location filename="../gadu-protocol.cpp" line="683"/>
         <source>Unable to connect, server has returned unknown data</source>
         <translation>Połączenie niemożliwe, serwer odpowiedział nieznanymi danymi</translation>
     </message>
     <message>
-        <location filename="../gadu-protocol.cpp" line="682"/>
+        <location filename="../gadu-protocol.cpp" line="687"/>
         <source>Unable to connect, connection break during reading</source>
         <translation>Połączenie niemożliwe, połączenie przerwane w czasie odczytu</translation>
     </message>
     <message>
-        <location filename="../gadu-protocol.cpp" line="686"/>
+        <location filename="../gadu-protocol.cpp" line="691"/>
         <source>Unable to connect, connection break during writing</source>
         <translation>Połączenie niemożliwe, połączenie przerwane w czasie zapisu</translation>
     </message>
     <message>
-        <location filename="../gadu-protocol.cpp" line="696"/>
+        <location filename="../gadu-protocol.cpp" line="701"/>
         <source>Unable to connect, error of negotiation TLS</source>
         <translation>Połączenie niemożliwe, błąd negocjacji TLS</translation>
     </message>
     <message>
-        <location filename="../gadu-protocol.cpp" line="700"/>
+        <location filename="../gadu-protocol.cpp" line="705"/>
         <source>Too many connection attempts with bad password!</source>
         <translation>Zbyt wiele połączeń z użyciem błędnego hasła!</translation>
     </message>
     <message>
-        <location filename="../gadu-protocol.cpp" line="705"/>
+        <location filename="../gadu-protocol.cpp" line="710"/>
         <source>Unable to connect, servers are down</source>
         <translation>Połączenie nie możliwe, serwery są niedostępne</translation>
     </message>
     <message>
-        <location filename="../gadu-protocol.cpp" line="709"/>
-        <location filename="../gadu-protocol.cpp" line="723"/>
+        <location filename="../gadu-protocol.cpp" line="714"/>
+        <location filename="../gadu-protocol.cpp" line="728"/>
         <source>Connection broken</source>
         <translation>Zerwane połączenie</translation>
     </message>
     <message>
-        <location filename="../gadu-protocol.cpp" line="714"/>
+        <location filename="../gadu-protocol.cpp" line="719"/>
         <source>Connection timeout!</source>
         <translation>Przekroczenie czasu połączenia!</translation>
     </message>
     <message>
-        <location filename="../gadu-protocol.cpp" line="718"/>
+        <location filename="../gadu-protocol.cpp" line="723"/>
         <source>Disconnection has occurred</source>
-        <translation type="unfinished"></translation>
+        <translation>Nastąpiło rozłączenie</translation>
     </message>
 </context>
 <context>
@@ -862,7 +862,7 @@ Hasła  muszą być identyczne w obu polach!</translation>
     <message>
         <location filename="../gui/windows/gadu-unregister-account-window.cpp" line="159"/>
         <source>An error has occurred while unregistration. Please try again later.</source>
-        <translation type="unfinished"></translation>
+        <translation>Wystąpił błąd podczas wyrejestrowywania konta. Proszę spróbować później.</translation>
     </message>
 </context>
 <context>

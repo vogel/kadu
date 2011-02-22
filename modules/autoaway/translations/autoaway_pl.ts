@@ -69,15 +69,15 @@
     </message>
     <message>
         <source>Enable auto extended away</source>
-        <translation type="unfinished"></translation>
+		<translation>Włącz auto-nieobecny</translation>
     </message>
     <message>
         <source>Set status to extended away after</source>
-        <translation type="unfinished"></translation>
+		<translation>Ustaw status na &apos;Nieobecny&apos; po</translation>
     </message>
     <message>
         <source>Auto refresh status</source>
-        <translation type="unfinished"></translation>
+        <translation>Automatycznie odświeżaj status</translation>
     </message>
 </context>
 <context>

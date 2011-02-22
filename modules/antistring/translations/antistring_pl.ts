@@ -31,18 +31,18 @@
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="19"/>
         <source>Admonition</source>
-        <translation type="unfinished"></translation>
+        <translation>Pouczenie</translation>
     </message>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="24"/>
         <location filename="../.configuration-ui-translations.cpp" line="30"/>
         <source>Log</source>
-        <translation type="unfinished"></translation>
+		<translation>Logowanie</translation>
     </message>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="27"/>
         <source>Write log to file</source>
-        <translation type="unfinished"></translation>
+        <translation>Loguj wiadomości do pliku</translation>
     </message>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="35"/>

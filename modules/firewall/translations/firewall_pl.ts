@@ -194,7 +194,9 @@ Jeśli chcesz natomiast &quot;poklikać&quot;, to znajdź sobie do tego inną os
         <source>This message has been generated AUTOMATICALLY!
 
 I&apos;m a busy person and I don&apos;t have time for stupid chats with the persons hiding itself. If you want to talk with me change the status to Online or Busy first.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ta wiadomość została wygenerowana AUTOMATYCZNIE!
+
+Jestem zajętą osobą i nie mam czasu na rozmowy z ukrywającymi się osobami. Jeśli chcesz ze mną rozmawiać, zmień wcześniej swój status na Dostępny.</translation>
     </message>
     <message>
         <source>Chat with invisible anonim ignored.

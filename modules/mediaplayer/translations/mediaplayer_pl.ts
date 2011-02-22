@@ -196,7 +196,7 @@ Control+ Enter/Backspace/Left/Right/Up/Down.Win+ Enter/Backspace/Left/Right/Up/D
     </message>
     <message>
         <source>More than 1/10 of titles you&apos;re trying to send are empty.&lt;br&gt;Perhaps %1 hasn&apos;t read all titles yet, give its some more time.&lt;br&gt;Do you want to send playlist anyway?</source>
-        <translation type="unfinished"></translation>
+        <translation>Więcej niż 1/10 tytułów, które próbujesz wysłać, jest pusta.&lt;br&gt;Być może %1 nie odczytał jeszcze wszystkich tytułów. Zaleca się odczekanie chwili. &lt;br&gt;Wysłać listę mimo to?</translation>
     </message>
     <message>
         <source>Pause</source>
