@@ -690,15 +690,6 @@ endif (UNIX AND NOT APPLE)
 
 qt_wrap_cpp (kadu MOC_FILES ${kadu_MOC_SRCS})
 
-add_subdirectory (
-	url-handlers
-)
-
-link_directories (
-	modules
-	url-handlers
-)
-
 if (WIN32)
 	message (STATUS "Copying headers")
 	exec_program (${CMAKE_CURRENT_SOURCE_DIR}/copy_headers.bat
@@ -769,14 +760,14 @@ if (WIN32)
 else (WIN32)
 	add_executable (kadu main.cpp main_unix.cpp os/qtsingleapplication/qtlockedfile_unix.cpp ${kadu_SRCS} ${MOC_FILES})
 
-	add_dependencies (kadu
+	kadu_source_subdirectories (kadu
 		url-handlers
 	)
 
 	set_target_properties (kadu PROPERTIES ENABLE_EXPORTS ON)
 	set_target_properties (kadu PROPERTIES COMPILE_FLAGS "-DKADULIB")
 
-	target_link_libraries (kadu ${STATIC_MODULES} ${QT_LIBRARIES} ${CMAKE_DL_LIBS} url-handlers)
+	target_link_libraries (kadu ${STATIC_MODULES} ${QT_LIBRARIES} ${CMAKE_DL_LIBS})
 
 	if (UNIX AND NOT APPLE)
 		target_link_libraries (kadu ${X11_X11_LIB})

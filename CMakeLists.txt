@@ -129,6 +129,19 @@ endif (WIN32)
 set (KADU_MODULES_DIR ${KADU_DATA_DIR}/modules)
 
 # macros
+macro (kadu_source_subdirectories CURRENT_TARGET)
+	foreach (ARG ${ARGN})
+		add_subdirectory (${ARG})
+		link_directories (${ARG})
+
+		add_dependencies (${CURRENT_TARGET}
+			${ARG}
+		)
+
+		target_link_libraries (${CURRENT_TARGET} ${ARG})
+	endforeach (ARG)
+endmacro (kadu_source_subdirectories)
+
 macro (kadu_configuration)
 	install (FILES ${ARGN}
 		DESTINATION ${KADU_DATA_DIR}/configuration
