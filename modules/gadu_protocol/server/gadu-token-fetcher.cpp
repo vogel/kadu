@@ -38,7 +38,7 @@ void GaduTokenFetcher::fetchToken()
 {
 	TokenId.clear();
 
-	QHttpRequestHeader header("POST", QUrl::toPercentEncoding("/appsvc/regtoken.asp"));
+	QHttpRequestHeader header("POST", "/appsvc/regtoken.asp");
 	header.setValue("Host", GG_REGISTER_HOST);
 	header.setValue("User-Agent", GG_HTTP_USERAGENT);
 	header.setValue("Content-Type", "application/x-www-form-urlencoded");
