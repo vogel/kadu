@@ -39,7 +39,7 @@ void GaduServerChangePassword::performAction()
 			NewPassword.toUtf8().constData(),
 			TokenId.toUtf8().constData(),
 			TokenValue.toUtf8().constData(),
-			1);
+			false);
 
 	if (H)
 	{
