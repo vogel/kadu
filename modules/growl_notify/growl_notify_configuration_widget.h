@@ -2,7 +2,8 @@
  * %kadu copyright begin%
  * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
  * Copyright 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
- * Copyright 2008,2010 Tomasz Rostański (rozteck@interia.pl)
+ * Copyright 2010 Tomasz Rostanski (rozteck@interia.pl)
+ * Copyright 2008, 2010 Tomasz Rostański (rozteck@interia.pl)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or

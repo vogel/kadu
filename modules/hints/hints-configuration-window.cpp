@@ -1,8 +1,9 @@
 /*
  * %kadu copyright begin%
+ * Copyright 2010, 2011 Bartosz Brachaczek (b.brachaczek@gmail.com)
+ * Copyright 2009 Piotr Galiszewski (piotr.galiszewski@kadu.im)
  * Copyright 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
- * Copyright 2009 Kermit (plaza.maciej@gmail.com)
- * Copyright 2009 Piotr Galiszewski (piotrgaliszewski@gmail.com)
+ * Copyright 2009 Maciej Płaza (plaza.maciej@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or

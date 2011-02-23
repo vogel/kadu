@@ -1,6 +1,7 @@
 /*
  * %kadu copyright begin%
- * Copyright 2010, 2011 Tomasz Rostaski (rozteck@interia.pl)
+ * Copyright 2011 Tomasz Rostanski (rozteck@interia.pl)
+ * Copyright 2010 Tomasz Rostański (rozteck@interia.pl)
  * %kadu copyright end%
  *
  * Copyright 2011 Adam "Vertex" Makświej (vertexbz@gmail.com)

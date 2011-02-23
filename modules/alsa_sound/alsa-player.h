@@ -1,11 +1,10 @@
 /*
  * %kadu copyright begin%
  * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
- * Copyright 2005, 2006 Marcin Ślusarz (joi@kadu.net)
+ * Copyright 2009 Piotr Galiszewski (piotr.galiszewski@kadu.im)
+ * Copyright 2005 Marcin Ślusarz (joi@kadu.net)
  * Copyright 2007, 2008, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
- * Copyright 2008 Michał Podsiadlik (michal@kadu.net)
  * Copyright 2008 Tomasz Rostański (rozteck@interia.pl)
- * Copyright 2009 Piotr Galiszewski (piotrgaliszewski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or

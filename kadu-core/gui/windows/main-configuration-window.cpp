@@ -1,13 +1,17 @@
 /*
  * %kadu copyright begin%
+ * Copyright 2010 Piotr Dąbrowski (ultr@ultr.pl)
  * Copyright 2007, 2008 Dawid Stawiarski (neeo@kadu.net)
- * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
- * Copyright 2007, 2008, 2009, 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2010, 2011 Bartosz Brachaczek (b.brachaczek@gmail.com)
+ * Copyright 2009, 2010 Wojciech Treter (juzefwt@gmail.com)
+ * Copyright 2008, 2009, 2010 Piotr Galiszewski (piotr.galiszewski@kadu.im)
+ * Copyright 2010 Przemysław Rudy (prudy1@o2.pl)
+ * Copyright 2010 badboy (badboy@gen2.org)
+ * Copyright 2009 Maciej Płaza (plaza.maciej@gmail.com)
+ * Copyright 2007, 2008, 2009, 2010, 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * Copyright 2008, 2009 Michał Podsiadlik (michal@kadu.net)
- * Copyright 2009 Kermit (plaza.maciej@gmail.com)
- * Copyright 2008, 2009 Tomasz Rostański (rozteck@interia.pl)
+ * Copyright 2008, 2009, 2010 Tomasz Rostański (rozteck@interia.pl)
  * Copyright 2009 Bartłomiej Zimoń (uzi18@o2.pl)
- * Copyright 2008, 2009, 2010 Piotr Galiszewski (piotrgaliszewski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or

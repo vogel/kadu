@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2010 Przemysław Rudy (prudy1@o2.pl)
+ * Copyright 2010, 2011 Przemysław Rudy (prudy1@o2.pl)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
