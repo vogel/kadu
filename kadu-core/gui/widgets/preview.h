@@ -1,5 +1,6 @@
 /*
  * %kadu copyright begin%
+ * Copyright 2011 Piotr Dąbrowski (ultr@ultr.pl)
  * Copyright 2007, 2008 Dawid Stawiarski (neeo@kadu.net)
  * Copyright 2010 Bartosz Brachaczek (b.brachaczek@gmail.com)
  * Copyright 2008, 2009, 2010 Piotr Galiszewski (piotr.galiszewski@kadu.im)
@@ -40,6 +41,10 @@ class Preview : public KaduWebView
 	QObjectList objectsToParse;
 	ContactSet contacts;
 	QString resetBackgroundColor;
+	bool DrawFrame;
+
+protected:
+	void paintEvent(QPaintEvent *event);
 
 public:
 	Preview(QWidget *parent = 0);
@@ -50,6 +55,9 @@ public:
 
 	const QObjectList & getObjectsToParse() const { return objectsToParse; }
 	const ContactSet & getContactList() const { return contacts; }
+
+	bool drawFrame() { return DrawFrame; };
+	void setDrawFrame(bool drawFrame);
 
 public slots:
 	void syntaxChanged(const QString &content);
