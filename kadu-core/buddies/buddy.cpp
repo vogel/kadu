@@ -271,7 +271,7 @@ Buddy Buddy::dummy()
 		Avatar avatar = AvatarManager::instance()->byContact(contact, ActionCreate);
 
 		avatar.setLastUpdated(QDateTime::currentDateTime());
-		avatar.setFilePath(IconsManager::instance()->iconPath("system-users", "32x32"));
+		avatar.setFilePath(IconsManager::instance()->iconPath("kadu_icons/buddy0", "96x96"));
 
 		example.addContact(contact);
 		example.setAnonymous(false);
