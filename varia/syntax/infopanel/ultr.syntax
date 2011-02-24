@@ -14,4 +14,4 @@ src='@{kadu_icons/96x96/buddy%z.png}'
 </tr></table>
 <hr style='border:0px; border-top:1px dotted #999999; height:1px;'>
 [<img valign='middle' height='16' width='16' src="#{statusIconPath}"> ]<b>%s</b>
-[<br>%d]
+[<br><br>%d]
