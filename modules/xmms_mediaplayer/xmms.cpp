@@ -130,11 +130,13 @@ QString XmmsMediaPlayer::getTitle(int position)
 
 QString XmmsMediaPlayer::getAlbum(int position)
 {
+	Q_UNUSED(position);
 	return QString();
 }
 
 QString XmmsMediaPlayer::getArtist(int position)
 {
+	Q_UNUSED(position);
 	return QString();
 }
 
@@ -245,5 +247,5 @@ QString XmmsMediaPlayer::convert(QString str)
 	{
 		str.replace(CODE_CP1250[i],CODE_ISO8859_2[i]);
 	}
-	return QString::fromLocal8Bit(str,-1);
+	return QString::fromLocal8Bit(str.toAscii(), -1);
 }
