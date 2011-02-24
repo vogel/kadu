@@ -1,5 +1,6 @@
 /*
  * %kadu copyright begin%
+ * Copyright 2010, 2011 Bartosz Brachaczek (b.brachaczek@gmail.com)
  * Copyright 2010 Przemysław Rudy (prudy1@o2.pl)
  * %kadu copyright end%
  *

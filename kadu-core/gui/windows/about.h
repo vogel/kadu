@@ -2,12 +2,13 @@
  * %kadu copyright begin%
  * Copyright 2008 Dawid Stawiarski (neeo@kadu.net)
  * Copyright 2004 Tomasz Jarzynka (tomee@cpi.pl)
+ * Copyright 2010 Bartosz Brachaczek (b.brachaczek@gmail.com)
+ * Copyright 2008 Piotr Galiszewski (piotr.galiszewski@kadu.im)
  * Copyright 2004, 2006, 2007 Marcin Ślusarz (joi@kadu.net)
  * Copyright 2002, 2003 Adrian Smarzewski (adrian@kadu.net)
  * Copyright 2002, 2003 Tomasz Chiliński (chilek@chilan.com)
  * Copyright 2008, 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * Copyright 2004 Michał Podsiadlik (michal@kadu.net)
- * Copyright 2008 Piotr Galiszewski (piotrgaliszewski@gmail.com)
  * Copyright 2005 Paweł Płuciennik (pawel_p@kadu.net)
  * Copyright 2002 Dariusz Jagodzik (mast3r@kadu.net)
  * %kadu copyright end%

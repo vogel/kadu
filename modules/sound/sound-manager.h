@@ -2,6 +2,7 @@
  * %kadu copyright begin%
  * Copyright 2007 Dawid Stawiarski (neeo@kadu.net)
  * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
+ * Copyright 2009, 2010 Piotr Galiszewski (piotr.galiszewski@kadu.im)
  * Copyright 2004, 2005, 2006 Marcin Ślusarz (joi@kadu.net)
  * Copyright 2003, 2004, 2005 Adrian Smarzewski (adrian@kadu.net)
  * Copyright 2003 Tomasz Chiliński (chilek@chilan.com)
@@ -10,7 +11,6 @@
  * Copyright 2004 Roman Krzystyniak (Ron_K@tlen.pl)
  * Copyright 2009 Longer (longer89@gmail.com)
  * Copyright 2008, 2009 Tomasz Rostański (rozteck@interia.pl)
- * Copyright 2009 Piotr Galiszewski (piotrgaliszewski@gmail.com)
  * Copyright 2009 Bartłomiej Zimoń (uzi18@o2.pl)
  * Copyright 2003, 2004 Paweł Płuciennik (pawel_p@kadu.net)
  * %kadu copyright end%

@@ -1,6 +1,5 @@
 /*
  * %kadu copyright begin%
- * Copyright 2010 Piotr Galiszewski (piotrgaliszewski@gmail.com)
  * Copyright 2010 Wojciech Treter (juzefwt@gmail.com)
  * %kadu copyright end%
  *
