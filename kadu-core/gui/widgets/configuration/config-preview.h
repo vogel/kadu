@@ -3,6 +3,7 @@
  * Copyright 2010 Bartosz Brachaczek (b.brachaczek@gmail.com)
  * Copyright 2009 Piotr Galiszewski (piotr.galiszewski@kadu.im)
  * Copyright 2008, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2011 Piotr Dąbrowski (ultr@ultr.pl)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -30,7 +31,8 @@ class QLabel;
 class ConfigGroupBox;
 
 /**
-	&lt;preview caption="caption" id="id" /&gt;
+	&lt;preview caption="caption" id="id" height="height" /&gt;
+	height - wysokość widgetu w pixelach (nieobowiazkowo, domyślnie PREVIEW_DEFAULT_HEIGHT)
 
 	Podgląd składni.
  **/
@@ -53,6 +55,8 @@ public:
 
 	virtual void show();
 	virtual void hide();
+	virtual bool fromDomElement(QDomElement domElement);
+
 };
 
 #endif

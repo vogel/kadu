@@ -242,7 +242,7 @@
 			<group-box name="Style">
 				<syntax-editor caption="Style" config-section="Look" config-item="InfoPanelSyntaxFile" category="InfoPanel" id="infoPanelSyntax"
 					tool-tip="Choose information panel style" />
-				<preview caption="Preview" id="infoPanelSyntaxPreview" />
+				<preview caption="Preview" id="infoPanelSyntaxPreview" height="190" />
 			</group-box>
 		</tab>
 	</section>

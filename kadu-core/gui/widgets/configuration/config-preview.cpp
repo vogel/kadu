@@ -3,6 +3,7 @@
  * Copyright 2010 Bartosz Brachaczek (b.brachaczek@gmail.com)
  * Copyright 2009 Piotr Galiszewski (piotr.galiszewski@kadu.im)
  * Copyright 2008, 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2011 Piotr Dąbrowski (ultr@ultr.pl)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -62,4 +63,14 @@ void ConfigPreview::hide()
 {
 	label->hide();
 	QWidget::hide();
+}
+
+bool ConfigPreview::fromDomElement(QDomElement domElement)
+{
+	QString height = domElement.attribute("height");
+	bool ok;
+	int newheight = height.toInt(&ok);
+	if (ok)
+		setFixedHeight(newheight);
+	return ConfigWidget::fromDomElement(domElement);
 }

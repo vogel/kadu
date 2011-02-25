@@ -4,6 +4,7 @@
  * Copyright 2010 Bartosz Brachaczek (b.brachaczek@gmail.com)
  * Copyright 2008, 2009, 2010 Piotr Galiszewski (piotr.galiszewski@kadu.im)
  * Copyright 2007, 2008, 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2011 Piotr Dąbrowski (ultr@ultr.pl)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -29,6 +30,8 @@
 
 #include "kadu-web-view.h"
 
+#define PREVIEW_DEFAULT_HEIGHT 250
+
 class Preview : public KaduWebView
 {
 	Q_OBJECT
@@ -47,7 +50,6 @@ public:
 
 	const QObjectList & getObjectsToParse() const { return objectsToParse; }
 	const ContactSet & getContactList() const { return contacts; }
-
 
 public slots:
 	void syntaxChanged(const QString &content);

@@ -23,7 +23,7 @@
 * file_transfer: #2014 fixed: removed file transfer code from 0.6.6.x branch (Vogel)
 * config_wizard: #2013 fixed: moved configuration widget trigger back to menu (Vogel)
 * core: #2023 fixed: parser's %i tag should return empty strings for null addresses (ultr)
-* gui: Fixes for config preview widgets (ultr)
+* gui: fixes for config preview widgets (ultr)
 * encryption: #2015 fixed: moved generate-keys action from configuration window to menu (Vogel)
 * status: #2031 fixed: Add missing statuses to "On startup, set" ComboBox (WhE)
 * core: #2036 fixed: shortcuts with "Alt" midifier don't work in chat window (WhE)
