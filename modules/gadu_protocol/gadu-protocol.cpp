@@ -622,8 +622,7 @@ void GaduProtocol::sendUserList()
 	ContactListHandler->setUpContactList(ContactManager::instance()->contacts(account()));
 }
 
-void GaduProtocol::socketContactStatusChanged(UinType uin, unsigned int status, const QString &description,
-		const QHostAddress &ip, unsigned short port, unsigned int maxImageSize, unsigned int version)
+void GaduProtocol::socketContactStatusChanged(UinType uin, unsigned int status, const QString &description, unsigned int maxImageSize)
 {
 	Contact contact = ContactManager::instance()->byId(account(), QString::number(uin));
 	Buddy buddy = contact.ownerBuddy();
@@ -636,14 +635,7 @@ void GaduProtocol::socketContactStatusChanged(UinType uin, unsigned int status, 
 		return;
 	}
 
-	contact.setAddress(ip);
 	contact.setMaximumImageSize(maxImageSize);
-	contact.setPort(port);
-	contact.setProtocolVersion(QString::number(version));
-
-	GaduContactDetails *details = gaduContactDetails(contact);
-	if (details)
-		details->setGaduProtocolVersion(version);
 
 	Status oldStatus = contact.currentStatus();
 	Status newStatus;

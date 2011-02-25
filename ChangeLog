@@ -1,3 +1,6 @@
++++ version 0.6.7
+* gadu: removed depreceated ip/port/version code - gg server does not send this info anymore (Vogel)
+
 +++ version 0.6.6-rc2
 
 +++ version 0.6.6-rc1

@@ -145,8 +145,7 @@ void GaduProtocolSocketNotifiers::handleEventNotify(struct gg_event *e)
 				? QString::fromUtf8(e->event.notify_descr.descr)
 				: QString();
 
-		CurrentProtocol->socketContactStatusChanged(notify->uin, notify->status, description,
-				QHostAddress((unsigned int)ntohl(notify->remote_ip)), notify->remote_port, 0, notify->version);
+		CurrentProtocol->socketContactStatusChanged(notify->uin, notify->status, description, 0);
 		notify++;
 	}
 }
@@ -157,8 +156,7 @@ void GaduProtocolSocketNotifiers::handleEventNotify60(struct gg_event *e)
 
 	while (notify->uin)
 	{
-		CurrentProtocol->socketContactStatusChanged(notify->uin, notify->status, QString::fromUtf8(notify->descr),
-				QHostAddress((unsigned int)ntohl(notify->remote_ip)), notify->remote_port, notify->image_size, notify->version);
+		CurrentProtocol->socketContactStatusChanged(notify->uin, notify->status, QString::fromUtf8(notify->descr), notify->image_size);
 
 		notify++;
 	}
@@ -168,11 +166,9 @@ void GaduProtocolSocketNotifiers::handleEventStatus(struct gg_event *e)
 {
 	if (GG_EVENT_STATUS60 == e->type)
 		CurrentProtocol->socketContactStatusChanged(e->event.status60.uin, e->event.status60.status, QString::fromUtf8(e->event.status60.descr),
-				QHostAddress((unsigned int)ntohl(e->event.status60.remote_ip)), e->event.status60.remote_port,
-				e->event.status60.image_size, e->event.status60.version);
+				e->event.status60.image_size);
 	else
-		CurrentProtocol->socketContactStatusChanged(e->event.status.uin, e->event.status.status, QString::fromUtf8(e->event.status.descr),
-				QHostAddress(), 0, 0, 0);
+		CurrentProtocol->socketContactStatusChanged(e->event.status.uin, e->event.status.status, QString::fromUtf8(e->event.status.descr), 0);
 }
 
 void GaduProtocolSocketNotifiers::handleEventConnFailed(struct gg_event *e)

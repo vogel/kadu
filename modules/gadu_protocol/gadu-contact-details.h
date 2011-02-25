@@ -30,7 +30,6 @@
 
 class GaduContactDetails : public ContactDetails
 {
-	PROPERTY_DEC(unsigned int, GaduProtocolVersion)
 
 public:
 	explicit GaduContactDetails(ContactShared *contactShared);
@@ -40,8 +39,6 @@ public:
 	virtual void store();
 
 	GaduProtocol::UinType uin();
-
-	PROPERTY_DEF(unsigned int, gaduProtocolVersion, setGaduProtocolVersion, GaduProtocolVersion)
 
 };
 

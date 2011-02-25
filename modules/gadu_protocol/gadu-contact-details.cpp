@@ -23,7 +23,7 @@
 #include "gadu-contact-details.h"
 
 GaduContactDetails::GaduContactDetails(ContactShared *contactShared) :
-		ContactDetails(contactShared), GaduProtocolVersion(0)
+		ContactDetails(contactShared)
 {
 }
 
