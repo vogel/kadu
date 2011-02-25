@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2010 Piotr Dąbrowski (ultr@ultr.pl)
+ * Copyright 2010, 2011 Piotr Dąbrowski (ultr@ultr.pl)
  * Copyright 2010, 2011 Bartosz Brachaczek (b.brachaczek@gmail.com)
  * Copyright 2009, 2010 Wojciech Treter (juzefwt@gmail.com)
  * Copyright 2008, 2009, 2010 Piotr Galiszewski (piotr.galiszewski@kadu.im)
@@ -149,7 +149,7 @@ void Hint::createLabels(const QPixmap &pixmap)
 	label = new QLabel(this);
 	label->setTextInteractionFlags(Qt::NoTextInteraction);
 	label->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
-	label->setContentsMargins(10, 0, 0, 0);
+	label->setContentsMargins(10, 10, 10, 10);
 	labels->addWidget(label);
 }
 

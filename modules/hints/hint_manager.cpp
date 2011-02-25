@@ -517,7 +517,7 @@ void HintManager::showToolTip(const QPoint &point, BuddyOrContact buddyOrContact
 	QLabel *tipLabel = new QLabel(tipFrame);
 	tipLabel->setTextFormat(Qt::RichText);
 	tipLabel->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
-	tipLabel->setContentsMargins(10, 0, 0, 0);
+	tipLabel->setContentsMargins(10, 10, 10, 10);
 
 	lay->addWidget(tipLabel);
 
