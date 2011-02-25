@@ -5,7 +5,6 @@ set (SYNTAX_FILES
 	default.syntax
 	dorr.syntax
 	maz.syntax
-	ronk.syntax
 	ultr.syntax
 )
 
