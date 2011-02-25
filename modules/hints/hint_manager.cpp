@@ -363,16 +363,15 @@ void HintManager::chatWidgetActivated(ChatWidget *chatWidget)
 	QPair<Chat , QString> newChat = qMakePair(chatWidget->chat(), QString("NewChat"));
 	QPair<Chat , QString> newMessage = qMakePair(chatWidget->chat(), QString("NewMessage"));
 
-	if (linkedHints.count(newChat))
+	if (linkedHints.contains(newChat))
 	{
-		linkedHints[newChat]->close();
-		linkedHints.remove(newChat);
+		Hint *linkedHint = linkedHints.take(newChat);
+		linkedHint->close();
 	}
-
-	if (linkedHints.count(newMessage))
+	if (linkedHints.contains(newMessage))
 	{
-		linkedHints[newMessage]->close();
-		linkedHints.remove(newMessage);
+		Hint *linkedHint = linkedHints.take(newMessage);
+		linkedHint->close();
 	}
 
 	foreach (Hint *h, hints)
@@ -568,15 +567,15 @@ void HintManager::notify(Notification *notification)
 		return;
 	}
 
-	if (linkedHints.count(qMakePair(chatNotification->chat(), notification->type())))
+	if (linkedHints.contains(qMakePair(chatNotification->chat(), notification->type())))
 	{
-		Hint *linkedHint = linkedHints[qMakePair(chatNotification->chat(), notification->type())];
+		Hint *linkedHint = linkedHints.value(qMakePair(chatNotification->chat(), notification->type()));
 		linkedHint->addDetail(notification->details());
 	}
 	else
 	{
 		Hint *linkedHint = addHint(notification);
-		linkedHints[qMakePair(chatNotification->chat(), notification->type())] = linkedHint;
+		linkedHints.insert(qMakePair(chatNotification->chat(), notification->type()), linkedHint);
 	}
 
 	kdebugf2();
@@ -588,7 +587,7 @@ void HintManager::notificationClosed(Notification *notification)
 	if (!chatNotification)
 		return;
 
-	if (linkedHints.count(qMakePair(chatNotification->chat(), notification->type())))
+	if (linkedHints.contains(qMakePair(chatNotification->chat(), notification->type())))
 		linkedHints.remove(qMakePair(chatNotification->chat(), notification->type()));
 }
 
