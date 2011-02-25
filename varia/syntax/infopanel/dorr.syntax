@@ -1,1 +1,0 @@
-<table><tr><td><img width="32" height="32" align="left" valign="top" src="@{16x16/x-office-address-book.png}"></td><td> <div align="left"> [<b>%a</b>][ (%u)] [<br>tel.: %m][<br>IP: %i[: %p]][<br>%oNie ma cię na liście] </div></td></tr></table> <hr> <b>%s</b> [<br>%d]

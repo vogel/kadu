@@ -1,5 +1,4 @@
 set (SYNTAX_FILES
-	Adi1981.syntax
 	aqq2_by_maddox84.syntax
 	Arvenil.syntax
 	c34_white_gradient_compact.syntax

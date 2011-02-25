@@ -1,10 +1,6 @@
 set (SYNTAX_FILES
-	abaddon.syntax
 	Arvenil.syntax
-	ciuciu.syntax
 	default.syntax
-	dorr.syntax
-	maz.syntax
 	ultr.syntax
 )
 
