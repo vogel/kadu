@@ -91,7 +91,7 @@ void HintsConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurati
 	overUserConfigurationTipLabel = new QLabel(overUserConfigurationPreview);
 	overUserConfigurationTipLabel->setTextFormat(Qt::RichText);
 	overUserConfigurationTipLabel->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
-	overUserConfigurationTipLabel->setContentsMargins(10, 0, 0, 0);
+	overUserConfigurationTipLabel->setContentsMargins(10, 10, 10, 10);
 
 	lay->addWidget(overUserConfigurationTipLabel);
 

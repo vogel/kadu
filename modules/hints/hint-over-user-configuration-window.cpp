@@ -74,7 +74,7 @@ HintOverUserConfigurationWindow::HintOverUserConfigurationWindow(Buddy exampleBu
 	previewTipLabel = new QLabel(previewFrame);
 	previewTipLabel->setTextFormat(Qt::RichText);
 	previewTipLabel->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
-	previewTipLabel->setContentsMargins(10, 0, 0, 0);
+	previewTipLabel->setContentsMargins(10, 10, 10, 10);
 
 	lay->addWidget(previewTipLabel);
 
