@@ -391,7 +391,10 @@ void HintManager::deleteAllHints()
 	foreach (Hint *h, hints)
 	{
 		if (!h->requireManualClosing())
+		{
+			h->discardNotification();
 			deleteHint(h);
+		}
 	}
 
 	if (hints.isEmpty())
