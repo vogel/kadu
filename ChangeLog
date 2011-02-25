@@ -4,7 +4,7 @@
 +++ version 0.6.6-rc2
 * jabber #2026 fixed: incorrect XEP-0085: Chat State Notifications implementation (WhE)
 * xmms_mediaplayer: compilation fixed
-* sms #1727 fixed: Plus GSM gateway is now working again
+* sms: #1727 fixed: Plus GSM gateway is now working again
 
 +++ version 0.6.6-rc1
 * chat: #1963 fixed: crash on opening chats, when citing from history is greater than message prunning setting (WhE)
