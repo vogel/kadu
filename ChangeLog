@@ -2,6 +2,7 @@
 * gadu: removed depreceated ip/port/version code - gg server does not send this info anymore (Vogel)
 
 +++ version 0.6.6-rc2
+* jabber #2026 fixed: incorrect XEP-0085: Chat State Notifications implementation (WhE)
 
 +++ version 0.6.6-rc1
 * chat: #1963 fixed: crash on opening chats, when citing from history is greater than message prunning setting (WhE)

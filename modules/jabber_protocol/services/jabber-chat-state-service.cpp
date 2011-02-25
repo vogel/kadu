@@ -195,7 +195,13 @@ void JabberChatStateService::incomingMessage(const XMPP::Message &msg)
 
 void JabberChatStateService::messageAboutToSend(XMPP::Message &message)
 {
-	message.addEvent(XMPP::ComposingEvent);
+	Contact contact = ContactManager::instance()->byId(Protocol->account(), message.to().bare(), ActionCreateAndAdd);
+	Chat chat = ChatManager::instance()->findChat(ContactSet(contact), true);
+	setChatState(chat, XMPP::StateActive);
+
+	if (ChatInfos[chat].UserRequestedEvents)
+		message.addEvent(XMPP::ComposingEvent);
+
 	message.setChatState(XMPP::StateActive);
 }
 
