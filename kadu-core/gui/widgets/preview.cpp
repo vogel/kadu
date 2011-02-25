@@ -4,6 +4,7 @@
  * Copyright 2008, 2009, 2010 Piotr Galiszewski (piotr.galiszewski@kadu.im)
  * Copyright 2007, 2008, 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * Copyright 2009 Bartłomiej Zimoń (uzi18@o2.pl)
+ * Copyright 2011 Piotr Dąbrowski (ultr@ultr.pl)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -36,8 +37,8 @@
 Preview::Preview(QWidget *parent)
 	: KaduWebView(parent), contact(Contact::null)
 {
-	setFixedHeight(170);
-	setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+	setFixedHeight(PREVIEW_DEFAULT_HEIGHT);
+	setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
 }
 
 Preview::~Preview()
