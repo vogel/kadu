@@ -137,9 +137,9 @@ macro (kadu_source_subdirectories CURRENT_TARGET)
 		add_dependencies (${CURRENT_TARGET}
 			${ARG}
 		)
-
-		target_link_libraries (${CURRENT_TARGET} ${ARG})
 	endforeach (ARG)
+
+	target_link_libraries (${CURRENT_TARGET} -Wl,--start-group -Wl,--whole-archive ${ARGN} -Wl,--end-group -Wl,--no-whole-archive)
 endmacro (kadu_source_subdirectories)
 
 macro (kadu_configuration)
