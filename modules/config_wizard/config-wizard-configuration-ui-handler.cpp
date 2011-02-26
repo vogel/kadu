@@ -42,14 +42,11 @@ void ConfigWizardConfigurationUiHandler::registerActions(bool firstLoad)
 	if (Instance)
 		return;
 
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/config-wizard.ui"));
-
 	Instance = new ConfigWizardConfigurationUiHandler();
 }
 
 void ConfigWizardConfigurationUiHandler::unregisterActions()
 {
-  	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/config-wizard.ui"));
 	delete Instance;
 	Instance = 0;
 }
@@ -59,15 +56,18 @@ ConfigWizardConfigurationUiHandler * ConfigWizardConfigurationUiHandler::instanc
 	return Instance;
 }
 
-ConfigWizardConfigurationUiHandler::ConfigWizardConfigurationUiHandler() :
-		ConfigurationWindow(0)
+ConfigWizardConfigurationUiHandler::ConfigWizardConfigurationUiHandler()
 {
-	MainConfigurationWindow::registerUiHandler(this);
+	ShowConfigWizardActionDescription = new ActionDescription(this, ActionDescription::TypeMainMenu,
+			"showConfigWizard", this, SLOT(showConfigWizardSlot()), QString(),
+			tr("Start Configuration Wizard..."));
+
+	Core::instance()->kaduWindow()->insertMenuActionDescription(ShowConfigWizardActionDescription, KaduWindow::MenuTools, 0);
 }
 
 ConfigWizardConfigurationUiHandler::~ConfigWizardConfigurationUiHandler()
 {
-	MainConfigurationWindow::unregisterUiHandler(this);
+	Core::instance()->kaduWindow()->removeMenuActionDescription(ShowConfigWizardActionDescription);
 }
 
 void ConfigWizardConfigurationUiHandler::showConfigWizard()
@@ -82,18 +82,4 @@ void ConfigWizardConfigurationUiHandler::showConfigWizard()
 void ConfigWizardConfigurationUiHandler::showConfigWizardSlot()
 {
 	showConfigWizard();
-}
-
-void ConfigWizardConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
-{
-	ConfigurationWindow = mainConfigurationWindow;
-	connect(ConfigurationWindow, SIGNAL(destroyed()), this, SLOT(configurationWindowDestroyed()));
-
-	QWidget *startButton = mainConfigurationWindow->widget()->widgetById("config-wizard/start");
-	connect(startButton, SIGNAL(clicked()), this, SLOT(showConfigWizardSlot()));
-}
-
-void ConfigWizardConfigurationUiHandler::configurationWindowDestroyed()
-{
-	ConfigurationWindow = 0;
 }

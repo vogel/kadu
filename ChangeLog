@@ -8,6 +8,7 @@
 * hints: fix crashes when two different modules providing hints are loaded at the same time (WhE)
 * syntax: #2018 fixed: cleanup chat and infopanel syntax files (Vogel)
 * desktop_docking: fixed crash and menu setup (Vogel)
+* config_wizard: #2013 fixed: moved configuration widget trigger back to menu (Vogel)
 
 +++ version 0.6.6-rc1
 * chat: #1963 fixed: crash on opening chats, when citing from history is greater than message prunning setting (WhE)
