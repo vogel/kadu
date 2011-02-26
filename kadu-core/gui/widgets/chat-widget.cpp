@@ -109,9 +109,8 @@ ChatWidget::ChatWidget(const Chat &chat, QWidget *parent) :
 			connect(contact.ownerBuddy(), SIGNAL(buddySubscriptionChanged()), this, SIGNAL(iconChanged()));
 		}
 
-		ChatStateService *chatStateService = currentProtocol()->chatStateService();
-		if (chatStateService)
-			connect(chatStateService, SIGNAL(contactActivityChanged(ChatStateService::ContactActivity, const Contact &)),
+		if (currentProtocol() && currentProtocol()->chatStateService())
+			connect(currentProtocol()->chatStateService(), SIGNAL(contactActivityChanged(ChatStateService::ContactActivity, const Contact &)),
 					this, SLOT(contactActivityChanged(ChatStateService::ContactActivity, const Contact &)));
 	}
 	connect(IconsManager::instance(), SIGNAL(themeChanged()), this, SIGNAL(iconChanged()));
