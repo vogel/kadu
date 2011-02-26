@@ -15,6 +15,9 @@
         <source>Config Wizard</source>
         <translation>Kreator konfiguracji</translation>
     </message>
+</context>
+<context>
+    <name>ConfigWizardConfigurationUiHandler</name>
     <message>
 		<source>Start Configuration Wizard...</source>
 		<translation>Uruchom kreator konfiguracji...</translation>

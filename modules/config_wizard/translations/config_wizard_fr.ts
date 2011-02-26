@@ -15,6 +15,9 @@
         <source>Config Wizard</source>
         <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>ConfigWizardConfigurationUiHandler</name>
     <message>
 		<source>Start Configuration Wizard...</source>
         <translation type="unfinished"></translation>
