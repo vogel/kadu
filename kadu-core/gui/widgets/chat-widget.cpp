@@ -716,6 +716,11 @@ void ChatWidget::updateComposing()
 		if (!currentProtocol() || !currentProtocol()->chatStateService())
 			return;
 
+		// If the text was deleted either by sending a message or explicitly by the user,
+		// let's not report it as composing.
+		if (edit()->toPlainText().isEmpty())
+			return;
+
 		currentProtocol()->chatStateService()->composingStarted(chat());
 
 		ComposingTimer.start();
