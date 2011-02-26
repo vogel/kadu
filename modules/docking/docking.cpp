@@ -470,7 +470,6 @@ void DockingManager::unregisterModuleAction(QAction *action)
 		return;
 
 	ModulesActions.removeAll(action);
-
 	updateContextMenu();
 }
 
