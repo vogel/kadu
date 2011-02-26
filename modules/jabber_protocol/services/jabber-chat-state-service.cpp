@@ -102,10 +102,12 @@ void JabberChatStateService::setChatState(const Chat &chat, XMPP::ChatState stat
 			if ((state == XMPP::StateInactive && info.LastChatState == XMPP::StateComposing)
 				|| (state == XMPP::StateComposing && info.LastChatState == XMPP::StateInactive))
 			{
-				// First go to the paused state
+				// First go to the paused or active state
 				XMPP::Message tm(chat.contacts().toContact().id());
 				tm.setType("chat");
-				tm.setChatState(XMPP::StatePaused);
+				tm.setChatState(info.LastChatState == XMPP::StateComposing
+						? XMPP::StatePaused
+						: XMPP::StateActive);
 
 				if (Protocol->isConnected())
 					Protocol->client()->client()->sendMessage(tm);
