@@ -78,11 +78,10 @@ void JabberChatStateService::setChatState(const Chat &chat, XMPP::ChatState stat
 		return;
 
 	// Check if we should send a message
-	if (state == info.LastChatState || state == XMPP::StateActive || (info.LastChatState == XMPP::StateActive && state == XMPP::StatePaused))
-	{
-		info.LastChatState = state;
+	if (state == info.LastChatState ||
+			(state == XMPP::StateActive && info.LastChatState == XMPP::StatePaused) ||
+			(info.LastChatState == XMPP::StateActive && state == XMPP::StatePaused))
 		return;
-	}
 
 	// Build event message
 	XMPP::Message m(chat.contacts().toContact().id());
@@ -202,12 +201,12 @@ void JabberChatStateService::messageAboutToSend(XMPP::Message &message)
 {
 	Contact contact = ContactManager::instance()->byId(Protocol->account(), message.to().bare(), ActionCreateAndAdd);
 	Chat chat = ChatManager::instance()->findChat(ContactSet(contact), true);
-	setChatState(chat, XMPP::StateActive);
 
 	if (ChatInfos[chat].UserRequestedEvents)
 		message.addEvent(XMPP::ComposingEvent);
 
 	message.setChatState(XMPP::StateActive);
+	ChatInfos[chat].LastChatState = XMPP::StateActive;
 }
 
 void JabberChatStateService::composingStarted(const Chat &chat)
