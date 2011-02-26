@@ -21,13 +21,13 @@
 #ifndef CONFIG_WIZARD_CONFIGURATION_UI_HANDLER
 #define CONFIG_WIZARD_CONFIGURATION_UI_HANDLER
 
-#include "gui/windows/main-configuration-window.h"
+#include <QtCore/QObject>
 
 class QAction;
 
 class ActionDescription;
 
-class ConfigWizardConfigurationUiHandler : public ConfigurationUiHandler
+class ConfigWizardConfigurationUiHandler : public QObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(ConfigWizardConfigurationUiHandler)
@@ -35,26 +35,21 @@ class ConfigWizardConfigurationUiHandler : public ConfigurationUiHandler
 	static ConfigWizardConfigurationUiHandler *Instance;
 
 	ActionDescription *ShowConfigWizardActionDescription;
-	MainConfigurationWindow *ConfigurationWindow;
 
 	ConfigWizardConfigurationUiHandler();
 	virtual ~ConfigWizardConfigurationUiHandler();
 	
-	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
-
-private slots:
-	void configurationWindowDestroyed();
-	
 public slots:
-    	void showConfigWizardSlot();
+	void showConfigWizardSlot();
 
 public:
 	static void registerActions(bool firstLoad);
 	static void unregisterActions();
 
 	static ConfigWizardConfigurationUiHandler * instance();
-	
+
 	void showConfigWizard();
+
 };
 
 #endif // CONFIG_WIZARD_CONFIGURATION_UI_HANDLER

@@ -22,7 +22,6 @@ set (MOC_SOURCES
 )
 
 set (CONFIGURATION_FILES
-	configuration/config-wizard.ui
 )
 
 set (TRANSLATION_SOURCES
