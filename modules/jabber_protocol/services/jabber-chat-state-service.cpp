@@ -41,6 +41,9 @@ bool JabberChatStateService::shouldSendEvent(const Chat &chat)
 	if (!info.UserRequestedEvents && info.ContactChatState == XMPP::StateNone)
 		return false;
 
+	if (info.ContactChatState == XMPP::StateGone)
+		return false;
+
 	JabberAccountDetails *jabberAccountDetails = dynamic_cast<JabberAccountDetails *>(Protocol->account().details());
 	if (!jabberAccountDetails)
 		return false;
