@@ -63,13 +63,15 @@ DesktopDock * DesktopDock::instance()
 
 
 DesktopDock::DesktopDock(QObject *parent) :
-		QObject(parent), MoveMenuAction(0), SeparatorAction(0)
+		QObject(parent)
 {
 	kdebugf();
 
 	createDefaultConfiguration();
 
 	DockWindow = new DesktopDockWindow();
+	MoveMenuAction = new QAction(tr("Move"), DockWindow);
+	connect(MoveMenuAction, SIGNAL(triggered()), DockWindow, SLOT(startMoving()));
 
 	if (config_file.readBoolEntry("Desktop Dock", "MoveInMenu"))
 		createMenu();
@@ -83,6 +85,9 @@ DesktopDock::~DesktopDock()
 
 	destroyMenu();
 
+	delete MoveMenuAction;
+	MoveMenuAction = 0;
+
 	delete DockWindow;
 	DockWindow = 0;
 
@@ -91,28 +96,12 @@ DesktopDock::~DesktopDock()
 
 void DesktopDock::createMenu()
 {
-	if (!SeparatorAction && !MoveMenuAction)
-	{
-		SeparatorAction = DockingManager::instance()->dockMenu()->addSeparator();
-		MoveMenuAction = DockingManager::instance()->dockMenu()->addAction(tr("Move"), DockWindow, SLOT(startMoving()));
-	}
+	DockingManager::instance()->registerModuleAction(MoveMenuAction);
 }
 
 void DesktopDock::destroyMenu()
 {
-	if (MoveMenuAction)
-	{
-		DockingManager::instance()->dockMenu()->removeAction(MoveMenuAction);
-		delete MoveMenuAction;
-		MoveMenuAction = 0;
-	}
-
-	if (SeparatorAction)
-	{
-		DockingManager::instance()->dockMenu()->removeAction(SeparatorAction);
-		delete SeparatorAction;
-		SeparatorAction = 0;
-	}
+	DockingManager::instance()->unregisterModuleAction(MoveMenuAction);
 }
 
 void DesktopDock::changeTrayIcon(const QIcon &icon)
@@ -147,6 +136,11 @@ void DesktopDock::updateMenu(bool b)
 		createMenu();
 	else
 		destroyMenu();
+}
+
+void DesktopDock::configurationUpdated()
+{
+	updateMenu(config_file.readBoolEntry("Desktop Dock", "MoveInMenu"));
 }
 
 void DesktopDock::createDefaultConfiguration()

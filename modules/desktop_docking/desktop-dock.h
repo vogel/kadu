@@ -24,13 +24,15 @@
 #include <QtGui/QIcon>
 #include <QtGui/QMovie>
 
+#include "configuration/configuration-aware-object.h"
+
 #include "modules/docking/docker.h"
 
 class QAction;
 
 class DesktopDockWindow;
 
-class DesktopDock : public QObject, public Docker
+class DesktopDock : public QObject, public Docker, ConfigurationAwareObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(DesktopDock)
@@ -40,7 +42,6 @@ class DesktopDock : public QObject, public Docker
 	DesktopDockWindow *DockWindow;
 
 	QAction *MoveMenuAction;
-	QAction *SeparatorAction;
 
 	explicit DesktopDock(QObject *parent = 0);
 	virtual ~DesktopDock();
@@ -52,6 +53,9 @@ class DesktopDock : public QObject, public Docker
 
 private slots:
 	void updateMenu(bool);
+
+protected:
+	virtual void configurationUpdated();
 
 public:
 	static void createInstance();
