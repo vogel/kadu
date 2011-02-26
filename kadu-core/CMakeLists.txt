@@ -124,12 +124,6 @@ set (kadu_SRCS
 	emoticons/emots-walker.cpp
 	emoticons/prefix-node.cpp
 
-	file-transfer/file-transfer.cpp
-	file-transfer/file-transfer-actions.cpp
-	file-transfer/file-transfer-manager.cpp
-	file-transfer/file-transfer-notifications.cpp
-	file-transfer/file-transfer-shared.cpp
-
 	gui/hot-key.cpp
 
 	gui/actions/action.cpp
@@ -170,7 +164,6 @@ set (kadu_SRCS
 	gui/widgets/color-selector.cpp
 	gui/widgets/custom-input.cpp
 	gui/widgets/delayed-line-edit.cpp
-	gui/widgets/file-transfer-widget.cpp
 	gui/widgets/filter-widget.cpp
 	gui/widgets/group-tab-bar.cpp
 	gui/widgets/groups-combo-box.cpp
@@ -234,7 +227,6 @@ set (kadu_SRCS
 	gui/windows/chat-window.cpp
 	gui/windows/choose-description.cpp
 	gui/windows/configuration-window.cpp
-	gui/windows/file-transfer-window.cpp
 	gui/windows/group-properties-window.cpp
 	gui/windows/kadu-window.cpp
 	gui/windows/kadu-window-actions.cpp
@@ -461,12 +453,6 @@ set (kadu_MOC_SRCS
 	emoticons/emoticon-selector.h
 	emoticons/emoticons-manager.h
 
-	file-transfer/file-transfer-actions.h
-	file-transfer/file-transfer-handler.h
-	file-transfer/file-transfer-manager.h
-	file-transfer/file-transfer-notifications.h
-	file-transfer/file-transfer-shared.h
-
 	gui/hot-key.h
 
 	gui/actions/action.h
@@ -506,7 +492,6 @@ set (kadu_MOC_SRCS
 	gui/widgets/color-selector.h
 	gui/widgets/custom-input.h
 	gui/widgets/delayed-line-edit.h
-	gui/widgets/file-transfer-widget.h
 	gui/widgets/filter-widget.h
 	gui/widgets/group-tab-bar.h
 	gui/widgets/groups-combo-box.h
@@ -569,7 +554,6 @@ set (kadu_MOC_SRCS
 	gui/windows/chat-window.h
 	gui/windows/choose-description.h
 	gui/windows/configuration-window.h
-	gui/windows/file-transfer-window.h
 	gui/windows/group-properties-window.h
 	gui/windows/kadu-window.h
 	gui/windows/kadu-window-actions.h
@@ -631,7 +615,6 @@ set (kadu_MOC_SRCS
 	protocols/services/chat-state-service.h
 	protocols/services/contact-list-service.h
 	protocols/services/contact-personal-info-service.h
-	protocols/services/file-transfer-service.h
 	protocols/services/multilogon-service.h
 	protocols/services/personal-info-service.h
 	protocols/services/roster-service.h

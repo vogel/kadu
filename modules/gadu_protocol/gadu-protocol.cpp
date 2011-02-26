@@ -224,7 +224,7 @@ Buddy GaduProtocol::searchResultToBuddy(gg_pubdir50_t res, int number)
 }
 
 GaduProtocol::GaduProtocol(Account account, ProtocolFactory *factory) :
-		Protocol(account, factory), CurrentFileTransferService(0),
+		Protocol(account, factory),
 		ActiveServer(), GaduLoginParams(), GaduSession(0), PingTimer(0)
 {
 	kdebugf();
@@ -380,7 +380,6 @@ void GaduProtocol::login(const QString &password, bool permanent)
 
 void GaduProtocol::accountUpdated()
 {
-	setUpFileTransferService();
 }
 
 void GaduProtocol::login()
@@ -532,51 +531,18 @@ void GaduProtocol::cleanUpLoginParams()
 	}
 }
 
-void GaduProtocol::setUpFileTransferService(bool forceClose)
-{
-	bool close = forceClose;
-	if (!close)
-		close = NetworkConnected != state();
-	if (!close)
-	{
-		GaduAccountDetails *gaduAccountDetails = dynamic_cast<GaduAccountDetails *>(account().details());
-		if (!gaduAccountDetails)
-			close = true;
-		else
-			close = !gaduAccountDetails->allowDcc();
-	}
-
-	if (close)
-	{
-		delete CurrentFileTransferService;
-		CurrentFileTransferService = 0;
-		account().data()->fileTransferServiceChanged(0);
-	}
-	else
-		if (!CurrentFileTransferService)
-		{
-			CurrentFileTransferService = new GaduFileTransferService(this);
-			account().data()->fileTransferServiceChanged(CurrentFileTransferService);
-		}
-}
-
 void GaduProtocol::networkConnected()
 {
 	networkStateChanged(NetworkConnected);
 
 	// fetch current avatar after connection
 	AvatarManager::instance()->updateAvatar(account().accountContact(), true);
-
-	// set up DCC if needed
-	setUpFileTransferService();
 }
 
 void GaduProtocol::networkDisconnected(bool tryAgain, bool waitForPassword)
 {
 	if (!tryAgain)
 		networkStateChanged(NetworkDisconnected);
-
-	setUpFileTransferService(true);
 
 	if (PingTimer)
 	{

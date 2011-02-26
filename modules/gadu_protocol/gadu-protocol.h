@@ -36,7 +36,6 @@
 #include "services/gadu-chat-state-service.h"
 #include "services/gadu-contact-list-service.h"
 #include "services/gadu-contact-personal-info-service.h"
-#include "services/gadu-file-transfer-service.h"
 #include "services/gadu-multilogon-service.h"
 #include "services/gadu-personal-info-service.h"
 #include "services/gadu-search-service.h"
@@ -49,7 +48,6 @@
 
 #include "protocols/protocol.h"
 
-class DccManager;
 class GaduContactDetails;
 class GaduContactListHandler;
 class GaduProtocolSocketNotifiers;
@@ -85,7 +83,6 @@ private:
 	GaduChatService *CurrentChatService;
 	GaduContactListService *CurrentContactListService;
 	GaduContactPersonalInfoService *CurrentContactPersonalInfoService;
-	GaduFileTransferService *CurrentFileTransferService;
 	GaduPersonalInfoService *CurrentPersonalInfoService;
 	GaduSearchService *CurrentSearchService;
 #ifdef GADU_HAVE_MULTILOGON
@@ -111,8 +108,6 @@ private:
 	void setupLoginParams();
 	void cleanUpLoginParams();
 	void cleanUpProxySettings();
-
-	void setUpFileTransferService(bool forceClose = false);
 
 	void networkConnected();
 	void networkDisconnected(bool tryAgain, bool waitForPassword);
@@ -156,7 +151,6 @@ public:
 	virtual ChatService * chatService() { return CurrentChatService; }
 	virtual ContactListService * contactListService() { return CurrentContactListService; }
 	virtual ContactPersonalInfoService * contactPersonalInfoService() { return CurrentContactPersonalInfoService; }
-	virtual FileTransferService * fileTransferService() { return CurrentFileTransferService; }
 	virtual PersonalInfoService * personalInfoService() { return CurrentPersonalInfoService; }
 	virtual SearchService * searchService() { return CurrentSearchService; }
 #ifdef GADU_HAVE_MULTILOGON

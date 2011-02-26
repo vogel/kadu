@@ -6,6 +6,7 @@
 * syntax: #2018 fixed: cleanup chat and infopanel syntax files (Vogel)
 * desktop_docking: fixed crash and menu setup (Vogel)
 * hints: fix crashes when two different modules providing hints are loaded at the same time (WhE)
+* file_transfer: #2014 fixed: removed file transfer code from 0.6.6.x branch (Vogel)
 
 +++ version 0.6.6-rc1
 * chat: #1963 fixed: crash on opening chats, when citing from history is greater than message prunning setting (WhE)

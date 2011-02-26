@@ -278,6 +278,7 @@ void GaduEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
 
 	AllowFileTransfers = new QCheckBox(tr("Allow file transfers"), this);
 	generalLayout->addWidget(AllowFileTransfers, 2, 0, 1, 4);
+	AllowFileTransfers->setVisible(false);
 
 	connect(useDefaultServers, SIGNAL(toggled(bool)), ipAddressesLabel, SLOT(setDisabled(bool)));
 	connect(useDefaultServers, SIGNAL(toggled(bool)), ipAddresses, SLOT(setDisabled(bool)));
