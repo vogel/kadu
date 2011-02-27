@@ -1,6 +1,6 @@
 [Module]
-Description=OpenSSL chat encryption module
-Description[pl]=Modu³ obs³ugi szyfrowania rozmów w QCA2
+Description=Chat encryption module
+Description[pl]=Modu³ obs³ugi szyfrowania rozmów
 Author=Kadu Team
 LoadByDefault=true
 Version=core
