@@ -22,27 +22,14 @@
 
 #include "gui/windows/main-configuration-window.h"
 
-class Account;
-class ConfigActionButton;
-
-class EncryptionNgConfigurationUiHandler : public ConfigurationUiHandler
+class EncryptionNgConfigurationUiHandler : public QObject
 {
 	Q_OBJECT
 
 	static EncryptionNgConfigurationUiHandler * Instance;
 
-	ConfigActionButton *GenerateKeys;
-
 	explicit EncryptionNgConfigurationUiHandler();
 	virtual ~EncryptionNgConfigurationUiHandler();
-
-	bool generateKeys(const Account &account);
-
-private slots:
-	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
-
-	void generateKeysClicked();
-	void generateKeys();
 
 public:
 	static void registerConfigurationUi();

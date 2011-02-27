@@ -4,7 +4,6 @@
 			<group-box name="General">
 				<check-box caption="Encrypt by default" config-section="Chat" config-item="Encryption" />
 				<check-box caption="Encrypt after receive encrypted message" config-section="Chat" config-item="EncryptAfterReceiveEncryptedMessage" />
-				<action-button caption="Generate keys" id="encryption-ng/generateKeys" />
 			</group-box>
 		</tab>
 	</section>

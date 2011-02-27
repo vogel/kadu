@@ -51,6 +51,11 @@
         <source>No public key available</source>
         <translation>Brak klucza publicznego</translation>
     </message>
+    <message>
+        <location filename="../encryption-actions.cpp" line="100"/>
+        <source>Generate Encryption Keys</source>
+        <translation>Wygeneruj klucze szyfrowania</translation>
+    </message>
 </context>
 <context>
     <name>EncryptionNgConfigurationUiHandler</name>
