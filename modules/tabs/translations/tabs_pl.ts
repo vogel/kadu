@@ -33,7 +33,7 @@
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="18"/>
         <source>Always use tabs</source>
-		<translation>Zawsze używaj kart</translation>
+        <translation>Zawsze używaj kart</translation>
     </message>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="21"/>
@@ -64,6 +64,16 @@
         <location filename="../.configuration-ui-translations.cpp" line="36"/>
         <source>Look</source>
         <translation>Wygląd</translation>
+    </message>
+    <message>
+        <location filename="../.configuration-ui-translations.cpp" line="39"/>
+        <source>Show &quot;New Tab&quot; button</source>
+		<translation>Pokaż przycisk otwierania nowej karty</translation>
+    </message>
+    <message>
+        <location filename="../.configuration-ui-translations.cpp" line="42"/>
+        <source>Show common &quot;Close Current Tab&quot; button in the corner</source>
+		<translation>Pokaż w rogu wspólny przycisk zamykania aktywnej karty</translation>
     </message>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="45"/>
@@ -99,48 +109,48 @@
 <context>
     <name>TabsManager</name>
     <message>
-        <location filename="../tabs.cpp" line="87"/>
+        <location filename="../tabs.cpp" line="90"/>
         <source>Chat in New Window</source>
         <translation>Rozmawiaj w nowym oknie</translation>
     </message>
     <message>
-        <location filename="../tabs.cpp" line="89"/>
-        <location filename="../tabs.cpp" line="134"/>
+        <location filename="../tabs.cpp" line="92"/>
+        <location filename="../tabs.cpp" line="137"/>
         <source>Chat in New Tab</source>
         <translation>Rozmawiaj w nowej karcie</translation>
     </message>
     <message>
-        <location filename="../tabs.cpp" line="141"/>
+        <location filename="../tabs.cpp" line="144"/>
         <source>Attach Chat to Tabs</source>
         <translation>Dołącz rozmowę do kart</translation>
     </message>
     <message>
-        <location filename="../tabs.cpp" line="457"/>
+        <location filename="../tabs.cpp" line="460"/>
         <source>NEW MESSAGE(S)</source>
         <translation>-&gt; COŚ NOWEGO &lt;-</translation>
     </message>
     <message>
-        <location filename="../tabs.cpp" line="539"/>
+        <location filename="../tabs.cpp" line="542"/>
         <source>Detach</source>
         <translation>Odłącz</translation>
     </message>
     <message>
-        <location filename="../tabs.cpp" line="540"/>
+        <location filename="../tabs.cpp" line="543"/>
         <source>Detach all</source>
         <translation>Odłącz wszystkie</translation>
     </message>
     <message>
-        <location filename="../tabs.cpp" line="542"/>
+        <location filename="../tabs.cpp" line="545"/>
         <source>Close</source>
         <translation>Zamknij</translation>
     </message>
     <message>
-        <location filename="../tabs.cpp" line="543"/>
+        <location filename="../tabs.cpp" line="546"/>
         <source>Close all</source>
         <translation>Zamknij wszystkie</translation>
     </message>
     <message>
-        <location filename="../tabs.cpp" line="755"/>
+        <location filename="../tabs.cpp" line="758"/>
         <source>Conference [%1]</source>
         <translation>Konferencja [%1]</translation>
     </message>
