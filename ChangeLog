@@ -8,6 +8,7 @@
 * hints: fix crashes when two different modules providing hints are loaded at the same time (WhE)
 * file_transfer: #2014 fixed: removed file transfer code from 0.6.6.x branch (Vogel)
 * config_wizard: #2013 fixed: moved configuration widget trigger back to menu (Vogel)
+* core: #2023 fixed: parser's %i tag should return empty strings for null addresses (ultr)
 
 +++ version 0.6.6-rc1
 * chat: #1963 fixed: crash on opening chats, when citing from history is greater than message prunning setting (WhE)
