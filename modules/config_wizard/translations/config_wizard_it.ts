@@ -15,11 +15,8 @@
         <source>Config Wizard</source>
         <translation type="unfinished"></translation>
     </message>
-</context>
-<context>
-    <name>ConfigWizardConfigurationUiHandler</name>
     <message>
-		<source>Start Configuration Wizard...</source>
+        <source>Start Configuration Wizard...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -54,6 +51,13 @@
     </message>
     <message>
         <source>Go to Accounts Setting after closing this window</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ConfigWizardConfigurationUiHandler</name>
+    <message>
+        <source>Start Configuration Wizard...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

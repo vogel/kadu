@@ -15,11 +15,8 @@
         <source>Config Wizard</source>
         <translation>Kreator konfiguracji</translation>
     </message>
-</context>
-<context>
-    <name>ConfigWizardConfigurationUiHandler</name>
     <message>
-		<source>Start Configuration Wizard...</source>
+        <source>Start Configuration Wizard...</source>
 		<translation>Uruchom kreator konfiguracji...</translation>
     </message>
 </context>
@@ -55,6 +52,13 @@
     <message>
         <source>Go to Accounts Setting after closing this window</source>
         <translation>Przejdź do okna konfiguracji kont po zamknięciu tego okna</translation>
+    </message>
+</context>
+<context>
+    <name>ConfigWizardConfigurationUiHandler</name>
+    <message>
+        <source>Start Configuration Wizard...</source>
+        <translation>Uruchom kreator konfiguracji...</translation>
     </message>
 </context>
 <context>
