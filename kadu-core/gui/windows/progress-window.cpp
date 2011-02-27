@@ -60,6 +60,8 @@ void ProgressWindow::createGui()
 	buttons->addButton(CloseButton, QDialogButtonBox::DestructiveRole);
 
 	mainLayout->addWidget(buttons);
+
+	setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 }
 
 void ProgressWindow::enableClosing(bool enable)
