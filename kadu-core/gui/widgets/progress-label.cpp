@@ -43,8 +43,10 @@ void ProgressLabel::createGui()
 	Label = new QLabel(this);
 	Label->setWordWrap(true);
 
-	layout->addWidget(Icon, 0, Qt::AlignTop);
-	layout->addWidget(Label, 100, Qt::AlignTop | Qt::AlignLeft);
+	layout->addWidget(Icon, 0, Qt::AlignCenter);
+	layout->addWidget(Label, 100, Qt::AlignVCenter | Qt::AlignLeft);
+
+	setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Minimum);
 }
 
 void ProgressLabel::setState(ProgressIcon::ProgressState state, const QString &text)
