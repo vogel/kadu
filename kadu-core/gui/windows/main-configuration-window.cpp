@@ -289,9 +289,9 @@ void MainConfigurationWindow::show()
 
 void MainConfigurationWindow::onChangeStartupStatus(int index)
 {
-	onStartupSetLastDescription->setEnabled(index != 4);
+	onStartupSetLastDescription->setEnabled(index != 6);
 	widget()->widgetById("startupStatusInvisibleWhenLastWasOffline")->setEnabled(index == 0);
-	widget()->widgetById("onStartupSetDescription")->setEnabled(!onStartupSetLastDescription->isChecked() && index != 4);
+	widget()->widgetById("onStartupSetDescription")->setEnabled(!onStartupSetLastDescription->isChecked() && index != 6);
 }
 
 void MainConfigurationWindow::setLanguages()

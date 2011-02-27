@@ -82,8 +82,10 @@
 				<combo-box caption="On startup, set" config-section="General" config-item="StartupStatus" id="startupStatus"
 					tool-tip="Choose status which will be set on startup">
 					<item value="LastStatus" caption="Last status" />
+					<item value="FreeForChat" caption="Free for chat" />
 					<item value="Online" caption="Online" />
-					<item value="Busy" caption="Busy" />
+					<item value="Busy" caption="Away" />
+					<item value="DoNotDisturb" caption="Do not disturb" />
 					<item value="Invisible" caption="Invisible" />
 					<item value="Offline" caption="Offline" />
 				</combo-box>
