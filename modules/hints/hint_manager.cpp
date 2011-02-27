@@ -639,6 +639,7 @@ void HintManager::import_0_6_5_configuration()
 				realCopyConfiguration("OSDHints", event, event);
 
 			config_file.writeEntry("Notify", event + "_Hints", true);
+			config_file.removeVariable("Notify", event + "_OSDHints");
 		}
 		else if (hintsSetAll)
 				realCopyConfiguration("Hints", "SetAll", event);
@@ -653,6 +654,7 @@ void HintManager::import_0_6_5_configuration()
 			realCopyConfiguration("OSDHints", "StatusChanged/ToBusy", "StatusChanged/ToAway");
 
 		config_file.writeEntry("Notify", "StatusChanged/ToAway_Hints", true);
+		config_file.removeVariable("Notify", "StatusChanged/ToBusy_OSDHints");
 	}
 	else
 	{
@@ -661,6 +663,9 @@ void HintManager::import_0_6_5_configuration()
 		else
 			realCopyConfiguration("Hints", "StatusChanged/ToBusy", "StatusChanged/ToAway");
 	}
+	config_file.removeVariable("OSDHints", "SetAll");
+	config_file.removeVariable("Hints", "SetAll");
+
 }
 
 void HintManager::createDefaultConfiguration()
