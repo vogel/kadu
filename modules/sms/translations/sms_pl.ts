@@ -13,11 +13,11 @@
     </message>
     <message>
         <source>Nick</source>
-        <translation>Nick</translation>
+		<translation>Pseudonim</translation>
     </message>
     <message>
         <source>SMS Nick</source>
-        <translation>Nick SMS</translation>
+		<translation>Pseudonim SMS</translation>
     </message>
     <message>
         <source>Application</source>
@@ -82,7 +82,7 @@ Argumenty powinny być oddzielone spacjami. %k jest zamieniane na numer, %m na w
     <name>SmsActions</name>
     <message>
         <source>Send SMS...</source>
-        <translation>Wyślij SMSa...</translation>
+		<translation>Wyślij SMS-a...</translation>
     </message>
 </context>
 <context>
@@ -189,7 +189,7 @@ Argumenty powinny być oddzielone spacjami. %k jest zamieniane na numer, %m na w
     <name>SmsProgressWindow</name>
     <message>
         <source>Sending SMS in progress.</source>
-        <translation>Trwa wysyłanie SMSa.</translation>
+		<translation>Trwa wysyłanie SMS-a.</translation>
     </message>
     <message>
         <source>Enter text from the picture:</source>
