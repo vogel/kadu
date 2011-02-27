@@ -96,8 +96,6 @@ QVariant BuddyStatusDatesModel::data(const QModelIndex &index, int role) const
 	if (row < 0 || row >= Dates.size())
 		return QVariant();
 
-	ItemCachedData cachedData = fetchCachedData(Dates.at(row));
-
 	switch (role)
 	{
 		case Qt::DisplayRole:
@@ -105,7 +103,7 @@ QVariant BuddyStatusDatesModel::data(const QModelIndex &index, int role) const
 			switch (col)
 			{
 				case 0: return Dates.at(row).toString("dd.MM.yyyy");
-				case 1: return cachedData.size;
+				case 1: return fetchCachedData(Dates.at(row)).size;
 			}
 
 			return QVariant();
@@ -128,13 +126,19 @@ void BuddyStatusDatesModel::setDates(const QList<QDate> &dates)
 {
 	Cache->clear();
 
-	beginRemoveRows(QModelIndex(), 0, Dates.size());
-	Dates.clear();
-	endRemoveRows();
+	if (!Dates.isEmpty())
+	{
+		beginRemoveRows(QModelIndex(), 0, Dates.size() - 1);
+		Dates.clear();
+		endRemoveRows();
+	}
 
-	beginInsertRows(QModelIndex(), 0, dates.size() - 1);
-	Dates = dates;
-	endInsertRows();
+	if (!dates.isEmpty())
+	{
+		beginInsertRows(QModelIndex(), 0, dates.size() - 1);
+		Dates = dates;
+		endInsertRows();
+	}
 }
 
 QModelIndex BuddyStatusDatesModel::indexForDate(const QDate &date)

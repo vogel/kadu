@@ -75,7 +75,7 @@ QVariant ChatDatesModel::headerData(int section, Qt::Orientation orientation, in
 QString ChatDatesModel::fetchTitle(const QDate &date) const
 {
 	QList<Message> messages = History::instance()->messages(MyChat, date, 1);
-	if (messages.size() == 0)
+	if (messages.isEmpty())
 		return QString();
 
 	Message firstMessage = messages.at(0);
@@ -122,8 +122,6 @@ QVariant ChatDatesModel::data(const QModelIndex &index, int role) const
 	if (row < 0 || row >= Dates.size())
 		return QVariant();
 
-	ItemCachedData cachedData = fetchCachedData(Dates.at(row));
-
 	switch (role)
 	{
 		case Qt::DisplayRole:
@@ -131,9 +129,9 @@ QVariant ChatDatesModel::data(const QModelIndex &index, int role) const
 			switch (col)
 			{
 				case 0: return MyChat.name();
-				case 1: return cachedData.title;
+				case 1: return fetchCachedData(Dates.at(row)).title;
 				case 2: return Dates.at(row).toString("dd.MM.yyyy");
-				case 3: return cachedData.size;
+				case 3: return fetchCachedData(Dates.at(row)).size;
 			}
 
 			return QVariant();
@@ -156,13 +154,19 @@ void ChatDatesModel::setDates(const QList<QDate> &dates)
 {
 	Cache->clear();
 
-	beginRemoveRows(QModelIndex(), 0, Dates.size());
-	Dates.clear();
-	endRemoveRows();
+	if (!Dates.isEmpty())
+	{
+		beginRemoveRows(QModelIndex(), 0, Dates.size() - 1);
+		Dates.clear();
+		endRemoveRows();
+	}
 
-	beginInsertRows(QModelIndex(), 0, dates.size() - 1);
-	Dates = dates;
-	endInsertRows();
+	if (!dates.isEmpty())
+	{
+		beginInsertRows(QModelIndex(), 0, dates.size() - 1);
+		Dates = dates;
+		endInsertRows();
+	}
 }
 
 QModelIndex ChatDatesModel::indexForDate(const QDate &date)
