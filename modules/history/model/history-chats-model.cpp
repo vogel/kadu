@@ -94,7 +94,7 @@ int HistoryChatsModel::rowCount(const QModelIndex &parent) const
 		return 0;
 	}
 
-	return Chats[parent.row()].size();
+	return Chats.at(parent.row()).size();
 }
 
 QModelIndex HistoryChatsModel::index(int row, int column, const QModelIndex &parent) const
@@ -174,7 +174,7 @@ QVariant HistoryChatsModel::statusData(const QModelIndex &index, int role) const
 	if (index.row() < 0 || index.row() >= StatusBuddies.size())
 		return QVariant();
 
-	Buddy buddy = StatusBuddies[index.row()];
+	Buddy buddy = StatusBuddies.at(index.row());
 	switch (role)
 	{
 		case Qt::DisplayRole:
@@ -207,9 +207,9 @@ QVariant HistoryChatsModel::smsRecipientData(const QModelIndex &index, int role)
 	switch (role)
 	{
 		case Qt::DisplayRole:
-			return SmsRecipients[index.row()];
+			return SmsRecipients.at(index.row());
 		case HistoryItemRole:
-			return QVariant::fromValue<HistoryTreeItem>(HistoryTreeItem(SmsRecipients[index.row()]));
+			return QVariant::fromValue<HistoryTreeItem>(HistoryTreeItem(SmsRecipients.at(index.row())));
 	}
 	return QVariant();
 }
@@ -244,11 +244,12 @@ void HistoryChatsModel::clearChats()
 {
 	int count = Chats.size();
 	for (int i = 0; i < count; i++)
-	{
-		beginRemoveRows(index(i, 0), 0, rowCount(index(i, 0)));
-		Chats[i].clear();
-		endRemoveRows();
-	}
+		if (!Chats.at(i).isEmpty())
+		{
+			beginRemoveRows(index(i, 0), 0, Chats.at(i).size() - 1);
+			Chats[i].clear();
+			endRemoveRows();
+		}
 }
 
 void HistoryChatsModel::addChat(const Chat &chat)
@@ -259,8 +260,8 @@ void HistoryChatsModel::addChat(const Chat &chat)
 
 	int id = ChatKeys.indexOf(chatType);
 
-	QModelIndex idx = index(id, 0, QModelIndex());
-	int count = rowCount(idx);
+	QModelIndex idx = index(id, 0);
+	int count = Chats.at(id).count();
 
 	beginInsertRows(idx, count, count);
 	Chats[id].append(chat);
@@ -277,42 +278,46 @@ void HistoryChatsModel::setChats(const QList<Chat> &chats)
 
 void HistoryChatsModel::clearStatusBuddies()
 {
-	QModelIndex statusParent = index(Chats.size(), 0);
-
-	beginRemoveRows(statusParent, 0, rowCount(statusParent));
-	StatusBuddies.clear();
-	endRemoveRows();
+	if (!StatusBuddies.isEmpty())
+	{
+		beginRemoveRows(index(Chats.size(), 0), 0, StatusBuddies.size() - 1);
+		StatusBuddies.clear();
+		endRemoveRows();
+	}
 }
 
 void HistoryChatsModel::clearSmsRecipients()
 {
-	QModelIndex statusParent = index(Chats.size() + 1, 0);
-
-	beginRemoveRows(statusParent, 0, rowCount(statusParent));
-	SmsRecipients.clear();
-	endRemoveRows();
+	if (!SmsRecipients.isEmpty())
+	{
+		beginRemoveRows(index(Chats.size() + 1, 0), 0, SmsRecipients.size() - 1);
+		SmsRecipients.clear();
+		endRemoveRows();
+	}
 }
 
 void HistoryChatsModel::setStatusBuddies(const QList<Buddy> &buddies)
 {
 	clearStatusBuddies();
 
-	QModelIndex statusParent = index(Chats.size(), 0);
-
-	beginInsertRows(statusParent, 0, buddies.size());
-	StatusBuddies = buddies;
-	endInsertRows();
+	if (!buddies.isEmpty())
+	{
+		beginInsertRows(index(Chats.size(), 0), 0, buddies.size() - 1);
+		StatusBuddies = buddies;
+		endInsertRows();
+	}
 }
 
 void HistoryChatsModel::setSmsRecipients(const QList<QString> &smsRecipients)
 {
 	clearSmsRecipients();
 
-	QModelIndex statusParent = index(Chats.size() + 1, 0);
-
-	beginInsertRows(statusParent, 0, smsRecipients.size());
-	SmsRecipients = smsRecipients;
-	endInsertRows();
+	if (!smsRecipients.isEmpty())
+	{
+		beginInsertRows(index(Chats.size() + 1, 0), 0, smsRecipients.size() - 1);
+		SmsRecipients = smsRecipients;
+		endInsertRows();
+	}
 }
 
 QModelIndex HistoryChatsModel::chatTypeIndex(ChatType *type) const
@@ -326,8 +331,7 @@ QModelIndex HistoryChatsModel::chatTypeIndex(ChatType *type) const
 
 QModelIndex HistoryChatsModel::chatIndex(const Chat &chat) const
 {
-	QString typeName = chat.type();
-	ChatType *chatType = ChatTypeManager::instance()->chatType(typeName);
+	ChatType *chatType = ChatTypeManager::instance()->chatType(chat.type());
 	if (!chatType)
 		return QModelIndex();
 
@@ -338,7 +342,7 @@ QModelIndex HistoryChatsModel::chatIndex(const Chat &chat) const
 	if (!typeIndex.isValid())
 		return QModelIndex();
 
-	int row = Chats[typeIndex.row()].indexOf(chat);
+	int row = Chats.at(typeIndex.row()).indexOf(chat);
 	return index(row, 0, typeIndex);
 }
 
