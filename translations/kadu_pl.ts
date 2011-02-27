@@ -3208,11 +3208,11 @@ Klient: %3</translation>
     <name>SearchWindowActions</name>
     <message>
         <source>&amp;Search</source>
-        <translation>&amp;amp;Szukaj</translation>
+		<translation>&amp;Szukaj</translation>
     </message>
     <message>
         <source>&amp;Next results</source>
-        <translation>&amp;amp;Następne wyniki</translation>
+		<translation>&amp;Następne wyniki</translation>
     </message>
     <message>
         <source>Stop</source>
@@ -3228,7 +3228,7 @@ Klient: %3</translation>
     </message>
     <message>
         <source>&amp;Chat</source>
-        <translation>&amp;amp;Rozmowa</translation>
+		<translation>&amp;Rozmowa</translation>
     </message>
 </context>
 <context>
