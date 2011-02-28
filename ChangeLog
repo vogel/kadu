@@ -1,6 +1,7 @@
 +++ version 0.6.7
 * gadu: removed depreceated ip/port/version code - gg server does not send this info anymore (Vogel)
 * modules: Library class removed, we can use QLibrary (Vogel)
+& cmake: faster linking, not using final.cpp on windows compilations (Darom,Beevvy,Vogel)
 
 +++ version 0.6.6-rc2
 * jabber #2026 fixed: incorrect XEP-0085: Chat State Notifications implementation (WhE)

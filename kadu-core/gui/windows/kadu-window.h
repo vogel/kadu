@@ -32,9 +32,9 @@
 
 #include "chat/chat.h"
 #include "buddies/buddy-list.h"
-
 #include "gui/windows/main-window.h"
 #include "os/generic/compositing-aware-object.h"
+#include "exports.h"
 
 class QSplitter;
 class QMenu;

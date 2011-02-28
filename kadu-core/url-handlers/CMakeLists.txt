@@ -8,3 +8,6 @@ add_library (url-handlers
 	STATIC
 	${url_handlers_SRCS}
 )
+
+set_target_properties (url-handlers PROPERTIES ENABLE_EXPORTS ON)
+set_target_properties (url-handlers PROPERTIES COMPILE_FLAGS "-DKADULIB")

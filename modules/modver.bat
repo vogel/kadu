@@ -5,9 +5,21 @@ SETLOCAL ENABLEEXTENSIONS
 echo #include "kadu-config.h" > %2
 
 FOR /F "eol=# tokens=1,2* delims==" %%i IN (%1) DO (
-	if "%%i" == "Description" echo #define DESCRIPTION "%%j" >> %2
-	if "%%i" == "Description[pl]" echo #define DESCRIPTION_PL "%%j" >> %2
-	if "%%i" == "Author" echo #define AUTHOR "%%j" >> %2
+	if "%%i" == "Description" (
+		set str=%%j
+		set str=!str:"=""!
+		echo #define DESCRIPTION "!str!" >> %2
+	)
+	if "%%i" == "Description[pl]" (
+		set str=%%j
+		set str=!str:"=""!
+		echo #define DESCRIPTION_PL "!str!" >> %2
+	)
+	if "%%i" == "Author" (
+		set str=%%j
+		set str=!str:"=""!
+		echo #define AUTHOR "!str!" >> %2
+	)
 	if "%%i" == "Version" (
 		if not "%%j" == "core" (
 			echo #define VERSION "%%j" >> %2
