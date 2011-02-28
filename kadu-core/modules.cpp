@@ -82,38 +82,6 @@
 	#define SO_PREFIX_LEN 3
 #endif
 
-#ifndef Q_WS_WIN
-Library::Library(const QString& file_name) : FileName(file_name), Handle(0)
-{
-}
-
-Library::~Library()
-{
-	kdebugf();
-	if (Handle != 0)
-		dlclose(Handle);
-	kdebugf2();
-}
-
-bool Library::load()
-{
-	Handle = dlopen(qPrintable(FileName), RTLD_NOW | RTLD_GLOBAL);
-	return (Handle != 0);
-}
-
-void* Library::resolve(const QString& symbol_name)
-{
-	if (Handle == 0)
-		return 0;
-	return dlsym(Handle, qPrintable(symbol_name));
-}
-
-QString Library::errorString()
-{
-	return QString(dlerror());
-}
-#endif
-
 ModuleInfo::ModuleInfo() : depends(), conflicts(), provides(),
 	description(), author(), version(), load_by_def(false)
 {
@@ -535,7 +503,8 @@ bool ModulesManager::activateModule(const QString& module_name)
 	}
 	else
 	{
-		m.lib = new Library(libPath("kadu/modules/"SO_PREFIX + module_name + "." SO_EXT));
+		m.lib = new QLibrary(libPath("kadu/modules/"SO_PREFIX + module_name + "." SO_EXT));
+		m.lib->setLoadHints(/*QLibrary::ResolveAllSymbolsHint |*/ QLibrary::ExportExternalSymbolsHint);
 		if (!m.lib->load())
 		{
 			QString err = m.lib->errorString();

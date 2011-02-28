@@ -31,6 +31,7 @@
 #ifndef KADU_MODULES_H
 #define KADU_MODULES_H
 
+#include <QtCore/QLibrary>
 #include <QtCore/QMap>
 #include <QtGui/QWidget>
 
@@ -43,54 +44,6 @@ class QTreeWidget;
 class QTreeWidgetItem;
 
 class ModulesWindow;
-
-#ifndef Q_OS_WIN
-/**
-	Zast�puje klas� QLibrary na specyficzne potrzeby Kadu.
-	\class Library
-	\brief Biblioteki dzielone.
-**/
-class Library : public QObject
-{
-	Q_OBJECT
-
-	QString FileName;
-	void *Handle;
-
-public:
-	/**
-		\fn Library(const QString &file_name)
-		Konstruktor przydzielaj�cy dany plik dla tego obiektu biblioteki dzielonej.
-		\param file_name nazwa pliku biblioteki dzielonej.
-	**/
-	Library(const QString &file_name);
-	~Library();
-
-	/**
-		\fn bool load()
-		�aduje przydzielon� bibliotek� dzielon� do pami�ci.
-	**/
-	bool load();
-
-	/**
-		\fn void * resolve(const QString &symbol_name)
-		T�umaczy nazw� symbolu na funkcj� z za�adowanej biblioteki dzielonej.
-		\param symbol_name nazwa symbolu do przet�umaczenia.
-		\return wska�nik do przt�umaczonego symbolu.
-	**/
-	void * resolve(const QString &symbol_name);
-
-	/**
-		\fn QString error()
-		\return tre�� b��du, jaki wyst�pi� podczas �adowanie biblioteki dzielonej.
-	**/
-	QString errorString();
-
-};
-#else
-#include <QtCore/QLibrary>
-#define Library QLibrary
-#endif
 
 /**
 	\struct ModuleInfo
@@ -152,7 +105,7 @@ class KADUAPI ModulesManager : public QObject
 	**/
 	struct Module
 	{
-		Library *lib; /*!< Wska�nik do obiektu biblioteki dzielonej. */
+		QLibrary *lib; /*!< Wska�nik do obiektu biblioteki dzielonej. */
 		CloseModuleFunc *close; /*!< Wska�nik do funkcji deinicjalizuj�cej modu�. */
 		QTranslator *translator; /*!< Wska�nik do obiektu t�umacz�cego dla tego modu�u. */
 		ModuleInfo info; /*!< Informacje o module. */
