@@ -19,11 +19,6 @@ set (CONFIGURATION_FILES
 	configuration/spellchecker.ui
 )
 
-if (WIN32)
-	include_directories (${CMAKE_CURRENT_SOURCE_DIR})
-	set (SOURCES ${SOURCES} ../module.rc)
-endif (WIN32)
-
 if (WITH_ENCHANT AND NOT WITH_ASPELL)
 	set (USE_ENCHANT TRUE)
 	set (FORCE_ENGINE TRUE)
@@ -64,7 +59,7 @@ if (USE_ASPELL)
 	message (STATUS "Using aspell as backend. To force enchant use -DWITH_ENCHANT=ON")
 
 	set (LIBRARIES ${ASPELL_LIBRARIES})
-	include_directories (${ASPELL_INCLUDE_DIRS})
+	include_directories (${ASPELL_INCLUDE_DIR})
 	add_definitions (${ASPELL_DEFINITIONS})
 	add_definitions (-DHAVE_ASPELL)
 else (USE_ASPELL)

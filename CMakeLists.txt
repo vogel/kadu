@@ -139,7 +139,7 @@ macro (kadu_source_subdirectories CURRENT_TARGET)
 		)
 	endforeach (ARG)
 
-	target_link_libraries (${CURRENT_TARGET} -Wl,--start-group -Wl,--whole-archive ${ARGN} -Wl,--end-group -Wl,--no-whole-archive)
+	target_link_libraries (${CURRENT_TARGET} -Wl,--start-group -Wl,--whole-archive ${ARGN} -Wl,--no-whole-archive -Wl,--end-group)
 endmacro (kadu_source_subdirectories)
 
 macro (kadu_configuration)
