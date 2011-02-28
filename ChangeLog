@@ -5,7 +5,6 @@
 * hints: fix crashes when two different modules providing hints are loaded at the same time (WhE)
 * syntax: #2018 fixed: cleanup chat and infopanel syntax files (Vogel)
 * desktop_docking: fixed crash and menu setup (Vogel)
-* hints: fix crashes when two different modules providing hints are loaded at the same time (WhE)
 * file_transfer: #2014 fixed: removed file transfer code from 0.6.6.x branch (Vogel)
 * config_wizard: #2013 fixed: moved configuration widget trigger back to menu (Vogel)
 * core: #2023 fixed: parser's %i tag should return empty strings for null addresses (ultr)
