@@ -236,7 +236,8 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 				case 'i':
 					++i;
 					if (contact)
-						pe.content = contact.address().toString();
+						if (!contact.address().isNull() && contact.address() != QHostAddress::Any && contact.address() != QHostAddress::AnyIPv6)
+							pe.content = contact.address().toString();
 					break;
 				case 'v':
 					++i;
