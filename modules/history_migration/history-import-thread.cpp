@@ -85,17 +85,14 @@ void HistoryImportThread::run()
 		ImportedMessages = 0;
 		TotalMessages = entries.count();
 
-		foreach (const HistoryEntry &entry, entries)
-			if (Canceled)
-				break;
-			else
-			{
-				importEntry(chat, entry);
-				ImportedMessages++;
-			}
-
 		if (Canceled)
 			break;
+
+		foreach (const HistoryEntry &entry, entries)
+		{
+			importEntry(chat, entry);
+			ImportedMessages++;
+		}
 
 		historyImporterChatData->setImported(true);
 		historyImporterChatData->store();
