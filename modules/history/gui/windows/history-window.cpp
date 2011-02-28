@@ -138,6 +138,7 @@ void HistoryWindow::createGui()
 	DetailsListView->setUniformRowHeights(true);
 
 	ContentBrowser = new ChatMessagesView(Chat::null, false, rightSplitter);
+	ContentBrowser->setFocusPolicy(Qt::StrongFocus);
 	ContentBrowser->setForcePruneDisabled(true);
 
 	QList<int> sizes;
@@ -788,9 +789,7 @@ void HistoryWindow::keyPressEvent(QKeyEvent *e)
 		hide();
 	}
 	else if (e == QKeySequence::Copy)
-	{
 		ContentBrowser->pageAction(QWebPage::Copy)->trigger();
-	}
 	else
 		QWidget::keyPressEvent(e);
 }
