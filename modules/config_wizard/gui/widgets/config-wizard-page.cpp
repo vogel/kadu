@@ -20,7 +20,6 @@
 
 #include <QtGui/QFormLayout>
 #include <QtGui/QHBoxLayout>
-
 #include <QtGui/QTextBrowser>
 
 #include "config-wizard-page.h"
@@ -41,6 +40,7 @@ void ConfigWizardPage::createGui()
 	mainLayout->setSpacing(5);
 
 	DescriptionPane = new QTextBrowser(this);
+	DescriptionPane->setFocusPolicy(Qt::ClickFocus);
 #ifdef Q_OS_MAC
 	DescriptionPane->setMinimumWidth(150);
 #endif
