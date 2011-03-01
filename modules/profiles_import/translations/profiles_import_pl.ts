@@ -3,6 +3,11 @@
 <TS version="2.0" language="pl">
 <context>
     <name>ImportProfileWindow</name>
+	<message>
+		<location filename="../gui/windows/import-profile-window.cpp" line="45"/>
+		<source>Import external Kadu 0.6.5 profile</source>
+		<translation>Import zewnętrznego profilu Kadu 0.6.5</translation>
+	</message>
     <message>
         <location filename="../gui/windows/import-profile-window.cpp" line="57"/>
         <source>Select profile path</source>

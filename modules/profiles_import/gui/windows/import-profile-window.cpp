@@ -42,6 +42,7 @@ ImportProfileWindow::ImportProfileWindow(QWidget *parent) :
 		QDialog(parent)
 {
 	setAttribute(Qt::WA_DeleteOnClose, true);
+	setWindowTitle(tr("Import external Kadu 0.6.5 profile"));
 
 	createGui();
 	validate();
