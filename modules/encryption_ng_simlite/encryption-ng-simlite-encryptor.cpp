@@ -167,7 +167,9 @@ QByteArray EncryptioNgSimliteEncryptor::encrypt(const QByteArray &data)
 	memcpy(head.init, headIV.data(), 8);
 
 	//the actual encryption
-	QByteArray encryptedData = QByteArray((const char *)&head, sizeof(sim_message_header)) + unicode2cp(QString::fromUtf8(data));
+	// NOTE: Kadu internally works with Unicode and our simlite works with CP-1250, so we have to
+	// manually replace each Line Separator (U+2028) with Line Feed (\n).
+	QByteArray encryptedData = QByteArray((const char *)&head, sizeof(sim_message_header)) + unicode2cp(QString::fromUtf8(data).replace(QChar::LineSeparator, QLatin1Char('\n')));
 	QCA::SecureArray encrypted = cipher.process(encryptedData);
 
 	if (!cipher.ok())
