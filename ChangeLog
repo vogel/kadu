@@ -15,6 +15,7 @@
 * encryption: #2015 fixed: moved generate-keys action from configuration window to menu (Vogel)
 * status: #2031 fixed: Add missing statuses to "On startup, set" ComboBox (WhE)
 * core: #2036 fixed: shortcuts with "Alt" midifier don't work in chat window (WhE)
+* gui: #2038 fixed: unloading firewall or mimetex modules, when configuration window is opened, crashes Kadu (WhE)
 
 +++ version 0.6.6-rc1
 * chat: #1963 fixed: crash on opening chats, when citing from history is greater than message prunning setting (WhE)

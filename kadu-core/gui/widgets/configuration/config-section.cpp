@@ -118,7 +118,7 @@ ConfigTab * ConfigSection::configTab(const QString &name, bool create)
 void ConfigSection::configTabDestroyed(QObject *obj)
 {
 	// see ConfigTab::~ConfigTab()
-	disconnect(obj, SIGNAL(destroyed(QObject *)), this, SLOT(configGroupBoxDestroyed(QObject *)));
+	disconnect(obj, SIGNAL(destroyed(QObject *)), this, SLOT(configTabDestroyed(QObject *)));
 
 	QMap<QString, ConfigTab *>::iterator i = ConfigTabs.find(static_cast<ConfigTab *>(obj)->name());
 
