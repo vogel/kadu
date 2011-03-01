@@ -51,6 +51,21 @@ HistoryImporter::HistoryImporter(const Account &account, const QString &path, QO
 HistoryImporter::~HistoryImporter()
 {
 	kdebugf();
+
+	if (Thread)
+	{
+		disconnect(Thread, SIGNAL(finished()), this, SLOT(threadFinished()));
+		Thread->cancel(true);
+		Thread->wait(2000);
+		if (Thread->isRunning())
+		{
+			Thread->terminate();
+			Thread->wait(2000);
+		}
+	}
+
+	delete ProgressWindow;
+	ProgressWindow = 0;
 }
 
 void HistoryImporter::run()
@@ -78,13 +93,12 @@ void HistoryImporter::run()
 		return;
 	}
 
-	ProgressWindow = new HistoryImportWindow();
-	ProgressWindow->setChatsCount(uinsLists.size());
-
-	connect(ProgressWindow, SIGNAL(rejected()), this, SLOT(canceled()));
-
 	Thread = new HistoryImportThread(DestinationAccount, SourceDirectory, uinsLists, totalEntries, this);
 	connect(Thread, SIGNAL(finished()), this, SLOT(threadFinished()));
+
+	ProgressWindow = new HistoryImportWindow();
+	ProgressWindow->setChatsCount(uinsLists.size());
+	connect(ProgressWindow, SIGNAL(rejected()), Thread, SLOT(cancel()));
 
 	QTimer *updateProgressBar = new QTimer(this);
 	updateProgressBar->setSingleShot(false);
@@ -108,30 +122,8 @@ void HistoryImporter::updateProgressWindow()
 
 void HistoryImporter::threadFinished()
 {
-	config_file.writeEntry("History", "Imported_from_0.6.5", true);
-
-	delete ProgressWindow;
-	ProgressWindow = 0;
-
-	deleteLater();
-}
-
-void HistoryImporter::canceled()
-{
-	if (Thread)
-	{
-		disconnect(Thread, SIGNAL(finished()), this, SLOT(threadFinished()));
-		Thread->cancel();
-		Thread->wait(2000);
-		if (Thread->isRunning())
-		{
-			Thread->terminate();
-			Thread->wait(2000);
-		}
-	}
-
-	delete ProgressWindow;
-	ProgressWindow = 0;
+	if (Thread && !Thread->wasCanceled() && SourceDirectory == profilePath("history/"))
+		config_file.writeEntry("History", "Imported_from_0.6.5", true);
 
 	deleteLater();
 }

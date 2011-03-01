@@ -54,7 +54,6 @@ public:
 
 public slots:
 	void run();
-	void canceled();
 
 };
 
