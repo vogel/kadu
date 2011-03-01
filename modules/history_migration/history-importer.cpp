@@ -39,6 +39,7 @@
 #include "gui/windows/history-import-window.h"
 
 #include "history-import-thread.h"
+#include "history-migration-actions.h"
 
 #include "history-importer.h"
 
@@ -123,7 +124,11 @@ void HistoryImporter::updateProgressWindow()
 void HistoryImporter::threadFinished()
 {
 	if (Thread && !Thread->wasCanceled() && SourceDirectory == profilePath("history/"))
+	{
 		config_file.writeEntry("History", "Imported_from_0.6.5", true);
+		// this is no longer useful
+		HistoryMigrationActions::unregisterActions();
+	}
 
 	deleteLater();
 }

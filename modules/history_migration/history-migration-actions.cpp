@@ -47,12 +47,18 @@ void HistoryMigrationActions::unregisterActions()
 	Instance = 0;
 }
 
-HistoryMigrationActions::HistoryMigrationActions()
+HistoryMigrationActions::HistoryMigrationActions() :
+		ImportHistoryActionDescription(0)
 {
-	ImportHistoryActionDescription = new ActionDescription(this, ActionDescription::TypeGlobal, "import_history",
-			this, SLOT(importHistoryActionActivated(QAction*,bool)), QString(), tr("Import history..."));
+	bool imported = config_file.readBoolEntry("History", "Imported_from_0.6.5", false);
+	Account gaduAccount = AccountManager::instance()->byId("gadu", config_file.readEntry("General", "UIN"));
+	if (!imported && gaduAccount && QFile::exists(profilePath("history")))
+	{
+		ImportHistoryActionDescription = new ActionDescription(this, ActionDescription::TypeGlobal, "import_history",
+				this, SLOT(importHistoryActionActivated(QAction*,bool)), QString(), tr("Import history..."));
 
-	Core::instance()->kaduWindow()->insertMenuActionDescription(ImportHistoryActionDescription, KaduWindow::MenuTools);
+		Core::instance()->kaduWindow()->insertMenuActionDescription(ImportHistoryActionDescription, KaduWindow::MenuTools);
+	}
 }
 
 HistoryMigrationActions::~HistoryMigrationActions()
@@ -70,18 +76,13 @@ void HistoryMigrationActions::importHistoryActionActivated(QAction *sender, bool
 
 void HistoryMigrationActions::runImportHistoryAction()
 {
-	bool imported = config_file.readBoolEntry("History", "Imported_from_0.6.5", false);
-	if (imported || !QFile::exists(profilePath("history")))
+	if (!ImportHistoryActionDescription)
 		return;
-
-	QString uin = config_file.readEntry("General", "UIN");
-	Account gaduAccount = AccountManager::instance()-> byId("gadu", uin);
-	if (!gaduAccount)
-		return; // maybe message?
 
 	if (HistoryImporterManager::instance()->containsImporter(profilePath("history/")))
 		return;
 
+	Account gaduAccount = AccountManager::instance()->byId("gadu", config_file.readEntry("General", "UIN"));
 	HistoryImporter *hi = new HistoryImporter(gaduAccount, profilePath("history/"));
 	HistoryImporterManager::instance()->addImporter(hi);
 
