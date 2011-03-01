@@ -49,15 +49,6 @@ void CustomInput::keyPressEvent(QKeyEvent *e)
 {
 	kdebugf();
 
-	bool handled = false;
-	emit keyPressed(e, this, handled);
-	if (handled)
-	{
-		e->accept();
-		kdebugf2();
-		return;
-	}
-
 	/* Ctrl+Return and Ctrl+Enter have a special meaning:
 	 * 1) autosend_enabled -> new line is entered
 	 * 2) message is sent
@@ -129,6 +120,15 @@ void CustomInput::keyPressEvent(QKeyEvent *e)
 	else if (!CopyPossible && e->matches(QKeySequence::Copy))
 	{
 		e->ignore();
+		kdebugf2();
+		return;
+	}
+
+	bool handled = false;
+	emit keyPressed(e, this, handled);
+	if (handled)
+	{
+		e->accept();
 		kdebugf2();
 		return;
 	}

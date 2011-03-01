@@ -177,6 +177,8 @@ void ChatWidget::createGui()
 
 	connect(VerticalSplitter, SIGNAL(splitterMoved(int, int)), this, SLOT(verticalSplitterMoved(int, int)));
 	connect(InputBox->inputBox(), SIGNAL(sendMessage()), this, SLOT(sendMessage()));
+	connect(InputBox->inputBox(), SIGNAL(keyPressed(QKeyEvent *, CustomInput *, bool &)),
+			this, SLOT(keyPressedSlot(QKeyEvent *, CustomInput *, bool &)));
 }
 
 void ChatWidget::createContactsList()
@@ -764,4 +766,14 @@ void ChatWidget::leaveConference()
 		CurrentChat.setIgnoreAllMessages(true);
 
 	emit closed();
+}
+
+void ChatWidget::keyPressedSlot(QKeyEvent *e, CustomInput *input, bool &handled)
+{
+	Q_UNUSED(input)
+
+	if (handled)
+		return;
+
+	handled = keyPressEventHandled(e);
 }

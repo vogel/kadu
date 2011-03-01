@@ -70,7 +70,8 @@ QString HotKeyEdit::shortCutString() const
 	return text();
 }
 
-QKeySequence HotKeyEdit::shortCut() const {
+QKeySequence HotKeyEdit::shortCut() const
+{
 	return QKeySequence(text());
 }
 
@@ -83,7 +84,8 @@ void HotKeyEdit::setShortCut(const QString &shortcut)
 		setText(shortcut);
 }
 
-void HotKeyEdit::setShortCut(const QKeySequence &shortcut) {
+void HotKeyEdit::setShortCut(const QKeySequence &shortcut)
+{
 	setText(shortcut);
 }
 
