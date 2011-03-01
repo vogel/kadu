@@ -40,12 +40,14 @@ class HistoryImportThread : public QThread
 	QString Path;
 	QList<UinsList> UinsLists;
 
-	bool Canceled;
 	int TotalEntries;
 	int ImportedEntries;
 	int ImportedChats;
 	int TotalMessages;
 	int ImportedMessages;
+
+	bool Canceled;
+	bool CancelForced;
 
 	Chat chatFromUinsList(const UinsList &uinsList) const;
 	void importEntry(const Chat &chat, const HistoryEntry &entry);
@@ -55,12 +57,16 @@ public:
 	virtual ~HistoryImportThread();
 
 	virtual void run();
-	void cancel();
 
 	int importedEntries() { return ImportedEntries; }
 	int importedChats() { return ImportedChats; }
 	int totalMessages() { return TotalMessages; }
 	int importedMessages() { return ImportedMessages; }
+
+	bool wasCanceled() { return Canceled; }
+
+public slots:
+	void cancel(bool force = false);
 
 };
 
