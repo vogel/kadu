@@ -1,5 +1,5 @@
 +++ version 0.6.6-rc2
-* jabber #2026 fixed: incorrect XEP-0085: Chat State Notifications implementation (WhE)
+* jabber: #2026 fixed: incorrect XEP-0085: Chat State Notifications implementation (WhE, beevvy)
 * xmms_mediaplayer: compilation fixed (Dorr)
 * sms: #1727 fixed: Plus GSM gateway is now working again (Dorr)
 * hints: fix crashes when two different modules providing hints are loaded at the same time (WhE)
@@ -13,6 +13,7 @@
 * status: #2031 fixed: Add missing statuses to "On startup, set" ComboBox (WhE)
 * core: #2036 fixed: shortcuts with "Alt" midifier don't work in chat window (WhE)
 * gui: #2038 fixed: unloading firewall or mimetex modules, when configuration window is opened, crashes Kadu (WhE)
+* history_migration: action in Tools menu is no more displayed if there is nothing to import (beevvy)
 
 +++ version 0.6.6-rc1
 * chat: #1963 fixed: crash on opening chats, when citing from history is greater than message prunning setting (WhE)
