@@ -83,6 +83,9 @@ void HistoryMigrationActions::runImportHistoryAction()
 		return;
 
 	Account gaduAccount = AccountManager::instance()->byId("gadu", config_file.readEntry("General", "UIN"));
+	if (!gaduAccount)
+		return;
+
 	HistoryImporter *hi = new HistoryImporter(gaduAccount, profilePath("history/"));
 	HistoryImporterManager::instance()->addImporter(hi);
 
