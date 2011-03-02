@@ -34,6 +34,7 @@
  */
 
 #include <QtCore/QList>
+#include <QtCore/QScopedPointer>
 #include <QtGui/QKeyEvent>
 #include <QtGui/QLabel>
 #include <QtGui/QGridLayout>
@@ -196,7 +197,7 @@ void History::showHistoryActionActivated(QAction *sender, bool toggled)
 
 		QWidget *widget = widgets[widgets.size() - 1];
 
-		QMenu *menu = new QMenu(chatWidget);
+		QScopedPointer<QMenu> menu(new QMenu(chatWidget));
 
 		if (config_file.readBoolEntry("Chat", "ChatPrune", false))
 		{
@@ -210,9 +211,9 @@ void History::showHistoryActionActivated(QAction *sender, bool toggled)
 		menu->addAction(tr("Show messages from last 30 days"))->setData(30);
 		menu->addAction(tr("Show whole history"))->setData(-1);
 
-		connect(menu, SIGNAL(triggered(QAction *)), this, SLOT(showMoreMessages(QAction *)));
+		connect(menu.data(), SIGNAL(triggered(QAction *)), this, SLOT(showMoreMessages(QAction *)));
 
-		menu->popup(widget->mapToGlobal(QPoint(0, widget->height())));
+		menu->exec(widget->mapToGlobal(QPoint(0, widget->height())));
 	}
 }
 
