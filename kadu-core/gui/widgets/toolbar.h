@@ -128,6 +128,8 @@ class KADUAPI ToolBar : public QToolBar, public ConfigurationAwareObject
 	QToolButton * createPushButton(QAction *before, ToolBarAction &action);
 	QWidget * createActionWidget(QAction *before, ToolBarAction &action);
 
+	QMenu * createContextMenu(QWidget *widget);
+
 	void emitUpdated();
 
 private slots:
@@ -162,8 +164,6 @@ private slots:
 	void setBlockToolbars(bool checked);
 
 	void widgetPressed();
-
-	QMenu * createContextMenu(QWidget *widget);
 
 	void slotContextIcons();
 	void slotContextText();
