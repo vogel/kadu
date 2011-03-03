@@ -119,7 +119,7 @@ void ContactListService::setBuddiesList(const BuddyList &buddies, bool removeOld
 	{
 		// TODO: why not Contact.ownerBuddy()?
 		Buddy buddy = BuddyManager::instance()->byId(CurrentProtocol->account(), i->id(), ActionCreate);
-		if (buddy.isAnonymous())
+		if (buddy.isAnonymous() || buddy == Core::instance()->myself())
 		{
 			i = unImportedContacts.erase(i);
 			continue;
