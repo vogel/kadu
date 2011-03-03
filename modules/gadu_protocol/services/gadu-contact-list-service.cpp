@@ -26,9 +26,9 @@
 #include <QtCore/QByteArray>
 
 #include "buddies/buddy-manager.h"
-
-#include "debug.h"
+#include "contacts/contact-shared.h"
 #include "misc/misc.h"
+#include "debug.h"
 
 #include "../helpers/gadu-list-helper.h"
 
@@ -64,7 +64,18 @@ void GaduContactListService::handleEventUserlistGetReply(struct gg_event *e)
 
 	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "\n%s\n", ImportReply.data());
 
-	emit contactListImported(true, GaduListHelper::byteArrayToBuddyList(Protocol->account(), ImportReply));
+	BuddyList buddies = GaduListHelper::byteArrayToBuddyList(Protocol->account(), ImportReply);
+	emit contactListImported(true, buddies);
+
+	// cleanup references, so buddy and contact instances can be removed
+	// this is really a hack, we need to call aboutToBeRemoved someway for non-manager contacts and buddies too
+	// or just only store managed only, i dont know yet
+	foreach (Buddy buddy, buddies)
+	{
+		foreach (Contact contact, buddy.contacts())
+			contact.data()->aboutToBeRemoved();
+		buddy.data()->aboutToBeRemoved();
+	}
 }
 
 void GaduContactListService::handleEventUserlistPutReply(struct gg_event *e)
