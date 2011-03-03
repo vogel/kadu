@@ -233,7 +233,7 @@ BuddyList GaduListHelper::streamPost70ToBuddyList(const QString &line, Account a
 				buddy.setGroups(groups);
 
 			QDomElement numberElement = contactElement.firstChildElement("GGNumber");
-			if (!numberElement.text().isEmpty())
+			if (!numberElement.text().isEmpty() && numberElement.text() != account.id())
 			{
 				Contact contact = Contact::create();
 				contact.setContactAccount(account);
@@ -293,7 +293,7 @@ Buddy GaduListHelper::linePre70ToBuddy(Account account, QStringList &sections)
 		UinType uin = sections[i++].toULong(&ok);
 		if (!ok)
 			uin = 0;
-		if (uin)
+		if (uin && QString::number(uin) != account.id())
 		{
 			Contact contact = Contact::create();
 			contact.setContactAccount(account);
@@ -364,7 +364,7 @@ Buddy GaduListHelper::line70ToBuddy(Account account, QStringList &sections)
 		UinType uin = sections[i++].toULong(&ok);
 		if (!ok)
 			uin = 0;
-		if (uin)
+		if (uin && QString::number(uin) != account.id())
 		{
 			Contact contact = Contact::create();
 			contact.setContactAccount(account);

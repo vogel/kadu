@@ -18,6 +18,7 @@
 * gui: #2038 fixed: unloading firewall or mimetex modules, when configuration window is opened, crashes Kadu (WhE)
 * history_migration: action in Tools menu is no more displayed if there is nothing to import (beevvy)
 * encryption_ng_simlite: #2040 fixed: new lines were sent as "?" (beevvy)
+* gadu: #2003 fixed: do not allow to import yourself from gadu gadu server (Vogel)
 
 +++ version 0.6.6-rc1
 * chat: #1963 fixed: crash on opening chats, when citing from history is greater than message prunning setting (WhE)
