@@ -175,12 +175,10 @@ void GaduResolver::resolved(const QHostInfo &host)
 		addr[0].s_addr = INADDR_NONE;
 	}
 
-	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Returning %d addresses\n", count);
-	size = sizeof(struct in_addr) * (count + 1);
 #ifdef Q_OS_WIN
-	if (send(Data->wfd, (const char *)&addr, size, 0) != size)
+	if (send(Data->wfd, (const char *)&addr, sizeof(addr), 0) != sizeof(addr))
 #else
-	if (write(Data->wfd, &addr, size) != size)
+	if (write(Data->wfd, &addr, sizeof(addr)) != sizeof(addr))
 #endif
 	{
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Writing to pipe failed\n");
