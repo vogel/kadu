@@ -44,6 +44,72 @@
 
 #include "gadu-resolver.h"
 
+#ifdef Q_OS_WIN
+int pipe(int *fds)
+{
+	int sock_fd;
+	struct sockaddr_in sock_addr;
+	int sock_addr_len = sizeof(sock_addr);
+
+	fds[0] = fds[1] = -1;
+
+	if ((sock_fd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
+	{
+		return -1;
+	}
+
+	memset(&sock_addr, 0, sizeof(sock_addr));
+	sock_addr.sin_family = AF_INET;
+	sock_addr.sin_port = 0;
+	sock_addr.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
+
+	if (bind(sock_fd, (SOCKADDR *)&sock_addr, sock_addr_len) < 0)
+	{
+		closesocket(sock_fd);
+		return -1;
+	}
+
+	if (listen(sock_fd, 1) < 0)
+	{
+		closesocket(sock_fd);
+		return -1;
+	}
+
+	if (getsockname(sock_fd, (SOCKADDR *)&sock_addr, &sock_addr_len) < 0)
+	{
+		closesocket(sock_fd);
+		return -1;
+	}
+
+	fds[1] = socket(AF_INET, SOCK_STREAM, 0);
+	if (fds[1] < 0)
+	{
+		closesocket(sock_fd);
+		return -1;
+	}
+
+	if (connect(fds[1], (SOCKADDR *)&sock_addr, sock_addr_len) < 0)
+	{
+		closesocket(fds[1]);
+		closesocket(sock_fd);
+		fds[1] = -1;
+		return -1;
+	}
+
+	fds[0] = accept(sock_fd, (SOCKADDR *)&sock_addr, &sock_addr_len);
+	if (fds[0] < 0)
+	{
+		closesocket(fds[1]);
+		closesocket(sock_fd);
+		fds[1] = -1;
+		return -1;
+	}
+
+	closesocket(sock_fd);
+	return 0;
+}
+#endif
+
 GaduResolver::GaduResolver(gadu_resolver_data *data, QObject *parent) :
 		QObject(parent), LookupId(-1), Data(data)
 {
@@ -101,7 +167,11 @@ void GaduResolver::resolved(const QHostInfo &host)
 		addr.s_addr = INADDR_NONE;
 	}
 
+#ifdef Q_OS_WIN
+	if (send(Data->wfd, (const char *)&addr, sizeof(addr), 0) != sizeof(addr))
+#else
 	if (write(Data->wfd, &addr, sizeof(addr)) != sizeof(addr))
+#endif
 	{
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Writing to pipe failed\n");
 	}
@@ -136,11 +206,7 @@ int gadu_resolver_start(int *fd, void **priv_data, const char *hostname)
 {
 	int pipes[2];
 
-#ifdef Q_OS_WIN
-	if (_pipe(pipes, 256, 0) == -1)
-#else
 	if (pipe(pipes) == -1)
-#endif
 	{
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Unable to create pipes\n");
 		return -1;
