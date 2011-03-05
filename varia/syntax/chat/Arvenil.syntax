@@ -1,6 +1,6 @@
 <p>
 <kadu:header>
-<img src="@{16x16/mail-message-new.png}" title="">&nbsp;&nbsp;<b><font color="#{nickColor}">%a</font>&nbsp;::&nbsp;<font color="#{fontColor}">[%g&nbsp;::&nbsp;]#{receivedDate}[&nbsp;(#{sentDate})]</font></b><br>
+<img width="16" height="16" src="@{mail-message-new:16x16}" title="">&nbsp;&nbsp;<b><font color="#{nickColor}">%a</font>&nbsp;::&nbsp;<font color="#{fontColor}">[%g&nbsp;::&nbsp;]#{receivedDate}[&nbsp;(#{sentDate})]</font></b><br>
 </kadu:header>
 <font color="#{fontColor}">#{message}</font>
 </p>

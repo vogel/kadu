@@ -1,13 +1,13 @@
 <table>
 <tr>
-<td align="left" valign="top"><img width="64" height="64" align="left" src="{#{avatarPath} #{avatarPath}}{~#{avatarPath} @{kadu_icons/64x64/kadu.png}}"></td>
+<td align="left" valign="top"><img width="64" height="64" align="left" src="{#{avatarPath} #{avatarPath}}{~#{avatarPath} @{kadu_icons/kadu:64x64}}"></td>
 <td width="100%">
 <div>[<font color="red"><b>%a</b></font>][&nbsp;<b>(%g)</b>]</div>
 [<div><img align="left" valign="middle" height="16" width="16" src="#{statusIconPath}">&nbsp;&nbsp;%u</div>]
-[<div><img align="left" valign="middle" height="16" width="16" src="@{16x16/phone.png}">&nbsp;&nbsp;%m</div>]
-[<div><img align="left" valign="middle" height="16" width="16" src="@{16x16/mail-message-new.png}">&nbsp;&nbsp;%e</div>]
-[<div><img align="left" valign="middle" height="16" width="16" src="@{16x16/dialog-apply.png}">&nbsp;&nbsp;%i</div>]
-[<div><img align="left" valign="middle" height="16" width="16" src="@{kadu_icons/kadu-blocking.png}">&nbsp;%oNie ma cię na liście</div>]
+[<div><img align="left" valign="middle" height="16" width="16" src="@{phone:16x16}">&nbsp;&nbsp;%m</div>]
+[<div><img align="left" valign="middle" height="16" width="16" src="@{mail-message-new:16x16}">&nbsp;&nbsp;%e</div>]
+[<div><img align="left" valign="middle" height="16" width="16" src="@{dialog-apply:16x16}">&nbsp;&nbsp;%i</div>]
+[<div><img align="left" valign="middle" height="16" width="16" src="@{kadu_icons/blocking:16x16}">&nbsp;%oNie ma cię na liście</div>]
 </td>
 </tr>
 </table>
