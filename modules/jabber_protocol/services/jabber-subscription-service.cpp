@@ -52,7 +52,7 @@ void JabberSubscriptionService::subscription(const XMPP::Jid &jid, const QString
 		kdebug("%s revoked our presence authorization", jid.full().toLocal8Bit().data());
 
 		XMPP::JT_Roster *task;
-		if (MessageDialog::ask(QString(), tr("Kadu"), tr("The user %1 removed subscription to you. "
+		if (MessageDialog::ask("dialog-question", tr("Kadu"), tr("The user %1 removed subscription to you. "
 					   "You will no longer be able to view his/her online/offline status. "
 					   "Do you want to delete the contact?").arg(jid.full())))
 		{
@@ -96,7 +96,7 @@ void JabberSubscriptionService::subscription(const XMPP::Jid &jid, const QString
 		if (contact.ownerBuddy().isAnonymous())
 			SubscriptionWindow::getSubscription(contact, this, SLOT(authorizeContact(Contact, bool)));
 		else
-			authorizeContact(contact, MessageDialog::ask(QString(), tr("Kadu - authorize user?"), tr("The user %1 (%2) is asking for subscription from you. "
+			authorizeContact(contact, MessageDialog::ask("dialog-question", tr("Kadu - authorize user?"), tr("The user %1 (%2) is asking for subscription from you. "
 						   "He will be able to view your online/offline status. "
 						   "Do you want to authorize the contact?").arg(contact.ownerBuddy().display(), jid.full())));
 	}
