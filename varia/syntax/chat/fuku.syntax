@@ -1,6 +1,6 @@
 <p style="background-color:#{backgroundColor}">
 <kadu:header>
-<img src="@{16x16/mail-message-new.png}" title="" >&nbsp;&nbsp;<span style="font-style:italic; font-size:small">#{receivedDate}</span><BR>
+<img width="16" height="16" src="@{mail-message-new:16x16}" title="" >&nbsp;&nbsp;<span style="font-style:italic; font-size:small">#{receivedDate}</span><BR>
 </kadu:header>
 <span style="font-weight:bold;  color:#{nickColor}">%a</span> <span style=" color:#{fontColor}">#{message}</span>
 </p>

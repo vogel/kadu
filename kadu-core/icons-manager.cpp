@@ -133,7 +133,7 @@ QString IconsManager::iconPathAllowEmpty(const QString &path) const
 QString IconsManager::iconPath(const QString &path, const QString &size, const QString &name) const
 {
 	QString result = iconPathAllowEmpty(path, size, name);
-	if(!result.isEmpty())
+	if (!result.isEmpty())
 		return result;
 	return iconPathAllowEmpty("kadu_icons", size, "0");
 }
@@ -141,7 +141,7 @@ QString IconsManager::iconPath(const QString &path, const QString &size, const Q
 QString IconsManager::iconPath(const QString &path, const QString &size) const
 {
 	QString result = iconPathAllowEmpty(path, size);
-	if(!result.isEmpty())
+	if (!result.isEmpty())
 		return result;
 	return iconPathAllowEmpty("kadu_icons/0", size);
 }
@@ -149,7 +149,7 @@ QString IconsManager::iconPath(const QString &path, const QString &size) const
 QString IconsManager::iconPath(const QString &path) const
 {
 	QString result = iconPathAllowEmpty(path);
-	if(!result.isEmpty())
+	if (!result.isEmpty())
 		return result;
 	return iconPathAllowEmpty("kadu_icons/64x64/0");
 }

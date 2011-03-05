@@ -500,7 +500,13 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 					{
 						parseStack.pop_back();
 						pe.type = ParserToken::PT_STRING;
-						pe.content = webKitPath(IconsManager::instance()->iconPath(pe.content));
+						if (pe.content.contains(':'))
+						{
+							QStringList parts = pe.content.split(':');
+							pe.content = webKitPath(IconsManager::instance()->iconPath(parts[0], parts[1]));
+						}
+						else
+							pe.content = webKitPath(IconsManager::instance()->iconPath(pe.content));
 						parseStack.push_back(pe);
 						break;
 					}
