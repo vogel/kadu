@@ -89,10 +89,6 @@ const char *MediaPlayerChatShortCutsText = QT_TRANSLATE_NOOP
 #endif
 );
 
-// TODO: remove For CP1250->ISO8859-2 converter
-const char CODE_CP1250[]    = {0xb9, 0x9c, 0x9f, 0xa5, 0x8c, 0x8f};
-const char CODE_ISO8859_2[] = {0xb1, 0xb6, 0xbc, 0xa1, 0xa6, 0xac};
-
 // For ID3 tags signatures cutter
 const char DEFAULT_SIGNATURES[] = "! WWW.POLSKIE-MP3.TK ! \n! www.polskie-mp3.tk ! ";
 
