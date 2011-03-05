@@ -19,6 +19,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QScopedPointer>
 #include <QtGui/QCursor>
 #include <QtGui/QMenu>
 #include <QtGui/QTextDocument>
@@ -89,7 +90,7 @@ void GaduUrlHandler::openUrl(const QString &url, bool disableMenu)
 	}
 	else
 	{
-		QMenu *menu = new QMenu;
+		QScopedPointer<QMenu> menu(new QMenu());
 
 		QStringList ids;
 		foreach (const Account &account, gaduAccounts)
@@ -101,7 +102,7 @@ void GaduUrlHandler::openUrl(const QString &url, bool disableMenu)
 			menu->addAction(account.data()->statusIcon(), account.id())->setData(ids);
 		}
 
-		connect(menu, SIGNAL(triggered(QAction *)), this, SLOT(accountSelected(QAction *)));
+		connect(menu.data(), SIGNAL(triggered(QAction *)), this, SLOT(accountSelected(QAction *)));
 
 		menu->exec(QCursor::pos());
 	}

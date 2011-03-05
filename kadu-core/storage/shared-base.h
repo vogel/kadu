@@ -513,9 +513,9 @@ public:
 };
 
 template<class T>
-KaduSharedBase_PropertyReadDef(SharedBase<T>, QUuid, uuid, Uuid, QUuid());
+KaduSharedBase_PropertyReadDef(SharedBase<T>, QUuid, uuid, Uuid, QUuid())
 template<class T>
-KaduSharedBase_PropertyWriteDef(SharedBase<T>, QUuid, uuid, Uuid);
+KaduSharedBase_PropertyWriteDef(SharedBase<T>, QUuid, uuid, Uuid)
 
 /**
  * @author Rafal 'Vogel' Malinowski

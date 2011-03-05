@@ -113,6 +113,6 @@ namespace Debug
 {
 	void ktDebugStart(const QString &message, QTime &time);
 	void ktDebugCheckPoint(const QString &message, QTime &time);
-};
+}
 
 #endif // DEBUG_H

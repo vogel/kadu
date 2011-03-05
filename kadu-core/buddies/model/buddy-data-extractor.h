@@ -29,6 +29,6 @@ namespace BuddyDataExtractor
 {
 	QVariant decoration(const Buddy &buddy);
 	QVariant data(const Buddy &buddy, int role);
-};
+}
 
 #endif // BUDDY_DATA_EXTRACTOR_H

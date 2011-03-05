@@ -3,7 +3,7 @@
 <img
 style='max-width:64px; max-height:64px;'
 [#{avatarPath} src='#{avatarPath}' ]
-src='@{kadu_icons/96x96/buddy%z.png}'
+src='@{kadu_icons/buddy%z:96x96}'
 >
 </td>
 <td style='vertical-align:top; padding-left:6px;'>

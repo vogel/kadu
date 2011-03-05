@@ -42,6 +42,6 @@ namespace MessageDialog
 			  QWidget *parent = 0, Qt::WindowFlags f = Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint);
 	bool ask(const QString &iconName, const QString &title, const QString &text,
 			 QWidget *parent = 0, Qt::WindowFlags f = Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint);
-};
+}
 
 #endif // MESSAGE_DIALOG_H

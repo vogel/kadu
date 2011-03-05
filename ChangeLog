@@ -20,6 +20,10 @@
 * encryption_ng_simlite: #2040 fixed: new lines were sent as "?" (beevvy)
 * gadu: #2003 fixed: do not allow to import yourself from gadu gadu server (Vogel)
 * gadu: #2002 fixed: crash on Kadu close after importing list from gadu gadu server (Vogel)
+* gadu: #2016 fixed: sending images to Gadu-Gadu 10 (Vogel)
+* kde_notify: do not allow too big icons in notifications (Vogel)
+* notify: #2037 fixed: add account id/name to connection error notification (Vogel)
+* gui: #2008 fixed: some icons are not visible in info panel (WhE)
 
 +++ version 0.6.6-rc1
 * chat: #1963 fixed: crash on opening chats, when citing from history is greater than message prunning setting (WhE)

@@ -135,4 +135,4 @@ void ktDebugCheckPoint(const QString& message, QTime& time)
 	printf("%s", qPrintable(QString("[timer checkpoint: %1] %2\n").arg(QTime::currentTime().msecsTo(time)).arg(message)));
 }
 
-}; // namespace Debug
+} // namespace Debug

@@ -28,7 +28,7 @@
 
 class KADUAPI FileTransferHandler : public QObject
 {
-	Q_OBJECT;
+	Q_OBJECT
 
 	FileTransfer Transfer;
 

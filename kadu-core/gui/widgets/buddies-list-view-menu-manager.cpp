@@ -113,7 +113,7 @@ QMenu * BuddiesListViewMenuManager::menu(QWidget *parent, ActionDataSource *acti
 
 	QMenu *menu = new QMenu(parent);
 
-	QMenu *actions = new QMenu(tr("More Actions..."));
+	QMenu *actions = new QMenu(tr("More Actions..."), menu);
 
 	BuddiesListViewMenuItem::BuddiesListViewMenuCategory lastCategory = BuddiesListViewMenuItem::MenuCategoryChat;
 	bool first = true;

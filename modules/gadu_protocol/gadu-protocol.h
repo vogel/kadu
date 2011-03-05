@@ -57,7 +57,7 @@ class GaduProtocolSocketNotifiers;
 class GADUAPI GaduProtocol : public Protocol
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(GaduProtocol);
+	Q_DISABLE_COPY(GaduProtocol)
 
 public:
 	enum GaduError

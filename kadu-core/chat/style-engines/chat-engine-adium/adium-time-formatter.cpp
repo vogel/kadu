@@ -404,4 +404,4 @@ while (length > NUM) \
 		return str;
 	}
 
-}; // namespace AdiumTimeFormatter
+} // namespace AdiumTimeFormatter

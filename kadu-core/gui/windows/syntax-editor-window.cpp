@@ -151,7 +151,7 @@ void SyntaxEditorWindow::saveAs()
 		}
 		else
 		{
-			if (MessageDialog::ask(QString(), tr("Kadu"), tr("Overwrite %1 syntax?").arg(newSyntaxName)))
+			if (MessageDialog::ask("dialog-question", tr("Kadu"), tr("Overwrite %1 syntax?").arg(newSyntaxName)))
 				break;
 		}
 	}

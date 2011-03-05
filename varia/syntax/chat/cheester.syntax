@@ -1,5 +1,5 @@
 <p style="background-color: #{backgroundColor}; margin:0">
 <kadu:header>
-<table border="0" cellspacing="0" cellpadding="0" width="100%"><tr><td width="10" align=left valign=bottom width="6%"><img src="@{16x16/mail-message-new.png}" title=""></td><td align="left" width="65%" valign="bottom"><span style="color:#{nickColor}; font-weight:bold" align="left">%a</font></td><td align="right" width="47%" valign="bottom"><span style=" color:#c0c0c0">#{sentDate}</span></td></tr></table>
+<table border="0" cellspacing="0" cellpadding="0" width="100%"><tr><td width="10" align=left valign=bottom width="6%"><img width="16" height="16" src="@{mail-message-new:16x16}" title=""></td><td align="left" width="65%" valign="bottom"><span style="color:#{nickColor}; font-weight:bold" align="left">%a</font></td><td align="right" width="47%" valign="bottom"><span style=" color:#c0c0c0">#{sentDate}</span></td></tr></table>
 </kadu:header>
 <span style="color:#{fontColor}">#{message}</span></p>

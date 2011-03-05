@@ -2,6 +2,11 @@
 
 PWD=`pwd`
 LOG=$PWD/update_ts_file.log
+XSLT_PROCESSOR=saxon-xslt
+
+if [ ! -e $1 ]; then
+	XSLT_PROCESSOR=$1
+fi
 
 LUPDATE=$(which lupdate-qt4) || LUPDATE=$(which lupdate) || LUPDATE=$QTDIR/bin/lupdate
 
@@ -11,7 +16,7 @@ echo > $LOG
 # empty fake file
 echo > ../kadu-core/.configuration-ui-translations.cpp
 for i in `ls ../varia/configuration/*.ui`; do
-	saxon-xslt $i configuration-ui.xsl >> ../kadu-core/.configuration-ui-translations.cpp 2>> $LOG
+	$XSLT_PROCESSOR $i configuration-ui.xsl >> ../kadu-core/.configuration-ui-translations.cpp 2>> $LOG
 done
 
 # all .cpp files in kadu_core subdirectories
@@ -45,7 +50,7 @@ for module in *; do
 		pushd configuration >> $LOG 2>&1
 		echo > ../.configuration-ui-translations.cpp
 		for i in *.ui; do
-			saxon-xslt $i ../../../translations/configuration-ui.xsl >> ../.configuration-ui-translations.cpp 2>> $LOG
+			$XSLT_PROCESSOR $i ../../../translations/configuration-ui.xsl >> ../.configuration-ui-translations.cpp 2>> $LOG
 		done
 		popd >> $LOG 2>&1
 	fi
@@ -56,7 +61,7 @@ for module in *; do
 		pushd data/configuration >> $LOG 2>&1
 		echo > ../.configuration-ui-translations.cpp
 		for i in *.ui; do
-			saxon-xslt $i ../../../../translations/configuration-ui.xsl >> ../../.configuration-ui-translations.cpp 2>> $LOG
+			$XSLT_PROCESSOR $i ../../../../translations/configuration-ui.xsl >> ../../.configuration-ui-translations.cpp 2>> $LOG
 		done
 		popd >> $LOG 2>&1
 	fi
