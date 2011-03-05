@@ -77,17 +77,23 @@ const char *MediaPlayerSyntaxText = QT_TRANSLATE_NOOP
 	"%p - percents of played song, %n - player name, %v - player version\n"
 );
 
+#ifdef Q_OS_MAC
 const char *MediaPlayerChatShortCutsText = QT_TRANSLATE_NOOP
 (
 	"@default",
 	"With this option enabled you'll be able to control\n"
 	"your MediaPlayer in chat window by keyboard shortcuts:\n"
-#ifdef Q_OS_MAC
 	"Control+ Enter/Backspace/Left/Right/Up/Down."
-#else
-	"Win+ Enter/Backspace/Left/Right/Up/Down."
-#endif
 );
+#else
+const char *MediaPlayerChatShortCutsText = QT_TRANSLATE_NOOP
+(
+	"@default",
+	"With this option enabled you'll be able to control\n"
+	"your MediaPlayer in chat window by keyboard shortcuts:\n"
+	"Win+ Enter/Backspace/Left/Right/Up/Down."
+);
+#endif
 
 // For ID3 tags signatures cutter
 const char DEFAULT_SIGNATURES[] = "! WWW.POLSKIE-MP3.TK ! \n! www.polskie-mp3.tk ! ";
