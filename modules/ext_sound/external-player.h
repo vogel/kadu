@@ -33,7 +33,7 @@
 class ExternalPlayer : public SoundPlayer
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(ExternalPlayer);
+	Q_DISABLE_COPY(ExternalPlayer)
 
 	static ExternalPlayer * Instance;
 

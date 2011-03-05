@@ -35,7 +35,7 @@
 
 class GADUAPI GaduServersManager : public ConfigurationAwareObject
 {
-	Q_DISABLE_COPY(GaduServersManager);
+	Q_DISABLE_COPY(GaduServersManager)
 
 public:
 	typedef QPair<QHostAddress, int> GaduServer;

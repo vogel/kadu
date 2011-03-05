@@ -37,6 +37,6 @@ namespace GaduFormatter
 	FormattedMessage createMessage(Account acccount, GaduProtocol::UinType sender, const QString &content, unsigned char *formats,
 			unsigned int size, bool receiveImages);
 
-};
+}
 
 #endif // GADU_FORMATTER_H

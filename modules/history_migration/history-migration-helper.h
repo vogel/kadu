@@ -76,6 +76,6 @@ namespace HistoryMigrationHelper
 	QList<UinsList> getUinsLists(const QString &path);
 	QList<HistoryEntry> historyEntries(const QString &path, const UinsList &uins);
 	QStringList mySplit(const QChar &sep, const QString &str);
-};
+}
 
 #endif // HISTORY_MIGRATION_HELPER_H

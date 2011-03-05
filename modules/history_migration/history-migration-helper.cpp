@@ -355,4 +355,4 @@ namespace HistoryMigrationHelper
 		kdebugf2();
 		return strlist;
 	}
-};
+}

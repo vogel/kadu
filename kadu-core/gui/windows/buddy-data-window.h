@@ -80,7 +80,7 @@ class KADUAPI BuddyDataWindow : public QWidget
 	void createGui();
 	void createTabs(QLayout *layout);
 	void createGeneralTab(QTabWidget *tabWidget);
-	void createGroupsTab(QTabWidget *tabWidget);;
+	void createGroupsTab(QTabWidget *tabWidget);
 	void createPersonalInfoTab(QTabWidget *tabWidget);
 	void createOptionsTab(QTabWidget *tabWidget);
 	void createButtons(QLayout *layout);

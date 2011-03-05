@@ -31,6 +31,6 @@ namespace ProfileDataManager
 	QDomElement getProfilesNode();
 	QList<ProfileData> readProfileData();
 	void markImported(const QString &name);
-};
+}
 
 #endif // PROFILE_DATA_READER_H

@@ -11,7 +11,7 @@ struct PlayerStatus
 	int i3;
 	int i4;
 };
-Q_DECLARE_METATYPE(PlayerStatus);
+Q_DECLARE_METATYPE(PlayerStatus)
 
 struct TrackInfo
 {
@@ -22,7 +22,7 @@ struct TrackInfo
 	QString file;
 	uint    time;
 };
-Q_DECLARE_METATYPE(TrackInfo);
+Q_DECLARE_METATYPE(TrackInfo)
 
 class MPRISController : public QObject
 {

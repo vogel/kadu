@@ -30,6 +30,6 @@ namespace UrlOpener
 	bool KADUAPI openUrl(const QString &urlForDesktopServices, const QString &urlForApplication, const QString &application);
 	void KADUAPI openUrl(const QString &url);
 	void KADUAPI openEmail(const QString &email);
-};
+}
 
 #endif // URL_OPENER_H

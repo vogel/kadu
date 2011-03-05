@@ -30,6 +30,6 @@ namespace ContactSetConfigurationHelper
 	ContactSet loadFromConfiguration(XmlConfigFile *configurationStorage, QDomElement contactSetNode);
 	void saveToConfiguration(StorableObject *parent, const QString &nodeName, const ContactSet &contactSet);
 	void saveToConfiguration(XmlConfigFile *configurationStorage, QDomElement contactSetNode, const ContactSet &contactSet);
-};
+}
 
 #endif // CONTACT_SET_CONFIGURATION_HELPER_H

@@ -27,7 +27,7 @@
 namespace XMPP
 {
 	class RosterItem;
-};
+}
 
 class Buddy;
 class Contact;

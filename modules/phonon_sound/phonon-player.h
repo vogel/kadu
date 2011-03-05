@@ -37,7 +37,7 @@ namespace Phonon
 class PhononPlayer : public SoundPlayer
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(PhononPlayer);
+	Q_DISABLE_COPY(PhononPlayer)
 
 	static PhononPlayer * Instance;
 

@@ -47,6 +47,6 @@ namespace AdiumTimeFormatter
 	 */
 	QString convertTimeDate(const QString &mac_format, const QDateTime &datetime);
 
-};
+}
 
 #endif // ADIUM_TIME_FORMATTER_H
