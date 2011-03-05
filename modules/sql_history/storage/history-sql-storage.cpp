@@ -201,10 +201,10 @@ void HistorySqlStorage::initIndexes()
 	query.prepare("CREATE INDEX IF NOT EXISTS kadu_messages_chat_receive_time_date ON kadu_messages (chat, date(receive_time))");
 	executeQuery(query);
 
-	query.prepare("DROP INDEX IF NOT EXISTS kadu_messages_chat_receive_time_send_time");
+	query.prepare("DROP INDEX IF EXISTS kadu_messages_chat_receive_time_send_time");
 	executeQuery(query);
 
-	query.prepare("DROP INDEX IF NOT EXISTS kadu_messages_chat_receive_time_date_send_time");
+	query.prepare("DROP INDEX IF EXISTS kadu_messages_chat_receive_time_date_send_time");
 	executeQuery(query);
 
 	query.prepare("CREATE INDEX IF NOT EXISTS kadu_statuses_contact ON kadu_statuses (contact)");
