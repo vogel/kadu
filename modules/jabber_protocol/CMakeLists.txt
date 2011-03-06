@@ -71,6 +71,13 @@ else (MINGW)
 		pkg_search_module (ZLIB REQUIRED zlib)
 	endif (NOT ZLIB_FOUND)
 endif (MINGW)
+if (APPLE)
+	if (QCA_FRAMEWORK_DIR)
+		set (QCA2_INCLUDE_DIRS ${QCA_FRAMEWORK_DIR}/qca.framework/Headers/)
+		set (QCA2_LIBRARY_DIRS ${QCA_FRAMEWORK_DIR}/qca.framework/)
+		set (QCA2_LIBRARIES "-framework qca")
+	endif (QCA_FRAMEWORK_DIR)
+endif (APPLE)
 
 set (SOURCES_IRIS
 	libiris/src/xmpp/base/randomnumbergenerator.cpp
