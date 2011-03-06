@@ -20,6 +20,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtGui/QApplication>
 #include <QtGui/QComboBox>
 #include <QtGui/QFormLayout>
 #include <QtGui/QLabel>
@@ -51,12 +52,16 @@ void ConfigWizardProfilePage::createGui()
 
 	LanguagesCombo = new QComboBox(this);
 	setLanguages();
-
 	formLayout()->addRow(tr("Language") + ':', LanguagesCombo);
+
+	QLabel *restartInfo = new QLabel("<font size='-1'><i>" + (qApp->translate("@default",
+			// NOTE: it's the same string as in varia/configuration/dialog.ui
+			"Kadu needs to be restarted before changes to the language settings will take effect.")) +
+			"</i></font>", this);
+	formLayout()->addRow(QString(), restartInfo);
 
 	NickNameEdit = new QLineEdit(this);
 	NickNameEdit->setMaximumWidth(300);
-
 	formLayout()->addRow(tr("Nickname") + ':', NickNameEdit);
 }
 
