@@ -25,6 +25,9 @@
 * single_window: fixed crash when docking was unloaded (beevvy)
 * single_window: fixed hiding Kadu widget instead of Single Window in some cases (beevvy)
 
++++ version 0.6.6-rc3
+* buddies: disable merging buddy with itself (Vogel)
+
 +++ version 0.6.6-rc2
 * jabber: #2026 fixed: incorrect XEP-0085: Chat State Notifications implementation (WhE, beevvy)
 * xmms_mediaplayer: compilation fixed (Dorr)
