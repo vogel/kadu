@@ -54,7 +54,9 @@ void XmlConsole::createGui()
 	Viewer->setUndoRedoEnabled(false);
 	Viewer->setReadOnly(true);
 	Viewer->setAcceptRichText(false);
-	Viewer->viewport()->setStyleSheet("background-color: black");
+	Viewer->viewport()->setObjectName("XmlViewport");
+	// context menu shouldn't inherit it
+	Viewer->viewport()->setStyleSheet("#XmlViewport { background-color: black; }");
 
 	mainLayout->addWidget(Viewer);
 
