@@ -235,9 +235,9 @@ void TabsManager::onDestroyingChat(ChatWidget* chat)
 		TabDialog->removeTab(TabDialog->indexOf(chat));
 	}
 
-	NewChats.removeOne(chat);
-	DetachedChats.removeOne(chat);
-	ChatsWithNewMessages.removeOne(chat);
+	NewChats.removeAll(chat);
+	DetachedChats.removeAll(chat);
+	ChatsWithNewMessages.removeAll(chat);
 	disconnect(chat->edit(), SIGNAL(keyPressed(QKeyEvent*, CustomInput*, bool&)), TabDialog, SLOT(chatKeyPressed(QKeyEvent*, CustomInput*, bool&)));
 	disconnect(chat, SIGNAL(messageReceived(Chat)), this, SLOT(onMessageReceived(Chat)));
 	disconnect(chat, SIGNAL(closed()), this, SLOT(closeChat()));
@@ -321,7 +321,7 @@ void TabsManager::onMessageReceived(Chat chat)
 		{
 			ChatsWithNewMessages.append(chatWidget);
 			if (!Timer.isActive())
-				Timer.start(500);
+				QMetaObject::invokeMethod(this, "onTimer", Qt::QueuedConnection);
 		}
 	}
 	else
@@ -384,7 +384,7 @@ void TabsManager::insertTab(ChatWidget* chat)
 
 	ContactSet contacts = chat->chat().contacts();
 
-	DetachedChats.removeOne(chat);
+	DetachedChats.removeAll(chat);
 
 	foreach (Action *action, AttachToTabsActionDescription->actions())
 	{
@@ -423,11 +423,12 @@ void TabsManager::onTimer()
 {
 	kdebugf();
 	ChatWidget *chat;
-	static bool msg, wasactive = 1;
+	static bool msg = true, wasactive = true;
 
-	bool tabsActive = _isActiveWindow(TabDialog);
+	// NOTE: keep it consistent with onMessageReceived()
+	bool tabsActive = _isWindowActiveOrFullyVisible(TabDialog);
 	ChatWidget *currentChat = static_cast<ChatWidget *>(TabDialog->currentWidget());
-	// sprawdzaj wszystkie okna ktore sa w tabach
+
 	for (int i = TabDialog->count() -1; i >= 0; i--)
 	{
 		chat = static_cast<ChatWidget *>(TabDialog->widget(i));
@@ -435,8 +436,25 @@ void TabsManager::onTimer()
 		// czy trzeba cos robia ?
 		if (ChatsWithNewMessages.contains(chat))
 		{
-			// okno nieaktywne to trzeba cos zrobic
-			if (!tabsActive)
+			if (msg)
+				TabDialog->setTabIcon(i, IconsManager::instance()->iconByPath("protocols/common/message"));
+			else
+				TabDialog->setTabIcon(i, chat->icon());
+
+			if (tabsActive)
+			{
+				TabDialog->setWindowTitle(currentChat->title());
+
+				if (currentChat == chat)
+				{
+					chat->markAllMessagesRead();
+					TabDialog->setTabIcon(i, chat->icon());
+					ChatsWithNewMessages.removeAll(chat);
+				}
+				else if (ChatsWithNewMessages.count() == 1 && !wasactive && ConfigAutoTabChange)
+					TabDialog->setCurrentWidget(chat);
+			}
+			else
 			{
 				qApp->alert(TabDialog);
 				// jesli chat jest na aktywnej karcie - zachowuje sie jak normalne okno
@@ -460,28 +478,6 @@ void TabsManager::onTimer()
 					TabDialog->setWindowTitle(tr("NEW MESSAGE(S)"));
 				else
 					TabDialog->setWindowTitle(chat->title());
-
-			}
-
-			if (msg)
-				TabDialog->setTabIcon(i, IconsManager::instance()->iconByPath("protocols/common/message"));
-			else
-				TabDialog->setTabIcon(i, chat->icon());
-
-			if (tabsActive)
-			{
-				if (currentChat == chat)
-				{
-					// zeruje licznik nowch wiadomosci w chat
-					chat->markAllMessagesRead();
-					// a tutaj przywroc tytul�
-					TabDialog->setWindowTitle(chat->title());
-					TabDialog->setTabIcon(i, chat->icon());
-					// wywal go z listy chatow z nowymi wiadomosciami
-					ChatsWithNewMessages.removeOne(chat);
-				}
-				else if (ChatsWithNewMessages.count() == 1 && !wasactive && ConfigAutoTabChange)
-					TabDialog->setCurrentWidget(chat);
 			}
 
 			if (chat->newMessagesCount() > 0)
@@ -497,11 +493,14 @@ void TabsManager::onTimer()
 		}
 	}
 
-	if (ChatsWithNewMessages.size()==0)
-		Timer.stop();
-
 	wasactive = tabsActive;
 	msg = !msg;
+
+	if (!ChatsWithNewMessages.isEmpty() && !Timer.isActive())
+		Timer.start(500);
+	else if (ChatsWithNewMessages.isEmpty() && Timer.isActive())
+		Timer.stop();
+
 	kdebugf2();
 }
 
