@@ -23,6 +23,15 @@
 
 #include "buddy-name-filter.h"
 
+BuddyNameFilter::BuddyNameFilter(QObject *parent) :
+		AbstractBuddyFilter(parent), IgnoreNextFilters(true)
+{
+}
+
+BuddyNameFilter::~BuddyNameFilter()
+{
+}
+
 bool BuddyNameFilter::acceptBuddy(const Buddy &buddy)
 {
 	if (Name.isEmpty())
@@ -50,7 +59,7 @@ bool BuddyNameFilter::ignoreNextFilters(const Buddy &buddy)
 {
 	Q_UNUSED(buddy)
 
-	return !Name.isEmpty();
+	return IgnoreNextFilters && !Name.isEmpty();
 }
 
 void BuddyNameFilter::setName(const QString &name)
@@ -58,6 +67,15 @@ void BuddyNameFilter::setName(const QString &name)
 	if (Name != name)
 	{
 		Name = name;
+		emit filterChanged();
+	}
+}
+
+void BuddyNameFilter::setIgnoreNextFilters(bool ignoreNextFilters)
+{
+	if (IgnoreNextFilters != ignoreNextFilters)
+	{
+		IgnoreNextFilters = ignoreNextFilters;
 		emit filterChanged();
 	}
 }

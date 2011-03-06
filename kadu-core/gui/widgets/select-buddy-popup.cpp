@@ -23,6 +23,7 @@
 #include <QtGui/QLineEdit>
 
 #include "buddies/buddy-manager.h"
+#include "buddies/filter/buddy-name-filter.h"
 #include "buddies/model/buddies-model.h"
 #include "gui/widgets/buddies-list-view.h"
 #include "model/roles.h"
@@ -44,6 +45,8 @@ SelectBuddyPopup::SelectBuddyPopup(QWidget *parent) :
 	view()->setModel(model);
 	view()->setRootIsDecorated(false);
 	view()->setShowAccountName(false);
+
+	nameFilter()->setIgnoreNextFilters(false);
 }
 
 SelectBuddyPopup::~SelectBuddyPopup()

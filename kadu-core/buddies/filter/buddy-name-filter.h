@@ -31,14 +31,17 @@ class KADUAPI BuddyNameFilter : public AbstractBuddyFilter
 	Q_OBJECT
 
 	QString Name;
+	bool IgnoreNextFilters;
 
 public:
-	BuddyNameFilter(QObject *parent = 0) : AbstractBuddyFilter(parent) {}
+	explicit BuddyNameFilter(QObject *parent = 0);
+	virtual ~BuddyNameFilter();
 
 	virtual bool acceptBuddy(const Buddy &buddy);
 	virtual bool ignoreNextFilters(const Buddy &buddy);
 
 	void setName(const QString &name);
+	void setIgnoreNextFilters(bool ignoreNextFilters);
 
 };
 
