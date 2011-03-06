@@ -26,6 +26,8 @@
 #ifndef BUDDIES_LIST_VIEW_DELEGATE_H
 #define BUDDIES_LIST_VIEW_DELEGATE_H
 
+#undef check
+
 #include <QtGui/QItemDelegate>
 
 #include "buddies/buddy.h"
