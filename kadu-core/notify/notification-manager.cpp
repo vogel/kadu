@@ -380,8 +380,8 @@ void NotificationManager::contactStatusChanged(Contact contact, Status oldStatus
 		return;
 
 	Status status = contact.currentStatus();
-//	if (oldStatus == status)
-//		return;
+	if (oldStatus == status)
+		return;
 
 	if (config_file.readBoolEntry("Notify", "IgnoreOnlineToOnline") &&
 			!status.isDisconnected() &&
