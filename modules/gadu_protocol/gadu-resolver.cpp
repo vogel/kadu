@@ -151,26 +151,36 @@ void GaduResolver::resolve(const QString &hostname)
 
 void GaduResolver::resolved(const QHostInfo &host)
 {
-	struct in_addr addr;
+	struct in_addr addr[6];
+	int count = 0;
+	int i, size;
 
 	if (Timer->isActive())
 		Timer->stop();
 
 	if (host.error() == QHostInfo::NoError)
 	{
-		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Resolved address to: %s\n", qPrintable(host.addresses().at(0).toString()));
-		addr.s_addr = htonl(host.addresses().at(0).toIPv4Address());
+		QList<QHostAddress> addr_list = host.addresses();
+		for (i = 0; i < addr_list.size(); ++i) {
+			addr[count++].s_addr = htonl(host.addresses().at(i).toIPv4Address());
+			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Address[%d] = %s\n", i, 
+				qPrintable(host.addresses().at(i).toString()));
+			if (count == 5) break;
+		}
+		addr[i].s_addr = INADDR_NONE;
 	}
 	else
 	{
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Error while resolving: %s\n", qPrintable(host.errorString()));
-		addr.s_addr = INADDR_NONE;
+		addr[0].s_addr = INADDR_NONE;
 	}
 
+	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Returning %d addresses\n", count);
+	size = sizeof(struct in_addr) * (count + 1);
 #ifdef Q_OS_WIN
-	if (send(Data->wfd, (const char *)&addr, sizeof(addr), 0) != sizeof(addr))
+	if (send(Data->wfd, (const char *)&addr, size, 0) != size)
 #else
-	if (write(Data->wfd, &addr, sizeof(addr)) != sizeof(addr))
+	if (write(Data->wfd, &addr, size) != size)
 #endif
 	{
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Writing to pipe failed\n");
