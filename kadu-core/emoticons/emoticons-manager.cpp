@@ -60,7 +60,7 @@ EmoticonsManager::EmoticonsManager() :
 		Aliases(), Selector(), walker(0)
 
 {
-	QStringList iconPaths = config_file.readEntry("Chat", "EmoticonsPaths").split(QRegExp("[;:&]"), QString::SkipEmptyParts);
+	QStringList iconPaths = config_file.readEntry("Chat", "EmoticonsPaths").split('&', QString::SkipEmptyParts);
 
 	ThemeManager = new EmoticonThemeManager(this);
 	ThemeManager->loadThemes(iconPaths);

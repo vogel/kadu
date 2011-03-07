@@ -52,7 +52,7 @@ IconsManager::IconsManager()
 {
 	kdebugf();
 
-	QStringList iconPaths = config_file.readEntry("Look", "IconsPaths").split(QRegExp("[;:&]"), QString::SkipEmptyParts);
+	QStringList iconPaths = config_file.readEntry("Look", "IconsPaths").split('&', QString::SkipEmptyParts);
 
 	ThemeManager = new IconThemeManager(this);
 	ThemeManager->loadThemes(iconPaths);
