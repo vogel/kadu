@@ -76,7 +76,6 @@ class KADUAPI ChatWidget : public QWidget, ConfigurationAwareObject
 	QDateTime LastMessageTime;
 
 	unsigned int NewMessagesCount;
-	bool SelectionFromMessagesView;
 
 	void createGui();
 	void createContactsList();
