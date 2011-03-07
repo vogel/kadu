@@ -67,9 +67,7 @@
 #include "gadu-contact-details.h"
 #include "gadu-id-validator.h"
 #include "gadu-protocol-factory.h"
-#ifndef Q_OS_WIN
 #include "gadu-resolver.h"
-#endif
 #include "gadu-url-handler.h"
 
 #include "gadu-protocol.h"
@@ -95,9 +93,7 @@ extern "C" KADU_EXPORT int gadu_protocol_init(bool firstLoad)
 #ifndef DEBUG_ENABLED
 	gg_debug_level = 0;
 #endif
-#ifndef Q_OS_WIN
 	gg_global_set_custom_resolver(gadu_resolver_start, gadu_resolver_cleanup);
-#endif
 
 	GaduIdValidator::createInstance();
 

@@ -44,6 +44,72 @@
 
 #include "gadu-resolver.h"
 
+#ifdef Q_OS_WIN
+int pipe(int *fds)
+{
+	int sock_fd;
+	struct sockaddr_in sock_addr;
+	int sock_addr_len = sizeof(sock_addr);
+
+	fds[0] = fds[1] = -1;
+
+	if ((sock_fd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
+	{
+		return -1;
+	}
+
+	memset(&sock_addr, 0, sizeof(sock_addr));
+	sock_addr.sin_family = AF_INET;
+	sock_addr.sin_port = 0;
+	sock_addr.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
+
+	if (bind(sock_fd, (SOCKADDR *)&sock_addr, sock_addr_len) < 0)
+	{
+		closesocket(sock_fd);
+		return -1;
+	}
+
+	if (listen(sock_fd, 1) < 0)
+	{
+		closesocket(sock_fd);
+		return -1;
+	}
+
+	if (getsockname(sock_fd, (SOCKADDR *)&sock_addr, &sock_addr_len) < 0)
+	{
+		closesocket(sock_fd);
+		return -1;
+	}
+
+	fds[1] = socket(AF_INET, SOCK_STREAM, 0);
+	if (fds[1] < 0)
+	{
+		closesocket(sock_fd);
+		return -1;
+	}
+
+	if (connect(fds[1], (SOCKADDR *)&sock_addr, sock_addr_len) < 0)
+	{
+		closesocket(fds[1]);
+		closesocket(sock_fd);
+		fds[1] = -1;
+		return -1;
+	}
+
+	fds[0] = accept(sock_fd, (SOCKADDR *)&sock_addr, &sock_addr_len);
+	if (fds[0] < 0)
+	{
+		closesocket(fds[1]);
+		closesocket(sock_fd);
+		fds[1] = -1;
+		return -1;
+	}
+
+	closesocket(sock_fd);
+	return 0;
+}
+#endif
+
 GaduResolver::GaduResolver(gadu_resolver_data *data, QObject *parent) :
 		QObject(parent), LookupId(-1), Data(data)
 {
@@ -85,23 +151,37 @@ void GaduResolver::resolve(const QString &hostname)
 
 void GaduResolver::resolved(const QHostInfo &host)
 {
-	struct in_addr addr;
+	struct in_addr addr[6];
+	int count = 0;
+	int i, size;
 
 	if (Timer->isActive())
 		Timer->stop();
 
 	if (host.error() == QHostInfo::NoError)
 	{
-		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Resolved address to: %s\n", qPrintable(host.addresses().at(0).toString()));
-		addr.s_addr = htonl(host.addresses().at(0).toIPv4Address());
+		QList<QHostAddress> addr_list = host.addresses();
+		for (i = 0; i < addr_list.size(); ++i) {
+			addr[count++].s_addr = htonl(host.addresses().at(i).toIPv4Address());
+			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Address[%d] = %s\n", i, 
+				qPrintable(host.addresses().at(i).toString()));
+			if (count == 5) break;
+		}
+		addr[i].s_addr = INADDR_NONE;
 	}
 	else
 	{
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Error while resolving: %s\n", qPrintable(host.errorString()));
-		addr.s_addr = INADDR_NONE;
+		addr[0].s_addr = INADDR_NONE;
 	}
 
-	if (write(Data->wfd, &addr, sizeof(addr)) != sizeof(addr))
+	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Returning %d addresses\n", count);
+	size = sizeof(struct in_addr) * (count + 1);
+#ifdef Q_OS_WIN
+	if (send(Data->wfd, (const char *)&addr, size, 0) != size)
+#else
+	if (write(Data->wfd, &addr, size) != size)
+#endif
 	{
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Writing to pipe failed\n");
 	}
@@ -136,11 +216,7 @@ int gadu_resolver_start(int *fd, void **priv_data, const char *hostname)
 {
 	int pipes[2];
 
-#ifdef Q_OS_WIN
-	if (_pipe(pipes, 256, 0) == -1)
-#else
 	if (pipe(pipes) == -1)
-#endif
 	{
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Unable to create pipes\n");
 		return -1;
