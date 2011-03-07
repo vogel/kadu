@@ -153,6 +153,8 @@ PlusGatewaySmsSender.prototype = {
 			this.finished();
 		else if (content.indexOf("OK") >= 0)
 			this.finished();
+		else if (content.indexOf("IncorrectCaptchaTextException") >= 0)
+			this.failure("Text from the picture is incorrect");
 		else
 			//this.failure("Provider gateway results page looks strange. SMS was probably NOT sent.");
 			this.failure(content);

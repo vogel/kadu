@@ -3,6 +3,12 @@
 * modules: Library class removed, we can use QLibrary (Vogel)
 * cmake: faster linking, not using final.cpp on Windows compilation (Darom, beevvy, Vogel)
 
++++ version 0.6.6-rc3
+* buddies: disable merging buddy with itself (Vogel)
+* tabs: fixed some issues with blinking icons/titles (beevvy)
+* notify: do not notify about status change if the status did not change actually (beevvy)
+* buddies: fixed possible crash at start or restoring main window from tray (beevvy)
+
 +++ version 0.6.6-rc2
 * jabber: #2026 fixed: incorrect XEP-0085: Chat State Notifications implementation (WhE, beevvy)
 * xmms_mediaplayer: compilation fixed (Dorr)

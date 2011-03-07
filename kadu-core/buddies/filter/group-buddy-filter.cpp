@@ -22,12 +22,16 @@
 
 #include "buddies/buddy.h"
 #include "buddies/buddy-manager.h"
+#include "buddies/group-manager.h"
 
 #include "group-buddy-filter.h"
 
 GroupBuddyFilter::GroupBuddyFilter(QObject *parent) :
 		AbstractBuddyFilter(parent), CurrentGroup(Group::null), AllGroupShown(true)
 {
+	// for Buddy::showInAllGroup()
+	connect(GroupManager::instance(), SIGNAL(groupUpdated(Group)),
+			this, SIGNAL(filterChanged()));
 }
 
 void GroupBuddyFilter::setGroup(Group group)
@@ -46,11 +50,6 @@ bool GroupBuddyFilter::acceptBuddy(const Buddy &buddy)
 			: AllGroupShown
 				? buddy.showInAllGroup()
 				: buddy.groups().isEmpty();
-}
-
-void GroupBuddyFilter::refresh()
-{
-	emit filterChanged();
 }
 
 void GroupBuddyFilter::setAllGroupShown(bool shown)

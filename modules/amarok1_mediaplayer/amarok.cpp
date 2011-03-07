@@ -325,7 +325,7 @@ bool AmarokMediaPlayer::isActive()
 	QByteArray reply = executeCommand("player", "isPlaying");
 	QString ret(reply);
 	ret = ret.simplified();
+	kdebugf2();
 
 	return ((ret == "true") || (ret == "false")) ? true : false;
-	kdebugf2();
 }

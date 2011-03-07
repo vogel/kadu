@@ -370,7 +370,7 @@ void ChatWidgetManager::sendMessage(const Chat &chat)
 
 	if (PendingMessagesManager::instance()->hasPendingMessagesForChat(chat))
 	{
-		openPendingMessages(chat);
+		openPendingMessages(chat, true);
 		return;
 	}
 

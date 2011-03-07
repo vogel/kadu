@@ -24,6 +24,10 @@
 PendingMessagesFilter::PendingMessagesFilter(QObject *parent) :
 		AbstractBuddyFilter(parent)
 {
+	connect(PendingMessagesManager::instance(), SIGNAL(messageAdded(Message)),
+			this, SIGNAL(filterChanged()));
+	connect(PendingMessagesManager::instance(), SIGNAL(messageRemoved(Message)),
+			this, SIGNAL(filterChanged()));
 }
 
 PendingMessagesFilter::~PendingMessagesFilter()

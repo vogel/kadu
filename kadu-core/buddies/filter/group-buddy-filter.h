@@ -39,8 +39,6 @@ public:
 	void setGroup(Group group);
 	virtual bool acceptBuddy(const Buddy &buddy);
 
-	void refresh();
-
 	void setAllGroupShown(bool shown);
 
 };
