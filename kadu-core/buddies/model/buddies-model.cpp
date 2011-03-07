@@ -207,5 +207,7 @@ void BuddiesModel::contactUpdated(Contact &contact)
 		return;
 
 	QModelIndex contactIndex = index(buddy.contacts().indexOf(contact), 0, indexOfBuddy);
+
+	emit dataChanged(indexOfBuddy, indexOfBuddy);
 	emit dataChanged(contactIndex, contactIndex);
 }
