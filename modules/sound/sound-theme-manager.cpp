@@ -45,7 +45,7 @@ SoundThemeManager * SoundThemeManager::instance()
 SoundThemeManager::SoundThemeManager() :
 		MyThemes(new Themes("sounds", "sound.conf"))
 {
-	MyThemes->setPaths(config_file.readEntry("Sounds", "SoundPaths").split(QRegExp("[;:&]"), QString::SkipEmptyParts));
+	MyThemes->setPaths(config_file.readEntry("Sounds", "SoundPaths").split('&', QString::SkipEmptyParts));
 
 	QStringList soundThemes = themes()->themes();
 	QString soundTheme = config_file.readEntry("Sounds", "SoundTheme");
