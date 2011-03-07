@@ -44,6 +44,9 @@ class KADUAPI GroupManager : public QObject, public SimpleManager<Group>
 
 	void importConfiguration();
 
+private slots:
+	void groupDataUpdated();
+
 protected:
 	virtual void load();
 	virtual void store();
@@ -68,6 +71,8 @@ signals:
 	void groupAdded(Group group);
 	void groupAboutToBeRemoved(Group group);
 	void groupRemoved(Group group);
+
+	void groupUpdated(Group group);
 
 	void saveGroupData();
 

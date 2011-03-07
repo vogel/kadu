@@ -181,8 +181,16 @@ bool GroupManager::acceptableGroupName(const QString &groupName, bool acceptExis
 	return true;
 }
 
+void GroupManager::groupDataUpdated()
+{
+	Group group(sender());
+	if (!group.isNull())
+		emit groupUpdated(group);
+}
+
 void GroupManager::itemAboutToBeAdded(Group item)
 {
+	connect(item, SIGNAL(updated()), this, SLOT(groupDataUpdated()));
 	emit groupAboutToBeAdded(item);
 }
 
@@ -198,5 +206,6 @@ void GroupManager::itemAboutToBeRemoved(Group item)
 
 void GroupManager::itemRemoved(Group item)
 {
+	disconnect(item, SIGNAL(updated()), this, SLOT(groupDataUpdated()));
 	emit groupRemoved(item);
 }

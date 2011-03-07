@@ -209,9 +209,6 @@ void GroupTabBar::groupRemoved(Group group)
 
 void GroupTabBar::updateGroup(Group group)
 {
-	if (tabData(currentIndex()).toString() == "AutoTab")
-		Filter->refresh();
-
 	QString groupUuid = group.uuid().toString();
 	int groupId = -1;
 	for (int i = 0; i < count(); ++i)
@@ -404,8 +401,6 @@ void GroupTabBar::moveToGroup()
 	{
 		buddy.removeFromGroup(GroupManager::instance()->byUuid(tabData(currentIndex()).toString()));
 		buddy.addToGroup(currentGroup);
-
-		Filter->refresh();
 	}
 }
 
@@ -434,7 +429,6 @@ void GroupTabBar::configurationUpdated()
 				break;
 			}
 
-		Filter->refresh();
 		setVisible(false);
 		return;
 	}
@@ -446,7 +440,4 @@ void GroupTabBar::configurationUpdated()
 	ShowAllGroup = config_file.readBoolEntry("Look", "ShowGroupAll", true);
 	updateAutoGroupTab(oldShowAllGroup);
 	Filter->setAllGroupShown(ShowAllGroup);
-
-	if (AutoGroupTabPosition == currentIndex())
-		Filter->refresh();
 }
