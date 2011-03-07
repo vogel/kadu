@@ -117,9 +117,10 @@ void CustomInput::keyPressEvent(QKeyEvent *e)
 		kdebugf2();
 		return;
 	}
-	else if (!CopyPossible && e->matches(QKeySequence::Copy))
+	else if (CopyPossible && e->matches(QKeySequence::Copy))
 	{
-		e->ignore();
+		copy();
+		e->accept();
 		kdebugf2();
 		return;
 	}
