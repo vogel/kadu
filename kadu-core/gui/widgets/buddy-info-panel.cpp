@@ -183,7 +183,7 @@ void BuddyInfoPanel::displayItem(BuddyOrContact item)
 	if (!isVisible())
 		return;
 
-	if (!item.contact())
+	if (!item.contact() && !item.buddy())
 	{
 		setHtml("<body bgcolor=\"" + BackgroundColor + "\"></body>");
 		return;
