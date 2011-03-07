@@ -29,6 +29,10 @@
 AnonymousWithoutMessagesBuddyFilter::AnonymousWithoutMessagesBuddyFilter(QObject *parent)
 	: AbstractBuddyFilter(parent), Enabled(false)
 {
+	connect(PendingMessagesManager::instance(), SIGNAL(messageAdded(Message)),
+			this, SIGNAL(filterChanged()));
+	connect(PendingMessagesManager::instance(), SIGNAL(messageRemoved(Message)),
+			this, SIGNAL(filterChanged()));
 }
 
 void AnonymousWithoutMessagesBuddyFilter::setEnabled(bool enabled)
