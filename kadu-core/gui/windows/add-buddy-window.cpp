@@ -399,7 +399,8 @@ void AddBuddyWindow::validateData()
 	}
 	else
 	{
-		if (BuddyManager::instance()->byDisplay(DisplayNameEdit->text(), ActionReturnNull))
+		Buddy existingBuddy = BuddyManager::instance()->byDisplay(DisplayNameEdit->text(), ActionReturnNull);
+		if (existingBuddy && existingBuddy != MyBuddy)
 		{
 			displayErrorMessage(tr("Visible name is already used for another buddy"));
 			return;
