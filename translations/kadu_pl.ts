@@ -3290,7 +3290,7 @@ Klient: %3</translation>
     <name>StatusContainerManager</name>
     <message>
         <source>All</source>
-        <translation>Wszyscy</translation>
+		<translation>Wszystkie</translation>
     </message>
     <message>
         <source>Offline</source>
