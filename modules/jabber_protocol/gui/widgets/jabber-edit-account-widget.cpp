@@ -337,8 +337,8 @@ void JabberEditAccountWidget::hostToggled(bool on)
 	CustomPort->setEnabled(on);
 	CustomHostLabel->setEnabled(on);
 	CustomPortLabel->setEnabled(on);
-	if (!on && EncryptionMode->currentIndex() == EncryptionMode->findData(2)) {
-		EncryptionMode->setCurrentIndex(1);
+	if (!on && EncryptionMode->currentIndex() == EncryptionMode->findData(JabberAccountDetails::Encryption_Legacy)) {
+		EncryptionMode->setCurrentIndex(JabberAccountDetails::Encryption_Auto);
 	}
 }
 
@@ -360,12 +360,12 @@ bool JabberEditAccountWidget::checkSSL()
 
 void JabberEditAccountWidget::sslActivated(int i)
 {
-	if ((EncryptionMode->itemData(i) == 0 || EncryptionMode->itemData(i) == 2) && !checkSSL())
-		EncryptionMode->setCurrentIndex(EncryptionMode->findData(1));
-	else if (EncryptionMode->itemData(i) == 2 && !CustomHostPort->isChecked())
+	if ((EncryptionMode->itemData(i) == JabberAccountDetails::Encryption_Auto || EncryptionMode->itemData(i) == JabberAccountDetails::Encryption_Legacy) && !checkSSL())
+		EncryptionMode->setCurrentIndex(EncryptionMode->findData(JabberAccountDetails::Encryption_No));
+	else if (EncryptionMode->itemData(i) == JabberAccountDetails::Encryption_Legacy && !CustomHostPort->isChecked())
 	{
 		MessageDialog::show("dialog-warning", tr("Kadu"), tr("Legacy SSL is only available in combination with manual host/port."));
-		EncryptionMode->setCurrentIndex(EncryptionMode->findData(1));
+		EncryptionMode->setCurrentIndex(EncryptionMode->findData(JabberAccountDetails::Encryption_Auto));
 	}
 }
 
