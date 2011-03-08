@@ -204,6 +204,13 @@ void OpenChatWith::inputChanged(const QString &text)
 void OpenChatWith::openChat()
 {
 	ContactSet contacts = BuddiesWidget->selectedContacts();
+
+	if (contacts.isEmpty())
+	{
+		close();
+		return;
+	}
+
 	foreach (const Contact &contact, contacts)
 		ContactManager::instance()->addItem(contact);
 
