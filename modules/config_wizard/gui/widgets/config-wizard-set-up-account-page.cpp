@@ -23,6 +23,7 @@
 #include <QtGui/QLabel>
 
 #include "accounts/account-manager.h"
+#include "core/core.h"
 #include "gui/widgets/account-add-widget.h"
 #include "gui/widgets/account-create-widget.h"
 #include "gui/windows/your-accounts.h"
@@ -106,6 +107,7 @@ void ConfigWizardSetUpAccountPage::accountCreated(Account account)
 {
 	account.importProxySettings();
 	AccountManager::instance()->addItem(account);
+	account.accountContact().setOwnerBuddy(Core::instance()->myself());
 
 	ConfigurationManager::instance()->flush();
 }

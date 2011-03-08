@@ -9,6 +9,7 @@
 * emoticons, icons, sound: fixed non-working custom theme paths on Windows (beevvy)
 * gadu: #1992 fixed: (un)registering GG account on Windows (Dorr)
 * buddies: adding new buddy from chat window does not require changing display name (Vogel)
+* accounts: properly set ownerBuddy for account contacts for all new accounts (Vogel)
 
 +++ version 0.6.6-rc2
 * jabber: #2026 fixed: incorrect XEP-0085: Chat State Notifications implementation (WhE, beevvy)

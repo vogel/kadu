@@ -43,6 +43,7 @@
 
 #include "accounts/account-manager.h"
 #include "accounts/model/accounts-model.h"
+#include "core/core.h"
 #include "gui/widgets/account-add-widget.h"
 #include "gui/widgets/account-create-widget.h"
 #include "gui/widgets/account-edit-widget.h"
@@ -426,6 +427,7 @@ void YourAccounts::accountCreated(Account account)
 {
 	account.importProxySettings();
 	AccountManager::instance()->addItem(account);
+	account.accountContact().setOwnerBuddy(Core::instance()->myself());
 
 	ConfigurationManager::instance()->flush();
 	selectAccount(account);

@@ -21,13 +21,14 @@
 
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
+#include "buddies/buddy-manager.h"
+#include "contacts/contact-manager.h"
+#include "core/core.h"
 #include "identities/identity-manager.h"
 
 #include "modules/gadu_protocol/helpers/gadu-importer.h"
 
 #include "profile-importer.h"
-#include <buddies/buddy-manager.h>
-#include <contacts/contact-manager.h>
 
 ProfileImporter::ProfileImporter(const QString &profileFileName) :
 		ProfileFileName(profileFileName)
@@ -71,6 +72,7 @@ bool ProfileImporter::import(const Identity &identity)
 	importedAccount.setAccountIdentity(identity);
 
 	AccountManager::instance()->addItem(importedAccount);
+	importedAccount.accountContact().setOwnerBuddy(Core::instance()->myself());
 
 	QList<Buddy> buddies = GaduImporter::import065Buddies(importedAccount, xmlQuery);
 	foreach (const Buddy &buddy, buddies)
