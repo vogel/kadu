@@ -225,7 +225,7 @@ About::~About()
 void About::openUrl(const QUrl &url)
 {
 	if (url.scheme().startsWith(QLatin1String("http")))
-		UrlOpener::openUrl(url.toString());
+		UrlOpener::openUrl(url.toEncoded());
 }
 
 void About::keyPressEvent(QKeyEvent *event)
@@ -261,10 +261,10 @@ QString About::loadFile(const QString &name)
 	return data;
 }
 
-KaduLink::KaduLink(const QString &link, QWidget *parent) :
+KaduLink::KaduLink(const QByteArray &link, QWidget *parent) :
 		QLabel(parent), Link(link)
 {
-	setText(QString("<a href=\"%1\">%1</a>").arg(Link));
+	setText(QString("<a href=\"%1\">%1</a>").arg(QString::fromUtf8(Link)));
 	setCursor(QCursor(Qt::PointingHandCursor));
 	setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed));
 }

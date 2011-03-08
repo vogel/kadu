@@ -128,5 +128,5 @@ void JabberContactPersonalInfoWidget::personalInfoAvailable(Buddy buddy)
 
 void JabberContactPersonalInfoWidget::urlClicked(const QString &link)
 {
-	UrlOpener::openUrl(link);
+	UrlOpener::openUrl(link.toUtf8());
 }

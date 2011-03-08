@@ -76,13 +76,13 @@ class KaduLink : public QLabel
 {
 	Q_OBJECT
 
-	QString Link;
+	QByteArray Link;
 
 protected:
 	virtual void mousePressEvent(QMouseEvent *);
 
 public:
-	explicit KaduLink(const QString &link, QWidget *parent = 0);
+	explicit KaduLink(const QByteArray &link, QWidget *parent = 0);
 	virtual ~KaduLink();
 
 };

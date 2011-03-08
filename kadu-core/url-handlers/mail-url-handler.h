@@ -31,11 +31,11 @@ class MailUrlHandler : public UrlHandler
 public:
 	MailUrlHandler();
 
-	bool isUrlValid(const QString &url);
+	bool isUrlValid(const QByteArray &url);
 
 	void convertUrlsToHtml(HtmlDocument &document);
 
-	void openUrl(const QString &url, bool disableMenu);
+	void openUrl(const QByteArray &url, bool disableMenu);
 
 	const QRegExp & mailRegExp() { return MailRegExp; }
 };

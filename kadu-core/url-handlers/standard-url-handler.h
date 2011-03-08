@@ -38,11 +38,11 @@ protected:
 public:
 	StandardUrlHandler();
 
-	bool isUrlValid(const QString &url);
+	bool isUrlValid(const QByteArray &url);
 
 	void convertUrlsToHtml(HtmlDocument &document);
 
-	void openUrl(const QString &url, bool disableMenu = false);
+	void openUrl(const QByteArray &url, bool disableMenu = false);
 
 	const QRegExp &urlRegExp() { return UrlRegExp; }
 };

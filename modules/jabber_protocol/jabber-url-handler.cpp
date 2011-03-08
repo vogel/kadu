@@ -53,12 +53,12 @@ JabberUrlHandler::JabberUrlHandler()
 	// Reparse pair with: "&([^=]+)=([^&]+)"
 }
 
-bool JabberUrlHandler::isUrlValid(const QString &url)
+bool JabberUrlHandler::isUrlValid(const QByteArray &url)
 {
 	if (url == "xmpp:")
 		return false;
 
-	return JabberRegExp.exactMatch(url);
+	return JabberRegExp.exactMatch(QString::fromUtf8(url));
 }
 
 void JabberUrlHandler::convertUrlsToHtml(HtmlDocument &document)
@@ -81,13 +81,13 @@ void JabberUrlHandler::convertUrlsToHtml(HtmlDocument &document)
 	}
 }
 
-void JabberUrlHandler::openUrl(const QString &url, bool disableMenu)
+void JabberUrlHandler::openUrl(const QByteArray &url, bool disableMenu)
 {
 	QList<Account> jabberAccounts = AccountManager::instance()->byProtocolName("jabber");
 	if (!jabberAccounts.count())
 		return;
 
-	QString jabberId = url;
+	QString jabberId = QString::fromUtf8(url);
 	if (jabberId.startsWith(QLatin1String("jid:")))
 	{
 		jabberId.remove(0, 3);

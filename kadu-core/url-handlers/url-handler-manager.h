@@ -54,7 +54,7 @@ public:
 
 	void convertAllUrls(HtmlDocument &document);
 
-	void openUrl(const QString &url, bool disableMenu = false);
+	void openUrl(const QByteArray &url, bool disableMenu = false);
 
 	// TODO:
 	//for mail validation:

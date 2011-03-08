@@ -34,9 +34,9 @@ StandardUrlHandler::StandardUrlHandler()
 	configurationUpdated();
 }
 
-bool StandardUrlHandler::isUrlValid(const QString &url)
+bool StandardUrlHandler::isUrlValid(const QByteArray &url)
 {
-	return UrlRegExp.exactMatch(url);
+	return UrlRegExp.exactMatch(QString::fromUtf8(url));
 }
 
 void StandardUrlHandler::convertUrlsToHtml(HtmlDocument &document)
@@ -72,11 +72,11 @@ void StandardUrlHandler::convertUrlsToHtml(HtmlDocument &document)
 	}
 }
 
-void StandardUrlHandler::openUrl(const QString &url, bool disableMenu)
+void StandardUrlHandler::openUrl(const QByteArray &url, bool disableMenu)
 {
 	Q_UNUSED(disableMenu)
 
-	if (url.startsWith(QLatin1String("www.")))
+	if (!url.contains("://"))
 		UrlOpener::openUrl("http://" + url);
 	else
 		UrlOpener::openUrl(url);
