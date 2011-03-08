@@ -76,7 +76,7 @@ void UrlHandlerManager::convertAllUrls(HtmlDocument &document)
 		handler->convertUrlsToHtml(document);
 }
 
-void UrlHandlerManager::openUrl(const QString &url, bool disableMenu)
+void UrlHandlerManager::openUrl(const QByteArray &url, bool disableMenu)
 {
 	foreach (UrlHandler *handler, RegisteredHandlersByPriority)
 	{

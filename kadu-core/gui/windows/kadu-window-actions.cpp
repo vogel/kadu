@@ -671,7 +671,7 @@ void KaduWindowActions::writeEmailActionActivated(QAction *sender, bool toggled)
 		return;
 
 	if (!buddy.email().isEmpty())
-		UrlOpener::openEmail(buddy.email());
+		UrlOpener::openEmail(buddy.email().toUtf8());
 
 	kdebugf2();
 }
@@ -723,7 +723,7 @@ void KaduWindowActions::openDescriptionLinkActionActivated(QAction *sender, bool
 	QRegExp url = UrlHandlerManager::instance()->urlRegExp();
 	int idx_start = url.indexIn(description);
 	if (idx_start >= 0)
-		UrlOpener::openUrl(description.mid(idx_start, url.matchedLength()));
+		UrlOpener::openUrl(description.mid(idx_start, url.matchedLength()).toUtf8());
 
 	kdebugf2();
 }

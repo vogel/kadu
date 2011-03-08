@@ -29,7 +29,7 @@
 
 #include "url-opener.h"
 
-bool UrlOpener::openUrl(const QString &urlForDesktopServices, const QString &urlForApplication, const QString &application)
+bool UrlOpener::openUrl(const QByteArray &urlForDesktopServices, const QByteArray &urlForApplication, const QString &application)
 {
 	if (!application.isEmpty())
 	{
@@ -37,19 +37,19 @@ bool UrlOpener::openUrl(const QString &urlForDesktopServices, const QString &url
 
 		QString launchLine = application;
 		if (!launchLine.contains("%1"))
-			launchLine.append(" \"" + urlForApplication + '"');
+			launchLine.append(" \"" + QString::fromUtf8(urlForApplication) + '"');
 		else
-			launchLine.replace("%1", urlForApplication);
+			launchLine.replace("%1", QString::fromUtf8(urlForApplication));
 
 		process->start(launchLine);
 		if (process->waitForStarted())
 			return true;
 	}
 
-	return QDesktopServices::openUrl(QUrl(urlForDesktopServices));
+	return QDesktopServices::openUrl(QUrl::fromEncoded(urlForDesktopServices));
 }
 
-void UrlOpener::openUrl(const QString &url)
+void UrlOpener::openUrl(const QByteArray &url)
 {
 	QString browser;
 	bool useDefaultWebBrowser = config_file.readBoolEntry("Chat", "UseDefaultWebBrowser", true);
@@ -61,16 +61,16 @@ void UrlOpener::openUrl(const QString &url)
 				qApp->translate("@default", QT_TR_NOOP("Could not spawn Web browser process. Check if the Web browser is functional")));
 }
 
-void UrlOpener::openEmail(const QString &email)
+void UrlOpener::openEmail(const QByteArray &email)
 {
 	QString client;
 	bool useDefaultEMailClient = config_file.readBoolEntry("Chat", "UseDefaultEMailClient", true);
 	if (useDefaultEMailClient)
 		client = config_file.readEntry("Chat", "MailClient");
 
-	QString urlForDesktopServices;
-	QString urlForApplication;
-	if (email.startsWith(QLatin1String("mailto:")))
+	QByteArray urlForDesktopServices;
+	QByteArray urlForApplication;
+	if (email.startsWith("mailto:"))
 	{
 		urlForDesktopServices = email;
 		urlForApplication = email;

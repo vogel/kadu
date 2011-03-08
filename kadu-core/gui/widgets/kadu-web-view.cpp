@@ -223,7 +223,7 @@ bool KaduWebView::eventFilter(QObject *, QEvent *e)
 
 void KaduWebView::hyperlinkClicked(const QUrl &anchor) const
 {
-	UrlHandlerManager::instance()->openUrl(anchor.toString());
+	UrlHandlerManager::instance()->openUrl(anchor.toEncoded());
 }
 
 void KaduWebView::loadStarted()

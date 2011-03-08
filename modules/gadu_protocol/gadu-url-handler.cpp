@@ -40,9 +40,9 @@ GaduUrlHandler::GaduUrlHandler()
 	GaduRegExp = QRegExp("\\bgg:(/){0,3}[0-9]{1,8}\\b");
 }
 
-bool GaduUrlHandler::isUrlValid(const QString &url)
+bool GaduUrlHandler::isUrlValid(const QByteArray &url)
 {
-	return GaduRegExp.exactMatch(url);
+	return GaduRegExp.exactMatch(QString::fromUtf8(url));
 }
 
 void GaduUrlHandler::convertUrlsToHtml(HtmlDocument &document)
@@ -65,13 +65,13 @@ void GaduUrlHandler::convertUrlsToHtml(HtmlDocument &document)
 	}
 }
 
-void GaduUrlHandler::openUrl(const QString &url, bool disableMenu)
+void GaduUrlHandler::openUrl(const QByteArray &url, bool disableMenu)
 {
 	QList<Account> gaduAccounts = AccountManager::instance()->byProtocolName("gadu");
 	if (!gaduAccounts.count())
 		return;
 
-	QString gaduId = url;
+	QString gaduId = QString::fromUtf8(url);
 	if (gaduId.startsWith(QLatin1String("gg:")))
 	{
 		gaduId.remove(0, 3);

@@ -332,7 +332,7 @@ void KaduWindow::buddyActivated(const Buddy &buddy)
 {
 	if (buddy.contacts().isEmpty() && buddy.mobile().isEmpty() && !buddy.email().isEmpty())
 		if (buddy.email().indexOf(UrlHandlerManager::instance()->mailRegExp()) == 0)
-			UrlOpener::openEmail(buddy.email());
+			UrlOpener::openEmail(buddy.email().toUtf8());
 }
 
 void KaduWindow::invalidateRecentChatsMenu()

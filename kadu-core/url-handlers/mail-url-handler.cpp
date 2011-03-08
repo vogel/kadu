@@ -30,9 +30,9 @@ MailUrlHandler::MailUrlHandler()
 	MailRegExp = QRegExp("\\b[a-zA-Z0-9_\\.\\-]+@[a-zA-Z0-9\\-\\.]+\\.[a-zA-Z]{2,4}\\b");
 }
 
-bool MailUrlHandler::isUrlValid(const QString &url)
+bool MailUrlHandler::isUrlValid(const QByteArray &url)
 {
-	return MailRegExp.exactMatch(url);
+	return MailRegExp.exactMatch(QString::fromUtf8(url));
 }
 
 void MailUrlHandler::convertUrlsToHtml(HtmlDocument &document)
@@ -55,7 +55,7 @@ void MailUrlHandler::convertUrlsToHtml(HtmlDocument &document)
 	}
 }
 
-void MailUrlHandler::openUrl(const QString &url, bool disableMenu)
+void MailUrlHandler::openUrl(const QByteArray &url, bool disableMenu)
 {
 	Q_UNUSED(disableMenu)
 

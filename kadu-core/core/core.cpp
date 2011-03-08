@@ -510,7 +510,7 @@ void Core::receivedSignal(const QString &signal)
 	if ("activate" == signal)
 		_activateWindow(Window);
 	else
-		UrlHandlerManager::instance()->openUrl(signal, true);
+		UrlHandlerManager::instance()->openUrl(signal.toUtf8(), true);
 }
 
 void Core::quit()

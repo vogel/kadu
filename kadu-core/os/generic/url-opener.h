@@ -21,15 +21,15 @@
 #ifndef URL_OPENER_H
 #define URL_OPENER_H
 
-#include <QtCore/QString>
+#include <QtCore/QByteArray>
 
 #include "exports.h"
 
 namespace UrlOpener
 {
-	bool KADUAPI openUrl(const QString &urlForDesktopServices, const QString &urlForApplication, const QString &application);
-	void KADUAPI openUrl(const QString &url);
-	void KADUAPI openEmail(const QString &email);
-};
+	bool KADUAPI openUrl(const QByteArray &urlForDesktopServices, const QByteArray &urlForApplication, const QString &application);
+	void KADUAPI openUrl(const QByteArray &url);
+	void KADUAPI openEmail(const QByteArray &email);
+}
 
 #endif // URL_OPENER_H
