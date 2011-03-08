@@ -28,6 +28,7 @@
 #include <QtGui/QPushButton>
 
 #include "configuration/configuration-file.h"
+#include "core/core.h"
 #include "languages-manager.h"
 
 #include "config-wizard-profile-page.h"
@@ -85,6 +86,8 @@ void ConfigWizardProfilePage::initializePage()
 
 void ConfigWizardProfilePage::acceptPage()
 {
-    config_file.writeEntry("General", "Language", LanguagesCombo->itemData(LanguagesCombo->currentIndex()).toString());
+	config_file.writeEntry("General", "Language", LanguagesCombo->itemData(LanguagesCombo->currentIndex()).toString());
 	config_file.writeEntry("General", "Nick", NickNameEdit->text());
+
+	Core::instance()->myself().setDisplay(NickNameEdit->text());
 }

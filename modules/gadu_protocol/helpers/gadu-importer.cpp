@@ -35,6 +35,7 @@
 #include "configuration/xml-configuration-file.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact-shared.h"
+#include "core/core.h"
 #include "identities/identity-manager.h"
 #include "protocols/protocols-manager.h"
 #include "misc/misc.h"
@@ -184,6 +185,7 @@ void GaduImporter::importAccounts()
 	accountDetails->import_0_6_5_LastStatus();
 
 	AccountManager::instance()->addItem(defaultGaduGadu);
+	defaultGaduGadu.accountContact().setOwnerBuddy(Core::instance()->myself());
 
 	config_file.writeEntry("General", "SimpleMode", true);
 
