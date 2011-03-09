@@ -340,8 +340,8 @@ void KaduWebView::convertClipboardHtml(QClipboard::Mode mode)
 {
 	static QRegExp emotsRegExpApos("<img[^>]+title\\s*=\\s*'([^']+)'[^>]*>");
 	static QRegExp emotsRegExpQuot("<img[^>]+title\\s*=\\s*\"([^\"]+)\"[^>]*>");
-	static QRegExp linksRegExpApos("<a[^>]+href\\s*=\\s*'([^']+)'[^>]*>[^<]*<[^>]*>");
-	static QRegExp linksRegExpQuot("<a[^>]+href\\s*=\\s*\"([^\"]+)\"[^>]*>[^<]*<[^>]*>");
+	static QRegExp linksRegExpApos("<a[^>]+href\\s*=[^>]+title\\s*=\\s*'([^']+)'[^>]*>[^<]*<[^>]*>");
+	static QRegExp linksRegExpQuot("<a[^>]+href\\s*=[^>]+title\\s*=\\s*\"([^\"]+)\"[^>]*>[^<]*<[^>]*>");
 
 	QClipboard *cb = QApplication::clipboard();
 	QString html = cb->mimeData(mode)->html();

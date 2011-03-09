@@ -51,7 +51,7 @@ void MailUrlHandler::convertUrlsToHtml(HtmlDocument &document)
 		QString mail = Qt::escape(text.mid(index, length));
 
 		document.splitElement(i, index, length);
-		document.setElementValue(i, "<a href=\"mailto:" + mail + "\">" + mail + "</a>", true);
+		document.setElementValue(i, "<a href=\"mailto:" + mail + "\" title=\"" + mail +"\">" + mail + "</a>", true);
 	}
 }
 
