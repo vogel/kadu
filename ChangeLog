@@ -3,6 +3,7 @@
 * modules: Library class removed, we can use QLibrary (Vogel)
 * cmake: faster linking, not using final.cpp on Windows compilation (Darom, beevvy, Vogel)
 * gui: #2048 fixed: opening percent-encoded URL's with system web browser (beevvy)
+* gui: new syntax editor window layout (ultr)
 
 +++ version 0.6.6-rc3
 * buddies: disable merging buddy with itself (Vogel)

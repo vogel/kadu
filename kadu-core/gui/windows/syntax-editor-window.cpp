@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2010 Piotr Dąbrowski (ultr@ultr.pl)
+ * Copyright 2010-2011 Piotr Dąbrowski (ultr@ultr.pl)
  * Copyright 2010 Piotr Galiszewski (piotr.galiszewski@kadu.im)
  * Copyright 2010 Bartosz Brachaczek (b.brachaczek@gmail.com)
  * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
@@ -21,13 +21,17 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtGui/QDialogButtonBox>
 #include <QtGui/QFrame>
-#include <QtGui/QGridLayout>
+#include <QtGui/QHBoxLayout>
 #include <QtGui/QInputDialog>
+#include <QtGui/QLabel>
 #include <QtGui/QKeyEvent>
 #include <QtGui/QPushButton>
+#include <QtGui/QSplitter>
 #include <QtGui/QStyle>
 #include <QtGui/QTextEdit>
+#include <QtGui/QVBoxLayout>
 
 #include "configuration/configuration-file.h"
 #include "gui/widgets/preview.h"
@@ -38,6 +42,9 @@
 
 #include "syntax-editor-window.h"
 
+#define  EDITOR_MINIMUM_SIZE   340, 200
+#define  PREVIEW_MINIMUM_SIZE  150, 200
+
 SyntaxEditorWindow::SyntaxEditorWindow(const QSharedPointer<SyntaxList> &syntaxList, const QString &syntaxName,
 		const QString &category, const QString &syntaxHint, QWidget *parent) :
 		QWidget(parent), syntaxList(syntaxList), syntaxName(syntaxName)
@@ -47,55 +54,73 @@ SyntaxEditorWindow::SyntaxEditorWindow(const QSharedPointer<SyntaxList> &syntaxL
 	setWindowTitle(tr("Kadu syntax editor"));
 	setAttribute(Qt::WA_DeleteOnClose);
 
-	QFrame *syntax = new QFrame();
+	QVBoxLayout *layout = new QVBoxLayout(this);
 
-	QGridLayout *syntax_layout = new QGridLayout(syntax);
- 	syntax_layout->setColumnStretch(0, 2);
- 	syntax_layout->setColumnStretch(1, 1);
-	syntax_layout->setSpacing(5);
+	QSplitter *splitter = new QSplitter(this);
+	layout->addWidget(splitter);
+	splitter->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+	splitter->setChildrenCollapsible(false);
 
-	editor = new QTextEdit(syntax);
+	QWidget *splitterleft = new QWidget(splitter);
+	QVBoxLayout *splitterleftlayout = new QVBoxLayout(splitterleft);
+	splitterleftlayout->setMargin(0);
+	splitterleftlayout->setSpacing(5);
+
+	editor = new QTextEdit(this);
+	splitterleftlayout->addWidget(editor);
+	editor->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	editor->setAcceptRichText(true);
 	editor->setPlainText(syntaxList->readSyntax(syntaxName));
+	QFont font = this->font();
+	font.setFamily("monospace");
+	if(font.pixelSize() == -1)
+		font.setPointSizeF(font.pointSizeF() - 0.5);
+	else
+		font.setPixelSize(font.pixelSize() - 2);
+	editor->setFont(font);
+	editor->setMinimumSize(EDITOR_MINIMUM_SIZE);
 
 	if (!syntaxHint.isEmpty())
-		editor->setToolTip(syntaxHint);
+	{
+		QLabel *editorhint = new QLabel(this);
+		splitterleftlayout->addWidget(editorhint);
+		editorhint->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
+		editorhint->setWordWrap(true);
+		editorhint->setText(syntaxHint);
+	}
 
-	syntax_layout->addWidget(editor, 0, 0, 2, 1);
+	QWidget *splitterright = new QWidget(splitter);
+	QVBoxLayout *splitterrightlayout = new QVBoxLayout(splitterright);
+	splitterrightlayout->setMargin(0);
+	splitterrightlayout->setSpacing(5);
 
-	previewPanel = new Preview(syntax);
+	previewPanel = new Preview(this);
+	splitterrightlayout->addWidget(previewPanel);
+	previewPanel->setMinimumHeight(0);
+	previewPanel->setMaximumHeight(QWIDGETSIZE_MAX);
+	previewPanel->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
 	previewPanel->setResetBackgroundColor(config_file.readEntry("Look", category + "BgColor"));
-	syntax_layout->addWidget(previewPanel, 0, 1);
+	previewPanel->setMinimumSize(PREVIEW_MINIMUM_SIZE);
 
-	QPushButton *preview = new QPushButton(tr("Preview"), syntax);
-	connect(preview, SIGNAL(clicked()), this, SLOT(refreshPreview()));
-	syntax_layout->addWidget(preview, 1, 1);
+	QPushButton *previewbutton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_BrowserReload), tr("Refresh Preview"), this);
+	splitterrightlayout->addWidget(previewbutton);
+	connect(previewbutton, SIGNAL(clicked()), this, SLOT(refreshPreview()));
 
-	QWidget *buttons = new QWidget();
-	QHBoxLayout *buttons_layout = new QHBoxLayout;
-	buttons->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
-	buttons_layout->setSpacing(5);
-#ifndef Q_OS_MAC
-	(new QWidget(buttons))->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
-#endif
-	QPushButton *saveSyntax = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogOkButton), tr("Save"), 0);
-	QPushButton *saveAsSyntax = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogOkButton), tr("Save as..."), 0);
-	QPushButton *cancel = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton), tr("Cancel"), 0);
+	QDialogButtonBox *buttonslayout = new QDialogButtonBox(Qt::Horizontal, this);
+	layout->addWidget(buttonslayout);
+	QPushButton *saveSyntax = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogOkButton), tr("Save"), this);
+	QPushButton *saveAsSyntax = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogSaveButton), tr("Save as..."), this);
+	QPushButton *cancel = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton), tr("Cancel"), this);
+	buttonslayout->addButton(saveSyntax, QDialogButtonBox::YesRole);
+	buttonslayout->addButton(saveAsSyntax, QDialogButtonBox::ActionRole);
+	buttonslayout->addButton(cancel, QDialogButtonBox::RejectRole);
 
-	buttons_layout->addWidget(saveSyntax);
-	buttons_layout->addWidget(saveAsSyntax);
-	buttons_layout->addWidget(cancel);
-	buttons->setLayout(buttons_layout);
-
-	QVBoxLayout *layout = new QVBoxLayout(this);
-	layout->addWidget(syntax);
-	layout->addWidget(buttons);
+	splitter->setSizes( QList<int>() << splitter->sizeHint().width() << 1 );
 
 	if (syntaxList->isGlobal(syntaxName))
 		saveSyntax->setDisabled(true);
 	else
 		connect(saveSyntax, SIGNAL(clicked()), this, SLOT(save()));
-
 	connect(saveAsSyntax, SIGNAL(clicked()), this, SLOT(saveAs()));
 	connect(cancel, SIGNAL(clicked()), this, SLOT(close()));
 
