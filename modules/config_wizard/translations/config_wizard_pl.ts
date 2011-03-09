@@ -5,7 +5,7 @@
     <name>@default</name>
     <message>
         <source>Kadu needs to be restarted before changes to the language settings will take effect.</source>
-        <translation type="unfinished"></translation>
+        <translation>Aby zastosować zmiany języka Kadu musi zostać uruchomione ponownie</translation>
     </message>
 </context>
 <context>
@@ -32,7 +32,7 @@
     </message>
     <message>
         <source>&lt;p&gt;Please choose the network for the account that you would like to set up.&lt;/p&gt;&lt;p&gt;You can also create a new account in the wizard if you don&apos;t already have one&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;Wybierz sieć w której chcesz skonfigurować konto.&lt;/p&gt;&lt;p&gt;Kreator konfiguracji pozwala także na stworzenie nowego konto&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -47,7 +47,7 @@
     </message>
     <message>
         <source>&lt;p&gt;Confirm your wizard setting to start using Kadu.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;Potwierdź wprowadzone ustawienia aby rozpocząć korzystanie z Kadu.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -84,7 +84,7 @@
     </message>
     <message>
         <source>&lt;p&gt;Please enter your account data.&lt;/p&gt;&lt;p&gt;Go back if you want to select a different Account Setup option.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;Wprowadź dane konta.&lt;/p&gt;&lt;p&gt;Cofnij się, jeżeli chcesz wybrać inną opcję ustawień konta.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
