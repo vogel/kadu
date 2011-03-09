@@ -36,7 +36,7 @@ public:
 	virtual void addContact(const Contact &contact) = 0;
 	virtual void removeContact(const Contact &contact) = 0;
 	virtual void askForAuthorization(const Contact &contact) = 0;
-
+	virtual void sendAuthorization(const Contact &contact) = 0;
 };
 
 #endif // ROSTER_SERVICE_H

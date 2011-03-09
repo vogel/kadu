@@ -85,7 +85,8 @@ class AddBuddyWindow : public QDialog
 	bool addMobile();
 	bool addEmail();
 
-	void askForAuthorization(Contact contact);
+	void askForAuthorization(const Contact &contact);
+	void sendAuthorization(const Contact &contact);
 
 #ifdef Q_WS_MAEMO_5
 	void resizeEvent(QResizeEvent *event);

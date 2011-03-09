@@ -57,6 +57,7 @@ public:
 	virtual void addContact(const Contact &contact);
 	virtual void removeContact(const Contact &contact);
 	virtual void askForAuthorization(const Contact &contact);
+	virtual void sendAuthorization(const Contact &contact);
 
 	void downloadRoster();
 
