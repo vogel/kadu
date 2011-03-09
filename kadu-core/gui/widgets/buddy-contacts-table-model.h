@@ -46,6 +46,8 @@ class BuddyContactsTableModel : public QAbstractTableModel
 
 	void addItem(BuddyContactsTableItem *item, bool emitRowsInserted = true);
 
+	void sendAuthorization(const Contact &contact);
+
 private slots:
 	void itemUpdated(BuddyContactsTableItem *item);
 
