@@ -46,11 +46,11 @@ TabWidget::TabWidget()
 
 	setAcceptDrops(true);
 	setMovable(true);
+
+	setDocumentMode(true);
+
 #ifdef Q_OS_MAC
 	/* Dorr: on Mac make the tabs look like the ones from terminal or safari */
-	/* TODO 0.6.6: consider setting the following on all platforms
-	 * (at least documentMode looks quite nice in Oxygen) */
-	setDocumentMode(true);
 	setAttribute(Qt::WA_MacBrushedMetal);
 	setStyleSheet("QToolButton { background: transparent; }");
 #endif
