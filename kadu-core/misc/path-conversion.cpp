@@ -145,7 +145,15 @@ QString profilePath(const QString &subpath)
 #endif
 
 		Parser::globalVariables["HOME"] = home;
+
+#ifndef Q_OS_WIN
 		QString config_dir = QString::fromLocal8Bit(getenv("CONFIG_DIR"));
+#else
+		QString config_dir;
+		char buff[1024] = { 0 };
+		if (GetEnvironmentVariable("CONFIG_DIR", buff, sizeof(buff) - 1) > 0)
+			config_dir = buff;
+#endif
 
 #ifdef Q_OS_MAC
 		if (config_dir.isNull())
