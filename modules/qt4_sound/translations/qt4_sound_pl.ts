@@ -4,12 +4,10 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../qt4_sound.cpp" line="47"/>
         <source>Kadu</source>
         <translation>Kadu</translation>
     </message>
     <message>
-        <location filename="../qt4_sound.cpp" line="47"/>
         <source>QSound API is not available on this platform</source>
         <translation>API QSound nie jest dostępne na tej platformie</translation>
     </message>

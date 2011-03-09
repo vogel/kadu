@@ -4,27 +4,22 @@
 <context>
     <name>@default</name>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="4"/>
         <source>MediaPlayer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="7"/>
         <source>General</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="10"/>
         <source>MPRIS Media Player</source>
         <translation>MPRIS-Konformes Abspielprogramm</translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="13"/>
         <source>Service</source>
         <translation>Dienst</translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="15"/>
         <source>Usually: org.mpris.&lt;player name&gt; (eg. org.mpris.audacious) but for amarok is org.kde.amarok</source>
         <translation>Üblicherweise: org.mpris.&lt;Programmname&gt; (np. org.mpris.audacious) aber für amarok org.kde.amarok</translation>
     </message>

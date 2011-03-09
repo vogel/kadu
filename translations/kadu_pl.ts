@@ -202,10 +202,6 @@ To poważne zagrożenie bezpieczeństwa!</translation>
         <translation>Dostępny</translation>
     </message>
     <message>
-        <source>Busy</source>
-        <translation>Zajęty</translation>
-    </message>
-    <message>
         <source>Invisible</source>
         <translation>Ukryty</translation>
     </message>
@@ -2011,12 +2007,8 @@ zostaną zignorowane. Czy na pewno chcesz opuścić konferencję?</translation>
         <translation>Błąd połączenia</translation>
     </message>
     <message>
-        <source>&lt;b&gt;Connection error:&lt;/b&gt; %1</source>
-        <translation>&lt;b&gt;Błąd połączenia:&lt;/b&gt; %1</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Connection error:&lt;/b&gt; (%1) %2</source>
-        <translation>&lt;b&gt;Błąd połączenia:&lt;/b&gt; (%1) %2</translation>
+        <source>Connection error on account: %1 (%2)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3208,11 +3200,11 @@ Klient: %3</translation>
     <name>SearchWindowActions</name>
     <message>
         <source>&amp;Search</source>
-		<translation>&amp;Szukaj</translation>
+        <translation>&amp;Szukaj</translation>
     </message>
     <message>
         <source>&amp;Next results</source>
-		<translation>&amp;Następne wyniki</translation>
+        <translation>&amp;Następne wyniki</translation>
     </message>
     <message>
         <source>Stop</source>
@@ -3228,7 +3220,7 @@ Klient: %3</translation>
     </message>
     <message>
         <source>&amp;Chat</source>
-		<translation>&amp;Rozmowa</translation>
+        <translation>&amp;Rozmowa</translation>
     </message>
 </context>
 <context>
@@ -3290,7 +3282,7 @@ Klient: %3</translation>
     <name>StatusContainerManager</name>
     <message>
         <source>All</source>
-		<translation>Wszystkie</translation>
+        <translation>Wszystkie</translation>
     </message>
     <message>
         <source>Offline</source>

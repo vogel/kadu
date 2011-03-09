@@ -202,10 +202,6 @@ Es ist ein Sicherheitsrisiko!</translation>
         <translation>Erreichbar</translation>
     </message>
     <message>
-        <source>Busy</source>
-        <translation>Beschäftigt</translation>
-    </message>
-    <message>
         <source>Invisible</source>
         <translation>Versteckt</translation>
     </message>
@@ -1990,11 +1986,7 @@ von nun an ignoriert. Wollen Sie diese Konferenz wirklich verlassen?</translatio
         <translation>Verbindungsfehler</translation>
     </message>
     <message>
-        <source>&lt;b&gt;Connection error:&lt;/b&gt; %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Connection error:&lt;/b&gt; (%1) %2</source>
+        <source>Connection error on account: %1 (%2)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

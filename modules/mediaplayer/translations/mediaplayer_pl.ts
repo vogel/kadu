@@ -107,7 +107,7 @@
         <source>Other Settings</source>
         <translation>Inne ustawienia</translation>
     </message>
-	<message>
+    <message>
         <source>With this option enabled you&apos;ll be able to control
 your MediaPlayer in chat window by keyboard shortcuts:
 Control+ Enter/Backspace/Left/Right/Up/Down.</source>

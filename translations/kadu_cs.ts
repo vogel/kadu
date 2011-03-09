@@ -202,10 +202,6 @@ Je to vysoce bezpečnostně rizikové!</translation>
         <translation>Připojený</translation>
     </message>
     <message>
-        <source>Busy</source>
-        <translation>Zaneprázdněný</translation>
-    </message>
-    <message>
         <source>Invisible</source>
         <translation>Neviditelný</translation>
     </message>
@@ -2012,12 +2008,8 @@ Jste si jistý, že tuto poradu chcete opustit?</translation>
         <translation>Chyba spojení</translation>
     </message>
     <message>
-        <source>&lt;b&gt;Connection error:&lt;/b&gt; %1</source>
-        <translation>&lt;b&gt;Chyba spojení:&lt;/b&gt; %1</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Connection error:&lt;/b&gt; (%1) %2</source>
-        <translation>&lt;b&gt;Chyba spojení:&lt;/b&gt; (%1) %2</translation>
+        <source>Connection error on account: %1 (%2)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

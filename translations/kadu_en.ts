@@ -201,10 +201,6 @@ It&apos;s a high security risk!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Busy</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Invisible</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1979,11 +1975,7 @@ from now on. Are you sure you want to leave this conference?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&lt;b&gt;Connection error:&lt;/b&gt; %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Connection error:&lt;/b&gt; (%1) %2</source>
+        <source>Connection error on account: %1 (%2)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

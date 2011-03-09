@@ -202,10 +202,6 @@ E un rischio per la sicurezza!</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Busy</source>
-        <translation>Occupato</translation>
-    </message>
-    <message>
         <source>Invisible</source>
         <translation>Invisibile</translation>
     </message>
@@ -1981,11 +1977,7 @@ from now on. Are you sure you want to leave this conference?</source>
         <translation>Errore conessione</translation>
     </message>
     <message>
-        <source>&lt;b&gt;Connection error:&lt;/b&gt; %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Connection error:&lt;/b&gt; (%1) %2</source>
+        <source>Connection error on account: %1 (%2)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

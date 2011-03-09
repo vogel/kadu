@@ -77,7 +77,7 @@
     </message>
     <message>
         <source> kB</source>
-		<translation> kB</translation>
+        <translation> kB</translation>
     </message>
 </context>
 <context>

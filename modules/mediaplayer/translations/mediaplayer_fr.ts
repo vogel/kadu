@@ -106,7 +106,13 @@
     <message>
         <source>With this option enabled you&apos;ll be able to control
 your MediaPlayer in chat window by keyboard shortcuts:
-Control+ Enter/Backspace/Left/Right/Up/Down.Win+ Enter/Backspace/Left/Right/Up/Down.</source>
+Control+ Enter/Backspace/Left/Right/Up/Down.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>With this option enabled you&apos;ll be able to control
+your MediaPlayer in chat window by keyboard shortcuts:
+Win+ Enter/Backspace/Left/Right/Up/Down.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

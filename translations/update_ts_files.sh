@@ -21,12 +21,12 @@ done
 
 # all .cpp files in kadu_core subdirectories
 SRC_FILES=`find ../kadu-core/ -type f -name *.cpp`
-$LUPDATE -noobsolete -verbose $SRC_FILES -ts kadu_cs.ts >> $LOG 2>&1
-$LUPDATE -noobsolete -verbose $SRC_FILES -ts kadu_it.ts >> $LOG 2>&1
-$LUPDATE -noobsolete -verbose $SRC_FILES -ts kadu_pl.ts >> $LOG 2>&1
-$LUPDATE -noobsolete -verbose $SRC_FILES -ts kadu_en.ts >> $LOG 2>&1
-$LUPDATE -noobsolete -verbose $SRC_FILES -ts kadu_de.ts >> $LOG 2>&1
-$LUPDATE -noobsolete -verbose $SRC_FILES -ts kadu_fr.ts >> $LOG 2>&1
+$LUPDATE -locations none -noobsolete -verbose $SRC_FILES -ts kadu_cs.ts >> $LOG 2>&1
+$LUPDATE -locations none -noobsolete -verbose $SRC_FILES -ts kadu_it.ts >> $LOG 2>&1
+$LUPDATE -locations none -noobsolete -verbose $SRC_FILES -ts kadu_pl.ts >> $LOG 2>&1
+$LUPDATE -locations none -noobsolete -verbose $SRC_FILES -ts kadu_en.ts >> $LOG 2>&1
+$LUPDATE -locations none -noobsolete -verbose $SRC_FILES -ts kadu_de.ts >> $LOG 2>&1
+$LUPDATE -locations none -noobsolete -verbose $SRC_FILES -ts kadu_fr.ts >> $LOG 2>&1
 
 pushd ../modules/ >> $LOG
 for module in *; do
@@ -71,11 +71,11 @@ for module in *; do
 	fi
 
 	SRC_FILES=`find . -type f -name "*.cpp"`
-	$LUPDATE -noobsolete -verbose $SRC_FILES ${UI_TRANS} -ts translations/${module}_it.ts >> $LOG 2>&1
-	$LUPDATE -noobsolete -verbose $SRC_FILES ${UI_TRANS} -ts translations/${module}_pl.ts >> $LOG 2>&1
-	$LUPDATE -noobsolete -verbose $SRC_FILES ${UI_TRANS} -ts translations/${module}_en.ts >> $LOG 2>&1
-	$LUPDATE -noobsolete -verbose $SRC_FILES ${UI_TRANS} -ts translations/${module}_de.ts >> $LOG 2>&1
-	$LUPDATE -noobsolete -verbose $SRC_FILES ${UI_TRANS} -ts translations/${module}_fr.ts >> $LOG 2>&1
+	$LUPDATE -locations none -noobsolete -verbose $SRC_FILES ${UI_TRANS} -ts translations/${module}_it.ts >> $LOG 2>&1
+	$LUPDATE -locations none -noobsolete -verbose $SRC_FILES ${UI_TRANS} -ts translations/${module}_pl.ts >> $LOG 2>&1
+	$LUPDATE -locations none -noobsolete -verbose $SRC_FILES ${UI_TRANS} -ts translations/${module}_en.ts >> $LOG 2>&1
+	$LUPDATE -locations none -noobsolete -verbose $SRC_FILES ${UI_TRANS} -ts translations/${module}_de.ts >> $LOG 2>&1
+	$LUPDATE -locations none -noobsolete -verbose $SRC_FILES ${UI_TRANS} -ts translations/${module}_fr.ts >> $LOG 2>&1
 
 	popd >> $LOG 2>&1
 done
