@@ -188,9 +188,6 @@ void JabberRosterService::addContact(const Contact &contact)
 		groupsList.append(group.name());
 
 	Protocol->client()->addContact(contact.id(), buddy.display(), groupsList);
-
-	if (!contact.ownerBuddy().isOfflineTo())
-		Protocol->subscriptionService()->authorizeContact(contact, true);
 }
 
 void JabberRosterService::removeContact(const Contact &contact)
@@ -217,4 +214,15 @@ void JabberRosterService::askForAuthorization(const Contact &contact)
 		return;
 
 	Protocol->client()->requestSubscription(contact.id());
+}
+
+void JabberRosterService::sendAuthorization(const Contact &contact)
+{
+	if (!Protocol->isConnected() || contact.contactAccount() != Protocol->account())
+		return;
+
+	if (!Protocol->client())
+		return;
+
+	Protocol->client()->resendSubscription(contact.id());
 }

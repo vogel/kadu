@@ -504,6 +504,9 @@ bool AddBuddyWindow::addContact()
 
 	buddy.addToGroup(GroupCombo->currentGroup());
 
+	if (!buddy.isOfflineTo())
+		sendAuthorization(contact);
+
 	if (AskForAuthorization->isChecked())
 		askForAuthorization(contact);
 
@@ -558,7 +561,7 @@ void AddBuddyWindow::reject()
 	QDialog::reject();
 }
 
-void AddBuddyWindow::askForAuthorization(Contact contact)
+void AddBuddyWindow::askForAuthorization(const Contact &contact)
 {
 	Account account = AccountCombo->currentAccount();
 
@@ -566,4 +569,14 @@ void AddBuddyWindow::askForAuthorization(Contact contact)
 		return;
 
 	account.protocolHandler()->rosterService()->askForAuthorization(contact);
+}
+
+void AddBuddyWindow::sendAuthorization(const Contact &contact)
+{
+	Account account = AccountCombo->currentAccount();
+
+	if (!account || !account.protocolHandler() || !account.protocolHandler()->rosterService())
+		return;
+
+	account.protocolHandler()->rosterService()->sendAuthorization(contact);
 }
