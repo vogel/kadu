@@ -31,7 +31,7 @@
 ConfigWizardChooseNetworkPage::ConfigWizardChooseNetworkPage(QWidget *parent) :
 		ConfigWizardPage(parent)
 {
-	setDescription("<p>Please choose the network for the account that you would like to set up.</p><p>You can also create a new account in the wizard if you don't already have one</p>");
+	setDescription(tr("<p>Please choose the network for the account that you would like to set up.</p><p>You can also create a new account in the wizard if you don't already have one</p>"));
 
 	createGui();
 }

@@ -34,7 +34,7 @@
 ConfigWizardSetUpAccountPage::ConfigWizardSetUpAccountPage(QWidget *parent) :
 		ConfigWizardPage(parent), AccountWidget(0)
 {
-	setDescription("<p>Please enter your account data.</p><p>Go back if you want to select a different Account Setup option.</p>");
+	setDescription(tr("<p>Please enter your account data.</p><p>Go back if you want to select a different Account Setup option.</p>"));
 
 	createGui();
 }
