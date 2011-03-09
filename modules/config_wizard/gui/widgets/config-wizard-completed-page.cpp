@@ -31,7 +31,7 @@
 ConfigWizardCompletedPage::ConfigWizardCompletedPage(QWidget *parent) :
 		ConfigWizardPage(parent)
 {
-	setDescription("<p>Confirm your wizard setting to start using Kadu.</p>");
+	setDescription(tr("<p>Confirm your wizard setting to start using Kadu.</p>"));
 
 	createGui();
 }

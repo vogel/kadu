@@ -26,6 +26,10 @@
 <context>
     <name>ConfigWizardChooseNetworkPage</name>
     <message>
+        <source>&lt;p&gt;Please choose the network for the account that you would like to set up.&lt;/p&gt;&lt;p&lt;You can also create a new account in the wizard if you don't already have one&lt;/p&gt;</source>
+        <translation>&lt;p&gt;Wybierz sieć, w której chcesz skonfigurować swoje konto.&lt;/p&gt;&lt;p&lt;Kreator konfiguracji pozwala na stworzenie nowego konta, jeżeli jeszcze nie masz żadnego&lt;/p&gt;</translation>
+    </message>
+    <message>
         <source>&lt;h3&gt;Account Setup&lt;/h3&gt;</source>
         <translation>&lt;h3&gt;Tworzenie konta&lt;/h3&gt;</translation>
     </message>
