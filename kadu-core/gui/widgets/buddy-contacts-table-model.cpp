@@ -24,6 +24,7 @@
 #include "contacts/contact-manager.h"
 #include "gui/widgets/buddy-contacts-table-item.h"
 #include "model/roles.h"
+#include "protocols/services/roster-service.h"
 #include "protocols/protocol.h"
 
 #include "buddy-contacts-table-model.h"
@@ -143,9 +144,13 @@ void BuddyContactsTableModel::performItemActionEdit(BuddyContactsTableItem *item
 		contact.setId(item->id());
 		contact.setOwnerBuddy(ModelBuddy);
 		ContactManager::instance()->addItem(contact);
+		sendAuthorization(contact);
 	}
-	else
+	else if (contact.id() != item->id())
+	{
 		contact.setId(item->id());
+		sendAuthorization(contact);
+	}
 }
 
 void BuddyContactsTableModel::performItemActionAdd(BuddyContactsTableItem *item)
@@ -153,6 +158,7 @@ void BuddyContactsTableModel::performItemActionAdd(BuddyContactsTableItem *item)
 	Contact contact = ContactManager::instance()->byId(item->itemAccount(), item->id(), ActionCreateAndAdd);
 	contact.setOwnerBuddy(ModelBuddy);
 	contact.setPriority(item->itemContactPriority());
+	sendAuthorization(contact);
 }
 
 void BuddyContactsTableModel::performItemActionDetach(BuddyContactsTableItem *item)
@@ -168,6 +174,19 @@ void BuddyContactsTableModel::performItemActionDetach(BuddyContactsTableItem *it
 	Buddy newBuddy = BuddyManager::instance()->byDisplay(display, ActionCreateAndAdd);
 	newBuddy.setAnonymous(false);
 	contact.setOwnerBuddy(newBuddy);
+}
+
+void BuddyContactsTableModel::sendAuthorization(const Contact &contact)
+{
+	if (contact.ownerBuddy().isOfflineTo())
+		return;
+
+	Account account = contact.contactAccount();
+
+	if (!account || !account.protocolHandler() || !account.protocolHandler()->rosterService())
+		return;
+
+	account.protocolHandler()->rosterService()->sendAuthorization(contact);
 }
 
 void BuddyContactsTableModel::performItemActionRemove(BuddyContactsTableItem *item)
