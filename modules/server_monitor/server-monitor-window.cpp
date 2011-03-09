@@ -146,6 +146,9 @@ void ServerMonitorWindow::loadServersListFromGaduManager()
 
 void ServerMonitorWindow::loadServersListFromFile()
 {
+	if (!QFile::exists(ServerFileListName))
+		return;
+
 	QFile serverFileList(ServerFileListName);
 
 	serverFileList.open( QIODevice::ReadOnly);
