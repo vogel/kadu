@@ -44,7 +44,7 @@
 #include "history-importer.h"
 
 HistoryImporter::HistoryImporter(const Account &account, const QString &path, QObject *parent) :
-		QObject(parent), DestinationAccount(account), SourceDirectory(path), Thread(0)
+		QObject(parent), DestinationAccount(account), SourceDirectory(path), Thread(0), ProgressWindow(0)
 {
 	kdebugf();
 }
