@@ -47,5 +47,7 @@ if (INSTALL_SOUND_THEMES)
 		PATTERN ".autodownloaded" EXCLUDE
 		PATTERN ".svn" EXCLUDE
 		PATTERN "*.wav"
+		PATTERN "*.txt"
+		PATTERN "sound.conf"
 	)
 endif (INSTALL_SOUND_THEMES)
