@@ -2254,7 +2254,7 @@ Jest to prawdopodobnie dalsza część pliku &lt;b&gt;%5&lt;/b&gt;
     <name>GroupPropertiesWindow</name>
     <message>
         <source>Properties of group %1</source>
-        <translation>Dane grupy %1</translation>
+		<translation>Ustawienia grupy %1</translation>
     </message>
     <message>
         <source>Behaviour</source>
@@ -2266,7 +2266,7 @@ Jest to prawdopodobnie dalsza część pliku &lt;b&gt;%5&lt;/b&gt;
     </message>
     <message>
         <source>Offline for this group</source>
-        <translation>Nieidostępny dla tej grupy</translation>
+		<translation>Niedostępny dla tej grupy</translation>
     </message>
     <message>
         <source>Supported for Gadu-Gadu network</source>
@@ -2278,7 +2278,7 @@ Jest to prawdopodobnie dalsza część pliku &lt;b&gt;%5&lt;/b&gt;
     </message>
     <message>
         <source>Show in group &quot;All&quot;</source>
-        <translation>Wyświetlaj grupę &quot;Wszyscy&quot;</translation>
+		<translation>Pokaż w grupie &quot;Wszyscy&quot;</translation>
     </message>
     <message>
         <source>Look</source>
@@ -2286,7 +2286,7 @@ Jest to prawdopodobnie dalsza część pliku &lt;b&gt;%5&lt;/b&gt;
     </message>
     <message>
         <source>Use custom icon</source>
-        <translation>Użyj ikony użytkownika</translation>
+		<translation>Użyj własnej ikony</translation>
     </message>
     <message>
         <source> Set Icon</source>
@@ -2341,7 +2341,7 @@ Jest to prawdopodobnie dalsza część pliku &lt;b&gt;%5&lt;/b&gt;
     </message>
     <message>
         <source>Properties</source>
-        <translation>Dane grupy</translation>
+		<translation>Ustawienia grupy</translation>
     </message>
     <message>
         <source>New Group</source>
