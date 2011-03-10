@@ -12,6 +12,8 @@
 * accounts: properly set ownerBuddy for account contacts for all new accounts (Vogel)
 * jabber: fixed stupid bug in account connection options when changing SSL settings (Vogel)
 * jabber: #2047 fixed: properly send authorization after adding contact to roster (WhE)
+* tabs: better tabs look (beevvy/Vogel)
+* modules: fixed bug when protocols modules were not loaded after Kadu upgrade (Vogel)
 
 +++ version 0.6.6-rc2
 * jabber: #2026 fixed: incorrect XEP-0085: Chat State Notifications implementation (WhE, beevvy)
