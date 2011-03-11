@@ -276,9 +276,11 @@ int main(int argc, char *argv[])
 		}
 		else if ((param == "--debug") && (argc > i + 1))
 			debug_mask = atol(argv[++i]);
-#ifndef Q_WS_WIN
 		else if ((param == "--config-dir") && (argc > i + 1))
+#ifndef Q_WS_WIN
 			setenv("CONFIG_DIR", argv[++i], 1);
+#else
+			SetEnvironmentVariable("CONFIG_DIR", argv[++i]);
 #endif
 		else if (QRegExp("^[a-zA-Z]*:(/){0,3}.*").exactMatch(param))
 			ids.append(param);
