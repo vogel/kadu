@@ -220,6 +220,8 @@ class KADUAPI ModulesManager : public QObject
 	**/
 	QObject *translators;
 
+	void ensureLoadedAtLeastOnce(const QString &moduleName);
+
 private slots:
 	void dialogDestroyed();
 

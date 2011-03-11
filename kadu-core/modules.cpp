@@ -159,16 +159,12 @@ ModulesManager::ModulesManager() : QObject(),
 		if (!loaded_list.contains("hints"))
 			loaded_list.append("hints");
 	}
-	if (!everLoaded.contains("gadu_protocol") && !loaded_list.contains("gadu_protocol") && unloaded_list.contains("gadu_protocol"))
-	{
-		loaded_list.append("gadu_protocol");
-		unloaded_list.removeAll("gadu_protocol");
-	}
-	if (!everLoaded.contains("jabber_protocol") && !loaded_list.contains("jabber_protocol") && unloaded_list.contains("jabber_protocol"))
-	{
-		loaded_list.append("jabber_protocol");
-		unloaded_list.removeAll("jabber_protocol");
-	}
+
+	ensureLoadedAtLeastOnce("gadu_protocol");
+	ensureLoadedAtLeastOnce("jabber_protocol");
+	ensureLoadedAtLeastOnce("sql_history");
+	ensureLoadedAtLeastOnce("history_migration");
+	ensureLoadedAtLeastOnce("profiles_import");
 
 	registerStaticModules();
 
@@ -186,6 +182,15 @@ ModulesManager::~ModulesManager()
 {
 	kdebugf();
 	kdebugf2();
+}
+
+void ModulesManager::ensureLoadedAtLeastOnce(const QString& moduleName)
+{
+	if (!everLoaded.contains(moduleName) && !loaded_list.contains(moduleName) && unloaded_list.contains(moduleName))
+	{
+		loaded_list.append(moduleName);
+		unloaded_list.removeAll(moduleName);
+	}
 }
 
 void ModulesManager::loadProtocolModules()
