@@ -286,11 +286,11 @@ Nowe hasło wprowadzone w polu &quot;Nowe hasło&quot; nie jest identyczne z zaw
     <name>JabberContactPersonalInfoWidget</name>
     <message>
         <source>Full Name</source>
-        <translation>Imię i Nazwisko</translation>
+        <translation>Imię i nazwisko</translation>
     </message>
     <message>
         <source>Family Name</source>
-        <translation>Nazwisko Rodowe</translation>
+        <translation>Nazwisko rodowe</translation>
     </message>
     <message>
         <source>Nickname</source>
@@ -298,11 +298,11 @@ Nowe hasło wprowadzone w polu &quot;Nowe hasło&quot; nie jest identyczne z zaw
     </message>
     <message>
         <source>Birthdate</source>
-        <translation>Data Urodzenia</translation>
+        <translation>Data urodzenia</translation>
     </message>
     <message>
         <source>City</source>
-        <translation> Miasto</translation>
+        <translation>Miasto</translation>
     </message>
     <message>
         <source>E-Mail</source>
