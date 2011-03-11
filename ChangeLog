@@ -20,6 +20,7 @@
 * jabber: #2047 fixed: properly send authorization after adding contact to roster (WhE)
 * tabs: better tabs look (beevvy/Vogel)
 * modules: fixed bug when protocols modules were not loaded after Kadu upgrade (Vogel)
+* contacts: fixed bad avatar pixmaps in some cases for contacts without avatars (WhE)
 
 +++ version 0.6.6-rc2
 * jabber: #2026 fixed: incorrect XEP-0085: Chat State Notifications implementation (WhE, beevvy)

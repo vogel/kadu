@@ -35,10 +35,10 @@ static QString getAvatarPath(BuddyOrContact buddyOrContact)
 	if (BuddyOrContact::ItemBuddy == buddyOrContact.type())
 		avatar = buddyOrContact.buddy().buddyAvatar();
 
-	if (!avatar)
+	if (!avatar || avatar.pixmap().isNull())
 		avatar = buddyOrContact.contact().contactAvatar();
 
-	if (!avatar)
+	if (!avatar || avatar.pixmap().isNull())
 		return QString();
 
 	return webKitPath(avatar.filePath());
