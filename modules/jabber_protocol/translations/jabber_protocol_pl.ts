@@ -352,12 +352,12 @@ Nowe hasło wprowadzone w polu &quot;Nowe hasło&quot; nie jest identyczne z zaw
     <message>
         <location filename="../gui/widgets/jabber-contact-personal-info-widget.cpp" line="76"/>
         <source>Full Name</source>
-        <translation>Imię i Nazwisko</translation>
+        <translation>Imię i nazwisko</translation>
     </message>
     <message>
         <location filename="../gui/widgets/jabber-contact-personal-info-widget.cpp" line="79"/>
         <source>Family Name</source>
-        <translation>Nazwisko Rodowe</translation>
+        <translation>Nazwisko rodowe</translation>
     </message>
     <message>
         <location filename="../gui/widgets/jabber-contact-personal-info-widget.cpp" line="82"/>
@@ -367,12 +367,12 @@ Nowe hasło wprowadzone w polu &quot;Nowe hasło&quot; nie jest identyczne z zaw
     <message>
         <location filename="../gui/widgets/jabber-contact-personal-info-widget.cpp" line="85"/>
         <source>Birthdate</source>
-        <translation>Data Urodzenia</translation>
+        <translation>Data urodzenia</translation>
     </message>
     <message>
         <location filename="../gui/widgets/jabber-contact-personal-info-widget.cpp" line="88"/>
         <source>City</source>
-        <translation> Miasto</translation>
+        <translation>Miasto</translation>
     </message>
     <message>
         <location filename="../gui/widgets/jabber-contact-personal-info-widget.cpp" line="91"/>
