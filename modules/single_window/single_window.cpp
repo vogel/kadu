@@ -8,6 +8,7 @@
  ***************************************************************************/
 
 #include <QtGui/QCloseEvent>
+#include <QtGui/QKeyEvent>
 #include <QtCore/QStringList>
 
 #include "configuration/configuration-file.h"
@@ -19,7 +20,6 @@
 #include "core/core.h"
 #include "misc/misc.h"
 #include "debug.h"
-#include "../docking/docking.h"
 
 #include "single_window.h"
 
@@ -131,7 +131,6 @@ SingleWindow::SingleWindow()
 			this, SLOT(onOpenChat(ChatWidget *)));
 	connect(Core::instance(), SIGNAL(mainIconChanged(const QIcon &)),
 		this, SLOT(onStatusPixmapChanged(const QIcon &)));
-	connect(DockingManager::instance(), SIGNAL(mousePressLeftButton()), this, SLOT(showHide()));
 
 	connect(kadu, SIGNAL(keyPressed(QKeyEvent *)), this, SLOT(onkaduKeyPressed(QKeyEvent *)));
 
@@ -149,6 +148,7 @@ SingleWindow::SingleWindow()
 		}
 	}
 
+	kadu->show();
 	show();
 }
 
@@ -165,7 +165,6 @@ SingleWindow::~SingleWindow()
 			this, SLOT(onOpenChat(ChatWidget *)));
 	disconnect(Core::instance(), SIGNAL(mainIconChanged(const QIcon &)),
 			this, SLOT(onStatusPixmapChanged(const QIcon &)));
-	disconnect(DockingManager::instance(), SIGNAL(mousePressLeftButton()), this, SLOT(showHide()));
 
 	disconnect(tabs, SIGNAL(tabCloseRequested(int)), this, SLOT(closeTab(int)));
 	disconnect(tabs, SIGNAL(currentChanged(int)), this, SLOT(onTabChange(int)));
@@ -184,10 +183,12 @@ SingleWindow::~SingleWindow()
 		}
 	}
 
-	// reparent kadu
-	kadu->setParent(NULL);
-	loadWindowGeometry(kadu, "General", "Geometry", 0, 50, 205, 465);
-	kadu->showNormal();
+	kadu->setParent(0);
+	if (!Core::instance()->isClosing())
+	{
+		loadWindowGeometry(kadu, "General", "Geometry", 0, 50, 205, 465);
+		kadu->showNormal();
+	}
 }
 
 void SingleWindow::changeRosterPos(int newRosterPos)
@@ -233,22 +234,33 @@ void SingleWindow::closeTab(int index)
 
 void SingleWindow::closeEvent(QCloseEvent *event)
 {
-	event->ignore();
-	hide();
+	if (Core::instance()->kaduWindow()->docked())
+	{
+		event->ignore();
+		hide();
+	}
+	else
+	{
+		QMainWindow::closeEvent(event);
+		qApp->quit();
+	}
+}
+
+void SingleWindow::keyPressEvent(QKeyEvent *event)
+{
+	if (event->key() == Qt::Key_Escape && Core::instance()->kaduWindow()->docked())
+	{
+		hide();
+		return;
+	}
+
+	QMainWindow::keyPressEvent(event);
 }
 
 void SingleWindow::resizeEvent(QResizeEvent *event)
 {
 	QSize newSize = event->size();
 	split->resize(newSize);
-}
-
-void SingleWindow::showHide()
-{
-	if (isHidden())
-		showNormal();
-	else
-		hide();
 }
 
 void SingleWindow::closeChatWidget(ChatWidget *w)

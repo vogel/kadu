@@ -14,7 +14,6 @@
 #include "os/generic/compositing-aware-object.h"
 
 class SingleWindow : public QMainWindow, public ChatContainer
-
 {
 	Q_OBJECT
 
@@ -25,6 +24,7 @@ class SingleWindow : public QMainWindow, public ChatContainer
 
 protected:
 	void closeEvent(QCloseEvent *event);
+	void keyPressEvent(QKeyEvent *event);
 	void resizeEvent(QResizeEvent *event);
 
 public:
@@ -44,7 +44,7 @@ public slots:
 	void closeTab(int index);
 	void onIconChanged();
 	void onStatusPixmapChanged(const QIcon &icon);
-	void showHide();
+
 };
 
 class SingleWindowManager : public ConfigurationUiHandler, public ConfigurationAwareObject

@@ -399,22 +399,32 @@ void KaduWindow::storeConfiguration()
 
 void KaduWindow::closeEvent(QCloseEvent *e)
 {
-	e->ignore();
-
-	if (Docked)
-		hide();
+	if (!parentWidget())
+	{
+		if (Docked)
+		{
+			e->ignore();
+			hide();
+		}
+		else
+		{
+			MainWindow::closeEvent(e);
+			qApp->quit();
+		}
+	}
 	else
-		qApp->quit();
+		MainWindow::closeEvent(e);
 }
 
 void KaduWindow::keyPressEvent(QKeyEvent *e)
 {
 	if (e->key() == Qt::Key_Escape)
 	{
-		if (Docked)
+		if (Docked && !parentWidget())
 		{
 			kdebugm(KDEBUG_INFO, "Kadu::keyPressEvent(Key_Escape): Kadu hide\n");
 			hide();
+			return;
 		}
 	}
 	else if (e->matches(QKeySequence::Copy))
