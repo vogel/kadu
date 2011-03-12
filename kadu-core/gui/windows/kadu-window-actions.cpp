@@ -160,7 +160,7 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 	ShowMultilogons = new ActionDescription(this,
 		ActionDescription::TypeMainMenu, "showMultilogonsAction",
 		this, SLOT(showMultilogonsActionActivated(QAction *, bool)),
-		"", tr("Multilogons...")
+		"kadu_icons/multilogon", tr("Multilogons...")
 	);
 
 	ManageModules = new ActionDescription(this,
