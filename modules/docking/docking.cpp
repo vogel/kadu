@@ -251,7 +251,7 @@ void DockingManager::trayMousePressEvent(QMouseEvent * e)
 
 	if (e->button() == Qt::LeftButton)
 	{
-		QWidget *kadu = Core::instance()->kaduWindow();
+		QWidget *kadu = Core::instance()->kaduWindow()->window();
 
 		emit mousePressLeftButton();
 		kdebugm(KDEBUG_INFO, "minimized: %d, visible: %d\n", kadu->isMinimized(), kadu->isVisible());
@@ -341,7 +341,7 @@ void DockingManager::setDocker(Docker *docker)
 	else
 	{
  		if (!Core::instance()->isClosing())
-			Core::instance()->kaduWindow()->show();
+			Core::instance()->kaduWindow()->window()->show();
 		Core::instance()->kaduWindow()->setDocked(false);
 #endif
 	}
@@ -484,7 +484,7 @@ void DockingManager::showMinimizedChats()
 
 void DockingManager::dockIconClicked()
 {
-	QWidget *kadu = Core::instance()->kaduWindow();
+	QWidget *kadu = Core::instance()->kaduWindow()->window();
 
 	if (PendingMessagesManager::instance()->hasPendingMessages())
 	{

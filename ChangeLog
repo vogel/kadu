@@ -22,6 +22,8 @@
 * tabs: better tabs look (beevvy/Vogel)
 * modules: fixed bug when protocols modules were not loaded after Kadu upgrade (Vogel)
 * contacts: fixed bad avatar pixmaps in some cases for contacts without avatars (WhE)
+* single_window: fixed crash when docking was unloaded (beevvy)
+* single_window: fixed hiding Kadu widget instead of Single Window in some cases (beevvy)
 
 +++ version 0.6.6-rc2
 * jabber: #2026 fixed: incorrect XEP-0085: Chat State Notifications implementation (WhE, beevvy)
