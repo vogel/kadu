@@ -39,10 +39,12 @@
 
 class QCheckBox;
 class QLabel;
+class QPluginLoader;
 class QTranslator;
 class QTreeWidget;
 class QTreeWidgetItem;
 
+class GenericPlugin;
 class ModulesWindow;
 
 /**
@@ -59,6 +61,7 @@ struct KADUAPI ModuleInfo
 	QString author; /*!< Autor modu�u. */
 	QString version; /*!< Wersja modu�u. */
 	bool load_by_def; /*!< Czy modu� jest domy�lnie �adowany, czy nie? */
+	bool is_plugin;
 	ModuleInfo();
 };
 
@@ -104,6 +107,9 @@ class KADUAPI ModulesManager : public QObject
 	**/
 	struct Module
 	{
+		QPluginLoader *pluginLoader;
+		GenericPlugin *plugin;
+
 		QLibrary *lib; /*!< Wska�nik do obiektu biblioteki dzielonej. */
 		CloseModuleFunc *close; /*!< Wska�nik do funkcji deinicjalizuj�cej modu�. */
 		QTranslator *translator; /*!< Wska�nik do obiektu t�umacz�cego dla tego modu�u. */

@@ -26,7 +26,7 @@ class GenericPlugin
 public:
 	virtual ~GenericPlugin() {}
 
-	virtual void init() = 0;
+	virtual int init(bool firstLoad) = 0;
 	virtual void done() = 0;
 
 };

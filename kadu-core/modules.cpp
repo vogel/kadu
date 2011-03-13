@@ -31,6 +31,7 @@
 
 #include <QtCore/QDir>
 #include <QtCore/QLibrary>
+#include <QtCore/QPluginLoader>
 #include <QtCore/QTextCodec>
 #include <QtCore/QTranslator>
 #include <QtGui/QApplication>
@@ -55,11 +56,11 @@
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/modules-window.h"
 #include "gui/windows/message-dialog.h"
-
+#include "misc/path-conversion.h"
+#include "plugins/generic-plugin.h"
 #include "activate.h"
 #include "debug.h"
 #include "icons-manager.h"
-#include "misc/path-conversion.h"
 
 #include "modules.h"
 
@@ -325,7 +326,7 @@ QStringList ModulesManager::loadedModules() const
 {
 	QStringList loaded;
 	for (QMap<QString, Module>::const_iterator i = Modules.constBegin(); i != Modules.constEnd(); ++i)
-		if (i.value().lib)
+		if (i.value().lib || i.value().plugin)
 			loaded.append(i.key());
 	return loaded;
 }
@@ -398,6 +399,7 @@ bool ModulesManager::moduleInfo(const QString& module_name, ModuleInfo& info) co
 	info.replaces = desc_file.readEntry("Module", "Replaces").split(' ', QString::SkipEmptyParts);
 
 	info.load_by_def = desc_file.readBoolEntry("Module", "LoadByDefault");
+	info.is_plugin = desc_file.readBoolEntry("Module", "Plugin", false);
 
 	return true;
 }
@@ -478,6 +480,8 @@ bool ModulesManager::conflictsWithLoaded(const QString &module_name, const Modul
 bool ModulesManager::activateModule(const QString& module_name)
 {
 	Module m;
+	m.plugin = 0;
+
 	kdebugmf(KDEBUG_FUNCTION_START, "'%s'\n", qPrintable(module_name));
 
 	if (moduleIsActive(module_name))
@@ -508,12 +512,59 @@ bool ModulesManager::activateModule(const QString& module_name)
 
 	InitModuleFunc *init;
 
+	ModuleInfo m_info;
+	moduleInfo(module_name, m_info);
+
+	int res = 0;
+
 	if (moduleIsStatic(module_name))
 	{
 		m.lib = 0;
 		StaticModule sm = StaticModules[module_name];
 		init = sm.init;
 		m.close = sm.close;
+	}
+	else if (m_info.is_plugin)
+	{
+		m.lib = 0;
+		m.close = 0;
+
+		m.pluginLoader = new QPluginLoader(libPath("kadu/modules/"SO_PREFIX + module_name + "." SO_EXT));
+		m.pluginLoader->setLoadHints(QLibrary::ExportExternalSymbolsHint);
+		if (!m.pluginLoader->load())
+		{
+			QString err = m.pluginLoader->errorString();
+			MessageDialog::show("dialog-warning", tr("Kadu"), tr("Cannot load %1 plugin library.:\n%2").arg(module_name, err));
+			kdebugm(KDEBUG_ERROR, "cannot load %s because of: %s\n", qPrintable(module_name), qPrintable(err));
+			delete m.lib;
+			m.lib = 0;
+			m.close = 0;
+			kdebugf2();
+			return false;
+		}
+
+		if (!m.pluginLoader->instance())
+		{
+			MessageDialog::show("dialog-warning", tr("Kadu"), tr("Cannot find required object in module %1.\n"
+					"Maybe it's not Kadu-compatible plugin.").arg(module_name));
+			delete m.pluginLoader;
+			m.pluginLoader = 0;
+			kdebugf2();
+			return false;
+		}
+
+		m.plugin = dynamic_cast<GenericPlugin *>(m.pluginLoader->instance());
+		if (!m.plugin)
+		{
+			MessageDialog::show("dialog-warning", tr("Kadu"), tr("Cannot find required plugin object in module %1.\n"
+					"Maybe it's not Kadu-compatible plugin.").arg(module_name));
+			delete m.pluginLoader;
+			m.pluginLoader = 0;
+			kdebugf2();
+			return false;
+		}
+
+		res = m.plugin->init(!everLoaded.contains(module_name));
 	}
 	else
 	{
@@ -542,11 +593,12 @@ bool ModulesManager::activateModule(const QString& module_name)
 			kdebugf2();
 			return false;
 		}
+
+		res = init(!everLoaded.contains(module_name));
 	}
 
 	m.translator = loadModuleTranslation(module_name);
 
-	int res = init(!everLoaded.contains(module_name));
 	if (!everLoaded.contains(module_name))
 	{
 		everLoaded.append(module_name);
@@ -566,6 +618,12 @@ bool ModulesManager::activateModule(const QString& module_name)
 			qApp->removeTranslator(m.translator);
 			delete m.translator;
 			m.translator = 0;
+		}
+		if (m.pluginLoader)
+		{
+			delete m.pluginLoader;
+			m.pluginLoader = 0;
+			m.plugin = 0;
 		}
 		return false;
 	}
@@ -641,6 +699,13 @@ bool ModulesManager::deactivateModule(const QString& module_name, bool force)
 	{
 		m.lib->deleteLater();
 		m.lib = 0;
+	}
+
+	if (m.pluginLoader)
+	{
+		m.pluginLoader->deleteLater();;
+		m.pluginLoader = 0;
+		m.plugin = 0;
 	}
 
 	Modules.remove(module_name);
