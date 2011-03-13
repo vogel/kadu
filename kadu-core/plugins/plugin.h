@@ -33,10 +33,20 @@ class Plugin : public QObject
 {
 	Q_OBJECT
 
+public:
+	enum PluginState
+	{
+		PluginStateNew,
+		PluginStateNotLoaded,
+		PluginStateLoaded
+	};
+
+private:
 	typedef int InitModuleFunc(bool);
 	typedef void CloseModuleFunc(void);
 
 	QString Name;
+	PluginState State;
 
 	QPluginLoader *PluginLoader;
 	GenericPlugin *PluginObject;
@@ -53,6 +63,8 @@ public:
 
 	bool activate();
 	bool deactivate();
+
+	PluginState state() const { return State; }
 
 	PluginInfo * info() const { return Info; }
 

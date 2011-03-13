@@ -45,7 +45,8 @@
 
 Plugin::Plugin(const QString &name, PluginInfo *info, QObject *parent) :
 		QObject(parent),
-		Name(name), PluginLoader(0), PluginObject(0), PluginLibrary(0), Close(0), Translator(0), Info(info), UsageCounter(0)
+		Name(name), State(PluginStateNew), PluginLoader(0), PluginObject(0),
+		PluginLibrary(0), Close(0), Translator(0), Info(info), UsageCounter(0)
 {
 }
 
@@ -55,6 +56,9 @@ Plugin::~Plugin()
 
 bool Plugin::activate()
 {
+	if (PluginStateLoaded == State)
+		return true;
+
 	InitModuleFunc *init;
 
 	int res = 0;
@@ -161,11 +165,16 @@ bool Plugin::activate()
 	ModulesManager::instance()->Modules.insert(Name, this);
 	kdebugf2();
 
+	State = PluginStateLoaded;
+
 	return true;
 }
 
 bool Plugin::deactivate()
 {
+	if (PluginStateLoaded != State)
+		return true;
+
 	if (Close)
 		Close();
 
@@ -183,6 +192,8 @@ bool Plugin::deactivate()
 	PluginObject = 0;
 
 	ModulesManager::instance()->Modules.remove(Name);
+
+	State = PluginStateNotLoaded;
 
 	kdebugf2();
 	return true;

@@ -104,6 +104,16 @@ ModulesManager::ModulesManager() : QObject(),
 
 	// load modules as config file say
 	installed_list = installedModules();
+	foreach (const QString &moduleName, installed_list)
+	{
+		PluginInfo *info = pluginInfo(moduleName);
+		if (!info)
+			continue;
+
+		Plugin *plugin = new Plugin(moduleName, info, this);
+		Modules.insert(moduleName, plugin);
+	}
+
 	QString loaded_str = config_file.readEntry("General", "LoadedModules");
 	loaded_list = loaded_str.split(',', QString::SkipEmptyParts);
 	QString unloaded_str = config_file.readEntry("General", "UnloadedModules");
@@ -393,7 +403,7 @@ bool ModulesManager::moduleIsLoaded(const QString& module_name) const
 
 bool ModulesManager::moduleIsActive(const QString& module_name) const
 {
-	return Modules.contains(module_name);
+	return Modules.contains(module_name) && (Plugin::PluginStateLoaded == Modules.value(module_name)->state());
 }
 
 void ModulesManager::saveLoadedModules()
@@ -431,7 +441,7 @@ bool ModulesManager::conflictsWithLoaded(const QString &module_name, PluginInfo 
 		}
 		foreach (const QString &key, Modules.keys())
 			foreach (const QString &sit, Modules.value(key)->info()->provides())
-				if (it == sit)
+				if (moduleIsActive(key) && (it == sit))
 				{
 					MessageDialog::show("dialog-warning", tr("Kadu"), tr("Module %1 conflicts with: %2").arg(module_name, key));
 					kdebugf2();
@@ -440,7 +450,7 @@ bool ModulesManager::conflictsWithLoaded(const QString &module_name, PluginInfo 
 	}
 	foreach (const QString &key, Modules.keys())
 		foreach (const QString &sit, Modules.value(key)->info()->conflicts())
-			if (sit == module_name)
+			if (moduleIsActive(key) && (sit == module_name))
 			{
 				MessageDialog::show("dialog-warning", tr("Kadu"), tr("Module %1 conflicts with: %2").arg(module_name, key));
 				kdebugf2();
@@ -461,17 +471,19 @@ bool ModulesManager::activateModule(const QString& module_name)
 		return false;
 	}
 
-	PluginInfo *info = pluginInfo(module_name);
-	if (!info)
+	Plugin *plugin = Modules.value(module_name);
+	if (!plugin)
 		return false;
 
-	if (conflictsWithLoaded(module_name, info))
+	if (Plugin::PluginStateLoaded == plugin->state())
+		return true;
+
+	if (conflictsWithLoaded(module_name, plugin->info()))
 		return false;
 
-	if (!satisfyModuleDependencies(info))
+	if (!satisfyModuleDependencies(plugin->info()))
 		return false;
 
-	Plugin *plugin = new Plugin(module_name, info, this);
 	return plugin->activate();
 }
 
