@@ -159,42 +159,42 @@ MediaPlayer::MediaPlayer()
 		chatWidgetCreated(it);
 
 	enableMediaPlayerStatuses = new ActionDescription(
-		0, ActionDescription::TypeGlobal, "enableMediaPlayerStatusesAction",
+		this, ActionDescription::TypeGlobal, "enableMediaPlayerStatusesAction",
 		this, SLOT(mediaPlayerStatusChangerActivated(QAction *, bool)),
 		"external_modules/mediaplayer-media-playback-play", tr("Enable MediaPlayer Statuses"), true
 	);
 	mediaPlayerMenu = new ActionDescription(
-		0, ActionDescription::TypeChat, "mediaplayer_button",
+		this, ActionDescription::TypeChat, "mediaplayer_button",
 		this, SLOT(mediaPlayerMenuActivated(QAction *, bool)),
 		"external_modules/mediaplayer", tr("MediaPlayer"), false
 	);
 	playAction = new ActionDescription(
-		0, ActionDescription::TypeChat, "mediaplayer_play",
+		this, ActionDescription::TypeChat, "mediaplayer_play",
 		this, SLOT(playPause()),
 		"external_modules/mediaplayer-media-playback-play", tr("Play"), false
 	);
 	stopAction = new ActionDescription(
-		0, ActionDescription::TypeChat, "mediaplayer_stop",
+		this, ActionDescription::TypeChat, "mediaplayer_stop",
 		this, SLOT(stop()),
 		"external_modules/mediaplayer-media-playback-stop", tr("Stop"), false
 	);
 	prevAction = new ActionDescription(
-		0, ActionDescription::TypeChat, "mediaplayer_prev",
+		this, ActionDescription::TypeChat, "mediaplayer_prev",
 		this, SLOT(prevTrack()),
 		"external_modules/mediaplayer-media-skip-backward", tr("Previous Track"), false
 	);
 	nextAction = new ActionDescription(
-		0, ActionDescription::TypeChat, "mediaplayer_next",
+		this, ActionDescription::TypeChat, "mediaplayer_next",
 		this, SLOT(nextTrack()),
 		"external_modules/mediaplayer-media-skip-forward", tr("Next Track"), false
 	);
 	volUpAction = new ActionDescription(
-		0, ActionDescription::TypeChat, "mediaplayer_vol_up",
+		this, ActionDescription::TypeChat, "mediaplayer_vol_up",
 		this, SLOT(incrVolume()),
 		"audio-volume-high", tr("Volume Up"), false
 	);
 	volDownAction = new ActionDescription(
-		0, ActionDescription::TypeChat, "mediaplayer_vol_down",
+		this, ActionDescription::TypeChat, "mediaplayer_vol_down",
 		this, SLOT(decrVolume()),
 		"audio-volume-low", tr("Volume Down"), false
 	);
