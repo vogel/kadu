@@ -38,9 +38,7 @@
 BuddiesModelProxy::BuddiesModelProxy(QObject *parent)
 	: QSortFilterProxyModel(parent), SourceBuddyModel(0), SortByStatus(true)
 {
-	QSortFilterProxyModel::setSourceModel(0);
 	setDynamicSortFilter(true);
-	sort(0);
 
 	BrokenStringCompare = (QString("a").localeAwareCompare(QString("B")) > 0);
 	if (BrokenStringCompare)
@@ -87,10 +85,6 @@ void BuddiesModelProxy::setSortByStatus(bool sortByStatus)
 
 	SortByStatus = sortByStatus;
 	invalidateFilter();
-	invalidate();
-
-	sort(1);
-	sort(0);
 }
 
 void BuddiesModelProxy::modelDestroyed()

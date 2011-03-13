@@ -91,9 +91,6 @@ BuddiesListView::BuddiesListView(QWidget *parent) :
 
 	HideUnloadedFilter = new ContactNoUnloadedAccountFilter(this);
 
-	Delegate->setModel(ProxyModel);
-	QTreeView::setModel(ProxyModel);
-
 	ToolTipTimeoutTimer.setSingleShot(true);
 
 	connect(MainConfiguration::instance(), SIGNAL(simpleModeChanged()), this, SLOT(simpleModeChanged()));
@@ -116,9 +113,11 @@ void BuddiesListView::setModel(AbstractBuddiesModel *model)
 	Model = model;
 
 	ProxyModel->setSourceModel(dynamic_cast<QAbstractItemModel *>(model));
+
+	Delegate->setModel(ProxyModel);
+	QTreeView::setModel(ProxyModel);
+
 	ProxyModel->addFilter(HideUnloadedFilter);
-	ProxyModel->sort(1);
-	ProxyModel->sort(0); // something is wrong with sorting in my Qt version
 }
 
 void BuddiesListView::addFilter(AbstractBuddyFilter *filter)
