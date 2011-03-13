@@ -313,12 +313,13 @@ QStringList ModulesManager::staticModules() const
 
 QStringList ModulesManager::installedModules() const
 {
-	QDir dir(libPath("kadu/modules"), SO_PREFIX "*." SO_EXT);
+	QDir dir(dataPath("kadu/modules"), "*.desc");
 	dir.setFilter(QDir::Files);
+
 	QStringList installed;
 	QStringList entries = dir.entryList();
 	foreach (const QString &entry, entries)
-		installed.append(entry.mid(SO_PREFIX_LEN, entry.length() - SO_EXT_LEN - SO_PREFIX_LEN - 1));
+		installed.append(entry.left(entry.length() - 5));
 	return installed;
 }
 
