@@ -398,7 +398,6 @@ bool ModulesManager::moduleInfo(const QString& module_name, ModuleInfo& info) co
 	info.replaces = desc_file.readEntry("Module", "Replaces").split(' ', QString::SkipEmptyParts);
 
 	info.load_by_def = desc_file.readBoolEntry("Module", "LoadByDefault");
-	info.base = desc_file.readBoolEntry("Module", "Base");
 
 	return true;
 }

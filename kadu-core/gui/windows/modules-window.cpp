@@ -30,7 +30,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "QtGui/QCheckBox"
 #include "QtGui/QGroupBox"
 #include "QtGui/QHBoxLayout"
 #include "QtGui/QLabel"
@@ -126,12 +125,8 @@ ModulesWindow::ModulesWindow(QWidget *parent)
 	QHBoxLayout *bottomLayout = new QHBoxLayout(bottom);
 	bottomLayout->setSpacing(5);
 
-	hideBaseModules = new QCheckBox(tr("Hide base modules"), bottom);
-	hideBaseModules->setChecked(config_file.readBoolEntry("General", "HideBaseModules"));
-	connect(hideBaseModules, SIGNAL(clicked()), this, SLOT(refreshList()));
 	QPushButton *pb_close = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton), tr("&Close"), bottom);
 
-	bottomLayout->addWidget(hideBaseModules);
 	bottomLayout->addStretch();
 	bottomLayout->addWidget(pb_close);
 #ifdef Q_OS_MAC
@@ -168,7 +163,6 @@ ModulesWindow::ModulesWindow(QWidget *parent)
 ModulesWindow::~ModulesWindow()
 {
 	kdebugf();
-	config_file.writeEntry("General", "HideBaseModules", hideBaseModules->isChecked());
  	saveWindowGeometry(this, "General", "ModulesWindowGeometry");
 	kdebugf2();
 }
@@ -239,18 +233,13 @@ void ModulesWindow::refreshList()
 
 	QStringList moduleList = ModulesManager::instance()->staticModules();
 	ModuleInfo info;
-	bool hideBase = hideBaseModules->isChecked();
+
 	foreach (const QString &module, moduleList)
 	{
 		QStringList strings;
 
 		if (ModulesManager::instance()->moduleInfo(module, info))
-		{
-			if (info.base && hideBase)
-				continue;
-
 			strings << module << info.version << tr("Static") << tr("Loaded");
-		}
 		else
 			strings << module << QString() << tr("Static") << tr("Loaded");
 
@@ -263,12 +252,7 @@ void ModulesWindow::refreshList()
 		QStringList strings;
 
 		if (ModulesManager::instance()->moduleInfo(module, info))
-		{
-			if (info.base && hideBase)
-				continue;
-
 			strings << module << info.version << tr("Dynamic") << tr("Loaded");
-		}
 		else
 			strings << module << QString() << tr("Dynamic") << tr("Loaded");
 
@@ -281,12 +265,7 @@ void ModulesWindow::refreshList()
 		QStringList strings;
 
 		if (ModulesManager::instance()->moduleInfo(module, info))
-		{
-			if (info.base && hideBase)
-				continue;
-
 			strings << module << info.version << tr("Dynamic") << tr("Not loaded");
-		}
 		else
 			strings << module << QString() << tr("Dynamic") << tr("Not loaded");
 

@@ -5,4 +5,3 @@ Author=Kadu Team
 Provides=notify_method
 LoadByDefault=false
 Version=core
-Base=false

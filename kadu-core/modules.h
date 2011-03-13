@@ -59,7 +59,6 @@ struct KADUAPI ModuleInfo
 	QString author; /*!< Autor modu�u. */
 	QString version; /*!< Wersja modu�u. */
 	bool load_by_def; /*!< Czy modu� jest domy�lnie �adowany, czy nie? */
-	bool base; /*!< Czy modu� nale�y do modu��w podstawowych? */
 	ModuleInfo();
 };
 
