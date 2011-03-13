@@ -52,6 +52,7 @@ set (kadu_SUBDIRS
 	notify
 	os
 	parser
+	plugins
 	protocols
 	qt
 	status

@@ -42,10 +42,11 @@
 #include <QtGui/QScrollBar>
 
 #include "configuration/configuration-file.h"
-
-#include "debug.h"
-#include "icons-manager.h"
 #include "misc/misc.h"
+#include "plugins/plugin-info.h"
+#include "icons-manager.h"
+#include "debug.h"
+
 #include "modules.h"
 #include "modules-window.h"
 
@@ -232,14 +233,14 @@ void ModulesWindow::refreshList()
 	lv_modules->clear();
 
 	QStringList moduleList = ModulesManager::instance()->staticModules();
-	ModuleInfo info;
 
 	foreach (const QString &module, moduleList)
 	{
 		QStringList strings;
 
-		if (ModulesManager::instance()->moduleInfo(module, info))
-			strings << module << info.version << tr("Static") << tr("Loaded");
+		PluginInfo *pluginInfo = ModulesManager::instance()->pluginInfo(module);
+		if (pluginInfo)
+			strings << module << pluginInfo->version() << tr("Static") << tr("Loaded");
 		else
 			strings << module << QString() << tr("Static") << tr("Loaded");
 
@@ -251,8 +252,9 @@ void ModulesWindow::refreshList()
 	{
 		QStringList strings;
 
-		if (ModulesManager::instance()->moduleInfo(module, info))
-			strings << module << info.version << tr("Dynamic") << tr("Loaded");
+		PluginInfo *pluginInfo = ModulesManager::instance()->pluginInfo(module);
+		if (pluginInfo)
+			strings << module << pluginInfo->version() << tr("Dynamic") << tr("Loaded");
 		else
 			strings << module << QString() << tr("Dynamic") << tr("Loaded");
 
@@ -264,8 +266,9 @@ void ModulesWindow::refreshList()
 	{
 		QStringList strings;
 
-		if (ModulesManager::instance()->moduleInfo(module, info))
-			strings << module << info.version << tr("Dynamic") << tr("Not loaded");
+		PluginInfo *pluginInfo = ModulesManager::instance()->pluginInfo(module);
+		if (pluginInfo)
+			strings << module << pluginInfo->version() << tr("Dynamic") << tr("Not loaded");
 		else
 			strings << module << QString() << tr("Dynamic") << tr("Not loaded");
 
@@ -281,13 +284,13 @@ void ModulesWindow::refreshList()
 void ModulesWindow::getInfo()
 {
 	kdebugf();
-	ModuleInfo info;
 
 	QTreeWidgetItem *selected = getSelected();
 	if (!selected)
 		return;
 
-	if (!ModulesManager::instance()->moduleInfo(selected->text(0), info))
+	PluginInfo *pluginInfo = ModulesManager::instance()->pluginInfo(selected->text(0));
+	if (!pluginInfo)
 	{
 		kdebugf2();
 		return;
@@ -303,12 +306,12 @@ void ModulesWindow::getInfo()
 			"<br/><b>Version: </b>%6"
 			"<br/><b>Description: </b>%7")
 			.arg(selected->text(0))
-			.arg(info.depends.join(", "))
-			.arg(info.conflicts.join(", "))
-			.arg(info.provides.join(", "))
-			.arg(info.author)
-			.arg(info.version)
-			.arg(info.description));
+			.arg(pluginInfo->dependencies().join(", "))
+			.arg(pluginInfo->conflicts().join(", "))
+			.arg(pluginInfo->provides().join(", "))
+			.arg(pluginInfo->author())
+			.arg(pluginInfo->version())
+			.arg(pluginInfo->description()));
 #endif
 
 	kdebugf2();

@@ -46,24 +46,7 @@ class QTreeWidgetItem;
 
 class GenericPlugin;
 class ModulesWindow;
-
-/**
-	\struct ModuleInfo
-	\brief Informacje o module.
-**/
-struct KADUAPI ModuleInfo
-{
-	QStringList depends; /*!< Jakie inne modu�y s� wymagane przez ten modu�. */
-	QStringList conflicts; /*!< Z jakimi modu�ami ten modu� konfliktuje. */
-	QStringList provides; /*!< Jak� cech� dostarcza ten modu�. */
-	QStringList replaces;
-	QString description; /*!< Opis modu�u. */
-	QString author; /*!< Autor modu�u. */
-	QString version; /*!< Wersja modu�u. */
-	bool load_by_def; /*!< Czy modu� jest domy�lnie �adowany, czy nie? */
-	bool is_plugin;
-	ModuleInfo();
-};
+class PluginInfo;
 
 /**
 	Ta klasa odpowiada za obs�ug� modu��w Kadu.
@@ -113,7 +96,7 @@ class KADUAPI ModulesManager : public QObject
 		QLibrary *lib; /*!< Wska�nik do obiektu biblioteki dzielonej. */
 		CloseModuleFunc *close; /*!< Wska�nik do funkcji deinicjalizuj�cej modu�. */
 		QTranslator *translator; /*!< Wska�nik do obiektu t�umacz�cego dla tego modu�u. */
-		ModuleInfo info; /*!< Informacje o module. */
+		PluginInfo *info; /*!< Informacje o module. */
 		int usage_counter; /*!< Licznik u�ycia modu�u. */
 		Module();
 	};
@@ -148,7 +131,7 @@ class KADUAPI ModulesManager : public QObject
 		stara si� je za�adowa� je�li s� dost�pne.
 		@param module_info informacje o module
 	**/
-	bool satisfyModuleDependencies(const ModuleInfo &module_info);
+	bool satisfyModuleDependencies(PluginInfo *pluginInfo);
 
 	/**
 		Zwi�ksza liczniki u�ycia modu��w u�ywanych
@@ -156,7 +139,7 @@ class KADUAPI ModulesManager : public QObject
 		@param module_info informacje o module
 	**/
 
-	void incDependenciesUsageCount(const ModuleInfo &module_info);
+	void incDependenciesUsageCount(PluginInfo *pluginInfo);
 	/**
 		Rejestruje modu� statyczny. Funcja wywo�ywana
 		dla wszystkich modu��w statycznych przez kod
@@ -234,14 +217,7 @@ public:
 
 	QString moduleProvides(const QString &provides);
 
-	/**
-		\fn bool moduleInfo(const QString &module_name, ModuleInfo &info) const
-		Pobiera do info informacje o danym module.
-		\param[in] module_name nazwa modu�u, dla kt�rego nale�y pobra� informacj�.
-		\param[out] info struktura, w kt�rej te informacje nale�y umie�ci�.
-		\return true, je�li si� uda�o, w przeciwnym wypadku false.
-	**/
-	bool moduleInfo(const QString &module_name, ModuleInfo &info) const;
+	PluginInfo * pluginInfo(const QString &moduleName) const;
 
 	/**
 		\fn bool moduleIsStatic(const QString &module_name) const
@@ -288,7 +264,7 @@ public:
 		\param module_info informacje o module.
 		\return true, je�li modu� konfliktuje, false je�li nie.
 	**/
-	bool conflictsWithLoaded(const QString &module_name, const ModuleInfo &module_info) const;
+	bool conflictsWithLoaded(const QString &module_name, PluginInfo *pluginInfo) const;
 
 public slots:
 	/**
