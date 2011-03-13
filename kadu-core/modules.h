@@ -46,6 +46,7 @@ class QTreeWidgetItem;
 
 class GenericPlugin;
 class ModulesWindow;
+class Plugin;
 class PluginInfo;
 
 /**
@@ -61,6 +62,8 @@ class KADUAPI ModulesManager : public QObject
 	ModulesManager();
 
 	static ModulesManager *Instance;
+
+	friend class Plugin;
 
 	typedef int InitModuleFunc(bool);
 	typedef void CloseModuleFunc(void);
@@ -82,30 +85,10 @@ class KADUAPI ModulesManager : public QObject
 	QMap<QString, StaticModule> StaticModules;
 
 	/**
-		Informacje o aktywnym module
-		statycznym b�d� zewn�trznym.
-		Dla modu�u statycznego lib==NULL.
-		\struct Module
-		\brief Informacje o aktywnym module.
-	**/
-	struct Module
-	{
-		QPluginLoader *pluginLoader;
-		GenericPlugin *plugin;
-
-		QLibrary *lib; /*!< Wska�nik do obiektu biblioteki dzielonej. */
-		CloseModuleFunc *close; /*!< Wska�nik do funkcji deinicjalizuj�cej modu�. */
-		QTranslator *translator; /*!< Wska�nik do obiektu t�umacz�cego dla tego modu�u. */
-		PluginInfo *info; /*!< Informacje o module. */
-		int usage_counter; /*!< Licznik u�ycia modu�u. */
-		Module();
-	};
-
-	/**
 		Lista aktywnych modu��w
 		statycznych b�d� zewn�trznych.
 	**/
-	QMap<QString, Module> Modules;
+	QMap<QString, Plugin *> Modules;
 
 	/**
 		List of modules that were loaded in the past.
