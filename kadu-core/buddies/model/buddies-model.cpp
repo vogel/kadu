@@ -50,14 +50,14 @@ BuddiesModel::BuddiesModel(QObject *parent) :
 			this, SLOT(buddyUpdated(Buddy &)));
 
 	ContactManager *cm = ContactManager::instance();
-	connect(cm, SIGNAL(contactAboutToBeAttached(Contact)),
-			this, SLOT(contactAboutToBeAttached(Contact)));
+	connect(cm, SIGNAL(contactAboutToBeAttached(Contact, Buddy)),
+			this, SLOT(contactAboutToBeAttached(Contact, Buddy)));
 	connect(cm, SIGNAL(contactAttached(Contact)),
 			this, SLOT(contactAttached(Contact)));
 	connect(cm, SIGNAL(contactAboutToBeDetached(Contact)),
 			this, SLOT(contactAboutToBeDetached(Contact)));
-	connect(cm, SIGNAL(contactDetached(Contact)),
-			this, SLOT(contactDetached(Contact)));
+	connect(cm, SIGNAL(contactDetached(Contact, Buddy)),
+			this, SLOT(contactDetached(Contact, Buddy)));
 	connect(cm, SIGNAL(contactUpdated(Contact&)),
 			   this, SLOT(contactUpdated(Contact&)));
 }
@@ -79,14 +79,14 @@ BuddiesModel::~BuddiesModel()
 			this, SLOT(buddyUpdated(Buddy &)));
 
 	ContactManager *cm = ContactManager::instance();
-	disconnect(cm, SIGNAL(contactAboutToBeAttached(Contact)),
-			this, SLOT(contactAboutToBeAttached(Contact)));
+	disconnect(cm, SIGNAL(contactAboutToBeAttached(Contact, Buddy)),
+			this, SLOT(contactAboutToBeAttached(Contact, Buddy)));
 	disconnect(cm, SIGNAL(contactAttached(Contact)),
 			this, SLOT(contactAttached(Contact)));
 	disconnect(cm, SIGNAL(contactAboutToBeDetached(Contact)),
 			this, SLOT(contactAboutToBeDetached(Contact)));
-	disconnect(cm, SIGNAL(contactDetached(Contact)),
-			this, SLOT(contactDetached(Contact)));
+	disconnect(cm, SIGNAL(contactDetached(Contact, Buddy)),
+			this, SLOT(contactDetached(Contact, Buddy)));
 	disconnect(cm, SIGNAL(contactUpdated(Contact&)),
 			   this, SLOT(contactUpdated(Contact&)));
 }
@@ -147,15 +147,15 @@ void BuddiesModel::buddyUpdated(Buddy &buddy)
 		emit dataChanged(index, index);
 }
 
-void BuddiesModel::contactAboutToBeAttached(Contact contact)
+void BuddiesModel::contactAboutToBeAttached(Contact contact, Buddy nearFutureBuddy)
 {
-	Buddy buddy = contact.ownerBuddy();
+	Q_UNUSED(contact)
 
-	QModelIndex index = indexForValue(buddy);
+	QModelIndex index = indexForValue(nearFutureBuddy);
 	if (!index.isValid())
 		return;
 
-	int count = rowCount(index);
+	int count = nearFutureBuddy.contacts().length();
 	beginInsertRows(index, count, count);
 }
 
@@ -182,11 +182,11 @@ void BuddiesModel::contactAboutToBeDetached(Contact contact)
 	beginRemoveRows(index, contactIndex, contactIndex);
 }
 
-void BuddiesModel::contactDetached(Contact contact)
+void BuddiesModel::contactDetached(Contact contact, Buddy previousBuddy)
 {
-	Buddy buddy = contact.ownerBuddy();
+	Q_UNUSED(contact)
 
-	QModelIndex index = indexForValue(buddy);
+	QModelIndex index = indexForValue(previousBuddy);
 	if (!index.isValid())
 		return;
 

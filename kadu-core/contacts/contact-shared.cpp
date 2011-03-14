@@ -169,7 +169,7 @@ void ContactShared::detach(const Buddy &buddy, bool emitSignals)
 	OwnerBuddy.removeContact(this);
 
 	if (emitSignals)
-		emit detached();
+		emit detached(OwnerBuddy);
 }
 
 void ContactShared::attach(const Buddy &buddy, bool emitReattached)
@@ -181,7 +181,7 @@ void ContactShared::attach(const Buddy &buddy, bool emitReattached)
 		return;
 
 	if (!emitReattached)
-		emit aboutToBeAttached();
+		emit aboutToBeAttached(OwnerBuddy);
 
 	OwnerBuddy.addContact(this);
 

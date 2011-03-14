@@ -70,22 +70,22 @@ void ContactManager::aboutToBeDetached()
 		emit contactAboutToBeDetached(contact);
 }
 
-void ContactManager::detached()
+void ContactManager::detached(Buddy previousBuddy)
 {
 	QMutexLocker(&mutex());
 
 	Contact contact(sender());
 	if (!contact.isNull())
-		emit contactDetached(contact);
+		emit contactDetached(contact, previousBuddy);
 }
 
-void ContactManager::aboutToBeAttached()
+void ContactManager::aboutToBeAttached(Buddy nearFutureBuddy)
 {
 	QMutexLocker(&mutex());
 
 	Contact contact(sender());
 	if (!contact.isNull())
-		emit contactAboutToBeAttached(contact);
+		emit contactAboutToBeAttached(contact, nearFutureBuddy);
 }
 
 void ContactManager::attached()
@@ -122,8 +122,8 @@ void ContactManager::itemRegistered(Contact item)
 
 	connect(item, SIGNAL(idChanged(const QString &)), this, SLOT(idChanged(const QString &)));
 	connect(item, SIGNAL(aboutToBeDetached()), this, SLOT(aboutToBeDetached()));
-	connect(item, SIGNAL(detached()), this, SLOT(detached()));
-	connect(item, SIGNAL(aboutToBeAttached()), this, SLOT(aboutToBeAttached()));
+	connect(item, SIGNAL(detached(Buddy)), this, SLOT(detached(Buddy)));
+	connect(item, SIGNAL(aboutToBeAttached(Buddy)), this, SLOT(aboutToBeAttached(Buddy)));
 	connect(item, SIGNAL(attached()), this, SLOT(attached()));
 	connect(item, SIGNAL(reattached()), this, SLOT(reattached()));
 }
@@ -140,8 +140,8 @@ void ContactManager::itemUnregistered(Contact item)
 {
 	disconnect(item, SIGNAL(idChanged(const QString &)), this, SLOT(idChanged(const QString &)));
 	disconnect(item, SIGNAL(aboutToBeDetached()), this, SLOT(aboutToBeDetached()));
-	disconnect(item, SIGNAL(detached()), this, SLOT(detached()));
-	disconnect(item, SIGNAL(aboutToBeAttached()), this, SLOT(aboutToBeAttached()));
+	disconnect(item, SIGNAL(detached(Buddy)), this, SLOT(detached(Buddy)));
+	disconnect(item, SIGNAL(aboutToBeAttached(Buddy)), this, SLOT(aboutToBeAttached(Buddy)));
 	disconnect(item, SIGNAL(attached()), this, SLOT(attached()));
 	disconnect(item, SIGNAL(reattached()), this, SLOT(reattached()));
 

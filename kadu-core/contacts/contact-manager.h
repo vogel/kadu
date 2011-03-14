@@ -51,10 +51,10 @@ private slots:
 	void contactDataUpdated();
 	void idChanged(const QString &oldId);
 
-	void aboutToBeAttached();
+	void aboutToBeAttached(Buddy nearFutureBuddy);
 	void attached();
 	void aboutToBeDetached();
-	void detached();
+	void detached(Buddy previousBuddy);
 	void reattached();
 
 protected:
@@ -79,8 +79,8 @@ signals:
 	void contactRemoved(Contact contact);
 
 	void contactAboutToBeDetached(Contact contact);
-	void contactDetached(Contact contact);
-	void contactAboutToBeAttached(Contact contact);
+	void contactDetached(Contact contact, Buddy previousBuddy);
+	void contactAboutToBeAttached(Contact contact, Buddy nearFutureBuddy);
 	void contactAttached(Contact contact);
 	void contactReattached(Contact contact);
 
