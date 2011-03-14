@@ -175,19 +175,19 @@
     <name>JabberActions</name>
     <message>
         <source>Show XML Console for Account</source>
-        <translation>Otwórz Konsolę XML</translation>
+        <translation>Otwórz konsolę XML</translation>
     </message>
     <message>
         <source>Resend Subscription</source>
-        <translation>Ponów Subskrypcję</translation>
+        <translation>Ponów subskrypcję</translation>
     </message>
     <message>
         <source>Remove Subscription</source>
-        <translation>Anuluj Subskrypcję</translation>
+        <translation>Anuluj subskrypcję</translation>
     </message>
     <message>
         <source>Ask for Subscription</source>
-        <translation>Poproś o Subskrypcję</translation>
+        <translation>Poproś o subskrypcję</translation>
     </message>
 </context>
 <context>
