@@ -136,10 +136,10 @@ Contact BuddiesModelBase::buddyContact(const QModelIndex &index, int accountInde
 		return Contact::null;
 
 	QList<Contact> contacts = buddy.contacts();
-	if (contacts.size() <= accountIndex)
+	if (accountIndex < 0 || contacts.size() <= accountIndex)
 		return Contact::null;
 
-	return contacts[accountIndex];
+	return contacts.at(accountIndex);
 }
 
 QVariant BuddiesModelBase::data(const QModelIndex &index, int role) const

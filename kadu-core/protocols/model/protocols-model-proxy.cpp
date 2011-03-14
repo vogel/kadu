@@ -69,6 +69,7 @@ int ProtocolsModelProxy::compareNames(QString n1, QString n2) const
 void ProtocolsModelProxy::modelDestroyed()
 {
 	SourceProtocolModel = 0;
+	QSortFilterProxyModel::setSourceModel(0);
 }
 
 bool ProtocolsModelProxy::lessThan(const QModelIndex &left, const QModelIndex &right) const
