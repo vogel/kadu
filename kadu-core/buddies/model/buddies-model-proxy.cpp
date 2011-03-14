@@ -86,11 +86,7 @@ void BuddiesModelProxy::setSortByStatus(bool sortByStatus)
 		return;
 
 	SortByStatus = sortByStatus;
-	invalidateFilter();
 	invalidate();
-
-	sort(1);
-	sort(0);
 }
 
 void BuddiesModelProxy::modelDestroyed()
