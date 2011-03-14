@@ -39,7 +39,7 @@ class BuddiesModelProxy : public QSortFilterProxyModel, public AbstractBuddiesMo
 
 	bool BrokenStringCompare;
 	bool SortByStatus;
-	int compareNames(QString n1, QString n2) const;
+	int compareNames(const QString &n1, const QString &n2) const;
 
 private slots:
 	void modelDestroyed();

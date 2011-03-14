@@ -73,7 +73,7 @@ void BuddiesModelProxy::setSourceModel(QAbstractItemModel *sourceModel)
 	sort(0);
 }
 
-int BuddiesModelProxy::compareNames(QString n1, QString n2) const
+int BuddiesModelProxy::compareNames(const QString &n1, const QString &n2) const
 {
 	return BrokenStringCompare
 		? n1.toLower().localeAwareCompare(n2.toLower())
@@ -92,6 +92,7 @@ void BuddiesModelProxy::setSortByStatus(bool sortByStatus)
 void BuddiesModelProxy::modelDestroyed()
 {
 	SourceBuddyModel = 0;
+	QSortFilterProxyModel::setSourceModel(0);
 }
 
 bool BuddiesModelProxy::lessThan(const QModelIndex &left, const QModelIndex &right) const
