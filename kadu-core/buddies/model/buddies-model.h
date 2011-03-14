@@ -44,10 +44,10 @@ private slots:
 
 	void buddyUpdated(Buddy &buddy);
 
-	void contactAboutToBeAttached(Contact contact);
+	void contactAboutToBeAttached(Contact contact, Buddy nearFutureBuddy);
 	void contactAttached(Contact contact);
 	void contactAboutToBeDetached(Contact contact);
-	void contactDetached(Contact contact);
+	void contactDetached(Contact contact, Buddy previousBuddy);
 
 	void contactUpdated(Contact &contact);
 

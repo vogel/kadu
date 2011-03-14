@@ -107,8 +107,8 @@ public:
 
 signals:
 	void aboutToBeDetached();
-	void detached();
-	void aboutToBeAttached();
+	void detached(Buddy previousBuddy);
+	void aboutToBeAttached(Buddy nearFutureBuddy);
 	void attached();
 	void reattached();
 
