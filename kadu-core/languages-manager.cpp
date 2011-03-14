@@ -28,6 +28,7 @@ QStringList LanguagesManager::languageValues()
 	values.append("en");
 	values.append("de");
 	values.append("it");
+	values.append("cs");
 
 	return values;
 }
