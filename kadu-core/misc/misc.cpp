@@ -99,19 +99,22 @@ QString pwHash(const QString &text)
 
 QString translateLanguage(const QApplication *application, const QString &locale, const bool l2n)
 {
-	static const int langSize = 5;
+	static const int langSize = 6;
 	static const char local[][3] = {"en",
 		"de",
 		"fr",
 		"it",
-		"pl"};
+		"pl",
+		"cs"
+	};
 
 	static const char name[][sizeof("English") /*length of the longest*/] = {
 		QT_TR_NOOP("English"),
 		QT_TR_NOOP("German"),
 		QT_TR_NOOP("French"),
 		QT_TR_NOOP("Italian"),
-		QT_TR_NOOP("Polish")};
+		QT_TR_NOOP("Polish"),
+		QT_TR_NOOP("Czech")};
 
 	for (int i = 0; i < langSize; ++i)
 	{
