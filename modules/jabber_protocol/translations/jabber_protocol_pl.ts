@@ -214,22 +214,22 @@
     <message>
         <location filename="../actions/jabber-actions.cpp" line="72"/>
         <source>Show XML Console for Account</source>
-        <translation>Otwórz Konsolę XML</translation>
+        <translation>Otwórz konsolę XML</translation>
     </message>
     <message>
         <location filename="../actions/jabber-actions.cpp" line="89"/>
         <source>Resend Subscription</source>
-        <translation>Ponów Subskrypcję</translation>
+        <translation>Ponów subskrypcję</translation>
     </message>
     <message>
         <location filename="../actions/jabber-actions.cpp" line="92"/>
         <source>Remove Subscription</source>
-        <translation>Anuluj Subskrypcję</translation>
+        <translation>Anuluj subskrypcję</translation>
     </message>
     <message>
         <location filename="../actions/jabber-actions.cpp" line="95"/>
         <source>Ask for Subscription</source>
-        <translation>Poproś o Subskrypcję</translation>
+        <translation>Poproś o subskrypcję</translation>
     </message>
 </context>
 <context>
