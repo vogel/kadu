@@ -264,12 +264,20 @@ void BuddyShared::addContact(Contact contact)
 
 	emit contactAboutToBeAdded(contact);
 
-	int newPriority = Contacts.isEmpty()
-			? 0
-			: Contacts.at(Contacts.count() - 1).priority() + 1;
-	contact.setPriority(newPriority);
+	// anonymous (default) buddies should have only contacts without priority
+	if (isAnonymous())
+		contact.setPriority(-1);
+	// if no priority (i.e., adding new contact), append at the end
+	else if (contact.priority() == -1)
+	{
+		int newPriority = Contacts.isEmpty()
+				? 0
+				: Contacts.at(Contacts.count() - 1).priority() + 1;
+		contact.setPriority(newPriority);
+	}
 
 	Contacts.append(contact);
+	sortContacts();
 
 	emit contactAdded(contact);
 
