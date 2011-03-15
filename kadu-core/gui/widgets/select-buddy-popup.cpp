@@ -44,6 +44,7 @@ SelectBuddyPopup::SelectBuddyPopup(QWidget *parent) :
 	view()->setModel(model);
 	view()->setRootIsDecorated(false);
 	view()->setShowAccountName(false);
+	view()->setSelectionMode(QAbstractItemView::SingleSelection);
 }
 
 SelectBuddyPopup::~SelectBuddyPopup()
