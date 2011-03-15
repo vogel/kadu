@@ -8,6 +8,7 @@
 +++ version 0.6.6-rc4
 * buddies: fixed priorities that were broken since rc2 (beevvy)
 * translations: enabled Czech translation in configuration window and configuration wizard (Vogel)
+* gui: #2056 fixed: only one buddy can be selected in merge buddies combobox (Vogel)
 
 +++ version 0.6.6-rc3
 * buddies: disable merging buddy with itself (Vogel)
