@@ -135,7 +135,7 @@ void Hint::createLabels(const QPixmap &pixmap)
 	vbox->setSizeConstraint(QLayout::SetMinimumSize);
 	QWidget *widget = new QWidget(this);
 	labels = new QHBoxLayout(widget);
-	labels->setContentsMargins(5, 5, 5, 5);
+	labels->setContentsMargins(1, 1, 1, 1);
 
 	vbox->addWidget(widget);
 	if (!pixmap.isNull())
@@ -149,7 +149,7 @@ void Hint::createLabels(const QPixmap &pixmap)
 	label = new QLabel(this);
 	label->setTextInteractionFlags(Qt::NoTextInteraction);
 	label->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
-	label->setContentsMargins(10, 10, 10, 10);
+	label->setContentsMargins(5, 0, 5, 0);
 	labels->addWidget(label);
 }
 
@@ -202,7 +202,7 @@ void Hint::updateText()
 
 	// this does not work
 	//label->setText(' ' + text.replace(' ', QLatin1String("&nbsp;")).replace('\n', QLatin1String("<br />")));
-	label->setText(' ' + text.replace('\n', QLatin1String("<br />")));
+	label->setText(' ' + text.trimmed().replace('\n', QLatin1String("<br />")));
 
 	emit updated(this);
 }
