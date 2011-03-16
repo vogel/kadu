@@ -227,6 +227,10 @@
             <numerusform>%n sekund</numerusform>
         </translation>
     </message>
+    <message>
+        <source>Margin size</source>
+        <translation>Margines</translation>
+    </message>
 </context>
 <context>
     <name>HintManager</name>
@@ -262,7 +266,7 @@
     </message>
     <message>
         <source>Hint over buddy list: </source>
-        <translation>Dymek nad listą znajomych</translation>
+        <translation>Dymek nad listą znajomych: </translation>
     </message>
 </context>
 <context>

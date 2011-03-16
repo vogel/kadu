@@ -714,6 +714,7 @@ void HintManager::createDefaultConfiguration()
 	config_file.addVariable("Hints", "ShowContentMessage", true);
 	config_file.addVariable("Hints", "UseUserPosition", false);
 	config_file.addVariable("Hints", "OpenChatOnEveryNotification", false);
+	config_file.addVariable("Hints", "MarginSize", 5);
 
 	config_file.addVariable("Hints", "AllEvents_transparency", 0);
 	config_file.addVariable("Hints", "AllEvents_iconSize", 32);

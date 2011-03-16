@@ -129,27 +129,33 @@ void Hint::configurationUpdated()
 
 void Hint::createLabels(const QPixmap &pixmap)
 {
+	int margin = config_file.readNumEntry("Hints", "MarginSize", 0);
+
 	vbox = new QVBoxLayout(this);
-	vbox->setSpacing(2);
-	vbox->setMargin(1);
+	vbox->setSpacing(0);
+	vbox->setMargin(0);
 	vbox->setSizeConstraint(QLayout::SetMinimumSize);
 	QWidget *widget = new QWidget(this);
 	labels = new QHBoxLayout(widget);
-	labels->setContentsMargins(1, 1, 1, 1);
+	labels->setSpacing(0);
+	labels->setMargin(0);
+	labels->setContentsMargins(margin + 4, margin + 2, margin + 4, margin + 2);
 
 	vbox->addWidget(widget);
 	if (!pixmap.isNull())
 	{
 		icon = new QLabel(this);
 		icon->setPixmap(pixmap);
+		icon->resize(pixmap.size());
 		icon->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 		labels->addWidget(icon, 0, Qt::AlignTop);
 	}
 
 	label = new QLabel(this);
+	label->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	label->setTextInteractionFlags(Qt::NoTextInteraction);
 	label->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
-	label->setContentsMargins(5, 0, 5, 0);
+	label->setContentsMargins(margin + 4, 0, 0, 0);
 	labels->addWidget(label);
 }
 
@@ -200,9 +206,10 @@ void Hint::updateText()
 		}
 	}
 
-	// this does not work
-	//label->setText(' ' + text.replace(' ', QLatin1String("&nbsp;")).replace('\n', QLatin1String("<br />")));
-	label->setText(' ' + text.trimmed().replace('\n', QLatin1String("<br />")));
+	label->setText(QString("<div style='width:100%; height:100%; vartical-align:middle;'>")
+		+ text.replace('\n', QLatin1String("<br />"))
+		+ "</div>"
+		);
 
 	emit updated(this);
 }

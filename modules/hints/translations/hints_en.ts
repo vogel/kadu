@@ -226,6 +226,10 @@
             <numerusform>%n seconds</numerusform>
         </translation>
     </message>
+    <message>
+        <source>Margin size</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>HintManager</name>
