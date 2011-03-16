@@ -1,4 +1,4 @@
-+++ version 0.6.6-rc4
++++ version 0.6.6-rc5
 
 +++ version 0.6.6-rc4
 * single_window: fixed crash when docking was unloaded (beevvy)
