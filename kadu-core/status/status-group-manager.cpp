@@ -63,7 +63,7 @@ void StatusGroupManager::registerStatusGroup(const QString &name, int sortIndex)
 	StatusGroupsCounter.insert(newGroup, 1);
 }
 
-// TODO 0.6.6 add counters how many statuses uses this status-group
+// TODO 0.10.0 add counters how many statuses uses this status-group
 // maybe even auto-remove
 void StatusGroupManager::unregisterStatusGroup(const QString &name)
 {

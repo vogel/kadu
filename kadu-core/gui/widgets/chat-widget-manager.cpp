@@ -255,7 +255,7 @@ ChatWidget * ChatWidgetManager::byChat(const Chat &chat, bool create) const
 
 void ChatWidgetManager::activateChatWidget(ChatWidget *chatwidget, bool forceActivate)
 {
-	// TODO: 0.6.6
+	// TODO: 0.10.0
 	Q_UNUSED(forceActivate)
 
 	QWidget *win = chatwidget->window();
@@ -287,7 +287,7 @@ ChatWidget * ChatWidgetManager::openChatWidget(const Chat &chat, bool forceActiv
 	connect(chatWidget, SIGNAL(messageSentAndConfirmed(Chat , const QString &)),
 		this, SIGNAL(messageSentAndConfirmed(Chat , const QString &)));
 
-	if (forceActivate) //TODO 0.6.6:
+	if (forceActivate) //TODO 0.10.0:
 	{
 		chatWidget->makeActive();
 	}
@@ -410,7 +410,7 @@ void ChatWidgetManager::configurationUpdated()
 	kdebugf2();
 }
 
-// TODO: 0.8, move to core or somewhere else
+// TODO 0.10.0:, move to core or somewhere else
 void ChatWidgetManager::messageReceived(const Message &message)
 {
 	kdebugf();

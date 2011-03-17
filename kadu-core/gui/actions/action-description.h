@@ -36,7 +36,7 @@ class KADUAPI ActionDescription : public QObject, ConfigurationAwareObject
 
 public:
 
-	// TODO 0.6.7: this sux, but will be better
+	// TODO 0.10.0: this sux, but will be better
 	typedef void (*ActionBoolCallback)(Action *);
 
 	enum ActionType {

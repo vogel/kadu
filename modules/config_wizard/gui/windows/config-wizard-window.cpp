@@ -63,7 +63,7 @@ ConfigWizardWindow::ConfigWizardWindow(QWidget *parent) :
 #else
 #ifdef Q_WS_WIN
 	// NOTE: Workaround for bug #1912.
-	// TODO 0.6.6: Remove this as soon as QTBUG-10478 is fixed in
+	// TODO 0.10.0: Remove this as soon as QTBUG-10478 is fixed in
 	// a release we bundle in the Windows build.
 	setWizardStyle(QWizard::ModernStyle);
 #endif

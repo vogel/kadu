@@ -69,7 +69,7 @@ private:
 	typedef QPair<Action *, MenuType> MenuAction;
 	QMap<ActionDescription *, MenuAction> MenuActions;
 
-	bool Docked; // TODO: 0.7.1 it is a hack
+	bool Docked; // TODO: 0.11.0 it is a hack
 	QSplitter *Split;
 
 	KaduWindowActions *Actions;

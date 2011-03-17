@@ -134,7 +134,7 @@ void AdiumStyle::loadHtmlFiles()
 		TemplateHref = BaseHref + "Template.html";
 	else if (QFile::exists(BaseHref + "template.html"))
 		TemplateHref = BaseHref + "template.html";
-	else // TODO 0.6.6: move it to proper place
+	else
 	{
 		TemplateHref = dataPath("kadu") + "/syntax/chat/Default/Template.html";
 		UsesCustomTemplateHtml = false;

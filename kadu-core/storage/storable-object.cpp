@@ -43,7 +43,7 @@ StorableObject::~StorableObject()
 	Destroying = true;
 
 	qDeleteAll(ModulesStorableData);
-	// TODO: 0.6.6, memory leak
+	// TODO: 0.10.0, memory leak
 // 	foreach (void *moduleData, ModulesData)
 // 		delete moduleData;
 }
@@ -146,7 +146,7 @@ void StorableObject::store()
  * @author Rafal 'Vogel' Malinowski
  * @short Determines if object is worth to be stored.
  * @return true if object should be stored, defaults to true
- * @todo this method is used only in managers, in 0.8 it should be used in every place
+ * @todo this method is used only in managers, in 0.10 it should be used in every place
  *
  * If object is incomplete or invalid this method should return false
  * so it will not be stored in persistent storage.

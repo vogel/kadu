@@ -68,7 +68,7 @@ public:
 	Buddy(const Buddy &copy);
 	virtual ~Buddy();
 
-	void mergeWith(Buddy buddy); // TODO: 0.8 refactor
+	void mergeWith(Buddy buddy); // TODO: 0.10 refactor
 
 	void importConfiguration(const QDomElement &parent);
 	void importConfiguration(); // import configuration from customDataValues
@@ -83,7 +83,7 @@ public:
 	void sortContacts();
 	void normalizePriorities();
 
-// 	void setData(BuddyShared *data) { Data = data; }  // TODO: 0.8 tricky merge, this should work well ;)
+// 	void setData(BuddyShared *data) { Data = data; }  // TODO: 0.10 tricky merge, this should work well ;)
 
 	QList<Contact> contacts(Account account) const;
 	QList<Contact> contacts() const;

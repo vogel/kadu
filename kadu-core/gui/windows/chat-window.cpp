@@ -205,7 +205,7 @@ void ChatWindow::updateTitle()
 {
 	setWindowTitle(currentChatWidget->title());
 
-	// TODO 0.6.6: is that really needed here? this method is called only on chat widget title change
+	// TODO 0.10.0: is that really needed here? this method is called only on chat widget title change
 	if (showNewMessagesNum && currentChatWidget->newMessagesCount()) // if we don't have new messages or don't want them to be shown
 		showNewMessagesNumInTitle();
 }

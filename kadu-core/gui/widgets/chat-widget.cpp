@@ -104,7 +104,7 @@ ChatWidget::ChatWidget(const Chat &chat, QWidget *parent) :
 		{
 			// actually we only need to send iconChanged() on CurrentStatus update
 			// but we don't have a signal for that in ContactShared
-			// TODO 0.6.7: consider adding currentStatusChanged() signal to ContactShared
+			// TODO 0.10.0: consider adding currentStatusChanged() signal to ContactShared
 			connect(contact, SIGNAL(updated()), this, SIGNAL(iconChanged()));
 			connect(contact.ownerBuddy(), SIGNAL(buddySubscriptionChanged()), this, SIGNAL(iconChanged()));
 		}

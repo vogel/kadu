@@ -50,7 +50,7 @@ class KADUAPI Core : public QObject, private AccountsAwareObject, public Configu
 	Buddy Myself;
 	KaduWindow *Window;
 	bool IsClosing;
-	bool ShowMainWindowOnStart; // TODO: 0.7.1, it is a hack
+	bool ShowMainWindowOnStart; // TODO: 0.11.0, it is a hack
 
 	Core();
 	virtual ~Core();

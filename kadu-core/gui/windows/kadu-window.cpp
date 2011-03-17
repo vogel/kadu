@@ -93,7 +93,7 @@ KaduWindow::KaduWindow(QWidget *parent) :
 	setWindowTitle(QLatin1String("Kadu"));
 
 	// we need to create gui first, then actions, then menus
-	// TODO: fix it in 0.8 or whenever
+	// TODO: fix it in 0.10 or whenever
 	createGui();
 	Actions = new KaduWindowActions(this);
 	loadToolBarsFromConfig();

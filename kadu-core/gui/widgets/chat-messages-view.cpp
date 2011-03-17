@@ -170,7 +170,7 @@ void ChatMessagesView::appendMessage(MessageRenderInfo *message)
 {
 	kdebugf();
 
-// TODO 0.8.0: currently we do not support showing messages state,
+// TODO 0.10.0: currently we do not support showing messages state,
 //	so disable this for now
 //	connect(message->message(), SIGNAL(statusChanged(Message::Status)),
 //				this, SLOT(messageStatusChanged(Message::Status)));
@@ -203,7 +203,7 @@ void ChatMessagesView::appendMessages(const QList<MessageRenderInfo *> &messages
 {
 	kdebugf2();
 
-// TODO 0.8.0: currently we do not support showing messages state,
+// TODO 0.10.0: currently we do not support showing messages state,
 //	so disable this for now
 //	foreach (MessageRenderInfo *message, messages)
 //		connect(message->message(), SIGNAL(statusChanged(Message::Status)),

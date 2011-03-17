@@ -25,8 +25,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-// TODO 0.6.6 : load,save options
-
 /*
  * autor
  * Michal Podsiadlik
@@ -676,7 +674,7 @@ void TabsManager::store()
 
 void TabsManager::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
-	// TODO 0.6.6: it doesn't seem to work -- beevvy
+	// TODO 0.10.0: it doesn't seem to work -- beevvy
 	connect(mainConfigurationWindow->widget()->widgetById("tabs/DefaultTabs"), SIGNAL(toggled(bool)),
 			mainConfigurationWindow->widget()->widgetById("tabs/MinTabs"), SLOT(setEnabled(bool)));
 }
