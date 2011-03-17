@@ -661,7 +661,7 @@ void ToolBar::loadFromConfig(const QDomElement &toolbar_element)
 
 		Qt::ToolButtonStyle buttonStyle;
 
-		//TODO:remove after 0.7.0
+		//TODO:remove after 0.9.0
 		if (button_elem.attribute("toolbutton_style").isNull())
 			buttonStyle = button_elem.attribute("uses_text_label") == "1"
 					? Qt::ToolButtonTextBesideIcon : Qt::ToolButtonIconOnly;

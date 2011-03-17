@@ -313,7 +313,7 @@ void GaduProtocol::changeStatus(bool force)
 		return;
 	}
 
-// TODO 0.6.6: workaround. Find general solution
+// TODO 0.10.0: workaround. Find general solution
 	if (newStatus.type() == "NotAvailable" && status().type() == "Away")
 		return;
 

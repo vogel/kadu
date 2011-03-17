@@ -150,7 +150,7 @@ void AddBuddyWindow::createGui()
 		if (ForceBuddyAccount)
 		{
 			// NOTE: keep "%2 (%3)" consistent with AccountsModel::data() for DisplayRole, when IncludeIdInDisplay is true
-			// TODO 0.8: remove such code duplication
+			// TODO 0.10: remove such code duplication
 			addingBuddyDescription->setText(addingBuddyDescription->text() + ' ' + tr("%1 account <b>%2 (%3)</b>")
 					.arg(MyAccount.protocolHandler()->protocolFactory()->displayName(),
 					MyAccount.accountIdentity().name(), MyAccount.id()));

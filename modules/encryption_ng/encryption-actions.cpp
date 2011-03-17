@@ -69,7 +69,7 @@ static void checkSendKey(Action *action)
 	{
 		Contact accountContact = contact.contactAccount().accountContact();
 		// TODO: this should depend on submodule and not be hardcoded
-		// TODO: 0.8
+		// TODO 0.10:
 		Key key = KeysManager::instance()->byContactAndType(accountContact, "simlite", ActionReturnNull);
 		if (key)
 		{
@@ -102,7 +102,7 @@ EncryptionActions::EncryptionActions()
 	connect(GenerateKeysActionDescription, SIGNAL(actionCreated(Action*)), this, SLOT(generateKeysActionCreated(Action*)));
 
 	// HACK: It is needed bacause of loading protocol modules before creating GUI.
-	// TODO 0.8: Fix it!
+	// TODO 0.10: Fix it!
 	QMetaObject::invokeMethod(this, "insertMenuToMainWindow", Qt::QueuedConnection);
 
 	GenerateKeysMenu = new QMenu(0);

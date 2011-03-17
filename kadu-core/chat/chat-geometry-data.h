@@ -50,7 +50,7 @@ public:
 	virtual QString name() const;
 
 	Property(QRect, windowGeometry, WindowGeometry)
-	// TODO 0.8: remove
+	// TODO 0.10: remove
 	Property(QList<int>, widgetVerticalSizes, WidgetVerticalSizes)
 	Property(QList<int>, widgetHorizontalSizes, WidgetHorizontalSizes)
 

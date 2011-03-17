@@ -76,7 +76,7 @@ QSharedPointer<StoragePoint> UuidStorableObject::createStoragePoint()
  * @author Rafal 'Vogel' Malinowski
  * @short Determines if object is worth to be stored.
  * @return true if object should be stored, defaults to true
- * @todo this method is used only in managers, in 0.8 it should be used in every place
+ * @todo this method is used only in managers, in 0.10 it should be used in every place
  *
  * Returns true if object has valid uuid. Otherwise object will not be stored.
  */

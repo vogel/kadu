@@ -45,7 +45,7 @@ BuddyPreferredManager::~BuddyPreferredManager()
 {
 }
 
-// TODO: 0.8 do a big review
+// TODO: 0.10 do a big review
 Contact BuddyPreferredManager::preferredContact(const Buddy &buddy, const Account &account, bool includechats)
 {
 	Q_UNUSED(includechats)

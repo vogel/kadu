@@ -74,7 +74,7 @@ JabberActions::JabberActions()
 	connect(ShowXmlConsole, SIGNAL(actionCreated(Action*)), this, SLOT(showXmlConsoleActionCreated(Action*)));
 
 	// HACK: It is needed bacause of loading protocol modules before creating GUI.
-	// TODO 0.8: Fix it!
+	// TODO 0.10: Fix it!
 	QMetaObject::invokeMethod(this, "insertMenuToMainWindow", Qt::QueuedConnection);
 
 	ShowXmlConsoleMenu = new QMenu();

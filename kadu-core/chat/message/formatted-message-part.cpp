@@ -75,7 +75,7 @@ QString FormattedMessagePart::toHtml() const
 	if (Underline)
 		span += "text-decoration:underline;";
 //  TODO: Ignore colors settings for now. Many clients send black as default color.
-//	This breaks all dark chat themes. We have to find better solution for post 0.6.6 versions
+//	This breaks all dark chat themes. We have to find better solution for post 0.9.0 versions
 //	if (Color.isValid())
 //		span += QString("color:%1;").arg(Color.name());
 	span += "\">";

@@ -244,7 +244,7 @@ Chat BuddiesListView::chatByPendingMessages(const QModelIndex &index) const
 		return PendingMessagesManager::instance()->chatForContact(contactAt(index));
 }
 
-// TODO 0.8.0: This method is too big. Review and split
+// TODO 0.10.0: This method is too big. Review and split
 Chat BuddiesListView::currentChat() const
 {
 	BuddySet buddies;
@@ -355,7 +355,7 @@ bool BuddiesListView::shouldEventGoToFilter(QKeyEvent *event)
 
 void BuddiesListView::keyPressEvent(QKeyEvent *event)
 {
-	// TODO 0.6.7: add proper shortcuts handling
+	// TODO 0.10.0: add proper shortcuts handling
 	if (HotKey::shortCut(event, "ShortCuts", "kadu_deleteuser"))
 		KaduWindowActions::deleteUserActionActivated(this);
 	else if (HotKey::shortCut(event, "ShortCuts", "kadu_persinfo"))
@@ -398,7 +398,7 @@ void BuddiesListView::mousePressEvent(QMouseEvent *event)
 {
 	QTreeView::mousePressEvent(event);
 
-	// TODO 0.6.7: remove once #1802 is fixed
+	// TODO 0.10.0: remove once #1802 is fixed
 	if (!indexAt(event->pos()).isValid())
 		setCurrentIndex(QModelIndex());
 

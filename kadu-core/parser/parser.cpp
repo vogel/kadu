@@ -122,7 +122,7 @@ QString Parser::executeCmd(const QString &cmd)
 	kdebugf();
 
 	QString s(cmd);
-	// TODO 0.6.6: check if Qt escapes these
+	// TODO 0.10.0: check if Qt escapes these
 	s.remove(QRegExp("`|>|<"));
 
 	QProcess executor;

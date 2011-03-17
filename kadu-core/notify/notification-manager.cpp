@@ -118,7 +118,7 @@ void NotificationManager::init()
 
 	createDefaultConfiguration();
 	AutoSilentMode = false;
-	//TODO 0.6.6:
+	//TODO 0.10.0:
 	//triggerAllAccountsRegistered();
 
 	notifyAboutUserActionDescription = new ActionDescription(this,
@@ -552,7 +552,6 @@ void NotificationManager::groupAdded(const Group &group)
 	connect(group, SIGNAL(updated()), this, SLOT(groupUpdated()));
 }
 
-// TODO 0.6.6:
 void NotificationManager::groupUpdated()
 {
 	Group group = sender();
