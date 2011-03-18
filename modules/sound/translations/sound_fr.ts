@@ -43,6 +43,10 @@
         <source>Test sound playing</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Play a sound</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SoundActions</name>

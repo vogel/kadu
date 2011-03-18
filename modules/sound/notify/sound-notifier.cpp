@@ -48,6 +48,7 @@ SoundNotifier * SoundNotifier::instance()
 SoundNotifier::SoundNotifier() :
 		Notifier("Sound", "Play a sound", "audio-volume-high")
 {
+	(void)QT_TRANSLATE_NOOP("@default", "Play a sound");
 }
 
 SoundNotifier::~SoundNotifier()

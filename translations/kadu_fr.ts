@@ -1228,6 +1228,10 @@ changes upon establishing connection to the server</source>
             <numerusform></numerusform>
         </translation>
     </message>
+    <message>
+        <source>Show a window with notification</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -3326,15 +3330,15 @@ You can load (or unload) them by double-clicking on their names.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Preview</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Save as...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Kadu</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Refresh Preview</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

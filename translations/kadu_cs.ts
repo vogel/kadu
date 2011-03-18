@@ -1251,6 +1251,10 @@ ihned po zřízení spojení se serverem</translation>
             <numerusform></numerusform>
         </translation>
     </message>
+    <message>
+        <source>Show a window with notification</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -3370,16 +3374,16 @@ Můžete je nahrát (nebo odebrat) dvojitým poklepáním na jejich názvy.</tra
         <translation>Přepsat %1 skladbu?</translation>
     </message>
     <message>
-        <source>Preview</source>
-        <translation>Náhled</translation>
-    </message>
-    <message>
         <source>Save as...</source>
         <translation>Uložit jako...</translation>
     </message>
     <message>
         <source>Kadu</source>
         <translation>Kadu</translation>
+    </message>
+    <message>
+        <source>Refresh Preview</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
