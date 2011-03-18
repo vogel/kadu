@@ -102,6 +102,7 @@ void XmlConfigFile::read()
 		QDomElement root = DomDocument.createElement( "Kadu" );
 		DomDocument.appendChild(root);
 	}
+
 	kdebugf2();
 }
 
@@ -185,7 +186,6 @@ QDomElement XmlConfigFile::findElement(const QDomElement &parent, const QString&
 QDomElement XmlConfigFile::findElementByProperty(const QDomElement &parent, const QString &tag_name,
 	const QString &property_name, const QString &property_value) const
 {
-//	kdebugf();
 	for (QDomNode n = parent.firstChild(); !n.isNull(); n = n.nextSibling())
 	{
 		const QDomElement &e = n.toElement();
@@ -194,17 +194,26 @@ QDomElement XmlConfigFile::findElementByProperty(const QDomElement &parent, cons
 		if (e.tagName() != tag_name)
 			continue;
 		const QString &val = e.attribute(property_name);
-//		kdebug("Checking if property value \"%s\" equals \"%s\"\n",
-//			qPrintable(val), qPrintable(property_value));
 		if (val == property_value)
-		{
-//			kdebug("Element found.\n");
-//			kdebugf2();
 			return e;
-		}
 	}
-//	kdebug("Element not found.\n");
-//	kdebugf2();
+	return QDomNode().toElement();
+}
+
+QDomElement XmlConfigFile::findElementByFileNameProperty(const QDomElement &parent, const QString &tag_name,
+	const QString &property_name, const QString &property_value) const
+{
+	for (QDomNode n = parent.firstChild(); !n.isNull(); n = n.nextSibling())
+	{
+		const QDomElement &e = n.toElement();
+		if (e.isNull())
+			continue;
+		if (e.tagName() != tag_name)
+			continue;
+		QString val = e.attribute(property_name);
+		if (val.section('/', -1).section('\\', -1) == property_value)
+			return e;
+	}
 	return QDomNode().toElement();
 }
 
@@ -221,6 +230,19 @@ QDomElement XmlConfigFile::accessElementByProperty(const QDomElement &parent, co
 	const QString& property_name, const QString& property_value)
 {
 	QDomElement elem = findElementByProperty(parent, tag_name,
+		property_name, property_value);
+	if (elem.isNull())
+	{
+		elem = createElement(parent, tag_name);
+		elem.setAttribute(property_name, property_value);
+	}
+	return elem;
+}
+
+QDomElement XmlConfigFile::accessElementByFileNameProperty(const QDomElement &parent, const QString& tag_name,
+	const QString& property_name, const QString& property_value)
+{
+	QDomElement elem = findElementByFileNameProperty(parent, tag_name,
 		property_name, property_value);
 	if (elem.isNull())
 	{

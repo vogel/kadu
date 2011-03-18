@@ -510,7 +510,7 @@ bool ConfigFile::changeEntry(const QString &group, const QString &name, const QS
 //	kdebugm(KDEBUG_FUNCTION_START, "ConfigFile::changeEntry(%s, %s, %s) %p\n", qPrintable(group), qPrintable(name), qPrintable(value), this);
 	QDomElement root_elem = xml_config_file->rootElement();
 	QDomElement deprecated_elem = xml_config_file->accessElement(root_elem, "Deprecated");
-	QDomElement config_file_elem = xml_config_file->accessElementByProperty(
+	QDomElement config_file_elem = xml_config_file->accessElementByFileNameProperty(
 		deprecated_elem, "ConfigFile", "name", filename.section('/', -1));
 	QDomElement group_elem = xml_config_file->accessElementByProperty(
 		config_file_elem, "Group", "name", group);
@@ -536,7 +536,7 @@ QString ConfigFile::getEntry(const QString &group, const QString &name, bool *ok
 		QDomElement deprecated_elem = xml_config_file->findElement(root_elem, "Deprecated");
 		if (!deprecated_elem.isNull())
 		{
-			QDomElement config_file_elem = xml_config_file->findElementByProperty(
+			QDomElement config_file_elem = xml_config_file->findElementByFileNameProperty(
 				deprecated_elem, "ConfigFile", "name", filename.section('/', -1));
 			if (!config_file_elem.isNull())
 			{
@@ -772,7 +772,7 @@ void ConfigFile::removeVariable(const QString &group, const QString &name)
 
 	QDomElement root_elem = xml_config_file->rootElement();
 	QDomElement deprecated_elem = xml_config_file->accessElement(root_elem, "Deprecated");
-	QDomElement config_file_elem = xml_config_file->accessElementByProperty(
+	QDomElement config_file_elem = xml_config_file->accessElementByFileNameProperty(
 		deprecated_elem, "ConfigFile", "name", filename.section('/', -1));
 	QDomElement group_elem = xml_config_file->accessElementByProperty(
 		config_file_elem, "Group", "name", group);

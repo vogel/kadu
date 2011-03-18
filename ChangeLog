@@ -1,4 +1,7 @@
-+++ version 0.6.6-rc5
++++ version 0.9.1-rc1
+
++++ version 0.9.0
+* configuration: configuration is now always properly imported on Windows (Vogel)
 
 +++ version 0.6.6-rc4
 * single_window: fixed crash when docking was unloaded (beevvy)
