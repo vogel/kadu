@@ -96,6 +96,8 @@ public:
 	**/
 	QDomElement findElementByProperty(const QDomElement &parent, const QString &tag_name,
 		const QString &property_name, const QString &property_value) const;
+	QDomElement findElementByFileNameProperty(const QDomElement &parent, const QString &tag_name,
+		const QString &property_name, const QString &property_value) const;
 
 	/**
 		Zwraca pierwszy element lub dodaje nowy i przypisuje do rodzica.
@@ -108,6 +110,8 @@ public:
 		atrybut na zadana wartosc).
 	**/
 	QDomElement accessElementByProperty(const QDomElement &parent, const QString &tag_name,
+		const QString &property_name, const QString &property_value);
+	QDomElement accessElementByFileNameProperty(const QDomElement &parent, const QString &tag_name,
 		const QString &property_name, const QString &property_value);
 
 	/**
