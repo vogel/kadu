@@ -1255,6 +1255,10 @@ znajomych po połączeniu się z serwerem</translation>
             <numerusform>[przez] %n minut</numerusform>
         </translation>
     </message>
+	<message>
+		<source>Show a window with notification</source>
+		<translation>Pokaż okno</translation>
+	</message>
 </context>
 <context>
     <name>About</name>
@@ -3346,6 +3350,10 @@ Klient: %3</translation>
         <source>Kadu</source>
         <translation>Kadu</translation>
     </message>
+	<message>
+		<source>Refresh Preview</source>
+		<translation>Odśwież podgląd</translation>
+	</message>
 </context>
 <context>
     <name>SyntaxEditorWindow</name>

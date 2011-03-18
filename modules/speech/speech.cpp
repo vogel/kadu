@@ -61,7 +61,7 @@ bool isFemale(const QString &s)
 }
 
 Speech::Speech() :
-		Notifier("Speech", "Read a text", QString()), lastSpeech()
+		Notifier("Speech", QT_TRANSLATE_NOOP("@default", "Read a text"), QString()), lastSpeech()
 {
 	kdebugf();
 

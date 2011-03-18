@@ -88,4 +88,11 @@
         <translation>%&amp;t - tytuł (np. Nowa wiadomość) %&amp;m - treść powiadomienia (np. Wiadomość od Jasia), %&amp;d - szczegóły (np. treść wiadomości),%&amp;i - ikona powiadomienia</translation>
     </message>
 </context>
+<context>
+	<name>Qt4Notify</name>
+	<message>
+		<source>Tray Icon Balloon</source>
+		<translation>Balonik ikony w zasobniku</translation>
+	</message>
+</context>
 </TS>

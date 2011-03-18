@@ -79,6 +79,10 @@
         <source> kB</source>
 		<translation> kB</translation>
     </message>
+	<message>
+		<source>ScreenShot images size limit</source>
+		<translation>Limit rozmiaru katalogu ze zrzutami</translation>
+	</message>
 </context>
 <context>
     <name>ScreenShot</name>

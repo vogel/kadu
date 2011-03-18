@@ -83,6 +83,10 @@
         <source>Test</source>
         <translation>Test</translation>
     </message>
+	<message>
+		<source>Read a text</source>
+		<translation>Przeczytaj tekst</translation>
+	</message>
 </context>
 <context>
     <name>SpeechConfigurationWidget</name>

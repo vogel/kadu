@@ -139,6 +139,10 @@
             <numerusform>%n milisekund</numerusform>
         </translation>
     </message>
+	<message>
+		<source>Message was firewalled</source>
+		<translation>Wiadomość została zablokowana</translation>
+	</message>
 </context>
 <context>
     <name>Firewall</name>

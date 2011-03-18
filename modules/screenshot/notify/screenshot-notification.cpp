@@ -33,7 +33,7 @@ void ScreenshotNotification::registerNotifications()
 	if (SizeLimitNotification)
 		return;
 
-	SizeLimitNotification = new NotifyEvent("ssSizeLimit", NotifyEvent::CallbackNotRequired, "ScreenShot images size limit");
+	SizeLimitNotification = new NotifyEvent("ssSizeLimit", NotifyEvent::CallbackNotRequired, QT_TRANSLATE_NOOP("@default", "ScreenShot images size limit"));
 	NotificationManager::instance()->registerNotifyEvent(SizeLimitNotification);
 }
 

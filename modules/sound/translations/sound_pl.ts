@@ -43,6 +43,10 @@
         <source>Test sound playing</source>
         <translation>Test dźwięku</translation>
     </message>
+	<message>
+		<source>Play a sound</source>
+		<translation>Odtwórz dźwięk</translation>
+	</message>
 </context>
 <context>
     <name>SoundActions</name>

@@ -56,7 +56,7 @@ extern "C" KADU_EXPORT int server_monitor_init(bool firstLoad)
 		config_file.addVariable("serverMonitor", "showResetButton", false);
 	}
 
-	ServerMonitor::notifyEvent = new NotifyEvent("serverMonitorChangeStatus", NotifyEvent::CallbackNotRequired, "Server Monitor");
+	ServerMonitor::notifyEvent = new NotifyEvent("serverMonitorChangeStatus", NotifyEvent::CallbackNotRequired, QT_TRANSLATE_NOOP("@default", "Server Monitor"));
 	NotificationManager::instance()->registerNotifyEvent(ServerMonitor::notifyEvent);
 
 	kdebugf2();

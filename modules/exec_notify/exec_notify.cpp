@@ -109,7 +109,7 @@ void ExecConfigurationWidget::switchToEvent(const QString &event)
 }
 
 ExecNotify::ExecNotify(QObject *parent) :
-		Notifier("Exec", "Run command", "external_modules/execnotify", parent)
+		Notifier("Exec", QT_TRANSLATE_NOOP("@default", "Run command"), "external_modules/execnotify", parent)
 {
 	kdebugf();
 
