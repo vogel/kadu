@@ -6,6 +6,7 @@
 * gui: new syntax editor window layout (ultr)
 
 +++ version 0.9.1
+* identities: fixed displaying improper status information when having more jabber and gadu account in one identity and invisible status for gadu (beevvy)
 
 +++ version 0.9.0
 * configuration: configuration is now always properly imported on Windows (Vogel)
