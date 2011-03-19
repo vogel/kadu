@@ -158,17 +158,16 @@ Account IdentityShared::bestAccount()
 	if (Accounts.isEmpty())
 		return result;
 
-	Status resultStatus;
 	foreach (const Account &account, Accounts)
 		if (account.details() && account.data())
 		{
 			// TODO: hack
-			if (result.isNull() || account.data()->status() < resultStatus ||
-					(account.data()->status() == resultStatus &&
-					account.protocolName() == "gadu" && result.protocolName() != "gadu"))
+			if (result.isNull() || result.data()->status().isDisconnected() ||
+					(account.protocolName() == "gadu" && result.protocolName() != "gadu"))
 			{
 				result = account;
-				resultStatus = account.data()->status();
+				if (!result.data()->status().isDisconnected() && result.protocolName() == "gadu")
+					break;
 			}
 		}
 
