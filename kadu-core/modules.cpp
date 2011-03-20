@@ -126,9 +126,6 @@ void ModulesManager::load()
 	foreach (const QString &moduleName, installedModules())
 	{
 		PluginInfo *info = pluginInfo(moduleName);
-		if (!info)
-			continue;
-
 		Plugin *plugin = new Plugin(moduleName, info, this);
 		plugin->ensureLoaded();
 		Modules.insert(moduleName, plugin);
@@ -140,6 +137,16 @@ void ModulesManager::load()
 	everLoaded += loadedPlugins;
 	QString unloaded_str = config_file.readEntry("General", "UnloadedModules");
 	QStringList unloadedPlugins = unloaded_str.split(',', QString::SkipEmptyParts);
+
+	QStringList allPlugins = everLoaded + unloadedPlugins; // just in case...
+	foreach (const QString &pluginName, allPlugins)
+		if (!Modules.contains(pluginName))
+		{
+			PluginInfo *info = pluginInfo(pluginName);
+			Plugin *plugin = new Plugin(pluginName, info, this);
+			plugin->ensureLoaded();
+			Modules.insert(pluginName, plugin);
+		}
 
 	if (loadedPlugins.contains("encryption"))
 	{
@@ -160,14 +167,11 @@ void ModulesManager::load()
 	ensureLoadedAtLeastOnce("history_migration");
 	ensureLoadedAtLeastOnce("profiles_import");
 
-	foreach (const QString &pluginName, everLoaded)
-		if (Modules.contains(pluginName))
-		{
-			if (loadedPlugins.contains(pluginName))
-				Modules.value(pluginName)->setState(Plugin::PluginStateLoaded);
-			else
-				Modules.value(pluginName)->setState(Plugin::PluginStateNotLoaded);
-		}
+	foreach (Plugin *plugin, Modules)
+		if (loadedPlugins.contains(plugin->name()))
+			plugin->setState(Plugin::PluginStateLoaded);
+		else
+			plugin->setState(Plugin::PluginStateNotLoaded);
 
 	registerStaticModules();
 }
@@ -371,7 +375,6 @@ QStringList ModulesManager::loadedModules() const
 			loaded.append(i.key());
 	return loaded;
 }
-
 
 QStringList ModulesManager::unloadedModules() const
 {
