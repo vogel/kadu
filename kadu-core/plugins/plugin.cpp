@@ -61,6 +61,14 @@ void Plugin::load()
 		return;
 
 	StorableObject::load();
+
+	QString stateString = loadValue<QString>("State");
+	if (stateString == "Loaded")
+		State = PluginStateLoaded;
+	else if (stateString == "NotLoaded")
+		State = PluginStateNotLoaded;
+	else
+		State = PluginStateNew;
 }
 
 void Plugin::store()
@@ -71,6 +79,19 @@ void Plugin::store()
 	ensureLoaded();
 
 	StorableObject::store();
+
+	switch (State)
+	{
+		case PluginStateNew:
+			storeValue("State", "New"); // should not happen, but who knows..
+			break;
+		case PluginStateLoaded:
+			storeValue("State", "Loaded");
+			break;
+		case PluginStateNotLoaded:
+			storeValue("State", "NotLoaded");
+			break;
+	}
 }
 
 bool Plugin::activate()

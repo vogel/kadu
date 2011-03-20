@@ -79,7 +79,7 @@ public:
 	bool deactivate();
 
 	bool active() const { return Active; }
-	PluginState state() const { return State; }
+	PluginState state() { ensureLoaded(); return State; }
 	void setState(PluginState state);
 
 	PluginInfo * info() const { return Info; }
