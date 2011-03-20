@@ -125,8 +125,7 @@ void ModulesManager::load()
 
 	foreach (const QString &moduleName, installedModules())
 	{
-		PluginInfo *info = pluginInfo(moduleName);
-		Plugin *plugin = new Plugin(moduleName, info, this);
+		Plugin *plugin = new Plugin(moduleName, this);
 		plugin->ensureLoaded();
 		Modules.insert(moduleName, plugin);
 	}
@@ -142,8 +141,7 @@ void ModulesManager::load()
 	foreach (const QString &pluginName, allPlugins)
 		if (!Modules.contains(pluginName))
 		{
-			PluginInfo *info = pluginInfo(pluginName);
-			Plugin *plugin = new Plugin(pluginName, info, this);
+			Plugin *plugin = new Plugin(pluginName, this);
 			plugin->ensureLoaded();
 			Modules.insert(pluginName, plugin);
 		}
@@ -268,7 +266,7 @@ void ModulesManager::loadAllModules()
 		{
 			foreach (Plugin *plugin, Modules)
 			{
-				PluginInfo *m_info = pluginInfo(plugin->name());
+				PluginInfo *m_info = plugin->info();
 				if (m_info && m_info->replaces().contains(i->name()))
 					if (activateModule(i->name()))
 						saveList = true;
@@ -399,31 +397,24 @@ QString ModulesManager::moduleProvides(const QString &provides)
 {
 	QStringList moduleList = staticModules();
 	foreach(const QString &moduleName, moduleList)
-	{
-		PluginInfo *info = pluginInfo(moduleName);
-		if (info && info->provides().contains(provides))
-			return moduleName;
-	}
+		if (Modules.contains(moduleName))
+		{
+			PluginInfo *info = Modules.value(moduleName)->info();
+			if (info && info->provides().contains(provides))
+				return moduleName;
+		}
 
 	moduleList = installedModules();
 	foreach(const QString &moduleName, moduleList)
-	{
-		PluginInfo *info = pluginInfo(moduleName);
-		if (info && info->provides().contains(provides))
-			if (moduleIsLoaded(moduleName))
-				return moduleName;
-	}
+		if (Modules.contains(moduleName))
+		{
+			PluginInfo *info = Modules.value(moduleName)->info();
+			if (info && info->provides().contains(provides))
+				if (moduleIsLoaded(moduleName))
+					return moduleName;
+		}
 
 	return QString();
-}
-
-PluginInfo * ModulesManager::pluginInfo(const QString &module_name) const
-{
-	if (Modules.contains(module_name))
-		return Modules.value(module_name)->info();
-
-	QString descFilePath = dataPath("kadu/modules/" + module_name + ".desc");
-	return new PluginInfo(descFilePath);
 }
 
 bool ModulesManager::moduleIsProtocol(const QString& module_name) const
@@ -464,11 +455,12 @@ QString ModulesManager::modulesUsing(const QString &module_name) const
 	QString modules;
 
 	foreach (const QString &moduleName, moduleList)
-	{
-		PluginInfo *info = pluginInfo(moduleName);
-		if (info && info->dependencies().contains(module_name))
-			modules += "\n- " + moduleName;
-	}
+		if (Modules.contains(moduleName))
+		{
+			PluginInfo *info = Modules.value(moduleName)->info();
+			if (info && info->dependencies().contains(module_name))
+				modules += "\n- " + moduleName;
+		}
 
 	return modules;
 }

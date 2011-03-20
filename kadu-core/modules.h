@@ -127,8 +127,6 @@ public:
 
 	QString moduleProvides(const QString &provides);
 
-	PluginInfo * pluginInfo(const QString &moduleName) const;
-
 	bool moduleIsProtocol(const QString &module_name) const;
 	bool moduleIsStatic(const QString &module_name) const;
 	bool moduleIsInstalled(const QString &module_name) const;
@@ -136,6 +134,8 @@ public:
 	bool moduleIsActive(const QString &module_name) const;
 
 	QString modulesUsing(const QString &module_name) const;
+
+	QMap<QString, Plugin *> plugins() { return Modules; }
 
 	bool conflictsWithLoaded(const QString &module_name, PluginInfo *pluginInfo) const;
 

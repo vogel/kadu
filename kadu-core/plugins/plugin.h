@@ -66,7 +66,7 @@ protected:
 	virtual void load();
 
 public:
-	Plugin(const QString &name, PluginInfo *info, QObject *parent = 0);
+	Plugin(const QString &name, QObject *parent = 0);
 	virtual ~Plugin();
 
 	// storage implementation

@@ -17,6 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QFileInfo>
 #include <QtCore/QPluginLoader>
 #include <QtCore/QTranslator>
 #include <QtGui/QApplication>
@@ -43,11 +44,19 @@
 	#define SO_PREFIX_LEN 3
 #endif
 
-Plugin::Plugin(const QString &name, PluginInfo *info, QObject *parent) :
+Plugin::Plugin(const QString &name, QObject *parent) :
 		QObject(parent),
 		Name(name), Active(false), State(PluginStateNew), PluginLoader(0), PluginObject(0),
-		PluginLibrary(0), Close(0), Translator(0), Info(info), UsageCounter(0)
+		PluginLibrary(0), Close(0), Translator(0), UsageCounter(0)
 {
+	QString descFilePath = dataPath("kadu/modules/" + name + ".desc");
+	QFileInfo descFileInfo(descFilePath);
+
+	if (descFileInfo.exists())
+		Info = new PluginInfo(descFilePath);
+	else
+		Info = 0;
+
 	StorableObject::setState(StateNotLoaded);
 }
 
