@@ -46,6 +46,7 @@ private:
 	typedef void CloseModuleFunc(void);
 
 	QString Name;
+	bool Active;
 	PluginState State;
 
 	QPluginLoader *PluginLoader;
@@ -64,7 +65,9 @@ public:
 	bool activate();
 	bool deactivate();
 
+	bool active() const { return Active; }
 	PluginState state() const { return State; }
+	void setState(PluginState state);
 
 	PluginInfo * info() const { return Info; }
 

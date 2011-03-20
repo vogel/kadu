@@ -95,8 +95,8 @@ ModulesManager * ModulesManager::instance()
 	return Instance;
 }
 
-ModulesManager::ModulesManager() : QObject(),
-	StaticModules(), Modules(), Window(0), translators(new QObject(this))
+ModulesManager::ModulesManager() :
+		StaticModules(), Modules(), Window(0), translators(new QObject(this))
 {
 	kdebugf();
 
@@ -137,6 +137,15 @@ ModulesManager::ModulesManager() : QObject(),
 	ensureLoadedAtLeastOnce("sql_history");
 	ensureLoadedAtLeastOnce("history_migration");
 	ensureLoadedAtLeastOnce("profiles_import");
+
+	foreach (const QString &pluginName, everLoaded)
+		if (Modules.contains(pluginName))
+		{
+			if (loaded_list.contains(pluginName))
+				Modules.value(pluginName)->setState(Plugin::PluginStateLoaded);
+			else
+				Modules.value(pluginName)->setState(Plugin::PluginStateNotLoaded);
+		}
 
 	registerStaticModules();
 
@@ -403,7 +412,7 @@ bool ModulesManager::moduleIsLoaded(const QString& module_name) const
 
 bool ModulesManager::moduleIsActive(const QString& module_name) const
 {
-	return Modules.contains(module_name) && (Plugin::PluginStateLoaded == Modules.value(module_name)->state());
+	return Modules.contains(module_name) && (Modules.value(module_name)->active());
 }
 
 void ModulesManager::saveLoadedModules()
@@ -475,7 +484,7 @@ bool ModulesManager::activateModule(const QString& module_name)
 	if (!plugin)
 		return false;
 
-	if (Plugin::PluginStateLoaded == plugin->state())
+	if (plugin->active())
 		return true;
 
 	if (conflictsWithLoaded(module_name, plugin->info()))
