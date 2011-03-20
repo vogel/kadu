@@ -138,7 +138,7 @@ bool Plugin::activate()
 			return false;
 		}
 
-		res = PluginObject->init(!ModulesManager::instance()->everLoaded.contains(Name));
+		res = PluginObject->init(PluginStateNew == State);
 	}
 	else
 	{
@@ -168,15 +168,16 @@ bool Plugin::activate()
 			return false;
 		}
 
-		res = init(!ModulesManager::instance()->everLoaded.contains(Name));
+		res = init(PluginStateNew == State);
 	}
 
 	Translator = ModulesManager::instance()->loadModuleTranslation(Name);
 
-	if (!ModulesManager::instance()->everLoaded.contains(Name))
+	if (PluginStateNew == State)
 	{
-		ModulesManager::instance()->everLoaded.append(Name);
-		config_file.writeEntry("General", "EverLoaded", ModulesManager::instance()->everLoaded.join(","));
+		QStringList everLoaded = config_file.readEntry("General", "EverLoaded").split(',', QString::SkipEmptyParts);
+		everLoaded.append(Name);
+		config_file.writeEntry("General", "EverLoaded", everLoaded.join(","));
 	}
 
 	if (res != 0)

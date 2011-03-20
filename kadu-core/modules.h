@@ -78,10 +78,7 @@ class KADUAPI ModulesManager : public QObject, public StorableObject
 
 	QMap<QString, Plugin *> Modules;
 
-	QStringList everLoaded;
-
 	QStringList protocolModulesList;
-	QStringList unloaded_list;
 
 	ModulesWindow *Window;
 
@@ -145,7 +142,7 @@ public:
 
 public slots:
 	bool activateModule(const QString &module_name);
-	bool deactivateModule(const QString &module_name, bool force = false);
+	bool deactivateModule(const QString &module_name, bool setAsUnloaded, bool force);
 
 	void showWindow(QAction *sender, bool toggled);
 

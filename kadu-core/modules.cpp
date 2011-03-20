@@ -121,7 +121,7 @@ void ModulesManager::load()
 
 	StorableObject::load();
 
-	everLoaded = config_file.readEntry("General", "EverLoaded").split(',', QString::SkipEmptyParts);
+	QStringList everLoaded = config_file.readEntry("General", "EverLoaded").split(',', QString::SkipEmptyParts);
 
 	foreach (const QString &moduleName, installedModules())
 	{
@@ -139,7 +139,7 @@ void ModulesManager::load()
 	QStringList loadedPlugins = loaded_str.split(',', QString::SkipEmptyParts);
 	everLoaded += loadedPlugins;
 	QString unloaded_str = config_file.readEntry("General", "UnloadedModules");
-	unloaded_list = unloaded_str.split(',', QString::SkipEmptyParts);
+	QStringList unloadedPlugins = unloaded_str.split(',', QString::SkipEmptyParts);
 
 	if (loadedPlugins.contains("encryption"))
 	{
@@ -197,11 +197,8 @@ void ModulesManager::ensureLoadedAtLeastOnce(const QString& moduleName)
 	if (!Modules.contains(moduleName))
 		return;
 
-	if (!everLoaded.contains(moduleName) && unloaded_list.contains(moduleName))
-	{
+	if (!Plugin::PluginStateNew == Modules.value(moduleName)->state())
 		Modules.value(moduleName)->setState(Plugin::PluginStateLoaded);
-		unloaded_list.removeAll(moduleName);
-	}
 }
 
 void ModulesManager::loadProtocolModules()
@@ -213,10 +210,10 @@ void ModulesManager::loadProtocolModules()
 
 		if (!moduleIsActive(i))
 		{
-			bool load_module;
+			bool load_module = false;
 			if (Plugin::PluginStateLoaded == Modules.value(i)->state())
 				load_module = true;
-			else if (unloaded_list.contains(i))
+			else if (Plugin::PluginStateNotLoaded == Modules.value(i)->state())
 				load_module = false;
 			else if (staticModules().contains(i))
 				load_module = true;
@@ -249,7 +246,7 @@ void ModulesManager::loadAllModules()
 			bool load_module;
 			if (Plugin::PluginStateLoaded == plugin->state())
 				load_module = true;
-			else if (unloaded_list.contains(plugin->name()))
+			else if (Plugin::PluginStateNotLoaded == plugin->state())
 				load_module = false;
 			else
 			{
@@ -525,6 +522,7 @@ bool ModulesManager::activateModule(const QString& module_name)
 	if (!satisfyModuleDependencies(plugin->info()))
 		return false;
 
+	plugin->setState(Plugin::PluginStateLoaded);
 	return plugin->activate();
 }
 
@@ -548,7 +546,7 @@ void ModulesManager::unloadAllModules()
 		deactivated = false;
 		foreach (const QString &i, active)
 			if (Modules.value(i)->usageCounter() == 0)
-				if (deactivateModule(i))
+				if (deactivateModule(i, false, false))
 					deactivated = true;
 	}
 	while (deactivated);
@@ -559,12 +557,12 @@ void ModulesManager::unloadAllModules()
 	foreach (const QString &i, active)
 	{
 		kdebugm(KDEBUG_PANIC, "WARNING! Could not deactivate module %s, killing\n",qPrintable(i));
-		deactivateModule(i, true);
+		deactivateModule(i, false, true);
 	}
 
 }
 
-bool ModulesManager::deactivateModule(const QString& module_name, bool force)
+bool ModulesManager::deactivateModule(const QString& module_name, bool setAsUnloaded, bool force)
 {
 	Plugin *plugin = Modules.value(module_name);
 	kdebugmf(KDEBUG_FUNCTION_START, "name:'%s' force:%d usage:%d\n", qPrintable(module_name), force, plugin->usageCounter());
@@ -579,6 +577,8 @@ bool ModulesManager::deactivateModule(const QString& module_name, bool force)
 	foreach (const QString &i, plugin->info()->dependencies())
 		moduleDecUsageCount(i);
 
+	if (setAsUnloaded)
+		plugin->setState(Plugin::PluginStateNotLoaded);
 	return plugin->deactivate();
 }
 

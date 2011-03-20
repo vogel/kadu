@@ -212,7 +212,7 @@ void ModulesWindow::loadItem(const QString &item)
 void ModulesWindow::unloadItem(const QString &item)
 {
 	kdebugf();
-	ModulesManager::instance()->deactivateModule(item);
+	ModulesManager::instance()->deactivateModule(item, true, false);
 	refreshList();
 	ModulesManager::instance()->saveLoadedModules();
 	kdebugf2();
