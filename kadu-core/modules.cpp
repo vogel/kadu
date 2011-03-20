@@ -135,22 +135,23 @@ void ModulesManager::load()
 	}
 
 	QString loaded_str = config_file.readEntry("General", "LoadedModules");
-	loaded_list = loaded_str.split(',', QString::SkipEmptyParts);
-	everLoaded += loaded_str;
+
+	QStringList loadedPlugins = loaded_str.split(',', QString::SkipEmptyParts);
+	everLoaded += loadedPlugins;
 	QString unloaded_str = config_file.readEntry("General", "UnloadedModules");
 	unloaded_list = unloaded_str.split(',', QString::SkipEmptyParts);
 
-	if (loaded_list.contains("encryption"))
+	if (loadedPlugins.contains("encryption"))
 	{
-		loaded_list.removeAll("encryption");
-		loaded_list.append("encryption_ng");
-		loaded_list.append("encryption_ng_simlite");
+		loadedPlugins.removeAll("encryption");
+		loadedPlugins.append("encryption_ng");
+		loadedPlugins.append("encryption_ng_simlite");
 	}
-	if (loaded_list.contains("osd_hints"))
+	if (loadedPlugins.contains("osd_hints"))
 	{
-		loaded_list.removeAll("osd_hints");
-		if (!loaded_list.contains("hints"))
-			loaded_list.append("hints");
+		loadedPlugins.removeAll("osd_hints");
+		if (!loadedPlugins.contains("hints"))
+			loadedPlugins.append("hints");
 	}
 
 	ensureLoadedAtLeastOnce("gadu_protocol");
@@ -162,7 +163,7 @@ void ModulesManager::load()
 	foreach (const QString &pluginName, everLoaded)
 		if (Modules.contains(pluginName))
 		{
-			if (loaded_list.contains(pluginName))
+			if (loadedPlugins.contains(pluginName))
 				Modules.value(pluginName)->setState(Plugin::PluginStateLoaded);
 			else
 				Modules.value(pluginName)->setState(Plugin::PluginStateNotLoaded);
@@ -193,9 +194,12 @@ void ModulesManager::store()
 
 void ModulesManager::ensureLoadedAtLeastOnce(const QString& moduleName)
 {
-	if (!everLoaded.contains(moduleName) && !loaded_list.contains(moduleName) && unloaded_list.contains(moduleName))
+	if (!Modules.contains(moduleName))
+		return;
+
+	if (!everLoaded.contains(moduleName) && unloaded_list.contains(moduleName))
 	{
-		loaded_list.append(moduleName);
+		Modules.value(moduleName)->setState(Plugin::PluginStateLoaded);
 		unloaded_list.removeAll(moduleName);
 	}
 }
@@ -204,10 +208,13 @@ void ModulesManager::loadProtocolModules()
 {
 	foreach (const QString &i, protocolModulesList)
 	{
+		if (!Modules.contains(i))
+			continue;
+
 		if (!moduleIsActive(i))
 		{
 			bool load_module;
-			if (loaded_list.contains(i))
+			if (Plugin::PluginStateLoaded == Modules.value(i)->state())
 				load_module = true;
 			else if (unloaded_list.contains(i))
 				load_module = false;
@@ -240,7 +247,7 @@ void ModulesManager::loadAllModules()
 		if (!plugin->active() && !protocolModulesList.contains(plugin->name()))
 		{
 			bool load_module;
-			if (loaded_list.contains(plugin->name()))
+			if (Plugin::PluginStateLoaded == plugin->state())
 				load_module = true;
 			else if (unloaded_list.contains(plugin->name()))
 				load_module = false;
@@ -258,15 +265,15 @@ void ModulesManager::loadAllModules()
 		}
 	}
 
-	foreach (const QString &i, loaded_list)
+	foreach (Plugin *i, Modules)
 	{
-		if (!moduleIsActive(i))
+		if (!i->active())
 		{
 			foreach (Plugin *plugin, Modules)
 			{
 				PluginInfo *m_info = pluginInfo(plugin->name());
-				if (m_info && m_info->replaces().contains(i))
-					if (activateModule(i))
+				if (m_info && m_info->replaces().contains(i->name()))
+					if (activateModule(i->name()))
 						saveList = true;
 			}
 		}
@@ -276,7 +283,6 @@ void ModulesManager::loadAllModules()
 	// save the list of modules
 	if (saveList)
 		saveLoadedModules();
-
 }
 
 QTranslator* ModulesManager::loadModuleTranslation(const QString &module_name)

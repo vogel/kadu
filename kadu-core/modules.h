@@ -97,7 +97,6 @@ class KADUAPI ModulesManager : public QObject, public StorableObject
 	QStringList everLoaded;
 
 	QStringList protocolModulesList;
-	QStringList loaded_list;
 	QStringList unloaded_list;
 
 	ModulesWindow *Window;
