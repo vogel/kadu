@@ -136,6 +136,7 @@ void ModulesManager::load()
 
 	QString loaded_str = config_file.readEntry("General", "LoadedModules");
 	loaded_list = loaded_str.split(',', QString::SkipEmptyParts);
+	everLoaded += loaded_str;
 	QString unloaded_str = config_file.readEntry("General", "UnloadedModules");
 	unloaded_list = unloaded_str.split(',', QString::SkipEmptyParts);
 
