@@ -51,6 +51,7 @@
 #endif
 
 #include "configuration/configuration-file.h"
+#include "configuration/configuration-manager.h"
 #include "core/core.h"
 #include "gui/hot-key.h"
 #include "gui/windows/kadu-window.h"
@@ -90,7 +91,12 @@ ModulesManager * ModulesManager::Instance = 0;
 ModulesManager * ModulesManager::instance()
 {
 	if (0 == Instance)
+	{
 		Instance = new ModulesManager();
+		// do not move to contructor
+		// Instance variable must be available ModulesManager::load method
+		Instance->ensureLoaded();
+	}
 
 	return Instance;
 }
@@ -98,7 +104,22 @@ ModulesManager * ModulesManager::instance()
 ModulesManager::ModulesManager() :
 		StaticModules(), Modules(), Window(0), translators(new QObject(this))
 {
-	kdebugf();
+	ConfigurationManager::instance()->registerStorableObject(this);
+
+	setState(StateNotLoaded);
+}
+
+ModulesManager::~ModulesManager()
+{
+	ConfigurationManager::instance()->unregisterStorableObject(this);
+}
+
+void ModulesManager::load()
+{
+	if (!isValidStorage())
+		return;
+
+	StorableObject::load();
 
 	everLoaded = config_file.readEntry("General", "EverLoaded").split(',', QString::SkipEmptyParts);
 
@@ -109,6 +130,7 @@ ModulesManager::ModulesManager() :
 			continue;
 
 		Plugin *plugin = new Plugin(moduleName, info, this);
+		plugin->ensureLoaded();
 		Modules.insert(moduleName, plugin);
 	}
 
@@ -153,14 +175,19 @@ ModulesManager::ModulesManager() :
 	foreach (Plugin *plugin, Modules)
 		if (plugin->name().endsWith("_protocol"))
 			    protocolModulesList.append(plugin->name());
-
-	kdebugf2();
 }
 
-ModulesManager::~ModulesManager()
+void ModulesManager::store()
 {
-	kdebugf();
-	kdebugf2();
+	if (!isValidStorage())
+		return;
+
+	ensureLoaded();
+
+	StorableObject::store();
+
+	foreach (Plugin *plugin, Modules)
+		plugin->store();
 }
 
 void ModulesManager::ensureLoadedAtLeastOnce(const QString& moduleName)

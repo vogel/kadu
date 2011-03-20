@@ -35,6 +35,7 @@
 #include <QtCore/QMap>
 #include <QtGui/QWidget>
 
+#include "storage/storable-object.h"
 #include "exports.h"
 
 class QCheckBox;
@@ -54,7 +55,7 @@ class PluginInfo;
 	\class ModulesManager
 	\brief Zarz�dzanie modu�ami
 **/
-class KADUAPI ModulesManager : public QObject
+class KADUAPI ModulesManager : public QObject, public StorableObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(ModulesManager)
@@ -148,7 +149,15 @@ class KADUAPI ModulesManager : public QObject
 private slots:
 	void dialogDestroyed();
 
+protected:
+	virtual void load();
+
 public:
+	// storage implementation
+	virtual StorableObject * storageParent() { return 0; }
+	virtual QString storageNodeName() { return QLatin1String("Plugins"); }
+
+	virtual void store();
 
 	void loadProtocolModules();
 

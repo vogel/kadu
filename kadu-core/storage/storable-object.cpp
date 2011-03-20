@@ -213,7 +213,7 @@ void StorableObject::removeFromStorage()
 		return;
 
 	Storage->point().parentNode().removeChild(Storage->point());
-	Storage.clear();;
+	Storage.clear();
 }
 
 /**

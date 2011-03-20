@@ -48,10 +48,29 @@ Plugin::Plugin(const QString &name, PluginInfo *info, QObject *parent) :
 		Name(name), Active(false), State(PluginStateNew), PluginLoader(0), PluginObject(0),
 		PluginLibrary(0), Close(0), Translator(0), Info(info), UsageCounter(0)
 {
+	StorableObject::setState(StateNotLoaded);
 }
 
 Plugin::~Plugin()
 {
+}
+
+void Plugin::load()
+{
+	if (!isValidStorage())
+		return;
+
+	StorableObject::load();
+}
+
+void Plugin::store()
+{
+	if (!isValidStorage())
+		return;
+
+	ensureLoaded();
+
+	StorableObject::store();
 }
 
 bool Plugin::activate()

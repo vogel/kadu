@@ -22,6 +22,9 @@
 
 #include <QtCore/QObject>
 
+#include "modules.h"
+#include "storage/named-storable-object.h"
+
 class QLibrary;
 class QPluginLoader;
 class QTranslator;
@@ -29,7 +32,7 @@ class QTranslator;
 class GenericPlugin;
 class PluginInfo;
 
-class Plugin : public QObject
+class Plugin : public QObject, public NamedStorableObject
 {
 	Q_OBJECT
 
@@ -58,14 +61,23 @@ private:
 	PluginInfo *Info;
 	int UsageCounter;
 
+protected:
+	virtual void load();
+
 public:
 	Plugin(const QString &name, PluginInfo *info, QObject *parent = 0);
 	virtual ~Plugin();
 
+	// storage implementation
+	virtual StorableObject* storageParent() { return ModulesManager::instance(); }
+	virtual QString storageNodeName() { return QLatin1String("Plugin"); }
+	virtual QString name() const { return Name; }
+
+	virtual void store();
+
 	bool activate();
 	bool deactivate();
 
-	QString name() const { return Name; }
 	bool active() const { return Active; }
 	PluginState state() const { return State; }
 	void setState(PluginState state);
