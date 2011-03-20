@@ -65,6 +65,7 @@ public:
 	bool activate();
 	bool deactivate();
 
+	QString name() const { return Name; }
 	bool active() const { return Active; }
 	PluginState state() const { return State; }
 	void setState(PluginState state);

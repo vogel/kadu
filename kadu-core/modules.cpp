@@ -102,9 +102,7 @@ ModulesManager::ModulesManager() :
 
 	everLoaded = config_file.readEntry("General", "EverLoaded").split(',', QString::SkipEmptyParts);
 
-	// load modules as config file say
-	installed_list = installedModules();
-	foreach (const QString &moduleName, installed_list)
+	foreach (const QString &moduleName, installedModules())
 	{
 		PluginInfo *info = pluginInfo(moduleName);
 		if (!info)
@@ -152,9 +150,9 @@ ModulesManager::ModulesManager() :
 	foreach (const QString &i, staticModules())
 		if (i.right(9) == "_protocol")
 			    protocolModulesList.append(i);
-	foreach (const QString &i, installed_list)
-		if (i.right(9) == "_protocol")
-			    protocolModulesList.append(i);
+	foreach (Plugin *plugin, Modules)
+		if (plugin->name().endsWith("_protocol"))
+			    protocolModulesList.append(plugin->name());
 
 	kdebugf2();
 }
@@ -209,25 +207,25 @@ void ModulesManager::loadAllModules()
 		if (!moduleIsActive(i))
 			activateModule(i);
 
-	foreach (const QString &i, installed_list)
+	foreach (Plugin *plugin, Modules)
 	{
-		if (!moduleIsActive(i) && !protocolModulesList.contains(i))
+		if (!plugin->active() && !protocolModulesList.contains(plugin->name()))
 		{
 			bool load_module;
-			if (loaded_list.contains(i))
+			if (loaded_list.contains(plugin->name()))
 				load_module = true;
-			else if (unloaded_list.contains(i))
+			else if (unloaded_list.contains(plugin->name()))
 				load_module = false;
 			else
 			{
-				PluginInfo *m_info = pluginInfo(i);
+				PluginInfo *m_info = pluginInfo(plugin->name());
 				if (m_info)
 					load_module = m_info->loadByDefault();
 				else
 					load_module = false;
 			}
 
-			if (load_module && !activateModule(i))
+			if (load_module && !activateModule(plugin->name()))
 				saveList = true;
 		}
 	}
@@ -236,9 +234,9 @@ void ModulesManager::loadAllModules()
 	{
 		if (!moduleIsActive(i))
 		{
-			foreach (const QString &module, installed_list)
+			foreach (Plugin *plugin, Modules)
 			{
-				PluginInfo *m_info = pluginInfo(module);
+				PluginInfo *m_info = pluginInfo(plugin->name());
 				if (m_info && m_info->replaces().contains(i))
 					if (activateModule(i))
 						saveList = true;

@@ -96,7 +96,6 @@ class KADUAPI ModulesManager : public QObject
 	QStringList everLoaded;
 
 	QStringList protocolModulesList;
-	QStringList installed_list;
 	QStringList loaded_list;
 	QStringList unloaded_list;
 
