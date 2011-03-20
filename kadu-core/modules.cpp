@@ -170,13 +170,6 @@ void ModulesManager::load()
 		}
 
 	registerStaticModules();
-
-	foreach (const QString &i, staticModules())
-		if (i.right(9) == "_protocol")
-			    protocolModulesList.append(i);
-	foreach (Plugin *plugin, Modules)
-		if (plugin->name().endsWith("_protocol"))
-			    protocolModulesList.append(plugin->name());
 }
 
 void ModulesManager::store()
@@ -203,31 +196,32 @@ void ModulesManager::ensureLoadedAtLeastOnce(const QString& moduleName)
 
 void ModulesManager::loadProtocolModules()
 {
-	foreach (const QString &i, protocolModulesList)
+	foreach (const QString &i, staticModules())
+		if (!moduleIsActive(i) && moduleIsProtocol(i))
+			activateModule(i);
+
+	foreach (Plugin *plugin, Modules)
 	{
-		if (!Modules.contains(i))
+		if (!moduleIsProtocol(plugin->name()))
+			continue;
+		if (plugin->active())
 			continue;
 
-		if (!moduleIsActive(i))
+		bool load_module = false;
+		if (Plugin::PluginStateLoaded == plugin->state())
+			load_module = true;
+		else if (Plugin::PluginStateNotLoaded == plugin->state())
+			load_module = false;
+		else
 		{
-			bool load_module = false;
-			if (Plugin::PluginStateLoaded == Modules.value(i)->state())
-				load_module = true;
-			else if (Plugin::PluginStateNotLoaded == Modules.value(i)->state())
-				load_module = false;
-			else if (staticModules().contains(i))
-				load_module = true;
+			PluginInfo *m_info = plugin->info();
+			if (m_info)
+				load_module = m_info->loadByDefault();
 			else
-			{
-				PluginInfo *m_info = pluginInfo(i);
-				if (m_info)
-					load_module = m_info->loadByDefault();
-				else
-					load_module = false;
-			}
-			if (load_module)
-				activateModule(i);
+				load_module = false;
 		}
+		if (load_module)
+			activateModule(plugin->name());
 	}
 }
 
@@ -241,25 +235,27 @@ void ModulesManager::loadAllModules()
 
 	foreach (Plugin *plugin, Modules)
 	{
-		if (!plugin->active() && !protocolModulesList.contains(plugin->name()))
-		{
-			bool load_module;
-			if (Plugin::PluginStateLoaded == plugin->state())
-				load_module = true;
-			else if (Plugin::PluginStateNotLoaded == plugin->state())
-				load_module = false;
-			else
-			{
-				PluginInfo *m_info = pluginInfo(plugin->name());
-				if (m_info)
-					load_module = m_info->loadByDefault();
-				else
-					load_module = false;
-			}
+		if (moduleIsProtocol(plugin->name()))
+			continue;
+		if (plugin->active())
+			continue;
 
-			if (load_module && !activateModule(plugin->name()))
-				saveList = true;
+		bool load_module;
+		if (Plugin::PluginStateLoaded == plugin->state())
+			load_module = true;
+		else if (Plugin::PluginStateNotLoaded == plugin->state())
+			load_module = false;
+		else
+		{
+			PluginInfo *m_info = plugin->info();
+			if (m_info)
+				load_module = m_info->loadByDefault();
+			else
+				load_module = false;
 		}
+
+		if (load_module && !activateModule(plugin->name()))
+			saveList = true;
 	}
 
 	foreach (Plugin *i, Modules)
@@ -422,6 +418,11 @@ PluginInfo * ModulesManager::pluginInfo(const QString &module_name) const
 
 	QString descFilePath = dataPath("kadu/modules/" + module_name + ".desc");
 	return new PluginInfo(descFilePath);
+}
+
+bool ModulesManager::moduleIsProtocol(const QString& module_name) const
+{
+	return module_name.endsWith("_protocol");
 }
 
 bool ModulesManager::moduleIsStatic(const QString& module_name) const

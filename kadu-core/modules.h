@@ -78,8 +78,6 @@ class KADUAPI ModulesManager : public QObject, public StorableObject
 
 	QMap<QString, Plugin *> Modules;
 
-	QStringList protocolModulesList;
-
 	ModulesWindow *Window;
 
 	QTranslator *loadModuleTranslation(const QString &module_name);
@@ -131,6 +129,7 @@ public:
 
 	PluginInfo * pluginInfo(const QString &moduleName) const;
 
+	bool moduleIsProtocol(const QString &module_name) const;
 	bool moduleIsStatic(const QString &module_name) const;
 	bool moduleIsInstalled(const QString &module_name) const;
 	bool moduleIsLoaded(const QString &module_name) const;
