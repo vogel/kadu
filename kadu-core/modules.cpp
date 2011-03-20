@@ -296,6 +296,9 @@ QTranslator* ModulesManager::loadModuleTranslation(const QString &module_name)
 
 bool ModulesManager::satisfyModuleDependencies(PluginInfo *pluginInfo)
 {
+	if (!pluginInfo)
+		return true;
+
 	kdebugf();
 	foreach (const QString &it, pluginInfo->dependencies())
 	{
@@ -469,6 +472,9 @@ QString ModulesManager::modulesUsing(const QString &module_name) const
 
 bool ModulesManager::conflictsWithLoaded(const QString &module_name, PluginInfo *pluginInfo) const
 {
+	if (!pluginInfo)
+		return false;
+
 	kdebugf();
 	foreach (const QString &it, pluginInfo->conflicts())
 	{
@@ -479,22 +485,24 @@ bool ModulesManager::conflictsWithLoaded(const QString &module_name, PluginInfo 
 			return true;
 		}
 		foreach (const QString &key, Modules.keys())
-			foreach (const QString &sit, Modules.value(key)->info()->provides())
-				if (moduleIsActive(key) && (it == sit))
+			if (Modules.value(key)->info())
+				foreach (const QString &sit, Modules.value(key)->info()->provides())
+					if (moduleIsActive(key) && (it == sit))
+					{
+						MessageDialog::show("dialog-warning", tr("Kadu"), tr("Module %1 conflicts with: %2").arg(module_name, key));
+						kdebugf2();
+						return true;
+					}
+	}
+	foreach (const QString &key, Modules.keys())
+		if (Modules.value(key)->info())
+			foreach (const QString &sit, Modules.value(key)->info()->conflicts())
+				if (moduleIsActive(key) && (sit == module_name))
 				{
 					MessageDialog::show("dialog-warning", tr("Kadu"), tr("Module %1 conflicts with: %2").arg(module_name, key));
 					kdebugf2();
 					return true;
 				}
-	}
-	foreach (const QString &key, Modules.keys())
-		foreach (const QString &sit, Modules.value(key)->info()->conflicts())
-			if (moduleIsActive(key) && (sit == module_name))
-			{
-				MessageDialog::show("dialog-warning", tr("Kadu"), tr("Module %1 conflicts with: %2").arg(module_name, key));
-				kdebugf2();
-				return true;
-			}
 	kdebugf2();
 	return false;
 }
