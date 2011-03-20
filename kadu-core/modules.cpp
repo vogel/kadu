@@ -204,7 +204,7 @@ void ModulesManager::loadProtocolModules()
 	{
 		if (!moduleIsProtocol(plugin->name()))
 			continue;
-		if (plugin->active())
+		if (plugin->isActive())
 			continue;
 
 		bool load_module = false;
@@ -237,7 +237,7 @@ void ModulesManager::loadAllModules()
 	{
 		if (moduleIsProtocol(plugin->name()))
 			continue;
-		if (plugin->active())
+		if (plugin->isActive())
 			continue;
 
 		bool load_module;
@@ -260,7 +260,7 @@ void ModulesManager::loadAllModules()
 
 	foreach (Plugin *i, Modules)
 	{
-		if (!i->active())
+		if (!i->isActive())
 		{
 			foreach (Plugin *plugin, Modules)
 			{
@@ -442,7 +442,7 @@ bool ModulesManager::moduleIsLoaded(const QString& module_name) const
 
 bool ModulesManager::moduleIsActive(const QString& module_name) const
 {
-	return Modules.contains(module_name) && (Modules.value(module_name)->active());
+	return Modules.contains(module_name) && (Modules.value(module_name)->isActive());
 }
 
 void ModulesManager::saveLoadedModules()
@@ -514,7 +514,7 @@ bool ModulesManager::activateModule(const QString& module_name)
 	if (!plugin)
 		return false;
 
-	if (plugin->active())
+	if (plugin->isActive())
 		return true;
 
 	if (conflictsWithLoaded(module_name, plugin->info()))
