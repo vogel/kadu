@@ -50,11 +50,6 @@ class ModulesWindow;
 class Plugin;
 class PluginInfo;
 
-/**
-	Ta klasa odpowiada za obs�ug� modu��w Kadu.
-	\class ModulesManager
-	\brief Zarz�dzanie modu�ami
-**/
 class KADUAPI ModulesManager : public QObject, public StorableObject
 {
 	Q_OBJECT
@@ -75,25 +70,14 @@ class KADUAPI ModulesManager : public QObject, public StorableObject
 	**/
 	struct StaticModule
 	{
-		InitModuleFunc *init; /*!< Wska�nik do funkcji inicjalizuj�cej modu�. */
-		CloseModuleFunc *close; /*!< Wska�nik do funkcji deinicjalizuj�cej modu�. */
+		InitModuleFunc *init;
+		CloseModuleFunc *close;
 	};
 
-	/**
-		Lista statycznych modu��w wype�niania
-		przez kod generowany przez configure.
-	**/
 	QMap<QString, StaticModule> StaticModules;
 
-	/**
-		Lista aktywnych modu��w
-		statycznych b�d� zewn�trznych.
-	**/
 	QMap<QString, Plugin *> Modules;
 
-	/**
-		List of modules that were loaded in the past.
-	 **/
 	QStringList everLoaded;
 
 	QStringList protocolModulesList;
@@ -101,46 +85,18 @@ class KADUAPI ModulesManager : public QObject, public StorableObject
 
 	ModulesWindow *Window;
 
-	/**
-		�aduje plik z t�umaczeniem. Zwraca NULL je�li wyst�pi�
-		b��d.
-	**/
 	QTranslator *loadModuleTranslation(const QString &module_name);
 
-	/**
-		Sprawdza czy dost�pne s� modu�y z listy
-		zale�no�ci danego modu�u. W razie czego
-		stara si� je za�adowa� je�li s� dost�pne.
-		@param module_info informacje o module
-	**/
 	bool satisfyModuleDependencies(PluginInfo *pluginInfo);
 
-	/**
-		Zwi�ksza liczniki u�ycia modu��w u�ywanych
-		przez dany modu�.
-		@param module_info informacje o module
-	**/
-
 	void incDependenciesUsageCount(PluginInfo *pluginInfo);
-	/**
-		Rejestruje modu� statyczny. Funcja wywo�ywana
-		dla wszystkich modu��w statycznych przez kod
-		wygenerowany przez configure.
-	**/
 
 	void registerStaticModule(const QString &module_name, InitModuleFunc *init, CloseModuleFunc *close);
 
-	/**
-		Rejestruje modu�y statyczne. Kod funkcji jest
-		generowany przez configure.
-	**/
 	void registerStaticModules();
 
 	QStringList protocolModules() const;
 
-	/**
-		Skupia wszystkie t�umaczenia w jednej hierarchii
-	**/
 	QObject *translators;
 
 	void ensureLoadedAtLeastOnce(const QString &moduleName);
@@ -168,138 +124,34 @@ public:
 
 	~ModulesManager();
 
-	/**
-		\fn QStringList staticModules() const
-		\return list� modu��w wkompilowanych
-		statycznie w plik wykonywalny Kadu.
-	**/
 	QStringList staticModules() const;
-
-	/**
-		\fn QStringList installedModules() const
-		\return list� modu��w zainstalowanych jako
-		dzielone biblioteki (shared libraries).
-	**/
 	QStringList installedModules() const;
-
-	/**
-		\fn QStringList loadedModules() const
-		\return list� modu��w za�adowanych do pami�ci
-		jako dzielone biblioteki (shared libraries).
-	**/
 	QStringList loadedModules() const;
-
-	/**
-		\fn QStringList unloadedModules() const
-		\return list� modu��w zainstalowanych jako
-		dzielone biblioteki (shared libraries)
-		i nie za�adowanych aktualnie do pami�ci.
-	**/
 	QStringList unloadedModules() const;
-
-	/**
-		\fn QStringList activeModules() const
-		\return list� aktywnych modu��w.
-		Uwzgl�dniane s� zar�wno aktywne modu�y
-		statyczne jak i zewn�trzne.
-	**/
 	QStringList activeModules() const;
 
 	QString moduleProvides(const QString &provides);
 
 	PluginInfo * pluginInfo(const QString &moduleName) const;
 
-	/**
-		\fn bool moduleIsStatic(const QString &module_name) const
-		Sprawdza czy podany modu� jest wkompilowany statycznie.
-		\param module_name nazwa modu�u.
-		\return true, je�li modu� jest wkompilowany, false je�li nie jest.
-	**/
 	bool moduleIsStatic(const QString &module_name) const;
-
-	/**
-		\fn bool moduleIsInstalled(const QString &module_name) const
-		Sprawdza czy podany modu� jest zainstalowany
-		w katalogu z modu�ami zewn�trznymi.
-		\param module_name nazwa modu�u.
-		\return true, je�li modu� jest zainstalowany, false je�li nie jest.
-	**/
 	bool moduleIsInstalled(const QString &module_name) const;
-
-	/**
-		\fn bool moduleIsLoaded(const QString &module_name) const
-		Sprawdza czy podany modu� zewn�trzny jest za�adowany.
-		\param module_name nazwa modu�u.
-		\return true, je�li modu� jest za�adowany, false je�li nie jest.
-	**/
 	bool moduleIsLoaded(const QString &module_name) const;
-
-	/**
-		\fn bool moduleIsActive(const QString &module_name) const
-		Sprawdza czy podany modu� jest aktywny.
-		Dzia�a dla modu��w statycznych i za�adowanych
-		zewn�trznych.
-		\param module_name nazwa modu�u.
-		\return true, je�li modu� jest aktywny, false je�li nie jest.
-	**/
 	bool moduleIsActive(const QString &module_name) const;
 
 	QString modulesUsing(const QString &module_name) const;
 
-	/**
-		\fn bool conflictsWithLoaded(const QString &module_name, const ModuleInfo &module_info) const
-		Sprawdza czy podany modu� konfliktuje
-		z jakim� innym za�adowanym modu�em.
-		\param module_name nazwa modu�u.
-		\param module_info informacje o module.
-		\return true, je�li modu� konfliktuje, false je�li nie.
-	**/
 	bool conflictsWithLoaded(const QString &module_name, PluginInfo *pluginInfo) const;
 
 public slots:
-	/**
-		\fn bool activateModule(const QString &module_name)
-		Aktywuje modu� statyczny je�li jest dost�pny
-		lub �aduje do pami�ci i aktywuje modu� zewn�trzny.
-		Przez aktywacje rozumie si� wywo�anie funkcji *_init z modu�u.
-		\param module_name nazwa modu�u.
-		\return true je�li aktywacja przebieg�a bezproblemowo, false w przeciwnym wypadku.
-	**/
 	bool activateModule(const QString &module_name);
-
-	/**
-		\fn bool deactivateModule(const QString &module_name, bool force=false)
-		Deaktywuje modu� statyczny lub deaktywuje i usuwa z pami�ci modu� zewn�trzny.
-		\param module_name nazwa modu�u.
-		\return true je�li dezaktywacja przebieg�a bezproblemowo, false w przeciwnym wypadku.
-	**/
 	bool deactivateModule(const QString &module_name, bool force = false);
 
-	/**
-		\fn void showWindow(QAction *sender, bool toggled)
-		Wy�wietla okno dialogowe "Zarz�dcy modu��w", czyli tworzy i pokazuje klas� ModulesDialog.
-	**/
 	void showWindow(QAction *sender, bool toggled);
 
-	/**
-		\fn void moduleIncUsageCount(const QString &module_name)
-		Zwi�ksza licznik u�ycia modu�u o 1.
-		\param module_name nazwa modu�u.
-	**/
 	void moduleIncUsageCount(const QString &module_name);
-
-	/**
-		\fn void moduleDecUsageCount(const QString &module_name)
-	 	Zmniejsza licznik u�ycia modu�u o 1.
-		\param module_name nazwa modu�u.
-	**/
 	void moduleDecUsageCount(const QString &module_name);
 
-	/**
-		\fn void saveLoadedModules()
-		Zapisuje do pliku konfiguracyjnego list� za�adowanych
-		modu��w.
-	**/
 	void saveLoadedModules();
 
 };
