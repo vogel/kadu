@@ -1,4 +1,4 @@
-+++ version 0.10.0-beta1
++++ version 0.10.0-alpha1
 * gadu: removed depreceated ip/port/version code - gg server does not send this info anymore (Vogel)
 * modules: Library class removed, we can use QLibrary (Vogel)
 * cmake: faster linking, not using final.cpp on Windows compilation (Darom, beevvy, Vogel)
@@ -7,6 +7,7 @@
 
 +++ version 0.9.1
 * identities: fixed displaying improper status information when having more jabber and gadu account in one identity and invisible status for gadu (beevvy)
+* gadu: fixed bug where Kadu could send contacts to Gadu server not from contacts list, but from history (Vogel)
 
 +++ version 0.9.0
 * configuration: configuration is now always properly imported on Windows (Vogel)
