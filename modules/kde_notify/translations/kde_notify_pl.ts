@@ -35,12 +35,9 @@
         <source>Number of quoted characters</source>
         <translation>Liczba cytowanych znaków</translation>
     </message>
-</context>
-<context>
-    <name>KdeNotify</name>
-    <message>
-        <source>KDE4 notifications</source>
-        <translation>Powiadomienia KDE4</translation>
-    </message>
+	<message>
+		<source>KDE4 notifications</source>
+		<translation>Powiadomienia KDE4</translation>
+	</message>
 </context>
 </TS>

@@ -39,6 +39,10 @@
         <source>Conditions</source>
         <translation>Warunki</translation>
     </message>
+	<message>
+		<source>Antistring notifications</source>
+		<translation>Powiadomienia antyłańcuszka</translation>
+	</message>
 </context>
 <context>
     <name>Antistring</name>

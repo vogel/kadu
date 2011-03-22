@@ -27,7 +27,7 @@ NotifyEvent * AntistringNotification::StringReceivedNotification;
 
 void AntistringNotification::registerNotifications()
 {
-	StringReceivedNotification = new NotifyEvent("Antistring", NotifyEvent::CallbackNotRequired, "Antistring notifications");
+	StringReceivedNotification = new NotifyEvent("Antistring", NotifyEvent::CallbackNotRequired, QT_TRANSLATE_NOOP("@default", "Antistring notifications"));
 	NotificationManager::instance()->registerNotifyEvent(StringReceivedNotification);
 }
 

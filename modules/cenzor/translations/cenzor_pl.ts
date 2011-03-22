@@ -31,6 +31,10 @@
         <source>Exclusions</source>
         <translation>Wyjątki</translation>
     </message>
+	<message>
+		<source>Message was cenzored</source>
+		<translation>Wiadomość została ocenzurowana</translation>
+	</message>
 </context>
 <context>
     <name>CenzorNotification</name>
