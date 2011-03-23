@@ -1251,6 +1251,10 @@ ihned po zřízení spojení se serverem</translation>
             <numerusform></numerusform>
         </translation>
     </message>
+    <message>
+        <source>Send message</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>
