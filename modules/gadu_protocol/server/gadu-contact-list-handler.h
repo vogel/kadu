@@ -34,6 +34,7 @@ class GaduContactListHandler : public QObject
 	Q_OBJECT
 
 	GaduProtocol *Protocol;
+	bool AlreadySent;
 
 public:
 	static int notifyTypeFromContact(const Contact &contact);
@@ -42,6 +43,7 @@ public:
 	virtual ~GaduContactListHandler();
 
 	void setUpContactList(const QList<Contact> &contacts);
+	void reset();
 
 	void updateContactEntry(Contact contact);
 

@@ -569,6 +569,9 @@ void GaduProtocol::networkConnected()
 
 void GaduProtocol::networkDisconnected(bool tryAgain, bool waitForPassword)
 {
+	if (ContactListHandler)
+		ContactListHandler->reset();
+
 	if (!tryAgain)
 		networkStateChanged(NetworkDisconnected);
 
