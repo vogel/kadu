@@ -42,7 +42,7 @@ int GaduContactListHandler::notifyTypeFromContact(const Contact &contact)
 }
 
 GaduContactListHandler::GaduContactListHandler(GaduProtocol *protocol, QObject *parent) :
-		QObject(parent), Protocol(protocol)
+		QObject(parent), Protocol(protocol), AlreadySent(false)
 {
 }
 
@@ -90,6 +90,13 @@ void GaduContactListHandler::setUpContactList(const QList<Contact> &contacts)
 
 	gg_notify_ex(Protocol->gaduSession(), uins.data(), types.data(), count);
 	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Userlist sent\n");
+
+	AlreadySent = true;
+}
+
+void GaduContactListHandler::reset()
+{
+	AlreadySent = false;
 }
 
 void GaduContactListHandler::updateContactEntry(Contact contact)
@@ -99,6 +106,9 @@ void GaduContactListHandler::updateContactEntry(Contact contact)
 
 void GaduContactListHandler::addContactEntry(UinType uin, int type)
 {
+	if (!AlreadySent)
+		return;
+
 	if (::Protocol::NetworkConnected != Protocol->state())
 		return;
 
@@ -123,6 +133,9 @@ void GaduContactListHandler::addContactEntry(Contact contact)
 
 void GaduContactListHandler::removeContactEntry(UinType uin)
 {
+	if (!AlreadySent)
+		return;
+
 	if (!uin)
 		return;
 
