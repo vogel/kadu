@@ -1230,6 +1230,10 @@ changes upon establishing connection to the server</source>
             <numerusform>%n minutes</numerusform>
         </translation>
     </message>
+    <message>
+        <source>Send message</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>

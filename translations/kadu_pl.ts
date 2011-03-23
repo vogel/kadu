@@ -1255,6 +1255,10 @@ znajomych po połączeniu się z serwerem</translation>
             <numerusform>[przez] %n minut</numerusform>
         </translation>
     </message>
+    <message>
+        <source>Send message</source>
+        <translation>Wyślij wiadomość</translation>
+    </message>
 	<message>
 		<source>Show a window with notification</source>
 		<translation>Pokaż okno</translation>
