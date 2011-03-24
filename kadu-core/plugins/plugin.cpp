@@ -112,12 +112,16 @@ bool Plugin::activate()
 
 	int res = 0;
 
+	loadTranslations();
+
 	if (ModulesManager::instance()->moduleIsStatic(Name))
 	{
 		PluginLibrary = 0;
 		ModulesManager::StaticModule sm = ModulesManager::instance()->StaticModules[Name];
 		init = sm.init;
 		Close = sm.close;
+
+		res = init(PluginStateNew == State);
 	}
 	else if (Info->isPlugin())
 	{
@@ -179,8 +183,6 @@ bool Plugin::activate()
 
 		res = init(PluginStateNew == State);
 	}
-
-	Translator = ModulesManager::instance()->loadModuleTranslation(Name);
 
 	if (PluginStateNew == State)
 	{
@@ -247,6 +249,20 @@ bool Plugin::deactivate()
 
 	kdebugf2();
 	return true;
+}
+
+void Plugin::loadTranslations()
+{
+	Translator = new QTranslator(this);
+	const QString lang = config_file.readEntry("General", "Language");
+
+	if (Translator->load(Name + '_' + lang, dataPath("kadu/modules/translations/")))
+		qApp->installTranslator(Translator);
+	else
+	{
+		delete Translator;
+		Translator = 0;
+	}
 }
 
 void Plugin::setState(Plugin::PluginState state)

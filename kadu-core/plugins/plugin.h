@@ -62,6 +62,8 @@ private:
 	PluginInfo *Info;
 	int UsageCounter;
 
+	void loadTranslations();
+
 protected:
 	virtual void load();
 

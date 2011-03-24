@@ -33,7 +33,6 @@
 #include <QtCore/QLibrary>
 #include <QtCore/QPluginLoader>
 #include <QtCore/QTextCodec>
-#include <QtCore/QTranslator>
 #include <QtGui/QApplication>
 #include <QtGui/QCheckBox>
 #include <QtGui/QGroupBox>
@@ -102,7 +101,7 @@ ModulesManager * ModulesManager::instance()
 }
 
 ModulesManager::ModulesManager() :
-		StaticModules(), Modules(), Window(0), translators(new QObject(this))
+		StaticModules(), Modules(), Window(0)
 {
 	ConfigurationManager::instance()->registerStorableObject(this);
 
@@ -278,22 +277,6 @@ void ModulesManager::loadAllModules()
 	// save the list of modules
 	if (saveList)
 		saveLoadedModules();
-}
-
-QTranslator* ModulesManager::loadModuleTranslation(const QString &module_name)
-{
-	QTranslator* translator = new QTranslator(translators);
-	const QString lang = config_file.readEntry("General", "Language");
-	if (translator->load(module_name + '_' + lang, dataPath("kadu/modules/translations/")))
-	{
-		qApp->installTranslator(translator);
-		return translator;
-	}
-	else
-	{
-		delete translator;
-		return 0;
-	}
 }
 
 bool ModulesManager::satisfyModuleDependencies(PluginInfo *pluginInfo)

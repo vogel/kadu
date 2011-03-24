@@ -80,8 +80,6 @@ class KADUAPI ModulesManager : public QObject, public StorableObject
 
 	ModulesWindow *Window;
 
-	QTranslator *loadModuleTranslation(const QString &module_name);
-
 	bool satisfyModuleDependencies(PluginInfo *pluginInfo);
 
 	void incDependenciesUsageCount(PluginInfo *pluginInfo);
@@ -91,8 +89,6 @@ class KADUAPI ModulesManager : public QObject, public StorableObject
 	void registerStaticModules();
 
 	QStringList protocolModules() const;
-
-	QObject *translators;
 
 	void ensureLoadedAtLeastOnce(const QString &moduleName);
 
