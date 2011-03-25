@@ -21,6 +21,7 @@
 
 #include "core/core.h"
 #include "configuration/configuration-manager.h"
+#include "identities/identities-aware-object.h"
 #include "identity.h"
 
 #include "identity-manager.h"
@@ -96,11 +97,15 @@ void IdentityManager::itemAboutToBeAdded(Identity item)
 
 void IdentityManager::itemAdded(Identity item)
 {
+	IdentitiesAwareObject::notifyIdentityAdded(item);
+
 	emit identityAdded(item);
 }
 
 void IdentityManager::itemAboutToBeRemoved(Identity item)
 {
+	IdentitiesAwareObject::notifyIdentityRemoved(item);
+
 	emit identityAboutToBeRemoved(item);
 }
 
