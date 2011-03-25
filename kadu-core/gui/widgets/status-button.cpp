@@ -56,13 +56,22 @@ void StatusButton::updateStatus()
 	setIcon(MyStatusContainer->statusIcon());
 
 	if (DisplayStatusName)
+	{
 		setText(MyStatusContainer->statusDisplayName());
+		setToolTip(QString());
+	}
 	else
 	{
 		if (MainConfiguration::instance()->simpleMode())
+		{
 			setText(MyStatusContainer->statusContainerName());
+			setToolTip(QString());
+		}
 		else
+		{
+			setText(QString());
 			setToolTip(MyStatusContainer->statusContainerName());
+		}
 	}
 }
 
