@@ -106,7 +106,7 @@ if (WIN32)
 
 	set_target_properties (kadu_core PROPERTIES DEFINE_SYMBOL KADULIB)
 	set_target_properties (kadu_core PROPERTIES COMPILE_FLAGS "-I${CMAKE_CURRENT_SOURCE_DIR}/includes")
-	target_link_libraries (kadu_core ${STATIC_MODULES} ${QT_LIBRARIES})
+	target_link_libraries (kadu_core ${QT_LIBRARIES})
 	set_property (TARGET kadu_core PROPERTY LINK_INTERFACE_LIBRARIES "")
 
 	if (MINGW)
@@ -144,7 +144,7 @@ else (WIN32)
 	set_target_properties (kadu PROPERTIES ENABLE_EXPORTS ON)
 	set_target_properties (kadu PROPERTIES COMPILE_FLAGS "-DKADULIB")
 
-	target_link_libraries (kadu ${STATIC_MODULES} ${QT_LIBRARIES} ${CMAKE_DL_LIBS})
+	target_link_libraries (kadu ${QT_LIBRARIES} ${CMAKE_DL_LIBS})
 
 	if (UNIX AND NOT APPLE)
 		target_link_libraries (kadu ${X11_X11_LIB})

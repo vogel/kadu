@@ -98,14 +98,8 @@ static void kadu_signal_handler(int signal)
 				fprintf(backtraceFile, "[%d] %s\n", i, backtraceStrings[i]);
 			fprintf(backtraceFile, "======= END OF BACKTRACE  ======\n");
 
-			fprintf(backtraceFile, "static modules:\n");
-			QStringList modules = ModulesManager::instance()->staticModules();
-
-			foreach (const QString &module, modules)
-				fprintf(backtraceFile, "> %s\n", qPrintable(module));
-
 			fprintf(backtraceFile, "loaded modules:\n");
-			modules = ModulesManager::instance()->loadedModules();
+			QStringList modules = ModulesManager::instance()->loadedModules();
 			foreach (const QString &module, modules)
 				fprintf(backtraceFile, "> %s\n", qPrintable(module));
 			fprintf(backtraceFile, "Kadu version: %s\n", qPrintable(Core::version()));

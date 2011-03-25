@@ -66,8 +66,6 @@
 
 #include "modules.h"
 
-#include "modules/static_modules.cpp"
-
 #ifdef Q_OS_MAC
 	#define SO_EXT "so"
 	#define SO_EXT_LEN 2
@@ -101,7 +99,7 @@ ModulesManager * ModulesManager::instance()
 }
 
 ModulesManager::ModulesManager() :
-		StaticModules(), Modules(), Window(0)
+		Modules(), Window(0)
 {
 	ConfigurationManager::instance()->registerStorableObject(this);
 
@@ -169,8 +167,6 @@ void ModulesManager::load()
 			plugin->setState(Plugin::PluginStateLoaded);
 		else
 			plugin->setState(Plugin::PluginStateNotLoaded);
-
-	registerStaticModules();
 }
 
 void ModulesManager::store()
@@ -197,10 +193,6 @@ void ModulesManager::ensureLoadedAtLeastOnce(const QString& moduleName)
 
 void ModulesManager::loadProtocolModules()
 {
-	foreach (const QString &i, staticModules())
-		if (!moduleIsActive(i) && moduleIsProtocol(i))
-			activateModule(i);
-
 	foreach (Plugin *plugin, Modules)
 	{
 		if (!moduleIsProtocol(plugin->name()))
@@ -229,10 +221,6 @@ void ModulesManager::loadProtocolModules()
 void ModulesManager::loadAllModules()
 {
 	bool saveList = false;
-
-	foreach (const QString &i, staticModules())
-		if (!moduleIsActive(i))
-			activateModule(i);
 
 	foreach (Plugin *plugin, Modules)
 	{
@@ -289,7 +277,7 @@ bool ModulesManager::satisfyModuleDependencies(PluginInfo *pluginInfo)
 	{
 		if (!moduleIsActive(it))
 		{
-			if (moduleIsInstalled(it) || moduleIsStatic(it))
+			if (moduleIsInstalled(it))
 			{
 				if (!activateModule(it))
 				{
@@ -318,22 +306,6 @@ void ModulesManager::incDependenciesUsageCount(PluginInfo *pluginInfo)
 		moduleIncUsageCount(it);
 	}
 	kdebugf2();
-}
-
-void ModulesManager::registerStaticModule(const QString &module_name, InitModuleFunc *init, CloseModuleFunc *close)
-{
-	StaticModule m;
-	m.init = init;
-	m.close = close;
-	StaticModules.insert(module_name, m);
-}
-
-QStringList ModulesManager::staticModules() const
-{
-	QStringList static_modules;
-	foreach (const QString &i, StaticModules.keys())
-		static_modules.append(i);
-	return static_modules;
 }
 
 QStringList ModulesManager::installedModules() const
@@ -378,16 +350,7 @@ QStringList ModulesManager::activeModules() const
 
 QString ModulesManager::moduleProvides(const QString &provides)
 {
-	QStringList moduleList = staticModules();
-	foreach(const QString &moduleName, moduleList)
-		if (Modules.contains(moduleName))
-		{
-			PluginInfo *info = Modules.value(moduleName)->info();
-			if (info && info->provides().contains(provides))
-				return moduleName;
-		}
-
-	moduleList = installedModules();
+	QStringList moduleList = installedModules();
 	foreach(const QString &moduleName, moduleList)
 		if (Modules.contains(moduleName))
 		{
@@ -403,11 +366,6 @@ QString ModulesManager::moduleProvides(const QString &provides)
 bool ModulesManager::moduleIsProtocol(const QString& module_name) const
 {
 	return module_name.endsWith("_protocol");
-}
-
-bool ModulesManager::moduleIsStatic(const QString& module_name) const
-{
-	return staticModules().contains(module_name);
 }
 
 bool ModulesManager::moduleIsInstalled(const QString& module_name) const

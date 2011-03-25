@@ -114,16 +114,7 @@ bool Plugin::activate()
 
 	loadTranslations();
 
-	if (ModulesManager::instance()->moduleIsStatic(Name))
-	{
-		PluginLibrary = 0;
-		ModulesManager::StaticModule sm = ModulesManager::instance()->StaticModules[Name];
-		init = sm.init;
-		Close = sm.close;
-
-		res = init(PluginStateNew == State);
-	}
-	else if (Info->isPlugin())
+	if (Info->isPlugin())
 	{
 		PluginLibrary = 0;
 		Close = 0;

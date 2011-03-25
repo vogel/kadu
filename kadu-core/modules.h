@@ -64,18 +64,6 @@ class KADUAPI ModulesManager : public QObject, public StorableObject
 	typedef int InitModuleFunc(bool);
 	typedef void CloseModuleFunc(void);
 
-	/**
-		\struct StaticModule
-		\brief Informacje o statycznym module.
-	**/
-	struct StaticModule
-	{
-		InitModuleFunc *init;
-		CloseModuleFunc *close;
-	};
-
-	QMap<QString, StaticModule> StaticModules;
-
 	QMap<QString, Plugin *> Modules;
 
 	ModulesWindow *Window;
@@ -83,10 +71,6 @@ class KADUAPI ModulesManager : public QObject, public StorableObject
 	bool satisfyModuleDependencies(PluginInfo *pluginInfo);
 
 	void incDependenciesUsageCount(PluginInfo *pluginInfo);
-
-	void registerStaticModule(const QString &module_name, InitModuleFunc *init, CloseModuleFunc *close);
-
-	void registerStaticModules();
 
 	QStringList protocolModules() const;
 
@@ -115,7 +99,6 @@ public:
 
 	~ModulesManager();
 
-	QStringList staticModules() const;
 	QStringList installedModules() const;
 	QStringList loadedModules() const;
 	QStringList unloadedModules() const;
@@ -124,7 +107,6 @@ public:
 	QString moduleProvides(const QString &provides);
 
 	bool moduleIsProtocol(const QString &module_name) const;
-	bool moduleIsStatic(const QString &module_name) const;
 	bool moduleIsInstalled(const QString &module_name) const;
 	bool moduleIsLoaded(const QString &module_name) const;
 	bool moduleIsActive(const QString &module_name) const;

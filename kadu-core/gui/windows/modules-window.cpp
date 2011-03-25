@@ -233,25 +233,7 @@ void ModulesWindow::refreshList()
 
 	lv_modules->clear();
 
-	QStringList moduleList = ModulesManager::instance()->staticModules();
-
-	foreach (const QString &module, moduleList)
-	{
-		if (ModulesManager::instance()->plugins().contains(module))
-		{
-			QStringList strings;
-
-			PluginInfo *pluginInfo = ModulesManager::instance()->plugins().value(module)->info();
-			if (pluginInfo)
-				strings << module << pluginInfo->version() << tr("Static") << tr("Loaded");
-			else
-				strings << module << QString() << tr("Static") << tr("Loaded");
-
-			new QTreeWidgetItem(lv_modules, strings);
-		}
-	}
-
-	moduleList = ModulesManager::instance()->loadedModules();
+	QStringList moduleList = ModulesManager::instance()->loadedModules();
 	foreach (const QString &module, moduleList)
 	{
 		if (ModulesManager::instance()->plugins().contains(module))
