@@ -43,8 +43,8 @@ StatusActions::StatusActions(StatusContainer *statusContainer, QObject *parent, 
 
 	createActions();
 
-	statusChanged();
-	connect(MyStatusContainer, SIGNAL(statusChanged()), this, SLOT(statusChanged()));
+	statusUpdated();
+	connect(MyStatusContainer, SIGNAL(statusUpdated()), this, SLOT(statusUpdated()));
 
 	connect(IconsManager::instance(), SIGNAL(themeChanged()), this, SLOT(iconThemeChanged()));
 }
@@ -133,7 +133,7 @@ QAction * StatusActions::createStatusAction(StatusType *statusType)
 	return statusAction;
 }
 
-void StatusActions::statusChanged()
+void StatusActions::statusUpdated()
 {
 	const QString &statusTypeName = MyStatusContainer->status().type();
 

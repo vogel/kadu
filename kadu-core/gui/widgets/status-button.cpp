@@ -35,8 +35,8 @@ StatusButton::StatusButton(StatusContainer *statusContainer, QWidget *parent) :
 {
 	createGui();
 
-	statusChanged();
-	connect(MyStatusContainer, SIGNAL(statusChanged()), this, SLOT(statusChanged()));
+	statusUpdated();
+	connect(MyStatusContainer, SIGNAL(statusUpdated()), this, SLOT(statusUpdated()));
 }
 
 StatusButton::~StatusButton()
@@ -51,7 +51,7 @@ void StatusButton::createGui()
 	setMenu(menu);
 }
 
-void StatusButton::update()
+void StatusButton::updateStatus()
 {
 	setIcon(MyStatusContainer->statusIcon());
 
@@ -66,14 +66,14 @@ void StatusButton::update()
 	}
 }
 
-void StatusButton::statusChanged()
+void StatusButton::statusUpdated()
 {
-	update();
+	updateStatus();
 }
 
 void StatusButton::configurationUpdated()
 {
-	update();
+	updateStatus();
 }
 
 void StatusButton::setDisplayStatusName(bool displayStatusName)
@@ -81,6 +81,6 @@ void StatusButton::setDisplayStatusName(bool displayStatusName)
 	if (DisplayStatusName != displayStatusName)
 	{
 		DisplayStatusName = displayStatusName;
-		update();
+		updateStatus();
 	}
 }

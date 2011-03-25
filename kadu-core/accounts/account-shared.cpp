@@ -62,11 +62,8 @@ AccountShared::~AccountShared()
 
 	triggerAllProtocolsUnregistered();
 
-	if (ProtocolHandler)
-	{
-		delete ProtocolHandler;
-		ProtocolHandler = 0;
-	}
+	delete ProtocolHandler;
+	ProtocolHandler = 0;
 }
 
 StorableObject * AccountShared::storageParent()
@@ -183,7 +180,7 @@ void AccountShared::useProtocolFactory(ProtocolFactory *factory)
 
 	if (ProtocolHandler)
 	{
-		disconnect(ProtocolHandler, SIGNAL(statusChanged(Account, Status)), this, SIGNAL(statusChanged()));
+		disconnect(ProtocolHandler, SIGNAL(statusChanged(Account, Status)), this, SIGNAL(statusUpdated()));
 		disconnect(ProtocolHandler, SIGNAL(contactStatusChanged(Contact, Status)),
 				   this, SIGNAL(buddyStatusChanged(Contact, Status)));
 		disconnect(ProtocolHandler, SIGNAL(connected(Account)), this, SIGNAL(connected()));
@@ -206,17 +203,19 @@ void AccountShared::useProtocolFactory(ProtocolFactory *factory)
 		emit protocolLoaded();
 	}
 
-	if (oldProtocolHandler)
-		delete oldProtocolHandler;
+	delete oldProtocolHandler;
+	oldProtocolHandler = 0;
 
 	if (ProtocolHandler)
 	{
-		connect(ProtocolHandler, SIGNAL(statusChanged(Account, Status)), this, SIGNAL(statusChanged()));
+		connect(ProtocolHandler, SIGNAL(statusChanged(Account, Status)), this, SIGNAL(statusUpdated()));
 		connect(ProtocolHandler, SIGNAL(contactStatusChanged(Contact, Status)),
 				this, SIGNAL(buddyStatusChanged(Contact, Status)));
 		connect(ProtocolHandler, SIGNAL(connected(Account)), this, SIGNAL(connected()));
 		connect(ProtocolHandler, SIGNAL(disconnected(Account)), this, SIGNAL(disconnected()));
 	}
+
+	emit statusUpdated();
 }
 
 void AccountShared::protocolRegistered(ProtocolFactory *factory)

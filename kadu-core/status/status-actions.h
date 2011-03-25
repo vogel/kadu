@@ -52,7 +52,7 @@ class StatusActions : public QObject
 	bool CommonStatusIcons;
 
 private slots:
-	void statusChanged();
+	void statusUpdated();
 	void iconThemeChanged();
 
 public:

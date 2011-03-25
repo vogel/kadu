@@ -120,7 +120,7 @@ ChooseDescription::ChooseDescription(StatusContainer *statusContainer, QWidget *
 	setMinimumSize(QDialog::sizeHint().expandedTo(QSize(250, 80)));
 
 	connect(this, SIGNAL(accepted()), this, SLOT(setDescription()));
-	connect(MyStatusContainer, SIGNAL(statusChanged()), this, SLOT(statusChanged()));
+	connect(MyStatusContainer, SIGNAL(statusUpdated()), this, SLOT(statusUpdated()));
 
 	kdebugf2();
 }
@@ -175,7 +175,7 @@ void ChooseDescription::currentDescriptionChanged(const QString &text)
 	AvailableChars->setText(' ' + QString::number(MyStatusContainer->maxDescriptionLength() - length));
 }
 
-void ChooseDescription::statusChanged()
+void ChooseDescription::statusUpdated()
 {
 	OkButton->setIcon(MyStatusContainer->statusIcon());
 }

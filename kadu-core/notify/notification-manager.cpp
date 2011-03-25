@@ -136,7 +136,7 @@ void NotificationManager::init()
 	configurationUpdated();
 	connect(SilentModeActionDescription, SIGNAL(actionCreated(Action *)), this, SLOT(silentModeActionCreated(Action *)));
 
-	connect(StatusContainerManager::instance(), SIGNAL(statusChanged()), this, SLOT(statusChanged()));
+	connect(StatusContainerManager::instance(), SIGNAL(statusUpdated()), this, SLOT(statusUpdated()));
 
 	foreach (const Group &group, GroupManager::instance()->items())
 		groupAdded(group);
@@ -260,7 +260,7 @@ void NotificationManager::silentModeActionActivated(QAction *sender, bool toggle
 	setSilentMode(!toggled);
 }
 
-void NotificationManager::statusChanged()
+void NotificationManager::statusUpdated()
 {
 	if (SilentModeWhenDnD && !silentMode() && StatusContainerManager::instance()->status().type() == "DoNotDisturb")
 	{

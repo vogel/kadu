@@ -35,9 +35,6 @@ class KADUAPI StatusContainer : public QObject
 	// all status changes must be performed by Core
 	friend class Core;
 
-protected:
-	void emitStatusContainerUpdated() { emit updated(); }
-
 public:
 	explicit StatusContainer(QObject *parent = 0) : QObject(parent) {}
 	virtual ~StatusContainer() {}
@@ -66,8 +63,12 @@ public:
 	virtual void storeStatus(Status status) = 0;
 
 signals:
-	void statusChanged();
-	void updated();
+	/**
+	 * This signal is emitted when the status was explicitly changed or something in this
+	 * StatusContainer was changed that might have caused implicit status change (but did not
+	 * need to, so do not assume real status change after this signal).
+	 */
+	void statusUpdated();
 
 };
 

@@ -335,12 +335,12 @@ void Core::init()
 	Myself.setAnonymous(false);
 	Myself.setDisplay(config_file.readEntry("General", "Nick", tr("Me")));
 
-	connect(StatusContainerManager::instance(), SIGNAL(statusChanged()), this, SLOT(statusChanged()));
+	connect(StatusContainerManager::instance(), SIGNAL(statusUpdated()), this, SLOT(statusUpdated()));
 
 	new Updates(this);
 
 	setIcon(IconsManager::instance()->iconByPath(QLatin1String("protocols/common/offline")));
-	connect(IconsManager::instance(), SIGNAL(themeChanged()), this, SLOT(statusChanged()));
+	connect(IconsManager::instance(), SIGNAL(themeChanged()), this, SLOT(statusUpdated()));
 	QTimer::singleShot(15000, this, SLOT(deleteOldConfigurationFiles()));
 
 	// TODO: add some life-cycle management
@@ -394,7 +394,7 @@ void Core::deleteOldConfigurationFiles()
 	kdebugf2();
 }
 
-void Core::statusChanged()
+void Core::statusUpdated()
 {
 	kdebugf();
 

@@ -150,7 +150,7 @@ void StatusContainerManager::setDefaultStatusContainer(StatusContainer *defaultS
 		return;
 
 	if (DefaultStatusContainer)
-		disconnect(DefaultStatusContainer, SIGNAL(statusChanged()), this, SIGNAL(statusChanged()));
+		disconnect(DefaultStatusContainer, SIGNAL(statusUpdated()), this, SIGNAL(statusUpdated()));
 
 	if (this != defaultStatusContainer)
 		DefaultStatusContainer = defaultStatusContainer;
@@ -158,9 +158,9 @@ void StatusContainerManager::setDefaultStatusContainer(StatusContainer *defaultS
 		DefaultStatusContainer = 0;
 
 	if (DefaultStatusContainer)
-		connect(DefaultStatusContainer, SIGNAL(statusChanged()), this, SIGNAL(statusChanged()));
+		connect(DefaultStatusContainer, SIGNAL(statusUpdated()), this, SIGNAL(statusUpdated()));
 
-	emit statusChanged();
+	emit statusUpdated();
 }
 
 void StatusContainerManager::simpleModeChanged()
@@ -182,12 +182,10 @@ void StatusContainerManager::registerStatusContainer(StatusContainer *statusCont
 	emit statusContainerRegistered(statusContainer);
 	StatusContainerAwareObject::notifyStatusContainerRegistered(statusContainer);
 
-	connect(statusContainer, SIGNAL(statusChanged()), this, SIGNAL(statusChanged()));
+	connect(statusContainer, SIGNAL(statusUpdated()), this, SIGNAL(statusUpdated()));
 
 	if (AllowSetDefaultStatus)
 		statusContainer->setDefaultStatus(StartupStatus, OfflineToInvisible, StartupDescription, StartupLastDescription);
-
-	emitStatusContainerUpdated();
 }
 
 void StatusContainerManager::unregisterStatusContainer(StatusContainer *statusContainer)
@@ -205,9 +203,7 @@ void StatusContainerManager::unregisterStatusContainer(StatusContainer *statusCo
 			setDefaultStatusContainer(StatusContainers.at(0));
 	}
 
-	disconnect(statusContainer, SIGNAL(statusChanged()), this, SIGNAL(statusChanged()));
-
-	emitStatusContainerUpdated();
+	disconnect(statusContainer, SIGNAL(statusUpdated()), this, SIGNAL(statusUpdated()));
 }
 
 void StatusContainerManager::setAllowSetDefaultStatus(bool allowSetDefaultStatus)

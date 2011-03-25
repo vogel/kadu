@@ -42,8 +42,6 @@ StatusMenu::StatusMenu(StatusContainer *statusContainer, QMenu *menu, bool commo
 	connect(Actions, SIGNAL(statusActionTriggered(QAction *)), this, SLOT(changeStatus(QAction *)));
 	connect(Actions, SIGNAL(changeDescriptionActionTriggered(bool)), this, SLOT(changeDescription()));
 
-// 	connect(MyStatusContainer, SIGNAL(updated()), this, SLOT(statusContainerUpdated()));
-
 	connect(Menu, SIGNAL(aboutToHide()), this, SLOT(aboutToHide()));
 
 	foreach (QAction *action, Actions->actions())

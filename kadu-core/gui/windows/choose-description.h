@@ -50,7 +50,7 @@ class ChooseDescription : public QDialog
 	virtual ~ChooseDescription();
 
 private slots:
-	void statusChanged();
+	void statusUpdated();
 	void setDescription();
 	void activated(int);
 	void currentDescriptionChanged(const QString &);

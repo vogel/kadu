@@ -36,10 +36,10 @@ class StatusButton : public QPushButton, private ConfigurationAwareObject
 	bool DisplayStatusName;
 
 	void createGui();
-	void update();
+	void updateStatus();
 
 private slots:
-	void statusChanged();
+	void statusUpdated();
 
 protected:
 	virtual void configurationUpdated();

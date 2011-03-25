@@ -374,7 +374,7 @@ void DockingManager::updateContextMenu()
 			menu->setIcon(container->statusIcon());
 			new StatusMenu(container, menu);
 			StatusContainerMenus[container] = DockMenu->addMenu(menu);
-			connect(container, SIGNAL(statusChanged()), this, SLOT(containerStatusChanged()));
+			connect(container, SIGNAL(statusUpdated()), this, SLOT(containerStatusChanged()));
 		}
 
 		if (statusContainersCount > 1)
