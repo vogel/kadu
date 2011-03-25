@@ -60,8 +60,8 @@ class HistorySqlStorage : public HistoryStorage, CrashAwareObject
 	QString chatWhere(const Chat &chat);
 	QString buddyContactsWhere(const Buddy &buddy);
 
-	void executeQuery(QSqlQuery query);
-	QList<Message> messagesFromQuery(QSqlQuery query);
+	void executeQuery(QSqlQuery &query);
+	QList<Message> messagesFromQuery(QSqlQuery &query);
 	QList<TimedStatus> statusesFromQuery(QSqlQuery query);
 	QList<Message> smsFromQuery(QSqlQuery query);
 
@@ -82,6 +82,7 @@ public:
 	virtual QList<Message> messages(const Chat &chat, const QDate &date = QDate(), int limit = 0);
 	virtual QList<Message> messagesSince(const Chat &chat, const QDate &date);
 	virtual QList<Message> messagesBackTo(const Chat &chat, const QDateTime &datetime, int limit);
+	virtual QPair<int, Message> firstMessageAndCount(const Chat &chat, const QDate &date);
 
 	virtual QList<Buddy> statusBuddiesList(const HistorySearchParameters &search);
 	virtual QList<QDate> datesForStatusBuddy(const Buddy &buddy, const HistorySearchParameters &search);
