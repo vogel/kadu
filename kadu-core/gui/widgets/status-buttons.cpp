@@ -39,8 +39,6 @@ StatusButtons::StatusButtons(QWidget *parent) :
 	createGui();
 
 	triggerAllStatusContainerRegistered();
-
-	connect(AccountManager::instance(), SIGNAL(accountUpdated(Account)), this, SLOT(rebuildGui()));
 }
 
 StatusButtons::~StatusButtons()
@@ -54,12 +52,6 @@ void StatusButtons::createGui()
 
 	if (!SimpleMode)
 		updateLayout(!SimpleMode);
-}
-
-void StatusButtons::rebuildGui()
-{
-	triggerAllStatusContainerUnregistered();
-	triggerAllStatusContainerRegistered();
 }
 
 void StatusButtons::addButton(StatusButton* button)

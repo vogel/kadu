@@ -50,7 +50,6 @@ class KADUAPI StatusButtons : public QWidget, private StatusContainerAwareObject
 
 private slots:
     void simpleModeChanged();
-	void rebuildGui();
 
 protected:
 	virtual void statusContainerRegistered(StatusContainer *statusContainer);
