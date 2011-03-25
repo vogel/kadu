@@ -148,6 +148,7 @@ bool AccountShared::shouldStore()
 void AccountShared::aboutToBeRemoved()
 {
 	setDetails(0);
+	setAccountIdentity(Identity::null);
 }
 
 void AccountShared::emitUpdated()
