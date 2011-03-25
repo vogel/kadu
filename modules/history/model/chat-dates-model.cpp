@@ -72,15 +72,14 @@ QVariant ChatDatesModel::headerData(int section, Qt::Orientation orientation, in
 	return QVariant();
 }
 
-QString ChatDatesModel::fetchTitle(const QDate &date) const
+QPair<int, QString> ChatDatesModel::fetchData(const QDate &date) const
 {
-	QList<Message> messages = History::instance()->messages(MyChat, date, 1);
-	if (messages.isEmpty())
-		return QString();
+	QPair<int, Message> pair = History::instance()->currentStorage()->firstMessageAndCount(MyChat, date);
+	if (!pair.second)
+		return qMakePair(0, QString());
 
-	Message firstMessage = messages.at(0);
 	QTextDocument document;
-	document.setHtml(firstMessage.content());
+	document.setHtml(pair.second.content());
 	FormattedMessage formatted = FormattedMessage::parse(&document);
 	QString title = formatted.toPlain();
 
@@ -90,12 +89,7 @@ QString ChatDatesModel::fetchTitle(const QDate &date) const
 		title += " ...";
 	}
 
-	return title;
-}
-
-int ChatDatesModel::fetchSize(const QDate &date) const
-{
-	return History::instance()->messagesCount(MyChat, date);
+	return qMakePair(pair.first, title);
 }
 
 ChatDatesModel::ItemCachedData ChatDatesModel::fetchCachedData(const QDate &date) const
@@ -103,9 +97,11 @@ ChatDatesModel::ItemCachedData ChatDatesModel::fetchCachedData(const QDate &date
 	if (Cache->contains(date))
 		return Cache->value(date);
 
+	QPair<int, QString> data = fetchData(date);
+
 	ItemCachedData cache;
-	cache.title = fetchTitle(date);
-	cache.size = fetchSize(date);
+	cache.size = data.first;
+	cache.title = data.second;
 	Cache->insert(date, cache);
 
 	return cache;

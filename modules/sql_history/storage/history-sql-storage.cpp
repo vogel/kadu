@@ -521,6 +521,66 @@ QList<QDate> HistorySqlStorage::chatDates(const Chat &chat, const HistorySearchP
 	return dates;
 }
 
+QPair<int, Message> HistorySqlStorage::firstMessageAndCount(const Chat &chat, const QDate &date)
+{
+	kdebugf();
+
+	DatabaseMutex.lock();
+
+	QSqlQuery query(Database);
+	QString queryString = "SELECT count(*), chat, sender, content, send_time, receive_time, attributes FROM kadu_messages WHERE " + chatWhere(chat);
+	queryString += " AND substr(receive_time,0,11) = :date";
+	queryString += " ORDER BY receive_time ASC, rowid ASC";
+	queryString += " LIMIT 1";
+
+	query.prepare(queryString);
+	query.bindValue(":date", date.toString(Qt::ISODate));
+
+	executeQuery(query);
+
+	if (!query.next())
+	{
+		DatabaseMutex.unlock();
+
+		return qMakePair(0, Message::null);
+	}
+	int count = query.value(0).toInt();
+
+	bool outgoing = QVariant(query.value(6).toString().split('=').last()).toBool();
+
+	Chat messageChat = ChatManager::instance()->byUuid(query.value(1).toString());
+	if (messageChat.isNull())
+	{
+		DatabaseMutex.unlock();
+
+		return qMakePair(0, Message::null);
+	}
+
+	Message::Type type = outgoing ? Message::TypeSent : Message::TypeReceived;
+
+	// ignore non-existing contacts
+	Contact sender = ContactManager::instance()->byUuid(query.value(2).toString());
+	if (sender.isNull())
+	{
+		DatabaseMutex.unlock();
+
+		return qMakePair(0, Message::null);
+	}
+
+	Message message = Message::create();
+	message.setMessageChat(messageChat);
+	message.setType(type);
+	message.setMessageSender(sender);
+	message.setContent(query.value(3).toString());
+	message.setSendDate(query.value(4).toDateTime());
+	message.setReceiveDate(query.value(5).toDateTime());
+	message.setStatus(outgoing ? Message::StatusDelivered : Message::StatusReceived);
+
+	DatabaseMutex.unlock();
+
+	return qMakePair(count, message);
+}
+
 QList<Message> HistorySqlStorage::messages(const Chat &chat, const QDate &date, int limit)
 {
 	kdebugf();

@@ -41,8 +41,7 @@ class ChatDatesModel : public QAbstractListModel
 	QList<QDate> Dates;
 	QMap<QDate, ItemCachedData> *Cache;
 
-	QString fetchTitle(const QDate &date) const;
-	int fetchSize(const QDate &date) const;
+	QPair<int, QString> fetchData(const QDate &date) const;
 	ItemCachedData fetchCachedData(const QDate &date) const;
 
 public:
