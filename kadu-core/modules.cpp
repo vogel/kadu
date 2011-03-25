@@ -118,14 +118,33 @@ void ModulesManager::load()
 
 	StorableObject::load();
 
+	QDomElement itemsNode = storage()->point();
+	if (!itemsNode.isNull())
+	{
+		QList<QDomElement> pluginElements = storage()->storage()->getNodes(itemsNode, QLatin1String("Plugin"));
+
+		foreach (const QDomElement &pluginElement, pluginElements)
+		{
+			QSharedPointer<StoragePoint> storagePoint(new StoragePoint(storage()->storage(), pluginElement));
+			QString name = storagePoint->point().attribute("name");
+			if (!name.isEmpty())
+			{
+				Plugin *plugin = new Plugin(name, this);
+				Modules.insert(name, plugin);
+			}
+		}
+	}
+
 	QStringList everLoaded = config_file.readEntry("General", "EverLoaded").split(',', QString::SkipEmptyParts);
 
 	foreach (const QString &moduleName, installedModules())
 	{
 		Plugin *plugin = new Plugin(moduleName, this);
-		plugin->ensureLoaded();
 		Modules.insert(moduleName, plugin);
 	}
+
+	foreach (Plugin *plugin, Modules)
+		plugin->ensureLoaded();
 
 	QString loaded_str = config_file.readEntry("General", "LoadedModules");
 
