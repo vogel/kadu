@@ -54,7 +54,7 @@ extern "C" KADU_EXPORT int dsp_sound_init(bool firstLoad)
 	kdebugf();
 
 	oss_player_slots = new OSSPlayerSlots;
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/dsp_sound.ui"));
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/dsp_sound.ui"));
 
 	kdebugf2();
 	return 0;
@@ -64,7 +64,7 @@ extern "C" KADU_EXPORT void dsp_sound_close()
 {
 	kdebugf();
 
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/dsp_sound.ui"));
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/dsp_sound.ui"));
 	delete oss_player_slots;
 	oss_player_slots = 0;
 

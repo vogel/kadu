@@ -47,7 +47,7 @@ extern "C" KADU_EXPORT int split_messages_init(bool firstLoad)
 	kdebugf();
 
 	split = new Split();
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/split_messages.ui"), split);
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/split_messages.ui"), split);
 
 	kdebugf2();
 	return 0;
@@ -58,7 +58,7 @@ extern "C" KADU_EXPORT void split_messages_close()
 {
 	kdebugf();
 
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/split_messages.ui"), split);
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/split_messages.ui"), split);
 	delete split;
 	split = NULL;
 

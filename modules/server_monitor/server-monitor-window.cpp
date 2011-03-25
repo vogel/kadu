@@ -188,7 +188,7 @@ void ServerMonitorWindow::configurationUpdated()
 	config_file.readBoolEntry("serverMonitor", "autorefresh", true) ?
 			RefreshTimer.start(60000 * config_file.readNumEntry("serverMonitor", "timerInterval", 5)) : RefreshTimer.stop();
 
-	ServerFileListName = config_file.readEntry("serverMonitor", "fileName", dataPath("kadu/modules/configuration/serverslist.txt"));
+	ServerFileListName = config_file.readEntry("serverMonitor", "fileName", dataPath("kadu/plugins/configuration/serverslist.txt"));
 	loadServers();
 
 	kdebugf2();

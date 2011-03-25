@@ -49,7 +49,7 @@ Plugin::Plugin(const QString &name, QObject *parent) :
 		Name(name), Active(false), State(PluginStateNew), PluginLoader(0), PluginObject(0),
 		PluginLibrary(0), Close(0), Translator(0), UsageCounter(0)
 {
-	QString descFilePath = dataPath("kadu/modules/" + name + ".desc");
+	QString descFilePath = dataPath("kadu/plugins/" + name + ".desc");
 	QFileInfo descFileInfo(descFilePath);
 
 	if (descFileInfo.exists())
@@ -119,7 +119,7 @@ bool Plugin::activate()
 		PluginLibrary = 0;
 		Close = 0;
 
-		PluginLoader = new QPluginLoader(libPath("kadu/modules/"SO_PREFIX + Name + "." SO_EXT));
+		PluginLoader = new QPluginLoader(libPath("kadu/plugins/"SO_PREFIX + Name + "." SO_EXT));
 		PluginLoader->setLoadHints(QLibrary::ExportExternalSymbolsHint);
 
 		if (!PluginLoader->load())
@@ -146,7 +146,7 @@ bool Plugin::activate()
 	}
 	else
 	{
-		PluginLibrary = new QLibrary(libPath("kadu/modules/"SO_PREFIX + Name + "." SO_EXT));
+		PluginLibrary = new QLibrary(libPath("kadu/plugins/"SO_PREFIX + Name + "." SO_EXT));
 		PluginLibrary->setLoadHints(/*QLibrary::ResolveAllSymbolsHint |*/ QLibrary::ExportExternalSymbolsHint);
 		if (!PluginLibrary->load())
 		{
@@ -247,7 +247,7 @@ void Plugin::loadTranslations()
 	Translator = new QTranslator(this);
 	const QString lang = config_file.readEntry("General", "Language");
 
-	if (Translator->load(Name + '_' + lang, dataPath("kadu/modules/translations/")))
+	if (Translator->load(Name + '_' + lang, dataPath("kadu/plugins/translations/")))
 		qApp->installTranslator(Translator);
 	else
 	{

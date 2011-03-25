@@ -98,7 +98,7 @@ static void kadu_signal_handler(int signal)
 				fprintf(backtraceFile, "[%d] %s\n", i, backtraceStrings[i]);
 			fprintf(backtraceFile, "======= END OF BACKTRACE  ======\n");
 
-			fprintf(backtraceFile, "loaded modules:\n");
+			fprintf(backtraceFile, "loaded plugins:\n");
 			QStringList modules = ModulesManager::instance()->loadedModules();
 			foreach (const QString &module, modules)
 				fprintf(backtraceFile, "> %s\n", qPrintable(module));

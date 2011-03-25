@@ -58,7 +58,7 @@ extern "C" KADU_EXPORT int autoresponder_init(bool firstLoad)
 
 	autoResponder = new AutoResponder();
 
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/autoresponder.ui"));
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/autoresponder.ui"));
 	MainConfigurationWindow::registerUiHandler(autoResponder);
 
 	kdebugf2();
@@ -69,7 +69,7 @@ extern "C" KADU_EXPORT void autoresponder_close()
 {
 	kdebugf();
 
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/autoresponder.ui"));
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/autoresponder.ui"));
 	MainConfigurationWindow::unregisterUiHandler(autoResponder);
 
 	delete autoResponder;

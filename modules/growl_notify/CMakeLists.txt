@@ -14,7 +14,7 @@ set (TRANSLATION_SOURCES
 	translations/growl_notify_pl.ts
 )
 
-kadu_module_desc (growl_notify.desc)
+kadu_plugin_desc (growl_notify.desc)
 qt_wrap_cpp (growl_notify MOC_FILES ${MOC_SOURCES})
 
 qt4_add_translation (TRANSLATION_FILES ${TRANSLATION_SOURCES})

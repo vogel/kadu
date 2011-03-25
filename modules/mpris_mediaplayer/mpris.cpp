@@ -36,7 +36,7 @@ extern "C" KADU_EXPORT int mpris_mediaplayer_init(bool firstLoad)
 	mpris = new MprisPlayer("MPRIS", QString());
 
 	MainConfigurationWindow::registerUiFile(
-		dataPath("kadu/modules/configuration/mpris_mediaplayer.ui"));
+		dataPath("kadu/plugins/configuration/mpris_mediaplayer.ui"));
 
 	bool res = mediaplayer->registerMediaPlayer(mpris, mpris);
 	return res ? 0 : 1;
@@ -45,7 +45,7 @@ extern "C" KADU_EXPORT int mpris_mediaplayer_init(bool firstLoad)
 extern "C" KADU_EXPORT void mpris_mediaplayer_close()
 {
 	MainConfigurationWindow::unregisterUiFile(
-		dataPath("kadu/modules/configuration/mpris_mediaplayer.ui"));
+		dataPath("kadu/plugins/configuration/mpris_mediaplayer.ui"));
 
 	mediaplayer->unregisterMediaPlayer();
 

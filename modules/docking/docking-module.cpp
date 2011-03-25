@@ -27,13 +27,13 @@ extern "C" KADU_EXPORT int docking_init(bool firstLoad)
 	Q_UNUSED(firstLoad)
 
 	DockingManager::createInstance();
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/docking.ui"));
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/docking.ui"));
 
 	return 0;
 }
 
 extern "C" KADU_EXPORT void docking_close()
 {
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/docking.ui"));
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/docking.ui"));
 	DockingManager::destroyInstance();
 }

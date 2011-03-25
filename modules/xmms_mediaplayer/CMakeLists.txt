@@ -14,9 +14,9 @@ set (XMMS_LIBRARIES
 set (XMMS_INCLUDE_DIRS
 )
 
-kadu_module (xmms_mediaplayer
-	MODULE_SOURCES ${SOURCES}
-	MODULE_MOC_SOURCES ${MOC_SOURCES}
+kadu_plugin (xmms_mediaplayer
+	PLUGIN_SOURCES ${SOURCES}
+	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
 )
 
 set_target_properties (xmms_mediaplayer PROPERTIES LINK_FLAGS "-lxmms")

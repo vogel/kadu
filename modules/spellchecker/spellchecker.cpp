@@ -57,14 +57,14 @@ extern "C" KADU_EXPORT int spellchecker_init(bool firstLoad)
 
 	spellcheck = new SpellChecker();
 
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/spellchecker.ui"));
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/spellchecker.ui"));
 	MainConfigurationWindow::registerUiHandler(spellcheck);
 	return 0;
 }
 
 extern "C" KADU_EXPORT void spellchecker_close()
 {
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/spellchecker.ui"));
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/spellchecker.ui"));
 	MainConfigurationWindow::unregisterUiHandler(spellcheck);
 	delete spellcheck;
 	spellcheck = 0;

@@ -42,7 +42,7 @@ void AntistringConfigurationUiHandler::registerUiHandler()
 	if (!Instance)
 	{
 		Instance = new AntistringConfigurationUiHandler();
-		MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/antistring.ui"));
+		MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/antistring.ui"));
 		MainConfigurationWindow::registerUiHandler(Instance);
 	}
 }
@@ -52,7 +52,7 @@ void AntistringConfigurationUiHandler::unregisterUiHandler()
 	if (Instance)
 	{
 		MainConfigurationWindow::unregisterUiHandler(Instance);
-		MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/antistring.ui"));
+		MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/antistring.ui"));
 		delete Instance;
 		Instance = 0;
 	}

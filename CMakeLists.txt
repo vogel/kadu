@@ -5,7 +5,7 @@ set (QT_MIN_VERSION "4.6.0")
 set (CMAKE_MIN_VERSION "2.6.0")
 
 # configuration
-option (ENABLE_AUTODOWNLOAD "Use automatic download of modules/icons/emoticons" ON)
+option (ENABLE_AUTODOWNLOAD "Use automatic download of icons/emoticons" ON)
 option (SIG_HANDLING_ENABLED "Define if you want system signals handling" ON)
 option (USE_X11_XFIXES "Use X11 Xfixes extension (Desktop Linux)" ON)
 
@@ -118,15 +118,15 @@ endif (NOT KADU_BINDIR)
 
 if (WIN32)
 	set (KADU_DATA_DIR ".")
-	set (KADU_MODULES_LIBDIR "modules")
+	set (KADU_PLUGINS_LIBDIR "plugins")
 	set (KADU_BIN_DIR ".")
 else (WIN32)
 	set (KADU_DATA_DIR "share/kadu")
-	set (KADU_MODULES_LIBDIR lib${LIB_SUFFIX}/kadu/modules)
+	set (KADU_PLUGINS_LIBDIR lib${LIB_SUFFIX}/kadu/plugins)
 	set (KADU_BIN_DIR "bin")
 endif (WIN32)
 
-set (KADU_MODULES_DIR ${KADU_DATA_DIR}/modules)
+set (KADU_PLUGINS_DIR ${KADU_DATA_DIR}/plugins)
 
 # macros
 macro (kadu_source_subdirectories CURRENT_TARGET)
@@ -148,119 +148,117 @@ macro (kadu_configuration)
 	)
 endmacro (kadu_configuration)
 
-macro (kadu_module_configuration)
+macro (kadu_plugin_configuration)
 	install (FILES ${ARGN}
-		DESTINATION ${KADU_MODULES_DIR}/configuration
+		DESTINATION ${KADU_PLUGINS_DIR}/configuration
 	)
-endmacro (kadu_module_configuration)
+endmacro (kadu_plugin_configuration)
 
-macro (kadu_module_desc MODULE_DESC)
+macro (kadu_plugin_desc PLUGIN_DESC)
 	install (FILES ${ARGN}
-		DESTINATION ${KADU_MODULES_DIR}
+		DESTINATION ${KADU_PLUGINS_DIR}
 	)
-endmacro (kadu_module_desc)
+endmacro (kadu_plugin_desc)
 
-macro (kadu_module)
-	set (VARIABLE_NAME "MODULE_NAME")
+macro (kadu_plugin)
+	set (VARIABLE_NAME "PLUGIN_NAME")
 
-	set (MODULE_NAME "")
-	set (MODULE_SOURCES "")
-	set (MODULE_MOC_SOURCES "")
-	set (MODULE_TRANSLATION_SOURCES "")
-	set (MODULE_CONFIGURATION_FILES "")
-	set (MODULE_DATA_FILES "")
-	set (MODULE_DATA_DIRECTORY "")
-	set (MODULE_BUILDDEF "")
-	set (MODULE_DEPENDENCIES "")
-	set (MODULE_LIBRARIES "")
+	set (PLUGIN_NAME "")
+	set (PLUGIN_SOURCES "")
+	set (PLUGIN_MOC_SOURCES "")
+	set (PLUGIN_TRANSLATION_SOURCES "")
+	set (PLUGIN_CONFIGURATION_FILES "")
+	set (PLUGIN_DATA_FILES "")
+	set (PLUGIN_DATA_DIRECTORY "")
+	set (PLUGIN_BUILDDEF "")
+	set (PLUGIN_DEPENDENCIES "")
+	set (PLUGIN_LIBRARIES "")
 
 	include_directories (".")
 
 	foreach (ARG ${ARGV})
-		if ("${VARIABLE_NAME}" STREQUAL "MODULE_NAME")
-			set (MODULE_NAME ${ARG})
+		if ("${VARIABLE_NAME}" STREQUAL "PLUGIN_NAME")
+			set (PLUGIN_NAME ${ARG})
 			set (VARIABLE_NAME "")
-		elseif (ARG MATCHES "(MODULE_SOURCES|MODULE_MOC_SOURCES|MODULE_TRANSLATION_SOURCES|MODULE_CONFIGURATION_FILES|MODULE_DATA_FILES|MODULE_DATA_DIRECTORY|MODULE_BUILDDEF|MODULE_DEPENDENCIES|MODULE_LIBRARIES)")
+		elseif (ARG MATCHES "(PLUGIN_SOURCES|PLUGIN_MOC_SOURCES|PLUGIN_TRANSLATION_SOURCES|PLUGIN_CONFIGURATION_FILES|PLUGIN_DATA_FILES|PLUGIN_DATA_DIRECTORY|PLUGIN_BUILDDEF|PLUGIN_DEPENDENCIES|PLUGIN_LIBRARIES)")
 			set (VARIABLE_NAME ${ARG})
 		elseif (VARIABLE_NAME STREQUAL "")
-			message (FATAL_ERROR "Invalid invocation of kadu_module macro")
-		else ("${VARIABLE_NAME}" STREQUAL "MODULE_NAME")
+			message (FATAL_ERROR "Invalid invocation of kadu_plugin macro")
+		else ("${VARIABLE_NAME}" STREQUAL "PLUGIN_NAME")
 			set (${VARIABLE_NAME} "${${VARIABLE_NAME}};${ARG}")
-		endif ("${VARIABLE_NAME}" STREQUAL "MODULE_NAME")
+		endif ("${VARIABLE_NAME}" STREQUAL "PLUGIN_NAME")
 	endforeach (ARG)
 
 	if (WIN32)
-		include_directories (${CMAKE_SOURCE_DIR}/modules)
+		include_directories (${CMAKE_SOURCE_DIR}/plugins)
 
 		# opisy .desc sa w iso-8859-2
 		set (CMAKE_RC_FLAGS "-c 28592")
 		# wygeneruj plik z wersja modulu
-		if (${${MODULE_NAME}} STREQUAL SHARED)
-			set (MODULE_SOURCES ${MODULE_SOURCES} ${MODULE_NAME}.rc)
-			add_custom_command (OUTPUT ${MODULE_NAME}.rc
-				COMMAND ${CMAKE_SOURCE_DIR}/modules/modver.bat ARGS ${CMAKE_CURRENT_SOURCE_DIR}/${MODULE_NAME}.desc ${MODULE_NAME}.rc
-				WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-				DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${MODULE_NAME}.desc
-				COMMENT "Building RC source ${MODULE_NAME}.rc"
-			)
-		endif (${${MODULE_NAME}} STREQUAL SHARED)
+		set (PLUGIN_SOURCES ${PLUGIN_SOURCES} ${PLUGIN_NAME}.rc)
+		add_custom_command (OUTPUT ${PLUGIN_NAME}.rc
+			COMMAND ${CMAKE_SOURCE_DIR}/plugins/modver.bat ARGS ${CMAKE_CURRENT_SOURCE_DIR}/${PLUGIN_NAME}.desc ${PLUGIN_NAME}.rc
+			WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+			DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${PLUGIN_NAME}.desc
+			COMMENT "Building RC source ${PLUGIN_NAME}.rc"
+		)
 
 		# naglowki do SDK
-		install (DIRECTORY "." DESTINATION ${KADU_DATA_DIR}/kadu-sdk/include/kadu-modules/${MODULE_NAME} FILES_MATCHING PATTERN "*.h" PATTERN ".svn" EXCLUDE)
+		install (DIRECTORY "." DESTINATION ${KADU_DATA_DIR}/kadu-sdk/include/kadu-plugins/${PLUGIN_NAME} FILES_MATCHING PATTERN "*.h" PATTERN ".svn" EXCLUDE)
 	endif (WIN32)
 
-	install (FILES ${MODULE_NAME}.desc
-		DESTINATION ${KADU_MODULES_DIR}
+	install (FILES ${PLUGIN_NAME}.desc
+		DESTINATION ${KADU_PLUGINS_DIR}
 	)
 
-	if (MODULE_MOC_SOURCES)
-		qt_wrap_cpp (${MODULE_NAME} MODULE_MOC_FILES ${MODULE_MOC_SOURCES})
-	endif (MODULE_MOC_SOURCES)
+	if (PLUGIN_MOC_SOURCES)
+		qt_wrap_cpp (${PLUGIN_NAME} PLUGIN_MOC_FILES ${PLUGIN_MOC_SOURCES})
+	endif (PLUGIN_MOC_SOURCES)
 
-	if (MODULE_TRANSLATION_SOURCES)
-		qt4_add_translation (MODULE_TRANSLATION_FILES ${MODULE_TRANSLATION_SOURCES})
-	endif (MODULE_TRANSLATION_SOURCES)
+	if (PLUGIN_TRANSLATION_SOURCES)
+		qt4_add_translation (PLUGIN_TRANSLATION_FILES ${PLUGIN_TRANSLATION_SOURCES})
+	endif (PLUGIN_TRANSLATION_SOURCES)
 
-	kadu_module_configuration (${MODULE_CONFIGURATION_FILES})
+	kadu_plugin_configuration (${PLUGIN_CONFIGURATION_FILES})
 
-	install (FILES ${MODULE_TRANSLATION_FILES}
-		DESTINATION ${KADU_MODULES_DIR}/translations
+	install (FILES ${PLUGIN_TRANSLATION_FILES}
+		DESTINATION ${KADU_PLUGINS_DIR}/translations
 	)
 
-	if (NOT "${MODULE_DATA_FILES}" STREQUAL "")
-		install (FILES ${MODULE_DATA_FILES}
-			DESTINATION ${KADU_MODULES_DIR}/data/${MODULE_NAME}
+	if (NOT "${PLUGIN_DATA_FILES}" STREQUAL "")
+		install (FILES ${PLUGIN_DATA_FILES}
+			DESTINATION ${KADU_PLUGINS_DIR}/data/${PLUGIN_NAME}
 		)
-	endif (NOT "${MODULE_DATA_FILES}" STREQUAL "")
+	endif (NOT "${PLUGIN_DATA_FILES}" STREQUAL "")
 
-	if (NOT "${MODULE_DATA_DIRECTORY}" STREQUAL "")
-		install (DIRECTORY ${MODULE_DATA_DIRECTORY}
-			DESTINATION ${KADU_MODULES_DIR}/data/${MODULE_NAME}
+	if (NOT "${PLUGIN_DATA_DIRECTORY}" STREQUAL "")
+		install (DIRECTORY ${PLUGIN_DATA_DIRECTORY}
+			DESTINATION ${KADU_PLUGINS_DIR}/data/${PLUGIN_NAME}
 		)
-	endif (NOT "${MODULE_DATA_DIRECTORY}" STREQUAL "")
+	endif (NOT "${PLUGIN_DATA_DIRECTORY}" STREQUAL "")
 
-	add_library (${MODULE_NAME} ${${MODULE_NAME}} ${MODULE_SOURCES} ${MODULE_MOC_FILES})
-	add_custom_target (${MODULE_NAME}-translations DEPENDS ${MODULE_TRANSLATION_FILES})
+	add_library (${PLUGIN_NAME} SHARED ${PLUGIN_SOURCES} ${PLUGIN_MOC_FILES})
+	add_custom_target (${PLUGIN_NAME}-translations DEPENDS ${PLUGIN_TRANSLATION_FILES})
 
-	add_dependencies (${MODULE_NAME} ${MODULE_NAME}-translations)
+	add_dependencies (${PLUGIN_NAME} ${PLUGIN_NAME}-translations)
 
-	if (NOT ${MODULE_BUILDDEF} STREQUAL "")
-		set_target_properties (${MODULE_NAME} PROPERTIES COMPILE_DEFINITIONS ${MODULE_BUILDDEF})
-	endif (NOT ${MODULE_BUILDDEF} STREQUAL "")
+	if (NOT ${PLUGIN_BUILDDEF} STREQUAL "")
+		set_target_properties (${PLUGIN_NAME} PROPERTIES COMPILE_DEFINITIONS ${PLUGIN_BUILDDEF})
+	endif (NOT ${PLUGIN_BUILDDEF} STREQUAL "")
 
-	if (NOT "${MODULE_LIBRARIES}" STREQUAL "")
-		target_link_libraries (${MODULE_NAME} ${MODULE_LIBRARIES})
-	endif (NOT "${MODULE_LIBRARIES}" STREQUAL "")
+	if (NOT "${PLUGIN_LIBRARIES}" STREQUAL "")
+		target_link_libraries (${PLUGIN_NAME} ${PLUGIN_LIBRARIES})
+	endif (NOT "${PLUGIN_LIBRARIES}" STREQUAL "")
 
 	if (WIN32)
-		target_link_libraries (${MODULE_NAME} kadu_core ${MODULE_DEPENDENCIES} ${QT_LIBRARIES})
-		install (TARGETS ${MODULE_NAME} ARCHIVE DESTINATION ${KADU_DATA_DIR}/kadu-sdk/lib)
+		target_link_libraries (${PLUGIN_NAME} kadu_core ${PLUGIN_DEPENDENCIES} ${QT_LIBRARIES})
+		install (TARGETS ${PLUGIN_NAME} ARCHIVE DESTINATION ${KADU_DATA_DIR}/kadu-sdk/lib)
 	endif (WIN32)
 	if (APPLE)
-		set_target_properties (${MODULE_NAME} PROPERTIES LINK_FLAGS "-undefined dynamic_lookup")
+		set_target_properties (${PLUGIN_NAME} PROPERTIES LINK_FLAGS "-undefined dynamic_lookup")
 	endif (APPLE)
-	install (TARGETS ${MODULE_NAME} RUNTIME DESTINATION ${KADU_MODULES_LIBDIR} LIBRARY DESTINATION ${KADU_MODULES_LIBDIR})
-endmacro (kadu_module)
+	install (TARGETS ${PLUGIN_NAME} RUNTIME DESTINATION ${KADU_PLUGINS_LIBDIR} LIBRARY DESTINATION ${KADU_PLUGINS_LIBDIR})
+endmacro (kadu_plugin)
 
 # libraries
 find_package (Qt4 REQUIRED)

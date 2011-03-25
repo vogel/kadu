@@ -45,14 +45,14 @@ extern "C" KADU_EXPORT int filedesc_init(bool firstLoad)
 
 	file_desc = new FileDescription();
 
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/filedesc.ui"));
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/filedesc.ui"));
 
 	return 0;
 }
 
 extern "C" KADU_EXPORT void filedesc_close()
 {
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/filedesc.ui"));
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/filedesc.ui"));
 
 	delete file_desc;
 	file_desc = 0;

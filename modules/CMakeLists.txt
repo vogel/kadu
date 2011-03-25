@@ -1,4 +1,4 @@
-set (BLACKLIST_MODULES
+set (BLACKLIST_PLUGINS
 	advanced_userlist
 	dbus
 	echo
@@ -11,32 +11,32 @@ set (BLACKLIST_MODULES
 if (WIN32)
 	exec_program (${CMAKE_CURRENT_SOURCE_DIR}/get-all.bat ${CMAKE_CURRENT_SOURCE_DIR}
 		ARGS OFF
-		OUTPUT_VARIABLE MODULES
+		OUTPUT_VARIABLE PLUGINS
 	)
 
 	exec_program (${CMAKE_CURRENT_SOURCE_DIR}/get-list.bat ${CMAKE_CURRENT_SOURCE_DIR}
-		ARGS ${MODULES}
-		OUTPUT_VARIABLE DYNAMIC_MODULES
+		ARGS ${PLUGINS}
+		OUTPUT_VARIABLE DYNAMIC_PLUGINS
 	)
 
 	if (ENABLE_AUTODOWNLOAD)
-		foreach (MODULE ${DYNAMIC_MODULES})
-			if (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${MODULE}.web)
-				if (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${MODULE}/.autodownloaded OR NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${MODULE}/CMakeLists.txt)
+		foreach (PLUGIN ${DYNAMIC_PLUGINS})
+			if (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${PLUGIN}.web)
+				if (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${PLUGIN}/.autodownloaded OR NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${PLUGIN}/CMakeLists.txt)
 					exec_program (${CMAKE_SOURCE_DIR}/varia/scripts/autodownload.bat ${CMAKE_CURRENT_SOURCE_DIR}
-						ARGS module ${MODULE}
+						ARGS plugin ${PLUGIN}
 						RETURN_VALUE DOWNLOAD_STATUS
 					)
 					if (DOWNLOAD_STATUS EQUAL 1)
-						message (FATAL_ERROR ${MODULE} " download failed!")
+						message (FATAL_ERROR ${PLUGIN} " download failed!")
 					endif (DOWNLOAD_STATUS EQUAL 1)
-				endif (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${MODULE}/.autodownloaded OR NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${MODULE}/CMakeLists.txt)
-			endif (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${MODULE}.web)
-		endforeach (MODULE)
+				endif (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${PLUGIN}/.autodownloaded OR NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${PLUGIN}/CMakeLists.txt)
+			endif (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${PLUGIN}.web)
+		endforeach (PLUGIN)
 	endif (ENABLE_AUTODOWNLOAD)
 
 	exec_program (${CMAKE_CURRENT_SOURCE_DIR}/check-deps.sh ${CMAKE_CURRENT_SOURCE_DIR}
-		ARGS ${AWK} ${DYNAMIC_MODULES}
+		ARGS ${AWK} ${DYNAMIC_PLUGINS}
 		OUTPUT_VARIABLE DEPS_MESSAGE
 		RETURN_VALUE DEPS_STATUS
 	)
@@ -47,33 +47,33 @@ if (WIN32)
 else (WIN32)
 	exec_program (${CMAKE_CURRENT_SOURCE_DIR}/get-all.sh ${CMAKE_CURRENT_SOURCE_DIR}
 		ARGS ${ENABLE_AUTODOWNLOAD}
-		OUTPUT_VARIABLE MODULES
+		OUTPUT_VARIABLE PLUGINS
 	)
 
 	exec_program (${CMAKE_CURRENT_SOURCE_DIR}/get-list.sh ${CMAKE_CURRENT_SOURCE_DIR}
-		ARGS ${MODULES}
-		OUTPUT_VARIABLE DYNAMIC_MODULES
+		ARGS ${PLUGINS}
+		OUTPUT_VARIABLE DYNAMIC_PLUGINS
 	)
 
 	# autodownload
 	if (ENABLE_AUTODOWNLOAD)
-		foreach (MODULE ${DYNAMIC_MODULES})
-			if (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${MODULE}.web)
-				if (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${MODULE}/.autodownloaded OR NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${MODULE}/CMakeLists.txt)
+		foreach (PLUGIN ${DYNAMIC_PLUGINS})
+			if (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${PLUGIN}.web)
+				if (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${PLUGIN}/.autodownloaded OR NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${PLUGIN}/CMakeLists.txt)
 					exec_program (${CMAKE_SOURCE_DIR}/varia/scripts/autodownload ${CMAKE_CURRENT_SOURCE_DIR}
-						ARGS module ${MODULE}
+						ARGS plugin ${PLUGIN}
 						RETURN_VALUE DOWNLOAD_STATUS
 					)
 					if (DOWNLOAD_STATUS EQUAL 1)
-						message (FATAL_ERROR ${MODULE} " download failed!")
+						message (FATAL_ERROR ${PLUGIN} " download failed!")
 					endif (DOWNLOAD_STATUS EQUAL 1)
-				endif (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${MODULE}/.autodownloaded OR NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${MODULE}/CMakeLists.txt)
-			endif (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${MODULE}.web)
-		endforeach (MODULE)
+				endif (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${PLUGIN}/.autodownloaded OR NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${PLUGIN}/CMakeLists.txt)
+			endif (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${PLUGIN}.web)
+		endforeach (PLUGIN)
 	endif (ENABLE_AUTODOWNLOAD)
 
 	exec_program (${CMAKE_CURRENT_SOURCE_DIR}/check-deps.sh ${CMAKE_CURRENT_SOURCE_DIR}
-		ARGS ${AWK} ${DYNAMIC_MODULES}
+		ARGS ${AWK} ${DYNAMIC_PLUGINS}
 		OUTPUT_VARIABLE DEPS_MESSAGE
 		RETURN_VALUE DEPS_STATUS
 	)
@@ -94,20 +94,20 @@ MACRO(LIST_CONTAINS var value)
 	ENDFOREACH (value2)
 ENDMACRO(LIST_CONTAINS)
 
-if (NOT DYNAMIC_MODULES STREQUAL "\n")
-	foreach (MODULE ${DYNAMIC_MODULES})
-		LIST_CONTAINS(BLACKLISTED ${MODULE} ${BLACKLIST_MODULES})
+if (NOT DYNAMIC_PLUGINS STREQUAL "\n")
+	foreach (PLUGIN ${DYNAMIC_PLUGINS})
+		LIST_CONTAINS(BLACKLISTED ${PLUGIN} ${BLACKLIST_PLUGINS})
 		if (BLACKLISTED)
-			message (STATUS "Plugin ${MODULE} is blacklisted")
+			message (STATUS "Plugin ${PLUGIN} is blacklisted")
 		else (BLACKLISTED)
-			message (STATUS "Plugin: " ${MODULE})
+			message (STATUS "Plugin: " ${PLUGIN})
 			if (WIN32)
-				set (${MODULE} SHARED)
+				set (${PLUGIN} SHARED)
 			else (WIN32)
-				set (${MODULE} MODULE)
+				set (${PLUGIN} PLUGIN)
 			endif (WIN32)
-		# 	link_directories (${MODULE})
-			add_subdirectory (${MODULE})
+		# 	link_directories (${PLUGIN})
+			add_subdirectory (${PLUGIN})
 		endif (BLACKLISTED)
-	endforeach (MODULE)
-endif (NOT DYNAMIC_MODULES STREQUAL "\n")
+	endforeach (PLUGIN)
+endif (NOT DYNAMIC_PLUGINS STREQUAL "\n")

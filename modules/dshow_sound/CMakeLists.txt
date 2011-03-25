@@ -6,8 +6,8 @@ set (MOC_SOURCES
 	player_dshow.h
 )
 
-kadu_module (dshow_sound
-	MODULE_SOURCES ${SOURCES}
-	MODULE_MOC_SOURCES ${MOC_SOURCES}
-	MODULE_DEPENDENCIES sound
+kadu_plugin (dshow_sound
+	PLUGIN_SOURCES ${SOURCES}
+	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
+	PLUGIN_DEPENDENCIES sound
 )

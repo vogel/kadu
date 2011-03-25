@@ -45,7 +45,7 @@ extern "C" KADU_EXPORT int auto_hide_init(bool firstLoad)
 	kdebugf();
 
 	autoHide = new AutoHide();
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/auto_hide.ui"));
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/auto_hide.ui"));
 	MainConfigurationWindow::registerUiHandler(autoHide);
 
 	kdebugf2();
@@ -56,7 +56,7 @@ extern "C" KADU_EXPORT void auto_hide_close()
 {
 	kdebugf();
 
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/auto_hide.ui"));
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/auto_hide.ui"));
 	MainConfigurationWindow::unregisterUiHandler(autoHide);
 
 	delete autoHide;

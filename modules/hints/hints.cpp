@@ -38,7 +38,7 @@ extern "C" KADU_EXPORT int hints_init(bool firstLoad)
 	kdebugf();
 
 	hint_manager = new HintManager();
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/hints.ui"));
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/hints.ui"));
 	MainConfigurationWindow::registerUiHandler(hint_manager->uiHandler());
 
 	kdebugf2();
@@ -49,7 +49,7 @@ extern "C" KADU_EXPORT void hints_close()
 {
 	kdebugf();
 
-//	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/hints.ui"));
+//	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/hints.ui"));
 	MainConfigurationWindow::unregisterUiHandler(hint_manager->uiHandler());
 	
 	delete hint_manager;

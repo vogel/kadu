@@ -44,13 +44,13 @@ extern "C" KADU_EXPORT int server_monitor_init(bool firstLoad)
 {
 	kdebugf();
 	serverMonitor = new ServerMonitor();
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/server-monitor.ui"));
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/server-monitor.ui"));
 	MainConfigurationWindow::registerUiHandler(serverMonitor);
 
 	if (firstLoad)
 	{
 		config_file.addVariable("serverMonitor", "autorefresh", true);
-		config_file.addVariable("serverMonitor", "fileName", dataPath("kadu/modules/configuration/serverslist.txt"));
+		config_file.addVariable("serverMonitor", "fileName", dataPath("kadu/plugins/configuration/serverslist.txt"));
 		config_file.addVariable("serverMonitor", "useGaduServersList", true);
 		config_file.addVariable("serverMonitor", "timerInterval", 5);
 		config_file.addVariable("serverMonitor", "showResetButton", false);
@@ -67,7 +67,7 @@ extern "C" KADU_EXPORT void server_monitor_close()
 {
 	kdebugf();
 
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/server-monitor.ui"));
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/server-monitor.ui"));
 	MainConfigurationWindow::unregisterUiHandler(serverMonitor);
 
 	NotificationManager::instance()->unregisterNotifyEvent(ServerMonitor::notifyEvent);

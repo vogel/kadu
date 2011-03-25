@@ -62,7 +62,7 @@ extern "C" KADU_EXPORT int autoaway_init(bool firstLoad)
 
 	autoAway = new AutoAway();
 
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/autoaway.ui"));
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/autoaway.ui"));
 	MainConfigurationWindow::registerUiHandler(autoAway);
 
 	kdebugf2();
@@ -73,7 +73,7 @@ extern "C" KADU_EXPORT void autoaway_close()
 {
 	kdebugf();
 
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/autoaway.ui"));
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/autoaway.ui"));
 	MainConfigurationWindow::unregisterUiHandler(autoAway);
 
 	delete autoAway;
