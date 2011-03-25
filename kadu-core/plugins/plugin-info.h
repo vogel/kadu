@@ -24,6 +24,7 @@ class PluginInfo
 {
 	bool IsValid;
 
+	QString Type;
 	QStringList Dependencies;
 	QStringList Conflicts;
 	QStringList Provides;
@@ -40,6 +41,7 @@ public:
 
 	bool isValid() const { return IsValid; }
 
+	QString type() const { return Type; }
 	QStringList dependencies() const { return Dependencies; }
 	QStringList conflicts() const { return Conflicts; }
 	QStringList provides() const { return Provides; }

@@ -5,3 +5,4 @@ Author=Kadu Team
 LoadByDefault=true
 Version=core
 Dependencies=
+Type=protocol

@@ -222,7 +222,7 @@ void ModulesManager::loadProtocolModules()
 {
 	foreach (Plugin *plugin, Modules)
 	{
-		if (!moduleIsProtocol(plugin->name()))
+		if (plugin->type() != "protocol")
 			continue;
 		if (plugin->isActive())
 			continue;
@@ -251,7 +251,7 @@ void ModulesManager::loadAllModules()
 
 	foreach (Plugin *plugin, Modules)
 	{
-		if (moduleIsProtocol(plugin->name()))
+		if (plugin->type() == "protocol")
 			continue;
 		if (plugin->isActive())
 			continue;
@@ -388,11 +388,6 @@ QString ModulesManager::moduleProvides(const QString &provides)
 		}
 
 	return QString();
-}
-
-bool ModulesManager::moduleIsProtocol(const QString& module_name) const
-{
-	return module_name.endsWith("_protocol");
 }
 
 bool ModulesManager::moduleIsInstalled(const QString& module_name) const

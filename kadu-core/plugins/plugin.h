@@ -94,6 +94,8 @@ public:
 	void incUsage() { UsageCounter++; }
 	void decUsage() { UsageCounter--; }
 
+	QString type() const;
+
 };
 
 #endif // PLUGIN_H

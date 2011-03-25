@@ -260,3 +260,10 @@ void Plugin::setState(Plugin::PluginState state)
 {
 	State = state;
 }
+
+QString Plugin::type() const
+{
+	return Info
+			? Info->type()
+			: QString();
+}
