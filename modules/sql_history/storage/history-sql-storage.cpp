@@ -198,7 +198,7 @@ void HistorySqlStorage::initIndexes()
 	query.prepare("DROP INDEX IF EXISTS kadu_messages_chat_receive_time");
 	executeQuery(query);
 
-	query.prepare("CREATE INDEX IF NOT EXISTS kadu_messages_chat_receive_time_date ON kadu_messages (chat, date(receive_time))");
+	query.prepare("DROP INDEX IF EXISTS kadu_messages_chat_receive_time_date");
 	executeQuery(query);
 
 	query.prepare("DROP INDEX IF EXISTS kadu_messages_chat_receive_time_send_time");
@@ -213,7 +213,7 @@ void HistorySqlStorage::initIndexes()
 	query.prepare("CREATE INDEX IF NOT EXISTS kadu_statuses_contact_time ON kadu_statuses (contact, set_time)");
 	executeQuery(query);
 
-	query.prepare("CREATE INDEX IF NOT EXISTS kadu_statuses_contact_time_date ON kadu_statuses (contact, date(set_time))");
+	query.prepare("DROP INDEX IF EXISTS kadu_statuses_contact_time_date");
 	executeQuery(query);
 
 	query.prepare("CREATE INDEX IF NOT EXISTS kadu_sms_receipient ON kadu_sms (receipient)");
@@ -222,7 +222,7 @@ void HistorySqlStorage::initIndexes()
 	query.prepare("CREATE INDEX IF NOT EXISTS kadu_sms_receipient_time ON kadu_sms (receipient, send_time)");
 	executeQuery(query);
 
-	query.prepare("CREATE INDEX IF NOT EXISTS kadu_sms_receipient_time_date ON kadu_sms (receipient, date(send_time))");
+	query.prepare("DROP INDEX IF EXISTS kadu_sms_receipient_time_date");
 	executeQuery(query);
 }
 
@@ -362,7 +362,7 @@ void HistorySqlStorage::clearChatHistory(const Chat &chat, const QDate &date)
 	QSqlQuery query(Database);
 	QString queryString = "DELETE FROM kadu_messages WHERE " + chatWhere(chat);
 	if (!date.isNull())
-		queryString += " AND date(receive_time) = date(:date)";
+		queryString += " AND substr(receive_time,0,11) = :date";
 
 	query.prepare(queryString);
 
@@ -381,7 +381,7 @@ void HistorySqlStorage::clearStatusHistory(const Buddy &buddy, const QDate &date
 	QSqlQuery query(Database);
 	QString queryString = "DELETE FROM kadu_statuses WHERE " + buddyContactsWhere(buddy);
 	if (!date.isNull())
-		queryString += " AND date(set_time) = date(:date)";
+		queryString += " AND substr(set_time,0,11) = :date";
 
 	query.prepare(queryString);
 
@@ -400,7 +400,7 @@ void HistorySqlStorage::clearSmsHistory(const QString &recipient, const QDate &d
 	QSqlQuery query(Database);
 	QString queryString = "DELETE FROM kadu_sms WHERE receipient = :receipient";
 	if (!date.isNull())
-		queryString += " AND date(send_time) = date(:date)";
+		queryString += " AND substr(send_time,0,11) = :date";
 
 	query.prepare(queryString);
 
@@ -449,9 +449,9 @@ QList<Chat> HistorySqlStorage::chats(const HistorySearchParameters &search)
 	if (!search.query().isEmpty())
 		queryString += " AND content LIKE :content";
 	if (search.fromDate().isValid())
-		queryString += " AND date(receive_time) >= date(:fromDate)";
+		queryString += " AND substr(receive_time,0,11) >= :fromDate";
 	if (search.toDate().isValid())
-		queryString += " AND date(receive_time) <= date(:toDate)";
+		queryString += " AND substr(receive_time,0,11) <= :toDate";
 
 	query.prepare(queryString);
 
@@ -465,9 +465,6 @@ QList<Chat> HistorySqlStorage::chats(const HistorySearchParameters &search)
 	QList<Chat> chats;
 
 	executeQuery(query);
-#if (QT_VERSION >= 0x040700)
-	chats.reserve(query.size());
-#endif
 
 	while (query.next())
 	{
@@ -491,14 +488,14 @@ QList<QDate> HistorySqlStorage::chatDates(const Chat &chat, const HistorySearchP
 	DatabaseMutex.lock();
 
 	QSqlQuery query(Database);
-	QString queryString = "SELECT DISTINCT date(receive_time) as date FROM kadu_messages WHERE " + chatWhere(chat);
+	QString queryString = "SELECT DISTINCT substr(receive_time,0,11) as date FROM kadu_messages WHERE " + chatWhere(chat);
 
 	if (!search.query().isEmpty())
 		queryString += " AND content LIKE :content";
 	if (search.fromDate().isValid())
-		queryString += " AND date(receive_time) >= date(:fromDate)";
+		queryString += " AND substr(receive_time,0,11) >= :fromDate";
 	if (search.toDate().isValid())
-		queryString += " AND date(receive_time) <= date(:toDate)";
+		queryString += " AND substr(receive_time,0,11) <= :toDate";
 
 	query.prepare(queryString);
 
@@ -511,9 +508,6 @@ QList<QDate> HistorySqlStorage::chatDates(const Chat &chat, const HistorySearchP
 
 	QList<QDate> dates;
 	executeQuery(query);
-#if (QT_VERSION >= 0x040700)
-	dates.reserve(query.size());
-#endif
 
 	while (query.next())
 	{
@@ -536,7 +530,7 @@ QList<Message> HistorySqlStorage::messages(const Chat &chat, const QDate &date, 
 	QSqlQuery query(Database);
 	QString queryString = "SELECT chat, sender, content, send_time, receive_time, attributes FROM kadu_messages WHERE " + chatWhere(chat);
 	if (!date.isNull())
-		queryString += " AND date(receive_time) = date(:date)";
+		queryString += " AND substr(receive_time,0,11) = :date";
 	queryString += " ORDER BY receive_time ASC, rowid ASC";
 	if (0 != limit)
 		queryString += " LIMIT :limit";
@@ -568,7 +562,7 @@ QList<Message> HistorySqlStorage::messagesSince(const Chat &chat, const QDate &d
 
 	QSqlQuery query(Database);
 	QString queryString = "SELECT chat, sender, content, send_time, receive_time, attributes FROM kadu_messages WHERE " + chatWhere(chat) +
-			" AND date(receive_time) >= date(:date) ORDER BY receive_time ASC, rowid ASC";
+			" AND substr(receive_time,0,11) >= :date ORDER BY receive_time ASC, rowid ASC";
 	query.prepare(queryString);
 
 	query.bindValue(":chat", chat.uuid().toString());
@@ -593,7 +587,7 @@ QList<Message> HistorySqlStorage::messagesBackTo(const Chat &chat, const QDateTi
 	// we want last *limit* messages, so we have to invert sorting here
 	// it is reverted back manually below
 	QString queryString = "SELECT chat, sender, content, send_time, receive_time, attributes FROM kadu_messages WHERE " + chatWhere(chat) +
-			" AND datetime(receive_time) >= datetime(:date) ORDER BY receive_time DESC, rowid DESC LIMIT :limit";
+			" AND receive_time >= :date ORDER BY receive_time DESC, rowid DESC LIMIT :limit";
 	query.prepare(queryString);
 
 	query.bindValue(":chat", chat.uuid().toString());
@@ -625,7 +619,7 @@ int HistorySqlStorage::messagesCount(const Chat &chat, const QDate &date)
 	QSqlQuery query(Database);
 	QString queryString = "SELECT COUNT(chat) FROM kadu_messages WHERE " + chatWhere(chat);
 	if (!date.isNull())
-		queryString += " AND date(receive_time) = date(:date)";
+		queryString += " AND substr(receive_time,0,11) = :date";
 	query.prepare(queryString);
 
 	if (!date.isNull())
@@ -651,9 +645,9 @@ QList<QString> HistorySqlStorage::smsRecipientsList(const HistorySearchParameter
 	if (!search.query().isEmpty())
 		queryString += " AND content LIKE :content";
 	if (search.fromDate().isValid())
-		queryString += " AND date(send_time) >= date(:fromDate)";
+		queryString += " AND substr(send_time,0,11)  >= :fromDate";
 	if (search.toDate().isValid())
-		queryString += " AND date(send_time) <= date(:toDate)";
+		queryString += " AND substr(send_time,0,11)  <= :toDate";
 
 	query.prepare(queryString);
 
@@ -667,9 +661,6 @@ QList<QString> HistorySqlStorage::smsRecipientsList(const HistorySearchParameter
 	QList<QString> recipients;
 
 	executeQuery(query);
-#if (QT_VERSION >= 0x040700)
-	recipients.reserve(query.size());
-#endif
 
 	while (query.next())
 		recipients.append(query.value(0).toString());
@@ -689,14 +680,14 @@ QList<QDate> HistorySqlStorage::datesForSmsRecipient(const QString &recipient, c
 	DatabaseMutex.lock();
 
 	QSqlQuery query(Database);
-	QString queryString = "SELECT DISTINCT date(send_time) as date FROM kadu_sms WHERE receipient = :receipient";
+	QString queryString = "SELECT DISTINCT substr(send_time,0,11) as date FROM kadu_sms WHERE receipient = :receipient";
 
 	if (!search.query().isEmpty())
 		queryString += " AND content LIKE :content";
 	if (search.fromDate().isValid())
-		queryString += " AND date(send_time) >= date(:fromDate)";
+		queryString += " AND substr(send_time,0,11) >= :fromDate";
 	if (search.toDate().isValid())
-		queryString += " AND date(send_time) <= date(:toDate)";
+		queryString += " AND substr(send_time,0,11) <= :toDate";
 
 	query.prepare(queryString);
 
@@ -710,9 +701,6 @@ QList<QDate> HistorySqlStorage::datesForSmsRecipient(const QString &recipient, c
 
 	QList<QDate> dates;
 	executeQuery(query);
-#if (QT_VERSION >= 0x040700)
-	dates.reserve(query.size());
-#endif
 
 	while (query.next())
 	{
@@ -735,7 +723,7 @@ QList<Message> HistorySqlStorage::sms(const QString &recipient, const QDate &dat
 	QSqlQuery query(Database);
 	QString queryString = "SELECT content, send_time FROM kadu_sms WHERE receipient = :receipient";
 	if (!date.isNull())
-		queryString += " AND date(send_time) = date(:date)";
+		queryString += " AND substr(send_time,0,11) = :date";
 	queryString += " ORDER BY send_time ASC";
 	if (0 != limit)
 		queryString += " LIMIT :limit";
@@ -765,7 +753,7 @@ int HistorySqlStorage::smsCount(const QString &recipient, const QDate &date)
 	QSqlQuery query(Database);
 	QString queryString = "SELECT COUNT(receipient) FROM kadu_sms WHERE receipient = :receipient";
 	if (!date.isNull())
-		queryString += " AND date(send_time) = date(:date)";
+		queryString += " AND substr(send_time,0,11) = :date";
 	query.prepare(queryString);
 
 	query.bindValue(":receipient", recipient);
@@ -792,9 +780,9 @@ QList<Buddy> HistorySqlStorage::statusBuddiesList(const HistorySearchParameters 
 	if (!search.query().isEmpty())
 		queryString += " AND description LIKE :description";
 	if (search.fromDate().isValid())
-		queryString += " AND date(set_time) >= date(:fromDate)";
+		queryString += " AND substr(set_time,0,11) >= :fromDate";
 	if (search.toDate().isValid())
-		queryString += " AND date(set_time) <= date(:toDate)";
+		queryString += " AND substr(set_time,0,11) <= :toDate";
 
 	query.prepare(queryString);
 
@@ -836,14 +824,14 @@ QList<QDate> HistorySqlStorage::datesForStatusBuddy(const Buddy &buddy, const Hi
 	DatabaseMutex.lock();
 
 	QSqlQuery query(Database);
-	QString queryString = "SELECT DISTINCT date(set_time) as date FROM kadu_statuses WHERE " + buddyContactsWhere(buddy);
+	QString queryString = "SELECT DISTINCT substr(set_time,0,11) as date FROM kadu_statuses WHERE " + buddyContactsWhere(buddy);
 
 	if (!search.query().isEmpty())
 		queryString += " AND description LIKE :description";
 	if (search.fromDate().isValid())
-		queryString += " AND date(set_time) >= date(:fromDate)";
+		queryString += " AND substr(set_time,0,11) >= :fromDate";
 	if (search.toDate().isValid())
-		queryString += " AND date(set_time) <= date(:toDate)";
+		queryString += " AND substr(set_time,0,11) <= :toDate";
 
 	query.prepare(queryString);
 
@@ -857,9 +845,6 @@ QList<QDate> HistorySqlStorage::datesForStatusBuddy(const Buddy &buddy, const Hi
 	QList<QDate> dates;
 
 	executeQuery(query);
-#if (QT_VERSION >= 0x040700)
-	dates.reserve(query.size());
-#endif
 
 	while (query.next())
 	{
@@ -882,7 +867,7 @@ QList<TimedStatus> HistorySqlStorage::statuses(const Buddy &buddy, const QDate &
 	QSqlQuery query(Database);
 	QString queryString = "SELECT contact, status, description, set_time FROM kadu_statuses WHERE " + buddyContactsWhere(buddy);
 	if (!date.isNull())
-		queryString += " AND date(set_time) = date(:date)";
+		queryString += " AND substr(set_time,0,11) = :date";
 	queryString += " ORDER BY set_time ASC";
 	if (0 != limit)
 		queryString += " LIMIT :limit";
@@ -912,7 +897,7 @@ int HistorySqlStorage::statusBuddyCount(const Buddy &buddy, const QDate &date)
 	QSqlQuery query(Database);
 	QString queryString = "SELECT COUNT(contact) FROM kadu_statuses WHERE " + buddyContactsWhere(buddy);
 	if (!date.isNull())
-		queryString += " AND date(set_time) = date(:date)";
+		queryString += " AND substr(set_time,0,11) = :date";
 	query.prepare(queryString);
 
 	if (!date.isNull())
@@ -926,7 +911,7 @@ int HistorySqlStorage::statusBuddyCount(const Buddy &buddy, const QDate &date)
 	return query.value(0).toInt();
 }
 
-void HistorySqlStorage::executeQuery(QSqlQuery query)
+void HistorySqlStorage::executeQuery(QSqlQuery &query)
 {
 	kdebugf();
 
@@ -945,12 +930,9 @@ void HistorySqlStorage::executeQuery(QSqlQuery query)
 }
 
 
-QList<Message> HistorySqlStorage::messagesFromQuery(QSqlQuery query)
+QList<Message> HistorySqlStorage::messagesFromQuery(QSqlQuery &query)
 {
 	QList<Message> messages;
-#if (QT_VERSION >= 0x040700)
-	messages.reserve(query.size());
-#endif
 	while (query.next())
 	{
 		bool outgoing = QVariant(query.value(5).toString().split('=').last()).toBool();
@@ -984,9 +966,7 @@ QList<Message> HistorySqlStorage::messagesFromQuery(QSqlQuery query)
 QList<TimedStatus> HistorySqlStorage::statusesFromQuery(QSqlQuery query)
 {
 	QList<TimedStatus> statuses;
-#if (QT_VERSION >= 0x040700)
-	statuses.reserve(query.size());
-#endif
+
 	while (query.next())
 	{
 		// ignore non-existing contacts
@@ -1009,9 +989,6 @@ QList<TimedStatus> HistorySqlStorage::statusesFromQuery(QSqlQuery query)
 QList<Message> HistorySqlStorage::smsFromQuery(QSqlQuery query)
 {
 	QList<Message> messages;
-#if (QT_VERSION >= 0x040700)
-	messages.reserve(query.size());
-#endif
 
 	while (query.next())
 	{
