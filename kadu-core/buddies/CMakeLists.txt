@@ -1,5 +1,4 @@
 set (buddies_SRCS
-	buddies-aware-object.cpp
 	buddy.cpp
 	buddy-additional-data-delete-handler.cpp
 	buddy-additional-data-delete-handler-manager.cpp

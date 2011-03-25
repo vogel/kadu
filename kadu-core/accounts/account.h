@@ -28,7 +28,6 @@
 
 #include "accounts/account-shared.h"
 #include "buddies/buddy.h"
-#include "buddies/buddies-aware-object.h"
 #include "status/base-status-container.h"
 #include "status/status.h"
 #include "storage/shared-base.h"
