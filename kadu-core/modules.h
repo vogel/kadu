@@ -76,6 +76,8 @@ class KADUAPI ModulesManager : public QObject, public StorableObject
 
 	void ensureLoadedAtLeastOnce(const QString &moduleName);
 
+	void importFrom09();
+
 private slots:
 	void dialogDestroyed();
 

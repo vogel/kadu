@@ -135,8 +135,6 @@ void ModulesManager::load()
 		}
 	}
 
-	QStringList everLoaded = config_file.readEntry("General", "EverLoaded").split(',', QString::SkipEmptyParts);
-
 	foreach (const QString &moduleName, installedModules())
 	{
 		Plugin *plugin = new Plugin(moduleName, this);
@@ -146,6 +144,29 @@ void ModulesManager::load()
 	foreach (Plugin *plugin, Modules)
 		plugin->ensureLoaded();
 
+	if (!loadAttribute<bool>("imported_from_09", false))
+	{
+		importFrom09();
+		storeAttribute("imported_from_09", true);
+	}
+}
+
+void ModulesManager::store()
+{
+	if (!isValidStorage())
+		return;
+
+	ensureLoaded();
+
+	StorableObject::store();
+
+	foreach (Plugin *plugin, Modules)
+		plugin->store();
+}
+
+void ModulesManager::importFrom09()
+{
+	QStringList everLoaded = config_file.readEntry("General", "EverLoaded").split(',', QString::SkipEmptyParts);
 	QString loaded_str = config_file.readEntry("General", "LoadedModules");
 
 	QStringList loadedPlugins = loaded_str.split(',', QString::SkipEmptyParts);
@@ -186,19 +207,6 @@ void ModulesManager::load()
 			plugin->setState(Plugin::PluginStateLoaded);
 		else
 			plugin->setState(Plugin::PluginStateNotLoaded);
-}
-
-void ModulesManager::store()
-{
-	if (!isValidStorage())
-		return;
-
-	ensureLoaded();
-
-	StorableObject::store();
-
-	foreach (Plugin *plugin, Modules)
-		plugin->store();
 }
 
 void ModulesManager::ensureLoadedAtLeastOnce(const QString& moduleName)
