@@ -93,9 +93,8 @@ public:
 
 	virtual void store();
 
-	void loadProtocolModules();
-
-	void loadAllModules();
+	void activateProtocolPlugins();
+	void activatePlugins();
 
 	void unloadAllModules();
 

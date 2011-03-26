@@ -218,77 +218,47 @@ void ModulesManager::ensureLoadedAtLeastOnce(const QString& moduleName)
 		Plugins.value(moduleName)->setState(Plugin::PluginStateLoaded);
 }
 
-void ModulesManager::loadProtocolModules()
-{
-	foreach (Plugin *plugin, Plugins)
-	{
-		if (plugin->type() != "protocol")
-			continue;
-		if (plugin->isActive())
-			continue;
-
-		bool load_module = false;
-		if (Plugin::PluginStateLoaded == plugin->state())
-			load_module = true;
-		else if (Plugin::PluginStateNotLoaded == plugin->state())
-			load_module = false;
-		else
-		{
-			PluginInfo *m_info = plugin->info();
-			if (m_info)
-				load_module = m_info->loadByDefault();
-			else
-				load_module = false;
-		}
-		if (load_module)
-			activatePlugin(plugin->name());
-	}
-}
-
-void ModulesManager::loadAllModules()
+void ModulesManager::activateProtocolPlugins()
 {
 	bool saveList = false;
 
 	foreach (Plugin *plugin, Plugins)
 	{
-		if (plugin->type() == "protocol")
-			continue;
-		if (plugin->isActive())
+		if (plugin->type() != "protocol")
 			continue;
 
-		bool load_module;
-		if (Plugin::PluginStateLoaded == plugin->state())
-			load_module = true;
-		else if (Plugin::PluginStateNotLoaded == plugin->state())
-			load_module = false;
-		else
-		{
-			PluginInfo *m_info = plugin->info();
-			if (m_info)
-				load_module = m_info->loadByDefault();
-			else
-				load_module = false;
-		}
-
-		if (load_module && !activatePlugin(plugin->name()))
-			saveList = true;
+		if (plugin->shouldBeActivated())
+			if (!activatePlugin(plugin))
+				saveList = true;
 	}
 
-	foreach (Plugin *i, Plugins)
+	// if not all plugins were loaded properly
+	// save the list of modules
+	if (saveList)
+		ConfigurationManager::instance()->flush();
+}
+
+void ModulesManager::activatePlugins()
+{
+	bool saveList = false;
+
+	foreach (Plugin *plugin, Plugins)
+		if (plugin->shouldBeActivated())
+			if (!activatePlugin(plugin))
+				saveList = true;
+
+	foreach (Plugin *pluginToReplace, Plugins)
 	{
-		if (!i->isActive())
-		{
-			foreach (Plugin *plugin, Plugins)
-			{
-				PluginInfo *m_info = plugin->info();
-				if (m_info && m_info->replaces().contains(i->name()))
-					if (activatePlugin(i->name()))
-						saveList = true;
-			}
-		}
+		if (pluginToReplace->isActive())
+			continue;
+
+		foreach (Plugin *replacementPlugin, Plugins)
+			if (replacementPlugin->isValid() && replacementPlugin->info()->replaces().contains(pluginToReplace->name()))
+				if (activatePlugin(replacementPlugin))
+					saveList = true; // list has changed
 	}
 
-	// if not all modules were loaded properly
+	// if not all plugins were loaded properly or new plugin was added
 	// save the list of modules
 	if (saveList)
 		ConfigurationManager::instance()->flush();

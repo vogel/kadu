@@ -103,6 +103,20 @@ void Plugin::store()
 	}
 }
 
+bool Plugin::shouldBeActivated()
+{
+	ensureLoaded();
+
+	if (!isValid() || isActive())
+		return false;
+
+	if (PluginStateLoaded == State)
+		return true;
+	if (PluginStateNotLoaded == State)
+		return false;
+	return Info->loadByDefault();
+}
+
 bool Plugin::activate()
 {
 	if (Active)

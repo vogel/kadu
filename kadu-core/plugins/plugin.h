@@ -78,6 +78,8 @@ public:
 
 	virtual void store();
 
+	bool shouldBeActivated();
+
 	bool activate();
 	bool deactivate();
 
