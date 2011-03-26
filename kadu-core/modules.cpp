@@ -99,7 +99,7 @@ ModulesManager * ModulesManager::instance()
 }
 
 ModulesManager::ModulesManager() :
-		Modules(), Window(0)
+		Plugins(), Window(0)
 {
 	ConfigurationManager::instance()->registerStorableObject(this);
 
@@ -130,7 +130,7 @@ void ModulesManager::load()
 			if (!name.isEmpty())
 			{
 				Plugin *plugin = new Plugin(name, this);
-				Modules.insert(name, plugin);
+				Plugins.insert(name, plugin);
 			}
 		}
 	}
@@ -138,10 +138,10 @@ void ModulesManager::load()
 	foreach (const QString &moduleName, installedModules())
 	{
 		Plugin *plugin = new Plugin(moduleName, this);
-		Modules.insert(moduleName, plugin);
+		Plugins.insert(moduleName, plugin);
 	}
 
-	foreach (Plugin *plugin, Modules)
+	foreach (Plugin *plugin, Plugins)
 		plugin->ensureLoaded();
 
 	if (!loadAttribute<bool>("imported_from_09", false))
@@ -160,7 +160,7 @@ void ModulesManager::store()
 
 	StorableObject::store();
 
-	foreach (Plugin *plugin, Modules)
+	foreach (Plugin *plugin, Plugins)
 		plugin->store();
 }
 
@@ -176,11 +176,11 @@ void ModulesManager::importFrom09()
 
 	QStringList allPlugins = everLoaded + unloadedPlugins; // just in case...
 	foreach (const QString &pluginName, allPlugins)
-		if (!Modules.contains(pluginName))
+		if (!Plugins.contains(pluginName))
 		{
 			Plugin *plugin = new Plugin(pluginName, this);
 			plugin->ensureLoaded();
-			Modules.insert(pluginName, plugin);
+			Plugins.insert(pluginName, plugin);
 		}
 
 	if (loadedPlugins.contains("encryption"))
@@ -202,7 +202,7 @@ void ModulesManager::importFrom09()
 	ensureLoadedAtLeastOnce("history_migration");
 	ensureLoadedAtLeastOnce("profiles_import");
 
-	foreach (Plugin *plugin, Modules)
+	foreach (Plugin *plugin, Plugins)
 		if (loadedPlugins.contains(plugin->name()))
 			plugin->setState(Plugin::PluginStateLoaded);
 		else
@@ -211,16 +211,16 @@ void ModulesManager::importFrom09()
 
 void ModulesManager::ensureLoadedAtLeastOnce(const QString& moduleName)
 {
-	if (!Modules.contains(moduleName))
+	if (!Plugins.contains(moduleName))
 		return;
 
-	if (!Plugin::PluginStateNew == Modules.value(moduleName)->state())
-		Modules.value(moduleName)->setState(Plugin::PluginStateLoaded);
+	if (!Plugin::PluginStateNew == Plugins.value(moduleName)->state())
+		Plugins.value(moduleName)->setState(Plugin::PluginStateLoaded);
 }
 
 void ModulesManager::loadProtocolModules()
 {
-	foreach (Plugin *plugin, Modules)
+	foreach (Plugin *plugin, Plugins)
 	{
 		if (plugin->type() != "protocol")
 			continue;
@@ -249,7 +249,7 @@ void ModulesManager::loadAllModules()
 {
 	bool saveList = false;
 
-	foreach (Plugin *plugin, Modules)
+	foreach (Plugin *plugin, Plugins)
 	{
 		if (plugin->type() == "protocol")
 			continue;
@@ -274,11 +274,11 @@ void ModulesManager::loadAllModules()
 			saveList = true;
 	}
 
-	foreach (Plugin *i, Modules)
+	foreach (Plugin *i, Plugins)
 	{
 		if (!i->isActive())
 		{
-			foreach (Plugin *plugin, Modules)
+			foreach (Plugin *plugin, Plugins)
 			{
 				PluginInfo *m_info = plugin->info();
 				if (m_info && m_info->replaces().contains(i->name()))
@@ -304,7 +304,7 @@ bool ModulesManager::satisfyModuleDependencies(PluginInfo *pluginInfo)
 	{
 		if (!moduleIsActive(it))
 		{
-			if (Modules.contains(it) && Modules.value(it)->isValid())
+			if (Plugins.contains(it) && Plugins.value(it)->isValid())
 			{
 				if (!activatePlugin(it))
 				{
@@ -350,7 +350,7 @@ QStringList ModulesManager::installedModules() const
 QStringList ModulesManager::activeModules() const
 {
 	QStringList active;
-	for (QMap<QString, Plugin *>::const_iterator i = Modules.constBegin(); i != Modules.constEnd(); ++i)
+	for (QMap<QString, Plugin *>::const_iterator i = Plugins.constBegin(); i != Plugins.constEnd(); ++i)
 		if (i.value()->isActive())
 			active.append(i.key());
 	return active;
@@ -358,7 +358,7 @@ QStringList ModulesManager::activeModules() const
 
 QString ModulesManager::moduleProvides(const QString &provides)
 {
-	foreach (Plugin *plugin, Modules)
+	foreach (Plugin *plugin, Plugins)
 	{
 		PluginInfo *info = plugin->info();
 		if (info && info->provides().contains(provides))
@@ -371,14 +371,14 @@ QString ModulesManager::moduleProvides(const QString &provides)
 
 bool ModulesManager::moduleIsActive(const QString& module_name) const
 {
-	return Modules.contains(module_name) && (Modules.value(module_name)->isActive());
+	return Plugins.contains(module_name) && (Plugins.value(module_name)->isActive());
 }
 
 QString ModulesManager::modulesUsing(const QString &module_name) const
 {
 	QString modules;
 
-	foreach (Plugin *plugin, Modules)
+	foreach (Plugin *plugin, Plugins)
 	{
 		PluginInfo *info = plugin->info();
 		if (info && info->dependencies().contains(module_name))
@@ -402,9 +402,9 @@ bool ModulesManager::conflictsWithLoaded(const QString &module_name, PluginInfo 
 			kdebugf2();
 			return true;
 		}
-		foreach (const QString &key, Modules.keys())
-			if (Modules.value(key)->info())
-				foreach (const QString &sit, Modules.value(key)->info()->provides())
+		foreach (const QString &key, Plugins.keys())
+			if (Plugins.value(key)->info())
+				foreach (const QString &sit, Plugins.value(key)->info()->provides())
 					if (moduleIsActive(key) && (it == sit))
 					{
 						MessageDialog::show("dialog-warning", tr("Kadu"), tr("Module %1 conflicts with: %2").arg(module_name, key));
@@ -412,9 +412,9 @@ bool ModulesManager::conflictsWithLoaded(const QString &module_name, PluginInfo 
 						return true;
 					}
 	}
-	foreach (const QString &key, Modules.keys())
-		if (Modules.value(key)->info())
-			foreach (const QString &sit, Modules.value(key)->info()->conflicts())
+	foreach (const QString &key, Plugins.keys())
+		if (Plugins.value(key)->info())
+			foreach (const QString &sit, Plugins.value(key)->info()->conflicts())
 				if (moduleIsActive(key) && (sit == module_name))
 				{
 					MessageDialog::show("dialog-warning", tr("Kadu"), tr("Module %1 conflicts with: %2").arg(module_name, key));
@@ -429,10 +429,10 @@ bool ModulesManager::activatePlugin(const QString& pluginName)
 {
 	kdebugmf(KDEBUG_FUNCTION_START, "'%s'\n", qPrintable(pluginName));
 
-	if (!Modules.contains(pluginName))
+	if (!Plugins.contains(pluginName))
 		return false;
 
-	Plugin *plugin = Modules.value(pluginName);
+	Plugin *plugin = Plugins.value(pluginName);
 	if (plugin->isActive())
 		return true;
 
@@ -453,10 +453,10 @@ bool ModulesManager::deactivatePlugin(const QString &pluginName, bool setAsUnloa
 {
 	kdebugmf(KDEBUG_FUNCTION_START, "name:'%s' force:%d\n", qPrintable(pluginName), force);
 
-	if (!Modules.contains(pluginName))
+	if (!Plugins.contains(pluginName))
 		return true; // non-existing module is properly deactivated
 
-	Plugin *plugin = Modules.value(pluginName);
+	Plugin *plugin = Plugins.value(pluginName);
 	if (plugin->usageCounter() > 0 && !force)
 	{
 		MessageDialog::show("dialog-warning", tr("Kadu"), tr("Module %1 cannot be deactivated because it is being used by the following modules:%2").arg(pluginName).arg(modulesUsing(pluginName)));
@@ -478,10 +478,10 @@ void ModulesManager::unloadAllModules()
 {
 	ConfigurationManager::instance()->flush();
 
-	foreach (const QString &it, Modules.keys())
+	foreach (const QString &it, Plugins.keys())
 	{
 		Q_UNUSED(it) // only in debug mode
-		kdebugm(KDEBUG_INFO, "module: %s, usage: %d\n", qPrintable(it), Modules.value(it)->usageCounter());
+		kdebugm(KDEBUG_INFO, "module: %s, usage: %d\n", qPrintable(it), Plugins.value(it)->usageCounter());
 	}
 
 	// unloading all not used modules
@@ -493,7 +493,7 @@ void ModulesManager::unloadAllModules()
 		QStringList active = activeModules();
 		deactivated = false;
 		foreach (const QString &i, active)
-			if (Modules.value(i)->usageCounter() == 0)
+			if (Plugins.value(i)->usageCounter() == 0)
 				if (deactivatePlugin(i, false, false))
 					deactivated = true;
 	}
@@ -538,10 +538,10 @@ void ModulesManager::dialogDestroyed()
 
 void ModulesManager::moduleIncUsageCount(const QString& module_name)
 {
-	Modules.value(module_name)->incUsage();
+	Plugins.value(module_name)->incUsage();
 }
 
 void ModulesManager::moduleDecUsageCount(const QString& module_name)
 {
-	Modules.value(module_name)->decUsage();
+	Plugins.value(module_name)->decUsage();
 }

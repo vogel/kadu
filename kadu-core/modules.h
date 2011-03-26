@@ -64,7 +64,7 @@ class KADUAPI ModulesManager : public QObject, public StorableObject
 	typedef int InitModuleFunc(bool);
 	typedef void CloseModuleFunc(void);
 
-	QMap<QString, Plugin *> Modules;
+	QMap<QString, Plugin *> Plugins;
 
 	ModulesWindow *Window;
 
@@ -110,7 +110,7 @@ public:
 
 	QString modulesUsing(const QString &module_name) const;
 
-	QMap<QString, Plugin *> plugins() { return Modules; }
+	QMap<QString, Plugin *> plugins() { return Plugins; }
 
 	bool conflictsWithLoaded(const QString &module_name, PluginInfo *pluginInfo) const;
 
