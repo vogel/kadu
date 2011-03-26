@@ -28,6 +28,7 @@
 class EngryptionNgSimlitePlugin : public QObject, public GenericPlugin
 {
 	Q_OBJECT
+	Q_INTERFACES(GenericPlugin)
 
 public:
 	virtual ~EngryptionNgSimlitePlugin();

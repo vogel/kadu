@@ -144,7 +144,7 @@ bool Plugin::activate()
 			return false;
 		}
 
-		PluginObject = dynamic_cast<GenericPlugin *>(PluginLoader->instance());
+		PluginObject = qobject_cast<GenericPlugin *>(PluginLoader->instance());
 		if (!PluginObject)
 		{
 			MessageDialog::show("dialog-warning", tr("Kadu"), tr("Cannot find required object in module %1.\n"
