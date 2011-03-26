@@ -388,41 +388,30 @@ QString ModulesManager::modulesUsing(const QString &module_name) const
 	return modules;
 }
 
-bool ModulesManager::conflictsWithLoaded(const QString &module_name, PluginInfo *pluginInfo) const
+QString ModulesManager::findActiveConflict(Plugin *plugin) const
 {
-	if (!pluginInfo)
-		return false;
+	if (!plugin || !plugin->isValid())
+		return QString();
 
-	kdebugf();
-	foreach (const QString &it, pluginInfo->conflicts())
+	foreach (const QString &it, plugin->info()->conflicts())
 	{
 		if (moduleIsActive(it))
-		{
-			MessageDialog::show("dialog-warning", tr("Kadu"), tr("Module %1 conflicts with: %2").arg(module_name, it));
-			kdebugf2();
-			return true;
-		}
-		foreach (const QString &key, Plugins.keys())
-			if (Plugins.value(key)->info())
-				foreach (const QString &sit, Plugins.value(key)->info()->provides())
-					if (moduleIsActive(key) && (it == sit))
-					{
-						MessageDialog::show("dialog-warning", tr("Kadu"), tr("Module %1 conflicts with: %2").arg(module_name, key));
-						kdebugf2();
-						return true;
-					}
+			return it;
+
+		foreach (Plugin *possibleConflict, Plugins)
+			if (possibleConflict->isValid() && possibleConflict->isActive())
+				foreach (const QString &sit, possibleConflict->info()->provides())
+					if (it == sit)
+						return possibleConflict->name();
 	}
-	foreach (const QString &key, Plugins.keys())
-		if (Plugins.value(key)->info())
-			foreach (const QString &sit, Plugins.value(key)->info()->conflicts())
-				if (moduleIsActive(key) && (sit == module_name))
-				{
-					MessageDialog::show("dialog-warning", tr("Kadu"), tr("Module %1 conflicts with: %2").arg(module_name, key));
-					kdebugf2();
-					return true;
-				}
-	kdebugf2();
-	return false;
+
+	foreach (Plugin *possibleConflict, Plugins)
+		if (possibleConflict->isValid() && possibleConflict->isActive())
+			foreach (const QString &sit, possibleConflict->info()->conflicts())
+				if (sit == plugin->name())
+					return plugin->name();
+
+	return QString();
 }
 
 bool ModulesManager::activatePlugin(const QString& pluginName)
@@ -436,8 +425,12 @@ bool ModulesManager::activatePlugin(const QString& pluginName)
 	if (plugin->isActive())
 		return true;
 
-	if (conflictsWithLoaded(pluginName, plugin->info()))
+	QString conflict = findActiveConflict(plugin);
+	if (!conflict.isEmpty())
+	{
+		MessageDialog::show("dialog-warning", tr("Kadu"), tr("Module %1 conflicts with: %2").arg(pluginName, conflict));
 		return false;
+	}
 
 	if (!satisfyModuleDependencies(plugin->info()))
 		return false;

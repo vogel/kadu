@@ -74,9 +74,10 @@ class KADUAPI ModulesManager : public QObject, public StorableObject
 
 	QStringList protocolModules() const;
 
+	void importFrom09();
 	void ensureLoadedAtLeastOnce(const QString &moduleName);
 
-	void importFrom09();
+	QString findActiveConflict(Plugin *plugin) const;
 
 private slots:
 	void dialogDestroyed();
@@ -111,8 +112,6 @@ public:
 	QString modulesUsing(const QString &module_name) const;
 
 	QMap<QString, Plugin *> plugins() { return Plugins; }
-
-	bool conflictsWithLoaded(const QString &module_name, PluginInfo *pluginInfo) const;
 
 public slots:
 	bool activatePlugin(const QString &pluginName);
