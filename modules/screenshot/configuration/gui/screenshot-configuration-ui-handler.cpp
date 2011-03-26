@@ -36,13 +36,13 @@ void ScreenShotConfigurationUiHandler::registerConfigurationUi()
 
 	Instance = new ScreenShotConfigurationUiHandler();
 
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/screenshot.ui"));
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/screenshot.ui"));
 	MainConfigurationWindow::registerUiHandler(Instance);
 }
 
 void ScreenShotConfigurationUiHandler::unregisterConfigurationUi()
 {
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/screenshot.ui"));
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/screenshot.ui"));
 
 	if (Instance)
 		MainConfigurationWindow::unregisterUiHandler(Instance);

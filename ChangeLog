@@ -5,6 +5,8 @@
 * gui: #2048 fixed: opening percent-encoded URL's with system web browser (beevvy)
 * gui: new syntax editor window layout (ultr)
 * core: #2091 fixed: 'Send message' shortcut restored (ultr)
+* modules: Hide base modules option removed from modules window (Vogel)
+* plugins: new API for loading plugins (Vogel)
 
 +++ version 0.9.1
 * identities: fixed displaying improper status information when having more jabber and gadu account in one identity and invisible status for gadu (beevvy)

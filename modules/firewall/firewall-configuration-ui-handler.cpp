@@ -45,7 +45,7 @@ void FirewallConfigurationUiHandler::registerUiHandler()
 	if (!Instance)
 	{
 		Instance = new FirewallConfigurationUiHandler();
-		MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/firewall.ui"));
+		MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/firewall.ui"));
 		MainConfigurationWindow::registerUiHandler(Instance);
 	}
 }
@@ -55,7 +55,7 @@ void FirewallConfigurationUiHandler::unregisterUiHandler()
 	if (Instance)
 	{
 		MainConfigurationWindow::unregisterUiHandler(Instance);
-		MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/firewall.ui"));
+		MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/firewall.ui"));
 		delete Instance;
 		Instance = 0;
 	}

@@ -28,7 +28,7 @@ extern "C" KADU_EXPORT int history_init(bool firstLoad)
 	Q_UNUSED(firstLoad)
 
 	History::createInstance();
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/history.ui"));
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/history.ui"));
 	MainConfigurationWindow::registerUiHandler(History::instance());
 
 	BuddyHistoryDeleteHandler::createInstance();
@@ -42,7 +42,7 @@ extern "C" KADU_EXPORT void history_close()
 	BuddyAdditionalDataDeleteHandlerManager::instance()->unregisterAdditionalDataDeleteHandler(BuddyHistoryDeleteHandler::instance());
 	BuddyHistoryDeleteHandler::destroyInstance();
 
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/history.ui"));
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/history.ui"));
 	MainConfigurationWindow::unregisterUiHandler(History::instance());
 	History::destroyInstance();
 }

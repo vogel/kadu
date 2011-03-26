@@ -79,8 +79,8 @@ if (WIN32)
 	set (SOURCES ${SOURCES} ../module.rc)
 endif (WIN32)
 
-kadu_module_desc (weather.desc)
-kadu_module_configuration (${CONFIGURATION_FILES})
+kadu_plugin_desc (weather.desc)
+kadu_plugin_configuration (${CONFIGURATION_FILES})
 qt_wrap_cpp (weather MOC_FILES ${MOC_SOURCES})
 
 qt4_add_translation (TRANSLATION_FILES ${TRANSLATION_SOURCES})

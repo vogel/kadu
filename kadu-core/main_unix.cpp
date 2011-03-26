@@ -30,10 +30,10 @@
 #include "core/core.h"
 #include "core/crash-aware-object.h"
 #include "gui/windows/kadu-window.h"
-
+#include "misc/path-conversion.h"
+#include "plugins/plugin.h"
 #include "debug.h"
 #include "kadu-config.h"
-#include "misc/path-conversion.h"
 #include "modules.h"
 
 #ifdef SIG_HANDLING_ENABLED
@@ -98,16 +98,10 @@ static void kadu_signal_handler(int signal)
 				fprintf(backtraceFile, "[%d] %s\n", i, backtraceStrings[i]);
 			fprintf(backtraceFile, "======= END OF BACKTRACE  ======\n");
 
-			fprintf(backtraceFile, "static modules:\n");
-			QStringList modules = ModulesManager::instance()->staticModules();
-
-			foreach (const QString &module, modules)
-				fprintf(backtraceFile, "> %s\n", qPrintable(module));
-
-			fprintf(backtraceFile, "loaded modules:\n");
-			modules = ModulesManager::instance()->loadedModules();
-			foreach (const QString &module, modules)
-				fprintf(backtraceFile, "> %s\n", qPrintable(module));
+			fprintf(backtraceFile, "loaded plugins:\n");
+			QList<Plugin *> plugins = ModulesManager::instance()->activePlugins();
+			foreach (Plugin *plugin, plugins)
+				fprintf(backtraceFile, "> %s\n", qPrintable(plugin->name()));
 			fprintf(backtraceFile, "Kadu version: %s\n", qPrintable(Core::version()));
 			fprintf(backtraceFile, "Qt compile time version: %s\nQt runtime version: %s\n",
 					QT_VERSION_STR, qVersion());

@@ -4,4 +4,3 @@ Description[pl]=Automatyczne dzielenie zbyt d³ugich wiadomo¶ci
 Author=PK Team, Dorregaray
 LoadByDefault=false
 Version=0.3.1
-Base=false

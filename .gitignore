@@ -1,6 +1,7 @@
 *~
 *.kdev4
 build*
+.configuration-ui-translations.cpp
 
 kadu-core/final.cpp
 kadu-core/includes

@@ -63,7 +63,7 @@ SmsDialog::SmsDialog(QWidget* parent) :
 
 	RecipientEdit->setFocus();
 
-	ModulesManager::instance()->moduleIncUsageCount("sms");
+	ModulesManager::instance()->usePlugin("sms");
 	kdebugf2();
 }
 
@@ -71,7 +71,7 @@ SmsDialog::~SmsDialog()
 {
 	saveWindowGeometry(this, "Sms", "SmsDialogGeometry");
 
-	ModulesManager::instance()->moduleDecUsageCount("sms");
+	ModulesManager::instance()->releasePlugin("sms");
 }
 
 void SmsDialog::createGui()

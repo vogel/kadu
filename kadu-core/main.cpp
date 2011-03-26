@@ -409,7 +409,7 @@ int main(int argc, char *argv[])
 	QDir().mkdir(path_);
 #endif
 
-	ModulesManager::instance()->loadAllModules();
+	ModulesManager::instance()->activatePlugins();
 
 #ifndef Q_WS_WIN
 	// if someone is running Kadu from root account, let's remind him

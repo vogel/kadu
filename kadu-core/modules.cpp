@@ -31,8 +31,8 @@
 
 #include <QtCore/QDir>
 #include <QtCore/QLibrary>
+#include <QtCore/QPluginLoader>
 #include <QtCore/QTextCodec>
-#include <QtCore/QTranslator>
 #include <QtGui/QApplication>
 #include <QtGui/QCheckBox>
 #include <QtGui/QGroupBox>
@@ -50,20 +50,21 @@
 #endif
 
 #include "configuration/configuration-file.h"
+#include "configuration/configuration-manager.h"
 #include "core/core.h"
 #include "gui/hot-key.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/modules-window.h"
 #include "gui/windows/message-dialog.h"
-
+#include "misc/path-conversion.h"
+#include "plugins/generic-plugin.h"
+#include "plugins/plugin.h"
+#include "plugins/plugin-info.h"
 #include "activate.h"
 #include "debug.h"
 #include "icons-manager.h"
-#include "misc/path-conversion.h"
 
 #include "modules.h"
-
-#include "modules/static_modules.cpp"
 
 #ifdef Q_OS_MAC
 	#define SO_EXT "so"
@@ -82,50 +83,117 @@
 	#define SO_PREFIX_LEN 3
 #endif
 
-ModuleInfo::ModuleInfo() : depends(), conflicts(), provides(),
-	description(), author(), version(), load_by_def(false)
-{
-}
-
-ModulesManager::Module::Module() : lib(0), close(0), translator(0), info(), usage_counter(0)
-{
-}
-
 ModulesManager * ModulesManager::Instance = 0;
 
 ModulesManager * ModulesManager::instance()
 {
 	if (0 == Instance)
+	{
 		Instance = new ModulesManager();
+		// do not move to contructor
+		// Instance variable must be available ModulesManager::load method
+		Instance->ensureLoaded();
+	}
 
 	return Instance;
 }
 
-ModulesManager::ModulesManager() : QObject(),
-	StaticModules(), Modules(), Window(0), translators(new QObject(this))
+ModulesManager::ModulesManager() :
+		Plugins(), Window(0)
 {
-	kdebugf();
+	ConfigurationManager::instance()->registerStorableObject(this);
 
-	everLoaded = config_file.readEntry("General", "EverLoaded").split(',', QString::SkipEmptyParts);
+	setState(StateNotLoaded);
+}
 
-	// load modules as config file say
-	installed_list = installedModules();
-	QString loaded_str = config_file.readEntry("General", "LoadedModules");
-	loaded_list = loaded_str.split(',', QString::SkipEmptyParts);
-	QString unloaded_str = config_file.readEntry("General", "UnloadedModules");
-	unloaded_list = unloaded_str.split(',', QString::SkipEmptyParts);
+ModulesManager::~ModulesManager()
+{
+	ConfigurationManager::instance()->unregisterStorableObject(this);
+}
 
-	if (loaded_list.contains("encryption"))
+void ModulesManager::load()
+{
+	if (!isValidStorage())
+		return;
+
+	StorableObject::load();
+
+	QDomElement itemsNode = storage()->point();
+	if (!itemsNode.isNull())
 	{
-		loaded_list.removeAll("encryption");
-		loaded_list.append("encryption_ng");
-		loaded_list.append("encryption_ng_simlite");
+		QList<QDomElement> pluginElements = storage()->storage()->getNodes(itemsNode, QLatin1String("Plugin"));
+
+		foreach (const QDomElement &pluginElement, pluginElements)
+		{
+			QSharedPointer<StoragePoint> storagePoint(new StoragePoint(storage()->storage(), pluginElement));
+			QString name = storagePoint->point().attribute("name");
+			if (!name.isEmpty())
+			{
+				Plugin *plugin = new Plugin(name, this);
+				Plugins.insert(name, plugin);
+			}
+		}
 	}
-	if (loaded_list.contains("osd_hints"))
+
+	foreach (const QString &moduleName, installedPlugins())
 	{
-		loaded_list.removeAll("osd_hints");
-		if (!loaded_list.contains("hints"))
-			loaded_list.append("hints");
+		Plugin *plugin = new Plugin(moduleName, this);
+		Plugins.insert(moduleName, plugin);
+	}
+
+	foreach (Plugin *plugin, Plugins)
+		plugin->ensureLoaded();
+
+	if (!loadAttribute<bool>("imported_from_09", false))
+	{
+		importFrom09();
+		storeAttribute("imported_from_09", true);
+	}
+}
+
+void ModulesManager::store()
+{
+	if (!isValidStorage())
+		return;
+
+	ensureLoaded();
+
+	StorableObject::store();
+
+	foreach (Plugin *plugin, Plugins)
+		plugin->store();
+}
+
+void ModulesManager::importFrom09()
+{
+	QStringList everLoaded = config_file.readEntry("General", "EverLoaded").split(',', QString::SkipEmptyParts);
+	QString loaded_str = config_file.readEntry("General", "LoadedModules");
+
+	QStringList loadedPlugins = loaded_str.split(',', QString::SkipEmptyParts);
+	everLoaded += loadedPlugins;
+	QString unloaded_str = config_file.readEntry("General", "UnloadedModules");
+	QStringList unloadedPlugins = unloaded_str.split(',', QString::SkipEmptyParts);
+
+	QStringList allPlugins = everLoaded + unloadedPlugins; // just in case...
+	foreach (const QString &pluginName, allPlugins)
+		if (!Plugins.contains(pluginName))
+		{
+			Plugin *plugin = new Plugin(pluginName, this);
+			plugin->ensureLoaded();
+			Plugins.insert(pluginName, plugin);
+		}
+
+	if (loadedPlugins.contains("encryption"))
+	{
+		loadedPlugins.removeAll("encryption");
+		loadedPlugins.append("encryption_ng");
+		loadedPlugins.append("encryption_ng_simlite");
+	}
+	if (loadedPlugins.contains("osd_hints"))
+	{
+		loadedPlugins.removeAll("osd_hints");
+		if (!loadedPlugins.contains("hints"))
+			loadedPlugins.append("hints");
 	}
 
 	ensureLoadedAtLeastOnce("gadu_protocol");
@@ -134,460 +202,77 @@ ModulesManager::ModulesManager() : QObject(),
 	ensureLoadedAtLeastOnce("history_migration");
 	ensureLoadedAtLeastOnce("profiles_import");
 
-	registerStaticModules();
-
-	foreach (const QString &i, staticModules())
-		if (i.right(9) == "_protocol")
-			    protocolModulesList.append(i);
-	foreach (const QString &i, installed_list)
-		if (i.right(9) == "_protocol")
-			    protocolModulesList.append(i);
-
-	kdebugf2();
-}
-
-ModulesManager::~ModulesManager()
-{
-	kdebugf();
-	kdebugf2();
+	foreach (Plugin *plugin, Plugins)
+		if (loadedPlugins.contains(plugin->name()))
+			plugin->setState(Plugin::PluginStateLoaded);
+		else
+			plugin->setState(Plugin::PluginStateNotLoaded);
 }
 
 void ModulesManager::ensureLoadedAtLeastOnce(const QString& moduleName)
 {
-	if (!everLoaded.contains(moduleName) && !loaded_list.contains(moduleName) && unloaded_list.contains(moduleName))
-	{
-		loaded_list.append(moduleName);
-		unloaded_list.removeAll(moduleName);
-	}
+	if (!Plugins.contains(moduleName))
+		return;
+
+	if (!Plugin::PluginStateNew == Plugins.value(moduleName)->state())
+		Plugins.value(moduleName)->setState(Plugin::PluginStateLoaded);
 }
 
-void ModulesManager::loadProtocolModules()
-{
-	foreach (const QString &i, protocolModulesList)
-	{
-		if (!moduleIsActive(i))
-		{
-			bool load_module;
-			if (loaded_list.contains(i))
-				load_module = true;
-			else if (unloaded_list.contains(i))
-				load_module = false;
-			else if (staticModules().contains(i))
-				load_module = true;
-			else
-			{
-				ModuleInfo m_info;
-				if (moduleInfo(i, m_info))
-					load_module = m_info.load_by_def;
-				else
-					load_module = false;
-			}
-			if (load_module)
-				activateModule(i);
-		}
-	}
-}
-
-void ModulesManager::loadAllModules()
+void ModulesManager::activateProtocolPlugins()
 {
 	bool saveList = false;
 
-	foreach (const QString &i, staticModules())
-		if (!moduleIsActive(i))
-			activateModule(i);
-
-	foreach (const QString &i, installed_list)
+	foreach (Plugin *plugin, Plugins)
 	{
-		if (!moduleIsActive(i) && !protocolModulesList.contains(i))
-		{
-			bool load_module;
-			if (loaded_list.contains(i))
-				load_module = true;
-			else if (unloaded_list.contains(i))
-				load_module = false;
-			else
-			{
-				ModuleInfo m_info;
-				if (moduleInfo(i, m_info))
-					load_module = m_info.load_by_def;
-				else
-					load_module = false;
-			}
+		if (plugin->type() != "protocol")
+			continue;
 
-			if (load_module && !activateModule(i))
+		if (plugin->shouldBeActivated())
+			if (!activatePlugin(plugin))
 				saveList = true;
-		}
 	}
 
-	foreach (const QString &i, loaded_list)
-	{
-		if (!moduleIsActive(i))
-		{
-			foreach (const QString &module, installed_list)
-			{
-				ModuleInfo m_info;
-				if (moduleInfo(module, m_info) && m_info.replaces.contains(i))
-					if (activateModule(i))
-						saveList = true;
-			}
-		}
-	}
-
-	// if not all modules were loaded properly
+	// if not all plugins were loaded properly
 	// save the list of modules
 	if (saveList)
-		saveLoadedModules();
-
+		ConfigurationManager::instance()->flush();
 }
 
-QTranslator* ModulesManager::loadModuleTranslation(const QString &module_name)
+void ModulesManager::activatePlugins()
 {
-	QTranslator* translator = new QTranslator(translators);
-	const QString lang = config_file.readEntry("General", "Language");
-	if (translator->load(module_name + '_' + lang, dataPath("kadu/modules/translations/")))
+	bool saveList = false;
+
+	foreach (Plugin *plugin, Plugins)
+		if (plugin->shouldBeActivated())
+			if (!activatePlugin(plugin))
+				saveList = true;
+
+	foreach (Plugin *pluginToReplace, Plugins)
 	{
-		qApp->installTranslator(translator);
-		return translator;
+		if (pluginToReplace->isActive())
+			continue;
+
+		foreach (Plugin *replacementPlugin, Plugins)
+			if (replacementPlugin->isValid() && replacementPlugin->info()->replaces().contains(pluginToReplace->name()))
+				if (activatePlugin(replacementPlugin))
+					saveList = true; // list has changed
 	}
-	else
-	{
-		delete translator;
-		return 0;
-	}
+
+	// if not all plugins were loaded properly or new plugin was added
+	// save the list of modules
+	if (saveList)
+		ConfigurationManager::instance()->flush();
 }
 
-bool ModulesManager::satisfyModuleDependencies(const ModuleInfo &module_info)
+void ModulesManager::deactivatePlugins()
 {
-	kdebugf();
-	foreach (const QString &it, module_info.depends)
-	{
-		if (!moduleIsActive(it))
+	ConfigurationManager::instance()->flush();
+
+	foreach (Plugin *plugin, Plugins)
+		if (plugin->isActive())
 		{
-			if (moduleIsInstalled(it) || moduleIsStatic(it))
-			{
-				if (!activateModule(it))
-				{
-					kdebugf2();
-					return false;
-				}
-			}
-			else
-			{
-				MessageDialog::show("dialog-warning", tr("Kadu"), tr("Required module %1 was not found").arg(it));
-				kdebugf2();
-				return false;
-			}
+			kdebugm(KDEBUG_INFO, "module: %s, usage: %d\n", qPrintable(plugin->name()), plugin->usageCounter());
 		}
-	}
-	kdebugf2();
-	return true;
-}
-
-void ModulesManager::incDependenciesUsageCount(const ModuleInfo &module_info)
-{
-	kdebugmf(KDEBUG_FUNCTION_START, "%s\n", qPrintable(module_info.description));
-	foreach (const QString &it, module_info.depends)
-	{
-		kdebugm(KDEBUG_INFO, "incUsage: %s\n", qPrintable(it));
-		moduleIncUsageCount(it);
-	}
-	kdebugf2();
-}
-
-void ModulesManager::registerStaticModule(const QString &module_name, InitModuleFunc *init, CloseModuleFunc *close)
-{
-	StaticModule m;
-	m.init = init;
-	m.close = close;
-	StaticModules.insert(module_name, m);
-}
-
-QStringList ModulesManager::staticModules() const
-{
-	QStringList static_modules;
-	foreach (const QString &i, StaticModules.keys())
-		static_modules.append(i);
-	return static_modules;
-}
-
-QStringList ModulesManager::installedModules() const
-{
-	QDir dir(libPath("kadu/modules"), SO_PREFIX "*." SO_EXT);
-	dir.setFilter(QDir::Files);
-	QStringList installed;
-	QStringList entries = dir.entryList();
-	foreach (const QString &entry, entries)
-		installed.append(entry.mid(SO_PREFIX_LEN, entry.length() - SO_EXT_LEN - SO_PREFIX_LEN - 1));
-	return installed;
-}
-
-QStringList ModulesManager::loadedModules() const
-{
-	QStringList loaded;
-	for (QMap<QString, Module>::const_iterator i = Modules.constBegin(); i != Modules.constEnd(); ++i)
-		if (i.value().lib)
-			loaded.append(i.key());
-	return loaded;
-}
-
-
-QStringList ModulesManager::unloadedModules() const
-{
-	QStringList installed = installedModules();
-	QStringList loaded = loadedModules();
-	QStringList unloaded;
-	foreach(const QString &module, installed)
-		if (!loaded.contains(module))
-			unloaded.append(module);
-	return unloaded;
-}
-
-QStringList ModulesManager::activeModules() const
-{
-	QStringList active;
-	foreach(const QString &i, Modules.keys())
-		active.append(i);
-	return active;
-}
-
-QString ModulesManager::moduleProvides(const QString &provides)
-{
-	ModuleInfo info;
-
-	QStringList moduleList = staticModules();
-	foreach(const QString &moduleName, moduleList)
-		if (moduleInfo(moduleName, info))
-			if (info.provides.contains(provides))
-				return moduleName;
-
-	moduleList = installedModules();
-	foreach(const QString &moduleName, moduleList)
-		if (moduleInfo(moduleName, info) && info.provides.contains(provides))
-			if (moduleIsLoaded(moduleName))
-				return moduleName;
-
-	return QString();
-}
-
-bool ModulesManager::moduleInfo(const QString& module_name, ModuleInfo& info) const
-{
-	if (Modules.contains(module_name))
-	{
-		info = Modules[module_name].info;
-		return true;
-	}
-
-	PlainConfigFile desc_file(dataPath("kadu/modules/" + module_name + ".desc"));
-
-	const QString lang = config_file.readEntry("General", "Language");
-
-	info.description = desc_file.readEntry("Module", "Description[" + lang + ']');
-	if(info.description.isEmpty())
-		info.description = desc_file.readEntry("Module", "Description");
-
-	info.author = desc_file.readEntry("Module", "Author");
-
-	if (desc_file.readEntry("Module", "Version") == "core")
-		info.version = Core::version();
-	else
-		info.version = desc_file.readEntry("Module", "Version");
-
-	info.depends = desc_file.readEntry("Module", "Dependencies").split(' ', QString::SkipEmptyParts);
-	info.conflicts = desc_file.readEntry("Module", "Conflicts").split(' ', QString::SkipEmptyParts);
-	info.provides = desc_file.readEntry("Module", "Provides").split(' ', QString::SkipEmptyParts);
-	info.replaces = desc_file.readEntry("Module", "Replaces").split(' ', QString::SkipEmptyParts);
-
-	info.load_by_def = desc_file.readBoolEntry("Module", "LoadByDefault");
-	info.base = desc_file.readBoolEntry("Module", "Base");
-
-	return true;
-}
-
-bool ModulesManager::moduleIsStatic(const QString& module_name) const
-{
-	return staticModules().contains(module_name);
-}
-
-bool ModulesManager::moduleIsInstalled(const QString& module_name) const
-{
-	return installedModules().contains(module_name);
-}
-
-bool ModulesManager::moduleIsLoaded(const QString& module_name) const
-{
-	return loadedModules().contains(module_name);
-}
-
-bool ModulesManager::moduleIsActive(const QString& module_name) const
-{
-	return Modules.contains(module_name);
-}
-
-void ModulesManager::saveLoadedModules()
-{
-	config_file.writeEntry("General", "LoadedModules", loadedModules().join(","));
-	config_file.writeEntry("General", "UnloadedModules", unloadedModules().join(","));
-	config_file.sync();
-}
-
-QString ModulesManager::modulesUsing(const QString &module_name) const
-{
-	ModuleInfo info;
-	QStringList moduleList = loadedModules();
-	QString modules;
-
-	foreach (const QString &moduleName, moduleList)
-		if (moduleInfo(moduleName, info))
-			if (info.depends.contains(module_name))
-				modules += "\n- " + moduleName;
-
-	return modules;
-}
-
-bool ModulesManager::conflictsWithLoaded(const QString &module_name, const ModuleInfo& module_info) const
-{
-	kdebugf();
-	foreach (const QString &it, module_info.conflicts)
-	{
-		if (moduleIsActive(it))
-		{
-			MessageDialog::show("dialog-warning", tr("Kadu"), tr("Module %1 conflicts with: %2").arg(module_name, it));
-			kdebugf2();
-			return true;
-		}
-		foreach (const QString &key, Modules.keys())
-			foreach (const QString &sit, Modules[key].info.provides)
-				if (it == sit)
-				{
-					MessageDialog::show("dialog-warning", tr("Kadu"), tr("Module %1 conflicts with: %2").arg(module_name, key));
-					kdebugf2();
-					return true;
-				}
-	}
-	foreach (const QString &key, Modules.keys())
-		foreach (const QString &sit, Modules[key].info.conflicts)
-			if (sit == module_name)
-			{
-				MessageDialog::show("dialog-warning", tr("Kadu"), tr("Module %1 conflicts with: %2").arg(module_name, key));
-				kdebugf2();
-				return true;
-			}
-	kdebugf2();
-	return false;
-}
-
-bool ModulesManager::activateModule(const QString& module_name)
-{
-	Module m;
-	kdebugmf(KDEBUG_FUNCTION_START, "'%s'\n", qPrintable(module_name));
-
-	if (moduleIsActive(module_name))
-	{
-		MessageDialog::show("dialog-warning", tr("Kadu"), tr("Module %1 is already active").arg(module_name));
-		kdebugf2();
-		return false;
-	}
-
-	if (moduleInfo(module_name,m.info))
-	{
-		if (conflictsWithLoaded(module_name, m.info))
-		{
-			kdebugf2();
-			return false;
-		}
-		if (!satisfyModuleDependencies(m.info))
-		{
-			kdebugf2();
-			return false;
-		}
-	}
-	else
-	{
-		kdebugf2();
-		return false;
-	}
-
-	InitModuleFunc *init;
-
-	if (moduleIsStatic(module_name))
-	{
-		m.lib = 0;
-		StaticModule sm = StaticModules[module_name];
-		init = sm.init;
-		m.close = sm.close;
-	}
-	else
-	{
-		m.lib = new QLibrary(libPath("kadu/modules/"SO_PREFIX + module_name + "." SO_EXT));
-		m.lib->setLoadHints(/*QLibrary::ResolveAllSymbolsHint |*/ QLibrary::ExportExternalSymbolsHint);
-		if (!m.lib->load())
-		{
-			QString err = m.lib->errorString();
-			MessageDialog::show("dialog-warning", tr("Kadu"), tr("Cannot load %1 module library.:\n%2").arg(module_name, err));
-			kdebugm(KDEBUG_ERROR, "cannot load %s because of: %s\n", qPrintable(module_name), qPrintable(err));
-			delete m.lib;
-			m.lib = 0;
-			m.close = 0;
-			kdebugf2();
-			return false;
-		}
-		init = (InitModuleFunc *)m.lib->resolve(qPrintable(module_name + "_init"));
-		m.close = (CloseModuleFunc *)m.lib->resolve(qPrintable(module_name + "_close"));
-		if (!init || !m.close)
-		{
-			MessageDialog::show("dialog-warning", tr("Kadu"), tr("Cannot find required functions in module %1.\n"
-					"Maybe it's not Kadu-compatible Module.").arg(module_name));
-			delete m.lib;
-			m.lib = 0;
-			m.close = 0;
-			kdebugf2();
-			return false;
-		}
-	}
-
-	m.translator = loadModuleTranslation(module_name);
-
-	int res = init(!everLoaded.contains(module_name));
-	if (!everLoaded.contains(module_name))
-	{
-		everLoaded.append(module_name);
-		config_file.writeEntry("General", "EverLoaded", everLoaded.join(","));
-	}
-
-	if (res != 0)
-	{
-		MessageDialog::show("dialog-warning", tr("Kadu"), tr("Module initialization routine for %1 failed.").arg(module_name));
-		if (m.lib)
-		{
-			delete m.lib;
-			m.lib = 0;
-		}
-		if (m.translator)
-		{
-			qApp->removeTranslator(m.translator);
-			delete m.translator;
-			m.translator = 0;
-		}
-		return false;
-	}
-
-	incDependenciesUsageCount(m.info);
-
-	m.usage_counter = 0;
-	Modules.insert(module_name,m);
-	kdebugf2();
-	return true;
-}
-
-void ModulesManager::unloadAllModules()
-{
-	saveLoadedModules();
-
-	foreach (const QString &it, Modules.keys())
-	{
-		Q_UNUSED(it) // only in debug mode
-		kdebugm(KDEBUG_INFO, "module: %s, usage: %d\n", qPrintable(it), Modules[it].usage_counter);
-	}
 
 	// unloading all not used modules
 	// as long as any module were unloaded
@@ -595,59 +280,198 @@ void ModulesManager::unloadAllModules()
 	bool deactivated;
 	do
 	{
-		QStringList active = activeModules();
+		QList<Plugin *> active = activePlugins();
 		deactivated = false;
-		foreach (const QString &i, active)
-			if (Modules[i].usage_counter == 0)
-				if (deactivateModule(i))
+		foreach (Plugin *plugin, active)
+			if (plugin->usageCounter() == 0)
+				if (deactivatePlugin(plugin, false, false))
 					deactivated = true;
 	}
 	while (deactivated);
 
 	// we cannot unload more modules in normal way
 	// so we are making it brutal ;)
-	QStringList active = activeModules();
-	foreach (const QString &i, active)
+	QList<Plugin *> active = activePlugins();
+	foreach (Plugin *plugin, active)
 	{
-		kdebugm(KDEBUG_PANIC, "WARNING! Could not deactivate module %s, killing\n",qPrintable(i));
-		deactivateModule(i, true);
+		kdebugm(KDEBUG_PANIC, "WARNING! Could not deactivate module %s, killing\n", qPrintable(plugin->name()));
+		deactivatePlugin(plugin, false, true);
 	}
 
 }
 
-bool ModulesManager::deactivateModule(const QString& module_name, bool force)
+QList<Plugin *> ModulesManager::activePlugins() const
 {
-	Module m = Modules[module_name];
-	kdebugmf(KDEBUG_FUNCTION_START, "name:'%s' force:%d usage:%d\n", qPrintable(module_name), force, m.usage_counter);
+	QList<Plugin *> result;
+	foreach (Plugin *plugin, Plugins)
+		if (plugin->isActive())
+			result.append(plugin);
+	return result;
+}
 
-	if (m.usage_counter > 0 && !force)
+void ModulesManager::incDependenciesUsageCount(Plugin *plugin)
+{
+	if (!plugin->isValid())
+		return;
+
+	kdebugmf(KDEBUG_FUNCTION_START, "%s\n", qPrintable(plugin->info()->description()));
+	foreach (const QString &pluginName, plugin->info()->dependencies())
 	{
-		MessageDialog::show("dialog-warning", tr("Kadu"), tr("Module %1 cannot be deactivated because it is being used by the following modules:%2").arg(module_name).arg(modulesUsing(module_name)));
+		kdebugm(KDEBUG_INFO, "incUsage: %s\n", qPrintable(pluginName));
+		usePlugin(pluginName);
+	}
+	kdebugf2();
+}
+
+QStringList ModulesManager::installedPlugins() const
+{
+	QDir dir(dataPath("kadu/plugins"), "*.desc");
+	dir.setFilter(QDir::Files);
+
+	QStringList installed;
+	QStringList entries = dir.entryList();
+	foreach (const QString &entry, entries)
+		installed.append(entry.left(entry.length() - 5));
+	return installed;
+}
+
+QString ModulesManager::findActiveConflict(Plugin *plugin) const
+{
+	if (!plugin || !plugin->isValid())
+		return QString();
+
+	foreach (const QString &it, plugin->info()->conflicts())
+	{
+		if (!Plugins.contains(it))
+			continue;
+
+		if (Plugins.value(it)->isActive())
+			return it;
+
+		foreach (Plugin *possibleConflict, Plugins)
+			if (possibleConflict->isValid() && possibleConflict->isActive())
+				foreach (const QString &sit, possibleConflict->info()->provides())
+					if (it == sit)
+						return possibleConflict->name();
+	}
+
+	foreach (Plugin *possibleConflict, Plugins)
+		if (possibleConflict->isValid() && possibleConflict->isActive())
+			foreach (const QString &sit, possibleConflict->info()->conflicts())
+				if (sit == plugin->name())
+					return plugin->name();
+
+	return QString();
+}
+
+bool ModulesManager::activateDependencies(Plugin *plugin)
+{
+	if (!plugin || !plugin->isValid())
+		return true; // always true
+
+	foreach (const QString &dependencyName, plugin->info()->dependencies())
+	{
+		if (!Plugins.contains(dependencyName))
+		{
+			MessageDialog::show("dialog-warning", tr("Kadu"), tr("Required module %1 was not found").arg(dependencyName));
+			return false;
+		}
+
+		if (!activatePlugin(Plugins.value(dependencyName)))
+			return false;
+	}
+
+	return true;
+}
+
+QString ModulesManager::activeDependentPluginNames(const QString &pluginName) const
+{
+	QString modules;
+
+	foreach (Plugin *possibleDependentPlugin, Plugins)
+		if (possibleDependentPlugin->isValid())
+			if (possibleDependentPlugin->info()->dependencies().contains(pluginName))
+				modules += "\n- " + possibleDependentPlugin->name();
+
+	return modules;
+}
+
+bool ModulesManager::activatePlugin(Plugin *plugin)
+{
+	if (plugin->isActive())
+		return true;
+
+	QString conflict = findActiveConflict(plugin);
+	if (!conflict.isEmpty())
+	{
+		MessageDialog::show("dialog-warning", tr("Kadu"), tr("Module %1 conflicts with: %2").arg(plugin->name(), conflict));
+		return false;
+	}
+
+	if (!activateDependencies(plugin))
+		return false;
+
+	bool result = plugin->activate();
+	if (result)
+	{
+		incDependenciesUsageCount(plugin);
+		plugin->setState(Plugin::PluginStateLoaded);
+	}
+
+	return result;
+}
+
+bool ModulesManager::activatePlugin(const QString& pluginName)
+{
+	kdebugmf(KDEBUG_FUNCTION_START, "'%s'\n", qPrintable(pluginName));
+
+	if (!Plugins.contains(pluginName))
+		return false;
+
+	return activatePlugin(Plugins.value(pluginName));
+}
+
+bool ModulesManager::deactivatePlugin(Plugin *plugin, bool setAsUnloaded, bool force)
+{
+	kdebugmf(KDEBUG_FUNCTION_START, "name:'%s' force:%d usage: %d\n", qPrintable(plugin->name()), force, plugin->usageCounter());
+
+	if (plugin->usageCounter() > 0 && !force)
+	{
+		MessageDialog::show("dialog-warning", tr("Kadu"), tr("Module %1 cannot be deactivated because it is being used by the following modules:%2").arg(plugin->name()).arg(activeDependentPluginNames(plugin->name())));
 		kdebugf2();
 		return false;
 	}
 
-	foreach (const QString &i, m.info.depends)
-		moduleDecUsageCount(i);
+	foreach (const QString &i, plugin->info()->dependencies())
+		releasePlugin(i);
 
-	m.close();
-	if (m.translator)
-	{
-		qApp->removeTranslator(m.translator);
-		delete m.translator;
-		m.translator = 0;
-	}
+	bool result = plugin->deactivate();
+	if (result && setAsUnloaded)
+		plugin->setState(Plugin::PluginStateNotLoaded);
 
-	if (m.lib)
-	{
-		m.lib->deleteLater();
-		m.lib = 0;
-	}
+	return result;
+}
 
-	Modules.remove(module_name);
+bool ModulesManager::deactivatePlugin(const QString &pluginName, bool setAsUnloaded, bool force)
+{
+	kdebugmf(KDEBUG_FUNCTION_START, "name:'%s' force:%d\n", qPrintable(pluginName), force);
 
-	kdebugf2();
-	return true;
+	if (!Plugins.contains(pluginName))
+		return true; // non-existing module is properly deactivated
+
+	return deactivatePlugin(Plugins.value(pluginName), setAsUnloaded, force);
+}
+
+void ModulesManager::usePlugin(const QString &pluginName)
+{
+	if (Plugins.contains(pluginName))
+		Plugins.value(pluginName)->incUsage();
+}
+
+void ModulesManager::releasePlugin(const QString &pluginName)
+{
+	if (Plugins.contains(pluginName))
+		Plugins.value(pluginName)->decUsage();
 }
 
 void ModulesManager::showWindow(QAction *sender, bool toggled)
@@ -674,14 +498,4 @@ void ModulesManager::dialogDestroyed()
 	kdebugf();
 	Window = 0;
 	kdebugf2();
-}
-
-void ModulesManager::moduleIncUsageCount(const QString& module_name)
-{
-	++Modules[module_name].usage_counter;
-}
-
-void ModulesManager::moduleDecUsageCount(const QString& module_name)
-{
-	--Modules[module_name].usage_counter;
 }

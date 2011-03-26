@@ -28,7 +28,7 @@ extern "C" KADU_EXPORT int autostatus_init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/autostatus.ui"));
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/autostatus.ui"));
 	Autostatus::createInstance();
 	AutostatusActions::createInstance();
 	AutostatusActions::instance()->registerActions();
@@ -41,5 +41,5 @@ extern "C" KADU_EXPORT void autostatus_close()
 	AutostatusActions::instance()->unregisterActions();
 	AutostatusActions::destroyInstance();
 	Autostatus::destroyInstance();
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/autostatus.ui"));
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/autostatus.ui"));
 }

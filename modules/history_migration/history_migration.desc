@@ -2,7 +2,6 @@
 Description=History migration module from Kadu < 0.6.6
 Description[pl]=Modu³ importu historii z Kadu < 0.6.6
 Author=Kadu Team
-Base=true
 Dependencies=gadu_protocol sql_history
 LoadByDefault=true
 Version=core

@@ -109,7 +109,7 @@ extern "C" KADU_EXPORT int mediaplayer_init(bool firstLoad)
 
 	mediaplayer = new MediaPlayer();
 
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/mediaplayer.ui"));
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/mediaplayer.ui"));
 	MainConfigurationWindow::registerUiHandler(mediaplayer);
 
 	return 0;
@@ -117,7 +117,7 @@ extern "C" KADU_EXPORT int mediaplayer_init(bool firstLoad)
 
 extern "C" KADU_EXPORT void mediaplayer_close()
 {
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/mediaplayer.ui"));
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/mediaplayer.ui"));
 	MainConfigurationWindow::unregisterUiHandler(mediaplayer);
 
 	delete mediaplayer;

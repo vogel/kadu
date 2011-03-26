@@ -29,7 +29,7 @@ extern "C" KADU_EXPORT int single_window_init(bool firstLoad)
 
 	Q_UNUSED(firstLoad)
 	singleWindowManager = new SingleWindowManager();
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/single_window.ui"));
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/single_window.ui"));
 	kdebugf2();
 
 	return 0;
@@ -38,7 +38,7 @@ extern "C" KADU_EXPORT void single_window_close()
 {
 	kdebugf();
 
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/single_window.ui"));
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/single_window.ui"));
 	delete singleWindowManager;
 	singleWindowManager = NULL;
 

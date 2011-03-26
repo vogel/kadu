@@ -5,4 +5,3 @@ Author=PK Team, Dorregaray
 Dependencies=idle
 LoadByDefault=false
 Version=core
-Base=false

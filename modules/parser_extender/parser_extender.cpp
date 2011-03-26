@@ -45,7 +45,7 @@ extern "C" KADU_EXPORT int parser_extender_init()
 	kdebugf();
 
 	parserExtender = new ParserExtender();
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/parser_extender.ui"));
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/parser_extender.ui"));
 
 	kdebugf2();
 	return 0;
@@ -56,7 +56,7 @@ extern "C" KADU_EXPORT void parser_extender_close()
 {
 	kdebugf();
 
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/parser_extender.ui"));
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/parser_extender.ui"));
 	delete parserExtender;
 	parserExtender = 0;
 

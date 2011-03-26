@@ -68,7 +68,7 @@ void SmsConfigurationUiHandler::registerConfigurationUi()
 	if (!Instance)
 	{
 		Instance = new SmsConfigurationUiHandler();
-		MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/sms.ui"));
+		MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/sms.ui"));
 		MainConfigurationWindow::registerUiHandler(Instance);
 	}
 }
@@ -77,7 +77,7 @@ void SmsConfigurationUiHandler::unregisterConfigurationUi()
 {
 	if (Instance)
 	{
-		MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/sms.ui"));
+		MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/sms.ui"));
 		MainConfigurationWindow::unregisterUiHandler(Instance);
 		delete Instance;
 		Instance = 0;

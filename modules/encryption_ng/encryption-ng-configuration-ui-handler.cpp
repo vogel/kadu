@@ -29,7 +29,7 @@ void EncryptionNgConfigurationUiHandler::registerConfigurationUi()
 	if (!Instance)
 	{
 		Instance = new EncryptionNgConfigurationUiHandler();
-		MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/encryption-ng.ui"));
+		MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/encryption-ng.ui"));
 	}
 }
 
@@ -37,7 +37,7 @@ void EncryptionNgConfigurationUiHandler::unregisterConfigurationUi()
 {
 	if (Instance)
 	{
-		MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/encryption-ng.ui"));
+		MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/encryption-ng.ui"));
 		delete Instance;
 		Instance = 0;
 	}

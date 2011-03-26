@@ -47,7 +47,7 @@ extern "C" KADU_EXPORT int kde_notify_init(bool firstLoad)
 
 	kde_notify = new KdeNotify();
 
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/kde_notify.ui"));
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/kde_notify.ui"));
 	MainConfigurationWindow::registerUiHandler(kde_notify);
 
 	kdebugf2();
@@ -58,7 +58,7 @@ extern "C" KADU_EXPORT void kde_notify_close()
 {
 	kdebugf();
 
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/kde_notify.ui"));
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/kde_notify.ui"));
 	MainConfigurationWindow::unregisterUiHandler(kde_notify);
 	delete kde_notify;
 	kde_notify = 0;

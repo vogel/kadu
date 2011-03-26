@@ -1,8 +1,8 @@
 /*
  * %kadu copyright begin%
+ * %kadu copyright end%
  * Copyright 2010, 2011 Bartosz Brachaczek (b.brachaczek@gmail.com)
  * Copyright 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
- * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -26,7 +26,13 @@
 #include "encryption-ng-simlite-key-importer.h"
 #include "encryption-ng-simlite-provider.h"
 
-extern "C" KADU_EXPORT int encryption_ng_simlite_init(bool firstLoad)
+#include "encryption-ng-simlite-plugin.h"
+
+EngryptionNgSimlitePlugin::~EngryptionNgSimlitePlugin()
+{
+}
+
+int EngryptionNgSimlitePlugin::init(bool firstLoad)
 {
 	if (firstLoad)
 		EncryptioNgSimliteKeyImporter::createInstance();
@@ -40,7 +46,7 @@ extern "C" KADU_EXPORT int encryption_ng_simlite_init(bool firstLoad)
 	return 0;
 }
 
-extern "C" KADU_EXPORT void encryption_ng_simlite_close()
+void EngryptionNgSimlitePlugin::done()
 {
 	EncryptionProviderManager::instance()->unregisterProvider(EncryptioNgSimliteProvider::instance());
 	EncryptioNgSimliteProvider::destroyInstance();
@@ -51,3 +57,5 @@ extern "C" KADU_EXPORT void encryption_ng_simlite_close()
 	// it can work without createInstance too, so don't care about firstLoad here
 	EncryptioNgSimliteKeyImporter::destroyInstance();
 }
+
+Q_EXPORT_PLUGIN2(encryption_ng_simlite, EngryptionNgSimlitePlugin)

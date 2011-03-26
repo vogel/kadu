@@ -52,7 +52,6 @@ class ModulesWindow : public QWidget
 
 	QTreeWidget *lv_modules;
 	QLabel *l_moduleinfo;
-	QCheckBox *hideBaseModules;
 
 	QTreeWidgetItem * getSelected();
 

@@ -40,7 +40,7 @@ extern "C" KADU_EXPORT int win32_sound_init(bool firstLoad)
 	kdebugf();
 
 	win32_player_slots = new WIN32PlayerSlots();
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/win32_sound.ui"));
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/win32_sound.ui"));
 	MainConfigurationWindow::registerUiHandler(win32_player_slots);
 
 	kdebugf2();
@@ -52,7 +52,7 @@ extern "C" KADU_EXPORT void win32_sound_close()
 	kdebugf();
 
 	MainConfigurationWindow::unregisterUiHandler(win32_player_slots);
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/win32_sound.ui"));
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/win32_sound.ui"));
 	delete win32_player_slots;
 	win32_player_slots = 0;
 

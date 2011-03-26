@@ -29,13 +29,13 @@ extern "C" KADU_EXPORT int imagelink_init(bool firstLoad)
 	Q_UNUSED(firstLoad)
 
 	ImageLink::createInstance();
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/image-link.ui"));
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/image-link.ui"));
 
 	return 0;
 }
 
 extern "C" KADU_EXPORT void imagelink_close()
 {
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/image-link.ui"));
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/image-link.ui"));
 	ImageLink::destroyInstance();
 }
