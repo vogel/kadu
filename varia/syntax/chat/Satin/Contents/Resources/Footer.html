@@ -1,0 +1,80 @@
+	<script type="text/javascript">
+	//<![CDATA[
+		closeBtn = new Image();
+		closeBtn.src = "images/header/header_button_close.png";
+		closePBtn = new Image();
+		closePBtn.src = "images/header/header_button_close_pressed.png";
+		openBtn = new Image();
+		openBtn.src = "images/header/header_button_open.png";
+		openPBtn = new Image();
+		openPBtn.src = "images/header/header_button_open_pressed.png";
+
+		function kaduAlign() {
+			return 0;
+		}
+
+		//Do this on load
+		function initEvents() {
+			if(document.getElementById("header") != null){
+				document.getElementById("bodyNode").style.marginTop = "68px";
+			}
+			KaduManualAlign = true;
+			alignChat(true);
+		}
+
+
+		//Swap an image with its alt-tag text on click
+		document.onclick = imageCheck;
+		function imageCheck() {
+			node = event.target;
+			if(node.tagName == 'IMG' && node.alt && node.className!="avatar") {
+				a = document.createElement('a');
+				a.setAttribute('onclick', 'imageSwap(this)');
+				a.setAttribute('src', node.getAttribute('src'));
+				a.className = node.className;
+				text = document.createTextNode(node.alt);
+				a.appendChild(text);
+				node.parentNode.replaceChild(a, node);
+			}
+		}
+		function imageSwap(node) {
+			shouldScroll = nearBottom();
+
+			//Swap the image/text
+			img = document.createElement('img');
+			img.setAttribute('src', node.getAttribute('src'));
+			img.className = node.className;
+			img.setAttribute('alt', node.firstChild.nodeValue);
+			node.parentNode.replaceChild(img, node);
+
+			alignChat(shouldScroll);
+		}
+
+		function toggleParent(parentId) {
+			myParent = document.getElementById(parentId);
+			toggleBtn = document.images["togglebutton"];
+			if (myParent.style.display=="none") {
+				myParent.style.display="block";
+				toggleBtn.src = closeBtn.src;
+				document.getElementById("bodyNode").style.marginTop = "68px";
+			} else {
+				myParent.style.display="none";
+				toggleBtn.src = openBtn.src;
+				document.getElementById("bodyNode").style.marginTop = "5px";
+			}
+			alignChat(shouldScroll);
+			return true;
+		}
+
+		function buttonPressed(parentId) {
+			myParent = document.getElementById(parentId);
+			me = event.target;
+			if (myParent.style.display=="none") {
+				me.src = openPBtn.src;
+			} else {
+				me.src = closePBtn.src;
+			}
+			return true;
+		}
+		//]]>
+	</script>
