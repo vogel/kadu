@@ -70,8 +70,6 @@ class KADUAPI ModulesManager : public QObject, public StorableObject
 
 	void incDependenciesUsageCount(PluginInfo *pluginInfo);
 
-	QStringList protocolModules() const;
-
 	void importFrom09();
 	void ensureLoadedAtLeastOnce(const QString &moduleName);
 
