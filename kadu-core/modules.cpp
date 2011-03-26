@@ -135,7 +135,7 @@ void ModulesManager::load()
 		}
 	}
 
-	foreach (const QString &moduleName, installedModules())
+	foreach (const QString &moduleName, installedPlugins())
 	{
 		Plugin *plugin = new Plugin(moduleName, this);
 		Plugins.insert(moduleName, plugin);
@@ -305,7 +305,7 @@ void ModulesManager::incDependenciesUsageCount(PluginInfo *pluginInfo)
 	kdebugf2();
 }
 
-QStringList ModulesManager::installedModules() const
+QStringList ModulesManager::installedPlugins() const
 {
 	QDir dir(dataPath("kadu/plugins"), "*.desc");
 	dir.setFilter(QDir::Files);

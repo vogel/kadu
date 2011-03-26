@@ -75,6 +75,8 @@ class KADUAPI ModulesManager : public QObject, public StorableObject
 	void importFrom09();
 	void ensureLoadedAtLeastOnce(const QString &moduleName);
 
+	QStringList installedPlugins() const;
+
 	QString findActiveConflict(Plugin *plugin) const;
 	bool activateDependencies(Plugin *plugin);
 
@@ -101,7 +103,6 @@ public:
 
 	~ModulesManager();
 
-	QStringList installedModules() const;
 	QStringList activeModules() const;
 
 	QString moduleProvides(const QString &provides);
