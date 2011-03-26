@@ -81,6 +81,7 @@ public:
 	bool activate();
 	bool deactivate();
 
+	bool isValid() const { return 0 != Info; }
 	bool isActive() const { return Active; }
 	PluginState state() { ensureLoaded(); return State; }
 	void setState(PluginState state);

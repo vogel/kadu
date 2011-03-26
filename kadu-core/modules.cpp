@@ -337,7 +337,7 @@ void ModulesManager::incDependenciesUsageCount(PluginInfo *pluginInfo)
 
 QStringList ModulesManager::installedModules() const
 {
-	QDir dir(dataPath("kadu/modules"), "*.desc");
+	QDir dir(dataPath("kadu/plugins"), "*.desc");
 	dir.setFilter(QDir::Files);
 
 	QStringList installed;
@@ -351,7 +351,7 @@ QStringList ModulesManager::loadedModules() const
 {
 	QStringList loaded;
 	for (QMap<QString, Plugin *>::const_iterator i = Modules.constBegin(); i != Modules.constEnd(); ++i)
-		if (i.value()->info() && (i.value()->pluginLibrary() || i.value()->pluginObject()))
+		if (i.value()->isValid() && i.value()->isActive())
 			loaded.append(i.key());
 	return loaded;
 }
@@ -360,7 +360,7 @@ QStringList ModulesManager::unloadedModules() const
 {
 	QStringList unloaded;
 	for (QMap<QString, Plugin *>::const_iterator i = Modules.constBegin(); i != Modules.constEnd(); ++i)
-		if (i.value()->info() && (!i.value()->pluginLibrary() && !i.value()->pluginObject()))
+		if (i.value()->isValid() && !i.value()->isActive())
 			unloaded.append(i.key());
 	return unloaded;
 }
@@ -368,8 +368,9 @@ QStringList ModulesManager::unloadedModules() const
 QStringList ModulesManager::activeModules() const
 {
 	QStringList active;
-	foreach(const QString &i, Modules.keys())
-		active.append(i);
+	for (QMap<QString, Plugin *>::const_iterator i = Modules.constBegin(); i != Modules.constEnd(); ++i)
+		if (i.value()->isActive())
+			active.append(i.key());
 	return active;
 }
 
