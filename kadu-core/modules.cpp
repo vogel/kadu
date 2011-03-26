@@ -291,7 +291,7 @@ void ModulesManager::loadAllModules()
 	// if not all modules were loaded properly
 	// save the list of modules
 	if (saveList)
-		saveLoadedModules();
+		ConfigurationManager::instance()->flush();
 }
 
 bool ModulesManager::satisfyModuleDependencies(PluginInfo *pluginInfo)
@@ -351,19 +351,17 @@ QStringList ModulesManager::loadedModules() const
 {
 	QStringList loaded;
 	for (QMap<QString, Plugin *>::const_iterator i = Modules.constBegin(); i != Modules.constEnd(); ++i)
-		if (i.value()->pluginLibrary() || i.value()->pluginObject())
+		if (i.value()->info() && (i.value()->pluginLibrary() || i.value()->pluginObject()))
 			loaded.append(i.key());
 	return loaded;
 }
 
 QStringList ModulesManager::unloadedModules() const
 {
-	QStringList installed = installedModules();
-	QStringList loaded = loadedModules();
 	QStringList unloaded;
-	foreach(const QString &module, installed)
-		if (!loaded.contains(module))
-			unloaded.append(module);
+	for (QMap<QString, Plugin *>::const_iterator i = Modules.constBegin(); i != Modules.constEnd(); ++i)
+		if (i.value()->info() && (!i.value()->pluginLibrary() && !i.value()->pluginObject()))
+			unloaded.append(i.key());
 	return unloaded;
 }
 
@@ -403,13 +401,6 @@ bool ModulesManager::moduleIsLoaded(const QString& module_name) const
 bool ModulesManager::moduleIsActive(const QString& module_name) const
 {
 	return Modules.contains(module_name) && (Modules.value(module_name)->isActive());
-}
-
-void ModulesManager::saveLoadedModules()
-{
-	config_file.writeEntry("General", "LoadedModules", loadedModules().join(","));
-	config_file.writeEntry("General", "UnloadedModules", unloadedModules().join(","));
-	config_file.sync();
 }
 
 QString ModulesManager::modulesUsing(const QString &module_name) const
@@ -495,7 +486,7 @@ bool ModulesManager::activateModule(const QString& module_name)
 
 void ModulesManager::unloadAllModules()
 {
-	saveLoadedModules();
+	ConfigurationManager::instance()->flush();
 
 	foreach (const QString &it, Modules.keys())
 	{

@@ -205,7 +205,6 @@ bool Plugin::activate()
 
 	UsageCounter = 0;
 
-	ModulesManager::instance()->Modules.insert(Name, this);
 	kdebugf2();
 
 	Active = true;
@@ -233,8 +232,6 @@ bool Plugin::deactivate()
 	PluginLoader->deleteLater();
 	PluginLoader = 0;
 	PluginObject = 0;
-
-	ModulesManager::instance()->Modules.remove(Name);
 
 	Active = false;
 

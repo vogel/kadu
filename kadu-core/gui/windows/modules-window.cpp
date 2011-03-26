@@ -42,6 +42,7 @@
 #include <QtGui/QScrollBar>
 
 #include "configuration/configuration-file.h"
+#include "configuration/configuration-manager.h"
 #include "misc/misc.h"
 #include "plugins/plugin-info.h"
 #include "icons-manager.h"
@@ -203,20 +204,18 @@ void ModulesWindow::moduleAction(QTreeWidgetItem *)
 
 void ModulesWindow::loadItem(const QString &item)
 {
-	kdebugf();
 	ModulesManager::instance()->activateModule(item);
 	refreshList();
-	ModulesManager::instance()->saveLoadedModules();
-	kdebugf2();
+
+	ConfigurationManager::instance()->flush();
 }
 
 void ModulesWindow::unloadItem(const QString &item)
 {
-	kdebugf();
 	ModulesManager::instance()->deactivateModule(item, true, false);
 	refreshList();
-	ModulesManager::instance()->saveLoadedModules();
-	kdebugf2();
+
+	ConfigurationManager::instance()->flush();
 }
 
 void ModulesWindow::refreshList()
@@ -236,35 +235,29 @@ void ModulesWindow::refreshList()
 	QStringList moduleList = ModulesManager::instance()->loadedModules();
 	foreach (const QString &module, moduleList)
 	{
-		if (ModulesManager::instance()->plugins().contains(module))
-		{
-			QStringList strings;
+		QStringList strings;
 
-			PluginInfo *pluginInfo = ModulesManager::instance()->plugins().value(module)->info();
-			if (pluginInfo)
-				strings << module << pluginInfo->version() << tr("Dynamic") << tr("Loaded");
-			else
-				strings << module << QString() << tr("Dynamic") << tr("Loaded");
+		PluginInfo *pluginInfo = ModulesManager::instance()->plugins().value(module)->info();
+		if (pluginInfo)
+			strings << module << pluginInfo->version() << tr("Dynamic") << tr("Loaded");
+		else
+			strings << module << QString() << tr("Dynamic") << tr("Loaded");
 
-			new QTreeWidgetItem(lv_modules, strings);
-		}
+		new QTreeWidgetItem(lv_modules, strings);
 	}
 
 	moduleList = ModulesManager::instance()->unloadedModules();
 	foreach (const QString &module, moduleList)
 	{
-		if (ModulesManager::instance()->plugins().contains(module))
-		{
-			QStringList strings;
+		QStringList strings;
 
-			PluginInfo *pluginInfo = ModulesManager::instance()->plugins().value(module)->info();
-			if (pluginInfo)
-				strings << module << pluginInfo->version() << tr("Dynamic") << tr("Not loaded");
-			else
-				strings << module << QString() << tr("Dynamic") << tr("Not loaded");
+		PluginInfo *pluginInfo = ModulesManager::instance()->plugins().value(module)->info();
+		if (pluginInfo)
+			strings << module << pluginInfo->version() << tr("Dynamic") << tr("Not loaded");
+		else
+			strings << module << QString() << tr("Dynamic") << tr("Not loaded");
 
-			new QTreeWidgetItem(lv_modules, strings);
-		}
+		new QTreeWidgetItem(lv_modules, strings);
 	}
 	lv_modules->resizeColumnToContents(0);
 // 	lv_modules->setSelected(lv_modules->findItem(s_selected, 0), true);

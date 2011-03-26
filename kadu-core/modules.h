@@ -127,8 +127,6 @@ public slots:
 	void moduleIncUsageCount(const QString &module_name);
 	void moduleDecUsageCount(const QString &module_name);
 
-	void saveLoadedModules();
-
 };
 
 #endif
