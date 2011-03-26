@@ -309,13 +309,16 @@ QList<Plugin *> ModulesManager::activePlugins() const
 	return result;
 }
 
-void ModulesManager::incDependenciesUsageCount(PluginInfo *pluginInfo)
+void ModulesManager::incDependenciesUsageCount(Plugin *plugin)
 {
-	kdebugmf(KDEBUG_FUNCTION_START, "%s\n", qPrintable(pluginInfo->description()));
-	foreach (const QString &it, pluginInfo->dependencies())
+	if (!plugin->isValid())
+		return;
+
+	kdebugmf(KDEBUG_FUNCTION_START, "%s\n", qPrintable(plugin->info()->description()));
+	foreach (const QString &pluginName, plugin->info()->dependencies())
 	{
-		kdebugm(KDEBUG_INFO, "incUsage: %s\n", qPrintable(it));
-		moduleIncUsageCount(it);
+		kdebugm(KDEBUG_INFO, "incUsage: %s\n", qPrintable(pluginName));
+		usePlugin(pluginName);
 	}
 	kdebugf2();
 }
@@ -410,7 +413,10 @@ bool ModulesManager::activatePlugin(Plugin *plugin)
 
 	bool result = plugin->activate();
 	if (result)
+	{
+		incDependenciesUsageCount(plugin);
 		plugin->setState(Plugin::PluginStateLoaded);
+	}
 
 	return result;
 }
@@ -437,7 +443,7 @@ bool ModulesManager::deactivatePlugin(Plugin *plugin, bool setAsUnloaded, bool f
 	}
 
 	foreach (const QString &i, plugin->info()->dependencies())
-		moduleDecUsageCount(i);
+		releasePlugin(i);
 
 	bool result = plugin->deactivate();
 	if (result && setAsUnloaded)
@@ -454,6 +460,18 @@ bool ModulesManager::deactivatePlugin(const QString &pluginName, bool setAsUnloa
 		return true; // non-existing module is properly deactivated
 
 	return deactivatePlugin(Plugins.value(pluginName), setAsUnloaded, force);
+}
+
+void ModulesManager::usePlugin(const QString &pluginName)
+{
+	if (Plugins.contains(pluginName))
+		Plugins.value(pluginName)->incUsage();
+}
+
+void ModulesManager::releasePlugin(const QString &pluginName)
+{
+	if (Plugins.contains(pluginName))
+		Plugins.value(pluginName)->decUsage();
 }
 
 void ModulesManager::showWindow(QAction *sender, bool toggled)
@@ -480,14 +498,4 @@ void ModulesManager::dialogDestroyed()
 	kdebugf();
 	Window = 0;
 	kdebugf2();
-}
-
-void ModulesManager::moduleIncUsageCount(const QString& module_name)
-{
-	Plugins.value(module_name)->incUsage();
-}
-
-void ModulesManager::moduleDecUsageCount(const QString& module_name)
-{
-	Plugins.value(module_name)->decUsage();
 }

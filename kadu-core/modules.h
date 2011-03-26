@@ -48,7 +48,6 @@ class QTreeWidgetItem;
 class GenericPlugin;
 class ModulesWindow;
 class Plugin;
-class PluginInfo;
 
 class KADUAPI ModulesManager : public QObject, public StorableObject
 {
@@ -56,8 +55,6 @@ class KADUAPI ModulesManager : public QObject, public StorableObject
 	Q_DISABLE_COPY(ModulesManager)
 
 	static ModulesManager *Instance;
-
-	friend class Plugin;
 
 	typedef int InitModuleFunc(bool);
 	typedef void CloseModuleFunc(void);
@@ -69,7 +66,7 @@ class KADUAPI ModulesManager : public QObject, public StorableObject
 	ModulesManager();
 	virtual ~ModulesManager();
 
-	void incDependenciesUsageCount(PluginInfo *pluginInfo);
+	void incDependenciesUsageCount(Plugin *plugin);
 
 	void importFrom09();
 	void ensureLoadedAtLeastOnce(const QString &moduleName);
@@ -108,8 +105,8 @@ public:
 	bool deactivatePlugin(Plugin *plugin, bool setAsUnloaded, bool force);
 	bool deactivatePlugin(const QString &pluginName, bool setAsUnloaded, bool force);
 
-	void moduleIncUsageCount(const QString &module_name);
-	void moduleDecUsageCount(const QString &module_name);
+	void usePlugin(const QString &pluginName);
+	void releasePlugin(const QString &pluginName);
 
 public slots:
 	void showWindow(QAction *sender, bool toggled);

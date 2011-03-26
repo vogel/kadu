@@ -215,8 +215,6 @@ bool Plugin::activate()
 		return false;
 	}
 
-	ModulesManager::instance()->incDependenciesUsageCount(Info);
-
 	UsageCounter = 0;
 
 	kdebugf2();
