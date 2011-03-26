@@ -289,7 +289,8 @@
 			a.appendChild(text);
 			node.parentNode.replaceChild(a, node);
 		}
-		
+
+		var KaduManualAlign = false;
 		//Align our chat to the bottom of the window.  If true is passed, view will also be scrolled down
 		function alignChat(shouldScroll) {
 			var windowHeight = window.innerHeight;
@@ -299,7 +300,10 @@
 				var contentHeight = contentElement.offsetHeight;
 				if (windowHeight - contentHeight > 0) {
 					contentElement.style.position = 'relative';
-					contentElement.style.top = (windowHeight - contentHeight) + 'px';
+					if(!KaduManualAlign)
+						contentElement.style.top = (windowHeight - contentHeight) + 'px';
+					else
+						contentElement.style.top = kaduAlign() + 'px';
 				} else {
 					contentElement.style.position = 'static';
 				}
@@ -314,8 +318,11 @@
 		
 		function initStyle() {
 			alignChat(true);
+
 			if(!coalescedHTML)
 				coalescedHTML = new CoalescedHTML();
+			initEvents();
+
 		}
 	</script>
 
@@ -339,7 +346,7 @@
 	</style>
 
 </head>
-<body onload="initStyle();" style="==bodyBackground==">
+<body onload="initStyle();" id="bodyNode" style="==bodyBackground==">
 %@
 <div id="Chat">
 </div>
