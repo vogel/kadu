@@ -20,6 +20,9 @@
 #ifndef PLUGIN_INFO_H
 #define PLUGIN_INFO_H
 
+#include <QtCore/QString>
+#include <QtCore/QStringList>
+
 class PluginInfo
 {
 	bool IsValid;
@@ -41,14 +44,14 @@ public:
 
 	bool isValid() const { return IsValid; }
 
-	QString type() const { return Type; }
-	QStringList dependencies() const { return Dependencies; }
-	QStringList conflicts() const { return Conflicts; }
-	QStringList provides() const { return Provides; }
-	QStringList replaces() const { return Replaces; }
-	QString description() const { return Description; }
-	QString author() const { return Author; }
-	QString version() const { return Version; }
+	const QString & type() const { return Type; }
+	const QStringList & dependencies() const { return Dependencies; }
+	const QStringList & conflicts() const { return Conflicts; }
+	const QStringList & provides() const { return Provides; }
+	const QStringList & replaces() const { return Replaces; }
+	const QString & description() const { return Description; }
+	const QString & author() const { return Author; }
+	const QString & version() const { return Version; }
 	bool loadByDefault() const { return LoadByDefault; }
 	bool isPlugin() const { return IsPlugin; }
 

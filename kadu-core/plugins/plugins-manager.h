@@ -93,7 +93,7 @@ public:
 
 	virtual void store();
 
-	const QMap<QString, Plugin *> & plugins() { return Plugins; }
+	const QMap<QString, Plugin *> & plugins() const { return Plugins; }
 	QList<Plugin *> activePlugins() const;
 
 	void activateProtocolPlugins();
