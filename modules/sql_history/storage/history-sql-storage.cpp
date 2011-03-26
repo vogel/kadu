@@ -528,10 +528,9 @@ QPair<int, Message> HistorySqlStorage::firstMessageAndCount(const Chat &chat, co
 	DatabaseMutex.lock();
 
 	QSqlQuery query(Database);
-	QString queryString = "SELECT count(*), chat, sender, content, send_time, receive_time, attributes FROM kadu_messages WHERE " + chatWhere(chat);
+	QString queryString = "SELECT chat, sender, content, send_time, receive_time, attributes FROM kadu_messages WHERE " + chatWhere(chat);
 	queryString += " AND substr(receive_time,0,11) = :date";
 	queryString += " ORDER BY receive_time ASC, rowid ASC";
-	queryString += " LIMIT 1";
 
 	query.prepare(queryString);
 	query.bindValue(":date", date.toString(Qt::ISODate));
@@ -544,11 +543,10 @@ QPair<int, Message> HistorySqlStorage::firstMessageAndCount(const Chat &chat, co
 
 		return qMakePair(0, Message::null);
 	}
-	int count = query.value(0).toInt();
 
-	bool outgoing = QVariant(query.value(6).toString().split('=').last()).toBool();
+	bool outgoing = QVariant(query.value(5).toString().split('=').last()).toBool();
 
-	Chat messageChat = ChatManager::instance()->byUuid(query.value(1).toString());
+	Chat messageChat = ChatManager::instance()->byUuid(query.value(0).toString());
 	if (messageChat.isNull())
 	{
 		DatabaseMutex.unlock();
@@ -559,7 +557,7 @@ QPair<int, Message> HistorySqlStorage::firstMessageAndCount(const Chat &chat, co
 	Message::Type type = outgoing ? Message::TypeSent : Message::TypeReceived;
 
 	// ignore non-existing contacts
-	Contact sender = ContactManager::instance()->byUuid(query.value(2).toString());
+	Contact sender = ContactManager::instance()->byUuid(query.value(1).toString());
 	if (sender.isNull())
 	{
 		DatabaseMutex.unlock();
@@ -571,10 +569,14 @@ QPair<int, Message> HistorySqlStorage::firstMessageAndCount(const Chat &chat, co
 	message.setMessageChat(messageChat);
 	message.setType(type);
 	message.setMessageSender(sender);
-	message.setContent(query.value(3).toString());
-	message.setSendDate(query.value(4).toDateTime());
-	message.setReceiveDate(query.value(5).toDateTime());
+	message.setContent(query.value(2).toString());
+	message.setSendDate(query.value(3).toDateTime());
+	message.setReceiveDate(query.value(4).toDateTime());
 	message.setStatus(outgoing ? Message::StatusDelivered : Message::StatusReceived);
+
+	int count = 1;
+	while (query.next())
+		++count;
 
 	DatabaseMutex.unlock();
 
