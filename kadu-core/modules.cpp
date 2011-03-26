@@ -264,6 +264,42 @@ void ModulesManager::activatePlugins()
 		ConfigurationManager::instance()->flush();
 }
 
+void ModulesManager::deactivatePlugins()
+{
+	ConfigurationManager::instance()->flush();
+
+	foreach (Plugin *plugin, Plugins)
+		if (plugin->isActive())
+		{
+			kdebugm(KDEBUG_INFO, "module: %s, usage: %d\n", qPrintable(plugin->name()), plugin->usageCounter());
+		}
+
+	// unloading all not used modules
+	// as long as any module were unloaded
+
+	bool deactivated;
+	do
+	{
+		QStringList active = activeModules();
+		deactivated = false;
+		foreach (const QString &i, active)
+			if (Plugins.value(i)->usageCounter() == 0)
+				if (deactivatePlugin(i, false, false))
+					deactivated = true;
+	}
+	while (deactivated);
+
+	// we cannot unload more modules in normal way
+	// so we are making it brutal ;)
+	QStringList active = activeModules();
+	foreach (const QString &i, active)
+	{
+		kdebugm(KDEBUG_PANIC, "WARNING! Could not deactivate module %s, killing\n",qPrintable(i));
+		deactivatePlugin(i, false, true);
+	}
+
+}
+
 void ModulesManager::incDependenciesUsageCount(PluginInfo *pluginInfo)
 {
 	kdebugmf(KDEBUG_FUNCTION_START, "%s\n", qPrintable(pluginInfo->description()));
@@ -435,42 +471,6 @@ bool ModulesManager::deactivatePlugin(const QString &pluginName, bool setAsUnloa
 		return true; // non-existing module is properly deactivated
 
 	return deactivatePlugin(Plugins.value(pluginName), setAsUnloaded, force);
-}
-
-void ModulesManager::unloadAllModules()
-{
-	ConfigurationManager::instance()->flush();
-
-	foreach (const QString &it, Plugins.keys())
-	{
-		Q_UNUSED(it) // only in debug mode
-		kdebugm(KDEBUG_INFO, "module: %s, usage: %d\n", qPrintable(it), Plugins.value(it)->usageCounter());
-	}
-
-	// unloading all not used modules
-	// as long as any module were unloaded
-
-	bool deactivated;
-	do
-	{
-		QStringList active = activeModules();
-		deactivated = false;
-		foreach (const QString &i, active)
-			if (Plugins.value(i)->usageCounter() == 0)
-				if (deactivatePlugin(i, false, false))
-					deactivated = true;
-	}
-	while (deactivated);
-
-	// we cannot unload more modules in normal way
-	// so we are making it brutal ;)
-	QStringList active = activeModules();
-	foreach (const QString &i, active)
-	{
-		kdebugm(KDEBUG_PANIC, "WARNING! Could not deactivate module %s, killing\n",qPrintable(i));
-		deactivatePlugin(i, false, true);
-	}
-
 }
 
 void ModulesManager::showWindow(QAction *sender, bool toggled)

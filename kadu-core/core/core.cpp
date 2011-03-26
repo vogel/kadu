@@ -111,7 +111,7 @@ Core::~Core()
 
 	storeConfiguration();
 
-	ModulesManager::instance()->unloadAllModules();
+	ModulesManager::instance()->deactivatePlugins();
 
 #ifdef Q_OS_MAC
 	setIcon(IconsManager::instance()->iconByPath("kadu_icons/kadu"));

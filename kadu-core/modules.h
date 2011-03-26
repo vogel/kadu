@@ -93,8 +93,7 @@ public:
 
 	void activateProtocolPlugins();
 	void activatePlugins();
-
-	void unloadAllModules();
+	void deactivatePlugins();
 
 	static ModulesManager * instance();
 
