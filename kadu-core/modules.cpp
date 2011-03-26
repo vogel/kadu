@@ -436,17 +436,13 @@ bool ModulesManager::activatePlugin(const QString& pluginName)
 	return activatePlugin(Plugins.value(pluginName));
 }
 
-bool ModulesManager::deactivatePlugin(const QString &pluginName, bool setAsUnloaded, bool force)
+bool ModulesManager::deactivatePlugin(Plugin *plugin, bool setAsUnloaded, bool force)
 {
-	kdebugmf(KDEBUG_FUNCTION_START, "name:'%s' force:%d\n", qPrintable(pluginName), force);
+	kdebugmf(KDEBUG_FUNCTION_START, "name:'%s' force:%d usage: %d\n", qPrintable(plugin->name()), force, plugin->usageCounter());
 
-	if (!Plugins.contains(pluginName))
-		return true; // non-existing module is properly deactivated
-
-	Plugin *plugin = Plugins.value(pluginName);
 	if (plugin->usageCounter() > 0 && !force)
 	{
-		MessageDialog::show("dialog-warning", tr("Kadu"), tr("Module %1 cannot be deactivated because it is being used by the following modules:%2").arg(pluginName).arg(modulesUsing(pluginName)));
+		MessageDialog::show("dialog-warning", tr("Kadu"), tr("Module %1 cannot be deactivated because it is being used by the following modules:%2").arg(plugin->name()).arg(modulesUsing(plugin->name())));
 		kdebugf2();
 		return false;
 	}
@@ -459,6 +455,16 @@ bool ModulesManager::deactivatePlugin(const QString &pluginName, bool setAsUnloa
 		plugin->setState(Plugin::PluginStateNotLoaded);
 
 	return result;
+}
+
+bool ModulesManager::deactivatePlugin(const QString &pluginName, bool setAsUnloaded, bool force)
+{
+	kdebugmf(KDEBUG_FUNCTION_START, "name:'%s' force:%d\n", qPrintable(pluginName), force);
+
+	if (!Plugins.contains(pluginName))
+		return true; // non-existing module is properly deactivated
+
+	return deactivatePlugin(Plugins.value(pluginName), setAsUnloaded, force);
 }
 
 void ModulesManager::unloadAllModules()
