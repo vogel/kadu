@@ -113,6 +113,7 @@ public:
 	QMap<QString, Plugin *> plugins() { return Plugins; }
 
 public slots:
+	bool activatePlugin(Plugin *plugin);
 	bool activatePlugin(const QString &pluginName);
 	bool deactivatePlugin(const QString &pluginName, bool setAsUnloaded, bool force);
 

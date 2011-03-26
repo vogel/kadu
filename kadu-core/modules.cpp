@@ -397,32 +397,22 @@ bool ModulesManager::activateDependencies(Plugin *plugin)
 			return false;
 		}
 
-		Plugin *dependencyPlugin = Plugins.value(dependencyName);
-		if (dependencyPlugin->isActive())
-			continue; // this one already loaded
-
-		if (!activatePlugin(dependencyName))
+		if (!activatePlugin(Plugins.value(dependencyName)))
 			return false;
 	}
 
 	return true;
 }
 
-bool ModulesManager::activatePlugin(const QString& pluginName)
+bool ModulesManager::activatePlugin(Plugin *plugin)
 {
-	kdebugmf(KDEBUG_FUNCTION_START, "'%s'\n", qPrintable(pluginName));
-
-	if (!Plugins.contains(pluginName))
-		return false;
-
-	Plugin *plugin = Plugins.value(pluginName);
 	if (plugin->isActive())
 		return true;
 
 	QString conflict = findActiveConflict(plugin);
 	if (!conflict.isEmpty())
 	{
-		MessageDialog::show("dialog-warning", tr("Kadu"), tr("Module %1 conflicts with: %2").arg(pluginName, conflict));
+		MessageDialog::show("dialog-warning", tr("Kadu"), tr("Module %1 conflicts with: %2").arg(plugin->name(), conflict));
 		return false;
 	}
 
@@ -434,6 +424,16 @@ bool ModulesManager::activatePlugin(const QString& pluginName)
 		plugin->setState(Plugin::PluginStateLoaded);
 
 	return result;
+}
+
+bool ModulesManager::activatePlugin(const QString& pluginName)
+{
+	kdebugmf(KDEBUG_FUNCTION_START, "'%s'\n", qPrintable(pluginName));
+
+	if (!Plugins.contains(pluginName))
+		return false;
+
+	return activatePlugin(Plugins.value(pluginName));
 }
 
 bool ModulesManager::deactivatePlugin(const QString &pluginName, bool setAsUnloaded, bool force)
