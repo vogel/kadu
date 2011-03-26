@@ -376,15 +376,13 @@ QStringList ModulesManager::activeModules() const
 
 QString ModulesManager::moduleProvides(const QString &provides)
 {
-	QStringList moduleList = installedModules();
-	foreach(const QString &moduleName, moduleList)
-		if (Modules.contains(moduleName))
-		{
-			PluginInfo *info = Modules.value(moduleName)->info();
-			if (info && info->provides().contains(provides))
-				if (moduleIsLoaded(moduleName))
-					return moduleName;
-		}
+	foreach (Plugin *plugin, Modules)
+	{
+		PluginInfo *info = plugin->info();
+		if (info && info->provides().contains(provides))
+			if (Plugin::PluginStateLoaded == plugin->state())
+				return plugin->name();
+	}
 
 	return QString();
 }
