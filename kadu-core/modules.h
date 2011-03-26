@@ -100,10 +100,6 @@ public:
 
 	QList<Plugin *> activePlugins() const;
 
-	QString moduleProvides(const QString &provides);
-
-	bool moduleIsActive(const QString &module_name) const;
-
 	QString modulesUsing(const QString &module_name) const;
 
 	QMap<QString, Plugin *> plugins() { return Plugins; }

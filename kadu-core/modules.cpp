@@ -332,24 +332,6 @@ QStringList ModulesManager::installedPlugins() const
 	return installed;
 }
 
-QString ModulesManager::moduleProvides(const QString &provides)
-{
-	foreach (Plugin *plugin, Plugins)
-	{
-		PluginInfo *info = plugin->info();
-		if (info && info->provides().contains(provides))
-			if (Plugin::PluginStateLoaded == plugin->state())
-				return plugin->name();
-	}
-
-	return QString();
-}
-
-bool ModulesManager::moduleIsActive(const QString& module_name) const
-{
-	return Plugins.contains(module_name) && (Plugins.value(module_name)->isActive());
-}
-
 QString ModulesManager::modulesUsing(const QString &module_name) const
 {
 	QString modules;
@@ -371,7 +353,10 @@ QString ModulesManager::findActiveConflict(Plugin *plugin) const
 
 	foreach (const QString &it, plugin->info()->conflicts())
 	{
-		if (moduleIsActive(it))
+		if (!Plugins.contains(it))
+			continue;
+
+		if (Plugins.value(it)->isActive())
 			return it;
 
 		foreach (Plugin *possibleConflict, Plugins)
