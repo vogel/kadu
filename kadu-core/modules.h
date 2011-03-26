@@ -96,24 +96,23 @@ public:
 
 	virtual void store();
 
+	const QMap<QString, Plugin *> & plugins() { return Plugins; }
+	QList<Plugin *> activePlugins() const;
+
 	void activateProtocolPlugins();
 	void activatePlugins();
 	void deactivatePlugins();
 
-	QList<Plugin *> activePlugins() const;
-
-	QMap<QString, Plugin *> plugins() { return Plugins; }
-
-public slots:
 	bool activatePlugin(Plugin *plugin);
 	bool activatePlugin(const QString &pluginName);
 	bool deactivatePlugin(Plugin *plugin, bool setAsUnloaded, bool force);
 	bool deactivatePlugin(const QString &pluginName, bool setAsUnloaded, bool force);
 
-	void showWindow(QAction *sender, bool toggled);
-
 	void moduleIncUsageCount(const QString &module_name);
 	void moduleDecUsageCount(const QString &module_name);
+
+public slots:
+	void showWindow(QAction *sender, bool toggled);
 
 };
 
