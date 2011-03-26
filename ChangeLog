@@ -11,6 +11,7 @@
 * gadu: fixed bug where Kadu could send contacts to Gadu server not from contacts list, but from history (Vogel)
 * gadu: do not flood server with ADD_NOTIFY and REMOVE_NOTIFY packets before list is sent (Vogel)
 * identities: fixed crash after removing the last account in a non-permanent identity in simple mode (beevvy)
+* tabs: #2093 fixed: close/open chat buttons reserved space in tab bar corners even if disabled (beevvy)
 
 +++ version 0.9.0
 * configuration: configuration is now always properly imported on Windows (Vogel)
