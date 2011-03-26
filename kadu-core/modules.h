@@ -55,8 +55,6 @@ class KADUAPI ModulesManager : public QObject, public StorableObject
 	Q_OBJECT
 	Q_DISABLE_COPY(ModulesManager)
 
-	ModulesManager();
-
 	static ModulesManager *Instance;
 
 	friend class Plugin;
@@ -67,6 +65,9 @@ class KADUAPI ModulesManager : public QObject, public StorableObject
 	QMap<QString, Plugin *> Plugins;
 
 	ModulesWindow *Window;
+
+	ModulesManager();
+	virtual ~ModulesManager();
 
 	void incDependenciesUsageCount(PluginInfo *pluginInfo);
 
@@ -85,6 +86,8 @@ protected:
 	virtual void load();
 
 public:
+	static ModulesManager * instance();
+
 	// storage implementation
 	virtual StorableObject * storageParent() { return 0; }
 	virtual QString storageNodeName() { return QLatin1String("Plugins"); }
@@ -95,11 +98,7 @@ public:
 	void activatePlugins();
 	void deactivatePlugins();
 
-	static ModulesManager * instance();
-
-	~ModulesManager();
-
-	QStringList activeModules() const;
+	QList<Plugin *> activePlugins() const;
 
 	QString moduleProvides(const QString &provides);
 

@@ -280,24 +280,33 @@ void ModulesManager::deactivatePlugins()
 	bool deactivated;
 	do
 	{
-		QStringList active = activeModules();
+		QList<Plugin *> active = activePlugins();
 		deactivated = false;
-		foreach (const QString &i, active)
-			if (Plugins.value(i)->usageCounter() == 0)
-				if (deactivatePlugin(i, false, false))
+		foreach (Plugin *plugin, active)
+			if (plugin->usageCounter() == 0)
+				if (deactivatePlugin(plugin, false, false))
 					deactivated = true;
 	}
 	while (deactivated);
 
 	// we cannot unload more modules in normal way
 	// so we are making it brutal ;)
-	QStringList active = activeModules();
-	foreach (const QString &i, active)
+	QList<Plugin *> active = activePlugins();
+	foreach (Plugin *plugin, active)
 	{
-		kdebugm(KDEBUG_PANIC, "WARNING! Could not deactivate module %s, killing\n",qPrintable(i));
-		deactivatePlugin(i, false, true);
+		kdebugm(KDEBUG_PANIC, "WARNING! Could not deactivate module %s, killing\n", qPrintable(plugin->name()));
+		deactivatePlugin(plugin, false, true);
 	}
 
+}
+
+QList<Plugin *> ModulesManager::activePlugins() const
+{
+	QList<Plugin *> result;
+	foreach (Plugin *plugin, Plugins)
+		if (plugin->isActive())
+			result.append(plugin);
+	return result;
 }
 
 void ModulesManager::incDependenciesUsageCount(PluginInfo *pluginInfo)
@@ -321,15 +330,6 @@ QStringList ModulesManager::installedPlugins() const
 	foreach (const QString &entry, entries)
 		installed.append(entry.left(entry.length() - 5));
 	return installed;
-}
-
-QStringList ModulesManager::activeModules() const
-{
-	QStringList active;
-	for (QMap<QString, Plugin *>::const_iterator i = Plugins.constBegin(); i != Plugins.constEnd(); ++i)
-		if (i.value()->isActive())
-			active.append(i.key());
-	return active;
 }
 
 QString ModulesManager::moduleProvides(const QString &provides)
