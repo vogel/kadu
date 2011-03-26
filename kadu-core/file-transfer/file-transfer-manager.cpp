@@ -40,7 +40,6 @@
 #include "protocols/services/file-transfer-service.h"
 #include "storage/storage-point.h"
 #include "debug.h"
-#include "modules.h"
 
 #include "file-transfer-manager.h"
 

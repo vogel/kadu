@@ -22,7 +22,8 @@
 
 #include <QtCore/QObject>
 
-#include "modules.h"
+#include "plugins/plugins-manager.h"
+
 #include "storage/named-storable-object.h"
 
 class QLibrary;
@@ -72,7 +73,7 @@ public:
 	virtual ~Plugin();
 
 	// storage implementation
-	virtual StorableObject* storageParent() { return ModulesManager::instance(); }
+	virtual StorableObject* storageParent() { return PluginsManager::instance(); }
 	virtual QString storageNodeName() { return QLatin1String("Plugin"); }
 	virtual QString name() const { return Name; }
 

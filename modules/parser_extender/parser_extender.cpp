@@ -33,7 +33,6 @@
 #include "parser/parser.h"
 
 #include "debug.h"
-#include "modules.h"
 
 #include "parser_extender.h"
 

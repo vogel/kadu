@@ -36,9 +36,9 @@
 #include "gui/widgets/select-buddy-combo-box.h"
 #include "gui/windows/message-dialog.h"
 #include "misc/misc.h"
+#include "plugins/plugins-manager.h"
 #include "debug.h"
 #include "icons-manager.h"
-#include "modules.h"
 
 #include "gui/windows/sms-progress-window.h"
 #include "mobile-number-manager.h"
@@ -63,7 +63,7 @@ SmsDialog::SmsDialog(QWidget* parent) :
 
 	RecipientEdit->setFocus();
 
-	ModulesManager::instance()->usePlugin("sms");
+	PluginsManager::instance()->usePlugin("sms");
 	kdebugf2();
 }
 
@@ -71,7 +71,7 @@ SmsDialog::~SmsDialog()
 {
 	saveWindowGeometry(this, "Sms", "SmsDialogGeometry");
 
-	ModulesManager::instance()->releasePlugin("sms");
+	PluginsManager::instance()->releasePlugin("sms");
 }
 
 void SmsDialog::createGui()

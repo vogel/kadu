@@ -31,7 +31,6 @@
 #include "gui/hot-key.h"
 #include "icons-manager.h"
 
-#include "modules.h"
 #include "misc/path-conversion.h"
 
 #include "scripts/sms-script-manager.h"

@@ -32,9 +32,9 @@
 #include "gui/windows/kadu-window.h"
 #include "misc/path-conversion.h"
 #include "plugins/plugin.h"
+#include "plugins/plugins-manager.h"
 #include "debug.h"
 #include "kadu-config.h"
-#include "modules.h"
 
 #ifdef SIG_HANDLING_ENABLED
 #include <signal.h>
@@ -99,7 +99,7 @@ static void kadu_signal_handler(int signal)
 			fprintf(backtraceFile, "======= END OF BACKTRACE  ======\n");
 
 			fprintf(backtraceFile, "loaded plugins:\n");
-			QList<Plugin *> plugins = ModulesManager::instance()->activePlugins();
+			QList<Plugin *> plugins = PluginsManager::instance()->activePlugins();
 			foreach (Plugin *plugin, plugins)
 				fprintf(backtraceFile, "> %s\n", qPrintable(plugin->name()));
 			fprintf(backtraceFile, "Kadu version: %s\n", qPrintable(Core::version()));
