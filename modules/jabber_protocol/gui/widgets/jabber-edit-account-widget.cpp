@@ -309,6 +309,7 @@ void JabberEditAccountWidget::createOptionsTab(QTabWidget *tabWidget)
 	dataTransferProxyLayout->addWidget(DataTransferProxyLabel);
 
 	DataTransferProxy = new QLineEdit;
+	connect(DataTransferProxy, SIGNAL(textEdited(QString)), this, SLOT(dataChanged()));
 	dataTransferProxyLayout->addWidget(DataTransferProxy);
 
 	layout->addWidget(dataTransferProxy);
@@ -395,6 +396,7 @@ void JabberEditAccountWidget::dataChanged()
 		&& AccountDetails->autoResource() == AutoResource->isChecked()
 		&& AccountDetails->resource() == ResourceName->text()
 		&& AccountDetails->priority() == Priority->text().toInt()
+		&& AccountDetails->dataTransferProxy() == DataTransferProxy->text()
 		&& AccountDetails->sendGoneNotification() == SendGoneNotification->isChecked()
 		&& AccountDetails->sendTypingNotification() == SendTypingNotification->isChecked()
 		&& StateNotChanged == Proxy->state()
