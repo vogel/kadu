@@ -12,7 +12,7 @@ set (identities_MOC_SRCS
 	identity-shared.h
 )
 
-qt_wrap_cpp (identities identities_MOC_FILES ${identities_MOC_SRCS})
+qt4_wrap_cpp (identities_MOC_FILES ${identities_MOC_SRCS})
 
 add_library (identities
 	STATIC

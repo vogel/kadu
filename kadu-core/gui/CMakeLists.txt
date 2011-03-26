@@ -254,7 +254,7 @@ set (gui_MOC_SRCS
 	windows/open-chat-with/open-chat-with-runner-manager.h
 )
 
-qt_wrap_cpp (gui gui_MOC_FILES ${gui_MOC_SRCS})
+qt4_wrap_cpp (gui_MOC_FILES ${gui_MOC_SRCS})
 
 add_library (gui
 	STATIC

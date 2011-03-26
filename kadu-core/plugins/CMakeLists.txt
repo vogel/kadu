@@ -9,7 +9,7 @@ set (plugins_MOC_SRCS
 	plugins-manager.h
 )
 
-qt_wrap_cpp (plugins plugins_MOC_FILES ${plugins_MOC_SRCS})
+qt4_wrap_cpp (plugins_MOC_FILES ${plugins_MOC_SRCS})
 
 add_library (plugins
 	STATIC

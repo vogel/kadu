@@ -8,7 +8,7 @@ set (core_MOC_SRCS
 	core.h
 )
 
-qt_wrap_cpp (core core_MOC_FILES ${core_MOC_SRCS})
+qt4_wrap_cpp (core_MOC_FILES ${core_MOC_SRCS})
 
 add_library (core
 	STATIC

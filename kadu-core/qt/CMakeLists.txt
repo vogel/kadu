@@ -6,7 +6,7 @@ set (qt_MOC_SRCS
 	long-validator.h
 )
 
-qt_wrap_cpp (qt qt_MOC_FILES ${qt_MOC_SRCS})
+qt4_wrap_cpp (qt_MOC_FILES ${qt_MOC_SRCS})
 
 add_library (qt
 	STATIC

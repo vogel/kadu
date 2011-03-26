@@ -89,7 +89,7 @@ if (UNIX AND NOT APPLE)
 	)
 endif (UNIX AND NOT APPLE)
 
-qt_wrap_cpp (kadu MOC_FILES ${kadu_MOC_SRCS})
+qt4_wrap_cpp (MOC_FILES ${kadu_MOC_SRCS})
 
 if (WIN32)
 	set (kadu_SRCS

@@ -15,7 +15,7 @@ set (TRANSLATION_SOURCES
 )
 
 kadu_plugin_desc (growl_notify.desc)
-qt_wrap_cpp (growl_notify MOC_FILES ${MOC_SOURCES})
+qt4_wrap_cpp (MOC_FILES ${MOC_SOURCES})
 
 qt4_add_translation (TRANSLATION_FILES ${TRANSLATION_SOURCES})
 

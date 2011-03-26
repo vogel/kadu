@@ -11,7 +11,7 @@ set (themes_MOC_SRCS
 	theme-manager.h
 )
 
-qt_wrap_cpp (themes themes_MOC_FILES ${themes_MOC_SRCS})
+qt4_wrap_cpp (themes_MOC_FILES ${themes_MOC_SRCS})
 
 add_library (themes
 	STATIC

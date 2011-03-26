@@ -27,7 +27,7 @@ set (notify_MOC_SRCS
 	window-notifier.h
 )
 
-qt_wrap_cpp (notify notify_MOC_FILES ${notify_MOC_SRCS})
+qt4_wrap_cpp (notify_MOC_FILES ${notify_MOC_SRCS})
 
 add_library (notify
 	STATIC

@@ -33,7 +33,7 @@ set (protocols_MOC_SRCS
 	services/search-service.h
 )
 
-qt_wrap_cpp (protocols protocols_MOC_FILES ${protocols_MOC_SRCS})
+qt4_wrap_cpp (protocols_MOC_FILES ${protocols_MOC_SRCS})
 
 add_library (protocols
 	STATIC

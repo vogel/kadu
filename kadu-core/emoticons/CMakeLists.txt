@@ -12,7 +12,7 @@ set (emoticons_MOC_SRCS
 	emoticons-manager.h
 )
 
-qt_wrap_cpp (emoticons emoticons_MOC_FILES ${emoticons_MOC_SRCS})
+qt4_wrap_cpp (emoticons_MOC_FILES ${emoticons_MOC_SRCS})
 
 add_library (emoticons
 	STATIC

@@ -10,7 +10,7 @@ set (multilogon_MOC_SRCS
 	multilogon-session.h
 )
 
-qt_wrap_cpp (multilogon multilogon_MOC_FILES ${multilogon_MOC_SRCS})
+qt4_wrap_cpp (multilogon_MOC_FILES ${multilogon_MOC_SRCS})
 
 add_library (multilogon
 	STATIC

@@ -13,7 +13,7 @@ set (avatars_MOC_SRCS
 	avatar-shared.h
 )
 
-qt_wrap_cpp (avatars avatars_MOC_FILES ${avatars_MOC_SRCS})
+qt4_wrap_cpp (avatars_MOC_FILES ${avatars_MOC_SRCS})
 
 add_library (avatars
 	STATIC

@@ -25,7 +25,7 @@ set (status_MOC_SRCS
 	status-container-manager.h
 )
 
-qt_wrap_cpp (status status_MOC_FILES ${status_MOC_SRCS})
+qt4_wrap_cpp (status_MOC_FILES ${status_MOC_SRCS})
 
 add_library (status
 	STATIC

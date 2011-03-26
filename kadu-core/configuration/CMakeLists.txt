@@ -17,7 +17,7 @@ set (configuration_MOC_SRCS
 	toolbar-configuration-manager.h
 )
 
-qt_wrap_cpp (configuration configuration_MOC_FILES ${configuration_MOC_SRCS})
+qt4_wrap_cpp (configuration_MOC_FILES ${configuration_MOC_SRCS})
 
 add_library (configuration
 	STATIC

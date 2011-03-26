@@ -30,7 +30,7 @@ set (accounts_MOC_SRCS
 )
 
 
-qt_wrap_cpp (accounts accounts_MOC_FILES ${accounts_MOC_SRCS})
+qt4_wrap_cpp (accounts_MOC_FILES ${accounts_MOC_SRCS})
 
 add_library (accounts
 	STATIC
