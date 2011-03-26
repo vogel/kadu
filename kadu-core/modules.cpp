@@ -449,6 +449,31 @@ bool ModulesManager::activatePlugin(const QString& pluginName)
 	return result;
 }
 
+bool ModulesManager::deactivatePlugin(const QString &pluginName, bool setAsUnloaded, bool force)
+{
+	kdebugmf(KDEBUG_FUNCTION_START, "name:'%s' force:%d\n", qPrintable(pluginName), force);
+
+	if (!Modules.contains(pluginName))
+		return true; // non-existing module is properly deactivated
+
+	Plugin *plugin = Modules.value(pluginName);
+	if (plugin->usageCounter() > 0 && !force)
+	{
+		MessageDialog::show("dialog-warning", tr("Kadu"), tr("Module %1 cannot be deactivated because it is being used by the following modules:%2").arg(pluginName).arg(modulesUsing(pluginName)));
+		kdebugf2();
+		return false;
+	}
+
+	foreach (const QString &i, plugin->info()->dependencies())
+		moduleDecUsageCount(i);
+
+	bool result = plugin->deactivate();
+	if (result && setAsUnloaded)
+		plugin->setState(Plugin::PluginStateNotLoaded);
+
+	return result;
+}
+
 void ModulesManager::unloadAllModules()
 {
 	ConfigurationManager::instance()->flush();
@@ -469,7 +494,7 @@ void ModulesManager::unloadAllModules()
 		deactivated = false;
 		foreach (const QString &i, active)
 			if (Modules.value(i)->usageCounter() == 0)
-				if (deactivateModule(i, false, false))
+				if (deactivatePlugin(i, false, false))
 					deactivated = true;
 	}
 	while (deactivated);
@@ -480,29 +505,9 @@ void ModulesManager::unloadAllModules()
 	foreach (const QString &i, active)
 	{
 		kdebugm(KDEBUG_PANIC, "WARNING! Could not deactivate module %s, killing\n",qPrintable(i));
-		deactivateModule(i, false, true);
+		deactivatePlugin(i, false, true);
 	}
 
-}
-
-bool ModulesManager::deactivateModule(const QString& module_name, bool setAsUnloaded, bool force)
-{
-	Plugin *plugin = Modules.value(module_name);
-	kdebugmf(KDEBUG_FUNCTION_START, "name:'%s' force:%d usage:%d\n", qPrintable(module_name), force, plugin->usageCounter());
-
-	if (plugin->usageCounter() > 0 && !force)
-	{
-		MessageDialog::show("dialog-warning", tr("Kadu"), tr("Module %1 cannot be deactivated because it is being used by the following modules:%2").arg(module_name).arg(modulesUsing(module_name)));
-		kdebugf2();
-		return false;
-	}
-
-	foreach (const QString &i, plugin->info()->dependencies())
-		moduleDecUsageCount(i);
-
-	if (setAsUnloaded)
-		plugin->setState(Plugin::PluginStateNotLoaded);
-	return plugin->deactivate();
 }
 
 void ModulesManager::showWindow(QAction *sender, bool toggled)

@@ -116,7 +116,7 @@ public:
 
 public slots:
 	bool activatePlugin(const QString &pluginName);
-	bool deactivateModule(const QString &module_name, bool setAsUnloaded, bool force);
+	bool deactivatePlugin(const QString &pluginName, bool setAsUnloaded, bool force);
 
 	void showWindow(QAction *sender, bool toggled);
 

@@ -212,7 +212,7 @@ void ModulesWindow::loadItem(const QString &item)
 
 void ModulesWindow::unloadItem(const QString &item)
 {
-	ModulesManager::instance()->deactivateModule(item, true, false);
+	ModulesManager::instance()->deactivatePlugin(item, true, false);
 	refreshList();
 
 	ConfigurationManager::instance()->flush();
