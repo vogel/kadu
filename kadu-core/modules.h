@@ -108,7 +108,6 @@ public:
 
 	QString moduleProvides(const QString &provides);
 
-	bool moduleIsInstalled(const QString &module_name) const;
 	bool moduleIsLoaded(const QString &module_name) const;
 	bool moduleIsActive(const QString &module_name) const;
 

@@ -304,7 +304,7 @@ bool ModulesManager::satisfyModuleDependencies(PluginInfo *pluginInfo)
 	{
 		if (!moduleIsActive(it))
 		{
-			if (moduleIsInstalled(it))
+			if (Modules.contains(it) && Modules.value(it)->isValid())
 			{
 				if (!activateModule(it))
 				{
@@ -387,11 +387,6 @@ QString ModulesManager::moduleProvides(const QString &provides)
 		}
 
 	return QString();
-}
-
-bool ModulesManager::moduleIsInstalled(const QString& module_name) const
-{
-	return installedModules().contains(module_name);
 }
 
 bool ModulesManager::moduleIsLoaded(const QString& module_name) const
