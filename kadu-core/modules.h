@@ -102,13 +102,10 @@ public:
 	~ModulesManager();
 
 	QStringList installedModules() const;
-	QStringList loadedModules() const;
-	QStringList unloadedModules() const;
 	QStringList activeModules() const;
 
 	QString moduleProvides(const QString &provides);
 
-	bool moduleIsLoaded(const QString &module_name) const;
 	bool moduleIsActive(const QString &module_name) const;
 
 	QString modulesUsing(const QString &module_name) const;

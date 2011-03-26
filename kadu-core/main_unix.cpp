@@ -99,7 +99,7 @@ static void kadu_signal_handler(int signal)
 			fprintf(backtraceFile, "======= END OF BACKTRACE  ======\n");
 
 			fprintf(backtraceFile, "loaded plugins:\n");
-			QStringList modules = ModulesManager::instance()->loadedModules();
+			QStringList modules = ModulesManager::instance()->activeModules();
 			foreach (const QString &module, modules)
 				fprintf(backtraceFile, "> %s\n", qPrintable(module));
 			fprintf(backtraceFile, "Kadu version: %s\n", qPrintable(Core::version()));

@@ -347,24 +347,6 @@ QStringList ModulesManager::installedModules() const
 	return installed;
 }
 
-QStringList ModulesManager::loadedModules() const
-{
-	QStringList loaded;
-	for (QMap<QString, Plugin *>::const_iterator i = Modules.constBegin(); i != Modules.constEnd(); ++i)
-		if (i.value()->isValid() && i.value()->isActive())
-			loaded.append(i.key());
-	return loaded;
-}
-
-QStringList ModulesManager::unloadedModules() const
-{
-	QStringList unloaded;
-	for (QMap<QString, Plugin *>::const_iterator i = Modules.constBegin(); i != Modules.constEnd(); ++i)
-		if (i.value()->isValid() && !i.value()->isActive())
-			unloaded.append(i.key());
-	return unloaded;
-}
-
 QStringList ModulesManager::activeModules() const
 {
 	QStringList active;
@@ -387,11 +369,6 @@ QString ModulesManager::moduleProvides(const QString &provides)
 	return QString();
 }
 
-bool ModulesManager::moduleIsLoaded(const QString& module_name) const
-{
-	return loadedModules().contains(module_name);
-}
-
 bool ModulesManager::moduleIsActive(const QString& module_name) const
 {
 	return Modules.contains(module_name) && (Modules.value(module_name)->isActive());
@@ -399,16 +376,14 @@ bool ModulesManager::moduleIsActive(const QString& module_name) const
 
 QString ModulesManager::modulesUsing(const QString &module_name) const
 {
-	QStringList moduleList = loadedModules();
 	QString modules;
 
-	foreach (const QString &moduleName, moduleList)
-		if (Modules.contains(moduleName))
-		{
-			PluginInfo *info = Modules.value(moduleName)->info();
-			if (info && info->dependencies().contains(module_name))
-				modules += "\n- " + moduleName;
-		}
+	foreach (Plugin *plugin, Modules)
+	{
+		PluginInfo *info = plugin->info();
+		if (info && info->dependencies().contains(module_name))
+			modules += "\n- " + plugin->name();
+	}
 
 	return modules;
 }
