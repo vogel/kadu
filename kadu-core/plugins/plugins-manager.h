@@ -28,8 +28,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef KADU_MODULES_H
-#define KADU_MODULES_H
+#ifndef PLUGINS_MANAGER_H
+#define PLUGINS_MANAGER_H
 
 #include <QtCore/QLibrary>
 #include <QtCore/QMap>
@@ -49,12 +49,12 @@ class GenericPlugin;
 class ModulesWindow;
 class Plugin;
 
-class KADUAPI ModulesManager : public QObject, public StorableObject
+class KADUAPI PluginsManager : public QObject, public StorableObject
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(ModulesManager)
+	Q_DISABLE_COPY(PluginsManager)
 
-	static ModulesManager *Instance;
+	static PluginsManager *Instance;
 
 	typedef int InitModuleFunc(bool);
 	typedef void CloseModuleFunc(void);
@@ -63,8 +63,8 @@ class KADUAPI ModulesManager : public QObject, public StorableObject
 
 	ModulesWindow *Window;
 
-	ModulesManager();
-	virtual ~ModulesManager();
+	PluginsManager();
+	virtual ~PluginsManager();
 
 	void incDependenciesUsageCount(Plugin *plugin);
 
@@ -85,7 +85,7 @@ protected:
 	virtual void load();
 
 public:
-	static ModulesManager * instance();
+	static PluginsManager * instance();
 
 	// storage implementation
 	virtual StorableObject * storageParent() { return 0; }
@@ -113,4 +113,4 @@ public slots:
 
 };
 
-#endif
+#endif // PLUGINS_MANAGER_H

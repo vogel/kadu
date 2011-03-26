@@ -64,7 +64,7 @@
 #include "debug.h"
 #include "icons-manager.h"
 
-#include "modules.h"
+#include "plugins-manager.h"
 
 #ifdef Q_OS_MAC
 	#define SO_EXT "so"
@@ -83,13 +83,13 @@
 	#define SO_PREFIX_LEN 3
 #endif
 
-ModulesManager * ModulesManager::Instance = 0;
+PluginsManager * PluginsManager::Instance = 0;
 
-ModulesManager * ModulesManager::instance()
+PluginsManager * PluginsManager::instance()
 {
 	if (0 == Instance)
 	{
-		Instance = new ModulesManager();
+		Instance = new PluginsManager();
 		// do not move to contructor
 		// Instance variable must be available ModulesManager::load method
 		Instance->ensureLoaded();
@@ -98,7 +98,7 @@ ModulesManager * ModulesManager::instance()
 	return Instance;
 }
 
-ModulesManager::ModulesManager() :
+PluginsManager::PluginsManager() :
 		Plugins(), Window(0)
 {
 	ConfigurationManager::instance()->registerStorableObject(this);
@@ -106,12 +106,12 @@ ModulesManager::ModulesManager() :
 	setState(StateNotLoaded);
 }
 
-ModulesManager::~ModulesManager()
+PluginsManager::~PluginsManager()
 {
 	ConfigurationManager::instance()->unregisterStorableObject(this);
 }
 
-void ModulesManager::load()
+void PluginsManager::load()
 {
 	if (!isValidStorage())
 		return;
@@ -151,7 +151,7 @@ void ModulesManager::load()
 	}
 }
 
-void ModulesManager::store()
+void PluginsManager::store()
 {
 	if (!isValidStorage())
 		return;
@@ -164,7 +164,7 @@ void ModulesManager::store()
 		plugin->store();
 }
 
-void ModulesManager::importFrom09()
+void PluginsManager::importFrom09()
 {
 	QStringList everLoaded = config_file.readEntry("General", "EverLoaded").split(',', QString::SkipEmptyParts);
 	QString loaded_str = config_file.readEntry("General", "LoadedModules");
@@ -209,7 +209,7 @@ void ModulesManager::importFrom09()
 			plugin->setState(Plugin::PluginStateNotLoaded);
 }
 
-void ModulesManager::ensureLoadedAtLeastOnce(const QString& moduleName)
+void PluginsManager::ensureLoadedAtLeastOnce(const QString& moduleName)
 {
 	if (!Plugins.contains(moduleName))
 		return;
@@ -218,7 +218,7 @@ void ModulesManager::ensureLoadedAtLeastOnce(const QString& moduleName)
 		Plugins.value(moduleName)->setState(Plugin::PluginStateLoaded);
 }
 
-void ModulesManager::activateProtocolPlugins()
+void PluginsManager::activateProtocolPlugins()
 {
 	bool saveList = false;
 
@@ -238,7 +238,7 @@ void ModulesManager::activateProtocolPlugins()
 		ConfigurationManager::instance()->flush();
 }
 
-void ModulesManager::activatePlugins()
+void PluginsManager::activatePlugins()
 {
 	bool saveList = false;
 
@@ -264,7 +264,7 @@ void ModulesManager::activatePlugins()
 		ConfigurationManager::instance()->flush();
 }
 
-void ModulesManager::deactivatePlugins()
+void PluginsManager::deactivatePlugins()
 {
 	ConfigurationManager::instance()->flush();
 
@@ -300,7 +300,7 @@ void ModulesManager::deactivatePlugins()
 
 }
 
-QList<Plugin *> ModulesManager::activePlugins() const
+QList<Plugin *> PluginsManager::activePlugins() const
 {
 	QList<Plugin *> result;
 	foreach (Plugin *plugin, Plugins)
@@ -309,7 +309,7 @@ QList<Plugin *> ModulesManager::activePlugins() const
 	return result;
 }
 
-void ModulesManager::incDependenciesUsageCount(Plugin *plugin)
+void PluginsManager::incDependenciesUsageCount(Plugin *plugin)
 {
 	if (!plugin->isValid())
 		return;
@@ -323,7 +323,7 @@ void ModulesManager::incDependenciesUsageCount(Plugin *plugin)
 	kdebugf2();
 }
 
-QStringList ModulesManager::installedPlugins() const
+QStringList PluginsManager::installedPlugins() const
 {
 	QDir dir(dataPath("kadu/plugins"), "*.desc");
 	dir.setFilter(QDir::Files);
@@ -335,7 +335,7 @@ QStringList ModulesManager::installedPlugins() const
 	return installed;
 }
 
-QString ModulesManager::findActiveConflict(Plugin *plugin) const
+QString PluginsManager::findActiveConflict(Plugin *plugin) const
 {
 	if (!plugin || !plugin->isValid())
 		return QString();
@@ -364,7 +364,7 @@ QString ModulesManager::findActiveConflict(Plugin *plugin) const
 	return QString();
 }
 
-bool ModulesManager::activateDependencies(Plugin *plugin)
+bool PluginsManager::activateDependencies(Plugin *plugin)
 {
 	if (!plugin || !plugin->isValid())
 		return true; // always true
@@ -384,7 +384,7 @@ bool ModulesManager::activateDependencies(Plugin *plugin)
 	return true;
 }
 
-QString ModulesManager::activeDependentPluginNames(const QString &pluginName) const
+QString PluginsManager::activeDependentPluginNames(const QString &pluginName) const
 {
 	QString modules;
 
@@ -396,7 +396,7 @@ QString ModulesManager::activeDependentPluginNames(const QString &pluginName) co
 	return modules;
 }
 
-bool ModulesManager::activatePlugin(Plugin *plugin)
+bool PluginsManager::activatePlugin(Plugin *plugin)
 {
 	if (plugin->isActive())
 		return true;
@@ -421,7 +421,7 @@ bool ModulesManager::activatePlugin(Plugin *plugin)
 	return result;
 }
 
-bool ModulesManager::activatePlugin(const QString& pluginName)
+bool PluginsManager::activatePlugin(const QString& pluginName)
 {
 	kdebugmf(KDEBUG_FUNCTION_START, "'%s'\n", qPrintable(pluginName));
 
@@ -431,7 +431,7 @@ bool ModulesManager::activatePlugin(const QString& pluginName)
 	return activatePlugin(Plugins.value(pluginName));
 }
 
-bool ModulesManager::deactivatePlugin(Plugin *plugin, bool setAsUnloaded, bool force)
+bool PluginsManager::deactivatePlugin(Plugin *plugin, bool setAsUnloaded, bool force)
 {
 	kdebugmf(KDEBUG_FUNCTION_START, "name:'%s' force:%d usage: %d\n", qPrintable(plugin->name()), force, plugin->usageCounter());
 
@@ -452,7 +452,7 @@ bool ModulesManager::deactivatePlugin(Plugin *plugin, bool setAsUnloaded, bool f
 	return result;
 }
 
-bool ModulesManager::deactivatePlugin(const QString &pluginName, bool setAsUnloaded, bool force)
+bool PluginsManager::deactivatePlugin(const QString &pluginName, bool setAsUnloaded, bool force)
 {
 	kdebugmf(KDEBUG_FUNCTION_START, "name:'%s' force:%d\n", qPrintable(pluginName), force);
 
@@ -462,19 +462,19 @@ bool ModulesManager::deactivatePlugin(const QString &pluginName, bool setAsUnloa
 	return deactivatePlugin(Plugins.value(pluginName), setAsUnloaded, force);
 }
 
-void ModulesManager::usePlugin(const QString &pluginName)
+void PluginsManager::usePlugin(const QString &pluginName)
 {
 	if (Plugins.contains(pluginName))
 		Plugins.value(pluginName)->incUsage();
 }
 
-void ModulesManager::releasePlugin(const QString &pluginName)
+void PluginsManager::releasePlugin(const QString &pluginName)
 {
 	if (Plugins.contains(pluginName))
 		Plugins.value(pluginName)->decUsage();
 }
 
-void ModulesManager::showWindow(QAction *sender, bool toggled)
+void PluginsManager::showWindow(QAction *sender, bool toggled)
 {
 	Q_UNUSED(sender)
 	Q_UNUSED(toggled)
@@ -493,7 +493,7 @@ void ModulesManager::showWindow(QAction *sender, bool toggled)
 	kdebugf2();
 }
 
-void ModulesManager::dialogDestroyed()
+void PluginsManager::dialogDestroyed()
 {
 	kdebugf();
 	Window = 0;

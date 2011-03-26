@@ -51,7 +51,6 @@
 #include "gui/hot-key.h"
 #include "icons-manager.h"
 
-#include "modules.h"
 #include "misc/path-conversion.h"
 
 #include "gui/windows/sms-image-dialog.h"

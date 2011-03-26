@@ -44,13 +44,13 @@
 #include "configuration/configuration-file.h"
 #include "configuration/configuration-manager.h"
 #include "misc/misc.h"
+#include "plugins/plugin.h"
 #include "plugins/plugin-info.h"
+#include "plugins/plugins-manager.h"
 #include "icons-manager.h"
 #include "debug.h"
 
-#include "modules.h"
 #include "modules-window.h"
-#include <plugins/plugin.h>
 
 ModulesWindow::ModulesWindow(QWidget *parent)
 	: QWidget(parent, Qt::Window),
@@ -204,7 +204,7 @@ void ModulesWindow::moduleAction(QTreeWidgetItem *)
 
 void ModulesWindow::loadItem(const QString &item)
 {
-	ModulesManager::instance()->activatePlugin(item);
+	PluginsManager::instance()->activatePlugin(item);
 	refreshList();
 
 	ConfigurationManager::instance()->flush();
@@ -212,7 +212,7 @@ void ModulesWindow::loadItem(const QString &item)
 
 void ModulesWindow::unloadItem(const QString &item)
 {
-	ModulesManager::instance()->deactivatePlugin(item, true, false);
+	PluginsManager::instance()->deactivatePlugin(item, true, false);
 	refreshList();
 
 	ConfigurationManager::instance()->flush();
@@ -232,7 +232,7 @@ void ModulesWindow::refreshList()
 
 	lv_modules->clear();
 
-	foreach (Plugin *plugin, ModulesManager::instance()->plugins())
+	foreach (Plugin *plugin, PluginsManager::instance()->plugins())
 		if (plugin->isValid())
 		{
 			QStringList strings;
@@ -260,10 +260,10 @@ void ModulesWindow::getInfo()
 	if (!selected)
 		return;
 
-	if (ModulesManager::instance()->plugins().contains(selected->text(0)))
+	if (PluginsManager::instance()->plugins().contains(selected->text(0)))
 		return;
 
-	PluginInfo *pluginInfo = ModulesManager::instance()->plugins().value(selected->text(0))->info();
+	PluginInfo *pluginInfo = PluginsManager::instance()->plugins().value(selected->text(0))->info();
 
 	if (!pluginInfo)
 	{

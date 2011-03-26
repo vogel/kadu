@@ -66,13 +66,13 @@
 #include "misc/misc.h"
 #include "os/generic/url-opener.h"
 #include "parser/parser.h"
+#include "plugins/plugins-manager.h"
 #include "status/status-changer-manager.h"
 #include "status/status-container-manager.h"
 #include "url-handlers/url-handler-manager.h"
 
 #include "about.h"
 #include "debug.h"
-#include "modules.h"
 
 #include "kadu-window-actions.h"
 
@@ -165,7 +165,7 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 
 	ManageModules = new ActionDescription(this,
 		ActionDescription::TypeMainMenu, "manageModulesAction",
-		ModulesManager::instance(), SLOT(showWindow(QAction *, bool)),
+		PluginsManager::instance(), SLOT(showWindow(QAction *, bool)),
 		"kadu_icons/plugins", tr("Plugins...")
 	);
 	ManageModules->setShortcut("kadu_modulesmanager", Qt::ApplicationShortcut);

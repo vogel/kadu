@@ -50,6 +50,7 @@
 #include "gui/windows/search-window.h"
 #include "misc/misc.h"
 #include "notify/notification-manager.h"
+#include "plugins/plugins-manager.h"
 #include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/services/chat-service.h"
@@ -58,12 +59,10 @@
 #include "status/status-type.h"
 #include "status/status-type-manager.h"
 #include "url-handlers/url-handler-manager.h"
-
 #include "activate.h"
 #include "debug.h"
 #include "icons-manager.h"
 #include "kadu-config.h"
-#include "modules.h"
 #include "updates.h"
 
 #include "core.h"
@@ -111,7 +110,7 @@ Core::~Core()
 
 	storeConfiguration();
 
-	ModulesManager::instance()->deactivatePlugins();
+	PluginsManager::instance()->deactivatePlugins();
 
 #ifdef Q_OS_MAC
 	setIcon(IconsManager::instance()->iconByPath("kadu_icons/kadu"));
@@ -330,7 +329,7 @@ void Core::init()
 {
 	// protocol modules should be loaded before gui
 	// it fixes crash on loading pending messages from config, contacts import from 0.6.5, and maybe other issues
-	ModulesManager::instance()->activateProtocolPlugins();
+	PluginsManager::instance()->activateProtocolPlugins();
 
 	Myself.setAnonymous(false);
 	Myself.setDisplay(config_file.readEntry("General", "Nick", tr("Me")));

@@ -6,7 +6,6 @@ set (kadu_SRCS
 	icons-manager.cpp
 	kadu-application.cpp
 	languages-manager.cpp
-	modules.cpp
 	themes.cpp
 	updates.cpp
 )
@@ -29,7 +28,6 @@ set (kadu_MOC_SRCS
 	dnshandler.h
 	icons-manager.h
 	kadu-application.h
-	modules.h
 	themes.h
 	updates.h
 )

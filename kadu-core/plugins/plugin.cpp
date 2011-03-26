@@ -28,7 +28,6 @@
 #include "plugins/generic-plugin.h"
 #include "plugins/plugin-info.h"
 #include "debug.h"
-#include "modules.h"
 
 #include "plugin.h"
 

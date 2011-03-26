@@ -57,6 +57,7 @@
 #include "configuration/xml-configuration-file.h"
 #include "gui/windows/message-dialog.h"
 #include "os/qtsingleapplication/qtlocalpeer.h"
+#include "plugins/plugins-manager.h"
 #include "protocols/protocols-manager.h"
 
 #include "debug.h"
@@ -64,7 +65,6 @@
 #include "icons-manager.h"
 #include "kadu-application.h"
 #include "misc/misc.h"
-#include "modules.h"
 
 // Qt 4.6 version produces warning here which causes build to fail with -Werror
 #if (QT_VERSION < 0x040700)
@@ -409,7 +409,7 @@ int main(int argc, char *argv[])
 	QDir().mkdir(path_);
 #endif
 
-	ModulesManager::instance()->activatePlugins();
+	PluginsManager::instance()->activatePlugins();
 
 #ifndef Q_WS_WIN
 	// if someone is running Kadu from root account, let's remind him
