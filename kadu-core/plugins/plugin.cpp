@@ -237,11 +237,17 @@ bool Plugin::deactivate()
 	delete Translator;
 	Translator = 0;
 
-	PluginLibrary->deleteLater();
-	PluginLibrary = 0;
+	if (PluginLibrary)
+	{
+		PluginLibrary->deleteLater();
+		PluginLibrary = 0;
+	}
 
-	PluginLoader->deleteLater();
-	PluginLoader = 0;
+	if (PluginLoader)
+	{
+		PluginLoader->deleteLater();
+		PluginLoader = 0;
+	}
 	PluginObject = 0;
 
 	Active = false;
