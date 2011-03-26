@@ -68,8 +68,6 @@ class KADUAPI ModulesManager : public QObject, public StorableObject
 
 	ModulesWindow *Window;
 
-	bool satisfyModuleDependencies(PluginInfo *pluginInfo);
-
 	void incDependenciesUsageCount(PluginInfo *pluginInfo);
 
 	QStringList protocolModules() const;
@@ -78,6 +76,7 @@ class KADUAPI ModulesManager : public QObject, public StorableObject
 	void ensureLoadedAtLeastOnce(const QString &moduleName);
 
 	QString findActiveConflict(Plugin *plugin) const;
+	bool activateDependencies(Plugin *plugin);
 
 private slots:
 	void dialogDestroyed();

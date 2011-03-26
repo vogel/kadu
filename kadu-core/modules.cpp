@@ -294,36 +294,6 @@ void ModulesManager::loadAllModules()
 		ConfigurationManager::instance()->flush();
 }
 
-bool ModulesManager::satisfyModuleDependencies(PluginInfo *pluginInfo)
-{
-	if (!pluginInfo)
-		return true;
-
-	kdebugf();
-	foreach (const QString &it, pluginInfo->dependencies())
-	{
-		if (!moduleIsActive(it))
-		{
-			if (Plugins.contains(it) && Plugins.value(it)->isValid())
-			{
-				if (!activatePlugin(it))
-				{
-					kdebugf2();
-					return false;
-				}
-			}
-			else
-			{
-				MessageDialog::show("dialog-warning", tr("Kadu"), tr("Required module %1 was not found").arg(it));
-				kdebugf2();
-				return false;
-			}
-		}
-	}
-	kdebugf2();
-	return true;
-}
-
 void ModulesManager::incDependenciesUsageCount(PluginInfo *pluginInfo)
 {
 	kdebugmf(KDEBUG_FUNCTION_START, "%s\n", qPrintable(pluginInfo->description()));
@@ -414,6 +384,30 @@ QString ModulesManager::findActiveConflict(Plugin *plugin) const
 	return QString();
 }
 
+bool ModulesManager::activateDependencies(Plugin *plugin)
+{
+	if (!plugin || !plugin->isValid())
+		return true; // always true
+
+	foreach (const QString &dependencyName, plugin->info()->dependencies())
+	{
+		if (!Plugins.contains(dependencyName))
+		{
+			MessageDialog::show("dialog-warning", tr("Kadu"), tr("Required module %1 was not found").arg(dependencyName));
+			return false;
+		}
+
+		Plugin *dependencyPlugin = Plugins.value(dependencyName);
+		if (dependencyPlugin->isActive())
+			continue; // this one already loaded
+
+		if (!activatePlugin(dependencyName))
+			return false;
+	}
+
+	return true;
+}
+
 bool ModulesManager::activatePlugin(const QString& pluginName)
 {
 	kdebugmf(KDEBUG_FUNCTION_START, "'%s'\n", qPrintable(pluginName));
@@ -432,7 +426,7 @@ bool ModulesManager::activatePlugin(const QString& pluginName)
 		return false;
 	}
 
-	if (!satisfyModuleDependencies(plugin->info()))
+	if (!activateDependencies(plugin))
 		return false;
 
 	bool result = plugin->activate();
