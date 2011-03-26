@@ -79,6 +79,8 @@ class KADUAPI ModulesManager : public QObject, public StorableObject
 	QString findActiveConflict(Plugin *plugin) const;
 	bool activateDependencies(Plugin *plugin);
 
+	QString activeDependentPluginNames(const QString &pluginName) const;
+
 private slots:
 	void dialogDestroyed();
 
@@ -99,8 +101,6 @@ public:
 	void deactivatePlugins();
 
 	QList<Plugin *> activePlugins() const;
-
-	QString modulesUsing(const QString &module_name) const;
 
 	QMap<QString, Plugin *> plugins() { return Plugins; }
 
