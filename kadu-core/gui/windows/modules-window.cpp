@@ -204,7 +204,7 @@ void ModulesWindow::moduleAction(QTreeWidgetItem *)
 
 void ModulesWindow::loadItem(const QString &item)
 {
-	ModulesManager::instance()->activateModule(item);
+	ModulesManager::instance()->activatePlugin(item);
 	refreshList();
 
 	ConfigurationManager::instance()->flush();

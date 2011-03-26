@@ -115,7 +115,7 @@ public:
 	bool conflictsWithLoaded(const QString &module_name, PluginInfo *pluginInfo) const;
 
 public slots:
-	bool activateModule(const QString &module_name);
+	bool activatePlugin(const QString &pluginName);
 	bool deactivateModule(const QString &module_name, bool setAsUnloaded, bool force);
 
 	void showWindow(QAction *sender, bool toggled);

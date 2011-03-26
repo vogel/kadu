@@ -241,7 +241,7 @@ void ModulesManager::loadProtocolModules()
 				load_module = false;
 		}
 		if (load_module)
-			activateModule(plugin->name());
+			activatePlugin(plugin->name());
 	}
 }
 
@@ -270,7 +270,7 @@ void ModulesManager::loadAllModules()
 				load_module = false;
 		}
 
-		if (load_module && !activateModule(plugin->name()))
+		if (load_module && !activatePlugin(plugin->name()))
 			saveList = true;
 	}
 
@@ -282,7 +282,7 @@ void ModulesManager::loadAllModules()
 			{
 				PluginInfo *m_info = plugin->info();
 				if (m_info && m_info->replaces().contains(i->name()))
-					if (activateModule(i->name()))
+					if (activatePlugin(i->name()))
 						saveList = true;
 			}
 		}
@@ -306,7 +306,7 @@ bool ModulesManager::satisfyModuleDependencies(PluginInfo *pluginInfo)
 		{
 			if (Modules.contains(it) && Modules.value(it)->isValid())
 			{
-				if (!activateModule(it))
+				if (!activatePlugin(it))
 				{
 					kdebugf2();
 					return false;
@@ -425,32 +425,28 @@ bool ModulesManager::conflictsWithLoaded(const QString &module_name, PluginInfo 
 	return false;
 }
 
-bool ModulesManager::activateModule(const QString& module_name)
+bool ModulesManager::activatePlugin(const QString& pluginName)
 {
-	kdebugmf(KDEBUG_FUNCTION_START, "'%s'\n", qPrintable(module_name));
+	kdebugmf(KDEBUG_FUNCTION_START, "'%s'\n", qPrintable(pluginName));
 
-	if (moduleIsActive(module_name))
-	{
-		MessageDialog::show("dialog-warning", tr("Kadu"), tr("Module %1 is already active").arg(module_name));
-		kdebugf2();
-		return false;
-	}
-
-	Plugin *plugin = Modules.value(module_name);
-	if (!plugin)
+	if (!Modules.contains(pluginName))
 		return false;
 
+	Plugin *plugin = Modules.value(pluginName);
 	if (plugin->isActive())
 		return true;
 
-	if (conflictsWithLoaded(module_name, plugin->info()))
+	if (conflictsWithLoaded(pluginName, plugin->info()))
 		return false;
 
 	if (!satisfyModuleDependencies(plugin->info()))
 		return false;
 
-	plugin->setState(Plugin::PluginStateLoaded);
-	return plugin->activate();
+	bool result = plugin->activate();
+	if (result)
+		plugin->setState(Plugin::PluginStateLoaded);
+
+	return result;
 }
 
 void ModulesManager::unloadAllModules()
