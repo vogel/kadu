@@ -17,24 +17,28 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "misc/path-conversion.h"
+#ifndef FREEDESKTOP_NOTIFY_CONFIGURATION_UI_HANDLER_H
+#define FREEDESKTOP_NOTIFY_CONFIGURATION_UI_HANDLER_H
 
-#include "configuration/gui/freedesktop-notify-configuration-ui-handler.h"
+#include "gui/windows/main-configuration-window.h"
 
-#include "freedesktop-notify.h"
-
-extern "C" KADU_EXPORT int freedesktop_notify_init(bool firstLoad)
+class FreedesktopNotifyConfigurationUiHandler : public ConfigurationUiHandler
 {
-	Q_UNUSED(firstLoad)
+	Q_OBJECT
+	Q_DISABLE_COPY(FreedesktopNotifyConfigurationUiHandler)
 
-	FreedesktopNotify::createInstance();
-	FreedesktopNotifyConfigurationUiHandler::registerConfigurationUi();
+	static FreedesktopNotifyConfigurationUiHandler *Instance;
 
-	return 0;
-}
+	FreedesktopNotifyConfigurationUiHandler();
 
-extern "C" KADU_EXPORT void freedesktop_notify_close()
-{
-	FreedesktopNotifyConfigurationUiHandler::unregisterConfigurationUi();
-	FreedesktopNotify::destroyInstance();
-}
+public:
+	static void registerConfigurationUi();
+	static void unregisterConfigurationUi();
+
+	static FreedesktopNotifyConfigurationUiHandler * instance();
+
+	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
+
+};
+
+#endif // FREEDESKTOP_NOTIFY_CONFIGURATION_UI_HANDLER_H

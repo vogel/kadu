@@ -22,16 +22,16 @@
 #ifndef FREEDESKTOP_NOTIFY_H
 #define FREEDESKTOP_NOTIFY_H
 
+#include <QtCore/QMap>
 #include <QtCore/QQueue>
 
-#include "gui/windows/main-configuration-window.h"
 #include "notify/notifier.h"
 
 class QDBusInterface;
 
 class Notification;
 
-class FreedesktopNotify : public Notifier, public ConfigurationUiHandler
+class FreedesktopNotify : public Notifier
 {
 	Q_OBJECT
 
@@ -63,7 +63,6 @@ public:
 	virtual CallbackCapacity callbackCapacity() { return CallbackSupported; }
 
 	virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = 0) { Q_UNUSED(parent); return 0; }
-	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
 	virtual void notify(Notification *notification);
 
 };

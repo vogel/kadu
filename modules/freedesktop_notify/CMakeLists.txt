@@ -1,11 +1,13 @@
 set (QT_USE_QTDBUS 1)
 
 set (SOURCES
+	configuration/gui/freedesktop-notify-configuration-ui-handler.cpp
 	freedesktop-notify.cpp
 	freedesktop-notify-module.cpp
 )
 
 set (MOC_SOURCES
+	configuration/gui/freedesktop-notify-configuration-ui-handler.h
 	freedesktop-notify.h
 )
 

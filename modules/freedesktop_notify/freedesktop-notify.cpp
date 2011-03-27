@@ -26,13 +26,13 @@
 #include <QtDBus/QDBusInterface>
 
 #include "configuration/configuration-file.h"
-#include "gui/widgets/configuration/configuration-widget.h"
 #include "misc/path-conversion.h"
 #include "notify/notification-manager.h"
 #include "notify/notification.h"
 #include "url-handlers/url-handler-manager.h"
 #include "debug.h"
 #include "html_document.h"
+#include "icons-manager.h"
 
 #include <QDBusReply>
 #include <QTimer>
@@ -96,12 +96,6 @@ void FreedesktopNotify::createDefaultConfiguration()
 	config_file.addVariable("KDENotify", "Timeout", 10);
 	config_file.addVariable("KDENotify", "ShowContentMessage", true);
 	config_file.addVariable("KDENotify", "CiteSign", 100);
-}
-
-void FreedesktopNotify::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
-{
-	connect(mainConfigurationWindow->widget()->widgetById("freedesktop-notify/showContent"), SIGNAL(toggled(bool)),
-			mainConfigurationWindow->widget()->widgetById("freedesktop-notify/showContentCount"), SLOT(setEnabled(bool)));
 }
 
 void FreedesktopNotify::notify(Notification *notification)
@@ -232,5 +226,3 @@ void FreedesktopNotify::deleteMapItem()
 	if (notification)
 		notification->release();
 }
-
-FreedesktopNotify *freedesktop_notify = 0;
