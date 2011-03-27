@@ -40,7 +40,7 @@ static QString getNotificationTitle(const QObject * const object)
 }
 
 Notification::Notification(const QString &type, const QString &iconPath) :
-	Type(type), IconPath(IconsManager::instance()->iconPath(iconPath, "16x16")),
+	Type(type), IconPath(iconPath),
 	Icon(IconsManager::instance()->iconByPath(iconPath)), DefaultCallbackTimer(0),
 	ReferencesCount(0), Closing(false)
 {
@@ -165,8 +165,7 @@ QString Notification::details() const
 
 void Notification::setIcon(const QString& iconPath)
 {
-	IconPath = IconsManager::instance()->iconPath(iconPath, "16x16");
-
+	IconPath = iconPath;
 	Icon = IconsManager::instance()->iconByPath(iconPath);
 }
 

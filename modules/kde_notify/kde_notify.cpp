@@ -126,17 +126,19 @@ void KdeNotify::notify(Notification *notification)
 	QList<QVariant> args;
 	args.append("Kadu");
 	args.append(0U);
-	args.append(IconsManager::instance()->iconPath("kadu_icons/section-kadu", "32x32"));
 
-	/* the new spec doesn't have this */
+	if (notification->iconPath().isEmpty())
+		args.append(IconsManager::instance()->iconPath("kadu_icons/section-kadu", "32x32"));
+	else
+		args.append(IconsManager::instance()->iconPath(notification->iconPath(), "32x32"));
+
+	// the new spec doesn't have this
 	if (!UseFreedesktopStandard)
 		args.append(QString());
 
   	args.append("Kadu");
 
 	QString text;
-	if (!notification->iconPath().isEmpty())
-		text = QString("<img src=\"%1\" alt=\"icon\" width=\"16\" height=\"16\" valign=\"middle\" /> ").arg(notification->iconPath().remove("file://"));
 
 	if (((notification->type() == "NewMessage") || (notification->type() == "NewChat")) &&
 			config_file.readBoolEntry("KDENotify", "ShowContentMessage"))
