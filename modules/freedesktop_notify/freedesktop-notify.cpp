@@ -37,7 +37,7 @@
 #include <QDBusReply>
 #include <QTimer>
 
-#include "freedesktop_notify.h"
+#include "freedesktop-notify.h"
 
 extern "C" KADU_EXPORT int freedesktop_notify_init(bool firstLoad)
 {

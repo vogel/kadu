@@ -1,11 +1,11 @@
 set (QT_USE_QTDBUS 1)
 
 set (SOURCES
-	freedesktop_notify.cpp
+	freedesktop-notify.cpp
 )
 
 set (MOC_SOURCES
-	freedesktop_notify.h
+	freedesktop-notify.h
 )
 
 set (TRANSLATION_SOURCES
