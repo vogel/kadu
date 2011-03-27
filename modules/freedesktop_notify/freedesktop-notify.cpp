@@ -24,6 +24,7 @@
 
 #include <QtCore/QMetaMethod>
 #include <QtDBus/QDBusInterface>
+#include <QtDBus/QDBusServiceWatcher>
 
 #include "configuration/configuration-file.h"
 #include "misc/path-conversion.h"
@@ -73,6 +74,14 @@ FreedesktopNotify::FreedesktopNotify() :
 		delete (KNotify);
 		KNotify = new QDBusInterface("org.freedesktop.Notifications",
 				"/org/freedesktop/Notifications", "org.freedesktop.Notifications");
+
+		QDBusServiceWatcher *watcher = new QDBusServiceWatcher(this);
+		watcher->setConnection(QDBusConnection::sessionBus());
+		watcher->setWatchMode(QDBusServiceWatcher::WatchForOwnerChange);
+		watcher->addWatchedService("org.freedesktop.Notifications");
+
+		connect(watcher, SIGNAL(serviceOwnerChanged(const QString &, const QString &, const QString &)),
+				SLOT(slotServiceOwnerChanged(const QString &, const QString &, const QString &)));
 
 		UseFreedesktopStandard = true;
 	}
@@ -202,6 +211,25 @@ void FreedesktopNotify::notificationClosed(Notification *notification)
 		}
 		++i;
 	}
+}
+
+void FreedesktopNotify::slotServiceOwnerChanged(const QString &serviceName, const QString &oldOwner, const QString &newOwner)
+{
+	Q_UNUSED(serviceName)
+	Q_UNUSED(oldOwner)
+	Q_UNUSED(newOwner)
+
+	while (!IdQueue.isEmpty())
+	{
+		unsigned int id = IdQueue.dequeue();
+		Notification *notification = NotificationMap.value(id);
+		NotificationMap.remove(id);
+
+		if (notification)
+			notification->release();
+	}
+
+	ServerCapabilitesReqiuresChecking = true;
 }
 
 void FreedesktopNotify::actionInvoked(unsigned int id, QString action)

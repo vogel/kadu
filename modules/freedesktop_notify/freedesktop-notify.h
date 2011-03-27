@@ -61,6 +61,8 @@ private slots:
 
 	void notificationClosed(Notification *notification);
 
+	void slotServiceOwnerChanged(const QString &serviceName, const QString &oldOwner, const QString &newOwner);
+
 public:
 	static void createInstance();
 	static void destroyInstance();
