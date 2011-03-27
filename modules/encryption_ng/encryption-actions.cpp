@@ -131,6 +131,7 @@ EncryptionActions::EncryptionActions()
 
 EncryptionActions::~EncryptionActions()
 {
+	BuddiesListViewMenuManager::instance()->removeListActionDescription(SendPublicKeyActionDescription);
 	Core::instance()->kaduWindow()->removeMenuActionDescription(GenerateKeysActionDescription);
 
 	disconnect(EncryptionProviderManager::instance(), SIGNAL(canEncryptChanged(Chat)), this, SLOT(canEncryptChanged(Chat)));
