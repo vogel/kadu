@@ -5,7 +5,7 @@
     <name>@default</name>
     <message>
         <source>Chat</source>
-        <translation>Rozmowa</translation>
+        <translation>Okno rozmowy</translation>
     </message>
     <message>
         <source>Tabs</source>
