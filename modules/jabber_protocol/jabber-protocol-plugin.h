@@ -1,7 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2011 Bartosz Brachaczek (b.brachaczek@gmail.com)
- * Copyright 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -18,18 +17,24 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "jabber-protocol.h"
+#ifndef JABBER_PROTOCOL_PLUGIN_H
+#define JABBER_PROTOCOL_PLUGIN_H
 
-#include "exports.h"
+#include <QtCore/QObject>
 
-extern "C" KADU_EXPORT int jabber_protocol_init(bool firstLoad)
+#include "plugins/generic-plugin.h"
+
+class JabberProtocolPlugin : public QObject, public GenericPlugin
 {
-	Q_UNUSED(firstLoad)
+	Q_OBJECT
+	Q_INTERFACES(GenericPlugin)
 
-	return JabberProtocol::initModule();
-}
+public:
+	virtual ~JabberProtocolPlugin();
 
-extern "C" KADU_EXPORT void jabber_protocol_close()
-{
-	JabberProtocol::closeModule();
-}
+	virtual int init(bool firstLoad);
+	virtual void done();
+
+};
+
+#endif // JABBER_PROTOCOL_PLUGIN_H

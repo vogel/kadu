@@ -55,61 +55,6 @@
 
 #include "jabber-protocol.h"
 
-int JabberProtocol::initModule()
-{
-	kdebugf();
-
-	if (ProtocolsManager::instance()->hasProtocolFactory("jabber")
-			|| ProtocolsManager::instance()->hasProtocolFactory("gtalk")
-			|| ProtocolsManager::instance()->hasProtocolFactory("facebook"))
-		return 0;
-
-	JabberIdValidator::createInstance();
-	VCardFactory::createInstance();
-
-	JabberActions::registerActions();
-	JabberProtocolMenuManager::createInstance();
-
-	JabberProtocolFactory::createInstance();
-	GTalkProtocolFactory::createInstance();
-	FacebookProtocolFactory::createInstance();
-
-	ProtocolsManager::instance()->registerProtocolFactory(JabberProtocolFactory::instance());
-	ProtocolsManager::instance()->registerProtocolFactory(GTalkProtocolFactory::instance());
-	ProtocolsManager::instance()->registerProtocolFactory(FacebookProtocolFactory::instance());
-
-	UrlHandlerManager::instance()->registerUrlHandler("Jabber", new JabberUrlHandler());
-
-	kdebugf2();
-	return 0;
-}
-
-void JabberProtocol::closeModule()
-{
-	kdebugf();
-
-	UrlHandlerManager::instance()->unregisterUrlHandler("Jabber");
-	ProtocolsManager::instance()->unregisterProtocolFactory(JabberProtocolFactory::instance());
-	ProtocolsManager::instance()->unregisterProtocolFactory(GTalkProtocolFactory::instance());
-	ProtocolsManager::instance()->unregisterProtocolFactory(FacebookProtocolFactory::instance());
-
-	JabberProtocolFactory::destroyInstance();
-	GTalkProtocolFactory::destroyInstance();
-	FacebookProtocolFactory::destroyInstance();
-
-	JabberProtocolMenuManager::destroyInstance();
-	JabberActions::unregisterActions();
-
-	VCardFactory::destroyInstance();
-	JabberIdValidator::destroyInstance();
-	TrustedCertificatesManager::destroyInstance();
-	XMPP::irisNetCleanup();
-
-	qRemovePostRoutine(QCA::deinit);
-
-	kdebugf2();
-}
-
 JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 		Protocol(account, factory), JabberClient(0), ContactsListReadOnly(false)
 {

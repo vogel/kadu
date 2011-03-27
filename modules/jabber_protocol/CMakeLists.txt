@@ -264,9 +264,9 @@ set (SOURCES
 	jabber-account-details.cpp
 	jabber-contact-details.cpp
 	jabber-id-validator.cpp
-	jabber-module.cpp
 	jabber-protocol.cpp
 	jabber-protocol-factory.cpp
+	jabber-protocol-plugin.cpp
 	jabber-url-handler.cpp
 	facebook-protocol-factory.cpp
 	gtalk-protocol-factory.cpp
@@ -314,6 +314,7 @@ set (MOC_SOURCES
 	jabber-id-validator.h
 	jabber-protocol.h
 	jabber-protocol-factory.h
+	jabber-protocol-plugin.h
 	jabber-url-handler.h
 	server/jabber-avatar-fetcher.h
 	server/jabber-avatar-pep-fetcher.h

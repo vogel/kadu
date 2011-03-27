@@ -93,9 +93,6 @@ protected:
 	virtual void changePrivateMode();
 
 public:
-	static int initModule();
-	static void closeModule();
-
 	JabberProtocol(Account account, ProtocolFactory *factory);
 	virtual ~JabberProtocol();
 

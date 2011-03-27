@@ -5,3 +5,4 @@ Author=Kadu Team
 Version=core
 LoadByDefault=true
 Type=protocol
+Plugin=true
