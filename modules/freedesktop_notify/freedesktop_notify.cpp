@@ -37,55 +37,46 @@
 #include <QDBusReply>
 #include <QTimer>
 
-#include "kde_notify.h"
+#include "freedesktop_notify.h"
 
-extern "C" KADU_EXPORT int kde_notify_init(bool firstLoad)
+extern "C" KADU_EXPORT int freedesktop_notify_init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
-	kdebugf();
+	freedesktop_notify = new FreedesktopNotify();
 
-	kde_notify = new KdeNotify();
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/freedesktop_notify.ui"));
+	MainConfigurationWindow::registerUiHandler(freedesktop_notify);
 
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/kde_notify.ui"));
-	MainConfigurationWindow::registerUiHandler(kde_notify);
-
-	kdebugf2();
 	return 0;
 }
 
-extern "C" KADU_EXPORT void kde_notify_close()
+extern "C" KADU_EXPORT void freedesktop_notify_close()
 {
-	kdebugf();
-
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/kde_notify.ui"));
-	MainConfigurationWindow::unregisterUiHandler(kde_notify);
-	delete kde_notify;
-	kde_notify = 0;
-
-	kdebugf2();
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/freedesktop_notify.ui"));
+	MainConfigurationWindow::unregisterUiHandler(freedesktop_notify);
+	delete freedesktop_notify;
+	freedesktop_notify = 0;
 }
 
-KdeNotify::KdeNotify(QObject *parent) :
-		Notifier("KNotify", QT_TRANSLATE_NOOP("@default", "KDE4 notifications"), "kadu_icons/notify-hints", parent),
-		UseFreedesktopStandard(false)
+FreedesktopNotify::FreedesktopNotify(QObject *parent) :
+		Notifier("KNotify", QT_TRANSLATE_NOOP("@default", "System notifications"), "kadu_icons/notify-hints", parent),
+		UseFreedesktopStandard(true)
 {
-	kdebugf();
-
 	StripHTML.setPattern(QString::fromLatin1("<.*>"));
 	StripHTML.setMinimal(true);
 
-	KNotify = new QDBusInterface("org.kde.VisualNotifications",
-			"/VisualNotifications", "org.kde.VisualNotifications");
+	KNotify = new QDBusInterface("org.freedesktop.Notifications",
+			"/org/freedesktop/Notifications", "org.freedesktop.Notifications");
 
-	/* Dorr: maybe we're using patched version of KDE */
+	// Fallback for older knotify
 	if (!KNotify->isValid())
 	{
 		delete (KNotify);
-		KNotify = new QDBusInterface("org.freedesktop.Notifications",
-				"/org/freedesktop/Notifications", "org.freedesktop.Notifications");
+		KNotify = new QDBusInterface("org.kde.VisualNotifications",
+				"/VisualNotifications", "org.kde.VisualNotifications");
 
-		UseFreedesktopStandard = true;
+		UseFreedesktopStandard = false;
 	}
 
 	KNotify->connection().connect(KNotify->service(), KNotify->path(), KNotify->interface(),
@@ -93,35 +84,29 @@ KdeNotify::KdeNotify(QObject *parent) :
 
 	NotificationManager::instance()->registerNotifier(this);
 	createDefaultConfiguration();
-
-	kdebugf2();
 }
 
-KdeNotify::~KdeNotify()
+FreedesktopNotify::~FreedesktopNotify()
 {
-	kdebugf();
-
 	NotificationManager::instance()->unregisterNotifier(this);
 	delete KNotify;
 	KNotify = 0;
-
-	kdebugf2();
 }
 
-void KdeNotify::createDefaultConfiguration()
+void FreedesktopNotify::createDefaultConfiguration()
 {
 	config_file.addVariable("KDENotify", "Timeout", 10);
 	config_file.addVariable("KDENotify", "ShowContentMessage", true);
 	config_file.addVariable("KDENotify", "CiteSign", 100);
 }
 
-void KdeNotify::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
+void FreedesktopNotify::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
-	connect(mainConfigurationWindow->widget()->widgetById("kdenotify/showContent"), SIGNAL(toggled(bool)),
-			mainConfigurationWindow->widget()->widgetById("kdenotify/showContentCount"), SLOT(setEnabled(bool)));
+	connect(mainConfigurationWindow->widget()->widgetById("freedesktop-notify/showContent"), SIGNAL(toggled(bool)),
+			mainConfigurationWindow->widget()->widgetById("freedesktop-notify/showContentCount"), SLOT(setEnabled(bool)));
 }
 
-void KdeNotify::notify(Notification *notification)
+void FreedesktopNotify::notify(Notification *notification)
 {
 	QList<QVariant> args;
 	args.append("Kadu");
@@ -187,7 +172,7 @@ void KdeNotify::notify(Notification *notification)
 	}
 }
 
-void KdeNotify::notificationClosed(Notification *notification)
+void FreedesktopNotify::notificationClosed(Notification *notification)
 {
 	QMap<unsigned int, Notification *>::iterator i = NotificationMap.begin();
 	while (i != NotificationMap.end())
@@ -206,7 +191,7 @@ void KdeNotify::notificationClosed(Notification *notification)
 	}
 }
 
-void KdeNotify::actionInvoked(unsigned int id, QString action)
+void FreedesktopNotify::actionInvoked(unsigned int id, QString action)
 {
 	if (!IdQueue.contains(id))
 		return;
@@ -240,7 +225,7 @@ void KdeNotify::actionInvoked(unsigned int id, QString action)
 	NotificationMap[id] = 0;
 }
 
-void KdeNotify::deleteMapItem()
+void FreedesktopNotify::deleteMapItem()
 {
 	unsigned int id = IdQueue.dequeue();
 	Notification *notification = NotificationMap.value(id);
@@ -250,4 +235,4 @@ void KdeNotify::deleteMapItem()
 		notification->release();
 }
 
-KdeNotify *kde_notify = 0;
+FreedesktopNotify *freedesktop_notify = 0;

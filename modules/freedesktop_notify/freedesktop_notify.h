@@ -19,8 +19,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef KDE_NOTIFY_H
-#define KDE_NOTIFY_H
+#ifndef FREEDESKTOP_NOTIFY_H
+#define FREEDESKTOP_NOTIFY_H
 
 #include <QtCore/QQueue>
 
@@ -31,7 +31,7 @@ class QDBusInterface;
 
 class Notification;
 
-class KdeNotify : public Notifier, public ConfigurationUiHandler
+class FreedesktopNotify : public Notifier, public ConfigurationUiHandler
 {
 	Q_OBJECT
 
@@ -51,8 +51,8 @@ private slots:
 	void notificationClosed(Notification *notification);
 
 public:
-	explicit KdeNotify(QObject *parent = 0);
-	virtual ~KdeNotify();
+	explicit FreedesktopNotify(QObject *parent = 0);
+	virtual ~FreedesktopNotify();
 
 	virtual CallbackCapacity callbackCapacity() { return CallbackSupported; }
 
@@ -62,6 +62,6 @@ public:
 
 };
 
-extern KdeNotify *kde_notify;
+extern FreedesktopNotify *freedesktop_notify;
 
-#endif // KDE_NOTIFY_H
+#endif // FREEDESKTOP_NOTIFY_H
