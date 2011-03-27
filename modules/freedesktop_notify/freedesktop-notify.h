@@ -46,9 +46,14 @@ class FreedesktopNotify : public Notifier
 	QQueue<unsigned int> IdQueue;
 
 	bool UseFreedesktopStandard;
+	bool ServerSupportsActions;
+	bool ServerSupportsHtml;
+	bool ServerCapabilitesReqiuresChecking;
 
 	void import_0_9_0_Configuration();
 	void createDefaultConfiguration();
+
+	void checkServerCapabilities();
 
 private slots:
 	void actionInvoked(unsigned int id, QString action);
@@ -61,7 +66,7 @@ public:
 	static void destroyInstance();
 	static FreedesktopNotify * instance();
 
-	virtual CallbackCapacity callbackCapacity() { return CallbackSupported; }
+	virtual CallbackCapacity callbackCapacity() { return ServerSupportsActions ? CallbackSupported : CallbackNotSupported; }
 
 	virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = 0) { Q_UNUSED(parent); return 0; }
 	virtual void notify(Notification *notification);

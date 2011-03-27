@@ -60,7 +60,7 @@ void FreedesktopNotify::destroyInstance()
 
 FreedesktopNotify::FreedesktopNotify() :
 		Notifier("FreedesktopNotify", QT_TRANSLATE_NOOP("@default", "System notifications"), "kadu_icons/notify-hints"),
-		UseFreedesktopStandard(false)
+		UseFreedesktopStandard(false), ServerSupportsActions(true), ServerSupportsHtml(true), ServerCapabilitesReqiuresChecking(true)
 {
 	StripHTML.setPattern(QString::fromLatin1("<.*>"));
 	StripHTML.setMinimal(true);
@@ -89,19 +89,36 @@ FreedesktopNotify::FreedesktopNotify() :
 FreedesktopNotify::~FreedesktopNotify()
 {
 	NotificationManager::instance()->unregisterNotifier(this);
+
 	delete KNotify;
 	KNotify = 0;
 }
 
-void FreedesktopNotify::createDefaultConfiguration()
+void FreedesktopNotify::checkServerCapabilities()
 {
-	config_file.addVariable("FreedesktopNotify", "Timeout", 10);
-	config_file.addVariable("FreedesktopNotify", "ShowContentMessage", true);
-	config_file.addVariable("FreedesktopNotify", "CiteSign", 100);
+	if (ServerCapabilitesReqiuresChecking)
+	{
+		QDBusMessage replyMsg = KNotify->call(QDBus::Block, "GetCapabilities");
+
+		if (replyMsg.type() != QDBusMessage::ReplyMessage)
+		{
+			ServerSupportsActions = false;
+			ServerSupportsHtml = false;
+		}
+
+		QStringList capabilities = replyMsg.arguments().at(0).toStringList();
+
+		ServerSupportsActions = capabilities.contains("actions");
+		ServerSupportsHtml = capabilities.contains("body-markup");
+
+		ServerCapabilitesReqiuresChecking = false;
+	}
 }
 
 void FreedesktopNotify::notify(Notification *notification)
 {
+	checkServerCapabilities();
+
 	QList<QVariant> args;
 	args.append("Kadu");
 	args.append(0U);
@@ -122,15 +139,15 @@ void FreedesktopNotify::notify(Notification *notification)
 	if (((notification->type() == "NewMessage") || (notification->type() == "NewChat")) &&
 			config_file.readBoolEntry("FreedesktopNotify", "ShowContentMessage"))
 	{
-		text.append(notification->text() + "<br/><small>");
+		text.append(notification->text() + (ServerSupportsHtml ? "<br/><small>" : "\n"));
 
 		QString strippedDetails = notification->details().replace("<br/>", "\n").remove(StripHTML).replace('\n', QLatin1String("<br/>"));
 		if (strippedDetails.length() > config_file.readNumEntry("FreedesktopNotify", "CiteSign", 10))
 			text.append(strippedDetails.left(config_file.readNumEntry("FreedesktopNotify", "CiteSign", 10)) + "...");
 		else
 			text.append(strippedDetails);
-
-		text.append("</small>");
+		if (ServerSupportsHtml)
+			text.append("</small>");
 	}
 	else
 		text.append(notification->text());
@@ -143,12 +160,14 @@ void FreedesktopNotify::notify(Notification *notification)
 
 	QStringList actions;
 
-	foreach (const Notification::Callback &callback, notification->getCallbacks())
+	if (ServerSupportsActions)
 	{
-		actions << callback.Signature;
-		actions << callback.Caption;
+		foreach (const Notification::Callback &callback, notification->getCallbacks())
+		{
+			actions << callback.Signature;
+			actions << callback.Caption;
+		}
 	}
-
 	args.append(actions);
 	args.append(QVariantMap());
 	args.append(config_file.readNumEntry("FreedesktopNotify", "Timeout", 10) * 1000);
@@ -237,4 +256,11 @@ void FreedesktopNotify::import_0_9_0_Configuration()
 
 	foreach (NotifyEvent *event, NotificationManager::instance()->notifyEvents())
 		config_file.addVariable("Notify", event->name() + "_FreedesktopNotify", config_file.readEntry("Notify", event->name() + "_KNotify"));
+}
+
+void FreedesktopNotify::createDefaultConfiguration()
+{
+	config_file.addVariable("FreedesktopNotify", "Timeout", 10);
+	config_file.addVariable("FreedesktopNotify", "ShowContentMessage", true);
+	config_file.addVariable("FreedesktopNotify", "CiteSign", 100);
 }
