@@ -35,6 +35,11 @@ class FreedesktopNotify : public Notifier, public ConfigurationUiHandler
 {
 	Q_OBJECT
 
+	static FreedesktopNotify *Instance;
+
+	explicit FreedesktopNotify();
+	virtual ~FreedesktopNotify();
+
 	QDBusInterface *KNotify;
 	QRegExp StripHTML;
 	QMap<unsigned int, Notification *> NotificationMap;
@@ -51,8 +56,9 @@ private slots:
 	void notificationClosed(Notification *notification);
 
 public:
-	explicit FreedesktopNotify(QObject *parent = 0);
-	virtual ~FreedesktopNotify();
+	static void createInstance();
+	static void destroyInstance();
+	static FreedesktopNotify * instance();
 
 	virtual CallbackCapacity callbackCapacity() { return CallbackSupported; }
 
@@ -61,7 +67,5 @@ public:
 	virtual void notify(Notification *notification);
 
 };
-
-extern FreedesktopNotify *freedesktop_notify;
 
 #endif // FREEDESKTOP_NOTIFY_H

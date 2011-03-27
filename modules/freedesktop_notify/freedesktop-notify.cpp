@@ -39,28 +39,26 @@
 
 #include "freedesktop-notify.h"
 
-extern "C" KADU_EXPORT int freedesktop_notify_init(bool firstLoad)
+FreedesktopNotify * FreedesktopNotify::Instance = 0;
+
+void FreedesktopNotify::createInstance()
 {
-	Q_UNUSED(firstLoad)
-
-	freedesktop_notify = new FreedesktopNotify();
-
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/freedesktop_notify.ui"));
-	MainConfigurationWindow::registerUiHandler(freedesktop_notify);
-
-	return 0;
+	Instance = new FreedesktopNotify();
 }
 
-extern "C" KADU_EXPORT void freedesktop_notify_close()
+FreedesktopNotify * FreedesktopNotify::instance()
 {
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/freedesktop_notify.ui"));
-	MainConfigurationWindow::unregisterUiHandler(freedesktop_notify);
-	delete freedesktop_notify;
-	freedesktop_notify = 0;
+	return Instance;
 }
 
-FreedesktopNotify::FreedesktopNotify(QObject *parent) :
-		Notifier("KNotify", QT_TRANSLATE_NOOP("@default", "System notifications"), "kadu_icons/notify-hints", parent),
+void FreedesktopNotify::destroyInstance()
+{
+	delete Instance;
+	Instance = 0;
+}
+
+FreedesktopNotify::FreedesktopNotify() :
+		Notifier("KNotify", QT_TRANSLATE_NOOP("@default", "System notifications"), "kadu_icons/notify-hints"),
 		UseFreedesktopStandard(true)
 {
 	StripHTML.setPattern(QString::fromLatin1("<.*>"));
