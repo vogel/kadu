@@ -4,7 +4,7 @@
 <context>
     <name>@default</name>
     <message>
-        <source>Chat</source>
+        <source>Chat Window</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
