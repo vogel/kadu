@@ -15,6 +15,7 @@
 * identities: fixed crash after removing the last account in a non-permanent identity in simple mode (beevvy)
 * tabs: #2093 fixed: close/open chat buttons reserved space in tab bar corners even if disabled (beevvy)
 * core: #2091 fixed: 'Send message' shortcut restored (ultr)
+* encryption_ng: fixed crash in buddies context menu after unloading module (beevvy)
 
 +++ version 0.9.0
 * configuration: configuration is now always properly imported on Windows (Vogel)
