@@ -89,6 +89,8 @@ FreedesktopNotify::FreedesktopNotify() :
 	KNotify->connection().connect(KNotify->service(), KNotify->path(), KNotify->interface(),
 		"ActionInvoked", this, SLOT(actionInvoked(unsigned int, QString)));
 
+	configurationUpdated();
+
 	NotificationManager::instance()->registerNotifier(this);
 
 	import_0_9_0_Configuration();
@@ -145,14 +147,13 @@ void FreedesktopNotify::notify(Notification *notification)
 
 	QString text;
 
-	if (((notification->type() == "NewMessage") || (notification->type() == "NewChat")) &&
-			config_file.readBoolEntry("FreedesktopNotify", "ShowContentMessage"))
+	if (((notification->type() == "NewMessage") || (notification->type() == "NewChat")) && ShowContentMessage)
 	{
 		text.append(notification->text() + (ServerSupportsHtml ? "<br/><small>" : "\n"));
 
 		QString strippedDetails = notification->details().replace("<br/>", "\n").remove(StripHTML).replace('\n', QLatin1String("<br/>"));
-		if (strippedDetails.length() > config_file.readNumEntry("FreedesktopNotify", "CiteSign", 10))
-			text.append(strippedDetails.left(config_file.readNumEntry("FreedesktopNotify", "CiteSign", 10)) + "...");
+		if (strippedDetails.length() > CiteSign)
+			text.append(strippedDetails.left(CiteSign) + "...");
 		else
 			text.append(strippedDetails);
 		if (ServerSupportsHtml)
@@ -179,7 +180,7 @@ void FreedesktopNotify::notify(Notification *notification)
 	}
 	args.append(actions);
 	args.append(QVariantMap());
-	args.append(config_file.readNumEntry("FreedesktopNotify", "Timeout", 10) * 1000);
+	args.append(Timeout * 1000);
 
 	QDBusReply<unsigned int> reply = KNotify->callWithArgumentList(QDBus::Block, "Notify", args);
 	if (reply.isValid())
@@ -190,7 +191,7 @@ void FreedesktopNotify::notify(Notification *notification)
 
 		NotificationMap.insert(reply.value(), notification);
 		IdQueue.enqueue(reply.value());
-		QTimer::singleShot(config_file.readNumEntry("FreedesktopNotify", "Timeout", 10) * 1000 + 2000, this, SLOT(deleteMapItem()));
+		QTimer::singleShot(Timeout * 1000 + 2000, this, SLOT(deleteMapItem()));
 	}
 }
 
@@ -274,6 +275,13 @@ void FreedesktopNotify::deleteMapItem()
 
 	if (notification)
 		notification->release();
+}
+
+void FreedesktopNotify::configurationUpdated()
+{
+	Timeout = config_file.readNumEntry("FreedesktopNotify", "Timeout");
+	ShowContentMessage = config_file.readBoolEntry("FreedesktopNotify", "ShowContentMessage");
+	CiteSign = config_file.readNumEntry("FreedesktopNotify", "CiteSign");
 }
 
 void FreedesktopNotify::import_0_9_0_Configuration()

@@ -25,13 +25,14 @@
 #include <QtCore/QMap>
 #include <QtCore/QQueue>
 
+#include "configuration/configuration-aware-object.h"
 #include "notify/notifier.h"
 
 class QDBusInterface;
 
 class Notification;
 
-class FreedesktopNotify : public Notifier
+class FreedesktopNotify : public Notifier, public ConfigurationAwareObject
 {
 	Q_OBJECT
 
@@ -44,6 +45,10 @@ class FreedesktopNotify : public Notifier
 	QRegExp StripHTML;
 	QMap<unsigned int, Notification *> NotificationMap;
 	QQueue<unsigned int> IdQueue;
+
+	int Timeout;
+	bool ShowContentMessage;
+	int CiteSign;
 
 	bool UseFreedesktopStandard;
 	bool ServerSupportsActions;
@@ -62,6 +67,9 @@ private slots:
 	void notificationClosed(Notification *notification);
 
 	void slotServiceOwnerChanged(const QString &serviceName, const QString &oldOwner, const QString &newOwner);
+
+protected:
+	void configurationUpdated();
 
 public:
 	static void createInstance();
