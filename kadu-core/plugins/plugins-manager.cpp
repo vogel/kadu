@@ -195,11 +195,7 @@ void PluginsManager::importFrom09()
 		if (!loadedPlugins.contains("hints"))
 			loadedPlugins.append("hints");
 	}
-	if (loadedPlugins.contains("kde_notify"))
-	{
-		loadedPlugins.removeAll("kde_notify");
-		loadedPlugins.append("freedesktop_notify");
-	}
+
 	ensureLoadedAtLeastOnce("gadu_protocol");
 	ensureLoadedAtLeastOnce("jabber_protocol");
 	ensureLoadedAtLeastOnce("sql_history");
