@@ -29,6 +29,7 @@
 #include "misc/path-conversion.h"
 #include "notify/notification-manager.h"
 #include "notify/notification.h"
+#include "notify/notify-event.h"
 #include "url-handlers/url-handler-manager.h"
 #include "debug.h"
 #include "html_document.h"
@@ -58,29 +59,30 @@ void FreedesktopNotify::destroyInstance()
 }
 
 FreedesktopNotify::FreedesktopNotify() :
-		Notifier("KNotify", QT_TRANSLATE_NOOP("@default", "System notifications"), "kadu_icons/notify-hints"),
-		UseFreedesktopStandard(true)
+		Notifier("FreedesktopNotify", QT_TRANSLATE_NOOP("@default", "System notifications"), "kadu_icons/notify-hints"),
+		UseFreedesktopStandard(false)
 {
 	StripHTML.setPattern(QString::fromLatin1("<.*>"));
 	StripHTML.setMinimal(true);
 
-	KNotify = new QDBusInterface("org.freedesktop.Notifications",
-			"/org/freedesktop/Notifications", "org.freedesktop.Notifications");
+	KNotify = new QDBusInterface("org.kde.VisualNotifications",
+			"/VisualNotifications", "org.kde.VisualNotifications");
 
-	// Fallback for older knotify
 	if (!KNotify->isValid())
 	{
 		delete (KNotify);
-		KNotify = new QDBusInterface("org.kde.VisualNotifications",
-				"/VisualNotifications", "org.kde.VisualNotifications");
+		KNotify = new QDBusInterface("org.freedesktop.Notifications",
+				"/org/freedesktop/Notifications", "org.freedesktop.Notifications");
 
-		UseFreedesktopStandard = false;
+		UseFreedesktopStandard = true;
 	}
 
 	KNotify->connection().connect(KNotify->service(), KNotify->path(), KNotify->interface(),
 		"ActionInvoked", this, SLOT(actionInvoked(unsigned int, QString)));
 
 	NotificationManager::instance()->registerNotifier(this);
+
+	import_0_9_0_Configuration();
 	createDefaultConfiguration();
 }
 
@@ -93,9 +95,9 @@ FreedesktopNotify::~FreedesktopNotify()
 
 void FreedesktopNotify::createDefaultConfiguration()
 {
-	config_file.addVariable("KDENotify", "Timeout", 10);
-	config_file.addVariable("KDENotify", "ShowContentMessage", true);
-	config_file.addVariable("KDENotify", "CiteSign", 100);
+	config_file.addVariable("FreedesktopNotify", "Timeout", 10);
+	config_file.addVariable("FreedesktopNotify", "ShowContentMessage", true);
+	config_file.addVariable("FreedesktopNotify", "CiteSign", 100);
 }
 
 void FreedesktopNotify::notify(Notification *notification)
@@ -118,13 +120,13 @@ void FreedesktopNotify::notify(Notification *notification)
 	QString text;
 
 	if (((notification->type() == "NewMessage") || (notification->type() == "NewChat")) &&
-			config_file.readBoolEntry("KDENotify", "ShowContentMessage"))
+			config_file.readBoolEntry("FreedesktopNotify", "ShowContentMessage"))
 	{
 		text.append(notification->text() + "<br/><small>");
 
 		QString strippedDetails = notification->details().replace("<br/>", "\n").remove(StripHTML).replace('\n', QLatin1String("<br/>"));
-		if (strippedDetails.length() > config_file.readNumEntry("KDENotify", "CiteSign", 10))
-			text.append(strippedDetails.left(config_file.readNumEntry("KDENotify", "CiteSign", 10)) + "...");
+		if (strippedDetails.length() > config_file.readNumEntry("FreedesktopNotify", "CiteSign", 10))
+			text.append(strippedDetails.left(config_file.readNumEntry("FreedesktopNotify", "CiteSign", 10)) + "...");
 		else
 			text.append(strippedDetails);
 
@@ -149,7 +151,7 @@ void FreedesktopNotify::notify(Notification *notification)
 
 	args.append(actions);
 	args.append(QVariantMap());
-	args.append(config_file.readNumEntry("KDENotify", "Timeout", 10) * 1000);
+	args.append(config_file.readNumEntry("FreedesktopNotify", "Timeout", 10) * 1000);
 
 	QDBusReply<unsigned int> reply = KNotify->callWithArgumentList(QDBus::Block, "Notify", args);
 	if (reply.isValid())
@@ -160,7 +162,7 @@ void FreedesktopNotify::notify(Notification *notification)
 
 		NotificationMap.insert(reply.value(), notification);
 		IdQueue.enqueue(reply.value());
-		QTimer::singleShot(config_file.readNumEntry("KDENotify", "Timeout", 10) * 1000 + 2000, this, SLOT(deleteMapItem()));
+		QTimer::singleShot(config_file.readNumEntry("FreedesktopNotify", "Timeout", 10) * 1000 + 2000, this, SLOT(deleteMapItem()));
 	}
 }
 
@@ -225,4 +227,14 @@ void FreedesktopNotify::deleteMapItem()
 
 	if (notification)
 		notification->release();
+}
+
+void FreedesktopNotify::import_0_9_0_Configuration()
+{
+	config_file.addVariable("FreedesktopNotify", "Timeout", config_file.readEntry("KDENotify", "Timeout"));
+	config_file.addVariable("FreedesktopNotify", "ShowContentMessage", config_file.readEntry("KDENotify", "ShowContentMessage"));
+	config_file.addVariable("FreedesktopNotify", "CiteSign", config_file.readEntry("KDENotify", "CiteSign"));
+
+	foreach (NotifyEvent *event, NotificationManager::instance()->notifyEvents())
+		config_file.addVariable("Notify", event->name() + "_FreedesktopNotify", config_file.readEntry("Notify", event->name() + "_KNotify"));
 }

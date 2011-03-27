@@ -47,6 +47,7 @@ class FreedesktopNotify : public Notifier
 
 	bool UseFreedesktopStandard;
 
+	void import_0_9_0_Configuration();
 	void createDefaultConfiguration();
 
 private slots:
