@@ -124,9 +124,9 @@ void FreedesktopNotify::notify(Notification *notification)
 	args.append(0U);
 
 	if (notification->iconPath().isEmpty())
-		args.append(IconsManager::instance()->iconPath("kadu_icons/section-kadu", "32x32"));
+		args.append(IconsManager::instance()->iconPath("kadu_icons/section-kadu", "64x64"));
 	else
-		args.append(IconsManager::instance()->iconPath(notification->iconPath(), "32x32"));
+		args.append(IconsManager::instance()->iconPath(notification->iconPath(), "64x64"));
 
 	// the new spec doesn't have this
 	if (!UseFreedesktopStandard)
