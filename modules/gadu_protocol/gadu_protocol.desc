@@ -6,3 +6,4 @@ LoadByDefault=true
 Version=core
 Dependencies=
 Type=protocol
+Plugin=true

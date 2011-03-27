@@ -65,6 +65,7 @@ set (SOURCES
 	gadu-id-validator.cpp
 	gadu-protocol.cpp
 	gadu-protocol-factory.cpp
+	gadu-protocol-plugin.cpp
 	gadu-resolver.cpp
 	gadu-url-handler.cpp
 )
@@ -121,6 +122,7 @@ set (MOC_SOURCES
 
 	gadu-id-validator.h
 	gadu-protocol-factory.h
+	gadu-protocol-plugin.h
 	gadu-protocol.h
 	gadu-resolver.h
 	gadu-url-handler.h

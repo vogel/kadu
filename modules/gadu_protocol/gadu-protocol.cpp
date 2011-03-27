@@ -23,9 +23,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QCoreApplication>
 #include <QtCore/QTimer>
-#include <QtCrypto>
 
 #ifdef Q_OS_WIN
 #include <winsock2.h>
@@ -45,18 +43,15 @@
 #include "contacts/contact-manager.h"
 #include "gui/windows/message-dialog.h"
 #include "gui/windows/password-window.h"
-#include "protocols/protocols-manager.h"
 #include "qt/long-validator.h"
 #include "status/status.h"
 #include "status/status-type.h"
 #include "status/status-type-manager.h"
-#include "url-handlers/url-handler-manager.h"
 
 #include "debug.h"
 #include "icons-manager.h"
 #include "misc/misc.h"
 
-#include "helpers/gadu-formatter.h"
 #include "server/gadu-contact-list-handler.h"
 #include "server/gadu-servers-manager.h"
 #include "socket-notifiers/gadu-protocol-socket-notifiers.h"
@@ -65,66 +60,10 @@
 #include "helpers/gadu-importer.h"
 #include "gadu-account-details.h"
 #include "gadu-contact-details.h"
-#include "gadu-id-validator.h"
-#include "gadu-protocol-factory.h"
-#include "gadu-resolver.h"
-#include "gadu-url-handler.h"
 
 #include "gadu-protocol.h"
 
 #define GG8_DESCRIPTION_MASK 0x00ff
-
-extern "C" KADU_EXPORT int gadu_protocol_init(bool firstLoad)
-{
-	Q_UNUSED(firstLoad)
-
-	GaduServersManager::createInstance();
-
-	if (ProtocolsManager::instance()->hasProtocolFactory("gadu"))
-		return 0;
-
-	// 8 bits for gadu debug
-	gg_debug_level = debug_mask & 255;
-
-	gg_proxy_host = 0;
-	gg_proxy_username = 0;
-	gg_proxy_password = 0;
-
-#ifndef DEBUG_ENABLED
-	gg_debug_level = 0;
-#endif
-	gg_global_set_custom_resolver(gadu_resolver_start, gadu_resolver_cleanup);
-
-	GaduIdValidator::createInstance();
-
-	GaduProtocolFactory::createInstance();
-
-	ProtocolsManager::instance()->registerProtocolFactory(GaduProtocolFactory::instance());
-	UrlHandlerManager::instance()->registerUrlHandler("Gadu", new GaduUrlHandler());
-
-	GaduImporter::createInstance();
-
-	if (AccountManager::instance()->allItems().isEmpty())
-		GaduImporter::instance()->importAccounts();
-	GaduImporter::instance()->importContacts();
-
-	return 0;
-}
-
-extern "C" KADU_EXPORT void gadu_protocol_close()
-{
-	GaduImporter::destroyInstance();
-
-	UrlHandlerManager::instance()->unregisterUrlHandler("Gadu");
-	ProtocolsManager::instance()->unregisterProtocolFactory(GaduProtocolFactory::instance());
-
-	GaduProtocolFactory::destroyInstance();
-
-	GaduIdValidator::destroyInstance();
-	GaduServersManager::destroyInstance();
-
-	qRemovePostRoutine(QCA::deinit);
-}
 
 #define GG_STATUS_INVISIBLE2 0x0009
 QString GaduProtocol::statusTypeFromGaduStatus(unsigned int index)
