@@ -23,7 +23,13 @@
 
 #include "freedesktop-notify.h"
 
-extern "C" KADU_EXPORT int freedesktop_notify_init(bool firstLoad)
+#include "freedesktop-notify-plugin.h"
+
+FreedesktopNotifyPlugin::~FreedesktopNotifyPlugin()
+{
+}
+
+int FreedesktopNotifyPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
@@ -33,8 +39,10 @@ extern "C" KADU_EXPORT int freedesktop_notify_init(bool firstLoad)
 	return 0;
 }
 
-extern "C" KADU_EXPORT void freedesktop_notify_close()
+void FreedesktopNotifyPlugin::done()
 {
 	FreedesktopNotifyConfigurationUiHandler::unregisterConfigurationUi();
 	FreedesktopNotify::destroyInstance();
 }
+
+Q_EXPORT_PLUGIN2(freedesktop_notify, FreedesktopNotifyPlugin)
