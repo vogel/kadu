@@ -23,21 +23,18 @@
  */
 
 #include <QtCore/QMetaMethod>
+#include <QtCore/QTimer>
 #include <QtDBus/QDBusInterface>
+#include <QtDBus/QDBusReply>
 #include <QtDBus/QDBusServiceWatcher>
 
 #include "configuration/configuration-file.h"
-#include "misc/path-conversion.h"
 #include "notify/notification-manager.h"
 #include "notify/notification.h"
 #include "notify/notify-event.h"
 #include "url-handlers/url-handler-manager.h"
-#include "debug.h"
 #include "html_document.h"
 #include "icons-manager.h"
-
-#include <QDBusReply>
-#include <QTimer>
 
 #include "freedesktop-notify.h"
 
