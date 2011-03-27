@@ -4,7 +4,6 @@
 * cmake: faster linking, not using final.cpp on Windows compilation (Darom, beevvy, Vogel)
 * gui: #2048 fixed: opening percent-encoded URL's with system web browser (beevvy)
 * gui: new syntax editor window layout (ultr)
-* core: #2091 fixed: 'Send message' shortcut restored (ultr)
 * modules: Hide base modules option removed from modules window (Vogel)
 * plugins: new API for loading plugins (Vogel)
 
@@ -14,6 +13,7 @@
 * gadu: do not flood server with ADD_NOTIFY and REMOVE_NOTIFY packets before list is sent (Vogel)
 * identities: fixed crash after removing the last account in a non-permanent identity in simple mode (beevvy)
 * tabs: #2093 fixed: close/open chat buttons reserved space in tab bar corners even if disabled (beevvy)
+* core: #2091 fixed: 'Send message' shortcut restored (ultr)
 
 +++ version 0.9.0
 * configuration: configuration is now always properly imported on Windows (Vogel)
