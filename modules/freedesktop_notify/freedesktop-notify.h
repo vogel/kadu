@@ -19,30 +19,46 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef KDE_NOTIFY_H
-#define KDE_NOTIFY_H
+#ifndef FREEDESKTOP_NOTIFY_H
+#define FREEDESKTOP_NOTIFY_H
 
+#include <QtCore/QMap>
 #include <QtCore/QQueue>
 
-#include "gui/windows/main-configuration-window.h"
+#include "configuration/configuration-aware-object.h"
 #include "notify/notifier.h"
 
 class QDBusInterface;
 
 class Notification;
 
-class KdeNotify : public Notifier, public ConfigurationUiHandler
+class FreedesktopNotify : public Notifier, public ConfigurationAwareObject
 {
 	Q_OBJECT
+
+	static FreedesktopNotify *Instance;
+
+	explicit FreedesktopNotify();
+	virtual ~FreedesktopNotify();
 
 	QDBusInterface *KNotify;
 	QRegExp StripHTML;
 	QMap<unsigned int, Notification *> NotificationMap;
 	QQueue<unsigned int> IdQueue;
 
-	bool UseFreedesktopStandard;
+	int Timeout;
+	bool ShowContentMessage;
+	int CiteSign;
 
+	bool UseFreedesktopStandard;
+	bool ServerSupportsActions;
+	bool ServerSupportsHtml;
+	bool ServerCapabilitesReqiuresChecking;
+
+	void import_0_9_0_Configuration();
 	void createDefaultConfiguration();
+
+	void checkServerCapabilities();
 
 private slots:
 	void actionInvoked(unsigned int id, QString action);
@@ -50,18 +66,21 @@ private slots:
 
 	void notificationClosed(Notification *notification);
 
-public:
-	explicit KdeNotify(QObject *parent = 0);
-	virtual ~KdeNotify();
+	void slotServiceOwnerChanged(const QString &serviceName, const QString &oldOwner, const QString &newOwner);
 
-	virtual CallbackCapacity callbackCapacity() { return CallbackSupported; }
+protected:
+	void configurationUpdated();
+
+public:
+	static void createInstance();
+	static void destroyInstance();
+	static FreedesktopNotify * instance();
+
+	virtual CallbackCapacity callbackCapacity() { return ServerSupportsActions ? CallbackSupported : CallbackNotSupported; }
 
 	virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = 0) { Q_UNUSED(parent); return 0; }
-	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
 	virtual void notify(Notification *notification);
 
 };
 
-extern KdeNotify *kde_notify;
-
-#endif // KDE_NOTIFY_H
+#endif // FREEDESKTOP_NOTIFY_H
