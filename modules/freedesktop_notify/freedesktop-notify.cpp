@@ -148,11 +148,15 @@ void FreedesktopNotify::notify(Notification *notification)
 	{
 		text.append(notification->text() + (ServerSupportsHtml ? "<br/><small>" : "\n"));
 
-		QString strippedDetails = notification->details().replace("<br/>", "\n").remove(StripHTML).replace('\n', QLatin1String("<br/>"));
+		QString strippedDetails = notification->details().replace("<br/>", "\n").remove(StripHTML);
+		if (ServerSupportsHtml)
+			strippedDetails.replace('\n', QLatin1String("<br/>"));
+
 		if (strippedDetails.length() > CiteSign)
 			text.append(strippedDetails.left(CiteSign) + "...");
 		else
 			text.append(strippedDetails);
+
 		if (ServerSupportsHtml)
 			text.append("</small>");
 	}

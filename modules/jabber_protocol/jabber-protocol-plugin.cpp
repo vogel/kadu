@@ -40,6 +40,8 @@ JabberProtocolPlugin::~JabberProtocolPlugin()
 
 int JabberProtocolPlugin::init(bool firstLoad)
 {
+	Q_UNUSED(firstLoad)
+
 	if (ProtocolsManager::instance()->hasProtocolFactory("jabber")
 			|| ProtocolsManager::instance()->hasProtocolFactory("gtalk")
 			|| ProtocolsManager::instance()->hasProtocolFactory("facebook"))
