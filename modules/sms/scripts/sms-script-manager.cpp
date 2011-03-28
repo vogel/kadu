@@ -77,9 +77,9 @@ void SmsScriptsManager::init()
 // 	debuger->attachTo(Engine);
 // 	debuger->standardWindow()->show();
 
-	loadScript(dataPath("kadu/modules/data/sms/scripts/gateway.js"));
+	loadScript(dataPath("kadu/plugins/data/sms/scripts/gateway.js"));
 
-	QDir scriptDirectory(dataPath("kadu/modules/data/sms/scripts/"));
+	QDir scriptDirectory(dataPath("kadu/plugins/data/sms/scripts/"));
 	if (scriptDirectory.exists())
 	{
 		QStringList filters;
