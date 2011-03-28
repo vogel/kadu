@@ -127,7 +127,7 @@ void PluginsManager::load()
 		{
 			QSharedPointer<StoragePoint> storagePoint(new StoragePoint(storage()->storage(), pluginElement));
 			QString name = storagePoint->point().attribute("name");
-			if (!name.isEmpty())
+			if (!name.isEmpty() && !Plugins.contains(name))
 			{
 				Plugin *plugin = new Plugin(name, this);
 				Plugins.insert(name, plugin);
@@ -136,10 +136,11 @@ void PluginsManager::load()
 	}
 
 	foreach (const QString &moduleName, installedPlugins())
-	{
-		Plugin *plugin = new Plugin(moduleName, this);
-		Plugins.insert(moduleName, plugin);
-	}
+		if (!Plugins.contains(moduleName))
+		{
+			Plugin *plugin = new Plugin(moduleName, this);
+			Plugins.insert(moduleName, plugin);
+		}
 
 	foreach (Plugin *plugin, Plugins)
 		plugin->ensureLoaded();

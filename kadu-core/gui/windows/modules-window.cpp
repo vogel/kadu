@@ -260,7 +260,7 @@ void ModulesWindow::getInfo()
 	if (!selected)
 		return;
 
-	if (PluginsManager::instance()->plugins().contains(selected->text(0)))
+	if (!PluginsManager::instance()->plugins().contains(selected->text(0)))
 		return;
 
 	PluginInfo *pluginInfo = PluginsManager::instance()->plugins().value(selected->text(0))->info();
