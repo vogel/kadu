@@ -61,6 +61,10 @@ public:
 	bool sendImageRequest(Contact contact, int size, quint32 crc32);
 	void prepareImageToSend(const QString &imageFileName, quint32 &size, quint32 &crc32);
 
+	virtual qint64 softSizeLimit();
+	virtual qint64 hardSizeLimit();
+	virtual bool showSoftSizeWarning(Account account);
+
 };
 
 #endif // GADU_CHAT_IMAGE_SERVICE

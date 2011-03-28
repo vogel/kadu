@@ -162,3 +162,21 @@ void GaduChatImageService::prepareImageToSend(const QString &imageFileName, quin
 
 	ImagesToSend[qMakePair(size, crc32)] = imageToSend;
 }
+
+qint64 GaduChatImageService::softSizeLimit()
+{
+	return 255 * 1024;
+}
+
+qint64 GaduChatImageService::hardSizeLimit()
+{
+	return ChatImageService::NoSizeLimit;
+}
+
+bool GaduChatImageService::showSoftSizeWarning(Account account)
+{
+	GaduAccountDetails *details = dynamic_cast<GaduAccountDetails *>(account.details());
+	if (!details)
+		return true;
+	return details->chatImageSizeWarning();
+}

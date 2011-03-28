@@ -300,7 +300,7 @@ void GaduProtocol::setupLoginParams()
 	GaduLoginParams.has_audio = false;
 	GaduLoginParams.last_sysmsg = config_file.readNumEntry("General", "SystemMsgIndex", 1389);
 
-	GaduLoginParams.image_size = gaduAccountDetails->maximumImageSize();
+	GaduLoginParams.image_size = qMax(qMin(gaduAccountDetails->maximumImageSize(), 255), 0);
 }
 
 void GaduProtocol::cleanUpLoginParams()

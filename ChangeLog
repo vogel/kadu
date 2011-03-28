@@ -11,6 +11,7 @@
 * gadu: use Kadu VERSION as client version for Gadu protocol (Vogel)
 * gui: status buttons now are blinking when connection is being established (Vogel)
 * protocols: proper reactions to network going online/offline (Vogel)
+* gadu: image size limitting is now optional (ultr)
 
 +++ version 0.9.1
 * identities: fixed displaying improper status information when having more jabber and gadu account in one identity and invisible status for gadu (beevvy)

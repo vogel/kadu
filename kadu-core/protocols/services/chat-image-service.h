@@ -1,5 +1,6 @@
 /*
  * %kadu copyright begin%
+ * Copyright 2011 Piotr Dąbrowski (ultr@ultr.pl)
  * Copyright 2010 Bartosz Brachaczek (b.brachaczek@gmail.com)
  * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * Copyright 2009 Michał Podsiadlik (michal@kadu.net)
@@ -24,6 +25,7 @@
 
 #include <QtCore/QObject>
 
+#include "accounts/account.h"
 #include "exports.h"
 
 class KADUAPI ChatImageService : public QObject
@@ -31,9 +33,17 @@ class KADUAPI ChatImageService : public QObject
 	Q_OBJECT
 
 public:
+	static const int NoSizeLimit = -1;
+
 	static QString imagesPath();
 
 	explicit ChatImageService(QObject *parent = 0);
+
+	virtual qint64 hardSizeLimit() { return NoSizeLimit; }
+	virtual qint64 softSizeLimit() { return NoSizeLimit; }
+	bool fitsHardSizeLimit(qint64 size);
+	bool fitsSoftSizeLimit(qint64 size);
+	virtual bool showSoftSizeWarning(Account account) { Q_UNUSED(account); return true; }
 
 signals:
 	void imageReceived(const QString &id, const QString &fileName);

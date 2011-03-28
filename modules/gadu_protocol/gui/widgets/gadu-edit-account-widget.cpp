@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2010 Piotr Dąbrowski (ultr@ultr.pl)
+ * Copyright 2010, 2011 Piotr Dąbrowski (ultr@ultr.pl)
  * Copyright 2010, 2011 Bartosz Brachaczek (b.brachaczek@gmail.com)
  * Copyright 2009, 2010, 2011 Piotr Galiszewski (piotr.galiszewski@kadu.im)
  * Copyright 2009, 2010 Wojciech Treter (juzefwt@gmail.com)
@@ -200,35 +200,56 @@ void GaduEditAccountWidget::createOptionsTab(QTabWidget *tabWidget)
 
 	QVBoxLayout *layout = new QVBoxLayout(optionsTab);
 
-	QGroupBox *images = new QGroupBox(tr("Images"), this);
-	QFormLayout *imagesLayout = new QFormLayout(images);
+	// incoming images
+
+	QGroupBox *inclomingImages = new QGroupBox(tr("Incoming Images"), this);
+	QFormLayout *incomingImagesLayout = new QFormLayout(inclomingImages);
+
+	LimitImageSize = new QCheckBox(tr("Limit incoming images' size"), optionsTab);
+	connect(LimitImageSize, SIGNAL(toggled(bool)), this, SLOT(dataChanged()));
+	incomingImagesLayout->addRow(LimitImageSize);
 
 	MaximumImageSize = new QSpinBox(optionsTab);
 	MaximumImageSize->setMinimum(0);
-	MaximumImageSize->setMaximum(255);
+	MaximumImageSize->setMaximum(20*1024); // 20 MiB
 	MaximumImageSize->setSingleStep(10);
 	MaximumImageSize->setSuffix(" kB");
-	MaximumImageSize->setToolTip(tr("Maximum image size that we want to receive"));
+	MaximumImageSize->setToolTip(tr("Maximum images' size that you accept"));
 	connect(MaximumImageSize, SIGNAL(valueChanged(int)), this, SLOT(dataChanged()));
+	incomingImagesLayout->addRow(tr("Maximum incoming images' size") + ':', MaximumImageSize);
 
-	imagesLayout->addRow(tr("Maximum image size for chat") + ':', MaximumImageSize);
+	ImageSizeAsk = new QCheckBox(tr("Ask for confirmation if an image's size exceeds the limit"), optionsTab);
+	connect(ImageSizeAsk, SIGNAL(toggled(bool)), this, SLOT(dataChanged()));
+	incomingImagesLayout->addRow(ImageSizeAsk);
 
-	ReceiveImagesDuringInvisibility = new QCheckBox(tr("Receive images during invisibility"), optionsTab);
-	ReceiveImagesDuringInvisibility->setToolTip(tr("Receiving images during invisibility is allowed"));
+	connect(LimitImageSize, SIGNAL(toggled(bool)), MaximumImageSize, SLOT(setEnabled(bool)));
+	connect(LimitImageSize, SIGNAL(toggled(bool)), ImageSizeAsk, SLOT(setEnabled(bool)));
+
+	ReceiveImagesDuringInvisibility = new QCheckBox(tr("Receive images also when Invisible"), optionsTab);
 	connect(ReceiveImagesDuringInvisibility, SIGNAL(clicked()), this, SLOT(dataChanged()));
-
-	imagesLayout->addRow(ReceiveImagesDuringInvisibility);
+	incomingImagesLayout->addRow(ReceiveImagesDuringInvisibility);
 
 	MaximumImageRequests = new QSpinBox(optionsTab);
 	MaximumImageRequests->setMinimum(1);
-	MaximumImageRequests->setMaximum(30);
+	MaximumImageRequests->setMaximum(60);
 	MaximumImageRequests->setSingleStep(1);
-	MaximumImageRequests->setToolTip(tr("Define limit of images received per minute"));
 	connect(MaximumImageRequests, SIGNAL(valueChanged(int)), this, SLOT(dataChanged()));
+	incomingImagesLayout->addRow(tr("Limit numbers of images received per minute") + ':', MaximumImageRequests);
 
-	imagesLayout->addRow(tr("Limit numbers of image received per minute") + ':', MaximumImageRequests);
+	layout->addWidget(inclomingImages);
 
-	layout->addWidget(images);
+	// outgoing images
+
+	QGroupBox *outgoingImages = new QGroupBox(tr("Outgoing Images"), this);
+	QFormLayout *outgoingImagesLayout = new QFormLayout(outgoingImages);
+
+	ChatImageSizeWarning = new QCheckBox(tr("Show a warning when the image is larger then 256 KiB"), optionsTab);
+	connect(ChatImageSizeWarning, SIGNAL(toggled(bool)), this, SLOT(dataChanged()));
+	outgoingImagesLayout->addRow(ChatImageSizeWarning);
+
+	layout->addWidget(outgoingImages);
+
+	// status
 
 	QGroupBox *status = new QGroupBox(tr("Status"), this);
 	QFormLayout *statusLayout = new QFormLayout(status);
@@ -241,6 +262,8 @@ void GaduEditAccountWidget::createOptionsTab(QTabWidget *tabWidget)
 
 	layout->addWidget(status);
 
+	// notifications
+
 	QGroupBox *notifications = new QGroupBox(tr("Notifications"), this);
 
 	QVBoxLayout *notificationsLayout = new QVBoxLayout(notifications);
@@ -249,6 +272,8 @@ void GaduEditAccountWidget::createOptionsTab(QTabWidget *tabWidget)
 	notificationsLayout->addWidget(SendTypingNotification);
 
 	layout->addWidget(notifications);
+
+	// stretch
 
 	layout->addStretch(100);
 }
@@ -301,9 +326,13 @@ void GaduEditAccountWidget::apply()
 
 	if (Details)
 	{
+		Details->setLimitImageSize(LimitImageSize->isChecked());
 		Details->setMaximumImageSize(MaximumImageSize->value());
+		Details->setImageSizeAsk(ImageSizeAsk->isChecked());
 		Details->setReceiveImagesDuringInvisibility(ReceiveImagesDuringInvisibility->isChecked());
 		Details->setMaximumImageRequests(MaximumImageRequests->value());
+
+		Details->setChatImageSizeWarning(ChatImageSizeWarning->isChecked());
 
 		Details->setAllowDcc(AllowFileTransfers->isChecked());
 		Details->setTlsEncryption(UseTlsEncryption->isChecked());
@@ -356,9 +385,13 @@ void GaduEditAccountWidget::dataChanged()
 		&& account().rememberPassword() == RememberPassword->isChecked()
 		&& account().password() == AccountPassword->text()
 		&& account().privateStatus() != PrivateStatus->isChecked()
+		&& Details->limitImageSize() == LimitImageSize->isChecked()
 		&& Details->maximumImageSize() == MaximumImageSize->value()
+		&& Details->imageSizeAsk() == ImageSizeAsk->isChecked()
 		&& Details->receiveImagesDuringInvisibility() == ReceiveImagesDuringInvisibility->isChecked()
 		&& Details->maximumImageRequests() == MaximumImageRequests->value()
+
+		&& Details->chatImageSizeWarning() == ChatImageSizeWarning->isChecked()
 
 		&& Details->allowDcc() == AllowFileTransfers->isChecked()
 
@@ -401,9 +434,15 @@ void GaduEditAccountWidget::loadAccountData()
 	GaduAccountDetails *details = dynamic_cast<GaduAccountDetails *>(account().details());
 	if (details)
 	{
+		LimitImageSize->setChecked(details->limitImageSize());
 		MaximumImageSize->setValue(details->maximumImageSize());
+		ImageSizeAsk->setChecked(details->imageSizeAsk());
 		ReceiveImagesDuringInvisibility->setChecked(details->receiveImagesDuringInvisibility());
 		MaximumImageRequests->setValue(details->maximumImageRequests());
+		MaximumImageSize->setEnabled(details->limitImageSize());
+		ImageSizeAsk->setEnabled(details->limitImageSize());
+
+		ChatImageSizeWarning->setChecked(details->chatImageSizeWarning());
 
 		AllowFileTransfers->setChecked(details->allowDcc());
 		UseTlsEncryption->setChecked(details->tlsEncryption());
