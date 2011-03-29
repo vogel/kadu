@@ -78,6 +78,9 @@ public:
 	Hint(QWidget *parent, Notification *notification);
 	virtual ~Hint();
 
+	void mouseOver();
+	void mouseOut();
+
 	void getData(QString &text, QPixmap &pixmap, unsigned int &timeout, QFont &font, QColor &fgcolor, QColor &bgcolor);
 	bool requireManualClosing();
 	bool isDeprecated();
