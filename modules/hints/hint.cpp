@@ -119,12 +119,9 @@ void Hint::configurationUpdated()
 	bcolor = config_file.readColorEntry("Hints", "Event_" + notification->key() + "_bgcolor", &qApp->palette().background().color());
 	fcolor = config_file.readColorEntry("Hints", "Event_" + notification->key() + "_fgcolor", &qApp->palette().foreground().color());
 	label->setFont(config_file.readFontEntry("Hints", "Event_" + notification->key() + "_font", &qApp->font()));
-	QString style = QString("QWidget {color:%1; background-color:%2; border-width:0px; border-color:%2}").arg(fcolor.name(), bcolor.name());
-
-	setStyleSheet(style);
-
 	setMinimumWidth(config_file.readNumEntry("Hints", "MinimumWidth", 100));
 	setMaximumWidth(config_file.readNumEntry("Hints", "MaximumWidth", 500));
+	mouseOut();
 }
 
 void Hint::createLabels(const QPixmap &pixmap)
@@ -281,11 +278,21 @@ void Hint::mouseReleaseEvent(QMouseEvent *event)
 
 void Hint::enterEvent(QEvent *)
 {
+	mouseOver();
+}
+
+void Hint::leaveEvent(QEvent *)
+{
+	mouseOut();
+}
+
+void Hint::mouseOver()
+{
 	QString style = QString("QWidget {color:%1; background-color:%2; border-width:0px; border-color:%2}").arg(fcolor.name(), bcolor.lighter().name());
 	setStyleSheet(style);
 }
 
-void Hint::leaveEvent(QEvent *)
+void Hint::mouseOut()
 {
 	QString style = QString("QWidget {color:%1; background-color:%2; border-width:0px; border-color:%2}").arg(fcolor.name(), bcolor.name());
 	setStyleSheet(style);

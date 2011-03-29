@@ -243,6 +243,8 @@ void HintManager::setHint()
 
 	frame->setWindowOpacity(Opacity);
 
+	frame->update();
+
 	kdebugf2();
 }
 
