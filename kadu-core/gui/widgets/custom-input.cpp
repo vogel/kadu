@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2011 S³awomir Stêpieñ (s.stepien@interia.pl)
+ * Copyright 2011 SÅ‚awomir StÄ™pieÅ„ (s.stepien@interia.pl)
  * Copyright 2007 Dawid Stawiarski (neeo@kadu.net)
  * Copyright 2010 Bartosz Brachaczek (b.brachaczek@gmail.com)
  * Copyright 2008, 2009, 2010 Piotr Galiszewski (piotr.galiszewski@kadu.im)

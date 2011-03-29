@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2011 S³awomir Stêpieñ (s.stepien@interia.pl)
+ * Copyright 2011 SÅ‚awomir StÄ™pieÅ„ (s.stepien@interia.pl)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
