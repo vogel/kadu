@@ -18,6 +18,7 @@
 * tabs: #2093 fixed: close/open chat buttons reserved space in tab bar corners even if disabled (beevvy)
 * core: #2091 fixed: 'Send message' shortcut restored (ultr)
 * encryption_ng: fixed crash in buddies context menu after unloading module (beevvy)
+* hints: #2086 fixed: invalid handling of "none" buddy-list tooltip type (Vogel)
 
 +++ version 0.9.0
 * configuration: configuration is now always properly imported on Windows (Vogel)
