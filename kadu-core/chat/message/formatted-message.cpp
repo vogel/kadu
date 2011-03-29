@@ -187,6 +187,7 @@ QString FormattedMessage::toPlain() const
 	foreach (const FormattedMessagePart &part, Parts)
 		result += part.content();
 
+	result.replace(QChar::LineSeparator, "\n");
 	return result;
 }
 
