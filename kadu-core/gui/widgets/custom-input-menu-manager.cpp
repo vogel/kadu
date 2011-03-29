@@ -108,7 +108,7 @@ QMenu * CustomInputMenuManager::menu(QWidget *parent)
 
 	QMenu *menu = new QMenu(parent);
 
-	QList<CustomInputMenuItem>::iterator i = InputContextMenu.begin();
+	QList<CustomInputMenuItem>::const_iterator i = InputContextMenu.begin();
 
 	while (i != InputContextMenu.end())
 	{
@@ -116,7 +116,7 @@ QMenu * CustomInputMenuManager::menu(QWidget *parent)
 
 		actionDescription = (*i).actionDescription();
 
-		Action *action = actionDescription->createAction(NULL, parent);
+		Action *action = actionDescription->createAction(0, parent);
 
 		menu->addAction(action);
 

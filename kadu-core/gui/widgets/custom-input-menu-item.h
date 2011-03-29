@@ -41,7 +41,7 @@ public:
 
 	bool operator < (const CustomInputMenuItem &compareTo) const;
 
-	ActionDescription * actionDescription() { return Action; }
+	ActionDescription * actionDescription() const { return Action; }
 	CustomInputMenuCategory category() const { return Category; }
 	int priority() const { return Priority; }
 
