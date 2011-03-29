@@ -243,6 +243,9 @@ bool Plugin::deactivate()
 		PluginLibrary = 0;
 	}
 
+	if (PluginObject)
+		PluginObject->done();
+
 	if (PluginLoader)
 	{
 		PluginLoader->deleteLater();
