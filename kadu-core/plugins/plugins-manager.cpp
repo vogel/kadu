@@ -250,11 +250,11 @@ void PluginsManager::activatePlugins()
 
 	foreach (Plugin *pluginToReplace, Plugins)
 	{
-		if (pluginToReplace->isActive())
+		if (pluginToReplace->isActive() || pluginToReplace->state() != Plugin::PluginStateEnabled)
 			continue;
 
 		foreach (Plugin *replacementPlugin, Plugins)
-			if (replacementPlugin->isValid() && replacementPlugin->info()->replaces().contains(pluginToReplace->name()))
+			if (replacementPlugin->state() == Plugin::PluginStateNew && replacementPlugin->isValid() && replacementPlugin->info()->replaces().contains(pluginToReplace->name()))
 				if (activatePlugin(replacementPlugin))
 					saveList = true; // list has changed
 	}
