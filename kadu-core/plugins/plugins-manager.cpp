@@ -205,9 +205,9 @@ void PluginsManager::importFrom09()
 
 	foreach (Plugin *plugin, Plugins)
 		if (loadedPlugins.contains(plugin->name()))
-			plugin->setState(Plugin::PluginStateLoaded);
+			plugin->setState(Plugin::PluginStateEnabled);
 		else
-			plugin->setState(Plugin::PluginStateNotLoaded);
+			plugin->setState(Plugin::PluginStateDisabled);
 }
 
 void PluginsManager::ensureLoadedAtLeastOnce(const QString& moduleName)
@@ -216,7 +216,7 @@ void PluginsManager::ensureLoadedAtLeastOnce(const QString& moduleName)
 		return;
 
 	if (!Plugin::PluginStateNew == Plugins.value(moduleName)->state())
-		Plugins.value(moduleName)->setState(Plugin::PluginStateLoaded);
+		Plugins.value(moduleName)->setState(Plugin::PluginStateEnabled);
 }
 
 void PluginsManager::activateProtocolPlugins()
@@ -416,7 +416,7 @@ bool PluginsManager::activatePlugin(Plugin *plugin)
 	if (result)
 	{
 		incDependenciesUsageCount(plugin);
-		plugin->setState(Plugin::PluginStateLoaded);
+		plugin->setState(Plugin::PluginStateEnabled);
 	}
 
 	return result;
@@ -448,7 +448,7 @@ bool PluginsManager::deactivatePlugin(Plugin *plugin, bool setAsUnloaded, bool f
 
 	bool result = plugin->deactivate();
 	if (result && setAsUnloaded)
-		plugin->setState(Plugin::PluginStateNotLoaded);
+		plugin->setState(Plugin::PluginStateDisabled);
 
 	return result;
 }

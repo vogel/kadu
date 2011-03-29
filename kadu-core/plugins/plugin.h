@@ -41,8 +41,8 @@ public:
 	enum PluginState
 	{
 		PluginStateNew,
-		PluginStateNotLoaded,
-		PluginStateLoaded
+		PluginStateDisabled,
+		PluginStateEnabled
 	};
 
 private:

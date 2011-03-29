@@ -72,9 +72,9 @@ void Plugin::load()
 
 	QString stateString = loadValue<QString>("State");
 	if (stateString == "Loaded")
-		State = PluginStateLoaded;
+		State = PluginStateEnabled;
 	else if (stateString == "NotLoaded")
-		State = PluginStateNotLoaded;
+		State = PluginStateDisabled;
 	else
 		State = PluginStateNew;
 }
@@ -93,10 +93,10 @@ void Plugin::store()
 		case PluginStateNew:
 			storeValue("State", "New"); // should not happen, but who knows..
 			break;
-		case PluginStateLoaded:
+		case PluginStateEnabled:
 			storeValue("State", "Loaded");
 			break;
-		case PluginStateNotLoaded:
+		case PluginStateDisabled:
 			storeValue("State", "NotLoaded");
 			break;
 	}
@@ -109,9 +109,9 @@ bool Plugin::shouldBeActivated()
 	if (!isValid() || isActive())
 		return false;
 
-	if (PluginStateLoaded == State)
+	if (PluginStateEnabled == State)
 		return true;
-	if (PluginStateNotLoaded == State)
+	if (PluginStateDisabled == State)
 		return false;
 	return Info->loadByDefault();
 }
