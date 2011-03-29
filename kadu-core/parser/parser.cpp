@@ -309,7 +309,7 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 				case 'x':
 					++i;
 					if (contact)
-						pe.content = contact.maximumImageSize();
+						pe.content = QString::number(contact.maximumImageSize());
 					break;
 				case 'z':
 					++i;
