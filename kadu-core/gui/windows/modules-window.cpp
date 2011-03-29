@@ -204,7 +204,13 @@ void ModulesWindow::moduleAction(QTreeWidgetItem *)
 
 void ModulesWindow::loadItem(const QString &item)
 {
-	PluginsManager::instance()->activatePlugin(item);
+	if (!PluginsManager::instance()->plugins().contains(item))
+		return;
+
+	Plugin *plugin = PluginsManager::instance()->plugins().value(item);
+	if (PluginsManager::instance()->activatePlugin(plugin))
+		plugin->setState(Plugin::PluginStateEnabled);
+
 	refreshList();
 
 	ConfigurationManager::instance()->flush();
@@ -212,7 +218,13 @@ void ModulesWindow::loadItem(const QString &item)
 
 void ModulesWindow::unloadItem(const QString &item)
 {
-	PluginsManager::instance()->deactivatePlugin(item, true, false);
+	if (!PluginsManager::instance()->plugins().contains(item))
+		return;
+
+	Plugin *plugin = PluginsManager::instance()->plugins().value(item);
+	if (PluginsManager::instance()->deactivatePlugin(plugin, false))
+		plugin->setState(Plugin::PluginStateDisabled);
+
 	refreshList();
 
 	ConfigurationManager::instance()->flush();

@@ -101,9 +101,7 @@ public:
 	void deactivatePlugins();
 
 	bool activatePlugin(Plugin *plugin);
-	bool activatePlugin(const QString &pluginName);
-	bool deactivatePlugin(Plugin *plugin, bool setAsUnloaded, bool force);
-	bool deactivatePlugin(const QString &pluginName, bool setAsUnloaded, bool force);
+	bool deactivatePlugin(Plugin *plugin, bool force);
 
 	void usePlugin(const QString &pluginName);
 	void releasePlugin(const QString &pluginName);

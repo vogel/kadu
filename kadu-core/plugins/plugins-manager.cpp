@@ -285,7 +285,7 @@ void PluginsManager::deactivatePlugins()
 		deactivated = false;
 		foreach (Plugin *plugin, active)
 			if (plugin->usageCounter() == 0)
-				if (deactivatePlugin(plugin, false, false))
+				if (deactivatePlugin(plugin, false))
 					deactivated = true;
 	}
 	while (deactivated);
@@ -296,7 +296,7 @@ void PluginsManager::deactivatePlugins()
 	foreach (Plugin *plugin, active)
 	{
 		kdebugm(KDEBUG_PANIC, "WARNING! Could not deactivate module %s, killing\n", qPrintable(plugin->name()));
-		deactivatePlugin(plugin, false, true);
+		deactivatePlugin(plugin, true);
 	}
 
 }
@@ -414,25 +414,12 @@ bool PluginsManager::activatePlugin(Plugin *plugin)
 
 	bool result = plugin->activate();
 	if (result)
-	{
 		incDependenciesUsageCount(plugin);
-		plugin->setState(Plugin::PluginStateEnabled);
-	}
 
 	return result;
 }
 
-bool PluginsManager::activatePlugin(const QString& pluginName)
-{
-	kdebugmf(KDEBUG_FUNCTION_START, "'%s'\n", qPrintable(pluginName));
-
-	if (!Plugins.contains(pluginName))
-		return false;
-
-	return activatePlugin(Plugins.value(pluginName));
-}
-
-bool PluginsManager::deactivatePlugin(Plugin *plugin, bool setAsUnloaded, bool force)
+bool PluginsManager::deactivatePlugin(Plugin *plugin, bool force)
 {
 	kdebugmf(KDEBUG_FUNCTION_START, "name:'%s' force:%d usage: %d\n", qPrintable(plugin->name()), force, plugin->usageCounter());
 
@@ -446,21 +433,7 @@ bool PluginsManager::deactivatePlugin(Plugin *plugin, bool setAsUnloaded, bool f
 	foreach (const QString &i, plugin->info()->dependencies())
 		releasePlugin(i);
 
-	bool result = plugin->deactivate();
-	if (result && setAsUnloaded)
-		plugin->setState(Plugin::PluginStateDisabled);
-
-	return result;
-}
-
-bool PluginsManager::deactivatePlugin(const QString &pluginName, bool setAsUnloaded, bool force)
-{
-	kdebugmf(KDEBUG_FUNCTION_START, "name:'%s' force:%d\n", qPrintable(pluginName), force);
-
-	if (!Plugins.contains(pluginName))
-		return true; // non-existing module is properly deactivated
-
-	return deactivatePlugin(Plugins.value(pluginName), setAsUnloaded, force);
+	return plugin->deactivate();
 }
 
 void PluginsManager::usePlugin(const QString &pluginName)
