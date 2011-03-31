@@ -62,6 +62,7 @@
 #include "gadu-contact-details.h"
 
 #include "gadu-protocol.h"
+#include <core/core.h>
 
 #define GG8_DESCRIPTION_MASK 0x00ff
 
@@ -435,7 +436,13 @@ void GaduProtocol::setupLoginParams()
 	GaduLoginParams.server_port = haveServer ? ActiveServer.second : 0;
 
 	GaduLoginParams.protocol_version = GG_DEFAULT_PROTOCOL_VERSION;
+
+#ifdef GADU_HAVE_VALID_CLIENT_NAME
+	GaduLoginParams.client_version = strdup(qPrintable(Core::nameWithVersion()));
+#else
 	GaduLoginParams.client_version = (char *)GG_DEFAULT_CLIENT_VERSION;
+#endif // GADU_HAVE_VALID_CLIENT_NAME
+
 	GaduLoginParams.protocol_features = GG_FEATURE_DND_FFC; // enable new statuses
 
 #ifdef GADU_HAVE_MULTILOGON
@@ -459,6 +466,11 @@ void GaduProtocol::cleanUpLoginParams()
 	memset(GaduLoginParams.password, 0, strlen(GaduLoginParams.password));
 	free(GaduLoginParams.password);
 	GaduLoginParams.password = 0;
+
+#ifdef GADU_HAVE_VALID_CLIENT_NAME
+	free(GaduLoginParams.client_version);
+	GaduLoginParams.client_version = 0;
+#endif // GADU_HAVE_VALID_CLIENT_NAME
 
 	if (GaduLoginParams.status_descr)
 	{

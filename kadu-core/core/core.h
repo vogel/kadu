@@ -78,7 +78,10 @@ protected:
 public:
 	static Core * instance();
 
+	static QString name();
 	static QString version();
+	static QString nameWithVersion();
+
 	bool isClosing() { return IsClosing; }
 	Buddy myself() { return Myself; }
 

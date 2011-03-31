@@ -80,9 +80,19 @@ Core * Core::instance()
 	return Instance;
 }
 
+QString Core::name()
+{
+	return QLatin1String("Kadu");
+}
+
 QString Core::version()
 {
-	return QString(VERSION);
+	return QLatin1String(VERSION);
+}
+
+QString Core::nameWithVersion()
+{
+	return name() + QLatin1String(" ")  + version();
 }
 
 Core::Core() :

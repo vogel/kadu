@@ -8,8 +8,8 @@
 * kde_notify: display better icon for notification (Vogel)
 * freedesktop_notify: kde_notify renamed to freedesktop_notify (WhE)
 * freedesktop_notify: add checking for server capabilities (WhE)
-* plugins: #2104 fixed: plugins are now properly closed (Vogel)
 * gui: #1978 fixed: detection of window being covered by other windows under OpenBox (ultr)
+* gadu: use Kadu VERSION as client version for Gadu protocol (Vogel)
 
 +++ version 0.9.1
 * identities: fixed displaying improper status information when having more jabber and gadu account in one identity and invisible status for gadu (beevvy)
