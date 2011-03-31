@@ -64,6 +64,10 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Orange Multibox</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>User ID (48xxxxxxxxx)</source>
         <translation type="unfinished"></translation>
     </message>
