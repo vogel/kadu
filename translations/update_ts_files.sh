@@ -2,31 +2,36 @@
 
 PWD=`pwd`
 LOG=$PWD/update_ts_file.log
-XSLT_PROCESSOR=saxon-xslt
 
-if [ ! -e $1 ]; then
-	XSLT_PROCESSOR=$1
+PROCESSONLY=""
+if [ -n "$1" ]; then
+	PROCESSONLY="$1"
+	echo "Only processing \"$PROCESSONLY\"";
 fi
+
+XSLT_PROCESSOR=$(which saxon-xslt) || XSLT_PROCESSOR=$(which saxon8) || XSLT_PROCESSOR=$(which xt) || XSLT_PROCESSOR=saxon-xslt
 
 LUPDATE=$(which lupdate-qt4) || LUPDATE=$(which lupdate) || LUPDATE=$QTDIR/bin/lupdate
 
-echo "Updating kadu-core translations"
-echo > $LOG
+if [ -z "$PROCESSONLY" ] || [ "$PROCESSONLY" = "kadu" ] || [ "$PROCESSONLY" = "kadu-core" ]; then
+	echo "Updating kadu-core translations"
+	echo > $LOG
 
-# empty fake file
-echo > ../kadu-core/.configuration-ui-translations.cpp
-for i in `ls ../varia/configuration/*.ui`; do
-	$XSLT_PROCESSOR $i configuration-ui.xsl >> ../kadu-core/.configuration-ui-translations.cpp 2>> $LOG
-done
+	# empty fake file
+	echo > ../kadu-core/.configuration-ui-translations.cpp
+	for i in `ls ../varia/configuration/*.ui`; do
+		$XSLT_PROCESSOR $i configuration-ui.xsl >> ../kadu-core/.configuration-ui-translations.cpp 2>> $LOG
+	done
 
-# all .cpp files in kadu_core subdirectories
-SRC_FILES=`find ../kadu-core/ -type f -name *.cpp`
-$LUPDATE -locations none -noobsolete -verbose $SRC_FILES -ts kadu_cs.ts >> $LOG 2>&1
-$LUPDATE -locations none -noobsolete -verbose $SRC_FILES -ts kadu_it.ts >> $LOG 2>&1
-$LUPDATE -locations none -noobsolete -verbose $SRC_FILES -ts kadu_pl.ts >> $LOG 2>&1
-$LUPDATE -locations none -noobsolete -verbose $SRC_FILES -ts kadu_en.ts >> $LOG 2>&1
-$LUPDATE -locations none -noobsolete -verbose $SRC_FILES -ts kadu_de.ts >> $LOG 2>&1
-$LUPDATE -locations none -noobsolete -verbose $SRC_FILES -ts kadu_fr.ts >> $LOG 2>&1
+	# all .cpp files in kadu_core subdirectories
+	SRC_FILES=`find ../kadu-core/ -type f -name *.cpp`
+	$LUPDATE -locations none -noobsolete -verbose $SRC_FILES -ts kadu_cs.ts >> $LOG 2>&1
+	$LUPDATE -locations none -noobsolete -verbose $SRC_FILES -ts kadu_it.ts >> $LOG 2>&1
+	$LUPDATE -locations none -noobsolete -verbose $SRC_FILES -ts kadu_pl.ts >> $LOG 2>&1
+	$LUPDATE -locations none -noobsolete -verbose $SRC_FILES -ts kadu_en.ts >> $LOG 2>&1
+	$LUPDATE -locations none -noobsolete -verbose $SRC_FILES -ts kadu_de.ts >> $LOG 2>&1
+	$LUPDATE -locations none -noobsolete -verbose $SRC_FILES -ts kadu_fr.ts >> $LOG 2>&1
+fi
 
 pushd ../modules/ >> $LOG
 for module in *; do
@@ -35,6 +40,10 @@ for module in *; do
 	fi
 
 	if [ ! -f $module/$module.desc ]; then
+		continue;
+	fi
+
+	if [ -n "$PROCESSONLY" ] && [ "$PROCESSONLY" != "$module" ]; then
 		continue;
 	fi
 
