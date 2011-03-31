@@ -23,7 +23,11 @@ GatewayOrangeM.prototype = {
 	},
 
 	id: function() {
-		return "04";
+		/*
+		ID 99 because we don't know for what numbers we should use Orange Multibox (it works with Orange, Plus, Play,
+		Era and others) so we can't choose this gateway automatically.
+		*/
+		return "99";
 	},
 
 	sendSms: function(recipient, signature, content, callbackObject) {
