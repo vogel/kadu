@@ -19,6 +19,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QTimer>
 #include <QtGui/QMenu>
 
 #include "accounts/account.h"
@@ -31,7 +32,7 @@
 #include "status-button.h"
 
 StatusButton::StatusButton(StatusContainer *statusContainer, QWidget *parent) :
-		QPushButton(parent), MyStatusContainer(statusContainer), DisplayStatusName(false)
+		QPushButton(parent), MyStatusContainer(statusContainer), DisplayStatusName(false), BlinkTimer(0), BlinkOffline(true)
 {
 	createGui();
 
@@ -51,9 +52,49 @@ void StatusButton::createGui()
 	setMenu(menu);
 }
 
+void StatusButton::enableBlink()
+{
+	if (BlinkTimer)
+		return;
+
+	BlinkTimer = new QTimer(this);
+	connect(BlinkTimer, SIGNAL(timeout()), this, SLOT(blink()));
+	BlinkTimer->start(500);
+}
+
+void StatusButton::disableBlink()
+{
+	if (!BlinkTimer)
+		return;
+
+	delete BlinkTimer;
+	BlinkTimer = 0;
+
+	setIcon(MyStatusContainer->statusIcon());
+}
+
+void StatusButton::blink()
+{
+	if (!MyStatusContainer->isStatusSettingInProgress())
+	{
+		disableBlink();
+		return;
+	}
+
+	BlinkOffline = !BlinkOffline;
+
+	if (BlinkOffline)
+		setIcon(MyStatusContainer->statusIcon(Status()));
+	else
+		setIcon(MyStatusContainer->statusIcon(MyStatusContainer->nextStatus()));
+}
+
 void StatusButton::updateStatus()
 {
-	setIcon(MyStatusContainer->statusIcon());
+	if (!MyStatusContainer->isStatusSettingInProgress())
+		setIcon(MyStatusContainer->statusIcon());
+	else
+		enableBlink();
 
 	if (DisplayStatusName)
 	{

@@ -249,6 +249,20 @@ Status StatusContainerManager::status()
 			: Status();
 }
 
+Status StatusContainerManager::nextStatus()
+{
+	return DefaultStatusContainer
+			? DefaultStatusContainer->nextStatus()
+			: Status();
+}
+
+bool StatusContainerManager::isStatusSettingInProgress()
+{
+	return DefaultStatusContainer
+			? DefaultStatusContainer->isStatusSettingInProgress()
+			: false;
+}
+
 QString StatusContainerManager::statusDisplayName()
 {
 	return DefaultStatusContainer

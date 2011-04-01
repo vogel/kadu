@@ -34,11 +34,17 @@ class StatusButton : public QPushButton, private ConfigurationAwareObject
 
 	StatusContainer *MyStatusContainer;
 	bool DisplayStatusName;
+	QTimer *BlinkTimer;
+	bool BlinkOffline;
 
 	void createGui();
 	void updateStatus();
 
+	void enableBlink();
+	void disableBlink();
+
 private slots:
+	void blink();
 	void statusUpdated();
 
 protected:

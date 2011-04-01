@@ -40,9 +40,11 @@ public:
 	virtual ~StatusContainer() {}
 
 	virtual QString statusContainerName() = 0;
-	
+
 	virtual void setStatus(Status newStatus) = 0;
 	virtual Status status() = 0;
+	virtual Status nextStatus() = 0;
+	virtual bool isStatusSettingInProgress() = 0;
 
 	virtual void setDescription(const QString &description) = 0;
 

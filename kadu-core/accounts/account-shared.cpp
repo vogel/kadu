@@ -337,6 +337,22 @@ Status AccountShared::status()
 		return Status();
 }
 
+Status AccountShared::nextStatus()
+{
+	if (ProtocolHandler)
+		return ProtocolHandler->nextStatus();
+	else
+		return Status();
+}
+
+bool AccountShared::isStatusSettingInProgress()
+{
+	if (ProtocolHandler)
+		return ProtocolHandler->isConnecting();
+	else
+		return false;
+}
+
 int AccountShared::maxDescriptionLength()
 {
 	if (ProtocolHandler)

@@ -124,6 +124,9 @@ void Protocol::networkStateChanged(NetworkState state)
 			emit disconnected(CurrentAccount);
 			break;
 	}
+
+	// for isStatusSettingInProgress in AccountShared
+	emit statusChanged(CurrentAccount, CurrentStatus);
 }
 
 QIcon Protocol::statusIcon(Status status)

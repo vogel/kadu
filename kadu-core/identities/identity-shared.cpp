@@ -180,6 +180,18 @@ Status IdentityShared::status()
 	return account ? account.data()->status() : Status();
 }
 
+Status IdentityShared::nextStatus()
+{
+	Account account = bestAccount();
+	return account ? account.data()->nextStatus() : Status();
+}
+
+bool IdentityShared::isStatusSettingInProgress()
+{
+	Account account = bestAccount();
+	return account ? account.data()->isStatusSettingInProgress() : false;
+}
+
 QString IdentityShared::statusDisplayName()
 {
 	return status().displayName();
