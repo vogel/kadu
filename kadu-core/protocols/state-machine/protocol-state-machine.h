@@ -17,25 +17,45 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef NETWORK_AWARE_OBJECT_H
-#define NETWORK_AWARE_OBJECT_H
+#ifndef PROTOCOL_STATE_MACHINE_H
+#define PROTOCOL_STATE_MACHINE_H
 
-#include "aware-object.h"
+#include <QtCore/QStateMachine>
 
-class KADUAPI NetworkAwareObject : public AwareObject<NetworkAwareObject>
+#include "network/network-aware-object.h"
+
+class ProtocolStateMachine : public QStateMachine, private NetworkAwareObject
 {
+	Q_OBJECT
+
+	QState *LoggedOutState;
+	QState *WantToLogInState;
+	QState *LoggingInState;
+	QState *LoggedInState;
+
+private slots:
+	void loggedOutStateEntered();
+	void wantToLogInStateEntered();
+	void loggingInStateEntered();
+	void loggedInStateEntered();
 
 protected:
-	virtual void onlineStateChanged(bool online) = 0;
+	void onlineStateChanged(bool online);
 
 public:
-	static KADUAPI void notifyOnlineStateChanged(bool online);
+	explicit ProtocolStateMachine(QObject *parent = 0);
+	virtual ~ProtocolStateMachine();
 
-	NetworkAwareObject();
+	void wantToLogin();
 
-	bool isOnline();
-	void triggerOnlineStateChanged();
+signals:
+	void networkOnlineSignal();
+	void networkOfflineSignal();
+	void wantToLoginOnlineSignal();
+	void wantToLoginOfflineSignal();
+
+	void login();
 
 };
 
-#endif // NETWORK_AWARE_OBJECT_H
+#endif // PROTOCOL_STATE_MACHINE_H

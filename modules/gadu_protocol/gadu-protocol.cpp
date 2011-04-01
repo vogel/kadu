@@ -44,6 +44,7 @@
 #include "gui/windows/message-dialog.h"
 #include "gui/windows/password-window.h"
 #include "qt/long-validator.h"
+#include "protocols/state-machine/protocol-state-machine.h"
 #include "status/status.h"
 #include "status/status-type.h"
 #include "status/status-type-manager.h"
@@ -190,6 +191,8 @@ GaduProtocol::GaduProtocol(Account account, ProtocolFactory *factory) :
 			this, SLOT(contactIdChanged(Contact, const QString &)));
 	connect(account, SIGNAL(updated()), this, SLOT(accountUpdated()));
 
+	connect(machine(), SIGNAL(login()), this, SLOT(login()));
+
 	kdebugf2();
 }
 
@@ -234,7 +237,7 @@ void GaduProtocol::changeStatus()
 
 	if (NetworkConnected != state())
 	{
-		login();
+		machine()->wantToLogin();
 		return;
 	}
 

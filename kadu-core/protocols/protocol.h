@@ -55,6 +55,7 @@ class Message;
 class MultilogonService;
 class PersonalInfoService;
 class ProtocolFactory;
+class ProtocolStateMachine;
 class RosterService;
 class SearchService;
 class Status;
@@ -74,6 +75,7 @@ public:
 
 private:
 	ProtocolFactory *Factory;
+	ProtocolStateMachine *Machine;
 
 	Account CurrentAccount;
 
@@ -84,6 +86,8 @@ private slots:
 	void statusChanged(StatusContainer *container, Status status);
 
 protected:
+	ProtocolStateMachine * machine() const { return Machine; }
+
 	void setAllOffline();
 
 	virtual void changeStatus() = 0;

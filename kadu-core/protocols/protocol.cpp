@@ -35,6 +35,7 @@
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
 #include "icons-manager.h"
+#include "protocols/state-machine/protocol-state-machine.h"
 #include "protocols/protocol-factory.h"
 #include "status/status-changer-manager.h"
 #include "status/status-type-manager.h"
@@ -46,6 +47,8 @@
 Protocol::Protocol(Account account, ProtocolFactory *factory) :
 		Factory(factory), CurrentAccount(account), State(NetworkDisconnected)
 {
+	Machine = new ProtocolStateMachine(this);
+
 	connect(StatusChangerManager::instance(), SIGNAL(statusChanged(StatusContainer*,Status)),
 			this, SLOT(statusChanged(StatusContainer*,Status)));
 }
