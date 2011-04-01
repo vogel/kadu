@@ -38,6 +38,8 @@ set (gui_SRCS
 	widgets/color-button.cpp
 	widgets/color-selector.cpp
 	widgets/custom-input.cpp
+	widgets/custom-input-menu-item.cpp
+	widgets/custom-input-menu-manager.cpp
 	widgets/delayed-line-edit.cpp
 	widgets/file-transfer-widget.cpp
 	widgets/filter-widget.cpp
@@ -167,6 +169,7 @@ set (gui_MOC_SRCS
 	widgets/color-button.h
 	widgets/color-selector.h
 	widgets/custom-input.h
+	widgets/custom-input-menu-manager.h
 	widgets/delayed-line-edit.h
 	widgets/file-transfer-widget.h
 	widgets/filter-widget.h
