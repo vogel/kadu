@@ -86,7 +86,6 @@ private slots:
 
 	void connectionErrorSlot(const QString &message);
 	void invalidPasswordSlot();
-	void changeStatus(bool force);
 
 protected:
 	virtual void changeStatus();

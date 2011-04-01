@@ -118,7 +118,6 @@ private:
 	void socketConnFailed(GaduError error);
 	void socketConnSuccess();
 	void socketDisconnected();
-	void changeStatus(bool force);
 
 private slots:
 	void accountUpdated();

@@ -117,7 +117,6 @@ public:
 	bool isConnecting() { return (State == NetworkConnecting); }
 
 	void setStatus(Status status);
-	Status status() const;
 	Status nextStatus() const;
 	virtual int maxDescriptionLength() { return -1; }
 

@@ -171,9 +171,9 @@ void AutoResponder::filterIncomingMessage(Chat chat, Contact sender, QString &me
 	// Na chwilę obecną busy == away gdyż:
 	// status-type-manager.cpp:
 	//   StatusGroup *busy = StatusGroupManager::instance()->statusGroup("Away");
-	if ((statusAvailable && protocol->status().group() == "Online")
-			|| (statusBusy && protocol->status().group() == "Away")
-			|| (statusInvisible && protocol->status().group() == "Invisible"))
+	if ((statusAvailable && protocol->nextStatus().group() == "Online")
+			|| (statusBusy && protocol->nextStatus().group() == "Away")
+			|| (statusInvisible && protocol->nextStatus().group() == "Invisible"))
 	{
 		ChatService *chatService = protocol->chatService();
 		if (!chatService)

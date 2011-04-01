@@ -162,7 +162,7 @@ void JabberProtocol::login(const QString &password, bool permanent)
 	
 	if (password.isEmpty()) // user did not give us password, so prevent from further reconnecting
 	{
-		Status newstat = status();
+		Status newstat = nextStatus();
 		newstat.setType("Offline");
 		setStatus(newstat);
 		statusChanged(newstat);
@@ -272,7 +272,7 @@ void JabberProtocol::rosterDownloaded(bool success)
 	* information in that case either). */
 	kdebug("Setting initial presence...\n");
 
-	changeStatus(true);
+	changeStatus();
 }
 
 // disconnect or stop reconnecting
@@ -280,8 +280,8 @@ void JabberProtocol::logout()
 {
 	kdebugf();
 
-	Status newstat = status();
-	if (!status().isDisconnected())
+	Status newstat = nextStatus();
+	if (!nextStatus().isDisconnected())
 	{
 		newstat.setType("Offline");
 		setStatus(newstat);
@@ -419,23 +419,11 @@ void JabberProtocol::contactIdChanged(Contact contact, const QString &oldId)
 
 void JabberProtocol::changeStatus()
 {
-	changeStatus(false);
-}
-
-void JabberProtocol::changeStatus(bool force)
-{
 	Status newStatus = nextStatus();
-	if (!force && IrisStatusAdapter::statusesEqual(newStatus, status()))
-		return;
 
-	if (newStatus.isDisconnected() && status().isDisconnected())
+	if (newStatus.isDisconnected() && NetworkConnected != state())
 	{
-		if (newStatus.description() != status().description())
-			statusChanged(newStatus);
-
-		if (NetworkConnecting == state())
-			networkStateChanged(NetworkDisconnected);
-
+		networkStateChanged(NetworkDisconnected);
 		return;
 	}
 

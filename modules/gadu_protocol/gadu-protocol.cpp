@@ -221,37 +221,22 @@ int GaduProtocol::maxDescriptionLength()
 
 void GaduProtocol::changeStatus()
 {
-	changeStatus(false);
-}
-
-void GaduProtocol::changeStatus(bool force)
-{
 	Status newStatus = nextStatus();
-	if (newStatus == status() && !force)
-		return; // don't reset password
 
-	if (newStatus.isDisconnected() && status().isDisconnected())
+	if (newStatus.isDisconnected() && NetworkConnected != state())
 	{
-		if (newStatus.description() != status().description())
-			statusChanged(newStatus);
-
-		if (NetworkConnecting == state())
-			networkDisconnected(false, false);
+		networkDisconnected(false, false);
 		return;
 	}
 
 	if (NetworkConnecting == state())
 		return;
 
-	if (status().isDisconnected())
+	if (NetworkConnected != state())
 	{
 		login();
 		return;
 	}
-
-// TODO 0.10.0: workaround. Find general solution
-	if (newStatus.type() == "NotAvailable" && status().type() == "Away")
-		return;
 
 	int friends = (!newStatus.isDisconnected() && account().privateStatus() ? GG_STATUS_FRIENDS_MASK : 0);
 
@@ -271,7 +256,7 @@ void GaduProtocol::changeStatus(bool force)
 
 void GaduProtocol::changePrivateMode()
 {
-	changeStatus(true);
+	changeStatus();
 }
 
 void GaduProtocol::connectionTimeoutTimerSlot()
@@ -296,7 +281,7 @@ void GaduProtocol::login(const QString &password, bool permanent)
 {
 	if (password.isEmpty()) // user did not give us password, so prevent from further reconnecting
 	{
-		Status newstat = status();
+		Status newstat = nextStatus();
 		newstat.setType("Offline");
 		setStatus(newstat);
 		statusChanged(newstat);
@@ -701,8 +686,8 @@ void GaduProtocol::socketConnSuccess()
 	}
 
 	// workaround about servers errors
-	if ("Invisible" == status().type())
-		setStatus(status());
+	if ("Invisible" == nextStatus().type())
+		setStatus(nextStatus());
 
 	kdebugf2();
 }
