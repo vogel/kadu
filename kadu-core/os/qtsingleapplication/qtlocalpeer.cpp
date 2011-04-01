@@ -126,11 +126,13 @@ bool QtLocalPeer::isClient()
 
     bool res = server->listen(socketName);
 
+#if defined(Q_OS_UNIX)
     // ### Workaround
     if (!res && server->serverError() == QAbstractSocket::AddressInUseError) {
         QFile::remove(QDir::cleanPath(QDir::tempPath())+QLatin1Char('/')+socketName);
         res = server->listen(socketName);
     }
+#endif
 
     if (!res)
         qWarning("QtSingleCoreApplication: listen on local socket failed, %s", qPrintable(server->errorString()));

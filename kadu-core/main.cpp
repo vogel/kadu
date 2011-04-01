@@ -177,9 +177,7 @@ static void printQtOptions()
 
 int main(int argc, char *argv[])
 {
-	// NOTE: Qt 4.7.0 has many bugs
-	// TODO: remove once we depend on 4.8
-	QT_REQUIRE_VERSION(argc, argv, "4.7.1")
+	QT_REQUIRE_VERSION(argc, argv, "4.7.0")
 
 	char *d = 0;
 	int msec;

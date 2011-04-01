@@ -1,7 +1,7 @@
 project (kadu)
 
 # minimal required versions
-set (QT_MIN_VERSION "4.7.2")
+set (QT_MIN_VERSION "4.7.0")
 set (CMAKE_MIN_VERSION "2.6.0")
 
 # configuration
