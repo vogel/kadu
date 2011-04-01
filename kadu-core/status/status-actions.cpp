@@ -146,15 +146,17 @@ void StatusActions::statusUpdated()
 		if (!CommonStatusIcons)
 			action->setIcon(MyStatusContainer->statusIcon(statusType->name()));
 
-		// For 'All xxx' status menu items - check only if all accounts have the same status
-		if (StatusContainerManager::instance() == MyStatusContainer)
-			action->setChecked(StatusContainerManager::instance()->allStatusEqual(statusType));
+		if (!MyStatusContainer->isStatusSettingInProgress())
+		{
+			// For 'All xxx' status menu items - check only if all accounts have the same status
+			if (StatusContainerManager::instance() == MyStatusContainer)
+				action->setChecked(StatusContainerManager::instance()->allStatusEqual(statusType));
+			else
+				action->setChecked(statusTypeName == statusType->name());
+		}
 		else
-			action->setChecked(statusTypeName == statusType->name());
+			action->setChecked(false);
 	}
-
-// 	ChangeStatusToOfflineDesc->setEnabled(index != 6);
-// 	ChangeStatusToOffline->setEnabled(index != 7);
 }
 
 void StatusActions::iconThemeChanged()
