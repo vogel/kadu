@@ -44,7 +44,7 @@ void BaseStatusContainer::setStatus(Status status)
 
 void BaseStatusContainer::setDescription(const QString &description)
 {
-	Status currentStatus = status();
+	Status currentStatus = nextStatus();
 	currentStatus.setDescription(description);
 	setStatus(currentStatus);
 }

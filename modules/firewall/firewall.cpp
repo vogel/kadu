@@ -270,7 +270,7 @@ bool Firewall::checkChat(const Chat &chat, const Contact &sender, const QString 
  		return false;
 	}
 
-	if (chat.chatAccount().statusContainer()->status().type() == "Invisible" && DropAnonymousWhenInvisible)
+	if (chat.chatAccount().statusContainer()->nextStatus().type() == "Invisible" && DropAnonymousWhenInvisible)
 	{
 		writeLog(sender, tr("Chat with anonim silently dropped.\n") + "----------------------------------------------------\n");
 

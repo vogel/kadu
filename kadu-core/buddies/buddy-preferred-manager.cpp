@@ -161,10 +161,10 @@ Contact BuddyPreferredManager::morePreferredContactByStatus(const Contact &c1, c
 	if (!c2 || (account && c2.contactAccount() != account))
 		return c1;
 
-	if (c1.contactAccount().data()->status().isDisconnected() && !c2.contactAccount().data()->status().isDisconnected())
+	if (c1.contactAccount().data()->nextStatus().isDisconnected() && !c2.contactAccount().data()->nextStatus().isDisconnected())
 		return c2;
 
-	if (c2.contactAccount().data()->status().isDisconnected() && !c1.contactAccount().data()->status().isDisconnected())
+	if (c2.contactAccount().data()->nextStatus().isDisconnected() && !c1.contactAccount().data()->nextStatus().isDisconnected())
 		return c1;
 
 	return Contact::contactWithHigherStatus(c1, c2);

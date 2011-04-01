@@ -135,7 +135,7 @@ QAction * StatusActions::createStatusAction(StatusType *statusType)
 
 void StatusActions::statusUpdated()
 {
-	const QString &statusTypeName = MyStatusContainer->status().type();
+	const QString &statusTypeName = MyStatusContainer->nextStatus().type();
 
 	foreach (QAction *action, ChangeStatusActionGroup->actions())
 	{

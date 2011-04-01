@@ -158,7 +158,9 @@ void AccountShared::emitUpdated()
 
 void AccountShared::setDisconnectStatus()
 {
-	if (status().type() == "Offline")
+	if (!ProtocolHandler)
+		return;
+	if (!ProtocolHandler->isConnected())
 		return;
 
 	bool disconnectWithCurrentDescription = config_file.readBoolEntry("General", "DisconnectWithCurrentDescription");
@@ -168,7 +170,7 @@ void AccountShared::setDisconnectStatus()
 	disconnectStatus.setType("Offline");
 
 	if (disconnectWithCurrentDescription)
-		disconnectStatus.setDescription(status().description());
+		disconnectStatus.setDescription(nextStatus().description());
 	else
 		disconnectStatus.setDescription(disconnectDescription);
 
@@ -329,14 +331,6 @@ void AccountShared::doSetStatus(Status status)
 		ProtocolHandler->setStatus(status);
 }
 
-Status AccountShared::status()
-{
-	if (ProtocolHandler)
-		return ProtocolHandler->status();
-	else
-		return Status();
-}
-
 Status AccountShared::nextStatus()
 {
 	if (ProtocolHandler)
@@ -363,12 +357,12 @@ int AccountShared::maxDescriptionLength()
 
 QString AccountShared::statusDisplayName()
 {
-	return status().displayName();
+	return nextStatus().displayName();
 }
 
 QIcon AccountShared::statusIcon()
 {
-	return statusIcon(status());
+	return statusIcon(nextStatus());
 }
 
 QString AccountShared::statusIconPath(const QString &statusType)

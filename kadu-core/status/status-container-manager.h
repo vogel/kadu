@@ -89,7 +89,6 @@ public:
 
 	virtual void setStatus(Status newStatus);
 	virtual void setDescription(const QString &description);
-	virtual Status status();
 	virtual Status nextStatus();
 	virtual bool isStatusSettingInProgress();
 

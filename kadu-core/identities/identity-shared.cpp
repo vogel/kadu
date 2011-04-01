@@ -162,22 +162,20 @@ Account IdentityShared::bestAccount()
 		if (account.details() && account.data())
 		{
 			// TODO: hack
-			if (result.isNull() || result.data()->status().isDisconnected() ||
-					(account.protocolName() == "gadu" && result.protocolName() != "gadu"))
+			bool isDisconnected = false;
+			if (!result)
+				isDisconnected = !result.data()->protocolHandler() || !result.data()->protocolHandler()->isConnected();
+
+			if (result || isDisconnected  || (account.protocolName() == "gadu" && result.protocolName() != "gadu"))
 			{
 				result = account;
-				if (!result.data()->status().isDisconnected() && result.protocolName() == "gadu")
+				bool isDisconnected = !result.data()->protocolHandler() || !result.data()->protocolHandler()->isConnected();
+				if (!isDisconnected && result.protocolName() == "gadu")
 					break;
 			}
 		}
 
 	return result;
-}
-
-Status IdentityShared::status()
-{
-	Account account = bestAccount();
-	return account ? account.data()->status() : Status();
 }
 
 Status IdentityShared::nextStatus()
@@ -194,12 +192,12 @@ bool IdentityShared::isStatusSettingInProgress()
 
 QString IdentityShared::statusDisplayName()
 {
-	return status().displayName();
+	return nextStatus().displayName();
 }
 
 QIcon IdentityShared::statusIcon()
 {
-	return statusIcon(status());
+	return statusIcon(nextStatus());
 }
 
 QIcon IdentityShared::statusIcon(Status status)

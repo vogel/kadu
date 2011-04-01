@@ -220,7 +220,7 @@ void StatusContainerManager::setAllowSetDefaultStatus(bool allowSetDefaultStatus
 bool StatusContainerManager::allStatusEqual(StatusType *type)
 {
 	foreach (StatusContainer *container, StatusContainers)
-		if (container->status().type() != type->name())
+		if (container->nextStatus().type() != type->name())
 			return false;
 	return true;
 }
@@ -240,13 +240,6 @@ void StatusContainerManager::setDescription(const QString &description)
 {
 	foreach (StatusContainer *container, StatusContainers)
 		container->setDescription(description);
-}
-
-Status StatusContainerManager::status()
-{
-	return DefaultStatusContainer
-			? DefaultStatusContainer->status()
-			: Status();
 }
 
 Status StatusContainerManager::nextStatus()
@@ -274,7 +267,7 @@ QIcon StatusContainerManager::statusIcon()
 {
 	if (!DefaultStatusContainer)
 		return IconsManager::instance()->iconByPath("protocols/common/offline");
-	Status status = DefaultStatusContainer->status();
+	Status status = DefaultStatusContainer->nextStatus();
 	return StatusTypeManager::instance()->statusIcon("common", status.type(), status.hasDescription(), false);
 }
 
