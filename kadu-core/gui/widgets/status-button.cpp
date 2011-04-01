@@ -51,7 +51,7 @@ StatusButton::~StatusButton()
 void StatusButton::createGui()
 {
 	QMenu *menu = new QMenu(this);
-	new StatusMenu(MyStatusContainer, menu);
+	new StatusMenu(MyStatusContainer, false, menu);
 
 	setMenu(menu);
 	setIcon(Icon->icon());

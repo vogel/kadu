@@ -34,10 +34,10 @@
 
 #include "status-menu.h"
 
-StatusMenu::StatusMenu(StatusContainer *statusContainer, QMenu *menu, bool commonStatusIcons) :
+StatusMenu::StatusMenu(StatusContainer *statusContainer, bool includePrefix, QMenu *menu) :
 		QObject(menu), Menu(menu), MyStatusContainer(statusContainer)
 {
-	Actions = new StatusActions(MyStatusContainer, this, commonStatusIcons);
+	Actions = new StatusActions(MyStatusContainer, includePrefix, this);
 
 	connect(Actions, SIGNAL(statusActionTriggered(QAction *)), this, SLOT(changeStatus(QAction *)));
 	connect(Actions, SIGNAL(changeDescriptionActionTriggered(bool)), this, SLOT(changeDescription()));

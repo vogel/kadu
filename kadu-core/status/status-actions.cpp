@@ -34,14 +34,14 @@
 
 #include "status-actions.h"
 
-StatusActions::StatusActions(StatusContainer *statusContainer, QObject *parent, bool commonStatusIcons) :
-		QObject(parent), MyStatusContainer(statusContainer), CommonStatusIcons(commonStatusIcons)
+StatusActions::StatusActions(StatusContainer *statusContainer, bool includePrefix, QObject *parent) :
+		QObject(parent), MyStatusContainer(statusContainer)
 {
 	ChangeStatusActionGroup = new QActionGroup(this);
 	ChangeStatusActionGroup->setExclusive(true); // HACK
 	connect(ChangeStatusActionGroup, SIGNAL(triggered(QAction*)), this, SIGNAL(statusActionTriggered(QAction*)));
 
-	createActions();
+	createActions(includePrefix);
 
 	statusUpdated();
 	connect(MyStatusContainer, SIGNAL(statusUpdated()), this, SLOT(statusUpdated()));
@@ -53,10 +53,10 @@ StatusActions::~StatusActions()
 {
 }
 
-void StatusActions::createActions()
+void StatusActions::createActions(bool includePrefix)
 {
 	createBasicActions();
-	createStatusActions();
+	createStatusActions(includePrefix);
 
 	QList<StatusType *> statusTypes = MyStatusContainer->supportedStatusTypes();
 	if (statusTypes.isEmpty())
@@ -99,12 +99,12 @@ void StatusActions::createBasicActions()
 	connect(ChangeDescription, SIGNAL(triggered(bool)), this, SIGNAL(changeDescriptionActionTriggered(bool)));
 }
 
-void StatusActions::createStatusActions()
+void StatusActions::createStatusActions(bool includePrefix)
 {
 	QList<StatusType *> statusTypes = MyStatusContainer->supportedStatusTypes();
 	foreach (StatusType *statusType, statusTypes)
 	{
-		QAction *action = createStatusAction(statusType);
+		QAction *action = createStatusAction(statusType, includePrefix);
 		StatusTypeActions.insert(statusType, action);
 	}
 }
@@ -117,16 +117,14 @@ QAction * StatusActions::createSeparator()
 	return separator;
 }
 
-QAction * StatusActions::createStatusAction(StatusType *statusType)
+QAction * StatusActions::createStatusAction(StatusType *statusType, bool includePrefix)
 {
-	QIcon icon;
-	if (!CommonStatusIcons)
-		icon = MyStatusContainer->statusIcon(statusType->name());
-	else
-		icon = StatusContainerManager::instance()->statusIcon(statusType->name());
+	QIcon icon = MyStatusContainer->statusIcon(statusType->name());
 	QAction *statusAction = ChangeStatusActionGroup->addAction(
 		icon.pixmap(16, 16),
-		MyStatusContainer->statusNamePrefix() + statusType->displayName());
+		includePrefix
+				? MyStatusContainer->statusNamePrefix() + statusType->displayName()
+				: statusType->displayName());
 	statusAction->setCheckable(true);
 	statusAction->setData(QVariant::fromValue(statusType));
 
@@ -143,8 +141,7 @@ void StatusActions::statusUpdated()
 		if (!statusType)
 			continue;
 
-		if (!CommonStatusIcons)
-			action->setIcon(MyStatusContainer->statusIcon(statusType->name()));
+		action->setIcon(MyStatusContainer->statusIcon(statusType->name()));
 
 		if (!MyStatusContainer->isStatusSettingInProgress())
 		{
@@ -167,9 +164,6 @@ void StatusActions::iconThemeChanged()
 		if (!statusType)
 			continue;
 
-		if (!CommonStatusIcons)
-			action->setIcon(MyStatusContainer->statusIcon(statusType->name()));
-		else
-			action->setIcon(StatusContainerManager::instance()->statusIcon(statusType->name()));
+		action->setIcon(MyStatusContainer->statusIcon(statusType->name()));
 	}
 }

@@ -54,7 +54,7 @@ private slots:
 	void changeDescription();
 
 public:
-	explicit StatusMenu(StatusContainer *statusContainer, QMenu *menu, bool commonStatusIcons = false);
+	explicit StatusMenu(StatusContainer *statusContainer, bool includePrefix, QMenu *menu);
 	virtual ~StatusMenu();
 
 };

@@ -185,13 +185,8 @@ void DockingManager::changeIcon()
 			}
 			else
 			{
-				Account account = AccountManager::instance()->defaultAccount();
-				if (account.isNull() || !account.protocolHandler())
-					return;
-
 				if (CurrentDocker)
-					CurrentDocker->changeTrayIcon(
-							StatusContainerManager::instance()->statusIcon(account.protocolHandler()->status()));
+					CurrentDocker->changeTrayIcon(StatusContainerManager::instance()->statusIcon());
 
 				icon_timer->setSingleShot(true);
 				icon_timer->start(500);
@@ -318,11 +313,7 @@ void DockingManager::searchingForTrayPosition(QPoint &point)
 
 QIcon DockingManager::defaultPixmap()
 {
-	Account account = AccountManager::instance()->defaultAccount();
-	if (account.isNull() || !account.protocolHandler())
-		return StatusContainerManager::instance()->statusIcon();
-
-	return StatusContainerManager::instance()->statusIcon(account.protocolHandler()->status());
+	return StatusContainerManager::instance()->statusIcon();
 }
 
 void DockingManager::setDocker(Docker *docker)
@@ -359,11 +350,11 @@ void DockingManager::updateContextMenu()
 
 	int statusContainersCount = StatusContainerManager::instance()->statusContainers().count();
 
-	if (statusContainersCount == 1)
+	if (1 == statusContainersCount)
 	{
-		new StatusMenu(StatusContainerManager::instance()->statusContainers().at(0), DockMenu, true);
+		new StatusMenu(StatusContainerManager::instance(), false, DockMenu);
 #ifdef Q_OS_MAC
-		new StatusMenu(StatusContainerManager::instance()->statusContainers().at(0), MacDockMenu, true);
+		new StatusMenu(StatusContainerManager::instance(), false, MacDockMenu);
 #endif
 	}
 	else
@@ -372,7 +363,7 @@ void DockingManager::updateContextMenu()
 		{
 			QMenu *menu = new QMenu(container->statusContainerName(), DockMenu);
 			menu->setIcon(container->statusIcon());
-			new StatusMenu(container, menu);
+			new StatusMenu(container, false, menu);
 			StatusContainerMenus[container] = DockMenu->addMenu(menu);
 			connect(container, SIGNAL(statusUpdated()), this, SLOT(containerStatusChanged()));
 		}
@@ -382,9 +373,9 @@ void DockingManager::updateContextMenu()
 
 		if (statusContainersCount > 0)
 		{
-			new StatusMenu(StatusContainerManager::instance(), DockMenu);
+			new StatusMenu(StatusContainerManager::instance(), true, DockMenu);
 #ifdef Q_OS_MAC
-			new StatusMenu(StatusContainerManager::instance(), MacDockMenu);
+			new StatusMenu(StatusContainerManager::instance(), true, MacDockMenu);
 #endif
 		}
 	}

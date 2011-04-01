@@ -897,7 +897,7 @@ void KaduWindowActions::changeStatusActionActivated(QAction *sender, bool toggle
 		return;
 
 	QScopedPointer<QMenu> menu(new QMenu());
-	new StatusMenu(container, menu.data());
+	new StatusMenu(container, false, menu.data());
 	menu->exec(QCursor::pos());
 }
 
