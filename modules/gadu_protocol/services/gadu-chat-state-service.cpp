@@ -32,7 +32,6 @@ GaduChatStateService::GaduChatStateService(GaduProtocol *parent) :
 
 }
 
-#ifdef GADU_HAVE_TYPING_NOTIFY
 void GaduChatStateService::handleEventTypingNotify(struct gg_event *e)
 {
 	Contact contact = ContactManager::instance()->byId(Protocol->account(), QString::number(e->event.typing_notification.uin), ActionReturnNull);
@@ -44,26 +43,21 @@ void GaduChatStateService::handleEventTypingNotify(struct gg_event *e)
 	else if (e->event.typing_notification.length == 0x0000)
 		emit contactActivityChanged(StatePaused, contact);
 }
-#endif // GADU_HAVE_TYPING_NOTIFY
-
 
 bool GaduChatStateService::shouldSendEvent()
 {
-#ifdef GADU_HAVE_TYPING_NOTIFY
 	GaduAccountDetails *gaduAccountDetails = dynamic_cast<GaduAccountDetails *>(Protocol->account().details());
 	if (!gaduAccountDetails)
 		return false;
 
 	if (!gaduAccountDetails->sendTypingNotification())
 		return false;
-#endif // GADU_HAVE_TYPING_NOTIFY
 
 	return true;
 }
 
 void GaduChatStateService::composingStarted(const Chat &chat)
 {
-#ifdef GADU_HAVE_TYPING_NOTIFY
 	if (!shouldSendEvent())
 		return;
 
@@ -75,14 +69,10 @@ void GaduChatStateService::composingStarted(const Chat &chat)
 		return;
 
 	gg_typing_notification(Protocol->gaduSession(), Protocol->uin(contact), 0x0001);
-#else
-	Q_UNUSED(chat)
-#endif // GADU_HAVE_TYPING_NOTIFY
 }
 
 void GaduChatStateService::composingStopped(const Chat &chat)
 {
-#ifdef GADU_HAVE_TYPING_NOTIFY
 	if (!shouldSendEvent())
 		return;
 
@@ -94,9 +84,6 @@ void GaduChatStateService::composingStopped(const Chat &chat)
 		return;
 
 	gg_typing_notification(Protocol->gaduSession(), Protocol->uin(contact), 0x0000);
-#else
-	Q_UNUSED(chat)
-#endif // GADU_HAVE_TYPING_NOTIFY
 }
 
 void GaduChatStateService::chatWidgetClosed(const Chat &chat)

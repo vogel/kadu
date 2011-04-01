@@ -30,8 +30,6 @@
 #include "chat/message/message.h"
 #include "protocols/services/chat-service.h"
 
-#include "gadu-features.h"
-
 class GaduProtocol;
 
 class GaduChatService : public ChatService
@@ -58,10 +56,7 @@ class GaduChatService : public ChatService
 	void handleMsg(Contact sender, ContactSet recipients, Message::Type type, struct gg_event *e);
 
 	void handleEventMsg(struct gg_event *e);
-#ifdef GADU_HAVE_MULTILOGON
 	void handleEventMultilogonMsg(struct gg_event *e);
-#endif
-
 	void handleEventAck(struct gg_event *e);
 
 public:

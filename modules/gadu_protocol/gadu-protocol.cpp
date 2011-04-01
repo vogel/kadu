@@ -174,12 +174,8 @@ GaduProtocol::GaduProtocol(Account account, ProtocolFactory *factory) :
 	CurrentContactPersonalInfoService = new GaduContactPersonalInfoService(this);
 	CurrentPersonalInfoService = new GaduPersonalInfoService(this);
 	CurrentSearchService = new GaduSearchService(this);
-#ifdef GADU_HAVE_MULTILOGON
 	CurrentMultilogonService = new GaduMultilogonService(account, this);
-#endif // GADU_HAVE_MULTILOGON
-#ifdef GADU_HAVE_TYPING_NOTIFY
 	CurrentChatStateService = new GaduChatStateService(this);
-#endif // GADU_HAVE_TYPING_NOTIFY
 	ContactListHandler = 0;
 
 	connect(BuddyManager::instance(), SIGNAL(buddySubscriptionChanged(Buddy &)),
@@ -424,11 +420,7 @@ void GaduProtocol::setupLoginParams()
 	if (!nextStatus().description().isEmpty())
 		GaduLoginParams.status_descr = strdup(nextStatus().description().toUtf8());
 
-#ifdef GADU_HAVE_TLS
 	GaduLoginParams.tls = gaduAccountDetails->tlsEncryption() ? 1 : 0;
-#else
-	GaduLoginParams.tls = 0;
-#endif
 
 	ActiveServer = GaduServersManager::instance()->getServer(1 == GaduLoginParams.tls);
 	bool haveServer = !ActiveServer.first.isNull();
@@ -436,22 +428,11 @@ void GaduProtocol::setupLoginParams()
 	GaduLoginParams.server_port = haveServer ? ActiveServer.second : 0;
 
 	GaduLoginParams.protocol_version = GG_DEFAULT_PROTOCOL_VERSION;
-
-#ifdef GADU_HAVE_VALID_CLIENT_NAME
 	GaduLoginParams.client_version = strdup(qPrintable(Core::nameWithVersion()));
-#else
-	GaduLoginParams.client_version = (char *)GG_DEFAULT_CLIENT_VERSION;
-#endif // GADU_HAVE_VALID_CLIENT_NAME
-
-	GaduLoginParams.protocol_features = GG_FEATURE_DND_FFC; // enable new statuses
-
-#ifdef GADU_HAVE_MULTILOGON
-	GaduLoginParams.protocol_features |= GG_FEATURE_MULTILOGON;
-#endif // GADU_HAVE_MULTILOGON
-
-#ifdef GADU_HAVE_TYPING_NOTIFY
-	GaduLoginParams.protocol_features |=GG_FEATURE_TYPING_NOTIFICATION;
-#endif // GADU_HAVE_TYPING_NOTIFY
+	GaduLoginParams.protocol_features =
+			GG_FEATURE_DND_FFC // enable new statuses
+			| GG_FEATURE_MULTILOGON
+			| GG_FEATURE_TYPING_NOTIFICATION;
 
 	GaduLoginParams.encoding = GG_ENCODING_UTF8;
 
@@ -467,10 +448,8 @@ void GaduProtocol::cleanUpLoginParams()
 	free(GaduLoginParams.password);
 	GaduLoginParams.password = 0;
 
-#ifdef GADU_HAVE_VALID_CLIENT_NAME
 	free(GaduLoginParams.client_version);
 	GaduLoginParams.client_version = 0;
-#endif // GADU_HAVE_VALID_CLIENT_NAME
 
 	if (GaduLoginParams.status_descr)
 	{
@@ -548,9 +527,7 @@ void GaduProtocol::networkDisconnected(bool tryAgain, bool waitForPassword)
 
 	setAllOffline();
 
-#ifdef GADU_HAVE_MULTILOGON
 	CurrentMultilogonService->removeAllSessions();
-#endif // GADU_HAVE_MULTILOGON
 
 	if (tryAgain && !nextStatus().isDisconnected()) // user still wants to login
 	{

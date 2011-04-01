@@ -25,8 +25,6 @@
 
 #include "gui/widgets/account-edit-widget.h"
 
-#include "gadu-features.h"
-
 class QCheckBox;
 class QComboBox;
 class QLineEdit;
@@ -62,16 +60,9 @@ class GaduEditAccountWidget : public AccountEditWidget
 
 	QCheckBox *useDefaultServers;
 	QLineEdit *ipAddresses;
-
 	QCheckBox *AllowFileTransfers;
-
-#ifdef GADU_HAVE_TLS
 	QCheckBox *UseTlsEncryption;
-#endif // GADU_HAVE_TLS
-
-#ifdef GADU_HAVE_TYPING_NOTIFY
 	QCheckBox *SendTypingNotification;
-#endif // GADU_HAVE_TYPING_NOTIFY
 
 	QPushButton *ApplyButton;
 	QPushButton *CancelButton;

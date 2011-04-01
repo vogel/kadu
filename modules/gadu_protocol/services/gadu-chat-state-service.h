@@ -22,8 +22,6 @@
 
 #include <libgadu.h>
 
-#include "gadu-features.h"
-
 #include "protocols/services/chat-state-service.h"
 
 class Chat;
@@ -37,10 +35,8 @@ class GaduChatStateService : public ChatStateService
 
 	bool shouldSendEvent();
 
-#ifdef GADU_HAVE_TYPING_NOTIFY
 	friend class GaduProtocolSocketNotifiers;
 	void handleEventTypingNotify(struct gg_event *e);
-#endif // GADU_HAVE_TYPING_NOTIFY
 
 public:
 	GaduChatStateService(GaduProtocol *parent);

@@ -21,27 +21,23 @@
 #ifndef GADU_MULTILOGON_SESSION_H
 #define GADU_MULTILOGON_SESSION_H
 
-#include "multilogon/multilogon-session.h"
+#include <libgadu.h>
 
-#include "gadu-features.h"
+#include "multilogon/multilogon-session.h"
 
 class GaduMultilogonSession : public MultilogonSession
 {
 	Q_OBJECT
 
-#ifdef GADU_HAVE_MULTILOGON
 	gg_multilogon_id_t Id;
-#endif // GADU_HAVE_MULTILOGON
 
 public:
 	explicit GaduMultilogonSession(Account account, QObject *parent = 0);
 	virtual ~GaduMultilogonSession();
 
-#ifdef GADU_HAVE_MULTILOGON
 	GaduMultilogonSession(Account account, const gg_multilogon_session &session, QObject *parent = 0);
 
 	const gg_multilogon_id_t & id() const;
-#endif // GADU_HAVE_MULTILOGON
 
 };
 

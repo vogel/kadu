@@ -1,4 +1,4 @@
-set (LIBGADU_MIN_VERSION "1.9.0")
+set (LIBGADU_MIN_VERSION "1.10.1")
 
 set (SOURCES
 	dcc/dcc-socket-notifiers.cpp

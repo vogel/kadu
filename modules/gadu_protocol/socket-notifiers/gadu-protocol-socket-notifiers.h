@@ -27,7 +27,6 @@
 #include "buddies/buddy.h"
 
 #include "gadu-protocol.h"
-#include "gadu-features.h"
 
 #include "gadu-socket-notifiers.h"
 
@@ -61,15 +60,9 @@ class GADU_LOCAL GaduProtocolSocketNotifiers : public GaduSocketNotifiers
 	void handleEventConnFailed(struct gg_event *e);
 	void handleEventConnSuccess(struct gg_event *e);
 	void handleEventDisconnect(struct gg_event *e);
-
-#ifdef GADU_HAVE_MULTILOGON
 	void handleEventMultilogonMsg(struct gg_event *e);
 	void handleEventMultilogonInfo(struct gg_event *e);
-#endif // GADU_HAVE_MULTILOGON
-
-#ifdef GADU_HAVE_TYPING_NOTIFY
 	void handleEventTypingNotify(struct gg_event *e);
-#endif // GADU_HAVE_TYPING_NOTIFY
 
 protected:
 	virtual bool checkRead();

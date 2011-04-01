@@ -241,7 +241,6 @@ void GaduEditAccountWidget::createOptionsTab(QTabWidget *tabWidget)
 
 	layout->addWidget(status);
 
-#ifdef GADU_HAVE_TYPING_NOTIFY
 	QGroupBox *notifications = new QGroupBox(tr("Notifications"), this);
 
 	QVBoxLayout *notificationsLayout = new QVBoxLayout(notifications);
@@ -250,7 +249,6 @@ void GaduEditAccountWidget::createOptionsTab(QTabWidget *tabWidget)
 	notificationsLayout->addWidget(SendTypingNotification);
 
 	layout->addWidget(notifications);
-#endif // GADU_HAVE_TYPING_NOTIFY
 
 	layout->addStretch(100);
 }
@@ -286,12 +284,10 @@ void GaduEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
 	connect(ipAddresses, SIGNAL(textEdited(QString)), this, SLOT(dataChanged()));
 	connect(AllowFileTransfers, SIGNAL(toggled(bool)), this, SLOT(dataChanged()));
 
-#ifdef GADU_HAVE_TLS
 	UseTlsEncryption = new QCheckBox(tr("Use encrypted connection"), this);
 	generalLayout->addWidget(UseTlsEncryption, 3, 0, 1, 4);
 
 	connect(UseTlsEncryption, SIGNAL(toggled(bool)), this, SLOT(dataChanged()));
-#endif
 }
 
 void GaduEditAccountWidget::apply()
@@ -310,14 +306,8 @@ void GaduEditAccountWidget::apply()
 		Details->setMaximumImageRequests(MaximumImageRequests->value());
 
 		Details->setAllowDcc(AllowFileTransfers->isChecked());
-
-#ifdef GADU_HAVE_TLS
 		Details->setTlsEncryption(UseTlsEncryption->isChecked());
-#endif // GADU_HAVE_TLS
-
-#ifdef GADU_HAVE_TYPING_NOTIFY
 		Details->setSendTypingNotification(SendTypingNotification->isChecked());
-#endif // GADU_HAVE_TYPING_NOTIFY
 
 	}
 
@@ -374,12 +364,8 @@ void GaduEditAccountWidget::dataChanged()
 
 		&& config_file.readBoolEntry("Network", "isDefServers", true) == useDefaultServers->isChecked()
 		&& config_file.readEntry("Network", "Server") == ipAddresses->text()
-#ifdef GADU_HAVE_TLS
 		&& Details->tlsEncryption() == UseTlsEncryption->isChecked()
-#endif
-#ifdef GADU_HAVE_TYPING_NOTIFY
 		&& Details->sendTypingNotification() == SendTypingNotification->isChecked()
-#endif // GADU_HAVE_TYPING_NOTIFY
 		&& StateNotChanged == Proxy->state()
 		&& !gpiw->isModified())
 	{
@@ -420,15 +406,8 @@ void GaduEditAccountWidget::loadAccountData()
 		MaximumImageRequests->setValue(details->maximumImageRequests());
 
 		AllowFileTransfers->setChecked(details->allowDcc());
-
-#ifdef GADU_HAVE_TLS
 		UseTlsEncryption->setChecked(details->tlsEncryption());
-#endif
-
-#ifdef GADU_HAVE_TYPING_NOTIFY
 		SendTypingNotification->setChecked(details->sendTypingNotification());
-#endif // GADU_HAVE_TYPING_NOTIFY
-
 	}
 
 	useDefaultServers->setChecked(config_file.readBoolEntry("Network", "isDefServers", true));

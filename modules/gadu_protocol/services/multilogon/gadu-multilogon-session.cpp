@@ -38,8 +38,6 @@ GaduMultilogonSession::~GaduMultilogonSession()
 {
 }
 
-#ifdef GADU_HAVE_MULTILOGON
-
 GaduMultilogonSession::GaduMultilogonSession(Account account, const gg_multilogon_session &session, QObject *parent) :
 		MultilogonSession(account, parent)
 {
@@ -59,5 +57,3 @@ const gg_multilogon_id_t & GaduMultilogonSession::id() const
 {
 	return Id;
 }
-
-#endif // GADU_HAVE_MULTILOGON

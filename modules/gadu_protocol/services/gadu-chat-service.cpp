@@ -289,7 +289,6 @@ void GaduChatService::handleEventMsg(struct gg_event *e)
 	handleMsg(sender, recipients, Message::TypeReceived, e);
 }
 
-#ifdef GADU_HAVE_MULTILOGON
 void GaduChatService::handleEventMultilogonMsg(gg_event *e)
 {
 	// warning: this may be not intuitive code
@@ -303,7 +302,6 @@ void GaduChatService::handleEventMultilogonMsg(gg_event *e)
 
 	handleMsg(sender, recipients, Message::TypeSent, e);
 }
-#endif
 
 void GaduChatService::handleEventAck(struct gg_event *e)
 {

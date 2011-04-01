@@ -23,12 +23,9 @@
 #include "protocols/protocol.h"
 
 #include "services/multilogon/gadu-multilogon-session.h"
-#include "gadu-features.h"
 #include "gadu-protocol.h"
 
 #include "gadu-multilogon-service.h"
-
-#ifdef GADU_HAVE_MULTILOGON
 
 static bool operator == (const gg_multilogon_id_t &left, const gg_multilogon_id_t &right)
 {
@@ -38,8 +35,6 @@ static bool operator == (const gg_multilogon_id_t &left, const gg_multilogon_id_
 
 	return true;
 }
-
-#endif // GADU_HAVE_MULTILOGON
 
 GaduMultilogonService::GaduMultilogonService(Account account, QObject *parent) :
 		MultilogonService(parent), MyAccount(account)
@@ -59,7 +54,6 @@ void GaduMultilogonService::killSession(MultilogonSession *session)
 {
 	Q_UNUSED(session)
 
-#ifdef GADU_HAVE_MULTILOGON
 	GaduProtocol *gaduProtocolHandler = dynamic_cast<GaduProtocol *>(MyAccount.protocolHandler());
 	if (!gaduProtocolHandler || !gaduProtocolHandler->gaduSession())
 		return;
@@ -67,10 +61,7 @@ void GaduMultilogonService::killSession(MultilogonSession *session)
 	GaduMultilogonSession *gaduSession = dynamic_cast<GaduMultilogonSession *>(session);
 	if (gaduSession)
 		gg_multilogon_disconnect(gaduProtocolHandler->gaduSession(), gaduSession->id());
-#endif // GADU_HAVE_MULTILOGON
 }
-
-#ifdef GADU_HAVE_MULTILOGON
 
 bool GaduMultilogonService::containsSession(const gg_multilogon_session &session)
 {
@@ -148,5 +139,3 @@ void GaduMultilogonService::removeAllSessions()
 		delete gaduSession;
 	}
 }
-
-#endif // GADU_HAVE_MULTILOGON

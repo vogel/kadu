@@ -26,7 +26,6 @@
 #include "accounts/account-details.h"
 
 #include "open-chat-with/gadu-open-chat-with-runner.h"
-#include "gadu-features.h"
 #include "gadu-protocol.h"
 
 class GaduAccountDetails : public AccountDetails
@@ -36,14 +35,8 @@ class GaduAccountDetails : public AccountDetails
 	PROPERTY_DEC(bool, ReceiveImagesDuringInvisibility)
 	PROPERTY_DEC(short int, MaximumImageRequests)
 	PROPERTY_DEC(bool, InitialRosterImport)
-
-#ifdef GADU_HAVE_TLS
 	PROPERTY_DEC(bool, TlsEncryption)
-#endif
-
-#ifdef GADU_HAVE_TYPING_NOTIFY
 	PROPERTY_DEC(bool, SendTypingNotification)
-#endif // GADU_HAVE_TYPING_NOTIFY
 
 	GaduOpenChatWithRunner *OpenChatRunner;
 
@@ -63,14 +56,8 @@ public:
 	PROPERTY_DEF(bool, receiveImagesDuringInvisibility, setReceiveImagesDuringInvisibility, ReceiveImagesDuringInvisibility)
 	PROPERTY_DEF(short int, maximumImageRequests, setMaximumImageRequests, MaximumImageRequests)
 	PROPERTY_DEF(bool, initialRosterImport, setInitialRosterImport, InitialRosterImport)
-
-#ifdef GADU_HAVE_TLS
 	PROPERTY_DEF(bool, tlsEncryption, setTlsEncryption, TlsEncryption)
-#endif // GADU_HAVE_TLS
-
-#ifdef GADU_HAVE_TYPING_NOTIFY
 	PROPERTY_DEF(bool, sendTypingNotification, setSendTypingNotification, SendTypingNotification)
-#endif // GADU_HAVE_TYPING_NOTIFY
 
 	void import_0_6_5_LastStatus();
 

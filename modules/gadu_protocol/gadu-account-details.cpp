@@ -55,14 +55,8 @@ void GaduAccountDetails::load()
 	ReceiveImagesDuringInvisibility = loadValue<bool>("ReceiveImagesDuringInvisibility", true);
 	MaximumImageRequests = loadValue<short int>("MaximumImageRequests", 10);
 	InitialRosterImport = loadValue<bool>("InitialRosterImport", false);
-
-#ifdef GADU_HAVE_TYPING_NOTIFY
 	SendTypingNotification = loadValue<bool>("SendTypingNotification", true);
-#endif // GADU_HAVE_TYPING_NOTIFY
-
-#ifdef GADU_HAVE_TLS
 	TlsEncryption = loadValue<bool>("TlsEncryption", false);
-#endif // GADU_HAVE_TLS
 }
 
 void GaduAccountDetails::store()
@@ -75,14 +69,8 @@ void GaduAccountDetails::store()
 	storeValue("ReceiveImagesDuringInvisibility", ReceiveImagesDuringInvisibility);
 	storeValue("MaximumImageRequests", MaximumImageRequests);
 	storeValue("InitialRosterImport", InitialRosterImport);
-
-#ifdef GADU_HAVE_TLS
 	storeValue("TlsEncryption", TlsEncryption);
-#endif
-
-#ifdef GADU_HAVE_TYPING_NOTIFY
 	storeValue("SendTypingNotification", SendTypingNotification);
-#endif // GADU_HAVE_TYPING_NOTIFY
 }
 
 void GaduAccountDetails::import_0_6_5_LastStatus()

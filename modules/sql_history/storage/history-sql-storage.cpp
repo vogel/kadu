@@ -664,9 +664,8 @@ QList<Message> HistorySqlStorage::messagesBackTo(const Chat &chat, const QDateTi
 
 	// se comment above
 	QList<Message> inverted;
-#if (QT_VERSION >= 0x040700)
 	inverted.reserve(result.size());
-#endif
+
 	for (int i = result.size() - 1; i >= 0; --i)
 		inverted.append(result.at(i));
 	return inverted;
