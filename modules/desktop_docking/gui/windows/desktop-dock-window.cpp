@@ -36,7 +36,7 @@ DesktopDockWindow::DesktopDockWindow(QWidget *parent) :
 	setMouseTracking(true);
 	setWindowFlags(Qt::Window | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint);
 
-	QIcon desktopDockIcon = DockingManager::instance()->defaultPixmap();
+	QIcon desktopDockIcon = DockingManager::instance()->defaultIcon();
 	setPixmap(desktopDockIcon.pixmap(128, 128));
 	resize(pixmap()->size());
 

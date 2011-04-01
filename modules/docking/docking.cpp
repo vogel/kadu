@@ -74,6 +74,7 @@ extern void qt_mac_set_dock_menu(QMenu *);
 #include "docker.h"
 
 #include "docking.h"
+#include <gui/status-icon.h>
 
 DockingManager * DockingManager::Instance = 0;
 
@@ -107,10 +108,12 @@ DockingManager::DockingManager() :
 
 	createDefaultConfiguration();
 
+	Icon = new StatusIcon(StatusContainerManager::instance(), this);
+	connect(Icon, SIGNAL(iconUpdated(QIcon)), this, SLOT(statusIconChanged(QIcon)));
+	connect(Core::instance(), SIGNAL(mainIconChanged(QIcon)), this, SLOT(statusIconChanged(QIcon)));
+
 	connect(icon_timer, SIGNAL(timeout()), this, SLOT(changeIcon()));
 
-	connect(Core::instance(), SIGNAL(mainIconChanged(const QIcon &)),
-		this, SLOT(statusPixmapChanged(const QIcon &)));
 	connect(PendingMessagesManager::instance(), SIGNAL(messageAdded(Message)), this, SLOT(pendingMessageAdded()));
 	connect(PendingMessagesManager::instance(), SIGNAL(messageRemoved(Message)), this, SLOT(pendingMessageDeleted()));
 
@@ -139,7 +142,7 @@ DockingManager::~DockingManager()
 	kdebugf();
 
 	disconnect(Core::instance(), SIGNAL(mainIconChanged(const QIcon &)),
-		this, SLOT(statusPixmapChanged(const QIcon &)));
+		this, SLOT(statusIconChanged(const QIcon &)));
 	disconnect(PendingMessagesManager::instance(), SIGNAL(messageAdded(Message)), this, SLOT(pendingMessageAdded()));
 	disconnect(PendingMessagesManager::instance(), SIGNAL(messageRemoved(Message)), this, SLOT(pendingMessageDeleted()));
 
@@ -214,7 +217,7 @@ void DockingManager::pendingMessageDeleted()
 #endif
 	if (!PendingMessagesManager::instance()->hasPendingMessages())
 		if (CurrentDocker)
-			CurrentDocker->changeTrayIcon(defaultPixmap());
+			CurrentDocker->changeTrayIcon(defaultIcon());
 }
 
 void DockingManager::defaultToolTip()
@@ -291,15 +294,17 @@ void DockingManager::trayMousePressEvent(QMouseEvent * e)
 	kdebugf2();
 }
 
-void DockingManager::statusPixmapChanged(const QIcon &icon)
+void DockingManager::statusIconChanged(const QIcon &icon)
 {
 	kdebugf();
+
+	if (PendingMessagesManager::instance()->hasPendingMessages() || icon_timer->isActive())
+		return;
 
 	if (CurrentDocker)
 		CurrentDocker->changeTrayIcon(icon);
 
 	defaultToolTip();
-	changeIcon();
 #ifdef Q_OS_MAC
 	qApp->setWindowIcon(icon);
 #endif
@@ -311,7 +316,7 @@ void DockingManager::searchingForTrayPosition(QPoint &point)
 		point = CurrentDocker->trayPosition();
 }
 
-QIcon DockingManager::defaultPixmap()
+QIcon DockingManager::defaultIcon()
 {
 	return StatusContainerManager::instance()->statusIcon();
 }

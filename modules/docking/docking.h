@@ -44,6 +44,7 @@ class QMenu;
 
 class Docker;
 class StatusContainer;
+class StatusIcon;
 
 class DOCKINGAPI DockingManager : public QObject, ConfigurationAwareObject, StatusContainerAwareObject
 {
@@ -60,6 +61,8 @@ class DOCKINGAPI DockingManager : public QObject, ConfigurationAwareObject, Stat
  #endif
 	QAction *CloseKaduAction;
 	QAction *containersSeparator;
+
+	StatusIcon *Icon;
 
 	QList<QAction *> ModulesActions;
 
@@ -78,7 +81,7 @@ class DOCKINGAPI DockingManager : public QObject, ConfigurationAwareObject, Stat
 	virtual ~DockingManager();
 
 private slots:
-	void statusPixmapChanged(const QIcon &icon);
+	void statusIconChanged(const QIcon &icon);
 	void changeIcon();
 	void pendingMessageAdded();
 	void pendingMessageDeleted();
@@ -98,7 +101,7 @@ public:
 	static DockingManager * instance();
 
 	void trayMousePressEvent(QMouseEvent * e);
-	QIcon defaultPixmap();
+	QIcon defaultIcon();
 	QMenu * dockMenu() { return DockMenu; }
 
 	void setDocker(Docker *docker);
