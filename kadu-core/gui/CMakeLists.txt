@@ -1,5 +1,6 @@
 set (gui_SRCS
 	hot-key.cpp
+	status-icon.cpp
 
 	actions/action.cpp
 	actions/actions.cpp
@@ -130,6 +131,7 @@ set (gui_SRCS
 
 set (gui_MOC_SRCS
 	hot-key.h
+	status-icon.h
 
 	actions/action.h
 	actions/actions.h

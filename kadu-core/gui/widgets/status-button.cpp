@@ -25,6 +25,7 @@
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
 #include "configuration/main-configuration.h"
+#include "gui/status-icon.h"
 #include "gui/widgets/status-menu.h"
 #include "protocols/protocol.h"
 #include "status/status-container.h"
@@ -32,12 +33,15 @@
 #include "status-button.h"
 
 StatusButton::StatusButton(StatusContainer *statusContainer, QWidget *parent) :
-		QPushButton(parent), MyStatusContainer(statusContainer), DisplayStatusName(false), BlinkTimer(0), BlinkOffline(true)
+		QPushButton(parent), MyStatusContainer(statusContainer), DisplayStatusName(false)
 {
+	Icon = new StatusIcon(MyStatusContainer, this);
+
 	createGui();
 
 	statusUpdated();
 	connect(MyStatusContainer, SIGNAL(statusUpdated()), this, SLOT(statusUpdated()));
+	connect(Icon, SIGNAL(iconUpdated(QIcon)), this, SLOT(iconUpdated(QIcon)));
 }
 
 StatusButton::~StatusButton()
@@ -50,52 +54,11 @@ void StatusButton::createGui()
 	new StatusMenu(MyStatusContainer, menu);
 
 	setMenu(menu);
-}
-
-void StatusButton::enableBlink()
-{
-	if (BlinkTimer)
-		return;
-
-	BlinkTimer = new QTimer(this);
-	connect(BlinkTimer, SIGNAL(timeout()), this, SLOT(blink()));
-	BlinkTimer->start(500);
-}
-
-void StatusButton::disableBlink()
-{
-	if (!BlinkTimer)
-		return;
-
-	delete BlinkTimer;
-	BlinkTimer = 0;
-
-	setIcon(MyStatusContainer->statusIcon());
-}
-
-void StatusButton::blink()
-{
-	if (!MyStatusContainer->isStatusSettingInProgress())
-	{
-		disableBlink();
-		return;
-	}
-
-	BlinkOffline = !BlinkOffline;
-
-	if (BlinkOffline)
-		setIcon(MyStatusContainer->statusIcon(Status()));
-	else
-		setIcon(MyStatusContainer->statusIcon(MyStatusContainer->nextStatus()));
+	setIcon(Icon->icon());
 }
 
 void StatusButton::updateStatus()
 {
-	if (!MyStatusContainer->isStatusSettingInProgress())
-		setIcon(MyStatusContainer->statusIcon());
-	else
-		enableBlink();
-
 	if (DisplayStatusName)
 	{
 		setText(MyStatusContainer->statusDisplayName());
@@ -133,4 +96,9 @@ void StatusButton::setDisplayStatusName(bool displayStatusName)
 		DisplayStatusName = displayStatusName;
 		updateStatus();
 	}
+}
+
+void StatusButton::iconUpdated(QIcon icon)
+{
+	setIcon(icon);
 }

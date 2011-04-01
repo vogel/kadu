@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -17,8 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef STATUS_BUTTON_H
-#define STATUS_BUTTON_H
+#ifndef STATUS_ICON_H
+#define STATUS_ICON_H
 
 #include <QtGui/QPushButton>
 
@@ -26,33 +26,40 @@
 #include "status/status.h"
 
 class StatusContainer;
-class StatusIcon;
-class StatusMenu;
 
-class StatusButton : public QPushButton, private ConfigurationAwareObject
+class StatusIcon : public QObject, private ConfigurationAwareObject
 {
 	Q_OBJECT
 
 	StatusContainer *MyStatusContainer;
-	bool DisplayStatusName;
-	StatusIcon *Icon;
+	QTimer *BlinkTimer;
+	bool BlinkOffline;
 
-	void createGui();
+	QIcon Icon;
+
 	void updateStatus();
 
+	void enableBlink();
+	void disableBlink();
+
+	void setIcon(QIcon icon);
+
 private slots:
-	void iconUpdated(QIcon icon);
+	void blink();
 	void statusUpdated();
 
 protected:
 	virtual void configurationUpdated();
 
 public:
-	explicit StatusButton(StatusContainer *statusContainer, QWidget *parent = 0);
-	virtual ~StatusButton();
+	explicit StatusIcon(StatusContainer *statusContainer, QObject *parent = 0);
+	virtual ~StatusIcon();
 
-	void setDisplayStatusName(bool displayStatusName);
+	QIcon icon() const { return Icon; }
+
+signals:
+	void iconUpdated(QIcon icon);
 
 };
 
-#endif // STATUS_BUTTON_H
+#endif // STATUS_ICON_H
