@@ -136,6 +136,11 @@ void Action::updateIcon()
 	setIcon(IconsManager::instance()->iconByPath(Description->iconPath()));
 }
 
+void Action::setIcon(QIcon icon)
+{
+	QAction::setIcon(icon);
+}
+
 void disableEmptyContacts(Action *action)
 {
 	action->setEnabled(!action->contacts().isEmpty());

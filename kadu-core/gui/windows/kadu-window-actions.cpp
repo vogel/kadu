@@ -44,6 +44,7 @@
 #include "buddies/filter/offline-buddy-filter.h"
 #include "buddies/filter/online-and-description-buddy-filter.h"
 #include "core/core.h"
+#include "gui/status-icon.h"
 #include "gui/actions/action.h"
 #include "gui/actions/actions.h"
 #include "gui/widgets/buddies-list-view.h"
@@ -453,8 +454,9 @@ void KaduWindowActions::changeStatusActionCreated(Action *action)
 	StatusContainer *statusContainer = action->statusContainer();
 	if (statusContainer)
 	{
-		Status status = StatusChangerManager::instance()->realStatus(statusContainer);
-		action->setIcon(statusContainer->statusIcon(status).pixmap(16,16));
+		StatusIcon *icon = new StatusIcon(statusContainer, action);
+		connect(icon, SIGNAL(iconUpdated(QIcon)), action, SLOT(setIcon(QIcon)));
+		action->setIcon(icon->icon());
 	}
 }
 

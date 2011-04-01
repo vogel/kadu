@@ -47,8 +47,6 @@ class KADUAPI Action : public QAction
 	ActionDescription *Description;
 	ActionDataSource *DataSource;
 
-	QIcon Icon;
-
 private slots:
 	void changedSlot();
 	void hoveredSlot();
@@ -73,6 +71,9 @@ public:
 public slots:
 	void checkState();
 	void updateIcon();
+
+	// we need a slot for StatusIcon class
+	void setIcon(QIcon icon);
 
 signals:
 	void changed(QAction *action);
