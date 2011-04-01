@@ -41,7 +41,7 @@ CustomInputMenuManager * CustomInputMenuManager::instance()
 }
 
 CustomInputMenuManager::CustomInputMenuManager() :
-		InputContextMenuSorted(true), InputActionsSorted(true)
+		InputContextMenuSorted(true)
 {
 }
 
@@ -51,15 +51,6 @@ void CustomInputMenuManager::sortInputContextMenu()
 	{
 		qSort(InputContextMenu);
 		InputContextMenuSorted = true;
-	}
-}
-
-void CustomInputMenuManager::sortInputActions()
-{
-	if (!InputActionsSorted)
-	{
-		qSort(InputActions);
-		InputActionsSorted = true;
 	}
 }
 
@@ -82,44 +73,18 @@ void CustomInputMenuManager::removeActionDescription(ActionDescription *actionDe
 	}
 }
 
-void CustomInputMenuManager::addListActionDescription(ActionDescription *actionDescription, CustomInputMenuItem::CustomInputMenuCategory category, int priority)
-{
-	InputActions.append(CustomInputMenuItem(actionDescription, category, priority));
-	InputActionsSorted = false;
-}
-
-void CustomInputMenuManager::removeListActionDescription(ActionDescription *actionDescription)
-{
-	QList<CustomInputMenuItem>::iterator i = InputActions.begin();
-
-	while (i != InputActions.end())
-	{
-		if ((*i).actionDescription() == actionDescription)
-			i = InputActions.erase(i);
-		else
-			++i;
-	}
-}
-
 QMenu * CustomInputMenuManager::menu(QWidget *parent)
 {
-	sortInputContextMenu();
-	sortInputActions();
-
 	QMenu *menu = new QMenu(parent);
 
-	QList<CustomInputMenuItem>::const_iterator i = InputContextMenu.begin();
+	sortInputContextMenu();
+	QList<CustomInputMenuItem>::const_iterator i = InputContextMenu.constBegin();
 
-	while (i != InputContextMenu.end())
+	while (i != InputContextMenu.constEnd())
 	{
-		ActionDescription *actionDescription;
-
-		actionDescription = (*i).actionDescription();
-
-		Action *action = actionDescription->createAction(0, parent);
+		Action *action = i->actionDescription()->createAction(0, parent);
 
 		menu->addAction(action);
-
 		action->checkState();
 
 		++i;

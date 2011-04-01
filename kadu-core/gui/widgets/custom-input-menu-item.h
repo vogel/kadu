@@ -44,7 +44,6 @@ public:
 	ActionDescription * actionDescription() const { return Action; }
 	CustomInputMenuCategory category() const { return Category; }
 	int priority() const { return Priority; }
-
 };
 
 #endif // CUSTOM_INPUT_MENU_ITEM_H

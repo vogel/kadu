@@ -41,13 +41,9 @@ class KADUAPI CustomInputMenuManager : public QObject
 	QList<CustomInputMenuItem> InputContextMenu;
 	bool InputContextMenuSorted;
 
-	QList<CustomInputMenuItem> InputActions;
-	bool InputActionsSorted;
-
 	CustomInputMenuManager();
 
 	void sortInputContextMenu();
-	void sortInputActions();
 
 public:
 	static CustomInputMenuManager * instance();
@@ -55,11 +51,7 @@ public:
 	void addActionDescription(ActionDescription *actionDescription, CustomInputMenuItem::CustomInputMenuCategory category, int priority);
 	void removeActionDescription(ActionDescription *actionDescription);
 
-	void addListActionDescription(ActionDescription *actionDescription, CustomInputMenuItem::CustomInputMenuCategory category, int priority);
-	void removeListActionDescription(ActionDescription *actionDescription);
-
 	QMenu * menu(QWidget *parent);
-
 };
 
 #endif // CUSTOM_ITEM_MENU_MANAGER_H
