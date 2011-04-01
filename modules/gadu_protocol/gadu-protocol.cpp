@@ -252,7 +252,10 @@ void GaduProtocol::changeStatus()
 		gg_change_status(GaduSession, type | friends);
 
 	if (newStatus.isDisconnected())
+	{
+		machine()->loggedOut();
 		networkDisconnected(false, false);
+	}
 
 	statusChanged(newStatus);
 }

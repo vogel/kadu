@@ -47,12 +47,14 @@ public:
 	virtual ~ProtocolStateMachine();
 
 	void wantToLogin();
+	void loggedOut();
 
 signals:
 	void networkOnlineSignal();
 	void networkOfflineSignal();
 	void wantToLoginOnlineSignal();
 	void wantToLoginOfflineSignal();
+	void loggedOutSignal();
 
 	void login();
 

@@ -38,8 +38,10 @@ ProtocolStateMachine::ProtocolStateMachine(QObject *parent) :
 	WantToLogInState->addTransition(this, SIGNAL(networkOnlineSignal()), LoggingInState);
 
 	LoggingInState->addTransition(this, SIGNAL(networkOfflineSignal()), WantToLogInState);
+	LoggingInState->addTransition(this, SIGNAL(loggedOutSignal()), LoggedOutState);
 
 	LoggedInState->addTransition(this, SIGNAL(networkOfflineSignal()), WantToLogInState);
+	LoggingInState->addTransition(this, SIGNAL(loggedOutSignal()), LoggedOutState);
 
 	addState(LoggedOutState);
 	addState(WantToLogInState);
@@ -69,6 +71,11 @@ void ProtocolStateMachine::wantToLogin()
 		emit wantToLoginOnlineSignal();
 	else
 		emit wantToLoginOfflineSignal();
+}
+
+void ProtocolStateMachine::loggedOut()
+{
+	emit loggedOutSignal();
 }
 
 #include <stdio.h>

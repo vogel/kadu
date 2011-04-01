@@ -34,6 +34,7 @@
 #include "gui/windows/message-dialog.h"
 #include "gui/windows/password-window.h"
 #include "os/generic/system-info.h"
+#include "protocols/state-machine/protocol-state-machine.h"
 #include "protocols/protocols-manager.h"
 #include "status/status-type-manager.h"
 #include "url-handlers/url-handler-manager.h"
@@ -76,6 +77,8 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 	CurrentSubscriptionService = new JabberSubscriptionService(this);
 
 	connectContactManagerSignals();
+
+	connect(machine(), SIGNAL(login()), this, SLOT(login()));
 
 	kdebugf2();
 }
@@ -432,7 +435,7 @@ void JabberProtocol::changeStatus()
 
 	if (!isConnected())
 	{
-		login();
+		machine()->wantToLogin();
 		return;
 	}
 
@@ -441,6 +444,7 @@ void JabberProtocol::changeStatus()
 
 	if (newStatus.isDisconnected())
 	{
+		machine()->loggedOut();
 		networkStateChanged(NetworkDisconnected);
 
 		setAllOffline();
