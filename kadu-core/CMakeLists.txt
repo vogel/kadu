@@ -47,6 +47,7 @@ set (kadu_SUBDIRS
 	misc
 	model
 	multilogon
+	network
 	notify
 	os
 	parser
