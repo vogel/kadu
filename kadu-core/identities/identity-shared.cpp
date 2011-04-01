@@ -163,10 +163,10 @@ Account IdentityShared::bestAccount()
 		{
 			// TODO: hack
 			bool isDisconnected = false;
-			if (!result)
+			if (result)
 				isDisconnected = !result.data()->protocolHandler() || !result.data()->protocolHandler()->isConnected();
 
-			if (result || isDisconnected  || (account.protocolName() == "gadu" && result.protocolName() != "gadu"))
+			if (!result || isDisconnected  || (account.protocolName() == "gadu" && result.protocolName() != "gadu"))
 			{
 				result = account;
 				bool isDisconnected = !result.data()->protocolHandler() || !result.data()->protocolHandler()->isConnected();
