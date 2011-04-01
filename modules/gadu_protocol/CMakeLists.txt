@@ -131,6 +131,7 @@ set (MOC_SOURCES
 )
 
 set (TRANSLATION_SOURCES
+	translations/gadu_protocol_en.ts
 	translations/gadu_protocol_de.ts
 	translations/gadu_protocol_fr.ts
 	translations/gadu_protocol_it.ts
@@ -192,7 +193,7 @@ set (QT_USE_QTNETWORK 1)
 set (QT_USE_QTWEBKIT 1)
 set (QT_USE_QTSCRIPT 1)
 set (QT_USE_QTSCRIPTTOOLS 1)
-include (${QT_USE_FILE}) 
+include (${QT_USE_FILE})
 
 kadu_plugin (gadu_protocol
 	PLUGIN_SOURCES ${SOURCES}

@@ -18,6 +18,7 @@ set (MOC_SOURCES
 )
 
 set (TRANSLATION_SOURCES
+	translations/hints_en.ts
 	translations/hints_de.ts
 	translations/hints_fr.ts
 	translations/hints_it.ts

@@ -8,6 +8,7 @@ set (MOC_SOURCES
 )
 
 set (TRANSLATION_SOURCES
+	translations/echo_en.ts
 	translations/echo_pl.ts
 )
 

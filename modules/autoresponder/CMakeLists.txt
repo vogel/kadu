@@ -7,6 +7,7 @@ set (MOC_SOURCES
 )
 
 set (TRANSLATION_SOURCES
+	translations/autoresponder_en.ts
 	translations/autoresponder_de.ts
 	translations/autoresponder_fr.ts
 	translations/autoresponder_it.ts

@@ -9,6 +9,7 @@ set (MOC_SOURCES
 )
 
 set (TRANSLATION_SOURCES
+	translations/pcspeaker_en.ts
 	translations/pcspeaker_pl.ts
 	translations/pcspeaker_de.ts
 	translations/pcspeaker_it.ts

@@ -29,6 +29,7 @@ set (MOC_SOURCES
 )
 
 set (TRANSLATION_SOURCES
+	translations/screenshot_en.ts
 	translations/screenshot_de.ts
 	translations/screenshot_fr.ts
 	translations/screenshot_it.ts

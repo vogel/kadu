@@ -7,6 +7,7 @@ set (MOC_SOURCES
 )
 
 set (TRANSLATION_SOURCES
+	translations/split_messages_en.ts
 	translations/split_messages_pl.ts
 )
 

@@ -9,6 +9,7 @@ set (MOC_SOURCES
 )
 
 set (TRANSLATION_SOURCES
+	translations/autoaway_en.ts
 	translations/autoaway_de.ts
 	translations/autoaway_fr.ts
 	translations/autoaway_it.ts

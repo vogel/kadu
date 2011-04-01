@@ -7,6 +7,7 @@ set (MOC_SOURCES
 )
 
 set (TRANSLATION_SOURCES
+	translations/word_fix_en.ts
 	translations/word_fix_pl.ts
 )
 

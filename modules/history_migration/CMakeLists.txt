@@ -24,6 +24,7 @@ set (CONFIGURATION_FILES
 )
 
 set (TRANSLATION_SOURCES
+	translations/history_migration_en.ts
 	translations/history_migration_de.ts
 	translations/history_migration_fr.ts
 	translations/history_migration_it.ts

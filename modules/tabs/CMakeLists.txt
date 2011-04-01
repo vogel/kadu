@@ -9,6 +9,7 @@ set (MOC_SOURCES
 )
 
 set (TRANSLATION_SOURCES
+	translations/tabs_en.ts
 	translations/tabs_de.ts
 	translations/tabs_fr.ts
 	translations/tabs_it.ts

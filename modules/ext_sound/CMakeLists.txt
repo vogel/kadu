@@ -8,6 +8,7 @@ set (MOC_SOURCES
 )
 
 set (TRANSLATION_SOURCES
+	translations/ext_sound_en.ts
 	translations/ext_sound_de.ts
 	translations/ext_sound_fr.ts
 	translations/ext_sound_it.ts
