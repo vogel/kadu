@@ -81,7 +81,7 @@ void Protocol::setStatus(Status status)
 	StatusChangerManager::instance()->setStatus(account().statusContainer(), status);
 }
 
-Status Protocol::nextStatus() const
+Status Protocol::status() const
 {
 	return StatusChangerManager::instance()->realStatus(account().statusContainer());
 }

@@ -191,7 +191,7 @@ void DockingManager::changeIcon()
 
 				if (CurrentDocker)
 					CurrentDocker->changeTrayIcon(
-							StatusContainerManager::instance()->statusIcon(account.protocolHandler()->nextStatus()));
+							StatusContainerManager::instance()->statusIcon(account.protocolHandler()->status()));
 
 				icon_timer->setSingleShot(true);
 				icon_timer->start(500);
@@ -322,7 +322,7 @@ QIcon DockingManager::defaultPixmap()
 	if (account.isNull() || !account.protocolHandler())
 		return StatusContainerManager::instance()->statusIcon();
 
-	return StatusContainerManager::instance()->statusIcon(account.protocolHandler()->nextStatus());
+	return StatusContainerManager::instance()->statusIcon(account.protocolHandler()->status());
 }
 
 void DockingManager::setDocker(Docker *docker)

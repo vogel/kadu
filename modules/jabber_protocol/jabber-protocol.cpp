@@ -162,7 +162,7 @@ void JabberProtocol::login(const QString &password, bool permanent)
 	
 	if (password.isEmpty()) // user did not give us password, so prevent from further reconnecting
 	{
-		Status newstat = nextStatus();
+		Status newstat = status();
 		newstat.setType("Offline");
 		setStatus(newstat);
 		statusChanged(newstat);
@@ -280,8 +280,8 @@ void JabberProtocol::logout()
 {
 	kdebugf();
 
-	Status newstat = nextStatus();
-	if (!nextStatus().isDisconnected())
+	Status newstat = status();
+	if (!status().isDisconnected())
 	{
 		newstat.setType("Offline");
 		setStatus(newstat);
@@ -331,7 +331,7 @@ void JabberProtocol::disconnectedFromServer()
 
 	JabberClient->disconnect();
 
-	if (!nextStatus().isDisconnected()) // user still wants to login
+	if (!status().isDisconnected()) // user still wants to login
 		QTimer::singleShot(1000, this, SLOT(login())); // try again after one second
 
 	kdebugf2();
@@ -419,7 +419,7 @@ void JabberProtocol::contactIdChanged(Contact contact, const QString &oldId)
 
 void JabberProtocol::changeStatus()
 {
-	Status newStatus = nextStatus();
+	Status newStatus = status();
 
 	if (newStatus.isDisconnected() && NetworkConnected != state())
 	{
@@ -447,7 +447,7 @@ void JabberProtocol::changeStatus()
 
 		JabberClient->disconnect();
 
-		if (!nextStatus().isDisconnected())
+		if (!status().isDisconnected())
 			setStatus(Status());
 	}
 

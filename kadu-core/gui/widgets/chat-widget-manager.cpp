@@ -433,7 +433,7 @@ void ChatWidgetManager::messageReceived(const Message &message)
 		if (config_file.readBoolEntry("Chat", "OpenChatOnMessage"))
 		{
 			Protocol *handler = message.messageChat().chatAccount().protocolHandler();
-			if (config_file.readBoolEntry("Chat", "OpenChatOnMessageWhenOnline") && (!handler || (handler->nextStatus().group() != "Online")))
+			if (config_file.readBoolEntry("Chat", "OpenChatOnMessageWhenOnline") && (!handler || (handler->status().group() != "Online")))
 			{
 				message.setPending(true);
 				PendingMessagesManager::instance()->addItem(message);

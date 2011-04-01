@@ -250,7 +250,7 @@ void TlenProtocol::connectToServer()
 	TlenClient->setUname(account().id());
 	TlenClient->setPass (account().password());
 
-	changeStatus(nextStatus());
+	changeStatus(status());
 
 	networkStateChanged(NetworkConnecting);
 	kdebugf2();
@@ -751,7 +751,7 @@ void TlenProtocol::changeStatus(Status status)
 	const QString &type = status.type();
 
 	// TODO: do sf if not connected
-	if (TlenClient == 0 && !nextStatus().isDisconnected())
+	if (TlenClient == 0 && !status().isDisconnected())
 		login();
 
 	if("Online" == type)
@@ -775,7 +775,7 @@ void TlenProtocol::changeStatus(Status status)
 
 		setAllOffline();
 
-		if (!nextStatus().isDisconnected())
+		if (!status().isDisconnected())
 			setStatus(Status());
 	}
 
@@ -784,7 +784,7 @@ void TlenProtocol::changeStatus(Status status)
 
 void TlenProtocol::changeStatus()
 {
-	Status newStatus = nextStatus();
+	Status newStatus = status();
 
 	if (newStatus.isDisconnected() && status().isDisconnected())
 	{
@@ -793,7 +793,7 @@ void TlenProtocol::changeStatus()
 
 		setAllOffline();
 
-		if (!nextStatus().isDisconnected())
+		if (!status().isDisconnected())
 			setStatus(Status());
 
 		return;

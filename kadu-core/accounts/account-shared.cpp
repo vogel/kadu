@@ -334,7 +334,7 @@ void AccountShared::doSetStatus(Status status)
 Status AccountShared::status()
 {
 	if (ProtocolHandler)
-		return ProtocolHandler->nextStatus();
+		return ProtocolHandler->status();
 	else
 		return Status();
 }

@@ -221,7 +221,7 @@ int GaduProtocol::maxDescriptionLength()
 
 void GaduProtocol::changeStatus()
 {
-	Status newStatus = nextStatus();
+	Status newStatus = status();
 
 	if (newStatus.isDisconnected() && NetworkConnected != state())
 	{
@@ -281,7 +281,7 @@ void GaduProtocol::login(const QString &password, bool permanent)
 {
 	if (password.isEmpty()) // user did not give us password, so prevent from further reconnecting
 	{
-		Status newstat = nextStatus();
+		Status newstat = status();
 		newstat.setType("Offline");
 		setStatus(newstat);
 		statusChanged(newstat);
@@ -401,9 +401,9 @@ void GaduProtocol::setupLoginParams()
 
 	GaduLoginParams.async = 1;
 
-	GaduLoginParams.status = (gaduStatusFromStatus(nextStatus()) | (account().privateStatus() ? GG_STATUS_FRIENDS_MASK : 0));
-	if (!nextStatus().description().isEmpty())
-		GaduLoginParams.status_descr = strdup(nextStatus().description().toUtf8());
+	GaduLoginParams.status = (gaduStatusFromStatus(status()) | (account().privateStatus() ? GG_STATUS_FRIENDS_MASK : 0));
+	if (!status().description().isEmpty())
+		GaduLoginParams.status_descr = strdup(status().description().toUtf8());
 
 	GaduLoginParams.tls = gaduAccountDetails->tlsEncryption() ? 1 : 0;
 
@@ -514,14 +514,14 @@ void GaduProtocol::networkDisconnected(bool tryAgain, bool waitForPassword)
 
 	CurrentMultilogonService->removeAllSessions();
 
-	if (tryAgain && !nextStatus().isDisconnected()) // user still wants to login
+	if (tryAgain && !status().isDisconnected()) // user still wants to login
 	{
 		networkStateChanged(NetworkConnecting);
 		statusChanged(Status());
 
 		QTimer::singleShot(1000, this, SLOT(login())); // try again after one second
 	}
-	else if (!nextStatus().isDisconnected())
+	else if (!status().isDisconnected())
 		if (!waitForPassword)
 		{
 			setStatus(Status());
@@ -670,7 +670,7 @@ void GaduProtocol::socketConnSuccess()
 	connect(PingTimer, SIGNAL(timeout()), this, SLOT(everyMinuteActions()));
 	PingTimer->start(60000);
 
-	statusChanged(nextStatus());
+	statusChanged(status());
 	networkConnected();
 
 	sendUserList();
@@ -686,8 +686,8 @@ void GaduProtocol::socketConnSuccess()
 	}
 
 	// workaround about servers errors
-	if ("Invisible" == nextStatus().type())
-		setStatus(nextStatus());
+	if ("Invisible" == status().type())
+		setStatus(status());
 
 	kdebugf2();
 }

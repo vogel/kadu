@@ -411,7 +411,7 @@ void Core::statusUpdated()
 	if (!account || !account.protocolHandler())
 		setIcon(StatusContainerManager::instance()->statusIcon());
 	else
-		setIcon(StatusContainerManager::instance()->statusIcon(account.protocolHandler()->nextStatus()));
+		setIcon(StatusContainerManager::instance()->statusIcon(account.protocolHandler()->status()));
 }
 
 void Core::kaduWindowDestroyed()
