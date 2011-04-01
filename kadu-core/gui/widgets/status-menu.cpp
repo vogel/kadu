@@ -63,7 +63,7 @@ void StatusMenu::changeStatus(QAction *action)
 	if (!statusType)
 		return;
 
-	Status status(MyStatusContainer->nextStatus());
+	Status status(MyStatusContainer->status());
 	status.setType(statusType->name());
 	MyStatusContainer->setStatus(status);
 }

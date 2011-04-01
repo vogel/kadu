@@ -178,10 +178,10 @@ Account IdentityShared::bestAccount()
 	return result;
 }
 
-Status IdentityShared::nextStatus()
+Status IdentityShared::status()
 {
 	Account account = bestAccount();
-	return account ? account.data()->nextStatus() : Status();
+	return account ? account.data()->status() : Status();
 }
 
 bool IdentityShared::isStatusSettingInProgress()
@@ -192,12 +192,12 @@ bool IdentityShared::isStatusSettingInProgress()
 
 QString IdentityShared::statusDisplayName()
 {
-	return nextStatus().displayName();
+	return status().displayName();
 }
 
 QIcon IdentityShared::statusIcon()
 {
-	return statusIcon(nextStatus());
+	return statusIcon(status());
 }
 
 QIcon IdentityShared::statusIcon(Status status)

@@ -30,7 +30,7 @@ Copyright (C) 2005 by
 	gg: 2087202
 
 Na podstawie skryptu TCL autorstwoa Attis'a.
-Czê¶æ kodu (atak flood i emotikonami) na podstawie ³aty amd_fanatyka
+Czï¿½ï¿½ï¿½ kodu (atak flood i emotikonami) na podstawie ï¿½aty amd_fanatyka
 Przystosowanie do kadu 0.6 -  White Eagle
 Nowa funkcjonalnosc - Dorregaray
 (szczegoly w zalaczonym pliku Changelog)
@@ -155,7 +155,7 @@ void Firewall::filterIncomingMessage(Chat chat, Contact sender, QString &message
 	if (!protocol)
 		return;
 
-// emotikony s± sprawdzane nawet przy ³±czeniu
+// emotikony sï¿½ sprawdzane nawet przy ï¿½ï¿½czeniu
 	const int min_interval_notify = 2000;
 
 	if (CheckFloodingEmoticons)
@@ -270,7 +270,7 @@ bool Firewall::checkChat(const Chat &chat, const Contact &sender, const QString 
  		return false;
 	}
 
-	if (chat.chatAccount().statusContainer()->nextStatus().type() == "Invisible" && DropAnonymousWhenInvisible)
+	if (chat.chatAccount().statusContainer()->status().type() == "Invisible" && DropAnonymousWhenInvisible)
 	{
 		writeLog(sender, tr("Chat with anonim silently dropped.\n") + "----------------------------------------------------\n");
 
@@ -573,13 +573,13 @@ void Firewall::configurationUpdated()
 
 void Firewall::createDefaultConfiguration()
 {
-	//domy¶lne powiadamianie dymkiem
+	//domyï¿½lne powiadamianie dymkiem
 	config_file.addVariable("Notify", "Firewall_Hints", config_file.readEntry("Firewall", "show_hint", "true"));
 	config_file.addVariable("Firewall", "notification_syntax", config_file.readEntry("Firewall", "hint_syntax", tr("%u writes")));
-	//domy¶lne kolory dymków
+	//domyï¿½lne kolory dymkï¿½w
 	config_file.addVariable("Hints", "Event_Firewall_fgcolor", config_file.readEntry("Firewall", "fg_color", "#000080"));//navy
 	config_file.addVariable("Hints", "Event_Firewall_bgcolor", config_file.readEntry("Firewall", "bg_color", "#add8e6"));//lightblue
-	//domy¶lne warto¶ci zmiennych konfiguracyjnych
+	//domyï¿½lne wartoï¿½ci zmiennych konfiguracyjnych
 	config_file.addVariable("Firewall", "ignore_conferences", true);
 	config_file.addVariable("Firewall", "search", true);
 	config_file.addVariable("Firewall", "chats", true);

@@ -262,7 +262,7 @@ void NotificationManager::silentModeActionActivated(QAction *sender, bool toggle
 
 void NotificationManager::statusUpdated()
 {
-	if (SilentModeWhenDnD && !silentMode() && StatusContainerManager::instance()->nextStatus().type() == "DoNotDisturb")
+	if (SilentModeWhenDnD && !silentMode() && StatusContainerManager::instance()->status().type() == "DoNotDisturb")
 	{
 		foreach (Action *action, SilentModeActionDescription->actions())
 			action->setChecked(false);

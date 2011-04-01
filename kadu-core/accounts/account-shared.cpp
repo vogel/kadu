@@ -170,7 +170,7 @@ void AccountShared::setDisconnectStatus()
 	disconnectStatus.setType("Offline");
 
 	if (disconnectWithCurrentDescription)
-		disconnectStatus.setDescription(nextStatus().description());
+		disconnectStatus.setDescription(status().description());
 	else
 		disconnectStatus.setDescription(disconnectDescription);
 
@@ -331,7 +331,7 @@ void AccountShared::doSetStatus(Status status)
 		ProtocolHandler->setStatus(status);
 }
 
-Status AccountShared::nextStatus()
+Status AccountShared::status()
 {
 	if (ProtocolHandler)
 		return ProtocolHandler->nextStatus();
@@ -357,12 +357,12 @@ int AccountShared::maxDescriptionLength()
 
 QString AccountShared::statusDisplayName()
 {
-	return nextStatus().displayName();
+	return status().displayName();
 }
 
 QIcon AccountShared::statusIcon()
 {
-	return statusIcon(nextStatus());
+	return statusIcon(status());
 }
 
 QString AccountShared::statusIconPath(const QString &statusType)

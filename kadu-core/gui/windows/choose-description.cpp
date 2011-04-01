@@ -85,7 +85,7 @@ ChooseDescription::ChooseDescription(StatusContainer *statusContainer, QWidget *
 	Description->setEditable(true);
 	Description->setInsertPolicy(QComboBox::NoInsert);
 	Description->completer()->setCaseSensitivity(Qt::CaseSensitive);
-	Description->setEditText(MyStatusContainer->nextStatus().description());
+	Description->setEditText(MyStatusContainer->status().description());
 	connect(Description, SIGNAL(activated(int)), this, SLOT(activated(int)));
 
 	OkButton = new QPushButton(tr("&OK"), this);

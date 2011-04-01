@@ -204,7 +204,7 @@ Status AccountManager::status()
 
 	Account account = defaultAccount();
 	return account.statusContainer()
-			? account.statusContainer()->nextStatus()
+			? account.statusContainer()->status()
 			: Status();
 }
 

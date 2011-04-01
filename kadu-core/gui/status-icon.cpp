@@ -68,7 +68,7 @@ void StatusIcon::blink()
 	if (BlinkOffline)
 		setIcon(MyStatusContainer->statusIcon(Status()));
 	else
-		setIcon(MyStatusContainer->statusIcon(MyStatusContainer->nextStatus()));
+		setIcon(MyStatusContainer->statusIcon(MyStatusContainer->status()));
 }
 
 void StatusIcon::updateStatus()
