@@ -17,6 +17,7 @@ set (MOC_SOURCES
 )
 
 set (TRANSLATION_SOURCES
+	translations/encryption_ng_simlite_en.ts
 	translations/encryption_ng_simlite_de.ts
 	translations/encryption_ng_simlite_fr.ts
 	translations/encryption_ng_simlite_it.ts

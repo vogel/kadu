@@ -12,6 +12,7 @@ set (MOC_SOURCES
 )
 
 set (TRANSLATION_SOURCES
+	translations/speech_en.ts
 	translations/speech_de.ts
 	translations/speech_fr.ts
 	translations/speech_it.ts

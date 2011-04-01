@@ -9,6 +9,7 @@ set (MOC_SOURCES
 )
 
 set (TRANSLATION_SOURCES
+	translations/alsa_sound_en.ts
 	translations/alsa_sound_de.ts
 	translations/alsa_sound_fr.ts
 	translations/alsa_sound_it.ts

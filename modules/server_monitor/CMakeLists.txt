@@ -11,6 +11,7 @@ set (MOC_SOURCES
 )
 
 set (TRANSLATION_SOURCES
+	translations/server_monitor_en.ts
 	translations/server_monitor_de.ts
 	translations/server_monitor_fr.ts
 	translations/server_monitor_it.ts

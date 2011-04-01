@@ -7,6 +7,7 @@ set (MOC_SOURCES
 )
 
 set (TRANSLATION_SOURCES
+	translations/exec_notify_en.ts
 	translations/exec_notify_de.ts
 	translations/exec_notify_fr.ts
 	translations/exec_notify_it.ts

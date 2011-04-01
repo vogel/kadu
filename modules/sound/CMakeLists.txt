@@ -21,6 +21,7 @@ set (MOC_SOURCES
 )
 
 set (TRANSLATION_SOURCES
+	translations/sound_en.ts
 	translations/sound_de.ts
 	translations/sound_fr.ts
 	translations/sound_it.ts

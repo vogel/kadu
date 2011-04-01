@@ -10,6 +10,7 @@ set (MOC_SOURCES
 )
 
 set (TRANSLATION_SOURCES
+	translations/simpleview_en.ts
 	translations/simpleview_de.ts
 	translations/simpleview_fr.ts
 	translations/simpleview_it.ts

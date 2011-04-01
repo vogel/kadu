@@ -8,6 +8,7 @@ set (MOC_SOURCES
 )
 
 set (TRANSLATION_SOURCES
+	translations/advanced_userlist_en.ts
 	translations/advanced_userlist_de.ts
 	translations/advanced_userlist_fr.ts
 	translations/advanced_userlist_it.ts

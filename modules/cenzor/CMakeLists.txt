@@ -17,6 +17,7 @@ set (MOC_SOURCES
 )
 
 set (TRANSLATION_SOURCES
+	translations/cenzor_en.ts
 	translations/cenzor_de.ts
 	translations/cenzor_fr.ts
 	translations/cenzor_it.ts

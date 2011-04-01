@@ -7,6 +7,7 @@ set (MOC_SOURCES
 )
 
 set (TRANSLATION_SOURCES
+	translations/dsp_sound_en.ts
 	translations/dsp_sound_de.ts
 	translations/dsp_sound_fr.ts
 	translations/dsp_sound_it.ts

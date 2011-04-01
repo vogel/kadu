@@ -41,6 +41,7 @@ set (DATA_DIRECTORY
 )
 
 set (TRANSLATION_SOURCES
+	translations/sms_en.ts
 	translations/sms_de.ts
 	translations/sms_fr.ts
 	translations/sms_it.ts

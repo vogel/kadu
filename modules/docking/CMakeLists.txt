@@ -14,6 +14,7 @@ if (APPLE)
 endif (APPLE)
 
 set (TRANSLATION_SOURCES
+	translations/docking_en.ts
 	translations/docking_de.ts
 	translations/docking_fr.ts
 	translations/docking_it.ts

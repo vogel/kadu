@@ -27,6 +27,7 @@ set (MOC_SOURCES
 )
 
 set (TRANSLATION_SOURCES
+	translations/weather_en.ts
 	translations/weather_pl.ts
 )
 

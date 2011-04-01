@@ -27,6 +27,7 @@ endif (UNIX AND NOT APPLE)
 
 
 set (TRANSLATION_SOURCES
+	translations/mediaplayer_en.ts
 	translations/mediaplayer_de.ts
 	translations/mediaplayer_fr.ts
 	translations/mediaplayer_it.ts

@@ -7,6 +7,7 @@ set (MOC_SOURCES
 )
 
 set (TRANSLATION_SOURCES
+#	translations/win32_sound_en.ts
 #	translations/win32_sound_de.ts
 #	translations/win32_sound_fr.ts
 #	translations/win32_sound_it.ts

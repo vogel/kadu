@@ -12,6 +12,7 @@ set (MOC_SOURCES
 )
 
 set (TRANSLATION_SOURCES
+	translations/desktop_docking_en.ts
 	translations/desktop_docking_cs.ts
 	translations/desktop_docking_de.ts
 	translations/desktop_docking_fr.ts

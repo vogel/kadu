@@ -7,6 +7,7 @@ set (MOC_SOURCES
 )
 
 set (TRANSLATION_SOURCES
+	translations/mpris_mediaplayer_en.ts
 	translations/mpris_mediaplayer_pl.ts
 )
 

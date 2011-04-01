@@ -9,6 +9,7 @@ set (MOC_SOURCES
 )
 
 set (TRANSLATION_SOURCES
+	translations/last_seen_en.ts
 	translations/last_seen_de.ts
 	translations/last_seen_fr.ts
 	translations/last_seen_it.ts
