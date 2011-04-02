@@ -130,6 +130,55 @@ unsigned int GaduProtocol::gaduStatusFromStatus(const Status &status)
 	return hasDescription ? GG_STATUS_NOT_AVAIL_DESCR : GG_STATUS_NOT_AVAIL;
 }
 
+QString GaduProtocol::connectionErrorMessage(GaduProtocol::GaduError error)
+{
+	switch (error)
+	{
+		case ConnectionServerNotFound:
+			return tr("Unable to connect, server has not been found");
+		case ConnectionCannotConnect:
+			return tr("Unable to connect");
+		case ConnectionNeedEmail:
+			return tr("Please change your email in \"Change password / email\" window. Leave new password field blank.");
+		case ConnectionInvalidData:
+			return tr("Unable to connect, server has returned unknown data");
+		case ConnectionCannotRead:
+			return tr("Unable to connect, connection break during reading");
+		case ConnectionCannotWrite:
+			return tr("Unable to connect, connection break during writing");
+		case ConnectionIncorrectPassword:
+			return tr("Unable to connect, invalid password");
+		case ConnectionTlsError:
+			return tr("Unable to connect, error of negotiation TLS");
+		case ConnectionIntruderError:
+			return tr("Too many connection attempts with bad password!");
+		case ConnectionUnavailableError:
+			return tr("Unable to connect, servers are down");
+		case ConnectionUnknow:
+			return tr("Connection broken");
+		case ConnectionTimeout:
+			return tr("Connection timeout!");
+		case Disconnected:
+			return tr("Disconnection has occurred");
+		default:
+			kdebugm(KDEBUG_ERROR, "Unhandled error? (%d)\n", int(error));
+			return tr("Connection broken");
+	}
+}
+
+bool GaduProtocol::isConnectionErrorFatal(GaduProtocol::GaduError error)
+{
+	switch (error)
+	{
+		case ConnectionNeedEmail:
+		case ConnectionIncorrectPassword:
+		case ConnectionIntruderError:
+			return true;
+		default:
+			return false;
+	}
+}
+
 Buddy GaduProtocol::searchResultToBuddy(gg_pubdir50_t res, int number)
 {
 	Buddy result = Buddy::create();
@@ -563,73 +612,19 @@ void GaduProtocol::socketContactStatusChanged(UinType uin, unsigned int status, 
 void GaduProtocol::socketConnFailed(GaduError error)
 {
 	kdebugf();
-	QString msg;
 
-	bool tryAgain = true;
+	QString msg = connectionErrorMessage(error);
+	bool tryAgain = isConnectionErrorFatal(error);
 
 	switch (error)
 	{
-		case ConnectionServerNotFound:
-			msg = tr("Unable to connect, server has not been found");
-			break;
-
-		case ConnectionCannotConnect:
-			msg = tr("Unable to connect");
-			break;
-
 		case ConnectionNeedEmail:
-			msg = tr("Please change your email in \"Change password / email\" window. "
-				"Leave new password field blank.");
-			tryAgain = false;
 			MessageDialog::show("dialog-warning", tr("Kadu"), msg);
 			break;
-
-		case ConnectionInvalidData:
-			msg = tr("Unable to connect, server has returned unknown data");
-			break;
-
-		case ConnectionCannotRead:
-			msg = tr("Unable to connect, connection break during reading");
-			break;
-
-		case ConnectionCannotWrite:
-			msg = tr("Unable to connect, connection break during writing");
-			break;
-
 		case ConnectionIncorrectPassword:
 			machine()->passwordRequired();
-			tryAgain = false;
 			break;
-
-		case ConnectionTlsError:
-			msg = tr("Unable to connect, error of negotiation TLS");
-			break;
-
-		case ConnectionIntruderError:
-			msg = tr("Too many connection attempts with bad password!");
-			tryAgain = false;
-			break;
-
-		case ConnectionUnavailableError:
-			msg = tr("Unable to connect, servers are down");
-			break;
-
-		case ConnectionUnknow:
-			msg = tr("Connection broken");
-			kdebugm(KDEBUG_INFO, "Connection broken unexpectedly!\nUnscheduled connection termination\n");
-			break;
-
-		case ConnectionTimeout:
-			msg = tr("Connection timeout!");
-			break;
-
-		case Disconnected:
-			msg = tr("Disconnection has occurred");
-			break;
-
-		default:
-			kdebugm(KDEBUG_ERROR, "Unhandled error? (%d)\n", int(error));
-			msg = tr("Connection broken");
+		default: // we need special code only for 2 cases
 			break;
 	}
 
