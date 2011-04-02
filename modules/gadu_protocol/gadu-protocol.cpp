@@ -212,7 +212,7 @@ GaduProtocol::~GaduProtocol()
 			this, SLOT(contactIdChanged(Contact, const QString &)));
 	disconnect(account(), SIGNAL(updated()), this, SLOT(accountUpdated()));
 
-	networkDisconnected(false, false);
+	networkDisconnected(false);
 
 	kdebugf2();
 }
@@ -228,7 +228,7 @@ void GaduProtocol::changeStatus()
 
 	if (newStatus.isDisconnected() && NetworkConnected != state())
 	{
-		networkDisconnected(false, false);
+		networkDisconnected(false);
 		return;
 	}
 
@@ -254,7 +254,7 @@ void GaduProtocol::changeStatus()
 	if (newStatus.isDisconnected())
 	{
 		machine()->loggedOut();
-		networkDisconnected(false, false);
+		networkDisconnected(false);
 	}
 
 	statusChanged(newStatus);
@@ -328,7 +328,7 @@ void GaduProtocol::login()
 	if (GaduSession)
 		SocketNotifiers->watchFor(GaduSession);
 	else
-		networkDisconnected(false, false);
+		networkDisconnected(false);
 
 	kdebugf2();
 }
@@ -469,7 +469,7 @@ void GaduProtocol::networkConnected()
 	setUpFileTransferService();
 }
 
-void GaduProtocol::networkDisconnected(bool tryAgain, bool waitForPassword)
+void GaduProtocol::networkDisconnected(bool tryAgain)
 {
 	if (ContactListHandler)
 		ContactListHandler->reset();
@@ -509,11 +509,10 @@ void GaduProtocol::networkDisconnected(bool tryAgain, bool waitForPassword)
 		QTimer::singleShot(1000, this, SLOT(login())); // try again after one second
 	}
 	else if (!status().isDisconnected())
-		if (!waitForPassword)
-		{
-			setStatus(Status());
-			statusChanged(Status());
-		}
+	{
+		setStatus(Status());
+		statusChanged(Status());
+	}
 }
 
 void GaduProtocol::sendUserList()
@@ -559,7 +558,6 @@ void GaduProtocol::socketConnFailed(GaduError error)
 	QString msg;
 
 	bool tryAgain = true;
-	bool waitForPassword = false;
 
 	switch (error)
 	{
@@ -592,7 +590,6 @@ void GaduProtocol::socketConnFailed(GaduError error)
 
 		case ConnectionIncorrectPassword:
 			machine()->passwordRequired();
-			waitForPassword = false;
 			tryAgain = false;
 			break;
 
@@ -642,7 +639,7 @@ void GaduProtocol::socketConnFailed(GaduError error)
 
 	if (tryAgain)
 		GaduServersManager::instance()->markServerAsBad(ActiveServer);
-	networkDisconnected(tryAgain, waitForPassword);
+	networkDisconnected(tryAgain);
 
 	kdebugf2();
 }
@@ -683,7 +680,7 @@ void GaduProtocol::socketDisconnected()
 {
 	kdebugf();
 
-	networkDisconnected(false, false);
+	networkDisconnected(false);
 
 	kdebugf2();
 }

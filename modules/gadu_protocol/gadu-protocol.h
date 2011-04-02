@@ -110,7 +110,7 @@ private:
 	void setUpFileTransferService(bool forceClose = false);
 
 	void networkConnected();
-	void networkDisconnected(bool tryAgain, bool waitForPassword);
+	void networkDisconnected(bool tryAgain);
 
 	void sendUserList();
 
