@@ -36,12 +36,14 @@ ProtocolStateMachine::ProtocolStateMachine(QObject *parent) :
 	LoggedOutState->addTransition(this, SIGNAL(wantToLoginOnlineSignal()), LoggingInState);
 
 	WantToLogInState->addTransition(this, SIGNAL(networkOnlineSignal()), LoggingInState);
+	WantToLogInState->addTransition(this, SIGNAL(loggedOutSignal()), LoggedOutState);
 
 	LoggingInState->addTransition(this, SIGNAL(networkOfflineSignal()), WantToLogInState);
+	LoggingInState->addTransition(this, SIGNAL(loggedInSignal()), LoggedInState);
 	LoggingInState->addTransition(this, SIGNAL(loggedOutSignal()), LoggedOutState);
 
 	LoggedInState->addTransition(this, SIGNAL(networkOfflineSignal()), WantToLogInState);
-	LoggingInState->addTransition(this, SIGNAL(loggedOutSignal()), LoggedOutState);
+	LoggedInState->addTransition(this, SIGNAL(loggedOutSignal()), LoggedOutState);
 
 	setInitialState(LoggedOutState);
 
@@ -66,6 +68,11 @@ void ProtocolStateMachine::wantToLogin()
 		emit wantToLoginOnlineSignal();
 	else
 		emit wantToLoginOfflineSignal();
+}
+
+void ProtocolStateMachine::loggedIn()
+{
+	emit loggedInSignal();
 }
 
 void ProtocolStateMachine::loggedOut()

@@ -481,6 +481,8 @@ void GaduProtocol::networkConnected()
 {
 	networkStateChanged(NetworkConnected);
 
+	machine()->loggedIn();
+
 	// fetch current avatar after connection
 	AvatarManager::instance()->updateAvatar(account().accountContact(), true);
 

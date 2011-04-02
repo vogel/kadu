@@ -47,6 +47,7 @@ public:
 	virtual ~ProtocolStateMachine();
 
 	void wantToLogin();
+	void loggedIn();
 	void loggedOut();
 
 signals:
@@ -54,6 +55,7 @@ signals:
 	void networkOfflineSignal();
 	void wantToLoginOnlineSignal();
 	void wantToLoginOfflineSignal();
+	void loggedInSignal();
 	void loggedOutSignal();
 
 	void login();

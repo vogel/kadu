@@ -259,6 +259,8 @@ void JabberProtocol::connectedToServer()
 
 	networkStateChanged(NetworkConnected);
 
+	machine()->loggedIn();
+
 	// ask for roster
 	CurrentRosterService->downloadRoster();
 	kdebugf2();
