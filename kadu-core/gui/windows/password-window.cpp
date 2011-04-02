@@ -33,16 +33,16 @@
 
 #include "password-window.h"
 
-void PasswordWindow::getPassword(const QString &message, QObject *receiver, const char *slot)
+void PasswordWindow::getPassword(const QString &message, QVariant data, QObject *receiver, const char *slot)
 {
-	PasswordWindow *window = new PasswordWindow(message, 0);
-	connect(window, SIGNAL(passwordEntered(const QString &, bool)), receiver, slot);
+	PasswordWindow *window = new PasswordWindow(message, data, 0);
+	connect(window, SIGNAL(passwordEntered(const QVariant &, const QString &, bool)), receiver, slot);
 
 	window->exec();
 }
 
-PasswordWindow::PasswordWindow(const QString &message, QWidget *parent) :
-		QDialog(parent)
+PasswordWindow::PasswordWindow(const QString &message, QVariant data, QWidget *parent) :
+		QDialog(parent), Data(data)
 {
 	setWindowRole("kadu-password");
 
@@ -80,12 +80,12 @@ PasswordWindow::~PasswordWindow()
 
 void PasswordWindow::accepted()
 {
-	emit passwordEntered(Password->text(), Store->isChecked());
+	emit passwordEntered(Data, Password->text(), Store->isChecked());
 	close();
 }
 
 void PasswordWindow::canceled()
 {
-	emit passwordEntered(QString(), false);
+	emit passwordEntered(Data, QString(), false);
 	close();
 }

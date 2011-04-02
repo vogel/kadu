@@ -84,6 +84,7 @@ private:
 
 private slots:
 	void statusChanged(StatusContainer *container, Status status);
+	void passwordRequired();
 
 protected:
 	ProtocolStateMachine * machine() const { return Machine; }
@@ -145,7 +146,7 @@ public:
 	}
 
 public slots:
-	virtual void login(const QString &password, bool permanent) = 0;
+	void passwordProvided();
 
 signals:
 	void connecting(Account account);

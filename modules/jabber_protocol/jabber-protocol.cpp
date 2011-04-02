@@ -158,27 +158,6 @@ void JabberProtocol::initializeJabberClient()
 		   this, SLOT(slotClientDebugMessage(const QString &)));
 }
 
-void JabberProtocol::login(const QString &password, bool permanent)
-{
-	if (isConnected())
-		return;
-	
-	if (password.isEmpty()) // user did not give us password, so prevent from further reconnecting
-	{
-		Status newstat = status();
-		newstat.setType("Offline");
-		setStatus(newstat);
-		statusChanged(newstat);
-		return;
-	}
-
-	account().setPassword(password);
-	account().setRememberPassword(permanent);
-	account().setHasPassword(!password.isEmpty());
-
-	connectToServer();
-}
-
 void JabberProtocol::connectionErrorSlot(const QString& message)
 {
 	if (JabberClient && JabberClient->clientConnector())
@@ -187,7 +166,7 @@ void JabberProtocol::connectionErrorSlot(const QString& message)
 
 void JabberProtocol::invalidPasswordSlot()
 {
-	emit invalidPassword(account());
+	machine()->passwordRequired();
 }
 
 void JabberProtocol::connectToServer()
@@ -209,10 +188,7 @@ void JabberProtocol::connectToServer()
 
 	if (!account().hasPassword())
 	{
-		QString message = tr("Please provide password for %1 (%2) account")
-				.arg(account().accountIdentity().name())
-				.arg(account().id());
-		PasswordWindow::getPassword(message, this, SLOT(login(const QString &, bool)));
+		machine()->passwordRequired();
 		return;
 	}
 

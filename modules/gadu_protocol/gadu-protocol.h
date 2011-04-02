@@ -170,9 +170,6 @@ public:
 	gg_session * gaduSession() { return GaduSession; }
 	GaduProtocolSocketNotifiers * socketNotifiers() { return SocketNotifiers; }
 
-public slots:
-	virtual void login(const QString &password, bool permanent);
-
 signals:
 	/**
 		Served sent information about status change for unknown user.

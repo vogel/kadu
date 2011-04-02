@@ -56,6 +56,7 @@ Protocol::Protocol(Account account, ProtocolFactory *factory) :
 	 * that just restored status from configuration file
 	 */
 	connect(Machine, SIGNAL(started()), this, SLOT(changeStatus()), Qt::QueuedConnection);
+	connect(Machine, SIGNAL(requestPassword()), this, SLOT(passwordRequired()));
 
 	connect(StatusChangerManager::instance(), SIGNAL(statusChanged(StatusContainer*,Status)),
 			this, SLOT(statusChanged(StatusContainer*,Status)));
@@ -68,6 +69,19 @@ Protocol::~Protocol()
 QIcon Protocol::icon()
 {
 	return Factory->icon();
+}
+
+void Protocol::passwordRequired()
+{
+	emit invalidPassword(CurrentAccount);
+}
+
+void Protocol::passwordProvided()
+{
+	if (CurrentAccount.hasPassword())
+		Machine->passwordAvailable();
+	else
+		Machine->loggedOut();
 }
 
 void Protocol::setAllOffline()

@@ -52,9 +52,10 @@ class KADUAPI AccountManager : public QObject, public Manager<Account>
 	virtual void loaded();
 
 private slots:
+	void passwordProvided(const QVariant &data, const QString &password, bool permament);
+
 	void accountDataUpdated();
 	void connectionError(Account account, const QString &server, const QString &message);
-    void invalidPassword(Account account);
 
 protected:
 	virtual void itemAdded(Account item);
@@ -80,6 +81,9 @@ public:
 	Status status();
 
 	void removeAccountAndBuddies(Account account);
+
+public slots:
+	void providePassword(Account account);
 
 signals:
 	void accountAboutToBeRegistered(Account);

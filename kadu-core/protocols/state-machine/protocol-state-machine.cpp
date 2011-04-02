@@ -26,11 +26,13 @@ ProtocolStateMachine::ProtocolStateMachine(QObject *parent) :
 	WantToLogInState = new QState(this);
 	LoggingInState = new QState(this);
 	LoggedInState = new QState(this);
+	PasswordRequiredState = new QState(this);
 
 	connect(LoggedOutState, SIGNAL(entered()), this, SLOT(loggedOutStateEntered()));
 	connect(WantToLogInState, SIGNAL(entered()), this, SLOT(wantToLogInStateEntered()));
 	connect(LoggingInState, SIGNAL(entered()), this, SLOT(loggingInStateEntered()));
 	connect(LoggedInState, SIGNAL(entered()), this, SLOT(loggedInStateEntered()));
+	connect(PasswordRequiredState, SIGNAL(entered()), this, SLOT(passwordRequiredStateEntered()));
 
 	LoggedOutState->addTransition(this, SIGNAL(wantToLoginOfflineSignal()), WantToLogInState);
 	LoggedOutState->addTransition(this, SIGNAL(wantToLoginOnlineSignal()), LoggingInState);
@@ -41,9 +43,14 @@ ProtocolStateMachine::ProtocolStateMachine(QObject *parent) :
 	LoggingInState->addTransition(this, SIGNAL(networkOfflineSignal()), WantToLogInState);
 	LoggingInState->addTransition(this, SIGNAL(loggedInSignal()), LoggedInState);
 	LoggingInState->addTransition(this, SIGNAL(loggedOutSignal()), LoggedOutState);
+	LoggingInState->addTransition(this, SIGNAL(passwordRequiredSignal()), PasswordRequiredState);
 
 	LoggedInState->addTransition(this, SIGNAL(networkOfflineSignal()), WantToLogInState);
 	LoggedInState->addTransition(this, SIGNAL(loggedOutSignal()), LoggedOutState);
+
+	PasswordRequiredState->addTransition(this, SIGNAL(networkOfflineSignal()), WantToLogInState);
+	PasswordRequiredState->addTransition(this, SIGNAL(loggedOutSignal()), LoggedOutState);
+	PasswordRequiredState->addTransition(this, SIGNAL(passwordAvailableSignal()), LoggingInState);
 
 	setInitialState(LoggedOutState);
 
@@ -80,6 +87,16 @@ void ProtocolStateMachine::loggedOut()
 	emit loggedOutSignal();
 }
 
+void ProtocolStateMachine::passwordRequired()
+{
+	emit passwordRequiredSignal();
+}
+
+void ProtocolStateMachine::passwordAvailable()
+{
+	emit passwordAvailableSignal();
+}
+
 #include <stdio.h>
 
 void ProtocolStateMachine::loggedInStateEntered()
@@ -101,4 +118,10 @@ void ProtocolStateMachine::loggingInStateEntered()
 void ProtocolStateMachine::wantToLogInStateEntered()
 {
 	printf("ProtocolStateMachine::wantToLogInStateEntered()\n");
+}
+
+void ProtocolStateMachine::passwordRequiredStateEntered()
+{
+	emit requestPassword();
+	printf("ProtocolStateMachine::passwordRequiredStateEntered()\n");
 }

@@ -283,24 +283,6 @@ void GaduProtocol::everyMinuteActions()
 	CurrentChatImageService->resetSendImageRequests();
 }
 
-void GaduProtocol::login(const QString &password, bool permanent)
-{
-	if (password.isEmpty()) // user did not give us password, so prevent from further reconnecting
-	{
-		Status newstat = status();
-		newstat.setType("Offline");
-		setStatus(newstat);
-		statusChanged(newstat);
-		return;
-	}
-
-	account().setPassword(password);
-	account().setRememberPassword(permanent);
-	account().setHasPassword(!password.isEmpty());
-
-	login();
-}
-
 void GaduProtocol::accountUpdated()
 {
 	setUpFileTransferService();
@@ -329,10 +311,7 @@ void GaduProtocol::login()
 
 	if (!account().hasPassword())
 	{
-		QString message = tr("Please provide password for %1 (%2) account")
-				.arg(account().accountIdentity().name())
-				.arg(account().id());
-		PasswordWindow::getPassword(message, this, SLOT(login(const QString &, bool)));
+		machine()->passwordRequired();
 		return;
 	}
 
@@ -612,8 +591,8 @@ void GaduProtocol::socketConnFailed(GaduError error)
 			break;
 
 		case ConnectionIncorrectPassword:
-			emit invalidPassword(account());
-			waitForPassword = true;
+			machine()->passwordRequired();
+			waitForPassword = false;
 			tryAgain = false;
 			break;
 

@@ -117,7 +117,6 @@ public:
 public slots:
 	void connectToServer();
 	void login();
-	virtual void login(const QString &password, bool permanent);
 	void logout();
 
 signals:
