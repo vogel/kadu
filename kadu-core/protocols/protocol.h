@@ -65,26 +65,20 @@ class KADUAPI Protocol : public QObject
 	Q_OBJECT
 	Q_DISABLE_COPY(Protocol)
 
-public:
-	enum NetworkState {
-		NetworkDisconnected,
-		NetworkConnecting,
-		NetworkConnected,
-		NetworkDisconnecting
-	};
-
-private:
 	ProtocolFactory *Factory;
 	ProtocolStateMachine *Machine;
 
 	Account CurrentAccount;
 
-	NetworkState State;
 	Status CurrentStatus;
 
 private slots:
 	void statusChanged(StatusContainer *container, Status status);
 	void passwordRequired();
+
+	void loginSlot();
+	void connectedSlot();
+	void disconnectedSlot();
 
 protected:
 	ProtocolStateMachine * machine() const { return Machine; }
@@ -92,8 +86,6 @@ protected:
 	void setAllOffline();
 
 	void statusChanged(Status newStatus);
-
-	void networkStateChanged(NetworkState state);
 
 protected slots:
 	virtual void changeStatus() = 0;
@@ -119,9 +111,8 @@ public:
 	virtual bool contactsListReadOnly() = 0;
 	virtual bool supportsPrivateStatus() { return false; }
 
-	NetworkState state() { return State; }
-	bool isConnected() { return (State == NetworkConnected); }
-	bool isConnecting() { return (State == NetworkConnecting); }
+	bool isConnected();
+	bool isConnecting();
 
 	void setStatus(Status status);
 	Status status() const;
@@ -151,7 +142,6 @@ public slots:
 signals:
 	void connecting(Account account);
 	void connected(Account account);
-	void disconnecting(Account account);
 	void disconnected(Account account);
 
 	void statusChanged(Account account, Status newStatus);

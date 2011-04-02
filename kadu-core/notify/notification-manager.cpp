@@ -350,7 +350,7 @@ void NotificationManager::contactStatusChanged(Contact contact, Status oldStatus
 		return;
 
 	Protocol *protocol = contact.contactAccount().protocolHandler();
-	if (!protocol || Protocol::NetworkConnected != protocol->state())
+	if (!protocol || !protocol->isConnected())
 		return;
 
 	if (config_file.readBoolEntry("Notify", "NotifyIgnoreOnConnection"))

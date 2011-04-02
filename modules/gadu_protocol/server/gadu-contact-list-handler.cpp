@@ -52,7 +52,7 @@ GaduContactListHandler::~GaduContactListHandler()
 
 void GaduContactListHandler::setUpContactList(const QList<Contact> &contacts)
 {
-	if (::Protocol::NetworkConnected != Protocol->state())
+	if (!Protocol->isConnected())
 		return;
 
 	/*
@@ -109,7 +109,7 @@ void GaduContactListHandler::addContactEntry(UinType uin, int type)
 	if (!AlreadySent)
 		return;
 
-	if (::Protocol::NetworkConnected != Protocol->state())
+	if (!Protocol->isConnected())
 		return;
 
 	if (!uin || Protocol->account().id() == QString::number(uin))
@@ -139,7 +139,7 @@ void GaduContactListHandler::removeContactEntry(UinType uin)
 	if (!uin)
 		return;
 
-	if (::Protocol::NetworkConnected != Protocol->state())
+	if (!Protocol->isConnected())
 		return;
 
 	gg_session *session = Protocol->gaduSession();

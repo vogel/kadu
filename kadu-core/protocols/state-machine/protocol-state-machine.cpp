@@ -117,17 +117,22 @@ void ProtocolStateMachine::fatalConnectionError()
 void ProtocolStateMachine::loggedInStateEntered()
 {
 	printf("ProtocolStateMachine::loggedInStateEntered()\n");
+
+	emit connected();
 }
 
 void ProtocolStateMachine::loggedOutStateEntered()
 {
 	printf("ProtocolStateMachine::loggedOutStateEntered()\n");
+
+	emit disconnected();
 }
 
 void ProtocolStateMachine::loggingInStateEntered()
 {
-	emit login();
 	printf("ProtocolStateMachine::loggingInStateEntered()\n");
+
+	emit login();
 }
 
 void ProtocolStateMachine::wantToLogInStateEntered()
@@ -137,6 +142,17 @@ void ProtocolStateMachine::wantToLogInStateEntered()
 
 void ProtocolStateMachine::passwordRequiredStateEntered()
 {
-	emit requestPassword();
 	printf("ProtocolStateMachine::passwordRequiredStateEntered()\n");
+
+	emit requestPassword();
+}
+
+bool ProtocolStateMachine::isLoggedIn()
+{
+	return configuration().contains(LoggedInState);
+}
+
+bool ProtocolStateMachine::isLoggingIn()
+{
+	return configuration().contains(LoggingInState);
 }

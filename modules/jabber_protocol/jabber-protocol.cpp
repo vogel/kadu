@@ -175,10 +175,15 @@ void JabberProtocol::connectToServer()
 
 	JabberAccountDetails *jabberAccountDetails = dynamic_cast<JabberAccountDetails *>(account().details());
 	if (!jabberAccountDetails)
+	{
+		machine()->loggedOut();
 		return;
+	}
 
 	if (account().id().isEmpty())
 	{
+		machine()->loggedOut();
+
 		MessageDialog::show("dialog-warning", tr("Kadu"), tr("XMPP username is not set!"));
 		setStatus(Status());
 		statusChanged(Status());
@@ -212,7 +217,6 @@ void JabberProtocol::connectToServer()
 
 	JabberClient->setAllowPlainTextPassword(plainAuthToXMPP(jabberAccountDetails->plainAuthMode()));
 
-	networkStateChanged(NetworkConnecting);
 	jabberID = jabberID.withResource(jabberAccountDetails->resource());
 	JabberClient->connect(jabberID, account().password(), true);
 
@@ -233,12 +237,10 @@ void JabberProtocol::connectedToServer()
 {
 	kdebugf();
 
-	networkStateChanged(NetworkConnected);
-
-	machine()->loggedIn();
-
 	// ask for roster
 	CurrentRosterService->downloadRoster();
+
+	machine()->loggedIn();
 	kdebugf2();
 }
 
@@ -291,7 +293,7 @@ void JabberProtocol::disconnectFromServer(const XMPP::Status &s)
 
 	kdebug("Disconnected.\n");
 
-	networkStateChanged(NetworkDisconnected);
+	machine()->loggedOut();
 	kdebugf2();
 }
 
@@ -308,12 +310,9 @@ void JabberProtocol::disconnectedFromServer()
 
 	setAllOffline();
 
-	networkStateChanged(NetworkDisconnected);
+	machine()->loggedOut();
 
 	JabberClient->disconnect();
-
-	if (!status().isDisconnected()) // user still wants to login
-		QTimer::singleShot(1000, this, SLOT(login())); // try again after one second
 
 	kdebugf2();
 }
@@ -402,9 +401,9 @@ void JabberProtocol::changeStatus()
 {
 	Status newStatus = status();
 
-	if (newStatus.isDisconnected() && NetworkConnected != state())
+	if (newStatus.isDisconnected() && !isConnected())
 	{
-		networkStateChanged(NetworkDisconnected);
+		machine()->loggedOut();
 		return;
 	}
 
@@ -423,7 +422,6 @@ void JabberProtocol::changeStatus()
 	if (newStatus.isDisconnected())
 	{
 		machine()->loggedOut();
-		networkStateChanged(NetworkDisconnected);
 
 		setAllOffline();
 

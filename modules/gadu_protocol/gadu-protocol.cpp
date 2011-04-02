@@ -275,16 +275,16 @@ void GaduProtocol::changeStatus()
 {
 	Status newStatus = status();
 
-	if (newStatus.isDisconnected() && NetworkConnected != state())
+	if (newStatus.isDisconnected() && !isConnected())
 	{
 		networkDisconnected(false);
 		return;
 	}
 
-	if (NetworkConnecting == state())
+	if (isConnecting())
 		return;
 
-	if (NetworkConnected != state())
+	if (!isConnected())
 	{
 		machine()->wantToLogin();
 		return;
@@ -354,6 +354,8 @@ void GaduProtocol::login()
 
 	if (0 == gaduAccountDetails->uin())
 	{
+		machine()->loggedOut();
+
 		MessageDialog::show("dialog-warning", tr("Kadu"), tr("UIN not set!"));
 		setStatus(Status());
 		statusChanged(Status());
@@ -366,8 +368,6 @@ void GaduProtocol::login()
 		machine()->passwordRequired();
 		return;
 	}
-
-	networkStateChanged(NetworkConnecting);
 
 	setupProxy();
 	setupLoginParams();
@@ -484,7 +484,7 @@ void GaduProtocol::setUpFileTransferService(bool forceClose)
 {
 	bool close = forceClose;
 	if (!close)
-		close = NetworkConnected != state();
+		close = !isConnected();
 	if (!close)
 	{
 		GaduAccountDetails *gaduAccountDetails = dynamic_cast<GaduAccountDetails *>(account().details());
@@ -510,24 +510,21 @@ void GaduProtocol::setUpFileTransferService(bool forceClose)
 
 void GaduProtocol::networkConnected()
 {
-	networkStateChanged(NetworkConnected);
-
-	machine()->loggedIn();
-
 	// fetch current avatar after connection
 	AvatarManager::instance()->updateAvatar(account().accountContact(), true);
 
 	// set up DCC if needed
 	setUpFileTransferService();
+
+	machine()->loggedIn();
+
+	statusChanged(status());
 }
 
 void GaduProtocol::networkDisconnected(bool tryAgain)
 {
 	if (ContactListHandler)
 		ContactListHandler->reset();
-
-	if (!tryAgain)
-		networkStateChanged(NetworkDisconnected);
 
 	setUpFileTransferService(true);
 

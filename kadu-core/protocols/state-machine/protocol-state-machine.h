@@ -56,6 +56,9 @@ public:
 	void connectionError();
 	void fatalConnectionError();
 
+	bool isLoggedIn();
+	bool isLoggingIn();
+
 signals:
 	void networkOnlineSignal();
 	void networkOfflineSignal();
@@ -68,6 +71,8 @@ signals:
 	void connectionErrorSignal();
 	void fatalConnectionErrorSignal();
 
+	void connected();
+	void disconnected();
 	void login();
 	void requestPassword();
 

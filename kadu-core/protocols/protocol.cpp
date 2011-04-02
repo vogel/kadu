@@ -45,7 +45,7 @@
 #include "protocol.h"
 
 Protocol::Protocol(Account account, ProtocolFactory *factory) :
-		Factory(factory), CurrentAccount(account), State(NetworkDisconnected)
+		Factory(factory), CurrentAccount(account)
 {
 	Machine = new ProtocolStateMachine(this);
 	/*
@@ -57,6 +57,9 @@ Protocol::Protocol(Account account, ProtocolFactory *factory) :
 	 */
 	connect(Machine, SIGNAL(started()), this, SLOT(changeStatus()), Qt::QueuedConnection);
 	connect(Machine, SIGNAL(requestPassword()), this, SLOT(passwordRequired()));
+	connect(Machine, SIGNAL(login()), this, SLOT(loginSlot()));
+	connect(Machine, SIGNAL(connected()), this, SLOT(connectedSlot()));
+	connect(Machine, SIGNAL(disconnected()), this, SLOT(disconnectedSlot()));
 
 	connect(StatusChangerManager::instance(), SIGNAL(statusChanged(StatusContainer*,Status)),
 			this, SLOT(statusChanged(StatusContainer*,Status)));
@@ -123,32 +126,6 @@ void Protocol::statusChanged(Status status)
 	emit statusChanged(CurrentAccount, CurrentStatus);
 }
 
-void Protocol::networkStateChanged(NetworkState state)
-{
-	if (State == state)
-		return;
-
-	State = state;
-	switch (State)
-	{
-		case NetworkConnecting:
-			emit connecting(CurrentAccount);
-			break;
-		case NetworkConnected:
-			emit connected(CurrentAccount);
-			break;
-		case NetworkDisconnecting:
-			emit disconnecting(CurrentAccount);
-			break;
-		case NetworkDisconnected:
-			emit disconnected(CurrentAccount);
-			break;
-	}
-
-	// for isStatusSettingInProgress in AccountShared
-	emit statusChanged(CurrentAccount, CurrentStatus);
-}
-
 QIcon Protocol::statusIcon(Status status)
 {
 	return StatusTypeManager::instance()->statusIcon(statusPixmapPath(), status.type(),
@@ -168,4 +145,30 @@ QString Protocol::statusIconFullPath(const QString& statusType)
 QIcon Protocol::statusIcon(const QString &statusType)
 {
 	return StatusTypeManager::instance()->statusIcon(statusPixmapPath(), statusType, false, false);
+}
+
+void Protocol::loginSlot()
+{
+	// just for status icon now
+	emit statusChanged(CurrentAccount, CurrentStatus);
+}
+
+void Protocol::connectedSlot()
+{
+	emit connected(CurrentAccount);
+}
+
+void Protocol::disconnectedSlot()
+{
+	emit disconnected(CurrentAccount);
+}
+
+bool Protocol::isConnected()
+{
+	return Machine->isLoggedIn();
+}
+
+bool Protocol::isConnecting()
+{
+	return Machine->isLoggingIn();
 }
