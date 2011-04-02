@@ -90,10 +90,12 @@ protected:
 
 	void setAllOffline();
 
-	virtual void changeStatus() = 0;
 	void statusChanged(Status newStatus);
 
 	void networkStateChanged(NetworkState state);
+
+protected slots:
+	virtual void changeStatus() = 0;
 
 public:
 	Protocol(Account account, ProtocolFactory *factory);

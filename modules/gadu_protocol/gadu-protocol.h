@@ -132,7 +132,7 @@ private slots:
 	void contactAboutToBeDetached(Contact contact);
 	void contactIdChanged(Contact contact, const QString &oldId);
 
-protected:
+protected slots:
 	virtual void changeStatus();
 
 public:

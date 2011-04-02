@@ -88,8 +88,10 @@ private slots:
 	void invalidPasswordSlot();
 
 protected:
-	virtual void changeStatus();
 	virtual void changePrivateMode();
+
+protected slots:
+	virtual void changeStatus();
 
 public:
 	JabberProtocol(Account account, ProtocolFactory *factory);

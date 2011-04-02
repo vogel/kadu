@@ -48,6 +48,14 @@ Protocol::Protocol(Account account, ProtocolFactory *factory) :
 		Factory(factory), CurrentAccount(account), State(NetworkDisconnected)
 {
 	Machine = new ProtocolStateMachine(this);
+	/*
+	 * after machine is started we need to re-call changeStatus
+	 * so proper transition can be called
+	 *
+	 * changeStatus was probably called before machine was started by some StatusContainer
+	 * that just restored status from configuration file
+	 */
+	connect(Machine, SIGNAL(started()), this, SLOT(changeStatus()), Qt::QueuedConnection);
 
 	connect(StatusChangerManager::instance(), SIGNAL(statusChanged(StatusContainer*,Status)),
 			this, SLOT(statusChanged(StatusContainer*,Status)));

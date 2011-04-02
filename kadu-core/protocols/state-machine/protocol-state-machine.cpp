@@ -43,11 +43,6 @@ ProtocolStateMachine::ProtocolStateMachine(QObject *parent) :
 	LoggedInState->addTransition(this, SIGNAL(networkOfflineSignal()), WantToLogInState);
 	LoggingInState->addTransition(this, SIGNAL(loggedOutSignal()), LoggedOutState);
 
-	addState(LoggedOutState);
-	addState(WantToLogInState);
-	addState(LoggingInState);
-	addState(LoggedInState);
-
 	setInitialState(LoggedOutState);
 
 	start();
@@ -79,6 +74,7 @@ void ProtocolStateMachine::loggedOut()
 }
 
 #include <stdio.h>
+
 void ProtocolStateMachine::loggedInStateEntered()
 {
 	printf("ProtocolStateMachine::loggedInStateEntered()\n");
