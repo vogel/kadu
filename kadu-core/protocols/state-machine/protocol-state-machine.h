@@ -53,6 +53,8 @@ public:
 	void loggedOut();
 	void passwordRequired();
 	void passwordAvailable();
+	void connectionError();
+	void fatalConnectionError();
 
 signals:
 	void networkOnlineSignal();
@@ -63,6 +65,8 @@ signals:
 	void loggedOutSignal();
 	void passwordRequiredSignal();
 	void passwordAvailableSignal();
+	void connectionErrorSignal();
+	void fatalConnectionErrorSignal();
 
 	void login();
 	void requestPassword();

@@ -44,13 +44,18 @@ ProtocolStateMachine::ProtocolStateMachine(QObject *parent) :
 	LoggingInState->addTransition(this, SIGNAL(loggedInSignal()), LoggedInState);
 	LoggingInState->addTransition(this, SIGNAL(loggedOutSignal()), LoggedOutState);
 	LoggingInState->addTransition(this, SIGNAL(passwordRequiredSignal()), PasswordRequiredState);
+	LoggingInState->addTransition(this, SIGNAL(connectionErrorSignal()), LoggingInState);
+	LoggingInState->addTransition(this, SIGNAL(fatalConnectionErrorSignal()), LoggedOutState);
 
 	LoggedInState->addTransition(this, SIGNAL(networkOfflineSignal()), WantToLogInState);
 	LoggedInState->addTransition(this, SIGNAL(loggedOutSignal()), LoggedOutState);
+	LoggedInState->addTransition(this, SIGNAL(connectionErrorSignal()), LoggingInState);
+	LoggedInState->addTransition(this, SIGNAL(fatalConnectionErrorSignal()), LoggedOutState);
 
 	PasswordRequiredState->addTransition(this, SIGNAL(networkOfflineSignal()), WantToLogInState);
 	PasswordRequiredState->addTransition(this, SIGNAL(loggedOutSignal()), LoggedOutState);
 	PasswordRequiredState->addTransition(this, SIGNAL(passwordAvailableSignal()), LoggingInState);
+	PasswordRequiredState->addTransition(this, SIGNAL(fatalConnectionErrorSignal()), LoggedOutState);
 
 	setInitialState(LoggedOutState);
 
@@ -95,6 +100,16 @@ void ProtocolStateMachine::passwordRequired()
 void ProtocolStateMachine::passwordAvailable()
 {
 	emit passwordAvailableSignal();
+}
+
+void ProtocolStateMachine::connectionError()
+{
+	emit connectionErrorSignal();
+}
+
+void ProtocolStateMachine::fatalConnectionError()
+{
+	emit fatalConnectionErrorSignal();
 }
 
 #include <stdio.h>

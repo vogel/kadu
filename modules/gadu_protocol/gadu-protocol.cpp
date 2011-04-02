@@ -298,7 +298,10 @@ void GaduProtocol::login()
 	GaduAccountDetails *gaduAccountDetails = dynamic_cast<GaduAccountDetails *>(account().details());
 
 	if (!gaduAccountDetails)
+	{
+		machine()->loggedOut();
 		return;
+	}
 
 	if (0 == gaduAccountDetails->uin())
 	{
@@ -501,18 +504,23 @@ void GaduProtocol::networkDisconnected(bool tryAgain)
 
 	CurrentMultilogonService->removeAllSessions();
 
-	if (tryAgain && !status().isDisconnected()) // user still wants to login
-	{
-		networkStateChanged(NetworkConnecting);
-		statusChanged(Status());
+	if (tryAgain)
+		machine()->connectionError();
+	else
+		machine()->fatalConnectionError();
 
-		QTimer::singleShot(1000, this, SLOT(login())); // try again after one second
-	}
-	else if (!status().isDisconnected())
-	{
-		setStatus(Status());
-		statusChanged(Status());
-	}
+// 	if (tryAgain && !status().isDisconnected()) // user still wants to login
+// 	{
+// 		networkStateChanged(NetworkConnecting);
+// 		statusChanged(Status());
+// 
+// 		QTimer::singleShot(1000, this, SLOT(login())); // try again after one second
+// 	}
+// 	else if (!status().isDisconnected())
+// 	{
+// 		setStatus(Status());
+// 		statusChanged(Status());
+// 	}
 }
 
 void GaduProtocol::sendUserList()
