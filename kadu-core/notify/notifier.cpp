@@ -23,21 +23,11 @@
 
 #include "notifier.h"
 
-Notifier::Notifier(const QString &name, const QString &description, const QString &iconPath, QObject *parent) :
-		QObject(parent), Name(name), Description(description), IconPath(iconPath)
+Notifier::Notifier(const QString& name, const QString& description, const KaduIcon& icon, QObject* parent) :
+		QObject(parent), Name(name), Description(description), Icon(icon)
 {
 }
 
 Notifier::~Notifier()
 {
-}
-
-Notifier::CallbackCapacity Notifier::callbackCapacity()
-{
-	return CallbackNotSupported;
-}
-
-QIcon Notifier::icon() const
-{
-	return KaduIcon(IconPath).icon();
 }

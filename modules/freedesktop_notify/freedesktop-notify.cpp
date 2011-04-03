@@ -57,7 +57,7 @@ void FreedesktopNotify::destroyInstance()
 }
 
 FreedesktopNotify::FreedesktopNotify() :
-		Notifier("FreedesktopNotify", QT_TRANSLATE_NOOP("@default", "System notifications"), "kadu_icons/notify-hints"),
+		Notifier("FreedesktopNotify", QT_TRANSLATE_NOOP("@default", "System notifications"), KaduIcon("kadu_icons/notify-hints")),
 		UseFreedesktopStandard(false), ServerSupportsActions(true), ServerSupportsHtml(true), ServerCapabilitesReqiuresChecking(true)
 {
 	StripHTML.setPattern(QString::fromLatin1("<.*>"));
@@ -131,10 +131,11 @@ void FreedesktopNotify::notify(Notification *notification)
 	args.append("Kadu");
 	args.append(0U);
 
-	if (notification->iconPath().isEmpty())
-		args.append(KaduIcon("kadu_icons/section-kadu", "64x64").fullPath());
-	else
-		args.append(KaduIcon(notification->iconPath(), "64x64").fullPath());
+	KaduIcon icon(notification->icon());
+	if (icon.isNull())
+		icon.setPath("kadu_icons/section-kadu");
+	icon.setSize("64x64");
+	args.append(icon.fullPath());
 
 	// the new spec doesn't have this
 	if (!UseFreedesktopStandard)

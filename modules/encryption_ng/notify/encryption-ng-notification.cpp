@@ -111,7 +111,7 @@ void EncryptionNgNotification::notifyEncryptionError(const QString &error)
 }
 
 EncryptionNgNotification::EncryptionNgNotification(const QString &name) :
-		Notification(name, "security-high")
+		Notification(name, KaduIcon("security-high"))
 {
 }
 

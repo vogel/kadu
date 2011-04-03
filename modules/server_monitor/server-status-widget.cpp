@@ -103,7 +103,7 @@ void ServerStatusWidget::refreshIcon()
 
 void ServerStatusWidget::notify(const QString &address, ServerState newServerState)
 {
-	Notification *notification = new Notification("serverMonitorChangeStatus", QString());
+	Notification *notification = new Notification("serverMonitorChangeStatus", KaduIcon());
 
 	notification->setDetails(tr("Server %1 changed status to %2").arg(address).arg(serverStateToString(newServerState)));
 	notification->setText("Server monitor");

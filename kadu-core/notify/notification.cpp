@@ -39,9 +39,8 @@ static QString getNotificationTitle(const QObject * const object)
 		return QString();
 }
 
-Notification::Notification(const QString &type, const QString &iconPath) :
-	Type(type), IconPath(iconPath),
-	Icon(KaduIcon(iconPath).icon()), DefaultCallbackTimer(0),
+Notification::Notification(const QString &type, const KaduIcon &icon) :
+	Type(type), Icon(icon), DefaultCallbackTimer(0),
 	ReferencesCount(0), Closing(false)
 {
 	Parser::registerObjectTag("event", getNotificationTitle);
@@ -163,18 +162,12 @@ QString Notification::details() const
 	return Details;
 }
 
-void Notification::setIcon(const QString& iconPath)
+void Notification::setIcon(const KaduIcon &icon)
 {
-	IconPath = iconPath;
-	Icon = KaduIcon(iconPath).icon();
+	Icon = icon;
 }
 
-QString Notification::iconPath() const
-{
-	return IconPath;
-}
-
-QIcon Notification::icon() const
+const KaduIcon & Notification::icon() const
 {
 	return Icon;
 }

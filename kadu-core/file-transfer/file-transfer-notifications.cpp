@@ -59,7 +59,7 @@ void NewFileTransferNotification::unregisterEvents()
 }
 
 NewFileTransferNotification::NewFileTransferNotification(const QString &type, FileTransfer ft, Chat chat, StartType startType) :
-		ChatNotification(chat, type, QString()), ft(ft)
+		ChatNotification(chat, type, KaduIcon()), ft(ft)
 {
 	if (startType == StartRestore)
 	{

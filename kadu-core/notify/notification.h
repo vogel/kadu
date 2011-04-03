@@ -28,6 +28,7 @@
 
 #include "buddies/buddy-set.h"
 #include "exports.h"
+#include "misc/kadu-icon.h"
 
 class QTimer;
 
@@ -116,8 +117,7 @@ private:
 	QString Title;
 	QString Text;
 	QString Details;
-	QString IconPath;
-	QIcon Icon;
+	KaduIcon Icon;
 
 	QList<Callback> Callbacks;
 	QTimer *DefaultCallbackTimer;
@@ -135,7 +135,7 @@ public:
 		@arg type typ zdarzenia
 		@arg icon nazwa ikony zdarzenia
 	 **/
-	Notification(const QString &type, const QString &iconPath);
+	Notification(const QString &type, const KaduIcon &icon);
 	virtual ~Notification();
 
 	/**
@@ -220,15 +220,13 @@ public:
 	/**
 		Ustawia ikon� zdarzenia.
 	 **/
-	void setIcon(const QString &iconPath);
+	void setIcon(const KaduIcon &icon);
 	/**
 		Ikona zdarzenia.
 
 		@return ikona zdarzenia
 	 **/
-	QIcon icon() const;
-
-	QString iconPath() const;
+	const KaduIcon & icon() const;
 	
 	/**
 		Lista akcji.

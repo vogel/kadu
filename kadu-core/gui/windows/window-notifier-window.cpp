@@ -60,10 +60,10 @@ void WindowNotifierWindow::createGui()
 	QHBoxLayout* labelsLayout = new QHBoxLayout(labels);
 	labelsLayout->setSpacing(10);
 
-	if (!CurrentNotification->icon().isNull())
+	if (!CurrentNotification->icon().icon().isNull())
 	{
 		QLabel *iconLabel = new QLabel;
-		iconLabel->setPixmap(CurrentNotification->icon().pixmap(64, 64));
+		iconLabel->setPixmap(CurrentNotification->icon().icon().pixmap(64, 64));
 		labelsLayout->addWidget(iconLabel);
 	}
 

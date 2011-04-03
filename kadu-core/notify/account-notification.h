@@ -36,7 +36,7 @@ class KADUAPI AccountNotification : public Notification
 	Account CurrentAccount;
 
 public:
-	AccountNotification(Account account, const QString& type, const QString& iconPath);
+	AccountNotification(Account account, const QString &type, const KaduIcon &icon);
 	virtual ~AccountNotification();
 
 	Account account() const { return CurrentAccount; }

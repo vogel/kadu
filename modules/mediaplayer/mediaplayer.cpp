@@ -745,7 +745,7 @@ void MediaPlayer::putTitleHint(QString title)
 {
 	kdebugf();
 
-	Notification *notification = new Notification(QString(mediaPlayerOsdHint), "external_modules/mediaplayer-media-playback-play");
+	Notification *notification = new Notification(QString(mediaPlayerOsdHint), KaduIcon("external_modules/mediaplayer-media-playback-play"));
 	notification->setText(title);
 	NotificationManager::instance()->notify(notification);
 }

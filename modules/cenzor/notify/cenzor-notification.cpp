@@ -55,7 +55,7 @@ void CenzorNotification::notifyCenzored(const Chat &chat)
 }
 
 CenzorNotification::CenzorNotification(const Chat &chat) :
-		ChatNotification(chat, "cenzorNotification", QString())
+		ChatNotification(chat, "cenzorNotification", KaduIcon())
 {
 }
 

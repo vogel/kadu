@@ -107,7 +107,7 @@ void StatusChangedNotification::unregisterEvents()
 
 StatusChangedNotification::StatusChangedNotification(const QString &toStatus, const Contact &contact) :
 		ChatNotification(ChatManager::instance()->findChat(ContactSet(contact)), QString("StatusChanged") + toStatus,
-			contact.contactAccount().protocolHandler()->statusIcon(contact.currentStatus().type()).path())
+			contact.contactAccount().protocolHandler()->statusIcon(contact.currentStatus().type()))
 {
 	Status status = contact.currentStatus();
 

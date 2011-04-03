@@ -65,7 +65,7 @@ Hint::Hint(QWidget *parent, Notification *notification)
 
 	startSecs = secs = config_file.readNumEntry("Hints", "Event_" + notification->key() + "_timeout", 10);
 
-	createLabels(notification->icon().pixmap(config_file.readNumEntry("Hints", "AllEvents_iconSize", 32)));
+	createLabels(notification->icon().icon().pixmap(config_file.readNumEntry("Hints", "AllEvents_iconSize", 32)));
 	updateText();
 
 	const QList<Notification::Callback> callbacks = notification->getCallbacks();
