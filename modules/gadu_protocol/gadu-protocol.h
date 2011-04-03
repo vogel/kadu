@@ -136,15 +136,6 @@ protected slots:
 	virtual void changeStatus();
 
 public:
-	static GADUAPI QString statusTypeFromGaduStatus(unsigned int index);
-	static GADUAPI bool isBlockingStatus(unsigned int index);
-	static GADUAPI unsigned int gaduStatusFromStatus(const Status &status);
-
-	static GADUAPI QString connectionErrorMessage(GaduError error);
-	static GADUAPI bool isConnectionErrorFatal(GaduError error);
-
-	Buddy searchResultToBuddy(gg_pubdir50_t res, int number);
-
 	GaduProtocol(Account account, ProtocolFactory *factory);
 	virtual ~GaduProtocol();
 

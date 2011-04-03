@@ -23,6 +23,7 @@
 #include "debug.h"
 #include "misc/misc.h"
 
+#include "helpers/gadu-protocol-helper.h"
 #include "socket-notifiers/gadu-protocol-socket-notifiers.h"
 #include "gadu-contact-details.h"
 #include "gadu-protocol.h"
@@ -100,9 +101,7 @@ void GaduSearchService::handleEventPubdir50SearchReply(struct gg_event *e)
 	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "found %d results\n", count);
 
 	for (int i = 0; i < count; i++)
-	{
-		results.append(Protocol->searchResultToBuddy(res, i));
-	}
+		results.append(GaduProtocolHelper::searchResultToBuddy(Protocol->account(), res, i));
 
 	From = gg_pubdir50_next(res);
 

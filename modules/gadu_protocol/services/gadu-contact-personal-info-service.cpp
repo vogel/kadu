@@ -20,6 +20,7 @@
 
 #include "misc/misc.h"
 
+#include "helpers/gadu-protocol-helper.h"
 #include "socket-notifiers/gadu-protocol-socket-notifiers.h"
 #include "gadu-contact-details.h"
 #include "gadu-protocol.h"
@@ -45,7 +46,7 @@ void GaduContactPersonalInfoService::handleEventPubdir50Read(struct gg_event *e)
 		return;
 	}
 
-	Buddy result = Protocol->searchResultToBuddy(res, 0);
+	Buddy result = GaduProtocolHelper::searchResultToBuddy(Protocol->account(), res, 0);
 	emit personalInfoAvailable(result);
 }
 

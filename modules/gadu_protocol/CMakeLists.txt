@@ -20,6 +20,7 @@ set (SOURCES
 	helpers/gadu-imported-contact-xml-receiver.cpp
 	helpers/gadu-importer.cpp
 	helpers/gadu-list-helper.cpp
+	helpers/gadu-protocol-helper.cpp
 
 	oauth/oauth-authorization.cpp
 	oauth/oauth-authorization-chain.cpp
