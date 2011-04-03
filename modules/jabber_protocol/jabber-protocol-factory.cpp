@@ -65,14 +65,9 @@ JabberProtocolFactory::JabberProtocolFactory()
 	qSort(SupportedStatusTypes.begin(), SupportedStatusTypes.end(), StatusType::lessThan);
 }
 
-QIcon JabberProtocolFactory::icon()
+KaduIcon JabberProtocolFactory::icon()
 {
-	return KaduIcon("protocols/xmpp/xmpp").icon();
-}
-
-QString JabberProtocolFactory::iconPath()
-{
-	return KaduIcon("protocols/xmpp/xmpp", "16x16").fullPath();
+	return KaduIcon("protocols/xmpp/xmpp", "16x16");
 }
 
 Protocol * JabberProtocolFactory::createProtocolHandler(Account account)

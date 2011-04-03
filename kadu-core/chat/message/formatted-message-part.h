@@ -23,6 +23,9 @@
 #ifndef FORMATTED_MESSAGE_PART_H
 #define FORMATTED_MESSAGE_PART_H
 
+#include <QtCore/QString>
+#include <QtGui/QColor>
+
 #include "protocols/protocol.h"
 
 #include "exports.h"

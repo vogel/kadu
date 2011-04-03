@@ -124,7 +124,7 @@ QWidget * GaduProtocolFactory::newContactPersonalInfoWidget(Contact contact, QWi
 	return new GaduContactPersonalInfoWidget(contact, parent);
 }
 
-QIcon GaduProtocolFactory::icon()
+KaduIcon GaduProtocolFactory::icon()
 {
-	return KaduIcon("protocols/gadu-gadu/gadu-gadu").icon();
+	return KaduIcon("protocols/gadu-gadu/gadu-gadu");
 }

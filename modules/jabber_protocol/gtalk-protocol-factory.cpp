@@ -52,14 +52,9 @@ GTalkProtocolFactory::GTalkProtocolFactory()
 {
 }
 
-QIcon GTalkProtocolFactory::icon()
+KaduIcon GTalkProtocolFactory::icon()
 {
-	return KaduIcon("protocols/xmpp/brand_name/GmailGoogleTalk").icon();
-}
-
-QString GTalkProtocolFactory::iconPath()
-{
-	return KaduIcon("protocols/xmpp/brand_name/GmailGoogleTalk", "16x16").fullPath();
+	return KaduIcon("protocols/xmpp/brand_name/GmailGoogleTalk", "16x16");
 }
 
 QString GTalkProtocolFactory::idLabel()

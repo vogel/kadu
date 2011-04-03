@@ -22,6 +22,7 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
+#include "misc/kadu-icon.h"
 #include "model/roles.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocols-manager.h"
@@ -62,7 +63,7 @@ QVariant ProtocolsModel::data(const QModelIndex &index, int role) const
 		case Qt::DisplayRole:
 			return pf->displayName();
 		case Qt::DecorationRole:
-			return pf->icon();
+			return pf->icon().icon();
 		case ProtocolRole:
 			return QVariant::fromValue<ProtocolFactory *>(pf);
 		default:

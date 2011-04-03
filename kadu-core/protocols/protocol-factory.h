@@ -27,7 +27,6 @@
 
 #include <QtCore/QString>
 #include <QtGui/QDialog>
-#include <QtGui/QIcon>
 #include <QtGui/QValidator>
 
 #include "contacts/contact-details.h"
@@ -43,6 +42,7 @@ class Buddy;
 class ConfigurationWindow;
 class Contact;
 class ContactShared;
+class KaduIcon;
 class Protocol;
 class ProtocolMenuManager;
 class StatusType;
@@ -70,15 +70,7 @@ public:
 	virtual QString name() = 0;
 	virtual QString displayName() = 0;
 
-	virtual QIcon icon()
-	{
-		return QIcon();
-	}
-
-	virtual QString iconPath()
-	{
-		return QString();
-	}
+	virtual KaduIcon icon() = 0;
 
 };
 

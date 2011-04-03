@@ -48,8 +48,7 @@ public:
 
 	virtual bool canRegister() { return false; }
 
-	virtual QIcon icon();
-	virtual QString iconPath();
+	virtual KaduIcon icon();
 
 	virtual AccountCreateWidget * newCreateAccountWidget(QWidget */*parent*/ = 0) { return 0; }
 

@@ -29,7 +29,6 @@
 
 #include <QtCore/QDateTime>
 #include <QtCore/QObject>
-#include <QtGui/QIcon>
 
 #include "exports.h"
 
@@ -130,7 +129,7 @@ public:
 	KaduIcon statusIcon(const Status &status);
 	KaduIcon statusIcon(const QString &statusType);
 
-	QIcon icon();
+	KaduIcon icon();
 
 	// TODO: workaround
 	void emitContactStatusChanged(Contact contact, Status oldStatus)

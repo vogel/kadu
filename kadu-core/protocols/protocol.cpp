@@ -55,7 +55,7 @@ Protocol::~Protocol()
 {
 }
 
-QIcon Protocol::icon()
+KaduIcon Protocol::icon()
 {
 	return Factory->icon();
 }

@@ -61,14 +61,9 @@ Protocol * FacebookProtocolFactory::createProtocolHandler(Account account)
 	return result;
 }
 
-QIcon FacebookProtocolFactory::icon()
+KaduIcon FacebookProtocolFactory::icon()
 {
-	return KaduIcon("protocols/xmpp/brand_name/facebook").icon();
-}
-
-QString FacebookProtocolFactory::iconPath()
-{
-	return KaduIcon("protocols/xmpp/brand_name/facebook", "16x16").fullPath();
+	return KaduIcon("protocols/xmpp/brand_name/facebook", "16x16");
 }
 
 QString FacebookProtocolFactory::idLabel()

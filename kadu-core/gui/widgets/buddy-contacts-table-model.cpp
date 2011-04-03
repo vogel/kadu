@@ -23,6 +23,7 @@
 #include "buddies/buddy-manager.h"
 #include "contacts/contact-manager.h"
 #include "gui/widgets/buddy-contacts-table-item.h"
+#include "misc/kadu-icon.h"
 #include "model/roles.h"
 #include "protocols/services/roster-service.h"
 #include "protocols/protocol.h"
@@ -320,7 +321,7 @@ QVariant BuddyContactsTableModel::data(const QModelIndex &index, int role) const
 					return item->itemAccount().accountIdentity().name();
 				case Qt::DecorationRole:
 					return item->itemAccount().protocolHandler()
-							? item->itemAccount().protocolHandler()->icon()
+							? item->itemAccount().protocolHandler()->icon().icon()
 							: QIcon();
 				case AccountRole:
 					return QVariant::fromValue<Account>(item->itemAccount());
