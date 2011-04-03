@@ -123,11 +123,6 @@ private slots:
 	void connectionTimeoutTimerSlot();
 	void everyMinuteActions();
 
-	void buddySubscriptionChanged(Buddy &buddy);
-	void contactAttached(Contact contact);
-	void contactAboutToBeDetached(Contact contact);
-	void contactIdChanged(Contact contact, const QString &oldId);
-
 protected slots:
 	virtual void login();
 	virtual void logout();
