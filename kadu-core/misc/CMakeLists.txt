@@ -1,6 +1,7 @@
 set (misc_SRCS
 	coding-conversion.cpp
 	date-time.cpp
+	kadu-icon.cpp
 	misc.cpp
 	path-conversion.cpp
 	syntax-list.cpp
