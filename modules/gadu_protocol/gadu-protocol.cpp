@@ -240,8 +240,6 @@ GaduProtocol::GaduProtocol(Account account, ProtocolFactory *factory) :
 			this, SLOT(contactIdChanged(Contact, const QString &)));
 	connect(account, SIGNAL(updated()), this, SLOT(accountUpdated()));
 
-	connect(machine(), SIGNAL(login()), this, SLOT(login()));
-
 	kdebugf2();
 }
 
@@ -281,14 +279,9 @@ void GaduProtocol::changeStatus()
 		return;
 	}
 
-	if (isConnecting())
+	// assert?
+	if (isConnecting() || !isConnected())
 		return;
-
-	if (!isConnected())
-	{
-		machine()->wantToLogin();
-		return;
-	}
 
 	int friends = (!newStatus.isDisconnected() && account().privateStatus() ? GG_STATUS_FRIENDS_MASK : 0);
 
@@ -302,7 +295,8 @@ void GaduProtocol::changeStatus()
 
 	if (newStatus.isDisconnected())
 	{
-		machine()->loggedOut();
+		// should be handled in state machine, is it?
+		// machine()->loggedOut();
 		networkDisconnected(false);
 	}
 
@@ -341,20 +335,27 @@ void GaduProtocol::login()
 {
 	kdebugf();
 
+	Protocol::login();
+
+	// TODO: create some kind of cleanup method
 	if (GaduSession)
+	{
+		gg_free_session(GaduSession);
+		GaduSession = 0;
 		return;
+	}
 
 	GaduAccountDetails *gaduAccountDetails = dynamic_cast<GaduAccountDetails *>(account().details());
 
 	if (!gaduAccountDetails)
 	{
-		machine()->loggedOut();
+		machine()->fatalConnectionError();
 		return;
 	}
 
 	if (0 == gaduAccountDetails->uin())
 	{
-		machine()->loggedOut();
+		machine()->fatalConnectionError();
 
 		MessageDialog::show("dialog-warning", tr("Kadu"), tr("UIN not set!"));
 		setStatus(Status());
@@ -554,19 +555,6 @@ void GaduProtocol::networkDisconnected(bool tryAgain)
 		machine()->connectionError();
 	else
 		machine()->fatalConnectionError();
-
-// 	if (tryAgain && !status().isDisconnected()) // user still wants to login
-// 	{
-// 		networkStateChanged(NetworkConnecting);
-// 		statusChanged(Status());
-// 
-// 		QTimer::singleShot(1000, this, SLOT(login())); // try again after one second
-// 	}
-// 	else if (!status().isDisconnected())
-// 	{
-// 		setStatus(Status());
-// 		statusChanged(Status());
-// 	}
 }
 
 void GaduProtocol::sendUserList()

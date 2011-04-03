@@ -24,9 +24,13 @@
 
 #include "network/network-aware-object.h"
 
+class Protocol;
+
 class ProtocolStateMachine : public QStateMachine, private NetworkAwareObject
 {
 	Q_OBJECT
+
+	Protocol *CurrentProtocol;
 
 	QState *LoggedOutState;
 	QState *WantToLogInState;
@@ -35,24 +39,21 @@ class ProtocolStateMachine : public QStateMachine, private NetworkAwareObject
 	QState *LoggedInState;
 
 private slots:
-	void loggedOutStateEntered();
-	void wantToLogInStateEntered();
-	void loggingInStateEntered();
-	void loggedInStateEntered();
-	void passwordRequiredStateEntered();
+	void loggedOutStateEnteredSlot();
+	void wantToLogInStateEnteredSlot();
+	void loggingInStateEnteredSlot();
+	void loggedInStateEnteredSlot();
+	void passwordRequiredStateEnteredSlot();
 
 protected:
 	void onlineStateChanged(bool online);
 
 public:
-	explicit ProtocolStateMachine(QObject *parent = 0);
+	explicit ProtocolStateMachine(Protocol *protocol, QObject *parent = 0);
 	virtual ~ProtocolStateMachine();
 
-	void wantToLogin();
 	void loggedIn();
-	void loggedOut();
 	void passwordRequired();
-	void passwordAvailable();
 	void connectionError();
 	void fatalConnectionError();
 
@@ -62,10 +63,7 @@ public:
 signals:
 	void networkOnlineSignal();
 	void networkOfflineSignal();
-	void wantToLoginOnlineSignal();
-	void wantToLoginOfflineSignal();
 	void loggedInSignal();
-	void loggedOutSignal();
 	void passwordRequiredSignal();
 	void passwordAvailableSignal();
 	void connectionErrorSignal();
@@ -73,8 +71,13 @@ signals:
 
 	void connected();
 	void disconnected();
-	void login();
 	void requestPassword();
+
+	void loggedOutStateEntered();
+	void wantToLogInStateEntered();
+	void loggingInStateEntered();
+	void loggedInStateEntered();
+	void passwordRequiredStateEntered();
 
 };
 

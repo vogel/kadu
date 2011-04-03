@@ -51,6 +51,7 @@ class JabberProtocol : public Protocol
 	JabberRosterService *CurrentRosterService;
 	JabberSubscriptionService *CurrentSubscriptionService;
 
+	friend class XMPP::JabberClient;
 	XMPP::JabberClient *JabberClient;
 	XMPP::Jid jabberID;
 
@@ -91,6 +92,7 @@ protected:
 	virtual void changePrivateMode();
 
 protected slots:
+	virtual void login();
 	virtual void changeStatus();
 
 public:
@@ -116,7 +118,6 @@ public:
 
 public slots:
 	void connectToServer();
-	void login();
 	void logout();
 
 signals:

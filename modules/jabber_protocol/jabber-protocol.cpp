@@ -78,8 +78,6 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 
 	connectContactManagerSignals();
 
-	connect(machine(), SIGNAL(login()), this, SLOT(login()));
-
 	kdebugf2();
 }
 
@@ -169,60 +167,6 @@ void JabberProtocol::invalidPasswordSlot()
 	machine()->passwordRequired();
 }
 
-void JabberProtocol::connectToServer()
-{
-	kdebugf();
-
-	JabberAccountDetails *jabberAccountDetails = dynamic_cast<JabberAccountDetails *>(account().details());
-	if (!jabberAccountDetails)
-	{
-		machine()->loggedOut();
-		return;
-	}
-
-	if (account().id().isEmpty())
-	{
-		machine()->loggedOut();
-
-		MessageDialog::show("dialog-warning", tr("Kadu"), tr("XMPP username is not set!"));
-		setStatus(Status());
-		statusChanged(Status());
-		kdebugmf(KDEBUG_FUNCTION_END, "end: XMPP username is not set\n");
-		return;
-	}
-
-	if (!account().hasPassword())
-	{
-		machine()->passwordRequired();
-		return;
-	}
-
-	JabberClient->setOSName(SystemInfo::instance()->osFullName());
-	JabberClient->setTimeZone(SystemInfo::instance()->timezone(), SystemInfo::instance()->timezoneOffset());
-	JabberClient->setClientName("Kadu");
-	JabberClient->setClientVersion(Core::instance()->version());
-
-	// Set caps node information
-	JabberClient->setCapsNode("http://kadu.im/caps");
-	JabberClient->setCapsVersion("0.10");
-
-	JabberClient->setForceTLS(jabberAccountDetails->encryptionMode() != JabberAccountDetails::Encryption_No);
-
-	// override server and port (this should be dropped when using the new protocol and no direct SSL)
-	JabberClient->setUseSSL(jabberAccountDetails->encryptionMode() == JabberAccountDetails::Encryption_Legacy);
-	JabberClient->setOverrideHost(jabberAccountDetails->useCustomHostPort(), jabberAccountDetails->customHost(), jabberAccountDetails->customPort());
-
-//	JabberClient->setFileTransfersEnabled(true); // i haz it
-	jabberID = account().id();
-
-	JabberClient->setAllowPlainTextPassword(plainAuthToXMPP(jabberAccountDetails->plainAuthMode()));
-
-	jabberID = jabberID.withResource(jabberAccountDetails->resource());
-	JabberClient->connect(jabberID, account().password(), true);
-
-	kdebugf2();
-}
-
 XMPP::ClientStream::AllowPlainType JabberProtocol::plainAuthToXMPP(JabberAccountDetails::AllowPlainType type)
 {
 	if (type == JabberAccountDetails::NoAllowPlain)
@@ -283,9 +227,6 @@ void JabberProtocol::disconnectFromServer(const XMPP::Status &s)
 	if (isConnected())
 	{
 		kdebug("Still connected, closing connection...\n");
-		// make sure that the connection animation gets stopped if we're still
-		// in the process of connecting
-
 		JabberClient->setPresence(s);
 	}
 	/* Tell backend class to disconnect. */
@@ -293,7 +234,8 @@ void JabberProtocol::disconnectFromServer(const XMPP::Status &s)
 
 	kdebug("Disconnected.\n");
 
-	machine()->loggedOut();
+	// in state machine?
+// 	machine()->loggedOut();
 	kdebugf2();
 }
 
@@ -310,7 +252,8 @@ void JabberProtocol::disconnectedFromServer()
 
 	setAllOffline();
 
-	machine()->loggedOut();
+	// is it error or not?
+// 	machine()->loggedOut();
 
 	JabberClient->disconnect();
 
@@ -319,9 +262,58 @@ void JabberProtocol::disconnectedFromServer()
 
 void JabberProtocol::login()
 {
-	if (isConnected())
+	kdebugf();
+
+	Protocol::login();
+
+	JabberAccountDetails *jabberAccountDetails = dynamic_cast<JabberAccountDetails *>(account().details());
+	if (!jabberAccountDetails)
+	{
+		machine()->fatalConnectionError();
 		return;
-	connectToServer();
+	}
+
+	if (account().id().isEmpty())
+	{
+		machine()->fatalConnectionError();
+
+		MessageDialog::show("dialog-warning", tr("Kadu"), tr("XMPP username is not set!"));
+		setStatus(Status());
+		statusChanged(Status());
+		kdebugmf(KDEBUG_FUNCTION_END, "end: XMPP username is not set\n");
+		return;
+	}
+
+	if (!account().hasPassword())
+	{
+		machine()->passwordRequired();
+		return;
+	}
+
+	JabberClient->setOSName(SystemInfo::instance()->osFullName());
+	JabberClient->setTimeZone(SystemInfo::instance()->timezone(), SystemInfo::instance()->timezoneOffset());
+	JabberClient->setClientName("Kadu");
+	JabberClient->setClientVersion(Core::instance()->version());
+
+	// Set caps node information
+	JabberClient->setCapsNode("http://kadu.im/caps");
+	JabberClient->setCapsVersion("0.10");
+
+	JabberClient->setForceTLS(jabberAccountDetails->encryptionMode() != JabberAccountDetails::Encryption_No);
+
+	// override server and port (this should be dropped when using the new protocol and no direct SSL)
+	JabberClient->setUseSSL(jabberAccountDetails->encryptionMode() == JabberAccountDetails::Encryption_Legacy);
+	JabberClient->setOverrideHost(jabberAccountDetails->useCustomHostPort(), jabberAccountDetails->customHost(), jabberAccountDetails->customPort());
+
+//	JabberClient->setFileTransfersEnabled(true); // i haz it
+	jabberID = account().id();
+
+	JabberClient->setAllowPlainTextPassword(plainAuthToXMPP(jabberAccountDetails->plainAuthMode()));
+
+	jabberID = jabberID.withResource(jabberAccountDetails->resource());
+	JabberClient->connect(jabberID, account().password(), true);
+
+	kdebugf2();
 }
 
 void JabberProtocol::clientResourceReceived(const XMPP::Jid &jid, const XMPP::Resource &resource)
@@ -403,29 +395,21 @@ void JabberProtocol::changeStatus()
 
 	if (newStatus.isDisconnected() && !isConnected())
 	{
-		machine()->loggedOut();
+		// should be handled in state machine, is it?
+		// machine()->loggedOut();
 		return;
 	}
 
-	if (isConnecting())
+	// assert?
+	if (isConnecting() || !isConnected())
 		return;
-
-	if (!isConnected())
-	{
-		machine()->wantToLogin();
-		return;
-	}
 
 	XMPP::Status xmppStatus = IrisStatusAdapter::toIrisStatus(newStatus);
 	JabberClient->setPresence(xmppStatus);
 
 	if (newStatus.isDisconnected())
 	{
-		machine()->loggedOut();
-
-		setAllOffline();
-
-		JabberClient->disconnect();
+		disconnectedFromServer();
 
 		if (!status().isDisconnected())
 			setStatus(Status());

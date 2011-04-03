@@ -32,6 +32,7 @@
 #include <xmpp_tasks.h>
 
 #include "accounts/account.h"
+#include "protocols/state-machine/protocol-state-machine.h"
 #include "debug.h"
 
 #include "certificates/certificate-helpers.h"
@@ -673,7 +674,7 @@ void JabberClient::slotCSError(int error)
 		kdebug("Incorrect password, retrying.\n");
 		Protocol->logout();
 
-		emit invalidPassword();
+		Protocol->machine()->passwordRequired();
 	}
 	else
 	{
@@ -687,12 +688,12 @@ void JabberClient::slotCSError(int error)
 			if (reconn)
 			{
 				cleanUp();
-				Protocol->connectToServer();
+				Protocol->machine()->connectionError();
 			}
 			else
 			{
 //				Protocol->resourcePool()->clear();
-				Protocol->logout();
+				Protocol->machine()->fatalConnectionError();
 			}
 		}
 	}

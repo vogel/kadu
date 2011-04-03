@@ -122,8 +122,6 @@ private:
 private slots:
 	void accountUpdated();
 
-	void login();
-
 	void connectionTimeoutTimerSlot();
 	void everyMinuteActions();
 
@@ -133,6 +131,7 @@ private slots:
 	void contactIdChanged(Contact contact, const QString &oldId);
 
 protected slots:
+	virtual void login();
 	virtual void changeStatus();
 
 public:

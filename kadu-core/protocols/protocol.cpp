@@ -55,11 +55,13 @@ Protocol::Protocol(Account account, ProtocolFactory *factory) :
 	 * changeStatus was probably called before machine was started by some StatusContainer
 	 * that just restored status from configuration file
 	 */
-	connect(Machine, SIGNAL(started()), this, SLOT(changeStatus()), Qt::QueuedConnection);
+	connect(Machine, SIGNAL(started()), this, SLOT(prepareStateMachine()), Qt::QueuedConnection);
 	connect(Machine, SIGNAL(requestPassword()), this, SLOT(passwordRequired()));
-	connect(Machine, SIGNAL(login()), this, SLOT(loginSlot()));
 	connect(Machine, SIGNAL(connected()), this, SLOT(connectedSlot()));
 	connect(Machine, SIGNAL(disconnected()), this, SLOT(disconnectedSlot()));
+
+	connect(Machine, SIGNAL(loggingInStateEntered()), this, SLOT(login()));
+	connect(Machine, SIGNAL(loggedInStateEntered()), this, SLOT(changeStatus()));
 
 	connect(StatusChangerManager::instance(), SIGNAL(statusChanged(StatusContainer*,Status)),
 			this, SLOT(statusChanged(StatusContainer*,Status)));
@@ -74,6 +76,12 @@ QIcon Protocol::icon()
 	return Factory->icon();
 }
 
+void Protocol::prepareStateMachine()
+{
+	if (!CurrentStatus.isDisconnected())
+		emit stateMachineChangeStatusToNotOffline();
+}
+
 void Protocol::passwordRequired()
 {
 	emit invalidPassword(CurrentAccount);
@@ -82,9 +90,9 @@ void Protocol::passwordRequired()
 void Protocol::passwordProvided()
 {
 	if (CurrentAccount.hasPassword())
-		Machine->passwordAvailable();
+		emit stateMachinePasswordAvailable();
 	else
-		Machine->loggedOut();
+		emit stateMachinePasswordNotAvailable();
 }
 
 void Protocol::setAllOffline()
@@ -116,8 +124,14 @@ Status Protocol::status() const
 
 void Protocol::statusChanged(StatusContainer *container, Status status)
 {
-	if (container && container == account().statusContainer() && CurrentStatus != status)
-		changeStatus();
+	if (!container || container != account().statusContainer() || CurrentStatus == status)
+		return;
+
+	CurrentStatus = status;
+	if (CurrentStatus.isDisconnected())
+		emit stateMachineChangeStatusToOffline();
+	else
+		emit stateMachineChangeStatusToNotOffline();
 }
 
 void Protocol::statusChanged(Status status)
@@ -147,9 +161,9 @@ QIcon Protocol::statusIcon(const QString &statusType)
 	return StatusTypeManager::instance()->statusIcon(statusPixmapPath(), statusType, false, false);
 }
 
-void Protocol::loginSlot()
+void Protocol::login()
 {
-	// just for status icon now
+	// just for status icon now, this signal need to be better
 	emit statusChanged(CurrentAccount, CurrentStatus);
 }
 
