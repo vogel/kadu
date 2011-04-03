@@ -66,6 +66,7 @@
 #include "url-handlers/url-handler-manager.h"
 #include "activate.h"
 
+#include "misc/kadu-icon.h"
 #include "misc/misc.h"
 #include "debug.h"
 #include "icons-manager.h"
@@ -188,7 +189,7 @@ void KaduWindow::createKaduMenu()
 	KaduMenu->setTitle("&Kadu");
 #endif
 	RecentChatsMenu = new QMenu(this);
-	RecentChatsMenu->setIcon(IconsManager::instance()->iconByPath("internet-group-chat"));
+	RecentChatsMenu->setIcon(KaduIcon("internet-group-chat").icon());
 	RecentChatsMenu->setTitle(tr("Recent chats"));
 	RecentChatsMenuNeedsUpdate = true;
 	connect(IconsManager::instance(), SIGNAL(themeChanged()), this, SLOT(iconThemeChanged()));
@@ -373,7 +374,7 @@ void KaduWindow::openRecentChats(QAction *action)
 
 void KaduWindow::iconThemeChanged()
 {
-	RecentChatsMenu->setIcon(IconsManager::instance()->iconByPath("internet-group-chat"));
+	RecentChatsMenu->setIcon(KaduIcon("internet-group-chat").icon());
 }
 
 void KaduWindow::storeConfiguration()

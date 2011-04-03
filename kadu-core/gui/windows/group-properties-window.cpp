@@ -34,7 +34,7 @@
 #include "configuration/configuration-file.h"
 #include "buddies/group.h"
 
-#include "icons-manager.h"
+#include "misc/kadu-icon.h"
 #include "misc/misc.h"
 
 #include "group-properties-window.h"
@@ -92,7 +92,7 @@ GroupPropertiesWindow::GroupPropertiesWindow(Group editedGroup, QWidget *parent)
 
 	if (iconPath.isEmpty())
 	{
-		icon->setIcon(IconsManager::instance()->iconByPath("document-open"));
+		icon->setIcon(KaduIcon("document-open").icon());
 		icon->setText(tr(" Set Icon"));
 	}
 	else

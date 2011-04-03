@@ -36,9 +36,9 @@
 #include "contacts/contact.h"
 #include "contacts/contact-shared.h"
 #include "core/core.h"
+#include "misc/kadu-icon.h"
 #include "protocols/protocol.h"
 #include "protocols/protocols-manager.h"
-#include "icons-manager.h"
 
 #include "buddy.h"
 
@@ -271,7 +271,7 @@ Buddy Buddy::dummy()
 		Avatar avatar = AvatarManager::instance()->byContact(contact, ActionCreate);
 
 		avatar.setLastUpdated(QDateTime::currentDateTime());
-		avatar.setFilePath(IconsManager::instance()->iconPath("kadu_icons/buddy0", "96x96"));
+		avatar.setFilePath(KaduIcon("kadu_icons/buddy0", "96x96").fullPath());
 
 		example.addContact(contact);
 		example.setAnonymous(false);

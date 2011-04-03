@@ -68,6 +68,7 @@
 #include "custom-input.h"
 #include "debug.h"
 #include "icons-manager.h"
+#include "misc/kadu-icon.h"
 #include "misc/misc.h"
 
 #include "chat-widget.h"
@@ -345,7 +346,7 @@ QIcon ChatWidget::icon()
 	else if (contactsCount > 1)
 		return ChatTypeManager::instance()->chatType("Conference")->icon();
 
-	return IconsManager::instance()->iconByPath("internet-group-chat");
+	return KaduIcon("internet-group-chat").icon();
 }
 
 void ChatWidget::appendMessages(const QList<MessageRenderInfo *> &messages, bool pending)

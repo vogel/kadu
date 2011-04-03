@@ -29,7 +29,7 @@
 
 #include <QtGui/QStyle>
 
-#include "icons-manager.h"
+#include "misc/kadu-icon.h"
 
 #include "message-dialog.h"
 
@@ -39,7 +39,8 @@ void KADUAPI MessageDialog::show(const QString &iconName, const QString &title, 
 	QMessageBox *mb = new QMessageBox(QMessageBox::NoIcon, title, text, buttons, parent, f);
 	mb->setAttribute(Qt::WA_DeleteOnClose, true);
 
-	QIcon icon = IconsManager::instance()->iconByPath(iconName);
+	QIcon icon = KaduIcon(iconName).icon();
+	// TODO: is it possible at all?
 	if (!icon.isNull())
 	{
 		QStyle *style = mb->style();
@@ -56,7 +57,8 @@ int KADUAPI MessageDialog::exec(const QString &iconName, const QString &title, c
 {
 	QMessageBox mb(QMessageBox::NoIcon, title, text, buttons, parent, f);
 
-	QIcon icon = IconsManager::instance()->iconByPath(iconName);
+	QIcon icon = KaduIcon(iconName).icon();
+	// TODO: is it possible at all?
 	if (!icon.isNull())
 	{
 		QStyle *style = mb.style();

@@ -29,12 +29,12 @@
 #include <QtDBus/QDBusServiceWatcher>
 
 #include "configuration/configuration-file.h"
+#include "misc/kadu-icon.h"
 #include "notify/notification-manager.h"
 #include "notify/notification.h"
 #include "notify/notify-event.h"
 #include "url-handlers/url-handler-manager.h"
 #include "html_document.h"
-#include "icons-manager.h"
 
 #include "freedesktop-notify.h"
 
@@ -132,9 +132,9 @@ void FreedesktopNotify::notify(Notification *notification)
 	args.append(0U);
 
 	if (notification->iconPath().isEmpty())
-		args.append(IconsManager::instance()->iconPath("kadu_icons/section-kadu", "64x64"));
+		args.append(KaduIcon("kadu_icons/section-kadu", "64x64").fullPath());
 	else
-		args.append(IconsManager::instance()->iconPath(notification->iconPath(), "64x64"));
+		args.append(KaduIcon(notification->iconPath(), "64x64").fullPath());
 
 	// the new spec doesn't have this
 	if (!UseFreedesktopStandard)

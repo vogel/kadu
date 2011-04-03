@@ -28,7 +28,7 @@
 #include "chat/message/formatted-message-part.h"
 #include "configuration/configuration-file.h"
 #include "emoticons/emoticons-manager.h"
-#include "icons-manager.h"
+#include "misc/kadu-icon.h"
 #include "misc/misc.h"
 #include "parser/parser.h"
 #include "protocols/services/chat-image-service.h"
@@ -116,7 +116,7 @@ static QString getSeparator(const QObject * const object)
 static QString loadingImageHtml(const QString &imageId)
 {
 	return QString("<img src=\"file:///%1\" id=\"%2\" />")
-			.arg(IconsManager::instance()->iconPath("kadu_icons/16x16/please-wait.gif"))
+			.arg(KaduIcon("kadu_icons/16x16/please-wait.gif").fullPath())
 			.arg(imageId);
 }
 

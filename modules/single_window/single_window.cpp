@@ -15,9 +15,9 @@
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/custom-input.h"
 #include "gui/windows/kadu-window.h"
-#include "icons-manager.h"
 #include "gui/hot-key.h"
 #include "core/core.h"
+#include "misc/kadu-icon.h"
 #include "misc/misc.h"
 #include "debug.h"
 
@@ -279,7 +279,7 @@ void SingleWindow::onNewMessage(Chat chat)
 	if (w != tabs->currentWidget())
 	{
 		int index = tabs->indexOf(w);
-		tabs->setTabIcon(index, IconsManager::instance()->iconByPath("protocols/common/message"));
+		tabs->setTabIcon(index, KaduIcon("protocols/common/message").icon());
 
 		if (config_file.readBoolEntry("SingleWindow", "NumMessagesInTab", false))
 		{

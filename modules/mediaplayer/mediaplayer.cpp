@@ -47,6 +47,7 @@
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-dialog.h"
 
+#include "misc/kadu-icon.h"
 #include "misc/path-conversion.h"
 
 #include "notify/notification-manager.h"
@@ -56,7 +57,6 @@
 #include "status/status-changer-manager.h"
 
 #include "debug.h"
-#include "icons-manager.h"
 
 #include "mp_status_changer.h"
 #include "player_commands.h"
@@ -844,7 +844,7 @@ void MediaPlayer::playPause()
 		isPaused = false;
 		foreach(Action *action, playAction->actions())
 		{
-			action->setIcon(IconsManager::instance()->iconByPath("external_modules/mediaplayer-media-playback-pause"));
+			action->setIcon(KaduIcon("external_modules/mediaplayer-media-playback-pause").icon());
 			action->setText(tr("Pause"));
 
 		}
@@ -855,7 +855,7 @@ void MediaPlayer::playPause()
 		isPaused = true;
 		foreach(Action *action, playAction->actions())
 		{
-			action->setIcon(IconsManager::instance()->iconByPath("external_modules/mediaplayer-media-playback-play"));
+			action->setIcon(KaduIcon("external_modules/mediaplayer-media-playback-play").icon());
 			action->setText(tr("Play"));
 		}
 	}
@@ -868,7 +868,7 @@ void MediaPlayer::play()
 
 	isPaused = false;
 	foreach(Action *action, playAction->actions())
-		action->setIcon(IconsManager::instance()->iconByPath("external_modules/mediaplayer-media-playback-play"));
+		action->setIcon(KaduIcon("external_modules/mediaplayer-media-playback-play").icon());
 }
 
 void MediaPlayer::stop()
@@ -878,7 +878,7 @@ void MediaPlayer::stop()
 
 	isPaused = true;
 	foreach(Action *action, playAction->actions())
-		action->setIcon(IconsManager::instance()->iconByPath("external_modules/mediaplayer-media-playback-play"));
+		action->setIcon(KaduIcon("external_modules/mediaplayer-media-playback-play").icon());
 }
 
 void MediaPlayer::pause()
@@ -888,7 +888,7 @@ void MediaPlayer::pause()
 
 	isPaused = true;
 	foreach(Action *action, playAction->actions())
-		action->setIcon(IconsManager::instance()->iconByPath("external_modules/mediaplayer-media-playback-play"));
+		action->setIcon(KaduIcon("external_modules/mediaplayer-media-playback-play").icon());
 }
 
 void MediaPlayer::setVolume(int vol)

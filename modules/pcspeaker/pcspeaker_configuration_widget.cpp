@@ -26,8 +26,9 @@
 #include <QtGui/QLabel>
 #include <QtGui/QHBoxLayout>
 
-#include "gui/widgets/configuration/notify-group-box.h"
 #include "configuration/configuration-file.h"
+#include "gui/widgets/configuration/notify-group-box.h"
+#include "misc/kadu-icon.h"
 
 #include "pcspeaker_configuration_widget.h"
 #include "pcspeaker.h"
@@ -37,7 +38,7 @@ PCSpeakerConfigurationWidget::PCSpeakerConfigurationWidget(QWidget *parent)
 {
 	soundEdit = new QLineEdit(this);
 	soundEdit->setToolTip(tr("Put the played sounds separate by space, _ for pause, eg. D2 C1# G0"));
-	testButton = new QPushButton(IconsManager::instance()->iconByPath("external_modules/mediaplayer-media-playback-play"),"", this);
+	testButton = new QPushButton(KaduIcon("external_modules/mediaplayer-media-playback-play").icon(), QString(), this);
 	connect(testButton, SIGNAL(clicked()), this, SLOT(test()));
 
 	QHBoxLayout *layout = new QHBoxLayout(this);

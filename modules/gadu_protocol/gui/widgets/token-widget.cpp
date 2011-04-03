@@ -27,14 +27,15 @@
 #include <QtGui/QMovie>
 #include <QtGui/QPushButton>
 
-#include "server/gadu-token-fetcher.h"
 #include "icons-manager.h"
+#include "misc/kadu-icon.h"
+#include "server/gadu-token-fetcher.h"
 
 #include "token-widget.h"
 
 TokenWidget::TokenWidget(QWidget *parent) : QWidget(parent)
 {
-	WaitMovie = new QMovie(IconsManager::instance()->iconPath("kadu_icons/16x16/please-wait.gif"),
+	WaitMovie = new QMovie(KaduIcon("kadu_icons/16x16/please-wait.gif").fullPath(),
 			QByteArray(), this);
 
 	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
@@ -43,7 +44,7 @@ TokenWidget::TokenWidget(QWidget *parent) : QWidget(parent)
 	TokenImage->setFixedHeight(32);
 	TokenImage->setScaledContents(true);
 
-	QPushButton *refreshButton = new QPushButton(IconsManager::instance()->iconByPath("view-refresh"), QString() ,this);
+	QPushButton *refreshButton = new QPushButton(KaduIcon("view-refresh").icon(), QString() ,this);
 	refreshButton->setIconSize(IconsManager::instance()->getIconsSize());
 	connect(refreshButton, SIGNAL(clicked()), this, SLOT(refreshToken()));
 

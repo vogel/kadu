@@ -27,6 +27,7 @@
 #include "gui/actions/action-description.h"
 #include "gui/hot-key.h"
 #include "icons-manager.h"
+#include "misc/kadu-icon.h"
 #include "protocols/services/chat-service.h"
 
 #include "action.h"
@@ -39,7 +40,7 @@ Action::Action(ActionDescription *description, ActionDataSource *dataSource, QOb
 	if (!Description->iconPath().isEmpty())
 	{
 		connect(IconsManager::instance(), SIGNAL(themeChanged()), this, SLOT(updateIcon()));
-		setIcon(IconsManager::instance()->iconByPath(Description->iconPath()));
+		setIcon(KaduIcon(Description->iconPath()).icon());
 	}
 
 	setCheckable(Description->Checkable);
@@ -133,7 +134,7 @@ void Action::checkState()
 
 void Action::updateIcon()
 {
-	setIcon(IconsManager::instance()->iconByPath(Description->iconPath()));
+	setIcon(KaduIcon(Description->iconPath()).icon());
 }
 
 void disableEmptyContacts(Action *action)

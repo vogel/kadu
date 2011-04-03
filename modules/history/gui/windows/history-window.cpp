@@ -52,13 +52,13 @@
 #include "gui/widgets/delayed-line-edit.h"
 #include "gui/widgets/filter-widget.h"
 #include "gui/windows/message-dialog.h"
+#include "misc/kadu-icon.h"
 #include "misc/misc.h"
 #include "model/roles.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocol-menu-manager.h"
 #include "activate.h"
 #include "debug.h"
-#include "icons-manager.h"
 
 #include "model/buddy-status-dates-model.h"
 #include "model/chat-dates-model.h"
@@ -80,7 +80,7 @@ HistoryWindow::HistoryWindow(QWidget *parent) :
 	setWindowRole("kadu-history");
 
 	setWindowTitle(tr("History"));
-	setWindowIcon(IconsManager::instance()->iconByPath("kadu_icons/history"));
+	setWindowIcon(KaduIcon("kadu_icons/history").icon());
 
 	createGui();
 	connectGui();
@@ -88,7 +88,7 @@ HistoryWindow::HistoryWindow(QWidget *parent) :
 	loadWindowGeometry(this, "History", "HistoryWindowGeometry", 200, 200, 750, 500);
 
 	DetailsPopupMenu = new QMenu(this);
-	DetailsPopupMenu->addAction(IconsManager::instance()->iconByPath("kadu_icons/clear-history"), tr("&Remove entries"), this, SLOT(removeHistoryEntriesPerDate()));
+	DetailsPopupMenu->addAction(KaduIcon("kadu_icons/clear-history").icon(), tr("&Remove entries"), this, SLOT(removeHistoryEntriesPerDate()));
 
 	kdebugf2();
 }
@@ -627,7 +627,7 @@ void HistoryWindow::showMainPopupMenu(const QPoint &pos)
 
 			menu.reset(BuddiesListViewMenuManager::instance()->menu(this, this, chat.contacts().toContactList()));
 			menu->addSeparator();
-			menu->addAction(IconsManager::instance()->iconByPath("kadu_icons/clear-history"),
+			menu->addAction(KaduIcon("kadu_icons/clear-history").icon(),
 					tr("&Clear Chat History"), this, SLOT(clearChatHistory()));
 
 			break;
@@ -641,7 +641,7 @@ void HistoryWindow::showMainPopupMenu(const QPoint &pos)
 
 			menu.reset(BuddiesListViewMenuManager::instance()->menu(this, this, buddy.contacts()));
 			menu->addSeparator();
-			menu->addAction(IconsManager::instance()->iconByPath("kadu_icons/clear-history"),
+			menu->addAction(KaduIcon("kadu_icons/clear-history").icon(),
 					tr("&Clear Status History"), this, SLOT(clearStatusHistory()));
 
 			break;
@@ -654,7 +654,7 @@ void HistoryWindow::showMainPopupMenu(const QPoint &pos)
 				return;
 
 			menu.reset(new QMenu(this));
-			menu->addAction(IconsManager::instance()->iconByPath("kadu_icons/clear-history"),
+			menu->addAction(KaduIcon("kadu_icons/clear-history").icon(),
 					tr("&Clear SMS History"), this, SLOT(clearSmsHistory()));
 			break;
 		}

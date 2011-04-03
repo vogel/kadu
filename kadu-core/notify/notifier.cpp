@@ -19,7 +19,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "icons-manager.h"
+#include "misc/kadu-icon.h"
 
 #include "notifier.h"
 
@@ -39,5 +39,5 @@ Notifier::CallbackCapacity Notifier::callbackCapacity()
 
 QIcon Notifier::icon() const
 {
-	return IconsManager::instance()->iconByPath(IconPath);
+	return KaduIcon(IconPath).icon();
 }

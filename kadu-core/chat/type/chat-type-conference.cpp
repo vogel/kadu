@@ -20,7 +20,7 @@
  */
 
 #include "chat/chat-details-conference.h"
-#include "icons-manager.h"
+#include "misc/kadu-icon.h"
 
 #include "chat-type-conference.h"
 
@@ -104,7 +104,7 @@ QString ChatTypeConference::displayNamePlural() const
  */
 QIcon ChatTypeConference::icon() const
 {
-	return IconsManager::instance()->iconByPath("kadu_icons/conference");
+	return KaduIcon("kadu_icons/conference").icon();
 }
 
 /**

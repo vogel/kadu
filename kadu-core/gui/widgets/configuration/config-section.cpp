@@ -27,12 +27,11 @@
 #include <QtGui/QHBoxLayout>
 
 #include "configuration/configuration-file.h"
+#include "misc/kadu-icon.h"
 #include "gui/widgets/configuration/config-section.h"
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/config-tab.h"
 #include "gui/widgets/configuration/config-widget.h"
-
-#include "icons-manager.h"
 
 ConfigSection::ConfigSection(const QString &name, ConfigurationWidget *configurationWidget,
 		QListWidgetItem *listWidgetItem, QWidget *parentConfigGroupBoxWidget, const QString &iconPath) :
@@ -134,5 +133,5 @@ void ConfigSection::configTabDestroyed(QObject *obj)
 
 void ConfigSection::iconThemeChanged()
 {
-	ListWidgetItem->setIcon(IconsManager::instance()->iconByPath(IconPath).pixmap(32, 32));
+	ListWidgetItem->setIcon(KaduIcon(IconPath).icon().pixmap(32, 32));
 }

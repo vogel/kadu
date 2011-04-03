@@ -503,10 +503,10 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 						if (pe.content.contains(':'))
 						{
 							QStringList parts = pe.content.split(':');
-							pe.content = webKitPath(IconsManager::instance()->iconPath(parts[0], parts[1]));
+							pe.content = KaduIcon(parts[0], parts[1]).webKitPath();
 						}
 						else
-							pe.content = webKitPath(IconsManager::instance()->iconPath(pe.content));
+							pe.content = KaduIcon(pe.content).webKitPath();
 						parseStack.push_back(pe);
 						break;
 					}

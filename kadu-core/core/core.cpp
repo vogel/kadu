@@ -124,7 +124,7 @@ Core::~Core()
 	PluginsManager::instance()->deactivatePlugins();
 
 #ifdef Q_OS_MAC
-	setIcon(IconsManager::instance()->iconByPath("kadu_icons/kadu"));
+	setIcon(KaduIcon("kadu_icons/kadu").icon());
 #endif // Q_OS_MAC
 
 	MainConfiguration::destroyInstance();
@@ -349,7 +349,7 @@ void Core::init()
 
 	new Updates(this);
 
-	setIcon(IconsManager::instance()->iconByPath(QLatin1String("protocols/common/offline")));
+	setIcon(KaduIcon(QLatin1String("protocols/common/offline")).icon());
 	connect(IconsManager::instance(), SIGNAL(themeChanged()), this, SLOT(statusUpdated()));
 	QTimer::singleShot(15000, this, SLOT(deleteOldConfigurationFiles()));
 

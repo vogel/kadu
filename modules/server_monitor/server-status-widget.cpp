@@ -23,10 +23,10 @@
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QLabel>
 
+#include "misc/kadu-icon.h"
 #include "notify/notification-manager.h"
 #include "notify/notification.h"
 #include "debug.h"
-#include "icons-manager.h"
 
 #include "server-status-widget.h"
 
@@ -47,7 +47,7 @@ ServerStatusWidget::ServerStatusWidget(const QString &watchedAddress, quint16 wa
 	connect(&TcpSocket, SIGNAL(error(QAbstractSocket::SocketError)),
 			this, SLOT(connectionError(QAbstractSocket::SocketError)));
 
-	PixmapLabel->setPixmap(IconsManager::instance()->iconByPath("protocols/gadu-gadu/offline").pixmap(16, 16));
+	PixmapLabel->setPixmap(KaduIcon("protocols/gadu-gadu/offline").icon().pixmap(16, 16));
 
 	layout->addWidget(PixmapLabel, 0);
 	layout->addWidget(textLabel, 100);
@@ -74,9 +74,9 @@ void ServerStatusWidget::setNewState(ServerState newState)
 	emit statusChanged(WatchedAddress.toString(), CurrentState);
 
 	if (Available == CurrentState)
-		PixmapLabel->setPixmap(IconsManager::instance()->iconByPath("protocols/gadu-gadu/online").pixmap(16, 16));
+		PixmapLabel->setPixmap(KaduIcon("protocols/gadu-gadu/online").icon().pixmap(16, 16));
 	else
-		PixmapLabel->setPixmap(IconsManager::instance()->iconByPath("protocols/gadu-gadu/offline").pixmap(16, 16));
+		PixmapLabel->setPixmap(KaduIcon("protocols/gadu-gadu/offline").icon().pixmap(16, 16));
 }
 
 

@@ -20,7 +20,7 @@
 #include <QtNetwork/QNetworkRequest>
 
 #include "gui/windows/message-dialog.h"
-#include "icons-manager.h"
+#include "misc/kadu-icon.h"
 
 #include "sms-image-dialog.h"
 
@@ -39,7 +39,7 @@ SmsImageDialog::~SmsImageDialog()
 
 void SmsImageDialog::createGui()
 {
-	QMovie *pleaseWaitMovie = new QMovie(IconsManager::instance()->iconPath("kadu_icons/16x16/please-wait.gif"));
+	QMovie *pleaseWaitMovie = new QMovie(KaduIcon("kadu_icons/16x16/please-wait.gif").fullPath());
 	pleaseWaitMovie->start();
 
 	PixmapLabel = new QLabel(this);

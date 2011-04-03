@@ -125,7 +125,7 @@ DockingManager::DockingManager() :
 	MacDockMenu = new QMenu();
 	qt_mac_set_dock_menu(MacDockMenu);
 #endif
-	CloseKaduAction = new QAction(IconsManager::instance()->iconByPath("application-exit"), tr("&Exit Kadu"), this);
+	CloseKaduAction = new QAction(KaduIcon("application-exit").icon(), tr("&Exit Kadu"), this);
 	connect(CloseKaduAction, SIGNAL(triggered()), qApp, SLOT(quit()));
 
 	configurationUpdated();
@@ -169,17 +169,17 @@ void DockingManager::changeIcon()
 	{
 		case AnimatedEnvelope:
 			if (CurrentDocker)
-				CurrentDocker->changeTrayMovie(IconsManager::instance()->iconPath("protocols/common/16x16/message_anim.gif"));
+				CurrentDocker->changeTrayMovie(KaduIcon("protocols/common/16x16/message_anim.gif").fullPath());
 			break;
 		case StaticEnvelope:
 			if (CurrentDocker)
-				CurrentDocker->changeTrayIcon(IconsManager::instance()->iconByPath("protocols/common/message"));
+				CurrentDocker->changeTrayIcon(KaduIcon("protocols/common/message").icon());
 			break;
 		case BlinkingEnvelope:
 			if (!blink)
 			{
 				if (CurrentDocker)
-					CurrentDocker->changeTrayIcon(IconsManager::instance()->iconByPath("protocols/common/message"));
+					CurrentDocker->changeTrayIcon(KaduIcon("protocols/common/message").icon());
 				icon_timer->setSingleShot(true);
 				icon_timer->start(500);
 				blink = true;

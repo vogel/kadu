@@ -23,8 +23,8 @@
 
 #include "chat/chat.h"
 #include "chat/type/chat-type-manager.h"
+#include "misc/kadu-icon.h"
 #include "model/roles.h"
-#include "icons-manager.h"
 
 #include "model/history-type.h"
 #include "history-tree-item.h"
@@ -166,7 +166,7 @@ QVariant HistoryChatsModel::statusData(const QModelIndex &index, int role) const
 			case Qt::DisplayRole:
 				return tr("Statuses");
 			case Qt::DecorationRole:
-				return IconsManager::instance()->iconByPath("protocols/common/online");
+				return KaduIcon("protocols/common/online").icon();
 		}
 		return QVariant();
 	}
@@ -196,7 +196,7 @@ QVariant HistoryChatsModel::smsRecipientData(const QModelIndex &index, int role)
 			case Qt::DisplayRole:
 				return tr("SMSes");
 			case Qt::DecorationRole:
-				return IconsManager::instance()->iconByPath("phone");
+				return KaduIcon("phone").icon();
 		}
 		return QVariant();
 	}

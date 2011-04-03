@@ -24,7 +24,6 @@
 #include "misc/kadu-icon.h"
 #include "misc/path-conversion.h"
 #include "parser/parser.h"
-#include "icons-manager.h"
 #include "protocols/protocol.h"
 #include "status/status-type-manager.h"
 
@@ -51,10 +50,10 @@ static QString getStatusIconPath(BuddyOrContact buddyOrContact)
 	Contact contact = buddyOrContact.contact();
 
 	if (buddy.isBlocked())
-		return webKitPath(IconsManager::instance()->iconPath("kadu_icons", "16x16", "blocked"));
+		return KaduIcon("kadu_icons", "16x16", "blocked").webKitPath();
 
 	if (contact.isBlocking())
-		return webKitPath(IconsManager::instance()->iconPath("kadu_icons", "16x16", "blocking"));
+		return KaduIcon("kadu_icons", "16x16", "blocking").webKitPath();
 
 	if (contact.contactAccount())
 	{

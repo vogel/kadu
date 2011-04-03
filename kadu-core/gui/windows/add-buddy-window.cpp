@@ -52,13 +52,13 @@
 #include "gui/widgets/accounts-combo-box.h"
 #include "gui/widgets/groups-combo-box.h"
 #include "gui/widgets/select-buddy-combo-box.h"
+#include "misc/kadu-icon.h"
 #include "misc/misc.h"
 #include "model/roles.h"
 #include "protocols/services/roster-service.h"
 #include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
 #include "url-handlers/url-handler-manager.h"
-#include "icons-manager.h"
 
 #include "add-buddy-window.h"
 
@@ -266,10 +266,10 @@ void AddBuddyWindow::addFakeAccountsToComboBox()
 {
 	ActionsProxyModel *actionsModel = AccountCombo->actionsModel();
 
-	MobileAccountAction = new QAction(IconsManager::instance()->iconByPath("phone"), tr("Mobile"), AccountCombo);
+	MobileAccountAction = new QAction(KaduIcon("phone").icon(), tr("Mobile"), AccountCombo);
 	actionsModel->addAfterAction(MobileAccountAction);
 
-	EmailAccountAction = new QAction(IconsManager::instance()->iconByPath("mail-message-new"), tr("E-mail"), AccountCombo);
+	EmailAccountAction = new QAction(KaduIcon("mail-message-new").icon(), tr("E-mail"), AccountCombo);
 	actionsModel->addAfterAction(EmailAccountAction);
 }
 

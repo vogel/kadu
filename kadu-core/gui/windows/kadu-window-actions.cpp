@@ -102,12 +102,12 @@ void checkBuddyProperties(Action *action)
 
 	if (action->buddy().isAnonymous())
 	{
-		action->setIcon(IconsManager::instance()->iconByPath("contact-new"));
+		action->setIcon(KaduIcon("contact-new").icon());
 		action->setText(qApp->translate("KaduWindowActions", "Add Buddy..."));
 	}
 	else
 	{
-		action->setIcon(IconsManager::instance()->iconByPath("x-office-address-book"));
+		action->setIcon(KaduIcon("x-office-address-book").icon());
 		action->setText(qApp->translate("KaduWindowActions", "View Buddy Properties"));
 	}
 
@@ -444,7 +444,7 @@ void KaduWindowActions::editUserActionCreated(Action *action)
 
 	if (buddy && buddy.isAnonymous())
 	{
-		action->setIcon(IconsManager::instance()->iconByPath("contact-new"));
+		action->setIcon(KaduIcon("contact-new").icon());
 		action->setText(tr("Add Buddy..."));
 	}
 }

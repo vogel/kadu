@@ -35,6 +35,7 @@
 #include <QtGui/QDialogButtonBox>
 
 #include "configuration/configuration-file.h"
+#include "misc/kadu-icon.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/config-widget.h"
@@ -425,7 +426,7 @@ ConfigSection * ConfigurationWidget::configSection(const QString &iconPath, cons
 	if (!create)
 		return 0;
 
-	QListWidgetItem *newConfigSectionListWidgetItem = new QListWidgetItem(IconsManager::instance()->iconByPath(iconPath).pixmap(32, 32), name, SectionsListWidget);
+	QListWidgetItem *newConfigSectionListWidgetItem = new QListWidgetItem(KaduIcon(iconPath).icon().pixmap(32, 32), name, SectionsListWidget);
 
 	QFontMetrics fontMetrics = SectionsListWidget->fontMetrics();
 	// TODO: 48 = margins + scrollbar - get real scrollbar width

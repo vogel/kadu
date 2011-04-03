@@ -44,6 +44,7 @@
 
 #include "debug.h"
 #include "icons-manager.h"
+#include "misc/kadu-icon.h"
 #include "misc/misc.h"
 
 #include "toolbar.h"
@@ -738,7 +739,7 @@ QMenu * ToolBar::createContextMenu(QWidget *widget)
 
 			if (!windowHasAction(actionDescription->name(), false))
 			{
-				QAction *action = new QAction(IconsManager::instance()->iconByPath(actionDescription->iconPath()), actionDescription->text(), actionsMenu);
+				QAction *action = new QAction(KaduIcon(actionDescription->iconPath()).icon(), actionDescription->text(), actionsMenu);
 				action->setData(actionDescription->name());
 
 				actions.append(action);

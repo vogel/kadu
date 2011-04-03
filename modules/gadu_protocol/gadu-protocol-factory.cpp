@@ -25,13 +25,13 @@
 
 #include <QtGui/QPushButton>
 
+#include "misc/kadu-icon.h"
 #include "gui/widgets/gadu-add-account-widget.h"
 #include "gui/widgets/gadu-contact-personal-info-widget.h"
 #include "gui/widgets/gadu-create-account-widget.h"
 #include "gui/widgets/gadu-edit-account-widget.h"
 #include "status/status-type.h"
 #include "status/status-type-manager.h"
-#include "icons-manager.h"
 
 #include "gadu-account-details.h"
 #include "gadu-contact-details.h"
@@ -126,5 +126,5 @@ QWidget * GaduProtocolFactory::newContactPersonalInfoWidget(Contact contact, QWi
 
 QIcon GaduProtocolFactory::icon()
 {
-	return IconsManager::instance()->iconByPath("protocols/gadu-gadu/gadu-gadu");
+	return KaduIcon("protocols/gadu-gadu/gadu-gadu").icon();
 }

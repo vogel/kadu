@@ -28,7 +28,6 @@
 #include "buddies/buddy-shared.h"
 #include "misc/kadu-icon.h"
 #include "model/roles.h"
-#include "icons-manager.h"
 
 #include "contact-data-extractor.h"
 
@@ -46,10 +45,10 @@ QVariant ContactDataExtractor::data(const Contact &contact, int role, bool useBu
 		case Qt::DecorationRole:
 		{
 			if (contact.ownerBuddy().isBlocked())
-				return IconsManager::instance()->iconByPath("kadu_icons/blocked");
+				return KaduIcon("kadu_icons/blocked").icon();
 
 			if (contact.isBlocking())
-				return IconsManager::instance()->iconByPath("kadu_icons/blocking");
+				return KaduIcon("kadu_icons/blocking").icon();
 
 			// TODO generic icon
 			return !contact.contactAccount().isNull()

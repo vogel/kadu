@@ -23,17 +23,16 @@
 #include <QtCore/QTimer>
 #include <QtGui/QApplication>
 #include <QtGui/QDesktopWidget>
+#include <QtGui/QKeyEvent>
 #include <QtGui/QLabel>
 #include <QtGui/QPixmap>
 #include <QtGui/QVBoxLayout>
 
-#include "icons-manager.h"
-
+#include "misc/kadu-icon.h"
 #include "gui/widgets/chat-widget.h"
 #include "pixmap-grabber.h"
 
 #include "screenshot-taker.h"
-#include <QKeyEvent>
 
 ScreenshotTaker::ScreenshotTaker(ChatWidget *chatWidget, QWidget *parent) :
 		QWidget(parent), CurrentChatWidget(chatWidget)
@@ -45,7 +44,7 @@ ScreenshotTaker::ScreenshotTaker(ChatWidget *chatWidget, QWidget *parent) :
 
 	QLabel *crossLabel = new QLabel(this);
 	crossLabel->setAlignment(Qt::AlignCenter);
-	crossLabel->setPixmap(IconsManager::instance()->iconByPath("external_modules/screenshot-camera-photo").pixmap(16, 16));
+	crossLabel->setPixmap(KaduIcon("external_modules/screenshot-camera-photo").icon().pixmap(16, 16));
 
 	layout->addWidget(crossLabel, Qt::AlignCenter);
 }
@@ -85,7 +84,7 @@ void ScreenshotTaker::mousePressEvent(QMouseEvent *e)
 {
 	Q_UNUSED(e)
 
-	setCursor(IconsManager::instance()->iconByPath("external_modules/screenshot-camera-photo").pixmap(32, 32));
+	setCursor(KaduIcon("external_modules/screenshot-camera-photo").icon().pixmap(32, 32));
 }
 
 void ScreenshotTaker::mouseReleaseEvent(QMouseEvent *e)
