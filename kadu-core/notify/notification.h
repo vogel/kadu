@@ -182,7 +182,7 @@ public:
 
 		@return typ zdarzenia
 	 **/
-	QString type() const;
+	const QString & type() const { return Type; }
 
 	QString key() const;
 
@@ -195,7 +195,7 @@ public:
 
 		@return tytu� zdarzenia
 	 **/
-	QString title() const;
+	const QString & title() const { return Title; }
 
 	/**
 		Ustawia tre�� zdarzenia.
@@ -206,7 +206,7 @@ public:
 
 		@return tre�� zdarzenia
 	 **/
-	QString text() const;
+	const QString & text() const { return Text; }
 
 	/**
 		Ustawia szczeg��y zdarzenia (jak na przyk�ad tekst wiadomo�ci).
@@ -215,7 +215,7 @@ public:
 	/**
 		Szczeg��y zdarzenia
 	 **/
-	QString details() const;
+	const QString & details() const { return Details; }
 
 	/**
 		Ustawia ikon� zdarzenia.
@@ -226,14 +226,14 @@ public:
 
 		@return ikona zdarzenia
 	 **/
-	const KaduIcon & icon() const;
+	const KaduIcon & icon() const { return Icon; }
 	
 	/**
 		Lista akcji.
 
 		@return lista akcji
 	 **/
-	const QList<Callback> & getCallbacks();
+	const QList<Callback> & getCallbacks() { return Callbacks; }
 
 public slots:
 	/**

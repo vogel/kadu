@@ -122,11 +122,6 @@ void Notification::clearDefaultCallback()
 	}
 }
 
-QString Notification::type() const
-{
-	return Type;
-}
-
 QString Notification::key() const
 {
 	return NotificationManager::instance()->notifyConfigurationKey(Type);
@@ -137,19 +132,9 @@ void Notification::setTitle(const QString &title)
 	Title = title;
 }
 
-QString Notification::title() const
-{
-	return Title;
-}
-
 void Notification::setText(const QString &text)
 {
 	Text = text;
-}
-
-QString Notification::text() const
-{
-	return Text;
 }
 
 void Notification::setDetails(const QString &details)
@@ -157,22 +142,7 @@ void Notification::setDetails(const QString &details)
 	Details = details;
 }
 
-QString Notification::details() const
-{
-	return Details;
-}
-
 void Notification::setIcon(const KaduIcon &icon)
 {
 	Icon = icon;
-}
-
-const KaduIcon & Notification::icon() const
-{
-	return Icon;
-}
-
-const QList<Notification::Callback> & Notification::getCallbacks()
-{
-	return Callbacks;
 }

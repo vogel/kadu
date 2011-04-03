@@ -149,7 +149,7 @@ void FreedesktopNotify::notify(Notification *notification)
 	{
 		text.append(notification->text() + (ServerSupportsHtml ? "<br/><small>" : "\n"));
 
-		QString strippedDetails = notification->details().replace("<br/>", "\n").remove(StripHTML);
+		QString strippedDetails = QString(notification->details()).replace("<br/>", "\n").remove(StripHTML);
 		if (ServerSupportsHtml)
 			strippedDetails.replace('\n', QLatin1String("<br/>"));
 
