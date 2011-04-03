@@ -31,6 +31,7 @@
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
 #include "gui/widgets/chat-widget-manager.h"
+#include "misc/kadu-icon.h"
 #include "misc/misc.h"
 
 #include "gadu-url-handler.h"
@@ -99,7 +100,7 @@ void GaduUrlHandler::openUrl(const QByteArray &url, bool disableMenu)
 			ids.append(account.id());
 			ids.append(gaduId);
 
-			menu->addAction(account.data()->statusIcon(), account.id())->setData(ids);
+			menu->addAction(account.data()->statusIcon().icon(), account.id())->setData(ids);
 		}
 
 		connect(menu.data(), SIGNAL(triggered(QAction *)), this, SLOT(accountSelected(QAction *)));

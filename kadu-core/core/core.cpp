@@ -48,6 +48,7 @@
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/search-window.h"
+#include "misc/kadu-icon.h"
 #include "misc/misc.h"
 #include "notify/notification-manager.h"
 #include "plugins/plugins-manager.h"
@@ -409,9 +410,9 @@ void Core::statusUpdated()
 
 	Account account = AccountManager::instance()->defaultAccount();
 	if (account.isNull() || !account.protocolHandler())
-		setIcon(StatusContainerManager::instance()->statusIcon());
+		setIcon(StatusContainerManager::instance()->statusIcon().icon());
 	else
-		setIcon(StatusContainerManager::instance()->statusIcon(account.protocolHandler()->status()));
+		setIcon(StatusContainerManager::instance()->statusIcon(account.protocolHandler()->status()).icon());
 }
 
 void Core::kaduWindowDestroyed()

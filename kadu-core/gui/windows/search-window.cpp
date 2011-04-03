@@ -45,6 +45,7 @@
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
 #include "core/core.h"
+#include "misc/kadu-icon.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/windows/add-buddy-window.h"
 #include "gui/windows/kadu-window.h"
@@ -477,7 +478,7 @@ void SearchWindow::newSearchResults(const BuddyList &buddies)
 			strings << QString() << contact.id() << buddy.firstName()
 					<< buddy.city() << buddy.nickName() << QString::number(buddy.birthYear());
 			treeItem = new QTreeWidgetItem(ResultsListWidget, strings);
-			treeItem->setIcon(0, contact.contactAccount().data()->statusIcon(contact.currentStatus()).pixmap(16, 16));
+			treeItem->setIcon(0, contact.contactAccount().data()->statusIcon(contact.currentStatus()).icon().pixmap(16, 16));
 		}
 	}
 

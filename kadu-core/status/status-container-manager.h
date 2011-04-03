@@ -93,10 +93,10 @@ public:
 	bool allStatusEqual(StatusType *type);
 
 	virtual QString statusDisplayName();
-	virtual QIcon statusIcon();
-	virtual QIcon statusIcon(Status status);
-	virtual QString statusIconPath(const QString &statusType);
-	virtual QIcon statusIcon(const QString &statusType);
+
+	virtual KaduIcon statusIcon();
+	virtual KaduIcon statusIcon(const Status &status);
+	virtual KaduIcon statusIcon(const QString &statusType);
 
 	virtual QList<StatusType *> supportedStatusTypes();
 

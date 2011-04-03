@@ -35,6 +35,7 @@
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
 #include "icons-manager.h"
+#include "misc/kadu-icon.h"
 #include "protocols/protocol-factory.h"
 #include "status/status-changer-manager.h"
 #include "status/status-type-manager.h"
@@ -126,28 +127,17 @@ void Protocol::networkStateChanged(NetworkState state)
 	}
 }
 
-QIcon Protocol::statusIcon()
+KaduIcon Protocol::statusIcon()
 {
 	return statusIcon(CurrentStatus);
 }
 
-QIcon Protocol::statusIcon(Status status)
+KaduIcon Protocol::statusIcon(const Status &status)
 {
-	return StatusTypeManager::instance()->statusIcon(statusPixmapPath(), status.type(),
-			!status.description().isEmpty(), false);
+	return StatusTypeManager::instance()->statusIcon(statusPixmapPath(), status.type(), !status.description().isEmpty(), false);
 }
 
-QString Protocol::statusIconPath(const QString& statusType)
-{
-	return StatusTypeManager::instance()->statusIconPath(statusPixmapPath(), statusType, false, false);
-}
-
-QString Protocol::statusIconFullPath(const QString& statusType)
-{
-	return StatusTypeManager::instance()->statusIconFullPath(statusPixmapPath(), statusType, false, false);
-}
-
-QIcon Protocol::statusIcon(const QString &statusType)
+KaduIcon Protocol::statusIcon(const QString &statusType)
 {
 	return StatusTypeManager::instance()->statusIcon(statusPixmapPath(), statusType, false, false);
 }

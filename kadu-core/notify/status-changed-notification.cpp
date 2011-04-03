@@ -27,6 +27,7 @@
 #include "chat/chat-manager.h"
 #include "contacts/contact.h"
 #include "contacts/contact-set.h"
+#include "misc/kadu-icon.h"
 #include "notify/notify-event.h"
 #include "protocols/protocol.h"
 
@@ -106,7 +107,7 @@ void StatusChangedNotification::unregisterEvents()
 
 StatusChangedNotification::StatusChangedNotification(const QString &toStatus, const Contact &contact) :
 		ChatNotification(ChatManager::instance()->findChat(ContactSet(contact)), QString("StatusChanged") + toStatus,
-			contact.contactAccount().protocolHandler()->statusIconPath(contact.currentStatus().type()))
+			contact.contactAccount().protocolHandler()->statusIcon(contact.currentStatus().type()).path())
 {
 	Status status = contact.currentStatus();
 

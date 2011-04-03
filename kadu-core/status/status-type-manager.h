@@ -25,11 +25,12 @@
 
 #include <QtCore/QList>
 #include <QtCore/QMap>
-#include <QtCore/QObject>
-#include <QtGui/QIcon>
 
 #include "exports.h"
 
+class QString;
+
+class KaduIcon;
 class StatusGroup;
 class StatusType;
 
@@ -53,12 +54,8 @@ public:
 	void unregisterStatusType(const QString &name);
 
 	StatusType * statusType(const QString &name);
-	QString statusIconPath(const QString &protocol, const QString &type,
-			bool description, bool mobile);
-	QString  statusIconFullPath(const QString &protocol, const QString &type,
-			bool description, bool mobile);
-
-	QIcon statusIcon(const QString &protocol, const QString &type,
+	
+	KaduIcon statusIcon(const QString &protocol, const QString &type,
 			bool description, bool mobile);
 
 	const QList<StatusType *> & statusTypes() const { return StatusTypes; }

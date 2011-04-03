@@ -59,6 +59,7 @@
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/main-configuration-window.h"
 #include "icons-manager.h"
+#include "misc/kadu-icon.h"
 #include "misc/misc.h"
 #include "protocols/protocol.h"
 #include "status/status-changer.h"
@@ -191,7 +192,7 @@ void DockingManager::changeIcon()
 
 				if (CurrentDocker)
 					CurrentDocker->changeTrayIcon(
-							StatusContainerManager::instance()->statusIcon(account.protocolHandler()->status()));
+							StatusContainerManager::instance()->statusIcon(account.protocolHandler()->status()).icon());
 
 				icon_timer->setSingleShot(true);
 				icon_timer->start(500);
@@ -320,9 +321,9 @@ QIcon DockingManager::defaultPixmap()
 {
 	Account account = AccountManager::instance()->defaultAccount();
 	if (account.isNull() || !account.protocolHandler())
-		return StatusContainerManager::instance()->statusIcon();
+		return StatusContainerManager::instance()->statusIcon().icon();
 
-	return StatusContainerManager::instance()->statusIcon(account.protocolHandler()->status());
+	return StatusContainerManager::instance()->statusIcon(account.protocolHandler()->status()).icon();
 }
 
 void DockingManager::setDocker(Docker *docker)
@@ -371,7 +372,7 @@ void DockingManager::updateContextMenu()
 		foreach (StatusContainer *container, StatusContainerManager::instance()->statusContainers())
 		{
 			QMenu *menu = new QMenu(container->statusContainerName(), DockMenu);
-			menu->setIcon(container->statusIcon());
+			menu->setIcon(container->statusIcon().icon());
 			new StatusMenu(container, menu);
 			StatusContainerMenus[container] = DockMenu->addMenu(menu);
 			connect(container, SIGNAL(statusUpdated()), this, SLOT(containerStatusChanged()));
@@ -403,7 +404,7 @@ void DockingManager::containerStatusChanged()
 {
 	StatusContainer *container;
 	if (sender() && (container = qobject_cast<StatusContainer *>(sender())) && StatusContainerMenus[container])
-		StatusContainerMenus[container]->setIcon(container->statusIcon());
+		StatusContainerMenus[container]->setIcon(container->statusIcon().icon());
 }
 
 void DockingManager::iconThemeChanged()
@@ -412,7 +413,7 @@ void DockingManager::iconThemeChanged()
 	while (i.hasNext())
 	{
 		i.next();
-		i.value()->setIcon(i.key()->statusIcon());
+		i.value()->setIcon(i.key()->statusIcon().icon());
 	}
 }
 

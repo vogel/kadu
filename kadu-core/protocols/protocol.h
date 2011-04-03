@@ -58,6 +58,7 @@ class ProtocolFactory;
 class RosterService;
 class SearchService;
 class Status;
+class KaduIcon;
 
 class KADUAPI Protocol : public QObject
 {
@@ -125,11 +126,9 @@ public:
 
 	virtual QString statusPixmapPath() = 0;
 
-	QIcon statusIcon();
-	QIcon statusIcon(Status status);
-	QString statusIconPath(const QString &statusType);
-	QString statusIconFullPath(const QString &statusType);
-	QIcon statusIcon(const QString &statusType);
+	KaduIcon statusIcon();
+	KaduIcon statusIcon(const Status &status);
+	KaduIcon statusIcon(const QString &statusType);
 
 	QIcon icon();
 

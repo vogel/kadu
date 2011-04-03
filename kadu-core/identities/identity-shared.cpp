@@ -24,6 +24,7 @@
 #include "contacts/contact.h"
 #include "core/core.h"
 #include "identities/identity-manager.h"
+#include "misc/kadu-icon.h"
 #include "misc/misc.h"
 #include "protocols/protocol.h"
 
@@ -185,27 +186,21 @@ QString IdentityShared::statusDisplayName()
 	return status().displayName();
 }
 
-QIcon IdentityShared::statusIcon()
+KaduIcon IdentityShared::statusIcon()
 {
 	return statusIcon(status());
 }
 
-QIcon IdentityShared::statusIcon(Status status)
+KaduIcon IdentityShared::statusIcon(const Status &status)
 {
 	Account account = bestAccount();
-	return account ? account.data()->statusIcon(status) : QIcon();
+	return account ? account.data()->statusIcon(status) : KaduIcon();
 }
 
-QString IdentityShared::statusIconPath(const QString &statusType)
+KaduIcon IdentityShared::statusIcon(const QString &statusType)
 {
 	Account account = bestAccount();
-	return account ? account.data()->statusIconPath(statusType) : QString();
-}
-
-QIcon IdentityShared::statusIcon(const QString &statusType)
-{
-	Account account = bestAccount();
-	return account ? account.data()->statusIcon(statusType) : QIcon();
+	return account ? account.data()->statusIcon(statusType) : KaduIcon();
 }
 
 QList<StatusType *> IdentityShared::supportedStatusTypes()

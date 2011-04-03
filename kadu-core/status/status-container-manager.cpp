@@ -27,6 +27,7 @@
 #include "configuration/main-configuration.h"
 #include "core/core.h"
 #include "identities/identity-manager.h"
+#include "misc/kadu-icon.h"
 #include "protocols/protocol.h"
 #include "status/status-container-aware-object.h"
 #include "status/status-type-manager.h"
@@ -256,32 +257,24 @@ QString StatusContainerManager::statusDisplayName()
 			: tr("Offline");
 }
 
-QIcon StatusContainerManager::statusIcon()
+KaduIcon StatusContainerManager::statusIcon()
+{
+	return statusIcon(status());
+}
+
+KaduIcon StatusContainerManager::statusIcon(const Status &status)
 {
 	if (!DefaultStatusContainer)
-		return IconsManager::instance()->iconByPath("protocols/common/offline");
-	Status status = DefaultStatusContainer->status();
+		return StatusTypeManager::instance()->statusIcon("common", "Offline", false, false);
+
 	return StatusTypeManager::instance()->statusIcon("common", status.type(), status.hasDescription(), false);
 }
 
-QIcon StatusContainerManager::statusIcon(Status status)
+KaduIcon StatusContainerManager::statusIcon(const QString &statusType)
 {
 	if (!DefaultStatusContainer)
-		return IconsManager::instance()->iconByPath("protocols/common/offline");
-	return StatusTypeManager::instance()->statusIcon("common", status.type(), status.hasDescription(), false);
-}
+		return StatusTypeManager::instance()->statusIcon("common", "Offline", false, false);
 
-QString StatusContainerManager::statusIconPath(const QString &statusType)
-{
-	if (!DefaultStatusContainer)
-		return "protocols/common/offline";
-	return StatusTypeManager::instance()->statusIconPath("common", statusType, false, false);
-}
-
-QIcon StatusContainerManager::statusIcon(const QString &statusType)
-{
-	if (!DefaultStatusContainer)
-		return IconsManager::instance()->iconByPath("protocols/common/offline");
 	return StatusTypeManager::instance()->statusIcon("common", statusType, false, false);
 }
 

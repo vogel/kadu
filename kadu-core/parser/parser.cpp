@@ -35,6 +35,7 @@
 #include "configuration/configuration-file.h"
 #include "contacts/contact.h"
 #include "parser/parser-token.h"
+#include "misc/kadu-icon.h"
 #include "misc/misc.h"
 #include "status/status-type.h"
 #include "status/status-type-manager.h"
@@ -217,7 +218,7 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 					{
 						StatusContainer *container = contact.contactAccount().statusContainer();
 						if (container)
-							pe.content = container->statusIconPath(contact.currentStatus().type());
+							pe.content = container->statusIcon(contact.currentStatus().type()).path();
 					}
 					break;
 				case 'd':
