@@ -29,6 +29,7 @@
 #include "debug.h"
 
 #include "helpers/gadu-formatter.h"
+#include "helpers/gadu-protocol-helper.h"
 #include "socket-notifiers/gadu-protocol-socket-notifiers.h"
 
 #include "gadu-account-details.h"
@@ -140,7 +141,7 @@ bool GaduChatImageService::sendImageRequest(Contact contact, int size, quint32 c
 		return false;
 
 	CurrentMinuteSendImageRequests++;
-	return 0 == gg_image_request(Protocol->gaduSession(), Protocol->uin(contact), size, crc32);
+	return 0 == gg_image_request(Protocol->gaduSession(), GaduProtocolHelper::uin(contact), size, crc32);
 }
 
 void GaduChatImageService::prepareImageToSend(const QString &imageFileName, quint32 &size, quint32 &crc32)

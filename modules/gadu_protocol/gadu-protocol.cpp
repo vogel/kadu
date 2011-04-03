@@ -61,6 +61,7 @@
 
 #include "helpers/gadu-importer.h"
 #include "helpers/gadu-protocol-helper.h"
+#include "helpers/gadu-proxy-helper.h"
 #include "gadu-account-details.h"
 #include "gadu-contact-details.h"
 
@@ -210,7 +211,7 @@ void GaduProtocol::login()
 		return;
 	}
 
-	setupProxy();
+	GaduProxyHelper::setupProxy(account().proxySettings());
 	setupLoginParams();
 
 	GaduSession = gg_login(&GaduLoginParams);
@@ -257,46 +258,6 @@ void GaduProtocol::logout()
 	CurrentMultilogonService->removeAllSessions();
 
 	Protocol::logout();
-}
-
-void GaduProtocol::cleanUpProxySettings()
-{
-	if (gg_proxy_host)
-	{
-		free(gg_proxy_host);
-		gg_proxy_host = 0;
-	}
-
-	if (gg_proxy_username)
-	{
-		free(gg_proxy_username);
-		free(gg_proxy_password);
-		gg_proxy_username = gg_proxy_password = 0;
-	}
-}
-
-void GaduProtocol::setupProxy()
-{
-	kdebugf();
-
-	cleanUpProxySettings();
-
-	AccountProxySettings proxySettings = account().proxySettings();
-	gg_proxy_enabled = proxySettings.enabled();
-	if (!gg_proxy_enabled)
-		return;
-
-	gg_proxy_host = strdup((char *)unicode2latin(proxySettings.address()).data());
-	gg_proxy_port = proxySettings.port();
-
-	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "gg_proxy_host = %s\n", gg_proxy_host);
-	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "gg_proxy_port = %d\n", gg_proxy_port);
-
-	if (proxySettings.requiresAuthentication() && !proxySettings.user().isEmpty())
-	{
-		gg_proxy_username = strdup((char *)unicode2latin(proxySettings.user()).data());
-		gg_proxy_password = strdup((char *)unicode2latin(proxySettings.password()).data());
-	}
 }
 
 void GaduProtocol::setupLoginParams()
@@ -519,21 +480,6 @@ void GaduProtocol::socketDisconnected()
 	networkDisconnected(false);
 
 	kdebugf2();
-}
-
-unsigned int GaduProtocol::uin(Contact contact) const
-{
-	GaduContactDetails *data = gaduContactDetails(contact);
-	return data
-			? data->uin()
-			: 0;
-}
-
-GaduContactDetails * GaduProtocol::gaduContactDetails(Contact contact) const
-{
-	if (contact.isNull())
-		return 0;
-	return dynamic_cast<GaduContactDetails *>(contact.details());
 }
 
 QString GaduProtocol::statusPixmapPath()

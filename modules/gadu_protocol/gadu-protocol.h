@@ -102,10 +102,8 @@ private:
 
 	QTimer *PingTimer;
 
-	void setupProxy();
 	void setupLoginParams();
 	void cleanUpLoginParams();
-	void cleanUpProxySettings();
 
 	void setUpFileTransferService(bool forceClose = false);
 
@@ -156,9 +154,6 @@ public:
 	virtual void changePrivateMode();
 
 	virtual QString statusPixmapPath();
-
-	UinType uin(Contact contact) const;
-	GaduContactDetails * gaduContactDetails(Contact contact) const;
 
 	virtual int maxDescriptionLength();
 

@@ -17,26 +17,17 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GADU_PROTOCOL_HELPER_H
-#define GADU_PROTOCOL_HELPER_H
+#ifndef GADU_PROXY_HELPER_H
+#define GADU_PROXY_HELPER_H
 
 #include "gadu-exports.h"
 
-#include "gadu-protocol.h"
+class AccountProxySettings;
 
-namespace GaduProtocolHelper
+namespace GaduProxyHelper
 {
-	GADUAPI QString statusTypeFromGaduStatus(unsigned int index);
-	GADUAPI bool isBlockingStatus(unsigned int index);
-	GADUAPI unsigned int gaduStatusFromStatus(const Status &status);
-
-	GADUAPI QString connectionErrorMessage(GaduProtocol::GaduError error);
-	GADUAPI bool isConnectionErrorFatal(GaduProtocol::GaduError error);
-
-	GADUAPI Buddy searchResultToBuddy(Account account, gg_pubdir50_t res, int number);
-
-	GADUAPI UinType uin(Contact contact);
-	GADUAPI GaduContactDetails * gaduContactDetails(Contact contact);
+	GADUAPI void cleanUpProxySettings();
+	GADUAPI void setupProxy(AccountProxySettings proxySettings);
 }
 
-#endif // GADU_PROTOCOL_HELPER_H
+#endif // GADU_PROXY_HELPER_H

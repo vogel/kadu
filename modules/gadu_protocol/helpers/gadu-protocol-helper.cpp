@@ -168,3 +168,18 @@ Buddy GaduProtocolHelper::searchResultToBuddy(Account account, gg_pubdir50_t res
 
 	return result;
 }
+
+unsigned int GaduProtocolHelper::uin(Contact contact)
+{
+	GaduContactDetails *data = GaduProtocolHelper::gaduContactDetails(contact);
+	return data
+			? data->uin()
+			: 0;
+}
+
+GaduContactDetails * GaduProtocolHelper::gaduContactDetails(Contact contact)
+{
+	if (contact.isNull())
+		return 0;
+	return dynamic_cast<GaduContactDetails *>(contact.details());
+}

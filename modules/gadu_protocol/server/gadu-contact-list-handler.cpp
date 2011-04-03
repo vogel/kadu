@@ -26,6 +26,7 @@
 #include "protocols/protocol.h"
 #include "debug.h"
 
+#include "helpers/gadu-protocol-helper.h"
 #include "gadu-protocol.h"
 
 #include "gadu-contact-list-handler.h"
@@ -83,7 +84,7 @@ void GaduContactListHandler::setUpContactList(const QList<Contact> &contacts)
 
 	foreach (const Contact &contact, contacts)
 	{
-		uins[i] = Protocol->uin(contact);
+		uins[i] = GaduProtocolHelper::uin(contact);
 		types[i] = notifyTypeFromContact(contact);
 		++i;
 	}
@@ -128,7 +129,7 @@ void GaduContactListHandler::addContactEntry(UinType uin, int type)
 
 void GaduContactListHandler::addContactEntry(Contact contact)
 {
-	addContactEntry(Protocol->uin(contact), notifyTypeFromContact(contact));
+	addContactEntry(GaduProtocolHelper::uin(contact), notifyTypeFromContact(contact));
 }
 
 void GaduContactListHandler::removeContactEntry(UinType uin)
@@ -153,5 +154,5 @@ void GaduContactListHandler::removeContactEntry(UinType uin)
 
 void GaduContactListHandler::removeContactEntry(Contact contact)
 {
-	removeContactEntry(Protocol->uin(contact));
+	removeContactEntry(GaduProtocolHelper::uin(contact));
 }

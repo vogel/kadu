@@ -21,6 +21,7 @@
 
 #include "accounts/account.h"
 #include "dcc/dcc-socket-notifiers.h"
+#include "helpers/gadu-protocol-helper.h"
 #include "gadu-contact-details.h"
 #include "gadu-protocol.h"
 
@@ -121,7 +122,7 @@ void GaduFileTransferHandler::send()
 	}
 
 	GaduProtocol *gaduProtocol = qobject_cast<GaduProtocol *>(account.protocolHandler());
-	if (!gaduProtocol || !gaduProtocol->gaduContactDetails(contact))
+	if (!gaduProtocol || !GaduProtocolHelper::gaduContactDetails(contact))
 	{
 		transfer().setTransferStatus(StatusNotConnected);
 		return;

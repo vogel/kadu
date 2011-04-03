@@ -21,6 +21,7 @@ set (SOURCES
 	helpers/gadu-importer.cpp
 	helpers/gadu-list-helper.cpp
 	helpers/gadu-protocol-helper.cpp
+	helpers/gadu-proxy-helper.cpp
 
 	oauth/oauth-authorization.cpp
 	oauth/oauth-authorization-chain.cpp
