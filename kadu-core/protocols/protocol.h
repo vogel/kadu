@@ -72,6 +72,8 @@ class KADUAPI Protocol : public QObject
 
 	Status CurrentStatus;
 
+	void setAllOffline();
+
 private slots:
 	void prepareStateMachine();
 	void statusChanged(StatusContainer *container, Status status);
@@ -83,12 +85,11 @@ private slots:
 protected:
 	ProtocolStateMachine * machine() const { return Machine; }
 
-	void setAllOffline();
-
 	void statusChanged(Status newStatus);
 
 protected slots:
 	virtual void login();
+	virtual void logout();
 	virtual void changeStatus() = 0;
 
 public:
@@ -153,6 +154,8 @@ signals:
 	void invalidPassword(Account account);
 
 // state machine signals
+	void stateMachineLoggedOut();
+
 	void stateMachineChangeStatusToNotOffline();
 	void stateMachineChangeStatusToOffline();
 

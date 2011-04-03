@@ -24,23 +24,29 @@
 ProtocolStateMachine::ProtocolStateMachine(Protocol *protocol, QObject *parent) :
 		QStateMachine(parent), CurrentProtocol(protocol)
 {
+	LoggingOutState = new QState(this);
 	LoggedOutState = new QState(this);
 	WantToLogInState = new QState(this);
 	LoggingInState = new QState(this);
 	LoggedInState = new QState(this);
 	PasswordRequiredState = new QState(this);
 
+	connect(LoggingOutState, SIGNAL(entered()), this, SLOT(loggingOutStateEnteredSlot()));
 	connect(LoggedOutState, SIGNAL(entered()), this, SLOT(loggedOutStateEnteredSlot()));
 	connect(WantToLogInState, SIGNAL(entered()), this, SLOT(wantToLogInStateEnteredSlot()));
 	connect(LoggingInState, SIGNAL(entered()), this, SLOT(loggingInStateEnteredSlot()));
 	connect(LoggedInState, SIGNAL(entered()), this, SLOT(loggedInStateEnteredSlot()));
 	connect(PasswordRequiredState, SIGNAL(entered()), this, SLOT(passwordRequiredStateEnteredSlot()));
 
+	connect(LoggingOutState, SIGNAL(entered()), this, SIGNAL(loggingOutStateEntered()));
 	connect(LoggedOutState, SIGNAL(entered()), this, SIGNAL(loggedOutStateEntered()));
 	connect(WantToLogInState, SIGNAL(entered()), this, SIGNAL(wantToLogInStateEntered()));
 	connect(LoggingInState, SIGNAL(entered()), this, SIGNAL(loggingInStateEntered()));
 	connect(LoggedInState, SIGNAL(entered()), this, SIGNAL(loggedInStateEntered()));
 	connect(PasswordRequiredState, SIGNAL(entered()), this, SIGNAL(passwordRequiredStateEntered()));
+
+	LoggingOutState->addTransition(this, SIGNAL(networkOfflineSignal()), LoggedOutState);
+	LoggingOutState->addTransition(CurrentProtocol, SIGNAL(stateMachineLoggedOut()), LoggedOutState);
 
 	// add 2 new states or something?
 	LoggedOutState->addTransition(CurrentProtocol, SIGNAL(stateMachineChangeStatusToNotOffline()), LoggingInState);
@@ -58,7 +64,7 @@ ProtocolStateMachine::ProtocolStateMachine(Protocol *protocol, QObject *parent) 
 	LoggedInState->addTransition(this, SIGNAL(networkOfflineSignal()), WantToLogInState);
 	// re-enter current state, so protocol implementations can update status message
 	LoggedInState->addTransition(CurrentProtocol, SIGNAL(stateMachineChangeStatusToNotOffline()), LoggedInState);
-	LoggedInState->addTransition(CurrentProtocol, SIGNAL(stateMachineChangeStatusToOffline()), LoggedOutState);
+	LoggedInState->addTransition(CurrentProtocol, SIGNAL(stateMachineChangeStatusToOffline()), LoggingOutState);
 	LoggedInState->addTransition(this, SIGNAL(connectionErrorSignal()), LoggingInState);
 	LoggedInState->addTransition(this, SIGNAL(fatalConnectionErrorSignal()), LoggedOutState);
 
@@ -112,6 +118,11 @@ void ProtocolStateMachine::loggedInStateEnteredSlot()
 	printf("ProtocolStateMachine::loggedInStateEntered()\n");
 
 	emit connected();
+}
+
+void ProtocolStateMachine::loggingOutStateEnteredSlot()
+{
+	printf("ProtocolStateMachine::loggingOutStateEnteredSlot()\n");
 }
 
 void ProtocolStateMachine::loggedOutStateEnteredSlot()

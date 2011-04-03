@@ -32,6 +32,7 @@ class ProtocolStateMachine : public QStateMachine, private NetworkAwareObject
 
 	Protocol *CurrentProtocol;
 
+	QState *LoggingOutState;
 	QState *LoggedOutState;
 	QState *WantToLogInState;
 	QState *PasswordRequiredState;
@@ -39,6 +40,7 @@ class ProtocolStateMachine : public QStateMachine, private NetworkAwareObject
 	QState *LoggedInState;
 
 private slots:
+	void loggingOutStateEnteredSlot();
 	void loggedOutStateEnteredSlot();
 	void wantToLogInStateEnteredSlot();
 	void loggingInStateEnteredSlot();
@@ -73,6 +75,7 @@ signals:
 	void disconnected();
 	void requestPassword();
 
+	void loggingOutStateEntered();
 	void loggedOutStateEntered();
 	void wantToLogInStateEntered();
 	void loggingInStateEntered();

@@ -93,6 +93,7 @@ protected:
 
 protected slots:
 	virtual void login();
+	virtual void logout();
 	virtual void changeStatus();
 
 public:
@@ -115,10 +116,6 @@ public:
 	JabberSubscriptionService * subscriptionService() { return CurrentSubscriptionService; }
 
 	JabberContactDetails * jabberContactDetails(Contact contact) const;
-
-public slots:
-	void connectToServer();
-	void logout();
 
 signals:
 	void userStatusChangeIgnored(Buddy);

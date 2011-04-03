@@ -273,17 +273,7 @@ void GaduProtocol::changeStatus()
 {
 	Status newStatus = status();
 
-	if (newStatus.isDisconnected() && !isConnected())
-	{
-		networkDisconnected(false);
-		return;
-	}
-
-	// assert?
-	if (isConnecting() || !isConnected())
-		return;
-
-	int friends = (!newStatus.isDisconnected() && account().privateStatus() ? GG_STATUS_FRIENDS_MASK : 0);
+	int friends = account().privateStatus() ? GG_STATUS_FRIENDS_MASK : 0;
 
 	int type = gaduStatusFromStatus(newStatus);
 	bool hasDescription = !newStatus.description().isEmpty();
@@ -292,13 +282,6 @@ void GaduProtocol::changeStatus()
 		gg_change_status_descr(GaduSession, type | friends, newStatus.description().toUtf8());
 	else
 		gg_change_status(GaduSession, type | friends);
-
-	if (newStatus.isDisconnected())
-	{
-		// should be handled in state machine, is it?
-		// machine()->loggedOut();
-		networkDisconnected(false);
-	}
 
 	statusChanged(newStatus);
 }
@@ -384,6 +367,39 @@ void GaduProtocol::login()
 		networkDisconnected(false);
 
 	kdebugf2();
+}
+
+void GaduProtocol::logout()
+{
+	kdebugf();
+
+	changeStatus(); // we need to change status manually in gadu
+	if (ContactListHandler)
+		ContactListHandler->reset();
+
+	setUpFileTransferService(true);
+
+	if (PingTimer)
+	{
+		PingTimer->stop();
+		delete PingTimer;
+		PingTimer = 0;
+	}
+
+	SocketNotifiers->watchFor(0); // stop watching
+
+	if (GaduSession)
+	{
+		gg_free_session(GaduSession);
+		GaduSession = 0;
+
+		delete ContactListHandler;
+		ContactListHandler = 0;
+	}
+
+	CurrentMultilogonService->removeAllSessions();
+
+	Protocol::logout();
 }
 
 void GaduProtocol::cleanUpProxySettings()
@@ -524,32 +540,7 @@ void GaduProtocol::networkConnected()
 
 void GaduProtocol::networkDisconnected(bool tryAgain)
 {
-	if (ContactListHandler)
-		ContactListHandler->reset();
-
-	setUpFileTransferService(true);
-
-	if (PingTimer)
-	{
-		PingTimer->stop();
-		delete PingTimer;
-		PingTimer = 0;
-	}
-
-	SocketNotifiers->watchFor(0); // stop watching
-
-	if (GaduSession)
-	{
-		gg_free_session(GaduSession);
-		GaduSession = 0;
-
-		delete ContactListHandler;
-		ContactListHandler = 0;
-	}
-
-	setAllOffline();
-
-	CurrentMultilogonService->removeAllSessions();
+	logout();
 
 	if (tryAgain)
 		machine()->connectionError();

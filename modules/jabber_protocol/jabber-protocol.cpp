@@ -202,24 +202,6 @@ void JabberProtocol::rosterDownloaded(bool success)
 	changeStatus();
 }
 
-// disconnect or stop reconnecting
-void JabberProtocol::logout()
-{
-	kdebugf();
-
-	Status newstat = status();
-	if (!status().isDisconnected())
-	{
-		newstat.setType("Offline");
-		setStatus(newstat);
-	}
-
-	disconnectFromServer(IrisStatusAdapter::toIrisStatus(newstat));
-	setAllOffline();
-
-	kdebugf2();
-}
-
 void JabberProtocol::disconnectFromServer(const XMPP::Status &s)
 {
 	kdebugf();
@@ -249,11 +231,6 @@ void JabberProtocol::slotClientDebugMessage(const QString &msg)
 void JabberProtocol::disconnectedFromServer()
 {
 	kdebugf();
-
-	setAllOffline();
-
-	// is it error or not?
-// 	machine()->loggedOut();
 
 	JabberClient->disconnect();
 
@@ -312,6 +289,16 @@ void JabberProtocol::login()
 
 	jabberID = jabberID.withResource(jabberAccountDetails->resource());
 	JabberClient->connect(jabberID, account().password(), true);
+
+	kdebugf2();
+}
+
+void JabberProtocol::logout()
+{
+	kdebugf();
+
+	disconnectFromServer(IrisStatusAdapter::toIrisStatus(status()));
+	Protocol::logout();
 
 	kdebugf2();
 }
@@ -391,31 +378,8 @@ void JabberProtocol::contactIdChanged(Contact contact, const QString &oldId)
 
 void JabberProtocol::changeStatus()
 {
-	Status newStatus = status();
-
-	if (newStatus.isDisconnected() && !isConnected())
-	{
-		// should be handled in state machine, is it?
-		// machine()->loggedOut();
-		return;
-	}
-
-	// assert?
-	if (isConnecting() || !isConnected())
-		return;
-
-	XMPP::Status xmppStatus = IrisStatusAdapter::toIrisStatus(newStatus);
-	JabberClient->setPresence(xmppStatus);
-
-	if (newStatus.isDisconnected())
-	{
-		disconnectedFromServer();
-
-		if (!status().isDisconnected())
-			setStatus(Status());
-	}
-
-	statusChanged(IrisStatusAdapter::fromIrisStatus(xmppStatus));
+	JabberClient->setPresence(IrisStatusAdapter::toIrisStatus(status()));
+	statusChanged(status());
 }
 
 void JabberProtocol::changePrivateMode()

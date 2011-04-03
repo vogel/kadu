@@ -132,6 +132,7 @@ private slots:
 
 protected slots:
 	virtual void login();
+	virtual void logout();
 	virtual void changeStatus();
 
 public:

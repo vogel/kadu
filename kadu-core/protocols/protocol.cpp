@@ -61,6 +61,7 @@ Protocol::Protocol(Account account, ProtocolFactory *factory) :
 	connect(Machine, SIGNAL(disconnected()), this, SLOT(disconnectedSlot()));
 
 	connect(Machine, SIGNAL(loggingInStateEntered()), this, SLOT(login()));
+	connect(Machine, SIGNAL(loggingOutStateEntered()), this, SLOT(logout()));
 	connect(Machine, SIGNAL(loggedInStateEntered()), this, SLOT(changeStatus()));
 
 	connect(StatusChangerManager::instance(), SIGNAL(statusChanged(StatusContainer*,Status)),
@@ -167,6 +168,13 @@ void Protocol::login()
 	emit statusChanged(CurrentAccount, CurrentStatus);
 }
 
+void Protocol::logout()
+{
+	setAllOffline();
+
+	emit stateMachineLoggedOut();
+}
+
 void Protocol::connectedSlot()
 {
 	emit connected(CurrentAccount);
@@ -174,6 +182,8 @@ void Protocol::connectedSlot()
 
 void Protocol::disconnectedSlot()
 {
+	setAllOffline();
+
 	emit disconnected(CurrentAccount);
 }
 
