@@ -126,6 +126,11 @@ void Protocol::networkStateChanged(NetworkState state)
 	}
 }
 
+QIcon Protocol::statusIcon()
+{
+	return statusIcon(CurrentStatus);
+}
+
 QIcon Protocol::statusIcon(Status status)
 {
 	return StatusTypeManager::instance()->statusIcon(statusPixmapPath(), status.type(),
