@@ -52,7 +52,7 @@ public:
 
 	const QString & description() const { return Description; }
 	void setDescription(const QString &description) { Description = description; }
-	bool hasDescription();
+	bool hasDescription() const;
 
 	bool isDisconnected() const;
 
