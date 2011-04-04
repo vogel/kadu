@@ -8,6 +8,7 @@ set (misc_SRCS
 )
 
 set (misc_MOC_SRCS
+	kadu-icon.h
 	syntax-list.h
 )
 

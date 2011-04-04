@@ -22,9 +22,46 @@
 
 #include "kadu-icon.h"
 
-KaduIcon::KaduIcon(const QString &path, const QString &size, const QString &name) :
-		Path(path), IconSize(size), IconName(name)
+KaduIconThemeChangeWatcher::KaduIconThemeChangeWatcher(const KaduIcon *icon) :
+		QObject(), Icon(icon)
 {
+	connect(IconsManager::instance(), SIGNAL(themeChanged()), this, SLOT(themeChanged()));
+}
+
+KaduIconThemeChangeWatcher::~KaduIconThemeChangeWatcher()
+{
+}
+
+void KaduIconThemeChangeWatcher::themeChanged() const
+{
+	Icon->clearCache();
+}
+
+KaduIcon::KaduIcon() :
+		Watcher(this)
+{
+}
+
+KaduIcon::KaduIcon(const QString &path, const QString &size, const QString &name) :
+		Path(path), IconSize(size), IconName(name), Watcher(this)
+{
+}
+
+KaduIcon::KaduIcon(const KaduIcon &copyMe) :
+		Path(copyMe.Path), IconSize(copyMe.IconSize), IconName(copyMe.IconName),
+		FullPath(copyMe.FullPath), Icon(copyMe.Icon), Watcher(this)
+{
+}
+
+KaduIcon & KaduIcon::operator = (const KaduIcon &copyMe)
+{
+	Path = copyMe.Path;
+	IconSize = copyMe.IconSize;
+	IconName = copyMe.IconName;
+	FullPath = copyMe.FullPath;
+	Icon = copyMe.Icon;
+
+	return *this;
 }
 
 bool KaduIcon::isNull() const
@@ -32,15 +69,18 @@ bool KaduIcon::isNull() const
 	return path().isEmpty();
 }
 
+void KaduIcon::clearCache() const
+{
+	FullPath.clear();
+	Icon = QIcon();
+}
+
 void KaduIcon::setSize(const QString &size)
 {
 	if (IconSize != size)
 	{
 		IconSize = size;
-
-		// clear cache
-		FullPath.clear();
-		Icon = QIcon();
+		clearCache();
 	}
 }
 
@@ -49,14 +89,11 @@ void KaduIcon::setPath(const QString &path)
 	if (Path != path)
 	{
 		Path = path;
+		clearCache();
 
 		// see comment to this method
 		IconSize.clear();
 		IconName.clear();
-
-		// clear cache
-		FullPath.clear();
-		Icon = QIcon();
 	}
 }
 
@@ -65,10 +102,7 @@ void KaduIcon::setName(const QString &name)
 	if (IconName != name)
 	{
 		IconName = name;
-
-		// clear cache
-		FullPath.clear();
-		Icon = QIcon();
+		clearCache();
 	}
 }
 

@@ -25,6 +25,23 @@
 
 #include "exports.h"
 
+class KaduIcon;
+
+class KaduIconThemeChangeWatcher : public QObject
+{
+	Q_OBJECT
+
+	const KaduIcon *Icon;
+
+private slots:
+	void themeChanged() const;
+
+public:
+	explicit KaduIconThemeChangeWatcher(const KaduIcon *icon);
+	virtual ~KaduIconThemeChangeWatcher();
+
+};
+
 class KADUAPI KaduIcon
 {
 	QString Path;
@@ -33,11 +50,18 @@ class KADUAPI KaduIcon
 	mutable QString FullPath;
 	mutable QIcon Icon;
 
+	KaduIconThemeChangeWatcher Watcher;
+
 public:
-	KaduIcon() {}
+	KaduIcon();
 	explicit KaduIcon(const QString &path, const QString &size = QString(), const QString &name = QString());
+	KaduIcon(const KaduIcon &copyMe);
+
+	KaduIcon & operator = (const KaduIcon &copyMe);
 
 	bool isNull() const;
+
+	void clearCache() const;
 
 	const QString & path() const { return Path; }
 	// NOTE: it resets iconSize and iconName as well because new path may contain them
