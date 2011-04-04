@@ -115,6 +115,11 @@ void Protocol::setAllOffline()
 	}
 }
 
+void Protocol::disconnectedCleanup()
+{
+	setAllOffline();
+}
+
 void Protocol::setStatus(Status status)
 {
 	StatusChangerManager::instance()->setStatus(account().statusContainer(), status);
@@ -135,6 +140,22 @@ void Protocol::statusChanged(StatusContainer *container, Status status)
 		emit stateMachineChangeStatusToOffline();
 	else
 		emit stateMachineChangeStatusToNotOffline();
+}
+
+void Protocol::connectionError()
+{
+	setStatus(Status());
+	statusChanged(Status());
+
+	emit stateMachineConnectionError();
+}
+
+void Protocol::fatalConnectionError()
+{
+	setStatus(Status());
+	statusChanged(Status());
+
+	emit stateMachineFatalConnectionError();
 }
 
 void Protocol::statusChanged(Status status)
@@ -166,7 +187,7 @@ QIcon Protocol::statusIcon(const QString &statusType)
 
 void Protocol::wantToLogin()
 {
-	setAllOffline();
+	disconnectedCleanup();
 	emit statusChanged(CurrentAccount, Status());
 }
 
@@ -178,8 +199,7 @@ void Protocol::login()
 
 void Protocol::logout()
 {
-	setAllOffline();
-
+	disconnectedCleanup();
 	emit stateMachineLoggedOut();
 }
 
@@ -190,8 +210,7 @@ void Protocol::connectedSlot()
 
 void Protocol::disconnectedSlot()
 {
-	setAllOffline();
-
+	disconnectedCleanup();
 	emit disconnected(CurrentAccount);
 }
 

@@ -239,20 +239,9 @@ void JabberProtocol::login()
 	Protocol::login();
 
 	JabberAccountDetails *jabberAccountDetails = dynamic_cast<JabberAccountDetails *>(account().details());
-	if (!jabberAccountDetails)
+	if (!jabberAccountDetails || account().id().isEmpty())
 	{
-		emit stateMachineFatalConnectionError();
-		return;
-	}
-
-	if (account().id().isEmpty())
-	{
-		emit stateMachineFatalConnectionError();
-
-		MessageDialog::show("dialog-warning", tr("Kadu"), tr("XMPP username is not set!"));
-		setStatus(Status());
-		statusChanged(Status());
-		kdebugmf(KDEBUG_FUNCTION_END, "end: XMPP username is not set\n");
+		fatalConnectionError();
 		return;
 	}
 

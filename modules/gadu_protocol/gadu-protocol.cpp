@@ -168,20 +168,9 @@ void GaduProtocol::login()
 
 	GaduAccountDetails *gaduAccountDetails = dynamic_cast<GaduAccountDetails *>(account().details());
 
-	if (!gaduAccountDetails)
+	if (!gaduAccountDetails || 0 == gaduAccountDetails->uin())
 	{
-		emit stateMachineFatalConnectionError();
-		return;
-	}
-
-	if (0 == gaduAccountDetails->uin())
-	{
-		emit stateMachineFatalConnectionError();
-
-		MessageDialog::show("dialog-warning", tr("Kadu"), tr("UIN not set!"));
-		setStatus(Status());
-		statusChanged(Status());
-		kdebugmf(KDEBUG_FUNCTION_END, "end: gadu UIN not set\n");
+		fatalConnectionError();
 		return;
 	}
 
@@ -341,9 +330,9 @@ void GaduProtocol::networkDisconnected(bool tryAgain)
 	logout();
 
 	if (tryAgain)
-		emit stateMachineConnectionError();
+		connectionError();
 	else
-		emit stateMachineFatalConnectionError();
+		fatalConnectionError();
 }
 
 void GaduProtocol::sendUserList()

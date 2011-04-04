@@ -688,12 +688,12 @@ void JabberClient::slotCSError(int error)
 			if (reconn)
 			{
 				cleanUp();
-				emit Protocol->stateMachineConnectionError();
+				Protocol->connectionError();
 			}
 			else
 			{
 //				Protocol->resourcePool()->clear();
-				emit Protocol->stateMachineFatalConnectionError();
+				Protocol->fatalConnectionError();
 			}
 		}
 	}
