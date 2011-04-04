@@ -110,8 +110,8 @@ DockingManager::DockingManager() :
 
 	connect(icon_timer, SIGNAL(timeout()), this, SLOT(changeIcon()));
 
-	connect(Core::instance(), SIGNAL(mainIconChanged(const QIcon &)),
-		this, SLOT(statusPixmapChanged(const QIcon &)));
+	connect(Core::instance(), SIGNAL(mainIconChanged(const KaduIcon &)),
+		this, SLOT(statusPixmapChanged(const KaduIcon &)));
 	connect(PendingMessagesManager::instance(), SIGNAL(messageAdded(Message)), this, SLOT(pendingMessageAdded()));
 	connect(PendingMessagesManager::instance(), SIGNAL(messageRemoved(Message)), this, SLOT(pendingMessageDeleted()));
 
@@ -139,8 +139,8 @@ DockingManager::~DockingManager()
 {
 	kdebugf();
 
-	disconnect(Core::instance(), SIGNAL(mainIconChanged(const QIcon &)),
-		this, SLOT(statusPixmapChanged(const QIcon &)));
+	disconnect(Core::instance(), SIGNAL(mainIconChanged(const KaduIcon &)),
+		this, SLOT(statusPixmapChanged(const KaduIcon &)));
 	disconnect(PendingMessagesManager::instance(), SIGNAL(messageAdded(Message)), this, SLOT(pendingMessageAdded()));
 	disconnect(PendingMessagesManager::instance(), SIGNAL(messageRemoved(Message)), this, SLOT(pendingMessageDeleted()));
 
@@ -173,13 +173,13 @@ void DockingManager::changeIcon()
 			break;
 		case StaticEnvelope:
 			if (CurrentDocker)
-				CurrentDocker->changeTrayIcon(KaduIcon("protocols/common/message").icon());
+				CurrentDocker->changeTrayIcon(KaduIcon("protocols/common/message"));
 			break;
 		case BlinkingEnvelope:
 			if (!blink)
 			{
 				if (CurrentDocker)
-					CurrentDocker->changeTrayIcon(KaduIcon("protocols/common/message").icon());
+					CurrentDocker->changeTrayIcon(KaduIcon("protocols/common/message"));
 				icon_timer->setSingleShot(true);
 				icon_timer->start(500);
 				blink = true;
@@ -192,7 +192,7 @@ void DockingManager::changeIcon()
 
 				if (CurrentDocker)
 					CurrentDocker->changeTrayIcon(
-							StatusContainerManager::instance()->statusIcon(account.protocolHandler()->status()).icon());
+							StatusContainerManager::instance()->statusIcon(account.protocolHandler()->status()));
 
 				icon_timer->setSingleShot(true);
 				icon_timer->start(500);
@@ -297,7 +297,7 @@ void DockingManager::trayMousePressEvent(QMouseEvent * e)
 	kdebugf2();
 }
 
-void DockingManager::statusPixmapChanged(const QIcon &icon)
+void DockingManager::statusPixmapChanged(const KaduIcon &icon)
 {
 	kdebugf();
 
@@ -317,13 +317,13 @@ void DockingManager::searchingForTrayPosition(QPoint &point)
 		point = CurrentDocker->trayPosition();
 }
 
-QIcon DockingManager::defaultPixmap()
+KaduIcon DockingManager::defaultPixmap()
 {
 	Account account = AccountManager::instance()->defaultAccount();
 	if (account.isNull() || !account.protocolHandler())
-		return StatusContainerManager::instance()->statusIcon().icon();
+		return StatusContainerManager::instance()->statusIcon();
 
-	return StatusContainerManager::instance()->statusIcon(account.protocolHandler()->status()).icon();
+	return StatusContainerManager::instance()->statusIcon(account.protocolHandler()->status());
 }
 
 void DockingManager::setDocker(Docker *docker)

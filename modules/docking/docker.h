@@ -20,9 +20,10 @@
 #ifndef DOCKER_H
 #define DOCKER_H
 
-class QIcon;
 class QPoint;
 class QString;
+
+class KaduIcon;
 
 class Docker
 {
@@ -30,7 +31,7 @@ public:
 	Docker() {}
 	virtual ~Docker() {}
 
-	virtual void changeTrayIcon(const QIcon &icon) = 0;
+	virtual void changeTrayIcon(const KaduIcon &icon) = 0;
 	virtual void changeTrayMovie(const QString &moviePath) = 0;
 	virtual void changeTrayTooltip(const QString &tooltip) = 0;
 	virtual QPoint trayPosition() = 0;

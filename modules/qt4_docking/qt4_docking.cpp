@@ -34,6 +34,7 @@
 #include "core/core.h"
 #include "debug.h"
 #include "exports.h"
+#include "icons/kadu-icon.h"
 
 #include "qt4_docking.h"
 
@@ -66,7 +67,7 @@ Qt4TrayIcon::Qt4TrayIcon(QWidget *parent) :
 {
 	kdebugf();
 
-	setIcon(QIcon(DockingManager::instance()->defaultPixmap()));
+	setIcon(DockingManager::instance()->defaultPixmap().icon());
 
 	connect(this, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(trayActivated(QSystemTrayIcon::ActivationReason)));
 
@@ -92,7 +93,7 @@ Qt4TrayIcon::~Qt4TrayIcon()
 	kdebugf2();
 }
 
-void Qt4TrayIcon::changeTrayIcon(const QIcon &icon)
+void Qt4TrayIcon::changeTrayIcon(const KaduIcon &icon)
 {
 	if (Movie)
 	{
@@ -100,7 +101,7 @@ void Qt4TrayIcon::changeTrayIcon(const QIcon &icon)
 		Movie->deleteLater();
 		Movie = 0;
 	}
-	setIcon(icon);
+	setIcon(icon.icon());
 }
 
 void Qt4TrayIcon::changeTrayMovie(const QString &moviePath)

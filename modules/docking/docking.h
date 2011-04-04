@@ -32,7 +32,6 @@
 
 #include <QtCore/QMap>
 #include <QtGui/QLabel>
-#include <QtGui/QIcon>
 
 #include "configuration/configuration-aware-object.h"
 #include "status/status-container-aware-object.h"
@@ -43,6 +42,7 @@ class QAction;
 class QMenu;
 
 class Docker;
+class KaduIcon;
 class StatusContainer;
 
 class DOCKINGAPI DockingManager : public QObject, ConfigurationAwareObject, StatusContainerAwareObject
@@ -78,7 +78,7 @@ class DOCKINGAPI DockingManager : public QObject, ConfigurationAwareObject, Stat
 	virtual ~DockingManager();
 
 private slots:
-	void statusPixmapChanged(const QIcon &icon);
+	void statusPixmapChanged(const KaduIcon &icon);
 	void changeIcon();
 	void pendingMessageAdded();
 	void pendingMessageDeleted();
@@ -98,7 +98,7 @@ public:
 	static DockingManager * instance();
 
 	void trayMousePressEvent(QMouseEvent * e);
-	QIcon defaultPixmap();
+	KaduIcon defaultPixmap();
 	QMenu * dockMenu() { return DockMenu; }
 
 	void setDocker(Docker *docker);

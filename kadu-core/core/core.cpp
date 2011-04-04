@@ -349,7 +349,7 @@ void Core::init()
 
 	new Updates(this);
 
-	setIcon(KaduIcon(QLatin1String("protocols/common/offline")).icon());
+	setIcon(KaduIcon(QLatin1String("protocols/common/offline")));
 	connect(IconsManager::instance(), SIGNAL(themeChanged()), this, SLOT(statusUpdated()));
 	QTimer::singleShot(15000, this, SLOT(deleteOldConfigurationFiles()));
 
@@ -410,9 +410,9 @@ void Core::statusUpdated()
 
 	Account account = AccountManager::instance()->defaultAccount();
 	if (account.isNull() || !account.protocolHandler())
-		setIcon(StatusContainerManager::instance()->statusIcon().icon());
+		setIcon(StatusContainerManager::instance()->statusIcon());
 	else
-		setIcon(StatusContainerManager::instance()->statusIcon(account.protocolHandler()->status()).icon());
+		setIcon(StatusContainerManager::instance()->statusIcon(account.protocolHandler()->status()));
 }
 
 void Core::kaduWindowDestroyed()
@@ -505,7 +505,7 @@ KaduWindow * Core::kaduWindow()
 	return Window;
 }
 
-void Core::setIcon(const QIcon &icon)
+void Core::setIcon(const KaduIcon &icon)
 {
 	bool blocked = false;
 	emit settingMainIconBlocked(blocked);
@@ -513,8 +513,8 @@ void Core::setIcon(const QIcon &icon)
 	if (!blocked)
 	{
 		if (Window)
-			Window->setWindowIcon(icon);
-		QApplication::setWindowIcon(icon);
+			Window->setWindowIcon(icon.icon());
+		QApplication::setWindowIcon(icon.icon());
 		emit mainIconChanged(icon);
 	}
 }

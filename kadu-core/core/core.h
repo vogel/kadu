@@ -29,14 +29,16 @@
 #include <QtCore/QObject>
 
 #include "accounts/accounts-aware-object.h"
-#include "chat/chat.h"
-#include "configuration/configuration-aware-object.h"
 #include "buddies/buddy.h"
 #include "buddies/buddy-list.h"
+#include "chat/chat.h"
+#include "configuration/configuration-aware-object.h"
+#include "icons/kadu-icon.h"
 #include "status/status.h"
 
 #include "exports.h"
 
+class KaduIcon;
 class KaduWindow;
 class Message;
 
@@ -91,7 +93,7 @@ public:
 	KaduWindow * kaduWindow();
 
 	void initialized();
-	void setIcon(const QIcon &icon);
+	void setIcon(const KaduIcon &icon);
 
 public slots:
 	void receivedSignal(const QString &signal);
@@ -112,7 +114,7 @@ signals:
 	//TODO:
 	void searchingForTrayPosition(QPoint &);
 
-	void mainIconChanged(const QIcon &);
+	void mainIconChanged(const KaduIcon &);
 
 };
 
