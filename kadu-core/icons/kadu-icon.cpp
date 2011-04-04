@@ -22,6 +22,14 @@
 
 #include "kadu-icon.h"
 
+/**
+ * @author Bartosz 'beevvy' Brachaczek
+ * @short Creates KaduIconThemeChangeWatcher object.
+ * @param icon pointer to KaduIcon object
+ * 
+ * Creates KaduIconThemeChangeWatcher object and sets it up for notifying
+ * provided KaduIcon object about theme changes.
+ */
 KaduIconThemeChangeWatcher::KaduIconThemeChangeWatcher(const KaduIcon *icon) :
 		QObject(), Icon(icon)
 {
@@ -32,27 +40,63 @@ KaduIconThemeChangeWatcher::~KaduIconThemeChangeWatcher()
 {
 }
 
+/**
+ * @author Bartosz 'beevvy' Brachaczek
+ * @short Clears cache in parent KaduIcon object.
+ * 
+ * Clears cache in parent KaduIcon object. Called when the theme changes.
+ */
 void KaduIconThemeChangeWatcher::themeChanged() const
 {
 	Icon->clearCache();
 }
 
+/**
+ * @author Bartosz 'beevvy' Brachaczek
+ * @short Creates null KaduIcon object.
+ * 
+ * Creates null KaduIcon object. isNull() will return true.
+ */
 KaduIcon::KaduIcon() :
 		Watcher(this)
 {
 }
 
+/**
+ * @author Bartosz 'beevvy' Brachaczek
+ * @short Creates KaduIcon object.
+ * @param path path to this icon
+ * @param size requested size as string formatted like "WIDTHxHEIGHT"
+ * @param name name of this icon
+ * 
+ * Creates KaduIcon object from given path and optionally size and name.
+ */
 KaduIcon::KaduIcon(const QString &path, const QString &size, const QString &name) :
 		Path(path), IconSize(size), IconName(name), Watcher(this)
 {
 }
 
+/**
+ * @author Bartosz 'beevvy' Brachaczek
+ * @short Creates KaduIcon object with the same contents as the one passed in parameter.
+ * @param copyMe another KaduIcon object
+ * 
+ * Creates KaduIcon object with the same contents as the one passed in parameter.
+ */
 KaduIcon::KaduIcon(const KaduIcon &copyMe) :
 		Path(copyMe.Path), IconSize(copyMe.IconSize), IconName(copyMe.IconName),
 		FullPath(copyMe.FullPath), Icon(copyMe.Icon), Watcher(this)
 {
 }
 
+/**
+ * @author Bartosz 'beevvy' Brachaczek
+ * @short Sets all data to be the same as in the KaduIcon object passed in parameter.
+ * @param copyMe another KaduIcon object
+ * @return reference to this object
+ * 
+ * Sets all data to be the same as in the KaduIcon object passed in parameter.
+ */
 KaduIcon & KaduIcon::operator = (const KaduIcon &copyMe)
 {
 	Path = copyMe.Path;
@@ -64,17 +108,38 @@ KaduIcon & KaduIcon::operator = (const KaduIcon &copyMe)
 	return *this;
 }
 
+/**
+ * @author Bartosz 'beevvy' Brachaczek
+ * @short Returns true if this object is null.
+ * @return true if this object is null, false otherwise
+ * 
+ * Returns true if this object is null. Every object with empty path() is considered null.
+ */
 bool KaduIcon::isNull() const
 {
 	return path().isEmpty();
 }
 
+/**
+ * @author Bartosz 'beevvy' Brachaczek
+ * @short Clears any cache stored by this KaduIcon object.
+ * 
+ * Clears any cache stored by this KaduIcon object.
+ */
 void KaduIcon::clearCache() const
 {
 	FullPath.clear();
 	Icon = QIcon();
 }
 
+/**
+ * @author Bartosz 'beevvy' Brachaczek
+ * @short Sets the requested size of icon file.
+ * @param size requested size as string formatted like "WIDTHxHEIGHT"
+ * 
+ * Sets the requested size of icon file returned by fullPath() and webKitPath() methods.
+ * The size has the same meaning as second parameter in IconsManager::iconPath() method.
+ */
 void KaduIcon::setSize(const QString &size)
 {
 	if (IconSize != size)
@@ -84,6 +149,18 @@ void KaduIcon::setSize(const QString &size)
 	}
 }
 
+/**
+ * @author Bartosz 'beevvy' Brachaczek
+ * @short Sets path to this icon and resets all other data.
+ * @param path path to this icon
+ * 
+ * Sets path to this icon and resets all other data. The path must have the same meaning
+ * as first parameter in IconsManager::iconPath() method, i.e. it can be either relative or
+ * absolute and gets special meaning when size or name are set.
+ * 
+ * @note It resets size and name because new path may contain them.
+ * @todo Resetting size and name could be avoided if one fixed IconsManager::iconPath() method.
+ */ 
 void KaduIcon::setPath(const QString &path)
 {
 	if (Path != path)
@@ -91,12 +168,21 @@ void KaduIcon::setPath(const QString &path)
 		Path = path;
 		clearCache();
 
-		// see comment to this method
+		// see documentation to this method
 		IconSize.clear();
 		IconName.clear();
 	}
 }
 
+/**
+ * @author Bartosz 'beevvy' Brachaczek
+ * @short Sets name of this icon if it is not provided by path.
+ * @param name name of this icon
+ * 
+ * Sets name of this icon if it is not provided by path(). Note that size() must
+ * be set as well for the name to have any meaning. The name has the same meaning
+ * as third parameter in IconsManager::iconPath() method.
+ */
 void KaduIcon::setName(const QString &name)
 {
 	if (IconName != name)
@@ -106,6 +192,14 @@ void KaduIcon::setName(const QString &name)
 	}
 }
 
+/**
+ * @author Bartosz 'beevvy' Brachaczek
+ * @short Returns full path to the icon file.
+ * @return full path to file
+ * 
+ * Returns full path to the icon file. Equivalent to calling IconsManager::iconPath()
+ * with this object's path(), size() and name() as parameters (skip parameter if empty).
+ */
 const QString & KaduIcon::fullPath() const
 {
 	// defer getting it until we need it for the first time
@@ -122,11 +216,27 @@ const QString & KaduIcon::fullPath() const
 	return FullPath;
 }
 
+/**
+ * @author Bartosz 'beevvy' Brachaczek
+ * @short Returns WebKit-friendly representation of full path to the icon file.
+ * @return WebKit-friendly representation of path
+ * 
+ * Return WebKit-friendly representation of full path to the icon file. Makes use
+ * of webKitPath() global Kadu function.
+ */
 QString KaduIcon::webKitPath() const
 {
 	return ::webKitPath(fullPath());
 }
 
+/**
+ * @author Bartosz 'beevvy' Brachaczek
+ * @short Returns QIcon object representing this icon.
+ * @return QIcon object of this icon
+ * 
+ * Returns QIcon object representing this icon. Equivalent to calling
+ * IconsManager::iconByPath() with path() as parameter.
+ */
 const QIcon & KaduIcon::icon() const
 {
 	// defer getting it until we need it for the first time
