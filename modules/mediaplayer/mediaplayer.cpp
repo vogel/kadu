@@ -47,6 +47,7 @@
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-dialog.h"
 
+#include "icons/kadu-icon.h"
 #include "misc/path-conversion.h"
 
 #include "notify/notification-manager.h"
@@ -56,7 +57,6 @@
 #include "status/status-changer-manager.h"
 
 #include "debug.h"
-#include "icons-manager.h"
 
 #include "mp_status_changer.h"
 #include "player_commands.h"
@@ -157,42 +157,42 @@ MediaPlayer::MediaPlayer()
 	enableMediaPlayerStatuses = new ActionDescription(
 		this, ActionDescription::TypeGlobal, "enableMediaPlayerStatusesAction",
 		this, SLOT(mediaPlayerStatusChangerActivated(QAction *, bool)),
-		"external_modules/mediaplayer-media-playback-play", tr("Enable MediaPlayer Statuses"), true
+		KaduIcon("external_modules/mediaplayer-media-playback-play"), tr("Enable MediaPlayer Statuses"), true
 	);
 	mediaPlayerMenu = new ActionDescription(
 		this, ActionDescription::TypeChat, "mediaplayer_button",
 		this, SLOT(mediaPlayerMenuActivated(QAction *, bool)),
-		"external_modules/mediaplayer", tr("MediaPlayer"), false
+		KaduIcon("external_modules/mediaplayer"), tr("MediaPlayer"), false
 	);
 	playAction = new ActionDescription(
 		this, ActionDescription::TypeChat, "mediaplayer_play",
 		this, SLOT(playPause()),
-		"external_modules/mediaplayer-media-playback-play", tr("Play"), false
+		KaduIcon("external_modules/mediaplayer-media-playback-play"), tr("Play"), false
 	);
 	stopAction = new ActionDescription(
 		this, ActionDescription::TypeChat, "mediaplayer_stop",
 		this, SLOT(stop()),
-		"external_modules/mediaplayer-media-playback-stop", tr("Stop"), false
+		KaduIcon("external_modules/mediaplayer-media-playback-stop"), tr("Stop"), false
 	);
 	prevAction = new ActionDescription(
 		this, ActionDescription::TypeChat, "mediaplayer_prev",
 		this, SLOT(prevTrack()),
-		"external_modules/mediaplayer-media-skip-backward", tr("Previous Track"), false
+		KaduIcon("external_modules/mediaplayer-media-skip-backward"), tr("Previous Track"), false
 	);
 	nextAction = new ActionDescription(
 		this, ActionDescription::TypeChat, "mediaplayer_next",
 		this, SLOT(nextTrack()),
-		"external_modules/mediaplayer-media-skip-forward", tr("Next Track"), false
+		KaduIcon("external_modules/mediaplayer-media-skip-forward"), tr("Next Track"), false
 	);
 	volUpAction = new ActionDescription(
 		this, ActionDescription::TypeChat, "mediaplayer_vol_up",
 		this, SLOT(incrVolume()),
-		"audio-volume-high", tr("Volume Up"), false
+		KaduIcon("audio-volume-high"), tr("Volume Up"), false
 	);
 	volDownAction = new ActionDescription(
 		this, ActionDescription::TypeChat, "mediaplayer_vol_down",
 		this, SLOT(decrVolume()),
-		"audio-volume-low", tr("Volume Down"), false
+		KaduIcon("audio-volume-low"), tr("Volume Down"), false
 	);
 
 	Core::instance()->kaduWindow()->insertMenuActionDescription(enableMediaPlayerStatuses, KaduWindow::MenuKadu, 7);
@@ -373,7 +373,7 @@ void MediaPlayer::putSongTitle(int ident)
 	if (!isActive())
 	{
 		// TODO: make it a notification
-		MessageDialog::show("dialog-warning", tr("Kadu"), tr("%1 isn't running!").arg(getPlayerName()));
+		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("%1 isn't running!").arg(getPlayerName()));
 		return;
 	}
 
@@ -450,7 +450,7 @@ void MediaPlayer::putPlayList(int ident)
 
 	if (!isActive())
 	{
-		MessageDialog::show("dialog-warning", tr("Kadu"), tr("%1 isn't running!").arg(getPlayerName()));
+		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("%1 isn't running!").arg(getPlayerName()));
 		return;
 	}
 
@@ -508,13 +508,13 @@ void MediaPlayer::putPlayList(int ident)
 
 	if (emptyEntries > (lgt / 10))
 	{
-		if (!MessageDialog::ask("dialog-question", tr("Kadu"), tr("More than 1/10 of titles you're trying to send are empty.<br>Perhaps %1 hasn't read all titles yet, give its some more time.<br>Do you want to send playlist anyway?").arg(getPlayerName())))
+		if (!MessageDialog::ask(KaduIcon("dialog-question"), tr("Kadu"), tr("More than 1/10 of titles you're trying to send are empty.<br>Perhaps %1 hasn't read all titles yet, give its some more time.<br>Do you want to send playlist anyway?").arg(getPlayerName())))
 			return;
 	}
 
 	if (chars >= 2000)
 	{
-		if (!MessageDialog::ask("dialog-question", tr("Kadu"), tr("You're trying to send %1 entries of %2 playlist.<br>It will be split and sent in few messages<br>Are you sure to do that?")
+		if (!MessageDialog::ask(KaduIcon("dialog-question"), tr("Kadu"), tr("You're trying to send %1 entries of %2 playlist.<br>It will be split and sent in few messages<br>Are you sure to do that?")
 			.arg(QString::number(lgt)).arg(getPlayerName())) )
 			return;
 	}
@@ -672,7 +672,7 @@ void MediaPlayer::mediaPlayerStatusChangerActivated(QAction *sender, bool toggle
 		foreach (Action *action, enableMediaPlayerStatuses->actions())
 			action->setChecked(false);
 
-		MessageDialog::show("dialog-warning", tr("Kadu"), tr("%1 isn't running!").arg(getPlayerName()));
+		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("%1 isn't running!").arg(getPlayerName()));
 		return;
 	}
 
@@ -691,7 +691,7 @@ void MediaPlayer::toggleStatuses(bool toggled)
 {
 	if (!isActive() && toggled)
 	{
-		MessageDialog::show("dialog-warning", tr("Kadu"), tr("%1 isn't running!").arg(getPlayerName()));
+		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("%1 isn't running!").arg(getPlayerName()));
 		return;
 	}
 
@@ -745,7 +745,7 @@ void MediaPlayer::putTitleHint(QString title)
 {
 	kdebugf();
 
-	Notification *notification = new Notification(QString(mediaPlayerOsdHint), "external_modules/mediaplayer-media-playback-play");
+	Notification *notification = new Notification(QString(mediaPlayerOsdHint), KaduIcon("external_modules/mediaplayer-media-playback-play"));
 	notification->setText(title);
 	NotificationManager::instance()->notify(notification);
 }
@@ -844,7 +844,7 @@ void MediaPlayer::playPause()
 		isPaused = false;
 		foreach(Action *action, playAction->actions())
 		{
-			action->setIcon(IconsManager::instance()->iconByPath("external_modules/mediaplayer-media-playback-pause"));
+			action->setIcon(KaduIcon("external_modules/mediaplayer-media-playback-pause").icon());
 			action->setText(tr("Pause"));
 
 		}
@@ -855,7 +855,7 @@ void MediaPlayer::playPause()
 		isPaused = true;
 		foreach(Action *action, playAction->actions())
 		{
-			action->setIcon(IconsManager::instance()->iconByPath("external_modules/mediaplayer-media-playback-play"));
+			action->setIcon(KaduIcon("external_modules/mediaplayer-media-playback-play").icon());
 			action->setText(tr("Play"));
 		}
 	}
@@ -868,7 +868,7 @@ void MediaPlayer::play()
 
 	isPaused = false;
 	foreach(Action *action, playAction->actions())
-		action->setIcon(IconsManager::instance()->iconByPath("external_modules/mediaplayer-media-playback-play"));
+		action->setIcon(KaduIcon("external_modules/mediaplayer-media-playback-play").icon());
 }
 
 void MediaPlayer::stop()
@@ -878,7 +878,7 @@ void MediaPlayer::stop()
 
 	isPaused = true;
 	foreach(Action *action, playAction->actions())
-		action->setIcon(IconsManager::instance()->iconByPath("external_modules/mediaplayer-media-playback-play"));
+		action->setIcon(KaduIcon("external_modules/mediaplayer-media-playback-play").icon());
 }
 
 void MediaPlayer::pause()
@@ -888,7 +888,7 @@ void MediaPlayer::pause()
 
 	isPaused = true;
 	foreach(Action *action, playAction->actions())
-		action->setIcon(IconsManager::instance()->iconByPath("external_modules/mediaplayer-media-playback-play"));
+		action->setIcon(KaduIcon("external_modules/mediaplayer-media-playback-play").icon());
 }
 
 void MediaPlayer::setVolume(int vol)

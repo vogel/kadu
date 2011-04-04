@@ -31,7 +31,7 @@
 #include "buddies/buddy-additional-data-delete-handler.h"
 #include "buddies/buddy-additional-data-delete-handler-manager.h"
 #include "buddies/buddy-manager.h"
-#include "icons-manager.h"
+#include "icons/kadu-icon.h"
 
 #include "buddy-delete-window.h"
 
@@ -61,7 +61,7 @@ void BuddyDeleteWindow::createGui()
 	QHBoxLayout *topLayout = new QHBoxLayout(topWidget);
 
 	QLabel *iconLabel = new QLabel(topWidget);
-	iconLabel->setPixmap(IconsManager::instance()->iconByPath("dialog-warning").pixmap(32, 32));
+	iconLabel->setPixmap(KaduIcon("dialog-warning").icon().pixmap(32, 32));
 	topLayout->addWidget(iconLabel, 0, Qt::AlignTop);
 
 	QWidget *contentWidget = new QWidget(topWidget);

@@ -43,7 +43,8 @@
 #include "gui/windows/message-dialog.h"
 
 #include "debug.h"
-#include "icons-manager.h"
+#include "icons/icons-manager.h"
+#include "icons/kadu-icon.h"
 #include "misc/misc.h"
 
 #include "toolbar.h"
@@ -738,7 +739,7 @@ QMenu * ToolBar::createContextMenu(QWidget *widget)
 
 			if (!windowHasAction(actionDescription->name(), false))
 			{
-				QAction *action = new QAction(IconsManager::instance()->iconByPath(actionDescription->iconPath()), actionDescription->text(), actionsMenu);
+				QAction *action = new QAction(actionDescription->icon().icon(), actionDescription->text(), actionsMenu);
 				action->setData(actionDescription->name());
 
 				actions.append(action);
@@ -805,7 +806,7 @@ void ToolBar::addSpacerClicked()
 void ToolBar::removeToolbar()
 {
 	kdebugf();
-	if (MessageDialog::ask("dialog-warning", tr("Kadu"), tr("Do you really want to remove selected toolbar?"), this))
+	if (MessageDialog::ask(KaduIcon("dialog-warning"), tr("Kadu"), tr("Do you really want to remove selected toolbar?"), this))
 		emit removed(this); // parent window will remove this toolbar
 	kdebugf2();
 }

@@ -33,7 +33,7 @@
 #include "notify/notify-event.h"
 #include "activate.h"
 #include "debug.h"
-#include "icons-manager.h"
+#include "icons/icons-manager.h"
 #include "server-monitor-window.h"
 
 #include "server-monitor.h"
@@ -82,7 +82,7 @@ ServerMonitor::ServerMonitor(QWidget *parent) :
 	ServerMonitorActionDescription = new ActionDescription(
 			this,ActionDescription::TypeMainMenu, "serverMonitorAction",
 			this, SLOT(serverMonitorActionActivated(QAction *, bool)),
-			"protocols/gadu-gadu/online", tr("Server's Monitor"));
+			KaduIcon("protocols/gadu-gadu/online"), tr("Server's Monitor"));
 	Core::instance()->kaduWindow()->insertMenuActionDescription(ServerMonitorActionDescription, KaduWindow::MenuTools, 7);
 
 	Dialog = new ServerMonitorWindow();

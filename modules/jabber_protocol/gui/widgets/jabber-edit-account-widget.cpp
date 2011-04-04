@@ -51,7 +51,7 @@
 #include "gui/windows/message-dialog.h"
 #include "identities/identity-manager.h"
 #include "protocols/services/avatar-service.h"
-#include "icons-manager.h"
+#include "icons/icons-manager.h"
 
 #include "gui/windows/jabber-change-password-window.h"
 
@@ -353,7 +353,7 @@ bool JabberEditAccountWidget::checkSSL()
 {
 	if (!QCA::isSupported("tls"))
 	{
-		MessageDialog::show("dialog-warning", tr("Kadu"), tr("Cannot enable secure connection. SSL/TLS plugin not found."));
+		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Cannot enable secure connection. SSL/TLS plugin not found."));
 		return false;
 	}
 	return true;
@@ -365,7 +365,7 @@ void JabberEditAccountWidget::sslActivated(int i)
 		EncryptionMode->setCurrentIndex(EncryptionMode->findData(JabberAccountDetails::Encryption_No));
 	else if (EncryptionMode->itemData(i) == JabberAccountDetails::Encryption_Legacy && !CustomHostPort->isChecked())
 	{
-		MessageDialog::show("dialog-warning", tr("Kadu"), tr("Legacy SSL is only available in combination with manual host/port."));
+		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Legacy SSL is only available in combination with manual host/port."));
 		EncryptionMode->setCurrentIndex(EncryptionMode->findData(JabberAccountDetails::Encryption_Auto));
 	}
 }

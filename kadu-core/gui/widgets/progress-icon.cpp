@@ -21,14 +21,14 @@
 
 #include <QtGui/QMovie>
 
-#include "icons-manager.h"
+#include "icons/kadu-icon.h"
 
 #include "progress-icon.h"
 
 ProgressIcon::ProgressIcon(QWidget *parent) :
 		QLabel(parent), State(StateFinished)
 {
-	ProgressMovie = new QMovie(IconsManager::instance()->iconPath("kadu_icons/16x16/please-wait.gif"),
+	ProgressMovie = new QMovie(KaduIcon("kadu_icons/16x16/please-wait.gif").fullPath(),
 			QByteArray(), this);
 
 	setState(StateInProgress);
@@ -54,12 +54,12 @@ void ProgressIcon::setState(ProgressIcon::ProgressState state)
 
 		case StateFinished:
 			ProgressMovie->stop();
-			setPixmap(IconsManager::instance()->iconByPath("dialog-information").pixmap(32, 32));
+			setPixmap(KaduIcon("dialog-information").icon().pixmap(32, 32));
 			break;
 
 		case StateFailed:
 			ProgressMovie->stop();
-			setPixmap(IconsManager::instance()->iconByPath("dialog-warning").pixmap(32, 32));
+			setPixmap(KaduIcon("dialog-warning").icon().pixmap(32, 32));
 			break;
 	}
 }

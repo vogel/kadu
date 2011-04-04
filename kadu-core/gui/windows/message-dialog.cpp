@@ -27,48 +27,39 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtGui/QPixmap>
 #include <QtGui/QStyle>
-
-#include "icons-manager.h"
 
 #include "message-dialog.h"
 
-void KADUAPI MessageDialog::show(const QString &iconName, const QString &title, const QString &text, QMessageBox::StandardButtons buttons,
+void KADUAPI MessageDialog::show(const KaduIcon &icon, const QString &title, const QString &text, QMessageBox::StandardButtons buttons,
 			QWidget *parent, Qt::WindowFlags f)
 {
 	QMessageBox *mb = new QMessageBox(QMessageBox::NoIcon, title, text, buttons, parent, f);
 	mb->setAttribute(Qt::WA_DeleteOnClose, true);
 
-	QIcon icon = IconsManager::instance()->iconByPath(iconName);
-	if (!icon.isNull())
-	{
-		QStyle *style = mb->style();
-		int iconSize = style->pixelMetric(QStyle::PM_MessageBoxIconSize, 0, mb);
-
-		mb->setIconPixmap(icon.pixmap(iconSize, iconSize));
-	}
+	int iconSize = mb->style()->pixelMetric(QStyle::PM_MessageBoxIconSize, 0, mb);
+	QPixmap pixmap(icon.icon().pixmap(iconSize, iconSize));
+	if (!pixmap.isNull())
+		mb->setIconPixmap(pixmap);
 
 	mb->show();
 }
 
-int KADUAPI MessageDialog::exec(const QString &iconName, const QString &title, const QString &text, QMessageBox::StandardButtons buttons,
+int KADUAPI MessageDialog::exec(const KaduIcon &icon, const QString &title, const QString &text, QMessageBox::StandardButtons buttons,
 			QWidget *parent, Qt::WindowFlags f)
 {
 	QMessageBox mb(QMessageBox::NoIcon, title, text, buttons, parent, f);
 
-	QIcon icon = IconsManager::instance()->iconByPath(iconName);
-	if (!icon.isNull())
-	{
-		QStyle *style = mb.style();
-		int iconSize = style->pixelMetric(QStyle::PM_MessageBoxIconSize, 0, &mb);
-
-		mb.setIconPixmap(icon.pixmap(iconSize, iconSize));
-	}
+	int iconSize = mb.style()->pixelMetric(QStyle::PM_MessageBoxIconSize, 0, &mb);
+	QPixmap pixmap(icon.icon().pixmap(iconSize, iconSize));
+	if (!pixmap.isNull())
+		mb.setIconPixmap(pixmap);
 
 	return mb.exec();
 }
 
-bool KADUAPI MessageDialog::ask(const QString &iconName, const QString &title, const QString &text, QWidget *parent, Qt::WindowFlags f)
+bool KADUAPI MessageDialog::ask(const KaduIcon &icon, const QString &title, const QString &text, QWidget *parent, Qt::WindowFlags f)
 {
-	return QMessageBox::Yes == exec(iconName, title, text, QMessageBox::Yes | QMessageBox::No, parent, f);
+	return QMessageBox::Yes == exec(icon, title, text, QMessageBox::Yes | QMessageBox::No, parent, f);
 }

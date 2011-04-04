@@ -55,7 +55,7 @@ HistoryMigrationActions::HistoryMigrationActions() :
 	if (!imported && gaduAccount && QFile::exists(profilePath("history")))
 	{
 		ImportHistoryActionDescription = new ActionDescription(this, ActionDescription::TypeGlobal, "import_history",
-				this, SLOT(importHistoryActionActivated(QAction*,bool)), QString(), tr("Import history..."));
+				this, SLOT(importHistoryActionActivated(QAction*,bool)), KaduIcon(), tr("Import history..."));
 
 		Core::instance()->kaduWindow()->insertMenuActionDescription(ImportHistoryActionDescription, KaduWindow::MenuTools);
 	}

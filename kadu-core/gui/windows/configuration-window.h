@@ -28,7 +28,7 @@
 #include <QtGui/QDialog>
 
 #include "configuration/configuration-window-data-manager.h"
-#include "icons-manager.h"
+#include "icons/icons-manager.h"
 
 class QWidget;
 class ConfigSection;

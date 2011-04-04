@@ -20,7 +20,7 @@
 #include "configuration/configuration-file.h"
 #include "notify/notification-manager.h"
 #include "notify/notify-event.h"
-#include "icons-manager.h"
+#include "icons/icons-manager.h"
 
 #include "firewall-notification.h"
 
@@ -56,7 +56,7 @@ void FirewallNotification::notify(const Chat &chat, const Contact &sender, const
 }
 
 FirewallNotification::FirewallNotification(const Chat &chat) :
-		ChatNotification(chat, "firewallNotification", "ManageKeysWindowIcon")
+		ChatNotification(chat, "firewallNotification", KaduIcon("ManageKeysWindowIcon"))
 {
 }
 

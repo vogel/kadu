@@ -32,11 +32,9 @@
 #include "gui/widgets/configuration/config-tab.h"
 #include "gui/widgets/configuration/config-widget.h"
 
-#include "icons-manager.h"
-
 ConfigSection::ConfigSection(const QString &name, ConfigurationWidget *configurationWidget,
-		QListWidgetItem *listWidgetItem, QWidget *parentConfigGroupBoxWidget, const QString &iconPath) :
-		QObject(configurationWidget), Name(name), MyConfigurationWidget(configurationWidget), IconPath(iconPath),
+		QListWidgetItem *listWidgetItem, QWidget *parentConfigGroupBoxWidget, const KaduIcon &icon) :
+		QObject(configurationWidget), Name(name), MyConfigurationWidget(configurationWidget), Icon(icon),
 		ListWidgetItem(listWidgetItem), Activated(false), ParentConfigGroupBoxWidget(parentConfigGroupBoxWidget)
 {
 	TabWidget = new KaduTabWidget(ParentConfigGroupBoxWidget);
@@ -134,5 +132,5 @@ void ConfigSection::configTabDestroyed(QObject *obj)
 
 void ConfigSection::iconThemeChanged()
 {
-	ListWidgetItem->setIcon(IconsManager::instance()->iconByPath(IconPath).pixmap(32, 32));
+	ListWidgetItem->setIcon(Icon.icon());
 }

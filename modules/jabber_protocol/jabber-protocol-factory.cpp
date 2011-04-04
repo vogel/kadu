@@ -22,10 +22,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "icons/kadu-icon.h"
 #include "misc/misc.h"
 #include "status/status-type.h"
 #include "status/status-type-manager.h"
-#include "icons-manager.h"
 
 #include "actions/jabber-protocol-menu-manager.h"
 #include "gui/widgets/jabber-contact-personal-info-widget.h"
@@ -65,14 +65,9 @@ JabberProtocolFactory::JabberProtocolFactory()
 	qSort(SupportedStatusTypes.begin(), SupportedStatusTypes.end(), StatusType::lessThan);
 }
 
-QIcon JabberProtocolFactory::icon()
+KaduIcon JabberProtocolFactory::icon()
 {
-	return IconsManager::instance()->iconByPath("protocols/xmpp/xmpp");
-}
-
-QString JabberProtocolFactory::iconPath()
-{
-	return IconsManager::instance()->iconPath("protocols/xmpp/xmpp", "16x16");
+	return KaduIcon("protocols/xmpp/xmpp", "16x16");
 }
 
 Protocol * JabberProtocolFactory::createProtocolHandler(Account account)

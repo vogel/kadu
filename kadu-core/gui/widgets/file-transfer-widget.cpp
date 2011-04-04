@@ -36,9 +36,9 @@
 #include "file-transfer/file-transfer-manager.h"
 #include "file-transfer/file-transfer-shared.h"
 #include "gui/windows/message-dialog.h"
+#include "icons/kadu-icon.h"
 
 #include "debug.h"
-#include "icons-manager.h"
 
 #include "file-transfer-widget.h"
 
@@ -128,13 +128,13 @@ void FileTransferWidget::createGui()
 
 	if (TypeSend == CurrentTransfer.transferType())
 	{
-		icon->setPixmap(IconsManager::instance()->iconByPath("kadu_icons/transfer-send").pixmap(16, 16));
+		icon->setPixmap(KaduIcon("kadu_icons/transfer-send").icon().pixmap(16, 16));
 		DescriptionLabel->setText(tr("File <b>%1</b><br /> to <b>%2</b><br />on account <b>%3</b>")
 				.arg(fileName).arg(buddy.display()).arg(account.accountIdentity().name()));
 	}
 	else
 	{
-		icon->setPixmap(IconsManager::instance()->iconByPath("kadu_icons/transfer-receive").pixmap(16, 16));
+		icon->setPixmap(KaduIcon("kadu_icons/transfer-receive").icon().pixmap(16, 16));
 		DescriptionLabel->setText(tr("File <b>%1</b><br /> from <b>%2</b><br />on account <b>%3</b>")
 				.arg(fileName).arg(buddy.display()).arg(account.accountIdentity().name()));
 	}
@@ -154,7 +154,7 @@ void FileTransferWidget::removeTransfer()
 
 	if (StatusFinished != CurrentTransfer.transferStatus())
 	{
-		if (!MessageDialog::ask(QString(), tr("Kadu"), tr("Are you sure you want to remove this transfer?"), this))
+		if (!MessageDialog::ask(KaduIcon(), tr("Kadu"), tr("Are you sure you want to remove this transfer?"), this))
 			return;
 		else
 			if (handler())

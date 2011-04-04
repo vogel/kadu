@@ -32,7 +32,7 @@
 
 #include "gui/windows/message-dialog.h"
 #include "misc/misc.h"
-#include "icons-manager.h"
+#include "icons/icons-manager.h"
 
 #include "server/jabber-server-change-password.h"
 
@@ -127,7 +127,7 @@ void JabberChangePasswordWindow::changePassword()
 {
 	if (NewPassword->text() != ReNewPassword->text())
 	{
-		MessageDialog::show("dialog-warning", tr("Kadu"), tr("Invalid data entered in required fields.\n\n"
+		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Invalid data entered in required fields.\n\n"
 			"Password entered in both fields (\"Password\" and \"Retype password\") "
 			"should be the same!"), QMessageBox::Ok, this);
 		return;
@@ -152,7 +152,7 @@ void JabberChangePasswordWindow::changingFinished(JabberServerChangePassword *gs
 
 	if (result)
 	{
-		MessageDialog::show("dialog-information", tr("Kadu"),tr("Changing password was successful."), QMessageBox::Ok, this);
+		MessageDialog::show(KaduIcon("dialog-information"), tr("Kadu"),tr("Changing password was successful."), QMessageBox::Ok, this);
 
 		MyAccount.setPassword(NewPassword->text());
 		emit passwordChanged(NewPassword->text());
@@ -160,7 +160,7 @@ void JabberChangePasswordWindow::changingFinished(JabberServerChangePassword *gs
 		close();
 	}
 	else
-		MessageDialog::show("dialog-error", tr("Kadu"), tr("An error has occurred. Please try again later."), QMessageBox::Ok, this);
+		MessageDialog::show(KaduIcon("dialog-error"), tr("Kadu"), tr("An error has occurred. Please try again later."), QMessageBox::Ok, this);
 }
 
 void JabberChangePasswordWindow::keyPressEvent(QKeyEvent *e)

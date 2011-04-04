@@ -19,25 +19,15 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "icons-manager.h"
+#include "icons/kadu-icon.h"
 
 #include "notifier.h"
 
-Notifier::Notifier(const QString &name, const QString &description, const QString &iconPath, QObject *parent) :
-		QObject(parent), Name(name), Description(description), IconPath(iconPath)
+Notifier::Notifier(const QString& name, const QString& description, const KaduIcon& icon, QObject* parent) :
+		QObject(parent), Name(name), Description(description), Icon(icon)
 {
 }
 
 Notifier::~Notifier()
 {
-}
-
-Notifier::CallbackCapacity Notifier::callbackCapacity()
-{
-	return CallbackNotSupported;
-}
-
-QIcon Notifier::icon() const
-{
-	return IconsManager::instance()->iconByPath(IconPath);
 }

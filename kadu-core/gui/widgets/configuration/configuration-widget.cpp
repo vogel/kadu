@@ -35,6 +35,7 @@
 #include <QtGui/QDialogButtonBox>
 
 #include "configuration/configuration-file.h"
+#include "icons/kadu-icon.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/config-widget.h"
@@ -184,8 +185,6 @@ QList<ConfigWidget *> ConfigurationWidget::processUiSectionFromDom(QDomNode sect
 		return result;
 	}
 
-	const QString &iconPath = sectionElement.attribute("icon");
-
 	const QString &sectionName = sectionElement.attribute("name");
 	if (sectionName.isEmpty())
 	{
@@ -193,22 +192,20 @@ QList<ConfigWidget *> ConfigurationWidget::processUiSectionFromDom(QDomNode sect
 		return result;
 	}
 
-	configSection(iconPath, qApp->translate("@default", sectionName.toAscii().data()), true);
+	configSection(KaduIcon(sectionElement.attribute("icon")), qApp->translate("@default", sectionName.toAscii().data()), true);
 
 	const QDomNodeList children = sectionElement.childNodes();
 	int length = children.length();
 	for (int i = 0; i < length; i++)
-		result += processUiTabFromDom(children.item(i), iconPath, sectionName, append);
+		result += processUiTabFromDom(children.item(i), sectionName, append);
 
 	kdebugf2();
 	return result;
 }
 
-QList<ConfigWidget *> ConfigurationWidget::processUiTabFromDom(QDomNode tabNode, const QString &iconName,
-	const QString &sectionName, bool append)
+QList<ConfigWidget *> ConfigurationWidget::processUiTabFromDom(QDomNode tabNode,
+		const QString &sectionName, bool append)
 {
-	Q_UNUSED(iconName)
-
 	kdebugf();
 
 	QList<ConfigWidget *> result;
@@ -417,7 +414,7 @@ ConfigSection * ConfigurationWidget::configSection(const QString &name)
 	return ConfigSections[name];
 }
 
-ConfigSection * ConfigurationWidget::configSection(const QString &iconPath, const QString &name, bool create)
+ConfigSection * ConfigurationWidget::configSection(const KaduIcon &icon, const QString &name, bool create)
 {
 	if (ConfigSections.contains(name))
 		return ConfigSections[name];
@@ -425,13 +422,13 @@ ConfigSection * ConfigurationWidget::configSection(const QString &iconPath, cons
 	if (!create)
 		return 0;
 
-	QListWidgetItem *newConfigSectionListWidgetItem = new QListWidgetItem(IconsManager::instance()->iconByPath(iconPath).pixmap(32, 32), name, SectionsListWidget);
+	QListWidgetItem *newConfigSectionListWidgetItem = new QListWidgetItem(icon.icon(), name, SectionsListWidget);
 
 	QFontMetrics fontMetrics = SectionsListWidget->fontMetrics();
 	// TODO: 48 = margins + scrollbar - get real scrollbar width
 	int width = fontMetrics.width(name) + 80;
 
-	ConfigSection *newConfigSection = new ConfigSection(name, this, newConfigSectionListWidgetItem, ContainerWidget, iconPath);
+	ConfigSection *newConfigSection = new ConfigSection(name, this, newConfigSectionListWidgetItem, ContainerWidget, icon);
 	ConfigSections[name] = newConfigSection;
 	connect(newConfigSection, SIGNAL(destroyed(QObject *)), this, SLOT(configSectionDestroyed(QObject *)));
 

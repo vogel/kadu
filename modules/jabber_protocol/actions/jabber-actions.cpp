@@ -70,7 +70,7 @@ void JabberActions::unregisterActions()
 JabberActions::JabberActions()
 {
 	ShowXmlConsole = new ActionDescription(this, ActionDescription::TypeMainMenu, "showXmlConsole",
-			0, 0, QString(), tr("Show XML Console for Account"));
+			0, 0, KaduIcon(), tr("Show XML Console for Account"));
 	connect(ShowXmlConsole, SIGNAL(actionCreated(Action*)), this, SLOT(showXmlConsoleActionCreated(Action*)));
 
 	// HACK: It is needed bacause of loading protocol modules before creating GUI.
@@ -87,13 +87,13 @@ JabberActions::JabberActions()
 			this, SLOT(updateShowXmlConsoleMenu()));
 
 	ResendSubscription = new ActionDescription(this, ActionDescription::TypeUser, "rosterResendSubscription",
-			this, SLOT(resendSubscriptionActionActivated(QAction*)), QString(), tr("Resend Subscription"),
+			this, SLOT(resendSubscriptionActionActivated(QAction*)), KaduIcon(), tr("Resend Subscription"),
 			false, disableNoRosterContact);
 	RemoveSubscription = new ActionDescription(this, ActionDescription::TypeUser, "rosterRemoveSubscription",
-			this, SLOT(removeSubscriptionActionActivated(QAction*)), QString(), tr("Remove Subscription"),
+			this, SLOT(removeSubscriptionActionActivated(QAction*)), KaduIcon(), tr("Remove Subscription"),
 			false, disableNoRosterContact);
 	AskForSubscription = new ActionDescription(this, ActionDescription::TypeUser, "rosterAskForSubscription",
-			this, SLOT(askForSubscriptionActionActivated(QAction*)), QString(), tr("Ask for Subscription"),
+			this, SLOT(askForSubscriptionActionActivated(QAction*)), KaduIcon(), tr("Ask for Subscription"),
 			false, disableNoRosterContact);
 }
 

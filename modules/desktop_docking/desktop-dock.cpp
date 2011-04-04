@@ -34,6 +34,7 @@
 
 #include "configuration/configuration-file.h"
 #include "debug.h"
+#include "icons/kadu-icon.h"
 
 #include "modules/docking/docking.h"
 
@@ -104,9 +105,9 @@ void DesktopDock::destroyMenu()
 	DockingManager::instance()->unregisterModuleAction(MoveMenuAction);
 }
 
-void DesktopDock::changeTrayIcon(const QIcon &icon)
+void DesktopDock::changeTrayIcon(const KaduIcon &icon)
 {
-	DockWindow->setPixmap(icon.pixmap(128,128));
+	DockWindow->setPixmap(icon.icon().pixmap(128,128));
 	DockWindow->repaint();
 	DockWindow->setMask(DockWindow->pixmap()->createHeuristicMask(false));
 }

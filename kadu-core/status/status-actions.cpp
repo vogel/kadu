@@ -25,12 +25,13 @@
 
 #include "accounts/account-manager.h"
 #include "configuration/configuration-file.h"
+#include "icons/kadu-icon.h"
 #include "protocols/protocol.h"
 #include "status/status-container.h"
 #include "status/status-container-manager.h"
 #include "status/status-group.h"
 #include "status/status-type.h"
-#include "icons-manager.h"
+#include "icons/icons-manager.h"
 
 #include "status-actions.h"
 
@@ -121,12 +122,11 @@ QAction * StatusActions::createStatusAction(StatusType *statusType)
 {
 	QIcon icon;
 	if (!CommonStatusIcons)
-		icon = MyStatusContainer->statusIcon(statusType->name());
+		icon = MyStatusContainer->statusIcon(statusType->name()).icon();
 	else
-		icon = StatusContainerManager::instance()->statusIcon(statusType->name());
+		icon = StatusContainerManager::instance()->statusIcon(statusType->name()).icon();
 	QAction *statusAction = ChangeStatusActionGroup->addAction(
-		icon.pixmap(16, 16),
-		MyStatusContainer->statusNamePrefix() + statusType->displayName());
+			icon, MyStatusContainer->statusNamePrefix() + statusType->displayName());
 	statusAction->setCheckable(true);
 	statusAction->setData(QVariant::fromValue(statusType));
 
@@ -144,7 +144,7 @@ void StatusActions::statusUpdated()
 			continue;
 
 		if (!CommonStatusIcons)
-			action->setIcon(MyStatusContainer->statusIcon(statusType->name()));
+			action->setIcon(MyStatusContainer->statusIcon(statusType->name()).icon());
 
 		// For 'All xxx' status menu items - check only if all accounts have the same status
 		if (StatusContainerManager::instance() == MyStatusContainer)
@@ -166,8 +166,8 @@ void StatusActions::iconThemeChanged()
 			continue;
 
 		if (!CommonStatusIcons)
-			action->setIcon(MyStatusContainer->statusIcon(statusType->name()));
+			action->setIcon(MyStatusContainer->statusIcon(statusType->name()).icon());
 		else
-			action->setIcon(StatusContainerManager::instance()->statusIcon(statusType->name()));
+			action->setIcon(StatusContainerManager::instance()->statusIcon(statusType->name()).icon());
 	}
 }

@@ -49,7 +49,7 @@
 #include "status/status-type-manager.h"
 
 #include "debug.h"
-#include "icons-manager.h"
+#include "icons/icons-manager.h"
 #include "misc/misc.h"
 
 #include "server/gadu-contact-list-handler.h"
@@ -329,7 +329,7 @@ void GaduProtocol::login()
 
 	if (0 == gaduAccountDetails->uin())
 	{
-		MessageDialog::show("dialog-warning", tr("Kadu"), tr("UIN not set!"));
+		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("UIN not set!"));
 		setStatus(Status());
 		statusChanged(Status());
 		kdebugmf(KDEBUG_FUNCTION_END, "end: gadu UIN not set\n");
@@ -603,7 +603,7 @@ void GaduProtocol::socketConnFailed(GaduError error)
 			msg = tr("Please change your email in \"Change password / email\" window. "
 				"Leave new password field blank.");
 			tryAgain = false;
-			MessageDialog::show("dialog-warning", tr("Kadu"), msg);
+			MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), msg);
 			break;
 
 		case ConnectionInvalidData:

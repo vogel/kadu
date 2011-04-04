@@ -29,7 +29,7 @@
 #include <QtGui/QStyle>
 #include <QtGui/QVBoxLayout>
 
-#include "icons-manager.h"
+#include "icons/icons-manager.h"
 
 #include "password-window.h"
 

@@ -22,6 +22,7 @@
 #include <QtGui/QMouseEvent>
 
 #include "configuration/configuration-file.h"
+#include "icons/kadu-icon.h"
 
 #include "modules/docking/docking.h"
 
@@ -36,8 +37,7 @@ DesktopDockWindow::DesktopDockWindow(QWidget *parent) :
 	setMouseTracking(true);
 	setWindowFlags(Qt::Window | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint);
 
-	QIcon desktopDockIcon = DockingManager::instance()->defaultPixmap();
-	setPixmap(desktopDockIcon.pixmap(128, 128));
+	setPixmap(DockingManager::instance()->defaultPixmap().icon().pixmap(128, 128));
 	resize(pixmap()->size());
 
 	configurationUpdated();

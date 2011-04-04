@@ -29,12 +29,12 @@
 #include <QtDBus/QDBusServiceWatcher>
 
 #include "configuration/configuration-file.h"
+#include "icons/kadu-icon.h"
 #include "notify/notification-manager.h"
 #include "notify/notification.h"
 #include "notify/notify-event.h"
 #include "url-handlers/url-handler-manager.h"
 #include "html_document.h"
-#include "icons-manager.h"
 
 #include "freedesktop-notify.h"
 
@@ -57,7 +57,7 @@ void FreedesktopNotify::destroyInstance()
 }
 
 FreedesktopNotify::FreedesktopNotify() :
-		Notifier("FreedesktopNotify", QT_TRANSLATE_NOOP("@default", "System notifications"), "kadu_icons/notify-hints"),
+		Notifier("FreedesktopNotify", QT_TRANSLATE_NOOP("@default", "System notifications"), KaduIcon("kadu_icons/notify-hints")),
 		UseFreedesktopStandard(false), ServerSupportsActions(true), ServerSupportsHtml(true), ServerCapabilitesReqiuresChecking(true)
 {
 	StripHTML.setPattern(QString::fromLatin1("<.*>"));
@@ -131,10 +131,11 @@ void FreedesktopNotify::notify(Notification *notification)
 	args.append("Kadu");
 	args.append(0U);
 
-	if (notification->iconPath().isEmpty())
-		args.append(IconsManager::instance()->iconPath("kadu_icons/section-kadu", "64x64"));
-	else
-		args.append(IconsManager::instance()->iconPath(notification->iconPath(), "64x64"));
+	KaduIcon icon(notification->icon());
+	if (icon.isNull())
+		icon.setPath("kadu_icons/section-kadu");
+	icon.setSize("64x64");
+	args.append(icon.fullPath());
 
 	// the new spec doesn't have this
 	if (!UseFreedesktopStandard)
@@ -148,7 +149,7 @@ void FreedesktopNotify::notify(Notification *notification)
 	{
 		text.append(notification->text() + (ServerSupportsHtml ? "<br/><small>" : "\n"));
 
-		QString strippedDetails = notification->details().replace("<br/>", "\n").remove(StripHTML);
+		QString strippedDetails = QString(notification->details()).replace("<br/>", "\n").remove(StripHTML);
 		if (ServerSupportsHtml)
 			strippedDetails.replace('\n', QLatin1String("<br/>"));
 

@@ -23,7 +23,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QIcon>
 #include <QtGui/QTextDocument>
 
 #include "accounts/account-manager.h"
@@ -34,7 +33,8 @@
 #include "contacts/contact.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
-#include "icons-manager.h"
+#include "icons/icons-manager.h"
+#include "icons/kadu-icon.h"
 #include "protocols/protocol-factory.h"
 #include "status/status-changer-manager.h"
 #include "status/status-type-manager.h"
@@ -54,7 +54,7 @@ Protocol::~Protocol()
 {
 }
 
-QIcon Protocol::icon()
+KaduIcon Protocol::icon()
 {
 	return Factory->icon();
 }
@@ -126,23 +126,17 @@ void Protocol::networkStateChanged(NetworkState state)
 	}
 }
 
-QIcon Protocol::statusIcon(Status status)
+KaduIcon Protocol::statusIcon()
 {
-	return StatusTypeManager::instance()->statusIcon(statusPixmapPath(), status.type(),
-			!status.description().isEmpty(), false);
+	return statusIcon(CurrentStatus);
 }
 
-QString Protocol::statusIconPath(const QString& statusType)
+KaduIcon Protocol::statusIcon(const Status &status)
 {
-	return StatusTypeManager::instance()->statusIconPath(statusPixmapPath(), statusType, false, false);
+	return StatusTypeManager::instance()->statusIcon(statusPixmapPath(), status.type(), !status.description().isEmpty(), false);
 }
 
-QString Protocol::statusIconFullPath(const QString& statusType)
-{
-	return StatusTypeManager::instance()->statusIconFullPath(statusPixmapPath(), statusType, false, false);
-}
-
-QIcon Protocol::statusIcon(const QString &statusType)
+KaduIcon Protocol::statusIcon(const QString &statusType)
 {
 	return StatusTypeManager::instance()->statusIcon(statusPixmapPath(), statusType, false, false);
 }

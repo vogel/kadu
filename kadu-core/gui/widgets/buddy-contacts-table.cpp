@@ -211,7 +211,7 @@ void BuddyContactsTable::removeClicked()
 		return;
 	}
 
-	bool sure = MessageDialog::ask("dialog-warning", tr("Kadu"),
+	bool sure = MessageDialog::ask(KaduIcon("dialog-warning"), tr("Kadu"),
 			tr("Are you sure do you want to delete this contact from buddy <b>%1</b>?").arg(MyBuddy.display()));
 
 	if (sure)

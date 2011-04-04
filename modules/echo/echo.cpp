@@ -56,7 +56,7 @@ Echo * Echo::instance()
 Echo::Echo(QObject *parent) :
 		QObject(parent)
 {
-	MessageDialog::show("dialog-information", tr("Kadu"), tr("Echo started"));
+	MessageDialog::show(KaduIcon("dialog-information"), tr("Kadu"), tr("Echo started"));
 
 	triggerAllAccountsRegistered();
 }
@@ -65,7 +65,7 @@ Echo::~Echo()
 {
 	// if we are closing the user won't notice this message anyway
 	if (!Core::instance()->isClosing())
-		MessageDialog::show("dialog-information", tr("Kadu"), tr("Echo stopped"));
+		MessageDialog::show(KaduIcon("dialog-information"), tr("Kadu"), tr("Echo stopped"));
 
 	triggerAllAccountsUnregistered();
 }

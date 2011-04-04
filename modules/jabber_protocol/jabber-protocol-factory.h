@@ -58,8 +58,7 @@ public:
 	virtual QString name() { return "jabber"; }
 	virtual QString displayName() { return "Jabber/XMPP"; }
 
-	virtual QIcon icon();
-	virtual QString iconPath();
+	virtual KaduIcon icon();
 
 protected:
 	JabberProtocolFactory();

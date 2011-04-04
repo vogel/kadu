@@ -57,7 +57,7 @@ Nowa funkcjonalnosc - Dorregaray
 #include "notify/notification.h"
 #include "misc/misc.h"
 #include "debug.h"
-#include "icons-manager.h"
+#include "icons/icons-manager.h"
 
 #include "buddy-firewall-data.h"
 #include "firewall-notification.h"

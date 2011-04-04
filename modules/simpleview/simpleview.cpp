@@ -32,6 +32,7 @@
 #include "gui/widgets/status-buttons.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/main-window.h"
+#include "icons/kadu-icon.h"
 #include "misc/path-conversion.h"
 
 #include "modules/docking/docking.h"
@@ -50,7 +51,7 @@ SimpleView::SimpleView() :
 	MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/simpleview.ui"));
 	MainConfigurationWindow::registerUiHandler(SimpleViewConfigUi::instance());
 
-	DockAction = new QAction(IconsManager::instance()->iconByPath("view-refresh"), tr("Simple view"), this);
+	DockAction = new QAction(KaduIcon("view-refresh").icon(), tr("Simple view"), this);
 	DockAction->setCheckable(true);
 	connect(DockAction, SIGNAL(triggered(bool)), this, SLOT(simpleViewToggle(bool)));
 	DockingManager::instance()->registerModuleAction(DockAction);

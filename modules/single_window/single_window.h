@@ -2,7 +2,6 @@
 #define SINGLE_WINDOW_H
 
 #include <QtCore/QList>
-#include <QtGui/QIcon>
 #include <QtGui/QSplitter>
 #include <QtGui/QTabWidget>
 #include <QtGui/QMainWindow>
@@ -12,6 +11,8 @@
 #include "configuration/configuration-aware-object.h"
 #include "gui/widgets/chat-widget.h"
 #include "os/generic/compositing-aware-object.h"
+
+class KaduIcon;
 
 class SingleWindow : public QMainWindow, public ChatContainer
 {
@@ -43,7 +44,7 @@ public slots:
 	void onkaduKeyPressed(QKeyEvent *e);
 	void closeTab(int index);
 	void onIconChanged();
-	void onStatusPixmapChanged(const QIcon &icon);
+	void onStatusPixmapChanged(const KaduIcon &icon);
 
 };
 

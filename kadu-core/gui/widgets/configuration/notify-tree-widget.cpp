@@ -62,7 +62,7 @@ void NotifyTreeWidgetDelegate::paint(QPainter *painter, const QStyleOptionViewIt
 	foreach (Notifier *notifier, NotificationManager::instance()->notifiers())
 	{
 		if (notifiers.contains(notifier->name()))
-			notifier->icon().paint(painter, rect.left() + position + 4, rect.top() + (rect.height() - iconHeight) / 2, iconWidth, iconHeight);
+			notifier->icon().icon().paint(painter, rect.left() + position + 4, rect.top() + (rect.height() - iconHeight) / 2, iconWidth, iconHeight);
 		position += iconWidth + 4;
 	}
 

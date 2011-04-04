@@ -29,7 +29,6 @@
 
 #include <QtCore/QDateTime>
 #include <QtCore/QObject>
-#include <QtGui/QIcon>
 
 #include "exports.h"
 
@@ -58,6 +57,7 @@ class ProtocolFactory;
 class RosterService;
 class SearchService;
 class Status;
+class KaduIcon;
 
 class KADUAPI Protocol : public QObject
 {
@@ -125,13 +125,11 @@ public:
 
 	virtual QString statusPixmapPath() = 0;
 
-	virtual QIcon statusIcon(Status status);
-	virtual QString statusIconPath(const QString &statusType);
-	virtual QString statusIconFullPath(const QString &statusType);
-	virtual QIcon statusIcon(const QString &statusType);
-	QIcon statusIcon() { return statusIcon(CurrentStatus); }
+	KaduIcon statusIcon();
+	KaduIcon statusIcon(const Status &status);
+	KaduIcon statusIcon(const QString &statusType);
 
-	QIcon icon();
+	KaduIcon icon();
 
 	// TODO: workaround
 	void emitContactStatusChanged(Contact contact, Status oldStatus)

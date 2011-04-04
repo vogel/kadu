@@ -45,7 +45,7 @@
 
 #include "activate.h"
 #include "debug.h"
-#include "icons-manager.h"
+#include "icons/icons-manager.h"
 #include "hints-configuration-ui-handler.h"
 #include "hints_configuration_widget.h"
 
@@ -60,7 +60,7 @@
 #define BORDER_RADIUS 0
 
 HintManager::HintManager(QWidget *parent) :
-		Notifier("Hints", "Hints", "kadu_icons/notify-hints", parent), AbstractToolTip(),
+		Notifier("Hints", "Hints", KaduIcon("kadu_icons/notify-hints"), parent), AbstractToolTip(),
 		hint_timer(new QTimer(this)),
 		tipFrame(0), hints()
 {

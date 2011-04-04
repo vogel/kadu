@@ -40,7 +40,7 @@
 #include "identities/identity-manager.h"
 #include "protocols/protocols-manager.h"
 #include "url-handlers/url-handler-manager.h"
-#include "icons-manager.h"
+#include "icons/icons-manager.h"
 
 #include "gui/windows/gadu-wait-for-account-register-window.h"
 #include "server/gadu-server-register-account.h"
@@ -166,7 +166,7 @@ void GaduCreateAccountWidget::apply()
 {
 	if (NewPassword->text() != ReNewPassword->text())
 	{
-		MessageDialog::show("dialog-error", tr("Kadu"), tr("Error data typed in required fields.\n\n"
+		MessageDialog::show(KaduIcon("dialog-error"), tr("Kadu"), tr("Error data typed in required fields.\n\n"
 			"Passwords typed in both fields (\"Password\" and \"Retype Password\") "
 			"should be the same!"));
 		return;

@@ -48,8 +48,8 @@
 
 #include "core/core.h"
 #include "debug.h"
-#include "icons-manager.h"
 #include "html_document.h"
+#include "icons/kadu-icon.h"
 #include "misc/misc.h"
 #include "os/generic/url-opener.h"
 #include "url-handlers/mail-url-handler.h"
@@ -71,7 +71,7 @@ About::About(QWidget *parent) :
 	QWidget *texts = new QWidget(center);
 
 	QLabel *l_icon = new QLabel(texts);
-	l_icon->setPixmap(IconsManager::instance()->iconByPath("kadu_icons/kadu").pixmap(64, 64));
+	l_icon->setPixmap(KaduIcon("kadu_icons/kadu").icon().pixmap(64, 64));
 
 	QLabel *l_info = new QLabel(texts);
 	l_info->setBackgroundRole(texts->backgroundRole());

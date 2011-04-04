@@ -39,7 +39,7 @@
 
 #include "gui/windows/message-dialog.h"
 #include "gui/windows/jabber-wait-for-account-register-window.h"
-#include "icons-manager.h"
+#include "icons/icons-manager.h"
 #include "identities/identity-manager.h"
 #include "protocols/protocols-manager.h"
 #include "server/jabber-server-register-account.h"
@@ -221,7 +221,7 @@ bool JabberCreateAccountWidget::checkSSL()
 {
 	if (!QCA::isSupported("tls"))
 	{
-		MessageDialog::show("dialog-warning", tr("Kadu"), tr("Cannot enable secure connection. SSL/TLS plugin not found."), QMessageBox::Ok, this);
+		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Cannot enable secure connection. SSL/TLS plugin not found."), QMessageBox::Ok, this);
 		return false;
 	}
 	return true;
@@ -243,7 +243,7 @@ void JabberCreateAccountWidget::sslActivated(int i)
 		EncryptionMode->setCurrentIndex(EncryptionMode->findData(1));
 	else if (EncryptionMode->itemData(i) == 2 && !CustomHostPort->isChecked())
 	{
-		MessageDialog::show("dialog-warning", tr("Kadu"), tr("Legacy secure connection (SSL) is only available in combination with manual host/port."), QMessageBox::Ok, this);
+		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Legacy secure connection (SSL) is only available in combination with manual host/port."), QMessageBox::Ok, this);
 		EncryptionMode->setCurrentIndex(EncryptionMode->findData(1));
 	}
 }
@@ -285,7 +285,7 @@ void JabberCreateAccountWidget::apply()
 {
 	if (NewPassword->text() != ReNewPassword->text())
 	{
-		MessageDialog::show("dialog-warning", tr("Kadu"), tr("Invalid data entered in required fields.\n\n"
+		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Invalid data entered in required fields.\n\n"
 			"Password entered in both fields (\"New password\" and \"Retype password\") "
 			"should be the same!"), QMessageBox::Ok, this);
 		return;

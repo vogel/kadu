@@ -22,7 +22,6 @@
 
 #include "notify/notification-manager.h"
 #include "notify/notify-event.h"
-#include "icons-manager.h"
 
 #include "screenshot-notification.h"
 
@@ -56,7 +55,7 @@ void ScreenshotNotification::notifySizeLimit(int size)
 }
 
 ScreenshotNotification::ScreenshotNotification() :
-		Notification("ssSizeLimit", "kadu_icons/blocking")
+		Notification("ssSizeLimit", KaduIcon("kadu_icons/blocking"))
 {
 }
 

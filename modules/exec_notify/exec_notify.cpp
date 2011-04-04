@@ -48,7 +48,7 @@
 #include "notify/notification.h"
 #include "notify/notification-manager.h"
 
-#include "icons-manager.h"
+#include "icons/icons-manager.h"
 #include "parser/parser.h"
 #include "debug.h"
 
@@ -109,7 +109,7 @@ void ExecConfigurationWidget::switchToEvent(const QString &event)
 }
 
 ExecNotify::ExecNotify(QObject *parent) :
-		Notifier("Exec", QT_TRANSLATE_NOOP("@default", "Run command"), "external_modules/execnotify", parent)
+		Notifier("Exec", QT_TRANSLATE_NOOP("@default", "Run command"), KaduIcon("external_modules/execnotify"), parent)
 {
 	kdebugf();
 

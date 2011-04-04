@@ -31,7 +31,7 @@
 #include "accounts/account-manager.h"
 #include "gui/windows/message-dialog.h"
 #include "misc/misc.h"
-#include "icons-manager.h"
+#include "icons/icons-manager.h"
 
 #include "gadu-id-validator.h"
 #include "gui/widgets/token-widget.h"
@@ -152,13 +152,13 @@ void GaduUnregisterAccountWindow::unregisteringFinished(GaduServerUnregisterAcco
 
 	if (result)
 	{
-		MessageDialog::show("dialog-information", tr("Kadu"), tr("Unregistation was successful. Now you don't have any GG number :("), QMessageBox::Ok, parentWidget());
+		MessageDialog::show(KaduIcon("dialog-information"), tr("Kadu"), tr("Unregistation was successful. Now you don't have any GG number :("), QMessageBox::Ok, parentWidget());
 		AccountManager::instance()->removeAccountAndBuddies(MyAccount);
 
 		close();
 	}
 	else
-		MessageDialog::show("dialog-error", tr("Kadu"), tr("An error has occurred while unregistration. Please try again later."), QMessageBox::Ok, parentWidget());
+		MessageDialog::show(KaduIcon("dialog-error"), tr("Kadu"), tr("An error has occurred while unregistration. Please try again later."), QMessageBox::Ok, parentWidget());
 }
 
 void GaduUnregisterAccountWindow::keyPressEvent(QKeyEvent *e)

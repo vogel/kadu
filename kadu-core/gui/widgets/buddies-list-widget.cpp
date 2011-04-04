@@ -34,7 +34,7 @@
 #include "buddies/filter/buddy-name-filter.h"
 #include "buddies/filter/pending-messages-filter.h"
 #include "gui/widgets/buddies-list-view.h"
-#include "icons-manager.h"
+#include "icons/icons-manager.h"
 
 #include "buddies-list-widget.h"
 

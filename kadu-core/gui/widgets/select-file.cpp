@@ -25,8 +25,8 @@
 #include <QtGui/QLineEdit>
 #include <QtGui/QPushButton>
 
+#include "icons/kadu-icon.h"
 #include "misc/misc.h"
-#include "icons-manager.h"
 
 #include "select-file.h"
 
@@ -38,7 +38,7 @@ SelectFile::SelectFile(const QString &type, QWidget *parent)
 	LineEdit = new QLineEdit(this);
 	connect(LineEdit, SIGNAL(editingFinished()), this, SLOT(fileEdited()));
 
-	QPushButton *selectFile = new QPushButton(IconsManager::instance()->iconByPath("document-open"), QString(), this);
+	QPushButton *selectFile = new QPushButton(KaduIcon("document-open").icon(), QString(), this);
 	connect(selectFile, SIGNAL(clicked()), this, SLOT(selectFileClicked()));
 
 	layout->addWidget(LineEdit);
@@ -55,7 +55,7 @@ SelectFile::SelectFile(QWidget *parent)
 	LineEdit = new QLineEdit(this);
 	connect(LineEdit, SIGNAL(editingFinished()), this, SLOT(fileEdited()));
 
-	QPushButton *selectFile = new QPushButton(IconsManager::instance()->iconByPath("document-open"), QString(), this);
+	QPushButton *selectFile = new QPushButton(KaduIcon("document-open").icon(), QString(), this);
 	connect(selectFile, SIGNAL(clicked()), this, SLOT(selectFileClicked()));
 
 	layout->addWidget(LineEdit);

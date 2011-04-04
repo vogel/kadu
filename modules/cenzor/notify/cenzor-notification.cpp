@@ -20,7 +20,7 @@
 
 #include "notify/notification-manager.h"
 #include "notify/notify-event.h"
-#include "icons-manager.h"
+#include "icons/icons-manager.h"
 
 #include "cenzor-notification.h"
 
@@ -55,7 +55,7 @@ void CenzorNotification::notifyCenzored(const Chat &chat)
 }
 
 CenzorNotification::CenzorNotification(const Chat &chat) :
-		ChatNotification(chat, "cenzorNotification", QString())
+		ChatNotification(chat, "cenzorNotification", KaduIcon())
 {
 }
 

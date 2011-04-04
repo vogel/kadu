@@ -27,6 +27,7 @@
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
 #include "identities/identity-manager.h"
+#include "icons/kadu-icon.h"
 #include "misc/misc.h"
 #include "protocols/protocol.h"
 #include "protocols/protocols-manager.h"
@@ -350,33 +351,25 @@ QString AccountShared::statusDisplayName()
 	return status().displayName();
 }
 
-QIcon AccountShared::statusIcon()
+KaduIcon AccountShared::statusIcon()
 {
 	return statusIcon(status());
 }
 
-QString AccountShared::statusIconPath(const QString &statusType)
-{
-	if (ProtocolHandler)
-		return ProtocolHandler->statusIconFullPath(statusType);
-	else
-		return QString();
-}
-
-QIcon AccountShared::statusIcon(const QString &statusType)
-{
-	if (ProtocolHandler)
-		return ProtocolHandler->statusIcon(statusType);
-	else
-		return QIcon();
-}
-
-QIcon AccountShared::statusIcon(Status status)
+KaduIcon AccountShared::statusIcon(const Status &status)
 {
 	if (ProtocolHandler)
 		return ProtocolHandler->statusIcon(status);
 	else
-		return QIcon();
+		return KaduIcon();
+}
+
+KaduIcon AccountShared::statusIcon(const QString &statusType)
+{
+	if (ProtocolHandler)
+		return ProtocolHandler->statusIcon(statusType);
+	else
+		return KaduIcon();
 }
 
 void AccountShared::setPrivateStatus(bool isPrivate)

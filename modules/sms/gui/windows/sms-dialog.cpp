@@ -35,10 +35,10 @@
 #include "configuration/configuration-file.h"
 #include "gui/widgets/select-buddy-combo-box.h"
 #include "gui/windows/message-dialog.h"
+#include "icons/kadu-icon.h"
 #include "misc/misc.h"
 #include "plugins/plugins-manager.h"
 #include "debug.h"
-#include "icons-manager.h"
 
 #include "gui/windows/sms-progress-window.h"
 #include "mobile-number-manager.h"
@@ -138,7 +138,7 @@ void SmsDialog::createGui()
 	mainLayout->addWidget(buttons);
 
 	SendButton = new QPushButton(this);
-	SendButton->setIcon(IconsManager::instance()->iconByPath("go-next"));
+	SendButton->setIcon(KaduIcon("go-next").icon());
 	SendButton->setText(tr("&Send"));
 	SendButton->setDefault(true);
 	SendButton->setMaximumWidth(200);
@@ -233,7 +233,7 @@ void SmsDialog::sendSms()
 	{
 		if (config_file.readEntry("SMS", "SmsApp").isEmpty())
 		{
-			MessageDialog::show("dialog-warning", tr("Kadu"),
+			MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"),
 					tr("SMS application was not specified. Visit the configuration section"), QMessageBox::Ok, this);
 			kdebugm(KDEBUG_WARNING, "SMS application NOT specified. Exit.\n");
 			return;

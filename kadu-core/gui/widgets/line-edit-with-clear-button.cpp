@@ -24,7 +24,7 @@
 #include <QtGui/QStyle>
 
 #include "gui/widgets/line-edit-clear-button.h"
-#include "icons-manager.h"
+#include "icons/kadu-icon.h"
 
 #include "line-edit-with-clear-button.h"
 
@@ -102,9 +102,9 @@ void LineEditWithClearButton::updateClearButtonIcon(const QString& text)
 		return;
 
 	if (layoutDirection() == Qt::LeftToRight)
-		ClearFilterButton->setPixmap(IconsManager::instance()->iconByPath("edit-clear-locationbar-rtl").pixmap(16, 16));
+		ClearFilterButton->setPixmap(KaduIcon("edit-clear-locationbar-rtl").icon().pixmap(16, 16));
 	else
-		ClearFilterButton->setPixmap(IconsManager::instance()->iconByPath("edit-clear-locationbar-ltr").pixmap(16, 16));
+		ClearFilterButton->setPixmap(KaduIcon("edit-clear-locationbar-ltr").icon().pixmap(16, 16));
 
 	ClearFilterButton->setVisible(text.length());
 }

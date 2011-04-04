@@ -50,6 +50,7 @@
 #include "gui/widgets/modal-configuration-widget.h"
 #include "gui/widgets/protocols-combo-box.h"
 #include "gui/windows/message-dialog.h"
+#include "icons/kadu-icon.h"
 #include "misc/misc.h"
 #include "model/actions-proxy-model.h"
 #include "model/roles.h"
@@ -59,7 +60,6 @@
 #include "protocols/filter/can-register-protocol-filter.h"
 
 #include "activate.h"
-#include "icons-manager.h"
 
 #include "your-accounts.h"
 
@@ -118,10 +118,10 @@ void YourAccounts::createGui()
 	QAction *separator = new QAction(this);
 	separator->setSeparator(true);
 
-	AddExistingAccountAction = new QAction(IconsManager::instance()->iconByPath("contact-new"), tr("Add existing account"), this);
-	CreateNewAccountAction = new QAction(IconsManager::instance()->iconByPath("system-users"), tr("Create new account"), this);
+	AddExistingAccountAction = new QAction(KaduIcon("contact-new").icon(), tr("Add existing account"), this);
+	CreateNewAccountAction = new QAction(KaduIcon("system-users").icon(), tr("Create new account"), this);
 
-	ActionsProxyModel* actionsModel = new ActionsProxyModel(this);
+	ActionsProxyModel *actionsModel = new ActionsProxyModel(this);
 	actionsModel->addAfterAction(separator, ActionsProxyModel::NotVisibleWithEmptySourceModel);
 	actionsModel->addAfterAction(AddExistingAccountAction);
 	actionsModel->addAfterAction(CreateNewAccountAction);

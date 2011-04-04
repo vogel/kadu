@@ -19,10 +19,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "icons/kadu-icon.h"
 #include "misc/misc.h"
 #include "status/status-type.h"
 #include "status/status-type-manager.h"
-#include "icons-manager.h"
 
 #include "gui/widgets/jabber-contact-personal-info-widget.h"
 #include "gui/widgets/jabber-add-account-widget.h"
@@ -52,14 +52,9 @@ GTalkProtocolFactory::GTalkProtocolFactory()
 {
 }
 
-QIcon GTalkProtocolFactory::icon()
+KaduIcon GTalkProtocolFactory::icon()
 {
-	return IconsManager::instance()->iconByPath("protocols/xmpp/brand_name/GmailGoogleTalk");
-}
-
-QString GTalkProtocolFactory::iconPath()
-{
-	return IconsManager::instance()->iconPath("protocols/xmpp/brand_name/GmailGoogleTalk", "16x16");
+	return KaduIcon("protocols/xmpp/brand_name/GmailGoogleTalk", "16x16");
 }
 
 QString GTalkProtocolFactory::idLabel()

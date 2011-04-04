@@ -54,7 +54,7 @@ void AutostatusActions::registerActions()
 	AutostatusActionDescription = new ActionDescription(this,
 		ActionDescription::TypeMainMenu, "autostatusAction",
 		this, SLOT(autostatusActionActivated(QAction *, bool)),
-		QString(), tr("&Autostatus"), true
+		KaduIcon(), tr("&Autostatus"), true
 	);
 	Core::instance()->kaduWindow()->insertMenuActionDescription(AutostatusActionDescription, KaduWindow::MenuKadu, 6);
 }

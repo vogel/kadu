@@ -109,7 +109,7 @@ void AccountBuddyListWidget::startImportTransfer()
 
 	if (!CurrentAccount.protocolHandler()->isConnected())
 	{
-		MessageDialog::show("dialog-error", tr("Kadu"), tr("Cannot import user list from server in offline mode"));
+		MessageDialog::show(KaduIcon("dialog-error"), tr("Kadu"), tr("Cannot import user list from server in offline mode"));
 		return;
 	}
 
@@ -128,7 +128,7 @@ void AccountBuddyListWidget::startExportTransfer()
 
 	if (!CurrentAccount.protocolHandler()->isConnected())
 	{
-		MessageDialog::show("dialog-error", tr("Kadu"), tr("Cannot export user list to server in offline mode"));
+		MessageDialog::show(KaduIcon("dialog-error"), tr("Kadu"), tr("Cannot export user list to server in offline mode"));
 		kdebugf2();
 		return;
 	}
@@ -150,7 +150,7 @@ void AccountBuddyListWidget::buddiesListImported(bool ok, const BuddyList &buddi
 	ImportButton->setEnabled(true);
 	if (!ok)
 	{
-		int result = MessageDialog::exec("dialog-error", tr("Kadu"),
+		int result = MessageDialog::exec(KaduIcon("dialog-error"), tr("Kadu"),
 				 tr("Contacts list couldn't be downloaded. Please check that account %0 is connected.").arg(CurrentAccount.id()),
 				QMessageBox::Cancel | QMessageBox::Retry);
 
@@ -171,9 +171,9 @@ void AccountBuddyListWidget::buddiesListExported(bool ok)
 	kdebugf();
 
 	if (ok)
-		MessageDialog::show("dialog-information", tr("Kadu"), tr("Your userlist has been successfully exported to server"));
+		MessageDialog::show(KaduIcon("dialog-information"), tr("Kadu"), tr("Your userlist has been successfully exported to server"));
 	else
-		MessageDialog::show("dialog-error", tr("Kadu"), tr("The application encountered an internal error\nThe export was unsuccessful"));
+		MessageDialog::show(KaduIcon("dialog-error"), tr("Kadu"), tr("The application encountered an internal error\nThe export was unsuccessful"));
 
 	ExportButton->setEnabled(true);
 
@@ -201,7 +201,7 @@ void AccountBuddyListWidget::restoreFromFile()
 
 		if (list.isEmpty())
 		{
-			MessageDialog::exec("dialog-error", tr("Kadu"),
+			MessageDialog::exec(KaduIcon("dialog-error"), tr("Kadu"),
 							tr("Contacts list couldn't be imported. File %0 doesn't contain correct contacts list.").arg(fileName),
 							QMessageBox::Cancel | QMessageBox::Retry);
 			return;

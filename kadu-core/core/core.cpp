@@ -48,6 +48,7 @@
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/search-window.h"
+#include "icons/kadu-icon.h"
 #include "misc/misc.h"
 #include "notify/notification-manager.h"
 #include "plugins/plugins-manager.h"
@@ -61,7 +62,7 @@
 #include "url-handlers/url-handler-manager.h"
 #include "activate.h"
 #include "debug.h"
-#include "icons-manager.h"
+#include "icons/icons-manager.h"
 #include "kadu-config.h"
 #include "updates.h"
 
@@ -123,7 +124,7 @@ Core::~Core()
 	PluginsManager::instance()->deactivatePlugins();
 
 #ifdef Q_OS_MAC
-	setIcon(IconsManager::instance()->iconByPath("kadu_icons/kadu"));
+	setIcon(KaduIcon("kadu_icons/kadu").icon());
 #endif // Q_OS_MAC
 
 	MainConfiguration::destroyInstance();
@@ -348,7 +349,7 @@ void Core::init()
 
 	new Updates(this);
 
-	setIcon(IconsManager::instance()->iconByPath(QLatin1String("protocols/common/offline")));
+	setIcon(KaduIcon(QLatin1String("protocols/common/offline")));
 	connect(IconsManager::instance(), SIGNAL(themeChanged()), this, SLOT(statusUpdated()));
 	QTimer::singleShot(15000, this, SLOT(deleteOldConfigurationFiles()));
 
@@ -504,7 +505,7 @@ KaduWindow * Core::kaduWindow()
 	return Window;
 }
 
-void Core::setIcon(const QIcon &icon)
+void Core::setIcon(const KaduIcon &icon)
 {
 	bool blocked = false;
 	emit settingMainIconBlocked(blocked);
@@ -512,8 +513,8 @@ void Core::setIcon(const QIcon &icon)
 	if (!blocked)
 	{
 		if (Window)
-			Window->setWindowIcon(icon);
-		QApplication::setWindowIcon(icon);
+			Window->setWindowIcon(icon.icon());
+		QApplication::setWindowIcon(icon.icon());
 		emit mainIconChanged(icon);
 	}
 }

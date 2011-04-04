@@ -19,8 +19,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "icons/kadu-icon.h"
 #include "chat/chat-details-simple.h"
-#include "icons-manager.h"
 
 #include "chat-type-simple.h"
 
@@ -102,9 +102,9 @@ QString ChatTypeSimple::displayNamePlural() const
  *
  * Icon for ChatTypeSimple is 'internet-group-chat'.
  */
-QIcon ChatTypeSimple::icon() const
+KaduIcon ChatTypeSimple::icon() const
 {
-	return IconsManager::instance()->iconByPath("internet-group-chat");
+	return KaduIcon("internet-group-chat");
 }
 
 /**

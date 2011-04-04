@@ -25,9 +25,9 @@
 #include <QtCore/QtAlgorithms>
 #include <QtGui/QApplication>
 
+#include "icons/kadu-icon.h"
 #include "status/status-group-manager.h"
 #include "status/status-type.h"
-#include "icons-manager.h"
 
 #include "status-type-manager.h"
 
@@ -105,47 +105,17 @@ StatusType * StatusTypeManager::statusType(const QString& name)
 	return 0;
 }
 
-QString StatusTypeManager::statusIconPath(const QString &protocol, const QString &type, bool description, bool mobile)
+KaduIcon StatusTypeManager::statusIcon(const QString &protocol, const QString &type, bool description, bool mobile)
 {
 	StatusType *statusType = this->statusType(type);
 	if (!statusType)
-		return QString();
-
-	return QString("protocols/%1/%2%3%4")
-			.arg(protocol)
-			.arg(statusType->iconName())
-			.arg(description ? "_d" : QString())
-			.arg(mobile ? "_m" : QString());
-}
-
-QString StatusTypeManager::statusIconFullPath(const QString &protocol, const QString &type, bool description, bool mobile)
-{
-	StatusType *statusType = this->statusType(type);
-	if (!statusType)
-		return QString();
+		return KaduIcon();
 
 	QString iconName = QString("protocols/%1/%2%3%4")
 			.arg(protocol)
 			.arg(statusType->iconName())
-			.arg(description ? "_d" : QString())
-			.arg(mobile ? "_m" : QString());
+			.arg(description ? QLatin1String("_d") : QString())
+			.arg(mobile ? QLatin1String("_m") : QString());
 
-	return IconsManager::instance()->iconPath(iconName, "16x16");
-}
-
-QIcon StatusTypeManager::statusIcon(const QString &protocol, const QString &type, bool description, bool mobile)
-{
-	StatusType *statusType = this->statusType(type);
-	if (!statusType)
-		return QIcon();
-
-	QString iconName = QString("protocols/%1/%2%3%4")
-			.arg(protocol)
-			.arg(statusType->iconName())
-			.arg(description ? "_d" : QString())
-			.arg(mobile ? "_m" : QString());
-
-	QIcon icon = IconsManager::instance()->iconByPath(iconName);
-
-	return icon;
+	return KaduIcon(iconName, "16x16");
 }

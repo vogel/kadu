@@ -31,7 +31,7 @@
 #include "gui/windows/message-dialog.h"
 #include "misc/misc.h"
 #include "url-handlers/url-handler-manager.h"
-#include "icons-manager.h"
+#include "icons/icons-manager.h"
 
 #include "gui/widgets/token-widget.h"
 #include "server/gadu-server-remind-password.h"
@@ -138,11 +138,11 @@ void GaduRemindPasswordWindow::remindPasswordFinished(GaduServerRemindPassword *
 
 	if (result)
 	{
-		MessageDialog::show("dialog-information", tr("Kadu"), tr("Your password has been send on your email"), QMessageBox::Ok, parentWidget());
+		MessageDialog::show(KaduIcon("dialog-information"), tr("Kadu"), tr("Your password has been send on your email"), QMessageBox::Ok, parentWidget());
 		close();
 	}
 	else
-		MessageDialog::show("dialog-error", tr("Kadu"), tr("Error during remind password"), QMessageBox::Ok, parentWidget());
+		MessageDialog::show(KaduIcon("dialog-error"), tr("Kadu"), tr("Error during remind password"), QMessageBox::Ok, parentWidget());
 }
 
 void GaduRemindPasswordWindow::keyPressEvent(QKeyEvent *e)

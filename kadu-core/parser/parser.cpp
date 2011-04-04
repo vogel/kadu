@@ -35,13 +35,14 @@
 #include "configuration/configuration-file.h"
 #include "contacts/contact.h"
 #include "parser/parser-token.h"
+#include "icons/kadu-icon.h"
 #include "misc/misc.h"
 #include "status/status-type.h"
 #include "status/status-type-manager.h"
 
 #include "debug.h"
 #include "html_document.h"
-#include "icons-manager.h"
+#include "icons/icons-manager.h"
 
 #include "parser.h"
 
@@ -217,7 +218,7 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 					{
 						StatusContainer *container = contact.contactAccount().statusContainer();
 						if (container)
-							pe.content = container->statusIconPath(contact.currentStatus().type());
+							pe.content = container->statusIcon(contact.currentStatus().type()).path();
 					}
 					break;
 				case 'd':
@@ -502,10 +503,10 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 						if (pe.content.contains(':'))
 						{
 							QStringList parts = pe.content.split(':');
-							pe.content = webKitPath(IconsManager::instance()->iconPath(parts[0], parts[1]));
+							pe.content = KaduIcon(parts[0], parts[1]).webKitPath();
 						}
 						else
-							pe.content = webKitPath(IconsManager::instance()->iconPath(pe.content));
+							pe.content = KaduIcon(pe.content).webKitPath();
 						parseStack.push_back(pe);
 						break;
 					}

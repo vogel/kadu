@@ -46,9 +46,9 @@
 #include "gui/windows/group-properties-window.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-dialog.h"
+#include "icons/kadu-icon.h"
 
 #include "debug.h"
-#include "icons-manager.h"
 
 #include "group-tab-bar.h"
 
@@ -156,11 +156,11 @@ void GroupTabBar::updateAutoGroupTab(bool oldShowAllGroup)
 		AutoGroupTabPosition = config_file.readNumEntry("Look", "AllGroupTabPosition", 0);
 
 		if (oldAutoGroupTabPosition == -1)
-			insertTab(AutoGroupTabPosition, IconsManager::instance()->iconByPath("x-office-address-book"), tr("All"));
+			insertTab(AutoGroupTabPosition, KaduIcon("x-office-address-book").icon(), tr("All"));
 		else
 		{
 			moveTab(oldAutoGroupTabPosition, AutoGroupTabPosition);
-			setTabIcon(AutoGroupTabPosition, IconsManager::instance()->iconByPath("x-office-address-book"));
+			setTabIcon(AutoGroupTabPosition, KaduIcon("x-office-address-book").icon());
 			setTabText(AutoGroupTabPosition, tr("All"));
 		}
 	}
@@ -396,7 +396,7 @@ void GroupTabBar::renameGroup()
 
 void GroupTabBar::deleteGroup()
 {
-	if (currentGroup && MessageDialog::ask("dialog-warning", tr("Kadu"), tr("Selected group:\n%0 will be deleted. Are you sure?").arg(currentGroup.name()), Core::instance()->kaduWindow()))
+	if (currentGroup && MessageDialog::ask(KaduIcon("dialog-warning"), tr("Kadu"), tr("Selected group:\n%0 will be deleted. Are you sure?").arg(currentGroup.name()), Core::instance()->kaduWindow()))
 		GroupManager::instance()->removeItem(currentGroup);
 }
 

@@ -10,6 +10,7 @@
 
 class GrowlNotifier;
 class GrowlNotifyConfigurationWidget;
+
 class GrowlNotify : public Notifier
 {
 	Q_OBJECT

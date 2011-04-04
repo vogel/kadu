@@ -20,10 +20,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "icons/kadu-icon.h"
 #include "misc/misc.h"
 #include "status/status-type.h"
 #include "status/status-type-manager.h"
-#include "icons-manager.h"
 
 #include "gui/widgets/jabber-contact-personal-info-widget.h"
 #include "gui/widgets/jabber-add-account-widget.h"
@@ -61,14 +61,9 @@ Protocol * FacebookProtocolFactory::createProtocolHandler(Account account)
 	return result;
 }
 
-QIcon FacebookProtocolFactory::icon()
+KaduIcon FacebookProtocolFactory::icon()
 {
-	return IconsManager::instance()->iconByPath("protocols/xmpp/brand_name/facebook");
-}
-
-QString FacebookProtocolFactory::iconPath()
-{
-	return IconsManager::instance()->iconPath("protocols/xmpp/brand_name/facebook", "16x16");
+	return KaduIcon("protocols/xmpp/brand_name/facebook", "16x16");
 }
 
 QString FacebookProtocolFactory::idLabel()

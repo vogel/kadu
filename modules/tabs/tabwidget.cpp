@@ -30,7 +30,7 @@
 
 #include "configuration/configuration-file.h"
 #include "gui/hot-key.h"
-#include "icons-manager.h"
+#include "icons/kadu-icon.h"
 #include "misc/misc.h"
 
 #include "activate.h"
@@ -64,13 +64,13 @@ TabWidget::TabWidget()
 
 	//przycisk otwarcia nowej karty pokazywany w lewym gornym rogu
 	OpenChatButton = new QToolButton(this);
-	OpenChatButton->setIcon(IconsManager::instance()->iconByPath("kadu_icons/chat"));
+	OpenChatButton->setIcon(KaduIcon("kadu_icons/chat").icon());
 	OpenChatButton->setAutoRaise(true);
 	connect(OpenChatButton, SIGNAL(clicked()), SLOT(newChat()));
 
 	//przycisk zamkniecia aktywnej karty znajdujacy sie w prawym gornym rogu
 	CloseChatButton = new QToolButton(this);
-	CloseChatButton->setIcon(IconsManager::instance()->iconByPath("kadu_icons/tab-remove"));
+	CloseChatButton->setIcon(KaduIcon("kadu_icons/tab-remove").icon());
 	CloseChatButton->setAutoRaise(true);
 	connect(CloseChatButton, SIGNAL(clicked()), SLOT(deleteTab()));
 }
@@ -293,8 +293,8 @@ void TabWidget::configurationUpdated()
 {
 	triggerCompositingStateChanged();
 
-	OpenChatButton->setIcon(IconsManager::instance()->iconByPath("internet-group-chat"));
-	CloseChatButton->setIcon(IconsManager::instance()->iconByPath("kadu_icons/tab-remove"));
+	OpenChatButton->setIcon(KaduIcon("internet-group-chat").icon());
+	CloseChatButton->setIcon(KaduIcon("kadu_icons/tab-remove").icon());
 
 	setTabsClosable(config_file.readBoolEntry("Tabs", "CloseButtonOnTab"));
 	config_oldStyleClosing = config_file.readBoolEntry("Tabs", "OldStyleClosing");

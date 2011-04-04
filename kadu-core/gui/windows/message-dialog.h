@@ -29,6 +29,8 @@
 
 #include <QtGui/QMessageBox>
 
+#include "icons/kadu-icon.h"
+
 #include "exports.h"
 
 class QBoxLayout;
@@ -36,11 +38,11 @@ class QLabel;
 
 namespace MessageDialog
 {
-	void show(const QString &iconName, const QString &title, const QString &text, QMessageBox::StandardButtons buttons = QMessageBox::Ok,
+	void show(const KaduIcon &icon, const QString &title, const QString &text, QMessageBox::StandardButtons buttons = QMessageBox::Ok,
 			  QWidget *parent = 0, Qt::WindowFlags f = Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint);
-	int exec(const QString &iconName, const QString &title, const QString &text, QMessageBox::StandardButtons buttons = QMessageBox::Ok,
+	int exec(const KaduIcon &icon, const QString &title, const QString &text, QMessageBox::StandardButtons buttons = QMessageBox::Ok,
 			  QWidget *parent = 0, Qt::WindowFlags f = Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint);
-	bool ask(const QString &iconName, const QString &title, const QString &text,
+	bool ask(const KaduIcon &icon, const QString &title, const QString &text,
 			 QWidget *parent = 0, Qt::WindowFlags f = Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint);
 }
 

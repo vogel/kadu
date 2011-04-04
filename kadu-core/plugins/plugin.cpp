@@ -138,7 +138,7 @@ bool Plugin::activate()
 		if (!PluginLoader->load())
 		{
 			QString err = PluginLoader->errorString();
-			MessageDialog::show("dialog-warning", tr("Kadu"), tr("Cannot load %1 plugin library.:\n%2").arg(Name, err));
+			MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Cannot load %1 plugin library.:\n%2").arg(Name, err));
 			kdebugm(KDEBUG_ERROR, "cannot load %s because of: %s\n", qPrintable(Name), qPrintable(err));
 			kdebugf2();
 			return false;
@@ -147,7 +147,7 @@ bool Plugin::activate()
 		PluginObject = qobject_cast<GenericPlugin *>(PluginLoader->instance());
 		if (!PluginObject)
 		{
-			MessageDialog::show("dialog-warning", tr("Kadu"), tr("Cannot find required object in module %1.\n"
+			MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Cannot find required object in module %1.\n"
 					"Maybe it's not Kadu-compatible plugin.").arg(Name));
 			delete PluginLoader;
 			PluginLoader = 0;
@@ -164,7 +164,7 @@ bool Plugin::activate()
 		if (!PluginLibrary->load())
 		{
 			QString err = PluginLibrary->errorString();
-			MessageDialog::show("dialog-warning", tr("Kadu"), tr("Cannot load %1 module library.:\n%2").arg(Name, err));
+			MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Cannot load %1 module library.:\n%2").arg(Name, err));
 			kdebugm(KDEBUG_ERROR, "cannot load %s because of: %s\n", qPrintable(Name), qPrintable(err));
 			delete PluginLibrary;
 			PluginLibrary = 0;
@@ -176,7 +176,7 @@ bool Plugin::activate()
 		Close = (CloseModuleFunc *)PluginLibrary->resolve(qPrintable(Name + "_close"));
 		if (!init || !Close)
 		{
-			MessageDialog::show("dialog-warning", tr("Kadu"), tr("Cannot find required functions in module %1.\n"
+			MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Cannot find required functions in module %1.\n"
 					"Maybe it's not Kadu-compatible Module.").arg(Name));
 			delete PluginLibrary;
 			PluginLibrary = 0;
@@ -197,7 +197,7 @@ bool Plugin::activate()
 
 	if (res != 0)
 	{
-		MessageDialog::show("dialog-warning", tr("Kadu"), tr("Module initialization routine for %1 failed.").arg(Name));
+		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Module initialization routine for %1 failed.").arg(Name));
 
 		delete PluginLibrary;
 		PluginLibrary = 0;

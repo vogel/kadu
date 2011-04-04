@@ -31,7 +31,7 @@
 #include <QtGui/QListWidget>
 
 #include "debug.h"
-#include "icons-manager.h"
+#include "icons/kadu-icon.h"
 #include "misc/misc.h"
 
 #include "path-list-edit.h"
@@ -88,9 +88,9 @@ PathListEditWindow::PathListEditWindow(const QStringList &pathList, QWidget *par
 	Layout->addWidget(PathListWidget, 0, 0, 4, 1);
 
 
-	QPushButton *add = new QPushButton(IconsManager::instance()->iconByPath("list-add"), tr("Add"), this);
-	QPushButton *change = new QPushButton(IconsManager::instance()->iconByPath("view-refresh"), tr("Change"), this);
-	QPushButton *remove = new QPushButton(IconsManager::instance()->iconByPath("list-remove"), tr("Remove"), this);
+	QPushButton *add = new QPushButton(KaduIcon("list-add").icon(), tr("Add"), this);
+	QPushButton *change = new QPushButton(KaduIcon("view-refresh").icon(), tr("Change"), this);
+	QPushButton *remove = new QPushButton(KaduIcon("list-remove").icon(), tr("Remove"), this);
 
 	Layout->addWidget(add, 0, 1);
 	Layout->addWidget(change, 1, 1);

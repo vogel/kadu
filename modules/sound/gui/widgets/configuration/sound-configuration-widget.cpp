@@ -26,7 +26,7 @@
 #include "configuration/configuration-file.h"
 #include "gui/widgets/configuration/notify-group-box.h"
 #include "gui/widgets/select-file.h"
-#include "icons-manager.h"
+#include "icons/kadu-icon.h"
 
 #include "sound-manager.h"
 
@@ -35,7 +35,7 @@
 SoundConfigurationWidget::SoundConfigurationWidget(QWidget *parent) :
 		NotifierConfigurationWidget(parent), CurrentNotifyEvent(QString())
 {
-	QPushButton *testButton = new QPushButton(IconsManager::instance()->iconByPath("external_modules/mediaplayer-media-playback-play"),QString(), this);
+	QPushButton *testButton = new QPushButton(KaduIcon("external_modules/mediaplayer-media-playback-play").icon(), QString(), this);
 	connect(testButton, SIGNAL(clicked()), this, SLOT(test()));
 
 	SoundFileSelectFile = new SelectFile("audio", this);

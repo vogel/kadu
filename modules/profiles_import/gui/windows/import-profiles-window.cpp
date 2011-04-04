@@ -116,7 +116,7 @@ void ImportProfilesWindow::accept()
 		if (importer.import(IdentityManager::instance()->byName(profile.Name, true)))
 		{
 			ProfileDataManager::markImported(profile.Name);
-			MessageDialog::exec("dialog-information", tr("Import external profile..."), tr("Profile %1 successfully imported!")
+			MessageDialog::exec(KaduIcon("dialog-information"), tr("Import external profile..."), tr("Profile %1 successfully imported!")
 					.arg(profile.Name));
 
 			if (importHistory && !HistoryImporterManager::instance()->containsImporter(path + "/kadu/history/"))
@@ -128,7 +128,7 @@ void ImportProfilesWindow::accept()
 			}
 		}
 		else
-			MessageDialog::exec("dialog-warning", tr("Import profile..."), tr("Unable to import profile: %1: %2")
+			MessageDialog::exec(KaduIcon("dialog-warning"), tr("Import profile..."), tr("Unable to import profile: %1: %2")
 					.arg(profile.Name)
 					.arg(importer.errorMessage()));
 	}

@@ -52,13 +52,13 @@ ProfilesImportActions::ProfilesImportActions() :
 	if (!ProfileDataManager::readProfileData().isEmpty())
 	{
 		ImportProfiles = new ActionDescription(this, ActionDescription::TypeGlobal, "import_profiles",
-				this, SLOT(importProfilesActionActivated(QAction*, bool)), QString(),
+				this, SLOT(importProfilesActionActivated(QAction*, bool)), KaduIcon(),
 				tr("Import profiles..."), false);
 		Core::instance()->kaduWindow()->insertMenuActionDescription(ImportProfiles, KaduWindow::MenuTools);
 	}
 
 	ImportExternalProfile = new ActionDescription(this, ActionDescription::TypeGlobal, "import_external_profile",
-			this, SLOT(importExternalProfileActionActivated(QAction*, bool)), QString(),
+			this, SLOT(importExternalProfileActionActivated(QAction*, bool)), KaduIcon(),
 			tr("Import external profile..."), false);
 	Core::instance()->kaduWindow()->insertMenuActionDescription(ImportExternalProfile, KaduWindow::MenuTools);
 }

@@ -24,6 +24,7 @@
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
 #include "configuration/main-configuration.h"
+#include "icons/kadu-icon.h"
 #include "gui/widgets/status-menu.h"
 #include "protocols/protocol.h"
 #include "status/status-container.h"
@@ -53,7 +54,7 @@ void StatusButton::createGui()
 
 void StatusButton::updateStatus()
 {
-	setIcon(MyStatusContainer->statusIcon());
+	setIcon(MyStatusContainer->statusIcon().icon());
 
 	if (DisplayStatusName)
 	{

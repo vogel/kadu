@@ -19,7 +19,7 @@
 
 #include "notify/notification-manager.h"
 #include "notify/notify-event.h"
-#include "icons-manager.h"
+#include "icons/icons-manager.h"
 
 #include "encryption-ng-notification.h"
 
@@ -111,7 +111,7 @@ void EncryptionNgNotification::notifyEncryptionError(const QString &error)
 }
 
 EncryptionNgNotification::EncryptionNgNotification(const QString &name) :
-		Notification(name, "security-high")
+		Notification(name, KaduIcon("security-high"))
 {
 }
 
