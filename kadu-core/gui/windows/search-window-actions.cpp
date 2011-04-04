@@ -44,42 +44,42 @@ SearchWindowActions::SearchWindowActions()
 	FirstSearch = new ActionDescription(this,
 		ActionDescription::TypeSearch, "firstSearchAction",
 		this, SLOT(firstSearchActionActivated(QAction*)),
-		"edit-find", tr("&Search")
+		KaduIcon("edit-find"), tr("&Search")
 	);
 	connect(FirstSearch, SIGNAL(actionCreated(Action*)), this, SLOT(firstSearchActionCreated(Action*)));
 
 	NextResults = new ActionDescription(this,
 		ActionDescription::TypeSearch, "nextResultsAction",
 		this, SLOT(nextResultsActionActivated(QAction*)),
-		"go-next", tr("&Next results")
+		KaduIcon("go-next"), tr("&Next results")
 	);
 	connect(NextResults, SIGNAL(actionCreated(Action*)), this, SLOT(nextResultsActionCreated(Action*)));
 
 	StopSearch = new ActionDescription(this,
 		ActionDescription::TypeSearch, "stopSearchAction",
 		this, SLOT(stopSearchActionActivated(QAction*)),
-		"dialog-cancel", tr("Stop")
+		KaduIcon("dialog-cancel"), tr("Stop")
 	);
 	connect(StopSearch, SIGNAL(actionCreated(Action*)), this, SLOT(stopSearchActionCreated(Action*)));
 
 	ClearResults = new ActionDescription(this,
 		ActionDescription::TypeSearch, "clearSearchAction",
 		this, SLOT(clearResultsActionActivated(QAction*)),
-		"edit-clear", tr("Clear results")
+		KaduIcon("edit-clear"), tr("Clear results")
 	);
 	connect(ClearResults, SIGNAL(actionCreated(Action*)), this, SLOT(clearResultsActionCreated(Action*)));
 
 	AddFound = new ActionDescription(this,
 		ActionDescription::TypeSearch, "addSearchedAction",
 		this, SLOT(addFoundActionActivated(QAction*)),
-		"contact-new", tr("Add selected user")
+		KaduIcon("contact-new"), tr("Add selected user")
 	);
 	connect(AddFound, SIGNAL(actionCreated(Action*)), this, SLOT(actionsFoundActionCreated(Action*)));
 
 	ChatFound = new ActionDescription(this,
 		ActionDescription::TypeSearch, "chatSearchedAction",
 		this, SLOT(chatFoundActionActivated(QAction*)),
-		"internet-group-chat", tr("&Chat")
+		KaduIcon("internet-group-chat"), tr("&Chat")
 	);
 	connect(ChatFound, SIGNAL(actionCreated(Action*)), this, SLOT(actionsFoundActionCreated(Action*)));
 }

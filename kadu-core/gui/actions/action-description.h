@@ -26,6 +26,7 @@
 #include <QtCore/QObject>
 
 #include "configuration/configuration-aware-object.h"
+#include "misc/kadu-icon.h"
 
 class Action;
 class ActionDataSource;
@@ -60,12 +61,12 @@ private:
 	QString Name;
 	QObject *Object;
 	const char *Slot;
-	QString IconPath;
+	KaduIcon Icon;
 	QString Text;
-	QString ShortcutItem;
-	Qt::ShortcutContext ShortcutContext;
 	bool Checkable;
 	ActionBoolCallback EnableCallback;
+	QString ShortcutItem;
+	Qt::ShortcutContext ShortcutContext;
 
 private slots:
 	void actionDestroyed(QObject *action);
@@ -75,8 +76,8 @@ protected:
 	virtual void configurationUpdated();
 
 public:
-	ActionDescription(QObject *parent, ActionType Type, const QString &Name, QObject *Object, const char *Slot,
-		const QString &iconPath, const QString &Text, bool Checkable = false, ActionBoolCallback enableCallback = 0);
+	ActionDescription(QObject *parent, ActionType type, const QString &name, QObject *object, const char *slot,
+			const KaduIcon &icon, const QString &text, bool checkable = false, ActionBoolCallback enableCallback = 0);
 	virtual ~ActionDescription();
 
 	const QString & name() const { return Name; }
@@ -85,7 +86,7 @@ public:
 	Action * action(ActionDataSource *dataSource);
 
 	const QString & text() const { return Text; }
-	const QString & iconPath() const { return IconPath; }
+	const KaduIcon & icon() const { return Icon; }
 
 	void setShortcut(QString configItem, Qt::ShortcutContext context = Qt::WindowShortcut);
 

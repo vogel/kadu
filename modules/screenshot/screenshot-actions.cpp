@@ -81,7 +81,7 @@ ScreenshotActions::ScreenshotActions() :
 	ScreenShotActionDescription = new ActionDescription(this,
 			ActionDescription::TypeChat, "ScreenShotAction",
 			this, SLOT(screenshotActionActivated(QAction *, bool)),
-			"external_modules/screenshot-camera-photo",
+			KaduIcon("external_modules/screenshot-camera-photo"),
 			tr("ScreenShot"), false,
 			disableNoChatImageService
 	);

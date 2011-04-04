@@ -157,42 +157,42 @@ MediaPlayer::MediaPlayer()
 	enableMediaPlayerStatuses = new ActionDescription(
 		this, ActionDescription::TypeGlobal, "enableMediaPlayerStatusesAction",
 		this, SLOT(mediaPlayerStatusChangerActivated(QAction *, bool)),
-		"external_modules/mediaplayer-media-playback-play", tr("Enable MediaPlayer Statuses"), true
+		KaduIcon("external_modules/mediaplayer-media-playback-play"), tr("Enable MediaPlayer Statuses"), true
 	);
 	mediaPlayerMenu = new ActionDescription(
 		this, ActionDescription::TypeChat, "mediaplayer_button",
 		this, SLOT(mediaPlayerMenuActivated(QAction *, bool)),
-		"external_modules/mediaplayer", tr("MediaPlayer"), false
+		KaduIcon("external_modules/mediaplayer"), tr("MediaPlayer"), false
 	);
 	playAction = new ActionDescription(
 		this, ActionDescription::TypeChat, "mediaplayer_play",
 		this, SLOT(playPause()),
-		"external_modules/mediaplayer-media-playback-play", tr("Play"), false
+		KaduIcon("external_modules/mediaplayer-media-playback-play"), tr("Play"), false
 	);
 	stopAction = new ActionDescription(
 		this, ActionDescription::TypeChat, "mediaplayer_stop",
 		this, SLOT(stop()),
-		"external_modules/mediaplayer-media-playback-stop", tr("Stop"), false
+		KaduIcon("external_modules/mediaplayer-media-playback-stop"), tr("Stop"), false
 	);
 	prevAction = new ActionDescription(
 		this, ActionDescription::TypeChat, "mediaplayer_prev",
 		this, SLOT(prevTrack()),
-		"external_modules/mediaplayer-media-skip-backward", tr("Previous Track"), false
+		KaduIcon("external_modules/mediaplayer-media-skip-backward"), tr("Previous Track"), false
 	);
 	nextAction = new ActionDescription(
 		this, ActionDescription::TypeChat, "mediaplayer_next",
 		this, SLOT(nextTrack()),
-		"external_modules/mediaplayer-media-skip-forward", tr("Next Track"), false
+		KaduIcon("external_modules/mediaplayer-media-skip-forward"), tr("Next Track"), false
 	);
 	volUpAction = new ActionDescription(
 		this, ActionDescription::TypeChat, "mediaplayer_vol_up",
 		this, SLOT(incrVolume()),
-		"audio-volume-high", tr("Volume Up"), false
+		KaduIcon("audio-volume-high"), tr("Volume Up"), false
 	);
 	volDownAction = new ActionDescription(
 		this, ActionDescription::TypeChat, "mediaplayer_vol_down",
 		this, SLOT(decrVolume()),
-		"audio-volume-low", tr("Volume Down"), false
+		KaduIcon("audio-volume-low"), tr("Volume Down"), false
 	);
 
 	Core::instance()->kaduWindow()->insertMenuActionDescription(enableMediaPlayerStatuses, KaduWindow::MenuKadu, 7);

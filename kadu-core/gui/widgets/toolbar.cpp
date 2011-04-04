@@ -739,7 +739,7 @@ QMenu * ToolBar::createContextMenu(QWidget *widget)
 
 			if (!windowHasAction(actionDescription->name(), false))
 			{
-				QAction *action = new QAction(KaduIcon(actionDescription->iconPath()).icon(), actionDescription->text(), actionsMenu);
+				QAction *action = new QAction(actionDescription->icon().icon(), actionDescription->text(), actionsMenu);
 				action->setData(actionDescription->name());
 
 				actions.append(action);

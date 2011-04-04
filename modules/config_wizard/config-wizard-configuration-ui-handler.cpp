@@ -59,7 +59,7 @@ ConfigWizardConfigurationUiHandler * ConfigWizardConfigurationUiHandler::instanc
 ConfigWizardConfigurationUiHandler::ConfigWizardConfigurationUiHandler()
 {
 	ShowConfigWizardActionDescription = new ActionDescription(this, ActionDescription::TypeMainMenu,
-			"showConfigWizard", this, SLOT(showConfigWizardSlot()), QString(),
+			"showConfigWizard", this, SLOT(showConfigWizardSlot()), KaduIcon(),
 			tr("Start Configuration Wizard..."));
 
 	Core::instance()->kaduWindow()->insertMenuActionDescription(ShowConfigWizardActionDescription, KaduWindow::MenuTools, 0);

@@ -97,7 +97,7 @@ EncryptionActions::EncryptionActions()
 {
 	GenerateKeysActionDescription = new ActionDescription(this,
 			ActionDescription::TypeMainMenu, "encryptionGenerateKeysAction",
-			this, 0, "security-high", tr("Generate Encryption Keys")
+			this, 0, KaduIcon("security-high"), tr("Generate Encryption Keys")
 	);
 	connect(GenerateKeysActionDescription, SIGNAL(actionCreated(Action*)), this, SLOT(generateKeysActionCreated(Action*)));
 
@@ -113,14 +113,14 @@ EncryptionActions::EncryptionActions()
 	EnableEncryptionActionDescription = new ActionDescription(this,
 			ActionDescription::TypeChat, "encryptionAction",
 			this, SLOT(enableEncryptionActionActivated(QAction *, bool)),
-			"security-high", tr("Encrypt"),
+			KaduIcon("security-high"), tr("Encrypt"),
 			true, checkCanEncrypt
 	);
 
 	SendPublicKeyActionDescription = new ActionDescription(this,
 		ActionDescription::TypeUser, "sendPublicKeyAction",
 		this, SLOT(sendPublicKeyActionActivated(QAction *, bool)),
-		"security-high", tr("Send My Public Key"),
+		KaduIcon("security-high"), tr("Send My Public Key"),
 		false, checkSendKey
 	);
 	BuddiesListViewMenuManager::instance()->addListActionDescription(SendPublicKeyActionDescription,

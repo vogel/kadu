@@ -120,7 +120,7 @@ Infos::Infos(QObject *parent) :
 	lastSeenActionDescription = new ActionDescription(
 		this, ActionDescription::TypeMainMenu, "lastSeenAction",
 		this, SLOT(onShowInfos()),
-		QString(), tr("&Show infos about buddies...")
+		KaduIcon(), tr("&Show infos about buddies...")
 	);
 	Core::instance()->kaduWindow()->insertMenuActionDescription(lastSeenActionDescription, KaduWindow::MenuTools, 3);
 

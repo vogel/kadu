@@ -28,19 +28,12 @@
 
 #include "action-description.h"
 
-ActionDescription::ActionDescription(QObject *parent, ActionType Type, const QString &Name, QObject *Object, const char *Slot,
-	const QString &IconPath, const QString &Text, bool Checkable, ActionBoolCallback enableCallback) :
-		QObject(parent), ShortcutContext(Qt::WidgetShortcut)
+ActionDescription::ActionDescription(QObject *parent, ActionType type, const QString &name, QObject *object, const char *slot,
+		const KaduIcon &icon, const QString &text, bool checkable, ActionBoolCallback enableCallback) :
+		QObject(parent), Type(type), Name(name), Object(object), Slot(slot), Icon(icon), Text(text),
+		Checkable(checkable), EnableCallback(enableCallback), ShortcutContext(Qt::WidgetShortcut)
 {
-	this->Type = Type;
-	this->Name = Name;
-	this->Object = Object;
-	this->Slot = Slot;
-	this->IconPath = IconPath;
-	this->Text = Text;
-	this->Checkable = Checkable;
-	this->EnableCallback = enableCallback;
-	this->deleted = 0;
+	deleted = 0;
 
 	Actions::instance()->insert(this);
 }
