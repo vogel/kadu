@@ -44,6 +44,11 @@ NetworkManager::~NetworkManager()
 void NetworkManager::onlineStateChanged(bool isOnline)
 {
 	NetworkAwareObject::notifyOnlineStateChanged(isOnline);
+
+	if (isOnline)
+		emit online();
+	else
+		emit offline();
 }
 
 bool NetworkManager::isOnline()

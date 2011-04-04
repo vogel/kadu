@@ -17,6 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "network/network-manager.h"
 #include "protocols/protocol.h"
 
 #include "protocol-state-machine.h"
@@ -25,108 +26,63 @@ ProtocolStateMachine::ProtocolStateMachine(Protocol *protocol, QObject *parent) 
 		QStateMachine(parent), CurrentProtocol(protocol)
 {
 	LoggingOutState = new QState(this);
-	LoggedOutState = new QState(this);
+	LoggedOutOnlineState = new QState(this);
+	LoggedOutOfflineState = new QState(this);
 	WantToLogInState = new QState(this);
 	LoggingInState = new QState(this);
 	LoggedInState = new QState(this);
 	PasswordRequiredState = new QState(this);
 
-	connect(LoggingOutState, SIGNAL(entered()), this, SLOT(loggingOutStateEnteredSlot()));
-	connect(LoggedOutState, SIGNAL(entered()), this, SLOT(loggedOutStateEnteredSlot()));
-	connect(WantToLogInState, SIGNAL(entered()), this, SLOT(wantToLogInStateEnteredSlot()));
-	connect(LoggingInState, SIGNAL(entered()), this, SLOT(loggingInStateEnteredSlot()));
-	connect(LoggedInState, SIGNAL(entered()), this, SLOT(loggedInStateEnteredSlot()));
-	connect(PasswordRequiredState, SIGNAL(entered()), this, SLOT(passwordRequiredStateEnteredSlot()));
-
 	connect(LoggingOutState, SIGNAL(entered()), this, SIGNAL(loggingOutStateEntered()));
-	connect(LoggedOutState, SIGNAL(entered()), this, SIGNAL(loggedOutStateEntered()));
+	connect(LoggedOutOnlineState, SIGNAL(entered()), this, SIGNAL(loggedOutOnlineStateEntered()));
+	connect(LoggedOutOfflineState, SIGNAL(entered()), this, SIGNAL(loggedOutOfflineStateEntered()));
 	connect(WantToLogInState, SIGNAL(entered()), this, SIGNAL(wantToLogInStateEntered()));
 	connect(LoggingInState, SIGNAL(entered()), this, SIGNAL(loggingInStateEntered()));
 	connect(LoggedInState, SIGNAL(entered()), this, SIGNAL(loggedInStateEntered()));
 	connect(PasswordRequiredState, SIGNAL(entered()), this, SIGNAL(passwordRequiredStateEntered()));
 
-	LoggingOutState->addTransition(this, SIGNAL(networkOfflineSignal()), LoggedOutState);
-	LoggingOutState->addTransition(CurrentProtocol, SIGNAL(stateMachineLoggedOut()), LoggedOutState);
+	LoggingOutState->addTransition(NetworkManager::instance(), SIGNAL(offline()), LoggedOutOfflineState);
+	LoggingOutState->addTransition(CurrentProtocol, SIGNAL(stateMachineLoggedOut()), LoggedOutOnlineState);
 
-	// add 2 new states or something?
-	LoggedOutState->addTransition(CurrentProtocol, SIGNAL(stateMachineChangeStatusToNotOffline()), LoggingInState);
+	LoggedOutOnlineState->addTransition(CurrentProtocol, SIGNAL(stateMachineChangeStatusToNotOffline()), LoggingInState);
+	LoggedOutOnlineState->addTransition(NetworkManager::instance(), SIGNAL(offline()), LoggedOutOfflineState);
 
-	WantToLogInState->addTransition(this, SIGNAL(networkOnlineSignal()), LoggingInState);
-	WantToLogInState->addTransition(CurrentProtocol, SIGNAL(stateMachineChangeStatusToOffline()), LoggingInState);
+	LoggedOutOfflineState->addTransition(CurrentProtocol, SIGNAL(stateMachineChangeStatusToNotOffline()), WantToLogInState);
+	LoggedOutOfflineState->addTransition(NetworkManager::instance(), SIGNAL(online()), LoggedOutOnlineState);
 
-	LoggingInState->addTransition(this, SIGNAL(networkOfflineSignal()), WantToLogInState);
+	WantToLogInState->addTransition(NetworkManager::instance(), SIGNAL(online()), LoggingInState);
+	WantToLogInState->addTransition(CurrentProtocol, SIGNAL(stateMachineChangeStatusToOffline()), LoggedOutOfflineState);
+
+	LoggingInState->addTransition(NetworkManager::instance(), SIGNAL(offline()), WantToLogInState);
 	LoggingInState->addTransition(CurrentProtocol, SIGNAL(stateMachineLoggedIn()), LoggedInState);
-	LoggingInState->addTransition(CurrentProtocol, SIGNAL(stateMachineChangeStatusToOffline()), LoggedOutState);
+	LoggingInState->addTransition(CurrentProtocol, SIGNAL(stateMachineChangeStatusToOffline()), LoggedOutOnlineState);
 	LoggingInState->addTransition(CurrentProtocol, SIGNAL(stateMachinePasswordRequired()), PasswordRequiredState);
 	LoggingInState->addTransition(CurrentProtocol, SIGNAL(stateMachineConnectionError()), LoggingInState);
-	LoggingInState->addTransition(CurrentProtocol, SIGNAL(stateMachineFatalConnectionError()), LoggedOutState);
+	LoggingInState->addTransition(CurrentProtocol, SIGNAL(stateMachineFatalConnectionError()), LoggedOutOnlineState);
 
-	LoggedInState->addTransition(this, SIGNAL(networkOfflineSignal()), WantToLogInState);
+	LoggedInState->addTransition(NetworkManager::instance(), SIGNAL(offline()), WantToLogInState);
 	// re-enter current state, so protocol implementations can update status message
 	LoggedInState->addTransition(CurrentProtocol, SIGNAL(stateMachineChangeStatusToNotOffline()), LoggedInState);
 	LoggedInState->addTransition(CurrentProtocol, SIGNAL(stateMachineChangeStatusToOffline()), LoggingOutState);
 	LoggedInState->addTransition(CurrentProtocol, SIGNAL(stateMachineConnectionError()), LoggingInState);
-	LoggedInState->addTransition(CurrentProtocol, SIGNAL(stateMachineFatalConnectionError()), LoggedOutState);
+	LoggedInState->addTransition(CurrentProtocol, SIGNAL(stateMachineFatalConnectionError()), LoggedOutOnlineState);
 
-	PasswordRequiredState->addTransition(this, SIGNAL(networkOfflineSignal()), WantToLogInState);
-	PasswordRequiredState->addTransition(CurrentProtocol, SIGNAL(stateMachineChangeStatusToOffline()), LoggedOutState);
+	PasswordRequiredState->addTransition(NetworkManager::instance(), SIGNAL(offline()), WantToLogInState);
+	PasswordRequiredState->addTransition(CurrentProtocol, SIGNAL(stateMachineChangeStatusToOffline()), LoggedOutOnlineState);
 	PasswordRequiredState->addTransition(CurrentProtocol, SIGNAL(stateMachinePasswordAvailable()), LoggingInState);
-	PasswordRequiredState->addTransition(CurrentProtocol, SIGNAL(stateMachinePasswordNotAvailable()), LoggedOutState);
-	PasswordRequiredState->addTransition(CurrentProtocol, SIGNAL(stateMachineFatalConnectionError()), LoggedOutState);
+	PasswordRequiredState->addTransition(CurrentProtocol, SIGNAL(stateMachinePasswordNotAvailable()), LoggedOutOnlineState);
+	PasswordRequiredState->addTransition(CurrentProtocol, SIGNAL(stateMachineFatalConnectionError()), LoggedOutOnlineState);
 
-	setInitialState(LoggedOutState);
+	if (NetworkManager::instance()->isOnline())
+		setInitialState(LoggedOutOnlineState);
+	else
+		setInitialState(LoggedOutOfflineState);
 
 	start();
 }
 
 ProtocolStateMachine::~ProtocolStateMachine()
 {
-}
-
-void ProtocolStateMachine::onlineStateChanged(bool online)
-{
-	if (online)
-		emit networkOnlineSignal();
-	else
-		emit networkOfflineSignal();
-}
-
-#include <stdio.h>
-
-void ProtocolStateMachine::loggedInStateEnteredSlot()
-{
-	printf("ProtocolStateMachine::loggedInStateEntered()\n");
-
-	emit connected();
-}
-
-void ProtocolStateMachine::loggingOutStateEnteredSlot()
-{
-	printf("ProtocolStateMachine::loggingOutStateEnteredSlot()\n");
-}
-
-void ProtocolStateMachine::loggedOutStateEnteredSlot()
-{
-	printf("ProtocolStateMachine::loggedOutStateEntered()\n");
-
-	emit disconnected();
-}
-
-void ProtocolStateMachine::loggingInStateEnteredSlot()
-{
-	printf("ProtocolStateMachine::loggingInStateEntered()\n");
-}
-
-void ProtocolStateMachine::wantToLogInStateEnteredSlot()
-{
-	printf("ProtocolStateMachine::wantToLogInStateEntered()\n");
-}
-
-void ProtocolStateMachine::passwordRequiredStateEnteredSlot()
-{
-	printf("ProtocolStateMachine::passwordRequiredStateEntered()\n");
-
-	emit requestPassword();
 }
 
 bool ProtocolStateMachine::isLoggedIn()

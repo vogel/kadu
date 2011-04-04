@@ -179,7 +179,7 @@ void JabberProtocol::connectedToServer()
 	// ask for roster
 	CurrentRosterService->downloadRoster();
 
-	emit stateMachineLoggedOut();
+	emit stateMachineLoggedIn();
 	kdebugf2();
 }
 
@@ -293,6 +293,7 @@ void JabberProtocol::logout()
 	kdebugf();
 
 	disconnectFromServer(IrisStatusAdapter::toIrisStatus(status()));
+	statusChanged(status());
 	Protocol::logout();
 
 	kdebugf2();

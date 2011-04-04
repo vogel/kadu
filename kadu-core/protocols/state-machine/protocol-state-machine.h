@@ -22,33 +22,21 @@
 
 #include <QtCore/QStateMachine>
 
-#include "network/network-aware-object.h"
-
 class Protocol;
 
-class ProtocolStateMachine : public QStateMachine, private NetworkAwareObject
+class ProtocolStateMachine : public QStateMachine
 {
 	Q_OBJECT
 
 	Protocol *CurrentProtocol;
 
 	QState *LoggingOutState;
-	QState *LoggedOutState;
+	QState *LoggedOutOnlineState;
+	QState *LoggedOutOfflineState;
 	QState *WantToLogInState;
 	QState *PasswordRequiredState;
 	QState *LoggingInState;
 	QState *LoggedInState;
-
-private slots:
-	void loggingOutStateEnteredSlot();
-	void loggedOutStateEnteredSlot();
-	void wantToLogInStateEnteredSlot();
-	void loggingInStateEnteredSlot();
-	void loggedInStateEnteredSlot();
-	void passwordRequiredStateEnteredSlot();
-
-protected:
-	void onlineStateChanged(bool online);
 
 public:
 	explicit ProtocolStateMachine(Protocol *protocol, QObject *parent = 0);
@@ -58,15 +46,11 @@ public:
 	bool isLoggingIn();
 
 signals:
-	void networkOnlineSignal();
-	void networkOfflineSignal();
-
-	void connected();
-	void disconnected();
 	void requestPassword();
 
 	void loggingOutStateEntered();
-	void loggedOutStateEntered();
+	void loggedOutOnlineStateEntered();
+	void loggedOutOfflineStateEntered();
 	void wantToLogInStateEntered();
 	void loggingInStateEntered();
 	void loggedInStateEntered();

@@ -88,6 +88,7 @@ protected:
 protected slots:
 	virtual void login();
 	virtual void logout();
+	virtual void wantToLogin();
 	virtual void changeStatus() = 0;
 
 public:

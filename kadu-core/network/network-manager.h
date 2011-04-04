@@ -46,6 +46,10 @@ public:
 
 	bool isOnline();
 
+signals:
+	void online();
+	void offline();
+
 };
 
 #endif // NETWORK_MANAGER_H

@@ -56,13 +56,15 @@ Protocol::Protocol(Account account, ProtocolFactory *factory) :
 	 * that just restored status from configuration file
 	 */
 	connect(Machine, SIGNAL(started()), this, SLOT(prepareStateMachine()), Qt::QueuedConnection);
-	connect(Machine, SIGNAL(requestPassword()), this, SLOT(passwordRequired()));
-	connect(Machine, SIGNAL(connected()), this, SLOT(connectedSlot()));
-	connect(Machine, SIGNAL(disconnected()), this, SLOT(disconnectedSlot()));
 
 	connect(Machine, SIGNAL(loggingInStateEntered()), this, SLOT(login()));
-	connect(Machine, SIGNAL(loggingOutStateEntered()), this, SLOT(logout()));
 	connect(Machine, SIGNAL(loggedInStateEntered()), this, SLOT(changeStatus()));
+	connect(Machine, SIGNAL(loggedInStateEntered()), this, SLOT(connectedSlot()));
+	connect(Machine, SIGNAL(loggingOutStateEntered()), this, SLOT(logout()));
+	connect(Machine, SIGNAL(loggedOutOnlineStateEntered()), this, SLOT(disconnectedSlot()));
+	connect(Machine, SIGNAL(loggedOutOfflineStateEntered()), this, SLOT(disconnectedSlot()));
+	connect(Machine, SIGNAL(wantToLogInStateEntered()), this, SLOT(wantToLogin()));
+	connect(Machine, SIGNAL(passwordRequiredStateEntered()), this, SLOT(passwordRequired()));
 
 	connect(StatusChangerManager::instance(), SIGNAL(statusChanged(StatusContainer*,Status)),
 			this, SLOT(statusChanged(StatusContainer*,Status)));
@@ -160,6 +162,12 @@ QString Protocol::statusIconFullPath(const QString& statusType)
 QIcon Protocol::statusIcon(const QString &statusType)
 {
 	return StatusTypeManager::instance()->statusIcon(statusPixmapPath(), statusType, false, false);
+}
+
+void Protocol::wantToLogin()
+{
+	setAllOffline();
+	emit statusChanged(CurrentAccount, Status());
 }
 
 void Protocol::login()
