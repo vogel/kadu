@@ -24,7 +24,6 @@
 #define NOTIFICATION_H
 
 #include <QtCore/QPair>
-#include <QtGui/QIcon>
 
 #include "buddies/buddy-set.h"
 #include "exports.h"

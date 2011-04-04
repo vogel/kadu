@@ -23,7 +23,6 @@
 #define NOTIFIER_H
 
 #include <QtCore/QObject>
-#include <QtGui/QIcon>
 
 #include "exports.h"
 #include "icons/kadu-icon.h"

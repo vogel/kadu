@@ -23,7 +23,6 @@
 
 #include <QtCore/QString>
 #include <QtCore/QVariant>
-#include <QtGui/QIcon>
 
 #include "chat/type/chat-type.h"
 

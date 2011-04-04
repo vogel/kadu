@@ -24,7 +24,6 @@
 
 #include <QtCore/QMultiMap>
 #include <QtGui/QAction>
-#include <QtGui/QIcon>
 
 #include "configuration/configuration-aware-object.h"
 
@@ -46,8 +45,6 @@ class KADUAPI Action : public QAction
 
 	ActionDescription *Description;
 	ActionDataSource *DataSource;
-
-	QIcon Icon;
 
 private slots:
 	void changedSlot();
