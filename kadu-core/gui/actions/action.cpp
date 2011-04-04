@@ -53,6 +53,7 @@ Action::Action(ActionDescription *description, ActionDataSource *dataSource, QOb
 
 Action::~Action()
 {
+	emit aboutToBeDestroyed(this);
 }
 
 Contact Action::contact()

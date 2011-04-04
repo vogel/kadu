@@ -68,7 +68,7 @@ private:
 	ActionBoolCallback EnableCallback;
 
 private slots:
-	void actionDestroyed(QObject *action);
+	void actionAboutToBeDestroyed(Action *action);
 
 protected:
 	virtual void connectNotify(const char *signal);

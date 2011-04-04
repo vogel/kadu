@@ -75,6 +75,8 @@ public slots:
 	void updateIcon();
 
 signals:
+	void aboutToBeDestroyed(Action *action);
+
 	void changed(QAction *action);
 	void hovered(QAction *action);
 	void toggled(QAction *action, bool checked);

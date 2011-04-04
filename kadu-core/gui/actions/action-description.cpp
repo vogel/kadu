@@ -53,14 +53,13 @@ ActionDescription::~ActionDescription()
 	Actions::instance()->remove(this);
 }
 
-void ActionDescription::actionDestroyed(QObject *action)
+void ActionDescription::actionAboutToBeDestroyed(Action *action)
 {
-	MainWindow *kaduMainWindow = static_cast<MainWindow *>(action->parent());
-	if (!kaduMainWindow)
+	if (deleted)
 		return;
 
-	if (!deleted && MappedActions.contains(kaduMainWindow))
-		MappedActions.remove(kaduMainWindow);
+	if (action && MappedActions.contains(action->dataSource()))
+		MappedActions.remove(action->dataSource());
 }
 
 void ActionDescription::setShortcut(QString configItem, Qt::ShortcutContext context)
@@ -79,7 +78,7 @@ Action * ActionDescription::createAction(ActionDataSource *dataSource, QObject *
 	Action *result = new Action(this, dataSource, parent);
 	MappedActions[dataSource] = result;
 
-	connect(result, SIGNAL(destroyed(QObject *)), this, SLOT(actionDestroyed(QObject *)));
+	connect(result, SIGNAL(aboutToBeDestroyed(Action *)), this, SLOT(actionAboutToBeDestroyed(Action *)));
 	if (Object && Slot)
 		connect(result, SIGNAL(triggered(QAction *, bool)), Object, Slot);
 
