@@ -266,7 +266,7 @@ void KaduWebView::saveImage()
 
 		if (!image.load(imageFullPath))
 		{
-			MessageDialog::show("dialog-warning", tr("Kadu"), tr("Cannot save this image"));
+			MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Cannot save this image"));
 			return;
 		}
 	}
@@ -289,12 +289,12 @@ void KaduWebView::saveImage()
 		QString file = fd.data()->selectedFiles().at(0);
 		if (QFile::exists(file))
 		{
-			if (MessageDialog::ask("dialog-question", tr("Kadu"), tr("File already exists. Overwrite?")))
+			if (MessageDialog::ask(KaduIcon("dialog-question"), tr("Kadu"), tr("File already exists. Overwrite?")))
 			{
 				QFile removeMe(file);
 				if (!removeMe.remove())
 				{
-					MessageDialog::show("dialog-warning", tr("Kadu"), tr("Cannot save image: %1").arg(removeMe.errorString()));
+					MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Cannot save image: %1").arg(removeMe.errorString()));
 					continue;
 				}
 			}
@@ -310,7 +310,7 @@ void KaduWebView::saveImage()
 		{
 			if (!image.save(dst, "PNG"))
 			{
-				MessageDialog::show("dialog-warning", tr("Kadu"), tr("Cannot save image"));
+				MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Cannot save image"));
 				continue;
 			}
 		}
@@ -319,7 +319,7 @@ void KaduWebView::saveImage()
 			QFile src(imageFullPath);
 			if (!src.copy(dst))
 			{
-				MessageDialog::show("dialog-warning", tr("Kadu"), tr("Cannot save image: %1").arg(src.errorString()));
+				MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Cannot save image: %1").arg(src.errorString()));
 				continue;
 			}
 		}

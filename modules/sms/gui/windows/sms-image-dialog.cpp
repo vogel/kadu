@@ -87,7 +87,7 @@ void SmsImageDialog::tokenImageDownloaded()
 {
 	if (QNetworkReply::NoError != TokenNetworkReply->error())
 	{
-		MessageDialog::exec("dialog-error", tr("SMS"), tr("Unable to fetch required token"));
+		MessageDialog::exec(KaduIcon("dialog-error"), tr("SMS"), tr("Unable to fetch required token"));
 		reject();
 		return;
 	}

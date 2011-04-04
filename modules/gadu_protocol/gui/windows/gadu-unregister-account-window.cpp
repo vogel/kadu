@@ -152,13 +152,13 @@ void GaduUnregisterAccountWindow::unregisteringFinished(GaduServerUnregisterAcco
 
 	if (result)
 	{
-		MessageDialog::show("dialog-information", tr("Kadu"), tr("Unregistation was successful. Now you don't have any GG number :("), QMessageBox::Ok, parentWidget());
+		MessageDialog::show(KaduIcon("dialog-information"), tr("Kadu"), tr("Unregistation was successful. Now you don't have any GG number :("), QMessageBox::Ok, parentWidget());
 		AccountManager::instance()->removeAccountAndBuddies(MyAccount);
 
 		close();
 	}
 	else
-		MessageDialog::show("dialog-error", tr("Kadu"), tr("An error has occurred while unregistration. Please try again later."), QMessageBox::Ok, parentWidget());
+		MessageDialog::show(KaduIcon("dialog-error"), tr("Kadu"), tr("An error has occurred while unregistration. Please try again later."), QMessageBox::Ok, parentWidget());
 }
 
 void GaduUnregisterAccountWindow::keyPressEvent(QKeyEvent *e)

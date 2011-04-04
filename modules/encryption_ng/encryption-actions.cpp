@@ -170,18 +170,18 @@ void EncryptionActions::generateKeysActionActivated(QAction *action)
 	KeyGenerator *generator = EncryptionManager::instance()->generator();
 	if (!generator)
 	{
-		MessageDialog::exec("dialog-error", tr("Encryption"), tr("Cannot generate keys. Check if encryption_simlite module is loaded"));
+		MessageDialog::exec(KaduIcon("dialog-error"), tr("Encryption"), tr("Cannot generate keys. Check if encryption_simlite module is loaded"));
 		return;
 	}
 
 	if (generator->hasKeys(account))
-		if (!MessageDialog::ask("dialog-information", tr("Encryption"), tr("Keys exist. Do you want to overwrite them?")))
+		if (!MessageDialog::ask(KaduIcon("dialog-information"), tr("Encryption"), tr("Keys exist. Do you want to overwrite them?")))
 			return;
 
 	if (generator->generateKeys(account))
-		MessageDialog::exec("dialog-information", tr("Encryption"), tr("Keys have been generated"));
+		MessageDialog::exec(KaduIcon("dialog-information"), tr("Encryption"), tr("Keys have been generated"));
 	else
-		MessageDialog::exec("dialog-error", tr("Encryption"), tr("Error generating keys"));
+		MessageDialog::exec(KaduIcon("dialog-error"), tr("Encryption"), tr("Error generating keys"));
 }
 
 void EncryptionActions::enableEncryptionActionActivated(QAction *sender, bool toggled)

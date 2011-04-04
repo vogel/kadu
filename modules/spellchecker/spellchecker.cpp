@@ -171,7 +171,7 @@ bool SpellChecker::addCheckedLang(const QString &name)
 	AspellCanHaveError *possibleErr = new_aspell_speller(SpellConfig);
 	if (aspell_error_number(possibleErr) != 0)
 	{
-		MessageDialog::show("dialog-error", tr("Kadu"), aspell_error_message(possibleErr));
+		MessageDialog::show(KaduIcon("dialog-error"), tr("Kadu"), aspell_error_message(possibleErr));
 		return false;
 	}
 	else
@@ -183,7 +183,7 @@ bool SpellChecker::addCheckedLang(const QString &name)
 	}
 	catch (enchant::Exception &e)
 	{
-		MessageDialog::show("dialog-error", tr("Kadu"), e.what());
+		MessageDialog::show(KaduIcon("dialog-error"), tr("Kadu"), e.what());
 		return false;
 	}
 #endif

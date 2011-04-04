@@ -396,7 +396,7 @@ void GroupTabBar::renameGroup()
 
 void GroupTabBar::deleteGroup()
 {
-	if (currentGroup && MessageDialog::ask("dialog-warning", tr("Kadu"), tr("Selected group:\n%0 will be deleted. Are you sure?").arg(currentGroup.name()), Core::instance()->kaduWindow()))
+	if (currentGroup && MessageDialog::ask(KaduIcon("dialog-warning"), tr("Kadu"), tr("Selected group:\n%0 will be deleted. Are you sure?").arg(currentGroup.name()), Core::instance()->kaduWindow()))
 		GroupManager::instance()->removeItem(currentGroup);
 }
 

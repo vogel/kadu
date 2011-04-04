@@ -373,7 +373,7 @@ void MediaPlayer::putSongTitle(int ident)
 	if (!isActive())
 	{
 		// TODO: make it a notification
-		MessageDialog::show("dialog-warning", tr("Kadu"), tr("%1 isn't running!").arg(getPlayerName()));
+		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("%1 isn't running!").arg(getPlayerName()));
 		return;
 	}
 
@@ -450,7 +450,7 @@ void MediaPlayer::putPlayList(int ident)
 
 	if (!isActive())
 	{
-		MessageDialog::show("dialog-warning", tr("Kadu"), tr("%1 isn't running!").arg(getPlayerName()));
+		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("%1 isn't running!").arg(getPlayerName()));
 		return;
 	}
 
@@ -508,13 +508,13 @@ void MediaPlayer::putPlayList(int ident)
 
 	if (emptyEntries > (lgt / 10))
 	{
-		if (!MessageDialog::ask("dialog-question", tr("Kadu"), tr("More than 1/10 of titles you're trying to send are empty.<br>Perhaps %1 hasn't read all titles yet, give its some more time.<br>Do you want to send playlist anyway?").arg(getPlayerName())))
+		if (!MessageDialog::ask(KaduIcon("dialog-question"), tr("Kadu"), tr("More than 1/10 of titles you're trying to send are empty.<br>Perhaps %1 hasn't read all titles yet, give its some more time.<br>Do you want to send playlist anyway?").arg(getPlayerName())))
 			return;
 	}
 
 	if (chars >= 2000)
 	{
-		if (!MessageDialog::ask("dialog-question", tr("Kadu"), tr("You're trying to send %1 entries of %2 playlist.<br>It will be split and sent in few messages<br>Are you sure to do that?")
+		if (!MessageDialog::ask(KaduIcon("dialog-question"), tr("Kadu"), tr("You're trying to send %1 entries of %2 playlist.<br>It will be split and sent in few messages<br>Are you sure to do that?")
 			.arg(QString::number(lgt)).arg(getPlayerName())) )
 			return;
 	}
@@ -672,7 +672,7 @@ void MediaPlayer::mediaPlayerStatusChangerActivated(QAction *sender, bool toggle
 		foreach (Action *action, enableMediaPlayerStatuses->actions())
 			action->setChecked(false);
 
-		MessageDialog::show("dialog-warning", tr("Kadu"), tr("%1 isn't running!").arg(getPlayerName()));
+		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("%1 isn't running!").arg(getPlayerName()));
 		return;
 	}
 
@@ -691,7 +691,7 @@ void MediaPlayer::toggleStatuses(bool toggled)
 {
 	if (!isActive() && toggled)
 	{
-		MessageDialog::show("dialog-warning", tr("Kadu"), tr("%1 isn't running!").arg(getPlayerName()));
+		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("%1 isn't running!").arg(getPlayerName()));
 		return;
 	}
 

@@ -374,7 +374,7 @@ bool PluginsManager::activateDependencies(Plugin *plugin)
 	{
 		if (!Plugins.contains(dependencyName))
 		{
-			MessageDialog::show("dialog-warning", tr("Kadu"), tr("Required module %1 was not found").arg(dependencyName));
+			MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Required module %1 was not found").arg(dependencyName));
 			return false;
 		}
 
@@ -405,7 +405,7 @@ bool PluginsManager::activatePlugin(Plugin *plugin)
 	QString conflict = findActiveConflict(plugin);
 	if (!conflict.isEmpty())
 	{
-		MessageDialog::show("dialog-warning", tr("Kadu"), tr("Module %1 conflicts with: %2").arg(plugin->name(), conflict));
+		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Module %1 conflicts with: %2").arg(plugin->name(), conflict));
 		return false;
 	}
 
@@ -425,7 +425,7 @@ bool PluginsManager::deactivatePlugin(Plugin *plugin, bool force)
 
 	if (plugin->usageCounter() > 0 && !force)
 	{
-		MessageDialog::show("dialog-warning", tr("Kadu"), tr("Module %1 cannot be deactivated because it is being used by the following modules:%2").arg(plugin->name()).arg(activeDependentPluginNames(plugin->name())));
+		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Module %1 cannot be deactivated because it is being used by the following modules:%2").arg(plugin->name()).arg(activeDependentPluginNames(plugin->name())));
 		kdebugf2();
 		return false;
 	}

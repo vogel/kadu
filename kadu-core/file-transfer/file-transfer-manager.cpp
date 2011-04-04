@@ -207,7 +207,7 @@ void FileTransferManager::acceptFileTransfer(FileTransfer transfer)
 
 		if (!file.open(flags))
 		{
-			MessageDialog::show("dialog-warning", tr("Kadu"), tr("Could not open file. Select another one."));
+			MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Could not open file. Select another one."));
 			fileName.clear();;
 		}
 
@@ -216,7 +216,7 @@ void FileTransferManager::acceptFileTransfer(FileTransfer transfer)
 		{
 			if (!transfer.handler()->accept(file))
 			{
-				MessageDialog::show("dialog-warning", tr("Kadu"), tr("Could not open file. Select another one."));
+				MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Could not open file. Select another one."));
 				fileName.clear();
 				continue;
 			}

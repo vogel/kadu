@@ -150,7 +150,7 @@ void GaduChangePasswordWindow::changePassword()
 {
 	if (NewPassword->text() != ReNewPassword->text())
 	{
-		MessageDialog::show("dialog-error", tr("Kadu"), tr("Error data typed in required fields.\n\n"
+		MessageDialog::show(KaduIcon("dialog-error"), tr("Kadu"), tr("Error data typed in required fields.\n\n"
 			"Passwords typed in both fields (\"Password\" and \"Retype Password\") "
 			"should be the same!"), QMessageBox::Ok, parentWidget());
 		return;
@@ -175,7 +175,7 @@ void GaduChangePasswordWindow::changingFinished(GaduServerChangePassword *gscp)
 
 	if (result)
 	{
-		MessageDialog::show("dialog-information", tr("Kadu"), tr("Changing password was successful."), QMessageBox::Ok, parentWidget());
+		MessageDialog::show(KaduIcon("dialog-information"), tr("Kadu"), tr("Changing password was successful."), QMessageBox::Ok, parentWidget());
 
 		MyAccount.setPassword(NewPassword->text());
 		emit passwordChanged(NewPassword->text());
@@ -183,7 +183,7 @@ void GaduChangePasswordWindow::changingFinished(GaduServerChangePassword *gscp)
 		close();
 	}
 	else
-		MessageDialog::show("dialog-error", tr("Kadu"), tr("An error has occurred. Please try again later."), QMessageBox::Ok, parentWidget());
+		MessageDialog::show(KaduIcon("dialog-error"), tr("Kadu"), tr("An error has occurred. Please try again later."), QMessageBox::Ok, parentWidget());
 }
 
 void GaduChangePasswordWindow::keyPressEvent(QKeyEvent *e)

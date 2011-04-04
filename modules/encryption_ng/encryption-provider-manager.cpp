@@ -156,7 +156,7 @@ void EncryptionProviderManager::keyReceived(const Contact &contact, const QStrin
 		return;
 
 	QString question = tr("Buddy %1 is sending you his public key.\nDo you want to save it?").arg(buddy.display());
-	bool answer = MessageDialog::ask("dialog-question", tr("Encryption"), question);
+	bool answer = MessageDialog::ask(KaduIcon("dialog-question"), tr("Encryption"), question);
 
 	if (answer)
 	{

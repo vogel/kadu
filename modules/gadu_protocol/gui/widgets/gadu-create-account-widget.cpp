@@ -166,7 +166,7 @@ void GaduCreateAccountWidget::apply()
 {
 	if (NewPassword->text() != ReNewPassword->text())
 	{
-		MessageDialog::show("dialog-error", tr("Kadu"), tr("Error data typed in required fields.\n\n"
+		MessageDialog::show(KaduIcon("dialog-error"), tr("Kadu"), tr("Error data typed in required fields.\n\n"
 			"Passwords typed in both fields (\"Password\" and \"Retype Password\") "
 			"should be the same!"));
 		return;

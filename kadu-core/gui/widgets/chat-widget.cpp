@@ -412,7 +412,7 @@ void ChatWidget::resetEditBox()
 void ChatWidget::clearChatWindow()
 {
 	kdebugf();
-	if (!config_file.readBoolEntry("Chat", "ConfirmChatClear") || MessageDialog::ask("dialog-question", tr("Kadu"), tr("Chat window will be cleared. Continue?")))
+	if (!config_file.readBoolEntry("Chat", "ConfirmChatClear") || MessageDialog::ask(KaduIcon("dialog-question"), tr("Kadu"), tr("Chat window will be cleared. Continue?")))
 	{
 		MessagesView->clearMessages();
 		activateWindow();
@@ -437,11 +437,11 @@ void ChatWidget::messageStatusChanged(int messageId, ChatService::MessageStatus 
 			return;
 
 		case ChatService::StatusRejectedBlocked:
-			MessageDialog::msg("Message blocked", true, "dialog-warning", this);
+			MessageDialog::msg(KaduIcon("Message blocked"), true, "dialog-warning", this);
 		case ChatService::StatusRejectedBoxFull:
-			MessageDialog::msg("Message box if full", true, "dialog-warning", this);
+			MessageDialog::msg(KaduIcon("Message box if full"), true, "dialog-warning", this);
 		case ChatService::StatusRejectedUnknown:
-			MessageDialog::msg("Message not delivered", true, "dialog-warning", this);
+			MessageDialog::msg(KaduIcon("Message not delivered"), true, "dialog-warning", this);
 	}
 
 	cancelMessage();
@@ -486,7 +486,7 @@ void ChatWidget::sendMessage()
 
 	if (!currentProtocol()->isConnected())
 	{
-		MessageDialog::show("dialog-error", tr("Kadu"), tr("Cannot send message while being offline.") + tr("Account:") + chat().chatAccount().id(),
+		MessageDialog::show(KaduIcon("dialog-error"), tr("Kadu"), tr("Cannot send message while being offline.") + tr("Account:") + chat().chatAccount().id(),
 				QMessageBox::Ok, this);
 		kdebugmf(KDEBUG_FUNCTION_END, "not connected!\n");
 		return;
@@ -760,7 +760,7 @@ void ChatWidget::contactActivityChanged(ChatStateService::ContactActivity state,
 
 void ChatWidget::leaveConference()
 {
-	if (!MessageDialog::ask("dialog-warning", tr("Kadu"), tr("All messages received in this conference will be ignored\nfrom now on. Are you sure you want to leave this conference?"), this))
+	if (!MessageDialog::ask(KaduIcon("dialog-warning"), tr("Kadu"), tr("All messages received in this conference will be ignored\nfrom now on. Are you sure you want to leave this conference?"), this))
 		return;
 
 	if (CurrentChat)

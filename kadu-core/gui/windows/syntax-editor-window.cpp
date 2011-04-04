@@ -171,12 +171,12 @@ void SyntaxEditorWindow::saveAs()
 
 		if (syntaxList->isGlobal(newSyntaxName))
 		{
-			MessageDialog::show("dialog-warning", tr("Kadu"), tr("Syntax %1 already exists and cannot be modified").arg(newSyntaxName));
+			MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Syntax %1 already exists and cannot be modified").arg(newSyntaxName));
 			continue;
 		}
 		else
 		{
-			if (MessageDialog::ask("dialog-question", tr("Kadu"), tr("Overwrite %1 syntax?").arg(newSyntaxName)))
+			if (MessageDialog::ask(KaduIcon("dialog-question"), tr("Kadu"), tr("Overwrite %1 syntax?").arg(newSyntaxName)))
 				break;
 		}
 	}

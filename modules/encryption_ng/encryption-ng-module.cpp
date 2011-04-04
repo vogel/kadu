@@ -52,7 +52,7 @@ extern "C" KADU_EXPORT int encryption_ng_init(bool firstLoad)
 			!QCA::PKey::supportedIOTypes().contains(QCA::PKey::RSA) ||
 			!QCA::isSupported("sha1"))
 	{
-		MessageDialog::exec("dialog-error", QApplication::tr("Encryption"),
+		MessageDialog::exec(KaduIcon("dialog-error"), QApplication::tr("Encryption"),
 				QApplication::tr("The QCA OSSL plugin for libqca2 is not present!"));
 
 		delete EncryptionNg::InitObject;
