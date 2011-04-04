@@ -91,7 +91,7 @@ protected:
 	virtual void changePrivateMode();
 
 protected slots:
-	virtual void login();
+	virtual bool login();
 	virtual void logout();
 	virtual void changeStatus();
 

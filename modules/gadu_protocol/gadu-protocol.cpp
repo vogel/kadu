@@ -97,8 +97,6 @@ GaduProtocol::~GaduProtocol()
 
 	disconnect(account(), SIGNAL(updated()), this, SLOT(accountUpdated()));
 
-	networkDisconnected(false);
-
 	kdebugf2();
 }
 
@@ -152,55 +150,60 @@ void GaduProtocol::accountUpdated()
 	setUpFileTransferService();
 }
 
-void GaduProtocol::login()
+bool GaduProtocol::login()
 {
-	kdebugf();
-
-	Protocol::login();
+	if (!Protocol::login())
+		return false;
 
 	// TODO: create some kind of cleanup method
 	if (GaduSession)
 	{
+		connectionClosed();
 		gg_free_session(GaduSession);
 		GaduSession = 0;
-		return;
+		return false;
 	}
 
 	GaduAccountDetails *gaduAccountDetails = dynamic_cast<GaduAccountDetails *>(account().details());
-
 	if (!gaduAccountDetails || 0 == gaduAccountDetails->uin())
 	{
-		fatalConnectionError();
-		return;
-	}
-
-	if (!account().hasPassword())
-	{
-		emit stateMachinePasswordRequired();
-		return;
+		connectionClosed();
+		return false;
 	}
 
 	GaduProxyHelper::setupProxy(account().proxySettings());
+
 	setupLoginParams();
-
 	GaduSession = gg_login(&GaduLoginParams);
-	ContactListHandler = new GaduContactListHandler(this);
-
 	cleanUpLoginParams();
 
-	if (GaduSession)
-		SocketNotifiers->watchFor(GaduSession);
-	else
-		networkDisconnected(false);
+	if (!GaduSession) // something fatal
+	{
+		connectionClosed();
+		return false;
+	}
 
-	kdebugf2();
+	ContactListHandler = new GaduContactListHandler(this);
+	SocketNotifiers->watchFor(GaduSession);
+
+	return true;
 }
 
 void GaduProtocol::logout()
 {
 	kdebugf();
 
-	changeStatus(); // we need to change status manually in gadu
+	// we need to change status manually in gadu
+	// status is offline
+	changeStatus();
+
+	Protocol::logout();
+}
+
+void GaduProtocol::disconnectedCleanup()
+{
+	Protocol::disconnectedCleanup();
+
 	if (ContactListHandler)
 		ContactListHandler->reset();
 
@@ -225,8 +228,6 @@ void GaduProtocol::logout()
 	}
 
 	CurrentMultilogonService->removeAllSessions();
-
-	Protocol::logout();
 }
 
 void GaduProtocol::setupLoginParams()
@@ -312,29 +313,6 @@ void GaduProtocol::setUpFileTransferService(bool forceClose)
 		}
 }
 
-void GaduProtocol::networkConnected()
-{
-	// fetch current avatar after connection
-	AvatarManager::instance()->updateAvatar(account().accountContact(), true);
-
-	// set up DCC if needed
-	setUpFileTransferService();
-
-	statusChanged(status());
-
-	emit stateMachineLoggedIn();
-}
-
-void GaduProtocol::networkDisconnected(bool tryAgain)
-{
-	logout();
-
-	if (tryAgain)
-		connectionError();
-	else
-		fatalConnectionError();
-}
-
 void GaduProtocol::sendUserList()
 {
 	QList<Contact> contacts = ContactManager::instance()->contacts(account());
@@ -377,7 +355,6 @@ void GaduProtocol::socketConnFailed(GaduError error)
 	kdebugf();
 
 	QString msg = GaduProtocolHelper::connectionErrorMessage(error);
-	bool tryAgain = GaduProtocolHelper::isConnectionErrorFatal(error);
 
 	switch (error)
 	{
@@ -403,14 +380,18 @@ void GaduProtocol::socketConnFailed(GaduError error)
 		emit connectionError(account(), host, msg);
 	}
 
-	if (tryAgain)
+	if (GaduProtocolHelper::isConnectionErrorFatal(error))
+	{
 		GaduServersManager::instance()->markServerAsBad(ActiveServer);
-	networkDisconnected(tryAgain);
+		connectionError();
+	}
+	else
+		connectionClosed();
 
 	kdebugf2();
 }
 
-void GaduProtocol::socketConnSuccess()
+void GaduProtocol::connectedToServer()
 {
 	kdebugf();
 
@@ -420,8 +401,13 @@ void GaduProtocol::socketConnSuccess()
 	connect(PingTimer, SIGNAL(timeout()), this, SLOT(everyMinuteActions()));
 	PingTimer->start(60000);
 
+	// fetch current avatar after connection
+	AvatarManager::instance()->updateAvatar(account().accountContact(), true);
+
+	// set up DCC if needed
+	setUpFileTransferService();
+
 	statusChanged(status());
-	networkConnected();
 
 	sendUserList();
 
@@ -435,20 +421,18 @@ void GaduProtocol::socketConnSuccess()
 		CurrentContactListService->importContactList();
 	}
 
+	emit stateMachineLoggedIn();
+
 	// workaround about servers errors
 	if ("Invisible" == status().type())
-		setStatus(status());
+		changeStatus();
 
 	kdebugf2();
 }
 
-void GaduProtocol::socketDisconnected()
+void GaduProtocol::disconnectedFromServer()
 {
-	kdebugf();
-
-	networkDisconnected(false);
-
-	kdebugf2();
+	connectionClosed();
 }
 
 QString GaduProtocol::statusPixmapPath()

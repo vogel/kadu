@@ -172,17 +172,6 @@ XMPP::ClientStream::AllowPlainType JabberProtocol::plainAuthToXMPP(JabberAccount
 		return XMPP::ClientStream::AllowPlainOverTLS;
 }
 
-void JabberProtocol::connectedToServer()
-{
-	kdebugf();
-
-	// ask for roster
-	CurrentRosterService->downloadRoster();
-
-	emit stateMachineLoggedIn();
-	kdebugf2();
-}
-
 void JabberProtocol::rosterDownloaded(bool success)
 {
 	Q_UNUSED(success)
@@ -223,32 +212,24 @@ void JabberProtocol::slotClientDebugMessage(const QString &msg)
 	kdebugm(KDEBUG_WARNING, "XMPP Client debug:  %s\n", qPrintable(msg));
 }
 
-void JabberProtocol::disconnectedFromServer()
+/*
+ * login procedute
+ * After calling login method we set up JabberClient that must call connectedToServer in order to inform
+ * us that connection was established. Then we can tell this to state machine in Protocol class
+ */
+
+bool JabberProtocol::login()
 {
 	kdebugf();
 
-	JabberClient->disconnect();
-
-	kdebugf2();
-}
-
-void JabberProtocol::login()
-{
-	kdebugf();
-
-	Protocol::login();
+	if (!Protocol::login())
+		return false;
 
 	JabberAccountDetails *jabberAccountDetails = dynamic_cast<JabberAccountDetails *>(account().details());
-	if (!jabberAccountDetails || account().id().isEmpty())
+	if (!jabberAccountDetails)
 	{
-		fatalConnectionError();
-		return;
-	}
-
-	if (!account().hasPassword())
-	{
-		emit stateMachinePasswordRequired();
-		return;
+		connectionClosed();
+		return false;
 	}
 
 	JabberClient->setOSName(SystemInfo::instance()->osFullName());
@@ -275,6 +256,32 @@ void JabberProtocol::login()
 	JabberClient->connect(jabberID, account().password(), true);
 
 	kdebugf2();
+
+	return true;
+}
+
+/*
+ * We are now connected to server - login procedure has ended
+ */
+void JabberProtocol::connectedToServer()
+{
+	kdebugf();
+
+	// ask for roster
+	CurrentRosterService->downloadRoster();
+	emit stateMachineLoggedIn();
+
+	kdebugf2();
+}
+
+void JabberProtocol::disconnectedFromServer()
+{
+	kdebugf();
+
+	JabberClient->disconnect();
+	connectionClosed();
+
+	kdebugf2();
 }
 
 void JabberProtocol::logout()
@@ -286,6 +293,17 @@ void JabberProtocol::logout()
 	Protocol::logout();
 
 	kdebugf2();
+}
+
+void JabberProtocol::changeStatus()
+{
+	JabberClient->setPresence(IrisStatusAdapter::toIrisStatus(status()));
+	statusChanged(status());
+}
+
+void JabberProtocol::changePrivateMode()
+{
+	//changeStatus();
 }
 
 void JabberProtocol::clientResourceReceived(const XMPP::Jid &jid, const XMPP::Resource &resource)
@@ -359,17 +377,6 @@ void JabberProtocol::contactIdChanged(Contact contact, const QString &oldId)
 
 	JabberClient->removeContact(oldId);
 	contactAttached(contact);
-}
-
-void JabberProtocol::changeStatus()
-{
-	JabberClient->setPresence(IrisStatusAdapter::toIrisStatus(status()));
-	statusChanged(status());
-}
-
-void JabberProtocol::changePrivateMode()
-{
-	//changeStatus();
 }
 
 QString JabberProtocol::statusPixmapPath()

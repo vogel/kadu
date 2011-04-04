@@ -693,7 +693,7 @@ void JabberClient::slotCSError(int error)
 			else
 			{
 //				Protocol->resourcePool()->clear();
-				Protocol->fatalConnectionError();
+				Protocol->connectionClosed();
 			}
 		}
 	}

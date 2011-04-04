@@ -73,9 +73,6 @@ GaduContactListHandler::~GaduContactListHandler()
 
 void GaduContactListHandler::setUpContactList(const QList<Contact> &contacts)
 {
-	if (!Protocol->isConnected())
-		return;
-
 	/*
 	 * it looks like gadu-gadu now stores contact list mask (offlineto, blocked, normal)
 	 * on server, so need to remove this mask and send a new one for each contact, so

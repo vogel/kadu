@@ -107,15 +107,12 @@ private:
 
 	void setUpFileTransferService(bool forceClose = false);
 
-	void networkConnected();
-	void networkDisconnected(bool tryAgain);
-
 	void sendUserList();
 
 	void socketContactStatusChanged(UinType uin, unsigned int status, const QString &description, unsigned int maxImageSize);
 	void socketConnFailed(GaduError error);
-	void socketConnSuccess();
-	void socketDisconnected();
+	void connectedToServer();
+	void disconnectedFromServer();
 
 private slots:
 	void accountUpdated();
@@ -123,8 +120,11 @@ private slots:
 	void connectionTimeoutTimerSlot();
 	void everyMinuteActions();
 
+protected:
+	virtual void disconnectedCleanup();
+
 protected slots:
-	virtual void login();
+	virtual bool login();
 	virtual void logout();
 	virtual void changeStatus();
 

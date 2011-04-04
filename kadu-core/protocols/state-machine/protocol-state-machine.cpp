@@ -58,20 +58,20 @@ ProtocolStateMachine::ProtocolStateMachine(Protocol *protocol, QObject *parent) 
 	LoggingInState->addTransition(CurrentProtocol, SIGNAL(stateMachineChangeStatusToOffline()), LoggedOutOnlineState);
 	LoggingInState->addTransition(CurrentProtocol, SIGNAL(stateMachinePasswordRequired()), PasswordRequiredState);
 	LoggingInState->addTransition(CurrentProtocol, SIGNAL(stateMachineConnectionError()), LoggingInState);
-	LoggingInState->addTransition(CurrentProtocol, SIGNAL(stateMachineFatalConnectionError()), LoggedOutOnlineState);
+	LoggingInState->addTransition(CurrentProtocol, SIGNAL(stateMachineConnectionClosed()), LoggedOutOnlineState);
 
 	LoggedInState->addTransition(NetworkManager::instance(), SIGNAL(offline()), WantToLogInState);
 	// re-enter current state, so protocol implementations can update status message
 	LoggedInState->addTransition(CurrentProtocol, SIGNAL(stateMachineChangeStatusToNotOffline()), LoggedInState);
 	LoggedInState->addTransition(CurrentProtocol, SIGNAL(stateMachineChangeStatusToOffline()), LoggingOutState);
 	LoggedInState->addTransition(CurrentProtocol, SIGNAL(stateMachineConnectionError()), LoggingInState);
-	LoggedInState->addTransition(CurrentProtocol, SIGNAL(stateMachineFatalConnectionError()), LoggedOutOnlineState);
+	LoggedInState->addTransition(CurrentProtocol, SIGNAL(stateMachineConnectionClosed()), LoggedOutOnlineState);
 
 	PasswordRequiredState->addTransition(NetworkManager::instance(), SIGNAL(offline()), WantToLogInState);
 	PasswordRequiredState->addTransition(CurrentProtocol, SIGNAL(stateMachineChangeStatusToOffline()), LoggedOutOnlineState);
 	PasswordRequiredState->addTransition(CurrentProtocol, SIGNAL(stateMachinePasswordAvailable()), LoggingInState);
 	PasswordRequiredState->addTransition(CurrentProtocol, SIGNAL(stateMachinePasswordNotAvailable()), LoggedOutOnlineState);
-	PasswordRequiredState->addTransition(CurrentProtocol, SIGNAL(stateMachineFatalConnectionError()), LoggedOutOnlineState);
+	PasswordRequiredState->addTransition(CurrentProtocol, SIGNAL(stateMachineConnectionClosed()), LoggedOutOnlineState);
 
 	if (NetworkManager::instance()->isOnline())
 		setInitialState(LoggedOutOnlineState);

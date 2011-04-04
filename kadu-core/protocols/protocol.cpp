@@ -150,12 +150,12 @@ void Protocol::connectionError()
 	emit stateMachineConnectionError();
 }
 
-void Protocol::fatalConnectionError()
+void Protocol::connectionClosed()
 {
 	setStatus(Status());
 	statusChanged(Status());
 
-	emit stateMachineFatalConnectionError();
+	emit stateMachineConnectionClosed();
 }
 
 void Protocol::statusChanged(Status status)
@@ -191,10 +191,24 @@ void Protocol::wantToLogin()
 	emit statusChanged(CurrentAccount, Status());
 }
 
-void Protocol::login()
+bool Protocol::login()
 {
+	if (!CurrentAccount.details() || account().id().isEmpty())
+	{
+		emit stateMachineConnectionClosed();
+		return false;
+	}
+
+	if (!account().hasPassword())
+	{
+		emit stateMachinePasswordRequired();
+		return false;
+	}
+
 	// just for status icon now, this signal need to be better
 	emit statusChanged(CurrentAccount, CurrentStatus);
+
+	return true;
 }
 
 void Protocol::logout()

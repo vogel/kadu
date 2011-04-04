@@ -73,7 +73,6 @@ class KADUAPI Protocol : public QObject
 	Status CurrentStatus;
 
 	void setAllOffline();
-	void disconnectedCleanup();
 
 private slots:
 	void prepareStateMachine();
@@ -85,12 +84,13 @@ private slots:
 
 protected:
 	void connectionError();
-	void fatalConnectionError();
+	void connectionClosed();
 
+	virtual void disconnectedCleanup();
 	void statusChanged(Status newStatus);
 
 protected slots:
-	virtual void login();
+	virtual bool login();
 	virtual void logout();
 	virtual void wantToLogin();
 	virtual void changeStatus() = 0;
@@ -168,7 +168,7 @@ signals:
 	void stateMachinePasswordNotAvailable();
 
 	void stateMachineConnectionError();
-	void stateMachineFatalConnectionError();
+	void stateMachineConnectionClosed();
 
 };
 
