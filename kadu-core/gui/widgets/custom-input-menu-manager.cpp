@@ -19,14 +19,8 @@
 
 #include <QtGui/QMenu>
 
-#include "accounts/account.h"
-#include "contacts/contact-set.h"
 #include "gui/actions/action.h"
-#include "gui/actions/action-data-source.h"
 #include "gui/actions/action-description.h"
-#include "protocols/protocol.h"
-#include "protocols/protocol-factory.h"
-#include "protocols/protocol-menu-manager.h"
 
 #include "custom-input-menu-manager.h"
 
