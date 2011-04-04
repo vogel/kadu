@@ -25,6 +25,8 @@
 
 #include <QtCore/QTimer>
 
+#include <libgadu.h>
+
 #ifdef Q_OS_WIN
 #include <winsock2.h>
 #else
@@ -105,7 +107,7 @@ int GaduProtocol::maxDescriptionLength()
 	return GG_STATUS_DESCR_MAXSIZE;
 }
 
-void GaduProtocol::changeStatus()
+void GaduProtocol::sendStatusToServer()
 {
 	Status newStatus = status();
 
@@ -118,13 +120,11 @@ void GaduProtocol::changeStatus()
 		gg_change_status_descr(GaduSession, type | friends, newStatus.description().toUtf8());
 	else
 		gg_change_status(GaduSession, type | friends);
-
-	statusChanged(newStatus);
 }
 
 void GaduProtocol::changePrivateMode()
 {
-	changeStatus();
+	sendStatusToServer();
 }
 
 void GaduProtocol::connectionTimeoutTimerSlot()
@@ -150,25 +150,22 @@ void GaduProtocol::accountUpdated()
 	setUpFileTransferService();
 }
 
-bool GaduProtocol::login()
+void GaduProtocol::login()
 {
-	if (!Protocol::login())
-		return false;
-
 	// TODO: create some kind of cleanup method
 	if (GaduSession)
 	{
 		connectionClosed();
 		gg_free_session(GaduSession);
 		GaduSession = 0;
-		return false;
+		return;
 	}
 
 	GaduAccountDetails *gaduAccountDetails = dynamic_cast<GaduAccountDetails *>(account().details());
 	if (!gaduAccountDetails || 0 == gaduAccountDetails->uin())
 	{
 		connectionClosed();
-		return false;
+		return;
 	}
 
 	GaduProxyHelper::setupProxy(account().proxySettings());
@@ -180,13 +177,50 @@ bool GaduProtocol::login()
 	if (!GaduSession) // something fatal
 	{
 		connectionClosed();
-		return false;
+		return;
 	}
 
 	ContactListHandler = new GaduContactListHandler(this);
 	SocketNotifiers->watchFor(GaduSession);
+}
 
-	return true;
+void GaduProtocol::connectedToServer()
+{
+	kdebugf();
+
+	GaduServersManager::instance()->markServerAsGood(ActiveServer);
+
+	PingTimer = new QTimer(0);
+	connect(PingTimer, SIGNAL(timeout()), this, SLOT(everyMinuteActions()));
+	PingTimer->start(60000);
+
+	loggedIn();
+
+	// workaround about servers errors
+	if ("Invisible" == status().type())
+		sendStatusToServer();
+
+	kdebugf2();
+}
+
+void GaduProtocol::afterLoggedIn()
+{
+	// fetch current avatar after connection
+	AvatarManager::instance()->updateAvatar(account().accountContact(), true);
+
+	// set up DCC if needed
+	setUpFileTransferService();
+
+	sendUserList();
+
+	GaduAccountDetails *details = dynamic_cast<GaduAccountDetails *>(account().details());
+	if (details && CurrentContactListService && details->initialRosterImport())
+	{
+		details->setState(StorableObject::StateNew);
+		details->setInitialRosterImport(false);
+
+		CurrentContactListService->importContactList();
+	}
 }
 
 void GaduProtocol::logout()
@@ -195,9 +229,10 @@ void GaduProtocol::logout()
 
 	// we need to change status manually in gadu
 	// status is offline
-	changeStatus();
+	sendStatusToServer();
+	gg_logoff(GaduSession);
 
-	Protocol::logout();
+	loggedOut();
 }
 
 void GaduProtocol::disconnectedCleanup()
@@ -285,6 +320,22 @@ void GaduProtocol::cleanUpLoginParams()
 	}
 }
 
+void GaduProtocol::startFileTransferService()
+{
+	if (!CurrentFileTransferService)
+	{
+		CurrentFileTransferService = new GaduFileTransferService(this);
+		account().data()->fileTransferServiceChanged(CurrentFileTransferService);
+	}
+}
+
+void GaduProtocol::stopFileTransferService()
+{
+	delete CurrentFileTransferService;
+	CurrentFileTransferService = 0;
+	account().data()->fileTransferServiceChanged(0);
+}
+
 void GaduProtocol::setUpFileTransferService(bool forceClose)
 {
 	bool close = forceClose;
@@ -300,17 +351,9 @@ void GaduProtocol::setUpFileTransferService(bool forceClose)
 	}
 
 	if (close)
-	{
-		delete CurrentFileTransferService;
-		CurrentFileTransferService = 0;
-		account().data()->fileTransferServiceChanged(0);
-	}
+		stopFileTransferService();
 	else
-		if (!CurrentFileTransferService)
-		{
-			CurrentFileTransferService = new GaduFileTransferService(this);
-			account().data()->fileTransferServiceChanged(CurrentFileTransferService);
-		}
+		startFileTransferService();
 }
 
 void GaduProtocol::sendUserList()
@@ -362,7 +405,7 @@ void GaduProtocol::socketConnFailed(GaduError error)
 			MessageDialog::show("dialog-warning", tr("Kadu"), msg);
 			break;
 		case ConnectionIncorrectPassword:
-			emit stateMachinePasswordRequired();
+			passwordRequired();
 			break;
 		default: // we need special code only for 2 cases
 			break;
@@ -387,45 +430,6 @@ void GaduProtocol::socketConnFailed(GaduError error)
 	}
 	else
 		connectionClosed();
-
-	kdebugf2();
-}
-
-void GaduProtocol::connectedToServer()
-{
-	kdebugf();
-
-	GaduServersManager::instance()->markServerAsGood(ActiveServer);
-
-	PingTimer = new QTimer(0);
-	connect(PingTimer, SIGNAL(timeout()), this, SLOT(everyMinuteActions()));
-	PingTimer->start(60000);
-
-	// fetch current avatar after connection
-	AvatarManager::instance()->updateAvatar(account().accountContact(), true);
-
-	// set up DCC if needed
-	setUpFileTransferService();
-
-	statusChanged(status());
-
-	sendUserList();
-
-	GaduAccountDetails *details = dynamic_cast<GaduAccountDetails *>(account().details());
-
-	if (details && CurrentContactListService && details->initialRosterImport())
-	{
-		details->setState(StorableObject::StateNew);
-		details->setInitialRosterImport(false);
-
-		CurrentContactListService->importContactList();
-	}
-
-	emit stateMachineLoggedIn();
-
-	// workaround about servers errors
-	if ("Invisible" == status().type())
-		changeStatus();
 
 	kdebugf2();
 }

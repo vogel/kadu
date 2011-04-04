@@ -105,6 +105,9 @@ private:
 	void setupLoginParams();
 	void cleanUpLoginParams();
 
+	void startFileTransferService();
+	void stopFileTransferService();
+
 	void setUpFileTransferService(bool forceClose = false);
 
 	void sendUserList();
@@ -121,12 +124,12 @@ private slots:
 	void everyMinuteActions();
 
 protected:
-	virtual void disconnectedCleanup();
-
-protected slots:
-	virtual bool login();
+	virtual void login();
+	virtual void afterLoggedIn();
 	virtual void logout();
-	virtual void changeStatus();
+	virtual void sendStatusToServer();
+
+	virtual void disconnectedCleanup();
 
 public:
 	GaduProtocol(Account account, ProtocolFactory *factory);

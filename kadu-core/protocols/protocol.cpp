@@ -57,14 +57,13 @@ Protocol::Protocol(Account account, ProtocolFactory *factory) :
 	 */
 	connect(Machine, SIGNAL(started()), this, SLOT(prepareStateMachine()), Qt::QueuedConnection);
 
-	connect(Machine, SIGNAL(loggingInStateEntered()), this, SLOT(login()));
-	connect(Machine, SIGNAL(loggedInStateEntered()), this, SLOT(changeStatus()));
-	connect(Machine, SIGNAL(loggedInStateEntered()), this, SLOT(connectedSlot()));
-	connect(Machine, SIGNAL(loggingOutStateEntered()), this, SLOT(logout()));
-	connect(Machine, SIGNAL(loggedOutOnlineStateEntered()), this, SLOT(disconnectedSlot()));
-	connect(Machine, SIGNAL(loggedOutOfflineStateEntered()), this, SLOT(disconnectedSlot()));
-	connect(Machine, SIGNAL(wantToLogInStateEntered()), this, SLOT(wantToLogin()));
-	connect(Machine, SIGNAL(passwordRequiredStateEntered()), this, SLOT(passwordRequired()));
+	connect(Machine, SIGNAL(loggingInStateEntered()), this, SLOT(loggingInStateEntered()));
+	connect(Machine, SIGNAL(loggedInStateEntered()), this, SLOT(loggedInStateEntered()));
+	connect(Machine, SIGNAL(loggingOutStateEntered()), this, SLOT(loggingOutStateEntered()));
+	connect(Machine, SIGNAL(loggedOutOnlineStateEntered()), this, SLOT(loggedOutAnyStateEntered()));
+	connect(Machine, SIGNAL(loggedOutOfflineStateEntered()), this, SLOT(loggedOutAnyStateEntered()));
+	connect(Machine, SIGNAL(wantToLogInStateEntered()), this, SLOT(wantToLogInStateEntered()));
+	connect(Machine, SIGNAL(passwordRequiredStateEntered()), this, SLOT(passwordRequiredStateEntered()));
 
 	connect(StatusChangerManager::instance(), SIGNAL(statusChanged(StatusContainer*,Status)),
 			this, SLOT(statusChanged(StatusContainer*,Status)));
@@ -82,12 +81,7 @@ QIcon Protocol::icon()
 void Protocol::prepareStateMachine()
 {
 	if (!CurrentStatus.isDisconnected())
-		emit stateMachineChangeStatusToNotOffline();
-}
-
-void Protocol::passwordRequired()
-{
-	emit invalidPassword(CurrentAccount);
+		emit stateMachineChangeStatus();
 }
 
 void Protocol::passwordProvided()
@@ -137,9 +131,24 @@ void Protocol::statusChanged(StatusContainer *container, Status status)
 
 	CurrentStatus = status;
 	if (CurrentStatus.isDisconnected())
-		emit stateMachineChangeStatusToOffline();
+		emit stateMachineLogout();
 	else
-		emit stateMachineChangeStatusToNotOffline();
+		emit stateMachineChangeStatus();
+}
+
+void Protocol::loggedIn()
+{
+	emit stateMachineLoggedIn();
+}
+
+void Protocol::loggedOut()
+{
+	emit stateMachineLoggedOut();
+}
+
+void Protocol::passwordRequired()
+{
+	emit stateMachinePasswordRequired();
 }
 
 void Protocol::connectionError()
@@ -185,47 +194,62 @@ QIcon Protocol::statusIcon(const QString &statusType)
 	return StatusTypeManager::instance()->statusIcon(statusPixmapPath(), statusType, false, false);
 }
 
-void Protocol::wantToLogin()
-{
-	disconnectedCleanup();
-	emit statusChanged(CurrentAccount, Status());
-}
-
-bool Protocol::login()
+void Protocol::loggingInStateEntered()
 {
 	if (!CurrentAccount.details() || account().id().isEmpty())
 	{
 		emit stateMachineConnectionClosed();
-		return false;
+		return;
 	}
 
 	if (!account().hasPassword())
 	{
 		emit stateMachinePasswordRequired();
-		return false;
+		return;
 	}
 
 	// just for status icon now, this signal need to be better
 	emit statusChanged(CurrentAccount, CurrentStatus);
 
-	return true;
+	// call protocol implementation
+	login();
 }
 
-void Protocol::logout()
+void Protocol::loggedInStateEntered()
 {
-	disconnectedCleanup();
-	emit stateMachineLoggedOut();
-}
+	afterLoggedIn();
 
-void Protocol::connectedSlot()
-{
+	sendStatusToServer();
+	statusChanged(status());
+
 	emit connected(CurrentAccount);
 }
 
-void Protocol::disconnectedSlot()
+void Protocol::loggingOutStateEntered()
+{
+	// call protocol implementation
+	logout();
+}
+
+void Protocol::loggedOutAnyStateEntered()
 {
 	disconnectedCleanup();
+	statusChanged(status());
+
 	emit disconnected(CurrentAccount);
+}
+
+void Protocol::wantToLogInStateEntered()
+{
+	disconnectedCleanup();
+	statusChanged(Status());
+
+	emit statusChanged(CurrentAccount, Status());
+}
+
+void Protocol::passwordRequiredStateEntered()
+{
+	emit invalidPassword(CurrentAccount);
 }
 
 bool Protocol::isConnected()

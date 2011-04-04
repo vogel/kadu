@@ -183,7 +183,7 @@ void JabberProtocol::rosterDownloaded(bool success)
 	* information in that case either). */
 	kdebug("Setting initial presence...\n");
 
-	changeStatus();
+	sendStatusToServer();
 }
 
 void JabberProtocol::disconnectFromServer(const XMPP::Status &s)
@@ -217,19 +217,15 @@ void JabberProtocol::slotClientDebugMessage(const QString &msg)
  * After calling login method we set up JabberClient that must call connectedToServer in order to inform
  * us that connection was established. Then we can tell this to state machine in Protocol class
  */
-
-bool JabberProtocol::login()
+void JabberProtocol::login()
 {
 	kdebugf();
-
-	if (!Protocol::login())
-		return false;
 
 	JabberAccountDetails *jabberAccountDetails = dynamic_cast<JabberAccountDetails *>(account().details());
 	if (!jabberAccountDetails)
 	{
 		connectionClosed();
-		return false;
+		return;
 	}
 
 	JabberClient->setOSName(SystemInfo::instance()->osFullName());
@@ -256,8 +252,6 @@ bool JabberProtocol::login()
 	JabberClient->connect(jabberID, account().password(), true);
 
 	kdebugf2();
-
-	return true;
 }
 
 /*
@@ -265,13 +259,13 @@ bool JabberProtocol::login()
  */
 void JabberProtocol::connectedToServer()
 {
-	kdebugf();
+	loggedIn();
+}
 
+void JabberProtocol::afterLoggedIn()
+{
 	// ask for roster
 	CurrentRosterService->downloadRoster();
-	emit stateMachineLoggedIn();
-
-	kdebugf2();
 }
 
 void JabberProtocol::disconnectedFromServer()
@@ -279,31 +273,24 @@ void JabberProtocol::disconnectedFromServer()
 	kdebugf();
 
 	JabberClient->disconnect();
-	connectionClosed();
+	loggedOut();
 
 	kdebugf2();
 }
 
 void JabberProtocol::logout()
 {
-	kdebugf();
-
 	disconnectFromServer(IrisStatusAdapter::toIrisStatus(status()));
-	statusChanged(status());
-	Protocol::logout();
-
-	kdebugf2();
 }
 
-void JabberProtocol::changeStatus()
+void JabberProtocol::sendStatusToServer()
 {
 	JabberClient->setPresence(IrisStatusAdapter::toIrisStatus(status()));
-	statusChanged(status());
 }
 
 void JabberProtocol::changePrivateMode()
 {
-	//changeStatus();
+	//sendStatusToServer();
 }
 
 void JabberProtocol::clientResourceReceived(const XMPP::Jid &jid, const XMPP::Resource &resource)

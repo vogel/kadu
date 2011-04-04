@@ -88,12 +88,12 @@ private slots:
 	void connectionErrorSlot(const QString &message);
 
 protected:
-	virtual void changePrivateMode();
-
-protected slots:
-	virtual bool login();
+	virtual void login();
+	virtual void afterLoggedIn();
 	virtual void logout();
-	virtual void changeStatus();
+	virtual void sendStatusToServer();
+
+	virtual void changePrivateMode();
 
 public:
 	JabberProtocol(Account account, ProtocolFactory *factory);

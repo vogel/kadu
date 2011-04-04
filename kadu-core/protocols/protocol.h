@@ -75,25 +75,32 @@ class KADUAPI Protocol : public QObject
 	void setAllOffline();
 
 private slots:
-	void prepareStateMachine();
 	void statusChanged(StatusContainer *container, Status status);
-	void passwordRequired();
 
-	void connectedSlot();
-	void disconnectedSlot();
+	// state machine slots
+	void prepareStateMachine();
+
+	void loggingInStateEntered();
+	void loggedInStateEntered();
+	void loggingOutStateEntered();
+	void loggedOutAnyStateEntered();
+	void wantToLogInStateEntered();
+	void passwordRequiredStateEntered();
 
 protected:
+	virtual void login() = 0;
+	virtual void afterLoggedIn() {}
+	virtual void logout() = 0;
+	virtual void sendStatusToServer() = 0;
+
+	void loggedIn();
+	void loggedOut();
+	void passwordRequired();
 	void connectionError();
 	void connectionClosed();
 
 	virtual void disconnectedCleanup();
 	void statusChanged(Status newStatus);
-
-protected slots:
-	virtual bool login();
-	virtual void logout();
-	virtual void wantToLogin();
-	virtual void changeStatus() = 0;
 
 public:
 	Protocol(Account account, ProtocolFactory *factory);
@@ -160,8 +167,8 @@ signals:
 	void stateMachineLoggedIn();
 	void stateMachineLoggedOut();
 
-	void stateMachineChangeStatusToNotOffline();
-	void stateMachineChangeStatusToOffline();
+	void stateMachineChangeStatus();
+	void stateMachineLogout();
 
 	void stateMachinePasswordRequired();
 	void stateMachinePasswordAvailable();
