@@ -24,7 +24,7 @@
 #include "buddies/buddy-shared.h"
 #include "contacts/contact.h"
 #include "contacts/contact-manager.h"
-#include "misc/kadu-icon.h"
+#include "icons/kadu-icon.h"
 #include "model/roles.h"
 #include "protocols/protocol.h"
 

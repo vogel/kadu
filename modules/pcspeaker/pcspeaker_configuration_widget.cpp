@@ -28,7 +28,7 @@
 
 #include "configuration/configuration-file.h"
 #include "gui/widgets/configuration/notify-group-box.h"
-#include "misc/kadu-icon.h"
+#include "icons/kadu-icon.h"
 
 #include "pcspeaker_configuration_widget.h"
 #include "pcspeaker.h"

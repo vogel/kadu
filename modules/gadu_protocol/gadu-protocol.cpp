@@ -49,7 +49,7 @@
 #include "status/status-type-manager.h"
 
 #include "debug.h"
-#include "icons-manager.h"
+#include "icons/icons-manager.h"
 #include "misc/misc.h"
 
 #include "server/gadu-contact-list-handler.h"

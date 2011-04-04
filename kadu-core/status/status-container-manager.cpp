@@ -27,12 +27,12 @@
 #include "configuration/main-configuration.h"
 #include "core/core.h"
 #include "identities/identity-manager.h"
-#include "misc/kadu-icon.h"
+#include "icons/kadu-icon.h"
 #include "protocols/protocol.h"
 #include "status/status-container-aware-object.h"
 #include "status/status-type-manager.h"
 #include "status/status-type.h"
-#include "icons-manager.h"
+#include "icons/icons-manager.h"
 
 #include "status-container-manager.h"
 

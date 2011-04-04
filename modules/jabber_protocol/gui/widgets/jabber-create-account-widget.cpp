@@ -39,7 +39,7 @@
 
 #include "gui/windows/message-dialog.h"
 #include "gui/windows/jabber-wait-for-account-register-window.h"
-#include "icons-manager.h"
+#include "icons/icons-manager.h"
 #include "identities/identity-manager.h"
 #include "protocols/protocols-manager.h"
 #include "server/jabber-server-register-account.h"

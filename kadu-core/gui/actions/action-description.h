@@ -26,7 +26,7 @@
 #include <QtCore/QObject>
 
 #include "configuration/configuration-aware-object.h"
-#include "misc/kadu-icon.h"
+#include "icons/kadu-icon.h"
 
 class Action;
 class ActionDataSource;

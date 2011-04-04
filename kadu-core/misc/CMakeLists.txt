@@ -1,14 +1,12 @@
 set (misc_SRCS
 	coding-conversion.cpp
 	date-time.cpp
-	kadu-icon.cpp
 	misc.cpp
 	path-conversion.cpp
 	syntax-list.cpp
 )
 
 set (misc_MOC_SRCS
-	kadu-icon.h
 	syntax-list.h
 )
 

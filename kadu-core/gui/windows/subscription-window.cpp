@@ -38,7 +38,7 @@
 #include "contacts/contact-manager.h"
 #include "gui/widgets/groups-combo-box.h"
 #include "gui/widgets/select-buddy-combo-box.h"
-#include "icons-manager.h"
+#include "icons/icons-manager.h"
 #include "model/actions-proxy-model.h"
 #include "model/roles.h"
 

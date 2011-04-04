@@ -26,7 +26,7 @@
 #include <QtGui/QIcon>
 
 #include "exports.h"
-#include "misc/kadu-icon.h"
+#include "icons/kadu-icon.h"
 
 class Notification;
 class NotifierConfigurationWidget;

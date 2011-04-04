@@ -50,7 +50,7 @@
 #include "protocols/services/avatar-service.h"
 #include "protocols/services/contact-list-service.h"
 #include "protocols/protocol.h"
-#include "icons-manager.h"
+#include "icons/icons-manager.h"
 
 #include "gui/windows/gadu-change-password-window.h"
 #include "gui/windows/gadu-remind-password-window.h"

@@ -29,7 +29,7 @@
 #include <QtDBus/QDBusServiceWatcher>
 
 #include "configuration/configuration-file.h"
-#include "misc/kadu-icon.h"
+#include "icons/kadu-icon.h"
 #include "notify/notification-manager.h"
 #include "notify/notification.h"
 #include "notify/notify-event.h"

@@ -35,14 +35,14 @@
 #include "configuration/configuration-file.h"
 #include "contacts/contact.h"
 #include "parser/parser-token.h"
-#include "misc/kadu-icon.h"
+#include "icons/kadu-icon.h"
 #include "misc/misc.h"
 #include "status/status-type.h"
 #include "status/status-type-manager.h"
 
 #include "debug.h"
 #include "html_document.h"
-#include "icons-manager.h"
+#include "icons/icons-manager.h"
 
 #include "parser.h"
 

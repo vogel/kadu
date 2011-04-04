@@ -36,7 +36,7 @@
 #include "contacts/model/contact-data-extractor.h"
 #include "model/roles.h"
 #include "protocols/protocol.h"
-#include "icons-manager.h"
+#include "icons/icons-manager.h"
 
 #include "buddies-model-base.h"
 

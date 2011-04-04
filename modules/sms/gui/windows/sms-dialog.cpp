@@ -35,7 +35,7 @@
 #include "configuration/configuration-file.h"
 #include "gui/widgets/select-buddy-combo-box.h"
 #include "gui/windows/message-dialog.h"
-#include "misc/kadu-icon.h"
+#include "icons/kadu-icon.h"
 #include "misc/misc.h"
 #include "plugins/plugins-manager.h"
 #include "debug.h"

@@ -26,7 +26,7 @@
 #include "configuration/configuration-file.h"
 #include "gui/widgets/configuration/notify-group-box.h"
 #include "gui/widgets/select-file.h"
-#include "misc/kadu-icon.h"
+#include "icons/kadu-icon.h"
 
 #include "sound-manager.h"
 

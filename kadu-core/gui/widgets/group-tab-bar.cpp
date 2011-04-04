@@ -46,7 +46,7 @@
 #include "gui/windows/group-properties-window.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-dialog.h"
-#include "misc/kadu-icon.h"
+#include "icons/kadu-icon.h"
 
 #include "debug.h"
 

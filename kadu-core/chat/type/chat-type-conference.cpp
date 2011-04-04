@@ -20,7 +20,7 @@
  */
 
 #include "chat/chat-details-conference.h"
-#include "misc/kadu-icon.h"
+#include "icons/kadu-icon.h"
 
 #include "chat-type-conference.h"
 

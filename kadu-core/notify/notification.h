@@ -28,7 +28,7 @@
 
 #include "buddies/buddy-set.h"
 #include "exports.h"
-#include "misc/kadu-icon.h"
+#include "icons/kadu-icon.h"
 
 class QTimer;
 

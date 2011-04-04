@@ -43,8 +43,8 @@
 #include "gui/windows/message-dialog.h"
 
 #include "debug.h"
-#include "icons-manager.h"
-#include "misc/kadu-icon.h"
+#include "icons/icons-manager.h"
+#include "icons/kadu-icon.h"
 #include "misc/misc.h"
 
 #include "toolbar.h"

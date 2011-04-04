@@ -28,7 +28,7 @@
 #include <QtGui/QPixmap>
 #include <QtGui/QVBoxLayout>
 
-#include "misc/kadu-icon.h"
+#include "icons/kadu-icon.h"
 #include "gui/widgets/chat-widget.h"
 #include "pixmap-grabber.h"
 

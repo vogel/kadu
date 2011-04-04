@@ -22,7 +22,7 @@
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QCheckBox>
 
-#include "icons-manager.h"
+#include "icons/icons-manager.h"
 
 #include "notify-group-box.h"
 

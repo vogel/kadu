@@ -46,7 +46,7 @@
 #include "chat/message/message.h"
 #include "chat/chat-manager.h"
 #include "debug.h"
-#include "icons-manager.h"
+#include "icons/icons-manager.h"
 #include "status/status.h"
 #include "status/status-type-manager.h"
 #include "misc/misc.h"

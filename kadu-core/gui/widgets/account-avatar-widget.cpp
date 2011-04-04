@@ -27,7 +27,7 @@
 
 #include "avatars/avatar.h"
 #include "avatars/avatar-manager.h"
-#include "misc/kadu-icon.h"
+#include "icons/kadu-icon.h"
 #include "protocols/services/avatar-service.h"
 #include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"

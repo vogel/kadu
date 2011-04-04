@@ -24,7 +24,7 @@
 #include <QtGui/QStyle>
 
 #include "gui/widgets/line-edit-clear-button.h"
-#include "misc/kadu-icon.h"
+#include "icons/kadu-icon.h"
 
 #include "line-edit-with-clear-button.h"
 

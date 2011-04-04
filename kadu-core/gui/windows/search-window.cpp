@@ -45,7 +45,7 @@
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
 #include "core/core.h"
-#include "misc/kadu-icon.h"
+#include "icons/kadu-icon.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/windows/add-buddy-window.h"
 #include "gui/windows/kadu-window.h"

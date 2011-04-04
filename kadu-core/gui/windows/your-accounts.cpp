@@ -50,7 +50,7 @@
 #include "gui/widgets/modal-configuration-widget.h"
 #include "gui/widgets/protocols-combo-box.h"
 #include "gui/windows/message-dialog.h"
-#include "misc/kadu-icon.h"
+#include "icons/kadu-icon.h"
 #include "misc/misc.h"
 #include "model/actions-proxy-model.h"
 #include "model/roles.h"

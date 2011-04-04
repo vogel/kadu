@@ -21,7 +21,7 @@
 
 #include <QtGui/QMovie>
 
-#include "misc/kadu-icon.h"
+#include "icons/kadu-icon.h"
 
 #include "progress-icon.h"
 

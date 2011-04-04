@@ -22,7 +22,7 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
-#include "misc/kadu-icon.h"
+#include "icons/kadu-icon.h"
 #include "model/roles.h"
 #include "protocols/protocol.h"
 

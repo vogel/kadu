@@ -25,7 +25,7 @@
 #include <QtGui/QLineEdit>
 #include <QtGui/QPushButton>
 
-#include "misc/kadu-icon.h"
+#include "icons/kadu-icon.h"
 #include "misc/misc.h"
 
 #include "select-file.h"

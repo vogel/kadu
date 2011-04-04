@@ -29,7 +29,7 @@
 
 #include <QtGui/QStyle>
 
-#include "misc/kadu-icon.h"
+#include "icons/kadu-icon.h"
 
 #include "message-dialog.h"
 

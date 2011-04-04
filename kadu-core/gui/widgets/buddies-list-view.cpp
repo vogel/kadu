@@ -51,7 +51,7 @@
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/windows/kadu-window-actions.h"
 #include "gui/hot-key.h"
-#include "misc/kadu-icon.h"
+#include "icons/kadu-icon.h"
 #include "model/roles.h"
 #include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"

@@ -27,7 +27,7 @@
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
 #include "identities/identity-manager.h"
-#include "misc/kadu-icon.h"
+#include "icons/kadu-icon.h"
 #include "misc/misc.h"
 #include "protocols/protocol.h"
 #include "protocols/protocols-manager.h"

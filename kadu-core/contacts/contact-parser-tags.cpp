@@ -21,7 +21,7 @@
 #include "accounts/account.h"
 #include "avatars/avatar.h"
 #include "buddies/buddy-preferred-manager.h"
-#include "misc/kadu-icon.h"
+#include "icons/kadu-icon.h"
 #include "misc/path-conversion.h"
 #include "parser/parser.h"
 #include "protocols/protocol.h"

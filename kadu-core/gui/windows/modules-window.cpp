@@ -43,7 +43,7 @@
 
 #include "configuration/configuration-file.h"
 #include "configuration/configuration-manager.h"
-#include "misc/kadu-icon.h"
+#include "icons/kadu-icon.h"
 #include "misc/misc.h"
 #include "plugins/plugin.h"
 #include "plugins/plugin-info.h"

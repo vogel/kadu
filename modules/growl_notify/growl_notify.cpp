@@ -37,7 +37,7 @@
 #include "notify/notification-manager.h"
 #include "notify/notification.h"
 #include "parser/parser.h"
-#include "icons-manager.h"
+#include "icons/icons-manager.h"
 #include "debug.h"
 
 #include "growl_notify.h"

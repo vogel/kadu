@@ -22,7 +22,7 @@
 #include <QtGui/QLineEdit>
 #include <QtGui/QPushButton>
 
-#include "misc/kadu-icon.h"
+#include "icons/kadu-icon.h"
 
 #include "path-edit.h"
 

@@ -67,8 +67,8 @@
 #include "chat-edit-box.h"
 #include "custom-input.h"
 #include "debug.h"
-#include "icons-manager.h"
-#include "misc/kadu-icon.h"
+#include "icons/icons-manager.h"
+#include "icons/kadu-icon.h"
 #include "misc/misc.h"
 
 #include "chat-widget.h"

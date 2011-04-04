@@ -44,7 +44,7 @@
 #include "gui/widgets/buddy-avatar-widget.h"
 #include "gui/widgets/buddy-contacts-table.h"
 #include "gui/windows/message-dialog.h"
-#include "icons-manager.h"
+#include "icons/icons-manager.h"
 #include "misc/misc.h"
 #include "model/actions-proxy-model.h"
 #include "model/roles.h"

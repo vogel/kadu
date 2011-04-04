@@ -36,7 +36,7 @@
 #include "file-transfer/file-transfer-manager.h"
 #include "file-transfer/file-transfer-shared.h"
 #include "gui/windows/message-dialog.h"
-#include "misc/kadu-icon.h"
+#include "icons/kadu-icon.h"
 
 #include "debug.h"
 

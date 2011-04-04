@@ -29,7 +29,7 @@
 
 #include "protocols/services/chat-image-service.h"
 #include "html_document.h"
-#include "icons-manager.h"
+#include "icons/icons-manager.h"
 
 #include "formatted-message.h"
 

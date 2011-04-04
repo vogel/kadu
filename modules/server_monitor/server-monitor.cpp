@@ -33,7 +33,7 @@
 #include "notify/notify-event.h"
 #include "activate.h"
 #include "debug.h"
-#include "icons-manager.h"
+#include "icons/icons-manager.h"
 #include "server-monitor-window.h"
 
 #include "server-monitor.h"

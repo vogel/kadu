@@ -34,14 +34,14 @@
 #include "configuration/configuration-file.h"
 #include "core/core.h"
 #include "gui/windows/kadu-window.h"
-#include "misc/kadu-icon.h"
+#include "icons/kadu-icon.h"
 #include "parser/parser.h"
 #include "status/description-manager.h"
 #include "status/description-model.h"
 
 #include "activate.h"
 #include "debug.h"
-#include "icons-manager.h"
+#include "icons/icons-manager.h"
 
 #include "choose-description.h"
 

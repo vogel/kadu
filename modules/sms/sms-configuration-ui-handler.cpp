@@ -49,7 +49,7 @@
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-dialog.h"
 #include "gui/hot-key.h"
-#include "icons-manager.h"
+#include "icons/icons-manager.h"
 
 #include "misc/path-conversion.h"
 

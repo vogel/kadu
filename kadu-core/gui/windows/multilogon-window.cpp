@@ -35,7 +35,7 @@
 #include "protocols/protocol.h"
 #include "protocols/services/multilogon-service.h"
 #include "activate.h"
-#include "icons-manager.h"
+#include "icons/icons-manager.h"
 
 #include "multilogon-window.h"
 

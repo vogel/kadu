@@ -25,7 +25,7 @@
 #include "notify/notify-event.h"
 #include "parser/parser.h"
 #include "debug.h"
-#include "icons-manager.h"
+#include "icons/icons-manager.h"
 
 #include "connection-error-notification.h"
 

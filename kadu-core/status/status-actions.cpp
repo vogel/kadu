@@ -25,13 +25,13 @@
 
 #include "accounts/account-manager.h"
 #include "configuration/configuration-file.h"
-#include "misc/kadu-icon.h"
+#include "icons/kadu-icon.h"
 #include "protocols/protocol.h"
 #include "status/status-container.h"
 #include "status/status-container-manager.h"
 #include "status/status-group.h"
 #include "status/status-type.h"
-#include "icons-manager.h"
+#include "icons/icons-manager.h"
 
 #include "status-actions.h"
 

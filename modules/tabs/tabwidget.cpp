@@ -30,7 +30,7 @@
 
 #include "configuration/configuration-file.h"
 #include "gui/hot-key.h"
-#include "misc/kadu-icon.h"
+#include "icons/kadu-icon.h"
 #include "misc/misc.h"
 
 #include "activate.h"

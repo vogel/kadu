@@ -65,7 +65,7 @@
 #include "themes/emoticon-theme-manager.h"
 
 #include "debug.h"
-#include "icons-manager.h"
+#include "icons/icons-manager.h"
 #include "languages-manager.h"
 
 #include "main-configuration-window.h"

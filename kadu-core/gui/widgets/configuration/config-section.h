@@ -28,7 +28,7 @@
 
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/configuration/kadu-tab-widget.h"
-#include "misc/kadu-icon.h"
+#include "icons/kadu-icon.h"
 
 class ConfigGroupBox;
 class ConfigTab;

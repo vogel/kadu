@@ -47,7 +47,7 @@
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-dialog.h"
 
-#include "misc/kadu-icon.h"
+#include "icons/kadu-icon.h"
 #include "misc/path-conversion.h"
 
 #include "notify/notification-manager.h"

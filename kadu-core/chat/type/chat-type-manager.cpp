@@ -21,7 +21,7 @@
 #include "chat/type/chat-type-aware-object.h"
 #include "chat/type/chat-type-conference.h"
 #include "chat/type/chat-type-simple.h"
-#include "icons-manager.h"
+#include "icons/icons-manager.h"
 
 #include "chat-type-manager.h"
 

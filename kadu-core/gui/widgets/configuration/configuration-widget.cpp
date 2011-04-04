@@ -35,7 +35,7 @@
 #include <QtGui/QDialogButtonBox>
 
 #include "configuration/configuration-file.h"
-#include "misc/kadu-icon.h"
+#include "icons/kadu-icon.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/config-widget.h"

@@ -3,7 +3,6 @@ set (kadu_SRCS
 	debug.cpp
 	dnshandler.cpp
 	html_document.cpp
-	icons-manager.cpp
 	kadu-application.cpp
 	languages-manager.cpp
 	themes.cpp
@@ -26,7 +25,6 @@ endif (NOT WIN32)
 
 set (kadu_MOC_SRCS
 	dnshandler.h
-	icons-manager.h
 	kadu-application.h
 	themes.h
 	updates.h
@@ -43,6 +41,7 @@ set (kadu_SUBDIRS
 	emoticons
 	file-transfer
 	gui
+	icons
 	identities
 	misc
 	model

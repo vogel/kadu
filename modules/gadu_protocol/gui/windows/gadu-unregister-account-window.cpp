@@ -31,7 +31,7 @@
 #include "accounts/account-manager.h"
 #include "gui/windows/message-dialog.h"
 #include "misc/misc.h"
-#include "icons-manager.h"
+#include "icons/icons-manager.h"
 
 #include "gadu-id-validator.h"
 #include "gui/widgets/token-widget.h"

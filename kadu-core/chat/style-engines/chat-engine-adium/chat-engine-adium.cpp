@@ -40,7 +40,7 @@
 #include "gui/widgets/preview.h"
 #include "parser/parser.h"
 #include "protocols/protocol-factory.h"
-#include "misc/kadu-icon.h"
+#include "icons/kadu-icon.h"
 #include "misc/misc.h"
 
 #include "adium-style.h"

@@ -52,7 +52,7 @@
 #include "gui/widgets/delayed-line-edit.h"
 #include "gui/widgets/filter-widget.h"
 #include "gui/windows/message-dialog.h"
-#include "misc/kadu-icon.h"
+#include "icons/kadu-icon.h"
 #include "misc/misc.h"
 #include "model/roles.h"
 #include "protocols/protocol-factory.h"

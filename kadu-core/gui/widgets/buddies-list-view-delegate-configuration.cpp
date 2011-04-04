@@ -21,7 +21,7 @@
 
 #include "configuration/configuration-file.h"
 #include "gui/widgets/buddies-list-view.h"
-#include "misc/kadu-icon.h"
+#include "icons/kadu-icon.h"
 
 #include "buddies-list-view-delegate-configuration.h"
 

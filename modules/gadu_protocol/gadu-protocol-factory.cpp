@@ -25,7 +25,7 @@
 
 #include <QtGui/QPushButton>
 
-#include "misc/kadu-icon.h"
+#include "icons/kadu-icon.h"
 #include "gui/widgets/gadu-add-account-widget.h"
 #include "gui/widgets/gadu-contact-personal-info-widget.h"
 #include "gui/widgets/gadu-create-account-widget.h"

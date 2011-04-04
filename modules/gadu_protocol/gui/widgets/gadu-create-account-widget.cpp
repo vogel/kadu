@@ -40,7 +40,7 @@
 #include "identities/identity-manager.h"
 #include "protocols/protocols-manager.h"
 #include "url-handlers/url-handler-manager.h"
-#include "icons-manager.h"
+#include "icons/icons-manager.h"
 
 #include "gui/windows/gadu-wait-for-account-register-window.h"
 #include "server/gadu-server-register-account.h"

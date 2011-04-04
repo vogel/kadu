@@ -20,7 +20,7 @@
 #include <QtNetwork/QNetworkRequest>
 
 #include "gui/windows/message-dialog.h"
-#include "misc/kadu-icon.h"
+#include "icons/kadu-icon.h"
 
 #include "sms-image-dialog.h"
 

@@ -20,7 +20,7 @@
 #include "configuration/configuration-file.h"
 #include "notify/notification-manager.h"
 #include "notify/notify-event.h"
-#include "icons-manager.h"
+#include "icons/icons-manager.h"
 
 #include "firewall-notification.h"
 

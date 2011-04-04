@@ -19,7 +19,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "misc/kadu-icon.h"
+#include "icons/kadu-icon.h"
 
 #include "notifier.h"
 

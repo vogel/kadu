@@ -48,7 +48,7 @@
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/search-window.h"
-#include "misc/kadu-icon.h"
+#include "icons/kadu-icon.h"
 #include "misc/misc.h"
 #include "notify/notification-manager.h"
 #include "plugins/plugins-manager.h"
@@ -62,7 +62,7 @@
 #include "url-handlers/url-handler-manager.h"
 #include "activate.h"
 #include "debug.h"
-#include "icons-manager.h"
+#include "icons/icons-manager.h"
 #include "kadu-config.h"
 #include "updates.h"
 

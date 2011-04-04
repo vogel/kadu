@@ -66,10 +66,10 @@
 #include "url-handlers/url-handler-manager.h"
 #include "activate.h"
 
-#include "misc/kadu-icon.h"
+#include "icons/kadu-icon.h"
 #include "misc/misc.h"
 #include "debug.h"
-#include "icons-manager.h"
+#include "icons/icons-manager.h"
 
 #include "kadu-window.h"
 

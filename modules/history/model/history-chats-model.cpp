@@ -23,7 +23,7 @@
 
 #include "chat/chat.h"
 #include "chat/type/chat-type-manager.h"
-#include "misc/kadu-icon.h"
+#include "icons/kadu-icon.h"
 #include "model/roles.h"
 
 #include "model/history-type.h"

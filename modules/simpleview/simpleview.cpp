@@ -32,7 +32,7 @@
 #include "gui/widgets/status-buttons.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/main-window.h"
-#include "misc/kadu-icon.h"
+#include "icons/kadu-icon.h"
 #include "misc/path-conversion.h"
 
 #include "modules/docking/docking.h"

@@ -48,7 +48,7 @@
 #include "notify/notification.h"
 #include "notify/notification-manager.h"
 
-#include "icons-manager.h"
+#include "icons/icons-manager.h"
 #include "parser/parser.h"
 #include "debug.h"
 

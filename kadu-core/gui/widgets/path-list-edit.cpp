@@ -31,7 +31,7 @@
 #include <QtGui/QListWidget>
 
 #include "debug.h"
-#include "misc/kadu-icon.h"
+#include "icons/kadu-icon.h"
 #include "misc/misc.h"
 
 #include "path-list-edit.h"

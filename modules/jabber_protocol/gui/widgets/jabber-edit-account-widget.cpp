@@ -51,7 +51,7 @@
 #include "gui/windows/message-dialog.h"
 #include "identities/identity-manager.h"
 #include "protocols/services/avatar-service.h"
-#include "icons-manager.h"
+#include "icons/icons-manager.h"
 
 #include "gui/windows/jabber-change-password-window.h"
 

@@ -25,7 +25,7 @@
 #include <QtCore/QtAlgorithms>
 #include <QtGui/QApplication>
 
-#include "misc/kadu-icon.h"
+#include "icons/kadu-icon.h"
 #include "status/status-group-manager.h"
 #include "status/status-type.h"
 

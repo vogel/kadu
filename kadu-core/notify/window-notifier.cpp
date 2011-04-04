@@ -27,7 +27,7 @@
 
 #include "activate.h"
 #include "debug.h"
-#include "icons-manager.h"
+#include "icons/icons-manager.h"
 
 #include "window-notifier.h"
 

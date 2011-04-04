@@ -52,7 +52,7 @@
 #include "gui/widgets/buddies-list-view-menu-manager.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/toolbar.h"
-#include "misc/kadu-icon.h"
+#include "icons/kadu-icon.h"
 #include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocols-manager.h"

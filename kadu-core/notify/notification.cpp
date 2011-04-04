@@ -21,7 +21,7 @@
 
 #include <QtCore/QTimer>
 
-#include "misc/kadu-icon.h"
+#include "icons/kadu-icon.h"
 #include "notify/notification-manager.h"
 #include "parser/parser.h"
 #include "debug.h"

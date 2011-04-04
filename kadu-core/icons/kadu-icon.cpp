@@ -17,7 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "icons-manager.h"
+#include "icons/icons-manager.h"
 #include "misc/path-conversion.h"
 
 #include "kadu-icon.h"

@@ -27,8 +27,8 @@
 #include <QtGui/QMovie>
 #include <QtGui/QPushButton>
 
-#include "icons-manager.h"
-#include "misc/kadu-icon.h"
+#include "icons/icons-manager.h"
+#include "icons/kadu-icon.h"
 #include "server/gadu-token-fetcher.h"
 
 #include "token-widget.h"

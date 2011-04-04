@@ -17,7 +17,7 @@
 #include "gui/windows/kadu-window.h"
 #include "gui/hot-key.h"
 #include "core/core.h"
-#include "misc/kadu-icon.h"
+#include "icons/kadu-icon.h"
 #include "misc/misc.h"
 #include "debug.h"
 

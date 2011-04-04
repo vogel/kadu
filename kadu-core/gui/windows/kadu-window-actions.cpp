@@ -44,7 +44,7 @@
 #include "buddies/filter/offline-buddy-filter.h"
 #include "buddies/filter/online-and-description-buddy-filter.h"
 #include "core/core.h"
-#include "misc/kadu-icon.h"
+#include "icons/kadu-icon.h"
 #include "gui/actions/action.h"
 #include "gui/actions/actions.h"
 #include "gui/widgets/buddies-list-view.h"

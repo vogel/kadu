@@ -62,7 +62,7 @@
 #include "plugins/plugin-info.h"
 #include "activate.h"
 #include "debug.h"
-#include "icons-manager.h"
+#include "icons/icons-manager.h"
 
 #include "plugins-manager.h"
 

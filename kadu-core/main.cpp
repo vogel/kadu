@@ -62,7 +62,7 @@
 
 #include "debug.h"
 #include "kadu-config.h"
-#include "icons-manager.h"
+#include "icons/icons-manager.h"
 #include "kadu-application.h"
 #include "misc/misc.h"
 

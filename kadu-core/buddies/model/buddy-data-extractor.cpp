@@ -22,7 +22,7 @@
 
 #include "buddies/buddy.h"
 #include "buddies/buddy-preferred-manager.h"
-#include "misc/kadu-icon.h"
+#include "icons/kadu-icon.h"
 #include "model/roles.h"
 
 #include "buddy-data-extractor.h"

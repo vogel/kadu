@@ -23,7 +23,7 @@
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QLabel>
 
-#include "misc/kadu-icon.h"
+#include "icons/kadu-icon.h"
 #include "notify/notification-manager.h"
 #include "notify/notification.h"
 #include "debug.h"

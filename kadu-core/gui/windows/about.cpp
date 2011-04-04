@@ -49,7 +49,7 @@
 #include "core/core.h"
 #include "debug.h"
 #include "html_document.h"
-#include "misc/kadu-icon.h"
+#include "icons/kadu-icon.h"
 #include "misc/misc.h"
 #include "os/generic/url-opener.h"
 #include "url-handlers/mail-url-handler.h"

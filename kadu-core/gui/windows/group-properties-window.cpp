@@ -34,7 +34,7 @@
 #include "configuration/configuration-file.h"
 #include "buddies/group.h"
 
-#include "misc/kadu-icon.h"
+#include "icons/kadu-icon.h"
 #include "misc/misc.h"
 
 #include "group-properties-window.h"

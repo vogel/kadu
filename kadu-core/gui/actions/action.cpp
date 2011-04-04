@@ -26,8 +26,8 @@
 #include "gui/actions/action-data-source.h"
 #include "gui/actions/action-description.h"
 #include "gui/hot-key.h"
-#include "icons-manager.h"
-#include "misc/kadu-icon.h"
+#include "icons/icons-manager.h"
+#include "icons/kadu-icon.h"
 #include "protocols/services/chat-service.h"
 
 #include "action.h"

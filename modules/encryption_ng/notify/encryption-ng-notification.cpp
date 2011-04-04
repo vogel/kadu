@@ -19,7 +19,7 @@
 
 #include "notify/notification-manager.h"
 #include "notify/notify-event.h"
-#include "icons-manager.h"
+#include "icons/icons-manager.h"
 
 #include "encryption-ng-notification.h"
 

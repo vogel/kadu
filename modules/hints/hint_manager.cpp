@@ -45,7 +45,7 @@
 
 #include "activate.h"
 #include "debug.h"
-#include "icons-manager.h"
+#include "icons/icons-manager.h"
 #include "hints-configuration-ui-handler.h"
 #include "hints_configuration_widget.h"
 

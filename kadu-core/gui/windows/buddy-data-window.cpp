@@ -67,7 +67,7 @@
 #include "protocols/protocol-factory.h"
 
 #include "debug.h"
-#include "icons-manager.h"
+#include "icons/icons-manager.h"
 
 #include "buddy-data-window.h"
 

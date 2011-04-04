@@ -31,7 +31,7 @@
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
 #include "gui/widgets/chat-widget-manager.h"
-#include "misc/kadu-icon.h"
+#include "icons/kadu-icon.h"
 #include "misc/misc.h"
 
 #include "gadu-url-handler.h"

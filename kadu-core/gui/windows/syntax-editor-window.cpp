@@ -38,7 +38,7 @@
 #include "gui/windows/message-dialog.h"
 #include "misc/misc.h"
 #include "misc/syntax-list.h"
-#include "icons-manager.h"
+#include "icons/icons-manager.h"
 
 #include "syntax-editor-window.h"
 

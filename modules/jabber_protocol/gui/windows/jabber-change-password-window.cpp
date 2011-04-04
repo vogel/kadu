@@ -32,7 +32,7 @@
 
 #include "gui/windows/message-dialog.h"
 #include "misc/misc.h"
-#include "icons-manager.h"
+#include "icons/icons-manager.h"
 
 #include "server/jabber-server-change-password.h"
 

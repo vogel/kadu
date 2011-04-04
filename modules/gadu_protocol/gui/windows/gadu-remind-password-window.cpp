@@ -31,7 +31,7 @@
 #include "gui/windows/message-dialog.h"
 #include "misc/misc.h"
 #include "url-handlers/url-handler-manager.h"
-#include "icons-manager.h"
+#include "icons/icons-manager.h"
 
 #include "gui/widgets/token-widget.h"
 #include "server/gadu-server-remind-password.h"
