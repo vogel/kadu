@@ -28,6 +28,7 @@
 
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/configuration/kadu-tab-widget.h"
+#include "misc/kadu-icon.h"
 
 class ConfigGroupBox;
 class ConfigTab;
@@ -44,7 +45,7 @@ class ConfigSection : public QObject
 
 	QString Name;
 	ConfigurationWidget *MyConfigurationWidget;
-	QString IconPath;
+	KaduIcon Icon;
 
 	QListWidgetItem *ListWidgetItem;
 	bool Activated;
@@ -61,7 +62,7 @@ private slots:
 
 public:
 	ConfigSection(const QString &name, ConfigurationWidget *configurationWidget, QListWidgetItem *listWidgetItem, QWidget *parentConfigGroupBoxWidget,
-		const QString &iconPath);
+		const KaduIcon &icon);
 	virtual ~ConfigSection();
 
 	const QString & name() const { return Name; }
