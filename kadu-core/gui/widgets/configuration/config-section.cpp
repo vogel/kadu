@@ -132,5 +132,5 @@ void ConfigSection::configTabDestroyed(QObject *obj)
 
 void ConfigSection::iconThemeChanged()
 {
-	ListWidgetItem->setIcon(Icon.icon().pixmap(32, 32));
+	ListWidgetItem->setIcon(Icon.icon());
 }

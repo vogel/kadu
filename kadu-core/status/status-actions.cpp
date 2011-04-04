@@ -126,8 +126,7 @@ QAction * StatusActions::createStatusAction(StatusType *statusType)
 	else
 		icon = StatusContainerManager::instance()->statusIcon(statusType->name()).icon();
 	QAction *statusAction = ChangeStatusActionGroup->addAction(
-		icon.pixmap(16, 16),
-		MyStatusContainer->statusNamePrefix() + statusType->displayName());
+			icon, MyStatusContainer->statusNamePrefix() + statusType->displayName());
 	statusAction->setCheckable(true);
 	statusAction->setData(QVariant::fromValue(statusType));
 

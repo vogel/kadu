@@ -422,7 +422,7 @@ ConfigSection * ConfigurationWidget::configSection(const KaduIcon &icon, const Q
 	if (!create)
 		return 0;
 
-	QListWidgetItem *newConfigSectionListWidgetItem = new QListWidgetItem(icon.icon().pixmap(32, 32), name, SectionsListWidget);
+	QListWidgetItem *newConfigSectionListWidgetItem = new QListWidgetItem(icon.icon(), name, SectionsListWidget);
 
 	QFontMetrics fontMetrics = SectionsListWidget->fontMetrics();
 	// TODO: 48 = margins + scrollbar - get real scrollbar width
