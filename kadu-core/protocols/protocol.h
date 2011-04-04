@@ -83,8 +83,6 @@ private slots:
 	void disconnectedSlot();
 
 protected:
-	ProtocolStateMachine * machine() const { return Machine; }
-
 	void statusChanged(Status newStatus);
 
 protected slots:
@@ -154,13 +152,18 @@ signals:
 	void invalidPassword(Account account);
 
 // state machine signals
+	void stateMachineLoggedIn();
 	void stateMachineLoggedOut();
 
 	void stateMachineChangeStatusToNotOffline();
 	void stateMachineChangeStatusToOffline();
 
+	void stateMachinePasswordRequired();
 	void stateMachinePasswordAvailable();
 	void stateMachinePasswordNotAvailable();
+
+	void stateMachineConnectionError();
+	void stateMachineFatalConnectionError();
 
 };
 

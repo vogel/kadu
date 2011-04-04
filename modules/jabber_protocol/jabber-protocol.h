@@ -86,7 +86,6 @@ private slots:
 	void contactIdChanged(Contact contact, const QString &oldId);
 
 	void connectionErrorSlot(const QString &message);
-	void invalidPasswordSlot();
 
 protected:
 	virtual void changePrivateMode();

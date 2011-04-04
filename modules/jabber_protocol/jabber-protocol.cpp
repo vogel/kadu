@@ -140,7 +140,7 @@ void JabberProtocol::initializeJabberClient()
 		   this, SLOT(clientResourceReceived(const XMPP::Jid &, const XMPP::Resource &)));
 
 	connect(JabberClient, SIGNAL(connectionError(QString)), this, SLOT(connectionErrorSlot(QString)));
-	connect(JabberClient, SIGNAL(invalidPassword()), this, SLOT(invalidPasswordSlot()));
+	connect(JabberClient, SIGNAL(invalidPassword()), this, SIGNAL(stateMachinePasswordRequired()));
 
 		/*//TODO: implement in the future
 		connect( JabberClient, SIGNAL ( groupChatJoined ( const XMPP::Jid & ) ),
@@ -162,11 +162,6 @@ void JabberProtocol::connectionErrorSlot(const QString& message)
 		emit connectionError(account(), JabberClient->clientConnector()->host(), message);
 }
 
-void JabberProtocol::invalidPasswordSlot()
-{
-	machine()->passwordRequired();
-}
-
 XMPP::ClientStream::AllowPlainType JabberProtocol::plainAuthToXMPP(JabberAccountDetails::AllowPlainType type)
 {
 	if (type == JabberAccountDetails::NoAllowPlain)
@@ -184,7 +179,7 @@ void JabberProtocol::connectedToServer()
 	// ask for roster
 	CurrentRosterService->downloadRoster();
 
-	machine()->loggedIn();
+	emit stateMachineLoggedOut();
 	kdebugf2();
 }
 
@@ -246,13 +241,13 @@ void JabberProtocol::login()
 	JabberAccountDetails *jabberAccountDetails = dynamic_cast<JabberAccountDetails *>(account().details());
 	if (!jabberAccountDetails)
 	{
-		machine()->fatalConnectionError();
+		emit stateMachineFatalConnectionError();
 		return;
 	}
 
 	if (account().id().isEmpty())
 	{
-		machine()->fatalConnectionError();
+		emit stateMachineFatalConnectionError();
 
 		MessageDialog::show("dialog-warning", tr("Kadu"), tr("XMPP username is not set!"));
 		setStatus(Status());
@@ -263,7 +258,7 @@ void JabberProtocol::login()
 
 	if (!account().hasPassword())
 	{
-		machine()->passwordRequired();
+		emit stateMachinePasswordRequired();
 		return;
 	}
 

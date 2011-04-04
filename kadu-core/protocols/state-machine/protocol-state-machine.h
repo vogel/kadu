@@ -54,22 +54,12 @@ public:
 	explicit ProtocolStateMachine(Protocol *protocol, QObject *parent = 0);
 	virtual ~ProtocolStateMachine();
 
-	void loggedIn();
-	void passwordRequired();
-	void connectionError();
-	void fatalConnectionError();
-
 	bool isLoggedIn();
 	bool isLoggingIn();
 
 signals:
 	void networkOnlineSignal();
 	void networkOfflineSignal();
-	void loggedInSignal();
-	void passwordRequiredSignal();
-	void passwordAvailableSignal();
-	void connectionErrorSignal();
-	void fatalConnectionErrorSignal();
 
 	void connected();
 	void disconnected();

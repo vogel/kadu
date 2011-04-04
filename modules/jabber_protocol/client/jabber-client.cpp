@@ -674,7 +674,7 @@ void JabberClient::slotCSError(int error)
 		kdebug("Incorrect password, retrying.\n");
 		Protocol->logout();
 
-		Protocol->machine()->passwordRequired();
+		emit Protocol->stateMachinePasswordRequired();
 	}
 	else
 	{
@@ -688,12 +688,12 @@ void JabberClient::slotCSError(int error)
 			if (reconn)
 			{
 				cleanUp();
-				Protocol->machine()->connectionError();
+				emit Protocol->stateMachineConnectionError();
 			}
 			else
 			{
 //				Protocol->resourcePool()->clear();
-				Protocol->machine()->fatalConnectionError();
+				emit Protocol->stateMachineFatalConnectionError();
 			}
 		}
 	}

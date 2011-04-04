@@ -170,13 +170,13 @@ void GaduProtocol::login()
 
 	if (!gaduAccountDetails)
 	{
-		machine()->fatalConnectionError();
+		emit stateMachineFatalConnectionError();
 		return;
 	}
 
 	if (0 == gaduAccountDetails->uin())
 	{
-		machine()->fatalConnectionError();
+		emit stateMachineFatalConnectionError();
 
 		MessageDialog::show("dialog-warning", tr("Kadu"), tr("UIN not set!"));
 		setStatus(Status());
@@ -187,7 +187,7 @@ void GaduProtocol::login()
 
 	if (!account().hasPassword())
 	{
-		machine()->passwordRequired();
+		emit stateMachinePasswordRequired();
 		return;
 	}
 
@@ -331,9 +331,9 @@ void GaduProtocol::networkConnected()
 	// set up DCC if needed
 	setUpFileTransferService();
 
-	machine()->loggedIn();
-
 	statusChanged(status());
+
+	emit stateMachineLoggedIn();
 }
 
 void GaduProtocol::networkDisconnected(bool tryAgain)
@@ -341,9 +341,9 @@ void GaduProtocol::networkDisconnected(bool tryAgain)
 	logout();
 
 	if (tryAgain)
-		machine()->connectionError();
+		emit stateMachineConnectionError();
 	else
-		machine()->fatalConnectionError();
+		emit stateMachineFatalConnectionError();
 }
 
 void GaduProtocol::sendUserList()
@@ -396,7 +396,7 @@ void GaduProtocol::socketConnFailed(GaduError error)
 			MessageDialog::show("dialog-warning", tr("Kadu"), msg);
 			break;
 		case ConnectionIncorrectPassword:
-			machine()->passwordRequired();
+			emit stateMachinePasswordRequired();
 			break;
 		default: // we need special code only for 2 cases
 			break;
