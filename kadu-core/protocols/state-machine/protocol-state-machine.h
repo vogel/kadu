@@ -38,6 +38,9 @@ class ProtocolStateMachine : public QStateMachine
 	QState *LoggingInState;
 	QState *LoggedInState;
 
+private slots:
+	void printConfiguration();
+
 public:
 	explicit ProtocolStateMachine(Protocol *protocol, QObject *parent = 0);
 	virtual ~ProtocolStateMachine();

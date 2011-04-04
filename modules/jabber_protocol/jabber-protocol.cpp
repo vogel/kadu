@@ -281,6 +281,7 @@ void JabberProtocol::disconnectedFromServer()
 void JabberProtocol::logout()
 {
 	disconnectFromServer(IrisStatusAdapter::toIrisStatus(status()));
+	loggedOut();
 }
 
 void JabberProtocol::sendStatusToServer()

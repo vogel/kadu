@@ -88,6 +88,8 @@ private slots:
 	void passwordRequiredStateEntered();
 
 protected:
+	Status loginStatus() const;
+
 	virtual void login() = 0;
 	virtual void afterLoggedIn() {}
 	virtual void logout() = 0;

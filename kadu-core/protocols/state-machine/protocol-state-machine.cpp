@@ -19,6 +19,7 @@
 
 #include "network/network-manager.h"
 #include "protocols/protocol.h"
+#include "debug.h"
 
 #include "protocol-state-machine.h"
 
@@ -32,6 +33,14 @@ ProtocolStateMachine::ProtocolStateMachine(Protocol *protocol, QObject *parent) 
 	LoggingInState = new QState(this);
 	LoggedInState = new QState(this);
 	PasswordRequiredState = new QState(this);
+
+	connect(LoggingOutState, SIGNAL(entered()), this, SLOT(printConfiguration()));
+	connect(LoggedOutOnlineState, SIGNAL(entered()), this, SLOT(printConfiguration()));
+	connect(LoggedOutOfflineState, SIGNAL(entered()), this, SLOT(printConfiguration()));
+	connect(WantToLogInState, SIGNAL(entered()), this, SLOT(printConfiguration()));
+	connect(LoggingInState, SIGNAL(entered()), this, SLOT(printConfiguration()));
+	connect(LoggedInState, SIGNAL(entered()), this, SLOT(printConfiguration()));
+	connect(PasswordRequiredState, SIGNAL(entered()), this, SLOT(printConfiguration()));
 
 	connect(LoggingOutState, SIGNAL(entered()), this, SIGNAL(loggingOutStateEntered()));
 	connect(LoggedOutOnlineState, SIGNAL(entered()), this, SIGNAL(loggedOutOnlineStateEntered()));
@@ -61,8 +70,6 @@ ProtocolStateMachine::ProtocolStateMachine(Protocol *protocol, QObject *parent) 
 	LoggingInState->addTransition(CurrentProtocol, SIGNAL(stateMachineConnectionClosed()), LoggedOutOnlineState);
 
 	LoggedInState->addTransition(NetworkManager::instance(), SIGNAL(offline()), WantToLogInState);
-	// re-enter current state, so protocol implementations can update status message
-	LoggedInState->addTransition(CurrentProtocol, SIGNAL(stateMachineChangeStatus()), LoggedInState);
 	LoggedInState->addTransition(CurrentProtocol, SIGNAL(stateMachineLogout()), LoggingOutState);
 	LoggedInState->addTransition(CurrentProtocol, SIGNAL(stateMachineConnectionError()), LoggingInState);
 	LoggedInState->addTransition(CurrentProtocol, SIGNAL(stateMachineConnectionClosed()), LoggedOutOnlineState);
@@ -83,6 +90,28 @@ ProtocolStateMachine::ProtocolStateMachine(Protocol *protocol, QObject *parent) 
 
 ProtocolStateMachine::~ProtocolStateMachine()
 {
+}
+
+void ProtocolStateMachine::printConfiguration()
+{
+	QStringList states;
+	
+	if (configuration().contains(LoggingOutState))
+		states.append("logging-out");
+	if (configuration().contains(LoggedOutOnlineState))
+		states.append("logged-out-online");
+	if (configuration().contains(LoggedOutOfflineState))
+		states.append("logged-out-offline");
+	if (configuration().contains(WantToLogInState))
+		states.append("want-to-log-in");
+	if (configuration().contains(PasswordRequiredState))
+		states.append("password-required");
+	if (configuration().contains(LoggingInState))
+		states.append("logging-in");
+	if (configuration().contains(LoggedInState))
+		states.append("logged-in");
+
+	kdebugm(KDEBUG_INFO, "State machine: [%s]\n", qPrintable(states.join(", ")));
 }
 
 bool ProtocolStateMachine::isLoggedIn()

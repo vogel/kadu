@@ -278,9 +278,9 @@ void GaduProtocol::setupLoginParams()
 
 	GaduLoginParams.async = 1;
 
-	GaduLoginParams.status = (GaduProtocolHelper::gaduStatusFromStatus(status()) | (account().privateStatus() ? GG_STATUS_FRIENDS_MASK : 0));
-	if (!status().description().isEmpty())
-		GaduLoginParams.status_descr = strdup(status().description().toUtf8());
+	GaduLoginParams.status = (GaduProtocolHelper::gaduStatusFromStatus(loginStatus()) | (account().privateStatus() ? GG_STATUS_FRIENDS_MASK : 0));
+	if (!loginStatus().description().isEmpty())
+		GaduLoginParams.status_descr = strdup(loginStatus().description().toUtf8());
 
 	GaduLoginParams.tls = gaduAccountDetails->tlsEncryption() ? 1 : 0;
 
@@ -423,7 +423,7 @@ void GaduProtocol::socketConnFailed(GaduError error)
 		emit connectionError(account(), host, msg);
 	}
 
-	if (GaduProtocolHelper::isConnectionErrorFatal(error))
+	if (!GaduProtocolHelper::isConnectionErrorFatal(error))
 	{
 		GaduServersManager::instance()->markServerAsBad(ActiveServer);
 		connectionError();

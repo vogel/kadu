@@ -119,9 +119,14 @@ void Protocol::setStatus(Status status)
 	StatusChangerManager::instance()->setStatus(account().statusContainer(), status);
 }
 
-Status Protocol::status() const
+Status Protocol::loginStatus() const
 {
 	return StatusChangerManager::instance()->realStatus(account().statusContainer());
+}
+
+Status Protocol::status() const
+{
+	return CurrentStatus;
 }
 
 void Protocol::statusChanged(StatusContainer *container, Status status)
@@ -130,10 +135,15 @@ void Protocol::statusChanged(StatusContainer *container, Status status)
 		return;
 
 	CurrentStatus = status;
-	if (CurrentStatus.isDisconnected())
-		emit stateMachineLogout();
-	else
+	if (!CurrentStatus.isDisconnected())
+	{
+		emit statusChanged(CurrentAccount, CurrentStatus);
+		sendStatusToServer();
+
 		emit stateMachineChangeStatus();
+	}
+	else
+		emit stateMachineLogout();
 }
 
 void Protocol::loggedIn()
@@ -219,8 +229,8 @@ void Protocol::loggedInStateEntered()
 {
 	afterLoggedIn();
 
+	statusChanged(loginStatus());
 	sendStatusToServer();
-	statusChanged(status());
 
 	emit connected(CurrentAccount);
 }
@@ -234,7 +244,7 @@ void Protocol::loggingOutStateEntered()
 void Protocol::loggedOutAnyStateEntered()
 {
 	disconnectedCleanup();
-	statusChanged(status());
+	statusChanged(loginStatus());
 
 	emit disconnected(CurrentAccount);
 }
