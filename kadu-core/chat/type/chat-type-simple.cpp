@@ -102,9 +102,9 @@ QString ChatTypeSimple::displayNamePlural() const
  *
  * Icon for ChatTypeSimple is 'internet-group-chat'.
  */
-QIcon ChatTypeSimple::icon() const
+KaduIcon ChatTypeSimple::icon() const
 {
-	return KaduIcon("internet-group-chat").icon();
+	return KaduIcon("internet-group-chat");
 }
 
 /**

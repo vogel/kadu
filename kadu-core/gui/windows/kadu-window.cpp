@@ -354,7 +354,7 @@ void KaduWindow::updateRecentChatsMenu()
 		if (!ChatWidgetManager::instance()->byChat(chat))
 		{
 			ChatType *type = ChatTypeManager::instance()->chatType(chat.type());
-			QAction *action = new QAction(type ? type->icon() : QIcon(), chat.name(), RecentChatsMenu);
+			QAction *action = new QAction(type ? type->icon().icon() : QIcon(), chat.name(), RecentChatsMenu);
 			action->setData(QVariant::fromValue<Chat>(chat));
 			RecentChatsMenu->addAction(action);
 		}

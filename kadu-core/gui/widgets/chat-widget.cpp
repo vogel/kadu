@@ -344,7 +344,7 @@ QIcon ChatWidget::icon()
 			return ContactDataExtractor::data(contact, Qt::DecorationRole, false).value<QIcon>();
 	}
 	else if (contactsCount > 1)
-		return ChatTypeManager::instance()->chatType("Conference")->icon();
+		return ChatTypeManager::instance()->chatType("Conference")->icon().icon();
 
 	return KaduIcon("internet-group-chat").icon();
 }

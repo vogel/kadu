@@ -102,9 +102,9 @@ QString ChatTypeConference::displayNamePlural() const
  *
  * Icon for ChatTypeConference is 'kadu_icons/conference'.
  */
-QIcon ChatTypeConference::icon() const
+KaduIcon ChatTypeConference::icon() const
 {
-	return KaduIcon("kadu_icons/conference").icon();
+	return KaduIcon("kadu_icons/conference");
 }
 
 /**
