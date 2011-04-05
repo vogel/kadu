@@ -102,46 +102,36 @@ private:
 
 	QTimer *PingTimer;
 
-	void setupProxy();
 	void setupLoginParams();
 	void cleanUpLoginParams();
-	void cleanUpProxySettings();
+
+	void startFileTransferService();
+	void stopFileTransferService();
 
 	void setUpFileTransferService(bool forceClose = false);
-
-	void networkConnected();
-	void networkDisconnected(bool tryAgain, bool waitForPassword);
 
 	void sendUserList();
 
 	void socketContactStatusChanged(UinType uin, unsigned int status, const QString &description, unsigned int maxImageSize);
 	void socketConnFailed(GaduError error);
-	void socketConnSuccess();
-	void socketDisconnected();
-	void changeStatus(bool force);
+	void connectedToServer();
+	void disconnectedFromServer();
 
 private slots:
 	void accountUpdated();
 
-	void login();
-
 	void connectionTimeoutTimerSlot();
 	void everyMinuteActions();
 
-	void buddySubscriptionChanged(Buddy &buddy);
-	void contactAttached(Contact contact);
-	void contactAboutToBeDetached(Contact contact);
-	void contactIdChanged(Contact contact, const QString &oldId);
-
 protected:
-	virtual void changeStatus();
+	virtual void login();
+	virtual void afterLoggedIn();
+	virtual void logout();
+	virtual void sendStatusToServer();
+
+	virtual void disconnectedCleanup();
 
 public:
-	static GADUAPI QString statusTypeFromGaduStatus(unsigned int index);
-	static GADUAPI bool isBlockingStatus(unsigned int index);
-	static GADUAPI unsigned int gaduStatusFromStatus(const Status &status);
-	Buddy searchResultToBuddy(gg_pubdir50_t res, int number);
-
 	GaduProtocol(Account account, ProtocolFactory *factory);
 	virtual ~GaduProtocol();
 
@@ -163,16 +153,10 @@ public:
 
 	virtual QString statusPixmapPath();
 
-	UinType uin(Contact contact) const;
-	GaduContactDetails * gaduContactDetails(Contact contact) const;
-
 	virtual int maxDescriptionLength();
 
 	gg_session * gaduSession() { return GaduSession; }
 	GaduProtocolSocketNotifiers * socketNotifiers() { return SocketNotifiers; }
-
-public slots:
-	virtual void login(const QString &password, bool permanent);
 
 signals:
 	/**

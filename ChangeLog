@@ -10,6 +10,8 @@
 * freedesktop_notify: add checking for server capabilities (WhE)
 * gui: #1978 fixed: detection of window being covered by other windows under OpenBox (ultr)
 * gadu: use Kadu VERSION as client version for Gadu protocol (Vogel)
+* gui: status buttons now are blinking when connection is being established (Vogel)
+* protocols: proper reactions to network going online/offline (Vogel)
 
 +++ version 0.9.1
 * identities: fixed displaying improper status information when having more jabber and gadu account in one identity and invisible status for gadu (beevvy)

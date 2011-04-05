@@ -71,6 +71,7 @@ public:
 	virtual QString statusContainerName()  { return name(); }
 
 	virtual Status status();
+	virtual bool isStatusSettingInProgress();
 	virtual int maxDescriptionLength();
 
 	virtual QString statusDisplayName();

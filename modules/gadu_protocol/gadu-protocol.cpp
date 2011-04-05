@@ -25,6 +25,8 @@
 
 #include <QtCore/QTimer>
 
+#include <libgadu.h>
+
 #ifdef Q_OS_WIN
 #include <winsock2.h>
 #else
@@ -35,11 +37,12 @@
 #include "accounts/account-manager.h"
 #include "accounts/account-shared.h"
 #include "avatars/avatar-manager.h"
+#include "buddies/buddy-manager.h"
 #include "chat/chat.h"
 #include "chat/message/formatted-message.h"
 #include "chat/chat-manager.h"
 #include "configuration/configuration-file.h"
-#include "buddies/buddy-manager.h"
+#include "core/core.h"
 #include "contacts/contact-manager.h"
 #include "gui/windows/message-dialog.h"
 #include "gui/windows/password-window.h"
@@ -58,106 +61,12 @@
 #include "socket-notifiers/gadu-pubdir-socket-notifiers.h"
 
 #include "helpers/gadu-importer.h"
+#include "helpers/gadu-protocol-helper.h"
+#include "helpers/gadu-proxy-helper.h"
 #include "gadu-account-details.h"
 #include "gadu-contact-details.h"
 
 #include "gadu-protocol.h"
-#include <core/core.h>
-
-#define GG8_DESCRIPTION_MASK 0x00ff
-
-#define GG_STATUS_INVISIBLE2 0x0009
-QString GaduProtocol::statusTypeFromGaduStatus(unsigned int index)
-{
-	switch (index & GG8_DESCRIPTION_MASK)
-	{
-		case GG_STATUS_FFC_DESCR:
-		case GG_STATUS_FFC:
-			return "FreeForChat";
-
-		case GG_STATUS_AVAIL_DESCR:
-		case GG_STATUS_AVAIL:
-			return "Online";
-
-		case GG_STATUS_BUSY_DESCR:
-		case GG_STATUS_BUSY:
-			return "Away";
-
-		case GG_STATUS_DND_DESCR:
-		case GG_STATUS_DND:
-			return "DoNotDisturb";
-
-		case GG_STATUS_INVISIBLE_DESCR:
-		case GG_STATUS_INVISIBLE:
-		case GG_STATUS_INVISIBLE2:
-			return "Invisible";
-
-		case GG_STATUS_BLOCKED:
-		case GG_STATUS_NOT_AVAIL_DESCR:
-		case GG_STATUS_NOT_AVAIL:
-
-		default:
-			return "Offline";
-	}
-}
-
-bool GaduProtocol::isBlockingStatus(unsigned int index)
-{
-	return GG_STATUS_BLOCKED == index;
-}
-
-unsigned int GaduProtocol::gaduStatusFromStatus(const Status &status)
-{
-	bool hasDescription = !status.description().isEmpty();
-	const QString &type = status.type();
-
-	if ("FreeForChat" == type)
-		return hasDescription ? GG_STATUS_FFC_DESCR : GG_STATUS_FFC;
-
-	if ("Online" == type)
-		return hasDescription ? GG_STATUS_AVAIL_DESCR : GG_STATUS_AVAIL;
-
-	if ("Away" == type || "NotAvailable" == type)
-		return hasDescription ? GG_STATUS_BUSY_DESCR : GG_STATUS_BUSY;
-
-	if ("DoNotDisturb" == type)
-		return hasDescription ? GG_STATUS_DND_DESCR : GG_STATUS_DND;
-
-	if ("Invisible" == type)
-		return hasDescription ? GG_STATUS_INVISIBLE_DESCR : GG_STATUS_INVISIBLE;
-
-	return hasDescription ? GG_STATUS_NOT_AVAIL_DESCR : GG_STATUS_NOT_AVAIL;
-}
-
-Buddy GaduProtocol::searchResultToBuddy(gg_pubdir50_t res, int number)
-{
-	Buddy result = Buddy::create();
-
-	Contact contact = Contact::create();
-	contact.setContactAccount(account());
-	contact.setOwnerBuddy(result);
-	contact.setId(gg_pubdir50_get(res, number, GG_PUBDIR50_UIN));
-	contact.setDetails(new GaduContactDetails(contact));
-
-	const char *pubdirStatus = gg_pubdir50_get(res, number, GG_PUBDIR50_STATUS);
-	if (pubdirStatus)
-	{
-		Status status;
-		status.setType(statusTypeFromGaduStatus(atoi(pubdirStatus) & 127));
-		contact.setCurrentStatus(status);
-	}
-
-	result.setFirstName(QString::fromUtf8(gg_pubdir50_get(res, number, GG_PUBDIR50_FIRSTNAME)));
-	result.setLastName(QString::fromUtf8(gg_pubdir50_get(res, number, GG_PUBDIR50_LASTNAME)));
-	result.setNickName(QString::fromUtf8(gg_pubdir50_get(res, number, GG_PUBDIR50_NICKNAME)));
-	result.setBirthYear(QString::fromUtf8(gg_pubdir50_get(res, number, GG_PUBDIR50_BIRTHYEAR)).toUShort());
-	result.setCity(QString::fromUtf8(gg_pubdir50_get(res, number, GG_PUBDIR50_CITY)));
-	result.setFamilyName(QString::fromUtf8(gg_pubdir50_get(res, number, GG_PUBDIR50_FAMILYNAME)));
-	result.setFamilyCity(QString::fromUtf8(gg_pubdir50_get(res, number, GG_PUBDIR50_FAMILYCITY)));
-	result.setGender((BuddyGender)QString::fromUtf8(gg_pubdir50_get(res, number, GG_PUBDIR50_GENDER)).toUShort());
-
-	return result;
-}
 
 GaduProtocol::GaduProtocol(Account account, ProtocolFactory *factory) :
 		Protocol(account, factory), CurrentFileTransferService(0),
@@ -178,16 +87,6 @@ GaduProtocol::GaduProtocol(Account account, ProtocolFactory *factory) :
 	CurrentChatStateService = new GaduChatStateService(this);
 	ContactListHandler = 0;
 
-	connect(BuddyManager::instance(), SIGNAL(buddySubscriptionChanged(Buddy &)),
-			this, SLOT(buddySubscriptionChanged(Buddy &)));
-	connect(ContactManager::instance(), SIGNAL(contactAttached(Contact)),
-			this, SLOT(contactAttached(Contact)));
-	connect(ContactManager::instance(), SIGNAL(contactReattached(Contact)),
-			this, SLOT(contactAttached(Contact)));
-	connect(ContactManager::instance(), SIGNAL(contactAboutToBeDetached(Contact)),
-			this, SLOT(contactAboutToBeDetached(Contact)));
-	connect(ContactManager::instance(), SIGNAL(contactIdChanged(Contact, const QString &)),
-			this, SLOT(contactIdChanged(Contact, const QString &)));
 	connect(account, SIGNAL(updated()), this, SLOT(accountUpdated()));
 
 	kdebugf2();
@@ -197,19 +96,7 @@ GaduProtocol::~GaduProtocol()
 {
 	kdebugf();
 
-	disconnect(BuddyManager::instance(), SIGNAL(buddySubscriptionChanged(Buddy &)),
-			this, SLOT(buddySubscriptionChanged(Buddy &)));
-	disconnect(ContactManager::instance(), SIGNAL(contactAttached(Contact)),
-			this, SLOT(contactAttached(Contact)));
-	disconnect(ContactManager::instance(), SIGNAL(contactReattached(Contact)),
-			this, SLOT(contactAttached(Contact)));
-	disconnect(ContactManager::instance(), SIGNAL(contactAboutToBeDetached(Contact)),
-			this, SLOT(contactAboutToBeDetached(Contact)));
-	disconnect(ContactManager::instance(), SIGNAL(contactIdChanged(Contact, const QString &)),
-			this, SLOT(contactIdChanged(Contact, const QString &)));
 	disconnect(account(), SIGNAL(updated()), this, SLOT(accountUpdated()));
-
-	networkDisconnected(false, false);
 
 	kdebugf2();
 }
@@ -219,59 +106,24 @@ int GaduProtocol::maxDescriptionLength()
 	return GG_STATUS_DESCR_MAXSIZE;
 }
 
-void GaduProtocol::changeStatus()
+void GaduProtocol::sendStatusToServer()
 {
-	changeStatus(false);
-}
+	Status newStatus = status();
 
-void GaduProtocol::changeStatus(bool force)
-{
-	Status newStatus = nextStatus();
-	if (newStatus == status() && !force)
-		return; // don't reset password
+	int friends = account().privateStatus() ? GG_STATUS_FRIENDS_MASK : 0;
 
-	if (newStatus.isDisconnected() && status().isDisconnected())
-	{
-		if (newStatus.description() != status().description())
-			statusChanged(newStatus);
-
-		if (NetworkConnecting == state())
-			networkDisconnected(false, false);
-		return;
-	}
-
-	if (NetworkConnecting == state())
-		return;
-
-	if (status().isDisconnected())
-	{
-		login();
-		return;
-	}
-
-// TODO 0.10.0: workaround. Find general solution
-	if (newStatus.type() == "NotAvailable" && status().type() == "Away")
-		return;
-
-	int friends = (!newStatus.isDisconnected() && account().privateStatus() ? GG_STATUS_FRIENDS_MASK : 0);
-
-	int type = gaduStatusFromStatus(newStatus);
+	int type = GaduProtocolHelper::gaduStatusFromStatus(newStatus);
 	bool hasDescription = !newStatus.description().isEmpty();
 
 	if (hasDescription)
 		gg_change_status_descr(GaduSession, type | friends, newStatus.description().toUtf8());
 	else
 		gg_change_status(GaduSession, type | friends);
-
-	if (newStatus.isDisconnected())
-		networkDisconnected(false, false);
-
-	statusChanged(newStatus);
 }
 
 void GaduProtocol::changePrivateMode()
 {
-	changeStatus(true);
+	sendStatusToServer();
 }
 
 void GaduProtocol::connectionTimeoutTimerSlot()
@@ -292,24 +144,6 @@ void GaduProtocol::everyMinuteActions()
 	CurrentChatImageService->resetSendImageRequests();
 }
 
-void GaduProtocol::login(const QString &password, bool permanent)
-{
-	if (password.isEmpty()) // user did not give us password, so prevent from further reconnecting
-	{
-		Status newstat = status();
-		newstat.setType("Offline");
-		setStatus(newstat);
-		statusChanged(newstat);
-		return;
-	}
-
-	account().setPassword(password);
-	account().setRememberPassword(permanent);
-	account().setHasPassword(!password.isEmpty());
-
-	login();
-}
-
 void GaduProtocol::accountUpdated()
 {
 	setUpFileTransferService();
@@ -317,90 +151,117 @@ void GaduProtocol::accountUpdated()
 
 void GaduProtocol::login()
 {
-	kdebugf();
-
+	// TODO: create some kind of cleanup method
 	if (GaduSession)
+	{
+		connectionClosed();
+		gg_free_session(GaduSession);
+		GaduSession = 0;
 		return;
+	}
 
 	GaduAccountDetails *gaduAccountDetails = dynamic_cast<GaduAccountDetails *>(account().details());
-
-	if (!gaduAccountDetails)
-		return;
-
-	if (0 == gaduAccountDetails->uin())
+	if (!gaduAccountDetails || 0 == gaduAccountDetails->uin())
 	{
-		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("UIN not set!"));
-		setStatus(Status());
-		statusChanged(Status());
-		kdebugmf(KDEBUG_FUNCTION_END, "end: gadu UIN not set\n");
+		connectionClosed();
 		return;
 	}
 
-	if (!account().hasPassword())
-	{
-		QString message = tr("Please provide password for %1 (%2) account")
-				.arg(account().accountIdentity().name())
-				.arg(account().id());
-		PasswordWindow::getPassword(message, this, SLOT(login(const QString &, bool)));
-		return;
-	}
+	GaduProxyHelper::setupProxy(account().proxySettings());
 
-	networkStateChanged(NetworkConnecting);
-
-	setupProxy();
 	setupLoginParams();
-
 	GaduSession = gg_login(&GaduLoginParams);
-	ContactListHandler = new GaduContactListHandler(this);
-
 	cleanUpLoginParams();
 
-	if (GaduSession)
-		SocketNotifiers->watchFor(GaduSession);
-	else
-		networkDisconnected(false, false);
+	if (!GaduSession) // something fatal
+	{
+		connectionClosed();
+		return;
+	}
+
+	ContactListHandler = new GaduContactListHandler(this);
+	SocketNotifiers->watchFor(GaduSession);
+}
+
+void GaduProtocol::connectedToServer()
+{
+	kdebugf();
+
+	GaduServersManager::instance()->markServerAsGood(ActiveServer);
+
+	PingTimer = new QTimer(0);
+	connect(PingTimer, SIGNAL(timeout()), this, SLOT(everyMinuteActions()));
+	PingTimer->start(60000);
+
+	loggedIn();
+
+	// workaround about servers errors
+	if ("Invisible" == status().type())
+		sendStatusToServer();
 
 	kdebugf2();
 }
 
-void GaduProtocol::cleanUpProxySettings()
+void GaduProtocol::afterLoggedIn()
 {
-	if (gg_proxy_host)
-	{
-		free(gg_proxy_host);
-		gg_proxy_host = 0;
-	}
+	// fetch current avatar after connection
+	AvatarManager::instance()->updateAvatar(account().accountContact(), true);
 
-	if (gg_proxy_username)
+	// set up DCC if needed
+	setUpFileTransferService();
+
+	sendUserList();
+
+	GaduAccountDetails *details = dynamic_cast<GaduAccountDetails *>(account().details());
+	if (details && CurrentContactListService && details->initialRosterImport())
 	{
-		free(gg_proxy_username);
-		free(gg_proxy_password);
-		gg_proxy_username = gg_proxy_password = 0;
+		details->setState(StorableObject::StateNew);
+		details->setInitialRosterImport(false);
+
+		CurrentContactListService->importContactList();
 	}
 }
 
-void GaduProtocol::setupProxy()
+void GaduProtocol::logout()
 {
 	kdebugf();
 
-	cleanUpProxySettings();
+	// we need to change status manually in gadu
+	// status is offline
+	sendStatusToServer();
+	gg_logoff(GaduSession);
 
-	AccountProxySettings proxySettings = account().proxySettings();
-	gg_proxy_enabled = proxySettings.enabled();
-	if (!gg_proxy_enabled)
-		return;
+	loggedOut();
+}
 
-	gg_proxy_host = strdup((char *)unicode2latin(proxySettings.address()).data());
-	gg_proxy_port = proxySettings.port();
+void GaduProtocol::disconnectedCleanup()
+{
+	Protocol::disconnectedCleanup();
 
-	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "gg_proxy_host = %s\n", gg_proxy_host);
-	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "gg_proxy_port = %d\n", gg_proxy_port);
+	if (ContactListHandler)
+		ContactListHandler->reset();
 
-	if (proxySettings.requiresAuthentication() && !proxySettings.user().isEmpty())
+	setUpFileTransferService(true);
+
+	if (PingTimer)
 	{
-		gg_proxy_username = strdup((char *)unicode2latin(proxySettings.user()).data());
-		gg_proxy_password = strdup((char *)unicode2latin(proxySettings.password()).data());
+		PingTimer->stop();
+		delete PingTimer;
+		PingTimer = 0;
 	}
+
+	SocketNotifiers->watchFor(0); // stop watching
+
+	if (GaduSession)
+	{
+		gg_free_session(GaduSession);
+		GaduSession = 0;
+
+		delete ContactListHandler;
+		ContactListHandler = 0;
+	}
+
+	CurrentMultilogonService->removeAllSessions();
 }
 
 void GaduProtocol::setupLoginParams()
@@ -416,9 +277,9 @@ void GaduProtocol::setupLoginParams()
 
 	GaduLoginParams.async = 1;
 
-	GaduLoginParams.status = (gaduStatusFromStatus(nextStatus()) | (account().privateStatus() ? GG_STATUS_FRIENDS_MASK : 0));
-	if (!nextStatus().description().isEmpty())
-		GaduLoginParams.status_descr = strdup(nextStatus().description().toUtf8());
+	GaduLoginParams.status = (GaduProtocolHelper::gaduStatusFromStatus(loginStatus()) | (account().privateStatus() ? GG_STATUS_FRIENDS_MASK : 0));
+	if (!loginStatus().description().isEmpty())
+		GaduLoginParams.status_descr = strdup(loginStatus().description().toUtf8());
 
 	GaduLoginParams.tls = gaduAccountDetails->tlsEncryption() ? 1 : 0;
 
@@ -458,11 +319,27 @@ void GaduProtocol::cleanUpLoginParams()
 	}
 }
 
+void GaduProtocol::startFileTransferService()
+{
+	if (!CurrentFileTransferService)
+	{
+		CurrentFileTransferService = new GaduFileTransferService(this);
+		account().data()->fileTransferServiceChanged(CurrentFileTransferService);
+	}
+}
+
+void GaduProtocol::stopFileTransferService()
+{
+	delete CurrentFileTransferService;
+	CurrentFileTransferService = 0;
+	account().data()->fileTransferServiceChanged(0);
+}
+
 void GaduProtocol::setUpFileTransferService(bool forceClose)
 {
 	bool close = forceClose;
 	if (!close)
-		close = NetworkConnected != state();
+		close = !isConnected();
 	if (!close)
 	{
 		GaduAccountDetails *gaduAccountDetails = dynamic_cast<GaduAccountDetails *>(account().details());
@@ -473,75 +350,9 @@ void GaduProtocol::setUpFileTransferService(bool forceClose)
 	}
 
 	if (close)
-	{
-		delete CurrentFileTransferService;
-		CurrentFileTransferService = 0;
-		account().data()->fileTransferServiceChanged(0);
-	}
+		stopFileTransferService();
 	else
-		if (!CurrentFileTransferService)
-		{
-			CurrentFileTransferService = new GaduFileTransferService(this);
-			account().data()->fileTransferServiceChanged(CurrentFileTransferService);
-		}
-}
-
-void GaduProtocol::networkConnected()
-{
-	networkStateChanged(NetworkConnected);
-
-	// fetch current avatar after connection
-	AvatarManager::instance()->updateAvatar(account().accountContact(), true);
-
-	// set up DCC if needed
-	setUpFileTransferService();
-}
-
-void GaduProtocol::networkDisconnected(bool tryAgain, bool waitForPassword)
-{
-	if (ContactListHandler)
-		ContactListHandler->reset();
-
-	if (!tryAgain)
-		networkStateChanged(NetworkDisconnected);
-
-	setUpFileTransferService(true);
-
-	if (PingTimer)
-	{
-		PingTimer->stop();
-		delete PingTimer;
-		PingTimer = 0;
-	}
-
-	SocketNotifiers->watchFor(0); // stop watching
-
-	if (GaduSession)
-	{
-		gg_free_session(GaduSession);
-		GaduSession = 0;
-
-		delete ContactListHandler;
-		ContactListHandler = 0;
-	}
-
-	setAllOffline();
-
-	CurrentMultilogonService->removeAllSessions();
-
-	if (tryAgain && !nextStatus().isDisconnected()) // user still wants to login
-	{
-		networkStateChanged(NetworkConnecting);
-		statusChanged(Status());
-
-		QTimer::singleShot(1000, this, SLOT(login())); // try again after one second
-	}
-	else if (!nextStatus().isDisconnected())
-		if (!waitForPassword)
-		{
-			setStatus(Status());
-			statusChanged(Status());
-		}
+		startFileTransferService();
 }
 
 void GaduProtocol::sendUserList()
@@ -573,10 +384,10 @@ void GaduProtocol::socketContactStatusChanged(UinType uin, unsigned int status, 
 
 	Status oldStatus = contact.currentStatus();
 	Status newStatus;
-	newStatus.setType(statusTypeFromGaduStatus(status));
+	newStatus.setType(GaduProtocolHelper::statusTypeFromGaduStatus(status));
 	newStatus.setDescription(description);
 	contact.setCurrentStatus(newStatus);
-	contact.setBlocking(isBlockingStatus(status));
+	contact.setBlocking(GaduProtocolHelper::isBlockingStatus(status));
 
 	emit contactStatusChanged(contact, oldStatus);
 }
@@ -584,75 +395,18 @@ void GaduProtocol::socketContactStatusChanged(UinType uin, unsigned int status, 
 void GaduProtocol::socketConnFailed(GaduError error)
 {
 	kdebugf();
-	QString msg;
 
-	bool tryAgain = true;
-	bool waitForPassword = false;
+	QString msg = GaduProtocolHelper::connectionErrorMessage(error);
 
 	switch (error)
 	{
-		case ConnectionServerNotFound:
-			msg = tr("Unable to connect, server has not been found");
-			break;
-
-		case ConnectionCannotConnect:
-			msg = tr("Unable to connect");
-			break;
-
 		case ConnectionNeedEmail:
-			msg = tr("Please change your email in \"Change password / email\" window. "
-				"Leave new password field blank.");
-			tryAgain = false;
 			MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), msg);
 			break;
-
-		case ConnectionInvalidData:
-			msg = tr("Unable to connect, server has returned unknown data");
-			break;
-
-		case ConnectionCannotRead:
-			msg = tr("Unable to connect, connection break during reading");
-			break;
-
-		case ConnectionCannotWrite:
-			msg = tr("Unable to connect, connection break during writing");
-			break;
-
 		case ConnectionIncorrectPassword:
-			emit invalidPassword(account());
-			waitForPassword = true;
-			tryAgain = false;
+			passwordRequired();
 			break;
-
-		case ConnectionTlsError:
-			msg = tr("Unable to connect, error of negotiation TLS");
-			break;
-
-		case ConnectionIntruderError:
-			msg = tr("Too many connection attempts with bad password!");
-			tryAgain = false;
-			break;
-
-		case ConnectionUnavailableError:
-			msg = tr("Unable to connect, servers are down");
-			break;
-
-		case ConnectionUnknow:
-			msg = tr("Connection broken");
-			kdebugm(KDEBUG_INFO, "Connection broken unexpectedly!\nUnscheduled connection termination\n");
-			break;
-
-		case ConnectionTimeout:
-			msg = tr("Connection timeout!");
-			break;
-
-		case Disconnected:
-			msg = tr("Disconnection has occurred");
-			break;
-
-		default:
-			kdebugm(KDEBUG_ERROR, "Unhandled error? (%d)\n", int(error));
-			msg = tr("Connection broken");
+		default: // we need special code only for 2 cases
 			break;
 	}
 
@@ -668,116 +422,23 @@ void GaduProtocol::socketConnFailed(GaduError error)
 		emit connectionError(account(), host, msg);
 	}
 
-	if (tryAgain)
-		GaduServersManager::instance()->markServerAsBad(ActiveServer);
-	networkDisconnected(tryAgain, waitForPassword);
-
-	kdebugf2();
-}
-
-void GaduProtocol::socketConnSuccess()
-{
-	kdebugf();
-
-	GaduServersManager::instance()->markServerAsGood(ActiveServer);
-
-	PingTimer = new QTimer(0);
-	connect(PingTimer, SIGNAL(timeout()), this, SLOT(everyMinuteActions()));
-	PingTimer->start(60000);
-
-	statusChanged(nextStatus());
-	networkConnected();
-
-	sendUserList();
-
-	GaduAccountDetails *details = dynamic_cast<GaduAccountDetails *>(account().details());
-
-	if (details && CurrentContactListService && details->initialRosterImport())
+	if (!GaduProtocolHelper::isConnectionErrorFatal(error))
 	{
-		details->setState(StorableObject::StateNew);
-		details->setInitialRosterImport(false);
-
-		CurrentContactListService->importContactList();
+		GaduServersManager::instance()->markServerAsBad(ActiveServer);
+		connectionError();
 	}
-
-	// workaround about servers errors
-	if ("Invisible" == status().type())
-		setStatus(status());
+	else
+		connectionClosed();
 
 	kdebugf2();
 }
 
-void GaduProtocol::socketDisconnected()
+void GaduProtocol::disconnectedFromServer()
 {
-	kdebugf();
-
-	networkDisconnected(false, false);
-
-	kdebugf2();
-}
-
-unsigned int GaduProtocol::uin(Contact contact) const
-{
-	GaduContactDetails *data = gaduContactDetails(contact);
-	return data
-			? data->uin()
-			: 0;
-}
-
-GaduContactDetails * GaduProtocol::gaduContactDetails(Contact contact) const
-{
-	if (contact.isNull())
-		return 0;
-	return dynamic_cast<GaduContactDetails *>(contact.details());
+	connectionClosed();
 }
 
 QString GaduProtocol::statusPixmapPath()
 {
 	return QLatin1String("gadu-gadu");
-}
-
-void GaduProtocol::buddySubscriptionChanged(Buddy &buddy)
-{
-	// update offline to and other data
-	if (ContactListHandler)
-		foreach (const Contact &contact, buddy.contacts(account()))
-			ContactListHandler->updateContactEntry(contact);
-}
-
-void GaduProtocol::contactAttached(Contact contact)
-{
-	if (!ContactListHandler)
-		return;
-
-	if (contact.contactAccount() != account())
-		return;
-
-	ContactListHandler->addContactEntry(contact);
-}
-
-void GaduProtocol::contactAboutToBeDetached(Contact contact)
-{
-	if (!ContactListHandler)
-		return;
-
-	if (contact.contactAccount() != account())
-		return;
-
-	ContactListHandler->removeContactEntry(contact);
-}
-
-void GaduProtocol::contactIdChanged(Contact contact, const QString &oldId)
-{
-	if (!ContactListHandler)
-		return;
-
-	if (contact.contactAccount() != account())
-		return;
-
-	bool ok;
-	UinType oldUin = oldId.toUInt(&ok);
-	if (ok)
-		ContactListHandler->removeContactEntry(oldUin);
-
-	ContactListHandler->addContactEntry(contact);
 }

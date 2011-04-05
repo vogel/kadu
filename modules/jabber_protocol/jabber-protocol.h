@@ -51,6 +51,7 @@ class JabberProtocol : public Protocol
 	JabberRosterService *CurrentRosterService;
 	JabberSubscriptionService *CurrentSubscriptionService;
 
+	friend class XMPP::JabberClient;
 	XMPP::JabberClient *JabberClient;
 	XMPP::Jid jabberID;
 
@@ -85,11 +86,13 @@ private slots:
 	void contactIdChanged(Contact contact, const QString &oldId);
 
 	void connectionErrorSlot(const QString &message);
-	void invalidPasswordSlot();
-	void changeStatus(bool force);
 
 protected:
-	virtual void changeStatus();
+	virtual void login();
+	virtual void afterLoggedIn();
+	virtual void logout();
+	virtual void sendStatusToServer();
+
 	virtual void changePrivateMode();
 
 public:
@@ -112,12 +115,6 @@ public:
 	JabberSubscriptionService * subscriptionService() { return CurrentSubscriptionService; }
 
 	JabberContactDetails * jabberContactDetails(Contact contact) const;
-
-public slots:
-	void connectToServer();
-	void login();
-	virtual void login(const QString &password, bool permanent);
-	void logout();
 
 signals:
 	void userStatusChangeIgnored(Buddy);

@@ -17,41 +17,17 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtNetwork/QNetworkConfigurationManager>
+#ifndef GADU_PROXY_HELPER_H
+#define GADU_PROXY_HELPER_H
 
-#include "network-manager.h"
-#include "network-aware-object.h"
+#include "gadu-exports.h"
 
-NetworkManager *NetworkManager::Instance = 0;
+class AccountProxySettings;
 
-NetworkManager * NetworkManager::instance()
+namespace GaduProxyHelper
 {
-	if (!Instance)
-		Instance = new NetworkManager();
-	return Instance;
+	GADUAPI void cleanUpProxySettings();
+	GADUAPI void setupProxy(AccountProxySettings proxySettings);
 }
 
-NetworkManager::NetworkManager()
-{
-	ConfigurationManager = new QNetworkConfigurationManager(this);
-	connect(ConfigurationManager, SIGNAL(onlineStateChanged(bool)), this, SLOT(onlineStateChanged(bool)));
-}
-
-NetworkManager::~NetworkManager()
-{
-}
-
-void NetworkManager::onlineStateChanged(bool isOnline)
-{
-	NetworkAwareObject::notifyOnlineStateChanged(isOnline);
-
-	if (isOnline)
-		emit online();
-	else
-		emit offline();
-}
-
-bool NetworkManager::isOnline()
-{
-	return ConfigurationManager->isOnline();
-}
+#endif // GADU_PROXY_HELPER_H

@@ -40,7 +40,7 @@ Action::Action(ActionDescription *description, ActionDataSource *dataSource, QOb
 	if (!Description->icon().isNull())
 	{
 		connect(IconsManager::instance(), SIGNAL(themeChanged()), this, SLOT(updateIcon()));
-		setIcon(Description->icon().icon());
+		setIcon(Description->icon());
 	}
 
 	setCheckable(Description->Checkable);
@@ -135,7 +135,12 @@ void Action::checkState()
 
 void Action::updateIcon()
 {
-	setIcon(Description->icon().icon());
+	setIcon(Description->icon());
+}
+
+void Action::setIcon(const KaduIcon &icon)
+{
+	QAction::setIcon(icon.icon());
 }
 
 void disableEmptyContacts(Action *action)

@@ -17,41 +17,26 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtNetwork/QNetworkConfigurationManager>
+#ifndef GADU_PROTOCOL_HELPER_H
+#define GADU_PROTOCOL_HELPER_H
 
-#include "network-manager.h"
-#include "network-aware-object.h"
+#include "gadu-exports.h"
 
-NetworkManager *NetworkManager::Instance = 0;
+#include "gadu-protocol.h"
 
-NetworkManager * NetworkManager::instance()
+namespace GaduProtocolHelper
 {
-	if (!Instance)
-		Instance = new NetworkManager();
-	return Instance;
+	GADUAPI QString statusTypeFromGaduStatus(unsigned int index);
+	GADUAPI bool isBlockingStatus(unsigned int index);
+	GADUAPI unsigned int gaduStatusFromStatus(const Status &status);
+
+	GADUAPI QString connectionErrorMessage(GaduProtocol::GaduError error);
+	GADUAPI bool isConnectionErrorFatal(GaduProtocol::GaduError error);
+
+	GADUAPI Buddy searchResultToBuddy(Account account, gg_pubdir50_t res, int number);
+
+	GADUAPI UinType uin(Contact contact);
+	GADUAPI GaduContactDetails * gaduContactDetails(Contact contact);
 }
 
-NetworkManager::NetworkManager()
-{
-	ConfigurationManager = new QNetworkConfigurationManager(this);
-	connect(ConfigurationManager, SIGNAL(onlineStateChanged(bool)), this, SLOT(onlineStateChanged(bool)));
-}
-
-NetworkManager::~NetworkManager()
-{
-}
-
-void NetworkManager::onlineStateChanged(bool isOnline)
-{
-	NetworkAwareObject::notifyOnlineStateChanged(isOnline);
-
-	if (isOnline)
-		emit online();
-	else
-		emit offline();
-}
-
-bool NetworkManager::isOnline()
-{
-	return ConfigurationManager->isOnline();
-}
+#endif // GADU_PROTOCOL_HELPER_H

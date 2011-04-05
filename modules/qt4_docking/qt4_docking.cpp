@@ -67,7 +67,7 @@ Qt4TrayIcon::Qt4TrayIcon(QWidget *parent) :
 {
 	kdebugf();
 
-	setIcon(DockingManager::instance()->defaultPixmap().icon());
+	setIcon(DockingManager::instance()->defaultIcon().icon());
 
 	connect(this, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(trayActivated(QSystemTrayIcon::ActivationReason)));
 

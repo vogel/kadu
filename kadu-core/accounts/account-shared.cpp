@@ -159,7 +159,9 @@ void AccountShared::emitUpdated()
 
 void AccountShared::setDisconnectStatus()
 {
-	if (status().type() == "Offline")
+	if (!ProtocolHandler)
+		return;
+	if (!ProtocolHandler->isConnected())
 		return;
 
 	bool disconnectWithCurrentDescription = config_file.readBoolEntry("General", "DisconnectWithCurrentDescription");
@@ -336,6 +338,14 @@ Status AccountShared::status()
 		return ProtocolHandler->status();
 	else
 		return Status();
+}
+
+bool AccountShared::isStatusSettingInProgress()
+{
+	if (ProtocolHandler)
+		return ProtocolHandler->isConnecting();
+	else
+		return false;
 }
 
 int AccountShared::maxDescriptionLength()

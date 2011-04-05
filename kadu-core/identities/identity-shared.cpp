@@ -163,11 +163,15 @@ Account IdentityShared::bestAccount()
 		if (account.details() && account.data())
 		{
 			// TODO: hack
-			if (result.isNull() || result.data()->status().isDisconnected() ||
-					(account.protocolName() == "gadu" && result.protocolName() != "gadu"))
+			bool isDisconnected = false;
+			if (result)
+				isDisconnected = !result.data()->protocolHandler() || !result.data()->protocolHandler()->isConnected();
+
+			if (!result || isDisconnected  || (account.protocolName() == "gadu" && result.protocolName() != "gadu"))
 			{
 				result = account;
-				if (!result.data()->status().isDisconnected() && result.protocolName() == "gadu")
+				bool isDisconnected = !result.data()->protocolHandler() || !result.data()->protocolHandler()->isConnected();
+				if (!isDisconnected && result.protocolName() == "gadu")
 					break;
 			}
 		}
@@ -179,6 +183,12 @@ Status IdentityShared::status()
 {
 	Account account = bestAccount();
 	return account ? account.data()->status() : Status();
+}
+
+bool IdentityShared::isStatusSettingInProgress()
+{
+	Account account = bestAccount();
+	return account ? account.data()->isStatusSettingInProgress() : false;
 }
 
 QString IdentityShared::statusDisplayName()

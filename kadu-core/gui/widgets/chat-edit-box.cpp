@@ -316,5 +316,5 @@ void ChatEditBox::setColorFromCurrentText(bool force)
 
 	p.fill(CurrentColor);
 
-	action->setIcon(p);
+	action->QAction::setIcon(p);
 }

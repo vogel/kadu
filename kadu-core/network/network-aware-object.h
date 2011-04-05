@@ -33,6 +33,7 @@ public:
 
 	NetworkAwareObject();
 
+	bool isOnline();
 	void triggerOnlineStateChanged();
 
 };

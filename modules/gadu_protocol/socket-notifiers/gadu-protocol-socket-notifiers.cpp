@@ -199,19 +199,19 @@ void GaduProtocolSocketNotifiers::handleEventConnSuccess(struct gg_event *e)
 {
 	Q_UNUSED(e)
 
-	CurrentProtocol->socketConnSuccess();
+	CurrentProtocol->connectedToServer();
 }
 
 void GaduProtocolSocketNotifiers::handleEventDisconnect(struct gg_event *e)
 {
 	Q_UNUSED(e)
 
-	CurrentProtocol->socketDisconnected();
-
 	// close connection
 	gg_logoff(Sess);
 	// we don't have connection anymore
 	watchFor(0);
+
+	CurrentProtocol->disconnectedFromServer();
 }
 
 void GaduProtocolSocketNotifiers::socketEvent()

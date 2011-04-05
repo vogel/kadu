@@ -26,6 +26,7 @@
 
 #include "dcc/dcc-socket-notifiers.h"
 #include "file-transfer/gadu-file-transfer-handler.h"
+#include "helpers/gadu-protocol-helper.h"
 #include "socket-notifiers/gadu-protocol-socket-notifiers.h"
 #include "gadu-account-details.h"
 #include "gadu-contact-details.h"
@@ -170,7 +171,7 @@ void GaduFileTransferService::attachSendFileTransferSocket(GaduFileTransferHandl
 	if (contact.isNull())
 		return;
 
-	GaduContactDetails *details = Protocol->gaduContactDetails(contact);
+	GaduContactDetails *details = GaduProtocolHelper::gaduContactDetails(contact);
 	if (!details)
 		return;
 

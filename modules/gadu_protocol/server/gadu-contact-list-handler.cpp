@@ -23,9 +23,12 @@
 
 #include <libgadu.h>
 
+#include "buddies/buddy-manager.h"
+#include "contacts/contact-manager.h"
 #include "protocols/protocol.h"
 #include "debug.h"
 
+#include "helpers/gadu-protocol-helper.h"
 #include "gadu-protocol.h"
 
 #include "gadu-contact-list-handler.h"
@@ -44,17 +47,32 @@ int GaduContactListHandler::notifyTypeFromContact(const Contact &contact)
 GaduContactListHandler::GaduContactListHandler(GaduProtocol *protocol, QObject *parent) :
 		QObject(parent), Protocol(protocol), AlreadySent(false)
 {
+	connect(BuddyManager::instance(), SIGNAL(buddySubscriptionChanged(Buddy &)),
+			this, SLOT(buddySubscriptionChanged(Buddy &)));
+	connect(ContactManager::instance(), SIGNAL(contactAttached(Contact)),
+			this, SLOT(contactAttached(Contact)));
+	connect(ContactManager::instance(), SIGNAL(contactReattached(Contact)),
+			this, SLOT(contactAttached(Contact)));
+	connect(ContactManager::instance(), SIGNAL(contactAboutToBeDetached(Contact)),
+			this, SLOT(contactAboutToBeDetached(Contact)));
+	connect(ContactManager::instance(), SIGNAL(contactIdChanged(Contact, const QString &)),
+			this, SLOT(contactIdChanged(Contact, const QString &)));
 }
 
 GaduContactListHandler::~GaduContactListHandler()
 {
+	disconnect(BuddyManager::instance(), SIGNAL(buddySubscriptionChanged(Buddy &)),
+			this, SLOT(buddySubscriptionChanged(Buddy &)));
+	disconnect(ContactManager::instance(), SIGNAL(contactAttached(Contact)),
+			this, SLOT(contactAttached(Contact)));
+	disconnect(ContactManager::instance(), SIGNAL(contactReattached(Contact)),
+			this, SLOT(contactAttached(Contact)));
+	disconnect(ContactManager::instance(), SIGNAL(contactAboutToBeDetached(Contact)),
+			this, SLOT(contactAboutToBeDetached(Contact)));
 }
 
 void GaduContactListHandler::setUpContactList(const QList<Contact> &contacts)
 {
-	if (::Protocol::NetworkConnected != Protocol->state())
-		return;
-
 	/*
 	 * it looks like gadu-gadu now stores contact list mask (offlineto, blocked, normal)
 	 * on server, so need to remove this mask and send a new one for each contact, so
@@ -83,7 +101,7 @@ void GaduContactListHandler::setUpContactList(const QList<Contact> &contacts)
 
 	foreach (const Contact &contact, contacts)
 	{
-		uins[i] = Protocol->uin(contact);
+		uins[i] = GaduProtocolHelper::uin(contact);
 		types[i] = notifyTypeFromContact(contact);
 		++i;
 	}
@@ -109,7 +127,7 @@ void GaduContactListHandler::addContactEntry(UinType uin, int type)
 	if (!AlreadySent)
 		return;
 
-	if (::Protocol::NetworkConnected != Protocol->state())
+	if (!Protocol->isConnected())
 		return;
 
 	if (!uin || Protocol->account().id() == QString::number(uin))
@@ -128,7 +146,7 @@ void GaduContactListHandler::addContactEntry(UinType uin, int type)
 
 void GaduContactListHandler::addContactEntry(Contact contact)
 {
-	addContactEntry(Protocol->uin(contact), notifyTypeFromContact(contact));
+	addContactEntry(GaduProtocolHelper::uin(contact), notifyTypeFromContact(contact));
 }
 
 void GaduContactListHandler::removeContactEntry(UinType uin)
@@ -139,7 +157,7 @@ void GaduContactListHandler::removeContactEntry(UinType uin)
 	if (!uin)
 		return;
 
-	if (::Protocol::NetworkConnected != Protocol->state())
+	if (!Protocol->isConnected())
 		return;
 
 	gg_session *session = Protocol->gaduSession();
@@ -153,5 +171,41 @@ void GaduContactListHandler::removeContactEntry(UinType uin)
 
 void GaduContactListHandler::removeContactEntry(Contact contact)
 {
-	removeContactEntry(Protocol->uin(contact));
+	removeContactEntry(GaduProtocolHelper::uin(contact));
+}
+
+void GaduContactListHandler::buddySubscriptionChanged(Buddy &buddy)
+{
+	// update offline to and other data
+	foreach (const Contact &contact, buddy.contacts(Protocol->account()))
+		updateContactEntry(contact);
+}
+
+void GaduContactListHandler::contactAttached(Contact contact)
+{
+	if (contact.contactAccount() != Protocol->account())
+		return;
+
+	addContactEntry(contact);
+}
+
+void GaduContactListHandler::contactAboutToBeDetached(Contact contact)
+{
+	if (contact.contactAccount() != Protocol->account())
+		return;
+
+	removeContactEntry(contact);
+}
+
+void GaduContactListHandler::contactIdChanged(Contact contact, const QString &oldId)
+{
+	if (contact.contactAccount() != Protocol->account())
+		return;
+
+	bool ok;
+	UinType oldUin = oldId.toUInt(&ok);
+	if (ok)
+		removeContactEntry(oldUin);
+
+	addContactEntry(contact);
 }

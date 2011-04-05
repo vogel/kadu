@@ -26,6 +26,7 @@
 #include <QtGui/QAction>
 
 #include "configuration/configuration-aware-object.h"
+#include "icons/kadu-icon.h"
 
 #include "exports.h"
 
@@ -70,6 +71,9 @@ public:
 public slots:
 	void checkState();
 	void updateIcon();
+
+	// we need a slot for StatusIcon class
+	void setIcon(const KaduIcon &icon);
 
 signals:
 	void aboutToBeDestroyed(Action *action);

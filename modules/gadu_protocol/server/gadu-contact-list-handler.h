@@ -36,6 +36,12 @@ class GaduContactListHandler : public QObject
 	GaduProtocol *Protocol;
 	bool AlreadySent;
 
+private slots:
+	void buddySubscriptionChanged(Buddy &buddy);
+	void contactAttached(Contact contact);
+	void contactAboutToBeDetached(Contact contact);
+	void contactIdChanged(Contact contact, const QString &oldId);
+
 public:
 	static int notifyTypeFromContact(const Contact &contact);
 

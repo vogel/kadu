@@ -34,6 +34,11 @@ void NetworkAwareObject::notifyOnlineStateChanged(bool available)
 		object->onlineStateChanged(available);
 }
 
+bool NetworkAwareObject::isOnline()
+{
+	return NetworkManager::instance()->isOnline();
+}
+
 void NetworkAwareObject::triggerOnlineStateChanged()
 {
 	onlineStateChanged(NetworkManager::instance()->isOnline());

@@ -43,20 +43,18 @@ class StatusActions : public QObject
 	QMap<StatusType *, QAction *> StatusTypeActions;
 	QList<QAction *> Actions;
 
-	void createActions();
+	void createActions(bool includePrefix);
 	void createBasicActions();
-	void createStatusActions();
+	void createStatusActions(bool includePrefix);
 	QAction * createSeparator();
-	QAction * createStatusAction(StatusType *statusType);
-
-	bool CommonStatusIcons;
+	QAction * createStatusAction(StatusType *statusType, bool includePrefix);
 
 private slots:
 	void statusUpdated();
 	void iconThemeChanged();
 
 public:
-	explicit StatusActions(StatusContainer *statusContainer, QObject *parent, bool commonStatusIcons = false);
+	explicit StatusActions(StatusContainer *statusContainer, bool includePrefix, QObject *parent);
 	virtual ~StatusActions();
 
 	const QList<QAction *> & actions() const { return Actions; }

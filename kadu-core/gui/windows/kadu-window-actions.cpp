@@ -45,6 +45,7 @@
 #include "buddies/filter/online-and-description-buddy-filter.h"
 #include "core/core.h"
 #include "icons/kadu-icon.h"
+#include "gui/status-icon.h"
 #include "gui/actions/action.h"
 #include "gui/actions/actions.h"
 #include "gui/widgets/buddies-list-view.h"
@@ -102,12 +103,12 @@ void checkBuddyProperties(Action *action)
 
 	if (action->buddy().isAnonymous())
 	{
-		action->setIcon(KaduIcon("contact-new").icon());
+		action->setIcon(KaduIcon("contact-new"));
 		action->setText(qApp->translate("KaduWindowActions", "Add Buddy..."));
 	}
 	else
 	{
-		action->setIcon(KaduIcon("x-office-address-book").icon());
+		action->setIcon(KaduIcon("x-office-address-book"));
 		action->setText(qApp->translate("KaduWindowActions", "View Buddy Properties"));
 	}
 
@@ -368,7 +369,7 @@ void KaduWindowActions::statusChanged(StatusContainer *container, Status status)
 	if (!container)
 		return;
 
-	QIcon icon = container->statusIcon(status).icon();
+	KaduIcon icon = container->statusIcon(status);
 	foreach (Action *action, ChangeStatus->actions())
 		if (action->statusContainer() == container)
 			action->setIcon(icon);
@@ -444,7 +445,7 @@ void KaduWindowActions::editUserActionCreated(Action *action)
 
 	if (buddy && buddy.isAnonymous())
 	{
-		action->setIcon(KaduIcon("contact-new").icon());
+		action->setIcon(KaduIcon("contact-new"));
 		action->setText(tr("Add Buddy..."));
 	}
 }
@@ -454,8 +455,9 @@ void KaduWindowActions::changeStatusActionCreated(Action *action)
 	StatusContainer *statusContainer = action->statusContainer();
 	if (statusContainer)
 	{
-		Status status = StatusChangerManager::instance()->realStatus(statusContainer);
-		action->setIcon(statusContainer->statusIcon(status).icon());
+		StatusIcon *icon = new StatusIcon(statusContainer, action);
+		connect(icon, SIGNAL(iconUpdated(KaduIcon)), action, SLOT(setIcon(KaduIcon)));
+		action->setIcon(icon->icon());
 	}
 }
 
@@ -896,7 +898,7 @@ void KaduWindowActions::changeStatusActionActivated(QAction *sender, bool toggle
 		return;
 
 	QScopedPointer<QMenu> menu(new QMenu());
-	new StatusMenu(container, menu.data());
+	new StatusMenu(container, false, menu.data());
 	menu->exec(QCursor::pos());
 }
 

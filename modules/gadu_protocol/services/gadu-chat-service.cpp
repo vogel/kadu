@@ -40,6 +40,7 @@
 #include "debug.h"
 
 #include "helpers/gadu-formatter.h"
+#include "helpers/gadu-protocol-helper.h"
 #include "socket-notifiers/gadu-protocol-socket-notifiers.h"
 
 #include "gadu-account-details.h"
@@ -100,7 +101,7 @@ bool GaduChatService::sendMessage(const Chat &chat, FormattedMessage &message, b
 		unsigned int i = 0;
 
 		foreach (const Contact &contact, contacts)
-			uins[i++] = Protocol->uin(contact);
+			uins[i++] = GaduProtocolHelper::uin(contact);
 
 		if (formatsSize)
 			messageId = gg_send_message_confer_richtext(
@@ -114,11 +115,11 @@ bool GaduChatService::sendMessage(const Chat &chat, FormattedMessage &message, b
 	{
 		if (formatsSize)
 			messageId = gg_send_message_richtext(
-					Protocol->gaduSession(), GG_CLASS_CHAT, Protocol->uin(contacts.at(0)), (unsigned char *)data.data(),
+					Protocol->gaduSession(), GG_CLASS_CHAT, GaduProtocolHelper::uin(contacts.at(0)), (unsigned char *)data.data(),
 					formats.data(), formatsSize);
 		else
 			messageId = gg_send_message(
-					Protocol->gaduSession(), GG_CLASS_CHAT, Protocol->uin(contacts.at(0)), (unsigned char *)data.data());
+					Protocol->gaduSession(), GG_CLASS_CHAT, GaduProtocolHelper::uin(contacts.at(0)), (unsigned char *)data.data());
 	}
 
 	if (-1 == messageId)

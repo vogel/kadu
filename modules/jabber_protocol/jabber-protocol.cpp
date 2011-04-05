@@ -139,7 +139,7 @@ void JabberProtocol::initializeJabberClient()
 		   this, SLOT(clientResourceReceived(const XMPP::Jid &, const XMPP::Resource &)));
 
 	connect(JabberClient, SIGNAL(connectionError(QString)), this, SLOT(connectionErrorSlot(QString)));
-	connect(JabberClient, SIGNAL(invalidPassword()), this, SLOT(invalidPasswordSlot()));
+	connect(JabberClient, SIGNAL(invalidPassword()), this, SIGNAL(stateMachinePasswordRequired()));
 
 		/*//TODO: implement in the future
 		connect( JabberClient, SIGNAL ( groupChatJoined ( const XMPP::Jid & ) ),
@@ -155,61 +155,75 @@ void JabberProtocol::initializeJabberClient()
 		   this, SLOT(slotClientDebugMessage(const QString &)));
 }
 
-void JabberProtocol::login(const QString &password, bool permanent)
-{
-	if (isConnected())
-		return;
-	
-	if (password.isEmpty()) // user did not give us password, so prevent from further reconnecting
-	{
-		Status newstat = status();
-		newstat.setType("Offline");
-		setStatus(newstat);
-		statusChanged(newstat);
-		return;
-	}
-
-	account().setPassword(password);
-	account().setRememberPassword(permanent);
-	account().setHasPassword(!password.isEmpty());
-
-	connectToServer();
-}
-
 void JabberProtocol::connectionErrorSlot(const QString& message)
 {
 	if (JabberClient && JabberClient->clientConnector())
 		emit connectionError(account(), JabberClient->clientConnector()->host(), message);
 }
 
-void JabberProtocol::invalidPasswordSlot()
+XMPP::ClientStream::AllowPlainType JabberProtocol::plainAuthToXMPP(JabberAccountDetails::AllowPlainType type)
 {
-	emit invalidPassword(account());
+	if (type == JabberAccountDetails::NoAllowPlain)
+		return XMPP::ClientStream::NoAllowPlain;
+	if (type == JabberAccountDetails::AllowPlain)
+		return XMPP::ClientStream::AllowPlain;
+	else
+		return XMPP::ClientStream::AllowPlainOverTLS;
 }
 
-void JabberProtocol::connectToServer()
+void JabberProtocol::rosterDownloaded(bool success)
+{
+	Q_UNUSED(success)
+
+	/* Since we are online now, set initial presence. Don't do this
+	* before the roster request or we will receive presence
+	* information before we have updated our roster with actual
+	* contacts from the server! (Iris won't forward presence
+	* information in that case either). */
+	kdebug("Setting initial presence...\n");
+
+	sendStatusToServer();
+}
+
+void JabberProtocol::disconnectFromServer(const XMPP::Status &s)
+{
+	kdebugf();
+
+	if (isConnected())
+	{
+		kdebug("Still connected, closing connection...\n");
+		JabberClient->setPresence(s);
+	}
+	/* Tell backend class to disconnect. */
+	JabberClient->disconnect();
+
+	kdebug("Disconnected.\n");
+
+	// in state machine?
+// 	machine()->loggedOut();
+	kdebugf2();
+}
+
+void JabberProtocol::slotClientDebugMessage(const QString &msg)
+{
+	Q_UNUSED(msg)
+
+	kdebugm(KDEBUG_WARNING, "XMPP Client debug:  %s\n", qPrintable(msg));
+}
+
+/*
+ * login procedute
+ * After calling login method we set up JabberClient that must call connectedToServer in order to inform
+ * us that connection was established. Then we can tell this to state machine in Protocol class
+ */
+void JabberProtocol::login()
 {
 	kdebugf();
 
 	JabberAccountDetails *jabberAccountDetails = dynamic_cast<JabberAccountDetails *>(account().details());
 	if (!jabberAccountDetails)
-		return;
-
-	if (account().id().isEmpty())
 	{
-		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("XMPP username is not set!"));
-		setStatus(Status());
-		statusChanged(Status());
-		kdebugmf(KDEBUG_FUNCTION_END, "end: XMPP username is not set\n");
-		return;
-	}
-
-	if (!account().hasPassword())
-	{
-		QString message = tr("Please provide password for %1 (%2) account")
-				.arg(account().accountIdentity().name())
-				.arg(account().id());
-		PasswordWindow::getPassword(message, this, SLOT(login(const QString &, bool)));
+		connectionClosed();
 		return;
 	}
 
@@ -233,115 +247,50 @@ void JabberProtocol::connectToServer()
 
 	JabberClient->setAllowPlainTextPassword(plainAuthToXMPP(jabberAccountDetails->plainAuthMode()));
 
-	networkStateChanged(NetworkConnecting);
 	jabberID = jabberID.withResource(jabberAccountDetails->resource());
 	JabberClient->connect(jabberID, account().password(), true);
 
 	kdebugf2();
 }
 
-XMPP::ClientStream::AllowPlainType JabberProtocol::plainAuthToXMPP(JabberAccountDetails::AllowPlainType type)
-{
-	if (type == JabberAccountDetails::NoAllowPlain)
-		return XMPP::ClientStream::NoAllowPlain;
-	if (type == JabberAccountDetails::AllowPlain)
-		return XMPP::ClientStream::AllowPlain;
-	else
-		return XMPP::ClientStream::AllowPlainOverTLS;
-}
-
+/*
+ * We are now connected to server - login procedure has ended
+ */
 void JabberProtocol::connectedToServer()
 {
-	kdebugf();
+	loggedIn();
+}
 
-	networkStateChanged(NetworkConnected);
-
+void JabberProtocol::afterLoggedIn()
+{
 	// ask for roster
 	CurrentRosterService->downloadRoster();
-	kdebugf2();
-}
-
-void JabberProtocol::rosterDownloaded(bool success)
-{
-	Q_UNUSED(success)
-
-	/* Since we are online now, set initial presence. Don't do this
-	* before the roster request or we will receive presence
-	* information before we have updated our roster with actual
-	* contacts from the server! (Iris won't forward presence
-	* information in that case either). */
-	kdebug("Setting initial presence...\n");
-
-	changeStatus(true);
-}
-
-// disconnect or stop reconnecting
-void JabberProtocol::logout()
-{
-	kdebugf();
-
-	Status newstat = status();
-	if (!status().isDisconnected())
-	{
-		newstat.setType("Offline");
-		setStatus(newstat);
-	}
-
-	disconnectFromServer(IrisStatusAdapter::toIrisStatus(newstat));
-	setAllOffline();
-
-	kdebugf2();
-}
-
-void JabberProtocol::disconnectFromServer(const XMPP::Status &s)
-{
-	kdebugf();
-
-	if (isConnected())
-	{
-		kdebug("Still connected, closing connection...\n");
-		// make sure that the connection animation gets stopped if we're still
-		// in the process of connecting
-
-		JabberClient->setPresence(s);
-	}
-	/* Tell backend class to disconnect. */
-	JabberClient->disconnect();
-
-	kdebug("Disconnected.\n");
-
-	networkStateChanged(NetworkDisconnected);
-	kdebugf2();
-}
-
-void JabberProtocol::slotClientDebugMessage(const QString &msg)
-{
-	Q_UNUSED(msg)
-
-	kdebugm(KDEBUG_WARNING, "XMPP Client debug:  %s\n", qPrintable(msg));
 }
 
 void JabberProtocol::disconnectedFromServer()
 {
 	kdebugf();
 
-	setAllOffline();
-
-	networkStateChanged(NetworkDisconnected);
-
 	JabberClient->disconnect();
-
-	if (!nextStatus().isDisconnected()) // user still wants to login
-		QTimer::singleShot(1000, this, SLOT(login())); // try again after one second
+	loggedOut();
 
 	kdebugf2();
 }
 
-void JabberProtocol::login()
+void JabberProtocol::logout()
 {
-	if (isConnected())
-		return;
-	connectToServer();
+	disconnectFromServer(IrisStatusAdapter::toIrisStatus(status()));
+	loggedOut();
+}
+
+void JabberProtocol::sendStatusToServer()
+{
+	JabberClient->setPresence(IrisStatusAdapter::toIrisStatus(status()));
+}
+
+void JabberProtocol::changePrivateMode()
+{
+	//sendStatusToServer();
 }
 
 void JabberProtocol::clientResourceReceived(const XMPP::Jid &jid, const XMPP::Resource &resource)
@@ -415,60 +364,6 @@ void JabberProtocol::contactIdChanged(Contact contact, const QString &oldId)
 
 	JabberClient->removeContact(oldId);
 	contactAttached(contact);
-}
-
-void JabberProtocol::changeStatus()
-{
-	changeStatus(false);
-}
-
-void JabberProtocol::changeStatus(bool force)
-{
-	Status newStatus = nextStatus();
-	if (!force && IrisStatusAdapter::statusesEqual(newStatus, status()))
-		return;
-
-	if (newStatus.isDisconnected() && status().isDisconnected())
-	{
-		if (newStatus.description() != status().description())
-			statusChanged(newStatus);
-
-		if (NetworkConnecting == state())
-			networkStateChanged(NetworkDisconnected);
-
-		return;
-	}
-
-	if (isConnecting())
-		return;
-
-	if (!isConnected())
-	{
-		login();
-		return;
-	}
-
-	XMPP::Status xmppStatus = IrisStatusAdapter::toIrisStatus(newStatus);
-	JabberClient->setPresence(xmppStatus);
-
-	if (newStatus.isDisconnected())
-	{
-		networkStateChanged(NetworkDisconnected);
-
-		setAllOffline();
-
-		JabberClient->disconnect();
-
-		if (!nextStatus().isDisconnected())
-			setStatus(Status());
-	}
-
-	statusChanged(IrisStatusAdapter::fromIrisStatus(xmppStatus));
-}
-
-void JabberProtocol::changePrivateMode()
-{
-	//changeStatus();
 }
 
 QString JabberProtocol::statusPixmapPath()

@@ -844,7 +844,7 @@ void MediaPlayer::playPause()
 		isPaused = false;
 		foreach(Action *action, playAction->actions())
 		{
-			action->setIcon(KaduIcon("external_modules/mediaplayer-media-playback-pause").icon());
+			action->setIcon(KaduIcon("external_modules/mediaplayer-media-playback-pause"));
 			action->setText(tr("Pause"));
 
 		}
@@ -855,7 +855,7 @@ void MediaPlayer::playPause()
 		isPaused = true;
 		foreach(Action *action, playAction->actions())
 		{
-			action->setIcon(KaduIcon("external_modules/mediaplayer-media-playback-play").icon());
+			action->setIcon(KaduIcon("external_modules/mediaplayer-media-playback-play"));
 			action->setText(tr("Play"));
 		}
 	}
@@ -868,7 +868,7 @@ void MediaPlayer::play()
 
 	isPaused = false;
 	foreach(Action *action, playAction->actions())
-		action->setIcon(KaduIcon("external_modules/mediaplayer-media-playback-play").icon());
+		action->setIcon(KaduIcon("external_modules/mediaplayer-media-playback-play"));
 }
 
 void MediaPlayer::stop()
@@ -878,7 +878,7 @@ void MediaPlayer::stop()
 
 	isPaused = true;
 	foreach(Action *action, playAction->actions())
-		action->setIcon(KaduIcon("external_modules/mediaplayer-media-playback-play").icon());
+		action->setIcon(KaduIcon("external_modules/mediaplayer-media-playback-play"));
 }
 
 void MediaPlayer::pause()
@@ -888,7 +888,7 @@ void MediaPlayer::pause()
 
 	isPaused = true;
 	foreach(Action *action, playAction->actions())
-		action->setIcon(KaduIcon("external_modules/mediaplayer-media-playback-play").icon());
+		action->setIcon(KaduIcon("external_modules/mediaplayer-media-playback-play"));
 }
 
 void MediaPlayer::setVolume(int vol)

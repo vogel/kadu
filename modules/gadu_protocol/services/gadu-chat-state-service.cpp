@@ -21,6 +21,7 @@
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
 
+#include "helpers/gadu-protocol-helper.h"
 #include "gadu-account-details.h"
 #include "gadu-protocol.h"
 
@@ -68,7 +69,7 @@ void GaduChatStateService::composingStarted(const Chat &chat)
 	if (!Protocol->gaduSession())
 		return;
 
-	gg_typing_notification(Protocol->gaduSession(), Protocol->uin(contact), 0x0001);
+	gg_typing_notification(Protocol->gaduSession(), GaduProtocolHelper::uin(contact), 0x0001);
 }
 
 void GaduChatStateService::composingStopped(const Chat &chat)
@@ -83,7 +84,7 @@ void GaduChatStateService::composingStopped(const Chat &chat)
 	if (!Protocol->gaduSession())
 		return;
 
-	gg_typing_notification(Protocol->gaduSession(), Protocol->uin(contact), 0x0000);
+	gg_typing_notification(Protocol->gaduSession(), GaduProtocolHelper::uin(contact), 0x0000);
 }
 
 void GaduChatStateService::chatWidgetClosed(const Chat &chat)

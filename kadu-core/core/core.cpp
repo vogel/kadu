@@ -406,13 +406,7 @@ void Core::deleteOldConfigurationFiles()
 
 void Core::statusUpdated()
 {
-	kdebugf();
-
-	Account account = AccountManager::instance()->defaultAccount();
-	if (account.isNull() || !account.protocolHandler())
-		setIcon(StatusContainerManager::instance()->statusIcon());
-	else
-		setIcon(StatusContainerManager::instance()->statusIcon(account.protocolHandler()->status()));
+	setIcon(StatusContainerManager::instance()->statusIcon());
 }
 
 void Core::kaduWindowDestroyed()

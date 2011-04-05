@@ -54,6 +54,7 @@ class Message;
 class MultilogonService;
 class PersonalInfoService;
 class ProtocolFactory;
+class ProtocolStateMachine;
 class RosterService;
 class SearchService;
 class Status;
@@ -64,32 +65,44 @@ class KADUAPI Protocol : public QObject
 	Q_OBJECT
 	Q_DISABLE_COPY(Protocol)
 
-public:
-	enum NetworkState {
-		NetworkDisconnected,
-		NetworkConnecting,
-		NetworkConnected,
-		NetworkDisconnecting
-	};
-
-private:
 	ProtocolFactory *Factory;
+	ProtocolStateMachine *Machine;
 
 	Account CurrentAccount;
 
-	NetworkState State;
 	Status CurrentStatus;
+
+	void setAllOffline();
 
 private slots:
 	void statusChanged(StatusContainer *container, Status status);
 
+	// state machine slots
+	void prepareStateMachine();
+
+	void loggingInStateEntered();
+	void loggedInStateEntered();
+	void loggingOutStateEntered();
+	void loggedOutAnyStateEntered();
+	void wantToLogInStateEntered();
+	void passwordRequiredStateEntered();
+
 protected:
-	void setAllOffline();
+	Status loginStatus() const;
 
-	virtual void changeStatus() = 0;
+	virtual void login() = 0;
+	virtual void afterLoggedIn() {}
+	virtual void logout() = 0;
+	virtual void sendStatusToServer() = 0;
+
+	void loggedIn();
+	void loggedOut();
+	void passwordRequired();
+	void connectionError();
+	void connectionClosed();
+
+	virtual void disconnectedCleanup();
 	void statusChanged(Status newStatus);
-
-	void networkStateChanged(NetworkState state);
 
 public:
 	Protocol(Account account, ProtocolFactory *factory);
@@ -112,13 +125,11 @@ public:
 	virtual bool contactsListReadOnly() = 0;
 	virtual bool supportsPrivateStatus() { return false; }
 
-	NetworkState state() { return State; }
-	bool isConnected() { return (State == NetworkConnected); }
-	bool isConnecting() { return (State == NetworkConnecting); }
+	bool isConnected();
+	bool isConnecting();
 
 	void setStatus(Status status);
 	Status status() const;
-	Status nextStatus() const;
 	virtual int maxDescriptionLength() { return -1; }
 
 	virtual void changePrivateMode() = 0;
@@ -138,12 +149,11 @@ public:
 	}
 
 public slots:
-	virtual void login(const QString &password, bool permanent) = 0;
+	void passwordProvided();
 
 signals:
 	void connecting(Account account);
 	void connected(Account account);
-	void disconnecting(Account account);
 	void disconnected(Account account);
 
 	void statusChanged(Account account, Status newStatus);
@@ -152,6 +162,20 @@ signals:
 // TODO: REVIEW
 	void connectionError(Account account, const QString &server, const QString &reason);
 	void invalidPassword(Account account);
+
+// state machine signals
+	void stateMachineLoggedIn();
+	void stateMachineLoggedOut();
+
+	void stateMachineChangeStatus();
+	void stateMachineLogout();
+
+	void stateMachinePasswordRequired();
+	void stateMachinePasswordAvailable();
+	void stateMachinePasswordNotAvailable();
+
+	void stateMachineConnectionError();
+	void stateMachineConnectionClosed();
 
 };
 
