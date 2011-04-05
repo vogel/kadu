@@ -110,8 +110,7 @@ DockingManager::DockingManager() :
 	createDefaultConfiguration();
 
 	Icon = new StatusIcon(StatusContainerManager::instance(), this);
-	connect(Icon, SIGNAL((KaduIcon)), this, SLOT(statusIconChanged(KaduIcon)));
-	connect(Core::instance(), SIGNAL(mainIconChanged(QIcon)), this, SLOT(statusIconChanged(QIcon)));
+	connect(Icon, SIGNAL(iconUpdated(KaduIcon)), this, SLOT(statusIconChanged(KaduIcon)));
 
 	connect(icon_timer, SIGNAL(timeout()), this, SLOT(changeIcon()));
 
