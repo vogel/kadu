@@ -8,7 +8,6 @@
 * kde_notify: display better icon for notification (Vogel)
 * freedesktop_notify: kde_notify renamed to freedesktop_notify (WhE)
 * freedesktop_notify: add checking for server capabilities (WhE)
-* gui: #1978 fixed: detection of window being covered by other windows under OpenBox (ultr)
 * gadu: use Kadu VERSION as client version for Gadu protocol (Vogel)
 * gui: status buttons now are blinking when connection is being established (Vogel)
 * protocols: proper reactions to network going online/offline (Vogel)
@@ -23,6 +22,8 @@
 * encryption_ng: fixed crash in buddies context menu after unloading module (beevvy)
 * hints: #2086 fixed: invalid handling of "none" buddy-list tooltip type (Vogel)
 * gui: #2048 fixed: opening percent-encoded URL's with system web browser (beevvy)
+* gui: #1978 fixed: detection of window being covered by other windows under OpenBox (ultr)
+* .desktop file: do not claim Kadu a Gadu-Gadu-only client (beevvy)
 
 +++ version 0.9.0
 * configuration: configuration is now always properly imported on Windows (Vogel)
