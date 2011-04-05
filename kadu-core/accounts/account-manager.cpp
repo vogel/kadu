@@ -114,7 +114,7 @@ void AccountManager::itemAboutToBeUnregisterd(Account item)
 	disconnect(item.protocolHandler(), SIGNAL(connectionError(Account, const QString &, const QString &)),
 			this, SLOT(connectionError(Account, const QString &, const QString &)));
 	disconnect(item.protocolHandler(), SIGNAL(invalidPassword(Account)),
-			this, SLOT(invalidPassword(Account)));
+			this, SLOT(providePassword(Account)));
 
 	emit accountAboutToBeUnregistered(item);
 }

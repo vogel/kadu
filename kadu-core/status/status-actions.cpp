@@ -121,11 +121,9 @@ QAction * StatusActions::createSeparator()
 QAction * StatusActions::createStatusAction(StatusType *statusType, bool includePrefix)
 {
 	KaduIcon icon = MyStatusContainer->statusIcon(statusType->name());
-	QAction *statusAction = ChangeStatusActionGroup->addAction(
-		icon.icon().pixmap(16, 16),
-		includePrefix
-				? MyStatusContainer->statusNamePrefix() + statusType->displayName()
-				: statusType->displayName());
+	QAction *statusAction = ChangeStatusActionGroup->addAction(icon.icon(), includePrefix
+			? MyStatusContainer->statusNamePrefix() + statusType->displayName()
+			: statusType->displayName());
 	statusAction->setCheckable(true);
 	statusAction->setData(QVariant::fromValue(statusType));
 

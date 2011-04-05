@@ -56,10 +56,10 @@ public:
 	explicit StatusIcon(StatusContainer *statusContainer, QObject *parent = 0);
 	virtual ~StatusIcon();
 
-	KaduIcon icon() const { return Icon; }
+	const KaduIcon & icon() const { return Icon; }
 
 signals:
-	void iconUpdated(KaduIcon icon);
+	void iconUpdated(const KaduIcon &icon);
 
 };
 
