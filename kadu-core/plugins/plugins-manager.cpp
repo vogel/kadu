@@ -98,6 +98,13 @@ PluginsManager * PluginsManager::instance()
 	return Instance;
 }
 
+/**
+ * @author Rafał 'Vogel' Malinowski
+ * @short Creates new PluginsManager and registers it in ConfigurationManager singleton.
+ *
+ * Creates new PluginsManager, registers it in ConfigurationManager singleton.
+ * Storage status is set to Storage::StateNotLoaded.
+ */
 PluginsManager::PluginsManager() :
 		Plugins(), Window(0)
 {
@@ -106,11 +113,29 @@ PluginsManager::PluginsManager() :
 	setState(StateNotLoaded);
 }
 
+/**
+ * @author Rafał 'Vogel' Malinowski
+ * @short Destroys instance and unregisters it from ConfigurationManager singleton.
+ *
+ * Destroys instance and unregisters it from ConfigurationManager singleton.
+ */
 PluginsManager::~PluginsManager()
 {
 	ConfigurationManager::instance()->unregisterStorableObject(this);
 }
 
+/**
+ * @author Rafał 'Vogel' Malinowski
+ * @short Loads PluginsManager and all Plugin configurations.
+ *
+ * This method loads PluginsManager configuration from storage node /root/Plugins and all sub nodes
+ * /root/Plugins/Plugin. If attribute /root/Plugins/\@imported_from_09 is not present importFrom09()
+ * method will be called to import depreceated configuration from 0.9.x and earlier versions.
+ *
+ * After reading all plugins configuration this method check for existence of new plugins that could
+ * be recently installed. Check is done by searching datadir/kadu/plugins directory for new *.desc
+ * files. All new plugins are set to have Plugin::PluginStateNew state.
+ */
 void PluginsManager::load()
 {
 	if (!isValidStorage())
@@ -142,6 +167,7 @@ void PluginsManager::load()
 			Plugins.insert(moduleName, plugin);
 		}
 
+	// TODO: do we really need this here?
 	foreach (Plugin *plugin, Plugins)
 		plugin->ensureLoaded();
 
@@ -152,6 +178,13 @@ void PluginsManager::load()
 	}
 }
 
+/**
+ * @author Rafał 'Vogel' Malinowski
+ * @short Stores PluginsManager and all Plugin configurations.
+ *
+ * This method stores PluginsManager configuration to storage node /root/Plugins and all sub nodes to
+ * /root/Plugins/Plugin. Attribute /root/Plugins/\@imported_from_09 is always stored as "true".
+ */
 void PluginsManager::store()
 {
 	if (!isValidStorage())
@@ -165,12 +198,19 @@ void PluginsManager::store()
 		plugin->store();
 }
 
+/**
+ * @author Rafał 'Vogel' Malinowski
+ * @short Import 0.9.x configuration.
+ *
+ * This method loads old configuration from depreceated configuration entries: General/EverLaoded,
+ * General/LoadedModules and General/UnloadedModules. Do not call it manually.
+ */
 void PluginsManager::importFrom09()
 {
 	QStringList everLoaded = config_file.readEntry("General", "EverLoaded").split(',', QString::SkipEmptyParts);
-	QString loaded_str = config_file.readEntry("General", "LoadedModules");
+	QString loaded = config_file.readEntry("General", "LoadedModules");
 
-	QStringList loadedPlugins = loaded_str.split(',', QString::SkipEmptyParts);
+	QStringList loadedPlugins = loaded.split(',', QString::SkipEmptyParts);
 	everLoaded += loadedPlugins;
 	QString unloaded_str = config_file.readEntry("General", "UnloadedModules");
 	QStringList unloadedPlugins = unloaded_str.split(',', QString::SkipEmptyParts);
@@ -210,15 +250,32 @@ void PluginsManager::importFrom09()
 			plugin->setState(Plugin::PluginStateDisabled);
 }
 
-void PluginsManager::ensureLoadedAtLeastOnce(const QString& moduleName)
+/**
+ * @author Rafał 'Vogel' Malinowski
+ * @short Enure that given plugin was/will be activated at least once.
+ * @param pluginName name of plugin to check
+ *
+ * This method is used to fix broken configurations that had importand modules marked
+ * as unloaded without even loading them one time. Do not call this method, it is used
+ * internally by importFrom09().
+ */
+void PluginsManager::ensureLoadedAtLeastOnce(const QString& pluginName)
 {
-	if (!Plugins.contains(moduleName))
+	if (!Plugins.contains(pluginName))
 		return;
 
-	if (!Plugin::PluginStateNew == Plugins.value(moduleName)->state())
-		Plugins.value(moduleName)->setState(Plugin::PluginStateEnabled);
+	if (!Plugin::PluginStateNew == Plugins.value(pluginName)->state())
+		Plugins.value(pluginName)->setState(Plugin::PluginStateEnabled);
 }
 
+/**
+ * @author Rafał 'Vogel' Malinowski
+ * @short Activate all protocols plugins that are enabled.
+ *
+ * This method activates all plugins with type "protocol" that are either enabled (Plugin::PluginStateEnabled)
+ * or new (Plugin::PluginStateNew) with attribute "load by default" set. This method is generally called before
+ * any other activation to ensure that all protocols and accounts are available for other plugins.
+ */
 void PluginsManager::activateProtocolPlugins()
 {
 	bool saveList = false;
@@ -239,6 +296,14 @@ void PluginsManager::activateProtocolPlugins()
 		ConfigurationManager::instance()->flush();
 }
 
+/**
+ * @author Rafał 'Vogel' Malinowski
+ * @short Activate all plugins that are enabled.
+ *
+ * This method activates all plugins that are either enabled (Plugin::PluginStateEnabled) or new (Plugin::PluginStateNew)
+ * with attribute "load by default" set. If given enabled plugin is no longer available replacement plugin is searched
+ * (by checking Plugin::replaces()). Any found replacement plugin is activated.
+ */
 void PluginsManager::activatePlugins()
 {
 	bool saveList = false;
@@ -265,6 +330,15 @@ void PluginsManager::activatePlugins()
 		ConfigurationManager::instance()->flush();
 }
 
+/**
+ * @author Rafał 'Vogel' Malinowski
+ * @short Activate all plugins that are enabled.
+ *
+ * This method deactivated all active plugins. First iteration of deactivation check Plugin::usageCounter() value
+ * to check if given plugin can be safely removed (no other active plugins depends on it). This procedure is
+ * performed for all active plugins until no more plugins can be deactivated. Then second iteration is performed.
+ * This time no checks are performed.
+ */
 void PluginsManager::deactivatePlugins()
 {
 	ConfigurationManager::instance()->flush();
@@ -301,6 +375,14 @@ void PluginsManager::deactivatePlugins()
 
 }
 
+/**
+ * @author Rafał 'Vogel' Malinowski
+ * @short Lists all active plugins.
+ * @return list of all active plugins
+ *
+ * This method returns list of all active plugins. Active plugin has its shred library loaded and objects
+ * created.
+ */
 QList<Plugin *> PluginsManager::activePlugins() const
 {
 	QList<Plugin *> result;
@@ -310,6 +392,14 @@ QList<Plugin *> PluginsManager::activePlugins() const
 	return result;
 }
 
+/**
+ * @author Rafał 'Vogel' Malinowski
+ * @short Marks all dependencies of given plugin as used.
+ * @param plugin plugin which dependencies will be marked as used
+ *
+ * All depenciec of plugin given as parameter will be marked as used so no accidental deactivation
+ * will be possible for them.
+ */
 void PluginsManager::incDependenciesUsageCount(Plugin *plugin)
 {
 	if (!plugin->isValid())
@@ -324,6 +414,14 @@ void PluginsManager::incDependenciesUsageCount(Plugin *plugin)
 	kdebugf2();
 }
 
+/**
+ * @author Rafał 'Vogel' Malinowski
+ * @short Lists all installed plugins names.
+ * @return list of all installed plugin names
+ *
+ * Lists all installed plugins names. Installed plugins are searched in dataDir/kadu/plugins as
+ * *.desc files.
+ */
 QStringList PluginsManager::installedPlugins() const
 {
 	QDir dir(dataPath("kadu/plugins"), "*.desc");
@@ -336,6 +434,18 @@ QStringList PluginsManager::installedPlugins() const
 	return installed;
 }
 
+/**
+ * @author Rafał 'Vogel' Malinowski
+ * @short Returns name of active plugin that conflicts with given one.
+ * @param plugin plugin for which conflict is searched
+ * @return name of active plugins that conflicts with given one
+ *
+ * Return empty string if no active conflict plugin is found or if given plugin is empty or invalid.
+ * In other cases name of active conflict plugin is returned. This means:
+ * * any active plugin that is in current plugin's PluginInfo::conflicts() list
+ * * any active plugin that provides (see PluginInfo::provides()) something that is in current plugin's PluginInfo::conflicts() list
+ * * any active plugin that has current plugin it its PluginInfo::conflicts() list
+ */
 QString PluginsManager::findActiveConflict(Plugin *plugin) const
 {
 	if (!plugin || !plugin->isValid())
@@ -365,6 +475,16 @@ QString PluginsManager::findActiveConflict(Plugin *plugin) const
 	return QString();
 }
 
+/**
+ * @author Rafał 'Vogel' Malinowski
+ * @short Activates (recursively) all dependencies.
+ * @param plugin plugin for which dependencies will be activated
+ * @return true if all dependencies were activated
+ * @todo remove MessageDialog from this methods, this is not a GUI class
+ *
+ * Activates all dependencies of plugin and dependencies of these dependencies. If any dependency
+ * is not found a message will be displayed to the user and false will be returned. * 
+ */
 bool PluginsManager::activateDependencies(Plugin *plugin)
 {
 	if (!plugin || !plugin->isValid())
@@ -385,6 +505,16 @@ bool PluginsManager::activateDependencies(Plugin *plugin)
 	return true;
 }
 
+/**
+ * @author Rafał 'Vogel' Malinowski
+ * @short Returns string with list of all plugins that depends on given one.
+ * @param pluginName name of plugin to check dependencies
+ * @return string with list of all plugins that depends on given one
+ * @todo ugly, should return QStringList or QList&lt;Plugin *&t;
+ *
+ * Returns string with list of all plugins that depends on given one. This string can be displayed
+ * to the user.
+ */
 QString PluginsManager::activeDependentPluginNames(const QString &pluginName) const
 {
 	QString modules;
@@ -397,6 +527,21 @@ QString PluginsManager::activeDependentPluginNames(const QString &pluginName) co
 	return modules;
 }
 
+/**
+ * @author Rafał 'Vogel' Malinowski
+ * @short Activates given plugin and all its dependencies.
+ * @param plugin plugin to activate
+ * @return true, if plugin was successfully activated
+ * @todo remove message box
+ *
+ * This method activates given plugin and all its dependencies. Plugin can be activated only when no conflict
+ * is found and all dependencies can be activated. In other case false is returned and plugin will not be activated.
+ * Please note that no dependency plugin activated in this method will be automatically deactivated if
+ * this method fails, so list of active plugins can be changed even if plugin could not be activated.
+ *
+ * After successfull activation all dependencies are locked using incDependenciesUsageCount() and cannot be
+ * deactivated without deactivating plugin. Plugin::usageCounter() of dependencies is increased.
+ */
 bool PluginsManager::activatePlugin(Plugin *plugin)
 {
 	if (plugin->isActive())
@@ -419,6 +564,19 @@ bool PluginsManager::activatePlugin(Plugin *plugin)
 	return result;
 }
 
+/**
+ * @author Rafał 'Vogel' Malinowski
+ * @short Deactivates given plugin.
+ * @param plugin plugin to deactivate
+ * @param force if true, no check for usage will be performed
+ * @return true, if plugin was successfully deactivated
+ * @todo remove message box
+ *
+ * This method deactivates given plugin. Deactivation can be performed only when plugin is no longed in use (its
+ * Plugin::usageCounter() returns 0) or when force parameter is set to true.
+ *
+ * After successfull deactivation all dependenecies are released - their Plugin::usageCounter() is decreaced.
+ */
 bool PluginsManager::deactivatePlugin(Plugin *plugin, bool force)
 {
 	kdebugmf(KDEBUG_FUNCTION_START, "name:'%s' force:%d usage: %d\n", qPrintable(plugin->name()), force, plugin->usageCounter());
@@ -436,18 +594,46 @@ bool PluginsManager::deactivatePlugin(Plugin *plugin, bool force)
 	return plugin->deactivate();
 }
 
+/**
+ * @author Rafał 'Vogel' Malinowski
+ * @short Increases usage counter for given plugin
+ * @param pluginName name of plugin to increase usage pointer
+ *
+ * This method increases usage counter for given plugin. Use it from plugin code when opening
+ * dialogs or performing long operatrions to prevent unloading plugins. It is used also to prevent
+ * unloading plugins when other loaded plugins are dependent on them.
+ *
+ * After plugin is no longer needes (operation has finished, dialog is closed) releasePlugin() must
+ * be called with the same parameter.
+ */
 void PluginsManager::usePlugin(const QString &pluginName)
 {
 	if (Plugins.contains(pluginName))
 		Plugins.value(pluginName)->incUsage();
 }
 
+/**
+ * @author Rafał 'Vogel' Malinowski
+ * @short Decreases usage counter for given plugin
+ * @param pluginName name of plugin to decrease usage pointer
+ *
+ * This method decreases usage counter for given plugin. Use it from plugin after calling usePlugin()
+ * when locking plugin is no longer needed (for example when long operation has finished or a dialog
+ * was closed).
+ *
+ * It can be only called after usePlugin() with the same parameter.
+ */
 void PluginsManager::releasePlugin(const QString &pluginName)
 {
 	if (Plugins.contains(pluginName))
 		Plugins.value(pluginName)->decUsage();
 }
 
+/**
+ * @author Rafał 'Vogel' Malinowski
+ * @short Shows plugins manager window
+ * @todo remove
+ */
 void PluginsManager::showWindow(QAction *sender, bool toggled)
 {
 	Q_UNUSED(sender)
@@ -467,6 +653,11 @@ void PluginsManager::showWindow(QAction *sender, bool toggled)
 	kdebugf2();
 }
 
+/**
+ * @author Rafał 'Vogel' Malinowski
+ * @short Called after plugins manager window got closed
+ * @todo remove
+ */
 void PluginsManager::dialogDestroyed()
 {
 	kdebugf();

@@ -49,6 +49,35 @@ class GenericPlugin;
 class ModulesWindow;
 class Plugin;
 
+/**
+ * @addtogroup Plugins
+ * @{
+ */
+
+/**
+ * @class PluginsManager
+ * @author Rafał 'Vogel' Malinowski
+ * @short Class responsible for loading and unloading plugins.
+ *
+ * This class manages all Kadu plugins, allows for loading and unloading and manages dependencies and
+ * replacements.
+ *
+ * Configuration of this class is stored in storage node /root/Plugins with each plugin stored as
+ * /root/Plugins/Plugin/\@name="".
+ * If attribute /root/Plugins/\@imported_from_09 is not present this object will try to import
+ * configuration from depreceated 0.9.x nodes.
+ *
+ * List of plugins is loaded from datadir/kadu/plugins directory as list of *.desc files (soon to be
+ * ported to *.desktop files). Also list of all known plugins from previous version is loaded from
+ * depreceated (0.9.x and before) configuration entries and from storage of this object.
+ *
+ * Plugins can be valid and invalid. Invalid plugins do not have *.desc files. They are stored because
+ * of replacements mechanism.
+ *
+ * For activating and deactivating plugins see activatePlugin() and deactivatingPlugin().
+ * For enabling auto-activating plugins see Plugin::setState() method - only plugins with state equal
+ * to Plugin::PluginStateEnabled will be loaded automatically.
+ */
 class KADUAPI PluginsManager : public QObject, public StorableObject
 {
 	Q_OBJECT
@@ -56,6 +85,7 @@ class KADUAPI PluginsManager : public QObject, public StorableObject
 
 	static PluginsManager *Instance;
 
+	/* to remove when all modules became plugins */
 	typedef int InitModuleFunc(bool);
 	typedef void CloseModuleFunc(void);
 
@@ -110,5 +140,9 @@ public slots:
 	void showWindow(QAction *sender, bool toggled);
 
 };
+
+/**
+ * @}
+ */
 
 #endif // PLUGINS_MANAGER_H
