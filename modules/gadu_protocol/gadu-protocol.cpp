@@ -47,7 +47,6 @@
 #include "gui/windows/message-dialog.h"
 #include "gui/windows/password-window.h"
 #include "qt/long-validator.h"
-#include "protocols/state-machine/protocol-state-machine.h"
 #include "status/status.h"
 #include "status/status-type.h"
 #include "status/status-type-manager.h"

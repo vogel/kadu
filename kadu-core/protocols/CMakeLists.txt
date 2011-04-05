@@ -8,12 +8,11 @@ set (protocols_SRCS
 	services/chat-image-service.cpp
 	services/contact-list-service.cpp
 
-	state-machine/protocol-state-machine.cpp
-
 	connection-error-notification.cpp
 	protocol.cpp
 	protocols-aware-object.cpp
 	protocols-manager.cpp
+	protocol-state-machine.cpp
 )
 
 set (protocols_MOC_SRCS
@@ -35,12 +34,11 @@ set (protocols_MOC_SRCS
 	services/roster-service.h
 	services/search-service.h
 
-	state-machine/protocol-state-machine.h
-
 	connection-error-notification.h
 	protocol.h
 	protocol-factory.h
 	protocols-manager.h
+	protocol-state-machine.h
 )
 
 qt4_wrap_cpp (protocols_MOC_FILES ${protocols_MOC_SRCS})

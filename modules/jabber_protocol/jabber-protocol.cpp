@@ -34,7 +34,6 @@
 #include "gui/windows/message-dialog.h"
 #include "gui/windows/password-window.h"
 #include "os/generic/system-info.h"
-#include "protocols/state-machine/protocol-state-machine.h"
 #include "protocols/protocols-manager.h"
 #include "status/status-type-manager.h"
 #include "url-handlers/url-handler-manager.h"

@@ -32,7 +32,6 @@
 #include <xmpp_tasks.h>
 
 #include "accounts/account.h"
-#include "protocols/state-machine/protocol-state-machine.h"
 #include "debug.h"
 
 #include "certificates/certificate-helpers.h"
