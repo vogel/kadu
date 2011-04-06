@@ -93,7 +93,7 @@ Status Protocol::nextStatus() const
 
 void Protocol::statusChanged(StatusContainer *container, Status status)
 {
-	if (container && container == account().statusContainer() && CurrentStatus != status)
+	if (container && container == account().statusContainer() && (CurrentStatus != status || isConnecting()))
 		changeStatus();
 }
 

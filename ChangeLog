@@ -10,6 +10,7 @@
 * hints: #2086 fixed: invalid handling of "none" buddy-list tooltip type (Vogel)
 * gui: #1978 fixed: detection of window being covered by other windows under OpenBox (ultr)
 * .desktop file: do not claim Kadu a Gadu-Gadu-only client (beevvy)
+* jabber: #2087 fixed: proper disconnect when connecting (Vogel)
 
 +++ version 0.9.0
 * configuration: configuration is now always properly imported on Windows (Vogel)

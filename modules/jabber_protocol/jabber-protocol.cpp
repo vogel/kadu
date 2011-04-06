@@ -480,6 +480,14 @@ void JabberProtocol::changeStatus()
 void JabberProtocol::changeStatus(bool force)
 {
 	Status newStatus = nextStatus();
+
+	if (isConnecting() && newStatus.isDisconnected())
+	{
+		networkStateChanged(NetworkDisconnected);
+		statusChanged(Status());
+		setStatus(Status());
+	}
+
 	if (!force && IrisStatusAdapter::statusesEqual(newStatus, status()))
 		return;
 
