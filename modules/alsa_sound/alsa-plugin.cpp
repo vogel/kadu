@@ -27,7 +27,13 @@
 
 #include "alsa-player.h"
 
-extern "C" KADU_EXPORT int alsa_sound_init(bool firstLoad)
+#include "alsa-plugin.h"
+
+AlsaPlugin::~AlsaPlugin()
+{
+}
+
+int AlsaPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
@@ -42,7 +48,7 @@ extern "C" KADU_EXPORT int alsa_sound_init(bool firstLoad)
 	return 0;
 }
 
-extern "C" KADU_EXPORT void alsa_sound_close()
+void AlsaPlugin::done()
 {
 	kdebugf();
 
@@ -53,3 +59,5 @@ extern "C" KADU_EXPORT void alsa_sound_close()
 
 	kdebugf2();
 }
+
+Q_EXPORT_PLUGIN2(alsa_protocol, AlsaPlugin)
