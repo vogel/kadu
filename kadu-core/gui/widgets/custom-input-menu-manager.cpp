@@ -84,5 +84,7 @@ QMenu * CustomInputMenuManager::menu(QWidget *parent)
 		++i;
 	}
 
+	menu->addSeparator();
+
 	return menu;
 }
