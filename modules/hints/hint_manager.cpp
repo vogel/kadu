@@ -96,23 +96,22 @@ HintManager::HintManager(QWidget *parent) :
 	const QString default_hints_syntax(QT_TRANSLATE_NOOP("HintManager", "<table>"
 "<tr>"
 "<td align=\"left\" valign=\"top\">"
-"<img"
-"style=\"max-width:64px; max-height:64px;\""
+"<img style=\"max-width:64px; max-height:64px;\""
 "src=\"{#{avatarPath} #{avatarPath}}{~#{avatarPath} @{kadu_icons/kadu:64x64}}\""
 ">"
 "</td>"
 "<td width=\"100%\">"
 "<div>[<b>%a</b>][&nbsp;<b>(%g)</b>]</div>"
-"[<div><img align=\"left\" valign=\"middle\" height=\"16\" width=\"16\" src=\"file:///#{statusIconPath}\">&nbsp;&nbsp;%u</div>]"
-"[<div><img align=\"left\" valign=\"middle\" height=\"16\" width=\"16\" src=\"file:///@{phone:16x16}\">&nbsp;&nbsp;%m</div>]"
-"[<div><img align=\"left\" valign=\"middle\" height=\"16\" width=\"16\" src=\"file:///@{mail-message-new:16x16}\">&nbsp;&nbsp;%e</div>]"
-"[<div><img align=\"left\" valign=\"middle\" height=\"16\" width=\"16\" src=\"file:///@{kadu_icons/blocking:16x16}\">&nbsp;%oDoesn't have you on the list</div>]"
+"[<div><img height=\"16\" width=\"16\" src=\"file:///#{statusIconPath}\">&nbsp;&nbsp;%u</div>]"
+"[<div><img height=\"16\" width=\"16\" src=\"file:///@{phone:16x16}\">&nbsp;&nbsp;%m</div>]"
+"[<div><img height=\"16\" width=\"16\" src=\"file:///@{mail-message-new:16x16}\">&nbsp;&nbsp;%e</div>]"
+"[<div><img height=\"16\" width=\"16\" src=\"file:///@{kadu_icons/blocking:16x16}\">&nbsp;%oDoesn't have you on the list</div>]"
 "</td>"
 "</tr>"
 "</table>"
 "[<hr><b>%s</b>][<b>:</b><br><small>%d</small>]"));
-	if (config_file.readEntry("Hints", "MouseOverUserSyntax") == default_hints_syntax || config_file.readEntry("Hints", "MouseOverUserSyntax").isEmpty())
-		config_file.writeEntry("Hints", "MouseOverUserSyntax", tr(default_hints_syntax.toAscii()));
+	if (config_file.readEntry("Hints", "MouseOverUserSyntax").isEmpty())
+		config_file.writeEntry("Hints", "MouseOverUserSyntax", default_hints_syntax);
 
 	connect(this, SIGNAL(searchingForTrayPosition(QPoint &)), Core::instance(), SIGNAL(searchingForTrayPosition(QPoint &)));
 
