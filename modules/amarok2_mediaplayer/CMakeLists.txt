@@ -1,8 +1,9 @@
 set (SOURCES
-	amarok2.cpp
+	amarok2-mediaplayer-plugin.cpp
 )
 
 set (MOC_SOURCES
+	amarok2-mediaplayer-plugin.h
 )
 
 kadu_plugin (amarok2_mediaplayer
