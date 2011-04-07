@@ -25,6 +25,7 @@
 * gui: #1978 fixed: detection of window being covered by other windows under OpenBox (ultr)
 * .desktop file: do not claim Kadu a Gadu-Gadu-only client (beevvy)
 * chat: #2120 fixed: invalid account used to open chat after changing contact's account (Vogel)
+* build: fixed compilation with GCC 4.6.0 (beevvy)
 
 +++ version 0.9.0
 * configuration: configuration is now always properly imported on Windows (Vogel)

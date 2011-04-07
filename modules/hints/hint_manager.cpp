@@ -597,9 +597,12 @@ void HintManager::notificationClosed(Notification *notification)
 
 void HintManager::realCopyConfiguration(const QString &fromCategory, const QString &fromHint, const QString &toHint)
 {
-	config_file.writeEntry("Hints", toHint + "_font", config_file.readFontEntry(fromCategory, fromHint + "_font", &qApp->font()));
-	config_file.writeEntry("Hints", toHint + "_fgcolor", config_file.readColorEntry(fromCategory, fromHint + "_fgcolor", &qApp->palette().windowText().color()));
-	config_file.writeEntry("Hints", toHint + "_bgcolor", config_file.readColorEntry(fromCategory, fromHint + "_bgcolor", &qApp->palette().window().color()));
+	QFont font(qApp->font());
+	QPalette palette(qApp->palette());
+
+	config_file.writeEntry("Hints", toHint + "_font", config_file.readFontEntry(fromCategory, fromHint + "_font", &font));
+	config_file.writeEntry("Hints", toHint + "_fgcolor", config_file.readColorEntry(fromCategory, fromHint + "_fgcolor", &palette.windowText().color()));
+	config_file.writeEntry("Hints", toHint + "_bgcolor", config_file.readColorEntry(fromCategory, fromHint + "_bgcolor", &palette.window().color()));
 	config_file.writeEntry("Hints", toHint + "_timeout", (int) config_file.readUnsignedNumEntry(fromCategory,  fromHint + "_timeout", 10));
 }
 
