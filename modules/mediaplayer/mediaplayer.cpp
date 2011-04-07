@@ -100,26 +100,6 @@ const char DEFAULT_SIGNATURES[] = "! WWW.POLSKIE-MP3.TK ! \n! www.polskie-mp3.tk
 
 const char *mediaPlayerOsdHint = "MediaPlayerOsd";
 
-extern "C" KADU_EXPORT int mediaplayer_init(bool firstLoad)
-{
-	Q_UNUSED(firstLoad)
-
-	MediaPlayer::createInstance();
-
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/mediaplayer.ui"));
-	MainConfigurationWindow::registerUiHandler(MediaPlayer::instance());
-
-	return 0;
-}
-
-extern "C" KADU_EXPORT void mediaplayer_close()
-{
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/mediaplayer.ui"));
-	MainConfigurationWindow::unregisterUiHandler(MediaPlayer::instance());
-
-	MediaPlayer::destroyInstance();
-}
-
 // Implementation of MediaPlayer class
 
 MediaPlayer * MediaPlayer::Instance = 0;

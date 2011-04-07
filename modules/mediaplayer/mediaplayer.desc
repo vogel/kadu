@@ -4,3 +4,4 @@ Description[pl]=Modu³ obs³ugi odtwarzaczy multimediów
 Author=Googie, amdfanatyk, Dorregaray
 Provides=descriptions
 Version=1.3
+Plugin=true

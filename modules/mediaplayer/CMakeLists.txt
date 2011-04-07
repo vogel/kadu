@@ -1,10 +1,12 @@
 set (SOURCES
 	mediaplayer.cpp
+	mediaplayer-plugin.cpp
 	mp_status_changer.cpp
 )
 
 set (MOC_SOURCES
 	mediaplayer.h
+	mediaplayer-plugin.h
 	mp_status_changer.h
 	player_commands.h
 )
