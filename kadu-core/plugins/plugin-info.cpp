@@ -23,7 +23,7 @@
 #include "plugin-info.h"
 
 PluginInfo::PluginInfo(const QString &fileName) :
-		IsValid(false), LoadByDefault(false), IsPlugin(false)
+		LoadByDefault(false), IsPlugin(false)
 {
 	PlainConfigFile file(fileName);
 
@@ -48,8 +48,6 @@ PluginInfo::PluginInfo(const QString &fileName) :
 
 	LoadByDefault = file.readBoolEntry("Module", "LoadByDefault");
 	IsPlugin = file.readBoolEntry("Module", "Plugin", false);
-
-	IsValid = true;
 }
 
 PluginInfo::~PluginInfo()
