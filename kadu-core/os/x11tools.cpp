@@ -21,9 +21,12 @@
 
 
 
+#include <list>
 #include <unistd.h>
+
 #include <X11/Xutil.h>
 #include <X11/Xatom.h>
+
 #include "x11tools.h"
 
 
@@ -488,21 +491,30 @@ bool X11_isWindowCovered( Display *display, Window window )
 			{
 				Atom type;
 				bool hastype = false;
-				Window window2 = children[k];
+				std::list<Window> windows;
+				windows.push_back( children[k] );
 				Window *children2 = NULL;
 				unsigned int nchildren2;
 				while( true )
 				{
-					if( X11_getFirstPropertyAtom( display, window2, "_NET_WM_WINDOW_TYPE", &type ) )
+					if( windows.empty() )
+						break;
+					Window w = *(windows.begin());
+					windows.pop_front();
+					if( X11_getFirstPropertyAtom( display, w, "_NET_WM_WINDOW_TYPE", &type ) )
 						hastype = true;
-					XFree( children2 );
 					if( hastype )
 						break;
-					XQueryTree( display, window2, &root, &parent, &children2, &nchildren2 );
-					if( ( nchildren2 == 0 ) || ( children2 == NULL ) )
-						break;
-					window2 = children2[nchildren2-1];
+					XQueryTree( display, w, &root, &parent, &children2, &nchildren2 );
+					if( ( nchildren2 > 0 ) && ( children2 != NULL ) )
+					{
+						for( int k2 = nchildren2 - 1; k2 >= 0; --k2 )
+							windows.push_back( children2[k2] );
+						XFree( children2 );
+						children2 = NULL;
+					}
 				}
+				windows.clear();
 				if(
 					( notypes && ( ! hastype ) ) ||
 					( hastype &&
