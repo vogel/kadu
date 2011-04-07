@@ -43,6 +43,16 @@
 	#define SO_PREFIX_LEN 3
 #endif
 
+/**
+ * @author Rafał 'Vogel' Malinowski
+ * @short Creates new Plugin object and loads PluginInfo data.
+ * @param name name of plugin
+ * @param parent parent object, almost always PluginManager instance
+ *
+ * This contructor load data for plugin with given name. New instance of PluginInfo class
+ * is created if dataDir/kadu/plugins/name.desc is found. If this file is not found, plugin
+ * is marked as invalid and will be unable to be activated.
+ */
 Plugin::Plugin(const QString &name, QObject *parent) :
 		QObject(parent),
 		Name(name), Active(false), State(PluginStateNew), PluginLoader(0), PluginObject(0),
@@ -63,6 +73,12 @@ Plugin::~Plugin()
 {
 }
 
+/**
+ * @author Rafał 'Vogel' Malinowski
+ * @short Loadas plugin data from storage.
+ *
+ * This method load plugin data (for now it is only State) from /Plugins/Plugin[\@name=pluginName]/ storage node.
+ */
 void Plugin::load()
 {
 	if (!isValidStorage())
@@ -79,6 +95,12 @@ void Plugin::load()
 		State = PluginStateNew;
 }
 
+/**
+ * @author Rafał 'Vogel' Malinowski
+ * @short Stores plugin data to storage.
+ *
+ * This method stores plugin data (for now it is only State) into /Plugins/Plugin[\@name=pluginName]/ storage node.
+ */
 void Plugin::store()
 {
 	if (!isValidStorage())
@@ -102,6 +124,17 @@ void Plugin::store()
 	}
 }
 
+/**
+ * @author Rafał 'Vogel' Malinowski
+ * @short Returns true if this plugin should be activated.
+ * @return true if this plugin should be activated
+ *
+ * Module should be activated only if:
+ * <ul>
+ *   <li>it is valid (has .desc file associated with it)
+ *   <li>is either PluginStateEnabled or PluginStateNew with PluginInfo::loadByDefault() set to true
+ * </ul>
+ */
 bool Plugin::shouldBeActivated()
 {
 	ensureLoaded();
@@ -116,6 +149,21 @@ bool Plugin::shouldBeActivated()
 	return Info->loadByDefault();
 }
 
+/**
+ * @author Rafał 'Vogel' Malinowski
+ * @short Activates plugin and retursn true if plugin is active.
+ * @return true if plugin is active after method return
+ *
+ * This method loads plugin library file (if exists) and set up  GenericPlugin object from this library.
+ * Then translations file is loaded. Next GenericPlugin::init() method is called with firstLoad
+ * paramer set to true if this plugin's state  if PluginStateNew. If this methods returns value different
+ * than 0, plugin is deactivated and false value is returned.
+ *
+ * Translations must be loaded before GenericPlugin::init() is called.
+ *
+ * This method returns true if plugin is active after method returns - especially when plugin was active
+ * before this call.
+ */
 bool Plugin::activate()
 {
 	if (Active)
@@ -124,8 +172,6 @@ bool Plugin::activate()
 	InitModuleFunc *init;
 
 	int res = 0;
-
-	loadTranslations();
 
 	if (Info->isPlugin())
 	{
@@ -155,6 +201,7 @@ bool Plugin::activate()
 			return false;
 		}
 
+		loadTranslations();
 		res = PluginObject->init(PluginStateNew == State);
 	}
 	else
@@ -185,6 +232,8 @@ bool Plugin::activate()
 			return false;
 		}
 
+
+		loadTranslations();
 		res = init(PluginStateNew == State);
 	}
 
@@ -223,10 +272,17 @@ bool Plugin::activate()
 	return true;
 }
 
-bool Plugin::deactivate()
+/**
+ * @author Rafał 'Vogel' Malinowski
+ * @short Deactivates plugin.
+ *
+ * If plugin is active, its GenericPlugin::done() method is called and then all data is removed from
+ * memory - plugin library file and plugin translations.
+ */
+void Plugin::deactivate()
 {
 	if (!Active)
-		return true;
+		return;
 
 	if (Close)
 		Close();
@@ -254,11 +310,15 @@ bool Plugin::deactivate()
 	PluginObject = 0;
 
 	Active = false;
-
-	kdebugf2();
-	return true;
 }
 
+/**
+ * @author Rafał 'Vogel' Malinowski
+ * @short Loads translations for plugin.
+ *
+ * This method loads translations for current Kadu's language. Translations are loaded from
+ * dataDir/kadu/plugins/translations/pluginName_lang.qm file.
+ */
 void Plugin::loadTranslations()
 {
 	Translator = new QTranslator(this);
@@ -273,14 +333,14 @@ void Plugin::loadTranslations()
 	}
 }
 
+/**
+ * @author Rafał 'Vogel' Malinowski
+ * @short Sets state of plugin.
+ *
+ * This method changes state of plugin. Set state to PluginStateEnabled to make this plugin
+ * activate at every Kadu run.
+ */
 void Plugin::setState(Plugin::PluginState state)
 {
 	State = state;
-}
-
-QString Plugin::type() const
-{
-	return Info
-			? Info->type()
-			: QString();
 }

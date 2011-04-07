@@ -282,7 +282,7 @@ void PluginsManager::activateProtocolPlugins()
 
 	foreach (Plugin *plugin, Plugins)
 	{
-		if (plugin->type() != "protocol")
+		if (!plugin->isValid() || plugin->info()->type() != "protocol")
 			continue;
 
 		if (plugin->shouldBeActivated())
@@ -591,7 +591,8 @@ bool PluginsManager::deactivatePlugin(Plugin *plugin, bool force)
 	foreach (const QString &i, plugin->info()->dependencies())
 		releasePlugin(i);
 
-	return plugin->deactivate();
+	plugin->deactivate();
+	return true;
 }
 
 /**
