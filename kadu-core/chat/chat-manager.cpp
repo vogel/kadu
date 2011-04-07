@@ -210,7 +210,11 @@ Chat ChatManager::findChat(const ContactSet &contacts, bool create)
 
 	foreach (const Chat &c, allItems()) // search allItems, chats can be not loaded yet
 		if ((c.type() == QLatin1String("Simple") || c.type() == QLatin1String("Conference")) && c.contacts() == contacts)
+		{
+			// when contacts changed their accounts we need to change account of chat too
+			c.setChatAccount(account);
 			return c;
+		}
 
 	if (!create)
 		return Chat::null;
