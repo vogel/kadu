@@ -359,32 +359,11 @@ QSize PlainConfigFile::readSizeEntry(const QString &group,const QString &name, c
 
 QColor PlainConfigFile::readColorEntry(const QString &group,const QString &name, const QColor *def)
 {
-	QColor col(0,0,0);
 	QString str = getEntry(group, name);
 	if (str.isNull())
-		return def ? *def : col;
+		return def ? *def : QColor(0, 0, 0);
 	else
-	{
-		if (!str.contains(','))
-			return QColor(str);
-
-		//stary zapis kolor�w, w 0.5.0 mo�na b�dzie wywali�
-		bool ok;
-		QStringList stringlist = str.split(',', QString::SkipEmptyParts);
-		if (stringlist.count() != 3)
-			return def ? *def : col;
-		int r = stringlist.at(0).toInt(&ok);
-		if (!ok)
-			return def ? *def : col;
-		int g = stringlist.at(1).toInt(&ok);
-		if (!ok)
-			return def ? *def : col;
-		int b = stringlist.at(2).toInt(&ok);
-		if (!ok)
-			return def ? *def : col;
-		col.setRgb(r, g, b);
-		return col;
-	}
+		return QColor(str);
 }
 
 
@@ -722,10 +701,9 @@ QSize ConfigFile::readSizeEntry(const QString &group,const QString &name, const 
 
 QColor ConfigFile::readColorEntry(const QString &group,const QString &name, const QColor *def) const
 {
-	QColor col(0,0,0);
 	QString str = getEntry(group, name);
 	if (str.isNull())
-		return def ? *def : col;
+		return def ? *def : QColor(0, 0, 0);
 	else
 		return QColor(str);
 }
