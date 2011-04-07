@@ -40,13 +40,13 @@ extern "C" KADU_EXPORT int falf_mediaplayer_init(bool firstLoad)
 	Q_UNUSED(firstLoad)
 
 	falf = new FalfMediaPlayer();
-	bool res = mediaplayer->registerMediaPlayer(falf, 0);
+	bool res = MediaPlayer::instance()->registerMediaPlayer(falf, 0);
 	return res ? 0 : 1;
 }
 
 extern "C" KADU_EXPORT void falf_mediaplayer_close()
 {
-	mediaplayer->unregisterMediaPlayer();
+	MediaPlayer::instance()->unregisterMediaPlayer();
 	delete falf;
 	falf = 0;
 }

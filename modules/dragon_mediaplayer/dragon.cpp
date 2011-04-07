@@ -40,13 +40,13 @@ extern "C" KADU_EXPORT int dragon_mediaplayer_init(bool firstLoad)
 	Q_UNUSED(firstLoad)
 
 	dragon = new MPRISMediaPlayer("Dragon Player", "org.kde.dragon.player");
-	bool res = mediaplayer->registerMediaPlayer(dragon, dragon);
+	bool res = MediaPlayer::instance()->registerMediaPlayer(dragon, dragon);
 	return res ? 0 : 1;
 }
 
 extern "C" KADU_EXPORT void dragon_mediaplayer_close()
 {
-	mediaplayer->unregisterMediaPlayer();
+	MediaPlayer::instance()->unregisterMediaPlayer();
 	delete dragon;
 	dragon = NULL;
 }

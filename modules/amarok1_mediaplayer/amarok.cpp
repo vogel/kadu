@@ -46,14 +46,14 @@ extern "C" KADU_EXPORT int amarok1_mediaplayer_init(bool firstLoad)
 	Q_UNUSED(firstLoad)
 
 	amarok = new AmarokMediaPlayer();
-	bool res = mediaplayer->registerMediaPlayer(amarok, amarok);
-	mediaplayer->setInterval(5);
+	bool res = MediaPlayer::instance()->registerMediaPlayer(amarok, amarok);
+	MediaPlayer::instance()->setInterval(5);
 	return res ? 0 : 1;
 }
 
 extern "C" KADU_EXPORT void amarok1_mediaplayer_close()
 {
-	mediaplayer->unregisterMediaPlayer();
+	MediaPlayer::instance()->unregisterMediaPlayer();
 	delete amarok;
 	amarok = NULL;
 }

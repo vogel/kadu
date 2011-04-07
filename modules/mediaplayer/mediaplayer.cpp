@@ -98,19 +98,16 @@ const char *MediaPlayerChatShortCutsText = QT_TRANSLATE_NOOP
 // For ID3 tags signatures cutter
 const char DEFAULT_SIGNATURES[] = "! WWW.POLSKIE-MP3.TK ! \n! www.polskie-mp3.tk ! ";
 
-// The main mediaplayer module object
-MediaPlayer *mediaplayer;
-
 const char *mediaPlayerOsdHint = "MediaPlayerOsd";
 
 extern "C" KADU_EXPORT int mediaplayer_init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
-	mediaplayer = new MediaPlayer();
+	MediaPlayer::createInstance();
 
 	MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/mediaplayer.ui"));
-	MainConfigurationWindow::registerUiHandler(mediaplayer);
+	MainConfigurationWindow::registerUiHandler(MediaPlayer::instance());
 
 	return 0;
 }
@@ -118,13 +115,26 @@ extern "C" KADU_EXPORT int mediaplayer_init(bool firstLoad)
 extern "C" KADU_EXPORT void mediaplayer_close()
 {
 	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/mediaplayer.ui"));
-	MainConfigurationWindow::unregisterUiHandler(mediaplayer);
+	MainConfigurationWindow::unregisterUiHandler(MediaPlayer::instance());
 
-	delete mediaplayer;
-	mediaplayer = 0;
+	MediaPlayer::destroyInstance();
 }
 
 // Implementation of MediaPlayer class
+
+MediaPlayer * MediaPlayer::Instance = 0;
+
+void MediaPlayer::createInstance()
+{
+	if (!Instance)
+		Instance = new MediaPlayer();
+}
+
+void MediaPlayer::destroyInstance()
+{
+	delete Instance;
+	Instance = 0;
+}
 
 MediaPlayer::MediaPlayer()
 {

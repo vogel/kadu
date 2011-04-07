@@ -120,7 +120,7 @@ void MPRISController::statusChanged(const PlayerStatus &status)
 		active_ = true;
 
 	currentStatus_ = status;
-	mediaplayer->statusChanged();
+	MediaPlayer::instance()->statusChanged();
 }
 
 void MPRISController::trackChanged(const QVariantMap &map)
@@ -141,7 +141,7 @@ void MPRISController::trackChanged(const QVariantMap &map)
 		if (currentTrack_.time == 0) /* for audacious... */
 			currentTrack_.time    = map.value("length").toUInt();
 	}
-	mediaplayer->titleChanged();
+	MediaPlayer::instance()->titleChanged();
 }
 
 void MPRISController::getStatus()

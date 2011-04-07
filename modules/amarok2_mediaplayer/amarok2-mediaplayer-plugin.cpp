@@ -45,13 +45,13 @@ int Amarok2MediaplayerPlugin::init(bool firstLoad)
 	Q_UNUSED(firstLoad)
 
 	Amarok2 = new MPRISMediaPlayer("Amarok", "org.kde.amarok");
-	bool res = mediaplayer->registerMediaPlayer(Amarok2, Amarok2);
+	bool res = MediaPlayer::instance()->registerMediaPlayer(Amarok2, Amarok2);
 	return res ? 0 : 1;
 }
 
 void Amarok2MediaplayerPlugin::done()
 {
-	mediaplayer->unregisterMediaPlayer();
+	MediaPlayer::instance()->unregisterMediaPlayer();
 	delete Amarok2;
 	Amarok2 = 0;
 }

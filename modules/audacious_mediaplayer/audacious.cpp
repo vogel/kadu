@@ -40,13 +40,13 @@ extern "C" KADU_EXPORT int audacious_mediaplayer_init(bool firstLoad)
 	Q_UNUSED(firstLoad)
 
 	audacious = new MPRISMediaPlayer("Audacious", "org.mpris.audacious");
-	bool res = mediaplayer->registerMediaPlayer(audacious, audacious);
+	bool res = MediaPlayer::instance()->registerMediaPlayer(audacious, audacious);
 	return res ? 0 : 1;
 }
 
 extern "C" KADU_EXPORT void audacious_mediaplayer_close()
 {
-	mediaplayer->unregisterMediaPlayer();
+	MediaPlayer::instance()->unregisterMediaPlayer();
 	delete audacious;
 	audacious = NULL;
 }

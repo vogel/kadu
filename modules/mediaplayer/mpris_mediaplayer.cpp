@@ -48,9 +48,9 @@ MPRISMediaPlayer::MPRISMediaPlayer(QString n, QString s) :
 	controller = new MPRISController(service, this);
 
 	if (name == "Audacious")
-		mediaplayer->setInterval(5);
+		MediaPlayer::instance()->setInterval(5);
 	else
-		mediaplayer->setInterval(0);
+		MediaPlayer::instance()->setInterval(0);
 }
 
 MPRISMediaPlayer::~MPRISMediaPlayer()

@@ -40,13 +40,13 @@ extern "C" KADU_EXPORT int xmms2_mediaplayer_init(bool firstLoad)
 	Q_UNUSED(firstLoad)
 
 	xmms2 = new MPRISMediaPlayer("XMMS2", "org.mpris.xmms2");
-	bool res = mediaplayer->registerMediaPlayer(xmms2, xmms2);
+	bool res = MediaPlayer::instance()->registerMediaPlayer(xmms2, xmms2);
 	return res ? 0 : 1;
 }
 
 extern "C" KADU_EXPORT void xmms2_mediaplayer_close()
 {
-	mediaplayer->unregisterMediaPlayer();
+	MediaPlayer::instance()->unregisterMediaPlayer();
 	delete xmms2;
 	xmms2 = NULL;
 }
