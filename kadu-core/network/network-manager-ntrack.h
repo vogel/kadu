@@ -1,6 +1,5 @@
 /*
  * %kadu copyright begin%
- * Copyright 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * Copyright 2011 Piotr Dąbrowski (ultr@ultr.pl)
  * %kadu copyright end%
  *
@@ -18,41 +17,29 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef NETWORK_MANAGER_NTRACK_H
+#define NETWORK_MANAGER_NTRACK_H
+
+#include <QtCore/QObject>
+
+#include <ntrack/qt4/QNtrack.h>
+
+#include "exports.h"
 #include "network-manager.h"
-#include "network-aware-object.h"
 
-#ifndef Q_OS_WIN
-#include "network-manager-ntrack.h"
-#else
-#include "network-manager-qt.h"
-#endif
-
-NetworkManager *NetworkManager::Instance = 0;
-
-NetworkManager * NetworkManager::instance()
+class KADUAPI NetworkManagerNTrack : public NetworkManager
 {
-	if (!Instance)
-#ifndef Q_OS_WIN
-		Instance = new NetworkManagerNTrack();
-#else
-		Instance = new NetworkManagerQt();
-#endif
-	return Instance;
-}
+	Q_OBJECT
 
-NetworkManager::NetworkManager()
-{
-}
+private slots:
+	void stateChanged(QNTrackState oldState, QNTrackState newState);
 
-NetworkManager::~NetworkManager()
-{
-}
+public:
+	NetworkManagerNTrack();
+	virtual ~NetworkManagerNTrack();
 
-void NetworkManager::onlineStateChanged(bool isOnline)
-{
-	NetworkAwareObject::notifyOnlineStateChanged(isOnline);
-	if (isOnline)
-		emit online();
-	else
-		emit offline();
-}
+	virtual bool isOnline();
+
+};
+
+#endif // NETWORK_MANAGER_NTRACK_H

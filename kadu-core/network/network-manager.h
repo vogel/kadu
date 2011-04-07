@@ -1,6 +1,7 @@
 /*
  * %kadu copyright begin%
  * Copyright 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2011 Piotr Dąbrowski (ultr@ultr.pl)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -24,8 +25,6 @@
 
 #include "exports.h"
 
-class QNetworkConfigurationManager;
-
 class KADUAPI NetworkManager : public QObject
 {
 	Q_OBJECT
@@ -33,18 +32,16 @@ class KADUAPI NetworkManager : public QObject
 
 	static NetworkManager *Instance;
 
-	QNetworkConfigurationManager *ConfigurationManager;
+protected slots:
+	void onlineStateChanged(bool isOnline);
 
+protected:
 	NetworkManager();
 	virtual ~NetworkManager();
 
-private slots:
-	void onlineStateChanged(bool isOnline);
-
 public:
 	static NetworkManager * instance();
-
-	bool isOnline();
+	virtual bool isOnline() = 0;
 
 signals:
 	void online();

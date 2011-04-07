@@ -18,41 +18,28 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef NETWORK_MANAGER_QT_H
+#define NETWORK_MANAGER_QT_H
+
+#include <QtCore/QObject>
+
+#include "exports.h"
 #include "network-manager.h"
-#include "network-aware-object.h"
 
-#ifndef Q_OS_WIN
-#include "network-manager-ntrack.h"
-#else
-#include "network-manager-qt.h"
-#endif
+class QNetworkConfigurationManager;
 
-NetworkManager *NetworkManager::Instance = 0;
-
-NetworkManager * NetworkManager::instance()
+class KADUAPI NetworkManagerQt : public NetworkManager
 {
-	if (!Instance)
-#ifndef Q_OS_WIN
-		Instance = new NetworkManagerNTrack();
-#else
-		Instance = new NetworkManagerQt();
-#endif
-	return Instance;
-}
+	Q_OBJECT
 
-NetworkManager::NetworkManager()
-{
-}
+	QNetworkConfigurationManager *ConfigurationManager;
 
-NetworkManager::~NetworkManager()
-{
-}
+public:
+	NetworkManagerQt();
+	virtual ~NetworkManagerQt();
 
-void NetworkManager::onlineStateChanged(bool isOnline)
-{
-	NetworkAwareObject::notifyOnlineStateChanged(isOnline);
-	if (isOnline)
-		emit online();
-	else
-		emit offline();
-}
+	virtual bool isOnline();
+
+};
+
+#endif // NETWORK_MANAGER_QT_H

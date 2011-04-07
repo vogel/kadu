@@ -18,41 +18,21 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "network-manager.h"
-#include "network-aware-object.h"
+#include <QtNetwork/QNetworkConfigurationManager>
 
-#ifndef Q_OS_WIN
-#include "network-manager-ntrack.h"
-#else
 #include "network-manager-qt.h"
-#endif
 
-NetworkManager *NetworkManager::Instance = 0;
-
-NetworkManager * NetworkManager::instance()
+NetworkManagerQt::NetworkManagerQt()
 {
-	if (!Instance)
-#ifndef Q_OS_WIN
-		Instance = new NetworkManagerNTrack();
-#else
-		Instance = new NetworkManagerQt();
-#endif
-	return Instance;
+	ConfigurationManager = new QNetworkConfigurationManager(this);
+	connect(ConfigurationManager, SIGNAL(onlineStateChanged(bool)), this, SLOT(onlineStateChanged(bool)));
 }
 
-NetworkManager::NetworkManager()
+NetworkManagerQt::~NetworkManagerQt()
 {
 }
 
-NetworkManager::~NetworkManager()
+bool NetworkManagerQt::isOnline()
 {
-}
-
-void NetworkManager::onlineStateChanged(bool isOnline)
-{
-	NetworkAwareObject::notifyOnlineStateChanged(isOnline);
-	if (isOnline)
-		emit online();
-	else
-		emit offline();
+	return ConfigurationManager->isOnline();
 }
