@@ -727,20 +727,11 @@ void MediaPlayer::checkTitle()
 	if (mediaPlayerStatusChanger->isDisabled())
 		return;
 
-	QString title = getTitle();
 	int pos = getCurrentPos();
 
 	// If OSD is enabled and current track position is betwean 0 and 1000 ms, then shows OSD
 	if (config_file.readBoolEntry("MediaPlayer", "osd", true) && pos < 1000 && pos > 0)
-		putTitleHint(title);
-
-	bool checked;
-	if (mediaplayerStatus != NULL)
-		checked = mediaplayerStatus->isChecked();
-	else if (enableMediaPlayerStatuses->action(Core::instance()->kaduWindow()->actionSource()))
-		checked = enableMediaPlayerStatuses->action(Core::instance()->kaduWindow()->actionSource())->isChecked();
-	else
-		checked = false;
+		putTitleHint(getTitle());
 
 	mediaPlayerStatusChanger->setTitle(parse(config_file.readEntry("MediaPlayer", "statusTagString")));
 }

@@ -118,8 +118,6 @@ QStyleOptionViewItemV4 BuddiesListViewDelegate::getOptions(const QModelIndex &in
 
 QSize BuddiesListViewDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-	QSize baseSizeHint = QItemDelegate::sizeHint(option, index);
-
 	BuddiesListViewItemPainter buddyPainter(Configuration, getOptions(index, option), index, UseConfigurationColors);
 	return QSize(0, buddyPainter.height());
 }
