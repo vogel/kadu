@@ -169,6 +169,8 @@ void GaduProtocol::login()
 
 	GaduProxyHelper::setupProxy(account().proxySettings());
 
+	gg_dcc_ip = 0xffffffff;
+
 	setupLoginParams();
 	GaduSession = gg_login(&GaduLoginParams);
 	cleanUpLoginParams();
