@@ -342,5 +342,7 @@ void Plugin::loadTranslations()
  */
 void Plugin::setState(Plugin::PluginState state)
 {
+	ensureLoaded();
+
 	State = state;
 }

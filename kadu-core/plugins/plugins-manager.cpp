@@ -167,10 +167,6 @@ void PluginsManager::load()
 			Plugins.insert(moduleName, plugin);
 		}
 
-	// TODO: do we really need this here?
-	foreach (Plugin *plugin, Plugins)
-		plugin->ensureLoaded();
-
 	if (!loadAttribute<bool>("imported_from_09", false))
 	{
 		importFrom09();
@@ -220,7 +216,6 @@ void PluginsManager::importFrom09()
 		if (!Plugins.contains(pluginName))
 		{
 			Plugin *plugin = new Plugin(pluginName, this);
-			plugin->ensureLoaded();
 			Plugins.insert(pluginName, plugin);
 		}
 
@@ -244,10 +239,13 @@ void PluginsManager::importFrom09()
 	ensureLoadedAtLeastOnce("profiles_import");
 
 	foreach (Plugin *plugin, Plugins)
-		if (loadedPlugins.contains(plugin->name()))
-			plugin->setState(Plugin::PluginStateEnabled);
-		else
-			plugin->setState(Plugin::PluginStateDisabled);
+		if (allPlugins.contains(plugin->name()))
+		{
+			if (loadedPlugins.contains(plugin->name()))
+				plugin->setState(Plugin::PluginStateEnabled);
+			else
+				plugin->setState(Plugin::PluginStateDisabled);
+		}
 }
 
 /**
@@ -286,8 +284,12 @@ void PluginsManager::activateProtocolPlugins()
 			continue;
 
 		if (plugin->shouldBeActivated())
+		{
 			if (!activatePlugin(plugin))
 				saveList = true;
+			else // for load-by-default plugins
+				plugin->setState(Plugin::PluginStateEnabled);
+		}
 	}
 
 	// if not all plugins were loaded properly
@@ -310,8 +312,12 @@ void PluginsManager::activatePlugins()
 
 	foreach (Plugin *plugin, Plugins)
 		if (plugin->shouldBeActivated())
+		{
 			if (!activatePlugin(plugin))
 				saveList = true;
+			else // for load-by-default plugins
+				plugin->setState(Plugin::PluginStateEnabled);
+		}
 
 	foreach (Plugin *pluginToReplace, Plugins)
 	{
