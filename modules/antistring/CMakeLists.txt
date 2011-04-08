@@ -2,14 +2,15 @@ set (SOURCES
 	antistring.cpp
 	antistring-configuration.cpp
 	antistring-configuration-ui-handler.cpp
-	antistring-module.cpp
 	antistring-notification.cpp
+	antistring-plugin.cpp
 )
 
 set (MOC_SOURCES
 	antistring.h
 	antistring-configuration-ui-handler.h
 	antistring-notification.h
+	antistring-plugin.h
 )
 
 set (TRANSLATION_SOURCES

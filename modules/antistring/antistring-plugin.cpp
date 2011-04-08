@@ -22,7 +22,13 @@
 #include "antistring-configuration-ui-handler.h"
 #include "antistring-notification.h"
 
-extern "C" KADU_EXPORT int antistring_init(bool firstLoad)
+#include "antistring-plugin.h"
+
+AntistringPlugin::~AntistringPlugin()
+{
+}
+
+int AntistringPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
@@ -33,9 +39,11 @@ extern "C" KADU_EXPORT int antistring_init(bool firstLoad)
 	return 0;
 }
 
-extern "C" KADU_EXPORT void antistring_close()
+void AntistringPlugin::done()
 {
 	AntistringNotification::unregisterNotifications();
 	AntistringConfigurationUiHandler::unregisterUiHandler();
 	Antistring::destroyInstance();
 }
+
+Q_EXPORT_PLUGIN2(antistring, AntistringPlugin)
