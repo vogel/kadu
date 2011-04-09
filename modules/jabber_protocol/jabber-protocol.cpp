@@ -41,7 +41,9 @@
 #include "actions/jabber-actions.h"
 #include "actions/jabber-protocol-menu-manager.h"
 #include "certificates/trusted-certificates-manager.h"
+#include "resource/jabber-resource-pool.h"
 #include "utils/vcard-factory.h"
+#include "iris/filetransfer.h"
 #include "iris/irisnetglobal.h"
 #include "services/jabber-roster-service.h"
 #include "services/jabber-subscription-service.h"
@@ -56,7 +58,8 @@
 #include "jabber-protocol.h"
 
 JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
-		Protocol(account, factory), JabberClient(0), ContactsListReadOnly(false)
+		Protocol(account, factory), JabberClient(0), ResourcePool(0),
+		ContactsListReadOnly(false)
 {
 	kdebugf();
 
@@ -69,6 +72,7 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 	CurrentChatService = new JabberChatService(this);
 	CurrentChatStateService = new JabberChatStateService(this);
 	CurrentContactPersonalInfoService = new JabberContactPersonalInfoService(this);
+	CurrentFileTransferService = new JabberFileTransferService(this);
 	CurrentPersonalInfoService = new JabberPersonalInfoService(this);
 	CurrentRosterService = new JabberRosterService(this);
 	connect(CurrentRosterService, SIGNAL(rosterDownloaded(bool)),
@@ -242,7 +246,7 @@ void JabberProtocol::login()
 	JabberClient->setUseSSL(jabberAccountDetails->encryptionMode() == JabberAccountDetails::Encryption_Legacy);
 	JabberClient->setOverrideHost(jabberAccountDetails->useCustomHostPort(), jabberAccountDetails->customHost(), jabberAccountDetails->customPort());
 
-//	JabberClient->setFileTransfersEnabled(true); // i haz it
+	JabberClient->setFileTransfersEnabled(true); // i haz it
 	jabberID = account().id();
 
 	JabberClient->setAllowPlainTextPassword(plainAuthToXMPP(jabberAccountDetails->plainAuthMode()));
@@ -297,7 +301,7 @@ void JabberProtocol::clientResourceReceived(const XMPP::Jid &jid, const XMPP::Re
 {
 	kdebugf();
 	kdebug("New resource available for %s\n", jid.full().toLocal8Bit().data());
-//	resourcePool()->addResource(jid, resource);
+	resourcePool()->addResource(jid, resource);
 
 	Status status(IrisStatusAdapter::fromIrisStatus(resource.status()));
 	Contact contact = ContactManager::instance()->byId(account(), jid.bare(), ActionReturnNull);
@@ -364,6 +368,13 @@ void JabberProtocol::contactIdChanged(Contact contact, const QString &oldId)
 
 	JabberClient->removeContact(oldId);
 	contactAttached(contact);
+}
+
+JabberResourcePool *JabberProtocol::resourcePool()
+{
+	if (!ResourcePool)
+		ResourcePool = new JabberResourcePool(this);
+	return ResourcePool;
 }
 
 QString JabberProtocol::statusPixmapPath()

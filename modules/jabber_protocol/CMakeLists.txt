@@ -49,6 +49,8 @@ set (SOURCES
 	client/jabber-client.cpp
 	client/mini-client.cpp
 
+	file-transfer/jabber-file-transfer-handler.cpp
+
 	gui/widgets/jabber-contact-personal-info-widget.cpp
 	gui/widgets/jabber-add-account-widget.cpp
 	gui/widgets/jabber-create-account-widget.cpp
@@ -60,6 +62,9 @@ set (SOURCES
 	gui/windows/xml-console.cpp
 
 	open-chat-with/jabber-open-chat-with-runner.cpp
+
+	resource/jabber-resource.cpp
+	resource/jabber-resource-pool.cpp
 
 	server/jabber-avatar-fetcher.cpp
 	server/jabber-avatar-pep-fetcher.cpp
@@ -74,6 +79,7 @@ set (SOURCES
 	services/jabber-chat-service.cpp
 	services/jabber-chat-state-service.cpp
 	services/jabber-contact-personal-info-service.cpp
+	services/jabber-file-transfer-service.cpp
 	services/jabber-personal-info-service.cpp
 	services/jabber-roster-service.cpp
 	services/jabber-subscription-service.cpp
@@ -109,6 +115,8 @@ set (MOC_SOURCES
 	client/jabber-client.h
 	client/mini-client.h
 
+	file-transfer/jabber-file-transfer-handler.h
+
 	gui/widgets/jabber-contact-personal-info-widget.h
 	gui/widgets/jabber-add-account-widget.h
 	gui/widgets/jabber-create-account-widget.h
@@ -118,6 +126,9 @@ set (MOC_SOURCES
 	gui/windows/jabber-change-password-window.h
 	gui/windows/jabber-wait-for-account-register-window.h
 	gui/windows/xml-console.h
+
+	resource/jabber-resource.h
+	resource/jabber-resource-pool.h
 
 	server/jabber-avatar-fetcher.h
 	server/jabber-avatar-pep-fetcher.h
@@ -132,6 +143,7 @@ set (MOC_SOURCES
 	services/jabber-chat-service.h
 	services/jabber-chat-state-service.h
 	services/jabber-contact-personal-info-service.h
+	services/jabber-file-transfer-service.h
 	services/jabber-personal-info-service.h
 	services/jabber-roster-service.h
 	services/jabber-subscription-service.h

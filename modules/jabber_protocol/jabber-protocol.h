@@ -33,10 +33,13 @@
 #include "services/jabber-chat-service.h"
 #include "services/jabber-chat-state-service.h"
 #include "services/jabber-contact-personal-info-service.h"
+#include "services/jabber-file-transfer-service.h"
 #include "services/jabber-personal-info-service.h"
 #include "services/jabber-roster-service.h"
 
 class JabberContactDetails;
+class JabberResourcePool;
+class JabberRosterService;
 class JabberSubscriptionService;
 
 class JabberProtocol : public Protocol
@@ -47,6 +50,7 @@ class JabberProtocol : public Protocol
 	JabberChatService *CurrentChatService;
 	JabberChatStateService *CurrentChatStateService;
 	JabberContactPersonalInfoService *CurrentContactPersonalInfoService;
+	JabberFileTransferService *CurrentFileTransferService;
 	JabberPersonalInfoService *CurrentPersonalInfoService;
 	JabberRosterService *CurrentRosterService;
 	JabberSubscriptionService *CurrentSubscriptionService;
@@ -54,6 +58,7 @@ class JabberProtocol : public Protocol
 	friend class XMPP::JabberClient;
 	XMPP::JabberClient *JabberClient;
 	XMPP::Jid jabberID;
+	JabberResourcePool *ResourcePool;
 
 	bool usingSSL;
 	bool confUseSSL;
@@ -110,9 +115,13 @@ public:
 	virtual ChatService * chatService() { return CurrentChatService; }
 	virtual ChatStateService *chatStateService() { return CurrentChatStateService; }
 	virtual ContactPersonalInfoService * contactPersonalInfoService() { return CurrentContactPersonalInfoService; }
+	virtual FileTransferService * fileTransferService() { return CurrentFileTransferService; }
 	virtual PersonalInfoService * personalInfoService() { return CurrentPersonalInfoService; }
 	virtual RosterService * rosterService() { return CurrentRosterService; }
+
 	JabberSubscriptionService * subscriptionService() { return CurrentSubscriptionService; }
+
+	JabberResourcePool *resourcePool();
 
 	JabberContactDetails * jabberContactDetails(Contact contact) const;
 
