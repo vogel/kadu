@@ -88,6 +88,8 @@ set (SOURCES_IRIS
 	libiris/src/irisnet/noncore/cutestuff/bsocket.cpp
 	libiris/src/irisnet/noncore/cutestuff/httpconnect.cpp
 	libiris/src/xmpp/xmpp-im/xmpp_discoitem.cpp
+	libiris/src/xmpp/xmpp-im/xmpp_bytestream.cpp
+	libiris/src/xmpp/xmpp-im/xmpp_bitsofbinary.cpp
 	libiris/src/xmpp/xmpp-im/client.cpp
 	libiris/src/xmpp/xmpp-im/types.cpp
 	libiris/src/xmpp/xmpp-im/xmpp_vcard.cpp
@@ -168,6 +170,8 @@ set (MOC_SOURCES_IRIS
 	libiris/src/irisnet/noncore/cutestuff/httpconnect.h
 	libiris/src/irisnet/noncore/cutestuff/bsocket.h
 	libiris/src/irisnet/noncore/cutestuff/httppoll.h
+	libiris/src/xmpp/xmpp-im/xmpp_bytestream.h
+	libiris/src/xmpp/xmpp-im/xmpp_bitsofbinary.h
 	libiris/src/xmpp/xmpp-im/xmpp_tasks.h
 	libiris/src/xmpp/xmpp-im/xmpp_discoinfotask.h
 	libiris/src/xmpp/xmpp-im/xmpp_ibb.h
