@@ -1,5 +1,6 @@
 /*
  * %kadu copyright begin%
+ * Copyright 2011 Piotr Dąbrowski (ultr@ultr.pl)
  * Copyright 2010, 2011 Bartosz Brachaczek (b.brachaczek@gmail.com)
  * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
  * Copyright 2009, 2010 Piotr Galiszewski (piotr.galiszewski@kadu.im)
@@ -28,10 +29,11 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
-#include "contacts/contact-manager.h"
+#include "buddies/buddy-manager.h"
 #include "chat/message/formatted-message.h"
 #include "configuration/configuration-file.h"
-#include "buddies/buddy-manager.h"
+#include "contacts/contact-manager.h"
+#include "gui/windows/message-dialog.h"
 
 #include "gadu-account-details.h"
 #include "gadu-protocol.h"
@@ -142,7 +144,7 @@ unsigned char * createFormats(Account account, const FormattedMessage &message, 
 	return result;
 }
 
-static void appendToMessage(Account account, FormattedMessage &result, UinType sender, const QString &content,
+static void appendToMessage(Account account, FormattedMessage &result, Contact contact, const QString &content,
 		struct gg_msg_richtext_format &format,
 		struct gg_msg_richtext_color &color, struct gg_msg_richtext_image &image, bool receiveImages)
 {
@@ -158,7 +160,7 @@ static void appendToMessage(Account account, FormattedMessage &result, UinType s
 
 		if (!receiveImages)
 		{
-			result << FormattedMessagePart(qApp->translate("@default", QT_TR_NOOP("###IMAGE BLOCKED###")), false, false, false, textColor);
+			result << FormattedMessagePart(qApp->translate("@default", "IMAGE SENT BY THIS BUDDY HAS BEEN BLOCKED"), false, true, false, textColor);
 			return;
 		}
 
@@ -166,20 +168,34 @@ static void appendToMessage(Account account, FormattedMessage &result, UinType s
 		if (!details)
 			return;
 
-		if (size > (quint32)details->maximumImageSize() * 1024)
+		if (details->limitImageSize() && size > (quint32)details->maximumImageSize() * 1024)
 		{
-			result << FormattedMessagePart(qApp->translate("@default", QT_TR_NOOP("###IMAGE TOO BIG###")), false, false, false, textColor);
-			return;
+			bool allow = false;
+			if (details->imageSizeAsk())
+			{
+				QString question = qApp->translate("@default",
+						"Buddy %1 is attempting to send you an image of %2 KiB in size.\n"
+						"This exceeds your configured limits.\n"
+						"Do you want to accept this image anyway?")
+						.arg(contact.ownerBuddy().display()).arg((size + 1023) / 1024);
+				allow = MessageDialog::ask(
+						KaduIcon("dialog-question"),
+						qApp->translate("@default", "Kadu") + " - " + qApp->translate("@default", "Incoming Image"),
+						question);
+			}
+			if (!allow)
+			{
+				result << FormattedMessagePart(qApp->translate("@default", "THIS BUDDY HAS SENT YOU AN IMAGE THAT IS TOO BIG TO BE RECEIVED"), false, true, false, textColor);
+				return;
+			}
 		}
 
 		// TODO: fix
 		GaduProtocol *gadu = qobject_cast<GaduProtocol *>(account.protocolHandler());
 		if (gadu)
 		{
-			static_cast<GaduChatImageService *>(gadu->chatImageService())->
-					sendImageRequest(ContactManager::instance()->byId(account, QString::number(sender)), size, crc32);
-
-			result << FormattedMessagePart(createImageId(sender, size, crc32));
+			static_cast<GaduChatImageService *>(gadu->chatImageService())->sendImageRequest(contact, size, crc32);
+			result << FormattedMessagePart(createImageId(contact.id().toUInt(), size, crc32));
 		}
 	}
 	else
@@ -206,7 +222,7 @@ QString createImageId(unsigned int sender, unsigned int size, unsigned int crc32
 		.arg(crc32);
 }
 
-FormattedMessage createMessage(Account account, UinType sender, const QString &content,
+FormattedMessage createMessage(Account account, Contact contact, const QString &content,
 		unsigned char *formats, unsigned int size, bool receiveImages)
 {
 	FormattedMessage result;
@@ -259,7 +275,7 @@ FormattedMessage createMessage(Account account, UinType sender, const QString &c
 		}
 
 		if (!first && textPosition > prevTextPosition)
-			appendToMessage(account, result, sender, content.mid(prevTextPosition, textPosition - prevTextPosition),
+			appendToMessage(account, result, contact, content.mid(prevTextPosition, textPosition - prevTextPosition),
 					prevFormat, prevColor, image, receiveImages && images <= MAX_NUMBER_OF_IMAGES);
 		else
 			first = false;
@@ -271,7 +287,7 @@ FormattedMessage createMessage(Account account, UinType sender, const QString &c
 		prevColor = color;
 	}
 
-	appendToMessage(account, result, sender, content.mid(prevTextPosition, content.length() - prevTextPosition),
+	appendToMessage(account, result, contact, content.mid(prevTextPosition, content.length() - prevTextPosition),
 			prevFormat, prevColor, image, receiveImages && images <= MAX_NUMBER_OF_IMAGES);
 
 	return result;

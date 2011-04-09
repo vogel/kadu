@@ -1,5 +1,6 @@
 /*
  * %kadu copyright begin%
+ * Copyright 2011 Piotr Dąbrowski (ultr@ultr.pl)
  * Copyright 2010 Bartosz Brachaczek (b.brachaczek@gmail.com)
  * %kadu copyright end%
  *
@@ -31,4 +32,20 @@ QString ChatImageService::imagesPath()
 ChatImageService::ChatImageService(QObject *parent) :
 		QObject(parent)
 {
+}
+
+bool ChatImageService::fitsHardSizeLimit(qint64 size)
+{
+	if (NoSizeLimit == hardSizeLimit())
+		return true;
+	return size <= hardSizeLimit();
+}
+
+bool ChatImageService::fitsSoftSizeLimit(qint64 size)
+{
+	if (!fitsHardSizeLimit(size))
+		return false;
+	if (NoSizeLimit == softSizeLimit())
+		return true;
+	return size <= softSizeLimit();
 }

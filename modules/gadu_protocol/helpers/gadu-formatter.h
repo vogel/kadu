@@ -1,5 +1,6 @@
 /*
  * %kadu copyright begin%
+ * Copyright 2011 Piotr Dąbrowski (ultr@ultr.pl)
  * Copyright 2010, 2011 Bartosz Brachaczek (b.brachaczek@gmail.com)
  * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
  * Copyright 2009 Piotr Galiszewski (piotr.galiszewski@kadu.im)
@@ -34,7 +35,7 @@ namespace GaduFormatter
 
 	QString createImageId(GaduProtocol::UinType sender, unsigned int size, unsigned int crc32);
 
-	FormattedMessage createMessage(Account acccount, GaduProtocol::UinType sender, const QString &content, unsigned char *formats,
+	FormattedMessage createMessage(Account account, Contact contact, const QString &content, unsigned char *formats,
 			unsigned int size, bool receiveImages);
 
 }

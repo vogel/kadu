@@ -1,5 +1,6 @@
 /*
  * %kadu copyright begin%
+ * Copyright 2011 Piotr Dąbrowski (ultr@ultr.pl)
  * Copyright 2010 Bartosz Brachaczek (b.brachaczek@gmail.com)
  * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
  * Copyright 2009, 2010, 2011 Piotr Galiszewski (piotr.galiszewski@kadu.im)
@@ -48,9 +49,14 @@ class GaduEditAccountWidget : public AccountEditWidget
 	QLineEdit *AccountPassword;
 	QCheckBox *RememberPassword;
 
+	QCheckBox *LimitImageSize;
 	QSpinBox *MaximumImageSize;
+	QCheckBox *ImageSizeAsk;
 	QCheckBox *ReceiveImagesDuringInvisibility;
 	QSpinBox *MaximumImageRequests;
+
+	QCheckBox *ChatImageSizeWarning;
+
 	QCheckBox *PrivateStatus;
 
 	IdentitiesComboBox *Identities;

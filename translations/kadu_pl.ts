@@ -1742,48 +1742,32 @@ Eksport listy kontaktów na serwer się nie powiódł</translation>
         <translation>Nie da się odczytać pliku</translation>
     </message>
     <message>
-        <source>This file is too big (%1 &gt;= %2)</source>
-        <translation>Plik jest zbyt duży (%1 &gt;= %2)</translation>
+        <source>This image has %1 KiB and may be too big for %2.</source>
+        <translation>Ten obrazek ma %1 KiB i może być za duży dla %2.</translation>
     </message>
     <message>
-        <source>This file is too big for %1.
-Do you really want to send this image?</source>
-        <translation>Ten plik jest zbyt duży dla %1.
-Czy na pewno chcesz wysłać ten obraz?</translation>
+        <source>%1 appears to be offline and may not receive images.</source>
+        <translation>%1 ma status niedostępny i może nie odebrać obrazka.</translation>
     </message>
     <message>
-        <source>%1 is disconnected and cannot receive images.
-Do you really want to send this image?</source>
-        <translation>%1 jest rozłączony i nie może odbierać obrazów.
-Czy na pewno chcesz wysłać ten obraz?</translation>
+        <source>This image has %1 KiB and may be too big for %2 of %3 contacts in this conference.</source>
+        <translation>Ten obrazek ma %1 KiB i może być za duży dla %2 z %3 kontaktów w tej konferencji.</translation>
     </message>
     <message>
-        <source>This file is too big for %1 of %2 contacts.
-</source>
-        <translation>Ten plik jest zbyt duży dla %1 z %2 kontaktów.</translation>
+        <source>%1 of %2 contacts appear to be offline and may not receive images.</source>
+        <translation>%1 z %2 kontaktów mają status niedostępny i mogą nie odebrać obrazka.</translation>
     </message>
     <message>
-        <source>%1 of %2 contacts are disconnected and cannot receive images.
-</source>
-        <translation>%1 z %2 kontaktów są rozłączeni i nie mogą odbierać obrazów.
-</translation>
+        <source>Do you really want to send this image?</source>
+        <translation>Czy na pewno chcesz wysłać ten obrazek?</translation>
     </message>
     <message>
-        <source>Do you really want to send this image?
-Some of them probably will not get it.</source>
-        <translation>Czy na pewno wysłać ten obraz?
-Część z nich może go nie otrzymać.</translation>
-    </message>
-</context>
-<context>
-    <name>ChatNotification</name>
-    <message>
-        <source>Chat</source>
-        <translation>Rozmowa</translation>
+        <source>This image has %1 KiB and exceeds the protocol limit of %2 KiB.</source>
+        <translation>Ten obrazek ma %1 KiB i przekracza limit protokołu wynoszący %2 KiB.</translation>
     </message>
     <message>
-        <source>Ignore</source>
-        <translation>Ignoruj</translation>
+        <source>This image has %1 KiB and exceeds recommended maximum size of %2 KiB.</source>
+        <translation>Ten obrazek ma %1 KiB i przekracza zalecany maksymalny rozmiar %2 KiB.</translation>
     </message>
 </context>
 <context>

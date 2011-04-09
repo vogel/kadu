@@ -223,9 +223,9 @@ bool GaduChatService::ignoreImages(Contact sender)
 FormattedMessage GaduChatService::createFormattedMessage(struct gg_event *e, const QByteArray &content, Contact sender)
 {
 	if (ignoreRichText(sender))
-		return GaduFormatter::createMessage(Protocol->account(), sender.id().toUInt(), QString::fromUtf8(content), 0, 0, false);
+		return GaduFormatter::createMessage(Protocol->account(), sender, QString::fromUtf8(content), 0, 0, false);
 	else
-		return GaduFormatter::createMessage(Protocol->account(), sender.id().toUInt(), QString::fromUtf8(content),
+		return GaduFormatter::createMessage(Protocol->account(), sender, QString::fromUtf8(content),
 				(unsigned char *)e->event.msg.formats, e->event.msg.formats_length, !ignoreImages(sender));
 }
 

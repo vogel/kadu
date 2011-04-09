@@ -87,6 +87,30 @@
         <source>Local TCP port</source>
         <translation>Lokalny port TCP</translation>
     </message>
+    <message>
+        <source>IMAGE SENT BY THIS BUDDY HAS BEEN BLOCKED</source>
+        <translation>OBRAZEK WYSŁANY PRZEZ ZNAJOMEGO ZOSTAŁ ZABLOKOWANY</translation>
+    </message>
+    <message>
+        <source>Buddy %1 is attempting to send you an image of %2 KiB in size.
+This exceeds your configured limits.
+Do you want to accept this image anyway?</source>
+        <translation>Znajomy %1 chce wysłać ci obrazek o rozmiarze %2 KiB.
+To więcej niż limit ustawiony w konfiguracji
+Czy chcesz mimo to odebrać ten obrazek?</translation>
+    </message>
+    <message>
+        <source>Kadu</source>
+        <translation>Kadu</translation>
+    </message>
+    <message>
+        <source>Incoming Image</source>
+        <translation>Przychodzący obrazek</translation>
+    </message>
+    <message>
+        <source>THIS BUDDY HAS SENT YOU AN IMAGE THAT IS TOO BIG TO BE RECEIVED</source>
+        <translation>ZNAJOMY WYSŁAŁ CI OBRAZEK, KTÓRY JEST ZBYT DUŻY BY GO ODEBRAĆ</translation>
+    </message>
 </context>
 <context>
     <name>GaduAddAccountWidget</name>
@@ -193,7 +217,7 @@ Nowe hasło wprowadzone w polu &quot;Nowe hasło&quot; nie jest identyczne z zaw
     </message>
     <message>
         <source>An error has occurred. Please try again later.</source>
-        <translation>Wystąpił błąd. Proszę spróbować później</translation>
+        <translation>Wystąpił błąd. Proszę spróbować później.</translation>
     </message>
 </context>
 <context>
@@ -387,34 +411,6 @@ Hasła  muszą być identyczne w obu polach!</translation>
         <translation>Opcje</translation>
     </message>
     <message>
-        <source>Images</source>
-        <translation>Obrazki</translation>
-    </message>
-    <message>
-        <source>Maximum image size that we want to receive</source>
-        <translation>Maksymalny rozmiar obrazka</translation>
-    </message>
-    <message>
-        <source>Maximum image size for chat</source>
-        <translation>Maksymalny rozmiar obrazka dla rozmowy</translation>
-    </message>
-    <message>
-        <source>Receive images during invisibility</source>
-        <translation>Odbieraj obrazki także gdy jestem ukryty</translation>
-    </message>
-    <message>
-        <source>Receiving images during invisibility is allowed</source>
-        <translation>Odbieranie obrazków w trybie ukrytym jest włączone</translation>
-    </message>
-    <message>
-        <source>Define limit of images received per minute</source>
-        <translation>Zdefiniuj maksymalną dozwoloną liczbę obrazków na minutę</translation>
-    </message>
-    <message>
-        <source>Limit numbers of image received per minute</source>
-        <translation>Limit liczby obrazków odbieranych w ciągu minuty</translation>
-    </message>
-    <message>
         <source>Status</source>
         <translation>Status</translation>
     </message>
@@ -462,16 +458,41 @@ Hasła  muszą być identyczne w obu polach!</translation>
         <source>Remove account and unregister from server</source>
         <translation>Usuń konto i wyrejestruj z serwera</translation>
     </message>
-</context>
-<context>
-    <name>GaduFormatter</name>
     <message>
-        <source>###IMAGE BLOCKED###</source>
-        <translation>###OBRAZEK ZABLOKOWANY###</translation>
+        <source>Incoming Images</source>
+        <translation>Odbieranie obrazków</translation>
     </message>
     <message>
-        <source>###IMAGE TOO BIG###</source>
-        <translation>###OBRAZEK ZBYT DUŻY###</translation>
+        <source>Limit incoming images&apos; size</source>
+        <translation>Ograniczaj rozmiar przychodzących obrazków</translation>
+    </message>
+    <message>
+        <source>Ask for confirmation if an image&apos;s size exceeds the limit</source>
+        <translation>Pytaj o potwierdzenie, gdy rozmiar obrazka przekracza limit</translation>
+    </message>
+    <message>
+        <source>Limit numbers of images received per minute</source>
+        <translation>Ograniczaj ilość odbieranych obrazków na minutę</translation>
+    </message>
+    <message>
+        <source>Outgoing Images</source>
+        <translation>Wysyłanie obrazków</translation>
+    </message>
+    <message>
+        <source>Maximum images&apos; size that you accept</source>
+        <translation>Maksymalny rozmiar obrazków, jaki akceptujesz</translation>
+    </message>
+    <message>
+        <source>Maximum incoming images&apos; size</source>
+        <translation>Maksymalny rozmiar obrazków przychodzących</translation>
+    </message>
+    <message>
+        <source>Receive images also when Invisible</source>
+        <translation>Odbieraj obrazki także gdy jesteś niewidoczny</translation>
+    </message>
+    <message>
+        <source>Show a warning when the image is larger then 256 KiB</source>
+        <translation>Pokaż ostrzeżenie gdy obrazek jest więszy niż 256 KiB</translation>
     </message>
 </context>
 <context>

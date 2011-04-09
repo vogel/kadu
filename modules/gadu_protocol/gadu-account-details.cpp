@@ -1,5 +1,6 @@
 /*
  * %kadu copyright begin%
+ * Copyright 2011 Piotr Dąbrowski (ultr@ultr.pl)
  * Copyright 2009 Dawid Stawiarski (neeo@kadu.net)
  * Copyright 2011 Bartosz Brachaczek (b.brachaczek@gmail.com)
  * Copyright 2009, 2010 Wojciech Treter (juzefwt@gmail.com)
@@ -51,9 +52,12 @@ void GaduAccountDetails::load()
 	AccountDetails::load();
 
 	AllowDcc = loadValue<bool>("AllowDcc", true);
-	MaximumImageSize = loadValue<short int>("MaximumImageSize", 255);
+	LimitImageSize = loadValue<bool>("LimitImageSize", true);
+	MaximumImageSize = loadValue<int>("MaximumImageSize", 255);
+	ImageSizeAsk = loadValue<bool>("ImageSizeAsk", false);
 	ReceiveImagesDuringInvisibility = loadValue<bool>("ReceiveImagesDuringInvisibility", true);
 	MaximumImageRequests = loadValue<short int>("MaximumImageRequests", 10);
+	ChatImageSizeWarning = loadValue<bool>("ChatImageSizeWarning", true);
 	InitialRosterImport = loadValue<bool>("InitialRosterImport", false);
 	SendTypingNotification = loadValue<bool>("SendTypingNotification", true);
 	TlsEncryption = loadValue<bool>("TlsEncryption", false);
@@ -65,9 +69,12 @@ void GaduAccountDetails::store()
 		return;
 
 	storeValue("AllowDcc", AllowDcc);
+	storeValue("LimitImageSize", LimitImageSize);
 	storeValue("MaximumImageSize", MaximumImageSize);
+	storeValue("ImageSizeAsk", ImageSizeAsk);
 	storeValue("ReceiveImagesDuringInvisibility", ReceiveImagesDuringInvisibility);
 	storeValue("MaximumImageRequests", MaximumImageRequests);
+	storeValue("ChatImageSizeWarning", ChatImageSizeWarning);
 	storeValue("InitialRosterImport", InitialRosterImport);
 	storeValue("TlsEncryption", TlsEncryption);
 	storeValue("SendTypingNotification", SendTypingNotification);
