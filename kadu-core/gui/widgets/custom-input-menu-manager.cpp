@@ -78,6 +78,9 @@ QMenu * CustomInputMenuManager::menu(QWidget *parent)
 	{
 		Action *action = i->actionDescription()->createAction(0, parent);
 
+		if (i->category() == CustomInputMenuItem::MenuCategorySuggestion)
+			action->setFont(QFont(QString(), -1, QFont::Bold));
+
 		menu->addAction(action);
 		action->checkState();
 
