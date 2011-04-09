@@ -59,6 +59,7 @@ void JabberFileTransferService::irisIncomingFileTransfer()
 	transfer.setPeer(peer);
 	transfer.setTransferType(TypeReceive);
 	transfer.setRemoteFileName(jTransfer->fileName());
+	transfer.setFileSize(jTransfer->fileSize());
 
 	transfer.createHandler();
 

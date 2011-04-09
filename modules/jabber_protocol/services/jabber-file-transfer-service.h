@@ -46,4 +46,3 @@ public:
 };
 
 #endif // JABBER_FILE_TRANSFER_SERVICE_H
-
