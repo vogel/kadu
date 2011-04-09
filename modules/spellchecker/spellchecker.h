@@ -62,6 +62,7 @@ public:
 	void buildMarkTag();
 	void buildCheckers();
 	bool checkWord(const QString &word);
+	QStringList buildSuggestList(const QString &word);
 
 public slots:
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);

@@ -38,7 +38,19 @@
     <message>
         <source>Ignore case</source>
         <translation>Ignoruj wielkość liter</translation>
-    </message>
+	</message>
+	<message>
+		<source>Suggester Options</source>
+		<translation>Opcje sugestii</translation>
+	</message>
+	<message>
+		<source>Use suggester</source>
+		<translation>Używaj sugestii</translation>
+	</message>
+	<message>
+		<source>Maximum number of suggestion words</source>
+		<translation>Maksymalna ilość wyrazów sugestii</translation>
+	</message>
 </context>
 <context>
     <name>SpellChecker</name>

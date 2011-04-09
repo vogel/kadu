@@ -1,11 +1,13 @@
 set (SOURCES
 	spellchecker.cpp
 	highlighter.cpp
+	suggester.cpp
 )
 
 set (MOC_SOURCES
 	spellchecker.h
 	highlighter.h
+	suggester.h
 )
 
 set (TRANSLATION_SOURCES
