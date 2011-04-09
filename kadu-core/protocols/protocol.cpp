@@ -163,7 +163,6 @@ void Protocol::passwordRequired()
 
 void Protocol::connectionError()
 {
-	setStatus(Status());
 	statusChanged(Status());
 
 	emit stateMachineConnectionError();

@@ -154,7 +154,6 @@ void GaduProtocol::login()
 	// TODO: create some kind of cleanup method
 	if (GaduSession)
 	{
-		connectionClosed();
 		gg_free_session(GaduSession);
 		GaduSession = 0;
 		return;
