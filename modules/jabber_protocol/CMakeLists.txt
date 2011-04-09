@@ -37,25 +37,56 @@ if (APPLE)
 	endif (QCA_FRAMEWORK_DIR)
 endif (APPLE)
 
-
 set (SOURCES
 	actions/jabber-actions.cpp
 	actions/jabber-protocol-menu-manager.cpp
+
 	certificates/certificate-display-dialog.cpp
 	certificates/certificate-error-dialog.cpp
 	certificates/certificate-helpers.cpp
 	certificates/trusted-certificates-manager.cpp
+
 	client/jabber-client.cpp
 	client/mini-client.cpp
+
 	gui/widgets/jabber-contact-personal-info-widget.cpp
 	gui/widgets/jabber-add-account-widget.cpp
 	gui/widgets/jabber-create-account-widget.cpp
 	gui/widgets/jabber-edit-account-widget.cpp
 	gui/widgets/jabber-personal-info-widget.cpp
+
 	gui/windows/jabber-change-password-window.cpp
 	gui/windows/jabber-wait-for-account-register-window.cpp
 	gui/windows/xml-console.cpp
+
 	open-chat-with/jabber-open-chat-with-runner.cpp
+
+	server/jabber-avatar-fetcher.cpp
+	server/jabber-avatar-pep-fetcher.cpp
+	server/jabber-avatar-pep-uploader.cpp
+	server/jabber-avatar-uploader.cpp
+	server/jabber-avatar-vcard-fetcher.cpp
+	server/jabber-avatar-vcard-uploader.cpp
+	server/jabber-server-change-password.cpp
+	server/jabber-server-register-account.cpp
+
+	services/jabber-avatar-service.cpp
+	services/jabber-chat-service.cpp
+	services/jabber-chat-state-service.cpp
+	services/jabber-contact-personal-info-service.cpp
+	services/jabber-personal-info-service.cpp
+	services/jabber-roster-service.cpp
+	services/jabber-subscription-service.cpp
+
+	tasks/pep-get-task.cpp
+	tasks/pep-publish-task.cpp
+	tasks/pep-retract-task.cpp
+
+	utils/jid-util.cpp
+	utils/pep-manager.cpp
+	utils/server-info-manager.cpp
+	utils/vcard-factory.cpp
+
 	iris-status-adapter.cpp
 	jabber-account-details.cpp
 	jabber-contact-details.cpp
@@ -66,52 +97,28 @@ set (SOURCES
 	jabber-url-handler.cpp
 	facebook-protocol-factory.cpp
 	gtalk-protocol-factory.cpp
-	server/jabber-avatar-fetcher.cpp
-	server/jabber-avatar-pep-fetcher.cpp
-	server/jabber-avatar-pep-uploader.cpp
-	server/jabber-avatar-uploader.cpp
-	server/jabber-avatar-vcard-fetcher.cpp
-	server/jabber-avatar-vcard-uploader.cpp
-	server/jabber-server-change-password.cpp
-	server/jabber-server-register-account.cpp
-	services/jabber-avatar-service.cpp
-	services/jabber-chat-service.cpp
-	services/jabber-chat-state-service.cpp
-	services/jabber-personal-info-service.cpp
-	services/jabber-contact-personal-info-service.cpp
-	services/jabber-roster-service.cpp
-	services/jabber-subscription-service.cpp
-	tasks/pep-get-task.cpp
-	tasks/pep-publish-task.cpp
-	tasks/pep-retract-task.cpp
-	utils/jid-util.cpp
-	utils/vcard-factory.cpp
-	utils/pep-manager.cpp
-	utils/server-info-manager.cpp
 )
 
 set (MOC_SOURCES
 	actions/jabber-actions.h
+
 	certificates/certificate-display-dialog.h
 	certificates/certificate-error-dialog.h
 	certificates/trusted-certificates-manager.h
+
 	client/jabber-client.h
 	client/mini-client.h
-	facebook-protocol-factory.h
-	gtalk-protocol-factory.h
+
 	gui/widgets/jabber-contact-personal-info-widget.h
 	gui/widgets/jabber-add-account-widget.h
 	gui/widgets/jabber-create-account-widget.h
 	gui/widgets/jabber-edit-account-widget.h
 	gui/widgets/jabber-personal-info-widget.h
+
 	gui/windows/jabber-change-password-window.h
 	gui/windows/jabber-wait-for-account-register-window.h
 	gui/windows/xml-console.h
-	jabber-id-validator.h
-	jabber-protocol.h
-	jabber-protocol-factory.h
-	jabber-protocol-plugin.h
-	jabber-url-handler.h
+
 	server/jabber-avatar-fetcher.h
 	server/jabber-avatar-pep-fetcher.h
 	server/jabber-avatar-pep-uploader.h
@@ -120,29 +127,30 @@ set (MOC_SOURCES
 	server/jabber-avatar-vcard-uploader.h
 	server/jabber-server-change-password.h
 	server/jabber-server-register-account.h
+
 	services/jabber-avatar-service.h
 	services/jabber-chat-service.h
 	services/jabber-chat-state-service.h
-	services/jabber-personal-info-service.h
 	services/jabber-contact-personal-info-service.h
+	services/jabber-personal-info-service.h
 	services/jabber-roster-service.h
 	services/jabber-subscription-service.h
+
 	tasks/pep-get-task.h
 	tasks/pep-publish-task.h
 	tasks/pep-retract-task.h
-	utils/vcard-factory.h
+
 	utils/pep-manager.h
 	utils/server-info-manager.h
-)
+	utils/vcard-factory.h
 
-set (DATA_FILES
-	data/status/away.png
-	data/status/ffc.png
-	data/status/dnd.png
-	data/status/invisible.png
-	data/status/offline.png
-	data/status/online.png
-	data/status/xa.png
+	facebook-protocol-factory.h
+	gtalk-protocol-factory.h
+	jabber-id-validator.h
+	jabber-protocol.h
+	jabber-protocol-factory.h
+	jabber-protocol-plugin.h
+	jabber-url-handler.h
 )
 
 set (TRANSLATION_SOURCES
@@ -151,9 +159,6 @@ set (TRANSLATION_SOURCES
 	translations/jabber_protocol_fr.ts
 	translations/jabber_protocol_it.ts
 	translations/jabber_protocol_pl.ts
-)
-
-set (CONFIGURATION_FILES
 )
 
 add_subdirectory (3rdparty)
@@ -171,25 +176,15 @@ include_directories (
 	${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/libiris/src
 )
 
-set (LIBRARIES ${QCA2_LIBRARIES} ${IDN_LIBRARIES} ${ZLIB_LIBRARIES} ${QT_LIBRARIES})
+set (LIBRARIES 3rdparty ${QCA2_LIBRARIES} ${IDN_LIBRARIES} ${ZLIB_LIBRARIES} ${QT_LIBRARIES})
 
 kadu_plugin (jabber_protocol
 	PLUGIN_SOURCES ${SOURCES}
 	PLUGIN_MOC_SOURCES  ${MOC_SOURCES}
 	PLUGIN_LIBRARIES ${LIBRARIES}
-	PLUGIN_DEPENDENCIES ${DEPENDENCIES}
 	PLUGIN_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
-	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 )
 
 add_dependencies (jabber_protocol
 	3rdparty
-)
-
-target_link_libraries (jabber_protocol
-	3rdparty
-)
-
-install (FILES ${DATA_FILES}
-	DESTINATION ${KADU_PLUGINS_DIR}/data/jabber_protocol
 )
