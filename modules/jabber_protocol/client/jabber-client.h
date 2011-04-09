@@ -29,9 +29,9 @@
 #include <accounts/account.h>
 
 // include these because of namespace reasons
-#include <im.h>
-#include <xmpp.h>
-#include <s5b.h>
+#include <iris/im.h>
+#include <iris/xmpp.h>
+#include <iris/s5b.h>
 
 #include <QtCrypto>
 
