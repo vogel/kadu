@@ -310,8 +310,8 @@ bool JabberFileTransferHandler::accept(const QFile &file)
 
 void JabberFileTransferHandler::reject()
 {
-//	if (SocketNotifiers)
-//		SocketNotifiers->rejectFileTransfer();
+	if (JabberTransfer)
+		JabberTransfer->close();
 
 	deleteLater();
 }
