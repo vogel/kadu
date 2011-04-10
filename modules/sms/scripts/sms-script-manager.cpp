@@ -105,6 +105,7 @@ void SmsScriptsManager::loadScript(const QString &fileName)
 		return;
 
 	QTextStream reader(&file);
+	reader.setCodec("UTF-8");
 	QString content = reader.readAll();
 	file.close();
 
