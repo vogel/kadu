@@ -68,20 +68,20 @@ void Suggester::addWordListToMenu(const QTextCursor &textCursor)
 	CurrentTextSelection = textCursor;
 
 	// Add new actions
-	for (QStringList::const_iterator it = SuggestionWordList.constBegin(); it != SuggestionWordList.constEnd(); ++it)
+	foreach (const QString listWord, SuggestionWordList)
 		SuggestActions.append(new ActionDescription(this, ActionDescription::TypeGlobal,
-					"spellcheckerSuggest#" + *it, this, SLOT(replaceWithSuggest(QAction *)), KaduIcon(), *it));
+					"spellcheckerSuggest#" + listWord, this, SLOT(replaceWithSuggest(QAction *)), KaduIcon(), listWord));
 
 	unsigned int actionPriority = 0;
-	for (QList<ActionDescription *>::const_iterator action_it = SuggestActions.constBegin(); action_it != SuggestActions.constEnd(); ++action_it)
-		CustomInputMenuManager::instance()->addActionDescription(*action_it, CustomInputMenuItem::MenuCategorySuggestion, actionPriority++);
+	foreach (ActionDescription *action, SuggestActions)
+		CustomInputMenuManager::instance()->addActionDescription(action, CustomInputMenuItem::MenuCategorySuggestion, actionPriority++);
 }
 
 void Suggester::clearWordMenu()
 {
 	// Remove old actions
-	for (QList<ActionDescription *>::const_iterator action_it = SuggestActions.constBegin(); action_it != SuggestActions.constEnd(); ++action_it)
-		CustomInputMenuManager::instance()->removeActionDescription(*action_it);
+	foreach (ActionDescription *action, SuggestActions)
+		CustomInputMenuManager::instance()->removeActionDescription(action);
 
 	qDeleteAll(SuggestActions);
 	SuggestActions.clear();
@@ -89,7 +89,7 @@ void Suggester::clearWordMenu()
 
 bool Suggester::eventFilter(QObject *object, QEvent *event)
 {
-	QTextEdit *inputBox = qobject_cast<QTextEdit *>(object);
+	CustomInput *inputBox = qobject_cast<CustomInput *>(object);
 
 	if ((inputBox) && (event->type() == QEvent::MouseButtonPress))
 	{

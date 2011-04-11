@@ -29,9 +29,6 @@
 #include <aspell.h>
 #else
 #include <enchant++.h>
-
-#include <vector>
-#include <string>
 #endif
 
 #include <QtCore/QTextCodec>
@@ -428,15 +425,26 @@ QStringList SpellChecker::buildSuggestList(const QString &word)
 			delete_aspell_string_enumeration(aspellStringEnum);
 		}
 #else
-		std::vector<std::string> tmpList(it.value()->suggest(word.toUtf8().constData()));
-		std::vector<std::string>::const_iterator vit = tmpList.begin();
+		size_t numberOfSuggs;
+		EnchantBroker *broker = enchant_broker_init();
+		EnchantDict *dict = enchant_broker_request_dict(broker, it.key().toUtf8().constData());
+		char **suggs = enchant_dict_suggest(dict, word.toUtf8().constData(), word.toUtf8().size(), &numberOfSuggs);
 
-		while ((vit != tmpList.end()) && (suggesterWordCount))
+		if ((suggs) && (numberOfSuggs))
 		{
-			suggestWordList.append((QString::fromUtf8((*vit).c_str())));
-			--suggesterWordCount;
-			vit++;
+			for (size_t i = 0; i < numberOfSuggs; ++i)
+			{
+				if (!suggesterWordCount)
+					break;
+
+				suggestWordList.append(QString::fromUtf8(suggs[i]));
+				--suggesterWordCount;
+			}
 		}
+
+		enchant_dict_free_string_list(dict, suggs);
+		enchant_broker_free_dict(broker, dict);
+		enchant_broker_free(broker);
 #endif
 	}
 
