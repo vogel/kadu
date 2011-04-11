@@ -623,6 +623,9 @@ void JabberClient::slotCSError(int error)
 
 void JabberClient::addContact(const XMPP::Jid &j, const QString &name, const QStringList &groups)
 {
+	if (!jabberClient)
+		return;
+
 	if (AddedContacts.contains(j.bare()))
 		return;
 
@@ -731,6 +734,9 @@ void JabberClient::rejectSubscription(const XMPP::Jid &jid)
 
 void JabberClient::changeSubscription(const XMPP::Jid &jid, const QString &type)
 {
+	if (!jabberClient)
+		return;
+
 	XMPP::JT_Presence *task = new XMPP::JT_Presence(jabberClient->rootTask());
 	task->sub(jid, type);
 	task->go(true);
