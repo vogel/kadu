@@ -1,3 +1,6 @@
++++ version 0.9.2
+* tabs: #2129 fixed: regression since 0.9.1 that caused button to be shown when the shouldn't in certain configurations (beevvy)
+
 +++ version 0.9.1
 * gadu: fixed bug where Kadu could send contacts to Gadu server not from contacts list, but from history (Vogel)
 * gadu: do not flood server with ADD_NOTIFY and REMOVE_NOTIFY packets before list is sent (Vogel)

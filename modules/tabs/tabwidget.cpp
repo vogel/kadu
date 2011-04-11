@@ -66,12 +66,14 @@ TabWidget::TabWidget()
 	OpenChatButton = new QToolButton(this);
 	OpenChatButton->setIcon(IconsManager::instance()->iconByPath("kadu_icons/chat"));
 	OpenChatButton->setAutoRaise(true);
+	OpenChatButton->setVisible(false);
 	connect(OpenChatButton, SIGNAL(clicked()), SLOT(newChat()));
 
 	//przycisk zamkniecia aktywnej karty znajdujacy sie w prawym gornym rogu
 	CloseChatButton = new QToolButton(this);
 	CloseChatButton->setIcon(IconsManager::instance()->iconByPath("kadu_icons/tab-remove"));
 	CloseChatButton->setAutoRaise(true);
+	CloseChatButton->setVisible(false);
 	connect(CloseChatButton, SIGNAL(clicked()), SLOT(deleteTab()));
 }
 
