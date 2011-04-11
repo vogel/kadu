@@ -84,8 +84,8 @@ void KaduChatStyleEngine::appendMessage(HtmlMessagesRenderer *renderer, MessageR
 	}
 
 	QString html(replacedNewLine(formatMessage(message, renderer->lastMessage()), QLatin1String(" ")));
-	html.replace('\'', QLatin1String("\\'"));
 	html.replace('\\', QLatin1String("\\\\"));
+	html.replace('\'', QLatin1String("\\'"));
 	html.prepend("<span>");
 	html.append("</span>");
 
