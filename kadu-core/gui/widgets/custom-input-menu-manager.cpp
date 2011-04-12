@@ -73,9 +73,14 @@ QMenu * CustomInputMenuManager::menu(QWidget *parent)
 
 	sortInputContextMenu();
 	QList<CustomInputMenuItem>::const_iterator i = InputContextMenu.constBegin();
+	CustomInputMenuItem::CustomInputMenuCategory lastCategory = CustomInputMenuItem::MenuCategoryTextEdit;
+	bool first = true;
 
 	while (i != InputContextMenu.constEnd())
 	{
+		if ((!first) && (i->category() != lastCategory))
+			menu->addSeparator();
+
 		Action *action = i->actionDescription()->createAction(0, parent);
 
 		if (i->category() == CustomInputMenuItem::MenuCategorySuggestion)
@@ -84,10 +89,13 @@ QMenu * CustomInputMenuManager::menu(QWidget *parent)
 		menu->addAction(action);
 		action->checkState();
 
+		lastCategory = i->category();
+		first = false;
 		++i;
 	}
 
-	menu->addSeparator();
+	if (!first)
+		menu->addSeparator();
 
 	return menu;
 }
