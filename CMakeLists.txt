@@ -6,6 +6,7 @@ set (CMAKE_MIN_VERSION "2.6.0")
 
 # configuration
 option (ENABLE_AUTODOWNLOAD "Use automatic download of modules/icons/emoticons" ON)
+option (ENABLE_DEVELOPER_BUILD "Turn on some features helpful during development process (does not necessarily turn on debug symbols in binaries)" OFF)
 option (SIG_HANDLING_ENABLED "Define if you want system signals handling" ON)
 option (USE_X11_XFIXES "Use X11 Xfixes extension (Desktop Linux)" ON)
 
@@ -81,9 +82,12 @@ endif (NOT WIN32)
 if (CMAKE_BUILD_TYPE STREQUAL "Debug" OR WIN32)
 	add_definitions (-DDEBUG_ENABLED)
 
-	set (DEBUG 1)
 	set (DEBUG_ENABLED 1)
 endif (CMAKE_BUILD_TYPE STREQUAL "Debug" OR WIN32)
+
+if (ENABLE_DEVELOPER_BUILD OR DEBUG_ENABLED EQUAL 1)
+	set (DEBUG 1)
+endif (ENABLE_DEVELOPER_BUILD OR DEBUG_ENABLED EQUAL 1)
 
 if (MSVC)
 	add_definitions (/D_CRT_SECURE_NO_WARNINGS=1)
@@ -96,8 +100,13 @@ endif (MINGW)
 
 # warnings
 if (UNIX AND NOT APPLE)
-	set (CMAKE_C_FLAGS "-W -Wall -Werror ${CMAKE_C_FLAGS}")
-	set (CMAKE_CXX_FLAGS "-W -Wall -Werror ${CMAKE_CXX_FLAGS}")
+	if (ENABLE_DEVELOPER_BUILD)
+		set (CMAKE_C_FLAGS "-Werror ${CMAKE_C_FLAGS}")
+		set (CMAKE_CXX_FLAGS "-Werror ${CMAKE_CXX_FLAGS}")
+	endif (ENABLE_DEVELOPER_BUILD)
+
+	set (CMAKE_C_FLAGS "-W -Wall ${CMAKE_C_FLAGS}")
+	set (CMAKE_CXX_FLAGS "-W -Wall ${CMAKE_CXX_FLAGS}")
 elseif (APPLE)
 	set (CMAKE_C_FLAGS "-W -Wall ${CMAKE_C_FLAGS}")
 	set (CMAKE_CXX_FLAGS "-W -Wall ${CMAKE_CXX_FLAGS}")
