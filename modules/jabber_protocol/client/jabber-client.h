@@ -77,7 +77,7 @@ namespace XMPP
 		QString Password;
 
 		// XMPP backend
-		XMPP::Client *jabberClient;
+		XMPP::Client *Client;
 		XMPP::ClientStream *JabberClientStream;
 		XMPP::AdvancedConnector *JabberClientConnector;
 		QCA::TLS *JabberTLS;
@@ -116,9 +116,6 @@ namespace XMPP
 
 		// allow transmission of plaintext passwords
 		XMPP::ClientStream::AllowPlainType AllowPlainTextPassword;
-
-		// enable file transfers
-		bool FileTransfersEnabled;
 
 		// current penalty time
 		int CurrentPenaltyTime;
@@ -353,20 +350,14 @@ namespace XMPP
 
 		/**
 		 * Enable file transfers. Default is false.
-		 * @param flag Whether to enable file transfers.
 		 * @param localAddress Local address to receive file transfers at. Will be determined automatically if not specified.
 		 */
-		void setFileTransfersEnabled(bool flag, const QString &localAddress = QString());
+		void setLocalAddress(const QString &localAddress = QString());
 
 		/**
 		 * Returns the address of the local interface.
 		 */
 		const QString & localAddress() const { return LocalAddress; }
-
-		/**
-		 * Returns if file transfers are enabled.
-		 */
-		bool fileTransfersEnabled () const { return FileTransfersEnabled; }
 
 		/**
 		 * Set client name.
@@ -423,7 +414,7 @@ namespace XMPP
 		 * Return the caps extension list for this client.
 		 * @return A string containing all extensions separated by space.
 		 */
-		QString capsExt() const { return jabberClient ? jabberClient->capsExt() : QString(); }
+		QString capsExt() const { return Client ? Client->capsExt() : QString(); }
 
 		/**
 		 * Set the disco Identity information for this client.
@@ -473,7 +464,7 @@ namespace XMPP
 		/**
 		 * Return the XMPP client instance.
 		 */
-		XMPP::Client *client() const { return jabberClient; }
+		XMPP::Client *client() const { return Client; }
 
 		/**
 		 * Return client stream instance.

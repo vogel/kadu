@@ -49,7 +49,7 @@ namespace XMPP
 {
 
 JabberClient::JabberClient(JabberProtocol *protocol, QObject *parent) :
-		QObject(parent), jabberClient(0), JabberClientStream(0), JabberClientConnector(0),
+		QObject(parent), Client(0), JabberClientStream(0), JabberClientConnector(0),
 		JabberTLS(0), JabberTLSHandler(0), Protocol(protocol), serverInfoManager(0), PepManager(0)
 {
 	QObject::connect(S5BServerManager::instance(), SIGNAL(serverChanged(XMPP::S5BServer *)),
@@ -57,41 +57,134 @@ JabberClient::JabberClient(JabberProtocol *protocol, QObject *parent) :
 
 	cleanUp();
 
+	Client = new XMPP::Client(this);
+	Client->setClientName(clientName());
+	Client->setClientVersion(clientVersion());
+	Client->setOSName(osName());
+
+	// Set caps information
+	Client->setCapsNode(capsNode());
+
+	// Set Disco Identity
+	//jabberClient->setIdentity( discoIdentity());
+
+	DiscoItem::Identity identity;
+	identity.category = "client";
+	identity.type = "pc";
+	identity.name = "Kadu";
+	Client->setIdentity(identity);
+
+	QStringList features;
+	features
+			<< "http://jabber.org/protocol/chatstates"
+			<< "http://jabber.org/protocol/disco#info"
+			<< "jabber:iq:version"
+			<< "jabber:x:data"
+			<< "urn:xmpp:avatar:data"
+			<< "urn:xmpp:avatar:metadata"
+			<< "urn:xmpp:avatar:metadata+notify";
+
+	setCapsVersion(calculateCapsVersion(identity, features));
+
+	Client->setCapsVersion(capsVersion());
+	Client->setFeatures(Features(features));
+	Client->setTimeZone(timeZoneName(), timeZoneOffset());
+
+	serverInfoManager = new ServerInfoManager(Client, Client);
+	QObject::connect(serverInfoManager, SIGNAL(featuresChanged()),
+		this, SLOT(serverFeaturesChanged()));
+
+	PepManager = new PEPManager(Client, serverInfoManager, Client);
+	QObject::connect(PepManager, SIGNAL(publish_success(const QString&, const XMPP::PubSubItem&)),
+		this, SIGNAL(publishSuccess(const QString&,const XMPP::PubSubItem&)));
+	QObject::connect(PepManager, SIGNAL(publish_error(const QString&, const XMPP::PubSubItem&)),
+		this, SIGNAL(publishError(const QString&,const XMPP::PubSubItem&)));
+	PepAvailable = false;
+
+	/*
+	 * Enable file transfer (IP and server will be set after connection
+	 * has been established.
+	 */
+	Client->setFileTransferEnabled(true);
+	{
+		using namespace XMPP;
+		QObject::connect(Client->fileTransferManager(), SIGNAL(incomingReady()),
+				   this, SLOT(slotIncomingFileTransfer()));
+	}
+
+	/* This should only be done here to connect the signals, otherwise it is a
+	 * bad idea.
+	 */
+	{
+		using namespace XMPP;
+		QObject::connect(Client, SIGNAL(subscription(const Jid &, const QString &, const QString &)),
+				   this, SLOT(slotSubscription(const Jid &, const QString &, const QString &)));
+		QObject::connect(Client, SIGNAL(rosterRequestFinished(bool, int, const QString &)),
+				   this, SLOT(slotRosterRequestFinished(bool, int, const QString &)));
+		QObject::connect(Client, SIGNAL(rosterItemAdded(const RosterItem &)),
+				   this, SLOT(slotNewContact(const RosterItem &)));
+		QObject::connect(Client, SIGNAL(rosterItemUpdated(const RosterItem &)),
+				   this, SLOT(slotContactUpdated(const RosterItem &)));
+		QObject::connect(Client, SIGNAL(rosterItemRemoved(const RosterItem &)),
+				   this, SLOT(slotContactDeleted(const RosterItem &)));
+		QObject::connect(Client, SIGNAL(resourceAvailable(const Jid &, const Resource &)),
+				   this, SLOT(slotResourceAvailable(const Jid &, const Resource &)));
+		QObject::connect(Client, SIGNAL(resourceUnavailable(const Jid &, const Resource &)),
+				   this, SLOT(slotResourceUnavailable(const Jid &, const Resource &)));
+		QObject::connect(Client, SIGNAL(messageReceived(const Message &)),
+				   this, SLOT(slotReceivedMessage(const Message &)));
+		QObject::connect(Client, SIGNAL(groupChatJoined(const Jid &)),
+				   this, SLOT(slotGroupChatJoined(const Jid &)));
+		QObject::connect(Client, SIGNAL(groupChatLeft(const Jid &)),
+				   this, SLOT(slotGroupChatLeft(const Jid &)));
+		QObject::connect(Client, SIGNAL(groupChatPresence(const Jid &, const Status &)),
+				   this, SLOT(slotGroupChatPresence(const Jid &, const Status &)));
+		QObject::connect(Client, SIGNAL(groupChatError(const Jid &, int, const QString &)),
+				   this, SLOT(slotGroupChatError(const Jid &, int, const QString &)));
+		//QObject::connect(jabberClient, SIGNAL(debugText(const QString &)),
+		//		   this, SLOT(slotPsiDebug(const QString &)));
+		QObject::connect(Client, SIGNAL(xmlIncoming(const QString&)),
+				   this, SLOT(slotIncomingXML(const QString &)));
+		QObject::connect(Client, SIGNAL(xmlOutgoing(const QString&)),
+				   this, SLOT(slotOutgoingXML(const QString &)));
+	}
+
 	// initiate penalty timer
 	QTimer::singleShot(JABBER_PENALTY_TIME * 1000, this, SLOT(slotUpdatePenaltyTime()));
-
 }
 
 JabberClient::~JabberClient()
 {
-	if (jabberClient)
-		jabberClient->close();
+	if (Client)
+		Client->close();
 
-	delete jabberClient;
+	delete Client;
 	delete JabberClientStream;
 	delete JabberClientConnector;
 	delete JabberTLSHandler;
 	delete JabberTLS;
 
-	jabberClient = 0;
+	Client = 0;
+	JabberClientStream = 0;
+	JabberClientConnector = 0;
+	JabberTLSHandler = 0;
+	JabberTLS = 0;
 }
 
 void JabberClient::cleanUp()
 {
-	if (jabberClient)
-		jabberClient->close();
+	if (Client)
+		Client->close();
 
-	delete jabberClient;
 	delete JabberClientStream;
 	delete JabberClientConnector;
 	delete JabberTLSHandler;
 	delete JabberTLS;
 
-	jabberClient = 0L;
-	JabberClientStream = 0L;
-	JabberClientConnector = 0L;
-	JabberTLSHandler = 0L;
-	JabberTLS = 0L;
+	JabberClientStream = 0;
+	JabberClientConnector = 0;
+	JabberTLSHandler = 0;
+	JabberTLS = 0;
 
 	CurrentPenaltyTime = 0;
 
@@ -106,8 +199,6 @@ void JabberClient::cleanUp()
 	setOverrideHost(false);
 
 	setAllowPlainTextPassword(XMPP::ClientStream::AllowPlainOverTLS);
-
-	setFileTransfersEnabled(true);
 
 	setClientName(QString());
 	setClientVersion(QString());
@@ -130,8 +221,7 @@ void JabberClient::slotUpdatePenaltyTime()
 
 void JabberClient::s5bServerChanged(XMPP::S5BServer *server)
 {
-	if (jabberClient)
-		jabberClient->s5bManager()->setServer(server);
+	Client->s5bManager()->setServer(server);
 }
 
 void JabberClient::setOverrideHost(bool flag, const QString &server, int port)
@@ -141,9 +231,8 @@ void JabberClient::setOverrideHost(bool flag, const QString &server, int port)
 	Port = port;
 }
 
-void JabberClient::setFileTransfersEnabled(bool flag, const QString &localAddress)
+void JabberClient::setLocalAddress(const QString &localAddress)
 {
-	FileTransfersEnabled = flag;
 	LocalAddress = localAddress;
 }
 
@@ -259,110 +348,7 @@ void JabberClient::connect(const XMPP::Jid &jid, const QString &password, bool a
 	 */
 	JabberClientStream->setAllowPlain(allowPlainTextPassword());
 
-	/*
-	 * Setup client layer.
-	 */
-	jabberClient = new XMPP::Client(this);
-
-	// Initialize server info stuff
-	serverInfoManager = new ServerInfoManager(jabberClient, jabberClient);
-	QObject::connect(serverInfoManager, SIGNAL(featuresChanged()),
-		this, SLOT(serverFeaturesChanged()));
-
-	// Initialize PubSub stuff
-	PepManager = new PEPManager(jabberClient, serverInfoManager, jabberClient);
-	QObject::connect(PepManager, SIGNAL(publish_success(const QString&, const XMPP::PubSubItem&)),
-		this, SIGNAL(publishSuccess(const QString&,const XMPP::PubSubItem&)));
-	QObject::connect(PepManager, SIGNAL(publish_error(const QString&, const XMPP::PubSubItem&)),
-		this, SIGNAL(publishError(const QString&,const XMPP::PubSubItem&)));
-	PepAvailable = false;
-
-	/*
-	 * Enable file transfer (IP and server will be set after connection
-	 * has been established.
-	 */
-	if (fileTransfersEnabled())
-	{
-		jabberClient->setFileTransferEnabled(true);
-		{
-			using namespace XMPP;
-			QObject::connect(jabberClient->fileTransferManager(), SIGNAL(incomingReady()),
-					   this, SLOT(slotIncomingFileTransfer()));
-		}
-	}
-
-	/* This should only be done here to connect the signals, otherwise it is a
-	 * bad idea.
-	 */
-	{
-		using namespace XMPP;
-		QObject::connect(jabberClient, SIGNAL(subscription(const Jid &, const QString &, const QString &)),
-				   this, SLOT(slotSubscription(const Jid &, const QString &, const QString &)));
-		QObject::connect(jabberClient, SIGNAL(rosterRequestFinished(bool, int, const QString &)),
-				   this, SLOT(slotRosterRequestFinished(bool, int, const QString &)));
-		QObject::connect(jabberClient, SIGNAL(rosterItemAdded(const RosterItem &)),
-				   this, SLOT(slotNewContact(const RosterItem &)));
-		QObject::connect(jabberClient, SIGNAL(rosterItemUpdated(const RosterItem &)),
-				   this, SLOT(slotContactUpdated(const RosterItem &)));
-		QObject::connect(jabberClient, SIGNAL(rosterItemRemoved(const RosterItem &)),
-				   this, SLOT(slotContactDeleted(const RosterItem &)));
-		QObject::connect(jabberClient, SIGNAL(resourceAvailable(const Jid &, const Resource &)),
-				   this, SLOT(slotResourceAvailable(const Jid &, const Resource &)));
-		QObject::connect(jabberClient, SIGNAL(resourceUnavailable(const Jid &, const Resource &)),
-				   this, SLOT(slotResourceUnavailable(const Jid &, const Resource &)));
-		QObject::connect(jabberClient, SIGNAL(messageReceived(const Message &)),
-				   this, SLOT(slotReceivedMessage(const Message &)));
-		QObject::connect(jabberClient, SIGNAL(groupChatJoined(const Jid &)),
-				   this, SLOT(slotGroupChatJoined(const Jid &)));
-		QObject::connect(jabberClient, SIGNAL(groupChatLeft(const Jid &)),
-				   this, SLOT(slotGroupChatLeft(const Jid &)));
-		QObject::connect(jabberClient, SIGNAL(groupChatPresence(const Jid &, const Status &)),
-				   this, SLOT(slotGroupChatPresence(const Jid &, const Status &)));
-		QObject::connect(jabberClient, SIGNAL(groupChatError(const Jid &, int, const QString &)),
-				   this, SLOT(slotGroupChatError(const Jid &, int, const QString &)));
-		//QObject::connect(jabberClient, SIGNAL(debugText(const QString &)),
-		//		   this, SLOT(slotPsiDebug(const QString &)));
-		QObject::connect(jabberClient, SIGNAL(xmlIncoming(const QString&)),
-				   this, SLOT(slotIncomingXML(const QString &)));
-		QObject::connect(jabberClient, SIGNAL(xmlOutgoing(const QString&)),
-				   this, SLOT(slotOutgoingXML(const QString &)));
-	}
-
-	jabberClient->setClientName(clientName());
-	jabberClient->setClientVersion(clientVersion());
-	jabberClient->setOSName(osName());
-
-	// Set caps information
-	jabberClient->setCapsNode(capsNode());
-
-	// Set Disco Identity
-	//jabberClient->setIdentity( discoIdentity());
-
-
-	DiscoItem::Identity identity;
-	identity.category = "client";
-	identity.type = "pc";
-	identity.name = "Kadu";
-	jabberClient->setIdentity(identity);
-
-	QStringList features;
-	features << "http://jabber.org/protocol/chatstates"
-	<< "http://jabber.org/protocol/disco#info"
-	<< "jabber:iq:version"
-	<< "jabber:x:data"
-	<< "urn:xmpp:avatar:data"
-	<< "urn:xmpp:avatar:metadata"
-	<< "urn:xmpp:avatar:metadata+notify";
-
-	setCapsVersion(calculateCapsVersion(identity, features));
-
-	jabberClient->setCapsVersion(capsVersion());
-
-	jabberClient->setFeatures(Features(features));
-
-	jabberClient->setTimeZone(timeZoneName(), timeZoneOffset());
-
-	jabberClient->connectToServer(JabberClientStream, jid, auth);
+	Client->connectToServer(JabberClientStream, jid, auth);
 }
 
 void JabberClient::disconnect()
@@ -388,49 +374,49 @@ void JabberClient::disconnect(XMPP::Status &reason)
 
 bool JabberClient::isConnected() const
 {
-	return jabberClient && jabberClient->isActive();
+	return Client->isActive();
 }
 
 void JabberClient::joinGroupChat(const QString &host, const QString &room, const QString &nick)
 {
-	client()->groupChatJoin(host, room, nick);
+	Client->groupChatJoin(host, room, nick);
 }
 
 void JabberClient::joinGroupChat(const QString &host, const QString &room, const QString &nick, const QString &password)
 {
-	client()->groupChatJoin(host, room, nick, password);
+	Client->groupChatJoin(host, room, nick, password);
 }
 
 void JabberClient::leaveGroupChat(const QString &host, const QString &room)
 {
-	client()->groupChatLeave(host, room);
+	Client->groupChatLeave(host, room);
 }
 
 void JabberClient::setGroupChatStatus( const QString &host, const QString &room, const XMPP::Status &status)
 {
-	client()->groupChatSetStatus( host, room, status);
+	Client->groupChatSetStatus( host, room, status);
 }
 
 void JabberClient::changeGroupChatNick( const QString &host, const QString &room, const QString &nick, const XMPP::Status &status)
 {
-	client()->groupChatChangeNick( host, room, nick, status);
+	Client->groupChatChangeNick( host, room, nick, status);
 }
 
 void JabberClient::sendMessage(const XMPP::Message &message)
 {
 	XMPP::Message m = message;
 	emit messageAboutToSend(m);
-	client()->sendMessage(m);
+	Client->sendMessage(m);
 }
 
 void JabberClient::send(const QString &packet)
 {
-	client()->send(packet);
+	Client->send(packet);
 }
 
 void JabberClient::requestRoster()
 {
-	client()->rosterRequest();
+	Client->rosterRequest();
 }
 
 void JabberClient::slotPsiDebug(const QString &_msg)
@@ -520,19 +506,16 @@ void JabberClient::slotCSAuthenticated()
 	if (bs->inherits("BSocket") || bs->inherits("XMPP::BSocket"))
 		LocalAddress =((BSocket *)bs)->address().toString();
 
-	if (fileTransfersEnabled())
-	{
-		S5BServerManager::instance()->addAddress(localAddress());
-		jabberClient->s5bManager()->setServer(S5BServerManager::instance()->server());
-	}
+	S5BServerManager::instance()->addAddress(localAddress());
+	Client->s5bManager()->setServer(S5BServerManager::instance()->server());
 
 	// start the client operation
-	jabberClient->start(jid().domain(), jid().node(), Password, jid().resource());
+	Client->start(jid().domain(), jid().node(), Password, jid().resource());
 
 
 	if (!JabberClientStream->old())
 	{
-		XMPP::JT_Session *j = new XMPP::JT_Session(jabberClient->rootTask());
+		XMPP::JT_Session *j = new XMPP::JT_Session(Client->rootTask());
 		QObject::connect(j,SIGNAL(finished()),this, SLOT(sessionStart_finished()));
 		j->go(true);
 	}
@@ -629,7 +612,7 @@ void JabberClient::addContact(const XMPP::Jid &j, const QString &name, const QSt
 	if (AddedContacts.contains(j.bare()))
 		return;
 
-	JT_Roster *r = new JT_Roster(jabberClient->rootTask());
+	JT_Roster *r = new JT_Roster(Client->rootTask());
 	r->set(j, name, groups);
 	r->go(true);
 
@@ -638,12 +621,9 @@ void JabberClient::addContact(const XMPP::Jid &j, const QString &name, const QSt
 
 void JabberClient::removeContact(const XMPP::Jid &j)
 {
-	if (!jabberClient)
-		return;
-
 	AddedContacts.removeAll(j.bare());
 
-	JT_Roster *r = new JT_Roster(jabberClient->rootTask());
+	JT_Roster *r = new JT_Roster(Client->rootTask());
 	r->remove(j);
 	r->go(true);
 
@@ -659,10 +639,7 @@ void JabberClient::removeContact(const XMPP::Jid &j)
 
 void JabberClient::updateContact(const XMPP::Jid &j, const QString &name, const QStringList &groups)
 {
-	if (!jabberClient)
-		return;
-
-	JT_Roster *r = new JT_Roster(jabberClient->rootTask());
+	JT_Roster *r = new JT_Roster(Client->rootTask());
 	r->set(j, name, groups);
 	r->go(true);
 }
@@ -734,10 +711,7 @@ void JabberClient::rejectSubscription(const XMPP::Jid &jid)
 
 void JabberClient::changeSubscription(const XMPP::Jid &jid, const QString &type)
 {
-	if (!jabberClient)
-		return;
-
-	XMPP::JT_Presence *task = new XMPP::JT_Presence(jabberClient->rootTask());
+	XMPP::JT_Presence *task = new XMPP::JT_Presence(Client->rootTask());
 	task->sub(jid, type);
 	task->go(true);
 }
