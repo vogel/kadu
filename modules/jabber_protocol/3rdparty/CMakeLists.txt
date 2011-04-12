@@ -32,7 +32,7 @@ macro (kadu_jabber_automoc)
 			endif (_match)
 		endif (NOT _skip AND EXISTS ${_abs_FILE})
 	endforeach (_current_FILE)
-endmacro (KADU_JABBER_AUTOMOC)
+endmacro (kadu_jabber_automoc)
 
 if (MINGW)
 	if (NOT MINGW_QCA_DIR)
