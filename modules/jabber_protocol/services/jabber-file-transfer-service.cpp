@@ -25,6 +25,7 @@
 #include "contacts/contact-manager.h"
 
 #include "file-transfer/jabber-file-transfer-handler.h"
+#include "file-transfer/s5b-server-manager.h"
 #include "jabber-protocol.h"
 
 #include "jabber-file-transfer-service.h"
@@ -32,8 +33,15 @@
 JabberFileTransferService::JabberFileTransferService(JabberProtocol *protocol) :
 		FileTransferService(protocol), Protocol(protocol)
 {
-	connect(Protocol->client(), SIGNAL(incomingFileTransfer()),
-			this, SLOT(irisIncomingFileTransfer()));
+	connect(S5BServerManager::instance(), SIGNAL(serverChanged(XMPP::S5BServer *)),
+			this, SLOT(s5bServerChanged(XMPP::S5BServer *)));
+
+	connect(Protocol, SIGNAL(stateMachineLoggedIn()), this, SLOT(loggedIn()));
+	connect(Protocol, SIGNAL(stateMachineLoggedOut()), this, SLOT(loggedOut()));
+
+	Protocol->xmppClient()->setFileTransferEnabled(true);
+	connect(Protocol->xmppClient()->fileTransferManager(), SIGNAL(incomingReady()),
+			this, SLOT(incomingFileTransferSlot()));
 }
 
 JabberFileTransferService::~JabberFileTransferService()
@@ -48,9 +56,26 @@ FileTransferHandler * JabberFileTransferService::createFileTransferHandler(FileT
 	return handler;
 }
 
-void JabberFileTransferService::irisIncomingFileTransfer()
+void JabberFileTransferService::loggedIn()
 {
-	XMPP::FileTransfer *jTransfer = Protocol->client()->fileTransferManager()->takeIncoming();
+	S5BServerManager::instance()->addAddress(Protocol->client()->localAddress());
+	Protocol->xmppClient()->s5bManager()->setServer(S5BServerManager::instance()->server());
+}
+
+void JabberFileTransferService::loggedOut()
+{
+	S5BServerManager::instance()->removeAddress(Protocol->client()->localAddress());
+	Protocol->xmppClient()->s5bManager()->setServer(0);
+}
+
+void JabberFileTransferService::s5bServerChanged(XMPP::S5BServer *server)
+{
+	Protocol->xmppClient()->s5bManager()->setServer(server);
+}
+
+void JabberFileTransferService::incomingFileTransferSlot()
+{
+	XMPP::FileTransfer *jTransfer = Protocol->xmppClient()->fileTransferManager()->takeIncoming();
 	if (!jTransfer)
 		return;
 

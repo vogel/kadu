@@ -28,14 +28,12 @@
 #include <QtCrypto>
 
 #include <bsocket.h>
-#include <filetransfer.h>
 #include <xmpp_tasks.h>
 
 #include "accounts/account.h"
 #include "debug.h"
 
 #include "certificates/certificate-helpers.h"
-#include "file-transfer/s5b-server-manager.h"
 #include "resource/jabber-resource-pool.h"
 #include "utils/pep-manager.h"
 #include "utils/server-info-manager.h"
@@ -52,9 +50,6 @@ JabberClient::JabberClient(JabberProtocol *protocol, QObject *parent) :
 		QObject(parent), Client(0), JabberClientStream(0), JabberClientConnector(0),
 		JabberTLS(0), JabberTLSHandler(0), Protocol(protocol), serverInfoManager(0), PepManager(0)
 {
-	QObject::connect(S5BServerManager::instance(), SIGNAL(serverChanged(XMPP::S5BServer *)),
-			this, SLOT(s5bServerChanged(XMPP::S5BServer *)));
-
 	cleanUp();
 
 	Client = new XMPP::Client(this);
@@ -100,17 +95,6 @@ JabberClient::JabberClient(JabberProtocol *protocol, QObject *parent) :
 	QObject::connect(PepManager, SIGNAL(publish_error(const QString&, const XMPP::PubSubItem&)),
 		this, SIGNAL(publishError(const QString&,const XMPP::PubSubItem&)));
 	PepAvailable = false;
-
-	/*
-	 * Enable file transfer (IP and server will be set after connection
-	 * has been established.
-	 */
-	Client->setFileTransferEnabled(true);
-	{
-		using namespace XMPP;
-		QObject::connect(Client->fileTransferManager(), SIGNAL(incomingReady()),
-				   this, SLOT(slotIncomingFileTransfer()));
-	}
 
 	/* This should only be done here to connect the signals, otherwise it is a
 	 * bad idea.
@@ -219,21 +203,11 @@ void JabberClient::slotUpdatePenaltyTime()
 	QTimer::singleShot(JABBER_PENALTY_TIME * 1000, this, SLOT(slotUpdatePenaltyTime()));
 }
 
-void JabberClient::s5bServerChanged(XMPP::S5BServer *server)
-{
-	Client->s5bManager()->setServer(server);
-}
-
 void JabberClient::setOverrideHost(bool flag, const QString &server, int port)
 {
 	OverrideHost = flag;
 	Server = server;
 	Port = port;
-}
-
-void JabberClient::setLocalAddress(const QString &localAddress)
-{
-	LocalAddress = localAddress;
 }
 
 void JabberClient::setTimeZone(const QString &timeZoneName, int timeZoneOffset)
@@ -506,9 +480,6 @@ void JabberClient::slotCSAuthenticated()
 	if (bs->inherits("BSocket") || bs->inherits("XMPP::BSocket"))
 		LocalAddress =((BSocket *)bs)->address().toString();
 
-	S5BServerManager::instance()->addAddress(localAddress());
-	Client->s5bManager()->setServer(S5BServerManager::instance()->server());
-
 	// start the client operation
 	Client->start(jid().domain(), jid().node(), Password, jid().resource());
 
@@ -539,11 +510,6 @@ void JabberClient::slotCSDisconnected()
 	 * but timers etc prevent us from doing so.(Psi does
 	 * not like to be deleted from a slot).
 	 */
-
-	emit debugMessage("Disconnected, freeing up file transfer port...");
-
-	// delete local address from S5B server
-	S5BServerManager::instance()->removeAddress(localAddress());
 
 	emit csDisconnected();
 }
@@ -606,9 +572,6 @@ void JabberClient::slotCSError(int error)
 
 void JabberClient::addContact(const XMPP::Jid &j, const QString &name, const QStringList &groups)
 {
-	if (!jabberClient)
-		return;
-
 	if (AddedContacts.contains(j.bare()))
 		return;
 
@@ -719,11 +682,6 @@ void JabberClient::changeSubscription(const XMPP::Jid &jid, const QString &type)
 void JabberClient::slotRosterRequestFinished(bool success, int /*statusCode*/, const QString &/*statusString*/)
 {
 	emit rosterRequestFinished(success);
-}
-
-void JabberClient::slotIncomingFileTransfer()
-{
-	emit incomingFileTransfer();
 }
 
 void JabberClient::slotNewContact(const XMPP::RosterItem &item)

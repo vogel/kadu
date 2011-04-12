@@ -196,8 +196,8 @@ void JabberFileTransferHandler::send()
 	// sendFile needs jid with resource so take best from ResourcePool
 	PeerJid = XMPP::Jid(jid).withResource(jabberProtocol->resourcePool()->bestResource(jid).name());
 
-	JabberTransfer = jabberProtocol->client()->fileTransferManager()->createTransfer();
-	if(proxy.isValid())
+	JabberTransfer = jabberProtocol->xmppClient()->fileTransferManager()->createTransfer();
+	if (proxy.isValid())
 		JabberTransfer->setProxy(proxy);
 
 	connect(JabberTransfer, SIGNAL(accepted()), SLOT(ft_accepted()));

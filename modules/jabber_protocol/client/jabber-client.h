@@ -37,7 +37,6 @@
 namespace XMPP
 {
 	class AdvancedConnector;
-	class S5BServer;
 }
 
 class JabberProtocol;
@@ -144,8 +143,6 @@ namespace XMPP
 		QString calculateCapsVersion(const DiscoItem::Identity &identity, const QStringList &features);
 
 	private slots:
-		void s5bServerChanged(XMPP::S5BServer *server);
-
 		/* update the penalty timer */
 		void slotUpdatePenaltyTime();
 
@@ -169,9 +166,6 @@ namespace XMPP
 
 		/* Called from Psi: roster request finished */
 		void slotRosterRequestFinished(bool success, int statusCode, const QString &statusString);
-
-		/* Called from Psi: incoming file transfer */
-		void slotIncomingFileTransfer();
 
 		/* A new item appeared in our roster */
 		void slotNewContact(const RosterItem &);
@@ -349,12 +343,6 @@ namespace XMPP
 		XMPP::ClientStream::AllowPlainType allowPlainTextPassword() const { return AllowPlainTextPassword; }
 
 		/**
-		 * Enable file transfers. Default is false.
-		 * @param localAddress Local address to receive file transfers at. Will be determined automatically if not specified.
-		 */
-		void setLocalAddress(const QString &localAddress = QString());
-
-		/**
 		 * Returns the address of the local interface.
 		 */
 		const QString & localAddress() const { return LocalAddress; }
@@ -484,13 +472,6 @@ namespace XMPP
 		XMPP::Task *rootTask() const { return client() ? client()->rootTask() : 0; }
 
 		/**
-		 * Returns the file transfer manager
-		 * instance that deals with current file
-		 * transfers.
-		 */
-		XMPP::FileTransferManager *fileTransferManager() const { return client() ? client()->fileTransferManager() : 0; }
-
-		/**
 		 * Join a groupchat.
 		 * @param host Node to join the room at.
 		 * @param room Name of room to join.
@@ -580,14 +561,6 @@ namespace XMPP
 		 * Client stream was disconnected.
 		 */
 		void csDisconnected();
-
-		/**
-		 * A new file transfer needs to be handled.
-		 * The file transfer can be dealt with by
-		 * querying the file transfer manager from
-		 * @ref client.
-		 */
-		void incomingFileTransfer();
 
 		/**
 		 * Fatal error has been encountered,

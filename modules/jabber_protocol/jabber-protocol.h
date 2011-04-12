@@ -105,6 +105,7 @@ public:
 	virtual ~JabberProtocol();
 
 	XMPP::JabberClient * client() { return JabberClient; }
+	XMPP::Client * xmppClient() { return JabberClient->client(); }
 
 	void setContactsListReadOnly(bool contactsListReadOnly);
 	virtual bool contactsListReadOnly();
