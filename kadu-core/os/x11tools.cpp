@@ -439,7 +439,7 @@ bool X11_isWindowCovered( Display *display, Window window )
 		window = parent;
 		XQueryTree( display, window, &root, &parent, &children, &nchildren );
 		XFree( children );
-		Atom type;
+		Atom type = None;
 		if( X11_getFirstPropertyAtom( display, window, "_NET_WM_WINDOW_TYPE", &type ) )
 			notypes = false;
 	}
@@ -489,7 +489,7 @@ bool X11_isWindowCovered( Display *display, Window window )
 			&&  ( ( y1 <= Y1 && Y1 <= y2 ) || ( y1 <= Y2 && Y2 <= y2 ) || ( y1 >= Y1 && y2 <= Y2 ) )
 			)
 			{
-				Atom type;
+				Atom type = None;
 				bool hastype = false;
 				std::list<Window> windows;
 				windows.push_back( children[k] );
@@ -700,8 +700,8 @@ void X11_setActiveWindowCheck( Display *display, Window window, bool forceFreeDe
 
 Window X11_getTopMostWindow( Display *display )
 {
-	Atom listatom;
-	Atom type_return;
+	Atom listatom = None;
+	Atom type_return = None;
 	int format_return;
 	unsigned long nitems_return;
 	unsigned long bytesafter_return;
@@ -932,7 +932,7 @@ bool X11_checkFullScreen( Display *display )
 		if( wl != None )
 		{
 			_x11toolsdebug( "[F2]" );
-			Atom wl_type;
+			Atom wl_type = None;
 			if( X11_getFirstPropertyAtom( display, wl, "_NET_WM_WINDOW_TYPE", &wl_type ) && ( wl_type != None ) )
 			{
 				_x11toolsdebug( "[F3]" );
