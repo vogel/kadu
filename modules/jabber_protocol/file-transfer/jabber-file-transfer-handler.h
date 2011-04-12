@@ -23,7 +23,7 @@
 #ifndef JABBER_FILE_TRANSFER_HANDLER_H
 #define JABBER_FILE_TRANSFER_HANDLER_H
 
- #include <QtCore/QFile>
+#include <QtCore/QFile>
 
 #include "file-transfer/file-transfer-handler.h"
 #include <xmpp.h>

@@ -31,11 +31,14 @@
 // include these because of namespace reasons
 #include <iris/im.h>
 #include <iris/xmpp.h>
-#include <iris/s5b.h>
 
 #include <QtCrypto>
 
-namespace XMPP { class AdvancedConnector; }
+namespace XMPP
+{
+	class AdvancedConnector;
+	class S5BServer;
+}
 
 class JabberProtocol;
 class PEPManager;
@@ -91,13 +94,6 @@ namespace XMPP
 		// ignore TLS warnings
 		bool IgnoreTLSWarnings;
 
-		// current S5B server instance
-		static XMPP::S5BServer *S5bServer;
-		// address list being handled by the S5B server instance
-		static QStringList S5bAddressList;
-		// port of S5B server
-		static int S5bServerPort;
-
 		// local IP address
 		QString LocalAddress;
 
@@ -145,27 +141,13 @@ namespace XMPP
 		*/
 		void cleanUp();
 
-		/**
-		* Return current instance of the S5B server.
-		*/
-		XMPP::S5BServer *s5bServer();
-		/**
-		 * Add an address that the S5B server should handle.
-		*/
-		void addS5BServerAddress(const QString &address);
-		/**
-		* Remove an address that the S5B server currently handles.
-		 */
-		void removeS5BServerAddress(const QString &address);
-
 		void setPEPAvailable(bool b);
 
 		// TODO 0.10: move this to proper place:
 		QString calculateCapsVersion(const DiscoItem::Identity &identity, const QStringList &features);
 
 	private slots:
-		/* S5B server object has been destroyed. */
-		void slotS5BServerGone();
+		void s5bServerChanged(XMPP::S5BServer *server);
 
 		/* update the penalty timer */
 		void slotUpdatePenaltyTime();
@@ -292,19 +274,6 @@ namespace XMPP
 		 * Return if TLS warnings are being ignored.
 		 */
 		bool ignoreTLSWarnings() { return IgnoreTLSWarnings; }
-
-		/**
-		 * Set the port on which the S5B server should listen.
-		 * This is only taken into account if @ref setFileTransfersEnabled
-		 * is set to true.
-		 * @return True if port could be bound, false if not.
-		 */
-		bool setS5BServerPort(int port);
-
-		/**
-		 * Returns the port the S5B server listens on.
-		 */
-		int s5bServerPort() const { return S5bServerPort; }
 
 		/**
 		 * Force the use of TLS. If TLS connections are forced,

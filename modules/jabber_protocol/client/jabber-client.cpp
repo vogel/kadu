@@ -35,6 +35,7 @@
 #include "debug.h"
 
 #include "certificates/certificate-helpers.h"
+#include "file-transfer/s5b-server-manager.h"
 #include "resource/jabber-resource-pool.h"
 #include "utils/pep-manager.h"
 #include "utils/server-info-manager.h"
@@ -47,14 +48,13 @@
 namespace XMPP
 {
 
-XMPP::S5BServer *JabberClient::S5bServer = 0L;
-QStringList JabberClient::S5bAddressList;
-int JabberClient::S5bServerPort = 8010;
-
 JabberClient::JabberClient(JabberProtocol *protocol, QObject *parent) :
 		QObject(parent), jabberClient(0), JabberClientStream(0), JabberClientConnector(0),
 		JabberTLS(0), JabberTLSHandler(0), Protocol(protocol), serverInfoManager(0), PepManager(0)
 {
+	QObject::connect(S5BServerManager::instance(), SIGNAL(serverChanged(XMPP::S5BServer *)),
+			this, SLOT(s5bServerChanged(XMPP::S5BServer *)));
+
 	cleanUp();
 
 	// initiate penalty timer
@@ -108,7 +108,6 @@ void JabberClient::cleanUp()
 	setAllowPlainTextPassword(XMPP::ClientStream::AllowPlainOverTLS);
 
 	setFileTransfersEnabled(true);
-	setS5BServerPort(8010);
 
 	setClientName(QString());
 	setClientVersion(QString());
@@ -129,86 +128,10 @@ void JabberClient::slotUpdatePenaltyTime()
 	QTimer::singleShot(JABBER_PENALTY_TIME * 1000, this, SLOT(slotUpdatePenaltyTime()));
 }
 
-bool JabberClient::setS5BServerPort(int port)
+void JabberClient::s5bServerChanged(XMPP::S5BServer *server)
 {
-	S5bServerPort = port;
-
-	if (fileTransfersEnabled())
-		return s5bServer()->start(port);
-
-	return true;
-}
-
-XMPP::S5BServer *JabberClient::s5bServer()
-{
-	if (!S5bServer)
-	{
-		S5bServer = new XMPP::S5BServer();
-		QObject::connect(S5bServer, SIGNAL(destroyed()), this, SLOT(slotS5BServerGone()));
-
-		/*
-		 * Try to start the server at the default port here.
-		 * We have no way of notifying the caller of an error.
-		 * However, since the caller will usually also
-		 * use setS5BServerPort() to ensure the correct
-		 * port, we can return an error code there.
-		 */
-		if (fileTransfersEnabled())
-			s5bServer()->start(S5bServerPort);
-	}
-
-	return S5bServer;
-}
-
-void JabberClient::slotS5BServerGone()
-{
-	S5bServer = 0L;
-
 	if (jabberClient)
-		jabberClient->s5bManager()->setServer(0L);
-}
-
-void JabberClient::addS5BServerAddress(const QString &address)
-{
-	QStringList newList;
-
-	S5bAddressList.append(address);
-
-	// now filter the list without dupes
-	foreach (QStringList::const_reference str, S5bAddressList)
-	{
-		if (!newList.contains(str))
-			newList.append(str);
-	}
-
-	s5bServer()->setHostList(newList);
-}
-
-void JabberClient::removeS5BServerAddress(const QString &address)
-{
-	QStringList newList;
-
-	int idx = S5bAddressList.indexOf( address);
-
-	if (idx != -1)
-		S5bAddressList.removeAt(idx);
-
-	if (S5bAddressList.isEmpty())
-	{
-		delete S5bServer;
-		S5bServer = 0L;
-	}
-	else
-	{
-		// now filter the list without dupes
-		foreach (QStringList::const_reference str, S5bAddressList)
-		{
-			if (!newList.contains(str))
-				newList.append(str);
-		}
-
-		s5bServer()->setHostList(newList);
-	}
+		jabberClient->s5bManager()->setServer(server);
 }
 
 void JabberClient::setOverrideHost(bool flag, const QString &server, int port)
@@ -599,9 +522,8 @@ void JabberClient::slotCSAuthenticated()
 
 	if (fileTransfersEnabled())
 	{
-		// setup file transfer
-		addS5BServerAddress(localAddress());
-		jabberClient->s5bManager()->setServer(s5bServer());
+		S5BServerManager::instance()->addAddress(localAddress());
+		jabberClient->s5bManager()->setServer(S5BServerManager::instance()->server());
 	}
 
 	// start the client operation
@@ -638,7 +560,7 @@ void JabberClient::slotCSDisconnected()
 	emit debugMessage("Disconnected, freeing up file transfer port...");
 
 	// delete local address from S5B server
-	removeS5BServerAddress(localAddress());
+	S5BServerManager::instance()->removeAddress(localAddress());
 
 	emit csDisconnected();
 }

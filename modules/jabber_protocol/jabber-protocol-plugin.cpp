@@ -25,6 +25,7 @@
 #include "actions/jabber-actions.h"
 #include "actions/jabber-protocol-menu-manager.h"
 #include "certificates/trusted-certificates-manager.h"
+#include "file-transfer/s5b-server-manager.h"
 #include "utils/vcard-factory.h"
 #include "facebook-protocol-factory.h"
 #include "gtalk-protocol-factory.h"
@@ -46,6 +47,8 @@ int JabberProtocolPlugin::init(bool firstLoad)
 			|| ProtocolsManager::instance()->hasProtocolFactory("gtalk")
 			|| ProtocolsManager::instance()->hasProtocolFactory("facebook"))
 		return 0;
+
+	S5BServerManager::createInstance();
 
 	JabberIdValidator::createInstance();
 	VCardFactory::createInstance();
@@ -69,6 +72,7 @@ int JabberProtocolPlugin::init(bool firstLoad)
 void JabberProtocolPlugin::done()
 {
 	UrlHandlerManager::instance()->unregisterUrlHandler("Jabber");
+
 	ProtocolsManager::instance()->unregisterProtocolFactory(JabberProtocolFactory::instance());
 	ProtocolsManager::instance()->unregisterProtocolFactory(GTalkProtocolFactory::instance());
 	ProtocolsManager::instance()->unregisterProtocolFactory(FacebookProtocolFactory::instance());
@@ -83,6 +87,9 @@ void JabberProtocolPlugin::done()
 	VCardFactory::destroyInstance();
 	JabberIdValidator::destroyInstance();
 	TrustedCertificatesManager::destroyInstance();
+
+	S5BServerManager::destroyInstance();
+
 	XMPP::irisNetCleanup();
 
 	qRemovePostRoutine(QCA::deinit);
