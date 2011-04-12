@@ -107,7 +107,7 @@ void JabberClient::cleanUp()
 
 	setAllowPlainTextPassword(XMPP::ClientStream::AllowPlainOverTLS);
 
-	setFileTransfersEnabled(false);
+	setFileTransfersEnabled(true);
 	setS5BServerPort(8010);
 
 	setClientName(QString());
@@ -165,7 +165,7 @@ void JabberClient::slotS5BServerGone()
 	S5bServer = 0L;
 
 	if (jabberClient)
-		jabberClient->s5bManager()->setServer( 0L);
+		jabberClient->s5bManager()->setServer(0L);
 }
 
 void JabberClient::addS5BServerAddress(const QString &address)

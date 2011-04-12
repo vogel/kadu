@@ -57,7 +57,7 @@ public:
 	virtual void pause();
 	virtual void restore();
 
-	virtual bool accept(const QFile &file);
+	virtual bool accept(QFile &file);
 	virtual void reject();
 
 };

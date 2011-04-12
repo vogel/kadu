@@ -143,7 +143,7 @@ void JabberFileTransferHandler::updateFileInfo()
 // 	if (SocketNotifiers)
 // 	{
 		transfer().setFileSize(LocalFile.size());
-		transfer().setTransferredSize(BytesSent);
+		transfer().setTransferredSize(BytesTransferred);
 // 	}
 // 	else
 // 	{
@@ -234,78 +234,40 @@ void JabberFileTransferHandler::restore()
 		send();
 }
 
-bool JabberFileTransferHandler::accept(const QFile &file)
+/**
+ * @todo do not pass opened file to this method
+ */
+bool JabberFileTransferHandler::accept(QFile &file)
 {
+	// this suxx, I know
+	file.close();
+	LocalFile.setFileName(file.fileName());
+
+	if (JabberTransfer->rangeSupported())
+	{
+		if (!LocalFile.open(QIODevice::Append | QIODevice::WriteOnly))
+			return false;
+	}
+	else
+	{
+		// we have to close file and reopen it
+		if (!LocalFile.open(QIODevice::Truncate | QIODevice::WriteOnly))
+			return false;
+	}
+
+	BytesTransferred = file.size();
+
 	transfer().accept(file);
-
-	LocalFile.setFileName(file.fileName());// = QFile(QString());
-	Length = JabberTransfer->fileSize();
-	bool couldOpen = false;
-	qlonglong offset = 0;
-	/*qlonglong length = 0;*/
-
-	transfer().setRemoteFileName(file.fileName());
-	transfer().setFileSize(JabberTransfer->fileSize());
-	transfer().setTransferredSize(BytesSent);
-
 	transfer().setTransferStatus(StatusTransfer);
+	transfer().setTransferredSize(BytesTransferred);
 
-	BytesSent = 0;
-	mBytesToTransfer = file.size();
+	Length = JabberTransfer->fileSize();
 
-	/*if ( mXMPPTransfer->rangeSupported () && mLocalFile.exists () )
-	{
-		KGuiItem resumeButton ( i18n ( "&Resume" ) );
-		KGuiItem overwriteButton ( i18n ( "Over&write" ) );
-
-		switch ( KMessageDialog::questionYesNoCancel ( Kopete::UI::Global::mainWidget (),
-													i18n ( "The file %1 already exists, do you want to resume or overwrite it?", fileName ),
-													i18n ( "File Exists: %1", fileName ),
-													resumeButton, overwriteButton ) )
-		{
-			case KMessageDialog::Yes:		// resume
-										couldOpen = mLocalFile.open ( QIODevice::ReadWrite );
-										if ( couldOpen )
-										{
-											offset = mLocalFile.size ();
-											length = mXMPPTransfer->fileSize () - offset;
-											mBytesTransferred = offset;
-											mBytesToTransfer = length;
-											mLocalFile.seek ( mLocalFile.size () );
-										}
-										break;
-
-			case KMessageDialog::No:		// overwrite
-										couldOpen = mLocalFile.open ( QIODevice::WriteOnly );
-										break;
-
-			default:					// cancel
-										deleteLater ();
-										return;
-		}
-	}
-	else
-	{*/
-		// overwrite by default
-		couldOpen = LocalFile.open ( QIODevice::WriteOnly );
-	//}
-
-	if ( !couldOpen )
-	{
-		//transfer->slotError ( KIO::ERR_COULD_NOT_WRITE, fileName );
-
-		//deleteLater ();
-	}
-	else
-	{
-		connect ( JabberTransfer, SIGNAL ( readyRead ( const QByteArray& ) ), this, SLOT ( slotIncomingDataReady ( const QByteArray & ) ) );
-		connect ( JabberTransfer, SIGNAL ( error ( int ) ), this, SLOT ( slotTransferError ( int ) ) );
-		JabberTransfer->accept(offset);
-	}
+	connect(JabberTransfer, SIGNAL(readyRead(const QByteArray &)), this, SLOT(slotIncomingDataReady(const QByteArray &)));
+	connect(JabberTransfer, SIGNAL(error(int)), this, SLOT (slotTransferError(int)));
+	JabberTransfer->accept(BytesTransferred);
 
 	return true;
-
-//	return SocketNotifiers->acceptFileTransfer(file);
 }
 
 void JabberFileTransferHandler::reject()
@@ -320,8 +282,6 @@ void JabberFileTransferHandler::ft_accepted()
 {
 	Offset = JabberTransfer->offset();
 	Length = JabberTransfer->length();
-
-kdebug("send file: accepted!");
 /*
 	d->c = d->ft->s5bConnection();
 	connect(d->c, SIGNAL(proxyQuery()), SLOT(s5b_proxyQuery()));
@@ -340,8 +300,6 @@ kdebug("send file: accepted!");
 
 void JabberFileTransferHandler::ft_connected()
 {
-
-kdebug("send file: connected!");
 /*	d->sent = d->offset;
 
 	if(d->sending) {
@@ -585,7 +543,6 @@ void JabberFileTransferHandler::trySend()
 
 void JabberFileTransferHandler::slotIncomingDataReady ( const QByteArray &data )
 {
-	kdebug("Incoming data ...\n");
 	//if(!d->sending) {
 		//printf("%d bytes read\n", a.size());
 		int r = LocalFile.write(data.data(), data.size());
@@ -596,7 +553,7 @@ void JabberFileTransferHandler::slotIncomingDataReady ( const QByteArray &data )
 			ft_error(ErrFile, 0, LocalFile.errorString());
 			return;
 		}
-		BytesSent += data.size();
+		BytesTransferred += data.size();
 		doFinish();
 	//}
 	emit statusChanged();
@@ -604,7 +561,8 @@ void JabberFileTransferHandler::slotIncomingDataReady ( const QByteArray &data )
 
 void JabberFileTransferHandler::doFinish()
 {
-	if(BytesSent == Length) {
+	if (BytesTransferred == Length)
+	{
 		LocalFile.close();
 		kdebug("Transfer finished... close file.\n");
 		delete JabberTransfer;

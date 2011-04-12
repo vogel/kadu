@@ -157,7 +157,7 @@ void GaduFileTransferHandler::restore()
 		send();
 }
 
-bool GaduFileTransferHandler::accept(const QFile &file)
+bool GaduFileTransferHandler::accept(QFile &file)
 {
 	transfer().accept(file);
 	return SocketNotifiers->acceptFileTransfer(file);

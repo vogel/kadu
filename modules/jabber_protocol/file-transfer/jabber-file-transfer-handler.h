@@ -40,9 +40,7 @@ class JabberFileTransferHandler : public FileTransferHandler
 	
 	XMPP::FileTransfer *JabberTransfer;
 	bool InProgress;
-	qlonglong BytesSent, Offset, Length;
-	qlonglong BytesTransferred;
-	qlonglong mBytesToTransfer;
+	qlonglong BytesTransferred, Offset, Length;
 	int Shift;
 	int Complement;
 	XMPP::Jid PeerJid;
@@ -79,7 +77,7 @@ public:
 	virtual void pause();
 	virtual void restore();
 
-	virtual bool accept(const QFile &file);
+	virtual bool accept(QFile &file);
 	virtual void reject();
 
 signals:
