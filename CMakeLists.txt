@@ -10,6 +10,10 @@ option (ENABLE_DEVELOPER_BUILD "Turn on some features helpful during development
 option (SIG_HANDLING_ENABLED "Define if you want system signals handling" ON)
 option (USE_X11_XFIXES "Use X11 Xfixes extension (Desktop Linux)" ON)
 
+if (NOT NETWORK_IMPLEMENTATION)
+	set (NETWORK_IMPLEMENTATION "dummy" CACHE STRING "Select network-aware implementation (Qt/ntrack/dummy)" FORCE)
+endif (NOT NETWORK_IMPLEMENTATION)
+
 if (NOT BUILD_DESCRIPTION)
 	set (BUILD_DESCRIPTION "Compiled from sources" CACHE STRING "Build description" FORCE)
 endif (NOT BUILD_DESCRIPTION)

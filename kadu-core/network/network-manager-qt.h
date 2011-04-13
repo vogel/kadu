@@ -33,6 +33,7 @@ class KADUAPI NetworkManagerQt : public NetworkManager
 	Q_OBJECT
 
 	QNetworkConfigurationManager *ConfigurationManager;
+	bool HasValidCapabilities;
 
 public:
 	NetworkManagerQt();

@@ -51,8 +51,3 @@ add_library (protocols
 
 set_target_properties (protocols PROPERTIES ENABLE_EXPORTS ON)
 set_target_properties (protocols PROPERTIES COMPILE_FLAGS "-DKADULIB")
-
-if (NOT WIN32)
-	include ("../../cmake/FindQNtrack.cmake")
-	include_directories (${QNTRACK_INCLUDE_DIR})
-endif (NOT WIN32)

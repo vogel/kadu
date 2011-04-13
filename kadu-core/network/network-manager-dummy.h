@@ -1,7 +1,6 @@
 /*
  * %kadu copyright begin%
  * Copyright 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
- * Copyright 2011 Piotr Dąbrowski (ultr@ultr.pl)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -18,36 +17,24 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "network/network-aware-object.h"
-#include "kadu-network-config.h"
+#ifndef NETWORK_MANAGER_DUMMY_H
+#define NETWORK_MANAGER_DUMMY_H
 
+#include <QtCore/QObject>
+
+#include "exports.h"
 #include "network-manager.h"
 
-#include NETWORK_IMPLEMENTATION_INCLUDE
-
-NetworkManager *NetworkManager::Instance = 0;
-
-NetworkManager * NetworkManager::instance()
+class KADUAPI NetworkManagerDummy : public NetworkManager
 {
-	if (!Instance)
-		Instance = new NETWORK_IMPLEMENTATION_CLASS_NAME();
+	Q_OBJECT
 
-	return Instance;
-}
+public:
+	NetworkManagerDummy();
+	virtual ~NetworkManagerDummy();
 
-NetworkManager::NetworkManager()
-{
-}
+	virtual bool isOnline();
 
-NetworkManager::~NetworkManager()
-{
-}
+};
 
-void NetworkManager::onlineStateChanged(bool isOnline)
-{
-	NetworkAwareObject::notifyOnlineStateChanged(isOnline);
-	if (isOnline)
-		emit online();
-	else
-		emit offline();
-}
+#endif // NETWORK_MANAGER_DUMMY_H

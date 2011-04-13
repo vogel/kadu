@@ -1,7 +1,6 @@
 /*
  * %kadu copyright begin%
  * Copyright 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
- * Copyright 2011 Piotr Dąbrowski (ultr@ultr.pl)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -18,36 +17,17 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "network/network-aware-object.h"
-#include "kadu-network-config.h"
+#include "network-manager-dummy.h"
 
-#include "network-manager.h"
-
-#include NETWORK_IMPLEMENTATION_INCLUDE
-
-NetworkManager *NetworkManager::Instance = 0;
-
-NetworkManager * NetworkManager::instance()
-{
-	if (!Instance)
-		Instance = new NETWORK_IMPLEMENTATION_CLASS_NAME();
-
-	return Instance;
-}
-
-NetworkManager::NetworkManager()
+NetworkManagerDummy::NetworkManagerDummy()
 {
 }
 
-NetworkManager::~NetworkManager()
+NetworkManagerDummy::~NetworkManagerDummy()
 {
 }
 
-void NetworkManager::onlineStateChanged(bool isOnline)
+bool NetworkManagerDummy::isOnline()
 {
-	NetworkAwareObject::notifyOnlineStateChanged(isOnline);
-	if (isOnline)
-		emit online();
-	else
-		emit offline();
+	return true;
 }

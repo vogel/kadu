@@ -22,7 +22,7 @@
 
 #include <QtCore/QObject>
 
-#include <ntrack/qt4/QNtrack.h>
+#include <QNtrack.h>
 
 #include "exports.h"
 #include "network-manager.h"

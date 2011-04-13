@@ -25,7 +25,10 @@
 NetworkManagerQt::NetworkManagerQt()
 {
 	ConfigurationManager = new QNetworkConfigurationManager(this);
-	connect(ConfigurationManager, SIGNAL(onlineStateChanged(bool)), this, SLOT(onlineStateChanged(bool)));
+	HasValidCapabilities = ConfigurationManager->capabilities() & QNetworkConfigurationManager::CanStartAndStopInterfaces;
+
+	if (HasValidCapabilities)
+		connect(ConfigurationManager, SIGNAL(onlineStateChanged(bool)), this, SLOT(onlineStateChanged(bool)));
 }
 
 NetworkManagerQt::~NetworkManagerQt()
@@ -34,5 +37,7 @@ NetworkManagerQt::~NetworkManagerQt()
 
 bool NetworkManagerQt::isOnline()
 {
-	return ConfigurationManager->isOnline();
+	return HasValidCapabilities
+			? ConfigurationManager->isOnline()
+			: true;
 }
