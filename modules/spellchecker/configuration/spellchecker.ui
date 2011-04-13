@@ -14,7 +14,7 @@
 				<check-box caption="Ignore case" config-section="ASpell" config-item="Case" id="spellchecker/ignoreCase" />
 			</group-box>
 			<group-box name="Spelling Suggestions Options">
-				<check-box caption="Use spelling suggestions" config-section="ASpell" config-item="Suggester" />
+				<check-box caption="Show suggestions" config-section="ASpell" config-item="Suggester" />
 				<spin-box caption="Maximum number of suggested words" config-section="ASpell" config-item="SuggesterWordCount"	min-value="1" max-value="20" />
 			</group-box>
 		</tab>

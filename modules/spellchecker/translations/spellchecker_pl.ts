@@ -44,12 +44,12 @@
 		<translation>Opcje sugerowania wyrazów</translation>
 	</message>
 	<message>
-		<source>Use spelling suggestions</source>
-		<translation>Używaj sugerowania wyrazów</translation>
+		<source>Show suggestions</source>
+		<translation>Pokazuj sugestie</translation>
 	</message>
 	<message>
 		<source>Maximum number of suggested words</source>
-		<translation>Maksymalna ilość sugerowanych wyrazów</translation>
+		<translation>Maksymalna ilość sugerowanych słów</translation>
 	</message>
 </context>
 <context>
