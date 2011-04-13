@@ -21,67 +21,45 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QFile>
-#include <QtCore/QTextStream>
-#include <QtGui/QApplication>
-#include <QtGui/QCheckBox>
-#include <QtGui/QCursor>
 #include <QtGui/QSpinBox>
 
-#include "../idle/idle.h"
 #include "configuration/configuration-file.h"
 #include "core/core.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/windows/kadu-window.h"
 #include "misc/path-conversion.h"
-#include "debug.h"
+
+#include "modules/idle/idle.h"
 
 #include "auto_hide.h"
-
-extern "C" KADU_EXPORT int auto_hide_init(bool firstLoad)
-{
-	Q_UNUSED(firstLoad)
-
-	kdebugf();
-
-	autoHide = new AutoHide();
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/auto_hide.ui"));
-	MainConfigurationWindow::registerUiHandler(autoHide);
-
-	kdebugf2();
-	return 0;
-}
-
-extern "C" KADU_EXPORT void auto_hide_close()
-{
-	kdebugf();
-
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/auto_hide.ui"));
-	MainConfigurationWindow::unregisterUiHandler(autoHide);
-
-	delete autoHide;
-	autoHide = 0;
-
-	kdebugf2();
-}
-
 
 AutoHide::AutoHide(QObject *parent) :
 		QObject(parent), IdleTime(0)
 {
-	kdebugf();
-
 	connect(&Timer, SIGNAL(timeout()), this, SLOT(timerTimeoutSlot()));
 
 	configurationUpdated();
-
-	kdebugf2();
 }
 
 AutoHide::~AutoHide()
 {
-	kdebugf();
-	kdebugf2();
+	Timer.stop();
+}
+
+int AutoHide::init(bool firstLoad)
+{
+	Q_UNUSED(firstLoad)
+
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/auto_hide.ui"));
+	MainConfigurationWindow::registerUiHandler(this);
+
+	return 0;
+}
+
+void AutoHide::done()
+{
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/auto_hide.ui"));
+	MainConfigurationWindow::unregisterUiHandler(this);
 }
 
 void AutoHide::timerTimeoutSlot()
@@ -115,4 +93,4 @@ void AutoHide::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfi
 	static_cast<QSpinBox *>(mainConfigurationWindow->widget()->widgetById("auto_hide/idle_time"))->setSpecialValueText(tr("Don't hide"));
 }
 
-AutoHide *autoHide;
+Q_EXPORT_PLUGIN2(auto_hide, AutoHide)
