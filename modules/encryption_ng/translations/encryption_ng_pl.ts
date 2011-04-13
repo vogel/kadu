@@ -24,21 +24,17 @@
         <translation>Szyfruj po otrzymaniu zaszyfrowanej wiadomości</translation>
     </message>
     <message>
-        <source>Generate keys</source>
-        <translation>Generuj klucze</translation>
+        <source>Public key has been sent</source>
+        <translation>Klucz publiczny został wysłany</translation>
     </message>
-	<message>
-		<source>Public key has been sent</source>
-		<translation>Klucz publiczny został wysłany</translation>
-		</message>
-	<message>
-		<source>Error during sending public key</source>
-		<translation>Błąd podczas wysyłania klucza publicznego</translation>
-	</message>
-	<message>
-		<source>Encryption error has occured</source>
-		<translation>Błąd szyfrowania</translation>
-	</message>
+    <message>
+        <source>Error during sending public key</source>
+        <translation>Błąd podczas wysyłania klucza publicznego</translation>
+    </message>
+    <message>
+        <source>Encryption error has occured</source>
+        <translation>Błąd szyfrowania</translation>
+    </message>
 </context>
 <context>
     <name>EncryptionActions</name>

@@ -39,6 +39,18 @@
         <source>Ignore case</source>
         <translation>Großschreibung ignorieren</translation>
     </message>
+    <message>
+        <source>Spelling Suggestions Options</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show suggestions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Maximum number of suggested words</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SpellChecker</name>

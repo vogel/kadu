@@ -8,10 +8,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>KNotify</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>General</source>
         <translation type="unfinished"></translation>
     </message>
@@ -34,11 +30,12 @@
         <source>Number of quoted characters</source>
         <translation>Anzahl de zu zitierenden Zeichen</translation>
     </message>
-</context>
-<context>
-    <name>KdeNotify</name>
     <message>
-        <source>KDE4 notifications</source>
+        <source>System</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>System notifications</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

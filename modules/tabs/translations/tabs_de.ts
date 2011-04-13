@@ -75,6 +75,10 @@
         <source>Switch to next tab</source>
         <translation>Zum nächsten Reiter umschalten</translation>
     </message>
+    <message>
+        <source>Chat</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>TabsManager</name>

@@ -79,6 +79,10 @@
         <source> kB</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>ScreenShot images size limit</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ScreenShot</name>

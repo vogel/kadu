@@ -682,16 +682,8 @@ Es ist ein Sicherheitsrisiko!</translation>
         <translation>Allgemein</translation>
     </message>
     <message>
-        <source>Event</source>
-        <translation>Ereignis</translation>
-    </message>
-    <message>
         <source>Options</source>
         <translation>Einstellungen</translation>
-    </message>
-    <message>
-        <source>New messages</source>
-        <translation>Neue Nachricht</translation>
     </message>
     <message>
         <source>Silent Mode</source>
@@ -714,20 +706,12 @@ Es ist ein Sicherheitsrisiko!</translation>
         <translation>Benachrichtige mich über neue Nachrichten nur, wenn das Fenster inaktiv ist</translation>
     </message>
     <message>
-        <source>Status change</source>
-        <translation>Zustandsänderung</translation>
-    </message>
-    <message>
         <source>Ignore status changes from available/busy to busy/available</source>
         <translation>Ignoriere Zustandsänderungen zwischen Erreichbar und Beschäftigt</translation>
     </message>
     <message>
         <source>Ignore changes right after connection to the server</source>
         <translation>Ignoriere Änderungen gleich nach der Verbindung zum Server</translation>
-    </message>
-    <message>
-        <source>Notify about all users</source>
-        <translation>Benachrichtige über alle Kontakte</translation>
     </message>
     <message>
         <source>Multilogon</source>
@@ -739,15 +723,6 @@ Es ist ein Sicherheitsrisiko!</translation>
     </message>
     <message>
         <source>Multilogon session disconnected</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ignore status changes from available / busy to busy / available</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>This option will supersede tooltips with users&apos; status
- changes upon establishing connection to the server</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1239,6 +1214,10 @@ changes upon establishing connection to the server</source>
         <source>Send message</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Show a window with notification</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -1721,32 +1700,31 @@ The export was unsuccessful</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>This file is too big (%1 &gt;= %2)</source>
+        <source>This image has %1 KiB and exceeds the protocol limit of %2 KiB.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>This file is too big for %1.
-Do you really want to send this image?</source>
+        <source>This image has %1 KiB and exceeds recommended maximum size of %2 KiB.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>%1 is disconnected and cannot receive images.
-Do you really want to send this image?</source>
+        <source>Do you really want to send this image?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>This file is too big for %1 of %2 contacts.
-</source>
+        <source>This image has %1 KiB and may be too big for %2.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>%1 of %2 contacts are disconnected and cannot receive images.
-</source>
+        <source>%1 appears to be offline and may not receive images.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Do you really want to send this image?
-Some of them probably will not get it.</source>
+        <source>This image has %1 KiB and may be too big for %2 of %3 contacts in this conference.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 of %2 contacts appear to be offline and may not receive images.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2667,45 +2645,6 @@ This is probably a next part of &lt;b&gt;%5&lt;/b&gt;
     </message>
 </context>
 <context>
-    <name>ModulesManager</name>
-    <message>
-        <source>Required module %1 was not found</source>
-        <translation>Erforderliches Modul %1 wurde nicht gefunden</translation>
-    </message>
-    <message>
-        <source>Module %1 is already active</source>
-        <translation>Modul %1 ist bereits aktiv</translation>
-    </message>
-    <message>
-        <source>Cannot load %1 module library.:
-%2</source>
-        <translation>Kann die Bibliothek %1 mit Modulen nicht laden:
-%2</translation>
-    </message>
-    <message>
-        <source>Module %1 conflicts with: %2</source>
-        <translation>Modul %1 kollidiert mit: %2</translation>
-    </message>
-    <message>
-        <source>Cannot find required functions in module %1.
-Maybe it&apos;s not Kadu-compatible Module.</source>
-        <translation>Ich kann die verlangte Funktion im Modul %1 nicht finden.
-Vielleicht ist es kein Kadu-Modul.</translation>
-    </message>
-    <message>
-        <source>Module initialization routine for %1 failed.</source>
-        <translation>Initialisationroutinen für Modul %1 fehlgeschlagen.</translation>
-    </message>
-    <message>
-        <source>Kadu</source>
-        <translation type="unfinished">Kadu</translation>
-    </message>
-    <message>
-        <source>Module %1 cannot be deactivated because it is being used by the following modules:%2</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>ModulesWindow</name>
     <message>
         <source>Manage Modules</source>
@@ -2714,10 +2653,6 @@ Vielleicht ist es kein Kadu-Modul.</translation>
     <message>
         <source>Info</source>
         <translation>Info</translation>
-    </message>
-    <message>
-        <source>Static</source>
-        <translation>Statisch</translation>
     </message>
     <message>
         <source>Loaded</source>
@@ -2755,10 +2690,6 @@ Vielleicht ist es kein Kadu-Modul.</translation>
         <source>&lt;b&gt;Module:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Depends on:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Conflicts with:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Provides:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Author:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Version:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Description:&lt;/b&gt;</source>
         <translation>&lt;b&gt;Module:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Hängt ab von:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Im Konflikt
 mit:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Bringt mit:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Autor:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Verion&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Beschreibung:&lt;/b&gt;</translation>
-    </message>
-    <message>
-        <source>Hide base modules</source>
-        <translation>Verstecke Standardmodule</translation>
     </message>
     <message>
         <source>&lt;b&gt;Module: &lt;/b&gt;%1&lt;br/&gt;&lt;b&gt;Depends on: &lt;/b&gt;%2&lt;br/&gt;&lt;b&gt;Conflicts with: &lt;/b&gt;%3&lt;br/&gt;&lt;b&gt;Provides: &lt;/b&gt;%4&lt;br/&gt;&lt;b&gt;Author: &lt;/b&gt;%5&lt;br/&gt;&lt;b&gt;Version: &lt;/b&gt;%6&lt;br/&gt;&lt;b&gt;Description: &lt;/b&gt;%7</source>
@@ -2973,6 +2904,58 @@ Sie können diese aktivieren oder deaktivieren, indem Sie auf deren Namen doppel
     </message>
 </context>
 <context>
+    <name>Plugin</name>
+    <message>
+        <source>Kadu</source>
+        <translation type="unfinished">Kadu</translation>
+    </message>
+    <message>
+        <source>Cannot load %1 plugin library.:
+%2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cannot find required object in module %1.
+Maybe it&apos;s not Kadu-compatible plugin.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cannot load %1 module library.:
+%2</source>
+        <translation type="unfinished">Kann die Bibliothek %1 mit Modulen nicht laden:
+%2</translation>
+    </message>
+    <message>
+        <source>Cannot find required functions in module %1.
+Maybe it&apos;s not Kadu-compatible Module.</source>
+        <translation type="unfinished">Ich kann die verlangte Funktion im Modul %1 nicht finden.
+Vielleicht ist es kein Kadu-Modul.</translation>
+    </message>
+    <message>
+        <source>Module initialization routine for %1 failed.</source>
+        <translation type="unfinished">Initialisationroutinen für Modul %1 fehlgeschlagen.</translation>
+    </message>
+</context>
+<context>
+    <name>PluginsManager</name>
+    <message>
+        <source>Kadu</source>
+        <translation type="unfinished">Kadu</translation>
+    </message>
+    <message>
+        <source>Required module %1 was not found</source>
+        <translation type="unfinished">Erforderliches Modul %1 wurde nicht gefunden</translation>
+    </message>
+    <message>
+        <source>Module %1 conflicts with: %2</source>
+        <translation type="unfinished">Modul %1 kollidiert mit: %2</translation>
+    </message>
+    <message>
+        <source>Module %1 cannot be deactivated because it is being used by the following modules:%2</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>ProgressWindow</name>
     <message>
         <source>Plase wait. New Gadu-Gadu account is being registered.</source>
@@ -3018,17 +3001,6 @@ Sie können diese aktivieren oder deaktivieren, indem Sie auf deren Namen doppel
     </message>
     <message>
         <source>Password</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>QApplication</name>
-    <message>
-        <source>Executable &apos;%1&apos; requires Qt %2, found Qt %3.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Incompatible Qt Library Error</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3341,16 +3313,16 @@ Sie können diese aktivieren oder deaktivieren, indem Sie auf deren Namen doppel
         <translation>Syntax %1 überschrieben?</translation>
     </message>
     <message>
-        <source>Preview</source>
-        <translation>Vorschau</translation>
-    </message>
-    <message>
         <source>Save as...</source>
         <translation>Speichern unter...</translation>
     </message>
     <message>
         <source>Kadu</source>
         <translation type="unfinished">Kadu</translation>
+    </message>
+    <message>
+        <source>Refresh Preview</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
