@@ -40,16 +40,16 @@
         <translation>Ignoruj wielkość liter</translation>
 	</message>
 	<message>
-		<source>Suggester Options</source>
-		<translation>Opcje sugestii</translation>
+		<source>Spelling Suggestions Options</source>
+		<translation>Opcje sugerowania wyrazów</translation>
 	</message>
 	<message>
-		<source>Use suggester</source>
-		<translation>Używaj sugestii</translation>
+		<source>Use spelling suggestions</source>
+		<translation>Używaj sugerowania wyrazów</translation>
 	</message>
 	<message>
-		<source>Maximum number of suggestion words</source>
-		<translation>Maksymalna ilość wyrazów sugestii</translation>
+		<source>Maximum number of suggested words</source>
+		<translation>Maksymalna ilość sugerowanych wyrazów</translation>
 	</message>
 </context>
 <context>

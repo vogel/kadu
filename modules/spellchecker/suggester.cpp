@@ -68,7 +68,7 @@ void Suggester::addWordListToMenu(const QTextCursor &textCursor)
 	CurrentTextSelection = textCursor;
 
 	// Add new actions
-	foreach (const QString listWord, SuggestionWordList)
+	foreach (const QString &listWord, SuggestionWordList)
 		SuggestActions.append(new ActionDescription(this, ActionDescription::TypeGlobal,
 					"spellcheckerSuggest#" + listWord, this, SLOT(replaceWithSuggest(QAction *)), KaduIcon(), listWord));
 
