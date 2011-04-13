@@ -132,5 +132,10 @@ void Suggester::replaceWithSuggest(QAction *sender)
 	if (!action)
 		return;
 
-	CurrentTextSelection.insertText(action->text());
+	QString replaceText = action->text();
+
+	if (replaceText.indexOf(" (") != -1)
+		replaceText.truncate(replaceText.indexOf(" ("));
+
+	CurrentTextSelection.insertText(replaceText);
 }

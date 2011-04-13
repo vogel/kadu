@@ -401,7 +401,6 @@ bool SpellChecker::checkWord(const QString &word)
 
 QStringList SpellChecker::buildSuggestList(const QString &word)
 {
-	unsigned int suggesterWordCount = config_file.readUnsignedNumEntry("ASpell", "SuggesterWordCount");
 	QStringList suggestWordList;
 #ifdef HAVE_ASPELL
 	QTextCodec *codec = QTextCodec::codecForName("utf-8");
@@ -409,6 +408,13 @@ QStringList SpellChecker::buildSuggestList(const QString &word)
 
 	for (Checkers::const_iterator it = MyCheckers.constBegin(); it != MyCheckers.constEnd(); ++it)
 	{
+		int suggesterWordCount = config_file.readNumEntry("ASpell", "SuggesterWordCount");
+
+		if (MyCheckers.size() > suggesterWordCount)
+			suggesterWordCount = 1;
+		else
+			suggesterWordCount /= MyCheckers.size();
+
 #ifdef HAVE_ASPELL
 		const AspellWordList *aspellTmpList = aspell_speller_suggest(it.value(), word.toUtf8().constData(), -1);
 
@@ -418,7 +424,11 @@ QStringList SpellChecker::buildSuggestList(const QString &word)
 
 			while((!aspell_string_enumeration_at_end(aspellStringEnum)) && ((suggesterWordCount)))
 			{
-				suggestWordList.append(codec->toUnicode(aspell_string_enumeration_next(aspellStringEnum)));
+				if (MyCheckers.size() > 1)
+					suggestWordList.append(codec->toUnicode(aspell_string_enumeration_next(aspellStringEnum)) + " (" + it.key() + ")");
+				else
+					suggestWordList.append(codec->toUnicode(aspell_string_enumeration_next(aspellStringEnum)));
+
 				--suggesterWordCount;
 			}
 
@@ -437,7 +447,11 @@ QStringList SpellChecker::buildSuggestList(const QString &word)
 				if (!suggesterWordCount)
 					break;
 
-				suggestWordList.append(QString::fromUtf8(suggs[i]));
+				if (MyCheckers.size() > 1)
+					suggestWordList.append(QString::fromUtf8(suggs[i]) + " (" + it.key() + ")");
+				else
+					suggestWordList.append(QString::fromUtf8(suggs[i]));
+
 				--suggesterWordCount;
 			}
 		}
