@@ -27,6 +27,23 @@
 #include "exports.h"
 #include "network-manager.h"
 
+/**
+ * @addtogroup Network
+ * @{
+ */
+
+/**
+ * @class NetworkManagerNTrack
+ * @author Rafał 'Vogel' Malinowski
+ * @author Piotr 'ultr' Dąbrowski
+ * @short Class responsible for network online-offline notifications using NTrack library.
+ * @see NetworkAwareObject
+ *
+ * This class provides information about network availability. To check if network is available use isOnline()
+ * method. Any object can connect to online() and offline() signals to get real-time notifications.
+ *
+ * This class uses NTrack library to get network availability information.
+ */
 class KADUAPI NetworkManagerNTrack : public NetworkManager
 {
 	Q_OBJECT
@@ -41,5 +58,9 @@ public:
 	virtual bool isOnline();
 
 };
+
+/**
+ * @}
+ */
 
 #endif // NETWORK_MANAGER_NTRACK_H

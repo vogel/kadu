@@ -36,6 +36,9 @@ bool NetworkManagerNTrack::isOnline()
 
 void NetworkManagerNTrack::stateChanged(QNTrackState oldState, QNTrackState newState)
 {
-	Q_UNUSED(oldState);
-	onlineStateChanged(newState == NTRACK_STATE_ONLINE || newState == NTRACK_STATE_UNKNOWN);
+	bool wasOnline = oldState == NTRACK_STATE_ONLINE || oldState == NTRACK_STATE_UNKNOWN;
+	bool isOnline = newState == NTRACK_STATE_ONLINE || newState == NTRACK_STATE_UNKNOWN;
+
+	if (wasOnline != isOnline)
+		onlineStateChanged(isOnline);
 }

@@ -36,7 +36,7 @@
 #include "exports.h"
 
 /**
- * @defgroup Chat Kadu Chat API
+ * @defgroup Chat
  *
  * Chats are basic concept in Kadu. Chat can define any conversation beetwen people. In core Kadu code
  * exists two kinds of chats:

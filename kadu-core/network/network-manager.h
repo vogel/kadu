@@ -25,6 +25,26 @@
 
 #include "exports.h"
 
+/**
+ * @addtogroup Network
+ * @{
+ */
+
+/**
+ * @class NetworkManager
+ * @author Rafał 'Vogel' Malinowski
+ * @author Piotr 'ultr' Dąbrowski
+ * @short Class responsible for network online-offline notifications.
+ * @see NetworkAwareObject
+ *
+ * This class provides information about network availability. To check if network is available use isOnline()
+ * method. Any object can connect to online() and offline() signals to get real-time notifications.
+ *
+ * On some systems that do not provide network availability information this class can always return online status.
+ *
+ * This class is singleton with possible different implementations, see NetworkManagerDummy, NetworkManagerNTrack
+ * and NetworkManagerQt for current implementation details.
+ */
 class KADUAPI NetworkManager : public QObject
 {
 	Q_OBJECT
@@ -41,12 +61,41 @@ protected:
 
 public:
 	static NetworkManager * instance();
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @author Piotr 'ultr' Dąbrowski
+	 * @short This method returns true if netwok is online.
+	 * @return true if netwok is online
+	 *
+	 * This method returns true if netwok is online. On some systems that do not provide network availability information
+	 * this method can always return true.
+	 */
 	virtual bool isOnline() = 0;
 
 signals:
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Signal emited when network changes state from offline to online.
+	 *
+	 * This signal is emited when network changes state from offline to online. On some systems that do not provide network
+	 * availability information this signal will be never emited.
+	 */
 	void online();
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Signal emited when network changes state from online to offline.
+	 *
+	 * This signal is emited when network changes state from online to offline. On some systems that do not provide network
+	 * availability information this signal will be never emited.
+	 */
 	void offline();
 
 };
+
+/**
+ * @}
+ */
 
 #endif // NETWORK_MANAGER_H

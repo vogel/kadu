@@ -28,6 +28,25 @@
 
 class QNetworkConfigurationManager;
 
+/**
+ * @addtogroup Network
+ * @{
+ */
+
+/**
+ * @class NetworkManagerQt
+ * @author Rafał 'Vogel' Malinowski
+ * @author Piotr 'ultr' Dąbrowski
+ * @short Class responsible for network online-offline notifications using QNetworkConfigurationManager.
+ * @see NetworkAwareObject
+ *
+ * This class provides information about network availability. To check if network is available use isOnline()
+ * method. Any object can connect to online() and offline() signals to get real-time notifications.
+ *
+ * This class uses QNetworkConfigurationManager to get network availability information. This is only possible
+ * when QNetworkConfigurationManager::capabilities() has flag QNetworkConfigurationManager::CanStartAndStopInterfaces.
+ * Otherwise constant online state will be assumed.
+ */
 class KADUAPI NetworkManagerQt : public NetworkManager
 {
 	Q_OBJECT
@@ -42,5 +61,9 @@ public:
 	virtual bool isOnline();
 
 };
+
+/**
+ * @}
+ */
 
 #endif // NETWORK_MANAGER_QT_H

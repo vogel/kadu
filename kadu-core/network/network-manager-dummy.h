@@ -25,6 +25,21 @@
 #include "exports.h"
 #include "network-manager.h"
 
+/**
+ * @addtogroup Network
+ * @{
+ */
+
+/**
+ * @class NetworkManagerDummy
+ * @author Rafał 'Vogel' Malinowski
+ * @author Piotr 'ultr' Dąbrowski
+ * @short Class responsible for network online-offline notifications.
+ * @see NetworkAwareObject
+ *
+ * This class is dummy implementation of NetworkManager that always assumes that network is online. This
+ * implementation is used on system that do not have valid network-availability information.
+ */
 class KADUAPI NetworkManagerDummy : public NetworkManager
 {
 	Q_OBJECT
@@ -36,5 +51,9 @@ public:
 	virtual bool isOnline();
 
 };
+
+/**
+ * @}
+ */
 
 #endif // NETWORK_MANAGER_DUMMY_H

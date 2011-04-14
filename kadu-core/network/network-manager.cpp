@@ -27,6 +27,20 @@
 
 NetworkManager *NetworkManager::Instance = 0;
 
+/**
+ * @author Rafał 'Vogel' Malinowski
+ * @author Piotr 'ultr' Dąbrowski
+ * @short Returns singleton instance of NetworkManager.
+ * @return singleton instance of NetworkManager
+ *
+ * This static method returns singleton instance of NetworkManager. Implementation class is selected at compile
+ * time and can be of one of the following classes:
+ * <ul>
+ *   <li>NetworkManagerDummy</li>
+ *   <li>NetworkManagerNTrack</li>
+ *   <li>NetworkManagerQt</li>
+ * </ul>
+ */
 NetworkManager * NetworkManager::instance()
 {
 	if (!Instance)
@@ -43,6 +57,14 @@ NetworkManager::~NetworkManager()
 {
 }
 
+/**
+ * @author Piotr 'ultr' Dąbrowski
+ * @short Implementations should call this method each time network state changes.
+ * @param isOnline new network state
+ *
+ * Implementations should call this method each time network state changes. This method will then inform
+ * all NetworkAwareObject's about the change and emit one of online() or offline() signals.
+ */
 void NetworkManager::onlineStateChanged(bool isOnline)
 {
 	NetworkAwareObject::notifyOnlineStateChanged(isOnline);

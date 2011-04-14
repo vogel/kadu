@@ -25,7 +25,7 @@
 #include "exports.h"
 
 /**
- * @defgroup Storage Kadu Storage API
+ * @defgroup Storage
  *
  * This group contains classes and templates that allows to store and load
  * data from XML file. This includes support for Managers (@link<Manager> Manager @endlink
