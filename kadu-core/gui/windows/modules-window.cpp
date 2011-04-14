@@ -1,4 +1,5 @@
 /*
+ * Copyright 2011 Sławomir Stępień (s.stepien@interia.pl)
  * Copyright 2008 Dawid Stawiarski (neeo@kadu.net)
  * Copyright 2004, 2005, 2006, 2007 Marcin Ślusarz (joi@kadu.net)
  * Copyright 2003, 2004 Adrian Smarzewski (adrian@kadu.net)
@@ -45,16 +46,13 @@
 #include "configuration/configuration-manager.h"
 #include "icons/kadu-icon.h"
 #include "misc/misc.h"
-#include "plugins/plugin.h"
-#include "plugins/plugin-info.h"
-#include "plugins/plugins-manager.h"
 #include "debug.h"
 
 #include "modules-window.h"
 
 ModulesWindow::ModulesWindow(QWidget *parent)
 	: QWidget(parent, Qt::Window),
-	lv_modules(0), l_moduleinfo(0)
+	ModulesList(0), ModuleInfo(0)
 {
 	kdebugf();
 
@@ -94,16 +92,14 @@ ModulesWindow::ModulesWindow(QWidget *parent)
 	// end create main QLabel widgets (icon and app info)
 
 	// our QListView
-	lv_modules = new QTreeWidget(center);
+	ModulesList = new QTreeWidget(center);
 	QStringList headers;
 	headers << tr("Module name") << tr("Version") << tr("Module type") << tr("State");
-	lv_modules->setHeaderLabels(headers);
-	lv_modules->setSortingEnabled(true);
-	lv_modules->setAllColumnsShowFocus(true);
-	lv_modules->setIndentation(false);
-	lv_modules->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
-
-
+	ModulesList->setHeaderLabels(headers);
+	ModulesList->setSortingEnabled(true);
+	ModulesList->setAllColumnsShowFocus(true);
+	ModulesList->setIndentation(false);
+	ModulesList->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
 	// end our QListView
 
 #ifndef Q_WS_MAEMO_5
@@ -113,14 +109,14 @@ ModulesWindow::ModulesWindow(QWidget *parent)
 	vgb_info->setTitle(tr("Info"));
 	//end our QGroupBox
 
-	l_moduleinfo = new QLabel(vgb_info);
-	l_moduleinfo->setText(tr("<b>Module:</b><br/><b>Depends on:</b><br/><b>Conflicts with:</b><br/><b>Provides:</b><br/><b>Author:</b><br/><b>Version:</b><br/><b>Description:</b>"));
+	ModuleInfo = new QLabel(vgb_info);
+	ModuleInfo->setText(tr("<b>Module:</b><br/><b>Depends on:</b><br/><b>Conflicts with:</b><br/><b>Provides:</b><br/><b>Author:</b><br/><b>Version:</b><br/><b>Description:</b>"));
 #ifndef	Q_OS_MAC
-	l_moduleinfo->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
+	ModuleInfo->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
 #endif
-	l_moduleinfo->setWordWrap(true);
+	ModuleInfo->setWordWrap(true);
 
-	infoLayout->addWidget(l_moduleinfo);
+	infoLayout->addWidget(ModuleInfo);
 #endif
 
 	// buttons
@@ -140,8 +136,8 @@ ModulesWindow::ModulesWindow(QWidget *parent)
 #ifndef Q_WS_MAEMO_5
 	centerLayout->addWidget(l_info);
 #endif
-	centerLayout->addWidget(lv_modules);
-	centerLayout->setStretchFactor(lv_modules, 1);
+	centerLayout->addWidget(ModulesList);
+	centerLayout->setStretchFactor(ModulesList, 1);
 #ifndef Q_WS_MAEMO_5
 	centerLayout->addWidget(vgb_info);
 #endif
@@ -154,12 +150,12 @@ ModulesWindow::ModulesWindow(QWidget *parent)
 	layout->addWidget(center);
 
 	connect(pb_close, SIGNAL(clicked()), this, SLOT(close()));
-	connect(lv_modules, SIGNAL(itemSelectionChanged()), this, SLOT(itemsChanging()));
-	connect(lv_modules, SIGNAL(itemDoubleClicked(QTreeWidgetItem *, int)), this, SLOT(moduleAction(QTreeWidgetItem *)));
+	connect(ModulesList, SIGNAL(itemSelectionChanged()), this, SLOT(itemsChanging()));
+	connect(ModulesList, SIGNAL(itemDoubleClicked(QTreeWidgetItem *, int)), this, SLOT(moduleAction(QTreeWidgetItem *)));
 
 	loadWindowGeometry(this, "General", "ModulesWindowGeometry", 0, 50, 600, 620);
 	refreshList();
-	lv_modules->sortByColumn(0, Qt::AscendingOrder);
+	ModulesList->sortByColumn(0, Qt::AscendingOrder);
 	kdebugf2();
 }
 
@@ -172,15 +168,15 @@ ModulesWindow::~ModulesWindow()
 
 QTreeWidgetItem * ModulesWindow::getSelected()
 {
-	if (lv_modules->selectedItems().count())
-		return lv_modules->selectedItems().at(0);
+	if (ModulesList->selectedItems().count())
+		return ModulesList->selectedItems().at(0);
 	else
 		return 0;
 }
 
 void ModulesWindow::itemsChanging()
 {
-	if (lv_modules->selectedItems().count())
+	if (ModulesList->selectedItems().count())
 		getInfo();
 }
 
@@ -192,38 +188,33 @@ void ModulesWindow::moduleAction(QTreeWidgetItem *)
 	if (!selectedItem)
 		return;
 
-	// TODO: OH LOL
-	if ((selectedItem->text(2) == tr("Dynamic")) && (selectedItem->text(3) == tr("Loaded")))
-		unloadItem(selectedItem->text(0));
-	else
-		if ((selectedItem->text(2) == tr("Dynamic")) && (selectedItem->text(3) == tr("Not loaded")))
-			loadItem(selectedItem->text(0));
+	if (!PluginsManager::instance()->plugins().contains(selectedItem->text(0)))
+		return;
+
+	Plugin *plugin = PluginsManager::instance()->plugins().value(selectedItem->text(0));
+
+	if (plugin->state() == Plugin::PluginStateEnabled)
+		unloadItemPlugin(plugin);
+	else if (plugin->state() == Plugin::PluginStateDisabled)
+		loadItemPlugin(plugin);
 
 	kdebugf2();
 }
 
-void ModulesWindow::loadItem(const QString &item)
+void ModulesWindow::loadItemPlugin(Plugin *itemPlugin)
 {
-	if (!PluginsManager::instance()->plugins().contains(item))
-		return;
-
-	Plugin *plugin = PluginsManager::instance()->plugins().value(item);
-	if (PluginsManager::instance()->activatePlugin(plugin))
-		plugin->setState(Plugin::PluginStateEnabled);
+	if (PluginsManager::instance()->activatePlugin(itemPlugin))
+		itemPlugin->setState(Plugin::PluginStateEnabled);
 
 	refreshList();
 
 	ConfigurationManager::instance()->flush();
 }
 
-void ModulesWindow::unloadItem(const QString &item)
+void ModulesWindow::unloadItemPlugin(Plugin *itemPlugin)
 {
-	if (!PluginsManager::instance()->plugins().contains(item))
-		return;
-
-	Plugin *plugin = PluginsManager::instance()->plugins().value(item);
-	if (PluginsManager::instance()->deactivatePlugin(plugin, false))
-		plugin->setState(Plugin::PluginStateDisabled);
+	if (PluginsManager::instance()->deactivatePlugin(itemPlugin, false))
+		itemPlugin->setState(Plugin::PluginStateDisabled);
 
 	refreshList();
 
@@ -234,7 +225,7 @@ void ModulesWindow::refreshList()
 {
 	kdebugf();
 
-	int vScrollValue = lv_modules->verticalScrollBar()->value();
+	int vScrollValue = ModulesList->verticalScrollBar()->value();
 
 	QString s_selected;
 
@@ -242,7 +233,7 @@ void ModulesWindow::refreshList()
 	if (selectedItem)
 		s_selected = selectedItem->text(0);
 
-	lv_modules->clear();
+	ModulesList->clear();
 
 	foreach (Plugin *plugin, PluginsManager::instance()->plugins())
 		if (plugin->isValid())
@@ -254,13 +245,13 @@ void ModulesWindow::refreshList()
 				strings << plugin->name() << pluginInfo->version() << tr("Dynamic") << tr("Loaded");
 			else
 				strings << plugin->name() << pluginInfo->version() << tr("Dynamic") << tr("Not loaded");
-			new QTreeWidgetItem(lv_modules, strings);
+			new QTreeWidgetItem(ModulesList, strings);
 		}
 
-	lv_modules->resizeColumnToContents(0);
-// 	lv_modules->setSelected(lv_modules->findItem(s_selected, 0), true);
+	ModulesList->resizeColumnToContents(0);
+// 	ModulesList->setSelected(ModulesList->findItem(s_selected, 0), true);
 
-	lv_modules->verticalScrollBar()->setValue(vScrollValue);
+	ModulesList->verticalScrollBar()->setValue(vScrollValue);
 	kdebugf2();
 }
 
@@ -284,7 +275,7 @@ void ModulesWindow::getInfo()
 	}
 
 #ifndef Q_WS_MAEMO_5
-	l_moduleinfo->setText(
+	ModuleInfo->setText(
 		tr("<b>Module: </b>%1"
 			"<br/><b>Depends on: </b>%2"
 			"<br/><b>Conflicts with: </b>%3"
