@@ -168,15 +168,12 @@ ModulesWindow::~ModulesWindow()
 
 QTreeWidgetItem * ModulesWindow::getSelected()
 {
-	if (ModulesList->selectedItems().count())
-		return ModulesList->selectedItems().at(0);
-	else
-		return 0;
+	return ModulesList->currentItem();
 }
 
 void ModulesWindow::itemsChanging()
 {
-	if (ModulesList->selectedItems().count())
+	if (ModulesList->currentItem())
 		getInfo();
 }
 
@@ -185,7 +182,7 @@ void ModulesWindow::moduleAction(QTreeWidgetItem *)
 	kdebugf();
 
 	QTreeWidgetItem *selectedItem = getSelected();
-	if (!selectedItem)
+	if ((!selectedItem) || (selectedItem->text(0).isEmpty()))
 		return;
 
 	if (!PluginsManager::instance()->plugins().contains(selectedItem->text(0)))
