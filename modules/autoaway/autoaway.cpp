@@ -74,8 +74,12 @@ AutoAway::~AutoAway()
 
 int AutoAway::init(bool firstLoad)
 {
+	Q_UNUSED(firstLoad)
+
 	MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/autoaway.ui"));
 	MainConfigurationWindow::registerUiHandler(this);
+
+	return 0;
 }
 
 void AutoAway::done()
