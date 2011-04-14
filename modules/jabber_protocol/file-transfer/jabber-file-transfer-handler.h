@@ -25,10 +25,11 @@
 
 #include <QtCore/QFile>
 
-#include "file-transfer/file-transfer-handler.h"
-#include <xmpp.h>
+#include <jid.h>
+#include <s5b.h>
 
-class JabberProtocol;
+#include "file-transfer/file-transfer-handler.h"
+
 namespace XMPP
 {
 	class FileTransfer;
@@ -39,34 +40,31 @@ class JabberFileTransferHandler : public FileTransferHandler
 	Q_OBJECT
 	
 	XMPP::FileTransfer *JabberTransfer;
-	bool InProgress;
-	qlonglong BytesTransferred, Offset, Length;
-	int Shift;
-	int Complement;
 	XMPP::Jid PeerJid;
-	QString Description;
+
+	bool InProgress;
+	qlonglong BytesTransferred;
 	QFile LocalFile;
+
+	void connectJabberTransfer();
+	void disconnectJabberTransfer();
 
 protected:
 	virtual void updateFileInfo();
 
 private slots:
-	// ft
-	void ft_accepted();
-	void ft_connected();
-	void ft_readyRead(const QByteArray &);
-	void ft_bytesWritten(int);
-	void ft_error(int);
-	void ft_error(int, int, const QString &);
+	void fileTransferAccepted();
+	void fileTransferConnected();
+	void fileTransferReadyRead(const QByteArray &a);
+	void fileTransferBytesWritten(int);
+	void fileTransferError(int);
+
 	void trySend();
 	void doFinish();
 	void slotIncomingDataReady(const QByteArray &data);
 	void slotTransferError(int errorCode);
 
 public:
-	enum { ErrReject, ErrTransfer, ErrFile };
-	enum { Sending, Receiving };
-
 	JabberFileTransferHandler(FileTransfer fileTransfer);
 	virtual ~JabberFileTransferHandler();
 

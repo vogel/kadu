@@ -20,112 +20,19 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include <QtGui/QMessageBox>
 
-#include "accounts/account.h"
-#include "buddies/buddy-manager.h"
-#include "contacts/contact-manager.h"
-#include "debug.h"
-#include "../jabber-account-details.h"
-#include "jabber-contact-details.h"
-#include "../jabber-protocol.h"
+#include <QMessageBox>
+
+#include <xmpp/xmpp-im/xmpp_bytestream.h>
+#include <filetransfer.h>
 
 #include "resource/jabber-resource-pool.h"
-#include "iris/filetransfer.h"
+#include "jabber-protocol.h"
 
 #include "jabber-file-transfer-handler.h"
 
-//typedef Q_UINT64 LARGE_TYPE;
-typedef long long LARGE_TYPE;
-
-#define CSMAX (sizeof(LARGE_TYPE)*8)
-#define CSMIN 16
-static int calcShift(qlonglong big)
-{
-	LARGE_TYPE val = 1;
-	val <<= CSMAX - 1;
-	for(int n = CSMAX - CSMIN; n > 0; --n) {
-		if(big & val)
-			return n;
-		val >>= 1;
-	}
-	return 0;
-}
-
-static int calcComplement(qlonglong big, int shift)
-{
-	int block = 1 << shift;
-	qlonglong rem = big % block;
-	if(rem == 0)
-		return 0;
-	else
-		return (block - (int)rem);
-}
-
-/*static int calcTotalSteps(qlonglong big, int shift)
-{
-	if(big < 1)
-		return 0;
-	return ((big - 1) >> shift) + 1;
-}
-
-static int calcProgressStep(qlonglong big, int complement, int shift)
-{
-	return ((big + complement) >> shift);
-}
-
-static QStringList *activeFiles = 0;
-
-static void active_file_add(const QString &s)
-{
-	if(!activeFiles)
-		activeFiles = new QStringList;
-	activeFiles->append(s);
-	//printf("added: [%s]\n", s.latin1());
-}
-
-static void active_file_remove(const QString &s)
-{
-	if(!activeFiles)
-		return;
-	activeFiles->removeAt(activeFiles->indexOf(s));
-	//printf("removed: [%s]\n", s.latin1());
-}
-
-static bool active_file_check(const QString &s)
-{
-	if(!activeFiles)
-		return false;
-	return activeFiles->contains(s);
-}
-
-static QString clean_filename(const QString &s)
-{
-//#ifdef Q_OS_WIN
-	QString badchars = "\\/|?*:\"<>";
-	QString str;
-	for(int n = 0; n < s.length(); ++n) {
-		bool found = false;
-		for(int b = 0; b < badchars.length(); ++b) {
-			if(s.at(n) == badchars.at(b)) {
-				found = true;
-				break;
-			}
-		}
-		if(!found)
-			str += s;
-	}
-	if(str.isEmpty())
-		str = "unnamed";
-	return str;
-//#else
-//	return s;
-//#endif
-}*/
-
-
 JabberFileTransferHandler::JabberFileTransferHandler(FileTransfer transfer) :
-		FileTransferHandler(transfer), InProgress(false)
+		FileTransferHandler(transfer), JabberTransfer(0), InProgress(false)
 {
 }
 
@@ -133,25 +40,59 @@ JabberFileTransferHandler::~JabberFileTransferHandler()
 {
 }
 
-void JabberFileTransferHandler::setJTransfer(XMPP::FileTransfer* jTransfer)
+void JabberFileTransferHandler::connectJabberTransfer()
 {
+	if (!JabberTransfer)
+		return;
+
+	connect(JabberTransfer, SIGNAL(accepted()), this, SLOT(fileTransferAccepted()));
+	connect(JabberTransfer, SIGNAL(connected()), this, SLOT(fileTransferConnected()));
+	connect(JabberTransfer, SIGNAL(readyRead(const QByteArray &)), this, SLOT(fileTransferReadyRead(const QByteArray &)));
+	connect(JabberTransfer, SIGNAL(bytesWritten(int)), this, SLOT(fileTransferBytesWritten(int)));
+	connect(JabberTransfer, SIGNAL(error(int)), this, SLOT(fileTransferError(int)));
+
+	connect(JabberTransfer->bsConnection(), SIGNAL(proxyQuery()), SLOT(s5b_proxyQuery()));
+	connect(JabberTransfer->bsConnection(), SIGNAL(proxyResult(bool)), SLOT(s5b_proxyResult(bool)));
+	connect(JabberTransfer->bsConnection(), SIGNAL(requesting()), SLOT(s5b_requesting()));
+	connect(JabberTransfer->bsConnection(), SIGNAL(accepted()), SLOT(s5b_accepted()));
+	connect(JabberTransfer->bsConnection(), SIGNAL(tryingHosts(const StreamHostList &)), SLOT(s5b_tryingHosts(const StreamHostList &)));
+	connect(JabberTransfer->bsConnection(), SIGNAL(proxyConnect()), SLOT(s5b_proxyConnect()));
+	connect(JabberTransfer->bsConnection(), SIGNAL(waitingForActivation()), SLOT(s5b_waitingForActivation()));
+}
+
+void JabberFileTransferHandler::disconnectJabberTransfer()
+{
+	if (!JabberTransfer)
+		return;
+
+	disconnect(JabberTransfer, SIGNAL(accepted()), this, SLOT(fileTransferAccepted()));
+	disconnect(JabberTransfer, SIGNAL(connected()), this, SLOT(fileTransferConnected()));
+	disconnect(JabberTransfer, SIGNAL(readyRead(const QByteArray &)), this, SLOT(fileTransferReadyRead(const QByteArray &)));
+	disconnect(JabberTransfer, SIGNAL(bytesWritten(int)), this, SLOT(fileTransferBytesWritten(int)));
+	disconnect(JabberTransfer, SIGNAL(error(int)), this, SLOT(fileTransferError(int)));
+}
+
+void JabberFileTransferHandler::setJTransfer(XMPP::FileTransfer *jTransfer)
+{
+	disconnectJabberTransfer();
 	JabberTransfer = jTransfer;
+	connectJabberTransfer();
 }
 
 void JabberFileTransferHandler::updateFileInfo()
 {
-// 	if (SocketNotifiers)
-// 	{
+	if (JabberTransfer)
+	{
 		transfer().setFileSize(LocalFile.size());
 		transfer().setTransferredSize(BytesTransferred);
-// 	}
-// 	else
-// 	{
-// 		setFileSize(0);
-// 		setTransferredSize(0);
-// 	}
+	}
+	else
+	{
+		transfer().setFileSize(0);
+		transfer().setTransferredSize(0);
+	}
 
-// 	emit statusChanged();
+	emit statusChanged();
 }
 
 void JabberFileTransferHandler::send()
@@ -189,38 +130,34 @@ void JabberFileTransferHandler::send()
 	if (0 != jabberAccountDetails)
 		proxy = jabberAccountDetails->dataTransferProxy();
 
-	Shift = calcShift(transfer().fileSize());
-	Complement = calcComplement(transfer().fileSize(), Shift);
-
 	QString jid = transfer().peer().id();
 	// sendFile needs jid with resource so take best from ResourcePool
 	PeerJid = XMPP::Jid(jid).withResource(jabberProtocol->resourcePool()->bestResource(jid).name());
 
-	JabberTransfer = jabberProtocol->xmppClient()->fileTransferManager()->createTransfer();
-	if (proxy.isValid())
-		JabberTransfer->setProxy(proxy);
+	if (!JabberTransfer)
+	{
+		JabberTransfer = jabberProtocol->xmppClient()->fileTransferManager()->createTransfer();
+		connectJabberTransfer();
+	}
 
-	connect(JabberTransfer, SIGNAL(accepted()), SLOT(ft_accepted()));
-	connect(JabberTransfer, SIGNAL(connected()), SLOT(ft_connected()));
-	connect(JabberTransfer, SIGNAL(readyRead(const QByteArray &)), SLOT(ft_readyRead(const QByteArray &)));
-	connect(JabberTransfer, SIGNAL(bytesWritten(int)), SLOT(ft_bytesWritten(int)));
-	connect(JabberTransfer, SIGNAL(error(int)), SLOT(ft_error(int)),Qt::QueuedConnection);
-
-	Description = "I iz in ur file transfer, steelin ur bytes";
+// 	if (proxy.isValid())
+// 		JabberTransfer->setProxy(proxy);
 
 	transfer().setTransferStatus(StatusWaitingForConnection);
 	InProgress = true;
-	JabberTransfer->sendFile(PeerJid, transfer().localFileName(), transfer().fileSize(), Description);
+
+	JabberTransfer->sendFile(PeerJid, transfer().localFileName(), transfer().fileSize(), QString());
 }
 
 void JabberFileTransferHandler::stop()
 {
-// 	if (SocketNotifiers)
-// 	{
-// 		delete SocketNotifiers;
-// 		SocketNotifiers = 0;
-// 		changeFileTransferStatus(XMPP::FileTransfer::StatusNotConnected);
-// 	}
+	if (JabberTransfer)
+	{
+		JabberTransfer->close();
+		JabberTransfer->deleteLater();
+		JabberTransfer = 0;
+		transfer().setTransferStatus(StatusNotConnected);
+	}
 }
 
 void JabberFileTransferHandler::pause()
@@ -261,10 +198,6 @@ bool JabberFileTransferHandler::accept(QFile &file)
 	transfer().setTransferStatus(StatusTransfer);
 	transfer().setTransferredSize(BytesTransferred);
 
-	Length = JabberTransfer->fileSize();
-
-	connect(JabberTransfer, SIGNAL(readyRead(const QByteArray &)), this, SLOT(slotIncomingDataReady(const QByteArray &)));
-	connect(JabberTransfer, SIGNAL(error(int)), this, SLOT (slotTransferError(int)));
 	JabberTransfer->accept(BytesTransferred);
 
 	return true;
@@ -278,27 +211,12 @@ void JabberFileTransferHandler::reject()
 	deleteLater();
 }
 
-void JabberFileTransferHandler::ft_accepted()
+void JabberFileTransferHandler::fileTransferAccepted()
 {
-	Offset = JabberTransfer->offset();
-	Length = JabberTransfer->length();
-/*
-	d->c = d->ft->s5bConnection();
-	connect(d->c, SIGNAL(proxyQuery()), SLOT(s5b_proxyQuery()));
-	connect(d->c, SIGNAL(proxyResult(bool)), SLOT(s5b_proxyResult(bool)));
-	connect(d->c, SIGNAL(requesting()), SLOT(s5b_requesting()));
-	connect(d->c, SIGNAL(accepted()), SLOT(s5b_accepted()));
-	connect(d->c, SIGNAL(tryingHosts(const StreamHostList &)), SLOT(s5b_tryingHosts(const StreamHostList &)));
-	connect(d->c, SIGNAL(proxyConnect()), SLOT(s5b_proxyConnect()));
-	connect(d->c, SfIGNAL(waitingForActivation()), SLOT(s5b_waitingForActivation()));
-
-	if(d->sending)
-		accepted();
-	else
-		statusMessage(QString());*/
+	transfer().setTransferStatus(StatusTransfer);
 }
 
-void JabberFileTransferHandler::ft_connected()
+void JabberFileTransferHandler::fileTransferConnected()
 {
 /*	d->sent = d->offset;
 
@@ -360,9 +278,10 @@ void JabberFileTransferHandler::ft_connected()
 }
 
 
-void JabberFileTransferHandler::ft_readyRead(const QByteArray &a)
+void JabberFileTransferHandler::fileTransferReadyRead(const QByteArray &a)
 {
 	Q_UNUSED(a)
+
 /*	if(!d->sending) {
 		//printf("%d bytes read\n", a.size());
 		int r = d->f.writeBlock(a.data(), a.size());
@@ -379,9 +298,10 @@ void JabberFileTransferHandler::ft_readyRead(const QByteArray &a)
 */
 }
 
-void JabberFileTransferHandler::ft_bytesWritten(int x)
+void JabberFileTransferHandler::fileTransferBytesWritten(int x)
 {
 	Q_UNUSED(x)
+
 /*
 	if(d->sending) {
 		//printf("%d bytes written\n", x);
@@ -393,114 +313,30 @@ void JabberFileTransferHandler::ft_bytesWritten(int x)
 		}
 		else
 			QTimer::singleShot(0, this, SLOT(trySend()));
-		progress(calcProgressStep(d->sent, d->complement, d->shift), d->sent);
+		progress(calcProgressStep(d->sent, JabberTransfer->bsConnectionomplement, d->shift), d->sent);
 	}
 */
 }
 
-void JabberFileTransferHandler::ft_error(int x)
+void JabberFileTransferHandler::fileTransferError(int error)
 {
-
-	if(LocalFile.isOpen())
+	if (LocalFile.isOpen())
 		LocalFile.close();
-	delete JabberTransfer;
+	JabberTransfer->deleteLater();
 	JabberTransfer = 0;
 
-	if(x == XMPP::FileTransfer::ErrReject)
-		ft_error(ErrReject, x, QString());
-	else if(x == XMPP::FileTransfer::ErrNeg)
-		ft_error(ErrTransfer, x, tr("Unable to negotiate transfer."));
-	else if(x == XMPP::FileTransfer::ErrConnect)
-		ft_error(ErrTransfer, x, tr("Unable to connect to peer for data transfer."));
-	else if(x == XMPP::FileTransfer::ErrProxy)
-		ft_error(ErrTransfer, x, tr("Unable to connect to proxy for data transfer."));
-	else if(x == XMPP::FileTransfer::ErrStream)
-		ft_error(ErrTransfer, x, tr("Lost connection / Cancelled."));
-
-}
-
-void JabberFileTransferHandler::ft_error(int x, int fx, const QString &)
-{
-//	d->t.stop();
-//	busy->stop();
-
-//	delete d->ft;
-//	d->ft = 0;
-
-//	closeDialogs(this);
-
-//	if(d->sending) {
-// 		unblockWidgets();
-// 		pb_stop->setText(tr("&Close"));
-// 		lb_status->setText(tr("Ready"));
-// 	}
-
-	QString str;
-	if(x == ErrReject)
-		str = tr("File was rejected by remote user.");
-	else if(x == ErrTransfer) {
-		if(fx == XMPP::FileTransfer::ErrNeg)
-			str = tr(
-				"Unable to negotiate transfer.\n\n"
-				"This can happen if the contact did not understand our request, or if the\n"
-				"contact is offline."
-				);
-		else if(fx == XMPP::FileTransfer::ErrConnect)
-			str = tr(
-				"Unable to connect to peer for data transfer.\n\n"
-				"Ensure that your Data Transfer settings are proper.  If you are behind\n"
-				"a NAT router or firewall then you'll need to open the proper TCP port\n"
-				"or specify a Data Transfer Proxy in your account settings."
-				);
-		else if(fx == XMPP::FileTransfer::ErrProxy)
-			str = tr(
-				"Failure to either connect to, or activate, the Data Transfer Proxy.\n\n"
-				"This means that the Proxy service is either not functioning or it is\n"
-				"unreachable.  If you are behind a firewall, then you'll need to ensure\n"
-				"that outgoing TCP connections are allowed."
-				);
-	}
-	else
-		str = tr("File I/O error");
-	QMessageBox::information(0, tr("Error"), str);
-
-	//if(!d->sending || x == ErrReject)
-	//	close();
-}
-
-void JabberFileTransferHandler::slotTransferError ( int errorCode )
-{
-
-	switch ( errorCode )
+	switch (error)
 	{
 		case XMPP::FileTransfer::ErrReject:
-			// user rejected the transfer request
 			transfer().setTransferStatus(StatusRejected);
 			break;
-
 		case XMPP::FileTransfer::ErrNeg:
-			// unable to negotiate a suitable connection for the file transfer with the user
-			transfer().setTransferStatus(StatusNotConnected);
-			break;
-
 		case XMPP::FileTransfer::ErrConnect:
-			// could not connect to the user
-			transfer().setTransferStatus(StatusNotConnected);
-			break;
-
 		case XMPP::FileTransfer::ErrStream:
-			// data stream was disrupted, probably cancelled
-			transfer().setTransferStatus(StatusNotConnected);
-			break;
-
 		default:
-			// unknown error
 			transfer().setTransferStatus(StatusNotConnected);
 			break;
 	}
-
-//	deleteLater ();
-
 }
 
 void JabberFileTransferHandler::trySend()
@@ -550,7 +386,7 @@ void JabberFileTransferHandler::slotIncomingDataReady ( const QByteArray &data )
 			LocalFile.close();
 			delete JabberTransfer;
 			JabberTransfer = 0;
-			ft_error(ErrFile, 0, LocalFile.errorString());
+			transfer().setTransferError(ErrorUnableToOpenFile);
 			return;
 		}
 		BytesTransferred += data.size();
@@ -561,12 +397,13 @@ void JabberFileTransferHandler::slotIncomingDataReady ( const QByteArray &data )
 
 void JabberFileTransferHandler::doFinish()
 {
-	if (BytesTransferred == Length)
+	if (BytesTransferred == JabberTransfer->length())
 	{
 		LocalFile.close();
-		kdebug("Transfer finished... close file.\n");
+
 		delete JabberTransfer;
 		JabberTransfer = 0;
+
 		transfer().setTransferStatus(StatusFinished);
 	}
 }
