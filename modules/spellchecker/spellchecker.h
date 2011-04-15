@@ -45,6 +45,8 @@ private:
 
 	void createDefaultConfiguration();
 
+	int SuggestedWordCount;
+
 private slots:
 	void configurationWindowApplied();
 

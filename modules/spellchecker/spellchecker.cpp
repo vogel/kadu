@@ -354,6 +354,7 @@ void SpellChecker::mainConfigurationWindowCreated(MainConfigurationWindow *mainC
 
 void SpellChecker::configurationUpdated()
 {
+	SuggestedWordCount = config_file.readNumEntry("ASpell", "SuggesterWordCount");
 	buildMarkTag();
 	buildCheckers();
 }
@@ -401,14 +402,21 @@ bool SpellChecker::checkWord(const QString &word)
 
 QStringList SpellChecker::buildSuggestList(const QString &word)
 {
-	unsigned int suggesterWordCount = config_file.readUnsignedNumEntry("ASpell", "SuggesterWordCount");
 	QStringList suggestWordList;
 #ifdef HAVE_ASPELL
 	QTextCodec *codec = QTextCodec::codecForName("utf-8");
 #endif
 
+	int suggesterWordCount = SuggestedWordCount;
+	if (MyCheckers.size() > SuggestedWordCount)
+		suggesterWordCount = 1;
+	else
+		suggesterWordCount /= MyCheckers.size();
+
+	int wordsForLanguage = 0;
 	for (Checkers::const_iterator it = MyCheckers.constBegin(); it != MyCheckers.constEnd(); ++it)
 	{
+		wordsForLanguage = suggesterWordCount;
 #ifdef HAVE_ASPELL
 		const AspellWordList *aspellTmpList = aspell_speller_suggest(it.value(), word.toUtf8().constData(), -1);
 
@@ -416,10 +424,14 @@ QStringList SpellChecker::buildSuggestList(const QString &word)
 		{
 			struct AspellStringEnumeration *aspellStringEnum = aspell_word_list_elements(aspellTmpList);
 
-			while((!aspell_string_enumeration_at_end(aspellStringEnum)) && ((suggesterWordCount)))
+			while((!aspell_string_enumeration_at_end(aspellStringEnum)) && wordsForLanguage)
 			{
-				suggestWordList.append(codec->toUnicode(aspell_string_enumeration_next(aspellStringEnum)));
-				--suggesterWordCount;
+				if (MyCheckers.size() > 1)
+					suggestWordList.append(codec->toUnicode(aspell_string_enumeration_next(aspellStringEnum)) + " (" + it.key() + ")");
+				else
+					suggestWordList.append(codec->toUnicode(aspell_string_enumeration_next(aspellStringEnum)));
+
+				--wordsForLanguage;
 			}
 
 			delete_aspell_string_enumeration(aspellStringEnum);
@@ -434,11 +446,15 @@ QStringList SpellChecker::buildSuggestList(const QString &word)
 		{
 			for (size_t i = 0; i < numberOfSuggs; ++i)
 			{
-				if (!suggesterWordCount)
+				if (!wordsForLanguage)
 					break;
 
-				suggestWordList.append(QString::fromUtf8(suggs[i]));
-				--suggesterWordCount;
+				if (MyCheckers.size() > 1)
+					suggestWordList.append(QString::fromUtf8(suggs[i]) + " (" + it.key() + ")");
+				else
+					suggestWordList.append(QString::fromUtf8(suggs[i]));
+
+				--wordsForLanguage;
 			}
 		}
 
