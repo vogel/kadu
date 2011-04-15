@@ -46,6 +46,7 @@ class QT4DOCKAPI Qt4TrayIcon : public QSystemTrayIcon, public Docker
 	static Qt4TrayIcon *Instance;
 
 	explicit Qt4TrayIcon(QWidget *parent = 0);
+	virtual ~Qt4TrayIcon();
 
 private slots:
 	void trayActivated(QSystemTrayIcon::ActivationReason reason);
@@ -53,10 +54,9 @@ private slots:
 	void movieUpdate();
 
 public:
-	virtual ~Qt4TrayIcon();
+	static QT4DOCKAPI Qt4TrayIcon * instance();
 
 	static Qt4TrayIcon * createInstance();
-	static Qt4TrayIcon * instance();
 	static void destroyInstance();
 
 	virtual void changeTrayIcon(const KaduIcon &icon);
