@@ -2,11 +2,12 @@ set (SOURCES
 	configuration/image-link-configuration.cpp
 
 	image-link.cpp
-	image-link-module.cpp
+	image-link-plugin.cpp
 )
 
 set (MOC_SOURCES
 	image-link.h
+	image-link-plugin.h
 )
 
 set (CONFIGURATION_FILES

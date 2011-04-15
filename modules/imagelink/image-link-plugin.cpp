@@ -2,6 +2,7 @@
  * %kadu copyright begin%
  * Copyright 2010 Michał Obrembski (byku@byku.com.pl)
  * Copyright 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2011 Piotr Galiszewski (piotr.galiszewski@kadu.im)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -18,13 +19,18 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "debug.h"
 #include "gui/windows/main-configuration-window.h"
 #include "misc/path-conversion.h"
 
 #include "image-link.h"
 
-extern "C" KADU_EXPORT int imagelink_init(bool firstLoad)
+#include "image-link-plugin.h"
+
+ImageLinkPlugin::~ImageLinkPlugin()
+{
+}
+
+int ImageLinkPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
@@ -34,8 +40,10 @@ extern "C" KADU_EXPORT int imagelink_init(bool firstLoad)
 	return 0;
 }
 
-extern "C" KADU_EXPORT void imagelink_close()
+void ImageLinkPlugin::done()
 {
 	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/image-link.ui"));
 	ImageLink::destroyInstance();
 }
+
+Q_EXPORT_PLUGIN2(imagelink, ImageLinkPlugin)
