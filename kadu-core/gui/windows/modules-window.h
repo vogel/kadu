@@ -1,4 +1,5 @@
 /*
+ * Copyright 2011 Sławomir Stępień (s.stepien@interia.pl)
  * Copyright 2008 Dawid Stawiarski (neeo@kadu.net)
  * Copyright 2004, 2005, 2006, 2007 Marcin Ślusarz (joi@kadu.net)
  * Copyright 2003, 2004 Adrian Smarzewski (adrian@kadu.net)
@@ -32,6 +33,10 @@
 #include <QtCore/QObject>
 #include <QtGui/QWidget>
 
+#include "plugins/plugin.h"
+#include "plugins/plugin-info.h"
+#include "plugins/plugins-manager.h"
+
 class QCheckBox;
 class QKeyEvent;
 class QLabel;
@@ -50,13 +55,13 @@ class ModulesWindow : public QWidget
 {
 	Q_OBJECT
 
-	QTreeWidget *lv_modules;
-	QLabel *l_moduleinfo;
+	QTreeWidget *ModulesList;
+	QLabel *ModuleInfo;
 
 	QTreeWidgetItem * getSelected();
 
-	void loadItem(const QString &item);
-	void unloadItem(const QString &item);
+	void loadItemPlugin(Plugin *itemPlugin);
+	void unloadItemPlugin(Plugin *itemPlugin);
 
 private slots:
 	void moduleAction(QTreeWidgetItem *);
