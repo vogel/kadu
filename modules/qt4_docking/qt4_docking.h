@@ -43,14 +43,21 @@ class QT4DOCKAPI Qt4TrayIcon : public QSystemTrayIcon, public Docker
 	QMovie *Movie;
 	QPoint lastPosition;
 
+	static Qt4TrayIcon *Instance;
+
+	explicit Qt4TrayIcon(QWidget *parent = 0);
+
 private slots:
 	void trayActivated(QSystemTrayIcon::ActivationReason reason);
 
 	void movieUpdate();
 
 public:
-	explicit Qt4TrayIcon(QWidget *parent = 0);
 	virtual ~Qt4TrayIcon();
+
+	static Qt4TrayIcon * createInstance();
+	static Qt4TrayIcon * instance();
+	static void destroyInstance();
 
 	virtual void changeTrayIcon(const KaduIcon &icon);
 	virtual void changeTrayMovie(const QString &moviePath);
@@ -58,6 +65,5 @@ public:
 	virtual QPoint trayPosition();
 };
 
-extern QT4DOCKAPI Qt4TrayIcon *qt4_tray_icon;
 
 #endif // QT4_DOCKING_H

@@ -8,3 +8,4 @@ Conflicts=docking_method
 Replaces=x11_docking
 LoadByDefault=true
 Version=core
+Plugin=true

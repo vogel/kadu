@@ -1,9 +1,11 @@
 set (SOURCES
 	qt4_docking.cpp
+	qt4-docking-plugin.cpp
 )
 
 set (MOC_SOURCES
 	qt4_docking.h
+	qt4-docking-plugin.h
 )
 
 kadu_plugin (qt4_docking
