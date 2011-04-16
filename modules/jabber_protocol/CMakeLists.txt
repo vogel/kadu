@@ -176,10 +176,11 @@ set (TRANSLATION_SOURCES
 )
 
 add_subdirectory (3rdparty)
-link_directories (3rdparty)
 
 include_directories (
+	${IDN_INCLUDE_DIRS}
 	${QCA2_INCLUDE_DIRS}
+	${ZLIB_INCLUDE_DIRS}
 
 	${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/libiris/include
 	${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/libiris/include/iris
@@ -191,6 +192,12 @@ include_directories (
 )
 
 set (LIBRARIES 3rdparty ${QCA2_LIBRARIES} ${IDN_LIBRARIES} ${ZLIB_LIBRARIES} ${QT_LIBRARIES})
+if (WIN32)
+	set (LIBRARIES ${LIBRARIES} ws2_32)
+endif (WIN32)
+
+link_directories (3rdparty ${QCA2_LIBRARY_DIRS} ${IDN_LIBRARY_DIRS} ${ZLIB_LIBRARY_DIRS})
+add_definitions (${QCA2_CFLAGS_OTHER} ${IDN_CFLAGS_OTHER} ${ZLIB_CFLAGS_OTHER})
 
 kadu_plugin (jabber_protocol
 	PLUGIN_SOURCES ${SOURCES}
