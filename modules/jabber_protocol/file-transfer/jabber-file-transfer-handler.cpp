@@ -219,8 +219,6 @@ void JabberFileTransferHandler::reject()
 	deleteLater();
 }
 
-using namespace XMPP;
-
 void JabberFileTransferHandler::fileTransferAccepted()
 {
 	transfer().setTransferStatus(StatusTransfer);
@@ -229,7 +227,7 @@ void JabberFileTransferHandler::fileTransferAccepted()
 	{
 		printf("[%p] ACCEPTED bs connection is: %s\n", this, JabberTransfer->bsConnection()->metaObject()->className());
 
-		S5BConnection *s5b = dynamic_cast<S5BConnection*>(JabberTransfer->bsConnection());
+		XMPP::S5BConnection *s5b = qobject_cast<XMPP::S5BConnection *>(JabberTransfer->bsConnection());
 		if (s5b)
 		{
 			printf("[%p] s5b connection\n", this);
