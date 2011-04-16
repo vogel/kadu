@@ -5,3 +5,4 @@ Author=Kadu Team
 Dependencies=history
 LoadByDefault=true
 Version=core
+Plugin=true

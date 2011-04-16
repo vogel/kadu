@@ -1,7 +1,7 @@
 /*
  * %kadu copyright begin%
  * Copyright 2011 Bartosz Brachaczek (b.brachaczek@gmail.com)
- * Copyright 2010 Piotr Galiszewski (piotr.galiszewski@kadu.im)
+ * Copyright 2010, 2011 Piotr Galiszewski (piotr.galiszewski@kadu.im)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -24,7 +24,13 @@
 #include "sms-gateway-manager.h"
 #include "scripts/sms-script-manager.h"
 
-extern "C" KADU_EXPORT int sms_init(bool firstLoad)
+#include "sms-plugin.h"
+
+SMSPlugin::~SMSPlugin()
+{
+}
+
+int SMSPlugin::init(bool firstLoad)
 {
 	SmsConfigurationUiHandler::registerConfigurationUi();
 	SmsActions::registerActions(firstLoad);
@@ -32,7 +38,7 @@ extern "C" KADU_EXPORT int sms_init(bool firstLoad)
 	return 0;
 }
 
-extern "C" KADU_EXPORT void sms_close()
+void SMSPlugin::done()
 {
 	SmsScriptsManager::destroyInstance();
 	SmsGatewayManager::destroyInstance();
@@ -40,3 +46,5 @@ extern "C" KADU_EXPORT void sms_close()
 	SmsActions::unregisterActions();
 	SmsConfigurationUiHandler::unregisterConfigurationUi();
 }
+
+Q_EXPORT_PLUGIN2(sms, SMSPlugin)

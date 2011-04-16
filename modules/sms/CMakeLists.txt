@@ -15,7 +15,7 @@ set (SOURCES
 	sms-gateway-query.cpp
 	sms-external-sender.cpp
 	sms-internal-sender.cpp
-	sms-module.cpp
+	sms-plugin.cpp
 	sms-sender.cpp
 )
 
@@ -33,6 +33,7 @@ set (MOC_SOURCES
 	sms-gateway-query.h
 	sms-external-sender.h
 	sms-internal-sender.h
+	sms-plugin.h
 	sms-sender.h
 )
 
