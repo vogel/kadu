@@ -153,6 +153,9 @@ else (WIN32)
 	endif (UNIX AND NOT APPLE)
 endif (WIN32)
 
+if (${NETWORK_IMPLEMENTATION} STREQUAL "ntrack")
+	target_link_libraries (kadu ${QNTRACK_LIBRARIES})
+endif (${NETWORK_IMPLEMENTATION} STREQUAL "ntrack")
 
 install (TARGETS kadu DESTINATION ${KADU_BIN_DIR})
 
@@ -180,5 +183,3 @@ if (APPLE)
 	link_directories (${SNDFILE_LIBRARY_DIRS})
 	target_link_libraries (kadu "-framework carbon")
 endif (APPLE)
-
-target_link_libraries (kadu ${QNTRACK_LIBRARIES})
