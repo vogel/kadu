@@ -1,10 +1,11 @@
 set (SOURCES
 	storage/history-sql-storage.cpp
-	sql-history-module.cpp
+	sql-history-plugin.cpp
 )
 
 set (MOC_SOURCES
 	storage/history-sql-storage.h
+	sql-history-plugin.h
 )
 
 set (TRANSLATION_SOURCES

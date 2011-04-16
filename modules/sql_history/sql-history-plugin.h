@@ -19,23 +19,26 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SQL_HISTORY_MODULE
-#define SQL_HISTORY_MODULE
+#ifndef SQL_HISTORY_PLUGIN
+#define SQL_HISTORY_PLUGIN
 
-#include <QtCore/QObject>
+#include "plugins/generic-plugin.h"
 
-#include "storage/history-sql-storage.h"
+class HistorySqlStorage;
 
-class SqlHistoryModule
+class SqlHistoryPlugin : public QObject, public GenericPlugin
 {
+	Q_OBJECT
+	Q_INTERFACES(GenericPlugin)
+
 	HistorySqlStorage *Storage;
 
 public:
-	SqlHistoryModule(bool firstLoad);
-	~SqlHistoryModule();
+	virtual ~SqlHistoryPlugin();
+
+	virtual int init(bool firstLoad);
+	virtual void done();
 
 };
 
-extern SqlHistoryModule *sqlHistoryModule;
-
-#endif //SQL_HISTORY_MODULE
+#endif //SQL_HISTORY_PLUGIN

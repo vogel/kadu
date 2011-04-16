@@ -21,35 +21,19 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QPushButton>
 #include <QtSql/QSqlDatabase>
-
-#include "configuration/configuration-file.h"
-#include "debug.h"
-#include "gui/widgets/configuration/configuration-widget.h"
-#include "misc/path-conversion.h"
 
 #include "modules/history/history.h"
 
-#include "sql-history-module.h"
+#include "storage/history-sql-storage.h"
 
-extern "C" KADU_EXPORT int sql_history_init(bool firstLoad)
+#include "sql-history-plugin.h"
+
+SqlHistoryPlugin::~SqlHistoryPlugin()
 {
-	kdebugf();
-	sqlHistoryModule = new SqlHistoryModule(firstLoad);
-	kdebugf2();
-	return 0;
 }
 
-extern "C" KADU_EXPORT void sql_history_close()
-{
-	kdebugf();
-	delete sqlHistoryModule;
-	sqlHistoryModule = 0;
-	kdebugf2();
-}
-
-SqlHistoryModule::SqlHistoryModule(bool firstLoad)
+int SqlHistoryPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
@@ -57,7 +41,7 @@ SqlHistoryModule::SqlHistoryModule(bool firstLoad)
 	History::instance()->registerStorage(Storage);
 }
 
-SqlHistoryModule::~SqlHistoryModule()
+void SqlHistoryPlugin::done()
 {
 	History::instance()->unregisterStorage(Storage);
 	Storage = 0;
@@ -65,4 +49,4 @@ SqlHistoryModule::~SqlHistoryModule()
 	QSqlDatabase::removeDatabase("kadu-history");
 }
 
-SqlHistoryModule *sqlHistoryModule = 0;
+Q_EXPORT_PLUGIN2(sql_history, SqlHistoryPlugin)
