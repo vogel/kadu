@@ -1,9 +1,10 @@
 set (SOURCES
-	docking-module.cpp
+	docking-plugin.cpp
 	docking.cpp
 )
 
 set (MOC_SOURCES
+	docking-plugin.h
 	docking.h
 )
 
