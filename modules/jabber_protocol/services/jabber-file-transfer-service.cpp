@@ -40,6 +40,8 @@ JabberFileTransferService::JabberFileTransferService(JabberProtocol *protocol) :
 	connect(Protocol, SIGNAL(stateMachineLoggedOut()), this, SLOT(loggedOut()));
 
 	Protocol->xmppClient()->setFileTransferEnabled(true);
+	Protocol->xmppClient()->fileTransferManager()->setDisabled(XMPP::S5BManager::ns(), false);
+
 	connect(Protocol->xmppClient()->fileTransferManager(), SIGNAL(incomingReady()),
 			this, SLOT(incomingFileTransferSlot()));
 }

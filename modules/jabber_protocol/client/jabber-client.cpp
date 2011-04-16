@@ -71,8 +71,12 @@ JabberClient::JabberClient(JabberProtocol *protocol, QObject *parent) :
 
 	QStringList features;
 	features
+			<< "http://jabber.org/protocol/bytestreams"	// file transfer
 			<< "http://jabber.org/protocol/chatstates"
 			<< "http://jabber.org/protocol/disco#info"
+			<< "http://jabber.org/protocol/ibb"	// file transfer
+			<< "http://jabber.org/protocol/si"	// file transfer
+			<< "http://jabber.org/protocol/si/profile/file-transfer" // file transfer
 			<< "jabber:iq:version"
 			<< "jabber:x:data"
 			<< "urn:xmpp:avatar:data"

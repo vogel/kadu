@@ -50,6 +50,7 @@ set (SOURCES
 	client/mini-client.cpp
 
 	file-transfer/jabber-file-transfer-handler.cpp
+	file-transfer/jabber-file-transfer-handler-private.cpp
 	file-transfer/s5b-server-manager.cpp
 
 	gui/widgets/jabber-contact-personal-info-widget.cpp
@@ -117,6 +118,7 @@ set (MOC_SOURCES
 	client/mini-client.h
 
 	file-transfer/jabber-file-transfer-handler.h
+	file-transfer/jabber-file-transfer-handler-private.h
 	file-transfer/s5b-server-manager.h
 
 	gui/widgets/jabber-contact-personal-info-widget.h

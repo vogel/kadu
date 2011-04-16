@@ -35,10 +35,14 @@ namespace XMPP
 	class FileTransfer;
 };
 
+class JabberFileTransferHandlerPrivate;
 class JabberFileTransferHandler : public FileTransferHandler
 {
 	Q_OBJECT
-	
+
+	Q_DECLARE_PRIVATE(JabberFileTransferHandler);
+	JabberFileTransferHandlerPrivate * const d_ptr;
+
 	XMPP::FileTransfer *JabberTransfer;
 	XMPP::Jid PeerJid;
 
@@ -58,6 +62,13 @@ private slots:
 	void fileTransferReadyRead(const QByteArray &a);
 	void fileTransferBytesWritten(int);
 	void fileTransferError(int);
+
+	void s5b_proxyQuery();
+	void s5b_proxyResult();
+	void s5b_requesting();
+	void s5b_accepted();
+	void s5b_proxyConnect();
+	void s5b_waitingForActivation();
 
 	void trySend();
 	void doFinish();
