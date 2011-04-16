@@ -21,7 +21,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QMessageBox>
+#include <QtCore/QFileInfo>
 
 #include <xmpp/xmpp-im/xmpp_bytestream.h>
 #include <filetransfer.h>
@@ -104,6 +104,9 @@ void JabberFileTransferHandler::send()
 		return;
 
 	transfer().setRemoteFileName(transfer().localFileName());
+
+	QFileInfo fileInfo(transfer().localFileName());
+	transfer().setFileSize(fileInfo.size());
 
 	Account account = transfer().peer().contactAccount();
 	if (account.isNull() || transfer().localFileName().isEmpty())
