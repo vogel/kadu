@@ -29,11 +29,10 @@
 #include "resource/jabber-resource-pool.h"
 #include "jabber-protocol.h"
 
-#include "jabber-file-transfer-handler-private.h"
 #include "jabber-file-transfer-handler.h"
 
 JabberFileTransferHandler::JabberFileTransferHandler(::FileTransfer transfer) :
-		FileTransferHandler(transfer), d_ptr(new JabberFileTransferHandlerPrivate(this)), JabberTransfer(0), InProgress(false)
+		FileTransferHandler(transfer), JabberTransfer(0), InProgress(false)
 {
 }
 
@@ -54,15 +53,13 @@ void JabberFileTransferHandler::connectJabberTransfer()
 
 	if (JabberTransfer->bsConnection())
 	{
-		Q_D(JabberFileTransferHandler);
-
 		printf("bs connection is: %s\n", JabberTransfer->bsConnection()->metaObject()->className());
 
 		connect(JabberTransfer->bsConnection(), SIGNAL(proxyQuery()), SLOT(s5b_proxyQuery()));
 		connect(JabberTransfer->bsConnection(), SIGNAL(proxyResult(bool)), SLOT(s5b_proxyResult(bool)));
 		connect(JabberTransfer->bsConnection(), SIGNAL(requesting()), SLOT(s5b_requesting()));
 		connect(JabberTransfer->bsConnection(), SIGNAL(accepted()), SLOT(s5b_accepted()));
-		connect(JabberTransfer->bsConnection(), SIGNAL(tryingHosts(const StreamHostList &)), d, SLOT(s5b_tryingHosts(const StreamHostList &)));
+		connect(JabberTransfer->bsConnection(), SIGNAL(tryingHosts(const StreamHostList &)), SLOT(s5b_tryingHosts(const StreamHostList &)));
 		connect(JabberTransfer->bsConnection(), SIGNAL(proxyConnect()), SLOT(s5b_proxyConnect()));
 		connect(JabberTransfer->bsConnection(), SIGNAL(waitingForActivation()), SLOT(s5b_waitingForActivation()));
 	}
@@ -235,15 +232,13 @@ void JabberFileTransferHandler::fileTransferAccepted()
 		S5BConnection *s5b = dynamic_cast<S5BConnection*>(JabberTransfer->bsConnection());
 		if (s5b)
 		{
-			Q_D(JabberFileTransferHandler);
-
 			printf("[%p] s5b connection\n", this);
 
 			printf("[%p] c1: %d\n", this, connect(s5b, SIGNAL(proxyQuery()), SLOT(s5b_proxyQuery())));
 			printf("[%p] c2: %d\n", this, connect(s5b, SIGNAL(proxyResult(bool)), SLOT(s5b_proxyResult())));
 			printf("[%p] c3: %d\n", this, connect(s5b, SIGNAL(requesting()), SLOT(s5b_requesting())));
 			printf("[%p] c4: %d\n", this, connect(s5b, SIGNAL(accepted()), SLOT(s5b_accepted())));
-			printf("[%p] c5: %d\n", this, connect(s5b, SIGNAL(tryingHosts(const StreamHostList &)), d, SLOT(s5b_tryingHosts(const StreamHostList &))));
+			printf("[%p] c5: %d\n", this, connect(s5b, SIGNAL(tryingHosts(const StreamHostList &)), SLOT(s5b_tryingHosts(const StreamHostList &))));
 			printf("[%p] c6: %d\n", this, connect(s5b, SIGNAL(proxyConnect()), SLOT(s5b_proxyConnect())));
 			printf("[%p] c7: %d\n", this, connect(s5b, SIGNAL(waitingForActivation()), SLOT(s5b_waitingForActivation())));
 		}
@@ -268,6 +263,13 @@ void JabberFileTransferHandler::s5b_requesting()
 void JabberFileTransferHandler::s5b_accepted()
 {
 	printf("[%p] s5b_accepted\n", this);
+}
+
+void JabberFileTransferHandler::s5b_tryingHosts(const XMPP::StreamHostList &hosts)
+{
+	printf("[%p] s5b_tryingHosts: %d\n", this, hosts.count());
+	foreach (const XMPP::StreamHost &host, hosts)
+		printf("  host: %s\n", qPrintable(host.host()));
 }
 
 void JabberFileTransferHandler::s5b_proxyConnect()

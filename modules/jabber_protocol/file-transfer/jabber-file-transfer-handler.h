@@ -35,13 +35,12 @@ namespace XMPP
 	class FileTransfer;
 };
 
-class JabberFileTransferHandlerPrivate;
 class JabberFileTransferHandler : public FileTransferHandler
 {
 	Q_OBJECT
 
-	Q_DECLARE_PRIVATE(JabberFileTransferHandler);
-	JabberFileTransferHandlerPrivate * const d_ptr;
+	// a workaround to Qt's MOC not doing really well when mixing namespaces
+	typedef XMPP::StreamHostList StreamHostList;
 
 	XMPP::FileTransfer *JabberTransfer;
 	XMPP::Jid PeerJid;
@@ -67,6 +66,7 @@ private slots:
 	void s5b_proxyResult();
 	void s5b_requesting();
 	void s5b_accepted();
+	void s5b_tryingHosts(const StreamHostList &hosts);
 	void s5b_proxyConnect();
 	void s5b_waitingForActivation();
 
