@@ -9,6 +9,7 @@
 #include "contacts/contact.h"
 #include "contacts/contact-set.h"
 #include "gui/windows/main-configuration-window.h"
+#include "plugins/generic-plugin.h"
 #include "protocols/protocol.h"
 
 /**
@@ -19,9 +20,10 @@
 class QLineEdit;
 class ChatWidget;
 
-class AutoResponder : public ConfigurationUiHandler, ConfigurationAwareObject, AccountsAwareObject
+class AutoResponder : public ConfigurationUiHandler, ConfigurationAwareObject, AccountsAwareObject, public GenericPlugin
 {
 	Q_OBJECT
+	Q_INTERFACES(GenericPlugin)
 
 	private:
 		ContactSet repliedUsers; /*!< kontakty, którym już odpowiedziano */
@@ -59,6 +61,9 @@ class AutoResponder : public ConfigurationUiHandler, ConfigurationAwareObject, A
 		virtual ~AutoResponder();
 		virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
 
+		virtual int init(bool firstLoad);
+		virtual void done();
+
 	public slots:
 		void filterIncomingMessage(Chat chat, Contact sender, QString &message, time_t time, bool &ignore);
 
@@ -70,8 +75,6 @@ class AutoResponder : public ConfigurationUiHandler, ConfigurationAwareObject, A
 		**/
 		void chatOpenedClosed(ChatWidget *chat, bool activate = false);
 };
-
-extern AutoResponder* autoresponder;
 
 /** @} */
 

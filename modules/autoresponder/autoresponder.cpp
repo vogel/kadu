@@ -48,36 +48,6 @@
  * @ingroup autoresponder
  * @{
  */
-AutoResponder *autoResponder = 0;
-
-extern "C" KADU_EXPORT int autoresponder_init(bool firstLoad)
-{
-	Q_UNUSED(firstLoad)
-
-	kdebugf();
-
-	autoResponder = new AutoResponder();
-
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/autoresponder.ui"));
-	MainConfigurationWindow::registerUiHandler(autoResponder);
-
-	kdebugf2();
-	return 0;
-}
-
-extern "C" KADU_EXPORT void autoresponder_close()
-{
-	kdebugf();
-
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/autoresponder.ui"));
-	MainConfigurationWindow::unregisterUiHandler(autoResponder);
-
-	delete autoResponder;
-	autoResponder = 0;
-
-	kdebugf2();
-}
-
 AutoResponder::AutoResponder(QObject *parent) :
 	QObject(parent)
 {
@@ -106,6 +76,22 @@ AutoResponder::~AutoResponder()
 			this, SLOT(chatOpenedClosed(ChatWidget *)));
 
 	kdebugf2();
+}
+
+int AutoResponder::init(bool firstLoad)
+{
+	Q_UNUSED(firstLoad)
+
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/autoresponder.ui"));
+	MainConfigurationWindow::registerUiHandler(this);
+
+	return 0;
+}
+
+void AutoResponder::done()
+{
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/autoresponder.ui"));
+	MainConfigurationWindow::unregisterUiHandler(this);
 }
 
 void AutoResponder::accountRegistered(Account account)
@@ -231,5 +217,7 @@ void AutoResponder::createDefaultConfiguration()
 	config_file.addVariable("Autoresponder", "StatusBusy", true);
 	config_file.addVariable("Autoresponder", "StatusInvisible", false);
 }
+
+Q_EXPORT_PLUGIN2(autoresponder, AutoResponder)
 
 /** @} */
