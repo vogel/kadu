@@ -23,6 +23,18 @@
         <source>Encrypt after receive encrypted message</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Public key has been sent</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error during sending public key</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Encryption error has occured</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EncryptionActions</name>

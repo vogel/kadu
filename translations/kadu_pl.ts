@@ -682,16 +682,8 @@ To poważne zagrożenie bezpieczeństwa!</translation>
         <translation>Ogólne</translation>
     </message>
     <message>
-        <source>Event</source>
-        <translation>Zdarzenie</translation>
-    </message>
-    <message>
         <source>Options</source>
         <translation>Opcje</translation>
-    </message>
-    <message>
-        <source>New messages</source>
-        <translation>Nowe wiadomości</translation>
     </message>
     <message>
         <source>Silent Mode</source>
@@ -714,20 +706,12 @@ To poważne zagrożenie bezpieczeństwa!</translation>
         <translation>Informuj o nowych wiadomościach tylko gdy okno rozmowy jest nieaktywne</translation>
     </message>
     <message>
-        <source>Status change</source>
-        <translation>Zmiana statusu</translation>
-    </message>
-    <message>
         <source>Ignore status changes from available/busy to busy/available</source>
         <translation>Ignoruj zmiany statusów z dostępny/zajęty na zajęty/dostępny</translation>
     </message>
     <message>
         <source>Ignore changes right after connection to the server</source>
         <translation>Ignoruj zmiany statusów po połączeniu z serwerem</translation>
-    </message>
-    <message>
-        <source>Notify about all users</source>
-        <translation>Powiadamiaj o wszystkich kontaktach</translation>
     </message>
     <message>
         <source>Multilogon</source>
@@ -740,16 +724,6 @@ To poważne zagrożenie bezpieczeństwa!</translation>
     <message>
         <source>Multilogon session disconnected</source>
         <translation>Rozłączono sesję multilogowania</translation>
-    </message>
-    <message>
-        <source>Ignore status changes from available / busy to busy / available</source>
-        <translation>Ignoruj zmiany statusu z dostępnego na zaraz wracam</translation>
-    </message>
-    <message>
-        <source>This option will supersede tooltips with users&apos; status
- changes upon establishing connection to the server</source>
-        <translation>Ta opcja wyłączy powiadomienia o zmianie statusu użytkowników
-po połączeniu się z serwerem</translation>
     </message>
     <message>
         <source>User changed status</source>
@@ -1255,10 +1229,10 @@ znajomych po połączeniu się z serwerem</translation>
         <source>Send message</source>
         <translation>Wyślij wiadomość</translation>
     </message>
-	<message>
-		<source>Show a window with notification</source>
-		<translation>Pokaż okno</translation>
-	</message>
+    <message>
+        <source>Show a window with notification</source>
+        <translation>Pokaż okno</translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -1768,6 +1742,17 @@ Eksport listy kontaktów na serwer się nie powiódł</translation>
     <message>
         <source>This image has %1 KiB and exceeds recommended maximum size of %2 KiB.</source>
         <translation>Ten obrazek ma %1 KiB i przekracza zalecany maksymalny rozmiar %2 KiB.</translation>
+    </message>
+</context>
+<context>
+    <name>ChatNotification</name>
+    <message>
+        <source>Chat</source>
+        <translation type="unfinished">Rozmowa</translation>
+    </message>
+    <message>
+        <source>Ignore</source>
+        <translation type="unfinished">Ignoruj</translation>
     </message>
 </context>
 <context>
@@ -2687,45 +2672,6 @@ Jest to prawdopodobnie dalsza część pliku &lt;b&gt;%5&lt;/b&gt;
     </message>
 </context>
 <context>
-    <name>ModulesManager</name>
-    <message>
-        <source>Required module %1 was not found</source>
-        <translation>Wymagany moduł %1 nie został znaleziony</translation>
-    </message>
-    <message>
-        <source>Module %1 is already active</source>
-        <translation>Moduł %1 jest aktywny</translation>
-    </message>
-    <message>
-        <source>Cannot load %1 module library.:
-%2</source>
-        <translation>Nie mogę załadować biblioteki modułu %1:
-%2</translation>
-    </message>
-    <message>
-        <source>Module %1 conflicts with: %2</source>
-        <translation>Moduł %1 koliduje z: %2</translation>
-    </message>
-    <message>
-        <source>Cannot find required functions in module %1.
-Maybe it&apos;s not Kadu-compatible Module.</source>
-        <translation>Nie znaleziono wymaganych funkcji w module %1.
-Być może nie jest to moduł kompatybilny z Kadu.</translation>
-    </message>
-    <message>
-        <source>Module initialization routine for %1 failed.</source>
-        <translation>Inicjacja modułu %1 nieudana.</translation>
-    </message>
-    <message>
-        <source>Kadu</source>
-        <translation>Kadu</translation>
-    </message>
-    <message>
-        <source>Module %1 cannot be deactivated because it is being used by the following modules:%2</source>
-        <translation>Moduł %1 nie może zostać wyłączony, ponieważ jest używany przez inne moduły: %2</translation>
-    </message>
-</context>
-<context>
     <name>ModulesWindow</name>
     <message>
         <source>Manage Modules</source>
@@ -2734,10 +2680,6 @@ Być może nie jest to moduł kompatybilny z Kadu.</translation>
     <message>
         <source>Info</source>
         <translation>Informacje</translation>
-    </message>
-    <message>
-        <source>Static</source>
-        <translation>Statyczny</translation>
     </message>
     <message>
         <source>Loaded</source>
@@ -2774,10 +2716,6 @@ Być może nie jest to moduł kompatybilny z Kadu.</translation>
     <message>
         <source>&lt;b&gt;Module:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Depends on:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Conflicts with:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Provides:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Author:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Version:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Description:&lt;/b&gt;</source>
         <translation>&lt;b&gt;Moduł:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Wymaga:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Konflikt z:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Dostarcza:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Autor:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Wersja:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Opis:&lt;/b&gt;</translation>
-    </message>
-    <message>
-        <source>Hide base modules</source>
-        <translation>Ukryj standardowe moduły</translation>
     </message>
     <message>
         <source>&lt;b&gt;Module: &lt;/b&gt;%1&lt;br/&gt;&lt;b&gt;Depends on: &lt;/b&gt;%2&lt;br/&gt;&lt;b&gt;Conflicts with: &lt;/b&gt;%3&lt;br/&gt;&lt;b&gt;Provides: &lt;/b&gt;%4&lt;br/&gt;&lt;b&gt;Author: &lt;/b&gt;%5&lt;br/&gt;&lt;b&gt;Version: &lt;/b&gt;%6&lt;br/&gt;&lt;b&gt;Description: &lt;/b&gt;%7</source>
@@ -2998,6 +2936,58 @@ Klient: %3</translation>
     </message>
 </context>
 <context>
+    <name>Plugin</name>
+    <message>
+        <source>Kadu</source>
+        <translation type="unfinished">Kadu</translation>
+    </message>
+    <message>
+        <source>Cannot load %1 plugin library.:
+%2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cannot find required object in module %1.
+Maybe it&apos;s not Kadu-compatible plugin.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cannot load %1 module library.:
+%2</source>
+        <translation type="unfinished">Nie mogę załadować biblioteki modułu %1:
+%2</translation>
+    </message>
+    <message>
+        <source>Cannot find required functions in module %1.
+Maybe it&apos;s not Kadu-compatible Module.</source>
+        <translation type="unfinished">Nie znaleziono wymaganych funkcji w module %1.
+Być może nie jest to moduł kompatybilny z Kadu.</translation>
+    </message>
+    <message>
+        <source>Module initialization routine for %1 failed.</source>
+        <translation type="unfinished">Inicjacja modułu %1 nieudana.</translation>
+    </message>
+</context>
+<context>
+    <name>PluginsManager</name>
+    <message>
+        <source>Kadu</source>
+        <translation type="unfinished">Kadu</translation>
+    </message>
+    <message>
+        <source>Required module %1 was not found</source>
+        <translation type="unfinished">Wymagany moduł %1 nie został znaleziony</translation>
+    </message>
+    <message>
+        <source>Module %1 conflicts with: %2</source>
+        <translation type="unfinished">Moduł %1 koliduje z: %2</translation>
+    </message>
+    <message>
+        <source>Module %1 cannot be deactivated because it is being used by the following modules:%2</source>
+        <translation type="unfinished">Moduł %1 nie może zostać wyłączony, ponieważ jest używany przez inne moduły: %2</translation>
+    </message>
+</context>
+<context>
     <name>ProgressWindow</name>
     <message>
         <source>Plase wait. New Gadu-Gadu account is being registered.</source>
@@ -3044,17 +3034,6 @@ Klient: %3</translation>
     <message>
         <source>Password</source>
         <translation>Hasło</translation>
-    </message>
-</context>
-<context>
-    <name>QApplication</name>
-    <message>
-        <source>Executable &apos;%1&apos; requires Qt %2, found Qt %3.</source>
-        <translation>Program &apos;%1&apos; wymaga Qt %2, znaleziono Qt %3.</translation>
-    </message>
-    <message>
-        <source>Incompatible Qt Library Error</source>
-        <translation>Błąd Kompatybilności Biblioteki Qt</translation>
     </message>
 </context>
 <context>
@@ -3334,10 +3313,6 @@ Klient: %3</translation>
         <source>Kadu</source>
         <translation>Kadu</translation>
     </message>
-	<message>
-		<source>Refresh Preview</source>
-		<translation>Odśwież podgląd</translation>
-	</message>
 </context>
 <context>
     <name>SyntaxEditorWindow</name>
@@ -3370,16 +3345,16 @@ Klient: %3</translation>
         <translation>Nadpisać składnię %1?</translation>
     </message>
     <message>
-        <source>Preview</source>
-        <translation>Podgląd</translation>
-    </message>
-    <message>
         <source>Save as...</source>
         <translation>Zapisz jako...</translation>
     </message>
     <message>
         <source>Kadu</source>
         <translation>Kadu</translation>
+    </message>
+    <message>
+        <source>Refresh Preview</source>
+        <translation type="unfinished">Odśwież podgląd</translation>
     </message>
 </context>
 <context>

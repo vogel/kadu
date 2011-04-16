@@ -75,6 +75,10 @@
         <source>Switch to next tab</source>
         <translation>Przełącz do następnej karty</translation>
     </message>
+    <message>
+        <source>Chat</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>TabsManager</name>

@@ -87,6 +87,80 @@
         <source>Local TCP port</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Unable to connect, server has not been found</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to connect</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please change your email in &quot;Change password / email&quot; window. Leave new password field blank.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to connect, server has returned unknown data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to connect, connection break during reading</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to connect, connection break during writing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to connect, invalid password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to connect, error of negotiation TLS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Too many connection attempts with bad password!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to connect, servers are down</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connection broken</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connection timeout!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Disconnection has occurred</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>IMAGE SENT BY THIS BUDDY HAS BEEN BLOCKED</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Buddy %1 is attempting to send you an image of %2 KiB in size.
+This exceeds your configured limits.
+Do you want to accept this image anyway?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Kadu</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Incoming Image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>THIS BUDDY HAS SENT YOU AN IMAGE THAT IS TOO BIG TO BE RECEIVED</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>GaduAddAccountWidget</name>
@@ -383,34 +457,6 @@ Passwords typed in both fields (&quot;Password&quot; and &quot;Retype Password&q
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Images</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Maximum image size that we want to receive</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Maximum image size for chat</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Receive images during invisibility</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Receiving images during invisibility is allowed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Define limit of images received per minute</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Limit numbers of image received per minute</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Status</source>
         <translation type="unfinished"></translation>
     </message>
@@ -458,15 +504,40 @@ Passwords typed in both fields (&quot;Password&quot; and &quot;Retype Password&q
         <source>Remove account and unregister from server</source>
         <translation type="unfinished"></translation>
     </message>
-</context>
-<context>
-    <name>GaduFormatter</name>
     <message>
-        <source>###IMAGE BLOCKED###</source>
+        <source>Incoming Images</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>###IMAGE TOO BIG###</source>
+        <source>Limit incoming images&apos; size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Maximum images&apos; size that you accept</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Maximum incoming images&apos; size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ask for confirmation if an image&apos;s size exceeds the limit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Receive images also when Invisible</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Limit numbers of images received per minute</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Outgoing Images</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show a warning when the image is larger then 256 KiB</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -521,62 +592,6 @@ Passwords typed in both fields (&quot;Password&quot; and &quot;Retype Password&q
     <name>GaduProtocol</name>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>UIN not set!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Please provide password for %1 (%2) account</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to connect, server has not been found</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to connect</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Please change your email in &quot;Change password / email&quot; window. Leave new password field blank.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to connect, server has returned unknown data</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to connect, connection break during reading</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to connect, connection break during writing</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to connect, error of negotiation TLS</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Too many connection attempts with bad password!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to connect, servers are down</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Connection broken</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Connection timeout!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Disconnection has occurred</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -31,6 +31,10 @@
         <source>Exclusions</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Message was cenzored</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>CenzorNotification</name>

@@ -564,6 +564,60 @@ Nowe hasło wprowadzone w polu &quot;Nowe hasło&quot; nie jest identyczne z zaw
     </message>
 </context>
 <context>
+    <name>JabberFileTransferHandler</name>
+    <message>
+        <source>Unable to negotiate transfer.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to connect to peer for data transfer.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to connect to proxy for data transfer.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Lost connection / Cancelled.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>File was rejected by remote user.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to negotiate transfer.
+
+This can happen if the contact did not understand our request, or if the
+contact is offline.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to connect to peer for data transfer.
+
+Ensure that your Data Transfer settings are proper.  If you are behind
+a NAT router or firewall then you&apos;ll need to open the proper TCP port
+or specify a Data Transfer Proxy in your account settings.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Failure to either connect to, or activate, the Data Transfer Proxy.
+
+This means that the Proxy service is either not functioning or it is
+unreachable.  If you are behind a firewall, then you&apos;ll need to ensure
+that outgoing TCP connections are allowed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>File I/O error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished">Błąd</translation>
+    </message>
+</context>
+<context>
     <name>JabberPersonalInfoWidget</name>
     <message>
         <source>Full name</source>
@@ -592,21 +646,6 @@ Nowe hasło wprowadzone w polu &quot;Nowe hasło&quot; nie jest identyczne z zaw
     <message>
         <source>Website</source>
         <translation>Strona WWW</translation>
-    </message>
-</context>
-<context>
-    <name>JabberProtocol</name>
-    <message>
-        <source>Kadu</source>
-        <translation>Kadu</translation>
-    </message>
-    <message>
-        <source>XMPP username is not set!</source>
-        <translation>Nie podano nazwy użytkownika XMPP!</translation>
-    </message>
-    <message>
-        <source>Please provide password for %1 (%2) account</source>
-        <translation>Wprowadź hasło dla konta %1 (%2)</translation>
     </message>
 </context>
 <context>

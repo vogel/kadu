@@ -138,6 +138,10 @@
             <numerusform></numerusform>
         </translation>
     </message>
+    <message>
+        <source>Message was firewalled</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Firewall</name>

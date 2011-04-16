@@ -111,6 +111,58 @@ Czy chcesz mimo to odebrać ten obrazek?</translation>
         <source>THIS BUDDY HAS SENT YOU AN IMAGE THAT IS TOO BIG TO BE RECEIVED</source>
         <translation>ZNAJOMY WYSŁAŁ CI OBRAZEK, KTÓRY JEST ZBYT DUŻY BY GO ODEBRAĆ</translation>
     </message>
+    <message>
+        <source>Unable to connect, server has not been found</source>
+        <translation type="unfinished">Połączenie niemożliwe, serwer nie znaleziony</translation>
+    </message>
+    <message>
+        <source>Unable to connect</source>
+        <translation type="unfinished">Połączenie niemożliwe</translation>
+    </message>
+    <message>
+        <source>Please change your email in &quot;Change password / email&quot; window. Leave new password field blank.</source>
+        <translation type="unfinished">Zmień swój e-mail w oknie &quot;Zmień hasło / e-mai&quot;. Pole nowe hasło pozostaw puste.</translation>
+    </message>
+    <message>
+        <source>Unable to connect, server has returned unknown data</source>
+        <translation type="unfinished">Połączenie niemożliwe, serwer odpowiedział nieznanymi danymi</translation>
+    </message>
+    <message>
+        <source>Unable to connect, connection break during reading</source>
+        <translation type="unfinished">Połączenie niemożliwe, połączenie przerwane w czasie odczytu</translation>
+    </message>
+    <message>
+        <source>Unable to connect, connection break during writing</source>
+        <translation type="unfinished">Połączenie niemożliwe, połączenie przerwane w czasie zapisu</translation>
+    </message>
+    <message>
+        <source>Unable to connect, invalid password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to connect, error of negotiation TLS</source>
+        <translation type="unfinished">Połączenie niemożliwe, błąd negocjacji TLS</translation>
+    </message>
+    <message>
+        <source>Too many connection attempts with bad password!</source>
+        <translation type="unfinished">Zbyt wiele połączeń z użyciem błędnego hasła!</translation>
+    </message>
+    <message>
+        <source>Unable to connect, servers are down</source>
+        <translation type="unfinished">Połączenie nie możliwe, serwery są niedostępne</translation>
+    </message>
+    <message>
+        <source>Connection broken</source>
+        <translation type="unfinished">Zerwane połączenie</translation>
+    </message>
+    <message>
+        <source>Connection timeout!</source>
+        <translation type="unfinished">Przekroczenie czasu połączenia!</translation>
+    </message>
+    <message>
+        <source>Disconnection has occurred</source>
+        <translation type="unfinished">Nastąpiło rozłączenie</translation>
+    </message>
 </context>
 <context>
     <name>GaduAddAccountWidget</name>
@@ -547,62 +599,6 @@ Hasła  muszą być identyczne w obu polach!</translation>
     <message>
         <source>Kadu</source>
         <translation>Kadu</translation>
-    </message>
-    <message>
-        <source>UIN not set!</source>
-        <translation>Numer Gadu-Gadu nie jest ustawiony!</translation>
-    </message>
-    <message>
-        <source>Please provide password for %1 (%2) account</source>
-        <translation>Wprowadź hasło dla konta %1 (%2)</translation>
-    </message>
-    <message>
-        <source>Unable to connect, server has not been found</source>
-        <translation>Połączenie niemożliwe, serwer nie znaleziony</translation>
-    </message>
-    <message>
-        <source>Unable to connect</source>
-        <translation>Połączenie niemożliwe</translation>
-    </message>
-    <message>
-        <source>Please change your email in &quot;Change password / email&quot; window. Leave new password field blank.</source>
-        <translation>Zmień swój e-mail w oknie &quot;Zmień hasło / e-mai&quot;. Pole nowe hasło pozostaw puste.</translation>
-    </message>
-    <message>
-        <source>Unable to connect, server has returned unknown data</source>
-        <translation>Połączenie niemożliwe, serwer odpowiedział nieznanymi danymi</translation>
-    </message>
-    <message>
-        <source>Unable to connect, connection break during reading</source>
-        <translation>Połączenie niemożliwe, połączenie przerwane w czasie odczytu</translation>
-    </message>
-    <message>
-        <source>Unable to connect, connection break during writing</source>
-        <translation>Połączenie niemożliwe, połączenie przerwane w czasie zapisu</translation>
-    </message>
-    <message>
-        <source>Unable to connect, error of negotiation TLS</source>
-        <translation>Połączenie niemożliwe, błąd negocjacji TLS</translation>
-    </message>
-    <message>
-        <source>Too many connection attempts with bad password!</source>
-        <translation>Zbyt wiele połączeń z użyciem błędnego hasła!</translation>
-    </message>
-    <message>
-        <source>Unable to connect, servers are down</source>
-        <translation>Połączenie nie możliwe, serwery są niedostępne</translation>
-    </message>
-    <message>
-        <source>Connection broken</source>
-        <translation>Zerwane połączenie</translation>
-    </message>
-    <message>
-        <source>Connection timeout!</source>
-        <translation>Przekroczenie czasu połączenia!</translation>
-    </message>
-    <message>
-        <source>Disconnection has occurred</source>
-        <translation>Nastąpiło rozłączenie</translation>
     </message>
 </context>
 <context>
