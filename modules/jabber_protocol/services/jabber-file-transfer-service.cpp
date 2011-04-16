@@ -70,7 +70,8 @@ void JabberFileTransferService::loggedOut()
 
 void JabberFileTransferService::s5bServerChanged(XMPP::S5BServer *server)
 {
-	Protocol->xmppClient()->s5bManager()->setServer(server);
+	if (Protocol->isConnected())
+		Protocol->xmppClient()->s5bManager()->setServer(server);
 }
 
 void JabberFileTransferService::incomingFileTransferSlot()
