@@ -100,6 +100,13 @@ void GaduContactListService::handleEventUserlist(struct gg_event *e)
 	}
 }
 
+void GaduContactListService::handleEventUserlist100Version(gg_event *e)
+{
+	Q_UNUSED(e)
+
+	kdebugmf(KDEBUG_INFO, "new version of userlist available: %d\n", e->event.userlist100_version.version);
+}
+
 void GaduContactListService::importContactList(bool automaticallySetBuddiesList)
 {
 	ContactListService::importContactList(automaticallySetBuddiesList);

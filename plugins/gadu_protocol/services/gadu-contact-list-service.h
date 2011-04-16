@@ -39,6 +39,7 @@ class GaduContactListService : public ContactListService
 	void handleEventUserlistGetReply(struct gg_event *e);
 	void handleEventUserlistPutReply(struct gg_event *e);
 	void handleEventUserlist(struct gg_event *e);
+	void handleEventUserlist100Version(struct gg_event* e);
 
 public:
 	GaduContactListService(GaduProtocol *protocol);

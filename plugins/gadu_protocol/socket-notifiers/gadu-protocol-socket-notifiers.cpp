@@ -353,6 +353,10 @@ void GaduProtocolSocketNotifiers::socketEvent()
 			else
 				CurrentProtocol->CurrentFileTransferService->handleEventDcc7Pending(e);
 			break;
+
+		case GG_EVENT_USERLIST100_VERSION:
+			CurrentProtocol->CurrentContactListService->handleEventUserlist100Version(e);
+			break;
 	}
 
 	gg_free_event(e);
