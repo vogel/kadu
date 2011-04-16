@@ -94,7 +94,7 @@ ModulesWindow::ModulesWindow(QWidget *parent)
 	// our QListView
 	ModulesList = new QTreeWidget(center);
 	QStringList headers;
-	headers << tr("Module name") << tr("Version") << tr("Module type") << tr("State");
+	headers << tr("Module name") << tr("Version") << tr("State");
 	ModulesList->setHeaderLabels(headers);
 	ModulesList->setSortingEnabled(true);
 	ModulesList->setAllColumnsShowFocus(true);
@@ -239,9 +239,9 @@ void ModulesWindow::refreshList()
 
 			PluginInfo *pluginInfo = plugin->info();
 			if (plugin->isActive())
-				strings << plugin->name() << pluginInfo->version() << tr("Dynamic") << tr("Loaded");
+				strings << plugin->name() << pluginInfo->version() << tr("Loaded");
 			else
-				strings << plugin->name() << pluginInfo->version() << tr("Dynamic") << tr("Not loaded");
+				strings << plugin->name() << pluginInfo->version() << tr("Not loaded");
 			new QTreeWidgetItem(ModulesList, strings);
 		}
 
