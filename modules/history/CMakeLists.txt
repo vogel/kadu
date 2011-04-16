@@ -12,7 +12,7 @@ set (SOURCES
 
 	buddy-history-delete-handler.cpp
 	history.cpp
-	history-module.cpp
+	history-plugin.cpp
 	history-tree-item.cpp
 	history-save-thread.cpp
 	timed-status.cpp
@@ -30,6 +30,7 @@ set (MOC_SOURCES
 	storage/history-storage.h
 
 	history.h
+	history-plugin.h
 	history-save-thread.h
 )
 

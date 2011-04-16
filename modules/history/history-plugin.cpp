@@ -23,7 +23,13 @@
 #include "buddy-history-delete-handler.h"
 #include "history.h"
 
-extern "C" KADU_EXPORT int history_init(bool firstLoad)
+#include "history-plugin.h"
+
+HistoryPlugin::~HistoryPlugin()
+{
+}
+
+int HistoryPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
@@ -37,7 +43,7 @@ extern "C" KADU_EXPORT int history_init(bool firstLoad)
 	return 0;
 }
 
-extern "C" KADU_EXPORT void history_close()
+void HistoryPlugin::done()
 {
 	BuddyAdditionalDataDeleteHandlerManager::instance()->unregisterAdditionalDataDeleteHandler(BuddyHistoryDeleteHandler::instance());
 	BuddyHistoryDeleteHandler::destroyInstance();
@@ -46,3 +52,5 @@ extern "C" KADU_EXPORT void history_close()
 	MainConfigurationWindow::unregisterUiHandler(History::instance());
 	History::destroyInstance();
 }
+
+Q_EXPORT_PLUGIN2(history, HistoryPlugin)
