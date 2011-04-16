@@ -39,6 +39,8 @@ int SqlHistoryPlugin::init(bool firstLoad)
 
 	Storage = new HistorySqlStorage();
 	History::instance()->registerStorage(Storage);
+
+	return 0;
 }
 
 void SqlHistoryPlugin::done()
