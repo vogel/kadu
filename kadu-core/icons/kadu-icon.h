@@ -28,7 +28,7 @@
 class KaduIcon;
 
 /**
- * @addtogroup Chat
+ * @addtogroup Icons
  * @{
  */
 
@@ -40,7 +40,7 @@ class KaduIcon;
  * This class is needed to notify KaduIcon about IconsManager::themeChanged() signal.
  * KaduIcon itself cannot be QObject (QObjects lack copy constructors, etc.).
  */
-class KaduIconThemeChangeWatcher : public QObject
+class KADUAPI KaduIconThemeChangeWatcher : public QObject
 {
 	Q_OBJECT
 

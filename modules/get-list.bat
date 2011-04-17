@@ -2,6 +2,7 @@
 SETLOCAL EnableDelayedExpansion 
 SETLOCAL ENABLEEXTENSIONS
 
+SET NTYPE=n
 SET AVAILABLE_MODULES=
 
 FOR /F "eol=# tokens=2,3,4,* delims=_=" %%i IN (..\.config) DO (
@@ -21,7 +22,7 @@ FOR /F "eol=# tokens=2,3,4,* delims=_=" %%i IN (..\.config) DO (
 	FOR %%M IN (%*) DO (
 		SET MODULE=%%M
 		IF !LINE! == !MODULE! ( 
-			IF NOT !n! == !SETTING! (
+			IF NOT !NTYPE! == !SETTING! (
 				CALL SET AVAILABLE_MODULES=%%AVAILABLE_MODULES%%;!MODULE!
 			)
 		)

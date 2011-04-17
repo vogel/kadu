@@ -201,10 +201,10 @@ else (WIN32)
 	list (APPEND MOC_SOURCES2_IRIS libiris/src/irisnet/corelib/netinterface_unix.cpp)
 endif (WIN32)
 
-add_definitions (-DIRISNET_STATIC)
-
 include_directories (
+	${IDN_INCLUDE_DIRS}
 	${QCA2_INCLUDE_DIRS}
+	${ZLIB_INCLUDE_DIRS}
 
 	${CMAKE_CURRENT_SOURCE_DIR}/libiris/include/iris
 	${CMAKE_CURRENT_SOURCE_DIR}/libiris/src/irisnet/corelib
@@ -216,4 +216,3 @@ qt4_wrap_cpp (MOC_SOURCES_FILES ${MOC_SOURCES_IRIS})
 kadu_jabber_automoc (${MOC_SOURCES2_IRIS})
 
 add_library (3rdparty STATIC ${SOURCES_IRIS} ${MOC_SOURCES2_IRIS} ${MOC_SOURCES_FILES})
-set_target_properties (3rdparty PROPERTIES COMPILE_FLAGS -fPIC)

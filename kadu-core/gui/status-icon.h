@@ -23,12 +23,13 @@
 #include <QtGui/QPushButton>
 
 #include "configuration/configuration-aware-object.h"
+#include "exports.h"
 #include "icons/kadu-icon.h"
 #include "status/status.h"
 
 class StatusContainer;
 
-class StatusIcon : public QObject, private ConfigurationAwareObject
+class KADUAPI StatusIcon : public QObject, private ConfigurationAwareObject
 {
 	Q_OBJECT
 
