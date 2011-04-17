@@ -57,15 +57,9 @@ QValidator::State JabberIdValidator::validate(QString &input, int &pos) const
 	if (mid.isEmpty())
 		return QValidator::Intermediate;
 
-	// reject resource
-	if (!mid.contains('/') && XMPP::Jid(mid).isValid())
-	{
-		// require node
-		if (QRegExp("^[^@]{1,1023}@[^@]{1,1023}$").exactMatch(mid))
-			return QValidator::Acceptable;
-		else if(QRegExp("[^@]{1,1023}@?").exactMatch(mid))
-			return QValidator::Intermediate;
-	}
-
-	return QValidator::Invalid;
+	XMPP::Jid jid = XMPP::Jid(mid);
+	if (jid.isValid())
+		return QValidator::Acceptable;
+	else
+		return QValidator::Invalid;
 }
