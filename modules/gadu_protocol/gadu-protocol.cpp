@@ -172,9 +172,10 @@ void GaduProtocol::login()
 	GaduSession = gg_login(&GaduLoginParams);
 	cleanUpLoginParams();
 
-	if (!GaduSession) // something fatal
+	if (!GaduSession)
 	{
-		connectionClosed();
+		// gadu session can be null if DNS failed, we can try IP after that
+		connectionError();
 		return;
 	}
 
@@ -434,7 +435,7 @@ void GaduProtocol::socketConnFailed(GaduError error)
 
 void GaduProtocol::disconnectedFromServer()
 {
-	connectionClosed();
+	connectionError();
 }
 
 QString GaduProtocol::statusPixmapPath()
