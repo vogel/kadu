@@ -229,26 +229,7 @@ void JabberFileTransferHandler::fileTransferConnected()
 			}
 		}
 
-		if (!JabberTransfer->bsConnection())
-		{
-			cleanup(StatusNotConnected);
-			return;
-		}
-
-		int dataSize = JabberTransfer->dataSizeNeeded();
-		QByteArray data(dataSize, (char)0);
-
-		int sizeRead = LocalFile.read(data.data(), data.size());
-		if (sizeRead < 0)
-		{
-			cleanup(StatusNotConnected);
-			return;
-		}
-
-		if (sizeRead < data.size())
-			data.resize(sizeRead);
-			
-		JabberTransfer->writeFileData(data);
+		fileTransferBytesWritten(0);
 	}
 	else
 	{
