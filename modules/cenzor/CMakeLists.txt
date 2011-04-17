@@ -5,7 +5,7 @@ set (SOURCES
 	notify/cenzor-notification.cpp
 
 	cenzor.cpp
-	cenzor-module.cpp
+	cenzor-plugin.cpp
 )
 
 set (MOC_SOURCES
@@ -14,6 +14,7 @@ set (MOC_SOURCES
 	notify/cenzor-notification.h
 
 	cenzor.h
+	cenzor-plugin.h
 )
 
 set (TRANSLATION_SOURCES

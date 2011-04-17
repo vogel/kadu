@@ -2,6 +2,7 @@
  * %kadu copyright begin%
  * Copyright 2011 Bartosz Brachaczek (b.brachaczek@gmail.com)
  * Copyright 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2011 Piotr Galiszewski (piotr.galiszewski@kadu.im)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -25,7 +26,13 @@
 #include "notify/cenzor-notification.h"
 #include "cenzor.h"
 
-extern "C" KADU_EXPORT int cenzor_init(bool firstLoad)
+#include "cenzor-plugin.h"
+
+CenzorPlugin::~CenzorPlugin()
+{
+}
+
+int CenzorPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
@@ -36,9 +43,11 @@ extern "C" KADU_EXPORT int cenzor_init(bool firstLoad)
 	return 0;
 }
 
-extern "C" KADU_EXPORT void cenzor_close()
+void CenzorPlugin::done()
 {
 	CenzorConfigurationUiHandler::unregisterConfigurationUi();
 	CenzorNotification::unregisterNotifiactions();
 	Cenzor::destroyInstance();
 }
+
+Q_EXPORT_PLUGIN2(cenzor, CenzorPlugin)
