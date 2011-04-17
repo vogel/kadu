@@ -71,6 +71,16 @@ void JabberFileTransferHandler::setJTransfer(XMPP::FileTransfer *jTransfer)
 	connectJabberTransfer();
 }
 
+void JabberFileTransferHandler::cleanup(FileTransferStatus status)
+{
+	transfer().setTransferStatus(status);
+	delete JabberTransfer;
+	JabberTransfer = 0;
+
+	if (LocalFile.isOpen())
+		LocalFile.close();
+}
+
 void JabberFileTransferHandler::updateFileInfo()
 {
 	if (JabberTransfer)
@@ -141,12 +151,9 @@ void JabberFileTransferHandler::send()
 void JabberFileTransferHandler::stop()
 {
 	if (JabberTransfer)
-	{
 		JabberTransfer->close();
-		JabberTransfer->deleteLater();
-		JabberTransfer = 0;
-		transfer().setTransferStatus(StatusNotConnected);
-	}
+
+	cleanup(StatusNotConnected);
 }
 
 void JabberFileTransferHandler::pause()
@@ -217,19 +224,14 @@ void JabberFileTransferHandler::fileTransferConnected()
 			LocalFile.setFileName(transfer().localFileName());
 			if (!LocalFile.open(QIODevice::ReadOnly))
 			{
-				transfer().setTransferStatus(StatusNotConnected);
-				delete JabberTransfer;
-				JabberTransfer = 0;
+				cleanup(StatusNotConnected);
 				return;
 			}
 		}
 
 		if (!JabberTransfer->bsConnection())
 		{
-			transfer().setTransferStatus(StatusNotConnected);
-			delete JabberTransfer;
-			JabberTransfer = 0;
-			LocalFile.close();
+			cleanup(StatusNotConnected);
 			return;
 		}
 
@@ -239,10 +241,7 @@ void JabberFileTransferHandler::fileTransferConnected()
 		int sizeRead = LocalFile.read(data.data(), data.size());
 		if (sizeRead < 0)
 		{
-			transfer().setTransferStatus(StatusNotConnected);
-			delete JabberTransfer;
-			JabberTransfer = 0;
-			LocalFile.close();
+			cleanup(StatusNotConnected);
 			return;
 		}
 
@@ -258,9 +257,7 @@ void JabberFileTransferHandler::fileTransferConnected()
 			LocalFile.setFileName(transfer().localFileName());
 			if (!LocalFile.open(QIODevice::WriteOnly | QIODevice::Truncate))
 			{
-				transfer().setTransferStatus(StatusNotConnected);
-				delete JabberTransfer;
-				JabberTransfer = 0;
+				cleanup(StatusNotConnected);
 				return;
 			}
 		}
@@ -268,7 +265,6 @@ void JabberFileTransferHandler::fileTransferConnected()
 
 	transfer().setTransferStatus(StatusTransfer);
 }
-
 
 void JabberFileTransferHandler::fileTransferReadyRead(const QByteArray &a)
 {
@@ -278,12 +274,7 @@ void JabberFileTransferHandler::fileTransferReadyRead(const QByteArray &a)
 	updateFileInfo();
 
 	if (BytesTransferred == JabberTransfer->fileSize())
-	{
-		transfer().setTransferStatus(StatusFinished);
-		delete JabberTransfer;
-		JabberTransfer = 0;
-		LocalFile.close();
-	}
+		cleanup(StatusFinished);
 }
 
 void JabberFileTransferHandler::fileTransferBytesWritten(int written)
@@ -293,19 +284,13 @@ void JabberFileTransferHandler::fileTransferBytesWritten(int written)
 
 	if (BytesTransferred == (qlonglong)(transfer().fileSize()))
 	{
-		transfer().setTransferStatus(StatusFinished);
-		delete JabberTransfer;
-		JabberTransfer = 0;
-		LocalFile.close();
+		cleanup(StatusFinished);
 		return;
 	}
 
 	if (!JabberTransfer->bsConnection())
 	{
-		transfer().setTransferStatus(StatusNotConnected);
-		delete JabberTransfer;
-		JabberTransfer = 0;
-		LocalFile.close();
+		cleanup(StatusNotConnected);
 		return;
 	}
 
@@ -316,10 +301,7 @@ void JabberFileTransferHandler::fileTransferBytesWritten(int written)
 	int sizeRead = LocalFile.read(data.data(), data.size());
 	if (sizeRead < 0)
 	{
-		transfer().setTransferStatus(StatusNotConnected);
-		delete JabberTransfer;
-		JabberTransfer = 0;
-		LocalFile.close();
+		cleanup(StatusNotConnected);
 		return;
 	}
 
@@ -329,23 +311,23 @@ void JabberFileTransferHandler::fileTransferBytesWritten(int written)
 	JabberTransfer->writeFileData(data);
 }
 
-void JabberFileTransferHandler::fileTransferError(int error)
+FileTransferStatus JabberFileTransferHandler::errorToStatus(int error)
 {
-	if (LocalFile.isOpen())
-		LocalFile.close();
-	JabberTransfer->deleteLater();
-	JabberTransfer = 0;
-
 	switch (error)
 	{
 		case XMPP::FileTransfer::ErrReject:
-			transfer().setTransferStatus(StatusRejected);
+			return StatusRejected;
 			break;
 		case XMPP::FileTransfer::ErrNeg:
 		case XMPP::FileTransfer::ErrConnect:
 		case XMPP::FileTransfer::ErrStream:
 		default:
-			transfer().setTransferStatus(StatusNotConnected);
+			return StatusNotConnected;
 			break;
 	}
+}
+
+void JabberFileTransferHandler::fileTransferError(int error)
+{
+	cleanup(errorToStatus(error));
 }

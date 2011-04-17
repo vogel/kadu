@@ -52,6 +52,9 @@ class JabberFileTransferHandler : public FileTransferHandler
 	void connectJabberTransfer();
 	void disconnectJabberTransfer();
 
+	FileTransferStatus errorToStatus(int error);
+	void cleanup(FileTransferStatus status);
+
 protected:
 	virtual void updateFileInfo();
 
