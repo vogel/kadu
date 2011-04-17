@@ -32,7 +32,7 @@
 #include "jabber-file-transfer-handler.h"
 
 JabberFileTransferHandler::JabberFileTransferHandler(::FileTransfer transfer) :
-		FileTransferHandler(transfer), JabberTransfer(0), InProgress(false)
+		FileTransferHandler(transfer), JabberTransfer(0), InProgress(false), BytesTransferred(0)
 {
 }
 
@@ -50,19 +50,6 @@ void JabberFileTransferHandler::connectJabberTransfer()
 	connect(JabberTransfer, SIGNAL(readyRead(const QByteArray &)), this, SLOT(fileTransferReadyRead(const QByteArray &)));
 	connect(JabberTransfer, SIGNAL(bytesWritten(int)), this, SLOT(fileTransferBytesWritten(int)));
 	connect(JabberTransfer, SIGNAL(error(int)), this, SLOT(fileTransferError(int)));
-
-	if (JabberTransfer->bsConnection())
-	{
-		printf("bs connection is: %s\n", JabberTransfer->bsConnection()->metaObject()->className());
-
-		connect(JabberTransfer->bsConnection(), SIGNAL(proxyQuery()), SLOT(s5b_proxyQuery()));
-		connect(JabberTransfer->bsConnection(), SIGNAL(proxyResult(bool)), SLOT(s5b_proxyResult(bool)));
-		connect(JabberTransfer->bsConnection(), SIGNAL(requesting()), SLOT(s5b_requesting()));
-		connect(JabberTransfer->bsConnection(), SIGNAL(accepted()), SLOT(s5b_accepted()));
-		connect(JabberTransfer->bsConnection(), SIGNAL(tryingHosts(const StreamHostList &)), SLOT(s5b_tryingHosts(const StreamHostList &)));
-		connect(JabberTransfer->bsConnection(), SIGNAL(proxyConnect()), SLOT(s5b_proxyConnect()));
-		connect(JabberTransfer->bsConnection(), SIGNAL(waitingForActivation()), SLOT(s5b_waitingForActivation()));
-	}
 }
 
 void JabberFileTransferHandler::disconnectJabberTransfer()
@@ -87,15 +74,9 @@ void JabberFileTransferHandler::setJTransfer(XMPP::FileTransfer *jTransfer)
 void JabberFileTransferHandler::updateFileInfo()
 {
 	if (JabberTransfer)
-	{
-		transfer().setFileSize(LocalFile.size());
 		transfer().setTransferredSize(BytesTransferred);
-	}
 	else
-	{
-		transfer().setFileSize(0);
 		transfer().setTransferredSize(0);
-	}
 
 	emit statusChanged();
 }
@@ -206,6 +187,9 @@ bool JabberFileTransferHandler::accept(QFile &file)
 	transfer().setTransferStatus(StatusTransfer);
 	transfer().setTransferredSize(BytesTransferred);
 
+	if (TypeReceive == transfer().transferType())
+		transfer().setFileSize(JabberTransfer->fileSize());
+
 	JabberTransfer->accept(BytesTransferred);
 
 	return true;
@@ -222,165 +206,127 @@ void JabberFileTransferHandler::reject()
 void JabberFileTransferHandler::fileTransferAccepted()
 {
 	transfer().setTransferStatus(StatusTransfer);
-
-	if (JabberTransfer->bsConnection())
-	{
-		printf("[%p] ACCEPTED bs connection is: %s\n", this, JabberTransfer->bsConnection()->metaObject()->className());
-
-		XMPP::S5BConnection *s5b = qobject_cast<XMPP::S5BConnection *>(JabberTransfer->bsConnection());
-		if (s5b)
-		{
-			printf("[%p] s5b connection\n", this);
-
-			printf("[%p] c1: %d\n", this, connect(s5b, SIGNAL(proxyQuery()), SLOT(s5b_proxyQuery())));
-			printf("[%p] c2: %d\n", this, connect(s5b, SIGNAL(proxyResult(bool)), SLOT(s5b_proxyResult())));
-			printf("[%p] c3: %d\n", this, connect(s5b, SIGNAL(requesting()), SLOT(s5b_requesting())));
-			printf("[%p] c4: %d\n", this, connect(s5b, SIGNAL(accepted()), SLOT(s5b_accepted())));
-			printf("[%p] c5: %d\n", this, connect(s5b, SIGNAL(tryingHosts(const StreamHostList &)), SLOT(s5b_tryingHosts(const StreamHostList &))));
-			printf("[%p] c6: %d\n", this, connect(s5b, SIGNAL(proxyConnect()), SLOT(s5b_proxyConnect())));
-			printf("[%p] c7: %d\n", this, connect(s5b, SIGNAL(waitingForActivation()), SLOT(s5b_waitingForActivation())));
-		}
-	}
 }
-
-void JabberFileTransferHandler::s5b_proxyQuery()
-{
-	printf("[%p] s5b_proxyQuery\n", this);
-}
-
-void JabberFileTransferHandler::s5b_proxyResult()
-{
-	printf("[%p] s5b_proxyResult\n", this);
-}
-
-void JabberFileTransferHandler::s5b_requesting()
-{
-	printf("[%p] s5b_requesting\n", this);
-}
-
-void JabberFileTransferHandler::s5b_accepted()
-{
-	printf("[%p] s5b_accepted\n", this);
-}
-
-void JabberFileTransferHandler::s5b_tryingHosts(const XMPP::StreamHostList &hosts)
-{
-	printf("[%p] s5b_tryingHosts: %d\n", this, hosts.count());
-	foreach (const XMPP::StreamHost &host, hosts)
-		printf("  host: %s\n", qPrintable(host.host()));
-}
-
-void JabberFileTransferHandler::s5b_proxyConnect()
-{
-	printf("[%p] s5b_proxyConnect\n", this);
-}
-
-void JabberFileTransferHandler::s5b_waitingForActivation()
-{
-	printf("[%p] s5b_waitingForActivation\n", this);
-}
-
 
 void JabberFileTransferHandler::fileTransferConnected()
 {
-/*	d->sent = d->offset;
-
-	if(d->sending) {
-		// open the file, and set the correct offset
-		bool ok = false;
-		if(d->f.open(QIODevice::ReadOnly)) {
-			if(d->offset == 0) {
-				ok = true;
-			}
-			else {
-				if(d->f.at(d->offset))
-					ok = true;
+	if (TypeSend == transfer().transferType())
+	{
+		if (!LocalFile.isOpen())
+		{
+			LocalFile.setFileName(transfer().localFileName());
+			if (!LocalFile.open(QIODevice::ReadOnly))
+			{
+				transfer().setTransferStatus(StatusNotConnected);
+				delete JabberTransfer;
+				JabberTransfer = 0;
+				return;
 			}
 		}
-		if(!ok) {
-			delete d->ft;
-			d->ft = 0;
-			error(ErrFile, 0, d->f.errorString());
+
+		if (!JabberTransfer->bsConnection())
+		{
+			transfer().setTransferStatus(StatusNotConnected);
+			delete JabberTransfer;
+			JabberTransfer = 0;
+			LocalFile.close();
 			return;
 		}
 
-		if(d->sent == d->fileSize)
-			QTimer::singleShot(0, this, SLOT(doFinish()));
-		else
-			QTimer::singleShot(0, this, SLOT(trySend()));
-	}
-	else {
-		// open the file, truncating if offset is zero, otherwise set the correct offset
-		QIODevice::OpenMode m = QIODevice::ReadWrite;
-		if(d->offset == 0)
-			m |= QIODevice::Truncate;
-		bool ok = false;
-		if(d->f.open(m)) {
-			if(d->offset == 0) {
-				ok = true;
-			}
-			else {
-				if(d->f.at(d->offset))
-					ok = true;
-			}
-		}
-		if(!ok) {
-			delete d->ft;
-			d->ft = 0;
-			error(ErrFile, 0, d->f.errorString());
+		int dataSize = JabberTransfer->dataSizeNeeded();
+		QByteArray data(dataSize, (char)0);
+
+		int sizeRead = LocalFile.read(data.data(), data.size());
+		if (sizeRead < 0)
+		{
+			transfer().setTransferStatus(StatusNotConnected);
+			delete JabberTransfer;
+			JabberTransfer = 0;
+			LocalFile.close();
 			return;
 		}
 
-		d->activeFile = d->f.name();
-		active_file_add(d->activeFile);
-
-		// done already?  this means a file size of zero
-		if(d->sent == d->fileSize)
-			QTimer::singleShot(0, this, SLOT(doFinish()));
+		if (sizeRead < data.size())
+			data.resize(sizeRead);
+			
+		JabberTransfer->writeFileData(data);
+	}
+	else
+	{
+		if (!LocalFile.isOpen())
+		{
+			LocalFile.setFileName(transfer().localFileName());
+			if (!LocalFile.open(QIODevice::WriteOnly | QIODevice::Truncate))
+			{
+				transfer().setTransferStatus(StatusNotConnected);
+				delete JabberTransfer;
+				JabberTransfer = 0;
+				return;
+			}
+		}
 	}
 
-	connected();*/
+	transfer().setTransferStatus(StatusTransfer);
 }
 
 
 void JabberFileTransferHandler::fileTransferReadyRead(const QByteArray &a)
 {
-	Q_UNUSED(a)
+	LocalFile.write(a);
 
-/*	if(!d->sending) {
-		//printf("%d bytes read\n", a.size());
-		int r = d->f.writeBlock(a.data(), a.size());
-		if(r < 0) {
-			d->f.close();
-			delete d->ft;
-			d->ft = 0;
-			error(ErrFile, 0, d->f.errorString());
-			return;
-		}
-		d->sent += a.size();
-		doFinish();
+	BytesTransferred += a.size();
+	updateFileInfo();
+
+	if (BytesTransferred == JabberTransfer->fileSize())
+	{
+		transfer().setTransferStatus(StatusFinished);
+		delete JabberTransfer;
+		JabberTransfer = 0;
+		LocalFile.close();
 	}
-*/
 }
 
-void JabberFileTransferHandler::fileTransferBytesWritten(int x)
+void JabberFileTransferHandler::fileTransferBytesWritten(int written)
 {
-	Q_UNUSED(x)
+	BytesTransferred += written;
+	updateFileInfo();
 
-/*
-	if(d->sending) {
-		//printf("%d bytes written\n", x);
-		d->sent += x;
-		if(d->sent == d->fileSize) {
-			d->f.close();
-			delete d->ft;
-			d->ft = 0;
-		}
-		else
-			QTimer::singleShot(0, this, SLOT(trySend()));
-		progress(calcProgressStep(d->sent, JabberTransfer->bsConnectionomplement, d->shift), d->sent);
+	if (BytesTransferred == (qlonglong)(transfer().fileSize()))
+	{
+		transfer().setTransferStatus(StatusFinished);
+		delete JabberTransfer;
+		JabberTransfer = 0;
+		LocalFile.close();
+		return;
 	}
-*/
+
+	if (!JabberTransfer->bsConnection())
+	{
+		transfer().setTransferStatus(StatusNotConnected);
+		delete JabberTransfer;
+		JabberTransfer = 0;
+		LocalFile.close();
+		return;
+	}
+
+	int dataSize = JabberTransfer->dataSizeNeeded();
+
+	QByteArray data(dataSize, (char)0);
+
+	int sizeRead = LocalFile.read(data.data(), data.size());
+	if (sizeRead < 0)
+	{
+		transfer().setTransferStatus(StatusNotConnected);
+		delete JabberTransfer;
+		JabberTransfer = 0;
+		LocalFile.close();
+		return;
+	}
+
+	if (sizeRead < data.size())
+		data.resize(sizeRead);
+
+	JabberTransfer->writeFileData(data);
 }
 
 void JabberFileTransferHandler::fileTransferError(int error)
@@ -403,73 +349,3 @@ void JabberFileTransferHandler::fileTransferError(int error)
 			break;
 	}
 }
-
-void JabberFileTransferHandler::trySend()
-{
-/*
-	// Since trySend comes from singleShot which is an "uncancelable"
-	//   action, we should protect that d->ft is valid, for good measure
-	if(!d->ft)
-		return;
-
-	// When FileTransfer emits error, you are not allowed to call
-	//   dataSizeNeeded() afterwards.  Simetime ago, we changed to using
-	//   QueuedConnection for error() signal delivery (see mapSignals()).
-	//   This made it possible to call dataSizeNeeded by accident between
-	//   the error() signal emit and the ft_error() slot invocation.  To
-	//   work around this problem, we'll check to see if the FileTransfer
-	//   is internally active by checking if s5bConnection() is null.
-	//   FIXME: this probably breaks other file transfer methods, whenever
-	//   we get those.  Probably we need a real fix in Iris..
-	if(!d->ft->s5bConnection())
-		return;
-
-	int blockSize = d->ft->dataSizeNeeded();
-	QByteArray a(blockSize, 0);
-	int r = 0;
-	if(blockSize > 0)
-		r = d->f.read(a.data(), a.size());
-	if(r < 0) {
-		d->f.close();
-		delete d->ft;
-		d->ft = 0;
-		error(ErrFile, 0, d->f.errorString());
-		return;
-	}
-	if(r < (int)a.size())
-		a.resize(r);
-	d->ft->writeFileData(a);
-*/
-}
-
-void JabberFileTransferHandler::slotIncomingDataReady ( const QByteArray &data )
-{
-	//if(!d->sending) {
-		//printf("%d bytes read\n", a.size());
-		int r = LocalFile.write(data.data(), data.size());
-		if(r < 0) {
-			LocalFile.close();
-			delete JabberTransfer;
-			JabberTransfer = 0;
-			transfer().setTransferError(ErrorUnableToOpenFile);
-			return;
-		}
-		BytesTransferred += data.size();
-		doFinish();
-	//}
-	emit statusChanged();
-}
-
-void JabberFileTransferHandler::doFinish()
-{
-	if (BytesTransferred == JabberTransfer->length())
-	{
-		LocalFile.close();
-
-		delete JabberTransfer;
-		JabberTransfer = 0;
-
-		transfer().setTransferStatus(StatusFinished);
-	}
-}
-

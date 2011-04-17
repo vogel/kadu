@@ -62,19 +62,6 @@ private slots:
 	void fileTransferBytesWritten(int);
 	void fileTransferError(int);
 
-	void s5b_proxyQuery();
-	void s5b_proxyResult();
-	void s5b_requesting();
-	void s5b_accepted();
-	void s5b_tryingHosts(const StreamHostList &hosts);
-	void s5b_proxyConnect();
-	void s5b_waitingForActivation();
-
-	void trySend();
-	void doFinish();
-	void slotIncomingDataReady(const QByteArray &data);
-	void slotTransferError(int errorCode);
-
 public:
 	JabberFileTransferHandler(FileTransfer fileTransfer);
 	virtual ~JabberFileTransferHandler();
