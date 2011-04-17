@@ -3,13 +3,14 @@ set (SOURCES
 
 	autostatus.cpp
 	autostatus-actions.cpp
-	autostatus-module.cpp
+	autostatus-plugin.cpp
 	autostatus-status-changer.cpp
 )
 
 set (MOC_SOURCES
 	autostatus.h
 	autostatus-actions.h
+	autostatus-plugin.h
 	autostatus-status-changer.h
 )
 

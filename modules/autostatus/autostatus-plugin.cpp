@@ -24,7 +24,13 @@
 #include "autostatus.h"
 #include "autostatus-actions.h"
 
-extern "C" KADU_EXPORT int autostatus_init(bool firstLoad)
+#include "autostatus-plugin.h"
+
+AutostatusPlugin::~AutostatusPlugin()
+{
+}
+
+int AutostatusPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
@@ -36,10 +42,12 @@ extern "C" KADU_EXPORT int autostatus_init(bool firstLoad)
 	return 0;
 }
 
-extern "C" KADU_EXPORT void autostatus_close()
+void AutostatusPlugin::done()
 {
 	AutostatusActions::instance()->unregisterActions();
 	AutostatusActions::destroyInstance();
 	Autostatus::destroyInstance();
 	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/autostatus.ui"));
 }
+
+Q_EXPORT_PLUGIN2(autostatus, AutostatusPlugin)
