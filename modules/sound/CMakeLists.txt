@@ -5,8 +5,8 @@ set (SOURCES
 	sound-actions.cpp
 	sound-file.cpp
 	sound-manager.cpp
-	sound-module.cpp
 	sound-play-thread.cpp
+	sound-plugin.cpp
 	sound-theme-manager.cpp
 )
 
@@ -18,6 +18,7 @@ set (MOC_SOURCES
 	sound-manager.h
 	sound-play-thread.h
 	sound-player.h
+	sound-plugin.h
 )
 
 set (TRANSLATION_SOURCES

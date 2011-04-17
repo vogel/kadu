@@ -1,6 +1,7 @@
 /*
  * %kadu copyright begin%
  * Copyright 2010, 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2011 Piotr Galiszewski (piotr.galiszewski@kadu.im)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -18,7 +19,6 @@
  */
 
 #include "notify/notification-manager.h"
-#include "debug.h"
 
 #include "configuration/gui/sound-configuration-ui-handler.h"
 #include "notify/sound-notifier.h"
@@ -27,11 +27,15 @@
 #include "sound-manager.h"
 #include "sound-theme-manager.h"
 
-extern "C" KADU_EXPORT int sound_init(bool firstLoad)
+#include "sound-plugin.h"
+
+SoundPlugin::~SoundPlugin()
+{
+}
+
+int SoundPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
-
-	kdebugf();
 
 	SoundThemeManager::createInstance();
 	SoundNotifier::createInstance();
@@ -41,12 +45,11 @@ extern "C" KADU_EXPORT int sound_init(bool firstLoad)
 	SoundActions::registerActions();
 
 	return 0;
+
 }
 
-extern "C" KADU_EXPORT void sound_close()
+void SoundPlugin::done()
 {
-	kdebugf();
-
 	NotificationManager::instance()->unregisterNotifier(SoundNotifier::instance());
 	SoundConfigurationUiHandler::unregisterConfigurationUi();
 	SoundActions::unregisterActions();
@@ -54,3 +57,5 @@ extern "C" KADU_EXPORT void sound_close()
 	SoundNotifier::destroyInstance();
 	SoundThemeManager::destroyInstance();
 }
+
+Q_EXPORT_PLUGIN2(sound, SoundPlugin)
