@@ -154,7 +154,11 @@ Win+ Enter/Backspace/Left/Right/Up/Down.</translation>
         <source>MediaPlayer</source>
         <translation>MediaPlayer</translation>
     </message>
-    <message>
+	<message>
+        <source>Player isn&apos;t running!</source>
+        <translation>Odtwarzacz nie jest uruchomiony!</translation>
+    </message>
+	<message>
         <source>%1 isn&apos;t running!</source>
         <translation>%1 nie jest uruchomiony!</translation>
     </message>

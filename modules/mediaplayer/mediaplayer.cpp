@@ -363,7 +363,11 @@ void MediaPlayer::putSongTitle(int ident)
 	if (!isActive())
 	{
 		// TODO: make it a notification
-		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("%1 isn't running!").arg(getPlayerName()));
+		if (!getPlayerName().isEmpty())
+			MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("%1 isn't running!").arg(getPlayerName()));
+		else
+			MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Player isn't running!"));
+
 		return;
 	}
 
@@ -440,7 +444,11 @@ void MediaPlayer::putPlayList(int ident)
 
 	if (!isActive())
 	{
-		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("%1 isn't running!").arg(getPlayerName()));
+		if (!getPlayerName().isEmpty())
+			MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("%1 isn't running!").arg(getPlayerName()));
+		else
+			MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Player isn't running!"));
+
 		return;
 	}
 
@@ -662,7 +670,11 @@ void MediaPlayer::mediaPlayerStatusChangerActivated(QAction *sender, bool toggle
 		foreach (Action *action, enableMediaPlayerStatuses->actions())
 			action->setChecked(false);
 
-		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("%1 isn't running!").arg(getPlayerName()));
+		if (!getPlayerName().isEmpty())
+			MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("%1 isn't running!").arg(getPlayerName()));
+		else
+			MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Player isn't running!"));
+
 		return;
 	}
 
