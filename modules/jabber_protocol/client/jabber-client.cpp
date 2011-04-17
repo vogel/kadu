@@ -474,7 +474,7 @@ void JabberClient::slotCSAuthenticated()
 
 	// Update our jid(if necessary)
 	if (!JabberClientStream->jid().isEmpty())
-		MyJid = JabberClientStream->jid().bare();
+		MyJid = JabberClientStream->jid();
 
 	// get IP address
 	ByteStream *bs = JabberClientConnector ? JabberClientConnector->stream() : 0;
