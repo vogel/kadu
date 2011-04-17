@@ -99,24 +99,24 @@ void FileTransferWidget::createGui()
 	layout->addWidget(StatusLabel, 2, 1);
 
 	QWidget *buttons = new QWidget(this);
-	QHBoxLayout *buttons_layout = new QHBoxLayout(buttons);
+	QHBoxLayout *buttonsLayout = new QHBoxLayout(buttons);
 	buttons->setBackgroundRole(QPalette::Base);
-	buttons_layout->setSpacing(2);
+	buttonsLayout->setSpacing(2);
 
-	PauseButton = new QPushButton(tr("Pause"), this);
-	PauseButton->hide();
-	connect(PauseButton, SIGNAL(clicked()), this, SLOT(pauseTransfer()));
+	StopButton = new QPushButton(tr("Stop"), this);
+	StopButton->hide();
+	connect(StopButton, SIGNAL(clicked()), this, SLOT(stopTransfer()));
 
-	ContinueButton = new QPushButton(tr("Continue"), this);
-	ContinueButton->hide();
-	connect(ContinueButton, SIGNAL(clicked()), this, SLOT(continueTransfer()));
+	StartButton = new QPushButton(tr("Start"), this);
+	StartButton->hide();
+	connect(StartButton, SIGNAL(clicked()), this, SLOT(startTransfer()));
 
 	QPushButton *deleteThis = new QPushButton(tr("Remove"), this);
 	connect(deleteThis, SIGNAL(clicked()), this, SLOT(removeTransfer()));
 
-	buttons_layout->addWidget(PauseButton);
-	buttons_layout->addWidget(ContinueButton);
-	buttons_layout->addWidget(deleteThis);
+	buttonsLayout->addWidget(StartButton);
+	buttonsLayout->addWidget(StopButton);
+	buttonsLayout->addWidget(deleteThis);
  	layout->addWidget(buttons, 2, 2, Qt::AlignRight);
 
 	Buddy buddy = CurrentTransfer.peer().ownerBuddy();
@@ -145,10 +145,20 @@ FileTransferHandler * FileTransferWidget::handler()
 	return CurrentTransfer.handler();
 }
 
+void FileTransferWidget::startTransfer()
+{
+	if (TypeSend == CurrentTransfer.transferType() && handler())
+		handler()->send();
+}
+
+void FileTransferWidget::stopTransfer()
+{
+	if (handler())
+		handler()->stop();
+}
+
 void FileTransferWidget::removeTransfer()
 {
-	kdebugf();
-
 	if (!CurrentTransfer)
 		return;
 
@@ -166,37 +176,23 @@ void FileTransferWidget::removeTransfer()
 	deleteLater();
 }
 
-void FileTransferWidget::pauseTransfer()
-{
-	kdebugf();
-
-	if (handler())
-		handler()->pause();
-}
-
-void FileTransferWidget::continueTransfer()
-{
-	kdebugf();
-
-	if (handler())
-		handler()->restore();
-}
-
 void FileTransferWidget::fileTransferUpdate()
 {
 	if (!CurrentTransfer)
 	{
 		StatusLabel->setText(tr("<b>Not connected</b>"));
-		PauseButton->hide();
-		ContinueButton->show();
+		StopButton->hide();
+		StartButton->hide();
 		return;
 	}
 
 	if (ErrorOk != CurrentTransfer.transferError())
 	{
 		StatusLabel->setText(tr("<b>Error</b>"));
-		PauseButton->hide();
-		ContinueButton->show();
+		StopButton->hide();
+
+		if (TypeSend == CurrentTransfer.transferType())
+			StartButton->show();
 		return;
 	}
 
@@ -230,8 +226,9 @@ void FileTransferWidget::fileTransferUpdate()
 	{
 		case StatusNotConnected:
 			StatusLabel->setText(tr("<b>Not connected</b>"));
-			PauseButton->hide();
-			ContinueButton->show();
+			StopButton->hide();
+			if (TypeSend == CurrentTransfer.transferType())
+				StartButton->show();
 			break;
 
 		case StatusWaitingForConnection:
@@ -244,25 +241,25 @@ void FileTransferWidget::fileTransferUpdate()
 
 		case StatusTransfer:
 			StatusLabel->setText(tr("<b>Transfer</b>: %1 kB/s").arg(QString::number(Speed)));
-			PauseButton->show();
-			ContinueButton->hide();
+			StopButton->show();
+			StartButton->hide();
 			break;
 
 		case StatusFinished:
 			StatusLabel->setText(tr("<b>Finished</b>"));
-			PauseButton->hide();
-			ContinueButton->hide();
+			StopButton->hide();
+			StartButton->hide();
 			break;
 
 		case StatusRejected:
 			StatusLabel->setText(tr("<b>Rejected</b>"));
-			PauseButton->hide();
-			ContinueButton->hide();
+			StopButton->hide();
+			StartButton->hide();
 			break;
 
 		default:
-			PauseButton->hide();
-			ContinueButton->hide();
+			StopButton->hide();
+			StartButton->hide();
 	}
 
 	qApp->processEvents();

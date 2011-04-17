@@ -45,8 +45,8 @@ class FileTransferWidget : public QFrame
 	QLabel *DescriptionLabel;
 	QLabel *StatusLabel;
 	QProgressBar *ProgressBar;
-	QPushButton *PauseButton;
-	QPushButton *ContinueButton;
+	QPushButton *StartButton;
+	QPushButton *StopButton;
 
 	void createGui();
 
@@ -55,9 +55,9 @@ class FileTransferWidget : public QFrame
 private slots:
 	void fileTransferUpdate();
 
+	void startTransfer();
+	void stopTransfer();
 	void removeTransfer();
-	void pauseTransfer();
-	void continueTransfer();
 
 public:
 	explicit FileTransferWidget(FileTransfer fileTransfer = FileTransfer::null, QWidget *parent = 0);

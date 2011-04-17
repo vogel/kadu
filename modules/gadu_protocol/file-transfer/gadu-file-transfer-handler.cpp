@@ -146,17 +146,6 @@ void GaduFileTransferHandler::stop()
 	}
 }
 
-void GaduFileTransferHandler::pause()
-{
-	stop();
-}
-
-void GaduFileTransferHandler::restore()
-{
-	if (TypeSend == transfer().transferType())
-		send();
-}
-
 bool GaduFileTransferHandler::accept(QFile &file)
 {
 	transfer().accept(file);

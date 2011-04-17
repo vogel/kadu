@@ -156,17 +156,6 @@ void JabberFileTransferHandler::stop()
 	cleanup(StatusNotConnected);
 }
 
-void JabberFileTransferHandler::pause()
-{
-	stop();
-}
-
-void JabberFileTransferHandler::restore()
-{
-	if (TypeSend == transfer().transferType())
-		send();
-}
-
 /**
  * @todo do not pass opened file to this method
  */

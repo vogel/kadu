@@ -73,8 +73,6 @@ public:
 
 	virtual void send();
 	virtual void stop();
-	virtual void pause();
-	virtual void restore();
 
 	virtual bool accept(QFile &file);
 	virtual void reject();
