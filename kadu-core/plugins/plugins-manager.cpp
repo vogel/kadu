@@ -514,18 +514,18 @@ bool PluginsManager::activateDependencies(Plugin *plugin)
  * @author Rafał 'Vogel' Malinowski
  * @short Returns string with list of all plugins that depends on given one.
  * @param pluginName name of plugin to check dependencies
- * @return string with list of all plugins that depends on given one
+ * @return string with list of all active plugins that depend on given one
  * @todo ugly, should return QStringList or QList&lt;Plugin *&t;
  *
- * Returns string with list of all plugins that depends on given one. This string can be displayed
- * to the user.
+ * Returns string with list of all active plugins that depend on given one. This string can
+ * be displayed to the user.
  */
 QString PluginsManager::activeDependentPluginNames(const QString &pluginName) const
 {
 	QString modules;
 
 	foreach (Plugin *possibleDependentPlugin, Plugins)
-		if (possibleDependentPlugin->isValid())
+		if (possibleDependentPlugin->isValid() && possibleDependentPlugin->isActive())
 			if (possibleDependentPlugin->info()->dependencies().contains(pluginName))
 				modules += "\n- " + possibleDependentPlugin->name();
 
