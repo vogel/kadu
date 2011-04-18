@@ -170,7 +170,7 @@ MainConfigurationWindow::MainConfigurationWindow() :
 
 	widget()->appendUiFile(dataPath("kadu/configuration/dialog.ui"));
 
-#ifndef DEBUG_ENABLED
+#if !defined(DEBUG_ENABLED) || defined(Q_OS_WIN)
 	((QWidget *)(widget()->widgetById("debug")->parent()))->hide();
 #endif
 

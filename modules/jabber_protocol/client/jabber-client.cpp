@@ -648,7 +648,7 @@ void JabberClient::setPresence(const XMPP::Status &status)
 		 */
 		if (isConnected())
 		{
-			kdebug("Sending new presence to the server.");
+			kdebug("Sending new presence to the server.\n");
 
 			XMPP::JT_Presence * task = new XMPP::JT_Presence(rootTask());
 			task->pres(newStatus);
@@ -656,7 +656,7 @@ void JabberClient::setPresence(const XMPP::Status &status)
 		}
 		else
 		{
-			kdebug("We were not connected, presence update aborted.");
+			kdebug("We were not connected, presence update aborted.\n");
 		}
 	}
 }

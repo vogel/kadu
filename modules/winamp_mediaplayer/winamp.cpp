@@ -374,7 +374,7 @@ int WinampMediaPlayer::getLength(int position)
 			WriteProcessMemory(hWinampProcess, pFileInfo, &fis, sizeof(fis), NULL);
 
 			if(SendMessage(hWinamp, WM_WA_IPC, (WPARAM)pFileInfo, IPC_GET_BASIC_FILE_INFOW)==1){
-				kdebug("unicode not supported");
+				kdebug("unicode not supported\n");
 				fis.filename=(const wchar_t*)SendMessage(hWinamp, WM_WA_IPC, position, IPC_GETPLAYLISTFILE);
 				WriteProcessMemory(hWinampProcess, pFileInfo, &fis, sizeof(fis), NULL);
 				SendMessage(hWinamp, WM_WA_IPC, (WPARAM)pFileInfo, IPC_GET_BASIC_FILE_INFO);

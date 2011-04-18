@@ -1,4 +1,3 @@
-#cmakedefine DEBUG 1
 #cmakedefine DEBUG_ENABLED 1
 
 #define KADU_DATADIR "${KADU_DATADIR}"

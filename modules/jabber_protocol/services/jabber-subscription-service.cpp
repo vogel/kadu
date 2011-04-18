@@ -50,7 +50,7 @@ void JabberSubscriptionService::subscription(const XMPP::Jid &jid, const QString
 		/*
 		 * Someone else removed our authorization to see them.
 		 */
-		kdebug("%s revoked our presence authorization", jid.full().toLocal8Bit().data());
+		kdebug("%s revoked our presence authorization\n", jid.full().toLocal8Bit().data());
 
 		XMPP::JT_Roster *task;
 		if (MessageDialog::ask(KaduIcon("dialog-question"), tr("Kadu"), tr("The user %1 removed subscription to you. "

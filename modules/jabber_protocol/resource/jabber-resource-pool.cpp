@@ -45,7 +45,7 @@ JabberResourcePool::~JabberResourcePool()
 
 void JabberResourcePool::slotResourceDestroyed (QObject *sender)
 {
-	kdebug("Resource has been destroyed, collecting the pieces.");
+	kdebug("Resource has been destroyed, collecting the pieces.\n");
 
 	JabberResource *oldResource = static_cast<JabberResource *>(sender);
 
@@ -145,7 +145,7 @@ void JabberResourcePool::removeResource(const XMPP::Jid &jid, const XMPP::Resour
 		}
 	}
 
-	kdebug("WARNING: No match found!");
+	kdebug("WARNING: No match found!\n");
 	kdebugf2();
 }
 
@@ -169,7 +169,7 @@ void JabberResourcePool::removeAllResources(const XMPP::Jid &jid)
 
 void JabberResourcePool::clear()
 {
-	kdebug("Clearing the resource pool.");
+	kdebug("Clearing the resource pool.\n");
 
 	/*
 	 * Since many contacts can have multiple resources, we can't simply delete
@@ -219,7 +219,7 @@ void JabberResourcePool::lockToResource(const XMPP::Jid &jid, const XMPP::Resour
 		}
 	}
 
-	kdebug("WARNING: No match found!");
+	kdebug("WARNING: No match found!\n");
 }
 
 void JabberResourcePool::removeLock(const XMPP::Jid &jid)
@@ -235,7 +235,7 @@ void JabberResourcePool::removeLock(const XMPP::Jid &jid)
 		}
 	}
 
-	kdebug("No locks found.");
+	kdebug("No locks found.\n");
 }
 
 JabberResource *JabberResourcePool::lockedJabberResource( const XMPP::Jid &jid)
@@ -252,7 +252,7 @@ JabberResource *JabberResourcePool::lockedJabberResource( const XMPP::Jid &jid)
 			}
 		}
 
-		kdebug("WARNING: No resource found in pool, returning as offline.");
+		kdebug("WARNING: No resource found in pool, returning as offline.\n");
 
 		return 0L;
 	}

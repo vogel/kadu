@@ -45,24 +45,25 @@ int GaduProtocolPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
-	GaduServersManager::createInstance();
-
 	if (ProtocolsManager::instance()->hasProtocolFactory("gadu"))
 		return 0;
 
+#ifdef DEBUG_ENABLED
 	// 8 bits for gadu debug
 	gg_debug_level = debug_mask & 255;
+#else
+	gg_debug_level = 0;
+#endif
 
 	gg_proxy_host = 0;
 	gg_proxy_username = 0;
 	gg_proxy_password = 0;
 
-#ifndef DEBUG_ENABLED
-	gg_debug_level = 0;
-#endif
 	gg_global_set_custom_resolver(gadu_resolver_start, gadu_resolver_cleanup);
 
 	GaduIdValidator::createInstance();
+
+	GaduServersManager::createInstance();
 
 	GaduProtocolFactory::createInstance();
 

@@ -98,7 +98,7 @@ void GaduPersonalInfoWidget::createGui()
 
 void GaduPersonalInfoWidget::personalInfoAvailable(Buddy buddy)
 {
-	kdebugmf (KDEBUG_INFO,"personal info available");
+	kdebugmf (KDEBUG_INFO,"personal info available\n");
 	MyBuddy = buddy;
 	fillForm();
 }

@@ -187,7 +187,7 @@ void WIN32PlayerSlots::closeDevice(SoundDevice device)
 	kdebugf();
 	WIN32SoundDevice* dev=(WIN32SoundDevice*)device;
 	if(!dev){
-		kdebugm(KDEBUG_ERROR, "Device not opened");
+		kdebugm(KDEBUG_ERROR, "Device not opened\n");
 		return;
 	}
 
