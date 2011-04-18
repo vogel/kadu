@@ -216,3 +216,6 @@ qt4_wrap_cpp (MOC_SOURCES_FILES ${MOC_SOURCES_IRIS})
 kadu_jabber_automoc (${MOC_SOURCES2_IRIS})
 
 add_library (3rdparty STATIC ${SOURCES_IRIS} ${MOC_SOURCES2_IRIS} ${MOC_SOURCES_FILES})
+if (NOT WIN32)
+	set_target_properties (3rdparty PROPERTIES COMPILE_FLAGS -fPIC)
+endif (NOT WIN32)
