@@ -129,7 +129,10 @@ void DccSocketNotifiers::socketEvent()
 
 	struct gg_event *e = gg_dcc7_watch_fd(Socket7);
 	if (FileTransferHandler)
+	{
+		FileTransferHandler->transfer().setTransferStatus(StatusTransfer);
 		FileTransferHandler->updateFileInfo();
+	}
 
 	if (!e)
 	{

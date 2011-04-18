@@ -71,14 +71,13 @@ void GaduFileTransferHandler::setFileTransferNotifiers(DccSocketNotifiers *socke
 	SocketNotifiers = socketNotifiers;
 	if (SocketNotifiers)
 	{
+		SocketNotifiers->setGaduFileTransferHandler(this);
+
 		transfer().setRemoteFileName(SocketNotifiers->remoteFileName());
 		transfer().setFileSize(SocketNotifiers->fileSize());
 		transfer().setTransferredSize(SocketNotifiers->transferredFileSize());
-		transfer().setTransferStatus(StatusTransfer);
 
 		connect(SocketNotifiers, SIGNAL(destroyed()), this, SLOT(socketNotifiersDeleted()));
-
-		SocketNotifiers->setGaduFileTransferHandler(this);
 	}
 
 	WaitingForSocketNotifiers = false;

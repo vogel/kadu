@@ -181,8 +181,8 @@ void GaduFileTransferService::attachSendFileTransferSocket(GaduFileTransferHandl
 	if (dcc)
 	{
 		DccSocketNotifiers *fileTransferNotifiers = new DccSocketNotifiers(dcc, this);
-		handler->setFileTransferNotifiers(fileTransferNotifiers);
 		handler->transfer().setTransferStatus(StatusWaitingForAccept);
+		handler->setFileTransferNotifiers(fileTransferNotifiers);
 		fileTransferNotifiers->start();
 
 		SocketNotifiers.insert(dcc, fileTransferNotifiers);
