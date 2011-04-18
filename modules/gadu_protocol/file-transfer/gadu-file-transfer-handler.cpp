@@ -146,10 +146,10 @@ void GaduFileTransferHandler::stop()
 	}
 }
 
-bool GaduFileTransferHandler::accept(QFile &file)
+bool GaduFileTransferHandler::accept(const QString &fileName, bool resumeTransfer)
 {
-	transfer().accept(file);
-	return SocketNotifiers->acceptFileTransfer(file);
+	transfer().accept(fileName);
+	return SocketNotifiers->acceptFileTransfer(fileName, resumeTransfer);
 }
 
 void GaduFileTransferHandler::reject()

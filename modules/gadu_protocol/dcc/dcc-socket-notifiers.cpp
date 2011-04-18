@@ -252,9 +252,19 @@ void DccSocketNotifiers::setGaduFileTransferHandler(GaduFileTransferHandler *fil
 	FileTransferHandler = fileTransferHandler;
 }
 
-bool DccSocketNotifiers::acceptFileTransfer(const QFile &file)
+bool DccSocketNotifiers::acceptFileTransfer(const QString &fileName, bool resumeTransfer)
 {
 	kdebugf();
+
+	QFile file(fileName);
+	QIODevice::OpenMode flags = QIODevice::WriteOnly;
+	if (resumeTransfer)
+		flags |= QIODevice::Append;
+	else
+		flags |= QIODevice::Truncate;
+
+	if (!file.open(flags))
+		return false;
 
 	Socket7->file_fd = dup(file.handle());
 	Socket7->offset = file.size();

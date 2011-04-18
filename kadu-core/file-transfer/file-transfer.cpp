@@ -93,10 +93,9 @@ unsigned int FileTransfer::percent()
 		return 0;
 }
 
-bool FileTransfer::accept(const QFile &file)
+bool FileTransfer::accept(const QString &localFileName)
 {
-	setLocalFileName(file.fileName());
-	// XXX
+	setLocalFileName(localFileName);
 	return true;
 }
 

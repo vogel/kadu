@@ -55,7 +55,7 @@ public:
 	virtual void send();
 	virtual void stop();
 
-	virtual bool accept(QFile &file);
+	virtual bool accept(const QString &fileName, bool resumeTransfer);
 	virtual void reject();
 
 };

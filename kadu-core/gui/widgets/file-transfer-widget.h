@@ -50,8 +50,6 @@ class FileTransferWidget : public QFrame
 
 	void createGui();
 
-	FileTransferHandler * handler();
-
 private slots:
 	void fileTransferUpdate();
 

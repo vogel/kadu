@@ -38,6 +38,7 @@ JabberFileTransferHandler::JabberFileTransferHandler(::FileTransfer transfer) :
 
 JabberFileTransferHandler::~JabberFileTransferHandler()
 {
+	cleanup(transfer().transferStatus());
 }
 
 void JabberFileTransferHandler::connectJabberTransfer()
@@ -73,6 +74,8 @@ void JabberFileTransferHandler::setJTransfer(XMPP::FileTransfer *jTransfer)
 
 void JabberFileTransferHandler::cleanup(FileTransferStatus status)
 {
+	InProgress = false;
+
 	transfer().setTransferStatus(status);
 	delete JabberTransfer;
 	JabberTransfer = 0;
@@ -142,7 +145,7 @@ void JabberFileTransferHandler::send()
 // 	if (proxy.isValid())
 // 		JabberTransfer->setProxy(proxy);
 
-	transfer().setTransferStatus(StatusWaitingForConnection);
+	transfer().setTransferStatus(StatusWaitingForAccept);
 	InProgress = true;
 
 	JabberTransfer->sendFile(PeerJid, transfer().localFileName(), transfer().fileSize(), QString());
@@ -156,30 +159,22 @@ void JabberFileTransferHandler::stop()
 	cleanup(StatusNotConnected);
 }
 
-/**
- * @todo do not pass opened file to this method
- */
-bool JabberFileTransferHandler::accept(QFile &file)
+bool JabberFileTransferHandler::accept(const QString &fileName, bool resumeTransfer)
 {
-	// this suxx, I know
-	file.close();
-	LocalFile.setFileName(file.fileName());
+	LocalFile.setFileName(fileName);
 
-	if (JabberTransfer->rangeSupported())
-	{
-		if (!LocalFile.open(QIODevice::Append | QIODevice::WriteOnly))
-			return false;
-	}
+	QIODevice::OpenMode flags = QIODevice::WriteOnly;
+	if (resumeTransfer && JabberTransfer->rangeSupported())
+		flags |= QIODevice::Append;
 	else
-	{
-		// we have to close file and reopen it
-		if (!LocalFile.open(QIODevice::Truncate | QIODevice::WriteOnly))
-			return false;
-	}
+		flags |= QIODevice::Truncate;
 
-	BytesTransferred = file.size();
+	if (!LocalFile.open(flags))
+		return false;
 
-	transfer().accept(file);
+	BytesTransferred = LocalFile.size();
+
+	transfer().accept(fileName);
 	transfer().setTransferStatus(StatusTransfer);
 	transfer().setTransferredSize(BytesTransferred);
 
@@ -201,37 +196,36 @@ void JabberFileTransferHandler::reject()
 
 void JabberFileTransferHandler::fileTransferAccepted()
 {
-	transfer().setTransferStatus(StatusTransfer);
+	transfer().setTransferStatus(StatusWaitingForConnection);
 }
 
 void JabberFileTransferHandler::fileTransferConnected()
 {
 	if (TypeSend == transfer().transferType())
 	{
-		if (!LocalFile.isOpen())
+		if (LocalFile.isOpen()) // ?? assert
 		{
-			LocalFile.setFileName(transfer().localFileName());
-			if (!LocalFile.open(QIODevice::ReadOnly))
-			{
-				cleanup(StatusNotConnected);
-				return;
-			}
+			cleanup(StatusNotConnected);
+			return;
+		}
+
+		LocalFile.setFileName(transfer().localFileName());
+		if (!LocalFile.open(QIODevice::ReadOnly))
+		{
+			cleanup(StatusNotConnected);
+			return;
+		}
+
+		BytesTransferred = JabberTransfer->offset();
+		if (0 != BytesTransferred && !LocalFile.seek(BytesTransferred))
+		{
+			cleanup(StatusNotConnected);
+			return;
 		}
 
 		fileTransferBytesWritten(0);
 	}
-	else
-	{
-		if (!LocalFile.isOpen())
-		{
-			LocalFile.setFileName(transfer().localFileName());
-			if (!LocalFile.open(QIODevice::WriteOnly | QIODevice::Truncate))
-			{
-				cleanup(StatusNotConnected);
-				return;
-			}
-		}
-	}
+	// on TypeReceive fileTransferReadyRead will be called automatically
 
 	transfer().setTransferStatus(StatusTransfer);
 }
@@ -265,7 +259,6 @@ void JabberFileTransferHandler::fileTransferBytesWritten(int written)
 	}
 
 	int dataSize = JabberTransfer->dataSizeNeeded();
-
 	QByteArray data(dataSize, (char)0);
 
 	int sizeRead = LocalFile.read(data.data(), data.size());

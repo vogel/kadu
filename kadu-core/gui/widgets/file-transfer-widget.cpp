@@ -140,21 +140,18 @@ void FileTransferWidget::createGui()
 	}
 }
 
-FileTransferHandler * FileTransferWidget::handler()
-{
-	return CurrentTransfer.handler();
-}
-
 void FileTransferWidget::startTransfer()
 {
-	if (TypeSend == CurrentTransfer.transferType() && handler())
-		handler()->send();
+	if (!CurrentTransfer.handler())
+		CurrentTransfer.createHandler();
+	if (TypeSend == CurrentTransfer.transferType() && CurrentTransfer.handler())
+		CurrentTransfer.handler()->send();
 }
 
 void FileTransferWidget::stopTransfer()
 {
-	if (handler())
-		handler()->stop();
+	if (CurrentTransfer.handler())
+		CurrentTransfer.handler()->stop();
 }
 
 void FileTransferWidget::removeTransfer()
@@ -167,8 +164,8 @@ void FileTransferWidget::removeTransfer()
 		if (!MessageDialog::ask(KaduIcon(), tr("Kadu"), tr("Are you sure you want to remove this transfer?"), this))
 			return;
 		else
-			if (handler())
-				handler()->stop();
+			if (CurrentTransfer.handler())
+				CurrentTransfer.handler()->stop();
 	}
 
 	FileTransferManager::instance()->removeItem(CurrentTransfer);
@@ -233,10 +230,12 @@ void FileTransferWidget::fileTransferUpdate()
 
 		case StatusWaitingForConnection:
 			StatusLabel->setText(tr("<b>Wait for connection</b>"));
+			StartButton->hide();
 			break;
 
 		case StatusWaitingForAccept:
 			StatusLabel->setText(tr("<b>Wait for accept</b>"));
+			StartButton->hide();
 			break;
 
 		case StatusTransfer:

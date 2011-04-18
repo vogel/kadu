@@ -87,7 +87,7 @@ public:
 	QString remoteFileName();
 
 	void setGaduFileTransferHandler(GaduFileTransferHandler *fileTransferHandler);
-	bool acceptFileTransfer(const QFile &file);
+	bool acceptFileTransfer(const QString &fileName, bool resumeTransfer);
 	void rejectFileTransfer();
 
 signals:
