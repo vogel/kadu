@@ -227,6 +227,8 @@ void FileTransferManager::acceptFileTransfer(FileTransfer transfer)
 
 	FileTransferManager::instance()->addItem(transfer);
 	transfer.setTransferStatus(StatusTransfer);
+
+	FileTransferManager::instance()->showFileTransferWindow();
 }
 
 void FileTransferManager::rejectFileTransfer(FileTransfer transfer)
