@@ -54,6 +54,12 @@ PhononPlayer::PhononPlayer()
 {
 	kdebugf();
 
+	// Phonon produces Qt warnings when is run not in QApplication's thread.
+	// It is a workaround.
+	int type = QMetaType::type("MediaSource");
+	if (type == 0 || !QMetaType::isRegistered(type))
+		qRegisterMetaType<Phonon::MediaSource>("MediaSource");
+
 	Media = Phonon::createPlayer(Phonon::NotificationCategory);
 
 	kdebugf2();
