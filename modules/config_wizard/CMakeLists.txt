@@ -7,7 +7,7 @@ set (SOURCES
 	gui/windows/config-wizard-window.cpp
 
 	config-wizard-configuration-ui-handler.cpp
-	config-wizard-module.cpp
+	config-wizard-plugin.cpp
 )
 
 set (MOC_SOURCES
@@ -19,6 +19,7 @@ set (MOC_SOURCES
 	gui/windows/config-wizard-window.h
 
 	config-wizard-configuration-ui-handler.h
+	config-wizard-plugin.h
 )
 
 set (CONFIGURATION_FILES

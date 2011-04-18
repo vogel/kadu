@@ -5,3 +5,4 @@ Author=Dorregaray
 Dependencies=sound
 LoadByDefault=true
 Version=core
+Plugin=true

@@ -21,24 +21,25 @@
 
 #include "config-wizard-configuration-ui-handler.h"
 
-#include "debug.h"
-#include "exports.h"
+#include "config-wizard-plugin.h"
 
-extern "C" KADU_EXPORT int config_wizard_init(bool firstLoad)
+ConfigWizardPlugin::~ConfigWizardPlugin()
 {
-	kdebugf();
-	
-	ConfigWizardConfigurationUiHandler::registerActions(firstLoad);
 
+}
+
+int ConfigWizardPlugin::init(bool firstLoad)
+{
+	ConfigWizardConfigurationUiHandler::registerActions(firstLoad);
 	if (firstLoad)
 		ConfigWizardConfigurationUiHandler::instance()->showConfigWizard();
 
 	return 0;
 }
 
-extern "C" KADU_EXPORT void config_wizard_close()
+void ConfigWizardPlugin::done()
 {
-	kdebugf();
-
 	ConfigWizardConfigurationUiHandler::unregisterActions();
 }
+
+Q_EXPORT_PLUGIN2(config_wizard, ConfigWizardPlugin)
