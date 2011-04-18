@@ -3,9 +3,6 @@
 build*
 .configuration-ui-translations.cpp
 
-kadu-core/final.cpp
-kadu-core/includes
 kadu-core/kadu_rc.o
-kadu-core/regerate_final.bat
 .configuration-ui-translations.cpp
 docs
