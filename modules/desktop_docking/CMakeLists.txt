@@ -1,13 +1,14 @@
 set (SOURCES
 	configuration/gui/desktop-dock-configuration-ui-handler.cpp
 	gui/windows/desktop-dock-window.cpp
-	desktop-docking-module.cpp
+	desktop-docking-plugin.cpp
 	desktop-dock.cpp
 )
 
 set (MOC_SOURCES
 	configuration/gui/desktop-dock-configuration-ui-handler.h
 	gui/windows/desktop-dock-window.h
+	desktop-docking-plugin.h
 	desktop-dock.h
 )
 

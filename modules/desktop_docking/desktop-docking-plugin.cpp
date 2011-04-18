@@ -19,7 +19,6 @@
 
 #include "gui/windows/main-configuration-window.h"
 #include "misc/path-conversion.h"
-#include "debug.h"
 
 #include "modules/docking/docking.h"
 
@@ -27,11 +26,15 @@
 
 #include "desktop-dock.h"
 
-extern "C" KADU_EXPORT int desktop_docking_init(bool firstLoad)
+#include "desktop-docking-plugin.h"
+
+DesktopDockingPlugin::~DesktopDockingPlugin()
+{
+}
+
+int DesktopDockingPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
-
-	kdebugf();
 
 	DesktopDock::createInstance();
 	DockingManager::instance()->setDocker(DesktopDock::instance());
@@ -39,19 +42,16 @@ extern "C" KADU_EXPORT int desktop_docking_init(bool firstLoad)
 	MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/desktop_docking.ui"));
 	MainConfigurationWindow::registerUiHandler(DesktopDockConfigurationUiHandler::instance());
 
-	kdebugf2();
 	return 0;
 }
 
-extern "C" KADU_EXPORT void desktop_docking_close()
+void DesktopDockingPlugin::done()
 {
-	kdebugf();
-
 	MainConfigurationWindow::unregisterUiHandler(DesktopDockConfigurationUiHandler::instance());
 	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/desktop_docking.ui"));
 	DesktopDockConfigurationUiHandler::destroyInstance();
 	DockingManager::instance()->setDocker(0);
 	DesktopDock::destroyInstance();
-
-	kdebugf2();
 }
+
+Q_EXPORT_PLUGIN2(desktop_docking, DesktopDockingPlugin)
