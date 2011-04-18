@@ -457,18 +457,17 @@ QString PluginsManager::findActiveConflict(Plugin *plugin) const
 	if (!plugin || !plugin->isValid())
 		return QString();
 
-	foreach (const QString &it, plugin->info()->conflicts())
+	foreach (const QString &conflict, plugin->info()->conflicts())
 	{
-		if (!Plugins.contains(it))
-			continue;
-
-		if (Plugins.value(it)->isActive())
-			return it;
+		// note that conflict may be something provided, not necessarily a plugin
+		QMap<QString, Plugin *>::const_iterator it(Plugins.find(conflict));
+		if (it != Plugins.constEnd() && it.value()->isActive())
+			return conflict;
 
 		foreach (Plugin *possibleConflict, Plugins)
 			if (possibleConflict->isValid() && possibleConflict->isActive())
-				foreach (const QString &sit, possibleConflict->info()->provides())
-					if (it == sit)
+				foreach (const QString &provided, possibleConflict->info()->provides())
+					if (conflict == provided)
 						return possibleConflict->name();
 	}
 
