@@ -60,4 +60,4 @@ void AlsaPlugin::done()
 	kdebugf2();
 }
 
-Q_EXPORT_PLUGIN2(alsa_protocol, AlsaPlugin)
+Q_EXPORT_PLUGIN2(alsa_sound, AlsaPlugin)
