@@ -60,15 +60,14 @@ class ExecNotify : public Notifier
 	void import_0_6_5_configuration();
 	void createDefaultConfiguration();
 
+	void run(const QStringList &args);
+
 public:
 	ExecNotify(QObject *parent = 0);
 	~ExecNotify();
 
 	virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = 0);
 	virtual void notify(Notification *notification);
-
-public slots:
-	void run(const QStringList &args, const QString &in);
 
 };
 
