@@ -313,6 +313,23 @@ void GaduEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
 	generalLayout->addWidget(UseTlsEncryption, 3, 0, 1, 4);
 
 	connect(UseTlsEncryption, SIGNAL(toggled(bool)), this, SLOT(dataChanged()));
+
+	QHBoxLayout *externalLayout = new QHBoxLayout(this);
+
+	ExternalIp = new QLineEdit(this);
+	connect(ExternalIp, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
+
+	externalLayout->addWidget(new QLabel(tr("External ip") + ':'));
+	externalLayout->addWidget(ExternalIp);
+
+	ExternalPort = new QLineEdit(this);
+	ExternalPort->setValidator(new QIntValidator(0, 99999, ExternalPort));
+	connect(ExternalPort, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
+
+	externalLayout->addWidget(new QLabel(tr("External port") + ':'));
+	externalLayout->addWidget(ExternalPort);
+
+	generalLayout->addLayout(externalLayout, 4, 0, 1, 4);
 }
 
 void GaduEditAccountWidget::apply()
@@ -338,6 +355,8 @@ void GaduEditAccountWidget::apply()
 		Details->setTlsEncryption(UseTlsEncryption->isChecked());
 		Details->setSendTypingNotification(SendTypingNotification->isChecked());
 
+		Details->setExternalIp(ExternalIp->text());
+		Details->setExternalPort(ExternalPort->text().toUInt());
 	}
 
 	Proxy->apply();
@@ -400,7 +419,10 @@ void GaduEditAccountWidget::dataChanged()
 		&& Details->tlsEncryption() == UseTlsEncryption->isChecked()
 		&& Details->sendTypingNotification() == SendTypingNotification->isChecked()
 		&& StateNotChanged == Proxy->state()
-		&& !gpiw->isModified())
+		&& !gpiw->isModified()
+
+		&& Details->externalIp() == ExternalIp->text()
+		&& Details->externalPort() == ExternalPort->text().toUInt())
 	{
 		resetState();
 		return;
@@ -447,6 +469,9 @@ void GaduEditAccountWidget::loadAccountData()
 		AllowFileTransfers->setChecked(details->allowDcc());
 		UseTlsEncryption->setChecked(details->tlsEncryption());
 		SendTypingNotification->setChecked(details->sendTypingNotification());
+
+		ExternalIp->setText(details->externalIp());
+		ExternalPort->setText(QString::number(details->externalPort()));
 	}
 
 	useDefaultServers->setChecked(config_file.readBoolEntry("Network", "isDefServers", true));

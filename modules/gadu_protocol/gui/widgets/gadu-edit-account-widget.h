@@ -70,6 +70,9 @@ class GaduEditAccountWidget : public AccountEditWidget
 	QCheckBox *UseTlsEncryption;
 	QCheckBox *SendTypingNotification;
 
+	QLineEdit *ExternalIp;
+	QLineEdit *ExternalPort;
+
 	QPushButton *ApplyButton;
 	QPushButton *CancelButton;
 

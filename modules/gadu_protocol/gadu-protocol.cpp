@@ -288,6 +288,15 @@ void GaduProtocol::setupLoginParams()
 	GaduLoginParams.server_addr = haveServer ? htonl(ActiveServer.first.toIPv4Address()) : 0;
 	GaduLoginParams.server_port = haveServer ? ActiveServer.second : 0;
 
+	if (!gaduAccountDetails->externalIp().isEmpty())
+	{
+		QHostAddress externalIp(gaduAccountDetails->externalIp());
+		if (!externalIp.isNull())
+			GaduLoginParams.external_addr = htonl(externalIp.toIPv4Address());
+	}
+
+	GaduLoginParams.external_port = gaduAccountDetails->externalPort();
+
 	GaduLoginParams.protocol_version = GG_DEFAULT_PROTOCOL_VERSION;
 	GaduLoginParams.client_version = strdup(qPrintable(Core::nameWithVersion()));
 	GaduLoginParams.protocol_features =

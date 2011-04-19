@@ -61,6 +61,8 @@ void GaduAccountDetails::load()
 	InitialRosterImport = loadValue<bool>("InitialRosterImport", false);
 	SendTypingNotification = loadValue<bool>("SendTypingNotification", true);
 	TlsEncryption = loadValue<bool>("TlsEncryption", false);
+	ExternalIp = loadValue<QString>("ExternalIp");
+	ExternalPort = loadValue<unsigned int>("ExternalPort", 0);
 }
 
 void GaduAccountDetails::store()
@@ -78,6 +80,8 @@ void GaduAccountDetails::store()
 	storeValue("InitialRosterImport", InitialRosterImport);
 	storeValue("TlsEncryption", TlsEncryption);
 	storeValue("SendTypingNotification", SendTypingNotification);
+	storeValue("ExternalIp", ExternalIp);
+	storeValue("ExternalPort", ExternalPort);
 }
 
 void GaduAccountDetails::import_0_6_5_LastStatus()
