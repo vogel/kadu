@@ -33,9 +33,6 @@
 JabberFileTransferService::JabberFileTransferService(JabberProtocol *protocol) :
 		FileTransferService(protocol), Protocol(protocol)
 {
-	connect(S5BServerManager::instance(), SIGNAL(serverChanged(XMPP::S5BServer *)),
-			this, SLOT(s5bServerChanged(XMPP::S5BServer *)));
-
 	connect(Protocol, SIGNAL(stateMachineLoggedIn()), this, SLOT(loggedIn()));
 	connect(Protocol, SIGNAL(stateMachineLoggedOut()), this, SLOT(loggedOut()));
 
@@ -68,12 +65,6 @@ void JabberFileTransferService::loggedOut()
 {
 	S5BServerManager::instance()->removeAddress(Protocol->client()->localAddress());
 	Protocol->xmppClient()->s5bManager()->setServer(0);
-}
-
-void JabberFileTransferService::s5bServerChanged(XMPP::S5BServer *server)
-{
-	if (Protocol->isConnected())
-		Protocol->xmppClient()->s5bManager()->setServer(server);
 }
 
 void JabberFileTransferService::incomingFileTransferSlot()

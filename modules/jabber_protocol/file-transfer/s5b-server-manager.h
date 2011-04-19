@@ -24,7 +24,9 @@
 
 #include <iris/s5b.h>
 
-class S5BServerManager : public QObject
+#include "configuration/configuration-aware-object.h"
+
+class S5BServerManager : public QObject, ConfigurationAwareObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(S5BServerManager)
@@ -33,13 +35,17 @@ class S5BServerManager : public QObject
 
 	XMPP::S5BServer *Server;
 	QStringList Addresses;
+
 	quint16 Port;
+	QString ExternalAddress;
 
 	S5BServerManager();
 	virtual ~S5BServerManager();
 
-private slots:
-	void serverDestroyed();
+	void createDefaultConfiguration();
+
+protected:
+	virtual void configurationUpdated();
 
 public:
 	static void createInstance();
@@ -47,15 +53,10 @@ public:
 
 	static S5BServerManager * instance() { return Instance; }
 
-	XMPP::S5BServer * server();
+	XMPP::S5BServer * server() { return Server; }
+
 	void addAddress(const QString &address);
 	void removeAddress(const QString &address);
-
-	bool setPort(quint16 port);
-
-signals:
-	void serverChanged(XMPP::S5BServer *server);
-
 
 };
 

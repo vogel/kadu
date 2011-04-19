@@ -17,6 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "configuration/configuration-file.h"
+
 #include "s5b-server-manager.h"
 
 S5BServerManager *S5BServerManager::Instance = 0;
@@ -34,65 +36,58 @@ void S5BServerManager::destroyInstance()
 }
 
 S5BServerManager::S5BServerManager() :
-		Server(0)
+		Server(new XMPP::S5BServer(this)), Port(-1)
 {
-	setPort(8010);
+	createDefaultConfiguration();
+	configurationUpdated();
 }
 
 S5BServerManager::~S5BServerManager()
 {
 }
 
-void S5BServerManager::serverDestroyed()
+void S5BServerManager::createDefaultConfiguration()
 {
-	Server = 0;
-	emit serverChanged(Server);
+	config_file.addVariable("XMPP", "DataTransferPort", 8010);
+	config_file.addVariable("XMPP", "DataTransferExternalAddress", "");
 }
 
-XMPP::S5BServer * S5BServerManager::server()
+void S5BServerManager::configurationUpdated()
 {
-	if (!Server)
+	int port = config_file.readNumEntry("XMPP", "DataTransferPort", 8010);
+	QString externalAddress = config_file.readEntry("XMPP", "DataTransferExternalAddress", "");
+
+	if (externalAddress != ExternalAddress)
 	{
-		Server = new XMPP::S5BServer();
-		connect(Server, SIGNAL(destroyed()), this, SLOT(serverDestroyed()));
-
-		// TODO: remove this, we should not start a server in getter!!
-		Server->start(Port);
-
-		emit serverChanged(Server);
+		if (!ExternalAddress.isEmpty())
+			removeAddress(ExternalAddress);
+		ExternalAddress = externalAddress;
+		if (!ExternalAddress.isEmpty())
+			addAddress(ExternalAddress);
 	}
 
-	return Server;
+	if (Port != port)
+	{
+		if (Server->isActive())
+			Server->stop();
+
+		Port = port;
+		Server->start(Port);
+	}
 }
 
 void S5BServerManager::addAddress(const QString &address)
 {
 	Addresses.append(address);
 
-	// remove duplicated
+	// remove duplicates
 	server()->setHostList(QSet<QString>::fromList(Addresses).toList());
 }
 
 void S5BServerManager::removeAddress(const QString &address)
 {
 	Addresses.removeOne(address);
-	if (Addresses.isEmpty())
-	{
-		delete Server;
-		Server = 0;
-	}
-	else
-		// remove duplicated
-		server()->setHostList(QSet<QString>::fromList(Addresses).toList());
-}
 
-bool S5BServerManager::setPort(quint16 port)
-{
-	if (Port != port || !server()->isActive())
-	{
-		Port = port;
-		return server()->start(Port);
-	}
-
-	return true;
+	// remove duplicates
+	server()->setHostList(QSet<QString>::fromList(Addresses).toList());
 }

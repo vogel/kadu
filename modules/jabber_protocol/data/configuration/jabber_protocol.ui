@@ -1,0 +1,14 @@
+<configuration-ui>
+
+	<section name="Jabber/XMPP" icon="protocols/xmpp/xmpp">
+
+		<tab name="Connection">
+			<group-box name="Data transfers">
+				<spin-box caption="Port" config-section="XMPP" config-item="DataTransferPort" min-value="1024" max-value="65535" />
+				<line-edit caption="External address" config-section="XMPP" config-item="DataTransferExternalAddress" />
+			</group-box>
+		</tab>
+
+	</section>
+
+</configuration-ui>

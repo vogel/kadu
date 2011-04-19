@@ -43,7 +43,6 @@ private slots:
 	void loggedIn();
 	void loggedOut();
 
-	void s5bServerChanged(XMPP::S5BServer *server);
 	void incomingFileTransferSlot();
 
 public:

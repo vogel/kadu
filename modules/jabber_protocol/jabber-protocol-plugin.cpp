@@ -26,6 +26,8 @@
 #include "actions/jabber-protocol-menu-manager.h"
 #include "certificates/trusted-certificates-manager.h"
 #include "file-transfer/s5b-server-manager.h"
+#include "gui/windows/main-configuration-window.h"
+#include "misc/path-conversion.h"
 #include "utils/vcard-factory.h"
 #include "facebook-protocol-factory.h"
 #include "gtalk-protocol-factory.h"
@@ -66,11 +68,15 @@ int JabberProtocolPlugin::init(bool firstLoad)
 
 	UrlHandlerManager::instance()->registerUrlHandler("Jabber", new JabberUrlHandler());
 
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/jabber_protocol.ui"));
+
 	return 0;
 }
 
 void JabberProtocolPlugin::done()
 {
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/jabber_protocol.ui"));
+
 	UrlHandlerManager::instance()->unregisterUrlHandler("Jabber");
 
 	ProtocolsManager::instance()->unregisterProtocolFactory(JabberProtocolFactory::instance());
