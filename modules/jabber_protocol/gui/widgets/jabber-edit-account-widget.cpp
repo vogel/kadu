@@ -255,6 +255,18 @@ void JabberEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
 	plainAuthLayout->addWidget(PlainTextAuth);
 	vboxLayout2->addLayout(plainAuthLayout);
 
+	QHBoxLayout *dataTransferLayout = new QHBoxLayout();
+	dataTransferLayout->setSpacing(6);
+	dataTransferLayout->setMargin(0);
+
+	DataTransferProxyLabel = new QLabel(general);
+	DataTransferProxyLabel->setText(tr("Data transfer proxy") + ':');
+	dataTransferLayout->addWidget(DataTransferProxyLabel);
+
+	DataTransferProxy = new QLineEdit(general);
+	connect(DataTransferProxy, SIGNAL(textEdited(QString)), this, SLOT(dataChanged()));
+	dataTransferLayout->addWidget(DataTransferProxy);
+	vboxLayout2->addLayout(dataTransferLayout);
 }
 
 void JabberEditAccountWidget::createOptionsTab(QTabWidget *tabWidget)
@@ -297,22 +309,6 @@ void JabberEditAccountWidget::createOptionsTab(QTabWidget *tabWidget)
 
 	resourceLayout->addLayout(resourceDetailsLayout);
 	layout->addWidget(resource);
-
-	QGroupBox *dataTransferProxy = new QGroupBox(tr("Data transfer proxy"), this);
-
-	QHBoxLayout *dataTransferProxyLayout = new QHBoxLayout(dataTransferProxy);
-	dataTransferProxyLayout->setSpacing(6);
-	dataTransferProxyLayout->setMargin(0);
-
-	DataTransferProxyLabel = new QLabel;
-	DataTransferProxyLabel->setText(tr("Data transfer proxy") + ':');
-	dataTransferProxyLayout->addWidget(DataTransferProxyLabel);
-
-	DataTransferProxy = new QLineEdit;
-	connect(DataTransferProxy, SIGNAL(textEdited(QString)), this, SLOT(dataChanged()));
-	dataTransferProxyLayout->addWidget(DataTransferProxy);
-
-	layout->addWidget(dataTransferProxy);
 
 	QGroupBox *notifications = new QGroupBox(tr("Notifications"), this);
 

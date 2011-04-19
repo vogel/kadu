@@ -127,11 +127,6 @@ void JabberFileTransferHandler::send()
 		return;
 	}
 
-	XMPP::Jid proxy;
-	JabberAccountDetails *jabberAccountDetails = dynamic_cast<JabberAccountDetails *>(account.details());
-	if (0 != jabberAccountDetails)
-		proxy = jabberAccountDetails->dataTransferProxy();
-
 	QString jid = transfer().peer().id();
 	// sendFile needs jid with resource so take best from ResourcePool
 	PeerJid = XMPP::Jid(jid).withResource(jabberProtocol->resourcePool()->bestResource(jid).name());
@@ -142,8 +137,13 @@ void JabberFileTransferHandler::send()
 		connectJabberTransfer();
 	}
 
-// 	if (proxy.isValid())
-// 		JabberTransfer->setProxy(proxy);
+	JabberAccountDetails *jabberAccountDetails = dynamic_cast<JabberAccountDetails *>(account.details());
+	XMPP::Jid proxy;
+	if (0 != jabberAccountDetails)
+		proxy = jabberAccountDetails->dataTransferProxy();
+
+	if (proxy.isValid())
+		JabberTransfer->setProxy(proxy);
 
 	transfer().setTransferStatus(StatusWaitingForAccept);
 	InProgress = true;
