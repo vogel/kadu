@@ -1144,18 +1144,11 @@ changes upon establishing connection to the server</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
-%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist
-%h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size, %z - gender (0/1/2)
-#{message} - message content,
-#{backgroundColor} - background color of message,
-#{fontColor} - font color of message,
-#{nickColor} - font color of nick,
-#{sentDate} - when message was sent,
-#{receivedDate} - when message was received,
-#{separator} - separator between messages,
-&lt;kadu:header&gt;text&lt;/kadu:header&gt; - text will not be displayed in &apos;Remove repeated headers&apos; mode
-</source>
+        <source>Syntax:
+%s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name, %r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist, %h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size, %z - gender (0/1/2),
+#{message} - message content, #{messageId} - message id, #{backgroundColor} - background color of message, #{fontColor} - font color of message, #{nickColor} - font color of nick, #{sentDate} - when message was sent, #{receivedDate} - when message was received, #{separator} - separator between messages,
+&lt;kadu:header&gt;...&lt;/kadu:header&gt; - content will not be displayed in &apos;Remove repeated headers&apos; mode,
+&lt;kadu:top&gt;...&lt;/kadu:top&gt; - content will be included once at the begining of the document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

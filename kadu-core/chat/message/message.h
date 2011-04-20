@@ -38,13 +38,14 @@ class KADUAPI Message : public SharedBase<MessageShared>
 	KaduSharedBaseClass(Message)
 
 public:
+	// Status enum vaules identical with those defined in kadu-core/chat/style-engines/chat-scripts.js
 	enum Status
 	{
-		StatusUnknown,
-		StatusReceived,
-		StatusSent,
-		StatusDelivered,
-		StatusWontDeliver
+		StatusUnknown = 0,
+		StatusReceived = 1,
+		StatusSent = 2,
+		StatusDelivered = 3,
+		StatusWontDeliver = 4
 	};
 	enum Type
 	{

@@ -1,5 +1,12 @@
 /* <![CDATA[ */
 
+// Status enum vaules identical with those defined in kadu-core/chat/message/message.h
+StatusUnknown = 0;
+StatusReceived = 1;
+StatusSent = 2;
+StatusDelivered = 3;
+StatusWontDeliver = 4;
+
 //clear messages
 function adium_clearMessages()
 {
@@ -39,6 +46,12 @@ function kadu_removeFirstMessage()
 {
 	var node = document.getElementsByTagName('body')[0];
 	node.removeChild(node.firstChild);
+}
+
+function call_messageStatusChanged(messageid, status)
+{
+	if (typeof(messageStatusChanged) != 'undefined')
+		messageStatusChanged(messageid, status);
 }
 
 /* ]]> */
