@@ -1,5 +1,6 @@
 /*
  * %kadu copyright begin%
+ * Copyright 2011 Sławomir Stępień (s.stepien@intera.pl)
  * Copyright 2011 Bartosz Brachaczek (b.brachaczek@gmail.com)
  * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
  * Copyright 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
@@ -28,25 +29,32 @@
 #include <QtDBus/QDBusReply>
 #include <QtCore/QDateTime>
 
-#include "debug.h"
-#include "exports.h"
 #include "../mediaplayer/mediaplayer.h"
 #include "../mediaplayer/mpris_mediaplayer.h"
 
-MPRISMediaPlayer* audacious;
+#include "debug.h"
+#include "exports.h"
 
-extern "C" KADU_EXPORT int audacious_mediaplayer_init(bool firstLoad)
+#include "audacious-mediaplayer-plugin.h"
+
+AudaciousMediaplayerPlugin::~AudaciousMediaplayerPlugin()
+{
+}
+
+int AudaciousMediaplayerPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
-	audacious = new MPRISMediaPlayer("Audacious", "org.mpris.audacious");
-	bool res = MediaPlayer::instance()->registerMediaPlayer(audacious, audacious);
+	Audacious = new MPRISMediaPlayer("Audacious", "org.mpris.audacious");
+	bool res = MediaPlayer::instance()->registerMediaPlayer(Audacious, Audacious);
 	return res ? 0 : 1;
 }
 
-extern "C" KADU_EXPORT void audacious_mediaplayer_close()
+void AudaciousMediaplayerPlugin::done()
 {
 	MediaPlayer::instance()->unregisterMediaPlayer();
-	delete audacious;
-	audacious = NULL;
+	delete Audacious;
+	Audacious = 0;
 }
+
+Q_EXPORT_PLUGIN2(audacious_mediaplayer, AudaciousMediaplayerPlugin)

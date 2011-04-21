@@ -1,9 +1,9 @@
 set (SOURCES
-	audacious.cpp
+	audacious-mediaplayer-plugin.cpp
 )
 
 set (MOC_SOURCES
-	audacious.h
+	audacious-mediaplayer-plugin.h
 )
 
 kadu_plugin (audacious_mediaplayer
