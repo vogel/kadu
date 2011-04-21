@@ -194,7 +194,7 @@ kadu_api_directories (core
 	buddies/model
 	buddies
 	chat/filter
-	chat/messages
+	chat/message
 	chat/style-engines/style-engine-adium
 	chat/style-engines/style-engine-kadu
 	chat/style-engines
