@@ -192,7 +192,7 @@ void ModulesWindow::moduleAction(QTreeWidgetItem *)
 
 	if (plugin->state() == Plugin::PluginStateEnabled)
 		unloadItemPlugin(plugin);
-	else if (plugin->state() == Plugin::PluginStateDisabled)
+	else if ((plugin->state() == Plugin::PluginStateDisabled) || (plugin->state() == Plugin::PluginStateNew))
 		loadItemPlugin(plugin);
 
 	kdebugf2();
