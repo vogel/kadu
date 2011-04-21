@@ -1,8 +1,0 @@
-91.197.13.1::Server GG 1
-91.197.13.2::Server GG 2
-91.197.13.3::Server GG 3
-91.197.13.4::Server GG 4
-91.197.13.5::Server GG 5
-91.197.13.6::Server GG 6
-83.28.68.195:80:My Neo Http
-212.77.100.101:80:Wp.pl
