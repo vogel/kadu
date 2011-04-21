@@ -3,21 +3,23 @@
 * modules: Library class removed, we can use QLibrary (Vogel)
 * cmake: faster linking, not using final.cpp on Windows compilation (Darom, beevvy, Vogel)
 * gui: new syntax editor window layout (ultr)
-* modules: Hide base modules option removed from modules window (Vogel)
+* modules: hide base modules option removed from modules window (Vogel)
 * plugins: new API for loading plugins (Vogel)
 * kde_notify: display better icon for notification (Vogel)
 * freedesktop_notify: kde_notify renamed to freedesktop_notify (WhE)
-* freedesktop_notify: add checking for server capabilities (WhE)
+* freedesktop_notify: #2150 fixed: add checking for server capabilities (WhE)
 * gadu: use Kadu VERSION as client version for Gadu protocol (Vogel)
 * gui: status buttons now are blinking when connection is being established (Vogel)
-* protocols: proper reactions to network going online/offline (Vogel)
+* network: #2148 fixed: proper reactions to network going online/offline (Vogel)
 * gadu: image size limitting is now optional (ultr)
 * core: fixed x11tools compilation warning (ultr)
 * spellchecker: suggestion option as context menu has been added (dienet)
-* jabber: #2128 fixed: do not require node on Jabber/XMPP ids (Vogel)
+* gadu: #2144 fixed: almost all possible gg file transfer variants implemented (Vogel)
+* jabber: #2142 partially fixed: re-added file transfers to XMPP, using sock5 protocol (Vogel)
 
 +++ version 0.9.2
 * tabs: #2129 fixed: regression since 0.9.1 that caused button to be shown when the shouldn't in certain configurations (beevvy)
+* jabber: #2128 fixed: do not require node on Jabber/XMPP ids (Vogel)
 
 +++ version 0.9.1
 * identities: fixed displaying improper status information when having more jabber and gadu account in one identity and invisible status for gadu (beevvy)
