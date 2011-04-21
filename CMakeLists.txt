@@ -130,6 +130,9 @@ endif (NOT KADU_LIBDIR)
 if (NOT KADU_BINDIR)
 	set (KADU_BINDIR ${CMAKE_INSTALL_PREFIX}/bin)
 endif (NOT KADU_BINDIR)
+if (NOT KADU_INCLUDEDIR)
+	set (KADU_INCLUDE_DIR ${CMAKE_INSTALL_PREFIX}/include/kadu)
+endif (NOT KADU_INCLUDEDIR)
 
 if (WIN32)
 	set (KADU_DATA_DIR ".")
@@ -156,6 +159,15 @@ macro (kadu_source_subdirectories CURRENT_TARGET)
 
 	target_link_libraries (${CURRENT_TARGET} -Wl,--start-group -Wl,--whole-archive ${ARGN} -Wl,--no-whole-archive -Wl,--end-group)
 endmacro (kadu_source_subdirectories)
+
+macro (kadu_api_directories INCLUDE_DIR)
+	foreach (ARG ${ARGN})
+		message (STATUS "Search in: " ${CMAKE_CURRENT_SOURCE_DIR}/${ARG}/*.h)
+		file (GLOB API_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/${ARG}/*.h)
+		message (STATUS "Api headers: " ${API_HEADERS})
+		install (FILES ${API_HEADERS} DESTINATION ${KADU_INCLUDE_DIR}/${INCLUDE_DIR}/${ARG})
+	endforeach (ARG)
+endmacro (kadu_api_directories)
 
 macro (kadu_configuration)
 	install (FILES ${ARGN}
