@@ -48,10 +48,6 @@
         <translation>Y</translation>
     </message>
     <message>
-        <source>Corner</source>
-        <translation>Róg</translation>
-    </message>
-    <message>
         <source>Top left</source>
         <translation>Lewy górny</translation>
     </message>
@@ -230,6 +226,10 @@
     <message>
         <source>Margin size</source>
         <translation>Margines</translation>
+    </message>
+    <message>
+        <source>Hint&apos;s corner</source>
+        <translation>Róg dymka</translation>
     </message>
 </context>
 <context>

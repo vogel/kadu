@@ -48,10 +48,6 @@
         <translation>Y</translation>
     </message>
     <message>
-        <source>Corner</source>
-        <translation>Ecke</translation>
-    </message>
-    <message>
         <source>Top left</source>
         <translation>Oben links</translation>
     </message>
@@ -228,6 +224,10 @@
     </message>
     <message>
         <source>Margin size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hint&apos;s corner</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
