@@ -1,5 +1,6 @@
 /*
  * %kadu copyright begin%
+ * Copyright 2011 Piotr Dąbrowski (ultr@ultr.pl)
  * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
  * Copyright 2009, 2011 Piotr Galiszewski (piotr.galiszewski@kadu.im)
  * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
@@ -44,6 +45,7 @@ public:
 		StatusAcceptedQueued,
 		StatusRejectedBlocked,
 		StatusRejectedBoxFull,
+		StatusRejectedTimeout,
 		StatusRejectedUnknown
 	};
 
@@ -61,7 +63,7 @@ signals:
 	void filterRawIncomingMessage(Chat chat, Contact sender, QByteArray &message, bool &ignore);
 	void filterIncomingMessage(Chat chat, Contact sender, QString &message, time_t time, bool &ignore);
 
-	void messageStatusChanged(int messsageId, ChatService::MessageStatus status);
+	void messageStatusChanged(const Message &message, ChatService::MessageStatus status);
 	void messageSent(const Message &message);
 	void messageReceived(const Message &message);
 
