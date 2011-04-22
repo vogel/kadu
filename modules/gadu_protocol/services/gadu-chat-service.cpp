@@ -137,7 +137,7 @@ bool GaduChatService::sendMessage(const Chat &chat, FormattedMessage &message, b
 		msg.setContent(message.toHtml());
 		msg.setSendDate(QDateTime::currentDateTime());
 		msg.setReceiveDate(QDateTime::currentDateTime());
-		msg.setId(messageId);
+		msg.setId(QString::number(messageId));
 
 		UndeliveredMessages.insert(messageId, msg);
 		emit messageSent(msg);

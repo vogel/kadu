@@ -74,7 +74,7 @@ public:
 	KaduSharedBase_Property(Message::Status, status, Status)
 	KaduSharedBase_Property(Message::Type, type, Type)
 	KaduSharedBase_PropertyBool(Pending)
-	KaduSharedBase_Property(int, id, Id)
+	KaduSharedBase_Property(QString, id, Id)
 
 };
 
