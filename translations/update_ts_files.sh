@@ -33,59 +33,63 @@ if [ -z "$PROCESSONLY" ] || [ "$PROCESSONLY" = "kadu" ] || [ "$PROCESSONLY" = "k
 	$LUPDATE -locations none -noobsolete -verbose $SRC_FILES -ts kadu_fr.ts >> $LOG 2>&1
 fi
 
-pushd ../modules/ >> $LOG
-for module in *; do
-	if [ ! -d $module ]; then
-		continue
-	fi
+for main_dir in modules plugins;
+do
+	pushd ../$main_dir/ >> $LOG
+	for module in *; do
+		if [ ! -d $module ]; then
+			continue
+		fi
 
-	if [ ! -f $module/$module.desc ]; then
-		continue;
-	fi
+		if [ ! -f $module/$module.desc ]; then
+			continue;
+		fi
 
-	if [ -n "$PROCESSONLY" ] && [ "$PROCESSONLY" != "$module" ]; then
-		continue;
-	fi
+		if [ -n "$PROCESSONLY" ] && [ "$PROCESSONLY" != "$module" ]; then
+			continue;
+		fi
 
-	echo "Updating module $module translations"
+		echo "Updating plugin $module translations"
 
-	UI_TRANS=
+		UI_TRANS=
 
-	pushd $module >> $LOG 2>&1
+		pushd $module >> $LOG 2>&1
 
-	if [ -d configuration ]; then
-		UI_TRANS=.configuration-ui-translations.cpp
+		if [ -d configuration ]; then
+			UI_TRANS=.configuration-ui-translations.cpp
 
-		pushd configuration >> $LOG 2>&1
-		echo > ../.configuration-ui-translations.cpp
-		for i in *.ui; do
-			$XSLT_PROCESSOR $i ../../../translations/configuration-ui.xsl >> ../.configuration-ui-translations.cpp 2>> $LOG
-		done
+			pushd configuration >> $LOG 2>&1
+			echo > ../.configuration-ui-translations.cpp
+			for i in *.ui; do
+				$XSLT_PROCESSOR $i ../../../translations/configuration-ui.xsl >> ../.configuration-ui-translations.cpp 2>> $LOG
+			done
+			popd >> $LOG 2>&1
+		fi
+
+		if [ -d data/configuration ]; then
+			UI_TRANS=.configuration-ui-translations.cpp
+
+			pushd data/configuration >> $LOG 2>&1
+			echo > ../.configuration-ui-translations.cpp
+			for i in *.ui; do
+				$XSLT_PROCESSOR $i ../../../../translations/configuration-ui.xsl >> ../../.configuration-ui-translations.cpp 2>> $LOG
+			done
+			popd >> $LOG 2>&1
+		fi
+
+		if [ ! -d translations ]; then
+			mkdir translations;
+		fi
+
+		SRC_FILES=`find . -type f -name "*.cpp"`
+		$LUPDATE -locations none -noobsolete -verbose $SRC_FILES ${UI_TRANS} -ts translations/${module}_it.ts >> $LOG 2>&1
+		$LUPDATE -locations none -noobsolete -verbose $SRC_FILES ${UI_TRANS} -ts translations/${module}_pl.ts >> $LOG 2>&1
+		$LUPDATE -locations none -noobsolete -verbose $SRC_FILES ${UI_TRANS} -ts translations/${module}_en.ts >> $LOG 2>&1
+		$LUPDATE -locations none -noobsolete -verbose $SRC_FILES ${UI_TRANS} -ts translations/${module}_de.ts >> $LOG 2>&1
+		$LUPDATE -locations none -noobsolete -verbose $SRC_FILES ${UI_TRANS} -ts translations/${module}_fr.ts >> $LOG 2>&1
+
 		popd >> $LOG 2>&1
-	fi
-
-	if [ -d data/configuration ]; then
-		UI_TRANS=.configuration-ui-translations.cpp
-
-		pushd data/configuration >> $LOG 2>&1
-		echo > ../.configuration-ui-translations.cpp
-		for i in *.ui; do
-			$XSLT_PROCESSOR $i ../../../../translations/configuration-ui.xsl >> ../../.configuration-ui-translations.cpp 2>> $LOG
-		done
-		popd >> $LOG 2>&1
-	fi
-
-	if [ ! -d translations ]; then
-		mkdir translations;
-	fi
-
-	SRC_FILES=`find . -type f -name "*.cpp"`
-	$LUPDATE -locations none -noobsolete -verbose $SRC_FILES ${UI_TRANS} -ts translations/${module}_it.ts >> $LOG 2>&1
-	$LUPDATE -locations none -noobsolete -verbose $SRC_FILES ${UI_TRANS} -ts translations/${module}_pl.ts >> $LOG 2>&1
-	$LUPDATE -locations none -noobsolete -verbose $SRC_FILES ${UI_TRANS} -ts translations/${module}_en.ts >> $LOG 2>&1
-	$LUPDATE -locations none -noobsolete -verbose $SRC_FILES ${UI_TRANS} -ts translations/${module}_de.ts >> $LOG 2>&1
-	$LUPDATE -locations none -noobsolete -verbose $SRC_FILES ${UI_TRANS} -ts translations/${module}_fr.ts >> $LOG 2>&1
-
+	done
 	popd >> $LOG 2>&1
 done
 popd >> $LOG 2>&1
