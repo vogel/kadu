@@ -17,29 +17,24 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "notify/notification-manager.h"
-
 #include "chat-notifier.h"
 
-#include "chat-notifier-plugin.h"
-
-ChatNotifierPlugin::~ChatNotifierPlugin()
+ChatNotifier::ChatNotifier(QObject *parent) :
+		Notifier("ChatNotifier", QT_TRANSLATE_NOOP("@default", "Chat window notifications"), KaduIcon("protocols/common/message"), parent)
 {
 }
 
-int ChatNotifierPlugin::init(bool firstLoad)
+ChatNotifier::~ChatNotifier()
 {
-	Q_UNUSED(firstLoad)
+}
 
-	NotifierInstance = new ChatNotifier(this);
-	NotificationManager::instance()->registerNotifier(NotifierInstance);
-
+NotifierConfigurationWidget * ChatNotifier::createConfigurationWidget(QWidget* parent)
+{
+	Q_UNUSED(parent);
 	return 0;
 }
 
-void ChatNotifierPlugin::done()
+void ChatNotifier::notify(Notification *notification)
 {
-	NotificationManager::instance()->unregisterNotifier(NotifierInstance);
+	Q_UNUSED(notification)
 }
-
-Q_EXPORT_PLUGIN2(chat_notifier, ChatNotifierPlugin)

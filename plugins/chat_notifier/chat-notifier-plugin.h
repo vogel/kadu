@@ -22,16 +22,21 @@
 
 #include "plugins/generic-plugin.h"
 
+class ChatNotifier;
+
 class ChatNotifierPlugin : public QObject, public GenericPlugin
 {
 	Q_OBJECT
 	Q_INTERFACES(GenericPlugin)
+
+	ChatNotifier *NotifierInstance;
 
 public:
 	virtual ~ChatNotifierPlugin();
 
 	virtual int init(bool firstLoad);
 	virtual void done();
+
 };
 
 #endif // CHAT_NOTIFIER_PLUGIN_H

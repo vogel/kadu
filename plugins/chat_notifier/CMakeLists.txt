@@ -3,7 +3,7 @@ project (chat_notifier)
 # minimal required versions
 cmake_minimum_required (VERSION 2.8)
 set (QT_MIN_VERSION "4.7.0")
-set (CMAKE_MIN_VERSION "2.6.0")
+set (CMAKE_MIN_VERSION "2.8.0")
 
 set (KADU_FIND_REQUIRED true)
 include (FindKadu)
@@ -13,10 +13,12 @@ include_directories ("${KADU_INCLUDE_DIR}/core")
 
 set (SOURCES
 	chat-notifier-plugin.cpp
+	chat-notifier.cpp
 )
 
 set (MOC_SOURCES
 	chat-notifier-plugin.h
+	chat-notifier.h
 )
 
 set (CONFIGURATION_FILES

@@ -17,29 +17,23 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "notify/notification-manager.h"
+#ifndef CHAT_NOTIFIER_H
+#define CHAT_NOTIFIER_H
 
-#include "chat-notifier.h"
+#include "notify/notifier.h"
 
-#include "chat-notifier-plugin.h"
-
-ChatNotifierPlugin::~ChatNotifierPlugin()
+class ChatNotifier : public Notifier
 {
-}
+	Q_OBJECT
 
-int ChatNotifierPlugin::init(bool firstLoad)
-{
-	Q_UNUSED(firstLoad)
+public:
+	explicit ChatNotifier(QObject *parent = 0);
+	virtual ~ChatNotifier();
 
-	NotifierInstance = new ChatNotifier(this);
-	NotificationManager::instance()->registerNotifier(NotifierInstance);
+	virtual NotifierConfigurationWidget * createConfigurationWidget(QWidget *parent = 0);
 
-	return 0;
-}
+	virtual void notify(Notification *notification);
 
-void ChatNotifierPlugin::done()
-{
-	NotificationManager::instance()->unregisterNotifier(NotifierInstance);
-}
+};
 
-Q_EXPORT_PLUGIN2(chat_notifier, ChatNotifierPlugin)
+#endif // CHAT_NOTIFIER_H
