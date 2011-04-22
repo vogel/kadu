@@ -79,9 +79,7 @@ void KeyShared::load()
 	Shared::load();
 
 	KeyType = loadValue<QString>("KeyType");
-
-	QString contactUuid = loadValue<QString>("Contact");
-	setKeyContact(ContactManager::instance()->byUuid(contactUuid));
+	KeyContact = ContactManager::instance()->byUuid(loadValue<QString>("Contact"));
 
 	QFile keyFile(filePath());
 	if (keyFile.exists() && keyFile.open(QFile::ReadOnly))
