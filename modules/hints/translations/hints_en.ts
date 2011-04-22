@@ -48,10 +48,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Corner</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Top left</source>
         <translation type="unfinished"></translation>
     </message>
@@ -225,6 +221,14 @@
             <numerusform>%n second</numerusform>
             <numerusform>%n seconds</numerusform>
         </translation>
+    </message>
+    <message>
+        <source>Margin size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hint&apos;s corner</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

@@ -48,10 +48,6 @@
         <translation>Y</translation>
     </message>
     <message>
-        <source>Corner</source>
-        <translation>Angolo</translation>
-    </message>
-    <message>
         <source>Top left</source>
         <translation>Sopra a sinistra</translation>
     </message>
@@ -225,6 +221,14 @@
             <numerusform></numerusform>
             <numerusform></numerusform>
         </translation>
+    </message>
+    <message>
+        <source>Margin size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hint&apos;s corner</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
