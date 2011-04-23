@@ -6,9 +6,13 @@ set (CMAKE_MIN_VERSION "2.6.0")
 set (CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 # configuration
-option (SIG_HANDLING_ENABLED "Define if you want system signals handling" ON)
-option (USE_X11_XFIXES "Use X11 Xfixes extension (Desktop Linux)" ON)
 option (INSTALL_CMAKE_MODULE "Install cmake modules" ON)
+if (UNIX)
+	option (SIG_HANDLING_ENABLED "Define if you want system signals handling" ON)
+	if (UNIX AND NOT APPLE)
+		option (USE_X11_XFIXES "Use X11 XFixes extension (Desktop Linux)" ON)
+	endif (UNIX AND NOT APPLE)
+endif (UNIX)
 
 if (NOT NETWORK_IMPLEMENTATION)
 	include ("cmake/FindQNtrack.cmake")
