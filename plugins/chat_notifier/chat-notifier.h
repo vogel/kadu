@@ -22,9 +22,13 @@
 
 #include "notify/notifier.h"
 
+class ChatWidget;
+
 class ChatNotifier : public Notifier
 {
 	Q_OBJECT
+
+	void sendNotificationToChatWidget(Notification *notification, ChatWidget *chatWidget);
 
 public:
 	explicit ChatNotifier(QObject *parent = 0);

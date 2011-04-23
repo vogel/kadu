@@ -17,6 +17,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "buddies/buddy-shared.h"
+#include "chat/message/message-render-info.h"
+#include "contacts/contact-set.h"
+#include "gui/widgets/chat-widget-manager.h"
+#include "notify/chat-notification.h"
+
 #include "chat-notifier.h"
 
 ChatNotifier::ChatNotifier(QObject *parent) :
@@ -34,7 +40,36 @@ NotifierConfigurationWidget * ChatNotifier::createConfigurationWidget(QWidget* p
 	return 0;
 }
 
+void ChatNotifier::sendNotificationToChatWidget(Notification *notification, ChatWidget *chatWidget)
+{
+	Message message = Message::create();
+	message.setMessageChat(chatWidget->chat());
+	message.setContent(notification->text());
+	message.setReceiveDate(QDateTime::currentDateTime());
+	message.setSendDate(QDateTime::currentDateTime());
+	message.setStatus(Message::StatusReceived);
+	message.setType(Message::TypeSystem);
+	message.setPending(false);
+
+	chatWidget->appendMessage(new MessageRenderInfo(message));
+}
+
 void ChatNotifier::notify(Notification *notification)
 {
-	Q_UNUSED(notification)
+	BuddySet buddies;
+	ChatNotification *chatNotification = qobject_cast<ChatNotification *>(notification);
+	if (chatNotification)
+		buddies = chatNotification->chat().contacts().toBuddySet();
+
+	QHash<Chat, ChatWidget *>::const_iterator i = ChatWidgetManager::instance()->chats().constBegin();
+	QHash<Chat, ChatWidget *>::const_iterator end = ChatWidgetManager::instance()->chats().constEnd();
+
+	while (i != end)
+	{
+		// warning: do not exchange intersect caller and argument, it will modify buddies variable if you do
+		if (buddies.isEmpty() || !i.key().contacts().toBuddySet().intersect(buddies).isEmpty())
+			sendNotificationToChatWidget(notification, i.value());
+
+		i++;
+	}
 }
