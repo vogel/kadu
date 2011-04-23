@@ -31,6 +31,8 @@ class ChatNotifierPlugin : public QObject, public GenericPlugin
 
 	ChatNotifier *NotifierInstance;
 
+	void createDefaultConfiguration();
+
 public:
 	virtual ~ChatNotifierPlugin();
 

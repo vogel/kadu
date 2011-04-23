@@ -17,6 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "configuration/configuration-file.h"
 #include "notify/notification-manager.h"
 
 #include "chat-notifier.h"
@@ -29,7 +30,8 @@ ChatNotifierPlugin::~ChatNotifierPlugin()
 
 int ChatNotifierPlugin::init(bool firstLoad)
 {
-	Q_UNUSED(firstLoad)
+	if (firstLoad)
+		createDefaultConfiguration();
 
 	NotifierInstance = new ChatNotifier(this);
 	NotificationManager::instance()->registerNotifier(NotifierInstance);
@@ -40,6 +42,19 @@ int ChatNotifierPlugin::init(bool firstLoad)
 void ChatNotifierPlugin::done()
 {
 	NotificationManager::instance()->unregisterNotifier(NotifierInstance);
+}
+
+void ChatNotifierPlugin::createDefaultConfiguration()
+{
+	config_file.addVariable("Notify", "FileTransfer_ChatNotifier", true);
+	config_file.addVariable("Notify", "FileTransfer/IncomingFile_ChatNotifier", true);
+	config_file.addVariable("Notify", "StatusChanged_ChatNotifier", true);
+	config_file.addVariable("Notify", "StatusChanged/ToAway_ChatNotifier", true);
+	config_file.addVariable("Notify", "StatusChanged/ToDoNotDisturb_ChatNotifier", true);
+	config_file.addVariable("Notify", "StatusChanged/ToFreeForChat_ChatNotifier", true);
+	config_file.addVariable("Notify", "StatusChanged/ToNotAvailable_ChatNotifier", true);
+	config_file.addVariable("Notify", "StatusChanged/ToOffline_ChatNotifier", true);
+	config_file.addVariable("Notify", "StatusChanged/ToOnline_ChatNotifier", true);
 }
 
 Q_EXPORT_PLUGIN2(chat_notifier, ChatNotifierPlugin)
