@@ -59,12 +59,17 @@ MPRISMediaPlayer::~MPRISMediaPlayer()
 	kdebugf();
 }
 
-void MPRISMediaPlayer::setService(QString service)
+void MPRISMediaPlayer::setService(const QString &service)
 {
 	this->service = service;
+
+	if (controller)
+		delete controller;
+
+	controller = new MPRISController(this->service, this);
 }
 
-void MPRISMediaPlayer::setName(QString name)
+void MPRISMediaPlayer::setName(const QString &name)
 {
 	this->name = name;
 
