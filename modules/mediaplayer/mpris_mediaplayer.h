@@ -38,6 +38,7 @@ public:
 	QString getPlayerName();
 	QString getPlayerVersion();
 	void setService(QString service);
+	void setName(QString name);
 
 	void nextTrack();
 	void prevTrack();

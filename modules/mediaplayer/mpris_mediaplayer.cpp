@@ -1,5 +1,6 @@
 /*
  * %kadu copyright begin%
+ * Copyright 2011 Sławomir Stępień (s.stepien@interia.pl)
  * Copyright 2010 Piotr Galiszewski (piotr.galiszewski@kadu.im)
  * Copyright 2010 Bartosz Brachaczek (b.brachaczek@gmail.com)
  * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
@@ -61,6 +62,16 @@ MPRISMediaPlayer::~MPRISMediaPlayer()
 void MPRISMediaPlayer::setService(QString service)
 {
 	this->service = service;
+}
+
+void MPRISMediaPlayer::setName(QString name)
+{
+	this->name = name;
+
+	if (name == "Audacious")
+		MediaPlayer::instance()->setInterval(5);
+	else
+		MediaPlayer::instance()->setInterval(0);
 }
 
 void MPRISMediaPlayer::send(QString obj, QString func, int val)
