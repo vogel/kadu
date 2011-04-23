@@ -6,7 +6,6 @@ set (CMAKE_MIN_VERSION "2.6.0")
 set (CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 # configuration
-option (ENABLE_DEVELOPER_BUILD "Turn on some features helpful during development process (does not necessarily turn on debug symbols in binaries)" OFF)
 option (SIG_HANDLING_ENABLED "Define if you want system signals handling" ON)
 option (USE_X11_XFIXES "Use X11 Xfixes extension (Desktop Linux)" ON)
 option (INSTALL_CMAKE_MODULE "Install cmake modules" ON)
@@ -26,27 +25,12 @@ if (NOT BUILD_DESCRIPTION)
 	set (BUILD_DESCRIPTION "Compiled from sources" CACHE STRING "Build description" FORCE)
 endif (NOT BUILD_DESCRIPTION)
 
-if (NOT CMAKE_BUILD_TYPE)
-	set (CMAKE_BUILD_TYPE Debug CACHE STRING "Choose the type of build, options are: Debug Release RelWithDebInfo." FORCE)
-endif (NOT CMAKE_BUILD_TYPE)
-
-string (REPLACE "-O3" "-O2" CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE}")
-string (REPLACE "-O3" "-O2" CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE}")
-
 # build version string if cmake < 2.6.3
 if (NOT DEFINED CMAKE_VERSION)
 	set (CMAKE_VERSION "${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}.${CMAKE_PATCH_VERSION}")
 endif (NOT DEFINED CMAKE_VERSION)
 
 cmake_minimum_required (VERSION ${CMAKE_MIN_VERSION} FATAL_ERROR)
-
-if (COMMAND cmake_policy)
-	cmake_policy (SET CMP0003 NEW)
-
-	if (${CMAKE_VERSION} VERSION_GREATER 2.8.0)
-		cmake_policy (SET CMP0015 OLD)
-	endif (${CMAKE_VERSION} VERSION_GREATER 2.8.0)
-endif (COMMAND cmake_policy)
 
 include (FindPkgConfig)
 include (CheckIncludeFiles)
@@ -90,15 +74,6 @@ if (NOT WIN32)
 		set (SIG_HANDLING_ENABLED 1)
 	endif (SIG_HANDLING_ENABLED)
 endif (NOT WIN32)
-
-if (CMAKE_BUILD_TYPE STREQUAL "Debug" OR ENABLE_DEVELOPER_BUILD OR WIN32)
-	set (DEBUG_ENABLED 1)
-	add_definitions (-DDEBUG_ENABLED)
-endif (CMAKE_BUILD_TYPE STREQUAL "Debug" OR ENABLE_DEVELOPER_BUILD OR WIN32)
-
-if (MSVC)
-	add_definitions (/D_CRT_SECURE_NO_WARNINGS=1)
-endif (MSVC)
 
 # macros
 macro (kadu_source_subdirectories CURRENT_TARGET)

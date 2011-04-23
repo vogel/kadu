@@ -44,6 +44,32 @@ if (NOT KADU_DO_NOT_FIND)
     endif (KADU_INCLUDE_DIR)
 endif (NOT KADU_DO_NOT_FIND)
 
+if (COMMAND cmake_policy)
+	cmake_policy (SET CMP0003 NEW)
+
+	if (${CMAKE_VERSION} VERSION_GREATER 2.8.0)
+		cmake_policy (SET CMP0015 OLD)
+	endif (${CMAKE_VERSION} VERSION_GREATER 2.8.0)
+endif (COMMAND cmake_policy)
+
+if (NOT CMAKE_BUILD_TYPE)
+	set (CMAKE_BUILD_TYPE Debug CACHE STRING "Choose the type of build, options are: Debug Release RelWithDebInfo." FORCE)
+endif (NOT CMAKE_BUILD_TYPE)
+
+string (REPLACE "-O3" "-O2" CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE}")
+string (REPLACE "-O3" "-O2" CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE}")
+
+option (ENABLE_DEVELOPER_BUILD "Turn on some features helpful during development process (does not necessarily turn on debug symbols in binaries)" OFF)
+
+if (CMAKE_BUILD_TYPE STREQUAL "Debug" OR ENABLE_DEVELOPER_BUILD OR WIN32)
+	set (DEBUG_ENABLED 1)
+	add_definitions (-DDEBUG_ENABLED)
+endif (CMAKE_BUILD_TYPE STREQUAL "Debug" OR ENABLE_DEVELOPER_BUILD OR WIN32)
+
+if (MSVC)
+	add_definitions (/D_CRT_SECURE_NO_WARNINGS=1)
+endif (MSVC)
+
 if (MINGW)
 	# override cmake bug/feature?
 	set (CMAKE_SHARED_LIBRARY_PREFIX "")
