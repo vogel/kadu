@@ -32,6 +32,7 @@
 
 #include "../helpers/gadu-list-helper.h"
 
+#include "../gadu-account-details.h"
 #include "../gadu-protocol.h"
 #include "socket-notifiers/gadu-protocol-socket-notifiers.h"
 
@@ -42,30 +43,58 @@ GaduContactListService::GaduContactListService(GaduProtocol *protocol) :
 {
 }
 
-void GaduContactListService::handleEventUserlistGetReply(struct gg_event *e)
+void GaduContactListService::handleEventUserlist100GetReply(struct gg_event *e)
 {
-	char *content = e->event.userlist.reply;
-	if (!content)
+	GaduAccountDetails *accountDetails = dynamic_cast<GaduAccountDetails *>(Protocol->account().details());
+	if (!accountDetails)
 	{
-		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "error!\n");
+		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "failed to cast account details to GaduAccountDetails\n");
 
 		emit contactListImported(false, BuddyList());
 		return;
 	}
 
-	if (content[0] != 0)
-		ImportReply.append(content);
+	bool fail = false;
 
-	if (e->event.userlist.type == GG_USERLIST_GET_MORE_REPLY)
+	if (e->event.userlist100_reply.format_type != GG_USERLIST100_FORMAT_TYPE_GG70)
 	{
-		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "next portion\n");
+		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "got userlist 100 reply with unwanted format type (%d)\n", (int)e->event.userlist100_reply.format_type);
+
+		fail = true;
+	}
+
+	char *content = e->event.userlist100_reply.reply;
+	if (!content)
+	{
+		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "got userlist 100 reply without any content\n");
+
+		fail = true;
+	}
+
+	if (fail)
+	{
+		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "checking received userlist version...\n");
+
+		if (accountDetails->userlistVersion() != (int)e->event.userlist100_reply.version)
+		{
+			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "not known version, asking to receive new one\n");
+			QMetaObject::invokeMethod(this, "importContactList", Qt::QueuedConnection);
+		}
+		else
+		{
+			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "got already known version\n");
+		}
+
+		emit contactListImported(false, BuddyList());
 		return;
 	}
 
-	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "\n%s\n", ImportReply.data());
+	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "userlist 100 reply:\n%s\n", content);
 
-	BuddyList buddies = GaduListHelper::byteArrayToBuddyList(Protocol->account(), ImportReply);
+	QByteArray content2(content);
+	BuddyList buddies = GaduListHelper::byteArrayToBuddyList(Protocol->account(), content2);
 	emit contactListImported(true, buddies);
+	accountDetails->setUserlistVersion(e->event.userlist100_reply.version);
 
 	// cleanup references, so buddy and contact instances can be removed
 	// this is really a hack, we need to call aboutToBeRemoved someway for non-manager contacts and buddies too
@@ -78,42 +107,54 @@ void GaduContactListService::handleEventUserlistGetReply(struct gg_event *e)
 	}
 }
 
-void GaduContactListService::handleEventUserlistPutReply(struct gg_event *e)
+void GaduContactListService::handleEventUserlist100PutReply(struct gg_event *e)
 {
-	Q_UNUSED(e)
+	if (e->event.userlist100_reply.type == GG_USERLIST100_REPLY_ACK)
+	{
+		GaduAccountDetails *accountDetails = dynamic_cast<GaduAccountDetails *>(Protocol->account().details());
+		if (accountDetails)
+		{
+			accountDetails->setUserlistVersion(e->event.userlist100_reply.version);
+			emit contactListExported(true);
 
-	emit contactListExported(true);
-	return;
+			return;
+		}
+	}
+
+	QMetaObject::invokeMethod(this, "importContactList", Qt::QueuedConnection);
+	emit contactListExported(false);
 }
 
-void GaduContactListService::handleEventUserlist(struct gg_event *e)
+void GaduContactListService::handleEventUserlist100Reply(struct gg_event *e)
 {
-	switch (e->event.userlist.type)
+	switch (e->event.userlist100_reply.type)
 	{
-		case GG_USERLIST_GET_REPLY:
-		case GG_USERLIST_GET_MORE_REPLY:
-			handleEventUserlistGetReply(e);
+		case GG_USERLIST100_REPLY_LIST:
+			handleEventUserlist100GetReply(e);
 			break;
-		case GG_USERLIST_PUT_REPLY:
-			handleEventUserlistPutReply(e);
+		case GG_USERLIST100_REPLY_ACK:
+		case GG_USERLIST100_REPLY_REJECT:
+			handleEventUserlist100PutReply(e);
 			break;
+		default:
+			kdebugmf(KDEBUG_INFO, "got unknown userlist100 reply type (%d)\n", e->event.userlist100_reply.type);
 	}
 }
 
 void GaduContactListService::handleEventUserlist100Version(gg_event *e)
 {
-	Q_UNUSED(e)
-
 	kdebugmf(KDEBUG_INFO, "new version of userlist available: %d\n", e->event.userlist100_version.version);
+
+	GaduAccountDetails *accountDetails = dynamic_cast<GaduAccountDetails *>(Protocol->account().details());
+	if (accountDetails && accountDetails->userlistVersion() != (int)e->event.userlist100_version.version)
+		QMetaObject::invokeMethod(this, "importContactList", Qt::QueuedConnection);
 }
 
 void GaduContactListService::importContactList(bool automaticallySetBuddiesList)
 {
 	ContactListService::importContactList(automaticallySetBuddiesList);
 
-	ImportReply.clear();
-
-	if (-1 == gg_userlist_request(Protocol->gaduSession(), GG_USERLIST_GET, 0))
+	if (-1 == gg_userlist100_request(Protocol->gaduSession(), GG_USERLIST100_GET, 0, GG_USERLIST100_FORMAT_TYPE_GG70, 0))
 		emit contactListImported(false, BuddyList());
 }
 
@@ -128,7 +169,10 @@ void GaduContactListService::exportContactList(const BuddyList &buddies)
 
 	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "\n%s\n", contacts.constData());
 
-	if (-1 == gg_userlist_request(Protocol->gaduSession(), GG_USERLIST_PUT, contacts.constData()))
+	GaduAccountDetails *accountDetails = dynamic_cast<GaduAccountDetails *>(Protocol->account().details());
+	if (!accountDetails || -1 == gg_userlist100_request(
+			Protocol->gaduSession(), GG_USERLIST100_PUT, accountDetails->userlistVersion(),
+			GG_USERLIST100_FORMAT_TYPE_GG70, contacts.constData()))
 		emit contactListExported(false);
 }
 

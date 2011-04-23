@@ -43,6 +43,7 @@ class GaduAccountDetails : public AccountDetails
 	PROPERTY_DEC(bool, SendTypingNotification)
 	PROPERTY_DEC(QString, ExternalIp)
 	PROPERTY_DEC(unsigned int, ExternalPort)
+	PROPERTY_DEC(int, UserlistVersion)
 
 	GaduOpenChatWithRunner *OpenChatRunner;
 
@@ -69,6 +70,7 @@ public:
 	PROPERTY_DEF(bool, sendTypingNotification, setSendTypingNotification, SendTypingNotification)
 	PROPERTY_DEF(QString, externalIp, setExternalIp, ExternalIp)
 	PROPERTY_DEF(unsigned int, externalPort, setExternalPort, ExternalPort)
+	PROPERTY_DEF(int, userlistVersion, setUserlistVersion, UserlistVersion)
 
 	void import_0_6_5_LastStatus();
 

@@ -33,23 +33,24 @@ class GaduContactListService : public ContactListService
 	Q_OBJECT
 
 	GaduProtocol *Protocol;
-	QByteArray ImportReply;
 
 	friend class GaduProtocolSocketNotifiers;
-	void handleEventUserlistGetReply(struct gg_event *e);
-	void handleEventUserlistPutReply(struct gg_event *e);
-	void handleEventUserlist(struct gg_event *e);
-	void handleEventUserlist100Version(struct gg_event* e);
+	void handleEventUserlist100Version(struct gg_event *e);
+	void handleEventUserlist100PutReply(struct gg_event *e);
+	void handleEventUserlist100GetReply(struct gg_event *e);
+	void handleEventUserlist100Reply(struct gg_event *e);
 
 public:
 	GaduContactListService(GaduProtocol *protocol);
 
-	virtual void importContactList(bool automaticallySetBuddiesList = true);
 	virtual void exportContactList();
 	virtual void exportContactList(const BuddyList &buddies);
 
 	virtual QList<Buddy> loadBuddyList(QTextStream &dataStream);
 	virtual QByteArray storeBuddyList(const BuddyList &buddies);
+
+public slots:
+	virtual void importContactList(bool automaticallySetBuddiesList = true);
 
 };
 
