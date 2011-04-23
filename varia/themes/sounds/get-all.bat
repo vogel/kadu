@@ -3,17 +3,10 @@ SETLOCAL EnableDelayedExpansion
 SETLOCAL ENABLEEXTENSIONS
 
 SET AVAILABLE_MODULES=
-SET AUTODOWNLOAD=%1
 
 FOR /D %%I IN (*) DO (
 	IF EXIST %%I/sound.conf (
 		CALL SET AVAILABLE_MODULES=%%AVAILABLE_MODULES%%;%%I
-	)
-)
-
-if "%AUTODOWNLOAD%"=="ON" (
-	FOR %%J IN (*.web) DO (
-		call :append_module_name %%J
 	)
 )
 
