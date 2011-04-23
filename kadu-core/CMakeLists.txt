@@ -185,7 +185,7 @@ if (APPLE)
 endif (APPLE)
 
 # install api headers
-kadu_api_directories (core
+kadu_api_directories (kadu-core
 	accounts/filter
 	accounts/model
 	accounts

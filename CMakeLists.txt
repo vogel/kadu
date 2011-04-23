@@ -3,6 +3,7 @@ project (kadu)
 # minimal required versions
 set (QT_MIN_VERSION "4.7.0")
 set (CMAKE_MIN_VERSION "2.6.0")
+set (CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 # configuration
 option (ENABLE_AUTODOWNLOAD "Use automatic download of icons/emoticons" ON)
@@ -130,6 +131,7 @@ add_custom_target (uninstall "${CMAKE_COMMAND}" -P "${CMAKE_CURRENT_BINARY_DIR}/
 
 add_subdirectory (modules)
 add_subdirectory (kadu-core)
+add_subdirectory (plugins)
 add_subdirectory (varia)
 add_subdirectory (translations)
 add_subdirectory (kthxbye)

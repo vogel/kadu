@@ -9,7 +9,7 @@ set (KADU_FIND_REQUIRED true)
 include (FindKadu)
 message (STATUS "Found Kadu: " ${KADU_INCLUDE_DIR})
 
-include_directories ("${KADU_INCLUDE_DIR}/core")
+include_directories ("${KADU_INCLUDE_DIR}/kadu-core")
 
 set (SOURCES
 	configuration/image-link-configuration.cpp
