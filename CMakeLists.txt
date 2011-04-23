@@ -115,7 +115,7 @@ macro (kadu_source_subdirectories CURRENT_TARGET)
 endmacro (kadu_source_subdirectories)
 
 if (INSTALL_CMAKE_MODULE)
-	install (FILES cmake/FindKadu.cmake DESTINATION ${CMAKE_ROOT}/Modules)
+	install (FILES cmake/FindKadu.cmake DESTINATION share/cmake/Modules)
 endif (INSTALL_CMAKE_MODULE)
 
 include (cmake/FindKadu.cmake)
