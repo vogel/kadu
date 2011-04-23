@@ -229,6 +229,8 @@ void RecentChatManager::configurationUpdated()
 	RecentChatsTimeout = config_file.readNumEntry("Chat", "RecentChatsTimeout") * 60;
 	if (RecentChatsTimeout > 0)
 		CleanUpTimer.start();
+
+	QTimer::singleShot(0, this, SLOT(cleanUp()));
 }
 
 /**
