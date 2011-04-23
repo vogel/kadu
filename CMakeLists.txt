@@ -6,7 +6,7 @@ set (CMAKE_MIN_VERSION "2.6.0")
 set (CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 # configuration
-option (ENABLE_AUTODOWNLOAD "Use automatic download of icons/emoticons" ON)
+option (ENABLE_AUTODOWNLOAD "Use automatic download of sound/icons/emoticons" ON)
 option (ENABLE_DEVELOPER_BUILD "Turn on some features helpful during development process (does not necessarily turn on debug symbols in binaries)" OFF)
 option (SIG_HANDLING_ENABLED "Define if you want system signals handling" ON)
 option (USE_X11_XFIXES "Use X11 Xfixes extension (Desktop Linux)" ON)
