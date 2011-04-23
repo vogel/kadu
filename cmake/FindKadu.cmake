@@ -44,14 +44,6 @@ if (NOT KADU_DO_NOT_FIND)
     endif (KADU_INCLUDE_DIR)
 endif (NOT KADU_DO_NOT_FIND)
 
-if (COMMAND cmake_policy)
-	cmake_policy (SET CMP0003 NEW)
-
-	if (${CMAKE_VERSION} VERSION_GREATER 2.8.0)
-		cmake_policy (SET CMP0015 OLD)
-	endif (${CMAKE_VERSION} VERSION_GREATER 2.8.0)
-endif (COMMAND cmake_policy)
-
 if (NOT CMAKE_BUILD_TYPE)
 	set (CMAKE_BUILD_TYPE Debug CACHE STRING "Choose the type of build, options are: Debug Release RelWithDebInfo." FORCE)
 endif (NOT CMAKE_BUILD_TYPE)

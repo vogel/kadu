@@ -36,6 +36,14 @@ endif (NOT DEFINED CMAKE_VERSION)
 
 cmake_minimum_required (VERSION ${CMAKE_MIN_VERSION} FATAL_ERROR)
 
+if (COMMAND cmake_policy)
+	cmake_policy (SET CMP0003 NEW)
+
+	if (${CMAKE_VERSION} VERSION_GREATER 2.8.0)
+		cmake_policy (SET CMP0015 OLD)
+	endif (${CMAKE_VERSION} VERSION_GREATER 2.8.0)
+endif (COMMAND cmake_policy)
+
 include (FindPkgConfig)
 include (CheckIncludeFiles)
 include (CheckFunctionExists)
