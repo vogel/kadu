@@ -11,6 +11,8 @@ set (COMPILE_PLUGINS
 	chat_notifier
 
 # misc
+	# Cenzor
+	cenzor
 	# Configuration wizard
 	config_wizard
 	# Shows image links and youtube links as images and videos in chat
