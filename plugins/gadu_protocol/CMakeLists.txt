@@ -1,4 +1,4 @@
-project (gadu_protocol)
+project (config_wizard)
 
 # minimal required versions
 cmake_minimum_required (VERSION 2.8)
