@@ -124,7 +124,7 @@ add_subdirectory (varia)
 add_subdirectory (translations)
 add_subdirectory (kthxbye)
 
-message (STATUS "Kadu (version: ${KADU_VERSION}) will be build:")
+message (STATUS "Kadu (version: ${KADU_VERSION}) will be built:")
 message (STATUS " * install prefix: ${CMAKE_INSTALL_PREFIX}")
 message (STATUS " * build type: ${CMAKE_BUILD_TYPE}")
 
