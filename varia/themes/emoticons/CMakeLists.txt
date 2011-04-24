@@ -1,35 +1,20 @@
-if (WIN32)
-	exec_program (${CMAKE_CURRENT_SOURCE_DIR}/get-all.bat ${CMAKE_CURRENT_SOURCE_DIR}
-		OUTPUT_VARIABLE EMOTICON_THEMES
-	)
+set (EMOTICON_THEMES
+	penguins
+	tango
+)
 
-	exec_program (${CMAKE_CURRENT_SOURCE_DIR}/get-list.bat ${CMAKE_CURRENT_SOURCE_DIR}
-		ARGS "y" ${EMOTICON_THEMES}
-		OUTPUT_VARIABLE INSTALL_EMOTICON_THEMES
-	)
-else (WIN32)
-	exec_program (${CMAKE_CURRENT_SOURCE_DIR}/get-all.sh ${CMAKE_CURRENT_SOURCE_DIR}
-		OUTPUT_VARIABLE EMOTICON_THEMES
-	)
-
-	exec_program (${CMAKE_CURRENT_SOURCE_DIR}/get-list.sh ${CMAKE_CURRENT_SOURCE_DIR}
-		ARGS "y" ${EMOTICON_THEMES}
-		OUTPUT_VARIABLE INSTALL_EMOTICON_THEMES
-	)
-endif (WIN32)
-
-if (INSTALL_EMOTICON_THEMES)
+if (EMOTICON_THEMES)
 	add_custom_target (emoticons_themes
-		DEPENDS ${INSTALL_EMOTICON_THEMES}
+		DEPENDS ${EMOTICON_THEMES}
 	)
 
-	foreach (INSTALL_EMOTICON_THEME ${INSTALL_EMOTICON_THEMES})
-		message (STATUS "Emoticon theme: " ${INSTALL_EMOTICON_THEME})
-	endforeach (INSTALL_EMOTICON_THEME)
+	foreach (EMOTICON_THEME ${EMOTICON_THEMES})
+		message (STATUS "Emoticon theme: " ${EMOTICON_THEME})
+	endforeach (EMOTICON_THEME)
 
 	add_dependencies (kadu emoticons_themes)
 
-	install (DIRECTORY ${INSTALL_EMOTICON_THEMES}
+	install (DIRECTORY ${EMOTICON_THEMES}
 		DESTINATION share/kadu/themes/emoticons
 		PATTERN ".svn" EXCLUDE
 		PATTERN "readme.txt"
@@ -38,4 +23,4 @@ if (INSTALL_EMOTICON_THEMES)
 		PATTERN "*.png"
 		PATTERN "*.gif"
 	)
-endif (INSTALL_EMOTICON_THEMES)
+endif (EMOTICON_THEMES)
