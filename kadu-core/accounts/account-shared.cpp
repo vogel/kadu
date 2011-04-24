@@ -88,10 +88,13 @@ void AccountShared::load()
 	if (identity.isNull() && !IdentityManager::instance()->items().isEmpty())
 		identity = IdentityManager::instance()->items().at(0);
 
+	// see setAccountIdentity() method
 	AccountIdentity = identity;
 	AccountIdentity.addAccount(this);
 
 	ProtocolName = loadValue<QString>("Protocol");
+
+	// see setId() method
 	Id = loadValue<QString>("Id");
 	AccountContact.setId(Id);
 
