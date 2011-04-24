@@ -10,6 +10,10 @@ set (COMPILE_PLUGINS
 	# Enables notifications about buddies presence and other in chat windows
 	chat_notifier
 
+# history
+	# Genral history plugin
+	history
+
 # misc
 	# Cenzor
 	cenzor
@@ -17,5 +21,6 @@ set (COMPILE_PLUGINS
 	config_wizard
 	# Shows image links and youtube links as images and videos in chat
 #	imagelink
-
+	# Sms gateway support
+	sms
 )

@@ -1,3 +1,5 @@
+include_directories ("../../plugins/history")
+
 set (SOURCES
 	buddy-firewall-data.cpp
 	firewall-configuration-ui-handler.cpp

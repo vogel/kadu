@@ -42,7 +42,7 @@ Nowa funkcjonalnosc - Dorregaray
 #include <QtCore/QStringList>
 #include <QtGui/QMessageBox>
 
-#include "../history/history.h"
+#include "plugins/history/history.h"
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"

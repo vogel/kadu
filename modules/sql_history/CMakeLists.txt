@@ -1,3 +1,5 @@
+include_directories ("../../plugins/history")
+
 set (SOURCES
 	storage/history-sql-storage.cpp
 	sql-history-plugin.cpp

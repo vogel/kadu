@@ -32,7 +32,7 @@
 
 #include "gui/widgets/progress-label.h"
 
-#include "modules/history/history.h"
+#include "plugins/history/history.h"
 
 #include "sms-internal-sender.h"
 

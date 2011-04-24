@@ -1,3 +1,5 @@
+include_directories ("../../plugins/history")
+
 set (SOURCES
 	gui/windows/history-import-window.cpp
 

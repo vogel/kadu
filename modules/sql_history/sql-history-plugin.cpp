@@ -23,7 +23,7 @@
 
 #include <QtSql/QSqlDatabase>
 
-#include "modules/history/history.h"
+#include "plugins/history/history.h"
 
 #include "storage/history-sql-storage.h"
 

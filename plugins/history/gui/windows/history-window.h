@@ -27,15 +27,14 @@
 #include <QtGui/QDateEdit>
 #include <QtGui/QTreeWidget>
 
-
 #include "buddies/buddy-set.h"
 #include "gui/actions/action-description.h"
 #include "gui/widgets/chat-messages-view.h"
 #include "gui/windows/main-window.h"
 
-#include "modules/history/search/history-search-parameters.h"
-#include "modules/history/history.h"
-#include "modules/history/history_exports.h"
+#include "search/history-search-parameters.h"
+#include "history.h"
+#include "history_exports.h"
 
 class BuddyNameFilter;
 class BuddyStatusDatesModel;

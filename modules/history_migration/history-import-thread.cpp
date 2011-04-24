@@ -29,7 +29,7 @@
 #include "contacts/contact.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
-#include "modules/history/history.h"
+#include "plugins/history/history.h"
 #include "status/status.h"
 
 #include "history-importer-chat-data.h"

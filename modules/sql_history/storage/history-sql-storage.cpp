@@ -44,9 +44,9 @@
 #include "misc/path-conversion.h"
 #include "gui/widgets/chat-widget.h"
 
-#include "modules/history/history.h"
-#include "modules/history/search/history-search-parameters.h"
-#include "modules/history/timed-status.h"
+#include "plugins/history/history.h"
+#include "plugins/history/search/history-search-parameters.h"
+#include "plugins/history/timed-status.h"
 
 #include "history-sql-storage.h"
 

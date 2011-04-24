@@ -24,7 +24,7 @@
 #include "chat/type/chat-type.h"
 #include "chat/chat.h"
 #include "model/roles.h"
-#include "modules/history/model/history-chats-model.h"
+#include "model/history-chats-model.h"
 
 #include "history-chats-model-proxy.h"
 

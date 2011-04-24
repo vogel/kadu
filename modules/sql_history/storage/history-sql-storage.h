@@ -29,7 +29,7 @@
 
 #include "core/crash-aware-object.h"
 
-#include "modules/history/storage/history-storage.h"
+#include "plugins/history/storage/history-storage.h"
 
 /**
 	@class HistorySqlStorage
