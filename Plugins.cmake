@@ -3,6 +3,8 @@ set (COMPILE_PLUGINS
 #protocols
 	# GaduGadu protocol suppot
 	gadu_protocol
+	# Jabber/XMPP protocol support
+	jabber_protocol
 
 # notifiers
 	# Enables notifications about buddies presence and other in chat windows

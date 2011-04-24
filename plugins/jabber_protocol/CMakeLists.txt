@@ -1,3 +1,18 @@
+project (jabber_protocol)
+
+# minimal required versions
+cmake_minimum_required (VERSION 2.8)
+set (QT_MIN_VERSION "4.7.0")
+set (CMAKE_MIN_VERSION "2.8.0")
+
+set (KADU_FIND_REQUIRED true)
+include (FindKadu)
+message (STATUS "Found Kadu: " ${KADU_INCLUDE_DIR})
+
+include_directories ("${KADU_INCLUDE_DIR}/kadu-core")
+
+include (FindPkgConfig)
+
 if (MINGW)
 	if (NOT MINGW_QCA_DIR)
 		message (SEND_ERROR " Pass path to libqca2 -DMINGW_QCA_DIR=path")
@@ -36,6 +51,23 @@ if (APPLE)
 		set (QCA2_LIBRARIES "-framework qca")
 	endif (QCA_FRAMEWORK_DIR)
 endif (APPLE)
+
+kadu_api_directories (plugins/jabber-protocol
+	actions
+	certificates
+	client
+	file-transfer
+	gui/widgets
+	gui/windows
+	gui
+	open-chat-with
+	resource
+	server
+	services
+	tasks
+	utils
+	.
+)
 
 set (SOURCES
 	actions/jabber-actions.cpp
@@ -195,7 +227,7 @@ if (WIN32)
 	set (LIBRARIES ${LIBRARIES} advapi32 ws2_32)
 endif (WIN32)
 
-link_directories (3rdparty ${QCA2_LIBRARY_DIRS} ${IDN_LIBRARY_DIRS} ${ZLIB_LIBRARY_DIRS})
+link_directories (${CMAKE_CURRENT_BUILD_DIR}/3rdparty ${QCA2_LIBRARY_DIRS} ${IDN_LIBRARY_DIRS} ${ZLIB_LIBRARY_DIRS})
 
 set (CONFIGURATION_FILES
 	data/configuration/jabber_protocol.ui
