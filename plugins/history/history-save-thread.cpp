@@ -18,7 +18,7 @@
  */
 
 #include "history.h"
-
+#include "chat/message/message.h"
 #include "history-save-thread.h"
 
 // 15 seconds
