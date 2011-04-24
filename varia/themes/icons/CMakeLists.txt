@@ -1,33 +1,17 @@
-if (WIN32)
-	exec_program (${CMAKE_CURRENT_SOURCE_DIR}/get-all.bat ${CMAKE_CURRENT_SOURCE_DIR}
-		OUTPUT_VARIABLE ICON_THEMES
-	)
-message (STATUS "ICON_THEMES: ${ICON_THEMES}")
+set (ICON_THEMES
+	default
+	glass
+	oxygen
+)
 
-	exec_program (${CMAKE_CURRENT_SOURCE_DIR}/get-list.bat ${CMAKE_CURRENT_SOURCE_DIR}
-		ARGS "y" ${ICON_THEMES}
-		OUTPUT_VARIABLE INSTALL_ICON_THEMES
-	)
-message (STATUS "INSTALL_ICON_THEMES: ${INSTALL_ICON_THEMES}")
-else (WIN32)
-	exec_program (${CMAKE_CURRENT_SOURCE_DIR}/get-all.sh ${CMAKE_CURRENT_SOURCE_DIR}
-		OUTPUT_VARIABLE ICON_THEMES
-	)
-
-	exec_program (${CMAKE_CURRENT_SOURCE_DIR}/get-list.sh ${CMAKE_CURRENT_SOURCE_DIR}
-		ARGS "y" ${ICON_THEMES}
-		OUTPUT_VARIABLE INSTALL_ICON_THEMES
-	)
-endif (WIN32)
-
-if (INSTALL_ICON_THEMES)
+if (ICON_THEMES)
 	add_custom_target (icon_themes)
 
-	foreach (INSTALL_ICON_THEME ${INSTALL_ICON_THEMES})
-		message (STATUS "Icon theme: " ${INSTALL_ICON_THEME})
-	endforeach (INSTALL_ICON_THEME)
+	foreach (ICON_THEME ${ICON_THEMES})
+		message (STATUS "Icon theme: " ${ICON_THEME})
+	endforeach (ICON_THEME)
 
-	install (DIRECTORY ${INSTALL_ICON_THEMES}
+	install (DIRECTORY ${ICON_THEMES}
 		DESTINATION ${KADU_DATA_DIR}/themes/icons
 		PATTERN "README"
 		PATTERN "*.png"
@@ -35,4 +19,4 @@ if (INSTALL_ICON_THEMES)
 	)
 
 	add_dependencies (kadu icon_themes)
-endif (INSTALL_ICON_THEMES)
+endif (ICON_THEMES)
