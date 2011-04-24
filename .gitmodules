@@ -1,3 +1,0 @@
-[submodule "modules/jabber_protocol/3rdparty/libiris"]
-	path = modules/jabber_protocol/3rdparty/libiris
-	url = http://git.gitorious.org/kadu/libiris.git
