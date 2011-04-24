@@ -89,7 +89,8 @@ void ContactShared::load()
 	if (buddyUuid.isNull())
 		buddyUuid = loadValue<QString>("Contact");
 
-	setOwnerBuddy(BuddyManager::instance()->byUuid(buddyUuid));
+	OwnerBuddy = BuddyManager::instance()->byUuid(buddyUuid);
+	OwnerBuddy.addContact(this);
 
 	if (storage()->point().isElement())
 	{

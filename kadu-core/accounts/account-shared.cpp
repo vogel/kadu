@@ -88,10 +88,12 @@ void AccountShared::load()
 	if (identity.isNull() && !IdentityManager::instance()->items().isEmpty())
 		identity = IdentityManager::instance()->items().at(0);
 
-	setAccountIdentity(identity);
+	AccountIdentity = identity;
+	AccountIdentity.addAccount(this);
 
 	ProtocolName = loadValue<QString>("Protocol");
-	setId(loadValue<QString>("Id"));
+	Id = loadValue<QString>("Id");
+	AccountContact.setId(Id);
 
 	RememberPassword = loadValue<bool>("RememberPassword", true);
 	HasPassword = RememberPassword;

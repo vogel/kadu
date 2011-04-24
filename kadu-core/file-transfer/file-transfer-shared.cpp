@@ -79,7 +79,7 @@ void FileTransferShared::load()
 	TransferredSize = loadValue<qulonglong>("TransferredSize");
 
 	if (FileSize == TransferredSize)
-		setTransferStatus(StatusFinished);
+		TransferStatus = StatusFinished;
 }
 
 void FileTransferShared::store()
