@@ -26,8 +26,8 @@
 
 #include "jabber-chat-state-service.h"
 
-JabberChatStateService::JabberChatStateService(JabberProtocol *parent) :
-		Protocol(parent)
+JabberChatStateService::JabberChatStateService(JabberProtocol *protocol) :
+		ChatStateService(protocol), Protocol(protocol)
 {
 	connect(Protocol->client(), SIGNAL(messageReceived(const XMPP::Message &)),
 			this, SLOT(incomingMessage(const XMPP::Message &)));
