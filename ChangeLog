@@ -23,6 +23,7 @@
 * tabs: #2129 fixed: regression since 0.9.1 that caused button to be shown when the shouldn't in certain configurations (beevvy)
 * jabber: #2128 fixed: do not require node on Jabber/XMPP ids (Vogel)
 * server_monitor: #2119 fixed: module removed (Vogel)
+* status: fixed a bug where sometimes invisible status wasn't possible to set in simple mode (beevvy)
 
 +++ version 0.9.1
 * identities: fixed displaying improper status information when having more jabber and gadu account in one identity and invisible status for gadu (beevvy)

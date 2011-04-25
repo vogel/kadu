@@ -37,15 +37,19 @@ class StatusActions : public QObject
 	Q_OBJECT
 
 	StatusContainer *MyStatusContainer;
+	bool IncludePrefix;
 
 	QActionGroup *ChangeStatusActionGroup;
 	QAction *ChangeDescription;
 	QList<QAction *> Actions;
+	QList<StatusType *> MyStatusTypes;
 
-	void createActions(bool includePrefix);
+	void createActions();
 	void createBasicActions();
 	QAction * createSeparator();
-	QAction * createStatusAction(StatusType *statusType, bool includePrefix);
+	QAction * createStatusAction(StatusType *statusType);
+
+	void cleanUpActions();
 
 private slots:
 	void statusUpdated();
@@ -58,6 +62,8 @@ public:
 	const QList<QAction *> & actions() const { return Actions; }
 
 signals:
+	void statusActionsCreated();
+
 	void statusActionTriggered(QAction *);
 	void changeDescriptionActionTriggered(bool);
 

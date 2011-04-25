@@ -36,13 +36,11 @@
 #include "status-actions.h"
 
 StatusActions::StatusActions(StatusContainer *statusContainer, bool includePrefix, QObject *parent) :
-		QObject(parent), MyStatusContainer(statusContainer)
+		QObject(parent), MyStatusContainer(statusContainer), IncludePrefix(includePrefix), ChangeDescription(0)
 {
 	ChangeStatusActionGroup = new QActionGroup(this);
 	ChangeStatusActionGroup->setExclusive(true); // HACK
 	connect(ChangeStatusActionGroup, SIGNAL(triggered(QAction*)), this, SIGNAL(statusActionTriggered(QAction*)));
-
-	createActions(includePrefix);
 
 	statusUpdated();
 	connect(MyStatusContainer, SIGNAL(statusUpdated()), this, SLOT(statusUpdated()));
@@ -54,15 +52,15 @@ StatusActions::~StatusActions()
 {
 }
 
-void StatusActions::createActions(bool includePrefix)
+void StatusActions::createActions()
 {
 	createBasicActions();
 
-	QList<StatusType *> statusTypes = MyStatusContainer->supportedStatusTypes();
+	MyStatusTypes = MyStatusContainer->supportedStatusTypes();
 	StatusGroup *currentGroup = 0;
 	bool setDescriptionAdded = false;
 
-	foreach (StatusType *statusType, statusTypes)
+	foreach (StatusType *statusType, MyStatusTypes)
 	{
 		if (0 == statusType)
 			continue;
@@ -85,9 +83,11 @@ void StatusActions::createActions(bool includePrefix)
 			currentGroup = statusType->statusGroup();
 		}
 
-		QAction *action = createStatusAction(statusType, includePrefix);
+		QAction *action = createStatusAction(statusType);
 		Actions.append(action);
 	}
+
+	emit statusActionsCreated();
 }
 
 void StatusActions::createBasicActions()
@@ -104,10 +104,10 @@ QAction * StatusActions::createSeparator()
 	return separator;
 }
 
-QAction * StatusActions::createStatusAction(StatusType *statusType, bool includePrefix)
+QAction * StatusActions::createStatusAction(StatusType *statusType)
 {
 	KaduIcon icon = MyStatusContainer->statusIcon(statusType->name());
-	QAction *statusAction = ChangeStatusActionGroup->addAction(icon.icon(), includePrefix
+	QAction *statusAction = ChangeStatusActionGroup->addAction(icon.icon(), IncludePrefix
 			? MyStatusContainer->statusNamePrefix() + statusType->displayName()
 			: statusType->displayName());
 	statusAction->setCheckable(true);
@@ -116,8 +116,31 @@ QAction * StatusActions::createStatusAction(StatusType *statusType, bool include
 	return statusAction;
 }
 
+void StatusActions::cleanUpActions()
+{
+	foreach (QAction *action, Actions)
+		if (action != ChangeDescription)
+		{
+			if (!action->isSeparator())
+				ChangeStatusActionGroup->removeAction(action);
+
+			delete action;
+		}
+
+	Actions.clear();
+
+	delete ChangeDescription;
+	ChangeDescription = 0;
+}
+
 void StatusActions::statusUpdated()
 {
+	if (MyStatusContainer->supportedStatusTypes() != MyStatusTypes)
+	{
+		cleanUpActions();
+		createActions();
+	}
+
 	const QString &statusTypeName = MyStatusContainer->status().type();
 
 	foreach (QAction *action, ChangeStatusActionGroup->actions())
