@@ -45,7 +45,7 @@ private slots:
 public:
 	static int notifyTypeFromContact(const Contact &contact);
 
-	explicit GaduContactListHandler(GaduProtocol *protocol, QObject *parent = 0);
+	explicit GaduContactListHandler(GaduProtocol *protocol);
 	virtual ~GaduContactListHandler();
 
 	void setUpContactList(const QList<Contact> &contacts);
