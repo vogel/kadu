@@ -163,15 +163,15 @@ Account IdentityShared::bestAccount()
 		if (account.details() && account.data())
 		{
 			// TODO: hack
-			bool isDisconnected = false;
+			bool newConnected = account.data()->protocolHandler() && account.data()->protocolHandler()->isConnected();
+			bool oldConnected = false;
 			if (result)
-				isDisconnected = !result.data()->protocolHandler() || !result.data()->protocolHandler()->isConnected();
+				oldConnected = result.data()->protocolHandler() && result.data()->protocolHandler()->isConnected();
 
-			if (!result || isDisconnected  || (account.protocolName() == "gadu" && result.protocolName() != "gadu"))
+			if (!result || (newConnected && !oldConnected)  || (account.protocolName() == "gadu" && result.protocolName() != "gadu"))
 			{
 				result = account;
-				bool isDisconnected = !result.data()->protocolHandler() || !result.data()->protocolHandler()->isConnected();
-				if (!isDisconnected && result.protocolName() == "gadu")
+				if (newConnected && result.protocolName() == "gadu")
 					break;
 			}
 		}
