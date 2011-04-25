@@ -87,7 +87,7 @@ void StatusActions::createActions()
 		Actions.append(action);
 	}
 
-	emit statusActionsCreated();
+	emit statusActionsRecreated();
 }
 
 void StatusActions::createBasicActions()

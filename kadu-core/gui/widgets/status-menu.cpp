@@ -39,7 +39,7 @@ StatusMenu::StatusMenu(StatusContainer *statusContainer, bool includePrefix, QMe
 {
 	Actions = new StatusActions(MyStatusContainer, includePrefix, this);
 
-	connect(Actions, SIGNAL(statusActionsCreated()), this, SLOT(addStatusActions()));
+	connect(Actions, SIGNAL(statusActionsRecreated()), this, SLOT(addStatusActions()));
 	connect(Actions, SIGNAL(statusActionTriggered(QAction *)), this, SLOT(changeStatus(QAction *)));
 	connect(Actions, SIGNAL(changeDescriptionActionTriggered(bool)), this, SLOT(changeDescription()));
 

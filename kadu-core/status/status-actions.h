@@ -62,7 +62,7 @@ public:
 	const QList<QAction *> & actions() const { return Actions; }
 
 signals:
-	void statusActionsCreated();
+	void statusActionsRecreated();
 
 	void statusActionTriggered(QAction *);
 	void changeDescriptionActionTriggered(bool);
