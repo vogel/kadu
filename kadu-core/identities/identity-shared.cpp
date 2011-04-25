@@ -162,11 +162,15 @@ Account IdentityShared::bestAccount()
 		if (account.details() && account.data())
 		{
 			// TODO: hack
-			if (result.isNull() || result.data()->status().isDisconnected() ||
-					(account.protocolName() == "gadu" && result.protocolName() != "gadu"))
+			bool newConnected = account.data()->protocolHandler() && account.data()->protocolHandler()->isConnected();
+			bool oldConnected = false;
+			if (result)
+				oldConnected = result.data()->protocolHandler() && result.data()->protocolHandler()->isConnected();
+
+			if (!result || (newConnected && !oldConnected)  || (account.protocolName() == "gadu" && result.protocolName() != "gadu"))
 			{
 				result = account;
-				if (!result.data()->status().isDisconnected() && result.protocolName() == "gadu")
+				if (newConnected && result.protocolName() == "gadu")
 					break;
 			}
 		}
