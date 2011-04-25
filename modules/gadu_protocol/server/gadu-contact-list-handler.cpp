@@ -41,8 +41,8 @@ int GaduContactListHandler::notifyTypeFromContact(const Contact &contact)
 			: GG_USER_NORMAL;
 }
 
-GaduContactListHandler::GaduContactListHandler(GaduProtocol *protocol, QObject *parent) :
-		QObject(parent), Protocol(protocol), AlreadySent(false)
+GaduContactListHandler::GaduContactListHandler(GaduProtocol *protocol) :
+		QObject(protocol), Protocol(protocol), AlreadySent(false)
 {
 }
 
