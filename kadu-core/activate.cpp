@@ -65,7 +65,7 @@
 
 	bool _isActiveWindow( QWidget *window )
 	{
-		return window->isActiveWindow();
+		return window->isActiveWindow() && !window->isMinimized();
 	}
 
 	void _activateWindow( QWidget *window )
