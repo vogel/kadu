@@ -30,8 +30,7 @@ class JabberAvatarService : public AvatarService
 	Q_OBJECT
 
 public:
-	explicit JabberAvatarService(Account account, QObject *parent = 0) : AvatarService(account, parent) {}
-	virtual ~JabberAvatarService() {}
+	JabberAvatarService(Account account, QObject *parent) : AvatarService(account, parent) {}
 
 	virtual void fetchAvatar(Contact contact);
 	virtual void uploadAvatar(QImage avatar);

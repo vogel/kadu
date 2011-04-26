@@ -49,7 +49,7 @@ private slots:
 	void publishError(const QString &ns, const XMPP::PubSubItem &item);
 
 public:
-	explicit JabberAvatarPepUploader(Account account, QObject *parent = 0);
+	JabberAvatarPepUploader(Account account, QObject *parent);
 	virtual ~JabberAvatarPepUploader();
 
 	void uploadAvatar(const QImage &avatar, const QByteArray &data);

@@ -31,7 +31,7 @@ class KADUAPI RosterService : public QObject
 	Q_OBJECT
 
 public:
-	RosterService(QObject *parent = 0) : QObject(parent) {}
+	explicit RosterService(QObject *parent) : QObject(parent) {}
 
 	virtual void addContact(const Contact &contact) = 0;
 	virtual void removeContact(const Contact &contact) = 0;

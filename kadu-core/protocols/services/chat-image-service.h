@@ -37,7 +37,7 @@ public:
 
 	static QString imagesPath();
 
-	explicit ChatImageService(QObject *parent = 0);
+	explicit ChatImageService(QObject *parent);
 
 	virtual qint64 hardSizeLimit() { return NoSizeLimit; }
 	virtual qint64 softSizeLimit() { return NoSizeLimit; }

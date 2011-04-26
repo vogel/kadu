@@ -31,7 +31,7 @@ class KADUAPI PersonalInfoService : public QObject
 	Q_OBJECT
 
 public:
-	PersonalInfoService(QObject *parent = 0) : QObject(parent) {}
+	explicit PersonalInfoService(QObject *parent) : QObject(parent) {}
 
 	virtual void updatePersonalInfo(Buddy buddy) = 0;
 	virtual void fetchPersonalInfo() = 0;

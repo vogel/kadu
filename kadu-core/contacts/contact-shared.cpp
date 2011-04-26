@@ -88,16 +88,7 @@ void ContactShared::load()
 	QString buddyUuid = loadValue<QString>("Buddy");
 	if (buddyUuid.isNull())
 		buddyUuid = loadValue<QString>("Contact");
-
-	// see setOwnerBuddy() method
-	OwnerBuddy = BuddyManager::instance()->byUuid(buddyUuid);
-	if (OwnerBuddy)
-	{
-		if (details())
-			OwnerBuddy.addContact(this);
-	}
-	else
-		OwnerBuddy = BuddyManager::instance()->byContact(Contact(this), ActionCreate);
+	doSetOwnerBuddy(BuddyManager::instance()->byUuid(buddyUuid), false);
 
 	if (storage()->point().isElement())
 	{
@@ -180,7 +171,7 @@ void ContactShared::detach(const Buddy &buddy, bool emitSignals)
 		emit detached(OwnerBuddy);
 }
 
-void ContactShared::attach(const Buddy &buddy, bool emitReattached)
+void ContactShared::attach(const Buddy& buddy, bool emitReattached, bool emitSignals)
 {
 	if (!details())
 		return;
@@ -188,15 +179,38 @@ void ContactShared::attach(const Buddy &buddy, bool emitReattached)
 	if (!buddy)
 		return;
 
-	if (!emitReattached)
+	if (emitSignals && !emitReattached)
 		emit aboutToBeAttached(OwnerBuddy);
 
 	OwnerBuddy.addContact(this);
 
-	if (!emitReattached)
-		emit attached();
-	else
-		emit reattached();
+	if (emitSignals)
+	{
+		if (!emitReattached)
+			emit attached();
+		else
+			emit reattached();
+	}
+}
+
+void ContactShared::doSetOwnerBuddy(Buddy buddy, bool emitSignals)
+{
+	/* NOTE: This guard is needed to avoid deleting this object when removing
+	 * Contact from Buddy which may hold last reference to it and thus wants to
+	 * delete it. But we don't want this to happen.
+	 */
+	Contact guard(this);
+
+	bool hadBuddy = !OwnerBuddy.isNull() && !OwnerBuddy.isAnonymous();
+
+	detach(OwnerBuddy, emitSignals && !buddy);
+	OwnerBuddy = buddy;
+	attach(OwnerBuddy, hadBuddy, emitSignals);
+
+	// TODO: make it pretty
+	// don't allow empty buddy to be set, use at least anonymous one
+	if (!OwnerBuddy)
+		OwnerBuddy = BuddyManager::instance()->byContact(Contact(this), ActionCreate);
 }
 
 void ContactShared::setOwnerBuddy(Buddy buddy)
@@ -206,22 +220,7 @@ void ContactShared::setOwnerBuddy(Buddy buddy)
 	if (OwnerBuddy == buddy)
 		return;
 
-	/* NOTE: This guard is needed to avoid deleting this object when removing
-	 * Contact from Buddy which may hold last reference to it and thus wants to
-	 * delete it. But we don't want this to happen.
-	 */
-	Contact guard(this);
-
-	bool hadBuddy = !OwnerBuddy.isNull() && !OwnerBuddy.isAnonymous();
-
-	detach(OwnerBuddy, !buddy);
-	OwnerBuddy = buddy;
-	attach(OwnerBuddy, hadBuddy);
-
-	// TODO: make it pretty
-	// don't allow empty buddy to be set, use at least anonymous one
-	if (!OwnerBuddy)
-		OwnerBuddy = BuddyManager::instance()->byContact(Contact(this), ActionCreate);
+	doSetOwnerBuddy(buddy, true);
 
 	dataUpdated();
 }
@@ -281,7 +280,7 @@ void ContactShared::detailsAdded()
 
 void ContactShared::afterDetailsAdded()
 {
-	attach(OwnerBuddy, false);
+	attach(OwnerBuddy, false, true);
 }
 
 void ContactShared::detailsAboutToBeRemoved()

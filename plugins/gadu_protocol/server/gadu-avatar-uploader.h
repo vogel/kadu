@@ -44,7 +44,7 @@ private slots:
 	void transferFinished();
 
 public:
-	explicit GaduAvatarUploader(Account account, QObject *parent = 0);
+	GaduAvatarUploader(Account account, QObject *parent);
 	virtual ~GaduAvatarUploader();
 
 	void uploadAvatar(QImage avatar);

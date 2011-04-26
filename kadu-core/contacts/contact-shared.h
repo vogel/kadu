@@ -57,7 +57,9 @@ class KADUAPI ContactShared : public QObject, public Shared, public DetailsHolde
 	QString DnsName;
 
 	void detach(const Buddy &buddy, bool emitSignals);
-	void attach(const Buddy &buddy, bool emitReattached);
+	void attach(const Buddy &buddy, bool emitReattached, bool emitSignals);
+
+	void doSetOwnerBuddy(Buddy buddy, bool emitSignals);
 
 protected:
 	virtual void load();

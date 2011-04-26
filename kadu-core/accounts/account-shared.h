@@ -73,6 +73,9 @@ private:
 	void setDisconnectStatus();
 	void useProtocolFactory(ProtocolFactory *factory);
 
+	void doSetAccountIdentity(Identity accountIdentity);
+	void doSetId(const QString &id);
+
 protected:
 	virtual void load();
 
@@ -101,11 +104,11 @@ public:
 	virtual QString storageNodeName();
 
 	virtual void store();
-    virtual bool shouldStore();
+	virtual bool shouldStore();
 	virtual void aboutToBeRemoved();
 
 	void setAccountIdentity(Identity accountIdentity);
-	void setProtocolName(QString protocolName);
+	void setProtocolName(const QString &protocolName);
 	void setId(const QString &id);
 
 	Contact accountContact();
@@ -141,7 +144,7 @@ public:
 
 	// TODO: 0.11, find better API
 	// this is only for GG now
-    void fileTransferServiceChanged(FileTransferService *service);
+	void fileTransferServiceChanged(FileTransferService *service);
 
 signals:
 	void buddyStatusChanged(Contact contact, Status oldStatus);

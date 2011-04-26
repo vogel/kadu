@@ -44,7 +44,7 @@ private slots:
 	void vcardUploaded();
 
 public:
-	explicit JabberAvatarVCardUploader(Account account, QObject *parent = 0);
+	JabberAvatarVCardUploader(Account account, QObject *parent);
 	virtual ~JabberAvatarVCardUploader();
 
 	void uploadAvatar(const QByteArray &data);

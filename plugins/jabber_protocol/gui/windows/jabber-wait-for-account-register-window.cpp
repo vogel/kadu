@@ -66,6 +66,5 @@ void JabberWaitForAccountRegisterWindow::registerNewAccountFinished(JabberServer
 		emit jidRegistered(QString(), QString());
 	}
 
-	if (jsra)
-		delete jsra;
+	delete jsra;
 }

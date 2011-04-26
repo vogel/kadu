@@ -49,7 +49,7 @@ private slots:
 	void avatarUploadedSlot(bool ok);
 
 public:
-	explicit JabberAvatarUploader(Account account, QObject *parent = 0);
+	JabberAvatarUploader(Account account, QObject *parent);
 	virtual ~JabberAvatarUploader();
 
 	void uploadAvatar(QImage avatar);

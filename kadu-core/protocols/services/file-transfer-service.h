@@ -39,7 +39,7 @@ class KADUAPI FileTransferService : public QObject
 	friend class DccManager;
 
 public:
-	FileTransferService(QObject *parent = 0) : QObject(parent) {}
+	explicit FileTransferService(QObject *parent) : QObject(parent) {}
 
 	virtual FileTransferHandler * createFileTransferHandler(FileTransfer fileTransfer) = 0;
 

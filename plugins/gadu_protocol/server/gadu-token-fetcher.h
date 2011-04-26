@@ -38,7 +38,7 @@ private slots:
 	void tokenReceivedSlot(int id, bool error);
 
 public:
-	explicit GaduTokenFetcher(QObject *parent = 0);
+	explicit GaduTokenFetcher(QObject *parent);
 	virtual ~GaduTokenFetcher();
 
 	void fetchToken();

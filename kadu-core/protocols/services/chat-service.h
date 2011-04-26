@@ -49,8 +49,7 @@ public:
 		StatusRejectedUnknown
 	};
 
-	ChatService(QObject *parent = 0)
-		: QObject(parent) {}
+	explicit ChatService(QObject *parent) : QObject(parent) {}
 
 public slots:
 	virtual bool sendMessage(const Chat &chat, const QString &messageContent, bool silent = false);
