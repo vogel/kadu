@@ -37,12 +37,19 @@
 #include "encryption-ng-configuration-ui-handler.h"
 #include "encryption-provider-manager.h"
 
+#include "encryption-ng-plugin.h"
+
 namespace EncryptionNg
 {
 	static QCA::Initializer *InitObject;
 }
 
-extern "C" KADU_EXPORT int encryption_ng_init(bool firstLoad)
+EncryptionNgPlugin::~EncryptionNgPlugin()
+{
+
+}
+
+int EncryptionNgPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
@@ -73,7 +80,7 @@ extern "C" KADU_EXPORT int encryption_ng_init(bool firstLoad)
 	return 0;
 }
 
-extern "C" KADU_EXPORT void encryption_ng_close()
+void EncryptionNgPlugin::done()
 {
 	EncryptionManager::destroyInstance();
 	EncryptionActions::unregisterActions();
@@ -89,3 +96,5 @@ extern "C" KADU_EXPORT void encryption_ng_close()
 	EncryptionNg::InitObject = 0;
 	qRemovePostRoutine(QCA::deinit);
 }
+
+Q_EXPORT_PLUGIN2(encryption_ng_plugin, EncryptionNgPlugin)

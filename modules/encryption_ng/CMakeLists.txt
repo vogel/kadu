@@ -13,7 +13,7 @@ set (SOURCES
 	encryption-chat-data.cpp
 	encryption-manager.cpp
 	encryption-ng-configuration-ui-handler.cpp
-	encryption-ng-module.cpp
+	encryption-ng-plugin.cpp
 	encryption-provider-manager.cpp
 	encryptor.cpp
 )
@@ -30,6 +30,7 @@ set (MOC_SOURCES
 	encryption-chat-data.h
 	encryption-manager.h
 	encryption-ng-configuration-ui-handler.h
+	encryption-ng-plugin.h
 	encryption-provider.h
 	encryption-provider-manager.h
 	encryptor.h
