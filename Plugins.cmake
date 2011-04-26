@@ -29,6 +29,8 @@ set (COMPILE_PLUGINS
 	auto_hide
 	# Autoresponder plugin
 	autoresponder
+	# Autostatus
+	autostatus
 	# Cenzor
 	cenzor
 	# Configuration wizard
