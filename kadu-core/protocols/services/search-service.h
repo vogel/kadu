@@ -35,7 +35,7 @@ class KADUAPI SearchService : public QObject
 	Q_OBJECT
 
 public:
-	SearchService(QObject *parent = 0) : QObject(parent) {}
+	explicit SearchService(QObject *parent) : QObject(parent) {}
 
 	virtual void searchFirst(BuddySearchCriteria criteria) = 0;
 	virtual void searchNext() = 0;

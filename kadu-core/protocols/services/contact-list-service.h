@@ -40,7 +40,7 @@ class KADUAPI ContactListService : public QObject
 	Buddy mergeBuddy(Buddy buddy);
 
 public:
-	explicit ContactListService(Protocol *protocol = 0);
+	explicit ContactListService(Protocol *protocol);
 	virtual ~ContactListService();
 
 	virtual void importContactList(bool automaticallySetBuddiesList = true);

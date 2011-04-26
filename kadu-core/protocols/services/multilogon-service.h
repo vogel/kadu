@@ -32,8 +32,7 @@ class KADUAPI MultilogonService : public QObject
 	Q_OBJECT
 
 public:
-	explicit MultilogonService(QObject *parent = 0) : QObject(parent) {}
-	virtual ~MultilogonService() {}
+	explicit MultilogonService(QObject *parent) : QObject(parent) {}
 
 	virtual const QList<MultilogonSession *> & sessions() const = 0;
 	virtual void killSession(MultilogonSession *session) = 0;

@@ -42,7 +42,7 @@ public:
 		StatePaused
 	};
 
-	ChatStateService(QObject *parent = 0) : QObject(parent) {}
+	explicit ChatStateService(QObject *parent) : QObject(parent) {}
 
 public:
 	virtual void composingStarted(const Chat &chat) = 0;

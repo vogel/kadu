@@ -45,7 +45,7 @@ class GaduMultilogonService : public MultilogonService
 	void removeAllSessions();
 
 public:
-	explicit GaduMultilogonService(Account account, QObject *parent = 0);
+	GaduMultilogonService(Account account, QObject *parent);
 	virtual ~GaduMultilogonService();
 
 	virtual const QList<MultilogonSession *> & sessions() const;

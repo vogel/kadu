@@ -37,8 +37,7 @@ class KADUAPI AvatarService : public QObject
 	Account MyAccount;
 
 public:
-	explicit AvatarService(Account account, QObject *parent = 0) : QObject(parent), MyAccount(account) {}
-	virtual ~AvatarService() {}
+	explicit AvatarService(Account account, QObject *parent) : QObject(parent), MyAccount(account) {}
 
 	Account account() { return MyAccount; }
 
