@@ -22,9 +22,11 @@
 
 #include "plugins/generic-plugin.h"
 
+#include "idle_exports.h"
+
 class Idle;
 
-class IdlePlugin : public QObject, public GenericPlugin
+class IDLEAPI IdlePlugin : public QObject, public GenericPlugin
 {
 	Q_OBJECT
 	Q_INTERFACES(GenericPlugin)
