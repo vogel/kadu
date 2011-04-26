@@ -9,6 +9,8 @@ set (COMPILE_PLUGINS
 # notifiers
 	# Enables notifications about buddies presence and other in chat windows
 	chat_notifier
+	# Freedesktop notification support
+	freedesktop_notify
 
 # history
 	# General history plugin
