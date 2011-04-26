@@ -1,3 +1,20 @@
+project (idle)
+
+# minimal required versions
+cmake_minimum_required (VERSION 2.8)
+set (QT_MIN_VERSION "4.7.0")
+set (CMAKE_MIN_VERSION "2.6.0")
+
+set (KADU_FIND_REQUIRED true)
+include (FindKadu)
+message (STATUS "Found Kadu: " ${KADU_INCLUDE_DIR})
+
+include_directories (${KADU_INCLUDE_DIR}/kadu-core)
+
+kadu_api_directories (plugins/idle
+	.
+)
+
 if (UNIX AND NOT APPLE)
 	include (FindX11)
 	if (X11_Xscreensaver_FOUND)

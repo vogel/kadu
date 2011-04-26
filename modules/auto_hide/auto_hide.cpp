@@ -29,8 +29,8 @@
 #include "gui/windows/kadu-window.h"
 #include "misc/path-conversion.h"
 
-#include "modules/idle/idle-plugin.h"
-#include "modules/idle/idle.h"
+#include "plugins/idle/idle-plugin.h"
+#include "plugins/idle/idle.h"
 
 #include "auto_hide.h"
 

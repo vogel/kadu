@@ -44,8 +44,8 @@
 #include "status/status-changer-manager.h"
 #include "debug.h"
 
-#include "modules/idle/idle-plugin.h"
-#include "modules/idle/idle.h"
+#include "plugins/idle/idle-plugin.h"
+#include "plugins/idle/idle.h"
 
 #include "autoaway.h"
 
