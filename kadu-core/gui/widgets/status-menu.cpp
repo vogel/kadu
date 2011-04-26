@@ -39,6 +39,7 @@ StatusMenu::StatusMenu(StatusContainer *statusContainer, QMenu *menu, bool commo
 {
 	Actions = new StatusActions(MyStatusContainer, this, commonStatusIcons);
 
+	connect(Actions, SIGNAL(statusActionsRecreated()), this, SLOT(addStatusActions()));
 	connect(Actions, SIGNAL(statusActionTriggered(QAction *)), this, SLOT(changeStatus(QAction *)));
 	connect(Actions, SIGNAL(changeDescriptionActionTriggered(bool)), this, SLOT(changeDescription()));
 
@@ -46,12 +47,17 @@ StatusMenu::StatusMenu(StatusContainer *statusContainer, QMenu *menu, bool commo
 
 	connect(Menu, SIGNAL(aboutToHide()), this, SLOT(aboutToHide()));
 
-	foreach (QAction *action, Actions->actions())
-		Menu->addAction(action);
+	addStatusActions();
 }
 
 StatusMenu::~StatusMenu()
 {
+}
+
+void StatusMenu::addStatusActions()
+{
+	foreach (QAction *action, Actions->actions())
+		Menu->addAction(action);
 }
 
 void StatusMenu::aboutToHide()

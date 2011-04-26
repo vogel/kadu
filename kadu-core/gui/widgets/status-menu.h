@@ -49,12 +49,13 @@ class KADUAPI StatusMenu : public QObject
 	StatusContainer *MyStatusContainer;
 
 private slots:
+	void addStatusActions();
 	void aboutToHide();
 	void changeStatus(QAction *action);
 	void changeDescription();
 
 public:
-	explicit StatusMenu(StatusContainer *statusContainer, QMenu *menu, bool commonStatusIcons = false);
+	StatusMenu(StatusContainer *statusContainer, QMenu *menu, bool commonStatusIcons = false);
 	virtual ~StatusMenu();
 
 };

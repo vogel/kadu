@@ -35,13 +35,11 @@
 #include "status-actions.h"
 
 StatusActions::StatusActions(StatusContainer *statusContainer, QObject *parent, bool commonStatusIcons) :
-		QObject(parent), MyStatusContainer(statusContainer), CommonStatusIcons(commonStatusIcons)
+		QObject(parent), MyStatusContainer(statusContainer), CommonStatusIcons(commonStatusIcons), ChangeDescription(0)
 {
 	ChangeStatusActionGroup = new QActionGroup(this);
 	ChangeStatusActionGroup->setExclusive(true); // HACK
 	connect(ChangeStatusActionGroup, SIGNAL(triggered(QAction*)), this, SIGNAL(statusActionTriggered(QAction*)));
-
-	createActions();
 
 	statusChanged();
 	connect(MyStatusContainer, SIGNAL(statusChanged()), this, SLOT(statusChanged()));
@@ -57,11 +55,11 @@ void StatusActions::createActions()
 {
 	createBasicActions();
 
-	QList<StatusType *> statusTypes = MyStatusContainer->supportedStatusTypes();
+	MyStatusTypes = MyStatusContainer->supportedStatusTypes();
 	StatusGroup *currentGroup = 0;
 	bool setDescriptionAdded = false;
 
-	foreach (StatusType *statusType, statusTypes)
+	foreach (StatusType *statusType, MyStatusTypes)
 	{
 		if (0 == statusType)
 			continue;
@@ -87,6 +85,8 @@ void StatusActions::createActions()
 		QAction *action = createStatusAction(statusType);
 		Actions.append(action);
 	}
+
+	emit statusActionsRecreated();
 }
 
 void StatusActions::createBasicActions()
@@ -119,8 +119,31 @@ QAction * StatusActions::createStatusAction(StatusType *statusType)
 	return statusAction;
 }
 
+void StatusActions::cleanUpActions()
+{
+	foreach (QAction *action, Actions)
+		if (action != ChangeDescription)
+		{
+			if (!action->isSeparator())
+				ChangeStatusActionGroup->removeAction(action);
+
+			delete action;
+		}
+
+	Actions.clear();
+
+	delete ChangeDescription;
+	ChangeDescription = 0;
+}
+
 void StatusActions::statusChanged()
 {
+	if (MyStatusContainer->supportedStatusTypes() != MyStatusTypes)
+	{
+		cleanUpActions();
+		createActions();
+	}
+
 	const QString &statusTypeName = MyStatusContainer->status().type();
 
 	foreach (QAction *action, ChangeStatusActionGroup->actions())
