@@ -1,4 +1,4 @@
-project (autostatus)
+project (docking)
 
 # minimal required versions
 cmake_minimum_required (VERSION 2.8)
