@@ -26,10 +26,6 @@
 class QSocketNotifier;
 class QTimer;
 
-#if false // #ifndef _MSC_VER
-#pragma GCC visibility push(hidden)
-#endif
-
 class GaduSocketNotifiers : public QObject
 {
 	Q_OBJECT
@@ -70,9 +66,5 @@ public:
 	virtual ~GaduSocketNotifiers();
 
 };
-
-#if false // #ifndef _MSC_VER
-#pragma GCC visibility pop
-#endif
 
 #endif // GADU_SOCKET_NOTIFIERS_H

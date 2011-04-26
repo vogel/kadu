@@ -27,10 +27,6 @@
 
 #include "gadu-socket-notifiers.h"
 
-#ifndef _MSC_VER
-#pragma GCC visibility push(hidden)
-#endif
-
 class GaduTokenSocketNotifiers : public GaduSocketNotifiers
 {
 	Q_OBJECT
@@ -57,9 +53,5 @@ signals:
 	void done(const QString &, const QPixmap &);
 
 };
-
-#ifndef _MSC_VER
-#pragma GCC visibility pop
-#endif
 
 #endif // GADU_TOKEN_SOCKET_NOTIFIERS_H

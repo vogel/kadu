@@ -25,10 +25,6 @@
 
 #include "gadu-socket-notifiers.h"
 
-#ifndef _MSC_VER
-#pragma GCC visibility push(hidden)
-#endif
-
 class GaduPubdirSocketNotifiers : public GaduSocketNotifiers
 {
 	Q_OBJECT
@@ -55,9 +51,5 @@ signals:
 	void done(bool ok, struct gg_http *h);
 
 };
-
-#ifndef _MSC_VER
-#pragma GCC visibility pop
-#endif
 
 #endif // GADU_PUBDIR_SOCKET_NOTIFIERS_H
