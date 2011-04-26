@@ -28,7 +28,7 @@
 #ifndef EXTERNAL_PLAYER_H
 #define EXTERNAL_PLAYER_H
 
-#include "modules/sound/sound-player.h"
+#include "plugins/sound/sound-player.h"
 
 class ExternalPlayer : public SoundPlayer
 {

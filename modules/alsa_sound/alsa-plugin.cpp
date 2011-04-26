@@ -23,7 +23,7 @@
 #include "debug.h"
 #include "exports.h"
 
-#include "modules/sound/sound-manager.h"
+#include "plugins/sound/sound-manager.h"
 
 #include "alsa-player.h"
 

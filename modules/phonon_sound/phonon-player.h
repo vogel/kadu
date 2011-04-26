@@ -26,7 +26,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QString>
 
-#include "modules/sound/sound-player.h"
+#include "plugins/sound/sound-player.h"
 
 namespace Phonon
 {

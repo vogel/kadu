@@ -29,7 +29,7 @@
 
 #include <alsa/asoundlib.h>
 
-#include "modules/sound/sound-player.h"
+#include "plugins/sound/sound-player.h"
 
 class AlsaPlayer : public SoundPlayer
 {

@@ -25,7 +25,7 @@
 #include <phonon/audiooutput.h>
 #include <phonon/phononnamespace.h>
 
-#include "modules/sound/sound-manager.h"
+#include "plugins/sound/sound-manager.h"
 
 #include "debug.h"
 

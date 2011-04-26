@@ -21,7 +21,7 @@
 #include "misc/path-conversion.h"
 #include "debug.h"
 
-#include "modules/sound/sound-manager.h"
+#include "plugins/sound/sound-manager.h"
 
 #include "external-player.h"
 

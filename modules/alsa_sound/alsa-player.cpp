@@ -25,7 +25,7 @@
 #include "configuration/configuration-file.h"
 #include "debug.h"
 
-#include "modules/sound/sound-file.h"
+#include "plugins/sound/sound-file.h"
 
 #include "alsa-device.h"
 

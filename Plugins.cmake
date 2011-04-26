@@ -14,6 +14,10 @@ set (COMPILE_PLUGINS
 	# Genral history plugin
 	history
 
+# sound
+	# General sound plugin
+	sound
+
 # misc
 	# Cenzor
 	cenzor
