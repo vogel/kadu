@@ -24,7 +24,7 @@
 #include "protocols/services/chat-service.h"
 #include "protocols/protocol.h"
 
-#include "modules/encryption_ng/keys/keys-manager.h"
+#include "plugins/encryption_ng/keys/keys-manager.h"
 
 #include "encryption-ng-simlite-decryptor.h"
 #include "encryption-ng-simlite-encryptor.h"

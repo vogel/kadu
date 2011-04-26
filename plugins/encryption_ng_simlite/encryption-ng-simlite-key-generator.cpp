@@ -20,8 +20,8 @@
 
 #include "accounts/account.h"
 
-#include "modules/encryption_ng/keys/key.h"
-#include "modules/encryption_ng/keys/keys-manager.h"
+#include "plugins/encryption_ng/keys/key.h"
+#include "plugins/encryption_ng/keys/keys-manager.h"
 
 #include "pkcs1_certificate.h"
 

@@ -17,39 +17,35 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ENCRYPTION_NG_SIMLITE_DECRYPTOR_H
-#define ENCRYPTION_NG_SIMLITE_DECRYPTOR_H
+#ifndef ENCRYPTION_NG_SIMLITE_KEY_GENERATOR_H
+#define ENCRYPTION_NG_SIMLITE_KEY_GENERATOR_H
 
-#include <QtCore/QObject>
+#include <QtCore/QtGlobal>
 #include <QtCrypto>
 
-#include "accounts/account.h"
+#include "plugins/encryption_ng/key-generator.h"
 
-#include "modules/encryption_ng/keys/key.h"
-#include "modules/encryption_ng/decryptor.h"
-
-class EncryptioNgSimliteDecryptor : public Decryptor
+class EncryptioNgSimliteKeyGenerator : public KeyGenerator
 {
-	Q_OBJECT
+	Q_DISABLE_COPY(EncryptioNgSimliteKeyGenerator)
 
-	Account MyAccount;
-	QCA::PrivateKey DecodingKey;
-	bool Valid;
+	static EncryptioNgSimliteKeyGenerator *Instance;
 
-	void updateKey();
-	QCA::PrivateKey getPrivateKey(const Key &key);
+	EncryptioNgSimliteKeyGenerator() {}
+	virtual ~EncryptioNgSimliteKeyGenerator() {}
 
-private slots:
-	void keyUpdated(const Key &key);
+	QCA::SecureArray writePublicKey(const QCA::RSAPublicKey &key);
+	QCA::SecureArray writePrivateKey(const QCA::RSAPrivateKey &key);
 
 public:
-	EncryptioNgSimliteDecryptor(const Account &account, EncryptionProvider *provider, QObject *parent = 0);
-	virtual ~EncryptioNgSimliteDecryptor();
+	static void createInstance();
+	static void destroyInstance();
 
-	virtual QByteArray decrypt(const QByteArray &data, bool *ok);
+	static EncryptioNgSimliteKeyGenerator * instance() { return Instance; }
 
-	bool isValid() { return Valid; }
+	virtual bool hasKeys(const Account &account);
+	virtual bool generateKeys(const Account &account);
 
 };
 
-#endif // ENCRYPTION_NG_SIMLITE_DECRYPTOR_H
+#endif // ENCRYPTION_NG_SIMLITE_KEY_GENERATOR_H

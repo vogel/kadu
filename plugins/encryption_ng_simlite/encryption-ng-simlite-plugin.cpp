@@ -18,8 +18,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "modules/encryption_ng/encryption-manager.h"
-#include "modules/encryption_ng/encryption-provider-manager.h"
+#include "plugins/encryption_ng/encryption-manager.h"
+#include "plugins/encryption_ng/encryption-provider-manager.h"
 #include "exports.h"
 
 #include "encryption-ng-simlite-key-generator.h"

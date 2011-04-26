@@ -1,5 +1,6 @@
 /*
  * %kadu copyright begin%
+ * Copyright 2010 Bartosz Brachaczek (b.brachaczek@gmail.com)
  * Copyright 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
@@ -17,35 +18,40 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ENCRYPTION_NG_SIMLITE_KEY_GENERATOR_H
-#define ENCRYPTION_NG_SIMLITE_KEY_GENERATOR_H
+#ifndef ENCRYPTION_NG_SIMLITE_ENCRYPTOR_H
+#define ENCRYPTION_NG_SIMLITE_ENCRYPTOR_H
 
-#include <QtCore/QtGlobal>
+#include <QtCore/QObject>
 #include <QtCrypto>
 
-#include "modules/encryption_ng/key-generator.h"
+#include "contacts/contact.h"
 
-class EncryptioNgSimliteKeyGenerator : public KeyGenerator
+#include "plugins/encryption_ng/encryptor.h"
+
+class Key;
+
+class EncryptioNgSimliteEncryptor : public Encryptor
 {
-	Q_DISABLE_COPY(EncryptioNgSimliteKeyGenerator)
+	Q_OBJECT
 
-	static EncryptioNgSimliteKeyGenerator *Instance;
+	Contact MyContact;
+	QCA::PublicKey EncodingKey;
+	bool Valid;
 
-	EncryptioNgSimliteKeyGenerator() {}
-	virtual ~EncryptioNgSimliteKeyGenerator() {}
+	void updateKey();
+	QCA::PublicKey getPublicKey(const Key &key);
 
-	QCA::SecureArray writePublicKey(const QCA::RSAPublicKey &key);
-	QCA::SecureArray writePrivateKey(const QCA::RSAPrivateKey &key);
+private slots:
+	void keyUpdated(const Key &key);
 
 public:
-	static void createInstance();
-	static void destroyInstance();
+	EncryptioNgSimliteEncryptor(const Contact &contact, EncryptionProvider *provider, QObject *parent = 0);
+	virtual ~EncryptioNgSimliteEncryptor();
 
-	static EncryptioNgSimliteKeyGenerator * instance() { return Instance; }
+	virtual QByteArray encrypt(const QByteArray &data);
 
-	virtual bool hasKeys(const Account &account);
-	virtual bool generateKeys(const Account &account);
+	bool isValid() { return Valid; }
 
 };
 
-#endif // ENCRYPTION_NG_SIMLITE_KEY_GENERATOR_H
+#endif // ENCRYPTION_NG_SIMLITE_ENCRYPTOR_H

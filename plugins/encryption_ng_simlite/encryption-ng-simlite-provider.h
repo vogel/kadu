@@ -24,9 +24,9 @@
 
 #include "accounts/accounts-aware-object.h"
 
-#include "modules/encryption_ng/keys/key.h"
+#include "plugins/encryption_ng/keys/key.h"
 
-#include "modules/encryption_ng/encryption-provider.h"
+#include "plugins/encryption_ng/encryption-provider.h"
 
 class EncryptioNgSimliteDecryptor;
 

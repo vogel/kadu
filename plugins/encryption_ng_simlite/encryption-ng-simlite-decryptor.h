@@ -1,6 +1,5 @@
 /*
  * %kadu copyright begin%
- * Copyright 2010 Bartosz Brachaczek (b.brachaczek@gmail.com)
  * Copyright 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
@@ -18,40 +17,39 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ENCRYPTION_NG_SIMLITE_ENCRYPTOR_H
-#define ENCRYPTION_NG_SIMLITE_ENCRYPTOR_H
+#ifndef ENCRYPTION_NG_SIMLITE_DECRYPTOR_H
+#define ENCRYPTION_NG_SIMLITE_DECRYPTOR_H
 
 #include <QtCore/QObject>
 #include <QtCrypto>
 
-#include "contacts/contact.h"
+#include "accounts/account.h"
 
-#include "modules/encryption_ng/encryptor.h"
+#include "plugins/encryption_ng/keys/key.h"
+#include "plugins/encryption_ng/decryptor.h"
 
-class Key;
-
-class EncryptioNgSimliteEncryptor : public Encryptor
+class EncryptioNgSimliteDecryptor : public Decryptor
 {
 	Q_OBJECT
 
-	Contact MyContact;
-	QCA::PublicKey EncodingKey;
+	Account MyAccount;
+	QCA::PrivateKey DecodingKey;
 	bool Valid;
 
 	void updateKey();
-	QCA::PublicKey getPublicKey(const Key &key);
+	QCA::PrivateKey getPrivateKey(const Key &key);
 
 private slots:
 	void keyUpdated(const Key &key);
 
 public:
-	EncryptioNgSimliteEncryptor(const Contact &contact, EncryptionProvider *provider, QObject *parent = 0);
-	virtual ~EncryptioNgSimliteEncryptor();
+	EncryptioNgSimliteDecryptor(const Account &account, EncryptionProvider *provider, QObject *parent = 0);
+	virtual ~EncryptioNgSimliteDecryptor();
 
-	virtual QByteArray encrypt(const QByteArray &data);
+	virtual QByteArray decrypt(const QByteArray &data, bool *ok);
 
 	bool isValid() { return Valid; }
 
 };
 
-#endif // ENCRYPTION_NG_SIMLITE_ENCRYPTOR_H
+#endif // ENCRYPTION_NG_SIMLITE_DECRYPTOR_H

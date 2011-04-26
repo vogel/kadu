@@ -18,6 +18,12 @@ set (COMPILE_PLUGINS
 	# Chat history storing, browsing and searching support using sqlite
 	sql_history
 
+# encryption
+	# Encrypted chat support
+	encryption_ng
+	# OpenSSL encrypted chat support
+	encryption_ng_simlite
+
 # docking
 	# Tray icon support (common part of all docking modules)
 	docking
