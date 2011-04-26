@@ -1,3 +1,17 @@
+project (qt4_docking)
+
+# minimal required versions
+cmake_minimum_required (VERSION 2.8)
+set (QT_MIN_VERSION "4.7.0")
+set (CMAKE_MIN_VERSION "2.6.0")
+
+set (KADU_FIND_REQUIRED true)
+include (FindKadu)
+message (STATUS "Found Kadu: " ${KADU_INCLUDE_DIR})
+
+include_directories (${KADU_INCLUDE_DIR})
+include_directories (${KADU_INCLUDE_DIR}/kadu-core)
+
 set (SOURCES
 	qt4_docking.cpp
 	qt4-docking-plugin.cpp

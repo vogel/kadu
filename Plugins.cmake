@@ -13,12 +13,16 @@ set (COMPILE_PLUGINS
 # history
 	# General history plugin
 	history
+	# Chat history storing, browsing and searching support using sqlite
+	sql_history
 
 # docking
 	# Tray icon support (common part of all docking modules)
 	docking
 	# Always on top window docking plugin
 	desktop_docking
+	# Qt tray docking techniques module (works everywhere)
+	qt4_docking
 
 # sound
 	# General sound plugin

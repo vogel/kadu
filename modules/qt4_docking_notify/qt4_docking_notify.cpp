@@ -37,7 +37,7 @@
 #include "parser/parser.h"
 #include "debug.h"
 
-#include "modules/qt4_docking/qt4_docking.h"
+#include "plugins/qt4_docking/qt4_docking.h"
 
 #include "qt4_docking_notify.h"
 
