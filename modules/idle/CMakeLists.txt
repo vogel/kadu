@@ -9,27 +9,28 @@ if (UNIX AND NOT APPLE)
 	set (LIBRARIES ${X11_Xscreensaver_LIB})
 
 	set (SOURCES
-		idle.cpp
+		idle-plugin.cpp
 		idle_x11.cpp
 	)
 endif (UNIX AND NOT APPLE)
 
 if (APPLE)
 	set (SOURCES
-		idle.cpp
+		idle-plugin.cpp
 		idle_mac.cpp
 	)
 endif (APPLE)
 
 if (WIN32)
 	set (SOURCES
-		idle.cpp
+		idle-plugin.cpp
 		idle_win.cpp
 	)
 endif (WIN32)
 
 set (MOC_SOURCES
 	idle.h
+	idle-plugin.h
 )
 
 kadu_plugin (idle

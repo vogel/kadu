@@ -1,8 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
- * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
- * Copyright 2009 Tomasz Rostański (rozteck@interia.pl)
+ * Copyright 20011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -19,33 +17,26 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "misc/misc.h"
-#include "debug.h"
-
 #include "idle.h"
 
-#include <QtCore/QTimer>
+#include "idle-plugin.h"
 
-Idle *idle = 0;
+Idle * IdlePlugin::IdleInstance = 0;
 
-extern "C" KADU_EXPORT int idle_init(bool firstLoad)
+IdlePlugin::~IdlePlugin()
+{
+}
+
+int IdlePlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
-	kdebugf();
-
-	idle = new Idle();
-
-	kdebugf2();
+	IdleInstance = new Idle(this);
 	return 0;
 }
 
-extern "C" KADU_EXPORT void idle_close()
+void IdlePlugin::done()
 {
-	kdebugf();
-
-	delete idle;
-	idle = 0;
-
-	kdebugf2();
 }
+
+Q_EXPORT_PLUGIN2(idle, IdlePlugin)

@@ -27,7 +27,8 @@
 static Display *display = 0;
 static XScreenSaverInfo *ss_info = 0;
 
-Idle::Idle()
+Idle::Idle(QObject *parent) :
+		QObject(parent)
 {
 	if (!ss_info)
 	{

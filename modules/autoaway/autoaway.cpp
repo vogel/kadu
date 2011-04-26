@@ -44,6 +44,7 @@
 #include "status/status-changer-manager.h"
 #include "debug.h"
 
+#include "modules/idle/idle-plugin.h"
 #include "modules/idle/idle.h"
 
 #include "autoaway.h"
@@ -90,7 +91,7 @@ void AutoAway::done()
 
 AutoAwayStatusChanger::ChangeStatusTo AutoAway::changeStatusTo()
 {
-	idleTime = idle->secondsIdle();
+	idleTime = IdlePlugin::idle()->secondsIdle();
 
 	if (idleTime >= autoDisconnectTime && autoDisconnectEnabled)
 		return AutoAwayStatusChanger::ChangeStatusToOffline;
@@ -122,7 +123,7 @@ void AutoAway::checkIdleTime()
 {
 	kdebugf();
 
-	idleTime = idle->secondsIdle();
+	idleTime = IdlePlugin::idle()->secondsIdle();
 
 	if (refreshStatusInterval > 0 && idleTime >= refreshStatusTime)
 	{

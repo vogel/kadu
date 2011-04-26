@@ -132,7 +132,8 @@ Idle::Idle()
 	}
 }
 
-Idle::~Idle()
+Idle::~Idle(QObject *parent) :
+		QObject(parent)
 {
 	RemoveEventLoopTimer(mTimerRef);
 	mTimerRef = 0;

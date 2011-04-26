@@ -35,7 +35,8 @@ BOOL (__stdcall * GetLastInputInfoFun)(PLASTINPUTINFO);
 DWORD (__stdcall * IdleUIGetLastInputTime)(void);
 QLibrary *lib;
 
-Idle::Idle()
+Idle::Idle(QObject *parent) :
+		QObject(parent)
 {
 	void *p;
 

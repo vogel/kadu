@@ -1,9 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2010 Piotr Galiszewski (piotr.galiszewski@kadu.im)
- * Copyright 2010 Bartosz Brachaczek (b.brachaczek@gmail.com)
- * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
- * Copyright 2009, 2010 Tomasz Rostański (rozteck@interia.pl)
+ * Copyright 20011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -20,23 +17,28 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef IDLE_H
-#define IDLE_H
+#ifndef IDLE_PLUGIN_H
+#define IDLE_PLUGIN_H
 
-#include <QtCore/QObject>
+#include "plugins/generic-plugin.h"
 
-#include "idle_exports.h"
+class Idle;
 
-class IDLEAPI Idle : public QObject
+class IdlePlugin : public QObject, public GenericPlugin
 {
 	Q_OBJECT
+	Q_INTERFACES(GenericPlugin)
+
+	static Idle *IdleInstance;
 
 public:
-	explicit Idle(QObject *parent = 0);
-	virtual ~Idle();
+	virtual ~IdlePlugin();
 
-	int secondsIdle();
+	virtual int init(bool firstLoad);
+	virtual void done();
+
+	static Idle * idle() { return IdleInstance; }
+
 };
 
-#endif // IDLE_H
-
+#endif // IDLE_PLUGIN_H

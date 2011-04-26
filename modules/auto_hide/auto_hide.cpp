@@ -29,6 +29,7 @@
 #include "gui/windows/kadu-window.h"
 #include "misc/path-conversion.h"
 
+#include "modules/idle/idle-plugin.h"
 #include "modules/idle/idle.h"
 
 #include "auto_hide.h"
@@ -66,7 +67,7 @@ void AutoHide::timerTimeoutSlot()
 {
 	if (Enabled)
 	{
-		if (idle->secondsIdle() >= IdleTime)
+		if (IdlePlugin::idle()->secondsIdle() >= IdleTime)
 		{
 			KaduWindow *window = Core::instance()->kaduWindow();
 			if (window && window->docked())
