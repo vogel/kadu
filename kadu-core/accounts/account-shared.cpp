@@ -87,16 +87,11 @@ void AccountShared::load()
 	Identity identity = IdentityManager::instance()->byUuid(loadValue<QString>("Identity"));
 	if (identity.isNull() && !IdentityManager::instance()->items().isEmpty())
 		identity = IdentityManager::instance()->items().at(0);
-
-	// see setAccountIdentity() method
-	AccountIdentity = identity;
-	AccountIdentity.addAccount(this);
+	doSetAccountIdentity(identity);
 
 	ProtocolName = loadValue<QString>("Protocol");
 
-	// see setId() method
-	Id = loadValue<QString>("Id");
-	AccountContact.setId(Id);
+	doSetId(loadValue<QString>("Id"));
 
 	RememberPassword = loadValue<bool>("RememberPassword", true);
 	HasPassword = RememberPassword;
@@ -270,13 +265,8 @@ void AccountShared::detailsRemoved()
 	AccountManager::instance()->detailsUnloaded(this);
 }
 
-void AccountShared::setAccountIdentity(Identity accountIdentity)
+void AccountShared::doSetAccountIdentity(Identity accountIdentity)
 {
-	ensureLoaded();
-
-	if (AccountIdentity == accountIdentity)
-		return;
-
 	/* NOTE: This guard is needed to avoid deleting this object when removing
 	 * Account from Identity which may hold last reference to it and thus wants
 	 * to delete it.
@@ -286,18 +276,37 @@ void AccountShared::setAccountIdentity(Identity accountIdentity)
 	AccountIdentity.removeAccount(this);
 	AccountIdentity = accountIdentity;
 	AccountIdentity.addAccount(this);
+}
+
+void AccountShared::setAccountIdentity(Identity accountIdentity)
+{
+	ensureLoaded();
+
+	if (AccountIdentity == accountIdentity)
+		return;
+
+	doSetAccountIdentity(accountIdentity);
 
 	dataUpdated();
 }
 
-void AccountShared::setProtocolName(QString protocolName)
+void AccountShared::setProtocolName(const QString &protocolName)
 {
 	ensureLoaded();
+
+	if (ProtocolName == protocolName)
+		return;
 
 	ProtocolName = protocolName;
 	useProtocolFactory(ProtocolsManager::instance()->byName(protocolName));
 
 	dataUpdated();
+}
+
+void AccountShared::doSetId(const QString &id)
+{
+	Id = id;
+	AccountContact.setId(id);
 }
 
 void AccountShared::setId(const QString &id)
@@ -307,8 +316,7 @@ void AccountShared::setId(const QString &id)
 	if (Id == id)
 		return;
 
-	Id = id;
-	AccountContact.setId(id);
+	doSetId(id);
 
 	dataUpdated();
 }
