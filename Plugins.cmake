@@ -25,6 +25,8 @@ set (COMPILE_PLUGINS
 	antistring
 	# Auto away module
 	autoaway
+	# Auto hide Kadu window
+	auto_hide
 	# Cenzor
 	cenzor
 	# Configuration wizard
