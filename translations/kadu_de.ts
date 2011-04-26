@@ -75,7 +75,7 @@ Es ist ein Sicherheitsrisiko!</translation>
     </message>
     <message>
         <source>Hide server time</source>
-        <translation type="unfinished"></translation>
+        <translation>Serverzeit nicht anzeigen</translation>
     </message>
     <message>
         <source>Maximum time difference</source>
@@ -311,7 +311,7 @@ Es ist ein Sicherheitsrisiko!</translation>
     </message>
     <message>
         <source>Use custom background color</source>
-        <translation type="unfinished"></translation>
+        <translation>Benutze eigene Hintergrundfarbe</translation>
     </message>
     <message>
         <source>Fonts</source>
@@ -682,40 +682,28 @@ Es ist ein Sicherheitsrisiko!</translation>
         <translation>Allgemein</translation>
     </message>
     <message>
-        <source>Event</source>
-        <translation>Ereignis</translation>
-    </message>
-    <message>
         <source>Options</source>
         <translation>Einstellungen</translation>
     </message>
     <message>
-        <source>New messages</source>
-        <translation>Neue Nachricht</translation>
-    </message>
-    <message>
         <source>Silent Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Stiller Modus</translation>
     </message>
     <message>
         <source>Disable notifications when my status is set to &apos;Do not Disturb&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation>Verstecke Benachrichtigungen, wenn mein Status auf &quot;Nicht stören&quot; steht</translation>
     </message>
     <message>
         <source>Disable notifications when a fullscreen application is active</source>
-        <translation type="unfinished"></translation>
+        <translation>Verstecke Benachtichtigungen, wenn ein Programm im Vollbildschirm-Modus läuft</translation>
     </message>
     <message>
         <source>Disables notifications when running a fullscreen application: movie player, game, etc.</source>
-        <translation type="unfinished"></translation>
+        <translation>Schaltet die Benachrichtigungen aus, wenn ein Programm wie Spiel oder Filmwiedergabe im Vollbild läuft.</translation>
     </message>
     <message>
         <source>Notify about new messages only when window is inactive</source>
         <translation>Benachrichtige mich über neue Nachrichten nur, wenn das Fenster inaktiv ist</translation>
-    </message>
-    <message>
-        <source>Status change</source>
-        <translation>Zustandsänderung</translation>
     </message>
     <message>
         <source>Ignore status changes from available/busy to busy/available</source>
@@ -726,454 +714,442 @@ Es ist ein Sicherheitsrisiko!</translation>
         <translation>Ignoriere Änderungen gleich nach der Verbindung zum Server</translation>
     </message>
     <message>
-        <source>Notify about all users</source>
-        <translation>Benachrichtige über alle Kontakte</translation>
-    </message>
-    <message>
         <source>Multilogon</source>
-        <translation type="unfinished"></translation>
+        <translation>Mehrfach-Login</translation>
     </message>
     <message>
         <source>Multilogon session connected</source>
-        <translation type="unfinished"></translation>
+        <translation>Multilogin-Sitzung verbunden</translation>
     </message>
     <message>
         <source>Multilogon session disconnected</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ignore status changes from available / busy to busy / available</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>This option will supersede tooltips with users&apos; status
- changes upon establishing connection to the server</source>
-        <translation type="unfinished"></translation>
+        <translation>Multilogin-Sitzung getrennt</translation>
     </message>
     <message>
         <source>User changed status</source>
-        <translation type="unfinished"></translation>
+        <translation>Benutzer änderte Status</translation>
     </message>
     <message>
         <source>to free for chat</source>
-        <translation type="unfinished"></translation>
+        <translation>nach &quot;bereit zum Chat&quot;</translation>
     </message>
     <message>
         <source>to online</source>
-        <translation type="unfinished"></translation>
+        <translation>nach &quot;online&quot;</translation>
     </message>
     <message>
         <source>to away</source>
-        <translation type="unfinished"></translation>
+        <translation>nach &quot;abwesend&quot;</translation>
     </message>
     <message>
         <source>to not available</source>
-        <translation type="unfinished"></translation>
+        <translation>nach &quot;nicht verfügbar&quot;</translation>
     </message>
     <message>
         <source>to do not disturb</source>
-        <translation type="unfinished"></translation>
+        <translation>nach &quot;nicht stören&quot;</translation>
     </message>
     <message>
         <source>to offline</source>
-        <translation type="unfinished"></translation>
+        <translation>nach &quot;offline&quot;</translation>
     </message>
     <message>
         <source>Buddies</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontakte</translation>
     </message>
     <message>
         <source>Protocol</source>
-        <translation type="unfinished"></translation>
+        <translation>Protokoll</translation>
     </message>
     <message>
         <source>Buddy</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontakt</translation>
     </message>
     <message>
         <source>Blocked</source>
-        <translation type="unfinished"></translation>
+        <translation>blockiert</translation>
     </message>
     <message>
         <source>Offline to</source>
-        <translation type="unfinished"></translation>
+        <translation>offline für</translation>
     </message>
     <message>
         <source>Data</source>
-        <translation type="unfinished"></translation>
+        <translation>Daten</translation>
     </message>
     <message>
         <source>Port and IP address</source>
-        <translation type="unfinished"></translation>
+        <translation>Port und IP-Adresse</translation>
     </message>
     <message>
         <source>DNS name</source>
-        <translation type="unfinished"></translation>
+        <translation>DNS-Name</translation>
     </message>
     <message>
         <source>Protocol version</source>
-        <translation type="unfinished"></translation>
+        <translation>Protokoll-Version</translation>
     </message>
     <message>
         <source>Display</source>
-        <translation type="unfinished"></translation>
+        <translation>Anzeige</translation>
     </message>
     <message>
         <source>First name</source>
-        <translation type="unfinished"></translation>
+        <translation>Vorname</translation>
     </message>
     <message>
         <source>Last name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nachname</translation>
     </message>
     <message>
         <source>Family name</source>
-        <translation type="unfinished"></translation>
+        <translation>Familienname</translation>
     </message>
     <message>
         <source>City</source>
-        <translation type="unfinished"></translation>
+        <translation>Stadt</translation>
     </message>
     <message>
         <source>Family city</source>
-        <translation type="unfinished"></translation>
+        <translation>Heimatstadt</translation>
     </message>
     <message>
         <source>Nick name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nick</translation>
     </message>
     <message>
         <source>Home phone</source>
-        <translation type="unfinished"></translation>
+        <translation>Telefon Daheim</translation>
     </message>
     <message>
         <source>Mobile phone</source>
-        <translation type="unfinished"></translation>
+        <translation>Handy-Nummer</translation>
     </message>
     <message>
         <source>Email</source>
-        <translation type="unfinished"></translation>
+        <translation>E-Mail</translation>
     </message>
     <message>
         <source>Birth year</source>
-        <translation type="unfinished"></translation>
+        <translation>Geburtsjahr</translation>
     </message>
     <message>
         <source>Gender</source>
-        <translation type="unfinished"></translation>
+        <translation>Geschlecht</translation>
     </message>
     <message>
         <source>File Transfers and Voice Chats</source>
-        <translation type="unfinished"></translation>
+        <translation>Dateiübertragungen und Gespräche</translation>
     </message>
     <message>
         <source>Allow file transfers and voice chats</source>
-        <translation type="unfinished"></translation>
+        <translation>Erlaube Dateiübertragungen und Gespräche</translation>
     </message>
     <message>
         <source>File Transfers</source>
-        <translation type="unfinished"></translation>
+        <translation>Dateiübertragungen</translation>
     </message>
     <message>
         <source>Remove completed transfers from transfers list</source>
-        <translation type="unfinished"></translation>
+        <translation>Übertragene Dateien aus der Liste entfernen</translation>
     </message>
     <message>
         <source>IP</source>
-        <translation type="unfinished"></translation>
+        <translation>IP</translation>
     </message>
     <message>
         <source>DCC IP autodetection</source>
-        <translation type="unfinished"></translation>
+        <translation>Autoerkennung der DDC-IP</translation>
     </message>
     <message>
         <source>IP address</source>
-        <translation type="unfinished"></translation>
+        <translation>Adresse-IP</translation>
     </message>
     <message>
         <source>DCC forwarding enabled</source>
-        <translation type="unfinished"></translation>
+        <translation>DDC-Weiterleitung erlaubt</translation>
     </message>
     <message>
         <source>External IP address</source>
-        <translation type="unfinished"></translation>
+        <translation>Externe Adresse-IP</translation>
     </message>
     <message>
         <source>External TCP port</source>
-        <translation type="unfinished"></translation>
+        <translation>Externer Port TCP</translation>
     </message>
     <message>
         <source>Local TCP port</source>
-        <translation type="unfinished"></translation>
+        <translation>Lokaler Port TCP</translation>
     </message>
     <message>
         <source>Sending Files and Voice Chats</source>
-        <translation type="unfinished"></translation>
+        <translation>Senden von Datein und Sprache</translation>
     </message>
     <message>
         <source>Send file</source>
-        <translation type="unfinished"></translation>
+        <translation>Sende Datei</translation>
     </message>
     <message>
         <source>Headers and Separators</source>
-        <translation type="unfinished"></translation>
+        <translation>Kopzeilen und Trenner</translation>
     </message>
     <message>
         <source>Server Time</source>
-        <translation type="unfinished"></translation>
+        <translation>Serverzeit</translation>
     </message>
     <message>
         <source>Window Title</source>
-        <translation type="unfinished"></translation>
+        <translation>Fenstertitel</translation>
     </message>
     <message>
         <source>Nickname</source>
-        <translation type="unfinished"></translation>
+        <translation>Nick</translation>
     </message>
     <message>
         <source>Enter a nickname for your account.</source>
-        <translation type="unfinished"></translation>
+        <translation>Geben Sie einen Nick für Ihr Konto.</translation>
     </message>
     <message>
         <source>Buddy List Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontaktlisten-Typ</translation>
     </message>
     <message>
         <source>Hide messaging networks for each buddy (Simple Mode)</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige keine Ntzwerk-Infos bei Kontakten</translation>
     </message>
     <message>
         <source>If enabled, buddies networks will be hidden in buddy list and status buttons</source>
-        <translation type="unfinished"></translation>
+        <translation>Wenn eingeschaltet, werden keine Informationene zu Netzerken und Protokollen des Kontakts in der Kontaktliste angezeigt</translation>
     </message>
     <message>
         <source>With this setting, each of your buddy&apos;s messaging networks will be removed from view on your buddy list.</source>
-        <translation type="unfinished"></translation>
+        <translation>Mit dieser Einstellung werden Sie die genutzten Netzwerke des Kontakts nicht sehen können.</translation>
     </message>
     <message>
         <source>Differentiate the messaging networks for each buddy (Advanced Mode)</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige beim Kontakt die von ihm genutzten Netzwerke (erweiterter Modus)</translation>
     </message>
     <message>
         <source>With this setting, your buddy list will display the associated messaging networks for each of your buddies (e.g. &apos;Anna uses Gadu-Gadu and Google Talk&apos;) .</source>
-        <translation type="unfinished"></translation>
+        <translation>Mit dieser Einstellung werden neben dem Kontakt alle von ihm genutzten Protokolle angezeigt (z.B. &apos;Anna nutzt Gadu-Gadu und Google Talk&apos;) .</translation>
     </message>
     <message>
         <source>Default Language</source>
-        <translation type="unfinished"></translation>
+        <translation>Standardsprache</translation>
     </message>
     <message>
         <source>Kadu needs to be restarted before changes to the language settings will take effect.</source>
-        <translation type="unfinished"></translation>
+        <translation>Um die Spracheinstellungen zu aktivieren, muss Kadu neu gestartet werden.</translation>
     </message>
     <message>
         <source>Web and E-Mail</source>
-        <translation type="unfinished"></translation>
+        <translation>WWW und E-Mail</translation>
     </message>
     <message>
         <source>Kadu will use default applications to open links from chat messages and buddy descriptions.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kadu wird den im System voreingestellten Web-Browser nutzen, um die Links in den Nachrichten und Kontaktbeschreibungen anzuzeigen.</translation>
     </message>
     <message>
         <source>Use System Web Browser</source>
-        <translation type="unfinished"></translation>
+        <translation>Benutze den Web-Browser, der im System voreingestellt ist</translation>
     </message>
     <message>
         <source>Use System E-Mail Client</source>
-        <translation type="unfinished"></translation>
+        <translation>Benutze das E-Mail-Programm, das im System voreingestellt ist</translation>
     </message>
     <message>
         <source>Updates and Startup</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktualisierungen</translation>
     </message>
     <message>
         <source>Check for updates when Kadu is opened</source>
-        <translation type="unfinished"></translation>
+        <translation>Überprüfe auf Aktualisierungen, wenn Kadu gestartet wurde</translation>
     </message>
     <message>
         <source>Automatically open Kadu at startup</source>
-        <translation type="unfinished"></translation>
+        <translation>Kadu automatisch nach dem Login starten</translation>
     </message>
     <message>
         <source>Window Activation Method</source>
-        <translation type="unfinished"></translation>
+        <translation>Methode der Fensteraktivierung</translation>
     </message>
     <message>
         <source>Show offline buddies</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige Kontakte, die offline sind</translation>
     </message>
     <message>
         <source>Show buddies that are ignored</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige Kontakte, die ich ignoriere</translation>
     </message>
     <message>
         <source>Show buddies which are blocking me</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige Kontakte, die mich blockieren</translation>
     </message>
     <message>
         <source>Chat Window</source>
-        <translation type="unfinished"></translation>
+        <translation>Chat-Fenster</translation>
     </message>
     <message>
         <source>Buddy&apos;s messages</source>
-        <translation type="unfinished"></translation>
+        <translation>Nachrichten vom Kontakt</translation>
     </message>
     <message>
         <source>Buddy&apos;s font</source>
-        <translation type="unfinished"></translation>
+        <translation>Schriftart des Kontakts</translation>
     </message>
     <message>
         <source>Buddy&apos;s nick</source>
-        <translation type="unfinished"></translation>
+        <translation>Nick des Kontakts</translation>
     </message>
     <message>
         <source>Buddy List</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontaktliste</translation>
     </message>
     <message>
         <source>Buddy list</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontaktliste</translation>
     </message>
     <message>
         <source>New Messages Notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Benachrichtigung über eine neue Nachricht</translation>
     </message>
     <message>
         <source>Turn on transparency</source>
-        <translation type="unfinished"></translation>
+        <translation>Transparenz einschalten</translation>
     </message>
     <message>
         <source>Displays group tabs on the buddy list</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige Reiter für Kontaktgruppen</translation>
     </message>
     <message>
         <source>Show group All</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige Gruppe &quot;Alle&quot;</translation>
     </message>
     <message>
         <source>Show connected buddies in bold</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige Kontakte, die online sind, in Fettschrift an</translation>
     </message>
     <message>
         <source>Displays buddies that are not offline using a bold font</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige Kontakte, die nicht offline sind, in Fettschrift an</translation>
     </message>
     <message>
         <source>Align buddy icon to</source>
-        <translation type="unfinished"></translation>
+        <translation>Position der Symbole für Kontakte</translation>
     </message>
     <message>
         <source>Align icon next to buddy&apos;s name</source>
-        <translation type="unfinished"></translation>
+        <translation>Symbole für Kontakte am Kontaktnamen</translation>
     </message>
     <message>
         <source>Choose buddy list tool-tip style</source>
-        <translation type="unfinished"></translation>
+        <translation>Stil der Sprechblasen für Kontakte</translation>
     </message>
     <message>
         <source>Buddy Photos</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontakt-Fotos</translation>
     </message>
     <message>
         <source>Show photos</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige Bilder</translation>
     </message>
     <message>
         <source>Add border</source>
-        <translation type="unfinished"></translation>
+        <translation>Rahmen hinzufügen</translation>
     </message>
     <message>
         <source>Grey out offline buddies&apos; photos</source>
-        <translation type="unfinished"></translation>
+        <translation>Bilder von Offline-Kontakten grau darstellen</translation>
     </message>
     <message>
         <source>Buddies who are offline will have their photos greyed out</source>
-        <translation type="unfinished"></translation>
+        <translation>Bilder von Kontakten werden grau dargestellt, wenn die Kontakte nicht online sind</translation>
     </message>
     <message>
         <source>Displays descriptions in the buddy list</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige Beschreibung in der Kontaktliste</translation>
     </message>
     <message>
         <source>Dislpays multiline descriptions in the buddy list</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige mehrzeilige Beschreibungen in der Kontaktliste</translation>
     </message>
     <message>
         <source>Alpha</source>
-        <translation type="unfinished"></translation>
+        <translation>Alpha</translation>
     </message>
     <message>
         <source>Define background file for the buddy list</source>
-        <translation type="unfinished"></translation>
+        <translation>Hintergrundbild für die Kontaktliste</translation>
     </message>
     <message>
         <source>Choose buddy list background style</source>
-        <translation type="unfinished"></translation>
+        <translation>Hintergrundbild für die Kontaktliste auswählen</translation>
     </message>
     <message>
         <source>Tiled and centered</source>
-        <translation type="unfinished"></translation>
+        <translation>Zentriert und gestreckt</translation>
     </message>
     <message>
         <source>Displays information panel below the buddy list</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige Informationspannel unter der Kontaktliste</translation>
     </message>
     <message>
         <source>Add buddy</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontakt hinzufügen</translation>
     </message>
     <message>
         <source>Exit</source>
-        <translation type="unfinished"></translation>
+        <translation>Beenden</translation>
     </message>
     <message>
         <source>Remove from buddy list</source>
-        <translation type="unfinished"></translation>
+        <translation>Aus der Kontaktliste entfernen</translation>
     </message>
     <message>
         <source>Search this buddy in directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Suche nach diesem Kontakt im Verzeichnis</translation>
     </message>
     <message>
         <source>Show / hide offline buddies</source>
-        <translation type="unfinished"></translation>
+        <translation>Zige / verstecke Kontakte, die offline sind</translation>
     </message>
     <message>
         <source>Show / hide buddies without description</source>
-        <translation type="unfinished"></translation>
+        <translation>Ziege / verstecke Kontakte ohne Beschreibung</translation>
     </message>
     <message>
         <source>Message Pruning</source>
-        <translation type="unfinished"></translation>
+        <translation>Nachrichten-Begrenzung</translation>
     </message>
     <message>
         <source>Link Folding</source>
-        <translation type="unfinished"></translation>
+        <translation>URLs falten</translation>
     </message>
     <message>
         <source>New Messages</source>
-        <translation type="unfinished"></translation>
+        <translation>Neue Nachrichten</translation>
     </message>
     <message>
         <source>Status Change</source>
-        <translation type="unfinished"></translation>
+        <translation>Zustandsänderungen</translation>
     </message>
     <message>
         <source>This option will supersede tooltips with buddies&apos; status
 changes upon establishing connection to the server</source>
-        <translation type="unfinished"></translation>
+        <translation>Mit dieser Einstellung werden keine Benachrichtugungen angezeigt,
+wenn Kontakte sich mit dem Server verbinden</translation>
     </message>
     <message>
         <source>Notify about all buddies</source>
-        <translation type="unfinished"></translation>
+        <translation>Benachrichtige über Kontakte</translation>
     </message>
     <message>
         <source>File transfer</source>
-        <translation type="unfinished"></translation>
+        <translation>Dateiübertragung</translation>
     </message>
     <message>
         <source>Incoming file transfer</source>
-        <translation type="unfinished"></translation>
+        <translation>Eingehende Dateiübertragung</translation>
     </message>
     <message>
         <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
@@ -1188,56 +1164,70 @@ changes upon establishing connection to the server</source>
 #{separator} - separator between messages,
 &lt;kadu:header&gt;text&lt;/kadu:header&gt; - text will not be displayed in &apos;Remove repeated headers&apos; mode
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Syntax: %s - Status, %d - Beschreibung, %i - IP, %n - Nick, %a - Altnick, %f - Vorname
+%r - Nachname, %m - Handy, %u - UIN, %g - Gruppe, %o - Zeige _Leerzeichen_ wenn Kontakt uns nicht in der Kontaktliste hat
+%h - Version GG, %v - revDNS, %p - Port, %e - E-Mail, %x - max Bildgröße, %z - Geschlecht (0/1/2)
+#{message} - Nachrichteninhalt,
+#{backgroundColor} - Hintergrundfarbe der Nachricht,
+#{fontColor} - Schriftfarbe der Nachricht,
+#{nickColor} - Schriftfarbe des Nicknames,
+#{sentDate} - wann gesendet,
+#{receivedDate} - wann empfangen,
+#{separator} - Separator zwischen Nachrichten,
+&lt;kadu:header&gt;text&lt;/kadu:header&gt; - Text wird im Modus &apos;Entferne wiederholte Kopfzeilen&apos; nicht angezeigt</translation>
     </message>
     <message>
         <source>Style variant</source>
-        <translation type="unfinished"></translation>
+        <translation>Stilvariante</translation>
     </message>
     <message>
         <source>Away</source>
-        <translation type="unfinished"></translation>
+        <translation>Abwesend</translation>
     </message>
     <message>
         <source>Not available</source>
-        <translation type="unfinished"></translation>
+        <translation>Nicht verfügbar</translation>
     </message>
     <message>
         <source>Do not disturb</source>
-        <translation type="unfinished"></translation>
+        <translation>Nicht stören</translation>
     </message>
     <message>
         <source>Free for chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Bereit zum Chat</translation>
     </message>
     <message numerus="yes">
         <source>%n minute(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n Minute</numerusform>
+            <numerusform>%n Minuten</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <source>%n second(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n Sekunde</numerusform>
+            <numerusform>%n Sekunden</numerusform>
         </translation>
     </message>
     <message>
         <source>never remove recent chats</source>
-        <translation type="unfinished"></translation>
+        <translation>Niemals alte Chats leeren</translation>
     </message>
     <message numerus="yes">
         <source>[for] %n minute(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n Minute lang</numerusform>
+            <numerusform>%n Minuten lang</numerusform>
         </translation>
     </message>
     <message>
         <source>Send message</source>
-        <translation type="unfinished"></translation>
+        <translation>Sende Nachricht</translation>
+    </message>
+    <message>
+        <source>Show a window with notification</source>
+        <translation>Zeige Fenster</translation>
     </message>
 </context>
 <context>
@@ -1276,538 +1266,542 @@ changes upon establishing connection to the server</source>
     </message>
     <message>
         <source>Version %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Version %1</translation>
     </message>
     <message>
         <source>&amp;About</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Über</translation>
     </message>
 </context>
 <context>
     <name>AccountAvatarWidget</name>
     <message>
         <source>Remove Photo...</source>
-        <translation type="unfinished"></translation>
+        <translation>Bild entfernen...</translation>
     </message>
     <message>
         <source>Change Photo...</source>
-        <translation type="unfinished"></translation>
+        <translation>Bild wechseln...</translation>
     </message>
     <message>
         <source>Select avatar file</source>
-        <translation type="unfinished"></translation>
+        <translation>Avatar-Datei auswählen</translation>
     </message>
 </context>
 <context>
     <name>AccountBuddyListWidget</name>
     <message>
         <source>Import contacts</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontakte importieren</translation>
     </message>
     <message>
         <source>Export contacts</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontakte exportieren</translation>
     </message>
     <message>
         <source>Restore from file</source>
-        <translation type="unfinished"></translation>
+        <translation>Wiederherstellen aus Datei</translation>
     </message>
     <message>
         <source>Store to file</source>
-        <translation type="unfinished"></translation>
+        <translation>Speichern in Datei</translation>
     </message>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished">Kadu</translation>
+        <translation>Kadu</translation>
     </message>
     <message>
         <source>Cannot import user list from server in offline mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Kann Kontaktliste vom Server nicht beziehen, solange Sie offline sind</translation>
     </message>
     <message>
         <source>Cannot export user list to server in offline mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Kann die Kontaktliste nicht auf dem Server speichern, solange Sie offline sind</translation>
     </message>
     <message>
         <source>Contacts list couldn&apos;t be downloaded. Please check that account %0 is connected.</source>
-        <translation type="unfinished"></translation>
+        <translation>Die Kontaktliste konnte nicht  heruntergeladen werden. Stellen Sie sicher, dass Konto %0 verbunden ist.</translation>
     </message>
     <message>
         <source>Your userlist has been successfully exported to server</source>
-        <translation type="unfinished"></translation>
+        <translation>Ihre Kontaktliste wurde erfolgreich auf dem Server gespeichert</translation>
     </message>
     <message>
         <source>The application encountered an internal error
 The export was unsuccessful</source>
-        <translation type="unfinished"></translation>
+        <translation>Das Programm verursachte einen Fehler
+Export ist leider mißlungen</translation>
     </message>
     <message>
         <source>Select file</source>
-        <translation type="unfinished"></translation>
+        <translation>Datei auswählen</translation>
     </message>
     <message>
         <source>Contacts list couldn&apos;t be imported. File %0 doesn&apos;t contain correct contacts list.</source>
-        <translation type="unfinished"></translation>
+        <translation>Die Kontaktliste konnte nicht importiert werden. Die Datie %0 beinhaltet keine korrekt formatierte Kontaktliste.</translation>
     </message>
 </context>
 <context>
     <name>AccountManager</name>
     <message>
         <source>Please provide valid password for %1 (%2) account</source>
-        <translation type="unfinished"></translation>
+        <translation>Geben Sie bitte das richtige Passwort für Konto %1 (%2)</translation>
     </message>
 </context>
 <context>
     <name>AccountsComboBox</name>
     <message>
         <source> - Select account - </source>
-        <translation type="unfinished"></translation>
+        <translation> - Konto auswählen - </translation>
     </message>
 </context>
 <context>
     <name>AddBuddyWindow</name>
     <message>
         <source>Adding contact with ID &lt;b&gt;%1&lt;/b&gt; in</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontakt mit ID &lt;b&gt;%1&lt;/b&gt; hinzufügen in</translation>
     </message>
     <message>
         <source>%1 account &lt;b&gt;%2 (%3)&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 Konto &lt;b&gt;%2 (%3)&lt;/b&gt;</translation>
     </message>
     <message>
         <source>in</source>
-        <translation type="unfinished"></translation>
+        <translation>in</translation>
     </message>
     <message>
         <source>Add in group:</source>
-        <translation type="unfinished"></translation>
+        <translation>Hinzufügen zu Gruppe:</translation>
     </message>
     <message>
         <source>Visible name:</source>
-        <translation type="unfinished"></translation>
+        <translation>Sichtbarer Name:</translation>
     </message>
     <message>
         <source>Enter a name for this buddy</source>
-        <translation type="unfinished"></translation>
+        <translation>Geben Sie einen Namen des Kontaktes an</translation>
     </message>
     <message>
         <source>Merge with existing buddy</source>
-        <translation type="unfinished"></translation>
+        <translation>Zusammenführen mit existierendem Kontakt</translation>
     </message>
     <message>
         <source>Ask contact for authorization</source>
-        <translation type="unfinished"></translation>
+        <translation>Frage Kontakt nach Authentifizierung</translation>
     </message>
     <message>
         <source>Allow buddy to see me when I&apos;m available</source>
-        <translation type="unfinished"></translation>
+        <translation>Erlaube dem Kontakt, meine Anwesenheit im Netz zu sehen</translation>
     </message>
     <message>
         <source>Add buddy</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontakt hinzufügen</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Abbrechen</translation>
+        <translation>Abbrechen</translation>
     </message>
     <message>
         <source>Mobile</source>
-        <translation type="unfinished"></translation>
+        <translation>Handy</translation>
     </message>
     <message>
         <source>E-mail</source>
-        <translation type="unfinished"></translation>
+        <translation>E-Mail</translation>
     </message>
     <message>
         <source>User ID:</source>
-        <translation type="unfinished"></translation>
+        <translation>Benutzer ID:</translation>
     </message>
     <message>
         <source>Mobile number:</source>
-        <translation type="unfinished"></translation>
+        <translation>Handy-Nummer:</translation>
     </message>
     <message>
         <source>E-mail address:</source>
-        <translation type="unfinished"></translation>
+        <translation>E-Mail-Adresse:</translation>
     </message>
     <message>
         <source>Account is not selected</source>
-        <translation type="unfinished"></translation>
+        <translation>Konto ist nicht ausgewählt</translation>
     </message>
     <message>
         <source>You must be connected to add contacts to this account</source>
-        <translation type="unfinished"></translation>
+        <translation>Sie müssen mit dem Server verbunden sein, um Kontakte diesem Konto hinzuzufügen</translation>
     </message>
     <message>
         <source>Entered username is invalid</source>
-        <translation type="unfinished"></translation>
+        <translation>Angegebener Name stimmt nicht</translation>
     </message>
     <message>
         <source>This contact is already available as &lt;i&gt;%1&lt;/i&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>Dieser Kontak ist bereits als &lt;i&gt;%1&lt;/i&gt; verfügbar</translation>
     </message>
     <message>
         <source>Select buddy to merge with</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontakt für die Zusammenführung auswählen</translation>
     </message>
     <message>
         <source>Visible name is already used for another buddy</source>
-        <translation type="unfinished"></translation>
+        <translation>Der sichtbare Name ist bereits vergeben</translation>
     </message>
     <message>
         <source>Entered mobile number is invalid</source>
-        <translation type="unfinished"></translation>
+        <translation>Angegebene Handy-Nummer stimmt nicht</translation>
     </message>
     <message>
         <source>Merging mobile number with buddy is not supported. Please use edit buddy window.</source>
-        <translation type="unfinished"></translation>
+        <translation>Das Zusammenführen der Handy-Nummer mit Kontakt wird nicht unterstützt. Benutzen Sie dazu bitte den Kontakt-Editor.</translation>
     </message>
     <message>
         <source>Entered e-mail is invalid</source>
-        <translation type="unfinished"></translation>
+        <translation>Angegebene E-Mail stimmt nicht</translation>
     </message>
     <message>
         <source>Merging e-mail with buddy is not supported. Please use edit buddy window.</source>
-        <translation type="unfinished"></translation>
+        <translation>Das Zusammenführen der E-Mail-Adressen mit Kontakt wird nicht unterstützt. Benutzen Sie dazu bitte den Kontakt-Editor.</translation>
     </message>
 </context>
 <context>
     <name>AdiumChatStyleEngine</name>
     <message>
         <source>Conference [%1]</source>
-        <translation type="unfinished"></translation>
+        <translation>Konferenz [%1]</translation>
     </message>
 </context>
 <context>
     <name>AdiumTimeFormatter</name>
     <message>
         <source>1st quarter</source>
-        <translation type="unfinished"></translation>
+        <translation>1. Quartal</translation>
     </message>
     <message>
         <source>2nd quarter</source>
-        <translation type="unfinished"></translation>
+        <translation>2. Quartal</translation>
     </message>
     <message>
         <source>3rd quarter</source>
-        <translation type="unfinished"></translation>
+        <translation>3. Quartal</translation>
     </message>
     <message>
         <source>4th quarter</source>
-        <translation type="unfinished"></translation>
+        <translation>4. Quartal</translation>
     </message>
 </context>
 <context>
     <name>BuddiesListViewMenuManager</name>
     <message>
         <source>More Actions...</source>
-        <translation type="unfinished"></translation>
+        <translation>Weitere Aktionen...</translation>
     </message>
 </context>
 <context>
     <name>Buddy</name>
     <message>
         <source>Example description</source>
-        <translation type="unfinished"></translation>
+        <translation>Beispielbeschreibung</translation>
     </message>
 </context>
 <context>
     <name>BuddyAvatarWidget</name>
     <message>
         <source>Remove Custom Photo...</source>
-        <translation type="unfinished"></translation>
+        <translation>Eigenes Bild entfernen...</translation>
     </message>
     <message>
         <source>Change Photo...</source>
-        <translation type="unfinished"></translation>
+        <translation>Foto ändern...</translation>
     </message>
     <message>
         <source>Select new photo</source>
-        <translation type="unfinished"></translation>
+        <translation>Neues Bild auswählen</translation>
     </message>
 </context>
 <context>
     <name>BuddyContactsTable</name>
     <message>
         <source>Move up</source>
-        <translation type="unfinished"></translation>
+        <translation>Nach oben</translation>
     </message>
     <message>
         <source>Move down</source>
-        <translation type="unfinished"></translation>
+        <translation>Nach unten</translation>
     </message>
     <message>
         <source>Add contact</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontakt hinzufügen</translation>
     </message>
     <message>
         <source>Detach contact</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontakt trennen</translation>
     </message>
     <message>
         <source>Remove contact</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontakt entfernen</translation>
     </message>
     <message>
         <source>New buddy display name</source>
-        <translation type="unfinished"></translation>
+        <translation>Neuer Anzeigename des Kontakts</translation>
     </message>
     <message>
         <source>Give name for new buddy for this contact</source>
-        <translation type="unfinished"></translation>
+        <translation>Geben Sie einen Namen für diesen Kontakt</translation>
     </message>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished">Kadu</translation>
+        <translation>Kadu</translation>
     </message>
     <message>
         <source>Are you sure do you want to delete this contact from buddy &lt;b&gt;%1&lt;/b&gt;?</source>
-        <translation type="unfinished"></translation>
+        <translation>Sind Sie sicher, dass Sie diesen Bekannten aus dem Kontakt &lt;b&gt;%1&lt;/b&gt; entfernen möchten?</translation>
     </message>
 </context>
 <context>
     <name>BuddyContactsTableModel</name>
     <message>
         <source>Username</source>
-        <translation type="unfinished"></translation>
+        <translation>Benutzername</translation>
     </message>
     <message>
         <source>Account</source>
-        <translation type="unfinished">Konto</translation>
+        <translation>Konto</translation>
     </message>
 </context>
 <context>
     <name>BuddyDataWindow</name>
     <message>
         <source>Buddy Properties - %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Daten des Bekannten - %1</translation>
     </message>
     <message>
         <source>General</source>
-        <translation type="unfinished">Allgemein</translation>
+        <translation>Allgemein</translation>
     </message>
     <message>
         <source>Groups</source>
-        <translation type="unfinished"></translation>
+        <translation>Gruppen</translation>
     </message>
     <message>
         <source>Personal Information</source>
-        <translation type="unfinished"></translation>
+        <translation>Persönliche Daten</translation>
     </message>
     <message>
         <source>Options</source>
-        <translation type="unfinished">Einstellungen</translation>
+        <translation>Einstellungen</translation>
     </message>
     <message>
         <source>OK</source>
-        <translation type="unfinished">OK</translation>
+        <translation>OK</translation>
     </message>
     <message>
         <source>Apply</source>
-        <translation type="unfinished">Anwenden</translation>
+        <translation>Anwenden</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Abbrechen</translation>
+        <translation>Abbrechen</translation>
     </message>
 </context>
 <context>
     <name>BuddyDeleteWindow</name>
     <message>
         <source>The following buddies will be deleted:&lt;br/&gt;%1.&lt;br/&gt;Are you sure?</source>
-        <translation type="unfinished"></translation>
+        <translation>Der folgende Kontakt wird gelöscht: &lt;br/&gt;%1&lt;br/&gt;Sind Sie sicher?</translation>
     </message>
     <message>
         <source>Please select additional data that will be removed:</source>
-        <translation type="unfinished"></translation>
+        <translation>Bitte wählen Sie zusätzliche Daten zum löschen aus:</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation type="unfinished">Löschen</translation>
+        <translation>Löschen</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Abbrechen</translation>
+        <translation>Abbrechen</translation>
     </message>
 </context>
 <context>
     <name>BuddyGeneralConfigurationWidget</name>
     <message>
         <source>Visible Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Sichtbarer Name</translation>
     </message>
     <message>
         <source>Buddy contacts</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontakte</translation>
     </message>
     <message>
         <source>Communication Information</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontaktinformationen</translation>
     </message>
     <message>
         <source>Phone</source>
-        <translation type="unfinished"></translation>
+        <translation>Telefon</translation>
     </message>
     <message>
         <source>Mobile</source>
-        <translation type="unfinished"></translation>
+        <translation>Handy</translation>
     </message>
     <message>
         <source>E-Mail</source>
-        <translation type="unfinished"></translation>
+        <translation>E-Mail</translation>
     </message>
     <message>
         <source>Website</source>
-        <translation type="unfinished"></translation>
+        <translation>Homepage</translation>
     </message>
     <message>
         <source>Prefer the most available contact</source>
-        <translation type="unfinished"></translation>
+        <translation>Meistverfügbaren Kontakt bevorzugen</translation>
     </message>
     <message>
         <source>&lt;p&gt;When enabled and one of this buddy&apos;s contacts has higher status (i.e., more available) than the others, that contact will be considered preferred regardless of its priority&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;Wenn eingeschaltet und eine der Kontakt-Identitäten den höheren Status (z. B. online) als andere hat, wird diese Kontakt-Möglichkeit bevorzugt, egal welche Priorität sie hat&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
     <name>BuddyGroupsConfigurationWidget</name>
     <message>
         <source>Add &lt;b&gt;%1&lt;/b&gt; to the groups below by checking the box next to the appropriate groups.</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;%1&lt;/b&gt;zu den folgenden (per Auswahlbox markierten) Gruppen hinzufügen.</translation>
     </message>
 </context>
 <context>
     <name>BuddyOptionsConfigurationWidget</name>
     <message>
         <source>Allow buddy to see when I&apos;m available</source>
-        <translation type="unfinished"></translation>
+        <translation>Erlaube dem Kontakt zu sehen, dass ich &quot;erreichbar&quot; bin</translation>
     </message>
     <message>
         <source>Block buddy</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontakt blockieren</translation>
     </message>
     <message>
         <source>Notify when buddy&apos;s status changes</source>
-        <translation type="unfinished"></translation>
+        <translation>Benachrichtige mich, wenn Kontakt sein Zustand wechselt</translation>
     </message>
     <message>
         <source>Hide description</source>
-        <translation type="unfinished"></translation>
+        <translation>Verstecke Beschreibung</translation>
     </message>
 </context>
 <context>
     <name>BuddyPersonalInfoConfigurationWidget</name>
     <message>
         <source>Buddy contact</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontakt</translation>
     </message>
 </context>
 <context>
     <name>ChatEditBox</name>
     <message>
         <source>Insert image</source>
-        <translation type="unfinished">Bild einfügen</translation>
+        <translation>Bild einfügen</translation>
     </message>
     <message>
         <source>Images</source>
-        <translation type="unfinished">Bilder</translation>
+        <translation>Bilder</translation>
     </message>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished">Kadu</translation>
+        <translation>Kadu</translation>
     </message>
     <message>
         <source>This file is not readable</source>
-        <translation type="unfinished"></translation>
+        <translation>Die Datei ist nicht lesbar</translation>
     </message>
     <message>
         <source>This file is too big (%1 &gt;= %2)</source>
-        <translation type="unfinished"></translation>
+        <translation>Diese Datei ist zu groß (%1 &gt;= %2)</translation>
     </message>
     <message>
         <source>This file is too big for %1.
 Do you really want to send this image?</source>
-        <translation type="unfinished"></translation>
+        <translation>Diese Datei ist für %1 zu groß
+Wollen Sie diese trotzdem senden?</translation>
     </message>
     <message>
         <source>%1 is disconnected and cannot receive images.
 Do you really want to send this image?</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 ist nicht erreichbar und kann Dateien nicht im Empfang nehmen.
+Wolen Sie trotzdem dieses Bild senden?</translation>
     </message>
     <message>
         <source>This file is too big for %1 of %2 contacts.
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Diese Datei ist zu groß für %1 von %2 Kontakte.</translation>
     </message>
     <message>
         <source>%1 of %2 contacts are disconnected and cannot receive images.
 </source>
-        <translation type="unfinished"></translation>
+        <translation>%1 von %2 Kontakte sind nicht verfügbar und können die Bilder nicht in Empfang nehmen.</translation>
     </message>
     <message>
         <source>Do you really want to send this image?
 Some of them probably will not get it.</source>
-        <translation type="unfinished"></translation>
+        <translation>Wollen Sie wirklich dieses Bild senden?
+Einige werden es nicht wohl nicht bekommen.</translation>
     </message>
 </context>
 <context>
     <name>ChatNotification</name>
     <message>
         <source>Chat</source>
-        <translation type="unfinished">Chat</translation>
+        <translation>Chat</translation>
     </message>
     <message>
         <source>Ignore</source>
-        <translation type="unfinished"></translation>
+        <translation>Ignorieren</translation>
     </message>
 </context>
 <context>
     <name>ChatStylesManager</name>
     <message>
         <source>Edit</source>
-        <translation type="unfinished">Bearbeiten</translation>
+        <translation>Bearbeiten</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation type="unfinished">Löschen</translation>
+        <translation>Löschen</translation>
     </message>
     <message>
         <source>Your message</source>
-        <translation type="unfinished"></translation>
+        <translation>Ihre Nachricht</translation>
     </message>
     <message>
         <source>Message from Your friend</source>
-        <translation type="unfinished"></translation>
+        <translation>Nachricht von Ihrem Freund</translation>
     </message>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished">Kadu</translation>
+        <translation>Kadu</translation>
     </message>
     <message>
         <source>Unable to remove style: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Kann den Stil %1 nicht entfernen</translation>
     </message>
 </context>
 <context>
     <name>ChatTypeConference</name>
     <message>
         <source>Conference</source>
-        <translation type="unfinished"></translation>
+        <translation>Konferenz</translation>
     </message>
     <message>
         <source>Conferences</source>
-        <translation type="unfinished"></translation>
+        <translation>Konferenzen</translation>
     </message>
 </context>
 <context>
     <name>ChatTypeSimple</name>
     <message>
         <source>Chat</source>
-        <translation type="unfinished">Chat</translation>
+        <translation>Chat</translation>
     </message>
     <message>
         <source>Chats</source>
-        <translation type="unfinished"></translation>
+        <translation>Chats</translation>
     </message>
 </context>
 <context>
@@ -1842,97 +1836,97 @@ von nun an ignoriert. Wollen Sie diese Konferenz wirklich verlassen?</translatio
     </message>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished">Kadu</translation>
+        <translation>Kadu</translation>
     </message>
     <message>
         <source>Account:</source>
-        <translation type="unfinished"></translation>
+        <translation>Konto:</translation>
     </message>
     <message>
         <source>%1 (Composing...)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (schreibt...)</translation>
     </message>
     <message>
         <source>%1 (Inactive)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (inaktiv)</translation>
     </message>
     <message>
         <source>%1 ended the conversation</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 hat die Unterhaltug beendet</translation>
     </message>
 </context>
 <context>
     <name>ChatWidgetActions</name>
     <message>
         <source>More...</source>
-        <translation type="unfinished"></translation>
+        <translation>Mehr...</translation>
     </message>
     <message>
         <source>Return Sends Message</source>
-        <translation type="unfinished"></translation>
+        <translation>ENTER sendet die Nachricht</translation>
     </message>
     <message>
         <source>Clear Messages in Chat Window</source>
-        <translation type="unfinished"></translation>
+        <translation>Nachrichten im Chatfenster entfernen</translation>
     </message>
     <message>
         <source>Insert Image</source>
-        <translation type="unfinished"></translation>
+        <translation>Bild einfügen</translation>
     </message>
     <message>
         <source>Bold</source>
-        <translation type="unfinished"></translation>
+        <translation>Fett</translation>
     </message>
     <message>
         <source>Italic</source>
-        <translation type="unfinished"></translation>
+        <translation>Kursiv</translation>
     </message>
     <message>
         <source>Underline</source>
-        <translation type="unfinished"></translation>
+        <translation>Unterstrichen</translation>
     </message>
     <message>
         <source>&amp;Send</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Senden</translation>
     </message>
     <message>
         <source>Search this User in Directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Suche diesen Benutzer im Verzeichnis</translation>
     </message>
     <message>
         <source>Block Buddy</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontakt blockieren</translation>
     </message>
     <message>
         <source>&amp;Chat</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Chat</translation>
     </message>
     <message>
         <source>Open Chat with...</source>
-        <translation type="unfinished"></translation>
+        <translation>Starte Chat mit...</translation>
     </message>
     <message>
         <source>Insert Emoticon</source>
-        <translation type="unfinished"></translation>
+        <translation>Smilie hinzufügen</translation>
     </message>
     <message>
         <source>Insert emoticon - enable in configuration</source>
-        <translation type="unfinished"></translation>
+        <translation>Smilie hinzufügen - in der Konfiguration einschalten</translation>
     </message>
     <message>
         <source>More</source>
-        <translation type="unfinished"></translation>
+        <translation>Mehr</translation>
     </message>
 </context>
 <context>
     <name>ChatWidgetManager</name>
     <message>
         <source>Insert emoticon - enable in configuration</source>
-        <translation type="unfinished"></translation>
+        <translation>Smilie hinzufügen - in der Konfiguration einschalten</translation>
     </message>
     <message>
         <source>Insert emoticon</source>
-        <translation type="unfinished"></translation>
+        <translation>Smilie hinzufügen</translation>
     </message>
 </context>
 <context>
@@ -1943,7 +1937,7 @@ von nun an ignoriert. Wollen Sie diese Konferenz wirklich verlassen?</translatio
     </message>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished">Kadu</translation>
+        <translation>Kadu</translation>
     </message>
 </context>
 <context>
@@ -1965,7 +1959,7 @@ von nun an ignoriert. Wollen Sie diese Konferenz wirklich verlassen?</translatio
     <name>ChooseIdentityWidget</name>
     <message>
         <source>Create new description...</source>
-        <translation type="unfinished"></translation>
+        <translation>Neue Beschreibung erstellen...</translation>
     </message>
 </context>
 <context>
@@ -1991,26 +1985,27 @@ von nun an ignoriert. Wollen Sie diese Konferenz wirklich verlassen?</translatio
     </message>
     <message>
         <source>Connection error on account: %1 (%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>Verbindungsfehler im Konto: %1 (%2)</translation>
     </message>
 </context>
 <context>
     <name>ContactListService</name>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished">Kadu</translation>
+        <translation>Kadu</translation>
     </message>
     <message>
         <source>Following contacts from your list were not found on server: &lt;b&gt;%0&lt;/b&gt;.
 Do you want to remove them from contacts list?</source>
-        <translation type="unfinished"></translation>
+        <translation>Folgende Kontakte aus Ihrer Liste wurden auf dem Server nicht gefunden: &lt;b&gt;%0&lt;/b&gt;.
+Soll ich sie aus der Kontaktliste löschen?</translation>
     </message>
 </context>
 <context>
     <name>Core</name>
     <message>
         <source>Me</source>
-        <translation type="unfinished"></translation>
+        <translation>Ich</translation>
     </message>
 </context>
 <context>
@@ -2048,355 +2043,361 @@ Do you want to remove them from contacts list?</source>
     <name>FileTransferActions</name>
     <message>
         <source>Send File...</source>
-        <translation type="unfinished"></translation>
+        <translation>Datei Senden...</translation>
     </message>
     <message>
         <source>View File Transfers</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige Dateiübertragungen</translation>
     </message>
     <message>
         <source>Select file location</source>
-        <translation type="unfinished"></translation>
+        <translation>Dateipfad auswählen</translation>
     </message>
 </context>
 <context>
     <name>FileTransferManager</name>
     <message>
         <source>Select file location</source>
-        <translation type="unfinished"></translation>
+        <translation>Dateipfad auswählen</translation>
     </message>
     <message>
         <source>File %1 already exists.</source>
-        <translation type="unfinished"></translation>
+        <translation>Datei %1 existiert bereits.</translation>
     </message>
     <message>
         <source>Save file</source>
-        <translation type="unfinished"></translation>
+        <translation>Datei speichern</translation>
     </message>
     <message>
         <source>Overwrite</source>
-        <translation type="unfinished"></translation>
+        <translation>Überschreiben</translation>
     </message>
     <message>
         <source>Resume</source>
-        <translation type="unfinished"></translation>
+        <translation>Fortfahren</translation>
     </message>
     <message>
         <source>Select another file</source>
-        <translation type="unfinished"></translation>
+        <translation>Andere Datei auswählen</translation>
     </message>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished">Kadu</translation>
+        <translation>Kadu</translation>
     </message>
     <message>
         <source>Could not open file. Select another one.</source>
-        <translation type="unfinished"></translation>
+        <translation>Konnte die Datei nicht öffnen. Wählen Sie bitte eine andere aus.</translation>
     </message>
     <message>
         <source>Incoming transfer</source>
-        <translation type="unfinished"></translation>
+        <translation>Eingehende Dateiübertragung</translation>
     </message>
     <message>
         <source>User &lt;b&gt;%1&lt;/b&gt; wants to send you a file &lt;b&gt;%2&lt;/b&gt;
 of size &lt;b&gt;%3&lt;/b&gt; using account &lt;b&gt;%4&lt;/b&gt;.
 Accept transfer?</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontakt &lt;b&gt;%1&lt;/b&gt; will die Datei &lt;b&gt;%2&lt;/b&gt; mit 
+einer Größe von &lt;b&gt;%3&lt;/b&gt; aus dem Konto &lt;b&gt;%4&lt;/b&gt; senden.
+Möchten Sie diese annehmen?</translation>
     </message>
     <message>
         <source>User &lt;b&gt;%1&lt;/b&gt; wants to send you a file &lt;b/&gt;%2&lt;/b&gt;
 of size &lt;b&gt;%3&lt;/b&gt; using account &lt;b&gt;%4&lt;/b&gt;.
 This is probably a next part of &lt;b&gt;%5&lt;/b&gt;
  What should I do?</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontakt &lt;b&gt;%1&lt;/b&gt; will die Datei &lt;b&gt;%2&lt;/b&gt; mit 
+einer Größe von &lt;b&gt;%3&lt;/b&gt; aus dem Konto &lt;b&gt;%4&lt;/b&gt; senden.
+Dies scheint Teil von &lt;b&gt;%5&lt;/b&gt; zu sein.
+Was soll ich tun?</translation>
     </message>
 </context>
 <context>
     <name>FileTransferWidget</name>
     <message>
         <source>Pause</source>
-        <translation type="unfinished"></translation>
+        <translation>Pause</translation>
     </message>
     <message>
         <source>Continue</source>
-        <translation type="unfinished"></translation>
+        <translation>Fortsetzen</translation>
     </message>
     <message>
         <source>Remove</source>
-        <translation type="unfinished">Entfernen</translation>
+        <translation>Entfernen</translation>
     </message>
     <message>
         <source>File &lt;b&gt;%1&lt;/b&gt;&lt;br /&gt; to &lt;b&gt;%2&lt;/b&gt;&lt;br /&gt;on account &lt;b&gt;%3&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>Datei &lt;b&gt;%1&lt;/b&gt;&lt;br/&gt; an &lt;b&gt;%2&lt;/b&gt;&lt;br/&gt; auf Konto &lt;b&gt;%3&lt;/b&gt;</translation>
     </message>
     <message>
         <source>File &lt;b&gt;%1&lt;/b&gt;&lt;br /&gt; from &lt;b&gt;%2&lt;/b&gt;&lt;br /&gt;on account &lt;b&gt;%3&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>Datei &lt;b&gt;%1&lt;/b&gt;&lt;br/&gt; von &lt;b&gt;%2&lt;/b&gt;&lt;br/&gt; auf Konto &lt;b&gt;%3&lt;/b&gt;</translation>
     </message>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished">Kadu</translation>
+        <translation>Kadu</translation>
     </message>
     <message>
         <source>Are you sure you want to remove this transfer?</source>
-        <translation type="unfinished"></translation>
+        <translation>Sind Sie sicher, dass Sie diese Datei entfernen möchten?</translation>
     </message>
     <message>
         <source>&lt;b&gt;Not connected&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Nicht verbunden&lt;/b&gt;</translation>
     </message>
     <message>
         <source>&lt;b&gt;Error&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Fehler&lt;/b&gt;</translation>
     </message>
     <message>
         <source>&lt;b&gt;Wait for connection&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Warte auf Verbindung&lt;/b&gt;</translation>
     </message>
     <message>
         <source>&lt;b&gt;Wait for accept&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Warte auf Annahme&lt;/b&gt;</translation>
     </message>
     <message>
         <source>&lt;b&gt;Transfer&lt;/b&gt;: %1 kB/s</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Übertragung&lt;/b&gt;: %1 kB/s</translation>
     </message>
     <message>
         <source>&lt;b&gt;Finished&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Beendet&lt;/b&gt;</translation>
     </message>
     <message>
         <source>&lt;b&gt;Rejected&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Abgewiesen&lt;/b&gt;</translation>
     </message>
 </context>
 <context>
     <name>FileTransferWindow</name>
     <message>
         <source>Kadu - file transfers</source>
-        <translation type="unfinished"></translation>
+        <translation>Kadu - Dateiübertragungen</translation>
     </message>
     <message>
         <source>Clear</source>
-        <translation type="unfinished">Leeren</translation>
+        <translation>Leeren</translation>
     </message>
     <message>
         <source>Hide</source>
-        <translation type="unfinished"></translation>
+        <translation>Verstecken</translation>
     </message>
 </context>
 <context>
     <name>FilterWidget</name>
     <message>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation>Suche</translation>
     </message>
 </context>
 <context>
     <name>GroupManager</name>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished">Kadu</translation>
+        <translation>Kadu</translation>
     </message>
     <message>
         <source>&apos;%1&apos; is prohibited</source>
-        <translation type="unfinished"></translation>
+        <translation>&apos;%1&apos; ist nicht zulässig</translation>
     </message>
     <message>
         <source>Numbers are prohibited</source>
-        <translation type="unfinished"></translation>
+        <translation>Nummern sind nicht zulässig</translation>
     </message>
     <message>
         <source>All</source>
-        <translation type="unfinished"></translation>
+        <translation>Alle</translation>
     </message>
     <message>
         <source>Group name %1 is prohibited</source>
-        <translation type="unfinished"></translation>
+        <translation>Gruppennamen %1 ist nich zulässig</translation>
     </message>
     <message>
         <source>Group of that name already exists!</source>
-        <translation type="unfinished"></translation>
+        <translation>Dieser Gruppennamen gibt es schon!</translation>
     </message>
 </context>
 <context>
     <name>GroupPropertiesWindow</name>
     <message>
         <source>Properties of group %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Eigenschaften der Gruppe %1</translation>
     </message>
     <message>
         <source>Behaviour</source>
-        <translation type="unfinished">Verhalten</translation>
+        <translation>Verhalten</translation>
     </message>
     <message>
         <source>Notify about status changes</source>
-        <translation type="unfinished"></translation>
+        <translation>Benachrichtigen über Zustandsänderungen</translation>
     </message>
     <message>
         <source>Offline for this group</source>
-        <translation type="unfinished"></translation>
+        <translation>Für diese Gruppe offline</translation>
     </message>
     <message>
         <source>Supported for Gadu-Gadu network</source>
-        <translation type="unfinished"></translation>
+        <translation>Unterstützt das Netzwerk Gadu-Gadu</translation>
     </message>
     <message>
         <source>Work only when network supports it</source>
-        <translation type="unfinished"></translation>
+        <translation>Funktioniert nur dann, wenn das Netzwerk es unterstützt</translation>
     </message>
     <message>
         <source>Show in group &quot;All&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige in Gruppe &quot;Alle&quot;</translation>
     </message>
     <message>
         <source>Look</source>
-        <translation type="unfinished">Aussehen</translation>
+        <translation>Aussehen</translation>
     </message>
     <message>
         <source>Use custom icon</source>
-        <translation type="unfinished"></translation>
+        <translation>Benutze eigenes Symbol</translation>
     </message>
     <message>
         <source> Set Icon</source>
-        <translation type="unfinished"></translation>
+        <translation>Symbol setzen</translation>
     </message>
     <message>
         <source>Show group name</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige den Gruppennamen</translation>
     </message>
     <message>
         <source>Ok</source>
-        <translation type="unfinished">Ok</translation>
+        <translation>Ok</translation>
     </message>
     <message>
         <source>Apply</source>
-        <translation type="unfinished">Anwenden</translation>
+        <translation>Anwenden</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Abbrechen</translation>
+        <translation>Abbrechen</translation>
     </message>
     <message>
         <source>Choose an icon</source>
-        <translation type="unfinished"></translation>
+        <translation>Symbol auswählen</translation>
     </message>
     <message>
         <source>Icons (*.png *.xpm *.jpg)</source>
-        <translation type="unfinished"></translation>
+        <translation>Symbole (*.png *.xpm *.jpg)</translation>
     </message>
 </context>
 <context>
     <name>GroupTabBar</name>
     <message>
         <source>All</source>
-        <translation type="unfinished"></translation>
+        <translation>Alle</translation>
     </message>
     <message>
         <source>Ungrouped</source>
-        <translation type="unfinished"></translation>
+        <translation>Nicht gruppiert</translation>
     </message>
     <message>
         <source>Add Buddy</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontakt hinzufügen</translation>
     </message>
     <message>
         <source>Rename Group</source>
-        <translation type="unfinished"></translation>
+        <translation>Gruppe umbenennen</translation>
     </message>
     <message>
         <source>Delete Group</source>
-        <translation type="unfinished"></translation>
+        <translation>Gruppe löschen</translation>
     </message>
     <message>
         <source>Properties</source>
-        <translation type="unfinished">Eigenschaften</translation>
+        <translation>Eigenschaften</translation>
     </message>
     <message>
         <source>New Group</source>
-        <translation type="unfinished"></translation>
+        <translation>Neue Gruppe</translation>
     </message>
     <message>
         <source>Please enter the name for the new group:</source>
-        <translation type="unfinished"></translation>
+        <translation>Geben Sie bitte den Namen für die neue Gruppe ein:</translation>
     </message>
     <message>
         <source>Move to group %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Verschiebe in die Gruppe %1</translation>
     </message>
     <message>
         <source>Add to group %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Zur Gruppe %1 hinzufügen</translation>
     </message>
     <message>
         <source>Please enter a new name for this group</source>
-        <translation type="unfinished"></translation>
+        <translation>Geben Sie bitten einen neuen Namen für diese Gruppe an</translation>
     </message>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished">Kadu</translation>
+        <translation>Kadu</translation>
     </message>
     <message>
         <source>Selected group:
 %0 will be deleted. Are you sure?</source>
-        <translation type="unfinished"></translation>
+        <translation>Ausgewählte Gruppe:
+%0 wird gelöscht. Sind Sie sicher?</translation>
     </message>
     <message>
         <source>Add Group</source>
-        <translation type="unfinished"></translation>
+        <translation>Gruppe hinzufügen</translation>
     </message>
 </context>
 <context>
     <name>GroupsComboBox</name>
     <message>
         <source>Create a new group...</source>
-        <translation type="unfinished"></translation>
+        <translation>Eine neue Gruppe erstellen...</translation>
     </message>
     <message>
         <source>New Group</source>
-        <translation type="unfinished"></translation>
+        <translation>Neue Gruppe</translation>
     </message>
     <message>
         <source>Please enter the name for the new group:</source>
-        <translation type="unfinished"></translation>
+        <translation>Geben Sie bitte den Namen für die neue Gruppe ein:</translation>
     </message>
     <message>
         <source> - Select group - </source>
-        <translation type="unfinished"></translation>
+        <translation> - Gruppe auswählen - </translation>
     </message>
 </context>
 <context>
     <name>IdentitiesComboBox</name>
     <message>
         <source>Create a new identity...</source>
-        <translation type="unfinished"></translation>
+        <translation>Eine neue Identität erstellen...</translation>
     </message>
     <message>
         <source>New Identity</source>
-        <translation type="unfinished"></translation>
+        <translation>Neue Identität</translation>
     </message>
     <message>
         <source>Please enter the name for the new identity:</source>
-        <translation type="unfinished"></translation>
+        <translation>Geben Sie bitte den Namen für die neue Identität ein:</translation>
     </message>
     <message>
         <source> - Select identity - </source>
-        <translation type="unfinished"></translation>
+        <translation> - Identität auswählen - </translation>
     </message>
 </context>
 <context>
     <name>IdentityManager</name>
     <message>
         <source>Friends</source>
-        <translation type="unfinished"></translation>
+        <translation>Freunde</translation>
     </message>
     <message>
         <source>Work</source>
-        <translation type="unfinished"></translation>
+        <translation>Arbeit</translation>
     </message>
     <message>
         <source>School</source>
-        <translation type="unfinished"></translation>
+        <translation>Schule</translation>
     </message>
 </context>
 <context>
@@ -2438,165 +2439,165 @@ This is probably a next part of &lt;b&gt;%5&lt;/b&gt;
     </message>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished">Kadu</translation>
+        <translation>Kadu</translation>
     </message>
     <message>
         <source>Cannot save this image</source>
-        <translation type="unfinished"></translation>
+        <translation>Kann diesen Bild nicht abspeichern</translation>
     </message>
     <message>
         <source>Cannot save image</source>
-        <translation type="unfinished"></translation>
+        <translation>Kann das Bild nicht speichern</translation>
     </message>
 </context>
 <context>
     <name>KaduWindow</name>
     <message>
         <source>General</source>
-        <translation type="unfinished">Allgemein</translation>
+        <translation>Allgemein</translation>
     </message>
     <message>
         <source>Recent chats</source>
-        <translation type="unfinished"></translation>
+        <translation>Letzte Chats</translation>
     </message>
     <message>
         <source>&amp;Buddies</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Kontakte</translation>
     </message>
     <message>
         <source>&amp;Tools</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Werkzeuge</translation>
     </message>
     <message>
         <source>&amp;Help</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Hilfe</translation>
     </message>
 </context>
 <context>
     <name>KaduWindowActions</name>
     <message>
         <source>Add Buddy...</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontakt hinzufügen...</translation>
     </message>
     <message>
         <source>View Buddy Properties</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige die Eigenschaften des Kontakts</translation>
     </message>
     <message>
         <source>Preferences...</source>
-        <translation type="unfinished"></translation>
+        <translation>Eigenschaften...</translation>
     </message>
     <message>
         <source>Your Accounts...</source>
-        <translation type="unfinished"></translation>
+        <translation>Ihre Konten...</translation>
     </message>
     <message>
         <source>Multilogons...</source>
-        <translation type="unfinished"></translation>
+        <translation>Mehrfach-Logins...</translation>
     </message>
     <message>
         <source>Plugins...</source>
-        <translation type="unfinished"></translation>
+        <translation>Erweiterungen...</translation>
     </message>
     <message>
         <source>&amp;Quit</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Beenden</translation>
     </message>
     <message>
         <source>Add Group...</source>
-        <translation type="unfinished"></translation>
+        <translation>Gruppe hinzufügen...</translation>
     </message>
     <message>
         <source>Search for Buddy...</source>
-        <translation type="unfinished"></translation>
+        <translation>Suche nach Kontakt...</translation>
     </message>
     <message>
         <source>Getting H&amp;elp...</source>
-        <translation type="unfinished"></translation>
+        <translation>Hilfe &amp;bekommen...</translation>
     </message>
     <message>
         <source>Report a Bug...</source>
-        <translation type="unfinished"></translation>
+        <translation>Fehler melden...</translation>
     </message>
     <message>
         <source>Support Us...</source>
-        <translation type="unfinished"></translation>
+        <translation>Unterstütze uns...</translation>
     </message>
     <message>
         <source>Get Involved...</source>
-        <translation type="unfinished"></translation>
+        <translation>Mitmachen...</translation>
     </message>
     <message>
         <source>Translate Kadu...</source>
-        <translation type="unfinished"></translation>
+        <translation>Kadu übersetzen...</translation>
     </message>
     <message>
         <source>A&amp;bout Kadu</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Über Kadu</translation>
     </message>
     <message>
         <source>Show Information Panel</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige das Informationspannel an</translation>
     </message>
     <message>
         <source>Show Blocked Buddies</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige blockierte Kontakte</translation>
     </message>
     <message>
         <source>Copy Description</source>
-        <translation type="unfinished"></translation>
+        <translation>Beschreibung kopieren</translation>
     </message>
     <message>
         <source>Copy Personal Info</source>
-        <translation type="unfinished"></translation>
+        <translation>Persönliche Daten kopieren</translation>
     </message>
     <message>
         <source>Open Description Link in Browser...</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige Link der Beschreibung im Browser...</translation>
     </message>
     <message>
         <source>Send E-Mail</source>
-        <translation type="unfinished"></translation>
+        <translation>Sende E-Mail</translation>
     </message>
     <message>
         <source>Search in Directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Suche im Verzeichnis</translation>
     </message>
     <message>
         <source>Show Offline Buddies</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige Kontakte, die offline sind</translation>
     </message>
     <message>
         <source>Only Show Buddies with Description</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige nur Kontakte mit Beschreibung</translation>
     </message>
     <message>
         <source>Show Descriptions</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige Beschreibungen</translation>
     </message>
     <message>
         <source>Only Show Online Buddies and Buddies with Description</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige nur Kontakte mit Beschreibung und Kontakte die online sind</translation>
     </message>
     <message>
         <source>Merge Buddies...</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontakte zusammenführen...</translation>
     </message>
     <message>
         <source>Delete Buddy...</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontakt löschen...</translation>
     </message>
     <message>
         <source>Change Status</source>
-        <translation type="unfinished"></translation>
+        <translation>Zustand ändern</translation>
     </message>
     <message>
         <source>New Group</source>
-        <translation type="unfinished"></translation>
+        <translation>Neue Gruppe</translation>
     </message>
     <message>
         <source>Please enter the name for the new group:</source>
-        <translation type="unfinished"></translation>
+        <translation>Geben Sie bitte den Namen für die neue Gruppe ein:</translation>
     </message>
     <message>
         <source>Contact: %a[ (%u)]
@@ -2604,14 +2605,18 @@ This is probably a next part of &lt;b&gt;%5&lt;/b&gt;
 ][Last name: %r
 ][Mobile: %m
 ]</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontakt: %a[ (%u)]
+[Vorname: %f
+][Nachname: %r
+][Handy: %m
+]</translation>
     </message>
 </context>
 <context>
     <name>LineEditWithClearButton</name>
     <message>
         <source>Clear current text in the line edit.</source>
-        <translation type="unfinished"></translation>
+        <translation>Lösche den Text der Texteingabenzeile.</translation>
     </message>
 </context>
 <context>
@@ -2633,26 +2638,26 @@ This is probably a next part of &lt;b&gt;%5&lt;/b&gt;
     <name>MainWindow</name>
     <message>
         <source>Create new toolbar</source>
-        <translation type="unfinished">Neue Werkzeugleiste erstellen</translation>
+        <translation>Neue Werkzeugleiste erstellen</translation>
     </message>
 </context>
 <context>
     <name>MergeBuddiesWindow</name>
     <message>
         <source>&lt;i&gt;Choose which contact would you like to merge with &lt;b&gt;%1&lt;/b&gt;&lt;/i&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;i&gt;Bitte wählen Sie den Kontakt aus, mit dem sie &lt;b&gt;%1&lt;/b&gt; zusammenführen wollen&lt;/i&gt;</translation>
     </message>
     <message>
         <source>Contact:</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontakt:</translation>
     </message>
     <message>
         <source>Merge</source>
-        <translation type="unfinished"></translation>
+        <translation>Zusammenführen</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Abbrechen</translation>
+        <translation>Abbrechen</translation>
     </message>
 </context>
 <context>
@@ -2698,11 +2703,11 @@ Vielleicht ist es kein Kadu-Modul.</translation>
     </message>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished">Kadu</translation>
+        <translation>Kadu</translation>
     </message>
     <message>
         <source>Module %1 cannot be deactivated because it is being used by the following modules:%2</source>
-        <translation type="unfinished"></translation>
+        <translation>Das Modul %1 kann nicht deaktiviert werden, das es von folgenden Modulen benötigt wird: %2</translation>
     </message>
 </context>
 <context>
@@ -2775,133 +2780,133 @@ Sie können diese aktivieren oder deaktivieren, indem Sie auf deren Namen doppel
     <name>MultilogonModel</name>
     <message>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Name</translation>
     </message>
     <message>
         <source>Ip</source>
-        <translation type="unfinished"></translation>
+        <translation>IP</translation>
     </message>
     <message>
         <source>Logon time</source>
-        <translation type="unfinished"></translation>
+        <translation>Login-Zeit</translation>
     </message>
 </context>
 <context>
     <name>MultilogonNotification</name>
     <message>
         <source>Ignore</source>
-        <translation type="unfinished"></translation>
+        <translation>Ignorieren</translation>
     </message>
     <message>
         <source>Disconnect session</source>
-        <translation type="unfinished"></translation>
+        <translation>Sitzung trennen</translation>
     </message>
     <message>
         <source>Multilogon</source>
-        <translation type="unfinished"></translation>
+        <translation>Mehrfach-Login</translation>
     </message>
     <message>
         <source>Multilogon session connected from %1 at %2 with %3 for %4 account</source>
-        <translation type="unfinished"></translation>
+        <translation>Mehrfach-Login-Sitzung von %1 auf %2 mit %3 für Konto %4 verbunden</translation>
     </message>
     <message>
         <source>Multilogon session disconnected from %1 at %2 with %3 for %4 account</source>
-        <translation type="unfinished"></translation>
+        <translation>Mehrfach-Login-Sitzung von %1 auf %2 mit %3 für Konto %4 getrennt</translation>
     </message>
 </context>
 <context>
     <name>MultilogonWindow</name>
     <message>
         <source>Multilogon window</source>
-        <translation type="unfinished"></translation>
+        <translation>Fenster des Mehrfach-Logins</translation>
     </message>
     <message>
         <source>Account:</source>
-        <translation type="unfinished"></translation>
+        <translation>Konto:</translation>
     </message>
     <message>
         <source>Disconnect session</source>
-        <translation type="unfinished"></translation>
+        <translation>Sitzung trennen</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Schließen</translation>
     </message>
 </context>
 <context>
     <name>NewFileTransferNotification</name>
     <message>
         <source>Continue</source>
-        <translation type="unfinished"></translation>
+        <translation>Fortsetzen</translation>
     </message>
     <message>
         <source>Save file under new name</source>
-        <translation type="unfinished"></translation>
+        <translation>Datei unter einem neuen Namen speichern</translation>
     </message>
     <message>
         <source>Ignore transfer</source>
-        <translation type="unfinished"></translation>
+        <translation>Übertragung ignorieren</translation>
     </message>
     <message>
         <source>Accept</source>
-        <translation type="unfinished"></translation>
+        <translation>Akzeptieren</translation>
     </message>
     <message>
         <source>Reject</source>
-        <translation type="unfinished"></translation>
+        <translation>Ablehnen</translation>
     </message>
 </context>
 <context>
     <name>NotificationManager</name>
     <message>
         <source>Notify About Buddy</source>
-        <translation type="unfinished"></translation>
+        <translation>Über Kontakt benachrichtigen</translation>
     </message>
     <message>
         <source>Enable Notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Benachrichtigungen einschalten</translation>
     </message>
     <message>
         <source>Unable to find notifier for %1 event</source>
-        <translation type="unfinished"></translation>
+        <translation>Kann die Banachrichtigung für das Ereignis %1 nicht finden</translation>
     </message>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished">Kadu</translation>
+        <translation>Kadu</translation>
     </message>
 </context>
 <context>
     <name>NotifyConfigurationUiHandler</name>
     <message>
         <source>Move to &apos;Notify List&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation>Verschiebe nach &apos;Benachrichtigungsliste&apos;</translation>
     </message>
     <message>
         <source>Buddy List</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontaktliste</translation>
     </message>
     <message>
         <source>Move to &apos;Buddy List&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation>Verschiebe nach &apos;Kontaktliste&apos;</translation>
     </message>
     <message>
         <source>Notify List</source>
-        <translation type="unfinished"></translation>
+        <translation>Benachrichtigungsliste</translation>
     </message>
     <message>
         <source>Use custom settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Benutze eigene Einstellungen</translation>
     </message>
 </context>
 <context>
     <name>NotifyTreeWidget</name>
     <message>
         <source>Event</source>
-        <translation type="unfinished">Ereignis</translation>
+        <translation>Ereignis</translation>
     </message>
     <message>
         <source>Notification</source>
-        <translation type="unfinished"></translation>
+        <translation>Benachrichtigung</translation>
     </message>
 </context>
 <context>
@@ -2916,22 +2921,22 @@ Sie können diese aktivieren oder deaktivieren, indem Sie auf deren Namen doppel
     </message>
     <message>
         <source>&amp;Ok</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Ok</translation>
     </message>
 </context>
 <context>
     <name>PasswordWindow</name>
     <message>
         <source>Store this password</source>
-        <translation type="unfinished"></translation>
+        <translation>Diese Passwort speichern</translation>
     </message>
     <message>
         <source>Ok</source>
-        <translation type="unfinished">Ok</translation>
+        <translation>Ok</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Abbrechen</translation>
+        <translation>Abbrechen</translation>
     </message>
 </context>
 <context>
@@ -2976,225 +2981,225 @@ Sie können diese aktivieren oder deaktivieren, indem Sie auf deren Namen doppel
     <name>ProgressWindow</name>
     <message>
         <source>Plase wait. New Gadu-Gadu account is being registered.</source>
-        <translation type="unfinished"></translation>
+        <translation>Bitte warten Sie. Das neue Konto Gadu-Gadu wird registriert.</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Schließen</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Abbrechen</translation>
+        <translation>Abbrechen</translation>
     </message>
 </context>
 <context>
     <name>ProtocolsComboBox</name>
     <message>
         <source> - Select network - </source>
-        <translation type="unfinished"></translation>
+        <translation> - Netzwerk auswählen - </translation>
     </message>
 </context>
 <context>
     <name>ProxyGroupBox</name>
     <message>
         <source>Use the following proxy</source>
-        <translation type="unfinished"></translation>
+        <translation>Benutze diesen Proxy</translation>
     </message>
     <message>
         <source>Host</source>
-        <translation type="unfinished"></translation>
+        <translation>Rechner</translation>
     </message>
     <message>
         <source>Port</source>
-        <translation type="unfinished"></translation>
+        <translation>Port</translation>
     </message>
     <message>
         <source>Proxy requires authentication</source>
-        <translation type="unfinished"></translation>
+        <translation>Proxy verlangt Authentifizierung</translation>
     </message>
     <message>
         <source>Username</source>
-        <translation type="unfinished"></translation>
+        <translation>Benutzername</translation>
     </message>
     <message>
         <source>Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Passwort</translation>
     </message>
 </context>
 <context>
     <name>QApplication</name>
     <message>
         <source>Executable &apos;%1&apos; requires Qt %2, found Qt %3.</source>
-        <translation type="unfinished"></translation>
+        <translation>Programm &apos;%1&apos; verlangt Qt %2 aber %3 ist installiert.</translation>
     </message>
     <message>
         <source>Incompatible Qt Library Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Fehler wegen nicht kompatibiliert Qt-Bibliothek</translation>
     </message>
 </context>
 <context>
     <name>SearchWindow</name>
     <message>
         <source>Nickname</source>
-        <translation type="unfinished"></translation>
+        <translation>Nick</translation>
     </message>
     <message>
         <source>Male</source>
-        <translation type="unfinished"></translation>
+        <translation>Männlich</translation>
     </message>
     <message>
         <source>Female</source>
-        <translation type="unfinished"></translation>
+        <translation>Weiblich</translation>
     </message>
     <message>
         <source>City</source>
-        <translation type="unfinished"></translation>
+        <translation>Stadt</translation>
     </message>
     <message>
         <source>Uin</source>
-        <translation type="unfinished"></translation>
+        <translation>UIN</translation>
     </message>
     <message>
         <source>&amp;Personal data</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Persönliche Daten</translation>
     </message>
     <message>
         <source>&amp;Uin number</source>
-        <translation type="unfinished"></translation>
+        <translation>Nummer &amp;UIN</translation>
     </message>
     <message>
         <source>Status</source>
-        <translation type="unfinished">Zustand</translation>
+        <translation>Zustand</translation>
     </message>
     <message>
         <source>Searching...</source>
-        <translation type="unfinished"></translation>
+        <translation>Suche...</translation>
     </message>
     <message>
         <source>Done searching</source>
-        <translation type="unfinished"></translation>
+        <translation>Suche ausgeführt</translation>
     </message>
     <message>
         <source>Search User in Directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Suche Benutzer im Verzeichnis</translation>
     </message>
     <message>
         <source>Search Criteria</source>
-        <translation type="unfinished"></translation>
+        <translation>Suchkriterien</translation>
     </message>
     <message>
         <source>Search for this uin exclusively</source>
-        <translation type="unfinished"></translation>
+        <translation>Suche nur nach diesem UIN</translation>
     </message>
     <message>
         <source>Search using the personal data typed above (name, nickname, etc.)</source>
-        <translation type="unfinished"></translation>
+        <translation>Suche mit diesen persönlichen Daten</translation>
     </message>
     <message>
         <source>Uin Number</source>
-        <translation type="unfinished"></translation>
+        <translation>Nummer UIN</translation>
     </message>
     <message>
         <source>Uin:</source>
-        <translation type="unfinished"></translation>
+        <translation>UIN:</translation>
     </message>
     <message>
         <source>Personal Data</source>
-        <translation type="unfinished"></translation>
+        <translation>Persönliche Daten</translation>
     </message>
     <message>
         <source>Nick:</source>
-        <translation type="unfinished"></translation>
+        <translation>Nick:</translation>
     </message>
     <message>
         <source>Gender:</source>
-        <translation type="unfinished"></translation>
+        <translation>Geschlecht:</translation>
     </message>
     <message>
         <source>First name:</source>
-        <translation type="unfinished"></translation>
+        <translation>Vorname:</translation>
     </message>
     <message>
         <source>Last name:</source>
-        <translation type="unfinished"></translation>
+        <translation>Nachname:</translation>
     </message>
     <message>
         <source>Birth year from:</source>
-        <translation type="unfinished"></translation>
+        <translation>Geburtsjahr von:</translation>
     </message>
     <message>
         <source>to:</source>
-        <translation type="unfinished"></translation>
+        <translation>bis:</translation>
     </message>
     <message>
         <source>City:</source>
-        <translation type="unfinished"></translation>
+        <translation>Stadt:</translation>
     </message>
     <message>
         <source>Search only for active users</source>
-        <translation type="unfinished"></translation>
+        <translation>Suche nur aktive Benutzer</translation>
     </message>
     <message>
         <source>First Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Vorname</translation>
     </message>
     <message>
         <source>Birth Year</source>
-        <translation type="unfinished"></translation>
+        <translation>Geburtsjahr</translation>
     </message>
     <message>
         <source>Ready</source>
-        <translation type="unfinished"></translation>
+        <translation>Bereit</translation>
     </message>
     <message>
         <source>To be able to search you have to set up an account first.</source>
-        <translation type="unfinished"></translation>
+        <translation>Bevor Sie suchen können, müssen Sie ein Konto registrieren.</translation>
     </message>
     <message>
         <source>We don&apos;t offer contacts search feature for your network yet.</source>
-        <translation type="unfinished"></translation>
+        <translation>Wir stellen gegenwärtig keine Suche für Ihr Netzwerk bereit.</translation>
     </message>
     <message>
         <source>Cannot search contacts in offline mode.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kann im Offline-Modus nicht suchen.</translation>
     </message>
     <message>
         <source>There were no results of your search.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ihre Suche ergab keine Treffer.</translation>
     </message>
 </context>
 <context>
     <name>SearchWindowActions</name>
     <message>
         <source>&amp;Search</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Suche</translation>
     </message>
     <message>
         <source>&amp;Next results</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Weitere Ergebnisse</translation>
     </message>
     <message>
         <source>Stop</source>
-        <translation type="unfinished"></translation>
+        <translation>Stop</translation>
     </message>
     <message>
         <source>Clear results</source>
-        <translation type="unfinished"></translation>
+        <translation>Ergebnis leeren</translation>
     </message>
     <message>
         <source>Add selected user</source>
-        <translation type="unfinished"></translation>
+        <translation>Ausgewählten Benutzer hinzufügen</translation>
     </message>
     <message>
         <source>&amp;Chat</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Chat</translation>
     </message>
 </context>
 <context>
     <name>SelectBuddyComboBox</name>
     <message>
         <source> - Select buddy - </source>
-        <translation type="unfinished"></translation>
+        <translation> - Kontakt auswählen - </translation>
     </message>
 </context>
 <context>
@@ -3213,7 +3218,7 @@ Sie können diese aktivieren oder deaktivieren, indem Sie auf deren Namen doppel
     </message>
     <message>
         <source>Images</source>
-        <translation type="unfinished">Bilder</translation>
+        <translation>Bilder</translation>
     </message>
 </context>
 <context>
@@ -3227,7 +3232,7 @@ Sie können diese aktivieren oder deaktivieren, indem Sie auf deren Namen doppel
     <name>StatusActions</name>
     <message>
         <source>Change Status Message...</source>
-        <translation type="unfinished"></translation>
+        <translation>Die Beschreibung des Zustandes ändern...</translation>
     </message>
 </context>
 <context>
@@ -3249,46 +3254,46 @@ Sie können diese aktivieren oder deaktivieren, indem Sie auf deren Namen doppel
     <name>StatusContainerManager</name>
     <message>
         <source>All</source>
-        <translation type="unfinished"></translation>
+        <translation>Alle</translation>
     </message>
     <message>
         <source>Offline</source>
-        <translation type="unfinished">Offline</translation>
+        <translation>Offline</translation>
     </message>
 </context>
 <context>
     <name>SubscriptionWindow</name>
     <message>
         <source>New Contact Request</source>
-        <translation type="unfinished"></translation>
+        <translation>Neue Kontaktanfrage</translation>
     </message>
     <message>
         <source>&lt;b&gt;%1&lt;/b&gt; wants to be able to chat with you.</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;%1&lt;/b&gt; möchte mit Ihnen chatten.</translation>
     </message>
     <message>
         <source>Add in Group</source>
-        <translation type="unfinished"></translation>
+        <translation>Zur Gruppe hinzufügen</translation>
     </message>
     <message>
         <source>Visible Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Sichtbarer Name</translation>
     </message>
     <message>
         <source>Enter a name for this contact.</source>
-        <translation type="unfinished"></translation>
+        <translation>Geben Sie einen Namen des Kontaktes an.</translation>
     </message>
     <message>
         <source>Merge with an existing contact</source>
-        <translation type="unfinished"></translation>
+        <translation>Zusammenführen mit existierendem Kontakt</translation>
     </message>
     <message>
         <source>Allow</source>
-        <translation type="unfinished"></translation>
+        <translation>Erlauben</translation>
     </message>
     <message>
         <source>Ignore</source>
-        <translation type="unfinished"></translation>
+        <translation>Ignorieren</translation>
     </message>
 </context>
 <context>
@@ -3307,7 +3312,7 @@ Sie können diese aktivieren oder deaktivieren, indem Sie auf deren Namen doppel
     </message>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished">Kadu</translation>
+        <translation>Kadu</translation>
     </message>
 </context>
 <context>
@@ -3341,30 +3346,30 @@ Sie können diese aktivieren oder deaktivieren, indem Sie auf deren Namen doppel
         <translation>Syntax %1 überschrieben?</translation>
     </message>
     <message>
-        <source>Preview</source>
-        <translation>Vorschau</translation>
-    </message>
-    <message>
         <source>Save as...</source>
         <translation>Speichern unter...</translation>
     </message>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished">Kadu</translation>
+        <translation>Kadu</translation>
+    </message>
+    <message>
+        <source>Refresh Preview</source>
+        <translation>Vorschau auffrischen</translation>
     </message>
 </context>
 <context>
     <name>ThemeManager</name>
     <message>
         <source>None</source>
-        <translation type="unfinished">Nichts</translation>
+        <translation>Nichts</translation>
     </message>
 </context>
 <context>
     <name>ToolBar</name>
     <message>
         <source>Remove this toolbar</source>
-        <translation type="unfinished"></translation>
+        <translation>Diese Werkzeugleiste entfernen</translation>
     </message>
     <message>
         <source>Add new button</source>
@@ -3372,19 +3377,19 @@ Sie können diese aktivieren oder deaktivieren, indem Sie auf deren Namen doppel
     </message>
     <message>
         <source>Add new separator</source>
-        <translation type="unfinished"></translation>
+        <translation>Einen Separator hinzufügen</translation>
     </message>
     <message>
         <source>Remove this separator</source>
-        <translation type="unfinished"></translation>
+        <translation>Diesen Separator entfernen</translation>
     </message>
     <message>
         <source>Add new expandable spacer</source>
-        <translation type="unfinished"></translation>
+        <translation>Einen Abstandhalter hinzufügen</translation>
     </message>
     <message>
         <source>Remove this expandable spacer</source>
-        <translation type="unfinished"></translation>
+        <translation>Diesen Abstandhalter entfernen</translation>
     </message>
     <message>
         <source>No items to add found</source>
@@ -3392,7 +3397,7 @@ Sie können diese aktivieren oder deaktivieren, indem Sie auf deren Namen doppel
     </message>
     <message>
         <source>Remove this button</source>
-        <translation type="unfinished"></translation>
+        <translation>Diesen Kopf entfernen</translation>
     </message>
     <message>
         <source>Create new toolbar</source>
@@ -3404,135 +3409,135 @@ Sie können diese aktivieren oder deaktivieren, indem Sie auf deren Namen doppel
     </message>
     <message>
         <source>Text position</source>
-        <translation type="unfinished"></translation>
+        <translation>Textposition</translation>
     </message>
     <message>
         <source>Icon only</source>
-        <translation type="unfinished"></translation>
+        <translation>Nur Symbol</translation>
     </message>
     <message>
         <source>Text only</source>
-        <translation type="unfinished"></translation>
+        <translation>Nur Text</translation>
     </message>
     <message>
         <source>Text alongside icon</source>
-        <translation type="unfinished"></translation>
+        <translation>Text neben Symbol</translation>
     </message>
     <message>
         <source>Text under icon</source>
-        <translation type="unfinished"></translation>
+        <translation>Text unter Symbol</translation>
     </message>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished">Kadu</translation>
+        <translation>Kadu</translation>
     </message>
     <message>
         <source>Do you really want to remove selected toolbar?</source>
-        <translation type="unfinished"></translation>
+        <translation>Wollen Sie wirklich diese Werkzeugleiste entfernen?</translation>
     </message>
 </context>
 <context>
     <name>UpdatesDialog</name>
     <message>
         <source>New version is available. Please update</source>
-        <translation type="unfinished"></translation>
+        <translation>Eine neue Version ist verfügbar. Bitte updaten Sie</translation>
     </message>
     <message>
         <source>A new version &lt;b&gt;%1&lt;/b&gt; of Kadu Instant Messenger is available for download. Please &lt;a href=&apos;download&apos;&gt;download&lt;/a&gt; an installer and upgrade or use your package management system to update Kadu.</source>
-        <translation type="unfinished"></translation>
+        <translation>Eine neue Version &lt;b&gt;%1&lt;/b&gt; von Kadu ist zum Download bereitgestellt.  &lt;a href=&apos;download&apos;&gt;Laden Sie bitte das Installationsprogramm herunter&lt;/a&gt; und updaten Sie Kadu oder nutzen dazu die das Installationspackete-Verwaltungssystem.</translation>
     </message>
     <message>
         <source>A new version &lt;b&gt;%1&lt;/b&gt; of Kadu Instant Messenger is available for download. Please &lt;a href=&apos;download&apos;&gt;download&lt;/a&gt; an installer and upgrade.</source>
-        <translation type="unfinished"></translation>
+        <translation>Eine neue Version &lt;b&gt;%1&lt;/b&gt; von Kadu ist zum Download bereitgestellt.  &lt;a href=&apos;download&apos;&gt;Laden Sie bitte das Installationsprogramm herunter&lt;/a&gt; und updaten Sie Kadu.</translation>
     </message>
     <message>
         <source>Check for updates when Kadu is opened</source>
-        <translation type="unfinished"></translation>
+        <translation>Auf Updates überprüfen, wenn Kadu gestartet wurde</translation>
     </message>
     <message>
         <source>Ok</source>
-        <translation type="unfinished">Ok</translation>
+        <translation>Ok</translation>
     </message>
 </context>
 <context>
     <name>UrlOpener</name>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished">Kadu</translation>
+        <translation>Kadu</translation>
     </message>
     <message>
         <source>Could not spawn Web browser process. Check if the Web browser is functional</source>
-        <translation type="unfinished"></translation>
+        <translation>Kadu kann den Browser nicht starten. Überprüfen Sie, ob der angegebene Browser nutzbar ist</translation>
     </message>
     <message>
         <source>Could not spawn Mail client process. Check if the Mail client is functional</source>
-        <translation type="unfinished"></translation>
+        <translation>Kadu kann das E-Mail-Programm nicht starten. Überprüfen Sie, ob es nutzbar ist</translation>
     </message>
 </context>
 <context>
     <name>WindowNotifierWindow</name>
     <message>
         <source>OK</source>
-        <translation type="unfinished">OK</translation>
+        <translation>OK</translation>
     </message>
 </context>
 <context>
     <name>YourAccounts</name>
     <message>
         <source>Your accounts</source>
-        <translation type="unfinished"></translation>
+        <translation>Ihre Konten</translation>
     </message>
     <message>
         <source>Add existing account</source>
-        <translation type="unfinished"></translation>
+        <translation>Existierendes Konto hinzufügen</translation>
     </message>
     <message>
         <source>Create new account</source>
-        <translation type="unfinished"></translation>
+        <translation>Neues Konto erstellen</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Schließen</translation>
     </message>
     <message>
         <source>&lt;font size=&apos;+2&apos;&gt;&lt;b&gt;Create New Account&lt;/b&gt;&lt;/font&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;font size=&apos;+2&apos;&gt;&lt;b&gt;Neues Konto erstellen&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
     <message>
         <source>Create New Account</source>
-        <translation type="unfinished"></translation>
+        <translation>Neues Konto Erstellen</translation>
     </message>
     <message>
         <source>&lt;font size=&apos;+2&apos;&gt;&lt;b&gt;Add Existing Account&lt;/b&gt;&lt;/font&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;font size=&apos;+2&apos;&gt;&lt;b&gt;Vorhandenes Konto hinzufügen&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
     <message>
         <source>Setup an Existing Account</source>
-        <translation type="unfinished"></translation>
+        <translation>Existierendes Konto einrichten</translation>
     </message>
     <message>
         <source>Choose a network</source>
-        <translation type="unfinished"></translation>
+        <translation>Netzwerk auswählen</translation>
     </message>
     <message>
         <source>IM Network</source>
-        <translation type="unfinished"></translation>
+        <translation>Chat-Netzwerk</translation>
     </message>
     <message>
         <source>Account</source>
-        <translation type="unfinished">Konto</translation>
+        <translation>Konto</translation>
     </message>
     <message>
         <source>You have unsaved changes in current account.&lt;br /&gt;Do you want to return to editing?</source>
-        <translation type="unfinished"></translation>
+        <translation>Sie haben nicht gespeicherte Änderungen im aktuellen Konto.&lt;br/&gt;Wollen Sie die Bearbeitung fortsetzen?</translation>
     </message>
     <message>
         <source>You have unsaved changes in current account.&lt;br /&gt;Do you want to save them?</source>
-        <translation type="unfinished"></translation>
+        <translation>Sie haben nicht gespeicherte Änderungen im aktuellen Konto.&lt;br/&gt;Wollen Sie die diese speichern?</translation>
     </message>
     <message>
         <source>You have unsaved changes in current account.&lt;br /&gt;This data is invalid, so you will loose all changes.&lt;br /&gt;Do you want to go back to edit them?</source>
-        <translation type="unfinished"></translation>
+        <translation>Sie haben nicht gespeicherte Änderungen im aktuellen Konto.&lt;br/&gt;Diese Daten sind falsch weshalb Sie alle Änderungen verlieren werden.&lt;br/&gt;Wollen Sie die Bearbeitung fortsetzen?</translation>
     </message>
 </context>
 </TS>
