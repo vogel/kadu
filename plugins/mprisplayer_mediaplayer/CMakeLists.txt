@@ -1,0 +1,52 @@
+project (mprisplayer_mediaplayer)
+
+# minimal required versions
+cmake_minimum_required (VERSION 2.8)
+set (QT_MIN_VERSION "4.7.0")
+set (CMAKE_MIN_VERSION "2.6.0")
+
+set (KADU_FIND_REQUIRED true)
+include (FindKadu)
+message (STATUS "Found Kadu: " ${KADU_INCLUDE_DIR})
+
+include_directories ("${KADU_INCLUDE_DIR}/kadu-core" "${KADU_INCLUDE_DIR}/plugins" "${KADU_INCLUDE_DIR}/modules")
+
+set (SOURCES
+	gui/windows/mpris-player-dialog.cpp
+
+	mpris-player-configuration-ui-handler.cpp
+	mpris-player.cpp
+	mpris-player-plugin.cpp
+)
+
+set (MOC_SOURCES
+	gui/windows/mpris-player-dialog.h
+
+	mpris-player-configuration-ui-handler.h
+	mpris-player.h
+	mpris-player-plugin.h
+)
+
+set (TRANSLATION_SOURCES
+	translations/mprisplayer_mediaplayer_en.ts
+	translations/mprisplayer_mediaplayer_cz.ts
+	translations/mprisplayer_mediaplayer_de.ts
+	translations/mprisplayer_mediaplayer_it.ts
+	translations/mprisplayer_mediaplayer_pl.ts
+)
+
+set (CONFIGURATION_FILES
+	configuration/mprisplayer_mediaplayer.ui
+)
+
+set (DATA_FILES
+	data/mprisplayer-players.data
+)
+
+kadu_plugin (mprisplayer_mediaplayer
+	PLUGIN_SOURCES ${SOURCES}
+	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
+	PLUGIN_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
+	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
+	PLUGIN_DATA_FILES ${DATA_FILES}
+)

@@ -1,0 +1,23 @@
+[Amarok]
+player=Amarok
+service=org.kde.amarok
+
+[Audacious]
+player=Audacious
+service=org.mpris.audacious
+
+[BMPx]
+player=BMPx
+service=org.mpris.bmp
+
+[Dragon Player]
+player=Dragon Player
+service=org.kde.dragon.player
+
+[VLC]
+player=VLC
+service=org.mpris.vlc
+
+[XMMS2]
+player=XMMS2
+service=org.mpris.xmms2

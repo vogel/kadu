@@ -23,4 +23,8 @@ set (COMPILE_PLUGINS
 #	imagelink
 	# Sms gateway support
 	sms
+
+# mediaplayer
+	# MPRIS Media Player support
+	mprisplayer_mediaplayer
 )

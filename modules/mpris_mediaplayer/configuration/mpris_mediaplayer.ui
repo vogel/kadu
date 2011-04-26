@@ -1,9 +1,0 @@
-<configuration-ui>
-	<section name="MediaPlayer" icon="external_modules/mediaplayer">
-		<tab name="General">
-			<group-box name="MPRIS Media Player">
-				<line-edit caption="Service" config-section="MediaPlayer" config-item="MPRISService" tool-tip="Usually: org.mpris.&lt;player name&gt; (eg. org.mpris.audacious) but for amarok is org.kde.amarok" />
-			</group-box>
-		</tab>
-	</section>
-</configuration-ui>
