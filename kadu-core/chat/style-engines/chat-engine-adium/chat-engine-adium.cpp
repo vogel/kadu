@@ -184,15 +184,18 @@ void AdiumChatStyleEngine::appendChatMessage(HtmlMessagesRenderer *renderer, Mes
 	}
 
 	formattedMessageHtml = replacedNewLine(replaceKeywords(CurrentStyle.baseHref(), formattedMessageHtml, message), QLatin1String(" "));
-	formattedMessageHtml.replace('\'', QLatin1String("\\'"));
 	formattedMessageHtml.replace('\\', QLatin1String("\\\\"));
-	formattedMessageHtml.prepend("<span>");
+	formattedMessageHtml.replace('\'', QLatin1String("\\'"));
+	if (!message->message().id().isEmpty())
+		formattedMessageHtml.prepend(QString("<span id=\"message_%1\">").arg(message->message().id()));
+	else
+		formattedMessageHtml.prepend("<span>");
 	formattedMessageHtml.append("</span>");
 
 	if (includeHeader)
-		renderer->webPage()->mainFrame()->evaluateJavaScript("appendMessage(\'"+ formattedMessageHtml +"\')");
+		renderer->webPage()->mainFrame()->evaluateJavaScript("appendMessage('"+ formattedMessageHtml +"')");
 	else
-		renderer->webPage()->mainFrame()->evaluateJavaScript("appendNextMessage(\'"+ formattedMessageHtml +"\')");
+		renderer->webPage()->mainFrame()->evaluateJavaScript("appendNextMessage('"+ formattedMessageHtml +"')");
 
 	renderer->setLastMessage(message);
 }
@@ -307,14 +310,20 @@ void AdiumChatStyleEngine::prepareStylePreview(Preview *preview, QString styleNa
 
 	QString outgoingHtml(replacedNewLine(replaceKeywords(style.baseHref(), style.outgoingHtml(), message), QLatin1String(" ")));
 	outgoingHtml.replace('\'', QLatin1String("\\'"));
-	outgoingHtml.prepend("<span>");
+	if (!message->message().id().isEmpty())
+		outgoingHtml.prepend(QString("<span id=\"message_%1\">").arg(message->message().id()));
+	else
+		outgoingHtml.prepend("<span>");
 	outgoingHtml.append("</span>");
 	preview->page()->mainFrame()->evaluateJavaScript("appendMessage(\'" + outgoingHtml + "\')");
 
 	message = qobject_cast<MessageRenderInfo *>(preview->getObjectsToParse().at(1));
 	QString incomingHtml(replacedNewLine(replaceKeywords(style.baseHref(), style.incomingHtml(), message), QLatin1String(" ")));
 	incomingHtml.replace('\'', QLatin1String("\\'"));
-	incomingHtml.prepend("<span>");
+	if (!message->message().id().isEmpty())
+		incomingHtml.prepend(QString("<span id=\"message_%1\">").arg(message->message().id()));
+	else
+		incomingHtml.prepend("<span>");
 	incomingHtml.append("</span>");
 	preview->page()->mainFrame()->evaluateJavaScript("appendMessage(\'" + incomingHtml + "\')");
 
@@ -469,9 +478,22 @@ QString AdiumChatStyleEngine::replaceKeywords(const QString &styleHref, const QS
 		result.replace(textPos, senderColorRegExp.cap(0).length(), doLight ? lightColorName : colorName);
 	}
 
-	// Replace message TODO: do sth with formatMessage
-	QString messageText = QString("<span>") + formatMessage(message->htmlMessageContent()) + QString("</span>");
+// Replace message TODO: do sth with formatMessage
+	QString messageText = formatMessage(message->htmlMessageContent());
+
+	if (!message->message().id().isEmpty())
+		messageText.prepend(QString("<span id=\"message_%1\">").arg(message->message().id()));
+	else
+		messageText.prepend("<span>");
+	messageText.append("</span>");
+
+	result.replace(QString("%messageId%"), message->message().id());
 	result.replace(QString("%message%"), messageText);
 
 	return result;
+}
+
+void AdiumChatStyleEngine::messageStatusChanged(HtmlMessagesRenderer *renderer, Message message, Message::Status status)
+{
+	renderer->webPage()->mainFrame()->evaluateJavaScript(QString("adium_messageStatusChanged(%1, %2);").arg(message.id()).arg((int)status));
 }

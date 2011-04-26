@@ -106,7 +106,7 @@ void KaduChatStyleEngine::refreshView(HtmlMessagesRenderer *renderer, bool useTr
 
 void KaduChatStyleEngine::messageStatusChanged(HtmlMessagesRenderer *renderer, Message message, Message::Status status)
 {
-	renderer->webPage()->mainFrame()->evaluateJavaScript(QString("call_messageStatusChanged(%1, %2);").arg(message.id()).arg((int)status));
+	renderer->webPage()->mainFrame()->evaluateJavaScript(QString("kadu_messageStatusChanged(%1, %2);").arg(message.id()).arg((int)status));
 }
 
 QString KaduChatStyleEngine::isStyleValid(QString stylePath)

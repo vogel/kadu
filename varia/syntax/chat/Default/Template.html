@@ -26,6 +26,7 @@
 		function CoalescedHTML() {
 			var self = this;
 			this.fragment = document.createDocumentFragment();
+			this.scriptNodes = new Array();
 			this.timeoutID = 0;
 			this.coalesceRounds = 0;
 			this.isCoalescing = false;
@@ -46,6 +47,11 @@
 					// insert the documentFragment into the live DOM
 					appendElement(self.fragment);
 				}
+
+				var body = document.getElementsByTagName("body")[0];
+				for (var k in self.scriptNodes)
+					body.appendChild(self.scriptNodes[k]);
+
 				alignChat(self.shouldScroll);
 				
 				// reset state to empty/non-coalescing
@@ -62,7 +68,22 @@
 				range.selectNode(document.getElementById("Chat"));
 				return range.createContextualFragment(html);
 			}
-			
+
+			// removes script nodes and appends them to scriptNodes array
+			this.takeScriptNodes = function (node) {
+				for (var k in node.childNodes)
+				{
+					var childnode = node.childNodes[k];
+					if (childnode.nodeName && childnode.nodeName.toLowerCase() == "script")
+					{
+						var scriptnode = node.removeChild(childnode);
+						self.scriptNodes.push(scriptnode.cloneNode(true));
+					}
+					else
+						self.takeScriptNodes(childnode);
+				}
+			}
+
 			// removes first insert node from the internal fragment.
 			function rmInsertNode() {
 				var insert = self.fragment.querySelector("#insert");
@@ -117,9 +138,10 @@
 				}
 				self.isConsecutive = false;
 				rmInsertNode();
+
 				var node = createHTMLNode(html);
+				self.takeScriptNodes(node);
 				self.fragment.appendChild(node);
-				
 				node = null;
 
 				setShouldScroll(shouldScroll);
@@ -129,7 +151,9 @@
 			this.appendNext = function(html, shouldScroll) {
 				if(undefined === self.isConsecutive)
 					self.isConsecutive = true;
+
 				var node = createHTMLNode(html);
+				self.takeScriptNodes(node);
 				var insert = self.fragment.querySelector("#insert");
 				if(insert) {
 					insert.parentNode.replaceChild(node, insert);
@@ -137,6 +161,7 @@
 					self.fragment.appendChild(node);
 				}
 				node = null;
+
 				setShouldScroll(shouldScroll);
 				self.coalesce();
 			}
@@ -315,7 +340,17 @@
 		window.onresize = function windowDidResize(){
 			alignChat(true/*nearBottom()*/); //nearBottom buggy with inactive tabs
 		}
-		
+
+		function adium_messageStatusChanged(messageid, status)
+		{
+			if (typeof(messageStatusChanged) == 'undefined')
+				return;
+			if (coalescedHTML.isCoalescing)
+				setTimeout("adium_messageStatusChanged('" + messageid + "', " + status + ");", 10);
+			else
+				messageStatusChanged(messageid, status);
+		}
+
 		function initStyle() {
 			alignChat(true);
 

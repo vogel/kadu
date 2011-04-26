@@ -48,7 +48,7 @@ function kadu_removeFirstMessage()
 	node.removeChild(node.firstChild);
 }
 
-function call_messageStatusChanged(messageid, status)
+function kadu_messageStatusChanged(messageid, status)
 {
 	if (typeof(messageStatusChanged) != 'undefined')
 		messageStatusChanged(messageid, status);

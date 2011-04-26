@@ -76,5 +76,14 @@
 			}
 			return true;
 		}
+
+		function messageStatusChanged(messageid, status)
+		{
+			if (status == StatusWontDeliver || status == StatusUnknown)
+				document.getElementById("msg_"+messageid).innerHTML = "&times;";
+			else
+				document.getElementById("msg_"+messageid).innerHTML = "&#10004;";
+		}
+
 		//]]>
 	</script>
