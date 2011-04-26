@@ -21,6 +21,8 @@ set (COMPILE_PLUGINS
 	alsa_sound
 
 # misc
+	# Antistring
+	antistring
 	# Cenzor
 	cenzor
 	# Configuration wizard
