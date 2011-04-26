@@ -540,6 +540,14 @@ Passwords typed in both fields (&quot;Password&quot; and &quot;Retype Password&q
         <source>Show a warning when the image is larger then 256 KiB</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>External ip</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>External port</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>GaduPersonalInfoWidget</name>

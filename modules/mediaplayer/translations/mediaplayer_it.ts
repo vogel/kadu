@@ -202,5 +202,9 @@ Win+ Enter/Backspace/Left/Right/Up/Down.</source>
         <source>Pause</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Player isn&apos;t running!</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>

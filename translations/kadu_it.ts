@@ -2083,14 +2083,6 @@ This is probably a next part of &lt;b&gt;%5&lt;/b&gt;
 <context>
     <name>FileTransferWidget</name>
     <message>
-        <source>Pause</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Continue</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Remove</source>
         <translation type="unfinished">Rimuovi</translation>
     </message>
@@ -2136,6 +2128,14 @@ This is probably a next part of &lt;b&gt;%5&lt;/b&gt;
     </message>
     <message>
         <source>&lt;b&gt;Rejected&lt;/b&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stop</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2654,20 +2654,12 @@ This is probably a next part of &lt;b&gt;%5&lt;/b&gt;
         <translation>Nome del modulo</translation>
     </message>
     <message>
-        <source>Module type</source>
-        <translation>Tipo del modulo</translation>
-    </message>
-    <message>
         <source>State</source>
         <translation>Lo stato</translation>
     </message>
     <message>
         <source>&amp;Close</source>
         <translation>&amp;Chiudi</translation>
-    </message>
-    <message>
-        <source>Dynamic</source>
-        <translation>Dinamico</translation>
     </message>
     <message>
         <source>Not loaded</source>

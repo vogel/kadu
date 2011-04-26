@@ -2,6 +2,29 @@
 <!DOCTYPE TS>
 <TS version="2.0" language="de">
 <context>
+    <name>@default</name>
+    <message>
+        <source>Jabber/XMPP</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Data transfers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Port</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>External address</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CertificateDisplayDialog</name>
     <message>
         <source>Certificate Information</source>
@@ -555,60 +578,6 @@ Password entered in both fields (&quot;New password&quot; and &quot;Retype passw
     </message>
     <message>
         <source>Remove account</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>JabberFileTransferHandler</name>
-    <message>
-        <source>Unable to negotiate transfer.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to connect to peer for data transfer.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to connect to proxy for data transfer.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Lost connection / Cancelled.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>File was rejected by remote user.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to negotiate transfer.
-
-This can happen if the contact did not understand our request, or if the
-contact is offline.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to connect to peer for data transfer.
-
-Ensure that your Data Transfer settings are proper.  If you are behind
-a NAT router or firewall then you&apos;ll need to open the proper TCP port
-or specify a Data Transfer Proxy in your account settings.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Failure to either connect to, or activate, the Data Transfer Proxy.
-
-This means that the Proxy service is either not functioning or it is
-unreachable.  If you are behind a firewall, then you&apos;ll need to ensure
-that outgoing TCP connections are allowed.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>File I/O error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

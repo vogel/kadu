@@ -2114,14 +2114,6 @@ Co se má udělat?</translation>
 <context>
     <name>FileTransferWidget</name>
     <message>
-        <source>Pause</source>
-        <translation>Pozastavit</translation>
-    </message>
-    <message>
-        <source>Continue</source>
-        <translation>Pokračovat</translation>
-    </message>
-    <message>
         <source>Remove</source>
         <translation>Odstranit</translation>
     </message>
@@ -2168,6 +2160,14 @@ Co se má udělat?</translation>
     <message>
         <source>&lt;b&gt;Rejected&lt;/b&gt;</source>
         <translation>&lt;b&gt;Odmítnuto&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>Stop</source>
+        <translation type="unfinished">Zastavit</translation>
+    </message>
+    <message>
+        <source>Start</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2691,20 +2691,12 @@ Sloučit kamarády...</translation>
         <translation>Název modulu</translation>
     </message>
     <message>
-        <source>Module type</source>
-        <translation>Typ modulu</translation>
-    </message>
-    <message>
         <source>State</source>
         <translation>Stav</translation>
     </message>
     <message>
         <source>&amp;Close</source>
         <translation>&amp;Zavřít</translation>
-    </message>
-    <message>
-        <source>Dynamic</source>
-        <translation>Dynamický</translation>
     </message>
     <message>
         <source>Not loaded</source>

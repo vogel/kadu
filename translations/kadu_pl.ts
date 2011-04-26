@@ -2114,14 +2114,6 @@ Jest to prawdopodobnie dalsza część pliku &lt;b&gt;%5&lt;/b&gt;
 <context>
     <name>FileTransferWidget</name>
     <message>
-        <source>Pause</source>
-        <translation>Pauza</translation>
-    </message>
-    <message>
-        <source>Continue</source>
-        <translation>Kontynuuj</translation>
-    </message>
-    <message>
         <source>Remove</source>
         <translation>Usuń</translation>
     </message>
@@ -2168,6 +2160,14 @@ Jest to prawdopodobnie dalsza część pliku &lt;b&gt;%5&lt;/b&gt;
     <message>
         <source>&lt;b&gt;Rejected&lt;/b&gt;</source>
         <translation>&lt;b&gt;Odrzucony&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>Stop</source>
+        <translation type="unfinished">Zatrzymaj</translation>
+    </message>
+    <message>
+        <source>Start</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2690,20 +2690,12 @@ Jest to prawdopodobnie dalsza część pliku &lt;b&gt;%5&lt;/b&gt;
         <translation>Nazwa</translation>
     </message>
     <message>
-        <source>Module type</source>
-        <translation>Typ</translation>
-    </message>
-    <message>
         <source>State</source>
         <translation>Stan</translation>
     </message>
     <message>
         <source>&amp;Close</source>
         <translation>&amp;Zamknij</translation>
-    </message>
-    <message>
-        <source>Dynamic</source>
-        <translation>Dynamiczny</translation>
     </message>
     <message>
         <source>Not loaded</source>
