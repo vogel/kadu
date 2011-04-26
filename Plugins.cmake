@@ -23,6 +23,8 @@ set (COMPILE_PLUGINS
 # misc
 	# Antistring
 	antistring
+	# Auto away module
+	autoaway
 	# Cenzor
 	cenzor
 	# Configuration wizard
