@@ -59,8 +59,8 @@ protected:
 	virtual void configurationUpdated();
 
 public:
-	static GADUAPI void createInstance();
-	static GADUAPI void destroyInstance();
+	static void createInstance();
+	static void destroyInstance();
 
 	static GaduServersManager * instance() { return Instance; }
 
