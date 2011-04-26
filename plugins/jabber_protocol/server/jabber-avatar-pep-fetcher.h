@@ -48,7 +48,7 @@ private slots:
 	void avatarDataQueryFinished(const XMPP::Jid &jid, const QString &node, const XMPP::PubSubItem &item);
 
 public:
-	explicit JabberAvatarPepFetcher(Contact contact, QObject *parent = 0);
+	JabberAvatarPepFetcher(Contact contact, QObject *parent);
 	virtual ~JabberAvatarPepFetcher();
 
 	void fetchAvatar();
