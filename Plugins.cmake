@@ -11,12 +11,14 @@ set (COMPILE_PLUGINS
 	chat_notifier
 
 # history
-	# Genral history plugin
+	# General history plugin
 	history
 
 # sound
 	# General sound plugin
 	sound
+	# ALSA sound support
+	alsa_sound
 
 # misc
 	# Cenzor
