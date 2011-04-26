@@ -17,6 +17,8 @@ set (COMPILE_PLUGINS
 # docking
 	# Tray icon support (common part of all docking modules)
 	docking
+	# Always on top window docking plugin
+	desktop_docking
 
 # sound
 	# General sound plugin
