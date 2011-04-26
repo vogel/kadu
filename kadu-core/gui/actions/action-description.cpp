@@ -28,19 +28,12 @@
 
 #include "action-description.h"
 
-ActionDescription::ActionDescription(QObject *parent, ActionType Type, const QString &Name, QObject *Object, const char *Slot,
-	const QString &IconPath, const QString &Text, bool Checkable, ActionBoolCallback enableCallback) :
-		QObject(parent), ShortcutContext(Qt::WidgetShortcut)
+ActionDescription::ActionDescription(QObject *parent, ActionType type, const QString &name, QObject *object, const char *slot,
+		const KaduIcon &icon, const QString &text, bool checkable, ActionBoolCallback enableCallback) :
+		QObject(parent), Type(type), Name(name), Object(object), Slot(slot), Icon(icon), Text(text),
+		Checkable(checkable), EnableCallback(enableCallback), ShortcutContext(Qt::WidgetShortcut)
 {
-	this->Type = Type;
-	this->Name = Name;
-	this->Object = Object;
-	this->Slot = Slot;
-	this->IconPath = IconPath;
-	this->Text = Text;
-	this->Checkable = Checkable;
-	this->EnableCallback = enableCallback;
-	this->deleted = 0;
+	deleted = 0;
 
 	Actions::instance()->insert(this);
 }
@@ -53,14 +46,13 @@ ActionDescription::~ActionDescription()
 	Actions::instance()->remove(this);
 }
 
-void ActionDescription::actionDestroyed(QObject *action)
+void ActionDescription::actionAboutToBeDestroyed(Action *action)
 {
-	MainWindow *kaduMainWindow = static_cast<MainWindow *>(action->parent());
-	if (!kaduMainWindow)
+	if (deleted)
 		return;
 
-	if (!deleted && MappedActions.contains(kaduMainWindow))
-		MappedActions.remove(kaduMainWindow);
+	if (action && MappedActions.contains(action->dataSource()))
+		MappedActions.remove(action->dataSource());
 }
 
 void ActionDescription::setShortcut(QString configItem, Qt::ShortcutContext context)
@@ -79,7 +71,7 @@ Action * ActionDescription::createAction(ActionDataSource *dataSource, QObject *
 	Action *result = new Action(this, dataSource, parent);
 	MappedActions[dataSource] = result;
 
-	connect(result, SIGNAL(destroyed(QObject *)), this, SLOT(actionDestroyed(QObject *)));
+	connect(result, SIGNAL(aboutToBeDestroyed(Action *)), this, SLOT(actionAboutToBeDestroyed(Action *)));
 	if (Object && Slot)
 		connect(result, SIGNAL(triggered(QAction *, bool)), Object, Slot);
 

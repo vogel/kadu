@@ -32,7 +32,6 @@
 #include "contacts/contact-manager.h"
 #include "misc/misc.h"
 #include "debug.h"
-#include "modules.h"
 
 #include "infos.h"
 

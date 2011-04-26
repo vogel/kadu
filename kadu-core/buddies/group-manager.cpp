@@ -140,14 +140,14 @@ bool GroupManager::acceptableGroupName(const QString &groupName, bool acceptExis
 
 	if (groupName.contains(","))
 	{
-		MessageDialog::show("dialog-warning", tr("Kadu"), tr("'%1' is prohibited").arg(','));
+		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("'%1' is prohibited").arg(','));
 		kdebugf2();
 		return false;
 	}
 
 	if (groupName.contains(";"))
 	{
-		MessageDialog::show("dialog-warning", tr("Kadu"), tr("'%1' is prohibited").arg(';'));
+		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("'%1' is prohibited").arg(';'));
 		kdebugf2();
 		return false;
 	}
@@ -157,7 +157,7 @@ bool GroupManager::acceptableGroupName(const QString &groupName, bool acceptExis
 	if (number)
 	{
 		// because of gadu-gadu contact list format...
-		MessageDialog::show("dialog-warning", tr("Kadu"), tr("Numbers are prohibited"));
+		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Numbers are prohibited"));
 		kdebugf2();
 		return false;
 	}
@@ -165,14 +165,14 @@ bool GroupManager::acceptableGroupName(const QString &groupName, bool acceptExis
 	// TODO All translations
  	if (groupName == tr("All"))
 	{
-		MessageDialog::show("dialog-warning", tr("Kadu"), tr("Group name %1 is prohibited").arg(groupName));
+		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Group name %1 is prohibited").arg(groupName));
  		kdebugf2();
  		return false;
 	}
 
 	if (!acceptExistingGroupName && byName(groupName, false))
  	{
-		MessageDialog::show("dialog-warning", tr("Kadu"), tr("Group of that name already exists!"));
+		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Group of that name already exists!"));
  		kdebugf2();
  		return false;
  	}

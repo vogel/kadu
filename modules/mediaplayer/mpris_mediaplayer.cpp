@@ -1,5 +1,6 @@
 /*
  * %kadu copyright begin%
+ * Copyright 2011 Sławomir Stępień (s.stepien@interia.pl)
  * Copyright 2010 Piotr Galiszewski (piotr.galiszewski@kadu.im)
  * Copyright 2010 Bartosz Brachaczek (b.brachaczek@gmail.com)
  * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
@@ -48,9 +49,9 @@ MPRISMediaPlayer::MPRISMediaPlayer(QString n, QString s) :
 	controller = new MPRISController(service, this);
 
 	if (name == "Audacious")
-		mediaplayer->setInterval(5);
+		MediaPlayer::instance()->setInterval(5);
 	else
-		mediaplayer->setInterval(0);
+		MediaPlayer::instance()->setInterval(0);
 }
 
 MPRISMediaPlayer::~MPRISMediaPlayer()
@@ -58,9 +59,24 @@ MPRISMediaPlayer::~MPRISMediaPlayer()
 	kdebugf();
 }
 
-void MPRISMediaPlayer::setService(QString service)
+void MPRISMediaPlayer::setService(const QString &service)
 {
 	this->service = service;
+
+	if (controller)
+		delete controller;
+
+	controller = new MPRISController(this->service, this);
+}
+
+void MPRISMediaPlayer::setName(const QString &name)
+{
+	this->name = name;
+
+	if (name == "Audacious")
+		MediaPlayer::instance()->setInterval(5);
+	else
+		MediaPlayer::instance()->setInterval(0);
 }
 
 void MPRISMediaPlayer::send(QString obj, QString func, int val)

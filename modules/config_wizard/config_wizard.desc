@@ -1,8 +1,0 @@
-[Module]
-Description=Configuration wizard
-Description[pl]=Kreator konfiguracji
-Author=Dorregaray
-Dependencies=sound
-LoadByDefault=true
-Version=core
-Base=true

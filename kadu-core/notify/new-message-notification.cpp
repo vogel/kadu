@@ -26,7 +26,7 @@
 #include "chat/message/message.h"
 #include "notify/notification-manager.h"
 #include "notify/notify-event.h"
-#include "icons-manager.h"
+#include "icons/icons-manager.h"
 
 #include "new-message-notification.h"
 
@@ -64,7 +64,7 @@ void MessageNotification::unregisterEvents()
 
 MessageNotification::MessageNotification(MessageType messageType, const Message &message) :
 		ChatNotification(message.messageChat(), messageType == NewChat ? "NewChat" : "NewMessage",
-		"protocols/common/message")
+		KaduIcon("protocols/common/message"))
 {
 	QString syntax;
 

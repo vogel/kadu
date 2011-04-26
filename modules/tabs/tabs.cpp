@@ -52,13 +52,13 @@
 #include "gui/widgets/buddies-list-view-menu-manager.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/toolbar.h"
+#include "icons/kadu-icon.h"
 #include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocols-manager.h"
 
 #include "activate.h"
 #include "debug.h"
-#include "icons-manager.h"
 
 #include "tabs.h"
 
@@ -69,13 +69,13 @@ extern "C" KADU_EXPORT int tabs_init(bool firstload)
 	Q_UNUSED(firstload)
 
 	tabs_manager = new TabsManager();
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/tabs.ui"));
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/tabs.ui"));
 	return 0;
 }
 
 extern "C" KADU_EXPORT void tabs_close()
 {
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/tabs.ui"));
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/tabs.ui"));
 	delete tabs_manager;
 	tabs_manager = 0;
 }
@@ -132,14 +132,14 @@ TabsManager::TabsManager() :
 	OpenInNewTabActionDescription = new ActionDescription(this,
 		ActionDescription::TypeUser, "openInNewTabAction",
 		this, SLOT(onNewTab(QAction *, bool)),
-		"internet-group-chat", tr("Chat in New Tab"), false, disableNewTab
+		KaduIcon("internet-group-chat"), tr("Chat in New Tab"), false, disableNewTab
 	);
 	BuddiesListViewMenuManager::instance()->addActionDescription(OpenInNewTabActionDescription, BuddiesListViewMenuItem::MenuCategoryChat, 200);
 
 	AttachToTabsActionDescription = new ActionDescription(this,
 		ActionDescription::TypeChat, "attachToTabsAction",
 		this, SLOT(onTabAttach(QAction *, bool)),
-		"kadu_icons/tab-detach", tr("Attach Chat to Tabs"), true
+		KaduIcon("kadu_icons/tab-detach"), tr("Attach Chat to Tabs"), true
 	);
 	connect(AttachToTabsActionDescription, SIGNAL(actionCreated(Action *)), this, SLOT(attachToTabsActionCreated(Action *)));
 
@@ -435,7 +435,7 @@ void TabsManager::onTimer()
 		if (ChatsWithNewMessages.contains(chat))
 		{
 			if (msg)
-				TabDialog->setTabIcon(i, IconsManager::instance()->iconByPath("protocols/common/message"));
+				TabDialog->setTabIcon(i, KaduIcon("protocols/common/message").icon());
 			else
 				TabDialog->setTabIcon(i, chat->icon());
 
@@ -536,10 +536,10 @@ void TabsManager::makePopupMenu()
 	kdebugf();
 
 	Menu = new QMenu();
-	DetachTabMenuAction = Menu->addAction(IconsManager::instance()->iconByPath("kadu_icons/tab-detach"), tr("Detach"), this, SLOT(onMenuActionDetach()));
+	DetachTabMenuAction = Menu->addAction(KaduIcon("kadu_icons/tab-detach").icon(), tr("Detach"), this, SLOT(onMenuActionDetach()));
 	Menu->addAction(tr("Detach all"), this, SLOT(onMenuActionDetachAll()));
 	Menu->addSeparator();
-	CloseTabMenuAction = Menu->addAction(IconsManager::instance()->iconByPath("kadu_icons/tab-close"), tr("Close"), this, SLOT(onMenuActionClose()));
+	CloseTabMenuAction = Menu->addAction(KaduIcon("kadu_icons/tab-close").icon(), tr("Close"), this, SLOT(onMenuActionClose()));
 	Menu->addAction(tr("Close all"), this, SLOT(onMenuActionCloseAll()));
 
 	kdebugf2();
@@ -709,8 +709,8 @@ void TabsManager::configurationUpdated()
 	*/
 	TabDialog->configurationUpdated();
 
-	DetachTabMenuAction->setIcon(IconsManager::instance()->iconByPath("kadu_icons/tab-detach"));
-	CloseTabMenuAction->setIcon(IconsManager::instance()->iconByPath("kadu_icons/tab-close"));
+	DetachTabMenuAction->setIcon(KaduIcon("kadu_icons/tab-detach").icon());
+	CloseTabMenuAction->setIcon(KaduIcon("kadu_icons/tab-close").icon());
 
 	kdebugf2();
 }

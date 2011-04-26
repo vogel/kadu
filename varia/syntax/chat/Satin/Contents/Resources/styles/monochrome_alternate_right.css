@@ -48,11 +48,12 @@
 	}
 
 .status {
-	background: url("../images/status/black/status_fill.png") top repeat-x;
-	}
-.statusmessage {
-	background: url("../images/status/black/status_left.png") left top no-repeat;
-	}
-.statustime {
-	background: url("../images/status/black/status_right.png") right top no-repeat;
-	}
+	background-image: -webkit-gradient(
+		linear,
+		left bottom,
+		left top,
+		color-stop(0.6, rgb(64,64,64)),
+		color-stop(0.19, rgb(4,4,4))
+	);
+	border: 1px solid #9d9d9d;
+}

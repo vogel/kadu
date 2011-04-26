@@ -34,7 +34,7 @@ class KADUAPI ChatNotification : public AccountNotification
 	Chat CurrentChat;
 
 public:
-	ChatNotification(const Chat &chat, const QString &type, const QString &iconPath);
+	ChatNotification(const Chat &chat, const QString &type, const KaduIcon &icon);
 	virtual ~ChatNotification() {}
 
 	Chat chat() { return CurrentChat; }

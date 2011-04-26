@@ -1,14 +1,14 @@
 set (SOURCES
-	audacious.cpp
+	audacious-mediaplayer-plugin.cpp
 )
 
 set (MOC_SOURCES
-	audacious.h
+	audacious-mediaplayer-plugin.h
 )
 
-kadu_module (audacious_mediaplayer
-	MODULE_SOURCES ${SOURCES}
-	MODULE_MOC_SOURCES ${MOC_SOURCES}
-	MODULE_LIBRARIES ${QT_QTDBUS_LIBRARY}
+kadu_plugin (audacious_mediaplayer
+	PLUGIN_SOURCES ${SOURCES}
+	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
+	PLUGIN_LIBRARIES ${QT_QTDBUS_LIBRARY}
 )
 

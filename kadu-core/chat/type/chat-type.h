@@ -24,12 +24,12 @@
 
 #include <QtCore/QString>
 #include <QtCore/QVariant>
-#include <QtGui/QIcon>
 
 #include "exports.h"
 
 class ChatDetails;
 class ChatShared;
+class KaduIcon;
 
 /**
  * @addtogroup Chat
@@ -102,7 +102,7 @@ public:
 	 *
 	 * Chat type icon. Icon is used in history window and as icon of chat windows.
 	 */
-	virtual QIcon icon() const = 0;
+	virtual KaduIcon icon() const = 0;
 
 	/**
 	 * @author Piotr 'ultr' Dąbrowski

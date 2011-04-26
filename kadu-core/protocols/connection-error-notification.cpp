@@ -25,7 +25,7 @@
 #include "notify/notify-event.h"
 #include "parser/parser.h"
 #include "debug.h"
-#include "icons-manager.h"
+#include "icons/icons-manager.h"
 
 #include "connection-error-notification.h"
 
@@ -80,7 +80,7 @@ bool ConnectionErrorNotification::activeError(Account account, const QString &er
 }
 
 ConnectionErrorNotification::ConnectionErrorNotification(Account account, const QString &errorServer, const QString &errorMessage) :
-		AccountNotification(account, "ConnectionError", "dialog-error"),
+		AccountNotification(account, "ConnectionError", KaduIcon("dialog-error")),
 		ErrorServer(errorServer), ErrorMessage(errorMessage)
 {
 	setTitle(tr("Connection error"));

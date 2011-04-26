@@ -26,6 +26,7 @@
 #include "status/status.h"
 #include "exports.h"
 
+class KaduIcon;
 class StatusType;
 
 class KADUAPI StatusContainer : public QObject
@@ -40,17 +41,18 @@ public:
 	virtual ~StatusContainer() {}
 
 	virtual QString statusContainerName() = 0;
-	
+
 	virtual void setStatus(Status newStatus) = 0;
 	virtual Status status() = 0;
+	virtual bool isStatusSettingInProgress() = 0;
 
 	virtual void setDescription(const QString &description) = 0;
 
 	virtual QString statusDisplayName() = 0;
-	virtual QIcon statusIcon() = 0;
-	virtual QIcon statusIcon(Status status) = 0;
-	virtual QString statusIconPath(const QString &statusType) = 0;
-	virtual QIcon statusIcon(const QString &statusType) = 0;
+
+	virtual KaduIcon statusIcon() = 0;
+	virtual KaduIcon statusIcon(const Status &status) = 0;
+	virtual KaduIcon statusIcon(const QString &statusType) = 0;
 
 	virtual QList<StatusType *> supportedStatusTypes() = 0;
 

@@ -3,6 +3,7 @@ set (SOURCES
 )
 
 set (TRANSLATION_SOURCES
+	translations/parser_extender_en.ts
 	translations/parser_extender_de.ts
 	translations/parser_extender_fr.ts
 	translations/parser_extender_it.ts
@@ -13,9 +14,9 @@ set (CONFIGURATION_FILES
 	configuration/parser_extender.ui
 )
 
-kadu_module (parser_extender
-	MODULE_SOURCES ${SOURCES}
-	MODULE_MOC_SOURCES ${MOC_SOURCES}
-	MODULE_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
-	MODULE_CONFIGURATION_FILES ${CONFIGURATION_FILES}
+kadu_plugin (parser_extender
+	PLUGIN_SOURCES ${SOURCES}
+	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
+	PLUGIN_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
+	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 )

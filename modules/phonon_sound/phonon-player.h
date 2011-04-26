@@ -42,7 +42,6 @@ class PhononPlayer : public SoundPlayer
 	static PhononPlayer * Instance;
 
 	Phonon::MediaObject *Media;
-	Phonon::AudioOutput *Output;
 
 	PhononPlayer();
 	virtual ~PhononPlayer();

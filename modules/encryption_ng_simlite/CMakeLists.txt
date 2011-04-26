@@ -3,7 +3,7 @@ set (SOURCES
 	encryption-ng-simlite-encryptor.cpp
 	encryption-ng-simlite-key-generator.cpp
 	encryption-ng-simlite-key-importer.cpp
-	encryption-ng-simlite-module.cpp
+	encryption-ng-simlite-plugin.cpp
 	encryption-ng-simlite-provider.cpp
 
 	pkcs1_certificate.cpp
@@ -13,10 +13,12 @@ set (MOC_SOURCES
 	encryption-ng-simlite-decryptor.h
 	encryption-ng-simlite-encryptor.h
 	encryption-ng-simlite-key-importer.h
+	encryption-ng-simlite-plugin.h
 	encryption-ng-simlite-provider.h
 )
 
 set (TRANSLATION_SOURCES
+	translations/encryption_ng_simlite_en.ts
 	translations/encryption_ng_simlite_de.ts
 	translations/encryption_ng_simlite_fr.ts
 	translations/encryption_ng_simlite_it.ts
@@ -49,11 +51,11 @@ link_directories (${QCA2_LIBRARY_DIRS})
 add_definitions (${QCA2_CFLAGS_OTHER})
 include_directories (${QCA2_INCLUDE_DIRS})
 
-kadu_module (encryption_ng_simlite
-	MODULE_SOURCES ${SOURCES}
-	MODULE_MOC_SOURCES ${MOC_SOURCES}
-	MODULE_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
-	MODULE_CONFIGURATION_FILES ${CONFIGURATION_FILES}
-	MODULE_LIBRARIES ${QCA2_LIBRARIES}
-	MODULE_DEPENDENCIES encryption_ng
+kadu_plugin (encryption_ng_simlite
+	PLUGIN_SOURCES ${SOURCES}
+	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
+	PLUGIN_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
+	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
+	PLUGIN_LIBRARIES ${QCA2_LIBRARIES}
+	PLUGIN_DEPENDENCIES encryption_ng
 )

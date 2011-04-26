@@ -1,13 +1,17 @@
+include_directories ("../../plugins/history")
+
 set (SOURCES
 	storage/history-sql-storage.cpp
-	sql-history-module.cpp
+	sql-history-plugin.cpp
 )
 
 set (MOC_SOURCES
 	storage/history-sql-storage.h
+	sql-history-plugin.h
 )
 
 set (TRANSLATION_SOURCES
+	translations/sql_history_en.ts
 	translations/sql_history_de.ts
 	translations/sql_history_fr.ts
 	translations/sql_history_it.ts
@@ -17,12 +21,12 @@ set (TRANSLATION_SOURCES
 set (CONFIGURATION_FILES
 )
 
-kadu_module (sql_history
-	MODULE_SOURCES ${SOURCES}
-	MODULE_MOC_SOURCES ${MOC_SOURCES}
-	MODULE_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
-	MODULE_CONFIGURATION_FILES ${CONFIGURATION_FILES}
-	MODULE_DEPENDENCIES history
+kadu_plugin (sql_history
+	PLUGIN_SOURCES ${SOURCES}
+	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
+	PLUGIN_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
+	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
+	PLUGIN_DEPENDENCIES history
 )
 
 target_link_libraries (sql_history ${QT_QTSQL_LIBRARIES})

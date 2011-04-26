@@ -52,35 +52,6 @@
  * @ingroup autoaway
  * @{
  */
-AutoAway *autoAway = 0;
-
-extern "C" KADU_EXPORT int autoaway_init(bool firstLoad)
-{
-	Q_UNUSED(firstLoad)
-
-	kdebugf();
-
-	autoAway = new AutoAway();
-
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/autoaway.ui"));
-	MainConfigurationWindow::registerUiHandler(autoAway);
-
-	kdebugf2();
-	return 0;
-}
-
-extern "C" KADU_EXPORT void autoaway_close()
-{
-	kdebugf();
-
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/autoaway.ui"));
-	MainConfigurationWindow::unregisterUiHandler(autoAway);
-
-	delete autoAway;
-	autoAway = 0;
-
-	kdebugf2();
-}
 
 AutoAway::AutoAway() :
 		StatusChanged(false)
@@ -99,6 +70,22 @@ AutoAway::AutoAway() :
 AutoAway::~AutoAway()
 {
 	StatusChangerManager::instance()->unregisterStatusChanger(autoAwayStatusChanger);
+}
+
+int AutoAway::init(bool firstLoad)
+{
+	Q_UNUSED(firstLoad)
+
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/autoaway.ui"));
+	MainConfigurationWindow::registerUiHandler(this);
+
+	return 0;
+}
+
+void AutoAway::done()
+{
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/autoaway.ui"));
+	MainConfigurationWindow::unregisterUiHandler(this);
 }
 
 AutoAwayStatusChanger::ChangeStatusTo AutoAway::changeStatusTo()
@@ -289,5 +276,7 @@ void AutoAway::createDefaultConfiguration()
 	config_file.addVariable("General", "AutoRefreshStatusTime", 0);
 	config_file.addVariable("General", "AutoStatusText", QString());
 }
+
+Q_EXPORT_PLUGIN2(autoaway, AutoAway)
 
 /** @} */

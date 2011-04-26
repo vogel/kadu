@@ -58,7 +58,8 @@
 #include "gui/widgets/status-menu.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/main-configuration-window.h"
-#include "icons-manager.h"
+#include "icons/icons-manager.h"
+#include "icons/kadu-icon.h"
 #include "misc/misc.h"
 #include "protocols/protocol.h"
 #include "status/status-changer.h"
@@ -74,6 +75,7 @@ extern void qt_mac_set_dock_menu(QMenu *);
 #include "docker.h"
 
 #include "docking.h"
+#include <gui/status-icon.h>
 
 DockingManager * DockingManager::Instance = 0;
 
@@ -107,10 +109,11 @@ DockingManager::DockingManager() :
 
 	createDefaultConfiguration();
 
+	Icon = new StatusIcon(StatusContainerManager::instance(), this);
+	connect(Icon, SIGNAL(iconUpdated(KaduIcon)), this, SLOT(statusIconChanged(KaduIcon)));
+
 	connect(icon_timer, SIGNAL(timeout()), this, SLOT(changeIcon()));
 
-	connect(Core::instance(), SIGNAL(mainIconChanged(const QIcon &)),
-		this, SLOT(statusPixmapChanged(const QIcon &)));
 	connect(PendingMessagesManager::instance(), SIGNAL(messageAdded(Message)), this, SLOT(pendingMessageAdded()));
 	connect(PendingMessagesManager::instance(), SIGNAL(messageRemoved(Message)), this, SLOT(pendingMessageDeleted()));
 
@@ -124,7 +127,7 @@ DockingManager::DockingManager() :
 	MacDockMenu = new QMenu();
 	qt_mac_set_dock_menu(MacDockMenu);
 #endif
-	CloseKaduAction = new QAction(IconsManager::instance()->iconByPath("application-exit"), tr("&Exit Kadu"), this);
+	CloseKaduAction = new QAction(KaduIcon("application-exit").icon(), tr("&Exit Kadu"), this);
 	connect(CloseKaduAction, SIGNAL(triggered()), qApp, SLOT(quit()));
 
 	configurationUpdated();
@@ -138,8 +141,6 @@ DockingManager::~DockingManager()
 {
 	kdebugf();
 
-	disconnect(Core::instance(), SIGNAL(mainIconChanged(const QIcon &)),
-		this, SLOT(statusPixmapChanged(const QIcon &)));
 	disconnect(PendingMessagesManager::instance(), SIGNAL(messageAdded(Message)), this, SLOT(pendingMessageAdded()));
 	disconnect(PendingMessagesManager::instance(), SIGNAL(messageRemoved(Message)), this, SLOT(pendingMessageDeleted()));
 
@@ -168,30 +169,25 @@ void DockingManager::changeIcon()
 	{
 		case AnimatedEnvelope:
 			if (CurrentDocker)
-				CurrentDocker->changeTrayMovie(IconsManager::instance()->iconPath("protocols/common/16x16/message_anim.gif"));
+				CurrentDocker->changeTrayMovie(KaduIcon("protocols/common/16x16/message_anim.gif").fullPath());
 			break;
 		case StaticEnvelope:
 			if (CurrentDocker)
-				CurrentDocker->changeTrayIcon(IconsManager::instance()->iconByPath("protocols/common/message"));
+				CurrentDocker->changeTrayIcon(KaduIcon("protocols/common/message"));
 			break;
 		case BlinkingEnvelope:
 			if (!blink)
 			{
 				if (CurrentDocker)
-					CurrentDocker->changeTrayIcon(IconsManager::instance()->iconByPath("protocols/common/message"));
+					CurrentDocker->changeTrayIcon(KaduIcon("protocols/common/message"));
 				icon_timer->setSingleShot(true);
 				icon_timer->start(500);
 				blink = true;
 			}
 			else
 			{
-				Account account = AccountManager::instance()->defaultAccount();
-				if (account.isNull() || !account.protocolHandler())
-					return;
-
 				if (CurrentDocker)
-					CurrentDocker->changeTrayIcon(
-							StatusContainerManager::instance()->statusIcon(account.protocolHandler()->status()));
+					CurrentDocker->changeTrayIcon(StatusContainerManager::instance()->statusIcon());
 
 				icon_timer->setSingleShot(true);
 				icon_timer->start(500);
@@ -219,7 +215,7 @@ void DockingManager::pendingMessageDeleted()
 #endif
 	if (!PendingMessagesManager::instance()->hasPendingMessages())
 		if (CurrentDocker)
-			CurrentDocker->changeTrayIcon(defaultPixmap());
+			CurrentDocker->changeTrayIcon(defaultIcon());
 }
 
 void DockingManager::defaultToolTip()
@@ -296,15 +292,17 @@ void DockingManager::trayMousePressEvent(QMouseEvent * e)
 	kdebugf2();
 }
 
-void DockingManager::statusPixmapChanged(const QIcon &icon)
+void DockingManager::statusIconChanged(const KaduIcon &icon)
 {
 	kdebugf();
+
+	if (PendingMessagesManager::instance()->hasPendingMessages() || icon_timer->isActive())
+		return;
 
 	if (CurrentDocker)
 		CurrentDocker->changeTrayIcon(icon);
 
 	defaultToolTip();
-	changeIcon();
 #ifdef Q_OS_MAC
 	qApp->setWindowIcon(icon);
 #endif
@@ -316,13 +314,9 @@ void DockingManager::searchingForTrayPosition(QPoint &point)
 		point = CurrentDocker->trayPosition();
 }
 
-QIcon DockingManager::defaultPixmap()
+KaduIcon DockingManager::defaultIcon()
 {
-	Account account = AccountManager::instance()->defaultAccount();
-	if (account.isNull() || !account.protocolHandler())
-		return StatusContainerManager::instance()->statusIcon();
-
-	return StatusContainerManager::instance()->statusIcon(account.protocolHandler()->status());
+	return StatusContainerManager::instance()->statusIcon();
 }
 
 void DockingManager::setDocker(Docker *docker)
@@ -359,11 +353,11 @@ void DockingManager::updateContextMenu()
 
 	int statusContainersCount = StatusContainerManager::instance()->statusContainers().count();
 
-	if (statusContainersCount == 1)
+	if (1 == statusContainersCount)
 	{
-		new StatusMenu(StatusContainerManager::instance()->statusContainers().at(0), DockMenu, true);
+		new StatusMenu(StatusContainerManager::instance(), false, DockMenu);
 #ifdef Q_OS_MAC
-		new StatusMenu(StatusContainerManager::instance()->statusContainers().at(0), MacDockMenu, true);
+		new StatusMenu(StatusContainerManager::instance(), false, MacDockMenu);
 #endif
 	}
 	else
@@ -371,8 +365,8 @@ void DockingManager::updateContextMenu()
 		foreach (StatusContainer *container, StatusContainerManager::instance()->statusContainers())
 		{
 			QMenu *menu = new QMenu(container->statusContainerName(), DockMenu);
-			menu->setIcon(container->statusIcon());
-			new StatusMenu(container, menu);
+			menu->setIcon(container->statusIcon().icon());
+			new StatusMenu(container, false, menu);
 			StatusContainerMenus[container] = DockMenu->addMenu(menu);
 			connect(container, SIGNAL(statusUpdated()), this, SLOT(containerStatusChanged()));
 		}
@@ -382,9 +376,9 @@ void DockingManager::updateContextMenu()
 
 		if (statusContainersCount > 0)
 		{
-			new StatusMenu(StatusContainerManager::instance(), DockMenu);
+			new StatusMenu(StatusContainerManager::instance(), true, DockMenu);
 #ifdef Q_OS_MAC
-			new StatusMenu(StatusContainerManager::instance(), MacDockMenu);
+			new StatusMenu(StatusContainerManager::instance(), true, MacDockMenu);
 #endif
 		}
 	}
@@ -403,7 +397,7 @@ void DockingManager::containerStatusChanged()
 {
 	StatusContainer *container;
 	if (sender() && (container = qobject_cast<StatusContainer *>(sender())) && StatusContainerMenus[container])
-		StatusContainerMenus[container]->setIcon(container->statusIcon());
+		StatusContainerMenus[container]->setIcon(container->statusIcon().icon());
 }
 
 void DockingManager::iconThemeChanged()
@@ -412,7 +406,7 @@ void DockingManager::iconThemeChanged()
 	while (i.hasNext())
 	{
 		i.next();
-		i.value()->setIcon(i.key()->statusIcon());
+		i.value()->setIcon(i.key()->statusIcon().icon());
 	}
 }
 

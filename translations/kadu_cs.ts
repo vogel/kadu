@@ -682,16 +682,8 @@ Je to vysoce bezpečnostně rizikové!</translation>
         <translation>Obecné</translation>
     </message>
     <message>
-        <source>Event</source>
-        <translation>Událost</translation>
-    </message>
-    <message>
         <source>Options</source>
         <translation>Volby</translation>
-    </message>
-    <message>
-        <source>New messages</source>
-        <translation>Nové zprávy</translation>
     </message>
     <message>
         <source>Silent Mode</source>
@@ -714,20 +706,12 @@ Je to vysoce bezpečnostně rizikové!</translation>
         <translation>Uvědomit o nových zprávách jen když okno není v činnosti</translation>
     </message>
     <message>
-        <source>Status change</source>
-        <translation>Změna stavu</translation>
-    </message>
-    <message>
         <source>Ignore status changes from available/busy to busy/available</source>
         <translation>Přehlížet změny stavů z dostupný/zaneprázdněný na zaneprázdněný/dostupný</translation>
     </message>
     <message>
         <source>Ignore changes right after connection to the server</source>
         <translation>Přehlížet změny hned po připojení k serveru</translation>
-    </message>
-    <message>
-        <source>Notify about all users</source>
-        <translation>Uvědomit o všech uživatelích</translation>
     </message>
     <message>
         <source>Multilogon</source>
@@ -740,16 +724,6 @@ Je to vysoce bezpečnostně rizikové!</translation>
     <message>
         <source>Multilogon session disconnected</source>
         <translation>Sezení více přihlášení odpojeno</translation>
-    </message>
-    <message>
-        <source>Ignore status changes from available / busy to busy / available</source>
-        <translation>Přehlížet změny stavů z dostupný/zaneprázdněný na zaneprázdněný/dostupný</translation>
-    </message>
-    <message>
-        <source>This option will supersede tooltips with users&apos; status
- changes upon establishing connection to the server</source>
-        <translation>Tato volba nahradí nástrojové rady změnami uživatelského stavu
-ihned po zřízení spojení se serverem</translation>
     </message>
     <message>
         <source>User changed status</source>
@@ -1255,6 +1229,10 @@ ihned po zřízení spojení se serverem</translation>
         <source>Send message</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Show a window with notification</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -1738,38 +1716,32 @@ Vyvedení nebylo úspěšné</translation>
         <translation>Soubor není čitelný</translation>
     </message>
     <message>
-        <source>This file is too big (%1 &gt;= %2)</source>
-        <translation>Soubor je příliš velký (%1 &gt;= %2)</translation>
+        <source>This image has %1 KiB and exceeds the protocol limit of %2 KiB.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>This file is too big for %1.
-Do you really want to send this image?</source>
-        <translation>Tento soubor je příliš velký pro %1.
-Opravdu chcete poslat tento obrázek?</translation>
+        <source>This image has %1 KiB and exceeds recommended maximum size of %2 KiB.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>%1 is disconnected and cannot receive images.
-Do you really want to send this image?</source>
-        <translation>%1 je odpojen a nemůže přijímat obrázky.
-Opravdu chcete poslat tento obrázek?</translation>
+        <source>Do you really want to send this image?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>This file is too big for %1 of %2 contacts.
-</source>
-        <translation>Tento soubor je příliš velký pro %1 ze %2 spojení.
-</translation>
+        <source>This image has %1 KiB and may be too big for %2.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>%1 of %2 contacts are disconnected and cannot receive images.
-</source>
-        <translation>%1 ze %2 spojení je odpojeno a nemůže přijímat obrázky.
-</translation>
+        <source>%1 appears to be offline and may not receive images.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Do you really want to send this image?
-Some of them probably will not get it.</source>
-        <translation>Opravdu chcete poslat tento obrázek?
-Někteří jej pravděpodobně nedostanou.</translation>
+        <source>This image has %1 KiB and may be too big for %2 of %3 contacts in this conference.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 of %2 contacts appear to be offline and may not receive images.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2701,45 +2673,6 @@ Sloučit kamarády...</translation>
     </message>
 </context>
 <context>
-    <name>ModulesManager</name>
-    <message>
-        <source>Required module %1 was not found</source>
-        <translation>Požadovaný modul %1 nebyl nalezen</translation>
-    </message>
-    <message>
-        <source>Module %1 is already active</source>
-        <translation>Modul %1 je již v činnosti</translation>
-    </message>
-    <message>
-        <source>Cannot load %1 module library.:
-%2</source>
-        <translation>Nelze nahrát %1 knihovnu modulu:
-%2</translation>
-    </message>
-    <message>
-        <source>Module %1 conflicts with: %2</source>
-        <translation>Modul %1 se střetává s: %2</translation>
-    </message>
-    <message>
-        <source>Cannot find required functions in module %1.
-Maybe it&apos;s not Kadu-compatible Module.</source>
-        <translation>V modulu %1 nelze najít požadované funkce.
-Možná to není modul, který by se dal sloučit s Kadu.</translation>
-    </message>
-    <message>
-        <source>Module initialization routine for %1 failed.</source>
-        <translation>Běžný postup pro zapnutí modulu pro %1 selhal.</translation>
-    </message>
-    <message>
-        <source>Kadu</source>
-        <translation>Kadu</translation>
-    </message>
-    <message>
-        <source>Module %1 cannot be deactivated because it is being used by the following modules:%2</source>
-        <translation>Modul %1 nelze vypnout, protože je používán následujícími moduly:%2</translation>
-    </message>
-</context>
-<context>
     <name>ModulesWindow</name>
     <message>
         <source>Manage Modules</source>
@@ -2748,10 +2681,6 @@ Možná to není modul, který by se dal sloučit s Kadu.</translation>
     <message>
         <source>Info</source>
         <translation>Informace</translation>
-    </message>
-    <message>
-        <source>Static</source>
-        <translation>Statický</translation>
     </message>
     <message>
         <source>Loaded</source>
@@ -2788,10 +2717,6 @@ Možná to není modul, který by se dal sloučit s Kadu.</translation>
     <message>
         <source>&lt;b&gt;Module:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Depends on:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Conflicts with:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Provides:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Author:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Version:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Description:&lt;/b&gt;</source>
         <translation>&lt;b&gt;Modul:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Závisí na:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Střetává se s:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Poskytuje:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Autor:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Verze:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Popis:&lt;/b&gt;</translation>
-    </message>
-    <message>
-        <source>Hide base modules</source>
-        <translation>Skrýt základní moduly</translation>
     </message>
     <message>
         <source>&lt;b&gt;Module: &lt;/b&gt;%1&lt;br/&gt;&lt;b&gt;Depends on: &lt;/b&gt;%2&lt;br/&gt;&lt;b&gt;Conflicts with: &lt;/b&gt;%3&lt;br/&gt;&lt;b&gt;Provides: &lt;/b&gt;%4&lt;br/&gt;&lt;b&gt;Author: &lt;/b&gt;%5&lt;br/&gt;&lt;b&gt;Version: &lt;/b&gt;%6&lt;br/&gt;&lt;b&gt;Description: &lt;/b&gt;%7</source>
@@ -3006,6 +2931,58 @@ Můžete je nahrát (nebo odebrat) dvojitým poklepáním na jejich názvy.</tra
     </message>
 </context>
 <context>
+    <name>Plugin</name>
+    <message>
+        <source>Kadu</source>
+        <translation type="unfinished">Kadu</translation>
+    </message>
+    <message>
+        <source>Cannot load %1 plugin library.:
+%2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cannot find required object in module %1.
+Maybe it&apos;s not Kadu-compatible plugin.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cannot load %1 module library.:
+%2</source>
+        <translation type="unfinished">Nelze nahrát %1 knihovnu modulu:
+%2</translation>
+    </message>
+    <message>
+        <source>Cannot find required functions in module %1.
+Maybe it&apos;s not Kadu-compatible Module.</source>
+        <translation type="unfinished">V modulu %1 nelze najít požadované funkce.
+Možná to není modul, který by se dal sloučit s Kadu.</translation>
+    </message>
+    <message>
+        <source>Module initialization routine for %1 failed.</source>
+        <translation type="unfinished">Běžný postup pro zapnutí modulu pro %1 selhal.</translation>
+    </message>
+</context>
+<context>
+    <name>PluginsManager</name>
+    <message>
+        <source>Kadu</source>
+        <translation type="unfinished">Kadu</translation>
+    </message>
+    <message>
+        <source>Required module %1 was not found</source>
+        <translation type="unfinished">Požadovaný modul %1 nebyl nalezen</translation>
+    </message>
+    <message>
+        <source>Module %1 conflicts with: %2</source>
+        <translation type="unfinished">Modul %1 se střetává s: %2</translation>
+    </message>
+    <message>
+        <source>Module %1 cannot be deactivated because it is being used by the following modules:%2</source>
+        <translation type="unfinished">Modul %1 nelze vypnout, protože je používán následujícími moduly:%2</translation>
+    </message>
+</context>
+<context>
     <name>ProgressWindow</name>
     <message>
         <source>Plase wait. New Gadu-Gadu account is being registered.</source>
@@ -3052,17 +3029,6 @@ Můžete je nahrát (nebo odebrat) dvojitým poklepáním na jejich názvy.</tra
     <message>
         <source>Password</source>
         <translation>Heslo</translation>
-    </message>
-</context>
-<context>
-    <name>QApplication</name>
-    <message>
-        <source>Executable &apos;%1&apos; requires Qt %2, found Qt %3.</source>
-        <translation>Spustitelný soubor &apos;%1&apos; vyžaduje Qt %2; bylo ale nalezeno Qt %3.</translation>
-    </message>
-    <message>
-        <source>Incompatible Qt Library Error</source>
-        <translation>Chyba knihovny Qt, jež není slučitelná</translation>
     </message>
 </context>
 <context>
@@ -3374,16 +3340,16 @@ Můžete je nahrát (nebo odebrat) dvojitým poklepáním na jejich názvy.</tra
         <translation>Přepsat %1 skladbu?</translation>
     </message>
     <message>
-        <source>Preview</source>
-        <translation>Náhled</translation>
-    </message>
-    <message>
         <source>Save as...</source>
         <translation>Uložit jako...</translation>
     </message>
     <message>
         <source>Kadu</source>
         <translation>Kadu</translation>
+    </message>
+    <message>
+        <source>Refresh Preview</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

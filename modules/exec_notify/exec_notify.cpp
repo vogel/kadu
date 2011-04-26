@@ -48,7 +48,7 @@
 #include "notify/notification.h"
 #include "notify/notification-manager.h"
 
-#include "icons-manager.h"
+#include "icons/icons-manager.h"
 #include "parser/parser.h"
 #include "debug.h"
 
@@ -109,7 +109,7 @@ void ExecConfigurationWidget::switchToEvent(const QString &event)
 }
 
 ExecNotify::ExecNotify(QObject *parent) :
-		Notifier("Exec", QT_TRANSLATE_NOOP("@default", "Run command"), "external_modules/execnotify", parent)
+		Notifier("Exec", QT_TRANSLATE_NOOP("@default", "Run command"), KaduIcon("external_modules/execnotify"), parent)
 {
 	kdebugf();
 
@@ -262,26 +262,19 @@ void ExecNotify::notify(Notification *notification)
 		foreach (const QString &it, s)
 			result.append(Parser::parse(it, notification));
 
-	run(result, QString());
-
-
+	run(result);
 }
 
-void ExecNotify::run(const QStringList &args, const QString &in)
+void ExecNotify::run(const QStringList &args)
 {
-	Q_UNUSED(in)
-#ifdef DEBUG_ENABLED
-	foreach(QString arg, args)
+	foreach(const QString &arg, args)
+	{
 		kdebugm(KDEBUG_INFO, "arg: '%s'\n", qPrintable(arg));
-	kdebugm(KDEBUG_INFO, "stdin: %s\n", qPrintable(in));
-#endif
-	QProcess *p = new QProcess();
-	QString cmd = args.at(0);
-	QStringList arguments = args;
-	arguments.removeAt(0);
+	}
+
+	QProcess *p = new QProcess(this);
 	connect(p, SIGNAL(finished(int, QProcess::ExitStatus)), p, SLOT(deleteLater()));
-	p->start(cmd, arguments);
-	//p->launch(stdin.local8Bit());
+	p->start(args.at(0), args.mid(1));
 }
 
 NotifierConfigurationWidget *ExecNotify::createConfigurationWidget(QWidget *parent)

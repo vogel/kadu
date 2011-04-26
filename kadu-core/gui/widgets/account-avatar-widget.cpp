@@ -27,19 +27,17 @@
 
 #include "avatars/avatar.h"
 #include "avatars/avatar-manager.h"
+#include "icons/kadu-icon.h"
 #include "protocols/services/avatar-service.h"
 #include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
-#include "icons-manager.h"
 
 #include "account-avatar-widget.h"
 
 AccountAvatarWidget::AccountAvatarWidget(Account account, QWidget *parent) :
 		QWidget(parent), MyAccount(account), Service(0), WaitMovie(0)
 {
-
-	QString pleaseWaithPath = IconsManager::instance()->iconPath("kadu_icons/16x16/please-wait.gif");
-	WaitMovie = new QMovie(pleaseWaithPath, QByteArray(), this);
+	WaitMovie = new QMovie(KaduIcon("kadu_icons/16x16/please-wait.gif").fullPath(), QByteArray(), this);
 
 	createGui();
 

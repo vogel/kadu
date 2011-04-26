@@ -21,9 +21,12 @@
 
 
 
+#include <list>
 #include <unistd.h>
+
 #include <X11/Xutil.h>
 #include <X11/Xatom.h>
+
 #include "x11tools.h"
 
 
@@ -157,11 +160,11 @@ bool X11_isPointerGrabbed( Display *display )
 		return true;
 	if( status == GrabInvalidTime )
 	{
-		_debug( "[TIME]" );
+		_x11toolsdebug( "[TIME]" );
 	}
 	if( status == GrabSuccess )
 	{
-		_debug( "[GRAB]" );
+		_x11toolsdebug( "[GRAB]" );
 		XUngrabPointer( display, CurrentTime );
 		XFlush( display );
 	}
@@ -426,15 +429,19 @@ bool X11_isWholeWindowOnOneDesktop( Display *display, Window window )
 
 bool X11_isWindowCovered( Display *display, Window window )
 {
+	bool notypes = true;
 	Window parent = window;
 	Window root;
 	Window *children = NULL;
 	unsigned int nchildren;
-	while( parent != DefaultRootWindow( display ) )
+	while( ( parent != 0x0 ) && ( parent != DefaultRootWindow( display ) ) )
 	{
 		window = parent;
 		XQueryTree( display, window, &root, &parent, &children, &nchildren );
 		XFree( children );
+		Atom type = None;
+		if( X11_getFirstPropertyAtom( display, window, "_NET_WM_WINDOW_TYPE", &type ) )
+			notypes = false;
 	}
 	int x, y;
 	unsigned int width, height, border, depth;
@@ -454,8 +461,12 @@ bool X11_isWindowCovered( Display *display, Window window )
 			k++;
 		}
 		k++;
-		Atom typedock = XInternAtom( display, "_NET_WM_WINDOW_TYPE_DOCK", False );
-		Atom typemenu = XInternAtom( display, "_NET_WM_WINDOW_TYPE_MENU", False );
+		Atom type_dock         = XInternAtom( display, "_NET_WM_WINDOW_TYPE_DOCK"         , False );
+		Atom type_toolbar      = XInternAtom( display, "_NET_WM_WINDOW_TYPE_TOOLBAR"      , False );
+		Atom type_menu         = XInternAtom( display, "_NET_WM_WINDOW_TYPE_MENU"         , False );
+		Atom type_dropdownmenu = XInternAtom( display, "_NET_WM_WINDOW_TYPE_DROPDOWN_MENU", False );
+		Atom type_popupmenu    = XInternAtom( display, "_NET_WM_WINDOW_TYPE_POPUP_MENU"   , False );
+		Atom type_combo        = XInternAtom( display, "_NET_WM_WINDOW_TYPE_COMBO"        , False );
 		unsigned long currentdesktop = X11_getCurrentDesktop( display );
 		for( ; k < nchildren ; k++ )
 		{
@@ -478,30 +489,39 @@ bool X11_isWindowCovered( Display *display, Window window )
 			&&  ( ( y1 <= Y1 && Y1 <= y2 ) || ( y1 <= Y2 && Y2 <= y2 ) || ( y1 >= Y1 && y2 <= Y2 ) )
 			)
 			{
-				Atom type;
+				Atom type = None;
 				bool hastype = false;
-				if( X11_getFirstPropertyAtom( display, children[k], "_NET_WM_WINDOW_TYPE", &type ) )
-					hastype = true;
-				if( ! hastype )
+				std::list<Window> windows;
+				windows.push_back( children[k] );
+				Window *children2 = NULL;
+				unsigned int nchildren2;
+				while( true )
 				{
-					Window window2 = children[k];
-					Window *children2 = NULL;
-					unsigned int nchildren2;
-					while( ( ! hastype ) )
+					if( windows.empty() )
+						break;
+					Window w = *(windows.begin());
+					windows.pop_front();
+					if( X11_getFirstPropertyAtom( display, w, "_NET_WM_WINDOW_TYPE", &type ) )
+						hastype = true;
+					if( hastype )
+						break;
+					XQueryTree( display, w, &root, &parent, &children2, &nchildren2 );
+					if( ( nchildren2 > 0 ) && ( children2 != NULL ) )
 					{
-						XQueryTree( display, window2, &root, &parent, &children2, &nchildren2 );
-						if( children2 != NULL )
-						{
-							window2 = children2[0];
-							if( X11_getFirstPropertyAtom( display, window2, "_NET_WM_WINDOW_TYPE", &type ) )
-								hastype = true;
-							XFree( children2 );
-						}
-						else
-							break;
+						for( int k2 = nchildren2 - 1; k2 >= 0; --k2 )
+							windows.push_back( children2[k2] );
+						XFree( children2 );
+						children2 = NULL;
 					}
 				}
-				if( ( hastype ) && ( type != typedock ) && ( type != typemenu ) )
+				windows.clear();
+				if(
+					( notypes && ( ! hastype ) ) ||
+					( hastype &&
+						( type != type_dock ) && ( type != type_toolbar ) && ( type != type_menu ) &&
+						( type != type_dropdownmenu ) && ( type != type_popupmenu ) && ( type != type_combo )
+					)
+				)
 				{
 					XFree( children );
 					return true;
@@ -538,15 +558,13 @@ std::pair<int,int> X11_getWindowPos( Display *display, Window window )
 	unsigned int nchildren;
 	if( window != DefaultRootWindow( display ) )
 	{
-		while( parent != DefaultRootWindow( display ) )
+		while( ( parent != 0x0 ) && ( parent != DefaultRootWindow( display ) ) )
 		{
 			window = parent;
 			if( XQueryTree( display, window, &root, &parent, &children, &nchildren ) == 0 )
 				return std::make_pair( 0, 0 );
 			XFree( children );
 		}
-		if( window == DefaultRootWindow( display ) )
-			return std::make_pair( 0, 0 );
 	}
 	int x, y;
 	unsigned int width, height, border, depth;
@@ -566,15 +584,13 @@ std::pair<int,int> X11_getWindowSize( Display *display, Window window )
 	unsigned int nchildren;
 	if( window != DefaultRootWindow( display ) )
 	{
-		while( parent != DefaultRootWindow( display ) )
+		while( ( parent != 0x0 ) && ( parent != DefaultRootWindow( display ) ) )
 		{
 			window = parent;
 			if( XQueryTree( display, window, &root, &parent, &children, &nchildren ) == 0 )
 				return std::make_pair( 0, 0 );
 			XFree( children );
 		}
-		if( window == DefaultRootWindow( display ) )
-			return std::make_pair( 0, 0 );
 	}
 	int x, y;
 	unsigned int width, height, border, depth;
@@ -684,8 +700,8 @@ void X11_setActiveWindowCheck( Display *display, Window window, bool forceFreeDe
 
 Window X11_getTopMostWindow( Display *display )
 {
-	Atom listatom;
-	Atom type_return;
+	Atom listatom = None;
+	Atom type_return = None;
 	int format_return;
 	unsigned long nitems_return;
 	unsigned long bytesafter_return;
@@ -859,68 +875,68 @@ void X11_windowSetDecoration( Display *display, Window window, bool set )
 
 bool X11_checkFullScreen( Display *display )
 {
-	_debug( "[A]" );
+	_x11toolsdebug( "[A]" );
 	Window wa = X11_getActiveWindow( display );
 	if( wa != None )
 		if( X11_isPropertyAtomSet( display, wa, "_NET_WM_STATE", "_NET_WM_STATE_FULLSCREEN" ) )
 			return true;
-	_debug( "[B]" )
+	_x11toolsdebug( "[B]" )
 	Window wt = X11_getTopMostWindow( display );
 	if( wt != None )
 		if( X11_isPropertyAtomSet( display, wt, "_NET_WM_STATE", "_NET_WM_STATE_FULLSCREEN" ) )
 			return true;
-	_debug( "[C]" );
+	_x11toolsdebug( "[C]" );
 	std::pair<int,int> resolution = X11_getResolution( display );
-	_debug( "[RES=%dx%d]", resolution.first, resolution.second );
-	_debug( "[wa=%dx%d]", X11_getWindowSize( display, wa ).first, X11_getWindowSize( display, wa ).second );
-	_debug( "[wt=%dx%d]", X11_getWindowSize( display, wt ).first, X11_getWindowSize( display, wt ).second );
+	_x11toolsdebug( "[RES=%dx%d]", resolution.first, resolution.second );
+	_x11toolsdebug( "[wa=%dx%d]", X11_getWindowSize( display, wa ).first, X11_getWindowSize( display, wa ).second );
+	_x11toolsdebug( "[wt=%dx%d]", X11_getWindowSize( display, wt ).first, X11_getWindowSize( display, wt ).second );
 	unsigned long currentdesktop = X11_getCurrentDesktop( display );
-	_debug( "[cD=%d]", currentdesktop );
+	_x11toolsdebug( "[cD=%d]", currentdesktop );
 	if( X11_isPointerGrabbed( display ) )
 	{
-		_debug( "[D]" );
+		_x11toolsdebug( "[D]" );
 		if( wt != None )
 			if( X11_getWindowSize( display, wt ) == resolution )
 			{
-				_debug( "[D2]" );
+				_x11toolsdebug( "[D2]" );
 				if(
 						X11_isPropertyAtomSet( display, wt, "_NET_WM_STATE", "_NET_WM_STATE_MAXIMIZED_HORZ" ) &&
 						X11_isPropertyAtomSet( display, wt, "_NET_WM_STATE", "_NET_WM_STATE_MAXIMIZED_VERT" ) &&
 						X11_isWindowOnDesktop( display, wt, currentdesktop )
 					)
 					return false;
-				_debug( "[D3]" );
-				_debug( "[wtD=%d]", X11_getDesktopOfWindow( display, wt ) );
+				_x11toolsdebug( "[D3]" );
+				_x11toolsdebug( "[wtD=%d]", X11_getDesktopOfWindow( display, wt ) );
 				if( X11_isWindowOnDesktop( display, wt, currentdesktop ) )
 					return true;
-				_debug( "[D4]" );
+				_x11toolsdebug( "[D4]" );
 			}
-		_debug( "[E]" );
+		_x11toolsdebug( "[E]" );
 		Window wl = X11_getLatestCreatedWindow( display );
-		_debug( "[wl=%dx%d]", X11_getWindowSize( display, wl ).first, X11_getWindowSize( display, wl ).second );
+		_x11toolsdebug( "[wl=%dx%d]", X11_getWindowSize( display, wl ).first, X11_getWindowSize( display, wl ).second );
 		if( wl != None )
 			if( X11_getWindowSize( display, wl ) == resolution )
 			{
-				_debug( "[E2]" );
-				_debug( "[wlD=%d]", X11_getDesktopOfWindow( display, wl ) );
+				_x11toolsdebug( "[E2]" );
+				_x11toolsdebug( "[wlD=%d]", X11_getDesktopOfWindow( display, wl ) );
 				if(
 						X11_isPropertyAtomSet( display, wl, "_NET_WM_STATE", "_NET_WM_STATE_MAXIMIZED_HORZ" ) &&
 						X11_isPropertyAtomSet( display, wl, "_NET_WM_STATE", "_NET_WM_STATE_MAXIMIZED_VERT" ) &&
 						X11_isWindowOnDesktop( display, wl, currentdesktop )
 					)
 					return false;
-				_debug( "[E3]" );
+				_x11toolsdebug( "[E3]" );
 				return true;
 			}
-		_debug( "[F]" );
+		_x11toolsdebug( "[F]" );
 		if( wl != None )
 		{
-			_debug( "[F2]" );
-			Atom wl_type;
+			_x11toolsdebug( "[F2]" );
+			Atom wl_type = None;
 			if( X11_getFirstPropertyAtom( display, wl, "_NET_WM_WINDOW_TYPE", &wl_type ) && ( wl_type != None ) )
 			{
-				_debug( "[F3]" );
-				_debug( "[wlT=%d]", wl_type );
+				_x11toolsdebug( "[F3]" );
+				_x11toolsdebug( "[wlT=%d]", wl_type );
 				Atom type_toolbar      = XInternAtom( display, "_NET_WM_WINDOW_TYPE_TOOLBAR"      , False );
 				Atom type_menu         = XInternAtom( display, "_NET_WM_WINDOW_TYPE_MENU"         , False );
 				Atom type_dropdownmenu = XInternAtom( display, "_NET_WM_WINDOW_TYPE_DROPDOWN_MENU", False );
@@ -934,37 +950,37 @@ bool X11_checkFullScreen( Display *display )
 					( wl_type == type_combo        )
 					)
 				{
-					_debug( "[Ttoolbar=%d]"     , type_toolbar      );
-					_debug( "[Tmenu=%d]"        , type_menu         );
-					_debug( "[Tdropdownmenu=%d]", type_dropdownmenu );
-					_debug( "[Tpopupmenu=%d]"   , type_popupmenu    );
-					_debug( "[Tcombo=%d]"       , type_combo        );
+					_x11toolsdebug( "[Ttoolbar=%d]"     , type_toolbar      );
+					_x11toolsdebug( "[Tmenu=%d]"        , type_menu         );
+					_x11toolsdebug( "[Tdropdownmenu=%d]", type_dropdownmenu );
+					_x11toolsdebug( "[Tpopupmenu=%d]"   , type_popupmenu    );
+					_x11toolsdebug( "[Tcombo=%d]"       , type_combo        );
 					return false;
 				}
-				_debug( "[F4]" );
+				_x11toolsdebug( "[F4]" );
 			}
 		}
-		_debug( "[G]" );
+		_x11toolsdebug( "[G]" );
 		if( ( wa != None ) && ( wt == wa ) )
 		{
-			_debug( "[G2]" );
+			_x11toolsdebug( "[G2]" );
 			if( wl != None )
 			{
-				_debug( "[G3]" );
+				_x11toolsdebug( "[G3]" );
 				XWindowAttributes attr;
 				Status status = XGetWindowAttributes( display, wl, &attr );
 				if( status != 0 )
 					if( ( attr.all_event_masks & ( ButtonReleaseMask | KeyReleaseMask ) ) == 0 )
 						return false;
-				_debug( "[G4]" );
+				_x11toolsdebug( "[G4]" );
 			}
-			_debug( "[G5]" );
+			_x11toolsdebug( "[G5]" );
 			return true;
 		}
-		_debug( "[I]" );
+		_x11toolsdebug( "[I]" );
 		return false;
 	}
-	_debug( "[Z]" );
+	_x11toolsdebug( "[Z]" );
 	return false;
 }
 

@@ -1,5 +1,6 @@
 /*
  * %kadu copyright begin%
+ * Copyright 2011 Sławomir Stępień (s.stepien@interia.pl)
  * Copyright 2010, 2011 Bartosz Brachaczek (b.brachaczek@gmail.com)
  * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
  * Copyright 2009, 2010 Piotr Galiszewski (piotr.galiszewski@kadu.im)
@@ -30,6 +31,7 @@
 #include <enchant++.h>
 #endif
 
+#include <QtCore/QTextCodec>
 #include <QtGui/QApplication>
 #include <QtGui/QGridLayout>
 #include <QtGui/QLabel>
@@ -42,10 +44,12 @@
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "configuration/configuration-file.h"
 #include "gui/widgets/custom-input.h"
+#include "gui/widgets/chat-edit-box.h"
 #include "gui/windows/message-dialog.h"
 #include "misc/misc.h"
 
 #include "highlighter.h"
+#include "suggester.h"
 
 #include "spellchecker.h"
 
@@ -57,15 +61,17 @@ extern "C" KADU_EXPORT int spellchecker_init(bool firstLoad)
 
 	spellcheck = new SpellChecker();
 
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/spellchecker.ui"));
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/spellchecker.ui"));
 	MainConfigurationWindow::registerUiHandler(spellcheck);
 	return 0;
 }
 
 extern "C" KADU_EXPORT void spellchecker_close()
 {
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/spellchecker.ui"));
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/spellchecker.ui"));
 	MainConfigurationWindow::unregisterUiHandler(spellcheck);
+
+	Suggester::destroyInstance();
 	delete spellcheck;
 	spellcheck = 0;
 }
@@ -97,6 +103,7 @@ SpellChecker::SpellChecker()
 	// prepare configuration of spellchecker
 	SpellConfig = new_aspell_config();
 	aspell_config_replace(SpellConfig, "encoding", "utf-8");
+	aspell_config_replace(SpellConfig, "sug-mode", "ultra");
 
 #ifdef Q_OS_WIN32
 	aspell_config_replace(SpellConfig, "dict-dir", qPrintable(dataPath("aspell/dict")));
@@ -171,7 +178,7 @@ bool SpellChecker::addCheckedLang(const QString &name)
 	AspellCanHaveError *possibleErr = new_aspell_speller(SpellConfig);
 	if (aspell_error_number(possibleErr) != 0)
 	{
-		MessageDialog::show("dialog-error", tr("Kadu"), aspell_error_message(possibleErr));
+		MessageDialog::show(KaduIcon("dialog-error"), tr("Kadu"), aspell_error_message(possibleErr));
 		return false;
 	}
 	else
@@ -183,7 +190,7 @@ bool SpellChecker::addCheckedLang(const QString &name)
 	}
 	catch (enchant::Exception &e)
 	{
-		MessageDialog::show("dialog-error", tr("Kadu"), e.what());
+		MessageDialog::show(KaduIcon("dialog-error"), tr("Kadu"), e.what());
 		return false;
 	}
 #endif
@@ -266,7 +273,10 @@ void SpellChecker::buildMarkTag()
 void SpellChecker::chatCreated(ChatWidget *chat)
 {
 	if (!MyCheckers.isEmpty())
+	{
+		chat->getChatEditBox()->inputBox()->installEventFilter(Suggester::instance());
 		new Highlighter(chat->edit()->document());
+	}
 }
 
 void SpellChecker::configForward()
@@ -344,6 +354,7 @@ void SpellChecker::mainConfigurationWindowCreated(MainConfigurationWindow *mainC
 
 void SpellChecker::configurationUpdated()
 {
+	SuggestedWordCount = config_file.readNumEntry("ASpell", "SuggesterWordCount");
 	buildMarkTag();
 	buildCheckers();
 }
@@ -362,6 +373,8 @@ void SpellChecker::createDefaultConfiguration()
 	config_file.addVariable("ASpell", "Checked", "pl");
 	config_file.addVariable("ASpell", "Accents", "false");
 	config_file.addVariable("ASpell", "Case", "false");
+	config_file.addVariable("ASpell", "Suggester", "true");
+	config_file.addVariable("ASpell", "SuggesterWordCount", "10");
 }
 
 bool SpellChecker::checkWord(const QString &word)
@@ -385,4 +398,71 @@ bool SpellChecker::checkWord(const QString &word)
 			}
 
 	return isWordValid;
+}
+
+QStringList SpellChecker::buildSuggestList(const QString &word)
+{
+	QStringList suggestWordList;
+#ifdef HAVE_ASPELL
+	QTextCodec *codec = QTextCodec::codecForName("utf-8");
+#endif
+
+	int suggesterWordCount = SuggestedWordCount;
+	if (MyCheckers.size() > SuggestedWordCount)
+		suggesterWordCount = 1;
+	else
+		suggesterWordCount /= MyCheckers.size();
+
+	int wordsForLanguage = 0;
+	for (Checkers::const_iterator it = MyCheckers.constBegin(); it != MyCheckers.constEnd(); ++it)
+	{
+		wordsForLanguage = suggesterWordCount;
+#ifdef HAVE_ASPELL
+		const AspellWordList *aspellTmpList = aspell_speller_suggest(it.value(), word.toUtf8().constData(), -1);
+
+		if (!aspell_word_list_empty(aspellTmpList))
+		{
+			struct AspellStringEnumeration *aspellStringEnum = aspell_word_list_elements(aspellTmpList);
+
+			while((!aspell_string_enumeration_at_end(aspellStringEnum)) && wordsForLanguage)
+			{
+				if (MyCheckers.size() > 1)
+					suggestWordList.append(codec->toUnicode(aspell_string_enumeration_next(aspellStringEnum)) + " (" + it.key() + ")");
+				else
+					suggestWordList.append(codec->toUnicode(aspell_string_enumeration_next(aspellStringEnum)));
+
+				--wordsForLanguage;
+			}
+
+			delete_aspell_string_enumeration(aspellStringEnum);
+		}
+#else
+		size_t numberOfSuggs;
+		EnchantBroker *broker = enchant_broker_init();
+		EnchantDict *dict = enchant_broker_request_dict(broker, it.key().toUtf8().constData());
+		char **suggs = enchant_dict_suggest(dict, word.toUtf8().constData(), word.toUtf8().size(), &numberOfSuggs);
+
+		if ((suggs) && (numberOfSuggs))
+		{
+			for (size_t i = 0; i < numberOfSuggs; ++i)
+			{
+				if (!wordsForLanguage)
+					break;
+
+				if (MyCheckers.size() > 1)
+					suggestWordList.append(QString::fromUtf8(suggs[i]) + " (" + it.key() + ")");
+				else
+					suggestWordList.append(QString::fromUtf8(suggs[i]));
+
+				--wordsForLanguage;
+			}
+		}
+
+		enchant_dict_free_string_list(dict, suggs);
+		enchant_broker_free_dict(broker, dict);
+		enchant_broker_free(broker);
+#endif
+	}
+
+	return suggestWordList;
 }

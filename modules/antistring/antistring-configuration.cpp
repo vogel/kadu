@@ -70,10 +70,10 @@ void AntistringConfiguration::addCondition(const QString &conditionString)
 
 void AntistringConfiguration::readDefaultConditions()
 {
-	QFile defaultListFile(dataPath("kadu/modules/data/antistring/ant_conditions.conf"));
+	QFile defaultListFile(dataPath("kadu/plugins/data/antistring/ant_conditions.conf"));
 	if (!defaultListFile.open(QFile::ReadOnly))
 	{
-		kdebug("Can't open file: %s", qPrintable(defaultListFile.fileName()));
+		kdebug("Can't open file: %s\n", qPrintable(defaultListFile.fileName()));
 		return;
 	}
 

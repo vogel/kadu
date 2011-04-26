@@ -1,4 +1,5 @@
 /*
+ * Copyright 2011 Sławomir Stępień (s.stepien@interia.pl)
  * Copyright 2008 Dawid Stawiarski (neeo@kadu.net)
  * Copyright 2004, 2005, 2006, 2007 Marcin Ślusarz (joi@kadu.net)
  * Copyright 2003, 2004 Adrian Smarzewski (adrian@kadu.net)
@@ -30,7 +31,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "QtGui/QCheckBox"
 #include "QtGui/QGroupBox"
 #include "QtGui/QHBoxLayout"
 #include "QtGui/QLabel"
@@ -43,16 +43,16 @@
 #include <QtGui/QScrollBar>
 
 #include "configuration/configuration-file.h"
-
-#include "debug.h"
-#include "icons-manager.h"
+#include "configuration/configuration-manager.h"
+#include "icons/kadu-icon.h"
 #include "misc/misc.h"
-#include "modules.h"
+#include "debug.h"
+
 #include "modules-window.h"
 
 ModulesWindow::ModulesWindow(QWidget *parent)
 	: QWidget(parent, Qt::Window),
-	lv_modules(0), l_moduleinfo(0)
+	ModulesList(0), ModuleInfo(0)
 {
 	kdebugf();
 
@@ -80,7 +80,7 @@ ModulesWindow::ModulesWindow(QWidget *parent)
 
 #ifndef Q_WS_MAEMO_5
 	QLabel *l_info = new QLabel(center);
-	l_icon->setPixmap(IconsManager::instance()->iconByPath("kadu_icons/plugins").pixmap(32, 32));
+	l_icon->setPixmap(KaduIcon("kadu_icons/plugins").icon().pixmap(32, 32));
 	l_info->setText(tr("This dialog box allows you to manage installed modules. Modules are responsible "
 			"for numerous vital features like playing sounds or message encryption.\n"
 			"You can load (or unload) them by double-clicking on their names."));
@@ -92,16 +92,14 @@ ModulesWindow::ModulesWindow(QWidget *parent)
 	// end create main QLabel widgets (icon and app info)
 
 	// our QListView
-	lv_modules = new QTreeWidget(center);
+	ModulesList = new QTreeWidget(center);
 	QStringList headers;
-	headers << tr("Module name") << tr("Version") << tr("Module type") << tr("State");
-	lv_modules->setHeaderLabels(headers);
-	lv_modules->setSortingEnabled(true);
-	lv_modules->setAllColumnsShowFocus(true);
-	lv_modules->setIndentation(false);
-	lv_modules->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
-
-
+	headers << tr("Module name") << tr("Version") << tr("State");
+	ModulesList->setHeaderLabels(headers);
+	ModulesList->setSortingEnabled(true);
+	ModulesList->setAllColumnsShowFocus(true);
+	ModulesList->setIndentation(false);
+	ModulesList->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
 	// end our QListView
 
 #ifndef Q_WS_MAEMO_5
@@ -111,14 +109,14 @@ ModulesWindow::ModulesWindow(QWidget *parent)
 	vgb_info->setTitle(tr("Info"));
 	//end our QGroupBox
 
-	l_moduleinfo = new QLabel(vgb_info);
-	l_moduleinfo->setText(tr("<b>Module:</b><br/><b>Depends on:</b><br/><b>Conflicts with:</b><br/><b>Provides:</b><br/><b>Author:</b><br/><b>Version:</b><br/><b>Description:</b>"));
+	ModuleInfo = new QLabel(vgb_info);
+	ModuleInfo->setText(tr("<b>Module:</b><br/><b>Depends on:</b><br/><b>Conflicts with:</b><br/><b>Provides:</b><br/><b>Author:</b><br/><b>Version:</b><br/><b>Description:</b>"));
 #ifndef	Q_OS_MAC
-	l_moduleinfo->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
+	ModuleInfo->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
 #endif
-	l_moduleinfo->setWordWrap(true);
+	ModuleInfo->setWordWrap(true);
 
-	infoLayout->addWidget(l_moduleinfo);
+	infoLayout->addWidget(ModuleInfo);
 #endif
 
 	// buttons
@@ -126,12 +124,8 @@ ModulesWindow::ModulesWindow(QWidget *parent)
 	QHBoxLayout *bottomLayout = new QHBoxLayout(bottom);
 	bottomLayout->setSpacing(5);
 
-	hideBaseModules = new QCheckBox(tr("Hide base modules"), bottom);
-	hideBaseModules->setChecked(config_file.readBoolEntry("General", "HideBaseModules"));
-	connect(hideBaseModules, SIGNAL(clicked()), this, SLOT(refreshList()));
 	QPushButton *pb_close = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton), tr("&Close"), bottom);
 
-	bottomLayout->addWidget(hideBaseModules);
 	bottomLayout->addStretch();
 	bottomLayout->addWidget(pb_close);
 #ifdef Q_OS_MAC
@@ -142,8 +136,8 @@ ModulesWindow::ModulesWindow(QWidget *parent)
 #ifndef Q_WS_MAEMO_5
 	centerLayout->addWidget(l_info);
 #endif
-	centerLayout->addWidget(lv_modules);
-	centerLayout->setStretchFactor(lv_modules, 1);
+	centerLayout->addWidget(ModulesList);
+	centerLayout->setStretchFactor(ModulesList, 1);
 #ifndef Q_WS_MAEMO_5
 	centerLayout->addWidget(vgb_info);
 #endif
@@ -156,34 +150,30 @@ ModulesWindow::ModulesWindow(QWidget *parent)
 	layout->addWidget(center);
 
 	connect(pb_close, SIGNAL(clicked()), this, SLOT(close()));
-	connect(lv_modules, SIGNAL(itemSelectionChanged()), this, SLOT(itemsChanging()));
-	connect(lv_modules, SIGNAL(itemDoubleClicked(QTreeWidgetItem *, int)), this, SLOT(moduleAction(QTreeWidgetItem *)));
+	connect(ModulesList, SIGNAL(itemSelectionChanged()), this, SLOT(itemsChanging()));
+	connect(ModulesList, SIGNAL(itemDoubleClicked(QTreeWidgetItem *, int)), this, SLOT(moduleAction(QTreeWidgetItem *)));
 
 	loadWindowGeometry(this, "General", "ModulesWindowGeometry", 0, 50, 600, 620);
 	refreshList();
-	lv_modules->sortByColumn(0, Qt::AscendingOrder);
+	ModulesList->sortByColumn(0, Qt::AscendingOrder);
 	kdebugf2();
 }
 
 ModulesWindow::~ModulesWindow()
 {
 	kdebugf();
-	config_file.writeEntry("General", "HideBaseModules", hideBaseModules->isChecked());
  	saveWindowGeometry(this, "General", "ModulesWindowGeometry");
 	kdebugf2();
 }
 
 QTreeWidgetItem * ModulesWindow::getSelected()
 {
-	if (lv_modules->selectedItems().count())
-		return lv_modules->selectedItems().at(0);
-	else
-		return 0;
+	return ModulesList->currentItem();
 }
 
 void ModulesWindow::itemsChanging()
 {
-	if (lv_modules->selectedItems().count())
+	if (ModulesList->currentItem())
 		getInfo();
 }
 
@@ -192,42 +182,47 @@ void ModulesWindow::moduleAction(QTreeWidgetItem *)
 	kdebugf();
 
 	QTreeWidgetItem *selectedItem = getSelected();
-	if (!selectedItem)
+	if ((!selectedItem) || (selectedItem->text(0).isEmpty()))
 		return;
 
-	// TODO: OH LOL
-	if ((selectedItem->text(2) == tr("Dynamic")) && (selectedItem->text(3) == tr("Loaded")))
-		unloadItem(selectedItem->text(0));
+	if (!PluginsManager::instance()->plugins().contains(selectedItem->text(0)))
+		return;
+
+	Plugin *plugin = PluginsManager::instance()->plugins().value(selectedItem->text(0));
+
+	if (plugin->state() == Plugin::PluginStateEnabled)
+		unloadItemPlugin(plugin);
 	else
-		if ((selectedItem->text(2) == tr("Dynamic")) && (selectedItem->text(3) == tr("Not loaded")))
-			loadItem(selectedItem->text(0));
+		loadItemPlugin(plugin);
 
 	kdebugf2();
 }
 
-void ModulesWindow::loadItem(const QString &item)
+void ModulesWindow::loadItemPlugin(Plugin *itemPlugin)
 {
-	kdebugf();
-	ModulesManager::instance()->activateModule(item);
+	if (PluginsManager::instance()->activatePlugin(itemPlugin))
+		itemPlugin->setState(Plugin::PluginStateEnabled);
+
 	refreshList();
-	ModulesManager::instance()->saveLoadedModules();
-	kdebugf2();
+
+	ConfigurationManager::instance()->flush();
 }
 
-void ModulesWindow::unloadItem(const QString &item)
+void ModulesWindow::unloadItemPlugin(Plugin *itemPlugin)
 {
-	kdebugf();
-	ModulesManager::instance()->deactivateModule(item);
+	if (PluginsManager::instance()->deactivatePlugin(itemPlugin, false))
+		itemPlugin->setState(Plugin::PluginStateDisabled);
+
 	refreshList();
-	ModulesManager::instance()->saveLoadedModules();
-	kdebugf2();
+
+	ConfigurationManager::instance()->flush();
 }
 
 void ModulesWindow::refreshList()
 {
 	kdebugf();
 
-	int vScrollValue = lv_modules->verticalScrollBar()->value();
+	int vScrollValue = ModulesList->verticalScrollBar()->value();
 
 	QString s_selected;
 
@@ -235,87 +230,49 @@ void ModulesWindow::refreshList()
 	if (selectedItem)
 		s_selected = selectedItem->text(0);
 
-	lv_modules->clear();
+	ModulesList->clear();
 
-	QStringList moduleList = ModulesManager::instance()->staticModules();
-	ModuleInfo info;
-	bool hideBase = hideBaseModules->isChecked();
-	foreach (const QString &module, moduleList)
-	{
-		QStringList strings;
-
-		if (ModulesManager::instance()->moduleInfo(module, info))
+	foreach (Plugin *plugin, PluginsManager::instance()->plugins())
+		if (plugin->isValid())
 		{
-			if (info.base && hideBase)
-				continue;
+			QStringList strings;
 
-			strings << module << info.version << tr("Static") << tr("Loaded");
+			PluginInfo *pluginInfo = plugin->info();
+			if (plugin->isActive())
+				strings << plugin->name() << pluginInfo->version() << tr("Loaded");
+			else
+				strings << plugin->name() << pluginInfo->version() << tr("Not loaded");
+			new QTreeWidgetItem(ModulesList, strings);
 		}
-		else
-			strings << module << QString() << tr("Static") << tr("Loaded");
 
-		new QTreeWidgetItem(lv_modules, strings);
-	}
+	ModulesList->resizeColumnToContents(0);
+// 	ModulesList->setSelected(ModulesList->findItem(s_selected, 0), true);
 
-	moduleList = ModulesManager::instance()->loadedModules();
-	foreach (const QString &module, moduleList)
-	{
-		QStringList strings;
-
-		if (ModulesManager::instance()->moduleInfo(module, info))
-		{
-			if (info.base && hideBase)
-				continue;
-
-			strings << module << info.version << tr("Dynamic") << tr("Loaded");
-		}
-		else
-			strings << module << QString() << tr("Dynamic") << tr("Loaded");
-
-		new QTreeWidgetItem(lv_modules, strings);
-	}
-
-	moduleList = ModulesManager::instance()->unloadedModules();
-	foreach (const QString &module, moduleList)
-	{
-		QStringList strings;
-
-		if (ModulesManager::instance()->moduleInfo(module, info))
-		{
-			if (info.base && hideBase)
-				continue;
-
-			strings << module << info.version << tr("Dynamic") << tr("Not loaded");
-		}
-		else
-			strings << module << QString() << tr("Dynamic") << tr("Not loaded");
-
-		new QTreeWidgetItem(lv_modules, strings);
-	}
-	lv_modules->resizeColumnToContents(0);
-// 	lv_modules->setSelected(lv_modules->findItem(s_selected, 0), true);
-
-	lv_modules->verticalScrollBar()->setValue(vScrollValue);
+	ModulesList->verticalScrollBar()->setValue(vScrollValue);
 	kdebugf2();
 }
 
 void ModulesWindow::getInfo()
 {
 	kdebugf();
-	ModuleInfo info;
 
 	QTreeWidgetItem *selected = getSelected();
 	if (!selected)
 		return;
 
-	if (!ModulesManager::instance()->moduleInfo(selected->text(0), info))
+	if (!PluginsManager::instance()->plugins().contains(selected->text(0)))
+		return;
+
+	PluginInfo *pluginInfo = PluginsManager::instance()->plugins().value(selected->text(0))->info();
+
+	if (!pluginInfo)
 	{
 		kdebugf2();
 		return;
 	}
 
 #ifndef Q_WS_MAEMO_5
-	l_moduleinfo->setText(
+	ModuleInfo->setText(
 		tr("<b>Module: </b>%1"
 			"<br/><b>Depends on: </b>%2"
 			"<br/><b>Conflicts with: </b>%3"
@@ -324,12 +281,12 @@ void ModulesWindow::getInfo()
 			"<br/><b>Version: </b>%6"
 			"<br/><b>Description: </b>%7")
 			.arg(selected->text(0))
-			.arg(info.depends.join(", "))
-			.arg(info.conflicts.join(", "))
-			.arg(info.provides.join(", "))
-			.arg(info.author)
-			.arg(info.version)
-			.arg(info.description));
+			.arg(pluginInfo->dependencies().join(", "))
+			.arg(pluginInfo->conflicts().join(", "))
+			.arg(pluginInfo->provides().join(", "))
+			.arg(pluginInfo->author())
+			.arg(pluginInfo->version())
+			.arg(pluginInfo->description()));
 #endif
 
 	kdebugf2();

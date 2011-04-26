@@ -61,7 +61,7 @@ public:
 	KaduSharedBase_Property(FileTransferError, transferError, TransferError)
 	KaduSharedBase_Property(FileTransferHandler *, handler, Handler)
 
-	virtual bool accept(const QFile &file);
+	virtual bool accept(const QString &file);
 
 	void createHandler();
 	unsigned int percent();

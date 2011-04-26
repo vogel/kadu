@@ -28,7 +28,6 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QPoint>
-#include <QtGui/QIcon>
 #include <QtGui/QSystemTrayIcon>
 
 #include "modules/docking/docker.h"
@@ -44,21 +43,27 @@ class QT4DOCKAPI Qt4TrayIcon : public QSystemTrayIcon, public Docker
 	QMovie *Movie;
 	QPoint lastPosition;
 
+	static Qt4TrayIcon *Instance;
+
+	explicit Qt4TrayIcon(QWidget *parent = 0);
+	virtual ~Qt4TrayIcon();
+
 private slots:
 	void trayActivated(QSystemTrayIcon::ActivationReason reason);
 
 	void movieUpdate();
 
 public:
-	explicit Qt4TrayIcon(QWidget *parent = 0);
-	virtual ~Qt4TrayIcon();
+	static QT4DOCKAPI Qt4TrayIcon * instance();
 
-	virtual void changeTrayIcon(const QIcon &icon);
+	static Qt4TrayIcon * createInstance();
+	static void destroyInstance();
+
+	virtual void changeTrayIcon(const KaduIcon &icon);
 	virtual void changeTrayMovie(const QString &moviePath);
 	virtual void changeTrayTooltip(const QString &tooltip);
 	virtual QPoint trayPosition();
 };
 
-extern QT4DOCKAPI Qt4TrayIcon *qt4_tray_icon;
 
 #endif // QT4_DOCKING_H

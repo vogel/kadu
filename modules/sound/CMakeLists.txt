@@ -5,8 +5,8 @@ set (SOURCES
 	sound-actions.cpp
 	sound-file.cpp
 	sound-manager.cpp
-	sound-module.cpp
 	sound-play-thread.cpp
+	sound-plugin.cpp
 	sound-theme-manager.cpp
 )
 
@@ -18,9 +18,11 @@ set (MOC_SOURCES
 	sound-manager.h
 	sound-play-thread.h
 	sound-player.h
+	sound-plugin.h
 )
 
 set (TRANSLATION_SOURCES
+	translations/sound_en.ts
 	translations/sound_de.ts
 	translations/sound_fr.ts
 	translations/sound_it.ts
@@ -31,12 +33,12 @@ set (CONFIGURATION_FILES
 	configuration/sound.ui
 )
 
-kadu_module (sound
-	MODULE_SOURCES ${SOURCES}
-	MODULE_MOC_SOURCES ${MOC_SOURCES}
-	MODULE_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
-	MODULE_CONFIGURATION_FILES ${CONFIGURATION_FILES}
-	MODULE_BUILDDEF SOUND_BUILD
+kadu_plugin (sound
+	PLUGIN_SOURCES ${SOURCES}
+	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
+	PLUGIN_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
+	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
+	PLUGIN_BUILDDEF SOUND_BUILD
 )
 
 if (NOT MINGW)

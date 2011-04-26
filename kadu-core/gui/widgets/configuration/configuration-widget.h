@@ -27,7 +27,7 @@
 #include <QtGui/QDialog>
 
 #include "configuration/configuration-window-data-manager.h"
-#include "icons-manager.h"
+#include "icons/icons-manager.h"
 
 class QDomNode;
 class QDialogButtonBox;
@@ -39,6 +39,7 @@ class QVBoxLayout;
 class ConfigGroupBox;
 class ConfigSection;
 class ConfigWidget;
+class KaduIcon;
 
 /**
 	@class ConfigurationWidget
@@ -109,11 +110,11 @@ class KADUAPI ConfigurationWidget : public QWidget
 	void saveConfiguration(QObject *object);
 
 	ConfigSection * configSection(const QString &name);
-	ConfigSection * configSection(const QString &iconPath, const QString &name, bool create = true);
+	ConfigSection * configSection(const KaduIcon &icon, const QString &name, bool create = true);
 
 	QList<ConfigWidget *> processUiFile(const QString &fileName, bool append = true);
 	QList<ConfigWidget *> processUiSectionFromDom(QDomNode sectionNode, bool append = true);
-	QList<ConfigWidget *> processUiTabFromDom(QDomNode tabNode, const QString &iconName, const QString &sectionName, bool append = true);
+	QList<ConfigWidget *> processUiTabFromDom(QDomNode tabNode, const QString &sectionName, bool append = true);
 	QList<ConfigWidget *> processUiGroupBoxFromDom(QDomNode groupBoxNode, const QString &sectionName, const QString &tabName, bool append = true);
 	ConfigWidget * appendUiElementFromDom(QDomNode uiElementNode, ConfigGroupBox *configGroupBox);
 	void removeUiElementFromDom(QDomNode uiElementNode, ConfigGroupBox *configGroupBox);

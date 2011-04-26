@@ -25,23 +25,22 @@
 
 #include "accounts/account-manager.h"
 #include "configuration/configuration-file.h"
+#include "icons/kadu-icon.h"
 #include "protocols/protocol.h"
 #include "status/status-container.h"
 #include "status/status-container-manager.h"
 #include "status/status-group.h"
 #include "status/status-type.h"
-#include "icons-manager.h"
+#include "icons/icons-manager.h"
 
 #include "status-actions.h"
 
-StatusActions::StatusActions(StatusContainer *statusContainer, QObject *parent, bool commonStatusIcons) :
-		QObject(parent), MyStatusContainer(statusContainer), CommonStatusIcons(commonStatusIcons)
+StatusActions::StatusActions(StatusContainer *statusContainer, bool includePrefix, QObject *parent) :
+		QObject(parent), MyStatusContainer(statusContainer), IncludePrefix(includePrefix), ChangeDescription(0)
 {
 	ChangeStatusActionGroup = new QActionGroup(this);
 	ChangeStatusActionGroup->setExclusive(true); // HACK
 	connect(ChangeStatusActionGroup, SIGNAL(triggered(QAction*)), this, SIGNAL(statusActionTriggered(QAction*)));
-
-	createActions();
 
 	statusUpdated();
 	connect(MyStatusContainer, SIGNAL(statusUpdated()), this, SLOT(statusUpdated()));
@@ -56,29 +55,26 @@ StatusActions::~StatusActions()
 void StatusActions::createActions()
 {
 	createBasicActions();
-	createStatusActions();
 
-	QList<StatusType *> statusTypes = MyStatusContainer->supportedStatusTypes();
-	if (statusTypes.isEmpty())
-		return;
-
-	StatusType *statusType = statusTypes.at(0);
-	if (0 == statusType)
-		return;
-
-	StatusGroup *currentGroup = statusType->statusGroup();
+	MyStatusTypes = MyStatusContainer->supportedStatusTypes();
+	StatusGroup *currentGroup = 0;
 	bool setDescriptionAdded = false;
 
-	foreach (StatusType *statusType, statusTypes)
+	foreach (StatusType *statusType, MyStatusTypes)
 	{
 		if (0 == statusType)
 			continue;
 
+		if (0 == currentGroup)
+			currentGroup = statusType->statusGroup();
+
 		if (!setDescriptionAdded && statusType->statusGroup() &&
 				statusType->statusGroup()->sortIndex() >= StatusGroup::StatusGroupSortIndexAfterSetDescription)
 		{
-			Actions.append(createSeparator());
+			if (!Actions.isEmpty())
+				Actions.append(createSeparator());
 			Actions.append(ChangeDescription);
+			setDescriptionAdded = true;
 		}
 
 		if (statusType->statusGroup() != currentGroup)
@@ -87,26 +83,17 @@ void StatusActions::createActions()
 			currentGroup = statusType->statusGroup();
 		}
 
-		Actions.append(StatusTypeActions[statusType]);
+		QAction *action = createStatusAction(statusType);
+		Actions.append(action);
 	}
 
-	Actions.append(createSeparator());
+	emit statusActionsRecreated();
 }
 
 void StatusActions::createBasicActions()
 {
 	ChangeDescription = new QAction(tr("Change Status Message..."), this);
 	connect(ChangeDescription, SIGNAL(triggered(bool)), this, SIGNAL(changeDescriptionActionTriggered(bool)));
-}
-
-void StatusActions::createStatusActions()
-{
-	QList<StatusType *> statusTypes = MyStatusContainer->supportedStatusTypes();
-	foreach (StatusType *statusType, statusTypes)
-	{
-		QAction *action = createStatusAction(statusType);
-		StatusTypeActions.insert(statusType, action);
-	}
 }
 
 QAction * StatusActions::createSeparator()
@@ -119,22 +106,41 @@ QAction * StatusActions::createSeparator()
 
 QAction * StatusActions::createStatusAction(StatusType *statusType)
 {
-	QIcon icon;
-	if (!CommonStatusIcons)
-		icon = MyStatusContainer->statusIcon(statusType->name());
-	else
-		icon = StatusContainerManager::instance()->statusIcon(statusType->name());
-	QAction *statusAction = ChangeStatusActionGroup->addAction(
-		icon.pixmap(16, 16),
-		MyStatusContainer->statusNamePrefix() + statusType->displayName());
+	KaduIcon icon = MyStatusContainer->statusIcon(statusType->name());
+	QAction *statusAction = ChangeStatusActionGroup->addAction(icon.icon(), IncludePrefix
+			? MyStatusContainer->statusNamePrefix() + statusType->displayName()
+			: statusType->displayName());
 	statusAction->setCheckable(true);
 	statusAction->setData(QVariant::fromValue(statusType));
 
 	return statusAction;
 }
 
+void StatusActions::cleanUpActions()
+{
+	foreach (QAction *action, Actions)
+		if (action != ChangeDescription)
+		{
+			if (!action->isSeparator())
+				ChangeStatusActionGroup->removeAction(action);
+
+			delete action;
+		}
+
+	Actions.clear();
+
+	delete ChangeDescription;
+	ChangeDescription = 0;
+}
+
 void StatusActions::statusUpdated()
 {
+	if (MyStatusContainer->supportedStatusTypes() != MyStatusTypes)
+	{
+		cleanUpActions();
+		createActions();
+	}
+
 	const QString &statusTypeName = MyStatusContainer->status().type();
 
 	foreach (QAction *action, ChangeStatusActionGroup->actions())
@@ -143,18 +149,19 @@ void StatusActions::statusUpdated()
 		if (!statusType)
 			continue;
 
-		if (!CommonStatusIcons)
-			action->setIcon(MyStatusContainer->statusIcon(statusType->name()));
+		action->setIcon(MyStatusContainer->statusIcon(statusType->name()).icon());
 
-		// For 'All xxx' status menu items - check only if all accounts have the same status
-		if (StatusContainerManager::instance() == MyStatusContainer)
-			action->setChecked(StatusContainerManager::instance()->allStatusEqual(statusType));
+		if (!MyStatusContainer->isStatusSettingInProgress())
+		{
+			// For 'All xxx' status menu items - check only if all accounts have the same status
+			if (StatusContainerManager::instance() == MyStatusContainer)
+				action->setChecked(StatusContainerManager::instance()->allStatusEqual(statusType));
+			else
+				action->setChecked(statusTypeName == statusType->name());
+		}
 		else
-			action->setChecked(statusTypeName == statusType->name());
+			action->setChecked(false);
 	}
-
-// 	ChangeStatusToOfflineDesc->setEnabled(index != 6);
-// 	ChangeStatusToOffline->setEnabled(index != 7);
 }
 
 void StatusActions::iconThemeChanged()
@@ -165,9 +172,6 @@ void StatusActions::iconThemeChanged()
 		if (!statusType)
 			continue;
 
-		if (!CommonStatusIcons)
-			action->setIcon(MyStatusContainer->statusIcon(statusType->name()));
-		else
-			action->setIcon(StatusContainerManager::instance()->statusIcon(statusType->name()));
+		action->setIcon(MyStatusContainer->statusIcon(statusType->name()).icon());
 	}
 }

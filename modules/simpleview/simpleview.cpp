@@ -32,6 +32,7 @@
 #include "gui/widgets/status-buttons.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/main-window.h"
+#include "icons/kadu-icon.h"
 #include "misc/path-conversion.h"
 
 #include "modules/docking/docking.h"
@@ -47,10 +48,10 @@ SimpleView::SimpleView() :
 
 	SimpleViewConfigUi::createInstance();
 
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/simpleview.ui"));
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/simpleview.ui"));
 	MainConfigurationWindow::registerUiHandler(SimpleViewConfigUi::instance());
 
-	DockAction = new QAction(IconsManager::instance()->iconByPath("view-refresh"), tr("Simple view"), this);
+	DockAction = new QAction(KaduIcon("view-refresh").icon(), tr("Simple view"), this);
 	DockAction->setCheckable(true);
 	connect(DockAction, SIGNAL(triggered(bool)), this, SLOT(simpleViewToggle(bool)));
 	DockingManager::instance()->registerModuleAction(DockAction);
@@ -78,7 +79,7 @@ SimpleView::~SimpleView()
 	if (!Core::instance()->isClosing())
 		DockingManager::instance()->unregisterModuleAction(DockAction);
 
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/simpleview.ui"));
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/simpleview.ui"));
 	MainConfigurationWindow::unregisterUiHandler(SimpleViewConfigUi::instance());
 	SimpleViewConfigUi::destroyInstance();
 }

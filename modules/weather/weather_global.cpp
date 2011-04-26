@@ -43,8 +43,8 @@ namespace
 		QString configFile_;
 	};
 
-	const QString WeatherConfigPath("kadu/modules/data/weather");
-	const QString WeatherIconPath("kadu/modules/data/weather/icons");
+	const QString WeatherConfigPath("kadu/plugins/data/weather");
+	const QString WeatherIconPath("kadu/plugins/data/weather/icons");
 } // namespace
 
 WeatherGlobal::WeatherGlobal()

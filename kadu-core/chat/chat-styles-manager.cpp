@@ -485,7 +485,7 @@ void ChatStylesManager::deleteStyleClicked()
 		styleChangedSlot(*AvailableStyles.keys().constBegin());
 	}
 	else
-		MessageDialog::show("dialog-error", tr("Kadu"), tr("Unable to remove style: %1").arg(styleName));
+		MessageDialog::show(KaduIcon("dialog-error"), tr("Kadu"), tr("Unable to remove style: %1").arg(styleName));
 }
 
 void ChatStylesManager::syntaxUpdated(const QString &syntaxName)

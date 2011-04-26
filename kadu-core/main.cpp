@@ -57,33 +57,14 @@
 #include "configuration/xml-configuration-file.h"
 #include "gui/windows/message-dialog.h"
 #include "os/qtsingleapplication/qtlocalpeer.h"
+#include "plugins/plugins-manager.h"
 #include "protocols/protocols-manager.h"
 
 #include "debug.h"
 #include "kadu-config.h"
-#include "icons-manager.h"
+#include "icons/icons-manager.h"
 #include "kadu-application.h"
 #include "misc/misc.h"
-#include "modules.h"
-
-// Qt 4.6 version produces warning here which causes build to fail with -Werror
-#if (QT_VERSION < 0x040700)
-#undef QT_REQUIRE_VERSION
-#define QT_REQUIRE_VERSION(argc, argv, str) { QString s = QString::fromLatin1(str);\
-QString sq = QString::fromLatin1(qVersion()); \
-if ((sq.section(QChar::fromLatin1('.'),0,0).toInt()<<16)+\
-(sq.section(QChar::fromLatin1('.'),1,1).toInt()<<8)+\
-sq.section(QChar::fromLatin1('.'),2,2).toInt()<(s.section(QChar::fromLatin1('.'),0,0).toInt()<<16)+\
-(s.section(QChar::fromLatin1('.'),1,1).toInt()<<8)+\
-s.section(QChar::fromLatin1('.'),2,2).toInt()) { \
-if (!qApp){ \
-    new QApplication(argc,argv); \
-} \
-QString s = QApplication::tr("Executable '%1' requires Qt "\
- "%2, found Qt %3.").arg(qAppName()).arg(QString::fromLatin1(\
-str)).arg(QString::fromLatin1(qVersion())); QMessageBox::critical(0, QApplication::tr(\
-"Incompatible Qt Library Error"), s, QMessageBox::Abort, 0); qFatal("%s", s.toLatin1().data()); }}
-#endif
 
 #ifndef Q_WS_WIN
 static void kaduQtMessageHandler(QtMsgType type, const char *msg)
@@ -196,9 +177,7 @@ static void printQtOptions()
 
 int main(int argc, char *argv[])
 {
-	// NOTE: Qt 4.6.0 has many bugs, one of them causing Kadu to crash when downloading avatars.
-	// TODO: remove once we depend on 4.7
-	QT_REQUIRE_VERSION(argc, argv, "4.6.1")
+	QT_REQUIRE_VERSION(argc, argv, "4.7.0")
 
 	char *d = 0;
 	int msec;
@@ -409,13 +388,13 @@ int main(int argc, char *argv[])
 	QDir().mkdir(path_);
 #endif
 
-	ModulesManager::instance()->loadAllModules();
+	PluginsManager::instance()->activatePlugins();
 
 #ifndef Q_WS_WIN
 	// if someone is running Kadu from root account, let's remind him
 	// that it's a "bad thing"(tm) ;) (usually for win32 users)
 	if (geteuid() == 0)
-		MessageDialog::show("dialog-warning", qApp->translate("@default", "Kadu"), qApp->translate("@default", "Please do not run Kadu as a root!\n"
+		MessageDialog::show(KaduIcon("dialog-warning"), qApp->translate("@default", "Kadu"), qApp->translate("@default", "Please do not run Kadu as a root!\n"
 				"It's a high security risk!"));
 #endif
 

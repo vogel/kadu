@@ -4,4 +4,3 @@ Description[pl]=Rozszerza mo¿liwo¶ci Parsera Kadu
 Author=Dorregaray
 LoadByDefault=false
 Version=0.2
-Base=false

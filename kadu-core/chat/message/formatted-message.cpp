@@ -29,7 +29,7 @@
 
 #include "protocols/services/chat-image-service.h"
 #include "html_document.h"
-#include "icons-manager.h"
+#include "icons/icons-manager.h"
 
 #include "formatted-message.h"
 
@@ -187,6 +187,7 @@ QString FormattedMessage::toPlain() const
 	foreach (const FormattedMessagePart &part, Parts)
 		result += part.content();
 
+	result.replace(QChar::LineSeparator, "\n");
 	return result;
 }
 

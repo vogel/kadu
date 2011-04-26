@@ -7,6 +7,7 @@ set (MOC_SOURCES
 )
 
 set (TRANSLATION_SOURCES
+	translations/dsp_sound_en.ts
 	translations/dsp_sound_de.ts
 	translations/dsp_sound_fr.ts
 	translations/dsp_sound_it.ts
@@ -17,9 +18,9 @@ set (CONFIGURATION_FILES
 	configuration/dsp_sound.ui
 )
 
-kadu_module (dsp_sound
-	MODULE_SOURCES ${SOURCES}
-	MODULE_MOC_SOURCES ${MOC_SOURCES}
-	MODULE_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
-	MODULE_CONFIGURATION_FILES ${CONFIGURATION_FILES}
+kadu_plugin (dsp_sound
+	PLUGIN_SOURCES ${SOURCES}
+	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
+	PLUGIN_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
+	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 )

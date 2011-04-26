@@ -68,7 +68,7 @@ set (buddies_MOC_SRCS
 	model/groups-model.h
 )
 
-qt_wrap_cpp (buddies buddies_MOC_FILES ${buddies_MOC_SRCS})
+qt4_wrap_cpp (buddies_MOC_FILES ${buddies_MOC_SRCS})
 
 add_library (buddies
 	STATIC

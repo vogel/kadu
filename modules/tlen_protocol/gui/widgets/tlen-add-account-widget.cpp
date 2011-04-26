@@ -27,7 +27,7 @@
 #include "gui/widgets/identities-combo-box.h"
 #include "gui/windows/message-dialog.h"
 #include "protocols/protocols-manager.h"
-#include "icons-manager.h"
+#include "icons/icons-manager.h"
 
 #include "tlen-account-details.h"
 #include "tlen-protocol-factory.h"

@@ -9,6 +9,7 @@ set (MOC_SOURCES
 )
 
 set (TRANSLATION_SOURCES
+	translations/qt4_docking_notify_en.ts
 	translations/qt4_docking_notify_de.ts
 	translations/qt4_docking_notify_fr.ts
 	translations/qt4_docking_notify_it.ts
@@ -19,10 +20,10 @@ set (CONFIGURATION_FILES
 	configuration/qt4-docking-notify.ui
 )
 
-kadu_module (qt4_docking_notify
-	MODULE_SOURCES ${SOURCES}
-	MODULE_MOC_SOURCES ${MOC_SOURCES}
-	MODULE_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
-	MODULE_CONFIGURATION_FILES ${CONFIGURATION_FILES}
-	MODULE_DEPENDENCIES qt4_docking
+kadu_plugin (qt4_docking_notify
+	PLUGIN_SOURCES ${SOURCES}
+	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
+	PLUGIN_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
+	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
+	PLUGIN_DEPENDENCIES qt4_docking
 )

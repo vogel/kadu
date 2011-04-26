@@ -40,6 +40,7 @@
 #include "gui/widgets/preview.h"
 #include "parser/parser.h"
 #include "protocols/protocol-factory.h"
+#include "icons/kadu-icon.h"
 #include "misc/misc.h"
 
 #include "adium-style.h"
@@ -394,7 +395,7 @@ QString AdiumChatStyleEngine::replaceKeywords(const QString &styleHref, const QS
 	{
 		result.replace(QString("%service%"), msg.messageChat().chatAccount().protocolHandler()->protocolFactory()->displayName());
 		// Replace protocolIcon (sender statusIcon). TODO:
-		result.replace(QString("%senderStatusIcon%"), msg.messageChat().chatAccount().protocolHandler()->protocolFactory()->iconPath());
+		result.replace(QString("%senderStatusIcon%"), msg.messageChat().chatAccount().protocolHandler()->protocolFactory()->icon().fullPath());
 	}
 	else
 	{

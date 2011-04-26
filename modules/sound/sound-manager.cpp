@@ -55,11 +55,6 @@ void SoundManager::destroyInstance()
 	Instance = 0;
 }
 
-SoundManager * SoundManager::instance()
-{
-	return Instance;
-}
-
 SoundManager::SoundManager() :
 		Player(0), Mute(false)
 {

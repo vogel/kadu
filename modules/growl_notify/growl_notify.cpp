@@ -37,7 +37,7 @@
 #include "notify/notification-manager.h"
 #include "notify/notification.h"
 #include "parser/parser.h"
-#include "icons-manager.h"
+#include "icons/icons-manager.h"
 #include "debug.h"
 
 #include "growl_notify.h"
@@ -73,7 +73,7 @@ extern "C" KADU_EXPORT void growl_notify_close()
 	growl_notify = 0;
 }
 
-GrowlNotify::GrowlNotify(QObject *parent) : Notifier("Growl", "Growl", "kadu_icons/notify-hints", parent)
+GrowlNotify::GrowlNotify(QObject *parent) : Notifier("Growl", "Growl", KaduIcon("kadu_icons/notify-hints"), parent)
 {
 	kdebugf();
 

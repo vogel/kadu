@@ -24,9 +24,9 @@
 
 #include <QtCore/QMultiMap>
 #include <QtGui/QAction>
-#include <QtGui/QIcon>
 
 #include "configuration/configuration-aware-object.h"
+#include "icons/kadu-icon.h"
 
 #include "exports.h"
 
@@ -46,8 +46,6 @@ class KADUAPI Action : public QAction
 
 	ActionDescription *Description;
 	ActionDataSource *DataSource;
-
-	QIcon Icon;
 
 private slots:
 	void changedSlot();
@@ -74,7 +72,12 @@ public slots:
 	void checkState();
 	void updateIcon();
 
+	// we need a slot for StatusIcon class
+	void setIcon(const KaduIcon &icon);
+
 signals:
+	void aboutToBeDestroyed(Action *action);
+
 	void changed(QAction *action);
 	void hovered(QAction *action);
 	void toggled(QAction *action, bool checked);

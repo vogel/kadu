@@ -33,13 +33,13 @@ extern "C" KADU_EXPORT int winamp_mediaplayer_init(bool firstLoad)
 	Q_UNUSED(firstLoad)
 
 	winamp = new WinampMediaPlayer();
-	bool res = mediaplayer->registerMediaPlayer((PlayerInfo*)winamp, (PlayerCommands*)winamp);
+	bool res = MediaPlayer::instance()->registerMediaPlayer((PlayerInfo*)winamp, (PlayerCommands*)winamp);
 	return res ? 0 : 1;
 }
 
 extern "C" KADU_EXPORT void winamp_mediaplayer_close()
 {
-	mediaplayer->unregisterMediaPlayer();
+	MediaPlayer::instance()->unregisterMediaPlayer();
 	delete winamp;
 	winamp = 0;
 }
@@ -374,7 +374,7 @@ int WinampMediaPlayer::getLength(int position)
 			WriteProcessMemory(hWinampProcess, pFileInfo, &fis, sizeof(fis), NULL);
 
 			if(SendMessage(hWinamp, WM_WA_IPC, (WPARAM)pFileInfo, IPC_GET_BASIC_FILE_INFOW)==1){
-				kdebug("unicode not supported");
+				kdebug("unicode not supported\n");
 				fis.filename=(const wchar_t*)SendMessage(hWinamp, WM_WA_IPC, position, IPC_GETPLAYLISTFILE);
 				WriteProcessMemory(hWinampProcess, pFileInfo, &fis, sizeof(fis), NULL);
 				SendMessage(hWinamp, WM_WA_IPC, (WPARAM)pFileInfo, IPC_GET_BASIC_FILE_INFO);

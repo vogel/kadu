@@ -23,9 +23,11 @@
 #include <QtGui/QPushButton>
 
 #include "configuration/configuration-aware-object.h"
+#include "icons/kadu-icon.h"
 #include "status/status.h"
 
 class StatusContainer;
+class StatusIcon;
 class StatusMenu;
 
 class StatusButton : public QPushButton, private ConfigurationAwareObject
@@ -34,11 +36,13 @@ class StatusButton : public QPushButton, private ConfigurationAwareObject
 
 	StatusContainer *MyStatusContainer;
 	bool DisplayStatusName;
+	StatusIcon *Icon;
 
 	void createGui();
 	void updateStatus();
 
 private slots:
+	void iconUpdated(const KaduIcon &icon);
 	void statusUpdated();
 
 protected:

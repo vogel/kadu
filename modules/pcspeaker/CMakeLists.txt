@@ -9,6 +9,7 @@ set (MOC_SOURCES
 )
 
 set (TRANSLATION_SOURCES
+	translations/pcspeaker_en.ts
 	translations/pcspeaker_pl.ts
 	translations/pcspeaker_de.ts
 	translations/pcspeaker_it.ts
@@ -18,9 +19,9 @@ set (TRANSLATION_SOURCES
 #	configuration/pcspeaker.ui
 #)
 
-kadu_module (pcspeaker
-	MODULE_SOURCES ${SOURCES}
-	MODULE_MOC_SOURCES ${MOC_SOURCES}
-	MODULE_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
-	MODULE_CONFIGURATION_FILES ${CONFIGURATION_FILES}
+kadu_plugin (pcspeaker
+	PLUGIN_SOURCES ${SOURCES}
+	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
+	PLUGIN_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
+	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 )

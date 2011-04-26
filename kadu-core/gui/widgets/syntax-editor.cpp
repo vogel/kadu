@@ -98,7 +98,7 @@ void SyntaxEditor::deleteClicked()
 	if (syntaxList->deleteSyntax(currentSyntax()))
 		setCurrentSyntax(*(syntaxList->keys().begin()));
 	else
-		MessageDialog::show("dialog-warning", tr("Kadu"), tr("Unable to remove syntax: %1").arg(currentSyntax()));
+		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Unable to remove syntax: %1").arg(currentSyntax()));
 }
 
 void SyntaxEditor::syntaxChangedSlot(const QString &newSyntax)

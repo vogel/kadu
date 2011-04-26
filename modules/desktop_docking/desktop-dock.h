@@ -21,7 +21,6 @@
 #define DESKTOP_DOCK_H
 
 #include <QtCore/QObject>
-#include <QtGui/QIcon>
 #include <QtGui/QMovie>
 
 #include "configuration/configuration-aware-object.h"
@@ -31,6 +30,7 @@
 class QAction;
 
 class DesktopDockWindow;
+class KaduIcon;
 
 class DesktopDock : public QObject, public Docker, ConfigurationAwareObject
 {
@@ -64,7 +64,7 @@ public:
 
 	DesktopDockWindow * dockWindow() { return DockWindow; }
 
-    virtual void changeTrayIcon(const QIcon &icon);
+    virtual void changeTrayIcon(const KaduIcon &icon);
     virtual void changeTrayMovie(const QString &moviePath);
     virtual void changeTrayTooltip(const QString &tooltip);
     virtual QPoint trayPosition();

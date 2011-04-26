@@ -88,15 +88,17 @@ public:
 	StatusContainer * defaultStatusContainer() const { return DefaultStatusContainer; }
 
 	virtual void setStatus(Status newStatus);
-    virtual void setDescription(const QString &description);
+	virtual void setDescription(const QString &description);
 	virtual Status status();
+	virtual bool isStatusSettingInProgress();
+
 	bool allStatusEqual(StatusType *type);
 
 	virtual QString statusDisplayName();
-	virtual QIcon statusIcon();
-	virtual QIcon statusIcon(Status status);
-	virtual QString statusIconPath(const QString &statusType);
-	virtual QIcon statusIcon(const QString &statusType);
+
+	virtual KaduIcon statusIcon();
+	virtual KaduIcon statusIcon(const Status &status);
+	virtual KaduIcon statusIcon(const QString &statusType);
 
 	virtual QList<StatusType *> supportedStatusTypes();
 

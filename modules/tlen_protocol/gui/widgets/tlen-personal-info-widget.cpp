@@ -144,7 +144,7 @@ void TlenPersonalInfoWidget::createGui()
 
 void TlenPersonalInfoWidget::personalInfoAvailable(Buddy buddy)
 {
-	kdebugmf (KDEBUG_INFO,"personal info available");
+	kdebugmf (KDEBUG_INFO,"personal info available\n");
 	NickName->setText(buddy.nickName());
 	FirstName->setText(buddy.firstName());
 	LastName->setText(buddy.lastName());

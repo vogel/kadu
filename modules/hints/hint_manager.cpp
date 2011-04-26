@@ -45,7 +45,7 @@
 
 #include "activate.h"
 #include "debug.h"
-#include "icons-manager.h"
+#include "icons/icons-manager.h"
 #include "hints-configuration-ui-handler.h"
 #include "hints_configuration_widget.h"
 
@@ -60,7 +60,7 @@
 #define BORDER_RADIUS 0
 
 HintManager::HintManager(QWidget *parent) :
-		Notifier("Hints", "Hints", "kadu_icons/notify-hints", parent), AbstractToolTip(),
+		Notifier("Hints", "Hints", KaduIcon("kadu_icons/notify-hints"), parent), AbstractToolTip(),
 		hint_timer(new QTimer(this)),
 		tipFrame(0), hints()
 {
@@ -96,23 +96,22 @@ HintManager::HintManager(QWidget *parent) :
 	const QString default_hints_syntax(QT_TRANSLATE_NOOP("HintManager", "<table>"
 "<tr>"
 "<td align=\"left\" valign=\"top\">"
-"<img"
-"style=\"max-width:64px; max-height:64px;\""
+"<img style=\"max-width:64px; max-height:64px;\""
 "src=\"{#{avatarPath} #{avatarPath}}{~#{avatarPath} @{kadu_icons/kadu:64x64}}\""
 ">"
 "</td>"
 "<td width=\"100%\">"
 "<div>[<b>%a</b>][&nbsp;<b>(%g)</b>]</div>"
-"[<div><img align=\"left\" valign=\"middle\" height=\"16\" width=\"16\" src=\"file:///#{statusIconPath}\">&nbsp;&nbsp;%u</div>]"
-"[<div><img align=\"left\" valign=\"middle\" height=\"16\" width=\"16\" src=\"file:///@{phone:16x16}\">&nbsp;&nbsp;%m</div>]"
-"[<div><img align=\"left\" valign=\"middle\" height=\"16\" width=\"16\" src=\"file:///@{mail-message-new:16x16}\">&nbsp;&nbsp;%e</div>]"
-"[<div><img align=\"left\" valign=\"middle\" height=\"16\" width=\"16\" src=\"file:///@{kadu_icons/blocking:16x16}\">&nbsp;%oDoesn't have you on the list</div>]"
+"[<div><img height=\"16\" width=\"16\" src=\"file:///#{statusIconPath}\">&nbsp;&nbsp;%u</div>]"
+"[<div><img height=\"16\" width=\"16\" src=\"file:///@{phone:16x16}\">&nbsp;&nbsp;%m</div>]"
+"[<div><img height=\"16\" width=\"16\" src=\"file:///@{mail-message-new:16x16}\">&nbsp;&nbsp;%e</div>]"
+"[<div><img height=\"16\" width=\"16\" src=\"file:///@{kadu_icons/blocking:16x16}\">&nbsp;%oDoesn't have you on the list</div>]"
 "</td>"
 "</tr>"
 "</table>"
 "[<hr><b>%s</b>][<b>:</b><br><small>%d</small>]"));
-	if (config_file.readEntry("Hints", "MouseOverUserSyntax") == default_hints_syntax || config_file.readEntry("Hints", "MouseOverUserSyntax").isEmpty())
-		config_file.writeEntry("Hints", "MouseOverUserSyntax", tr(default_hints_syntax.toAscii()));
+	if (config_file.readEntry("Hints", "MouseOverUserSyntax").isEmpty())
+		config_file.writeEntry("Hints", "MouseOverUserSyntax", default_hints_syntax);
 
 	connect(this, SIGNAL(searchingForTrayPosition(QPoint &)), Core::instance(), SIGNAL(searchingForTrayPosition(QPoint &)));
 
@@ -242,6 +241,8 @@ void HintManager::setHint()
 	frame->setGeometry(newPosition.x(), newPosition.y(), preferredSize.width(), preferredSize.height());
 
 	frame->setWindowOpacity(Opacity);
+
+	frame->update();
 
 	kdebugf2();
 }
@@ -596,9 +597,12 @@ void HintManager::notificationClosed(Notification *notification)
 
 void HintManager::realCopyConfiguration(const QString &fromCategory, const QString &fromHint, const QString &toHint)
 {
-	config_file.writeEntry("Hints", toHint + "_font", config_file.readFontEntry(fromCategory, fromHint + "_font", &qApp->font()));
-	config_file.writeEntry("Hints", toHint + "_fgcolor", config_file.readColorEntry(fromCategory, fromHint + "_fgcolor", &qApp->palette().windowText().color()));
-	config_file.writeEntry("Hints", toHint + "_bgcolor", config_file.readColorEntry(fromCategory, fromHint + "_bgcolor", &qApp->palette().window().color()));
+	QFont font(qApp->font());
+	QPalette palette(qApp->palette());
+
+	config_file.writeEntry("Hints", toHint + "_font", config_file.readFontEntry(fromCategory, fromHint + "_font", &font));
+	config_file.writeEntry("Hints", toHint + "_fgcolor", config_file.readColorEntry(fromCategory, fromHint + "_fgcolor", &palette.windowText().color()));
+	config_file.writeEntry("Hints", toHint + "_bgcolor", config_file.readColorEntry(fromCategory, fromHint + "_bgcolor", &palette.window().color()));
 	config_file.writeEntry("Hints", toHint + "_timeout", (int) config_file.readUnsignedNumEntry(fromCategory,  fromHint + "_timeout", 10));
 }
 
@@ -714,6 +718,7 @@ void HintManager::createDefaultConfiguration()
 	config_file.addVariable("Hints", "ShowContentMessage", true);
 	config_file.addVariable("Hints", "UseUserPosition", false);
 	config_file.addVariable("Hints", "OpenChatOnEveryNotification", false);
+	config_file.addVariable("Hints", "MarginSize", 5);
 
 	config_file.addVariable("Hints", "AllEvents_transparency", 0);
 	config_file.addVariable("Hints", "AllEvents_iconSize", 32);

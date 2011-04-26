@@ -101,7 +101,7 @@ void AccountManager::itemRegistered(Account item)
 	connect(item.protocolHandler(), SIGNAL(connectionError(Account, const QString &, const QString &)),
 			this, SLOT(connectionError(Account, const QString &, const QString &)), Qt::QueuedConnection);
 	connect(item.protocolHandler(), SIGNAL(invalidPassword(Account)),
-			this, SLOT(invalidPassword(Account)), Qt::QueuedConnection);
+			this, SLOT(providePassword(Account)), Qt::QueuedConnection);
 
 	emit accountRegistered(item);
 }
@@ -114,7 +114,7 @@ void AccountManager::itemAboutToBeUnregisterd(Account item)
 	disconnect(item.protocolHandler(), SIGNAL(connectionError(Account, const QString &, const QString &)),
 			this, SLOT(connectionError(Account, const QString &, const QString &)));
 	disconnect(item.protocolHandler(), SIGNAL(invalidPassword(Account)),
-			this, SLOT(invalidPassword(Account)));
+			this, SLOT(providePassword(Account)));
 
 	emit accountAboutToBeUnregistered(item);
 }
@@ -229,16 +229,6 @@ void AccountManager::connectionError(Account account, const QString &server, con
 	}
 }
 
-void AccountManager::invalidPassword(Account account)
-{
-	QMutexLocker(&mutex());
-
-	QString message = tr("Please provide valid password for %1 (%2) account")
-			.arg(account.accountIdentity().name())
-			.arg(account.id());
-	PasswordWindow::getPassword(message, account.protocolHandler(), SLOT(login(const QString &, bool)));
-}
-
 void AccountManager::removeAccountAndBuddies(Account account)
 {
 	account.setRemoving(true);
@@ -248,6 +238,32 @@ void AccountManager::removeAccountAndBuddies(Account account)
 		BuddyManager::instance()->clearOwnerAndRemoveEmptyBuddy(contact);
 
 	removeItem(account);
+}
+
+void AccountManager::passwordProvided(const QVariant& data, const QString& password, bool permanent)
+{
+	Account account = data.value<Account>();
+	if (!account)
+		return;
+
+	account.setPassword(password);
+	account.setRememberPassword(permanent);
+	account.setHasPassword(!password.isEmpty());
+
+	// inform protocol that we have password
+	// maybe this should be in other place, but for now it is enough
+	if (account.protocolHandler())
+		account.protocolHandler()->passwordProvided();
+}
+
+void AccountManager::providePassword(Account account)
+{
+	QMutexLocker(&mutex());
+
+	QString message = tr("Please provide valid password for %1 (%2) account")
+			.arg(account.accountIdentity().name())
+			.arg(account.id());
+	PasswordWindow::getPassword(message, account, this, SLOT(passwordProvided(const QVariant &, const QString &, bool)));
 }
 
 void AccountManager::loaded()

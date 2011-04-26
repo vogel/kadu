@@ -25,7 +25,7 @@ set (contacts_MOC_SRCS
 	model/contact-list-model.h
 )
 
-qt_wrap_cpp (contacts contacts_MOC_FILES ${contacts_MOC_SRCS})
+qt4_wrap_cpp (contacts_MOC_FILES ${contacts_MOC_SRCS})
 
 add_library (contacts
 	STATIC

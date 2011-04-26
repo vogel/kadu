@@ -40,7 +40,6 @@
 #include "protocols/services/file-transfer-service.h"
 #include "storage/storage-point.h"
 #include "debug.h"
-#include "modules.h"
 
 #include "file-transfer-manager.h"
 
@@ -153,10 +152,14 @@ void FileTransferManager::acceptFileTransfer(FileTransfer transfer)
 {
 	QMutexLocker(&mutex());
 
+	FileTransfer alreadyTransferred = byPeerAndRemoteFileName(transfer.peer(), transfer.remoteFileName());
+	if (alreadyTransferred)
+		FileTransferManager::instance()->removeItem(alreadyTransferred);
+
 	QString fileName = transfer.localFileName();
 
 	bool haveFileName = !fileName.isEmpty();
-	bool resume = haveFileName;
+	bool resumeTransfer = haveFileName;
 
 	QFileInfo fi;
 
@@ -187,37 +190,33 @@ void FileTransferManager::acceptFileTransfer(FileTransfer transfer)
 			                                 tr("Select another file"), 0, 2))
 			{
 				case 0:
-					resume = false;
+					resumeTransfer = false;
 					break;
 
 				case 1:
-					resume = true;
+					resumeTransfer = true;
 					break;
 
 				case 2:
+					fileName = QString();
+					haveFileName = false;
 					continue;
 			}
 		}
 
-		QFile file(fileName);
-		QIODevice::OpenMode flags = QIODevice::WriteOnly;
-		if (resume)
-			flags |= QIODevice::Append;
-		else
-			flags |= QIODevice::Truncate;
-
-		if (!file.open(flags))
+		if (fi.exists() && !fi.isWritable())
 		{
-			MessageDialog::show("dialog-warning", tr("Kadu"), tr("Could not open file. Select another one."));
-			fileName.clear();;
+			MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Could not open file. Select another one."));
+			fileName.clear();
+			continue;
 		}
 
 		transfer.createHandler();
 		if (transfer.handler())
 		{
-			if (!transfer.handler()->accept(file))
+			if (!transfer.handler()->accept(fileName, resumeTransfer))
 			{
-				MessageDialog::show("dialog-warning", tr("Kadu"), tr("Could not open file. Select another one."));
+				MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Could not open file. Select another one."));
 				fileName.clear();
 				continue;
 			}
@@ -228,6 +227,8 @@ void FileTransferManager::acceptFileTransfer(FileTransfer transfer)
 
 	FileTransferManager::instance()->addItem(transfer);
 	transfer.setTransferStatus(StatusTransfer);
+
+	FileTransferManager::instance()->showFileTransferWindow();
 }
 
 void FileTransferManager::rejectFileTransfer(FileTransfer transfer)

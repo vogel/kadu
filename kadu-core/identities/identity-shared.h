@@ -71,16 +71,17 @@ public:
 	virtual QString statusContainerName()  { return name(); }
 
 	virtual Status status();
+	virtual bool isStatusSettingInProgress();
 	virtual int maxDescriptionLength();
 
 	virtual QString statusDisplayName();
-	virtual QIcon statusIcon();
-    virtual QString statusIconPath(const QString &statusType);
-	virtual QIcon statusIcon(const QString &statusType);
+
+	virtual KaduIcon statusIcon();
+	virtual KaduIcon statusIcon(const Status &status);
+	virtual KaduIcon statusIcon(const QString &statusType);
 
 	virtual QList<StatusType *> supportedStatusTypes();
 
-	QIcon statusIcon(Status status);
 };
 
 #endif // IDENTITY_SHARED_H

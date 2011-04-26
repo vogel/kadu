@@ -38,7 +38,7 @@
 #include "notify/notification.h"
 #include "parser/parser.h"
 #include "debug.h"
-#include "icons-manager.h"
+#include "icons/icons-manager.h"
 
 #include "hint.h"
 
@@ -65,7 +65,7 @@ Hint::Hint(QWidget *parent, Notification *notification)
 
 	startSecs = secs = config_file.readNumEntry("Hints", "Event_" + notification->key() + "_timeout", 10);
 
-	createLabels(notification->icon().pixmap(config_file.readNumEntry("Hints", "AllEvents_iconSize", 32)));
+	createLabels(notification->icon().icon().pixmap(config_file.readNumEntry("Hints", "AllEvents_iconSize", 32)));
 	updateText();
 
 	const QList<Notification::Callback> callbacks = notification->getCallbacks();
@@ -116,40 +116,46 @@ Hint::~Hint()
 
 void Hint::configurationUpdated()
 {
-	bcolor = config_file.readColorEntry("Hints", "Event_" + notification->key() + "_bgcolor", &qApp->palette().background().color());
-	fcolor = config_file.readColorEntry("Hints", "Event_" + notification->key() + "_fgcolor", &qApp->palette().foreground().color());
-	label->setFont(config_file.readFontEntry("Hints", "Event_" + notification->key() + "_font", &qApp->font()));
-	QString style = QString("QWidget {color:%1; background-color:%2; border-width:0px; border-color:%2}").arg(fcolor.name(), bcolor.name());
+	QFont font(qApp->font());
+	QPalette palette(qApp->palette());
 
-	setStyleSheet(style);
-
+	bcolor = config_file.readColorEntry("Hints", "Event_" + notification->key() + "_bgcolor", &palette.window().color());
+	fcolor = config_file.readColorEntry("Hints", "Event_" + notification->key() + "_fgcolor", &palette.windowText().color());
+	label->setFont(config_file.readFontEntry("Hints", "Event_" + notification->key() + "_font", &font));
 	setMinimumWidth(config_file.readNumEntry("Hints", "MinimumWidth", 100));
 	setMaximumWidth(config_file.readNumEntry("Hints", "MaximumWidth", 500));
+	mouseOut();
 }
 
 void Hint::createLabels(const QPixmap &pixmap)
 {
+	int margin = config_file.readNumEntry("Hints", "MarginSize", 0);
+
 	vbox = new QVBoxLayout(this);
-	vbox->setSpacing(2);
-	vbox->setMargin(1);
+	vbox->setSpacing(0);
+	vbox->setMargin(0);
 	vbox->setSizeConstraint(QLayout::SetMinimumSize);
 	QWidget *widget = new QWidget(this);
 	labels = new QHBoxLayout(widget);
-	labels->setContentsMargins(1, 1, 1, 1);
+	labels->setSpacing(0);
+	labels->setMargin(0);
+	labels->setContentsMargins(margin + 4, margin + 2, margin + 4, margin + 2);
 
 	vbox->addWidget(widget);
 	if (!pixmap.isNull())
 	{
 		icon = new QLabel(this);
 		icon->setPixmap(pixmap);
+		icon->resize(pixmap.size());
 		icon->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 		labels->addWidget(icon, 0, Qt::AlignTop);
 	}
 
 	label = new QLabel(this);
+	label->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	label->setTextInteractionFlags(Qt::NoTextInteraction);
 	label->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
-	label->setContentsMargins(5, 0, 5, 0);
+	label->setContentsMargins(margin + 4, 0, 0, 0);
 	labels->addWidget(label);
 }
 
@@ -200,9 +206,10 @@ void Hint::updateText()
 		}
 	}
 
-	// this does not work
-	//label->setText(' ' + text.replace(' ', QLatin1String("&nbsp;")).replace('\n', QLatin1String("<br />")));
-	label->setText(' ' + text.trimmed().replace('\n', QLatin1String("<br />")));
+	label->setText(QString("<div style='width:100%; height:100%; vartical-align:middle;'>")
+		+ text.replace('\n', QLatin1String("<br />"))
+		+ "</div>"
+		);
 
 	emit updated(this);
 }
@@ -281,11 +288,21 @@ void Hint::mouseReleaseEvent(QMouseEvent *event)
 
 void Hint::enterEvent(QEvent *)
 {
+	mouseOver();
+}
+
+void Hint::leaveEvent(QEvent *)
+{
+	mouseOut();
+}
+
+void Hint::mouseOver()
+{
 	QString style = QString("QWidget {color:%1; background-color:%2; border-width:0px; border-color:%2}").arg(fcolor.name(), bcolor.lighter().name());
 	setStyleSheet(style);
 }
 
-void Hint::leaveEvent(QEvent *)
+void Hint::mouseOut()
 {
 	QString style = QString("QWidget {color:%1; background-color:%2; border-width:0px; border-color:%2}").arg(fcolor.name(), bcolor.name());
 	setStyleSheet(style);

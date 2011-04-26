@@ -8,7 +8,7 @@ set (os_MOC_SRCS
 	qtsingleapplication/qtlocalpeer.h
 )
 
-qt_wrap_cpp (os os_MOC_FILES ${os_MOC_SRCS})
+qt4_wrap_cpp (os_MOC_FILES ${os_MOC_SRCS})
 
 add_library (os
 	STATIC

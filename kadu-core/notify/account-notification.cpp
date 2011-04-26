@@ -43,8 +43,8 @@ static QString getProtocolName(const QObject * const object)
 		: QString();
 }
 
-AccountNotification::AccountNotification(Account account, const QString &type, const QString &iconPath) :
-		Notification(type, iconPath), CurrentAccount(account)
+AccountNotification::AccountNotification(Account account, const QString &type, const KaduIcon &icon) :
+		Notification(type, icon), CurrentAccount(account)
 {
 	Parser::registerObjectTag("protocol", getProtocolName);
 	Parser::registerObjectTag("account", getAccountName);

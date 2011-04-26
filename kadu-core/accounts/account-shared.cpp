@@ -27,6 +27,7 @@
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
 #include "identities/identity-manager.h"
+#include "icons/kadu-icon.h"
 #include "misc/misc.h"
 #include "protocols/protocol.h"
 #include "protocols/protocols-manager.h"
@@ -87,10 +88,15 @@ void AccountShared::load()
 	if (identity.isNull() && !IdentityManager::instance()->items().isEmpty())
 		identity = IdentityManager::instance()->items().at(0);
 
-	setAccountIdentity(identity);
+	// see setAccountIdentity() method
+	AccountIdentity = identity;
+	AccountIdentity.addAccount(this);
 
 	ProtocolName = loadValue<QString>("Protocol");
-	setId(loadValue<QString>("Id"));
+
+	// see setId() method
+	Id = loadValue<QString>("Id");
+	AccountContact.setId(Id);
 
 	RememberPassword = loadValue<bool>("RememberPassword", true);
 	HasPassword = RememberPassword;
@@ -158,7 +164,9 @@ void AccountShared::emitUpdated()
 
 void AccountShared::setDisconnectStatus()
 {
-	if (status().type() == "Offline")
+	if (!ProtocolHandler)
+		return;
+	if (!ProtocolHandler->isConnected())
 		return;
 
 	bool disconnectWithCurrentDescription = config_file.readBoolEntry("General", "DisconnectWithCurrentDescription");
@@ -337,6 +345,14 @@ Status AccountShared::status()
 		return Status();
 }
 
+bool AccountShared::isStatusSettingInProgress()
+{
+	if (ProtocolHandler)
+		return ProtocolHandler->isConnecting();
+	else
+		return false;
+}
+
 int AccountShared::maxDescriptionLength()
 {
 	if (ProtocolHandler)
@@ -350,33 +366,25 @@ QString AccountShared::statusDisplayName()
 	return status().displayName();
 }
 
-QIcon AccountShared::statusIcon()
+KaduIcon AccountShared::statusIcon()
 {
 	return statusIcon(status());
 }
 
-QString AccountShared::statusIconPath(const QString &statusType)
-{
-	if (ProtocolHandler)
-		return ProtocolHandler->statusIconFullPath(statusType);
-	else
-		return QString();
-}
-
-QIcon AccountShared::statusIcon(const QString &statusType)
-{
-	if (ProtocolHandler)
-		return ProtocolHandler->statusIcon(statusType);
-	else
-		return QIcon();
-}
-
-QIcon AccountShared::statusIcon(Status status)
+KaduIcon AccountShared::statusIcon(const Status &status)
 {
 	if (ProtocolHandler)
 		return ProtocolHandler->statusIcon(status);
 	else
-		return QIcon();
+		return KaduIcon();
+}
+
+KaduIcon AccountShared::statusIcon(const QString &statusType)
+{
+	if (ProtocolHandler)
+		return ProtocolHandler->statusIcon(statusType);
+	else
+		return KaduIcon();
 }
 
 void AccountShared::setPrivateStatus(bool isPrivate)

@@ -17,6 +17,7 @@ set(MOC_SOURCES
 )
 
 set (TRANSLATION_SOURCES
+	translations/profiles_import_en.ts
 	translations/profiles_import_de.ts
 	translations/profiles_import_fr.ts
 	translations/profiles_import_it.ts
@@ -26,10 +27,10 @@ set (TRANSLATION_SOURCES
 set (CONFIGURATION_FILES
 )
 
-kadu_module (profiles_import
-	MODULE_SOURCES ${SOURCES}
-	MODULE_MOC_SOURCES ${MOC_SOURCES}
-	MODULE_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
-	MODULE_CONFIGURATION_FILES ${CONFIGURATION_FILES}
-	MODULE_DEPENDENCIES gadu_protocol history_migration
+kadu_plugin (profiles_import
+	PLUGIN_SOURCES ${SOURCES}
+	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
+	PLUGIN_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
+	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
+	PLUGIN_DEPENDENCIES gadu_protocol history_migration
 )

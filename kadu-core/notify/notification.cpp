@@ -21,9 +21,9 @@
 
 #include <QtCore/QTimer>
 
+#include "icons/kadu-icon.h"
 #include "notify/notification-manager.h"
 #include "parser/parser.h"
-#include "icons-manager.h"
 #include "debug.h"
 
 #include "notification.h"
@@ -39,9 +39,8 @@ static QString getNotificationTitle(const QObject * const object)
 		return QString();
 }
 
-Notification::Notification(const QString &type, const QString &iconPath) :
-	Type(type), IconPath(IconsManager::instance()->iconPath(iconPath, "16x16")),
-	Icon(IconsManager::instance()->iconByPath(iconPath)), DefaultCallbackTimer(0),
+Notification::Notification(const QString &type, const KaduIcon &icon) :
+	Type(type), Icon(icon), DefaultCallbackTimer(0),
 	ReferencesCount(0), Closing(false)
 {
 	Parser::registerObjectTag("event", getNotificationTitle);
@@ -123,11 +122,6 @@ void Notification::clearDefaultCallback()
 	}
 }
 
-QString Notification::type() const
-{
-	return Type;
-}
-
 QString Notification::key() const
 {
 	return NotificationManager::instance()->notifyConfigurationKey(Type);
@@ -138,19 +132,9 @@ void Notification::setTitle(const QString &title)
 	Title = title;
 }
 
-QString Notification::title() const
-{
-	return Title;
-}
-
 void Notification::setText(const QString &text)
 {
 	Text = text;
-}
-
-QString Notification::text() const
-{
-	return Text;
 }
 
 void Notification::setDetails(const QString &details)
@@ -158,29 +142,7 @@ void Notification::setDetails(const QString &details)
 	Details = details;
 }
 
-QString Notification::details() const
+void Notification::setIcon(const KaduIcon &icon)
 {
-	return Details;
-}
-
-void Notification::setIcon(const QString& iconPath)
-{
-	IconPath = IconsManager::instance()->iconPath(iconPath, "16x16");
-
-	Icon = IconsManager::instance()->iconByPath(iconPath);
-}
-
-QString Notification::iconPath() const
-{
-	return IconPath;
-}
-
-QIcon Notification::icon() const
-{
-	return Icon;
-}
-
-const QList<Notification::Callback> & Notification::getCallbacks()
-{
-	return Callbacks;
+	Icon = icon;
 }

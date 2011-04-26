@@ -7,7 +7,7 @@ set (MOC_SOURCES
 	itunes.h
 )
 
-kadu_module (itunes_mediaplayer
-	MODULE_SOURCES ${SOURCES}
-	MODULE_MOC_SOURCES ${MOC_SOURCES}
+kadu_plugin (itunes_mediaplayer
+	PLUGIN_SOURCES ${SOURCES}
+	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
 )

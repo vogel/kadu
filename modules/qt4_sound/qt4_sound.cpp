@@ -45,7 +45,7 @@ extern "C" KADU_EXPORT int qt4_sound_init(bool firstLoad)
 
 	if (!QSound::isAvailable ())
 	{
-		MessageDialog::show("dialog-error", QObject::tr("Kadu"), QObject::tr("QSound API is not available on this platform"));
+		MessageDialog::show(KaduIcon("dialog-error"), QObject::tr("Kadu"), QObject::tr("QSound API is not available on this platform"));
 		return 1;
 	}
 

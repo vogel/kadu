@@ -1,0 +1,7 @@
+[Module]
+Description=Display notifications in chat window
+Description[pl]=Pokazuje powiadomenia w oknie rozmowy
+Author=KaduTeam
+Version=core
+Plugin=true
+LoadByDefault=true

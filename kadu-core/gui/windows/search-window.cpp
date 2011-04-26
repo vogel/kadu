@@ -45,6 +45,7 @@
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
 #include "core/core.h"
+#include "icons/kadu-icon.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/windows/add-buddy-window.h"
 #include "gui/windows/kadu-window.h"
@@ -369,21 +370,21 @@ void SearchWindow::firstSearch()
 
 	if (!CurrentAccount)
 	{
-		MessageDialog::show("dialog-error", windowTitle(),
+		MessageDialog::show(KaduIcon("dialog-error"), windowTitle(),
 				tr("To be able to search you have to set up an account first."), QMessageBox::Ok, this);
 		return;
 	}
 
 	if (!CurrentSearchService)
 	{
-		MessageDialog::show("dialog-error", windowTitle(),
+		MessageDialog::show(KaduIcon("dialog-error"), windowTitle(),
 				tr("We don't offer contacts search feature for your network yet."), QMessageBox::Ok, this);
 		return;
 	}
 
 	if (!CurrentAccount.protocolHandler() || !CurrentAccount.protocolHandler()->isConnected())
 	{
-		MessageDialog::show("dialog-error", windowTitle(),
+		MessageDialog::show(KaduIcon("dialog-error"), windowTitle(),
 				tr("Cannot search contacts in offline mode."), QMessageBox::Ok, this);
 		return;
 	}
@@ -477,7 +478,7 @@ void SearchWindow::newSearchResults(const BuddyList &buddies)
 			strings << QString() << contact.id() << buddy.firstName()
 					<< buddy.city() << buddy.nickName() << QString::number(buddy.birthYear());
 			treeItem = new QTreeWidgetItem(ResultsListWidget, strings);
-			treeItem->setIcon(0, contact.contactAccount().data()->statusIcon(contact.currentStatus()).pixmap(16, 16));
+			treeItem->setIcon(0, contact.contactAccount().data()->statusIcon(contact.currentStatus()).icon());
 		}
 	}
 
@@ -490,7 +491,7 @@ void SearchWindow::newSearchResults(const BuddyList &buddies)
 	setActionEnabled(SearchWindowActions::instance()->StopSearch, false);
 
 	if (buddies.isEmpty())
-		MessageDialog::show("dialog-information", windowTitle(),
+		MessageDialog::show(KaduIcon("dialog-information"), windowTitle(),
 				tr("There were no results of your search."), QMessageBox::Ok, this);
 	else
 	{

@@ -1,4 +1,5 @@
 set (TRANSLATION_SOURCES
+	kadu_en.ts
 	kadu_cs.ts
 	kadu_de.ts
 	kadu_fr.ts

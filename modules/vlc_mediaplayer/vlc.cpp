@@ -40,13 +40,13 @@ extern "C" KADU_EXPORT int vlc_mediaplayer_init(bool firstLoad)
 	Q_UNUSED(firstLoad)
 
 	vlc = new MPRISMediaPlayer("VLC", "org.mpris.vlc");
-	bool res = mediaplayer->registerMediaPlayer(vlc, vlc);
+	bool res = MediaPlayer::instance()->registerMediaPlayer(vlc, vlc);
 	return res ? 0 : 1;
 }
 
 extern "C" KADU_EXPORT void vlc_mediaplayer_close()
 {
-	mediaplayer->unregisterMediaPlayer();
+	MediaPlayer::instance()->unregisterMediaPlayer();
 	delete vlc;
 	vlc = NULL;
 }

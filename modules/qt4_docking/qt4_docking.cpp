@@ -34,6 +34,7 @@
 #include "core/core.h"
 #include "debug.h"
 #include "exports.h"
+#include "icons/kadu-icon.h"
 
 #include "qt4_docking.h"
 
@@ -42,31 +43,32 @@
  * @{
  */
 
-extern "C" KADU_EXPORT int qt4_docking_init(bool firstLoad)
+Qt4TrayIcon * Qt4TrayIcon::Instance = 0;
+
+Qt4TrayIcon * Qt4TrayIcon::createInstance()
 {
-	Q_UNUSED(firstLoad)
+	Instance = new Qt4TrayIcon();
 
-	qt4_tray_icon = new Qt4TrayIcon(0);
-	DockingManager::instance()->setDocker(qt4_tray_icon);
-
-	return 0;
+	return Instance;
 }
 
-extern "C" KADU_EXPORT void qt4_docking_close()
+Qt4TrayIcon * Qt4TrayIcon::instance()
 {
-	if (!Core::instance()->isClosing())
-		DockingManager::instance()->setDocker(0);
-	delete qt4_tray_icon;
-	qt4_tray_icon = 0;
+	return Instance;
 }
 
+void Qt4TrayIcon::destroyInstance()
+{
+	delete Instance;
+	Instance = 0;
+}
 
 Qt4TrayIcon::Qt4TrayIcon(QWidget *parent) :
 		QSystemTrayIcon(parent), Movie(0)
 {
 	kdebugf();
 
-	setIcon(QIcon(DockingManager::instance()->defaultPixmap()));
+	setIcon(DockingManager::instance()->defaultIcon().icon());
 
 	connect(this, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(trayActivated(QSystemTrayIcon::ActivationReason)));
 
@@ -92,7 +94,7 @@ Qt4TrayIcon::~Qt4TrayIcon()
 	kdebugf2();
 }
 
-void Qt4TrayIcon::changeTrayIcon(const QIcon &icon)
+void Qt4TrayIcon::changeTrayIcon(const KaduIcon &icon)
 {
 	if (Movie)
 	{
@@ -100,7 +102,7 @@ void Qt4TrayIcon::changeTrayIcon(const QIcon &icon)
 		Movie->deleteLater();
 		Movie = 0;
 	}
-	setIcon(icon);
+	setIcon(icon.icon());
 }
 
 void Qt4TrayIcon::changeTrayMovie(const QString &moviePath)
@@ -152,8 +154,5 @@ void Qt4TrayIcon::trayActivated(QSystemTrayIcon::ActivationReason reason)
 	if (!event.isNull())
 		DockingManager::instance()->trayMousePressEvent(event.data());
 }
-
-
-Qt4TrayIcon *qt4_tray_icon = 0;
 
 /** @} */

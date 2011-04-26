@@ -70,7 +70,7 @@ extern "C" KADU_EXPORT void qt4_docking_notify_close()
 }
 
 Qt4Notify::Qt4Notify() :
-		Notifier("Tray Icon Balloon", QT_TRANSLATE_NOOP("@default", "Tray Icon Balloon"), "external_modules/qt4notify")
+		Notifier("Tray Icon Balloon", QT_TRANSLATE_NOOP("@default", "Tray Icon Balloon"), KaduIcon("external_modules/qt4notify"))
 {
 	kdebugf();
 
@@ -79,10 +79,8 @@ Qt4Notify::Qt4Notify() :
 
 	NotificationManager::instance()->registerNotifier(this);
 
-	if (qt4_tray_icon != 0)
-	{
-		connect(qt4_tray_icon, SIGNAL(messageClicked()), this, SLOT(messageClicked()));
-	}
+	if (Qt4TrayIcon::instance())
+		connect(Qt4TrayIcon::instance(), SIGNAL(messageClicked()), this, SLOT(messageClicked()));
 
 	kdebugf2();
 }
@@ -92,9 +90,9 @@ Qt4Notify::~Qt4Notify()
 	kdebugf();
 	NotificationManager::instance()->unregisterNotifier(this);
 
-	if (qt4_tray_icon != 0)
+	if (Qt4TrayIcon::instance())
 	{
-		disconnect(qt4_tray_icon, SIGNAL(messageClicked()), this, SLOT(messageClicked()));
+		disconnect(Qt4TrayIcon::instance(), SIGNAL(messageClicked()), this, SLOT(messageClicked()));
 	}
 
 	kdebugf2();
@@ -139,7 +137,7 @@ void Qt4Notify::notify(Notification *notification)
 {
 	kdebugf();
 
-	if (qt4_tray_icon)
+	if (Qt4TrayIcon::instance())
 	{
 		notification->acquire();
 
@@ -148,7 +146,7 @@ void Qt4Notify::notify(Notification *notification)
 		QString title = config_file.readEntry("Qt4DockingNotify", QString("Event_") + notification->key() + "_title");
 		QString syntax = config_file.readEntry("Qt4DockingNotify", QString("Event_") + notification->key() + "_syntax");
 
-		qt4_tray_icon->showMessage(parseText(title, notification, notification->text()),
+		Qt4TrayIcon::instance()->showMessage(parseText(title, notification, notification->text()),
 			parseText(syntax, notification, notification->details()),
 			(QSystemTrayIcon::MessageIcon)icon, timeout * 1000);
 

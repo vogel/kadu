@@ -19,11 +19,14 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QTimer>
 #include <QtGui/QMenu>
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
 #include "configuration/main-configuration.h"
+#include "icons/kadu-icon.h"
+#include "gui/status-icon.h"
 #include "gui/widgets/status-menu.h"
 #include "protocols/protocol.h"
 #include "status/status-container.h"
@@ -33,10 +36,13 @@
 StatusButton::StatusButton(StatusContainer *statusContainer, QWidget *parent) :
 		QPushButton(parent), MyStatusContainer(statusContainer), DisplayStatusName(false)
 {
+	Icon = new StatusIcon(MyStatusContainer, this);
+
 	createGui();
 
 	statusUpdated();
 	connect(MyStatusContainer, SIGNAL(statusUpdated()), this, SLOT(statusUpdated()));
+	connect(Icon, SIGNAL(iconUpdated(KaduIcon)), this, SLOT(iconUpdated(KaduIcon)));
 }
 
 StatusButton::~StatusButton()
@@ -46,23 +52,31 @@ StatusButton::~StatusButton()
 void StatusButton::createGui()
 {
 	QMenu *menu = new QMenu(this);
-	new StatusMenu(MyStatusContainer, menu);
+	new StatusMenu(MyStatusContainer, false, menu);
 
 	setMenu(menu);
+	setIcon(Icon->icon().icon());
 }
 
 void StatusButton::updateStatus()
 {
-	setIcon(MyStatusContainer->statusIcon());
-
 	if (DisplayStatusName)
+	{
 		setText(MyStatusContainer->statusDisplayName());
+		setToolTip(QString());
+	}
 	else
 	{
 		if (MainConfiguration::instance()->simpleMode())
+		{
 			setText(MyStatusContainer->statusContainerName());
+			setToolTip(QString());
+		}
 		else
+		{
+			setText(QString());
 			setToolTip(MyStatusContainer->statusContainerName());
+		}
 	}
 }
 
@@ -83,4 +97,9 @@ void StatusButton::setDisplayStatusName(bool displayStatusName)
 		DisplayStatusName = displayStatusName;
 		updateStatus();
 	}
+}
+
+void StatusButton::iconUpdated(const KaduIcon &icon)
+{
+	setIcon(icon.icon());
 }

@@ -2,6 +2,5 @@
 Description=Idle Timer
 Description[pl]=Wykrywanie bezczynno¶ci
 Author=Kadu Team
-Base=true
 LoadByDefault=false
 Version=core

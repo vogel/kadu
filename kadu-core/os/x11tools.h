@@ -19,7 +19,7 @@
 ****************************************************************************/
 
 
-// VERSION: 1.15
+// VERSION: 1.19
 
 
 /*
@@ -43,9 +43,9 @@ KNOWN ISSUES:
 
 #ifdef X11TOOLSDEBUG
 	#include <stdio.h>
-	#define _debug( ... ) printf( __VA_ARGS__ ); fflush( stdout );
+	#define _x11toolsdebug( ... ) printf( __VA_ARGS__ ); fflush( stdout );
 #else
-	#define _debug( ... )
+	#define _x11toolsdebug( ... )
 #endif
 
 

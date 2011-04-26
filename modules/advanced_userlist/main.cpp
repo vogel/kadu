@@ -31,7 +31,7 @@ extern "C" KADU_EXPORT int advanced_userlist_init(bool firstLoad)
 	kdebugf();
 
 	advanced_userlist = new AdvancedUserList();
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/advanced_userlist.ui"), advanced_userlist);
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/advanced_userlist.ui"), advanced_userlist);
 
 	kdebugf2();
 	return 0;
@@ -41,7 +41,7 @@ extern "C" KADU_EXPORT void advanced_userlist_close()
 {
 	kdebugf();
 
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/advanced_userlist.ui"), advanced_userlist);
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/advanced_userlist.ui"), advanced_userlist);
 	delete advanced_userlist;
 
 	kdebugf2();

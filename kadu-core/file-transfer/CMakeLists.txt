@@ -14,7 +14,7 @@ set (file-transfer_MOC_SRCS
 	file-transfer-shared.h
 )
 
-qt_wrap_cpp (file-transfer file-transfer_MOC_FILES ${file-transfer_MOC_SRCS})
+qt4_wrap_cpp (file-transfer_MOC_FILES ${file-transfer_MOC_SRCS})
 
 add_library (file-transfer
 	STATIC

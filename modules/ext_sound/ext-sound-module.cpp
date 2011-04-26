@@ -33,7 +33,7 @@ extern "C" KADU_EXPORT int ext_sound_init(bool firstLoad)
 
 	ExternalPlayer::createInstance();
 	SoundManager::instance()->setPlayer(ExternalPlayer::instance());
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/ext_sound.ui"));
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/ext_sound.ui"));
 
 	kdebugf2();
 	return 0;
@@ -43,7 +43,7 @@ extern "C" KADU_EXPORT void ext_sound_close()
 {
 	kdebugf();
 
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/ext_sound.ui"));
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/ext_sound.ui"));
 	SoundManager::instance()->setPlayer(0);
 	ExternalPlayer::destroyInstance();
 

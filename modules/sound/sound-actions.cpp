@@ -66,7 +66,7 @@ SoundActions::SoundActions()
 	MuteActionDescription = new ActionDescription(this,
 		ActionDescription::TypeGlobal, "muteSoundsAction",
 		this, SLOT(muteActionActivated(QAction *, bool)),
-		"audio-volume-high", tr("Play Sounds"), true
+		KaduIcon("audio-volume-high"), tr("Play Sounds"), true
 	);
 	connect(MuteActionDescription, SIGNAL(actionCreated(Action *)), this, SLOT(setMuteActionState()));
 

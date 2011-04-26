@@ -13,7 +13,7 @@ set (storage_MOC_SRCS
 	module-data.h
 )
 
-qt_wrap_cpp (storage storage_MOC_FILES ${storage_MOC_SRCS})
+qt4_wrap_cpp (storage_MOC_FILES ${storage_MOC_SRCS})
 
 add_library (storage
 	STATIC

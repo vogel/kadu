@@ -62,7 +62,7 @@ set (chat_MOC_SRCS
 	type/chat-type-simple.h
 )
 
-qt_wrap_cpp (chat chat_MOC_FILES ${chat_MOC_SRCS})
+qt4_wrap_cpp (chat_MOC_FILES ${chat_MOC_SRCS})
 
 add_library (chat
 	STATIC

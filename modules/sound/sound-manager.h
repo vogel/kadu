@@ -68,7 +68,7 @@ public slots:
 public:
 	static void createInstance();
 	static void destroyInstance();
-	static SoundManager * instance();
+	static SoundManager * instance() { return Instance; }
 
 	void setPlayer(SoundPlayer *player);
 

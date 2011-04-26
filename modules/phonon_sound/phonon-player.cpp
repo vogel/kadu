@@ -54,25 +54,30 @@ PhononPlayer::PhononPlayer()
 {
 	kdebugf();
 
-	Media = new Phonon::MediaObject(this);
-	Output = new Phonon::AudioOutput(Phonon::NotificationCategory, this);
-	Phonon::createPath(Media, Output);
+	// Phonon produces Qt warnings when is run not in QApplication's thread.
+	// It is a workaround.
+	int type = QMetaType::type("MediaSource");
+	if (type == 0 || !QMetaType::isRegistered(type))
+		qRegisterMetaType<Phonon::MediaSource>("MediaSource");
+
+	Media = Phonon::createPlayer(Phonon::NotificationCategory);
 
 	kdebugf2();
 }
 
 PhononPlayer::~PhononPlayer()
 {
+	Media->deleteLater();
 }
 
 void PhononPlayer::playSound(const QString &path, bool volumeControl, double volumes)
 {
+	Q_UNUSED(volumeControl)
+	Q_UNUSED(volumes)
+
 	kdebugf();
 
-	if (volumeControl)
-		Output->setVolume(volumes);
-
-	Media->setCurrentSource(Phonon::MediaSource(path));
+	Media->setCurrentSource(path);
 	Media->play();
 
 	kdebugf2();

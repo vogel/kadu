@@ -10,7 +10,7 @@ set (misc_MOC_SRCS
 	syntax-list.h
 )
 
-qt_wrap_cpp (misc misc_MOC_FILES ${misc_MOC_SRCS})
+qt4_wrap_cpp (misc_MOC_FILES ${misc_MOC_SRCS})
 
 add_library (misc
 	STATIC

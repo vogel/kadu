@@ -1,5 +1,6 @@
 /*
  * %kadu copyright begin%
+ * Copyright 2011 Sławomir Stępień (s.stepien@interia.pl)
  * Copyright 2007 Dawid Stawiarski (neeo@kadu.net)
  * Copyright 2010 Bartosz Brachaczek (b.brachaczek@gmail.com)
  * Copyright 2008, 2009, 2010 Piotr Galiszewski (piotr.galiszewski@kadu.im)
@@ -26,11 +27,13 @@
 #include <QtGui/QAction>
 #include <QtGui/QKeyEvent>
 #include <QtGui/QMenu>
+#include <QtCore/QScopedPointer>
 
 #include "gui/hot-key.h"
 #include "debug.h"
 
 #include "custom-input.h"
+#include "custom-input-menu-manager.h"
 
 CustomInput::CustomInput(QWidget *parent) :
 		QTextEdit(parent), CopyPossible(false), autosend_enabled(true)
@@ -153,47 +156,47 @@ void CustomInput::keyReleaseEvent(QKeyEvent *e)
 
 void CustomInput::contextMenuEvent(QContextMenuEvent *e)
 {
-	QMenu menu(this);
+	QScopedPointer<QMenu> menu(CustomInputMenuManager::instance()->menu(this));
 
-	QAction *undo = new QAction(tr("Undo"), &menu);
+	QAction *undo = new QAction(tr("Undo"), menu.data());
 	undo->setShortcut(QKeySequence::Undo);
 	connect(undo, SIGNAL(triggered()), this, SLOT(undo()));
-	menu.addAction(undo);
+	menu->addAction(undo);
 
-	QAction *redo = new QAction(tr("Redo"), &menu);
+	QAction *redo = new QAction(tr("Redo"), menu.data());
 	redo->setShortcut(QKeySequence::Redo);
 	connect(redo, SIGNAL(triggered()), this, SLOT(redo()));
-	menu.addAction(redo);
+	menu->addAction(redo);
 
-	menu.addSeparator();
+	menu->addSeparator();
 
-	QAction *cut = new QAction(tr("Cut"), &menu);
+	QAction *cut = new QAction(tr("Cut"), menu.data());
 	cut->setShortcut(QKeySequence::Cut);
 	connect(cut, SIGNAL(triggered()), this, SLOT(cut()));
-	menu.addAction(cut);
+	menu->addAction(cut);
 
-	QAction *copy = new QAction(tr("Copy"), &menu);
+	QAction *copy = new QAction(tr("Copy"), menu.data());
 	copy->setShortcut(QKeySequence::Copy);
 	connect(copy, SIGNAL(triggered()), this, SLOT(copy()));
-	menu.addAction(copy);
+	menu->addAction(copy);
 
-	QAction *paste = new QAction(tr("Paste"), &menu);
+	QAction *paste = new QAction(tr("Paste"), menu.data());
 	paste->setShortcut(QKeySequence::Paste);
 	connect(paste, SIGNAL(triggered()), this, SLOT(paste()));
-	menu.addAction(paste);
+	menu->addAction(paste);
 
-	QAction *clear = new QAction(tr("Clear"), &menu);
+	QAction *clear = new QAction(tr("Clear"), menu.data());
 	connect(clear, SIGNAL(triggered()), this, SLOT(clear()));
-	menu.addAction(clear);
+	menu->addAction(clear);
 
-	menu.addSeparator();
+	menu->addSeparator();
 
-	QAction *all = new QAction(tr("Select All"), &menu);
+	QAction *all = new QAction(tr("Select All"), menu.data());
 	all->setShortcut(QKeySequence::SelectAll);
 	connect(all, SIGNAL(triggered()), this, SLOT(selectAll()));
-	menu.addAction(all);
+	menu->addAction(all);
 
-	menu.exec(e->globalPos());
+	menu->exec(e->globalPos());
 }
 
 void CustomInput::setAutoSend(bool on)

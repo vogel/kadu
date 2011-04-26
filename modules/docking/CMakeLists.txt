@@ -1,9 +1,10 @@
 set (SOURCES
-	docking-module.cpp
+	docking-plugin.cpp
 	docking.cpp
 )
 
 set (MOC_SOURCES
+	docking-plugin.h
 	docking.h
 )
 
@@ -14,6 +15,7 @@ if (APPLE)
 endif (APPLE)
 
 set (TRANSLATION_SOURCES
+	translations/docking_en.ts
 	translations/docking_de.ts
 	translations/docking_fr.ts
 	translations/docking_it.ts
@@ -24,12 +26,12 @@ set (CONFIGURATION_FILES
 	data/configuration/docking.ui
 )
 
-kadu_module (docking
-	MODULE_SOURCES ${SOURCES}
-	MODULE_MOC_SOURCES ${MOC_SOURCES}
-	MODULE_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
-	MODULE_CONFIGURATION_FILES ${CONFIGURATION_FILES}
-	MODULE_BUILDDEF DOCKING_BUILD
+kadu_plugin (docking
+	PLUGIN_SOURCES ${SOURCES}
+	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
+	PLUGIN_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
+	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
+	PLUGIN_BUILDDEF DOCKING_BUILD
 )
 
 if (WIN32)

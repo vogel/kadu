@@ -29,6 +29,7 @@ set (MOC_SOURCES
 )
 
 set (TRANSLATION_SOURCES
+	translations/screenshot_en.ts
 	translations/screenshot_de.ts
 	translations/screenshot_fr.ts
 	translations/screenshot_it.ts
@@ -39,9 +40,9 @@ set (CONFIGURATION_FILES
 	data/configuration/screenshot.ui
 )
 
-kadu_module (screenshot
-	MODULE_SOURCES ${SOURCES}
-	MODULE_MOC_SOURCES ${MOC_SOURCES}
-	MODULE_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
-	MODULE_CONFIGURATION_FILES ${CONFIGURATION_FILES}
+kadu_plugin (screenshot
+	PLUGIN_SOURCES ${SOURCES}
+	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
+	PLUGIN_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
+	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 )

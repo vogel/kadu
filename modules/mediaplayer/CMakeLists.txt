@@ -1,10 +1,12 @@
 set (SOURCES
 	mediaplayer.cpp
+	mediaplayer-plugin.cpp
 	mp_status_changer.cpp
 )
 
 set (MOC_SOURCES
 	mediaplayer.h
+	mediaplayer-plugin.h
 	mp_status_changer.h
 	player_commands.h
 )
@@ -27,6 +29,7 @@ endif (UNIX AND NOT APPLE)
 
 
 set (TRANSLATION_SOURCES
+	translations/mediaplayer_en.ts
 	translations/mediaplayer_de.ts
 	translations/mediaplayer_fr.ts
 	translations/mediaplayer_it.ts
@@ -41,13 +44,13 @@ set (DATA_FILES
 	data/mediaplayer.png
 )
 
-kadu_module (mediaplayer
-	MODULE_SOURCES ${SOURCES}
-	MODULE_MOC_SOURCES ${MOC_SOURCES}
-	MODULE_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
-	MODULE_CONFIGURATION_FILES ${CONFIGURATION_FILES}
-	MODULE_LIBRARIES ${DBUS_LIBS}
-	MODULE_BUILDDEF MEDIAPLAYER_BUILD
+kadu_plugin (mediaplayer
+	PLUGIN_SOURCES ${SOURCES}
+	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
+	PLUGIN_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
+	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
+	PLUGIN_LIBRARIES ${DBUS_LIBS}
+	PLUGIN_BUILDDEF MEDIAPLAYER_BUILD
 )
 
 install (FILES ${DATA_FILES}

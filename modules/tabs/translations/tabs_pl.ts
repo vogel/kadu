@@ -4,8 +4,8 @@
 <context>
     <name>@default</name>
     <message>
-        <source>Chat</source>
-        <translation>Rozmowa</translation>
+        <source>Chat Window</source>
+        <translation>Okno rozmowy</translation>
     </message>
     <message>
         <source>Tabs</source>
@@ -74,6 +74,10 @@
     <message>
         <source>Switch to next tab</source>
         <translation>Przełącz do następnej karty</translation>
+    </message>
+    <message>
+        <source>Chat</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

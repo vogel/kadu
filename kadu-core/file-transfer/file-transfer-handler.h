@@ -41,10 +41,8 @@ public:
 
 	virtual void send() = 0;
 	virtual void stop() = 0;
-	virtual void pause() = 0;
-	virtual void restore() = 0;
 
-	virtual bool accept(const QFile &file) = 0;
+	virtual bool accept(const QString &fileName, bool resumeTransfer) = 0;
 	virtual void reject() = 0;
 
 };

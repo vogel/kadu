@@ -1,0 +1,8 @@
+[Module]
+Description=Freedesktop notification support
+Description[pl]=Wtyczka powiadamiania przy pomocy standardu notyfikacji Freedesktop
+Author=Jacek Jab³oñski, Kadu Team
+Replaces=kde_notify
+Plugin=true
+Provides=notify_method
+Version=core

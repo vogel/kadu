@@ -22,19 +22,19 @@
 
 #include "buddies/buddy.h"
 #include "buddies/buddy-preferred-manager.h"
+#include "icons/kadu-icon.h"
 #include "model/roles.h"
-#include "icons-manager.h"
 
 #include "buddy-data-extractor.h"
 
 QVariant BuddyDataExtractor::decoration(const Buddy &buddy)
 {
 	if (!buddy.homePhone().isEmpty() || !buddy.mobile().isEmpty())
-		return IconsManager::instance()->iconByPath("phone");
+		return KaduIcon("phone").icon();
 	else if (!buddy.email().isEmpty())
-		return IconsManager::instance()->iconByPath("mail-message-new");
+		return KaduIcon("mail-message-new").icon();
 	else
-		return IconsManager::instance()->iconByPath("system-users");
+		return KaduIcon("system-users").icon();
 }
 
 QVariant BuddyDataExtractor::data(const Buddy &buddy, int role)

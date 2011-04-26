@@ -24,6 +24,7 @@
 #include "contacts/contact.h"
 #include "core/core.h"
 #include "identities/identity-manager.h"
+#include "icons/kadu-icon.h"
 #include "misc/misc.h"
 #include "protocols/protocol.h"
 
@@ -162,11 +163,15 @@ Account IdentityShared::bestAccount()
 		if (account.details() && account.data())
 		{
 			// TODO: hack
-			if (result.isNull() || result.data()->status().isDisconnected() ||
-					(account.protocolName() == "gadu" && result.protocolName() != "gadu"))
+			bool newConnected = account.data()->protocolHandler() && account.data()->protocolHandler()->isConnected();
+			bool oldConnected = false;
+			if (result)
+				oldConnected = result.data()->protocolHandler() && result.data()->protocolHandler()->isConnected();
+
+			if (!result || (newConnected && !oldConnected)  || (account.protocolName() == "gadu" && result.protocolName() != "gadu"))
 			{
 				result = account;
-				if (!result.data()->status().isDisconnected() && result.protocolName() == "gadu")
+				if (newConnected && result.protocolName() == "gadu")
 					break;
 			}
 		}
@@ -180,32 +185,32 @@ Status IdentityShared::status()
 	return account ? account.data()->status() : Status();
 }
 
+bool IdentityShared::isStatusSettingInProgress()
+{
+	Account account = bestAccount();
+	return account ? account.data()->isStatusSettingInProgress() : false;
+}
+
 QString IdentityShared::statusDisplayName()
 {
 	return status().displayName();
 }
 
-QIcon IdentityShared::statusIcon()
+KaduIcon IdentityShared::statusIcon()
 {
 	return statusIcon(status());
 }
 
-QIcon IdentityShared::statusIcon(Status status)
+KaduIcon IdentityShared::statusIcon(const Status &status)
 {
 	Account account = bestAccount();
-	return account ? account.data()->statusIcon(status) : QIcon();
+	return account ? account.data()->statusIcon(status) : KaduIcon();
 }
 
-QString IdentityShared::statusIconPath(const QString &statusType)
+KaduIcon IdentityShared::statusIcon(const QString &statusType)
 {
 	Account account = bestAccount();
-	return account ? account.data()->statusIconPath(statusType) : QString();
-}
-
-QIcon IdentityShared::statusIcon(const QString &statusType)
-{
-	Account account = bestAccount();
-	return account ? account.data()->statusIcon(statusType) : QIcon();
+	return account ? account.data()->statusIcon(statusType) : KaduIcon();
 }
 
 QList<StatusType *> IdentityShared::supportedStatusTypes()

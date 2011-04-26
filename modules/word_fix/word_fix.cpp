@@ -55,7 +55,7 @@ extern "C" KADU_EXPORT int word_fix_init(bool firstLoad)
 
 	kdebugf();
 	wordFix = new WordFix();
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/word_fix.ui"));
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/word_fix.ui"));
 	MainConfigurationWindow::registerUiHandler(wordFix);
 	kdebugf2();
 	return 0;
@@ -65,7 +65,7 @@ extern "C" KADU_EXPORT int word_fix_init(bool firstLoad)
 extern "C" KADU_EXPORT void word_fix_close()
 {
 	kdebugf();
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/word_fix.ui"));
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/word_fix.ui"));
 	MainConfigurationWindow::unregisterUiHandler(wordFix);
 	delete wordFix;
 	wordFix = NULL;
@@ -95,7 +95,7 @@ WordFix::WordFix()
 	QString data = config_file.readEntry("word_fix", "WordFix_list");
 	if (data.isEmpty())
 	{
-		QFile defList(dataPath("kadu/modules/data/word_fix/wf_default_list.data"));
+		QFile defList(dataPath("kadu/plugins/data/word_fix/wf_default_list.data"));
 		if (defList.open(QIODevice::ReadOnly))
 		{
 			QTextStream s(&defList);
@@ -112,7 +112,7 @@ WordFix::WordFix()
 		}
 		else
 		{
-			kdebug("Can't open file: %s", qPrintable((defList.fileName())));
+			kdebug("Can't open file: %s\n", qPrintable((defList.fileName())));
 		}
 	}
 	else

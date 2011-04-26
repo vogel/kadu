@@ -40,13 +40,13 @@ extern "C" KADU_EXPORT int bmpx_mediaplayer_init(bool firstLoad)
 	Q_UNUSED(firstLoad)
 
 	bmpx = new MPRISMediaPlayer("BMPx", "org.mpris.bmp");
-	bool res = mediaplayer->registerMediaPlayer(bmpx, bmpx);
+	bool res = MediaPlayer::instance()->registerMediaPlayer(bmpx, bmpx);
 	return res ? 0 : 1;
 }
 
 extern "C" KADU_EXPORT void bmpx_mediaplayer_close()
 {
-	mediaplayer->unregisterMediaPlayer();
+	MediaPlayer::instance()->unregisterMediaPlayer();
 	delete bmpx;
 	bmpx = NULL;
 }

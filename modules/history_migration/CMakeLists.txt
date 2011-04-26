@@ -1,3 +1,5 @@
+include_directories ("../../plugins/history")
+
 set (SOURCES
 	gui/windows/history-import-window.cpp
 
@@ -24,20 +26,21 @@ set (CONFIGURATION_FILES
 )
 
 set (TRANSLATION_SOURCES
+	translations/history_migration_en.ts
 	translations/history_migration_de.ts
 	translations/history_migration_fr.ts
 	translations/history_migration_it.ts
 	translations/history_migration_pl.ts
 )
 
-kadu_module (history_migration
-	MODULE_SOURCES ${SOURCES}
-	MODULE_MOC_SOURCES ${MOC_SOURCES}
-	MODULE_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
+kadu_plugin (history_migration
+	PLUGIN_SOURCES ${SOURCES}
+	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
+	PLUGIN_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
 	#TODO: make it more general, eg. gadu_protocol,history_storage
-	MODULE_CONFIGURATION_FILES ${CONFIGURATION_FILES}
-	MODULE_DEPENDENCIES gadu_protocol sql_history
-	MODULE_BUILDDEF HISTORY_MIGRATION_BUILD
+	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
+	PLUGIN_DEPENDENCIES gadu_protocol sql_history
+	PLUGIN_BUILDDEF HISTORY_MIGRATION_BUILD
 )
 
 if (MINGW)

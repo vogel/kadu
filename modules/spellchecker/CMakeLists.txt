@@ -1,14 +1,17 @@
 set (SOURCES
-	spellchecker.cpp
 	highlighter.cpp
+	spellchecker.cpp
+	suggester.cpp
 )
 
 set (MOC_SOURCES
-	spellchecker.h
 	highlighter.h
+	spellchecker.h
+	suggester.h
 )
 
 set (TRANSLATION_SOURCES
+	translations/spellchecker_en.ts
 	translations/spellchecker_de.ts
 	translations/spellchecker_fr.ts
 	translations/spellchecker_it.ts
@@ -71,10 +74,10 @@ else (USE_ASPELL)
 	add_definitions (-DHAVE_ENCHANT)
 endif (USE_ASPELL)
 
-kadu_module (spellchecker
-	MODULE_SOURCES ${SOURCES}
-	MODULE_MOC_SOURCES ${MOC_SOURCES}
-	MODULE_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
-	MODULE_CONFIGURATION_FILES ${CONFIGURATION_FILES}
-	MODULE_LIBRARIES ${LIBRARIES}
+kadu_plugin (spellchecker
+	PLUGIN_SOURCES ${SOURCES}
+	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
+	PLUGIN_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
+	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
+	PLUGIN_LIBRARIES ${LIBRARIES}
 )

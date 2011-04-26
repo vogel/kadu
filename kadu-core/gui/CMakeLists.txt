@@ -1,5 +1,6 @@
 set (gui_SRCS
 	hot-key.cpp
+	status-icon.cpp
 
 	actions/action.cpp
 	actions/actions.cpp
@@ -38,6 +39,8 @@ set (gui_SRCS
 	widgets/color-button.cpp
 	widgets/color-selector.cpp
 	widgets/custom-input.cpp
+	widgets/custom-input-menu-item.cpp
+	widgets/custom-input-menu-manager.cpp
 	widgets/delayed-line-edit.cpp
 	widgets/file-transfer-widget.cpp
 	widgets/filter-widget.cpp
@@ -130,6 +133,7 @@ set (gui_SRCS
 
 set (gui_MOC_SRCS
 	hot-key.h
+	status-icon.h
 
 	actions/action.h
 	actions/actions.h
@@ -167,6 +171,7 @@ set (gui_MOC_SRCS
 	widgets/color-button.h
 	widgets/color-selector.h
 	widgets/custom-input.h
+	widgets/custom-input-menu-manager.h
 	widgets/delayed-line-edit.h
 	widgets/file-transfer-widget.h
 	widgets/filter-widget.h
@@ -254,7 +259,7 @@ set (gui_MOC_SRCS
 	windows/open-chat-with/open-chat-with-runner-manager.h
 )
 
-qt_wrap_cpp (gui gui_MOC_FILES ${gui_MOC_SRCS})
+qt4_wrap_cpp (gui_MOC_FILES ${gui_MOC_SRCS})
 
 add_library (gui
 	STATIC

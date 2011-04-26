@@ -23,9 +23,9 @@
 #define NOTIFIER_H
 
 #include <QtCore/QObject>
-#include <QtGui/QIcon>
 
 #include "exports.h"
+#include "icons/kadu-icon.h"
 
 class Notification;
 class NotifierConfigurationWidget;
@@ -41,7 +41,7 @@ class NotifierConfigurationWidget;
 	odebranie pliku, kontynuacje odbierania pliku i inne. Niekt�ry notifikatory nie b�d�
 	implementowa� akcji, dlatego te� niekt�re zdarzenia nie mog� by� przez nie obs�ugiwane.
  **/
-class KADUAPI Notifier : public virtual QObject
+class KADUAPI Notifier : public QObject
 {
 	Q_OBJECT
 
@@ -58,19 +58,17 @@ public:
 private:
 	QString Name;
 	QString Description;
-	QString IconPath;
-
+	KaduIcon Icon;
 
 public:
-	explicit Notifier(const QString &name, const QString &description, const QString &iconPath, QObject *parent = 0);
+	Notifier(const QString &name, const QString &description, const KaduIcon &icon, QObject *parent = 0);
 	virtual ~Notifier();
 
 	const QString & name() const { return Name; }
 	const QString & description() const { return Description; }
-	QIcon icon() const;
+	const KaduIcon & icon() const { return Icon; }
 
-
-	virtual CallbackCapacity callbackCapacity();
+	virtual CallbackCapacity callbackCapacity() { return CallbackNotSupported; }
 
 	/**
 		Metoda informuj�ca notifikator o nowym zdarzeniu. Zdarzenie mo�e wywo�a�

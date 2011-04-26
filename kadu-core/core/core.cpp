@@ -48,8 +48,10 @@
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/search-window.h"
+#include "icons/kadu-icon.h"
 #include "misc/misc.h"
 #include "notify/notification-manager.h"
+#include "plugins/plugins-manager.h"
 #include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/services/chat-service.h"
@@ -58,12 +60,10 @@
 #include "status/status-type.h"
 #include "status/status-type-manager.h"
 #include "url-handlers/url-handler-manager.h"
-
 #include "activate.h"
 #include "debug.h"
-#include "icons-manager.h"
+#include "icons/icons-manager.h"
 #include "kadu-config.h"
-#include "modules.h"
 #include "updates.h"
 
 #include "core.h"
@@ -81,9 +81,19 @@ Core * Core::instance()
 	return Instance;
 }
 
+QString Core::name()
+{
+	return QLatin1String("Kadu");
+}
+
 QString Core::version()
 {
-	return QString(VERSION);
+	return QLatin1String(VERSION);
+}
+
+QString Core::nameWithVersion()
+{
+	return name() + QLatin1String(" ")  + version();
 }
 
 Core::Core() :
@@ -111,10 +121,10 @@ Core::~Core()
 
 	storeConfiguration();
 
-	ModulesManager::instance()->unloadAllModules();
+	PluginsManager::instance()->deactivatePlugins();
 
 #ifdef Q_OS_MAC
-	setIcon(IconsManager::instance()->iconByPath("kadu_icons/kadu"));
+	setIcon(KaduIcon("kadu_icons/kadu").icon());
 #endif // Q_OS_MAC
 
 	MainConfiguration::destroyInstance();
@@ -330,7 +340,7 @@ void Core::init()
 {
 	// protocol modules should be loaded before gui
 	// it fixes crash on loading pending messages from config, contacts import from 0.6.5, and maybe other issues
-	ModulesManager::instance()->loadProtocolModules();
+	PluginsManager::instance()->activateProtocolPlugins();
 
 	Myself.setAnonymous(false);
 	Myself.setDisplay(config_file.readEntry("General", "Nick", tr("Me")));
@@ -339,7 +349,7 @@ void Core::init()
 
 	new Updates(this);
 
-	setIcon(IconsManager::instance()->iconByPath(QLatin1String("protocols/common/offline")));
+	setIcon(KaduIcon(QLatin1String("protocols/common/offline")));
 	connect(IconsManager::instance(), SIGNAL(themeChanged()), this, SLOT(statusUpdated()));
 	QTimer::singleShot(15000, this, SLOT(deleteOldConfigurationFiles()));
 
@@ -396,13 +406,7 @@ void Core::deleteOldConfigurationFiles()
 
 void Core::statusUpdated()
 {
-	kdebugf();
-
-	Account account = AccountManager::instance()->defaultAccount();
-	if (account.isNull() || !account.protocolHandler())
-		setIcon(StatusContainerManager::instance()->statusIcon());
-	else
-		setIcon(StatusContainerManager::instance()->statusIcon(account.protocolHandler()->status()));
+	setIcon(StatusContainerManager::instance()->statusIcon());
 }
 
 void Core::kaduWindowDestroyed()
@@ -495,7 +499,7 @@ KaduWindow * Core::kaduWindow()
 	return Window;
 }
 
-void Core::setIcon(const QIcon &icon)
+void Core::setIcon(const KaduIcon &icon)
 {
 	bool blocked = false;
 	emit settingMainIconBlocked(blocked);
@@ -503,8 +507,8 @@ void Core::setIcon(const QIcon &icon)
 	if (!blocked)
 	{
 		if (Window)
-			Window->setWindowIcon(icon);
-		QApplication::setWindowIcon(icon);
+			Window->setWindowIcon(icon.icon());
+		QApplication::setWindowIcon(icon.icon());
 		emit mainIconChanged(icon);
 	}
 }

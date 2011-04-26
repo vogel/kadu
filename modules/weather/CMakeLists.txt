@@ -27,6 +27,7 @@ set (MOC_SOURCES
 )
 
 set (TRANSLATION_SOURCES
+	translations/weather_en.ts
 	translations/weather_pl.ts
 )
 
@@ -79,9 +80,9 @@ if (WIN32)
 	set (SOURCES ${SOURCES} ../module.rc)
 endif (WIN32)
 
-kadu_module_desc (weather.desc)
-kadu_module_configuration (${CONFIGURATION_FILES})
-qt_wrap_cpp (weather MOC_FILES ${MOC_SOURCES})
+kadu_plugin_desc (weather.desc)
+kadu_plugin_configuration (${CONFIGURATION_FILES})
+qt4_wrap_cpp (MOC_FILES ${MOC_SOURCES})
 
 qt4_add_translation (TRANSLATION_FILES ${TRANSLATION_SOURCES})
 

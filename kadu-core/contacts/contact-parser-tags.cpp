@@ -21,9 +21,9 @@
 #include "accounts/account.h"
 #include "avatars/avatar.h"
 #include "buddies/buddy-preferred-manager.h"
+#include "icons/kadu-icon.h"
 #include "misc/path-conversion.h"
 #include "parser/parser.h"
-#include "icons-manager.h"
 #include "protocols/protocol.h"
 #include "status/status-type-manager.h"
 
@@ -50,24 +50,19 @@ static QString getStatusIconPath(BuddyOrContact buddyOrContact)
 	Contact contact = buddyOrContact.contact();
 
 	if (buddy.isBlocked())
-		return webKitPath(IconsManager::instance()->iconPath("kadu_icons", "16x16", "blocked"));
+		return KaduIcon("kadu_icons", "16x16", "blocked").webKitPath();
 
 	if (contact.isBlocking())
-		return webKitPath(IconsManager::instance()->iconPath("kadu_icons", "16x16", "blocking"));
+		return KaduIcon("kadu_icons", "16x16", "blocking").webKitPath();
 
 	if (contact.contactAccount())
 	{
 		Protocol *protocol = contact.contactAccount().protocolHandler();
 		if (protocol)
 		{
-			StatusTypeManager* statustypemanager = StatusTypeManager::instance();
-			if (statustypemanager)
-			{
-				Status status = contact.currentStatus();
-				QString iconpath = statustypemanager->statusIconFullPath(protocol->statusPixmapPath(), status.type(), !status.description().isEmpty(), false);
-				if (!iconpath.isEmpty())
-					return webKitPath(iconpath);
-			}
+			const Status &status = contact.currentStatus();
+			return StatusTypeManager::instance()->statusIcon(
+					protocol->statusPixmapPath(), status.type(), !status.description().isEmpty(), false).webKitPath();
 		}
 	}
 

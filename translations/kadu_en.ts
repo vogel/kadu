@@ -673,15 +673,7 @@ It&apos;s a high security risk!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Event</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Options</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>New messages</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -705,19 +697,11 @@ It&apos;s a high security risk!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Status change</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Ignore status changes from available/busy to busy/available</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Ignore changes right after connection to the server</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Notify about all users</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -730,15 +714,6 @@ It&apos;s a high security risk!</source>
     </message>
     <message>
         <source>Multilogon session disconnected</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ignore status changes from available / busy to busy / available</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>This option will supersede tooltips with users&apos; status
- changes upon establishing connection to the server</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1230,6 +1205,10 @@ changes upon establishing connection to the server</source>
         <source>Send message</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Show a window with notification</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -1712,32 +1691,31 @@ The export was unsuccessful</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>This file is too big (%1 &gt;= %2)</source>
+        <source>This image has %1 KiB and exceeds the protocol limit of %2 KiB.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>This file is too big for %1.
-Do you really want to send this image?</source>
+        <source>This image has %1 KiB and exceeds recommended maximum size of %2 KiB.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>%1 is disconnected and cannot receive images.
-Do you really want to send this image?</source>
+        <source>Do you really want to send this image?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>This file is too big for %1 of %2 contacts.
-</source>
+        <source>This image has %1 KiB and may be too big for %2.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>%1 of %2 contacts are disconnected and cannot receive images.
-</source>
+        <source>%1 appears to be offline and may not receive images.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Do you really want to send this image?
-Some of them probably will not get it.</source>
+        <source>This image has %1 KiB and may be too big for %2 of %3 contacts in this conference.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 of %2 contacts appear to be offline and may not receive images.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2656,43 +2634,6 @@ This is probably a next part of &lt;b&gt;%5&lt;/b&gt;
     </message>
 </context>
 <context>
-    <name>ModulesManager</name>
-    <message>
-        <source>Required module %1 was not found</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Module %1 is already active</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cannot load %1 module library.:
-%2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Module %1 conflicts with: %2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cannot find required functions in module %1.
-Maybe it&apos;s not Kadu-compatible Module.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Module initialization routine for %1 failed.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Kadu</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Module %1 cannot be deactivated because it is being used by the following modules:%2</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>ModulesWindow</name>
     <message>
         <source>Manage Modules</source>
@@ -2700,10 +2641,6 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
     </message>
     <message>
         <source>Info</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Static</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2740,10 +2677,6 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
     </message>
     <message>
         <source>&lt;b&gt;Module:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Depends on:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Conflicts with:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Provides:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Author:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Version:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Description:&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Hide base modules</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2958,6 +2891,56 @@ You can load (or unload) them by double-clicking on their names.</source>
     </message>
 </context>
 <context>
+    <name>Plugin</name>
+    <message>
+        <source>Kadu</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cannot load %1 plugin library.:
+%2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cannot find required object in module %1.
+Maybe it&apos;s not Kadu-compatible plugin.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cannot load %1 module library.:
+%2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cannot find required functions in module %1.
+Maybe it&apos;s not Kadu-compatible Module.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Module initialization routine for %1 failed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>PluginsManager</name>
+    <message>
+        <source>Kadu</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Required module %1 was not found</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Module %1 conflicts with: %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Module %1 cannot be deactivated because it is being used by the following modules:%2</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>ProgressWindow</name>
     <message>
         <source>Plase wait. New Gadu-Gadu account is being registered.</source>
@@ -3003,17 +2986,6 @@ You can load (or unload) them by double-clicking on their names.</source>
     </message>
     <message>
         <source>Password</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>QApplication</name>
-    <message>
-        <source>Executable &apos;%1&apos; requires Qt %2, found Qt %3.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Incompatible Qt Library Error</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3326,15 +3298,15 @@ You can load (or unload) them by double-clicking on their names.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Preview</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Save as...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Kadu</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Refresh Preview</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

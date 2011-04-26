@@ -24,14 +24,14 @@ WeatherCfgUiHandler::WeatherCfgUiHandler()
 {
 	// Load configuration UI
 	//
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/weather.ui"), this);
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/weather.ui"), this);
 }
 
 WeatherCfgUiHandler::~WeatherCfgUiHandler()
 {
 	// Unload configuration UI
 	//
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/weather.ui"), this);
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/weather.ui"), this);
 }
 
 void WeatherCfgUiHandler::mainConfigurationWindowCreated(MainConfigurationWindow *mainCfgWindow)

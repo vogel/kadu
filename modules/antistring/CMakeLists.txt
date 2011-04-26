@@ -2,17 +2,19 @@ set (SOURCES
 	antistring.cpp
 	antistring-configuration.cpp
 	antistring-configuration-ui-handler.cpp
-	antistring-module.cpp
 	antistring-notification.cpp
+	antistring-plugin.cpp
 )
 
 set (MOC_SOURCES
 	antistring.h
 	antistring-configuration-ui-handler.h
 	antistring-notification.h
+	antistring-plugin.h
 )
 
 set (TRANSLATION_SOURCES
+	translations/antistring_en.ts
 	translations/antistring_de.ts
 	translations/antistring_fr.ts
 	translations/antistring_it.ts
@@ -27,11 +29,11 @@ set (DATA_FILES
 	data/ant_conditions.conf
 )
 
-kadu_module (antistring
-	MODULE_SOURCES ${SOURCES}
-	MODULE_MOC_SOURCES ${MOC_SOURCES}
-	MODULE_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
-	MODULE_CONFIGURATION_FILES ${CONFIGURATION_FILES}
+kadu_plugin (antistring
+	PLUGIN_SOURCES ${SOURCES}
+	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
+	PLUGIN_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
+	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 )
 
 install (FILES ${DATA_FILES}

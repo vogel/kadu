@@ -10,6 +10,7 @@ set (MOC_SOURCES
 )
 
 set (TRANSLATION_SOURCES
+	translations/simpleview_en.ts
 	translations/simpleview_de.ts
 	translations/simpleview_fr.ts
 	translations/simpleview_it.ts
@@ -20,11 +21,11 @@ set (CONFIGURATION_FILES
 	configuration/simpleview.ui
 )
 
-kadu_module (simpleview
-	MODULE_SOURCES ${SOURCES}
-	MODULE_MOC_SOURCES ${MOC_SOURCES}
-	MODULE_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
-	MODULE_CONFIGURATION_FILES ${CONFIGURATION_FILES}
-	MODULE_DEPENDENCIES docking
+kadu_plugin (simpleview
+	PLUGIN_SOURCES ${SOURCES}
+	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
+	PLUGIN_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
+	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
+	PLUGIN_DEPENDENCIES docking
 )
 

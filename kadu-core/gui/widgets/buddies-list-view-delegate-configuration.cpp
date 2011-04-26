@@ -21,7 +21,7 @@
 
 #include "configuration/configuration-file.h"
 #include "gui/widgets/buddies-list-view.h"
-#include "icons-manager.h"
+#include "icons/kadu-icon.h"
 
 #include "buddies-list-view-delegate-configuration.h"
 
@@ -31,7 +31,7 @@ BuddiesListViewDelegateConfiguration::BuddiesListViewDelegateConfiguration(QObje
 	ListView = qobject_cast<BuddiesListView *>(listView);
 
 	DefaultAvatarSize = QSize(32, 32);
-	MessagePixmap = IconsManager::instance()->iconByPath("protocols/common/message").pixmap(16, 16);
+	MessagePixmap = KaduIcon("protocols/common/message").icon().pixmap(16, 16);
 
 	configurationUpdated();
 }

@@ -65,7 +65,7 @@
 #include "themes/emoticon-theme-manager.h"
 
 #include "debug.h"
-#include "icons-manager.h"
+#include "icons/icons-manager.h"
 #include "languages-manager.h"
 
 #include "main-configuration-window.h"
@@ -170,7 +170,7 @@ MainConfigurationWindow::MainConfigurationWindow() :
 
 	widget()->appendUiFile(dataPath("kadu/configuration/dialog.ui"));
 
-#ifndef DEBUG_ENABLED
+#if !defined(DEBUG_ENABLED) || defined(Q_OS_WIN)
 	((QWidget *)(widget()->widgetById("debug")->parent()))->hide();
 #endif
 
@@ -346,7 +346,7 @@ void MainConfigurationWindow::setToolTipClasses()
 	QStringList captions;
 	QStringList values;
 	captions << tr("None");
-	values << QString();
+	values << QLatin1String("none");
 
 	QStringList toolTipClasses = ToolTipClassManager::instance()->getToolTipClasses();
 	foreach(const QString &toolTipClass, toolTipClasses)

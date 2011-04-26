@@ -1,0 +1,6 @@
+[Module]
+Description=Automatic images and YouTube links parser
+Description[pl]=Pokazuje obrazki i filmy YouTube w oknie rozmowy
+Author=NeoX
+Version=core
+Plugin=true

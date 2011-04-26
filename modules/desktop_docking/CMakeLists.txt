@@ -1,17 +1,19 @@
 set (SOURCES
 	configuration/gui/desktop-dock-configuration-ui-handler.cpp
 	gui/windows/desktop-dock-window.cpp
-	desktop-docking-module.cpp
+	desktop-docking-plugin.cpp
 	desktop-dock.cpp
 )
 
 set (MOC_SOURCES
 	configuration/gui/desktop-dock-configuration-ui-handler.h
 	gui/windows/desktop-dock-window.h
+	desktop-docking-plugin.h
 	desktop-dock.h
 )
 
 set (TRANSLATION_SOURCES
+	translations/desktop_docking_en.ts
 	translations/desktop_docking_cs.ts
 	translations/desktop_docking_de.ts
 	translations/desktop_docking_fr.ts
@@ -23,10 +25,10 @@ set (CONFIGURATION_FILES
 	data/configuration/desktop_docking.ui
 )
 
-kadu_module (desktop_docking
-	MODULE_SOURCES ${SOURCES}
-	MODULE_MOC_SOURCES ${MOC_SOURCES}
-	MODULE_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
-	MODULE_CONFIGURATION_FILES ${CONFIGURATION_FILES}
-	MODULE_DEPENDENCIES docking
+kadu_plugin (desktop_docking
+	PLUGIN_SOURCES ${SOURCES}
+	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
+	PLUGIN_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
+	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
+	PLUGIN_DEPENDENCIES docking
 )

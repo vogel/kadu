@@ -1,8 +1,0 @@
-[Module]
-Description=GaduGadu protocol support
-Description[pl]=Obs³uga protoko³u GaduGadu
-Author=Kadu Team
-LoadByDefault=true
-Version=core
-Dependencies=
-Base=true

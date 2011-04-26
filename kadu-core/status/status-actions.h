@@ -23,7 +23,7 @@
 #ifndef STATUS_ACTIONS_H
 #define STATUS_ACTIONS_H
 
-#include <QtCore/QMap>
+#include <QtCore/QList>
 #include <QtCore/QObject>
 
 class QAction;
@@ -37,31 +37,33 @@ class StatusActions : public QObject
 	Q_OBJECT
 
 	StatusContainer *MyStatusContainer;
+	bool IncludePrefix;
 
 	QActionGroup *ChangeStatusActionGroup;
 	QAction *ChangeDescription;
-	QMap<StatusType *, QAction *> StatusTypeActions;
 	QList<QAction *> Actions;
+	QList<StatusType *> MyStatusTypes;
 
 	void createActions();
 	void createBasicActions();
-	void createStatusActions();
 	QAction * createSeparator();
 	QAction * createStatusAction(StatusType *statusType);
 
-	bool CommonStatusIcons;
+	void cleanUpActions();
 
 private slots:
 	void statusUpdated();
 	void iconThemeChanged();
 
 public:
-	explicit StatusActions(StatusContainer *statusContainer, QObject *parent, bool commonStatusIcons = false);
+	StatusActions(StatusContainer *statusContainer, bool includePrefix, QObject *parent);
 	virtual ~StatusActions();
 
 	const QList<QAction *> & actions() const { return Actions; }
 
 signals:
+	void statusActionsRecreated();
+
 	void statusActionTriggered(QAction *);
 	void changeDescriptionActionTriggered(bool);
 

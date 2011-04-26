@@ -34,13 +34,14 @@
 #include "configuration/configuration-file.h"
 #include "core/core.h"
 #include "gui/windows/kadu-window.h"
+#include "icons/kadu-icon.h"
 #include "parser/parser.h"
 #include "status/description-manager.h"
 #include "status/description-model.h"
 
 #include "activate.h"
 #include "debug.h"
-#include "icons-manager.h"
+#include "icons/icons-manager.h"
 
 #include "choose-description.h"
 
@@ -89,7 +90,7 @@ ChooseDescription::ChooseDescription(StatusContainer *statusContainer, QWidget *
 	connect(Description, SIGNAL(activated(int)), this, SLOT(activated(int)));
 
 	OkButton = new QPushButton(tr("&OK"), this);
-	OkButton->setIcon(MyStatusContainer->statusIcon());
+	OkButton->setIcon(MyStatusContainer->statusIcon().icon());
 	OkButton->setDefault(true);
 	connect(OkButton, SIGNAL(clicked(bool)), this, SLOT(accept()));
 
@@ -177,5 +178,5 @@ void ChooseDescription::currentDescriptionChanged(const QString &text)
 
 void ChooseDescription::statusUpdated()
 {
-	OkButton->setIcon(MyStatusContainer->statusIcon());
+	OkButton->setIcon(MyStatusContainer->statusIcon().icon());
 }

@@ -17,13 +17,14 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtGui/QFileDialog>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QLineEdit>
 #include <QtGui/QPushButton>
 
+#include "icons/kadu-icon.h"
+
 #include "path-edit.h"
-#include <icons-manager.h>
-#include <QFileDialog>
 
 PathEdit::PathEdit(const QString &dialogTitle, QWidget *parent) :
 		QWidget(parent), DialogTitle(dialogTitle)
@@ -43,7 +44,7 @@ void PathEdit::createGui()
 	PathLineEdit->setMinimumWidth(200);
 	layout->addWidget(PathLineEdit);
 
-	QPushButton *selectButton = new QPushButton(IconsManager::instance()->iconByPath("document-open"), QString(), this);
+	QPushButton *selectButton = new QPushButton(KaduIcon("document-open").icon(), QString(), this);
 	layout->addWidget(selectButton);
 
 	connect(selectButton, SIGNAL(pressed()), this, SLOT(selectPath()));

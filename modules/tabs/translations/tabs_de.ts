@@ -4,7 +4,7 @@
 <context>
     <name>@default</name>
     <message>
-        <source>Chat</source>
+        <source>Chat Window</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -74,6 +74,10 @@
     <message>
         <source>Switch to next tab</source>
         <translation>Zum nächsten Reiter umschalten</translation>
+    </message>
+    <message>
+        <source>Chat</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

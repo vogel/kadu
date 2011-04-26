@@ -27,7 +27,7 @@
 
 #include "activate.h"
 #include "debug.h"
-#include "icons-manager.h"
+#include "icons/icons-manager.h"
 
 #include "window-notifier.h"
 
@@ -37,7 +37,7 @@
  */
 
 WindowNotifier::WindowNotifier(QObject *parent) :
-		Notifier("Window", QT_TRANSLATE_NOOP("@default", "Show a window with notification"), "dialog-information", parent)
+		Notifier("Window", QT_TRANSLATE_NOOP("@default", "Show a window with notification"), KaduIcon("dialog-information"), parent)
 {
 	kdebugf();
 

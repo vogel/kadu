@@ -23,7 +23,6 @@
 
 #include <QtCore/QString>
 #include <QtCore/QVariant>
-#include <QtGui/QIcon>
 
 #include "chat/type/chat-type.h"
 
@@ -54,7 +53,7 @@ public:
 	virtual QString name() const;
 	virtual QString displayName() const;
 	virtual QString displayNamePlural() const;
-	virtual QIcon icon() const;
+	virtual KaduIcon icon() const;
 	virtual QString windowRole() const;
 
 	virtual ChatDetails * createChatDetails(ChatShared *chatData) const;

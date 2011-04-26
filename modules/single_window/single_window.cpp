@@ -15,9 +15,9 @@
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/custom-input.h"
 #include "gui/windows/kadu-window.h"
-#include "icons-manager.h"
 #include "gui/hot-key.h"
 #include "core/core.h"
+#include "icons/kadu-icon.h"
 #include "misc/misc.h"
 #include "debug.h"
 
@@ -29,7 +29,7 @@ extern "C" KADU_EXPORT int single_window_init(bool firstLoad)
 
 	Q_UNUSED(firstLoad)
 	singleWindowManager = new SingleWindowManager();
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/single_window.ui"));
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/single_window.ui"));
 	kdebugf2();
 
 	return 0;
@@ -38,7 +38,7 @@ extern "C" KADU_EXPORT void single_window_close()
 {
 	kdebugf();
 
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/single_window.ui"));
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/single_window.ui"));
 	delete singleWindowManager;
 	singleWindowManager = NULL;
 
@@ -129,8 +129,8 @@ SingleWindow::SingleWindow()
 			this, SLOT(onNewChat(ChatWidget *,bool &)));
 	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetOpen(ChatWidget *, bool)),
 			this, SLOT(onOpenChat(ChatWidget *)));
-	connect(Core::instance(), SIGNAL(mainIconChanged(const QIcon &)),
-		this, SLOT(onStatusPixmapChanged(const QIcon &)));
+	connect(Core::instance(), SIGNAL(mainIconChanged(const KaduIcon &)),
+		this, SLOT(onStatusPixmapChanged(const KaduIcon &)));
 
 	connect(kadu, SIGNAL(keyPressed(QKeyEvent *)), this, SLOT(onkaduKeyPressed(QKeyEvent *)));
 
@@ -163,8 +163,8 @@ SingleWindow::~SingleWindow()
 			this, SLOT(onNewChat(ChatWidget *,bool &)));
 	disconnect(ChatWidgetManager::instance(), SIGNAL(chatWidgetOpen(ChatWidget *, bool)),
 			this, SLOT(onOpenChat(ChatWidget *)));
-	disconnect(Core::instance(), SIGNAL(mainIconChanged(const QIcon &)),
-			this, SLOT(onStatusPixmapChanged(const QIcon &)));
+	disconnect(Core::instance(), SIGNAL(mainIconChanged(const KaduIcon &)),
+			this, SLOT(onStatusPixmapChanged(const KaduIcon &)));
 
 	disconnect(tabs, SIGNAL(tabCloseRequested(int)), this, SLOT(closeTab(int)));
 	disconnect(tabs, SIGNAL(currentChanged(int)), this, SLOT(onTabChange(int)));
@@ -279,7 +279,7 @@ void SingleWindow::onNewMessage(Chat chat)
 	if (w != tabs->currentWidget())
 	{
 		int index = tabs->indexOf(w);
-		tabs->setTabIcon(index, IconsManager::instance()->iconByPath("protocols/common/message"));
+		tabs->setTabIcon(index, KaduIcon("protocols/common/message").icon());
 
 		if (config_file.readBoolEntry("SingleWindow", "NumMessagesInTab", false))
 		{
@@ -377,9 +377,9 @@ void SingleWindow::onChatKeyPressed(QKeyEvent *e, CustomInput *w, bool &handled)
 	}
 }
 
-void SingleWindow::onStatusPixmapChanged(const QIcon &icon)
+void SingleWindow::onStatusPixmapChanged(const KaduIcon &icon)
 {
-	setWindowIcon(icon);
+	setWindowIcon(icon.icon());
 }
 
 void SingleWindow::onIconChanged()

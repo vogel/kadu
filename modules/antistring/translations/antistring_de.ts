@@ -39,6 +39,10 @@
         <source>Conditions</source>
         <translation>Bedingungen</translation>
     </message>
+    <message>
+        <source>Antistring notifications</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Antistring</name>

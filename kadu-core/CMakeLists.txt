@@ -3,10 +3,8 @@ set (kadu_SRCS
 	debug.cpp
 	dnshandler.cpp
 	html_document.cpp
-	icons-manager.cpp
 	kadu-application.cpp
 	languages-manager.cpp
-	modules.cpp
 	themes.cpp
 	updates.cpp
 )
@@ -27,9 +25,7 @@ endif (NOT WIN32)
 
 set (kadu_MOC_SRCS
 	dnshandler.h
-	icons-manager.h
 	kadu-application.h
-	modules.h
 	themes.h
 	updates.h
 )
@@ -45,13 +41,16 @@ set (kadu_SUBDIRS
 	emoticons
 	file-transfer
 	gui
+	icons
 	identities
 	misc
 	model
 	multilogon
+	network
 	notify
 	os
 	parser
+	plugins
 	protocols
 	qt
 	status
@@ -90,7 +89,7 @@ if (UNIX AND NOT APPLE)
 	)
 endif (UNIX AND NOT APPLE)
 
-qt_wrap_cpp (kadu MOC_FILES ${kadu_MOC_SRCS})
+qt4_wrap_cpp (MOC_FILES ${kadu_MOC_SRCS})
 
 if (WIN32)
 	set (kadu_SRCS
@@ -105,7 +104,7 @@ if (WIN32)
 
 	set_target_properties (kadu_core PROPERTIES DEFINE_SYMBOL KADULIB)
 	set_target_properties (kadu_core PROPERTIES COMPILE_FLAGS "-I${CMAKE_CURRENT_SOURCE_DIR}/includes")
-	target_link_libraries (kadu_core ${STATIC_MODULES} ${QT_LIBRARIES})
+	target_link_libraries (kadu_core ${QT_LIBRARIES})
 	set_property (TARGET kadu_core PROPERTY LINK_INTERFACE_LIBRARIES "")
 
 	if (MINGW)
@@ -143,7 +142,7 @@ else (WIN32)
 	set_target_properties (kadu PROPERTIES ENABLE_EXPORTS ON)
 	set_target_properties (kadu PROPERTIES COMPILE_FLAGS "-DKADULIB")
 
-	target_link_libraries (kadu ${STATIC_MODULES} ${QT_LIBRARIES} ${CMAKE_DL_LIBS})
+	target_link_libraries (kadu ${QT_LIBRARIES} ${CMAKE_DL_LIBS})
 
 	if (UNIX AND NOT APPLE)
 		target_link_libraries (kadu ${X11_X11_LIB})
@@ -154,6 +153,9 @@ else (WIN32)
 	endif (UNIX AND NOT APPLE)
 endif (WIN32)
 
+if (${NETWORK_IMPLEMENTATION} STREQUAL "ntrack")
+	target_link_libraries (kadu ${QNTRACK_LIBRARIES})
+endif (${NETWORK_IMPLEMENTATION} STREQUAL "ntrack")
 
 install (TARGETS kadu DESTINATION ${KADU_BIN_DIR})
 
@@ -181,3 +183,58 @@ if (APPLE)
 	link_directories (${SNDFILE_LIBRARY_DIRS})
 	target_link_libraries (kadu "-framework carbon")
 endif (APPLE)
+
+# install api headers
+kadu_api_directories (kadu-core
+	accounts/filter
+	accounts/model
+	accounts
+	avatars
+	buddies/filter
+	buddies/model
+	buddies
+	chat/filter
+	chat/message
+	chat/style-engines/style-engine-adium
+	chat/style-engines/style-engine-kadu
+	chat/style-engines
+	chat/type
+	chat
+	configuration
+	contacts/filter
+	contacts/model
+	contacts
+	core
+	emoticons
+	file-transfer
+	gui/actions
+	gui/widgets/configuration
+	gui/widgets
+	gui/windows/open-chat-with
+	gui/windows
+	gui
+	icons
+	identities/model
+	identities
+	misc
+	model
+	multilogon/model
+	multilogon
+	network
+	notify
+	os/generic
+	os/qtsingleapplication
+	os
+	parser
+	plugins
+	protocols/filter
+	protocols/model
+	protocols/services
+	protocols
+	qt
+	status
+	storage
+	themes
+	url-handlers
+	.
+)

@@ -1,0 +1,7 @@
+[Module]
+Description=History module
+Description[pl]=Modu³ historii
+Author=Kadu Team
+LoadByDefault=true
+Version=core
+Plugin=true

@@ -115,7 +115,7 @@ void HintsConfigurationUiHandler::showAdvanced()
 	if (!AdvancedWindow)
 	{
 		AdvancedWindow = new ConfigurationWindow("HintsAdvanced", tr("Advenced hints's configuration"), "Notification", MainConfigurationWindow::instanceDataManager());
-		AdvancedWindow->widget()->appendUiFile(dataPath("kadu/modules/configuration/hints-advanced.ui"));
+		AdvancedWindow->widget()->appendUiFile(dataPath("kadu/plugins/configuration/hints-advanced.ui"));
 
 		newHintUnder = static_cast<QComboBox *>(AdvancedWindow->widget()->widgetById("hints/newHintUnder"));
 
@@ -154,7 +154,7 @@ void HintsConfigurationUiHandler::advancedDestroyed()
 
 void HintsConfigurationUiHandler::addHintsPreview()
 {
-	Notification *previewNotify = new Notification(QString("Preview"), "protocols/common/message");
+	Notification *previewNotify = new Notification(QLatin1String("Preview"), KaduIcon("protocols/common/message"));
 	previewNotify->setText(qApp->translate("@default", "Hints position preview"));
 
 	Hint *previewHint = new Hint(previewHintsFrame, previewNotify);

@@ -1,3 +1,5 @@
+include_directories ("../../plugins/history")
+
 set (SOURCES
 	buddy-firewall-data.cpp
 	firewall-configuration-ui-handler.cpp
@@ -14,6 +16,7 @@ set (MOC_SOURCES
 )
 
 set (TRANSLATION_SOURCES
+	translations/firewall_en.ts
 	translations/firewall_de.ts
 	translations/firewall_fr.ts
 	translations/firewall_it.ts
@@ -24,10 +27,10 @@ set (CONFIGURATION_FILES
 	configuration/firewall.ui
 )
 
-kadu_module (firewall
-	MODULE_SOURCES ${SOURCES}
-	MODULE_MOC_SOURCES ${MOC_SOURCES}
-	MODULE_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
-	MODULE_CONFIGURATION_FILES ${CONFIGURATION_FILES}
-	MODULE_DEPENDENCIES history
+kadu_plugin (firewall
+	PLUGIN_SOURCES ${SOURCES}
+	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
+	PLUGIN_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
+	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
+	PLUGIN_DEPENDENCIES history
 )

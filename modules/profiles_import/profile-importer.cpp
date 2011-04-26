@@ -26,7 +26,7 @@
 #include "core/core.h"
 #include "identities/identity-manager.h"
 
-#include "modules/gadu_protocol/helpers/gadu-importer.h"
+#include "plugins/gadu_protocol/helpers/gadu-importer.h"
 
 #include "profile-importer.h"
 

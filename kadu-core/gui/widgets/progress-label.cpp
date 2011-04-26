@@ -19,7 +19,7 @@
 
 #include <QtGui/QHBoxLayout>
 
-#include "icons-manager.h"
+#include "icons/icons-manager.h"
 
 #include "progress-label.h"
 

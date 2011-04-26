@@ -25,6 +25,8 @@ class MEDIAPLAYERAPI MediaPlayer : public ConfigurationUiHandler, ConfigurationA
 {
 	Q_OBJECT
 
+	static MediaPlayer *Instance;
+
 	MediaPlayerStatusChanger *mediaPlayerStatusChanger;
 	PlayerInfo *playerInfo;
 	PlayerCommands *playerCommands;
@@ -45,6 +47,10 @@ class MEDIAPLAYERAPI MediaPlayer : public ConfigurationUiHandler, ConfigurationA
 	QMap<ChatWidget *, QPushButton *> chatButtons;
 
 	bool isPaused;
+
+	MediaPlayer();
+	virtual ~MediaPlayer();
+
 	int pos();
 
 	/**
@@ -130,8 +136,10 @@ protected:
 	void configurationUpdated();
 
 public:
-	MediaPlayer();
-	~MediaPlayer();
+	static void createInstance();
+	static void destroyInstance();
+
+	static MediaPlayer * instance() { return Instance; }
 
 	/*
 		Looks for special tags in string 'str' and replaces it by
@@ -207,7 +215,5 @@ public slots:
 	void insertPlaylistFilenames();
 
 };
-
-extern MEDIAPLAYERAPI MediaPlayer *mediaplayer;
 
 #endif

@@ -5,4 +5,4 @@ Author=Kadu Team
 Dependencies=idle
 LoadByDefault=true
 Version=core
-Base=true
+Plugin=true

@@ -18,7 +18,7 @@
 		</tab>
 	</section>
 	<section name="Shortcuts">
-		<tab name="Chat">
+		<tab name="Chat Window">
 			<group-box name="Tabs">
 				<hot-key-edit caption="Move tab left" config-section="ShortCuts" config-item="MoveTabLeft" />
 				<hot-key-edit caption="Move tab right" config-section="ShortCuts" config-item="MoveTabRight" />

@@ -3,17 +3,19 @@ set (SOURCES
 
 	autostatus.cpp
 	autostatus-actions.cpp
-	autostatus-module.cpp
+	autostatus-plugin.cpp
 	autostatus-status-changer.cpp
 )
 
 set (MOC_SOURCES
 	autostatus.h
 	autostatus-actions.h
+	autostatus-plugin.h
 	autostatus-status-changer.h
 )
 
 set (TRANSLATION_SOURCES
+	translations/autostatus_en.ts
 	translations/autostatus_de.ts
 	translations/autostatus_fr.ts
 	translations/autostatus_it.ts
@@ -24,9 +26,9 @@ set (CONFIGURATION_FILES
 	data/configuration/autostatus.ui
 )
 
-kadu_module (autostatus
-	MODULE_SOURCES ${SOURCES}
-	MODULE_MOC_SOURCES ${MOC_SOURCES}
-	MODULE_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
-	MODULE_CONFIGURATION_FILES ${CONFIGURATION_FILES}
+kadu_plugin (autostatus
+	PLUGIN_SOURCES ${SOURCES}
+	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
+	PLUGIN_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
+	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 )
