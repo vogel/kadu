@@ -27,6 +27,8 @@ set (COMPILE_PLUGINS
 	autoaway
 	# Auto hide Kadu window
 	auto_hide
+	# Autoresponder plugin
+	autoresponder
 	# Cenzor
 	cenzor
 	# Configuration wizard
