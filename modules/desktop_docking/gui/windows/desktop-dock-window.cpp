@@ -24,7 +24,7 @@
 #include "configuration/configuration-file.h"
 #include "icons/kadu-icon.h"
 
-#include "modules/docking/docking.h"
+#include "plugins/docking/docking.h"
 
 #include "desktop-dock-window.h"
 

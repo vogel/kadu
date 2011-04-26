@@ -14,6 +14,10 @@ set (COMPILE_PLUGINS
 	# General history plugin
 	history
 
+# docking
+	# Tray icon support (common part of all docking modules)
+	docking
+
 # sound
 	# General sound plugin
 	sound

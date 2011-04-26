@@ -19,7 +19,7 @@
 
 #include "core/core.h"
 
-#include "../docking/docking.h"
+#include "plugins/docking/docking.h"
 
 #include "qt4_docking.h"
 

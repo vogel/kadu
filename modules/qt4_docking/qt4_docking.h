@@ -30,7 +30,7 @@
 #include <QtCore/QPoint>
 #include <QtGui/QSystemTrayIcon>
 
-#include "modules/docking/docker.h"
+#include "plugins/docking/docker.h"
 
 #include "qt4_docking_exports.h"
 

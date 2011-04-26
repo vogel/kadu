@@ -36,7 +36,7 @@
 #include "debug.h"
 #include "icons/kadu-icon.h"
 
-#include "modules/docking/docking.h"
+#include "plugins/docking/docking.h"
 
 #include "gui/windows/desktop-dock-window.h"
 

@@ -35,7 +35,8 @@
 #include "icons/kadu-icon.h"
 #include "misc/path-conversion.h"
 
-#include "modules/docking/docking.h"
+#include "plugins/docking/docking.h"
+
 #include "simpleview-config-ui.h"
 #include "simpleview.h"
 

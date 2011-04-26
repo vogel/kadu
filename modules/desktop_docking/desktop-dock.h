@@ -25,7 +25,7 @@
 
 #include "configuration/configuration-aware-object.h"
 
-#include "modules/docking/docker.h"
+#include "plugins/docking/docker.h"
 
 class QAction;
 

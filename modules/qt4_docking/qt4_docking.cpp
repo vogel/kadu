@@ -28,7 +28,7 @@
 #include <QtGui/QMouseEvent>
 #include <QtGui/QMovie>
 
-#include "../docking/docking.h"
+#include "plugins/docking/docking.h"
 
 #include "configuration/configuration-file.h"
 #include "core/core.h"
