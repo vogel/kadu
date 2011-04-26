@@ -18,15 +18,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PLAYER_EXTERNAL_H
-#define PLAYER_EXTERNAL_H
+#ifndef QT4_SOUND_H
+#define QT4_SOUND_H
 
-#include "modules/sound/sound-player.h"
+#include "plugins/sound/sound-player.h"
 
-/**
- * @defgroup ext_sound Ext sound
- * @{
- */
 class QtSound4Player : public SoundPlayer
 {
 	Q_OBJECT
@@ -45,6 +41,4 @@ public:
 	virtual void playSound(const QString &path, bool volCntrl, double vol);
 };
 
-/** @} */
-
-#endif
+#endif // QT4_SOUND_H

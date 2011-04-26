@@ -26,7 +26,7 @@
 #include <QtGui/QApplication>
 
 #include "gui/windows/message-dialog.h"
-#include "modules/sound/sound-manager.h"
+#include "plugins/sound/sound-manager.h"
 #include "debug.h"
 
 #include "qt4_sound.h"
