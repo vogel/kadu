@@ -56,17 +56,9 @@ StatusActions::~StatusActions()
 void StatusActions::createActions()
 {
 	createBasicActions();
-	createStatusActions();
 
 	QList<StatusType *> statusTypes = MyStatusContainer->supportedStatusTypes();
-	if (statusTypes.isEmpty())
-		return;
-
-	StatusType *statusType = statusTypes.at(0);
-	if (0 == statusType)
-		return;
-
-	StatusGroup *currentGroup = statusType->statusGroup();
+	StatusGroup *currentGroup = 0;
 	bool setDescriptionAdded = false;
 
 	foreach (StatusType *statusType, statusTypes)
@@ -74,11 +66,16 @@ void StatusActions::createActions()
 		if (0 == statusType)
 			continue;
 
+		if (0 == currentGroup)
+			currentGroup = statusType->statusGroup();
+
 		if (!setDescriptionAdded && statusType->statusGroup() &&
 				statusType->statusGroup()->sortIndex() >= StatusGroup::StatusGroupSortIndexAfterSetDescription)
 		{
-			Actions.append(createSeparator());
+			if (!Actions.isEmpty())
+				Actions.append(createSeparator());
 			Actions.append(ChangeDescription);
+			setDescriptionAdded = true;
 		}
 
 		if (statusType->statusGroup() != currentGroup)
@@ -87,26 +84,15 @@ void StatusActions::createActions()
 			currentGroup = statusType->statusGroup();
 		}
 
-		Actions.append(StatusTypeActions[statusType]);
+		QAction *action = createStatusAction(statusType);
+		Actions.append(action);
 	}
-
-	Actions.append(createSeparator());
 }
 
 void StatusActions::createBasicActions()
 {
 	ChangeDescription = new QAction(tr("Change Status Message..."), this);
 	connect(ChangeDescription, SIGNAL(triggered(bool)), this, SIGNAL(changeDescriptionActionTriggered(bool)));
-}
-
-void StatusActions::createStatusActions()
-{
-	QList<StatusType *> statusTypes = MyStatusContainer->supportedStatusTypes();
-	foreach (StatusType *statusType, statusTypes)
-	{
-		QAction *action = createStatusAction(statusType);
-		StatusTypeActions.insert(statusType, action);
-	}
 }
 
 QAction * StatusActions::createSeparator()
