@@ -5,3 +5,4 @@ Author=Googie
 Provides=descriptions
 Conflicts=
 Version=1.13
+Plugin=true

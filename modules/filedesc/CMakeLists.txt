@@ -1,8 +1,10 @@
 set (SOURCES
+	filedesc-plugin.cpp
 	filedesc.cpp
 )
 
 set (MOC_SOURCES
+	filedesc-plugin.h
 	filedesc.h
 )
 
