@@ -71,6 +71,4 @@ public:
 
 };
 
-extern ExecNotify *exec_notify;
-
 #endif // EXEC_NOTIFY_H

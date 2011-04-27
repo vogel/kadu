@@ -54,23 +54,6 @@
 
 #include "exec_notify.h"
 
-extern "C" KADU_EXPORT int exec_notify_init(bool firstLoad)
-{
-	Q_UNUSED(firstLoad)
-	kdebugf();
-	exec_notify = new ExecNotify();
-	kdebugf2();
-	return 0;
-}
-
-extern "C" KADU_EXPORT void exec_notify_close()
-{
-	kdebugf();
-	delete exec_notify;
-	exec_notify = 0;
-	kdebugf2();
-}
-
 ExecConfigurationWidget::ExecConfigurationWidget(QWidget *parent)
 	: NotifierConfigurationWidget(parent)
 {
@@ -281,5 +264,3 @@ NotifierConfigurationWidget *ExecNotify::createConfigurationWidget(QWidget *pare
 {
 	return new ExecConfigurationWidget(parent);
 }
-
-ExecNotify *exec_notify = NULL;

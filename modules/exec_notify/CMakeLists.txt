@@ -1,9 +1,11 @@
 set (SOURCES
 	exec_notify.cpp
+	exec-notify-plugin.cpp
 )
 
 set (MOC_SOURCES
 	exec_notify.h
+	exec-notify-plugin.h
 )
 
 set (TRANSLATION_SOURCES
