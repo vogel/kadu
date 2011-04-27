@@ -1,6 +1,6 @@
 set (COMPILE_PLUGINS
 
-#protocols
+# protocols
 	# GaduGadu protocol suppot
 	gadu_protocol
 	# Jabber/XMPP protocol support
@@ -9,6 +9,8 @@ set (COMPILE_PLUGINS
 # notifiers
 	# Enables notifications about buddies presence and other in chat windows
 	chat_notifier
+	# Notification by external commands module
+	exec_notify
 	# Freedesktop notification support
 	freedesktop_notify
 
