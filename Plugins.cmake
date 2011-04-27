@@ -55,10 +55,13 @@ set (COMPILE_PLUGINS
 	cenzor
 	# Configuration wizard
 	config_wizard
+	# Loads presence status messages from file
+	filedesc
 	# Idle time counter
 	idle
 	# Shows image links and youtube links as images and videos in chat
 #	imagelink
 	# Sms gateway support
 	sms
+
 )
