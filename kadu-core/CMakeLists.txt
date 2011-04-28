@@ -103,7 +103,6 @@ if (WIN32)
 	kadu_source_subdirectories (kadu_core ${kadu_SUBDIRS})
 
 	set_target_properties (kadu_core PROPERTIES DEFINE_SYMBOL KADULIB)
-	set_target_properties (kadu_core PROPERTIES COMPILE_FLAGS "-I${CMAKE_CURRENT_SOURCE_DIR}/includes")
 	target_link_libraries (kadu_core ${QT_LIBRARIES})
 	set_property (TARGET kadu_core PROPERTY LINK_INTERFACE_LIBRARIES "")
 
