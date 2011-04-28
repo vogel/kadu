@@ -5,820 +5,827 @@
     <name>@default</name>
     <message>
         <source>Jabber/XMPP</source>
-        <translation type="unfinished"></translation>
+        <translation>Jabber/XMPP</translation>
     </message>
     <message>
         <source>Connection</source>
-        <translation type="unfinished"></translation>
+        <translation>Verbindung</translation>
     </message>
     <message>
         <source>Data transfers</source>
-        <translation type="unfinished"></translation>
+        <translation>Datenübertragungen</translation>
     </message>
     <message>
         <source>Port</source>
-        <translation type="unfinished"></translation>
+        <translation>Port</translation>
     </message>
     <message>
         <source>External address</source>
-        <translation type="unfinished"></translation>
+        <translation>Externe Adresse</translation>
     </message>
 </context>
 <context>
     <name>CertificateDisplayDialog</name>
     <message>
         <source>Certificate Information</source>
-        <translation type="unfinished"></translation>
+        <translation>Zertifikat-Informationen</translation>
     </message>
     <message>
         <source>Certificate Validation</source>
-        <translation type="unfinished"></translation>
+        <translation>Zertifikat-Prüfung</translation>
     </message>
     <message>
         <source>Valid From</source>
-        <translation type="unfinished"></translation>
+        <translation>Gültige seit</translation>
     </message>
     <message>
         <source>Valid Until</source>
-        <translation type="unfinished"></translation>
+        <translation>Gültig bis</translation>
     </message>
     <message>
         <source>Serial Number</source>
-        <translation type="unfinished"></translation>
+        <translation>Seriennummer</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Schließen</translation>
     </message>
     <message>
         <source>The certificate is valid.</source>
-        <translation type="unfinished"></translation>
+        <translation>Dieses Zertifikat ist gültig.</translation>
     </message>
     <message>
         <source>The certificate is NOT valid!</source>
-        <translation type="unfinished"></translation>
+        <translation>Dieses Zertifikat NICHT ist gültig!</translation>
     </message>
     <message>
         <source>Reason: %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Antwort: %1.</translation>
     </message>
     <message>
         <source>Subject Details:</source>
-        <translation type="unfinished"></translation>
+        <translation>Details:</translation>
     </message>
     <message>
         <source>Issuer Details:</source>
-        <translation type="unfinished"></translation>
+        <translation>Details zum Zertifikatnehmer:</translation>
     </message>
     <message>
         <source>Organization:</source>
-        <translation type="unfinished"></translation>
+        <translation>Organisation:</translation>
     </message>
     <message>
         <source>Organizational unit:</source>
-        <translation type="unfinished"></translation>
+        <translation>Abteilung:</translation>
     </message>
     <message>
         <source>Locality:</source>
-        <translation type="unfinished"></translation>
+        <translation>Ortschaft:</translation>
     </message>
     <message>
         <source>State:</source>
-        <translation type="unfinished"></translation>
+        <translation>Staat:</translation>
     </message>
     <message>
         <source>Country:</source>
-        <translation type="unfinished"></translation>
+        <translation>Land:</translation>
     </message>
     <message>
         <source>Common name:</source>
-        <translation type="unfinished"></translation>
+        <translation>Allgemeiner Name (CN):</translation>
     </message>
     <message>
         <source>Domain name:</source>
-        <translation type="unfinished"></translation>
+        <translation>Domainname:</translation>
     </message>
     <message>
         <source>XMPP name:</source>
-        <translation type="unfinished"></translation>
+        <translation>XMPP-Name:</translation>
     </message>
     <message>
         <source>Email:</source>
-        <translation type="unfinished"></translation>
+        <translation>E-Mail:</translation>
     </message>
 </context>
 <context>
     <name>FacebookProtocolFactory</name>
     <message>
         <source>Facebook ID:</source>
-        <translation type="unfinished"></translation>
+        <translation>Facebook-Id:</translation>
     </message>
     <message>
         <source>Your username is available at &lt;a href=&apos;https://www.facebook.com/editaccount.php?settings&apos;&gt;https://www.facebook.com/editaccount.php?settings&lt;/a&gt; under Username field. If this field is empty, you can choose your Username and enter it there.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ihren Benutzernamen finden Sie unter &lt;a href=&apos;https://www.facebook.com/editaccount.php?settings&apos;&gt;https://www.facebook.com/editaccount.php?settings&lt;/a&gt; im Feld Name heraus. Sollte dieses Feld leer sein, können Sie einen neuen Namen dort und hier eintragen.</translation>
     </message>
 </context>
 <context>
     <name>GTalkProtocolFactory</name>
     <message>
         <source>Gmail/Google Talk ID:</source>
-        <translation type="unfinished"></translation>
+        <translation>Gmail/Google-Talk-ID:</translation>
     </message>
 </context>
 <context>
     <name>HttpConnect</name>
     <message>
         <source>Authentication failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Authentifizierung ist fehlgeschlagen</translation>
     </message>
     <message>
         <source>Host not found</source>
-        <translation type="unfinished"></translation>
+        <translation>Rechner nicht gefunden</translation>
     </message>
     <message>
         <source>Access denied</source>
-        <translation type="unfinished"></translation>
+        <translation>Zugriff verweigert</translation>
     </message>
     <message>
         <source>Connection refused</source>
-        <translation type="unfinished"></translation>
+        <translation>Verbindung wurde abgelehnt</translation>
     </message>
     <message>
         <source>Invalid reply</source>
-        <translation type="unfinished"></translation>
+        <translation>Ungültige Antwort</translation>
     </message>
 </context>
 <context>
     <name>HttpProxyGetStream</name>
     <message>
         <source>Authentication failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Authentifizierung ist fehlgeschlagen</translation>
     </message>
     <message>
         <source>Host not found</source>
-        <translation type="unfinished"></translation>
+        <translation>Rechner nicht gefunden</translation>
     </message>
     <message>
         <source>Access denied</source>
-        <translation type="unfinished"></translation>
+        <translation>Zugriff verweigert</translation>
     </message>
     <message>
         <source>Connection refused</source>
-        <translation type="unfinished"></translation>
+        <translation>Verbindung wurde abgelehnt</translation>
     </message>
     <message>
         <source>Invalid reply</source>
-        <translation type="unfinished"></translation>
+        <translation>Ungültige Antwort</translation>
     </message>
 </context>
 <context>
     <name>HttpProxyPost</name>
     <message>
         <source>Authentication failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Authentifizierung ist fehlgeschlagen</translation>
     </message>
     <message>
         <source>Host not found</source>
-        <translation type="unfinished"></translation>
+        <translation>Rechner nicht gefunden</translation>
     </message>
     <message>
         <source>Access denied</source>
-        <translation type="unfinished"></translation>
+        <translation>Zugriff verweigert</translation>
     </message>
     <message>
         <source>Connection refused</source>
-        <translation type="unfinished"></translation>
+        <translation>Verbindung wurde abgelehnt</translation>
     </message>
     <message>
         <source>Invalid reply</source>
-        <translation type="unfinished"></translation>
+        <translation>Ungültige Antwort</translation>
     </message>
 </context>
 <context>
     <name>JabberActions</name>
     <message>
         <source>Show XML Console for Account</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige XML-Konsole für das Konto</translation>
     </message>
     <message>
         <source>Resend Subscription</source>
-        <translation type="unfinished"></translation>
+        <translation>Abonnement erneut senden</translation>
     </message>
     <message>
         <source>Remove Subscription</source>
-        <translation type="unfinished"></translation>
+        <translation>Abonnement entfernen</translation>
     </message>
     <message>
         <source>Ask for Subscription</source>
-        <translation type="unfinished"></translation>
+        <translation>Abonnement anfordern</translation>
     </message>
 </context>
 <context>
     <name>JabberAddAccountWidget</name>
     <message>
         <source>&lt;a href=&apos;#&apos;&gt;What is my username?&lt;/a&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;a href=&apos;#&apos;&gt;Wie lautet mein Benutzername?&lt;/a&gt;</translation>
     </message>
     <message>
         <source>Username</source>
-        <translation type="unfinished"></translation>
+        <translation>Benutzername</translation>
     </message>
     <message>
         <source>Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Passwort</translation>
     </message>
     <message>
         <source>Remember Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Passwort speichern</translation>
     </message>
     <message>
         <source>Account Identity</source>
-        <translation type="unfinished"></translation>
+        <translation>Konto-Identität</translation>
     </message>
     <message>
         <source>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Select or enter the identity that will be associated with this account.&lt;/i&gt;&lt;/font&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Wählen Sie aus oder geben Sie eine Identität für dieses Konto ein.&lt;/i&gt;&lt;/font&gt;</translation>
     </message>
     <message>
         <source>Add Account</source>
-        <translation type="unfinished"></translation>
+        <translation>Konto hinzufügen</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Abbrechen</translation>
     </message>
 </context>
 <context>
     <name>JabberChangePasswordWindow</name>
     <message>
         <source>Change Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Passwort ändern</translation>
     </message>
     <message>
         <source>This dialog box allows you to change your current password.
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Dieses Fenster erlaubt Ihnen, das aktuelle Passwort zu ändern.</translation>
     </message>
     <message>
         <source>Old Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Altes Passwort</translation>
     </message>
     <message>
         <source>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Enter current password for your XMPP/Jabber account.&lt;/i&gt;&lt;/font&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Geben Sie Ihr aktuelles Passwort für Ihr XMPP/Jabber-Konto ein.&lt;/i&gt;&lt;/font&gt;</translation>
     </message>
     <message>
         <source>New password</source>
-        <translation type="unfinished"></translation>
+        <translation>Neues Passwort</translation>
     </message>
     <message>
         <source>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Enter new password for your XMPP/Jabber account.&lt;/i&gt;&lt;/font&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Geben Sie ein neues Passwort für Ihr XMPP/Jabber-Konto ein.&lt;/i&gt;&lt;/font&gt;</translation>
     </message>
     <message>
         <source>Retype new password</source>
-        <translation type="unfinished"></translation>
+        <translation>Passwort erneut eingeben</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Abbrechen</translation>
     </message>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished"></translation>
+        <translation>Kadu</translation>
     </message>
     <message>
         <source>Invalid data entered in required fields.
 
 Password entered in both fields (&quot;Password&quot; and &quot;Retype password&quot;) should be the same!</source>
-        <translation type="unfinished"></translation>
+        <translation>Daten, die Sie im Formular angegeben haben sind ungültig.
+
+Das Passwort sollte in beiden Feldern (&quot;Neues Passwort&quot; und &quot;Passwort erneut eingeben&quot;) gleich sein!</translation>
     </message>
     <message>
         <source>Changing password was successful.</source>
-        <translation type="unfinished"></translation>
+        <translation>Passwort erfolgreich geändert.</translation>
     </message>
     <message>
         <source>An error has occurred. Please try again later.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ein Fehler ist eingetreten. Versuchen Sie später noch einmal.</translation>
     </message>
 </context>
 <context>
     <name>JabberContactPersonalInfoWidget</name>
     <message>
         <source>Full Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Voller Name</translation>
     </message>
     <message>
         <source>Family Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Familienname</translation>
     </message>
     <message>
         <source>Nickname</source>
-        <translation type="unfinished"></translation>
+        <translation>Nick</translation>
     </message>
     <message>
         <source>Birthdate</source>
-        <translation type="unfinished"></translation>
+        <translation>Geburtsdatum</translation>
     </message>
     <message>
         <source>City</source>
-        <translation type="unfinished"></translation>
+        <translation>Stadt</translation>
     </message>
     <message>
         <source>E-Mail</source>
-        <translation type="unfinished"></translation>
+        <translation>E-Mail</translation>
     </message>
     <message>
         <source>Website</source>
-        <translation type="unfinished"></translation>
+        <translation>Webseite</translation>
     </message>
 </context>
 <context>
     <name>JabberCreateAccountWidget</name>
     <message>
         <source>Username</source>
-        <translation type="unfinished"></translation>
+        <translation>Benutzername</translation>
     </message>
     <message>
         <source>Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Passwort</translation>
     </message>
     <message>
         <source>Retype Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Passwort erneut eingeben</translation>
     </message>
     <message>
         <source>Remember password</source>
-        <translation type="unfinished"></translation>
+        <translation>Passwort speichern</translation>
     </message>
     <message>
         <source>Account Identity</source>
-        <translation type="unfinished"></translation>
+        <translation>Konto-Identität</translation>
     </message>
     <message>
         <source>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Select or enter the identity that will be associated with this account.&lt;/i&gt;&lt;/font&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Wählen Sie aus oder geben Sie eine Identität für dieses Konto ein.&lt;/i&gt;&lt;/font&gt;</translation>
     </message>
     <message>
         <source>More options:</source>
-        <translation type="unfinished"></translation>
+        <translation>Mehr Optionen:</translation>
     </message>
     <message>
         <source>Connection settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Verbindungseinstellungen</translation>
     </message>
     <message>
         <source>Manually Specify Server Host/Port</source>
-        <translation type="unfinished"></translation>
+        <translation>Den Rechnernamen und Port selber angeben</translation>
     </message>
     <message>
         <source>Host</source>
-        <translation type="unfinished"></translation>
+        <translation>Rechnername</translation>
     </message>
     <message>
         <source>Port</source>
-        <translation type="unfinished"></translation>
+        <translation>Port</translation>
     </message>
     <message>
         <source>Encrypt connection</source>
-        <translation type="unfinished"></translation>
+        <translation>Verbindung verschlüsseln</translation>
     </message>
     <message>
         <source>Always</source>
-        <translation type="unfinished"></translation>
+        <translation>Immer</translation>
     </message>
     <message>
         <source>When available</source>
-        <translation type="unfinished"></translation>
+        <translation>Wenn möglich</translation>
     </message>
     <message>
         <source>Legacy SSL</source>
-        <translation type="unfinished"></translation>
+        <translation>Veraltetes SSL</translation>
     </message>
     <message>
         <source>Probe legacy SSL port</source>
-        <translation type="unfinished"></translation>
+        <translation>Versuche Port des veralteten SSL</translation>
     </message>
     <message>
         <source>Register Account</source>
-        <translation type="unfinished"></translation>
+        <translation>Konto erstellen</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Abbrechen</translation>
     </message>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished"></translation>
+        <translation>Kadu</translation>
     </message>
     <message>
         <source>Cannot enable secure connection. SSL/TLS plugin not found.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kann sichere Verbindung nicht ermöglichen. SSL/TLS-Plugin fehlt.</translation>
     </message>
     <message>
         <source>Legacy secure connection (SSL) is only available in combination with manual host/port.</source>
-        <translation type="unfinished"></translation>
+        <translation>Die veraltete sichere Verbindung (SSL) ist nur unter Angabe von Rechnername und Port möglich.</translation>
     </message>
     <message>
         <source>Invalid data entered in required fields.
 
 Password entered in both fields (&quot;New password&quot; and &quot;Retype password&quot;) should be the same!</source>
-        <translation type="unfinished"></translation>
+        <translation>Daten, die Sie im Formular angegeben haben sind ungültig.
+
+Das Passwort sollte in beiden Feldern (&quot;Neues Passwort&quot; und &quot;Passwort erneut eingeben&quot;) gleich sein!</translation>
     </message>
 </context>
 <context>
     <name>JabberEditAccountWidget</name>
     <message>
         <source>Apply</source>
-        <translation type="unfinished"></translation>
+        <translation>Anwenden</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Abbrechen</translation>
     </message>
     <message>
         <source>Delete account</source>
-        <translation type="unfinished"></translation>
+        <translation>Konto löschen</translation>
     </message>
     <message>
         <source>Username</source>
-        <translation type="unfinished"></translation>
+        <translation>Benutzername</translation>
     </message>
     <message>
         <source>Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Passwort</translation>
     </message>
     <message>
         <source>Remember password</source>
-        <translation type="unfinished"></translation>
+        <translation>Passwort speichern</translation>
     </message>
     <message>
         <source>Change your password</source>
-        <translation type="unfinished"></translation>
+        <translation>Passwort ändern</translation>
     </message>
     <message>
         <source>Account Identity</source>
-        <translation type="unfinished"></translation>
+        <translation>Konto-Identität</translation>
     </message>
     <message>
         <source>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Select or enter the identity that will be associated with this account.&lt;/i&gt;&lt;/font&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Wählen Sie aus oder geben Sie eine Identität für dieses Konto ein.&lt;/i&gt;&lt;/font&gt;</translation>
     </message>
     <message>
         <source>General</source>
-        <translation type="unfinished"></translation>
+        <translation>Allgemein</translation>
     </message>
     <message>
         <source>Personal Information</source>
-        <translation type="unfinished"></translation>
+        <translation>Persönliche Daten</translation>
     </message>
     <message>
         <source>Connection</source>
-        <translation type="unfinished"></translation>
+        <translation>Verbindung</translation>
     </message>
     <message>
         <source>Proxy</source>
-        <translation type="unfinished"></translation>
+        <translation>Proxy</translation>
     </message>
     <message>
         <source>Manually specify server host/port</source>
-        <translation type="unfinished"></translation>
+        <translation>Den Rechnernamen und Port selber angeben</translation>
     </message>
     <message>
         <source>Host</source>
-        <translation type="unfinished"></translation>
+        <translation>Rechnername</translation>
     </message>
     <message>
         <source>Port</source>
-        <translation type="unfinished"></translation>
+        <translation>Port</translation>
     </message>
     <message>
         <source>Encrypt connection</source>
-        <translation type="unfinished"></translation>
+        <translation>Verbindung verschlüsseln</translation>
     </message>
     <message>
         <source>Never</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie</translation>
     </message>
     <message>
         <source>Always</source>
-        <translation type="unfinished"></translation>
+        <translation>Immer</translation>
     </message>
     <message>
         <source>When available</source>
-        <translation type="unfinished"></translation>
+        <translation>Wenn möglich</translation>
     </message>
     <message>
         <source>Legacy SSL</source>
-        <translation type="unfinished"></translation>
+        <translation>Veraltetes SSL</translation>
     </message>
     <message>
         <source>Probe legacy SSL port</source>
-        <translation type="unfinished"></translation>
+        <translation>Versuche Port des veralteten SSL</translation>
     </message>
     <message>
         <source>Allow plaintext authentication</source>
-        <translation type="unfinished"></translation>
+        <translation>Erlaube Anmeldung mit Klartext</translation>
     </message>
     <message>
         <source>Over encrypted connection</source>
-        <translation type="unfinished"></translation>
+        <translation>Über verschlüsselte Verbindung</translation>
     </message>
     <message>
         <source>Options</source>
-        <translation type="unfinished"></translation>
+        <translation>Optionen</translation>
     </message>
     <message>
         <source>Resource</source>
-        <translation type="unfinished"></translation>
+        <translation>Ressource</translation>
     </message>
     <message>
         <source>Use hostname as a resource</source>
-        <translation type="unfinished"></translation>
+        <translation>Benutze den Rechnernamen als Ressource</translation>
     </message>
     <message>
         <source>Priority</source>
-        <translation type="unfinished"></translation>
+        <translation>Priorität</translation>
     </message>
     <message>
         <source>Data transfer proxy</source>
-        <translation type="unfinished"></translation>
+        <translation>Proxy für den Datenaustausch</translation>
     </message>
     <message>
         <source>Notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Benachrichtigungen</translation>
     </message>
     <message>
         <source>Send composing events</source>
-        <translation type="unfinished"></translation>
+        <translation>Benachrichtige über das Tippen</translation>
     </message>
     <message>
         <source>Send inactivity events (end/suspend conversation)</source>
-        <translation type="unfinished"></translation>
+        <translation>Benachrichtige über Inaktivität (Ende/Unterbrechung einer Unterhaltung)</translation>
     </message>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished"></translation>
+        <translation>Kadu</translation>
     </message>
     <message>
         <source>Cannot enable secure connection. SSL/TLS plugin not found.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kann sichere Verbindung nicht ermöglichen. SSL/TLS-Plugin fehlt.</translation>
     </message>
     <message>
         <source>Legacy SSL is only available in combination with manual host/port.</source>
-        <translation type="unfinished"></translation>
+        <translation>Die veraltete sichere Verbindung (SSL) ist nur unter Angabe von Rechnername und Port möglich.</translation>
     </message>
     <message>
         <source>Confirm account removal</source>
-        <translation type="unfinished"></translation>
+        <translation>Beim Konto-Entfernen nachfragen</translation>
     </message>
     <message>
         <source>Are you sure you want to remove account %1 (%2)?</source>
-        <translation type="unfinished"></translation>
+        <translation>Sind Sie sicher, dass Sie das Konto %1 (%2) entfernen wollen?</translation>
     </message>
     <message>
         <source>Remove account</source>
-        <translation type="unfinished"></translation>
+        <translation>Konto entfernen</translation>
     </message>
 </context>
 <context>
     <name>JabberPersonalInfoWidget</name>
     <message>
         <source>Full name</source>
-        <translation type="unfinished"></translation>
+        <translation>Voller Name</translation>
     </message>
     <message>
         <source>Nick</source>
-        <translation type="unfinished"></translation>
+        <translation>Nick</translation>
     </message>
     <message>
         <source>Family name</source>
-        <translation type="unfinished"></translation>
+        <translation>Familienname</translation>
     </message>
     <message>
         <source>Birth year</source>
-        <translation type="unfinished"></translation>
+        <translation>Geburtsjahr</translation>
     </message>
     <message>
         <source>City</source>
-        <translation type="unfinished"></translation>
+        <translation>Stadt</translation>
     </message>
     <message>
         <source>E-Mail</source>
-        <translation type="unfinished"></translation>
+        <translation>E-Mail</translation>
     </message>
     <message>
         <source>Website</source>
-        <translation type="unfinished"></translation>
+        <translation>Webseite</translation>
     </message>
 </context>
 <context>
     <name>JabberProtocolFactory</name>
     <message>
         <source>User JID:</source>
-        <translation type="unfinished"></translation>
+        <translation>Benutzer JID:</translation>
     </message>
 </context>
 <context>
     <name>JabberServerRegisterAccount</name>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished"></translation>
+        <translation>Kadu</translation>
     </message>
     <message>
         <source>This server does not support registration</source>
-        <translation type="unfinished"></translation>
+        <translation>Dieser Server lässt keine Registrierung zu</translation>
     </message>
     <message>
         <source>There was an error registering the account.
 Reason: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Während der Kontenregistrierung ist ein Fehler eingetreren: %1</translation>
     </message>
 </context>
 <context>
     <name>JabberSubscriptionService</name>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished"></translation>
+        <translation>Kadu</translation>
     </message>
     <message>
         <source>The user %1 removed subscription to you. You will no longer be able to view his/her online/offline status. Do you want to delete the contact?</source>
-        <translation type="unfinished"></translation>
+        <translation>Der Benutzer %1 entfernte das Abonnement an Sie. Sie werden nicht mehr imstande sein, seinen/ihren online/offline-Status zu sehen. Wollen Sie diesen Kontakt löschen?</translation>
     </message>
     <message>
         <source>Kadu - authorize user?</source>
-        <translation type="unfinished"></translation>
+        <translation>Kadu - Benutzer zulassen?</translation>
     </message>
     <message>
         <source>The user %1 (%2) is asking for subscription from you. He will be able to view your online/offline status. Do you want to authorize the contact?</source>
-        <translation type="unfinished"></translation>
+        <translation>Der Benutzer %1 (%2) fragt Sie nach einem Abbonement an. Er/sie wird imstande sein, Ihren online-/offline-Status zu sehen. Wollen Sie ihn zulassen?</translation>
     </message>
 </context>
 <context>
     <name>JabberWaitForAccountRegisterWindow</name>
     <message>
         <source>Plase wait. New XMPP account is being registered.</source>
-        <translation type="unfinished"></translation>
+        <translation>Bitte warten. Neues Konto XMPP wird erstellt.</translation>
     </message>
     <message>
         <source>Registration was successful. Your new XMPP username is %1.
 Store it in a safe place along with the password.
 Now please add your friends to the buddy list.</source>
-        <translation type="unfinished"></translation>
+        <translation>Registrierung war erfolgreich. Ihr neuer Bentzername im XMPP ist %1.
+Speichern Sie es mit Ihrem Passwort nur an einem sicheren Ort.
+Jetzt können Sie Ihre Freunde in die Kontaktliste aufnehmen.</translation>
     </message>
     <message>
         <source>An error has occurred during registration. Please try again later.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ein Fehler ist während der Registrierung eingetreten. Versuchen Sie später noch einmal.</translation>
     </message>
 </context>
 <context>
     <name>MiniClient</name>
     <message>
         <source>Server Authentication</source>
-        <translation type="unfinished"></translation>
+        <translation>Server Authentifizierung</translation>
     </message>
     <message>
         <source>Server Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Serverfehler</translation>
     </message>
     <message>
         <source>The server does not support TLS encryption.</source>
-        <translation type="unfinished"></translation>
+        <translation>Dieser Server unterstützt keine TLS-Verschlüsselung.</translation>
     </message>
     <message>
         <source>There was an error communicating with the Jabber server.
 Details: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Es entstand ein Fehler während der Kommunikation mit dem Server Jabber.
+Genauer gesagt: %1</translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
         <source>The %1 certificate failed the authenticity test.</source>
-        <translation type="unfinished"></translation>
+        <translation>Das Zertifikat %1 bestand den Zulassungstest nicht.</translation>
     </message>
     <message>
         <source>&amp;Details...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Details...</translation>
     </message>
     <message>
         <source>&amp;Connect anyway</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Verbinde trotz allem</translation>
     </message>
     <message>
         <source>&amp;Trust this certificate</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Vertraue dem Zertifikat</translation>
     </message>
     <message>
         <source>&amp;Trust this domain</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Vertraue der Domäne</translation>
     </message>
     <message>
         <source>The server did not present a certificate.</source>
-        <translation type="unfinished"></translation>
+        <translation>Der Server hat kein Zertifikat vorgezeigt.</translation>
     </message>
     <message>
         <source>Certificate is valid.</source>
-        <translation type="unfinished"></translation>
+        <translation>Zertifikat ist gültig.</translation>
     </message>
     <message>
         <source>The hostname does not match the one the certificate was issued to.</source>
-        <translation type="unfinished"></translation>
+        <translation>Der Rechnername passt nicht zu dem im Zertifikat angegebenen.</translation>
     </message>
     <message>
         <source>General certificate validation error.</source>
-        <translation type="unfinished"></translation>
+        <translation>Allgemeiner Fehler der Zertifikat-Validierung.</translation>
     </message>
     <message>
         <source>No certificate presented.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kein Zertifikat ausgeliefert.</translation>
     </message>
     <message>
         <source>Hostname mismatch.</source>
-        <translation type="unfinished"></translation>
+        <translation>Rechnername passt nicht.</translation>
     </message>
     <message>
         <source>Invalid Certificate.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ungültiges Zertifikat.</translation>
     </message>
     <message>
         <source>General validation error.</source>
-        <translation type="unfinished"></translation>
+        <translation>Allgemeiner Fehler der Validierung.</translation>
     </message>
     <message>
         <source>Username</source>
-        <translation type="unfinished"></translation>
+        <translation>Benutzername</translation>
     </message>
     <message>
         <source>Nickname</source>
-        <translation type="unfinished"></translation>
+        <translation>Nick</translation>
     </message>
     <message>
         <source>Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Passwort</translation>
     </message>
     <message>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Name</translation>
     </message>
     <message>
         <source>First Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Vorname</translation>
     </message>
     <message>
         <source>Last Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nachname</translation>
     </message>
     <message>
         <source>E-mail</source>
-        <translation type="unfinished"></translation>
+        <translation>E-Mail</translation>
     </message>
     <message>
         <source>Address</source>
-        <translation type="unfinished"></translation>
+        <translation>Adresse</translation>
     </message>
     <message>
         <source>City</source>
-        <translation type="unfinished"></translation>
+        <translation>Stadt</translation>
     </message>
     <message>
         <source>State</source>
-        <translation type="unfinished"></translation>
+        <translation>Staat</translation>
     </message>
     <message>
         <source>Zipcode</source>
-        <translation type="unfinished"></translation>
+        <translation>PLZ</translation>
     </message>
     <message>
         <source>Phone</source>
-        <translation type="unfinished"></translation>
+        <translation>Telefon</translation>
     </message>
     <message>
         <source>URL</source>
-        <translation type="unfinished"></translation>
+        <translation>URL</translation>
     </message>
     <message>
         <source>Date</source>
-        <translation type="unfinished"></translation>
+        <translation>Datum</translation>
     </message>
     <message>
         <source>Misc</source>
-        <translation type="unfinished"></translation>
+        <translation>Andere</translation>
     </message>
 </context>
 <context>
     <name>TestDlg</name>
     <message>
         <source>XMPP Test</source>
-        <translation type="unfinished"></translation>
+        <translation>XMPP Test</translation>
     </message>
     <message>
         <source>&amp;Connect</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Verbinden</translation>
     </message>
     <message>
         <source>About %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Über %1</translation>
     </message>
     <message>
         <source>%1 v1.0
@@ -830,309 +837,319 @@ Currently supports:
   JEP-0025
 
 Copyright (C) 2003 Justin Karneges</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 v1.0
+
+Werkzeug zum demonstrieren der Iris-XMPP-Bibliothek.
+
+Unterstützt gegenwärtig:
+  draft-ietf-xmpp-core-21
+  JEP-0025
+
+Urheberrecht (c) 2003 Justin Karneges</translation>
     </message>
     <message>
         <source>Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Fehler</translation>
     </message>
     <message>
         <source>Please enter the Full JID to connect with.</source>
-        <translation type="unfinished"></translation>
+        <translation>Geben Sie bitte die vollständige JID, die ich verbinden soll.</translation>
     </message>
     <message>
         <source>You must specify a host:port for the proxy.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sie müssen den Rechnernamen und den Port des Proxy angeben.</translation>
     </message>
     <message>
         <source>You must at least enter a URL to use http poll.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sie müssen zumindest die URL angeben, um http-Abfrage zu nutzen.</translation>
     </message>
     <message>
         <source>Please enter the proxy host in the form &apos;host:port&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Geben Sie bitte den Rechnernamen und Port des Proxy in der folgenden Form an: &apos;Rechnername:Port&apos;.</translation>
     </message>
     <message>
         <source>Please enter the host in the form &apos;host:port&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Geben Sie den Rechnernamen in der folgenden Form an: &apos;Rechnername:Port&apos;.</translation>
     </message>
     <message>
         <source>Error: SSF Min is greater than SSF Max.</source>
-        <translation type="unfinished"></translation>
+        <translation>Fehler SSF Min ist größer als SSF Max.</translation>
     </message>
     <message>
         <source>Error: TLS not available.  Disable any TLS options.</source>
-        <translation type="unfinished"></translation>
+        <translation>Fehler: TLS ist nicht verfügbar. Deaktiviere alle TSL-Optionen.</translation>
     </message>
     <message>
         <source>&amp;Disconnect</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Trennen</translation>
     </message>
     <message>
         <source>Bad XML input (%1,%2): %3
 Please correct and try again.</source>
-        <translation type="unfinished"></translation>
+        <translation>Falsche XML-Eingabe (%1, %2): %3
+Bitte verbinden Sie sich erneut und versuchen noch einmal.</translation>
     </message>
     <message>
         <source>Bad Stanza &apos;%1&apos;.  Must be &apos;message&apos;, &apos;presence&apos;, or &apos;iq&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation>Falsche Strophe &apos;%1&apos;. Solle &apos;message&apos;, &apos;presence&apos;, oder &apos;iq&apos; sein</translation>
     </message>
     <message>
         <source>You must enter at least one stanza!</source>
-        <translation type="unfinished"></translation>
+        <translation>Sie müssen zumindest eine Strophe angeben!</translation>
     </message>
     <message>
         <source>Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Passwort</translation>
     </message>
     <message>
         <source>Enter the password for %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Geben Sie das Passwort für %1 ein</translation>
     </message>
 </context>
 <context>
     <name>XMPP::ClientStream</name>
     <message>
         <source>Offered mechanisms: </source>
-        <translation type="unfinished"></translation>
+        <translation>Angebotene Mechanismen:</translation>
     </message>
 </context>
 <context>
     <name>XMPP::Features::FeatureName</name>
     <message>
         <source>ERROR: Incorrect usage of Features class</source>
-        <translation type="unfinished"></translation>
+        <translation>FEHLER: Falsche Nutzng der Klasse Features</translation>
     </message>
     <message>
         <source>None</source>
-        <translation type="unfinished"></translation>
+        <translation>Nichts</translation>
     </message>
     <message>
         <source>Register</source>
-        <translation type="unfinished"></translation>
+        <translation>Registrieren</translation>
     </message>
     <message>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation>Suche</translation>
     </message>
     <message>
         <source>Groupchat</source>
-        <translation type="unfinished"></translation>
+        <translation>Gruppenchat</translation>
     </message>
     <message>
         <source>Gateway</source>
-        <translation type="unfinished"></translation>
+        <translation>Gateway</translation>
     </message>
     <message>
         <source>Service Discovery</source>
-        <translation type="unfinished"></translation>
+        <translation>Service-Fund</translation>
     </message>
     <message>
         <source>VCard</source>
-        <translation type="unfinished"></translation>
+        <translation>VCard</translation>
     </message>
     <message>
         <source>Execute command</source>
-        <translation type="unfinished"></translation>
+        <translation>Kommando ausführen</translation>
     </message>
     <message>
         <source>Add to roster</source>
-        <translation type="unfinished"></translation>
+        <translation>Zum Dienstplan hinzufügen</translation>
     </message>
 </context>
 <context>
     <name>XMPP::JT_VCard</name>
     <message>
         <source>No VCard available</source>
-        <translation type="unfinished"></translation>
+        <translation>Kein VCard verfügbar</translation>
     </message>
 </context>
 <context>
     <name>XMPP::JabberClient</name>
     <message>
         <source>SSL support could not be initialized for account %1. This is most likely because the QCA TLS plugin is not installed on your system.</source>
-        <translation type="unfinished"></translation>
+        <translation>SSL konnte für das Konto %1 nicht initialisiert werden. Meistens passiert dies, weil Sie im System kein QCA-TLS-Plugin installiert haben.</translation>
     </message>
     <message>
         <source>Server Authentication</source>
-        <translation type="unfinished"></translation>
+        <translation>Server Authentifizierung</translation>
     </message>
     <message>
         <source>The server does not support TLS encryption.</source>
-        <translation type="unfinished"></translation>
+        <translation>Dieser Server unterstützt keine TLS-Verschlüsselung.</translation>
     </message>
     <message>
         <source>There was an error communicating with the server.
 Details: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Es entstand ein Fehler während der Kommunikation mit dem Server.
+Genauer gesagt: %1</translation>
     </message>
     <message>
         <source>Disconnected</source>
-        <translation type="unfinished"></translation>
+        <translation>Getrennt</translation>
     </message>
     <message>
         <source>XML Parsing Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Fehler beim Parsen des XML</translation>
     </message>
     <message>
         <source>XMPP Protocol Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Fehler im XMPP-Protokoll</translation>
     </message>
     <message>
         <source>Generic stream error</source>
-        <translation type="unfinished"></translation>
+        <translation>Fehler im Datenstrom</translation>
     </message>
     <message>
         <source>Conflict(remote login replacing this one)</source>
-        <translation type="unfinished"></translation>
+        <translation>Konflikt (entfernte Anmeldung überschreibt diese)</translation>
     </message>
     <message>
         <source>Timed out from inactivity</source>
-        <translation type="unfinished"></translation>
+        <translation>Inaktivitätslimit wurde überschritten</translation>
     </message>
     <message>
         <source>Internal server error</source>
-        <translation type="unfinished"></translation>
+        <translation>Interner Serverfehler</translation>
     </message>
     <message>
         <source>Invalid XML</source>
-        <translation type="unfinished"></translation>
+        <translation>Ungültiges XML</translation>
     </message>
     <message>
         <source>Policy violation</source>
-        <translation type="unfinished"></translation>
+        <translation>Regelüberschreitung</translation>
     </message>
     <message>
         <source>Server out of resources</source>
-        <translation type="unfinished"></translation>
+        <translation>Server hat seine Ressourcen ausgeschöpft</translation>
     </message>
     <message>
         <source>Server is shutting down</source>
-        <translation type="unfinished"></translation>
+        <translation>Server fährt herunter</translation>
     </message>
     <message>
         <source>XMPP Stream Error: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>XMPP-Strom-Fehler: %1</translation>
     </message>
     <message>
         <source>Unable to connect to server</source>
-        <translation type="unfinished"></translation>
+        <translation>Verbindung zum Server nicht möglich</translation>
     </message>
     <message>
         <source>Host not found</source>
-        <translation type="unfinished"></translation>
+        <translation>Rechner nicht gefunden</translation>
     </message>
     <message>
         <source>Error connecting to proxy</source>
-        <translation type="unfinished"></translation>
+        <translation>Fehler bei der Verbindung zum Proxy</translation>
     </message>
     <message>
         <source>Error during proxy negotiation</source>
-        <translation type="unfinished"></translation>
+        <translation>Fehler während der Negotiation mit dem Proxy</translation>
     </message>
     <message>
         <source>Proxy authentication failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Anmeldung am Proxy fehlgeschlagen</translation>
     </message>
     <message>
         <source>Socket/stream error</source>
-        <translation type="unfinished"></translation>
+        <translation>Socket-/Datenstrom-Fehler</translation>
     </message>
     <message>
         <source>Connection Error: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Verbindungsfehler: %1</translation>
     </message>
     <message>
         <source>Host no longer hosted</source>
-        <translation type="unfinished"></translation>
+        <translation>Rechner nicht mehr verfügbar</translation>
     </message>
     <message>
         <source>Host unknown</source>
-        <translation type="unfinished"></translation>
+        <translation>Unbekannter Rechner</translation>
     </message>
     <message>
         <source>A required remote connection failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Benötigte Verbindung nach Aussen ist misslungen</translation>
     </message>
     <message>
         <source>See other host: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Benutzen Sie einen anderen Rechner: %1</translation>
     </message>
     <message>
         <source>Server does not support proper XMPP version</source>
-        <translation type="unfinished"></translation>
+        <translation>Dieser Server unterstützt die benötigte Version XMPP nicht</translation>
     </message>
     <message>
         <source>Stream Negotiation Error: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Fehler bei der Datenstromnegotiation: %1</translation>
     </message>
     <message>
         <source>Server rejected STARTTLS</source>
-        <translation type="unfinished"></translation>
+        <translation>Server hat STARTTLS abgelehnt</translation>
     </message>
     <message>
         <source>TLS handshake error</source>
-        <translation type="unfinished"></translation>
+        <translation>TLS-Handshake-Fehler</translation>
     </message>
     <message>
         <source>Broken security layer (TLS)</source>
-        <translation type="unfinished"></translation>
+        <translation>Falscher Sicherheitslayer (TLS)</translation>
     </message>
     <message>
         <source>Unable to login</source>
-        <translation type="unfinished"></translation>
+        <translation>Login nicht möglich</translation>
     </message>
     <message>
         <source>No appropriate mechanism available for given security settings(e.g. SASL library too weak, or plaintext authentication not enabled)</source>
-        <translation type="unfinished"></translation>
+        <translation>Für diese Sicherheitseinstellungen gibt es keinen passende Mechanismus (z.B. SASL-Bibliothek zu schwach oder Klartext nicht eingeschaltet)</translation>
     </message>
     <message>
         <source>Bad server response</source>
-        <translation type="unfinished"></translation>
+        <translation>Falsche Antwort vom Server</translation>
     </message>
     <message>
         <source>Server failed mutual authentication</source>
-        <translation type="unfinished"></translation>
+        <translation>Die gegenseitige Authentifizierung mit dem Server ist fehlgeschlagen</translation>
     </message>
     <message>
         <source>Encryption required for chosen SASL mechanism</source>
-        <translation type="unfinished"></translation>
+        <translation>Verschlüsselung wird für den ausgewählten Mechanismus verlangt</translation>
     </message>
     <message>
         <source>Invalid account information</source>
-        <translation type="unfinished"></translation>
+        <translation>Ungültige Konteninformationen</translation>
     </message>
     <message>
         <source>Invalid SASL mechanism</source>
-        <translation type="unfinished"></translation>
+        <translation>Ungültiger SASL-Mechanismus</translation>
     </message>
     <message>
         <source>Invalid realm</source>
-        <translation type="unfinished"></translation>
+        <translation>Ungültiger Realm</translation>
     </message>
     <message>
         <source>SASL mechanism too weak for this account</source>
-        <translation type="unfinished"></translation>
+        <translation>Die SASL-Bibliothek ist zu schwach für dieses Konto</translation>
     </message>
     <message>
         <source>Not authorized</source>
-        <translation type="unfinished"></translation>
+        <translation>Nicht authorisiert</translation>
     </message>
     <message>
         <source>Temporary auth failure</source>
-        <translation type="unfinished"></translation>
+        <translation>Vorübergehender Fehler der Authentifizierung</translation>
     </message>
     <message>
         <source>Authentication error: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Authentifizierungsfehler: %1</translation>
     </message>
     <message>
         <source>Broken security layer (SASL)</source>
-        <translation type="unfinished"></translation>
+        <translation>Falscher Sicherheitslayer (SASL)</translation>
     </message>
     <message>
         <source>None</source>
-        <translation type="unfinished"></translation>
+        <translation>Nichts</translation>
     </message>
 </context>
 <context>
@@ -1318,14 +1335,14 @@ Details: %1</source>
     <name>XMPP::Task</name>
     <message>
         <source>Disconnected</source>
-        <translation type="unfinished"></translation>
+        <translation>Getrennt</translation>
     </message>
 </context>
 <context>
     <name>XmlConsole</name>
     <message>
         <source>XML Console - %1</source>
-        <translation type="unfinished"></translation>
+        <translation>XML-Konsole - %1</translation>
     </message>
 </context>
 </TS>
