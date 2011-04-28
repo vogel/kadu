@@ -53,6 +53,9 @@ BuddiesModel::BuddiesModel(QObject *parent) :
 	connect(manager, SIGNAL(buddyUpdated(Buddy &)),
 			this, SLOT(buddyUpdated(Buddy &)));
 
+	connect(Core::instance()->myself(), SIGNAL(updated()),
+			this, SLOT(myselfBuddyUpdated()));
+
 	ContactManager *cm = ContactManager::instance();
 	connect(cm, SIGNAL(contactAboutToBeAttached(Contact, Buddy)),
 			this, SLOT(contactAboutToBeAttached(Contact, Buddy)));
@@ -152,6 +155,15 @@ void BuddiesModel::buddyRemoved(Buddy &buddy)
 	Q_UNUSED(buddy)
 
 	endRemoveRows();
+}
+
+void BuddiesModel::myselfBuddyUpdated()
+{
+	if (IncludeMyself)
+	{ 
+		Buddy myself = Core::instance()->myself();
+		buddyUpdated(myself);
+	}
 }
 
 void BuddiesModel::buddyUpdated(Buddy &buddy)
