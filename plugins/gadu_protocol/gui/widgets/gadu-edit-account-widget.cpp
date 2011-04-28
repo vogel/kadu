@@ -286,11 +286,11 @@ void GaduEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
 	generalLayout->setColumnMinimumWidth(3, 20);
 	layout->addWidget(general);
 
-	useDefaultServers = new QCheckBox(tr("Use default servers"), this);
+	useDefaultServers = new QCheckBox(tr("Use default servers"), general);
 	generalLayout->addWidget(useDefaultServers, 0, 0, 1, 4);
 
-	QLabel *ipAddressesLabel = new QLabel(tr("IP addresses"), this);
-	ipAddresses = new QLineEdit(this);
+	QLabel *ipAddressesLabel = new QLabel(tr("IP addresses"), general);
+	ipAddresses = new QLineEdit(general);
 	ipAddresses->setToolTip("You can specify which servers and ports to use.\n"
 							"Separate every server using semicolon.\n"
 							"The last IPv4 octet may be specified as a range of addresses.\n"
@@ -299,7 +299,7 @@ void GaduEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
 	generalLayout->addWidget(ipAddressesLabel, 1, 1);
 	generalLayout->addWidget(ipAddresses, 1, 2);
 
-	AllowFileTransfers = new QCheckBox(tr("Allow file transfers"), this);
+	AllowFileTransfers = new QCheckBox(tr("Allow file transfers"), general);
 	generalLayout->addWidget(AllowFileTransfers, 2, 0, 1, 4);
 
 	connect(useDefaultServers, SIGNAL(toggled(bool)), ipAddressesLabel, SLOT(setDisabled(bool)));
@@ -309,24 +309,24 @@ void GaduEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
 	connect(ipAddresses, SIGNAL(textEdited(QString)), this, SLOT(dataChanged()));
 	connect(AllowFileTransfers, SIGNAL(toggled(bool)), this, SLOT(dataChanged()));
 
-	UseTlsEncryption = new QCheckBox(tr("Use encrypted connection"), this);
+	UseTlsEncryption = new QCheckBox(tr("Use encrypted connection"), general);
 	generalLayout->addWidget(UseTlsEncryption, 3, 0, 1, 4);
 
 	connect(UseTlsEncryption, SIGNAL(toggled(bool)), this, SLOT(dataChanged()));
 
-	QHBoxLayout *externalLayout = new QHBoxLayout(this);
+	QHBoxLayout *externalLayout = new QHBoxLayout();
 
-	ExternalIp = new QLineEdit(this);
+	ExternalIp = new QLineEdit(general);
 	connect(ExternalIp, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
 
-	externalLayout->addWidget(new QLabel(tr("External ip") + ':'));
+	externalLayout->addWidget(new QLabel(tr("External ip") + ':', general));
 	externalLayout->addWidget(ExternalIp);
 
-	ExternalPort = new QLineEdit(this);
+	ExternalPort = new QLineEdit(general);
 	ExternalPort->setValidator(new QIntValidator(0, 99999, ExternalPort));
 	connect(ExternalPort, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
 
-	externalLayout->addWidget(new QLabel(tr("External port") + ':'));
+	externalLayout->addWidget(new QLabel(tr("External port") + ':', general));
 	externalLayout->addWidget(ExternalPort);
 
 	generalLayout->addLayout(externalLayout, 4, 0, 1, 4);

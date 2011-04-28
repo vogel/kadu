@@ -1,11 +1,11 @@
 @ECHO OFF
 
 set DESTINATION="C:\kadu\git-install"
-set QT_DIR="C:\Qt\2010.05\qt\bin"
-set QT_PLUGINS_DIR="C:\Qt\2010.05\qt\plugins"
+set QT_DIR="C:\Qt\4.7.2\bin"
+set QT_PLUGINS_DIR="C:\Qt\4.7.2\plugins"
 set QT_TRANSLATIONS_DIR="C:\Qt\2010.05\qt\translations"
 set QT_DEBUG_SUFFIX=""
-set LIBGADU_DIR="C:\kadu\deps\libgadu-1.10.0-win32"
+set LIBGADU_DIR="C:\kadu\deps\libgadu-1.10.1-win32"
 set LIBICONV_DIR="C:\kadu\deps\libiconv-1.13.1"
 set LIBIDN_DIR="C:\kadu\deps\libidn-1.19"
 set LIBINTL_DIR="C:\kadu\deps\libintl-0.17"
@@ -15,8 +15,7 @@ set QCA_DIR="C:\kadu\deps\qca-2.0.3\bin"
 set QCA_OSSL_DIR="C:\kadu\deps\qca-ossl-2.0.0_beta3"
 set ZLIB_DIR="C:\kadu\deps\zlib-1.2.5"
 
-ECHO Set proper paths and uncomment this line
-REM EXIT
+ECHO ! Make sure to set proper paths !
 
 ECHO Removing existing installation
 rd %DESTINATION% /S /Q
@@ -72,31 +71,53 @@ for /D %%D in (*) do (
 )
 cd ..\..\..
 
-ECHO Copying Kadu modules
-cd build\modules
+ECHO Copying Kadu plugins
+cd build\plugins
 for /D %%F in (*) do (
 	IF EXIST %%F\*.a (
 		IF EXIST %%F\*.dll (
-		  xcopy %%F\*.dll  %DESTINATION%\modules\ /C /H /R /Y /Q
+		  xcopy %%F\*.dll  %DESTINATION%\plugins\ /C /H /R /Y /Q
 		)
-		xcopy ..\..\modules\%%F\*.desc %DESTINATION%\modules\ /C /H /R /Y /Q
-		IF EXIST ..\..\modules\%%F\configuration\*.ui (
-			xcopy ..\..\modules\%%F\configuration\*.ui %DESTINATION%\modules\configuration\ /C /H /R /Y /Q
+		xcopy ..\..\plugins\%%F\*.desc %DESTINATION%\plugins\ /C /H /R /Y /Q
+		IF EXIST ..\..\plugins\%%F\configuration\*.ui (
+			xcopy ..\..\plugins\%%F\configuration\*.ui %DESTINATION%\plugins\configuration\ /C /H /R /Y /Q
 		)
-		IF EXIST ..\..\modules\%%F\data\configuration\*.ui (
-			xcopy ..\..\modules\%%F\data\configuration\*.ui %DESTINATION%\modules\configuration\ /C /H /R /Y /Q
+		IF EXIST ..\..\plugins\%%F\data\configuration\*.ui (
+			xcopy ..\..\plugins\%%F\data\configuration\*.ui %DESTINATION%\plugins\configuration\ /C /H /R /Y /Q
 		)
-		IF EXIST ..\..\modules\%%F\*.qm (
-			xcopy ..\..\modules\%%F\*.qm   %DESTINATION%\modules\translations\ /C /H /R /Y /Q
+		IF EXIST ..\..\plugins\%%F\*.qm (
+			xcopy ..\..\plugins\%%F\*.qm   %DESTINATION%\plugins\translations\ /C /H /R /Y /Q
 		)
-		IF EXIST ..\..\modules\%%F\data\* (
-			xcopy ..\..\modules\%%F\data\* %DESTINATION%\modules\data\%%F\ /C /H /R /Y /E /Q
+		IF EXIST ..\..\plugins\%%F\data\* (
+			xcopy ..\..\plugins\%%F\data\* %DESTINATION%\plugins\data\%%F\ /C /H /R /Y /E /Q
 		)
 	)
 )
-echo LoadByDefault=true >> %DESTINATION%\modules\qt4_docking_notify.desc
-echo LoadByDefault=true >> %DESTINATION%\modules\qt4_sound.desc
+
+cd ..\..\build\modules
+for /D %%F in (*) do (
+	IF EXIST %%F\*.a (
+		IF EXIST %%F\*.dll (
+		  xcopy %%F\*.dll  %DESTINATION%\plugins\ /C /H /R /Y /Q
+		)
+		xcopy ..\..\modules\%%F\*.desc %DESTINATION%\plugins\ /C /H /R /Y /Q
+		IF EXIST ..\..\modules\%%F\configuration\*.ui (
+			xcopy ..\..\modules\%%F\configuration\*.ui %DESTINATION%\plugins\configuration\ /C /H /R /Y /Q
+		)
+		IF EXIST ..\..\modules\%%F\data\configuration\*.ui (
+			xcopy ..\..\modules\%%F\data\configuration\*.ui %DESTINATION%\plugins\configuration\ /C /H /R /Y /Q
+		)
+		IF EXIST ..\..\modules\%%F\*.qm (
+			xcopy ..\..\modules\%%F\*.qm   %DESTINATION%\plugins\translations\ /C /H /R /Y /Q
+		)
+		IF EXIST ..\..\modules\%%F\data\* (
+			xcopy ..\..\modules\%%F\data\* %DESTINATION%\plugins\data\%%F\ /C /H /R /Y /E /Q
+		)
+	)
+)
 cd ..\..
+
+echo LoadByDefault=true >> %DESTINATION%\plugins\qt4_docking_notify.desc
 
 ECHO Copying Qt
 xcopy %QT_DIR%\libgcc_s_dw2-1.dll                  %DESTINATION%\ /C /H /R /Y /Q
@@ -114,14 +135,17 @@ xcopy %QT_DIR%\QtXml%QT_DEBUG_SUFFIX%4.dll         %DESTINATION%\ /C /H /R /Y /Q
 xcopy %QT_DIR%\QtXmlPatterns%QT_DEBUG_SUFFIX%4.dll %DESTINATION%\ /C /H /R /Y /Q
 
 ECHO Copying Qt plugins
-xcopy %QT_PLUGINS_DIR%\iconengines\qsvgicon%QT_DEBUG_SUFFIX%4.dll %DESTINATION%\plugins\iconengines\  /C /H /R /Y /Q
-xcopy %QT_PLUGINS_DIR%\imageformats\qgif%QT_DEBUG_SUFFIX%4.dll    %DESTINATION%\plugins\imageformats\ /C /H /R /Y /Q
-xcopy %QT_PLUGINS_DIR%\imageformats\qico%QT_DEBUG_SUFFIX%4.dll    %DESTINATION%\plugins\imageformats\ /C /H /R /Y /Q
-xcopy %QT_PLUGINS_DIR%\imageformats\qjpeg%QT_DEBUG_SUFFIX%4.dll   %DESTINATION%\plugins\imageformats\ /C /H /R /Y /Q
-xcopy %QT_PLUGINS_DIR%\imageformats\qmng%QT_DEBUG_SUFFIX%4.dll    %DESTINATION%\plugins\imageformats\ /C /H /R /Y /Q
-xcopy %QT_PLUGINS_DIR%\imageformats\qsvg%QT_DEBUG_SUFFIX%4.dll    %DESTINATION%\plugins\imageformats\ /C /H /R /Y /Q
-xcopy %QT_PLUGINS_DIR%\imageformats\qtiff%QT_DEBUG_SUFFIX%4.dll   %DESTINATION%\plugins\imageformats\ /C /H /R /Y /Q
-xcopy %QT_PLUGINS_DIR%\sqldrivers\qsqlite%QT_DEBUG_SUFFIX%4.dll   %DESTINATION%\plugins\sqldrivers\   /C /H /R /Y /Q
+REM xcopy %QT_PLUGINS_DIR%\bearer\qgenericbearer%QT_DEBUG_SUFFIX%4.dll     %DESTINATION%\qt-plugins\bearer\         /C /H /R /Y /Q
+REM xcopy %QT_PLUGINS_DIR%\bearer\qnativewifibearer%QT_DEBUG_SUFFIX%4.dll  %DESTINATION%\qt-plugins\bearer\         /C /H /R /Y /Q
+xcopy %QT_PLUGINS_DIR%\iconengines\qsvgicon%QT_DEBUG_SUFFIX%4.dll      %DESTINATION%\qt-plugins\iconengines\    /C /H /R /Y /Q
+xcopy %QT_PLUGINS_DIR%\imageformats\qgif%QT_DEBUG_SUFFIX%4.dll         %DESTINATION%\qt-plugins\imageformats\   /C /H /R /Y /Q
+xcopy %QT_PLUGINS_DIR%\imageformats\qico%QT_DEBUG_SUFFIX%4.dll         %DESTINATION%\qt-plugins\imageformats\   /C /H /R /Y /Q
+xcopy %QT_PLUGINS_DIR%\imageformats\qjpeg%QT_DEBUG_SUFFIX%4.dll        %DESTINATION%\qt-plugins\imageformats\   /C /H /R /Y /Q
+xcopy %QT_PLUGINS_DIR%\imageformats\qmng%QT_DEBUG_SUFFIX%4.dll         %DESTINATION%\qt-plugins\imageformats\   /C /H /R /Y /Q
+xcopy %QT_PLUGINS_DIR%\imageformats\qsvg%QT_DEBUG_SUFFIX%4.dll         %DESTINATION%\qt-plugins\imageformats\   /C /H /R /Y /Q
+xcopy %QT_PLUGINS_DIR%\imageformats\qtiff%QT_DEBUG_SUFFIX%4.dll        %DESTINATION%\qt-plugins\imageformats\   /C /H /R /Y /Q
+xcopy %QT_PLUGINS_DIR%\phonon_backend\phonon_ds9%QT_DEBUG_SUFFIX%4.dll %DESTINATION%\qt-plugins\phonon_backend\ /C /H /R /Y /Q
+xcopy %QT_PLUGINS_DIR%\sqldrivers\qsqlite%QT_DEBUG_SUFFIX%4.dll        %DESTINATION%\qt-plugins\sqldrivers\     /C /H /R /Y /Q
 
 ECHO Copying Qt translations
 xcopy %QT_TRANSLATIONS_DIR%\qt_cs.qm %DESTINATION%\translations\  /C /H /R /Y /Q
@@ -131,14 +155,14 @@ xcopy %QT_TRANSLATIONS_DIR%\qt_it.qm %DESTINATION%\translations\  /C /H /R /Y /Q
 xcopy %QT_TRANSLATIONS_DIR%\qt_pl.qm %DESTINATION%\translations\  /C /H /R /Y /Q
 
 ECHO [Paths] > %DESTINATION%\qt.conf
-ECHO Plugins = plugins >> %DESTINATION%\qt.conf
+ECHO Plugins = qt-plugins >> %DESTINATION%\qt.conf
 ECHO Translations = translations >> %DESTINATION%\qt.conf
 
 ECHO Copying QCA
 xcopy %QCA_DIR%\qca2.dll %DESTINATION%\ /C /H /R /Y /Q
 
 ECHO Copying QCA OSSL Plugin
-xcopy %QCA_OSSL_DIR%\qca-ossl2.dll  %DESTINATION%\plugins\crypto\ /C /H /R /Y /Q
+xcopy %QCA_OSSL_DIR%\qca-ossl2.dll  %DESTINATION%\qt-plugins\crypto\ /C /H /R /Y /Q
 
 ECHO Copying OpenSSL
 xcopy %OPENSSL_DIR%\libeay32.dll %DESTINATION%\ /C /H /R /Y /Q

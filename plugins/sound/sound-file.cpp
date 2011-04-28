@@ -64,7 +64,9 @@ SoundFile::~SoundFile()
 
 void SoundFile::loadData(const QString &path)
 {
-#ifndef Q_OS_WIN
+#ifdef Q_OS_WIN
+	Q_UNUSED(path)
+#else
 	SF_INFO info;
 	memset(&info, 0, sizeof(info));
 	SNDFILE *f = sf_open(path.toUtf8().constData(), SFM_READ, &info);

@@ -48,19 +48,18 @@ if (NOT CMAKE_BUILD_TYPE)
 	set (CMAKE_BUILD_TYPE Debug CACHE STRING "Choose the type of build, options are: Debug Release RelWithDebInfo." FORCE)
 endif (NOT CMAKE_BUILD_TYPE)
 
-string (REPLACE "-O3" "-O2" CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE}")
-string (REPLACE "-O3" "-O2" CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE}")
+# never use -O3 unless explicitly set by the user
+if (CMAKE_COMPILER_IS_GNUCXX)
+	string (REPLACE "-O3" "-O2" CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE}")
+	string (REPLACE "-O3" "-O2" CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE}")
+endif (CMAKE_COMPILER_IS_GNUCXX)
 
-option (ENABLE_DEVELOPER_BUILD "Turn on some features helpful during development process (does not necessarily turn on debug symbols in binaries)" OFF)
+option (ENABLE_DEVELOPER_BUILD "Turn on some features helpful during development process (has nothing to do with debugging symbols)" OFF)
 
 if (CMAKE_BUILD_TYPE STREQUAL "Debug" OR ENABLE_DEVELOPER_BUILD OR WIN32)
 	set (DEBUG_ENABLED 1)
 	add_definitions (-DDEBUG_ENABLED)
 endif (CMAKE_BUILD_TYPE STREQUAL "Debug" OR ENABLE_DEVELOPER_BUILD OR WIN32)
-
-if (MSVC)
-	add_definitions (/D_CRT_SECURE_NO_WARNINGS=1)
-endif (MSVC)
 
 if (MINGW)
 	# override cmake bug/feature?
@@ -68,21 +67,20 @@ if (MINGW)
 endif (MINGW)
 
 # warnings
-if (UNIX AND NOT APPLE)
+if (CMAKE_COMPILER_IS_GNUCXX)
 	if (ENABLE_DEVELOPER_BUILD)
 		set (CMAKE_C_FLAGS "-Werror ${CMAKE_C_FLAGS}")
 		set (CMAKE_CXX_FLAGS "-Werror ${CMAKE_CXX_FLAGS}")
 	endif (ENABLE_DEVELOPER_BUILD)
-
 	set (CMAKE_C_FLAGS "-W -Wall ${CMAKE_C_FLAGS}")
 	set (CMAKE_CXX_FLAGS "-W -Wall ${CMAKE_CXX_FLAGS}")
-elseif (APPLE)
-	set (CMAKE_C_FLAGS "-W -Wall ${CMAKE_C_FLAGS}")
-	set (CMAKE_CXX_FLAGS "-W -Wall ${CMAKE_CXX_FLAGS}")
-elseif (MINGW)
-	set (CMAKE_C_FLAGS "-ffast-math -mtune=i686")
-	set (CMAKE_CXX_FLAGS "-ffast-math -mtune=i686")
-endif (UNIX AND NOT APPLE)
+	if (MINGW)
+		set (CMAKE_C_FLAGS "-mtune=i686 -pipe ${CMAKE_C_FLAGS}")
+		set (CMAKE_CXX_FLAGS "-mtune=i686 -pipe ${CMAKE_CXX_FLAGS}")
+	endif (MINGW)
+elseif (MSVC)
+	add_definitions (/D_CRT_SECURE_NO_WARNINGS=1)
+endif (CMAKE_COMPILER_IS_GNUCXX)
 
 if (NOT KADU_DATADIR)
 	set (KADU_DATADIR ${CMAKE_INSTALL_PREFIX}/share)
