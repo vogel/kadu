@@ -155,6 +155,14 @@ void disableIfContactSelected(Action *action)
 		action->setEnabled(false);
 }
 
+void disableMerge(Action *action)
+{
+	disableIfContactSelected(action);
+
+	if (1 != action->buddies().size())
+		action->setEnabled(false);
+}
+
 KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 {
 	Configuration = new ActionDescription(this,
@@ -351,7 +359,7 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 		ActionDescription::TypeUser, "mergeContactAction",
 		this, SLOT(mergeContactActionActivated(QAction *, bool)),
 		KaduIcon("kadu_icons/merge-buddies"), tr("Merge Buddies..."), false,
-		disableIfContactSelected
+		disableMerge
 	);
 	BuddiesListViewMenuManager::instance()->addActionDescription(MergeContact, BuddiesListViewMenuItem::MenuCategoryManagement, 100);
 
