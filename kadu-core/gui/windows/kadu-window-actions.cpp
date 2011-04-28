@@ -513,9 +513,14 @@ void KaduWindowActions::showMyselfActionCreated(Action *action)
 	BuddiesModelProxy *proxyModel = qobject_cast<BuddiesModelProxy *>(window->buddiesListView()->model());
 	if (!proxyModel)
 		return;
+
+	bool enabled = config_file.readBoolEntry("General", "ShowMyself", false);
 	BuddiesModel *model = qobject_cast<BuddiesModel *>(proxyModel->sourceModel());
 	if (model)
-		action->setChecked(model->includeMyself());
+	{
+		model->setIncludeMyself(enabled);
+		action->setChecked(enabled);
+	}
 }
 
 void KaduWindowActions::configurationActionActivated(QAction *sender, bool toggled)
@@ -706,7 +711,10 @@ void KaduWindowActions::showMyselfActionActivated(QAction *sender, bool toggled)
 		return;
 	BuddiesModel *model = qobject_cast<BuddiesModel *>(proxyModel->sourceModel());
 	if (model)
+	{
 		model->setIncludeMyself(toggled);
+		config_file.writeEntry("General", "ShowMyself", toggled);
+	}
 }
 
 void KaduWindowActions::writeEmailActionActivated(QAction *sender, bool toggled)
@@ -963,4 +971,6 @@ void KaduWindowActions::configurationUpdated()
 	if (ShowBlockedBuddies->action(Core::instance()->kaduWindow())->isChecked() != config_file.readBoolEntry("General", "ShowBlocked"))
 		ShowBlockedBuddies->action(Core::instance()->kaduWindow())->trigger();
 
+	if (ShowMyself->action(Core::instance()->kaduWindow())->isChecked() != config_file.readBoolEntry("General", "ShowMyself"))
+		ShowMyself->action(Core::instance()->kaduWindow())->trigger();
 }

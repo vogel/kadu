@@ -25,17 +25,20 @@
 #include "buddies/buddy.h"
 #include "buddies/buddy-list-mime-data-helper.h"
 #include "buddies/buddy-manager.h"
+#include "configuration/configuration-file.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
+#include "core/core.h"
 
 #include "protocols/protocol.h"
 
 #include "buddies-model.h"
-#include <core/core.h>
 
 BuddiesModel::BuddiesModel(QObject *parent) :
-		BuddiesModelBase(parent), IncludeMyself(false)
+		BuddiesModelBase(parent)
 {
+	IncludeMyself = config_file.readBoolEntry("General", "ShowMyself", false);
+
 	triggerAllAccountsRegistered();
 
 	BuddyManager *manager = BuddyManager::instance();
