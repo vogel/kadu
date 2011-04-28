@@ -54,9 +54,6 @@ void ProtocolsModelProxy::setSourceModel(QAbstractItemModel *sourceModel)
 
 	if (SourceProtocolModel)
 		connect(SourceProtocolModel, SIGNAL(destroyed()), this, SLOT(modelDestroyed()));
-
-	setDynamicSortFilter(true);
-	sort(0);
 }
 
 int ProtocolsModelProxy::compareNames(QString n1, QString n2) const

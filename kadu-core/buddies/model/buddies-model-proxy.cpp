@@ -39,6 +39,7 @@ BuddiesModelProxy::BuddiesModelProxy(QObject *parent)
 	: QSortFilterProxyModel(parent), SourceBuddyModel(0), SortByStatus(true)
 {
 	setDynamicSortFilter(true);
+	sort(0);
 
 	BrokenStringCompare = (QString("a").localeAwareCompare(QString("B")) > 0);
 	if (BrokenStringCompare)
@@ -66,9 +67,6 @@ void BuddiesModelProxy::setSourceModel(QAbstractItemModel *sourceModel)
 
 	if (sourceModel)
 		connect(sourceModel, SIGNAL(destroyed()), this, SLOT(modelDestroyed()));
-
-	setDynamicSortFilter(true);
-	sort(0);
 }
 
 int BuddiesModelProxy::compareNames(const QString &n1, const QString &n2) const

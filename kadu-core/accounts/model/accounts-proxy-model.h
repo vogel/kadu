@@ -44,7 +44,6 @@ public:
 	AccountsProxyModel(QObject *parent = 0);
 	virtual ~AccountsProxyModel();
 
-	virtual void setSourceModel(QAbstractItemModel *sourceModel);
 	void addFilter(AbstractAccountFilter *filter);
 	void removeFilter(AbstractAccountFilter *filter);
 

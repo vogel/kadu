@@ -175,8 +175,6 @@ void HistoryWindow::createChatTree(QWidget *parent)
 	ChatsModelProxy->addChatFilter(NameFilter);
 
 	ChatsTree->setModel(ChatsModelProxy);
-	ChatsModelProxy->sort(1);
-	ChatsModelProxy->sort(0); // do the sorting
 	ChatsTree->setRootIsDecorated(true);
 }
 

@@ -37,7 +37,6 @@ GroupsComboBox::GroupsComboBox(QWidget *parent) :
 	setUpModel(new GroupsModel(this), new QSortFilterProxyModel(this));
 
 	static_cast<QSortFilterProxyModel *>(SourceProxyModel)->setDynamicSortFilter(true);
-	SourceProxyModel->sort(1);
 	SourceProxyModel->sort(0);
 
 	CreateNewGroupAction = new QAction(tr("Create a new group..."), this);

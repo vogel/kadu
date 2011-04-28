@@ -39,14 +39,6 @@ AccountsProxyModel::~AccountsProxyModel()
 {
 }
 
-void AccountsProxyModel::setSourceModel(QAbstractItemModel *sourceModel)
-{
-	QSortFilterProxyModel::setSourceModel(sourceModel);
-
-	setDynamicSortFilter(true);
-	sort(0);
-}
-
 int AccountsProxyModel::compareNames(QString n1, QString n2) const
 {
 	return BrokenStringCompare
