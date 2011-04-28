@@ -1464,8 +1464,12 @@ Eksport listy kontaktów na serwer się nie powiódł</translation>
         <translation>Musisz być połączony, aby dodawać kontakty dla tego konta.</translation>
     </message>
     <message>
-        <source>Entered username is invalid</source>
-        <translation>Podana nazwa jest nieprawidłowa</translation>
+        <source>Entered user identification is invalid</source>
+        <translation>Podany identyfikator jest nieprawidłowy</translation>
+    </message>
+    <message>
+        <source>No user identification entered</source>
+        <translation>Nie wpisano identyfikatora</translation>
     </message>
     <message>
         <source>This contact is already available as &lt;i&gt;%1&lt;/i&gt;</source>
@@ -1484,12 +1488,20 @@ Eksport listy kontaktów na serwer się nie powiódł</translation>
         <translation>Wpisany numer telefonu jest nieprawidłowy</translation>
     </message>
     <message>
+        <source>No mobile number entered</source>
+        <translation>Nie wpisano numeru telefonu</translation>
+    </message>
+    <message>
         <source>Merging mobile number with buddy is not supported. Please use edit buddy window.</source>
         <translation>Scalenie numeru telefonu nie jest możliwe. Proszę użyć okna edycji kontaktu</translation>
     </message>
     <message>
         <source>Entered e-mail is invalid</source>
         <translation>Wprowadzony e-mail jest nieprawidłowy</translation>
+    </message>
+    <message>
+        <source>No e-mail entered</source>
+        <translation>Nie wpisano adresu e-mail</translation>
     </message>
     <message>
         <source>Merging e-mail with buddy is not supported. Please use edit buddy window.</source>
