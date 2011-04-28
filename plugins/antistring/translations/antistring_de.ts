@@ -5,7 +5,7 @@
     <name>@default</name>
     <message>
         <source>Chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Chat</translation>
     </message>
     <message>
         <source>Antistring</source>
@@ -13,7 +13,7 @@
     </message>
     <message>
         <source>General</source>
-        <translation type="unfinished"></translation>
+        <translation>Allgemein</translation>
     </message>
     <message>
         <source>Enable Antistring</source>
@@ -25,15 +25,15 @@
     </message>
     <message>
         <source>Admonition</source>
-        <translation type="unfinished"></translation>
+        <translation>Ermahnung</translation>
     </message>
     <message>
         <source>Log</source>
-        <translation type="unfinished"></translation>
+        <translation>Log</translation>
     </message>
     <message>
         <source>Write log to file</source>
-        <translation type="unfinished"></translation>
+        <translation>Log in Datei schreiben</translation>
     </message>
     <message>
         <source>Conditions</source>
@@ -41,7 +41,7 @@
     </message>
     <message>
         <source>Antistring notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Bechrichtigungen vom Anti-Schneeball-System</translation>
     </message>
 </context>
 <context>
@@ -49,45 +49,46 @@
     <message>
         <source>     DATA AND TIME      ::   ID   ::    MESSAGE
 </source>
-        <translation type="unfinished"></translation>
+        <translation>     DATUM UND ZEIT      ::   ID   ::    NACHRICHT
+</translation>
     </message>
 </context>
 <context>
     <name>AntistringConfigurationUiHandler</name>
     <message>
         <source>Condition</source>
-        <translation type="unfinished"></translation>
+        <translation>Bedingung</translation>
     </message>
     <message>
         <source>Don&apos;t use</source>
-        <translation type="unfinished"></translation>
+        <translation>Nicht benutzen</translation>
     </message>
     <message>
         <source>Factor</source>
-        <translation type="unfinished"></translation>
+        <translation>Faktor</translation>
     </message>
     <message>
         <source>Add</source>
-        <translation type="unfinished"></translation>
+        <translation>Hinzufügen</translation>
     </message>
     <message>
         <source>Change</source>
-        <translation type="unfinished"></translation>
+        <translation>Ändern</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <translation>Löschen</translation>
     </message>
 </context>
 <context>
     <name>AntistringNotification</name>
     <message>
         <source>Antistring</source>
-        <translation type="unfinished">Anti-Schneeball-System</translation>
+        <translation>Anti-Schneeball-System</translation>
     </message>
     <message>
         <source>Your interlocutor send you love letter</source>
-        <translation type="unfinished"></translation>
+        <translation>Ihr Gegenüber hat Ihnen Schneebal zugeworfen (Teil eines Schneeebalsystems)</translation>
     </message>
 </context>
 </TS>

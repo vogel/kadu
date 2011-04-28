@@ -5,61 +5,61 @@
     <name>@default</name>
     <message>
         <source>Chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Chat</translation>
     </message>
     <message>
         <source>Cenzor</source>
-        <translation type="unfinished"></translation>
+        <translation>Zensor</translation>
     </message>
     <message>
         <source>General</source>
-        <translation type="unfinished"></translation>
+        <translation>Allgemein</translation>
     </message>
     <message>
         <source>Enable cenzor</source>
-        <translation type="unfinished"></translation>
+        <translation>Zensor einschalten</translation>
     </message>
     <message>
         <source>Admonition</source>
-        <translation type="unfinished"></translation>
+        <translation>Ermahnung</translation>
     </message>
     <message>
         <source>Swearwords</source>
-        <translation type="unfinished"></translation>
+        <translation>Schimpfwörter</translation>
     </message>
     <message>
         <source>Exclusions</source>
-        <translation type="unfinished"></translation>
+        <translation>Ausnahmen</translation>
     </message>
     <message>
         <source>Message was cenzored</source>
-        <translation type="unfinished"></translation>
+        <translation>Nachricht wurde zensiert</translation>
     </message>
 </context>
 <context>
     <name>CenzorNotification</name>
     <message>
         <source>Message was cenzored</source>
-        <translation type="unfinished"></translation>
+        <translation>Nachricht wurde zensiert</translation>
     </message>
     <message>
         <source>Your interlocutor used obscene word and became admonished</source>
-        <translation type="unfinished"></translation>
+        <translation>Dein Gegenüber schimpft und wurde auf sein Fehlverhalten hingewiesen</translation>
     </message>
 </context>
 <context>
     <name>ListEditWidget</name>
     <message>
         <source>Add</source>
-        <translation type="unfinished"></translation>
+        <translation>Hinzufügen</translation>
     </message>
     <message>
         <source>Change</source>
-        <translation type="unfinished"></translation>
+        <translation>Ändern</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <translation>Löschen</translation>
     </message>
 </context>
 </TS>
