@@ -56,6 +56,7 @@
 #include "configuration/configuration-file.h"
 #include "configuration/xml-configuration-file.h"
 #include "contacts/contact.h"
+#include "core/core.h"
 #include "gui/widgets/buddy-general-configuration-widget.h"
 #include "gui/widgets/buddy-groups-configuration-widget.h"
 #include "gui/widgets/buddy-options-configuration-widget.h"
@@ -227,7 +228,7 @@ void BuddyDataWindow::keyPressEvent(QKeyEvent *event)
 
 bool BuddyDataWindow::isValid()
 {
-	return ContactTab->isValid();
+	return (MyBuddy != Core::instance()->myself()) && ContactTab->isValid();
 }
 
 void BuddyDataWindow::updateButtons()
