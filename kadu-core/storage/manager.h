@@ -345,7 +345,7 @@ public:
 	 *
 	 * This methods works on registered items.
 	 */
-	Item byIndex(unsigned int index)
+	Item byIndex(int index)
 	{
 		(void) QMutexLocker(&Mutex);
 
@@ -394,7 +394,7 @@ public:
 	 *
 	 * This methods works on registered items.
 	 */
-	unsigned int indexOf(Item item)
+	int indexOf(Item item)
 	{
 		(void) QMutexLocker(&Mutex);
 
@@ -411,7 +411,7 @@ public:
 	 *
 	 * This methods works on registered items.
 	 */
-	unsigned int count()
+	int count()
 	{
 		(void) QMutexLocker(&Mutex);
 

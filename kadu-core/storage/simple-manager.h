@@ -242,7 +242,7 @@ public:
 	 *
 	 * When index is out of range Item::null value is returned.
 	 */
-	Item byIndex(unsigned int index)
+	Item byIndex(int index)
 	{
 		(void) QMutexLocker(&Mutex);
 
@@ -290,7 +290,7 @@ public:
 	 * or removed. This method returns the same index as
 	 * items().indexOf(item) would return.
 	 */
-	unsigned int indexOf(Item item)
+	int indexOf(Item item)
 	{
 		(void) QMutexLocker(&Mutex);
 
@@ -305,7 +305,7 @@ public:
 	 *
 	 * Return number of loaded items.
 	 */
-	unsigned int count()
+	int count()
 	{
 		(void) QMutexLocker(&Mutex);
 

@@ -106,7 +106,7 @@ int BuddiesModel::rowCount(const QModelIndex &parent) const
 Buddy BuddiesModel::buddyAt(const QModelIndex &index) const
 {
 	QModelIndex parent = index.parent();
-	unsigned int row = parent.isValid() ? parent.row() : index.row();
+	int row = parent.isValid() ? parent.row() : index.row();
 
 	if (IncludeMyself && (row == BuddyManager::instance()->count()))
 		return Core::instance()->myself();
