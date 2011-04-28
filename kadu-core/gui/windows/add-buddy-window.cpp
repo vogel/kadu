@@ -378,7 +378,10 @@ void AddBuddyWindow::validateData()
 
 	if (account.protocolHandler()->protocolFactory()->validateId(UserNameEdit->text()) != QValidator::Acceptable)
 	{
-		displayErrorMessage(tr("Entered username is invalid"));
+		if (!UserNameEdit->text().isEmpty())
+			displayErrorMessage(tr("Entered user identification is invalid"));
+		else
+			displayErrorMessage(tr("No user identification entered"));
 		return;
 	}
 
@@ -417,7 +420,10 @@ void AddBuddyWindow::validateMobileData()
 
 	if (!mobileRegularExpression.exactMatch(UserNameEdit->text()))
 	{
-		displayErrorMessage(tr("Entered mobile number is invalid"));
+		if (!UserNameEdit->text().isEmpty())
+			displayErrorMessage(tr("Entered mobile number is invalid"));
+		else
+			displayErrorMessage(tr("No mobile number entered"));
 		return;
 	}
 
@@ -435,7 +441,10 @@ void AddBuddyWindow::validateEmailData()
 {
 	if (!UrlHandlerManager::instance()->mailRegExp().exactMatch(UserNameEdit->text()))
 	{
-		displayErrorMessage(tr("Entered e-mail is invalid"));
+		if (!UserNameEdit->text().isEmpty())
+			displayErrorMessage(tr("Entered e-mail is invalid"));
+		else
+			displayErrorMessage(tr("No e-mail entered"));
 		return;
 	}
 
