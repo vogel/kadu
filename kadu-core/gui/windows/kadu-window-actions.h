@@ -57,6 +57,7 @@ class KaduWindowActions : QObject, ConfigurationAwareObject
 	ActionDescription *Translate;
 	ActionDescription *ShowInfoPanel;
 	ActionDescription *ShowBlockedBuddies;
+	ActionDescription *ShowMyself;
 
 	ActionDescription *WriteEmail;
 	ActionDescription *CopyDescription;
@@ -83,6 +84,7 @@ private slots:
 	void changeStatusActionCreated(Action *action);
 	void showInfoPanelActionCreated(Action *action);
 	void showBlockedActionCreated(Action *action);
+	void showMyselfActionCreated(Action *action);
 
 	void configurationActionActivated(QAction *sender, bool toggled);
 	void yourAccountsActionActivated(QAction *sender, bool toggled);
@@ -100,6 +102,7 @@ private slots:
 	void translateActionActivated(QAction *sender, bool toggled);
 	void showInfoPanelActionActivated(QAction *sender, bool toggled);
 	void showBlockedActionActivated(QAction *sender, bool toggled);
+	void showMyselfActionActivated(QAction *sender, bool toggled);
 
 	void writeEmailActionActivated(QAction *sender, bool toggled);
 	void copyDescriptionActionActivated(QAction *sender, bool toggled);

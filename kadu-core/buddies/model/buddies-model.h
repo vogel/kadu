@@ -36,6 +36,8 @@ class BuddiesModel : public BuddiesModelBase
 {
 	Q_OBJECT
 
+	bool IncludeMyself;
+
 private slots:
 	void buddyAboutToBeAdded(Buddy &buddy);
 	void buddyAdded(Buddy &buddy);
@@ -60,6 +62,9 @@ public:
 	// AbstractContactsModel implementation
 	virtual Buddy buddyAt(const QModelIndex &index) const;
 	virtual QModelIndex indexForValue(const QVariant &value) const;
+
+	void setIncludeMyself(bool includeMyself);
+	bool includeMyself() { return IncludeMyself; }
 
 };
 

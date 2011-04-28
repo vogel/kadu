@@ -38,11 +38,13 @@
 #include "buddies/buddy-shared.h"
 #include "buddies/group-manager.h"
 #include "buddies/filter/blocked-buddy-filter.h"
-#include "configuration/configuration-file.h"
-#include "contacts/contact.h"
 #include "buddies/filter/has-description-buddy-filter.h"
 #include "buddies/filter/offline-buddy-filter.h"
 #include "buddies/filter/online-and-description-buddy-filter.h"
+#include "buddies/model/buddies-model.h"
+#include "buddies/model/buddies-model-proxy.h"
+#include "configuration/configuration-file.h"
+#include "contacts/contact.h"
 #include "core/core.h"
 #include "icons/kadu-icon.h"
 #include "gui/status-icon.h"
@@ -247,6 +249,13 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 		KaduIcon("kadu_icons/show-blocked-buddies"), tr("Show Blocked Buddies"), true
 	);
 	connect(ShowBlockedBuddies, SIGNAL(actionCreated(Action *)), this, SLOT(showBlockedActionCreated(Action *)));
+
+	ShowMyself = new ActionDescription(this,
+		ActionDescription::TypeMainMenu, "showMyselfAction",
+		this, SLOT(showMyselfActionActivated(QAction *, bool)),
+		KaduIcon(), tr("Show Myself Buddy"), true
+	);
+	connect(ShowMyself, SIGNAL(actionCreated(Action *)), this, SLOT(showMyselfActionCreated(Action *)));
 
 	CopyDescription = new ActionDescription(this,
 		ActionDescription::TypeUser, "copyDescriptionAction",
@@ -484,6 +493,22 @@ void KaduWindowActions::showBlockedActionCreated(Action *action)
 	window->buddiesListView()->addFilter(ibf);
 }
 
+void KaduWindowActions::showMyselfActionCreated(Action *action)
+{
+	MainWindow *window = qobject_cast<MainWindow *>(action->parentWidget());
+	if (!window)
+		return;
+	if (!window->buddiesListView())
+		return;
+
+	BuddiesModelProxy *proxyModel = qobject_cast<BuddiesModelProxy *>(window->buddiesListView()->model());
+	if (!proxyModel)
+		return;
+	BuddiesModel *model = qobject_cast<BuddiesModel *>(proxyModel->sourceModel());
+	if (model)
+		action->setChecked(model->includeMyself());
+}
+
 void KaduWindowActions::configurationActionActivated(QAction *sender, bool toggled)
 {
 	Q_UNUSED(sender)
@@ -657,6 +682,22 @@ void KaduWindowActions::showBlockedActionActivated(QAction *sender, bool toggled
 		bbf->setEnabled(!toggled);
 		config_file.writeEntry("General", "ShowBlocked", toggled);
 	}
+}
+
+void KaduWindowActions::showMyselfActionActivated(QAction *sender, bool toggled)
+{
+	MainWindow *window = qobject_cast<MainWindow *>(sender->parentWidget());
+	if (!window)
+		return;
+	if (!window->buddiesListView())
+		return;
+
+	BuddiesModelProxy *proxyModel = qobject_cast<BuddiesModelProxy *>(window->buddiesListView()->model());
+	if (!proxyModel)
+		return;
+	BuddiesModel *model = qobject_cast<BuddiesModel *>(proxyModel->sourceModel());
+	if (model)
+		model->setIncludeMyself(toggled);
 }
 
 void KaduWindowActions::writeEmailActionActivated(QAction *sender, bool toggled)
