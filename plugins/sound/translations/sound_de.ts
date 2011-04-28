@@ -41,25 +41,25 @@
     </message>
     <message>
         <source>Test sound playing</source>
-        <translation type="unfinished"></translation>
+        <translation>Testklang wird abgespielt</translation>
     </message>
     <message>
         <source>Play a sound</source>
-        <translation type="unfinished"></translation>
+        <translation>Spiele einen Klang ab</translation>
     </message>
 </context>
 <context>
     <name>SoundActions</name>
     <message>
         <source>Play Sounds</source>
-        <translation type="unfinished"></translation>
+        <translation>Spiele Klänge ab</translation>
     </message>
 </context>
 <context>
     <name>SoundConfigurationUiHandler</name>
     <message>
         <source>Custom</source>
-        <translation type="unfinished"></translation>
+        <translation>Eigene</translation>
     </message>
 </context>
 </TS>
