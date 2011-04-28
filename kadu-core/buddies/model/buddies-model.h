@@ -64,7 +64,7 @@ public:
 	virtual QModelIndex indexForValue(const QVariant &value) const;
 
 	void setIncludeMyself(bool includeMyself);
-	bool includeMyself() { return IncludeMyself; }
+	bool includeMyself() const { return IncludeMyself; }
 
 };
 

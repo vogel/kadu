@@ -117,7 +117,12 @@ Buddy BuddiesModel::buddyAt(const QModelIndex &index) const
 QModelIndex BuddiesModel::indexForValue(const QVariant &value) const
 {
 	Buddy buddy = value.value<Buddy>();
-	int result = BuddyManager::instance()->indexOf(buddy);
+	int result;
+	if (IncludeMyself && buddy == Core::instance()->myself())
+		result = BuddyManager::instance()->count();
+	else
+		result = BuddyManager::instance()->indexOf(buddy);
+
 	return index(result, 0);
 }
 
