@@ -25,8 +25,10 @@
 #include "buddies/buddy.h"
 #include "buddies/buddy-list-mime-data-helper.h"
 #include "buddies/buddy-manager.h"
+#include "configuration/configuration-file.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
+#include "core/core.h"
 
 #include "protocols/protocol.h"
 
@@ -35,6 +37,8 @@
 BuddiesModel::BuddiesModel(QObject *parent) :
 		BuddiesModelBase(parent)
 {
+	IncludeMyself = config_file.readBoolEntry("General", "ShowMyself", false);
+
 	triggerAllAccountsRegistered();
 
 	BuddyManager *manager = BuddyManager::instance();
@@ -96,13 +100,18 @@ int BuddiesModel::rowCount(const QModelIndex &parent) const
 	if (parent.isValid())
 		return BuddiesModelBase::rowCount(parent);
 
-	return BuddyManager::instance()->count();
+	return BuddyManager::instance()->count() + (IncludeMyself ? 1 : 0);
 }
 
 Buddy BuddiesModel::buddyAt(const QModelIndex &index) const
 {
 	QModelIndex parent = index.parent();
-	return BuddyManager::instance()->byIndex(parent.isValid() ? parent.row() : index.row());
+	unsigned int row = parent.isValid() ? parent.row() : index.row();
+
+	if (IncludeMyself && (row == BuddyManager::instance()->count()))
+		return Core::instance()->myself();
+	else
+		return BuddyManager::instance()->byIndex(row);
 }
 
 QModelIndex BuddiesModel::indexForValue(const QVariant &value) const
@@ -210,4 +219,22 @@ void BuddiesModel::contactUpdated(Contact &contact)
 
 	emit dataChanged(indexOfBuddy, indexOfBuddy);
 	emit dataChanged(contactIndex, contactIndex);
+}
+
+void BuddiesModel::setIncludeMyself(bool includeMyself)
+{
+	if (IncludeMyself == includeMyself)
+		return;
+
+	if (IncludeMyself)
+		beginRemoveRows(QModelIndex(), rowCount() - 1, rowCount() - 1);
+	else
+		beginInsertRows(QModelIndex(), rowCount(), rowCount());
+
+	IncludeMyself = includeMyself;
+
+	if (!IncludeMyself)
+		endRemoveRows();
+	else
+		endInsertRows();
 }

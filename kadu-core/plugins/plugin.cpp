@@ -304,6 +304,7 @@ void Plugin::deactivate()
 
 	if (PluginLoader)
 	{
+		PluginLoader->unload();
 		PluginLoader->deleteLater();
 		PluginLoader = 0;
 	}

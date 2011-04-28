@@ -38,11 +38,13 @@
 #include "buddies/buddy-shared.h"
 #include "buddies/group-manager.h"
 #include "buddies/filter/blocked-buddy-filter.h"
-#include "configuration/configuration-file.h"
-#include "contacts/contact.h"
 #include "buddies/filter/has-description-buddy-filter.h"
 #include "buddies/filter/offline-buddy-filter.h"
 #include "buddies/filter/online-and-description-buddy-filter.h"
+#include "buddies/model/buddies-model.h"
+#include "buddies/model/buddies-model-proxy.h"
+#include "configuration/configuration-file.h"
+#include "contacts/contact.h"
 #include "core/core.h"
 #include "icons/kadu-icon.h"
 #include "gui/status-icon.h"
@@ -99,6 +101,12 @@ void checkBuddyProperties(Action *action)
 		return;
 	}
 
+	if (action->buddies().contains(Core::instance()->myself()))
+	{
+		action->setEnabled(false);
+		return;
+	}
+
 	action->setEnabled(true);
 
 	if (action->buddy().isAnonymous())
@@ -142,6 +150,17 @@ void disableIfContactSelected(Action *action)
 {
 	if (action && action->dataSource())
 		action->setEnabled(!action->dataSource()->hasContactSelected() && action->dataSource()->buddies().count());
+
+	if (action->buddies().contains(Core::instance()->myself()))
+		action->setEnabled(false);
+}
+
+void disableMerge(Action *action)
+{
+	disableIfContactSelected(action);
+
+	if (1 != action->buddies().size())
+		action->setEnabled(false);
 }
 
 KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
@@ -248,6 +267,13 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 	);
 	connect(ShowBlockedBuddies, SIGNAL(actionCreated(Action *)), this, SLOT(showBlockedActionCreated(Action *)));
 
+	ShowMyself = new ActionDescription(this,
+		ActionDescription::TypeMainMenu, "showMyselfAction",
+		this, SLOT(showMyselfActionActivated(QAction *, bool)),
+		KaduIcon(), tr("Show Myself Buddy"), true
+	);
+	connect(ShowMyself, SIGNAL(actionCreated(Action *)), this, SLOT(showMyselfActionCreated(Action *)));
+
 	CopyDescription = new ActionDescription(this,
 		ActionDescription::TypeUser, "copyDescriptionAction",
 		this, SLOT(copyDescriptionActionActivated(QAction *, bool)),
@@ -333,7 +359,7 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 		ActionDescription::TypeUser, "mergeContactAction",
 		this, SLOT(mergeContactActionActivated(QAction *, bool)),
 		KaduIcon("kadu_icons/merge-buddies"), tr("Merge Buddies..."), false,
-		disableIfContactSelected
+		disableMerge
 	);
 	BuddiesListViewMenuManager::instance()->addActionDescription(MergeContact, BuddiesListViewMenuItem::MenuCategoryManagement, 100);
 
@@ -482,6 +508,27 @@ void KaduWindowActions::showBlockedActionCreated(Action *action)
 	action->setChecked(enabled);
 
 	window->buddiesListView()->addFilter(ibf);
+}
+
+void KaduWindowActions::showMyselfActionCreated(Action *action)
+{
+	MainWindow *window = qobject_cast<MainWindow *>(action->parentWidget());
+	if (!window)
+		return;
+	if (!window->buddiesListView())
+		return;
+
+	BuddiesModelProxy *proxyModel = qobject_cast<BuddiesModelProxy *>(window->buddiesListView()->model());
+	if (!proxyModel)
+		return;
+
+	bool enabled = config_file.readBoolEntry("General", "ShowMyself", false);
+	BuddiesModel *model = qobject_cast<BuddiesModel *>(proxyModel->sourceModel());
+	if (model)
+	{
+		model->setIncludeMyself(enabled);
+		action->setChecked(enabled);
+	}
 }
 
 void KaduWindowActions::configurationActionActivated(QAction *sender, bool toggled)
@@ -656,6 +703,25 @@ void KaduWindowActions::showBlockedActionActivated(QAction *sender, bool toggled
 		BlockedBuddyFilter *bbf = v.value<BlockedBuddyFilter *>();
 		bbf->setEnabled(!toggled);
 		config_file.writeEntry("General", "ShowBlocked", toggled);
+	}
+}
+
+void KaduWindowActions::showMyselfActionActivated(QAction *sender, bool toggled)
+{
+	MainWindow *window = qobject_cast<MainWindow *>(sender->parentWidget());
+	if (!window)
+		return;
+	if (!window->buddiesListView())
+		return;
+
+	BuddiesModelProxy *proxyModel = qobject_cast<BuddiesModelProxy *>(window->buddiesListView()->model());
+	if (!proxyModel)
+		return;
+	BuddiesModel *model = qobject_cast<BuddiesModel *>(proxyModel->sourceModel());
+	if (model)
+	{
+		model->setIncludeMyself(toggled);
+		config_file.writeEntry("General", "ShowMyself", toggled);
 	}
 }
 
@@ -913,4 +979,6 @@ void KaduWindowActions::configurationUpdated()
 	if (ShowBlockedBuddies->action(Core::instance()->kaduWindow())->isChecked() != config_file.readBoolEntry("General", "ShowBlocked"))
 		ShowBlockedBuddies->action(Core::instance()->kaduWindow())->trigger();
 
+	if (ShowMyself->action(Core::instance()->kaduWindow())->isChecked() != config_file.readBoolEntry("General", "ShowMyself"))
+		ShowMyself->action(Core::instance()->kaduWindow())->trigger();
 }

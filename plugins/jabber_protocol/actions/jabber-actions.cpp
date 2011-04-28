@@ -22,6 +22,8 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
+#include "buddies/buddy-set.h"
+#include "buddies/buddy-shared.h"
 #include "contacts/contact.h"
 #include "core/core.h"
 #include "gui/actions/action.h"
@@ -41,6 +43,9 @@ static void disableNoRosterContact(Action *action)
 
 	Contact contact = action->contact();
 	if (!contact)
+		return;
+
+	if (action->buddies().contains(Core::instance()->myself()))
 		return;
 
 	Account account = contact.contactAccount();

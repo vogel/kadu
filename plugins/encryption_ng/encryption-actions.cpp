@@ -22,6 +22,7 @@
 #include <QtGui/QMenu>
 
 #include "accounts/account-manager.h"
+#include "buddies/buddy-shared.h"
 #include "chat/chat.h"
 #include "chat/chat-manager.h"
 #include "contacts/contact-set.h"
@@ -63,6 +64,9 @@ static void checkSendKey(Action *action)
 
 	ContactSet contacts = action->contacts();
 	if (contacts.isEmpty())
+		return;
+
+	if (action->buddies().contains(Core::instance()->myself()))
 		return;
 
 	foreach (const Contact &contact, contacts)

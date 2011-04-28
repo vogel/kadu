@@ -37,27 +37,6 @@
 
 #define MODULE_FILEDESC_VERSION 1.14
 
-FileDescription *file_desc;
-
-extern "C" KADU_EXPORT int filedesc_init(bool firstLoad)
-{
-	Q_UNUSED(firstLoad)
-
-	file_desc = new FileDescription();
-
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/filedesc.ui"));
-
-	return 0;
-}
-
-extern "C" KADU_EXPORT void filedesc_close()
-{
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/filedesc.ui"));
-
-	delete file_desc;
-	file_desc = 0;
-}
-
 // Implementation of FileDescStatusChanger class
 
 FileDescStatusChanger::FileDescStatusChanger(FileDescription *parent, QObject *parentObj) :

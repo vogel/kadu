@@ -202,6 +202,7 @@ void Core::createDefaultConfiguration()
 	config_file.addVariable("General", "SaveStdErr", false);
 	config_file.addVariable("General", "ShowBlocked", true);
 	config_file.addVariable("General", "ShowBlocking", true);
+	config_file.addVariable("General", "ShowMyself", false);
 	config_file.addVariable("General", "ShowEmotPanel", true);
 	config_file.addVariable("General", "ShowOffline", true);
 	config_file.addVariable("General", "ShowOnlineAndDescription", false);
@@ -468,6 +469,8 @@ void Core::configurationUpdated()
 #endif
 
 	debug_mask = config_file.readNumEntry("General", "DEBUG_MASK");
+
+	Myself.setDisplay(config_file.readEntry("General", "Nick", tr("Me")));
 }
 
 void Core::createGui()

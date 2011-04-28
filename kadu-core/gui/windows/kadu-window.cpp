@@ -231,6 +231,7 @@ void KaduWindow::createContactsMenu()
 	ContactsMenu->addSeparator();
 	insertMenuActionDescription(Actions->InactiveUsers, MenuContacts);
 	insertMenuActionDescription(Actions->ShowBlockedBuddies, MenuContacts);
+	insertMenuActionDescription(Actions->ShowMyself, MenuContacts);
 	insertMenuActionDescription(Actions->ShowInfoPanel, MenuContacts);
 
 	menuBar()->addMenu(ContactsMenu);
