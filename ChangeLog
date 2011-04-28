@@ -17,6 +17,7 @@
 * jabber: #2142 partially fixed: re-added file transfers to XMPP, using sock5 protocol (Vogel)
 * chat_notifier: #2145 fixed: plugin for chat notification added (Vogel)
 * autodownload: #2151 fixed: removed autodownload (Vogel)
+* buddies: #2140 fixed: allow to show Myself buddy on buddies list (Vogel)
 
 +++ version 0.9.2
 * tabs: #2129 fixed: regression since 0.9.1 that caused button to be shown when the shouldn't in certain configurations (beevvy)
