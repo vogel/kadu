@@ -101,6 +101,12 @@ void checkBuddyProperties(Action *action)
 		return;
 	}
 
+	if (action->buddies().contains(Core::instance()->myself()))
+	{
+		action->setEnabled(false);
+		return;
+	}
+
 	action->setEnabled(true);
 
 	if (action->buddy().isAnonymous())
@@ -144,6 +150,9 @@ void disableIfContactSelected(Action *action)
 {
 	if (action && action->dataSource())
 		action->setEnabled(!action->dataSource()->hasContactSelected() && action->dataSource()->buddies().count());
+
+	if (action->buddies().contains(Core::instance()->myself()))
+		action->setEnabled(false);
 }
 
 KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
