@@ -351,7 +351,7 @@ public:
 
 		ensureLoaded();
 
-		if (index >= count())
+		if (index < 0 || index >= count())
 			return Item::null;
 
 		return ItemsWithDetails.at(index);
