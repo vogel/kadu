@@ -13,7 +13,7 @@
     </message>
     <message>
         <source>Buddy List</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontaktliste</translation>
     </message>
 </context>
 <context>
