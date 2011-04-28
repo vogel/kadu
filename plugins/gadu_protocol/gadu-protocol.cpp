@@ -119,6 +119,8 @@ void GaduProtocol::sendStatusToServer()
 		gg_change_status_descr(GaduSession, type | friends, newStatus.description().toUtf8());
 	else
 		gg_change_status(GaduSession, type | friends);
+
+	account().accountContact().setCurrentStatus(status());
 }
 
 void GaduProtocol::changePrivateMode()

@@ -289,6 +289,7 @@ void JabberProtocol::logout()
 void JabberProtocol::sendStatusToServer()
 {
 	JabberClient->setPresence(IrisStatusAdapter::toIrisStatus(status()));
+	account().accountContact().setCurrentStatus(status());
 }
 
 void JabberProtocol::changePrivateMode()
