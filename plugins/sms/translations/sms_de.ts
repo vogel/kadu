@@ -53,27 +53,27 @@
     </message>
     <message>
         <source>SMS Era Gateway</source>
-        <translation type="unfinished"></translation>
+        <translation>Server SMS Era</translation>
     </message>
     <message>
         <source>Sponsored</source>
-        <translation type="unfinished"></translation>
+        <translation>Gesponsort</translation>
     </message>
     <message>
         <source>OmnixMultimedia</source>
-        <translation type="unfinished"></translation>
+        <translation>OmnixMultimedia</translation>
     </message>
     <message>
         <source>Orange Multibox</source>
-        <translation type="unfinished"></translation>
+        <translation>Orange Multibox</translation>
     </message>
     <message>
         <source>User ID (48xxxxxxxxx)</source>
-        <translation type="unfinished"></translation>
+        <translation>Benutzer-Id (48xxxxxxxxx)</translation>
     </message>
     <message>
         <source>Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Passwort</translation>
     </message>
     <message>
         <source>Check this box if your sms application doesn&apos;t understand arguments: number &amp;message&amp;
@@ -86,69 +86,69 @@ Argumente werder durch Leerzeichen getrennt. %k Argumente werden in Nummer, %m i
     <name>SmsActions</name>
     <message>
         <source>Send SMS...</source>
-        <translation type="unfinished"></translation>
+        <translation>Sende SMS...</translation>
     </message>
 </context>
 <context>
     <name>SmsDialog</name>
     <message>
         <source>Send SMS</source>
-        <translation type="unfinished">Sende SMS</translation>
+        <translation>Sende SMS</translation>
     </message>
     <message>
         <source>Recipient</source>
-        <translation type="unfinished"></translation>
+        <translation>Empfänger</translation>
     </message>
     <message>
         <source>Select automatically</source>
-        <translation type="unfinished"></translation>
+        <translation>Automatisch auswählen</translation>
     </message>
     <message>
         <source>GSM provider</source>
-        <translation type="unfinished"></translation>
+        <translation>Provider GSM</translation>
     </message>
     <message>
         <source>Content</source>
-        <translation type="unfinished"></translation>
+        <translation>Inhalt</translation>
     </message>
     <message>
         <source>Signature</source>
-        <translation type="unfinished"></translation>
+        <translation>Signatur</translation>
     </message>
     <message>
         <source>Save SMS in history</source>
-        <translation type="unfinished"></translation>
+        <translation>SMS im Verlauf Speichern</translation>
     </message>
     <message>
         <source>&amp;Send</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Senden</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Schließen</translation>
     </message>
     <message>
         <source>Clear</source>
-        <translation type="unfinished"></translation>
+        <translation>Leeren</translation>
     </message>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished"></translation>
+        <translation>Kadu</translation>
     </message>
     <message>
         <source>SMS application was not specified. Visit the configuration section</source>
-        <translation type="unfinished"></translation>
+        <translation>Programm zum Senden von SMS wurde nicht angegeben. Konsultieren Sie bitte die Konfiguration</translation>
     </message>
 </context>
 <context>
     <name>SmsExternalSender</name>
     <message>
         <source>Could not spawn child process. Check if the program is functional</source>
-        <translation type="unfinished"></translation>
+        <translation>Konnte das Kind-Prozess nicht erreichen. Überprüfen Sie, ob das Programm funktioniert</translation>
     </message>
     <message>
         <source>The process exited abnormally. The SMS may not be sent</source>
-        <translation type="unfinished"></translation>
+        <translation>Der Prozess wurde ungewöhnlich beendet. SMS wurde nicht weschickt</translation>
     </message>
 </context>
 <context>
@@ -167,45 +167,45 @@ Argumente werder durch Leerzeichen getrennt. %k Argumente werden in Nummer, %m i
     </message>
     <message>
         <source>SMS</source>
-        <translation type="unfinished">SMS</translation>
+        <translation>SMS</translation>
     </message>
     <message>
         <source>Unable to fetch required token</source>
-        <translation type="unfinished"></translation>
+        <translation>Konnte den Token nicht abholen</translation>
     </message>
 </context>
 <context>
     <name>SmsInternalSender</name>
     <message>
         <source>Mobile number is incorrect</source>
-        <translation type="unfinished"></translation>
+        <translation>Handy-Nummer ist falsch</translation>
     </message>
     <message>
         <source>Signature can&apos;t be empty</source>
-        <translation type="unfinished"></translation>
+        <translation>Signatur darf nicht leer sein</translation>
     </message>
     <message>
         <source>Automatic gateway selection is not available. Please select SMS gateway manually.</source>
-        <translation type="unfinished"></translation>
+        <translation>Automatische Providerauswahl ist nicht verfügbar. Wählen Sie einen aus.</translation>
     </message>
 </context>
 <context>
     <name>SmsProgressWindow</name>
     <message>
         <source>Sending SMS in progress.</source>
-        <translation type="unfinished"></translation>
+        <translation>Die SMS wird versendet.</translation>
     </message>
     <message>
         <source>Enter text from the picture:</source>
-        <translation type="unfinished">Lese den Text vom Bild ab und gib ihn hier ein:</translation>
+        <translation>Lese den Text vom Bild ab und gib ihn hier ein:</translation>
     </message>
     <message>
         <source>Ok</source>
-        <translation type="unfinished">Ok</translation>
+        <translation>Ok</translation>
     </message>
     <message>
         <source>SMS sent successfully</source>
-        <translation type="unfinished"></translation>
+        <translation>SMS wurde verschickt</translation>
     </message>
 </context>
 </TS>
