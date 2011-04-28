@@ -468,6 +468,8 @@ void Core::configurationUpdated()
 #endif
 
 	debug_mask = config_file.readNumEntry("General", "DEBUG_MASK");
+
+	Myself.setDisplay(config_file.readEntry("General", "Nick", tr("Me")));
 }
 
 void Core::createGui()
