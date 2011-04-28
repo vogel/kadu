@@ -17,15 +17,15 @@
     </message>
     <message>
         <source>Click Me !1!</source>
-        <translation type="unfinished"></translation>
+        <translation>Klick mich an !1!</translation>
     </message>
     <message>
         <source>Database Connection Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Einstellungen für die Datenbankverbindung</translation>
     </message>
     <message>
         <source>Choose database type</source>
-        <translation type="unfinished"></translation>
+        <translation>Wählen Sie einen Datenbanktyp aus</translation>
     </message>
     <message>
         <source>Choose type of databse, in which data should be stored</source>
@@ -45,11 +45,11 @@
     </message>
     <message>
         <source>Database host</source>
-        <translation type="unfinished"></translation>
+        <translation>Datenbankserver</translation>
     </message>
     <message>
         <source>Port</source>
-        <translation type="unfinished"></translation>
+        <translation>Port</translation>
     </message>
     <message>
         <source>Database name</source>
@@ -65,7 +65,7 @@
     </message>
     <message>
         <source>Table name prefix</source>
-        <translation type="unfinished"></translation>
+        <translation>Prefix für Tabellennamen</translation>
     </message>
 </context>
 <context>
