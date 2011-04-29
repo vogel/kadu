@@ -164,11 +164,16 @@ void FreedesktopNotify::notify(Notification *notification)
 	else
 		text.append(notification->text());
 
-	HtmlDocument doc;
-	doc.parseHtml(text);
-	UrlHandlerManager::instance()->convertAllUrls(doc);
+	if (ServerSupportsHtml)
+	{
+		HtmlDocument doc;
+		doc.parseHtml(text);
+		UrlHandlerManager::instance()->convertAllUrls(doc);
 
-	args.append(doc.generateHtml());
+		args.append(doc.generateHtml());
+	}
+	else
+		args.append(text);
 
 	QStringList actions;
 
