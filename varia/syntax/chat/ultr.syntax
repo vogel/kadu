@@ -1,0 +1,51 @@
+<kadu:top>
+	<script>
+		function messageStatusChanged( messageid, status )
+		{
+			if( status == StatusDelivered )
+				document.getElementById("confirm_"+messageid).innerHTML = "&#10004;";
+			if( status == StatusWontDeliver )
+				document.getElementById("confirm_"+messageid).innerHTML = "&times;";
+		}
+	</script>
+	<div style="border-bottom:1px dashed #cccccc;"></div>
+</kadu:top>
+
+<div style="padding-left:4px; padding-right:4px; border-bottom:1px dashed #cccccc; color:#{fontColor}; background-color:#{backgroundColor}; cursor:text;"
+	onmouseover="this.style.backgroundColor='#ffffff';" onmouseout="this.style.backgroundColor='#{backgroundColor}';">
+	<kadu:header>
+		<span style="vertical-align:bottom;">
+		<span style="float:left; font-weight: bold; color:#{nickColor}; padding-top:3px;">
+			%a
+		</span>
+		<span style="float:right; color:#666666; padding-top:5px;">
+			<small>#{receivedDate}[&nbsp;(#{sentDate})]</small>
+		</span>
+		</span>
+	</kadu:header>
+	<span style="float:right; color:#888888; padding-right:3px; padding-top:3px; margin-left:10px;">
+		<span id="confirm_#{messageId}" style="font-weight:bold;"></span>
+	</span>
+	<div style="clear:left; padding-top:3px; padding-bottom:3px; padding-left:6px; padding-right:6px;"
+	onmouseup="
+		if( event.button != 1 )
+			return;
+		if( this.style.fontFamily == 'monospace' )
+			this.style.fontFamily = 'inherit';
+		else
+			this.style.fontFamily = 'monospace';
+		if( this.style.whiteSpace == 'nowrap' )
+			this.style.whiteSpace = 'inherit';
+		else
+			this.style.whiteSpace = 'nowrap';
+	">
+		<span style="position:relative;">#{message}</span>
+	</div>
+</div>
+<script>
+	if( "#{messageId}" != "" )
+	{
+		document.getElementById("confirm_#{messageId}").innerHTML = "&#8230;";
+		messageStatusChanged("#{messageId}", #{messageStatus});
+	}
+</script>

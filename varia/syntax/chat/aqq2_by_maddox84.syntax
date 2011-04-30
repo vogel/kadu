@@ -1,4 +1,16 @@
-<div style="background-color: #{backgroundColor}; border-top: solid 1px #2d4949;">
+<kadu:top>
+	<script>
+		function messageStatusChanged(messageid, status)
+		{
+			if (status == StatusDelivered)
+				document.getElementById("confirm_"+messageid).style.opacity = "1.0";
+			if (status == StatusWontDeliver)
+				document.getElementById("confirm_"+messageid).style.opacity = "0.1";
+		}
+	</script>
+</kadu:top>
+
+<div[ id="confirm_#{messageId}"] style="background-color: #{backgroundColor}; border-top: solid 1px #2d4949;">
 <table width=100% cellspacing=10>
 <tr>
    <td>
@@ -24,3 +36,10 @@
 </tr>
 </table>
 </div>
+<script>
+	if ("#{messageId}" != "")
+	{
+		document.getElementById("confirm_#{messageId}").style.opacity = "0.4";
+		messageStatusChanged("#{messageId}", #{messageStatus});
+	}
+</script>
