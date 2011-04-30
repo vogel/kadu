@@ -23,8 +23,11 @@
 #include "accounts/account-manager.h"
 
 #include "buddies/buddy.h"
+#include "buddies/buddy-manager.h"
+#include "buddies/buddy-shared.h"
 #include "buddies/buddy-list-mime-data-helper.h"
 #include "contacts/contact.h"
+#include "contacts/contact-shared.h"
 
 #include "protocols/protocol.h"
 
@@ -38,6 +41,17 @@ BuddyListModel::BuddyListModel(const BuddyList &list, QObject *parent) :
 
 BuddyListModel::~BuddyListModel()
 {
+	// cleanup references, so buddy and contact instances can be removed
+	// this is really a hack, we need to call aboutToBeRemoved someway for non-manager contacts and buddies too
+	// or just only store managed only, i dont know yet
+	// also in: GaduContactListService::handleEventUserlistGetReply()
+	foreach (const Buddy &buddy, List)
+		if (!BuddyManager::instance()->items().contains(buddy))
+		{
+			foreach (Contact contact, buddy.contacts())
+				contact.data()->aboutToBeRemoved();
+			buddy.data()->aboutToBeRemoved();
+		}
 }
 
 int BuddyListModel::rowCount(const QModelIndex &parent) const
