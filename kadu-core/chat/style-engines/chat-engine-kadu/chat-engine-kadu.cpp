@@ -92,7 +92,7 @@ void KaduChatStyleEngine::appendMessage(HtmlMessagesRenderer *renderer, MessageR
 		html.prepend("<span>");
 	html.append("</span>");
 
-	renderer->webPage()->mainFrame()->evaluateJavaScript("kadu_appendMessage(\'" + html + "\')");
+	renderer->webPage()->mainFrame()->evaluateJavaScript("kadu_appendMessage('" + html + "')");
 
 	renderer->setLastMessage(message);
 }
@@ -106,7 +106,7 @@ void KaduChatStyleEngine::refreshView(HtmlMessagesRenderer *renderer, bool useTr
 
 void KaduChatStyleEngine::messageStatusChanged(HtmlMessagesRenderer *renderer, Message message, Message::Status status)
 {
-	renderer->webPage()->mainFrame()->evaluateJavaScript(QString("kadu_messageStatusChanged(%1, %2);").arg(message.id()).arg((int)status));
+	renderer->webPage()->mainFrame()->evaluateJavaScript(QString("kadu_messageStatusChanged(\"%1\", %2);").arg(message.id()).arg((int)status));
 }
 
 QString KaduChatStyleEngine::isStyleValid(QString stylePath)
@@ -273,7 +273,7 @@ void KaduChatStyleEngine::styleEditionRequested(QString styleName)
 		"%s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name,"
 		" %r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn't have us in userlist,"
 		" %h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size, %z - gender (0/1/2),\n"
-		"#{message} - message content, #{messageId} - message id, #{backgroundColor} - background color of message,"
+		"#{message} - message content, #{messageId} - message id, #{messageStatus} - message status value, #{backgroundColor} - background color of message,"
 		" #{fontColor} - font color of message, #{nickColor} - font color of nick, #{sentDate} - when message was sent,"
 		" #{receivedDate} - when message was received, #{separator} - separator between messages,\n"
 		"<kadu:header>...</kadu:header> - content will not be displayed in 'Remove repeated headers' mode,\n"

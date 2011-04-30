@@ -63,6 +63,14 @@ static QString getMessageId(const QObject * const object)
 	return QString();
 }
 
+static QString getMessageStatus(const QObject * const object)
+{
+	const MessageRenderInfo * const messageRenderInfo = qobject_cast<const MessageRenderInfo * const>(object);
+	if (messageRenderInfo)
+		return QString::number(messageRenderInfo->message().status());
+	return QString();
+}
+
 static QString getBackgroundColor(const QObject * const object)
 {
 	const MessageRenderInfo * const messageRenderInfo = qobject_cast<const MessageRenderInfo * const>(object);
@@ -132,6 +140,7 @@ void MessageRenderInfo::registerParserTags()
 {
 	Parser::registerObjectTag("message", getMessage);
 	Parser::registerObjectTag("messageId", getMessageId);
+	Parser::registerObjectTag("messageStatus", getMessageStatus);
 	Parser::registerObjectTag("backgroundColor", getBackgroundColor);
 	Parser::registerObjectTag("fontColor", getFontColor);
 	Parser::registerObjectTag("nickColor", getNickColor);
@@ -144,6 +153,7 @@ void MessageRenderInfo::unregisterParserTags()
 {
 	Parser::unregisterObjectTag("message", getMessage);
 	Parser::unregisterObjectTag("messageId", getMessageId);
+	Parser::unregisterObjectTag("messageStatus", getMessageStatus);
 	Parser::unregisterObjectTag("backgroundColor", getBackgroundColor);
 	Parser::unregisterObjectTag("fontColor", getFontColor);
 	Parser::unregisterObjectTag("nickColor", getNickColor);

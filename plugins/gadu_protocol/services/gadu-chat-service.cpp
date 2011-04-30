@@ -316,40 +316,37 @@ void GaduChatService::handleEventAck(struct gg_event *e)
 	UinType uin = e->event.ack.recipient;
 	Q_UNUSED(uin) // only in debug mode
 
-	Message::Status status = Message::StatusUnknown;
 	switch (e->event.ack.status)
 	{
 		case GG_ACK_DELIVERED:
 			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "message delivered (uin: %u, seq: %d)\n", uin, messageId);
+			UndeliveredMessages[messageId].setStatus(Message::StatusDelivered);
 			emit messageStatusChanged(UndeliveredMessages[messageId], StatusAcceptedDelivered);
-			status = Message::StatusDelivered;
 			break;
 		case GG_ACK_QUEUED:
 			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "message queued (uin: %u, seq: %d)\n", uin, messageId);
+			UndeliveredMessages[messageId].setStatus(Message::StatusDelivered);
 			emit messageStatusChanged(UndeliveredMessages[messageId], StatusAcceptedQueued);
-			status = Message::StatusDelivered;
 			break;
 		case GG_ACK_BLOCKED:
 			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "message blocked (uin: %u, seq: %d)\n", uin, messageId);
+			UndeliveredMessages[messageId].setStatus(Message::StatusWontDeliver);
 			emit messageStatusChanged(UndeliveredMessages[messageId], StatusRejectedBlocked);
-			status = Message::StatusWontDeliver;
 			break;
 		case GG_ACK_MBOXFULL:
 			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "message box full (uin: %u, seq: %d)\n", uin, messageId);
+			UndeliveredMessages[messageId].setStatus(Message::StatusWontDeliver);
 			emit messageStatusChanged(UndeliveredMessages[messageId], StatusRejectedBoxFull);
-			status = Message::StatusWontDeliver;
 			break;
 		case GG_ACK_NOT_DELIVERED:
 			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "message not delivered (uin: %u, seq: %d)\n", uin, messageId);
+			UndeliveredMessages[messageId].setStatus(Message::StatusWontDeliver);
 			emit messageStatusChanged(UndeliveredMessages[messageId], StatusRejectedUnknown);
-			status = Message::StatusWontDeliver;
 			break;
 		default:
 			kdebugm(KDEBUG_NETWORK|KDEBUG_WARNING, "unknown acknowledge! (uin: %u, seq: %d, status:%d)\n", uin, messageId, e->event.ack.status);
 			break;
 	}
-
-	UndeliveredMessages[messageId].setStatus(status);
 	UndeliveredMessages.remove(messageId);
 
 	removeTimeoutUndeliveredMessages();

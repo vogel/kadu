@@ -17,5 +17,8 @@
 </div>
 <script type="text/javascript">
 	if ("%messageId%" != "")
+	{
 		document.getElementById("msg_%messageId%").innerHTML = "&#8230;";
+		messageStatusChanged("%messageId%", %messageStatus%);
+	}
 </script>

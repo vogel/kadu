@@ -79,10 +79,10 @@
 
 		function messageStatusChanged(messageid, status)
 		{
-			if (status == StatusWontDeliver || status == StatusUnknown)
-				document.getElementById("msg_"+messageid).innerHTML = "&times;";
-			else
+			if (status == StatusDelivered)
 				document.getElementById("msg_"+messageid).innerHTML = "&#10004;";
+			if (status == StatusWontDeliver)
+				document.getElementById("msg_"+messageid).innerHTML = "&times;";
 		}
 
 		//]]>

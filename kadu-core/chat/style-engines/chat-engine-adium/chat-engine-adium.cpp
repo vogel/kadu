@@ -488,6 +488,8 @@ QString AdiumChatStyleEngine::replaceKeywords(const QString &styleHref, const QS
 	messageText.append("</span>");
 
 	result.replace(QString("%messageId%"), message->message().id());
+	result.replace(QString("%messageStatus%"), QString::number(message->message().status()));
+
 	result.replace(QString("%message%"), messageText);
 
 	return result;
@@ -495,5 +497,5 @@ QString AdiumChatStyleEngine::replaceKeywords(const QString &styleHref, const QS
 
 void AdiumChatStyleEngine::messageStatusChanged(HtmlMessagesRenderer *renderer, Message message, Message::Status status)
 {
-	renderer->webPage()->mainFrame()->evaluateJavaScript(QString("adium_messageStatusChanged(%1, %2);").arg(message.id()).arg((int)status));
+	renderer->webPage()->mainFrame()->evaluateJavaScript(QString("adium_messageStatusChanged(\"%1\", %2);").arg(message.id()).arg((int)status));
 }
