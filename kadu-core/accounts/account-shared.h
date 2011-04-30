@@ -97,7 +97,7 @@ public:
 	static AccountShared * loadStubFromStorage(const QSharedPointer<StoragePoint> &storagePoint);
 	static AccountShared * loadFromStorage(const QSharedPointer<StoragePoint> &storagePoint);
 
-	explicit AccountShared(QUuid uuid = QUuid());
+	explicit AccountShared(const QUuid &uuid = QUuid());
 	virtual ~AccountShared();
 
 	virtual StorableObject * storageParent();

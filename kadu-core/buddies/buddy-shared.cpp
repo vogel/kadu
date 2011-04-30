@@ -53,7 +53,7 @@ BuddyShared * BuddyShared::loadFromStorage(const QSharedPointer<StoragePoint> &b
 	return result;
 }
 
-BuddyShared::BuddyShared(QUuid uuid) :
+BuddyShared::BuddyShared(const QUuid &uuid) :
 		Shared(uuid),
 		BirthYear(0), Gender(GenderUnknown), PreferHigherStatuses(true),
 		Anonymous(true), Blocked(false), OfflineTo(false)

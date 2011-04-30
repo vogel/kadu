@@ -44,7 +44,7 @@ KeyShared * KeyShared::loadFromStorage(const QSharedPointer<StoragePoint> &stora
 	return result;
 }
 
-KeyShared::KeyShared(QUuid uuid) :
+KeyShared::KeyShared(const QUuid &uuid) :
 		Shared(uuid)
 {
 	KeysDir = profilePath("keys/");

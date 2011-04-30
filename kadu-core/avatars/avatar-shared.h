@@ -51,7 +51,7 @@ public:
 	static AvatarShared * loadStubFromStorage(const QSharedPointer<StoragePoint> &avatarStoragePoint);
 	static AvatarShared * loadFromStorage(const QSharedPointer<StoragePoint> &avatarStoragePoint);
 
-	explicit AvatarShared(QUuid uuid = QUuid());
+	explicit AvatarShared(const QUuid &uuid = QUuid());
 	virtual ~AvatarShared();
 
 	virtual StorableObject * storageParent();

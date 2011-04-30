@@ -41,7 +41,7 @@ FileTransferShared * FileTransferShared::loadFromStorage(const QSharedPointer<St
 	return result;
 }
 
-FileTransferShared::FileTransferShared(QUuid uuid) :
+FileTransferShared::FileTransferShared(const QUuid &uuid) :
 		Shared(uuid),
 		FileSize(0), TransferredSize(0),
 		TransferType(TypeReceive), TransferStatus(StatusNotConnected),

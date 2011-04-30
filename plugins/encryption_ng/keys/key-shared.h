@@ -49,7 +49,7 @@ public:
 	static KeyShared * loadStubFromStorage(const QSharedPointer<StoragePoint> &avatarStoragePoint);
 	static KeyShared * loadFromStorage(const QSharedPointer<StoragePoint> &avatarStoragePoint);
 
-	explicit KeyShared(QUuid uuid = QUuid());
+	explicit KeyShared(const QUuid &uuid = QUuid());
 	virtual ~KeyShared();
 
 	virtual StorableObject * storageParent();

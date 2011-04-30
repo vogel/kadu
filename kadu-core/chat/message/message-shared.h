@@ -53,7 +53,7 @@ public:
 	static MessageShared * loadStubFromStorage(const QSharedPointer<StoragePoint> &messageStoragePoint);
 	static MessageShared * loadFromStorage(const QSharedPointer<StoragePoint> &messageStoragePoint);
 
-	explicit MessageShared(QUuid uuid = QUuid());
+	explicit MessageShared(const QUuid &uuid = QUuid());
 	virtual ~MessageShared();
 
 	virtual StorableObject * storageParent();

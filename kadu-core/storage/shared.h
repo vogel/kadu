@@ -23,10 +23,7 @@
 #ifndef SHARED_H
 #define SHARED_H
 
-#include <QtCore/QObject>
 #include <QtCore/QSharedData>
-
-#include "status/status.h"
 
 #include "storage/uuid-storable-object.h"
 #include "exports.h"
@@ -161,7 +158,7 @@ protected:
 	virtual void emitUpdated();
 
 public:
-	explicit Shared(QUuid Uuid);
+	explicit Shared(const QUuid &uuid);
 	virtual ~Shared();
 
 	virtual void store();

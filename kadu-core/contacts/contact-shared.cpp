@@ -48,7 +48,7 @@ ContactShared * ContactShared::loadFromStorage(const QSharedPointer<StoragePoint
 	return result;
 }
 
-ContactShared::ContactShared(QUuid uuid) :
+ContactShared::ContactShared(const QUuid &uuid) :
 		Shared(uuid),
 		ContactAccount(Account::null), ContactAvatar(Avatar::null), OwnerBuddy(Buddy::null),
 		Priority(-1), MaximumImageSize(0), Blocking(false), Port(0)

@@ -54,7 +54,7 @@ public:
 	static GroupShared * loadStubFromStorage(const QSharedPointer<StoragePoint> &groupStoragePoint);
 	static GroupShared * loadFromStorage(const QSharedPointer<StoragePoint> &groupStoragePoint);
 
-	explicit GroupShared(QUuid uuid = QUuid());
+	explicit GroupShared(const QUuid &uuid = QUuid());
 	virtual ~GroupShared();
 
 	virtual StorableObject * storageParent();

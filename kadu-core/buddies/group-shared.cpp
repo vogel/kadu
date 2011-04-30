@@ -39,7 +39,7 @@ GroupShared * GroupShared::loadFromStorage(const QSharedPointer<StoragePoint> &s
 	return result;
 }
 
-GroupShared::GroupShared(QUuid uuid) :
+GroupShared::GroupShared(const QUuid &uuid) :
 		Shared(uuid),
 		NotifyAboutStatusChanges(false), ShowInAllGroup(false),
 		OfflineToGroup(false), ShowIcon(false), ShowName(false),

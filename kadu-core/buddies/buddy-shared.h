@@ -92,7 +92,7 @@ public:
 	static BuddyShared * loadStubFromStorage(const QSharedPointer<StoragePoint> &buddyStoragePoint);
 	static BuddyShared * loadFromStorage(const QSharedPointer<StoragePoint> &buddyStoragePoint);
 
-	explicit BuddyShared(QUuid uuid = QUuid());
+	explicit BuddyShared(const QUuid &uuid = QUuid());
 	virtual ~BuddyShared();
 
 	virtual StorableObject * storageParent();

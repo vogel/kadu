@@ -69,7 +69,7 @@ ChatShared * ChatShared::loadFromStorage(const QSharedPointer<StoragePoint> &sto
  * be assigned to this object, if not, new unique id will be
  * created.
  */
-ChatShared::ChatShared(QUuid uuid) :
+ChatShared::ChatShared(const QUuid &uuid) :
 		Shared(uuid), IgnoreAllMessages(false)
 {
 }

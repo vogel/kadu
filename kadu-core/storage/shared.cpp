@@ -29,7 +29,7 @@
  * Contructs empty object with given uuid. When uuid is invalid (NULL)
  * new uuid is created and assigned to object.
  */
-Shared::Shared(QUuid uuid) :
+Shared::Shared(const QUuid &uuid) :
 		BlockUpdatedSignalCount(0), Updated(false)
 {
 	setUuid(uuid.isNull() ? QUuid::createUuid() : uuid);

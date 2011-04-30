@@ -74,7 +74,7 @@ public:
 	static ChatShared * loadStubFromStorage(const QSharedPointer<StoragePoint> &storagePoint);
 	static ChatShared * loadFromStorage(const QSharedPointer<StoragePoint> &storagePoint);
 
-	explicit ChatShared(QUuid uuid = QUuid::createUuid());
+	explicit ChatShared(const QUuid &uuid = QUuid::createUuid());
 	virtual ~ChatShared();
 
 	virtual StorableObject * storageParent();

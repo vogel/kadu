@@ -51,7 +51,7 @@ AccountShared * AccountShared::loadFromStorage(const QSharedPointer<StoragePoint
 	return result;
 }
 
-AccountShared::AccountShared(QUuid uuid) :
+AccountShared::AccountShared(const QUuid &uuid) :
 		BaseStatusContainer(this), Shared(uuid),
 		ProtocolHandler(0), RememberPassword(false), HasPassword(false), Removing(false)
 {

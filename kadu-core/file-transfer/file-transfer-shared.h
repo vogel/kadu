@@ -56,7 +56,7 @@ public:
 	static FileTransferShared * loadStubFromStorage(const QSharedPointer<StoragePoint> &fileTransferStoragePoint);
 	static FileTransferShared * loadFromStorage(const QSharedPointer<StoragePoint> &fileTransferStoragePoint);
 
-	explicit FileTransferShared(QUuid uuid = QUuid());
+	explicit FileTransferShared(const QUuid &uuid = QUuid());
 	virtual ~FileTransferShared();
 
 	virtual void store();
