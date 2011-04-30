@@ -63,7 +63,7 @@ public:
 	bool hasAnyAccountWithDetails();
 	bool isEmpty();
 
-	KaduShared_Property(QString, name, Name)
+	KaduShared_Property(const QString &, name, Name)
 	KaduShared_PropertyBool(Permanent)
 
 	// StatusContainer implementation

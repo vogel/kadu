@@ -102,7 +102,7 @@ public:
 	void importConfiguration(); // imports configuration from custom data values
 
 	virtual void store();
-    virtual bool shouldStore();
+	virtual bool shouldStore();
 	virtual void aboutToBeRemoved();
 
 	QString id(const Account &account);
@@ -125,21 +125,21 @@ public:
 
 	bool isEmpty();
 
-	KaduShared_Property(Avatar, buddyAvatar, BuddyAvatar)
-	KaduShared_Property(QString, display, Display)
-	KaduShared_Property(QString, firstName, FirstName)
-	KaduShared_Property(QString, lastName, LastName)
-	KaduShared_Property(QString, familyName, FamilyName)
-	KaduShared_Property(QString, city, City)
-	KaduShared_Property(QString, familyCity, FamilyCity)
-	KaduShared_Property(QString, nickName, NickName)
-	KaduShared_Property(QString, homePhone, HomePhone)
-	KaduShared_Property(QString, mobile, Mobile)
-	KaduShared_Property(QString, email, Email)
-	KaduShared_Property(QString, website, Website)
+	KaduShared_Property(const Avatar &, buddyAvatar, BuddyAvatar)
+	KaduShared_Property(const QString &, display, Display)
+	KaduShared_Property(const QString &, firstName, FirstName)
+	KaduShared_Property(const QString &, lastName, LastName)
+	KaduShared_Property(const QString &, familyName, FamilyName)
+	KaduShared_Property(const QString &, city, City)
+	KaduShared_Property(const QString &, familyCity, FamilyCity)
+	KaduShared_Property(const QString &, nickName, NickName)
+	KaduShared_Property(const QString &, homePhone, HomePhone)
+	KaduShared_Property(const QString &, mobile, Mobile)
+	KaduShared_Property(const QString &, email, Email)
+	KaduShared_Property(const QString &, website, Website)
 	KaduShared_Property(unsigned short, birthYear, BirthYear)
 	KaduShared_Property(BuddyGender, gender, Gender)
-	KaduShared_Property(QList<Group>, groups, Groups)
+	KaduShared_Property(const QList<Group> &, groups, Groups)
 	KaduShared_Property(bool, preferHigherStatuses, PreferHigherStatuses)
 	BuddyShared_PropertySubscription(Anonymous)
 	BuddyShared_PropertySubscription(Blocked)
@@ -153,6 +153,7 @@ signals:
 
 	void updated();
 	void buddySubscriptionChanged();
+
 };
 
 // for MOC

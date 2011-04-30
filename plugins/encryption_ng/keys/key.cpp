@@ -72,6 +72,6 @@ QString Key::filePath()
 }
 
 KaduSharedBase_PropertyBoolReadDef(Key, Empty, true)
-KaduSharedBase_PropertyDef(Key, QString, keyType, KeyType, QString())
-KaduSharedBase_PropertyDef(Key, Contact, keyContact, KeyContact, Contact::null)
-KaduSharedBase_PropertyDef(Key, QCA::SecureArray, key, Key, QCA::SecureArray())
+KaduSharedBase_PropertyDefCRW(Key, QString, keyType, KeyType, QString())
+KaduSharedBase_PropertyDefCRW(Key, Contact, keyContact, KeyContact, Contact::null)
+KaduSharedBase_PropertyDefCRW(Key, QCA::SecureArray, key, Key, QCA::SecureArray())

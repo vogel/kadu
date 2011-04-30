@@ -62,8 +62,8 @@ public:
 
 	virtual void store();
 
-	KaduShared_Property(QString, name, Name)
-	KaduShared_Property(QString, icon, Icon)
+	KaduShared_Property(const QString &, name, Name)
+	KaduShared_Property(const QString &, icon, Icon)
 	KaduShared_Property(bool, notifyAboutStatusChanges, NotifyAboutStatusChanges)
 	KaduShared_Property(bool, showInAllGroup, ShowInAllGroup)
 	KaduShared_Property(bool, offlineToGroup, OfflineToGroup)

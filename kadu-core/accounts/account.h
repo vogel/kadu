@@ -66,17 +66,17 @@ public:
 	 */
 	StatusContainer * statusContainer();
 
-	KaduSharedBase_Property(Identity, accountIdentity, AccountIdentity)
+	KaduSharedBase_PropertyCRW(Identity, accountIdentity, AccountIdentity)
 	KaduSharedBase_PropertyRead(QSharedPointer<StoragePoint>, storage, Storage)
-	KaduSharedBase_Property(QString, protocolName, ProtocolName)
+	KaduSharedBase_PropertyCRW(QString, protocolName, ProtocolName)
 	KaduSharedBase_Property(Protocol *, protocolHandler, ProtocolHandler)
 	KaduSharedBase_PropertyRead(AccountDetails *, details, Details)
 	KaduSharedBase_PropertyRead(Contact, accountContact, AccountContact)
-	KaduSharedBase_Property(QString, id, Id)
+	KaduSharedBase_PropertyCRW(QString, id, Id)
 	KaduSharedBase_Property(bool, rememberPassword, RememberPassword)
 	KaduSharedBase_Property(bool, hasPassword, HasPassword)
-	KaduSharedBase_Property(QString, password, Password)
-	KaduSharedBase_Property(AccountProxySettings, proxySettings, ProxySettings)
+	KaduSharedBase_PropertyCRW(QString, password, Password)
+	KaduSharedBase_PropertyCRW(AccountProxySettings, proxySettings, ProxySettings)
 	KaduSharedBase_Property(bool, privateStatus, PrivateStatus)
 	KaduSharedBase_Property(bool, removing, Removing)
 

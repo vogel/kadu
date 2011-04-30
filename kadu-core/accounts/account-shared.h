@@ -113,14 +113,14 @@ public:
 
 	Contact accountContact();
 
-	KaduShared_PropertyRead(Identity, accountIdentity, AccountIdentity)
-	KaduShared_PropertyRead(QString, protocolName, ProtocolName)
+	KaduShared_PropertyRead(const Identity &, accountIdentity, AccountIdentity)
+	KaduShared_PropertyRead(const QString &, protocolName, ProtocolName)
 	KaduShared_Property(Protocol *, protocolHandler, ProtocolHandler)
-	KaduShared_PropertyRead(QString, id, Id)
+	KaduShared_PropertyRead(const QString &, id, Id)
 	KaduShared_Property(bool, rememberPassword, RememberPassword)
 	KaduShared_Property(bool, hasPassword, HasPassword)
-	KaduShared_Property(QString, password, Password)
-	KaduShared_Property(AccountProxySettings, proxySettings, ProxySettings)
+	KaduShared_Property(const QString &, password, Password)
+	KaduShared_Property(const AccountProxySettings &, proxySettings, ProxySettings)
 	KaduShared_PropertyRead(bool, privateStatus, PrivateStatus)
 	KaduShared_Property(bool, removing, Removing)
 

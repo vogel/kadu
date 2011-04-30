@@ -63,9 +63,9 @@ public:
 
 	bool isEmpty();
 
-	KaduShared_Property(QString, keyType, KeyType)
-	KaduShared_Property(Contact, keyContact, KeyContact)
-	KaduShared_Property(QCA::SecureArray, key, Key)
+	KaduShared_Property(const QString &, keyType, KeyType)
+	KaduShared_Property(const Contact &, keyContact, KeyContact)
+	KaduShared_Property(const QCA::SecureArray &, key, Key)
 
 signals:
 	void updated();

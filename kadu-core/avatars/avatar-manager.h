@@ -81,7 +81,7 @@ signals:
 	void avatarAboutToBeRemoved(Avatar avatar);
 	void avatarRemoved(Avatar avatar);
 
-	void avatarUpdated(Avatar contact);
+	void avatarUpdated(Avatar avatar);
 
 };
 

@@ -45,8 +45,8 @@ public:
 
 	virtual ~Group();
 
-	KaduSharedBase_Property(QString, name, Name)
-	KaduSharedBase_Property(QString, icon, Icon)
+	KaduSharedBase_PropertyCRW(QString, name, Name)
+	KaduSharedBase_PropertyCRW(QString, icon, Icon)
 	KaduSharedBase_Property(bool, notifyAboutStatusChanges, NotifyAboutStatusChanges)
 	KaduSharedBase_Property(bool, showInAllGroup, ShowInAllGroup)
 	KaduSharedBase_Property(bool, offlineToGroup, OfflineToGroup)

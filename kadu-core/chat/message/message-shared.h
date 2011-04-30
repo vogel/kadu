@@ -64,15 +64,15 @@ public:
 
 	void setStatus(Message::Status status);
 
-	KaduShared_Property(Chat, messageChat, MessageChat)
-	KaduShared_Property(Contact, messageSender, MessageSender)
-	KaduShared_Property(QString, content, Content)
-	KaduShared_Property(QDateTime, receiveDate, ReceiveDate)
-	KaduShared_Property(QDateTime, sendDate, SendDate)
+	KaduShared_Property(const Chat &, messageChat, MessageChat)
+	KaduShared_Property(const Contact &, messageSender, MessageSender)
+	KaduShared_Property(const QString &, content, Content)
+	KaduShared_Property(const QDateTime &, receiveDate, ReceiveDate)
+	KaduShared_Property(const QDateTime &, sendDate, SendDate)
 	KaduShared_PropertyRead(Message::Status, status, Status)
 	KaduShared_Property(Message::Type, type, Type)
 	KaduShared_PropertyBool(Pending)
-	KaduShared_Property(QString, id, Id)
+	KaduShared_Property(const QString &, id, Id)
 
 signals:
 	void statusChanged(Message::Status);

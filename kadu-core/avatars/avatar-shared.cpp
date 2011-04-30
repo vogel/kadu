@@ -151,7 +151,7 @@ bool AvatarShared::isEmpty()
 	return Pixmap.isNull();
 }
 
-void AvatarShared::setPixmap(QPixmap pixmap)
+void AvatarShared::setPixmap(const QPixmap &pixmap)
 {
 	ensureLoaded();
 

@@ -69,9 +69,9 @@ public:
 	void setHandler(FileTransferHandler *handler);
 	void createHandler();
 
-	KaduShared_Property(Contact, peer, Peer)
-	KaduShared_Property(QString, localFileName, LocalFileName)
-	KaduShared_Property(QString, remoteFileName, RemoteFileName)
+	KaduShared_Property(const Contact &, peer, Peer)
+	KaduShared_Property(const QString &, localFileName, LocalFileName)
+	KaduShared_Property(const QString &, remoteFileName, RemoteFileName)
 	KaduShared_Property(unsigned long, fileSize, FileSize)
 	KaduShared_Property(unsigned long, transferredSize, TransferredSize)
 	KaduShared_Property(FileTransferType, transferType, TransferType)

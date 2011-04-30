@@ -124,6 +124,21 @@ private:
 	KaduSharedBase_PropertyWrite(type, name, capitalized_name)
 
 /**
+ * @author Bartosz 'beevvy' Brachaczek
+ * @short Declares getter and setter for given property of SharedBase's Shared class.
+ * @param type type of property
+ * @param name name of getter
+ * @param capitalized_name name of property
+ *
+ * Declares getter and setter for a delegated property of @link Shared @endlink class stored in
+ * @link SharedBase @endlink. Getter is named 'name'. Setter is named 'set##capitalized_name'.
+ * Argument of the setter wil be a const reference to 'type'.
+ */
+#define KaduSharedBase_PropertyCRW(type, name, capitalized_name) \
+	KaduSharedBase_PropertyRead(type, name, capitalized_name) \
+	KaduSharedBase_PropertyWrite(const type &, name, capitalized_name)
+
+/**
  * @author Rafal 'Vogel' Malinowski
  * @short Declares getter for given boolean property of SharedBase's Shared class.
  * @param capitalized_name name of property
@@ -208,6 +223,22 @@ private:
 #define KaduSharedBase_PropertyDef(class_name, type, name, capitalized_name, default) \
 	KaduSharedBase_PropertyReadDef(class_name, type, name, capitalized_name, default) \
 	KaduSharedBase_PropertyWriteDef(class_name, type, name, capitalized_name)
+
+/**
+ * @author Bartosz 'beevvy' Brachaczek
+ * @short Defines getter and setter for given property of SharedBase's Shared class.
+ * @param type type of property
+ * @param name name of getter
+ * @param capitalized_name name of property
+ * @param default default value
+ *
+ * Defines getter (@link KaduSharedBase_PropertyReadDef @endlink) and setter
+ * (@link KaduSharedBase_PropertyWriteDef @endlink) got given delegated property.
+ * Argument of the setter will be a const reference to 'type'.
+ */
+#define KaduSharedBase_PropertyDefCRW(class_name, type, name, capitalized_name, default) \
+	KaduSharedBase_PropertyReadDef(class_name, type, name, capitalized_name, default) \
+	KaduSharedBase_PropertyWriteDef(class_name, const type &, name, capitalized_name)
 
 /**
  * @author Rafal 'Vogel' Malinowski

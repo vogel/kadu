@@ -56,7 +56,7 @@ public:
 	bool isEmpty() const;
 
 	KaduSharedBase_PropertyBool(Permanent)
-	KaduSharedBase_Property(QString, name, Name)
+	KaduSharedBase_PropertyCRW(QString, name, Name)
 
 };
 

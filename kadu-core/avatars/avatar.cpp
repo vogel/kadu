@@ -71,20 +71,10 @@ Avatar::~Avatar()
 {
 }
 
-QString Avatar::filePath()
-{
-	return isNull() ? QString() : data()->filePath();
-}
-
-void Avatar::setFilePath(const QString& filePath)
-{
-	if (!isNull())
-		data()->setFilePath(filePath);
-}
-
 KaduSharedBase_PropertyBoolReadDef(Avatar, Empty, true)
-KaduSharedBase_PropertyDef(Avatar, Buddy, avatarBuddy, AvatarBuddy, Buddy::null)
-KaduSharedBase_PropertyDef(Avatar, Contact, avatarContact, AvatarContact, Contact::null)
-KaduSharedBase_PropertyDef(Avatar, QDateTime, lastUpdated, LastUpdated, QDateTime())
-KaduSharedBase_PropertyDef(Avatar, QDateTime, nextUpdate, NextUpdate, QDateTime())
-KaduSharedBase_PropertyDef(Avatar, QPixmap, pixmap, Pixmap, QPixmap())
+KaduSharedBase_PropertyDefCRW(Avatar, Buddy, avatarBuddy, AvatarBuddy, Buddy::null)
+KaduSharedBase_PropertyDefCRW(Avatar, Contact, avatarContact, AvatarContact, Contact::null)
+KaduSharedBase_PropertyDefCRW(Avatar, QDateTime, lastUpdated, LastUpdated, QDateTime())
+KaduSharedBase_PropertyDefCRW(Avatar, QDateTime, nextUpdate, NextUpdate, QDateTime())
+KaduSharedBase_PropertyDefCRW(Avatar, QPixmap, pixmap, Pixmap, QPixmap())
+KaduSharedBase_PropertyDefCRW(Avatar, QString, filePath, FilePath, QString())

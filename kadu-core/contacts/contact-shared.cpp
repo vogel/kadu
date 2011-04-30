@@ -216,7 +216,7 @@ void ContactShared::doSetOwnerBuddy(Buddy buddy, bool emitSignals)
 		OwnerBuddy = BuddyManager::instance()->byContact(Contact(this), ActionCreate);
 }
 
-void ContactShared::setOwnerBuddy(Buddy buddy)
+void ContactShared::setOwnerBuddy(const Buddy &buddy)
 {
 	ensureLoaded();
 
@@ -228,7 +228,7 @@ void ContactShared::setOwnerBuddy(Buddy buddy)
 	dataUpdated();
 }
 
-void ContactShared::setContactAccount(Account account)
+void ContactShared::setContactAccount(const Account &account)
 {
 	ensureLoaded();
 

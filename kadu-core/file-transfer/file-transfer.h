@@ -51,9 +51,9 @@ public:
 	FileTransfer(const FileTransfer &copy);
 	virtual ~FileTransfer();
 
-	KaduSharedBase_Property(Contact, peer, Peer)
-	KaduSharedBase_Property(QString, localFileName, LocalFileName)
-	KaduSharedBase_Property(QString, remoteFileName, RemoteFileName)
+	KaduSharedBase_PropertyCRW(Contact, peer, Peer)
+	KaduSharedBase_PropertyCRW(QString, localFileName, LocalFileName)
+	KaduSharedBase_PropertyCRW(QString, remoteFileName, RemoteFileName)
 	KaduSharedBase_Property(unsigned long, fileSize, FileSize)
 	KaduSharedBase_Property(unsigned long, transferredSize, TransferredSize)
 	KaduSharedBase_Property(FileTransferType, transferType, TransferType)

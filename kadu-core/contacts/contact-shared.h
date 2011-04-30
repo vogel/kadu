@@ -88,23 +88,23 @@ public:
 	virtual bool shouldStore();
 	virtual void aboutToBeRemoved();
 
-	KaduShared_PropertyRead(Account, contactAccount, ContactAccount)
-	void setContactAccount(Account account);
+	KaduShared_PropertyRead(const Account &, contactAccount, ContactAccount)
+	void setContactAccount(const Account &account);
 
-	KaduShared_Property(Avatar, contactAvatar, ContactAvatar)
-	KaduShared_PropertyRead(Buddy, ownerBuddy, OwnerBuddy)
-	void setOwnerBuddy(Buddy buddy);
+	KaduShared_Property(const Avatar &, contactAvatar, ContactAvatar)
+	KaduShared_PropertyRead(const Buddy &, ownerBuddy, OwnerBuddy)
+	void setOwnerBuddy(const Buddy &buddy);
 
-	KaduShared_PropertyRead(QString, id, Id)
+	KaduShared_PropertyRead(const QString &, id, Id)
 	void setId(const QString &id);
 
 	KaduShared_Property(int, priority, Priority)
-	KaduShared_Property(Status, currentStatus, CurrentStatus)
+	KaduShared_Property(const Status &, currentStatus, CurrentStatus)
 	KaduShared_PropertyBool(Blocking)
-	KaduShared_Property(QString, protocolVersion, ProtocolVersion)
-	KaduShared_Property(QHostAddress, address, Address)
+	KaduShared_Property(const QString &, protocolVersion, ProtocolVersion)
+	KaduShared_Property(const QHostAddress &, address, Address)
 	KaduShared_Property(unsigned int, port, Port)
-	KaduShared_Property(QString, dnsName, DnsName)
+	KaduShared_Property(const QString &, dnsName, DnsName)
 	KaduShared_Property(short int, maximumImageSize, MaximumImageSize)
 
 signals:

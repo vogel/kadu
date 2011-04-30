@@ -48,9 +48,9 @@ public:
 	QString filePath();
 
 	KaduSharedBase_PropertyBoolRead(Empty)
-	KaduSharedBase_Property(QString, keyType, KeyType)
-	KaduSharedBase_Property(Contact, keyContact, KeyContact)
-	KaduSharedBase_Property(QCA::SecureArray, key, Key)
+	KaduSharedBase_PropertyCRW(QString, keyType, KeyType)
+	KaduSharedBase_PropertyCRW(Contact, keyContact, KeyContact)
+	KaduSharedBase_PropertyCRW(QCA::SecureArray, key, Key)
 
 };
 
