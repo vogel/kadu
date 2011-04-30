@@ -70,7 +70,8 @@ void GaduContactListService::handleEventUserlistGetReply(struct gg_event *e)
 	// cleanup references, so buddy and contact instances can be removed
 	// this is really a hack, we need to call aboutToBeRemoved someway for non-manager contacts and buddies too
 	// or just only store managed only, i dont know yet
-	foreach (Buddy buddy, buddies)
+	// also in: BuddyListModel::~BuddyListModel()
+	foreach (const Buddy &buddy, buddies)
 	{
 		foreach (Contact contact, buddy.contacts())
 			contact.data()->aboutToBeRemoved();
