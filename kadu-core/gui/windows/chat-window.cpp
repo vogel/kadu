@@ -48,7 +48,8 @@
 #include "chat-window.h"
 
 ChatWindow::ChatWindow(ChatWidget *chatWidget, QWidget *parent) :
-		QWidget(parent), currentChatWidget(chatWidget), title_timer(new QTimer(this))
+		QWidget(parent), currentChatWidget(chatWidget), title_timer(new QTimer(this)),
+		showNewMessagesNum(false), blinkChatTitle(true)
 {
 	kdebugf();
 
