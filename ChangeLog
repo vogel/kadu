@@ -5,6 +5,7 @@
 * status: fixed a bug where sometimes invisible status for GG wasn't possible to set in simple mode (beevvy)
 * gui: fixed a bug on Windows where chat notifications may not work in certain cases (ultr, beevvy)
 * buddies: fixed crash on exit in some configurations after using OpenChatWith window (beevvy)
+* gui: #2067 fixed: wrong error message in Add Buddy window if no id entered and some account chosen (dienet)
 
 +++ version 0.9.1
 * gadu: fixed bug where Kadu could send contacts to Gadu server not from contacts list, but from history (Vogel)
