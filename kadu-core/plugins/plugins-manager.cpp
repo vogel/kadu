@@ -327,7 +327,10 @@ void PluginsManager::activatePlugins()
 		foreach (Plugin *replacementPlugin, Plugins)
 			if (replacementPlugin->state() == Plugin::PluginStateNew && replacementPlugin->isValid() && replacementPlugin->info()->replaces().contains(pluginToReplace->name()))
 				if (activatePlugin(replacementPlugin))
+				{
+					replacementPlugin->setState(Plugin::PluginStateEnabled);
 					saveList = true; // list has changed
+				}
 	}
 
 	// if not all plugins were loaded properly or new plugin was added
