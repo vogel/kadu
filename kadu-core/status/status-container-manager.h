@@ -87,8 +87,8 @@ public:
 	// TODO: rethink it, it is needed by status-change action in main window
 	StatusContainer * defaultStatusContainer() const { return DefaultStatusContainer; }
 
-	virtual void setStatus(Status newStatus);
-	virtual void setDescription(const QString &description);
+	virtual void setStatus(Status newStatus, bool flush = true);
+	virtual void setDescription(const QString &description, bool flush = true);
 	virtual Status status();
 	virtual bool isStatusSettingInProgress();
 

@@ -148,7 +148,7 @@ void IdentityShared::doSetStatus(Status status)
 
 	foreach (const Account &account, Accounts)
 		if (account)
-			account.data()->setStatus(status);
+			account.data()->setStatus(status, false);
 }
 
 Account IdentityShared::bestAccount()

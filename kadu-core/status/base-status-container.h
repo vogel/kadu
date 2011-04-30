@@ -41,8 +41,8 @@ public:
 	explicit BaseStatusContainer(StorableObject *storableObject);
 	virtual ~BaseStatusContainer();
 
-	virtual void setStatus(Status status);
-	virtual void setDescription(const QString &description);
+	virtual void setStatus(Status status, bool flush = true);
+	virtual void setDescription(const QString &description, bool flush = true);
 
 	virtual void setDefaultStatus(const QString &startupStatus, bool offlineToInvisible,
 			const QString &startupDescription, bool StartupLastDescription);

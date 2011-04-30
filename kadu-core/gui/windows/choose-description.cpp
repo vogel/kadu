@@ -160,7 +160,7 @@ void ChooseDescription::setDescription()
 	if (config_file.readBoolEntry("General", "ParseStatus", false))
 		description = Parser::parse(description, BuddyOrContact(Core::instance()->myself()), false);
 
-	MyStatusContainer->setDescription(description);
+	MyStatusContainer->setDescription(description, true);
 }
 
 void ChooseDescription::activated(int index)
