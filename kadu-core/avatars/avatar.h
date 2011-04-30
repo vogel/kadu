@@ -52,6 +52,7 @@ public:
 
 	QString filePath();
 	void setFilePath(const QString &filePath);
+	virtual void storeAvatar();
 
 	KaduSharedBase_PropertyBoolRead(Empty)
 	KaduSharedBase_Property(Buddy, avatarBuddy, AvatarBuddy)
