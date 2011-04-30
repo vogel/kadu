@@ -50,6 +50,8 @@ public:
 	Avatar(const Avatar &copy);
 	virtual ~Avatar();
 
+	virtual void storeAvatar();
+
 	KaduSharedBase_PropertyBoolRead(Empty)
 	KaduSharedBase_PropertyCRW(Buddy, avatarBuddy, AvatarBuddy)
 	KaduSharedBase_PropertyCRW(Contact, avatarContact, AvatarContact)

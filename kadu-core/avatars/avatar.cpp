@@ -71,6 +71,13 @@ Avatar::~Avatar()
 {
 }
 
+void Avatar::storeAvatar()
+{
+	if (!isNull())
+		data()->storeAvatar();
+}
+
+
 KaduSharedBase_PropertyBoolReadDef(Avatar, Empty, true)
 KaduSharedBase_PropertyDefCRW(Avatar, Buddy, avatarBuddy, AvatarBuddy, Buddy::null)
 KaduSharedBase_PropertyDefCRW(Avatar, Contact, avatarContact, AvatarContact, Contact::null)

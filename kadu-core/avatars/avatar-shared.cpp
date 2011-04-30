@@ -94,7 +94,7 @@ void AvatarShared::load()
 	Pixmap.load(filePath());
 }
 
-void AvatarShared::store()
+void AvatarShared::storeAvatar()
 {
 	if (!isValidStorage())
 		return;

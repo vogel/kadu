@@ -180,7 +180,7 @@ void AvatarManager::avatarPixmapUpdated()
 
 	Avatar avatar(sender());
 	if (avatar)
-		avatar.store(); // store file now so webkit can see it
+		avatar.storeAvatar(); // store file now so webkit can see it
 }
 
 Avatar AvatarManager::byBuddy(Buddy buddy, NotFoundAction action)
