@@ -25,6 +25,7 @@
 
 #include <QtCore/QHash>
 #include <QtCore/QScopedArrayPointer>
+#include <QtCore/QTimer>
 
 #include "buddies/buddy-set.h"
 #include "buddies/buddy-shared.h"
@@ -49,12 +50,21 @@
 
 #include "gadu-chat-service.h"
 
+// TODO: move to const or something
+#define MAX_DELIVERY_TIME 60 /*seconds*/
+#define REMOVE_TIMER_INTERVAL 1000
+
 GaduChatService::GaduChatService(GaduProtocol *protocol)
 	: ChatService(protocol), Protocol(protocol)
 {
 	// TODO
 // 	connect(protocol->socketNotifiers(), SIGNAL(ackReceived(int, uin_t, int)),
 // 		this, SLOT(ackReceived(int, uin_t, int)));
+
+	RemoveTimer = new QTimer(this);
+	RemoveTimer->setInterval(REMOVE_TIMER_INTERVAL);
+	connect(RemoveTimer, SIGNAL(timeout()), this, SLOT(removeTimeoutUndeliveredMessages()));
+	RemoveTimer->start();
 }
 
 bool GaduChatService::sendMessage(const Chat &chat, FormattedMessage &message, bool silent)
@@ -356,25 +366,16 @@ void GaduChatService::handleEventAck(struct gg_event *e)
 
 void GaduChatService::removeTimeoutUndeliveredMessages()
 {
-// TODO: move to const or something
-	#define MAX_DELIVERY_TIME 60
-
-	QDateTime now;
+	QDateTime now = QDateTime::currentDateTime();
 	QList<int> toRemove;
 
-	QHash<int, Message>::iterator message = UndeliveredMessages.begin();
-	QHash<int, Message>::iterator end = UndeliveredMessages.end();
-	for (; message != end; ++message)
-	{
-		if (message.value().sendDate().addSecs(MAX_DELIVERY_TIME) < now)
-		{
-			toRemove.append(message.key());
-			message.value().setStatus(Message::StatusWontDeliver);
-		}
-	}
+	foreach (int messageId, UndeliveredMessages.keys())
+		if (UndeliveredMessages[messageId].sendDate().addSecs(MAX_DELIVERY_TIME) < now)
+			toRemove.append(messageId);
 
 	foreach (int messageId, toRemove)
 	{
+		UndeliveredMessages[messageId].setStatus(Message::StatusWontDeliver);
 		emit messageStatusChanged(UndeliveredMessages[messageId], StatusRejectedTimeout);
 		UndeliveredMessages.remove(messageId);
 	}
