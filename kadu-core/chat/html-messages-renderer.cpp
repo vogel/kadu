@@ -34,8 +34,6 @@ HtmlMessagesRenderer::HtmlMessagesRenderer(const Chat &chat, QObject *parent) :
 {
 	MyWebPage = new QWebPage(this);
 	MyWebPage->settings()->setAttribute(QWebSettings::JavascriptEnabled, true);
-
-	ChatStylesManager::instance()->currentEngine()->refreshView(this);
 }
 
 HtmlMessagesRenderer::~HtmlMessagesRenderer()
