@@ -38,9 +38,10 @@
 #include "gui/widgets/chat-messages-view.h"
 #include "gui/widgets/chat-widget.h"
 #include "gui/widgets/preview.h"
+#include "icons/kadu-icon.h"
+#include "identities/identity.h"
 #include "parser/parser.h"
 #include "protocols/protocol-factory.h"
-#include "icons/kadu-icon.h"
 #include "misc/misc.h"
 
 #include "adium-style.h"

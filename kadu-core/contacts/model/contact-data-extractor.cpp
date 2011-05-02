@@ -23,6 +23,7 @@
 #include <QtCore/QVariant>
 
 #include "accounts/account.h"
+#include "avatars/avatar.h"
 #include "contacts/contact.h"
 #include "buddies/buddy-kadu-data.h"
 #include "buddies/buddy-shared.h"

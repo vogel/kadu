@@ -31,6 +31,7 @@
 #include "storage/shared-base.h"
 #include "exports.h"
 
+class Buddy;
 class Contact;
 class StoragePoint;
 

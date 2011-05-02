@@ -32,8 +32,7 @@
 
 #include "exports.h"
 
-#include "buddies/buddy.h"
-#include "buddies/buddy-list.h"
+#include "accounts/account.h"
 #include "chat/chat.h"
 #include "status/status.h"
 

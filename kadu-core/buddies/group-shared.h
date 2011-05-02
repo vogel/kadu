@@ -22,10 +22,7 @@
 #define GROUP_SHARED_H
 
 #include <QtCore/QObject>
-#include <QtCore/QSharedData>
-#include <QtCore/QUuid>
-
-#include "status/status.h"
+#include <QtCore/QString>
 
 #include "storage/shared.h"
 

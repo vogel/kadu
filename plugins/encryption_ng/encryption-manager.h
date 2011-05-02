@@ -26,12 +26,13 @@
 #include <QtGui/QAction>
 
 #include "accounts/accounts-aware-object.h"
-#include "chat/chat.h"
 
 #include "encryption_exports.h"
 
 class ActionDescription;
+class Chat;
 class ChatWidget;
+class Contact;
 class KeyGenerator;
 
 class ENCRYPTIONAPI EncryptionManager : public QObject, AccountsAwareObject
@@ -69,5 +70,9 @@ public:
 	bool setEncryptionEnabled(const Chat &chat, bool enable);
 
 };
+
+// for MOC
+#include "chat/chat.h"
+#include "contacts/contact.h"
 
 #endif // ENCRYPTION_MANAGER_H

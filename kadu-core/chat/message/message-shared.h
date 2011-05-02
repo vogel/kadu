@@ -24,8 +24,9 @@
 
 #include <QtCore/QSharedData>
 
-#include "buddies/buddy.h"
+#include "chat/chat.h"
 #include "chat/message/message.h"
+#include "contacts/contact.h"
 #include "storage/shared.h"
 
 class Chat;

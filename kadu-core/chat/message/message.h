@@ -24,13 +24,13 @@
 #define MESSAGE_H
 
 #include <QtCore/QDateTime>
-#include <QtCore/QObject>
 
-#include "buddies/buddy.h"
-#include "chat/chat.h"
+#include "storage/shared-base.h"
 
 #include "exports.h"
 
+class Chat;
+class Contact;
 class MessageShared;
 
 class KADUAPI Message : public SharedBase<MessageShared>

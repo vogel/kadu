@@ -23,6 +23,7 @@
 
 #include "accounts/account-details.h"
 #include "accounts/account-manager.h"
+#include "accounts/account-proxy-settings.h"
 #include "buddies/buddy-manager.h"
 #include "configuration/configuration-file.h"
 #include "configuration/main-configuration.h"
@@ -30,6 +31,7 @@
 #include "contacts/contact.h"
 #include "contacts/contact-details.h"
 #include "contacts/contact-manager.h"
+#include "identities/identity.h"
 #include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocols-manager.h"

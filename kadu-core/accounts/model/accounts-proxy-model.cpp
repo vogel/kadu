@@ -20,6 +20,7 @@
 
 #include "accounts/account.h"
 #include "accounts/filter/abstract-account-filter.h"
+#include "identities/identity.h"
 #include "model/roles.h"
 
 #include "accounts-proxy-model.h"

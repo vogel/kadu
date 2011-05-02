@@ -24,6 +24,7 @@
 
 #include <QtCore/QObject>
 
+#include "chat/chat.h"
 #include "chat/message/message.h"
 
 class QWebPage;

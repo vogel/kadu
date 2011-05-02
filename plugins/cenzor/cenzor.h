@@ -24,9 +24,11 @@
 #include <QtCore/QObject>
 
 #include "accounts/accounts-aware-object.h"
-#include "chat/chat.h"
 
 #include "configuration/cenzor-configuration.h"
+
+class Chat;
+class Contact;
 
 class Cenzor : public QObject, AccountsAwareObject
 {
@@ -60,5 +62,9 @@ public:
 };
 
 extern Cenzor *cenzor;
+
+// for MOC
+#include "chat/chat.h"
+#include "contacts/contact.h"
 
 #endif

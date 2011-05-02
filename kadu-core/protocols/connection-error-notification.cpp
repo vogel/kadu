@@ -26,6 +26,7 @@
 #include "parser/parser.h"
 #include "debug.h"
 #include "icons/icons-manager.h"
+#include "identities/identity.h"
 
 #include "connection-error-notification.h"
 

@@ -35,6 +35,7 @@
 
 class HistorySearchParameters;
 class Message;
+class Status;
 class TimedStatus;
 
 class HISTORYAPI HistoryStorage : public QObject

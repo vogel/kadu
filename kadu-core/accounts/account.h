@@ -27,16 +27,15 @@
 #include <QtXml/QDomElement>
 
 #include "accounts/account-shared.h"
-#include "buddies/buddy.h"
 #include "status/base-status-container.h"
-#include "status/status.h"
 #include "storage/shared-base.h"
 
 class AccountDetails;
 class AccountProxySettings;
+class Contact;
+class Identity;
 class Protocol;
 class ProtocolFactory;
-class Status;
 class XmlConfigFile;
 
 class KADUAPI Account : public SharedBase<AccountShared>

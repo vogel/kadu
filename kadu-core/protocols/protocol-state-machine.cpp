@@ -17,6 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QStringList>
+
 #include "network/network-manager.h"
 #include "protocols/protocol.h"
 #include "debug.h"

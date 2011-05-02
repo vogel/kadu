@@ -28,6 +28,7 @@
 
 class Action;
 class ActionDescription;
+class Contact;
 
 class EncryptionActions : public QObject, AccountsAwareObject
 {

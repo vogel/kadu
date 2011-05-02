@@ -30,13 +30,16 @@
 #include <QtGui/QProgressBar>
 #include <QtGui/QPushButton>
 
+#include "accounts/account.h"
 #include "buddies/buddy.h"
+#include "contacts/contact.h"
 #include "file-transfer/file-transfer.h"
 #include "file-transfer/file-transfer-handler.h"
 #include "file-transfer/file-transfer-manager.h"
 #include "file-transfer/file-transfer-shared.h"
 #include "gui/windows/message-dialog.h"
 #include "icons/kadu-icon.h"
+#include "identities/identity.h"
 
 #include "debug.h"
 

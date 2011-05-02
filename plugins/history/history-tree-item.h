@@ -24,10 +24,10 @@
 
 #include <QtCore/QVariant>
 
-#include "model/history-type.h"
+#include "buddies/buddy.h"
+#include "chat/chat.h"
 
-class Buddy;
-class Chat;
+#include "model/history-type.h"
 
 class HistoryTreeItem
 {

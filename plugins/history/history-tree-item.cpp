@@ -19,9 +19,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "buddies/buddy.h"
-#include "chat/chat.h"
-
 #include "history-tree-item.h"
 
 HistoryTreeItem::HistoryTreeItem() :

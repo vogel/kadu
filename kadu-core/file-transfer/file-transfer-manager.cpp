@@ -35,6 +35,7 @@
 #include "gui/windows/file-transfer-window.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-dialog.h"
+#include "identities/identity.h"
 #include "notify/notification-manager.h"
 #include "protocols/protocol.h"
 #include "protocols/services/file-transfer-service.h"

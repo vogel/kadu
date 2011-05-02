@@ -23,9 +23,6 @@
 #ifndef IDENTITY_H
 #define IDENTITY_H
 
-#include <QtCore/QUuid>
-#include <QtCore/QStringList>
-
 #include "identities/identity-shared.h"
 #include "exports.h"
 

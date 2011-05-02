@@ -37,6 +37,7 @@
 #include "contacts/contact-shared.h"
 #include "core/core.h"
 #include "icons/kadu-icon.h"
+#include "identities/identity.h"
 #include "protocols/protocol.h"
 #include "protocols/protocols-manager.h"
 

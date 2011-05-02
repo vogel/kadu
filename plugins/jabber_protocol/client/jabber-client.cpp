@@ -31,6 +31,7 @@
 #include <xmpp_tasks.h>
 
 #include "accounts/account.h"
+#include "identities/identity.h"
 #include "debug.h"
 
 #include "certificates/certificate-helpers.h"

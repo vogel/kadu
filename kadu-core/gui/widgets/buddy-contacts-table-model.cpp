@@ -24,6 +24,7 @@
 #include "contacts/contact-manager.h"
 #include "gui/widgets/buddy-contacts-table-item.h"
 #include "icons/kadu-icon.h"
+#include "identities/identity.h"
 #include "model/roles.h"
 #include "protocols/services/roster-service.h"
 #include "protocols/protocol.h"

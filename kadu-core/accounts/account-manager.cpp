@@ -31,6 +31,7 @@
 #include "contacts/contact-manager.h"
 #include "core/core.h"
 #include "gui/windows/password-window.h"
+#include "identities/identity.h"
 #include "notify/notification-manager.h"
 #include "protocols/connection-error-notification.h"
 #include "protocols/protocol.h"

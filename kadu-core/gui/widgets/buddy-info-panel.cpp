@@ -24,6 +24,7 @@
 #include <QtWebKit/QWebFrame>
 
 #include "accounts/account.h"
+#include "avatars/avatar.h"
 #include "buddies/buddy.h"
 #include "buddies/buddy-shared.h"
 #include "buddies/buddy-preferred-manager.h"

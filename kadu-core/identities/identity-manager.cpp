@@ -19,6 +19,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "accounts/account.h"
 #include "core/core.h"
 #include "configuration/configuration-manager.h"
 #include "identities/identities-aware-object.h"

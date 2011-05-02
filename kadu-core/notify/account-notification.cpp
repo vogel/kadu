@@ -19,6 +19,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "identities/identity.h"
 #include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
 

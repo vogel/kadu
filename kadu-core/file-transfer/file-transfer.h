@@ -24,8 +24,6 @@
 #ifndef FILE_TRANSFER_H
 #define FILE_TRANSFER_H
 
-#include <QtCore/QObject>
-
 #include "file-transfer/file-transfer-shared.h"
 #include "storage/shared-base.h"
 
@@ -33,7 +31,7 @@
 
 class QFile;
 
-class Buddy;
+class Contact;
 
 class KADUAPI FileTransfer : public SharedBase<FileTransferShared>
 {

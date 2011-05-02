@@ -20,6 +20,7 @@
 #include <QtCore/QTimer>
 
 #include "avatars/avatar-job-runner.h"
+#include "contacts/contact.h"
 #include "contacts/contact-shared.h"
 
 #include "avatar-job-manager.h"

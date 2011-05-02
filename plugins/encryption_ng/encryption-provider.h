@@ -23,10 +23,10 @@
 
 #include <QtCore/QObject>
 
-#include "chat/chat.h"
-
 #include "encryption_exports.h"
 
+class Chat;
+class Contact;
 class Decryptor;
 class Encryptor;
 
@@ -52,5 +52,9 @@ signals:
 	void keyReceived(const Contact &contact, const QString &keyType, const QByteArray &key);
 
 };
+
+// for MOC
+#include "chat/chat.h"
+#include "contacts/contact.h"
 
 #endif // ENCRYPTION_PROVIDER_H

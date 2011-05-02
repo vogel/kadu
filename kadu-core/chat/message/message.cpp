@@ -20,7 +20,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "chat/chat.h"
 #include "chat/message/message-shared.h"
+#include "contacts/contact.h"
 
 #include "message.h"
 

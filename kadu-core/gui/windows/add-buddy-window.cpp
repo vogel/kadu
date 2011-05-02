@@ -53,6 +53,7 @@
 #include "gui/widgets/groups-combo-box.h"
 #include "gui/widgets/select-buddy-combo-box.h"
 #include "icons/kadu-icon.h"
+#include "identities/identity.h"
 #include "misc/misc.h"
 #include "model/roles.h"
 #include "protocols/services/roster-service.h"

@@ -25,6 +25,7 @@
 #include "buddies/buddy-shared.h"
 #include "chat/chat.h"
 #include "chat/chat-manager.h"
+#include "contacts/contact.h"
 #include "contacts/contact-set.h"
 #include "contacts/contact-shared.h"
 #include "core/core.h"
@@ -34,6 +35,7 @@
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-dialog.h"
+#include "identities/identity.h"
 #include "protocols/services/chat-service.h"
 #include "protocols/protocol.h"
 

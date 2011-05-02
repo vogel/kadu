@@ -22,12 +22,12 @@
 #define ANTISTRING_H
 
 #include "accounts/accounts-aware-object.h"
-#include "chat/chat.h"
 #include "configuration/configuration-aware-object.h"
 #include "gui/windows/main-configuration-window.h"
 
 #include "antistring-configuration.h"
 
+class Chat;
 class ChatService;
 class Contact;
 
@@ -64,5 +64,9 @@ public:
 	AntistringConfiguration & configuration() { return Configuration; }
 
 };
+
+// for MOC
+#include "chat/chat.h"
+#include "contacts/contact.h"
 
 #endif // ANTISTRING_H

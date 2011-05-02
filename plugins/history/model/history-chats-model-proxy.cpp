@@ -19,6 +19,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <stdio.h>
+
+#include "buddies/buddy.h"
 #include "buddies/filter/abstract-buddy-filter.h"
 #include "chat/filter/chat-filter.h"
 #include "chat/type/chat-type.h"
