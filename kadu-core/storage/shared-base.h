@@ -342,8 +342,7 @@ public:
 	 *
 	 * Contructs empty (null) object. It contains no data.
 	 */
-	SharedBase() :
-			Data(0)
+	SharedBase()
 	{
 	}
 
@@ -365,8 +364,7 @@ public:
 	 * @param copy object that will be copied
 	 *
 	 * Copies copy object. Source and resulting object will have the same data. Udpate
-	 * in one will result in update with second. Only way to break this dependence
-	 * is to use assignment operator.
+	 * in one will result in update with second.
 	 */
 	SharedBase(const SharedBase &copy) :
 			Data(copy.Data)
@@ -445,33 +443,6 @@ public:
 	bool isNull() const
 	{
 		return !Data;
-	}
-
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Check if two objects are not equal.
-	 * @param compare object to compare with
-	 * @return true, if two objects are different
-	 *
-	 * Returns true if two objects contains different data objects (or one of them is null).
-	 */
-	bool operator != (const SharedBase<T> &compare) const
-	{
-		return Data != compare.Data;
-	}
-
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Check if one objects is smaller than second.
-	 * @param compare object to compare with
-	 * @return true, if this object is smaller than compare
-	 *
-	 * Objects are compared by pointers to their data objects. Object with smaller pointer value
-	 * is considered as smaller. Methos is used mainly in QMap.
-	 */
-	int operator < (const SharedBase<T> &compare) const
-	{
-		return Data < compare.Data;
 	}
 
 	/**
