@@ -67,12 +67,12 @@ public:
 	bool isEmpty();
 
 	void setPixmap(const QPixmap &pixmap);
+	KaduShared_PropertyRead(const QPixmap &, pixmap, Pixmap)
 
 	KaduShared_Property(const Buddy &, avatarBuddy, AvatarBuddy)
 	KaduShared_Property(const Contact &, avatarContact, AvatarContact)
 	KaduShared_Property(const QDateTime &, lastUpdated, LastUpdated)
 	KaduShared_Property(const QDateTime &, nextUpdate, NextUpdate)
-	KaduShared_PropertyRead(const QPixmap &, pixmap, Pixmap)
 
 signals:
 	void updated();

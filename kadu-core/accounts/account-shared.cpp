@@ -265,7 +265,7 @@ void AccountShared::detailsRemoved()
 	AccountManager::instance()->detailsUnloaded(this);
 }
 
-void AccountShared::doSetAccountIdentity(Identity accountIdentity)
+void AccountShared::doSetAccountIdentity(const Identity &accountIdentity)
 {
 	/* NOTE: This guard is needed to avoid deleting this object when removing
 	 * Account from Identity which may hold last reference to it and thus wants
@@ -278,7 +278,7 @@ void AccountShared::doSetAccountIdentity(Identity accountIdentity)
 	AccountIdentity.addAccount(this);
 }
 
-void AccountShared::setAccountIdentity(Identity accountIdentity)
+void AccountShared::setAccountIdentity(const Identity &accountIdentity)
 {
 	ensureLoaded();
 
@@ -306,7 +306,7 @@ void AccountShared::setProtocolName(const QString &protocolName)
 void AccountShared::doSetId(const QString &id)
 {
 	Id = id;
-	AccountContact.setId(id);
+	accountContact().setId(id);
 }
 
 void AccountShared::setId(const QString &id)
@@ -325,7 +325,7 @@ Contact AccountShared::accountContact()
 {
 	ensureLoaded();
 
-	if (AccountContact.isNull())
+	if (!AccountContact)
 	{
 		AccountContact = ContactManager::instance()->byId(this, Id, ActionCreateAndAdd);
 		ContactManager::instance()->addItem(AccountContact);
@@ -339,10 +339,10 @@ QString AccountShared::statusContainerName()
 	return Id;
 }
 
-void AccountShared::doSetStatus(Status status)
+void AccountShared::doSetStatus(Status newStatus)
 {
 	if (ProtocolHandler)
-		ProtocolHandler->setStatus(status);
+		ProtocolHandler->setStatus(newStatus);
 }
 
 Status AccountShared::status()

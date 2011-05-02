@@ -160,7 +160,7 @@ void BuddyShared::load()
 			if (groupElement.isNull())
 				continue;
 			Group group = GroupManager::instance()->byUuid(groupElement.text());
-			if (!group.isNull())
+			if (group)
 				Groups << group;
 		}
 	}
@@ -217,7 +217,7 @@ void BuddyShared::store()
 	storeValue("Gender", (int)Gender);
 	storeValue("PreferHigherStatuses", PreferHigherStatuses);
 
-	if (Groups.count())
+	if (!Groups.isEmpty())
 	{
 		QDomElement groupsNode = configurationStorage->getNode(parent, "ContactGroups", XmlConfigFile::ModeCreate);
 		foreach (const Group &group, Groups)
@@ -245,7 +245,7 @@ void BuddyShared::aboutToBeRemoved()
 
 	setAnonymous(true);
 
-	foreach (Contact contact, Contacts)
+	foreach (const Contact &contact, Contacts)
 		contact.setOwnerBuddy(Buddy::null);
 
 	Contacts.clear();
@@ -255,11 +255,11 @@ void BuddyShared::aboutToBeRemoved()
 	BuddyAvatar = Avatar::null;
 }
 
-void BuddyShared::addContact(Contact contact)
+void BuddyShared::addContact(const Contact &contact)
 {
 	ensureLoaded();
 
-	if (contact.isNull() || Contacts.contains(contact))
+	if (!contact || Contacts.contains(contact))
 		return;
 
 	emit contactAboutToBeAdded(contact);
@@ -284,11 +284,11 @@ void BuddyShared::addContact(Contact contact)
 	dataUpdated();
 }
 
-void BuddyShared::removeContact(Contact contact)
+void BuddyShared::removeContact(const Contact &contact)
 {
 	ensureLoaded();
 
-	if (contact.isNull() || !Contacts.contains(contact))
+	if (!contact || !Contacts.contains(contact))
 		return;
 
 	emit contactAboutToBeRemoved(contact);
@@ -305,7 +305,6 @@ QList<Contact> BuddyShared::contacts(const Account &account)
 	ensureLoaded();
 
 	QList<Contact> contacts;
-
 	foreach (const Contact &contact, Contacts)
 		if (contact.contactAccount() == account)
 			contacts.append(contact);
@@ -313,7 +312,7 @@ QList<Contact> BuddyShared::contacts(const Account &account)
 	return contacts;
 }
 
-QList<Contact> BuddyShared::contacts()
+const QList<Contact> & BuddyShared::contacts()
 {
 	ensureLoaded();
 
@@ -326,7 +325,7 @@ QString BuddyShared::id(const Account &account)
 
 	QList<Contact> contactslist;
 	contactslist = contacts(account);
-	if (contactslist.count() > 0)
+	if (!contactslist.isEmpty())
 		return contactslist.at(0).id();
 
 	return QString();
@@ -345,7 +344,7 @@ void BuddyShared::sortContacts()
 void BuddyShared::normalizePriorities()
 {
 	int priority = 0;
-	foreach (Contact contact, Contacts)
+	foreach (const Contact &contact, Contacts)
 		contact.setPriority(priority++);
 }
 
@@ -368,7 +367,7 @@ bool BuddyShared::showInAllGroup()
 	ensureLoaded();
 
 	foreach (const Group &group, Groups)
-		if (!group.isNull() && !group.showInAllGroup())
+		if (group && !group.showInAllGroup())
 			return false;
 
 	return true;
@@ -378,7 +377,7 @@ void BuddyShared::addToGroup(const Group &group)
 {
 	ensureLoaded();
 
-	if (Groups.contains(group) || group.isNull())
+	if (!group || Groups.contains(group))
 		return;
 
 	Groups.append(group);
@@ -389,8 +388,8 @@ void BuddyShared::removeFromGroup(const Group &group)
 {
 	ensureLoaded();
 
-	Groups.removeAll(group);
-	dataUpdated();
+	if (Groups.removeAll(group) > 0)
+		dataUpdated();
 }
 
 bool BuddyShared::isEmpty()

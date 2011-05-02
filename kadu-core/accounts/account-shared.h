@@ -38,7 +38,6 @@
 #include "storage/shared.h"
 
 class AccountDetails;
-class Buddy;
 class FileTransferService;
 class Protocol;
 class ProtocolFactory;
@@ -73,7 +72,7 @@ private:
 	void setDisconnectStatus();
 	void useProtocolFactory(ProtocolFactory *factory);
 
-	void doSetAccountIdentity(Identity accountIdentity);
+	void doSetAccountIdentity(const Identity &accountIdentity);
 	void doSetId(const QString &id);
 
 protected:
@@ -107,21 +106,25 @@ public:
 	virtual bool shouldStore();
 	virtual void aboutToBeRemoved();
 
-	void setAccountIdentity(Identity accountIdentity);
-	void setProtocolName(const QString &protocolName);
-	void setId(const QString &id);
-
 	Contact accountContact();
 
+	void setAccountIdentity(const Identity &accountIdentity);
 	KaduShared_PropertyRead(const Identity &, accountIdentity, AccountIdentity)
+
+	void setProtocolName(const QString &protocolName);
 	KaduShared_PropertyRead(const QString &, protocolName, ProtocolName)
-	KaduShared_Property(Protocol *, protocolHandler, ProtocolHandler)
+
+	void setId(const QString &id);
 	KaduShared_PropertyRead(const QString &, id, Id)
+
+	void setPrivateStatus(bool isPrivate);
+	KaduShared_PropertyRead(bool, privateStatus, PrivateStatus)
+
+	KaduShared_Property(Protocol *, protocolHandler, ProtocolHandler)
 	KaduShared_Property(bool, rememberPassword, RememberPassword)
 	KaduShared_Property(bool, hasPassword, HasPassword)
 	KaduShared_Property(const QString &, password, Password)
 	KaduShared_Property(const AccountProxySettings &, proxySettings, ProxySettings)
-	KaduShared_PropertyRead(bool, privateStatus, PrivateStatus)
 	KaduShared_Property(bool, removing, Removing)
 
 	// StatusContainer implementation
@@ -140,14 +143,12 @@ public:
 
 	virtual QList<StatusType *> supportedStatusTypes();
 
-	virtual void setPrivateStatus(bool isPrivate);
-
 	// TODO: 0.11, find better API
 	// this is only for GG now
 	void fileTransferServiceChanged(FileTransferService *service);
 
 signals:
-	void buddyStatusChanged(Contact contact, Status oldStatus);
+	void buddyStatusChanged(const Contact &contact, const Status &oldStatus);
 	void protocolLoaded();
 	void protocolUnloaded();
 
@@ -163,6 +164,7 @@ signals:
 
 };
 
-#include "buddies/buddy.h" // for MOC
+// for MOC
+#include "status/status.h"
 
 #endif // ACCOUNT_SHARED_H

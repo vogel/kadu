@@ -44,7 +44,7 @@ AvatarShared * AvatarShared::loadFromStorage(const QSharedPointer<StoragePoint> 
 }
 
 AvatarShared::AvatarShared(const QUuid &uuid) :
-		Shared(uuid), AvatarContact(Contact::null)
+		Shared(uuid)
 {
 	AvatarsDir = profilePath("avatars/");
 }
@@ -69,7 +69,7 @@ QString AvatarShared::filePath()
 	return FilePath.isEmpty() ? AvatarsDir + uuid() : FilePath;
 }
 
-void AvatarShared::setFilePath(const QString& filePath)
+void AvatarShared::setFilePath(const QString &filePath)
 {
 	if (FilePath != filePath)
 	{

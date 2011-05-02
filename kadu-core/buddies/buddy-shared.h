@@ -109,10 +109,10 @@ public:
 
 	QMap<QString, QString> & customData() { return CustomData; }
 
-	void addContact(Contact contact);
-	void removeContact(Contact contact);
+	void addContact(const Contact &contact);
+	void removeContact(const Contact &contact);
 	QList<Contact> contacts(const Account &account);
-	QList<Contact> contacts();
+	const QList<Contact> & contacts();
 
 	void sortContacts();
 	void normalizePriorities();
@@ -146,10 +146,10 @@ public:
 	BuddyShared_PropertySubscription(OfflineTo)
 
 signals:
-	void contactAboutToBeAdded(Contact contact);
-	void contactAdded(Contact contact);
-	void contactAboutToBeRemoved(Contact contact);
-	void contactRemoved(Contact contact);
+	void contactAboutToBeAdded(const Contact &contact);
+	void contactAdded(const Contact &contact);
+	void contactAboutToBeRemoved(const Contact &contact);
+	void contactRemoved(const Contact &contact);
 
 	void updated();
 	void buddySubscriptionChanged();
@@ -157,7 +157,6 @@ signals:
 };
 
 // for MOC
-#include "accounts/account.h"
 #include "contacts/contact.h"
 
 #endif // BUDDY_SHARED_DATA

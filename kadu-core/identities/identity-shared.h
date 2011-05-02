@@ -57,9 +57,9 @@ public:
 	virtual void store();
 	virtual void aboutToBeRemoved();
 
-	void addAccount(Account account);
-	void removeAccount(Account account);
-	bool hasAccount(Account account);
+	void addAccount(const Account &account);
+	void removeAccount(const Account &account);
+	bool hasAccount(const Account &account);
 	bool hasAnyAccountWithDetails();
 	bool isEmpty();
 

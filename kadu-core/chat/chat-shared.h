@@ -120,6 +120,4 @@ signals:
  * @}
  */
 
-#include "chat/chat.h" // for MOC
-
 #endif // CHAT_SHARED_H

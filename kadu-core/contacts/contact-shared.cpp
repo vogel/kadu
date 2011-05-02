@@ -50,7 +50,6 @@ ContactShared * ContactShared::loadFromStorage(const QSharedPointer<StoragePoint
 
 ContactShared::ContactShared(const QUuid &uuid) :
 		Shared(uuid),
-		ContactAccount(Account::null), ContactAvatar(Avatar::null), OwnerBuddy(Buddy::null),
 		Priority(-1), MaximumImageSize(0), Blocking(false), Port(0)
 {
 }
@@ -127,14 +126,13 @@ void ContactShared::store()
 	storeValue("Id", Id);
 	storeValue("Priority", Priority);
 	storeValue("Account", ContactAccount.uuid().toString());
+	storeValue("Buddy", !OwnerBuddy.isAnonymous()
+			? OwnerBuddy.uuid().toString()
+			: QString());
 
-	if (OwnerBuddy.isAnonymous())
-		storeValue("Buddy", QString());
-	else
-		storeValue("Buddy", OwnerBuddy.uuid().toString());
-
-	if (!ContactAvatar.isNull())
+	if (ContactAvatar)
 		storeValue("Avatar", ContactAvatar.uuid().toString());
+
 	removeValue("Contact");
 }
 
@@ -152,7 +150,10 @@ void ContactShared::emitUpdated()
 
 void ContactShared::detach(const Buddy &buddy, bool emitSignals)
 {
-	if (!details() || !buddy)
+	if (!details())
+		return;
+
+	if (!buddy)
 		return;
 
 	/* NOTE: This guard is needed to delay deleting this object when removing
@@ -171,7 +172,7 @@ void ContactShared::detach(const Buddy &buddy, bool emitSignals)
 		emit detached(OwnerBuddy);
 }
 
-void ContactShared::attach(const Buddy& buddy, bool emitReattached, bool emitSignals)
+void ContactShared::attach(const Buddy &buddy, bool emitReattached, bool emitSignals)
 {
 	if (!details())
 		return;
@@ -193,7 +194,7 @@ void ContactShared::attach(const Buddy& buddy, bool emitReattached, bool emitSig
 	}
 }
 
-void ContactShared::doSetOwnerBuddy(Buddy buddy, bool emitSignals)
+void ContactShared::doSetOwnerBuddy(const Buddy &buddy, bool emitSignals)
 {
 	/* NOTE: This guard is needed to avoid deleting this object when removing
 	 * Contact from Buddy which may hold last reference to it and thus wants to
@@ -201,7 +202,7 @@ void ContactShared::doSetOwnerBuddy(Buddy buddy, bool emitSignals)
 	 */
 	Contact guard(this);
 
-	bool hadBuddy = !OwnerBuddy.isNull() && !OwnerBuddy.isAnonymous();
+	bool hadBuddy = OwnerBuddy && !OwnerBuddy.isAnonymous();
 
 	detach(OwnerBuddy, emitSignals && !buddy);
 	OwnerBuddy = buddy;
@@ -247,7 +248,7 @@ void ContactShared::protocolRegistered(ProtocolFactory *protocolFactory)
 {
 	ensureLoaded();
 
-	if (ContactAccount.protocolName() != protocolFactory->name())
+	if (!ContactAccount || ContactAccount.protocolName() != protocolFactory->name())
 		return;
 
 	if (details())
@@ -260,10 +261,11 @@ void ContactShared::protocolUnregistered(ProtocolFactory *protocolFactory)
 {
 	ensureLoaded();
 
+	// HACK for dangling contacts causing crashes on exit/plugin unload
 	if (Id.isEmpty())
 		return;
 
-	if (ContactAccount.protocolName() != protocolFactory->name())
+	if (!ContactAccount || ContactAccount.protocolName() != protocolFactory->name())
 		return;
 
 	setDetails(0);

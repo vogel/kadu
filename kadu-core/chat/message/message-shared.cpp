@@ -101,7 +101,7 @@ bool MessageShared::shouldStore()
 	ensureLoaded();
 
 	// only store pending messages
-	// all other messages are stored by history module
+	// all other messages are stored by history plugin
 	return UuidStorableObject::shouldStore()
 			&& !MessageSender.uuid().isNull()
 			&& !MessageChat.uuid().isNull()

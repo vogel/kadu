@@ -59,7 +59,7 @@ class KADUAPI ContactShared : public QObject, public Shared, public DetailsHolde
 	void detach(const Buddy &buddy, bool emitSignals);
 	void attach(const Buddy &buddy, bool emitReattached, bool emitSignals);
 
-	void doSetOwnerBuddy(Buddy buddy, bool emitSignals);
+	void doSetOwnerBuddy(const Buddy &buddy, bool emitSignals);
 
 protected:
 	virtual void load();
@@ -109,8 +109,8 @@ public:
 
 signals:
 	void aboutToBeDetached();
-	void detached(Buddy previousBuddy);
-	void aboutToBeAttached(Buddy nearFutureBuddy);
+	void detached(const Buddy &previousBuddy);
+	void aboutToBeAttached(const Buddy &nearFutureBuddy);
 	void attached();
 	void reattached();
 

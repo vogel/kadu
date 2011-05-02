@@ -97,8 +97,11 @@ void IdentityShared::aboutToBeRemoved()
 	Accounts.clear();
 }
 
-void IdentityShared::addAccount(Account account)
+void IdentityShared::addAccount(const Account &account)
 {
+	if (!account)
+		return;
+
 	ensureLoaded();
 
 	Accounts.append(account);
@@ -107,21 +110,25 @@ void IdentityShared::addAccount(Account account)
 	emit statusUpdated();
 }
 
-void IdentityShared::removeAccount(Account account)
+void IdentityShared::removeAccount(const Account &account)
 {
+	if (!account)
+		return;
+
 	ensureLoaded();
 
-	Accounts.removeAll(account);
-	disconnect(account, SIGNAL(statusUpdated()), this, SIGNAL(statusUpdated()));
-
-	emit statusUpdated();
+	if (Accounts.removeAll(account) > 0)
+	{
+		disconnect(account, SIGNAL(statusUpdated()), this, SIGNAL(statusUpdated()));
+		emit statusUpdated();
+	}
 }
 
-bool IdentityShared::hasAccount(Account account)
+bool IdentityShared::hasAccount(const Account &account)
 {
 	ensureLoaded();
 
-	return Accounts.contains(account);
+	return account && Accounts.contains(account);
 }
 
 bool IdentityShared::hasAnyAccountWithDetails()
