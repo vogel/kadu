@@ -262,7 +262,7 @@ void PluginsManager::ensureLoadedAtLeastOnce(const QString& pluginName)
 	if (!Plugins.contains(pluginName))
 		return;
 
-	if (!Plugin::PluginStateNew == Plugins.value(pluginName)->state())
+	if (Plugin::PluginStateNew == Plugins.value(pluginName)->state())
 		Plugins.value(pluginName)->setState(Plugin::PluginStateEnabled);
 }
 
