@@ -170,7 +170,7 @@ macro (kadu_plugin)
 		include_directories (${CMAKE_SOURCE_DIR}/plugins)
 
 		# opisy .desc sa w iso-8859-2
-		set (CMAKE_RC_FLAGS "-c 28592")
+		set (CMAKE_RC_FLAGS "-c 28592 ${CMAKE_RC_FLAGS}")
 		# wygeneruj plik z wersja modulu
 		set (PLUGIN_SOURCES ${PLUGIN_SOURCES} ${PLUGIN_NAME}.rc)
 		add_custom_command (OUTPUT ${PLUGIN_NAME}.rc
