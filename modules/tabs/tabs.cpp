@@ -62,24 +62,6 @@
 
 #include "tabs.h"
 
-TabsManager *tabs_manager;
-
-extern "C" KADU_EXPORT int tabs_init(bool firstload)
-{
-	Q_UNUSED(firstload)
-
-	tabs_manager = new TabsManager();
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/tabs.ui"));
-	return 0;
-}
-
-extern "C" KADU_EXPORT void tabs_close()
-{
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/tabs.ui"));
-	delete tabs_manager;
-	tabs_manager = 0;
-}
-
 static void disableNewTab(Action *action)
 {
 	action->setEnabled(action->chat());
@@ -92,8 +74,8 @@ static void disableNewTab(Action *action)
 	kdebugf2();
 }
 
-TabsManager::TabsManager() :
-		NoTabs(false), ForceTabs(false), TargetTabs(-1)
+TabsManager::TabsManager(QObject *parent) :
+		QObject(parent), NoTabs(false), ForceTabs(false), TargetTabs(-1)
 {
 	kdebugf();
 

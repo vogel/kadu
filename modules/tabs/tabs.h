@@ -98,7 +98,7 @@ protected:
 	virtual void load();
 
 public:
-	explicit TabsManager();
+	explicit TabsManager(QObject *parent = 0);
 	virtual ~TabsManager();
 
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
@@ -132,7 +132,5 @@ public slots:
 signals:
 	void chatWidgetActivated(ChatWidget *);
 };
-
-extern TabsManager *tabs_manager;
 
 #endif // TABS_TABS_H

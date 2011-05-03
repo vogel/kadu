@@ -1,10 +1,12 @@
 set (SOURCES
 	tabs.cpp
+	tabs-plugin.cpp
 	tabwidget.cpp
 )
 
 set (MOC_SOURCES
 	tabs.h
+	tabs-plugin.h
 	tabwidget.h
 )
 
