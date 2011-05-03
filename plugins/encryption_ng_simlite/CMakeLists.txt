@@ -43,17 +43,18 @@ set (TRANSLATION_SOURCES
 set (CONFIGURATION_FILES
 )
 
-if (MINGW)
+if (WIN32)
 	if (NOT MINGW_QCA_DIR)
 		message (SEND_ERROR " Pass path to libqca2 -DMINGW_QCA_DIR=path")
 	else (NOT MINGW_QCA_DIR)
 		set (QCA2_INCLUDE_DIRS ${MINGW_QCA_DIR}/include/QtCrypto)
 		set (QCA2_LIBRARY_DIRS ${MINGW_QCA_DIR}/bin)
-		set (QCA2_LIBRARIES -lqca2)
+		set (QCA2_LIBRARIES qca2)
 	endif (NOT MINGW_QCA_DIR)
-else (MINGW)
+else (WIN32)
 	pkg_search_module (QCA2 REQUIRED qca2)
-endif (MINGW)
+endif (WIN32)
+
 if (APPLE)
 	if (QCA_FRAMEWORK_DIR)
 		set (QCA2_INCLUDE_DIRS ${QCA_FRAMEWORK_DIR}/qca.framework/Headers/)
