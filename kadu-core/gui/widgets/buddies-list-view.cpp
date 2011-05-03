@@ -66,7 +66,7 @@
 
 BuddiesListView::BuddiesListView(QWidget *parent) :
 		QTreeView(parent), Delegate(0), Model(0),
-		ProxyModel(new BuddiesModelProxy(this)),BackgroundImageMode(BackgroundNone),
+		ProxyModel(new BuddiesModelProxy(this)), BackgroundImageMode(BackgroundNone),
 		BackgroundTemporaryFile(0), ContextMenuEnabled(false)
 {
 	setAnimated(BackgroundImageMode == BackgroundNone);
