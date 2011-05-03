@@ -63,5 +63,7 @@ set (COMPILE_PLUGINS
 #	imagelink
 	# Sms gateway support
 	sms
+	# Tabbed chat dialog
+	tabs
 
 )
