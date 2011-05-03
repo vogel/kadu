@@ -196,7 +196,7 @@ void MessageRenderInfo::replaceLoadingImages(const QString &imageId, const QStri
 MessageRenderInfo & MessageRenderInfo::setShowServerTime(bool noServerTime, int noServerTimeDiff)
 {
 	ShowServerTime = (MyMessage.sendDate().isValid()
-			&& (!noServerTime || (abs(MyMessage.receiveDate().toTime_t() - MyMessage.sendDate().toTime_t())) > noServerTimeDiff));
+			&& (!noServerTime || (abs((qint64)MyMessage.receiveDate().toTime_t() - (qint64)MyMessage.sendDate().toTime_t())) > noServerTimeDiff));
 	return *this;
 }
 

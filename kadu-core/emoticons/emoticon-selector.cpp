@@ -94,7 +94,7 @@ void EmoticonSelector::addEmoticonButtons(int num_emoticons, QWidget *mainwidget
 	}
 
 	if (total_height < selector_width - 80)
-		selector_width = sqrt(selector_width * total_height) * 1.1;
+		selector_width = sqrt((float)selector_width * total_height) * 1.1f;
 	else if (total_height > selector_width + 40)
 		selector_width += 40;
 

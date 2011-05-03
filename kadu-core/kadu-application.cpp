@@ -31,6 +31,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtGui/QSessionManager>
+
 #include "kadu-application.h"
 
 #if defined(Q_WS_X11) && !defined(Q_WS_MAEMO_5)

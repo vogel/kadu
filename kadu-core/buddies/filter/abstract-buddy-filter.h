@@ -25,6 +25,8 @@
 
 #include <QtCore/QObject>
 
+#include "buddies/buddy.h"
+
 #include "exports.h"
 
 class Buddy;

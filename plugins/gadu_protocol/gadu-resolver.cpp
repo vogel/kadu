@@ -33,10 +33,10 @@
 #include <netinet/in.h>
 #include <netdb.h>
 #include <arpa/inet.h>
+#include <unistd.h>
 #endif
 #include <errno.h>
 #include <stdlib.h>
-#include <unistd.h>
 #include <signal.h>
 #include <libgadu.h>
 
