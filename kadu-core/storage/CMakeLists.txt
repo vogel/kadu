@@ -2,7 +2,6 @@ set (storage_SRCS
 	named-storable-object.cpp
 	module-data.cpp
 	shared.cpp
-	shared-base.cpp
 	storable-object.cpp
 	storable-string-list.cpp
 	storage-point.cpp
