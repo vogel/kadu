@@ -146,7 +146,7 @@ void JabberAvatarPepFetcher::avatarDataQueryFinished(const XMPP::Jid &jid, const
 	if (jabberProtocol)
 		disconnect(jabberProtocol->client()->pepManager(), SIGNAL(itemPublished(XMPP::Jid,QString,XMPP::PubSubItem)), this, SLOT(avatarDataQueryFinished(XMPP::Jid,QString,XMPP::PubSubItem)));
 
-	QByteArray imageData = XMPP::Base64().decode(item.payload().text());
+	QByteArray imageData = XMPP::Base64::decode(item.payload().text());
 
 	Avatar contactAvatar = AvatarManager::instance()->byContact(MyContact, ActionCreateAndAdd);
 	contactAvatar.setLastUpdated(QDateTime::currentDateTime());
