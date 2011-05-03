@@ -105,11 +105,8 @@ void ContactShared::load()
 
 void ContactShared::aboutToBeRemoved()
 {
-	Contact guard(this);
-
 	// clean up references
 	ContactAccount = Account::null;
-	OwnerBuddy.removeContact(this);
 	OwnerBuddy = Buddy::null;
 
 	AvatarManager::instance()->removeItem(ContactAvatar);
