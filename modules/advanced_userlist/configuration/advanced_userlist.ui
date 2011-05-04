@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<configuration-ui>
-	<section name="Look" icon="32x32/preferences-desktop-theme">
-		<tab name="Buddy List">
-			<group-box name="Sorting">
-			</group-box>
-		</tab>
-	</section>
-</configuration-ui>

@@ -1,6 +1,0 @@
-[Module]
-Description=Advanced userlist module
-Description[pl]=Modu³ zaawansowanej konfiguracji sortowania listy kontaktów
-Author=joi
-LoadByDefault=false
-Version=core

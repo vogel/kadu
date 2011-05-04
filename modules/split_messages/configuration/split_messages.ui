@@ -1,9 +1,0 @@
-<configuration-ui>
-	<section name="Chat">
-		<tab name="Messages">
-			<group-box name="Split messages">
-				<check-box caption="Split too long messages" config-section="PowerKadu" config-item="enable_split_message" id="split_messages/enable_split_message" />
-			</group-box>
-		</tab>
-	</section>
-</configuration-ui>

@@ -1,8 +1,0 @@
-[Module]
-Description=Weather checking module
-Description[pl]=Modu³ do sprawdzania pogody
-Author=Micha³ Ma³ek
-Dependencies=notify
-Conflicts=
-Provides=descriptions
-Version=3.15
