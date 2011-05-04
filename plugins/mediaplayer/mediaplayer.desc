@@ -1,0 +1,7 @@
+[Module]
+Description=Media players support plugin
+Description[pl]=Plugin obs³ugi odtwarzaczy multimediów
+Author=Googie, amdfanatyk, Dorregaray
+Provides=descriptions
+Version=1.3
+Plugin=true

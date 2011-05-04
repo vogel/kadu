@@ -66,4 +66,7 @@ set (COMPILE_PLUGINS
 	# Tabbed chat dialog
 	tabs
 
+# mediaplayer
+	# Media players support plugin
+	mediaplayer
 )
