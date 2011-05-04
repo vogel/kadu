@@ -17,17 +17,19 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QFile>
+
 #include "configuration/configuration-file.h"
 #include "gui/windows/main-configuration-window.h"
 #include "mediaplayer/mediaplayer.h"
-#include "misc/path-conversion.h"
 #include "plugins/plugin.h"
 #include "plugins/plugin-info.h"
 #include "plugins/plugins-manager.h"
 
 #include "mpris-player.h"
 
-const QString MPRISPlayer::PlayersListFile = "kadu/plugins/data/mprisplayer_mediaplayer/mprisplayer-players.data";
+const QString MPRISPlayer::UserPlayersListFile = "mprisplayer-players.data";
+const QString MPRISPlayer::GlobalPlayersListFile = "kadu/plugins/data/mprisplayer_mediaplayer/" + MPRISPlayer::UserPlayersListFile;
 MPRISPlayer *MPRISPlayer::Instance = 0;
 
 void MPRISPlayer::createInstance()
@@ -45,7 +47,8 @@ void MPRISPlayer::destroyInstance()
 MPRISPlayer::MPRISPlayer() :
 	MPRISMediaPlayer(QString(), QString())
 {
-	replaceModule();
+	prepareUserPlayersFile();
+	replacePlugin();
 	configurationApplied();
 }
 
@@ -54,9 +57,21 @@ MPRISPlayer::~MPRISPlayer()
 
 }
 
-void MPRISPlayer::replaceModule()
+void MPRISPlayer::prepareUserPlayersFile()
 {
-	QMap<QString , QString> replaceMap;
+	if (QFile::exists(MPRISPlayer::userPlayersListFileName()))
+		return;
+
+	QFile userFile(MPRISPlayer::userPlayersListFileName());
+	if (!userFile.open(QIODevice::ReadWrite))
+		return;
+
+	userFile.close();
+}
+
+void MPRISPlayer::replacePlugin()
+{
+	QMap<QString, QString> replaceMap;
 	replaceMap.insert("amarok2_mediaplayer", 	"Amarok");
 	replaceMap.insert("audacious_mediaplayer", 	"Audacious");
 	replaceMap.insert("bmpx_mediaplayer", 		"BMPx");
@@ -65,15 +80,15 @@ void MPRISPlayer::replaceModule()
 	replaceMap.insert("vlc_mediaplayer", 		"VLC");
 	replaceMap.insert("xmms2_mediaplayer", 		"XMMS2");
 
-	QMap<QString, Plugin *> loadedModules = PluginsManager::instance()->plugins();
+	QMap<QString, Plugin *> plugins = PluginsManager::instance()->plugins();
 
 	foreach (const QString &value, replaceMap)
 	{
 		QString key = replaceMap.key(value);
-		if ((loadedModules.contains(key)) && (loadedModules.value(key)->state() == Plugin::PluginStateEnabled))
+		if (plugins.contains(key) && (plugins.value(key)->state() == Plugin::PluginStateEnabled))
 		{
 			choosePlayer(key, value);
-			loadedModules.value(key)->setState(Plugin::PluginStateDisabled);
+			plugins.value(key)->setState(Plugin::PluginStateDisabled);
 			break;
 		}
 	}
@@ -81,16 +96,17 @@ void MPRISPlayer::replaceModule()
 
 void MPRISPlayer::choosePlayer(const QString &key, const QString &value)
 {
-	PlainConfigFile PlayersFile(dataPath(MPRISPlayer::playersListFileName()));
+	PlainConfigFile globalPlayersFile(MPRISPlayer::globalPlayersListFileName());
+	PlainConfigFile userPlayersFile(MPRISPlayer::userPlayersListFileName());
 
 	// Save service value from mpris_mediaplayer module
 	if (key == "mpris_mediaplayer")
 	{
 		QString oldMPRISService = config_file.readEntry("MediaPlayer", "MPRISService");
 
-		PlayersFile.writeEntry(value, "player", value);
-		PlayersFile.writeEntry(value, "service", oldMPRISService);
-		PlayersFile.sync();
+		userPlayersFile.writeEntry(value, "player", value);
+		userPlayersFile.writeEntry(value, "service", oldMPRISService);
+		userPlayersFile.sync();
 
 		config_file.writeEntry("MPRISPlayer", "Player", value);
 		config_file.writeEntry("MPRISPlayer", "Service", oldMPRISService);
@@ -98,7 +114,7 @@ void MPRISPlayer::choosePlayer(const QString &key, const QString &value)
 	else // Choose player based on old module loaded.
 	{
 		config_file.writeEntry("MPRISPlayer", "Player", value);
-		config_file.writeEntry("MPRISPlayer", "Service", PlayersFile.readEntry(value, "service"));
+		config_file.writeEntry("MPRISPlayer", "Service", globalPlayersFile.readEntry(value, "service"));
 	}
 }
 

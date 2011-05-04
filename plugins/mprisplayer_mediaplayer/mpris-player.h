@@ -24,6 +24,7 @@
 
 #include "configuration/configuration-aware-object.h"
 #include "mediaplayer/mpris_mediaplayer.h"
+#include "misc/path-conversion.h"
 
 class QString;
 
@@ -33,12 +34,14 @@ class MPRISPlayer : public MPRISMediaPlayer
 	Q_DISABLE_COPY(MPRISPlayer)
 
 	static MPRISPlayer *Instance;
-	static const QString PlayersListFile;
+	static const QString UserPlayersListFile;
+	static const QString GlobalPlayersListFile;
 
 	explicit MPRISPlayer();
 	virtual ~MPRISPlayer();
 
-	void replaceModule();
+	void prepareUserPlayersFile();
+	void replacePlugin();
 	void choosePlayer(const QString &key, const QString &value);
 
 public:
@@ -46,9 +49,11 @@ public:
 	static void destroyInstance();
 	static MPRISPlayer *instance() { return Instance; }
 
-	static const QString &playersListFileName() { return PlayersListFile; }
+	static const QString userPlayersListFileName() { return profilePath(UserPlayersListFile); }
+	static const QString globalPlayersListFileName() { return dataPath(GlobalPlayersListFile); }
 
 	void configurationApplied();
+
 };
 
 #endif /* MPRIS_PLAYER_H */

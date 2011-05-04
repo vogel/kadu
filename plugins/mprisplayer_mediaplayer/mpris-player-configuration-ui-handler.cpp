@@ -39,23 +39,23 @@ MPRISPlayerConfigurationUiHandler *MPRISPlayerConfigurationUiHandler::Instance =
 
 void MPRISPlayerConfigurationUiHandler::registerConfigurationUi()
 {
-	if (!Instance)
-	{
-		Instance = new MPRISPlayerConfigurationUiHandler();
-		MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/mprisplayer_mediaplayer.ui"));
-		MainConfigurationWindow::registerUiHandler(Instance);
-	}
+	if (Instance)
+		return;
+
+	Instance = new MPRISPlayerConfigurationUiHandler();
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/mprisplayer_mediaplayer.ui"));
+	MainConfigurationWindow::registerUiHandler(Instance);
 }
 
 void MPRISPlayerConfigurationUiHandler::unregisterConfigurationUi()
 {
-	if (Instance)
-	{
-		MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/mprisplayer_mediaplayer.ui"));
-		MainConfigurationWindow::unregisterUiHandler(Instance);
-		delete Instance;
-		Instance = 0;
-	}
+	if (!Instance)
+		return;
+
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/mprisplayer_mediaplayer.ui"));
+	MainConfigurationWindow::unregisterUiHandler(Instance);
+	delete Instance;
+	Instance = 0;
 }
 
 MPRISPlayerConfigurationUiHandler::MPRISPlayerConfigurationUiHandler() :
@@ -96,7 +96,7 @@ void MPRISPlayerConfigurationUiHandler::mainConfigurationWindowCreated(MainConfi
 
 	optionsGroupBox->addWidgets(0, options);
 
-	loadPlayersListFromFile(dataPath(MPRISPlayer::playersListFileName()));
+	loadPlayersListFromFile(MPRISPlayer::globalPlayersListFileName(), MPRISPlayer::userPlayersListFileName());
 	fillPlayersBox();
 	PlayersBox->setCurrentIndex(PlayersBox->findText(config_file.readEntry("MPRISPlayer", "Player")));
 
@@ -106,18 +106,34 @@ void MPRISPlayerConfigurationUiHandler::mainConfigurationWindowCreated(MainConfi
 	connect(mainConfigurationWindow, SIGNAL(configurationWindowApplied()), this, SLOT(configurationApplied()));
 }
 
-void MPRISPlayerConfigurationUiHandler::loadPlayersListFromFile(const QString &fileName)
+void MPRISPlayerConfigurationUiHandler::loadPlayersListFromFile(const QString &globalFileName, const QString &userFileName)
 {
-	PlainConfigFile PlayersFile(fileName);
-	QStringList sections = PlayersFile.getGroupList();
+	PlainConfigFile globalPlayersFile(globalFileName);
+	PlainConfigFile userPlayersFile(userFileName);
+
+	QStringList globalSections = globalPlayersFile.getGroupList();
+	QStringList userSections = userPlayersFile.getGroupList();
+
 	PlayersMap.clear();
 
-	foreach (const QString &section, sections)
+	foreach (const QString &section, userSections)
 	{
-		QString player = PlayersFile.readEntry(section, "player");
-		QString service = PlayersFile.readEntry(section, "service");
+		QString player = userPlayersFile.readEntry(section, "player");
+		QString service = userPlayersFile.readEntry(section, "service");
 
-		if ((!player.isEmpty()) && (!service.isEmpty()))
+		if (!player.isEmpty() && !service.isEmpty())
+			PlayersMap.insert(player, service);
+	}
+
+	foreach (const QString &globalSection, globalSections)
+	{
+		if (userSections.contains(globalSection))
+			continue;
+
+		QString player = globalPlayersFile.readEntry(globalSection, "player");
+		QString service = globalPlayersFile.readEntry(globalSection, "service");
+
+		if (!player.isEmpty() && !service.isEmpty())
 			PlayersMap.insert(player, service);
 	}
 }
@@ -144,20 +160,20 @@ void MPRISPlayerConfigurationUiHandler::addPlayer()
 	QString newPlayer = Dialog.getPlayer();
 	QString newService = Dialog.getService();
 
-	if ((!newPlayer.isEmpty()) && (!newService.isEmpty()))
-	{
-		QString oldPlayerName = config_file.readEntry("MPRISPlayer", "Player");
-		PlainConfigFile PlayersFile(dataPath(MPRISPlayer::playersListFileName()));
+	if (newPlayer.isEmpty() || newService.isEmpty())
+		return;
 
-		PlayersFile.writeEntry(newPlayer, "player", newPlayer);
-		PlayersFile.writeEntry(newPlayer, "service", newService);
-		PlayersFile.sync();
+	QString oldPlayerName = config_file.readEntry("MPRISPlayer", "Player");
+	PlainConfigFile userPlayersFile(MPRISPlayer::userPlayersListFileName());
 
-		loadPlayersListFromFile(dataPath(MPRISPlayer::playersListFileName()));
-		fillPlayersBox();
+	userPlayersFile.writeEntry(newPlayer, "player", newPlayer);
+	userPlayersFile.writeEntry(newPlayer, "service", newService);
+	userPlayersFile.sync();
 
-		PlayersBox->setCurrentIndex(PlayersBox->findText(oldPlayerName));
-	}
+	loadPlayersListFromFile(MPRISPlayer::globalPlayersListFileName(), MPRISPlayer::userPlayersListFileName());
+	fillPlayersBox();
+
+	PlayersBox->setCurrentIndex(PlayersBox->findText(oldPlayerName));
 }
 
 void MPRISPlayerConfigurationUiHandler::editPlayer()
@@ -166,6 +182,9 @@ void MPRISPlayerConfigurationUiHandler::editPlayer()
 
 	QString oldPlayer = PlayersBox->currentText();
 	QString oldService = PlayersMap.value(oldPlayer);
+
+	if ((oldPlayer.isEmpty() || oldService.isEmpty()))
+		return;
 
 	Dialog.setPlayer(oldPlayer);
 	Dialog.setService(oldService);
@@ -176,49 +195,62 @@ void MPRISPlayerConfigurationUiHandler::editPlayer()
 	QString newPlayer = Dialog.getPlayer();
 	QString newService = Dialog.getService();
 
-	if ((!newPlayer.isEmpty()) && (!newService.isEmpty()) && ((newPlayer != oldPlayer) || (oldService != newService)))
+	if ((newPlayer.isEmpty() || newService.isEmpty()) || (newPlayer == oldPlayer && oldService == newService))
+		return;
+
+	PlainConfigFile globalPlayersFile(MPRISPlayer::globalPlayersListFileName());
+	PlainConfigFile userPlayersFile(MPRISPlayer::userPlayersListFileName());
+	QStringList sections = globalPlayersFile.getGroupList();
+
+	if (!sections.contains(oldPlayer))
+		sections = userPlayersFile.getGroupList();
+
+	foreach (const QString &section, sections)
 	{
-		PlainConfigFile PlayersFile(dataPath(MPRISPlayer::playersListFileName()));
-		QStringList sections = PlayersFile.getGroupList();
+		if (section != oldPlayer)
+			continue;
 
-		foreach (const QString &section, sections)
-		{
-			if (section == oldPlayer)
-			{
-				PlayersFile.writeEntry(newPlayer, "player", newPlayer);
-				PlayersFile.writeEntry(newPlayer, "service", newService);
-				break;
-			}
-		}
+		userPlayersFile.writeEntry(section, "player", QString());
+		userPlayersFile.writeEntry(section, "service", QString());
 
-		PlayersFile.sync();
-
-		loadPlayersListFromFile(dataPath(MPRISPlayer::playersListFileName()));
-		fillPlayersBox();
-
-		PlayersBox->setCurrentIndex(PlayersBox->findText(newPlayer));
+		userPlayersFile.writeEntry(newPlayer, "player", newPlayer);
+		userPlayersFile.writeEntry(newPlayer, "service", newService);
+		break;
 	}
+
+	userPlayersFile.sync();
+
+	loadPlayersListFromFile(MPRISPlayer::globalPlayersListFileName(), MPRISPlayer::userPlayersListFileName());
+	fillPlayersBox();
+
+	PlayersBox->setCurrentIndex(PlayersBox->findText(newPlayer));
 }
 
 void MPRISPlayerConfigurationUiHandler::delPlayer()
 {
-	PlainConfigFile PlayersFile(dataPath(MPRISPlayer::playersListFileName()));
-	QStringList sections = PlayersFile.getGroupList();
 	QString playerToRemove = PlayersBox->currentText();
+
+	PlainConfigFile globalPlayersFile(MPRISPlayer::globalPlayersListFileName());
+	PlainConfigFile userPlayersFile(MPRISPlayer::userPlayersListFileName());
+
+	QStringList sections = globalPlayersFile.getGroupList();
+
+	if (!sections.contains(playerToRemove))
+		sections = userPlayersFile.getGroupList();
 
 	foreach (const QString &section, sections)
 	{
-		if (section == playerToRemove)
-		{
-			PlayersFile.writeEntry(section, "player", QString());
-			PlayersFile.writeEntry(section, "service", QString());
-			break;
-		}
+		if (section != playerToRemove)
+			continue;
+
+		userPlayersFile.writeEntry(section, "player", QString());
+		userPlayersFile.writeEntry(section, "service", QString());
+		break;
 	}
 
-	PlayersFile.sync();
+	userPlayersFile.sync();
 
-	loadPlayersListFromFile(dataPath(MPRISPlayer::playersListFileName()));
+	loadPlayersListFromFile(MPRISPlayer::globalPlayersListFileName(), MPRISPlayer::userPlayersListFileName());
 	fillPlayersBox();
 
 	PlayersBox->setCurrentIndex(-1);

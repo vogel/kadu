@@ -26,8 +26,8 @@
 
 #include "mpris-player-dialog.h"
 
-MPRISPlayerDialog::MPRISPlayerDialog(bool isEdit) :
-	QDialog(0), IsEdit(isEdit)
+MPRISPlayerDialog::MPRISPlayerDialog(bool isEdit, QWidget *parent) :
+	QDialog(parent, Qt::Dialog), IsEdit(isEdit)
 {
 	createGui();
 }
