@@ -1,4 +1,4 @@
-project (chat_notifier)
+project (chat_notify)
 
 # minimal required versions
 cmake_minimum_required (VERSION 2.8)
@@ -8,30 +8,30 @@ set (CMAKE_MIN_VERSION "2.8.0")
 set (KADU_FIND_REQUIRED true)
 include (FindKadu)
 
-include_directories ("${KADU_INCLUDE_DIR}/kadu-core")
+include_directories (${KADU_INCLUDE_DIR}/kadu-core)
 
 set (SOURCES
-	chat-notifier-plugin.cpp
 	chat-notifier.cpp
+	chat-notify-plugin.cpp
 )
 
 set (MOC_SOURCES
-	chat-notifier-plugin.h
 	chat-notifier.h
+	chat-notify-plugin.h
 )
 
 set (CONFIGURATION_FILES
 )
 
 set (TRANSLATION_SOURCES
-	translations/chat_notifier_en.ts
-	translations/chat_notifier_de.ts
-	translations/chat_notifier_fr.ts
-	translations/chat_notifier_it.ts
-	translations/chat_notifier_pl.ts
+	translations/chat_notify_en.ts
+	translations/chat_notify_de.ts
+	translations/chat_notify_fr.ts
+	translations/chat_notify_it.ts
+	translations/chat_notify_pl.ts
 )
 
-kadu_plugin (chat_notifier
+kadu_plugin (chat_notify
 	PLUGIN_SOURCES ${SOURCES}
 	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
 	PLUGIN_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}

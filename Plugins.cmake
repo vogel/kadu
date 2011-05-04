@@ -8,7 +8,7 @@ set (COMPILE_PLUGINS
 
 # notifiers
 	# Enables notifications about buddies presence and other in chat windows
-	chat_notifier
+	chat_notify
 	# Notification by external commands module
 	exec_notify
 	# Freedesktop notification support

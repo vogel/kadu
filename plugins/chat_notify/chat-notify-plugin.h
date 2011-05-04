@@ -17,14 +17,14 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CHAT_NOTIFIER_PLUGIN_H
-#define CHAT_NOTIFIER_PLUGIN_H
+#ifndef CHAT_NOTIFY_PLUGIN_H
+#define CHAT_NOTIFY_PLUGIN_H
 
 #include "plugins/generic-plugin.h"
 
 class ChatNotifier;
 
-class ChatNotifierPlugin : public QObject, public GenericPlugin
+class ChatNotifyPlugin : public QObject, public GenericPlugin
 {
 	Q_OBJECT
 	Q_INTERFACES(GenericPlugin)
@@ -34,11 +34,11 @@ class ChatNotifierPlugin : public QObject, public GenericPlugin
 	void createDefaultConfiguration();
 
 public:
-	virtual ~ChatNotifierPlugin();
+	virtual ~ChatNotifyPlugin();
 
 	virtual int init(bool firstLoad);
 	virtual void done();
 
 };
 
-#endif // CHAT_NOTIFIER_PLUGIN_H
+#endif // CHAT_NOTIFY_PLUGIN_H

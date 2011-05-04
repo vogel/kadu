@@ -22,13 +22,13 @@
 
 #include "chat-notifier.h"
 
-#include "chat-notifier-plugin.h"
+#include "chat-notify-plugin.h"
 
-ChatNotifierPlugin::~ChatNotifierPlugin()
+ChatNotifyPlugin::~ChatNotifyPlugin()
 {
 }
 
-int ChatNotifierPlugin::init(bool firstLoad)
+int ChatNotifyPlugin::init(bool firstLoad)
 {
 	if (firstLoad)
 		createDefaultConfiguration();
@@ -39,12 +39,12 @@ int ChatNotifierPlugin::init(bool firstLoad)
 	return 0;
 }
 
-void ChatNotifierPlugin::done()
+void ChatNotifyPlugin::done()
 {
 	NotificationManager::instance()->unregisterNotifier(NotifierInstance);
 }
 
-void ChatNotifierPlugin::createDefaultConfiguration()
+void ChatNotifyPlugin::createDefaultConfiguration()
 {
 	config_file.addVariable("Notify", "FileTransfer_ChatNotifier", true);
 	config_file.addVariable("Notify", "FileTransfer/IncomingFile_ChatNotifier", true);
@@ -57,4 +57,4 @@ void ChatNotifierPlugin::createDefaultConfiguration()
 	config_file.addVariable("Notify", "StatusChanged/ToOnline_ChatNotifier", true);
 }
 
-Q_EXPORT_PLUGIN2(chat_notifier, ChatNotifierPlugin)
+Q_EXPORT_PLUGIN2(chat_notify, ChatNotifyPlugin)
