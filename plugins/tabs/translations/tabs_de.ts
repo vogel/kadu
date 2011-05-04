@@ -5,7 +5,7 @@
     <name>@default</name>
     <message>
         <source>Chat Window</source>
-        <translation type="unfinished"></translation>
+        <translation>Chat-Fenster</translation>
     </message>
     <message>
         <source>Tabs</source>
@@ -13,7 +13,7 @@
     </message>
     <message>
         <source>General</source>
-        <translation type="unfinished"></translation>
+        <translation>Allgemein</translation>
     </message>
     <message>
         <source>Use tabs by default</source>
@@ -25,7 +25,7 @@
     </message>
     <message>
         <source>Always use tabs</source>
-        <translation type="unfinished"></translation>
+        <translation>Benutze immer Reiter</translation>
     </message>
     <message>
         <source>Tabs at the bottom of the window</source>
@@ -49,15 +49,15 @@
     </message>
     <message>
         <source>Look</source>
-        <translation type="unfinished"></translation>
+        <translation>Aussehen</translation>
     </message>
     <message>
         <source>Show Close button on each tab</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige &quot;Schließen&quot;-Knopf auf jedem Reiter</translation>
     </message>
     <message>
         <source>Shortcuts</source>
-        <translation type="unfinished"></translation>
+        <translation>Tastenkürzel</translation>
     </message>
     <message>
         <source>Move tab left</source>
@@ -77,22 +77,22 @@
     </message>
     <message>
         <source>Chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Chat</translation>
     </message>
 </context>
 <context>
     <name>TabsManager</name>
     <message>
         <source>Chat in New Window</source>
-        <translation type="unfinished"></translation>
+        <translation>Chat im neuen Fenster</translation>
     </message>
     <message>
         <source>Chat in New Tab</source>
-        <translation type="unfinished"></translation>
+        <translation>Chat im neuen Reiter</translation>
     </message>
     <message>
         <source>Attach Chat to Tabs</source>
-        <translation type="unfinished"></translation>
+        <translation>Verbinde Chat mit Reitern</translation>
     </message>
     <message>
         <source>NEW MESSAGE(S)</source>

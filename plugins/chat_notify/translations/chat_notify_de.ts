@@ -5,7 +5,7 @@
     <name>@default</name>
     <message>
         <source>Chat window notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Benachrichtigungen des Chatfensters</translation>
     </message>
 </context>
 </TS>
