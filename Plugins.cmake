@@ -39,6 +39,8 @@ set (COMPILE_PLUGINS
 	sound
 	# Phonon sound support
 	phonon_sound
+	# External sound player support
+	ext_sound
 
 # misc
 	# Antistring
