@@ -23,8 +23,9 @@
 #include <QtCore/QMap>
 
 #include "configuration/configuration-aware-object.h"
-#include "mediaplayer/mpris_mediaplayer.h"
 #include "misc/path-conversion.h"
+
+#include "../mediaplayer/mpris_mediaplayer.h"
 
 class QString;
 

@@ -21,10 +21,11 @@
 
 #include "configuration/configuration-file.h"
 #include "gui/windows/main-configuration-window.h"
-#include "mediaplayer/mediaplayer.h"
 #include "plugins/plugin.h"
 #include "plugins/plugin-info.h"
 #include "plugins/plugins-manager.h"
+
+#include "../mediaplayer/mediaplayer.h"
 
 #include "mpris-player.h"
 
