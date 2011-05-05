@@ -73,4 +73,7 @@ set (COMPILE_PLUGINS
 # mediaplayer
 	# Media players support plugin
 	mediaplayer
+	# MPRIS Media Player support
+	mprisplayer_mediaplayer
+
 )

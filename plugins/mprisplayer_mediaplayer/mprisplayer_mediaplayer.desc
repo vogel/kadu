@@ -1,0 +1,10 @@
+[Module]
+Description=Generic MPRIS media player support module
+Description[pl]=Modu³ obs³ugi odtwarzacza przez interfejs MPRIS
+Author=dienet
+Provides=media_player
+Conflicts=media_player
+Dependencies=mediaplayer
+Replaces=amarok2_mediaplayer audacious_mediaplayer bmpx_mediaplayer dragon_mediaplayer mpris_mediaplayer vlc_mediaplayer xmms2_mediaplayer
+Version=core
+Plugin=true

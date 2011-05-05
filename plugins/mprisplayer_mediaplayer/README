@@ -1,0 +1,30 @@
+Autor: Sławomir 'dienet' Stępień (dienet@poczta.fm)
+
+Plugin ten, łączy wszystkie odtwarzacze kompatybilne z MPRIS w jednym 
+pluginie.
+Plugin pozwala na dodawanie, usuwanie i edytowanie niezbędnych 
+informacji o odtwarzaczu.
+
+Swoje dane plugin przechowuje w pliku: 
+"kadu/plugins/data/mprisplayer_mediaplayer/mprisplayer-players.data"
+
+!!! UWAGA !!!
+Jeśli chcesz zachować zmiany w tym pliku, skopiuj go przed ponowną 
+instalacją plugina lub Kadu.
+
+Po więcej informacji dot. MPRIS zajrzyj na: http://www.mpris.org/
+
+ENGLISH:
+Author: Sławomir 'dienet' Stępień (dienet@poczta.fm)
+
+This plugin merge all MPRIS compatible media players into one plugin.
+Plugin allows to add, edit and remove necessary player informations.
+
+Plugin stores its data in file:
+"kadu/plugins/data/mprisplayer_mediaplayer/mprisplayer-players.data"
+
+!!! NOTICE !!!
+If You want to keep changes You made to this file, copy it before 
+reinstalling this plugin or Kadu.
+
+For mor info about MPRIS see: http://www.mpris.org/
