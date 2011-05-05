@@ -13,6 +13,8 @@ set (COMPILE_PLUGINS
 	exec_notify
 	# Freedesktop notification support
 	freedesktop_notify
+	# Hints near tray icon
+	hints
 
 # history
 	# General history plugin
