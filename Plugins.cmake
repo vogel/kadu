@@ -70,7 +70,9 @@ set (COMPILE_PLUGINS
 	# Idle time counter
 	idle
 	# Shows image links and youtube links as images and videos in chat
-#	imagelink
+	imagelink
+	# Last status infos
+	last_seen
 	# Sms gateway support
 	sms
 	# Tabbed chat dialog

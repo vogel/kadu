@@ -22,6 +22,7 @@
 #define IMAGE_LINK_H
 
 #include <QtCore/QObject>
+#include <QtCore/QRegExp>
 
 #include "accounts/accounts-aware-object.h"
 #include "chat/chat.h"
