@@ -61,6 +61,8 @@ set (COMPILE_PLUGINS
 	config_wizard
 	# Loads presence status messages from file
 	filedesc
+	# Protection against unwanted chats
+	firewall
 	# Idle time counter
 	idle
 	# Shows image links and youtube links as images and videos in chat
