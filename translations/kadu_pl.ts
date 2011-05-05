@@ -1152,30 +1152,16 @@ znajomych po połączeniu się z serwerem</translation>
         <translation>Przychodzący transfer pliku</translation>
     </message>
     <message>
-        <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
-%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist
-%h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size, %z - gender (0/1/2)
-#{message} - message content,
-#{backgroundColor} - background color of message,
-#{fontColor} - font color of message,
-#{nickColor} - font color of nick,
-#{sentDate} - when message was sent,
-#{receivedDate} - when message was received,
-#{separator} - separator between messages,
-&lt;kadu:header&gt;text&lt;/kadu:header&gt; - text will not be displayed in &apos;Remove repeated headers&apos; mode
-</source>
-        <translation>Składnia: %s - status, %d - opis, %i - adres IP, %n - nazwa kontaktu, %a - alternatywna nazwa kontaktu, %f - imię
-%r - nazwisko, %m - telefon komórkowy, %u - numer GG, %g - grupa, %o - zwraca spację jeśli kontakt nie ma nas na liście znajomych
-%h - wersja GG, %v - domena, %p - port, %e - email, %x - maksymalny rozmiar obrazka, %z - płeć (0/1/2)
-#{message} - treść wiadomości,
-#{backgroundColor} - kolor tła wiadomości,
-#{fontColor} - kolor czcionki wiadomości,
-#{nickColor} - kolor czcionki nazwy kontaktu,
-#{sentDate} - data wysłania wiadomości,
-#{receivedDate} - data otrzymania wiadomości,
-#{separator} - separator między wiadomościami,
-&lt;kadu:header&gt;tekst&lt;/kadu:header&gt; - tekst nie zostanie wyświetlony jeśli zaznaczono &quot;Usuń powtarzające się nagłówki&quot;
-</translation>
+        <source>Syntax:
+%s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name, %r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist, %h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size, %z - gender (0/1/2),
+#{message} - message content, #{messageId} - message id, #{backgroundColor} - background color of message, #{fontColor} - font color of message, #{nickColor} - font color of nick, #{sentDate} - when message was sent, #{receivedDate} - when message was received, #{separator} - separator between messages,
+&lt;kadu:header&gt;...&lt;/kadu:header&gt; - content will not be displayed in &apos;Remove repeated headers&apos; mode,
+&lt;kadu:top&gt;...&lt;/kadu:top&gt; - content will be included once at the begining of the document</source>
+        <translation>Składnia:
+%s - status, %d - opis, %i - adres IP, %n - nazwa kontaktu, %a - alternatywna nazwa kontaktu, %f - imię, %r - nazwisko, %m - telefon komórkowy, %u - numer GG, %g - grupa, %o - zwraca spację jeśli kontakt nie ma nas na liście znajomych, %h - wersja GG, %v - domena, %p - port, %e - email, %x - maksymalny rozmiar obrazka, %z - płeć (0/1/2),
+#{message} - treść wiadomości, #{messageId} - id wiadomości, #{backgroundColor} - kolor tła wiadomości, #{fontColor} - kolor czcionki wiadomości, #{nickColor} - kolor czcionki nazwy kontaktu, #{sentDate} - data wysłania wiadomości, #{receivedDate} - data otrzymania wiadomości, #{separator} - separator między wiadomościami,
+&lt;kadu:header&gt;...&lt;/kadu:header&gt; - zawartość nie zostanie wyświetlona jeśli zaznaczono &quot;Usuń powtarzające się nagłówki&quot;
+&lt;kadu:top&gt;...&lt;/kadu:top&gt; - zawartość zostanie wstawiona tylko raz na początku dokumentu</translation>
     </message>
     <message>
         <source>Style variant</source>

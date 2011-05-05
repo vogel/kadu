@@ -8,10 +8,17 @@
 		</div>
 		<div class="messagetextcontainer">
 			<div class="message">
-				<p><span class="messagetime">%time%</span>%message%</p>
+				<p><span class="messagetime"><span id="msg_%messageId%" style="font-weight:bold; margin-right:3px;"></span>%time%</span>%message%</p>
 				<div id="insert"></div>
 			</div>
 		</div>
 	</div>
 	<div class="spacer"></div>
 </div>
+<script type="text/javascript">
+	if ("%messageId%" != "")
+	{
+		document.getElementById("msg_%messageId%").innerHTML = "&#8230;";
+		messageStatusChanged("%messageId%", %messageStatus%);
+	}
+</script>

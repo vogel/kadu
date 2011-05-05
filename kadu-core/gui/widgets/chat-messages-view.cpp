@@ -66,6 +66,9 @@ ChatMessagesView::ChatMessagesView(const Chat &chat, bool supportTransparency, Q
 
 	connect(this->page()->mainFrame(), SIGNAL(contentsSizeChanged(const QSize &)), this, SLOT(scrollToBottom()));
 
+	if (chat.chatAccount().protocolHandler() && chat.chatAccount().protocolHandler()->chatService())
+		connect(chat.chatAccount().protocolHandler()->chatService(), SIGNAL(messageStatusChanged(const Message &, ChatService::MessageStatus)), this, SLOT(messageStatusChanged(const Message &, ChatService::MessageStatus)));
+
 	ChatStylesManager::instance()->chatViewCreated(this);
 }
 
@@ -170,10 +173,6 @@ void ChatMessagesView::appendMessage(MessageRenderInfo *message)
 {
 	kdebugf();
 
-// TODO 0.10.0: currently we do not support showing messages state,
-//	so disable this for now
-//	connect(message->message(), SIGNAL(statusChanged(Message::Status)),
-//				this, SLOT(messageStatusChanged(Message::Status)));
 //	rememberScrollBarPosition();
 
 	Renderer->appendMessage(message);
@@ -201,11 +200,6 @@ void ChatMessagesView::appendMessages(const QList<MessageRenderInfo *> &messages
 {
 	kdebugf2();
 
-// TODO 0.10.0: currently we do not support showing messages state,
-//	so disable this for now
-//	foreach (MessageRenderInfo *message, messages)
-//		connect(message->message(), SIGNAL(statusChanged(Message::Status)),
-//				this, SLOT(messageStatusChanged(Message::Status)));
 //	rememberScrollBarPosition();
 
 	Renderer->appendMessages(messages);
@@ -224,11 +218,12 @@ unsigned int ChatMessagesView::countMessages()
 	return Renderer->messages().count();
 }
 
-void ChatMessagesView::messageStatusChanged(Message::Status status)
+void ChatMessagesView::messageStatusChanged(const Message &message, ChatService::MessageStatus status)
 {
-	if (!sender())
+	Q_UNUSED(status);
+	if (CurrentChat != message.messageChat())
 		return;
-	Renderer->messageStatusChanged(Message(sender()), status);
+	Renderer->messageStatusChanged(message, message.status());
 }
 
 void ChatMessagesView::scrollToBottom()

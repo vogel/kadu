@@ -1,5 +1,25 @@
-<p style="background-color: #{backgroundColor}; margin:0">
+<kadu:top>
+	<script>
+		function messageStatusChanged(messageid, status)
+		{
+			if (status == StatusDelivered)
+				document.getElementById("confirm_"+messageid).style.opacity = "1.0";
+			if (status == StatusWontDeliver)
+				document.getElementById("confirm_"+messageid).style.opacity = "0.1";
+		}
+	</script>
+</kadu:top>
+
+<p[ id="confirm_#{messageId}"] style="background-color: #{backgroundColor}; margin:0">
 <kadu:header>
 <table border="0" cellspacing="0" cellpadding="0" width="100%"><tr><td width="10" align=left valign=bottom width="6%"><img width="16" height="16" src="@{mail-message-new:16x16}" title=""></td><td align="left" width="65%" valign="bottom"><span style="color:#{nickColor}; font-weight:bold" align="left">%a</font></td><td align="right" width="47%" valign="bottom"><span style=" color:#c0c0c0">#{sentDate}</span></td></tr></table>
 </kadu:header>
-<span style="color:#{fontColor}">#{message}</span></p>
+<span style="color:#{fontColor}">#{message}</span>
+</p>
+<script>
+	if ("#{messageId}" != "")
+	{
+		document.getElementById("confirm_#{messageId}").style.opacity = "0.4";
+		messageStatusChanged("#{messageId}", #{messageStatus});
+	}
+</script>

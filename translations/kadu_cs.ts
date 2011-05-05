@@ -1152,30 +1152,16 @@ ihned po zřízení spojení se serverem</translation>
         <translation>Příchozí přenos souboru</translation>
     </message>
     <message>
-        <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
-%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist
-%h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size, %z - gender (0/1/2)
-#{message} - message content,
-#{backgroundColor} - background color of message,
-#{fontColor} - font color of message,
-#{nickColor} - font color of nick,
-#{sentDate} - when message was sent,
-#{receivedDate} - when message was received,
-#{separator} - separator between messages,
-&lt;kadu:header&gt;text&lt;/kadu:header&gt; - text will not be displayed in &apos;Remove repeated headers&apos; mode
-</source>
-        <translation>Skladba: %s - stav, %d - popis, %i - ip, %n - přezdívka, %a - stará přezdívka, %f - křestní jméno
-%r - příjmení, %m - přenosný telefon, %u - uin, %g - skupina, %o - vrátit _volné místo_ pokud nás uživatel nemá v seznamu uživatelů
-%h - gg verze, %v - revDNS, %p - přípojka, %e - e-mail, %x - největší velikost obrázku, %z - pohlaví (0/1/2)
-#{message} - obsah zprávy,
-#{backgroundColor} - barva pozadí zprávy,
-#{fontColor} - barva písma zprávy,
-#{nickColor} - barva písma přezdívky,
-#{sentDate} - čas poslání zprávy,
-#{receivedDate} - čas přijetí zprávy,
-#{separator} - oddělovač mezi zprávami,
-&lt;kadu:header&gt;text&lt;/kadu:header&gt; - text nebude zobrazen v režimu &apos;Odstranit opakující se hlavičky&apos;
-</translation>
+        <source>Syntax:
+%s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name, %r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist, %h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size, %z - gender (0/1/2),
+#{message} - message content, #{messageId} - message id, #{backgroundColor} - background color of message, #{fontColor} - font color of message, #{nickColor} - font color of nick, #{sentDate} - when message was sent, #{receivedDate} - when message was received, #{separator} - separator between messages,
+&lt;kadu:header&gt;...&lt;/kadu:header&gt; - content will not be displayed in &apos;Remove repeated headers&apos; mode,
+&lt;kadu:top&gt;...&lt;/kadu:top&gt; - content will be included once at the begining of the document</source>
+        <translation type="unfinished">Skladba:
+%s - stav, %d - popis, %i - ip, %n - přezdívka, %a - stará přezdívka, %f - křestní jméno, %r - příjmení, %m - přenosný telefon, %u - uin, %g - skupina, %o - vrátit _volné místo_ pokud nás uživatel nemá v seznamu uživatelů, %h - gg verze, %v - revDNS, %p - přípojka, %e - e-mail, %x - největší velikost obrázku, %z - pohlaví (0/1/2),
+#{message} - obsah zprávy, #{messageId} - id zprávy, #{backgroundColor} - barva pozadí zprávy, #{fontColor} - barva písma zprávy, #{nickColor} - barva písma přezdívky, #{sentDate} - čas poslání zprávy, #{receivedDate} - čas přijetí zprávy, #{separator} - oddělovač mezi zprávami,
+&lt;kadu:header&gt;...&lt;/kadu:header&gt; - text nebude zobrazen v režimu &apos;Odstranit opakující se hlavičky&apos;
+&lt;kadu:top&gt;...&lt;/kadu:top&gt; - content will be included once at the begining of the document</translation>
     </message>
     <message>
         <source>Style variant</source>

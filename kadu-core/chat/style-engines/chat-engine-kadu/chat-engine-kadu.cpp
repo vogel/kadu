@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2010 Piotr Dąbrowski (ultr@ultr.pl)
+ * Copyright 2010, 2011 Piotr Dąbrowski (ultr@ultr.pl)
  * Copyright 2010, 2011 Bartosz Brachaczek (b.brachaczek@gmail.com)
  * Copyright 2009, 2010 Piotr Galiszewski (piotr.galiszewski@kadu.im)
  * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
@@ -32,11 +32,11 @@
 #include "gui/widgets/chat-messages-view.h"
 #include "gui/widgets/preview.h"
 #include "gui/windows/syntax-editor-window.h"
+#include "misc/misc.h"
 #include "misc/syntax-list.h"
 #include "parser/parser.h"
 
 #include "chat-engine-kadu.h"
-#include "misc/misc.h"
 
 KaduChatStyleEngine::KaduChatStyleEngine(QObject *parent) :
 	QObject(parent)
@@ -86,10 +86,13 @@ void KaduChatStyleEngine::appendMessage(HtmlMessagesRenderer *renderer, MessageR
 	QString html(replacedNewLine(formatMessage(message, renderer->lastMessage()), QLatin1String(" ")));
 	html.replace('\\', QLatin1String("\\\\"));
 	html.replace('\'', QLatin1String("\\'"));
-	html.prepend("<span>");
+	if (!message->message().id().isEmpty())
+		html.prepend(QString("<span id=\"message_%1\">").arg(message->message().id()));
+	else
+		html.prepend("<span>");
 	html.append("</span>");
 
-	renderer->webPage()->mainFrame()->evaluateJavaScript("kadu_appendMessage(\'" + html + "\')");
+	renderer->webPage()->mainFrame()->evaluateJavaScript("kadu_appendMessage('" + html + "')");
 
 	renderer->setLastMessage(message);
 }
@@ -103,10 +106,7 @@ void KaduChatStyleEngine::refreshView(HtmlMessagesRenderer *renderer, bool useTr
 
 void KaduChatStyleEngine::messageStatusChanged(HtmlMessagesRenderer *renderer, Message message, Message::Status status)
 {
-	Q_UNUSED(message)
-	Q_UNUSED(status)
-	Q_UNUSED(renderer)
-//	repaintMessages(renderer);
+	renderer->webPage()->mainFrame()->evaluateJavaScript(QString("kadu_messageStatusChanged(\"%1\", %2);").arg(message.id()).arg((int)status));
 }
 
 QString KaduChatStyleEngine::isStyleValid(QString stylePath)
@@ -126,16 +126,8 @@ void KaduChatStyleEngine::loadStyle(const QString &styleName, const QString &var
 			"#{receivedDate}[ / S #{sentDate}]</b><br /></kadu:header>"
 		"#{message}</font></p>"
 	);
-	int beginOfHeader = chatSyntax.indexOf("<kadu:header>");
-	int endOfHeader = chatSyntax.indexOf("</kadu:header>");
-	ChatSyntaxWithHeader = chatSyntax;
-	ChatSyntaxWithHeader.remove("<kadu:header>");
-	ChatSyntaxWithHeader.remove("</kadu:header>");
+	CurrentChatSyntax.setSyntax(chatSyntax);
 
-	if (endOfHeader != -1)
-		ChatSyntaxWithoutHeader = chatSyntax.left(beginOfHeader) + chatSyntax.mid(endOfHeader + strlen("</kadu:header>"));
-	else
-		ChatSyntaxWithoutHeader = ChatSyntaxWithHeader;
 	CurrentStyleName = styleName;
 }
 
@@ -150,7 +142,7 @@ QString KaduChatStyleEngine::formatMessage(MessageRenderInfo *message, MessageRe
 	if (msg.type() == Message::TypeSystem)
 	{
 		separatorSize = ChatStylesManager::instance()->paragraphSeparator();
-		format = ChatSyntaxWithHeader;
+		format = CurrentChatSyntax.withHeader();
 
 		message->setSeparatorSize(separatorSize);
 
@@ -173,12 +165,12 @@ QString KaduChatStyleEngine::formatMessage(MessageRenderInfo *message, MessageRe
 		if (includeHeader)
 		{
 			separatorSize = ChatStylesManager::instance()->cfgHeaderSeparatorHeight();
-			format = ChatSyntaxWithHeader;
+			format = CurrentChatSyntax.withHeader();
 		}
 		else
 		{
 			separatorSize = ChatStylesManager::instance()->paragraphSeparator();
-			format = ChatSyntaxWithoutHeader;
+			format = CurrentChatSyntax.withoutHeader();
 		}
 
 		message->setShowServerTime(ChatStylesManager::instance()->noServerTime(), ChatStylesManager::instance()->noServerTimeDiff());
@@ -203,25 +195,52 @@ void KaduChatStyleEngine::repaintMessages(HtmlMessagesRenderer *renderer)
 		"	</head>"
 		"	<body>";
 
+	text += QString("<script>%1</script>").arg(jsCode);
+
+	text += CurrentChatSyntax.top();
+
 	MessageRenderInfo *prevMessage = 0;
 	foreach (MessageRenderInfo *message, renderer->messages())
 	{
-		text += "<span>" + formatMessage(message, prevMessage) + "</span>";
+		QString messageText;
+		if (!message->message().id().isEmpty())
+			messageText = QString("<span id=\"message_%1\">%2</span>").arg(message->message().id()).arg(formatMessage(message, prevMessage));
+		else
+			messageText = QString("<span>%1</span>").arg(formatMessage(message, prevMessage));
+		messageText = scriptsAtEnd(messageText);
+		text += messageText;
 		prevMessage = message;
 	}
-	renderer->setLastMessage(prevMessage);
+	renderer->setLastMessage(prevMessage);	
 
 	text += "</body></html>";
 
 	renderer->webPage()->mainFrame()->setHtml(text);
-	renderer->webPage()->mainFrame()->evaluateJavaScript(jsCode);
+}
 
+QString KaduChatStyleEngine::scriptsAtEnd(const QString &html)
+{
+	QString html2 = html;
+	QString scripts;
+	QRegExp scriptRegexp("<script[^>]*>.*</script>", Qt::CaseInsensitive);
+	scriptRegexp.setMinimal(true);
+	int k = 0;
+	while (true)
+	{
+		k = html2.indexOf(scriptRegexp, k);
+		if (k == -1)
+			break;
+		scripts += scriptRegexp.cap();
+		k += scriptRegexp.matchedLength();
+	}
+	html2.remove(scriptRegexp);
+	return html2 + scripts;
 }
 
 void KaduChatStyleEngine::configurationUpdated()
 {
 	QString chatSyntax = SyntaxList::readSyntax("chat", CurrentStyleName, QString());
-	if (ChatSyntaxWithHeader != chatSyntax)
+	if (CurrentChatSyntax.syntax() != chatSyntax)
 		loadStyle(CurrentStyleName, QString());
 }
 
@@ -229,14 +248,11 @@ void KaduChatStyleEngine::prepareStylePreview(Preview *preview, QString styleNam
 {
 	Q_UNUSED(variantName)
 
-	QString content = SyntaxList::readSyntax("chat", styleName, QString());
+	KaduChatSyntax syntax(SyntaxList::readSyntax("chat", styleName, QString()));
 
-	content.replace(QRegExp("%o"), " ");
-	content.remove("<kadu:header>");
-	content.remove("</kadu:header>");
+	QString text = syntax.top();
 
 	int count = preview->getObjectsToParse().count();
-	QString text;
 	if (count)
 	{
 		MessageRenderInfo *message;
@@ -244,7 +260,7 @@ void KaduChatStyleEngine::prepareStylePreview(Preview *preview, QString styleNam
 		{
 			message = qobject_cast<MessageRenderInfo *>(preview->getObjectsToParse().at(i));
 			Contact sender = message->message().messageSender();
-			text += Parser::parse(content, BuddyOrContact(sender), message);
+			text += Parser::parse(syntax.withHeader(), BuddyOrContact(sender), message);
 		}
 	}
 	preview->setHtml(QString("<html><head><style type='text/css'>%1</style></head><body>%2</body>").arg(ChatStylesManager::instance()->mainStyle(), text));
@@ -252,19 +268,16 @@ void KaduChatStyleEngine::prepareStylePreview(Preview *preview, QString styleNam
 
 void KaduChatStyleEngine::styleEditionRequested(QString styleName)
 {
-	QString syntaxHint = QT_TRANSLATE_NOOP
-	(
-		"@default", "Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name\n"
-		"%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn't have us in userlist\n"
-		"%h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size, %z - gender (0/1/2)\n"
-		"#{message} - message content,\n"
-		"#{backgroundColor} - background color of message,\n"
-		"#{fontColor} - font color of message,\n"
-		"#{nickColor} - font color of nick,\n"
-		"#{sentDate} - when message was sent,\n"
-		"#{receivedDate} - when message was received,\n"
-		"#{separator} - separator between messages,\n"
-		"<kadu:header>text</kadu:header> - text will not be displayed in 'Remove repeated headers' mode\n"
+	QString syntaxHint = qApp->translate(
+		"@default", "Syntax:\n"
+		"%s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name,"
+		" %r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn't have us in userlist,"
+		" %h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size, %z - gender (0/1/2),\n"
+		"#{message} - message content, #{messageId} - message id, #{messageStatus} - message status value, #{backgroundColor} - background color of message,"
+		" #{fontColor} - font color of message, #{nickColor} - font color of nick, #{sentDate} - when message was sent,"
+		" #{receivedDate} - when message was received, #{separator} - separator between messages,\n"
+		"<kadu:header>...</kadu:header> - content will not be displayed in 'Remove repeated headers' mode,\n"
+		"<kadu:top>...</kadu:top> - content will be included once at the begining of the document"
 	);
 
 	SyntaxEditorWindow *editor = new SyntaxEditorWindow(syntaxList, styleName, "Chat", syntaxHint);

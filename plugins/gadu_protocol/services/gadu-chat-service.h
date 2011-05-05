@@ -1,5 +1,6 @@
 /*
  * %kadu copyright begin%
+ * Copyright 2011 Piotr Dąbrowski (ultr@ultr.pl)
  * Copyright 2011 Bartosz Brachaczek (b.brachaczek@gmail.com)
  * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
  * Copyright 2009, 2010, 2011 Piotr Galiszewski (piotr.galiszewski@kadu.im)
@@ -30,6 +31,8 @@
 #include "chat/message/message.h"
 #include "protocols/services/chat-service.h"
 
+class QTimer;
+
 class GaduProtocol;
 
 class GaduChatService : public ChatService
@@ -51,13 +54,16 @@ class GaduChatService : public ChatService
 	bool ignoreImages(Contact sender);
 	FormattedMessage createFormattedMessage(struct gg_event *e, const QByteArray &content, Contact sender);
 
-	void removeTimeoutUndeliveredMessages();
-
 	void handleMsg(Contact sender, ContactSet recipients, Message::Type type, struct gg_event *e);
 
 	void handleEventMsg(struct gg_event *e);
 	void handleEventMultilogonMsg(struct gg_event *e);
 	void handleEventAck(struct gg_event *e);
+
+	QTimer *RemoveTimer;
+
+private slots:
+	void removeTimeoutUndeliveredMessages();
 
 public:
 	GaduChatService(GaduProtocol *protocol);

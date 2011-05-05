@@ -25,6 +25,7 @@
 
 #include <QtCore/QHash>
 #include <QtCore/QScopedArrayPointer>
+#include <QtCore/QTimer>
 
 #include "buddies/buddy-set.h"
 #include "buddies/buddy-shared.h"
@@ -49,12 +50,21 @@
 
 #include "gadu-chat-service.h"
 
+// TODO: move to const or something
+#define MAX_DELIVERY_TIME 60 /*seconds*/
+#define REMOVE_TIMER_INTERVAL 1000
+
 GaduChatService::GaduChatService(GaduProtocol *protocol)
 	: ChatService(protocol), Protocol(protocol)
 {
 	// TODO
 // 	connect(protocol->socketNotifiers(), SIGNAL(ackReceived(int, uin_t, int)),
 // 		this, SLOT(ackReceived(int, uin_t, int)));
+
+	RemoveTimer = new QTimer(this);
+	RemoveTimer->setInterval(REMOVE_TIMER_INTERVAL);
+	connect(RemoveTimer, SIGNAL(timeout()), this, SLOT(removeTimeoutUndeliveredMessages()));
+	RemoveTimer->start();
 }
 
 bool GaduChatService::sendMessage(const Chat &chat, FormattedMessage &message, bool silent)
@@ -316,40 +326,37 @@ void GaduChatService::handleEventAck(struct gg_event *e)
 	UinType uin = e->event.ack.recipient;
 	Q_UNUSED(uin) // only in debug mode
 
-	Message::Status status = Message::StatusUnknown;
 	switch (e->event.ack.status)
 	{
 		case GG_ACK_DELIVERED:
 			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "message delivered (uin: %u, seq: %d)\n", uin, messageId);
+			UndeliveredMessages[messageId].setStatus(Message::StatusDelivered);
 			emit messageStatusChanged(UndeliveredMessages[messageId], StatusAcceptedDelivered);
-			status = Message::StatusDelivered;
 			break;
 		case GG_ACK_QUEUED:
 			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "message queued (uin: %u, seq: %d)\n", uin, messageId);
+			UndeliveredMessages[messageId].setStatus(Message::StatusDelivered);
 			emit messageStatusChanged(UndeliveredMessages[messageId], StatusAcceptedQueued);
-			status = Message::StatusDelivered;
 			break;
 		case GG_ACK_BLOCKED:
 			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "message blocked (uin: %u, seq: %d)\n", uin, messageId);
+			UndeliveredMessages[messageId].setStatus(Message::StatusWontDeliver);
 			emit messageStatusChanged(UndeliveredMessages[messageId], StatusRejectedBlocked);
-			status = Message::StatusWontDeliver;
 			break;
 		case GG_ACK_MBOXFULL:
 			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "message box full (uin: %u, seq: %d)\n", uin, messageId);
+			UndeliveredMessages[messageId].setStatus(Message::StatusWontDeliver);
 			emit messageStatusChanged(UndeliveredMessages[messageId], StatusRejectedBoxFull);
-			status = Message::StatusWontDeliver;
 			break;
 		case GG_ACK_NOT_DELIVERED:
 			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "message not delivered (uin: %u, seq: %d)\n", uin, messageId);
+			UndeliveredMessages[messageId].setStatus(Message::StatusWontDeliver);
 			emit messageStatusChanged(UndeliveredMessages[messageId], StatusRejectedUnknown);
-			status = Message::StatusWontDeliver;
 			break;
 		default:
 			kdebugm(KDEBUG_NETWORK|KDEBUG_WARNING, "unknown acknowledge! (uin: %u, seq: %d, status:%d)\n", uin, messageId, e->event.ack.status);
 			break;
 	}
-
-	UndeliveredMessages[messageId].setStatus(status);
 	UndeliveredMessages.remove(messageId);
 
 	removeTimeoutUndeliveredMessages();
@@ -359,25 +366,16 @@ void GaduChatService::handleEventAck(struct gg_event *e)
 
 void GaduChatService::removeTimeoutUndeliveredMessages()
 {
-// TODO: move to const or something
-	#define MAX_DELIVERY_TIME 60
-
-	QDateTime now;
+	QDateTime now = QDateTime::currentDateTime();
 	QList<int> toRemove;
 
-	QHash<int, Message>::iterator message = UndeliveredMessages.begin();
-	QHash<int, Message>::iterator end = UndeliveredMessages.end();
-	for (; message != end; ++message)
-	{
-		if (message.value().sendDate().addSecs(MAX_DELIVERY_TIME) < now)
-		{
-			toRemove.append(message.key());
-			message.value().setStatus(Message::StatusWontDeliver);
-		}
-	}
+	foreach (int messageId, UndeliveredMessages.keys())
+		if (UndeliveredMessages[messageId].sendDate().addSecs(MAX_DELIVERY_TIME) < now)
+			toRemove.append(messageId);
 
 	foreach (int messageId, toRemove)
 	{
+		UndeliveredMessages[messageId].setStatus(Message::StatusWontDeliver);
 		emit messageStatusChanged(UndeliveredMessages[messageId], StatusRejectedTimeout);
 		UndeliveredMessages.remove(messageId);
 	}

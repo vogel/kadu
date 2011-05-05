@@ -28,6 +28,7 @@
 #include <QtCore/QList>
 
 #include "chat/message/message.h"
+#include "protocols/services/chat-service.h"
 #include "protocols/protocol.h"
 
 #include "kadu-web-view.h"
@@ -66,7 +67,7 @@ private slots:
 
 	void imageReceived(const QString &imageId, const QString &imageFileName);
 
-	void messageStatusChanged(Message::Status);
+	void messageStatusChanged(const Message &message, ChatService::MessageStatus status);
 
 	void scrollToBottom();
 

@@ -1,6 +1,25 @@
-<p>
+<kadu:top>
+	<script>
+		function messageStatusChanged(messageid, status)
+		{
+			if (status == StatusDelivered)
+				document.getElementById("confirm_"+messageid).style.opacity = "1.0";
+			if (status == StatusWontDeliver)
+				document.getElementById("confirm_"+messageid).style.opacity = "0.1";
+		}
+	</script>
+</kadu:top>
+
+<p[ id="confirm_#{messageId}"]>
 <kadu:header> 
 <span style="color:#{nickColor}; font-weight:bold">%a</span> <span style="color:#{nickColor}; font-size:x-small ">(#{receivedDate})</span><br> 
 </kadu:header>
 <span color="#{fontColor}">#{message}</span> 
 </p>
+<script>
+	if ("#{messageId}" != "")
+	{
+		document.getElementById("confirm_#{messageId}").style.opacity = "0.4";
+		messageStatusChanged("#{messageId}", #{messageStatus});
+	}
+</script>

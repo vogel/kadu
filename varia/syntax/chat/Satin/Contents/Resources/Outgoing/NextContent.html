@@ -1,3 +1,10 @@
 <div class="nextmessageline"></div>
-<p><span class="messagetime consecutive">%time%</span>%message%</p>
+<p><span class="messagetime consecutive"><span id="msg_%messageId%" style="font-weight:bold; margin-right:3px;"></span>%time%</span>%message%</p>
 <div id="insert"></div>
+<script type="text/javascript">
+	if ("%messageId%" != "")
+	{
+		document.getElementById("msg_%messageId%").innerHTML = "&#8230;";
+		messageStatusChanged("%messageId%", %messageStatus%);
+	}
+</script>

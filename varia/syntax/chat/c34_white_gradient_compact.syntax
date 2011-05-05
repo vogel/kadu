@@ -1,4 +1,16 @@
-<div style="background-color: #{backgroundColor};">
+<kadu:top>
+	<script>
+		function messageStatusChanged(messageid, status)
+		{
+			if (status == StatusDelivered)
+				document.getElementById("confirm_"+messageid).style.opacity = "1.0";
+			if (status == StatusWontDeliver)
+				document.getElementById("confirm_"+messageid).style.opacity = "0.1";
+		}
+	</script>
+</kadu:top>
+
+<div[ id="confirm_#{messageId}"] style="background-color: #{backgroundColor};">
    <kadu:header>
    <div style="background: transparent url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAKCAYAAAB10jRKAAAAGUlEQVQIHWP6//9/OxMDEMCJryDWW1zEGwASwAob6QBiSgAAAABJRU5ErkJggg==) repeat-x; text-align: center; padding-top: 2px;">
       <p style="font-weight: bold; color: #{nickColor}">%a</p>
@@ -9,3 +21,10 @@
       <p style="color: #{fontColor}">#{message}</p>
    </div>
 </div>
+<script>
+	if ("#{messageId}" != "")
+	{
+		document.getElementById("confirm_#{messageId}").style.opacity = "0.4";
+		messageStatusChanged("#{messageId}", #{messageStatus});
+	}
+</script>

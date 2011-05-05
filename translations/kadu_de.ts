@@ -1152,29 +1152,12 @@ wenn Kontakte sich mit dem Server verbinden</translation>
         <translation>Eingehende Dateiübertragung</translation>
     </message>
     <message>
-        <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
-%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist
-%h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size, %z - gender (0/1/2)
-#{message} - message content,
-#{backgroundColor} - background color of message,
-#{fontColor} - font color of message,
-#{nickColor} - font color of nick,
-#{sentDate} - when message was sent,
-#{receivedDate} - when message was received,
-#{separator} - separator between messages,
-&lt;kadu:header&gt;text&lt;/kadu:header&gt; - text will not be displayed in &apos;Remove repeated headers&apos; mode
-</source>
-        <translation>Syntax: %s - Status, %d - Beschreibung, %i - IP, %n - Nick, %a - Altnick, %f - Vorname
-%r - Nachname, %m - Handy, %u - UIN, %g - Gruppe, %o - Zeige _Leerzeichen_ wenn Kontakt uns nicht in der Kontaktliste hat
-%h - Version GG, %v - revDNS, %p - Port, %e - E-Mail, %x - max Bildgröße, %z - Geschlecht (0/1/2)
-#{message} - Nachrichteninhalt,
-#{backgroundColor} - Hintergrundfarbe der Nachricht,
-#{fontColor} - Schriftfarbe der Nachricht,
-#{nickColor} - Schriftfarbe des Nicknames,
-#{sentDate} - wann gesendet,
-#{receivedDate} - wann empfangen,
-#{separator} - Separator zwischen Nachrichten,
-&lt;kadu:header&gt;text&lt;/kadu:header&gt; - Text wird im Modus &apos;Entferne wiederholte Kopfzeilen&apos; nicht angezeigt</translation>
+        <source>Syntax:
+%s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name, %r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist, %h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size, %z - gender (0/1/2),
+#{message} - message content, #{messageId} - message id, #{backgroundColor} - background color of message, #{fontColor} - font color of message, #{nickColor} - font color of nick, #{sentDate} - when message was sent, #{receivedDate} - when message was received, #{separator} - separator between messages,
+&lt;kadu:header&gt;...&lt;/kadu:header&gt; - content will not be displayed in &apos;Remove repeated headers&apos; mode,
+&lt;kadu:top&gt;...&lt;/kadu:top&gt; - content will be included once at the begining of the document</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Style variant</source>

@@ -1,1 +1,23 @@
-#{separator}<p style="background-color: #{backgroundColor}"><span style="color:#{fontColor}; font-weight:bold">\[#{receivedDate}[ / S #{sentDate}]\]</span> <span style=" color:#{nickColor}; font-weight:bold">%a</span>:  <span style="color:#{fontColor}">#{message}</span></p>
+<kadu:top>
+	<script>
+		function messageStatusChanged(messageid, status)
+		{
+			if (status == StatusDelivered)
+				document.getElementById("confirm_"+messageid).style.opacity = "1.0";
+			if (status == StatusWontDeliver)
+				document.getElementById("confirm_"+messageid).style.opacity = "0.1";
+		}
+	</script>
+</kadu:top>
+
+#{separator}
+<p[ id="confirm_#{messageId}"] style="background-color: #{backgroundColor}">
+<span style="color:#{fontColor}; font-weight:bold">\[#{receivedDate}[ / S #{sentDate}]\]</span> <span style=" color:#{nickColor}; font-weight:bold">%a</span>:  <span style="color:#{fontColor}">#{message}</span>
+</p>
+<script>
+	if ("#{messageId}" != "")
+	{
+		document.getElementById("confirm_#{messageId}").style.opacity = "0.4";
+		messageStatusChanged("#{messageId}", #{messageStatus});
+	}
+</script>

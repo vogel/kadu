@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2010 Piotr Dąbrowski (ultr@ultr.pl)
+ * Copyright 2010, 2011 Piotr Dąbrowski (ultr@ultr.pl)
  * Copyright 2007, 2009 Dawid Stawiarski (neeo@kadu.net)
  * Copyright 2010, 2011 Bartosz Brachaczek (b.brachaczek@gmail.com)
  * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
@@ -453,6 +453,13 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 					{
 						pe.content.prepend(pe2.content);
 						parseStack.pop_back();
+					}
+					else if (pe.content.contains('\n'))
+					{
+						pe.type = ParserToken::PT_STRING;
+						pe.content.append('}');
+						parseStack.push_back(pe);
+						break;
 					}
 					else if (pe2.type == ParserToken::PT_CHECK_FILE_EXISTS || pe2.type == ParserToken::PT_CHECK_FILE_NOT_EXISTS)
 					{
