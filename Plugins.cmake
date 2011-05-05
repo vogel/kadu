@@ -41,6 +41,8 @@ set (COMPILE_PLUGINS
 	phonon_sound
 	# External sound player support
 	ext_sound
+	# QtSound sound support
+#	qt4_sound
 
 # misc
 	# Antistring
