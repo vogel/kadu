@@ -1,9 +1,11 @@
 set (SOURCES
+	last-seen-plugin.cpp
 	infos.cpp
 	infos_dialog.cpp
 )
 
 set (MOC_SOURCES
+	last-seen-plugin.h
 	infos.h
 	infos_dialog.h
 )

@@ -39,32 +39,6 @@
 #include "infos.h"
 #include "infos_dialog.h"
 
-Infos *lastSeen;
-
-extern "C" KADU_EXPORT int last_seen_init(bool firstLoad)
-{
-	Q_UNUSED(firstLoad)
-
-	kdebugf();
-
-	lastSeen = new Infos();
-
-	kdebugf2();
-	return 0;
-}
-
-
-extern "C" KADU_EXPORT void last_seen_close()
-{
-	kdebugf();
-
-	delete lastSeen;
-	lastSeen = NULL;
-
-	kdebugf2();
-}
-
-
 Infos::Infos(QObject *parent) :
 	QObject(parent)
 {

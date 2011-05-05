@@ -4,3 +4,4 @@ Description[pl]=Ostatnio widziani
 Author=PK Team, Dorregaray
 LoadByDefault=false
 Version=core
+Plugin=true
