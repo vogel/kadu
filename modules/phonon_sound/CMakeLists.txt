@@ -1,10 +1,11 @@
 set (SOURCES
-	phonon-module.cpp
 	phonon-player.cpp
+	phonon-plugin.cpp
 )
 
 set (MOC_SOURCES
 	phonon-player.h
+	phonon-plugin.h
 )
 
 set (QT_USE_PHONON 1)
