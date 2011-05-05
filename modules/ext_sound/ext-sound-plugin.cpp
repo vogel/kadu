@@ -19,33 +19,33 @@
 
 #include "gui/windows/main-configuration-window.h"
 #include "misc/path-conversion.h"
-#include "debug.h"
 
 #include "plugins/sound/sound-manager.h"
 
 #include "external-player.h"
 
-extern "C" KADU_EXPORT int ext_sound_init(bool firstLoad)
+#include "ext-sound-plugin.h"
+
+ExtSoundPlugin::~ExtSoundPlugin()
+{
+}
+
+int ExtSoundPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
-
-	kdebugf();
 
 	ExternalPlayer::createInstance();
 	SoundManager::instance()->setPlayer(ExternalPlayer::instance());
 	MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/ext_sound.ui"));
 
-	kdebugf2();
 	return 0;
 }
 
-extern "C" KADU_EXPORT void ext_sound_close()
+void ExtSoundPlugin::done()
 {
-	kdebugf();
-
 	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/ext_sound.ui"));
 	SoundManager::instance()->setPlayer(0);
 	ExternalPlayer::destroyInstance();
-
-	kdebugf2();
 }
+
+Q_EXPORT_PLUGIN2(ext_sound, ExtSoundPlugin)
