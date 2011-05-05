@@ -3,8 +3,8 @@ include_directories ("../../plugins/history")
 set (SOURCES
 	buddy-firewall-data.cpp
 	firewall-configuration-ui-handler.cpp
-	firewall-module.cpp
 	firewall-notification.cpp
+	firewall-plugin.cpp
 	firewall.cpp
 )
 
@@ -12,6 +12,7 @@ set (MOC_SOURCES
 	buddy-firewall-data.h
 	firewall-configuration-ui-handler.h
 	firewall-notification.h
+	firewall-plugin.h
 	firewall.h
 )
 

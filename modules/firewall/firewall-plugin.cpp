@@ -24,7 +24,13 @@
 #include "firewall-notification.h"
 #include "firewall.h"
 
-extern "C" KADU_EXPORT int firewall_init(bool firstLoad)
+#include "firewall-plugin.h"
+
+FirewallPlugin::~FirewallPlugin()
+{
+}
+
+int FirewallPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
@@ -35,9 +41,11 @@ extern "C" KADU_EXPORT int firewall_init(bool firstLoad)
 	return 0;
 }
 
-extern "C" KADU_EXPORT void firewall_close()
+void FirewallPlugin::done()
 {
 	FirewallConfigurationUiHandler::unregisterUiHandler();
 	FirewallNotification::unregisterNotifications();
 	Firewall::destroyInstance();
 }
+
+Q_EXPORT_PLUGIN2(firewall, FirewallPlugin)
