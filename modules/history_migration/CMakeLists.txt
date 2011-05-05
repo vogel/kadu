@@ -9,7 +9,7 @@ set (SOURCES
 	history-importer-manager.cpp
 	history-migration-actions.cpp
 	history-migration-helper.cpp
-	history-migration-module.cpp
+	history-migration-plugin.cpp
 )
 
 set (MOC_SOURCES
@@ -20,6 +20,7 @@ set (MOC_SOURCES
 	history-importer.h
 	history-importer-chat-data.h
 	history-importer-manager.h
+	history-migration-plugin.h
 )
 
 set (CONFIGURATION_FILES

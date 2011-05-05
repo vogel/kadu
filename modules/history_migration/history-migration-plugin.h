@@ -17,28 +17,24 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "debug.h"
+#ifndef HISTORY_MIGRATION_PLUGIN_H
+#define HISTORY_MIGRATION_PLUGIN_H
 
-#include "history-importer-manager.h"
-#include "history-migration-actions.h"
+#include <QtCore/QObject>
 
-extern "C" KADU_EXPORT int history_migration_init(bool firstLoad)
+#include "plugins/generic-plugin.h"
+
+class HistoryMigrationPlugin : public QObject, public GenericPlugin
 {
-	kdebugf();
+	Q_OBJECT
+	Q_INTERFACES(GenericPlugin)
 
-	HistoryMigrationActions::registerActions();
-	HistoryImporterManager::createInstance();
+public:
+	virtual ~HistoryMigrationPlugin();
 
-	if (firstLoad)
-		HistoryMigrationActions::instance()->runImportHistoryAction();
+	virtual int init(bool firstLoad);
+	virtual void done();
 
-	return 0;
-}
+};
 
-extern "C" KADU_EXPORT void history_migration_close()
-{
-	kdebugf();
-
-	HistoryImporterManager::destroyInstance();
-	HistoryMigrationActions::unregisterActions();
-}
+#endif // HISTORY_MIGRATION_PLUGIN_H
