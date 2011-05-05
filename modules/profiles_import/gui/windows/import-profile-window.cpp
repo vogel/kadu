@@ -31,8 +31,8 @@
 #include "gui/windows/message-dialog.h"
 #include "gui/widgets/path-edit.h"
 
-#include "modules/history_migration/history-importer.h"
-#include "modules/history_migration/history-importer-manager.h"
+#include "plugins/history_migration/history-importer.h"
+#include "plugins/history_migration/history-importer-manager.h"
 
 #include "profile-importer.h"
 

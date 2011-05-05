@@ -30,8 +30,8 @@
 #include "identities/identity-manager.h"
 #include "misc/path-conversion.h"
 
-#include "modules/history_migration/history-importer.h"
-#include "modules/history_migration/history-importer-manager.h"
+#include "plugins/history_migration/history-importer.h"
+#include "plugins/history_migration/history-importer-manager.h"
 
 #include "profile-data-manager.h"
 #include "profile-importer.h"

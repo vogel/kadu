@@ -21,6 +21,8 @@ set (COMPILE_PLUGINS
 	history
 	# Chat history storing, browsing and searching support using sqlite
 	sql_history
+	# Migration from x <= 0.6.5 format
+	history_migration
 
 # encryption
 	# Encrypted chat support
