@@ -11,6 +11,10 @@ include (FindKadu)
 include_directories (${KADU_INCLUDE_DIR})
 include_directories (${KADU_INCLUDE_DIR}/kadu-core)
 
+kadu_api_directories (plugins/mediaplayer
+	.
+)
+
 set (SOURCES
 	mediaplayer.cpp
 	mediaplayer-plugin.cpp
