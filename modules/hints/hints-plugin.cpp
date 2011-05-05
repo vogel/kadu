@@ -23,40 +23,40 @@
  */
 
 #include "misc/path-conversion.h"
-#include "debug.h"
+
 #include "hint_manager.h"
 #include "hints-configuration-ui-handler.h"
 
-/**
- * @ingroup hints
- * @{
- */
-extern "C" KADU_EXPORT int hints_init(bool firstLoad)
+#include "hints-plugin.h"
+
+HintsPlugin * HintsPlugin::Instance = 0;
+
+HintsPlugin::HintsPlugin(QObject *parent) :
+		QObject(parent), HintManagerInstance(0)
+{
+	Instance = this;
+}
+
+HintsPlugin::~HintsPlugin()
+{
+	Instance = 0;
+}
+
+int HintsPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
-	kdebugf();
-
-	hint_manager = new HintManager();
+	HintManagerInstance = new HintManager(this);
 	MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/hints.ui"));
-	MainConfigurationWindow::registerUiHandler(hint_manager->uiHandler());
+	MainConfigurationWindow::registerUiHandler(HintManagerInstance->uiHandler());
 
-	kdebugf2();
 	return 0;
 }
 
-extern "C" KADU_EXPORT void hints_close()
+void HintsPlugin::done()
 {
-	kdebugf();
-
-	MainConfigurationWindow::unregisterUiHandler(hint_manager->uiHandler());
+	MainConfigurationWindow::unregisterUiHandler(HintManagerInstance->uiHandler());
 	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/hints.ui"));
-	
-	delete hint_manager;
-	hint_manager = 0;
-
-	kdebugf2();
 }
 
-/** @} */
-
+Q_EXPORT_PLUGIN2(hints, HintsPlugin)

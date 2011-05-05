@@ -37,6 +37,7 @@
 #include "notify/chat-notification.h"
 
 #include "hint-over-user-configuration-window.h"
+#include "hints-plugin.h"
 
 #include "activate.h"
 #include "misc/misc.h"
@@ -101,7 +102,7 @@ void HintsConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurati
 	Buddy example = Buddy::dummy();
 
 	if (!example.isNull())
-		hint_manager->prepareOverUserHint(overUserConfigurationPreview, overUserConfigurationTipLabel, example);
+		HintsPlugin::instance()->hintsManger()->prepareOverUserHint(overUserConfigurationPreview, overUserConfigurationTipLabel, example);
 
 	lay = new QHBoxLayout(configureHint);
 	lay->addWidget(overUserConfigurationPreview);
@@ -270,7 +271,7 @@ void HintsConfigurationUiHandler::updateHintsPreview()
 
 	previewHintsFrame->setGeometry(newPosition.x(), newPosition.y(), preferredSize.width(), preferredSize.height());
 
-	previewHintsFrame->setWindowOpacity(hint_manager->opacity());
+	previewHintsFrame->setWindowOpacity(HintsPlugin::instance()->hintsManger()->opacity());
 }
 
 void HintsConfigurationUiHandler::deleteHintsPreview(Hint *hint)
@@ -330,7 +331,7 @@ void HintsConfigurationUiHandler::updateOverUserPreview()
 	Buddy example = Buddy::dummy();
 
 	if (!example.isNull())
-		hint_manager->prepareOverUserHint(overUserConfigurationPreview, overUserConfigurationTipLabel, example);
+		HintsPlugin::instance()->hintsManger()->prepareOverUserHint(overUserConfigurationPreview, overUserConfigurationTipLabel, example);
 }
 
 void HintsConfigurationUiHandler::mainConfigurationWindowDestroyed()

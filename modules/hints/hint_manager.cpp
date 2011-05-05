@@ -59,7 +59,7 @@
 #define FRAME_WIDTH 1
 #define BORDER_RADIUS 0
 
-HintManager::HintManager(QWidget *parent) :
+HintManager::HintManager(QObject *parent) :
 		Notifier("Hints", "Hints", KaduIcon("kadu_icons/notify-hints"), parent), AbstractToolTip(),
 		hint_timer(new QTimer(this)),
 		tipFrame(0), hints()
@@ -70,9 +70,9 @@ HintManager::HintManager(QWidget *parent) :
 	createDefaultConfiguration();
 
 #ifdef Q_OS_MAC
-	frame = new QFrame(parent, Qt::FramelessWindowHint | Qt::SplashScreen | Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint |Qt::MSWindowsOwnDC);
+	frame = new QFrame(0, Qt::FramelessWindowHint | Qt::SplashScreen | Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint |Qt::MSWindowsOwnDC);
 #else
-	frame = new QFrame(parent, Qt::FramelessWindowHint | Qt::Tool | Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint |Qt::MSWindowsOwnDC);
+	frame = new QFrame(0, Qt::FramelessWindowHint | Qt::Tool | Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint |Qt::MSWindowsOwnDC);
 #endif
 	frame->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 

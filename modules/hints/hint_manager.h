@@ -138,8 +138,8 @@ signals:
 	void searchingForTrayPosition(QPoint& pos);
 
 public:
-	HintManager(QWidget *parent = 0);
-	~HintManager();
+	explicit HintManager(QObject *parent = 0);
+	virtual ~HintManager();
 
 	virtual CallbackCapacity callbackCapacity() { return CallbackSupported; }
 	virtual void notify(Notification *notification);
@@ -156,7 +156,5 @@ public:
 	HintsConfigurationUiHandler *uiHandler() { return UiHandler; }
 
 };
-
-extern HintManager *hint_manager;
 
 #endif // HINT_MANAGER_H

@@ -4,8 +4,8 @@ set (SOURCES
 	hint-over-user-configuration-window.cpp
 	hints_configuration_widget.cpp
 	hints-configuration-window.cpp
-	hints.cpp
 	hints-configuration-ui-handler.cpp
+	hints-plugin.cpp
 )
 
 set (MOC_SOURCES
@@ -15,6 +15,7 @@ set (MOC_SOURCES
 	hints_configuration_widget.h
 	hints-configuration-window.h
 	hints-configuration-ui-handler.h
+	hints-plugin.h
 )
 
 set (TRANSLATION_SOURCES

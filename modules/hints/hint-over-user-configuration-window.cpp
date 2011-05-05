@@ -45,6 +45,7 @@
 #include "parser/parser.h"
 
 #include "hint_manager.h"
+#include "hints-plugin.h"
 
 #include "hint-over-user-configuration-window.h"
 
@@ -95,7 +96,7 @@ HintOverUserConfigurationWindow::HintOverUserConfigurationWindow(Buddy exampleBu
 	lay->addWidget(syntaxChangedButton);
 	groupBox->addWidget(syntaxWidget, true);
 
-	hint_manager->prepareOverUserHint(previewFrame, previewTipLabel, ExampleBuddy);
+	HintsPlugin::instance()->hintsManger()->prepareOverUserHint(previewFrame, previewTipLabel, ExampleBuddy);
 
 	bgcolor = config_file.readColorEntry("Hints", "HintOverUser_bgcolor").name();
 	fgcolor = config_file.readColorEntry("Hints", "HintOverUser_fgcolor").name();
