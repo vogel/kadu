@@ -37,34 +37,6 @@ QtSound4Player *QtSound4Player::Instance = 0;
  * @ingroup qt4_sound
  * @{
  */
-extern "C" KADU_EXPORT int qt4_sound_init(bool firstLoad)
-{
-	Q_UNUSED(firstLoad)
-
-	kdebugf();
-
-	if (!QSound::isAvailable ())
-	{
-		MessageDialog::show(KaduIcon("dialog-error"), QObject::tr("Kadu"), QObject::tr("QSound API is not available on this platform"));
-		return 1;
-	}
-
-	QtSound4Player::createInstance();
-	SoundManager::instance()->setPlayer(QtSound4Player::instance());
-
-	kdebugf2();
-	return 0;
-}
-extern "C" KADU_EXPORT void qt4_sound_close()
-{
-	kdebugf();
-
-	SoundManager::instance()->setPlayer(0);
-	QtSound4Player::destroyInstance();
-
-	kdebugf2();
-}
-
 void QtSound4Player::createInstance()
 {
 	if (!Instance)

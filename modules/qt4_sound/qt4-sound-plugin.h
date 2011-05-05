@@ -1,7 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
- * Copyright 2008, 2010 Tomasz Rostański (rozteck@interia.pl)
+ * Copyright 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -18,28 +17,22 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef QT4_SOUND_H
-#define QT4_SOUND_H
+#ifndef QT4_SOUND_PLUGIN_H
+#define QT4_SOUND_PLUGIN_H
 
-#include "plugins/sound/sound-player.h"
+#include "plugins/generic-plugin.h"
 
-class QtSound4Player : public SoundPlayer
+class Qt4SoundPlugin : public QObject, public GenericPlugin
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(QtSound4Player);
-
-	static QtSound4Player *Instance;
-
-	QtSound4Player();
-	virtual ~QtSound4Player();
+	Q_INTERFACES(GenericPlugin)
 
 public:
-	static void createInstance();
-	static void destroyInstance();
-	static QtSound4Player *instance();
+	virtual ~Qt4SoundPlugin();
 
-	virtual void playSound(const QString &path, bool volCntrl, double vol);
+	virtual int init(bool firstLoad);
+	virtual void done();
 
 };
 
-#endif // QT4_SOUND_H
+#endif // QT4_SOUND_PLUGIN_H
