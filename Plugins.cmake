@@ -37,8 +37,6 @@ set (COMPILE_PLUGINS
 # sound
 	# General sound plugin
 	sound
-	# ALSA sound support
-	alsa_sound
 
 # misc
 	# Antistring

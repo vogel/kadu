@@ -1,9 +1,0 @@
-[Module]
-Description=Direct Show sound module
-Description[pl]=Modu³ obs³ugi d¼wiêku u¿ywaj±cy Direct Show
-Author=Kadu Team
-Dependencies=sound
-Provides=sound_driver
-Conflicts=sound_driver
-LoadByDefault=true
-Version=core
