@@ -37,6 +37,8 @@ set (COMPILE_PLUGINS
 # sound
 	# General sound plugin
 	sound
+	# Phonon sound support
+	phonon_sound
 
 # misc
 	# Antistring
