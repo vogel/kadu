@@ -1,13 +1,14 @@
 set (SOURCES
 	speech-configuration-ui-handler.cpp
 	speech-configuration-widget.cpp
-	speech-module.cpp
+	speech-plugin.cpp
 	speech.cpp
 )
 
 set (MOC_SOURCES
 	speech-configuration-ui-handler.h
 	speech-configuration-widget.h
+	speech-plugin.h
 	speech.h
 )
 

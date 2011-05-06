@@ -1,7 +1,7 @@
 /*
  * %kadu copyright begin%
  * Copyright 2011 Bartosz Brachaczek (b.brachaczek@gmail.com)
- * Copyright 2010 Piotr Galiszewski (piotr.galiszewski@kadu.im)
+ * Copyright 2010, 2011 Piotr Galiszewski (piotr.galiszewski@kadu.im)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -23,7 +23,13 @@
 #include "debug.h"
 #include "exports.h"
 
-extern "C" KADU_EXPORT int speech_init(bool firstLoad)
+#include "speech-plugin.h"
+
+SpeechPlugin::~SpeechPlugin()
+{
+}
+
+int SpeechPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
@@ -36,7 +42,7 @@ extern "C" KADU_EXPORT int speech_init(bool firstLoad)
 	return 0;
 }
 
-extern "C" KADU_EXPORT void speech_close()
+void SpeechPlugin::done()
 {
 	kdebugf();
 
@@ -45,3 +51,5 @@ extern "C" KADU_EXPORT void speech_close()
 
 	kdebugf2();
 }
+
+Q_EXPORT_PLUGIN2(speech, SpeechPlugin)

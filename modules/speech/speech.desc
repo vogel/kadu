@@ -4,3 +4,4 @@ Description[pl]=Modu³ obs³ugi "G³o¶nego czytania" przez zewnêtrzny program "Powi
 Author=Kadu Team
 Provides=notify_method
 Version=core
+Plugin=true
