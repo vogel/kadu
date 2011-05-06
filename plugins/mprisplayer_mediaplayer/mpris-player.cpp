@@ -25,7 +25,7 @@
 #include "plugins/plugin-info.h"
 #include "plugins/plugins-manager.h"
 
-#include "../mediaplayer/mediaplayer.h"
+#include "plugins/mediaplayer/mediaplayer.h"
 
 #include "mpris-player.h"
 

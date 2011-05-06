@@ -10,7 +10,7 @@ include (FindKadu)
 
 include_directories (
 	${KADU_INCLUDE_DIR}/kadu-core
-	${KADU_INCLUDE_DIR}/plugins
+	${KADU_INCLUDE_DIR}
 )
 
 set (SOURCES

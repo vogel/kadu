@@ -17,10 +17,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "plugins/mediaplayer/mediaplayer.h"
+
 #include "mpris-player-configuration-ui-handler.h"
 #include "mpris-player.h"
-
-#include "../mediaplayer/mediaplayer.h"
 
 #include "mpris-player-plugin.h"
 
