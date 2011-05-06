@@ -30,6 +30,7 @@
 * gui: fixed a bug on Windows where chat notifications may not work in certain cases (ultr, beevvy)
 * buddies: fixed crash on exit in some configurations after using OpenChatWith window (beevvy)
 * gui: #2067 fixed: wrong error message in Add Buddy window if no id entered and some account chosen (dienet)
+* core: #2154 fixed: fix version comparisons (WhE)
 
 +++ version 0.9.1
 * identities: fixed displaying improper status information when having more jabber and gadu account in one identity and invisible status for gadu (beevvy)
