@@ -73,6 +73,8 @@ set (COMPILE_PLUGINS
 	imagelink
 	# Last status infos
 	last_seen
+	# Simple view
+	simpleview
 	# Sms gateway support
 	sms
 	# Tabbed chat dialog
