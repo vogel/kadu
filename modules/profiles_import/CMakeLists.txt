@@ -5,7 +5,7 @@ set (SOURCES
 	profile-data-manager.cpp
 	profile-importer.cpp
 	profiles-import-actions.cpp
-	profiles-import-module.cpp
+	profiles-import-plugin.cpp
 )
 
 set(MOC_SOURCES
@@ -14,6 +14,7 @@ set(MOC_SOURCES
 
 	profile-importer.h
 	profiles-import-actions.h
+	profiles-import-plugin.h
 )
 
 set (TRANSLATION_SOURCES

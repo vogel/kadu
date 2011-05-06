@@ -2,6 +2,7 @@
  * %kadu copyright begin%
  * Copyright 2011 Bartosz Brachaczek (b.brachaczek@gmail.com)
  * Copyright 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2011 Piotr Galiszewski (piotr.galiszewski@kadu.im)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -27,7 +28,13 @@
 
 #include "profiles-import-actions.h"
 
-extern "C" KADU_EXPORT int profiles_import_init(bool firstLoad)
+#include "profiles-import-plugin.h"
+
+ProfilesImportPlugin::~ProfilesImportPlugin()
+{
+}
+
+int ProfilesImportPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
@@ -39,7 +46,9 @@ extern "C" KADU_EXPORT int profiles_import_init(bool firstLoad)
 	return 0;
 }
 
-extern "C" KADU_EXPORT void profiles_import_close()
+void ProfilesImportPlugin::done()
 {
 	ProfilesImportActions::unregisterActions();
 }
+
+Q_EXPORT_PLUGIN2(profiles_import, ProfilesImportPlugin)
