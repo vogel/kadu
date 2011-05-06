@@ -2,6 +2,7 @@
  * %kadu copyright begin%
  * Copyright 2011 Bartosz Brachaczek (b.brachaczek@gmail.com)
  * Copyright 2010, 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2011 Piotr Galiszewski (piotr.galiszewski@kadu.im)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -28,7 +29,13 @@
 
 #include "screenshot.h"
 
-extern "C" KADU_EXPORT int screenshot_init(bool firstLoad)
+#include "screenshot-plugin.h"
+
+ScreenshotPlugin::~ScreenshotPlugin()
+{
+}
+
+int ScreenshotPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
@@ -42,7 +49,7 @@ extern "C" KADU_EXPORT int screenshot_init(bool firstLoad)
 	return 0;
 }
 
-extern "C" KADU_EXPORT void screenshot_close()
+void ScreenshotPlugin::done()
 {
 	kdebugf();
 
@@ -51,3 +58,5 @@ extern "C" KADU_EXPORT void screenshot_close()
 	ScreenShotConfigurationUiHandler::unregisterConfigurationUi();
 	ScreenshotNotification::unregisterNotifiactions();
 }
+
+Q_EXPORT_PLUGIN2(screenshot, ScreenshotPlugin)

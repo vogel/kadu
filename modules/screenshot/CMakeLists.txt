@@ -10,7 +10,7 @@ set (SOURCES
 	pixmap-grabber.cpp
 	screenshot.cpp
 	screenshot-actions.cpp
-	screenshot-module.cpp
+	screenshot-plugin.cpp
 	screen-shot-saver.cpp
 	screenshot-taker.cpp
 )
@@ -24,6 +24,7 @@ set (MOC_SOURCES
 	notify/screenshot-notification.h
 	screenshot.h
 	screenshot-actions.h
+	screenshot-plugin.h
 	screen-shot-saver.h
 	screenshot-taker.h
 )
