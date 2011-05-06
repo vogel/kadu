@@ -82,6 +82,9 @@ class HISTORYAPI History : public ConfigurationUiHandler, ConfigurationAwareObje
 	bool SaveOnlyStatusesWithDescription;
 	bool SyncEnabled;
 
+	int ChatHistoryCitation;
+	int ChatHistoryQuotationTime;
+
 	QMutex UnsavedDataMutex;
 	QQueue<Message> UnsavedMessages;
 	QQueue<QPair<Contact, Status> > UnsavedStatusChanges;

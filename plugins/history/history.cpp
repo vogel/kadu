@@ -253,7 +253,7 @@ void History::showMoreMessages(QAction *action)
 	}
 	else
 	{
-		QDateTime backTo = QDateTime::currentDateTime().addDays(config_file.readNumEntry("Chat", "ChatHistoryQuotationTime", -744)/24);
+		QDateTime backTo = QDateTime::currentDateTime().addDays(ChatHistoryQuotationTime/24);
 		messages = CurrentStorage->messagesBackTo(chat ? chat : chatWidget->chat(), backTo, config_file.readNumEntry("Chat", "ChatPruneLen", 20));
 	}
 
@@ -297,12 +297,11 @@ void History::chatCreated(ChatWidget *chatWidget)
 
 	QList<Message> messages;
 
-	unsigned int chatHistoryQuotation = qMax(config_file.readNumEntry("History", "ChatHistoryCitation"),
-			PendingMessagesManager::instance()->pendingMessagesForChat(chatWidget->chat()).size());
+	unsigned int chatHistoryQuotation = qMax(ChatHistoryCitation, PendingMessagesManager::instance()->pendingMessagesForChat(chatWidget->chat()).size());
 
 	Chat chat = AggregateChatManager::instance()->aggregateChat(chatWidget->chat());
 
-	QDateTime backTo = QDateTime::currentDateTime().addSecs(config_file.readNumEntry("History", "ChatHistoryQuotationTime", -744)*3600);
+	QDateTime backTo = QDateTime::currentDateTime().addSecs(ChatHistoryQuotationTime * 3600);
 	messages = CurrentStorage->messagesBackTo(chat ? chat : chatWidget->chat(), backTo, chatHistoryQuotation);
 
 	if (messages.isEmpty())
@@ -461,6 +460,9 @@ void History::configurationUpdated()
 {
 	kdebugf();
 
+	ChatHistoryCitation = config_file.readNumEntry("History", "ChatHistoryCitation");
+	ChatHistoryQuotationTime = config_file.readNumEntry("History", "ChatHistoryQuotationTime", -744);
+
 	SaveChats = config_file.readBoolEntry("History", "SaveChats", true);
 	SaveChatsWithAnonymous = config_file.readBoolEntry("History", "SaveChatsWithAnonymous", true);
 	SaveStatuses = config_file.readBoolEntry("History", "SaveStatusChanges", false);
@@ -549,14 +551,14 @@ QList<Buddy> History::statusBuddiesList(const HistorySearchParameters &search)
 	return CurrentStorage->statusBuddiesList(search);
 }
 
-QList< QDate > History::datesForStatusBuddy(const Buddy &buddy, const HistorySearchParameters &search)
+QList<QDate> History::datesForStatusBuddy(const Buddy &buddy, const HistorySearchParameters &search)
 {
 	kdebugf();
 
 	return CurrentStorage->datesForStatusBuddy(buddy, search);
 }
 
-QList< TimedStatus > History::statuses(const Buddy &buddy, const QDate &date, int limit)
+QList<TimedStatus> History::statuses(const Buddy &buddy, const QDate &date, int limit)
 {
 	kdebugf();
 
@@ -570,14 +572,14 @@ int History::statusBuddyCount(const Buddy &buddy, const QDate &date)
 	return CurrentStorage->statusBuddyCount(buddy, date);
 }
 
-QList< QString > History::smsRecipientsList(const HistorySearchParameters &search)
+QList<QString> History::smsRecipientsList(const HistorySearchParameters &search)
 {
 	kdebugf();
 
 	return CurrentStorage->smsRecipientsList(search);
 }
 
-QList< QDate > History::datesForSmsRecipient(const QString &recipient, const HistorySearchParameters &search)
+QList<QDate> History::datesForSmsRecipient(const QString &recipient, const HistorySearchParameters &search)
 {
 	kdebugf();
 
