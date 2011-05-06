@@ -7,6 +7,14 @@ StatusSent = 2;
 StatusDelivered = 3;
 StatusWontDeliver = 4;
 
+// ContactActivity enum vaules identical with those defined in protocols/services/chat-state-service.h
+StateActive = 0;
+StateComposing = 1;
+StateGone = 2;
+StateInactive = 3;
+StateNone = 4;
+StatePaused = 5;
+
 //clear messages
 function adium_clearMessages()
 {
@@ -19,6 +27,12 @@ function adium_removeFirstMessage()
 {
 	var chatElement = document.getElementById('Chat');
 	chatElement.removeChild(chatElement.firstChild);
+}
+
+function adium_contactActivityChanged(state, message, name)
+{
+	if (typeof(contactActivityChanged) != 'undefined')
+		contactActivityChanged(state, message, name);
 }
 
 function kadu_clearMessages()
@@ -73,6 +87,12 @@ function kadu_messageStatusChanged(messageid, status)
 {
 	if (typeof(messageStatusChanged) != 'undefined')
 		messageStatusChanged(messageid, status);
+}
+
+function kadu_contactActivityChanged(state, message, name)
+{
+	if (typeof(contactActivityChanged) != 'undefined')
+		contactActivityChanged(state, message, name);
 }
 
 /* ]]> */

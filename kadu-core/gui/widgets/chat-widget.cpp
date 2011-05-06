@@ -686,8 +686,10 @@ void ChatWidget::contactActivityChanged(ChatStateService::ContactActivity state,
 
 	if (CurrentContactActivity == state)
 		return;
-
 	CurrentContactActivity = state;
+
+	if (ChatConfiguration::instance()->contactStateChats())
+		MessagesView->contactActivityChanged(state, contact);
 
 	if (CurrentContactActivity != ChatStateService::StateGone)
 		refreshTitle();

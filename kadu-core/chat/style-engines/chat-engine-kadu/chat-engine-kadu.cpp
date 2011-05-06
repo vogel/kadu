@@ -109,6 +109,11 @@ void KaduChatStyleEngine::messageStatusChanged(HtmlMessagesRenderer *renderer, M
 	renderer->webPage()->mainFrame()->evaluateJavaScript(QString("kadu_messageStatusChanged(\"%1\", %2);").arg(message.id()).arg((int)status));
 }
 
+void KaduChatStyleEngine::contactActivityChanged(HtmlMessagesRenderer *renderer, ChatStateService::ContactActivity state, const QString &message, const QString &name)
+{
+	renderer->webPage()->mainFrame()->evaluateJavaScript(QString("kadu_contactActivityChanged(%1, \"%2\", \"%3\");").arg((int)state).arg(message).arg(name));
+}
+
 QString KaduChatStyleEngine::isStyleValid(QString stylePath)
 {
 	QFileInfo fi;
@@ -197,7 +202,7 @@ void KaduChatStyleEngine::repaintMessages(HtmlMessagesRenderer *renderer)
 
 	text += QString("<script>%1</script>").arg(jsCode);
 
-	Contact contact = renderer->chat().contacts().count() == 1 ? *(renderer->chat().contacts().begin()) : Contact();
+	Contact contact = renderer->chat().contacts().count() == 1 ? *(renderer->chat().contacts().constBegin()) : Contact();
 	text += Parser::parse(CurrentChatSyntax.top(), BuddyOrContact(contact), true);
 
 	MessageRenderInfo *prevMessage = 0;
@@ -251,7 +256,7 @@ void KaduChatStyleEngine::prepareStylePreview(Preview *preview, QString styleNam
 
 	KaduChatSyntax syntax(SyntaxList::readSyntax("chat", styleName, QString()));
 
-	Contact contact = preview->getContactList().count() == 1 ? *(preview->getContactList().begin()) : Contact();
+	Contact contact = preview->getContactList().count() == 1 ? *(preview->getContactList().constBegin()) : Contact();
 	QString text = Parser::parse(syntax.top(), BuddyOrContact(contact), true);
 
 	int count = preview->getObjectsToParse().count();
