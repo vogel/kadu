@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2010 Przemysław Rudy (prudy1@o2.pl)
+ * Copyright 2011 Piotr Galiszewski (piotr.galiszewski@kadu.im)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -15,27 +15,23 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
- *
- * Objectives:
- * - simple view hides everything from the main window except the contact list,
- *   which can be still used to contact buddies. For any other action
- *   switching back to the normal view is required
- * - quickly accessible switching mechanism between views
  */
 
+#ifndef SIMPLEVIEW_PLUGIN_H
+#define SIMPLEVIEW_PLUGIN_H
 
-#include "simpleview.h"
+#include "plugins/generic-plugin.h"
 
-extern "C" KADU_EXPORT int simpleview_init(bool firstLoad)
+class SimpleViewPlugin : public QObject, public GenericPlugin
 {
-	Q_UNUSED(firstLoad)
+	Q_OBJECT
+	Q_INTERFACES(GenericPlugin)
 
-	SimpleView::createInstance();
+public:
+	virtual ~SimpleViewPlugin();
 
-	return 0;
-}
+	virtual int init(bool firstLoad);
+	virtual void done();
+};
 
-extern "C" KADU_EXPORT void simpleview_close()
-{
-	SimpleView::destroyInstance();
-}
+#endif // SIMPLEVIEW_PLUGIN_H

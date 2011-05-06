@@ -1,12 +1,13 @@
 set (SOURCES
-	simpleview-module.cpp
 	simpleview.cpp
 	simpleview-config-ui.cpp
+	simpleview-plugin.cpp
 )
 
 set (MOC_SOURCES
 	simpleview.h
 	simpleview-config-ui.h
+	simpleview-plugin.h
 )
 
 set (TRANSLATION_SOURCES
