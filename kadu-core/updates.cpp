@@ -171,15 +171,21 @@ void Updates::run()
 
 bool Updates::isNewerVersion(const QString &newestversion)
 {
-	QString actual = stripVersion(Core::version());
-	QString newest = stripVersion(newestversion);
+	QStringList actual = stripVersion(Core::version()).split('.', QString::SkipEmptyParts);
+	QStringList newest = stripVersion(newestversion).split('.', QString::SkipEmptyParts);
 
+	if (newest.at(0).toInt() > actual.at(0).toInt())
+		return true;
+	if (newest.at(1).toInt() > actual.at(1).toInt())
+		return true;
+	if (newest.at(2).toInt() > actual.at(2).toInt())
+		return true;
 	if (newest.length() > actual.length())
-		actual.append(QString(newest.length() - actual.length(), '0'));
-	else
-		newest.append(QString(actual.length() - newest.length(), '0'));
+		return true;
+	if (newest.length() == 4)
+		return newest.at(3).toInt() > actual.at(3).toInt();
 
-	return (newest.toUInt() > actual.toUInt());
+	return false;
 }
 
 QString Updates::stripVersion(const QString stripversion)
@@ -189,7 +195,7 @@ QString Updates::stripVersion(const QString stripversion)
 
 	if (version.contains("-svn", cs))
 		version.replace("-svn", "01", cs);
-	if (version.contains("-git", cs))
+	else if (version.contains("-git", cs))
 		version.replace("-git", "01", cs);
 	else if (version.contains("-alpha", cs))
 		version.replace("-alpha", "02", cs);
@@ -200,7 +206,7 @@ QString Updates::stripVersion(const QString stripversion)
 	else
 		version.append("05");
 
-	return (version.remove('.'));
+	return version;
 }
 
 void Updates::gotUpdatesInfo(const QHttpResponseHeader &responseHeader)
