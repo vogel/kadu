@@ -73,6 +73,8 @@ set (COMPILE_PLUGINS
 	imagelink
 	# Last status infos
 	last_seen
+	# Imports profiles from old Kadu
+	profiles_import
 	# Simple view
 	simpleview
 	# Sms gateway support
