@@ -134,8 +134,6 @@ ChatWidget::~ChatWidget()
 
 	currentProtocol()->chatStateService()->chatWidgetClosed(CurrentChat);
 
-//	disconnectAcknowledgeSlots();
-
 	kdebugmf(KDEBUG_FUNCTION_END, "chat destroyed\n");
 }
 
@@ -423,55 +421,6 @@ void ChatWidget::clearChatWindow()
 	kdebugf2();
 }
 
-/*
-void ChatWidget::messageStatusChanged(int messageId, ChatService::MessageStatus status)
-{
-	if (messageId != myLastMessage.id())
-		return;
-
-	switch (status)
-	{
-		case ChatService::StatusAcceptedDelivered:
-		case ChatService::StatusAcceptedQueued:
-			writeMyMessage();
-			emit messageSentAndConfirmed(CurrentChat, myLastMessage.toHtml());
-			disconnectAcknowledgeSlots();
-			changeCancelSendToSend();
-			return;
-
-		case ChatService::StatusRejectedBlocked:
-			MessageDialog::msg(KaduIcon("Message blocked"), true, "dialog-warning", this);
-		case ChatService::StatusRejectedBoxFull:
-			MessageDialog::msg(KaduIcon("Message box if full"), true, "dialog-warning", this);
-		case ChatService::StatusRejectedUnknown:
-			MessageDialog::msg(KaduIcon("Message not delivered"), true, "dialog-warning", this);
-	}
-
-	cancelMessage();
-}*/
-
-void ChatWidget::connectAcknowledgeSlots()
-{
-	if (!currentProtocol() || !currentProtocol()->chatService())
-		return;
-
-	ChatService *chatService = currentProtocol()->chatService();
-	if (chatService)
-		connect(chatService, SIGNAL(messageStatusChanged(int, ChatService::MessageStatus)),
-				this, SLOT(messageStatusChanged(int, ChatService::MessageStatus)));
-}
-
-void ChatWidget::disconnectAcknowledgeSlots()
-{
-	if (!currentProtocol() || !currentProtocol()->chatService())
-		return;
-
-	ChatService *chatService = currentProtocol()->chatService();
-	if (chatService)
-		disconnect(chatService, SIGNAL(messageStatusChanged(int, ChatService::MessageStatus)),
-				this, SLOT(messageStatusChanged(int, ChatService::MessageStatus)));
-}
-
 /* sends the message typed */
 void ChatWidget::sendMessage()
 {
@@ -494,28 +443,14 @@ void ChatWidget::sendMessage()
 		kdebugmf(KDEBUG_FUNCTION_END, "not connected!\n");
 		return;
 	}
-/*
-	if (config_file.readBoolEntry("Chat","MessageAcks"))
-	{
-		InputBox->inputBox()->setReadOnly(true);
-		InputBox->inputBox()->setEnabled(false);
-		WaitingForACK = true;
-
-		changeSendToCancelSend();
-	}*/
 
 	FormattedMessage message = FormattedMessage::parse(InputBox->inputBox()->document());
 	ChatService *chatService = currentProtocol()->chatService();
 	if (!chatService || !chatService->sendMessage(CurrentChat, message))
 		return;
-/*
-	if (config_file.readBoolEntry("Chat", "MessageAcks"))
-		connectAcknowledgeSlots();
-	else
-	{*/
+
 	resetEditBox();
 	emit messageSentAndConfirmed(CurrentChat, message.toHtml());
-// 	}
 
 	emit messageSent(this);
 	kdebugf2();

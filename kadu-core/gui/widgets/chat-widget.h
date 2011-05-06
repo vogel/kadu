@@ -86,9 +86,6 @@ class KADUAPI ChatWidget : public QWidget
 private slots:
 	void configurationUpdated();
 
-	void connectAcknowledgeSlots();
-	void disconnectAcknowledgeSlots();
-
 	void setUpVerticalSizes();
 	void commonHeightChanged(int height);
 	void verticalSplitterMoved(int pos, int index);
@@ -173,7 +170,6 @@ public:
 	unsigned int countMessages() const { return MessagesView->countMessages(); }
 
 public slots:
-// 	void messageStatusChanged(int messageId, ChatService::MessageStatus status);
 
 	/**
 		\fn void appendMessages(const QValueList<MessageRenderInfo *> &)
