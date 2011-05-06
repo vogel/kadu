@@ -43,6 +43,7 @@
 #include "chat/chat-manager.h"
 #include "chat/message/message-render-info.h"
 #include "chat/type/chat-type-manager.h"
+#include "configuration/chat-configuration.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact.h"
 #include "contacts/contact-set.h"
@@ -114,7 +115,9 @@ ChatWidget::ChatWidget(const Chat &chat, QWidget *parent) :
 			connect(currentProtocol()->chatStateService(), SIGNAL(contactActivityChanged(ChatStateService::ContactActivity, const Contact &)),
 					this, SLOT(contactActivityChanged(ChatStateService::ContactActivity, const Contact &)));
 	}
+
 	connect(IconsManager::instance(), SIGNAL(themeChanged()), this, SIGNAL(iconChanged()));
+	connect(ChatConfiguration::instance(), SIGNAL(chatConfigurationUpdated()), this, SLOT(configurationUpdated()));
 
 	kdebugf2();
 }
@@ -218,8 +221,8 @@ void ChatWidget::createContactsList()
 
 void ChatWidget::configurationUpdated()
 {
-	InputBox->inputBox()->setFont(config_file.readFontEntry("Look","ChatFont"));
-	InputBox->inputBox()->viewport()->setStyleSheet(QString("background-color: %1").arg(config_file.readColorEntry("Look", "ChatTextBgColor").name()));
+	InputBox->inputBox()->setFont(ChatConfiguration::instance()->chatFont());
+	InputBox->inputBox()->viewport()->setStyleSheet(QString("background-color: %1").arg(ChatConfiguration::instance()->chatTextBgColor().name()));
 
 	refreshTitle();
 }
@@ -286,11 +289,11 @@ void ChatWidget::refreshTitle()
 	kdebugmf(KDEBUG_FUNCTION_START, "chat().contacts().size() = %d\n", contactsCount);
 	if (contactsCount > 1)
 	{
-		title = config_file.readEntry("Look", "ConferencePrefix");
+		title = ChatConfiguration::instance()->conferencePrefix();
 		if (title.isEmpty())
 			title = tr("Conference with ");
 
-		QString conferenceContents = config_file.readEntry("Look", "ConferenceContents");
+		QString conferenceContents = ChatConfiguration::instance()->conferenceContents();
 		QStringList contactslist;
 		foreach (Contact contact, chat().contacts())
 			contactslist.append(Parser::parse(conferenceContents.isEmpty() ? "%a" : conferenceContents, BuddyOrContact(contact), false));
@@ -301,7 +304,7 @@ void ChatWidget::refreshTitle()
 	{
 		Contact contact = chat().contacts().toContact();
 
-		if (config_file.readEntry("Look", "ChatContents").isEmpty())
+		if (ChatConfiguration::instance()->chatContents().isEmpty())
 		{
 			if (contact.ownerBuddy().isAnonymous())
 				title = Parser::parse(tr("Chat with ") + "%a", BuddyOrContact(contact), false);
@@ -309,7 +312,7 @@ void ChatWidget::refreshTitle()
 				title = Parser::parse(tr("Chat with ") + "%a (%s[: %d])", BuddyOrContact(contact), false);
 		}
 		else
-			title = Parser::parse(config_file.readEntry("Look", "ChatContents"), BuddyOrContact(contact), false);
+			title = Parser::parse(ChatConfiguration::instance()->chatContents(), BuddyOrContact(contact), false);
 
 		if (CurrentContactActivity == ChatStateService::StateComposing)
 			title = tr("%1 (Composing...)").arg(title);

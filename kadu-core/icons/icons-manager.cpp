@@ -27,6 +27,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+
+#define QT_USE_FAST_CONCATENATION
+#define QT_USE_FAST_OPERATOR_PLUS
+
 #include <QtCore/QFile>
 #include <QtCore/QFileInfo>
 
@@ -76,19 +80,19 @@ QString IconsManager::iconPathAllowEmpty(const QString &path, const QString &siz
 {
 	QFileInfo fileInfo;
 
-	fileInfo.setFile( ThemeManager->currentTheme().path() + path + '/' + size + '/' + name + ".png" );
+	fileInfo.setFile(ThemeManager->currentTheme().path() + path + '/' + size + '/' + name + ".png" );
 	if (fileInfo.isFile() && fileInfo.isReadable())
 		return fileInfo.canonicalFilePath();
 
-	fileInfo.setFile( ThemeManager->currentTheme().path() + path + "/svg/" + name + ".svg" );
+	fileInfo.setFile(ThemeManager->currentTheme().path() + path + "/svg/" + name + ".svg" );
 	if (fileInfo.isFile() && fileInfo.isReadable())
 		return fileInfo.canonicalFilePath();
 
-	fileInfo.setFile( ThemeManager->currentTheme().path() + path + "/svg/" + name + ".svgz" );
+	fileInfo.setFile(ThemeManager->currentTheme().path() + path + "/svg/" + name + ".svgz" );
 	if (fileInfo.isFile() && fileInfo.isReadable())
 		return fileInfo.canonicalFilePath();
 
-	if (path == "protocols/common")
+	if (path == QLatin1String("protocols/common"))
 	{
 		QString protocolpath;
 		if (AccountManager::instance()->defaultAccount())
@@ -192,14 +196,15 @@ QIcon IconsManager::buildSvgIcon(const QString& path)
 		iconName = path;
 
 	QFileInfo fileInfo;
-
-	fileInfo.setFile( ThemeManager->currentTheme().path() + realPath + "/svg/" + iconName + ".svg" );
+	fileInfo.setFile(ThemeManager->currentTheme().path() + realPath + "/svg/" + iconName + ".svgz" );
 	if (fileInfo.isFile() && fileInfo.isReadable())
 		icon.addFile(fileInfo.canonicalFilePath());
-
-	fileInfo.setFile( ThemeManager->currentTheme().path() + realPath + "/svg/" + iconName + ".svgz" );
-	if (fileInfo.isFile() && fileInfo.isReadable())
-		icon.addFile(fileInfo.canonicalFilePath());
+	else
+	{
+		fileInfo.setFile(ThemeManager->currentTheme().path() + realPath + "/svg/" + iconName + ".svg" );
+		if (fileInfo.isFile() && fileInfo.isReadable())
+			icon.addFile(fileInfo.canonicalFilePath());
+	}
 
 	return icon;
 }

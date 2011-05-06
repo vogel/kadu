@@ -1,4 +1,5 @@
 set (configuration_SRCS
+	chat-configuration.cpp
 	config-file-data-manager.cpp
 	configuration-aware-object.cpp
 	configuration-file.cpp
@@ -10,6 +11,7 @@ set (configuration_SRCS
 )
 
 set (configuration_MOC_SRCS
+	chat-configuration.h
 	config-file-data-manager.h
 	configuration-window-data-manager.h
 	main-configuration.h

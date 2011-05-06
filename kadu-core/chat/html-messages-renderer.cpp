@@ -25,6 +25,7 @@
 #include "chat/chat-styles-manager.h"
 #include "chat/style-engines/chat-style-engine.h"
 #include "chat/message/message-render-info.h"
+#include "configuration/chat-configuration.h"
 #include "configuration/configuration-file.h"
 
 #include "html-messages-renderer.h"
@@ -145,27 +146,20 @@ void HtmlMessagesRenderer::replaceLoadingImages(const QString &imageId, const QS
 
 void HtmlMessagesRenderer::updateBackgroundsAndColors()
 {
-	QString myBackgroundColor = config_file.readEntry("Look", "ChatMyBgColor");
-	QString myFontColor = config_file.readEntry("Look", "ChatMyFontColor");
-	QString myNickColor = config_file.readEntry("Look", "ChatMyNickColor");
-	QString usrBackgroundColor = config_file.readEntry("Look", "ChatUsrBgColor");
-	QString usrFontColor = config_file.readEntry("Look", "ChatUsrFontColor");
-	QString usrNickColor = config_file.readEntry("Look", "ChatUsrNickColor");
-
 	foreach (MessageRenderInfo *message, MyChatMessages)
 	{
 		switch (message->message().type())
 		{
 			case Message::TypeSent:
-				message->setBackgroundColor(myBackgroundColor)
-					.setNickColor(myNickColor)
-					.setFontColor(myFontColor);
+				message->setBackgroundColor(ChatConfiguration::instance()->myBackgroundColor())
+					.setNickColor(ChatConfiguration::instance()->myNickColor())
+					.setFontColor(ChatConfiguration::instance()->myFontColor());
 				break;
 
 			case Message::TypeReceived:
-				message->setBackgroundColor(usrBackgroundColor)
-					.setNickColor(usrNickColor)
-					.setFontColor(usrFontColor);
+				message->setBackgroundColor(ChatConfiguration::instance()->usrBackgroundColor())
+					.setNickColor(ChatConfiguration::instance()->usrNickColor())
+					.setFontColor(ChatConfiguration::instance()->usrFontColor());
 				break;
 
 			default:

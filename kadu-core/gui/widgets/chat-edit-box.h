@@ -24,7 +24,6 @@
 #define CHAT_EDIT_BOX_H
 
 #include "chat/chat.h"
-#include "configuration/configuration-aware-object.h"
 #include "gui/windows/main-window.h"
 
 #include "exports.h"
@@ -33,7 +32,7 @@ class Action;
 class ChatWidget;
 class CustomInput;
 
-class KADUAPI ChatEditBox : public MainWindow, ConfigurationAwareObject
+class KADUAPI ChatEditBox : public MainWindow
 {
 	Q_OBJECT
 
@@ -44,12 +43,11 @@ class KADUAPI ChatEditBox : public MainWindow, ConfigurationAwareObject
 	void setColorFromCurrentText(bool force);
 
 private slots:
+	void configurationUpdated();
+
 	void fontChanged(QFont font);
 	void colorSelectorActionCreated(Action *action);
 	void cursorPositionChanged();
-
-protected:
-	virtual void configurationUpdated();
 
 public:
 	static void createDefaultToolbars(QDomElement parentConfig);

@@ -150,5 +150,5 @@ void disableEmptyContacts(Action *action)
 
 void disableNoChat(Action *action)
 {
-  action->setEnabled(action->chat());
+	action->setEnabled(action->chat());
 }

@@ -55,7 +55,7 @@ public:
 	virtual bool canRemoveAvatar() { return false; } // this is so lame for gadu-gadu, so so lame ...
 
 	virtual QString name() { return "gadu"; }
-	virtual QString displayName() { return tr("Gadu-Gadu"); }
+	virtual QString displayName() { return "Gadu-Gadu"; }
 	virtual KaduIcon icon();
 
 };

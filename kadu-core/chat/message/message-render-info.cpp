@@ -26,6 +26,7 @@
 #include <QtCore/QRegExp>
 
 #include "chat/message/formatted-message-part.h"
+#include "configuration/chat-configuration.h"
 #include "configuration/configuration-file.h"
 #include "emoticons/emoticons-manager.h"
 #include "icons/kadu-icon.h"
@@ -41,7 +42,7 @@ QString formatMessage(const QString& text)
 	HtmlDocument htmlDocument;
 	htmlDocument.parseHtml(text);
 	UrlHandlerManager::instance()->convertAllUrls(htmlDocument);
-	EmoticonsManager::instance()->expandEmoticons(htmlDocument, (EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle"));
+	EmoticonsManager::instance()->expandEmoticons(htmlDocument, (EmoticonsStyle)ChatConfiguration::instance()->emoticonsStyle());
 
 	return htmlDocument.generateHtml();
 }
@@ -168,15 +169,15 @@ MessageRenderInfo::MessageRenderInfo(const Message &msg) :
 	switch (msg.type())
 	{
 		case Message::TypeSent:
-			BackgroundColor = config_file.readEntry("Look", "ChatMyBgColor");
-			FontColor = config_file.readEntry("Look", "ChatMyFontColor");
-			NickColor = config_file.readEntry("Look", "ChatMyNickColor");
+			BackgroundColor = ChatConfiguration::instance()->myBackgroundColor();
+			NickColor = ChatConfiguration::instance()->myNickColor();
+			FontColor = ChatConfiguration::instance()->myFontColor();
 			break;
 
 		case Message::TypeReceived:
-			BackgroundColor = config_file.readEntry("Look", "ChatUsrBgColor");
-			FontColor = config_file.readEntry("Look", "ChatUsrFontColor");
-			NickColor = config_file.readEntry("Look", "ChatUsrNickColor");
+			BackgroundColor = ChatConfiguration::instance()->usrBackgroundColor();
+			NickColor = ChatConfiguration::instance()->usrNickColor();
+			FontColor = ChatConfiguration::instance()->usrFontColor();
 			break;
 
 		default:
@@ -198,9 +199,6 @@ MessageRenderInfo::MessageRenderInfo(const Message &msg) :
 		else
 			pos += kaduimgRegExp.matchedLength();
 	}
-
-// 	convertCharacters(unformattedMessage, backgroundColor,
-// 		(EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle"));
 }
 
 MessageRenderInfo::~MessageRenderInfo()
