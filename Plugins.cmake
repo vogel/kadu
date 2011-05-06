@@ -15,6 +15,8 @@ set (COMPILE_PLUGINS
 	freedesktop_notify
 	# Hints near tray icon
 	hints
+	# Speech synthesis support
+	speech
 
 # history
 	# General history plugin
