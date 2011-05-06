@@ -197,7 +197,8 @@ void KaduChatStyleEngine::repaintMessages(HtmlMessagesRenderer *renderer)
 
 	text += QString("<script>%1</script>").arg(jsCode);
 
-	text += CurrentChatSyntax.top();
+	Contact contact = renderer->chat().contacts().count() == 1 ? *(renderer->chat().contacts().begin()) : Contact();
+	text += Parser::parse(CurrentChatSyntax.top(), BuddyOrContact(contact), true);
 
 	MessageRenderInfo *prevMessage = 0;
 	foreach (MessageRenderInfo *message, renderer->messages())
@@ -250,7 +251,8 @@ void KaduChatStyleEngine::prepareStylePreview(Preview *preview, QString styleNam
 
 	KaduChatSyntax syntax(SyntaxList::readSyntax("chat", styleName, QString()));
 
-	QString text = syntax.top();
+	Contact contact = preview->getContactList().count() == 1 ? *(preview->getContactList().begin()) : Contact();
+	QString text = Parser::parse(syntax.top(), BuddyOrContact(contact), true);
 
 	int count = preview->getObjectsToParse().count();
 	if (count)
