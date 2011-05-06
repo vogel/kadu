@@ -7,19 +7,30 @@
 			if( status == StatusWontDeliver )
 				document.getElementById("confirm_"+messageid).innerHTML = "&times;";
 		}
+		function contactActivityChanged( state, message, name )
+		{
+			if( state == StateComposing )
+				document.getElementById("composing").style.display = "block";
+			else
+				document.getElementById("composing").style.display = "none";
+		}
 	</script>
-	<div style="border-bottom:1px dashed #cccccc;"></div>
+	<div id="composing" style="display:none; position:fixed; z-index:1; top:0px; right:0px; cursor:default; -webkit-user-select:none;" onclick="this.style.display='none';">
+		<div style="position:relative; top:2px; right:2px; padding:3px 8px; -webkit-border-radius:10px; background:rgba(255,255,255,0.7);">
+			<img id="composingicon" src="@{kadu_icons/composing:svg}" alt="" style="max-width:32px; max-height:32px; vertical-align:middle;">
+		</div>
+	</div>
 </kadu:top>
 
-<div style="padding-left:4px; padding-right:4px; border-bottom:1px dashed #cccccc; color:#{fontColor}; background-color:#{backgroundColor}; cursor:text;"
-	onmouseover="this.style.backgroundColor='#ffffff';" onmouseout="this.style.backgroundColor='#{backgroundColor}';">
+<div style="padding-left:4px; padding-right:4px; border-bottom:1px dashed #cccccc; color:#{fontColor}; background-color:#{backgroundColor}; cursor:default; -webkit-user-select:none;"
+	onmouseover="this.style.backgroundColor='rgba(255,255,255,0.9)';" onmouseout="this.style.backgroundColor='#{backgroundColor}';">
 	<kadu:header>
 		<span style="vertical-align:bottom;">
-		<span style="float:left; font-weight: bold; color:#{nickColor}; padding-top:3px;">
+		<span style="float:left; font-weight: bold; color:#{nickColor}; padding-top:3px; cursor:text; -webkit-user-select:text;">
 			%a
 		</span>
-		<span style="float:right; color:#666666; padding-top:5px;">
-			<small>#{receivedDate}[&nbsp;(#{sentDate})]</small>
+		<span style="float:right; color:#666666; padding-top:5px; cursor:text; -webkit-user-select:text;">
+			<small>&nbsp;#{receivedDate}[&nbsp;(#{sentDate})]</small>
 		</span>
 		</span>
 	</kadu:header>
@@ -39,7 +50,7 @@
 		else
 			this.style.whiteSpace = 'nowrap';
 	">
-		<span style="position:relative;">#{message}</span>
+		<span style="position:relative; cursor:text; -webkit-user-select:text;">#{message}</span>
 	</div>
 </div>
 <script>
