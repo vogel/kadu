@@ -18,6 +18,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "core/core.h"
 #include "gui/actions/action.h"
 #include "gui/actions/action-description.h"
 #include "gui/windows/main-window.h"
@@ -51,7 +52,7 @@ void Actions::remove(ActionDescription *action)
 {
 	QMap<QString, ActionDescription *>::remove(action->name());
 
-	if (!BlockSignals)
+	if (!Core::instance()->isClosing())
 		emit actionUnloaded(action->name());
 }
 
