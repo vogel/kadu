@@ -59,7 +59,7 @@ public:
 	virtual ~ConfigListWidget();
 
 	void setItems(const QStringList &itemValues, const QStringList &itemCaptions);
-	const QString & currentItemValue() { return itemValues[currentRow()]; }
+	const QString & currentItemValue() { return itemValues.at(currentRow()); }
 
 	virtual void loadConfiguration() {};
 	virtual void saveConfiguration() {};

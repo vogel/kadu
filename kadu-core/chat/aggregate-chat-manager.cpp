@@ -79,7 +79,7 @@ void AggregateChatManager::chatRemoved(const Chat &chat)
 		return;
 
 	AggregateChats[buddies].removeAll(chat);
-	if (AggregateChats[buddies].isEmpty())
+	if (AggregateChats.value(buddies).isEmpty())
 		AggregateChats.remove(buddies);
 }
 
@@ -101,7 +101,7 @@ Chat AggregateChatManager::aggregateChat(const BuddySet &buddies)
 	if (!AggregateChats.contains(buddies))
 		return Chat::null;
 
-	QList<Chat> chats = AggregateChats[buddies];
+	QList<Chat> chats = AggregateChats.value(buddies);
 	if (chats.count() <= 1)
 		return Chat::null;
 

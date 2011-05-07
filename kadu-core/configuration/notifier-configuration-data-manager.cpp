@@ -49,8 +49,8 @@ QVariant NotifierConfigurationDataManager::readEntry(const QString &section, con
 
 NotifierConfigurationDataManager * NotifierConfigurationDataManager::dataManagerForEvent(const QString &eventName)
 {
-	if (DataManagers[eventName])
-		return DataManagers[eventName];
+	if (DataManagers.contains(eventName))
+		return DataManagers.value(eventName);
 	else
 		return DataManagers[eventName] = new NotifierConfigurationDataManager(eventName);
 }

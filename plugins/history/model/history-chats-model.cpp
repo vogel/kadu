@@ -136,7 +136,7 @@ QVariant HistoryChatsModel::chatData(const QModelIndex &index, int role) const
 	if (index.internalId() < 0 || index.internalId() >= Chats.size())
 		return QVariant();
 
-	const QList<Chat> &chats = Chats[index.internalId()];
+	const QList<Chat> &chats = Chats.at(index.internalId());
 	if (index.row() < 0 || index.row() >= chats.size())
 		return QVariant();
 

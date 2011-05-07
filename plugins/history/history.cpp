@@ -195,7 +195,7 @@ void History::showHistoryActionActivated(QAction *sender, bool toggled)
 		if (widgets.size() == 0)
 			return;
 
-		QWidget *widget = widgets[widgets.size() - 1];
+		QWidget *widget = widgets.at(widgets.size() - 1);
 
 		QScopedPointer<QMenu> menu(new QMenu(chatWidget));
 

@@ -81,7 +81,7 @@ void ConfigTab::configGroupBoxDestroyed(QObject *obj)
 ConfigGroupBox *ConfigTab::configGroupBox(const QString &name, bool create)
 {
 	if (MyConfigGroupBoxes.contains(name))
-		return MyConfigGroupBoxes[name];
+		return MyConfigGroupBoxes.value(name);
 
 	if (!create)
 		return 0;
@@ -93,7 +93,7 @@ ConfigGroupBox *ConfigTab::configGroupBox(const QString &name, bool create)
 	MyMainLayout->insertWidget(MyConfigGroupBoxes.count(), groupBox);
 
 	ConfigGroupBox *newConfigGroupBox = new ConfigGroupBox(name, this, groupBox);
-	MyConfigGroupBoxes[name] = newConfigGroupBox;
+	MyConfigGroupBoxes.insert(name, newConfigGroupBox);
 	connect(newConfigGroupBox, SIGNAL(destroyed(QObject *)), this, SLOT(configGroupBoxDestroyed(QObject *)));
 
 	groupBox->show();

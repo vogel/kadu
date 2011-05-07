@@ -239,7 +239,7 @@ void ToolBar::moveAction(const QString &actionName, Qt::ToolButtonStyle style, Q
 	if (-1 == index)
 		return;
 
-	ToolBarAction currentAction = ToolBarActions[index];
+	ToolBarAction currentAction = ToolBarActions.at(index);
 	if (currentAction.action == before)
 		return;
 

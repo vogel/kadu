@@ -72,7 +72,7 @@ QString ConfigComboBox::currentItemValue()
 	if ((index < 0) || (index >= itemValues.size()))
 		return QString();
 
-	return itemValues[index];
+	return itemValues.at(index);
 }
 
 void ConfigComboBox::createWidgets()

@@ -249,7 +249,7 @@ ChatWidget * ChatWidgetManager::byChat(const Chat &chat, bool create) const
 	Q_UNUSED(create)
 
 	return Chats.contains(chat)
-		? Chats[chat]
+		? Chats.value(chat)
 		: 0;
 }
 

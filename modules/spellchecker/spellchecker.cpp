@@ -244,7 +244,7 @@ void SpellChecker::buildCheckers()
 
 	// create spell checkers for each language
 	for (int i = 0; i < checkedList.count(); i++)
-		addCheckedLang(checkedList[i]);
+		addCheckedLang(checkedList.at(i));
 }
 
 void SpellChecker::buildMarkTag()

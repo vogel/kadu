@@ -90,20 +90,20 @@ void ConfigSection::activate()
 
 	QString tab = config_file.readEntry("General", "ConfigurationWindow_" + MyConfigurationWidget->name() + '_' + Name);
 	if (ConfigTabs.contains(tab))
-		TabWidget->setCurrentWidget(ConfigTabs[tab]->widget());
+		TabWidget->setCurrentWidget(ConfigTabs.value(tab)->widget());
 	Activated = true;
 }
 
 ConfigTab * ConfigSection::configTab(const QString &name, bool create)
 {
 	if (ConfigTabs.contains(name))
-		return ConfigTabs[name];
+		return ConfigTabs.value(name);
 
 	if (!create)
 		return 0;
 
 	ConfigTab *newConfigTab = new ConfigTab(name, this, TabWidget);
-	ConfigTabs[name] = newConfigTab;
+	ConfigTabs.insert(name, newConfigTab);
 	connect(newConfigTab, SIGNAL(destroyed(QObject *)), this, SLOT(configTabDestroyed(QObject *)));
 
 	TabWidget->addTab(newConfigTab->widget(), newConfigTab->name());

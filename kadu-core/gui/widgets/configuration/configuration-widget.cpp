@@ -110,9 +110,9 @@ void ConfigurationWidget::init()
 {
 	QString lastSection = config_file.readEntry("General", "ConfigurationWindow_" + Name);
 	if (ConfigSections.contains(lastSection))
-		ConfigSections[lastSection]->activate();
+		ConfigSections.value(lastSection)->activate();
 	else if (SectionsListWidget->count() > 0)
-		ConfigSections[SectionsListWidget->item(0)->text()]->activate();
+		ConfigSections.value(SectionsListWidget->item(0)->text())->activate();
 }
 
 QList<ConfigWidget *> ConfigurationWidget::appendUiFile(const QString &fileName, bool load)
@@ -273,7 +273,7 @@ QList<ConfigWidget *> ConfigurationWidget::processUiGroupBoxFromDom(QDomNode gro
 	}
 
 	if (!groupBoxId.isEmpty())
-		Widgets[groupBoxId] = configGroupBoxWidget->widget();
+		Widgets.insert(groupBoxId, configGroupBoxWidget->widget());
 
 	const QDomNodeList &children = groupBoxElement.childNodes();
 	int length = children.length();
@@ -352,7 +352,7 @@ ConfigWidget * ConfigurationWidget::appendUiElementFromDom(QDomNode uiElementNod
 
 	QString id = uiElement.attribute("id");
 	if (!id.isEmpty())
-		Widgets[id] = dynamic_cast<QWidget *>(widget);
+		Widgets.insert(id, dynamic_cast<QWidget *>(widget));
 
 	widget->show();
 
@@ -395,7 +395,7 @@ void ConfigurationWidget::removeUiElementFromDom(QDomNode uiElementNode, ConfigG
 QWidget * ConfigurationWidget::widgetById(const QString &id)
 {
 	if (Widgets.contains(id))
-		return Widgets[id];
+		return Widgets.value(id);
 
 	return 0;
 }
@@ -411,13 +411,13 @@ ConfigGroupBox * ConfigurationWidget::configGroupBox(const QString &section, con
 
 ConfigSection * ConfigurationWidget::configSection(const QString &name)
 {
-	return ConfigSections[name];
+	return ConfigSections.value(name);
 }
 
 ConfigSection * ConfigurationWidget::configSection(const KaduIcon &icon, const QString &name, bool create)
 {
 	if (ConfigSections.contains(name))
-		return ConfigSections[name];
+		return ConfigSections.value(name);
 
 	if (!create)
 		return 0;
@@ -429,7 +429,7 @@ ConfigSection * ConfigurationWidget::configSection(const KaduIcon &icon, const Q
 	int width = fontMetrics.width(name) + 80;
 
 	ConfigSection *newConfigSection = new ConfigSection(name, this, newConfigSectionListWidgetItem, ContainerWidget, icon);
-	ConfigSections[name] = newConfigSection;
+	ConfigSections.insert(name, newConfigSection);
 	connect(newConfigSection, SIGNAL(destroyed(QObject *)), this, SLOT(configSectionDestroyed(QObject *)));
 
 	if (ConfigSections.count() == 1)
@@ -492,7 +492,7 @@ void ConfigurationWidget::changeSection(const QString &newSectionName)
 	if (!ConfigSections.contains(newSectionName))
 		return;
 
-	ConfigSection *newSection = ConfigSections[newSectionName];
+	ConfigSection *newSection = ConfigSections.value(newSectionName);
 	if (newSection == CurrentSection)
 		return;
 

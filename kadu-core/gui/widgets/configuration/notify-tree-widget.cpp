@@ -120,8 +120,8 @@ void NotifyTreeWidget::refresh()
 				notifiersNames << notifier->name();
 
 		if (notifyEvent->category().isEmpty())
-			TreeItems[eventName] = new NotifyTreeWidgetItem(this, eventName,
-						notifyEvent->description(), notifiersNames);
+			TreeItems.insert(eventName, new NotifyTreeWidgetItem(this, eventName,
+						notifyEvent->description(), notifiersNames));
 		else
 		{
 			TreeItems[eventName] = new NotifyTreeWidgetItem(TreeItems[notifyEvent->category()], eventName,

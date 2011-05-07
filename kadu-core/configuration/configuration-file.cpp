@@ -64,10 +64,10 @@ PlainConfigFile &PlainConfigFile::operator=(const PlainConfigFile &c)
 void PlainConfigFile::changeActiveGroup(const QString& newGroup)
 {
 	if (!activeGroupName.isEmpty())
-		groups[activeGroupName] = activeGroup;
+		groups.insert(activeGroupName, activeGroup);
 	activeGroupName = newGroup;
 	if (!activeGroupName.isEmpty())
-		activeGroup = groups[activeGroupName];
+		activeGroup = groups.value(activeGroupName);
 }
 
 void PlainConfigFile::read()
@@ -96,10 +96,10 @@ void PlainConfigFile::read()
 				name = name.trimmed();
 
 				if (line.contains('=') && !name.isEmpty() && !value.isEmpty())
-					activeGroup[name] = value;
+					activeGroup.insert(name, value);
 			}
 		}
-		groups[activeGroupName] = activeGroup;
+		groups.insert(activeGroupName, activeGroup);
 		file.close();
 	}
 	kdebugf2();
@@ -161,12 +161,12 @@ QStringList PlainConfigFile::getGroupList() const
 void PlainConfigFile::sync()
 {
 	if (!activeGroupName.isEmpty())
-		groups[activeGroupName] = activeGroup;
+		groups.insert(activeGroupName, activeGroup);
 
 	write();
 }
 
-QMap<QString, QString>& PlainConfigFile::getGroupSection(const QString& name)
+QMap<QString, QString> & PlainConfigFile::getGroupSection(const QString& name)
 {
 	kdebugf();
 	return groups[name];
@@ -179,7 +179,7 @@ bool PlainConfigFile::changeEntry(const QString &group, const QString &name, con
 		changeActiveGroup(group);
 
 	bool ret=activeGroup.contains(name);
-	activeGroup[name]=value;
+	activeGroup.insert(name, value);
 	//
 	return ret;
 }
@@ -201,7 +201,7 @@ QString PlainConfigFile::getEntry(const QString &group, const QString &name, boo
 	if (ok)
 		*ok=activeGroup.contains(name);
 	if (activeGroup.contains(name))
-		return activeGroup[name];
+		return activeGroup.value(name);
 	else
 		return QString();
 }

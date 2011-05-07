@@ -76,7 +76,7 @@ QString BuddyShared::storageNodeName()
 }
 
 #define ImportProperty(name, old_name) \
-	set##name(CustomData[#old_name]); \
+	set##name(CustomData.value(#old_name)); \
 	CustomData.remove(#old_name);
 
 void BuddyShared::importConfiguration(const QDomElement &parent)
@@ -196,7 +196,7 @@ void BuddyShared::store()
 	QDomElement customDataValues = configurationStorage->getNode(parent, "CustomDataValues", XmlConfigFile::ModeCreate);
 
 	foreach (const QString &key, CustomData.keys())
-		configurationStorage->createNamedTextNode(customDataValues, "CustomDataValue", key, CustomData[key]);
+		configurationStorage->createNamedTextNode(customDataValues, "CustomDataValue", key, CustomData.value(key));
 
 	if (BuddyAvatar.uuid().isNull())
 		removeValue("Avatar");

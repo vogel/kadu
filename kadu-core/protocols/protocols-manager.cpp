@@ -96,5 +96,5 @@ ProtocolFactory * ProtocolsManager::byIndex(int index)
 	if (index < 0 || index >= Factories.count())
 		return 0;
 
-	return Factories[index];
+	return Factories.at(index);
 }

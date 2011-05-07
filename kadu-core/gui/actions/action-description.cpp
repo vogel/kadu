@@ -66,10 +66,10 @@ void ActionDescription::setShortcut(QString configItem, Qt::ShortcutContext cont
 Action * ActionDescription::createAction(ActionDataSource *dataSource, QObject *parent)
 {
 	if (MappedActions.contains(dataSource))
-		return MappedActions[dataSource];
+		return MappedActions.value(dataSource);
 
 	Action *result = new Action(this, dataSource, parent);
-	MappedActions[dataSource] = result;
+	MappedActions.insert(dataSource, result);
 
 	connect(result, SIGNAL(aboutToBeDestroyed(Action *)), this, SLOT(actionAboutToBeDestroyed(Action *)));
 	if (Object && Slot)
@@ -98,7 +98,7 @@ QList<Action *> ActionDescription::actions()
 Action * ActionDescription::action(ActionDataSource *dataSource)
 {
 	if (MappedActions.contains(dataSource))
-		return MappedActions[dataSource];
+		return MappedActions.value(dataSource);
 	else
 		return 0;
 }
