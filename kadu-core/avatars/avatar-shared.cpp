@@ -66,7 +66,7 @@ QString AvatarShared::storageNodeName()
 
 QString AvatarShared::filePath()
 {
-	return FilePath.isEmpty() ? AvatarsDir + uuid() : FilePath;
+	return FilePath.isEmpty() ? AvatarsDir + uuid().toString() : FilePath;
 }
 
 void AvatarShared::setFilePath(const QString &filePath)

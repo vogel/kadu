@@ -27,10 +27,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-
-#define QT_USE_FAST_CONCATENATION
-#define QT_USE_FAST_OPERATOR_PLUS
-
 #include <QtCore/QFile>
 #include <QtCore/QFileInfo>
 

@@ -219,8 +219,8 @@ bool Plugin::activate()
 			kdebugf2();
 			return false;
 		}
-		init = (InitModuleFunc *)PluginLibrary->resolve(qPrintable(Name + "_init"));
-		Close = (CloseModuleFunc *)PluginLibrary->resolve(qPrintable(Name + "_close"));
+		init = (InitModuleFunc *)PluginLibrary->resolve(qPrintable(QString(Name + "_init")));
+		Close = (CloseModuleFunc *)PluginLibrary->resolve(qPrintable(QString(Name + "_close")));
 		if (!init || !Close)
 		{
 			MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Cannot find required functions in module %1.\n"
