@@ -17,6 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QMutexLocker>
+
 #include "history.h"
 #include "chat/message/message.h"
 #include "history-save-thread.h"
@@ -68,14 +70,12 @@ void HistorySaveThread::sync()
 
 void HistorySaveThread::forceSync()
 {
-	SomethingToSave.lock();
+	QMutexLocker locker(&SomethingToSave);
 
 	storeMessages();
 	storeStatusChanges();
 
 	sync();
-
-	SomethingToSave.unlock();
 }
 
 void HistorySaveThread::run()
@@ -84,7 +84,7 @@ void HistorySaveThread::run()
 
 	while (!Stopped)
 	{
-		SomethingToSave.lock();
+		QMutexLocker locker(&SomethingToSave);
 
 		if (Enabled)
 		{
@@ -94,8 +94,7 @@ void HistorySaveThread::run()
 				sync();
 		}
 
-		WaitForSomethingToSave.wait(&SomethingToSave, SYNCHRONIZATION_TIMEOUT);
-		SomethingToSave.unlock();
+		WaitForSomethingToSave.wait(locker.mutex(), SYNCHRONIZATION_TIMEOUT);
 	}
 
 	storeMessages();

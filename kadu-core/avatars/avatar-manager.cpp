@@ -91,21 +91,21 @@ void AvatarManager::itemRemoved(Avatar item)
 
 void AvatarManager::accountRegistered(Account account)
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	connect(account, SIGNAL(connected()), this, SLOT(updateAccountAvatars()));
 }
 
 void AvatarManager::accountUnregistered(Account account)
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	disconnect(account, SIGNAL(connected()), this, SLOT(updateAccountAvatars()));
 }
 
 void AvatarManager::contactAdded(Contact contact)
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	Protocol *protocol = contact.contactAccount().protocolHandler();
 	if (protocol && protocol->isConnected())
@@ -114,7 +114,7 @@ void AvatarManager::contactAdded(Contact contact)
 
 bool AvatarManager::needUpdate(const Contact &contact)
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	if (!contact.contactAvatar())
 		return true;
@@ -135,7 +135,7 @@ bool AvatarManager::needUpdate(const Contact &contact)
 
 void AvatarManager::updateAvatar(const Contact &contact, bool force)
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	if (!force && !needUpdate(contact))
 		return;
@@ -145,7 +145,7 @@ void AvatarManager::updateAvatar(const Contact &contact, bool force)
 
 void AvatarManager::updateAvatars()
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	foreach (const Contact &contact, ContactManager::instance()->items())
 		if (!contact.ownerBuddy().isAnonymous())
@@ -154,7 +154,7 @@ void AvatarManager::updateAvatars()
 
 void AvatarManager::updateAccountAvatars()
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	Account account(sender());
 	if (!account)
@@ -167,7 +167,7 @@ void AvatarManager::updateAccountAvatars()
 
 void AvatarManager::avatarDataUpdated()
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	Avatar avatar(sender());
 	if (avatar)
@@ -176,7 +176,7 @@ void AvatarManager::avatarDataUpdated()
 
 void AvatarManager::avatarPixmapUpdated()
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	Avatar avatar(sender());
 	if (avatar)

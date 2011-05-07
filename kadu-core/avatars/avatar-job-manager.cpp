@@ -46,7 +46,7 @@ AvatarJobManager::~AvatarJobManager()
 
 void AvatarJobManager::scheduleJob()
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	if (!IsJobRunning && hasJob())
 		// run it in next even cycle
@@ -56,7 +56,7 @@ void AvatarJobManager::scheduleJob()
 
 void AvatarJobManager::runJob()
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	if (IsJobRunning)
 		return;
@@ -74,7 +74,7 @@ void AvatarJobManager::runJob()
 
 void AvatarJobManager::jobFinished()
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	IsJobRunning = false;
 	scheduleJob();
@@ -82,7 +82,7 @@ void AvatarJobManager::jobFinished()
 
 void AvatarJobManager::addJob(const Contact &contact)
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	if (!contact)
 		return;
@@ -93,14 +93,14 @@ void AvatarJobManager::addJob(const Contact &contact)
 
 bool AvatarJobManager::hasJob()
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	return !Jobs.isEmpty();
 }
 
 Contact AvatarJobManager::nextJob()
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	if (!hasJob())
 		return Contact::null;

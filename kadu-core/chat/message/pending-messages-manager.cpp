@@ -65,7 +65,7 @@ PendingMessagesManager::~PendingMessagesManager()
 // TODO: optimize
 bool PendingMessagesManager::hasPendingMessagesForContact(const Contact &contact)
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	foreach (const Message &message, items())
 		if (message.isPending() && message.messageSender() == contact)
@@ -76,7 +76,7 @@ bool PendingMessagesManager::hasPendingMessagesForContact(const Contact &contact
 
 bool PendingMessagesManager::hasPendingMessagesForBuddy(const Buddy &buddy)
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	foreach (const Message &message, items())
 		if (message.isPending() && buddy.contacts().contains(message.messageSender()))
@@ -87,7 +87,7 @@ bool PendingMessagesManager::hasPendingMessagesForBuddy(const Buddy &buddy)
 
 bool PendingMessagesManager::hasPendingMessagesForChat(const Chat &chat)
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	foreach (const Message &message, items())
 		if (message.isPending() && message.messageChat() == chat)
@@ -98,7 +98,7 @@ bool PendingMessagesManager::hasPendingMessagesForChat(const Chat &chat)
 
 bool PendingMessagesManager::hasPendingMessages()
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	foreach (const Message &message, items())
 		if (message.isPending())
@@ -109,7 +109,7 @@ bool PendingMessagesManager::hasPendingMessages()
 
 Chat PendingMessagesManager::chatForBuddy(const Buddy &buddy)
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	foreach (const Message &message, items())
 		if (message.isPending() && buddy.contacts().contains(message.messageSender()))
@@ -120,7 +120,7 @@ Chat PendingMessagesManager::chatForBuddy(const Buddy &buddy)
 
 Chat PendingMessagesManager::chatForContact(const Contact &contact)
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	foreach (const Message &message, items())
 		if (message.isPending() && message.messageSender() == contact)
@@ -131,7 +131,7 @@ Chat PendingMessagesManager::chatForContact(const Contact &contact)
 
 QList<Message> PendingMessagesManager::pendingMessagesForContact(const Contact &contact)
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	QList<Message> result;
 
@@ -144,7 +144,7 @@ QList<Message> PendingMessagesManager::pendingMessagesForContact(const Contact &
 
 QList<Message> PendingMessagesManager::pendingMessagesForBuddy(const Buddy &buddy)
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	QList<Message> result;
 	QSet<Contact> contacts = buddy.contacts().toSet();
@@ -158,7 +158,7 @@ QList<Message> PendingMessagesManager::pendingMessagesForBuddy(const Buddy &budd
 
 QList<Message> PendingMessagesManager::pendingMessagesForChat(const Chat &chat)
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	QList<Message> result;
 
@@ -171,7 +171,7 @@ QList<Message> PendingMessagesManager::pendingMessagesForChat(const Chat &chat)
 
 QList<Message> PendingMessagesManager::pendingMessages()
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	QList<Message> result;
 
@@ -184,7 +184,7 @@ QList<Message> PendingMessagesManager::pendingMessages()
 
 Message PendingMessagesManager::firstPendingMessage()
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	foreach (const Message &message, items())
 		if (message.isPending())

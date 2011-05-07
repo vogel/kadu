@@ -59,7 +59,7 @@ GroupManager::~GroupManager()
 
 void GroupManager::importConfiguration()
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	QSharedPointer<StoragePoint> sp(storage());
 	if (!sp || !sp->storage())
@@ -83,7 +83,7 @@ void GroupManager::importConfiguration()
 
 void GroupManager::load()
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	QDomElement groupsNode = xml_config_file->getNode("Groups", XmlConfigFile::ModeFind);
 	if (groupsNode.isNull())
@@ -98,7 +98,7 @@ void GroupManager::load()
 
 void GroupManager::store()
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	emit saveGroupData();
 
@@ -107,7 +107,7 @@ void GroupManager::store()
 
 Group GroupManager::byName(const QString &name, bool create)
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	if (name.isEmpty())
 		return Group::null;

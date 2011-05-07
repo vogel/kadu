@@ -30,6 +30,7 @@
 #include <QtCore/QDir>
 #include <QtCore/QFile>
 #include <QtCore/QMutex>
+#include <QtCore/QMutexLocker>
 #include <QtCore/QTextStream>
 #include <QtGui/QApplication>
 
@@ -42,7 +43,7 @@
 
 #include "configuration-file.h"
 
-QMutex GlobalMutex;
+static QMutex GlobalMutex;
 
 PlainConfigFile::PlainConfigFile(const QString &filename) : filename(filename), groups(), activeGroupName()
 {
@@ -484,7 +485,7 @@ void ConfigFile::sync()
 
 bool ConfigFile::changeEntry(const QString &group, const QString &name, const QString &value)
 {
-	GlobalMutex.lock();
+	QMutexLocker locker(&GlobalMutex);
 
 //	kdebugm(KDEBUG_FUNCTION_START, "ConfigFile::changeEntry(%s, %s, %s) %p\n", qPrintable(group), qPrintable(name), qPrintable(value), this);
 	QDomElement root_elem = xml_config_file->rootElement();
@@ -497,14 +498,12 @@ bool ConfigFile::changeEntry(const QString &group, const QString &name, const QS
 		group_elem, "Entry", "name", name);
 	entry_elem.setAttribute("value", value);
 
-	GlobalMutex.unlock();
-
 	return true;
 }
 
 QString ConfigFile::getEntry(const QString &group, const QString &name, bool *ok) const
 {
-	GlobalMutex.lock();
+	QMutexLocker locker(&GlobalMutex);
 
 	bool resOk;
 	QString result;
@@ -540,7 +539,6 @@ QString ConfigFile::getEntry(const QString &group, const QString &name, bool *ok
 	if (ok)
 		*ok = resOk;
 
-	GlobalMutex.unlock();
 	return result;
 }
 
@@ -746,7 +744,7 @@ QPoint ConfigFile::readPointEntry(const QString &group,const QString &name, cons
 
 void ConfigFile::removeVariable(const QString &group, const QString &name)
 {
-	GlobalMutex.lock();
+	QMutexLocker locker(&GlobalMutex);
 
 	QDomElement root_elem = xml_config_file->rootElement();
 	QDomElement deprecated_elem = xml_config_file->accessElement(root_elem, "Deprecated");
@@ -757,8 +755,6 @@ void ConfigFile::removeVariable(const QString &group, const QString &name)
 	QDomElement entry_elem = xml_config_file->accessElementByProperty(
 		group_elem, "Entry", "name", name);
 	group_elem.removeChild(entry_elem);
-
-	GlobalMutex.unlock();
 }
 
 void ConfigFile::addVariable(const QString &group, const QString &name, const QString &defvalue)

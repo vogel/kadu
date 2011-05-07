@@ -66,7 +66,7 @@ AccountManager::~AccountManager()
 
 void AccountManager::itemAdded(Account item)
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	if (item.data())
 		item.data()->ensureLoaded();
@@ -75,14 +75,14 @@ void AccountManager::itemAdded(Account item)
 
 void AccountManager::itemRemoved(Account item)
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	AccountsAwareObject::notifyAccountRemoved(item);
 }
 
 void AccountManager::itemAboutToBeRegistered(Account item)
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	connect(item, SIGNAL(updated()), this, SLOT(accountDataUpdated()));
 	emit accountAboutToBeRegistered(item);
@@ -90,7 +90,7 @@ void AccountManager::itemAboutToBeRegistered(Account item)
 
 void AccountManager::itemRegistered(Account item)
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	AccountsAwareObject::notifyAccountRegistered(item);
 
@@ -109,7 +109,7 @@ void AccountManager::itemRegistered(Account item)
 
 void AccountManager::itemAboutToBeUnregisterd(Account item)
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	AccountsAwareObject::notifyAccountUnregistered(item);
 	disconnect(item.protocolHandler(), SIGNAL(connectionError(Account, const QString &, const QString &)),
@@ -122,7 +122,7 @@ void AccountManager::itemAboutToBeUnregisterd(Account item)
 
 void AccountManager::itemUnregistered(Account item)
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	disconnect(item, SIGNAL(updated()), this, SLOT(accountDataUpdated()));
 	emit accountUnregistered(item);
@@ -130,7 +130,7 @@ void AccountManager::itemUnregistered(Account item)
 
 void AccountManager::detailsLoaded(Account account)
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	if (!account.isNull())
 		registerItem(account);
@@ -138,7 +138,7 @@ void AccountManager::detailsLoaded(Account account)
 
 void AccountManager::detailsUnloaded(Account account)
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	if (!account.isNull())
 		unregisterItem(account);
@@ -146,7 +146,7 @@ void AccountManager::detailsUnloaded(Account account)
 
 Account AccountManager::defaultAccount()
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	ensureLoaded();
 
@@ -160,7 +160,7 @@ Account AccountManager::defaultAccount()
 
 const QList<Account> AccountManager::byIdentity(Identity identity)
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	ensureLoaded();
 
@@ -174,7 +174,7 @@ const QList<Account> AccountManager::byIdentity(Identity identity)
 
 Account AccountManager::byId(const QString& protocolName, const QString& id)
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	ensureLoaded();
 
@@ -187,7 +187,7 @@ Account AccountManager::byId(const QString& protocolName, const QString& id)
 
 const QList<Account> AccountManager::byProtocolName(const QString &name)
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	ensureLoaded();
 
@@ -201,7 +201,7 @@ const QList<Account> AccountManager::byProtocolName(const QString &name)
 
 Status AccountManager::status()
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	Account account = defaultAccount();
 	return account.statusContainer()
@@ -211,7 +211,7 @@ Status AccountManager::status()
 
 void AccountManager::accountDataUpdated()
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	Account account(sender());
 	if (account)
@@ -220,7 +220,7 @@ void AccountManager::accountDataUpdated()
 
 void AccountManager::connectionError(Account account, const QString &server, const QString &message)
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	if (!ConnectionErrorNotification::activeError(account, message))
 	{
@@ -259,7 +259,7 @@ void AccountManager::passwordProvided(const QVariant& data, const QString& passw
 
 void AccountManager::providePassword(Account account)
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	QString message = tr("Please provide valid password for %1 (%2) account")
 			.arg(account.accountIdentity().name())

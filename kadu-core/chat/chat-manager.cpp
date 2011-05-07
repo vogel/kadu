@@ -84,7 +84,7 @@ void ChatManager::itemUnregistered(Chat item)
  */
 void ChatManager::detailsLoaded(Chat chat)
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	if (!chat.isNull())
 		registerItem(chat);
@@ -100,7 +100,7 @@ void ChatManager::detailsLoaded(Chat chat)
  */
 void ChatManager::detailsUnloaded(Chat chat)
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	if (!chat.isNull())
 		unregisterItem(chat);
@@ -108,7 +108,7 @@ void ChatManager::detailsUnloaded(Chat chat)
 
 bool ChatManager::isAccountCommon(const Account &account, const BuddySet &buddies)
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	foreach (const Buddy &buddy, buddies)
 		if (buddy.contacts(account).isEmpty())
@@ -119,7 +119,7 @@ bool ChatManager::isAccountCommon(const Account &account, const BuddySet &buddie
 
 Account ChatManager::getCommonAccount(const BuddySet &buddies)
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	QList<Account> accounts = AccountManager::instance()->items();
 	foreach (const Account &account, accounts)
@@ -131,7 +131,7 @@ Account ChatManager::getCommonAccount(const BuddySet &buddies)
 
 Chat ChatManager::findChat(const BuddySet &buddies, bool create)
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	if (buddies.count() == 1)
 	{
@@ -180,7 +180,7 @@ Chat ChatManager::findChat(const BuddySet &buddies, bool create)
  */
 Chat ChatManager::findChat(const ContactSet &contacts, bool create)
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	ensureLoaded();
 

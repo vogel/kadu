@@ -34,6 +34,7 @@
  */
 
 #include <QtCore/QList>
+#include <QtCore/QMutex>
 #include <QtCore/QScopedPointer>
 #include <QtGui/QKeyEvent>
 #include <QtGui/QLabel>
@@ -384,32 +385,22 @@ void History::contactStatusChanged(Contact contact, Status oldStatus)
 
 Message History::dequeueUnsavedMessage()
 {
-	UnsavedDataMutex.lock();
+	QMutexLocker locker(&UnsavedDataMutex);
+
 	if (UnsavedMessages.isEmpty())
-	{
-		UnsavedDataMutex.unlock();
 		return Message::null;
-	}
 
-	Message result = UnsavedMessages.dequeue();
-	UnsavedDataMutex.unlock();
-
-	return result;
+	return UnsavedMessages.dequeue();
 }
 
 QPair<Contact, Status> History::dequeueUnsavedStatusChange()
 {
-	UnsavedDataMutex.lock();
+	QMutexLocker locker(&UnsavedDataMutex);
+
 	if (UnsavedStatusChanges.isEmpty())
-	{
-		UnsavedDataMutex.unlock();
 		return qMakePair(Contact::null, Status("Offline"));
-	}
 
-	QPair<Contact, Status> result = UnsavedStatusChanges.dequeue();
-	UnsavedDataMutex.unlock();
-
-	return result;
+	return UnsavedStatusChanges.dequeue();
 }
 
 void History::crash()

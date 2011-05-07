@@ -77,7 +77,7 @@ void KeysManager::itemRemoved(Key item)
 
 void KeysManager::keyDataUpdated()
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	Key key(sender());
 	if (key)

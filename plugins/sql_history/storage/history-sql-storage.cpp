@@ -23,6 +23,7 @@
  */
 
 #include <QtCore/QDir>
+#include <QtCore/QMutexLocker>
 #include <QtSql/QSqlError>
 #include <QtSql/QSqlRecord>
 
@@ -55,12 +56,10 @@ HistorySqlStorage::HistorySqlStorage(QObject *parent) :
 {
 	kdebugf();
 
-	DatabaseMutex.lock();
+	QMutexLocker locker(&DatabaseMutex);
 
 	initDatabase();
 	initQueries();
-
-	DatabaseMutex.unlock();
 }
 
 HistorySqlStorage::~HistorySqlStorage()
@@ -278,12 +277,10 @@ QString HistorySqlStorage::buddyContactsWhere(const Buddy &buddy)
 
 void HistorySqlStorage::sync()
 {
-	DatabaseMutex.lock();
+	QMutexLocker locker(&DatabaseMutex);
 
 	Database.commit();
 	Database.transaction();
-
-	DatabaseMutex.unlock();
 }
 
 void HistorySqlStorage::messageReceived(const Message &message)
@@ -300,7 +297,7 @@ void HistorySqlStorage::appendMessage(const Message &message)
 {
 	kdebugf();
 
-	DatabaseMutex.lock();
+	QMutexLocker locker(&DatabaseMutex);
 
 	QString outgoing = (message.type() == Message::TypeSent)
 			? "1"
@@ -315,8 +312,6 @@ void HistorySqlStorage::appendMessage(const Message &message)
 
 	executeQuery(AppendMessageQuery);
 
-	DatabaseMutex.unlock();
-
 	kdebugf2();
 }
 
@@ -324,7 +319,7 @@ void HistorySqlStorage::appendStatus(const Contact &contact, const Status &statu
 {
 	kdebugf();
 
-	DatabaseMutex.lock();
+	QMutexLocker locker(&DatabaseMutex);
 
 	AppendStatusQuery.bindValue(":contact", contact.uuid().toString());
 	AppendStatusQuery.bindValue(":status", status.type());
@@ -333,8 +328,6 @@ void HistorySqlStorage::appendStatus(const Contact &contact, const Status &statu
 
 	executeQuery(AppendStatusQuery);
 
-	DatabaseMutex.unlock();
-
 	kdebugf2();
 }
 
@@ -342,7 +335,7 @@ void HistorySqlStorage::appendSms(const QString &recipient, const QString &conte
 {
 	kdebugf();
 
-	DatabaseMutex.lock();
+	QMutexLocker locker(&DatabaseMutex);
 
 	AppendSmsQuery.bindValue(":contact", recipient);
 	AppendSmsQuery.bindValue(":send_time", time);
@@ -350,14 +343,12 @@ void HistorySqlStorage::appendSms(const QString &recipient, const QString &conte
 
 	executeQuery(AppendSmsQuery);
 
-	DatabaseMutex.unlock();
-
 	kdebugf2();
 }
 
 void HistorySqlStorage::clearChatHistory(const Chat &chat, const QDate &date)
 {
-	DatabaseMutex.lock();
+	QMutexLocker locker(&DatabaseMutex);
 
 	QSqlQuery query(Database);
 	QString queryString = "DELETE FROM kadu_messages WHERE " + chatWhere(chat);
@@ -370,13 +361,11 @@ void HistorySqlStorage::clearChatHistory(const Chat &chat, const QDate &date)
 		query.bindValue(":date", date.toString(Qt::ISODate));
 
 	executeQuery(query);
-
-	DatabaseMutex.unlock();
 }
 
 void HistorySqlStorage::clearStatusHistory(const Buddy &buddy, const QDate &date)
 {
-	DatabaseMutex.lock();
+	QMutexLocker locker(&DatabaseMutex);
 
 	QSqlQuery query(Database);
 	QString queryString = "DELETE FROM kadu_statuses WHERE " + buddyContactsWhere(buddy);
@@ -389,13 +378,11 @@ void HistorySqlStorage::clearStatusHistory(const Buddy &buddy, const QDate &date
 		query.bindValue(":date", date.toString(Qt::ISODate));
 
 	executeQuery(query);
-
-	DatabaseMutex.unlock();
 }
 
 void HistorySqlStorage::clearSmsHistory(const QString &recipient, const QDate &date)
 {
-	DatabaseMutex.lock();
+	QMutexLocker locker(&DatabaseMutex);
 
 	QSqlQuery query(Database);
 	QString queryString = "DELETE FROM kadu_sms WHERE receipient = :receipient";
@@ -409,13 +396,11 @@ void HistorySqlStorage::clearSmsHistory(const QString &recipient, const QDate &d
 		query.bindValue(":date", date.toString(Qt::ISODate));
 
 	executeQuery(query);
-
-	DatabaseMutex.unlock();
 }
 
 void HistorySqlStorage::deleteHistory(const Buddy &buddy)
 {
-	DatabaseMutex.lock();
+	QMutexLocker locker(&DatabaseMutex);
 
 	QSqlQuery query(Database);
 
@@ -433,15 +418,13 @@ void HistorySqlStorage::deleteHistory(const Buddy &buddy)
 	QString queryString = "DELETE FROM kadu_statuses WHERE " + buddyContactsWhere(buddy);
 	query.prepare(queryString);
 	executeQuery(query);
-
-	DatabaseMutex.unlock();
 }
 
 QList<Chat> HistorySqlStorage::chats(const HistorySearchParameters &search)
 {
 	kdebugf();
 
-	DatabaseMutex.lock();
+	QMutexLocker locker(&DatabaseMutex);
 
 	QSqlQuery query(Database);
 	QString queryString = "SELECT DISTINCT chat FROM kadu_messages WHERE 1";
@@ -473,8 +456,6 @@ QList<Chat> HistorySqlStorage::chats(const HistorySearchParameters &search)
 			chats.append(chat);
 	}
 
-	DatabaseMutex.unlock();
-
 	return chats;
 }
 
@@ -485,7 +466,7 @@ QList<QDate> HistorySqlStorage::chatDates(const Chat &chat, const HistorySearchP
 	if (!chat)
 		return QList<QDate>();
 
-	DatabaseMutex.lock();
+	QMutexLocker locker(&DatabaseMutex);
 
 	QSqlQuery query(Database);
 	QString queryString = "SELECT DISTINCT substr(receive_time,0,11) as date FROM kadu_messages WHERE " + chatWhere(chat);
@@ -516,8 +497,6 @@ QList<QDate> HistorySqlStorage::chatDates(const Chat &chat, const HistorySearchP
 			dates.append(date);
 	}
 
-	DatabaseMutex.unlock();
-
 	return dates;
 }
 
@@ -525,7 +504,7 @@ QPair<int, Message> HistorySqlStorage::firstMessageAndCount(const Chat &chat, co
 {
 	kdebugf();
 
-	DatabaseMutex.lock();
+	QMutexLocker locker(&DatabaseMutex);
 
 	QSqlQuery query(Database);
 	QString queryString = "SELECT chat, sender, content, send_time, receive_time, attributes FROM kadu_messages WHERE " + chatWhere(chat);
@@ -538,32 +517,20 @@ QPair<int, Message> HistorySqlStorage::firstMessageAndCount(const Chat &chat, co
 	executeQuery(query);
 
 	if (!query.next())
-	{
-		DatabaseMutex.unlock();
-
 		return qMakePair(0, Message::null);
-	}
 
 	bool outgoing = QVariant(query.value(5).toString().split('=').last()).toBool();
 
 	Chat messageChat = ChatManager::instance()->byUuid(query.value(0).toString());
 	if (messageChat.isNull())
-	{
-		DatabaseMutex.unlock();
-
 		return qMakePair(0, Message::null);
-	}
 
 	Message::Type type = outgoing ? Message::TypeSent : Message::TypeReceived;
 
 	// ignore non-existing contacts
 	Contact sender = ContactManager::instance()->byUuid(query.value(1).toString());
 	if (sender.isNull())
-	{
-		DatabaseMutex.unlock();
-
 		return qMakePair(0, Message::null);
-	}
 
 	Message message = Message::create();
 	message.setMessageChat(messageChat);
@@ -578,8 +545,6 @@ QPair<int, Message> HistorySqlStorage::firstMessageAndCount(const Chat &chat, co
 	while (query.next())
 		++count;
 
-	DatabaseMutex.unlock();
-
 	return qMakePair(count, message);
 }
 
@@ -587,7 +552,7 @@ QList<Message> HistorySqlStorage::messages(const Chat &chat, const QDate &date, 
 {
 	kdebugf();
 
-	DatabaseMutex.lock();
+	QMutexLocker locker(&DatabaseMutex);
 
 	QSqlQuery query(Database);
 	QString queryString = "SELECT chat, sender, content, send_time, receive_time, attributes FROM kadu_messages WHERE " + chatWhere(chat);
@@ -607,8 +572,6 @@ QList<Message> HistorySqlStorage::messages(const Chat &chat, const QDate &date, 
 	executeQuery(query);
 	messages = messagesFromQuery(query);
 
-	DatabaseMutex.unlock();
-
 	return messages;
 }
 
@@ -616,7 +579,7 @@ QList<Message> HistorySqlStorage::messagesSince(const Chat &chat, const QDate &d
 {
 	kdebugf();
 
-	DatabaseMutex.lock();
+	QMutexLocker locker(&DatabaseMutex);
 
 	QList<Message> messages;
 	if (date.isNull())
@@ -633,8 +596,6 @@ QList<Message> HistorySqlStorage::messagesSince(const Chat &chat, const QDate &d
 	executeQuery(query);
 
 	messages = messagesFromQuery(query);
-
-	DatabaseMutex.unlock();
 
 	return messages;
 }
@@ -675,7 +636,7 @@ int HistorySqlStorage::messagesCount(const Chat &chat, const QDate &date)
 {
 	kdebugf();
 
-	DatabaseMutex.lock();
+	QMutexLocker locker(&DatabaseMutex);
 
 	QSqlQuery query(Database);
 	QString queryString = "SELECT COUNT(chat) FROM kadu_messages WHERE " + chatWhere(chat);
@@ -689,8 +650,6 @@ int HistorySqlStorage::messagesCount(const Chat &chat, const QDate &date)
 	executeQuery(query);
 	query.next();
 
-	DatabaseMutex.unlock();
-
 	return query.value(0).toInt();
 }
 
@@ -698,7 +657,7 @@ QList<QString> HistorySqlStorage::smsRecipientsList(const HistorySearchParameter
 {
 	kdebugf();
 
-	DatabaseMutex.lock();
+	QMutexLocker locker(&DatabaseMutex);
 
 	QSqlQuery query(Database);
 	QString queryString = "SELECT DISTINCT receipient FROM kadu_sms WHERE 1";
@@ -726,8 +685,6 @@ QList<QString> HistorySqlStorage::smsRecipientsList(const HistorySearchParameter
 	while (query.next())
 		recipients.append(query.value(0).toString());
 
-	DatabaseMutex.unlock();
-
 	return recipients;
 }
 
@@ -738,7 +695,7 @@ QList<QDate> HistorySqlStorage::datesForSmsRecipient(const QString &recipient, c
 	if (recipient.isEmpty())
 		return QList<QDate>();
 
-	DatabaseMutex.lock();
+	QMutexLocker locker(&DatabaseMutex);
 
 	QSqlQuery query(Database);
 	QString queryString = "SELECT DISTINCT substr(send_time,0,11) as date FROM kadu_sms WHERE receipient = :receipient";
@@ -770,8 +727,6 @@ QList<QDate> HistorySqlStorage::datesForSmsRecipient(const QString &recipient, c
 			dates.append(date);
 	}
 
-	DatabaseMutex.unlock();
-
 	return dates;
 }
 
@@ -779,7 +734,7 @@ QList<Message> HistorySqlStorage::sms(const QString &recipient, const QDate &dat
 {
 	kdebugf();
 
-	DatabaseMutex.lock();
+	QMutexLocker locker(&DatabaseMutex);
 
 	QSqlQuery query(Database);
 	QString queryString = "SELECT content, send_time FROM kadu_sms WHERE receipient = :receipient";
@@ -800,8 +755,6 @@ QList<Message> HistorySqlStorage::sms(const QString &recipient, const QDate &dat
 
 	QList<Message> result = smsFromQuery(query);
 
-	DatabaseMutex.unlock();
-
 	return result;
 }
 
@@ -809,7 +762,7 @@ int HistorySqlStorage::smsCount(const QString &recipient, const QDate &date)
 {
 	kdebugf();
 
-	DatabaseMutex.lock();
+	QMutexLocker locker(&DatabaseMutex);
 
 	QSqlQuery query(Database);
 	QString queryString = "SELECT COUNT(receipient) FROM kadu_sms WHERE receipient = :receipient";
@@ -824,8 +777,6 @@ int HistorySqlStorage::smsCount(const QString &recipient, const QDate &date)
 	executeQuery(query);
 	query.next();
 
-	DatabaseMutex.unlock();
-
 	return query.value(0).toInt();
 }
 
@@ -833,7 +784,7 @@ QList<Buddy> HistorySqlStorage::statusBuddiesList(const HistorySearchParameters 
 {
 	kdebugf();
 
-	DatabaseMutex.lock();
+	QMutexLocker locker(&DatabaseMutex);
 
 	QSqlQuery query(Database);
 	QString queryString = "SELECT DISTINCT contact FROM kadu_statuses WHERE 1";
@@ -870,8 +821,6 @@ QList<Buddy> HistorySqlStorage::statusBuddiesList(const HistorySearchParameters 
 		}
 	}
 
-	DatabaseMutex.unlock();
-
 	return buddies;
 }
 
@@ -882,7 +831,7 @@ QList<QDate> HistorySqlStorage::datesForStatusBuddy(const Buddy &buddy, const Hi
 	if (!buddy)
 		return QList<QDate>();
 
-	DatabaseMutex.lock();
+	QMutexLocker locker(&DatabaseMutex);
 
 	QSqlQuery query(Database);
 	QString queryString = "SELECT DISTINCT substr(set_time,0,11) as date FROM kadu_statuses WHERE " + buddyContactsWhere(buddy);
@@ -914,8 +863,6 @@ QList<QDate> HistorySqlStorage::datesForStatusBuddy(const Buddy &buddy, const Hi
 			dates.append(date);
 	}
 
-	DatabaseMutex.unlock();
-
 	return dates;
 }
 
@@ -923,7 +870,7 @@ QList<TimedStatus> HistorySqlStorage::statuses(const Buddy &buddy, const QDate &
 {
 	kdebugf();
 
-	DatabaseMutex.lock();
+	QMutexLocker locker(&DatabaseMutex);
 
 	QSqlQuery query(Database);
 	QString queryString = "SELECT contact, status, description, set_time FROM kadu_statuses WHERE " + buddyContactsWhere(buddy);
@@ -944,8 +891,6 @@ QList<TimedStatus> HistorySqlStorage::statuses(const Buddy &buddy, const QDate &
 	executeQuery(query);
 	statuses = statusesFromQuery(query);
 
-	DatabaseMutex.unlock();
-
 	return statuses;
 }
 
@@ -953,7 +898,7 @@ int HistorySqlStorage::statusBuddyCount(const Buddy &buddy, const QDate &date)
 {
 	kdebugf();
 
-	DatabaseMutex.lock();
+	QMutexLocker locker(&DatabaseMutex);
 
 	QSqlQuery query(Database);
 	QString queryString = "SELECT COUNT(contact) FROM kadu_statuses WHERE " + buddyContactsWhere(buddy);
@@ -966,8 +911,6 @@ int HistorySqlStorage::statusBuddyCount(const Buddy &buddy, const QDate &date)
 
 	executeQuery(query);
 	query.next();
-
-	DatabaseMutex.unlock();
 
 	return query.value(0).toInt();
 }

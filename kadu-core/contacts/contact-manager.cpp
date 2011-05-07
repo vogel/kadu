@@ -54,7 +54,7 @@ ContactManager::~ContactManager()
 
 void ContactManager::idChanged(const QString &oldId)
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	Contact contact(sender());
 	if (!contact.isNull())
@@ -63,7 +63,7 @@ void ContactManager::idChanged(const QString &oldId)
 
 void ContactManager::aboutToBeDetached()
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	Contact contact(sender());
 	if (!contact.isNull())
@@ -72,7 +72,7 @@ void ContactManager::aboutToBeDetached()
 
 void ContactManager::detached(Buddy previousBuddy)
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	Contact contact(sender());
 	if (!contact.isNull())
@@ -81,7 +81,7 @@ void ContactManager::detached(Buddy previousBuddy)
 
 void ContactManager::aboutToBeAttached(Buddy nearFutureBuddy)
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	Contact contact(sender());
 	if (!contact.isNull())
@@ -90,7 +90,7 @@ void ContactManager::aboutToBeAttached(Buddy nearFutureBuddy)
 
 void ContactManager::attached()
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	Contact contact(sender());
 	if (!contact.isNull())
@@ -99,7 +99,7 @@ void ContactManager::attached()
 
 void ContactManager::reattached()
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	Contact contact(sender());
 	if (!contact.isNull())
@@ -108,7 +108,7 @@ void ContactManager::reattached()
 
 void ContactManager::itemAboutToBeRegistered(Contact item)
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	connect(item, SIGNAL(updated()), this, SLOT(contactDataUpdated()));
 	emit contactAboutToBeAdded(item);
@@ -116,7 +116,7 @@ void ContactManager::itemAboutToBeRegistered(Contact item)
 
 void ContactManager::itemRegistered(Contact item)
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	emit contactAdded(item);
 
@@ -130,7 +130,7 @@ void ContactManager::itemRegistered(Contact item)
 
 void ContactManager::itemAboutToBeUnregisterd(Contact item)
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	disconnect(item, SIGNAL(updated()), this, SLOT(contactDataUpdated()));
 	emit contactAboutToBeRemoved(item);
@@ -150,7 +150,7 @@ void ContactManager::itemUnregistered(Contact item)
 
 void ContactManager::detailsLoaded(Contact item)
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	if (!item.isNull())
 		registerItem(item);
@@ -158,7 +158,7 @@ void ContactManager::detailsLoaded(Contact item)
 
 void ContactManager::detailsUnloaded(Contact item)
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	if (!item.isNull())
 		unregisterItem(item);
@@ -166,7 +166,7 @@ void ContactManager::detailsUnloaded(Contact item)
 
 Contact ContactManager::byId(Account account, const QString &id, NotFoundAction action)
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	ensureLoaded();
 
@@ -199,7 +199,7 @@ Contact ContactManager::byId(Account account, const QString &id, NotFoundAction 
 
 QList<Contact> ContactManager::contacts(Account account)
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	ensureLoaded();
 
@@ -217,7 +217,7 @@ QList<Contact> ContactManager::contacts(Account account)
 
 void ContactManager::contactDataUpdated()
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	Contact contact(sender());
 	if (!contact.isNull())

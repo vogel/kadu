@@ -236,7 +236,7 @@ protected:
 	 */
 	void registerItem(Item item)
 	{
-		(void) QMutexLocker(&Mutex);
+		QMutexLocker locker(&Mutex);
 
 		if (ItemsWithDetails.contains(item))
 			return;
@@ -260,7 +260,7 @@ protected:
 	 */
 	void unregisterItem(Item item)
 	{
-		(void) QMutexLocker(&Mutex);
+		QMutexLocker locker(&Mutex);
 
 		if (!ItemsWithDetails.contains(item))
 			return;
@@ -283,7 +283,7 @@ protected:
 	 */
 	virtual void load()
 	{
-		(void) QMutexLocker(&Mutex);
+		QMutexLocker locker(&Mutex);
 
 		if (!isValidStorage())
 			return;
@@ -322,7 +322,7 @@ public:
 	 */
 	virtual void store()
 	{
-		(void) QMutexLocker(&Mutex);
+		QMutexLocker locker(&Mutex);
 
 		ensureLoaded();
 
@@ -346,7 +346,7 @@ public:
 	 */
 	Item byIndex(int index)
 	{
-		(void) QMutexLocker(&Mutex);
+		QMutexLocker locker(&Mutex);
 
 		ensureLoaded();
 
@@ -367,7 +367,7 @@ public:
 	 */
 	Item byUuid(const QUuid &uuid)
 	{
-		(void) QMutexLocker(&Mutex);
+		QMutexLocker locker(&Mutex);
 
 		ensureLoaded();
 
@@ -395,7 +395,7 @@ public:
 	 */
 	int indexOf(Item item)
 	{
-		(void) QMutexLocker(&Mutex);
+		QMutexLocker locker(&Mutex);
 
 		ensureLoaded();
 		return ItemsWithDetails.indexOf(item);
@@ -412,7 +412,7 @@ public:
 	 */
 	int count()
 	{
-		(void) QMutexLocker(&Mutex);
+		QMutexLocker locker(&Mutex);
 
 		ensureLoaded();
 		return ItemsWithDetails.count();
@@ -427,7 +427,7 @@ public:
 	 */
 	const QMap<QUuid, Item> & allItems()
 	{
-		(void) QMutexLocker(&Mutex);
+		QMutexLocker locker(&Mutex);
 
 		ensureLoaded();
 		return Items;
@@ -442,7 +442,7 @@ public:
 	 */
 	const QList<Item> & items()
 	{
-		(void) QMutexLocker(&Mutex);
+		QMutexLocker locker(&Mutex);
 
 		ensureLoaded();
 		return ItemsWithDetails;
@@ -459,7 +459,7 @@ public:
 	 */
 	void addItem(Item item)
 	{
-		(void) QMutexLocker(&Mutex);
+		QMutexLocker locker(&Mutex);
 
 		ensureLoaded();
 
@@ -489,7 +489,7 @@ public:
 	 */
 	void removeItem(Item item)
 	{
-		(void) QMutexLocker(&Mutex);
+		QMutexLocker locker(&Mutex);
 
 		ensureLoaded();
 

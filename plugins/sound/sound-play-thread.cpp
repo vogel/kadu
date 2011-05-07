@@ -20,6 +20,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QMutexLocker>
+
 #include "debug.h"
 
 #include "sound-player.h"
@@ -44,14 +46,11 @@ void SoundPlayThread::run()
 
 	while (!End)
 	{
-		mutex.lock();
-		NewSoundToPlay.wait(&mutex);
+		QMutexLocker locker(&mutex);
+		NewSoundToPlay.wait(locker.mutex());
 
 		if (End)
-		{
-			mutex.unlock();
 			break;
-		}
 
 		if (Play)
 		{
@@ -64,8 +63,6 @@ void SoundPlayThread::run()
 
 			Play = false;
 		}
-
-		mutex.unlock();
 	}
 
 	kdebugf2();

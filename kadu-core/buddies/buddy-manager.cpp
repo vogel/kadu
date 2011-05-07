@@ -63,7 +63,7 @@ BuddyManager::~BuddyManager()
 
 void BuddyManager::init()
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	connect(GroupManager::instance(), SIGNAL(groupAboutToBeRemoved(Group)),
 			this, SLOT(groupRemoved(Group)));
@@ -80,7 +80,7 @@ void BuddyManager::init()
 
 void BuddyManager::importConfiguration(XmlConfigFile *configurationStorage)
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	QDomElement contactsNode = configurationStorage->getNode("Contacts", XmlConfigFile::ModeFind);
 	if (contactsNode.isNull())
@@ -105,14 +105,14 @@ void BuddyManager::importConfiguration(XmlConfigFile *configurationStorage)
 
 void BuddyManager::load()
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	SimpleManager<Buddy>::load();
 }
 
 void BuddyManager::itemAboutToBeAdded(Buddy buddy)
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	connect(buddy, SIGNAL(updated()), this, SLOT(buddyDataUpdated()));
 	connect(buddy, SIGNAL(buddySubscriptionChanged()), this, SLOT(buddySubscriptionChanged()));
@@ -131,7 +131,7 @@ void BuddyManager::itemAboutToBeRemoved(Buddy buddy)
 
 void BuddyManager::itemRemoved(Buddy buddy)
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	disconnect(buddy, SIGNAL(updated()), this, SLOT(buddyDataUpdated()));
 	disconnect(buddy, SIGNAL(buddySubscriptionChanged()), this, SLOT(buddySubscriptionChanged()));
@@ -140,7 +140,7 @@ void BuddyManager::itemRemoved(Buddy buddy)
 
 void BuddyManager::mergeBuddies(Buddy destination, Buddy source)
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	if (destination == source)
 		return;
@@ -160,7 +160,7 @@ void BuddyManager::mergeBuddies(Buddy destination, Buddy source)
 
 Buddy BuddyManager::byDisplay(const QString &display, NotFoundAction action)
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	ensureLoaded();
 
@@ -187,7 +187,7 @@ Buddy BuddyManager::byDisplay(const QString &display, NotFoundAction action)
 
 Buddy BuddyManager::byId(Account account, const QString &id, NotFoundAction action)
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	ensureLoaded();
 
@@ -200,7 +200,7 @@ Buddy BuddyManager::byId(Account account, const QString &id, NotFoundAction acti
 
 Buddy BuddyManager::byContact(Contact contact, NotFoundAction action)
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	ensureLoaded();
 
@@ -221,7 +221,7 @@ Buddy BuddyManager::byContact(Contact contact, NotFoundAction action)
 
 Buddy BuddyManager::byUuid(const QUuid &uuid)
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	ensureLoaded();
 
@@ -249,7 +249,7 @@ void BuddyManager::clearOwnerAndRemoveEmptyBuddy(Contact contact)
 
 BuddyList BuddyManager::buddies(Account account, bool includeAnonymous)
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	ensureLoaded();
 
@@ -264,7 +264,7 @@ BuddyList BuddyManager::buddies(Account account, bool includeAnonymous)
 
 void BuddyManager::buddyDataUpdated()
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	Buddy buddy(sender());
 	if (!buddy.isNull())
@@ -273,7 +273,7 @@ void BuddyManager::buddyDataUpdated()
 
 void BuddyManager::buddySubscriptionChanged()
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	Buddy buddy(sender());
 	if (!buddy.isNull())
@@ -282,7 +282,7 @@ void BuddyManager::buddySubscriptionChanged()
 
 void BuddyManager::groupRemoved(Group group)
 {
-	QMutexLocker(&mutex());
+	QMutexLocker locker(&mutex());
 
 	foreach (Buddy buddy, items())
 		buddy.removeFromGroup(group);
