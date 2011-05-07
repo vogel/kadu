@@ -101,12 +101,12 @@ macro (kadu_source_subdirectories CURRENT_TARGET)
 	target_link_libraries (${CURRENT_TARGET} -Wl,--start-group -Wl,--whole-archive ${ARGN} -Wl,--no-whole-archive -Wl,--end-group)
 endmacro (kadu_source_subdirectories)
 
-if (INSTALL_CMAKE_MODULE)
-	install (FILES cmake/FindKadu.cmake DESTINATION share/cmake/Modules)
-endif (INSTALL_CMAKE_MODULE)
-
 include (cmake/FindKadu.cmake)
 include_directories (${CMAKE_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/kadu-core ${QT_INCLUDES})
+
+if (INSTALL_CMAKE_MODULE)
+	install (FILES cmake/FindKadu.cmake DESTINATION ${KADU_CMAKE_MODULES_DIR})
+endif (INSTALL_CMAKE_MODULE)
 
 # build
 configure_file (${CMAKE_SOURCE_DIR}/kadu-config.h.cmake ${CMAKE_BINARY_DIR}/kadu-config.h)
