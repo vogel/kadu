@@ -70,7 +70,7 @@ class KADUAPI Manager : public StorableObject
 {
 	QMutex Mutex;
 
-	QMap<QString, Item> Items;
+	QMap<QUuid, Item> Items;
 	QList<Item> ItemsWithDetails;
 
 protected:
@@ -425,7 +425,7 @@ public:
 	 *
 	 * Return list of all items.
 	 */
-	const QMap<QString, Item> & allItems()
+	const QMap<QUuid, Item> & allItems()
 	{
 		(void) QMutexLocker(&Mutex);
 
