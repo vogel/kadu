@@ -83,6 +83,8 @@ set (COMPILE_PLUGINS
 	screenshot
 	# Simple view
 	simpleview
+	# Single window mode
+	single_window
 	# Sms gateway support
 	sms
 	# Tabbed chat dialog

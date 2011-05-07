@@ -20,7 +20,7 @@
 #include "gui/windows/main-configuration-window.h"
 #include "misc/path-conversion.h"
 
-#include "single_window.h"
+#include "single-window.h"
 
 #include "single-window-plugin.h"
 

@@ -21,7 +21,7 @@
 #include "misc/misc.h"
 #include "debug.h"
 
-#include "single_window.h"
+#include "single-window.h"
 
 SingleWindowManager::SingleWindowManager(QObject *parent) :
 		ConfigurationUiHandler(parent)

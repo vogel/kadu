@@ -1,10 +1,22 @@
+project (single_window)
+
+# minimal required versions
+cmake_minimum_required (VERSION 2.8)
+set (QT_MIN_VERSION "4.7.0")
+set (CMAKE_MIN_VERSION "2.6.0")
+
+set (KADU_FIND_REQUIRED true)
+include (FindKadu)
+
+include_directories (${KADU_INCLUDE_DIR}/kadu-core)
+
 set (SOURCES
-	single_window.cpp
+	single-window.cpp
 	single-window-plugin.cpp
 )
 
 set (MOC_SOURCES
-	single_window.h
+	single-window.h
 	single-window-plugin.h
 )
 
@@ -27,6 +39,3 @@ kadu_plugin (single_window
 	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 	PLUGIN_DEPENDENCIES docking
 )
-
-# XXX
-link_directories (${SNDFILE_LIBRARY_DIRS})
