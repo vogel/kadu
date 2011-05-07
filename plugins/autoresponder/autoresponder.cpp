@@ -49,7 +49,7 @@
  * @{
  */
 AutoResponder::AutoResponder(QObject *parent) :
-	QObject(parent)
+		ConfigurationUiHandler(parent)
 {
 	kdebugf();
 

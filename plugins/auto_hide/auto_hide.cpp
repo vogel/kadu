@@ -35,7 +35,7 @@
 #include "auto_hide.h"
 
 AutoHide::AutoHide(QObject *parent) :
-		QObject(parent), IdleTime(0)
+		ConfigurationUiHandler(parent), IdleTime(0)
 {
 	connect(&Timer, SIGNAL(timeout()), this, SLOT(timerTimeoutSlot()));
 

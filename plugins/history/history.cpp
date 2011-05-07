@@ -116,7 +116,7 @@ History * History::instance()
 }
 
 History::History() :
-		QObject(0), SyncEnabled(true), SaveThread(0), CurrentStorage(0), HistoryDialog(new HistoryWindow())
+		ConfigurationUiHandler(0), SyncEnabled(true), SaveThread(0), CurrentStorage(0), HistoryDialog(new HistoryWindow())
 {
 	kdebugf();
 	createActionDescriptions();

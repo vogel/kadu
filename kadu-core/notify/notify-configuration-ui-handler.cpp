@@ -50,7 +50,7 @@
 #include "debug.h"
 
 NotifyConfigurationUiHandler::NotifyConfigurationUiHandler(QObject *parent) :
-		QObject(parent), notificationsGroupBox(0)
+		ConfigurationUiHandler(parent), notificationsGroupBox(0)
 {
 	connect(NotificationManager::instance(), SIGNAL(notiferRegistered(Notifier *)),
 			this, SLOT(notifierRegistered(Notifier *)));

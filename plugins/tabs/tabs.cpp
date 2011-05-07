@@ -75,7 +75,7 @@ static void disableNewTab(Action *action)
 }
 
 TabsManager::TabsManager(QObject *parent) :
-		QObject(parent), NoTabs(false), ForceTabs(false), TargetTabs(-1)
+		ConfigurationUiHandler(parent), NoTabs(false), ForceTabs(false), TargetTabs(-1)
 {
 	kdebugf();
 

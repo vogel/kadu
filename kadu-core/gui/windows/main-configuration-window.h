@@ -24,8 +24,7 @@ class MainConfigurationWindow;
 	konfiguracyjnego co da jej mo�liwo�� podpi�cia si� pod sygna�y odpowiednich
 	kontrolek i odpowiedniej reakcji na nie.
  **/
-// TODO: zamiast slota zwyk�a metoda wirtualna?
-class KADUAPI ConfigurationUiHandler : public virtual QObject
+class KADUAPI ConfigurationUiHandler : public QObject
 {
 	Q_OBJECT
 
@@ -33,11 +32,8 @@ public:
 	explicit ConfigurationUiHandler(QObject *parent = 0) : QObject(parent) {}
 	virtual ~ConfigurationUiHandler() {}
 
-public slots:
-	/**
-		Slot wywo�ywany, gdy g��wne okno konfiguracyjne zostanie stworzone.
-	 **/
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) = 0;
+
 };
 
 class ConfigFileDataManager;
