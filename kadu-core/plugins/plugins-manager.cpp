@@ -350,8 +350,6 @@ void PluginsManager::activatePlugins()
  */
 void PluginsManager::deactivatePlugins()
 {
-	ConfigurationManager::instance()->flush();
-
 	foreach (Plugin *plugin, Plugins)
 		if (plugin->isActive())
 		{
