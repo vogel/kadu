@@ -306,7 +306,7 @@ void AccountShared::setProtocolName(const QString &protocolName)
 void AccountShared::doSetId(const QString &id)
 {
 	Id = id;
-	accountContact().setId(id);
+	AccountContact.setId(id);
 }
 
 void AccountShared::setId(const QString &id)
@@ -326,10 +326,7 @@ Contact AccountShared::accountContact()
 	ensureLoaded();
 
 	if (!AccountContact)
-	{
 		AccountContact = ContactManager::instance()->byId(this, Id, ActionCreateAndAdd);
-		ContactManager::instance()->addItem(AccountContact);
-	}
 
 	return AccountContact;
 }
