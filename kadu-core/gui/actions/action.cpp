@@ -63,7 +63,7 @@ Contact Action::contact()
 	if (1 != contactSet.count())
 		return Contact::null;
 	else
-		return *contactSet.begin();
+		return *contactSet.constBegin();
 }
 
 ContactSet Action::contacts()
@@ -80,7 +80,7 @@ Buddy Action::buddy()
 	if (1 != buddySet.count())
 		return Buddy::null;
 	else
-		return *buddySet.begin();
+		return *buddySet.constBegin();
 }
 
 BuddySet Action::buddies()

@@ -514,8 +514,8 @@ void ChatWidget::dropEvent(QDropEvent *e)
 	{
 		e->acceptProposedAction();
 
-		QStringList::iterator i = files.begin();
-		QStringList::iterator end = files.end();
+		QStringList::const_iterator i = files.constBegin();
+		QStringList::const_iterator end = files.constEnd();
 
 		for (; i != end; ++i)
 			emit fileDropped(CurrentChat, *i);

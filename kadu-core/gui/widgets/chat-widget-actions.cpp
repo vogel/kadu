@@ -531,7 +531,7 @@ void ChatWidgetActions::updateBlockingActions(Buddy buddy)
 	{
 		ContactSet contacts = action->contacts();
 		if (1 == contacts.size())
-			if (buddyContacts.contains(*contacts.begin()))
+			if (buddyContacts.contains(*contacts.constBegin()))
 				action->setChecked(buddy.isBlocked());
 	}
 }

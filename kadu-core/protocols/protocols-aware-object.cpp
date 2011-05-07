@@ -32,7 +32,7 @@ void ProtocolsAwareObject::notifyProtocolRegistered(ProtocolFactory *protocol)
 
 void ProtocolsAwareObject::notifyProtocolUnregistered(ProtocolFactory *protocol)
 {
-	for (QList<ProtocolsAwareObject *>::iterator i = Objects.begin(); i != Objects.end() ; ++i)
+	for (QList<ProtocolsAwareObject *>::const_iterator i = Objects.constBegin(); i != Objects.constEnd() ; ++i)
 		(*i)->protocolUnregistered(protocol);
 }
 

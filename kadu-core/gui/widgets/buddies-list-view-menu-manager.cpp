@@ -134,7 +134,7 @@ QMenu * BuddiesListViewMenuManager::menu(QWidget *parent, ActionDataSource *acti
 	{
 		if (1 == actionDataSource->contacts().size())
 		{
-			Contact contact = *actionDataSource->contacts().begin();
+			Contact contact = *actionDataSource->contacts().constBegin();
 
 			if (contact.contactAccount() && contact.contactAccount().protocolHandler())
 			{

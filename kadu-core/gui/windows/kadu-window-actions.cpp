@@ -946,7 +946,7 @@ void KaduWindowActions::editUserActionActivated(ActionDataSource *source)
 	if (1 != buddySet.count())
 		return;
 
-	Buddy buddy = *buddySet.begin();
+	Buddy buddy = *buddySet.constBegin();
 
 	if (buddy.isAnonymous())
 		(new AddBuddyWindow(Core::instance()->kaduWindow(), buddy, true))->show();

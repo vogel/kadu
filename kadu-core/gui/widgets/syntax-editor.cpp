@@ -96,7 +96,7 @@ void SyntaxEditor::deleteClicked()
 		return;
 
 	if (syntaxList->deleteSyntax(currentSyntax()))
-		setCurrentSyntax(*(syntaxList->keys().begin()));
+		setCurrentSyntax(*(syntaxList->keys().constBegin()));
 	else
 		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Unable to remove syntax: %1").arg(currentSyntax()));
 }

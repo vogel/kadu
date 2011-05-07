@@ -116,7 +116,7 @@ QString Qt4Notify::parseText(const QString &text, Notification *notification, co
 	{
 		if (chatNotification)
 		{
-			Contact contact = *chatNotification->chat().contacts().begin();
+			Contact contact = *chatNotification->chat().contacts().constBegin();
 			ret = Parser::parse(text, BuddyOrContact(contact), notification);
 		}
 		else

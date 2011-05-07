@@ -224,7 +224,7 @@ void OpenChatWith::openChat()
 		return;
 	}
 
-	Buddy buddy = *buddies.begin();
+	Buddy buddy = *buddies.constBegin();
 	if (buddy.mobile().isEmpty() && !buddy.email().isEmpty())
 		UrlOpener::openEmail(buddy.email().toUtf8());
 

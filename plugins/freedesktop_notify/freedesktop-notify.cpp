@@ -204,8 +204,8 @@ void FreedesktopNotify::notify(Notification *notification)
 
 void FreedesktopNotify::notificationClosed(Notification *notification)
 {
-	QMap<unsigned int, Notification *>::iterator i = NotificationMap.begin();
-	while (i != NotificationMap.end())
+	QMap<unsigned int, Notification *>::const_iterator i = NotificationMap.constBegin();
+	while (i != NotificationMap.constEnd())
 	{
 		if (i.value() == notification)
 		{

@@ -123,7 +123,7 @@ bool EncryptioNgSimliteProvider::canEncrypt(const Chat &chat)
 	if (1 != chat.contacts().size())
 		return false;
 
-	Key key = KeysManager::instance()->byContactAndType(*chat.contacts().begin(), "simlite", ActionReturnNull);
+	Key key = KeysManager::instance()->byContactAndType(*chat.contacts().constBegin(), "simlite", ActionReturnNull);
 	return !key.isNull() && !key.isEmpty();
 }
 
@@ -143,7 +143,7 @@ Encryptor * EncryptioNgSimliteProvider::acquireEncryptor(const Chat &chat)
 	if (1 != chat.contacts().size())
 		return 0;
 
-	EncryptioNgSimliteEncryptor *encryptor = new EncryptioNgSimliteEncryptor(*chat.contacts().begin(), this, this);
+	EncryptioNgSimliteEncryptor *encryptor = new EncryptioNgSimliteEncryptor(*chat.contacts().constBegin(), this, this);
 	if (!encryptor->isValid())
 	{
 		delete encryptor;

@@ -355,7 +355,7 @@ void History::enqueueMessage(const Message &message)
 		return;
 
 	if (!SaveChatsWithAnonymous && message.messageChat().contacts().count() == 1
-		&& (*message.messageChat().contacts().begin()).ownerBuddy().isAnonymous())
+		&& (*message.messageChat().contacts().constBegin()).ownerBuddy().isAnonymous())
 		return;
 
 	UnsavedDataMutex.lock();

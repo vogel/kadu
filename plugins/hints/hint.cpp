@@ -172,7 +172,7 @@ void Hint::updateText()
 
 		if (CurrentChat)
 		{
-			Contact contact = *CurrentChat.contacts().begin();
+			Contact contact = *CurrentChat.contacts().constBegin();
 			text = Parser::parse(syntax, BuddyOrContact(contact), notification);
 		}
 		else

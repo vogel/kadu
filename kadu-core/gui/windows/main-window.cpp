@@ -383,7 +383,7 @@ Contact MainWindow::contact()
 {
 	ContactSet contactSet = contacts();
 	return 1 == contactSet.count()
-			? *contactSet.begin()
+			? *contactSet.constBegin()
 			: Contact::null;
 }
 
@@ -391,7 +391,7 @@ Buddy MainWindow::buddy()
 {
 	BuddySet buddySet = buddies();
 	return 1 == buddySet.count()
-			? *buddySet.begin()
+			? *buddySet.constBegin()
 			: Buddy::null;
 }
 

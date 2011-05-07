@@ -137,7 +137,7 @@ Contact BuddyPreferredManager::preferredContactByChatWidgets(const Buddy &buddy,
 		Chat chat = chatwidget->chat();
 		if (chat.contacts().isEmpty())
 			continue;
-		Contact contact = *chat.contacts().begin();
+		Contact contact = *chat.contacts().constBegin();
 		if (contact.ownerBuddy() != buddy)
 			continue;
 		result = morePreferredContactByStatus(result, contact, account);

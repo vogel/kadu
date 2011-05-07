@@ -274,7 +274,7 @@ void ChatEditBox::openInsertImageDialog()
 		QString message;
 		if (1 == CurrentChat.contacts().count())
 		{
-			Contact contact = *CurrentChat.contacts().begin();
+			Contact contact = *CurrentChat.contacts().constBegin();
 			if (tooBigCounter > 0)
 				message = tr("This image has %1 KiB and may be too big for %2.")
 						.arg((f.size() + 1023) / 1024).arg(contact.ownerBuddy().display()) + '\n';

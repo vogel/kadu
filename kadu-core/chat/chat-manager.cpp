@@ -135,9 +135,9 @@ Chat ChatManager::findChat(const BuddySet &buddies, bool create)
 
 	if (buddies.count() == 1)
 	{
-		Contact contact = BuddyPreferredManager::instance()->preferredContactByPendingMessages(*buddies.begin());
+		Contact contact = BuddyPreferredManager::instance()->preferredContactByPendingMessages(*buddies.constBegin());
 		if (!contact)
-			contact = BuddyPreferredManager::instance()->preferredContact(*buddies.begin());
+			contact = BuddyPreferredManager::instance()->preferredContact(*buddies.constBegin());
 
 		return findChat(ContactSet(contact), create);
 	}

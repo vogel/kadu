@@ -48,7 +48,7 @@ bool EncryptionChatData::importEncrypt()
 	if (1 != contacts.size())
 		return result;
 
-	Contact contact = *contacts.begin();
+	Contact contact = *contacts.constBegin();
 	QString encryptionEnabled = contact.ownerBuddy().customData("encryption_enabled");
 	contact.ownerBuddy().removeCustomData("encryption_enabled");
 
