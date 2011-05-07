@@ -7,3 +7,4 @@ Provides=tabs
 Conflicts=tabs
 LoadByDefault=false
 Version=core
+Plugin=true

@@ -23,29 +23,8 @@
 
 #include "single_window.h"
 
-extern "C" KADU_EXPORT int single_window_init(bool firstLoad)
-{
-	kdebugf();
-
-	Q_UNUSED(firstLoad)
-	singleWindowManager = new SingleWindowManager();
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/single_window.ui"));
-	kdebugf2();
-
-	return 0;
-}
-extern "C" KADU_EXPORT void single_window_close()
-{
-	kdebugf();
-
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/single_window.ui"));
-	delete singleWindowManager;
-	singleWindowManager = NULL;
-
-	kdebugf2();
-}
-
-SingleWindowManager::SingleWindowManager()
+SingleWindowManager::SingleWindowManager(QObject *parent) :
+		ConfigurationUiHandler(parent)
 {
 	config_file.addVariable("SingleWindow", "RosterPosition", 0);
 	config_file.addVariable("SingleWindow", "KaduWindowWidth", 205);
@@ -390,6 +369,3 @@ void SingleWindow::onIconChanged()
 	if (chatWidget && (index = tabs->indexOf(chatWidget)) != -1)
 		tabs->setTabIcon(index, chatWidget->icon());
 }
-
-
-SingleWindowManager *singleWindowManager = NULL;

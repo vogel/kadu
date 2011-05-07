@@ -54,16 +54,15 @@ class SingleWindowManager : public ConfigurationUiHandler, public ConfigurationA
 
 	SingleWindow *singleWindow;
 
-	protected:
-		virtual void configurationUpdated();
+protected:
+	virtual void configurationUpdated();
 
-	public:
-		SingleWindowManager();
-		~SingleWindowManager();
+public:
+	explicit SingleWindowManager(QObject *parent = 0);
+	virtual ~SingleWindowManager();
 
-		virtual void mainConfigurationWindowCreated(MainConfigurationWindow */*mainConfigurationWindow*/) {};
+	virtual void mainConfigurationWindowCreated(MainConfigurationWindow */*mainConfigurationWindow*/) {};
+
 };
-
-extern SingleWindowManager *singleWindowManager;
 
 #endif /* SingleWindow_H */

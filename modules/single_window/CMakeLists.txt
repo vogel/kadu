@@ -1,9 +1,11 @@
 set (SOURCES
 	single_window.cpp
+	single-window-plugin.cpp
 )
 
 set (MOC_SOURCES
 	single_window.h
+	single-window-plugin.h
 )
 
 set (TRANSLATION_SOURCES
