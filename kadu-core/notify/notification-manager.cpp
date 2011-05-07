@@ -390,8 +390,6 @@ void NotificationManager::contactStatusChanged(Contact contact, Status oldStatus
 
 	QString changedTo = "/To" + status.type();
 
-	ContactSet contacts(contact);
-
 	StatusChangedNotification *statusChangedNotification;
 	statusChangedNotification = new StatusChangedNotification(changedTo, contact);
 

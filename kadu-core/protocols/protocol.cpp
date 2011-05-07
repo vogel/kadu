@@ -26,13 +26,14 @@
 #include <QtGui/QTextDocument>
 
 #include "accounts/account-manager.h"
+#include "buddies/buddy-manager.h"
 #include "chat/chat-details-conference.h"
 #include "chat/chat-details-simple.h"
 #include "chat/chat-manager.h"
-#include "buddies/buddy-manager.h"
 #include "contacts/contact.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
+#include "core/core.h"
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "protocols/protocol-factory.h"
@@ -94,6 +95,9 @@ void Protocol::passwordProvided()
 
 void Protocol::setAllOffline()
 {
+	if (Core::instance()->isClosing())
+		return;
+
 	Status status;
 	Status oldStatus;
 
