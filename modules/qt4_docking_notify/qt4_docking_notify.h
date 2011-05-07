@@ -23,8 +23,8 @@ class Qt4Notify : public Notifier
 	Qt4NotifyConfigurationWidget *configurationWidget;
 
 public:
-	Qt4Notify();
-	~Qt4Notify();
+	explicit Qt4Notify(QObject *parent = 0);
+	virtual ~Qt4Notify();
 
 	virtual void notify(Notification *notification);
 
@@ -35,8 +35,6 @@ public:
 public slots:
 	void messageClicked();
 };
-
-extern Qt4Notify *qt4_notify;
 
 /** @} */
 

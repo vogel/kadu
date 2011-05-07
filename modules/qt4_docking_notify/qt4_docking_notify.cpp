@@ -45,32 +45,9 @@
  * @ingroup qt4_notify
  * @{
  */
-extern "C" KADU_EXPORT int qt4_docking_notify_init(bool firstLoad)
-{
-	Q_UNUSED(firstLoad)
-	kdebugf();
 
-	if (!QSystemTrayIcon::supportsMessages())
-		return 1;
-
-	qt4_notify = new Qt4Notify;
-
-	kdebugf2();
-	return 0;
-}
-
-extern "C" KADU_EXPORT void qt4_docking_notify_close()
-{
-	kdebugf();
-
-	delete qt4_notify;
-	qt4_notify = 0;
-
-	kdebugf2();
-}
-
-Qt4Notify::Qt4Notify() :
-		Notifier("Tray Icon Balloon", QT_TRANSLATE_NOOP("@default", "Tray Icon Balloon"), KaduIcon("external_modules/qt4notify"))
+Qt4Notify::Qt4Notify(QObject *parent) :
+		Notifier("Tray Icon Balloon", QT_TRANSLATE_NOOP("@default", "Tray Icon Balloon"), KaduIcon("external_modules/qt4notify"), parent)
 {
 	kdebugf();
 
@@ -91,9 +68,7 @@ Qt4Notify::~Qt4Notify()
 	NotificationManager::instance()->unregisterNotifier(this);
 
 	if (Qt4TrayIcon::instance())
-	{
 		disconnect(Qt4TrayIcon::instance(), SIGNAL(messageClicked()), this, SLOT(messageClicked()));
-	}
 
 	kdebugf2();
 }
@@ -243,8 +218,6 @@ void Qt4Notify::createDefaultConfiguration()
 	config_file.addVariable("Qt4DockingNotify", "Event_FileTransfer/IncomingFile_icon", 2);
 	config_file.addVariable("Qt4DockingNotify", "Qt4DockingNotifyEventConfiguration_Geometry", "50, 50, 615, 290");
 }
-
-Qt4Notify *qt4_notify = 0;
 
 /** @} */
 
