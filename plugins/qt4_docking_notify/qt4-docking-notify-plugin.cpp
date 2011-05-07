@@ -19,7 +19,7 @@
 
 #include <QtGui/QSystemTrayIcon>
 
-#include "qt4_docking_notify.h"
+#include "qt4-docking-notify.h"
 
 #include "qt4-docking-notify-plugin.h"
 

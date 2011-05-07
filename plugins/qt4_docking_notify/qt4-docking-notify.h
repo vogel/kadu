@@ -5,7 +5,7 @@
 #include "gui/windows/main-configuration-window.h"
 #include "notify/notifier.h"
 
-#include "qt4_docking_notify_configuration_widget.h"
+#include "qt4-docking-notify-configuration-widget.h"
 
 /**
  * @defgroup qt4_notify Qt4 Notify

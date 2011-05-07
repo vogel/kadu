@@ -37,7 +37,7 @@
 #include "activate.h"
 #include "debug.h"
 
-#include "qt4_docking_notify_configuration_widget.h"
+#include "qt4-docking-notify-configuration-widget.h"
 
 Qt4NotifyConfigurationWidget::Qt4NotifyConfigurationWidget(QWidget *parent)
 	: NotifierConfigurationWidget(parent)

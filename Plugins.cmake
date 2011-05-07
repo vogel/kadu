@@ -15,6 +15,8 @@ set (COMPILE_PLUGINS
 	freedesktop_notify
 	# Hints near tray icon
 	hints
+	# Notifications by qt4_docking plugin
+	qt4_docking_notify
 	# Speech synthesis support
 	speech
 

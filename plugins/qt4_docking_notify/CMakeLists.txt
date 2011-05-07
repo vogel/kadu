@@ -1,12 +1,24 @@
+project (qt4_docking_notify)
+
+# minimal required versions
+cmake_minimum_required (VERSION 2.8)
+set (QT_MIN_VERSION "4.7.0")
+set (CMAKE_MIN_VERSION "2.8.0")
+
+set (KADU_FIND_REQUIRED true)
+include (FindKadu)
+
+include_directories (${KADU_INCLUDE_DIR}/kadu-core)
+
 set (SOURCES
-	qt4_docking_notify.cpp
-	qt4_docking_notify_configuration_widget.cpp
+	qt4-docking-notify.cpp
+	qt4-docking-notify-configuration-widget.cpp
 	qt4-docking-notify-plugin.cpp
 )
 
 set (MOC_SOURCES
-	qt4_docking_notify.h
-	qt4_docking_notify_configuration_widget.h
+	qt4-docking-notify.h
+	qt4-docking-notify-configuration-widget.h
 	qt4-docking-notify-plugin.h
 )
 
