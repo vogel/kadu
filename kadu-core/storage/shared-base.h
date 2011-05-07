@@ -524,13 +524,16 @@ KaduSharedBase_PropertyWriteDef(SharedBase<T>, QUuid, uuid, Uuid)
  * @short Computes hash for given SharedBase object.
  * @return hash for given SharedBase object
  *
- * Hash is computed by uuid field of data object. All null objects have the same hash.
+ * Hash is computed by the pointer for data object.
  * Used for QHash objects.
  */
 template<class T>
 uint qHash(const SharedBase<T> &sharedBase)
 {
-	return qHash(sharedBase.uuid().toString());
+	if (sharedBase.isNull())
+		return 0;
+
+	return qHash(sharedBase.data());
 }
 
 /**
