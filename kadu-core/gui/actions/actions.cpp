@@ -34,21 +34,25 @@ Actions * Actions::instance()
 	return Instance;
 }
 
-Actions::Actions()
+Actions::Actions() :
+	BlockSignals(false)
 {
 }
 
 void Actions::insert(ActionDescription *action)
 {
 	QMap<QString, ActionDescription *>::insert(action->name(), action);
-	emit actionLoaded(action->name());
+
+	if (!BlockSignals)
+		emit actionLoaded(action->name());
 }
 
 void Actions::remove(ActionDescription *action)
 {
 	QMap<QString, ActionDescription *>::remove(action->name());
 
-	emit actionUnloaded(action->name());
+	if (!BlockSignals)
+		emit actionUnloaded(action->name());
 }
 
 QAction * Actions::createAction(const QString &name, MainWindow *kaduMainWindow)

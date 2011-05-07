@@ -140,6 +140,8 @@ static void disableNoGadu(Action *action)
 
 ChatWidgetActions::ChatWidgetActions(QObject *parent) : QObject(parent)
 {
+	Actions::instance()->blockSignals();
+
 	MoreActions = new ActionDescription(0,
 		ActionDescription::TypeChat, "moreActionsAction",
 		this, SLOT(moreActionsActionActivated(QAction *, bool)),
@@ -224,6 +226,9 @@ ChatWidgetActions::ChatWidgetActions(QObject *parent) : QObject(parent)
 		KaduIcon("internet-group-chat"), tr("Open Chat with...")
 	);
 	OpenWith->setShortcut("kadu_openchatwith", Qt::ApplicationShortcut);
+
+	// The last ActionDescription will send ActionAdded signal
+	Actions::instance()->unblockSignals();
 
 	InsertEmoticon = new ActionDescription(0,
 		ActionDescription::TypeChat, "insertEmoticonAction",

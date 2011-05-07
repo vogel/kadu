@@ -44,10 +44,15 @@ class KADUAPI Actions : public QObject, public QMap<QString, ActionDescription *
 	Actions();
 	virtual ~Actions() {}
 
+	bool BlockSignals;
+
 public:
 	static Actions * instance();
 
 	QAction * createAction(const QString &name, MainWindow *kaduMainWindow);
+
+	void blockSignals() { BlockSignals = true; }
+	void unblockSignals() { BlockSignals = false; }
 
 signals:
 	void actionCreated(Action *);

@@ -165,6 +165,8 @@ void disableMerge(Action *action)
 
 KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 {
+	Actions::instance()->blockSignals();
+
 	Configuration = new ActionDescription(this,
 		ActionDescription::TypeGlobal, "configurationAction",
 		this, SLOT(configurationActionActivated(QAction *, bool)),
@@ -373,6 +375,9 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 	);
 	DeleteUsers->setShortcut("kadu_deleteuser");
 	BuddiesListViewMenuManager::instance()->addActionDescription(DeleteUsers, BuddiesListViewMenuItem::MenuCategoryManagement, 1000);
+
+	// The last ActionDescription will send ActionAdded signal
+	Actions::instance()->unblockSignals();
 
 	ChangeStatus = new ActionDescription(this,
 		ActionDescription::TypeGlobal, "openStatusAction",
