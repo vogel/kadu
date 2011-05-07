@@ -70,7 +70,7 @@ class KADUAPI Manager : public StorableObject
 {
 	QMutex Mutex;
 
-	QHash<QString, Item> Items;
+	QMap<QString, Item> Items;
 	QList<Item> ItemsWithDetails;
 
 protected:
@@ -240,7 +240,7 @@ protected:
 
 		if (ItemsWithDetails.contains(item))
 			return;
-		if (!Items.contains(item.uuid().toString()))
+		if (!Items.contains(item.uuid()))
 			return;
 
 		itemAboutToBeRegistered(item);
@@ -264,7 +264,7 @@ protected:
 
 		if (!ItemsWithDetails.contains(item))
 			return;
-		if (!Items.contains(item.uuid().toString()))
+		if (!Items.contains(item.uuid()))
 			return;
 
 		itemAboutToBeUnregisterd(item);
@@ -295,7 +295,6 @@ protected:
 			return;
 
 		QList<QDomElement> itemElements = storage()->storage()->getNodes(itemsNode, storageNodeItemName());
-		Items.reserve(itemElements.count());
 
 		foreach (const QDomElement &itemElement, itemElements)
 		{
@@ -375,8 +374,8 @@ public:
 		if (uuid.isNull())
 			return Item::null;
 
-		if (Items.contains(uuid.toString()))
-			return Items.value(uuid.toString());
+		if (Items.contains(uuid))
+			return Items.value(uuid);
 
 		return Item::null;
 	}
@@ -426,7 +425,7 @@ public:
 	 *
 	 * Return list of all items.
 	 */
-	const QHash<QString, Item> & allItems()
+	const QMap<QString, Item> & allItems()
 	{
 		(void) QMutexLocker(&Mutex);
 
@@ -464,12 +463,12 @@ public:
 
 		ensureLoaded();
 
-		if (Items.contains(item.uuid().toString()))
+		if (Items.contains(item.uuid()))
 			return;
 
 		itemAboutToBeAdded(item);
 
-		Items.insert(item.uuid().toString(), item);
+		Items.insert(item.uuid(), item);
 
 		itemAdded(item);
 
@@ -494,14 +493,14 @@ public:
 
 		ensureLoaded();
 
-		if (!Items.contains(item.uuid().toString()))
+		if (!Items.contains(item.uuid()))
 			return;
 
 		itemAboutToBeRemoved(item);
 
 		if (item.details())
 			unregisterItem(item);
-		Items.remove(item.uuid().toString());
+		Items.remove(item.uuid());
 
 		item.remove();
 
