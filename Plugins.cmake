@@ -87,6 +87,8 @@ set (COMPILE_PLUGINS
 	single_window
 	# Sms gateway support
 	sms
+	# Spellchecking in chat window
+	spellchecker
 	# Tabbed chat dialog
 	tabs
 
