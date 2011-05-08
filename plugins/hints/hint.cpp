@@ -96,7 +96,7 @@ Hint::Hint(QWidget *parent, Notification *notification)
 
 	connect(notification, SIGNAL(closed(Notification *)), this, SLOT(notificationClosed()));
 
-	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+	setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
 	configurationUpdated();
 	show();
@@ -152,7 +152,8 @@ void Hint::createLabels(const QPixmap &pixmap)
 	}
 
 	label = new QLabel(this);
-	label->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+	label->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
+	label->setMaximumWidth(config_file.readNumEntry("Hints", "MaximumWidth", 500));
 	label->setTextInteractionFlags(Qt::NoTextInteraction);
 	label->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
 	label->setContentsMargins(margin + 4, 0, 0, 0);

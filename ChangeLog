@@ -33,6 +33,7 @@
 * buddies: fixed crash on exit in some configurations after using OpenChatWith window (beevvy)
 * gui: #2067 fixed: wrong error message in Add Buddy window if no id entered and some account chosen (dienet)
 * core: #2154 fixed: fix version comparisons (WhE)
+* hints: #2158 fixed: respect maximum hint width (Vogel)
 
 +++ version 0.9.1
 * identities: fixed displaying improper status information when having more jabber and gadu account in one identity and invisible status for gadu (beevvy)
