@@ -101,6 +101,8 @@ set (COMPILE_PLUGINS
 # mediaplayer
 	# Media players support plugin
 	mediaplayer
+	# Amarok 1.x mediaplayer support
+	amarok1_mediaplayer
 	# MPRIS Media Player support
 	mprisplayer_mediaplayer
 	# Itunes Media Player support (Mac OS X)
