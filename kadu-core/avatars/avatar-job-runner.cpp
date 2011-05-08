@@ -59,7 +59,12 @@ void AvatarJobRunner::runJob()
 {
 	AvatarService *service = avatarService(MyContact);
 	if (!service)
+	{
+		emit jobFinished(false);
+		deleteLater();
+
 		return;
+	}
 
 	connect(service, SIGNAL(avatarFetched(Contact,bool)),
 			this, SLOT(avatarFetched(Contact,bool)));
