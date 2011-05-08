@@ -33,34 +33,28 @@
 
 #include "falf.h"
 
-FalfMediaPlayer * falf = 0;
-
-extern "C" KADU_EXPORT int falf_mediaplayer_init(bool firstLoad)
-{
-	Q_UNUSED(firstLoad)
-
-	falf = new FalfMediaPlayer();
-	bool res = MediaPlayer::instance()->registerMediaPlayer(falf, 0);
-	return res ? 0 : 1;
-}
-
-extern "C" KADU_EXPORT void falf_mediaplayer_close()
-{
-	MediaPlayer::instance()->unregisterMediaPlayer();
-	delete falf;
-	falf = 0;
-}
-
-FalfMediaPlayer::FalfMediaPlayer()
+FalfMediaPlayer::FalfMediaPlayer(QObject *parent) :
+		QObject(parent), InfoFile(QDir::homePath() + QLatin1String("/.FALF/track.info"))
 {
 	kdebugf();
-	
-	InfoFile.setFileName(QDir::homePath() + "/.FALF/track.info");
 }
 
 FalfMediaPlayer::~FalfMediaPlayer()
 {
 	kdebugf();
+}
+
+int FalfMediaPlayer::init(bool firstLoad)
+{
+	Q_UNUSED(firstLoad)
+
+	bool res = MediaPlayer::instance()->registerMediaPlayer(this, 0);
+	return res ? 0 : 1;
+}
+
+void FalfMediaPlayer::done()
+{
+	MediaPlayer::instance()->unregisterMediaPlayer();
 }
 
 QString FalfMediaPlayer::getData(DataType type)
@@ -189,3 +183,5 @@ bool FalfMediaPlayer::isActive()
 	kdebugf();
 	return InfoFile.exists();
 }
+
+Q_EXPORT_PLUGIN2(falf_mediaplayer, FalfMediaPlayer)
