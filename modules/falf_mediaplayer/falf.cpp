@@ -28,10 +28,10 @@
 
 #include "debug.h"
 #include "exports.h"
-#include "../mediaplayer/mediaplayer.h"
-#include "falf.h"
 
-#define MODULE_FALF_MEDIAPLAYER_VERSION 2.3
+#include "plugins/mediaplayer/mediaplayer.h"
+
+#include "falf.h"
 
 FalfMediaPlayer * falf = 0;
 
@@ -55,7 +55,7 @@ FalfMediaPlayer::FalfMediaPlayer()
 {
 	kdebugf();
 	
-	infoFile.setFileName(QDir::homePath() + "/.FALF/track.info");
+	InfoFile.setFileName(QDir::homePath() + "/.FALF/track.info");
 }
 
 FalfMediaPlayer::~FalfMediaPlayer()
@@ -63,82 +63,77 @@ FalfMediaPlayer::~FalfMediaPlayer()
 	kdebugf();
 }
 
-// Private members
-QString FalfMediaPlayer::getData(dataType t)
+QString FalfMediaPlayer::getData(DataType type)
 {
 	if (!isActive())
-		return "";
+		return QString();
 
-	infoFile.open(QIODevice::ReadOnly);
-	QTextStream sI(&infoFile);
+	if (!InfoFile.open(QIODevice::ReadOnly))
+		return QString();
+
+	QTextStream sI(&InfoFile);
 	sI.setCodec("UTF-8");
 
 	QString buffer;
 
-	switch (t)
+	switch (type)
 	{
-		case ANY:
+		case TypeAny:
 			buffer = sI.readLine();
-		break;
-		case TITLE:
+			break;
+		case TypeTitle:
 			buffer = sI.readLine();
 			buffer = buffer.mid(7);
-		break;
-		case ALBUM:
-			for (unsigned short int i = 0 ; i < 2 ; i++)
+			break;
+		case TypeAlbum:
+			for (int i = 0 ; i < 2 ; i++)
 				buffer = sI.readLine();
 			buffer = buffer.mid(7);
-		break;
-		case ARTIST:
-			for (unsigned short int i = 0 ; i < 3 ; i++)
+			break;
+		case TypeArtist:
+			for (int i = 0 ; i < 3 ; i++)
 				buffer = sI.readLine();
 			buffer = buffer.mid(8);
-		break;
-		case VER:
-			for (unsigned short int i = 0 ; i < 5 ; i++)
+			break;
+		case TypeVersion:
+			for (int i = 0 ; i < 5 ; i++)
 				buffer = sI.readLine();
 			buffer = buffer.mid(12);
-		break;
+			break;
 	}
 
-	infoFile.close();
+	InfoFile.close();
 
 	return buffer.simplified();
 }
 
-// PlayerInfo
 QString FalfMediaPlayer::getPlayerName()
 {
 	kdebugf();
-
-	return "FALF";
+	return QLatin1String("FALF");
 }
 
 QString FalfMediaPlayer::getPlayerVersion()
 {
 	kdebugf();
-
-	return getData(VER);
+	return getData(TypeVersion);
 }
 
 QStringList FalfMediaPlayer::getPlayListTitles()
 {
 	kdebugf();
-	QStringList ret;
-	return ret;
+	return QStringList();
 }
 
 QStringList FalfMediaPlayer::getPlayListFiles()
 {
 	kdebugf();
-	QStringList ret;
-	return ret;
+	return QStringList();
 }
 
 uint FalfMediaPlayer::getPlayListLength()
 {
 	kdebugf();
-
 	return 0;
 }
 
@@ -146,59 +141,51 @@ QString FalfMediaPlayer::getTitle(int position)
 {
 	Q_UNUSED(position)
 	kdebugf();
-
-	return getData(TITLE);
+	return getData(TypeTitle);
 }
 
 QString FalfMediaPlayer::getAlbum(int position)
 {
 	Q_UNUSED(position)
 	kdebugf();
-
-	return getData(ALBUM);
+	return getData(TypeAlbum);
 }
 
 QString FalfMediaPlayer::getArtist(int position)
 {
 	Q_UNUSED(position)
 	kdebugf();
-
-	return getData(ARTIST);
+	return getData(TypeArtist);
 }
 
 QString FalfMediaPlayer::getFile(int position)
 {
 	Q_UNUSED(position)
 	kdebugf();
-
-	return "";
+	return QString();
 }
 
 int FalfMediaPlayer::getLength(int position)
 {
 	Q_UNUSED(position)
 	kdebugf();
-
 	return 0;
 }
 
 int FalfMediaPlayer::getCurrentPos()
 {
 	kdebugf();
-
 	return 0;
 }
 
 bool FalfMediaPlayer::isPlaying()
 {
 	kdebugf();
-	
-	return (getData(ANY).indexOf("TITLE:") == -1 ? false : true);
+	return (getData(TypeAny).indexOf("TITLE:") != -1);
 }
 
 bool FalfMediaPlayer::isActive()
 {
 	kdebugf();
-	
-	return (infoFile.exists());
+	return InfoFile.exists();
 }

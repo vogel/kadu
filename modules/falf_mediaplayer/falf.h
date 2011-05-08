@@ -4,33 +4,41 @@
 #include <QtCore/QFile>
 #include <QtCore/QObject>
 
-#include "../mediaplayer/player_info.h"
-#include "../mediaplayer/player_commands.h"
+#include "plugins/mediaplayer/player_info.h"
+#include "plugins/mediaplayer/player_commands.h"
 
 class FalfMediaPlayer : public PlayerInfo
 {
-	public:
-		FalfMediaPlayer();
-		~FalfMediaPlayer();
+	enum DataType
+	{
+		TypeTitle,
+		TypeAlbum,
+		TypeArtist,
+		TypeAny,
+		TypeVersion
+	};
 
-		QString getTitle(int position = -1);
-		QString getAlbum(int position = -1);
-		QString getArtist(int position = -1);
-		QString getFile(int position = -1);
-		int getLength(int position = -1);
-		int getCurrentPos();
-		bool isPlaying();
-		bool isActive();
-		QStringList getPlayListTitles();
-		QStringList getPlayListFiles();
-		uint getPlayListLength();
-		QString getPlayerName();
-		QString getPlayerVersion();
+	QFile InfoFile;
+	QString getData(DataType type);
 
-	private:
-		QFile infoFile;
-		enum dataType {TITLE, ALBUM, ARTIST, ANY, VER};
-		QString getData(dataType);
+public:
+	FalfMediaPlayer();
+	virtual ~FalfMediaPlayer();
+
+	virtual QString getTitle(int position = -1);
+	virtual QString getAlbum(int position = -1);
+	virtual QString getArtist(int position = -1);
+	virtual QString getFile(int position = -1);
+	virtual int getLength(int position = -1);
+	virtual int getCurrentPos();
+	virtual bool isPlaying();
+	virtual bool isActive();
+	virtual QStringList getPlayListTitles();
+	virtual QStringList getPlayListFiles();
+	virtual uint getPlayListLength();
+	virtual QString getPlayerName();
+	virtual QString getPlayerVersion();
+
 };
 
-#endif
+#endif // FALF_H
