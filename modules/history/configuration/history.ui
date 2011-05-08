@@ -21,7 +21,7 @@
 	</section>
 	<section name="Shortcuts">
 		<tab name="General">
-			<group-box name="Chat" id="history/shortCuts">
+			<group-box name="Kadu">
 				<hot-key-edit caption="View history" config-section="ShortCuts" config-item="kadu_viewhistory" />
 			</group-box>
 		</tab>

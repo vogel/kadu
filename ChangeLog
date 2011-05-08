@@ -8,6 +8,7 @@
 * gui: #2067 fixed: wrong error message in Add Buddy window if no id entered and some account chosen (dienet)
 * core: #2154 fixed: fix version comparisons (WhE)
 * hints: #2158 fixed: respect maximum hint width (Vogel)
+* history: #2130 fixed: moved shortcut configuration (Vogel)
 
 +++ version 0.9.1
 * gadu: fixed bug where Kadu could send contacts to Gadu server not from contacts list, but from history (Vogel)
