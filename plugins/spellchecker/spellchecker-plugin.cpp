@@ -19,10 +19,10 @@
 
 #include "misc/path-conversion.h"
 
+#include "configuration/spellchecker-configuration.h"
 #include "spellchecker.h"
-#include "suggester.h"
-
 #include "spellchecker-plugin.h"
+#include "suggester.h"
 
 SpellCheckerPlugin * SpellCheckerPlugin::Instance = 0;
 
@@ -42,6 +42,7 @@ int SpellCheckerPlugin::init(bool firstLoad)
 	Q_UNUSED(firstLoad)
 
 	SpellCheckerInstance = new SpellChecker(this);
+	SpellcheckerConfiguration::createInstance();
 
 	MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/spellchecker.ui"));
 	MainConfigurationWindow::registerUiHandler(SpellCheckerInstance);
@@ -52,6 +53,7 @@ int SpellCheckerPlugin::init(bool firstLoad)
 void SpellCheckerPlugin::done()
 {
 	Suggester::destroyInstance();
+	SpellcheckerConfiguration::destroyInstance();
 
 	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/spellchecker.ui"));
 	MainConfigurationWindow::unregisterUiHandler(SpellCheckerInstance);

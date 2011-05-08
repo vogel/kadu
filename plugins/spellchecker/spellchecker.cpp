@@ -42,7 +42,6 @@
 #include "gui/widgets/chat-widget.h"
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"
-#include "configuration/configuration-file.h"
 #include "gui/widgets/custom-input.h"
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/windows/message-dialog.h"
@@ -51,6 +50,7 @@
 #include "highlighter.h"
 #include "suggester.h"
 
+#include "configuration/spellchecker-configuration.h"
 #include "spellchecker.h"
 
 #ifdef HAVE_ENCHANT
@@ -89,9 +89,6 @@ SpellChecker::SpellChecker(QObject *parent) :
 	aspell_config_replace(SpellConfig, "prefix", qPrintable(profilePath("dicts")));
 #endif // Q_OS_WIN32
 #endif // HAVE_ASPELL
-
-	createDefaultConfiguration();
-	configurationUpdated();
 }
 
 SpellChecker::~SpellChecker()
@@ -205,19 +202,19 @@ void SpellChecker::buildCheckers()
 	MyCheckers.clear();
 
 #ifdef HAVE_ASPELL
-	if (config_file.readBoolEntry("ASpell", "Accents", false))
+	if (SpellcheckerConfiguration::instance()->accents())
 		aspell_config_replace(SpellConfig, "ignore-accents", "true");
 	else
 		aspell_config_replace(SpellConfig, "ignore-accents", "false");
 
-	if (config_file.readBoolEntry("ASpell", "Case", false))
+	if (SpellcheckerConfiguration::instance()->casesens())
 		aspell_config_replace(SpellConfig, "ignore-case", "true");
 	else
 		aspell_config_replace(SpellConfig, "ignore-case", "false");
 #endif
 
 	// load languages to check from configuration
-	QString checkedStr = config_file.readEntry("ASpell", "Checked", "pl");
+	QString checkedStr = SpellcheckerConfiguration::instance()->checked();
 	QStringList checkedList = checkedStr.split(',', QString::SkipEmptyParts);
 
 	// create spell checkers for each language
@@ -229,20 +226,17 @@ void SpellChecker::buildMarkTag()
 {
 	QTextCharFormat format;
 
-	QColor colorMark("#FF0101");
-	colorMark = config_file.readColorEntry("ASpell", "Color", &colorMark);
-
-	if (config_file.readBoolEntry("ASpell", "Bold", false))
+	if (SpellcheckerConfiguration::instance()->bold())
 		format.setFontWeight(600);
-	if (config_file.readBoolEntry("ASpell", "Italic", false))
+	if (SpellcheckerConfiguration::instance()->italic())
 		format.setFontItalic(true);
-	if (config_file.readBoolEntry("ASpell", "Underline", false))
+	if (SpellcheckerConfiguration::instance()->underline())
 	{
 		format.setFontUnderline(true);
-		format.setUnderlineColor(colorMark);
+		format.setUnderlineColor(SpellcheckerConfiguration::instance()->color());
 		format.setUnderlineStyle(QTextCharFormat::SpellCheckUnderline);
 	}
-	format.setForeground(QBrush(colorMark));
+	format.setForeground(QBrush(SpellcheckerConfiguration::instance()->color()));
 
 	Highlighter::setHighlightFormat(format);
 	Highlighter::rehighlightAll();
@@ -330,29 +324,9 @@ void SpellChecker::mainConfigurationWindowCreated(MainConfigurationWindow *mainC
 	CheckedLanguagesList->addItems(checkedLanguages());
 }
 
-void SpellChecker::configurationUpdated()
-{
-	SuggestedWordCount = config_file.readNumEntry("ASpell", "SuggesterWordCount");
-	buildMarkTag();
-	buildCheckers();
-}
-
 void SpellChecker::configurationWindowApplied()
 {
-	config_file.writeEntry("ASpell", "Checked", checkedLanguages().join(","));
-}
-
-void SpellChecker::createDefaultConfiguration()
-{
-	config_file.addVariable("ASpell", "Bold", "false");
-	config_file.addVariable("ASpell", "Italic", "false");
-	config_file.addVariable("ASpell", "Underline", "true");
-	config_file.addVariable("ASpell", "Color", "#FF0101");
-	config_file.addVariable("ASpell", "Checked", "pl");
-	config_file.addVariable("ASpell", "Accents", "false");
-	config_file.addVariable("ASpell", "Case", "false");
-	config_file.addVariable("ASpell", "Suggester", "true");
-	config_file.addVariable("ASpell", "SuggesterWordCount", "10");
+	SpellcheckerConfiguration::instance()->setChecked(checkedLanguages());
 }
 
 bool SpellChecker::checkWord(const QString &word)
@@ -385,8 +359,8 @@ QStringList SpellChecker::buildSuggestList(const QString &word)
 	QTextCodec *codec = QTextCodec::codecForName("utf-8");
 #endif
 
-	int suggesterWordCount = SuggestedWordCount;
-	if (MyCheckers.size() > SuggestedWordCount)
+	int suggesterWordCount = SpellcheckerConfiguration::instance()->suggesterWordCount();
+	if (MyCheckers.size() > suggesterWordCount)
 		suggesterWordCount = 1;
 	else
 		suggesterWordCount /= MyCheckers.size();

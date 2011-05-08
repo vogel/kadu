@@ -24,9 +24,9 @@
 #include "gui/actions/action-description.h"
 #include "gui/widgets/custom-input.h"
 #include "gui/widgets/custom-input-menu-manager.h"
-#include "configuration/configuration-file.h"
 #include "icons/kadu-icon.h"
 
+#include "configuration/spellchecker-configuration.h"
 #include "spellchecker.h"
 #include "spellchecker-plugin.h"
 
@@ -44,9 +44,7 @@ Suggester *Suggester::instance()
 
 void Suggester::destroyInstance()
 {
-	if (Instance)
-		delete Instance;
-
+	delete Instance;
 	Instance = 0;
 }
 
@@ -103,7 +101,7 @@ bool Suggester::eventFilter(QObject *object, QEvent *event)
 
 			if ((!textCursor.selectedText().isEmpty()) &&
 					(!SpellCheckerPlugin::instance()->spellChecker()->checkWord(textCursor.selectedText())) &&
-					 (config_file.readBoolEntry("ASpell", "Suggester", true)))
+					 (SpellcheckerConfiguration::instance()->suggester()))
 			{
 				buildSuggestList(textCursor.selectedText());
 				clearWordMenu();

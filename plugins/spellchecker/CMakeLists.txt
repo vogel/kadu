@@ -11,6 +11,7 @@ include (FindKadu)
 include_directories (${KADU_INCLUDE_DIR}/kadu-core)
 
 set (SOURCES
+	configuration/spellchecker-configuration.cpp
 	highlighter.cpp
 	spellchecker.cpp
 	spellchecker-plugin.cpp
