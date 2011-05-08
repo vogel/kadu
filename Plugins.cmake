@@ -103,6 +103,8 @@ set (COMPILE_PLUGINS
 	mediaplayer
 	# Amarok 1.x mediaplayer support
 	amarok1_mediaplayer
+	# FALF mediaplayer support
+	falf_mediaplayer
 	# MPRIS Media Player support
 	mprisplayer_mediaplayer
 	# Itunes Media Player support (Mac OS X)
