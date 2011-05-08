@@ -78,8 +78,8 @@ About::About(QWidget *parent) :
 
 	l_info->setText("<font size=\"5\">Kadu</font><br /><b>"
 		+ tr("Version %1").arg(Core::version())
-		+ "</b><br />"
-		+ QString("Qt %2 (compiled with Qt %3)").arg(qVersion()).arg(QT_VERSION_STR));
+		+ "</b><br/>"
+		+ tr("Qt %2 (compiled with Qt %3)").arg(qVersion()).arg(QT_VERSION_STR));
 
 	l_info->setWordWrap(true);
 	l_info->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
