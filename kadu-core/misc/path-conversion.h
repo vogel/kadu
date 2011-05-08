@@ -27,6 +27,8 @@
 
 KADUAPI void printBacktrace(const QString &header = QString());
 
+KADUAPI QString desktopFilePath();
+
 KADUAPI QString homePath();
 
 /**

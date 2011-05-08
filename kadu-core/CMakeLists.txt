@@ -160,7 +160,7 @@ install (TARGETS kadu DESTINATION ${KADU_BIN_DIR})
 
 # install desktop file
 if (UNIX AND NOT APPLE)
-	install (FILES ${DESKTOP_ENTRY} DESTINATION share/applications)
+	install (FILES ${DESKTOP_ENTRY} DESTINATION ${KADU_DESKTOP_FILE_DIR} RENAME ${KADU_DESKTOP_FILE_NAME})
 
 	# install icons
 	install (FILES hi16-app-kadu.png DESTINATION "share/icons/hicolor/16x16/apps" RENAME kadu.png)
