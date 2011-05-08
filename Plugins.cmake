@@ -91,6 +91,8 @@ set (COMPILE_PLUGINS
 	spellchecker
 	# Tabbed chat dialog
 	tabs
+	# Automatic mispelled word replacement
+	word_fix
 
 # mediaplayer
 	# Media players support plugin

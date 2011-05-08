@@ -45,7 +45,7 @@
 #include "html_document.h"
 #include "debug.h"
 
-#include "word_fix.h"
+#include "word-fix.h"
 
 
 WordFix::WordFix(QObject *parent) :
