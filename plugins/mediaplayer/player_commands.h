@@ -10,8 +10,8 @@ class MEDIAPLAYERAPI PlayerCommands : public QObject
 	Q_OBJECT
 
 public:
-	PlayerCommands() {};
-	virtual ~PlayerCommands() {};
+	explicit PlayerCommands(QObject *parent = 0) : QObject(parent) {}
+	virtual ~PlayerCommands() {}
 
 public slots:
 	/**

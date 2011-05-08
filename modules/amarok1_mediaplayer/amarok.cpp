@@ -34,10 +34,10 @@
 
 #include "debug.h"
 #include "exports.h"
-#include "../mediaplayer/mediaplayer.h"
-#include "amarok.h"
 
-#define MODULE_AMAROK_MEDIAPLAYER_VERSION 2.0
+#include "plugins/mediaplayer/mediaplayer.h"
+
+#include "amarok.h"
 
 AmarokMediaPlayer* amarok;
 
@@ -58,7 +58,7 @@ extern "C" KADU_EXPORT void amarok1_mediaplayer_close()
 	amarok = NULL;
 }
 
-QByteArray AmarokMediaPlayer::executeCommand(QString obj, QString func)
+QByteArray AmarokMediaPlayer::executeCommand(const QString &obj, const QString &func)
 {
 	QByteArray result;
 	QStringList params;
@@ -76,12 +76,13 @@ QByteArray AmarokMediaPlayer::executeCommand(QString obj, QString func)
 	result = process.readAll();
 
 	kdebugmf(KDEBUG_INFO, "command: dcop amarok %s %s - result: [%s]\n",
-		qPrintable(obj), qPrintable(func), qPrintable(QString(result)));
+			qPrintable(obj), qPrintable(func), qPrintable(QString(result)));
 
 	return result;
 }
 
-AmarokMediaPlayer::AmarokMediaPlayer()
+AmarokMediaPlayer::AmarokMediaPlayer(QObject *parent) :
+		PlayerCommands(parent)
 {
 	kdebugf();
 }
@@ -91,71 +92,67 @@ AmarokMediaPlayer::~AmarokMediaPlayer()
 	kdebugf();
 }
 
-QString AmarokMediaPlayer::getString(QString obj, QString func)
+QString AmarokMediaPlayer::getString(const QString &obj, const QString &func)
 {
 	if (!isActive())
-		return "";
+		return QString();
 
-	QByteArray reply = executeCommand(obj, func);
-	QString str(reply);
-	return str.simplified();
+	return QString(executeCommand(obj, func)).simplified();
 }
 
-QStringList AmarokMediaPlayer::getStringList(QString obj, QString func)
+QStringList AmarokMediaPlayer::getStringList(const QString &obj, const QString &func)
 {
 	if (!isActive())
 		return QStringList();
 
-	QByteArray reply = executeCommand(obj, func);
-	return QString(reply).split('\n');
+	return QString(executeCommand(obj, func)).split('\n');
 }
 
-int AmarokMediaPlayer::getInt(QString obj, QString func)
+int AmarokMediaPlayer::getInt(const QString &obj, const QString &func)
 {
 	if (!isActive())
 		return 0;
 
-	QString reply = getString(obj, func);
-	return reply.toInt();
+	return getString(obj, func).toInt();
 }
 
-uint AmarokMediaPlayer::getUint(QString obj, QString func)
+uint AmarokMediaPlayer::getUint(const QString &obj, const QString &func)
 {
 	if (!isActive())
 		return 0;
 
-	QString reply = getString(obj, func);
-	return reply.toUInt();
+	return getString(obj, func).toUInt();
 }
 
-bool AmarokMediaPlayer::getBool(QString obj, QString func)
+bool AmarokMediaPlayer::getBool(const QString &obj, const QString &func)
 {
 	if (!isActive())
 		return 0;
 
-	QString ret = getString(obj, func);
-	return (ret == "true") ? true : false;
+	return (getString(obj, func) == QLatin1String("true"));
 }
 
 
-void AmarokMediaPlayer::send(QString obj, QString func, int arg)
+void AmarokMediaPlayer::send(const QString &obj, const QString &func, int arg)
 {
 	if (!isActive())
 		return;
 
+	QString func2(func);
 	if (arg != -1)
 	{
-		func.append(" ");
-		func.append(QString::number(arg));
+		func2.append(' ');
+		func2.append(QString::number(arg));
 	}
-	QByteArray reply = executeCommand(obj, func);
+
+	executeCommand(obj, func2);
 }
 
 // PlayerInfo
 
 QString AmarokMediaPlayer::getPlayerName()
 {
-	return "amaroK";
+	return QLatin1String("amaroK");
 }
 
 QString AmarokMediaPlayer::getPlayerVersion()
@@ -321,11 +318,8 @@ bool AmarokMediaPlayer::isPlaying()
 bool AmarokMediaPlayer::isActive()
 {
 	kdebugf();
-
-	QByteArray reply = executeCommand("player", "isPlaying");
-	QString ret(reply);
-	ret = ret.simplified();
+	QString ret(QString(executeCommand("player", "isPlaying")).simplified());
 	kdebugf2();
 
-	return ((ret == "true") || (ret == "false")) ? true : false;
+	return (ret == QLatin1String("true")) || (ret == QLatin1String("false"));
 }

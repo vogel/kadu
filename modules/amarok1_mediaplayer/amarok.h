@@ -1,48 +1,50 @@
 #ifndef AMAROK_H
 #define AMAROK_H
 
-#include "../mediaplayer/player_info.h"
-#include "../mediaplayer/player_commands.h"
+#include "plugins/mediaplayer/player_info.h"
+#include "plugins/mediaplayer/player_commands.h"
 
 class AmarokMediaPlayer : public PlayerCommands, public PlayerInfo
 {
 	Q_OBJECT
 
-	QString getString(QString obj, QString func);
-	QStringList getStringList(QString obj, QString func);
-	int getInt(QString obj, QString func);
-	uint getUint(QString obj, QString func);
-	bool getBool(QString obj, QString func);
-	void send(QString obj, QString func, int arg = -1);
-	QByteArray executeCommand(QString obj, QString func);
+	QString getString(const QString &obj, const QString &func);
+	QStringList getStringList(const QString &obj, const QString &func);
+	int getInt(const QString &obj, const QString &func);
+	uint getUint(const QString &obj, const QString &func);
+	bool getBool(const QString &obj, const QString &func);
+	void send(const QString &obj, const QString &func, int arg = -1);
+	QByteArray executeCommand(const QString &obj, const QString &func);
 
 public:
-	AmarokMediaPlayer();
-	~AmarokMediaPlayer();
+	explicit AmarokMediaPlayer(QObject *parent = 0);
+	virtual ~AmarokMediaPlayer();
 
-	QString getTitle(int position = -1);
-	QString getAlbum(int position = -1);
-	QString getArtist(int position = -1);
-	QString getFile(int position = -1);
-	int getLength(int position = -1);
-	int getCurrentPos();
-	bool isPlaying();
-	bool isActive();
-	QStringList getPlayListTitles();
-	QStringList getPlayListFiles();
-	uint getPlayListLength();
-	QString getPlayerName();
-	QString getPlayerVersion();
+	// PlayerInfo implementation
+	virtual QString getTitle(int position = -1);
+	virtual QString getAlbum(int position = -1);
+	virtual QString getArtist(int position = -1);
+	virtual QString getFile(int position = -1);
+	virtual int getLength(int position = -1);
+	virtual int getCurrentPos();
+	virtual bool isPlaying();
+	virtual bool isActive();
+	virtual QStringList getPlayListTitles();
+	virtual QStringList getPlayListFiles();
+	virtual uint getPlayListLength();
+	virtual QString getPlayerName();
+	virtual QString getPlayerVersion();
 
-	void nextTrack();
-	void prevTrack();
-	void play();
-	void stop();
-	void pause();
-	void setVolume(int vol);
-	void incrVolume();
-	void decrVolume();
+	// PlayerCommands implementation
+	virtual void nextTrack();
+	virtual void prevTrack();
+	virtual void play();
+	virtual void stop();
+	virtual void pause();
+	virtual void setVolume(int vol);
+	virtual void incrVolume();
+	virtual void decrVolume();
 
 };
 
-#endif
+#endif // AMAROK_H
