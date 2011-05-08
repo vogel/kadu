@@ -22,6 +22,7 @@
  */
 
 #include "spellchecker.h"
+#include "spellchecker-plugin.h"
 
 #include "highlighter.h"
 
@@ -52,7 +53,7 @@ void Highlighter::highlightBlock(const QString& text)
 	int index = 0;
 	while ((index = word.indexIn(text, index)) != -1)
 	{
-		if (!spellcheck->checkWord(word.cap()))
+		if (!SpellCheckerPlugin::instance()->spellChecker()->checkWord(word.cap()))
 			setFormat(index, word.matchedLength(), HighlightFormat);
 		index += word.matchedLength();
 	}

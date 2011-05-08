@@ -53,29 +53,6 @@
 
 #include "spellchecker.h"
 
-SpellChecker *spellcheck;
-
-extern "C" KADU_EXPORT int spellchecker_init(bool firstLoad)
-{
-	Q_UNUSED(firstLoad)
-
-	spellcheck = new SpellChecker();
-
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/spellchecker.ui"));
-	MainConfigurationWindow::registerUiHandler(spellcheck);
-	return 0;
-}
-
-extern "C" KADU_EXPORT void spellchecker_close()
-{
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/spellchecker.ui"));
-	MainConfigurationWindow::unregisterUiHandler(spellcheck);
-
-	Suggester::destroyInstance();
-	delete spellcheck;
-	spellcheck = 0;
-}
-
 #ifdef HAVE_ENCHANT
 typedef std::pair<SpellChecker::Checkers *, QStringList *> DescWrapper;
 
@@ -94,7 +71,8 @@ static void enchantDictDescribe(const char * const langTag, const char * const p
 }
 #endif
 
-SpellChecker::SpellChecker()
+SpellChecker::SpellChecker(QObject *parent) :
+		ConfigurationUiHandler(parent)
 {
 	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetCreated(ChatWidget *)),
 			this, SLOT(chatCreated(ChatWidget *)));

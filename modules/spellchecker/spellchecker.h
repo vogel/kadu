@@ -54,7 +54,7 @@ protected:
 	virtual void configurationUpdated();
 
 public:
-	SpellChecker();
+	explicit SpellChecker(QObject *parent = 0);
 	virtual ~SpellChecker();
 
 	QStringList notCheckedLanguages();
@@ -76,7 +76,5 @@ public slots:
 	void configBackward2(QListWidgetItem *item);
 
 };
-
-extern SpellChecker *spellcheck;
 
 #endif // SPELLCHECKER_H

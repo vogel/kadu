@@ -28,6 +28,7 @@
 #include "icons/kadu-icon.h"
 
 #include "spellchecker.h"
+#include "spellchecker-plugin.h"
 
 #include "suggester.h"
 
@@ -60,7 +61,7 @@ Suggester::~Suggester()
 
 void Suggester::buildSuggestList(const QString &word)
 {
-	SuggestionWordList = spellcheck->buildSuggestList(word);
+	SuggestionWordList = SpellCheckerPlugin::instance()->spellChecker()->buildSuggestList(word);
 }
 
 void Suggester::addWordListToMenu(const QTextCursor &textCursor)
@@ -101,7 +102,7 @@ bool Suggester::eventFilter(QObject *object, QEvent *event)
 			textCursor.select(QTextCursor::WordUnderCursor);
 
 			if ((!textCursor.selectedText().isEmpty()) &&
-					(!spellcheck->checkWord(textCursor.selectedText())) &&
+					(!SpellCheckerPlugin::instance()->spellChecker()->checkWord(textCursor.selectedText())) &&
 					 (config_file.readBoolEntry("ASpell", "Suggester", true)))
 			{
 				buildSuggestList(textCursor.selectedText());
