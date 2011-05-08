@@ -47,33 +47,9 @@
 
 #include "word_fix.h"
 
-WordFix *wordFix;
 
-extern "C" KADU_EXPORT int word_fix_init(bool firstLoad)
-{
-	Q_UNUSED(firstLoad)
-
-	kdebugf();
-	wordFix = new WordFix();
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/word_fix.ui"));
-	MainConfigurationWindow::registerUiHandler(wordFix);
-	kdebugf2();
-	return 0;
-}
-
-
-extern "C" KADU_EXPORT void word_fix_close()
-{
-	kdebugf();
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/word_fix.ui"));
-	MainConfigurationWindow::unregisterUiHandler(wordFix);
-	delete wordFix;
-	wordFix = NULL;
-	kdebugf2();
-}
-
-
-WordFix::WordFix()
+WordFix::WordFix(QObject *parent) :
+		ConfigurationUiHandler(parent)
 {
 	kdebugf();
 
@@ -148,6 +124,25 @@ WordFix::~WordFix()
 		}
 	}
 
+	kdebugf2();
+}
+
+int WordFix::init(bool firstLoad)
+{
+	Q_UNUSED(firstLoad)
+
+	kdebugf();
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/word_fix.ui"));
+	MainConfigurationWindow::registerUiHandler(this);
+	kdebugf2();
+	return 0;
+}
+
+void WordFix::done()
+{
+	kdebugf();
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/word_fix.ui"));
+	MainConfigurationWindow::unregisterUiHandler(this);
 	kdebugf2();
 }
 
@@ -459,3 +454,5 @@ void WordFix::saveList()
 
 	kdebugf2();
 }
+
+Q_EXPORT_PLUGIN2(word_fix, WordFix)
