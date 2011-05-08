@@ -33,29 +33,37 @@
 #include <QtCore/QStringList>
 
 #include "debug.h"
-#include "exports.h"
 
 #include "plugins/mediaplayer/mediaplayer.h"
 
 #include "amarok.h"
 
-AmarokMediaPlayer* amarok;
+AmarokMediaPlayer::AmarokMediaPlayer(QObject *parent) :
+		PlayerCommands(parent)
+{
+	kdebugf();
+}
 
-extern "C" KADU_EXPORT int amarok1_mediaplayer_init(bool firstLoad)
+AmarokMediaPlayer::~AmarokMediaPlayer()
+{
+	kdebugf();
+}
+
+int AmarokMediaPlayer::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
-	amarok = new AmarokMediaPlayer();
-	bool res = MediaPlayer::instance()->registerMediaPlayer(amarok, amarok);
+	bool res = MediaPlayer::instance()->registerMediaPlayer(this, this);
+	if (!res)
+		return 1;
+
 	MediaPlayer::instance()->setInterval(5);
-	return res ? 0 : 1;
+	return 0;
 }
 
-extern "C" KADU_EXPORT void amarok1_mediaplayer_close()
+void AmarokMediaPlayer::done()
 {
 	MediaPlayer::instance()->unregisterMediaPlayer();
-	delete amarok;
-	amarok = NULL;
 }
 
 QByteArray AmarokMediaPlayer::executeCommand(const QString &obj, const QString &func)
@@ -79,17 +87,6 @@ QByteArray AmarokMediaPlayer::executeCommand(const QString &obj, const QString &
 			qPrintable(obj), qPrintable(func), qPrintable(QString(result)));
 
 	return result;
-}
-
-AmarokMediaPlayer::AmarokMediaPlayer(QObject *parent) :
-		PlayerCommands(parent)
-{
-	kdebugf();
-}
-
-AmarokMediaPlayer::~AmarokMediaPlayer()
-{
-	kdebugf();
 }
 
 QString AmarokMediaPlayer::getString(const QString &obj, const QString &func)
@@ -323,3 +320,5 @@ bool AmarokMediaPlayer::isActive()
 
 	return (ret == QLatin1String("true")) || (ret == QLatin1String("false"));
 }
+
+Q_EXPORT_PLUGIN2(amarok1_mediaplayer, AmarokMediaPlayer)

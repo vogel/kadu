@@ -1,12 +1,15 @@
 #ifndef AMAROK_H
 #define AMAROK_H
 
+#include "plugins/generic-plugin.h"
+
 #include "plugins/mediaplayer/player_info.h"
 #include "plugins/mediaplayer/player_commands.h"
 
-class AmarokMediaPlayer : public PlayerCommands, public PlayerInfo
+class AmarokMediaPlayer : public PlayerCommands, PlayerInfo, GenericPlugin
 {
 	Q_OBJECT
+	Q_INTERFACES(GenericPlugin)
 
 	QString getString(const QString &obj, const QString &func);
 	QStringList getStringList(const QString &obj, const QString &func);
@@ -19,6 +22,9 @@ class AmarokMediaPlayer : public PlayerCommands, public PlayerInfo
 public:
 	explicit AmarokMediaPlayer(QObject *parent = 0);
 	virtual ~AmarokMediaPlayer();
+
+	virtual int init(bool firstLoad);
+	virtual void done();
 
 	// PlayerInfo implementation
 	virtual QString getTitle(int position = -1);
