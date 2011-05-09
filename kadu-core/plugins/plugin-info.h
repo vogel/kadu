@@ -50,7 +50,6 @@ class PluginInfo
 	QString Author;
 	QString Version;
 	bool LoadByDefault;
-	bool IsPlugin;
 
 public:
 	/**
@@ -162,18 +161,6 @@ public:
 	 * version.
 	 */
 	bool loadByDefault() const { return LoadByDefault; }
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns if this plugin is really a plugin.
-	 * @return true, if this plugin is really a plugin
-	 * @todo remove after module-to-plugin port is finished
-	 *
-	 * When Plugin is set to true, Kadu will look for objects that implements GenericPlugin
-	 * interface to load. When Plugin is set to false, Kadu will look for oldshool _init and
-	 * _close C functions in plugin library.
-	 */
-	bool isPlugin() const { return IsPlugin; }
 
 };
 

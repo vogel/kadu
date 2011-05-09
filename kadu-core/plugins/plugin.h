@@ -43,7 +43,6 @@ class PluginInfo;
  * @author Rafał 'Vogel' Malinowski
  * @short Class responsible for activating, deactivating and managing single plugin.
  * @todo Rewrite to use .desktop files
- * @todo Remove modules support
  *
  * This class manages single plugin, loads and stored its state data from configuration.
  *
@@ -101,9 +100,6 @@ public:
 	};
 
 private:
-	typedef int InitModuleFunc(bool);
-	typedef void CloseModuleFunc(void);
-
 	QString Name;
 	bool Active;
 	PluginState State;
@@ -112,8 +108,6 @@ private:
 	QPluginLoader *PluginLoader;
 	GenericPlugin *PluginObject;
 
-	QLibrary *PluginLibrary;
-	CloseModuleFunc *Close;
 	QTranslator *Translator;
 	PluginInfo *Info;
 	int UsageCounter;

@@ -56,7 +56,7 @@
 Plugin::Plugin(const QString &name, QObject *parent) :
 		QObject(parent),
 		Name(name), Active(false), State(PluginStateNew), PluginLoader(0), PluginObject(0),
-		PluginLibrary(0), Close(0), Translator(0), UsageCounter(0)
+		Translator(0), UsageCounter(0)
 {
 	QString descFilePath = dataPath("kadu/plugins/" + name + ".desc");
 	QFileInfo descFileInfo(descFilePath);
@@ -169,73 +169,31 @@ bool Plugin::activate()
 	if (Active)
 		return true;
 
-	InitModuleFunc *init;
+	PluginLoader = new QPluginLoader(libPath("kadu/plugins/"SO_PREFIX + Name + "." SO_EXT));
+	PluginLoader->setLoadHints(QLibrary::ExportExternalSymbolsHint);
 
-	int res = 0;
-
-	if (Info->isPlugin())
+	if (!PluginLoader->load())
 	{
-		PluginLibrary = 0;
-		Close = 0;
-
-		PluginLoader = new QPluginLoader(libPath("kadu/plugins/"SO_PREFIX + Name + "." SO_EXT));
-		PluginLoader->setLoadHints(QLibrary::ExportExternalSymbolsHint);
-
-		if (!PluginLoader->load())
-		{
-			QString err = PluginLoader->errorString();
-			MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Cannot load %1 plugin library.:\n%2").arg(Name, err));
-			kdebugm(KDEBUG_ERROR, "cannot load %s because of: %s\n", qPrintable(Name), qPrintable(err));
-			kdebugf2();
-			return false;
-		}
-
-		PluginObject = qobject_cast<GenericPlugin *>(PluginLoader->instance());
-		if (!PluginObject)
-		{
-			MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Cannot find required object in module %1.\n"
-					"Maybe it's not Kadu-compatible plugin.").arg(Name));
-			delete PluginLoader;
-			PluginLoader = 0;
-			kdebugf2();
-			return false;
-		}
-
-		loadTranslations();
-		res = PluginObject->init(PluginStateNew == State);
+		QString err = PluginLoader->errorString();
+		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Cannot load %1 plugin library.:\n%2").arg(Name, err));
+		kdebugm(KDEBUG_ERROR, "cannot load %s because of: %s\n", qPrintable(Name), qPrintable(err));
+		kdebugf2();
+		return false;
 	}
-	else
+
+	PluginObject = qobject_cast<GenericPlugin *>(PluginLoader->instance());
+	if (!PluginObject)
 	{
-		PluginLibrary = new QLibrary(libPath("kadu/plugins/"SO_PREFIX + Name + "." SO_EXT));
-		PluginLibrary->setLoadHints(/*QLibrary::ResolveAllSymbolsHint |*/ QLibrary::ExportExternalSymbolsHint);
-		if (!PluginLibrary->load())
-		{
-			QString err = PluginLibrary->errorString();
-			MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Cannot load %1 module library.:\n%2").arg(Name, err));
-			kdebugm(KDEBUG_ERROR, "cannot load %s because of: %s\n", qPrintable(Name), qPrintable(err));
-			delete PluginLibrary;
-			PluginLibrary = 0;
-			Close = 0;
-			kdebugf2();
-			return false;
-		}
-		init = (InitModuleFunc *)PluginLibrary->resolve(qPrintable(QString(Name + "_init")));
-		Close = (CloseModuleFunc *)PluginLibrary->resolve(qPrintable(QString(Name + "_close")));
-		if (!init || !Close)
-		{
-			MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Cannot find required functions in module %1.\n"
-					"Maybe it's not Kadu-compatible Module.").arg(Name));
-			delete PluginLibrary;
-			PluginLibrary = 0;
-			Close = 0;
-			kdebugf2();
-			return false;
-		}
-
-
-		loadTranslations();
-		res = init(PluginStateNew == State);
+		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Cannot find required object in module %1.\n"
+				"Maybe it's not Kadu-compatible plugin.").arg(Name));
+		delete PluginLoader;
+		PluginLoader = 0;
+		kdebugf2();
+		return false;
 	}
+
+	loadTranslations();
+	int res = PluginObject->init(PluginStateNew == State);
 
 	if (PluginStateNew == State)
 	{
@@ -247,9 +205,6 @@ bool Plugin::activate()
 	if (res != 0)
 	{
 		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Module initialization routine for %1 failed.").arg(Name));
-
-		delete PluginLibrary;
-		PluginLibrary = 0;
 
 		if (Translator)
 			qApp->removeTranslator(Translator);
@@ -284,20 +239,11 @@ void Plugin::deactivate()
 	if (!Active)
 		return;
 
-	if (Close)
-		Close();
-
 	if (Translator)
 		qApp->removeTranslator(Translator);
 
 	delete Translator;
 	Translator = 0;
-
-	if (PluginLibrary)
-	{
-		PluginLibrary->deleteLater();
-		PluginLibrary = 0;
-	}
 
 	if (PluginObject)
 		PluginObject->done();
