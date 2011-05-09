@@ -24,6 +24,7 @@
 * alsa_sound, ao_sound, dsp_sound, dshow_sound, win32_sound: removed in favor of phonon_sound and qt4_sound (Vogel)
 * xmms_mediaplayer: removed as it was unsupported (beevvy)
 * plugins: #2152 fixed: plugins replaced modules (Vogel)
+* sdk: #2149 fixed: SDK created (Vogel, beevvy, whe)
 
 +++ version 0.9.2
 * tabs: #2129 fixed: regression since 0.9.1 that caused button to be shown when the shouldn't in certain configurations (beevvy)
