@@ -37,4 +37,4 @@ FOR /F "eol=# tokens=1,2* delims==" %%i IN (%1) DO (
 	)		
 )
 
-echo #include "module.rc" >> %2
+echo #include "plugin.rc" >> %2

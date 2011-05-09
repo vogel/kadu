@@ -117,7 +117,6 @@ add_custom_target (uninstall "${CMAKE_COMMAND}" -P "${CMAKE_CURRENT_BINARY_DIR}/
 
 include (Plugins.cmake)
 
-add_subdirectory (modules)
 add_subdirectory (kadu-core)
 add_subdirectory (plugins)
 add_subdirectory (varia)
