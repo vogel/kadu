@@ -5,4 +5,5 @@ Author=Kadu Team
 Provides=media_player
 Conflicts=media_player
 Dependencies=mediaplayer
+Plugin=true
 Version=0.1

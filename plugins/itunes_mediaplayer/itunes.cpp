@@ -31,24 +31,6 @@
 #include "itunes.h"
 #include "itunescontroller.h"
 
-ITunesMediaPlayer* iTunes;
-
-extern "C" KADU_EXPORT int itunes_mediaplayer_init(bool firstLoad)
-{
-	Q_UNUSED(firstLoad)
-
-	iTunes = new ITunesMediaPlayer();
-	bool res = MediaPlayer::instance()->registerMediaPlayer(iTunes, iTunes);
-	return res ? 0 : 1;
-}
-
-extern "C" KADU_EXPORT void itunes_mediaplayer_close()
-{
-	MediaPlayer::instance()->unregisterMediaPlayer();
-	delete iTunes;
-	iTunes = NULL;
-}
-
 ITunesMediaPlayer::ITunesMediaPlayer()
 {
 	controller = new ITunesController();

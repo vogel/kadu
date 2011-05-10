@@ -101,5 +101,6 @@ set (COMPILE_PLUGINS
 	mediaplayer
 	# MPRIS Media Player support
 	mprisplayer_mediaplayer
-
+	# Itunes Media Player support (Mac OS X)
+	# itunes_mediaplayer
 )
