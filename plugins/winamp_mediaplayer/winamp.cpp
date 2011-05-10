@@ -26,24 +26,6 @@
 #define WINAMP_CMD_RAISE_VOLUME 40058
 #define WINAMP_CMD_LOWER_VOLUME 40059
 
-WinampMediaPlayer * winamp = 0;
-
-extern "C" KADU_EXPORT int winamp_mediaplayer_init(bool firstLoad)
-{
-	Q_UNUSED(firstLoad)
-
-	winamp = new WinampMediaPlayer();
-	bool res = MediaPlayer::instance()->registerMediaPlayer((PlayerInfo*)winamp, (PlayerCommands*)winamp);
-	return res ? 0 : 1;
-}
-
-extern "C" KADU_EXPORT void winamp_mediaplayer_close()
-{
-	MediaPlayer::instance()->unregisterMediaPlayer();
-	delete winamp;
-	winamp = 0;
-}
-
 WinampMediaPlayer::WinampMediaPlayer()
 {
 	kdebugf();

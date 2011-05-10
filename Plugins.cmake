@@ -103,4 +103,6 @@ set (COMPILE_PLUGINS
 	mprisplayer_mediaplayer
 	# Itunes Media Player support (Mac OS X)
 	# itunes_mediaplayer
+	# Winamp Media Player support (Windows)
+	# winamp_mediaplayer
 )

@@ -1,4 +1,4 @@
-project (itunes_mediaplayer)
+project (winamp_mediaplayer)
 
 # minimal required versions
 cmake_minimum_required (VERSION 2.8)
@@ -11,17 +11,17 @@ include (FindKadu)
 include_directories (${KADU_INCLUDE_DIR}/kadu-core)
 
 set (SOURCES
-	itunes.cpp
-	itunescontroller.cpp
-	itunes-player-plugin.cpp
+	winamp.cpp
+	winamp-player-plugin.cpp
 )
 
 set (MOC_SOURCES
-	itunes.h
-	itunes-player-plugin.h
+	winamp.h
+	winamp-player-plugin.h
 )
 
-kadu_plugin (itunes_mediaplayer
+kadu_plugin (winamp_mediaplayer
 	PLUGIN_SOURCES ${SOURCES}
 	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
+	PLUGIN_DEPENDENCIES mediaplayer
 )

@@ -5,4 +5,5 @@ Author=Micha³ Podsiadlik <michal@kadu.net>
 Provides=media_player
 Conflicts=media_player
 Dependencies=mediaplayer
+Plugin=true
 Version=1.0
