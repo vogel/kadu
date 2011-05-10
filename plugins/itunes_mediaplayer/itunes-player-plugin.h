@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2011 Tomasz Rostanski 
+ * Copyright 2010 Tomasz Rostański (rozteck@interia.pl)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or

@@ -31,7 +31,7 @@ int ItunesMediaplayerPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
-	ITunesMediaPlayer iTunes = new ITunesMediaPlayer();
+	ITunesMediaPlayer *iTunes = new ITunesMediaPlayer();
 	bool res = MediaPlayer::instance()->registerMediaPlayer(iTunes, iTunes);
 	return res ? 0 : 1;
 }
