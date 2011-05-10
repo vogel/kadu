@@ -34,8 +34,6 @@ public:
 	virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = 0);
 };
 
-extern GrowlNotify *growl_notify;
-
 /** @} */
 
 #endif

@@ -19,8 +19,10 @@ set (COMPILE_PLUGINS
 	qt4_docking_notify
 	# Speech synthesis support
 	speech
-	# PC Speaker
+	# PC Speaker notification support
 	pcspeaker
+	# Growl notification support (Mac OS X)
+	# growl_notify
 
 # history
 	# General history plugin

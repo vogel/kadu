@@ -40,38 +40,10 @@
 #include "icons/icons-manager.h"
 #include "debug.h"
 
-#include "growl_notify.h"
+#include "growl-notify.h"
 #include "growlnotifier.h"
-#include "growl_notify_configuration_widget.h"
+#include "growl-notify-configuration-widget.h"
 
-/**
- * @ingroup growl_notify
- * @{
- */
-extern "C" KADU_EXPORT int growl_notify_init(bool firstLoad)
-{
-	Q_UNUSED(firstLoad)
-
-#ifndef Q_OS_MAC
-	/* growl is only supported on MacOSX */
-	return 1;
-#endif
-	/*if (!grow_is_installed())
-	{
-		MessageBox::msg("Growl is not installed in your system");
-		return 1;
-	}*/
-
-	growl_notify = new GrowlNotify();
-	return 0;
-
-}
-
-extern "C" KADU_EXPORT void growl_notify_close()
-{
-	delete growl_notify;
-	growl_notify = 0;
-}
 
 GrowlNotify::GrowlNotify(QObject *parent) : Notifier("Growl", "Growl", KaduIcon("kadu_icons/notify-hints"), parent)
 {
@@ -193,8 +165,6 @@ NotifierConfigurationWidget *GrowlNotify::createConfigurationWidget(QWidget *par
 	configurationWidget = new GrowlNotifyConfigurationWidget(parent);
 	return configurationWidget;
 }
-
-GrowlNotify *growl_notify = 0;
 
 /** @} */
 
