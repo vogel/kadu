@@ -76,5 +76,5 @@ void PCSpeakerConfigurationWidget::switchToEvent(const QString &event)
 
 void PCSpeakerConfigurationWidget::test()
 {
-	pcspeaker->parseAndPlay(soundEdit->text());
+//	pcspeaker->parseAndPlay(soundEdit->text());
 }

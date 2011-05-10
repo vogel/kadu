@@ -108,38 +108,24 @@ void PCSpeaker::beep(int pitch, int duration)
 }
 #endif
 
-extern "C" KADU_EXPORT int pcspeaker_init(bool firstLoad)
+
+
+int PCSpeaker::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
-	kdebugf();
-	pcspeaker = new PCSpeaker();
-	kdebugf2();
+	NotificationManager::instance()->registerNotifier(this);
+	createDefaultConfiguration();
+
 	return 0;
 }
 
-
-extern "C" KADU_EXPORT void pcspeaker_close()
-{
-	kdebugf();
-	delete pcspeaker;
-	kdebugf2();
-}
-
-
-PCSpeaker::PCSpeaker() : Notifier("PC Speaker", "PC Speaker", KaduIcon("audio-volume-low"))
-{
-	NotificationManager::instance()->registerNotifier(this);
-	createDefaultConfiguration();
-}
-
-
-PCSpeaker::~PCSpeaker()
+void PCSpeaker::done()
 {
 	NotificationManager::instance()->unregisterNotifier(this);
 }
 
-void PCSpeaker::mainConfigurationWindowCreated(MainConfigurationWindow */*mainConfigurationWindow*/)
+void PCSpeaker::mainConfigurationWindowCreated(MainConfigurationWindow * /*mainConfigurationWindow*/)
 {
 }
 
@@ -269,3 +255,5 @@ void PCSpeaker::createDefaultConfiguration()
 	config_file.addVariable("PC Speaker", "StatusChanged_Sound", "A3/2");
 	config_file.addVariable("PC Speaker", "FileTransfer_Sound", "E4/4");
 }
+
+Q_EXPORT_PLUGIN2(pcspeaker, PCSpeaker)

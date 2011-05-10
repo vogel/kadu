@@ -19,6 +19,8 @@ set (COMPILE_PLUGINS
 	qt4_docking_notify
 	# Speech synthesis support
 	speech
+	# PC Speaker
+	pcspeaker
 
 # history
 	# General history plugin

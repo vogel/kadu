@@ -7,15 +7,21 @@
 
 #include "notify/notifier.h"
 #include "gui/windows/main-configuration-window.h"
+#include "plugins/generic-plugin.h"
 
 class PCSpeakerConfigurationWidget;
 
-class PCSpeaker : public Notifier
-{	
+class PCSpeaker : public Notifier, public GenericPlugin
+{
 	Q_OBJECT
+	Q_INTERFACES(GenericPlugin)
+
 	public:
 		PCSpeaker();
 		~PCSpeaker();
+
+		virtual int init(bool firstLoad);
+		virtual void done();
 
 		virtual void notify(Notification *notification);
 		virtual CallbackCapacity callbackCapacity() { return CallbackSupported; }
@@ -35,5 +41,4 @@ class PCSpeaker : public Notifier
 		void play(int sound[21], int soundlength[20]);
 };
 
-extern PCSpeaker *pcspeaker;
 #endif
