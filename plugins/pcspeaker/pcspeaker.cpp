@@ -50,6 +50,8 @@
 #include <Carbon/Carbon.h>
 #endif
 
+PCSpeaker *PCSpeaker::Instance = 0;
+
 //Sound Frequencies
 //Rows - sounds: C, C#, D, D#, E, F, F#, G, G#, A, A#, B
 //Cols - octaves (0 to 7)
@@ -66,8 +68,6 @@ int sounds[96] = {
 	27,55,110,220,440,880,1760,3520,
 	29,58,116,233,466,932,1865,3729,
 	31,62,123,245,494,988,1975,3951};
-
-PCSpeaker *pcspeaker;
 
 #if defined(Q_WS_WIN)
 void PCSpeaker::beep(int pitch, int duration)
@@ -108,7 +108,14 @@ void PCSpeaker::beep(int pitch, int duration)
 }
 #endif
 
+PCSpeaker::PCSpeaker(QObject *parent) : Notifier("PC Speaker", QT_TRANSLATE_NOOP("@default", "PC Speaker"), KaduIcon("audio-volume-low"), parent)
+{
+	Instance = this;
+}
 
+PCSpeaker::~PCSpeaker()
+{
+}
 
 int PCSpeaker::init(bool firstLoad)
 {
@@ -234,7 +241,7 @@ void PCSpeaker::play(int sound[21], int soundlength[20])
 		beep(sound[i], soundlength[i]);
 	}
 #ifdef Q_WS_X11
-	XCloseDisplay(pcspeaker->xdisplay);
+	XCloseDisplay(xdisplay);
 #endif
 }
 

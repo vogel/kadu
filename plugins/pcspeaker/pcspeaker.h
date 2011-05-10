@@ -17,7 +17,7 @@ class PCSpeaker : public Notifier, public GenericPlugin
 	Q_INTERFACES(GenericPlugin)
 
 	public:
-		PCSpeaker();
+		PCSpeaker(QObject *parent = NULL);
 		~PCSpeaker();
 
 		virtual int init(bool firstLoad);
@@ -30,11 +30,14 @@ class PCSpeaker : public Notifier, public GenericPlugin
 		void createDefaultConfiguration();
 		void parseAndPlay(QString linia);
 
+		static PCSpeaker *instance() { return Instance; }
+
 	private:
 #ifdef Q_WS_X11
 		Display *xdisplay;
 #endif
 		PCSpeakerConfigurationWidget *configWidget;
+		static PCSpeaker *Instance;
 		int volume;
 		void ParseStringToSound(QString linia, int tablica[21], int tablica2[20]);
 		void beep(int pitch, int duration);
