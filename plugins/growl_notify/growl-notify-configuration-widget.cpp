@@ -32,7 +32,7 @@
 #include "debug.h"
 #include "configuration/configuration-file.h"
 
-#include "growl_notify_configuration_widget.h"
+#include "growl-notify-configuration-widget.h"
 
 GrowlNotifyConfigurationWidget::GrowlNotifyConfigurationWidget(QWidget *parent)
 	: NotifierConfigurationWidget(parent), currentNotifyEvent("")

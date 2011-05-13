@@ -27,10 +27,6 @@ set (TRANSLATION_SOURCES
 	translations/growl_notify_pl.ts
 )
 
-if (APPLE)
-	set (LIBRARIES "-framework Growl -framework CoreFoundation")
-endif (APPLE)
-
 kadu_plugin (growl_notify
 	PLUGIN_SOURCES ${SOURCES}
 	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
@@ -38,6 +34,4 @@ kadu_plugin (growl_notify
 	PLUGIN_LIBRARIES ${LIBRARIES}
 )
 
-if (APPLE)
-	set_target_properties (growl_notify PROPERTIES LINK_FLAGS "-undefined dynamic_lookup")
-endif (APPLE)
+set_target_properties (growl_notify PROPERTIES LINK_FLAGS "-undefined dynamic_lookup -framework Growl -framework CoreFoundation")

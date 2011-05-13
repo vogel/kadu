@@ -27,6 +27,10 @@
  * growlnotifier.cpp file, which are the part of PSI Jabber Client.
  */
 
+#include "growlnotifier.h"
+#include "growl-notify.h"
+#include "growl-notify-configuration-widget.h"
+
 #include <QtGui/QTextDocument>
 
 #include "avatars/avatar.h"
@@ -39,11 +43,6 @@
 #include "parser/parser.h"
 #include "icons/icons-manager.h"
 #include "debug.h"
-
-#include "growl-notify.h"
-#include "growlnotifier.h"
-#include "growl-notify-configuration-widget.h"
-
 
 GrowlNotify::GrowlNotify(QObject *parent) : Notifier("Growl", "Growl", KaduIcon("kadu_icons/notify-hints"), parent)
 {
@@ -118,7 +117,7 @@ void GrowlNotify::notify(Notification *notification)
 		}
 	}
 	if (pixmap.isNull())
-		pixmap = notification->icon().pixmap(128,128);
+		pixmap = notification->icon().icon().pixmap(128,128);
 
 	growlNotifier->notify("Kadu Notification",
 		parseText(title, notification, notification->text()),
@@ -165,6 +164,3 @@ NotifierConfigurationWidget *GrowlNotify::createConfigurationWidget(QWidget *par
 	configurationWidget = new GrowlNotifyConfigurationWidget(parent);
 	return configurationWidget;
 }
-
-/** @} */
-
