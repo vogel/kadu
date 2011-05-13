@@ -50,6 +50,11 @@ class ChatConfigurationHolder : public ConfigurationHolder
 	QString UsrFontColor;
 	QString UsrNickColor;
 
+	bool ContactStateChats;
+	bool ContactStateWindowTitle;
+	int ContactStateWindowTitlePosition;
+	QString ContactStateWindowTitleComposingSyntax;
+
 public:
 	static ChatConfigurationHolder * instance();
 	void configurationUpdated();
@@ -69,6 +74,14 @@ public:
 	const QString &usrBackgroundColor() const { return UsrBackgroundColor; }
 	const QString &usrFontColor() const { return UsrFontColor; }
 	const QString &usrNickColor() const { return UsrNickColor; }
+
+	bool contactStateChats() const { return ContactStateChats; }
+	bool contactStateWindowTitle() const { return ContactStateWindowTitle; }
+	int contactStateWindowTitlePosition() const { return ContactStateWindowTitlePosition; }
+	const QString &contactStateWindowTitleComposingSyntax() const { return ContactStateWindowTitleComposingSyntax; }
+
+signals:
+	void chatConfigurationUpdated();
 
 };
 

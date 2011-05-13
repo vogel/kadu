@@ -337,6 +337,10 @@ void Core::createDefaultConfiguration()
 
 	config_file.addVariable("Chat", "UseDefaultWebBrowser", config_file.readEntry("Chat", "WebBrowser").isEmpty());
 	config_file.addVariable("Chat", "UseDefaultEMailClient", config_file.readEntry("Chat", "MailClient").isEmpty());
+	config_file.addVariable("Chat", "ContactStateChats", true);
+	config_file.addVariable("Chat", "ContactStateWindowTitle", true);
+	config_file.addVariable("Chat", "ContactStateWindowTitleSyntax", QString());
+	config_file.addVariable("Chat", "ContactStateWindowTitlePosition", 1);
 
 	createAllDefaultToolbars();
 }

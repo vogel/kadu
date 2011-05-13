@@ -57,4 +57,11 @@ void ChatConfigurationHolder::configurationUpdated()
 	UsrBackgroundColor = config_file.readEntry("Look", "ChatUsrBgColor");
 	UsrFontColor = config_file.readEntry("Look", "ChatUsrFontColor");
 	UsrNickColor = config_file.readEntry("Look", "ChatUsrNickColor");
+
+	ContactStateChats = config_file.readBoolEntry("Chat", "ContactStateChats");
+	ContactStateWindowTitle = config_file.readBoolEntry("Chat", "ContactStateWindowTitle");
+	ContactStateWindowTitlePosition = config_file.readNumEntry("Chat", "ContactStateWindowTitlePosition");
+	ContactStateWindowTitleComposingSyntax = config_file.readEntry("Chat", "ContactStateWindowTitleComposingSyntax");
+
+	emit chatConfigurationUpdated();
 }
