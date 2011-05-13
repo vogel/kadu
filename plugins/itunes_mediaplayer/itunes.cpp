@@ -84,6 +84,7 @@ uint ITunesMediaPlayer::getPlayListLength()
 
 QString ITunesMediaPlayer::getTitle(int position)
 {
+	Q_UNUSED(position)
 	kdebugf();
 	Tune t = controller->currentTune();
 	return t.name();
@@ -91,6 +92,7 @@ QString ITunesMediaPlayer::getTitle(int position)
 
 QString ITunesMediaPlayer::getAlbum(int position)
 {
+	Q_UNUSED(position)
 	kdebugf();
 	Tune t = controller->currentTune();
 	return t.album();
@@ -98,6 +100,7 @@ QString ITunesMediaPlayer::getAlbum(int position)
 
 QString ITunesMediaPlayer::getArtist(int position)
 {
+	Q_UNUSED(position)
 	kdebugf();
 	Tune t = controller->currentTune();
 	return t.artist();
@@ -105,6 +108,7 @@ QString ITunesMediaPlayer::getArtist(int position)
 
 QString ITunesMediaPlayer::getFile(int position)
 {
+	Q_UNUSED(position)
 	kdebugf();
 	Tune t = controller->currentTune();
 	return t.location();
@@ -112,6 +116,7 @@ QString ITunesMediaPlayer::getFile(int position)
 
 int ITunesMediaPlayer::getLength(int position)
 {
+	Q_UNUSED(position)
 	kdebugf();
 	Tune t = controller->currentTune();
 	return t.time();

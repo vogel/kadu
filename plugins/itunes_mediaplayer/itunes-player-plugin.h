@@ -24,10 +24,13 @@
 
 #include "plugins/generic-plugin.h"
 
+class ITunesMediaPlayer;
 class ItunesMediaplayerPlugin : public QObject, public GenericPlugin
 {
 	Q_OBJECT
 	Q_INTERFACES(GenericPlugin)
+
+	ITunesMediaPlayer *iTunes;
 
 public:
 	virtual ~ItunesMediaplayerPlugin();
