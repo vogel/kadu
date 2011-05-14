@@ -5,7 +5,6 @@ set (SOURCES
 
 set (MOC_SOURCES
 	mpd_mediaplayer.h
-	mpd_config.h
 )
 
 set (CONFIGURATION_FILES

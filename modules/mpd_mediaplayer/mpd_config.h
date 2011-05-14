@@ -25,18 +25,23 @@
 
 class MPDConfig : public ConfigurationAwareObject
 {
+	QString Host;
+	QString Port;
+	QString Timeout;
+
 	void createDefaultConfiguration();
 
 protected:
-	 void configurationUpdated();
+	virtual void configurationUpdated();
 
 public:
 	MPDConfig();
-	~MPDConfig();
+	virtual ~MPDConfig();
+	
+	const QString & host() const { return Host; }
+	const QString & port() const { return Port; }
+	const QString & timeout() const { return Timeout; }
 
-	QString host;
-	QString port;
-	QString timeout;
 };
 
 #endif // MPD_CONFIG

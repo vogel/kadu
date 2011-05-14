@@ -24,8 +24,8 @@
 
 #include <mpd/client.h>
 
-#include "../mediaplayer/player_info.h"
-#include "../mediaplayer/player_commands.h"
+#include "plugins/mediaplayer/player_info.h"
+#include "plugins/mediaplayer/player_commands.h"
 
 #include "mpd_config.h"
 
@@ -33,39 +33,41 @@ class MPDMediaPlayer : public PlayerCommands, public PlayerInfo
 {
 	Q_OBJECT
 
-	MPDConfig *config;
+	MPDConfig Config;
 
 public:
-	MPDMediaPlayer();
-	~MPDMediaPlayer();
+	explicit MPDMediaPlayer(QObject *parent = 0);
+	virtual ~MPDMediaPlayer();
 
-	mpd_connection* mpdConnect();
+	mpd_connection * mpdConnect();
 
-	QString getTitle(int position = -1);
-	QString getAlbum(int position = -1);
-	QString getArtist(int position = -1);
-	QString getFile(int position = -1);
-	int getLength(int position = -1);
-	int getCurrentPos();
-	bool isPlaying();
-	bool isActive();
-	QStringList getPlayListTitles();
-	QStringList getPlayListFiles();
-	uint getPlayListLength();
-	QString getPlayerName();
-	QString getPlayerVersion();
+	// PlayerInfo implementation
+	virtual QString getTitle(int position = -1);
+	virtual QString getAlbum(int position = -1);
+	virtual QString getArtist(int position = -1);
+	virtual QString getFile(int position = -1);
+	virtual int getLength(int position = -1);
+	virtual int getCurrentPos();
+	virtual bool isPlaying();
+	virtual bool isActive();
+	virtual QStringList getPlayListTitles();
+	virtual QStringList getPlayListFiles();
+	virtual uint getPlayListLength();
+	virtual QString getPlayerName();
+	virtual QString getPlayerVersion();
 
-	void nextTrack();
-	void prevTrack();
-	void play();
-	void stop();
-	void pause();
-	void setVolume(int vol);
-	void incrVolume();
-	void decrVolume();
+	// PlayerCommands implementation
+	virtual void nextTrack();
+	virtual void prevTrack();
+	virtual void play();
+	virtual void stop();
+	virtual void pause();
+	virtual void setVolume(int vol);
+	virtual void incrVolume();
+	virtual void decrVolume();
 
 };
 
-extern MPDMediaPlayer* mpd;
+extern MPDMediaPlayer *mpd;
 
 #endif // MPD_MEDIAPLAYER

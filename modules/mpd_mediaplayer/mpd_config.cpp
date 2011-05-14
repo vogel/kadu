@@ -28,9 +28,9 @@ MPDConfig::MPDConfig()
 {
 	MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/mpd_config.ui"));
 	createDefaultConfiguration();
-	host = config_file.readEntry("MediaPlayer", "MPDHost");
-	port = config_file.readEntry("MediaPlayer", "MPDPort");
-	timeout = config_file.readEntry("MediaPlayer", "MPDTimeout");
+	Host = config_file.readEntry("MediaPlayer", "MPDHost");
+	Port = config_file.readEntry("MediaPlayer", "MPDPort");
+	Timeout = config_file.readEntry("MediaPlayer", "MPDTimeout");
 }
 
 MPDConfig::~MPDConfig()
@@ -47,7 +47,7 @@ void MPDConfig::createDefaultConfiguration()
 
 void MPDConfig::configurationUpdated()
 {
-	host = config_file.readEntry("MediaPlayer", "MPDHost");
-	port = config_file.readEntry("MediaPlayer", "MPDPort");
-	timeout = config_file.readEntry("MediaPlayer", "MPDTimeout");
+	Host = config_file.readEntry("MediaPlayer", "MPDHost");
+	Port = config_file.readEntry("MediaPlayer", "MPDPort");
+	Timeout = config_file.readEntry("MediaPlayer", "MPDTimeout");
 }
