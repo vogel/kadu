@@ -25,8 +25,7 @@
 #include <QtCore/QDateTime>
 
 #include "debug.h"
-#include "exports.h"
-#include "../mediaplayer/mediaplayer.h"
+#include "plugins/mediaplayer/mediaplayer.h"
 
 #include "itunes.h"
 #include "itunescontroller.h"

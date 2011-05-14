@@ -11,8 +11,7 @@
 #include <QtCore/QStringList>
 
 #include "debug.h"
-#include "exports.h"
-#include "../mediaplayer/mediaplayer.h"
+#include "plugins/mediaplayer/mediaplayer.h"
 #include "winamp.h"
 
 #include "wa_ipc.h"

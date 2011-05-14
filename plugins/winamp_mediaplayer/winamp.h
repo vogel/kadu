@@ -8,8 +8,8 @@
 #ifndef _WINAMP_H
 #define _WINAMP_H
 
-#include "../mediaplayer/player_info.h"
-#include "../mediaplayer/player_commands.h"
+#include "plugins/mediaplayer/player_info.h"
+#include "plugins/mediaplayer/player_commands.h"
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>

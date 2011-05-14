@@ -25,7 +25,7 @@
 #include "configuration/configuration-aware-object.h"
 #include "misc/path-conversion.h"
 
-#include "../mediaplayer/mpris_mediaplayer.h"
+#include "plugins/mediaplayer/mpris_mediaplayer.h"
 
 class QString;
 

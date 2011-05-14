@@ -5,8 +5,8 @@
 #include <QtCore/QStringList>
 #include <QtCore/QByteArray>
 
-#include "../mediaplayer/player_info.h"
-#include "../mediaplayer/player_commands.h"
+#include "plugins/mediaplayer/player_info.h"
+#include "plugins/mediaplayer/player_commands.h"
 
 class ITunesController;
 
