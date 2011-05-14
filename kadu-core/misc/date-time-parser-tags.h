@@ -4,6 +4,7 @@
  * Copyright 2009, 2010 Piotr Galiszewski (piotr.galiszewski@kadu.im)
  * Copyright 2008 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
+ * Copyright 2008 Tomasz Rostański (rozteck@interia.pl)
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -19,27 +20,14 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PARSER_EXTENDER_H
-#define PARSER_EXTENDER_H
+#ifndef DATE_TIME_PARSER_TAGS_H
+#define DATE_TIME_PARSER_TAGS_H
 
-#include <QtCore/QObject>
-
-#include "configuration/configuration-aware-object.h"
-
-class ParserExtender : public ConfigurationAwareObject
+namespace DateTimeParserTags
 {
-	void init();
-	void close();
-	bool isStarted;
+	void registerParserTags();
+	void unregisterParserTags();
 
-protected:
-	virtual void configurationUpdated();
+}
 
-public:
-	ParserExtender();
-	~ParserExtender();
-};
-
-extern ParserExtender *parserExtender;
-
-#endif // PARSER_EXTENDER_H
+#endif // DATE_TIME_PARSER_TAGS_H

@@ -49,6 +49,7 @@
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/search-window.h"
 #include "icons/kadu-icon.h"
+#include "misc/date-time-parser-tags.h"
 #include "misc/misc.h"
 #include "notify/notification-manager.h"
 #include "plugins/plugins-manager.h"
@@ -106,6 +107,8 @@ Core::Core() :
 	configurationUpdated();
 
 	MainConfiguration::createInstance();
+
+	DateTimeParserTags::registerParserTags();
 }
 
 Core::~Core()

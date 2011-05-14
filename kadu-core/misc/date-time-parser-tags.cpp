@@ -6,6 +6,7 @@
  * Copyright 2008, 2009, 2010, 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * Copyright 2010 Tomasz Rostański (rozteck@interia.pl)
  * %kadu copyright end%
+ * Copyright 2008 Tomasz Rostański (rozteck@interia.pl)
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -21,7 +22,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 #include <QtCore/QDateTime>
 #include <QtCore/QString>
 
@@ -34,34 +34,9 @@
 
 #include "debug.h"
 
-#include "parser_extender.h"
+#include "date-time-parser-tags.h"
 
 QDateTime started;
-ParserExtender *parserExtender;
-
-extern "C" KADU_EXPORT int parser_extender_init()
-{
-	kdebugf();
-
-	parserExtender = new ParserExtender();
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/parser_extender.ui"));
-
-	kdebugf2();
-	return 0;
-}
-
-
-extern "C" KADU_EXPORT void parser_extender_close()
-{
-	kdebugf();
-
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/parser_extender.ui"));
-	delete parserExtender;
-	parserExtender = 0;
-
-	kdebugf2();
-}
-
 
 /*
  * Returns uptime counted from the start of the module
@@ -229,24 +204,7 @@ QString parseLongKaduUptime(BuddyOrContact buddyOrContact)
 	return getKaduUptime(1);
 }
 
-ParserExtender::ParserExtender()
-{
-	if (config_file.readEntry("PowerKadu", "enable_parser_extender") == "true")
-	{
-		init();
-		isStarted = true;
-	}
-	else
-		isStarted = false;
-}
-
-ParserExtender::~ParserExtender()
-{
-	if (config_file.readEntry("PowerKadu", "enable_parser_extender") == "true")
-		close();
-}
-
-void ParserExtender::init()
+void DateTimeParserTags::registerParserTags()
 {
 	/* store the date of module start */
 	started = QDateTime::currentDateTime();
@@ -264,7 +222,7 @@ void ParserExtender::init()
 	Parser::registerTag("kuptime-long", &parseLongKaduUptime);
 }
 
-void ParserExtender::close()
+void DateTimeParserTags::unregisterParserTags()
 {
 	/* unregister tags */
 	Parser::unregisterTag("time", &parseTime);
@@ -277,18 +235,4 @@ void ParserExtender::close()
 	Parser::unregisterTag("uptime-long", &parseLongUptime);
 	Parser::unregisterTag("kuptime", &parseKaduUptime);
 	Parser::unregisterTag("kuptime-long", &parseLongKaduUptime);
-}
-
-void ParserExtender::configurationUpdated()
-{
-	if ((config_file.readEntry("PowerKadu", "enable_parser_extender") == "false") && isStarted)
-	{
-		close();
-		isStarted = false;
-	}
-	else if ((config_file.readEntry("PowerKadu", "enable_parser_extender") == "true") && !isStarted)
-	{
-		init();
-		isStarted = true;
-	}
 }
