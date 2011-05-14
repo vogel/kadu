@@ -1,10 +1,10 @@
 set (SOURCES
-	mpd_mediaplayer.cpp
-	mpd_config.cpp
+	mpd-mediaplayer.cpp
+	mpd-config.cpp
 )
 
 set (MOC_SOURCES
-	mpd_mediaplayer.h
+	mpd-mediaplayer.h
 )
 
 set (CONFIGURATION_FILES

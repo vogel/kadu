@@ -29,7 +29,7 @@
 #include "plugins/mediaplayer/player_info.h"
 #include "plugins/mediaplayer/player_commands.h"
 
-#include "mpd_config.h"
+#include "mpd-config.h"
 
 class MPDMediaPlayer : public PlayerCommands, PlayerInfo, GenericPlugin
 {

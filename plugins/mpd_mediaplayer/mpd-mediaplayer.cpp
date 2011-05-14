@@ -19,11 +19,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "exports.h"
-
 #include "plugins/mediaplayer/mediaplayer.h"
 
-#include "mpd_mediaplayer.h"
+#include "mpd-mediaplayer.h"
 
 MPDMediaPlayer::MPDMediaPlayer(QObject *parent) :
 		PlayerCommands(parent)

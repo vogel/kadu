@@ -22,7 +22,7 @@
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "misc/path-conversion.h"
 
-#include "mpd_config.h"
+#include "mpd-config.h"
 
 MPDConfig::MPDConfig()
 {

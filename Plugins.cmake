@@ -22,7 +22,7 @@ set (COMPILE_PLUGINS
 	# PC Speaker notification support
 	pcspeaker
 	# Growl notification support (Mac OS X)
-	# growl_notify
+#	growl_notify
 
 # history
 	# General history plugin
@@ -105,10 +105,12 @@ set (COMPILE_PLUGINS
 	amarok1_mediaplayer
 	# FALF mediaplayer support
 	falf_mediaplayer
-	# MPRIS Media Player support
+	# MPD mediaplayer support
+#	mpd_mediaplayer
+	# MPRIS Media Players support
 	mprisplayer_mediaplayer
 	# Itunes Media Player support (Mac OS X)
-	# itunes_mediaplayer
+#	itunes_mediaplayer
 	# Winamp Media Player support (Windows)
-	# winamp_mediaplayer
+#	winamp_mediaplayer
 )
