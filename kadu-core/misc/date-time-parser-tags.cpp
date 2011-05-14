@@ -25,214 +25,202 @@
 #include <QtCore/QDateTime>
 #include <QtCore/QString>
 
-#include <stdio.h>
-
-#include "configuration/configuration-file.h"
-#include "gui/windows/main-configuration-window.h"
-#include "misc/path-conversion.h"
 #include "parser/parser.h"
-
-#include "debug.h"
 
 #include "date-time-parser-tags.h"
 
-QDateTime started;
+static QDateTime started;
 
-/*
- * Returns uptime counted from the start of the module
- * @param mode - if 0 number of seconds is returned,
- *               if 1 formatted date is returned
+/**
+ * Returns Kadu uptime.
+ * @param formatted If false number of seconds is returned,
+ *                  otherwise formatted date.
  */
-QString getKaduUptime(int mode)
+static QString getKaduUptime(bool formatted)
 {
-	QString uptime('0');
+	QString uptime("0 s ");
 
-	uptime += "s ";
 	if (QDateTime::currentDateTime() > started)
 	{
 		int upTime = started.secsTo(QDateTime::currentDateTime());
-		if (mode == 0)
-		{
-			uptime.setNum(upTime);
-			uptime += "s ";
-		}
+		if (!formatted)
+			uptime = QString::number(upTime) + "s ";
 		else
 		{
-			int days = upTime/(60*60*24);
-			upTime -= days * 60*60*24;
-			int hours = upTime/(60*60);
-			upTime -= hours * 60*60;
-			int mins = upTime/(60);
+			int days = upTime / (60 * 60 * 24);
+			upTime -= days * (60 * 60 * 24);
+			int hours = upTime / (60 * 60);
+			upTime -= hours * (60 * 60);
+			int mins = upTime / 60;
 			upTime -= mins * 60;
 			int secs = upTime;
 
-			QString s;
-			uptime = s.setNum(days)+"d ";
-			uptime += s.setNum(hours)+"h ";
-			uptime += s.setNum(mins)+"m ";
-			uptime += s.setNum(secs)+"s ";
+			uptime = QString::number(days) + "d " +
+					QString::number(hours) + "h " +
+					QString::number(mins) + "m " +
+					QString::number(secs) + "s ";
 		}
 	}
+
 	return uptime;
 }
 
-/*
- * Returns system uptime
- * @param mode - if 0 number of seconds is returned,
- *               if 1 formatted date is returned
+/**
+ * Returns system uptime.
+ * @param formatted If false, number of seconds is returned,
+ *                  otherwise formatted date.
+ * @note Currently works only on Linux.
+ * @todo Find more portable way to get system uptime.
  */
-QString getUptime(int mode)
+static QString getUptime(bool formatted)
 {
-	QString uptime('0');
+	QString uptime("0 s ");
 
-#ifdef Q_OS_LINUX //TODO find more portable way to get system uptime
-	time_t upTime = 0;
+#ifdef Q_OS_LINUX
 	FILE *f;
-	double duptime = 0;
-	f = fopen("/proc/uptime", "r");
-	if (!fscanf(f, "%lf", &duptime))
-	{
-		fclose(f);
-		return QString();
-	}
+	if (!(f = fopen("/proc/uptime", "r")))
+		return uptime;
 
+	double duptime = 0.;
+	int ret = fscanf(f, "%lf", &duptime);
 	fclose(f);
-	upTime = (time_t)duptime;
 
-	QString s;
-	if (mode == 0)
-	 	uptime = s.setNum(upTime) + "s ";
+	if (ret == EOF || ret == 0)
+		return uptime;
+
+	time_t upTime = (time_t)duptime;
+
+	if (!formatted)
+	 	uptime = QString::number(upTime) + "s ";
 	else
 	{
-		int days = upTime/(60*60*24);
-		upTime -= days * 60*60*24;
-		int hours = upTime/(60*60);
-		upTime -= hours * 60*60;
-		int mins = upTime/(60);
+		int days = upTime / (60 * 60 * 24);
+		upTime -= days * (60 * 60 * 24);
+		int hours = upTime / (60 * 60);
+		upTime -= hours * (60 * 60);
+		int mins = upTime / 60;
 		upTime -= mins * 60;
 		int secs = upTime;
 
-		uptime = s.setNum(days)+"d ";
-		uptime += s.setNum(hours)+"h ";
-		uptime += s.setNum(mins)+"m ";
-		uptime += s.setNum(secs)+"s ";
+		uptime = QString::number(days) + "d " +
+				QString::number(hours) + "h " +
+				QString::number(mins) + "m " +
+				QString::number(secs) + "s ";
 	}
 #else
-	Q_UNUSED(mode)
+	Q_UNUSED(formatted)
 #endif
 
 	return uptime;
 }
 
-/* Returns current time (without secs) */
-QString parseTime(BuddyOrContact buddyOrContact)
+/** Returns current time (without secs) */
+static QString parseTime(BuddyOrContact buddyOrContact)
 {
 	Q_UNUSED(buddyOrContact)
 
 	return QDateTime::currentDateTime().toString("h:mm");
 }
 
-/* Returns current time (with secs) */
-QString parseLongTime(BuddyOrContact buddyOrContact)
+/** Returns current time (with secs) */
+static QString parseLongTime(BuddyOrContact buddyOrContact)
 {
 	Q_UNUSED(buddyOrContact)
 
 	return QDateTime::currentDateTime().toString("hh:mm:ss");
 }
 
-/* Returns current date (without year) */
-QString parseDate(BuddyOrContact buddyOrContact)
+/** Returns current date (without year) */
+static QString parseDate(BuddyOrContact buddyOrContact)
 {
 	Q_UNUSED(buddyOrContact)
 
 	return QDateTime::currentDateTime().toString("dd-MM");
 }
 
-/* Returns current date (with year) */
-QString parseLongDate(BuddyOrContact buddyOrContact)
+/** Returns current date (with year) */
+static QString parseLongDate(BuddyOrContact buddyOrContact)
 {
 	Q_UNUSED(buddyOrContact)
 
 	return QDateTime::currentDateTime().toString("dd-MM-yyyy");
 }
 
-/* Returns time of module start (without seconds) */
-QString parseStartTime(BuddyOrContact buddyOrContact)
+/** Returns time of Kadu start (without seconds) */
+static QString parseStartTime(BuddyOrContact buddyOrContact)
 {
 	Q_UNUSED(buddyOrContact)
 
 	return started.toString("hh:mm");
 }
 
-/* Returns time of module start (with seconds) */
-QString parseLongStartTime(BuddyOrContact buddyOrContact)
+/** Returns time of Kadu start (with seconds) */
+static QString parseLongStartTime(BuddyOrContact buddyOrContact)
 {
 	Q_UNUSED(buddyOrContact)
 
-	return  started.toString("dd-MM-yy hh:mm:ss");
+	return started.toString("dd-MM-yy hh:mm:ss");
 }
 
-/* Returns uptime (seconds) */
-QString parseUptime(BuddyOrContact buddyOrContact)
+/** Returns system uptime (seconds) */
+static QString parseUptime(BuddyOrContact buddyOrContact)
 {
 	Q_UNUSED(buddyOrContact)
 
-	return getUptime(0);
+	return getUptime(false);
 }
 
-/* Returns uptime (formatted) */
-QString parseLongUptime(BuddyOrContact buddyOrContact)
+/** Returns system uptime (formatted) */
+static QString parseLongUptime(BuddyOrContact buddyOrContact)
 {
 	Q_UNUSED(buddyOrContact)
 
-	return getUptime(1);
+	return getUptime(true);
 }
 
-/* Returns Kadu uptime */
-QString parseKaduUptime(BuddyOrContact buddyOrContact)
+/** Returns Kadu uptime */
+static QString parseKaduUptime(BuddyOrContact buddyOrContact)
 {
 	Q_UNUSED(buddyOrContact)
 
-	return getKaduUptime(0);
+	return getKaduUptime(false);
 }
 
-/* Returns Kadu uptime (formatted) */
-QString parseLongKaduUptime(BuddyOrContact buddyOrContact)
+/** Returns Kadu uptime (formatted) */
+static QString parseLongKaduUptime(BuddyOrContact buddyOrContact)
 {
 	Q_UNUSED(buddyOrContact)
 
-	return getKaduUptime(1);
+	return getKaduUptime(true);
 }
 
 void DateTimeParserTags::registerParserTags()
 {
-	/* store the date of module start */
+	// TODO: do it pretty, possibly in Core
 	started = QDateTime::currentDateTime();
 
-	/* register tags */
-	Parser::registerTag("time", &parseTime);
-	Parser::registerTag("time-long", &parseLongTime);
-	Parser::registerTag("date", &parseDate);
-	Parser::registerTag("date-long", &parseLongDate);
-	Parser::registerTag("start", &parseStartTime);
-	Parser::registerTag("start-long", &parseLongStartTime);
-	Parser::registerTag("uptime", &parseUptime);
-	Parser::registerTag("uptime-long", &parseLongUptime);
-	Parser::registerTag("kuptime", &parseKaduUptime);
-	Parser::registerTag("kuptime-long", &parseLongKaduUptime);
+	Parser::registerTag("time", parseTime);
+	Parser::registerTag("time-long", parseLongTime);
+	Parser::registerTag("date", parseDate);
+	Parser::registerTag("date-long", parseLongDate);
+	Parser::registerTag("start", parseStartTime);
+	Parser::registerTag("start-long", parseLongStartTime);
+	Parser::registerTag("uptime", parseUptime);
+	Parser::registerTag("uptime-long", parseLongUptime);
+	Parser::registerTag("kuptime", parseKaduUptime);
+	Parser::registerTag("kuptime-long", parseLongKaduUptime);
 }
 
 void DateTimeParserTags::unregisterParserTags()
 {
-	/* unregister tags */
-	Parser::unregisterTag("time", &parseTime);
-	Parser::unregisterTag("time-long", &parseLongTime);
-	Parser::unregisterTag("date", &parseDate);
-	Parser::unregisterTag("date-long", &parseLongDate);
-	Parser::unregisterTag("start", &parseStartTime);
-	Parser::unregisterTag("start-long", &parseLongStartTime);
-	Parser::unregisterTag("uptime", &parseUptime);
-	Parser::unregisterTag("uptime-long", &parseLongUptime);
-	Parser::unregisterTag("kuptime", &parseKaduUptime);
-	Parser::unregisterTag("kuptime-long", &parseLongKaduUptime);
+	Parser::unregisterTag("time", parseTime);
+	Parser::unregisterTag("time-long", parseLongTime);
+	Parser::unregisterTag("date", parseDate);
+	Parser::unregisterTag("date-long", parseLongDate);
+	Parser::unregisterTag("start", parseStartTime);
+	Parser::unregisterTag("start-long", parseLongStartTime);
+	Parser::unregisterTag("uptime", parseUptime);
+	Parser::unregisterTag("uptime-long", parseLongUptime);
+	Parser::unregisterTag("kuptime", parseKaduUptime);
+	Parser::unregisterTag("kuptime-long", parseLongKaduUptime);
 }
