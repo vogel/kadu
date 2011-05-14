@@ -20,14 +20,11 @@
 #ifndef CONTACT_PARSER_TAGS_H
 #define CONTACT_PARSER_TAGS_H
 
-class ContactParserTags
+namespace ContactParserTags
 {
-	ContactParserTags();
+	void registerParserTags();
+	void unregisterParserTags();
 
-public:
-	static void registerParserTags();
-	static void unregisterParserTags();
-
-};
+}
 
 #endif // CONTACT_PARSER_TAGS_H
