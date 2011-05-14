@@ -21,8 +21,6 @@ set (COMPILE_PLUGINS
 	speech
 	# PC Speaker notification support
 	pcspeaker
-	# Growl notification support (Mac OS X)
-#	growl_notify
 
 # history
 	# General history plugin
@@ -56,6 +54,10 @@ set (COMPILE_PLUGINS
 	# QtSound sound support
 	qt4_sound
 
+# mediaplayer
+	# Media players support plugin
+	mediaplayer
+
 # misc
 	# Antistring
 	antistring
@@ -83,8 +85,6 @@ set (COMPILE_PLUGINS
 	last_seen
 	# Imports profiles from old Kadu
 	profiles_import
-	# Screenshot
-	screenshot
 	# Simple view
 	simpleview
 	# Single window mode
@@ -97,20 +97,54 @@ set (COMPILE_PLUGINS
 	tabs
 	# Automatic mispelled word replacement
 	word_fix
-
-# mediaplayer
-	# Media players support plugin
-	mediaplayer
-	# Amarok 1.x mediaplayer support
-	amarok1_mediaplayer
-	# FALF mediaplayer support
-	falf_mediaplayer
-	# MPD mediaplayer support
-#	mpd_mediaplayer
-	# MPRIS Media Players support
-	mprisplayer_mediaplayer
-	# Itunes Media Player support (Mac OS X)
-#	itunes_mediaplayer
-	# Winamp Media Player support (Windows)
-#	winamp_mediaplayer
 )
+
+# Platform-speficic plugins
+
+if (UNIX)
+	list (APPEND COMPILE_PLUGINS
+
+	# mediaplayer
+		# MPD mediaplayer support
+#		mpd_mediaplayer
+		# MPRIS Media Players support
+		mprisplayer_mediaplayer
+	)
+endif (UNIX)
+
+if (UNIX AND NOT APPLE)
+	list (APPEND COMPILE_PLUGINS
+
+	# mediaplayer
+		# Amarok 1.x mediaplayer support
+		amarok1_mediaplayer
+		# FALF mediaplayer support
+		falf_mediaplayer
+
+	# misc
+		# Easily take screenshots and send as images
+		screenshot
+	)
+endif (UNIX AND NOT APPLE)
+
+if (APPLE)
+	list (APPEND COMPILE_PLUGINS
+
+	# notifiers
+		# Growl notification support
+		growl_notify
+
+	# mediaplayer
+		# Itunes Media Player support
+		itunes_mediaplayer
+	)
+endif (APPLE)
+
+if (WIN32)
+	list (APPEND COMPILE_PLUGINS
+
+	# mediaplayer
+		# Winamp Media Player support
+		winamp_mediaplayer
+	)
+endif (WIN32)
