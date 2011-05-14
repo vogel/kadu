@@ -24,20 +24,26 @@
 
 #include <mpd/client.h>
 
+#include "plugins/generic-plugin.h"
+
 #include "plugins/mediaplayer/player_info.h"
 #include "plugins/mediaplayer/player_commands.h"
 
 #include "mpd_config.h"
 
-class MPDMediaPlayer : public PlayerCommands, public PlayerInfo
+class MPDMediaPlayer : public PlayerCommands, PlayerInfo, GenericPlugin
 {
 	Q_OBJECT
+	Q_INTERFACES(GenericPlugin)
 
 	MPDConfig Config;
 
 public:
 	explicit MPDMediaPlayer(QObject *parent = 0);
 	virtual ~MPDMediaPlayer();
+
+	virtual int init(bool firstLoad);
+	virtual void done();
 
 	mpd_connection * mpdConnect();
 
@@ -67,7 +73,5 @@ public:
 	virtual void decrVolume();
 
 };
-
-extern MPDMediaPlayer *mpd;
 
 #endif // MPD_MEDIAPLAYER

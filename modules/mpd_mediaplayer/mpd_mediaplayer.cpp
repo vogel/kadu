@@ -25,24 +25,6 @@
 
 #include "mpd_mediaplayer.h"
 
-MPDMediaPlayer *mpd = NULL;
-
-extern "C" KADU_EXPORT int mpd_mediaplayer_init(bool firstLoad)
-{
-	Q_UNUSED(firstLoad)
-
-	mpd = new MPDMediaPlayer();
-	bool res = MediaPlayer::instance()->registerMediaPlayer(mpd, mpd);
-	return res ? 0 : 1;
-}
-
-extern "C" KADU_EXPORT void mpd_mediaplayer_close()
-{
-	MediaPlayer::instance()->unregisterMediaPlayer();
-	delete mpd;
-	mpd = NULL;
-}
-
 MPDMediaPlayer::MPDMediaPlayer(QObject *parent) :
 		PlayerCommands(parent)
 {
@@ -50,6 +32,19 @@ MPDMediaPlayer::MPDMediaPlayer(QObject *parent) :
 
 MPDMediaPlayer::~MPDMediaPlayer()
 {
+}
+
+int MPDMediaPlayer::init(bool firstLoad)
+{
+	Q_UNUSED(firstLoad)
+
+	bool res = MediaPlayer::instance()->registerMediaPlayer(this, this);
+	return res ? 0 : 1;
+}
+
+void MPDMediaPlayer::done()
+{
+	MediaPlayer::instance()->unregisterMediaPlayer();
 }
 
 mpd_connection * MPDMediaPlayer::mpdConnect()
@@ -443,3 +438,5 @@ void MPDMediaPlayer::decrVolume()
 	}
 	mpd_connection_free(con);
 }
+
+Q_EXPORT_PLUGIN2(mpd_mediaplayer, MPDMediaPlayer)
