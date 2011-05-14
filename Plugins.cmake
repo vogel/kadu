@@ -148,3 +148,6 @@ if (WIN32)
 		winamp_mediaplayer
 	)
 endif (WIN32)
+
+# Sort the list so plugins will be built in alphabetical order
+list (SORT COMPILE_PLUGINS)
