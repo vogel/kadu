@@ -29,6 +29,7 @@
 #include <QtXml/QDomElement>
 
 #include "buddies/buddy.h"
+#include "contacts/contact-roster-status.h"
 #include "status/status.h"
 #include "storage/shared-base.h"
 
@@ -70,6 +71,7 @@ public:
 	KaduSharedBase_Property(int, priority, Priority)
 	KaduSharedBase_PropertyCRW(Status, currentStatus, CurrentStatus)
 	KaduSharedBase_PropertyBool(Blocking)
+	KaduSharedBase_Property(ContactRosterStatus, rosterStatus, RosterStatus)
 	KaduSharedBase_PropertyCRW(QString, protocolVersion, ProtocolVersion)
 	KaduSharedBase_PropertyCRW(QHostAddress, address, Address)
 	KaduSharedBase_Property(unsigned int, port, Port)

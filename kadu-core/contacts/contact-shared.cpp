@@ -50,7 +50,7 @@ ContactShared * ContactShared::loadFromStorage(const QSharedPointer<StoragePoint
 
 ContactShared::ContactShared(const QUuid &uuid) :
 		Shared(uuid),
-		Priority(-1), MaximumImageSize(0), Blocking(false), Port(0)
+		Priority(-1), MaximumImageSize(0), Blocking(false), RosterStatus(RosterStatusNormal), Port(0)
 {
 }
 
@@ -81,6 +81,8 @@ void ContactShared::load()
 	Id = loadValue<QString>("Id");
 
 	Priority = loadValue<int>("Priority", -1);
+	
+	RosterStatus = (ContactRosterStatus)loadValue<int>("RosterStatus", (int)RosterStatusNormal);
 
 	ContactAccount = AccountManager::instance()->byUuid(loadValue<QString>("Account"));
 
@@ -125,6 +127,7 @@ void ContactShared::store()
 
 	storeValue("Id", Id);
 	storeValue("Priority", Priority);
+	storeValue("RosterStatus", (int)RosterStatus);
 	storeValue("Account", ContactAccount.uuid().toString());
 	storeValue("Buddy", !OwnerBuddy.isAnonymous()
 			? OwnerBuddy.uuid().toString()
