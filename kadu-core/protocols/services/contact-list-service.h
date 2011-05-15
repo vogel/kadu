@@ -42,6 +42,8 @@ public:
 	explicit ContactListService(Protocol *protocol);
 	virtual ~ContactListService();
 
+	Protocol * protocol() const { return CurrentProtocol; }
+
 	virtual void importContactList(bool automaticallySetBuddiesList = true);
 	virtual void exportContactList() = 0;
 	virtual void exportContactList(const BuddyList &buddies) = 0;
