@@ -76,7 +76,7 @@ void MPRISPlayerConfigurationUiHandler::mainConfigurationWindowCreated(MainConfi
 	QWidget *options = new QWidget(optionsGroupBox->widget());
 
 	QGridLayout *selectionLayout = new QGridLayout(options);
-	QGridLayout *buttonsLayout = new QGridLayout(options);
+	QGridLayout *buttonsLayout = new QGridLayout();
 
 	QLabel *label = new QLabel(tr("Select Player:"), options);
 	PlayersBox = new QComboBox(options);
