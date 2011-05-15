@@ -62,6 +62,9 @@ class KADUAPI NotificationManager : public QObject, AccountsAwareObject, Configu
 	void init();
 
 	bool NotifyAboutAll;
+	bool NewMessageOnlyIfInactive;
+	bool NotifyIgnoreOnConnection;
+	bool IgnoreOnlineToOnline;
 	bool SilentMode;
 	bool SilentModeWhenDnD;
 	bool SilentModeWhenFullscreen;

@@ -335,7 +335,7 @@ void NotificationManager::accountConnected()
 	if (!account)
 		return;
 
-	if (config_file.readBoolEntry("Notify", "NotifyIgnoreOnConnection"))
+	if (NotifyIgnoreOnConnection)
 	{
 		QDateTime *dateTime = account.data()->moduleData<QDateTime>("notify-account-connected", true);
 		*dateTime = QDateTime::currentDateTime().addSecs(10);
@@ -353,7 +353,7 @@ void NotificationManager::contactStatusChanged(Contact contact, Status oldStatus
 	if (!protocol || !protocol->isConnected())
 		return;
 
-	if (config_file.readBoolEntry("Notify", "NotifyIgnoreOnConnection"))
+	if (NotifyIgnoreOnConnection)
 	{
 		QDateTime *dateTime = contact.contactAccount().data()->moduleData<QDateTime>("notify-account-connected");
 		if (dateTime && (*dateTime >= QDateTime::currentDateTime()))
@@ -383,15 +383,14 @@ void NotificationManager::contactStatusChanged(Contact contact, Status oldStatus
 	if (oldStatus == status)
 		return;
 
-	if (config_file.readBoolEntry("Notify", "IgnoreOnlineToOnline") &&
+	if (IgnoreOnlineToOnline &&
 			!status.isDisconnected() &&
 			!oldStatus.isDisconnected())
 		return;
 
 	QString changedTo = "/To" + status.type();
 
-	StatusChangedNotification *statusChangedNotification;
-	statusChangedNotification = new StatusChangedNotification(changedTo, contact);
+	StatusChangedNotification *statusChangedNotification = new StatusChangedNotification(changedTo, contact);
 
 	notify(statusChangedNotification);
 
@@ -405,7 +404,7 @@ void NotificationManager::messageReceived(const Message &message)
 	ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(message.messageChat());
 	if (!chatWidget)
 		notify(new MessageNotification(MessageNotification::NewChat, message));
-	else if (!config_file.readBoolEntry("Notify", "NewMessageOnlyIfInactive") || !_isWindowActiveOrFullyVisible(chatWidget))
+	else if (!NewMessageOnlyIfInactive || !_isWindowActiveOrFullyVisible(chatWidget))
 		notify(new MessageNotification(MessageNotification::NewMessage, message));
 
 	kdebugf2();
@@ -583,6 +582,9 @@ void NotificationManager::groupUpdated()
 void NotificationManager::configurationUpdated()
 {
 	NotifyAboutAll = config_file.readBoolEntry("Notify", "NotifyAboutAll");
+	NewMessageOnlyIfInactive = config_file.readBoolEntry("Notify", "NewMessageOnlyIfInactive");
+	NotifyIgnoreOnConnection = config_file.readBoolEntry("Notify", "NotifyIgnoreOnConnection");
+	IgnoreOnlineToOnline = config_file.readBoolEntry("Notify", "IgnoreOnlineToOnline");
 	SilentModeWhenDnD = config_file.readBoolEntry("Notify", "AwaySilentMode", false);
 	SilentModeWhenFullscreen = config_file.readBoolEntry("Notify", "FullscreenSilentMode", false);
 	setSilentMode(config_file.readBoolEntry("Notify", "SilentMode", false));

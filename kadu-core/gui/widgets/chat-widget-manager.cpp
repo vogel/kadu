@@ -405,6 +405,10 @@ void ChatWidgetManager::configurationUpdated()
 {
 	kdebugf();
 
+	OpenChatOnMessage = config_file.readBoolEntry("Chat", "OpenChatOnMessage");
+	AutoRaise = config_file.readBoolEntry("General","AutoRaise");
+	OpenChatOnMessageWhenOnline = config_file.readBoolEntry("Chat", "OpenChatOnMessageWhenOnline");
+
 	insertEmoticonActionEnabled();
 
 	kdebugf2();
@@ -424,16 +428,16 @@ void ChatWidgetManager::messageReceived(const Message &message)
 	}
 	else
 	{
-		if (config_file.readBoolEntry("General","AutoRaise"))
+		if (AutoRaise)
 		{
 			Core::instance()->kaduWindow()->showNormal();
 			Core::instance()->kaduWindow()->setFocus();
 		}
 
-		if (config_file.readBoolEntry("Chat", "OpenChatOnMessage"))
+		if (OpenChatOnMessage)
 		{
 			Protocol *handler = message.messageChat().chatAccount().protocolHandler();
-			if (config_file.readBoolEntry("Chat", "OpenChatOnMessageWhenOnline") && (!handler || (handler->status().group() != "Online")))
+			if (OpenChatOnMessageWhenOnline && (!handler || (handler->status().group() != "Online")))
 			{
 				message.setPending(true);
 				PendingMessagesManager::instance()->addItem(message);
