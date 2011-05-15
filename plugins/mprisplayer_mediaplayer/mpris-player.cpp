@@ -37,6 +37,8 @@ void MPRISPlayer::createInstance()
 {
 	if (!Instance)
 		Instance = new MPRISPlayer();
+
+	Instance->configurationApplied();
 }
 
 void MPRISPlayer::destroyInstance()
@@ -50,7 +52,6 @@ MPRISPlayer::MPRISPlayer() :
 {
 	prepareUserPlayersFile();
 	replacePlugin();
-	configurationApplied();
 }
 
 MPRISPlayer::~MPRISPlayer()
