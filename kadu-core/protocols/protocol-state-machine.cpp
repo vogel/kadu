@@ -29,14 +29,13 @@
  * @author Rafał 'Vogel' Malinowski
  * @short Creates new ProtocolStateMachine associated with given protocol handler.
  * @param protocol protocol handler to connect this object to
- * @param parent QObject parent of this object
  *
  * This contructor creates new ProtocolStateMachine and connects to given protocol handler. All states
  * are set up. Depending on current network state (see NetworkManager::isOnline()) starting state
  * is selected: either logged out, online or logged out, offline. State machine is then started.
  */
-ProtocolStateMachine::ProtocolStateMachine(Protocol *protocol, QObject *parent) :
-		QStateMachine(parent), CurrentProtocol(protocol)
+ProtocolStateMachine::ProtocolStateMachine(Protocol *protocol) :
+		QStateMachine(protocol), CurrentProtocol(protocol)
 {
 	LoggingOutState = new QState(this);
 	LoggedOutOnlineState = new QState(this);

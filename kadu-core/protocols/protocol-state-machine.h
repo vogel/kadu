@@ -171,7 +171,7 @@ private slots:
 	void printConfiguration();
 
 public:
-	explicit ProtocolStateMachine(Protocol *protocol, QObject *parent = 0);
+	explicit ProtocolStateMachine(Protocol *protocol);
 	virtual ~ProtocolStateMachine();
 
 	bool isLoggedIn();
