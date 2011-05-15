@@ -770,6 +770,10 @@ To poważne zagrożenie bezpieczeństwa!</translation>
         <translation>Zablokowany</translation>
     </message>
     <message>
+        <source>Blocking</source>
+        <translation>Blokuje</translation>
+    </message>
+    <message>
         <source>Offline to</source>
         <translation>Niedostępny dla kontaktu</translation>
     </message>

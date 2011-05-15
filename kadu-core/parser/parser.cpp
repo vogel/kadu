@@ -1,5 +1,6 @@
 /*
  * %kadu copyright begin%
+ * Copyright 2011 Sławomir Stępień (s.stepien@interia.pl)
  * Copyright 2010, 2011 Piotr Dąbrowski (ultr@ultr.pl)
  * Copyright 2007, 2009 Dawid Stawiarski (neeo@kadu.net)
  * Copyright 2010, 2011 Bartosz Brachaczek (b.brachaczek@gmail.com)
@@ -205,8 +206,19 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 			{
 				case 's':
 					++i;
+					if (buddy && buddy.isBlocked())
+					{
+						pe.content = qApp->translate("@default", "Blocked");
+						break;
+					}
 					if (contact)
 					{
+						if (contact.isBlocking())
+						{
+							pe.content = qApp->translate("@default", "Blocking");
+							break;
+						}
+
 						StatusType *type = StatusTypeManager::instance()->statusType(contact.currentStatus().type());
 						if (type)
 							pe.content = type->displayName();
