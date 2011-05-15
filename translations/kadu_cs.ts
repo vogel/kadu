@@ -770,6 +770,10 @@ Je to vysoce bezpečnostně rizikové!</translation>
         <translation>Znemožněný</translation>
     </message>
     <message>
+        <source>Blocking</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Offline to</source>
         <translation>Nepřipojený pro</translation>
     </message>

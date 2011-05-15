@@ -770,6 +770,10 @@ Es ist ein Sicherheitsrisiko!</translation>
         <translation>blockiert</translation>
     </message>
     <message>
+        <source>Blocking</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Offline to</source>
         <translation>offline für</translation>
     </message>
