@@ -30,7 +30,7 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
-#include "configuration/configuration-file.h"
+#include "configuration/chat-configuration-holder.h"
 #include "chat/style-engines/chat-style-engine.h"
 #include "chat/message/message-render-info.h"
 #include "chat/message/message-shared.h"
@@ -61,6 +61,8 @@ ChatMessagesView::ChatMessagesView(const Chat &chat, bool supportTransparency, Q
 	setPage(Renderer->webPage());
 	settings()->setAttribute(QWebSettings::JavascriptEnabled, true);
 	settings()->setAttribute(QWebSettings::PluginsEnabled, true);
+
+	configurationUpdated();
 
 	connectChat();
 
@@ -230,4 +232,9 @@ void ChatMessagesView::scrollToBottom()
 {
 	if (AtBottom)
 		page()->mainFrame()->setScrollBarValue(Qt::Vertical, page()->mainFrame()->scrollBarMaximum(Qt::Vertical));
+}
+
+void ChatMessagesView::configurationUpdated()
+{
+	setUserFont(ChatConfigurationHolder::instance()->chatFont());
 }

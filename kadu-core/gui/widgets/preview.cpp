@@ -27,7 +27,7 @@
 
 #include "accounts/account-manager.h"
 #include "chat/style-engines/chat-engine-kadu/kadu-chat-syntax.h"
-#include "configuration/configuration-file.h"
+#include "configuration/chat-configuration-holder.h"
 #include "parser/parser.h"
 #include "status/status.h"
 #include "status/status-type-manager.h"
@@ -46,6 +46,8 @@ Preview::Preview(QWidget *parent)
 	p.setBrush(QPalette::Base, Qt::transparent);
 	page()->setPalette(p);
 	setAttribute(Qt::WA_OpaquePaintEvent, false);
+	
+	configurationUpdated();
 }
 
 Preview::~Preview()
@@ -103,4 +105,9 @@ void Preview::setDrawFrame(bool drawFrame)
 		return;
 	DrawFrame = drawFrame;
 	repaint();
+}
+
+void Preview::configurationUpdated()
+{
+	setUserFont(ChatConfigurationHolder::instance()->chatFont());
 }

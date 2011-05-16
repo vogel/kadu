@@ -24,6 +24,7 @@
 #ifndef PREVIEW_H
 #define PREVIEW_H
 
+#include "configuration/configuration-aware-object.h"
 #include "contacts/contact.h"
 #include "contacts/contact-shared.h"
 #include "contacts/contact-set.h"
@@ -32,7 +33,7 @@
 
 #define PREVIEW_DEFAULT_HEIGHT 250
 
-class Preview : public KaduWebView
+class Preview : public KaduWebView, public ConfigurationAwareObject
 {
 	Q_OBJECT
 
@@ -43,6 +44,7 @@ class Preview : public KaduWebView
 	bool DrawFrame;
 
 protected:
+	virtual void configurationUpdated();
 	void paintEvent(QPaintEvent *event);
 
 public:

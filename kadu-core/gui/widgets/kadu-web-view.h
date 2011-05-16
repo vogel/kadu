@@ -61,6 +61,9 @@ protected:
 	virtual void mousePressEvent(QMouseEvent *e);
 	virtual void mouseReleaseEvent(QMouseEvent *e);
 
+	void setUserFont(const QFont &font);
+	QString userFontStyle(const QFont &font);
+
 #ifdef Q_WS_MAEMO_5
 	virtual bool eventFilter(QObject *, QEvent *e);
 #endif

@@ -28,6 +28,7 @@
 #include <QtCore/QList>
 
 #include "chat/message/message.h"
+#include "configuration/configuration-aware-object.h"
 #include "protocols/services/chat-service.h"
 #include "protocols/protocol.h"
 
@@ -42,7 +43,7 @@ class ChatWidget;
 class HtmlMessagesRenderer;
 class MessageRenderInfo;
 
-class KADUAPI ChatMessagesView : public KaduWebView
+class KADUAPI ChatMessagesView : public KaduWebView, public ConfigurationAwareObject
 {
 	Q_OBJECT
 
@@ -72,6 +73,7 @@ private slots:
 	void scrollToBottom();
 
 protected:
+	virtual void configurationUpdated();
 	virtual void mouseReleaseEvent(QMouseEvent *e);
 	virtual void resizeEvent(QResizeEvent *e);
 	virtual void wheelEvent(QWheelEvent *e);
