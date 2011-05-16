@@ -26,7 +26,6 @@
 #include <QtCore/QTextStream>
 
 #include "buddies/buddy-list.h"
-#include "buddies/buddy-manager.h"
 #include "buddies/group.h"
 #include "buddies/group-manager.h"
 #include "contacts/contact.h"
@@ -45,7 +44,7 @@
 QString GaduListHelper::contactToLine70(Contact contact)
 {
 	QStringList list;
-	Buddy buddy = BuddyManager::instance()->byContact(contact, ActionCreateAndAdd);
+	Buddy buddy = contact.ownerBuddy();
 
 	list.append(buddy.firstName());
 	list.append(buddy.lastName());
@@ -84,8 +83,10 @@ QByteArray GaduListHelper::buddyListToByteArray(Account account, const BuddyList
 	return codec_cp1250->fromUnicode(result.join("\n"));
 }
 
-BuddyList GaduListHelper::byteArrayToBuddyList(Account account, QByteArray &content) {
+BuddyList GaduListHelper::byteArrayToBuddyList(Account account, QByteArray &content)
+{
 	QTextStream stream(&content, QIODevice::ReadOnly);
+
 	return streamToBuddyList(account, stream);
 }
 
