@@ -82,7 +82,7 @@ private slots:
 	void clientResourceReceived(const XMPP::Jid &j, const XMPP::Resource &r);
 	void slotClientDebugMessage (const QString &msg);
 
-	void contactDetached(Contact contact);
+	void contactAboutToBeDetached(Contact contact);
 	void contactAttached(Contact contact);
 	void contactUpdated(Contact contact);
 
