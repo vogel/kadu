@@ -1,5 +1,6 @@
 /*
  * %kadu copyright begin%
+ * Copyright 2011 Piotr Dąbrowski (ultr@ultr.pl)
  * Copyright 2011 Piotr Galiszewski (piotr.galiszewski@kadu.im)
  * %kadu copyright end%
  *
@@ -20,31 +21,24 @@
 #ifndef CHAT_CONFIGURATION_H
 #define CHAT_CONFIGURATION_H
 
-#include <QtCore/QObject>
 #include <QtGui/QColor>
 #include <QtGui/QFont>
 
-#include "configuration-aware-object.h"
+#include "configuration-holder.h"
 
-class ChatConfiguration : public QObject, public ConfigurationAwareObject
+class ChatConfigurationHolder : public ConfigurationHolder
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(ChatConfiguration)
+	Q_DISABLE_COPY(ChatConfigurationHolder)
 
-	static ChatConfiguration * Instance;
-
-	ChatConfiguration();
-	virtual ~ChatConfiguration();
+	static ChatConfigurationHolder *Instance;
+	explicit ChatConfigurationHolder();
 
 	bool AutoSend;
 	bool NiceDateFormat;
-
 	int EmoticonsStyle;
-
 	QColor ChatTextBgColor;
-
 	QFont ChatFont;
-
 	QString ChatContents;
 	QString ConferenceContents;
 	QString ConferencePrefix;
@@ -55,21 +49,15 @@ class ChatConfiguration : public QObject, public ConfigurationAwareObject
 	QString UsrFontColor;
 	QString UsrNickColor;
 
-protected:
-	void configurationUpdated();
-
 public:
-	static ChatConfiguration *instance();
+	static ChatConfigurationHolder * instance();
+	void configurationUpdated();
 
 	bool autoSend() const { return AutoSend; }
 	bool niceDateFormat() const { return NiceDateFormat; }
-
 	int emoticonsStyle() const { return EmoticonsStyle; }
-
 	const QColor &chatTextBgColor() const { return ChatTextBgColor; }
-
 	const QFont &chatFont() const { return ChatFont; }
-
 	const QString &chatContents() const { return ChatContents; }
 	const QString &conferenceContents() const { return ConferenceContents; }
 	const QString &conferencePrefix() const { return ConferencePrefix; }
@@ -79,10 +67,6 @@ public:
 	const QString &usrBackgroundColor() const { return UsrBackgroundColor; }
 	const QString &usrFontColor() const { return UsrFontColor; }
 	const QString &usrNickColor() const { return UsrNickColor; }
-
-
-signals:
-	void chatConfigurationUpdated();
 
 };
 

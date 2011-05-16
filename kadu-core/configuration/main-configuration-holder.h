@@ -1,8 +1,7 @@
 /*
  * %kadu copyright begin%
  * Copyright 2011 Piotr Dąbrowski (ultr@ultr.pl)
- * Copyright 2008 Piotr Galiszewski (piotr.galiszewski@kadu.im)
- * Copyright 2007, 2008, 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -19,25 +18,32 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef MAIN_CONFIGURATION_HOLDER_H
+#define MAIN_CONFIGURATION_HOLDER_H
+
 #include "configuration-holder.h"
-#include "misc/misc.h"
 
-#include "configuration-aware-object.h"
-
-KADU_AWARE_CLASS(ConfigurationAwareObject)
-
-void ConfigurationAwareObject::notifyAll()
+class MainConfigurationHolder : public ConfigurationHolder
 {
-	foreach (ConfigurationHolder *configurationHolder, ConfigurationHolder::instances())
-		configurationHolder->configurationUpdated();
-	foreach (ConfigurationAwareObject *object, Objects)
-		object->configurationUpdated();
-}
+	Q_OBJECT
+	Q_DISABLE_COPY(MainConfigurationHolder)
 
-ConfigurationAwareObject::ConfigurationAwareObject()
-{
-}
+	static MainConfigurationHolder *Instance;
+	explicit MainConfigurationHolder();
 
-ConfigurationAwareObject::~ConfigurationAwareObject()
-{
-}
+	bool SimpleMode;
+
+public:
+	static void createInstance();
+	static void destroyInstance();
+	static MainConfigurationHolder * instance();
+	void configurationUpdated();
+
+	bool simpleMode() const { return SimpleMode; }
+
+signals:
+	void simpleModeChanged();
+
+};
+
+#endif // MAIN_CONFIGURATION_HOLDER_H

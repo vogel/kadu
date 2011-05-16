@@ -1,8 +1,6 @@
 /*
  * %kadu copyright begin%
  * Copyright 2011 Piotr Dąbrowski (ultr@ultr.pl)
- * Copyright 2008 Piotr Galiszewski (piotr.galiszewski@kadu.im)
- * Copyright 2007, 2008, 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -20,24 +18,15 @@
  */
 
 #include "configuration-holder.h"
-#include "misc/misc.h"
 
-#include "configuration-aware-object.h"
+QList<ConfigurationHolder *> ConfigurationHolder::Instances;
 
-KADU_AWARE_CLASS(ConfigurationAwareObject)
-
-void ConfigurationAwareObject::notifyAll()
+ConfigurationHolder::ConfigurationHolder()
 {
-	foreach (ConfigurationHolder *configurationHolder, ConfigurationHolder::instances())
-		configurationHolder->configurationUpdated();
-	foreach (ConfigurationAwareObject *object, Objects)
-		object->configurationUpdated();
+	Instances.append(this);
 }
 
-ConfigurationAwareObject::ConfigurationAwareObject()
+ConfigurationHolder::~ConfigurationHolder()
 {
-}
-
-ConfigurationAwareObject::~ConfigurationAwareObject()
-{
+	Instances.removeOne(this);
 }

@@ -1,5 +1,6 @@
 /*
  * %kadu copyright begin%
+ * Copyright 2011 Piotr Dąbrowski (ultr@ultr.pl)
  * Copyright 2011 Piotr Galiszewski (piotr.galiszewski@kadu.im)
  * %kadu copyright end%
  *
@@ -19,28 +20,23 @@
 
 #include "configuration-file.h"
 
-#include "chat-configuration.h"
+#include "chat-configuration-holder.h"
 
-ChatConfiguration * ChatConfiguration::Instance = 0;
+ChatConfigurationHolder *ChatConfigurationHolder::Instance = 0;
 
-ChatConfiguration * ChatConfiguration::instance()
+ChatConfigurationHolder * ChatConfigurationHolder::instance()
 {
 	if (0 == Instance)
-		Instance = new ChatConfiguration();
-
+		Instance = new ChatConfigurationHolder();
 	return Instance;
 }
 
-ChatConfiguration::ChatConfiguration()
+ChatConfigurationHolder::ChatConfigurationHolder()
 {
 	configurationUpdated();
 }
 
-ChatConfiguration::~ChatConfiguration()
-{
-}
-
-void ChatConfiguration::configurationUpdated()
+void ChatConfigurationHolder::configurationUpdated()
 {
 	AutoSend = config_file.readBoolEntry("Chat", "AutoSend");
 	NiceDateFormat = config_file.readBoolEntry("Look", "NiceDateFormat");
@@ -60,7 +56,4 @@ void ChatConfiguration::configurationUpdated()
 	UsrBackgroundColor = config_file.readEntry("Look", "ChatUsrBgColor");
 	UsrFontColor = config_file.readEntry("Look", "ChatUsrFontColor");
 	UsrNickColor = config_file.readEntry("Look", "ChatUsrNickColor");
-
-
-	emit chatConfigurationUpdated();
 }

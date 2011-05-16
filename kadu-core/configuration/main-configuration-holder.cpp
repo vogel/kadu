@@ -1,5 +1,6 @@
 /*
  * %kadu copyright begin%
+ * Copyright 2011 Piotr Dąbrowski (ultr@ultr.pl)
  * Copyright 2010 Wojciech Treter (juzefwt@gmail.com)
  * Copyright 2010 Bartosz Brachaczek (b.brachaczek@gmail.com)
  * Copyright 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
@@ -22,38 +23,34 @@
 #include "configuration/configuration-file.h"
 #include "misc/path-conversion.h"
 
-#include "main-configuration.h"
+#include "main-configuration-holder.h"
 
-MainConfiguration * MainConfiguration::Instance = 0;
+MainConfigurationHolder *MainConfigurationHolder::Instance = 0;
 
-MainConfiguration * MainConfiguration::instance()
+MainConfigurationHolder * MainConfigurationHolder::instance()
 {
 	return Instance;
 }
 
-void MainConfiguration::createInstance()
+void MainConfigurationHolder::createInstance()
 {
 	if (!Instance)
-		Instance = new MainConfiguration();
+		Instance = new MainConfigurationHolder();
 }
 
-void MainConfiguration::destroyInstance()
+void MainConfigurationHolder::destroyInstance()
 {
 	delete Instance;
 	Instance = 0;
 }
 
-MainConfiguration::MainConfiguration() :
-		SimpleMode(true)
+MainConfigurationHolder::MainConfigurationHolder() :
+	SimpleMode(true)
 {
 	configurationUpdated();
 }
 
-MainConfiguration::~MainConfiguration()
-{
-}
-
-void MainConfiguration::configurationUpdated()
+void MainConfigurationHolder::configurationUpdated()
 {
 	bool simpleMode = config_file.readBoolEntry("General", "SimpleMode", true);
 	if (SimpleMode != simpleMode)

@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2011 Piotr Dąbrowski (ultr@ultr.pl)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -17,39 +17,27 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MAIN_CONFIGURATION_H
-#define MAIN_CONFIGURATION_H
+#ifndef CONFIGURATION_HOLDER_H
+#define CONFIGURATION_HOLDER_H
 
 #include <QtCore/QObject>
 
-#include "configuration/configuration-aware-object.h"
-
-class MainConfiguration : public QObject, private ConfigurationAwareObject
+class ConfigurationHolder : public QObject
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(MainConfiguration)
+	Q_DISABLE_COPY(ConfigurationHolder)
 
-	static MainConfiguration * Instance;
-
-	bool SimpleMode;
-
-	MainConfiguration();
-	virtual ~MainConfiguration();
+	static QList<ConfigurationHolder *> Instances;
 
 protected:
-	virtual void configurationUpdated();
+	ConfigurationHolder();
+	virtual ~ConfigurationHolder();
 
 public:
-	static MainConfiguration * instance();
+	static const QList<ConfigurationHolder *> & instances() { return Instances; }
 
-	static void createInstance();
-	static void destroyInstance();
-
-	bool simpleMode() { return SimpleMode; }
-
-signals:
-	void simpleModeChanged();
+	virtual void configurationUpdated() = 0;
 
 };
 
-#endif // MAIN_CONFIGURATION_H
+#endif // CONFIGURATION_HOLDER_H
