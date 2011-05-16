@@ -36,8 +36,7 @@ class KADUAPI ContactListService : public QObject
 
 	Protocol *CurrentProtocol;
 
-	// TODO: rename
-	Buddy mergeBuddy(Buddy buddy);
+	Buddy registerBuddy(Buddy buddy);
 
 public:
 	explicit ContactListService(Protocol *protocol);
