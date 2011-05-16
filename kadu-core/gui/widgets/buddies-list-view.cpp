@@ -44,7 +44,7 @@
 #include "chat/chat-manager.h"
 #include "chat/message/pending-messages-manager.h"
 #include "configuration/configuration-file.h"
-#include "configuration/main-configuration.h"
+#include "configuration/main-configuration-holder.h"
 #include "contacts/filter/contact-no-unloaded-account-filter.h"
 #include "gui/actions/action.h"
 #include "gui/actions/action-description.h"
@@ -92,7 +92,7 @@ BuddiesListView::BuddiesListView(QWidget *parent) :
 
 	ToolTipTimeoutTimer.setSingleShot(true);
 
-	connect(MainConfiguration::instance(), SIGNAL(simpleModeChanged()), this, SLOT(simpleModeChanged()));
+	connect(MainConfigurationHolder::instance(), SIGNAL(simpleModeChanged()), this, SLOT(simpleModeChanged()));
 	connect(&ToolTipTimeoutTimer, SIGNAL(timeout()), this, SLOT(toolTipTimeout()));
 	connect(this, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(doubleClickedSlot(const QModelIndex &)));
 	connect(PendingMessagesManager::instance(), SIGNAL(messageAdded(Message)), this, SLOT(update()));
@@ -448,7 +448,7 @@ void BuddiesListView::selectionChanged(const QItemSelection &selected, const QIt
 
 void BuddiesListView::simpleModeChanged()
 {
-	if (MainConfiguration::instance()->simpleMode() && !config_file.readBoolEntry("General", "ExpandingInSimpleMode", false))
+	if (MainConfigurationHolder::instance()->simpleMode() && !config_file.readBoolEntry("General", "ExpandingInSimpleMode", false))
 	{
 		collapseAll();
 		setItemsExpandable(false);

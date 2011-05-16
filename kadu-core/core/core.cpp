@@ -40,7 +40,7 @@
 #include "chat/message/pending-messages-manager.h"
 #include "configuration/configuration-file.h"
 #include "configuration/configuration-manager.h"
-#include "configuration/main-configuration.h"
+#include "configuration/main-configuration-holder.h"
 #include "contacts/contact-manager.h"
 #include "emoticons/emoticons.h"
 #include "file-transfer/file-transfer-manager.h"
@@ -106,7 +106,7 @@ Core::Core() :
 	createDefaultConfiguration();
 	configurationUpdated();
 
-	MainConfiguration::createInstance();
+	MainConfigurationHolder::createInstance();
 
 	DateTimeParserTags::registerParserTags();
 }
@@ -130,7 +130,7 @@ Core::~Core()
 	setIcon(KaduIcon("kadu_icons/kadu").icon());
 #endif // Q_OS_MAC
 
-	MainConfiguration::destroyInstance();
+	MainConfigurationHolder::destroyInstance();
 
 	delete Window;
 	Window = 0;

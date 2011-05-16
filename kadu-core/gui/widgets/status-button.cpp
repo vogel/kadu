@@ -24,7 +24,7 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
-#include "configuration/main-configuration.h"
+#include "configuration/main-configuration-holder.h"
 #include "icons/kadu-icon.h"
 #include "gui/status-icon.h"
 #include "gui/widgets/status-menu.h"
@@ -67,7 +67,7 @@ void StatusButton::updateStatus()
 	}
 	else
 	{
-		if (MainConfiguration::instance()->simpleMode())
+		if (MainConfigurationHolder::instance()->simpleMode())
 		{
 			setText(MyStatusContainer->statusContainerName());
 			setToolTip(QString());

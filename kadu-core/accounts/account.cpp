@@ -26,7 +26,7 @@
 #include "accounts/account-proxy-settings.h"
 #include "buddies/buddy-manager.h"
 #include "configuration/configuration-file.h"
-#include "configuration/main-configuration.h"
+#include "configuration/main-configuration-holder.h"
 #include "configuration/xml-configuration-file.h"
 #include "contacts/contact.h"
 #include "contacts/contact-details.h"
@@ -95,7 +95,7 @@ void Account::importProxySettings()
 
 StatusContainer * Account::statusContainer()
 {
-	if (MainConfiguration::instance()->simpleMode())
+	if (MainConfigurationHolder::instance()->simpleMode())
 		return accountIdentity().data();
 	else
 		return data();

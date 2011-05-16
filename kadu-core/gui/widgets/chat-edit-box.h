@@ -25,6 +25,7 @@
 
 #include "chat/chat.h"
 #include "gui/windows/main-window.h"
+#include "configuration/configuration-aware-object.h"
 
 #include "exports.h"
 
@@ -32,7 +33,7 @@ class Action;
 class ChatWidget;
 class CustomInput;
 
-class KADUAPI ChatEditBox : public MainWindow
+class KADUAPI ChatEditBox : public MainWindow, public ConfigurationAwareObject
 {
 	Q_OBJECT
 

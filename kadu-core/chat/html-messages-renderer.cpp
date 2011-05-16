@@ -25,7 +25,7 @@
 #include "chat/chat-styles-manager.h"
 #include "chat/style-engines/chat-style-engine.h"
 #include "chat/message/message-render-info.h"
-#include "configuration/chat-configuration.h"
+#include "configuration/chat-configuration-holder.h"
 #include "configuration/configuration-file.h"
 
 #include "html-messages-renderer.h"
@@ -151,15 +151,15 @@ void HtmlMessagesRenderer::updateBackgroundsAndColors()
 		switch (message->message().type())
 		{
 			case Message::TypeSent:
-				message->setBackgroundColor(ChatConfiguration::instance()->myBackgroundColor())
-					.setNickColor(ChatConfiguration::instance()->myNickColor())
-					.setFontColor(ChatConfiguration::instance()->myFontColor());
+				message->setBackgroundColor(ChatConfigurationHolder::instance()->myBackgroundColor())
+					.setNickColor(ChatConfigurationHolder::instance()->myNickColor())
+					.setFontColor(ChatConfigurationHolder::instance()->myFontColor());
 				break;
 
 			case Message::TypeReceived:
-				message->setBackgroundColor(ChatConfiguration::instance()->usrBackgroundColor())
-					.setNickColor(ChatConfiguration::instance()->usrNickColor())
-					.setFontColor(ChatConfiguration::instance()->usrFontColor());
+				message->setBackgroundColor(ChatConfigurationHolder::instance()->usrBackgroundColor())
+					.setNickColor(ChatConfigurationHolder::instance()->usrNickColor())
+					.setFontColor(ChatConfigurationHolder::instance()->usrFontColor());
 				break;
 
 			default:

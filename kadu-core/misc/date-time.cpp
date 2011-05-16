@@ -30,7 +30,7 @@
 #endif
 #include <time.h>
 
-#include "configuration/chat-configuration.h"
+#include "configuration/chat-configuration-holder.h"
 #include "configuration/configuration-file.h"
 
 #include "date-time.h"
@@ -49,7 +49,7 @@ QString printDateTime(const QDateTime &datetime)
 
 	if (delta != 0)
 	{
-		if (ChatConfiguration::instance()->niceDateFormat())
+		if (ChatConfigurationHolder::instance()->niceDateFormat())
 		{
 			if (delta == 1) // 1 day ago
 				ret.prepend(qApp->translate("@default", "Yesterday at "));

@@ -24,7 +24,7 @@
 #include <QtGui/QLayoutItem>
 
 #include "accounts/account-manager.h"
-#include "configuration/main-configuration.h"
+#include "configuration/main-configuration-holder.h"
 #include "gui/widgets/status-button.h"
 #include "status/status-container-manager.h"
 
@@ -33,8 +33,8 @@
 StatusButtons::StatusButtons(QWidget *parent) :
 		QWidget(parent), Layout(0)
 {
-	SimpleMode = MainConfiguration::instance()->simpleMode();
-	connect(MainConfiguration::instance(), SIGNAL(simpleModeChanged()), this, SLOT(simpleModeChanged()));
+	SimpleMode = MainConfigurationHolder::instance()->simpleMode();
+	connect(MainConfigurationHolder::instance(), SIGNAL(simpleModeChanged()), this, SLOT(simpleModeChanged()));
 
 	createGui();
 
@@ -74,16 +74,16 @@ void StatusButtons::updateLayout(bool addStretch)
 
 void StatusButtons::simpleModeChanged()
 {
-	if (SimpleMode == MainConfiguration::instance()->simpleMode())
+	if (SimpleMode == MainConfigurationHolder::instance()->simpleMode())
 		return;
  
-	SimpleMode = MainConfiguration::instance()->simpleMode();
+	SimpleMode = MainConfigurationHolder::instance()->simpleMode();
 	updateLayout(!SimpleMode);
 }
 
 void StatusButtons::enableStatusName()
 {
-	if (MainConfiguration::instance()->simpleMode() && 1 == Buttons.count())
+	if (MainConfigurationHolder::instance()->simpleMode() && 1 == Buttons.count())
 		Buttons.begin().value()->setDisplayStatusName(true);
 }
 

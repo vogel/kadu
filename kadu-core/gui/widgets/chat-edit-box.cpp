@@ -31,7 +31,7 @@
 #include "accounts/account-details.h"
 #include "buddies/buddy-set.h"
 #include "chat/chat.h"
-#include "configuration/chat-configuration.h"
+#include "configuration/chat-configuration-holder.h"
 #include "configuration/configuration-file.h"
 #include "configuration/xml-configuration-file.h"
 #include "contacts/contact.h"
@@ -84,8 +84,6 @@ ChatEditBox::ChatEditBox(const Chat &chat, QWidget *parent) :
 	connect(InputBox, SIGNAL(fontChanged(QFont)), this, SLOT(fontChanged(QFont)));
 	connect(InputBox, SIGNAL(cursorPositionChanged()), this, SLOT(cursorPositionChanged()));
 
-	connect(ChatConfiguration::instance(), SIGNAL(chatConfigurationUpdated()), this, SLOT(configurationUpdated()));
-
 	configurationUpdated();
 }
 
@@ -123,7 +121,7 @@ void ChatEditBox::configurationUpdated()
 {
 	setColorFromCurrentText(true);
 
-	InputBox->setAutoSend(ChatConfiguration::instance()->autoSend());
+	InputBox->setAutoSend(ChatConfigurationHolder::instance()->autoSend());
 }
 
 void ChatEditBox::setAutoSend(bool autoSend)

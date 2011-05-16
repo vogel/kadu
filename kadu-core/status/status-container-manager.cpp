@@ -24,7 +24,7 @@
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
 #include "configuration/configuration-file.h"
-#include "configuration/main-configuration.h"
+#include "configuration/main-configuration-holder.h"
 #include "core/core.h"
 #include "identities/identity-manager.h"
 #include "icons/kadu-icon.h"
@@ -50,21 +50,21 @@ StatusContainerManager::StatusContainerManager() :
 {
 	configurationUpdated();
 
-	if (MainConfiguration::instance()->simpleMode())
+	if (MainConfigurationHolder::instance()->simpleMode())
 		triggerAllIdentitiesAdded();
 	else
 		triggerAllAccountsRegistered();
 
-	connect(MainConfiguration::instance(), SIGNAL(simpleModeChanged()), this, SLOT(simpleModeChanged()));
+	connect(MainConfigurationHolder::instance(), SIGNAL(simpleModeChanged()), this, SLOT(simpleModeChanged()));
 	connect(AccountManager::instance(), SIGNAL(accountUpdated(Account)), this, SLOT(updateIdentities()));
 }
 
 StatusContainerManager::~StatusContainerManager()
 {
 	disconnect(AccountManager::instance(), SIGNAL(accountUpdated(Account)), this, SLOT(updateIdentities()));
-	disconnect(MainConfiguration::instance(), SIGNAL(simpleModeChanged()), this, SLOT(simpleModeChanged()));
+	disconnect(MainConfigurationHolder::instance(), SIGNAL(simpleModeChanged()), this, SLOT(simpleModeChanged()));
 
-	if (MainConfiguration::instance()->simpleMode())
+	if (MainConfigurationHolder::instance()->simpleMode())
 		triggerAllIdentitiesRemoved();
 	else
 		triggerAllAccountsUnregistered();
@@ -72,7 +72,7 @@ StatusContainerManager::~StatusContainerManager()
 
 void StatusContainerManager::updateIdentities()
 {
-	if (!MainConfiguration::instance()->simpleMode())
+	if (!MainConfigurationHolder::instance()->simpleMode())
 		return;
 
 	foreach (const Identity &identity, IdentityManager::instance()->items())
@@ -84,31 +84,31 @@ void StatusContainerManager::updateIdentities()
 
 void StatusContainerManager::accountRegistered(Account account)
 {
-	if (!MainConfiguration::instance()->simpleMode() && !StatusContainers.contains(account.statusContainer()))
+	if (!MainConfigurationHolder::instance()->simpleMode() && !StatusContainers.contains(account.statusContainer()))
 		registerStatusContainer(account.statusContainer());
 
-	if (MainConfiguration::instance()->simpleMode() && !StatusContainers.contains(account.accountIdentity()))
+	if (MainConfigurationHolder::instance()->simpleMode() && !StatusContainers.contains(account.accountIdentity()))
 		updateIdentities();
 }
 
 void StatusContainerManager::accountUnregistered(Account account)
 {
-	if (!MainConfiguration::instance()->simpleMode() && StatusContainers.contains(account.statusContainer()))
+	if (!MainConfigurationHolder::instance()->simpleMode() && StatusContainers.contains(account.statusContainer()))
 		unregisterStatusContainer(account.statusContainer());
 
-	if (MainConfiguration::instance()->simpleMode())
+	if (MainConfigurationHolder::instance()->simpleMode())
 		updateIdentities();
 }
 
 void StatusContainerManager::identityAdded(Identity identity)
 {
-	if (MainConfiguration::instance()->simpleMode() && !StatusContainers.contains(identity) && identity.hasAnyAccountWithDetails())
+	if (MainConfigurationHolder::instance()->simpleMode() && !StatusContainers.contains(identity) && identity.hasAnyAccountWithDetails())
 		registerStatusContainer(identity);
 }
 
 void StatusContainerManager::identityRemoved(Identity identity)
 {
-	if (MainConfiguration::instance()->simpleMode() && StatusContainers.contains(identity))
+	if (MainConfigurationHolder::instance()->simpleMode() && StatusContainers.contains(identity))
 		unregisterStatusContainer(identity);
 }
 
@@ -167,7 +167,7 @@ void StatusContainerManager::setDefaultStatusContainer(StatusContainer *defaultS
 void StatusContainerManager::simpleModeChanged()
 {
 	cleanStatusContainers();
-	if (MainConfiguration::instance()->simpleMode())
+	if (MainConfigurationHolder::instance()->simpleMode())
 		addAllIdentities();
 	else
 		addAllAccounts();

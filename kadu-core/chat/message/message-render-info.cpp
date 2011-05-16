@@ -26,7 +26,7 @@
 #include <QtCore/QRegExp>
 
 #include "chat/message/formatted-message-part.h"
-#include "configuration/chat-configuration.h"
+#include "configuration/chat-configuration-holder.h"
 #include "configuration/configuration-file.h"
 #include "emoticons/emoticons-manager.h"
 #include "icons/kadu-icon.h"
@@ -42,7 +42,7 @@ QString formatMessage(const QString& text)
 	HtmlDocument htmlDocument;
 	htmlDocument.parseHtml(text);
 	UrlHandlerManager::instance()->convertAllUrls(htmlDocument);
-	EmoticonsManager::instance()->expandEmoticons(htmlDocument, (EmoticonsStyle)ChatConfiguration::instance()->emoticonsStyle());
+	EmoticonsManager::instance()->expandEmoticons(htmlDocument, (EmoticonsStyle)ChatConfigurationHolder::instance()->emoticonsStyle());
 
 	return htmlDocument.generateHtml();
 }
@@ -169,15 +169,15 @@ MessageRenderInfo::MessageRenderInfo(const Message &msg) :
 	switch (msg.type())
 	{
 		case Message::TypeSent:
-			BackgroundColor = ChatConfiguration::instance()->myBackgroundColor();
-			NickColor = ChatConfiguration::instance()->myNickColor();
-			FontColor = ChatConfiguration::instance()->myFontColor();
+			BackgroundColor = ChatConfigurationHolder::instance()->myBackgroundColor();
+			NickColor = ChatConfigurationHolder::instance()->myNickColor();
+			FontColor = ChatConfigurationHolder::instance()->myFontColor();
 			break;
 
 		case Message::TypeReceived:
-			BackgroundColor = ChatConfiguration::instance()->usrBackgroundColor();
-			NickColor = ChatConfiguration::instance()->usrNickColor();
-			FontColor = ChatConfiguration::instance()->usrFontColor();
+			BackgroundColor = ChatConfigurationHolder::instance()->usrBackgroundColor();
+			NickColor = ChatConfigurationHolder::instance()->usrNickColor();
+			FontColor = ChatConfigurationHolder::instance()->usrFontColor();
 			break;
 
 		default:

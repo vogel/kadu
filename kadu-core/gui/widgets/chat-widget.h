@@ -35,6 +35,7 @@
 #include "buddies/buddy-list.h"
 #include "chat/chat.h"
 #include "chat/message/formatted-message.h"
+#include "configuration/configuration-aware-object.h"
 #include "gui/widgets/buddies-list-widget.h"
 #include "gui/widgets/chat-messages-view.h"
 #include "protocols/services/chat-service.h"
@@ -49,7 +50,7 @@ class CustomInput;
 class MessageRenderInfo;
 class Protocol;
 
-class KADUAPI ChatWidget : public QWidget
+class KADUAPI ChatWidget : public QWidget, public ConfigurationAwareObject
 {
 	Q_OBJECT
 
