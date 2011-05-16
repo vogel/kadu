@@ -61,13 +61,13 @@ void ContactManager::idChanged(const QString &oldId)
 		emit contactIdChanged(contact, oldId);
 }
 
-void ContactManager::aboutToBeDetached()
+void ContactManager::aboutToBeDetached(bool reattaching)
 {
 	QMutexLocker locker(&mutex());
 
 	Contact contact(sender());
 	if (!contact.isNull())
-		emit contactAboutToBeDetached(contact);
+		emit contactAboutToBeDetached(contact, reattaching);
 }
 
 void ContactManager::detached(Buddy previousBuddy)
@@ -88,22 +88,13 @@ void ContactManager::aboutToBeAttached(Buddy nearFutureBuddy)
 		emit contactAboutToBeAttached(contact, nearFutureBuddy);
 }
 
-void ContactManager::attached()
+void ContactManager::attached(bool reattached)
 {
 	QMutexLocker locker(&mutex());
 
 	Contact contact(sender());
 	if (!contact.isNull())
-		emit contactAttached(contact);
-}
-
-void ContactManager::reattached()
-{
-	QMutexLocker locker(&mutex());
-
-	Contact contact(sender());
-	if (!contact.isNull())
-		emit contactReattached(contact);
+		emit contactAttached(contact, reattached);
 }
 
 void ContactManager::itemAboutToBeRegistered(Contact item)
@@ -121,11 +112,10 @@ void ContactManager::itemRegistered(Contact item)
 	emit contactAdded(item);
 
 	connect(item, SIGNAL(idChanged(const QString &)), this, SLOT(idChanged(const QString &)));
-	connect(item, SIGNAL(aboutToBeDetached()), this, SLOT(aboutToBeDetached()));
+	connect(item, SIGNAL(aboutToBeDetached(bool)), this, SLOT(aboutToBeDetached(bool)));
 	connect(item, SIGNAL(detached(Buddy)), this, SLOT(detached(Buddy)));
 	connect(item, SIGNAL(aboutToBeAttached(Buddy)), this, SLOT(aboutToBeAttached(Buddy)));
-	connect(item, SIGNAL(attached()), this, SLOT(attached()));
-	connect(item, SIGNAL(reattached()), this, SLOT(reattached()));
+	connect(item, SIGNAL(attached(bool)), this, SLOT(attached(bool)));
 }
 
 void ContactManager::itemAboutToBeUnregisterd(Contact item)
@@ -139,11 +129,10 @@ void ContactManager::itemAboutToBeUnregisterd(Contact item)
 void ContactManager::itemUnregistered(Contact item)
 {
 	disconnect(item, SIGNAL(idChanged(const QString &)), this, SLOT(idChanged(const QString &)));
-	disconnect(item, SIGNAL(aboutToBeDetached()), this, SLOT(aboutToBeDetached()));
+	disconnect(item, SIGNAL(aboutToBeDetached(bool)), this, SLOT(aboutToBeDetached(bool)));
 	disconnect(item, SIGNAL(detached(Buddy)), this, SLOT(detached(Buddy)));
 	disconnect(item, SIGNAL(aboutToBeAttached(Buddy)), this, SLOT(aboutToBeAttached(Buddy)));
-	disconnect(item, SIGNAL(attached()), this, SLOT(attached()));
-	disconnect(item, SIGNAL(reattached()), this, SLOT(reattached()));
+	disconnect(item, SIGNAL(attached(bool)), this, SLOT(attached(bool)));
 
 	emit contactRemoved(item);
 }

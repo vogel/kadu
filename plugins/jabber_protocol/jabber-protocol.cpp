@@ -92,14 +92,12 @@ JabberProtocol::~JabberProtocol()
 
 void JabberProtocol::connectContactManagerSignals()
 {
-	connect(ContactManager::instance(), SIGNAL(contactAboutToBeDetached(Contact)),
-			this, SLOT(contactAboutToBeDetached(Contact)));
-	connect(ContactManager::instance(), SIGNAL(contactAttached(Contact)),
-			this, SLOT(contactAttached(Contact)));
+	connect(ContactManager::instance(), SIGNAL(contactAboutToBeDetached(Contact, bool)),
+			this, SLOT(contactAboutToBeDetached(Contact, bool)));
+	connect(ContactManager::instance(), SIGNAL(contactAttached(Contact, bool)),
+			this, SLOT(contactAttached(Contact, bool)));
 	connect(ContactManager::instance(), SIGNAL(contactIdChanged(Contact, const QString &)),
 			this, SLOT(contactIdChanged(Contact, const QString &)));
-	connect(ContactManager::instance(), SIGNAL(contactReattached(Contact)),
-			this, SLOT(contactUpdated(Contact)));
 
 	connect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy &)),
 			this, SLOT(buddyUpdated(Buddy &)));
@@ -107,14 +105,12 @@ void JabberProtocol::connectContactManagerSignals()
 
 void JabberProtocol::disconnectContactManagerSignals()
 {
-	disconnect(ContactManager::instance(), SIGNAL(contactAboutToBeDetached(Contact)),
-			this, SLOT(contactAboutToBeDetached(Contact)));
-	disconnect(ContactManager::instance(), SIGNAL(contactAttached(Contact)),
-			this, SLOT(contactAttached(Contact)));
+	disconnect(ContactManager::instance(), SIGNAL(contactAboutToBeDetached(Contact, bool)),
+			this, SLOT(contactAboutToBeDetached(Contact, bool)));
+	disconnect(ContactManager::instance(), SIGNAL(contactAttached(Contact, bool)),
+			this, SLOT(contactAttached(Contact, bool)));
 	disconnect(ContactManager::instance(), SIGNAL(contactIdChanged(Contact, const QString &)),
 			this, SLOT(contactIdChanged(Contact, const QString &)));
-	disconnect(ContactManager::instance(), SIGNAL(contactReattached(Contact)),
-			this, SLOT(contactUpdated(Contact)));
 
 	disconnect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy &)),
 			this, SLOT(buddyUpdated(Buddy &)));
@@ -316,14 +312,23 @@ void JabberProtocol::clientResourceReceived(const XMPP::Jid &jid, const XMPP::Re
 	kdebugf2();
 }
 
-void JabberProtocol::contactAttached(Contact contact)
+void JabberProtocol::contactAttached(Contact contact, bool reattached)
 {
+	if (reattached)
+	{
+		contactUpdated(contact);
+		return;
+	}
+
 	if (CurrentRosterService)
 		CurrentRosterService->addContact(contact);
 }
 
-void JabberProtocol::contactAboutToBeDetached(Contact contact)
+void JabberProtocol::contactAboutToBeDetached(Contact contact, bool reattached)
 {
+	if (reattached)
+		return;
+
 	if (CurrentRosterService)
 		CurrentRosterService->removeContact(contact);
 }
@@ -367,7 +372,7 @@ void JabberProtocol::contactIdChanged(Contact contact, const QString &oldId)
 		return;
 
 	JabberClient->removeContact(oldId);
-	contactAttached(contact);
+	contactAttached(contact, false);
 }
 
 JabberResourcePool *JabberProtocol::resourcePool()

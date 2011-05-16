@@ -82,8 +82,8 @@ private slots:
 	void clientResourceReceived(const XMPP::Jid &j, const XMPP::Resource &r);
 	void slotClientDebugMessage (const QString &msg);
 
-	void contactAboutToBeDetached(Contact contact);
-	void contactAttached(Contact contact);
+	void contactAboutToBeDetached(Contact contact, bool reattached);
+	void contactAttached(Contact contact, bool reattached);
 	void contactUpdated(Contact contact);
 
 	void buddyUpdated(Buddy &buddy);

@@ -48,8 +48,8 @@ private slots:
 	void buddyUpdated(Buddy &buddy);
 
 	void contactAboutToBeAttached(Contact contact, Buddy nearFutureBuddy);
-	void contactAttached(Contact contact);
-	void contactAboutToBeDetached(Contact contact);
+	void contactAttached(Contact contact, bool reattached);
+	void contactAboutToBeDetached(Contact contact, bool reattached);
 	void contactDetached(Contact contact, Buddy previousBuddy);
 
 	void contactUpdated(Contact &contact);

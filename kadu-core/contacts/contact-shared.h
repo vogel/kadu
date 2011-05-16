@@ -56,8 +56,8 @@ class KADUAPI ContactShared : public QObject, public Shared, public DetailsHolde
 	unsigned int Port;
 	QString DnsName;
 
-	void detach(const Buddy &buddy, bool emitSignals);
-	void attach(const Buddy &buddy, bool emitReattached, bool emitSignals);
+	void detach(bool reattaching, bool emitSignals);
+	void attach(bool reattaching, bool emitSignals);
 
 	void doSetOwnerBuddy(const Buddy &buddy, bool emitSignals);
 
@@ -108,11 +108,10 @@ public:
 	KaduShared_Property(short int, maximumImageSize, MaximumImageSize)
 
 signals:
-	void aboutToBeDetached();
+	void aboutToBeDetached(bool reattaching);
 	void detached(const Buddy &previousBuddy);
 	void aboutToBeAttached(const Buddy &nearFutureBuddy);
-	void attached();
-	void reattached();
+	void attached(bool reattached);
 
 	void updated();
 	void idChanged(const QString &oldId);

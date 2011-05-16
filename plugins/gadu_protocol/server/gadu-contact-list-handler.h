@@ -38,8 +38,8 @@ class GaduContactListHandler : public QObject
 
 private slots:
 	void buddySubscriptionChanged(Buddy &buddy);
-	void contactAttached(Contact contact);
-	void contactAboutToBeDetached(Contact contact);
+	void contactAttached(Contact contact, bool reattached);
+	void contactAboutToBeDetached(Contact contact, bool reattaching);
 	void contactIdChanged(Contact contact, const QString &oldId);
 
 public:

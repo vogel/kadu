@@ -49,12 +49,10 @@ GaduContactListHandler::GaduContactListHandler(GaduProtocol *protocol) :
 {
 	connect(BuddyManager::instance(), SIGNAL(buddySubscriptionChanged(Buddy &)),
 			this, SLOT(buddySubscriptionChanged(Buddy &)));
-	connect(ContactManager::instance(), SIGNAL(contactAttached(Contact)),
-			this, SLOT(contactAttached(Contact)));
-	connect(ContactManager::instance(), SIGNAL(contactReattached(Contact)),
-			this, SLOT(contactAttached(Contact)));
-	connect(ContactManager::instance(), SIGNAL(contactAboutToBeDetached(Contact)),
-			this, SLOT(contactAboutToBeDetached(Contact)));
+	connect(ContactManager::instance(), SIGNAL(contactAttached(Contact, bool)),
+			this, SLOT(contactAttached(Contact, bool)));
+	connect(ContactManager::instance(), SIGNAL(contactAboutToBeDetached(Contact, bool)),
+			this, SLOT(contactAboutToBeDetached(Contact, bool)));
 	connect(ContactManager::instance(), SIGNAL(contactIdChanged(Contact, const QString &)),
 			this, SLOT(contactIdChanged(Contact, const QString &)));
 }
@@ -63,12 +61,10 @@ GaduContactListHandler::~GaduContactListHandler()
 {
 	disconnect(BuddyManager::instance(), SIGNAL(buddySubscriptionChanged(Buddy &)),
 			this, SLOT(buddySubscriptionChanged(Buddy &)));
-	disconnect(ContactManager::instance(), SIGNAL(contactAttached(Contact)),
-			this, SLOT(contactAttached(Contact)));
-	disconnect(ContactManager::instance(), SIGNAL(contactReattached(Contact)),
-			this, SLOT(contactAttached(Contact)));
-	disconnect(ContactManager::instance(), SIGNAL(contactAboutToBeDetached(Contact)),
-			this, SLOT(contactAboutToBeDetached(Contact)));
+	disconnect(ContactManager::instance(), SIGNAL(contactAttached(Contact, bool)),
+			this, SLOT(contactAttached(Contact, bool)));
+	disconnect(ContactManager::instance(), SIGNAL(contactAboutToBeDetached(Contact, bool)),
+			this, SLOT(contactAboutToBeDetached(Contact, bool)));
 }
 
 void GaduContactListHandler::setUpContactList(const QList<Contact> &contacts)
@@ -181,16 +177,21 @@ void GaduContactListHandler::buddySubscriptionChanged(Buddy &buddy)
 		updateContactEntry(contact);
 }
 
-void GaduContactListHandler::contactAttached(Contact contact)
+void GaduContactListHandler::contactAttached(Contact contact, bool reattached)
 {
+	Q_UNUSED(reattached)
+
 	if (contact.contactAccount() != Protocol->account())
 		return;
 
 	addContactEntry(contact);
 }
 
-void GaduContactListHandler::contactAboutToBeDetached(Contact contact)
+void GaduContactListHandler::contactAboutToBeDetached(Contact contact, bool reattaching)
 {
+	if (reattaching)
+		return;
+
 	if (contact.contactAccount() != Protocol->account())
 		return;
 
