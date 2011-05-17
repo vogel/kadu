@@ -252,4 +252,10 @@ macro (kadu_plugin)
 		set_target_properties (${PLUGIN_NAME} PROPERTIES LINK_FLAGS "-undefined dynamic_lookup")
 	endif (APPLE)
 	install (TARGETS ${PLUGIN_NAME} RUNTIME DESTINATION ${KADU_PLUGINS_LIBDIR} LIBRARY DESTINATION ${KADU_PLUGINS_LIBDIR})
+
+	cmake_policy(SET CMP0002 OLD)
+	add_custom_target (tsupdate
+		${CMAKE_INSTALL_PREFIX}/${KADU_PLUGINS_DIR}/sdk/plugintsupdate.sh "${CMAKE_CURRENT_SOURCE_DIR}"
+	)
+	cmake_policy(SET CMP0002 NEW)
 endmacro (kadu_plugin)

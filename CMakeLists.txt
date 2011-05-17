@@ -107,6 +107,8 @@ include_directories (${CMAKE_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CUR
 
 if (INSTALL_CMAKE_MODULE)
 	install (FILES cmake/FindKadu.cmake DESTINATION ${KADU_CMAKE_MODULES_DIR})
+	install (PROGRAMS translations/plugintsupdate.sh DESTINATION ${KADU_PLUGINS_DIR}/sdk)
+	install (FILES translations/configuration-ui.xsl DESTINATION ${KADU_PLUGINS_DIR}/sdk)
 endif (INSTALL_CMAKE_MODULE)
 
 # build
