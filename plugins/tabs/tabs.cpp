@@ -403,7 +403,7 @@ void TabsManager::onTimer()
 {
 	kdebugf();
 	ChatWidget *chat;
-	static bool msg = true, wasactive = true;
+	static bool msg = true;
 
 	// NOTE: keep it consistent with onMessageReceived()
 	bool tabsActive = _isWindowActiveOrFullyVisible(TabDialog);
@@ -431,8 +431,6 @@ void TabsManager::onTimer()
 					TabDialog->setTabIcon(i, chat->icon());
 					ChatsWithNewMessages.removeAll(chat);
 				}
-				else if (ChatsWithNewMessages.count() == 1 && !wasactive && ConfigAutoTabChange)
-					TabDialog->setCurrentWidget(chat);
 			}
 			else
 			{
@@ -473,7 +471,6 @@ void TabsManager::onTimer()
 		}
 	}
 
-	wasactive = tabsActive;
 	msg = !msg;
 
 	if (!ChatsWithNewMessages.isEmpty() && !Timer.isActive())
@@ -666,7 +663,6 @@ void TabsManager::configurationUpdated()
 	kdebugf();
 	ConfigConferencesInTabs = config_file.readBoolEntry("Chat", "ConferencesInTabs");
 	ConfigTabsBelowChats = config_file.readBoolEntry("Chat", "TabsBelowChats");
-	ConfigAutoTabChange = config_file.readBoolEntry("Chat", "AutoTabChange");
 	ConfigDefaultTabs = config_file.readBoolEntry("Chat", "DefaultTabs");
 	ConfigMinTabs = config_file.readUnsignedNumEntry("Chat", "MinTabs");
 	ConfigBlinkChatTitle = config_file.readBoolEntry("Chat", "BlinkChatTitle");
@@ -756,7 +752,6 @@ void TabsManager::createDefaultConfiguration()
 	config_file.addVariable("ShortCuts", "SwitchTabRight", "Alt+Right");
 	config_file.addVariable("Chat", "ConferencesInTabs", "true");
 	config_file.addVariable("Chat", "TabsBelowChats", "false");
-	config_file.addVariable("Chat", "AutoTabChange", "false");
 	config_file.addVariable("Chat", "DefaultTabs", "true");
 	config_file.addVariable("Chat", "MinTabs", "1");
 	config_file.addVariable("Tabs", "CloseButton", "true");

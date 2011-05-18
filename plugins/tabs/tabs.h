@@ -78,7 +78,6 @@ class TabsManager : public ConfigurationUiHandler, ConfigurationAwareObject, Sto
 	*/
 	bool ConfigConferencesInTabs;
 	bool ConfigTabsBelowChats;
-	bool ConfigAutoTabChange;
 	bool ConfigDefaultTabs;
 	int ConfigMinTabs;
 	bool ConfigBlinkChatTitle;
