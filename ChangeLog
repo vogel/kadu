@@ -28,6 +28,7 @@
 * parser_extender: plugin moved to Kadu core (beevvy)
 * gui: #2052 fixed: wrong status types in information panel for blocked or blocking buddy (dienet)
 * tabs: #726 fixed: removed not-working and not-documented auto-tab-change option (Vogel)
+* gui: #1094 fixed: update send-email action on buddy change (Vogel)
 
 +++ version 0.9.2
 * tabs: #2129 fixed: regression since 0.9.1 that caused button to be shown when the shouldn't in certain configurations (beevvy)

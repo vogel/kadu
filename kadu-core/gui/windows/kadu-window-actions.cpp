@@ -306,6 +306,7 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 		disableNoEMail
 	);
 	BuddiesListViewMenuManager::instance()->addActionDescription(WriteEmail, BuddiesListViewMenuItem::MenuCategoryActions, 200);
+	connect(WriteEmail, SIGNAL(actionCreated(Action *)), this, SLOT(writeEmailActionCreated(Action *)));
 
 	LookupUserInfo = new ActionDescription(this,
 		ActionDescription::TypeUser, "lookupUserInfoAction",
@@ -534,6 +535,12 @@ void KaduWindowActions::showMyselfActionCreated(Action *action)
 		model->setIncludeMyself(enabled);
 		action->setChecked(enabled);
 	}
+}
+
+void KaduWindowActions::writeEmailActionCreated(Action *action)
+{
+	if (action->buddy())
+		connect(action->buddy(), SIGNAL(updated()), action, SLOT(checkState()));
 }
 
 void KaduWindowActions::configurationActionActivated(QAction *sender, bool toggled)

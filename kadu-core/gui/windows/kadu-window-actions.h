@@ -85,6 +85,7 @@ private slots:
 	void showInfoPanelActionCreated(Action *action);
 	void showBlockedActionCreated(Action *action);
 	void showMyselfActionCreated(Action *action);
+	void writeEmailActionCreated(Action *action);
 
 	void configurationActionActivated(QAction *sender, bool toggled);
 	void yourAccountsActionActivated(QAction *sender, bool toggled);
