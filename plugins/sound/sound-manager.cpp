@@ -108,7 +108,6 @@ void SoundManager::createDefaultConfiguration()
 	config_file.addVariable("Sounds", "SoundPaths", QString());
 	config_file.addVariable("Sounds", "SoundTheme", "default");
 	config_file.addVariable("Sounds", "SoundVolume", 100);
-	config_file.addVariable("Sounds", "VolumeControl", false);
 }
 
 bool SoundManager::isMuted() const
@@ -126,14 +125,8 @@ void SoundManager::playFile(const QString &path, bool force)
 	if (isMuted() && !force)
 		return;
 
-	if (QFile::exists(path))
-		playFile(path, config_file.readBoolEntry("Sounds", "VolumeControl"), 1.0 * config_file.readDoubleNumEntry("Sounds", "SoundVolume") / 100);
-}
-
-void SoundManager::playFile(const QString &path, bool volumeControl, double volume)
-{
-	if (Player)
-		PlayThread->play(Player, path, volumeControl, volume);
+	if (Player && QFile::exists(path))
+		PlayThread->play(Player, path);
 }
 
 void SoundManager::playSoundByName(const QString &soundName)

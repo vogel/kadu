@@ -60,7 +60,6 @@ class SOUNDAPI SoundManager : public QObject
 
 public slots:
 	void playFile(const QString &path, bool force = false);
-	void playFile(const QString &path, bool volumeControl, double volume);
 	void playSoundByName(const QString &soundName);
 
 	void setMute(bool enable);

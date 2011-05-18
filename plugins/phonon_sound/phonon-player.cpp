@@ -70,11 +70,8 @@ PhononPlayer::~PhononPlayer()
 	Media->deleteLater();
 }
 
-void PhononPlayer::playSound(const QString &path, bool volumeControl, double volumes)
+void PhononPlayer::playSound(const QString &path)
 {
-	Q_UNUSED(volumeControl)
-	Q_UNUSED(volumes)
-
 	kdebugf();
 
 	Media->setCurrentSource(path);

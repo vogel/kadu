@@ -60,7 +60,7 @@ ExternalPlayer::~ExternalPlayer()
 {
 }
 
-void ExternalPlayer::playSound(const QString &path, bool volumeControl, double volume)
+void ExternalPlayer::playSound(const QString &path)
 {
 	kdebugf();
 
@@ -74,13 +74,6 @@ void ExternalPlayer::playSound(const QString &path, bool volumeControl, double v
 	}
 
 	QStringList argumentList;
-
-	if (volumeControl)
-	{
-		argumentList.append("-v");
-		argumentList.append(QString::number(volume, 'g', 2));
-	}
-
 	argumentList.append(path);
 
 	QProcess process;

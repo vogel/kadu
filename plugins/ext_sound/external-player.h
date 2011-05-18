@@ -47,7 +47,7 @@ public:
 	static void destroyInstance();
 	static ExternalPlayer * instance();
 
-	virtual void playSound(const QString &path, bool volumeControl, double volume);
+	virtual void playSound(const QString &path);
 
 };
 

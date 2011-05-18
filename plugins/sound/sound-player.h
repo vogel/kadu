@@ -33,7 +33,7 @@ public:
 	SoundPlayer() {}
 	virtual ~SoundPlayer() {}
 
-	virtual void playSound(const QString &sound, bool volumeControl, double vol) = 0;
+	virtual void playSound(const QString &sound) = 0;
 
 };
 

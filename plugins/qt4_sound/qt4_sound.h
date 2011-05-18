@@ -38,7 +38,7 @@ public:
 	static void destroyInstance();
 	static QtSound4Player *instance();
 
-	virtual void playSound(const QString &path, bool volCntrl, double vol);
+	virtual void playSound(const QString &path);
 
 };
 

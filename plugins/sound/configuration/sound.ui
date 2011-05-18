@@ -10,10 +10,6 @@
 				<combo-box caption="Sound theme" config-section="Sounds" config-item="SoundTheme" id="sound/themes" />
 				<path-list-edit caption="Sound paths" config-section="Sounds" config-item="SoundPaths" id="soundPaths" />
 			</group-box>
-			<group-box name="Volume" id="sound/volume">
-				<check-box caption="Enable volume control (player must support it)" config-section="Sounds" config-item="VolumeControl" id="sound/enableVolumeControl" />
-				<slider caption="Volume" config-section="Sounds" config-item="SoundVolume" min-value="0" max-value="100" page-step="20" id="sound/volumeControl" />
-			</group-box>
 		</tab>
 	</section>
 </configuration-ui>

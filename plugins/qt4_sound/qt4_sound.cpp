@@ -66,11 +66,8 @@ QtSound4Player::~QtSound4Player()
 	kdebugf2();
 }
 
-void QtSound4Player::playSound(const QString &path, bool volCntrl, double vol)
+void QtSound4Player::playSound(const QString &path)
 {
-	Q_UNUSED(volCntrl)
-	Q_UNUSED(vol)
-
 	kdebugf();
 	QSound::play(path);
 	kdebugf2();

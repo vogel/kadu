@@ -112,9 +112,6 @@ void SoundConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurati
 	//connect(mainConfigurationWindow->widget()->widgetById("sound/use"), SIGNAL(toggled(bool)),
 	//	mainConfigurationWindow->widget()->widgetById("sound/samples"), SLOT(setEnabled(bool)));
 
-	connect(mainConfigurationWindow->widget()->widgetById("sound/enableVolumeControl"), SIGNAL(toggled(bool)),
-		mainConfigurationWindow->widget()->widgetById("sound/volumeControl"), SLOT(setEnabled(bool)));
-
 	connect(mainConfigurationWindow->widget()->widgetById("sound/testPlay"), SIGNAL(clicked()), SoundManager::instance(), SLOT(testSoundPlaying()));
 
 	ThemesComboBox = static_cast<ConfigComboBox *>(mainConfigurationWindow->widget()->widgetById("sound/themes"));

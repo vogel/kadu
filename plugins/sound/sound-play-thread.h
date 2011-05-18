@@ -39,8 +39,6 @@ class SoundPlayThread : public QThread
 
 	SoundPlayer *Player;
 	QString Path;
-	bool VolumeControl;
-	float Volume;
 
 private slots:
 	void playerDestroyed();
@@ -54,7 +52,7 @@ public:
 
 	void end();
 
-	void play(SoundPlayer *player, const QString &path, bool volumeControl = false, float volume = 1.0);
+	void play(SoundPlayer *player, const QString &path);
 
 };
 

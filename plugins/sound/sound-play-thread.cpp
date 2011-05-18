@@ -57,7 +57,7 @@ void SoundPlayThread::run()
 			if (Player)
 			{
 				PlayingMutex.lock();
-				Player->playSound(Path, VolumeControl, Volume);
+				Player->playSound(Path);
 				PlayingMutex.unlock();
 			}
 
@@ -74,7 +74,7 @@ void SoundPlayThread::end()
 	NewSoundToPlay.wakeAll();
 }
 
-void SoundPlayThread::play(SoundPlayer *player, const QString &path, bool volumeControl, float volume)
+void SoundPlayThread::play(SoundPlayer *player, const QString &path)
 {
 	if (!PlayingMutex.tryLock())
 		return; // one sound is played, we ignore next one
@@ -91,8 +91,6 @@ void SoundPlayThread::play(SoundPlayer *player, const QString &path, bool volume
 	}
 
 	Path = path;
-	VolumeControl = volumeControl;
-	Volume = volume;
 
 	Play = true;
 
