@@ -25,6 +25,7 @@
 
 #include "protocols/services/contact-list-service.h"
 
+class GaduContactListStateMachine;
 class GaduProtocol;
 class GaduProtocolSocketNotifiers;
 
@@ -33,6 +34,7 @@ class GaduContactListService : public ContactListService
 	Q_OBJECT
 
 	GaduProtocol *Protocol;
+	GaduContactListStateMachine *StateMachine;
 
 	friend class GaduProtocolSocketNotifiers;
 	void handleEventUserlist100Version(struct gg_event *e);
@@ -41,16 +43,28 @@ class GaduContactListService : public ContactListService
 	void handleEventUserlist100Reply(struct gg_event *e);
 
 public:
-	GaduContactListService(GaduProtocol *protocol);
+	explicit GaduContactListService(GaduProtocol *protocol);
+	virtual ~GaduContactListService();
 
-	virtual void exportContactList();
+	virtual bool shouldDeleteOldContactsAutomatically() const;
+
 	virtual void exportContactList(const BuddyList &buddies);
 
 	virtual QList<Buddy> loadBuddyList(QTextStream &dataStream);
 	virtual QByteArray storeBuddyList(const BuddyList &buddies);
 
 public slots:
-	virtual void importContactList(bool automaticallySetBuddiesList = true);
+	virtual void exportContactList();
+	virtual void importContactList();
+
+signals:
+	// state machine signals
+	void stateMachineInternalError();
+	void stateMachineNewVersionAvailable();
+	void stateMachineSucceededImporting();
+	void stateMachineSucceededExporting();
+	void stateMachineFailedExporting();
+	void stateMachineHasDirtyContacts();
 
 };
 

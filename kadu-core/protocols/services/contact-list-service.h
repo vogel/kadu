@@ -44,14 +44,16 @@ public:
 
 	Protocol * protocol() const { return CurrentProtocol; }
 
-	virtual void importContactList(bool automaticallySetBuddiesList = true);
+	virtual bool shouldDeleteOldContactsAutomatically() const = 0;
+
+	virtual void importContactList();
 	virtual void exportContactList() = 0;
 	virtual void exportContactList(const BuddyList &buddies) = 0;
 
 	virtual QList<Buddy> loadBuddyList(QTextStream &dataStream) = 0;
 	virtual QByteArray storeBuddyList(const BuddyList &buddies) = 0;
 
-	void setBuddiesList(const BuddyList &buddies, bool removeOld = true);
+	void setBuddiesList(const BuddyList &buddies, bool removeOldAutomatically);
 
 public slots:
 	virtual void contactListImportedSlot(bool ok, const BuddyList &buddies);

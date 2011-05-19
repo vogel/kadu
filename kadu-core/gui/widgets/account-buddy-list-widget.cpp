@@ -117,7 +117,7 @@ void AccountBuddyListWidget::startImportTransfer()
 	if (!service)
 		return;
 	ImportButton->setEnabled(false);
-	service->importContactList(false);
+	service->importContactList();
 
 	kdebugf2();
 }
@@ -145,6 +145,8 @@ void AccountBuddyListWidget::startExportTransfer()
 
 void AccountBuddyListWidget::buddiesListImported(bool ok, const BuddyList &buddies)
 {
+	Q_UNUSED(buddies)
+
 	kdebugf();
 
 	ImportButton->setEnabled(true);
@@ -158,12 +160,6 @@ void AccountBuddyListWidget::buddiesListImported(bool ok, const BuddyList &buddi
 			startImportTransfer();
 		return;
 	}
-
-	ContactListService *service = CurrentAccount.protocolHandler()->contactListService();
-	if (!service)
-		return;
-
-	service->setBuddiesList(buddies);
 }
 
 void AccountBuddyListWidget::buddiesListExported(bool ok)

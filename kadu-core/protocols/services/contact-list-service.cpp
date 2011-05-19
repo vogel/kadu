@@ -82,7 +82,7 @@ Buddy ContactListService::registerBuddy(Buddy buddy)
 	return resultBuddy;
 }
 
-void ContactListService::setBuddiesList(const BuddyList &buddies, bool removeOld)
+void ContactListService::setBuddiesList(const BuddyList &buddies, bool removeOldAutomatically)
 {
 	QList<Contact> unImportedContacts = ContactManager::instance()->contacts(CurrentProtocol->account());
 
@@ -113,9 +113,9 @@ void ContactListService::setBuddiesList(const BuddyList &buddies, bool removeOld
 		++i;
 	}
 
-	if (removeOld && !unImportedContacts.isEmpty())
+	if (!unImportedContacts.isEmpty())
 	{
-		if (MessageDialog::ask(KaduIcon("dialog-question"),
+		if (removeOldAutomatically || MessageDialog::ask(KaduIcon("dialog-question"),
 				tr("Kadu - Account %1 (%2)").arg(CurrentProtocol->account().accountIdentity().name()).arg(CurrentProtocol->account().id()),
 				tr("Following contacts from your list were not found on server: <b>%0</b>.<br/>"
 				"Do you want to remove them from contact list?").arg(contactsList.join("</b>, <b>"))))
@@ -128,11 +128,10 @@ void ContactListService::setBuddiesList(const BuddyList &buddies, bool removeOld
 	ConfigurationManager::instance()->flush();
 }
 
-void ContactListService::importContactList(bool automaticallySetBuddiesList)
+void ContactListService::importContactList()
 {
-	if (automaticallySetBuddiesList)
-		connect(this, SIGNAL(contactListImported(bool,BuddyList)),
-				this, SLOT(contactListImportedSlot(bool,BuddyList)));
+	connect(this, SIGNAL(contactListImported(bool,BuddyList)),
+			this, SLOT(contactListImportedSlot(bool,BuddyList)));
 }
 
 void ContactListService::contactListImportedSlot(bool ok, const BuddyList &buddies)
@@ -141,5 +140,5 @@ void ContactListService::contactListImportedSlot(bool ok, const BuddyList &buddi
 			this, SLOT(contactListImportedSlot(bool,BuddyList)));
 
 	if (ok)
-		setBuddiesList(buddies);
+		setBuddiesList(buddies, shouldDeleteOldContactsAutomatically());
 }

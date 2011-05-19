@@ -31,7 +31,7 @@
 #include "gadu-account-details.h"
 
 GaduAccountDetails::GaduAccountDetails(AccountShared *data) :
-		AccountDetails(data), AllowDcc(true), InitialRosterImport(false)
+		AccountDetails(data), AllowDcc(true)
 {
 	OpenChatRunner = new GaduOpenChatWithRunner(data);
 	OpenChatWithRunnerManager::instance()->registerRunner(OpenChatRunner);
@@ -58,7 +58,6 @@ void GaduAccountDetails::load()
 	ReceiveImagesDuringInvisibility = loadValue<bool>("ReceiveImagesDuringInvisibility", true);
 	MaximumImageRequests = loadValue<short int>("MaximumImageRequests", 10);
 	ChatImageSizeWarning = loadValue<bool>("ChatImageSizeWarning", true);
-	InitialRosterImport = loadValue<bool>("InitialRosterImport", false);
 	SendTypingNotification = loadValue<bool>("SendTypingNotification", true);
 	TlsEncryption = loadValue<bool>("TlsEncryption", false);
 	ExternalIp = loadValue<QString>("ExternalIp");
@@ -78,7 +77,6 @@ void GaduAccountDetails::store()
 	storeValue("ReceiveImagesDuringInvisibility", ReceiveImagesDuringInvisibility);
 	storeValue("MaximumImageRequests", MaximumImageRequests);
 	storeValue("ChatImageSizeWarning", ChatImageSizeWarning);
-	storeValue("InitialRosterImport", InitialRosterImport);
 	storeValue("TlsEncryption", TlsEncryption);
 	storeValue("SendTypingNotification", SendTypingNotification);
 	storeValue("ExternalIp", ExternalIp);
