@@ -26,6 +26,8 @@
 #include <QtCore/QByteArray>
 
 #include "buddies/buddy-manager.h"
+#include "contacts/contact.h"
+#include "contacts/contact-manager.h"
 #include "contacts/contact-shared.h"
 #include "misc/misc.h"
 #include "debug.h"
@@ -120,6 +122,9 @@ void GaduContactListService::handleEventUserlist100PutReply(struct gg_event *e)
 		if (accountDetails)
 		{
 			accountDetails->setUserlistVersion(e->event.userlist100_reply.version);
+
+			foreach (const Contact &contact, ContactManager::instance()->contacts(Protocol->account()))
+				contact.setRosterStatus(RosterStatusNormal);
 
 			emit stateMachineSucceededExporting();
 			emit contactListExported(true);

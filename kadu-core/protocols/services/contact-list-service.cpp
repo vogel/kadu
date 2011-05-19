@@ -44,7 +44,7 @@ Buddy ContactListService::registerBuddy(Buddy buddy)
 	if (buddy.display().isEmpty())
 		buddy.setDisplay(buddy.uuid().toString());
 
-	Buddy resultBuddy = BuddyManager::instance()->byDisplay(buddy.display(), ActionCreateAndAdd);
+	Buddy resultBuddy = BuddyManager::instance()->byDisplay(buddy.display(), ActionCreate);
 	resultBuddy.setAnonymous(false);
 	
 	// TODO: generate this somehow based on which information the actual contact list service can provide
@@ -61,23 +61,41 @@ Buddy ContactListService::registerBuddy(Buddy buddy)
 	resultBuddy.setWebsite(buddy.website());
 	resultBuddy.setGender(buddy.gender());
 
+	bool addedSomething = false;
 	foreach (const Contact &contact, buddy.contacts(CurrentProtocol->account()))
 	{
 		Contact knownContact = ContactManager::instance()->byId(CurrentProtocol->account(), contact.id(), ActionReturnNull);
 		if (knownContact)
 		{
-			if (knownContact.ownerBuddy() != resultBuddy)
+			if (knownContact.ownerBuddy().isAnonymous() && RosterStatusDirtyRemoved == knownContact.rosterStatus())
+				BuddyManager::instance()->clearOwnerAndRemoveEmptyBuddy(knownContact);
+			else if (knownContact.ownerBuddy() != resultBuddy)
 			{
 				BuddyManager::instance()->clearOwnerAndRemoveEmptyBuddy(knownContact);
 				knownContact.setOwnerBuddy(resultBuddy);
+				addedSomething = true;
 			}
+			else
+				addedSomething = true;
+
+			knownContact.setRosterStatus(RosterStatusNormal);
 		}
 		else
 		{
 			ContactManager::instance()->addItem(contact);
+			contact.setRosterStatus(RosterStatusNormal);
 			contact.setOwnerBuddy(resultBuddy);
+			addedSomething = true;
 		}
 	}
+	
+	if (!addedSomething)
+		return Buddy::null;
+
+	// sometimes when a new Contact is added from server on login, sorting fails on that Contact,
+	// and moving this call before the loop fixes it
+	// TODO 0.10: find out why it happens and fix it _properly_ as it _might_ be a bug in model
+	BuddyManager::instance()->addItem(resultBuddy);
 
 	return resultBuddy;
 }
@@ -101,7 +119,7 @@ void ContactListService::setBuddiesList(const BuddyList &buddies, bool removeOld
 	while (i != unImportedContacts.end())
 	{
 		Buddy ownerBuddy = i->ownerBuddy();
-		if (ownerBuddy.isAnonymous())
+		if (RosterStatusDirtyAdded == i->rosterStatus() || ownerBuddy.isAnonymous())
 		{
 			i = unImportedContacts.erase(i);
 			continue;
@@ -121,8 +139,14 @@ void ContactListService::setBuddiesList(const BuddyList &buddies, bool removeOld
 				"Do you want to remove them from contact list?").arg(contactsList.join("</b>, <b>"))))
 		{
 			foreach (const Contact &contact, unImportedContacts)
+			{
 				BuddyManager::instance()->clearOwnerAndRemoveEmptyBuddy(contact);
+				contact.setRosterStatus(RosterStatusNormal);
+			}
 		}
+		else
+			foreach (const Contact &contact, unImportedContacts)
+				contact.setRosterStatus(RosterStatusDirtyAdded);
 	}
 
 	ConfigurationManager::instance()->flush();
