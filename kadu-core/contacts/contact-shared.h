@@ -99,10 +99,12 @@ public:
 	KaduShared_PropertyRead(const QString &, id, Id)
 	void setId(const QString &id);
 
+	KaduShared_PropertyBoolRead(Dirty)
+	void setDirty(bool dirty);
+
 	KaduShared_Property(int, priority, Priority)
 	KaduShared_Property(const Status &, currentStatus, CurrentStatus)
 	KaduShared_PropertyBool(Blocking)
-	KaduShared_PropertyBool(Dirty)
 	KaduShared_Property(const QString &, protocolVersion, ProtocolVersion)
 	KaduShared_Property(const QHostAddress &, address, Address)
 	KaduShared_Property(unsigned int, port, Port)
@@ -117,6 +119,7 @@ signals:
 
 	void updated();
 	void idChanged(const QString &oldId);
+	void dirtinessChanged();
 
 };
 

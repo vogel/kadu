@@ -320,3 +320,15 @@ void ContactShared::setId(const QString &id)
 	dataUpdated();
 	emit idChanged(oldId);
 }
+
+void ContactShared::setDirty(bool dirty)
+{
+	ensureLoaded();
+
+	if (Dirty == dirty)
+		return;
+
+	Dirty = dirty;
+	dataUpdated();
+	emit dirtinessChanged();
+}
