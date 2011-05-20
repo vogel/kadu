@@ -32,19 +32,17 @@ class Buddy;
 class BuddyList;
 class Contact;
 
-class GaduListHelper
+namespace GaduListHelper
 {
-
-public:
-	static QByteArray buddyListToByteArray(Account account, const BuddyList &buddies);
-	static QString contactToLine70(Contact contact);
-	static BuddyList byteArrayToBuddyList(Account account, QByteArray &content);
-	static BuddyList streamToBuddyList(Account account, QTextStream &content);
-	static Buddy linePre70ToBuddy(Account account, QStringList &sections);
-	static Buddy line70ToBuddy(Account account, QStringList &sections);
-	static BuddyList streamPost70ToBuddyList(const QString &line, Account account, QTextStream &content);
-	static BuddyList stream70ToBuddyList(Account account, QTextStream &content);
-	static BuddyList streamPre70ToBuddyList(const QString &firstLine, Account account, QTextStream &content);
-};
+	QByteArray buddyListToByteArray(Account account, const BuddyList &buddies);
+	QString contactToLine70(Contact contact);
+	BuddyList byteArrayToBuddyList(Account account, QByteArray &content);
+	BuddyList streamToBuddyList(Account account, QTextStream &content);
+	Buddy linePre70ToBuddy(Account account, QStringList &sections);
+	Buddy line70ToBuddy(Account account, QStringList &sections);
+	BuddyList streamPost70ToBuddyList(const QString &line, Account account, QTextStream &content);
+	BuddyList stream70ToBuddyList(Account account, QTextStream &content);
+	BuddyList streamPre70ToBuddyList(const QString &firstLine, Account account, QTextStream &content);
+}
 
 #endif // GADU_LIST_HELPER_H
