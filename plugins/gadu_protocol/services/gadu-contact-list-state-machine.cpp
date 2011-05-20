@@ -52,7 +52,8 @@ GaduContactListStateMachine::GaduContactListStateMachine(GaduContactListService 
 
 	connect(AwaitingServerGetResponseState, SIGNAL(entered()), SIGNAL(awaitingServerGetResponseStateEntered()));
 	connect(AwaitingServerPutResponseState, SIGNAL(entered()), SIGNAL(awaitingServerPutResponseStateEntered()));
-	connect(InternalErrorState, SIGNAL(entered()), SLOT(startRetryTimer()));
+
+	connect(InternalErrorState, SIGNAL(entered()), &RetryTimer, SLOT(start()));
 
 	Protocol *protocol = CurrentService->protocol();
 	Q_ASSERT(protocol);
@@ -83,11 +84,6 @@ GaduContactListStateMachine::GaduContactListStateMachine(GaduContactListService 
 
 GaduContactListStateMachine::~GaduContactListStateMachine()
 {
-}
-
-void GaduContactListStateMachine::startRetryTimer()
-{
-	RetryTimer.start();
 }
 
 void GaduContactListStateMachine::printConfiguration()

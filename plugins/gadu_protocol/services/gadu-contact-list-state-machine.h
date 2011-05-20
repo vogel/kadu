@@ -41,7 +41,6 @@ class GaduContactListStateMachine : public QStateMachine
 	QState *NormalState;
 
 private slots:
-	void startRetryTimer();
 	void printConfiguration();
 
 public:
