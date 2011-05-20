@@ -196,6 +196,11 @@ void GaduContactListService::exportContactList(const BuddyList &buddies)
 	}
 }
 
+void GaduContactListService::copySupportedBuddyInformation(Buddy &destination, const Buddy &source)
+{
+	GaduListHelper::setSupportedBuddyInformation(destination, source);
+}
+
 QList<Buddy> GaduContactListService::loadBuddyList(QTextStream &dataStream)
 {
 	return GaduListHelper::streamToBuddyList(Protocol->account(), dataStream);

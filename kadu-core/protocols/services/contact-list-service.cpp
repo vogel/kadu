@@ -46,20 +46,8 @@ Buddy ContactListService::registerBuddy(Buddy buddy)
 
 	Buddy resultBuddy = BuddyManager::instance()->byDisplay(buddy.display(), ActionCreate);
 	resultBuddy.setAnonymous(false);
-	
-	// TODO: generate this somehow based on which information the actual contact list service can provide
-	resultBuddy.setFirstName(buddy.firstName());
-	resultBuddy.setLastName(buddy.lastName());
-	resultBuddy.setNickName(buddy.nickName());
-	resultBuddy.setMobile(buddy.mobile());
-	resultBuddy.setGroups(buddy.groups());
-	resultBuddy.setEmail(buddy.email());
-	resultBuddy.setDisplay(buddy.display());
-	resultBuddy.setHomePhone(buddy.homePhone());
-	resultBuddy.setOfflineTo(buddy.isOfflineTo());
-	resultBuddy.setCity(buddy.city());
-	resultBuddy.setWebsite(buddy.website());
-	resultBuddy.setGender(buddy.gender());
+
+	copySupportedBuddyInformation(resultBuddy, buddy);
 
 	bool addedSomething = false;
 	foreach (const Contact &contact, buddy.contacts(CurrentProtocol->account()))
