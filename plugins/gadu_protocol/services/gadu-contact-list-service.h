@@ -46,6 +46,8 @@ public:
 	explicit GaduContactListService(GaduProtocol *protocol);
 	virtual ~GaduContactListService();
 
+	virtual bool isListInitiallySetUp() const;
+
 	virtual void exportContactList(const BuddyList &buddies);
 
 	virtual void copySupportedBuddyInformation(Buddy &destination, const Buddy &source);

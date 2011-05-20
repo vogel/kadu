@@ -44,6 +44,10 @@ public:
 
 	Protocol * protocol() const { return CurrentProtocol; }
 
+	// it is useful when migrating from 0.9.x to a newer version
+	// TODO 0.14: remove
+	virtual bool isListInitiallySetUp() const = 0;
+
 	virtual void importContactList();
 	virtual void exportContactList() = 0;
 	virtual void exportContactList(const BuddyList &buddies) = 0;

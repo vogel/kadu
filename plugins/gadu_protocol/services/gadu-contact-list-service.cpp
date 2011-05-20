@@ -163,6 +163,13 @@ void GaduContactListService::handleEventUserlist100Version(gg_event *e)
 		emit stateMachineNewVersionAvailable();
 }
 
+bool GaduContactListService::isListInitiallySetUp() const
+{
+	GaduAccountDetails *accountDetails = dynamic_cast<GaduAccountDetails *>(Protocol->account().details());
+	Q_ASSERT(accountDetails);
+	return accountDetails && -1 != accountDetails->userlistVersion();
+}
+
 void GaduContactListService::importContactList()
 {
 	ContactListService::importContactList();

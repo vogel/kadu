@@ -55,28 +55,29 @@ Buddy ContactListService::registerBuddy(Buddy buddy)
 		Contact knownContact = ContactManager::instance()->byId(CurrentProtocol->account(), contact.id(), ActionReturnNull);
 		if (knownContact)
 		{
-			if (knownContact.ownerBuddy().isAnonymous() && knownContact.isDirty())
-				BuddyManager::instance()->clearOwnerAndRemoveEmptyBuddy(knownContact);
-			else if (knownContact.ownerBuddy() != resultBuddy)
+			// do not import dirty removed contacts unless we are migrating from 0.9.x
+			// (note that all migrated contacts, including those with anynomous buddies, are marked dirty)
+			if (!(knownContact.isDirty() && knownContact.ownerBuddy().isAnonymous()) && isListInitiallySetUp())
 			{
-				BuddyManager::instance()->clearOwnerAndRemoveEmptyBuddy(knownContact);
-				knownContact.setOwnerBuddy(resultBuddy);
+				if (knownContact.ownerBuddy() != resultBuddy)
+				{
+					BuddyManager::instance()->clearOwnerAndRemoveEmptyBuddy(knownContact);
+					knownContact.setOwnerBuddy(resultBuddy);
+				}
+
+				knownContact.setDirty(false);
 				addedSomething = true;
 			}
-			else
-				addedSomething = true;
-
-			knownContact.setDirty(false);
 		}
 		else
 		{
 			ContactManager::instance()->addItem(contact);
-			contact.setDirty(false);
 			contact.setOwnerBuddy(resultBuddy);
+			contact.setDirty(false);
 			addedSomething = true;
 		}
 	}
-	
+
 	if (!addedSomething)
 		return Buddy::null;
 
@@ -95,12 +96,17 @@ void ContactListService::setBuddiesList(const BuddyList &buddies, bool removeOld
 	foreach (const Contact &myselfContact, Core::instance()->myself().contacts(CurrentProtocol->account()))
 		unImportedContacts.removeAll(myselfContact);
 
+	// now buddies = SERVER_CONTACTS, unImportedContacts = ALL_EVER_HAD_LOCALLY_CONTACTS
+
 	foreach (const Buddy &buddy, buddies)
 	{
 		Buddy managedContactsBuddy = registerBuddy(buddy);
 		foreach (const Contact &contact, managedContactsBuddy.contacts())
 			unImportedContacts.removeAll(contact);
 	}
+
+	// now unImportedContacts = ALL_EVER_HAD_LOCALLY_CONTACTS - (SERVER_CONTACTS - LOCAL_DIRTY_REMOVED_CONTACTS)
+	// (unless we are importing from 0.9.x)
 
 	QStringList contactsList;
 	QList<Contact>::iterator i = unImportedContacts.begin();
@@ -109,7 +115,7 @@ void ContactListService::setBuddiesList(const BuddyList &buddies, bool removeOld
 		Buddy ownerBuddy = i->ownerBuddy();
 		if (i->isDirty() || ownerBuddy.isAnonymous())
 		{
-			if (i->isDirty() && ownerBuddy.isAnonymous())
+			if (i->isDirty() && ownerBuddy.isAnonymous() && !isListInitiallySetUp())
 				i->setDirty(false);
 
 			i = unImportedContacts.erase(i);
@@ -120,6 +126,12 @@ void ContactListService::setBuddiesList(const BuddyList &buddies, bool removeOld
 
 		++i;
 	}
+
+	// now unImportedContacts = ALL_EVER_HAD_LOCALLY_CONTACTS - (SERVER_CONTACTS - LOCAL_DIRTY_REMOVED_CONTACTS) -
+	//                          - LOCAL_REMOVED_CONTACTS - LOCAL_DIRTY_ADDED_CONTACTS =
+	//                        = NOT_REMOVED_LOCAL_CONTACTS - SERVER_CONTACTS - LOCAL_DIRTY_ADDED_CONTACTS =
+	//                        = NOT_PRESENT_ON_SERVER_BUT_PRESENT_LOCALLY_CONTACTS - LOCAL_DIRTY_ADDED_CONTACTS
+	// (unless we are importing from 0.9.x)
 
 	if (!unImportedContacts.isEmpty())
 	{
