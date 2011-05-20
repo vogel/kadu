@@ -63,7 +63,7 @@ QString GaduListHelper::contactToLine70(Contact contact)
 	list.append(QString()); // alive sound
 	list.append(QString()); // message sound
 	list.append(QString()); // message sound
-	list.append(QString()); // offlineTo
+	list.append(QString::number((int)buddy.isOfflineTo()));
 	list.append(buddy.homePhone());
 
 	return list.join(";");
