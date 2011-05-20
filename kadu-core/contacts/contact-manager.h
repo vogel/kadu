@@ -40,6 +40,8 @@ class KADUAPI ContactManager : public QObject, public Manager<Contact>
 
 	static ContactManager * Instance;
 
+	QList<Contact> DirtyContacts;
+
 	ContactManager();
 	virtual ~ContactManager();
 
@@ -50,6 +52,7 @@ class KADUAPI ContactManager : public QObject, public Manager<Contact>
 private slots:
 	void contactDataUpdated();
 	void idChanged(const QString &oldId);
+	void dirtinessChanged();
 
 	void aboutToBeAttached(Buddy nearFutureBuddy);
 	void attached(bool reattached);
@@ -71,6 +74,9 @@ public:
 	Contact byId(Account account, const QString &id, NotFoundAction = ActionCreate);
 	QList<Contact> contacts(Account account);
 
+	const QList<Contact> & dirtyContacts();
+	QList<Contact> dirtyContacts(Account account);
+
 signals:
 	void contactAboutToBeAdded(Contact contact);
 	void contactAdded(Contact contact);
@@ -83,6 +89,8 @@ signals:
 	void contactAttached(Contact contact, bool reattached);
 
 	void contactIdChanged(Contact contact, const QString &oldId);
+
+	void dirtyContactAdded(Contact contact);
 
 	void contactUpdated(Contact &contact);
 
