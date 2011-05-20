@@ -30,7 +30,6 @@
 #include "avatars/avatar.h"
 #include "buddies/buddy.h"
 #include "contacts/contact-details.h"
-#include "contacts/contact-roster-status.h"
 #include "protocols/protocols-aware-object.h"
 #include "status/status.h"
 #include "storage/details-holder.h"
@@ -50,7 +49,7 @@ class KADUAPI ContactShared : public QObject, public Shared, public DetailsHolde
 
 	Status CurrentStatus;
 	bool Blocking;
-	ContactRosterStatus RosterStatus;
+	bool Dirty;
 
 	QString ProtocolVersion;
 
@@ -103,7 +102,7 @@ public:
 	KaduShared_Property(int, priority, Priority)
 	KaduShared_Property(const Status &, currentStatus, CurrentStatus)
 	KaduShared_PropertyBool(Blocking)
-	KaduShared_Property(ContactRosterStatus, rosterStatus, RosterStatus)
+	KaduShared_PropertyBool(Dirty)
 	KaduShared_Property(const QString &, protocolVersion, ProtocolVersion)
 	KaduShared_Property(const QHostAddress &, address, Address)
 	KaduShared_Property(unsigned int, port, Port)

@@ -124,7 +124,7 @@ void GaduContactListService::handleEventUserlist100PutReply(struct gg_event *e)
 			accountDetails->setUserlistVersion(e->event.userlist100_reply.version);
 
 			foreach (const Contact &contact, ContactManager::instance()->contacts(Protocol->account()))
-				contact.setRosterStatus(RosterStatusNormal);
+				contact.setDirty(false);
 
 			emit stateMachineSucceededExporting();
 			emit contactListExported(true);

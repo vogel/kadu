@@ -55,7 +55,7 @@ Buddy ContactListService::registerBuddy(Buddy buddy)
 		Contact knownContact = ContactManager::instance()->byId(CurrentProtocol->account(), contact.id(), ActionReturnNull);
 		if (knownContact)
 		{
-			if (knownContact.ownerBuddy().isAnonymous() && RosterStatusDirtyRemoved == knownContact.rosterStatus())
+			if (knownContact.ownerBuddy().isAnonymous() && knownContact.isDirty())
 				BuddyManager::instance()->clearOwnerAndRemoveEmptyBuddy(knownContact);
 			else if (knownContact.ownerBuddy() != resultBuddy)
 			{
@@ -66,12 +66,12 @@ Buddy ContactListService::registerBuddy(Buddy buddy)
 			else
 				addedSomething = true;
 
-			knownContact.setRosterStatus(RosterStatusNormal);
+			knownContact.setDirty(false);
 		}
 		else
 		{
 			ContactManager::instance()->addItem(contact);
-			contact.setRosterStatus(RosterStatusNormal);
+			contact.setDirty(false);
 			contact.setOwnerBuddy(resultBuddy);
 			addedSomething = true;
 		}
@@ -107,8 +107,11 @@ void ContactListService::setBuddiesList(const BuddyList &buddies, bool removeOld
 	while (i != unImportedContacts.end())
 	{
 		Buddy ownerBuddy = i->ownerBuddy();
-		if (RosterStatusDirtyAdded == i->rosterStatus() || ownerBuddy.isAnonymous())
+		if (i->isDirty() || ownerBuddy.isAnonymous())
 		{
+			if (i->isDirty() && ownerBuddy.isAnonymous())
+				i->setDirty(false);
+
 			i = unImportedContacts.erase(i);
 			continue;
 		}
@@ -126,14 +129,11 @@ void ContactListService::setBuddiesList(const BuddyList &buddies, bool removeOld
 				"Do you want to remove them from contact list?").arg(contactsList.join("</b>, <b>"))))
 		{
 			foreach (const Contact &contact, unImportedContacts)
-			{
 				BuddyManager::instance()->clearOwnerAndRemoveEmptyBuddy(contact);
-				contact.setRosterStatus(RosterStatusNormal);
-			}
 		}
 		else
 			foreach (const Contact &contact, unImportedContacts)
-				contact.setRosterStatus(RosterStatusDirtyAdded);
+				contact.setDirty(true);
 	}
 
 	ConfigurationManager::instance()->flush();
