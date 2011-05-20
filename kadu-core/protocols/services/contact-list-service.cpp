@@ -49,6 +49,7 @@ Buddy ContactListService::registerBuddy(Buddy buddy)
 
 	copySupportedBuddyInformation(resultBuddy, buddy);
 
+	QVector<Buddy> buddiesToRemove;
 	bool addedSomething = false;
 	foreach (const Contact &contact, buddy.contacts(CurrentProtocol->account()))
 	{
@@ -61,7 +62,8 @@ Buddy ContactListService::registerBuddy(Buddy buddy)
 			{
 				if (knownContact.ownerBuddy() != resultBuddy)
 				{
-					BuddyManager::instance()->clearOwnerAndRemoveEmptyBuddy(knownContact);
+					// do not remove now as theoretically it may be used in next loop run
+					buddiesToRemove.append(knownContact.ownerBuddy());
 					knownContact.setOwnerBuddy(resultBuddy);
 				}
 
@@ -80,6 +82,10 @@ Buddy ContactListService::registerBuddy(Buddy buddy)
 
 	if (!addedSomething)
 		return Buddy::null;
+
+	foreach (const Buddy &buddy, buddiesToRemove)
+		if (buddy.contacts().isEmpty())
+			BuddyManager::instance()->removeItem(buddy);
 
 	// sometimes when a new Contact is added from server on login, sorting fails on that Contact,
 	// and moving this call before the loop fixes it
@@ -141,7 +147,13 @@ void ContactListService::setBuddiesList(const BuddyList &buddies, bool removeOld
 				"Do you want to remove them from contact list?").arg(contactsList.join("</b>, <b>"))))
 		{
 			foreach (const Contact &contact, unImportedContacts)
-				BuddyManager::instance()->clearOwnerAndRemoveEmptyBuddy(contact);
+			{
+				Buddy ownerBuddy = contact.ownerBuddy();
+				contact.setOwnerBuddy(Buddy::null);
+				// remove even if it still has some data, e.g. mobile number
+				if (ownerBuddy.contacts().isEmpty())
+					BuddyManager::instance()->removeItem(ownerBuddy);
+			}
 		}
 		else
 			foreach (const Contact &contact, unImportedContacts)
