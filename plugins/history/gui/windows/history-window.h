@@ -56,6 +56,8 @@ class HistoryWindow : public MainWindow
 
 	friend class History;
 
+	static HistoryWindow *Instance;
+
 	QTreeView *ChatsTree;
 	QTreeView *DetailsListView;
 	HistoryChatsModel *ChatsModel;
@@ -142,8 +144,7 @@ public:
 	virtual StatusContainer* statusContainer() { return 0; }
 	virtual bool hasContactSelected() { return false; } // we can select only buddies here
 
-	void show(const Chat &chat);
-
+	static void show(const Chat &chat);
 };
 
 class HistoryChatsModel;

@@ -72,12 +72,38 @@
 
 #include "history-window.h"
 
+HistoryWindow * HistoryWindow::Instance = 0;
+
+void HistoryWindow::show(const Chat &chat)
+{
+	if (!History::instance()->currentStorage())
+	{
+		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("There is no history storage module loaded!"));
+		return;
+	}
+
+	Chat aggregate = AggregateChatManager::instance()->aggregateChat(chat);
+	if (!aggregate)
+		aggregate = chat;
+
+	if (!Instance)
+	    Instance = new HistoryWindow();
+
+
+	Instance->updateData();
+	Instance->selectChat(aggregate);
+
+	Instance->setVisible(true);
+	_activateWindow(Instance);
+}
+
 HistoryWindow::HistoryWindow(QWidget *parent) :
 		MainWindow("history", parent)
 {
 	kdebugf();
 
 	setWindowRole("kadu-history");
+	setAttribute(Qt::WA_DeleteOnClose);
 
 	setWindowTitle(tr("History"));
 	setWindowIcon(KaduIcon("kadu_icons/history").icon());
@@ -98,6 +124,8 @@ HistoryWindow::~HistoryWindow()
 	kdebugf();
 
 	saveWindowGeometry(this, "History", "HistoryDialogGeometry");
+
+	Instance = 0;
 
 	kdebugf2();
 }
@@ -684,25 +712,6 @@ void HistoryWindow::showDetailsPopupMenu(const QPoint &pos)
 		DetailsPopupMenu->exec(QCursor::pos());
 }
 
-void HistoryWindow::show(const Chat &chat)
-{
-	if (!History::instance()->currentStorage())
-	{
-		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("There is no history storage module loaded!"));
-		return;
-	}
-
-	Chat aggregate = AggregateChatManager::instance()->aggregateChat(chat);
-	if (!aggregate)
-		aggregate = chat;
-
-	updateData();
-	selectChat(aggregate);
-
-	QWidget::show();
-	_activateWindow(this);
-}
-
 void HistoryWindow::openChat()
 {
 	kdebugf();
@@ -784,7 +793,7 @@ void HistoryWindow::keyPressEvent(QKeyEvent *e)
 	if (e->key() == Qt::Key_Escape)
 	{
 		e->accept();
-		hide();
+		close();
 	}
 	else if (e == QKeySequence::Copy)
 		ContentBrowser->pageAction(QWebPage::Copy)->trigger();
@@ -839,5 +848,3 @@ void HistoryWindow::dateFilteringEnabled(int state)
 		updateData();
 	}
 }
-
-HistoryWindow *historyDialog = 0;

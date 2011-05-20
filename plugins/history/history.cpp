@@ -116,7 +116,7 @@ History * History::instance()
 }
 
 History::History() :
-		ConfigurationUiHandler(0), SyncEnabled(true), SaveThread(0), CurrentStorage(0), HistoryDialog(new HistoryWindow())
+		ConfigurationUiHandler(0), SyncEnabled(true), SaveThread(0), CurrentStorage(0)
 {
 	kdebugf();
 	createActionDescriptions();
@@ -137,9 +137,6 @@ History::~History()
 	kdebugf();
 	stopSaveThread();
 	deleteActionDescriptions();
-
-	delete HistoryDialog;
-	HistoryDialog = 0;
 
 	kdebugf2();
 }
@@ -184,10 +181,10 @@ void History::showHistoryActionActivated(QAction *sender, bool toggled)
 	ChatEditBox *chatEditBox = qobject_cast<ChatEditBox *>(sender->parent());
 	Chat chat = action->chat();
 	if (!chatEditBox || chat != chatEditBox->chat())
-		HistoryDialog->show(chat);
-
-	if (!chatEditBox)
+	{
+		HistoryWindow::show(chat);
 		return;
+	}
 
 	ChatWidget *chatWidget = chatEditBox->chatWidget();
 	if (chatWidget)
@@ -244,7 +241,7 @@ void History::showMoreMessages(QAction *action)
 
 	if (-1 == days)
 	{
-		HistoryDialog->show(chatWidget->chat());
+		HistoryWindow::show(chatWidget->chat());
 		return;
 	}
 	else if (0 != days)
