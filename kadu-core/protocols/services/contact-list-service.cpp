@@ -134,10 +134,8 @@ void ContactListService::setBuddiesList(const BuddyList &buddies, bool removeOld
 	{
 		if (removeOldAutomatically || MessageDialog::ask(KaduIcon("dialog-question"),
 				tr("Kadu"),
-				tr("The following contacts from your list for account %1 (%2) were not found on server:<br/><b>%3</b>.<br/>"
-				"Do you want to remove them from contact list?")
-				.arg(CurrentProtocol->account().accountIdentity().name()).arg(CurrentProtocol->account().id())
-				.arg(contactsList.join("</b>, <b>"))))
+				tr("The following contacts from your list were not found in file:<br/><b>%1</b>.<br/>"
+				"Do you want to remove them from contact list?").arg(contactsList.join("</b>, <b>"))))
 		{
 			foreach (const Contact &contact, unImportedContacts)
 			{
@@ -165,5 +163,5 @@ void ContactListService::contactListImportedSlot(bool ok, const BuddyList &buddi
 			this, SLOT(contactListImportedSlot(bool,BuddyList)));
 
 	if (ok)
-		setBuddiesList(buddies, shouldDeleteOldContactsAutomatically());
+		setBuddiesList(buddies, true);
 }

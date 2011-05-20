@@ -44,8 +44,6 @@ public:
 
 	Protocol * protocol() const { return CurrentProtocol; }
 
-	virtual bool shouldDeleteOldContactsAutomatically() const = 0;
-
 	virtual void importContactList();
 	virtual void exportContactList() = 0;
 	virtual void exportContactList(const BuddyList &buddies) = 0;

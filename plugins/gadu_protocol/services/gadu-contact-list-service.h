@@ -46,8 +46,6 @@ public:
 	explicit GaduContactListService(GaduProtocol *protocol);
 	virtual ~GaduContactListService();
 
-	virtual bool shouldDeleteOldContactsAutomatically() const;
-
 	virtual void exportContactList(const BuddyList &buddies);
 
 	virtual QList<Buddy> loadBuddyList(QTextStream &dataStream);
