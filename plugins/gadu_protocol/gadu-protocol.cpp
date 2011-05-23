@@ -213,15 +213,6 @@ void GaduProtocol::afterLoggedIn()
 	setUpFileTransferService();
 
 	sendUserList();
-
-	GaduAccountDetails *details = dynamic_cast<GaduAccountDetails *>(account().details());
-	if (details && CurrentContactListService && details->initialRosterImport())
-	{
-		details->setState(StorableObject::StateNew);
-		details->setInitialRosterImport(false);
-
-		CurrentContactListService->importContactList();
-	}
 }
 
 void GaduProtocol::logout()

@@ -295,10 +295,6 @@ void GaduProtocolSocketNotifiers::socketEvent()
 			CurrentProtocol->CurrentPersonalInfoService->handleEventPubdir50Write(e);
 			break;
 
-		case GG_EVENT_USERLIST:
-			CurrentProtocol->CurrentContactListService->handleEventUserlist(e);
-			break;
-
 		case GG_EVENT_IMAGE_REQUEST:
 			CurrentProtocol->CurrentChatImageService->handleEventImageRequest(e);
 			break;
@@ -352,6 +348,14 @@ void GaduProtocolSocketNotifiers::socketEvent()
 			}
 			else
 				CurrentProtocol->CurrentFileTransferService->handleEventDcc7Pending(e);
+			break;
+
+		case GG_EVENT_USERLIST100_VERSION:
+			CurrentProtocol->CurrentContactListService->handleEventUserlist100Version(e);
+			break;
+
+		case GG_EVENT_USERLIST100_REPLY:
+			CurrentProtocol->CurrentContactListService->handleEventUserlist100Reply(e);
 			break;
 	}
 

@@ -41,6 +41,19 @@
 
 #include "gadu-list-helper.h"
 
+void GaduListHelper::setSupportedBuddyInformation(const Buddy &destination, const Buddy &source)
+{
+	destination.setFirstName(source.firstName());
+	destination.setLastName(source.lastName());
+	destination.setNickName(source.nickName());
+	destination.setDisplay(source.display());
+	destination.setMobile(source.mobile());
+	destination.setGroups(source.groups());
+	destination.setEmail(source.email());
+	destination.setOfflineTo(source.isOfflineTo());
+	destination.setHomePhone(source.homePhone());
+}
+
 QString GaduListHelper::contactToLine70(Contact contact)
 {
 	QStringList list;
@@ -63,7 +76,7 @@ QString GaduListHelper::contactToLine70(Contact contact)
 	list.append(QString()); // alive sound
 	list.append(QString()); // message sound
 	list.append(QString()); // message sound
-	list.append(QString()); // offlineTo
+	list.append(QString::number((int)buddy.isOfflineTo()));
 	list.append(buddy.homePhone());
 
 	return list.join(";");
@@ -80,7 +93,7 @@ QByteArray GaduListHelper::buddyListToByteArray(Account account, const BuddyList
 		foreach (const Contact &contact, buddy.contacts(account))
 			result.append(contactToLine70(contact));
 
-	return codec_cp1250->fromUnicode(result.join("\n"));
+	return result.join("\n").toUtf8();
 }
 
 BuddyList GaduListHelper::byteArrayToBuddyList(Account account, QByteArray &content)
@@ -94,7 +107,7 @@ BuddyList GaduListHelper::streamToBuddyList(Account account, QTextStream &conten
 {
 	BuddyList result;
 
-	content.setCodec(codec_cp1250);
+	content.setCodec("UTF-8");
 
 	QString line = content.readLine(70);
 
@@ -111,6 +124,8 @@ BuddyList GaduListHelper::streamToBuddyList(Account account, QTextStream &conten
 BuddyList GaduListHelper::streamPre70ToBuddyList(const QString &firstLine, Account account, QTextStream &content)
 {
 	BuddyList result;
+
+	content.setCodec(codec_cp1250);
 
 	if (firstLine.isEmpty())
 		return result;
@@ -178,7 +193,6 @@ BuddyList GaduListHelper::streamPost70ToBuddyList(const QString &line, Account a
 {
 	BuddyList result;
 
-	content.setCodec("UTF-8");
 	QString documentString = line + content.readAll();
 
 	QDomDocument document;

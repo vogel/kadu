@@ -50,7 +50,7 @@ ContactShared * ContactShared::loadFromStorage(const QSharedPointer<StoragePoint
 
 ContactShared::ContactShared(const QUuid &uuid) :
 		Shared(uuid),
-		Priority(-1), MaximumImageSize(0), Blocking(false), Port(0)
+		Priority(-1), MaximumImageSize(0), Blocking(false), Dirty(true), Port(0)
 {
 }
 
@@ -81,6 +81,8 @@ void ContactShared::load()
 	Id = loadValue<QString>("Id");
 
 	Priority = loadValue<int>("Priority", -1);
+	
+	Dirty = loadValue<bool>("Dirty", true);
 
 	ContactAccount = AccountManager::instance()->byUuid(loadValue<QString>("Account"));
 
@@ -125,6 +127,7 @@ void ContactShared::store()
 
 	storeValue("Id", Id);
 	storeValue("Priority", Priority);
+	storeValue("Dirty", Dirty);
 	storeValue("Account", ContactAccount.uuid().toString());
 	storeValue("Buddy", !OwnerBuddy.isAnonymous()
 			? OwnerBuddy.uuid().toString()
@@ -225,6 +228,7 @@ void ContactShared::setOwnerBuddy(const Buddy &buddy)
 	Contact guard(this);
 
 	doSetOwnerBuddy(buddy, true);
+	setDirty(true);
 
 	dataUpdated();
 }
@@ -314,6 +318,19 @@ void ContactShared::setId(const QString &id)
 	QString oldId = Id;
 	Id = id;
 
+	setDirty(true);
 	dataUpdated();
 	emit idChanged(oldId);
+}
+
+void ContactShared::setDirty(bool dirty)
+{
+	ensureLoaded();
+
+	if (Dirty == dirty)
+		return;
+
+	Dirty = dirty;
+	dataUpdated();
+	emit dirtinessChanged();
 }

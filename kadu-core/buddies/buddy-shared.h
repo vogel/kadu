@@ -41,15 +41,29 @@
 
 #include "exports.h"
 
+#define BuddyShared_PropertyDirtyWrite(type, name, capitalized_name) \
+	void set##capitalized_name(type name) { ensureLoaded(); if (capitalized_name != name) { capitalized_name = name; dataUpdated(); markContactsDirty(); } }
+
+#define BuddyShared_PropertyDirty(type, name, capitalized_name) \
+	KaduShared_PropertyRead(type, name, capitalized_name) \
+	BuddyShared_PropertyDirtyWrite(type, name, capitalized_name)
+
 #define BuddyShared_PropertySubscriptionRead(capitalized_name) \
 	bool is##capitalized_name() { ensureLoaded(); return capitalized_name; }
 
 #define BuddyShared_PropertySubscriptionWrite(capitalized_name) \
 	void set##capitalized_name(bool name) { ensureLoaded(); if (capitalized_name != name) { capitalized_name = name;  buddySubscriptionChanged(); dataUpdated(); } }
 
+#define BuddyShared_PropertySubscriptionDirtyWrite(capitalized_name) \
+	void set##capitalized_name(bool name) { ensureLoaded(); if (capitalized_name != name) { capitalized_name = name;  buddySubscriptionChanged(); dataUpdated(); markContactsDirty(); } }
+
 #define BuddyShared_PropertySubscription(capitalized_name) \
 	BuddyShared_PropertySubscriptionRead(capitalized_name) \
 	BuddyShared_PropertySubscriptionWrite(capitalized_name)
+
+#define BuddyShared_PropertySubscriptionDirty(capitalized_name) \
+	BuddyShared_PropertySubscriptionRead(capitalized_name) \
+	BuddyShared_PropertySubscriptionDirtyWrite(capitalized_name)
 
 class Account;
 class Contact;
@@ -83,6 +97,8 @@ class KADUAPI BuddyShared : public QObject, public Shared
 	bool Anonymous;
 	bool Blocked;
 	bool OfflineTo;
+
+	void markContactsDirty();
 
 protected:
 	virtual void load();
@@ -126,24 +142,24 @@ public:
 	bool isEmpty();
 
 	KaduShared_Property(const Avatar &, buddyAvatar, BuddyAvatar)
-	KaduShared_Property(const QString &, display, Display)
-	KaduShared_Property(const QString &, firstName, FirstName)
-	KaduShared_Property(const QString &, lastName, LastName)
-	KaduShared_Property(const QString &, familyName, FamilyName)
-	KaduShared_Property(const QString &, city, City)
-	KaduShared_Property(const QString &, familyCity, FamilyCity)
-	KaduShared_Property(const QString &, nickName, NickName)
-	KaduShared_Property(const QString &, homePhone, HomePhone)
-	KaduShared_Property(const QString &, mobile, Mobile)
-	KaduShared_Property(const QString &, email, Email)
-	KaduShared_Property(const QString &, website, Website)
+	BuddyShared_PropertyDirty(const QString &, display, Display)
+	BuddyShared_PropertyDirty(const QString &, firstName, FirstName)
+	BuddyShared_PropertyDirty(const QString &, lastName, LastName)
+	BuddyShared_PropertyDirty(const QString &, familyName, FamilyName)
+	BuddyShared_PropertyDirty(const QString &, city, City)
+	BuddyShared_PropertyDirty(const QString &, familyCity, FamilyCity)
+	BuddyShared_PropertyDirty(const QString &, nickName, NickName)
+	BuddyShared_PropertyDirty(const QString &, homePhone, HomePhone)
+	BuddyShared_PropertyDirty(const QString &, mobile, Mobile)
+	BuddyShared_PropertyDirty(const QString &, email, Email)
+	BuddyShared_PropertyDirty(const QString &, website, Website)
 	KaduShared_Property(unsigned short, birthYear, BirthYear)
 	KaduShared_Property(BuddyGender, gender, Gender)
-	KaduShared_Property(const QList<Group> &, groups, Groups)
+	BuddyShared_PropertyDirty(const QList<Group> &, groups, Groups)
 	KaduShared_Property(bool, preferHigherStatuses, PreferHigherStatuses)
 	BuddyShared_PropertySubscription(Anonymous)
-	BuddyShared_PropertySubscription(Blocked)
-	BuddyShared_PropertySubscription(OfflineTo)
+	BuddyShared_PropertySubscriptionDirty(Blocked)
+	BuddyShared_PropertySubscriptionDirty(OfflineTo)
 
 signals:
 	void contactAboutToBeAdded(const Contact &contact);

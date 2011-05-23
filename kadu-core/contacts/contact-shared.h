@@ -49,6 +49,7 @@ class KADUAPI ContactShared : public QObject, public Shared, public DetailsHolde
 
 	Status CurrentStatus;
 	bool Blocking;
+	bool Dirty;
 
 	QString ProtocolVersion;
 
@@ -98,6 +99,9 @@ public:
 	KaduShared_PropertyRead(const QString &, id, Id)
 	void setId(const QString &id);
 
+	KaduShared_PropertyBoolRead(Dirty)
+	void setDirty(bool dirty);
+
 	KaduShared_Property(int, priority, Priority)
 	KaduShared_Property(const Status &, currentStatus, CurrentStatus)
 	KaduShared_PropertyBool(Blocking)
@@ -115,6 +119,7 @@ signals:
 
 	void updated();
 	void idChanged(const QString &oldId);
+	void dirtinessChanged();
 
 };
 

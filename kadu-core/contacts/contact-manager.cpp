@@ -44,6 +44,9 @@ ContactManager * ContactManager::instance()
 
 ContactManager::ContactManager()
 {
+	// needed for QueuedConnection
+	qRegisterMetaType<Contact>("Contact");
+
 	ContactParserTags::registerParserTags();
 }
 
@@ -59,6 +62,23 @@ void ContactManager::idChanged(const QString &oldId)
 	Contact contact(sender());
 	if (!contact.isNull())
 		emit contactIdChanged(contact, oldId);
+}
+
+void ContactManager::dirtinessChanged()
+{
+	QMutexLocker locker(&mutex());
+
+	Contact contact(sender());
+	if (!contact.isNull())
+	{
+		if (contact.isDirty())
+		{
+			DirtyContacts.append(contact);
+			emit dirtyContactAdded(contact);
+		}
+		else
+			DirtyContacts.removeAll(contact);
+	}
 }
 
 void ContactManager::aboutToBeDetached(bool reattaching)
@@ -111,7 +131,16 @@ void ContactManager::itemRegistered(Contact item)
 
 	emit contactAdded(item);
 
+	if (Core::instance()->myself() == item.ownerBuddy())
+		item.setDirty(false);
+	else if (item.isDirty())
+	{
+		DirtyContacts.append(item);
+		emit dirtyContactAdded(item);
+	}
+
 	connect(item, SIGNAL(idChanged(const QString &)), this, SLOT(idChanged(const QString &)));
+	connect(item, SIGNAL(dirtinessChanged()), this, SLOT(dirtinessChanged()));
 	connect(item, SIGNAL(aboutToBeDetached(bool)), this, SLOT(aboutToBeDetached(bool)));
 	connect(item, SIGNAL(detached(Buddy)), this, SLOT(detached(Buddy)));
 	connect(item, SIGNAL(aboutToBeAttached(Buddy)), this, SLOT(aboutToBeAttached(Buddy)));
@@ -129,10 +158,14 @@ void ContactManager::itemAboutToBeUnregisterd(Contact item)
 void ContactManager::itemUnregistered(Contact item)
 {
 	disconnect(item, SIGNAL(idChanged(const QString &)), this, SLOT(idChanged(const QString &)));
+	disconnect(item, SIGNAL(dirtinessChanged()), this, SLOT(dirtinessChanged()));
 	disconnect(item, SIGNAL(aboutToBeDetached(bool)), this, SLOT(aboutToBeDetached(bool)));
 	disconnect(item, SIGNAL(detached(Buddy)), this, SLOT(detached(Buddy)));
 	disconnect(item, SIGNAL(aboutToBeAttached(Buddy)), this, SLOT(aboutToBeAttached(Buddy)));
 	disconnect(item, SIGNAL(attached(bool)), this, SLOT(attached(bool)));
+
+	if (item.isDirty())
+		DirtyContacts.removeAll(item);
 
 	emit contactRemoved(item);
 }
@@ -198,6 +231,33 @@ QList<Contact> ContactManager::contacts(Account account)
 		return contacts;
 
 	foreach (const Contact &contact, allItems())
+		if (account == contact.contactAccount())
+			contacts.append(contact);
+
+	return contacts;
+}
+
+const QList<Contact> & ContactManager::dirtyContacts()
+{
+	QMutexLocker locker(&mutex());
+
+	ensureLoaded();
+
+	return DirtyContacts;
+}
+
+QList<Contact> ContactManager::dirtyContacts(Account account)
+{
+	QMutexLocker locker(&mutex());
+
+	ensureLoaded();
+
+	QList<Contact> contacts;
+
+	if (account.isNull())
+		return contacts;
+
+	foreach (const Contact &contact, DirtyContacts)
 		if (account == contact.contactAccount())
 			contacts.append(contact);
 

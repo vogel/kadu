@@ -70,6 +70,7 @@ public:
 	KaduSharedBase_Property(int, priority, Priority)
 	KaduSharedBase_PropertyCRW(Status, currentStatus, CurrentStatus)
 	KaduSharedBase_PropertyBool(Blocking)
+	KaduSharedBase_PropertyBool(Dirty)
 	KaduSharedBase_PropertyCRW(QString, protocolVersion, ProtocolVersion)
 	KaduSharedBase_PropertyCRW(QHostAddress, address, Address)
 	KaduSharedBase_Property(unsigned int, port, Port)

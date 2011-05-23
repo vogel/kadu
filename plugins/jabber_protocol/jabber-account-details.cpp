@@ -32,7 +32,9 @@
 #include "jabber-account-details.h"
 
 JabberAccountDetails::JabberAccountDetails(AccountShared *data) :
-		AccountDetails(data), EncryptionMode(JabberAccountDetails::Encryption_Auto)
+		AccountDetails(data), AutoResource(false), UseCustomHostPort(false), CustomPort(5222),
+		EncryptionMode(Encryption_Auto), PlainAuthMode(AllowPlainOverTLS), LegacySSLProbe(true),
+		SendTypingNotification(true), SendGoneNotification(true)
 {
 	OpenChatRunner = new JabberOpenChatWithRunner(data);
 	OpenChatWithRunnerManager::instance()->registerRunner(OpenChatRunner);
@@ -54,29 +56,29 @@ void JabberAccountDetails::load()
 
 	QString resourceString = loadValue<QString>("Resource");
 	QString priorityString = loadValue<QString>("Priority");
-	setAutoResource(loadValue<bool>("AutoResource"));
+	AutoResource = loadValue<bool>("AutoResource", false);
 	if (resourceString.isEmpty() && !AutoResource)
 		resourceString = "Kadu";
-	setResource(AutoResource ? SystemInfo::instance()->localHostName() : resourceString);
+	Resource = AutoResource ? SystemInfo::instance()->localHostName() : resourceString;
 	bool ok = false;
 	int priority = priorityString.toInt(&ok);
 	if (!ok)
 		priority = 5;
-	setPriority(priority);
-	setDataTransferProxy(loadValue<QString>("DataTransferProxy"));
+	Priority = priority;
+	DataTransferProxy = loadValue<QString>("DataTransferProxy");
 
-	setUseCustomHostPort(loadValue<bool>("UseCustomHostPort"));
-	setCustomHost(loadValue<QString>("CustomHost"));
-	setCustomPort(loadValue<int>("CustomPort", 5222));
+	UseCustomHostPort = loadValue<bool>("UseCustomHostPort", false);
+	CustomHost = loadValue<QString>("CustomHost");
+	CustomPort = loadValue<int>("CustomPort", 5222);
 
-	setEncryptionMode((EncryptionFlag)loadValue<int>("EncryptionMode", 2));
-	setPlainAuthMode((AllowPlainType)loadValue<int>("PlainAuthMode", 2));
-	setLegacySSLProbe(loadValue<bool>("LegacySSLProbe"));
-	setTlsOverrideCert(XMPP::Base64::decode(loadValue<QByteArray>("TlsOverrideCert")));
-	setTlsOverrideDomain(loadValue<QString>("TlsOverrideDomain"));
+	EncryptionMode = (EncryptionFlag)loadValue<int>("EncryptionMode", (int)Encryption_Auto);
+	PlainAuthMode = (AllowPlainType)loadValue<int>("PlainAuthMode", (int)AllowPlainOverTLS);
+	LegacySSLProbe = loadValue<bool>("LegacySSLProbe", true);
+	TlsOverrideCert = XMPP::Base64::decode(loadValue<QByteArray>("TlsOverrideCert"));
+	TlsOverrideDomain = loadValue<QString>("TlsOverrideDomain");
 
-	setSendTypingNotification(loadValue<bool>("SendTypingNotification", true));
-	setSendGoneNotification(loadValue<bool>("SendGoneNotification", true));
+	SendTypingNotification = loadValue<bool>("SendTypingNotification", true);
+	SendGoneNotification = loadValue<bool>("SendGoneNotification", true);
 }
 
 void JabberAccountDetails::store()
@@ -84,21 +86,21 @@ void JabberAccountDetails::store()
 	if (!isValidStorage())
 		return;
 
-	storeValue("AutoResource", autoResource());
-	storeValue("Resource", resource());
-	storeValue("Priority", priority());
-	storeValue("DataTransferProxy", dataTransferProxy());
+	storeValue("AutoResource", AutoResource);
+	storeValue("Resource", Resource);
+	storeValue("Priority", Priority);
+	storeValue("DataTransferProxy", DataTransferProxy);
 
-	storeValue("UseCustomHostPort", useCustomHostPort());
-	storeValue("CustomHost", customHost());
-	storeValue("CustomPort", customPort());
+	storeValue("UseCustomHostPort", UseCustomHostPort);
+	storeValue("CustomHost", CustomHost);
+	storeValue("CustomPort", CustomPort);
 
-	storeValue("EncryptionMode", encryptionMode());
-	storeValue("PlainAuthMode", plainAuthMode());
-	storeValue("LegacySSLProbe", legacySSLProbe());
-	storeValue("TlsOverrideCert", XMPP::Base64::encode(tlsOverrideCert()));
-	storeValue("TlsOverrideDomain", tlsOverrideDomain());
+	storeValue("EncryptionMode", EncryptionMode);
+	storeValue("PlainAuthMode", PlainAuthMode);
+	storeValue("LegacySSLProbe", LegacySSLProbe);
+	storeValue("TlsOverrideCert", XMPP::Base64::encode(TlsOverrideCert).toAscii());
+	storeValue("TlsOverrideDomain", TlsOverrideDomain);
 
-	storeValue("SendTypingNotification", sendTypingNotification());
-	storeValue("SendGoneNotification", sendGoneNotification());
+	storeValue("SendTypingNotification", SendTypingNotification);
+	storeValue("SendGoneNotification", SendGoneNotification);
 }

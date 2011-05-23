@@ -368,7 +368,7 @@ void JabberProtocol::contactUpdated(Contact contact)
 
 void JabberProtocol::contactIdChanged(Contact contact, const QString &oldId)
 {
-  	if (!isConnected() || contact.contactAccount() != account())
+	if (!isConnected() || contact.contactAccount() != account())
 		return;
 
 	JabberClient->removeContact(oldId);

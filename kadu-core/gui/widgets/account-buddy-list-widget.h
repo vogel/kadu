@@ -41,15 +41,8 @@ class KADUAPI AccountBuddyListWidget : public QWidget
 	Account CurrentAccount;
 
 	BuddiesListWidget *BuddiesWidget;
-	QPushButton *ExportButton;
-	QPushButton *ImportButton;
 
 private slots:
-	void startImportTransfer();
-	void startExportTransfer();
-	void buddiesListImported(bool ok, const BuddyList &buddies);
-	void buddiesListExported(bool ok);
-
 	void restoreFromFile();
 	void storeToFile();
 

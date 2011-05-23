@@ -64,14 +64,6 @@ AccountBuddyListWidget::AccountBuddyListWidget(Account account, QWidget *parent)
 	buttonsLayout->setContentsMargins(0, 0, 0, 0);
 	buttonsLayout->setSpacing(5);
 
-	ImportButton = new QPushButton(tr("Import contacts"), buttons);
-	connect(ImportButton, SIGNAL(clicked()), this, SLOT(startImportTransfer()));
-	buttonsLayout->addWidget(ImportButton);
-
-	ExportButton = new QPushButton(tr("Export contacts"), buttons);
-	connect(ExportButton, SIGNAL(clicked()), this, SLOT(startExportTransfer()));
-	buttonsLayout->addWidget(ExportButton);
-
 	QPushButton *restoreFromFile = new QPushButton(tr("Restore from file"), buttons);
 	connect(restoreFromFile, SIGNAL(clicked()), this, SLOT(restoreFromFile()));
 	buttonsLayout->addWidget(restoreFromFile);
@@ -89,95 +81,6 @@ AccountBuddyListWidget::AccountBuddyListWidget(Account account, QWidget *parent)
 
 	BuddiesWidget->view()->addFilter(accountFilter);
 	BuddiesWidget->view()->addFilter(anonymousFilter);
-
-	ContactListService *manager = CurrentAccount.protocolHandler()->contactListService();
-	if (!manager)
-	{
-		ImportButton->setEnabled(false);
-		ExportButton->setEnabled(false);
-		return;
-	}
-
-	connect(manager, SIGNAL(contactListExported(bool)), this, SLOT(buddiesListExported(bool)));
-	connect(manager, SIGNAL(contactListImported(bool, const BuddyList &)),
-		this, SLOT(buddiesListImported(bool, const BuddyList &)));
-}
-
-void AccountBuddyListWidget::startImportTransfer()
-{
-	kdebugf();
-
-	if (!CurrentAccount.protocolHandler()->isConnected())
-	{
-		MessageDialog::show(KaduIcon("dialog-error"), tr("Kadu"), tr("Cannot import user list from server in offline mode"));
-		return;
-	}
-
-	ContactListService *service = CurrentAccount.protocolHandler()->contactListService();
-	if (!service)
-		return;
-	ImportButton->setEnabled(false);
-	service->importContactList(false);
-
-	kdebugf2();
-}
-
-void AccountBuddyListWidget::startExportTransfer()
-{
-	kdebugf();
-
-	if (!CurrentAccount.protocolHandler()->isConnected())
-	{
-		MessageDialog::show(KaduIcon("dialog-error"), tr("Kadu"), tr("Cannot export user list to server in offline mode"));
-		kdebugf2();
-		return;
-	}
-
-	ContactListService *service = CurrentAccount.protocolHandler()->contactListService();
-	if (!service)
-		return;
-
-	ExportButton->setEnabled(false);
-	service->exportContactList();
-
-	kdebugf2();
-}
-
-void AccountBuddyListWidget::buddiesListImported(bool ok, const BuddyList &buddies)
-{
-	kdebugf();
-
-	ImportButton->setEnabled(true);
-	if (!ok)
-	{
-		int result = MessageDialog::exec(KaduIcon("dialog-error"), tr("Kadu"),
-				 tr("Contacts list couldn't be downloaded. Please check that account %0 is connected.").arg(CurrentAccount.id()),
-				QMessageBox::Cancel | QMessageBox::Retry);
-
-		if (result == QMessageBox::Retry)
-			startImportTransfer();
-		return;
-	}
-
-	ContactListService *service = CurrentAccount.protocolHandler()->contactListService();
-	if (!service)
-		return;
-
-	service->setBuddiesList(buddies);
-}
-
-void AccountBuddyListWidget::buddiesListExported(bool ok)
-{
-	kdebugf();
-
-	if (ok)
-		MessageDialog::show(KaduIcon("dialog-information"), tr("Kadu"), tr("Your userlist has been successfully exported to server"));
-	else
-		MessageDialog::show(KaduIcon("dialog-error"), tr("Kadu"), tr("The application encountered an internal error\nThe export was unsuccessful"));
-
-	ExportButton->setEnabled(true);
-
-	kdebugf2();
 }
 
 void AccountBuddyListWidget::restoreFromFile()
