@@ -41,7 +41,7 @@
 
 #include "gadu-list-helper.h"
 
-void GaduListHelper::setSupportedBuddyInformation(Buddy &destination, const Buddy &source)
+void GaduListHelper::setSupportedBuddyInformation(const Buddy &destination, const Buddy &source)
 {
 	destination.setFirstName(source.firstName());
 	destination.setLastName(source.lastName());

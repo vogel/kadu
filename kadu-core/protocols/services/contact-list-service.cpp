@@ -39,60 +39,129 @@ ContactListService::~ContactListService()
 {
 }
 
-Buddy ContactListService::registerBuddy(Buddy buddy)
+bool ContactListService::askForAddingContacts(const QMap<Buddy, Contact> &contactsToAdd, const QMap<Buddy, Contact> &contactsToRename)
 {
-	if (buddy.display().isEmpty())
-		buddy.setDisplay(buddy.uuid().toString());
+	QString toAddString;
+	QString toRenameString;
 
-	Buddy resultBuddy = BuddyManager::instance()->byDisplay(buddy.display(), ActionCreate);
-	resultBuddy.setAnonymous(false);
-
-	copySupportedBuddyInformation(resultBuddy, buddy);
-
-	QVector<Buddy> buddiesToRemove;
-	bool addedSomething = false;
-	foreach (const Contact &contact, buddy.contacts(CurrentProtocol->account()))
+	if (!contactsToAdd.isEmpty())
 	{
-		Contact knownContact = ContactManager::instance()->byId(CurrentProtocol->account(), contact.id(), ActionReturnNull);
-		if (knownContact)
-		{
-			// do not import dirty removed contacts unless we are migrating from 0.9.x
-			// (note that all migrated contacts, including those with anynomous buddies, are marked dirty)
-			if (!(knownContact.isDirty() && knownContact.ownerBuddy().isAnonymous()) && isListInitiallySetUp())
-			{
-				if (knownContact.ownerBuddy() != resultBuddy)
-				{
-					// do not remove now as theoretically it may be used in next loop run
-					buddiesToRemove.append(knownContact.ownerBuddy());
-					knownContact.setOwnerBuddy(resultBuddy);
-				}
+		QStringList contactsToAddStrings;
+		for (QMap<Buddy, Contact>::const_iterator i = contactsToAdd.constBegin(); i != contactsToAdd.constEnd(); i++)
+			contactsToAddStrings.append(i.key().display() + " (" + i.value().id() + ')');
 
-				knownContact.setDirty(false);
-				addedSomething = true;
-			}
-		}
-		else
-		{
-			ContactManager::instance()->addItem(contact);
-			contact.setOwnerBuddy(resultBuddy);
-			contact.setDirty(false);
-			addedSomething = true;
-		}
+		toAddString = tr("The following contacts present on server were not found on your local contact list:<br/>"
+				"<b>%1</b>.<br/>").arg(contactsToAddStrings.join("</b>, <b>"));
 	}
 
-	if (!addedSomething)
-		return Buddy::null;
+	if (!contactsToRename.isEmpty())
+	{
+		QStringList contactsToRenameStrings;
+		for (QMap<Buddy, Contact>::const_iterator i = contactsToRename.constBegin(); i != contactsToRename.constEnd(); i++)
+			contactsToRenameStrings.append(i.value().ownerBuddy().display() + " (" + i.value().id() + ") -> " + i.key().display());
+
+		if (toAddString.isEmpty())
+			toRenameString = tr("The following contacts present on server were found on your local contact list "
+					"under different buddy display names:<br/><b>%1</b>.<br/>").arg(contactsToRenameStrings.join("</b>, <b>"));
+		else
+			toRenameString = tr("Moreover, the following contacts present on server were found on your local contact list "
+					"under different buddy display names:<br/><b>%1</b>.<br/>").arg(contactsToRenameStrings.join("</b>, <b>"));
+	}
+
+	QString questionString = toAddString + toRenameString;
+	if (questionString.isEmpty())
+		return true;
+
+	questionString += tr("Do you want to apply the above changes to your contact list?");
+
+	return MessageDialog::ask(KaduIcon("dialog-question"), tr("Kadu"), questionString);
+}
+
+void ContactListService::performAddsAndRenames(const QMap<Buddy, Contact> &contactsToAdd, const QMap<Buddy, Contact> &contactsToRename)
+{
+	for (QMap<Buddy, Contact>::const_iterator i = contactsToAdd.constBegin(); i != contactsToAdd.constEnd(); i++)
+	{
+		ContactManager::instance()->addItem(i.value());
+		i.value().setOwnerBuddy(i.key());
+		i.value().setDirty(false);
+	}
+
+	BuddyList buddiesToRemove;
+	for (QMap<Buddy, Contact>::const_iterator i = contactsToRename.constBegin(); i != contactsToRename.constEnd(); i++)
+	{
+		// do not remove now as theoretically it could be used in next loop run
+		buddiesToRemove.append(i.value().ownerBuddy());
+		i.value().setOwnerBuddy(i.key());
+	}
 
 	foreach (const Buddy &buddy, buddiesToRemove)
 		if (buddy.contacts().isEmpty())
 			BuddyManager::instance()->removeItem(buddy);
+}
 
-	// sometimes when a new Contact is added from server on login, sorting fails on that Contact,
-	// and moving this call before the loop fixes it
-	// TODO 0.10: find out why it happens and fix it _properly_ as it _might_ be a bug in model
-	BuddyManager::instance()->addItem(resultBuddy);
+BuddyList ContactListService::registerBuddies(const BuddyList &buddies)
+{
+	BuddyList resultBuddies;
+	QMap<Buddy, Contact> contactsToAdd;
+	QMap<Buddy, Contact> contactsToRename;
+	QMap<Buddy, Buddy> personalInfoSourceBuddies;
 
-	return resultBuddy;
+	foreach (const Buddy &buddy, buddies)
+	{
+		if (buddy.display().isEmpty())
+			buddy.setDisplay(buddy.uuid().toString());
+
+		Buddy targetBuddy = BuddyManager::instance()->byDisplay(buddy.display(), ActionCreate);
+		targetBuddy.setAnonymous(false);
+
+		foreach (const Contact &contact, buddy.contacts(CurrentProtocol->account()))
+		{
+			Contact knownContact = ContactManager::instance()->byId(CurrentProtocol->account(), contact.id(), ActionReturnNull);
+			if (knownContact)
+			{
+				// do not import dirty removed contacts unless we are migrating from 0.9.x
+				// (note that all migrated contacts, including those with anynomous buddies, are marked dirty)
+				if (!(knownContact.isDirty() && knownContact.ownerBuddy().isAnonymous() && isListInitiallySetUp()))
+				{
+					if (knownContact.ownerBuddy().isAnonymous())
+						contactsToAdd.insert(targetBuddy, knownContact);
+					else if (knownContact.ownerBuddy() != targetBuddy)
+						contactsToRename.insert(targetBuddy, knownContact);
+					else
+					{
+						knownContact.setDirty(false);
+						resultBuddies.append(knownContact.ownerBuddy());
+					}
+
+					personalInfoSourceBuddies.insert(targetBuddy, buddy);
+				}
+			}
+			else
+			{
+				contactsToAdd.insert(targetBuddy, contact);
+				personalInfoSourceBuddies.insert(targetBuddy, buddy);
+			}
+		}
+	}
+
+	if (!isListInitiallySetUp() && !askForAddingContacts(contactsToAdd, contactsToRename))
+		return resultBuddies;
+
+	performAddsAndRenames(contactsToAdd, contactsToRename);
+
+	for (QMap<Buddy, Buddy>::const_iterator i = personalInfoSourceBuddies.constBegin(); i != personalInfoSourceBuddies.constEnd(); i++)
+	{
+		if (i.key().contacts().isEmpty())
+			continue;
+
+		copySupportedBuddyInformation(i.key(), i.value());
+		// sometimes when a new Contact is added from server on login, sorting fails on that Contact
+		// TODO 0.10: find out why it happens and fix it _properly_ as it _might_ be a bug in model
+		BuddyManager::instance()->addItem(i.key());
+		resultBuddies.append(i.key());
+	}
+
+	return resultBuddies;
 }
 
 void ContactListService::setBuddiesList(const BuddyList &buddies, bool removeOldAutomatically)
@@ -104,12 +173,10 @@ void ContactListService::setBuddiesList(const BuddyList &buddies, bool removeOld
 
 	// now buddies = SERVER_CONTACTS, unImportedContacts = ALL_EVER_HAD_LOCALLY_CONTACTS
 
-	foreach (const Buddy &buddy, buddies)
-	{
-		Buddy managedContactsBuddy = registerBuddy(buddy);
-		foreach (const Contact &contact, managedContactsBuddy.contacts())
+	BuddyList managedContactsBuddies = registerBuddies(buddies);
+	foreach (const Buddy &buddy, managedContactsBuddies)
+		foreach (const Contact &contact, buddy.contacts(CurrentProtocol->account()))
 			unImportedContacts.removeAll(contact);
-	}
 
 	// now unImportedContacts = ALL_EVER_HAD_LOCALLY_CONTACTS - (SERVER_CONTACTS - LOCAL_DIRTY_REMOVED_CONTACTS)
 	// (unless we are importing from 0.9.x)

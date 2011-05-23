@@ -50,7 +50,7 @@ public:
 
 	virtual void exportContactList(const BuddyList &buddies);
 
-	virtual void copySupportedBuddyInformation(Buddy &destination, const Buddy &source);
+	virtual void copySupportedBuddyInformation(const Buddy &destination, const Buddy &source);
 
 	virtual QList<Buddy> loadBuddyList(QTextStream &dataStream);
 	virtual QByteArray storeBuddyList(const BuddyList &buddies);

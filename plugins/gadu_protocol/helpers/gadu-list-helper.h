@@ -34,7 +34,7 @@ class Contact;
 
 namespace GaduListHelper
 {
-	void setSupportedBuddyInformation(Buddy &destination, const Buddy &source);
+	void setSupportedBuddyInformation(const Buddy &destination, const Buddy &source);
 	QByteArray buddyListToByteArray(Account account, const BuddyList &buddies);
 	QString contactToLine70(Contact contact);
 	BuddyList byteArrayToBuddyList(Account account, QByteArray &content);

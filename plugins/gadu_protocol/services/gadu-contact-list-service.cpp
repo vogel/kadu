@@ -203,7 +203,7 @@ void GaduContactListService::exportContactList(const BuddyList &buddies)
 	}
 }
 
-void GaduContactListService::copySupportedBuddyInformation(Buddy &destination, const Buddy &source)
+void GaduContactListService::copySupportedBuddyInformation(const Buddy &destination, const Buddy &source)
 {
 	GaduListHelper::setSupportedBuddyInformation(destination, source);
 }

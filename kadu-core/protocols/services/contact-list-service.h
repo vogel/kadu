@@ -28,6 +28,7 @@
 #include "buddies/buddy-list.h"
 #include "exports.h"
 
+class Contact;
 class Protocol;
 
 class KADUAPI ContactListService : public QObject
@@ -36,7 +37,9 @@ class KADUAPI ContactListService : public QObject
 
 	Protocol *CurrentProtocol;
 
-	Buddy registerBuddy(Buddy buddy);
+	bool askForAddingContacts(const QMap<Buddy, Contact> &contactsToAdd, const QMap<Buddy, Contact> &contactsToRename);
+	void performAddsAndRenames(const QMap<Buddy, Contact> &contactsToAdd, const QMap<Buddy, Contact> &contactsToRename);
+	BuddyList registerBuddies(const BuddyList &buddies);
 
 public:
 	explicit ContactListService(Protocol *protocol);
@@ -52,7 +55,7 @@ public:
 	virtual void exportContactList() = 0;
 	virtual void exportContactList(const BuddyList &buddies) = 0;
 
-	virtual void copySupportedBuddyInformation(Buddy &destination, const Buddy &source) = 0;
+	virtual void copySupportedBuddyInformation(const Buddy &destination, const Buddy &source) = 0;
 
 	virtual QList<Buddy> loadBuddyList(QTextStream &dataStream) = 0;
 	virtual QByteArray storeBuddyList(const BuddyList &buddies) = 0;
