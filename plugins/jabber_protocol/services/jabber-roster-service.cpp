@@ -105,6 +105,8 @@ void JabberRosterService::contactUpdated(const XMPP::RosterItem &item)
 	kdebug("New roster item: %s (Subscription: %s )\n", qPrintable(item.jid().full()), qPrintable(item.subscription().toString()));
 
 	Contact contact = ContactManager::instance()->byId(Protocol->account(), item.jid().bare(), ActionCreateAndAdd);
+	// in case we return before next call of it
+	contact.setDirty(false);
 	ContactsForDelete.removeAll(contact);
 
 	if (contact == Protocol->account().accountContact())
@@ -127,6 +129,8 @@ void JabberRosterService::contactUpdated(const XMPP::RosterItem &item)
 	foreach (const QString &group, item.groups())
 		buddy.addToGroup(gm->byName(group, true /* create group */));
 
+	contact.setDirty(false);
+
 	Protocol->connectContactManagerSignals();
 
 	kdebugf2();
@@ -138,6 +142,7 @@ void JabberRosterService::contactDeleted(const XMPP::RosterItem &item)
 
 	Contact contact = ContactManager::instance()->byId(Protocol->account(), item.jid().bare(), ActionReturnNull);
 	BuddyManager::instance()->clearOwnerAndRemoveEmptyBuddy(contact);
+	contact.setDirty(false);
 }
 
 void JabberRosterService::rosterRequestFinished(bool success)
@@ -148,7 +153,10 @@ void JabberRosterService::rosterRequestFinished(bool success)
 	// all "dirty" items from the contact list
 	if (success)
 		foreach (const Contact &contact, ContactsForDelete)
+		{
 			BuddyManager::instance()->clearOwnerAndRemoveEmptyBuddy(contact);
+			contact.setDirty(false);
+		}
 
 	InRequest = false;
 	emit rosterDownloaded(success);
@@ -189,6 +197,7 @@ void JabberRosterService::addContact(const Contact &contact)
 		groupsList.append(group.name());
 
 	Protocol->client()->addContact(contact.id(), buddy.display(), groupsList);
+	contact.setDirty(false);
 }
 
 void JabberRosterService::removeContact(const Contact &contact)
@@ -204,6 +213,7 @@ void JabberRosterService::removeContact(const Contact &contact)
 		return;
 
 	Protocol->client()->removeContact(contact.id());
+	contact.setDirty(false);
 }
 
 void JabberRosterService::askForAuthorization(const Contact &contact)
