@@ -30,6 +30,9 @@
 * tabs: #726 fixed: removed not-working and not-documented auto-tab-change option (Vogel)
 * gui: #1094 fixed: update send-email action on buddy change (Vogel)
 
++++ version 0.9.3
+* jabber: #2183 fixed: very rare crash when trying to reconnect (beevvy)
+
 +++ version 0.9.2
 * tabs: #2129 fixed: regression since 0.9.1 that caused button to be shown when the shouldn't in certain configurations (beevvy)
 * jabber: #2128 fixed: do not require node on Jabber/XMPP ids (Vogel)
