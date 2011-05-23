@@ -133,14 +133,12 @@ void GaduContactListService::handleEventUserlist100PutReply(struct gg_event *e)
 				contact.setDirty(false);
 
 			emit stateMachineSucceededExporting();
-			emit contactListExported(true);
 
 			return;
 		}
 	}
 
 	emit stateMachineFailedExporting();
-	emit contactListExported(false);
 }
 
 void GaduContactListService::handleEventUserlist100Reply(struct gg_event *e)
@@ -211,10 +209,7 @@ void GaduContactListService::exportContactList(const BuddyList &buddies)
 	if (!accountDetails || -1 == gg_userlist100_request(
 			Protocol->gaduSession(), GG_USERLIST100_PUT, accountDetails->userlistVersion(),
 			GG_USERLIST100_FORMAT_TYPE_GG70, contacts.constData()))
-	{
 		emit stateMachineInternalError();
-		emit contactListExported(false);
-	}
 }
 
 void GaduContactListService::copySupportedBuddyInformation(const Buddy &destination, const Buddy &source)

@@ -67,7 +67,6 @@ public slots:
 
 signals:
 	void contactListImported(bool ok, const BuddyList &buddies);
-	void contactListExported(bool ok);
 
 };
 
