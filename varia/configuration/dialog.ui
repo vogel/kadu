@@ -288,8 +288,6 @@
 					tool-tip="Open chat window when a new message arrives" />
 				<check-box caption="Open chat window only when I'm online" config-section="Chat" config-item="OpenChatOnMessageWhenOnline"
 					id="openChatOnMessageWhenOnline" tool-tip="Open chat window on new message only when online" />
-				<check-box caption="Wait for message delivery" config-section="Chat" config-item="MessageAcks"
-					tool-tip="Wait for confirmation from server during send messages" />
 				<check-box caption="'Enter' in chat send message" config-section="Chat" config-item="AutoSend"
 					tool-tip="'Enter' in chat send message" />
 				<check-box caption="Confirm clearing chat window" config-section="Chat" config-item="ConfirmChatClear"

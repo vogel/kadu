@@ -180,7 +180,6 @@ void Core::createDefaultConfiguration()
 	config_file.addVariable("Chat", "IgnoreAnonymousUsers", false);
 	config_file.addVariable("Chat", "IgnoreAnonymousUsersInConferences", false);
 	config_file.addVariable("Chat", "LastImagePath", QString(getenv("HOME")) + '/');
-	config_file.addVariable("Chat", "MessageAcks", false);
 	config_file.addVariable("Chat", "NewMessagesInChatTitle", false);
 	config_file.addVariable("Chat", "OpenChatOnMessage", false);
 	config_file.addVariable("Chat", "OpenChatOnMessageWhenOnline", false);
