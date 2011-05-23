@@ -222,9 +222,6 @@ void ContactListService::setBuddiesList(const BuddyList &buddies, bool removeOld
 					BuddyManager::instance()->removeItem(ownerBuddy);
 			}
 		}
-		else
-			foreach (const Contact &contact, unImportedContacts)
-				contact.setDirty(true);
 	}
 
 	ConfigurationManager::instance()->flush();
