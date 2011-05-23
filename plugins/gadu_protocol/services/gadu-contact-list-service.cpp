@@ -29,6 +29,7 @@
 #include "contacts/contact.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact-shared.h"
+#include "core/core.h"
 #include "misc/misc.h"
 #include "debug.h"
 
@@ -123,6 +124,8 @@ void GaduContactListService::handleEventUserlist100PutReply(struct gg_event *e)
 		{
 			accountDetails->setUserlistVersion(e->event.userlist100_reply.version);
 
+			// there is potential possibility that something changed after we sent request but before getting reply
+			// TODO: fix it
 			foreach (const Contact &contact, ContactManager::instance()->contacts(Protocol->account()))
 				contact.setDirty(false);
 
@@ -167,7 +170,15 @@ bool GaduContactListService::isListInitiallySetUp() const
 {
 	GaduAccountDetails *accountDetails = dynamic_cast<GaduAccountDetails *>(Protocol->account().details());
 	Q_ASSERT(accountDetails);
-	return accountDetails && -1 != accountDetails->userlistVersion();
+	if (accountDetails && -1 != accountDetails->userlistVersion())
+		return true;
+
+	// if our contact list is empty (most likely on first run), it is okay to import contacts without asking
+	foreach (const Contact &contact, ContactManager::instance()->contacts(Protocol->account()))
+		if (Core::instance()->myself() != contact.ownerBuddy())
+			return false;
+
+	return true;
 }
 
 void GaduContactListService::importContactList()
