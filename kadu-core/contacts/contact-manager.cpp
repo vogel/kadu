@@ -131,7 +131,10 @@ void ContactManager::itemRegistered(Contact item)
 	if (Core::instance()->myself() == item.ownerBuddy())
 		item.setDirty(false);
 	else if (item.isDirty())
+	{
 		DirtyContacts.append(item);
+		emit dirtyContactAdded(item);
+	}
 
 	connect(item, SIGNAL(idChanged(const QString &)), this, SLOT(idChanged(const QString &)));
 	connect(item, SIGNAL(dirtinessChanged()), this, SLOT(dirtinessChanged()));
