@@ -29,6 +29,7 @@
 * gui: #2052 fixed: wrong status types in information panel for blocked or blocking buddy (dienet)
 * tabs: #726 fixed: removed not-working and not-documented auto-tab-change option (Vogel)
 * gui: #1094 fixed: update send-email action on buddy change (Vogel)
+* gadu: #2143 fixed: implemented GG10 roster with support for automatic contact list synchronization (beevvy, Vogel)
 
 +++ version 0.9.3
 * jabber: #2183 fixed: very rare crash when trying to reconnect (beevvy)
