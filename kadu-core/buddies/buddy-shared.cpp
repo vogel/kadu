@@ -398,3 +398,11 @@ bool BuddyShared::isEmpty()
 
 	return Contacts.isEmpty() && HomePhone.isEmpty() && Mobile.isEmpty() && Website.isEmpty() && Email.isEmpty();
 }
+
+void BuddyShared::markContactsDirty()
+{
+	ensureLoaded();
+
+	foreach (const Contact &contact, Contacts)
+		contact.setDirty(true);
+}
