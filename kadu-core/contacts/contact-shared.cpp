@@ -228,6 +228,7 @@ void ContactShared::setOwnerBuddy(const Buddy &buddy)
 	Contact guard(this);
 
 	doSetOwnerBuddy(buddy, true);
+	setDirty(true);
 
 	dataUpdated();
 }
@@ -317,6 +318,7 @@ void ContactShared::setId(const QString &id)
 	QString oldId = Id;
 	Id = id;
 
+	setDirty(true);
 	dataUpdated();
 	emit idChanged(oldId);
 }
