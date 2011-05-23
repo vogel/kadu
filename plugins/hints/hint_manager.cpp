@@ -74,7 +74,7 @@ HintManager::HintManager(QObject *parent) :
 #else
 	frame = new QFrame(0, Qt::FramelessWindowHint | Qt::Tool | Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint |Qt::MSWindowsOwnDC);
 #endif
-	frame->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+	frame->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
 
 	Style = QString("QFrame {border-width: %1px; border-style: solid; border-color: %2; border-radius: %3px;}")
 			.arg(config_file.readNumEntry("Hints", "AllEvents_borderWidth", FRAME_WIDTH))
@@ -85,7 +85,7 @@ HintManager::HintManager(QObject *parent) :
 	layout = new QVBoxLayout(frame);
 	layout->setSpacing(0);
 	layout->setMargin(FRAME_WIDTH);
-	layout->setSizeConstraint(QLayout::SetFixedSize);
+// 	layout->setSizeConstraint(QLayout::SetFixedSize);
 
 	Opacity = config_file.readNumEntry("Hints", "AllEvents_transparency", 0);
 	Opacity = 1 - Opacity/100;
@@ -181,6 +181,10 @@ void HintManager::setHint()
 
 	frame->adjustSize();
 	QSize preferredSize = frame->sizeHint();
+	if (preferredSize.width() < config_file.readNumEntry("Hints", "MinimumWidth", 100))
+		preferredSize.setWidth(config_file.readNumEntry("Hints", "MinimumWidth", 100));
+	if (preferredSize.width() > config_file.readNumEntry("Hints", "MaximumWidth", 500))
+		preferredSize.setWidth(config_file.readNumEntry("Hints", "MaximumWidth", 500));
 	QSize desktopSize = QApplication::desktop()->screenGeometry(frame).size();
 
 	emit searchingForTrayPosition(trayPosition);
@@ -239,9 +243,9 @@ void HintManager::setHint()
 	}
 
 	frame->setGeometry(newPosition.x(), newPosition.y(), preferredSize.width(), preferredSize.height());
-
+	frame->setFixedWidth(preferredSize.width());
+	frame->setFixedHeight(preferredSize.height());
 	frame->setWindowOpacity(Opacity);
-
 	frame->update();
 
 	kdebugf2();
