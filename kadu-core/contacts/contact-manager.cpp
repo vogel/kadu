@@ -44,6 +44,9 @@ ContactManager * ContactManager::instance()
 
 ContactManager::ContactManager()
 {
+	// needed for QueuedConnection
+	qRegisterMetaType<Contact>("Contact");
+
 	ContactParserTags::registerParserTags();
 }
 

@@ -47,6 +47,8 @@ GaduContactListService::GaduContactListService(GaduProtocol *protocol) :
 	connect(StateMachine, SIGNAL(awaitingServerGetResponseStateEntered()), SLOT(importContactList()));
 	connect(StateMachine, SIGNAL(awaitingServerPutResponseStateEntered()), SLOT(exportContactList()));
 
+	connect(ContactManager::instance(), SIGNAL(dirtyContactAdded(Contact)), SIGNAL(stateMachineHasDirtyContacts()), Qt::QueuedConnection);
+
 	StateMachine->start();
 }
 
@@ -96,8 +98,6 @@ void GaduContactListService::handleEventUserlist100GetReply(struct gg_event *e)
 	emit contactListImported(true, buddies);
 	accountDetails->setUserlistVersion(e->event.userlist100_reply.version);
 
-	// TODO: dirty contacts
-
 	// cleanup references, so buddy and contact instances can be removed
 	// this is really a hack, we need to call aboutToBeRemoved someway for non-manager contacts and buddies too
 	// or just only store managed only, i dont know yet
@@ -107,6 +107,9 @@ void GaduContactListService::handleEventUserlist100GetReply(struct gg_event *e)
 			contact.data()->aboutToBeRemoved();
 		buddy.data()->aboutToBeRemoved();
 	}
+
+	if (!ContactManager::instance()->dirtyContacts(Protocol->account()).isEmpty())
+		QMetaObject::invokeMethod(this, "stateMachineHasDirtyContacts", Qt::QueuedConnection);
 }
 
 void GaduContactListService::handleEventUserlist100PutReply(struct gg_event *e)
