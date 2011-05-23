@@ -128,7 +128,9 @@ void ContactManager::itemRegistered(Contact item)
 
 	emit contactAdded(item);
 
-	if (item.isDirty())
+	if (Core::instance()->myself() == item.ownerBuddy())
+		item.setDirty(false);
+	else if (item.isDirty())
 		DirtyContacts.append(item);
 
 	connect(item, SIGNAL(idChanged(const QString &)), this, SLOT(idChanged(const QString &)));

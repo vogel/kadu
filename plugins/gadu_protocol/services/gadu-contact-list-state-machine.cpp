@@ -101,7 +101,7 @@ void GaduContactListStateMachine::printConfiguration()
 	if (configuration().contains(NormalState))
 		states.append("normal");
 
- 	kdebugm(KDEBUG_INFO, "Gadu contact list state machine: [%s]\n", qPrintable(states.join(", ")));
+	kdebugm(KDEBUG_INFO, "Gadu contact list state machine: [%s]\n", qPrintable(states.join(", ")));
 }
 
 bool GaduContactListStateMachine::awaitingServerGetResponse() const

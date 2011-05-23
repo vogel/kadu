@@ -126,7 +126,7 @@ void GaduContactListService::handleEventUserlist100PutReply(struct gg_event *e)
 
 			// there is potential possibility that something changed after we sent request but before getting reply
 			// TODO: fix it
-			foreach (const Contact &contact, ContactManager::instance()->contacts(Protocol->account()))
+			foreach (const Contact &contact, ContactManager::instance()->dirtyContacts(Protocol->account()))
 				contact.setDirty(false);
 
 			emit stateMachineSucceededExporting();
