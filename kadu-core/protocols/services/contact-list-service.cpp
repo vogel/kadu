@@ -118,7 +118,15 @@ QVector<Contact> ContactListService::registerBuddies(const BuddyList &buddies)
 		if (buddy.display().isEmpty())
 			buddy.setDisplay(buddy.uuid().toString());
 
-		Buddy targetBuddy = BuddyManager::instance()->byDisplay(buddy.display(), ActionCreate);
+		Buddy targetBuddy;
+		for (QMap<Buddy, Buddy>::const_iterator i = personalInfoSourceBuddies.constBegin(); i != personalInfoSourceBuddies.constEnd(); i++)
+			if (i.key().display() == buddy.display())
+			{
+				targetBuddy = i.key();
+				break;
+			}
+		if (!targetBuddy)
+			targetBuddy = BuddyManager::instance()->byDisplay(buddy.display(), ActionCreate);
 		targetBuddy.setAnonymous(false);
 
 		foreach (const Contact &contact, buddy.contacts(CurrentProtocol->account()))
