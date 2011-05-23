@@ -382,6 +382,7 @@ void BuddyShared::addToGroup(const Group &group)
 
 	Groups.append(group);
 	dataUpdated();
+	markContactsDirty();
 }
 
 void BuddyShared::removeFromGroup(const Group &group)
@@ -389,7 +390,10 @@ void BuddyShared::removeFromGroup(const Group &group)
 	ensureLoaded();
 
 	if (Groups.removeAll(group) > 0)
+	{
 		dataUpdated();
+		markContactsDirty();
+	}
 }
 
 bool BuddyShared::isEmpty()
