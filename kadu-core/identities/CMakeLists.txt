@@ -20,6 +20,5 @@ add_library (identities
 	${identities_MOC_FILES}
 )
 
-set_target_properties (identities PROPERTIES ENABLE_EXPORTS ON)
-set_target_properties (identities PROPERTIES COMPILE_FLAGS "-DKADULIB")
+set_target_properties (identities PROPERTIES DEFINE_SYMBOL KADULIB)
 

@@ -14,5 +14,4 @@ add_library (qt
 	${qt_MOC_FILES}
 )
 
-set_target_properties (qt PROPERTIES ENABLE_EXPORTS ON)
-set_target_properties (qt PROPERTIES COMPILE_FLAGS "-DKADULIB")
+set_target_properties (qt PROPERTIES DEFINE_SYMBOL KADULIB)

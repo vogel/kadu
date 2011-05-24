@@ -35,5 +35,4 @@ add_library (notify
 	${notify_MOC_FILES}
 )
 
-set_target_properties (notify PROPERTIES ENABLE_EXPORTS ON)
-set_target_properties (notify PROPERTIES COMPILE_FLAGS "-DKADULIB")
+set_target_properties (notify PROPERTIES DEFINE_SYMBOL KADULIB)

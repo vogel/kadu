@@ -29,5 +29,4 @@ add_library (configuration
 	${configuration_MOC_FILES}
 )
 
-set_target_properties (configuration PROPERTIES ENABLE_EXPORTS ON)
-set_target_properties (configuration PROPERTIES COMPILE_FLAGS "-DKADULIB")
+set_target_properties (configuration PROPERTIES DEFINE_SYMBOL KADULIB)

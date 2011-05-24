@@ -76,5 +76,4 @@ add_library (buddies
 	${buddies_MOC_FILES}
 )
 
-set_target_properties (buddies PROPERTIES ENABLE_EXPORTS ON)
-set_target_properties (buddies PROPERTIES COMPILE_FLAGS "-DKADULIB")
+set_target_properties (buddies PROPERTIES DEFINE_SYMBOL KADULIB)

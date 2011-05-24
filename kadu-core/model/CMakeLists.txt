@@ -14,5 +14,4 @@ add_library (model
 	${model_MOC_FILES}
 )
 
-set_target_properties (model PROPERTIES ENABLE_EXPORTS ON)
-set_target_properties (model PROPERTIES COMPILE_FLAGS "-DKADULIB")
+set_target_properties (model PROPERTIES DEFINE_SYMBOL KADULIB)

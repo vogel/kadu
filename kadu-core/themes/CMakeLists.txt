@@ -19,5 +19,4 @@ add_library (themes
 	${themes_MOC_FILES}
 )
 
-set_target_properties (themes PROPERTIES ENABLE_EXPORTS ON)
-set_target_properties (themes PROPERTIES COMPILE_FLAGS "-DKADULIB")
+set_target_properties (themes PROPERTIES DEFINE_SYMBOL KADULIB)

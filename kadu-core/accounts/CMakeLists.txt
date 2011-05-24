@@ -29,7 +29,6 @@ set (accounts_MOC_SRCS
 	model/accounts-proxy-model.h
 )
 
-
 qt4_wrap_cpp (accounts_MOC_FILES ${accounts_MOC_SRCS})
 
 add_library (accounts
@@ -38,5 +37,4 @@ add_library (accounts
 	${accounts_MOC_FILES}
 )
 
-set_target_properties (accounts PROPERTIES ENABLE_EXPORTS ON)
-set_target_properties (accounts PROPERTIES COMPILE_FLAGS "-DKADULIB")
+set_target_properties (accounts PROPERTIES DEFINE_SYMBOL KADULIB)

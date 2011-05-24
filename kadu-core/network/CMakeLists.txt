@@ -57,8 +57,7 @@ add_library (network
 	${network_MOC_FILES}
 )
 
-set_target_properties (network PROPERTIES ENABLE_EXPORTS ON)
-set_target_properties (network PROPERTIES COMPILE_FLAGS "-DKADULIB")
+set_target_properties (network PROPERTIES DEFINE_SYMBOL KADULIB)
 
 include_directories (${CMAKE_CURRENT_BINARY_DIR})
 configure_file (${CMAKE_CURRENT_SOURCE_DIR}/kadu-network-config.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/kadu-network-config.h)

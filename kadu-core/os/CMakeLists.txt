@@ -16,5 +16,4 @@ add_library (os
 	${os_MOC_FILES}
 )
 
-set_target_properties (os PROPERTIES ENABLE_EXPORTS ON)
-set_target_properties (os PROPERTIES COMPILE_FLAGS "-DKADULIB")
+set_target_properties (os PROPERTIES DEFINE_SYMBOL KADULIB)

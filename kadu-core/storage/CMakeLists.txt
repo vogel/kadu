@@ -20,5 +20,4 @@ add_library (storage
 	${storage_MOC_FILES}
 )
 
-set_target_properties (storage PROPERTIES ENABLE_EXPORTS ON)
-set_target_properties (storage PROPERTIES COMPILE_FLAGS "-DKADULIB")
+set_target_properties (storage PROPERTIES DEFINE_SYMBOL KADULIB)

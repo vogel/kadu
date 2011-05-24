@@ -16,5 +16,4 @@ add_library (core
 	${core_MOC_FILES}
 )
 
-set_target_properties (core PROPERTIES ENABLE_EXPORTS ON)
-set_target_properties (core PROPERTIES COMPILE_FLAGS "-DKADULIB")
+set_target_properties (core PROPERTIES DEFINE_SYMBOL KADULIB)

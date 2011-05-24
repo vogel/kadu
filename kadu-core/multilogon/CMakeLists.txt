@@ -18,5 +18,4 @@ add_library (multilogon
 	${multilogon_MOC_FILES}
 )
 
-set_target_properties (multilogon PROPERTIES ENABLE_EXPORTS ON)
-set_target_properties (multilogon PROPERTIES COMPILE_FLAGS "-DKADULIB")
+set_target_properties (multilogon PROPERTIES DEFINE_SYMBOL KADULIB)

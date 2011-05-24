@@ -16,5 +16,4 @@ add_library (icons
 	${icons_MOC_FILES}
 )
 
-set_target_properties (icons PROPERTIES ENABLE_EXPORTS ON)
-set_target_properties (icons PROPERTIES COMPILE_FLAGS "-DKADULIB")
+set_target_properties (icons PROPERTIES DEFINE_SYMBOL KADULIB)

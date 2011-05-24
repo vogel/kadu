@@ -7,5 +7,4 @@ add_library (parser
 	${parser_SRCS}
 )
 
-set_target_properties (parser PROPERTIES ENABLE_EXPORTS ON)
-set_target_properties (parser PROPERTIES COMPILE_FLAGS "-DKADULIB")
+set_target_properties (parser PROPERTIES DEFINE_SYMBOL KADULIB)

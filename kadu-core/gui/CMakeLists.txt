@@ -267,5 +267,4 @@ add_library (gui
 	${gui_MOC_FILES}
 )
 
-set_target_properties (gui PROPERTIES ENABLE_EXPORTS ON)
-set_target_properties (gui PROPERTIES COMPILE_FLAGS "-DKADULIB")
+set_target_properties (gui PROPERTIES DEFINE_SYMBOL KADULIB)

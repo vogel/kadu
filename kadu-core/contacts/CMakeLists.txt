@@ -33,5 +33,4 @@ add_library (contacts
 	${contacts_MOC_FILES}
 )
 
-set_target_properties (contacts PROPERTIES ENABLE_EXPORTS ON)
-set_target_properties (contacts PROPERTIES COMPILE_FLAGS "-DKADULIB")
+set_target_properties (contacts PROPERTIES DEFINE_SYMBOL KADULIB)

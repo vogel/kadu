@@ -49,5 +49,4 @@ add_library (protocols
 	${protocols_MOC_FILES}
 )
 
-set_target_properties (protocols PROPERTIES ENABLE_EXPORTS ON)
-set_target_properties (protocols PROPERTIES COMPILE_FLAGS "-DKADULIB")
+set_target_properties (protocols PROPERTIES DEFINE_SYMBOL KADULIB)

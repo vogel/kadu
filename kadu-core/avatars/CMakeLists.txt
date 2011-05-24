@@ -21,5 +21,4 @@ add_library (avatars
 	${avatars_MOC_FILES}
 )
 
-set_target_properties (avatars PROPERTIES ENABLE_EXPORTS ON)
-set_target_properties (avatars PROPERTIES COMPILE_FLAGS "-DKADULIB")
+set_target_properties (avatars PROPERTIES DEFINE_SYMBOL KADULIB)
