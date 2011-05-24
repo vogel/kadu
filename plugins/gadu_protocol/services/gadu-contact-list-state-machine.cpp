@@ -30,8 +30,6 @@
 GaduContactListStateMachine::GaduContactListStateMachine(GaduContactListService *service) :
 		QStateMachine(service), CurrentService(service)
 {
-	Q_ASSERT(service);
-
 	RetryTimer.setInterval(3000);
 	RetryTimer.setSingleShot(true);
 
@@ -56,7 +54,6 @@ GaduContactListStateMachine::GaduContactListStateMachine(GaduContactListService 
 	connect(InternalErrorState, SIGNAL(entered()), &RetryTimer, SLOT(start()));
 
 	Protocol *protocol = CurrentService->protocol();
-	Q_ASSERT(protocol);
 
 	OfflineState->addTransition(protocol, SIGNAL(connected(Account)), AwaitingServerGetResponseState);
 

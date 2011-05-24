@@ -67,7 +67,6 @@ void GaduContactListService::handleEventUserlist100GetReply(struct gg_event *e)
 	GaduAccountDetails *accountDetails = dynamic_cast<GaduAccountDetails *>(Protocol->account().details());
 	if (!accountDetails)
 	{
-		Q_ASSERT(0);
 		emit stateMachineInternalError();
 		emit contactListImported(false, BuddyList());
 		return;
@@ -162,7 +161,6 @@ void GaduContactListService::handleEventUserlist100Version(gg_event *e)
 	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "new version of userlist available: %d\n", e->event.userlist100_version.version);
 
 	GaduAccountDetails *accountDetails = dynamic_cast<GaduAccountDetails *>(Protocol->account().details());
-	Q_ASSERT(accountDetails);
 	if (accountDetails && accountDetails->userlistVersion() != (int)e->event.userlist100_version.version)
 		emit stateMachineNewVersionAvailable();
 }
@@ -170,7 +168,6 @@ void GaduContactListService::handleEventUserlist100Version(gg_event *e)
 bool GaduContactListService::isListInitiallySetUp() const
 {
 	GaduAccountDetails *accountDetails = dynamic_cast<GaduAccountDetails *>(Protocol->account().details());
-	Q_ASSERT(accountDetails);
 	if (accountDetails && -1 != accountDetails->userlistVersion())
 		return true;
 
@@ -205,7 +202,6 @@ void GaduContactListService::exportContactList(const BuddyList &buddies)
 	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "\n%s\n", contacts.constData());
 
 	GaduAccountDetails *accountDetails = dynamic_cast<GaduAccountDetails *>(Protocol->account().details());
-	Q_ASSERT(accountDetails);
 	if (!accountDetails || -1 == gg_userlist100_request(
 			Protocol->gaduSession(), GG_USERLIST100_PUT, accountDetails->userlistVersion(),
 			GG_USERLIST100_FORMAT_TYPE_GG70, contacts.constData()))

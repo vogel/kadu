@@ -532,10 +532,7 @@ void JabberClient::slotCSWarning(int warning)
 	if (showNoTlsWarning)
 		emit connectionError(tr("The server does not support TLS encryption."));
 	else if (!doCleanupStream)
-	{
-		Q_ASSERT(JabberClientStream);
 		JabberClientStream->continueAfterWarning();
-	}
 }
 
 void JabberClient::slotCSError(int error)
