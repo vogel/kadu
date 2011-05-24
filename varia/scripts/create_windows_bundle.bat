@@ -1,9 +1,9 @@
 @ECHO OFF
 
 set DESTINATION="C:\kadu\git-install"
-set QT_DIR="C:\Qt\4.7.2\bin"
-set QT_PLUGINS_DIR="C:\Qt\4.7.2\plugins"
-set QT_TRANSLATIONS_DIR="C:\Qt\2010.05\qt\translations"
+set QT_DIR="C:\QtSDK\Desktop\Qt\4.7.3\mingw\bin"
+set QT_PLUGINS_DIR="C:\QtSDK\Desktop\Qt\4.7.3\mingw\plugins"
+set QT_TRANSLATIONS_DIR="C:\QtSDK\Desktop\Qt\4.7.3\mingw\translations"
 set QT_DEBUG_SUFFIX=""
 set LIBGADU_DIR="C:\kadu\deps\libgadu-1.10.1-win32"
 set LIBIDN_DIR="C:\kadu\deps\libidn-1.21"
