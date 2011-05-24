@@ -102,9 +102,11 @@ if (WIN32)
 	add_library (kadu_core SHARED ${kadu_SRCS} ${MOC_FILES} kadu_core.rc)
 	kadu_source_subdirectories (kadu_core ${kadu_SUBDIRS})
 
-	set_target_properties (kadu_core PROPERTIES DEFINE_SYMBOL KADULIB)
+	set_target_properties (kadu_core PROPERTIES
+		DEFINE_SYMBOL KADULIB
+		LINK_INTERFACE_LIBRARIES ""
+	)
 	target_link_libraries (kadu_core ${QT_LIBRARIES})
-	set_property (TARGET kadu_core PROPERTY LINK_INTERFACE_LIBRARIES "")
 
 	if (MINGW)
 		exec_program (windres ${CMAKE_CURRENT_SOURCE_DIR}
@@ -118,7 +120,7 @@ if (WIN32)
 		add_executable (kadu_c main.cpp main_win32.cpp kadu.rc)
 	endif (MINGW)
 
-	set_target_properties (kadu_c PROPERTIES COMPILE_FLAGS "-DKADU_CONSOLE")
+	set_target_properties (kadu_c PROPERTIES DEFINE_SYMBOL KADU_CONSOLE)
 
 	target_link_libraries (kadu kadu_core ${QT_QTMAIN_LIBRARY} ${QT_LIBRARIES} ws2_32)
 	target_link_libraries (kadu_c kadu_core ${QT_LIBRARIES} ws2_32)
@@ -138,8 +140,11 @@ else (WIN32)
 
 	kadu_source_subdirectories (kadu ${kadu_SUBDIRS})
 
-	set_target_properties (kadu PROPERTIES ENABLE_EXPORTS ON)
-	set_target_properties (kadu PROPERTIES COMPILE_FLAGS "-DKADULIB")
+	set_target_properties (kadu PROPERTIES
+		ENABLE_EXPORTS ON
+		DEFINE_SYMBOL KADULIB
+		LINK_INTERFACE_LIBRARIES ""
+	)
 
 	target_link_libraries (kadu ${QT_LIBRARIES} ${CMAKE_DL_LIBS})
 
