@@ -183,7 +183,7 @@ macro (kadu_plugin)
 		# wygeneruj plik z wersja modulu
 		set (PLUGIN_SOURCES ${PLUGIN_SOURCES} ${PLUGIN_NAME}.rc)
 		add_custom_command (OUTPUT ${PLUGIN_NAME}.rc
-			COMMAND ${CMAKE_SOURCE_DIR}/modules/modver.bat ARGS ${CMAKE_CURRENT_SOURCE_DIR}/${PLUGIN_NAME}.desc ${PLUGIN_NAME}.rc
+			COMMAND ${CMAKE_SOURCE_DIR}/plugins/plugver.bat ARGS ${CMAKE_CURRENT_SOURCE_DIR}/${PLUGIN_NAME}.desc ${PLUGIN_NAME}.rc
 			WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
 			DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${PLUGIN_NAME}.desc
 			COMMENT "Building RC source ${PLUGIN_NAME}.rc"
