@@ -91,28 +91,6 @@ for /D %%F in (*) do (
 		)
 	)
 )
-
-cd ..\..\build\modules
-for /D %%F in (*) do (
-	IF EXIST %%F\*.a (
-		IF EXIST %%F\*.dll (
-		  xcopy %%F\*.dll  %DESTINATION%\plugins\ /C /H /R /Y /Q
-		)
-		xcopy ..\..\modules\%%F\*.desc %DESTINATION%\plugins\ /C /H /R /Y /Q
-		IF EXIST ..\..\modules\%%F\configuration\*.ui (
-			xcopy ..\..\modules\%%F\configuration\*.ui %DESTINATION%\plugins\configuration\ /C /H /R /Y /Q
-		)
-		IF EXIST ..\..\modules\%%F\data\configuration\*.ui (
-			xcopy ..\..\modules\%%F\data\configuration\*.ui %DESTINATION%\plugins\configuration\ /C /H /R /Y /Q
-		)
-		IF EXIST ..\..\modules\%%F\*.qm (
-			xcopy ..\..\modules\%%F\*.qm   %DESTINATION%\plugins\translations\ /C /H /R /Y /Q
-		)
-		IF EXIST ..\..\modules\%%F\data\* (
-			xcopy ..\..\modules\%%F\data\* %DESTINATION%\plugins\data\%%F\ /C /H /R /Y /E /Q
-		)
-	)
-)
 cd ..\..
 
 echo LoadByDefault=true >> %DESTINATION%\plugins\qt4_docking_notify.desc
@@ -151,6 +129,7 @@ xcopy %QT_TRANSLATIONS_DIR%\qt_de.qm %DESTINATION%\translations\  /C /H /R /Y /Q
 xcopy %QT_TRANSLATIONS_DIR%\qt_fr.qm %DESTINATION%\translations\  /C /H /R /Y /Q
 xcopy %QT_TRANSLATIONS_DIR%\qt_it.qm %DESTINATION%\translations\  /C /H /R /Y /Q
 xcopy %QT_TRANSLATIONS_DIR%\qt_pl.qm %DESTINATION%\translations\  /C /H /R /Y /Q
+xcopy %QT_TRANSLATIONS_DIR%\qt_ru.qm %DESTINATION%\translations\  /C /H /R /Y /Q
 
 ECHO [Paths] > %DESTINATION%\qt.conf
 ECHO Plugins = qt-plugins >> %DESTINATION%\qt.conf
