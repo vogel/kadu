@@ -228,6 +228,8 @@ macro (kadu_plugin)
 
 	add_dependencies (${PLUGIN_NAME} ${PLUGIN_NAME}-translations)
 
+	set_target_properties (${PLUGIN_NAME} PROPERTIES LINK_INTERFACE_LIBRARIES "")
+
 	if (NOT ${PLUGIN_BUILDDEF} STREQUAL "")
 		set_target_properties (${PLUGIN_NAME} PROPERTIES COMPILE_DEFINITIONS ${PLUGIN_BUILDDEF})
 	endif (NOT ${PLUGIN_BUILDDEF} STREQUAL "")

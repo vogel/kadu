@@ -70,7 +70,3 @@ kadu_plugin (mediaplayer
 	PLUGIN_DATA_FILES ${DATA_FILES}
 	PLUGIN_BUILDDEF MEDIAPLAYER_BUILD
 )
-
-if (WIN32)
-	set_target_properties (mediaplayer PROPERTIES COMPILE_FLAGS "-DMEDIAPLAYER_BUILD")
-endif (WIN32)

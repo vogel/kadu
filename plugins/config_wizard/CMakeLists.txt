@@ -53,6 +53,3 @@ kadu_plugin (config_wizard
 	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 	PLUGIN_DEPENDENCIES sound
 )
-
-# XXX
-link_directories (${SNDFILE_LIBRARY_DIRS})
