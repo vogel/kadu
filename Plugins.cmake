@@ -11,8 +11,6 @@ set (COMPILE_PLUGINS
 	chat_notify
 	# Notification by external commands module
 	exec_notify
-	# Freedesktop notification support
-	freedesktop_notify
 	# Hints near tray icon
 	hints
 	# Notifications by qt4_docking plugin
@@ -114,6 +112,10 @@ endif (UNIX)
 
 if (UNIX AND NOT APPLE)
 	list (APPEND COMPILE_PLUGINS
+
+	# notifiers
+		# Freedesktop notification support
+		freedesktop_notify
 
 	# mediaplayer
 		# Amarok 1.x mediaplayer support
