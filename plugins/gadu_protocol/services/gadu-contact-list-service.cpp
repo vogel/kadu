@@ -91,20 +91,30 @@ void GaduContactListService::handleEventUserlist100GetReply(struct gg_event *e)
 
 	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "userlist 100 reply:\n%s\n", content);
 
-	QByteArray content2(content);
-	BuddyList buddies = GaduListHelper::byteArrayToBuddyList(Protocol->account(), content2);
-	emit stateMachineSucceededImporting();
-	emit contactListImported(true, buddies);
-	accountDetails->setUserlistVersion(e->event.userlist100_reply.version);
-
-	// cleanup references, so buddy and contact instances can be removed
-	// this is really a hack, we need to call aboutToBeRemoved someway for non-manager contacts and buddies too
-	// or just only store managed only, i dont know yet
-	foreach (Buddy buddy, buddies)
+	if (accountDetails->userlistVersion() != (int)e->event.userlist100_reply.version)
 	{
-		foreach (Contact contact, buddy.contacts())
-			contact.data()->aboutToBeRemoved();
-		buddy.data()->aboutToBeRemoved();
+		QByteArray content2(content);
+		BuddyList buddies = GaduListHelper::byteArrayToBuddyList(Protocol->account(), content2);
+		emit stateMachineSucceededImporting();
+		emit contactListImported(true, buddies);
+		accountDetails->setUserlistVersion(e->event.userlist100_reply.version);
+
+		// cleanup references, so buddy and contact instances can be removed
+		// this is really a hack, we need to call aboutToBeRemoved someway for non-manager contacts and buddies too
+		// or just only store managed only, i dont know yet
+		foreach (Buddy buddy, buddies)
+		{
+			foreach (Contact contact, buddy.contacts())
+				contact.data()->aboutToBeRemoved();
+			buddy.data()->aboutToBeRemoved();
+		}
+	}
+	else
+	{
+		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "ignoring userlist 100 reply as we already know that version\n");
+
+		emit stateMachineSucceededImporting();
+		emit contactListImported(false, BuddyList());
 	}
 
 	if (!ContactManager::instance()->dirtyContacts(Protocol->account()).isEmpty())
