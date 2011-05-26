@@ -23,6 +23,7 @@
 #ifndef GADU_CONTACT_LIST_SERVICE_H
 #define GADU_CONTACT_LIST_SERVICE_H
 
+#include "contacts/contact.h"
 #include "protocols/services/contact-list-service.h"
 
 class GaduContactListStateMachine;
@@ -41,6 +42,9 @@ class GaduContactListService : public ContactListService
 	void handleEventUserlist100PutReply(struct gg_event *e);
 	void handleEventUserlist100GetReply(struct gg_event *e);
 	void handleEventUserlist100Reply(struct gg_event *e);
+
+private slots:
+	void dirtyContactAdded(Contact contact);
 
 public:
 	explicit GaduContactListService(GaduProtocol *protocol);
