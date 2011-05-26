@@ -69,7 +69,7 @@ void ContactManager::dirtinessChanged()
 	QMutexLocker locker(&mutex());
 
 	Contact contact(sender());
-	if (!contact.isNull())
+	if (!contact.isNull() && contact.ownerBuddy() != Core::instance()->myself())
 	{
 		if (contact.isDirty())
 		{
