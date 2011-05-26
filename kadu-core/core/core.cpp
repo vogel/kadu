@@ -210,6 +210,12 @@ void Core::createDefaultConfiguration()
 	config_file.addVariable("General", "ShowOnlineAndDescription", false);
 	config_file.addVariable("General", "ShowWithoutDescription", true);
 	config_file.addVariable("General", "StartDelay", 0);
+
+	if (config_file.readBoolEntry("General", "AdvancedMode", false))
+		config_file.addVariable("General", "StatusContainerType", "Account");
+	else
+		config_file.addVariable("General", "StatusContainerType", "Identity");
+
 	config_file.addVariable("General", "StartupLastDescription", true);
 	config_file.addVariable("General", "StartupStatus", "LastStatus");
 	config_file.addVariable("General", "StartupStatusInvisibleWhenLastWasOffline", true);
@@ -315,9 +321,6 @@ void Core::createDefaultConfiguration()
 
 	config_file.addVariable("Chat", "UseDefaultWebBrowser", config_file.readEntry("Chat", "WebBrowser").isEmpty());
 	config_file.addVariable("Chat", "UseDefaultEMailClient", config_file.readEntry("Chat", "MailClient").isEmpty());
-
-	if (!config_file.readBoolEntry("General", "AdvancedMode", false))
-		config_file.addVariable("General", "SimpleMode", true);
 
 	createAllDefaultToolbars();
 }
