@@ -45,17 +45,24 @@ void MainConfigurationHolder::destroyInstance()
 }
 
 MainConfigurationHolder::MainConfigurationHolder() :
-	SimpleMode(true)
+		SetStatus(SetStatusPerIdentity)
 {
 	configurationUpdated();
 }
 
 void MainConfigurationHolder::configurationUpdated()
 {
-	bool simpleMode = config_file.readBoolEntry("General", "SimpleMode", true);
-	if (SimpleMode != simpleMode)
+	QString statusContainerType = config_file.readEntry("General", "StatusContainerType", "Identity");
+
+	SetStatusMode newStatus = SetStatusPerIdentity;
+	if (statusContainerType == "Account")
+		newStatus = SetStatusPerAccount;
+	else if (statusContainerType == "All")
+		newStatus = SetStatusForAll;
+
+	if (SetStatus != newStatus)
 	{
-		SimpleMode = simpleMode;
-		emit simpleModeChanged();
+		SetStatus = newStatus;
+		emit setStatusModeChanged();
 	}
 }

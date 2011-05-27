@@ -448,7 +448,7 @@ void BuddiesListView::selectionChanged(const QItemSelection &selected, const QIt
 
 void BuddiesListView::simpleModeChanged()
 {
-	if (MainConfigurationHolder::instance()->simpleMode() && !config_file.readBoolEntry("General", "ExpandingInSimpleMode", false))
+	if (MainConfigurationHolder::instance()->isSetStatusPerIdentity() && !config_file.readBoolEntry("General", "ExpandingInSimpleMode", false))
 	{
 		collapseAll();
 		setItemsExpandable(false);

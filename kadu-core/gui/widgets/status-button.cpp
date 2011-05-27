@@ -67,7 +67,7 @@ void StatusButton::updateStatus()
 	}
 	else
 	{
-		if (MainConfigurationHolder::instance()->simpleMode())
+		if (MainConfigurationHolder::instance()->isSetStatusPerIdentity())
 		{
 			setText(MyStatusContainer->statusContainerName());
 			setToolTip(QString());

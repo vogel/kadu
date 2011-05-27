@@ -23,6 +23,13 @@
 
 #include "configuration-holder.h"
 
+enum SetStatusMode
+{
+	SetStatusPerAccount,
+	SetStatusPerIdentity,
+	SetStatusForAll
+};
+
 class MainConfigurationHolder : public ConfigurationHolder
 {
 	Q_OBJECT
@@ -31,7 +38,7 @@ class MainConfigurationHolder : public ConfigurationHolder
 	static MainConfigurationHolder *Instance;
 	explicit MainConfigurationHolder();
 
-	bool SimpleMode;
+	SetStatusMode SetStatus;
 
 public:
 	static void createInstance();
@@ -39,10 +46,12 @@ public:
 	static MainConfigurationHolder * instance();
 	void configurationUpdated();
 
-	bool simpleMode() const { return SimpleMode; }
+	SetStatusMode setStatusMode() const { return SetStatus; }
+	bool isSetStatusPerAccount() const { return SetStatus == SetStatusPerAccount; }
+	bool isSetStatusPerIdentity() const { return SetStatus == SetStatusPerIdentity; }
 
 signals:
-	void simpleModeChanged();
+	void setStatusModeChanged();
 
 };
 

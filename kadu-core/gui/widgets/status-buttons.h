@@ -38,7 +38,7 @@ class KADUAPI StatusButtons : public QWidget, private StatusContainerAwareObject
 
 	QHBoxLayout *Layout;
 	QSpacerItem *Spacer;
-	bool SimpleMode;
+	bool HasStretch;
 
 	QMap<StatusContainer *, StatusButton *> Buttons;
 
@@ -46,10 +46,7 @@ class KADUAPI StatusButtons : public QWidget, private StatusContainerAwareObject
 	void enableStatusName();
 	void disableStatusName();
 	void addButton(StatusButton *button);
-	void updateLayout(bool addStretch);
-
-private slots:
-    void simpleModeChanged();
+	void setStretch(bool stretch);
 
 protected:
 	virtual void statusContainerRegistered(StatusContainer *statusContainer);
