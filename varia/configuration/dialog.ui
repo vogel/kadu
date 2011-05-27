@@ -196,7 +196,8 @@
 				</combo-box>
 				<combo-box caption="Tool tip style" config-section="Look" config-item="UserboxToolTipStyle" id="toolTipClasses"
 					tool-tip="Choose buddy list tool-tip style" />
-				<check-box caption="Allow expanding buddies into contacts" config-section="Look" config-item="AllowExpandingBuddies" />
+				<check-box caption="Allow expanding buddies into contacts" config-section="Look" config-item="AllowExpandingBuddies" id="allowExpandingBuddies" />
+				<check-box caption="Show expanding control" config-section="Look" config-item="ShowExpandingControl" id="showExpandingControl" />
 			</group-box>
 			<group-box name="Buddy Photos">
 				<check-box caption="Show photos" config-section="Look" config-item="ShowAvatars" id="showAvatars" />

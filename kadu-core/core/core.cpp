@@ -215,11 +215,13 @@ void Core::createDefaultConfiguration()
 	{
 		config_file.addVariable("General", "StatusContainerType", "Account");
 		config_file.addVariable("Look", "AllowExpandingBuddies", false);
+		config_file.addVariable("Look", "ShowExpandingControl", false);
 	}
 	else
 	{
 		config_file.addVariable("General", "StatusContainerType", "Identity");
 		config_file.addVariable("Look", "AllowExpandingBuddies", false);
+		config_file.addVariable("Look", "ShowExpandingControl", true);
 	}
 
 	config_file.addVariable("General", "StartupLastDescription", true);

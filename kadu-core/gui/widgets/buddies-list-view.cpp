@@ -338,7 +338,7 @@ void BuddiesListView::configurationUpdated()
 	if (config_file.readBoolEntry("Look", "AllowExpandingBuddies", false))
 	{
 		setItemsExpandable(true);
-		setRootIsDecorated(true);
+		setRootIsDecorated(config_file.readBoolEntry("Look", "ShowExpandingControl", false));
 	}
 	else
 	{
