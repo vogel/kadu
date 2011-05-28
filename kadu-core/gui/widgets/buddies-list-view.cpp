@@ -74,6 +74,7 @@ BuddiesListView::BuddiesListView(QWidget *parent) :
 	/* Disable as we use kinetic scrolling by default */
 	setDragEnabled(true);
 #endif
+	setItemsExpandable(true);
 	setExpandsOnDoubleClick(false);
 	setHeaderHidden(true);
 	setMouseTracking(true);
@@ -333,18 +334,7 @@ void BuddiesListView::setContextMenuEnabled(bool enabled)
 
 void BuddiesListView::configurationUpdated()
 {
-
-	if (config_file.readBoolEntry("Look", "AllowExpandingBuddies", false))
-	{
-		setItemsExpandable(true);
-		setRootIsDecorated(config_file.readBoolEntry("Look", "ShowExpandingControl", false));
-	}
-	else
-	{
-		collapseAll();
-		setItemsExpandable(false);
-		setRootIsDecorated(false);
-	}
+	setRootIsDecorated(config_file.readBoolEntry("Look", "ShowExpandingControl", false));
 }
 
 void BuddiesListView::contextMenuEvent(QContextMenuEvent *event)

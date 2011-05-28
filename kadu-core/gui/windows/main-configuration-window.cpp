@@ -246,8 +246,6 @@ MainConfigurationWindow::MainConfigurationWindow() :
 	widget()->widgetById("parseStatus")->setToolTip(qApp->translate("@default", SyntaxText));
 	(static_cast<ConfigSyntaxEditor *>(widget()->widgetById("infoPanelSyntax")))->setSyntaxHint(qApp->translate("@default", SyntaxText));
 
-	connect(widget()->widgetById("allowExpandingBuddies"), SIGNAL(toggled(bool)), widget()->widgetById("showExpandingControl"), SLOT(setEnabled(bool)));
-
 	userboxTransparency = static_cast<QCheckBox *>(widget()->widgetById("userboxTransparency"));
 	userboxAlpha = static_cast<QSlider *>(widget()->widgetById("userboxAlpha"));
 	connect(userboxTransparency, SIGNAL(toggled(bool)), widget()->widgetById("userboxAlpha"), SLOT(setEnabled(bool)));
