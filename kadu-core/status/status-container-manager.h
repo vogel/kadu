@@ -28,6 +28,8 @@
 #include "identities/identities-aware-object.h"
 #include "status/status-container.h"
 
+class AllAccountsStatusContainer;
+
 class KADUAPI StatusContainerManager : public StatusContainer,
 		public ConfigurationAwareObject, private AccountsAwareObject, private IdentitiesAwareObject
 {
@@ -45,6 +47,7 @@ class KADUAPI StatusContainerManager : public StatusContainer,
 
 	QList<StatusContainer *> StatusContainers;
 	StatusContainer *DefaultStatusContainer;
+	AllAccountsStatusContainer *AllAccountsContainer;
 
 	QString StartupStatus;
 	QString StartupDescription;
@@ -65,7 +68,7 @@ class KADUAPI StatusContainerManager : public StatusContainer,
 
 private slots:
 	void updateIdentities();
-	void simpleModeChanged();
+	void setStatusModeChanged();
 
 protected:
 	virtual void accountRegistered(Account account);

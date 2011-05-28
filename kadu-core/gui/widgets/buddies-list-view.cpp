@@ -76,9 +76,7 @@ BuddiesListView::BuddiesListView(QWidget *parent) :
 #endif
 	setExpandsOnDoubleClick(false);
 	setHeaderHidden(true);
-	setItemsExpandable(true);
 	setMouseTracking(true);
-	setRootIsDecorated(true);
 	setSelectionMode(QAbstractItemView::ExtendedSelection);
 #ifndef Q_WS_MAEMO_5
 	setUniformRowHeights(false);
@@ -98,7 +96,7 @@ BuddiesListView::BuddiesListView(QWidget *parent) :
 	connect(PendingMessagesManager::instance(), SIGNAL(messageAdded(Message)), this, SLOT(update()));
 	connect(PendingMessagesManager::instance(), SIGNAL(messageRemoved(Message)), this, SLOT(update()));
 
-	simpleModeChanged();
+	configurationUpdated();
 }
 
 BuddiesListView::~BuddiesListView()
@@ -334,6 +332,22 @@ void BuddiesListView::setContextMenuEnabled(bool enabled)
 	ContextMenuEnabled = enabled;
 }
 
+void BuddiesListView::configurationUpdated()
+{
+
+	if (config_file.readBoolEntry("Look", "AllowExpandingBuddies", false))
+	{
+		setItemsExpandable(true);
+		setRootIsDecorated(config_file.readBoolEntry("Look", "ShowExpandingControl", false));
+	}
+	else
+	{
+		collapseAll();
+		setItemsExpandable(false);
+		setRootIsDecorated(false);
+	}
+}
+
 void BuddiesListView::contextMenuEvent(QContextMenuEvent *event)
 {
 	if (!ContextMenuEnabled)
@@ -444,21 +458,6 @@ void BuddiesListView::selectionChanged(const QItemSelection &selected, const QIt
 {
 	QTreeView::selectionChanged(selected, deselected);
 	emit buddySelectionChanged();
-}
-
-void BuddiesListView::simpleModeChanged()
-{
-	if (MainConfigurationHolder::instance()->simpleMode() && !config_file.readBoolEntry("General", "ExpandingInSimpleMode", false))
-	{
-		collapseAll();
-		setItemsExpandable(false);
-		setRootIsDecorated(false);
-	}
-	else
-	{
-		setItemsExpandable(true);
-		setRootIsDecorated(true);
-	}
 }
 
 void BuddiesListView::doubleClickedSlot(const QModelIndex &index)

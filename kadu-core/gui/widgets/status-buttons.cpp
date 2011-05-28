@@ -31,11 +31,8 @@
 #include "status-buttons.h"
 
 StatusButtons::StatusButtons(QWidget *parent) :
-		QWidget(parent), Layout(0)
+		QWidget(parent), Layout(0), HasStretch(0)
 {
-	SimpleMode = MainConfigurationHolder::instance()->simpleMode();
-	connect(MainConfigurationHolder::instance(), SIGNAL(simpleModeChanged()), this, SLOT(simpleModeChanged()));
-
 	createGui();
 
 	triggerAllStatusContainerRegistered();
@@ -49,41 +46,33 @@ void StatusButtons::createGui()
 {
 	setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
 	Layout = new QHBoxLayout(this);
-
-	if (!SimpleMode)
-		updateLayout(!SimpleMode);
+	setStretch(MainConfigurationHolder::instance()->setStatusMode() == SetStatusPerAccount);
 }
 
 void StatusButtons::addButton(StatusButton* button)
 {
-	if (SimpleMode)
-		Layout->addWidget(button);
-	else
+	if (HasStretch)
 		Layout->insertWidget(Layout->count() - 1, button);
+	else
+		Layout->addWidget(button);
 }
 
-void StatusButtons::updateLayout(bool addStretch)
+void StatusButtons::setStretch(bool stretch)
 {
-	Q_UNUSED(addStretch)
+	if (HasStretch == stretch)
+		return;
 
-	if (addStretch)
+	HasStretch = stretch;
+
+	if (HasStretch)
 		Layout->addStretch(200);
 	else
 		delete Layout->takeAt(Layout->count() - 1);
 }
 
-void StatusButtons::simpleModeChanged()
-{
-	if (SimpleMode == MainConfigurationHolder::instance()->simpleMode())
-		return;
- 
-	SimpleMode = MainConfigurationHolder::instance()->simpleMode();
-	updateLayout(!SimpleMode);
-}
-
 void StatusButtons::enableStatusName()
 {
-	if (MainConfigurationHolder::instance()->simpleMode() && 1 == Buttons.count())
+	if (MainConfigurationHolder::instance()->setStatusMode() != SetStatusPerAccount && 1 == Buttons.count())
 		Buttons.begin().value()->setDisplayStatusName(true);
 }
 
@@ -105,6 +94,7 @@ void StatusButtons::statusContainerRegistered(StatusContainer *statusContainer)
 	Buttons[statusContainer] = button;
 
 	enableStatusName();
+	setStretch(MainConfigurationHolder::instance()->setStatusMode() == SetStatusPerAccount);
 }
 
 void StatusButtons::statusContainerUnregistered(StatusContainer *statusContainer)
@@ -116,5 +106,6 @@ void StatusButtons::statusContainerUnregistered(StatusContainer *statusContainer
 		Buttons.remove(statusContainer);
 
 		enableStatusName();
+		setStretch(MainConfigurationHolder::instance()->setStatusMode() == SetStatusPerAccount);
 	}
 }

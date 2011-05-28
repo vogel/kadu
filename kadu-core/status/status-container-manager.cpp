@@ -29,6 +29,7 @@
 #include "identities/identity-manager.h"
 #include "icons/kadu-icon.h"
 #include "protocols/protocol.h"
+#include "status/all-accounts-status-container.h"
 #include "status/status-container-aware-object.h"
 #include "status/status-type-manager.h"
 #include "status/status-type.h"
@@ -48,31 +49,37 @@ KADUAPI StatusContainerManager * StatusContainerManager::instance()
 StatusContainerManager::StatusContainerManager() :
 		StatusContainer(0), AllowSetDefaultStatus(false), DefaultStatusContainer(0)
 {
+	AllAccountsContainer = new AllAccountsStatusContainer(this);
+
 	configurationUpdated();
 
-	if (MainConfigurationHolder::instance()->simpleMode())
+	if (MainConfigurationHolder::instance()->isSetStatusPerIdentity())
 		triggerAllIdentitiesAdded();
-	else
+	else if (MainConfigurationHolder::instance()->isSetStatusPerAccount())
 		triggerAllAccountsRegistered();
+	else
+		registerStatusContainer(AllAccountsContainer);
 
-	connect(MainConfigurationHolder::instance(), SIGNAL(simpleModeChanged()), this, SLOT(simpleModeChanged()));
+	connect(MainConfigurationHolder::instance(), SIGNAL(setStatusModeChanged()), this, SLOT(setStatusModeChanged()));
 	connect(AccountManager::instance(), SIGNAL(accountUpdated(Account)), this, SLOT(updateIdentities()));
 }
 
 StatusContainerManager::~StatusContainerManager()
 {
 	disconnect(AccountManager::instance(), SIGNAL(accountUpdated(Account)), this, SLOT(updateIdentities()));
-	disconnect(MainConfigurationHolder::instance(), SIGNAL(simpleModeChanged()), this, SLOT(simpleModeChanged()));
+	disconnect(MainConfigurationHolder::instance(), SIGNAL(setStatusModeChanged()), this, SLOT(setStatusModeChanged()));
 
-	if (MainConfigurationHolder::instance()->simpleMode())
+	if (MainConfigurationHolder::instance()->isSetStatusPerIdentity())
 		triggerAllIdentitiesRemoved();
-	else
+	else if (MainConfigurationHolder::instance()->isSetStatusPerAccount())
 		triggerAllAccountsUnregistered();
+	else
+		unregisterStatusContainer(AllAccountsContainer);
 }
 
 void StatusContainerManager::updateIdentities()
 {
-	if (!MainConfigurationHolder::instance()->simpleMode())
+	if (!MainConfigurationHolder::instance()->isSetStatusPerIdentity())
 		return;
 
 	foreach (const Identity &identity, IdentityManager::instance()->items())
@@ -84,31 +91,31 @@ void StatusContainerManager::updateIdentities()
 
 void StatusContainerManager::accountRegistered(Account account)
 {
-	if (!MainConfigurationHolder::instance()->simpleMode() && !StatusContainers.contains(account.statusContainer()))
+	if (MainConfigurationHolder::instance()->isSetStatusPerAccount() && !StatusContainers.contains(account.statusContainer()))
 		registerStatusContainer(account.statusContainer());
 
-	if (MainConfigurationHolder::instance()->simpleMode() && !StatusContainers.contains(account.accountIdentity()))
+	if (MainConfigurationHolder::instance()->isSetStatusPerIdentity() && !StatusContainers.contains(account.accountIdentity()))
 		updateIdentities();
 }
 
 void StatusContainerManager::accountUnregistered(Account account)
 {
-	if (!MainConfigurationHolder::instance()->simpleMode() && StatusContainers.contains(account.statusContainer()))
+	if (MainConfigurationHolder::instance()->isSetStatusPerAccount() && StatusContainers.contains(account.statusContainer()))
 		unregisterStatusContainer(account.statusContainer());
 
-	if (MainConfigurationHolder::instance()->simpleMode())
+	if (MainConfigurationHolder::instance()->isSetStatusPerIdentity())
 		updateIdentities();
 }
 
 void StatusContainerManager::identityAdded(Identity identity)
 {
-	if (MainConfigurationHolder::instance()->simpleMode() && !StatusContainers.contains(identity) && identity.hasAnyAccountWithDetails())
+	if (MainConfigurationHolder::instance()->isSetStatusPerIdentity() && !StatusContainers.contains(identity) && identity.hasAnyAccountWithDetails())
 		registerStatusContainer(identity);
 }
 
 void StatusContainerManager::identityRemoved(Identity identity)
 {
-	if (MainConfigurationHolder::instance()->simpleMode() && StatusContainers.contains(identity))
+	if (MainConfigurationHolder::instance()->isSetStatusPerIdentity() && StatusContainers.contains(identity))
 		unregisterStatusContainer(identity);
 }
 
@@ -164,13 +171,15 @@ void StatusContainerManager::setDefaultStatusContainer(StatusContainer *defaultS
 	emit statusUpdated();
 }
 
-void StatusContainerManager::simpleModeChanged()
+void StatusContainerManager::setStatusModeChanged()
 {
 	cleanStatusContainers();
-	if (MainConfigurationHolder::instance()->simpleMode())
+	if (MainConfigurationHolder::instance()->isSetStatusPerIdentity())
 		addAllIdentities();
-	else
+	else if (MainConfigurationHolder::instance()->isSetStatusPerAccount())
 		addAllAccounts();
+	else
+		registerStatusContainer(AllAccountsContainer);
 }
 
 void StatusContainerManager::registerStatusContainer(StatusContainer *statusContainer)

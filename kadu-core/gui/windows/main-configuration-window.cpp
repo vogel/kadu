@@ -193,7 +193,6 @@ MainConfigurationWindow::MainConfigurationWindow() :
 		disconnectDescription->setMaxLength(account.data()->maxDescriptionLength());
 		onStartupSetDescription->setMaxLength(account.data()->maxDescriptionLength());
 	}
-//	connect(widget()->widgetById("advancedMode"), SIGNAL(toggled(bool)), widget()->widgetById("contactsWithIcons"), SLOT(setEnabled(bool)));
 	connect(widget()->widgetById("showAvatars"), SIGNAL(toggled(bool)), widget()->widgetById("avatarBorder"), SLOT(setEnabled(bool)));
 	connect(widget()->widgetById("showAvatars"), SIGNAL(toggled(bool)), widget()->widgetById("avatarGreyOut"), SLOT(setEnabled(bool)));
 	connect(widget()->widgetById("disconnectWithCurrentDescription"), SIGNAL(toggled(bool)), disconnectDescription, SLOT(setDisabled(bool)));
@@ -246,6 +245,8 @@ MainConfigurationWindow::MainConfigurationWindow() :
 
 	widget()->widgetById("parseStatus")->setToolTip(qApp->translate("@default", SyntaxText));
 	(static_cast<ConfigSyntaxEditor *>(widget()->widgetById("infoPanelSyntax")))->setSyntaxHint(qApp->translate("@default", SyntaxText));
+
+	connect(widget()->widgetById("allowExpandingBuddies"), SIGNAL(toggled(bool)), widget()->widgetById("showExpandingControl"), SLOT(setEnabled(bool)));
 
 	userboxTransparency = static_cast<QCheckBox *>(widget()->widgetById("userboxTransparency"));
 	userboxAlpha = static_cast<QSlider *>(widget()->widgetById("userboxAlpha"));

@@ -95,7 +95,7 @@ void Account::importProxySettings()
 
 StatusContainer * Account::statusContainer()
 {
-	if (MainConfigurationHolder::instance()->simpleMode())
+	if (MainConfigurationHolder::instance()->isSetStatusPerIdentity())
 		return accountIdentity().data();
 	else
 		return data();

@@ -32,6 +32,7 @@
 #include "buddies/buddy.h"
 #include "buddies/buddy-or-contact.h"
 #include "chat/chat.h"
+#include "configuration/configuration-aware-object.h"
 #include "contacts/contact.h"
 #include "gui/actions/action-data-source.h"
 
@@ -49,7 +50,7 @@ class BuddiesModelProxy;
 class ContactNoUnloadedAccountFilter;
 class ContactSet;
 
-class BuddiesListView : public QTreeView, public ActionDataSource
+class BuddiesListView : public QTreeView, public ActionDataSource, ConfigurationAwareObject
 {
 	Q_OBJECT
 
@@ -93,7 +94,6 @@ private:
 	bool ContextMenuEnabled;
 
 private slots:
-	void simpleModeChanged();
 	void doubleClickedSlot(const QModelIndex &index);
 
 	// Tool tips
@@ -102,6 +102,8 @@ private slots:
 	void toolTipHide(bool waitForAnother = true);
 
 protected:
+	virtual void configurationUpdated();
+
 	virtual void contextMenuEvent(QContextMenuEvent *event);
 	virtual void keyPressEvent(QKeyEvent *event);
 

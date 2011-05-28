@@ -7,15 +7,6 @@
 				<line-edit caption="Nickname" config-section="General" config-item="Nick" />
 				<label caption="Enter a nickname for your account." />
 			</group-box>
-			<group-box name="Buddy List Mode">
-				<radio-button caption="Hide messaging networks for each buddy (Simple Mode)" config-section="General" config-item="SimpleMode"
-					id="simpleMode" tool-tip="If enabled, buddies networks will be hidden in buddy list and status buttons" />
-				<label caption="With this setting, each of your buddy's messaging networks will be removed from view on your buddy list." />
-				<radio-button caption="Differentiate the messaging networks for each buddy (Advanced Mode)" config-section="General"
-					config-item="AdvancedMode" id="advancedMode" />
-				<label caption="With this setting, your buddy list will display the associated messaging networks for each of your buddies (e.g. 'Anna uses Gadu-Gadu and Google Talk') ." />
-				<!-- <check-box caption="Show network icons with each buddy" config-section="General" config-item="ShowContactsWithIcons" id="contactsWithIcons" /> -->
-			</group-box>
 			<group-box name="Default Language">
 				<combo-box caption="Language" config-section="General" config-item="Language" id="languages" tool-tip="Choose your language" />
 				<label caption="Kadu needs to be restarted before changes to the language settings will take effect." />
@@ -78,6 +69,13 @@
 
 	<section name="Status" icon="kadu_icons/section-status">
 		<tab name="General">
+			<group-box name="Status">
+				<combo-box caption="Set status" config-section="General" config-item="StatusContainerType">
+					<item value="Account" caption="per account" />
+					<item value="Identity" caption="per identity" />
+					<item value="All" caption="for all accounts" />
+				</combo-box>
+			</group-box>
 			<group-box name="Description">
 				<combo-box caption="On startup, set" config-section="General" config-item="StartupStatus" id="startupStatus"
 					tool-tip="Choose status which will be set on startup">
@@ -196,10 +194,10 @@
 					<item value="true" caption="Top" />
 					<item value="false" caption="Center" />
 				</combo-box>
-				<!-- <spin-box caption="Column count" config-section="Look" config-item="UserBoxColumnCount" min-value="1" max-value="10"
-					tool-tip="Number of columns displays in the buddy list" /> -->
 				<combo-box caption="Tool tip style" config-section="Look" config-item="UserboxToolTipStyle" id="toolTipClasses"
 					tool-tip="Choose buddy list tool-tip style" />
+				<check-box caption="Allow expanding buddies into contacts" config-section="Look" config-item="AllowExpandingBuddies" id="allowExpandingBuddies" />
+				<check-box caption="Show expanding control" config-section="Look" config-item="ShowExpandingControl" id="showExpandingControl" />
 			</group-box>
 			<group-box name="Buddy Photos">
 				<check-box caption="Show photos" config-section="Look" config-item="ShowAvatars" id="showAvatars" />

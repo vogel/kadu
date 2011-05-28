@@ -1,4 +1,5 @@
 set (status_SRCS
+	all-accounts-status-container.cpp
 	base-status-container.cpp
 	description-manager.cpp
 	description-model.cpp
@@ -15,6 +16,7 @@ set (status_SRCS
 )
 
 set (status_MOC_SRCS
+	all-accounts-status-container.h
 	base-status-container.h
 	description-manager.h
 	description-model.h
