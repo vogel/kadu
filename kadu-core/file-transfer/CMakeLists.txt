@@ -22,4 +22,4 @@ add_library (file-transfer
 	${file-transfer_MOC_FILES}
 )
 
-set_target_properties (file-transfer PROPERTIES DEFINE_SYMBOL KADULIB)
+set_target_properties (file-transfer PROPERTIES COMPILE_DEFINITIONS KADULIB)

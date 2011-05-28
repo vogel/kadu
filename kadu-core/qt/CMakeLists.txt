@@ -14,4 +14,4 @@ add_library (qt
 	${qt_MOC_FILES}
 )
 
-set_target_properties (qt PROPERTIES DEFINE_SYMBOL KADULIB)
+set_target_properties (qt PROPERTIES COMPILE_DEFINITIONS KADULIB)

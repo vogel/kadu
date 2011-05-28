@@ -76,4 +76,4 @@ add_library (buddies
 	${buddies_MOC_FILES}
 )
 
-set_target_properties (buddies PROPERTIES DEFINE_SYMBOL KADULIB)
+set_target_properties (buddies PROPERTIES COMPILE_DEFINITIONS KADULIB)

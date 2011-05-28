@@ -7,4 +7,4 @@ add_library (parser
 	${parser_SRCS}
 )
 
-set_target_properties (parser PROPERTIES DEFINE_SYMBOL KADULIB)
+set_target_properties (parser PROPERTIES COMPILE_DEFINITIONS KADULIB)

@@ -29,4 +29,4 @@ add_library (configuration
 	${configuration_MOC_FILES}
 )
 
-set_target_properties (configuration PROPERTIES DEFINE_SYMBOL KADULIB)
+set_target_properties (configuration PROPERTIES COMPILE_DEFINITIONS KADULIB)

@@ -17,4 +17,4 @@ add_library (plugins
 	${plugins_MOC_FILES}
 )
 
-set_target_properties (plugins PROPERTIES DEFINE_SYMBOL KADULIB)
+set_target_properties (plugins PROPERTIES COMPILE_DEFINITIONS KADULIB)

@@ -16,4 +16,4 @@ add_library (core
 	${core_MOC_FILES}
 )
 
-set_target_properties (core PROPERTIES DEFINE_SYMBOL KADULIB)
+set_target_properties (core PROPERTIES COMPILE_DEFINITIONS KADULIB)

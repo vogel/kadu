@@ -37,4 +37,4 @@ add_library (accounts
 	${accounts_MOC_FILES}
 )
 
-set_target_properties (accounts PROPERTIES DEFINE_SYMBOL KADULIB)
+set_target_properties (accounts PROPERTIES COMPILE_DEFINITIONS KADULIB)

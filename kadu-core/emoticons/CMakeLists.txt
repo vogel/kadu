@@ -20,4 +20,4 @@ add_library (emoticons
 	${emoticons_MOC_FILES}
 )
 
-set_target_properties (emoticons PROPERTIES DEFINE_SYMBOL KADULIB)
+set_target_properties (emoticons PROPERTIES COMPILE_DEFINITIONS KADULIB)

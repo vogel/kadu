@@ -21,4 +21,4 @@ add_library (avatars
 	${avatars_MOC_FILES}
 )
 
-set_target_properties (avatars PROPERTIES DEFINE_SYMBOL KADULIB)
+set_target_properties (avatars PROPERTIES COMPILE_DEFINITIONS KADULIB)

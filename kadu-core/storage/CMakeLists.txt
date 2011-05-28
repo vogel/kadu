@@ -20,4 +20,4 @@ add_library (storage
 	${storage_MOC_FILES}
 )
 
-set_target_properties (storage PROPERTIES DEFINE_SYMBOL KADULIB)
+set_target_properties (storage PROPERTIES COMPILE_DEFINITIONS KADULIB)

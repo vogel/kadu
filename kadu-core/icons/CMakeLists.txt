@@ -16,4 +16,4 @@ add_library (icons
 	${icons_MOC_FILES}
 )
 
-set_target_properties (icons PROPERTIES DEFINE_SYMBOL KADULIB)
+set_target_properties (icons PROPERTIES COMPILE_DEFINITIONS KADULIB)

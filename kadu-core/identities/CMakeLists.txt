@@ -20,5 +20,5 @@ add_library (identities
 	${identities_MOC_FILES}
 )
 
-set_target_properties (identities PROPERTIES DEFINE_SYMBOL KADULIB)
+set_target_properties (identities PROPERTIES COMPILE_DEFINITIONS KADULIB)
 

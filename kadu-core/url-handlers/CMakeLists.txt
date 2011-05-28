@@ -9,4 +9,4 @@ add_library (url-handlers
 	${url_handlers_SRCS}
 )
 
-set_target_properties (url-handlers PROPERTIES DEFINE_SYMBOL KADULIB)
+set_target_properties (url-handlers PROPERTIES COMPILE_DEFINITIONS KADULIB)

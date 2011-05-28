@@ -19,4 +19,4 @@ add_library (misc
 	${misc_MOC_FILES}
 )
 
-set_target_properties (misc PROPERTIES DEFINE_SYMBOL KADULIB)
+set_target_properties (misc PROPERTIES COMPILE_DEFINITIONS KADULIB)

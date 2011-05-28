@@ -49,4 +49,4 @@ add_library (protocols
 	${protocols_MOC_FILES}
 )
 
-set_target_properties (protocols PROPERTIES DEFINE_SYMBOL KADULIB)
+set_target_properties (protocols PROPERTIES COMPILE_DEFINITIONS KADULIB)

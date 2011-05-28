@@ -35,4 +35,4 @@ add_library (notify
 	${notify_MOC_FILES}
 )
 
-set_target_properties (notify PROPERTIES DEFINE_SYMBOL KADULIB)
+set_target_properties (notify PROPERTIES COMPILE_DEFINITIONS KADULIB)

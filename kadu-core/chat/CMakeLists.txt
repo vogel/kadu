@@ -71,4 +71,4 @@ add_library (chat
 	${chat_MOC_FILES}
 )
 
-set_target_properties (chat PROPERTIES DEFINE_SYMBOL KADULIB)
+set_target_properties (chat PROPERTIES COMPILE_DEFINITIONS KADULIB)

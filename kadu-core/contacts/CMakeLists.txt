@@ -33,4 +33,4 @@ add_library (contacts
 	${contacts_MOC_FILES}
 )
 
-set_target_properties (contacts PROPERTIES DEFINE_SYMBOL KADULIB)
+set_target_properties (contacts PROPERTIES COMPILE_DEFINITIONS KADULIB)

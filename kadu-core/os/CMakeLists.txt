@@ -16,4 +16,4 @@ add_library (os
 	${os_MOC_FILES}
 )
 
-set_target_properties (os PROPERTIES DEFINE_SYMBOL KADULIB)
+set_target_properties (os PROPERTIES COMPILE_DEFINITIONS KADULIB)

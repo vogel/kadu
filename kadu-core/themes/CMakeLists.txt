@@ -19,4 +19,4 @@ add_library (themes
 	${themes_MOC_FILES}
 )
 
-set_target_properties (themes PROPERTIES DEFINE_SYMBOL KADULIB)
+set_target_properties (themes PROPERTIES COMPILE_DEFINITIONS KADULIB)

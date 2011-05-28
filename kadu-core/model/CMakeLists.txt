@@ -14,4 +14,4 @@ add_library (model
 	${model_MOC_FILES}
 )
 
-set_target_properties (model PROPERTIES DEFINE_SYMBOL KADULIB)
+set_target_properties (model PROPERTIES COMPILE_DEFINITIONS KADULIB)

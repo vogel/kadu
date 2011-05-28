@@ -18,4 +18,4 @@ add_library (multilogon
 	${multilogon_MOC_FILES}
 )
 
-set_target_properties (multilogon PROPERTIES DEFINE_SYMBOL KADULIB)
+set_target_properties (multilogon PROPERTIES COMPILE_DEFINITIONS KADULIB)

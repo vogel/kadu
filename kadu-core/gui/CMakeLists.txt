@@ -267,4 +267,4 @@ add_library (gui
 	${gui_MOC_FILES}
 )
 
-set_target_properties (gui PROPERTIES DEFINE_SYMBOL KADULIB)
+set_target_properties (gui PROPERTIES COMPILE_DEFINITIONS KADULIB)

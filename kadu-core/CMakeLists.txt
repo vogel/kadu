@@ -103,7 +103,7 @@ if (WIN32)
 	kadu_source_subdirectories (kadu_core ${kadu_SUBDIRS})
 
 	set_target_properties (kadu_core PROPERTIES
-		DEFINE_SYMBOL KADULIB
+		COMPILE_DEFINITIONS KADULIB
 		LINK_INTERFACE_LIBRARIES ""
 	)
 	target_link_libraries (kadu_core ${QT_LIBRARIES})
@@ -120,7 +120,7 @@ if (WIN32)
 		add_executable (kadu_c main.cpp main_win32.cpp kadu.rc)
 	endif (MINGW)
 
-	set_target_properties (kadu_c PROPERTIES DEFINE_SYMBOL KADU_CONSOLE)
+	set_target_properties (kadu_c PROPERTIES COMPILE_DEFINITIONS KADU_CONSOLE)
 
 	target_link_libraries (kadu kadu_core ${QT_QTMAIN_LIBRARY} ${QT_LIBRARIES} ws2_32)
 	target_link_libraries (kadu_c kadu_core ${QT_LIBRARIES} ws2_32)
@@ -142,7 +142,7 @@ else (WIN32)
 
 	set_target_properties (kadu PROPERTIES
 		ENABLE_EXPORTS ON
-		DEFINE_SYMBOL KADULIB
+		COMPILE_DEFINITIONS KADULIB
 		LINK_INTERFACE_LIBRARIES ""
 	)
 

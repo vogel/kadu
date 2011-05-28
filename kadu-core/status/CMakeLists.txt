@@ -35,4 +35,4 @@ add_library (status
 	${status_MOC_FILES}
 )
 
-set_target_properties (status PROPERTIES DEFINE_SYMBOL KADULIB)
+set_target_properties (status PROPERTIES COMPILE_DEFINITIONS KADULIB)
