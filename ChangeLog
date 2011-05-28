@@ -32,6 +32,7 @@
 * gadu: #2143 fixed: implemented GG10 roster with support for automatic contact list synchronization (beevvy, Vogel)
 * gui: #2131 fixed: user font settings are now optionally respected by Adium styles (ultr)
 * gui: #2137 fixed: removed simple/advanced mode, replaced with more detailed setting in Status and Buddy List section of configuration window (Vogel)
+* chat styles: removed Gaia and Pushpin styles from official package due to license concerns (beevvy)
 
 +++ version 0.9.3
 * jabber: #2183 fixed: very rare crash when trying to reconnect (beevvy)

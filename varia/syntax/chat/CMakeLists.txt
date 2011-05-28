@@ -16,9 +16,7 @@ set (SYNTAX_FILES
 
 set (ADIUM_STYLES
 	Default
-	Gaia
 	Modern\ Bubbling\ \(Compact\)
-	Pushpin
 	renkooNaked
 	Satin
 	SimpleStuff
