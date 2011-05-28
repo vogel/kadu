@@ -143,7 +143,7 @@
 			<group-box name="Fonts">
 				<select-font caption="Chat window" config-section="Look" config-item="ChatFont" />
 				<select-font caption="Buddy list" config-section="Look" config-item="UserboxFont" />
-				<select-font caption="Font in panel" config-section="Look" config-item="PanelFont" />
+				<select-font caption="Information panel" config-section="Look" config-item="PanelFont" />
 			</group-box>
 		</tab>
 
