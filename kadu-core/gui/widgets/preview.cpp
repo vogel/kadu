@@ -109,5 +109,8 @@ void Preview::setDrawFrame(bool drawFrame)
 
 void Preview::configurationUpdated()
 {
-	setUserFont(ChatConfigurationHolder::instance()->chatFont());
+	if (ChatConfigurationHolder::instance()->forceCustomChatFont())
+		setUserFont(ChatConfigurationHolder::instance()->chatFont().toString());
+	else
+		setUserFont(QString());
 }

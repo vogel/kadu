@@ -357,11 +357,18 @@ void KaduWebView::convertClipboardHtml(QClipboard::Mode mode)
 	cb->setMimeData(data, mode);
 }
 
-void KaduWebView::setUserFont(const QFont &font)
+void KaduWebView::setUserFont(const QString &fontString)
 {
-	QString style = QString("* { %1 }").arg(userFontStyle(font));
-	QString url = QString("data:text/css;charset=utf-8;base64,%1").arg(QString(style.toUtf8().toBase64()));
-	settings()->setUserStyleSheetUrl(url);
+	if (fontString.isEmpty())
+		settings()->setUserStyleSheetUrl(QString());
+	else
+	{
+		QFont font;
+		font.fromString(fontString);
+		QString style = QString("* { %1 }").arg(userFontStyle(font));
+		QString url = QString("data:text/css;charset=utf-8;base64,%1").arg(QString(style.toUtf8().toBase64()));
+		settings()->setUserStyleSheetUrl(url);
+	}
 }
 
 QString KaduWebView::userFontStyle(const QFont &font)

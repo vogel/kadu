@@ -43,7 +43,8 @@ void ChatConfigurationHolder::configurationUpdated()
 
 	ChatTextBgColor = config_file.readColorEntry("Look", "ChatTextBgColor");
 
-	ChatFont = config_file.readFontEntry("Look","ChatFont");
+	ForceCustomChatFont = config_file.readBoolEntry("Look", "ForceCustomChatFont");
+	ChatFont = config_file.readFontEntry("Look", "ChatFont");
 
 	EmoticonsStyle = config_file.readNumEntry("Chat", "EmoticonsStyle");
 

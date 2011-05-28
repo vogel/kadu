@@ -235,6 +235,7 @@ void Core::createDefaultConfiguration()
 	config_file.addVariable("Look", "AvatarBorder", false);
 	config_file.addVariable("Look", "AvatarGreyOut", true);
 	config_file.addVariable("Look", "ChatContents", QString());
+	config_file.addVariable("Look", "ForceCustomChatFont", false);
 	config_file.addVariable("Look", "ChatFont", qApp->font());
 	config_file.addVariable("Look", "ChatBgColor", QColor("#ffffff"));
 	config_file.addVariable("Look", "ChatMyBgColor", QColor("#E0E0E0"));

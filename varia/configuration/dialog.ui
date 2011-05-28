@@ -141,6 +141,8 @@
 
 		<tab name="Fonts">
 			<group-box name="Fonts">
+				<check-box caption="Force custom font in chat window" config-section="Look" config-item="ForceCustomChatFont"
+					tool-tip="Force custom font even for chat styles which define their own fonts (most Adium styles do that)" />
 				<select-font caption="Chat window" config-section="Look" config-item="ChatFont" />
 				<select-font caption="Buddy list" config-section="Look" config-item="UserboxFont" />
 				<select-font caption="Information panel" config-section="Look" config-item="PanelFont" />

@@ -38,6 +38,7 @@ class ChatConfigurationHolder : public ConfigurationHolder
 	bool NiceDateFormat;
 	int EmoticonsStyle;
 	QColor ChatTextBgColor;
+	bool ForceCustomChatFont;
 	QFont ChatFont;
 	QString ChatContents;
 	QString ConferenceContents;
@@ -57,6 +58,7 @@ public:
 	bool niceDateFormat() const { return NiceDateFormat; }
 	int emoticonsStyle() const { return EmoticonsStyle; }
 	const QColor &chatTextBgColor() const { return ChatTextBgColor; }
+	bool forceCustomChatFont() const { return ForceCustomChatFont; }
 	const QFont &chatFont() const { return ChatFont; }
 	const QString &chatContents() const { return ChatContents; }
 	const QString &conferenceContents() const { return ConferenceContents; }
