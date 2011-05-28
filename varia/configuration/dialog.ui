@@ -187,6 +187,7 @@
 				<check-box caption="Display group tabs" config-section="Look" config-item="DisplayGroupTabs" id="displayGroupTabs"
 					tool-tip="Displays group tabs on the buddy list" />
 				<check-box caption="Show group All" config-section="Look" config-item="ShowGroupAll" id="showGroupAll"/>
+				<check-box caption="Show expanding control" config-section="Look" config-item="ShowExpandingControl" id="showExpandingControl" />
 				<check-box caption="Show connected buddies in bold" config-section="Look" config-item="ShowBold"
 					tool-tip="Displays buddies that are not offline using a bold font" />
 				<combo-box caption="Align buddy icon to" config-section="Look" config-item="AlignUserboxIconsTop"
@@ -196,7 +197,6 @@
 				</combo-box>
 				<combo-box caption="Tool tip style" config-section="Look" config-item="UserboxToolTipStyle" id="toolTipClasses"
 					tool-tip="Choose buddy list tool-tip style" />
-				<check-box caption="Show expanding control" config-section="Look" config-item="ShowExpandingControl" id="showExpandingControl" />
 			</group-box>
 			<group-box name="Buddy Photos">
 				<check-box caption="Show photos" config-section="Look" config-item="ShowAvatars" id="showAvatars" />
