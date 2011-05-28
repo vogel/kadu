@@ -23,10 +23,10 @@
 
 			<group-box name="Description">
 				<combo-box caption="Description" config-section="General" config-item="AutoChangeDescription" id="autoaway/descriptionChange">
-					<item value="0" caption="Don't change" />
+					<item value="0" caption="Do Not Change" />
 					<item value="1" caption="Replace" />
-					<item value="2" caption="Add in front" />
-					<item value="3" caption="Add at the back" />
+					<item value="2" caption="Add in the Front" />
+					<item value="3" caption="Add at the Back" />
 				</combo-box>
 				<line-edit caption="New description" config-section="General" config-item="AutoStatusText" id="autoaway/descriptionText" />
 				<spin-box caption="Auto refresh status" config-section="General" config-item="AutoRefreshStatusTime" min-value="0" max-value="10000" suffix="%n second(s)"

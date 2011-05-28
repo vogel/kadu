@@ -39,8 +39,8 @@
 			</group-box>
 			<group-box name="Window Activation Method" id="windowActivationMethodGroup">
 				<combo-box caption="Select method" config-section="General" config-item="WindowActivationMethod" id="windowActivationMethod" >
-					<item value="0" caption="Move the window to an active desktop" />
-					<item value="1" caption="Switch desktop to make the window visible" />
+					<item value="0" caption="Move the window to the Active Desktop" />
+					<item value="1" caption="Switch Desktop Making the Window Visible" />
 				</combo-box>
 			</group-box>
 			<group-box name="Debugging" id="debug">
@@ -71,19 +71,19 @@
 		<tab name="General">
 			<group-box name="Status">
 				<combo-box caption="Set status" config-section="General" config-item="StatusContainerType">
-					<item value="Account" caption="per account" />
-					<item value="Identity" caption="per identity" />
-					<item value="All" caption="for all accounts" />
+					<item value="Account" caption="Per Account" />
+					<item value="Identity" caption="Per Identity" />
+					<item value="All" caption="For All Accounts" />
 				</combo-box>
 			</group-box>
 			<group-box name="Description">
 				<combo-box caption="On startup, set" config-section="General" config-item="StartupStatus" id="startupStatus"
 					tool-tip="Choose status which will be set on startup">
-					<item value="LastStatus" caption="Last status" />
-					<item value="FreeForChat" caption="Free for chat" />
+					<item value="LastStatus" caption="Last Atatus" />
+					<item value="FreeForChat" caption="Free For Chat" />
 					<item value="Online" caption="Online" />
 					<item value="Busy" caption="Away" />
-					<item value="DoNotDisturb" caption="Do not disturb" />
+					<item value="DoNotDisturb" caption="Do Not Disturb" />
 					<item value="Invisible" caption="Invisible" />
 					<item value="Offline" caption="Offline" />
 				</combo-box>
@@ -173,9 +173,9 @@
 				</combo-box>
 				<combo-box caption="Selector behavior" config-section="Chat" config-item="EmoticonsScaling" id="emoticonsScaling"
 					tool-tip="Choose the way emoticons are scaled in the selector" >
-					<item value="3" caption="Scale all emoticons" />
-					<item value="1" caption="Scale only static emoticons" />
-					<item value="0" caption="Don't scale emoticons" />
+					<item value="3" caption="Scale All Emoticons" />
+					<item value="1" caption="Scale Only Static Emoticons" />
+					<item value="0" caption="Don Not Scale Emoticons" />
 				</combo-box>
 				<path-list-edit caption="Emoticons paths" config-section="Chat" config-item="EmoticonsPaths" id="emoticonsPaths"
 					tool-tip="Define emoticons paths" />
@@ -220,7 +220,7 @@
 				<combo-box caption="Display style" config-section="Look" config-item="UserboxBackgroundDisplayStyle"
 					tool-tip="Choose buddy list background style" id="userboxBackgroundDisplayStyle" >
 					<item value="Tiled" caption="Tiled" />
-					<item value="TiledAndCentered" caption="Tiled and centered" />
+					<item value="TiledAndCentered" caption="Tiled And Centered" />
 					<item value="Centered" caption="Centered" />
 					<item value="Stretched" caption="Stretched" />
 				</combo-box>
@@ -283,7 +283,7 @@
 				<check-box caption="Remember chat windows positions" config-section="Chat" config-item="RememberPosition" />
 				<check-box caption="Open chat window on new message" config-section="Chat" config-item="OpenChatOnMessage" id="openChatOnMessage"
 					tool-tip="Open chat window when a new message arrives" />
-				<check-box caption="Open chat window only when I'm online" config-section="Chat" config-item="OpenChatOnMessageWhenOnline"
+				<check-box caption="Open chat window only when I am online" config-section="Chat" config-item="OpenChatOnMessageWhenOnline"
 					id="openChatOnMessageWhenOnline" tool-tip="Open chat window on new message only when online" />
 				<check-box caption="'Enter' in chat send message" config-section="Chat" config-item="AutoSend"
 					tool-tip="'Enter' in chat send message" />
@@ -292,7 +292,7 @@
 				<check-box caption="Save opened windows on exit" config-section="Chat" config-item="SaveOpenedWindows"
 					tool-tip="Save opened chat windows when exiting" />
 				<spin-box caption="Remember recent chats for" config-section="Chat" config-item="RecentChatsTimeout" min-value="0"
-					max-value="1000000" suffix="[for] %n minute(s)" special-value="never remove recent chats" id="recentChatsTimeout" tool-tip="" />
+					max-value="1000000" suffix="[for] %n minute(s)" special-value="Never Remove Recent Chats" id="recentChatsTimeout" tool-tip="" />
 				<check-box caption="Clear recent chats list on exit" config-section="Chat" config-item="RecentChatsClear" id="recentChatsClear"
 					tool-tip="" />
 			</group-box>

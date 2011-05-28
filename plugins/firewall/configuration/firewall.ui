@@ -17,7 +17,7 @@
 		<tab name="Unknown chats protection">
 			<group-box name="Unknown chats protection">
 				<check-box caption="Ignore conferences with all persons unknown" config-section="Firewall" config-item="ignore_conferences" />
-				<check-box caption="Protect against chats with unknown persons" config-section="Firewall" config-item="chats" tool-tip="Module will ask the question typed below, if someone wants talk to you and you don't have him on your list." id="firewall/chats" />
+				<check-box caption="Protect against chats with unknown persons" config-section="Firewall" config-item="chats" tool-tip="Module will ask the question typed below, if someone wants talk to you and you do not have him on your list." id="firewall/chats" />
 				<!-- <check-box caption="Ignore chats with unknown invisible persons" config-section="Firewall" config-item="ignore_invisible" /> -->
 				<check-box caption="When invisible silently drop chats with unknown persons" config-section="Firewall" config-item="drop_anonymous_when_invisible" />
 			</group-box>
