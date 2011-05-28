@@ -24,21 +24,21 @@
 
 WinampMediaplayerPlugin::~WinampMediaplayerPlugin()
 {
-
 }
 
-int WinampMediaplayerPlugin:init(bool firstLoad)
+int WinampMediaplayerPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
-	WinampMediaPlayer *winamp = new WinampMediaPlayer();
-	bool res = MediaPlayer::instance()->registerMediaPlayer((PlayerInfo*)winamp, (PlayerCommands*)winamp);
+	PlayerInstance = new WinampMediaPlayer();
+	bool res = MediaPlayer::instance()->registerMediaPlayer(PlayerInstance, PlayerInstance);
 	return res ? 0 : 1;
 }
 
 void WinampMediaplayerPlugin::done()
 {
 	MediaPlayer::instance()->unregisterMediaPlayer();
-	delete winamp;
+	delete PlayerInstance;
+	PlayerInstance = 0;
 }
 
 Q_EXPORT_PLUGIN2(winamp_mediaplayer, WinampMediaplayerPlugin)

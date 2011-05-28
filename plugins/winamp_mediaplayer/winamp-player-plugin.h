@@ -24,10 +24,14 @@
 
 #include "plugins/generic-plugin.h"
 
+class WinampMediaPlayer;
+
 class WinampMediaplayerPlugin : public QObject, public GenericPlugin
 {
 	Q_OBJECT
 	Q_INTERFACES(GenericPlugin)
+
+	WinampMediaPlayer *PlayerInstance;
 
 public:
 	virtual ~WinampMediaplayerPlugin();
