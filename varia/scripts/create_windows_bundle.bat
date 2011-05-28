@@ -6,7 +6,7 @@ set QT_PLUGINS_DIR="C:\QtSDK\Desktop\Qt\4.7.3\mingw\plugins"
 set QT_TRANSLATIONS_DIR="C:\QtSDK\Desktop\Qt\4.7.3\mingw\translations"
 set QT_DEBUG_SUFFIX=""
 set LIBGADU_DIR="C:\kadu\deps\libgadu-1.10.1-win32"
-set LIBIDN_DIR="C:\kadu\deps\libidn-1.21"
+set LIBIDN_DIR="C:\kadu\deps\libidn-1.22-win32"
 set LIBSNDFILE_DIR="C:\kadu\deps\libsndfile-1.0.23"
 set OPENSSL_DIR="C:\kadu\deps\openssl-0.9.8q"
 set QCA_DIR="C:\kadu\deps\qca-2.0.3\bin"
@@ -152,7 +152,8 @@ ECHO Copying libgadu
 xcopy %LIBGADU_DIR%\libgadu.dll %DESTINATION%\ /C /H /R /Y /Q
 
 ECHO Copying libidn
-xcopy %LIBIDN_DIR%\lib\libidn.dll %DESTINATION%\ /C /H /R /Y /Q
+xcopy %LIBIDN_DIR%\bin\libiconv-2.dll %DESTINATION%\ /C /H /R /Y /Q
+xcopy %LIBIDN_DIR%\bin\libidn-11.dll  %DESTINATION%\ /C /H /R /Y /Q
 
 ECHO Copying zlib
 xcopy %ZLIB_DIR%\zlib1.dll %DESTINATION%\ /C /H /R /Y /Q
