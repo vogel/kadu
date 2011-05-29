@@ -24,6 +24,7 @@
 #include <libgadu.h>
 
 #include "accounts/account-manager.h"
+#include "gui/windows/message-dialog.h"
 #include "protocols/protocols-manager.h"
 #include "url-handlers/url-handler-manager.h"
 #include "debug.h"
@@ -47,6 +48,14 @@ int GaduProtocolPlugin::init(bool firstLoad)
 
 	if (ProtocolsManager::instance()->hasProtocolFactory("gadu"))
 		return 0;
+
+	if (!gg_libgadu_check_feature(GG_LIBGADU_FEATURE_USERLIST100))
+	{
+		MessageDialog::exec(KaduIcon("dialog-error"), tr("Gadu-Gadu Protocol"),
+				tr("Cannot load Gadu-Gadu Protocol plugin. Please compile libgadu with zlib support."));
+
+		return -1;
+	}
 
 #ifdef DEBUG_ENABLED
 	// 8 bits for gadu debug
