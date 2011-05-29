@@ -62,8 +62,8 @@ class HistorySqlStorage : public HistoryStorage, CrashAwareObject
 
 	void executeQuery(QSqlQuery &query);
 	QList<Message> messagesFromQuery(QSqlQuery &query);
-	QList<TimedStatus> statusesFromQuery(QSqlQuery &query);
-	QList<Message> smsFromQuery(QSqlQuery &query);
+	QList<TimedStatus> statusesFromQuery(QSqlQuery query);
+	QList<Message> smsFromQuery(QSqlQuery query);
 
 private slots:
 	virtual void messageReceived(const Message &message);
