@@ -38,7 +38,7 @@
 					<item value="0" caption="Nothing" />
 					<item value="1" caption="Open Chat" />
 					<item value="2" caption="Delete Hint" />
-					<item value="3" caption="Delete all Hints" />
+					<item value="3" caption="Delete All Hints" />
 				</combo-box>
 				<check-box caption="'Open chat' works on all events" config-section="Hints" config-item="OpenChatOnEveryNotification" />
 			</group-box>

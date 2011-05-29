@@ -39,7 +39,7 @@
 			</group-box>
 			<group-box name="Window Activation Method" id="windowActivationMethodGroup">
 				<combo-box caption="Select method" config-section="General" config-item="WindowActivationMethod" id="windowActivationMethod" >
-					<item value="0" caption="Move the window to the Active Desktop" />
+					<item value="0" caption="Move the Window to the Active Desktop" />
 					<item value="1" caption="Switch Desktop Making the Window Visible" />
 				</combo-box>
 			</group-box>
@@ -80,7 +80,7 @@
 				<combo-box caption="On startup, set" config-section="General" config-item="StartupStatus" id="startupStatus"
 					tool-tip="Choose status which will be set on startup">
 					<item value="LastStatus" caption="Last Atatus" />
-					<item value="FreeForChat" caption="Free For Chat" />
+					<item value="FreeForChat" caption="Free for Chat" />
 					<item value="Online" caption="Online" />
 					<item value="Busy" caption="Away" />
 					<item value="DoNotDisturb" caption="Do Not Disturb" />
@@ -177,7 +177,7 @@
 					tool-tip="Choose the way emoticons are scaled in the selector" >
 					<item value="3" caption="Scale All Emoticons" />
 					<item value="1" caption="Scale Only Static Emoticons" />
-					<item value="0" caption="Don Not Scale Emoticons" />
+					<item value="0" caption="Do Not Scale Emoticons" />
 				</combo-box>
 				<path-list-edit caption="Emoticons paths" config-section="Chat" config-item="EmoticonsPaths" id="emoticonsPaths"
 					tool-tip="Define emoticons paths" />
@@ -222,7 +222,7 @@
 				<combo-box caption="Display style" config-section="Look" config-item="UserboxBackgroundDisplayStyle"
 					tool-tip="Choose buddy list background style" id="userboxBackgroundDisplayStyle" >
 					<item value="Tiled" caption="Tiled" />
-					<item value="TiledAndCentered" caption="Tiled And Centered" />
+					<item value="TiledAndCentered" caption="Tiled and Centered" />
 					<item value="Centered" caption="Centered" />
 					<item value="Stretched" caption="Stretched" />
 				</combo-box>
