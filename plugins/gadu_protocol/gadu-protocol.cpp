@@ -274,7 +274,7 @@ void GaduProtocol::setupLoginParams()
 	if (!loginStatus().description().isEmpty())
 		GaduLoginParams.status_descr = strdup(loginStatus().description().toUtf8());
 
-	GaduLoginParams.tls = gaduAccountDetails->tlsEncryption() ? 1 : 0;
+	GaduLoginParams.tls = gaduAccountDetails->tlsEncryption() ? GG_SSL_ENABLED : GG_SSL_DISABLED;
 
 	ActiveServer = GaduServersManager::instance()->getServer(1 == GaduLoginParams.tls);
 	bool haveServer = !ActiveServer.first.isNull();
