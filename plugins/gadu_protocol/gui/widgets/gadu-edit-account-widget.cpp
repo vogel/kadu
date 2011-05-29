@@ -312,7 +312,13 @@ void GaduEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
 	UseTlsEncryption = new QCheckBox(tr("Use encrypted connection"), general);
 	generalLayout->addWidget(UseTlsEncryption, 3, 0, 1, 4);
 
-	connect(UseTlsEncryption, SIGNAL(toggled(bool)), this, SLOT(dataChanged()));
+	if (gg_libgadu_check_feature(GG_LIBGADU_FEATURE_SSL))
+		connect(UseTlsEncryption, SIGNAL(toggled(bool)), this, SLOT(dataChanged()));
+	else
+	{
+		UseTlsEncryption->setDisabled(true);
+		UseTlsEncryption->setToolTip(tr("You have to compile libgadu with SSL support to be able to enable encrypted connection"));
+	}
 
 	QHBoxLayout *externalLayout = new QHBoxLayout();
 
@@ -352,7 +358,8 @@ void GaduEditAccountWidget::apply()
 		Details->setChatImageSizeWarning(ChatImageSizeWarning->isChecked());
 
 		Details->setAllowDcc(AllowFileTransfers->isChecked());
-		Details->setTlsEncryption(UseTlsEncryption->isChecked());
+		if (gg_libgadu_check_feature(GG_LIBGADU_FEATURE_SSL))
+			Details->setTlsEncryption(UseTlsEncryption->isChecked());
 		Details->setSendTypingNotification(SendTypingNotification->isChecked());
 
 		Details->setExternalIp(ExternalIp->text());
@@ -416,7 +423,7 @@ void GaduEditAccountWidget::dataChanged()
 
 		&& config_file.readBoolEntry("Network", "isDefServers", true) == useDefaultServers->isChecked()
 		&& config_file.readEntry("Network", "Server") == ipAddresses->text()
-		&& Details->tlsEncryption() == UseTlsEncryption->isChecked()
+		&& (!gg_libgadu_check_feature(GG_LIBGADU_FEATURE_SSL) || Details->tlsEncryption() == UseTlsEncryption->isChecked())
 		&& Details->sendTypingNotification() == SendTypingNotification->isChecked()
 		&& StateNotChanged == Proxy->state()
 		&& !gpiw->isModified()
@@ -467,7 +474,7 @@ void GaduEditAccountWidget::loadAccountData()
 		ChatImageSizeWarning->setChecked(details->chatImageSizeWarning());
 
 		AllowFileTransfers->setChecked(details->allowDcc());
-		UseTlsEncryption->setChecked(details->tlsEncryption());
+		UseTlsEncryption->setChecked(gg_libgadu_check_feature(GG_LIBGADU_FEATURE_SSL) ? details->tlsEncryption() : false);
 		SendTypingNotification->setChecked(details->sendTypingNotification());
 
 		ExternalIp->setText(details->externalIp());
