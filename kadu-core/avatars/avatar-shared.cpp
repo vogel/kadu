@@ -21,6 +21,7 @@
 
 #include <QtCore/QDir>
 #include <QtCore/QFile>
+#include <QtGui/QImageReader>
 
 #include "avatars/avatar-manager.h"
 #include "misc/misc.h"
@@ -76,7 +77,10 @@ void AvatarShared::setFilePath(const QString &filePath)
 		ensureLoaded();
 
 		FilePath = filePath;
-		Pixmap.load(filePath);
+
+		QImageReader imageReader(filePath);
+		Pixmap = QPixmap::fromImageReader(&imageReader);
+
 		dataUpdated();
 		emit pixmapUpdated();
 	}
@@ -91,7 +95,9 @@ void AvatarShared::load()
 
 	LastUpdated = loadValue<QDateTime>("LastUpdated");
 	NextUpdate = loadValue<QDateTime>("NextUpdate");
-	Pixmap.load(filePath());
+
+	QImageReader imageReader(filePath());
+	Pixmap = QPixmap::fromImageReader(&imageReader);
 }
 
 void AvatarShared::store()

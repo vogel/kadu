@@ -21,6 +21,7 @@
  */
 
 #include <QtGui/QFileDialog>
+#include <QtGui/QImageReader>
 #include <QtGui/QLabel>
 #include <QtGui/QPushButton>
 #include <QtGui/QVBoxLayout>
@@ -107,8 +108,10 @@ void BuddyAvatarWidget::changeAvatar()
 	if (newAvatar.isEmpty())
 		return;
 
-	QPixmap pixmap;
-	if (pixmap.load(newAvatar))
+	QImageReader imageReader(newAvatar);
+	QPixmap pixmap = QPixmap::fromImageReader(&imageReader);
+
+	if (!pixmap.isNull())
 	{
 		showAvatar(newAvatar);
 		BuddyAvatarPixmap = pixmap;
