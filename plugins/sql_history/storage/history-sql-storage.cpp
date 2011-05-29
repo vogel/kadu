@@ -312,6 +312,8 @@ void HistorySqlStorage::appendMessage(const Message &message)
 
 	executeQuery(AppendMessageQuery);
 
+	AppendMessageQuery.finish();
+
 	kdebugf2();
 }
 
@@ -328,6 +330,8 @@ void HistorySqlStorage::appendStatus(const Contact &contact, const Status &statu
 
 	executeQuery(AppendStatusQuery);
 
+	AppendStatusQuery.finish();
+
 	kdebugf2();
 }
 
@@ -342,6 +346,8 @@ void HistorySqlStorage::appendSms(const QString &recipient, const QString &conte
 	AppendSmsQuery.bindValue(":content", content);
 
 	executeQuery(AppendSmsQuery);
+
+	AppendSmsQuery.finish();
 
 	kdebugf2();
 }
@@ -919,6 +925,8 @@ void HistorySqlStorage::executeQuery(QSqlQuery &query)
 {
 	kdebugf();
 
+	query.setForwardOnly(true);
+
 // 	QDateTime before = QDateTime::currentDateTime();
 	query.exec();
 // 	QDateTime after = QDateTime::currentDateTime();
@@ -967,7 +975,7 @@ QList<Message> HistorySqlStorage::messagesFromQuery(QSqlQuery &query)
 	return messages;
 }
 
-QList<TimedStatus> HistorySqlStorage::statusesFromQuery(QSqlQuery query)
+QList<TimedStatus> HistorySqlStorage::statusesFromQuery(QSqlQuery &query)
 {
 	QList<TimedStatus> statuses;
 
@@ -990,7 +998,7 @@ QList<TimedStatus> HistorySqlStorage::statusesFromQuery(QSqlQuery query)
 	return statuses;
 }
 
-QList<Message> HistorySqlStorage::smsFromQuery(QSqlQuery query)
+QList<Message> HistorySqlStorage::smsFromQuery(QSqlQuery &query)
 {
 	QList<Message> messages;
 
