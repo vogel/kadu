@@ -143,6 +143,8 @@ void HistorySqlStorage::initKaduMessagesTable()
 			"attributes TEXT);"
 	);
 	executeQuery(query);
+
+	query.clear();
 }
 
 void HistorySqlStorage::initKaduStatusesTable()
@@ -163,6 +165,8 @@ void HistorySqlStorage::initKaduStatusesTable()
 			"description TEXT);"
 	);
 	executeQuery(query);
+
+	query.clear();
 }
 
 void HistorySqlStorage::initKaduSmsTable()
@@ -182,6 +186,8 @@ void HistorySqlStorage::initKaduSmsTable()
 			"content TEXT);"
 	);
 	executeQuery(query);
+
+	query.clear();
 }
 
 void HistorySqlStorage::initIndexes()
@@ -223,6 +229,8 @@ void HistorySqlStorage::initIndexes()
 
 	query.prepare("DROP INDEX IF EXISTS kadu_sms_receipient_time_date");
 	executeQuery(query);
+
+	query.clear();
 }
 
 void HistorySqlStorage::initQueries()
@@ -312,6 +320,8 @@ void HistorySqlStorage::appendMessage(const Message &message)
 
 	executeQuery(AppendMessageQuery);
 
+	AppendMessageQuery.clear();
+
 	kdebugf2();
 }
 
@@ -328,6 +338,8 @@ void HistorySqlStorage::appendStatus(const Contact &contact, const Status &statu
 
 	executeQuery(AppendStatusQuery);
 
+	AppendStatusQuery.clear();
+
 	kdebugf2();
 }
 
@@ -342,6 +354,8 @@ void HistorySqlStorage::appendSms(const QString &recipient, const QString &conte
 	AppendSmsQuery.bindValue(":content", content);
 
 	executeQuery(AppendSmsQuery);
+
+	AppendSmsQuery.clear();
 
 	kdebugf2();
 }
@@ -361,6 +375,8 @@ void HistorySqlStorage::clearChatHistory(const Chat &chat, const QDate &date)
 		query.bindValue(":date", date.toString(Qt::ISODate));
 
 	executeQuery(query);
+
+	query.clear();
 }
 
 void HistorySqlStorage::clearStatusHistory(const Buddy &buddy, const QDate &date)
@@ -378,6 +394,8 @@ void HistorySqlStorage::clearStatusHistory(const Buddy &buddy, const QDate &date
 		query.bindValue(":date", date.toString(Qt::ISODate));
 
 	executeQuery(query);
+
+	query.clear();
 }
 
 void HistorySqlStorage::clearSmsHistory(const QString &recipient, const QDate &date)
@@ -396,6 +414,8 @@ void HistorySqlStorage::clearSmsHistory(const QString &recipient, const QDate &d
 		query.bindValue(":date", date.toString(Qt::ISODate));
 
 	executeQuery(query);
+
+	query.clear();
 }
 
 void HistorySqlStorage::deleteHistory(const Buddy &buddy)
@@ -418,6 +438,8 @@ void HistorySqlStorage::deleteHistory(const Buddy &buddy)
 	QString queryString = "DELETE FROM kadu_statuses WHERE " + buddyContactsWhere(buddy);
 	query.prepare(queryString);
 	executeQuery(query);
+
+	query.clear();
 }
 
 QList<Chat> HistorySqlStorage::chats(const HistorySearchParameters &search)
@@ -455,6 +477,8 @@ QList<Chat> HistorySqlStorage::chats(const HistorySearchParameters &search)
 		if (chat)
 			chats.append(chat);
 	}
+
+	query.clear();
 
 	return chats;
 }
@@ -496,6 +520,8 @@ QList<QDate> HistorySqlStorage::chatDates(const Chat &chat, const HistorySearchP
 		if (date.isValid())
 			dates.append(date);
 	}
+
+	query.clear();
 
 	return dates;
 }
@@ -545,6 +571,8 @@ QPair<int, Message> HistorySqlStorage::firstMessageAndCount(const Chat &chat, co
 	while (query.next())
 		++count;
 
+	query.clear();
+
 	return qMakePair(count, message);
 }
 
@@ -572,6 +600,8 @@ QList<Message> HistorySqlStorage::messages(const Chat &chat, const QDate &date, 
 	executeQuery(query);
 	messages = messagesFromQuery(query);
 
+	query.clear();
+
 	return messages;
 }
 
@@ -597,6 +627,8 @@ QList<Message> HistorySqlStorage::messagesSince(const Chat &chat, const QDate &d
 
 	messages = messagesFromQuery(query);
 
+	query.clear();
+
 	return messages;
 }
 
@@ -620,6 +652,8 @@ QList<Message> HistorySqlStorage::messagesBackTo(const Chat &chat, const QDateTi
 	executeQuery(query);
 
 	result = messagesFromQuery(query);
+
+	query.clear();
 
 	DatabaseMutex.unlock();
 
@@ -650,7 +684,11 @@ int HistorySqlStorage::messagesCount(const Chat &chat, const QDate &date)
 	executeQuery(query);
 	query.next();
 
-	return query.value(0).toInt();
+	int result = query.value(0).toInt();
+
+	query.clear();
+
+	return result;
 }
 
 QList<QString> HistorySqlStorage::smsRecipientsList(const HistorySearchParameters &search)
@@ -684,6 +722,8 @@ QList<QString> HistorySqlStorage::smsRecipientsList(const HistorySearchParameter
 
 	while (query.next())
 		recipients.append(query.value(0).toString());
+
+	query.clear();
 
 	return recipients;
 }
@@ -727,6 +767,8 @@ QList<QDate> HistorySqlStorage::datesForSmsRecipient(const QString &recipient, c
 			dates.append(date);
 	}
 
+	query.clear();
+
 	return dates;
 }
 
@@ -755,6 +797,8 @@ QList<Message> HistorySqlStorage::sms(const QString &recipient, const QDate &dat
 
 	QList<Message> result = smsFromQuery(query);
 
+	query.clear();
+
 	return result;
 }
 
@@ -777,7 +821,11 @@ int HistorySqlStorage::smsCount(const QString &recipient, const QDate &date)
 	executeQuery(query);
 	query.next();
 
-	return query.value(0).toInt();
+	int result = query.value(0).toInt();
+
+	query.clear();
+
+	return result;
 }
 
 QList<Buddy> HistorySqlStorage::statusBuddiesList(const HistorySearchParameters &search)
@@ -821,6 +869,8 @@ QList<Buddy> HistorySqlStorage::statusBuddiesList(const HistorySearchParameters 
 		}
 	}
 
+	query.clear();
+
 	return buddies;
 }
 
@@ -863,6 +913,8 @@ QList<QDate> HistorySqlStorage::datesForStatusBuddy(const Buddy &buddy, const Hi
 			dates.append(date);
 	}
 
+	query.clear();
+
 	return dates;
 }
 
@@ -891,6 +943,8 @@ QList<TimedStatus> HistorySqlStorage::statuses(const Buddy &buddy, const QDate &
 	executeQuery(query);
 	statuses = statusesFromQuery(query);
 
+	query.clear();
+
 	return statuses;
 }
 
@@ -912,12 +966,18 @@ int HistorySqlStorage::statusBuddyCount(const Buddy &buddy, const QDate &date)
 	executeQuery(query);
 	query.next();
 
-	return query.value(0).toInt();
+	int result = query.value(0).toInt();
+
+	query.clear();
+
+	return result;
 }
 
 void HistorySqlStorage::executeQuery(QSqlQuery &query)
 {
 	kdebugf();
+
+	query.setForwardOnly(true);
 
 // 	QDateTime before = QDateTime::currentDateTime();
 	query.exec();
@@ -967,7 +1027,7 @@ QList<Message> HistorySqlStorage::messagesFromQuery(QSqlQuery &query)
 	return messages;
 }
 
-QList<TimedStatus> HistorySqlStorage::statusesFromQuery(QSqlQuery query)
+QList<TimedStatus> HistorySqlStorage::statusesFromQuery(QSqlQuery &query)
 {
 	QList<TimedStatus> statuses;
 
@@ -990,7 +1050,7 @@ QList<TimedStatus> HistorySqlStorage::statusesFromQuery(QSqlQuery query)
 	return statuses;
 }
 
-QList<Message> HistorySqlStorage::smsFromQuery(QSqlQuery query)
+QList<Message> HistorySqlStorage::smsFromQuery(QSqlQuery &query)
 {
 	QList<Message> messages;
 
