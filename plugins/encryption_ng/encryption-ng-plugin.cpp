@@ -59,8 +59,8 @@ int EncryptionNgPlugin::init(bool firstLoad)
 			!QCA::PKey::supportedIOTypes().contains(QCA::PKey::RSA) ||
 			!QCA::isSupported("sha1"))
 	{
-		MessageDialog::exec(KaduIcon("dialog-error"), QApplication::tr("Encryption"),
-				QApplication::tr("The QCA OSSL plugin for libqca2 is not present!"));
+		MessageDialog::exec(KaduIcon("dialog-error"), tr("Encryption"),
+				tr("The QCA OSSL plugin for libqca2 is not present!"));
 
 		delete EncryptionNg::InitObject;
 		EncryptionNg::InitObject = 0;
