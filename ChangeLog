@@ -33,6 +33,8 @@
 * gui: #2131 fixed: user font settings are now optionally respected by Adium styles (ultr)
 * gui: #2137 fixed: removed simple/advanced mode, replaced with more detailed setting in Status and Buddy List section of configuration window (Vogel)
 * chat styles: removed Gaia and Pushpin styles from official package due to license concerns (beevvy)
+* translations: translations can now be added to Kadu without modyfing source code (Vogel)
+* translations: allow polish, czech and english traslations by default (Vogel)
 
 +++ version 0.9.3
 * jabber: #2183 fixed: very rare crash when trying to reconnect (beevvy)
