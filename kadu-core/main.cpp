@@ -346,7 +346,7 @@ int main(int argc, char *argv[])
 		return 10;
 	}
 
-	const QString lang = config_file.readEntry("General", "Language", QLocale::system().name());
+	const QString lang = config_file.readEntry("General", "Language", QLocale::system().name().left(2));
 	QTranslator qt_qm, kadu_qm;
 	qt_qm.load("qt_" + lang, QLibraryInfo::location(QLibraryInfo::TranslationsPath));
 	kadu_qm.load("kadu_" + lang, dataPath("kadu/translations"));

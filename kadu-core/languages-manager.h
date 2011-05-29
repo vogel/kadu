@@ -21,16 +21,23 @@
 #ifndef LANGUAGES_MANAGER_H
 #define LANGUAGES_MANAGER_H
 
+#include <QtCore/QMap>
 #include <QtCore/QStringList>
+
 #include "exports.h"
 
 class KADUAPI LanguagesManager
 {
-	LanguagesManager() {};
+	Q_DISABLE_COPY(LanguagesManager)
+
+	LanguagesManager();
+
+	static QMap<QString, QString> Languages;
+
+	static void loadLanguages();
 
 public:
-	static QStringList languageValues();
-	static QStringList languageNames();
+	static const QMap<QString, QString> & languages();
 
 };
 

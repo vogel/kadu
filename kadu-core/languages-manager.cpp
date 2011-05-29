@@ -17,29 +17,37 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QDir>
+
 #include "misc/misc.h"
 
 #include "languages-manager.h"
 
-QStringList LanguagesManager::languageValues()
-{
-	QStringList values;
-	values.append("pl");
-	values.append("en");
-	values.append("de");
-	values.append("it");
-	values.append("cs");
+QMap<QString, QString> LanguagesManager::Languages;
 
-	return values;
+void LanguagesManager::loadLanguages()
+{
+	QDir tranlationsDir(dataPath("kadu/translations"));
+
+	QStringList languagesFilter;
+	languagesFilter << "*.language";
+	QFileInfoList languages = tranlationsDir.entryInfoList(languagesFilter, QDir::Files);
+
+	foreach (const QFileInfo &languageFileInfo, languages)
+	{
+		QFile languageFile(languageFileInfo.filePath());
+		if (languageFile.open(QIODevice::ReadOnly))
+		{
+			Languages.insert(languageFileInfo.fileName().left(2), QString::fromUtf8(languageFile.readAll()).trimmed());
+			languageFile.close();
+		}
+	}
 }
 
-QStringList LanguagesManager::languageNames()
+const QMap<QString, QString> & LanguagesManager::languages()
 {
+	if (Languages.isEmpty())
+		loadLanguages();
 
-	QStringList names;
-
-	foreach(const QString &value, languageValues())
-		names.append(translateLanguage(qApp, value, true));
-
-	return names;
+	return Languages;
 }

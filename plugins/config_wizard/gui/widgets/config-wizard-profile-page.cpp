@@ -68,8 +68,8 @@ void ConfigWizardProfilePage::createGui()
 
 void ConfigWizardProfilePage::setLanguages()
 {
-	QStringList languageValues = LanguagesManager::languageValues();
-	QStringList languageNames = LanguagesManager::languageNames();
+	QStringList languageValues = LanguagesManager::languages().keys();
+	QStringList languageNames = LanguagesManager::languages().values();
 
 	for (int i = 0; i < languageValues.size(); i++)
 		LanguagesCombo->addItem(languageNames.at(i), languageValues.at(i));

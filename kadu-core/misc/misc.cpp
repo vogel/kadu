@@ -97,42 +97,6 @@ QString pwHash(const QString &text)
 	return newText;
 }
 
-QString translateLanguage(const QApplication *application, const QString &locale, const bool l2n)
-{
-	static const int langSize = 6;
-	static const char local[][3] = {"en",
-		"de",
-		"fr",
-		"it",
-		"pl",
-		"cs"
-	};
-
-	static const char name[][sizeof("English") /*length of the longest*/] = {
-		QT_TR_NOOP("English"),
-		QT_TR_NOOP("German"),
-		QT_TR_NOOP("French"),
-		QT_TR_NOOP("Italian"),
-		QT_TR_NOOP("Polish"),
-		QT_TR_NOOP("Czech")};
-
-	for (int i = 0; i < langSize; ++i)
-	{
-		if (l2n)
-		{
-			if (locale.leftRef(2) == local[i])
-				return application->translate("@default", name[i]);
-		}
-		else
-			if (locale == application->translate("@default", name[i]))
-				return local[i];
-	}
-	if (l2n)
-		return application->translate("@default", QT_TR_NOOP("English"));
-	else
-		return "en";
-}
-
 QList<int> stringToIntList(const QString &in)
 {
 	QList<int> out;

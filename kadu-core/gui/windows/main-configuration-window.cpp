@@ -297,7 +297,7 @@ void MainConfigurationWindow::setLanguages()
 {
 	ConfigComboBox *languages = static_cast<ConfigComboBox *>(widget()->widgetById("languages"));
 
-	languages->setItems(LanguagesManager::languageValues(), LanguagesManager::languageNames());
+	languages->setItems(LanguagesManager::languages().keys(), LanguagesManager::languages().values());
 }
 
 void MainConfigurationWindow::setIconThemes()
