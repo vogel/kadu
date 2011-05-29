@@ -10,7 +10,7 @@ include (FindKadu)
 
 include_directories ("${KADU_INCLUDE_DIR}/kadu-core")
 
-set (LIBGADU_MIN_VERSION "1.10.1")
+set (LIBGADU_MIN_VERSION "1.11.0")
 
 kadu_api_directories (plugins/gadu-protocol
 	dcc
