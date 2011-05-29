@@ -1,3 +1,5 @@
++++ version 0.10.0-beta1
+
 +++ version 0.10.0-alpha1
 * gadu: removed depreceated ip/port/version code - gg server does not send this info anymore (Vogel)
 * modules: Library class removed, we can use QLibrary (Vogel)
