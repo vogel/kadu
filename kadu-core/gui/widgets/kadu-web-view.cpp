@@ -340,21 +340,45 @@ void KaduWebView::convertClipboardHtml(QClipboard::Mode mode)
 {
 	static QRegExp emotsRegExpApos("<img[^>]+title\\s*=\\s*'([^']+)'[^>]*>");
 	static QRegExp emotsRegExpQuot("<img[^>]+title\\s*=\\s*\"([^\"]+)\"[^>]*>");
-	static QRegExp linksRegExpApos("<a[^>]+href\\s*=[^>]+title\\s*=\\s*'([^']+)'[^>]*>[^<]*<[^>]*>");
-	static QRegExp linksRegExpQuot("<a[^>]+href\\s*=[^>]+title\\s*=\\s*\"([^\"]+)\"[^>]*>[^<]*<[^>]*>");
 
-	QClipboard *cb = QApplication::clipboard();
-	QString html = cb->mimeData(mode)->html();
+	// (Assume we don't use apostrophes.)
+	// Expected string to replace is as follows (capitalics are captured):
+	// <a folded="1" displaystr="DISPLAY" href="HREF"*>DISPLAY</a>
+	// If first display is different than the second, it means that the user selected only part of the link.
+	// Source string is created in StandardUrlHandler::convertUrlsToHtml().
+	// BTW, I know it is totally ugly.
+	static QRegExp foldedLinksRegExp("<a[^>]+folded\\s*=\\s*\"1\"[^>]+displaystr\\s*=\\s*\"([^\"]+)\"[^>]+href\\s*=\\s*\"([^\"]+)\"[^>]*>([^<]*)<[^>]*>");
+
+	QString html = QApplication::clipboard()->mimeData(mode)->html();
+
 	html.replace(emotsRegExpApos, QLatin1String("\\1"));
 	html.replace(emotsRegExpQuot, QLatin1String("\\1"));
-	html.replace(linksRegExpApos, QLatin1String("<a href='\\1'>\\1</a>"));
-	html.replace(linksRegExpQuot, QLatin1String("<a href=\"\\1\">\\1</a>"));
+
+	int pos = 0;
+	while (-1 != (pos = foldedLinksRegExp.indexIn(html, pos)))
+	{
+		int matchedLength = foldedLinksRegExp.matchedLength();
+		QString displayStr = foldedLinksRegExp.cap(1);
+		QString realDisplayStr = foldedLinksRegExp.cap(3);
+
+		if (displayStr == realDisplayStr) // i.e., we are copying the entire link, not a part of it
+		{
+			QString hRef = foldedLinksRegExp.cap(2);
+			QString unfoldedLink = QString("<a href=\"%1\">%1</a>").arg(hRef);
+			html.replace(pos, matchedLength, unfoldedLink);
+
+			pos += unfoldedLink.length();
+		}
+		else
+			pos += matchedLength;
+	}
+
 	QTextDocument htmlToPlainTextConverter;
 	htmlToPlainTextConverter.setHtml(html);
 	QMimeData *data = new QMimeData();
 	data->setHtml(html);
 	data->setText(htmlToPlainTextConverter.toPlainText());
-	cb->setMimeData(data, mode);
+	QApplication::clipboard()->setMimeData(data, mode);
 }
 
 void KaduWebView::setUserFont(const QString &fontString)

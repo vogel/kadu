@@ -61,11 +61,16 @@ void StandardUrlHandler::convertUrlsToHtml(HtmlDocument &document)
 		if (!aLink.contains("://"))
 			aLink.prepend("http://");
 
-		if ((length - index > LinkFoldTreshold) && FoldLink)
+		if (FoldLink && (length - index > LinkFoldTreshold))
+		{
 			displayLink = Qt::escape(text.mid(index, index + (LinkFoldTreshold / 2)) + "..."
 					+ text.mid(length - (LinkFoldTreshold / 2), LinkFoldTreshold / 2));
 
-		link = "<a href=\"" + aLink + "\" title=\"" + aLink + "\">" + displayLink + "</a>";
+			// prepare string for KaduWebView::convertClipboardHtml()
+			link = "<a folded=\"1\" displaystr=\"" + displayLink + "\" href=\"" + aLink + "\" title=\"" + aLink + "\">" + displayLink + "</a>";
+		}
+		else
+			link = "<a href=\"" + aLink + "\" title=\"" + aLink + "\">" + displayLink + "</a>";
 
 		document.splitElement(i, index, length);
 		document.setElementValue(i, link, true);
