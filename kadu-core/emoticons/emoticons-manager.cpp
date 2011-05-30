@@ -229,10 +229,11 @@ void EmoticonsManager::expandEmoticons(HtmlDocument &doc, EmoticonsStyle style)
 {
 	kdebugf();
 
+	// prepare string for KaduWebView::convertClipboardHtml()
+	const static QString emotTemplate("<img emoticon=\"1\" title=\"%1\" alt=\"%1\" src=\"file:///%2\" />");
+
 	if (EmoticonsStyleNone == style)
 		return;
-
-	const static QString emotTemplate("<img emoticon=\"1\" alt=\"%1\" title=\"%1\" src=\"file:///%2\" />");
 
 	if (!walker)
 	{

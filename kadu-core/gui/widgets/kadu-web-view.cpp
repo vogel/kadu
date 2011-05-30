@@ -338,10 +338,13 @@ void KaduWebView::textCopied() const
 // taken from Psi+'s webkit patch, SVN rev. 2638, and slightly modified
 void KaduWebView::convertClipboardHtml(QClipboard::Mode mode)
 {
-	static QRegExp emotsRegExpApos("<img[^>]+title\\s*=\\s*'([^']+)'[^>]*>");
-	static QRegExp emotsRegExpQuot("<img[^>]+title\\s*=\\s*\"([^\"]+)\"[^>]*>");
+	// Assume we don't use apostrophes in HTML attributes.
 
-	// (Assume we don't use apostrophes.)
+	// Expected string to replace is as follows (capitalics are captured):
+	// <img emoticon="1" title="TITLE"*>
+	// Source string is created in EmoticonsManager::expandEmoticons().
+	static QRegExp emotsRegExp("<img[^>]+emoticon\\s*=\\s*\"1\"[^>]+title\\s*=\\s*\"([^\"]+)\"[^>]*>");
+
 	// Expected string to replace is as follows (capitalics are captured):
 	// <a folded="1" displaystr="DISPLAY" href="HREF"*>DISPLAY</a>
 	// If first display is different than the second, it means that the user selected only part of the link.
@@ -351,8 +354,7 @@ void KaduWebView::convertClipboardHtml(QClipboard::Mode mode)
 
 	QString html = QApplication::clipboard()->mimeData(mode)->html();
 
-	html.replace(emotsRegExpApos, QLatin1String("\\1"));
-	html.replace(emotsRegExpQuot, QLatin1String("\\1"));
+	html.replace(emotsRegExp, QLatin1String("\\1"));
 
 	int pos = 0;
 	while (-1 != (pos = foldedLinksRegExp.indexIn(html, pos)))
