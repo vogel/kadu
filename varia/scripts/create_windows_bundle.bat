@@ -5,7 +5,7 @@ set QT_DIR="C:\QtSDK\Desktop\Qt\4.7.3\mingw\bin"
 set QT_PLUGINS_DIR="C:\QtSDK\Desktop\Qt\4.7.3\mingw\plugins"
 set QT_TRANSLATIONS_DIR="C:\QtSDK\Desktop\Qt\4.7.3\mingw\translations"
 set QT_DEBUG_SUFFIX=""
-set LIBGADU_DIR="C:\kadu\deps\libgadu-1.10.1-win32"
+set LIBGADU_DIR="C:\kadu\deps\libgadu-1.11.0-win32"
 set LIBIDN_DIR="C:\kadu\deps\libidn-1.22-win32"
 set LIBSNDFILE_DIR="C:\kadu\deps\libsndfile-1.0.23"
 set OPENSSL_DIR="C:\kadu\deps\openssl-0.9.8q"
@@ -111,8 +111,8 @@ xcopy %QT_DIR%\QtXml%QT_DEBUG_SUFFIX%4.dll         %DESTINATION%\ /C /H /R /Y /Q
 xcopy %QT_DIR%\QtXmlPatterns%QT_DEBUG_SUFFIX%4.dll %DESTINATION%\ /C /H /R /Y /Q
 
 ECHO Copying Qt plugins
-REM xcopy %QT_PLUGINS_DIR%\bearer\qgenericbearer%QT_DEBUG_SUFFIX%4.dll     %DESTINATION%\qt-plugins\bearer\         /C /H /R /Y /Q
-REM xcopy %QT_PLUGINS_DIR%\bearer\qnativewifibearer%QT_DEBUG_SUFFIX%4.dll  %DESTINATION%\qt-plugins\bearer\         /C /H /R /Y /Q
+xcopy %QT_PLUGINS_DIR%\bearer\qgenericbearer%QT_DEBUG_SUFFIX%4.dll     %DESTINATION%\qt-plugins\bearer\         /C /H /R /Y /Q
+xcopy %QT_PLUGINS_DIR%\bearer\qnativewifibearer%QT_DEBUG_SUFFIX%4.dll  %DESTINATION%\qt-plugins\bearer\         /C /H /R /Y /Q
 xcopy %QT_PLUGINS_DIR%\iconengines\qsvgicon%QT_DEBUG_SUFFIX%4.dll      %DESTINATION%\qt-plugins\iconengines\    /C /H /R /Y /Q
 xcopy %QT_PLUGINS_DIR%\imageformats\qgif%QT_DEBUG_SUFFIX%4.dll         %DESTINATION%\qt-plugins\imageformats\   /C /H /R /Y /Q
 xcopy %QT_PLUGINS_DIR%\imageformats\qico%QT_DEBUG_SUFFIX%4.dll         %DESTINATION%\qt-plugins\imageformats\   /C /H /R /Y /Q
