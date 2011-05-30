@@ -36,7 +36,7 @@ FormattedMessagePart::FormattedMessagePart(const QString &content, bool bold, bo
 }
 
 FormattedMessagePart::FormattedMessagePart(const QString &imagePath) :
-		IsImage(true), ImagePath(imagePath)
+		Content(QChar::Nbsp), IsImage(true), ImagePath(imagePath)
 {
 }
 

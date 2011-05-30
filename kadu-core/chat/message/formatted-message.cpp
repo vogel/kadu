@@ -73,10 +73,14 @@ void FormattedMessage::parseImages(FormattedMessage &message, const QString &mes
 	{
 		if (lastPos != pos)
 		{
+			QString part;
 			if (lastPos == -1)
-				message << FormattedMessagePart(messageString.left(pos), b, i, u, color);
+				part = messageString.left(pos);
 			else
-				message << FormattedMessagePart(messageString.mid(lastPos, pos - lastPos), b, i, u, color);
+				part = messageString.mid(lastPos, pos - lastPos);
+
+			if (!part.isEmpty())
+				message << FormattedMessagePart(part, b, i, u, color);
 		}
 
 		QString filePath = imageRegExp.cap(1);
@@ -91,7 +95,10 @@ void FormattedMessage::parseImages(FormattedMessage &message, const QString &mes
 	}
 
 	if (lastPos == -1)
-		message << FormattedMessagePart(messageString, b, i, u, color);
+	{
+		if (!messageString.isEmpty())
+			message << FormattedMessagePart(messageString, b, i, u, color);
+	}
 	else if (lastPos != messageString.length())
 		message << FormattedMessagePart(messageString.mid(lastPos, messageString.length() - lastPos), b, i, u, color);
 }
@@ -144,7 +151,8 @@ FormattedMessage::FormattedMessage()
 
 FormattedMessage::FormattedMessage(const QString &messageString)
 {
-	Parts.append(FormattedMessagePart(messageString, false, false, false, QColor()));
+	if (!messageString.isEmpty())
+		Parts.append(FormattedMessagePart(messageString, false, false, false, QColor()));
 }
 
 FormattedMessage::~FormattedMessage()

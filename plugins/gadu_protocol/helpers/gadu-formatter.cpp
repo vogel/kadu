@@ -198,7 +198,7 @@ static void appendToMessage(Account account, FormattedMessage &result, Contact c
 			result << FormattedMessagePart(createImageId(contact.id().toUInt(), size, crc32));
 		}
 	}
-	else
+	else if (!content.isEmpty())
 	{
 		if (format.font & GG_FONT_COLOR)
 		{
@@ -229,7 +229,8 @@ FormattedMessage createMessage(Account account, Contact contact, const QString &
 
 	if (size == 0 || !formats)
 	{
-		result << FormattedMessagePart(content, false, false, false, QColor());
+		if (!content.isEmpty())
+			result << FormattedMessagePart(content, false, false, false, QColor());
 		return result;
 	}
 

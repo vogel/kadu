@@ -74,9 +74,6 @@ bool GaduChatService::sendMessage(const Chat &chat, FormattedMessage &message, b
 	QString plain = message.toPlain();
 	QList<Contact> contacts = chat.contacts().toContactList();
 
-	if (plain.isEmpty()) // for image sending
-		message.prepend(FormattedMessagePart(" ", false, false, false, QColor(0, 0, 0)));
-
 	unsigned int uinsCount = 0;
 	unsigned int formatsSize = 0;
 	QScopedArrayPointer<unsigned char> formats(GaduFormatter::createFormats(Protocol->account(), message, formatsSize));
