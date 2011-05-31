@@ -8,6 +8,8 @@ set (CMAKE_MIN_VERSION "2.8.0")
 set (KADU_FIND_REQUIRED true)
 include (FindKadu)
 
+include (FindPkgConfig)
+
 set (LIBGADU_MIN_VERSION "1.11.0")
 
 kadu_api_directories (plugins/gadu_protocol
