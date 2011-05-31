@@ -50,7 +50,7 @@ if (APPLE)
 	endif (QCA_FRAMEWORK_DIR)
 endif (APPLE)
 
-kadu_api_directories (plugins/jabber-protocol
+kadu_api_directories (plugins/jabber_protocol
 	actions
 	certificates
 	client

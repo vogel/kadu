@@ -10,7 +10,7 @@ include (FindKadu)
 
 set (LIBGADU_MIN_VERSION "1.11.0")
 
-kadu_api_directories (plugins/gadu-protocol
+kadu_api_directories (plugins/gadu_protocol
 	dcc
 	file-transfers
 	gui/widgets
