@@ -10,8 +10,6 @@ include (FindKadu)
 
 include (FindPkgConfig)
 
-include_directories (${KADU_INCLUDE_DIR}/kadu-core)
-
 kadu_api_directories (plugins/encryption_ng
 	configuration
 	keys

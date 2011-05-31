@@ -10,9 +10,6 @@ include (FindKadu)
 
 include (FindPkgConfig)
 
-include_directories (${KADU_INCLUDE_DIR})
-include_directories (${KADU_INCLUDE_DIR}/kadu-core)
-
 set (SOURCES
 	phonon-player.cpp
 	phonon-plugin.cpp

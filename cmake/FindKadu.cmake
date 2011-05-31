@@ -159,8 +159,8 @@ macro (kadu_plugin)
 	set (PLUGIN_LIBRARIES "")
 
 	include_directories (".")
-	include_directories ("${KADU_INCLUDE_DIR}/kadu")
-	include_directories ("${KADU_INCLUDE_DIR}/kadu/core")
+	include_directories ("${KADU_INCLUDE_DIR}")
+	include_directories ("${KADU_INCLUDE_DIR}/kadu-core")
 
 	foreach (ARG ${ARGV})
 		if ("${VARIABLE_NAME}" STREQUAL "PLUGIN_NAME")

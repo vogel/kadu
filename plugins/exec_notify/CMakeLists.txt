@@ -10,8 +10,6 @@ include (FindKadu)
 
 include (FindPkgConfig)
 
-include_directories (${KADU_INCLUDE_DIR}/kadu-core)
-
 set (SOURCES
 	exec_notify.cpp
 	exec-notify-plugin.cpp

@@ -8,8 +8,6 @@ set (CMAKE_MIN_VERSION "2.8.0")
 set (KADU_FIND_REQUIRED true)
 include (FindKadu)
 
-include_directories (${KADU_INCLUDE_DIR}/kadu-core)
-
 set (SOURCES
 	qt4-docking-notify.cpp
 	qt4-docking-notify-configuration-widget.cpp

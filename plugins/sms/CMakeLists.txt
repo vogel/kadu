@@ -8,10 +8,6 @@ set (CMAKE_MIN_VERSION "2.8.0")
 set (KADU_FIND_REQUIRED true)
 include (FindKadu)
 
-include_directories ("${KADU_INCLUDE_DIR}/kadu-core")
-include_directories ("${KADU_INCLUDE_DIR}/plugins/history")
-include_directories ("${KADU_INCLUDE_DIR}")
-
 set (SOURCES
 	gui/windows/sms-dialog.cpp
 	gui/windows/sms-image-dialog.cpp
