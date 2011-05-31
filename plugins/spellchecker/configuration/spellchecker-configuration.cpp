@@ -19,9 +19,10 @@
 
 #include "configuration/configuration-file.h"
 
+#include "spellchecker.h" 
+#include "spellchecker-plugin.h"
+
 #include "spellchecker-configuration.h"
-#include "plugins/spellchecker/spellchecker.h"
-#include "plugins/spellchecker/spellchecker-plugin.h"
 
 SpellcheckerConfiguration *SpellcheckerConfiguration::Instance = 0;
 
