@@ -8,6 +8,10 @@ set (CMAKE_MIN_VERSION "2.6.0")
 set (KADU_FIND_REQUIRED true)
 include (FindKadu)
 
+kadu_api_directories (plugins/qt4_docking
+	.
+)
+
 set (SOURCES
 	qt4_docking.cpp
 	qt4-docking-plugin.cpp
