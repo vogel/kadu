@@ -26,11 +26,13 @@
 
 #include <QtGui/QTextEdit>
 
+#include "exports.h"
+
 /**
 	\class CustomInput
 	\brief Klasa umo�liwiaj�ca wpisywanie wiadomo�ci
 **/
-class CustomInput : public QTextEdit
+class KADUAPI CustomInput : public QTextEdit
 {
 	Q_OBJECT
 
