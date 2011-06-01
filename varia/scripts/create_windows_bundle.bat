@@ -5,6 +5,7 @@ set QT_DIR="C:\QtSDK\Desktop\Qt\4.7.3\mingw\bin"
 set QT_PLUGINS_DIR="C:\QtSDK\Desktop\Qt\4.7.3\mingw\plugins"
 set QT_TRANSLATIONS_DIR="C:\QtSDK\Desktop\Qt\4.7.3\mingw\translations"
 set QT_DEBUG_SUFFIX=""
+set ASPELL_DIR="C:\kadu\deps\aspell"
 set LIBGADU_DIR="C:\kadu\deps\libgadu-1.11.0-win32"
 set LIBIDN_DIR="C:\kadu\deps\libidn-1.22-win32"
 set LIBSNDFILE_DIR="C:\kadu\deps\libsndfile-1.0.23"
@@ -144,6 +145,11 @@ xcopy %QCA_OSSL_DIR%\qca-ossl2.dll  %DESTINATION%\qt-plugins\crypto\ /C /H /R /Y
 ECHO Copying OpenSSL
 xcopy %OPENSSL_DIR%\libeay32.dll %DESTINATION%\ /C /H /R /Y /Q
 xcopy %OPENSSL_DIR%\libssl32.dll %DESTINATION%\ /C /H /R /Y /Q
+
+ECHO Copying aspell
+xcopy %ASPELL_DIR%\data\*             %DESTINATION%\aspell\data\ /C /H /R /Y /Q
+xcopy %ASPELL_DIR%\dict\*             %DESTINATION%\aspell\dict\ /C /H /R /Y /Q
+xcopy %ASPELL_DIR%\bin\aspell-15.dll  %DESTINATION%\             /C /H /R /Y /Q
 
 ECHO Copying libsndfile
 xcopy %LIBSNDFILE_DIR%\libsndfile-1.dll %DESTINATION%\ /C /H /R /Y /Q
