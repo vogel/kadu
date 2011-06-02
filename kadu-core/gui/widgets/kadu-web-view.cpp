@@ -49,8 +49,9 @@
 #include <QtGui/QMouseEvent>
 #include <QtGui/QStyle>
 #include <QtGui/QTextDocument>
-#include <QtWebKit/QWebPage>
 #include <QtWebKit/QWebHitTestResult>
+#include <QtWebKit/QWebHistory>
+#include <QtWebKit/QWebPage>
 
 #include "configuration/configuration-file.h"
 #include "gui/windows/message-dialog.h"
@@ -65,6 +66,10 @@ KaduWebView::KaduWebView(QWidget *parent) :
 		QWebView(parent), DraggingPossible(false), IsLoading(false), RefreshTimer(new QTimer(this))
 {
 	kdebugf();
+
+	QWebSettings::setMaximumPagesInCache(0);
+	QWebSettings::setObjectCacheCapacities(0, 0, 0);
+
 
 	setAttribute(Qt::WA_NoBackground);
 	setAcceptDrops(false);
@@ -89,6 +94,8 @@ void KaduWebView::setPage(QWebPage *page)
 {
 	QWebView::setPage(page);
 	page->setLinkDelegationPolicy(QWebPage::DelegateAllLinks);
+
+	page->history()->setMaximumItemCount(0);
 
 	connect(page, SIGNAL(linkClicked(const QUrl &)), this, SLOT(hyperlinkClicked(const QUrl &)));
 	connect(page, SIGNAL(loadStarted()), this, SLOT(loadStarted()));
