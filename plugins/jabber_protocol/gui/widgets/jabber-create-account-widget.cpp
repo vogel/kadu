@@ -287,7 +287,7 @@ void JabberCreateAccountWidget::apply()
 	{
 		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Invalid data entered in required fields.\n\n"
 			"Password entered in both fields (\"New password\" and \"Retype password\") "
-			"should be the same!"), QMessageBox::Ok, this);
+			"must be the same!"), QMessageBox::Ok, this);
 		return;
 	}
 
