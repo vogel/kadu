@@ -82,7 +82,7 @@ unsigned char * createFormats(Account account, const FormattedMessage &message, 
 	struct gg_msg_richtext_color color;
 	struct gg_msg_richtext_image image;
 
-	header.flag = GG_MSG_OPTION_ATTRIBUTES;
+	header.flag = 2;
 	header.length = gg_fix16(size - sizeof(struct gg_msg_richtext));
 	memcpy(result, &header, sizeof(header));
 
