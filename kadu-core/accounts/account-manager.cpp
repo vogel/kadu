@@ -51,6 +51,32 @@ KADUAPI AccountManager * AccountManager::instance()
 	return Instance;
 }
 
+Account AccountManager::bestAccount(QList<Account> accounts)
+{
+	Account result;
+	if (accounts.isEmpty())
+		return result;
+
+	foreach (const Account &account, accounts)
+		if (account.details() && account.data())
+		{
+			// TODO: hack
+			bool newConnected = account.data()->protocolHandler() && account.data()->protocolHandler()->isConnected();
+			bool oldConnected = false;
+			if (result)
+				oldConnected = result.data()->protocolHandler() && result.data()->protocolHandler()->isConnected();
+
+			if (!result || (newConnected && !oldConnected)  || (account.protocolName() == "gadu" && result.protocolName() != "gadu"))
+			{
+				result = account;
+				if (newConnected && result.protocolName() == "gadu")
+					break;
+			}
+		}
+
+	return result;
+}
+
 AccountManager::AccountManager()
 {
 	ConfigurationManager::instance()->registerStorableObject(this);
@@ -156,6 +182,11 @@ Account AccountManager::defaultAccount()
 			return account;
 
 	return byIndex(0);
+}
+
+Account AccountManager::bestAccount()
+{
+	return bestAccount(items());
 }
 
 const QList<Account> AccountManager::byIdentity(Identity identity)

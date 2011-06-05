@@ -32,8 +32,6 @@ class KADUAPI AllAccountsStatusContainer : public StatusContainer, public Accoun
 
 	QList<Account> Accounts;
 
-	Account bestAccount();
-
 protected:
 	virtual void accountRegistered(Account account);
 	virtual void accountUnregistered(Account account);

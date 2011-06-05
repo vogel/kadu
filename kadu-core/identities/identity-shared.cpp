@@ -158,43 +158,15 @@ void IdentityShared::doSetStatus(Status status)
 			account.data()->setStatus(status, false);
 }
 
-Account IdentityShared::bestAccount()
-{
-	ensureLoaded();
-
-	Account result;
-	if (Accounts.isEmpty())
-		return result;
-
-	foreach (const Account &account, Accounts)
-		if (account.details() && account.data())
-		{
-			// TODO: hack
-			bool newConnected = account.data()->protocolHandler() && account.data()->protocolHandler()->isConnected();
-			bool oldConnected = false;
-			if (result)
-				oldConnected = result.data()->protocolHandler() && result.data()->protocolHandler()->isConnected();
-
-			if (!result || (newConnected && !oldConnected)  || (account.protocolName() == "gadu" && result.protocolName() != "gadu"))
-			{
-				result = account;
-				if (newConnected && result.protocolName() == "gadu")
-					break;
-			}
-		}
-
-	return result;
-}
-
 Status IdentityShared::status()
 {
-	Account account = bestAccount();
+	Account account = AccountManager::bestAccount(Accounts);
 	return account ? account.data()->status() : Status();
 }
 
 bool IdentityShared::isStatusSettingInProgress()
 {
-	Account account = bestAccount();
+	Account account = AccountManager::bestAccount(Accounts);
 	return account ? account.data()->isStatusSettingInProgress() : false;
 }
 
@@ -210,24 +182,24 @@ KaduIcon IdentityShared::statusIcon()
 
 KaduIcon IdentityShared::statusIcon(const Status &status)
 {
-	Account account = bestAccount();
+	Account account = AccountManager::bestAccount(Accounts);
 	return account ? account.data()->statusIcon(status) : KaduIcon();
 }
 
 KaduIcon IdentityShared::statusIcon(const QString &statusType)
 {
-	Account account = bestAccount();
+	Account account = AccountManager::bestAccount(Accounts);
 	return account ? account.data()->statusIcon(statusType) : KaduIcon();
 }
 
 QList<StatusType *> IdentityShared::supportedStatusTypes()
 {
-	Account account = bestAccount();
+	Account account = AccountManager::bestAccount(Accounts);
 	return account ? account.data()->supportedStatusTypes() : QList<StatusType *>();
 }
 
 int IdentityShared::maxDescriptionLength()
 {
-	Account account = bestAccount();
+	Account account = AccountManager::bestAccount(Accounts);
 	return account ? account.data()->maxDescriptionLength() : -1;
 }

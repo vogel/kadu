@@ -69,10 +69,13 @@ protected:
 public:
 	static AccountManager * instance();
 
+	static Account bestAccount(QList<Account> accounts);
+
 	virtual QString storageNodeName() { return QLatin1String("Accounts"); }
 	virtual QString storageNodeItemName() { return QLatin1String("Account"); }
 
 	Account defaultAccount();
+	Account bestAccount();
 
 	const QList<Account> byIdentity(Identity identity);
 	Account byId(const QString &protocolName, const QString &id);

@@ -18,6 +18,7 @@
  */
 
 #include "accounts/account.h"
+#include "accounts/account-manager.h"
 #include "icons/kadu-icon.h"
 #include "protocols/protocol.h"
 
@@ -58,41 +59,15 @@ void AllAccountsStatusContainer::doSetStatus(Status status)
 			account.data()->setStatus(status, false);
 }
 
-Account AllAccountsStatusContainer::bestAccount()
-{
-	Account result;
-	if (Accounts.isEmpty())
-		return result;
-
-	foreach (const Account &account, Accounts)
-		if (account.details() && account.data())
-		{
-			// TODO: hack
-			bool newConnected = account.data()->protocolHandler() && account.data()->protocolHandler()->isConnected();
-			bool oldConnected = false;
-			if (result)
-				oldConnected = result.data()->protocolHandler() && result.data()->protocolHandler()->isConnected();
-
-			if (!result || (newConnected && !oldConnected)  || (account.protocolName() == "gadu" && result.protocolName() != "gadu"))
-			{
-				result = account;
-				if (newConnected && result.protocolName() == "gadu")
-					break;
-			}
-		}
-
-	return result;
-}
-
 Status AllAccountsStatusContainer::status()
 {
-	Account account = bestAccount();
+	Account account = AccountManager::bestAccount(Accounts);
 	return account ? account.data()->status() : Status();
 }
 
 bool AllAccountsStatusContainer::isStatusSettingInProgress()
 {
-	Account account = bestAccount();
+	Account account = AccountManager::bestAccount(Accounts);
 	return account ? account.data()->isStatusSettingInProgress() : false;
 }
 
@@ -108,25 +83,25 @@ KaduIcon AllAccountsStatusContainer::statusIcon()
 
 KaduIcon AllAccountsStatusContainer::statusIcon(const Status &status)
 {
-	Account account = bestAccount();
+	Account account = AccountManager::bestAccount(Accounts);
 	return account ? account.data()->statusIcon(status) : KaduIcon();
 }
 
 KaduIcon AllAccountsStatusContainer::statusIcon(const QString &statusType)
 {
-	Account account = bestAccount();
+	Account account = AccountManager::bestAccount(Accounts);
 	return account ? account.data()->statusIcon(statusType) : KaduIcon();
 }
 
 QList<StatusType *> AllAccountsStatusContainer::supportedStatusTypes()
 {
-	Account account = bestAccount();
+	Account account = AccountManager::bestAccount(Accounts);
 	return account ? account.data()->supportedStatusTypes() : QList<StatusType *>();
 }
 
 int AllAccountsStatusContainer::maxDescriptionLength()
 {
-	Account account = bestAccount();
+	Account account = AccountManager::bestAccount(Accounts);
 	return account ? account.data()->maxDescriptionLength() : -1;
 }
 
