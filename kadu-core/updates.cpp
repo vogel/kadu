@@ -174,12 +174,12 @@ bool Updates::isNewerVersion(const QString &newestversion)
 	QStringList actual = stripVersion(Core::version()).split('.', QString::SkipEmptyParts);
 	QStringList newest = stripVersion(newestversion).split('.', QString::SkipEmptyParts);
 
-	if (newest.at(0).toInt() > actual.at(0).toInt())
-		return true;
-	if (newest.at(1).toInt() > actual.at(1).toInt())
-		return true;
-	if (newest.at(2).toInt() > actual.at(2).toInt())
-		return true;
+	if (newest.at(0).toInt() != actual.at(0).toInt())
+		return newest.at(0).toInt() > actual.at(0).toInt();
+	if (newest.at(1).toInt() != actual.at(1).toInt())
+		return newest.at(1).toInt() != actual.at(1).toInt();
+	if (newest.at(2).toInt() != actual.at(2).toInt())
+		return newest.at(2).toInt() != actual.at(2).toInt();
 	if (newest.length() > actual.length())
 		return true;
 	if (newest.length() == 4)
