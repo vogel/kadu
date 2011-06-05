@@ -2,6 +2,7 @@
 * gadu: #2050 fixed: fixed sending images to GG7 and AQQ (beevvy)
 * history: #2185 fixed: unable to open valid chat from history window (Vogel)
 * history: #2167 fixed: do not add history buddies to main buddy list (Vogel)
+* gui: changed status buttons look and feel (Vogel)
 
 +++ version 0.10.0-alpha1
 * gadu: removed depreceated ip/port/version code - gg server does not send this info anymore (Vogel)

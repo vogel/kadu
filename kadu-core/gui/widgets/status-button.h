@@ -20,7 +20,7 @@
 #ifndef STATUS_BUTTON_H
 #define STATUS_BUTTON_H
 
-#include <QtGui/QPushButton>
+#include <QtGui/QToolButton>
 
 #include "configuration/configuration-aware-object.h"
 #include "icons/kadu-icon.h"
@@ -30,7 +30,7 @@ class StatusContainer;
 class StatusIcon;
 class StatusMenu;
 
-class StatusButton : public QPushButton, private ConfigurationAwareObject
+class StatusButton : public QToolButton, private ConfigurationAwareObject
 {
 	Q_OBJECT
 

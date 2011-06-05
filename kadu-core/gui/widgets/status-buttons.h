@@ -22,31 +22,22 @@
 #define STATUS_BUTTONS_H
 
 #include <QtCore/QMap>
-#include <QtGui/QWidget>
+#include <QtGui/QToolBar>
 
 #include "status/status-container-aware-object.h"
-
-class QHBoxLayout;
-class QSpacerItem;
 
 class StatusButton;
 class StatusContainer;
 
-class KADUAPI StatusButtons : public QWidget, private StatusContainerAwareObject
+class KADUAPI StatusButtons : public QToolBar, private StatusContainerAwareObject
 {
 	Q_OBJECT
-
-	QHBoxLayout *Layout;
-	QSpacerItem *Spacer;
-	bool HasStretch;
 
 	QMap<StatusContainer *, StatusButton *> Buttons;
 
 	void createGui();
 	void enableStatusName();
 	void disableStatusName();
-	void addButton(StatusButton *button);
-	void setStretch(bool stretch);
 
 protected:
 	virtual void statusContainerRegistered(StatusContainer *statusContainer);

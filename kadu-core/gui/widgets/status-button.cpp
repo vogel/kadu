@@ -34,11 +34,12 @@
 #include "status-button.h"
 
 StatusButton::StatusButton(StatusContainer *statusContainer, QWidget *parent) :
-		QPushButton(parent), MyStatusContainer(statusContainer), DisplayStatusName(false)
+		QToolButton(parent), MyStatusContainer(statusContainer), DisplayStatusName(false)
 {
 	Icon = new StatusIcon(MyStatusContainer, this);
 
 	createGui();
+	setPopupMode(InstantPopup);
 
 	statusUpdated();
 	connect(MyStatusContainer, SIGNAL(statusUpdated()), this, SLOT(statusUpdated()));
@@ -62,6 +63,7 @@ void StatusButton::updateStatus()
 {
 	if (DisplayStatusName)
 	{
+		setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
 		setText(MyStatusContainer->statusDisplayName());
 		setToolTip(QString());
 	}
@@ -69,11 +71,13 @@ void StatusButton::updateStatus()
 	{
 		if (MainConfigurationHolder::instance()->isSetStatusPerIdentity())
 		{
+			setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
 			setText(MyStatusContainer->statusContainerName());
 			setToolTip(QString());
 		}
 		else
 		{
+			setToolButtonStyle(Qt::ToolButtonIconOnly);
 			setText(QString());
 			setToolTip(MyStatusContainer->statusContainerName());
 		}

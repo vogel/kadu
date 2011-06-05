@@ -20,9 +20,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QHBoxLayout>
-#include <QtGui/QLayoutItem>
-
 #include "accounts/account-manager.h"
 #include "configuration/main-configuration-holder.h"
 #include "gui/widgets/status-button.h"
@@ -31,7 +28,7 @@
 #include "status-buttons.h"
 
 StatusButtons::StatusButtons(QWidget *parent) :
-		QWidget(parent), Layout(0), HasStretch(0)
+		QToolBar(parent)//, Layout(0), HasStretch(0)
 {
 	createGui();
 
@@ -45,29 +42,6 @@ StatusButtons::~StatusButtons()
 void StatusButtons::createGui()
 {
 	setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
-	Layout = new QHBoxLayout(this);
-	setStretch(MainConfigurationHolder::instance()->setStatusMode() == SetStatusPerAccount);
-}
-
-void StatusButtons::addButton(StatusButton* button)
-{
-	if (HasStretch)
-		Layout->insertWidget(Layout->count() - 1, button);
-	else
-		Layout->addWidget(button);
-}
-
-void StatusButtons::setStretch(bool stretch)
-{
-	if (HasStretch == stretch)
-		return;
-
-	HasStretch = stretch;
-
-	if (HasStretch)
-		Layout->addStretch(200);
-	else
-		delete Layout->takeAt(Layout->count() - 1);
 }
 
 void StatusButtons::enableStatusName()
@@ -90,11 +64,10 @@ void StatusButtons::statusContainerRegistered(StatusContainer *statusContainer)
 	disableStatusName();
 
 	StatusButton *button = new StatusButton(statusContainer);
-	addButton(button);
+	addWidget(button);
 	Buttons[statusContainer] = button;
 
 	enableStatusName();
-	setStretch(MainConfigurationHolder::instance()->setStatusMode() == SetStatusPerAccount);
 }
 
 void StatusButtons::statusContainerUnregistered(StatusContainer *statusContainer)
@@ -106,6 +79,5 @@ void StatusButtons::statusContainerUnregistered(StatusContainer *statusContainer
 		Buttons.remove(statusContainer);
 
 		enableStatusName();
-		setStretch(MainConfigurationHolder::instance()->setStatusMode() == SetStatusPerAccount);
 	}
 }
