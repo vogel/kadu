@@ -255,10 +255,10 @@ void ContactShared::protocolRegistered(ProtocolFactory *protocolFactory)
 {
 	ensureLoaded();
 
-	if (!ContactAccount || ContactAccount.protocolName() != protocolFactory->name())
+	if (details())
 		return;
 
-	if (details())
+	if (!ContactAccount || ContactAccount.protocolName() != protocolFactory->name())
 		return;
 
 	setDetails(protocolFactory->createContactDetails(this));

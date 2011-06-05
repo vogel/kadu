@@ -172,30 +172,17 @@ QDomElement XmlConfigFile::createElement(QDomElement parent, const QString& tag_
 
 QDomElement XmlConfigFile::findElement(const QDomElement &parent, const QString& tag_name) const
 {
-	for (QDomNode n = parent.firstChild(); !n.isNull(); n = n.nextSibling())
-	{
-		const QDomElement &e = n.toElement();
-		if (e.isNull())
-			continue;
-		if (e.tagName() == tag_name)
-			return e;
-	}
-	return QDomNode().toElement();
+	return parent.firstChildElement(tag_name);
 }
 
 QDomElement XmlConfigFile::findElementByProperty(const QDomElement &parent, const QString &tag_name,
 	const QString &property_name, const QString &property_value) const
 {
-	for (QDomNode n = parent.firstChild(); !n.isNull(); n = n.nextSibling())
+	for (QDomElement elem = parent.firstChildElement(tag_name); !elem.isNull(); elem = elem.nextSiblingElement(tag_name))
 	{
-		const QDomElement &e = n.toElement();
-		if (e.isNull())
-			continue;
-		if (e.tagName() != tag_name)
-			continue;
-		const QString &val = e.attribute(property_name);
+		const QString &val = elem.attribute(property_name);
 		if (val == property_value)
-			return e;
+			return elem;
 	}
 	return QDomNode().toElement();
 }
@@ -203,16 +190,11 @@ QDomElement XmlConfigFile::findElementByProperty(const QDomElement &parent, cons
 QDomElement XmlConfigFile::findElementByFileNameProperty(const QDomElement &parent, const QString &tag_name,
 	const QString &property_name, const QString &property_value) const
 {
-	for (QDomNode n = parent.firstChild(); !n.isNull(); n = n.nextSibling())
+	for (QDomElement elem = parent.firstChildElement(tag_name); !elem.isNull(); elem = elem.nextSiblingElement(tag_name))
 	{
-		const QDomElement &e = n.toElement();
-		if (e.isNull())
-			continue;
-		if (e.tagName() != tag_name)
-			continue;
-		QString val = e.attribute(property_name);
+		QString val = elem.attribute(property_name);
 		if (val.section('/', -1).section('\\', -1) == property_value)
-			return e;
+			return elem;
 	}
 	return QDomNode().toElement();
 }
@@ -318,14 +300,19 @@ QDomElement XmlConfigFile::getUuidNode(const QString &nodeTagName, const QString
 
 QDomElement XmlConfigFile::getNode(QDomElement parentNode, const QString &nodeTagName, GetNodeMode getMode)
 {
-	QDomElement result;
-	QList<QDomElement> nodes = getNodes(parentNode, nodeTagName);
-
 	if (ModeCreate == getMode)
+	{
+		QList<QDomElement> nodes = getNodes(parentNode, nodeTagName);
 		removeNodes(parentNode, nodes);
-	else if (ModeAppend != getMode && !nodes.isEmpty())
-		return nodes.at(0);
+	}
+	else if (ModeAppend != getMode)
+	{
+		QDomElement elem = parentNode.firstChildElement(nodeTagName);
+		if (!elem.isNull())
+			return elem;
+	}
 
+	QDomElement result;
 	if (ModeFind != getMode)
 	{
 		result = DomDocument.createElement(nodeTagName);
@@ -338,10 +325,10 @@ QDomElement XmlConfigFile::getNode(QDomElement parentNode, const QString &nodeTa
 QDomElement XmlConfigFile::getNamedNode(QDomElement parentNode, const QString &nodeTagName, const QString &nodeName, GetNodeMode getMode)
 {
 	QDomElement result;
-	QList<QDomElement> nodes = getNodes(parentNode, nodeTagName);
-
 	if (ModeAppend == getMode)
 		return result;
+
+	QList<QDomElement> nodes = getNodes(parentNode, nodeTagName);
 
 	if (ModeCreate == getMode)
 		removeNamedNodes(parentNode, nodes, nodeName);
@@ -363,10 +350,10 @@ QDomElement XmlConfigFile::getNamedNode(QDomElement parentNode, const QString &n
 QDomElement XmlConfigFile::getUuidNode(QDomElement parentNode, const QString &nodeTagName, const QString &nodeUuid, GetNodeMode getMode)
 {
 	QDomElement result;
-	QList<QDomElement> nodes = getNodes(parentNode, nodeTagName);
-
 	if (ModeAppend == getMode)
 		return result;
+
+	QList<QDomElement> nodes = getNodes(parentNode, nodeTagName);
 
 	if (ModeCreate == getMode)
 		removeUuidNodes(parentNode, nodes, nodeUuid);
@@ -387,19 +374,10 @@ QDomElement XmlConfigFile::getUuidNode(QDomElement parentNode, const QString &no
 
 QList<QDomElement> XmlConfigFile::getNodes(const QDomElement &parent, const QString &nodeTagName)
 {
-	QDomNodeList nodes = parent.childNodes();
 	QList<QDomElement> result;
 
-	int count = nodes.count();
-	for (int i = 0; i < count; i++)
-	{
-		QDomElement element = nodes.at(i).toElement();
-		if (element.isNull())
-			continue;
-
-		if (element.tagName() == nodeTagName)
-			result.append(element);
-	}
+	for (QDomElement elem = parent.firstChildElement(nodeTagName); !elem.isNull(); elem = elem.nextSiblingElement(nodeTagName))
+	    result.append(elem);
 
 	return result;
 }
