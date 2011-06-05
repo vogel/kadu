@@ -4,6 +4,7 @@ project (kadu)
 set (QT_MIN_VERSION "4.7.0")
 set (CMAKE_MIN_VERSION "2.6.0")
 set (CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+option (BUILD_PLUGINS "Switch to Off if you do not want to build plugins" ON)
 
 # configuration
 option (INSTALL_CMAKE_MODULE "Install cmake modules" ON)
