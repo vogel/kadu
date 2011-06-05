@@ -223,9 +223,10 @@ QString Buddy::display() const
 			Contact contact = data()->contacts().at(0);
 			if (contact)
 			{
+				result = contact.id();
 				Account account = contact.contactAccount();
-				if (account)
-					result = account.accountIdentity().name() + ':' + contact.id();
+				if (!account.accountIdentity().name().isEmpty())
+					result += QString(" (%1)").arg(account.accountIdentity().name());
 			}
 		}
 	}
