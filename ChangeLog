@@ -1,5 +1,6 @@
 +++ version 0.10.0-beta1
 * gadu: #2050 fixed: fixed sending images to GG7 and AQQ (beevvy)
+* history: #2185 fixed: unable to open valid chat from history window (Vogel)
 
 +++ version 0.10.0-alpha1
 * gadu: removed depreceated ip/port/version code - gg server does not send this info anymore (Vogel)

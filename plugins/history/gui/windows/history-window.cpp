@@ -37,6 +37,7 @@
 #include <QtGui/QStatusBar>
 #include <QtGui/QVBoxLayout>
 
+#include "accounts/account-manager.h"
 #include "buddies/filter/buddy-name-filter.h"
 #include "buddies/model/buddies-model-base.h"
 #include "chat/chat-details-aggregate.h"
@@ -824,7 +825,18 @@ BuddySet HistoryWindow::buddies()
 
 Chat HistoryWindow::chat()
 {
-	return ChatsTree->currentIndex().data(ChatRole).value<Chat>();
+	Chat chat = ChatsTree->currentIndex().data(ChatRole).value<Chat>();
+	ChatDetails *details = chat.details();
+	ChatDetailsAggregate *aggregate = qobject_cast<ChatDetailsAggregate *>(details);
+	if (!aggregate)
+		return chat;
+
+	QMap<Account, Chat> map;
+	foreach (const Chat &chat, aggregate->chats())
+		map.insert(chat.chatAccount(), chat);
+
+	Account bestAccount = AccountManager::bestAccount(map.keys());
+	return map.value(bestAccount);
 }
 
 void HistoryWindow::dateFilteringEnabled(int state)
