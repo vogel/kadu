@@ -97,8 +97,6 @@ void JabberProtocolPlugin::done()
 	S5BServerManager::destroyInstance();
 
 	XMPP::irisNetCleanup();
-
-	qRemovePostRoutine(QCA::deinit);
 }
 
 Q_EXPORT_PLUGIN2(jabber_protocol, JabberProtocolPlugin)

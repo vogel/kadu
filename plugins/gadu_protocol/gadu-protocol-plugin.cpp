@@ -99,8 +99,6 @@ void GaduProtocolPlugin::done()
 
 	GaduIdValidator::destroyInstance();
 	GaduServersManager::destroyInstance();
-
-	qRemovePostRoutine(QCA::deinit);
 }
 
 Q_EXPORT_PLUGIN2(gadu_protocol, GaduProtocolPlugin)

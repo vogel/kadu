@@ -38,6 +38,11 @@
 
 #include "exports.h"
 
+namespace QCA
+{
+	class Initializer;
+}
+
 class KaduIcon;
 class KaduWindow;
 class Message;
@@ -53,6 +58,11 @@ class KADUAPI Core : public QObject, private AccountsAwareObject, public Configu
 	KaduWindow *Window;
 	bool IsClosing;
 	bool ShowMainWindowOnStart; // TODO: 0.11.0, it is a hack
+
+	// NOTE: Kadu core itself doesn't use QCA, but important plugins do. And QCA lib
+	// isn't very well suited to be unloaded, so we just link to it in core and initialize
+	// here.
+	QCA::Initializer *QcaInit;
 
 	Core();
 	virtual ~Core();

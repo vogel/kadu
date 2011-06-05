@@ -59,6 +59,24 @@ set (kadu_SUBDIRS
 	url-handlers
 )
 
+qt4_wrap_cpp (MOC_FILES ${kadu_MOC_SRCS})
+
+if (WIN32)
+	if (NOT MINGW_QCA_DIR)
+		message (SEND_ERROR " Pass path to libqca2 -DMINGW_QCA_DIR=path")
+	else (NOT MINGW_QCA_DIR)
+		set (QCA2_INCLUDE_DIRS ${MINGW_QCA_DIR}/include/QtCrypto)
+		set (QCA2_LIBRARY_DIRS ${MINGW_QCA_DIR}/bin)
+		set (QCA2_LIBRARIES qca2)
+	endif (NOT MINGW_QCA_DIR)
+else (WIN32)
+	pkg_search_module (QCA2 REQUIRED qca2)
+endif (WIN32)
+
+link_directories (${QCA2_LIBRARY_DIRS})
+add_definitions (${QCA2_CFLAGS_OTHER})
+include_directories (${QCA2_INCLUDE_DIRS})
+
 if (UNIX AND NOT APPLE)
 	include (FindX11)
 	if (X11_FOUND)
@@ -89,8 +107,6 @@ if (UNIX AND NOT APPLE)
 	)
 endif (UNIX AND NOT APPLE)
 
-qt4_wrap_cpp (MOC_FILES ${kadu_MOC_SRCS})
-
 if (WIN32)
 	set (kadu_SRCS
 		${kadu_SRCS}
@@ -106,7 +122,7 @@ if (WIN32)
 		COMPILE_DEFINITIONS KADULIB
 		LINK_INTERFACE_LIBRARIES ""
 	)
-	target_link_libraries (kadu_core ${QT_LIBRARIES})
+	target_link_libraries (kadu_core ${QT_LIBRARIES} ${QCA2_LIBRARIES})
 
 	if (MINGW)
 		exec_program (windres ${CMAKE_CURRENT_SOURCE_DIR}
@@ -146,7 +162,7 @@ else (WIN32)
 		LINK_INTERFACE_LIBRARIES ""
 	)
 
-	target_link_libraries (kadu ${QT_LIBRARIES} ${CMAKE_DL_LIBS})
+	target_link_libraries (kadu ${QT_LIBRARIES} ${QCA2_LIBRARIES} ${CMAKE_DL_LIBS})
 
 	if (UNIX AND NOT APPLE)
 		target_link_libraries (kadu ${X11_X11_LIB})

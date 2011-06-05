@@ -34,6 +34,8 @@
 #include <QtCore/QTimer>
 #include <QtGui/QApplication>
 
+#include <QtCrypto>
+
 #include "accounts/account-manager.h"
 #include "avatars/avatar-manager.h"
 #include "buddies/buddy-manager.h"
@@ -99,7 +101,7 @@ QString Core::nameWithVersion()
 }
 
 Core::Core() :
-		Myself(Buddy::create()), Window(0), IsClosing(false), ShowMainWindowOnStart(true)
+		Myself(Buddy::create()), Window(0), IsClosing(false), ShowMainWindowOnStart(true), QcaInit(new QCA::Initializer())
 {
 	connect(qApp, SIGNAL(aboutToQuit()), this, SLOT(quit()));
 
@@ -140,9 +142,11 @@ Core::~Core()
 
 	xml_config_file->sync();
 
+	delete QcaInit;
 	delete xml_config_file;
 	delete config_file_ptr;
 
+	QcaInit = 0;
 	xml_config_file = 0;
 	config_file_ptr = 0;
 }

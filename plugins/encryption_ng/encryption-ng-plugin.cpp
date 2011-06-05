@@ -39,11 +39,6 @@
 
 #include "encryption-ng-plugin.h"
 
-namespace EncryptionNg
-{
-	static QCA::Initializer *InitObject;
-}
-
 EncryptionNgPlugin::~EncryptionNgPlugin()
 {
 
@@ -53,18 +48,12 @@ int EncryptionNgPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
-	EncryptionNg::InitObject = new QCA::Initializer();
-
 	if (!QCA::isSupported("pkey") ||
 			!QCA::PKey::supportedIOTypes().contains(QCA::PKey::RSA) ||
 			!QCA::isSupported("sha1"))
 	{
 		MessageDialog::exec(KaduIcon("dialog-error"), tr("Encryption"),
 				tr("The QCA OSSL plugin for libqca2 is not present!"));
-
-		delete EncryptionNg::InitObject;
-		EncryptionNg::InitObject = 0;
-		qRemovePostRoutine(QCA::deinit);
 
 		return -1;
 	}
@@ -91,10 +80,6 @@ void EncryptionNgPlugin::done()
 	EncryptionNgNotification::unregisterNotifications();
 
 	KeysManager::destroyInstance();
-
-	delete EncryptionNg::InitObject;
-	EncryptionNg::InitObject = 0;
-	qRemovePostRoutine(QCA::deinit);
 }
 
 Q_EXPORT_PLUGIN2(encryption_ng_plugin, EncryptionNgPlugin)

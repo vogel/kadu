@@ -19,6 +19,7 @@
  */
 
 #include <QtCore/QBuffer>
+#include <QtCore/QRegExp>
 #include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QNetworkRequest>
 #include <QtNetwork/QNetworkReply>

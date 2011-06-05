@@ -81,7 +81,6 @@ namespace XMPP
 		XMPP::AdvancedConnector *JabberClientConnector;
 		QCA::TLS *JabberTLS;
 		XMPP::QCATLSHandler *JabberTLSHandler;
-		QCA::Initializer QCAInit;
 
 		JabberProtocol *Protocol;
 
