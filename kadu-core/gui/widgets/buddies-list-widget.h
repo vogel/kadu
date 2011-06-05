@@ -31,7 +31,7 @@
 #include "gui/widgets/filter-widget.h"
 #include "exports.h"
 
-class AnonymousBuddyFilter;
+class AnonymousWithoutMessagesBuddyFilter;
 class BuddyNameFilter;
 class BuddiesListView;
 class MainWindow;
@@ -51,7 +51,7 @@ private:
 	FilterWidget *NameFilterWidget;
 
 	BuddiesListView *View;
-	AnonymousBuddyFilter *AnonymousFilter;
+	AnonymousWithoutMessagesBuddyFilter *AnonymousFilter;
 	BuddyNameFilter *NameFilter;
 
 private slots:
