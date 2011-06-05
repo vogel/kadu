@@ -35,7 +35,6 @@ class KADUAPI StatusButtons : public QToolBar, private StatusContainerAwareObjec
 
 	QMap<StatusContainer *, StatusButton *> Buttons;
 
-	void createGui();
 	void enableStatusName();
 	void disableStatusName();
 

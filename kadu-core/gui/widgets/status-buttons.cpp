@@ -30,18 +30,13 @@
 StatusButtons::StatusButtons(QWidget *parent) :
 		QToolBar(parent)//, Layout(0), HasStretch(0)
 {
-	createGui();
+	setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
 
 	triggerAllStatusContainerRegistered();
 }
 
 StatusButtons::~StatusButtons()
 {
-}
-
-void StatusButtons::createGui()
-{
-	setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
 }
 
 void StatusButtons::enableStatusName()
@@ -72,11 +67,11 @@ void StatusButtons::statusContainerRegistered(StatusContainer *statusContainer)
 
 void StatusButtons::statusContainerUnregistered(StatusContainer *statusContainer)
 {
-	if (Buttons.contains(statusContainer))
+	StatusButton *button = Buttons.take(statusContainer);
+	if (button)
 	{
 		// cannot delete now, because this will modify ConfigurationAwareObject::objects list
-		Buttons[statusContainer]->deleteLater();
-		Buttons.remove(statusContainer);
+		button->deleteLater();
 
 		enableStatusName();
 	}
