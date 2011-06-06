@@ -287,7 +287,7 @@ void PluginsManager::activateProtocolPlugins()
 		{
 			if (!activatePlugin(plugin))
 				saveList = true;
-			else // for load-by-default plugins
+			else if (plugin->info()->loadByDefault())
 				plugin->setState(Plugin::PluginStateEnabled);
 		}
 	}
@@ -315,7 +315,7 @@ void PluginsManager::activatePlugins()
 		{
 			if (!activatePlugin(plugin))
 				saveList = true;
-			else // for load-by-default plugins
+			else if (plugin->info()->loadByDefault())
 				plugin->setState(Plugin::PluginStateEnabled);
 		}
 
@@ -504,8 +504,12 @@ bool PluginsManager::activateDependencies(Plugin *plugin)
 			return false;
 		}
 
-		if (!activatePlugin(Plugins.value(dependencyName)))
+		Plugin *plugin = Plugins.value(dependencyName);
+		if (!activatePlugin(plugin))
 			return false;
+
+		if (plugin->info()->loadByDefault())
+			plugin->setState(Plugin::PluginStateEnabled);
 	}
 
 	return true;
@@ -557,11 +561,15 @@ bool PluginsManager::activatePlugin(Plugin *plugin)
 	if (!conflict.isEmpty())
 	{
 		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Module %1 conflicts with: %2").arg(plugin->name(), conflict));
+		plugin->setState(Plugin::PluginStateDisabled);
 		return false;
 	}
 
 	if (!activateDependencies(plugin))
+	{
+		plugin->setState(Plugin::PluginStateDisabled);
 		return false;
+	}
 
 	bool result = plugin->activate();
 	if (result)
