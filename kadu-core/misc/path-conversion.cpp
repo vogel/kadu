@@ -46,16 +46,17 @@
 #include <stdlib.h>
 #endif
 
-#ifdef HAVE_EXECINFO
+#if HAVE_EXECINFO
 #include <execinfo.h>
 #endif
+
 void printBacktrace(const QString &header)
 {
 	if (header.isEmpty())
 		fprintf(stderr, "\nbacktrace:\n");
 	else
 		fprintf(stderr, "\nbacktrace: ('%s')\n", qPrintable(header));
-#ifdef HAVE_EXECINFO
+#if HAVE_EXECINFO
 	void *bt_array[100];
 	char **bt_strings;
 	int num_entries;

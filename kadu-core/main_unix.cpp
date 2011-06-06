@@ -37,13 +37,13 @@
 #include "debug.h"
 #include "kadu-config.h"
 
-#ifdef SIG_HANDLING_ENABLED
+#if SIG_HANDLING_ENABLED
 #include <signal.h>
 
 #include <QtCore/QCoreApplication>
 #include <QtCore/QDateTime>
 
-#ifdef HAVE_EXECINFO
+#if HAVE_EXECINFO
 #include <execinfo.h>
 #endif // HAVE_EXECINFO
 
@@ -69,7 +69,7 @@ static void kadu_signal_handler(int signal)
 		QString backupFileName = QString("kadu.conf.xml.backup.%1").arg(QDateTime::currentDateTime().toString("yyyy.MM.dd.hh.mm.ss"));
 		QString backtraceFileName = QString("kadu.backtrace.%1").arg(QDateTime::currentDateTime().toString("yyyy.MM.dd.hh.mm.ss"));
 
-#ifdef HAVE_EXECINFO
+#if HAVE_EXECINFO
 		void *backtraceArray[100];
 		char **backtraceStrings;
 		int numEntries;
@@ -136,7 +136,7 @@ static void kadu_signal_handler(int signal)
 
 void enableSignalHandling()
 {
-#ifdef SIG_HANDLING_ENABLED
+#if SIG_HANDLING_ENABLED
 	char *d = getenv("SIGNAL_HANDLING");
 	bool signalHandlingEnabled = d ? (atoi(d) != 0) : true;
 
