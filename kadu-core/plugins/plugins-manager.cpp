@@ -557,23 +557,21 @@ bool PluginsManager::activatePlugin(Plugin *plugin)
 	if (plugin->isActive())
 		return true;
 
+	bool result;
+
 	QString conflict = findActiveConflict(plugin);
 	if (!conflict.isEmpty())
 	{
 		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Module %1 conflicts with: %2").arg(plugin->name(), conflict));
-		plugin->setState(Plugin::PluginStateDisabled);
-		return false;
+		result = false;
 	}
+	else
+		result = activateDependencies(plugin) && plugin->activate();
 
-	if (!activateDependencies(plugin))
-	{
-		plugin->setState(Plugin::PluginStateDisabled);
-		return false;
-	}
-
-	bool result = plugin->activate();
 	if (result)
 		incDependenciesUsageCount(plugin);
+	else
+		plugin->setState(Plugin::PluginStateDisabled);
 
 	return result;
 }
