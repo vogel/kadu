@@ -128,8 +128,6 @@ void SyntaxEditor::syntaxChangedSlot(const QString &newSyntax)
 	content = stream.readAll();
 	file.close();
 
-	content.replace(QRegExp("%o"),  " ");
-
 	deleteButton->setEnabled(!info.global);
 	emit syntaxChanged(content);
 }

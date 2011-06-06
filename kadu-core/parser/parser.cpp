@@ -258,8 +258,8 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 					break;
 				case 'o':
 					++i;
-					if (contact && contact.port() == 2)
-						pe.content = ' ';
+					// it does not work so we should just ignore it
+					// see: http://kadu.net/mantis/view.php?id=2199
 					break;
 				case 'p':
 					++i;

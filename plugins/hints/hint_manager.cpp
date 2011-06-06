@@ -105,7 +105,6 @@ HintManager::HintManager(QObject *parent) :
 "[<div><img height=\"16\" width=\"16\" src=\"file:///#{statusIconPath}\">&nbsp;&nbsp;%u</div>]"
 "[<div><img height=\"16\" width=\"16\" src=\"file:///@{phone:16x16}\">&nbsp;&nbsp;%m</div>]"
 "[<div><img height=\"16\" width=\"16\" src=\"file:///@{mail-message-new:16x16}\">&nbsp;&nbsp;%e</div>]"
-"[<div><img height=\"16\" width=\"16\" src=\"file:///@{kadu_icons/blocking:16x16}\">&nbsp;%oDoesn't have you on the list</div>]"
 "</td>"
 "</tr>"
 "</table>"

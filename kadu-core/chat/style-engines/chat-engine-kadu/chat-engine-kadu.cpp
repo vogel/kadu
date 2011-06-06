@@ -271,7 +271,7 @@ void KaduChatStyleEngine::styleEditionRequested(QString styleName)
 	QString syntaxHint = qApp->translate(
 		"@default", "Syntax:\n"
 		"%s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name,"
-		" %r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn't have us in userlist,"
+		" %r - surname, %m - mobile, %u - uin, %g - group,"
 		" %h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size, %z - gender (0/1/2),\n"
 		"#{message} - message content, #{messageId} - message id, #{messageStatus} - message status value, #{backgroundColor} - background color of message,"
 		" #{fontColor} - font color of message, #{nickColor} - font color of nick, #{sentDate} - when message was sent,"

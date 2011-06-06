@@ -7,7 +7,6 @@
 [<div><img align="left" valign="middle" height="16" width="16" src="@{phone:16x16}">&nbsp;&nbsp;%m</div>]
 [<div><img align="left" valign="middle" height="16" width="16" src="@{mail-message-new:16x16}">&nbsp;&nbsp;%e</div>]
 [<div><img align="left" valign="middle" height="16" width="16" src="@{dialog-apply:16x16}">&nbsp;&nbsp;%i</div>]
-[<div><img align="left" valign="middle" height="16" width="16" src="@{kadu_icons/blocking:16x16}">&nbsp;%oNie ma cię na liście</div>]
 </td>
 </tr>
 </table>

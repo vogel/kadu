@@ -5,6 +5,7 @@
 * gui: changed status buttons look and feel (Vogel)
 * core: require and link to QCA, fixes some crashes (WhE, beevvy)
 * plugins: #2201 fixed: fixed incorrect plugin state managing in corner cases (beevvy)
+* core: #2199 fixed: removed %o token from parser (Vogel)
 
 +++ version 0.10.0-alpha1
 * gadu: removed depreceated ip/port/version code - gg server does not send this info anymore (Vogel)

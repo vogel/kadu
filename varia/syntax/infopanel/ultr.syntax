@@ -15,7 +15,7 @@
 </td>
 <td style='vertical-align:top; padding-left:6px;'>
 
-[%o<font color='#dd0000'>]<b>%a</b>[%o</font>]<br>
+[<b>%a</b><br>
 <div>[%f ]["%n" ][%r]</div>
 [%u<br>]
 [<br>

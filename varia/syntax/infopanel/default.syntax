@@ -7,7 +7,7 @@ src='@{kadu_icons/buddy%z:96x96}'
 >
 </td>
 <td style='vertical-align:top; padding-left:6px;'>
-[%o<font color='#dd0000'>]<b>%a</b>[%o</font>]<br>
+<b>%a</b><br>
 [%u<br>]
 [<br>IP: %i]
 </td>
