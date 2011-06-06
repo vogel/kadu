@@ -195,13 +195,6 @@ bool Plugin::activate()
 	loadTranslations();
 	int res = PluginObject->init(PluginStateNew == State);
 
-	if (PluginStateNew == State)
-	{
-		QStringList everLoaded = config_file.readEntry("General", "EverLoaded").split(',', QString::SkipEmptyParts);
-		everLoaded.append(Name);
-		config_file.writeEntry("General", "EverLoaded", everLoaded.join(","));
-	}
-
 	if (res != 0)
 	{
 		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Module initialization routine for %1 failed.").arg(Name));
