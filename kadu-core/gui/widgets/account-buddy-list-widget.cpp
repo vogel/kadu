@@ -78,6 +78,7 @@ AccountBuddyListWidget::AccountBuddyListWidget(Account account, QWidget *parent)
 	AccountBuddyFilter *accountFilter = new AccountBuddyFilter(CurrentAccount, this);
 	accountFilter->setEnabled(true);
 	AnonymousBuddyFilter *anonymousFilter = new AnonymousBuddyFilter(this);
+	anonymousFilter->setEnabled(true);
 
 	BuddiesWidget->view()->addFilter(accountFilter);
 	BuddiesWidget->view()->addFilter(anonymousFilter);

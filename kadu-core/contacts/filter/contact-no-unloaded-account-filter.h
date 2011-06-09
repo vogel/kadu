@@ -30,8 +30,8 @@ class ContactNoUnloadedAccountFilter : public AbstractContactFilter
 	bool Enabled;
 
 public:
-	explicit ContactNoUnloadedAccountFilter(QObject *parent = 0)
-			: AbstractContactFilter(parent), Enabled(true) {}
+	explicit ContactNoUnloadedAccountFilter(QObject *parent = 0) :
+			AbstractContactFilter(parent), Enabled(false) {}
 	virtual ~ContactNoUnloadedAccountFilter() {}
 
 	virtual bool acceptContact(const Contact &contact);

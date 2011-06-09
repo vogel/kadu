@@ -26,7 +26,7 @@
 #include "anonymous-buddy-filter.h"
 
 AnonymousBuddyFilter::AnonymousBuddyFilter(QObject *parent)
-	: AbstractBuddyFilter(parent), Enabled(true)
+	: AbstractBuddyFilter(parent), Enabled(false)
 {
 }
 

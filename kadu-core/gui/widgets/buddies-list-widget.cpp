@@ -54,6 +54,7 @@ BuddiesListWidget::BuddiesListWidget(FilterPosition filterPosition, QWidget *par
 	View->addFilter(new PendingMessagesFilter(this));
 
 	AnonymousFilter = new AnonymousWithoutMessagesBuddyFilter(this);
+	AnonymousFilter->setEnabled(true);
 	View->addFilter(AnonymousFilter);
 
 	NameFilterWidget->setView(View);

@@ -88,6 +88,7 @@ BuddiesListView::BuddiesListView(QWidget *parent) :
 	setItemDelegate(Delegate);
 
 	HideUnloadedFilter = new ContactNoUnloadedAccountFilter(this);
+	HideUnloadedFilter->setEnabled(true);
 
 	ToolTipTimeoutTimer.setSingleShot(true);
 
