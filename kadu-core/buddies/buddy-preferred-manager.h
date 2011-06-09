@@ -29,7 +29,6 @@
 #include "buddies/buddy.h"
 #include "chat/message/message.h"
 #include "contacts/contact.h"
-#include "gui/widgets/chat-widget.h"
 
 class Account;
 class Buddy;

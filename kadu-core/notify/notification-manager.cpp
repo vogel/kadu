@@ -62,6 +62,7 @@
 #include "notify/notifier.h"
 #include "notify/notify-configuration-ui-handler.h"
 #include "notify/window-notifier.h"
+#include "protocols/services/chat-service.h"
 #include "protocols/services/multilogon-service.h"
 #include "status/status-container-manager.h"
 

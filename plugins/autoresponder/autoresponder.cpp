@@ -41,6 +41,7 @@
 #include "gui/windows/main-configuration-window.h"
 #include "misc/path-conversion.h"
 #include "parser/parser.h"
+#include "protocols/services/chat-service.h"
 
 #include "autoresponder.h"
 

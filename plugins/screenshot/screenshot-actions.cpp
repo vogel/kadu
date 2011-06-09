@@ -24,11 +24,12 @@
 #include <QtGui/QAction>
 #include <QtGui/QMenu>
 
+#include "debug.h"
 #include "gui/actions/action.h"
 #include "gui/actions/action-description.h"
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-widget.h"
-#include "debug.h"
+#include "protocols/protocol.h"
 
 #include "screenshot.h"
 

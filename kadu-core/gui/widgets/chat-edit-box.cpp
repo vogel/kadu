@@ -43,6 +43,7 @@
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/color-selector.h"
 #include "gui/windows/message-dialog.h"
+#include "protocols/protocol.h"
 #include "protocols/services/chat-image-service.h"
 
 #include "chat-widget.h"

@@ -56,6 +56,7 @@
 #include "gui/widgets/buddies-list-view.h"
 #include "gui/widgets/buddies-list-widget.h"
 #include "gui/widgets/chat-edit-box-size-manager.h"
+#include "gui/widgets/chat-messages-view.h"
 #include "gui/widgets/chat-widget-actions.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/color-selector.h"
@@ -463,7 +464,17 @@ void ChatWidget::colorSelectorAboutToClose()
 
 CustomInput * ChatWidget::edit() const
 {
-	return InputBox->inputBox();
+	return InputBox ? InputBox->inputBox() : 0;
+}
+
+BuddiesListView * ChatWidget::contactsListWidget() const
+{
+	return BuddiesWidget ? BuddiesWidget->view() : 0;
+}
+
+unsigned int ChatWidget::countMessages() const
+{
+	return MessagesView ? MessagesView->countMessages() : 0;
 }
 
 bool ChatWidget::decodeLocalFiles(QDropEvent *event, QStringList &files)

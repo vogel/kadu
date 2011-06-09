@@ -32,19 +32,17 @@
 #include <QtGui/QIcon>
 #include <QtGui/QWidget>
 
-#include "buddies/buddy-list.h"
 #include "chat/chat.h"
-#include "chat/message/formatted-message.h"
 #include "configuration/configuration-aware-object.h"
-#include "gui/widgets/buddies-list-widget.h"
-#include "gui/widgets/chat-messages-view.h"
-#include "protocols/services/chat-service.h"
 #include "protocols/services/chat-state-service.h"
 #include "exports.h"
 
 class QSplitter;
 
+class BuddiesListView;
+class BuddiesListWidget;
 class ChatEditBox;
+class ChatMessagesView;
 class ChatWidget;
 class CustomInput;
 class MessageRenderInfo;
@@ -139,7 +137,7 @@ public:
 	void repaintMessages();
 
 	CustomInput * edit() const;
-	BuddiesListView * contactsListWidget() const { return BuddiesWidget ? BuddiesWidget->view() : 0; }
+	BuddiesListView * contactsListWidget() const;
 	ChatEditBox * getChatEditBox() const { return InputBox; }
 	ChatMessagesView * chatMessagesView() const { return MessagesView; }
 
@@ -168,7 +166,7 @@ public:
 	void kaduStoreGeometry();
 	void kaduRestoreGeometry();
 
-	unsigned int countMessages() const { return MessagesView->countMessages(); }
+	unsigned int countMessages() const;
 
 public slots:
 
