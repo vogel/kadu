@@ -68,7 +68,6 @@ public:
 
 private:
 	BuddiesListViewDelegate *Delegate;
-	AbstractBuddiesModel *Model;
 	BuddiesModelProxy *ProxyModel;
 
 	ContactNoUnloadedAccountFilter *HideUnloadedFilter;

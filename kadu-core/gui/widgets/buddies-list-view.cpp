@@ -65,9 +65,8 @@
 #include "tool-tip-class-manager.h"
 
 BuddiesListView::BuddiesListView(QWidget *parent) :
-		QTreeView(parent), Delegate(0), Model(0),
-		ProxyModel(new BuddiesModelProxy(this)), BackgroundImageMode(BackgroundNone),
-		BackgroundTemporaryFile(0), ContextMenuEnabled(false)
+		QTreeView(parent), Delegate(0), ProxyModel(new BuddiesModelProxy(this)),
+		BackgroundImageMode(BackgroundNone), BackgroundTemporaryFile(0), ContextMenuEnabled(false)
 {
 	setAnimated(BackgroundImageMode == BackgroundNone);
 #ifndef Q_WS_MAEMO_5
@@ -108,8 +107,6 @@ BuddiesListView::~BuddiesListView()
 
 void BuddiesListView::setModel(AbstractBuddiesModel *model)
 {
-	Model = model;
-
 	ProxyModel->setSourceModel(dynamic_cast<QAbstractItemModel *>(model));
 
 	Delegate->setModel(ProxyModel);
@@ -145,10 +142,7 @@ BuddiesListViewDelegateConfiguration & BuddiesListView::delegateConfiguration()
 
 void BuddiesListView::selectBuddy(Buddy buddy)
 {
-	QModelIndex index = Model->indexForValue(buddy);
-	index = ProxyModel->mapFromSource(index);
-
-	setCurrentIndex(index);
+	setCurrentIndex(ProxyModel->indexForValue(buddy));
 }
 
 Contact BuddiesListView::currentContact() const
