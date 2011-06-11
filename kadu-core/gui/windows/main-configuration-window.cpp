@@ -201,6 +201,9 @@ MainConfigurationWindow::MainConfigurationWindow() :
 	connect(widget()->widgetById("chatPrune"), SIGNAL(toggled(bool)), widget()->widgetById("chatPruneLen"), SLOT(setEnabled(bool)));
 	connect(widget()->widgetById("chatCloseTimer"), SIGNAL(toggled(bool)), widget()->widgetById("chatCloseTimerPeriod"), SLOT(setEnabled(bool)));
 	connect(widget()->widgetById("startupStatus"), SIGNAL(activated(int)), this, SLOT(onChangeStartupStatus(int)));
+	connect(widget()->widgetById("chatBgFilled"), SIGNAL(toggled(bool)), widget()->widgetById("chatBgColor"), SLOT(setEnabled(bool)));
+	connect(widget()->widgetById("chatTextCustomColors"), SIGNAL(toggled(bool)), widget()->widgetById("chatTextBgColor"), SLOT(setEnabled(bool)));
+	connect(widget()->widgetById("chatTextCustomColors"), SIGNAL(toggled(bool)), widget()->widgetById("chatTextFontColor"), SLOT(setEnabled(bool)));
 	connect(widget()->widgetById("infoPanelBgFilled"), SIGNAL(toggled(bool)), widget()->widgetById("infoPanelBgColor"), SLOT(setEnabled(bool)));
 	connect(widget()->widgetById("showDescription"), SIGNAL(toggled(bool)), widget()->widgetById("multilineDescription"), SLOT(setEnabled(bool)));
 //	connect(widget()->widgetById("useDefaultServers"), SIGNAL(toggled(bool)), widget()->widgetById("serverList"), SLOT(setDisabled(bool)));

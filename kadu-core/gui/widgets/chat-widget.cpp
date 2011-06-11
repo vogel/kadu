@@ -220,7 +220,17 @@ void ChatWidget::createContactsList()
 void ChatWidget::configurationUpdated()
 {
 	InputBox->inputBox()->setFont(ChatConfigurationHolder::instance()->chatFont());
-	InputBox->inputBox()->viewport()->setStyleSheet(QString("background-color: %1").arg(ChatConfigurationHolder::instance()->chatTextBgColor().name()));
+	QString style;
+	QColor color = qApp->palette().text().color();
+	if (ChatConfigurationHolder::instance()->chatTextCustomColors())
+	{
+		style = QString("background-color:%1;").arg(ChatConfigurationHolder::instance()->chatTextBgColor().name());
+		color = ChatConfigurationHolder::instance()->chatTextFontColor();
+	}
+	InputBox->inputBox()->viewport()->setStyleSheet(style);
+	QPalette palette = InputBox->inputBox()->palette();
+	palette.setBrush(QPalette::Text, color);
+	InputBox->inputBox()->setPalette(palette);
 
 	refreshTitle();
 }

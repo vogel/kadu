@@ -38,6 +38,7 @@
 #include "chat/style-engines/chat-engine-adium/chat-engine-adium.h"
 #include "chat/style-engines/chat-engine-kadu/chat-engine-kadu.h"
 #include "chat/message/message-render-info.h"
+#include "configuration/chat-configuration-holder.h"
 #include "configuration/configuration-file.h"
 #include "core/core.h"
 #include "emoticons/emoticons-manager.h"
@@ -103,13 +104,7 @@ void ChatStylesManager::chatViewCreated(ChatMessagesView *view)
 	{
 		ChatViews.append(view);
 
-		bool useTransparency = view->supportTransparency() && CompositingEnabled && config_file.readBoolEntry("Chat", "UseTransparency", false);
-		if (useTransparency)
-		{
-			QPalette palette = view->renderer()->webPage()->palette();
-			palette.setBrush(QPalette::Base, Qt::transparent);
-			view->renderer()->webPage()->setPalette(palette);
-		}
+		bool useTransparency = view->supportTransparency() & ChatConfigurationHolder::instance()->useTransparency();
 		CurrentEngine->refreshView(view->renderer(), useTransparency);
 	}
 }
@@ -149,7 +144,9 @@ void ChatStylesManager::configurationUpdated()
 	QString fontStyle = font.italic() ? "italic" : "normal";
 	QString fontWeight = font.bold() ? "bold" : "normal";
 	QString textDecoration = font.underline() ? "underline" : "none";
-	QString backgroundColor = config_file.readColorEntry("Look", "ChatBgColor").name();
+	QString backgroundColor = "transparent";
+	if (ChatConfigurationHolder::instance()->chatBgFilled())
+		backgroundColor = ChatConfigurationHolder::instance()->chatBgColor().name();
 
 	MainStyle = QString(
 		"html {"
@@ -235,22 +232,7 @@ void ChatStylesManager::compositingEnabled()
 	{
 		view->updateBackgroundsAndColors();
 
-		if (!view->supportTransparency())
-		{
-			CurrentEngine->refreshView(view->renderer());
-			continue;
-		}
-
-		QPalette palette = view->renderer()->webPage()->palette();
-
-		bool useTransparency = config_file.readBoolEntry("Chat", "UseTransparency", false);
-		if (useTransparency)
-			palette.setBrush(QPalette::Base, Qt::transparent);
-		else
-			palette.setBrush(QPalette::Base, config_file.readColorEntry("Look", "ChatBgColor"));
-
-		view->renderer()->webPage()->setPalette(palette);
-
+		bool useTransparency = view->supportTransparency() & ChatConfigurationHolder::instance()->useTransparency();
 		CurrentEngine->refreshView(view->renderer(), useTransparency);
 	}
 
@@ -265,14 +247,8 @@ void ChatStylesManager::compositingDisabled()
 	{
 		view->updateBackgroundsAndColors();
 
-		if (!view->supportTransparency())
-			continue;
-
-		QPalette palette = view->renderer()->webPage()->palette();
-		palette.setBrush(QPalette::Base, config_file.readColorEntry("Look", "ChatBgColor"));
-
-		view->renderer()->webPage()->setPalette(palette);
-		CurrentEngine->refreshView(view->renderer());
+		bool useTransparency = view->supportTransparency() & ChatConfigurationHolder::instance()->useTransparency();
+		CurrentEngine->refreshView(view->renderer(), useTransparency);
 	}
 
 	if (TurnOnTransparency)
