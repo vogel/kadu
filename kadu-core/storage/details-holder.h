@@ -103,8 +103,10 @@ class DetailsHolder
 			return;
 
 		detailsAboutToBeRemoved();
-		delete Details;
+
+		DetailsClass *deleteMe = Details;
 		Details = 0;
+		delete deleteMe;
 
 		detailsRemoved();
 		afterDetailsRemoved();
@@ -221,6 +223,18 @@ public:
 	DetailsClass * details() const
 	{
 		return Details;
+	}
+
+	void detailsDestroyed()
+	{
+		if (!Details)
+			return;
+
+		detailsAboutToBeRemoved();
+		Details = 0;
+
+		detailsRemoved();
+		afterDetailsRemoved();
 	}
 
 };

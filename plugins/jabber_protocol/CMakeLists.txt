@@ -190,6 +190,7 @@ set (MOC_SOURCES
 
 	facebook-protocol-factory.h
 	gtalk-protocol-factory.h
+	jabber-contact-details.h
 	jabber-id-validator.h
 	jabber-protocol.h
 	jabber-protocol-factory.h

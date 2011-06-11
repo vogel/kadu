@@ -150,6 +150,7 @@ set (MOC_SOURCES
 	socket-notifiers/gadu-pubdir-socket-notifiers.h
 	socket-notifiers/gadu-socket-notifiers.h
 
+	gadu-contact-details.h
 	gadu-id-validator.h
 	gadu-protocol-factory.h
 	gadu-protocol-plugin.h

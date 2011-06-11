@@ -30,11 +30,12 @@
 #include "storage/details.h"
 #include "exports.h"
 
-class KADUAPI ContactDetails : public Details<ContactShared>
+class KADUAPI ContactDetails : public QObject, public Details<ContactShared>
 {
+	Q_OBJECT
 
 public:
-	explicit ContactDetails(ContactShared *mainData);
+	explicit ContactDetails(ContactShared *mainData, QObject *parent = 0);
 	virtual ~ContactDetails();
 
 };

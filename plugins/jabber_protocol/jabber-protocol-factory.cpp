@@ -82,7 +82,7 @@ AccountDetails * JabberProtocolFactory::createAccountDetails(AccountShared *acco
 
 ContactDetails * JabberProtocolFactory::createContactDetails(ContactShared *contactShared)
 {
-	return new JabberContactDetails(contactShared);
+	return new JabberContactDetails(contactShared, this);
 }
 
 AccountAddWidget * JabberProtocolFactory::newAddAccountWidget(bool showButtons, QWidget *parent)

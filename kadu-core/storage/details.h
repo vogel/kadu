@@ -72,7 +72,11 @@ public:
 	 *
 	 * Empty destructor.
 	 */
-	virtual ~Details() {}
+	virtual ~Details()
+	{
+		if (MainData)
+			MainData->detailsDestroyed();
+	}
 
 	/**
 	 * @author Rafal 'Vogel' Malinowski

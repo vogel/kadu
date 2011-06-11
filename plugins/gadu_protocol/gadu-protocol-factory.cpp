@@ -79,7 +79,7 @@ AccountDetails * GaduProtocolFactory::createAccountDetails(AccountShared *accoun
 
 ContactDetails * GaduProtocolFactory::createContactDetails(ContactShared *contactShared)
 {
-	return new GaduContactDetails(contactShared);
+	return new GaduContactDetails(contactShared, this);
 }
 
 AccountAddWidget * GaduProtocolFactory::newAddAccountWidget(bool showButtons, QWidget *parent)

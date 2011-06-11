@@ -23,6 +23,9 @@
 #ifndef JABBER_CONTACT_DETAILS_H
 #define JABBER_CONTACT_DETAILS_H
 
+class QDomDocument;
+class QDomElement;
+
 #include <xmpp_rosteritem.h>
 
 #include "contacts/contact.h"
@@ -31,11 +34,12 @@
 
 class JabberContactDetails : public ContactDetails
 {
-  
+	Q_OBJECT
+
 	PROPERTY_DEC(XMPP::Subscription, ContactSubscription)
 
 public:
-	explicit JabberContactDetails(ContactShared *contactShared);
+	explicit JabberContactDetails(ContactShared *contactShared, QObject *parent = 0);
 	virtual ~JabberContactDetails();
 
 	virtual bool validateId();

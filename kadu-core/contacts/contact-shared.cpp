@@ -275,7 +275,8 @@ void ContactShared::protocolUnregistered(ProtocolFactory *protocolFactory)
 	if (!ContactAccount || ContactAccount.protocolName() != protocolFactory->name())
 		return;
 
-	setDetails(0);
+// 	protocol unregistered means auto-deleting all contact details, so we cannot set them to zero here
+// 	setDetails(0);
 }
 
 void ContactShared::detailsAdded()

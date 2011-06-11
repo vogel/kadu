@@ -27,8 +27,8 @@
 
 #include "jabber-contact-details.h"
 
-JabberContactDetails::JabberContactDetails(ContactShared *contactShared) :
-		ContactDetails(contactShared)
+JabberContactDetails::JabberContactDetails(ContactShared *contactShared, QObject *parent) :
+		ContactDetails(contactShared, parent)
 {
 	ContactSubscription = XMPP::Subscription();
 }

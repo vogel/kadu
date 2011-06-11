@@ -30,9 +30,10 @@
 
 class GaduContactDetails : public ContactDetails
 {
+	Q_OBJECT
 
 public:
-	explicit GaduContactDetails(ContactShared *contactShared);
+	explicit GaduContactDetails(ContactShared *contactShared, QObject *parent = 0);
 	virtual ~GaduContactDetails();
 
 	virtual bool validateId();
