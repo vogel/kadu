@@ -130,9 +130,6 @@ void StatusContainerManager::configurationUpdated()
 		StartupStatus = "LastStatus";
 	else if (StartupStatus == "Busy")
 		StartupStatus =  "Away";
-
-	DisconnectWithCurrentDescription = config_file.readBoolEntry("General", "DisconnectWithCurrentDescription");
-	DisconnectDescription = config_file.readEntry("General", "DisconnectDescription");
 }
 
 void StatusContainerManager::cleanStatusContainers()

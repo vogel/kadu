@@ -54,9 +54,6 @@ class KADUAPI StatusContainerManager : public StatusContainer,
 	bool StartupLastDescription;
 	bool OfflineToInvisible;
 
-	bool DisconnectWithCurrentDescription;
-	QString DisconnectDescription;
-
 	void cleanStatusContainers();
 	void addAllAccounts();
 	void addAllIdentities();
