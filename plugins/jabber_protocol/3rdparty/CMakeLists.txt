@@ -116,10 +116,10 @@ else (WIN32)
 	list (APPEND SOURCES_IRIS libiris/src/irisnet/corelib/netinterface_unix.cpp)
 endif (WIN32)
 
-if (CMAKE_COMPILER_IS_GNUCXX)
+if (CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
 	set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-error")
 	set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-error")
-endif (CMAKE_COMPILER_IS_GNUCXX)
+endif (CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
 
 set (MOC_SOURCES_IRIS
 	libiris/src/irisnet/noncore/cutestuff/bytestream.h

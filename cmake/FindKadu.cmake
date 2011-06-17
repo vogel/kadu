@@ -48,7 +48,7 @@ if (NOT CMAKE_BUILD_TYPE)
 	set (CMAKE_BUILD_TYPE Debug CACHE STRING "Choose the type of build, options are: Debug Release RelWithDebInfo." FORCE)
 endif (NOT CMAKE_BUILD_TYPE)
 
-# never use -O3 unless explicitly set by the user
+# never use -O3 on GCC unless explicitly set by the user
 if (CMAKE_COMPILER_IS_GNUCXX)
 	string (REPLACE "-O3" "-O2" CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE}")
 	string (REPLACE "-O3" "-O2" CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE}")
@@ -70,8 +70,13 @@ if (MINGW)
 endif (MINGW)
 
 # warnings
-if (CMAKE_COMPILER_IS_GNUCXX)
+if (CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
 	if (ENABLE_DEVELOPER_BUILD)
+		if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+			set (CMAKE_C_FLAGS "-fcatch-undefined-behavior ${CMAKE_C_FLAGS}")
+			set (CMAKE_CXX_FLAGS "-fcatch-undefined-behavior ${CMAKE_CXX_FLAGS}")
+		endif (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+
 		set (CMAKE_C_FLAGS "-Werror ${CMAKE_C_FLAGS}")
 		set (CMAKE_CXX_FLAGS "-Werror ${CMAKE_CXX_FLAGS}")
 	endif (ENABLE_DEVELOPER_BUILD)
@@ -84,7 +89,7 @@ if (CMAKE_COMPILER_IS_GNUCXX)
 	endif (MINGW)
 elseif (MSVC)
 	add_definitions (/D_CRT_SECURE_NO_WARNINGS=1)
-endif (CMAKE_COMPILER_IS_GNUCXX)
+endif (CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
 
 if (NOT KADU_DATADIR)
 	set (KADU_DATADIR ${CMAKE_INSTALL_PREFIX}/share)
