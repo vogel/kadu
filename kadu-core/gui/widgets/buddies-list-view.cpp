@@ -105,9 +105,13 @@ BuddiesListView::~BuddiesListView()
 	disconnect(PendingMessagesManager::instance(), SIGNAL(messageRemoved(Message)), this, SLOT(update()));
 }
 
-void BuddiesListView::setModel(AbstractBuddiesModel *model)
+void BuddiesListView::setModel(QAbstractItemModel *model)
 {
-	ProxyModel->setSourceModel(dynamic_cast<QAbstractItemModel *>(model));
+	AbstractBuddiesModel *buddiesModel = dynamic_cast<AbstractBuddiesModel *>(model);
+	if (!buddiesModel)
+		return;
+
+	ProxyModel->setSourceModel(model);
 
 	Delegate->setModel(ProxyModel);
 	QTreeView::setModel(ProxyModel);

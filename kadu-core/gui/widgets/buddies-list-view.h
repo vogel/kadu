@@ -127,7 +127,9 @@ public:
 	explicit BuddiesListView(QWidget *parent = 0);
 	virtual ~BuddiesListView();
 
-	virtual void setModel(AbstractBuddiesModel *model);
+	// Note that model has to inherit AbstractBuddyModel.
+	virtual void setModel(QAbstractItemModel *model);
+
 	void addFilter(AbstractBuddyFilter *filter);
 	void removeFilter(AbstractBuddyFilter *filter);
 
