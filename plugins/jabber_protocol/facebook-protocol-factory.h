@@ -53,7 +53,7 @@ public:
 
 	virtual KaduIcon icon();
 
-	virtual AccountCreateWidget * newCreateAccountWidget(QWidget * /*parent*/ = 0) { return 0; }
+	virtual AccountCreateWidget * newCreateAccountWidget(bool /*showButtons*/, QWidget * /*parent*/) { return 0; }
 
 };
 

@@ -38,8 +38,8 @@ class QListWidgetItem;
 class ChatWidget;
 
 #ifdef HAVE_ASPELL
-class AspellSpeller;
-class AspellConfig;
+struct AspellSpeller;
+struct AspellConfig;
 #else
 namespace enchant
 {
