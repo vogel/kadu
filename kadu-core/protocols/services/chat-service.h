@@ -52,7 +52,7 @@ public:
 	explicit ChatService(QObject *parent) : QObject(parent) {}
 
 public slots:
-	virtual bool sendMessage(const Chat &chat, const QString &messageContent, bool silent = false);
+	bool sendMessage(const Chat &chat, const QString &messageContent, bool silent = false);
 	virtual bool sendMessage(const Chat &chat, FormattedMessage &message, bool silent = false) = 0;
 
 signals:
