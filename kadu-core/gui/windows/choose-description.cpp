@@ -38,6 +38,7 @@
 #include "parser/parser.h"
 #include "status/description-manager.h"
 #include "status/description-model.h"
+#include "status/status-changer-manager.h"
 
 #include "activate.h"
 #include "debug.h"
@@ -160,7 +161,8 @@ void ChooseDescription::setDescription()
 	if (config_file.readBoolEntry("General", "ParseStatus", false))
 		description = Parser::parse(description, BuddyOrContact(Core::instance()->myself()), false);
 
-	MyStatusContainer->setDescription(description, true);
+	MyStatusContainer->setDescription(description);
+	MyStatusContainer->storeStatus(StatusChangerManager::instance()->manuallySetStatus(MyStatusContainer));
 }
 
 void ChooseDescription::activated(int index)

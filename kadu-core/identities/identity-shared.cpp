@@ -149,13 +149,13 @@ bool IdentityShared::isEmpty()
 	return Accounts.isEmpty();
 }
 
-void IdentityShared::doSetStatus(Status status)
+void IdentityShared::setStatus(Status status)
 {
 	ensureLoaded();
 
 	foreach (const Account &account, Accounts)
 		if (account)
-			account.data()->setStatus(status, false);
+			account.data()->setStatus(status);
 }
 
 Status IdentityShared::status()

@@ -90,8 +90,6 @@ protected:
 	virtual void protocolRegistered(ProtocolFactory *protocolHandler);
 	virtual void protocolUnregistered(ProtocolFactory *protocolHandler);
 
-	virtual void doSetStatus(Status newStatus);
-
 public:
 	static AccountShared * loadStubFromStorage(const QSharedPointer<StoragePoint> &storagePoint);
 	static AccountShared * loadFromStorage(const QSharedPointer<StoragePoint> &storagePoint);
@@ -132,6 +130,7 @@ public:
 	virtual QString statusContainerName();
 
 	virtual Status status();
+	virtual void setStatus(Status newStatus);
 	virtual bool isStatusSettingInProgress();
 	virtual int maxDescriptionLength();
 

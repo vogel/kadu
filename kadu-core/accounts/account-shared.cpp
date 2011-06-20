@@ -175,7 +175,7 @@ void AccountShared::setDisconnectStatus()
 	else
 		disconnectStatus.setDescription(disconnectDescription);
 
-	doSetStatus(disconnectStatus); // this does not store status
+	setStatus(disconnectStatus);
 }
 
 void AccountShared::useProtocolFactory(ProtocolFactory *factory)
@@ -190,7 +190,6 @@ void AccountShared::useProtocolFactory(ProtocolFactory *factory)
 		disconnect(ProtocolHandler, SIGNAL(connected(Account)), this, SIGNAL(connected()));
 		disconnect(ProtocolHandler, SIGNAL(disconnected(Account)), this, SIGNAL(disconnected()));
 
-		storeStatus(StatusChangerManager::instance()->manuallySetStatus(this));
 		setDisconnectStatus();
 	}
 
@@ -336,7 +335,7 @@ QString AccountShared::statusContainerName()
 	return Id;
 }
 
-void AccountShared::doSetStatus(Status newStatus)
+void AccountShared::setStatus(Status newStatus)
 {
 	if (ProtocolHandler)
 		ProtocolHandler->setStatus(newStatus);

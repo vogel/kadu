@@ -237,22 +237,16 @@ QString StatusContainerManager::statusContainerName()
 	return tr("All");
 }
 
-void StatusContainerManager::setStatus(Status newStatus, bool flush)
+void StatusContainerManager::setStatus(Status newStatus)
 {
 	foreach (StatusContainer *container, StatusContainers)
-		container->setStatus(newStatus, false);
-
-	if (flush)
-		ConfigurationManager::instance()->flush();
+		container->setStatus(newStatus);
 }
 
-void StatusContainerManager::setDescription(const QString &description, bool flush)
+void StatusContainerManager::setDescription(const QString &description)
 {
 	foreach (StatusContainer *container, StatusContainers)
-		container->setDescription(description, false);
-
-	if (flush)
-		ConfigurationManager::instance()->flush();
+		container->setDescription(description);
 }
 
 Status StatusContainerManager::status()

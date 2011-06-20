@@ -34,20 +34,11 @@ BaseStatusContainer::~BaseStatusContainer()
 {
 }
 
-void BaseStatusContainer::setStatus(Status status, bool flush)
-{
-	doSetStatus(status);
-	storeStatus(status);
-
-	if (flush)
-		ConfigurationManager::instance()->flush();
-}
-
-void BaseStatusContainer::setDescription(const QString &description, bool flush)
+void BaseStatusContainer::setDescription(const QString &description)
 {
 	Status currentStatus = status();
 	currentStatus.setDescription(description);
-	setStatus(currentStatus, flush);
+	setStatus(currentStatus);
 }
 
 void BaseStatusContainer::setDefaultStatus(const QString &startupStatus, bool offlineToInvisible,
@@ -81,7 +72,7 @@ void BaseStatusContainer::setDefaultStatus(const QString &startupStatus, bool of
 	status.setType(name);
 	status.setDescription(description);
 
-	setStatus(status, false);
+	setStatus(status);
 }
 
 void BaseStatusContainer::storeStatus(Status status)
@@ -91,4 +82,6 @@ void BaseStatusContainer::storeStatus(Status status)
 
 	MyStorableObject->storeValue("LastStatusDescription", status.description());
 	MyStorableObject->storeValue("LastStatusName", status.type());
+
+	ConfigurationManager::instance()->flush();
 }
