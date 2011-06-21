@@ -33,6 +33,8 @@
 #include "buddies/buddy-preferred-manager.h"
 #include "buddies/buddy-shared.h"
 #include "chat/message/message-shared.h"
+#include "chat/chat-details.h"
+#include "chat/chat-details-aggregate.h"
 #include "chat/chat-manager.h"
 #include "configuration/xml-configuration-file.h"
 #include "contacts/contact-set.h"
@@ -161,9 +163,17 @@ QList<Message> PendingMessagesManager::pendingMessagesForChat(const Chat &chat)
 	QMutexLocker locker(&mutex());
 
 	QList<Message> result;
+	QSet<Chat> chats;
+
+	ChatDetails *details = chat.details();
+	ChatDetailsAggregate *aggregateDetails = qobject_cast<ChatDetailsAggregate *>(details);
+	if (aggregateDetails)
+		chats = aggregateDetails->chats().toSet();
+	else
+		chats.insert(chat);
 
 	foreach (const Message &message, items())
-		if (message.isPending() && message.messageChat() == chat)
+		if (message.isPending() && chats.contains(message.messageChat()))
 			result.append(message);
 
 	return result;

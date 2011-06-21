@@ -27,6 +27,7 @@
 #include "accounts/account-manager.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-preferred-manager.h"
+#include "chat/aggregate-chat-manager.h"
 #include "chat/message/message.h"
 #include "chat/message/message-render-info.h"
 #include "chat/message/message-shared.h"
@@ -335,7 +336,9 @@ void ChatWidgetManager::openPendingMessages(const Chat &chat, bool forceActivate
 	if (!chatWidget)
 		return;
 
-	QList<Message> pendingMessages = PendingMessagesManager::instance()->pendingMessagesForChat(chat);
+	Chat aggregateChat = AggregateChatManager::instance()->aggregateChat(chat);
+	QList<Message> pendingMessages = PendingMessagesManager::instance()->pendingMessagesForChat(aggregateChat ? aggregateChat : chat);
+
 	foreach (Message message, pendingMessages)
 	{
 		messages.append(new MessageRenderInfo(message));

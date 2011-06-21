@@ -6,6 +6,7 @@
 * core: require and link to QCA, fixes some crashes (WhE, beevvy)
 * plugins: #2201 fixed: fixed incorrect plugin state managing in corner cases (beevvy)
 * core: #2199 fixed: removed %o token from parser (Vogel)
+* core: #2042 fixed: no longes use two envelopes in docking for buddies with messages from different contacts (Vogel)
 
 +++ version 0.10.0-alpha1
 * gadu: removed depreceated ip/port/version code - gg server does not send this info anymore (Vogel)
