@@ -158,7 +158,7 @@ void GaduProtocol::login()
 	{
 		gg_free_session(GaduSession);
 		GaduSession = 0;
-		return;
+		// here was return... do not re-add it ;)
 	}
 
 	GaduAccountDetails *gaduAccountDetails = dynamic_cast<GaduAccountDetails *>(account().details());
@@ -407,7 +407,12 @@ void GaduProtocol::socketConnFailed(GaduError error)
 			break;
 		case ConnectionIncorrectPassword:
 			passwordRequired();
-			break;
+
+			// do not call connectionClosed here
+			// we dont need to do that, because no connection is open here
+			// and we should not do that, because closing connection causes changing of state to offline
+			// and it break our state machine, so we would be out of password-required state
+			return;
 		default: // we need special code only for 2 cases
 			break;
 	}

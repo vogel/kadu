@@ -139,7 +139,7 @@ void JabberProtocol::initializeJabberClient()
 		   this, SLOT(clientResourceReceived(const XMPP::Jid &, const XMPP::Resource &)));
 
 	connect(JabberClient, SIGNAL(connectionError(QString)), this, SLOT(connectionErrorSlot(QString)));
-	connect(JabberClient, SIGNAL(invalidPassword()), this, SIGNAL(stateMachinePasswordRequired()));
+	connect(JabberClient, SIGNAL(invalidPassword()), this, SLOT(passwordRequired()));
 
 		/*//TODO: implement in the future
 		connect( JabberClient, SIGNAL ( groupChatJoined ( const XMPP::Jid & ) ),

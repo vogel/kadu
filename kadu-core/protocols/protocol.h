@@ -94,14 +94,15 @@ protected:
 	virtual void logout() = 0;
 	virtual void sendStatusToServer() = 0;
 
+	virtual void disconnectedCleanup();
+	void statusChanged(Status newStatus);
+
+protected slots:
 	void loggedIn();
 	void loggedOut();
 	void passwordRequired();
 	void connectionError();
 	void connectionClosed();
-
-	virtual void disconnectedCleanup();
-	void statusChanged(Status newStatus);
 
 public:
 	Protocol(Account account, ProtocolFactory *factory);
