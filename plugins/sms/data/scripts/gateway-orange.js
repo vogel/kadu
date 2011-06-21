@@ -115,22 +115,40 @@ GatewaySmsSender.prototype = {
 			return;
 		}
 
-		var content = this.reply.content();
-		if (content.indexOf("wyczerpany") >= 0) {
-			this.failure("You exceeded your daily limit");
-		} else if (content.indexOf("Podano błędne hasło") >= 0) {
-			this.failure("Text from the picture is incorrect");
-		} else if (content.indexOf("Użytkownik nie ma aktywnej usługi") >= 0) {
-			this.failure("The receiver has to enable SMS STANDARD service");
-		} else if (content.indexOf("Twój SMS został wysłany") >= 0) {
-			this.finished();
-		} else if (content.indexOf("Wiadomość została pomyślnie wysłana") >= 0) {
-			this.finished();
-		} else {
-			this.failure("Provider gateway results page looks strange. SMS was probably NOT sent.");
-		}
-	}
+        var redirect = this.reply.redirect();
 
+        if (redirect.indexOf("inboxview.aspx") >= 0)
+        {
+            this.reply = network.get("http://sms.orange.pl" + redirect);
+            this.reply.finished.connect(this, this.checkErrors);
+        }
+        else
+        {
+            this.checkErrors();
+        }
+    },
+
+    checkErrors: function() {
+        if (!this.reply.ok()) {
+            this.failure("Network error");
+            return;
+        }
+
+        var content = this.reply.content();
+        if (content.indexOf("wyczerpany") >= 0) {
+            this.failure("You exceeded your daily limit");
+        } else if (content.indexOf("Podano błędne hasło") >= 0) {
+            this.failure("Text from the picture is incorrect");
+        } else if (content.indexOf("Użytkownik nie ma aktywnej usługi") >= 0) {
+            this.failure("The receiver has to enable SMS STANDARD service");
+        } else if (content.indexOf("Twój SMS został wysłany") >= 0) {
+            this.finished();
+        } else if (content.indexOf("Wiadomość została pomyślnie wysłana") >= 0) {
+            this.finished();
+        } else {
+            this.failure("Provider gateway results page looks strange. SMS was probably NOT sent.");
+        }
+    }
 };
 
 function GatewaySmsSender() {
