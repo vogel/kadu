@@ -152,6 +152,8 @@ QString profilePath(const QString &subpath)
 
 		Parser::globalVariables["HOME"] = home;
 
+		QString pwd = QDir::currentPath();
+
 #ifndef Q_OS_WIN
 		QString config_dir = QString::fromLocal8Bit(getenv("CONFIG_DIR"));
 #else
@@ -164,6 +166,14 @@ QString profilePath(const QString &subpath)
 #ifdef Q_OS_MAC
 		if (config_dir.isNull())
 			path = QString("%1/Library/Kadu/").arg(home);
+		else if (config_dir.startsWith("./"))
+		{
+			config_dir = config_dir.right(config_dir.length() - 2);
+			if (QDir(QString("%1/%2/Kadu").arg(pwd).arg(config_dir)).exists())
+				path = QString("%1/%2/Kadu/").arg(pwd).arg(config_dir); // compatibility with earlier versions
+			else
+				path = QString("%1/%2/").arg(pwd).arg(config_dir);
+		}
 		else if (QDir(config_dir).isAbsolute())
 		{
 			if (QDir(QString("%1/Kadu").arg(config_dir)).exists())
@@ -181,6 +191,14 @@ QString profilePath(const QString &subpath)
 #elif defined(Q_OS_WIN)
 		if (config_dir.isNull())
 			path = QString("%1/Kadu/").arg(home);
+		else if (config_dir.startsWith("./") || config_dir.startsWith(".\\"))
+		{
+			config_dir = config_dir.right(config_dir.length() - 2);
+			if (QDir(QString("%1/%2/Kadu").arg(pwd).arg(config_dir)).exists())
+				path = QString("%1/%2/Kadu/").arg(pwd).arg(config_dir); // compatibility with earlier versions
+			else
+				path = QString("%1/%2/").arg(pwd).arg(config_dir);
+		}
 		else if (QDir(config_dir).isAbsolute())
 		{
 			if (QDir(QString("%1/Kadu").arg(config_dir)).exists())
@@ -198,6 +216,14 @@ QString profilePath(const QString &subpath)
 #else
 		if (config_dir.isNull())
 			path = QString("%1/.kadu/").arg(home);
+		else if (config_dir.startsWith("./"))
+		{
+			config_dir = config_dir.right(config_dir.length() - 2);
+			if (QDir(QString("%1/%2/kadu").arg(pwd).arg(config_dir)).exists())
+				path = QString("%1/%2/kadu/").arg(pwd).arg(config_dir); // compatibility with earlier versions
+			else
+				path = QString("%1/%2/").arg(pwd).arg(config_dir);
+		}
 		else if (QDir(config_dir).isAbsolute())
 		{
 			if (QDir(QString("%1/kadu").arg(config_dir)).exists())
