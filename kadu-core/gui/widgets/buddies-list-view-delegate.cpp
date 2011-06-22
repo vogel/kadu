@@ -32,6 +32,7 @@
 #include "avatars/avatar-manager.h"
 #include "buddies/buddy-preferred-manager.h"
 #include "buddies/model/abstract-buddies-model.h"
+#include "chat/message/pending-messages-manager.h"
 #include "contacts/contact-manager.h"
 #include "gui/widgets/buddies-list-view-item-painter.h"
 
@@ -43,6 +44,8 @@ BuddiesListViewDelegate::BuddiesListViewDelegate(QObject *parent) :
 	connect(AvatarManager::instance(), SIGNAL(avatarUpdated(Avatar)), this, SLOT(avatarUpdated(Avatar)));
 	connect(ContactManager::instance(), SIGNAL(contactUpdated(Contact&)), this, SLOT(contactUpdated(Contact&)));
 	connect(BuddyPreferredManager::instance(), SIGNAL(buddyUpdated(Buddy&)), this, SLOT(buddyUpdated(Buddy&)));
+	connect(PendingMessagesManager::instance(), SIGNAL(messageAdded(Message)), this, SLOT(messageStatusChanged(Message)));
+	connect(PendingMessagesManager::instance(), SIGNAL(messageRemoved(Message)), this, SLOT(messageStatusChanged(Message)));
 }
 
 BuddiesListViewDelegate::~BuddiesListViewDelegate()
@@ -50,6 +53,8 @@ BuddiesListViewDelegate::~BuddiesListViewDelegate()
 	disconnect(AvatarManager::instance(), SIGNAL(avatarUpdated(Avatar)), this, SLOT(avatarUpdated(Avatar)));
 	disconnect(ContactManager::instance(), SIGNAL(contactUpdated(Contact&)), this, SLOT(contactUpdated(Contact&)));
 	disconnect(BuddyPreferredManager::instance(), SIGNAL(buddyUpdated(Buddy&)), this, SLOT(buddyUpdated(Buddy&)));
+	disconnect(PendingMessagesManager::instance(), SIGNAL(messageAdded(Message)), this, SLOT(messageStatusChanged(Message)));
+	disconnect(PendingMessagesManager::instance(), SIGNAL(messageRemoved(Message)), this, SLOT(messageStatusChanged(Message)));
 }
 
 void BuddiesListViewDelegate::setModel(AbstractBuddiesModel *model)
@@ -87,8 +92,14 @@ void BuddiesListViewDelegate::contactUpdated(Contact &contact)
 
 void BuddiesListViewDelegate::buddyUpdated(Buddy &buddy)
 {
-	Contact contact = BuddyPreferredManager::instance()->preferredContact(buddy);
-	contactUpdated(contact);
+	if (Model)
+		emit sizeHintChanged(Model->indexForValue(buddy));
+}
+
+void BuddiesListViewDelegate::messageStatusChanged(Message message)
+{
+	Buddy buddy = message.messageSender().ownerBuddy();
+	buddyUpdated(buddy);
 }
 
 void BuddiesListViewDelegate::modelDestroyed()

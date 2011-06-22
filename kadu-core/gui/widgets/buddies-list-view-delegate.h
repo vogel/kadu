@@ -31,6 +31,7 @@
 #include <QtGui/QItemDelegate>
 
 #include "buddies/buddy.h"
+#include "chat/message/message.h"
 #include "gui/widgets/buddies-list-view-delegate-configuration.h"
 
 class AbstractBuddiesModel;
@@ -55,6 +56,7 @@ private slots:
 	void avatarUpdated(Avatar avatar);
 	void contactUpdated(Contact &contact);
 	void buddyUpdated(Buddy &buddy);
+	void messageStatusChanged(Message message);
 	void modelDestroyed();
 
 public:
