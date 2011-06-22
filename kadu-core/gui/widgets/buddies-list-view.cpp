@@ -93,16 +93,12 @@ BuddiesListView::BuddiesListView(QWidget *parent) :
 
 	connect(&ToolTipTimeoutTimer, SIGNAL(timeout()), this, SLOT(toolTipTimeout()));
 	connect(this, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(doubleClickedSlot(const QModelIndex &)));
-	connect(PendingMessagesManager::instance(), SIGNAL(messageAdded(Message)), this, SLOT(update()));
-	connect(PendingMessagesManager::instance(), SIGNAL(messageRemoved(Message)), this, SLOT(update()));
 
 	configurationUpdated();
 }
 
 BuddiesListView::~BuddiesListView()
 {
-	disconnect(PendingMessagesManager::instance(), SIGNAL(messageAdded(Message)), this, SLOT(update()));
-	disconnect(PendingMessagesManager::instance(), SIGNAL(messageRemoved(Message)), this, SLOT(update()));
 }
 
 void BuddiesListView::setModel(QAbstractItemModel *model)
