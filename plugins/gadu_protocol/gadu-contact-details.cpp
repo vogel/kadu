@@ -36,12 +36,6 @@ unsigned int GaduContactDetails::uin()
 	return mainData()->id().toUInt();
 }
 
-bool GaduContactDetails::validateId()
-{
-	bool ok;
-	mainData()->id().toUInt(&ok);
-	return ok;
-}
 
 void GaduContactDetails::store()
 {

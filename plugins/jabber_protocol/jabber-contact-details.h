@@ -42,7 +42,6 @@ public:
 	explicit JabberContactDetails(ContactShared *contactShared, QObject *parent = 0);
 	virtual ~JabberContactDetails();
 
-	virtual bool validateId();
 	virtual void store();
 	
 	PROPERTY_DEF(XMPP::Subscription, subscription, setSubscription, ContactSubscription)

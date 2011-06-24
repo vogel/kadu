@@ -85,16 +85,6 @@ void Contact::refreshDNSName()
 				this, SLOT(setDNSName(const QString &, const QString &)));
 }*/
 
-bool Contact::validateId()
-{
-	return true;
-}
-
-bool Contact::isValid()
-{
-	return validateId();
-}
-
 Contact Contact::contactWithHigherStatus(const Contact &c1, const Contact &c2)
 {
 	if (!c1)

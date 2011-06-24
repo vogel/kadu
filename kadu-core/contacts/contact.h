@@ -57,9 +57,6 @@ public:
 	Contact(const Contact &copy);
 	virtual ~Contact();
 
-	virtual bool validateId();
-	bool isValid();
-
 	KaduSharedBase_Property(ContactDetails *, details, Details)
 	KaduSharedBase_PropertyRead(QUuid, uuid, Uuid)
 	KaduSharedBase_PropertyRead(QSharedPointer<StoragePoint>, storage, Storage)

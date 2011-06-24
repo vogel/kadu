@@ -36,7 +36,6 @@ public:
 	explicit GaduContactDetails(ContactShared *contactShared, QObject *parent = 0);
 	virtual ~GaduContactDetails();
 
-	virtual bool validateId();
 	virtual void store();
 
 	GaduProtocol::UinType uin();
