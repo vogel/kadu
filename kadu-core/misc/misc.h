@@ -1,5 +1,6 @@
 /*
  * %kadu copyright begin%
+ * Copyright 2011 Piotr Dąbrowski (ultr@ultr.pl)
  * Copyright 2010, 2011 Bartosz Brachaczek (b.brachaczek@gmail.com)
  * Copyright 2009, 2010 Piotr Galiszewski (piotr.galiszewski@kadu.im)
  * Copyright 2009, 2010, 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
@@ -38,6 +39,8 @@ extern KADUAPI bool measureTime;
 KADUAPI QString replacedNewLine(const QString &text, const QString &newLineText);
 
 KADUAPI QString pwHash(const QString &text);
+
+KADUAPI QRect properGeometry(const QRect &rect);
 
 void KADUAPI saveWindowGeometry(const QWidget *w, const QString &section, const QString &name);
 void KADUAPI loadWindowGeometry(QWidget *w, const QString &section, const QString &name, int defaultX, int defaultY, int defaultWidth, int defaultHeight);

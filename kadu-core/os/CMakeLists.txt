@@ -1,10 +1,13 @@
 set (os_SRCS
 	generic/compositing-aware-object.cpp
+	generic/desktop-aware-object.cpp
+	generic/desktop-aware-object-helper.cpp
 	generic/system-info.cpp
 	generic/url-opener.cpp
 )
 
 set (os_MOC_SRCS
+	generic/desktop-aware-object-helper.h
 	qtsingleapplication/qtlocalpeer.h
 )
 

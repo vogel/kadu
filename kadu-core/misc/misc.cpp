@@ -1,5 +1,6 @@
 /*
  * %kadu copyright begin%
+ * Copyright 2011 Piotr Dąbrowski (ultr@ultr.pl)
  * Copyright 2009 Dawid Stawiarski (neeo@kadu.net)
  * Copyright 2010, 2011 Bartosz Brachaczek (b.brachaczek@gmail.com)
  * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
@@ -56,6 +57,41 @@ QString replacedNewLine(const QString &text, const QString &newLineText)
 	return QString(text).replace(newLineRegExp, newLineText);
 }
 
+QRect properGeometry(const QRect &rect)
+{
+	QRect geometry(rect);
+	QRect availableGeometry = QApplication::desktop()->availableGeometry(geometry.center());
+
+	// correct size
+	if (geometry.width() > availableGeometry.width())
+		geometry.setWidth(availableGeometry.width());
+	if (geometry.height() > availableGeometry.height())
+		geometry.setHeight(availableGeometry.height());
+
+	// switch screen
+	if (geometry.center().x() < availableGeometry.x())
+		geometry.moveLeft(availableGeometry.x());
+	else if (geometry.center().x() >= availableGeometry.x() + availableGeometry.width())
+		geometry.moveLeft(availableGeometry.x() + availableGeometry.width() - geometry.width());
+	if (geometry.center().y() < availableGeometry.y())
+		geometry.moveTop(availableGeometry.y());
+	else if (geometry.center().y() >= availableGeometry.y() + availableGeometry.height())
+		geometry.moveTop(availableGeometry.y() + availableGeometry.height() - geometry.height());
+
+	// move
+	if (geometry.bottomRight().x() >= availableGeometry.x() + availableGeometry.width())
+		geometry.moveLeft(availableGeometry.x() + availableGeometry.width() - geometry.width());
+	if (geometry.bottomRight().y() >= availableGeometry.y() + availableGeometry.height())
+		geometry.moveTop(availableGeometry.y() + availableGeometry.height() - geometry.height());
+	if (geometry.topLeft().x() < availableGeometry.x())
+		geometry.moveLeft(availableGeometry.x());
+	if (geometry.topLeft().y() < availableGeometry.y())
+		geometry.moveTop(availableGeometry.x());
+
+	// done
+	return geometry;
+}
+
 void saveWindowGeometry(const QWidget *w, const QString &section, const QString &name)
 {
 #if defined(Q_OS_MAC) || defined(Q_WS_MAEMO_5)
@@ -79,13 +115,8 @@ void loadWindowGeometry(QWidget *w, const QString &section, const QString &name,
 {
 	QRect rect = config_file.readRectEntry(section, name);
 	if ((rect.height() == 0) || (rect.width() == 0))
-	{
 		rect.setRect(defaultX, defaultY, defaultWidth, defaultHeight);
-	}
-#ifdef Q_OS_MAC
-	if (rect.y() < 20)
-		rect.setY(20);
-#endif
+	rect = properGeometry(rect);
 	w->setGeometry(rect);
 }
 
