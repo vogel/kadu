@@ -27,8 +27,6 @@
 #include <QtSql/QSqlDatabase>
 #include <QtSql/QSqlQuery>
 
-#include "core/crash-aware-object.h"
-
 #include "plugins/history/storage/history-storage.h"
 
 /**
@@ -36,7 +34,7 @@
 	@author Juzef, Adrian
 **/
 
-class HistorySqlStorage : public HistoryStorage, CrashAwareObject
+class HistorySqlStorage : public HistoryStorage
 {
 	Q_OBJECT
 
@@ -68,9 +66,6 @@ class HistorySqlStorage : public HistoryStorage, CrashAwareObject
 private slots:
 	virtual void messageReceived(const Message &message);
 	virtual void messageSent(const Message &message);
-
-protected:
-	virtual void crash();
 
 public:
 	explicit HistorySqlStorage(QObject *parent = 0);

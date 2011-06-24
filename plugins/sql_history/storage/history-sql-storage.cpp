@@ -69,11 +69,6 @@ HistorySqlStorage::~HistorySqlStorage()
 	Database.commit();
 }
 
-void HistorySqlStorage::crash()
-{
-	Database.commit();
-}
-
 void HistorySqlStorage::initDatabase()
 {
 	kdebugf();
