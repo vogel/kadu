@@ -150,7 +150,7 @@ void HistoryImportThread::importEntry(const Chat &chat, const HistoryEntry &entr
 			msg.setContent(entry.Content);
 			msg.setSendDate(entry.SendDate);
 			msg.setReceiveDate(entry.Date);
-			msg.setType(outgoing ? Message::TypeSent : Message::TypeReceived);
+			msg.setType(outgoing ? MessageTypeSent : MessageTypeReceived);
 
 			History::instance()->currentStorage()->appendMessage(msg);
 			ImportedEntries++;

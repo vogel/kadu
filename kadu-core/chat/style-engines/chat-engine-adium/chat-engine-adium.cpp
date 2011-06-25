@@ -151,14 +151,14 @@ void AdiumChatStyleEngine::appendChatMessage(HtmlMessagesRenderer *renderer, Mes
 		Message last = lastMessage->message();
 
 		includeHeader =
-			msg.type() == Message::TypeSystem ||
-			last.type() == Message::TypeSystem ||
+			msg.type() == MessageTypeSystem ||
+			last.type() == MessageTypeSystem ||
 			msg.messageSender() != last.messageSender() ||
 			msg.receiveDate().toTime_t() - last.receiveDate().toTime_t() > (ChatStylesManager::instance()->cfgNoHeaderInterval() * 60);
 	}
 	switch (msg.type())
 	{
-		case Message::TypeReceived:
+		case MessageTypeReceived:
 		{
 			if (includeHeader)
 				formattedMessageHtml = CurrentStyle.incomingHtml();
@@ -166,7 +166,7 @@ void AdiumChatStyleEngine::appendChatMessage(HtmlMessagesRenderer *renderer, Mes
 				formattedMessageHtml = CurrentStyle.nextIncomingHtml();
 			break;
 		}
-		case Message::TypeSent:
+		case MessageTypeSent:
 		{
 			if (includeHeader)
 				formattedMessageHtml = CurrentStyle.outgoingHtml();
@@ -174,7 +174,7 @@ void AdiumChatStyleEngine::appendChatMessage(HtmlMessagesRenderer *renderer, Mes
 				formattedMessageHtml = CurrentStyle.nextOutgoingHtml();
 			break;
 		}
-		case Message::TypeSystem:
+		case MessageTypeSystem:
 		{
 			formattedMessageHtml = CurrentStyle.statusHtml();
 			break;
@@ -433,7 +433,7 @@ QString AdiumChatStyleEngine::replaceKeywords(const QString &styleHref, const QS
 
 	// Replace userIconPath
 	QString photoPath;
-	if (msg.type() == Message::TypeReceived)
+	if (msg.type() == MessageTypeReceived)
 	{
 		result.replace(QString("%messageClasses%"), "message incoming");
 
@@ -444,7 +444,7 @@ QString AdiumChatStyleEngine::replaceKeywords(const QString &styleHref, const QS
 		else
 			photoPath = webKitPath(styleHref + QLatin1String("Incoming/buddy_icon.png"));
 	}
-	else if (msg.type() == Message::TypeSent)
+	else if (msg.type() == MessageTypeSent)
 	{
    		result.replace(QString("%messageClasses%"), "message outgoing");
 		Avatar avatar = msg.messageChat().chatAccount().accountContact().contactAvatar();
@@ -496,7 +496,7 @@ QString AdiumChatStyleEngine::replaceKeywords(const QString &styleHref, const QS
 	return result;
 }
 
-void AdiumChatStyleEngine::messageStatusChanged(HtmlMessagesRenderer *renderer, Message message, Message::Status status)
+void AdiumChatStyleEngine::messageStatusChanged(HtmlMessagesRenderer *renderer, Message message, MessageStatus status)
 {
 	renderer->webPage()->mainFrame()->evaluateJavaScript(QString("adium_messageStatusChanged(\"%1\", %2);").arg(message.id()).arg((int)status));
 }

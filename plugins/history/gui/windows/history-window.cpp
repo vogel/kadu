@@ -590,8 +590,8 @@ QList<Message> HistoryWindow::statusesToMessages(const QList<TimedStatus> &statu
 	foreach (const TimedStatus &timedStatus, statuses)
 	{
 		Message message = Message::create();
-		message.setStatus(Message::StatusReceived);
-		message.setType(Message::TypeReceived);
+		message.setStatus(MessageStatusReceived);
+		message.setType(MessageTypeReceived);
 
 		if (timedStatus.status().description().isEmpty())
 			message.setContent(timedStatus.status().type());

@@ -217,7 +217,7 @@ void Firewall::filterIncomingMessage(Chat chat, Contact sender, QString &message
 			{
 				Message msg = Message::create();
 				msg.setContent(message);
-				msg.setType(Message::TypeReceived);
+				msg.setType(MessageTypeReceived);
 				msg.setReceiveDate(QDateTime::currentDateTime());
 				msg.setSendDate(QDateTime::fromTime_t(time));
 				History::instance()->currentStorage()->appendMessage(msg);

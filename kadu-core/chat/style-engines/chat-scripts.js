@@ -1,6 +1,6 @@
 /* <![CDATA[ */
 
-// Status enum vaules identical with those defined in kadu-core/chat/message/message.h
+// MessageStatus enum vaules identical with those defined in kadu-core/chat/message/message-common.h
 StatusUnknown = 0;
 StatusReceived = 1;
 StatusSent = 2;

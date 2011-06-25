@@ -90,7 +90,7 @@ bool JabberChatService::sendMessage(const Chat &chat, FormattedMessage &formatte
 
 		Message message = Message::create();
 		message.setMessageChat(chat);
-		message.setType(Message::TypeSent);
+		message.setType(MessageTypeSent);
 		message.setMessageSender(Protocol->account().accountContact());
 		message.setContent(Qt::escape(formattedMessage.toPlain()));
 		message.setSendDate(QDateTime::currentDateTime());
@@ -137,7 +137,7 @@ void JabberChatService::clientMessageReceived(const XMPP::Message &msg)
 
 	Message message = Message::create();
 	message.setMessageChat(chat);
-	message.setType(Message::TypeReceived);
+	message.setType(MessageTypeReceived);
 	message.setMessageSender(contact);
 	message.setContent(plain);
 	message.setSendDate(msg.timeStamp());

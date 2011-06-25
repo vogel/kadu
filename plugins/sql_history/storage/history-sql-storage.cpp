@@ -294,7 +294,7 @@ void HistorySqlStorage::appendMessage(const Message &message)
 
 	QMutexLocker locker(&DatabaseMutex);
 
-	QString outgoing = (message.type() == Message::TypeSent)
+	QString outgoing = (message.type() == MessageTypeSent)
 			? "1"
 			: "0";
 
@@ -526,7 +526,7 @@ QPair<int, Message> HistorySqlStorage::firstMessageAndCount(const Chat &chat, co
 	if (messageChat.isNull())
 		return qMakePair(0, Message::null);
 
-	Message::Type type = outgoing ? Message::TypeSent : Message::TypeReceived;
+	MessageType type = outgoing ? MessageTypeSent : MessageTypeReceived;
 
 	// ignore non-existing contacts
 	Contact sender = ContactManager::instance()->byUuid(query.value(1).toString());
@@ -540,7 +540,7 @@ QPair<int, Message> HistorySqlStorage::firstMessageAndCount(const Chat &chat, co
 	message.setContent(query.value(2).toString());
 	message.setSendDate(query.value(3).toDateTime());
 	message.setReceiveDate(query.value(4).toDateTime());
-	message.setStatus(outgoing ? Message::StatusDelivered : Message::StatusReceived);
+	message.setStatus(outgoing ? MessageStatusDelivered : MessageStatusReceived);
 
 	int count = 1;
 	while (query.next())
@@ -948,7 +948,7 @@ QList<Message> HistorySqlStorage::messagesFromQuery(QSqlQuery &query)
 		if (chat.isNull())
 			continue;
 
-		Message::Type type = outgoing ? Message::TypeSent : Message::TypeReceived;
+		MessageType type = outgoing ? MessageTypeSent : MessageTypeReceived;
 
 		// ignore non-existing contacts
 		Contact sender = ContactManager::instance()->byUuid(query.value(1).toString());
@@ -962,7 +962,7 @@ QList<Message> HistorySqlStorage::messagesFromQuery(QSqlQuery &query)
 		message.setContent(query.value(2).toString());
 		message.setSendDate(query.value(3).toDateTime());
 		message.setReceiveDate(query.value(4).toDateTime());
-		message.setStatus(outgoing ? Message::StatusDelivered : Message::StatusReceived);
+		message.setStatus(outgoing ? MessageStatusDelivered : MessageStatusReceived);
 
 		messages.append(message);
 	}
@@ -1000,8 +1000,8 @@ QList<Message> HistorySqlStorage::smsFromQuery(QSqlQuery &query)
 	while (query.next())
 	{
 		Message message = Message::create();
-		message.setStatus(Message::StatusSent);
-		message.setType(Message::TypeSystem);
+		message.setStatus(MessageStatusSent);
+		message.setType(MessageTypeSystem);
 		message.setReceiveDate(query.value(1).toDateTime());
 		message.setSendDate(query.value(1).toDateTime());
 		message.setContent(query.value(0).toString());

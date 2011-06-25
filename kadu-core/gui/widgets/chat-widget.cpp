@@ -370,7 +370,7 @@ void ChatWidget::appendSystemMessage(const QString &rawContent, const QString &b
 {
 	Message message = Message::create();
 	message.setMessageChat(CurrentChat);
-	message.setType(Message::TypeSystem);
+	message.setType(MessageTypeSystem);
 	message.setContent(rawContent);
 	message.setSendDate(QDateTime::currentDateTime());
 	MessageRenderInfo *messageRenderInfo = new MessageRenderInfo(message);
@@ -696,7 +696,7 @@ void ChatWidget::contactActivityChanged(ChatStateService::ContactActivity state,
 		QString msg = "[ " + tr("%1 ended the conversation").arg(contact.ownerBuddy().display()) + " ]";
 		Message message = Message::create();
 		message.setMessageChat(CurrentChat);
-		message.setType(Message::TypeSystem);
+		message.setType(MessageTypeSystem);
 		message.setMessageSender(contact);
 		message.setContent(msg);
 		message.setSendDate(QDateTime::currentDateTime());

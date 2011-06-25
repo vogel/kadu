@@ -168,13 +168,13 @@ MessageRenderInfo::MessageRenderInfo(const Message &msg) :
 {
 	switch (msg.type())
 	{
-		case Message::TypeSent:
+		case MessageTypeSent:
 			BackgroundColor = ChatConfigurationHolder::instance()->myBackgroundColor();
 			NickColor = ChatConfigurationHolder::instance()->myNickColor();
 			FontColor = ChatConfigurationHolder::instance()->myFontColor();
 			break;
 
-		case Message::TypeReceived:
+		case MessageTypeReceived:
 			BackgroundColor = ChatConfigurationHolder::instance()->usrBackgroundColor();
 			NickColor = ChatConfigurationHolder::instance()->usrNickColor();
 			FontColor = ChatConfigurationHolder::instance()->usrFontColor();

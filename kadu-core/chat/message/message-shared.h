@@ -22,10 +22,11 @@
 #ifndef MESSAGE_SHARED_H
 #define MESSAGE_SHARED_H
 
+#include <QtCore/QDateTime>
 #include <QtCore/QSharedData>
 
 #include "chat/chat.h"
-#include "chat/message/message.h"
+#include "chat/message/message-common.h"
 #include "contacts/contact.h"
 #include "storage/shared.h"
 
@@ -41,8 +42,8 @@ class MessageShared : public QObject, public Shared
 	QString Content;
 	QDateTime ReceiveDate;
 	QDateTime SendDate;
-	Message::Status Status;
-	Message::Type Type;
+	MessageStatus Status;
+	MessageType Type;
 	bool Pending;
 	QString Id;
 
@@ -63,20 +64,20 @@ public:
 	virtual void store();
 	virtual bool shouldStore();
 
-	void setStatus(Message::Status status);
+	void setStatus(MessageStatus status);
 
 	KaduShared_Property(const Chat &, messageChat, MessageChat)
 	KaduShared_Property(const Contact &, messageSender, MessageSender)
 	KaduShared_Property(const QString &, content, Content)
 	KaduShared_Property(const QDateTime &, receiveDate, ReceiveDate)
 	KaduShared_Property(const QDateTime &, sendDate, SendDate)
-	KaduShared_PropertyRead(Message::Status, status, Status)
-	KaduShared_Property(Message::Type, type, Type)
+	KaduShared_PropertyRead(MessageStatus, status, Status)
+	KaduShared_Property(MessageType, type, Type)
 	KaduShared_PropertyBool(Pending)
 	KaduShared_Property(const QString &, id, Id)
 
 signals:
-	void statusChanged(Message::Status);
+	void statusChanged(MessageStatus);
 
 	void updated();
 

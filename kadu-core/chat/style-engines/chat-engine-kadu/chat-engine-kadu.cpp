@@ -104,7 +104,7 @@ void KaduChatStyleEngine::refreshView(HtmlMessagesRenderer *renderer, bool useTr
 	repaintMessages(renderer);
 }
 
-void KaduChatStyleEngine::messageStatusChanged(HtmlMessagesRenderer *renderer, Message message, Message::Status status)
+void KaduChatStyleEngine::messageStatusChanged(HtmlMessagesRenderer *renderer, Message message, MessageStatus status)
 {
 	renderer->webPage()->mainFrame()->evaluateJavaScript(QString("kadu_messageStatusChanged(\"%1\", %2);").arg(message.id()).arg((int)status));
 }
@@ -139,7 +139,7 @@ QString KaduChatStyleEngine::formatMessage(MessageRenderInfo *message, MessageRe
 
 	Message msg = message->message();
 
-	if (msg.type() == Message::TypeSystem)
+	if (msg.type() == MessageTypeSystem)
 	{
 		separatorSize = ChatStylesManager::instance()->paragraphSeparator();
 		format = CurrentChatSyntax.withHeader();
@@ -157,7 +157,7 @@ QString KaduChatStyleEngine::formatMessage(MessageRenderInfo *message, MessageRe
 		{
 			Message aft = after->message();
 			includeHeader =
-				(aft.type() != Message::TypeSystem) &&
+				(aft.type() != MessageTypeSystem) &&
 				((msg.receiveDate().toTime_t() - aft.receiveDate().toTime_t() > (ChatStylesManager::instance()->cfgNoHeaderInterval() * 60)) ||
 				 (msg.messageSender() != aft.messageSender()));
 		}

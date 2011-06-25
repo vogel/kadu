@@ -73,7 +73,7 @@ public:
 	void refresh();
 	void replaceLoadingImages(const QString &imageId, const QString &imageFileName);
 	void updateBackgroundsAndColors();
-	void messageStatusChanged(Message message, Message::Status status);
+	void messageStatusChanged(Message message, MessageStatus status);
 
 };
 

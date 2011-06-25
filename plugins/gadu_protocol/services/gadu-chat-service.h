@@ -54,7 +54,7 @@ class GaduChatService : public ChatService
 	bool ignoreImages(Contact sender);
 	FormattedMessage createFormattedMessage(struct gg_event *e, const QByteArray &content, Contact sender);
 
-	void handleMsg(Contact sender, ContactSet recipients, Message::Type type, struct gg_event *e);
+	void handleMsg(Contact sender, ContactSet recipients, MessageType type, struct gg_event *e);
 
 	void handleEventMsg(struct gg_event *e);
 	void handleEventMultilogonMsg(struct gg_event *e);

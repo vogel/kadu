@@ -25,6 +25,7 @@
 
 #include <QtCore/QDateTime>
 
+#include "chat/message/message-common.h"
 #include "storage/shared-base.h"
 
 #include "exports.h"
@@ -36,24 +37,6 @@ class MessageShared;
 class KADUAPI Message : public SharedBase<MessageShared>
 {
 	KaduSharedBaseClass(Message)
-
-public:
-	// Status enum vaules identical with those defined in kadu-core/chat/style-engines/chat-scripts.js
-	enum Status
-	{
-		StatusUnknown = 0,
-		StatusReceived = 1,
-		StatusSent = 2,
-		StatusDelivered = 3,
-		StatusWontDeliver = 4
-	};
-	enum Type
-	{
-		TypeUnknown,
-		TypeReceived,
-		TypeSent,
-		TypeSystem
-	};
 
 public:
 	static Message create();
@@ -72,8 +55,8 @@ public:
 	KaduSharedBase_PropertyCRW(QString, content, Content)
 	KaduSharedBase_PropertyCRW(QDateTime, receiveDate, ReceiveDate)
 	KaduSharedBase_PropertyCRW(QDateTime, sendDate, SendDate)
-	KaduSharedBase_Property(Message::Status, status, Status)
-	KaduSharedBase_Property(Message::Type, type, Type)
+	KaduSharedBase_Property(MessageStatus, status, Status)
+	KaduSharedBase_Property(MessageType, type, Type)
 	KaduSharedBase_PropertyBool(Pending)
 	KaduSharedBase_PropertyCRW(QString, id, Id)
 

@@ -61,7 +61,7 @@ public:
 	virtual void appendMessage(HtmlMessagesRenderer *renderer, MessageRenderInfo *message);
 	virtual void pruneMessage(HtmlMessagesRenderer *renderer);
 	virtual void refreshView(HtmlMessagesRenderer *renderer, bool useTransparency = false);
-	virtual void messageStatusChanged(HtmlMessagesRenderer *renderer, Message message, Message::Status status);
+	virtual void messageStatusChanged(HtmlMessagesRenderer *renderer, Message message, MessageStatus status);
 
 	virtual void prepareStylePreview(Preview *preview, QString styleName, QString variantName);
 

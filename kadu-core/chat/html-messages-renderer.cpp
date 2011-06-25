@@ -150,13 +150,13 @@ void HtmlMessagesRenderer::updateBackgroundsAndColors()
 	{
 		switch (message->message().type())
 		{
-			case Message::TypeSent:
+			case MessageTypeSent:
 				message->setBackgroundColor(ChatConfigurationHolder::instance()->myBackgroundColor())
 					.setNickColor(ChatConfigurationHolder::instance()->myNickColor())
 					.setFontColor(ChatConfigurationHolder::instance()->myFontColor());
 				break;
 
-			case Message::TypeReceived:
+			case MessageTypeReceived:
 				message->setBackgroundColor(ChatConfigurationHolder::instance()->usrBackgroundColor())
 					.setNickColor(ChatConfigurationHolder::instance()->usrNickColor())
 					.setFontColor(ChatConfigurationHolder::instance()->usrFontColor());
@@ -170,7 +170,7 @@ void HtmlMessagesRenderer::updateBackgroundsAndColors()
 	}
 }
 
-void HtmlMessagesRenderer::messageStatusChanged(Message message, Message::Status status)
+void HtmlMessagesRenderer::messageStatusChanged(Message message, MessageStatus status)
 {
     	ChatStylesManager::instance()->currentEngine()->messageStatusChanged(this, message, status);
 }

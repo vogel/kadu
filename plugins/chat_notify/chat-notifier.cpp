@@ -47,8 +47,8 @@ void ChatNotifier::sendNotificationToChatWidget(Notification *notification, Chat
 	message.setContent(notification->text());
 	message.setReceiveDate(QDateTime::currentDateTime());
 	message.setSendDate(QDateTime::currentDateTime());
-	message.setStatus(Message::StatusReceived);
-	message.setType(Message::TypeSystem);
+	message.setStatus(MessageStatusReceived);
+	message.setType(MessageTypeSystem);
 	message.setPending(false);
 
 	chatWidget->appendMessage(new MessageRenderInfo(message));

@@ -138,9 +138,9 @@ bool GaduChatService::sendMessage(const Chat &chat, FormattedMessage &message, b
 	{
 		Message msg = Message::create();
 		msg.setMessageChat(chat);
-		msg.setType(Message::TypeSent);
+		msg.setType(MessageTypeSent);
 		msg.setMessageSender(Protocol->account().accountContact());
-		msg.setStatus(Message::StatusSent);
+		msg.setStatus(MessageStatusSent);
 		msg.setContent(message.toHtml());
 		msg.setSendDate(QDateTime::currentDateTime());
 		msg.setReceiveDate(QDateTime::currentDateTime());
@@ -237,7 +237,7 @@ FormattedMessage GaduChatService::createFormattedMessage(struct gg_event *e, con
 				(unsigned char *)e->event.msg.formats, e->event.msg.formats_length, !ignoreImages(sender));
 }
 
-void GaduChatService::handleMsg(Contact sender, ContactSet recipients, Message::Type type, gg_event *e)
+void GaduChatService::handleMsg(Contact sender, ContactSet recipients, MessageType type, gg_event *e)
 {
 	ContactSet conference = recipients;
 	conference += sender;
@@ -271,12 +271,12 @@ void GaduChatService::handleMsg(Contact sender, ContactSet recipients, Message::
 	msg.setMessageChat(chat);
 	msg.setType(type);
 	msg.setMessageSender(sender);
-	msg.setStatus(Message::TypeReceived == type ? Message::StatusReceived : Message::StatusSent);
+	msg.setStatus(MessageTypeReceived == type ? MessageStatusReceived : MessageStatusSent);
 	msg.setContent(message.toHtml());
 	msg.setSendDate(time);
 	msg.setReceiveDate(QDateTime::currentDateTime());
 
-	if (Message::TypeReceived == type)
+	if (MessageTypeReceived == type)
 		emit messageReceived(msg);
 	else
 		emit messageSent(msg);
@@ -295,7 +295,7 @@ void GaduChatService::handleEventMsg(struct gg_event *e)
 
 	ContactSet recipients = getRecipients(e);
 
-	handleMsg(sender, recipients, Message::TypeReceived, e);
+	handleMsg(sender, recipients, MessageTypeReceived, e);
 }
 
 void GaduChatService::handleEventMultilogonMsg(gg_event *e)
@@ -309,7 +309,7 @@ void GaduChatService::handleEventMultilogonMsg(gg_event *e)
 	ContactSet recipients = getRecipients(e);
 	recipients.insert(getSender(e));
 
-	handleMsg(sender, recipients, Message::TypeSent, e);
+	handleMsg(sender, recipients, MessageTypeSent, e);
 }
 
 void GaduChatService::handleEventAck(struct gg_event *e)
@@ -327,27 +327,27 @@ void GaduChatService::handleEventAck(struct gg_event *e)
 	{
 		case GG_ACK_DELIVERED:
 			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "message delivered (uin: %u, seq: %d)\n", uin, messageId);
-			UndeliveredMessages[messageId].setStatus(Message::StatusDelivered);
+			UndeliveredMessages[messageId].setStatus(MessageStatusDelivered);
 			emit messageStatusChanged(UndeliveredMessages[messageId], StatusAcceptedDelivered);
 			break;
 		case GG_ACK_QUEUED:
 			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "message queued (uin: %u, seq: %d)\n", uin, messageId);
-			UndeliveredMessages[messageId].setStatus(Message::StatusDelivered);
+			UndeliveredMessages[messageId].setStatus(MessageStatusDelivered);
 			emit messageStatusChanged(UndeliveredMessages[messageId], StatusAcceptedQueued);
 			break;
 		case GG_ACK_BLOCKED:
 			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "message blocked (uin: %u, seq: %d)\n", uin, messageId);
-			UndeliveredMessages[messageId].setStatus(Message::StatusWontDeliver);
+			UndeliveredMessages[messageId].setStatus(MessageStatusWontDeliver);
 			emit messageStatusChanged(UndeliveredMessages[messageId], StatusRejectedBlocked);
 			break;
 		case GG_ACK_MBOXFULL:
 			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "message box full (uin: %u, seq: %d)\n", uin, messageId);
-			UndeliveredMessages[messageId].setStatus(Message::StatusWontDeliver);
+			UndeliveredMessages[messageId].setStatus(MessageStatusWontDeliver);
 			emit messageStatusChanged(UndeliveredMessages[messageId], StatusRejectedBoxFull);
 			break;
 		case GG_ACK_NOT_DELIVERED:
 			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "message not delivered (uin: %u, seq: %d)\n", uin, messageId);
-			UndeliveredMessages[messageId].setStatus(Message::StatusWontDeliver);
+			UndeliveredMessages[messageId].setStatus(MessageStatusWontDeliver);
 			emit messageStatusChanged(UndeliveredMessages[messageId], StatusRejectedUnknown);
 			break;
 		default:
@@ -372,7 +372,7 @@ void GaduChatService::removeTimeoutUndeliveredMessages()
 
 	foreach (int messageId, toRemove)
 	{
-		UndeliveredMessages[messageId].setStatus(Message::StatusWontDeliver);
+		UndeliveredMessages[messageId].setStatus(MessageStatusWontDeliver);
 		emit messageStatusChanged(UndeliveredMessages[messageId], StatusRejectedTimeout);
 		UndeliveredMessages.remove(messageId);
 	}

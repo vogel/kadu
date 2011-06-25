@@ -20,6 +20,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "chat/message/message.h"
 #include "chat/message/pending-messages-manager.h"
 #include "chat/chat-manager.h"
 #include "contacts/contact-manager.h"
@@ -41,7 +42,7 @@ MessageShared * MessageShared::loadFromStorage(const QSharedPointer<StoragePoint
 }
 
 MessageShared::MessageShared(const QUuid &uuid) :
-		Shared(uuid), Status(Message::StatusUnknown), Type(Message::TypeUnknown), Pending(false)
+		Shared(uuid), Status(MessageStatusUnknown), Type(MessageTypeUnknown), Pending(false)
 {
 }
 
@@ -72,9 +73,9 @@ void MessageShared::load()
 	Content = loadValue<QString>("Content");
 	ReceiveDate = loadValue<QDateTime>("ReceiveDate");
 	SendDate = loadValue<QDateTime>("SendDate");
-	Status = (Message::Status)loadValue<int>("Status");
-	Type = (Message::Type)loadValue<int>("Type");
-	Pending = (Message::Type)loadValue<bool>("Pending");
+	Status = (MessageStatus)loadValue<int>("Status");
+	Type = (MessageType)loadValue<int>("Type");
+	Pending = (MessageType)loadValue<bool>("Pending");
 	Id = loadValue<QString>("Id");
 }
 
@@ -113,7 +114,7 @@ void MessageShared::emitUpdated()
 	emit updated();
 }
 
-void MessageShared::setStatus(Message::Status status)
+void MessageShared::setStatus(MessageStatus status)
 {
 	ensureLoaded();
 
