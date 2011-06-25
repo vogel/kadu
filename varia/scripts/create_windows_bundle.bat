@@ -46,6 +46,7 @@ xcopy Default %DESTINATION%\syntax\chat\Default /C /H /R /Y /S /I /Q
 cd ..\..\..
 
 xcopy varia\syntax\infopanel\*.syntax %DESTINATION%\syntax\infopanel\ /C /H /R /Y /Q
+xcopy translations\*.language         %DESTINATION%\translations\ /C /H /R /Y /Q
 xcopy build\translations\*.qm         %DESTINATION%\translations\ /C /H /R /Y /Q
 
 cd varia\themes\emoticons
