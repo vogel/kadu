@@ -51,6 +51,8 @@ private:
 	void removeUuidNodes(QDomElement parentNode, const QList<QDomElement> &elements, const QString &uuid);
 	void removeNamedNodes(QDomElement parentNode, const QList<QDomElement> &elements, const QString &name);
 
+	QDomNode cdataOrText(const QString &text);
+
 public:
 	/**
 		Otwiera plik i go wczytuje

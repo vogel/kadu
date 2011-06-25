@@ -382,23 +382,31 @@ QList<QDomElement> XmlConfigFile::getNodes(const QDomElement &parent, const QStr
 	return result;
 }
 
+QDomNode XmlConfigFile::cdataOrText(const QString &text)
+{
+	if (text.trimmed() != text)
+		return DomDocument.createCDATASection(text);
+	else
+		return DomDocument.createTextNode(text);
+}
+
 void XmlConfigFile::appendTextNode(const QDomElement &parentNode, const QString &nodeTagName, const QString &nodeContent)
 {
 	QDomElement element = getNode(parentNode, nodeTagName, ModeAppend);
-	element.appendChild(DomDocument.createTextNode(nodeContent));
+	element.appendChild(cdataOrText(nodeContent));
 }
 
 void XmlConfigFile::createTextNode(const QDomElement &parentNode, const QString &nodeTagName, const QString &nodeContent)
 {
 	QDomElement element = getNode(parentNode, nodeTagName, ModeCreate);
-	element.appendChild(DomDocument.createTextNode(nodeContent));
+	element.appendChild(cdataOrText(nodeContent));
 }
 
 void XmlConfigFile::createNamedTextNode(const QDomElement &parentNode, const QString &nodeTagName,
 		const QString &nodeName, const QString &nodeContent)
 {
 	QDomElement element = getNamedNode(parentNode, nodeTagName, nodeName, ModeCreate);
-	element.appendChild(DomDocument.createTextNode(nodeContent));
+	element.appendChild(cdataOrText(nodeContent));
 }
 
 QString XmlConfigFile::getTextNode(const QDomElement &parentNode, const QString &nodeTagName, const QString &defaultValue)
