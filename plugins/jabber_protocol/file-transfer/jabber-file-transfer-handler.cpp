@@ -82,6 +82,8 @@ void JabberFileTransferHandler::cleanup(FileTransferStatus status)
 
 	if (LocalFile.isOpen())
 		LocalFile.close();
+
+	deleteLater();
 }
 
 void JabberFileTransferHandler::updateFileInfo()
@@ -111,6 +113,7 @@ void JabberFileTransferHandler::send()
 	if (account.isNull() || transfer().localFileName().isEmpty())
 	{
 		transfer().setTransferStatus(StatusNotConnected);
+		deleteLater();
 		return; // TODO: notify
 	}
 
@@ -118,12 +121,14 @@ void JabberFileTransferHandler::send()
 	if (!jabberProtocol)
 	{
 		transfer().setTransferStatus(StatusNotConnected);
+		deleteLater();
 		return;
 	}
 
 	if (!jabberProtocol->jabberContactDetails(transfer().peer()))
 	{
 		transfer().setTransferStatus(StatusNotConnected);
+		deleteLater();
 		return;
 	}
 

@@ -88,6 +88,7 @@ void GaduFileTransferHandler::socketNotAvailable()
 	WaitingForSocketNotifiers = false;
 
 	transfer().setTransferStatus(StatusNotConnected);
+	deleteLater();
 }
 
 void GaduFileTransferHandler::finished(bool ok)
@@ -95,6 +96,7 @@ void GaduFileTransferHandler::finished(bool ok)
 	transfer().setTransferStatus(ok
 			? StatusFinished
 			: StatusNotConnected);
+	deleteLater();
 }
 
 void GaduFileTransferHandler::socketNotifiersDeleted()
@@ -143,6 +145,8 @@ void GaduFileTransferHandler::stop()
 		SocketNotifiers = 0;
 		transfer().setTransferStatus(StatusNotConnected);
 	}
+
+	deleteLater();
 }
 
 bool GaduFileTransferHandler::accept(const QString &fileName, bool resumeTransfer)

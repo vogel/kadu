@@ -9,6 +9,7 @@
 * core: #2042 fixed: no longes use two envelopes in docking for buddies with messages from different contacts (Vogel)
 * gadu: #2134 fixed: gadu now try to reconnect after providing invalid password (Vogel)
 * storage: #2179 fixed: properly store whitespace values in configuration (Vogel)
+* file-transfer: #2162 fixed: properly delete file transfer handlers (Vogel)
 
 +++ version 0.10.0-alpha1
 * gadu: removed depreceated ip/port/version code - gg server does not send this info anymore (Vogel)
