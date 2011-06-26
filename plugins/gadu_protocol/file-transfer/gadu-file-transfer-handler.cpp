@@ -119,6 +119,7 @@ void GaduFileTransferHandler::send()
 	if (account.isNull() || transfer().localFileName().isEmpty())
 	{
 		transfer().setTransferStatus(StatusNotConnected);
+		deleteLater();
 		return; // TODO: notify
 	}
 
@@ -126,6 +127,7 @@ void GaduFileTransferHandler::send()
 	if (!gaduProtocol || !GaduProtocolHelper::gaduContactDetails(contact))
 	{
 		transfer().setTransferStatus(StatusNotConnected);
+		deleteLater();
 		return;
 	}
 
