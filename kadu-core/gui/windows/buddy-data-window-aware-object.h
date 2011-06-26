@@ -60,8 +60,8 @@ protected:
 	virtual void buddyDataWindowDestroyed(BuddyDataWindow *buddydatawindow) = 0;
 
 public:
-	static KADUAPI void notifyBuddyDataWindowCreated(BuddyDataWindow *buddydatawindow);
-	static KADUAPI void notifyBuddyDataWindowDestroyed(BuddyDataWindow *buddydatawindow);
+	static void notifyBuddyDataWindowCreated(BuddyDataWindow *buddydatawindow);
+	static void notifyBuddyDataWindowDestroyed(BuddyDataWindow *buddydatawindow);
 
 	void triggerAllBuddyDataWindowsCreated();
 	void triggerAllBuddyDataWindowsDestroyed();

@@ -27,7 +27,7 @@
 
 StatusGroupManager * StatusGroupManager::Instance = 0;
 
-KADUAPI StatusGroupManager * StatusGroupManager::instance()
+StatusGroupManager * StatusGroupManager::instance()
 {
 	if (0 == Instance)
 		Instance = new StatusGroupManager();

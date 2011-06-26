@@ -54,7 +54,7 @@ private slots:
 	void jobFinished();
 
 public:
-	static KADUAPI AvatarJobManager * instance();
+	static AvatarJobManager * instance();
 
 	void addJob(const Contact &contact);
 

@@ -51,7 +51,7 @@ private slots:
 	void rejected();
 
 public:
-	static KADUAPI void getSubscription(Contact contact, QObject* receiver, const char* slot);
+	static void getSubscription(Contact contact, QObject* receiver, const char* slot);
 	
 	explicit SubscriptionWindow(Contact contact, QWidget* parent = 0);
 	virtual ~SubscriptionWindow();

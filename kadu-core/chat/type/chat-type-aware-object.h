@@ -67,8 +67,8 @@ protected:
 	virtual void chatTypeUnregistered(ChatType *chatType) = 0;
 
 public:
-	static KADUAPI void notifyChatTypeRegistered(ChatType *chatType);
-	static KADUAPI void notifyChatTypeUnregistered(ChatType *chatType);
+	static void notifyChatTypeRegistered(ChatType *chatType);
+	static void notifyChatTypeUnregistered(ChatType *chatType);
 
 	void triggerAllChatTypesRegistered();
 	void triggerAllChatTypesUnregistered();

@@ -59,7 +59,7 @@ protected:
 	virtual void keyPressEvent(QKeyEvent *e);
 
 public:
-	static KADUAPI MultilogonWindow * instance();
+	static MultilogonWindow * instance();
 
 	void show();
 

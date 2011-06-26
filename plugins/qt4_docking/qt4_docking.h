@@ -54,7 +54,7 @@ private slots:
 	void movieUpdate();
 
 public:
-	static QT4DOCKAPI Qt4TrayIcon * instance();
+	static Qt4TrayIcon * instance();
 
 	static Qt4TrayIcon * createInstance();
 	static void destroyInstance();

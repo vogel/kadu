@@ -29,7 +29,7 @@ protected:
 	virtual void onlineStateChanged(bool online) = 0;
 
 public:
-	static KADUAPI void notifyOnlineStateChanged(bool online);
+	static void notifyOnlineStateChanged(bool online);
 
 	NetworkAwareObject();
 

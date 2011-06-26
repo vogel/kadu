@@ -65,7 +65,7 @@ protected:
 	virtual void itemRemoved(Avatar item);
 
 public:
-	static KADUAPI AvatarManager * instance();
+	static AvatarManager * instance();
 
 	virtual QString storageNodeName() { return QLatin1String("Avatars"); }
 	virtual QString storageNodeItemName() { return QLatin1String("Avatar"); }

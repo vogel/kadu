@@ -28,7 +28,7 @@
 
 DescriptionManager * DescriptionManager::Instance = 0;
 
-KADUAPI DescriptionManager * DescriptionManager::instance()
+DescriptionManager * DescriptionManager::instance()
 {
 	if (0 == Instance)
 		Instance = new DescriptionManager();

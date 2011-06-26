@@ -49,7 +49,7 @@ protected:
 	virtual void itemRemoved(Key item);
 
 public:
-	static ENCRYPTIONAPI KeysManager * instance();
+	static KeysManager * instance();
 
 	static void destroyInstance();
 

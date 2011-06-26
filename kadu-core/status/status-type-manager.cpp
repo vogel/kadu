@@ -33,7 +33,7 @@
 
 StatusTypeManager * StatusTypeManager::Instance = 0;
 
-KADUAPI StatusTypeManager * StatusTypeManager::instance()
+StatusTypeManager * StatusTypeManager::instance()
 {
 	if (0 == Instance)
 		Instance = new StatusTypeManager();

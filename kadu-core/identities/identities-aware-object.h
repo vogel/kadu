@@ -35,8 +35,8 @@ protected:
 	virtual void identityRemoved(Identity identity) = 0;
 
 public:
-	static KADUAPI void notifyIdentityAdded(Identity identity);
-	static KADUAPI void notifyIdentityRemoved(Identity identity);
+	static void notifyIdentityAdded(Identity identity);
+	static void notifyIdentityRemoved(Identity identity);
 
 	void triggerAllIdentitiesAdded();
 	void triggerAllIdentitiesRemoved();

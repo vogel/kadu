@@ -35,8 +35,8 @@ protected:
 	virtual void protocolUnregistered(ProtocolFactory *protocolFactory) = 0;
 
 public:
-	static KADUAPI void notifyProtocolRegistered(ProtocolFactory *protocolFactory);
-	static KADUAPI void notifyProtocolUnregistered(ProtocolFactory *protocolFactory);
+	static void notifyProtocolRegistered(ProtocolFactory *protocolFactory);
+	static void notifyProtocolUnregistered(ProtocolFactory *protocolFactory);
 
 	void triggerAllProtocolsRegistered();
 	void triggerAllProtocolsUnregistered();

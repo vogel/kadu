@@ -79,5 +79,5 @@ protected:
     QtLP_Private::QtLockedFile lockFile;
 
 private:
-    static KADUAPI const char* ack;
+    static const char* ack;
 };

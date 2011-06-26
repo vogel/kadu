@@ -119,7 +119,7 @@ protected:
 	virtual void accountUnregistered(Account account);
 
 public:
-	static KADUAPI YourAccounts * instance();
+	static YourAccounts * instance();
 
 	virtual ~YourAccounts();
 	void show();

@@ -29,7 +29,7 @@
 
 IdentityManager * IdentityManager::Instance = 0;
 
-KADUAPI IdentityManager * IdentityManager::instance()
+IdentityManager * IdentityManager::instance()
 {
 	if (0 == Instance)
 		Instance = new IdentityManager();

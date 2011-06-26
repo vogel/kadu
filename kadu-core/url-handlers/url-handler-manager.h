@@ -46,7 +46,7 @@ class KADUAPI UrlHandlerManager
 	StandardUrlHandler *standardUrlHandler;
 
 public:
-	static KADUAPI UrlHandlerManager * instance();
+	static UrlHandlerManager * instance();
 	~UrlHandlerManager();
 
 	void registerUrlHandler(const QString &name, UrlHandler *handler);

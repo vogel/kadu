@@ -34,7 +34,7 @@ class KADUAPI AwareObject
 {
 
 protected:
-	static KADUAPI QList<T *> Objects;
+	static QList<T *> Objects;
 
 public:
 	AwareObject() { Objects.append(static_cast<T *>(this)); }

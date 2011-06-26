@@ -33,7 +33,7 @@ protected:
 	virtual void crash() = 0;
 
 public:
-	static KADUAPI void notifyCrash();
+	static void notifyCrash();
 
 };
 

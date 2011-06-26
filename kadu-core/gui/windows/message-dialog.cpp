@@ -32,7 +32,7 @@
 
 #include "message-dialog.h"
 
-void KADUAPI MessageDialog::show(const KaduIcon &icon, const QString &title, const QString &text, QMessageBox::StandardButtons buttons,
+void MessageDialog::show(const KaduIcon &icon, const QString &title, const QString &text, QMessageBox::StandardButtons buttons,
 			QWidget *parent, Qt::WindowFlags f)
 {
 	QMessageBox *mb = new QMessageBox(QMessageBox::NoIcon, title, text, buttons, parent, f);
@@ -46,7 +46,7 @@ void KADUAPI MessageDialog::show(const KaduIcon &icon, const QString &title, con
 	mb->show();
 }
 
-int KADUAPI MessageDialog::exec(const KaduIcon &icon, const QString &title, const QString &text, QMessageBox::StandardButtons buttons,
+int MessageDialog::exec(const KaduIcon &icon, const QString &title, const QString &text, QMessageBox::StandardButtons buttons,
 			QWidget *parent, Qt::WindowFlags f)
 {
 	QMessageBox mb(QMessageBox::NoIcon, title, text, buttons, parent, f);
@@ -59,7 +59,7 @@ int KADUAPI MessageDialog::exec(const KaduIcon &icon, const QString &title, cons
 	return mb.exec();
 }
 
-bool KADUAPI MessageDialog::ask(const KaduIcon &icon, const QString &title, const QString &text, QWidget *parent, Qt::WindowFlags f)
+bool MessageDialog::ask(const KaduIcon &icon, const QString &title, const QString &text, QWidget *parent, Qt::WindowFlags f)
 {
 	return QMessageBox::Yes == exec(icon, title, text, QMessageBox::Yes | QMessageBox::No, parent, f);
 }

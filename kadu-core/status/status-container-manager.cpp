@@ -39,7 +39,7 @@
 
 StatusContainerManager * StatusContainerManager::Instance = 0;
 
-KADUAPI StatusContainerManager * StatusContainerManager::instance()
+StatusContainerManager * StatusContainerManager::instance()
 {
 	if (!Instance)
 		Instance = new StatusContainerManager();

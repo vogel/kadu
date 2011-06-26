@@ -37,10 +37,10 @@ protected:
 	virtual void accountUnregistered(Account account) = 0;
 
 public:
-	static KADUAPI void notifyAccountAdded(Account account);
-	static KADUAPI void notifyAccountRemoved(Account account);
-	static KADUAPI void notifyAccountRegistered(Account account);
-	static KADUAPI void notifyAccountUnregistered(Account account);
+	static void notifyAccountAdded(Account account);
+	static void notifyAccountRemoved(Account account);
+	static void notifyAccountRegistered(Account account);
+	static void notifyAccountUnregistered(Account account);
 	
 	void triggerAllAccountsAdded();
 	void triggerAllAccountsRemoved();
