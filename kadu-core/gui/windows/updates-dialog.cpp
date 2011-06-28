@@ -34,7 +34,7 @@
 #include "updates-dialog.h"
 
 UpdatesDialog::UpdatesDialog(const QString &newestVersion, QWidget *parent) :
-		QDialog(parent)
+		QDialog(parent), DesktopAwareObject(this)
 {
 	setWindowRole("kadu-updates");
 	setWindowTitle(tr("New version is available. Please update"));

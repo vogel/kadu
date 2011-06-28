@@ -28,6 +28,7 @@
 #include <QtGui/QDialog>
 
 #include "contacts/contact.h"
+#include "os/generic/desktop-aware-object.h"
 #include "exports.h"
 
 class QCheckBox;
@@ -36,7 +37,7 @@ class QLineEdit;
 class GroupsComboBox;
 class SelectBuddyComboBox;
 
-class KADUAPI SubscriptionWindow : public QDialog
+class KADUAPI SubscriptionWindow : public QDialog, DesktopAwareObject
 {
 	Q_OBJECT
 

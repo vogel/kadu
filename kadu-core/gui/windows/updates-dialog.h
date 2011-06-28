@@ -22,9 +22,11 @@
 
 #include <QtGui/QDialog>
 
+#include "os/generic/desktop-aware-object.h"
+
 class QCheckBox;
 
-class UpdatesDialog : public QDialog
+class UpdatesDialog : public QDialog, DesktopAwareObject
 {
 	Q_OBJECT
 

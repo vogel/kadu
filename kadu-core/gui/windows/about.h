@@ -33,6 +33,8 @@
 #include <QtGui/QLabel>
 #include <QtGui/QWidget>
 
+#include "os/generic/desktop-aware-object.h"
+
 class QUrl;
 class QKeyEvent;
 class QMouseEvent;
@@ -42,7 +44,7 @@ class QString;
 	\class About
 	\brief Okno z informacjami o programie.
 **/
-class About : public QWidget
+class About : public QWidget, DesktopAwareObject
 {
 	Q_OBJECT
 

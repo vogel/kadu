@@ -40,7 +40,7 @@
 #include "group-properties-window.h"
 
 GroupPropertiesWindow::GroupPropertiesWindow(Group editedGroup, QWidget *parent)
-	: QWidget(parent, Qt::Window), group(editedGroup)
+	: QWidget(parent, Qt::Window), DesktopAwareObject(this), group(editedGroup)
 {
 	setWindowRole("kadu-group-properties");
 

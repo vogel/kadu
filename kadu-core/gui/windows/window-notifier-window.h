@@ -24,9 +24,11 @@
 
 #include <QtGui/QDialog>
 
+#include "os/generic/desktop-aware-object.h"
+
 class Notification;
 
-class WindowNotifierWindow : public QDialog
+class WindowNotifierWindow : public QDialog, DesktopAwareObject
 {
 	Q_OBJECT
 

@@ -29,6 +29,7 @@
 
 #include "gui/actions/action-data-source.h"
 #include "gui/actions/action-description.h"
+#include "os/generic/desktop-aware-object.h"
 
 #include "exports.h"
 
@@ -43,7 +44,7 @@ class ContactSet;
 class StatusContainer;
 class ToolBar;
 
-class KADUAPI MainWindow : public QMainWindow, public ActionDataSource
+class KADUAPI MainWindow : public QMainWindow, public ActionDataSource, DesktopAwareObject
 {
 	Q_OBJECT
 

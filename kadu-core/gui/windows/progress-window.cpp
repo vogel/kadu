@@ -30,7 +30,7 @@
 #include "progress-window.h"
 
 ProgressWindow::ProgressWindow(QWidget *parent) :
-		QDialog(parent), CanClose(false)
+		QDialog(parent), DesktopAwareObject(this), CanClose(false)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	setWindowRole("kadu-progress");

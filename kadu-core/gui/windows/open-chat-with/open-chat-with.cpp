@@ -63,7 +63,7 @@ OpenChatWith * OpenChatWith::instance()
 }
 
 OpenChatWith::OpenChatWith() :
-	QWidget(0, Qt::Window), IsTyping(false), ListModel(0)
+	QWidget(0, Qt::Window), DesktopAwareObject(this), IsTyping(false), ListModel(0)
 {
 	kdebugf();
 

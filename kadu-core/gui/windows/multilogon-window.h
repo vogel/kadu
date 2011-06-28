@@ -23,6 +23,7 @@
 #include <QtGui/QWidget>
 
 #include "accounts/account.h"
+#include "os/generic/desktop-aware-object.h"
 #include "exports.h"
 
 class QPushButton;
@@ -32,7 +33,7 @@ class AccountsComboBox;
 class MultilogonService;
 class MultilogonSession;
 
-class KADUAPI MultilogonWindow : public QWidget
+class KADUAPI MultilogonWindow : public QWidget, DesktopAwareObject
 {
 	Q_OBJECT
 

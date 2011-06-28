@@ -24,12 +24,13 @@
 #include <QtGui/QWidget>
 
 #include "buddies/group.h"
+#include "os/generic/desktop-aware-object.h"
 
 class QCheckBox;
 class QLabel;
 class QPushButton;
 
-class GroupPropertiesWindow : public QWidget
+class GroupPropertiesWindow : public QWidget, DesktopAwareObject
 {
 	Q_OBJECT
 

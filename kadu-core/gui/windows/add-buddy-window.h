@@ -28,6 +28,7 @@
 
 #include "accounts/account.h"
 #include "buddies/buddy.h"
+#include "os/generic/desktop-aware-object.h"
 
 class QCheckBox;
 class QLabel;
@@ -40,7 +41,7 @@ class GroupsComboBox;
 class IdValidityFilter;
 class SelectBuddyComboBox;
 
-class AddBuddyWindow : public QDialog
+class AddBuddyWindow : public QDialog, DesktopAwareObject
 {
 	Q_OBJECT
 

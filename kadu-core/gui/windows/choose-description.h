@@ -25,6 +25,7 @@
 
 #include <QtGui/QDialog>
 
+#include "os/generic/desktop-aware-object.h"
 #include "status/status.h"
 
 class QComboBox;
@@ -32,7 +33,7 @@ class QLabel;
 
 class StatusContainer;
 
-class ChooseDescription : public QDialog
+class ChooseDescription : public QDialog, DesktopAwareObject
 {
 	Q_OBJECT
 

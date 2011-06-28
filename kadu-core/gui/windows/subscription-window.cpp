@@ -53,7 +53,7 @@ void SubscriptionWindow::getSubscription(Contact contact, QObject *receiver, con
 }
 
 SubscriptionWindow::SubscriptionWindow(Contact contact, QWidget *parent) :
-		QDialog(parent), CurrentContact(contact)
+		QDialog(parent), DesktopAwareObject(this), CurrentContact(contact)
 {
 	setWindowRole("kadu-subscription");
 

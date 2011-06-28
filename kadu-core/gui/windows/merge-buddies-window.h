@@ -24,10 +24,11 @@
 #include <QtGui/QDialog>
 
 #include "buddies/buddy.h"
+#include "os/generic/desktop-aware-object.h"
 
 class SelectBuddyComboBox;
 
-class MergeBuddiesWindow : public QDialog
+class MergeBuddiesWindow : public QDialog, DesktopAwareObject
 {
 	Q_OBJECT
 

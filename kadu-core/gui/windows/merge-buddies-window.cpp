@@ -36,7 +36,7 @@
 #include "merge-buddies-window.h"
 
 MergeBuddiesWindow::MergeBuddiesWindow(Buddy buddy, QWidget *parent) :
-		QDialog(parent), MyBuddy(buddy)
+		QDialog(parent), DesktopAwareObject(this), MyBuddy(buddy)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 

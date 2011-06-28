@@ -33,6 +33,7 @@
 #include <QtCore/QObject>
 #include <QtGui/QWidget>
 
+#include "os/generic/desktop-aware-object.h"
 #include "plugins/plugin.h"
 #include "plugins/plugin-info.h"
 #include "plugins/plugins-manager.h"
@@ -51,7 +52,7 @@ class QTreeWidgetItem;
 	\class ModulesWindow
 	\brief "Zarz�dca modu��w"
 **/
-class ModulesWindow : public QWidget
+class ModulesWindow : public QWidget, DesktopAwareObject
 {
 	Q_OBJECT
 

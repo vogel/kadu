@@ -38,7 +38,7 @@
 #include "file-transfer-window.h"
 
 FileTransferWindow::FileTransferWindow(QWidget *parent) :
-	QFrame(parent)
+	QFrame(parent), DesktopAwareObject(this)
 {
 	kdebugf();
 
