@@ -9,11 +9,11 @@
 # Copyrignt (c) 2011, Rafał 'Vogel' Malinowski <vogel@kadu.im>
 
 # libraries
-find_package (Qt4 4.7.0 REQUIRED)
 set (QT_USE_QTXML 1)
 set (QT_USE_QTNETWORK 1)
 set (QT_USE_QTWEBKIT 1)
 set (QT_USE_QTSVG 1)
+find_package (Qt4 4.7.0 REQUIRED)
 if (UNIX AND NOT APPLE)
 	set (QT_USE_QTDBUS 1)
 endif (UNIX AND NOT APPLE)
