@@ -107,8 +107,6 @@ void SoundConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurati
 
 	connect(mainConfigurationWindow->widget()->widgetById("sound/use"), SIGNAL(toggled(bool)),
 		mainConfigurationWindow->widget()->widgetById("sound/theme"), SLOT(setEnabled(bool)));
-	connect(mainConfigurationWindow->widget()->widgetById("sound/use"), SIGNAL(toggled(bool)),
-		mainConfigurationWindow->widget()->widgetById("sound/volume"), SLOT(setEnabled(bool)));
 	//connect(mainConfigurationWindow->widget()->widgetById("sound/use"), SIGNAL(toggled(bool)),
 	//	mainConfigurationWindow->widget()->widgetById("sound/samples"), SLOT(setEnabled(bool)));
 
