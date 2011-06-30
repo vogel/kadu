@@ -206,7 +206,7 @@ void WordFix::doReplace(QString &text)
 
 	for (QMap<QString, QString>::const_iterator i = wordsList.constBegin(); i != wordsList.constEnd(); ++i)
 	{
-		int keyLength = i.key().length();
+		const int keyLength = i.key().length();
 		int pos = 0;
 		while ((pos = text.indexOf(i.key(), pos)) != -1)
 		{
@@ -231,6 +231,7 @@ void WordFix::doReplace(QString &text)
 			}
 
 			text.replace(pos, keyLength, i.value());
+			pos += i.value().length();
 		}
 	}
 
