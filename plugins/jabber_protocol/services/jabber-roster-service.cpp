@@ -65,18 +65,18 @@ Buddy JabberRosterService::itemBuddy(const XMPP::RosterItem &item, const Contact
 		if (byDispalyBuddy) // move to buddy by display, why not?
 		{
 			buddy = byDispalyBuddy;
-			contact.setOwnerBuddy(byDispalyBuddy);
+			contact.setOwnerBuddy(buddy);
 		}
 		else
-			contact.ownerBuddy().setDisplay(display);
+			buddy.setDisplay(display);
+
+		buddy.setAnonymous(false);
 	}
 	else // check if we can change name
 	{
 		if (!Protocol->contactsListReadOnly())
 			contact.ownerBuddy().setDisplay(display);
 	}
-
-	buddy.setAnonymous(false);
 
 	return buddy;
 }
