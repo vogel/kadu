@@ -113,21 +113,21 @@ bool GaduChatService::sendMessage(const Chat &chat, FormattedMessage &message, b
 
 		if (formatsSize)
 			messageId = gg_send_message_confer_richtext(
-					Protocol->gaduSession(), GG_CLASS_CHAT, uinsCount, uins.data(), (unsigned char *)data.data(),
+					Protocol->gaduSession(), GG_CLASS_CHAT, uinsCount, uins.data(), (const unsigned char *)data.constData(),
 					formats.data(), formatsSize);
 		else
 			messageId = gg_send_message_confer(
-					Protocol->gaduSession(), GG_CLASS_CHAT, uinsCount, uins.data(), (unsigned char *)data.data());
+					Protocol->gaduSession(), GG_CLASS_CHAT, uinsCount, uins.data(), (const unsigned char *)data.constData());
 	}
 	else if (uinsCount == 1)
 	{
 		if (formatsSize)
 			messageId = gg_send_message_richtext(
-					Protocol->gaduSession(), GG_CLASS_CHAT, GaduProtocolHelper::uin(contacts.at(0)), (unsigned char *)data.data(),
+					Protocol->gaduSession(), GG_CLASS_CHAT, GaduProtocolHelper::uin(contacts.at(0)), (const unsigned char *)data.constData(),
 					formats.data(), formatsSize);
 		else
 			messageId = gg_send_message(
-					Protocol->gaduSession(), GG_CLASS_CHAT, GaduProtocolHelper::uin(contacts.at(0)), (unsigned char *)data.data());
+					Protocol->gaduSession(), GG_CLASS_CHAT, GaduProtocolHelper::uin(contacts.at(0)), (const unsigned char *)data.constData());
 	}
 
 	if (-1 == messageId)
