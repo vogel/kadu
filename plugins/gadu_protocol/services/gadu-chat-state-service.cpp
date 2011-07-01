@@ -89,7 +89,7 @@ void GaduChatStateService::composingStopped(const Chat &chat)
 
 void GaduChatStateService::chatWidgetClosed(const Chat &chat)
 {
-	Q_UNUSED(chat)
+	composingStopped(chat);
 }
 
 void GaduChatStateService::chatWidgetActivated(const Chat &chat)
