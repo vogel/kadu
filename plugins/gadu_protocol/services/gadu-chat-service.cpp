@@ -254,7 +254,8 @@ void GaduChatService::handleMsg(Contact sender, ContactSet recipients, MessageTy
 	QDateTime time = QDateTime::fromTime_t(e->event.msg.time);
 
 	bool ignore = false;
-	emit filterRawIncomingMessage(chat, sender, content, ignore);
+	if (Protocol->account().accountContact() != sender)
+		emit filterRawIncomingMessage(chat, sender, content, ignore);
 
 	FormattedMessage message = createFormattedMessage(e, content, sender);
 	if (message.isEmpty())
@@ -263,8 +264,11 @@ void GaduChatService::handleMsg(Contact sender, ContactSet recipients, MessageTy
 	kdebugmf(KDEBUG_INFO, "Got message from %u saying \"%s\"\n",
 			sender.id().toUInt(), qPrintable(message.toPlain()));
 
-	QString messageString = message.toPlain();
-	emit filterIncomingMessage(chat, sender, messageString, time.toTime_t(), ignore);
+	if (Protocol->account().accountContact() != sender)
+	{
+		QString messageString = message.toPlain();
+		emit filterIncomingMessage(chat, sender, messageString, time.toTime_t(), ignore);
+	}
 
 	if (ignore)
 		return;
