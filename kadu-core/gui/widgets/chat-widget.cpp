@@ -129,10 +129,8 @@ ChatWidget::~ChatWidget()
 
 	ChatWidgetManager::instance()->unregisterChatWidget(this);
 
-	if (!currentProtocol() || !currentProtocol()->chatStateService())
-		return;
-
-	currentProtocol()->chatStateService()->chatWidgetClosed(CurrentChat);
+	if (currentProtocol() && currentProtocol()->chatStateService())
+		currentProtocol()->chatStateService()->chatWidgetClosed(chat());
 
 	kdebugmf(KDEBUG_FUNCTION_END, "chat destroyed\n");
 }
@@ -651,21 +649,20 @@ void ChatWidget::checkComposing()
 	{
 		ComposingTimer.stop();
 
-		if (!currentProtocol() || !currentProtocol()->chatStateService())
-			return;
-
-		currentProtocol()->chatStateService()->composingStopped(chat());
+		if (currentProtocol() && currentProtocol()->chatStateService())
+			currentProtocol()->chatStateService()->composingStopped(chat());
 	}
-
-	IsComposing = false;
+	else
+		IsComposing = false;
 }
 
 void ChatWidget::updateComposing()
 {
+	if (!currentProtocol() || !currentProtocol()->chatStateService())
+		return;
+
 	if (!ComposingTimer.isActive())
 	{
-		if (!currentProtocol() || !currentProtocol()->chatStateService())
-			return;
 
 		// If the text was deleted either by sending a message or explicitly by the user,
 		// let's not report it as composing.
