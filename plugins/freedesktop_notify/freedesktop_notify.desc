@@ -5,4 +5,5 @@ Author=Jacek Jab³oñski, Kadu Team
 Replaces=kde_notify
 Plugin=true
 Provides=notify_method
+LoadByDefault=true
 Version=core

@@ -303,6 +303,23 @@ void FreedesktopNotify::import_0_9_0_Configuration()
 
 void FreedesktopNotify::createDefaultConfiguration()
 {
+	config_file.addVariable("Notify", "ConnectionError_FreedesktopNotify", true);
+	config_file.addVariable("Notify", "NewChat_FreedesktopNotify", true);
+	config_file.addVariable("Notify", "NewMessage_FreedesktopNotify", true);
+	config_file.addVariable("Notify", "StatusChanged_FreedesktopNotify", true);
+	config_file.addVariable("Notify", "StatusChanged/ToFreeForChat_FreedesktopNotify", true);
+	config_file.addVariable("Notify", "StatusChanged/ToOnline_FreedesktopNotify", true);
+	config_file.addVariable("Notify", "StatusChanged/ToAway_FreedesktopNotify", true);
+	config_file.addVariable("Notify", "StatusChanged/ToNotAvailable_FreedesktopNotify", true);
+	config_file.addVariable("Notify", "StatusChanged/ToDoNotDisturb_FreedesktopNotify", true);
+	config_file.addVariable("Notify", "StatusChanged/ToOffline_FreedesktopNotify", true);
+	config_file.addVariable("Notify", "FileTransfer_FreedesktopNotify", true);
+	config_file.addVariable("Notify", "FileTransfer/IncomingFile_FreedesktopNotify", true);
+	config_file.addVariable("Notify", "FileTransfer/Finished_FreedesktopNotify", true);
+	config_file.addVariable("Notify", "multilogon_FreedesktopNotify", true);
+	config_file.addVariable("Notify", "multilogon/sessionConnected_FreedesktopNotify", true);
+	config_file.addVariable("Notify", "multilogon/sessionDisconnected_FreedesktopNotify", true);
+
 	config_file.addVariable("FreedesktopNotify", "Timeout", 10);
 	config_file.addVariable("FreedesktopNotify", "ShowContentMessage", true);
 	config_file.addVariable("FreedesktopNotify", "CiteSign", 100);

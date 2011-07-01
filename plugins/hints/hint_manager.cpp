@@ -677,6 +677,7 @@ void HintManager::import_0_6_5_configuration()
 
 void HintManager::createDefaultConfiguration()
 {
+#if !defined(Q_WS_X11) || defined(Q_WS_MAEMO_5)
 	config_file.addVariable("Notify", "ConnectionError_Hints", true);
 	config_file.addVariable("Notify", "NewChat_Hints", true);
 	config_file.addVariable("Notify", "NewMessage_Hints", true);
@@ -693,6 +694,7 @@ void HintManager::createDefaultConfiguration()
 	config_file.addVariable("Notify", "multilogon_Hints", true);
 	config_file.addVariable("Notify", "multilogon/sessionConnected_Hints", true);
 	config_file.addVariable("Notify", "multilogon/sessionDisconnected_Hints", true);
+#endif
 
 	config_file.addVariable("Hints", "CiteSign", 50);
 	config_file.addVariable("Hints", "Corner", 0);
