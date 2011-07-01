@@ -45,15 +45,13 @@
 * gui: #2052 fixed: wrong status types in information panel for blocked or blocking buddy (dienet)
 * tabs: #726 fixed: removed not-working and not-documented auto-tab-change option (Vogel)
 * gui: #1094 fixed: update send-email action on buddy change (Vogel)
+* jabber: #2183 fixed: very rare crash when trying to reconnect (beevvy)
 * gadu: #2143 fixed: implemented GG10 roster with support for automatic contact list synchronization (beevvy, Vogel)
 * gui: #2131 fixed: user font settings are now optionally respected by Adium styles (ultr)
 * gui: #2137 fixed: removed simple/advanced mode, replaced with more detailed setting in Status and Buddy List section of configuration window (Vogel)
 * chat styles: removed Gaia and Pushpin styles from official package due to license concerns (beevvy)
 * translations: translations can now be added to Kadu without modyfing source code (Vogel)
 * translations: allow polish, czech and english traslations by default (Vogel)
-
-+++ version 0.9.3
-* jabber: #2183 fixed: very rare crash when trying to reconnect (beevvy)
 
 +++ version 0.9.2
 * tabs: #2129 fixed: regression since 0.9.1 that caused button to be shown when the shouldn't in certain configurations (beevvy)
