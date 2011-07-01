@@ -72,10 +72,12 @@ Buddy JabberRosterService::itemBuddy(const XMPP::RosterItem &item, const Contact
 
 		buddy.setAnonymous(false);
 	}
-	else // check if we can change name
+	else
 	{
-		if (!Protocol->contactsListReadOnly())
-			contact.ownerBuddy().setDisplay(display);
+		// Prevent read-only rosters (e.g., Facebook Chat) from changing names of buddies with multiple contacts (#1570).
+		// Though, if given buddy has exactly one contact, let the name be changed (#2226).
+		if (!Protocol->contactsListReadOnly() || 1 == buddy.contacts().count())
+			buddy.setDisplay(display);
 	}
 
 	return buddy;
