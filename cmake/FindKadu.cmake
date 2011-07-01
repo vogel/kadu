@@ -69,8 +69,8 @@ if (MINGW)
 	set (CMAKE_SHARED_LIBRARY_PREFIX "")
 endif (MINGW)
 
-# warnings
-if (CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+# warnings and other flags
+if (NOT MSVC)
 	if (ENABLE_DEVELOPER_BUILD)
 		if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
 			set (CMAKE_C_FLAGS "-fcatch-undefined-behavior ${CMAKE_C_FLAGS}")
@@ -87,9 +87,9 @@ if (CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
 		set (CMAKE_C_FLAGS "-mtune=i686 -pipe ${CMAKE_C_FLAGS}")
 		set (CMAKE_CXX_FLAGS "-mtune=i686 -pipe ${CMAKE_CXX_FLAGS}")
 	endif (MINGW)
-elseif (MSVC)
+else (NOT MSVC)
 	add_definitions (/D_CRT_SECURE_NO_WARNINGS=1)
-endif (CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+endif (NOT MSVC)
 
 if (NOT KADU_DATADIR)
 	set (KADU_DATADIR ${CMAKE_INSTALL_PREFIX}/share)
