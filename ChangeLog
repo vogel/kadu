@@ -3,7 +3,7 @@
 * freedesktop_notify, hints: #2195 fixed: enable Freedesktop notifications in favor of hints on X11 by default (beevvy)
 * gadu: #2189 fixed: not composing chat events were not always sent when they should (beevvy)
 * gadu: #2203 fixed: crash when other multilogged in client sent message to our number (beevvy)
-* jabber: #2226 fixed: automatically update names of buddies containing exactly one Facebook Chat contact (beevvy)
+* jabber: #2226, #2240 fixed: automatically update names of buddies containing exactly one Facebook Chat contact and do not allow manually changing those buddies' names (beevvy)
 
 +++ version 0.10.0-beta1
 * gadu: #2050 fixed: fixed sending images to GG7 and AQQ (beevvy)

@@ -81,6 +81,15 @@ void BuddyGeneralConfigurationWidget::createGui()
 	connect(DisplayEdit, SIGNAL(textChanged(QString)), this, SIGNAL(validChanged()));
 	DisplayEdit->setText(MyBuddy.display());
 	nameLayout->addWidget(DisplayEdit);
+	if (1 == MyBuddy.contacts().count())
+	{
+		Protocol *protocolHandler = MyBuddy.contacts().at(0).contactAccount().protocolHandler();
+		if (protocolHandler && protocolHandler->contactsListReadOnly())
+		{
+			DisplayEdit->setReadOnly(true);
+			DisplayEdit->setToolTip(tr("Protocol used by this buddy's contact does not allow changing buddy's name client-side"));
+		}
+	}
 
 	AvatarWidget = new BuddyAvatarWidget(MyBuddy, nameWidget);
 	nameLayout->addWidget(AvatarWidget);
