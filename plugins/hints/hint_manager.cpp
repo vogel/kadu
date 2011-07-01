@@ -690,6 +690,9 @@ void HintManager::createDefaultConfiguration()
 	config_file.addVariable("Notify", "FileTransfer_Hints", true);
 	config_file.addVariable("Notify", "FileTransfer/IncomingFile_Hints", true);
 	config_file.addVariable("Notify", "FileTransfer/Finished_Hints", true);
+	config_file.addVariable("Notify", "multilogon_Hints", true);
+	config_file.addVariable("Notify", "multilogon/sessionConnected_Hints", true);
+	config_file.addVariable("Notify", "multilogon/sessionDisconnected_Hints", true);
 
 	config_file.addVariable("Hints", "CiteSign", 50);
 	config_file.addVariable("Hints", "Corner", 0);
