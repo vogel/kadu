@@ -2,6 +2,7 @@
 * word_fix: #2229 fixed: word replace at bounds worked bad (beevvy)
 * freedesktop_notify, hints: #2195 fixed: enable Freedesktop notifications in favor of hints on X11 by default (beevvy)
 * gadu: #2189 fixed: not composing chat events were not always sent when they should (beevvy)
+* gadu: #2203 fixed: crash when other multilogged in client sent message to our number (beevvy)
 
 +++ version 0.10.0-beta1
 * gadu: #2050 fixed: fixed sending images to GG7 and AQQ (beevvy)

@@ -246,7 +246,8 @@ void GaduChatService::handleMsg(Contact sender, ContactSet recipients, MessageTy
 	chatContacts.remove(Protocol->account().accountContact());
 
 	Chat chat = ChatManager::instance()->findChat(chatContacts);
-	if (chat.isIgnoreAllMessages())
+	// create=true in our call for findChat(), but chat might be null for example if chatContacts was empty
+	if (!chat || chat.isIgnoreAllMessages())
 		return;
 
 	QByteArray content = getContent(e);
@@ -264,6 +265,7 @@ void GaduChatService::handleMsg(Contact sender, ContactSet recipients, MessageTy
 
 	QString messageString = message.toPlain();
 	emit filterIncomingMessage(chat, sender, messageString, time.toTime_t(), ignore);
+
 	if (ignore)
 		return;
 
