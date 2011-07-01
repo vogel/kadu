@@ -121,11 +121,6 @@ void JabberProtocol::setContactsListReadOnly(bool contactsListReadOnly)
 	ContactsListReadOnly = contactsListReadOnly;
 }
 
-bool JabberProtocol::contactsListReadOnly()
-{
-	return ContactsListReadOnly;
-}
-
 void JabberProtocol::initializeJabberClient()
 {
 	JabberClient = new XMPP::JabberClient(this, this);

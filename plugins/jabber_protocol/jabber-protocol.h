@@ -108,7 +108,7 @@ public:
 	XMPP::Client * xmppClient() { return JabberClient->client(); }
 
 	void setContactsListReadOnly(bool contactsListReadOnly);
-	virtual bool contactsListReadOnly();
+	virtual bool contactsListReadOnly() { return ContactsListReadOnly; }
 
 	virtual QString statusPixmapPath();
 
