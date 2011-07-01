@@ -39,7 +39,7 @@ void GaduChatStateService::handleEventTypingNotify(struct gg_event *e)
 	if (!contact)
 		return;
 
-	if (e->event.typing_notification.length == 0x0001)
+	if (e->event.typing_notification.length > 0x0000)
 		emit contactActivityChanged(StateComposing, contact);
 	else if (e->event.typing_notification.length == 0x0000)
 		emit contactActivityChanged(StatePaused, contact);
