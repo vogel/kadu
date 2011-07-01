@@ -272,6 +272,9 @@ ChatWidget * ChatWidgetManager::openChatWidget(const Chat &chat, bool forceActiv
 {
 	kdebugf();
 
+	if (!chat)
+		return 0;
+
 	ChatWidget *chatWidget = byChat(chat);
 	if (chatWidget)
 	{
