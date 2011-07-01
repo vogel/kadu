@@ -31,7 +31,7 @@
 #include <QtGui/QTabWidget>
 #include <QtGui/QToolButton>
 
-#include "gui/widgets/chat-widget.h"
+#include "gui/widgets/chat-widget-container.h"
 #include "gui/widgets/custom-input.h"
 
 #include "os/generic/compositing-aware-object.h"
@@ -73,7 +73,7 @@ signals:
 
 };
 
-class TabWidget: public QTabWidget, public ChatContainer, CompositingAwareObject
+class TabWidget: public QTabWidget, public ChatWidgetContainer, CompositingAwareObject
 {
 	Q_OBJECT
 

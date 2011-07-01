@@ -26,6 +26,7 @@
 #include <QtGui/QDrag>
 
 #include "gui/widgets/buddies-list-widget.h"
+#include "gui/widgets/chat-widget.h"
 #include "gui/windows/open-chat-with/open-chat-with.h"
 
 #include "configuration/configuration-file.h"

@@ -7,14 +7,15 @@
 #include <QtGui/QMainWindow>
 
 #include "chat/chat-manager.h"
-#include "gui/windows/main-configuration-window.h"
 #include "configuration/configuration-aware-object.h"
-#include "gui/widgets/chat-widget.h"
+#include "gui/widgets/chat-widget-container.h"
+#include "gui/widgets/custom-input.h"
+#include "gui/windows/main-configuration-window.h"
 #include "os/generic/compositing-aware-object.h"
 
 class KaduIcon;
 
-class SingleWindow : public QMainWindow, public ChatContainer
+class SingleWindow : public QMainWindow, public ChatWidgetContainer
 {
 	Q_OBJECT
 

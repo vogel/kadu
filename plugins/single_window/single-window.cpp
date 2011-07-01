@@ -12,6 +12,7 @@
 #include <QtCore/QStringList>
 
 #include "configuration/configuration-file.h"
+#include "gui/widgets/chat-widget.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/custom-input.h"
 #include "gui/windows/kadu-window.h"

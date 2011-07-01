@@ -45,6 +45,7 @@
 #include "gui/actions/actions.h"
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-widget-actions.h"
+#include "gui/widgets/chat-widget-container.h"
 #include "gui/widgets/buddies-list-view-menu-manager.h"
 #include "gui/widgets/custom-input.h"
 #include "gui/windows/chat-window.h"
@@ -388,7 +389,7 @@ void ChatWidgetManager::closeChat(const Chat &chat)
 	ChatWidget *chatWidget = byChat(chat);
 	if (chatWidget)
 	{
-		ChatContainer *container = dynamic_cast<ChatContainer *>(chatWidget->window());
+		ChatWidgetContainer *container = dynamic_cast<ChatWidgetContainer *>(chatWidget->window());
 		if (container)
 			container->closeChatWidget(chatWidget);
 	}

@@ -258,28 +258,7 @@ signals:
 	void iconChanged();
 	void titleChanged(ChatWidget *chatWidget, const QString &newTitle);
 	void closed();
-};
 
-/**
-	@class ChatContainer
-	@brief Klasa abstrakcyjna opisuj�ca rodzica klasy ChatWidget.
-
-	Klasa abstrakcyjna z kt�rej powinny dziedziczy� klasy b�d�ce rodzicami obiekt�w
-	klasy ChatWidget.
-
-	Informuje kt�ry chat powinien zosta� zamkni�ty w przypadku np. ignorowania kontaktu
-	z kt�rym prowadzona jest rozmowa
-**/
-class ChatContainer
-{
-public:
-	ChatContainer() {}
-	virtual ~ChatContainer() {}
-
-	/**
-		Metoda informuj�ca, kt�ry chat powinien zosta� zamkni�ty
-	 **/
-	virtual void closeChatWidget(ChatWidget *chat) = 0;
 };
 
 #endif // CHAT_WIDGET_H

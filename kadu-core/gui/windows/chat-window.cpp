@@ -37,6 +37,7 @@
 #include "chat/chat-geometry-data.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact-set.h"
+#include "gui/widgets/chat-widget.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/custom-input.h"
 #include "gui/windows/message-dialog.h"
