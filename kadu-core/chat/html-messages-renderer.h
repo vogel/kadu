@@ -26,6 +26,7 @@
 
 #include "chat/chat.h"
 #include "chat/message/message.h"
+#include "protocols/services/chat-state-service.h"
 
 class QWebPage;
 
@@ -74,6 +75,7 @@ public:
 	void replaceLoadingImages(const QString &imageId, const QString &imageFileName);
 	void updateBackgroundsAndColors();
 	void messageStatusChanged(Message message, MessageStatus status);
+	void contactActivityChanged(ChatStateService::ContactActivity state, const Contact &contact);
 
 };
 

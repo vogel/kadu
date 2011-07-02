@@ -25,7 +25,8 @@
 #include <QtCore/QString>
 #include <QtCore/QStringList>
 
-#include <chat/message/message.h>
+#include "chat/message/message.h"
+#include "protocols/services/chat-state-service.h"
 
 class HtmlMessagesRenderer;
 class MessageRenderInfo;
@@ -56,6 +57,7 @@ public:
 	virtual void pruneMessage(HtmlMessagesRenderer *) = 0;
 	virtual void refreshView(HtmlMessagesRenderer *, bool useTransparency = false) = 0;
 	virtual void messageStatusChanged(HtmlMessagesRenderer *, Message, MessageStatus) = 0;
+	virtual void contactActivityChanged(HtmlMessagesRenderer *, ChatStateService::ContactActivity, const QString &, const QString &) = 0;
 
 	virtual void prepareStylePreview(Preview *, QString, QString) = 0;
 

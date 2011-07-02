@@ -500,3 +500,8 @@ void AdiumChatStyleEngine::messageStatusChanged(HtmlMessagesRenderer *renderer, 
 {
 	renderer->webPage()->mainFrame()->evaluateJavaScript(QString("adium_messageStatusChanged(\"%1\", %2);").arg(message.id()).arg((int)status));
 }
+
+void AdiumChatStyleEngine::contactActivityChanged(HtmlMessagesRenderer *renderer, ChatStateService::ContactActivity state, const QString &message, const QString &name)
+{
+	renderer->webPage()->mainFrame()->evaluateJavaScript(QString("adium_contactActivityChanged(%1, \"%2\", \"%3\");").arg((int)state).arg(message).arg(name));
+}

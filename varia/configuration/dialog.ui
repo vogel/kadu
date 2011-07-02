@@ -304,6 +304,10 @@
 				<spin-box caption="Max time to block window close" config-section="Chat" config-item="ChatCloseTimerPeriod" min-value="1"
 					max-value="30" suffix="%n second(s)" id="chatCloseTimerPeriod" tool-tip="Max time to block window close" />
 			</group-box>
+			<group-box name="Contacts' states">
+				<check-box caption="Show state notifications in chats" config-section="Chat" config-item="ContactStateChats" id="contactStateChats" />
+				<check-box caption="Show state notifications in windows' titles" config-section="Chat" config-item="ContactStateWindowTitle" id="contactStateWindowTitle" />
+			</group-box>
 		</tab>
 
 		<tab name="Messages">

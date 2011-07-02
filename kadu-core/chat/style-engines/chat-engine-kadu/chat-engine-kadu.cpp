@@ -28,10 +28,10 @@
 #include "chat/chat-styles-manager.h"
 #include "chat/html-messages-renderer.h"
 #include "chat/message/message-render-info.h"
-#include "configuration/configuration-file.h"
 #include "gui/widgets/chat-messages-view.h"
 #include "gui/widgets/preview.h"
 #include "gui/windows/syntax-editor-window.h"
+#include "icons/kadu-icon.h"
 #include "misc/misc.h"
 #include "misc/syntax-list.h"
 #include "parser/parser.h"
@@ -107,6 +107,11 @@ void KaduChatStyleEngine::refreshView(HtmlMessagesRenderer *renderer, bool useTr
 void KaduChatStyleEngine::messageStatusChanged(HtmlMessagesRenderer *renderer, Message message, MessageStatus status)
 {
 	renderer->webPage()->mainFrame()->evaluateJavaScript(QString("kadu_messageStatusChanged(\"%1\", %2);").arg(message.id()).arg((int)status));
+}
+
+void KaduChatStyleEngine::contactActivityChanged(HtmlMessagesRenderer *renderer, ChatStateService::ContactActivity state, const QString &message, const QString &name)
+{
+	renderer->webPage()->mainFrame()->evaluateJavaScript(QString("kadu_contactActivityChanged(%1, \"%2\", \"%3\");").arg((int)state).arg(message).arg(name));
 }
 
 QString KaduChatStyleEngine::isStyleValid(QString stylePath)
@@ -197,7 +202,8 @@ void KaduChatStyleEngine::repaintMessages(HtmlMessagesRenderer *renderer)
 
 	text += QString("<script>%1</script>").arg(jsCode);
 
-	text += CurrentChatSyntax.top();
+	Contact contact = renderer->chat().contacts().count() == 1 ? *(renderer->chat().contacts().constBegin()) : Contact();
+	text += Parser::parse(CurrentChatSyntax.top(), BuddyOrContact(contact), true);
 
 	MessageRenderInfo *prevMessage = 0;
 	foreach (MessageRenderInfo *message, renderer->messages())
@@ -250,7 +256,8 @@ void KaduChatStyleEngine::prepareStylePreview(Preview *preview, QString styleNam
 
 	KaduChatSyntax syntax(SyntaxList::readSyntax("chat", styleName, QString()));
 
-	QString text = syntax.top();
+	Contact contact = preview->getContactList().count() == 1 ? *(preview->getContactList().constBegin()) : Contact();
+	QString text = Parser::parse(syntax.top(), BuddyOrContact(contact), true);
 
 	int count = preview->getObjectsToParse().count();
 	if (count)

@@ -310,10 +310,20 @@ void ChatWidget::refreshTitle()
 		else
 			title = Parser::parse(ChatConfigurationHolder::instance()->chatContents(), BuddyOrContact(contact), false);
 
-		if (CurrentContactActivity == ChatStateService::StateComposing)
-			title = tr("%1 (Composing...)").arg(title);
-		else if (CurrentContactActivity == ChatStateService::StateInactive)
-			title = tr("%1 (Inactive)").arg(title);
+		if (ChatConfigurationHolder::instance()->contactStateWindowTitle())
+		{
+			QString message;
+			if (CurrentContactActivity == ChatStateService::StateComposing)
+			{
+				if (ChatConfigurationHolder::instance()->contactStateWindowTitleComposingSyntax().isEmpty())
+					message = tr("(Composing...)");
+				else
+					message = ChatConfigurationHolder::instance()->contactStateWindowTitleComposingSyntax();
+			}
+			else if (CurrentContactActivity == ChatStateService::StateInactive)
+				message = tr("(Inactive)");
+			title = ChatConfigurationHolder::instance()->contactStateWindowTitlePosition() == 0 ? message + " " + title : title + " "  + message;
+		}
 	}
 
 	title.replace("<br/>", " ");
@@ -683,11 +693,16 @@ void ChatWidget::contactActivityChanged(ChatStateService::ContactActivity state,
 
 	if (CurrentContactActivity == state)
 		return;
-
 	CurrentContactActivity = state;
 
+	if (ChatConfigurationHolder::instance()->contactStateChats())
+		MessagesView->contactActivityChanged(state, contact);
+
 	if (CurrentContactActivity != ChatStateService::StateGone)
-		refreshTitle();
+	{
+		if (ChatConfigurationHolder::instance()->contactStateWindowTitle())
+			refreshTitle();
+	}
 	else
 	{
 		QString msg = "[ " + tr("%1 ended the conversation").arg(contact.ownerBuddy().display()) + " ]";

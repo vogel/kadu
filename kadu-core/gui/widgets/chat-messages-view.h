@@ -30,6 +30,7 @@
 #include "chat/message/message.h"
 #include "configuration/configuration-aware-object.h"
 #include "protocols/services/chat-service.h"
+#include "protocols/services/chat-state-service.h"
 #include "protocols/protocol.h"
 
 #include "kadu-web-view.h"
@@ -103,6 +104,7 @@ public:
 
 public slots:
 	void clearMessages();
+	void contactActivityChanged(ChatStateService::ContactActivity state, const Contact &contact);
 
 signals:
 	void messagesUpdated();

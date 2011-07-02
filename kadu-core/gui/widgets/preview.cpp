@@ -71,7 +71,7 @@ void Preview::syntaxChanged(const QString &content)
 	{
 		KaduChatSyntax syntax(content);
 
-		text = syntax.top();
+		text = Parser::parse(syntax.top(), BuddyOrContact(contact), true);
 
 		Contact contact = *contacts.constBegin();
 		for (int i = 0; i < count; i++)

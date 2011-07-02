@@ -174,3 +174,30 @@ void HtmlMessagesRenderer::messageStatusChanged(Message message, MessageStatus s
 {
     	ChatStylesManager::instance()->currentEngine()->messageStatusChanged(this, message, status);
 }
+
+void HtmlMessagesRenderer::contactActivityChanged(ChatStateService::ContactActivity state, const Contact &contact)
+{
+	QString display = contact.ownerBuddy().display();
+	QString message;
+	switch (state)
+	{
+		case ChatStateService::StateActive:
+			message = tr("%1 is active").arg(display);
+			break;
+		case ChatStateService::StateComposing:
+			message = tr("%1 is composing...").arg(display);
+			break;
+		case ChatStateService::StateGone:
+			message = tr("%1 is gone").arg(display);
+			break;
+		case ChatStateService::StateInactive:
+			message = tr("%1 is inactive").arg(display);
+			break;
+		case ChatStateService::StateNone:
+			break;
+		case ChatStateService::StatePaused:
+			message = tr("%1 has paused composing").arg(display);
+			break;
+	}
+	ChatStylesManager::instance()->currentEngine()->contactActivityChanged(this, state, message, display);
+}

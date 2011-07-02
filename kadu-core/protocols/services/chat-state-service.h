@@ -32,14 +32,15 @@ class KADUAPI ChatStateService : public QObject
 	Q_OBJECT
 
 public:
+	// ContactActivity enum vaules identical with those defined in kadu-core/chat/style-engines/chat-scripts.js
 	enum ContactActivity
 	{
-		StateActive,
-		StateComposing,
-		StateGone,
-		StateInactive,
-		StateNone,
-		StatePaused
+		StateActive = 0,
+		StateComposing = 1,
+		StateGone = 2,
+		StateInactive = 3,
+		StateNone = 4,
+		StatePaused = 5
 	};
 
 	explicit ChatStateService(QObject *parent) : QObject(parent) {}

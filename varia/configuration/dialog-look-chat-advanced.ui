@@ -22,6 +22,11 @@
 				<line-edit caption="Chat window title syntax" config-section="Look" config-item="ChatContents" id="chatSyntax" />
 				<line-edit caption="Conference window title prefix" config-section="Look" config-item="ConferencePrefix" id="conferencePrefix" />
 				<line-edit caption="Conference window title syntax" config-section="Look" config-item="ConferenceContents" id="conferenceSyntax" />
+				<combo-box caption="Contact state change notification position" config-section="Chat" config-item="ContactStateWindowTitlePosition" id="contactStateWindowTitlePosition" >
+					<item value="0" caption="Beginning of title" />
+					<item value="1" caption="End of title" />
+				</combo-box>
+				<line-edit caption="Custom composing notification syntax" config-section="Chat" config-item="ContactStateWindowTitleComposingSyntax" id="contactStateWindowTitleComposingSyntax" />
 			</group-box>
 		</tab>
 	</section>
