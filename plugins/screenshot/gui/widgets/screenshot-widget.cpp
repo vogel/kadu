@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2010 Piotr Dąbrowski (ultr@ultr.pl)
+ * Copyright 2010, 2011 Piotr Dąbrowski (ultr@ultr.pl)
  * Copyright 2010, 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
@@ -24,6 +24,11 @@
 #include <QtGui/QDesktopWidget>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QMouseEvent>
+#ifdef Q_WS_X11
+#include <QtGui/QX11Info>
+#include <X11/Xlib.h>
+#include <X11/Xatom.h>
+#endif
 
 #include "configuration/configuration-file.h"
 #include "debug.h"
@@ -38,8 +43,18 @@ ScreenshotWidget::ScreenshotWidget(QWidget *parent) :
 {
 	setWindowRole("kadu-screenshot");
 
-	setWindowFlags(Qt::Tool | Qt::CustomizeWindowHint
-			| Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
+	setWindowFlags(windowFlags() | Qt::Tool | Qt::CustomizeWindowHint | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint);
+#ifdef Q_WS_X11
+	// set always-on-top and force taskbar and pager skipping
+	Atom win_state = XInternAtom( QX11Info::display(), "_NET_WM_STATE", False );
+	Atom win_state_setting[] =
+	{
+		XInternAtom( QX11Info::display(), "_NET_WM_STATE_ABOVE"       , False ),
+		XInternAtom( QX11Info::display(), "_NET_WM_STATE_SKIP_TASKBAR", False ),
+		XInternAtom( QX11Info::display(), "_NET_WM_STATE_SKIP_PAGER"  , False )
+	};
+	XChangeProperty( QX11Info::display(), window()->winId(), win_state, XA_ATOM, 32, PropModeReplace, (unsigned char*)&win_state_setting, 3 );
+#endif
 
 	QHBoxLayout *layout = new QHBoxLayout(this);
 	layout->setMargin(0);
