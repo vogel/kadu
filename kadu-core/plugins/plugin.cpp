@@ -199,10 +199,7 @@ bool Plugin::activate()
 	{
 		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Module initialization routine for %1 failed.").arg(Name));
 
-		if (Translator)
-			qApp->removeTranslator(Translator);
-		delete Translator;
-		Translator = 0;
+		unloadTranslations();
 
 		delete PluginLoader;
 		PluginLoader = 0;
@@ -244,11 +241,7 @@ void Plugin::deactivate()
 	PluginObject = 0;
 
 	// We cannot unload translations before calling PluginObject->done(), see #2177.
-	if (Translator)
-		qApp->removeTranslator(Translator);
-
-	delete Translator;
-	Translator = 0;
+	unloadTranslations();
 
 	Active = false;
 }
@@ -269,6 +262,24 @@ void Plugin::loadTranslations()
 		qApp->installTranslator(Translator);
 	else
 	{
+		delete Translator;
+		Translator = 0;
+	}
+}
+
+/**
+ * @author Rafał 'Vogel' Malinowski
+ * @author Bartosz 'beevvy' Brachaczek
+ * @short Unloads translations for plugin.
+ *
+ * This method unloads existing translations for this plugin. Translations are removed
+ * from QApplication instance and \c Translator is deleted.
+ */
+void Plugin::unloadTranslations()
+{
+	if (Translator)
+	{
+		qApp->removeTranslator(Translator);
 		delete Translator;
 		Translator = 0;
 	}

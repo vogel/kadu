@@ -113,6 +113,7 @@ private:
 	int UsageCounter;
 
 	void loadTranslations();
+	void unloadTranslations();
 
 protected:
 	virtual void load();
