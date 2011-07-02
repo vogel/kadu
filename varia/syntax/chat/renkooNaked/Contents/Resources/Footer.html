@@ -12,5 +12,14 @@
 			KaduManualAlign = true;
 			alignChat(true);
 		}
+
+		function contactActivityChanged(state, message, name)
+		{
+			if (state == StateComposing)
+				document.getElementById("composing").style.display = "block";
+			else
+				document.getElementById("composing").style.display = "none";
+		}
+
 		//]]>
 	</script>
