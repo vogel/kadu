@@ -181,29 +181,35 @@ bool Plugin::activate()
 		return false;
 	}
 
+	// Load translations before the root component of the plugin is instantiated (it is done by instance() method).
+	loadTranslations();
+
 	PluginObject = qobject_cast<GenericPlugin *>(PluginLoader->instance());
 	if (!PluginObject)
 	{
 		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Cannot find required object in module %1.\n"
 				"Maybe it's not Kadu-compatible plugin.").arg(Name));
+
 		delete PluginLoader;
 		PluginLoader = 0;
+
+		unloadTranslations();
+
 		kdebugf2();
 		return false;
 	}
 
-	loadTranslations();
 	int res = PluginObject->init(PluginStateNew == State);
 
 	if (res != 0)
 	{
 		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Module initialization routine for %1 failed.").arg(Name));
 
-		unloadTranslations();
-
 		delete PluginLoader;
 		PluginLoader = 0;
 		PluginObject = 0;
+
+		unloadTranslations();
 
 		return false;
 	}
