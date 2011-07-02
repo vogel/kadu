@@ -205,6 +205,7 @@ bool Plugin::activate()
 	{
 		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Module initialization routine for %1 failed.").arg(Name));
 
+		PluginLoader->unload();
 		delete PluginLoader;
 		PluginLoader = 0;
 		PluginObject = 0;
