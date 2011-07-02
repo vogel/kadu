@@ -171,16 +171,16 @@ MainConfigurationWindow::MainConfigurationWindow() :
 	widget()->appendUiFile(dataPath("kadu/configuration/dialog.ui"));
 
 #if !defined(DEBUG_ENABLED) || defined(Q_OS_WIN)
-	((QWidget *)(widget()->widgetById("debug")->parent()))->hide();
+	widget()->widgetById("debug")->parentWidget()->hide();
 #endif
 
 #ifndef Q_OS_WIN
-	((QWidget *)(widget()->widgetById("startup")))->hide();
+	widget()->widgetById("startup")->hide();
 #endif
 
 #ifndef Q_WS_X11
-	((QWidget *)(widget()->widgetById("windowActivationMethodGroup")))->hide();
-	((QWidget *)(widget()->widgetById("notify/fullscreenSilentMode")))->hide();
+	widget()->widgetById("windowActivationMethodGroup")->hide();
+	widget()->widgetById("notify/fullscreenSilentMode")->hide();
 #endif
 
 	onStartupSetLastDescription = static_cast<QCheckBox *>(widget()->widgetById("onStartupSetLastDescription"));
