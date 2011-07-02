@@ -232,12 +232,6 @@ void Plugin::deactivate()
 	if (!Active)
 		return;
 
-	if (Translator)
-		qApp->removeTranslator(Translator);
-
-	delete Translator;
-	Translator = 0;
-
 	if (PluginObject)
 		PluginObject->done();
 
@@ -248,6 +242,13 @@ void Plugin::deactivate()
 		PluginLoader = 0;
 	}
 	PluginObject = 0;
+
+	// We cannot unload translations before calling PluginObject->done(), see #2177.
+	if (Translator)
+		qApp->removeTranslator(Translator);
+
+	delete Translator;
+	Translator = 0;
 
 	Active = false;
 }
