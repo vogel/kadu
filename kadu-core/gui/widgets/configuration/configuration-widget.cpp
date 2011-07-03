@@ -283,6 +283,10 @@ QList<ConfigWidget *> ConfigurationWidget::processUiGroupBoxFromDom(QDomNode gro
 		else
 			removeUiElementFromDom(children.item(i), configGroupBoxWidget);
 
+	// delete even if length == 0
+	if (!append && configGroupBoxWidget->empty())
+		delete configGroupBoxWidget;
+
 	kdebugf2();
 	return result;
 }
@@ -385,9 +389,6 @@ void ConfigurationWidget::removeUiElementFromDom(QDomNode uiElementNode, ConfigG
 			break;
 		}
 	}
-
-	if (configGroupBox->empty())
-		delete configGroupBox;
 
 	kdebugf2();
 }
