@@ -276,6 +276,9 @@ void FreedesktopNotify::actionInvoked(unsigned int id, QString action)
 
 void FreedesktopNotify::deleteMapItem()
 {
+	if (IdQueue.isEmpty())
+		return;
+
 	unsigned int id = IdQueue.dequeue();
 	Notification *notification = NotificationMap.value(id);
 	NotificationMap.remove(id);
