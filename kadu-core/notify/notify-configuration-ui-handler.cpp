@@ -132,7 +132,7 @@ void NotifyConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurat
 		NotifyEvents[eventName] = item;
 	}
 
-	ConfigGroupBox *statusGroupBox = mainConfigurationWindow->widget()->configGroupBox("Notifications", "Options", "Status change");
+	ConfigGroupBox *statusGroupBox = mainConfigurationWindow->widget()->configGroupBox("Notifications", "Options", "Status Change");
 
 	QWidget *notifyUsers = new QWidget(statusGroupBox->widget());
 	QGridLayout *notifyUsersLayout = new QGridLayout(notifyUsers);
