@@ -204,19 +204,43 @@ void WordFix::doReplace(QString &text)
 {
 	kdebugf();
 
-	// Make text as " "+text+" ", to match words at the start and end of text.
-	text = ' ' + text + ' ';
-
-	// Replacing
 	for (QMap<QString, QString>::const_iterator i = wordsList.constBegin(); i != wordsList.constEnd(); ++i)
-		text.replace(
-				QRegExp("[\\s\\!\\.\\,\\(\\)\\[\\]\\;\\:\\\"\\']{1}"
-						+ i.key()
-						+ "[\\s\\!\\.\\,\\(\\)\\[\\]\\;\\:\\\"\\']{1}"),
-				' ' + i.value() + ' ');
+	{
+		const int keyLength = i.key().length();
+		int pos = 0;
+		while ((pos = text.indexOf(i.key(), pos)) != -1)
+		{
+			bool beginsWord = (pos == 0);
+			if (!beginsWord)
+			{
+				const QChar ch(text.at(pos - 1));
+				beginsWord = !ch.isLetterOrNumber() && !ch.isMark() && ch != QLatin1Char('_');
 
-	// Cutting off " " from start and end.
-	text = text.mid(1, text.length()-2);
+				if (!beginsWord)
+				{
+					pos += keyLength;
+					continue;
+				}
+			}
+
+			bool endsWord = (pos + keyLength == text.length());
+			if (!endsWord)
+			{
+				const QChar ch(text.at(pos + keyLength));
+				endsWord = !ch.isLetterOrNumber() && !ch.isMark() && ch != QLatin1Char('_');
+
+				if (!endsWord)
+				{
+					pos += keyLength;
+					continue;
+				}
+			}
+
+			text.replace(pos, keyLength, i.value());
+			pos += i.value().length();
+		}
+	}
+
 	kdebugf2();
 }
 
