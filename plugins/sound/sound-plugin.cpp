@@ -38,10 +38,10 @@ int SoundPlugin::init(bool firstLoad)
 	Q_UNUSED(firstLoad)
 
 	SoundThemeManager::createInstance();
+	SoundManager::createInstance();
 	SoundNotifier::createInstance();
 	SoundConfigurationUiHandler::registerConfigurationUi();
 	NotificationManager::instance()->registerNotifier(SoundNotifier::instance());
-	SoundManager::createInstance();
 	SoundActions::registerActions();
 
 	return 0;
@@ -50,11 +50,11 @@ int SoundPlugin::init(bool firstLoad)
 
 void SoundPlugin::done()
 {
+	SoundActions::unregisterActions();
 	NotificationManager::instance()->unregisterNotifier(SoundNotifier::instance());
 	SoundConfigurationUiHandler::unregisterConfigurationUi();
-	SoundActions::unregisterActions();
-	SoundManager::destroyInstance();
 	SoundNotifier::destroyInstance();
+	SoundManager::destroyInstance();
 	SoundThemeManager::destroyInstance();
 }
 

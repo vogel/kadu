@@ -28,7 +28,6 @@
 #include "themes.h"
 
 #include "gui/widgets/configuration/sound-configuration-widget.h"
-#include "sound-actions.h"
 #include "sound-manager.h"
 #include "sound-theme-manager.h"
 
