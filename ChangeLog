@@ -5,6 +5,7 @@
 * jabber: #2226, #2240 fixed: automatically update names of buddies containing exactly one Facebook Chat contact and do not allow manually changing those buddies' names (beevvy)
 * plugins: #2177 fixed: unloading a plugin did not remove its widgets from opened configuration window (beevvy)
 * word_fix: #2229 fixed: word replace at bounds worked bad (beevvy)
+* cenzor: #2180 fixed: unloading cenzor caused crash if configuration window was opened (beevvy)
 
 +++ version 0.10.0-beta1
 * gadu: #2050 fixed: fixed sending images to GG7 and AQQ (beevvy)

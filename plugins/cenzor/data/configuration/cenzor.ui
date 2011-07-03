@@ -5,10 +5,10 @@
 				<check-box caption="Enable cenzor" config-section="PowerKadu" config-item="enable_cenzor" id="cenzor/enable_cenzor" />
 				<line-edit caption="Admonition" config-section="PowerKadu" config-item="admonition_content_cenzor" id="cenzor/admonition" />
 			</group-box>
+			<group-box name="Swearwords">
+			</group-box>
+			<group-box name="Exclusions">
+			</group-box>
 		</tab>
-		<group-box name="Swearwords">
-		</group-box>
-		<group-box name="Exclusions">
-		</group-box>
 	</section>
 </configuration-ui>
