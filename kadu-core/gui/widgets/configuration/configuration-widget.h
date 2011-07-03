@@ -110,12 +110,12 @@ class KADUAPI ConfigurationWidget : public QWidget
 	void saveConfiguration(QObject *object);
 
 	ConfigSection * configSection(const QString &name);
-	ConfigSection * configSection(const KaduIcon &icon, const QString &name, bool create = true);
+	ConfigSection * configSection(const KaduIcon &icon, const QString &name, bool create);
 
-	QList<ConfigWidget *> processUiFile(const QString &fileName, bool append = true);
-	QList<ConfigWidget *> processUiSectionFromDom(QDomNode sectionNode, bool append = true);
-	QList<ConfigWidget *> processUiTabFromDom(QDomNode tabNode, const QString &sectionName, bool append = true);
-	QList<ConfigWidget *> processUiGroupBoxFromDom(QDomNode groupBoxNode, const QString &sectionName, const QString &tabName, bool append = true);
+	QList<ConfigWidget *> processUiFile(const QString &fileName, bool append);
+	QList<ConfigWidget *> processUiSectionFromDom(QDomNode sectionNode, bool append);
+	QList<ConfigWidget *> processUiTabFromDom(QDomNode tabNode, const QString &sectionName, bool append);
+	QList<ConfigWidget *> processUiGroupBoxFromDom(QDomNode groupBoxNode, const QString &sectionName, const QString &tabName, bool append);
 	ConfigWidget * appendUiElementFromDom(QDomNode uiElementNode, ConfigGroupBox *configGroupBox);
 	void removeUiElementFromDom(QDomNode uiElementNode, ConfigGroupBox *configGroupBox);
 
@@ -142,11 +142,11 @@ public:
 		/section[@caption=SECTION]/tab[@caption=TAB]/group-box[@caption=GROUPBOX]
 
 		Jeżeli nie istnieje taki group-box to zostanie on stworzony, gdy create == true.
-		Dla crate == false zostanie zwrócony NULL.
+		Dla create == false zostanie zwrócony NULL.
 		
 		@note Stringi należy podawać w formie oryginalnej, nie przetłumaczonej.
 	 **/
-	ConfigGroupBox * configGroupBox(const QString &section, const QString &tab, const QString &groupBox, bool create = true);
+	ConfigGroupBox * configGroupBox(const QString &section, const QString &tab, const QString &groupBox, bool create = false);
 
 	/**
 		Dodaje do okna konfiguracyjnego widgety wczytane z pliku fileName.

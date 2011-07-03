@@ -54,7 +54,7 @@ public:
 	ConfigTab(const QString &name, ConfigSection *configSection, QWidget *mainWidget);
 	virtual ~ConfigTab();
 
-	ConfigGroupBox * configGroupBox(const QString &name, bool create = true);
+	ConfigGroupBox * configGroupBox(const QString &name, bool create);
 
 	const QString & name() const { return MyName; }
 	QWidget * widget() const;

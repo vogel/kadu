@@ -117,7 +117,7 @@ void ConfigurationWidget::init()
 
 QList<ConfigWidget *> ConfigurationWidget::appendUiFile(const QString &fileName, bool load)
 {
-	QList<ConfigWidget *> widgets = processUiFile(fileName);
+	QList<ConfigWidget *> widgets = processUiFile(fileName, true);
 
 	if (load)
 		foreach (ConfigWidget *widget, widgets)
