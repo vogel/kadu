@@ -6,6 +6,7 @@
 * jabber: fixed removing buddies from groups when the roster was changed not by this Kadu installation (beevvy)
 * docking: fixed crash when trying to add account after removing all previous accounts without restarting Kadu (beevvy)
 * protocols: #2256 fixed: with no connection to the Internet and not working network-awareness trying to connect would result in a hang (beevvy)
+* hints: #2249 fixed: removed unnecessary 1px window-color margin from hints (ultr)
 
 +++ version 0.10.0-beta2
 * freedesktop_notify, hints: #2195 fixed: enable Freedesktop notifications in favor of hints on X11 by default (beevvy)
