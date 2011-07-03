@@ -143,6 +143,8 @@ public:
 
 		Jeżeli nie istnieje taki group-box to zostanie on stworzony, gdy create == true.
 		Dla crate == false zostanie zwrócony NULL.
+		
+		@note Stringi należy podawać w formie oryginalnej, nie przetłumaczonej.
 	 **/
 	ConfigGroupBox * configGroupBox(const QString &section, const QString &tab, const QString &groupBox, bool create = true);
 

@@ -71,7 +71,7 @@ MPRISPlayerConfigurationUiHandler::~MPRISPlayerConfigurationUiHandler()
 
 void MPRISPlayerConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
-	ConfigGroupBox *optionsGroupBox = mainConfigurationWindow->widget()->configGroupBox(qApp->translate("@default", "MediaPlayer"), qApp->translate("@default", "General"), qApp->translate("@default", "MPRIS Player"));
+	ConfigGroupBox *optionsGroupBox = mainConfigurationWindow->widget()->configGroupBox("MediaPlayer", "General", "MPRIS Player");
 
 	QWidget *options = new QWidget(optionsGroupBox->widget());
 
