@@ -272,6 +272,9 @@ QList<ConfigWidget *> ConfigurationWidget::processUiGroupBoxFromDom(QDomNode gro
 		return result;
 	}
 
+	if (append)
+		configGroupBoxWidget->ref();
+
 	if (!groupBoxId.isEmpty())
 		Widgets.insert(groupBoxId, configGroupBoxWidget->widget());
 
@@ -283,9 +286,10 @@ QList<ConfigWidget *> ConfigurationWidget::processUiGroupBoxFromDom(QDomNode gro
 		else
 			removeUiElementFromDom(children.item(i), configGroupBoxWidget);
 
-	// delete even if length == 0
-	if (!append && configGroupBoxWidget->isEmpty())
-		delete configGroupBoxWidget;
+	// delete unused even if length == 0
+	if (!append)
+		if (!configGroupBoxWidget->deref())
+			delete configGroupBoxWidget;
 
 	kdebugf2();
 	return result;

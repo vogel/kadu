@@ -64,6 +64,8 @@ class KADUAPI ConfigGroupBox : public QObject
 	QWidget *Container;
 	QGridLayout *GridLayout;
 
+	int RefCount;
+
 public:
 	ConfigGroupBox(const QString &name, ConfigTab *configTab, QGroupBox *groupBox);
 	virtual ~ConfigGroupBox();
@@ -89,11 +91,9 @@ public:
 
 	void insertWidgets(int pos, QWidget *widget1, QWidget *widget2);
 
-	/**
-		Zwraca true, gdy GroupBox nie posiada w sobie żadnych obiektów klasy ConfigWidget.
-		@return true, gdy GroupBox nie posiada w sobie żadnych obiektów klasy ConfigWidget
-	 **/
-	bool isEmpty() const;
+	bool ref() { return (0 != ++RefCount); }
+
+	bool deref() { return (0 != --RefCount); }
 
 };
 
