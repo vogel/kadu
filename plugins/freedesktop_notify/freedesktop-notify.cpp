@@ -230,8 +230,7 @@ void FreedesktopNotify::slotServiceOwnerChanged(const QString &serviceName, cons
 	while (!IdQueue.isEmpty())
 	{
 		unsigned int id = IdQueue.dequeue();
-		Notification *notification = NotificationMap.value(id);
-		NotificationMap.remove(id);
+		Notification *notification = NotificationMap.take(id);
 
 		if (notification)
 			notification->release();
@@ -280,8 +279,7 @@ void FreedesktopNotify::deleteMapItem()
 		return;
 
 	unsigned int id = IdQueue.dequeue();
-	Notification *notification = NotificationMap.value(id);
-	NotificationMap.remove(id);
+	Notification *notification = NotificationMap.take(id);
 
 	if (notification)
 		notification->release();
