@@ -90,10 +90,10 @@ public:
 	void insertWidgets(int pos, QWidget *widget1, QWidget *widget2);
 
 	/**
-		Zwraca true, gdy GroupBox nie posiada w sobie żadnych widgetów.
-		@return true, gdy GroupBox nie posiada w sobie żadnych widgetów
+		Zwraca true, gdy GroupBox nie posiada w sobie żadnych obiektów klasy ConfigWidget.
+		@return true, gdy GroupBox nie posiada w sobie żadnych obiektów klasy ConfigWidget
 	 **/
-	bool empty() const;
+	bool isEmpty() const;
 
 };
 

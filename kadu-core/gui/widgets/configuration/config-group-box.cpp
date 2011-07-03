@@ -26,6 +26,7 @@
 
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/config-tab.h"
+#include "gui/widgets/configuration/config-widget.h"
 
 ConfigGroupBox::ConfigGroupBox(const QString &name, ConfigTab *configTab, QGroupBox *groupBox) :
 		QObject(configTab), Name(name), MyConfigTab(configTab), GroupBox(groupBox)
@@ -51,9 +52,13 @@ ConfigGroupBox::~ConfigGroupBox()
 	GroupBox = 0;
 }
 
-bool ConfigGroupBox::empty() const
+bool ConfigGroupBox::isEmpty() const
 {
-	return (Container->children().count() == 1);
+	foreach (QObject *child, Container->children())
+		if (dynamic_cast<ConfigWidget *>(child))
+			return false;
+
+	return true;
 }
 
 void ConfigGroupBox::addWidget(QWidget *widget, bool fullSpace)
