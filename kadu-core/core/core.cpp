@@ -432,6 +432,9 @@ void Core::deleteOldConfigurationFiles()
 
 void Core::statusUpdated()
 {
+	if (isClosing())
+		return;
+
 	setIcon(StatusContainerManager::instance()->statusIcon());
 }
 
