@@ -35,13 +35,17 @@ int TabsPlugin::init(bool firstLoad)
 
 	TabsManagerInstance = new TabsManager(this);
 	MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/tabs.ui"));
+	MainConfigurationWindow::registerUiHandler(TabsManagerInstance);
 
 	return 0;
 }
 
 void TabsPlugin::done()
 {
+	MainConfigurationWindow::unregisterUiHandler(TabsManagerInstance);
 	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/tabs.ui"));
+	delete TabsManagerInstance;
+	TabsManagerInstance = 0;
 }
 
 Q_EXPORT_PLUGIN2(tabs, TabsPlugin)
