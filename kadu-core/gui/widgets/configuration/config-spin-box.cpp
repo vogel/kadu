@@ -35,7 +35,7 @@ ConfigSpinBox::ConfigSpinBox(const QString &section, const QString &item, const 
 		label(0)
 {
 	if (!specialValue.isEmpty())
-		setSpecialValueText(qApp->translate("@default", specialValue.toAscii().data()));
+		setSpecialValueText(qApp->translate("@default", specialValue.toUtf8().constData()));
 	setMinimum(minValue);
 	setMaximum(maxValue);
 	setSingleStep(step);
@@ -60,13 +60,13 @@ void ConfigSpinBox::createWidgets()
 {
 	kdebugf();
 
-	label = new QLabel(qApp->translate("@default", widgetCaption.toAscii().data()) + ':', parentConfigGroupBox->widget());
+	label = new QLabel(qApp->translate("@default", widgetCaption.toUtf8().constData()) + ':', parentConfigGroupBox->widget());
 	parentConfigGroupBox->addWidgets(label, this);
 
 	if (!ConfigWidget::toolTip.isEmpty())
 	{
-		setToolTip(qApp->translate("@default", ConfigWidget::toolTip.toAscii().data()));
-		label->setToolTip(qApp->translate("@default", ConfigWidget::toolTip.toAscii().data()));
+		setToolTip(qApp->translate("@default", ConfigWidget::toolTip.toUtf8().constData()));
+		label->setToolTip(qApp->translate("@default", ConfigWidget::toolTip.toUtf8().constData()));
 	}
 }
 
@@ -106,7 +106,7 @@ bool ConfigSpinBox::fromDomElement(QDomElement domElement)
 	Suffix = domElement.attribute("suffix");
 
 	if (!specialValue.isEmpty())
-		setSpecialValueText(qApp->translate("@default", specialValue.toAscii().data()));
+		setSpecialValueText(qApp->translate("@default", specialValue.toUtf8().constData()));
 
 	bool ok;
 
@@ -130,7 +130,7 @@ void ConfigSpinBox::onValueChanged(int i)
 	QString suffix = Suffix;
 	if (Suffix.contains("%n"))
 	{
-		suffix = qApp->translate("@default", Suffix.toAscii().data(), 0, QCoreApplication::CodecForTr, i);
+		suffix = qApp->translate("@default", Suffix.toUtf8().constData(), 0, QCoreApplication::CodecForTr, i);
 		QRegExp rx(QString("^.*%1").arg(i));
 		rx.setMinimal(true);
 		suffix.remove(rx);

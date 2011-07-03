@@ -169,7 +169,7 @@ void Hint::updateText()
 		text = notification->text();
 	else
 	{
-		kdebug("syntax is: %s, text is: %s\n", syntax.toAscii().data(), notification->text().toAscii().data());
+		kdebug("syntax is: %s, text is: %s\n", qPrintable(syntax), qPrintable(notification->text()));
 
 		if (CurrentChat)
 		{

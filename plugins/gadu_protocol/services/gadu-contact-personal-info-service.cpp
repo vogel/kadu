@@ -54,7 +54,7 @@ void GaduContactPersonalInfoService::fetchPersonalInfo(Contact contact)
 {
 	Id = contact.id();
 	gg_pubdir50_t req = gg_pubdir50_new(GG_PUBDIR50_SEARCH);
-	gg_pubdir50_add(req, GG_PUBDIR50_UIN, qPrintable(Id));
+	gg_pubdir50_add(req, GG_PUBDIR50_UIN, Id.toUtf8().constData());
 	FetchSeq = gg_pubdir50(Protocol->gaduSession(), req);
 	//gg_pubdir50_free(req);
 }

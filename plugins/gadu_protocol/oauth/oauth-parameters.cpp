@@ -158,7 +158,7 @@ void OAuthParameters::sign()
 {
 	QStringList baseItems;
 	baseItems.append(HttpMethod);
-	baseItems.append(Url.toLocal8Bit().toPercentEncoding());
+	baseItems.append(Url.toUtf8().toPercentEncoding());
 	baseItems.append(toSignatureBase());
 
 	QByteArray key;
@@ -167,7 +167,7 @@ void OAuthParameters::sign()
 	key += Token.tokenSecret();
 
 	QCA::MessageAuthenticationCode hmac("hmac(sha1)", QCA::SymmetricKey(key));
-	QCA::SecureArray array(baseItems.join("&").toLocal8Bit());
+	QCA::SecureArray array(baseItems.join("&").toUtf8());
 
 	QByteArray digest = hmac.process(array).toByteArray().toBase64();
 	setSignature(digest);

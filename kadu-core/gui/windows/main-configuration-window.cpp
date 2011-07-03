@@ -313,7 +313,7 @@ void MainConfigurationWindow::setIconThemes()
 	foreach (const Theme &theme, themes)
 	{
 		values.append(theme.path());
-		captions.append(qApp->translate("@default", theme.name().toAscii().data()));
+		captions.append(qApp->translate("@default", theme.name().toUtf8().constData()));
 	}
 
 	iconThemes->setItems(values, captions);
@@ -333,7 +333,7 @@ void MainConfigurationWindow::setEmoticonThemes()
 	foreach (const Theme &theme, themes)
 	{
 		values.append(theme.path());
-		captions.append(qApp->translate("@default", theme.name().toAscii().data()));
+		captions.append(qApp->translate("@default", theme.name().toUtf8().constData()));
 	}
 
 	emoticonsThemes->setItems(values, captions);
@@ -350,7 +350,7 @@ void MainConfigurationWindow::setToolTipClasses()
 	QStringList toolTipClasses = ToolTipClassManager::instance()->getToolTipClasses();
 	foreach(const QString &toolTipClass, toolTipClasses)
 	{
-		captions << qApp->translate("@default", toolTipClass.toAscii().data());
+		captions << qApp->translate("@default", toolTipClass.toUtf8().constData());
 		values << toolTipClass;
 	}
 

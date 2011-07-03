@@ -297,7 +297,7 @@ void GrowlNotifier::notify(const QString& name, const QString& title,
 		QBuffer buffer(&img_data);
 		buffer.open(QIODevice::WriteOnly);
 		p.save(&buffer, "PNG");
-		icon = CFDataCreate( NULL, (UInt8*) img_data.data(), img_data.size());
+		icon = CFDataCreate( NULL, (const UInt8 *) img_data.constData(), img_data.size());
 	}
 
 	// Convert strings

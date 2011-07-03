@@ -40,12 +40,12 @@ void ConfigLabel::createWidgets()
 {
 	kdebugf();
 
-	setText("<font size='-1'><i>" + (qApp->translate("@default", widgetCaption.toAscii().data())) + "</i></font>");
+	setText("<font size='-1'><i>" + (qApp->translate("@default", widgetCaption.toUtf8().constData())) + "</i></font>");
 	setWordWrap(true);
 	parentConfigGroupBox->addWidget(this);
 
 	if (!ConfigWidget::toolTip.isEmpty())
-		setToolTip(qApp->translate("@default", ConfigWidget::toolTip.toAscii().data()));
+		setToolTip(qApp->translate("@default", ConfigWidget::toolTip.toUtf8().constData()));
 }
 
 void ConfigLabel::show()

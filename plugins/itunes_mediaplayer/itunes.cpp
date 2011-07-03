@@ -223,7 +223,7 @@ QByteArray ITunesMediaPlayer::executeCommand(const QString &command)
 	result = process.readAll();
 
 	kdebugmf(KDEBUG_INFO,"command: osascript -e %s - result: [%s]\n",
-		qPrintable(command), qPrintable(QString(result)));
+		qPrintable(command), result.constData());
 
 	return result;
 }

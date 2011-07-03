@@ -90,7 +90,7 @@ void FilterWidget::setText(const QString &text)
 {
 	CFRelease(searchFieldText);
 	searchFieldText = CFStringCreateWithCString(0,
-			  (const char *)text.toAscii(), 0);
+			text.toUtf8().constData(), 0);
 	HIViewSetText(searchField, searchFieldText);
 	emit textChanged(text);
 }
@@ -166,7 +166,7 @@ FilterWidget::FilterWidget(QWidget *parent) : QWidget(parent)
 #ifdef Q_OS_MAC
 
 	searchFieldText = CFStringCreateWithCString(0,
-		(const char *) tr("Search").toAscii(), 0);
+		tr("Search").toUtf8().constData(), 0);
 	HISearchFieldCreate(NULL, kHISearchFieldAttributesSearchIcon |
 		kHISearchFieldAttributesCancel,
 		NULL, searchFieldText, &searchField);

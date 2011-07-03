@@ -51,7 +51,7 @@ void GaduProxyHelper::setupProxy(AccountProxySettings proxySettings)
 	if (!gg_proxy_enabled)
 		return;
 
-	gg_proxy_host = strdup((char *)unicode2latin(proxySettings.address()).data());
+	gg_proxy_host = strdup(unicode2latin(proxySettings.address()).constData());
 	gg_proxy_port = proxySettings.port();
 
 	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "gg_proxy_host = %s\n", gg_proxy_host);
@@ -59,7 +59,7 @@ void GaduProxyHelper::setupProxy(AccountProxySettings proxySettings)
 
 	if (proxySettings.requiresAuthentication() && !proxySettings.user().isEmpty())
 	{
-		gg_proxy_username = strdup((char *)unicode2latin(proxySettings.user()).data());
-		gg_proxy_password = strdup((char *)unicode2latin(proxySettings.password()).data());
+		gg_proxy_username = strdup(unicode2latin(proxySettings.user()).constData());
+		gg_proxy_password = strdup(unicode2latin(proxySettings.password()).constData());
 	}
 }

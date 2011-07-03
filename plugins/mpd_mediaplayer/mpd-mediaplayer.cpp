@@ -47,7 +47,7 @@ void MPDMediaPlayer::done()
 
 mpd_connection * MPDMediaPlayer::mpdConnect()
 {
-	const char *host = Config.host().toAscii().constData();
+	const char *host = Config.host().toUtf8().constData();
 	unsigned int port = Config.port().toUInt();
 	unsigned int timeout = Config.timeout().toUInt();
 

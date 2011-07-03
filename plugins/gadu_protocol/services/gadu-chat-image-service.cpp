@@ -108,7 +108,7 @@ void GaduChatImageService::handleEventImageRequest(struct gg_event *e)
 			return;
 	}
 
-	gg_image_reply(Protocol->gaduSession(), e->event.image_request.sender, qPrintable(image.fileName), image.content.constData(), image.content.length());
+	gg_image_reply(Protocol->gaduSession(), e->event.image_request.sender, image.fileName.toUtf8().constData(), image.content.constData(), image.content.length());
 
 	image.content.clear();
 	image.lastSent = QDateTime::currentDateTime();
@@ -155,7 +155,7 @@ void GaduChatImageService::prepareImageToSend(const QString &imageFileName, quin
 	if (imageToSend.content.isNull())
 		return;
 
-	imageToSend.crc32 = gg_crc32(0, (const unsigned char*)imageToSend.content.data(), imageToSend.content.length());
+	imageToSend.crc32 = gg_crc32(0, (const unsigned char*)imageToSend.content.constData(), imageToSend.content.length());
 
 	size = imageToSend.content.length();
 	crc32 = imageToSend.crc32;

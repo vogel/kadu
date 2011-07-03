@@ -303,7 +303,7 @@ NotifierConfigurationWidget *HintManager::createConfigurationWidget(QWidget *par
 
 void HintManager::processButtonPress(const QString &buttonName, Hint *hint)
 {
-	kdebugmf(KDEBUG_FUNCTION_START, "%s\n", buttonName.toAscii().data());
+	kdebugmf(KDEBUG_FUNCTION_START, "%s\n", buttonName.toUtf8().constData());
 
 	switch (config_file.readNumEntry("Hints", buttonName))
 	{

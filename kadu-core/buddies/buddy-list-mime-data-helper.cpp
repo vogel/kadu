@@ -48,7 +48,7 @@ QMimeData * BuddyListMimeDataHelper::toMimeData(const BuddyList &buddyList)
 	foreach (const Buddy &buddy, buddyList)
 		buddyListStrings << buddy.uuid().toString();
 
-	mimeData->setData(MimeType, buddyListStrings.join(":").toAscii());
+	mimeData->setData(MimeType, buddyListStrings.join(":").toUtf8());
 	return mimeData;
 }
 

@@ -120,7 +120,7 @@ static void kadu_signal_handler(int signal)
 		kdebugm(KDEBUG_PANIC, "backtrace not available\n");
 #endif // HAVE_EXECINFO
 
-		xml_config_file->saveTo(profilePath(backupFileName.toLatin1()));
+		xml_config_file->saveTo(profilePath(backupFileName));
 		abort();
 	}
 	else if (signal == SIGUSR1)

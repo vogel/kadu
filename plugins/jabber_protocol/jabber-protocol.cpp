@@ -291,7 +291,7 @@ void JabberProtocol::changePrivateMode()
 void JabberProtocol::clientResourceReceived(const XMPP::Jid &jid, const XMPP::Resource &resource)
 {
 	kdebugf();
-	kdebug("New resource available for %s\n", jid.full().toLocal8Bit().data());
+	kdebug("New resource available for %s\n", jid.full().toUtf8().constData());
 	resourcePool()->addResource(jid, resource);
 
 	Status status(IrisStatusAdapter::fromIrisStatus(resource.status()));

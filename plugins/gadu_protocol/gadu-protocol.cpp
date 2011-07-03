@@ -116,7 +116,7 @@ void GaduProtocol::sendStatusToServer()
 	bool hasDescription = !newStatus.description().isEmpty();
 
 	if (hasDescription)
-		gg_change_status_descr(GaduSession, type | friends, newStatus.description().toUtf8());
+		gg_change_status_descr(GaduSession, type | friends, newStatus.description().toUtf8().constData());
 	else
 		gg_change_status(GaduSession, type | friends);
 
@@ -266,13 +266,13 @@ void GaduProtocol::setupLoginParams()
 		return;
 
 	GaduLoginParams.uin = account().id().toULong();
-	GaduLoginParams.password = strdup(account().password().toAscii().data());
+	GaduLoginParams.password = strdup(account().password().toAscii().constData());
 
 	GaduLoginParams.async = 1;
 
 	GaduLoginParams.status = (GaduProtocolHelper::gaduStatusFromStatus(loginStatus()) | (account().privateStatus() ? GG_STATUS_FRIENDS_MASK : 0));
 	if (!loginStatus().description().isEmpty())
-		GaduLoginParams.status_descr = strdup(loginStatus().description().toUtf8());
+		GaduLoginParams.status_descr = strdup(loginStatus().description().toUtf8().constData());
 
 	GaduLoginParams.tls = gaduAccountDetails->tlsEncryption() ? GG_SSL_ENABLED : GG_SSL_DISABLED;
 
@@ -291,7 +291,7 @@ void GaduProtocol::setupLoginParams()
 	GaduLoginParams.external_port = gaduAccountDetails->externalPort();
 
 	GaduLoginParams.protocol_version = GG_DEFAULT_PROTOCOL_VERSION;
-	GaduLoginParams.client_version = strdup(qPrintable(Core::nameWithVersion()));
+	GaduLoginParams.client_version = strdup(Core::nameWithVersion().toUtf8().constData());
 	GaduLoginParams.protocol_features =
 			GG_FEATURE_DND_FFC // enable new statuses
 			| GG_FEATURE_MULTILOGON

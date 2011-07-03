@@ -207,7 +207,7 @@ void Speech::say(const QString &s, const QString &path,
 	QProcess *p = new QProcess();
 	connect(p, SIGNAL(finished(int, QProcess::ExitStatus)), p, SLOT(deleteLater()));
 	p->start(t, list);
-	p->write(qPrintable(s));
+	p->write(s.toUtf8().constData());
 	p->closeWriteChannel();
 
 	kdebugf2();

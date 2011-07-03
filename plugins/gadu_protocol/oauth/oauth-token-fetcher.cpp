@@ -108,7 +108,7 @@ void OAuthTokenFetcher::requestFinished()
 		return;
 	}
 
-	OAuthToken token(oauthTokenElement.text().toAscii(), oauthTokenSecretElement.text().toAscii(), oauthTokenExpiresInlement.text().toUInt());
+	OAuthToken token(oauthTokenElement.text().toUtf8(), oauthTokenSecretElement.text().toUtf8(), oauthTokenExpiresInlement.text().toUInt());
 	token.setConsumer(Consumer);
 	emit tokenFetched(token);
 

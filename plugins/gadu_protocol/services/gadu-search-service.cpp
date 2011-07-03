@@ -80,7 +80,7 @@ void GaduSearchService::searchNext()
 	if (Query.Active)
 		gg_pubdir50_add(req, GG_PUBDIR50_ACTIVE, GG_PUBDIR50_ACTIVE_TRUE);
 
-	gg_pubdir50_add(req, GG_PUBDIR50_START, qPrintable(QString::number(From)));
+	gg_pubdir50_add(req, GG_PUBDIR50_START, QString::number(From).toUtf8().constData());
 
 	SearchSeq = gg_pubdir50(Protocol->gaduSession(), req);
 	gg_pubdir50_free(req);

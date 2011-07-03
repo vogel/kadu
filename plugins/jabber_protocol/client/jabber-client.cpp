@@ -611,7 +611,7 @@ void JabberClient::updateContact(const XMPP::Jid &j, const QString &name, const 
 
 void JabberClient::setPresence(const XMPP::Status &status)
 {
-	kdebug("Status: %s, Reason: %s\n", status.show().toLocal8Bit().data(), status.status().toLocal8Bit().data());
+	kdebug("Status: %s, Reason: %s\n", status.show().toUtf8().constData(), status.status().toUtf8().constData());
 
 	XMPP::Status newStatus = status;
 

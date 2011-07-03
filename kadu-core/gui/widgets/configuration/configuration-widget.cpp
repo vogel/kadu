@@ -192,7 +192,7 @@ QList<ConfigWidget *> ConfigurationWidget::processUiSectionFromDom(QDomNode sect
 		return result;
 	}
 
-	configSection(KaduIcon(sectionElement.attribute("icon")), qApp->translate("@default", sectionName.toAscii().data()), true);
+	configSection(KaduIcon(sectionElement.attribute("icon")), qApp->translate("@default", sectionName.toUtf8().constData()), true);
 
 	const QDomNodeList children = sectionElement.childNodes();
 	int length = children.length();
@@ -402,11 +402,11 @@ QWidget * ConfigurationWidget::widgetById(const QString &id)
 
 ConfigGroupBox * ConfigurationWidget::configGroupBox(const QString &section, const QString &tab, const QString &groupBox, bool create)
 {
-	ConfigSection *s = configSection(qApp->translate("@default", section.toAscii().data()));
+	ConfigSection *s = configSection(qApp->translate("@default", section.toUtf8().constData()));
 	if (!s)
 		return 0;
 
-	return s->configGroupBox(qApp->translate("@default", tab.toAscii().data()), qApp->translate("@default", groupBox.toAscii().data()), create);
+	return s->configGroupBox(qApp->translate("@default", tab.toUtf8().constData()), qApp->translate("@default", groupBox.toUtf8().constData()), create);
 }
 
 ConfigSection * ConfigurationWidget::configSection(const QString &name)
