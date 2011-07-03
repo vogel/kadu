@@ -507,7 +507,7 @@ void ConfigurationWidget::changeSection(const QString &newSectionName)
 void ConfigurationWidget::configSectionDestroyed(QObject *obj)
 {
 	// see ConfigSection::~ConfigSection()
-	disconnect(obj, SIGNAL(destroyed(QObject *)), this, SLOT(configGroupBoxDestroyed(QObject *)));
+	disconnect(obj, SIGNAL(destroyed(QObject *)), this, SLOT(configSectionDestroyed(QObject *)));
 
 	ConfigSections.remove(static_cast<ConfigSection *>(obj)->name());
 
