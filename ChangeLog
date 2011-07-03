@@ -4,6 +4,7 @@
 * gadu: #2189 fixed: not composing chat events were not always sent when they should (beevvy)
 * gadu: #2203 fixed: crash when other multilogged in client sent message to our number (beevvy)
 * jabber: #2226, #2240 fixed: automatically update names of buddies containing exactly one Facebook Chat contact and do not allow manually changing those buddies' names (beevvy)
+* hints: #2249 fixed: removed unnecessary 1px window-color margin from hints (ultr)
 
 +++ version 0.10.0-beta1
 * gadu: #2050 fixed: fixed sending images to GG7 and AQQ (beevvy)

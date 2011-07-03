@@ -84,7 +84,7 @@ HintManager::HintManager(QObject *parent) :
 
 	layout = new QVBoxLayout(frame);
 	layout->setSpacing(0);
-	layout->setMargin(FRAME_WIDTH);
+	layout->setMargin(0);
 // 	layout->setSizeConstraint(QLayout::SetFixedSize);
 
 	Opacity = config_file.readNumEntry("Hints", "AllEvents_transparency", 0);

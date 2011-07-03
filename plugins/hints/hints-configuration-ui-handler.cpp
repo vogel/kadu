@@ -56,7 +56,7 @@ HintsConfigurationUiHandler::HintsConfigurationUiHandler(const QString &style, Q
 
 	previewHintsLayout = new QVBoxLayout(previewHintsFrame);
 	previewHintsLayout->setSpacing(0);
-	previewHintsLayout->setMargin(1);
+	previewHintsLayout->setMargin(0);
 	previewHintsLayout->setSizeConstraint(QLayout::SetFixedSize);
 	previewHintsFrame->setStyleSheet(style);
 
