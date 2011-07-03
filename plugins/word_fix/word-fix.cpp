@@ -367,7 +367,6 @@ void WordFix::moveToNewValue()
 void WordFix::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
 	kdebugf();
-	printf("mainConfigurationWindowCreated, window: %p\n", mainConfigurationWindow);
 
 	ConfigGroupBox *groupBox = mainConfigurationWindow->widget()->
 		configGroupBox("Chat", "Words fix", "Words fix");
