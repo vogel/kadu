@@ -21,6 +21,7 @@
 
 #include <QtGui/QAction>
 
+#include "activate.h"
 #include "configuration/configuration-file.h"
 #include "core/core.h"
 #include "gui/actions/action-description.h"
@@ -68,15 +69,22 @@ ConfigWizardConfigurationUiHandler::ConfigWizardConfigurationUiHandler()
 ConfigWizardConfigurationUiHandler::~ConfigWizardConfigurationUiHandler()
 {
 	Core::instance()->kaduWindow()->removeMenuActionDescription(ShowConfigWizardActionDescription);
+
+	delete Wizard.data();
 }
 
 void ConfigWizardConfigurationUiHandler::showConfigWizard()
 {
 	kdebugf();
 
-	ConfigWizardWindow *wizard = new ConfigWizardWindow();
-	// we have to delay it a bit to show after main window to have focus on startup
-	QMetaObject::invokeMethod(wizard, "show", Qt::QueuedConnection);
+	if (Wizard)
+		_activateWindow(Wizard.data());
+	else
+	{
+		Wizard = new ConfigWizardWindow();
+		// we have to delay it a bit to show after main window to have focus on startup
+		QMetaObject::invokeMethod(Wizard.data(), "show", Qt::QueuedConnection);
+	}
 }
 
 void ConfigWizardConfigurationUiHandler::showConfigWizardSlot()

@@ -22,10 +22,13 @@
 #define CONFIG_WIZARD_CONFIGURATION_UI_HANDLER
 
 #include <QtCore/QObject>
+#include <QtCore/QWeakPointer>
 
 class QAction;
 
 class ActionDescription;
+
+class ConfigWizardWindow;
 
 class ConfigWizardConfigurationUiHandler : public QObject
 {
@@ -33,6 +36,8 @@ class ConfigWizardConfigurationUiHandler : public QObject
 	Q_DISABLE_COPY(ConfigWizardConfigurationUiHandler)
 
 	static ConfigWizardConfigurationUiHandler *Instance;
+
+	QWeakPointer<ConfigWizardWindow> Wizard;
 
 	ActionDescription *ShowConfigWizardActionDescription;
 
