@@ -80,8 +80,8 @@ SimpleView::~SimpleView()
 	if (!Core::instance()->isClosing())
 		DockingManager::instance()->unregisterModuleAction(DockAction);
 
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/simpleview.ui"));
 	MainConfigurationWindow::unregisterUiHandler(SimpleViewConfigUi::instance());
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/simpleview.ui"));
 	SimpleViewConfigUi::destroyInstance();
 }
 

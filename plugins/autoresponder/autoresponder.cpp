@@ -91,8 +91,8 @@ int AutoResponder::init(bool firstLoad)
 
 void AutoResponder::done()
 {
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/autoresponder.ui"));
 	MainConfigurationWindow::unregisterUiHandler(this);
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/autoresponder.ui"));
 }
 
 void AutoResponder::accountRegistered(Account account)

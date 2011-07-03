@@ -99,14 +99,26 @@ public:
 		Plik uiFile zostanie wczytany wraz z otwarciem g��wnego okna konfiguracyjnego.
 		Obiekt uiHandle zostanie poinformowany o stworzeniu okna i b�dzie m�g� doda�
 		do niego w�asne interakcje.
+		@note Należy pamiętać, aby wywołać tę metodę zawsze przed korespondującym
+		      wywołaniem metody \c registerUiHandler() (o ile takie istnieje).
 	 **/
 	static void registerUiFile(const QString &uiFile);
 	/**
 		Wyrejestrowanie pliku *.ui i klasy obs�uguj�cej okno konfiguracyjne.
+		@note Należy pamiętać, aby wywołać tę metodę zawsze po korespondującym
+		      wywołaniu metody \c unregisterUiHandler() (o ile takie istnieje).
 	 **/
 	static void unregisterUiFile(const QString &uiFile);
 
+	/**
+	 * @note Always remember to call this method after correspoding
+	 *       \c registerUiHandler() method call (if such exists).
+	 */
 	static void registerUiHandler(ConfigurationUiHandler *uiHandler);
+	/**
+	 * @note Always remember to call this method before correspoding
+	 *       \c unregisterUiFile() method call (if such exists).
+	 */
 	static void unregisterUiHandler(ConfigurationUiHandler *uiHandler);
 
 	static const char *SyntaxText;

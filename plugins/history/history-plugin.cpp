@@ -48,8 +48,8 @@ void HistoryPlugin::done()
 	BuddyAdditionalDataDeleteHandlerManager::instance()->unregisterAdditionalDataDeleteHandler(BuddyHistoryDeleteHandler::instance());
 	BuddyHistoryDeleteHandler::destroyInstance();
 
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/history.ui"));
 	MainConfigurationWindow::unregisterUiHandler(History::instance());
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/history.ui"));
 	History::destroyInstance();
 }
 

@@ -52,10 +52,11 @@ void MPRISPlayerConfigurationUiHandler::unregisterConfigurationUi()
 	if (!Instance)
 		return;
 
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/mprisplayer_mediaplayer.ui"));
 	MainConfigurationWindow::unregisterUiHandler(Instance);
 	delete Instance;
 	Instance = 0;
+
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/mprisplayer_mediaplayer.ui"));
 }
 
 MPRISPlayerConfigurationUiHandler::MPRISPlayerConfigurationUiHandler() :

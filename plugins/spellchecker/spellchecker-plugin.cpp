@@ -55,8 +55,8 @@ void SpellCheckerPlugin::done()
 	Suggester::destroyInstance();
 	SpellcheckerConfiguration::destroyInstance();
 
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/spellchecker.ui"));
 	MainConfigurationWindow::unregisterUiHandler(SpellCheckerInstance);
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/spellchecker.ui"));
 
 	delete SpellCheckerInstance;
 	SpellCheckerInstance = 0;

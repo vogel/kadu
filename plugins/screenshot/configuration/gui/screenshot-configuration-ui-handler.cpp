@@ -42,13 +42,13 @@ void ScreenShotConfigurationUiHandler::registerConfigurationUi()
 
 void ScreenShotConfigurationUiHandler::unregisterConfigurationUi()
 {
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/screenshot.ui"));
-
 	if (Instance)
 		MainConfigurationWindow::unregisterUiHandler(Instance);
 
 	delete Instance;
 	Instance = 0;
+
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/screenshot.ui"));
 }
 
 ScreenShotConfigurationUiHandler::ScreenShotConfigurationUiHandler(QObject *parent) :

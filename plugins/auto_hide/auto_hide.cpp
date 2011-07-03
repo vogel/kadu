@@ -59,8 +59,8 @@ int AutoHide::init(bool firstLoad)
 
 void AutoHide::done()
 {
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/auto_hide.ui"));
 	MainConfigurationWindow::unregisterUiHandler(this);
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/auto_hide.ui"));
 }
 
 void AutoHide::timerTimeoutSlot()

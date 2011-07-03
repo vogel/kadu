@@ -37,13 +37,13 @@ void FreedesktopNotifyConfigurationUiHandler::registerConfigurationUi()
 
 void FreedesktopNotifyConfigurationUiHandler::unregisterConfigurationUi()
 {
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/freedesktop_notify.ui"));
-
 	if (Instance)
 		MainConfigurationWindow::unregisterUiHandler(Instance);
 
 	delete Instance;
 	Instance = 0;
+
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/freedesktop_notify.ui"));
 }
 
 FreedesktopNotifyConfigurationUiHandler * FreedesktopNotifyConfigurationUiHandler::instance()

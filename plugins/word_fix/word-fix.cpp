@@ -141,8 +141,8 @@ int WordFix::init(bool firstLoad)
 void WordFix::done()
 {
 	kdebugf();
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/word_fix.ui"));
 	MainConfigurationWindow::unregisterUiHandler(this);
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/word_fix.ui"));
 	kdebugf2();
 }
 
