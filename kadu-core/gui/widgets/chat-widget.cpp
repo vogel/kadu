@@ -673,7 +673,6 @@ void ChatWidget::updateComposing()
 
 	if (!ComposingTimer.isActive())
 	{
-
 		// If the text was deleted either by sending a message or explicitly by the user,
 		// let's not report it as composing.
 		if (edit()->toPlainText().isEmpty())
@@ -688,11 +687,12 @@ void ChatWidget::updateComposing()
 
 void ChatWidget::contactActivityChanged(ChatStateService::ContactActivity state, const Contact &contact)
 {
+	if (CurrentContactActivity == state)
+		return;
+
 	if (!CurrentChat.contacts().contains(contact))
 		return;
 
-	if (CurrentContactActivity == state)
-		return;
 	CurrentContactActivity = state;
 
 	if (ChatConfigurationHolder::instance()->contactStateChats())
