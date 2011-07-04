@@ -698,12 +698,10 @@ void ChatWidget::contactActivityChanged(ChatStateService::ContactActivity state,
 	if (ChatConfigurationHolder::instance()->contactStateChats())
 		MessagesView->contactActivityChanged(state, contact);
 
-	if (CurrentContactActivity != ChatStateService::StateGone)
-	{
-		if (ChatConfigurationHolder::instance()->contactStateWindowTitle())
-			refreshTitle();
-	}
-	else
+	if (ChatConfigurationHolder::instance()->contactStateWindowTitle())
+		refreshTitle();
+
+	if (CurrentContactActivity == ChatStateService::StateGone)
 	{
 		QString msg = "[ " + tr("%1 ended the conversation").arg(contact.ownerBuddy().display()) + " ]";
 		Message message = Message::create();
