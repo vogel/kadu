@@ -70,8 +70,8 @@ void GaduPersonalInfoWidget::createGui()
 	Sex = new QComboBox(this);
 	connect(Sex, SIGNAL(currentIndexChanged(int)), this, SIGNAL(dataChanged()));
 	Sex->addItem(tr("Unknown Gender"));
-	Sex->addItem(tr("Male"));
 	Sex->addItem(tr("Female"));
+	Sex->addItem(tr("Male"));
 
 	FamilyName = new QLineEdit(this);
 	connect(FamilyName, SIGNAL(textChanged(QString)), this, SIGNAL(dataChanged()));
