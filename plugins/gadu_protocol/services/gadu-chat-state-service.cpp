@@ -30,7 +30,14 @@
 GaduChatStateService::GaduChatStateService(GaduProtocol *parent) :
 	ChatStateService(parent), Protocol(parent)
 {
+	if (Protocol->chatService())
+		connect(Protocol->chatService(), SIGNAL(messageReceived(Message)), this, SLOT(messageReceived(Message)));
+}
 
+void GaduChatStateService::messageReceived(const Message &message)
+{
+	// it seems it is what is also done by GG10
+	emit contactActivityChanged(StatePaused, message.messageSender());
 }
 
 void GaduChatStateService::handleEventTypingNotify(struct gg_event *e)

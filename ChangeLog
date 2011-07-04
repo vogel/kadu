@@ -10,6 +10,7 @@
 * config_wizard: fixed crash when unloading plugin with opened config wizard window (beevvy)
 * freedesktop_notify: #2248 fixed: fixed possible crash (beevvy)
 * gadu: #2242 fixed: fixed setting and reading own gender (beevvy)
+* gadu: #2245 fixed: indication that our interlocutor was composing a message didn't disappear in the moment of receiving that message but about a second after that (beevvy)
 
 +++ version 0.10.0-beta1
 * gadu: #2050 fixed: fixed sending images to GG7 and AQQ (beevvy)

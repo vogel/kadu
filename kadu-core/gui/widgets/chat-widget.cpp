@@ -655,15 +655,20 @@ void ChatWidget::commonHeightChanged(int commonHeight)
 
 void ChatWidget::checkComposing()
 {
-	if (!IsComposing)
+	if (IsComposing)
+	{
+		if (currentProtocol() && currentProtocol()->chatStateService() && !edit()->toPlainText().isEmpty())
+			currentProtocol()->chatStateService()->composingStarted(chat());
+
+		IsComposing = false;
+	}
+	else
 	{
 		ComposingTimer.stop();
 
 		if (currentProtocol() && currentProtocol()->chatStateService())
 			currentProtocol()->chatStateService()->composingStopped(chat());
 	}
-	else
-		IsComposing = false;
 }
 
 void ChatWidget::updateComposing()
