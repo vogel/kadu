@@ -82,6 +82,8 @@ class KADUAPI ChatWidget : public QWidget, public ConfigurationAwareObject
 
 	bool decodeLocalFiles(QDropEvent *event, QStringList &files);
 
+	void composingStopped();
+
 private slots:
 	void configurationUpdated();
 

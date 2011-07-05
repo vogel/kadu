@@ -468,6 +468,13 @@ void ChatWidget::sendMessage()
 		return;
 
 	resetEditBox();
+
+	// We sent the message and reseted the edit box, so composing of that message is done.
+	// Note that if ComposingTimer is not active, it means that we already reported
+	// composing had stopped.
+	if (ComposingTimer.isActive())
+		composingStopped();
+
 	emit messageSentAndConfirmed(CurrentChat, message.toHtml());
 
 	emit messageSent(this);
@@ -663,16 +670,22 @@ void ChatWidget::commonHeightChanged(int commonHeight)
 	VerticalSplitter->setSizes(sizes);
 }
 
+void ChatWidget::composingStopped()
+{
+	ComposingTimer.stop();
+	IsComposing = false;
+
+	if (currentProtocol() && currentProtocol()->chatStateService())
+		currentProtocol()->chatStateService()->composingStopped(chat());
+}
+
 void ChatWidget::checkComposing()
 {
 	if (!IsComposing)
-	{
-		ComposingTimer.stop();
-
-		if (currentProtocol() && currentProtocol()->chatStateService())
-			currentProtocol()->chatStateService()->composingStopped(chat());
-	}
+		composingStopped();
 	else
+		// Reset IsComposing to false, so if updateComposing() method doesn't set it to true
+		// before ComposingTimer hits this method again, we will call composingStopped().
 		IsComposing = false;
 }
 
