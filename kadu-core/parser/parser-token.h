@@ -36,10 +36,12 @@ struct ParserToken
 		PT_ICONPATH,
 		PT_EXTERNAL_VARIABLE,
 		PT_EXECUTE2
-	} type;
+	} Type;
 
-	QString content;
-	ParserToken() : type(PT_STRING), content() {}
+	QString Content;
+
+	ParserToken() : Type(PT_STRING), Content() {}
+
 };
 
 #endif // PARSER_TOKEN_H

@@ -97,7 +97,7 @@ QString homePath()
 		if (QFile::exists(dataPath("usbinst", "")))
 		{
 			path = dataPath("config/");
-			Parser::globalVariables["KADU_CONFIG"] = path;
+			Parser::GlobalVariables["KADU_CONFIG"] = path;
 			return (path);
 		}
 		WCHAR *homepath = new WCHAR[MAX_PATH + 1];
@@ -133,7 +133,7 @@ QString profilePath(const QString &subpath)
 		if (QFile::exists(dataPath("usbinst", "")))
 		{
 			path = dataPath("config/");
-			Parser::globalVariables["KADU_CONFIG"] = path;
+			Parser::GlobalVariables["KADU_CONFIG"] = path;
 			return (path+subpath);
 		}
 		WCHAR *homepath = new WCHAR[MAX_PATH + 1];
@@ -150,7 +150,7 @@ QString profilePath(const QString &subpath)
 			home = QString::fromLocal8Bit(getenv("HOME"));
 #endif
 
-		Parser::globalVariables["HOME"] = home;
+		Parser::GlobalVariables["HOME"] = home;
 
 		QString pwd = QDir::currentPath();
 
@@ -240,7 +240,7 @@ QString profilePath(const QString &subpath)
 		}
 #endif
 
-		Parser::globalVariables["KADU_CONFIG"] = path;
+		Parser::GlobalVariables["KADU_CONFIG"] = path;
 	}
 
 	return (path + subpath);
@@ -322,8 +322,8 @@ QString dataPath(const QString &p, const char *argv0)
 		data_path = dataDir.canonicalPath() + '/';
 		lib_path = libDir.canonicalPath() + '/';
 
-		Parser::globalVariables["DATA_PATH"] = data_path;
-		Parser::globalVariables["LIB_PATH"] = lib_path;
+		Parser::GlobalVariables["DATA_PATH"] = data_path;
+		Parser::GlobalVariables["LIB_PATH"] = lib_path;
 	}
 	if (data_path.isEmpty())
 	{
