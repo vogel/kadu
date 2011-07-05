@@ -41,7 +41,9 @@ void ChatConfigurationHolder::configurationUpdated()
 	AutoSend = config_file.readBoolEntry("Chat", "AutoSend");
 	NiceDateFormat = config_file.readBoolEntry("Look", "NiceDateFormat");
 
+	ChatTextCustomColors = config_file.readBoolEntry("Look", "ChatTextCustomColors");
 	ChatTextBgColor = config_file.readColorEntry("Look", "ChatTextBgColor");
+	ChatTextFontColor = config_file.readColorEntry("Look", "ChatTextFontColor");
 
 	ForceCustomChatFont = config_file.readBoolEntry("Look", "ForceCustomChatFont");
 	ChatFont = config_file.readFontEntry("Look", "ChatFont");
@@ -63,5 +65,11 @@ void ChatConfigurationHolder::configurationUpdated()
 	ContactStateWindowTitlePosition = config_file.readNumEntry("Chat", "ContactStateWindowTitlePosition");
 	ContactStateWindowTitleComposingSyntax = config_file.readEntry("Chat", "ContactStateWindowTitleComposingSyntax");
 
+	ChatBgFilled = config_file.readBoolEntry("Look", "ChatBgFilled");
+	ChatBgColor = config_file.readColorEntry("Look", "ChatBgColor");
+
+	UseTransparency = config_file.readBoolEntry("Chat", "UseTransparency");
+
+	
 	emit chatConfigurationUpdated();
 }

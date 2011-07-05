@@ -62,6 +62,11 @@ ChatMessagesView::ChatMessagesView(const Chat &chat, bool supportTransparency, Q
 	settings()->setAttribute(QWebSettings::JavascriptEnabled, true);
 	settings()->setAttribute(QWebSettings::PluginsEnabled, true);
 
+	QPalette p = palette();
+	p.setBrush(QPalette::Base, Qt::transparent);
+	page()->setPalette(p);
+	setAttribute(Qt::WA_OpaquePaintEvent, false);
+
 	configurationUpdated();
 
 	connectChat();

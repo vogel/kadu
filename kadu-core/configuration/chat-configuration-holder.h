@@ -37,7 +37,9 @@ class ChatConfigurationHolder : public ConfigurationHolder
 	bool AutoSend;
 	bool NiceDateFormat;
 	int EmoticonsStyle;
+	bool ChatTextCustomColors;
 	QColor ChatTextBgColor;
+	QColor ChatTextFontColor;
 	bool ForceCustomChatFont;
 	QFont ChatFont;
 	QString ChatContents;
@@ -49,6 +51,9 @@ class ChatConfigurationHolder : public ConfigurationHolder
 	QString UsrBackgroundColor;
 	QString UsrFontColor;
 	QString UsrNickColor;
+	bool ChatBgFilled;
+	QColor ChatBgColor;
+	bool UseTransparency;
 
 	bool ContactStateChats;
 	bool ContactStateWindowTitle;
@@ -62,7 +67,9 @@ public:
 	bool autoSend() const { return AutoSend; }
 	bool niceDateFormat() const { return NiceDateFormat; }
 	int emoticonsStyle() const { return EmoticonsStyle; }
+	bool chatTextCustomColors() const { return ChatTextCustomColors; }
 	const QColor &chatTextBgColor() const { return ChatTextBgColor; }
+	const QColor &chatTextFontColor() const { return ChatTextFontColor; }
 	bool forceCustomChatFont() const { return ForceCustomChatFont; }
 	const QFont &chatFont() const { return ChatFont; }
 	const QString &chatContents() const { return ChatContents; }
@@ -74,6 +81,9 @@ public:
 	const QString &usrBackgroundColor() const { return UsrBackgroundColor; }
 	const QString &usrFontColor() const { return UsrFontColor; }
 	const QString &usrNickColor() const { return UsrNickColor; }
+	bool chatBgFilled() const { return ChatBgFilled; }
+	const QColor &chatBgColor() const { return ChatBgColor; }
+	bool useTransparency() const { return UseTransparency; }
 
 	bool contactStateChats() const { return ContactStateChats; }
 	bool contactStateWindowTitle() const { return ContactStateWindowTitle; }

@@ -119,14 +119,17 @@
 
 		<tab name="Colors">
 			<group-box name="Chat Window">
-				<color-button caption="Chat window" config-section="Look" config-item="ChatBgColor" />
-				<color-button caption="Text edit" config-section="Look" config-item="ChatTextBgColor" />
-				<color-button caption="My messages" config-section="Look" config-item="ChatMyBgColor" />
-				<color-button caption="Buddy's messages" config-section="Look" config-item="ChatUsrBgColor" />
-				<color-button caption="My font" config-section="Look" config-item="ChatMyFontColor" />
-				<color-button caption="Buddy's font" config-section="Look" config-item="ChatUsrFontColor" />
-				<color-button caption="My nick" config-section="Look" config-item="ChatMyNickColor" />
-				<color-button caption="Buddy's nick" config-section="Look" config-item="ChatUsrNickColor" />
+				<color-button caption="My font color" config-section="Look" config-item="ChatMyFontColor" />
+				<color-button caption="Buddy's font color" config-section="Look" config-item="ChatUsrFontColor" />
+				<color-button caption="My nick color" config-section="Look" config-item="ChatMyNickColor" />
+				<color-button caption="Buddy's nick color" config-section="Look" config-item="ChatUsrNickColor" />
+				<color-button caption="My messages' background" config-section="Look" config-item="ChatMyBgColor" />
+				<color-button caption="Buddy's messages' background" config-section="Look" config-item="ChatUsrBgColor" />
+				<check-box caption="Use custom chat background color" config-section="Look" config-item="ChatBgFilled" id="chatBgFilled" />
+				<color-button caption="Chat background" config-section="Look" config-item="ChatBgColor" id="chatBgColor" />
+				<check-box caption="Use custom text edit colors" config-section="Look" config-item="ChatTextCustomColors" id="chatTextCustomColors" />
+				<color-button caption="Text edit background" config-section="Look" config-item="ChatTextBgColor" id="chatTextBgColor" />
+				<color-button caption="Text edit font" config-section="Look" config-item="ChatTextFontColor" id="chatTextFontColor" />
 			</group-box>
 			<group-box name="Buddy List">
 				<color-button caption="Font" config-section="Look" config-item="UserboxFgColor" />
