@@ -246,7 +246,7 @@ void Core::createDefaultConfiguration()
 	config_file.addVariable("Look", "ForceCustomChatFont", false);
 	config_file.addVariable("Look", "ChatFont", qApp->font());
 	config_file.addVariable("Look", "ChatBgFilled", // depends on configuration imported from older version
-		!config_file.readColorEntry("Look", "ChatBgColor").isValid() ||
+		config_file.readColorEntry("Look", "ChatBgColor").isValid() &&
 		config_file.readColorEntry("Look", "ChatBgColor") != QColor("#ffffff"));
 	config_file.addVariable("Look", "ChatBgColor", QColor("#ffffff"));
 	config_file.addVariable("Look", "ChatMyBgColor", QColor("#E0E0E0"));
@@ -256,7 +256,7 @@ void Core::createDefaultConfiguration()
 	config_file.addVariable("Look", "ChatUsrFontColor", QColor("#000000"));
 	config_file.addVariable("Look", "ChatUsrNickColor", QColor("#000000"));
 	config_file.addVariable("Look", "ChatTextCustomColors", // depends on configuration imported from older version
-		!config_file.readColorEntry("Look", "ChatTextBgColor").isValid() ||
+		config_file.readColorEntry("Look", "ChatTextBgColor").isValid() &&
 		config_file.readColorEntry("Look", "ChatTextBgColor") != QColor("#ffffff"));
 	config_file.addVariable("Look", "ChatTextBgColor", QColor("#ffffff"));
 	config_file.addVariable("Look", "ChatTextFontColor", QColor("#000000"));
