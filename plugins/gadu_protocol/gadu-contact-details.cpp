@@ -23,7 +23,7 @@
 #include "gadu-contact-details.h"
 
 GaduContactDetails::GaduContactDetails(ContactShared *contactShared, QObject *parent) :
-		ContactDetails(contactShared, parent)
+		ContactDetails(contactShared, parent), GaduFlags(0)
 {
 }
 
@@ -39,4 +39,9 @@ unsigned int GaduContactDetails::uin()
 
 void GaduContactDetails::store()
 {
+}
+
+void GaduContactDetails::setGaduFlags(int gaduFlags)
+{
+	GaduFlags = gaduFlags;
 }

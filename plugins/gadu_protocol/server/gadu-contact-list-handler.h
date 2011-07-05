@@ -27,6 +27,7 @@
 #include <protocols/protocol.h>
 
 class Contact;
+class GaduContactDetails;
 class GaduProtocol;
 
 class GaduContactListHandler : public QObject
@@ -52,12 +53,6 @@ public:
 	void reset();
 
 	void updateContactEntry(Contact contact);
-
-	void addContactEntry(UinType uin, int type);
-	void addContactEntry(Contact contact);
-
-	void removeContactEntry(UinType uin);
-	void removeContactEntry(Contact contact);
 
 };
 

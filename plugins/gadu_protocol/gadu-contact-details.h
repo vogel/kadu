@@ -32,6 +32,8 @@ class GaduContactDetails : public ContactDetails
 {
 	Q_OBJECT
 
+	int GaduFlags;
+
 public:
 	explicit GaduContactDetails(ContactShared *contactShared, QObject *parent = 0);
 	virtual ~GaduContactDetails();
@@ -39,6 +41,9 @@ public:
 	virtual void store();
 
 	GaduProtocol::UinType uin();
+
+	void setGaduFlags(int gaduFlags);
+	int gaduFlags() const { return GaduFlags; }
 
 };
 

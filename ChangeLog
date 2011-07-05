@@ -12,6 +12,7 @@
 * gadu: #2242 fixed: fixed setting and reading own gender (beevvy)
 * docking: #2188 fixed: wrong order and duplicate entries in DockMenu (WhE)
 * gui: #2245 fixed: indication that our interlocutor was composing a message didn't disappear in the moment of receiving that message but about a second after that when using gadu; this change also fixed a minor issue with jabber (beevvy)
+* gadu: #2078 fixed: offline to buddy now works properly (Vogel)
 
 +++ version 0.10.0-beta1
 * gadu: #2050 fixed: fixed sending images to GG7 and AQQ (beevvy)

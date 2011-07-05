@@ -29,6 +29,7 @@
 #include "debug.h"
 
 #include "helpers/gadu-protocol-helper.h"
+#include "gadu-contact-details.h"
 #include "gadu-protocol.h"
 
 #include "gadu-contact-list-handler.h"
@@ -37,11 +38,16 @@ int GaduContactListHandler::notifyTypeFromContact(const Contact &contact)
 {
 	Buddy buddy = contact.ownerBuddy();
 
-	return buddy.isOfflineTo()
-		? GG_USER_OFFLINE
-		: buddy.isBlocked()
-			? GG_USER_BLOCKED
-			: GG_USER_NORMAL;
+	if (buddy.isAnonymous())
+		return 0;
+
+	int result = 0x01; // GG_USER_BUDDY
+	if (!buddy.isOfflineTo())
+		result |= 0x02; // GG_USER_FRIEND
+	if (buddy.isBlocked())
+		result |= 0x04; // GG_USER_BLOCKED
+
+	return result;
 }
 
 GaduContactListHandler::GaduContactListHandler(GaduProtocol *protocol) :
@@ -69,36 +75,33 @@ GaduContactListHandler::~GaduContactListHandler()
 
 void GaduContactListHandler::setUpContactList(const QList<Contact> &contacts)
 {
-	/*
-	 * it looks like gadu-gadu now stores contact list mask (offlineto, blocked, normal)
-	 * on server, so need to remove this mask and send a new one for each contact, so
-	 * server has up-to-date information about our contact list
-	 */
-
-	// send empty list
-	//gg_notify_ex(Protocol->gaduSession(), 0, 0, 0);
-
-	// send all items
-	//foreach (const Contact &contact, contacts)
-	//	addContactEntry(contact);
-
 	if (contacts.isEmpty())
 	{
 		gg_notify_ex(Protocol->gaduSession(), 0, 0, 0);
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Userlist is empty\n");
+
+		AlreadySent = true;
 		return;
 	}
 
-	int count = contacts.count();
+	QList<Contact> sendList = contacts;
+	sendList.removeAll(Protocol->account().accountContact());
+
+	int count = sendList.count();
 	QScopedArrayPointer<UinType> uins(new UinType[count]);
 	QScopedArrayPointer<char> types(new char[count]);
 
 	int i = 0;
 
-	foreach (const Contact &contact, contacts)
+	foreach (const Contact &contact, sendList)
 	{
 		uins[i] = GaduProtocolHelper::uin(contact);
 		types[i] = notifyTypeFromContact(contact);
+
+		GaduContactDetails *details = GaduProtocolHelper::gaduContactDetails(contact);
+		if (details)
+			details->setGaduFlags(types[i]);
+
 		++i;
 	}
 
@@ -115,59 +118,43 @@ void GaduContactListHandler::reset()
 
 void GaduContactListHandler::updateContactEntry(Contact contact)
 {
-	addContactEntry(contact);
-}
-
-void GaduContactListHandler::addContactEntry(UinType uin, int type)
-{
 	if (!AlreadySent)
 		return;
 
 	if (!Protocol->isConnected())
 		return;
 
+	gg_session *session = Protocol->gaduSession();
+	if (!session)
+		return;
+
+	GaduContactDetails *details = GaduProtocolHelper::gaduContactDetails(contact);
+	if (!details)
+		return;
+
+	int uin = details->uin();
 	if (!uin || Protocol->account().id() == QString::number(uin))
 		return;
 
-	gg_session *session = Protocol->gaduSession();
-	if (!session)
-		return;
+	int newFlags = notifyTypeFromContact(contact);
+	int oldFlags = details->gaduFlags();
+	details->setGaduFlags(newFlags);
 
-	gg_remove_notify_ex(session, uin, GG_USER_NORMAL);
-	gg_remove_notify_ex(session, uin, GG_USER_BLOCKED);
-	gg_remove_notify_ex(session, uin, GG_USER_OFFLINE);
+	// add new flags
+	if (!(oldFlags & 0x01) && (newFlags & 0x01))
+		gg_add_notify_ex(session, uin, 0x01);
+	if (!(oldFlags & 0x02) && (newFlags & 0x02))
+		gg_add_notify_ex(session, uin, 0x02);
+	if (!(oldFlags & 0x04) && (newFlags & 0x04))
+		gg_add_notify_ex(session, uin, 0x04);
 
-	gg_add_notify_ex(session, uin, type);
-}
-
-void GaduContactListHandler::addContactEntry(Contact contact)
-{
-	addContactEntry(GaduProtocolHelper::uin(contact), notifyTypeFromContact(contact));
-}
-
-void GaduContactListHandler::removeContactEntry(UinType uin)
-{
-	if (!AlreadySent)
-		return;
-
-	if (!uin)
-		return;
-
-	if (!Protocol->isConnected())
-		return;
-
-	gg_session *session = Protocol->gaduSession();
-	if (!session)
-		return;
-
-	gg_remove_notify_ex(session, uin, GG_USER_NORMAL);
-	gg_remove_notify_ex(session, uin, GG_USER_BLOCKED);
-	gg_remove_notify_ex(session, uin, GG_USER_OFFLINE);
-}
-
-void GaduContactListHandler::removeContactEntry(Contact contact)
-{
-	removeContactEntry(GaduProtocolHelper::uin(contact));
+	// remove old flags
+	if ((oldFlags & 0x01) && !(newFlags & 0x01))
+		gg_remove_notify_ex(session, uin, 0x01);
+	if ((oldFlags & 0x02) && !(newFlags & 0x02))
+		gg_remove_notify_ex(session, uin, 0x02);
+	if ((oldFlags & 0x04) && !(newFlags & 0x04))
+		gg_remove_notify_ex(session, uin, 0x04);
 }
 
 void GaduContactListHandler::buddySubscriptionChanged(Buddy &buddy)
@@ -184,7 +171,7 @@ void GaduContactListHandler::contactAttached(Contact contact, bool reattached)
 	if (contact.contactAccount() != Protocol->account())
 		return;
 
-	addContactEntry(contact);
+	updateContactEntry(contact);
 }
 
 void GaduContactListHandler::contactAboutToBeDetached(Contact contact, bool reattaching)
@@ -195,7 +182,7 @@ void GaduContactListHandler::contactAboutToBeDetached(Contact contact, bool reat
 	if (contact.contactAccount() != Protocol->account())
 		return;
 
-	removeContactEntry(contact);
+	updateContactEntry(contact);
 }
 
 void GaduContactListHandler::contactIdChanged(Contact contact, const QString &oldId)
@@ -203,10 +190,25 @@ void GaduContactListHandler::contactIdChanged(Contact contact, const QString &ol
 	if (contact.contactAccount() != Protocol->account())
 		return;
 
+	if (!AlreadySent)
+		return;
+
+	if (!Protocol->isConnected())
+		return;
+
+	gg_session *session = Protocol->gaduSession();
+	if (!session)
+		return;
+
 	bool ok;
 	UinType oldUin = oldId.toUInt(&ok);
-	if (ok)
-		removeContactEntry(oldUin);
+	if (session && ok)
+	{
+		// remove all flags
+		gg_remove_notify_ex(session, oldUin, 0x04);
+		gg_remove_notify_ex(session, oldUin, 0x02);
+		gg_remove_notify_ex(session, oldUin, 0x01);
+	}
 
-	addContactEntry(contact);
+	updateContactEntry(contact);
 }

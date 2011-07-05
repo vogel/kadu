@@ -271,6 +271,7 @@ void GaduProtocol::setupLoginParams()
 	GaduLoginParams.async = 1;
 
 	GaduLoginParams.status = (GaduProtocolHelper::gaduStatusFromStatus(loginStatus()) | (account().privateStatus() ? GG_STATUS_FRIENDS_MASK : 0));
+
 	if (!loginStatus().description().isEmpty())
 		GaduLoginParams.status_descr = strdup(loginStatus().description().toUtf8().constData());
 
@@ -293,9 +294,15 @@ void GaduProtocol::setupLoginParams()
 	GaduLoginParams.protocol_version = GG_DEFAULT_PROTOCOL_VERSION;
 	GaduLoginParams.client_version = strdup(Core::nameWithVersion().toUtf8().constData());
 	GaduLoginParams.protocol_features =
-			GG_FEATURE_DND_FFC // enable new statuses
-			| GG_FEATURE_MULTILOGON
-			| GG_FEATURE_TYPING_NOTIFICATION;
+			GG_FEATURE_UNKNOWN_4 | // GG_FEATURE_STATUS80
+			GG_FEATURE_DND_FFC |
+			GG_FEATURE_IMAGE_DESCR |
+			GG_FEATURE_UNKNOWN_40 |
+			GG_FEATURE_UNKNOWN_100 |
+			GG_FEATURE_USER_DATA |
+			GG_FEATURE_MSG_ACK |
+			GG_FEATURE_TYPING_NOTIFICATION |
+			GG_FEATURE_MULTILOGON;
 
 	GaduLoginParams.encoding = GG_ENCODING_UTF8;
 
@@ -378,7 +385,7 @@ void GaduProtocol::socketContactStatusChanged(UinType uin, unsigned int status, 
 	{
 		kdebugmf(KDEBUG_INFO, "buddy %u not in list. Damned server!\n", uin);
 		emit userStatusChangeIgnored(buddy);
-		ContactListHandler->removeContactEntry(uin);
+		ContactListHandler->updateContactEntry(contact);
 		return;
 	}
 
