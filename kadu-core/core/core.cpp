@@ -1,4 +1,3 @@
-
 /*
  * %kadu copyright begin%
  * Copyright 2010 Piotr Dąbrowski (ultr@ultr.pl)
