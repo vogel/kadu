@@ -74,12 +74,20 @@ class JabberProtocol : public Protocol
 	void disconnectContactManagerSignals();
 	XMPP::ClientStream::AllowPlainType plainAuthToXMPP(JabberAccountDetails::AllowPlainType type);
 
+	void notifyAboutPresenceChanged(const XMPP::Jid &jid, const XMPP::Resource &resource);
+
+	// TODO: move this to libiris in near future
+	static bool resourcesEquals(const XMPP::Resource &resource1, const XMPP::Resource &resource2);
+
 private slots:
 	void connectedToServer();
 	void disconnectedFromServer();
 	void disconnectFromServer(const XMPP::Status &s = XMPP::Status (QString(), QString(), 0, false));
 	void rosterDownloaded(bool success);
-	void clientResourceReceived(const XMPP::Jid &j, const XMPP::Resource &r);
+
+	void clientAvailableResourceReceived(const XMPP::Jid &j, const XMPP::Resource &r);
+	void clientUnavailableResourceReceived(const XMPP::Jid &j, const XMPP::Resource &r);
+
 	void slotClientDebugMessage (const QString &msg);
 
 	void contactAboutToBeDetached(Contact contact, bool reattached);

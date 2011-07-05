@@ -129,9 +129,9 @@ void JabberProtocol::initializeJabberClient()
 	connect(JabberClient, SIGNAL(connected()), this, SLOT(connectedToServer()));
 
 	connect(JabberClient, SIGNAL(resourceAvailable(const XMPP::Jid &, const XMPP::Resource &)),
-		   this, SLOT(clientResourceReceived(const XMPP::Jid &, const XMPP::Resource &)));
+		   this, SLOT(clientAvailableResourceReceived(const XMPP::Jid &, const XMPP::Resource &)));
 	connect(JabberClient, SIGNAL(resourceUnavailable(const XMPP::Jid &, const XMPP::Resource &)),
-		   this, SLOT(clientResourceReceived(const XMPP::Jid &, const XMPP::Resource &)));
+		   this, SLOT(clientUnavailableResourceReceived(const XMPP::Jid &, const XMPP::Resource &)));
 
 	connect(JabberClient, SIGNAL(connectionError(QString)), this, SLOT(connectionErrorSlot(QString)));
 	connect(JabberClient, SIGNAL(invalidPassword()), this, SLOT(passwordRequired()));
@@ -288,12 +288,47 @@ void JabberProtocol::changePrivateMode()
 	//sendStatusToServer();
 }
 
-void JabberProtocol::clientResourceReceived(const XMPP::Jid &jid, const XMPP::Resource &resource)
+bool JabberProtocol::resourcesEquals(const XMPP::Resource &resource1, const XMPP::Resource &resource2)
 {
-	kdebugf();
+	return resource1.name() == resource2.name()
+			&& resource1.priority() == resource2.priority()
+			&& resource1.status().typeString() == resource2.status().typeString()
+			&& resource1.status().status() == resource2.status().status();
+}
+
+
+void JabberProtocol::clientAvailableResourceReceived(const XMPP::Jid &jid, const XMPP::Resource &resource)
+{
 	kdebug("New resource available for %s\n", jid.full().toUtf8().constData());
+
 	resourcePool()->addResource(jid, resource);
 
+	XMPP::Resource bestResource = resourcePool()->bestResource(jid);
+
+	if (resourcesEquals(resource, bestResource))
+		notifyAboutPresenceChanged(jid, resource);
+
+	kdebugf2();
+}
+
+void JabberProtocol::clientUnavailableResourceReceived(const XMPP::Jid &jid, const XMPP::Resource &resource)
+{
+	XMPP::Resource bestResource = resourcePool()->bestResource(jid);
+
+	bool notify = bestResource.name() == resource.name()
+					&& bestResource.priority() == resource.priority();
+
+	resourcePool()->removeResource(jid, resource);
+
+	bestResource = resourcePool()->bestResource(jid);
+
+	if (notify)
+		notifyAboutPresenceChanged(jid, resourcesEquals(bestResource, JabberResourcePool::EmptyResource)
+									? resource : bestResource);
+}
+
+void JabberProtocol::notifyAboutPresenceChanged(const XMPP::Jid &jid, const XMPP::Resource &resource)
+{
 	Status status(IrisStatusAdapter::fromIrisStatus(resource.status()));
 	Contact contact = ContactManager::instance()->byId(account(), jid.bare(), ActionReturnNull);
 
@@ -304,7 +339,6 @@ void JabberProtocol::clientResourceReceived(const XMPP::Jid &jid, const XMPP::Re
 
 		emit contactStatusChanged(contact, oldStatus);
 	}
-	kdebugf2();
 }
 
 void JabberProtocol::contactAttached(Contact contact, bool reattached)
@@ -374,6 +408,7 @@ JabberResourcePool *JabberProtocol::resourcePool()
 {
 	if (!ResourcePool)
 		ResourcePool = new JabberResourcePool(this);
+
 	return ResourcePool;
 }
 
