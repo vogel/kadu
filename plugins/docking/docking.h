@@ -45,6 +45,7 @@ class Docker;
 class KaduIcon;
 class StatusContainer;
 class StatusIcon;
+class StatusMenu;
 
 class DOCKINGAPI DockingManager : public QObject, ConfigurationAwareObject, StatusContainerAwareObject
 {
@@ -59,6 +60,9 @@ class DOCKINGAPI DockingManager : public QObject, ConfigurationAwareObject, Stat
  #ifdef Q_OS_MAC
 	QMenu *MacDockMenu;
  #endif
+
+	StatusMenu *AllAccountsMenu;
+
 	QAction *CloseKaduAction;
 	QAction *containersSeparator;
 
@@ -73,8 +77,6 @@ class DOCKINGAPI DockingManager : public QObject, ConfigurationAwareObject, Stat
 	bool blink;
 	void defaultToolTip();
 
-	void updateContextMenu();
-
 	void createDefaultConfiguration();
 
 	DockingManager();
@@ -87,6 +89,8 @@ private slots:
 	void pendingMessageDeleted();
 	void searchingForTrayPosition(QPoint &point);
 	void iconThemeChanged();
+
+	void updateContextMenu();
 
 	void containerStatusChanged();
 

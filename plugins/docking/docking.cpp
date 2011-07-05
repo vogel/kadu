@@ -103,7 +103,7 @@ DockingManager * DockingManager::instance()
 }
 
 DockingManager::DockingManager() :
-		CurrentDocker(0), newMessageIcon(StaticEnvelope), icon_timer(new QTimer(this)), blink(false)
+        CurrentDocker(0), AllAccountsMenu(0), newMessageIcon(StaticEnvelope), icon_timer(new QTimer(this)), blink(false)
 {
 	kdebugf();
 
@@ -343,6 +343,9 @@ void DockingManager::setDocker(Docker *docker)
 
 void DockingManager::updateContextMenu()
 {
+	if (AllAccountsMenu)
+		AllAccountsMenu->deleteLater();
+
 	DockMenu->clear();
 #ifdef Q_OS_MAC
 	MacDockMenu->clear();
@@ -355,10 +358,11 @@ void DockingManager::updateContextMenu()
 
 	if (1 == statusContainersCount)
 	{
-		new StatusMenu(StatusContainerManager::instance(), false, DockMenu);
+		AllAccountsMenu = new StatusMenu(StatusContainerManager::instance(), false, DockMenu);
 #ifdef Q_OS_MAC
-		new StatusMenu(StatusContainerManager::instance(), false, MacDockMenu);
+		AllAccountsMenu = new StatusMenu(StatusContainerManager::instance(), false, MacDockMenu);
 #endif
+		connect(AllAccountsMenu, SIGNAL(menuRecreated()), this, SLOT(updateContextMenu()));
 	}
 	else
 	{
@@ -376,10 +380,11 @@ void DockingManager::updateContextMenu()
 
 		if (statusContainersCount > 0)
 		{
-			new StatusMenu(StatusContainerManager::instance(), true, DockMenu);
+			AllAccountsMenu = new StatusMenu(StatusContainerManager::instance(), true, DockMenu);
 #ifdef Q_OS_MAC
-			new StatusMenu(StatusContainerManager::instance(), true, MacDockMenu);
+			AllAccountsMenu = new StatusMenu(StatusContainerManager::instance(), true, MacDockMenu);
 #endif
+			connect(AllAccountsMenu, SIGNAL(menuRecreated()), this, SLOT(updateContextMenu()));
 		}
 	}
 
