@@ -1,7 +1,6 @@
 set (kadu_SRCS
 	activate.cpp
 	debug.cpp
-	dnshandler.cpp
 	html_document.cpp
 	kadu-application.cpp
 	languages-manager.cpp
@@ -24,7 +23,6 @@ if (NOT WIN32)
 endif (NOT WIN32)
 
 set (kadu_MOC_SRCS
-	dnshandler.h
 	kadu-application.h
 	themes.h
 	updates.h

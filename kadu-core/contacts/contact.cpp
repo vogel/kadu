@@ -29,7 +29,6 @@
 #include "contacts/contact-shared.h"
 #include "buddies/buddy-manager.h"
 #include "storage/storage-point.h"
-#include "dnshandler.h"
 
 #include "contact.h"
 
