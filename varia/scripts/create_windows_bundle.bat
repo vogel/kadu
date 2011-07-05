@@ -95,8 +95,6 @@ for /D %%F in (*) do (
 )
 cd ..\..
 
-echo LoadByDefault=true >> %DESTINATION%\plugins\qt4_docking_notify.desc
-
 ECHO Copying Qt
 xcopy %QT_DIR%\libgcc_s_dw2-1.dll                  %DESTINATION%\ /C /H /R /Y /Q
 xcopy %QT_DIR%\mingwm10.dll                        %DESTINATION%\ /C /H /R /Y /Q
