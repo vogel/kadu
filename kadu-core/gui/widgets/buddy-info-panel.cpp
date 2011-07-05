@@ -28,6 +28,7 @@
 #include "buddies/buddy.h"
 #include "buddies/buddy-shared.h"
 #include "buddies/buddy-preferred-manager.h"
+#include "core/core.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact-manager.h"
 #include "emoticons/emoticons-manager.h"
@@ -74,6 +75,9 @@ void BuddyInfoPanel::buddyUpdated(Buddy &buddy)
 
 void BuddyInfoPanel::update()
 {
+	if (Core::instance()->isClosing())
+		return;
+
 	QFont font = config_file.readFontEntry("Look", "PanelFont");
 	QString fontFamily = font.family();
 	QString fontSize;
