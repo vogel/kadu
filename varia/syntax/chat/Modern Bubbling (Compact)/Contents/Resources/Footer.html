@@ -2,3 +2,15 @@
 
 <script src="javascripts/scroll.js" type="text/javascript" charset="utf-8"></script>
 <script src="javascripts/reflection.js" type="text/javascript" charset="utf-8"></script>
+
+<script type="text/javascript">
+	//<![CDATA[
+		function contactActivityChanged(state, message, name)
+		{
+			if (state == StateComposing)
+				document.getElementById("composing").style.display = "block";
+			else
+				document.getElementById("composing").style.display = "none";
+		}
+	//]]>
+</script>

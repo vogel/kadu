@@ -3,3 +3,21 @@
 	<div class="with">%chatName%</div>
 	<div class="timestamp">Conversation began %timeOpened%</div>
 </div>
+
+<div id="composing" style="display:none; position:fixed; z-index:1; bottom:0px; right:0px; cursor:default; -webkit-user-select:none;" onclick="this.style.display='none';">
+	<div style="position:relative; bottom:2px; right:2px; padding:3px 8px; -webkit-border-radius:10px; background:rgba(255,255,255,0.7);">
+		<img id="composingicon" src="../../../Default/Resources/images/composing.svgz" alt="" style="max-height:32px; max-width:32px; vertical-align:middle;">
+	</div>
+</div>
+
+<script type="text/javascript">
+	//<![CDATA[
+		function contactActivityChanged(state, message, name)
+		{
+			if (state == StateComposing)
+				document.getElementById("composing").style.display = "block";
+			else
+				document.getElementById("composing").style.display = "none";
+		}
+	//]]>
+</script>
