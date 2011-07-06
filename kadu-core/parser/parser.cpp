@@ -357,7 +357,8 @@ ParserToken Parser::parsePercentSyntax(const QString &s, int &idx, const BuddyOr
 	return pe;
 }
 
-QString Parser::joinParseStack(const QStack<ParserToken> &parseStack)
+template<typename ContainerClass>
+QString Parser::joinParserTokens(const ContainerClass &parseStack)
 {
 	QString joined;
 	foreach(const ParserToken &elem, parseStack)
@@ -810,7 +811,7 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 		}
 	}
 
-	QString ret = joinParseStack(parseStack);
+	QString ret = joinParserTokens(parseStack);
 
 	kdebugm(KDEBUG_DUMP, "%s\n", qPrintable(ret));
 
