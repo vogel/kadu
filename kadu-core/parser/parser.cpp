@@ -61,6 +61,12 @@ bool Parser::registerTag(const QString &name, BuddyOrContactTagCallback func)
 		return false;
 	}
 
+	if (RegisteredObjectTags.contains(name))
+	{
+		kdebugmf(KDEBUG_ERROR | KDEBUG_FUNCTION_END, "tag %s already registered (as object tag)!\n", qPrintable(name));
+		return false;
+	}
+
 	RegisteredBuddyOrContactTags.insert(name, func);
 
 	kdebugf2();
@@ -73,7 +79,7 @@ bool Parser::unregisterTag(const QString &name)
 
 	if (!RegisteredBuddyOrContactTags.contains(name))
 	{
-		kdebugmf(KDEBUG_ERROR | KDEBUG_FUNCTION_END, "tag %s not registered!\n", qPrintable(name));
+		kdebugmf(KDEBUG_ERROR | KDEBUG_FUNCTION_END, "BuddyOrContact tag %s not registered!\n", qPrintable(name));
 		return false;
 	}
 
@@ -93,6 +99,12 @@ bool Parser::registerObjectTag(const QString &name, ObjectTagCallback func)
 		return false;
 	}
 
+	if (RegisteredBuddyOrContactTags.contains(name))
+	{
+		kdebugmf(KDEBUG_ERROR | KDEBUG_FUNCTION_END, "tag %s already registered (as BuddyOrContact tag)!\n", qPrintable(name));
+		return false;
+	}
+
 	RegisteredObjectTags.insert(name, func);
 
 	kdebugf2();
@@ -105,7 +117,7 @@ bool Parser::unregisterObjectTag(const QString &name)
 
 	if (!RegisteredObjectTags.contains(name))
 	{
-		kdebugmf(KDEBUG_ERROR | KDEBUG_FUNCTION_END, "tag %s not registered!\n", qPrintable(name));
+		kdebugmf(KDEBUG_ERROR | KDEBUG_FUNCTION_END, "object tag %s not registered!\n", qPrintable(name));
 		return false;
 	}
 
