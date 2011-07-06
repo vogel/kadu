@@ -148,6 +148,32 @@ QString Parser::executeCmd(const QString &cmd)
 	return ret;
 }
 
+bool Parser::isActionParserTokenAtTop(const QStack<ParserToken> &parseStack, const QVector<ParserToken::ParserTokenType> &acceptedTokens)
+{
+	bool found = false;
+	QStack<ParserToken>::const_iterator begin = parseStack.constBegin();
+	QStack<ParserToken>::const_iterator it = parseStack.constEnd();
+
+	while (it != begin)
+	{
+		--it;
+		ParserToken::ParserTokenType t = it->Type;
+
+		if (acceptedTokens.contains(t))
+		{
+			found = true;
+			break;
+		}
+
+		if (ParserToken::PT_STRING == t)
+			continue;
+
+		break;
+	}
+
+	return found;
+}
+
 ParserToken Parser::parsePercentSyntax(const QString &s, int &idx, const BuddyOrContact &buddyOrContact, bool escape)
 {
 	ParserToken pe;
@@ -404,27 +430,12 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 		{
 			++idx;
 
-			bool found = false;
-			if (!parseStack.isEmpty())
-			{
-				QStack<ParserToken>::const_iterator begin = parseStack.constBegin();
-				QStack<ParserToken>::const_iterator it = parseStack.constEnd();
+			QVector<ParserToken::ParserTokenType> acceptedTokens;
+			acceptedTokens
+					<< ParserToken::PT_CHECK_ALL_NOT_NULL
+					<< ParserToken::PT_CHECK_ANY_NULL;
 
-				while (!found && it != begin)
-				{
-					--it;
-					ParserToken::ParserTokenType t = it->Type;
-
-					if (t == ParserToken::PT_STRING)
-						continue;
-					else if (t == ParserToken::PT_CHECK_ALL_NOT_NULL || t == ParserToken::PT_CHECK_ANY_NULL)
-						found = true;
-					else
-						break;
-				}
-			}
-
-			if (!found)
+			if (!isActionParserTokenAtTop(parseStack, acceptedTokens))
 			{
 				pe.Content = ']';
 				pe.Type = ParserToken::PT_STRING;
@@ -494,34 +505,17 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 		{
 			++idx;
 
-			bool found = false;
-			if (!parseStack.isEmpty())
-			{
-				QStack<ParserToken>::const_iterator begin = parseStack.constBegin();
-				QStack<ParserToken>::const_iterator it = parseStack.constEnd();
+			QVector<ParserToken::ParserTokenType> acceptedTokens;
+			acceptedTokens
+					<< ParserToken::PT_EXECUTE
+					<< ParserToken::PT_CHECK_FILE_EXISTS
+					<< ParserToken::PT_CHECK_FILE_NOT_EXISTS
+					<< ParserToken::PT_VARIABLE
+					<< ParserToken::PT_ICONPATH
+					<< ParserToken::PT_EXTERNAL_VARIABLE
+					<< ParserToken::PT_EXECUTE2;
 
-				while (!found && it != begin)
-				{
-					--it;
-
-					ParserToken::ParserTokenType t = it->Type;
-
-					if (t == ParserToken::PT_STRING)
-						continue;
-					else if (t == ParserToken::PT_EXECUTE ||
-							t == ParserToken::PT_CHECK_FILE_EXISTS ||
-							t == ParserToken::PT_CHECK_FILE_NOT_EXISTS ||
-							t == ParserToken::PT_VARIABLE ||
-							t == ParserToken::PT_ICONPATH ||
-							t == ParserToken::PT_EXTERNAL_VARIABLE ||
-							t == ParserToken::PT_EXECUTE2)
-						found = true;
-					else
-						break;
-				}
-			}
-
-			if (!found)
+			if (!isActionParserTokenAtTop(parseStack, acceptedTokens))
 			{
 				pe.Content = '}';
 				pe.Type = ParserToken::PT_STRING;
@@ -671,28 +665,9 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 
 			pe.Content.clear();
 
-			bool found = false;
-			if (!parseStack.isEmpty())
-			{
-				QStack<ParserToken>::const_iterator begin = parseStack.constBegin();
-				QStack<ParserToken>::const_iterator it = parseStack.constEnd();
+			QVector<ParserToken::ParserTokenType> acceptedTokens(ParserToken::PT_EXECUTE);
 
-				while (!found && it != begin)
-				{
-					--it;
-
-					ParserToken::ParserTokenType t = it->Type;
-
-					if (t == ParserToken::PT_STRING)
-						continue;
-					else if (t == ParserToken::PT_EXECUTE)
-						found = true;
-					else
-						break;
-				}
-			}
-
-			if (!found)
+			if (!isActionParserTokenAtTop(parseStack, acceptedTokens))
 			{
 				pe.Content = '\'';
 				pe.Type = ParserToken::PT_STRING;

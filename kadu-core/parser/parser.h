@@ -27,10 +27,11 @@
 #include <QtCore/QMap>
 
 #include "buddies/buddy-or-contact.h"
+#include "parser/parser-token.h"
 
 #include "exports.h"
 
-class ParserToken;
+template<typename T> class QStack;
 
 class KADUAPI Parser
 {
@@ -42,6 +43,7 @@ class KADUAPI Parser
 
 	static QString executeCmd(const QString &cmd);
 
+	static bool isActionParserTokenAtTop(const QStack<ParserToken> &parseStack, const QVector<ParserToken::ParserTokenType> &acceptedTokens);
 	static ParserToken parsePercentSyntax(const QString &s, int &idx, const BuddyOrContact &buddyOrContact, bool escape);
 
 public:
