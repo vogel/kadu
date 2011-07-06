@@ -568,16 +568,6 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 			else
 				while (!parseStack.empty())
 				{
-					if (parseStack.top().Type != ParserToken::PT_STRING && pe.Content.contains('\n'))
-					{
-						pe.Type = ParserToken::PT_STRING;
-						pe.Content.append('}');
-
-						parseStack.push(pe);
-
-						break;
-					}
-
 					ParserToken pe2 = parseStack.pop();
 
 					if (pe2.Type == ParserToken::PT_CHECK_FILE_EXISTS || pe2.Type == ParserToken::PT_CHECK_FILE_NOT_EXISTS)
@@ -671,6 +661,19 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 
 					// here we know for sure that pe2.Type == ParserToken::PT_STRING,
 					// as it is guaranteed by isActionParserTokenAtTop() call
+
+					// do not execute any of the above actions on a multi-line string
+					if (pe2.Content.contains('\n'))
+					{
+						pe.Type = ParserToken::PT_STRING;
+						pe.Content.prepend(pe2.Content);
+						pe.Content.append('}');
+
+						parseStack.push(pe);
+
+						break;
+					}
+
 					pe.Content.prepend(pe2.Content);
 				}
 		}
