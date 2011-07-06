@@ -147,6 +147,189 @@ QString Parser::executeCmd(const QString &cmd)
 	return ret;
 }
 
+ParserToken Parser::parsePercentSyntax(const QString &s, int &idx, const BuddyOrContact &buddyOrContact, bool escape)
+{
+	ParserToken pe;
+	pe.Type = ParserToken::PT_STRING;
+
+	Buddy buddy = buddyOrContact.buddy();
+	Contact contact = buddyOrContact.contact();
+
+	switch (s.at(idx).toAscii())
+	{
+		// 'o' does not work so we should just ignore it
+		// see: http://kadu.net/mantis/view.php?id=2199
+		case 'o':
+		// 't' was removed in commit 48d3cd65 during 0.9 (aka 0.6.6) release cycle
+		case 't':
+			++idx;
+			break;
+		case 's':
+			++idx;
+
+			if (buddy && buddy.isBlocked())
+				pe.Content = qApp->translate("@default", "Blocked");
+			else if (contact)
+			{
+				if (contact.isBlocking())
+					pe.Content = qApp->translate("@default", "Blocking");
+				else
+				{
+					StatusType *type = StatusTypeManager::instance()->statusType(contact.currentStatus().type());
+					if (type)
+						pe.Content = type->displayName();
+				}
+			}
+
+			break;
+		case 'q':
+			++idx;
+
+			if (contact)
+			{
+				StatusContainer *container = contact.contactAccount().statusContainer();
+				if (container)
+					pe.Content = container->statusIcon(contact.currentStatus().type()).path();
+			}
+
+			break;
+		case 'd':
+			++idx;
+
+			if (contact)
+			{
+				pe.Content = contact.currentStatus().description();
+
+				if (escape)
+					HtmlDocument::escapeText(pe.Content);
+
+				if (config_file.readBoolEntry("Look", "ShowMultilineDesc"))
+				{
+					pe.Content.replace('\n', QLatin1String("<br/>"));
+					pe.Content.replace(QRegExp("\\s\\s"), QString(" &nbsp;"));
+				}
+			}
+
+			break;
+		case 'i':
+			++idx;
+
+			if (contact)
+				pe.Content = contact.address().toString();
+
+			break;
+		case 'v':
+			++idx;
+
+			if (contact)
+				pe.Content = contact.dnsName();
+
+			break;
+		case 'p':
+			++idx;
+
+			if (contact && contact.port())
+				pe.Content = QString::number(contact.port());
+
+			break;
+		case 'u':
+			++idx;
+
+			if (contact)
+				pe.Content = contact.id();
+			else if (buddy)
+				pe.Content = buddy.mobile().isEmpty() ? buddy.email() : buddy.mobile();
+
+			break;
+		case 'h':
+			++idx;
+
+			if (contact && !contact.currentStatus().isDisconnected())
+				pe.Content = contact.protocolVersion();
+
+			break;
+		case 'n':
+			++idx;
+
+			pe.Content = buddy.nickName();
+			if (escape)
+				HtmlDocument::escapeText(pe.Content);
+
+			break;
+		case 'a':
+			++idx;
+
+			pe.Content = buddy.display();
+			if (escape)
+				HtmlDocument::escapeText(pe.Content);
+
+			break;
+		case 'f':
+			++idx;
+
+			pe.Content = buddy.firstName();
+			if (escape)
+				HtmlDocument::escapeText(pe.Content);
+
+			break;
+		case 'r':
+			++idx;
+
+			pe.Content = buddy.lastName();
+			if (escape)
+				HtmlDocument::escapeText(pe.Content);
+
+			break;
+		case 'm':
+			++idx;
+
+			pe.Content = buddy.mobile();
+
+			break;
+		case 'g':
+		{
+			++idx;
+
+			QStringList groups;
+			foreach (const Group &group, buddy.groups())
+				groups << group.name();
+
+			pe.Content = groups.join(",");
+
+			break;
+		}
+		case 'e':
+			++idx;
+
+			pe.Content = buddy.email();
+
+			break;
+		case 'x':
+			++idx;
+
+			if (contact)
+				pe.Content = QString::number(contact.maximumImageSize());
+
+			break;
+		case 'z':
+			++idx;
+
+			if (buddy)
+				pe.Content = QString::number(buddy.gender());
+
+			break;
+		case '%':
+			++idx;
+			// fall through
+		default:
+			pe.Content = '%';
+
+			break;
+	}
+
+	return pe;
+}
+
 QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QObject * const object, bool escape)
 {
 	kdebugmf(KDEBUG_DUMP, "%s escape=%i\n", qPrintable(s), escape);
@@ -170,8 +353,6 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 	searchChars['`'] = allowExec;
 	searchChars['\''] = allowExec;
 
-	Buddy buddy = buddyOrContact.buddy();
-	Contact contact = buddyOrContact.contact();
 	QList<ParserToken> parseStack;
 	int idx = 0, len = s.length();
 	while (idx < len)
@@ -187,7 +368,6 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 		{
 			pe1.Type = ParserToken::PT_STRING;
 			pe1.Content = s.mid(prevIdx, idx - prevIdx);
-
 			parseStack.append(pe1);
 
 			if (idx == len)
@@ -201,181 +381,7 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 			if (idx == len)
 				break;
 
-			pe.Type = ParserToken::PT_STRING;
-
-			switch (s.at(idx).toAscii())
-			{
-				// 'o' does not work so we should just ignore it
-				// see: http://kadu.net/mantis/view.php?id=2199
-				case 'o':
-				// 't' was removed in commit 48d3cd65 during 0.9 (aka 0.6.6) release cycle
-				case 't':
-					++idx;
-					break;
-				case 's':
-					++idx;
-
-					if (buddy && buddy.isBlocked())
-						pe.Content = qApp->translate("@default", "Blocked");
-					else if (contact)
-					{
-						if (contact.isBlocking())
-							pe.Content = qApp->translate("@default", "Blocking");
-						else
-						{
-							StatusType *type = StatusTypeManager::instance()->statusType(contact.currentStatus().type());
-							if (type)
-								pe.Content = type->displayName();
-						}
-					}
-
-					break;
-				case 'q':
-					++idx;
-
-					if (contact)
-					{
-						StatusContainer *container = contact.contactAccount().statusContainer();
-						if (container)
-							pe.Content = container->statusIcon(contact.currentStatus().type()).path();
-					}
-
-					break;
-				case 'd':
-					++idx;
-
-					if (contact)
-					{
-						pe.Content = contact.currentStatus().description();
-
-						if (escape)
-							HtmlDocument::escapeText(pe.Content);
-
-						if (config_file.readBoolEntry("Look", "ShowMultilineDesc"))
-						{
-							pe.Content.replace('\n', QLatin1String("<br/>"));
-							pe.Content.replace(QRegExp("\\s\\s"), QString(" &nbsp;"));
-						}
-					}
-
-					break;
-				case 'i':
-					++idx;
-
-					if (contact)
-						pe.Content = contact.address().toString();
-
-					break;
-				case 'v':
-					++idx;
-
-					if (contact)
-						pe.Content = contact.dnsName();
-
-					break;
-				case 'p':
-					++idx;
-
-					if (contact && contact.port())
-						pe.Content = QString::number(contact.port());
-
-					break;
-				case 'u':
-					++idx;
-
-					if (contact)
-						pe.Content = contact.id();
-					else if (buddy)
-						pe.Content = buddy.mobile().isEmpty() ? buddy.email() : buddy.mobile();
-
-					break;
-				case 'h':
-					++idx;
-
-					if (contact && !contact.currentStatus().isDisconnected())
-						pe.Content = contact.protocolVersion();
-
-					break;
-				case 'n':
-					++idx;
-
-					pe.Content = buddy.nickName();
-					if (escape)
-						HtmlDocument::escapeText(pe.Content);
-
-					break;
-				case 'a':
-					++idx;
-
-					pe.Content = buddy.display();
-					if (escape)
-						HtmlDocument::escapeText(pe.Content);
-
-					break;
-				case 'f':
-					++idx;
-
-					pe.Content = buddy.firstName();
-					if (escape)
-						HtmlDocument::escapeText(pe.Content);
-
-					break;
-				case 'r':
-					++idx;
-
-					pe.Content = buddy.lastName();
-					if (escape)
-						HtmlDocument::escapeText(pe.Content);
-
-					break;
-				case 'm':
-					++idx;
-
-					pe.Content = buddy.mobile();
-
-					break;
-				case 'g':
-				{
-					++idx;
-
-					QStringList groups;
-					foreach (const Group &group, buddy.groups())
-						groups << group.name();
-
-					pe.Content = groups.join(",");
-
-					break;
-				}
-				case 'e':
-					++idx;
-
-					pe.Content = buddy.email();
-
-					break;
-				case 'x':
-					++idx;
-
-					if (contact)
-						pe.Content = QString::number(contact.maximumImageSize());
-
-					break;
-				case 'z':
-					++idx;
-
-					if (buddy)
-						pe.Content = QString::number(buddy.gender());
-
-					break;
-				case '%':
-					++idx;
-					// fall through
-				default:
-					pe.Content = '%';
-
-					break;
-			}
-
-			parseStack.append(pe);
+			parseStack.append(parsePercentSyntax(s, idx, buddyOrContact, escape));
 		}
 		else if (c == '[')
 		{

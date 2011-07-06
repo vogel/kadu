@@ -30,6 +30,8 @@
 
 #include "exports.h"
 
+class ParserToken;
+
 class KADUAPI Parser
 {
 	typedef QString (*ObjectTagCallback)(const QObject * const);
@@ -39,6 +41,8 @@ class KADUAPI Parser
 	static QMap<QString, ObjectTagCallback> RegisteredObjectTags;
 
 	static QString executeCmd(const QString &cmd);
+
+	static ParserToken parsePercentSyntax(const QString &s, int &idx, const BuddyOrContact &buddyOrContact, bool escape);
 
 public:
 	static QMap<QString, QString> GlobalVariables;
