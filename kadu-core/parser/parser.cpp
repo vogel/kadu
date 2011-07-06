@@ -28,6 +28,7 @@
 
 #include <QtCore/QFile>
 #include <QtCore/QProcess>
+#include <QtCore/QStack>
 #include <QtCore/QVariant>
 #include <QtGui/QApplication>
 #include <QtNetwork/QHostAddress>
@@ -353,7 +354,7 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 	searchChars['`'] = allowExec;
 	searchChars['\''] = allowExec;
 
-	QList<ParserToken> parseStack;
+	QStack<ParserToken> parseStack;
 	int idx = 0, len = s.length();
 	while (idx < len)
 	{
@@ -368,7 +369,7 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 		{
 			pe1.Type = ParserToken::PT_STRING;
 			pe1.Content = s.mid(prevIdx, idx - prevIdx);
-			parseStack.append(pe1);
+			parseStack.push(pe1);
 
 			if (idx == len)
 				break;
@@ -381,7 +382,7 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 			if (idx == len)
 				break;
 
-			parseStack.append(parsePercentSyntax(s, idx, buddyOrContact, escape));
+			parseStack.push(parsePercentSyntax(s, idx, buddyOrContact, escape));
 		}
 		else if (c == '[')
 		{
@@ -397,7 +398,7 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 			else
 				pe.Type = ParserToken::PT_CHECK_ALL_NOT_NULL;
 
-			parseStack.append(pe);
+			parseStack.push(pe);
 		}
 		else if (c == ']')
 		{
@@ -406,8 +407,8 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 			bool found = false;
 			if (!parseStack.isEmpty())
 			{
-				QList<ParserToken>::const_iterator begin = parseStack.constBegin();
-				QList<ParserToken>::const_iterator it = parseStack.constEnd();
+				QStack<ParserToken>::const_iterator begin = parseStack.constBegin();
+				QStack<ParserToken>::const_iterator it = parseStack.constEnd();
 
 				while (!found && it != begin)
 				{
@@ -428,44 +429,44 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 				pe.Content = ']';
 				pe.Type = ParserToken::PT_STRING;
 
-				parseStack.append(pe);
+				parseStack.push(pe);
 			}
 			else
 			{
 				bool anyNull = false;
 				while (!parseStack.empty())
 				{
-					const ParserToken &pe2 = parseStack.at(parseStack.length() - 1);
+					const ParserToken &pe2 = parseStack.top();
 
 					if (pe2.Type == ParserToken::PT_STRING)
 					{
 						anyNull = anyNull || pe2.Content.isEmpty();
 						pe.Content.prepend(pe2.Content);
 
-						parseStack.removeLast();
+						parseStack.pop();
 					}
 					else if (pe2.Type == ParserToken::PT_CHECK_ALL_NOT_NULL)
 					{
-						parseStack.removeLast();
+						parseStack.pop();
 
 						if (!anyNull)
 						{
 							pe.Type = ParserToken::PT_STRING;
 
-							parseStack.append(pe);
+							parseStack.push(pe);
 						}
 
 						break;
 					}
 					else if (pe2.Type == ParserToken::PT_CHECK_ANY_NULL)
 					{
-						parseStack.removeLast();
+						parseStack.pop();
 
 						if (anyNull)
 						{
 							pe.Type = ParserToken::PT_STRING;
 
-							parseStack.append(pe);
+							parseStack.push(pe);
 						}
 
 						break;
@@ -487,7 +488,7 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 			else
 				pe.Type = ParserToken::PT_CHECK_FILE_EXISTS;
 
-			parseStack.append(pe);
+			parseStack.push(pe);
 		}
 		else if (c == '}')
 		{
@@ -496,8 +497,8 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 			bool found = false;
 			if (!parseStack.isEmpty())
 			{
-				QList<ParserToken>::const_iterator begin = parseStack.constBegin();
-				QList<ParserToken>::const_iterator it = parseStack.constEnd();
+				QStack<ParserToken>::const_iterator begin = parseStack.constBegin();
+				QStack<ParserToken>::const_iterator it = parseStack.constEnd();
 
 				while (!found && it != begin)
 				{
@@ -525,34 +526,34 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 				pe.Content = '}';
 				pe.Type = ParserToken::PT_STRING;
 
-				parseStack.append(pe);
+				parseStack.push(pe);
 			}
 			else
 				while (!parseStack.empty())
 				{
-					const ParserToken &pe2 = parseStack.at(parseStack.length() - 1);
+					const ParserToken &pe2 = parseStack.top();
 
 					if (pe2.Type == ParserToken::PT_STRING)
 					{
 						pe.Content.prepend(pe2.Content);
 
-						parseStack.removeLast();
+						parseStack.pop();
 					}
 					else if (pe.Content.contains('\n'))
 					{
 						pe.Type = ParserToken::PT_STRING;
 						pe.Content.append('}');
 
-						parseStack.append(pe);
+						parseStack.push(pe);
 
 						break;
 					}
 					else if (pe2.Type == ParserToken::PT_CHECK_FILE_EXISTS || pe2.Type == ParserToken::PT_CHECK_FILE_NOT_EXISTS)
 					{
-						// we need that because pe2 is a reference which will be destroyed by parseStack.removeLast()
+						// we need that because pe2 is a reference which will be destroyed by parseStack.pop()
 						bool checkFileExists = (pe2.Type == ParserToken::PT_CHECK_FILE_EXISTS);
 
-						parseStack.removeLast();
+						parseStack.pop();
 
 						int spacePos = pe.Content.indexOf(' ', 0);
 						QString filePath;
@@ -569,14 +570,14 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 							pe.Content = pe.Content.mid(spacePos + 1);
 							pe.Type = ParserToken::PT_STRING;
 
-							parseStack.append(pe);
+							parseStack.push(pe);
 						}
 
 						break;
 					}
 					else if (pe2.Type == ParserToken::PT_VARIABLE)
 					{
-						parseStack.removeLast();
+						parseStack.pop();
 
 						pe.Type = ParserToken::PT_STRING;
 
@@ -591,13 +592,13 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 							pe.Content.clear();
 						}
 
-						parseStack.append(pe);
+						parseStack.push(pe);
 
 						break;
 					}
 					else if (pe2.Type == ParserToken::PT_ICONPATH)
 					{
-						parseStack.removeLast();
+						parseStack.pop();
 
 						pe.Type = ParserToken::PT_STRING;
 						if (pe.Content.contains(':'))
@@ -608,13 +609,13 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 						else
 							pe.Content = KaduIcon(pe.Content).webKitPath();
 
-						parseStack.append(pe);
+						parseStack.push(pe);
 
 						break;
 					}
 					else if (pe2.Type == ParserToken::PT_EXTERNAL_VARIABLE)
 					{
-						parseStack.removeLast();
+						parseStack.pop();
 
 						pe.Type = ParserToken::PT_STRING;
 
@@ -628,18 +629,18 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 							pe.Content.clear();
 						}
 
-						parseStack.append(pe);
+						parseStack.push(pe);
 
 						break;
 					}
 					else if (pe2.Type == ParserToken::PT_EXECUTE2)
 					{
-						parseStack.removeLast();
+						parseStack.pop();
 
 						pe.Type = ParserToken::PT_STRING;
 						pe.Content = executeCmd(pe.Content);
 
-						parseStack.append(pe);
+						parseStack.push(pe);
 
 						break;
 					}
@@ -653,7 +654,7 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 			{
 				pe.Type = ParserToken::PT_EXECUTE;
 
-				parseStack.append(pe);
+				parseStack.push(pe);
 			}
 			else
 			{
@@ -661,7 +662,7 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 
 				pe.Type = ParserToken::PT_EXECUTE2;
 
-				parseStack.append(pe);
+				parseStack.push(pe);
 			}
 		}
 		else if (c == '\'')
@@ -673,8 +674,8 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 			bool found = false;
 			if (!parseStack.isEmpty())
 			{
-				QList<ParserToken>::const_iterator begin = parseStack.constBegin();
-				QList<ParserToken>::const_iterator it = parseStack.constEnd();
+				QStack<ParserToken>::const_iterator begin = parseStack.constBegin();
+				QStack<ParserToken>::const_iterator it = parseStack.constEnd();
 
 				while (!found && it != begin)
 				{
@@ -696,27 +697,27 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 				pe.Content = '\'';
 				pe.Type = ParserToken::PT_STRING;
 
-				parseStack.append(pe);
+				parseStack.push(pe);
 			}
 			else
 				while (!parseStack.empty())
 				{
-					const ParserToken &pe2 = parseStack.at(parseStack.length() - 1);
+					const ParserToken &pe2 = parseStack.top();
 
 					if (pe2.Type == ParserToken::PT_STRING)
 					{
 						pe.Content.prepend(pe2.Content);
 
-						parseStack.removeLast();
+						parseStack.pop();
 					}
 					else if (pe2.Type == ParserToken::PT_EXECUTE)
 					{
-						parseStack.removeLast();
+						parseStack.pop();
 
 						pe.Type = ParserToken::PT_STRING;
 						pe.Content = executeCmd(pe.Content);
 
-						parseStack.append(pe);
+						parseStack.push(pe);
 
 						break;
 					}
@@ -733,7 +734,7 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 
 			++idx;
 
-			parseStack.append(pe);
+			parseStack.push(pe);
 		}
 		else if (c == '$')
 		{
@@ -744,7 +745,7 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 				pe.Type = ParserToken::PT_STRING;
 				pe.Content = '$';
 
-				parseStack.append(pe);
+				parseStack.push(pe);
 			}
 			else
 			{
@@ -752,7 +753,7 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 
 				pe.Type = ParserToken::PT_VARIABLE;
 
-				parseStack.append(pe);
+				parseStack.push(pe);
 			}
 		}
 		else if (c == '@')
@@ -764,7 +765,7 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 				pe.Type = ParserToken::PT_STRING;
 				pe.Content = '@';
 
-				parseStack.append(pe);
+				parseStack.push(pe);
 			}
 			else
 			{
@@ -772,7 +773,7 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 
 				pe.Type = ParserToken::PT_ICONPATH;
 
-				parseStack.append(pe);
+				parseStack.push(pe);
 			}
 		}
 		else if (c == '#')
@@ -784,7 +785,7 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 				pe.Type = ParserToken::PT_STRING;
 				pe.Content = '#';
 
-				parseStack.append(pe);
+				parseStack.push(pe);
 			}
 			else
 			{
@@ -792,7 +793,7 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 
 				pe.Type = ParserToken::PT_EXTERNAL_VARIABLE;
 
-				parseStack.append(pe);
+				parseStack.push(pe);
 			}
 		}
 		else
