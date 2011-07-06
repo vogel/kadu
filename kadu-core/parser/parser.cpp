@@ -147,16 +147,6 @@ QString Parser::executeCmd(const QString &cmd)
 	return ret;
 }
 
-QString Parser::parse(const QString &s, const QObject * const object, bool escape)
-{
-	return parse(s, BuddyOrContact(), object, escape);
-}
-
-QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, bool escape)
-{
-	return parse(s, buddyOrContact, 0, escape);
-}
-
 QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QObject * const object, bool escape)
 {
 	kdebugmf(KDEBUG_DUMP, "%s escape=%i\n", qPrintable(s), escape);
