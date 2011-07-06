@@ -30,6 +30,7 @@
 
 #include "accounts/account.h"
 #include "accounts/accounts-aware-object.h"
+#include "os/generic/desktop-aware-object.h"
 #include "exports.h"
 
 class QHBoxLayout;
@@ -48,7 +49,7 @@ class ModalConfigurationWidget;
 class ProtocolFactory;
 class ProtocolsComboBox;
 
-class KADUAPI YourAccounts : public QWidget, AccountsAwareObject
+class KADUAPI YourAccounts : public QWidget, AccountsAwareObject, DesktopAwareObject
 {
 	Q_OBJECT
 

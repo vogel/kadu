@@ -66,7 +66,8 @@
 YourAccounts *YourAccounts::Instance = 0;
 
 YourAccounts::YourAccounts(QWidget *parent) :
-		QWidget(parent), CurrentWidget(0), IsCurrentWidgetEditAccount(false), ForceWidgetChange(false), CanRegisterFilter(new CanRegisterProtocolFilter())
+		QWidget(parent), DesktopAwareObject(this), CurrentWidget(0), IsCurrentWidgetEditAccount(false),
+		ForceWidgetChange(false), CanRegisterFilter(new CanRegisterProtocolFilter())
 {
 	setWindowRole("kadu-your-accounts");
 

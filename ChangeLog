@@ -14,6 +14,7 @@
 * gui: #2245 fixed: indication that our interlocutor was composing a message didn't disappear in the moment of receiving that message but about a second after that when using gadu; this change also fixed a minor issue with jabber (beevvy)
 * gadu: #2078 fixed: offline to buddy now works properly (Vogel)
 * jabber: #2187 fixed: invalid status of contacts logged on multiple times on different resources (WhE)
+* core: #2062 fixed: windows are now repositioned when resolution changes or one of the screens is detached (ultr)
 
 +++ version 0.10.0-beta1
 * gadu: #2050 fixed: fixed sending images to GG7 and AQQ (beevvy)

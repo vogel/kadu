@@ -24,6 +24,8 @@
 
 #include <QtGui/QWidget>
 
+#include "os/generic/desktop-aware-object.h"
+
 #include "open-chat-with-runner.h"
 
 class QLabel;
@@ -34,7 +36,7 @@ class BuddiesListView;
 class BuddyListModel;
 class LineEditWithClearButton;
 
-class KADUAPI OpenChatWith : public QWidget
+class KADUAPI OpenChatWith : public QWidget, DesktopAwareObject
 {
 	Q_OBJECT
 

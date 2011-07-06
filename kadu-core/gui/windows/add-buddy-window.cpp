@@ -64,10 +64,11 @@
 #include "add-buddy-window.h"
 
 AddBuddyWindow::AddBuddyWindow(QWidget *parent, const Buddy &buddy, bool forceBuddyAccount) :
-		QDialog(parent, Qt::Window), UserNameLabel(0), UserNameEdit(0), MobileAccountAction(0), EmailAccountAction(0),
-		AccountCombo(0), AccountComboIdFilter(0), GroupCombo(0), DisplayNameEdit(0), MergeBuddy(0),
-		SelectBuddy(0), AskForAuthorization(0), AllowToSeeMeCheck(0), ErrorLabel(0), AddContactButton(0),
-		MyBuddy(buddy), ForceBuddyAccount(forceBuddyAccount)
+		QDialog(parent, Qt::Window), DesktopAwareObject(this), UserNameLabel(0), UserNameEdit(0),
+		MobileAccountAction(0), EmailAccountAction(0), AccountCombo(0), AccountComboIdFilter(0),
+		GroupCombo(0), DisplayNameEdit(0), MergeBuddy(0), SelectBuddy(0), AskForAuthorization(0),
+		AllowToSeeMeCheck(0), ErrorLabel(0), AddContactButton(0), MyBuddy(buddy),
+		ForceBuddyAccount(forceBuddyAccount)
 {
 	setWindowRole("kadu-add-buddy");
 

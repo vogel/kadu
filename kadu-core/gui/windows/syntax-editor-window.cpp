@@ -47,7 +47,7 @@
 
 SyntaxEditorWindow::SyntaxEditorWindow(const QSharedPointer<SyntaxList> &syntaxList, const QString &syntaxName,
 		const QString &category, const QString &syntaxHint, QWidget *parent) :
-		QWidget(parent), syntaxList(syntaxList), syntaxName(syntaxName)
+		QWidget(parent), DesktopAwareObject(this), syntaxList(syntaxList), syntaxName(syntaxName)
 {
 	setWindowRole("kadu-syntax-editor");
 

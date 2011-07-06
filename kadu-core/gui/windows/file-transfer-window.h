@@ -25,13 +25,14 @@
 #include <QtGui/QFrame>
 
 #include "file-transfer/file-transfer.h"
+#include "os/generic/desktop-aware-object.h"
 
 class QScrollArea;
 class QVBoxLayout;
 
 class FileTransferWidget;
 
-class FileTransferWindow : public QFrame
+class FileTransferWindow : public QFrame, DesktopAwareObject
 {
 	Q_OBJECT
 

@@ -25,12 +25,13 @@
 #include <QtCore/QVariant>
 #include <QtGui/QDialog>
 
+#include "os/generic/desktop-aware-object.h"
 #include "exports.h"
 
 class QCheckBox;
 class QLineEdit;
 
-class KADUAPI PasswordWindow : public QDialog
+class KADUAPI PasswordWindow : public QDialog, DesktopAwareObject
 {
 	Q_OBJECT
 

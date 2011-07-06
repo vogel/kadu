@@ -31,7 +31,7 @@
 
 WindowNotifierWindow::WindowNotifierWindow(Notification *notification, QWidget *parent) :
 		QDialog(parent, Qt::Window | Qt::MSWindowsFixedSizeDialogHint | Qt::WindowTitleHint | Qt::WindowSystemMenuHint),
-		CurrentNotification(notification)
+		DesktopAwareObject(this), CurrentNotification(notification)
 {
 	kdebugf();
 

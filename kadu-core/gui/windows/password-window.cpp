@@ -42,7 +42,7 @@ void PasswordWindow::getPassword(const QString &message, QVariant data, QObject 
 }
 
 PasswordWindow::PasswordWindow(const QString &message, QVariant data, QWidget *parent) :
-		QDialog(parent), Data(data)
+		QDialog(parent), DesktopAwareObject(this), Data(data)
 {
 	setWindowRole("kadu-password");
 

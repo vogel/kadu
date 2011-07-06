@@ -57,7 +57,7 @@
 #include "about.h"
 
 About::About(QWidget *parent) :
-		QWidget(parent, Qt::Window)
+		QWidget(parent, Qt::Window), DesktopAwareObject(this)
 {
 	kdebugf();
 

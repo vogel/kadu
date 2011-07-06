@@ -24,11 +24,12 @@
 #include <QtGui/QDialog>
 
 #include "gui/widgets/progress-icon.h"
+#include "os/generic/desktop-aware-object.h"
 #include "exports.h"
 
 class ProgressLabel;
 
-class KADUAPI ProgressWindow : public QDialog
+class KADUAPI ProgressWindow : public QDialog, DesktopAwareObject
 {
 	Q_OBJECT
 

@@ -1,8 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2010 Piotr Galiszewski (piotr.galiszewski@kadu.im)
- * Copyright 2010 Bartosz Brachaczek (b.brachaczek@gmail.com)
- * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2011 Piotr Dąbrowski (ultr@ultr.pl)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -19,28 +17,25 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef WINDOW_NOTIFIER_WINDOW_H
-#define WINDOW_NOTIFIER_WINDOW_H
+#ifndef DESKTOP_AWARE_OBJECT_HELPER
+#define DESKTOP_AWARE_OBJECT_HELPER
 
-#include <QtGui/QDialog>
+#include <QtCore/QObject>
+#include <QtCore/QTimer>
 
-#include "os/generic/desktop-aware-object.h"
-
-class Notification;
-
-class WindowNotifierWindow : public QDialog, DesktopAwareObject
+class DesktopAwareObjectHelper : public QObject
 {
 	Q_OBJECT
 
-	Notification *CurrentNotification;
+	QTimer Timer;
 
-	void createGui();
-	void addButton(QWidget *parent, const QString &caption, const char *slot);
+protected slots:
+	void workAreaResized();
 
 public:
-	explicit WindowNotifierWindow(Notification *notification, QWidget *parent = 0);
-	virtual ~WindowNotifierWindow();
+	DesktopAwareObjectHelper();
+	~DesktopAwareObjectHelper();
 
 };
 
-#endif // WINDOW_NOTIFIER_WINDOW_H
+#endif // DESKTOP_AWARE_OBJECT_HELPER

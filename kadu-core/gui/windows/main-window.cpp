@@ -55,7 +55,7 @@ MainWindow * MainWindow::findMainWindow(QWidget *widget)
 }
 
 MainWindow::MainWindow(const QString &windowName, QWidget *parent) :
-		QMainWindow(parent), WindowName(windowName), TransparencyEnabled(false)
+		QMainWindow(parent), DesktopAwareObject(this),  WindowName(windowName), TransparencyEnabled(false)
 {
 	connect(ConfigurationManager::instance()->toolbarConfigurationManager(), SIGNAL(configurationUpdated()),
 			this, SLOT(refreshToolBars()));

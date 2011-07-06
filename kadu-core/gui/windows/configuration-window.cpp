@@ -62,7 +62,7 @@
 #include "misc/misc.h"
 
 ConfigurationWindow::ConfigurationWindow(const QString &name, const QString &caption, const QString &section, ConfigurationWindowDataManager *dataManager)
-	: QDialog(Core::instance()->kaduWindow(), Qt::Window), Name(name), Section(section)
+	: QDialog(Core::instance()->kaduWindow(), Qt::Window), DesktopAwareObject(this),  Name(name), Section(section)
 {
 	setWindowRole("kadu-configuration");
 

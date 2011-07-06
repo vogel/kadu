@@ -42,7 +42,7 @@
 MultilogonWindow *MultilogonWindow::Instance = 0;
 
 MultilogonWindow::MultilogonWindow(QWidget *parent) :
-		QWidget(parent)
+		QWidget(parent), DesktopAwareObject(this)
 {
 	setWindowRole("kadu-multilogon");
 

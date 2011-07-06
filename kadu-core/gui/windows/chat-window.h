@@ -6,13 +6,14 @@
 #include "gui/widgets/chat-widget-container.h"
 #include "configuration/configuration-aware-object.h"
 #include "os/generic/compositing-aware-object.h"
+#include "os/generic/desktop-aware-object.h"
 #include "exports.h"
 
 class QTimer;
 
 class ChatWidget;
 
-class KADUAPI ChatWindow : public QWidget, public ChatWidgetContainer, ConfigurationAwareObject, CompositingAwareObject
+class KADUAPI ChatWindow : public QWidget, public ChatWidgetContainer, ConfigurationAwareObject, CompositingAwareObject, DesktopAwareObject
 {
 	Q_OBJECT
 

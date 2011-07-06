@@ -51,7 +51,7 @@
 #include "modules-window.h"
 
 ModulesWindow::ModulesWindow(QWidget *parent)
-	: QWidget(parent, Qt::Window),
+	: QWidget(parent, Qt::Window), DesktopAwareObject(this),
 	ModulesList(0), ModuleInfo(0)
 {
 	kdebugf();

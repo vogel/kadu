@@ -71,7 +71,7 @@ ChooseDescription * ChooseDescription::showDialog(StatusContainer *statusContain
 }
 
 ChooseDescription::ChooseDescription(StatusContainer *statusContainer, QWidget *parent) :
-		QDialog(parent), MyStatusContainer(statusContainer)
+		QDialog(parent), DesktopAwareObject(this), MyStatusContainer(statusContainer)
 {
 	kdebugf();
 

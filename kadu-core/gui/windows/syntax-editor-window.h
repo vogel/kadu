@@ -24,13 +24,15 @@
 #include <QtCore/QSharedPointer>
 #include <QtGui/QWidget>
 
+#include "os/generic/desktop-aware-object.h"
+
 class QLineEdit;
 class QTextEdit;
 
 class Preview;
 class SyntaxList;
 
-class SyntaxEditorWindow : public QWidget
+class SyntaxEditorWindow : public QWidget, DesktopAwareObject
 {
 	Q_OBJECT
 
