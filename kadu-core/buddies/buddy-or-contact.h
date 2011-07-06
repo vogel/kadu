@@ -45,7 +45,7 @@ public:
 	BuddyOrContact();
 	BuddyOrContact(const Buddy &buddy);
 	BuddyOrContact(const Contact &contact);
-	BuddyOrContact(const BuddyOrContact& copyMe);
+	BuddyOrContact(const BuddyOrContact &copyMe);
 
 	BuddyOrContact & operator = (const Buddy &buddy);
 	BuddyOrContact & operator = (const Contact &contact);
@@ -54,9 +54,9 @@ public:
 	bool operator == (const BuddyOrContact &compareTo) const;
 	bool operator != (const BuddyOrContact &compareTo) const;
 
-	ItemType type() { return Type; }
-	Buddy buddy() { return MyBuddy; }
-	Contact contact() { return MyContact; }
+	ItemType type() const { return Type; }
+	Buddy buddy() const { return MyBuddy; }
+	Contact contact() const { return MyContact; }
 
 };
 
