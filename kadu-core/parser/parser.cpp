@@ -495,19 +495,10 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 				bool anyNull = false;
 				while (!parseStack.empty())
 				{
-					const ParserToken &pe2 = parseStack.top();
+					ParserToken pe2 = parseStack.pop();
 
-					if (pe2.Type == ParserToken::PT_STRING)
+					if (pe2.Type == ParserToken::PT_CHECK_ALL_NOT_NULL)
 					{
-						anyNull = anyNull || pe2.Content.isEmpty();
-						pe.Content.prepend(pe2.Content);
-
-						parseStack.pop();
-					}
-					else if (pe2.Type == ParserToken::PT_CHECK_ALL_NOT_NULL)
-					{
-						parseStack.pop();
-
 						if (!anyNull)
 						{
 							pe.Type = ParserToken::PT_STRING;
@@ -517,10 +508,9 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 
 						break;
 					}
-					else if (pe2.Type == ParserToken::PT_CHECK_ANY_NULL)
-					{
-						parseStack.pop();
 
+					if (pe2.Type == ParserToken::PT_CHECK_ANY_NULL)
+					{
 						if (anyNull)
 						{
 							pe.Type = ParserToken::PT_STRING;
@@ -530,6 +520,11 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 
 						break;
 					}
+
+					// here we know for sure that pe2.Type == ParserToken::PT_STRING,
+					// as it is guaranteed by isActionParserTokenAtTop() call
+					anyNull = anyNull || pe2.Content.isEmpty();
+					pe.Content.prepend(pe2.Content);
 				}
 			}
 		}
@@ -573,15 +568,7 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 			else
 				while (!parseStack.empty())
 				{
-					const ParserToken &pe2 = parseStack.top();
-
-					if (pe2.Type == ParserToken::PT_STRING)
-					{
-						pe.Content.prepend(pe2.Content);
-
-						parseStack.pop();
-					}
-					else if (pe.Content.contains('\n'))
+					if (parseStack.top().Type != ParserToken::PT_STRING && pe.Content.contains('\n'))
 					{
 						pe.Type = ParserToken::PT_STRING;
 						pe.Content.append('}');
@@ -590,13 +577,11 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 
 						break;
 					}
-					else if (pe2.Type == ParserToken::PT_CHECK_FILE_EXISTS || pe2.Type == ParserToken::PT_CHECK_FILE_NOT_EXISTS)
+
+					ParserToken pe2 = parseStack.pop();
+
+					if (pe2.Type == ParserToken::PT_CHECK_FILE_EXISTS || pe2.Type == ParserToken::PT_CHECK_FILE_NOT_EXISTS)
 					{
-						// we need that because pe2 is a reference which will be destroyed by parseStack.pop()
-						bool checkFileExists = (pe2.Type == ParserToken::PT_CHECK_FILE_EXISTS);
-
-						parseStack.pop();
-
 						int spacePos = pe.Content.indexOf(' ', 0);
 						QString filePath;
 						if (spacePos == -1)
@@ -607,6 +592,7 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 						if (filePath.startsWith(QLatin1String("file://")))
 							filePath = filePath.mid(7 /*strlen("file://")*/);
 
+						bool checkFileExists = (pe2.Type == ParserToken::PT_CHECK_FILE_EXISTS);
 						if (QFile::exists(filePath) == checkFileExists)
 						{
 							pe.Content = pe.Content.mid(spacePos + 1);
@@ -617,10 +603,9 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 
 						break;
 					}
-					else if (pe2.Type == ParserToken::PT_VARIABLE)
-					{
-						parseStack.pop();
 
+					if (pe2.Type == ParserToken::PT_VARIABLE)
+					{
 						pe.Type = ParserToken::PT_STRING;
 
 						if (GlobalVariables.contains(pe.Content))
@@ -638,10 +623,9 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 
 						break;
 					}
-					else if (pe2.Type == ParserToken::PT_ICONPATH)
-					{
-						parseStack.pop();
 
+					if (pe2.Type == ParserToken::PT_ICONPATH)
+					{
 						pe.Type = ParserToken::PT_STRING;
 						if (pe.Content.contains(':'))
 						{
@@ -655,10 +639,9 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 
 						break;
 					}
-					else if (pe2.Type == ParserToken::PT_EXTERNAL_VARIABLE)
-					{
-						parseStack.pop();
 
+					if (pe2.Type == ParserToken::PT_EXTERNAL_VARIABLE)
+					{
 						pe.Type = ParserToken::PT_STRING;
 
 						if (RegisteredBuddyOrContactTags.contains(pe.Content))
@@ -675,10 +658,9 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 
 						break;
 					}
-					else if (pe2.Type == ParserToken::PT_EXECUTE2)
-					{
-						parseStack.pop();
 
+					if (pe2.Type == ParserToken::PT_EXECUTE2)
+					{
 						pe.Type = ParserToken::PT_STRING;
 						pe.Content = executeCmd(pe.Content);
 
@@ -686,6 +668,10 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 
 						break;
 					}
+
+					// here we know for sure that pe2.Type == ParserToken::PT_STRING,
+					// as it is guaranteed by isActionParserTokenAtTop() call
+					pe.Content.prepend(pe2.Content);
 				}
 		}
 		else if (c == '`')
@@ -725,18 +711,10 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 			else
 				while (!parseStack.empty())
 				{
-					const ParserToken &pe2 = parseStack.top();
+					ParserToken pe2 = parseStack.pop();
 
-					if (pe2.Type == ParserToken::PT_STRING)
+					if (pe2.Type == ParserToken::PT_EXECUTE)
 					{
-						pe.Content.prepend(pe2.Content);
-
-						parseStack.pop();
-					}
-					else if (pe2.Type == ParserToken::PT_EXECUTE)
-					{
-						parseStack.pop();
-
 						pe.Type = ParserToken::PT_STRING;
 						pe.Content = executeCmd(pe.Content);
 
@@ -744,6 +722,10 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 
 						break;
 					}
+
+					// here we know for sure that pe2.Type == ParserToken::PT_STRING,
+					// as it is guaranteed by isActionParserTokenAtTop() call
+					pe.Content.prepend(pe2.Content);
 				}
 		}
 		else if (c == '\\')
