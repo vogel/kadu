@@ -204,6 +204,13 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 
 			switch (s.at(i).toAscii())
 			{
+				// 'o' does not work so we should just ignore it
+				// see: http://kadu.net/mantis/view.php?id=2199
+				case 'o':
+				// 't' was removed in commit 48d3cd65 during 0.9 (aka 0.6.6) release cycle
+				case 't':
+					++i;
+					break;
 				case 's':
 					++i;
 
@@ -221,7 +228,7 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 						}
 					}
 
-					break; // TODO: 't' removed
+					break;
 				case 'q':
 					++i;
 
@@ -264,12 +271,6 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 					if (contact)
 						pe.Content = contact.dnsName();
 
-					break;
-				case 'o':
-					++i;
-
-					// it does not work so we should just ignore it
-					// see: http://kadu.net/mantis/view.php?id=2199
 					break;
 				case 'p':
 					++i;
