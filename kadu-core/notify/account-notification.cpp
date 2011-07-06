@@ -54,6 +54,6 @@ AccountNotification::AccountNotification(Account account, const QString &type, c
 
 AccountNotification::~AccountNotification()
 {
-	Parser::unregisterObjectTag("protocol", getProtocolName);
-	Parser::unregisterObjectTag("account", getAccountName);
+	Parser::unregisterObjectTag("protocol");
+	Parser::unregisterObjectTag("account");
 }

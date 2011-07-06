@@ -78,6 +78,6 @@ void ContactParserTags::registerParserTags()
 
 void ContactParserTags::unregisterParserTags()
 {
-	Parser::unregisterTag("avatarPath", getAvatarPath);
-	Parser::unregisterTag("statusIconPath", getStatusIconPath);
+	Parser::unregisterTag("avatarPath");
+	Parser::unregisterTag("statusIconPath");
 }

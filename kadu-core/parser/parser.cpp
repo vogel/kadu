@@ -67,10 +67,8 @@ bool Parser::registerTag(const QString &name, BuddyOrContactTagCallback func)
 	return true;
 }
 
-bool Parser::unregisterTag(const QString &name, BuddyOrContactTagCallback func)
+bool Parser::unregisterTag(const QString &name)
 {
-	Q_UNUSED(func)
-
 	kdebugf();
 
 	if (!RegisteredBuddyOrContactTags.contains(name))
@@ -101,10 +99,8 @@ bool Parser::registerObjectTag(const QString &name, ObjectTagCallback func)
 	return true;
 }
 
-bool Parser::unregisterObjectTag(const QString &name, ObjectTagCallback func)
+bool Parser::unregisterObjectTag(const QString &name)
 {
-	Q_UNUSED(func)
-
 	kdebugf();
 
 	if (!RegisteredObjectTags.contains(name))

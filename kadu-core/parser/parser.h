@@ -48,10 +48,10 @@ public:
 	static QString parse(const QString &s, BuddyOrContact buddyOrContact, const QObject * const object, bool escape = true);
 
 	static bool registerTag(const QString &name, BuddyOrContactTagCallback);
-	static bool unregisterTag(const QString &name, BuddyOrContactTagCallback);
+	static bool unregisterTag(const QString &name);
 
 	static bool registerObjectTag(const QString &name, ObjectTagCallback);
-	static bool unregisterObjectTag(const QString &name, ObjectTagCallback);
+	static bool unregisterObjectTag(const QString &name);
 
 };
 

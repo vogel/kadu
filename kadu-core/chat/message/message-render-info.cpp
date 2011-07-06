@@ -152,15 +152,15 @@ void MessageRenderInfo::registerParserTags()
 
 void MessageRenderInfo::unregisterParserTags()
 {
-	Parser::unregisterObjectTag("message", getMessage);
-	Parser::unregisterObjectTag("messageId", getMessageId);
-	Parser::unregisterObjectTag("messageStatus", getMessageStatus);
-	Parser::unregisterObjectTag("backgroundColor", getBackgroundColor);
-	Parser::unregisterObjectTag("fontColor", getFontColor);
-	Parser::unregisterObjectTag("nickColor", getNickColor);
-	Parser::unregisterObjectTag("sentDate", getSentDate);
-	Parser::unregisterObjectTag("receivedDate", getReceivedDate);
-	Parser::unregisterObjectTag("separator", getSeparator);
+	Parser::unregisterObjectTag("message");
+	Parser::unregisterObjectTag("messageId");
+	Parser::unregisterObjectTag("messageStatus");
+	Parser::unregisterObjectTag("backgroundColor");
+	Parser::unregisterObjectTag("fontColor");
+	Parser::unregisterObjectTag("nickColor");
+	Parser::unregisterObjectTag("sentDate");
+	Parser::unregisterObjectTag("receivedDate");
+	Parser::unregisterObjectTag("separator");
 }
 
 MessageRenderInfo::MessageRenderInfo(const Message &msg) :

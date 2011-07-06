@@ -48,7 +48,7 @@ Notification::Notification(const QString &type, const KaduIcon &icon) :
 
 Notification::~Notification()
 {
-	Parser::unregisterObjectTag("event", getNotificationTitle);
+	Parser::unregisterObjectTag("event");
 }
 
 void Notification::acquire()

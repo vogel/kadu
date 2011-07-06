@@ -213,14 +213,14 @@ void DateTimeParserTags::registerParserTags()
 
 void DateTimeParserTags::unregisterParserTags()
 {
-	Parser::unregisterTag("time", parseTime);
-	Parser::unregisterTag("time-long", parseLongTime);
-	Parser::unregisterTag("date", parseDate);
-	Parser::unregisterTag("date-long", parseLongDate);
-	Parser::unregisterTag("start", parseStartTime);
-	Parser::unregisterTag("start-long", parseLongStartTime);
-	Parser::unregisterTag("uptime", parseUptime);
-	Parser::unregisterTag("uptime-long", parseLongUptime);
-	Parser::unregisterTag("kuptime", parseKaduUptime);
-	Parser::unregisterTag("kuptime-long", parseLongKaduUptime);
+	Parser::unregisterTag("time");
+	Parser::unregisterTag("time-long");
+	Parser::unregisterTag("date");
+	Parser::unregisterTag("date-long");
+	Parser::unregisterTag("start");
+	Parser::unregisterTag("start-long");
+	Parser::unregisterTag("uptime");
+	Parser::unregisterTag("uptime-long");
+	Parser::unregisterTag("kuptime");
+	Parser::unregisterTag("kuptime-long");
 }

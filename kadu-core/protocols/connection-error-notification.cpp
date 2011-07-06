@@ -67,8 +67,8 @@ void ConnectionErrorNotification::unregisterEvent()
 	if (!ConnectionErrorNotifyEvent)
 		return;
 
-	Parser::unregisterObjectTag("errorServer", getErrorServer);
-	Parser::unregisterObjectTag("error", getErrorMessage);
+	Parser::unregisterObjectTag("errorServer");
+	Parser::unregisterObjectTag("error");
 
 	NotificationManager::instance()->unregisterNotifyEvent(ConnectionErrorNotifyEvent);
 	delete ConnectionErrorNotifyEvent;
