@@ -45,6 +45,7 @@ class KADUAPI Parser
 
 	static bool isActionParserTokenAtTop(const QStack<ParserToken> &parseStack, const QVector<ParserToken::ParserTokenType> &acceptedTokens);
 	static ParserToken parsePercentSyntax(const QString &s, int &idx, const BuddyOrContact &buddyOrContact, bool escape);
+	static QString joinParseStack(const QStack<ParserToken> &parseStack);
 
 public:
 	static QMap<QString, QString> GlobalVariables;

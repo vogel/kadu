@@ -357,6 +357,54 @@ ParserToken Parser::parsePercentSyntax(const QString &s, int &idx, const BuddyOr
 	return pe;
 }
 
+QString Parser::joinParseStack(const QStack<ParserToken> &parseStack)
+{
+	QString joined;
+	foreach(const ParserToken &elem, parseStack)
+	{
+		if (elem.Type != ParserToken::PT_STRING)
+		{
+			kdebugm(KDEBUG_WARNING, "Incorrect parse string! %d\n", elem.Type);
+		}
+
+		switch (elem.Type)
+		{
+			case ParserToken::PT_STRING:
+				joined += elem.Content;
+				break;
+			case ParserToken::PT_EXTERNAL_VARIABLE:
+				joined += "#{";
+				break;
+			case ParserToken::PT_ICONPATH:
+				joined += "@{";
+				break;
+			case ParserToken::PT_VARIABLE:
+				joined += "${";
+				break;
+			case ParserToken::PT_CHECK_FILE_EXISTS:
+				joined += '{';
+				break;
+			case ParserToken::PT_CHECK_FILE_NOT_EXISTS:
+				joined += "{!";
+				break;
+			case ParserToken::PT_CHECK_ALL_NOT_NULL:
+				joined += '[';
+				break;
+			case ParserToken::PT_CHECK_ANY_NULL:
+				joined += "[!";
+				break;
+			case ParserToken::PT_EXECUTE:
+				joined += '`';
+				break;
+			case ParserToken::PT_EXECUTE2:
+				joined += "`{";
+				break;
+		}
+	}
+
+	return joined;
+}
+
 QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QObject * const object, bool escape)
 {
 	kdebugmf(KDEBUG_DUMP, "%s escape=%i\n", qPrintable(s), escape);
@@ -777,48 +825,7 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 		}
 	}
 
-	QString ret;
-	foreach(const ParserToken &elem, parseStack)
-	{
-		if (elem.Type != ParserToken::PT_STRING)
-		{
-			kdebugm(KDEBUG_WARNING, "Incorrect parse string! %d\n", elem.Type);
-		}
-
-		switch (elem.Type)
-		{
-			case ParserToken::PT_STRING:
-				ret += elem.Content;
-				break;
-			case ParserToken::PT_EXTERNAL_VARIABLE:
-				ret += "#{";
-				break;
-			case ParserToken::PT_ICONPATH:
-				ret += "@{";
-				break;
-			case ParserToken::PT_VARIABLE:
-				ret += "${";
-				break;
-			case ParserToken::PT_CHECK_FILE_EXISTS:
-				ret += '{';
-				break;
-			case ParserToken::PT_CHECK_FILE_NOT_EXISTS:
-				ret += "{!";
-				break;
-			case ParserToken::PT_CHECK_ALL_NOT_NULL:
-				ret += '[';
-				break;
-			case ParserToken::PT_CHECK_ANY_NULL:
-				ret += "[!";
-				break;
-			case ParserToken::PT_EXECUTE:
-				ret += '`';
-				break;
-			case ParserToken::PT_EXECUTE2:
-				ret += "`{";
-				break;
-		}
-	}
+	QString ret = joinParseStack(parseStack);
 
 	kdebugm(KDEBUG_DUMP, "%s\n", qPrintable(ret));
 
