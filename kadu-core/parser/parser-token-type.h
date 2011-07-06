@@ -17,27 +17,21 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PARSER_TOKEN_H
-#define PARSER_TOKEN_H
+#ifndef PARSER_TOKEN_TYPE_H
+#define PARSER_TOKEN_TYPE_H
 
-#include <QtCore/QString>
-
-#include "parser/parser-token-type.h"
-
-class ParserToken
+enum ParserTokenType
 {
-	ParserTokenType Type;
-	QString Content;
-
-public:
-	ParserToken() : Type(PT_STRING), Content() {}
-
-	ParserTokenType type() const { return Type; }
-	void setType(ParserTokenType type) { Type = type; }
-
-	const QString & content() const { return Content; }
-	void setContent(const QString &content) { Content = content; }
-
+	PT_STRING,
+	PT_CHECK_ALL_NOT_NULL,
+	PT_CHECK_ANY_NULL,
+	PT_CHECK_FILE_EXISTS,
+	PT_CHECK_FILE_NOT_EXISTS,
+	PT_EXECUTE,
+	PT_VARIABLE,
+	PT_ICONPATH,
+	PT_EXTERNAL_VARIABLE,
+	PT_EXECUTE2,
 };
 
-#endif // PARSER_TOKEN_H
+#endif // PARSER_TOKEN_TYPE_H
