@@ -22,8 +22,9 @@
 
 #include <QtCore/QString>
 
-struct ParserToken
+class ParserToken
 {
+public:
 	enum ParserTokenType
 	{
 		PT_STRING,
@@ -36,11 +37,20 @@ struct ParserToken
 		PT_ICONPATH,
 		PT_EXTERNAL_VARIABLE,
 		PT_EXECUTE2
-	} Type;
+	};
 
+private:
+	ParserTokenType Type;
 	QString Content;
 
+public:
 	ParserToken() : Type(PT_STRING), Content() {}
+
+	ParserTokenType type() const { return Type; }
+	void setType(ParserTokenType type) { Type = type; }
+
+	const QString & content() const { return Content; }
+	void setContent(const QString &content) { Content = content; }
 
 };
 
