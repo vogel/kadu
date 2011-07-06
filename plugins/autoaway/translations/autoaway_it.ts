@@ -5,7 +5,7 @@
     <name>@default</name>
     <message>
         <source>Status</source>
-        <translation>Status</translation>
+		<translation>Stato</translation>
     </message>
     <message>
         <source>Autoaway</source>
@@ -13,31 +13,31 @@
     </message>
     <message>
         <source>Check idle every</source>
-        <translation>Controlla  Iddle ogni</translation>
+		<translation>Controlla assenza ogni</translation>
     </message>
     <message>
         <source>Enable autoaway</source>
-        <translation>Occupato automatico</translation>
+		<translation>Abilita autoaway</translation>
     </message>
     <message>
         <source>Set status to away after</source>
-        <translation>Metti status Occupato dopo</translation>
+		<translation>Setta lo stato su assente dopo</translation>
     </message>
     <message>
         <source>Enable autoinvisible</source>
-        <translation>Attiva autoinvisibile</translation>
+		<translation>Abilita autoinvisibile</translation>
     </message>
     <message>
         <source>Set status to invisible after</source>
-        <translation>Metti status invisibile dopo</translation>
+		<translation>Setta lo stato invisibile dopo</translation>
     </message>
     <message>
         <source>Enable autodisconnect</source>
-        <translation>Attiva autosconessione</translation>
+		<translation>Abilita autodisconessione</translation>
     </message>
     <message>
         <source>Disconnect after</source>
-        <translation>Sconnetti dopo</translation>
+		<translation>Disconnetti dopo</translation>
     </message>
     <message>
         <source>Description</source>
@@ -45,11 +45,11 @@
     </message>
     <message>
         <source>Don&apos;t change</source>
-        <translation>Non cambiare descrizione</translation>
+		<translation>Non cambiare</translation>
     </message>
     <message>
         <source>Replace</source>
-        <translation>Cambia</translation>
+		<translation>Sostituisci</translation>
     </message>
     <message>
         <source>Add in front</source>
@@ -57,55 +57,46 @@
     </message>
     <message>
         <source>Add at the back</source>
-        <translation>Agiungi alla fine</translation>
+		<translation>Aggiungi alla fine</translation>
     </message>
     <message>
         <source>New description</source>
-        <translation>Nuovo descrizione</translation>
+		<translation>Nuova descrizione</translation>
     </message>
     <message>
         <source>Parse AutoStatus</source>
-        <translation>Parse status automatico</translation>
+		<translation>Analizza lo stato</translation>
     </message>
     <message>
         <source>Enable auto extended away</source>
-        <translation type="unfinished"></translation>
+		<translation>Abilita autoaway esteso</translation>
     </message>
     <message>
         <source>Set status to extended away after</source>
-        <translation type="unfinished"></translation>
+		<translation>Setta lo stato su autoaway esteso dopo</translation>
     </message>
     <message>
         <source>Auto refresh status</source>
-        <translation type="unfinished"></translation>
+		<translation>Auto aggiorna stato</translation>
     </message>
     <message numerus="yes">
         <source>[every] %n second(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        </translation>
+		<translation><numerusform>%n secondo</numerusform><numerusform>%n secondi</numerusform></translation>
     </message>
     <message numerus="yes">
         <source>[after] %n second(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        </translation>
+		<translation><numerusform>%n secondo</numerusform><numerusform>%n secondi</numerusform></translation>
     </message>
     <message numerus="yes">
         <source>%n second(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        </translation>
+		<translation><numerusform>%n secondo</numerusform><numerusform>%n secondi</numerusform></translation>
     </message>
 </context>
 <context>
     <name>AutoAway</name>
     <message>
         <source>Don&apos;t refresh</source>
-        <translation type="unfinished"></translation>
+		<translation>Non aggiornare</translation>
     </message>
 </context>
 </TS>

@@ -5,37 +5,34 @@
     <name>@default</name>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished"></translation>
+		<translation>Kadu</translation>
     </message>
     <message>
         <source>Advanced</source>
-        <translation type="unfinished"></translation>
+		<translation>Avanzato</translation>
     </message>
     <message>
         <source>Kadu&apos;s Main Window Autohide</source>
-        <translation type="unfinished"></translation>
+		<translation>Principale Finestra di Autonascondi</translation>
     </message>
     <message>
         <source>Use autohide</source>
-        <translation type="unfinished"></translation>
+		<translation>Usa autonascondi</translation>
     </message>
     <message>
         <source>Autohide idle time</source>
-        <translation type="unfinished"></translation>
+		<translation>Tempo di inattività per l&apos;autonascondi</translation>
     </message>
     <message numerus="yes">
         <source>%n second(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        </translation>
+	<translation><numerusform>%n secondo</numerusform><numerusform>%n secondi</numerusform></translation>
     </message>
 </context>
 <context>
     <name>AutoHide</name>
     <message>
         <source>Don&apos;t hide</source>
-        <translation type="unfinished"></translation>
+		<translation>Non nascondere</translation>
     </message>
 </context>
 </TS>
