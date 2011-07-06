@@ -567,18 +567,23 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 				parseStack.push(pe);
 			}
 			else
+			{
+				QList<ParserToken> tokens;
+
 				while (!parseStack.empty())
 				{
 					ParserToken pe2 = parseStack.pop();
 
 					if (pe2.Type == ParserToken::PT_CHECK_FILE_EXISTS || pe2.Type == ParserToken::PT_CHECK_FILE_NOT_EXISTS)
 					{
-						int spacePos = pe.Content.indexOf(' ', 0);
+						QString content = joinParserTokens(tokens);
+
+						int spacePos = content.indexOf(' ', 0);
 						QString filePath;
 						if (spacePos == -1)
-							filePath = pe.Content;
+							filePath = content;
 						else
-							filePath = pe.Content.left(spacePos);
+							filePath = content.left(spacePos);
 
 						if (filePath.startsWith(QLatin1String("file://")))
 							filePath = filePath.mid(7 /*strlen("file://")*/);
@@ -586,7 +591,7 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 						bool checkFileExists = (pe2.Type == ParserToken::PT_CHECK_FILE_EXISTS);
 						if (QFile::exists(filePath) == checkFileExists)
 						{
-							pe.Content = pe.Content.mid(spacePos + 1);
+							pe.Content = content.mid(spacePos + 1);
 							pe.Type = ParserToken::PT_STRING;
 
 							parseStack.push(pe);
@@ -597,12 +602,14 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 
 					if (pe2.Type == ParserToken::PT_VARIABLE)
 					{
+						QString content = joinParserTokens(tokens);
+
 						pe.Type = ParserToken::PT_STRING;
 
-						if (GlobalVariables.contains(pe.Content))
+						if (GlobalVariables.contains(content))
 						{
 							kdebugm(KDEBUG_INFO, "name: %s, value: %s\n", qPrintable(pe.Content), qPrintable(GlobalVariables[pe.Content]));
-							pe.Content = GlobalVariables[pe.Content];
+							pe.Content = GlobalVariables[content];
 						}
 						else
 						{
@@ -617,14 +624,16 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 
 					if (pe2.Type == ParserToken::PT_ICONPATH)
 					{
+						QString content = joinParserTokens(tokens);
+
 						pe.Type = ParserToken::PT_STRING;
-						if (pe.Content.contains(':'))
+						if (content.contains(':'))
 						{
-							QStringList parts = pe.Content.split(':');
+							QStringList parts = content.split(':');
 							pe.Content = KaduIcon(parts.at(0), parts.at(1)).webKitPath();
 						}
 						else
-							pe.Content = KaduIcon(pe.Content).webKitPath();
+							pe.Content = KaduIcon(content).webKitPath();
 
 						parseStack.push(pe);
 
@@ -633,12 +642,14 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 
 					if (pe2.Type == ParserToken::PT_EXTERNAL_VARIABLE)
 					{
+						QString content = joinParserTokens(tokens);
+
 						pe.Type = ParserToken::PT_STRING;
 
-						if (RegisteredBuddyOrContactTags.contains(pe.Content))
-							pe.Content = RegisteredBuddyOrContactTags[pe.Content](buddyOrContact);
-						else if (object && RegisteredObjectTags.contains(pe.Content))
-							pe.Content = RegisteredObjectTags[pe.Content](object);
+						if (RegisteredBuddyOrContactTags.contains(content))
+							pe.Content = RegisteredBuddyOrContactTags[content](buddyOrContact);
+						else if (object && RegisteredObjectTags.contains(content))
+							pe.Content = RegisteredObjectTags[content](object);
 						else
 						{
 							kdebugm(KDEBUG_WARNING, "tag %s not registered\n", qPrintable(pe.Content));
@@ -653,7 +664,7 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 					if (pe2.Type == ParserToken::PT_EXECUTE2)
 					{
 						pe.Type = ParserToken::PT_STRING;
-						pe.Content = executeCmd(pe.Content);
+						pe.Content = executeCmd(joinParserTokens(tokens));
 
 						parseStack.push(pe);
 
@@ -666,8 +677,10 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 					// do not execute any of the above actions on a multi-line string
 					if (pe2.Content.contains('\n'))
 					{
+						tokens.prepend(pe2);
+
 						pe.Type = ParserToken::PT_STRING;
-						pe.Content.prepend(pe2.Content);
+						pe.Content = joinParserTokens(tokens);
 						pe.Content.append('}');
 
 						parseStack.push(pe);
@@ -675,8 +688,9 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 						break;
 					}
 
-					pe.Content.prepend(pe2.Content);
+					tokens.prepend(pe2);
 				}
+			}
 		}
 		else if (c == '`')
 		{
