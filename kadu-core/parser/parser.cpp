@@ -173,46 +173,47 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 	Buddy buddy = buddyOrContact.buddy();
 	Contact contact = buddyOrContact.contact();
 	QList<ParserToken> parseStack;
-	int i, len = s.length();
-	for (int index = 0; index < len; index = i)
+	int idx = 0, len = s.length();
+	while (idx < len)
 	{
 		ParserToken pe1, pe;
 
-		for (i = index; i < len; ++i)
-			if (searchChars.value(s.at(i), false))
+		int prevIdx = idx;
+		for (; idx < len; ++idx)
+			if (searchChars.value(s.at(idx), false))
 				break;
 
-		if (i != index)
+		if (idx != prevIdx)
 		{
 			pe1.Type = ParserToken::PT_STRING;
-			pe1.Content = s.mid(index, i - index);
+			pe1.Content = s.mid(prevIdx, idx - prevIdx);
 
 			parseStack.append(pe1);
 
-			if (i == len)
+			if (idx == len)
 				break;
 		}
 
-		const QChar c(s.at(i));
+		const QChar c(s.at(idx));
 		if (c == '%')
 		{
-			++i;
-			if (i == len)
+			++idx;
+			if (idx == len)
 				break;
 
 			pe.Type = ParserToken::PT_STRING;
 
-			switch (s.at(i).toAscii())
+			switch (s.at(idx).toAscii())
 			{
 				// 'o' does not work so we should just ignore it
 				// see: http://kadu.net/mantis/view.php?id=2199
 				case 'o':
 				// 't' was removed in commit 48d3cd65 during 0.9 (aka 0.6.6) release cycle
 				case 't':
-					++i;
+					++idx;
 					break;
 				case 's':
-					++i;
+					++idx;
 
 					if (buddy && buddy.isBlocked())
 						pe.Content = qApp->translate("@default", "Blocked");
@@ -230,7 +231,7 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 
 					break;
 				case 'q':
-					++i;
+					++idx;
 
 					if (contact)
 					{
@@ -241,7 +242,7 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 
 					break;
 				case 'd':
-					++i;
+					++idx;
 
 					if (contact)
 					{
@@ -259,28 +260,28 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 
 					break;
 				case 'i':
-					++i;
+					++idx;
 
 					if (contact)
 						pe.Content = contact.address().toString();
 
 					break;
 				case 'v':
-					++i;
+					++idx;
 
 					if (contact)
 						pe.Content = contact.dnsName();
 
 					break;
 				case 'p':
-					++i;
+					++idx;
 
 					if (contact && contact.port())
 						pe.Content = QString::number(contact.port());
 
 					break;
 				case 'u':
-					++i;
+					++idx;
 
 					if (contact)
 						pe.Content = contact.id();
@@ -289,14 +290,14 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 
 					break;
 				case 'h':
-					++i;
+					++idx;
 
 					if (contact && !contact.currentStatus().isDisconnected())
 						pe.Content = contact.protocolVersion();
 
 					break;
 				case 'n':
-					++i;
+					++idx;
 
 					pe.Content = buddy.nickName();
 					if (escape)
@@ -304,7 +305,7 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 
 					break;
 				case 'a':
-					++i;
+					++idx;
 
 					pe.Content = buddy.display();
 					if (escape)
@@ -312,7 +313,7 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 
 					break;
 				case 'f':
-					++i;
+					++idx;
 
 					pe.Content = buddy.firstName();
 					if (escape)
@@ -320,7 +321,7 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 
 					break;
 				case 'r':
-					++i;
+					++idx;
 
 					pe.Content = buddy.lastName();
 					if (escape)
@@ -328,14 +329,14 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 
 					break;
 				case 'm':
-					++i;
+					++idx;
 
 					pe.Content = buddy.mobile();
 
 					break;
 				case 'g':
 				{
-					++i;
+					++idx;
 
 					QStringList groups;
 					foreach (const Group &group, buddy.groups())
@@ -346,27 +347,27 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 					break;
 				}
 				case 'e':
-					++i;
+					++idx;
 
 					pe.Content = buddy.email();
 
 					break;
 				case 'x':
-					++i;
+					++idx;
 
 					if (contact)
 						pe.Content = QString::number(contact.maximumImageSize());
 
 					break;
 				case 'z':
-					++i;
+					++idx;
 
 					if (buddy)
 						pe.Content = QString::number(buddy.gender());
 
 					break;
 				case '%':
-					++i;
+					++idx;
 					// fall through
 				default:
 					pe.Content = '%';
@@ -378,14 +379,14 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 		}
 		else if (c == '[')
 		{
-			++i;
-			if (i == len)
+			++idx;
+			if (idx == len)
 				break;
 
-			if (s.at(i) == '!')
+			if (s.at(idx) == '!')
 			{
 				pe.Type = ParserToken::PT_CHECK_ANY_NULL;
-				++i;
+				++idx;
 			}
 			else
 				pe.Type = ParserToken::PT_CHECK_ALL_NOT_NULL;
@@ -394,7 +395,7 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 		}
 		else if (c == ']')
 		{
-			++i;
+			++idx;
 
 			bool found = false;
 			if (!parseStack.isEmpty())
@@ -468,13 +469,13 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 		}
 		else if (c == '{')
 		{
-			++i;
-			if (i == len)
+			++idx;
+			if (idx == len)
 				break;
 
-			if (s.at(i) == '!' || s.at(i) == '~')
+			if (s.at(idx) == '!' || s.at(idx) == '~')
 			{
-				++i;
+				++idx;
 				pe.Type = ParserToken::PT_CHECK_FILE_NOT_EXISTS;
 			}
 			else
@@ -484,7 +485,7 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 		}
 		else if (c == '}')
 		{
-			++i;
+			++idx;
 
 			bool found = false;
 			if (!parseStack.isEmpty())
@@ -640,9 +641,9 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 		}
 		else if (c == '`')
 		{
-			++i;
+			++idx;
 
-			if (i == len || s.at(i) != '{')
+			if (idx == len || s.at(idx) != '{')
 			{
 				pe.Type = ParserToken::PT_EXECUTE;
 
@@ -650,7 +651,7 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 			}
 			else
 			{
-				++i;
+				++idx;
 
 				pe.Type = ParserToken::PT_EXECUTE2;
 
@@ -659,7 +660,7 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 		}
 		else if (c == '\'')
 		{
-			++i;
+			++idx;
 
 			pe.Content.clear();
 
@@ -717,22 +718,22 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 		}
 		else if (c == '\\')
 		{
-			++i;
-			if (i == len)
+			++idx;
+			if (idx == len)
 				break;
 
 			pe.Type = ParserToken::PT_STRING;
-			pe.Content = s.at(i);
+			pe.Content = s.at(idx);
 
-			++i;
+			++idx;
 
 			parseStack.append(pe);
 		}
 		else if (c == '$')
 		{
-			++i;
+			++idx;
 
-			if (i == len || s.at(i) != '{')
+			if (idx == len || s.at(idx) != '{')
 			{
 				pe.Type = ParserToken::PT_STRING;
 				pe.Content = '$';
@@ -741,7 +742,7 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 			}
 			else
 			{
-				++i;
+				++idx;
 
 				pe.Type = ParserToken::PT_VARIABLE;
 
@@ -750,9 +751,9 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 		}
 		else if (c == '@')
 		{
-			++i;
+			++idx;
 
-			if (i == len || s.at(i) != '{')
+			if (idx == len || s.at(idx) != '{')
 			{
 				pe.Type = ParserToken::PT_STRING;
 				pe.Content = '@';
@@ -761,7 +762,7 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 			}
 			else
 			{
-				++i;
+				++idx;
 
 				pe.Type = ParserToken::PT_ICONPATH;
 
@@ -770,9 +771,9 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 		}
 		else if (c == '#')
 		{
-			++i;
+			++idx;
 
-			if (i == len || s.at(i) != '{')
+			if (idx == len || s.at(idx) != '{')
 			{
 				pe.Type = ParserToken::PT_STRING;
 				pe.Content = '#';
@@ -781,7 +782,7 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 			}
 			else
 			{
-				++i;
+				++idx;
 
 				pe.Type = ParserToken::PT_EXTERNAL_VARIABLE;
 
@@ -790,7 +791,7 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 		}
 		else
 		{
-			kdebugm(KDEBUG_ERROR, "shit happens? %d %c (ascii %d, unicode 0x%hx)\n", i, c.toAscii(), (int)c.toAscii(), c.unicode());
+			kdebugm(KDEBUG_ERROR, "shit happens? %d %c (ascii %d, unicode 0x%hx)\n", idx, c.toAscii(), (int)c.toAscii(), c.unicode());
 		}
 	}
 
