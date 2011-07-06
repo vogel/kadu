@@ -233,7 +233,7 @@ ParserToken Parser::parsePercentSyntax(const QString &s, int &idx, const BuddyOr
 
 				if (config_file.readBoolEntry("Look", "ShowMultilineDesc"))
 				{
-					QString content = pe.content();
+					QString content = pe.decodedContent();
 					content.replace('\n', QLatin1String("<br/>"));
 					content.replace(QRegExp("\\s\\s"), QString(" &nbsp;"));
 					pe.setContent(content);
@@ -390,7 +390,7 @@ QString Parser::joinParserTokens(const ContainerClass &parseStack)
 		switch (elem.type())
 		{
 			case PT_STRING:
-				joined += elem.content();
+				joined += elem.decodedContent();
 				break;
 			case PT_EXTERNAL_VARIABLE:
 				joined += "#{";
@@ -543,9 +543,9 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 
 					// here we know for sure that pe2.type() == PT_STRING,
 					// as it is guaranteed by isActionParserTokenAtTop() call
-					anyNull = anyNull || pe2.content().isEmpty();
-					QString content = pe.content();
-					content.prepend(pe2.content());
+					anyNull = anyNull || pe2.decodedContent().isEmpty();
+					QString content = pe.decodedContent();
+					content.prepend(pe2.decodedContent());
 					pe.setContent(content);
 				}
 			}
@@ -629,12 +629,12 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 
 						if (GlobalVariables.contains(content))
 						{
-							kdebugm(KDEBUG_INFO, "name: %s, value: %s\n", qPrintable(pe.content()), qPrintable(GlobalVariables[pe.content()]));
+							kdebugm(KDEBUG_INFO, "name: %s, value: %s\n", qPrintable(pe.decodedContent()), qPrintable(GlobalVariables[pe.decodedContent()]));
 							pe.setContent(GlobalVariables[content]);
 						}
 						else
 						{
-							kdebugm(KDEBUG_WARNING, "variable %s undefined\n", qPrintable(pe.content()));
+							kdebugm(KDEBUG_WARNING, "variable %s undefined\n", qPrintable(pe.decodedContent()));
 							pe.setContent(QString());
 						}
 
@@ -673,7 +673,7 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 							pe.setContent(RegisteredObjectTags[content](object));
 						else
 						{
-							kdebugm(KDEBUG_WARNING, "tag %s not registered\n", qPrintable(pe.content()));
+							kdebugm(KDEBUG_WARNING, "tag %s not registered\n", qPrintable(pe.decodedContent()));
 							pe.setContent(QString());
 						}
 
@@ -696,7 +696,7 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 					// as it is guaranteed by isActionParserTokenAtTop() call
 
 					// do not execute any of the above actions on a multi-line string
-					if (pe2.content().contains('\n'))
+					if (pe2.decodedContent().contains('\n'))
 					{
 						tokens.prepend(pe2);
 
@@ -754,7 +754,7 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 					if (pe2.type() == PT_EXECUTE)
 					{
 						pe.setType(PT_STRING);
-						pe.setContent(executeCmd(pe.content()));
+						pe.setContent(executeCmd(pe.decodedContent()));
 
 						parseStack.push(pe);
 
@@ -763,8 +763,8 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 
 					// here we know for sure that pe2.type() == PT_STRING,
 					// as it is guaranteed by isActionParserTokenAtTop() call
-					QString content = pe.content();
-					content.prepend(pe2.content());
+					QString content = pe.decodedContent();
+					content.prepend(pe2.decodedContent());
 					pe.setContent(content);
 				}
 		}

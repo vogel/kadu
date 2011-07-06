@@ -1,6 +1,7 @@
 /*
  * %kadu copyright begin%
  * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2011 Bartosz Brachaczek (b.brachaczek@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -17,33 +18,39 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PARSER_TOKEN_H
-#define PARSER_TOKEN_H
+#include <QtCore/QByteArray>
 
-#include <QtCore/QString>
+#include "parser-token.h"
 
-#include "parser/parser-token-type.h"
-
-class ParserToken
+ParserToken::ParserToken() :
+		Type(PT_STRING), IsContentEncoded(false)
 {
-	ParserTokenType Type;
-	QString Content;
-	bool IsContentEncoded;
+}
 
-public:
-	ParserToken();
+void ParserToken::setType(ParserTokenType type)
+{
+	Type = type;
+}
 
-	ParserTokenType type() const { return Type; }
-	void setType(ParserTokenType type);
+QString ParserToken::decodedContent() const
+{
+	if (!IsContentEncoded)
+		return Content;
 
-	QString decodedContent() const;
-	const QString & rawContent() const { return Content; } 
-	void setContent(const QString &content);
+	return QString::fromUtf8(QByteArray::fromPercentEncoding(Content.toUtf8()));
+}
 
-	bool isEncoded() const { return IsContentEncoded; }
+void ParserToken::setContent(const QString &content)
+{
+	Content = content;
+	IsContentEncoded = false;
+}
 
-	void encodeContent(const QByteArray &exclude, const QByteArray &include);
+void ParserToken::encodeContent(const QByteArray &exclude, const QByteArray &include)
+{
+	if (IsContentEncoded || Content.isEmpty())
+		return;
 
-};
-
-#endif // PARSER_TOKEN_H
+	Content = QString::fromUtf8(Content.toUtf8().toPercentEncoding(exclude, include));
+	IsContentEncoded = true;
+}
