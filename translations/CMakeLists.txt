@@ -10,7 +10,7 @@ set (TRANSLATION_SOURCES
 set (LANGAUGE_FILES
 	en.language
 	pl.language
-	cz.language
+	cs.language
 )
 
 qt4_add_translation (TRANSLATION_FILES ${TRANSLATION_SOURCES})
