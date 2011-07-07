@@ -48,6 +48,10 @@
 
 #include "parser.h"
 
+// PT_CHECK_FILE_EXISTS and PT_CHECK_FILE_NOT_EXISTS checks need space to be encoded,
+// and encoding searchChars shouldn't hurt also
+#define ENCODE_INCLUDE_CHARS " %[{\\$@#}]`\'"
+
 QMap<QString, QString> Parser::GlobalVariables;
 QMap<QString, Parser::BuddyOrContactTagCallback> Parser::RegisteredBuddyOrContactTags;
 QMap<QString, Parser::ObjectTagCallback> Parser::RegisteredObjectTags;
@@ -476,7 +480,10 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 			if (idx == len)
 				break;
 
-			parseStack.push(parsePercentSyntax(s, idx, buddyOrContact, escape));
+			pe = parsePercentSyntax(s, idx, buddyOrContact, escape);
+			pe.encodeContent(QByteArray(), ENCODE_INCLUDE_CHARS);
+
+			parseStack.push(pe);
 		}
 		else if (c == '[')
 		{
@@ -597,14 +604,26 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 
 					if (pe2.type() == PT_CHECK_FILE_EXISTS || pe2.type() == PT_CHECK_FILE_NOT_EXISTS)
 					{
-						QString content = joinParserTokens(tokens);
+						int firstSpaceTokenIdx = 0, spacePos = -1;
+						foreach (const ParserToken &token, tokens)
+						{
+							// encoded cannot contain space
+							if (!token.isEncoded())
+							{
+								spacePos = token.rawContent().indexOf(' ');
+								if (spacePos != -1)
+									break;
+							}
 
-						int spacePos = content.indexOf(' ', 0);
+							++firstSpaceTokenIdx;
+						}
+
 						QString filePath;
 						if (spacePos == -1)
-							filePath = content;
+							filePath = joinParserTokens(tokens);
 						else
-							filePath = content.left(spacePos);
+							filePath = joinParserTokens(tokens.mid(0, firstSpaceTokenIdx)) +
+									tokens.at(firstSpaceTokenIdx).rawContent().left(spacePos);
 
 						if (filePath.startsWith(QLatin1String("file://")))
 							filePath = filePath.mid(7 /*strlen("file://")*/);
@@ -612,8 +631,17 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 						bool checkFileExists = (pe2.type() == PT_CHECK_FILE_EXISTS);
 						if (QFile::exists(filePath) == checkFileExists)
 						{
-							pe.setContent(content.mid(spacePos + 1));
 							pe.setType(PT_STRING);
+
+							if (spacePos == -1)
+								pe.setContent(filePath);
+							else
+							{
+								QString content = tokens.at(firstSpaceTokenIdx).rawContent().mid(spacePos + 1) +
+										joinParserTokens(tokens.mid(firstSpaceTokenIdx + 1));
+
+								pe.setContent(content);
+							}
 
 							parseStack.push(pe);
 						}
@@ -631,6 +659,7 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 						{
 							kdebugm(KDEBUG_INFO, "name: %s, value: %s\n", qPrintable(pe.decodedContent()), qPrintable(GlobalVariables[pe.decodedContent()]));
 							pe.setContent(GlobalVariables[content]);
+							pe.encodeContent(QByteArray(), ENCODE_INCLUDE_CHARS);
 						}
 						else
 						{
@@ -677,6 +706,7 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 							pe.setContent(QString());
 						}
 
+						pe.encodeContent(QByteArray(), ENCODE_INCLUDE_CHARS);
 						parseStack.push(pe);
 
 						break;

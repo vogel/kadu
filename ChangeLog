@@ -15,6 +15,7 @@
 * gadu: #2078 fixed: offline to buddy now works properly (Vogel)
 * jabber: #2187 fixed: invalid status of contacts logged on multiple times on different resources (WhE)
 * core: #2062 fixed: windows are now repositioned when resolution changes or one of the screens is detached (ultr)
+* parser: #2200 fixed: fixed parser bug that caused avatars in hints over contact list not to show in configurations with paths to Kadu user profile containing spaces, especially Windows XP (beevvy)
 
 +++ version 0.10.0-beta1
 * gadu: #2050 fixed: fixed sending images to GG7 and AQQ (beevvy)
