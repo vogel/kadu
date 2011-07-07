@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="it" version="2.0">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="it">
 <context>
     <name>@default</name>
     <message>
@@ -26,16 +28,16 @@
         <translation>Icona del nuovo messaggio sulla barra</translation>
     </message>
     <message>
-        <source>Blinking envelope</source>
-        <translation>Copertina lampeggiante</translation>
+        <source>Blinking Envelope</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Static envelope</source>
-        <translation>Copertina statica</translation>
+        <source>Static Envelope</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Animated envelope</source>
-        <translation>Copertina animata</translation>
+        <source>Animated Envelope</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

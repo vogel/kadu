@@ -76,10 +76,9 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Check this box if your sms application doesn&apos;t understand arguments: number &amp;message&amp;
+        <source>Check this box if your sms application does not understand arguments: number &amp;message&amp;
 Arguments should be separated with spaces. %k argument is converted to number, %m to message</source>
-        <translation type="unfinished">Segna questo campo se il tuo programma non capisce i parametri : numero_tel_cell &amp;il messaggio&amp;
-e scrivi la stringa corretta. I parametri devono essere separati da spazio. Il parametro %k è il numero di cellulare, %m è il messaggio</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

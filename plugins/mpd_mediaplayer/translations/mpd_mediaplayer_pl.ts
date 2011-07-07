@@ -40,4 +40,11 @@
         <translation>Ilość sekund, po których połączenie zostanie przerwane</translation>
     </message>
 </context>
+<context>
+    <name>MPDMediaPlayer</name>
+    <message>
+        <source>Unknown</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
 </TS>

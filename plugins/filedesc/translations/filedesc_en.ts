@@ -32,7 +32,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Allows you to set some custom description manualy, until file contents doesn&apos;t change</source>
+        <source>Allows you to set some custom description manualy, until file contents does not change</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

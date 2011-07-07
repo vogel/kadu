@@ -28,14 +28,6 @@
         <translation>Automatisch</translation>
     </message>
     <message>
-        <source>On top</source>
-        <translation>Oben</translation>
-    </message>
-    <message>
-        <source>On bottom</source>
-        <translation>Unten</translation>
-    </message>
-    <message>
         <source>Own hints position</source>
         <translation>Auf dieser Stelle</translation>
     </message>
@@ -46,22 +38,6 @@
     <message>
         <source>Y</source>
         <translation>Y</translation>
-    </message>
-    <message>
-        <source>Top left</source>
-        <translation>Oben links</translation>
-    </message>
-    <message>
-        <source>Top right</source>
-        <translation>Oben rechts</translation>
-    </message>
-    <message>
-        <source>Bottom left</source>
-        <translation>Unten links</translation>
-    </message>
-    <message>
-        <source>Bottom right</source>
-        <translation>Unten rechts</translation>
     </message>
     <message>
         <source>Minimum width</source>
@@ -102,18 +78,6 @@
     <message>
         <source>Nothing</source>
         <translation>Nichst</translation>
-    </message>
-    <message>
-        <source>Open chat</source>
-        <translation>Öffne Chat-Fenster</translation>
-    </message>
-    <message>
-        <source>Delete hint</source>
-        <translation>Lösche Hinweis</translation>
-    </message>
-    <message>
-        <source>Delete all hints</source>
-        <translation>Lösche alle Hinweise</translation>
     </message>
     <message>
         <source>Middle button</source>
@@ -230,11 +194,47 @@
         <source>Hint&apos;s corner</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>On Top</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>On Bottom</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Top Left</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Top Right</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bottom Left</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bottom Right</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Hint</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete All Hints</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>HintManager</name>
     <message>
-        <source>&lt;table&gt;&lt;tr&gt;&lt;td align=&quot;left&quot; valign=&quot;top&quot;&gt;&lt;img style=&quot;max-width:64px; max-height:64px;&quot;src=&quot;{#{avatarPath} #{avatarPath}}{~#{avatarPath} @{kadu_icons/kadu:64x64}}&quot;&gt;&lt;/td&gt;&lt;td width=&quot;100%&quot;&gt;&lt;div&gt;[&lt;b&gt;%a&lt;/b&gt;][&amp;nbsp;&lt;b&gt;(%g)&lt;/b&gt;]&lt;/div&gt;[&lt;div&gt;&lt;img height=&quot;16&quot; width=&quot;16&quot; src=&quot;file:///#{statusIconPath}&quot;&gt;&amp;nbsp;&amp;nbsp;%u&lt;/div&gt;][&lt;div&gt;&lt;img height=&quot;16&quot; width=&quot;16&quot; src=&quot;file:///@{phone:16x16}&quot;&gt;&amp;nbsp;&amp;nbsp;%m&lt;/div&gt;][&lt;div&gt;&lt;img height=&quot;16&quot; width=&quot;16&quot; src=&quot;file:///@{mail-message-new:16x16}&quot;&gt;&amp;nbsp;&amp;nbsp;%e&lt;/div&gt;][&lt;div&gt;&lt;img height=&quot;16&quot; width=&quot;16&quot; src=&quot;file:///@{kadu_icons/blocking:16x16}&quot;&gt;&amp;nbsp;%oDoesn&apos;t have you on the list&lt;/div&gt;]&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;[&lt;hr&gt;&lt;b&gt;%s&lt;/b&gt;][&lt;b&gt;:&lt;/b&gt;&lt;br&gt;&lt;small&gt;%d&lt;/small&gt;]</source>
+        <source>&lt;table&gt;&lt;tr&gt;&lt;td align=&quot;left&quot; valign=&quot;top&quot;&gt;&lt;img style=&quot;max-width:64px; max-height:64px;&quot;src=&quot;{#{avatarPath} #{avatarPath}}{~#{avatarPath} @{kadu_icons/kadu:64x64}}&quot;&gt;&lt;/td&gt;&lt;td width=&quot;100%&quot;&gt;&lt;div&gt;[&lt;b&gt;%a&lt;/b&gt;][&amp;nbsp;&lt;b&gt;(%g)&lt;/b&gt;]&lt;/div&gt;[&lt;div&gt;&lt;img height=&quot;16&quot; width=&quot;16&quot; src=&quot;file:///#{statusIconPath}&quot;&gt;&amp;nbsp;&amp;nbsp;%u&lt;/div&gt;][&lt;div&gt;&lt;img height=&quot;16&quot; width=&quot;16&quot; src=&quot;file:///@{phone:16x16}&quot;&gt;&amp;nbsp;&amp;nbsp;%m&lt;/div&gt;][&lt;div&gt;&lt;img height=&quot;16&quot; width=&quot;16&quot; src=&quot;file:///@{mail-message-new:16x16}&quot;&gt;&amp;nbsp;&amp;nbsp;%e&lt;/div&gt;]&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;[&lt;hr&gt;&lt;b&gt;%s&lt;/b&gt;][&lt;b&gt;:&lt;/b&gt;&lt;br&gt;&lt;small&gt;%d&lt;/small&gt;]</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -260,11 +260,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Advenced hints&apos;s configuration</source>
+        <source>Hint over buddy list: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Hint over buddy list: </source>
+        <source>Advanced hints&apos; configuration</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

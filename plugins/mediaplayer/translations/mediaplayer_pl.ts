@@ -40,18 +40,6 @@
         <translation>Zamień</translation>
     </message>
     <message>
-        <source>Add in front</source>
-        <translation>Dodaj na początku</translation>
-    </message>
-    <message>
-        <source>Add at the back</source>
-        <translation>Dodaj na końcu</translation>
-    </message>
-    <message>
-        <source>Replace &apos;#{player}&apos; tag</source>
-        <translation>Zastąp frazę &apos;#{player}&apos;</translation>
-    </message>
-    <message>
         <source>MediaPlayer description format</source>
         <translation>Format opisu</translation>
     </message>
@@ -122,6 +110,18 @@ Win+ Enter/Backspace/Left/Right/Up/Down.</source>
         <translation>Po włączeniu tej opcji będziesz móc kontrolować
 swój odtwarzacz z okna rozmowy za pomocą następujących skrótów:
 Win+ Enter/Backspace/Left/Right/Up/Down.</translation>
+    </message>
+    <message>
+        <source>Add in the Front</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add at the Back</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Replace &apos;#{player}&apos; Tag</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

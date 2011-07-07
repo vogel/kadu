@@ -24,15 +24,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Always use tabs</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Tabs at the bottom of the window</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Auto tab change</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -77,6 +69,10 @@
     </message>
     <message>
         <source>Chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Always Use Tabs</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

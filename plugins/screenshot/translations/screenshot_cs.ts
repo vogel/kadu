@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="cs" version="2.0">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="cs">
 <context>
     <name>@default</name>
     <message>
@@ -77,6 +79,10 @@
         <source> kB</source>
         <translation> kB</translation>
     </message>
+    <message>
+        <source>ScreenShot images size limit</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ScreenShot</name>
@@ -100,7 +106,7 @@
         <translation>Nelze vytvořit adresář %1 pro ukládání snímků obrazovky!</translation>
     </message>
     <message>
-        <source>Can't write file %1.
+        <source>Can&apos;t write file %1.
 Access denied or other problem!</source>
         <translation>Nelze zapsat soubor %1.
 Přístup odepřen, nebo jde o jiné potíže!</translation>

@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="cs" version="2.0">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="cs">
 <context>
     <name>@default</name>
     <message>
@@ -35,18 +37,6 @@
     <message>
         <source>Replace</source>
         <translation>Nahradit</translation>
-    </message>
-    <message>
-        <source>Add in front</source>
-        <translation>Přidat na začátek</translation>
-    </message>
-    <message>
-        <source>Add at the back</source>
-        <translation>Přidat na konec</translation>
-    </message>
-    <message>
-        <source>Replace &apos;#{player}&apos; tag</source>
-        <translation>Nahradit značku &apos;#{player}&apos;</translation>
     </message>
     <message>
         <source>MediaPlayer description format</source>
@@ -105,12 +95,28 @@
         <translation>Jiná nastavení</translation>
     </message>
     <message>
-        <source>With this option enabled you'll be able to control
+        <source>Add in the Front</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add at the Back</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Replace &apos;#{player}&apos; Tag</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>With this option enabled you&apos;ll be able to control
 your MediaPlayer in chat window by keyboard shortcuts:
-Control+ Enter/Backspace/Left/Right/Up/Down.Win+ Enter/Backspace/Left/Right/Up/Down.</source>
-        <translation>Když bude tato volba povolena, budete schopen ovládat
-svůj MediaPlayer v okně s rozhovorem klávesovými zkratkami:
-Ctrl+ Enter/Backspace/Left/Right/Up/Down.Win+ Enter/Backspace/Left/Right/Up/Down.</translation>
+Control+ Enter/Backspace/Left/Right/Up/Down.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>With this option enabled you&apos;ll be able to control
+your MediaPlayer in chat window by keyboard shortcuts:
+Win+ Enter/Backspace/Left/Right/Up/Down.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -198,6 +204,10 @@ Ctrl+ Enter/Backspace/Left/Right/Up/Down.Win+ Enter/Backspace/Left/Right/Up/Down
     <message>
         <source>Pause</source>
         <translation>Pozastavit</translation>
+    </message>
+    <message>
+        <source>Player isn&apos;t running!</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

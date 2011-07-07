@@ -48,10 +48,6 @@
         <translation>Cytowanie historii w oknie rozmowy</translation>
     </message>
     <message>
-        <source>Don&apos;t quote messages older than</source>
-        <translation>Nie cytuj historii starszej niż</translation>
-    </message>
-    <message>
         <source>.</source>
         <translation>.</translation>
     </message>
@@ -66,6 +62,14 @@
     <message>
         <source>View history</source>
         <translation>Pokaż historię</translation>
+    </message>
+    <message>
+        <source>Do not quote messages older than</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Kadu</source>
+        <translation type="unfinished">Kadu</translation>
     </message>
 </context>
 <context>

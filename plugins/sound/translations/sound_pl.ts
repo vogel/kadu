@@ -32,14 +32,6 @@
         <translation>Ścieżki do zestawów</translation>
     </message>
     <message>
-        <source>Volume</source>
-        <translation>Głośność</translation>
-    </message>
-    <message>
-        <source>Enable volume control (player must support it)</source>
-        <translation>Włącz kontrolę głośności (musi być wspierana przez odtwarzacz)</translation>
-    </message>
-    <message>
         <source>Test sound playing</source>
         <translation>Test dźwięku</translation>
     </message>

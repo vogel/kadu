@@ -76,7 +76,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Check this box if your sms application doesn&apos;t understand arguments: number &amp;message&amp;
+        <source>Check this box if your sms application does not understand arguments: number &amp;message&amp;
 Arguments should be separated with spaces. %k argument is converted to number, %m to message</source>
         <translation type="unfinished"></translation>
     </message>

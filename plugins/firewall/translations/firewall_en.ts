@@ -56,10 +56,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Module will ask the question typed below, if someone wants talk to you and you don&apos;t have him on your list.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>When invisible silently drop chats with unknown persons</source>
         <translation type="unfinished"></translation>
     </message>
@@ -140,6 +136,10 @@
     </message>
     <message>
         <source>Message was firewalled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Module will ask the question typed below, if someone wants talk to you and you do not have him on your list.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -32,14 +32,6 @@
         <translation>Pfad zu den Klängen</translation>
     </message>
     <message>
-        <source>Volume</source>
-        <translation>Lautstärke</translation>
-    </message>
-    <message>
-        <source>Enable volume control (player must support it)</source>
-        <translation>Lautstärkekontolle benutzen (wenn das Abspiel-Programm dies unterstützt)</translation>
-    </message>
-    <message>
         <source>Test sound playing</source>
         <translation>Testklang wird abgespielt</translation>
     </message>

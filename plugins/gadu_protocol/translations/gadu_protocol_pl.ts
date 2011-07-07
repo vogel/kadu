@@ -256,20 +256,18 @@ Czy chcesz mimo to odebrać ten obrazek?</translation>
         <translation>Kadu</translation>
     </message>
     <message>
-        <source>Error data typed in required fields.
-
-Passwords typed in both fields (&quot;Password&quot; and &quot;Retype Password&quot;) should be the same!</source>
-        <translation>Błąd w wymaganych danych.
-
-Nowe hasło wprowadzone w polu &quot;Nowe hasło&quot; nie jest identyczne z zawartością pola &quot;Powtórz nowe hasło&quot;!</translation>
-    </message>
-    <message>
         <source>Changing password was successful.</source>
         <translation>Hasło zostało pomyślnie zmienione.</translation>
     </message>
     <message>
         <source>An error has occurred. Please try again later.</source>
         <translation>Wystąpił błąd. Proszę spróbować później.</translation>
+    </message>
+    <message>
+        <source>Error data typed in required fields.
+
+Passwords typed in both fields (&quot;Password&quot; and &quot;Retype Password&quot;) must be the same!</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -387,9 +385,8 @@ Nowe hasło wprowadzone w polu &quot;Nowe hasło&quot; nie jest identyczne z zaw
     <message>
         <source>Error data typed in required fields.
 
-Passwords typed in both fields (&quot;Password&quot; and &quot;Retype Password&quot;) should be the same!</source>
-        <translation>Błędne dane w  wymaganych polach.
-Hasła  muszą być identyczne w obu polach!</translation>
+Passwords typed in both fields (&quot;Password&quot; and &quot;Retype Password&quot;) must be the same!</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -554,6 +551,10 @@ Hasła  muszą być identyczne w obu polach!</translation>
         <source>External port</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>You have to compile libgadu with SSL support to be able to enable encrypted connection</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>GaduPersonalInfoWidget</name>
@@ -614,6 +615,17 @@ Hasła  muszą być identyczne w obu polach!</translation>
     <message>
         <source>Gadu-Gadu number:</source>
         <translation>Numer Gadu-Gadu:</translation>
+    </message>
+</context>
+<context>
+    <name>GaduProtocolPlugin</name>
+    <message>
+        <source>Gadu-Gadu Protocol</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cannot load Gadu-Gadu Protocol plugin. Please compile libgadu with zlib support.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

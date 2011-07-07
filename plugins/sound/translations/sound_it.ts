@@ -32,14 +32,6 @@
         <translation>Percorso per suoni</translation>
     </message>
     <message>
-        <source>Volume</source>
-        <translation>Volume</translation>
-    </message>
-    <message>
-        <source>Enable volume control (player must support it)</source>
-        <translation>Attiva regolazione volume (se riproduttore lo supporta)</translation>
-    </message>
-    <message>
         <source>Test sound playing</source>
         <translation type="unfinished"></translation>
     </message>

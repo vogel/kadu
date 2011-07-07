@@ -32,14 +32,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Volume</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Enable volume control (player must support it)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Test sound playing</source>
         <translation type="unfinished"></translation>
     </message>

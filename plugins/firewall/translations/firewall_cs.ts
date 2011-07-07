@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="cs" version="2.0">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="cs">
 <context>
     <name>@default</name>
     <message>
@@ -52,10 +54,6 @@
     <message>
         <source>Protect against chats with unknown persons</source>
         <translation>Ochrana před hovory s neznámými účastníky</translation>
-    </message>
-    <message>
-        <source>Module will ask the question typed below, if someone wants talk to you and you don&apos;t have him on your list.</source>
-        <translation>Tento modul položí otázku napsanou níže, když s vámi bude chtít někdo mluvit, ale není zapsán ve vašem seznamu spojení.</translation>
     </message>
     <message>
         <source>When invisible silently drop chats with unknown persons</source>
@@ -131,7 +129,19 @@
     </message>
     <message numerus="yes">
         <source>%n millisecond(s)</source>
-        <translation><numerusform>1 milisekunda</numerusform><numerusform>%n milisekundy</numerusform><numerusform>%n milisekund</numerusform></translation>
+        <translation>
+            <numerusform>1 milisekunda</numerusform>
+            <numerusform>%n milisekundy</numerusform>
+            <numerusform>%n milisekund</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Module will ask the question typed below, if someone wants talk to you and you do not have him on your list.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Message was firewalled</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

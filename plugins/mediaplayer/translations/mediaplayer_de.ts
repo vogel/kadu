@@ -39,18 +39,6 @@
         <translation>Ersetzen</translation>
     </message>
     <message>
-        <source>Add in front</source>
-        <translation>Hinzufügen am Anfang</translation>
-    </message>
-    <message>
-        <source>Add at the back</source>
-        <translation>Hinzufügen am Ende</translation>
-    </message>
-    <message>
-        <source>Replace &apos;#{player}&apos; tag</source>
-        <translation>Ersetze &apos;#{player}&apos;-Tag</translation>
-    </message>
-    <message>
         <source>MediaPlayer description format</source>
         <translation>Format der MediaPlayer-Beschreibung</translation>
     </message>
@@ -116,6 +104,18 @@ Control+ Enter/Backspace/Left/Right/Up/Down.</source>
         <source>With this option enabled you&apos;ll be able to control
 your MediaPlayer in chat window by keyboard shortcuts:
 Win+ Enter/Backspace/Left/Right/Up/Down.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add in the Front</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add at the Back</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Replace &apos;#{player}&apos; Tag</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

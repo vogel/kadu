@@ -5,39 +5,42 @@
     <name>@default</name>
     <message>
         <source>Status</source>
-		<translation>Stato</translation>
+        <translation>Stato</translation>
     </message>
     <message>
         <source>Autostatus</source>
-		<translation>Autostatus</translation>
+        <translation>Autostatus</translation>
     </message>
     <message>
         <source>General</source>
-		<translation>Generale</translation>
+        <translation>Generale</translation>
     </message>
     <message>
         <source>Autostatus file</source>
-		<translation>Autostatus File</translation>
+        <translation>Autostatus File</translation>
     </message>
     <message>
         <source>Time</source>
-		<translation>Tempo</translation>
+        <translation>Tempo</translation>
     </message>
     <message numerus="yes">
         <source>%n second(s)</source>
-		<translation><numerusform>%n secondo</numerusform><numerusform>%n secondi</numerusform></translation>
+        <translation>
+            <numerusform>%n secondo</numerusform>
+            <numerusform>%n secondi</numerusform>
+        </translation>
     </message>
     <message>
         <source>Online</source>
-		<translation>In linea</translation>
+        <translation>In linea</translation>
     </message>
     <message>
         <source>Busy</source>
-		<translation>Occupato</translation>
+        <translation>Occupato</translation>
     </message>
     <message>
         <source>Invisible</source>
-		<translation>Invisibile</translation>
+        <translation>Invisibile</translation>
     </message>
 </context>
 <context>

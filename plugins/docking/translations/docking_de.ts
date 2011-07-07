@@ -28,16 +28,16 @@
         <translation>Dock-Symbol für neue Nachrichten</translation>
     </message>
     <message>
-        <source>Blinking envelope</source>
-        <translation>Blinkender Briefumschlag</translation>
+        <source>Blinking Envelope</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Static envelope</source>
-        <translation>Statischer Briefumschlag</translation>
+        <source>Static Envelope</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Animated envelope</source>
-        <translation>Animierter Briefumschlag</translation>
+        <source>Animated Envelope</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

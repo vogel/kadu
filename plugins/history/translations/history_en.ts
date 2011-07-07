@@ -48,10 +48,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Don&apos;t quote messages older than</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -65,6 +61,14 @@
     </message>
     <message>
         <source>View history</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do not quote messages older than</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Kadu</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -31,10 +31,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>No icon</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Information</source>
         <translation type="unfinished"></translation>
     </message>
@@ -52,6 +48,10 @@
     </message>
     <message>
         <source>Syntax</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No Icon</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

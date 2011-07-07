@@ -31,10 +31,6 @@
         <translation>Benachrichtigungssymbol</translation>
     </message>
     <message>
-        <source>No icon</source>
-        <translation>Kein Symbol</translation>
-    </message>
-    <message>
         <source>Information</source>
         <translation>Information</translation>
     </message>
@@ -53,6 +49,10 @@
     <message>
         <source>Syntax</source>
         <translation>Syntax</translation>
+    </message>
+    <message>
+        <source>No Icon</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

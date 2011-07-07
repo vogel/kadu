@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="ru" version="2.0">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="ru">
 <context>
     <name>@default</name>
     <message>
@@ -140,14 +142,6 @@ It&apos;s a high security risk!</source>
         <translation>Выбрать метод</translation>
     </message>
     <message>
-        <source>Move the window to an active desktop</source>
-        <translation>Переместить окно на активный рабочий стол</translation>
-    </message>
-    <message>
-        <source>Switch desktop to make the window visible</source>
-        <translation>Выбрать рабочий стол что-бы окно было видимым</translation>
-    </message>
-    <message>
         <source>Debugging</source>
         <translation>Отладка</translation>
     </message>
@@ -192,16 +186,8 @@ It&apos;s a high security risk!</source>
         <translation>Выберите статус, который будет установлен при запуске</translation>
     </message>
     <message>
-        <source>Last status</source>
-        <translation>Последний статус</translation>
-    </message>
-    <message>
         <source>Online</source>
         <translation>В сети</translation>
-    </message>
-    <message>
-        <source>Busy</source>
-        <translation>Занят</translation>
     </message>
     <message>
         <source>Invisible</source>
@@ -280,22 +266,6 @@ It&apos;s a high security risk!</source>
         <translation>Окно чата</translation>
     </message>
     <message>
-        <source>Text edit</source>
-        <translation>Текстовый редактор</translation>
-    </message>
-    <message>
-        <source>My messages</source>
-        <translation>Мои сообщения</translation>
-    </message>
-    <message>
-        <source>My font</source>
-        <translation>Мой шрифт</translation>
-    </message>
-    <message>
-        <source>My nick</source>
-        <translation>Мой ник</translation>
-    </message>
-    <message>
         <source>Background</source>
         <translation>Подложка</translation>
     </message>
@@ -318,10 +288,6 @@ It&apos;s a high security risk!</source>
     <message>
         <source>Fonts</source>
         <translation>Шрифты</translation>
-    </message>
-    <message>
-        <source>Font in panel</source>
-        <translation>Шрифт в панели</translation>
     </message>
     <message>
         <source>Flash chat title on new message</source>
@@ -386,18 +352,6 @@ It&apos;s a high security risk!</source>
     <message>
         <source>Choose the way emoticons are scaled in the selector</source>
         <translation>Выбрать способ масштабирования смайликов в окне селектора</translation>
-    </message>
-    <message>
-        <source>Scale all emoticons</source>
-        <translation>Масштабировать все смайлики</translation>
-    </message>
-    <message>
-        <source>Scale only static emoticons</source>
-        <translation>Масштабировать только статичные смайлики</translation>
-    </message>
-    <message>
-        <source>Don&apos;t scale emoticons</source>
-        <translation>Не масштабировать смайлики</translation>
     </message>
     <message>
         <source>Advanced...</source>
@@ -532,20 +486,8 @@ It&apos;s a high security risk!</source>
         <translation>Открывает окно чата при поступлении нового сообщения</translation>
     </message>
     <message>
-        <source>Open chat window only when I&apos;m online</source>
-        <translation>Открывать окно чата только если я в сети</translation>
-    </message>
-    <message>
         <source>Open chat window on new message only when online</source>
         <translation>Открывать окно чата при поступлении нового сообщения только если я в сети</translation>
-    </message>
-    <message>
-        <source>Wait for message delivery</source>
-        <translation>Ожидать доставку сообщения</translation>
-    </message>
-    <message>
-        <source>Wait for confirmation from server during send messages</source>
-        <translation>Ожидать подтверждения сервера о доставке сообщения</translation>
     </message>
     <message>
         <source>&apos;Enter&apos; in chat send message</source>
@@ -624,28 +566,6 @@ It&apos;s a high security risk!</source>
         <translation>по умолчанию</translation>
     </message>
     <message>
-        <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
-%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn't have us in userlist
-%h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size, %z - gender (0/1/2)
-</source>
-        <translation>Синтакс: %s - статус, %d - описание, %i - ip, %n - ник, %a - альтернативный ник, %f - имя
-%r - фамилия, %m - мобильный, %u - uin, %g - группа, %o - возвращает пробел если пользователь не в списке
-%h - gg версия, %v - revDNS, %p - порт, %e - email, %x - макс. разм. картинки, %z - пол (0/1/2)</translation>
-    </message>
-    <message>
-        <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
-%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn't have us in userlist
-%h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size, %z - gender (0/1/2),
-#{protocol} - protocol that triggered event,
-#{event} - name of event,
-</source>
-        <translation>Синтакс: %s - статус, %d - описание, %i - ip, %n - ник, %a - альтернативный ник, %f - имя
-%r - фамилия, %m - мобильный, %u - uin, %g - группа, %o - возвращает пробел если пользователь не в списке
-%h - gg версия, %v - revDNS, %p - порт, %e - email, %x - макс. разм. картинки, %z - пол (0/1/2),
-#{protocol} - протокол который вызвал событие,
-#{event} - имя события,</translation>
-    </message>
-    <message>
         <source>Properties</source>
         <translation>Свойства</translation>
     </message>
@@ -682,16 +602,8 @@ It&apos;s a high security risk!</source>
         <translation>Основное</translation>
     </message>
     <message>
-        <source>Event</source>
-        <translation>События</translation>
-    </message>
-    <message>
         <source>Options</source>
         <translation>Настройки</translation>
-    </message>
-    <message>
-        <source>New messages</source>
-        <translation>Новые сообщения</translation>
     </message>
     <message>
         <source>Silent Mode</source>
@@ -714,20 +626,12 @@ It&apos;s a high security risk!</source>
         <translation>Уведомлять о новых сообщениях только тогда, когда окно не активно</translation>
     </message>
     <message>
-        <source>Status change</source>
-        <translation>Смена статуса</translation>
-    </message>
-    <message>
         <source>Ignore status changes from available/busy to busy/available</source>
         <translation>Игнорировать смену статуса из Присутствует/Занят в Занят/Присутствует</translation>
     </message>
     <message>
         <source>Ignore changes right after connection to the server</source>
         <translation>Игнорировать изменения сразу после подключения к серверу</translation>
-    </message>
-    <message>
-        <source>Notify about all users</source>
-        <translation>Сообщать о всех пользователях</translation>
     </message>
     <message>
         <source>Multilogon</source>
@@ -740,16 +644,6 @@ It&apos;s a high security risk!</source>
     <message>
         <source>Multilogon session disconnected</source>
         <translation>Мультилогинная сессия отключена</translation>
-    </message>
-    <message>
-        <source>Ignore status changes from available / busy to busy / available</source>
-        <translation>Игнорировать изменение статуса от Присутствует/Занят к Присутствует/Занят</translation>
-    </message>
-    <message>
-        <source>This option will supersede tooltips with users' status
- changes upon establishing connection to the server</source>
-        <translation>Эта опция заменяет подсказки о статусах пользователей
-при установлении подключения к серверу</translation>
     </message>
     <message>
         <source>User changed status</source>
@@ -936,30 +830,6 @@ It&apos;s a high security risk!</source>
         <translation>Укажите никнейм Вашего аккаунта.</translation>
     </message>
     <message>
-        <source>Buddy List Mode</source>
-        <translation>Режим контакт-листа</translation>
-    </message>
-    <message>
-        <source>Hide messaging networks for each buddy (Simple Mode)</source>
-        <translation>Скрывать сетевой протокол для каждого контакта (Простой режим)</translation>
-    </message>
-    <message>
-        <source>If enabled, buddies networks will be hidden in buddy list and status buttons</source>
-        <translation>Если включено, то сетевой протокол контакта будет скрыт в контакт листе и кнопке статуса</translation>
-    </message>
-    <message>
-        <source>With this setting, each of your buddy&apos;s messaging networks will be removed from view on your buddy list.</source>
-        <translation>С этой установкой, информация о сетевом протоколе контакта будет убрана из списка контактов.</translation>
-    </message>
-    <message>
-        <source>Differentiate the messaging networks for each buddy (Advanced Mode)</source>
-        <translation>Отображение сетевого протокола каждого контакта (Расширенный режим)</translation>
-    </message>
-    <message>
-        <source>With this setting, your buddy list will display the associated messaging networks for each of your buddies (e.g. &apos;Anna uses Gadu-Gadu and Google Talk&apos;) .</source>
-        <translation>При этой установке, Ваш контакт лист будет сообщать какой сетевой протокол использует контакт (например: &apos;Анна использует Gadu-Gadu и Goole Talk&apos;).</translation>
-    </message>
-    <message>
         <source>Default Language</source>
         <translation>Язык по умолчанию</translation>
     </message>
@@ -1014,18 +884,6 @@ It&apos;s a high security risk!</source>
     <message>
         <source>Chat Window</source>
         <translation>Окно чата</translation>
-    </message>
-    <message>
-        <source>Buddy&apos;s messages</source>
-        <translation>Сообщения контактов</translation>
-    </message>
-    <message>
-        <source>Buddy&apos;s font</source>
-        <translation>Шрифт контактов</translation>
-    </message>
-    <message>
-        <source>Buddy&apos;s nick</source>
-        <translation>Ник контакта</translation>
     </message>
     <message>
         <source>Buddy List</source>
@@ -1112,10 +970,6 @@ It&apos;s a high security risk!</source>
         <translation>Выбрать стиль подложки контакт листа</translation>
     </message>
     <message>
-        <source>Tiled and centered</source>
-        <translation>Плиточные по центру</translation>
-    </message>
-    <message>
         <source>Displays information panel below the buddy list</source>
         <translation>Отображать информационную панель под списком контактов</translation>
     </message>
@@ -1160,7 +1014,7 @@ It&apos;s a high security risk!</source>
         <translation>Изменение статуса</translation>
     </message>
     <message>
-        <source>This option will supersede tooltips with buddies' status
+        <source>This option will supersede tooltips with buddies&apos; status
 changes upon establishing connection to the server</source>
         <translation>Эта опция заменяет подсказки статусов контактов
 при подключении к серверу</translation>
@@ -1176,32 +1030,6 @@ changes upon establishing connection to the server</source>
     <message>
         <source>Incoming file transfer</source>
         <translation>Входящая передача файла</translation>
-    </message>
-    <message>
-        <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
-%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn't have us in userlist
-%h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size, %z - gender (0/1/2)
-#{message} - message content,
-#{backgroundColor} - background color of message,
-#{fontColor} - font color of message,
-#{nickColor} - font color of nick,
-#{sentDate} - when message was sent,
-#{receivedDate} - when message was received,
-#{separator} - separator between messages,
-&lt;kadu:header&gt;text&lt;/kadu:header&gt; - text will not be displayed in 'Remove repeated headers' mode
-</source>
-        <translation>Синтакс: %s - статус, %d - описание, %i - ip, %n - ник, %a - альт. ник, %f - имя
-%r - фамилия, %m - мобильный, %u - uin, %g - группа, %o - возвращает пробел если пользователь не в списке контактов
-%h - gg версия, %v - revDNS, %p - порт, %e - email, %x - макс. размер изображения, %z - пол (0/1/2)
-#{message} - содержание сообщения,
-#{backgroundColor} - цвет подложки сообщения,
-#{fontColor} - цвет шрифта сообщения,
-#{nickColor} - цвет ника,
-#{sentDate} - когда сообщение отправлено,
-#{receivedDate} - когда сообщение доставлено,
-#{separator} - разделитель перед сообщением,
-&lt;kadu:header&gt;текст&lt;/kadu:header&gt; - этот не будет отображаться в режиме 'удалять повторяющиеся заголовки'
-</translation>
     </message>
     <message>
         <source>Style variant</source>
@@ -1225,19 +1053,211 @@ changes upon establishing connection to the server</source>
     </message>
     <message numerus="yes">
         <source>%n minute(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
     </message>
     <message numerus="yes">
         <source>%n second(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
-    </message>
-    <message>
-        <source>never remove recent chats</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
     </message>
     <message numerus="yes">
         <source>[for] %n minute(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Show a window with notification</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Contact state change notification position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Beginning of title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>End of title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Custom composing notification syntax</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move the Window to the Active Desktop</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Switch Desktop Making the Window Visible</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Per Account</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Per Identity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>For All Accounts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Last Status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Free for Chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do Not Disturb</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>My font color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Buddy&apos;s font color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>My nick color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Buddy&apos;s nick color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>My messages&apos; background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Buddy&apos;s messages&apos; background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use custom chat background color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Chat background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use custom text edit colors</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Text edit background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Text edit font</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Force custom font in chat window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Force custom font even for chat styles which define their own fonts (most Adium styles do that)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Information panel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Scale All Emoticons</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Scale Only Static Emoticons</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do Not Scale Emoticons</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show expanding control</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Tiled and Centered</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Send message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open chat window only when I am online</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Never Remove Recent Chats</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Contacts&apos; states</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show state notifications in chats</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show state notifications in windows&apos; titles</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Blocking</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Syntax:
+%s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name, %r - surname, %m - mobile, %u - uin, %g - group, %h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size, %z - gender (0/1/2),
+#{message} - message content, #{messageId} - message id, #{messageStatus} - message status value, #{backgroundColor} - background color of message, #{fontColor} - font color of message, #{nickColor} - font color of nick, #{sentDate} - when message was sent, #{receivedDate} - when message was received, #{separator} - separator between messages,
+&lt;kadu:header&gt;...&lt;/kadu:header&gt; - content will not be displayed in &apos;Remove repeated headers&apos; mode,
+&lt;kadu:top&gt;...&lt;/kadu:top&gt; - content will be included once at the begining of the document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
+%r - surname, %m - mobile, %u - uin, %g - group
+%h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size, %z - gender (0/1/2)
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
+%r - surname, %m - mobile, %u - uin, %g - group
+%h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size, %z - gender (0/1/2),
+#{protocol} - protocol that triggered event,
+#{event} - name of event,
+</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1282,6 +1302,10 @@ changes upon establishing connection to the server</source>
         <source>&amp;About</source>
         <translation>&amp;О программе</translation>
     </message>
+    <message>
+        <source>Qt %2 (compiled with Qt %3)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AccountAvatarWidget</name>
@@ -1301,14 +1325,6 @@ changes upon establishing connection to the server</source>
 <context>
     <name>AccountBuddyListWidget</name>
     <message>
-        <source>Import contacts</source>
-        <translation>Импорт контактов</translation>
-    </message>
-    <message>
-        <source>Export contacts</source>
-        <translation>Экспорт контактов</translation>
-    </message>
-    <message>
         <source>Restore from file</source>
         <translation>Восстановить из файла</translation>
     </message>
@@ -1319,28 +1335,6 @@ changes upon establishing connection to the server</source>
     <message>
         <source>Kadu</source>
         <translation>Kadu</translation>
-    </message>
-    <message>
-        <source>Cannot import user list from server in offline mode</source>
-        <translation>Не возможно импортировать список пользователей в режиме &apos;не в сети&apos;</translation>
-    </message>
-    <message>
-        <source>Cannot export user list to server in offline mode</source>
-        <translation>Невозможно экспортировать список пользователей в режиме &apos;не в сети&apos;</translation>
-    </message>
-    <message>
-        <source>Contacts list couldn&apos;t be downloaded. Please check that account %0 is connected.</source>
-        <translation>Контакт лист не может быть скачен. Пожалуйста убедитесь, что аккаунт %0 подключен.</translation>
-    </message>
-    <message>
-        <source>Your userlist has been successfully exported to server</source>
-        <translation>Ваш список контаков экспортирован на сервер</translation>
-    </message>
-    <message>
-        <source>The application encountered an internal error
-The export was unsuccessful</source>
-        <translation>Произошла внутренняя ошибка приложения
-Процедура экспорта была не удачной</translation>
     </message>
     <message>
         <source>Select file</source>
@@ -1440,10 +1434,6 @@ The export was unsuccessful</source>
         <translation>Вы должн быть подключены для добавления контакта в этот аккаунт</translation>
     </message>
     <message>
-        <source>Entered username is invalid</source>
-        <translation>Введенное имя пользователя не верно</translation>
-    </message>
-    <message>
         <source>This contact is already available as &lt;i&gt;%1&lt;/i&gt;</source>
         <translation>Контакт уже имеется как &lt;i&gt;%1&lt;/i&gt;</translation>
     </message>
@@ -1470,6 +1460,22 @@ The export was unsuccessful</source>
     <message>
         <source>Merging e-mail with buddy is not supported. Please use edit buddy window.</source>
         <translation>Слияние e-mail адреса с контактом не поддерживается. Пожалуйста воспользуйтесь окном редактирования контакта.</translation>
+    </message>
+    <message>
+        <source>Entered user identification is invalid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No user identification entered</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No mobile number entered</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No e-mail entered</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1663,11 +1669,15 @@ The export was unsuccessful</source>
     </message>
     <message>
         <source>Prefer the most available contact</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&lt;p&gt;When enabled and one of this buddy&apos;s contacts has higher status (i.e., more available) than the others, that contact will be considered preferred regardless of its priority&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Protocol used by this buddy&apos;s contact does not allow changing buddy&apos;s name client-side</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1722,36 +1732,32 @@ The export was unsuccessful</source>
         <translation>Файл не читаем</translation>
     </message>
     <message>
-        <source>This file is too big (%1 &gt;= %2)</source>
-        <translation>Файл слишком большой (%1 &gt;= %2)</translation>
+        <source>This image has %1 KiB and exceeds the protocol limit of %2 KiB.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>This file is too big for %1.
-Do you really want to send this image?</source>
-        <translation>Этот файл слишком большой для %1.
-Вы действительно желаете отправить это изображение?</translation>
+        <source>This image has %1 KiB and exceeds recommended maximum size of %2 KiB.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>%1 is disconnected and cannot receive images.
-Do you really want to send this image?</source>
-        <translation>%1 отключен и не может принимать изображения.
-Вы действительно желаете отправить это изображение?</translation>
+        <source>Do you really want to send this image?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>This file is too big for %1 of %2 contacts.
-</source>
-        <translation>Этот файл слишком большой для %1 от %2 контактов.</translation>
+        <source>This image has %1 KiB and may be too big for %2.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>%1 of %2 contacts are disconnected and cannot receive images.
-</source>
-        <translation>%1 из %2 контактов отключился от сети и не может получить изображение.</translation>
+        <source>%1 appears to be offline and may not receive images.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Do you really want to send this image?
-Some of them probably will not get it.</source>
-        <translation>Вы действительно желаете отправить это изображение?
-Вероятно, некоторые не получат его.</translation>
+        <source>This image has %1 KiB and may be too big for %2 of %3 contacts in this conference.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 of %2 contacts appear to be offline and may not receive images.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1853,16 +1859,16 @@ from now on. Are you sure you want to leave this conference?</source>
         <translation>Аккаунт:</translation>
     </message>
     <message>
-        <source>%1 (Composing...)</source>
-        <translation>%1 (набирает...)</translation>
-    </message>
-    <message>
-        <source>%1 (Inactive)</source>
-        <translation>%1 (отключен)</translation>
-    </message>
-    <message>
         <source>%1 ended the conversation</source>
         <translation>%1 прекратил разговор</translation>
+    </message>
+    <message>
+        <source>(Composing...)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>(Inactive)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1994,12 +2000,8 @@ from now on. Are you sure you want to leave this conference?</source>
         <translation>Ошибка подключения</translation>
     </message>
     <message>
-        <source>&lt;b&gt;Connection error:&lt;/b&gt; %1</source>
-        <translation>&lt;b&gt;Ошибка подключения:&lt;/b&gt; %1</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Connection error:&lt;/b&gt; (%1) %2</source>
-        <translation>&lt;b&gt;Ошибка подключения:&lt;/b&gt; (%1) %2</translation>
+        <source>Connection error on account: %1 (%2)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2009,10 +2011,24 @@ from now on. Are you sure you want to leave this conference?</source>
         <translation>Kadu</translation>
     </message>
     <message>
-        <source>Following contacts from your list were not found on server: &lt;b&gt;%0&lt;/b&gt;.
-Do you want to remove them from contacts list?</source>
-        <translation>Следующие контакты из контакт листа не были найдены на сервере: &lt;b&gt;%0&lt;/b&gt;.
-Вы действительно хотите удалить их из контакт листа?</translation>
+        <source>The following contacts present on server were not found on your local contact list:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The following contacts present on server were found on your local contact list under different buddy display names:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Moreover, the following contacts present on server were found on your local contact list under different buddy display names:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you want to apply the above changes to your contact list?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The following contacts from your list were not found in file:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;Do you want to remove them from contact list?</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2128,14 +2144,6 @@ This is probably a next part of &lt;b&gt;%5&lt;/b&gt;
 <context>
     <name>FileTransferWidget</name>
     <message>
-        <source>Pause</source>
-        <translation>Пауза</translation>
-    </message>
-    <message>
-        <source>Continue</source>
-        <translation>Продолжить</translation>
-    </message>
-    <message>
         <source>Remove</source>
         <translation>Удалить</translation>
     </message>
@@ -2182,6 +2190,14 @@ This is probably a next part of &lt;b&gt;%5&lt;/b&gt;
     <message>
         <source>&lt;b&gt;Rejected&lt;/b&gt;</source>
         <translation>&lt;b&gt;Отказано&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>Stop</source>
+        <translation type="unfinished">Остановить</translation>
+    </message>
+    <message>
+        <source>Start</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2378,6 +2394,29 @@ This is probably a next part of &lt;b&gt;%5&lt;/b&gt;
     <message>
         <source> - Select group - </source>
         <translation> - Выбрать группу - </translation>
+    </message>
+</context>
+<context>
+    <name>HtmlMessagesRenderer</name>
+    <message>
+        <source>%1 is active</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 is composing...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 is gone</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 is inactive</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 has paused composing</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2624,6 +2663,10 @@ This is probably a next part of &lt;b&gt;%5&lt;/b&gt;
 [Фамилия: %r]
 [Мобильный: %m]</translation>
     </message>
+    <message>
+        <source>Show Myself Buddy</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>LineEditWithClearButton</name>
@@ -2643,8 +2686,8 @@ This is probably a next part of &lt;b&gt;%5&lt;/b&gt;
         <translation>Kadu конфигурация</translation>
     </message>
     <message>
-        <source>Advenced chat&apos;s look configuration</source>
-        <translation>Дополнительные настройки внешнего вида чатов</translation>
+        <source>Advanced chat&apos;s look configuration</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2685,45 +2728,6 @@ This is probably a next part of &lt;b&gt;%5&lt;/b&gt;
     </message>
 </context>
 <context>
-    <name>ModulesManager</name>
-    <message>
-        <source>Required module %1 was not found</source>
-        <translation>Необходимый модуль %1 не найден</translation>
-    </message>
-    <message>
-        <source>Module %1 is already active</source>
-        <translation>Модуль %1 уже активный</translation>
-    </message>
-    <message>
-        <source>Cannot load %1 module library.:
-%2</source>
-        <translation>Нет возможности запустить для модуля %1 библиотеку:
-%2</translation>
-    </message>
-    <message>
-        <source>Module %1 conflicts with: %2</source>
-        <translation>Модуль %1 конфликтует с: %2</translation>
-    </message>
-    <message>
-        <source>Cannot find required functions in module %1.
-Maybe it&apos;s not Kadu-compatible Module.</source>
-        <translation>Нет возможности найти необходимые функции в модуле %1.
-Возможно этот модуль не совместим с Kadu.</translation>
-    </message>
-    <message>
-        <source>Module initialization routine for %1 failed.</source>
-        <translation>Обычная инициализация модуля %1 не удалась.</translation>
-    </message>
-    <message>
-        <source>Kadu</source>
-        <translation>Kadu</translation>
-    </message>
-    <message>
-        <source>Module %1 cannot be deactivated because it is being used by the following modules:%2</source>
-        <translation>Модуль %1 не может быть деактивирован потому, что он используется следующими модулями: %2</translation>
-    </message>
-</context>
-<context>
     <name>ModulesWindow</name>
     <message>
         <source>Manage Modules</source>
@@ -2734,10 +2738,6 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
         <translation>Информация</translation>
     </message>
     <message>
-        <source>Static</source>
-        <translation>Статический</translation>
-    </message>
-    <message>
         <source>Loaded</source>
         <translation>Загружен</translation>
     </message>
@@ -2746,20 +2746,12 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
         <translation>Имя модуля</translation>
     </message>
     <message>
-        <source>Module type</source>
-        <translation>Тип модуля</translation>
-    </message>
-    <message>
         <source>State</source>
         <translation>Состояние</translation>
     </message>
     <message>
         <source>&amp;Close</source>
         <translation>&amp;Закрыть</translation>
-    </message>
-    <message>
-        <source>Dynamic</source>
-        <translation>Динамический</translation>
     </message>
     <message>
         <source>Not loaded</source>
@@ -2772,10 +2764,6 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
     <message>
         <source>&lt;b&gt;Module:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Depends on:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Conflicts with:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Provides:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Author:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Version:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Description:&lt;/b&gt;</source>
         <translation>&lt;b&gt;Модуль:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Зависимости:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Конфликтует с:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Обеспечивает:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Автор:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Версия:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Описание:&lt;/b&gt;</translation>
-    </message>
-    <message>
-        <source>Hide base modules</source>
-        <translation>Скрыть базовые модули</translation>
     </message>
     <message>
         <source>&lt;b&gt;Module: &lt;/b&gt;%1&lt;br/&gt;&lt;b&gt;Depends on: &lt;/b&gt;%2&lt;br/&gt;&lt;b&gt;Conflicts with: &lt;/b&gt;%3&lt;br/&gt;&lt;b&gt;Provides: &lt;/b&gt;%4&lt;br/&gt;&lt;b&gt;Author: &lt;/b&gt;%5&lt;br/&gt;&lt;b&gt;Version: &lt;/b&gt;%6&lt;br/&gt;&lt;b&gt;Description: &lt;/b&gt;%7</source>
@@ -2990,6 +2978,46 @@ You can load (or unload) them by double-clicking on their names.</source>
     </message>
 </context>
 <context>
+    <name>Plugin</name>
+    <message>
+        <source>Kadu</source>
+        <translation type="unfinished">Kadu</translation>
+    </message>
+    <message>
+        <source>Cannot load %1 plugin library.:
+%2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cannot find required object in module %1.
+Maybe it&apos;s not Kadu-compatible plugin.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Module initialization routine for %1 failed.</source>
+        <translation type="unfinished">Обычная инициализация модуля %1 не удалась.</translation>
+    </message>
+</context>
+<context>
+    <name>PluginsManager</name>
+    <message>
+        <source>Kadu</source>
+        <translation type="unfinished">Kadu</translation>
+    </message>
+    <message>
+        <source>Required module %1 was not found</source>
+        <translation type="unfinished">Необходимый модуль %1 не найден</translation>
+    </message>
+    <message>
+        <source>Module %1 conflicts with: %2</source>
+        <translation type="unfinished">Модуль %1 конфликтует с: %2</translation>
+    </message>
+    <message>
+        <source>Module %1 cannot be deactivated because it is being used by the following modules:%2</source>
+        <translation type="unfinished">Модуль %1 не может быть деактивирован потому, что он используется следующими модулями: %2</translation>
+    </message>
+</context>
+<context>
     <name>ProgressWindow</name>
     <message>
         <source>Plase wait. New Gadu-Gadu account is being registered.</source>
@@ -3036,17 +3064,6 @@ You can load (or unload) them by double-clicking on their names.</source>
     <message>
         <source>Password</source>
         <translation>Пароль</translation>
-    </message>
-</context>
-<context>
-    <name>QApplication</name>
-    <message>
-        <source>Executable &apos;%1&apos; requires Qt %2, found Qt %3.</source>
-        <translation>Запускаемый &apos;%1&apos; требует Qt %2, найден Qt %3.</translation>
-    </message>
-    <message>
-        <source>Incompatible Qt Library Error</source>
-        <translation>Ошибка несовместимости библиотек Qt</translation>
     </message>
 </context>
 <context>
@@ -3358,16 +3375,16 @@ You can load (or unload) them by double-clicking on their names.</source>
         <translation>Перезаписать синтаксис %1 ?</translation>
     </message>
     <message>
-        <source>Preview</source>
-        <translation>Предпросмотр</translation>
-    </message>
-    <message>
         <source>Save as...</source>
         <translation>Сохранить как...</translation>
     </message>
     <message>
         <source>Kadu</source>
         <translation>Kadu</translation>
+    </message>
+    <message>
+        <source>Refresh Preview</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

@@ -56,10 +56,6 @@
         <translation>Schützt vor Chats mit unbekannten Teilnehmern</translation>
     </message>
     <message>
-        <source>Module will ask the question typed below, if someone wants talk to you and you don&apos;t have him on your list.</source>
-        <translation>Dieses Modul wird die untent eingegebene Frage stellen, wenn jemand Sie anspricht aber nicht in Ihrer Kontaktliste enthalten ist.</translation>
-    </message>
-    <message>
         <source>When invisible silently drop chats with unknown persons</source>
         <translation>Wenn unsichtbar, Nachrichten von Unbekannten verwerfen - ohne jegliche Rückmeldung</translation>
     </message>
@@ -140,6 +136,10 @@
     </message>
     <message>
         <source>Message was firewalled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Module will ask the question typed below, if someone wants talk to you and you do not have him on your list.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

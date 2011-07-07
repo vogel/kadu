@@ -95,6 +95,17 @@
     </message>
 </context>
 <context>
+    <name>EncryptionNgPlugin</name>
+    <message>
+        <source>Encryption</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The QCA OSSL plugin for libqca2 is not present!</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>EncryptionProviderManager</name>
     <message>
         <source>Buddy %1 is sending you his public key.
@@ -103,17 +114,6 @@ Do you want to save it?</source>
     </message>
     <message>
         <source>Encryption</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>QApplication</name>
-    <message>
-        <source>Encryption</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>The QCA OSSL plugin for libqca2 is not present!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

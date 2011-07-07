@@ -253,17 +253,17 @@ Do you want to accept this image anyway?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Error data typed in required fields.
-
-Passwords typed in both fields (&quot;Password&quot; and &quot;Retype Password&quot;) should be the same!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Changing password was successful.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>An error has occurred. Please try again later.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error data typed in required fields.
+
+Passwords typed in both fields (&quot;Password&quot; and &quot;Retype Password&quot;) must be the same!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -382,7 +382,7 @@ Passwords typed in both fields (&quot;Password&quot; and &quot;Retype Password&q
     <message>
         <source>Error data typed in required fields.
 
-Passwords typed in both fields (&quot;Password&quot; and &quot;Retype Password&quot;) should be the same!</source>
+Passwords typed in both fields (&quot;Password&quot; and &quot;Retype Password&quot;) must be the same!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -548,6 +548,10 @@ Passwords typed in both fields (&quot;Password&quot; and &quot;Retype Password&q
         <source>External port</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>You have to compile libgadu with SSL support to be able to enable encrypted connection</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>GaduPersonalInfoWidget</name>
@@ -607,6 +611,17 @@ Passwords typed in both fields (&quot;Password&quot; and &quot;Retype Password&q
     <name>GaduProtocolFactory</name>
     <message>
         <source>Gadu-Gadu number:</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>GaduProtocolPlugin</name>
+    <message>
+        <source>Gadu-Gadu Protocol</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cannot load Gadu-Gadu Protocol plugin. Please compile libgadu with zlib support.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

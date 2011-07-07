@@ -288,17 +288,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Invalid data entered in required fields.
-
-Password entered in both fields (&quot;Password&quot; and &quot;Retype password&quot;) should be the same!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Changing password was successful.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>An error has occurred. Please try again later.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Invalid data entered in required fields.
+
+Password entered in both fields (&quot;Password&quot; and &quot;Retype password&quot;) must be the same!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -422,7 +422,7 @@ Password entered in both fields (&quot;Password&quot; and &quot;Retype password&
     <message>
         <source>Invalid data entered in required fields.
 
-Password entered in both fields (&quot;New password&quot; and &quot;Retype password&quot;) should be the same!</source>
+Password entered in both fields (&quot;New password&quot; and &quot;Retype password&quot;) must be the same!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

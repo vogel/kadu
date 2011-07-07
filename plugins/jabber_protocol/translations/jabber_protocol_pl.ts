@@ -289,20 +289,18 @@
         <translation>Kadu</translation>
     </message>
     <message>
-        <source>Invalid data entered in required fields.
-
-Password entered in both fields (&quot;Password&quot; and &quot;Retype password&quot;) should be the same!</source>
-        <translation>Błąd w wymaganych danych.
-
-Nowe hasło wprowadzone w polu &quot;Nowe hasło&quot; nie jest identyczne z zawartością pola &quot;Powtórz nowe hasło&quot;!</translation>
-    </message>
-    <message>
         <source>Changing password was successful.</source>
         <translation>Hasło zostało pomyślnie zmienione.</translation>
     </message>
     <message>
         <source>An error has occurred. Please try again later.</source>
         <translation>Wystąpił błąd. Spróbuj ponownie później.</translation>
+    </message>
+    <message>
+        <source>Invalid data entered in required fields.
+
+Password entered in both fields (&quot;Password&quot; and &quot;Retype password&quot;) must be the same!</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -425,10 +423,8 @@ Nowe hasło wprowadzone w polu &quot;Nowe hasło&quot; nie jest identyczne z zaw
     <message>
         <source>Invalid data entered in required fields.
 
-Password entered in both fields (&quot;New password&quot; and &quot;Retype password&quot;) should be the same!</source>
-        <translation>Błąd w wymaganych danych.
-
-Nowe hasło wprowadzone w polu &quot;Nowe hasło&quot; nie jest identyczne z zawartością pola &quot;Powtórz nowe hasło&quot;!</translation>
+Password entered in both fields (&quot;New password&quot; and &quot;Retype password&quot;) must be the same!</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

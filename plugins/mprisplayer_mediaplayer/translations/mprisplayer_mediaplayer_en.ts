@@ -2,56 +2,56 @@
 <!DOCTYPE TS>
 <TS version="2.0" language="en">
 <context>
-	<name>@default</name>
-	<message>
-		<source>MediaPlayer</source>
-		<translation type="unfinished"></translation>
-	</message>
-	<message>
-		<source>General</source>
-		<translation type="unfinished"></translation>
-	</message>
-	<message>
-		<source>MPRIS Player</source>
-		<translation type="unfinished"></translation>
-	</message>
+    <name>@default</name>
+    <message>
+        <source>MediaPlayer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>General</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>MPRIS Player</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
-	<name>MPRISPlayerConfigurationUiHandler</name>
-	<message>
-		<source>Select Player:</source>
-		<translation type="unfinished"></translation>
-	</message>
-	<message>
-		<source>Add Player</source>
-		<translation type="unfinished"></translation>
-	</message>
-	<message>
-		<source>Edit Player</source>
-		<translation type="unfinished"></translation>
-	</message>
-	<message>
-		<source>Delete Player</source>
-		<translation type="unfinished"></translation>
-	</message>
+    <name>MPRISPlayerConfigurationUiHandler</name>
+    <message>
+        <source>Select Player:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add Player</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit Player</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Player</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
-	<name>MPRISPlayerDialog</name>
-	<message>
-		<source>Add Player</source>
-		<translation type="unfinished"></translation>
-	</message>
-	<message>
-		<source>Edit Player</source>
-		<translation type="unfinished"></translation>
-	</message>
-	<message>
-		<source>Player:</source>
-		<translation type="unfinished"></translation>
-	</message>
-	<message>
-		<source>Service:</source>
-		<translation type="unfinished"></translation>
-	</message>
+    <name>MPRISPlayerDialog</name>
+    <message>
+        <source>Add Player</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit Player</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Player:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Service:</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>

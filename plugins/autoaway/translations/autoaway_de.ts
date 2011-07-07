@@ -44,20 +44,8 @@
         <translation>Beschreibung</translation>
     </message>
     <message>
-        <source>Don&apos;t change</source>
-        <translation>Nicht ändern</translation>
-    </message>
-    <message>
         <source>Replace</source>
         <translation>Ersetzen</translation>
-    </message>
-    <message>
-        <source>Add in front</source>
-        <translation>Vorne anfügen</translation>
-    </message>
-    <message>
-        <source>Add at the back</source>
-        <translation>Hinten anfügen</translation>
     </message>
     <message>
         <source>New description</source>
@@ -99,6 +87,18 @@
             <numerusform></numerusform>
             <numerusform></numerusform>
         </translation>
+    </message>
+    <message>
+        <source>Do Not Change</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add in the Front</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add at the Back</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

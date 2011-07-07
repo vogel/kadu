@@ -44,19 +44,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Don&apos;t change</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Replace</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Add in front</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Add at the back</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -99,6 +87,18 @@
             <numerusform>%n second</numerusform>
             <numerusform>%n seconds</numerusform>
         </translation>
+    </message>
+    <message>
+        <source>Do Not Change</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add in the Front</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add at the Back</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

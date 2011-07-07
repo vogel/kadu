@@ -24,16 +24,8 @@
         <translation>Maximale Anzahl an Reitern</translation>
     </message>
     <message>
-        <source>Always use tabs</source>
-        <translation>Benutze immer Reiter</translation>
-    </message>
-    <message>
         <source>Tabs at the bottom of the window</source>
         <translation>Reiter unter</translation>
-    </message>
-    <message>
-        <source>Auto tab change</source>
-        <translation>Automatisch Reiter wechseln</translation>
     </message>
     <message>
         <source>Conferences in tabs</source>
@@ -78,6 +70,10 @@
     <message>
         <source>Chat</source>
         <translation>Chat</translation>
+    </message>
+    <message>
+        <source>Always Use Tabs</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

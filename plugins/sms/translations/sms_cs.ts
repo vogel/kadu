@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="cs" version="2.0">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="cs">
 <context>
     <name>@default</name>
     <message>
@@ -70,10 +72,13 @@
         <translation>Heslo</translation>
     </message>
     <message>
-        <source>Check this box if your sms application doesn't understand arguments: number &amp;message&amp;
+        <source>Check this box if your sms application does not understand arguments: number &amp;message&amp;
 Arguments should be separated with spaces. %k argument is converted to number, %m to message</source>
-        <translation>Toto okénko zaškrtněte v případě, že váš program na SMS nerozumí argumentům: číslo &amp;zpráva&amp; (number &amp;message&amp;)
-Argumenty by měly být odděleny mezerami. Argument %k je převeden na číslo, %m na zprávu</translation>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Orange Multibox</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

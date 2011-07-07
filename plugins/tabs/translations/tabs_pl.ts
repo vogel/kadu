@@ -24,16 +24,8 @@
         <translation>Minimalna liczba kart</translation>
     </message>
     <message>
-        <source>Always use tabs</source>
-        <translation>Zawsze używaj kart</translation>
-    </message>
-    <message>
         <source>Tabs at the bottom of the window</source>
         <translation>Karty na dole okna</translation>
-    </message>
-    <message>
-        <source>Auto tab change</source>
-        <translation>Automatyczna zmiana karty</translation>
     </message>
     <message>
         <source>Conferences in tabs</source>
@@ -77,6 +69,10 @@
     </message>
     <message>
         <source>Chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Always Use Tabs</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

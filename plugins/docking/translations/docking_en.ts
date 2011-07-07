@@ -28,15 +28,15 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Blinking envelope</source>
+        <source>Blinking Envelope</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Static envelope</source>
+        <source>Static Envelope</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Animated envelope</source>
+        <source>Animated Envelope</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

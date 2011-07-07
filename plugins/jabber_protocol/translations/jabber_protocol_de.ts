@@ -288,20 +288,18 @@
         <translation>Kadu</translation>
     </message>
     <message>
-        <source>Invalid data entered in required fields.
-
-Password entered in both fields (&quot;Password&quot; and &quot;Retype password&quot;) should be the same!</source>
-        <translation>Daten, die Sie im Formular angegeben haben sind ungültig.
-
-Das Passwort sollte in beiden Feldern (&quot;Neues Passwort&quot; und &quot;Passwort erneut eingeben&quot;) gleich sein!</translation>
-    </message>
-    <message>
         <source>Changing password was successful.</source>
         <translation>Passwort erfolgreich geändert.</translation>
     </message>
     <message>
         <source>An error has occurred. Please try again later.</source>
         <translation>Ein Fehler ist eingetreten. Versuchen Sie später noch einmal.</translation>
+    </message>
+    <message>
+        <source>Invalid data entered in required fields.
+
+Password entered in both fields (&quot;Password&quot; and &quot;Retype password&quot;) must be the same!</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -424,10 +422,8 @@ Das Passwort sollte in beiden Feldern (&quot;Neues Passwort&quot; und &quot;Pass
     <message>
         <source>Invalid data entered in required fields.
 
-Password entered in both fields (&quot;New password&quot; and &quot;Retype password&quot;) should be the same!</source>
-        <translation>Daten, die Sie im Formular angegeben haben sind ungültig.
-
-Das Passwort sollte in beiden Feldern (&quot;Neues Passwort&quot; und &quot;Passwort erneut eingeben&quot;) gleich sein!</translation>
+Password entered in both fields (&quot;New password&quot; and &quot;Retype password&quot;) must be the same!</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1196,7 +1192,7 @@ Genauer gesagt: %1</translation>
     </message>
     <message>
         <source>Internal server error</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Interner Serverfehler</translation>
     </message>
     <message>
         <source>The server could not process the stanza because of a misconfiguration or an otherwise-undefined internal server error.</source>
@@ -1236,7 +1232,7 @@ Genauer gesagt: %1</translation>
     </message>
     <message>
         <source>Not authorized</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Nicht authorisiert</translation>
     </message>
     <message>
         <source>The sender must provide proper credentials before being allowed to perform the action, or has provided improper credentials.</source>

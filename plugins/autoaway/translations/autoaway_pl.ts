@@ -44,20 +44,8 @@
         <translation>Opis</translation>
     </message>
     <message>
-        <source>Don&apos;t change</source>
-        <translation>Nie zmieniaj</translation>
-    </message>
-    <message>
         <source>Replace</source>
         <translation>Zastąp</translation>
-    </message>
-    <message>
-        <source>Add in front</source>
-        <translation>Dodaj na początku</translation>
-    </message>
-    <message>
-        <source>Add at the back</source>
-        <translation>Dodaj na końcu</translation>
     </message>
     <message>
         <source>New description</source>
@@ -102,6 +90,18 @@
             <numerusform>%n sekundy</numerusform>
             <numerusform>%n sekund</numerusform>
         </translation>
+    </message>
+    <message>
+        <source>Do Not Change</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add in the Front</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add at the Back</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

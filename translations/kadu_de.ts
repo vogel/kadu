@@ -142,14 +142,6 @@ Es ist ein Sicherheitsrisiko!</translation>
         <translation>Methode auswählen</translation>
     </message>
     <message>
-        <source>Move the window to an active desktop</source>
-        <translation>Fenster auf die aktive Oberfläche verschieben</translation>
-    </message>
-    <message>
-        <source>Switch desktop to make the window visible</source>
-        <translation>Oberfläche umschalten, um das Fenster anzuzeigen</translation>
-    </message>
-    <message>
         <source>Debugging</source>
         <translation>Debugging</translation>
     </message>
@@ -192,10 +184,6 @@ Es ist ein Sicherheitsrisiko!</translation>
     <message>
         <source>Choose status which will be set on startup</source>
         <translation>Wählen Sie den Zustand aus, der beim Start gesetzt werden soll</translation>
-    </message>
-    <message>
-        <source>Last status</source>
-        <translation>Wie zuvor</translation>
     </message>
     <message>
         <source>Online</source>
@@ -278,22 +266,6 @@ Es ist ein Sicherheitsrisiko!</translation>
         <translation>Chatfenster</translation>
     </message>
     <message>
-        <source>Text edit</source>
-        <translation>Text editieren</translation>
-    </message>
-    <message>
-        <source>My messages</source>
-        <translation>Meine Nachricht</translation>
-    </message>
-    <message>
-        <source>My font</source>
-        <translation>Meine Schriftart</translation>
-    </message>
-    <message>
-        <source>My nick</source>
-        <translation>Mein Nick-Name</translation>
-    </message>
-    <message>
         <source>Background</source>
         <translation>Hintergrund</translation>
     </message>
@@ -316,10 +288,6 @@ Es ist ein Sicherheitsrisiko!</translation>
     <message>
         <source>Fonts</source>
         <translation>Schriftarten</translation>
-    </message>
-    <message>
-        <source>Font in panel</source>
-        <translation>Schriftarten im Panel</translation>
     </message>
     <message>
         <source>Flash chat title on new message</source>
@@ -384,18 +352,6 @@ Es ist ein Sicherheitsrisiko!</translation>
     <message>
         <source>Choose the way emoticons are scaled in the selector</source>
         <translation>Wählen Sie die Art und Weise der Größenanpassung von Smilies in der Auswahl</translation>
-    </message>
-    <message>
-        <source>Scale all emoticons</source>
-        <translation>Alle Smilies skallieren</translation>
-    </message>
-    <message>
-        <source>Scale only static emoticons</source>
-        <translation>Nur statische Smilies skallieren</translation>
-    </message>
-    <message>
-        <source>Don&apos;t scale emoticons</source>
-        <translation>Keine Smilies skallieren</translation>
     </message>
     <message>
         <source>Advanced...</source>
@@ -530,20 +486,8 @@ Es ist ein Sicherheitsrisiko!</translation>
         <translation>Öffne das Chat-Fenster, wenn eine neue Nachricht eingetroffen ist</translation>
     </message>
     <message>
-        <source>Open chat window only when I&apos;m online</source>
-        <translation>Öffne Chat-Fenster nur, wenn ich &quot;erreichbar&quot; bin</translation>
-    </message>
-    <message>
         <source>Open chat window on new message only when online</source>
         <translation>Öffne Chat-Fenster für neue Nachrichten nur, wenn ich &quot;erreichbar&quot; bin</translation>
-    </message>
-    <message>
-        <source>Wait for message delivery</source>
-        <translation>Warte auf die Zustellung der Nachricht</translation>
-    </message>
-    <message>
-        <source>Wait for confirmation from server during send messages</source>
-        <translation>Warte auf Bestätigung des Servers während des Sendens</translation>
     </message>
     <message>
         <source>&apos;Enter&apos; in chat send message</source>
@@ -620,30 +564,6 @@ Es ist ein Sicherheitsrisiko!</translation>
     <message>
         <source>default</source>
         <translation>Voreinstellung</translation>
-    </message>
-    <message>
-        <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
-%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist
-%h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size, %z - gender (0/1/2)
-</source>
-        <translation>Syntax: %s - Zustand, %d - Beschreibung, %i - IP, %n - Nick-Name, %a - Alternativer-Nick, %f - Vorname
-%r - Nachname, %m - Handy, %u - Nr. GG, %g - Gruppe, %o  - leer, wenn Sie nicht in der Kontaktliste desjenigen sind
-%h - Version GG, %v - rev. DNS, %p - Port, %e - Email, %x - maximale Bildgröße, %z - gender (0/1/2)
-</translation>
-    </message>
-    <message>
-        <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
-%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist
-%h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size, %z - gender (0/1/2),
-#{protocol} - protocol that triggered event,
-#{event} - name of event,
-</source>
-        <translation>Syntax: %s - Zustand, %d - Beschreibung, %i - IP, %n - Nick-Name, %a - Alternativer-Nick, %f - Vorname
-%r - Nachname, %m - Handy, %u - Nr. GG, %g - Gruppe, %o  - leer, wenn Sie nicht in der Kontaktliste desjenigen sind
-%h - Version GG, %v - rev. DNS, %p - Port, %e - Email, %x - maximale Bildgröße, %z - gender (0/1/2),
-#{protocol} - Protokoll, welches dieses Ereignis ausgelöst hat,
-#{event} - Ereignisname,
-</translation>
     </message>
     <message>
         <source>Properties</source>
@@ -914,30 +834,6 @@ Es ist ein Sicherheitsrisiko!</translation>
         <translation>Geben Sie einen Nick für Ihr Konto.</translation>
     </message>
     <message>
-        <source>Buddy List Mode</source>
-        <translation>Kontaktlisten-Typ</translation>
-    </message>
-    <message>
-        <source>Hide messaging networks for each buddy (Simple Mode)</source>
-        <translation>Zeige keine Ntzwerk-Infos bei Kontakten</translation>
-    </message>
-    <message>
-        <source>If enabled, buddies networks will be hidden in buddy list and status buttons</source>
-        <translation>Wenn eingeschaltet, werden keine Informationene zu Netzerken und Protokollen des Kontakts in der Kontaktliste angezeigt</translation>
-    </message>
-    <message>
-        <source>With this setting, each of your buddy&apos;s messaging networks will be removed from view on your buddy list.</source>
-        <translation>Mit dieser Einstellung werden Sie die genutzten Netzwerke des Kontakts nicht sehen können.</translation>
-    </message>
-    <message>
-        <source>Differentiate the messaging networks for each buddy (Advanced Mode)</source>
-        <translation>Zeige beim Kontakt die von ihm genutzten Netzwerke (erweiterter Modus)</translation>
-    </message>
-    <message>
-        <source>With this setting, your buddy list will display the associated messaging networks for each of your buddies (e.g. &apos;Anna uses Gadu-Gadu and Google Talk&apos;) .</source>
-        <translation>Mit dieser Einstellung werden neben dem Kontakt alle von ihm genutzten Protokolle angezeigt (z.B. &apos;Anna nutzt Gadu-Gadu und Google Talk&apos;) .</translation>
-    </message>
-    <message>
         <source>Default Language</source>
         <translation>Standardsprache</translation>
     </message>
@@ -992,18 +888,6 @@ Es ist ein Sicherheitsrisiko!</translation>
     <message>
         <source>Chat Window</source>
         <translation>Chat-Fenster</translation>
-    </message>
-    <message>
-        <source>Buddy&apos;s messages</source>
-        <translation>Nachrichten vom Kontakt</translation>
-    </message>
-    <message>
-        <source>Buddy&apos;s font</source>
-        <translation>Schriftart des Kontakts</translation>
-    </message>
-    <message>
-        <source>Buddy&apos;s nick</source>
-        <translation>Nick des Kontakts</translation>
     </message>
     <message>
         <source>Buddy List</source>
@@ -1090,10 +974,6 @@ Es ist ein Sicherheitsrisiko!</translation>
         <translation>Hintergrundbild für die Kontaktliste auswählen</translation>
     </message>
     <message>
-        <source>Tiled and centered</source>
-        <translation>Zentriert und gestreckt</translation>
-    </message>
-    <message>
         <source>Displays information panel below the buddy list</source>
         <translation>Zeige Informationspannel unter der Kontaktliste</translation>
     </message>
@@ -1156,14 +1036,6 @@ wenn Kontakte sich mit dem Server verbinden</translation>
         <translation>Eingehende Dateiübertragung</translation>
     </message>
     <message>
-        <source>Syntax:
-%s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name, %r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist, %h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size, %z - gender (0/1/2),
-#{message} - message content, #{messageId} - message id, #{backgroundColor} - background color of message, #{fontColor} - font color of message, #{nickColor} - font color of nick, #{sentDate} - when message was sent, #{receivedDate} - when message was received, #{separator} - separator between messages,
-&lt;kadu:header&gt;...&lt;/kadu:header&gt; - content will not be displayed in &apos;Remove repeated headers&apos; mode,
-&lt;kadu:top&gt;...&lt;/kadu:top&gt; - content will be included once at the begining of the document</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Style variant</source>
         <translation>Stilvariante</translation>
     </message>
@@ -1197,10 +1069,6 @@ wenn Kontakte sich mit dem Server verbinden</translation>
             <numerusform>%n Sekunden</numerusform>
         </translation>
     </message>
-    <message>
-        <source>never remove recent chats</source>
-        <translation>Niemals alte Chats leeren</translation>
-    </message>
     <message numerus="yes">
         <source>[for] %n minute(s)</source>
         <translation>
@@ -1215,6 +1083,178 @@ wenn Kontakte sich mit dem Server verbinden</translation>
     <message>
         <source>Show a window with notification</source>
         <translation>Zeige Fenster</translation>
+    </message>
+    <message>
+        <source>Contact state change notification position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Beginning of title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>End of title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Custom composing notification syntax</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move the Window to the Active Desktop</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Switch Desktop Making the Window Visible</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Per Account</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Per Identity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>For All Accounts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Last Status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Free for Chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do Not Disturb</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>My font color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Buddy&apos;s font color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>My nick color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Buddy&apos;s nick color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>My messages&apos; background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Buddy&apos;s messages&apos; background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use custom chat background color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Chat background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use custom text edit colors</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Text edit background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Text edit font</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Force custom font in chat window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Force custom font even for chat styles which define their own fonts (most Adium styles do that)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Information panel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Scale All Emoticons</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Scale Only Static Emoticons</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do Not Scale Emoticons</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show expanding control</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Tiled and Centered</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open chat window only when I am online</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Never Remove Recent Chats</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Contacts&apos; states</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show state notifications in chats</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show state notifications in windows&apos; titles</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Syntax:
+%s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name, %r - surname, %m - mobile, %u - uin, %g - group, %h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size, %z - gender (0/1/2),
+#{message} - message content, #{messageId} - message id, #{messageStatus} - message status value, #{backgroundColor} - background color of message, #{fontColor} - font color of message, #{nickColor} - font color of nick, #{sentDate} - when message was sent, #{receivedDate} - when message was received, #{separator} - separator between messages,
+&lt;kadu:header&gt;...&lt;/kadu:header&gt; - content will not be displayed in &apos;Remove repeated headers&apos; mode,
+&lt;kadu:top&gt;...&lt;/kadu:top&gt; - content will be included once at the begining of the document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
+%r - surname, %m - mobile, %u - uin, %g - group
+%h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size, %z - gender (0/1/2)
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
+%r - surname, %m - mobile, %u - uin, %g - group
+%h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size, %z - gender (0/1/2),
+#{protocol} - protocol that triggered event,
+#{event} - name of event,
+</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1259,6 +1299,10 @@ wenn Kontakte sich mit dem Server verbinden</translation>
         <source>&amp;About</source>
         <translation>&amp;Über</translation>
     </message>
+    <message>
+        <source>Qt %2 (compiled with Qt %3)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AccountAvatarWidget</name>
@@ -1278,14 +1322,6 @@ wenn Kontakte sich mit dem Server verbinden</translation>
 <context>
     <name>AccountBuddyListWidget</name>
     <message>
-        <source>Import contacts</source>
-        <translation>Kontakte importieren</translation>
-    </message>
-    <message>
-        <source>Export contacts</source>
-        <translation>Kontakte exportieren</translation>
-    </message>
-    <message>
         <source>Restore from file</source>
         <translation>Wiederherstellen aus Datei</translation>
     </message>
@@ -1296,28 +1332,6 @@ wenn Kontakte sich mit dem Server verbinden</translation>
     <message>
         <source>Kadu</source>
         <translation>Kadu</translation>
-    </message>
-    <message>
-        <source>Cannot import user list from server in offline mode</source>
-        <translation>Kann Kontaktliste vom Server nicht beziehen, solange Sie offline sind</translation>
-    </message>
-    <message>
-        <source>Cannot export user list to server in offline mode</source>
-        <translation>Kann die Kontaktliste nicht auf dem Server speichern, solange Sie offline sind</translation>
-    </message>
-    <message>
-        <source>Contacts list couldn&apos;t be downloaded. Please check that account %0 is connected.</source>
-        <translation>Die Kontaktliste konnte nicht  heruntergeladen werden. Stellen Sie sicher, dass Konto %0 verbunden ist.</translation>
-    </message>
-    <message>
-        <source>Your userlist has been successfully exported to server</source>
-        <translation>Ihre Kontaktliste wurde erfolgreich auf dem Server gespeichert</translation>
-    </message>
-    <message>
-        <source>The application encountered an internal error
-The export was unsuccessful</source>
-        <translation>Das Programm verursachte einen Fehler
-Export ist leider mißlungen</translation>
     </message>
     <message>
         <source>Select file</source>
@@ -1417,10 +1431,6 @@ Export ist leider mißlungen</translation>
         <translation>Sie müssen mit dem Server verbunden sein, um Kontakte diesem Konto hinzuzufügen</translation>
     </message>
     <message>
-        <source>Entered username is invalid</source>
-        <translation>Angegebener Name stimmt nicht</translation>
-    </message>
-    <message>
         <source>This contact is already available as &lt;i&gt;%1&lt;/i&gt;</source>
         <translation>Dieser Kontak ist bereits als &lt;i&gt;%1&lt;/i&gt; verfügbar</translation>
     </message>
@@ -1447,6 +1457,22 @@ Export ist leider mißlungen</translation>
     <message>
         <source>Merging e-mail with buddy is not supported. Please use edit buddy window.</source>
         <translation>Das Zusammenführen der E-Mail-Adressen mit Kontakt wird nicht unterstützt. Benutzen Sie dazu bitte den Kontakt-Editor.</translation>
+    </message>
+    <message>
+        <source>Entered user identification is invalid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No user identification entered</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No mobile number entered</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No e-mail entered</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1646,6 +1672,10 @@ Export ist leider mißlungen</translation>
         <source>&lt;p&gt;When enabled and one of this buddy&apos;s contacts has higher status (i.e., more available) than the others, that contact will be considered preferred regardless of its priority&lt;/p&gt;</source>
         <translation>&lt;p&gt;Wenn eingeschaltet und eine der Kontakt-Identitäten den höheren Status (z. B. online) als andere hat, wird diese Kontakt-Möglichkeit bevorzugt, egal welche Priorität sie hat&lt;/p&gt;</translation>
     </message>
+    <message>
+        <source>Protocol used by this buddy&apos;s contact does not allow changing buddy&apos;s name client-side</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>BuddyGroupsConfigurationWidget</name>
@@ -1826,16 +1856,16 @@ von nun an ignoriert. Wollen Sie diese Konferenz wirklich verlassen?</translatio
         <translation>Konto:</translation>
     </message>
     <message>
-        <source>%1 (Composing...)</source>
-        <translation>%1 (schreibt...)</translation>
-    </message>
-    <message>
-        <source>%1 (Inactive)</source>
-        <translation>%1 (inaktiv)</translation>
-    </message>
-    <message>
         <source>%1 ended the conversation</source>
         <translation>%1 hat die Unterhaltug beendet</translation>
+    </message>
+    <message>
+        <source>(Composing...)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>(Inactive)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1978,10 +2008,24 @@ von nun an ignoriert. Wollen Sie diese Konferenz wirklich verlassen?</translatio
         <translation>Kadu</translation>
     </message>
     <message>
-        <source>Following contacts from your list were not found on server: &lt;b&gt;%0&lt;/b&gt;.
-Do you want to remove them from contacts list?</source>
-        <translation>Folgende Kontakte aus Ihrer Liste wurden auf dem Server nicht gefunden: &lt;b&gt;%0&lt;/b&gt;.
-Soll ich sie aus der Kontaktliste löschen?</translation>
+        <source>The following contacts present on server were not found on your local contact list:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The following contacts present on server were found on your local contact list under different buddy display names:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Moreover, the following contacts present on server were found on your local contact list under different buddy display names:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you want to apply the above changes to your contact list?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The following contacts from your list were not found in file:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;Do you want to remove them from contact list?</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2350,6 +2394,29 @@ Was soll ich tun?</translation>
     </message>
 </context>
 <context>
+    <name>HtmlMessagesRenderer</name>
+    <message>
+        <source>%1 is active</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 is composing...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 is gone</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 is inactive</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 has paused composing</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>IdentitiesComboBox</name>
     <message>
         <source>Create a new identity...</source>
@@ -2594,6 +2661,10 @@ Was soll ich tun?</translation>
 ][Handy: %m
 ]</translation>
     </message>
+    <message>
+        <source>Show Myself Buddy</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>LineEditWithClearButton</name>
@@ -2613,8 +2684,8 @@ Was soll ich tun?</translation>
         <translation>Konfiguration Kadu</translation>
     </message>
     <message>
-        <source>Advenced chat&apos;s look configuration</source>
-        <translation>Erweiterte Konfiguration der Chat-Darstellung</translation>
+        <source>Advanced chat&apos;s look configuration</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2922,18 +2993,6 @@ Sie können diese aktivieren oder deaktivieren, indem Sie auf deren Namen doppel
 Maybe it&apos;s not Kadu-compatible plugin.</source>
         <translation>Kann das benötigte Objekt im Modul %1 nicht finden.
 Vielleicht ist das Modul nich Kadu-kompatibel.</translation>
-    </message>
-    <message>
-        <source>Cannot load %1 module library.:
-%2</source>
-        <translation>Kann die Bibliothek %1 mit Modulen nicht laden:
-%2</translation>
-    </message>
-    <message>
-        <source>Cannot find required functions in module %1.
-Maybe it&apos;s not Kadu-compatible Module.</source>
-        <translation>Ich kann die benötigte Funktion im Modul %1 nicht finden.
-Vielleicht ist es Modul nicht Kadu-kompatibel.</translation>
     </message>
     <message>
         <source>Module initialization routine for %1 failed.</source>

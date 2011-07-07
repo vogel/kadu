@@ -1,72 +1,59 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="cs" version="2.0">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="cs">
 <context>
     <name>ImportProfileWindow</name>
     <message>
-        <location filename="../gui/windows/import-profile-window.cpp" line="45"/>
         <source>Import external Kadu 0.6.5 profile</source>
         <translation>Zavést vnější profil Kadu 0.6.5</translation>
     </message>
     <message>
-        <location filename="../gui/windows/import-profile-window.cpp" line="57"/>
         <source>Select profile path</source>
         <translation>Vybrat cestu k profilu</translation>
     </message>
     <message>
-        <location filename="../gui/windows/import-profile-window.cpp" line="58"/>
         <source>Select profile path:</source>
         <translation>Vybrat cestu k profilu:</translation>
     </message>
     <message>
-        <location filename="../gui/windows/import-profile-window.cpp" line="62"/>
         <source>Select imported account identity:</source>
         <translation>Vybrat totožnost zavedeného účtu:</translation>
     </message>
     <message>
-        <location filename="../gui/windows/import-profile-window.cpp" line="65"/>
         <source>Import history</source>
         <translation>Zavést historii</translation>
     </message>
     <message>
-        <location filename="../gui/windows/import-profile-window.cpp" line="75"/>
         <source>Import</source>
         <translation>Zavést</translation>
     </message>
     <message>
-        <location filename="../gui/windows/import-profile-window.cpp" line="79"/>
         <source>Close</source>
         <translation>Zavřít</translation>
     </message>
     <message>
-        <location filename="../gui/windows/import-profile-window.cpp" line="94"/>
         <source>&lt;b&gt;Identity not selected&lt;/b&gt;</source>
         <translation>&lt;b&gt;Totožnost nevybrána&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/windows/import-profile-window.cpp" line="101"/>
         <source>&lt;b&gt;Selected directory does not contain kadu.conf.xml file&lt;/b&gt;</source>
         <translation>&lt;b&gt;Vybraný adresář neobsahuje soubor kadu.conf.xml&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/windows/import-profile-window.cpp" line="114"/>
-        <location filename="../gui/windows/import-profile-window.cpp" line="121"/>
-        <location filename="../gui/windows/import-profile-window.cpp" line="132"/>
         <source>Import external profile...</source>
         <translation>Zavést vnější profil...</translation>
     </message>
     <message>
-        <location filename="../gui/windows/import-profile-window.cpp" line="114"/>
         <source>This directory is not a Kadu profile directory.
 File kadu.conf.xml not found</source>
         <translation>Tento adresář není adresářem s profilem Kadu.
 Soubor kadu.conf.xml nebyl nalezen</translation>
     </message>
     <message>
-        <location filename="../gui/windows/import-profile-window.cpp" line="121"/>
         <source>Profile successfully imported!</source>
         <translation>Profil úspěšně zaveden!</translation>
     </message>
     <message>
-        <location filename="../gui/windows/import-profile-window.cpp" line="132"/>
         <source>Unable to import profile: %1</source>
         <translation>Nelze zavést profil: %1</translation>
     </message>
@@ -74,42 +61,34 @@ Soubor kadu.conf.xml nebyl nalezen</translation>
 <context>
     <name>ImportProfilesWindow</name>
     <message>
-        <location filename="../gui/windows/import-profiles-window.cpp" line="59"/>
         <source>&lt;p&gt;Current version of Kadu does not support user profiles.&lt;br /&gt;Instead, multiple account are supported in one instances of kadu.&lt;/p&gt;&lt;p&gt;Please select profiles that you would like to import as&lt;br /&gt;account into this instance of Kadu.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Současná verze Kadu nepodporuje uživatelské profily.&lt;br /&gt;Místo toho je v jednom běhu Kadu podporováno více účtů.&lt;/p&gt;&lt;p&gt;Vyberte, prosím, profily, které chcete zavést jako&lt;br /&gt;účet pro tento běh Kadu.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../gui/windows/import-profiles-window.cpp" line="69"/>
         <source>Import</source>
         <translation>Zavést</translation>
     </message>
     <message>
-        <location filename="../gui/windows/import-profiles-window.cpp" line="73"/>
         <source>Close</source>
         <translation>Zavřít</translation>
     </message>
     <message>
-        <location filename="../gui/windows/import-profiles-window.cpp" line="91"/>
         <source>Import history</source>
         <translation>Zavést historii</translation>
     </message>
     <message>
-        <location filename="../gui/windows/import-profiles-window.cpp" line="118"/>
         <source>Import external profile...</source>
         <translation>Zavést vnější profil...</translation>
     </message>
     <message>
-        <location filename="../gui/windows/import-profiles-window.cpp" line="118"/>
         <source>Profile %1 successfully imported!</source>
         <translation>Profil %1 úspěšně zaveden!</translation>
     </message>
     <message>
-        <location filename="../gui/windows/import-profiles-window.cpp" line="130"/>
         <source>Import profile...</source>
         <translation>Zavést profil...</translation>
     </message>
     <message>
-        <location filename="../gui/windows/import-profiles-window.cpp" line="130"/>
         <source>Unable to import profile: %1: %2</source>
         <translation>Nelze zavést profil: %1: %2</translation>
     </message>
@@ -117,17 +96,14 @@ Soubor kadu.conf.xml nebyl nalezen</translation>
 <context>
     <name>ProfileImporter</name>
     <message>
-        <location filename="../profile-importer.cpp" line="47"/>
         <source>Unable to open profile file [%1].</source>
         <translation>Nelze otevřít soubor s profilem [%1].</translation>
     </message>
     <message>
-        <location filename="../profile-importer.cpp" line="59"/>
         <source>Account already exists.</source>
         <translation>Účet již existuje.</translation>
     </message>
     <message>
-        <location filename="../profile-importer.cpp" line="66"/>
         <source>Imported account has no ID</source>
         <translation>Zavedený účet nemá žádné ID</translation>
     </message>
@@ -135,12 +111,10 @@ Soubor kadu.conf.xml nebyl nalezen</translation>
 <context>
     <name>ProfilesImportActions</name>
     <message>
-        <location filename="../profiles-import-actions.cpp" line="56"/>
         <source>Import profiles...</source>
         <translation>Zavést profily...</translation>
     </message>
     <message>
-        <location filename="../profiles-import-actions.cpp" line="62"/>
         <source>Import external profile...</source>
         <translation>Zavést vnější profil...</translation>
     </message>

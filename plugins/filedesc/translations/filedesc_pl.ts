@@ -32,8 +32,8 @@
         <translation>Dopuść inne opisy</translation>
     </message>
     <message>
-        <source>Allows you to set some custom description manualy, until file contents doesn&apos;t change</source>
-        <translation>Pozwala na ustawienie dowolnego opisu ręcznie, dopóki zawartość pliku nie ulegnie zmianie</translation>
+        <source>Allows you to set some custom description manualy, until file contents does not change</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

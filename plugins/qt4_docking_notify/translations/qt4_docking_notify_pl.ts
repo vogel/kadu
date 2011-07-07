@@ -32,10 +32,6 @@
         <translation>Ikona powiadomienia</translation>
     </message>
     <message>
-        <source>No icon</source>
-        <translation>Bez ikony</translation>
-    </message>
-    <message>
         <source>Information</source>
         <translation>Informacja</translation>
     </message>
@@ -54,6 +50,10 @@
     <message>
         <source>Syntax</source>
         <translation>Treść</translation>
+    </message>
+    <message>
+        <source>No Icon</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

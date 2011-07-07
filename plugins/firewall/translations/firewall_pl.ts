@@ -56,10 +56,6 @@
         <translation>Chroń przed rozmowami z nieznaną osobą</translation>
     </message>
     <message>
-        <source>Module will ask the question typed below, if someone wants talk to you and you don&apos;t have him on your list.</source>
-        <translation>Moduł zada pytanie, znajdujące się poniżej, jeśli ktoś, kogo nie masz na liście kontaktów, chce z tobą porozmawiać.</translation>
-    </message>
-    <message>
         <source>When invisible silently drop chats with unknown persons</source>
         <translation>Ciche odrzucanie rozmów z nieznajomymi gdy jesteśmy ukryci</translation>
     </message>
@@ -142,6 +138,10 @@
     <message>
         <source>Message was firewalled</source>
         <translation>Wiadomość została zablokowana</translation>
+    </message>
+    <message>
+        <source>Module will ask the question typed below, if someone wants talk to you and you do not have him on your list.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
