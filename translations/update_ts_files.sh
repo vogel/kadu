@@ -25,12 +25,12 @@ if [ -z "$PROCESSONLY" ] || [ "$PROCESSONLY" = "kadu" ] || [ "$PROCESSONLY" = "k
 
 	# all .cpp files in kadu_core subdirectories
 	SRC_FILES=`find ../kadu-core/ -type f -name *.cpp`
-	$LUPDATE -locations none -noobsolete -verbose $SRC_FILES -ts kadu_cs.ts >> $LOG 2>&1
-	$LUPDATE -locations none -noobsolete -verbose $SRC_FILES -ts kadu_it.ts >> $LOG 2>&1
-	$LUPDATE -locations none -noobsolete -verbose $SRC_FILES -ts kadu_pl.ts >> $LOG 2>&1
-	$LUPDATE -locations none -noobsolete -verbose $SRC_FILES -ts kadu_en.ts >> $LOG 2>&1
-	$LUPDATE -locations none -noobsolete -verbose $SRC_FILES -ts kadu_de.ts >> $LOG 2>&1
-	$LUPDATE -locations none -noobsolete -verbose $SRC_FILES -ts kadu_fr.ts >> $LOG 2>&1
+
+	for ts in *.ts; do
+		$LUPDATE -locations none -noobsolete -verbose $SRC_FILES -ts $ts  >> $LOG 2>&1 || \
+		( rm $ts && $LUPDATE -locations none -noobsolete -verbose $SRC_FILES -ts $ts  >> $LOG 2>&1 )
+	done
+
 fi
 
 for main_dir in modules plugins;
@@ -82,11 +82,15 @@ do
 		fi
 
 		SRC_FILES=`find . -type f -name "*.cpp"`
-		$LUPDATE -locations none -noobsolete -verbose $SRC_FILES ${UI_TRANS} -ts translations/${module}_it.ts >> $LOG 2>&1
-		$LUPDATE -locations none -noobsolete -verbose $SRC_FILES ${UI_TRANS} -ts translations/${module}_pl.ts >> $LOG 2>&1
-		$LUPDATE -locations none -noobsolete -verbose $SRC_FILES ${UI_TRANS} -ts translations/${module}_en.ts >> $LOG 2>&1
-		$LUPDATE -locations none -noobsolete -verbose $SRC_FILES ${UI_TRANS} -ts translations/${module}_de.ts >> $LOG 2>&1
-		$LUPDATE -locations none -noobsolete -verbose $SRC_FILES ${UI_TRANS} -ts translations/${module}_fr.ts >> $LOG 2>&1
+
+		for ts in translations/*.ts; do
+			$LUPDATE -locations none -noobsolete -verbose $SRC_FILES ${UI_TRANS} -ts $ts || \
+			( rm $ts && $LUPDATE -locations none -noobsolete -verbose $SRC_FILES ${UI_TRANS} -ts $ts )
+		done
+		if [ ! -f translations/${module}_en.ts ]; then
+			$LUPDATE -locations none -noobsolete -verbose $SRC_FILES ${UI_TRANS} -ts translations/${module}_en.ts || \
+			( rm translations/${module}_en.ts && $LUPDATE -locations none -noobsolete -verbose $SRC_FILES ${UI_TRANS} -ts translations/${module}_en.ts )
+		fi
 
 		popd >> $LOG 2>&1
 	done
