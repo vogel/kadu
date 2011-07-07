@@ -96,7 +96,7 @@ HintManager::HintManager(QObject *parent) :
 	const QString default_hints_syntax(QT_TRANSLATE_NOOP("HintManager", "<table>"
 "<tr>"
 "<td align=\"left\" valign=\"top\">"
-"<img style=\"max-width:64px; max-height:64px;\""
+"<img style=\"max-width:64px; max-height:64px;\" "
 "src=\"{#{avatarPath} #{avatarPath}}{~#{avatarPath} @{kadu_icons/kadu:64x64}}\""
 ">"
 "</td>"
