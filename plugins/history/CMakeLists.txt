@@ -54,10 +54,9 @@ set (MOC_SOURCES
 )
 
 set (TRANSLATION_SOURCES
-	translations/history_en.ts
+	translations/history_cs.ts
 	translations/history_de.ts
-	translations/history_fr.ts
-	translations/history_it.ts
+	translations/history_en.ts
 	translations/history_pl.ts
 )
 

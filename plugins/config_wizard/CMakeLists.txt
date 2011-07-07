@@ -36,9 +36,8 @@ set (CONFIGURATION_FILES
 )
 
 set (TRANSLATION_SOURCES
+	translations/config_wizard_cs.ts
 	translations/config_wizard_en.ts
-	translations/config_wizard_de.ts
-	translations/config_wizard_fr.ts
 	translations/config_wizard_it.ts
 	translations/config_wizard_pl.ts
 )

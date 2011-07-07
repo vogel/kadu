@@ -199,10 +199,9 @@ set (MOC_SOURCES
 )
 
 set (TRANSLATION_SOURCES
-	translations/jabber_protocol_en.ts
+	translations/jabber_protocol_cs.ts
 	translations/jabber_protocol_de.ts
-	translations/jabber_protocol_fr.ts
-	translations/jabber_protocol_it.ts
+	translations/jabber_protocol_en.ts
 	translations/jabber_protocol_pl.ts
 )
 

@@ -24,8 +24,6 @@ set (CONFIGURATION_FILES
 set (TRANSLATION_SOURCES
 	translations/chat_notify_en.ts
 	translations/chat_notify_de.ts
-	translations/chat_notify_fr.ts
-	translations/chat_notify_it.ts
 	translations/chat_notify_pl.ts
 )
 

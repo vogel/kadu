@@ -28,10 +28,8 @@ set(MOC_SOURCES
 )
 
 set (TRANSLATION_SOURCES
+	translations/profiles_import_cs.ts
 	translations/profiles_import_en.ts
-	translations/profiles_import_de.ts
-	translations/profiles_import_fr.ts
-	translations/profiles_import_it.ts
 	translations/profiles_import_pl.ts
 )
 

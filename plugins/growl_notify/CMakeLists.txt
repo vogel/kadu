@@ -21,6 +21,8 @@ set (MOC_SOURCES
 )
 
 set (TRANSLATION_SOURCES
+	translations/growl_notify_cs.ts
+	translations/growl_notify_de.ts
 	translations/growl_notify_en.ts
 	translations/growl_notify_pl.ts
 )

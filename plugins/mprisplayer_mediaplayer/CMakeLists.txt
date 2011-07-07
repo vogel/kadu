@@ -26,9 +26,6 @@ set (MOC_SOURCES
 
 set (TRANSLATION_SOURCES
 	translations/mprisplayer_mediaplayer_en.ts
-	translations/mprisplayer_mediaplayer_cz.ts
-	translations/mprisplayer_mediaplayer_de.ts
-	translations/mprisplayer_mediaplayer_it.ts
 	translations/mprisplayer_mediaplayer_pl.ts
 )
 

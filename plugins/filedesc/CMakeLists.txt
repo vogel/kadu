@@ -19,10 +19,9 @@ set (MOC_SOURCES
 )
 
 set (TRANSLATION_SOURCES
-	translations/filedesc_en.ts
+	translations/filedesc_cs.ts
 	translations/filedesc_de.ts
-	translations/filedesc_fr.ts
-	translations/filedesc_it.ts
+	translations/filedesc_en.ts
 	translations/filedesc_pl.ts
 )
 

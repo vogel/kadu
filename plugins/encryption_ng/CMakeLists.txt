@@ -56,9 +56,8 @@ set (MOC_SOURCES
 )
 
 set (TRANSLATION_SOURCES
+	translations/encryption_ng_cs.ts
 	translations/encryption_ng_en.ts
-	translations/encryption_ng_de.ts
-	translations/encryption_ng_fr.ts
 	translations/encryption_ng_it.ts
 	translations/encryption_ng_pl.ts
 )

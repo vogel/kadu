@@ -17,8 +17,12 @@ set (MOC_SOURCES
 )
 
 set (TRANSLATION_SOURCES
+	translations/word_fix_cs.ts
+	translations/word_fix_de.ts
 	translations/word_fix_en.ts
+	translations/word_fix_es_ES.ts
 	translations/word_fix_pl.ts
+	translations/word_fix_ru.ts
 )
 
 set (CONFIGURATION_FILES

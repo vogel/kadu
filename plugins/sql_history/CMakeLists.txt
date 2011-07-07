@@ -19,10 +19,9 @@ set (MOC_SOURCES
 )
 
 set (TRANSLATION_SOURCES
-	translations/sql_history_en.ts
+	translations/sql_history_cs.ts
 	translations/sql_history_de.ts
-	translations/sql_history_fr.ts
-	translations/sql_history_it.ts
+	translations/sql_history_en.ts
 	translations/sql_history_pl.ts
 )
 

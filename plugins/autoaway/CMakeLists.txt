@@ -19,9 +19,10 @@ set (MOC_SOURCES
 )
 
 set (TRANSLATION_SOURCES
-	translations/autoaway_en.ts
+	translations/autoaway_cs.ts
 	translations/autoaway_de.ts
-	translations/autoaway_fr.ts
+	translations/autoaway_en.ts
+	translations/autoaway_es_ES.ts
 	translations/autoaway_it.ts
 	translations/autoaway_pl.ts
 )

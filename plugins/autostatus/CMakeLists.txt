@@ -25,9 +25,8 @@ set (MOC_SOURCES
 )
 
 set (TRANSLATION_SOURCES
+	translations/autostatus_cs.ts
 	translations/autostatus_en.ts
-	translations/autostatus_de.ts
-	translations/autostatus_fr.ts
 	translations/autostatus_it.ts
 	translations/autostatus_pl.ts
 )

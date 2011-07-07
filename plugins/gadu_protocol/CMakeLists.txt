@@ -160,10 +160,8 @@ set (MOC_SOURCES
 )
 
 set (TRANSLATION_SOURCES
+	translations/gadu_protocol_cs.ts
 	translations/gadu_protocol_en.ts
-	translations/gadu_protocol_de.ts
-	translations/gadu_protocol_fr.ts
-	translations/gadu_protocol_it.ts
 	translations/gadu_protocol_pl.ts
 )
 

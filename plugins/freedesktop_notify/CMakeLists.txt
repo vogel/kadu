@@ -23,10 +23,9 @@ set (MOC_SOURCES
 )
 
 set (TRANSLATION_SOURCES
-	translations/freedesktop_notify_en.ts
+	translations/freedesktop_notify_cs.ts
 	translations/freedesktop_notify_de.ts
-	translations/freedesktop_notify_fr.ts
-	translations/freedesktop_notify_it.ts
+	translations/freedesktop_notify_en.ts
 	translations/freedesktop_notify_pl.ts
 )
 

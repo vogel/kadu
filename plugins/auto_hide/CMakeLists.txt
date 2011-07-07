@@ -17,9 +17,10 @@ set (MOC_SOURCES
 )
 
 set (TRANSLATION_SOURCES
-	translations/auto_hide_en.ts
+	translations/auto_hide_cs.ts
 	translations/auto_hide_de.ts
-	translations/auto_hide_fr.ts
+	translations/auto_hide_en.ts
+	translations/auto_hide_es_ES.ts
 	translations/auto_hide_it.ts
 	translations/auto_hide_pl.ts
 )
