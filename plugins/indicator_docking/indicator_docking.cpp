@@ -17,10 +17,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QEvent>
+#include <QtCore/QPoint>
+#include <QtGui/QMouseEvent>
+
 #include "core/core.h"
-#include <QEvent>
-#include <QPoint>
-#include <QMouseEvent>
 
 #include "indicator_docking.h"
 
@@ -45,144 +46,129 @@ IndicatorDocking * IndicatorDocking::instance()
 }
 
 IndicatorDocking::IndicatorDocking(QObject *parent) :
-Notifier("ubumm_notify", QT_TRANSLATE_NOOP("@default", "Indicator"), KaduIcon("external_modules/mail-internet-mail"))
+	Notifier("indicator_notify", QT_TRANSLATE_NOOP("@default", "Indicator"), 
+	KaduIcon("external_modules/mail-internet-mail"))
 {
 	Q_UNUSED(parent)
 
-	server = QIndicate::Server::defaultInstance();
-    	server->setDesktopFile(desktopFilePath()); 
-  	server->setCount(0);
-  	server->setType("message.im");
-  	server->show();
+	Server = QIndicate::Server::defaultInstance();
+    	Server->setDesktopFile(desktopFilePath()); 
+  	Server->setCount(0);
+  	Server->setType("message.im");
+  	Server->show();
+	
+	EventForShowMainWindow.reset(new QMouseEvent(QEvent::MouseButtonPress, QPoint(0,0), Qt::LeftButton, Qt::LeftButton, Qt::NoModifier));
 	
 	DockingManager::instance()->setDocker(this);
 	NotificationManager::instance()->registerNotifier(this);
-  	connect(server, SIGNAL(serverDisplay()), this, SLOT(showMainWindow()));
+  	connect(Server, SIGNAL(serverDisplay()), this, SLOT(showMainWindow()));
 	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetActivated(ChatWidget *)), this, SLOT(chatWidgetActivated(ChatWidget *)));
 }
 
-void IndicatorDocking::showMainWindow(){
-	QScopedPointer<QMouseEvent> event;
-	event.reset(new QMouseEvent(QEvent::MouseButtonPress, QPoint(0,0), Qt::LeftButton, Qt::LeftButton, Qt::NoModifier));
-	if (!event.isNull())
-		DockingManager::instance()->trayMousePressEvent(event.data());
+IndicatorDocking::~IndicatorDocking()
+{
+	NotificationManager::instance()->unregisterNotifier(this);
+	disconnect(Server, SIGNAL(ServerDisplay()), this, SLOT(showMainWindow()));
+	disconnect(ChatWidgetManager::instance(), SIGNAL(chatWidgetActivated(ChatWidget *)), this, SLOT(chatWidgetActivated(ChatWidget *)));
+	deleteAllIndicators();
+	Server->hide();
+}
+
+void IndicatorDocking::showMainWindow()
+{
+	DockingManager::instance()->trayMousePressEvent(EventForShowMainWindow.data());
 }
 
 
-void IndicatorDocking::notify(Notification *notification){
+void IndicatorDocking::notify(Notification *notification)
+{
 	if ((notification->type() == "NewMessage") || (notification->type() == "NewChat")){		
 		notification->clearDefaultCallback();
 		notification->acquire();
 		ChatNotification *chatNotification = qobject_cast<ChatNotification *>(notification);
 		if (!chatNotification)
 			return;
-		Chat chat = chatNotification ? chatNotification->chat() : Chat();
+		Chat chat = chatNotification->chat();
 		Contact contact = *chat.contacts().constBegin();
 		QString contactName = BuddyOrContact(contact).buddy().display();	
-		if (contactName=="")
+		if (contactName.isEmpty())
 			return;
 
 		QIndicate::Indicator* indicator;
-		if (isThereAnyIndicatorNamed(contactName)){
-			indicator = indicatorsMap[contactName];
+		if (IndicatorsMap.contains(contactName)){
+			indicator = IndicatorsMap[contactName];
+			ChatsMap[contactName] = chat;
 		}else{
-			indicator = new QIndicate::Indicator(server);
-			indicatorsMap[contactName] = indicator;
-			chatsMap[contactName] = chat;
-			contactsMap[contactName] = chat.contacts();		
+			indicator = new QIndicate::Indicator(Server);
+			IndicatorsMap[contactName] = indicator;
+			ChatsMap[contactName] = chat;
+			ContactsMap[contactName] = chat.contacts();		
 			indicator->setNameProperty(contactName);	
 			
-			Avatar avatar = BuddyOrContact(contact).contact().contactAvatar();
-			avatarsMap[contactName] = QImage(avatar.pixmap().toImage().scaled(20, 20));
-			indicator->setIconProperty(avatarsMap[contactName]);
+			Avatar avatar = contact.contactAvatar();
+			AvatarsMap[contactName] = QImage(avatar.pixmap().toImage().scaled(20, 20, Qt::KeepAspectRatio));
+			indicator->setIconProperty(AvatarsMap[contactName]);
 			
 			connect(indicator, SIGNAL(display(QIndicate::Indicator*)), SLOT(displayIndicator(QIndicate::Indicator*))); 
-
 		}
 		connect(notification, SIGNAL(closed(Notification*)), this, SLOT(notificationClosed(Notification*)));
 		indicator->setTimeProperty(QDateTime::currentDateTime());
 		indicator->setDrawAttentionProperty(true);
 		indicator->show();
-		indicatorsVisible[contactName] = true;
+		IndicatorsVisible[contactName] = true;
 	}
 }
 
-void IndicatorDocking::notificationClosed(Notification* notification){
+void IndicatorDocking::notificationClosed(Notification* notification)
+{
 	ChatNotification *chatNotification = qobject_cast<ChatNotification *>(notification);
 	if (!chatNotification)
 		return;
-	Chat chat = chatNotification->chat();
 	Contact contact = *chatNotification->chat().contacts().begin();
 	QString contactName = BuddyOrContact(contact).buddy().display();
-	if (contactName=="")
-			return;
-	deleteIndicatorAndChat(contactName);
+	if (contactName.isEmpty())
+		return;
+	deleteIndicator(contactName);
 }
 
-void IndicatorDocking::chatWidgetActivated(ChatWidget *){
-	QMapIterator<QString, QIndicate::Indicator*> i(indicatorsMap);
- 	while (i.hasNext()) {
- 	    i.next();
-	    i.value()->hide();
-	 }
+void IndicatorDocking::chatWidgetActivated(ChatWidget *)
+{
+	deleteAllIndicators();
 }
 
-void IndicatorDocking::displayIndicator(QIndicate::Indicator* indicator){
+void IndicatorDocking::displayIndicator(QIndicate::Indicator* indicator)
+{
 	QString indicatorName = indicator->nameProperty();
-	if (isThereAnyChatNamed(indicatorName)){
-		ContactSet contacts = contactsMap[indicatorName];
+	if (ChatsMap.contains(indicatorName))
+	{
+		ContactSet contacts = ContactsMap[indicatorName];
 		Chat chat = ChatManager::instance()->findChat(contacts);		
 		ChatWidgetManager::instance()->openPendingMessages(chat);
+		//Don't have to deleteIndicator when you call chatWidgetActivated
 	}
 }
 
-QString IndicatorDocking::getContactsFromChat(Chat chat){
-	QString contacts = "";
-	 QSet<Contact>::iterator i;
-	i = chat.contacts().begin();
-	contacts = BuddyOrContact((*i)).buddy().display();
-	for (i = chat.contacts().begin(); i != chat.contacts().end(); ++i)
-    		contacts = contacts + ", " + BuddyOrContact((*i)).buddy().display();
-	contacts = contacts.mid(0, contacts.size()-2);
-	return contacts;
-}
 
-bool IndicatorDocking::isThereAnyIndicatorNamed(QString indicatorName){
-	if (indicatorsMap.count(indicatorName) > 0)
-		return true;
-	else
-		return false;
-}
-
-bool IndicatorDocking::isThereAnyChatNamed(QString name){
-	if (chatsMap.count(name) > 0)
-		return true;
-	else
-		return false;
-}
-
-void IndicatorDocking::deleteIndicatorAndChat(QString name){
-	if (isThereAnyIndicatorNamed(name)){
-		if (isIndicatorVisible(name)){
-			indicatorsVisible[name] = false;
-			indicatorsMap[name]->hide();
+void IndicatorDocking::deleteIndicator(const QString name)
+{
+	if (IndicatorsMap.contains(name))
+	{
+		if (IndicatorsVisible.contains(name) && IndicatorsVisible[name])
+		{
+			IndicatorsVisible[name] = false;
+			IndicatorsMap[name]->hide();
 		}
 	}
 	
 }
 
-bool IndicatorDocking::isIndicatorVisible(QString name){
-	if (indicatorsVisible.count(name) > 0)
-		return indicatorsVisible[name];
-	else
-		return false;
+void IndicatorDocking::deleteAllIndicators()
+{
+	QMapIterator<QString, QIndicate::Indicator*> i(IndicatorsMap);
+ 	while (i.hasNext()) 
+	{
+ 	    i.next();
+	    delete i.value();
+	}
+	IndicatorsMap.clear();
 }
-
-IndicatorDocking::~IndicatorDocking(){
-	NotificationManager::instance()->unregisterNotifier(this);
-	disconnect(ChatWidgetManager::instance(), SIGNAL(chatWidgetActivated(ChatWidget *)), this, SLOT(chatWidgetActivated(ChatWidget *)));
-	server->hide();
-	delete server;
-}
-
-

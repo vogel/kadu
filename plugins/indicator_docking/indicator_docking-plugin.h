@@ -19,6 +19,8 @@
 #ifndef indicator_docking_PLUGIN_H
 #define indicator_docking_PLUGIN_H
 
+#include <QtCore/QObject>
+
 #include "plugins/generic-plugin.h"
 
 class IndicatorDockingPlugin : public QObject, public GenericPlugin

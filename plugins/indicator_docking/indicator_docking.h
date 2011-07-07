@@ -21,12 +21,10 @@
 #define indicator_docking_H
 
 #include <QtCore/QObject>
-#include <QDebug>
-#include <QImage>
-#include <QMap>
-#include <libindicate-qt/qindicateserver.h>
-#include <libindicate-qt/qindicateindicator.h>
-#include "plugins/docking/docking.h"
+#include <QtCore/QDebug>
+#include <QtCore/QMap>
+#include <QtGui/QImage>
+
 #include "notify/notifier.h"
 #include "notify/notification-manager.h"
 #include "notify/notification.h"
@@ -41,20 +39,35 @@
 #include "debug.h"
 #include "exports.h"
 
+#include <libindicate-qt/qindicateserver.h>
+#include <libindicate-qt/qindicateindicator.h>
+
+
 class IndicatorDocking : public Notifier, public Docker
 {
 	Q_OBJECT
 
 	static IndicatorDocking *Instance;
-	QIndicate::Server* server;
-	QMap<QString, QIndicate::Indicator*> indicatorsMap;
-	QMap<QString, bool> indicatorsVisible; 
-	QMap<QString, Chat> chatsMap;
-	QMap<QString, ContactSet> contactsMap;
-	QMap<QString, QImage> avatarsMap;
+	QIndicate::Server* Server;
+	QMap<QString, QIndicate::Indicator*> IndicatorsMap;
+	QMap<QString, bool> IndicatorsVisible; 
+	QMap<QString, Chat> ChatsMap;
+	QMap<QString, ContactSet> ContactsMap;
+	QMap<QString, QImage> AvatarsMap;
+	QScopedPointer<QMouseEvent> EventForShowMainWindow;
 
 	explicit IndicatorDocking(QObject *parent = 0);
-	virtual ~IndicatorDocking();
+	virtual ~IndicatorDocking();	
+	
+	void deleteAllIndicators();
+	void deleteIndicator(const QString name);
+
+private slots:
+	void showMainWindow();
+	void displayIndicator(QIndicate::Indicator* indicator);
+	void notificationClosed(Notification* notification);
+	void chatWidgetActivated(ChatWidget *);
+
 public:
 	static IndicatorDocking * instance();
 	static void createInstance();
@@ -68,17 +81,6 @@ public:
 	virtual void changeTrayMovie(const QString &moviePath) { Q_UNUSED(moviePath); return; }
 	virtual void changeTrayTooltip(const QString &tooltip) { Q_UNUSED(tooltip); return; }
 	virtual QPoint trayPosition() { return QPoint(0, 0); }
-private:
-	bool isThereAnyIndicatorNamed(QString indicatorName);
-	bool isThereAnyChatNamed(QString name);
-	void deleteIndicatorAndChat(QString name);
-	bool isIndicatorVisible(QString name);
-	QString getContactsFromChat(Chat chat);
-private slots:
-	void showMainWindow();
-	void displayIndicator(QIndicate::Indicator* indicator);
-	void notificationClosed(Notification* notification);
-	void chatWidgetActivated(ChatWidget *);
 };
 
 
