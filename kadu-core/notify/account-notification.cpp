@@ -20,6 +20,7 @@
  */
 
 #include "identities/identity.h"
+#include "parser/parser.h"
 #include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
 

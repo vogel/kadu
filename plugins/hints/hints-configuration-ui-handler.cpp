@@ -30,6 +30,7 @@
 #include <QtGui/QSpinBox>
 
 #include "buddies/buddy-preferred-manager.h"
+#include "buddies/buddy-or-contact.h"
 #include "configuration/config-file-data-manager.h"
 #include "core/core.h"
 #include "gui/widgets/configuration/config-group-box.h"

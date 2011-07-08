@@ -41,15 +41,7 @@
 #include <QtGui/QApplication>
 #include <QtGui/QMenu>
 #include <QtGui/QMouseEvent>
-#ifdef Q_WS_X11
-#include <QtGui/QX11Info>
-#endif
 
-#ifdef Q_WS_X11
-#include "os/x11tools.h"
-// TODO: hack :/
-#undef Status
-#endif
 #include "activate.h"
 #include "accounts/account-manager.h"
 #include "chat/message/pending-messages-manager.h"
