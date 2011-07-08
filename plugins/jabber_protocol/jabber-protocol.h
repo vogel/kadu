@@ -76,9 +76,6 @@ class JabberProtocol : public Protocol
 
 	void notifyAboutPresenceChanged(const XMPP::Jid &jid, const XMPP::Resource &resource);
 
-	// TODO: move this to libiris in near future
-	static bool resourcesEquals(const XMPP::Resource &resource1, const XMPP::Resource &resource2);
-
 private slots:
 	void connectedToServer();
 	void disconnectedFromServer();
