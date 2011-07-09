@@ -579,7 +579,6 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 
 			QVector<ParserTokenType> acceptedTokens;
 			acceptedTokens
-					<< PT_EXECUTE
 					<< PT_CHECK_FILE_EXISTS
 					<< PT_CHECK_FILE_NOT_EXISTS
 					<< PT_VARIABLE
