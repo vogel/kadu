@@ -52,6 +52,7 @@
 #include "gui/widgets/configuration/config-combo-box.h"
 #include "gui/widgets/configuration/config-line-edit.h"
 #include "gui/widgets/configuration/config-preview.h"
+#include "gui/widgets/configuration/config-slider.h"
 #include "gui/widgets/configuration/config-syntax-editor.h"
 #include "gui/widgets/configuration/config-path-list-edit.h"
 #include "gui/widgets/configuration/config-check-box.h"
@@ -181,6 +182,13 @@ MainConfigurationWindow::MainConfigurationWindow() :
 #ifndef Q_WS_X11
 	widget()->widgetById("windowActivationMethodGroup")->hide();
 	widget()->widgetById("notify/fullscreenSilentMode")->hide();
+#endif
+
+#if !defined(Q_WS_X11) || defined(Q_WS_MAEMO_5)
+	widget()->widgetById("useTransparency")->hide();
+	widget()->widgetById("userboxTransparency")->hide();
+	// cast is needed to call proper hide() method (QWidget::hide() is not virtual)
+	qobject_cast<ConfigSlider *>(widget()->widgetById("userboxAlpha"))->hide();
 #endif
 
 	onStartupSetLastDescription = static_cast<QCheckBox *>(widget()->widgetById("onStartupSetLastDescription"));
