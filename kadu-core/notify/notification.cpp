@@ -39,16 +39,24 @@ static QString getNotificationTitle(const QObject * const object)
 		return QString();
 }
 
-Notification::Notification(const QString &type, const KaduIcon &icon) :
-	Type(type), Icon(icon), DefaultCallbackTimer(0),
-	ReferencesCount(0), Closing(false)
+void Notification::registerParserTags()
 {
 	Parser::registerObjectTag("event", getNotificationTitle);
 }
 
-Notification::~Notification()
+void Notification::unregisterParserTags()
 {
 	Parser::unregisterObjectTag("event");
+}
+
+Notification::Notification(const QString &type, const KaduIcon &icon) :
+	Type(type), Icon(icon), DefaultCallbackTimer(0),
+	ReferencesCount(0), Closing(false)
+{
+}
+
+Notification::~Notification()
+{
 }
 
 void Notification::acquire()

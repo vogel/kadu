@@ -125,6 +125,8 @@ private:
 	bool Closing;
 
 public:
+	static void registerParserTags();
+	static void unregisterParserTags();
 
 	/**
 		Tworzy now� notfikacj� o zadanym typie, ikonie i zadanej asocjacji z kontaktami.

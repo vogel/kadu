@@ -59,6 +59,7 @@
 #include "multilogon/multilogon-session.h"
 #include "notify/buddy-notify-data.h"
 #include "notify/multilogon-notification.h"
+#include "notify/notification.h"
 #include "notify/notifier.h"
 #include "notify/notify-configuration-ui-handler.h"
 #include "notify/window-notifier.h"
@@ -106,7 +107,9 @@ NotificationManager::NotificationManager()
 
 void NotificationManager::init()
 {
-    	kdebugf();
+	kdebugf();
+
+	Notification::registerParserTags();
 
 	UiHandler = new NotifyConfigurationUiHandler(this);
 	MainConfigurationWindow::registerUiHandler(UiHandler);
@@ -165,6 +168,8 @@ NotificationManager::~NotificationManager()
 		kdebugm(KDEBUG_WARNING, "WARNING: not unregistered notifiers found! (%u)\n", Notifiers.size());
 		unregisterNotifier(Notifiers.at(0));
 	}
+
+	Notification::unregisterParserTags();
 
 #if defined(Q_WS_X11) && !defined(Q_WS_MAEMO_5)
 	XCloseDisplay(x11display);
