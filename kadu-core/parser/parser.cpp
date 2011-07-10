@@ -595,29 +595,11 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 			}
 			else
 			{
-				bool isMultiLine = false;
 				QList<ParserToken> tokens;
 
 				while (!parseStack.empty())
 				{
 					ParserToken pe2 = parseStack.pop();
-
-					// we do not execute any actions on a multi-line string
-					if (isMultiLine &&
-							(pe2.type() == PT_CHECK_FILE_EXISTS ||
-							pe2.type() == PT_CHECK_FILE_NOT_EXISTS ||
-							pe2.type() == PT_VARIABLE ||
-							pe2.type() == PT_ICONPATH ||
-							pe2.type() == PT_EXTERNAL_VARIABLE ||
-							pe2.type() == PT_EXECUTE2))
-					{
-						pe.setType(PT_STRING);
-						pe.setContent('{' + joinParserTokens(tokens) + '}');
-
-						parseStack.push(pe);
-
-						break;
-					}
 
 					if (pe2.type() == PT_CHECK_FILE_EXISTS || pe2.type() == PT_CHECK_FILE_NOT_EXISTS)
 					{
@@ -741,10 +723,6 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 
 					// here we know for sure that pe2.type() == PT_STRING,
 					// as it is guaranteed by isActionParserTokenAtTop() call
-
-					if (!isMultiLine && pe2.decodedContent().contains('\n'))
-						isMultiLine = true;
-
 					tokens.prepend(pe2);
 				}
 			}
