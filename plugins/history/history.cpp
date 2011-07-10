@@ -427,7 +427,7 @@ void History::stopSaveThread()
 
 		if (SaveThread->isRunning())
 		{
-			kdebugm(KDEBUG_WARNING, "terminating play_thread!\n");
+			kdebugm(KDEBUG_WARNING, "terminating history save thread!\n");
 
 			SaveThread->terminate();
 			SaveThread->wait(2000);
