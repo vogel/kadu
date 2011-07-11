@@ -46,8 +46,14 @@ xcopy Default %DESTINATION%\syntax\chat\Default /C /H /R /Y /S /I /Q
 cd ..\..\..
 
 xcopy varia\syntax\infopanel\*.syntax %DESTINATION%\syntax\infopanel\ /C /H /R /Y /Q
-xcopy translations\*.language         %DESTINATION%\translations\ /C /H /R /Y /Q
-xcopy build\translations\*.qm         %DESTINATION%\translations\ /C /H /R /Y /Q
+xcopy translations\cs.language        %DESTINATION%\translations\ /C /H /R /Y /Q
+xcopy translations\de.language        %DESTINATION%\translations\ /C /H /R /Y /Q
+xcopy translations\en.language        %DESTINATION%\translations\ /C /H /R /Y /Q
+xcopy translations\pl.language        %DESTINATION%\translations\ /C /H /R /Y /Q
+xcopy build\translations\kadu_cs.qm   %DESTINATION%\translations\ /C /H /R /Y /Q
+xcopy build\translations\kadu_de.qm   %DESTINATION%\translations\ /C /H /R /Y /Q
+xcopy build\translations\kadu_en.qm   %DESTINATION%\translations\ /C /H /R /Y /Q
+xcopy build\translations\kadu_pl.qm   %DESTINATION%\translations\ /C /H /R /Y /Q
 
 cd varia\themes\emoticons
 for /D %%D in (*) do (
@@ -85,8 +91,17 @@ for /D %%F in (*) do (
 		IF EXIST ..\..\plugins\%%F\data\configuration\*.ui (
 			xcopy ..\..\plugins\%%F\data\configuration\*.ui %DESTINATION%\plugins\configuration\ /C /H /R /Y /Q
 		)
-		IF EXIST ..\..\plugins\%%F\*.qm (
-			xcopy ..\..\plugins\%%F\*.qm   %DESTINATION%\plugins\translations\ /C /H /R /Y /Q
+		IF EXIST %%F\%%F_cs.qm (
+			xcopy %%F\%%F_cs.qm   %DESTINATION%\plugins\translations\ /C /H /R /Y /Q
+		)
+		IF EXIST %%F\%%F_de.qm (
+			xcopy %%F\%%F_de.qm   %DESTINATION%\plugins\translations\ /C /H /R /Y /Q
+		)
+		IF EXIST %%F\%%F_en.qm (
+			xcopy %%F\%%F_en.qm   %DESTINATION%\plugins\translations\ /C /H /R /Y /Q
+		)
+		IF EXIST %%F\%%F_pl.qm (
+			xcopy %%F\%%F_pl.qm   %DESTINATION%\plugins\translations\ /C /H /R /Y /Q
 		)
 		IF EXIST ..\..\plugins\%%F\data\* (
 			xcopy ..\..\plugins\%%F\data\* %DESTINATION%\plugins\data\%%F\ /C /H /R /Y /E /Q
@@ -123,13 +138,10 @@ xcopy %QT_PLUGINS_DIR%\imageformats\qtiff%QT_DEBUG_SUFFIX%4.dll        %DESTINAT
 xcopy %QT_PLUGINS_DIR%\phonon_backend\phonon_ds9%QT_DEBUG_SUFFIX%4.dll %DESTINATION%\qt-plugins\phonon_backend\ /C /H /R /Y /Q
 xcopy %QT_PLUGINS_DIR%\sqldrivers\qsqlite%QT_DEBUG_SUFFIX%4.dll        %DESTINATION%\qt-plugins\sqldrivers\     /C /H /R /Y /Q
 
-ECHO Copying Qt translations
+ECHO Copying Qt translations (cs, de, pl)
 xcopy %QT_TRANSLATIONS_DIR%\qt_cs.qm %DESTINATION%\translations\  /C /H /R /Y /Q
 xcopy %QT_TRANSLATIONS_DIR%\qt_de.qm %DESTINATION%\translations\  /C /H /R /Y /Q
-xcopy %QT_TRANSLATIONS_DIR%\qt_fr.qm %DESTINATION%\translations\  /C /H /R /Y /Q
-xcopy %QT_TRANSLATIONS_DIR%\qt_it.qm %DESTINATION%\translations\  /C /H /R /Y /Q
 xcopy %QT_TRANSLATIONS_DIR%\qt_pl.qm %DESTINATION%\translations\  /C /H /R /Y /Q
-xcopy %QT_TRANSLATIONS_DIR%\qt_ru.qm %DESTINATION%\translations\  /C /H /R /Y /Q
 
 ECHO [Paths] > %DESTINATION%\qt.conf
 ECHO Plugins = qt-plugins >> %DESTINATION%\qt.conf
