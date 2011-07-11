@@ -172,6 +172,12 @@ set (SERVERS_FILE
 	data/servers.txt
 )
 
+if (MINGW)
+	set_source_files_properties (gadu-resolver.cpp PROPERTIES
+		COMPILE_FLAGS -fno-strict-aliasing
+	)
+endif (MINGW)
+
 if (WIN32)
 	if (NOT MINGW_LIBGADU_DIR)
 		message (SEND_ERROR " Pass path to libgadu -DMINGW_LIBGADU_DIR=path")

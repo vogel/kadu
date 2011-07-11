@@ -18,6 +18,12 @@ set (MOC_SOURCES
 	winamp-player-plugin.h
 )
 
+if (MINGW)
+	set_source_files_properties (winamp.cpp PROPERTIES
+		COMPILE_FLAGS -fno-strict-aliasing
+	)
+endif (MINGW)
+
 kadu_plugin (winamp_mediaplayer
 	PLUGIN_SOURCES ${SOURCES}
 	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
