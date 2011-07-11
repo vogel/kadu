@@ -48,6 +48,9 @@ public:
 
 	virtual void show();
 	virtual void hide();
+
+	void setText(const QString &text, bool defaultFormatting = true);
+
 };
 
 #endif

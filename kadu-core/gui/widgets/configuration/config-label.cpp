@@ -40,7 +40,7 @@ void ConfigLabel::createWidgets()
 {
 	kdebugf();
 
-	setText("<font size='-1'><i>" + (qApp->translate("@default", widgetCaption.toUtf8().constData())) + "</i></font>");
+	setText(qApp->translate("@default", widgetCaption.toUtf8().constData()));
 	setWordWrap(true);
 	parentConfigGroupBox->addWidget(this);
 
@@ -56,4 +56,9 @@ void ConfigLabel::show()
 void ConfigLabel::hide()
 {
 	QLabel::hide();
+}
+
+void ConfigLabel::setText(const QString &text, bool defaultFormatting)
+{
+	QLabel::setText((defaultFormatting ? "<font size='-1'><i>" : "") + text + (defaultFormatting ? "</i></font>" : ""));
 }
