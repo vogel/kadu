@@ -177,9 +177,9 @@ bool Updates::isNewerVersion(const QString &newestversion)
 	if (newest.at(0).toInt() != actual.at(0).toInt())
 		return newest.at(0).toInt() > actual.at(0).toInt();
 	if (newest.at(1).toInt() != actual.at(1).toInt())
-		return newest.at(1).toInt() != actual.at(1).toInt();
+		return newest.at(1).toInt() > actual.at(1).toInt();
 	if (newest.at(2).toInt() != actual.at(2).toInt())
-		return newest.at(2).toInt() != actual.at(2).toInt();
+		return newest.at(2).toInt() > actual.at(2).toInt();
 	if (newest.length() > actual.length())
 		return true;
 	if (newest.length() == 4)
