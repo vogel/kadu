@@ -23,7 +23,7 @@
 
 #include "gui/windows/configuration-window.h"
 
-class QLabel;
+class ConfigLabel;
 
 class NotifierConfigurationDataManager;
 
@@ -31,7 +31,7 @@ class HintsConfigurationWindow : public ConfigurationWindow
 {
 	Q_OBJECT
 
-    	QLabel *preview;
+	ConfigLabel *preview;
 
 	QString EventName;
 

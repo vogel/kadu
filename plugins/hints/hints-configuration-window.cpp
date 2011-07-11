@@ -20,12 +20,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QLabel>
+#include <QtGui/QApplication>
 #include <QtGui/QPalette>
 #include <QtGui/QSpinBox>
 
 #include "configuration/notifier-configuration-data-manager.h"
 #include "gui/widgets/configuration/config-color-button.h"
+#include "gui/widgets/configuration/config-label.h"
 #include "gui/widgets/configuration/config-select-font.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/windows/main-configuration-window.h"
@@ -43,7 +44,9 @@ HintsConfigurationWindow::HintsConfigurationWindow(const QString &eventName, Not
 	widget()->widgetById("syntax")->setToolTip(tr(MainConfigurationWindow::SyntaxTextNotify));
 	static_cast<QSpinBox *>(widget()->widgetById("timeout"))->setSpecialValueText(tr("Don't hide"));
 
-	preview = static_cast<QLabel *>(widget()->widgetById("preview"));
+	preview = static_cast<ConfigLabel *>(widget()->widgetById("preview"));
+	preview->setMargin(3);
+	preview->setText(qApp->translate("HintsConfigurationWidget", "<b>Preview</b> text"), false);
 
 	connect(static_cast<ConfigSelectFont *>(widget()->widgetById("font")), SIGNAL(fontChanged(QFont)),
 			this, SLOT(fontChanged(QFont)));
