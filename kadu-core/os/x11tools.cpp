@@ -32,7 +32,7 @@
 
 
 
-bool X11_getCardinalProperty( Display *display, Window window, const char *propertyName, unsigned long *value, unsigned long offset )
+bool X11_getCardinalProperty( Display *display, Window window, const char *propertyName, uint32_t *value, unsigned long offset )
 {
 	Atom property = XInternAtom( display, propertyName, False );
 	if( property == None )
@@ -45,7 +45,7 @@ bool X11_getCardinalProperty( Display *display, Window window, const char *prope
 		return false;
 	if( nitems > 0 )
 	{
-		*value = ((unsigned long*)data)[0];
+		*value = ((uint32_t*)data)[0];
 		XFree( data );
 		return true;
 	}
@@ -116,10 +116,10 @@ std::pair<int,int> X11_getResolution( Display *display )
 
 std::pair<int,int> X11_getDesktopSize( Display *display )
 {
-	unsigned long width;
+	uint32_t width;
 	if( ! X11_getCardinalProperty( display, DefaultRootWindow( display ), "_NET_DESKTOP_GEOMETRY", &width, 0 ) )
 		return std::make_pair( 0, 0 );
-	unsigned long height;
+	uint32_t height;
 	if( ! X11_getCardinalProperty( display, DefaultRootWindow( display ), "_NET_DESKTOP_GEOMETRY", &height, 1 ) )
 		return std::make_pair( 0, 0 );
 	return std::make_pair( width, height );
@@ -191,7 +191,7 @@ bool X11_isFreeDesktopCompatible( Display *display )
 
 
 
-unsigned long X11_getDesktopsCount( Display *display, bool forceFreeDesktop )
+uint32_t X11_getDesktopsCount( Display *display, bool forceFreeDesktop )
 {
 	if( ( ! forceFreeDesktop ) && ( ! X11_isFreeDesktopCompatible( display ) ) )
 	{
@@ -201,7 +201,7 @@ unsigned long X11_getDesktopsCount( Display *display, bool forceFreeDesktop )
 	}
 	else
 	{
-		unsigned long value;
+		uint32_t value;
 		if( ! X11_getCardinalProperty( display, DefaultRootWindow( display ), "_NET_NUMBER_OF_DESKTOPS", &value ) )
 			return 0;
 		return value;
@@ -209,21 +209,21 @@ unsigned long X11_getDesktopsCount( Display *display, bool forceFreeDesktop )
 }
 
 
-unsigned long X11_getCurrentDesktop( Display *display, bool forceFreeDesktop )
+uint32_t X11_getCurrentDesktop( Display *display, bool forceFreeDesktop )
 {
 	if( ( ! forceFreeDesktop ) && ( ! X11_isFreeDesktopCompatible( display ) ) )
 	{
-		unsigned long dx = 0, dy = 0;
+		uint32_t dx = 0, dy = 0;
 		X11_getCardinalProperty( display, DefaultRootWindow( display ), "_NET_DESKTOP_VIEWPORT", &dx, 0 );
 		X11_getCardinalProperty( display, DefaultRootWindow( display ), "_NET_DESKTOP_VIEWPORT", &dy, 1 );
 		std::pair<int,int> desktopsize = X11_getDesktopSize( display );
 		std::pair<int,int> resolution = X11_getResolution( display );
-		unsigned long desktop = ( dy / resolution.second ) * ( desktopsize.first / resolution.first ) + ( dx / resolution.first );
+		uint32_t desktop = ( dy / resolution.second ) * ( desktopsize.first / resolution.first ) + ( dx / resolution.first );
 		return desktop;
 	}
 	else
 	{
-		unsigned long desktop;
+		uint32_t desktop;
 		if( ! X11_getCardinalProperty( display, DefaultRootWindow( display ), "_NET_CURRENT_DESKTOP", &desktop ) )
 			return X11_NODESKTOP;
 		return desktop;
@@ -231,7 +231,7 @@ unsigned long X11_getCurrentDesktop( Display *display, bool forceFreeDesktop )
 }
 
 
-void X11_setCurrentDesktop( Display *display, unsigned long desktop, bool forceFreeDesktop )
+void X11_setCurrentDesktop( Display *display, uint32_t desktop, bool forceFreeDesktop )
 {
 	if( ( desktop != X11_ALLDESKTOPS ) && ( desktop != X11_NODESKTOP ) && ( desktop != X11_getCurrentDesktop( display, forceFreeDesktop ) ) )
 	{
@@ -267,8 +267,8 @@ void X11_setCurrentDesktop( Display *display, unsigned long desktop, bool forceF
 		{
 			std::pair<int,int> desktopsize = X11_getDesktopSize( display );
 			std::pair<int,int> resolution = X11_getResolution( display );
-			unsigned long dx = ( desktop % ( desktopsize.first / resolution.first ) ) * resolution.first;
-			unsigned long dy = ( desktop / ( desktopsize.first / resolution.first ) ) * resolution.second;
+			uint32_t dx = ( desktop % ( desktopsize.first / resolution.first ) ) * resolution.first;
+			uint32_t dy = ( desktop / ( desktopsize.first / resolution.first ) ) * resolution.second;
 			XEvent xev;
 			xev.type                 = ClientMessage;
 			xev.xclient.type         = ClientMessage;
@@ -308,11 +308,11 @@ void X11_setCurrentDesktop( Display *display, unsigned long desktop, bool forceF
 }
 
 
-unsigned long X11_getDesktopOfWindow( Display *display, Window window, bool forceFreeDesktop, bool windowareadecides )
+uint32_t X11_getDesktopOfWindow( Display *display, Window window, bool forceFreeDesktop, bool windowareadecides )
 {
 	if( ( ! forceFreeDesktop ) && ( ! X11_isFreeDesktopCompatible( display ) ) )
 	{
-		unsigned long currentdesktop = X11_getCurrentDesktop( display, forceFreeDesktop );
+		uint32_t currentdesktop = X11_getCurrentDesktop( display, forceFreeDesktop );
 		std::pair<int,int> pos = X11_getWindowPos( display, window );
 		std::pair<int,int> desktopsize = X11_getDesktopSize( display );
 		std::pair<int,int> resolution = X11_getResolution( display );
@@ -323,7 +323,7 @@ unsigned long X11_getDesktopOfWindow( Display *display, Window window, bool forc
 			pos.second += size.second / 2;
 			pos.second %= desktopsize.second;
 		}
-		unsigned long desktopofwindow = currentdesktop + ( pos.second / resolution.second ) * ( desktopsize.first / resolution.first ) + ( pos.first / resolution.first );
+		uint32_t desktopofwindow = currentdesktop + ( pos.second / resolution.second ) * ( desktopsize.first / resolution.first ) + ( pos.first / resolution.first );
 		if( pos.first < 0 )
 			desktopofwindow -= 1;
 		if( pos.second < 0 )
@@ -333,7 +333,7 @@ unsigned long X11_getDesktopOfWindow( Display *display, Window window, bool forc
 	}
 	else
 	{
-		unsigned long desktopofwindow;
+		uint32_t desktopofwindow;
 		if( ! X11_getCardinalProperty( display, window, "_NET_WM_DESKTOP", &desktopofwindow ) )
 			return X11_NODESKTOP;
 		return desktopofwindow;
@@ -341,16 +341,16 @@ unsigned long X11_getDesktopOfWindow( Display *display, Window window, bool forc
 }
 
 
-void X11_moveWindowToDesktop( Display *display, Window window, unsigned long desktop, bool forceFreeDesktop, bool position, int x, int y )
+void X11_moveWindowToDesktop( Display *display, Window window, uint32_t desktop, bool forceFreeDesktop, bool position, int x, int y )
 {
 	if( ( ! forceFreeDesktop ) && ( ! X11_isFreeDesktopCompatible( display ) ) )
 	{
 		std::pair<int,int> pos = X11_getWindowPos( display, window );
 		std::pair<int,int> desktopsize = X11_getDesktopSize( display );
 		std::pair<int,int> resolution = X11_getResolution( display );
-		unsigned long desktopofwindow = X11_getDesktopOfWindow( display, window, forceFreeDesktop );
-		unsigned long ddx = ( desktop % ( desktopsize.first / resolution.first ) ) - ( desktopofwindow % ( desktopsize.first / resolution.first ) );
-		unsigned long ddy = ( desktop / ( desktopsize.first / resolution.first ) ) - ( desktopofwindow / ( desktopsize.first / resolution.first ) );
+		uint32_t desktopofwindow = X11_getDesktopOfWindow( display, window, forceFreeDesktop );
+		uint32_t ddx = ( desktop % ( desktopsize.first / resolution.first ) ) - ( desktopofwindow % ( desktopsize.first / resolution.first ) );
+		uint32_t ddy = ( desktop / ( desktopsize.first / resolution.first ) ) - ( desktopofwindow / ( desktopsize.first / resolution.first ) );
 		int newx, newy;
 		if( position )
 		{
@@ -389,16 +389,16 @@ void X11_moveWindowToDesktop( Display *display, Window window, unsigned long des
 }
 
 
-bool X11_isWindowOnDesktop( Display *display, Window window, unsigned long desktop, bool forceFreeDesktop )
+bool X11_isWindowOnDesktop( Display *display, Window window, uint32_t desktop, bool forceFreeDesktop )
 {
 	if( ( ! forceFreeDesktop ) && ( ! X11_isFreeDesktopCompatible( display ) ) )
 	{
-		unsigned long desktopofwindow = X11_getDesktopOfWindow( display, window, forceFreeDesktop );
+		uint32_t desktopofwindow = X11_getDesktopOfWindow( display, window, forceFreeDesktop );
 		return ( desktopofwindow == desktop );
 	}
 	else
 	{
-		unsigned long desktopofwindow = X11_getDesktopOfWindow( display, window, forceFreeDesktop );
+		uint32_t desktopofwindow = X11_getDesktopOfWindow( display, window, forceFreeDesktop );
 		if( desktopofwindow == X11_ALLDESKTOPS )
 			return true;
 		return ( desktopofwindow == desktop );
@@ -467,7 +467,7 @@ bool X11_isWindowCovered( Display *display, Window window )
 		Atom type_dropdownmenu = XInternAtom( display, "_NET_WM_WINDOW_TYPE_DROPDOWN_MENU", False );
 		Atom type_popupmenu    = XInternAtom( display, "_NET_WM_WINDOW_TYPE_POPUP_MENU"   , False );
 		Atom type_combo        = XInternAtom( display, "_NET_WM_WINDOW_TYPE_COMBO"        , False );
-		unsigned long currentdesktop = X11_getCurrentDesktop( display );
+		uint32_t currentdesktop = X11_getCurrentDesktop( display );
 		for( ; k < nchildren ; k++ )
 		{
 			if( children[k] == window )
@@ -618,7 +618,7 @@ void X11_moveWindow( Display *display, Window window, int x, int y )
 }
 
 
-void X11_centerWindow( Display *display, Window window, unsigned long desktop, bool forceFreeDesktop )
+void X11_centerWindow( Display *display, Window window, uint32_t desktop, bool forceFreeDesktop )
 {
 	if( desktop == X11_NODESKTOP )
 		desktop = X11_getCurrentDesktop( display, forceFreeDesktop );
@@ -890,7 +890,7 @@ bool X11_checkFullScreen( Display *display )
 	_x11toolsdebug( "[RES=%dx%d]", resolution.first, resolution.second );
 	_x11toolsdebug( "[wa=%dx%d]", X11_getWindowSize( display, wa ).first, X11_getWindowSize( display, wa ).second );
 	_x11toolsdebug( "[wt=%dx%d]", X11_getWindowSize( display, wt ).first, X11_getWindowSize( display, wt ).second );
-	unsigned long currentdesktop = X11_getCurrentDesktop( display );
+	uint32_t currentdesktop = X11_getCurrentDesktop( display );
 	_x11toolsdebug( "[cD=%d]", currentdesktop );
 	if( X11_isPointerGrabbed( display ) )
 	{
