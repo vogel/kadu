@@ -402,8 +402,9 @@ QPair<Contact, Status> History::dequeueUnsavedStatusChange()
 
 void History::crash()
 {
-	// NOTE: don't try to stop/wait on thread here, see http://kadu.net/mantis/view.php?id=2228
-	forceSync();
+	// don't try to stop/wait on thread here, see http://kadu.net/mantis/view.php?id=2228
+	if (SaveThread)
+		SaveThread->forceSync(true);
 }
 
 void History::startSaveThread()

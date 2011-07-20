@@ -27,7 +27,7 @@
 #define SYNCHRONIZATION_TIMEOUT 15*1000
 
 HistorySaveThread::HistorySaveThread(History *history, QObject *parent) :
-		QThread(parent), CurrentHistory(history), Enabled(true), Stopped(false)
+		QThread(parent), CurrentHistory(history), Enabled(true), Stopped(false), ForceSyncOnce(false)
 {
 }
 
@@ -68,14 +68,31 @@ void HistorySaveThread::sync()
 	}
 }
 
-void HistorySaveThread::forceSync()
+void HistorySaveThread::forceSync(bool crashed)
 {
-	QMutexLocker locker(&SomethingToSave);
+	if (crashed)
+	{
+		// just sync, using threads won't work after crash
+		storeMessages();
+		storeStatusChanges();
+		sync();
 
-	storeMessages();
-	storeStatusChanges();
+		return;
+	}
 
-	sync();
+	if (isRunning())
+	{
+		ForceSyncOnce = true;
+		WaitForSomethingToSave.wakeAll();
+	}
+	else
+	{
+		QMutexLocker locker(&SomethingToSave);
+
+		storeMessages();
+		storeStatusChanges();
+		sync();
+	}
 }
 
 void HistorySaveThread::run()
@@ -86,12 +103,15 @@ void HistorySaveThread::run()
 	{
 		QMutexLocker locker(&SomethingToSave);
 
-		if (Enabled)
+		if (Enabled || ForceSyncOnce)
 		{
 			storeMessages();
 			storeStatusChanges();
-			if (QDateTime::currentDateTime().addMSecs(-SYNCHRONIZATION_TIMEOUT) >= LastSyncTime)
+			if (ForceSyncOnce || QDateTime::currentDateTime().addMSecs(-SYNCHRONIZATION_TIMEOUT) >= LastSyncTime)
+			{
 				sync();
+				ForceSyncOnce = false;
+			}
 		}
 
 		WaitForSomethingToSave.wait(locker.mutex(), SYNCHRONIZATION_TIMEOUT);

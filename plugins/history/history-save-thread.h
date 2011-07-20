@@ -40,6 +40,7 @@ class HistorySaveThread : public QThread
 	QDateTime LastSyncTime;
 
 	bool Stopped;
+	bool ForceSyncOnce;
 
 	void storeMessages();
 	void storeStatusChanges();
@@ -51,7 +52,7 @@ public:
 
 	virtual void run();
 
-	void forceSync();
+	void forceSync(bool crashed = false);
 
 	void setEnabled(bool enabled);
 
