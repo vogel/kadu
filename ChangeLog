@@ -1,4 +1,5 @@
 +++ version 0.10.0-beta3
+* gadu: #2257 fixed: fixed very unlikely possibility to needlessly and confusingly ask whether to import contacts from server on clean installation (beevvy)
 
 +++ version 0.10.0-beta2
 * freedesktop_notify, hints: #2195 fixed: enable Freedesktop notifications in favor of hints on X11 by default (beevvy)

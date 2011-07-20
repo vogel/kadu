@@ -33,8 +33,8 @@
 GaduAccountDetails::GaduAccountDetails(AccountShared *data) :
 		AccountDetails(data), AllowDcc(true), LimitImageSize(true), MaximumImageSize(255),
 		ImageSizeAsk(false), ReceiveImagesDuringInvisibility(true), MaximumImageRequests(10),
-		ChatImageSizeWarning(true), TlsEncryption(false), SendTypingNotification(true),
-		ExternalPort(0), UserlistVersion(-1)
+		ChatImageSizeWarning(true), InitialRosterImport(true), TlsEncryption(false),
+		SendTypingNotification(true), ExternalPort(0), UserlistVersion(-1)
 {
 	OpenChatRunner = new GaduOpenChatWithRunner(data);
 	OpenChatWithRunnerManager::instance()->registerRunner(OpenChatRunner);
@@ -61,6 +61,7 @@ void GaduAccountDetails::load()
 	ReceiveImagesDuringInvisibility = loadValue<bool>("ReceiveImagesDuringInvisibility", true);
 	MaximumImageRequests = loadValue<short int>("MaximumImageRequests", 10);
 	ChatImageSizeWarning = loadValue<bool>("ChatImageSizeWarning", true);
+	InitialRosterImport = loadValue<bool>("InitialRosterImport", true);
 	TlsEncryption = loadValue<bool>("TlsEncryption", false);
 	SendTypingNotification = loadValue<bool>("SendTypingNotification", true);
 	ExternalIp = loadValue<QString>("ExternalIp");
@@ -80,6 +81,7 @@ void GaduAccountDetails::store()
 	storeValue("ReceiveImagesDuringInvisibility", ReceiveImagesDuringInvisibility);
 	storeValue("MaximumImageRequests", MaximumImageRequests);
 	storeValue("ChatImageSizeWarning", ChatImageSizeWarning);
+	storeValue("InitialRosterImport", InitialRosterImport);
 	storeValue("TlsEncryption", TlsEncryption);
 	storeValue("SendTypingNotification", SendTypingNotification);
 	storeValue("ExternalIp", ExternalIp);

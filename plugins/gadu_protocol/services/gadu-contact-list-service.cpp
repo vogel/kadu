@@ -98,6 +98,7 @@ void GaduContactListService::handleEventUserlist100GetReply(struct gg_event *e)
 		emit stateMachineSucceededImporting();
 		emit contactListImported(true, buddies);
 		accountDetails->setUserlistVersion(e->event.userlist100_reply.version);
+		accountDetails->setInitialRosterImport(false);
 
 		// cleanup references, so buddy and contact instances can be removed
 		// this is really a hack, we need to call aboutToBeRemoved someway for non-manager contacts and buddies too
@@ -181,17 +182,21 @@ void GaduContactListService::dirtyContactAdded(Contact contact)
 		QMetaObject::invokeMethod(this, "stateMachineHasDirtyContacts", Qt::QueuedConnection);
 }
 
-bool GaduContactListService::isListInitiallySetUp() const
+bool GaduContactListService::haveToAskForAddingContacts() const
 {
 	GaduAccountDetails *accountDetails = dynamic_cast<GaduAccountDetails *>(Protocol->account().details());
-	if (accountDetails && -1 != accountDetails->userlistVersion())
+	if (!accountDetails) // assert?
 		return true;
 
-	// if our contact list is empty (most likely on first run), it is okay to import contacts without asking
-	foreach (const Contact &contact, ContactManager::instance()->contacts(Protocol->account()))
-		if (Core::instance()->myself() != contact.ownerBuddy())
-			return false;
+	// if already synchronized, never ask
+	if (-1 != accountDetails->userlistVersion())
+		return false;
 
+	// if not yet synchronized but also not migrating from 0.9.x, i.e., it's a clean install, do not ask as well
+	if (accountDetails->initialRosterImport())
+		return false;
+
+	// here is the case for migrating from 0.9.x - ask then
 	return true;
 }
 

@@ -50,7 +50,7 @@ public:
 	explicit GaduContactListService(GaduProtocol *protocol);
 	virtual ~GaduContactListService();
 
-	virtual bool isListInitiallySetUp() const;
+	virtual bool haveToAskForAddingContacts() const;
 
 	virtual void exportContactList(const BuddyList &buddies);
 

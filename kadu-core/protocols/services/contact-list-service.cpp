@@ -134,9 +134,10 @@ QVector<Contact> ContactListService::registerBuddies(const BuddyList &buddies)
 			Contact knownContact = ContactManager::instance()->byId(CurrentProtocol->account(), contact.id(), ActionReturnNull);
 			if (knownContact)
 			{
-				// do not import dirty removed contacts unless we are migrating from 0.9.x
-				// (note that all migrated contacts, including those with anynomous buddies, are marked dirty)
-				if (!(knownContact.isDirty() && knownContact.ownerBuddy().isAnonymous() && isListInitiallySetUp()))
+				// do not import dirty removed contacts unless we will be asking the user
+				// (We will be asking only if we are migrating from 0.9.x. Remember that
+				// all migrated contacts, including those with anynomous buddies, are initially marked dirty.)
+				if (!(knownContact.isDirty() && knownContact.ownerBuddy().isAnonymous() && !haveToAskForAddingContacts()))
 				{
 					if (knownContact.ownerBuddy().isAnonymous())
 						contactsToAdd.insert(targetBuddy, knownContact);
@@ -159,7 +160,7 @@ QVector<Contact> ContactListService::registerBuddies(const BuddyList &buddies)
 		}
 	}
 
-	if (!isListInitiallySetUp() && !askForAddingContacts(contactsToAdd, contactsToRename))
+	if (haveToAskForAddingContacts() && !askForAddingContacts(contactsToAdd, contactsToRename))
 		return resultContacts;
 
 	resultContacts += performAddsAndRenames(contactsToAdd, contactsToRename);
@@ -201,16 +202,17 @@ void ContactListService::setBuddiesList(const BuddyList &buddies, bool removeOld
 		Buddy ownerBuddy = i->ownerBuddy();
 		if (i->isDirty() || ownerBuddy.isAnonymous())
 		{
-			if (i->isDirty() && ownerBuddy.isAnonymous() && !isListInitiallySetUp())
+			// local dirty removed contacts are no longer dirty if they were absent on server
+			if (i->isDirty() && ownerBuddy.isAnonymous())
 				i->setDirty(false);
 
 			i = unImportedContacts.erase(i);
-			continue;
 		}
-
-		contactsList.append(ownerBuddy.display() + " (" + i->id() + ')');
-
-		++i;
+		else
+		{
+			contactsList.append(ownerBuddy.display() + " (" + i->id() + ')');
+			++i;
+		}
 	}
 
 	// now unImportedContacts = ALL_EVER_HAD_LOCALLY_CONTACTS - (SERVER_CONTACTS - LOCAL_DIRTY_REMOVED_CONTACTS) -
