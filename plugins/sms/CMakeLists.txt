@@ -5,6 +5,12 @@ cmake_minimum_required (VERSION 2.8)
 set (QT_MIN_VERSION "4.7.0")
 set (CMAKE_MIN_VERSION "2.8.0")
 
+set (QT_USE_QTXML 1)
+set (QT_USE_QTNETWORK 1)
+set (QT_USE_QTWEBKIT 1)
+set (QT_USE_QTSCRIPT 1)
+set (QT_USE_QTSCRIPTTOOLS 1)
+
 set (KADU_FIND_REQUIRED true)
 include (FindKadu)
 
@@ -60,16 +66,8 @@ set (TRANSLATION_SOURCES
 )
 
 set (CONFIGURATION_FILES
-	configuration/sms.ui)
-
-set (QT_MIN_VERSION "4.5.0")
-find_package (Qt4 REQUIRED)
-set (QT_USE_QTXML 1)
-set (QT_USE_QTNETWORK 1)
-set (QT_USE_QTWEBKIT 1)
-set (QT_USE_QTSCRIPT 1)
-set (QT_USE_QTSCRIPTTOOLS 1)
-include (${QT_USE_FILE})
+	configuration/sms.ui
+)
 
 kadu_plugin (sms
 	PLUGIN_SOURCES ${SOURCES}

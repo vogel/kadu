@@ -5,6 +5,13 @@ cmake_minimum_required (VERSION 2.8)
 set (QT_MIN_VERSION "4.7.0")
 set (CMAKE_MIN_VERSION "2.8.0")
 
+set (QT_USE_QTXML 1)
+set (QT_USE_QTXMLPATTERNS 1)
+set (QT_USE_QTNETWORK 1)
+set (QT_USE_QTWEBKIT 1)
+set (QT_USE_QTSCRIPT 1)
+set (QT_USE_QTSCRIPTTOOLS 1)
+
 set (KADU_FIND_REQUIRED true)
 include (FindKadu)
 
@@ -218,15 +225,6 @@ if (LIBGADU_FOUND)
 else (LIBGADU_FOUND)
 	message (FATAL_ERROR " * libgadu (version ${LIBGADU_MIN_VERSION}) was NOT FOUND")
 endif (LIBGADU_FOUND)
-
-find_package (Qt4 REQUIRED)
-set (QT_USE_QTXML 1)
-set (QT_USE_QTXMLPATTERNS 1)
-set (QT_USE_QTNETWORK 1)
-set (QT_USE_QTWEBKIT 1)
-set (QT_USE_QTSCRIPT 1)
-set (QT_USE_QTSCRIPTTOOLS 1)
-include (${QT_USE_FILE})
 
 kadu_plugin (gadu_protocol
 	PLUGIN_SOURCES ${SOURCES}
