@@ -67,40 +67,38 @@ PlusGatewaySmsSender.prototype = {
 
 	tokenRead: function(tokenValue) {
 
-		var separator = String.fromCharCode(0xef, 0xbf, 0xbf);
-		//var end = String.fromCharCode(0x0d, 0x0a, 0x0d, 0x0a);
-
+		var separator = String.fromCharCode(0x7c);
 		var postUrl = "http://www1.plus.pl/bsm/service/SendSmsService";
-		var postData = 
-			"3" + separator + "0" + separator + "13" + separator +
-			"http://www1.plus.pl/bsm/" + separator +
-			"E23E25B5B18D1CA333516D75EAF0966A" + separator +
-			"pl.plus.map.bsm.gwt.client.service.SendSmsService" + separator + "send" + separator +
-			"pl.plus.map.bsm.core.gwt.dto.MessageTO" + separator +
-			"pl.plus.map.bsm.core.gwt.dto.MessageTO/3818266010" + separator +
+		var postData =
+			"7"+ separator + "0"+ separator + "12"+ separator +
+			"http://www1.plus.pl/bsm/"+ separator +
+			"A356AF1D38BD7E411FD470C57483AFEE"+ separator +
+			"pl.plus.map.bsm.gwt.client.service.SendSmsService"+ separator + "send"+ separator +
+			"pl.plus.map.bsm.core.gwt.dto.MessageTO/3818266010"+ separator +
 			tokenValue + separator +
-			this.tokenId + separator + 
-			"a25d77f6f165317cc6400863a41d9ca6" + separator +
-			this.content  + separator + separator +
+			this.tokenId + separator +
+			"b980ccf30e9531787046fda86d2b544b"+ separator +
+			this.content + separator +
+			"" + separator +
 			this.recipient + separator +
-			this.signature + separator + 
+			this.signature + separator +
 			"1" + separator +
 			"2" + separator +
 			"3" + separator +
 			"4" + separator +
 			"1" + separator +
 			"5" + separator +
+			"5" + separator +
+			"0" + separator +
+			"0" + separator +
 			"6" + separator +
-			"0" + separator +
-			"0" + separator +
 			"7" + separator +
 			"8" + separator +
+			"0" + separator +
+			"0" + separator +
 			"9" + separator +
 			"0" + separator +
 			"0" + separator +
-			"10"+ separator +
-			"0" + separator +
-			"0" + separator +
 			"0" + separator +
 			"0" + separator +
 			"0" + separator +
@@ -123,15 +121,15 @@ PlusGatewaySmsSender.prototype = {
 			"0" + separator +
 			"0" + separator +
 			"0" + separator +
-			"11"+ separator +
+			"10" + separator +
+			"11" + separator +
+			"0" + separator +
+			"0" + separator +
+			"0" + separator +
 			"12" + separator +
 			"0" + separator +
 			"0" + separator +
-			"0" + separator +
-			"13"+ separator +
-			"0" + separator +
-			"0" + separator +
-			"11"+ separator +
+			"10" + separator +
 			"0" + separator +
 			"0" + separator +
 			"0" + separator +

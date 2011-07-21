@@ -55,8 +55,10 @@ QScriptValue NetworkAccessManagerWrapper::post(const QString &url, const QString
 
 	if (Unicode)
 	{
-		request.setRawHeader("Content-Type", "text/plain; charset=utf-8");
+		request.setRawHeader("Content-Type", "text/x-gwt-rpc; charset=utf-8");
 		request.setRawHeader("Accept-Encoding", "gzip, deflate");
+		request.setRawHeader("X-GWT-Module-Base", "http://www1.plus.pl/bsm/");
+		request.setRawHeader("X-GWT-Permutation", "22E4064F5698D299DC724EC04F1478DC");
 		requestData = data.toAscii();
 	}
 	else
