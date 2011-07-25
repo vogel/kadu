@@ -135,7 +135,13 @@ Status Protocol::status() const
 
 void Protocol::statusChanged(StatusContainer *container, Status status)
 {
-	if (!container || container != account().statusContainer() || CurrentStatus == status)
+	if (!container || container != account().statusContainer())
+		return;
+
+	// If we are in logging-in state and user requested stopping connecting,
+	// CurrentStatus and status are both offline but we still have to emit
+	// stateMachineLogout() signal to actually stop connecting.
+	if (!status.isDisconnected() && CurrentStatus == status)
 		return;
 
 	CurrentStatus = status;
