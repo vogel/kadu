@@ -548,16 +548,12 @@ void HintManager::showToolTip(const QPoint &point, BuddyOrContact buddyOrContact
 
 void HintManager::hideToolTip()
 {
-	kdebugf();
-
 	if (tipFrame)
 	{
 		tipFrame->hide();
 		tipFrame->deleteLater();
 		tipFrame = 0;
 	}
-
-	kdebugf2();
 }
 
 void HintManager::notify(Notification *notification)
