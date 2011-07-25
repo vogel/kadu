@@ -57,6 +57,7 @@
 #include "gui/windows/main-window.h"
 #include "gui/windows/message-dialog.h"
 #include "multilogon/multilogon-session.h"
+#include "notify/account-notification.h"
 #include "notify/buddy-notify-data.h"
 #include "notify/multilogon-notification.h"
 #include "notify/notification.h"
@@ -110,6 +111,7 @@ void NotificationManager::init()
 	kdebugf();
 
 	Notification::registerParserTags();
+	AccountNotification::registerParserTags();
 
 	UiHandler = new NotifyConfigurationUiHandler(this);
 	MainConfigurationWindow::registerUiHandler(UiHandler);
@@ -169,6 +171,7 @@ NotificationManager::~NotificationManager()
 		unregisterNotifier(Notifiers.at(0));
 	}
 
+	AccountNotification::unregisterParserTags();
 	Notification::unregisterParserTags();
 
 #if defined(Q_WS_X11) && !defined(Q_WS_MAEMO_5)

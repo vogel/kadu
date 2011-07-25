@@ -45,15 +45,23 @@ static QString getProtocolName(const QObject * const object)
 		: QString();
 }
 
-AccountNotification::AccountNotification(Account account, const QString &type, const KaduIcon &icon) :
-		Notification(type, icon), CurrentAccount(account)
+void AccountNotification::registerParserTags()
 {
 	Parser::registerObjectTag("protocol", getProtocolName);
 	Parser::registerObjectTag("account", getAccountName);
 }
 
-AccountNotification::~AccountNotification()
+void AccountNotification::unregisterParserTags()
 {
 	Parser::unregisterObjectTag("protocol");
 	Parser::unregisterObjectTag("account");
+}
+
+AccountNotification::AccountNotification(Account account, const QString &type, const KaduIcon &icon) :
+		Notification(type, icon), CurrentAccount(account)
+{
+}
+
+AccountNotification::~AccountNotification()
+{
 }

@@ -35,6 +35,9 @@ class KADUAPI AccountNotification : public Notification
 	Account CurrentAccount;
 
 public:
+	static void registerParserTags();
+	static void unregisterParserTags();
+
 	AccountNotification(Account account, const QString &type, const KaduIcon &icon);
 	virtual ~AccountNotification();
 
