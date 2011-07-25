@@ -98,6 +98,10 @@ class KADUAPI BuddyShared : public QObject, public Shared
 	bool Blocked;
 	bool OfflineTo;
 
+	bool doAddToGroup(const Group &group);
+	bool doRemoveFromGroup(const Group &group);
+	void doClearGroups();
+
 private slots:
 	void markContactsDirty();
 
@@ -134,13 +138,14 @@ public:
 	void sortContacts();
 	void normalizePriorities();
 
-	// properties
+	bool isEmpty();
+
+	KaduShared_PropertyRead(const QList<Group> &, groups, Groups)
+	void setGroups(const QList<Group> &groups);
 	bool showInAllGroup();
 	bool isInGroup(const Group &group);
 	void addToGroup(const Group &group);
 	void removeFromGroup(const Group &group);
-
-	bool isEmpty();
 
 	KaduShared_Property(const Avatar &, buddyAvatar, BuddyAvatar)
 	BuddyShared_PropertyDirty(const QString &, display, Display)
@@ -156,7 +161,6 @@ public:
 	BuddyShared_PropertyDirty(const QString &, website, Website)
 	KaduShared_Property(unsigned short, birthYear, BirthYear)
 	KaduShared_Property(BuddyGender, gender, Gender)
-	BuddyShared_PropertyDirty(const QList<Group> &, groups, Groups)
 	KaduShared_Property(bool, preferHigherStatuses, PreferHigherStatuses)
 	BuddyShared_PropertySubscription(Anonymous)
 	BuddyShared_PropertySubscriptionDirty(Blocked)
