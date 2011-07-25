@@ -110,6 +110,11 @@ void GroupShared::store()
 	storeValue("TabPosition", TabPosition);
 }
 
+void GroupShared::aboutToBeRemoved()
+{
+	emit groupAboutToBeRemoved();
+}
+
 void GroupShared::setName(const QString &name)
 {
 	ensureLoaded();

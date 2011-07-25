@@ -402,6 +402,8 @@ bool BuddyShared::doAddToGroup(const Group &group)
 
 	Groups.append(group);
 	connect(group, SIGNAL(nameChanged()), this, SLOT(markContactsDirty()));
+	connect(group, SIGNAL(groupAboutToBeRemoved()), this, SLOT(groupAboutToBeRemoved()));
+
 	return true;
 }
 
@@ -411,6 +413,8 @@ bool BuddyShared::doRemoveFromGroup(const Group &group)
 		return false;
 
 	disconnect(group, SIGNAL(nameChanged()), this, SLOT(markContactsDirty()));
+	disconnect(group, SIGNAL(groupAboutToBeRemoved()), this, SLOT(groupAboutToBeRemoved()));
+
 	return true;
 }
 
@@ -434,6 +438,13 @@ void BuddyShared::removeFromGroup(const Group &group)
 		dataUpdated();
 		markContactsDirty();
 	}
+}
+
+void BuddyShared::groupAboutToBeRemoved()
+{
+	Group group(sender());
+	if (!group.isNull())
+		removeFromGroup(group);
 }
 
 bool BuddyShared::isEmpty()

@@ -58,6 +58,7 @@ public:
 	virtual QString storageNodeName();
 
 	virtual void store();
+	virtual void aboutToBeRemoved();
 
 	KaduShared_PropertyRead(const QString &, name, Name)
 	void setName(const QString &name);
@@ -73,6 +74,7 @@ public:
 signals:
 	void updated();
 	void nameChanged();
+	void groupAboutToBeRemoved();
 
 };
 

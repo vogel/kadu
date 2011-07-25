@@ -103,6 +103,7 @@ class KADUAPI BuddyShared : public QObject, public Shared
 	void doClearGroups();
 
 private slots:
+	void groupAboutToBeRemoved();
 	void markContactsDirty();
 
 protected:

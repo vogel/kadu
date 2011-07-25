@@ -27,7 +27,6 @@
 #include "buddies/buddy-list.h"
 #include "buddies/buddy-remove-predicate-object.h"
 #include "buddies/buddy-shared.h"
-#include "buddies/group-manager.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
 #include "configuration/configuration-manager.h"
@@ -36,7 +35,6 @@
 #include "storage/storage-point.h"
 
 #include "debug.h"
-#include "group.h"
 
 #include "buddy-manager.h"
 
@@ -64,9 +62,6 @@ BuddyManager::~BuddyManager()
 void BuddyManager::init()
 {
 	QMutexLocker locker(&mutex());
-
-	connect(GroupManager::instance(), SIGNAL(groupAboutToBeRemoved(Group)),
-			this, SLOT(groupRemoved(Group)));
 
 	int itemsSize = items().size();
 	QDomElement buddiesNode = xml_config_file->getNode("Buddies", XmlConfigFile::ModeFind);
@@ -278,12 +273,4 @@ void BuddyManager::buddySubscriptionChanged()
 	Buddy buddy(sender());
 	if (!buddy.isNull())
 		emit buddySubscriptionChanged(buddy);
-}
-
-void BuddyManager::groupRemoved(Group group)
-{
-	QMutexLocker locker(&mutex());
-
-	foreach (Buddy buddy, items())
-		buddy.removeFromGroup(group);
 }

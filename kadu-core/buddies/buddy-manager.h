@@ -38,7 +38,6 @@
 #include "exports.h"
 
 class Account;
-class Group;
 class XmlConfigFile;
 
 class KADUAPI BuddyManager : public QObject, public SimpleManager<Buddy>
@@ -58,7 +57,6 @@ class KADUAPI BuddyManager : public QObject, public SimpleManager<Buddy>
 private slots:
 	void buddyDataUpdated();
 	void buddySubscriptionChanged();
-	void groupRemoved(Group group);
 
 protected:
 	virtual void load();
@@ -93,8 +91,5 @@ signals:
 	void buddyUpdated(Buddy &buddy);
 	void buddySubscriptionChanged(Buddy &buddy);
 };
-
-// for MOC
-#include "buddies/group.h"
 
 #endif // BUDDY_MANAGER_H
