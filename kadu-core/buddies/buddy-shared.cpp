@@ -99,7 +99,7 @@ void BuddyShared::importConfiguration()
 {
 	QStringList groups = CustomData["groups"].split(',', QString::SkipEmptyParts);
 	foreach (const QString &group, groups)
-		Groups << GroupManager::instance()->byName(group);
+		doAddToGroup(GroupManager::instance()->byName(group));
 
 	CustomData.remove("groups");
 
@@ -147,7 +147,7 @@ void BuddyShared::load()
 			CustomData[name] = customDataElement.text();
 	}
 
-	Groups.clear();
+	doClearGroups();
 	QDomElement groupsNode = configurationStorage->getNode(parent, "ContactGroups", XmlConfigFile::ModeFind);
 	if (!groupsNode.isNull())
 	{
@@ -159,9 +159,7 @@ void BuddyShared::load()
 			QDomElement groupElement = groupsList.at(i).toElement();
 			if (groupElement.isNull())
 				continue;
-			Group group = GroupManager::instance()->byUuid(groupElement.text());
-			if (group)
-				Groups << group;
+			doAddToGroup(GroupManager::instance()->byUuid(groupElement.text()));
 		}
 	}
 
@@ -249,7 +247,7 @@ void BuddyShared::aboutToBeRemoved()
 		contact.setOwnerBuddy(Buddy::null);
 
 	Contacts.clear();
-	Groups.clear();
+	doClearGroups();
 
 	AvatarManager::instance()->removeItem(BuddyAvatar);
 	BuddyAvatar = Avatar::null;
@@ -353,7 +351,25 @@ void BuddyShared::emitUpdated()
 	emit updated();
 }
 
-// properties
+void BuddyShared::setGroups(const QList<Group> &groups)
+{
+	ensureLoaded();
+
+	if (Groups == groups)
+		return;
+
+	QList<Group> groupsToRemove = Groups;
+
+	foreach (const Group &group, groups)
+		if (groupsToRemove.removeAll(group) <= 0)
+			doAddToGroup(group);
+
+	foreach (const Group &group, groupsToRemove)
+		doRemoveFromGroup(group);
+
+	dataUpdated();
+	markContactsDirty();
+}
 
 bool BuddyShared::isInGroup(const Group &group)
 {
@@ -373,26 +389,48 @@ bool BuddyShared::showInAllGroup()
 	return true;
 }
 
+void BuddyShared::doClearGroups()
+{
+	while (!Groups.isEmpty())
+		doRemoveFromGroup(Groups.at(0));
+}
+
+bool BuddyShared::doAddToGroup(const Group &group)
+{
+	if (!group || Groups.contains(group))
+		return false;
+
+	Groups.append(group);
+	connect(group, SIGNAL(nameChanged()), this, SLOT(markContactsDirty()));
+	return true;
+}
+
+bool BuddyShared::doRemoveFromGroup(const Group &group)
+{
+	if (Groups.removeAll(group) <= 0)
+		return false;
+
+	disconnect(group, SIGNAL(nameChanged()), this, SLOT(markContactsDirty()));
+	return true;
+}
+
 void BuddyShared::addToGroup(const Group &group)
 {
 	ensureLoaded();
 
-	if (!group || Groups.contains(group))
-		return;
-
-	Groups.append(group);
-	dataUpdated();
-	markContactsDirty();
-	connect(group, SIGNAL(nameChanged()), this, SLOT(markContactsDirty()));
+	if (doAddToGroup(group))
+	{
+		dataUpdated();
+		markContactsDirty();
+	}
 }
 
 void BuddyShared::removeFromGroup(const Group &group)
 {
 	ensureLoaded();
 
-	if (Groups.removeAll(group) > 0)
+	if (doRemoveFromGroup(group))
 	{
-		disconnect(group, SIGNAL(nameChanged()), this, SLOT(markContactsDirty()));
 		dataUpdated();
 		markContactsDirty();
 	}
