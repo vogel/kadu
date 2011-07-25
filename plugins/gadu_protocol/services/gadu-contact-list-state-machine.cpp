@@ -39,7 +39,7 @@ GaduContactListStateMachine::GaduContactListStateMachine(GaduContactListService 
 	OfflineState = new QState(this);
 	AwaitingServerGetResponseState = new QState(awaitingServerResponseState);
 	AwaitingServerPutResponseState = new QState(awaitingServerResponseState);
-	InternalErrorState = new QStateMachine(this);
+	InternalErrorState = new QState(this);
 	NormalState = new QState(this);
 
 	connect(OfflineState, SIGNAL(entered()), SLOT(printConfiguration()));
@@ -52,6 +52,7 @@ GaduContactListStateMachine::GaduContactListStateMachine(GaduContactListService 
 	connect(AwaitingServerPutResponseState, SIGNAL(entered()), SIGNAL(awaitingServerPutResponseStateEntered()));
 
 	connect(InternalErrorState, SIGNAL(entered()), &RetryTimer, SLOT(start()));
+	connect(InternalErrorState, SIGNAL(exited()), &RetryTimer, SLOT(stop()));
 
 	Protocol *protocol = CurrentService->protocol();
 
