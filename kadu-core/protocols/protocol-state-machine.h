@@ -21,6 +21,7 @@
 #define PROTOCOL_STATE_MACHINE_H
 
 #include <QtCore/QStateMachine>
+#include <QtCore/QTimer>
 
 class Protocol;
 
@@ -159,12 +160,15 @@ class ProtocolStateMachine : public QStateMachine
 
 	Protocol *CurrentProtocol;
 
+	QTimer DelayTimer;
+
 	QState *LoggingOutState;
 	QState *LoggedOutOnlineState;
 	QState *LoggedOutOfflineState;
 	QState *WantToLogInState;
 	QState *PasswordRequiredState;
 	QState *LoggingInState;
+	QState *LoggingInDelayState;
 	QState *LoggedInState;
 
 private slots:
