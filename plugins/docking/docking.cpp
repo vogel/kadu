@@ -336,7 +336,10 @@ void DockingManager::setDocker(Docker *docker)
 void DockingManager::updateContextMenu()
 {
 	if (AllAccountsMenu)
+	{
 		AllAccountsMenu->deleteLater();
+		AllAccountsMenu = 0;
+	}
 
 	DockMenu->clear();
 #ifdef Q_OS_MAC
