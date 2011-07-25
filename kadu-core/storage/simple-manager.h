@@ -372,10 +372,12 @@ public:
 			return;
 
 		itemAboutToBeRemoved(item);
+		item.aboutToBeRemoved();
+
 		Items.removeAll(item);
-		itemRemoved(item);
 
 		item.remove();
+		itemRemoved(item);
 	}
 
 };

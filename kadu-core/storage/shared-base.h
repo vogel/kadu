@@ -495,19 +495,29 @@ public:
 
 	/**
 	 * @author Rafal 'Vogel' Malinowski
+	 * @author Bartosz 'beevvy' Brachaczek
+	 * @short Informs the object it is about to be removed.
+	 *
+	 * If object is null, this method does nothing.
+	 * This method calls @link<Shared::aboutToBeRemoved @endlink.
+	 */
+	void aboutToBeRemoved()
+	{
+		if (!isNull())
+			Data->aboutToBeRemoved();
+	}
+
+	/**
+	 * @author Rafal 'Vogel' Malinowski
 	 * @short Removes object completely.
 	 *
 	 * If object is null, this method does nothing.
-	 * This method calls @link<Shared::aboutToBeRemoved @endlink. Then data object is removed from
-	 * storage (it must be StorableObject then).
+	 * The Data object is removed from storage (it must be StorableObject then).
 	 */
 	void remove()
 	{
 		if (!isNull())
-		{
-			Data->aboutToBeRemoved();
 			Data->removeFromStorage();
-		}
 	}
 
 	KaduSharedBase_Property(QUuid, uuid, Uuid)

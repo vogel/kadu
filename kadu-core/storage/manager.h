@@ -497,13 +497,13 @@ public:
 			return;
 
 		itemAboutToBeRemoved(item);
+		item.aboutToBeRemoved();
 
 		if (item.details())
 			unregisterItem(item);
 		Items.remove(item.uuid());
 
 		item.remove();
-
 		itemRemoved(item);
 	}
 
