@@ -3,6 +3,7 @@
 * gadu: fixed sending new contact list version to server after renaming a group (beevvy)
 * sms: fixed sending SMS-es to Plus (Dorr)
 * sms: fixed sending SMS-es with non-ascii characters to some gateways (beevvy)
+* jabber: fixed removing buddies from groups when the roster was changed not by this Kadu installation (beevvy)
 
 +++ version 0.10.0-beta2
 * freedesktop_notify, hints: #2195 fixed: enable Freedesktop notifications in favor of hints on X11 by default (beevvy)
