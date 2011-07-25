@@ -139,7 +139,7 @@ public:
 	void sortContacts();
 	void normalizePriorities();
 
-	bool isEmpty();
+	bool isEmpty(bool checkOnlyForContacts);
 
 	KaduShared_PropertyRead(const QList<Group> &, groups, Groups)
 	void setGroups(const QList<Group> &groups);

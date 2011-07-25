@@ -100,8 +100,7 @@ QVector<Contact> ContactListService::performAddsAndRenames(const QMap<Buddy, Con
 	}
 
 	foreach (const Buddy &buddy, buddiesToRemove)
-		if (buddy.contacts().isEmpty())
-			BuddyManager::instance()->removeItem(buddy);
+		BuddyManager::instance()->removeBuddyIfEmpty(buddy, true);
 
 	return resultContacts;
 }
@@ -233,8 +232,7 @@ void ContactListService::setBuddiesList(const BuddyList &buddies, bool removeOld
 				Buddy ownerBuddy = contact.ownerBuddy();
 				contact.setOwnerBuddy(Buddy::null);
 				// remove even if it still has some data, e.g. mobile number
-				if (ownerBuddy.contacts().isEmpty())
-					BuddyManager::instance()->removeItem(ownerBuddy);
+				BuddyManager::instance()->removeBuddyIfEmpty(ownerBuddy, true);
 			}
 		}
 	}

@@ -197,12 +197,12 @@ void Buddy::removeFromGroup(Group group)
 		data()->removeFromGroup(group);
 }
 
-bool Buddy::isEmpty() const
+bool Buddy::isEmpty(bool checkOnlyForContacts) const
 {
 	if (isNull())
 		return true;
 	else
-		return data()->isEmpty();
+		return data()->isEmpty(checkOnlyForContacts);
 }
 
 QString Buddy::display() const

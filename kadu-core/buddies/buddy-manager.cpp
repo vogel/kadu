@@ -230,16 +230,23 @@ Buddy BuddyManager::byUuid(const QUuid &uuid)
 	return Buddy::create();
 }
 
-void BuddyManager::clearOwnerAndRemoveEmptyBuddy(Contact contact)
+void BuddyManager::removeBuddyIfEmpty(Buddy buddy, bool checkOnlyForContacts)
+{
+	if (!buddy)
+		return;
+
+	if (buddy.isEmpty(checkOnlyForContacts))
+		removeItem(buddy);
+}
+
+void BuddyManager::clearOwnerAndRemoveEmptyBuddy(Contact contact, bool checkBuddyOnlyForOtherContacts)
 {
 	if (!contact)
 		return;
 
 	Buddy owner = contact.ownerBuddy();
 	contact.setOwnerBuddy(Buddy::null);
-
-	if (owner && owner.isEmpty())
-		removeItem(owner);
+	removeBuddyIfEmpty(owner, checkBuddyOnlyForOtherContacts);
 }
 
 BuddyList BuddyManager::buddies(Account account, bool includeAnonymous)

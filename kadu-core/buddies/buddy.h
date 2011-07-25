@@ -97,7 +97,7 @@ public:
 	void addToGroup(Group group);
 	void removeFromGroup(Group group);
 
-	bool isEmpty() const;
+	bool isEmpty(bool checkOnlyForContacts = false) const;
 
 	QString display() const;
 

@@ -80,7 +80,8 @@ public:
 	Buddy byContact(Contact contact, NotFoundAction action);
 	Buddy byUuid(const QUuid &uuid);
 
-	void clearOwnerAndRemoveEmptyBuddy(Contact contact);
+	void removeBuddyIfEmpty(Buddy buddy, bool checkOnlyForContacts = false);
+	void clearOwnerAndRemoveEmptyBuddy(Contact contact, bool checkBuddyOnlyForOtherContacts = false);
 
 signals:
 	void buddyAboutToBeAdded(Buddy &buddy);

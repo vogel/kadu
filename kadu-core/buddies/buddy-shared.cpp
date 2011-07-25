@@ -447,11 +447,14 @@ void BuddyShared::groupAboutToBeRemoved()
 		removeFromGroup(group);
 }
 
-bool BuddyShared::isEmpty()
+bool BuddyShared::isEmpty(bool checkOnlyForContacts)
 {
 	ensureLoaded();
 
-	return Contacts.isEmpty() && HomePhone.isEmpty() && Mobile.isEmpty() && Website.isEmpty() && Email.isEmpty();
+	if (checkOnlyForContacts)
+		return Contacts.isEmpty();
+	else
+		return Contacts.isEmpty() && HomePhone.isEmpty() && Mobile.isEmpty() && Website.isEmpty() && Email.isEmpty();
 }
 
 void BuddyShared::markContactsDirty()
