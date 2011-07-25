@@ -98,6 +98,7 @@ class KADUAPI BuddyShared : public QObject, public Shared
 	bool Blocked;
 	bool OfflineTo;
 
+private slots:
 	void markContactsDirty();
 
 protected:

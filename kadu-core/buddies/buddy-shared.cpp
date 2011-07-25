@@ -383,6 +383,7 @@ void BuddyShared::addToGroup(const Group &group)
 	Groups.append(group);
 	dataUpdated();
 	markContactsDirty();
+	connect(group, SIGNAL(nameChanged()), this, SLOT(markContactsDirty()));
 }
 
 void BuddyShared::removeFromGroup(const Group &group)
@@ -391,6 +392,7 @@ void BuddyShared::removeFromGroup(const Group &group)
 
 	if (Groups.removeAll(group) > 0)
 	{
+		disconnect(group, SIGNAL(nameChanged()), this, SLOT(markContactsDirty()));
 		dataUpdated();
 		markContactsDirty();
 	}

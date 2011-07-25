@@ -59,7 +59,9 @@ public:
 
 	virtual void store();
 
-	KaduShared_Property(const QString &, name, Name)
+	KaduShared_PropertyRead(const QString &, name, Name)
+	void setName(const QString &name);
+
 	KaduShared_Property(const QString &, icon, Icon)
 	KaduShared_Property(bool, notifyAboutStatusChanges, NotifyAboutStatusChanges)
 	KaduShared_Property(bool, showInAllGroup, ShowInAllGroup)
@@ -70,6 +72,7 @@ public:
 
 signals:
 	void updated();
+	void nameChanged();
 
 };
 

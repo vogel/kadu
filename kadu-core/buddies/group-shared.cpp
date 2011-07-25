@@ -110,6 +110,18 @@ void GroupShared::store()
 	storeValue("TabPosition", TabPosition);
 }
 
+void GroupShared::setName(const QString &name)
+{
+	ensureLoaded();
+
+	if (Name != name)
+	{
+		Name = name;
+		dataUpdated();
+		emit nameChanged();
+	}
+}
+
 void GroupShared::emitUpdated()
 {
 	emit updated();
