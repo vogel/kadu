@@ -59,10 +59,10 @@ QScriptValue NetworkAccessManagerWrapper::post(const QString &url, const QString
 		request.setRawHeader("Accept-Encoding", "gzip, deflate");
 		request.setRawHeader("X-GWT-Module-Base", "http://www1.plus.pl/bsm/");
 		request.setRawHeader("X-GWT-Permutation", "22E4064F5698D299DC724EC04F1478DC");
-		requestData = data.toAscii();
+		requestData = data.toUtf8();
 	}
 	else
-		requestData = data.toUtf8();
+		requestData = data.toAscii();
 
 	return Engine->newQObject(new NetworkReplyWrapper(QNetworkAccessManager::post(request, requestData)));
 }
