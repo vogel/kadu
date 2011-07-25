@@ -37,11 +37,15 @@
 ProtocolStateMachine::ProtocolStateMachine(Protocol *protocol) :
 		QStateMachine(protocol), CurrentProtocol(protocol)
 {
+	DelayTimer.setInterval(500);
+	DelayTimer.setSingleShot(true);
+
 	LoggingOutState = new QState(this);
 	LoggedOutOnlineState = new QState(this);
 	LoggedOutOfflineState = new QState(this);
 	WantToLogInState = new QState(this);
 	LoggingInState = new QState(this);
+	LoggingInDelayState = new QState(this);
 	LoggedInState = new QState(this);
 	PasswordRequiredState = new QState(this);
 
@@ -50,6 +54,7 @@ ProtocolStateMachine::ProtocolStateMachine(Protocol *protocol) :
 	connect(LoggedOutOfflineState, SIGNAL(entered()), this, SLOT(printConfiguration()));
 	connect(WantToLogInState, SIGNAL(entered()), this, SLOT(printConfiguration()));
 	connect(LoggingInState, SIGNAL(entered()), this, SLOT(printConfiguration()));
+	connect(LoggingInDelayState, SIGNAL(entered()), this, SLOT(printConfiguration()));
 	connect(LoggedInState, SIGNAL(entered()), this, SLOT(printConfiguration()));
 	connect(PasswordRequiredState, SIGNAL(entered()), this, SLOT(printConfiguration()));
 
@@ -60,6 +65,9 @@ ProtocolStateMachine::ProtocolStateMachine(Protocol *protocol) :
 	connect(LoggingInState, SIGNAL(entered()), this, SIGNAL(loggingInStateEntered()));
 	connect(LoggedInState, SIGNAL(entered()), this, SIGNAL(loggedInStateEntered()));
 	connect(PasswordRequiredState, SIGNAL(entered()), this, SIGNAL(passwordRequiredStateEntered()));
+
+	connect(LoggingInDelayState, SIGNAL(entered()), &DelayTimer, SLOT(start()));
+	connect(LoggingInDelayState, SIGNAL(exited()), &DelayTimer, SLOT(stop()));
 
 	LoggingOutState->addTransition(NetworkManager::instance(), SIGNAL(offline()), LoggedOutOfflineState);
 	LoggingOutState->addTransition(CurrentProtocol, SIGNAL(stateMachineLoggedOut()), LoggedOutOnlineState);
@@ -77,8 +85,15 @@ ProtocolStateMachine::ProtocolStateMachine(Protocol *protocol) :
 	LoggingInState->addTransition(CurrentProtocol, SIGNAL(stateMachineLoggedIn()), LoggedInState);
 	LoggingInState->addTransition(CurrentProtocol, SIGNAL(stateMachineLogout()), LoggedOutOnlineState);
 	LoggingInState->addTransition(CurrentProtocol, SIGNAL(stateMachinePasswordRequired()), PasswordRequiredState);
-	LoggingInState->addTransition(CurrentProtocol, SIGNAL(stateMachineConnectionError()), LoggingInState);
+	LoggingInState->addTransition(CurrentProtocol, SIGNAL(stateMachineConnectionError()), LoggingInDelayState);
 	LoggingInState->addTransition(CurrentProtocol, SIGNAL(stateMachineConnectionClosed()), LoggedOutOnlineState);
+
+	LoggingInDelayState->addTransition(NetworkManager::instance(), SIGNAL(offline()), WantToLogInState);
+	LoggingInDelayState->addTransition(&DelayTimer, SIGNAL(timeout()), LoggingInState);
+	LoggingInDelayState->addTransition(CurrentProtocol, SIGNAL(stateMachineLoggedIn()), LoggedInState);
+	LoggingInDelayState->addTransition(CurrentProtocol, SIGNAL(stateMachineLogout()), LoggedOutOnlineState);
+	LoggingInDelayState->addTransition(CurrentProtocol, SIGNAL(stateMachinePasswordRequired()), PasswordRequiredState);
+	LoggingInDelayState->addTransition(CurrentProtocol, SIGNAL(stateMachineConnectionClosed()), LoggedOutOnlineState);
 
 	LoggedInState->addTransition(NetworkManager::instance(), SIGNAL(offline()), WantToLogInState);
 	LoggedInState->addTransition(CurrentProtocol, SIGNAL(stateMachineLogout()), LoggingOutState);
@@ -123,6 +138,8 @@ void ProtocolStateMachine::printConfiguration()
 		states.append("password-required");
 	if (configuration().contains(LoggingInState))
 		states.append("logging-in");
+	if (configuration().contains(LoggingInDelayState))
+		states.append("logging-in-delay");
 	if (configuration().contains(LoggedInState))
 		states.append("logged-in");
 
@@ -150,5 +167,5 @@ bool ProtocolStateMachine::isLoggedIn()
  */
 bool ProtocolStateMachine::isLoggingIn()
 {
-	return configuration().contains(LoggingInState);
+	return configuration().contains(LoggingInState) || configuration().contains(LoggingInDelayState);
 }
