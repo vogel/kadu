@@ -58,7 +58,7 @@ void FreedesktopNotify::destroyInstance()
 
 FreedesktopNotify::FreedesktopNotify() :
 		Notifier("FreedesktopNotify", QT_TRANSLATE_NOOP("@default", "System notifications"), KaduIcon("kadu_icons/notify-hints")),
-		UseFreedesktopStandard(false), ServerSupportsActions(true), ServerSupportsBody(true), ServerSupportsMarkup(true),
+		UseFreedesktopStandard(false), ServerSupportsActions(true), ServerSupportsBody(true), ServerSupportsHyperlinks(true), ServerSupportsMarkup(true),
 		ServerCapabilitiesRequireChecking(false)
 {
 	StripHtml.setPattern(QLatin1String("<[^>]*>"));
@@ -114,6 +114,7 @@ void FreedesktopNotify::checkServerCapabilities()
 	{
 		ServerSupportsActions = false;
 		ServerSupportsBody = false;
+		ServerSupportsHyperlinks = false;
 		ServerSupportsMarkup = false;
 	}
 
@@ -121,6 +122,7 @@ void FreedesktopNotify::checkServerCapabilities()
 
 	ServerSupportsActions = capabilities.contains("actions");
 	ServerSupportsBody = capabilities.contains("body");
+	ServerSupportsHyperlinks = capabilities.contains("body-hyperlinks");
 	ServerSupportsMarkup = capabilities.contains("body-markup");
 
 	ServerCapabilitiesRequireChecking = false;
@@ -168,7 +170,7 @@ void FreedesktopNotify::notify(Notification *notification)
 		else
 			body.append(notification->text());
 
-		if (ServerSupportsMarkup)
+		if (ServerSupportsHyperlinks)
 		{
 			HtmlDocument doc;
 			doc.parseHtml(body);
