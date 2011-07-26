@@ -63,6 +63,8 @@ FreedesktopNotify::FreedesktopNotify() :
 {
 	StripBr.setPattern(QLatin1String("<br ?/?>"));
 	StripHtml.setPattern(QLatin1String("<[^>]*>"));
+	// this is meant to catch all HTML tags except <b>, <i>, <u>
+	StripUnsupportedHtml.setPattern(QLatin1String("<(/?[^/<>][^<>]+|//[^>]*|/?[^biu])>"));
 
 	KNotify = new QDBusInterface("org.kde.VisualNotifications",
 			"/VisualNotifications", "org.kde.VisualNotifications");
@@ -155,9 +157,12 @@ void FreedesktopNotify::notify(Notification *notification)
 	QString body;
 	if (ServerSupportsBody && ShowContentMessage && (notification->type() == "NewMessage" || notification->type() == "NewChat"))
 	{
-		body = QString(notification->details()).replace(StripBr, "\n").remove(StripHtml);
+		body = notification->details();
+		body.replace(StripBr, QLatin1String("\n"));
 		if (ServerSupportsMarkup)
-			body.replace('\n', QLatin1String("<br/>"));
+			body.remove(StripUnsupportedHtml);
+		else
+			body.remove(StripHtml);
 
 		if (body.length() > CiteSign)
 			body = body.left(CiteSign) + QLatin1String("...");
