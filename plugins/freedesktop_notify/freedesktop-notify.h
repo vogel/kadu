@@ -54,6 +54,7 @@ class FreedesktopNotify : public Notifier, public ConfigurationAwareObject
 	int CiteSign;
 
 	bool IsServerVendorKde;
+	bool IsXCanonicalAppendSupported;
 	bool UseFreedesktopStandard;
 	bool ServerSupportsActions;
 	bool ServerSupportsBody;
