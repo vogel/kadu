@@ -48,6 +48,7 @@ class FreedesktopNotify : public Notifier, public ConfigurationAwareObject
 	QMap<unsigned int, Notification *> NotificationMap;
 	QQueue<unsigned int> IdQueue;
 
+	bool CustomTimeout;
 	int Timeout;
 	bool ShowContentMessage;
 	int CiteSign;
