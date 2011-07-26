@@ -53,6 +53,7 @@ class FreedesktopNotify : public Notifier, public ConfigurationAwareObject
 	bool UseFreedesktopStandard;
 	bool ServerSupportsActions;
 	bool ServerSupportsBody;
+	bool ServerSupportsHyperlinks;
 	bool ServerSupportsMarkup;
 	bool ServerCapabilitiesRequireChecking;
 
