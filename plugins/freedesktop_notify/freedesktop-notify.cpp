@@ -124,15 +124,17 @@ void FreedesktopNotify::checkServerCapabilities()
 		ServerSupportsHyperlinks = false;
 		ServerSupportsMarkup = false;
 	}
+	else
+	{
+		QStringList capabilities = replyMsg.arguments().at(0).toStringList();
 
-	QStringList capabilities = replyMsg.arguments().at(0).toStringList();
+		ServerSupportsActions = capabilities.contains("actions");
+		ServerSupportsBody = capabilities.contains("body");
+		ServerSupportsHyperlinks = capabilities.contains("body-hyperlinks");
+		ServerSupportsMarkup = capabilities.contains("body-markup");
 
-	ServerSupportsActions = capabilities.contains("actions");
-	ServerSupportsBody = capabilities.contains("body");
-	ServerSupportsHyperlinks = capabilities.contains("body-hyperlinks");
-	ServerSupportsMarkup = capabilities.contains("body-markup");
-
-	ServerCapabilitiesRequireChecking = false;
+		ServerCapabilitiesRequireChecking = false;
+	}
 }
 
 void FreedesktopNotify::notify(Notification *notification)
