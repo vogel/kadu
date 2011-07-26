@@ -58,7 +58,8 @@ void FreedesktopNotify::destroyInstance()
 
 FreedesktopNotify::FreedesktopNotify() :
 		Notifier("FreedesktopNotify", QT_TRANSLATE_NOOP("@default", "System notifications"), KaduIcon("kadu_icons/notify-hints")),
-		UseFreedesktopStandard(false), ServerSupportsActions(true), ServerSupportsMarkup(true), ServerCapabilitiesRequireChecking(false)
+		UseFreedesktopStandard(false), ServerSupportsActions(true), ServerSupportsBody(true), ServerSupportsMarkup(true),
+		ServerCapabilitiesRequireChecking(false)
 {
 	StripHtml.setPattern(QLatin1String("<[^>]*>"));
 
@@ -112,12 +113,14 @@ void FreedesktopNotify::checkServerCapabilities()
 	if (replyMsg.type() != QDBusMessage::ReplyMessage)
 	{
 		ServerSupportsActions = false;
+		ServerSupportsBody = false;
 		ServerSupportsMarkup = false;
 	}
 
 	QStringList capabilities = replyMsg.arguments().at(0).toStringList();
 
 	ServerSupportsActions = capabilities.contains("actions");
+	ServerSupportsBody = capabilities.contains("body");
 	ServerSupportsMarkup = capabilities.contains("body-markup");
 
 	ServerCapabilitiesRequireChecking = false;
@@ -141,39 +144,41 @@ void FreedesktopNotify::notify(Notification *notification)
 	if (!UseFreedesktopStandard)
 		args.append(QString());
 
-  	args.append("Kadu");
+	args.append("Kadu");
 
-	QString text;
-
-	if (((notification->type() == "NewMessage") || (notification->type() == "NewChat")) && ShowContentMessage)
+	QString body;
+	if (ServerSupportsBody)
 	{
-		text.append(notification->text() + (ServerSupportsMarkup ? "<br/><small>" : "\n"));
+		if (((notification->type() == "NewMessage") || (notification->type() == "NewChat")) && ShowContentMessage)
+		{
+			body.append(notification->text() + (ServerSupportsMarkup ? "<br/><small>" : "\n"));
 
-		QString strippedDetails = QString(notification->details()).replace("<br/>", "\n").remove(StripHtml);
-		if (ServerSupportsMarkup)
-			strippedDetails.replace('\n', QLatin1String("<br/>"));
+			QString strippedDetails = QString(notification->details()).replace("<br/>", "\n").remove(StripHtml);
+			if (ServerSupportsMarkup)
+				strippedDetails.replace('\n', QLatin1String("<br/>"));
 
-		if (strippedDetails.length() > CiteSign)
-			text.append(strippedDetails.left(CiteSign) + "...");
+			if (strippedDetails.length() > CiteSign)
+				body.append(strippedDetails.left(CiteSign) + "...");
+			else
+				body.append(strippedDetails);
+
+			if (ServerSupportsMarkup)
+				body.append("</small>");
+		}
 		else
-			text.append(strippedDetails);
+			body.append(notification->text());
 
 		if (ServerSupportsMarkup)
-			text.append("</small>");
-	}
-	else
-		text.append(notification->text());
+		{
+			HtmlDocument doc;
+			doc.parseHtml(body);
+			UrlHandlerManager::instance()->convertAllUrls(doc, true);
 
-	if (ServerSupportsMarkup)
-	{
-		HtmlDocument doc;
-		doc.parseHtml(text);
-		UrlHandlerManager::instance()->convertAllUrls(doc, true);
-
-		args.append(doc.generateHtml());
+			body = doc.generateHtml();
+		}
 	}
-	else
-		args.append(text);
+
+	args.append(body);
 
 	QStringList actions;
 
