@@ -70,10 +70,10 @@ void UrlHandlerManager::unregisterUrlHandler(const QString &name)
 		delete handler;
 	}
 }
-void UrlHandlerManager::convertAllUrls(HtmlDocument &document)
+void UrlHandlerManager::convertAllUrls(HtmlDocument &document, bool generateOnlyHrefAttr)
 {
 	foreach (UrlHandler *handler, RegisteredHandlersByPriority)
-		handler->convertUrlsToHtml(document);
+		handler->convertUrlsToHtml(document, generateOnlyHrefAttr);
 }
 
 void UrlHandlerManager::openUrl(const QByteArray &url, bool disableMenu)

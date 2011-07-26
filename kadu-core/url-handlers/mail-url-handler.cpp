@@ -35,7 +35,7 @@ bool MailUrlHandler::isUrlValid(const QByteArray &url)
 	return MailRegExp.exactMatch(QString::fromUtf8(url));
 }
 
-void MailUrlHandler::convertUrlsToHtml(HtmlDocument &document)
+void MailUrlHandler::convertUrlsToHtml(HtmlDocument &document, bool generateOnlyHrefAttr)
 {
 	for (int i = 0; i < document.countElements(); ++i)
 	{
@@ -51,7 +51,14 @@ void MailUrlHandler::convertUrlsToHtml(HtmlDocument &document)
 		QString mail = Qt::escape(text.mid(index, length));
 
 		document.splitElement(i, index, length);
-		document.setElementValue(i, "<a href=\"mailto:" + mail + "\" title=\"" + mail +"\">" + mail + "</a>", true);
+
+		QString anchor;
+		if (generateOnlyHrefAttr)
+			anchor = "<a href=\"mailto:" + mail + "\">" + mail + "</a>";
+		else
+			anchor = "<a href=\"mailto:" + mail + "\" title=\"" + mail +"\">" + mail + "</a>";
+
+		document.setElementValue(i, anchor, true);
 	}
 }
 

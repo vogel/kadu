@@ -46,8 +46,10 @@ bool GaduUrlHandler::isUrlValid(const QByteArray &url)
 	return GaduRegExp.exactMatch(QString::fromUtf8(url));
 }
 
-void GaduUrlHandler::convertUrlsToHtml(HtmlDocument &document)
+void GaduUrlHandler::convertUrlsToHtml(HtmlDocument &document, bool generateOnlyHrefAttr)
 {
+	Q_UNUSED(generateOnlyHrefAttr)
+
 	for (int i = 0; i < document.countElements(); ++i)
 	{
 		if (document.isTagElement(i))

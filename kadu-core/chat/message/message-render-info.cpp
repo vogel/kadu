@@ -41,7 +41,7 @@ QString formatMessage(const QString& text)
 {
 	HtmlDocument htmlDocument;
 	htmlDocument.parseHtml(text);
-	UrlHandlerManager::instance()->convertAllUrls(htmlDocument);
+	UrlHandlerManager::instance()->convertAllUrls(htmlDocument, false);
 	EmoticonsManager::instance()->expandEmoticons(htmlDocument, (EmoticonsStyle)ChatConfigurationHolder::instance()->emoticonsStyle());
 
 	return htmlDocument.generateHtml();
