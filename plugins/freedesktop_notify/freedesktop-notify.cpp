@@ -61,6 +61,7 @@ FreedesktopNotify::FreedesktopNotify() :
 		UseFreedesktopStandard(false), ServerSupportsActions(true), ServerSupportsBody(true), ServerSupportsHyperlinks(true), ServerSupportsMarkup(true),
 		ServerCapabilitiesRequireChecking(false)
 {
+	StripBr.setPattern(QLatin1String("<br ?/?>"));
 	StripHtml.setPattern(QLatin1String("<[^>]*>"));
 
 	KNotify = new QDBusInterface("org.kde.VisualNotifications",
@@ -155,7 +156,7 @@ void FreedesktopNotify::notify(Notification *notification)
 		{
 			body.append(notification->text() + (ServerSupportsMarkup ? "<br/><small>" : "\n"));
 
-			QString strippedDetails = QString(notification->details()).replace("<br/>", "\n").remove(StripHtml);
+			QString strippedDetails = QString(notification->details()).replace(StripBr, "\n").remove(StripHtml);
 			if (ServerSupportsMarkup)
 				strippedDetails.replace('\n', QLatin1String("<br/>"));
 
