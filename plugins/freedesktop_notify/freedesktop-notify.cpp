@@ -60,8 +60,8 @@ void FreedesktopNotify::destroyInstance()
 
 FreedesktopNotify::FreedesktopNotify() :
 		Notifier("FreedesktopNotify", QT_TRANSLATE_NOOP("@default", "System notifications"), KaduIcon("kadu_icons/notify-hints")),
-		UseFreedesktopStandard(false), ServerSupportsActions(true), ServerSupportsBody(true), ServerSupportsHyperlinks(true), ServerSupportsMarkup(true),
-		ServerCapabilitiesRequireChecking(false)
+		IsServerVendorKde(true), UseFreedesktopStandard(false), ServerSupportsActions(true), ServerSupportsBody(true),
+		ServerSupportsHyperlinks(true), ServerSupportsMarkup(true), ServerCapabilitiesRequireChecking(false)
 {
 	StripBr.setPattern(QLatin1String("<br ?/?>"));
 	StripHtml.setPattern(QLatin1String("<[^>]*>"));
@@ -115,8 +115,13 @@ void FreedesktopNotify::checkServerCapabilities()
 	if (!ServerCapabilitiesRequireChecking)
 		return;
 
-	QDBusMessage replyMsg = KNotify->call(QDBus::Block, "GetCapabilities");
+	QDBusMessage replyMsg = KNotify->call(QDBus::Block, "GetServerInformation");
+	if (replyMsg.type() != QDBusMessage::ReplyMessage)
+		IsServerVendorKde = false;
+	else
+		IsServerVendorKde = replyMsg.arguments().at(1).toString().contains("KDE");
 
+	replyMsg = KNotify->call(QDBus::Block, "GetCapabilities");
 	if (replyMsg.type() != QDBusMessage::ReplyMessage)
 	{
 		ServerSupportsActions = false;
@@ -141,6 +146,8 @@ void FreedesktopNotify::notify(Notification *notification)
 {
 	checkServerCapabilities();
 
+	bool useKdeStyle = IsServerVendorKde && ServerSupportsBody && ServerSupportsMarkup;
+
 	QList<QVariant> args;
 	args.append("Kadu");
 	args.append(0U);
@@ -155,24 +162,42 @@ void FreedesktopNotify::notify(Notification *notification)
 	if (!UseFreedesktopStandard)
 		args.append(QString());
 
-	QString summary = notification->text();
-	summary.replace(StripBr, " ");
-	summary.remove(StripHtml);
+	QString summary;
+	if (useKdeStyle)
+		summary = "Kadu";
+	else
+	{
+		summary = notification->text();
+		summary.replace(StripBr, QLatin1String(" "));
+		summary.remove(StripHtml);
+	}
+
 	args.append(summary);
 
 	bool msgRcv = (notification->type() == "NewMessage" || notification->type() == "NewChat");
 	QString body;
-	if (ServerSupportsBody && ShowContentMessage && msgRcv)
+	if (ServerSupportsBody)
 	{
-		body = notification->details();
-		body.replace(StripBr, QLatin1String("\n"));
-		if (ServerSupportsMarkup)
-			body.remove(StripUnsupportedHtml);
-		else
-			body.remove(StripHtml);
+		if (msgRcv && ShowContentMessage)
+		{
+			body = notification->details();
+			body.replace(StripBr, QLatin1String("\n"));
+			if (ServerSupportsMarkup)
+				body.remove(StripUnsupportedHtml);
+			else
+				body.remove(StripHtml);
 
-		if (body.length() > CiteSign)
-			body = body.left(CiteSign) + QLatin1String("...");
+			if (body.length() > CiteSign)
+				body = body.left(CiteSign) + QLatin1String("...");
+
+			if (useKdeStyle)
+			{
+				body.prepend(notification->text() + "\n<small>");
+				body.append("</small>");
+			}
+		}
+		else if (useKdeStyle)
+			body = notification->text();
 
 		if (ServerSupportsHyperlinks)
 		{
