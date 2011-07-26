@@ -195,7 +195,7 @@ void BuddyInfoPanel::displayItem(BuddyOrContact item)
 
 	HtmlDocument doc;
 	doc.parseHtml(Parser::parse(Syntax, item));
-	UrlHandlerManager::instance()->convertAllUrls(doc);
+	UrlHandlerManager::instance()->convertAllUrls(doc, false);
 
 	if (EmoticonsStyleNone != (EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle") &&
 			config_file.readBoolEntry("General", "ShowEmotPanel"))

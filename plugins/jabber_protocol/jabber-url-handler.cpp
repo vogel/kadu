@@ -62,8 +62,10 @@ bool JabberUrlHandler::isUrlValid(const QByteArray &url)
 	return JabberRegExp.exactMatch(QString::fromUtf8(url));
 }
 
-void JabberUrlHandler::convertUrlsToHtml(HtmlDocument &document)
+void JabberUrlHandler::convertUrlsToHtml(HtmlDocument &document, bool generateOnlyHrefAttr)
 {
+	Q_UNUSED(generateOnlyHrefAttr)
+
 	for (int i = 0; i < document.countElements(); ++i)
 	{
 		if (document.isTagElement(i))

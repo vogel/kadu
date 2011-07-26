@@ -168,7 +168,7 @@ void FreedesktopNotify::notify(Notification *notification)
 	{
 		HtmlDocument doc;
 		doc.parseHtml(text);
-		UrlHandlerManager::instance()->convertAllUrls(doc);
+		UrlHandlerManager::instance()->convertAllUrls(doc, true);
 
 		args.append(doc.generateHtml());
 	}
