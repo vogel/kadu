@@ -58,7 +58,7 @@ void FreedesktopNotify::destroyInstance()
 
 FreedesktopNotify::FreedesktopNotify() :
 		Notifier("FreedesktopNotify", QT_TRANSLATE_NOOP("@default", "System notifications"), KaduIcon("kadu_icons/notify-hints")),
-		UseFreedesktopStandard(false), ServerSupportsActions(true), ServerSupportsMarkup(true), ServerCapabilitiesRequireChecking(true)
+		UseFreedesktopStandard(false), ServerSupportsActions(true), ServerSupportsMarkup(true), ServerCapabilitiesRequireChecking(false)
 {
 	StripHtml.setPattern(QLatin1String("<[^>]*>"));
 
@@ -80,6 +80,7 @@ FreedesktopNotify::FreedesktopNotify() :
 				SLOT(slotServiceOwnerChanged(const QString &, const QString &, const QString &)));
 
 		UseFreedesktopStandard = true;
+		ServerCapabilitiesRequireChecking = true;
 	}
 
 	KNotify->connection().connect(KNotify->service(), KNotify->path(), KNotify->interface(),
