@@ -94,12 +94,12 @@ FreedesktopNotify::FreedesktopNotify() :
 	KNotify->connection().connect(KNotify->service(), KNotify->path(), KNotify->interface(),
 			"ActionInvoked", this, SLOT(actionInvoked(unsigned int, QString)));
 
+	import_0_9_0_Configuration();
+	createDefaultConfiguration();
+
 	configurationUpdated();
 
 	NotificationManager::instance()->registerNotifier(this);
-
-	import_0_9_0_Configuration();
-	createDefaultConfiguration();
 }
 
 FreedesktopNotify::~FreedesktopNotify()
@@ -200,7 +200,8 @@ void FreedesktopNotify::notify(Notification *notification)
 	hints.insert("desktop-entry", DesktopEntry);
 	args.append(hints);
 
-	args.append(Timeout * 1000);
+	// -1 is server default
+	args.append(CustomTimeout ? Timeout * 1000 : -1);
 
 	QDBusReply<unsigned int> reply = KNotify->callWithArgumentList(QDBus::Block, "Notify", args);
 	if (reply.isValid())
@@ -300,6 +301,7 @@ void FreedesktopNotify::deleteMapItem()
 
 void FreedesktopNotify::configurationUpdated()
 {
+	CustomTimeout = config_file.readBoolEntry("FreedesktopNotify", "CustomTimeout");
 	Timeout = config_file.readNumEntry("FreedesktopNotify", "Timeout");
 	ShowContentMessage = config_file.readBoolEntry("FreedesktopNotify", "ShowContentMessage");
 	CiteSign = config_file.readNumEntry("FreedesktopNotify", "CiteSign");
@@ -310,6 +312,8 @@ void FreedesktopNotify::import_0_9_0_Configuration()
 	config_file.addVariable("FreedesktopNotify", "Timeout", config_file.readEntry("KDENotify", "Timeout"));
 	config_file.addVariable("FreedesktopNotify", "ShowContentMessage", config_file.readEntry("KDENotify", "ShowContentMessage"));
 	config_file.addVariable("FreedesktopNotify", "CiteSign", config_file.readEntry("KDENotify", "CiteSign"));
+	if (!config_file.readEntry("KDENotify", "Timeout").isEmpty() || !config_file.readEntry("FreedesktopNotify", "Timeout").isEmpty())
+		config_file.addVariable("FreedesktopNotify", "CustomTimeout", true);
 
 	foreach (NotifyEvent *event, NotificationManager::instance()->notifyEvents())
 		config_file.addVariable("Notify", event->name() + "_FreedesktopNotify", config_file.readEntry("Notify", event->name() + "_KNotify"));
@@ -334,6 +338,7 @@ void FreedesktopNotify::createDefaultConfiguration()
 	config_file.addVariable("Notify", "multilogon/sessionConnected_FreedesktopNotify", true);
 	config_file.addVariable("Notify", "multilogon/sessionDisconnected_FreedesktopNotify", true);
 
+	config_file.addVariable("FreedesktopNotify", "CustomTimeout", false);
 	config_file.addVariable("FreedesktopNotify", "Timeout", 10);
 	config_file.addVariable("FreedesktopNotify", "ShowContentMessage", true);
 	config_file.addVariable("FreedesktopNotify", "CiteSign", 100);
