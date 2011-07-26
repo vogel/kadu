@@ -154,8 +154,9 @@ void FreedesktopNotify::notify(Notification *notification)
 	summary.remove(StripHtml);
 	args.append(summary);
 
+	bool msgRcv = (notification->type() == "NewMessage" || notification->type() == "NewChat");
 	QString body;
-	if (ServerSupportsBody && ShowContentMessage && (notification->type() == "NewMessage" || notification->type() == "NewChat"))
+	if (ServerSupportsBody && ShowContentMessage && msgRcv)
 	{
 		body = notification->details();
 		body.replace(StripBr, QLatin1String("\n"));
@@ -180,7 +181,6 @@ void FreedesktopNotify::notify(Notification *notification)
 	args.append(body);
 
 	QStringList actions;
-
 	if (ServerSupportsActions)
 	{
 		foreach (const Notification::Callback &callback, notification->getCallbacks())
@@ -190,7 +190,11 @@ void FreedesktopNotify::notify(Notification *notification)
 		}
 	}
 	args.append(actions);
-	args.append(QVariantMap());
+
+	QVariantMap hints;
+	hints.insert("category", msgRcv ? "im.received" : "im");
+	args.append(hints);
+
 	args.append(Timeout * 1000);
 
 	QDBusReply<unsigned int> reply = KNotify->callWithArgumentList(QDBus::Block, "Notify", args);
