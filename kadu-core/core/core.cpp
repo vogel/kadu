@@ -232,7 +232,7 @@ void Core::createDefaultConfiguration()
 
 	config_file.addVariable("General", "StartupLastDescription", true);
 	config_file.addVariable("General", "StartupStatus", "LastStatus");
-	config_file.addVariable("General", "StartupStatusInvisibleWhenLastWasOffline", true);
+	config_file.addVariable("General", "StartupStatusInvisibleWhenLastWasOffline", false);
 	config_file.addVariable("General", "UserBoxHeight", 300);
 	config_file.addVariable("General", "WindowActivationMethod", 0);
 	config_file.addVariable("General", "MainConfiguration_Geometry", "50, 50, 790, 580");
