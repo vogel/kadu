@@ -22,6 +22,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QFileInfo>
 #include <QtCore/QMetaMethod>
 #include <QtCore/QTimer>
 #include <QtDBus/QDBusInterface>
@@ -30,6 +31,7 @@
 
 #include "configuration/configuration-file.h"
 #include "icons/kadu-icon.h"
+#include "misc/path-conversion.h"
 #include "notify/notification-manager.h"
 #include "notify/notification.h"
 #include "notify/notify-event.h"
@@ -65,6 +67,8 @@ FreedesktopNotify::FreedesktopNotify() :
 	StripHtml.setPattern(QLatin1String("<[^>]*>"));
 	// this is meant to catch all HTML tags except <b>, <i>, <u>
 	StripUnsupportedHtml.setPattern(QLatin1String("<(/?[^/<>][^<>]+|//[^>]*|/?[^biu])>"));
+
+	DesktopEntry = QFileInfo(desktopFilePath()).baseName();
 
 	KNotify = new QDBusInterface("org.kde.VisualNotifications",
 			"/VisualNotifications", "org.kde.VisualNotifications");
@@ -193,6 +197,7 @@ void FreedesktopNotify::notify(Notification *notification)
 
 	QVariantMap hints;
 	hints.insert("category", msgRcv ? "im.received" : "im");
+	hints.insert("desktop-entry", DesktopEntry);
 	args.append(hints);
 
 	args.append(Timeout * 1000);
