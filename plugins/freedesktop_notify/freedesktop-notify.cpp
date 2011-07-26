@@ -60,7 +60,7 @@ void FreedesktopNotify::destroyInstance()
 
 FreedesktopNotify::FreedesktopNotify() :
 		Notifier("FreedesktopNotify", QT_TRANSLATE_NOOP("@default", "System notifications"), KaduIcon("kadu_icons/notify-hints")),
-		IsServerVendorKde(true), UseFreedesktopStandard(false), ServerSupportsActions(true), ServerSupportsBody(true),
+		IsServerVendorKde(true), IsXCanonicalAppendSupported(false), UseFreedesktopStandard(false), ServerSupportsActions(true), ServerSupportsBody(true),
 		ServerSupportsHyperlinks(true), ServerSupportsMarkup(true), ServerCapabilitiesRequireChecking(false)
 {
 	StripBr.setPattern(QLatin1String("<br ?/?>"));
@@ -124,6 +124,7 @@ void FreedesktopNotify::checkServerCapabilities()
 	replyMsg = KNotify->call(QDBus::Block, "GetCapabilities");
 	if (replyMsg.type() != QDBusMessage::ReplyMessage)
 	{
+		IsXCanonicalAppendSupported = false;
 		ServerSupportsActions = false;
 		ServerSupportsBody = false;
 		ServerSupportsHyperlinks = false;
@@ -133,6 +134,7 @@ void FreedesktopNotify::checkServerCapabilities()
 	{
 		QStringList capabilities = replyMsg.arguments().at(0).toStringList();
 
+		IsXCanonicalAppendSupported = capabilities.contains("x-canonical-append");
 		ServerSupportsActions = capabilities.contains("actions");
 		ServerSupportsBody = capabilities.contains("body");
 		ServerSupportsHyperlinks = capabilities.contains("body-hyperlinks");
@@ -228,6 +230,8 @@ void FreedesktopNotify::notify(Notification *notification)
 	QVariantMap hints;
 	hints.insert("category", msgRcv ? "im.received" : "im");
 	hints.insert("desktop-entry", DesktopEntry);
+	if (IsXCanonicalAppendSupported)
+		hints.insert("x-canonical-append", "allowed");
 	args.append(hints);
 
 	// -1 is server default
