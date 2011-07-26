@@ -178,7 +178,7 @@ void FreedesktopNotify::notify(Notification *notification)
 	QString body;
 	if (ServerSupportsBody)
 	{
-		if (msgRcv && ShowContentMessage)
+		if (!msgRcv || ShowContentMessage)
 		{
 			body = notification->details();
 			body.replace(StripBr, QLatin1String("\n"));
@@ -189,17 +189,20 @@ void FreedesktopNotify::notify(Notification *notification)
 
 			if (body.length() > CiteSign)
 				body = body.left(CiteSign) + QLatin1String("...");
+		}
 
-			if (useKdeStyle)
+		if (useKdeStyle)
+		{
+			if (body.isEmpty())
+				body = notification->text();
+			else
 			{
 				body.prepend(notification->text() + "\n<small>");
 				body.append("</small>");
 			}
 		}
-		else if (useKdeStyle)
-			body = notification->text();
 
-		if (ServerSupportsHyperlinks)
+		if (ServerSupportsHyperlinks && !body.isEmpty())
 		{
 			HtmlDocument doc;
 			doc.parseHtml(body);
