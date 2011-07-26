@@ -147,29 +147,20 @@ void FreedesktopNotify::notify(Notification *notification)
 	if (!UseFreedesktopStandard)
 		args.append(QString());
 
-	args.append("Kadu");
+	QString summary = notification->text();
+	summary.replace(StripBr, " ");
+	summary.remove(StripHtml);
+	args.append(summary);
 
 	QString body;
-	if (ServerSupportsBody)
+	if (ServerSupportsBody && ShowContentMessage && (notification->type() == "NewMessage" || notification->type() == "NewChat"))
 	{
-		if (((notification->type() == "NewMessage") || (notification->type() == "NewChat")) && ShowContentMessage)
-		{
-			body.append(notification->text() + (ServerSupportsMarkup ? "<br/><small>" : "\n"));
+		body = QString(notification->details()).replace(StripBr, "\n").remove(StripHtml);
+		if (ServerSupportsMarkup)
+			body.replace('\n', QLatin1String("<br/>"));
 
-			QString strippedDetails = QString(notification->details()).replace(StripBr, "\n").remove(StripHtml);
-			if (ServerSupportsMarkup)
-				strippedDetails.replace('\n', QLatin1String("<br/>"));
-
-			if (strippedDetails.length() > CiteSign)
-				body.append(strippedDetails.left(CiteSign) + "...");
-			else
-				body.append(strippedDetails);
-
-			if (ServerSupportsMarkup)
-				body.append("</small>");
-		}
-		else
-			body.append(notification->text());
+		if (body.length() > CiteSign)
+			body = body.left(CiteSign) + QLatin1String("...");
 
 		if (ServerSupportsHyperlinks)
 		{
