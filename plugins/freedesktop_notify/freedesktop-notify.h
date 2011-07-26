@@ -59,6 +59,8 @@ class FreedesktopNotify : public Notifier, public ConfigurationAwareObject
 	bool ServerSupportsMarkup;
 	bool ServerCapabilitiesRequireChecking;
 
+	QString DesktopEntry;
+
 	void import_0_9_0_Configuration();
 	void createDefaultConfiguration();
 
