@@ -42,7 +42,7 @@ class FreedesktopNotify : public Notifier, public ConfigurationAwareObject
 	virtual ~FreedesktopNotify();
 
 	QDBusInterface *KNotify;
-	QRegExp StripHTML;
+	QRegExp StripHtml;
 	QMap<unsigned int, Notification *> NotificationMap;
 	QQueue<unsigned int> IdQueue;
 
@@ -52,8 +52,8 @@ class FreedesktopNotify : public Notifier, public ConfigurationAwareObject
 
 	bool UseFreedesktopStandard;
 	bool ServerSupportsActions;
-	bool ServerSupportsHtml;
-	bool ServerCapabilitesReqiuresChecking;
+	bool ServerSupportsMarkup;
+	bool ServerCapabilitiesRequireChecking;
 
 	void import_0_9_0_Configuration();
 	void createDefaultConfiguration();

@@ -58,17 +58,16 @@ void FreedesktopNotify::destroyInstance()
 
 FreedesktopNotify::FreedesktopNotify() :
 		Notifier("FreedesktopNotify", QT_TRANSLATE_NOOP("@default", "System notifications"), KaduIcon("kadu_icons/notify-hints")),
-		UseFreedesktopStandard(false), ServerSupportsActions(true), ServerSupportsHtml(true), ServerCapabilitesReqiuresChecking(true)
+		UseFreedesktopStandard(false), ServerSupportsActions(true), ServerSupportsMarkup(true), ServerCapabilitiesRequireChecking(true)
 {
-	StripHTML.setPattern(QString::fromLatin1("<.*>"));
-	StripHTML.setMinimal(true);
+	StripHtml.setPattern(QLatin1String("<[^>]*>"));
 
 	KNotify = new QDBusInterface("org.kde.VisualNotifications",
 			"/VisualNotifications", "org.kde.VisualNotifications");
 
 	if (!KNotify->isValid())
 	{
-		delete (KNotify);
+		delete KNotify;
 		KNotify = new QDBusInterface("org.freedesktop.Notifications",
 				"/org/freedesktop/Notifications", "org.freedesktop.Notifications");
 
@@ -84,7 +83,7 @@ FreedesktopNotify::FreedesktopNotify() :
 	}
 
 	KNotify->connection().connect(KNotify->service(), KNotify->path(), KNotify->interface(),
-		"ActionInvoked", this, SLOT(actionInvoked(unsigned int, QString)));
+			"ActionInvoked", this, SLOT(actionInvoked(unsigned int, QString)));
 
 	configurationUpdated();
 
@@ -104,23 +103,23 @@ FreedesktopNotify::~FreedesktopNotify()
 
 void FreedesktopNotify::checkServerCapabilities()
 {
-	if (ServerCapabilitesReqiuresChecking)
+	if (!ServerCapabilitiesRequireChecking)
+		return;
+
+	QDBusMessage replyMsg = KNotify->call(QDBus::Block, "GetCapabilities");
+
+	if (replyMsg.type() != QDBusMessage::ReplyMessage)
 	{
-		QDBusMessage replyMsg = KNotify->call(QDBus::Block, "GetCapabilities");
-
-		if (replyMsg.type() != QDBusMessage::ReplyMessage)
-		{
-			ServerSupportsActions = false;
-			ServerSupportsHtml = false;
-		}
-
-		QStringList capabilities = replyMsg.arguments().at(0).toStringList();
-
-		ServerSupportsActions = capabilities.contains("actions");
-		ServerSupportsHtml = capabilities.contains("body-markup");
-
-		ServerCapabilitesReqiuresChecking = false;
+		ServerSupportsActions = false;
+		ServerSupportsMarkup = false;
 	}
+
+	QStringList capabilities = replyMsg.arguments().at(0).toStringList();
+
+	ServerSupportsActions = capabilities.contains("actions");
+	ServerSupportsMarkup = capabilities.contains("body-markup");
+
+	ServerCapabilitiesRequireChecking = false;
 }
 
 void FreedesktopNotify::notify(Notification *notification)
@@ -147,10 +146,10 @@ void FreedesktopNotify::notify(Notification *notification)
 
 	if (((notification->type() == "NewMessage") || (notification->type() == "NewChat")) && ShowContentMessage)
 	{
-		text.append(notification->text() + (ServerSupportsHtml ? "<br/><small>" : "\n"));
+		text.append(notification->text() + (ServerSupportsMarkup ? "<br/><small>" : "\n"));
 
-		QString strippedDetails = QString(notification->details()).replace("<br/>", "\n").remove(StripHTML);
-		if (ServerSupportsHtml)
+		QString strippedDetails = QString(notification->details()).replace("<br/>", "\n").remove(StripHtml);
+		if (ServerSupportsMarkup)
 			strippedDetails.replace('\n', QLatin1String("<br/>"));
 
 		if (strippedDetails.length() > CiteSign)
@@ -158,13 +157,13 @@ void FreedesktopNotify::notify(Notification *notification)
 		else
 			text.append(strippedDetails);
 
-		if (ServerSupportsHtml)
+		if (ServerSupportsMarkup)
 			text.append("</small>");
 	}
 	else
 		text.append(notification->text());
 
-	if (ServerSupportsHtml)
+	if (ServerSupportsMarkup)
 	{
 		HtmlDocument doc;
 		doc.parseHtml(text);
@@ -236,7 +235,7 @@ void FreedesktopNotify::slotServiceOwnerChanged(const QString &serviceName, cons
 			notification->release();
 	}
 
-	ServerCapabilitesReqiuresChecking = true;
+	ServerCapabilitiesRequireChecking = true;
 }
 
 void FreedesktopNotify::actionInvoked(unsigned int id, QString action)
