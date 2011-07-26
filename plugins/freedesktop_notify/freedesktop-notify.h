@@ -42,6 +42,7 @@ class FreedesktopNotify : public Notifier, public ConfigurationAwareObject
 	virtual ~FreedesktopNotify();
 
 	QDBusInterface *KNotify;
+	QRegExp StripBr;
 	QRegExp StripHtml;
 	QMap<unsigned int, Notification *> NotificationMap;
 	QQueue<unsigned int> IdQueue;
