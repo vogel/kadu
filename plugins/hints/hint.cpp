@@ -195,7 +195,12 @@ void Hint::updateText()
 
 			int citeSign = config_file.readNumEntry("Hints","CiteSign");
 
-			QString itemSyntax = config_file.readEntry("Hints", "Event_" + notification->key() + "_detailSyntax", "\n&bull; <small>%1</small>");
+			QString defaultSyntax;
+			if (notification->type() == "NewMessage" || notification->type() == "NewChat")
+				defaultSyntax = "\n&bull; <small>%1</small>";
+			else
+				defaultSyntax = "\n <small>%1</small>";
+			QString itemSyntax = config_file.readEntry("Hints", "Event_" + notification->key() + "_detailSyntax", defaultSyntax);
 			for (; i < count; i++)
 			{
 				const QString &message = details[i];

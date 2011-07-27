@@ -68,7 +68,10 @@ void WindowNotifierWindow::createGui()
 	}
 
 	QLabel *textLabel = new QLabel;
-	textLabel->setText(CurrentNotification->text());
+	QString text = CurrentNotification->text();
+	if (!CurrentNotification->details().isEmpty())
+		text += "<br/> <small>" + CurrentNotification->details() + "</small>";
+	textLabel->setText(text);
 
 	labelsLayout->addWidget(textLabel);
 
