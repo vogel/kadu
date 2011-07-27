@@ -156,8 +156,12 @@ void FreedesktopNotify::notify(Notification *notification)
 
 	KaduIcon icon(notification->icon());
 	if (icon.isNull())
+	{
 		icon.setPath("kadu_icons/section-kadu");
-	icon.setSize("64x64");
+		icon.setSize("32x32");
+	}
+	else
+		icon.setSize("64x64");
 	args.append(icon.fullPath());
 
 	// the new spec doesn't have this
