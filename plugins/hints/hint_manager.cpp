@@ -146,7 +146,7 @@ void HintManager::hintUpdated()
 
 void HintManager::configurationUpdated()
 {
-	Style = QString("QFrame {border-width: %1px; border-style: solid; border-color: %2; border-radius: %3px;}")
+	Style = QString("Hint {border-width: %1px; border-style: solid; border-color: %2; border-radius: %3px;}")
 			.arg(config_file.readNumEntry("Hints", "AllEvents_borderWidth", FRAME_WIDTH))
 			.arg(config_file.readColorEntry("Hints", "AllEvents_bdcolor").name())
 			.arg(BORDER_RADIUS);
@@ -499,8 +499,7 @@ void HintManager::showToolTip(const QPoint &point, BuddyOrContact buddyOrContact
 {
 	kdebugf();
 
-	if (tipFrame)
-		delete tipFrame;
+	delete tipFrame;
 
 #ifdef Q_OS_MAC
 	tipFrame = new QFrame(0, Qt::FramelessWindowHint | Qt::SplashScreen | Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint |Qt::MSWindowsOwnDC);

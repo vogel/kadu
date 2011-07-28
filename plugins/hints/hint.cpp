@@ -47,7 +47,7 @@
  * @{
  */
 Hint::Hint(QWidget *parent, Notification *notification)
-	: QWidget(parent), vbox(0), callbacksBox(0), icon(0), label(0), bcolor(), notification(notification),
+	: QFrame(parent), vbox(0), callbacksBox(0), icon(0), label(0), bcolor(), notification(notification),
 	  requireCallbacks(notification->requireCallback())
 {
 	kdebugf();
@@ -133,12 +133,10 @@ void Hint::createLabels(const QPixmap &pixmap)
 
 	vbox = new QVBoxLayout(this);
 	vbox->setSpacing(0);
-	vbox->setMargin(0);
 	vbox->setSizeConstraint(QLayout::SetMinimumSize);
 	QWidget *widget = new QWidget(this);
 	labels = new QHBoxLayout(widget);
 	labels->setSpacing(0);
-	labels->setMargin(0);
 	labels->setContentsMargins(margin + 4, margin + 2, margin + 4, margin + 2);
 
 	vbox->addWidget(widget);
@@ -299,13 +297,13 @@ void Hint::leaveEvent(QEvent *)
 
 void Hint::mouseOver()
 {
-	QString style = QString("QWidget {color:%1; background-color:%2; border-width:0px; border-color:%2}").arg(fcolor.name(), bcolor.lighter().name());
+	QString style = QString("* {color:%1; background-color:%2;}").arg(fcolor.name(), bcolor.lighter().name());
 	setStyleSheet(style);
 }
 
 void Hint::mouseOut()
 {
-	QString style = QString("QWidget {color:%1; background-color:%2; border-width:0px; border-color:%2}").arg(fcolor.name(), bcolor.name());
+	QString style = QString("* {color:%1; background-color:%2;}").arg(fcolor.name(), bcolor.name());
 	setStyleSheet(style);
 }
 

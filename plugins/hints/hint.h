@@ -23,7 +23,7 @@
 #ifndef HINT_H
 #define HINT_H
 
-#include <QtGui/QWidget>
+#include <QtGui/QFrame>
 #include <QtGui/QVBoxLayout>
 
 #include "chat/chat.h"
@@ -36,7 +36,8 @@ class QVBoxLayout;
 class Chat;
 class Notification;
 
-class Hint : public QWidget, ConfigurationAwareObject
+// Hint needs to inherit QFrame (not just QWidget) for better stylesheets support.
+class Hint : public QFrame, ConfigurationAwareObject
 {
 	Q_OBJECT
 
