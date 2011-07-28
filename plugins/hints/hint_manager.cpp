@@ -76,19 +76,10 @@ HintManager::HintManager(QObject *parent) :
 #endif
 	frame->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
 
-	Style = QString("QFrame {border-width: %1px; border-style: solid; border-color: %2; border-radius: %3px;}")
-			.arg(config_file.readNumEntry("Hints", "AllEvents_borderWidth", FRAME_WIDTH))
-			.arg(config_file.readColorEntry("Hints", "AllEvents_bdcolor").name())
-			.arg(BORDER_RADIUS);
-	frame->setStyleSheet(Style);
-
 	layout = new QVBoxLayout(frame);
 	layout->setSpacing(0);
 	layout->setMargin(0);
 // 	layout->setSizeConstraint(QLayout::SetFixedSize);
-
-	Opacity = config_file.readNumEntry("Hints", "AllEvents_transparency", 0);
-	Opacity = 1 - Opacity/100;
 
 	connect(hint_timer, SIGNAL(timeout()), this, SLOT(oneSecond()));
 	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetActivated(ChatWidget *)), this, SLOT(chatWidgetActivated(ChatWidget *)));
@@ -117,6 +108,9 @@ HintManager::HintManager(QObject *parent) :
 	NotificationManager::instance()->registerNotifier(this);
 	ToolTipClassManager::instance()->registerToolTipClass(QT_TRANSLATE_NOOP("@default", "Hints"), this);
 
+	configurationUpdated();
+
+	// remember to call it after setting `Style' member
 	UiHandler = new HintsConfigurationUiHandler(Style, this);
 
 	kdebugf2();
