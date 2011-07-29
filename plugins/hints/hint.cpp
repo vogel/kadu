@@ -95,7 +95,7 @@ Hint::Hint(QWidget *parent, Notification *notification)
 
 	connect(notification, SIGNAL(closed(Notification *)), this, SLOT(notificationClosed()));
 
-	setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+	setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
 
 	configurationUpdated();
 	show();
@@ -132,7 +132,6 @@ void Hint::createLabels(const QPixmap &pixmap)
 
 	vbox = new QVBoxLayout(this);
 	vbox->setSpacing(0);
-	vbox->setSizeConstraint(QLayout::SetMinimumSize);
 	labels = new QHBoxLayout();
 	labels->setSpacing(0);
 	labels->setContentsMargins(margin + 4, margin + 2, margin + 4, margin + 2);
@@ -148,8 +147,7 @@ void Hint::createLabels(const QPixmap &pixmap)
 	}
 
 	label = new QLabel(this);
-	label->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
-	label->setMaximumWidth(config_file.readNumEntry("Hints", "MaximumWidth", 500));
+	label->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::MinimumExpanding);
 	label->setTextInteractionFlags(Qt::NoTextInteraction);
 	label->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
 	label->setContentsMargins(margin + 4, 0, 0, 0);
@@ -208,6 +206,7 @@ void Hint::updateText()
 		+ "</div>"
 		);
 
+	adjustSize();
 	emit updated(this);
 }
 

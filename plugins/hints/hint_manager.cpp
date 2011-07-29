@@ -76,12 +76,11 @@ HintManager::HintManager(QObject *parent) :
 #else
 	frame = new QFrame(0, Qt::FramelessWindowHint | Qt::Tool | Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint |Qt::MSWindowsOwnDC);
 #endif
-	frame->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+	frame->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
 	layout = new QVBoxLayout(frame);
 	layout->setSpacing(0);
 	layout->setMargin(0);
-// 	layout->setSizeConstraint(QLayout::SetFixedSize);
 
 	connect(hint_timer, SIGNAL(timeout()), this, SLOT(oneSecond()));
 	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetActivated(ChatWidget *)), this, SLOT(chatWidgetActivated(ChatWidget *)));
@@ -240,7 +239,6 @@ void HintManager::setHint()
 
 	frame->setGeometry(newPosition.x(), newPosition.y(), preferredSize.width(), preferredSize.height());
 	frame->setFixedWidth(preferredSize.width());
-	frame->setFixedHeight(preferredSize.height());
 	frame->setWindowOpacity(Opacity);
 
 	if (frame->isVisible())
