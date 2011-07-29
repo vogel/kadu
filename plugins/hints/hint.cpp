@@ -76,10 +76,9 @@ Hint::Hint(QWidget *parent, Notification *notification)
 
 	if (showButtons)
 	{
-		QWidget *callbacksWidget = new QWidget(this);
-		callbacksBox = new QHBoxLayout(callbacksWidget);
+		callbacksBox = new QHBoxLayout();
 		callbacksBox->addStretch(10);
-		vbox->addWidget(callbacksWidget);
+		vbox->addLayout(callbacksBox);
 
 		foreach (const Notification::Callback &i, callbacks)
 		{
@@ -134,12 +133,11 @@ void Hint::createLabels(const QPixmap &pixmap)
 	vbox = new QVBoxLayout(this);
 	vbox->setSpacing(0);
 	vbox->setSizeConstraint(QLayout::SetMinimumSize);
-	QWidget *widget = new QWidget(this);
-	labels = new QHBoxLayout(widget);
+	labels = new QHBoxLayout();
 	labels->setSpacing(0);
 	labels->setContentsMargins(margin + 4, margin + 2, margin + 4, margin + 2);
+	vbox->addLayout(labels);
 
-	vbox->addWidget(widget);
 	if (!pixmap.isNull())
 	{
 		icon = new QLabel(this);
