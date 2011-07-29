@@ -51,7 +51,7 @@ class HintManager : public Notifier, public AbstractToolTip, public Configuratio
 	double Opacity;
 
 	QList<Hint *> hints;
-	QMap<QPair<Chat , QString>, Hint *> linkedHints;
+	QMap<QPair<Chat, QString>, Hint *> linkedHints;
 
 	HintsConfigurationUiHandler *UiHandler;
 

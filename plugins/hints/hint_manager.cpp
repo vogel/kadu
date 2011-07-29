@@ -120,18 +120,16 @@ HintManager::~HintManager()
 {
 	kdebugf();
 
+	hint_timer->stop();
+
 	ToolTipClassManager::instance()->unregisterToolTipClass("Hints");
 	NotificationManager::instance()->unregisterNotifier(this);
 
 	disconnect(this, SIGNAL(searchingForTrayPosition(QPoint &)), Core::instance(), SIGNAL(searchingForTrayPosition(QPoint &)));
+	disconnect(ChatWidgetManager::instance(), SIGNAL(chatWidgetActivated(ChatWidget *)), this, SLOT(chatWidgetActivated(ChatWidget *)));
 
 	delete tipFrame;
 	tipFrame = 0;
-
-	disconnect(ChatWidgetManager::instance(), SIGNAL(chatWidgetActivated(ChatWidget *)), this, SLOT(chatWidgetActivated(ChatWidget *)));
-	disconnect(hint_timer, SIGNAL(timeout()), this, SLOT(oneSecond()));
-
-	hints.clear();
 
 	delete frame;
 	frame = 0;
@@ -249,6 +247,14 @@ void HintManager::deleteHint(Hint *hint)
 	kdebugf();
 
 	hints.removeAll(hint);
+	for (QMap<QPair<Chat, QString>, Hint *>::iterator it = linkedHints.begin(); it != linkedHints.end(); )
+	{
+		if (it.value() == hint)
+			it = linkedHints.erase(it);
+		else
+			it++;
+	}
+
 	layout->removeWidget(hint);
 	hint->deleteLater();
 
