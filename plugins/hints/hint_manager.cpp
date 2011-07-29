@@ -30,7 +30,9 @@
  */
 
 #include <QtGui/QDesktopWidget>
+#include <QtGui/QHBoxLayout>
 #include <QtGui/QLabel>
+#include <QtGui/QVBoxLayout>
 
 #include "contacts/contact.h"
 #include "configuration/configuration-file.h"
@@ -167,15 +169,18 @@ void HintManager::setHint()
 		return;
 	}
 
+	int minimumWidth = config_file.readNumEntry("Hints", "MinimumWidth", 100);
+	int maximumWidth = config_file.readNumEntry("Hints", "MaximumWidth", 500);
+
 	QPoint newPosition;
 	QPoint trayPosition;
 
 	frame->adjustSize();
 	QSize preferredSize = frame->sizeHint();
-	if (preferredSize.width() < config_file.readNumEntry("Hints", "MinimumWidth", 100))
-		preferredSize.setWidth(config_file.readNumEntry("Hints", "MinimumWidth", 100));
-	if (preferredSize.width() > config_file.readNumEntry("Hints", "MaximumWidth", 500))
-		preferredSize.setWidth(config_file.readNumEntry("Hints", "MaximumWidth", 500));
+	if (preferredSize.width() < minimumWidth)
+		preferredSize.setWidth(minimumWidth);
+	if (preferredSize.width() > maximumWidth)
+		preferredSize.setWidth(maximumWidth);
 	QSize desktopSize = QApplication::desktop()->screenGeometry(frame).size();
 
 	emit searchingForTrayPosition(trayPosition);
@@ -237,7 +242,11 @@ void HintManager::setHint()
 	frame->setFixedWidth(preferredSize.width());
 	frame->setFixedHeight(preferredSize.height());
 	frame->setWindowOpacity(Opacity);
-	frame->update();
+
+	if (frame->isVisible())
+		frame->update();
+	else
+		frame->show();
 
 	kdebugf2();
 }
@@ -428,8 +437,6 @@ Hint *HintManager::addHint(Notification *notification)
 
 	if (!hint_timer->isActive())
 		hint_timer->start(1000);
-	if (frame->isHidden())
-		frame->show();
 
 	kdebugf2();
 
