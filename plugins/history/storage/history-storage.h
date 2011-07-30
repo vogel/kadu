@@ -63,9 +63,8 @@ public:
 	virtual QList<TimedStatus> statuses(const Buddy &buddy, const QDate &date = QDate(), int limit = 0) = 0;
 
 	virtual QList<QString> smsRecipientsList(const HistorySearchParameters &search) = 0;
-	virtual QList<QDate> datesForSmsRecipient(const QString &recipient, const HistorySearchParameters &search) = 0;
+	virtual QList<DatesModelItem> datesForSmsRecipient(const QString &recipient, const HistorySearchParameters &search) = 0;
 	virtual QList<Message> sms(const QString &recipient, const QDate &date = QDate(), int limit = 0) = 0;
-	virtual int smsCount(const QString &recipient, const QDate &date = QDate()) = 0;
 
 	virtual void appendMessage(const Message &message) = 0;
 	virtual void appendStatus(const Contact &contact, const Status &status, const QDateTime &time = QDateTime::currentDateTime()) = 0;

@@ -24,21 +24,19 @@
 #include "chat/chat.h"
 #include "model/roles.h"
 
+#include "model/dates-model-item.h"
 #include "history-tree-item.h"
 #include "history.h"
 
 #include "sms-dates-model.h"
 
-SmsDatesModel::SmsDatesModel(const QString &recipient, const QList<QDate> &dates, QObject *parent) :
+SmsDatesModel::SmsDatesModel(const QString &recipient, const QList<DatesModelItem> &dates, QObject *parent) :
 		QAbstractListModel(parent), Recipient(recipient), Dates(dates)
 {
-	Cache = new QMap<QDate, ItemCachedData>();
 }
 
 SmsDatesModel::~SmsDatesModel()
 {
-	delete Cache;
-	Cache = 0;
 }
 
 int SmsDatesModel::columnCount(const QModelIndex &parent) const
@@ -68,23 +66,6 @@ QVariant SmsDatesModel::headerData(int section, Qt::Orientation orientation, int
 	return QVariant();
 }
 
-int SmsDatesModel::fetchSize(const QDate &date) const
-{
-	return History::instance()->smsCount(Recipient, date);
-}
-
-SmsDatesModel::ItemCachedData SmsDatesModel::fetchCachedData(const QDate &date) const
-{
-	if (Cache->contains(date))
-		return Cache->value(date);
-
-	ItemCachedData cache;
-	cache.size = fetchSize(date);
-	Cache->insert(date, cache);
-
-	return cache;
-}
-
 QVariant SmsDatesModel::data(const QModelIndex &index, int role) const
 {
 	if (Recipient.isEmpty())
@@ -102,15 +83,15 @@ QVariant SmsDatesModel::data(const QModelIndex &index, int role) const
 		{
 			switch (col)
 			{
-				case 0: return Dates.at(row).toString("dd.MM.yyyy");
-				case 1: return fetchCachedData(Dates.at(row)).size;
+				case 0: return Dates.at(row).Date.toString("dd.MM.yyyy");
+				case 1: return Dates.at(row).Count;
 			}
 
 			return QVariant();
 		}
 
 		case HistoryItemRole: return QVariant::fromValue<HistoryTreeItem>(HistoryTreeItem(Recipient));
-		case DateRole: return Dates.at(row);
+		case DateRole: return Dates.at(row).Date;
 	}
 
 	return QVariant();
@@ -121,10 +102,8 @@ void SmsDatesModel::setRecipient(const QString &recipient)
 	Recipient = recipient;
 }
 
-void SmsDatesModel::setDates(const QList<QDate> &dates)
+void SmsDatesModel::setDates(const QList<DatesModelItem> &dates)
 {
-	Cache->clear();
-
 	if (!Dates.isEmpty())
 	{
 		beginRemoveRows(QModelIndex(), 0, Dates.size() - 1);
@@ -142,5 +121,13 @@ void SmsDatesModel::setDates(const QList<QDate> &dates)
 
 QModelIndex SmsDatesModel::indexForDate(const QDate &date)
 {
-	return index(Dates.indexOf(date));
+	int i = 0;
+	foreach (const DatesModelItem &item, Dates)
+	{
+		if (item.Date == date)
+			return index(i);
+		++i;
+	}
+
+	return index(-1);
 }

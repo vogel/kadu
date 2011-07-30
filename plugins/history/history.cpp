@@ -564,7 +564,7 @@ QList<QString> History::smsRecipientsList(const HistorySearchParameters &search)
 	return CurrentStorage->smsRecipientsList(search);
 }
 
-QList<QDate> History::datesForSmsRecipient(const QString &recipient, const HistorySearchParameters &search)
+QList<DatesModelItem> History::datesForSmsRecipient(const QString &recipient, const HistorySearchParameters &search)
 {
 	kdebugf();
 
@@ -576,13 +576,6 @@ QList<Message> History::sms(const QString &recipient, const QDate &date, int lim
 	kdebugf();
 
 	return CurrentStorage->sms(recipient, date, limit);
-}
-
-int History::smsCount(const QString &recipient, const QDate &date)
-{
-	kdebugf();
-
-	return CurrentStorage->smsCount(recipient, date);
 }
 
 void History::deleteHistory(const Buddy &buddy)

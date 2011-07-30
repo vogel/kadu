@@ -162,7 +162,7 @@ void HistoryWindow::createGui()
 
 	MyChatDatesModel = new ChatDatesModel(Chat::null, QList<DatesModelItem>(), this);
 	MyBuddyStatusDatesModel = new BuddyStatusDatesModel(Buddy::null, QList<DatesModelItem>(), this);
-	MySmsDatesModel = new SmsDatesModel(QString(), QList<QDate>(), this);
+	MySmsDatesModel = new SmsDatesModel(QString(), QList<DatesModelItem>(), this);
 
 	DetailsListView->setRootIsDecorated(false);
 	DetailsListView->setUniformRowHeights(true);
@@ -469,7 +469,7 @@ void HistoryWindow::smsRecipientActivated(const QString& recipient)
 
 	QDate date = selectedIndex.data(DateRole).toDate();
 
-	QList<QDate> smsDates = History::instance()->datesForSmsRecipient(recipient, Search);
+	QList<DatesModelItem> smsDates = History::instance()->datesForSmsRecipient(recipient, Search);
 	MySmsDatesModel->setRecipient(recipient);
 	MySmsDatesModel->setDates(smsDates);
 
