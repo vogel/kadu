@@ -68,6 +68,7 @@
 #include "debug.h"
 
 #include "gui/windows/history-window.h"
+#include "model/dates-model-item.h"
 #include "history-save-thread.h"
 #include "timed-status.h"
 
@@ -521,7 +522,7 @@ QList<Chat> History::chatsList(const HistorySearchParameters &search)
 	return CurrentStorage->chats(search);
 }
 
-QList<QDate> History::datesForChat(const Chat &chat, const HistorySearchParameters &search)
+QList<DatesModelItem> History::datesForChat(const Chat &chat, const HistorySearchParameters &search)
 {
 	kdebugf();
 
@@ -533,13 +534,6 @@ QList<Message> History::messages(const Chat &chat, const QDate &date, int limit)
 	kdebugf();
 
 	return CurrentStorage->messages(chat, date, limit);
-}
-
-int History::messagesCount(const Chat &chat, const QDate &date)
-{
-	kdebugf();
-
-	return CurrentStorage->messagesCount(chat, date);
 }
 
 QList<Buddy> History::statusBuddiesList(const HistorySearchParameters &search)

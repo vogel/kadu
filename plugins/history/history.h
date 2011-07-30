@@ -147,9 +147,8 @@ public:
 	void unregisterStorage(HistoryStorage *storage);
 
 	QList<Chat> chatsList(const HistorySearchParameters &search);
-	QList<QDate> datesForChat(const Chat &chat, const HistorySearchParameters &search);
+	QList<DatesModelItem> datesForChat(const Chat &chat, const HistorySearchParameters &search);
 	QList<Message> messages(const Chat &chat, const QDate &date = QDate(), int limit = 0);
-	int messagesCount(const Chat &chat, const QDate &date = QDate());
 
 	QList<Buddy> statusBuddiesList(const HistorySearchParameters &search);
 	QList<QDate> datesForStatusBuddy(const Buddy &buddy, const HistorySearchParameters &search);

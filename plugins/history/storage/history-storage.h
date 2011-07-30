@@ -33,6 +33,7 @@
 
 #include "../history_exports.h"
 
+class DatesModelItem;
 class HistorySearchParameters;
 class Message;
 class Status;
@@ -52,12 +53,10 @@ public:
 
 	virtual QList<Chat> chats(const HistorySearchParameters &search) = 0;
 
-	virtual QList<QDate> chatDates(const Chat &chat, const HistorySearchParameters &search) = 0;
+	virtual QList<DatesModelItem> chatDates(const Chat &chat, const HistorySearchParameters &search) = 0;
 	virtual QList<Message> messages(const Chat &chat, const QDate &date = QDate(), int limit = 0) = 0;
 	virtual QList<Message> messagesSince(const Chat &chat, const QDate &date) = 0;
 	virtual QList<Message> messagesBackTo(const Chat &chat, const QDateTime &datetime, int limit) = 0;
-	virtual int messagesCount(const Chat &chat, const QDate &date = QDate()) = 0;
-	virtual QPair<int, Message> firstMessageAndCount(const Chat &chat, const QDate &date) = 0;
 
 	virtual QList<Buddy> statusBuddiesList(const HistorySearchParameters &search) = 0;
 	virtual QList<QDate> datesForStatusBuddy(const Buddy &buddy, const HistorySearchParameters &search) = 0;
