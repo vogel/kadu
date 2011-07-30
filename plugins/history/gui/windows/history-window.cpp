@@ -63,6 +63,7 @@
 
 #include "model/buddy-status-dates-model.h"
 #include "model/chat-dates-model.h"
+#include "model/dates-model-item.h"
 #include "model/history-chats-model.h"
 #include "model/history-chats-model-proxy.h"
 #include "model/sms-dates-model.h"
@@ -159,7 +160,7 @@ void HistoryWindow::createGui()
 	DetailsListView = new QTreeView(rightWidget);
 	rightLayout->addWidget(DetailsListView);
 
-	MyChatDatesModel = new ChatDatesModel(Chat::null, QList<QDate>(), this);
+	MyChatDatesModel = new ChatDatesModel(Chat::null, QList<DatesModelItem>(), this);
 	MyBuddyStatusDatesModel = new BuddyStatusDatesModel(Buddy::null, QList<QDate>(), this);
 	MySmsDatesModel = new SmsDatesModel(QString(), QList<QDate>(), this);
 
@@ -403,7 +404,7 @@ void HistoryWindow::chatActivated(const Chat &chat)
 			: QModelIndex();
 	QDate date = selectedIndex.data(DateRole).toDate();
 
-	QList<QDate> chatDates = History::instance()->datesForChat(chat, Search);
+	QList<DatesModelItem> chatDates = History::instance()->datesForChat(chat, Search);
 	MyChatDatesModel->setChat(chat);
 	MyChatDatesModel->setDates(chatDates);
 

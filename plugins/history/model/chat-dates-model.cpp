@@ -19,28 +19,23 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QTextDocument>
 
 #include "chat/chat.h"
-#include "chat/message/formatted-message.h"
-#include "chat/message/message.h"
 #include "model/roles.h"
 
+#include "dates-model-item.h"
 #include "history-tree-item.h"
 #include "history.h"
 
 #include "chat-dates-model.h"
 
-ChatDatesModel::ChatDatesModel(const Chat &chat, const QList<QDate> &dates, QObject *parent) :
+ChatDatesModel::ChatDatesModel(const Chat &chat, const QList<DatesModelItem> &dates, QObject *parent) :
 		QAbstractListModel(parent), MyChat(chat), Dates(dates)
 {
-	Cache = new QMap<QDate, ItemCachedData>();
 }
 
 ChatDatesModel::~ChatDatesModel()
 {
-	delete Cache;
-	Cache = 0;
 }
 
 int ChatDatesModel::columnCount(const QModelIndex &parent) const
@@ -72,41 +67,6 @@ QVariant ChatDatesModel::headerData(int section, Qt::Orientation orientation, in
 	return QVariant();
 }
 
-QPair<int, QString> ChatDatesModel::fetchData(const QDate &date) const
-{
-	QPair<int, Message> pair = History::instance()->currentStorage()->firstMessageAndCount(MyChat, date);
-	if (!pair.second)
-		return qMakePair(0, QString());
-
-	QTextDocument document;
-	document.setHtml(pair.second.content());
-	FormattedMessage formatted = FormattedMessage::parse(&document);
-	QString title = formatted.toPlain();
-
-	if (title.length() > 20)
-	{
-		title.truncate(20);
-		title += " ...";
-	}
-
-	return qMakePair(pair.first, title);
-}
-
-ChatDatesModel::ItemCachedData ChatDatesModel::fetchCachedData(const QDate &date) const
-{
-	if (Cache->contains(date))
-		return Cache->value(date);
-
-	QPair<int, QString> data = fetchData(date);
-
-	ItemCachedData cache;
-	cache.size = data.first;
-	cache.title = data.second;
-	Cache->insert(date, cache);
-
-	return cache;
-}
-
 QVariant ChatDatesModel::data(const QModelIndex &index, int role) const
 {
 	if (!MyChat)
@@ -125,9 +85,9 @@ QVariant ChatDatesModel::data(const QModelIndex &index, int role) const
 			switch (col)
 			{
 				case 0: return MyChat.name();
-				case 1: return fetchCachedData(Dates.at(row)).title;
-				case 2: return Dates.at(row).toString("dd.MM.yyyy");
-				case 3: return fetchCachedData(Dates.at(row)).size;
+				case 1: return Dates.at(row).Title;
+				case 2: return Dates.at(row).Date.toString("dd.MM.yyyy");
+				case 3: return Dates.at(row).Count;
 			}
 
 			return QVariant();
@@ -135,7 +95,7 @@ QVariant ChatDatesModel::data(const QModelIndex &index, int role) const
 
 		case HistoryItemRole: return QVariant::fromValue<HistoryTreeItem>(HistoryTreeItem(MyChat));
 		case ChatRole: return QVariant::fromValue<Chat>(MyChat);
-		case DateRole: return Dates.at(row);
+		case DateRole: return Dates.at(row).Date;
 	}
 
 	return QVariant();
@@ -146,10 +106,8 @@ void ChatDatesModel::setChat(const Chat &chat)
 	MyChat = chat;
 }
 
-void ChatDatesModel::setDates(const QList<QDate> &dates)
+void ChatDatesModel::setDates(const QList<DatesModelItem> &dates)
 {
-	Cache->clear();
-
 	if (!Dates.isEmpty())
 	{
 		beginRemoveRows(QModelIndex(), 0, Dates.size() - 1);
@@ -167,5 +125,13 @@ void ChatDatesModel::setDates(const QList<QDate> &dates)
 
 QModelIndex ChatDatesModel::indexForDate(const QDate &date)
 {
-	return index(Dates.indexOf(date));
+	int i = 0;
+	foreach (const DatesModelItem &item, Dates)
+	{
+		if (item.Date == date)
+			return index(i);
+		++i;
+	}
+
+	return index(-1);
 }
