@@ -156,7 +156,6 @@ public:
 	virtual int maxDescriptionLength();
 
 	gg_session * gaduSession() { return GaduSession; }
-	GaduProtocolSocketNotifiers * socketNotifiers() { return SocketNotifiers; }
 
 signals:
 	/**

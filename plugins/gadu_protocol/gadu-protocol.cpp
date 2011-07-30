@@ -70,11 +70,9 @@
 
 GaduProtocol::GaduProtocol(Account account, ProtocolFactory *factory) :
 		Protocol(account, factory), CurrentFileTransferService(0),
-		ActiveServer(), GaduLoginParams(), GaduSession(0), PingTimer(0)
+		ActiveServer(), GaduLoginParams(), GaduSession(0), SocketNotifiers(0), PingTimer(0)
 {
 	kdebugf();
-
-	SocketNotifiers = new GaduProtocolSocketNotifiers(account, this);
 
 	CurrentAvatarService = new GaduAvatarService(account, this);
 	CurrentChatImageService = new GaduChatImageService(this);
@@ -161,6 +159,12 @@ void GaduProtocol::login()
 		// here was return... do not re-add it ;)
 	}
 
+	if (SocketNotifiers)
+	{
+		delete SocketNotifiers;
+		SocketNotifiers = 0;
+	}
+
 	GaduAccountDetails *gaduAccountDetails = dynamic_cast<GaduAccountDetails *>(account().details());
 	if (!gaduAccountDetails || 0 == gaduAccountDetails->uin())
 	{
@@ -182,6 +186,8 @@ void GaduProtocol::login()
 	}
 
 	ContactListHandler = new GaduContactListHandler(this);
+
+	SocketNotifiers = new GaduProtocolSocketNotifiers(account(), this);
 	SocketNotifiers->watchFor(GaduSession);
 }
 
@@ -243,7 +249,12 @@ void GaduProtocol::disconnectedCleanup()
 		PingTimer = 0;
 	}
 
-	SocketNotifiers->watchFor(0); // stop watching
+	if (SocketNotifiers)
+	{
+		SocketNotifiers->watchFor(0); // stop watching
+		delete SocketNotifiers;
+		SocketNotifiers = 0;
+	}
 
 	if (GaduSession)
 	{
@@ -278,6 +289,7 @@ void GaduProtocol::setupLoginParams()
 	GaduLoginParams.tls = gaduAccountDetails->tlsEncryption() ? GG_SSL_ENABLED : GG_SSL_DISABLED;
 
 	ActiveServer = GaduServersManager::instance()->getServer(1 == GaduLoginParams.tls);
+
 	bool haveServer = !ActiveServer.first.isNull();
 	GaduLoginParams.server_addr = haveServer ? htonl(ActiveServer.first.toIPv4Address()) : 0;
 	GaduLoginParams.server_port = haveServer ? ActiveServer.second : 0;
@@ -439,10 +451,14 @@ void GaduProtocol::socketConnFailed(GaduError error)
 	if (!GaduProtocolHelper::isConnectionErrorFatal(error))
 	{
 		GaduServersManager::instance()->markServerAsBad(ActiveServer);
+		logout();
 		connectionError();
 	}
 	else
+	{
+		logout();
 		connectionClosed();
+	}
 
 	kdebugf2();
 }
