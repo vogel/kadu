@@ -692,7 +692,7 @@ QList<DatesModelItem> HistorySqlStorage::datesForSmsRecipient(const QString &rec
 
 		dates.append(DatesModelItem(date, query.value(0).toInt(), QString()));
 	}
-	qDebug("%d", dates.count());
+
 	return dates;
 }
 
