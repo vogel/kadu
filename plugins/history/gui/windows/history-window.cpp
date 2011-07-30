@@ -161,7 +161,7 @@ void HistoryWindow::createGui()
 	rightLayout->addWidget(DetailsListView);
 
 	MyChatDatesModel = new ChatDatesModel(Chat::null, QList<DatesModelItem>(), this);
-	MyBuddyStatusDatesModel = new BuddyStatusDatesModel(Buddy::null, QList<QDate>(), this);
+	MyBuddyStatusDatesModel = new BuddyStatusDatesModel(Buddy::null, QList<DatesModelItem>(), this);
 	MySmsDatesModel = new SmsDatesModel(QString(), QList<QDate>(), this);
 
 	DetailsListView->setRootIsDecorated(false);
@@ -436,7 +436,7 @@ void HistoryWindow::statusBuddyActivated(const Buddy &buddy)
 
 	QDate date = selectedIndex.data(DateRole).toDate();
 
-	QList<QDate> statusDates = History::instance()->datesForStatusBuddy(buddy, Search);
+	QList<DatesModelItem> statusDates = History::instance()->datesForStatusBuddy(buddy, Search);
 	MyBuddyStatusDatesModel->setBuddy(buddy);
 	MyBuddyStatusDatesModel->setDates(statusDates);
 

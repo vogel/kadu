@@ -59,9 +59,8 @@ public:
 	virtual QList<Message> messagesBackTo(const Chat &chat, const QDateTime &datetime, int limit) = 0;
 
 	virtual QList<Buddy> statusBuddiesList(const HistorySearchParameters &search) = 0;
-	virtual QList<QDate> datesForStatusBuddy(const Buddy &buddy, const HistorySearchParameters &search) = 0;
+	virtual QList<DatesModelItem> datesForStatusBuddy(const Buddy &buddy, const HistorySearchParameters &search) = 0;
 	virtual QList<TimedStatus> statuses(const Buddy &buddy, const QDate &date = QDate(), int limit = 0) = 0;
-	virtual int statusBuddyCount(const Buddy &buddy, const QDate &date = QDate()) = 0;
 
 	virtual QList<QString> smsRecipientsList(const HistorySearchParameters &search) = 0;
 	virtual QList<QDate> datesForSmsRecipient(const QString &recipient, const HistorySearchParameters &search) = 0;

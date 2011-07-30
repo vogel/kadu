@@ -33,12 +33,6 @@ class ChatDatesModel : public QAbstractListModel
 {
 	Q_OBJECT
 
-	struct ItemCachedData
-	{
-		QString title;
-		int size;
-	};
-
 	Chat MyChat;
 	QList<DatesModelItem> Dates;
 
