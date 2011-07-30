@@ -234,7 +234,7 @@ void FreedesktopNotify::notify(Notification *notification)
 	QVariantMap hints;
 	hints.insert("category", msgRcv ? "im.received" : "im");
 	hints.insert("desktop-entry", DesktopEntry);
-	if (IsXCanonicalAppendSupported)
+	if (IsXCanonicalAppendSupported && !useKdeStyle)
 		hints.insert("x-canonical-append", "allowed");
 	args.append(hints);
 
