@@ -28,24 +28,17 @@
 
 #include "buddies/buddy.h"
 
+class DatesModelItem;
+
 class SmsDatesModel : public QAbstractListModel
 {
 	Q_OBJECT
 
-	struct ItemCachedData
-	{
-		int size;
-	};
-
 	QString Recipient;
-	QList<QDate> Dates;
-	QMap<QDate, ItemCachedData> *Cache;
-
-	int fetchSize(const QDate &date) const;
-	ItemCachedData fetchCachedData(const QDate &date) const;
+	QList<DatesModelItem> Dates;
 
 public:
-	SmsDatesModel(const QString &recipient, const QList<QDate> &dates, QObject *parent = 0);
+	SmsDatesModel(const QString &recipient, const QList<DatesModelItem> &dates, QObject *parent = 0);
 	virtual ~SmsDatesModel();
 
 	virtual int columnCount(const QModelIndex &parent) const;
@@ -55,7 +48,7 @@ public:
 	virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 
 	void setRecipient(const QString &recipient);
-	void setDates(const QList<QDate> &dates);
+	void setDates(const QList<DatesModelItem> &dates);
 
 	QModelIndex indexForDate(const QDate &date);
 

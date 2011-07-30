@@ -155,9 +155,8 @@ public:
 	QList<TimedStatus> statuses(const Buddy &buddy, const QDate &date = QDate(), int limit = 0);
 
 	QList<QString> smsRecipientsList(const HistorySearchParameters &search);
-	QList<QDate> datesForSmsRecipient(const QString &recipient, const HistorySearchParameters &search);
+	QList<DatesModelItem> datesForSmsRecipient(const QString &recipient, const HistorySearchParameters &search);
 	QList<Message> sms(const QString &recipient, const QDate &date = QDate(), int limit = 0);
-	int smsCount(const QString &recipient, const QDate &date = QDate());
 
 	void deleteHistory(const Buddy &buddy);
 

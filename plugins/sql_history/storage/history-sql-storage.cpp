@@ -648,17 +648,18 @@ QList<QString> HistorySqlStorage::smsRecipientsList(const HistorySearchParameter
 	return recipients;
 }
 
-QList<QDate> HistorySqlStorage::datesForSmsRecipient(const QString &recipient, const HistorySearchParameters &search)
+QList<DatesModelItem> HistorySqlStorage::datesForSmsRecipient(const QString &recipient, const HistorySearchParameters &search)
 {
 	kdebugf();
 
 	if (recipient.isEmpty())
-		return QList<QDate>();
+		return QList<DatesModelItem>();
 
 	QMutexLocker locker(&DatabaseMutex);
 
 	QSqlQuery query(Database);
-	QString queryString = "SELECT DISTINCT substr(send_time,0,11) as date FROM kadu_sms WHERE receipient = :receipient";
+	QString queryString = "SELECT count(1), substr(send_time,0,11)";
+	queryString += " FROM (select send_time from kadu_sms where receipient = :receipient";
 
 	if (!search.query().isEmpty())
 		queryString += " AND content LIKE :content";
@@ -666,6 +667,9 @@ QList<QDate> HistorySqlStorage::datesForSmsRecipient(const QString &recipient, c
 		queryString += " AND substr(send_time,0,11) >= :fromDate";
 	if (search.toDate().isValid())
 		queryString += " AND substr(send_time,0,11) <= :toDate";
+
+	queryString += " order by send_time DESC, rowid DESC)";
+	queryString += " group by substr(send_time,0,11) order by send_time ASC;";
 
 	query.prepare(queryString);
 
@@ -677,16 +681,18 @@ QList<QDate> HistorySqlStorage::datesForSmsRecipient(const QString &recipient, c
 	if (search.toDate().isValid())
 		query.bindValue(":toDate", search.toDate());
 
-	QList<QDate> dates;
+	QList<DatesModelItem> dates;
 	executeQuery(query);
 
 	while (query.next())
 	{
-		QDate date = query.value(0).toDate();
-		if (date.isValid())
-			dates.append(date);
-	}
+		QDate date = query.value(1).toDate();
+		if (!date.isValid())
+			continue;
 
+		dates.append(DatesModelItem(date, query.value(0).toInt(), QString()));
+	}
+	qDebug("%d", dates.count());
 	return dates;
 }
 
@@ -716,28 +722,6 @@ QList<Message> HistorySqlStorage::sms(const QString &recipient, const QDate &dat
 	QList<Message> result = smsFromQuery(query);
 
 	return result;
-}
-
-int HistorySqlStorage::smsCount(const QString &recipient, const QDate &date)
-{
-	kdebugf();
-
-	QMutexLocker locker(&DatabaseMutex);
-
-	QSqlQuery query(Database);
-	QString queryString = "SELECT COUNT(receipient) FROM kadu_sms WHERE receipient = :receipient";
-	if (!date.isNull())
-		queryString += " AND substr(send_time,0,11) = :date";
-	query.prepare(queryString);
-
-	query.bindValue(":receipient", recipient);
-	if (!date.isNull())
-		query.bindValue(":date", date.toString(Qt::ISODate));
-
-	executeQuery(query);
-	query.next();
-
-	return query.value(0).toInt();
 }
 
 QList<Buddy> HistorySqlStorage::statusBuddiesList(const HistorySearchParameters &search)
