@@ -53,7 +53,7 @@ class FreedesktopNotify : public Notifier, public ConfigurationAwareObject
 	bool ShowContentMessage;
 	int CiteSign;
 
-	bool IsServerVendorKde;
+	bool KdePlasmaNotifications;
 	bool IsXCanonicalAppendSupported;
 	bool UseFreedesktopStandard;
 	bool ServerSupportsActions;

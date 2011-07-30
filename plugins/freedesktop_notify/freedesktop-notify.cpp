@@ -60,7 +60,7 @@ void FreedesktopNotify::destroyInstance()
 
 FreedesktopNotify::FreedesktopNotify() :
 		Notifier("FreedesktopNotify", QT_TRANSLATE_NOOP("@default", "System notifications"), KaduIcon("kadu_icons/notify-hints")),
-		IsServerVendorKde(true), IsXCanonicalAppendSupported(false), UseFreedesktopStandard(false), ServerSupportsActions(true), ServerSupportsBody(true),
+		KdePlasmaNotifications(true), IsXCanonicalAppendSupported(false), UseFreedesktopStandard(false), ServerSupportsActions(true), ServerSupportsBody(true),
 		ServerSupportsHyperlinks(true), ServerSupportsMarkup(true), ServerCapabilitiesRequireChecking(false)
 {
 	StripBr.setPattern(QLatin1String("<br ?/?>"));
@@ -117,9 +117,9 @@ void FreedesktopNotify::checkServerCapabilities()
 
 	QDBusMessage replyMsg = KNotify->call(QDBus::Block, "GetServerInformation");
 	if (replyMsg.type() != QDBusMessage::ReplyMessage)
-		IsServerVendorKde = false;
+		KdePlasmaNotifications = false;
 	else
-		IsServerVendorKde = replyMsg.arguments().at(1).toString().contains("KDE");
+		KdePlasmaNotifications = replyMsg.arguments().at(0).toString().contains("Plasma") && replyMsg.arguments().at(1).toString().contains("KDE");
 
 	replyMsg = KNotify->call(QDBus::Block, "GetCapabilities");
 	if (replyMsg.type() != QDBusMessage::ReplyMessage)
@@ -148,7 +148,7 @@ void FreedesktopNotify::notify(Notification *notification)
 {
 	checkServerCapabilities();
 
-	bool useKdeStyle = IsServerVendorKde && ServerSupportsBody && ServerSupportsMarkup;
+	bool useKdeStyle = KdePlasmaNotifications && ServerSupportsBody && ServerSupportsMarkup;
 
 	QList<QVariant> args;
 	args.append("Kadu");
