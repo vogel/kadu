@@ -9,7 +9,7 @@
 * hints: #2249 fixed: removed unnecessary 1px window-color margin from hints (ultr)
 * hints: fixed occasional crash (beevvy)
 * hints: #2258 fixed: hints size was improperly computed (beevvy)
-* freedesktop_notify: #2163 fixed: properly support all popular notifications daemons (beevvy)
+* freedesktop_notify: #2163, #2263 fixed: properly support all popular notifications daemons (beevvy)
 
 +++ version 0.10.0-beta2
 * freedesktop_notify, hints: #2195 fixed: enable Freedesktop notifications in favor of hints on X11 by default (beevvy)

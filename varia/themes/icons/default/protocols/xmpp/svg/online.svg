@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
+
 <svg
    xmlns:dc="http://purl.org/dc/elements/1.1/"
    xmlns:cc="http://creativecommons.org/ns#"
@@ -13,7 +14,7 @@
    height="16"
    id="svg6306"
    sodipodi:version="0.32"
-   inkscape:version="0.46"
+   inkscape:version="0.48.2 r9819"
    version="1.0"
    sodipodi:docname="online.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape">
@@ -333,10 +334,11 @@
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="1006"
-     inkscape:window-height="882"
-     inkscape:window-x="0"
-     inkscape:window-y="16" />
+     inkscape:window-width="1366"
+     inkscape:window-height="709"
+     inkscape:window-x="-2"
+     inkscape:window-y="-3"
+     inkscape:window-maximized="1" />
   <metadata
      id="metadata6311">
     <rdf:RDF>
@@ -369,7 +371,7 @@
          transform="matrix(0.9784021,0,0,0.8278787,-120.89356,-92.007187)"
          id="path5418"
          d="M -8.3176899,9.8194942 C -8.26426,12.696909 -10.425762,15.407897 -13.237122,16.010491 C -15.890257,16.668546 -18.858125,15.370274 -20.183074,12.981334 C -21.643368,10.535947 -21.151781,7.1487711 -19.054518,5.220841 C -17.028261,3.218013 -13.619645,2.8897743 -11.247652,4.4671366 C -9.4448059,5.6059042 -8.2986208,7.6845686 -8.3176899,9.8194942 z"
-         style="fill:url(#linearGradient5442);fill-opacity:1;fill-rule:evenodd;stroke:url(#radialGradient5444);stroke-width:1.06266141;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter6694)" />
+         style="fill:url(#linearGradient5442);fill-opacity:1;fill-rule:evenodd;stroke:url(#radialGradient5444);stroke-width:1.06266141000000003;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;" />
       <path
          id="path5420"
          d="M -129.91175,-83.16214 C -129.87159,-85.126697 -131.1863,-86.928553 -132.95098,-87.711657 C -134.07121,-88.227607 -135.32452,-88.503776 -136.55709,-88.450915 C -138.46065,-88.186957 -140.41467,-87.193659 -141.25664,-85.383664 C -142.32247,-83.104122 -141.70131,-80.33213 -140.24745,-78.368646 C -139.24311,-76.984151 -137.54,-75.903695 -135.77442,-76.232148 C -133.83109,-76.598393 -132.4572,-78.240839 -131.48186,-79.847415 C -130.85117,-80.897332 -130.34613,-82.018428 -129.91175,-83.16214 z"
