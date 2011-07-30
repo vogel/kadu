@@ -151,9 +151,8 @@ public:
 	QList<Message> messages(const Chat &chat, const QDate &date = QDate(), int limit = 0);
 
 	QList<Buddy> statusBuddiesList(const HistorySearchParameters &search);
-	QList<QDate> datesForStatusBuddy(const Buddy &buddy, const HistorySearchParameters &search);
+	QList<DatesModelItem> datesForStatusBuddy(const Buddy &buddy, const HistorySearchParameters &search);
 	QList<TimedStatus> statuses(const Buddy &buddy, const QDate &date = QDate(), int limit = 0);
-	int statusBuddyCount(const Buddy &buddy, const QDate &date = QDate());
 
 	QList<QString> smsRecipientsList(const HistorySearchParameters &search);
 	QList<QDate> datesForSmsRecipient(const QString &recipient, const HistorySearchParameters &search);

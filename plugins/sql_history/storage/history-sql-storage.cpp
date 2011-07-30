@@ -784,17 +784,18 @@ QList<Buddy> HistorySqlStorage::statusBuddiesList(const HistorySearchParameters 
 	return buddies;
 }
 
-QList<QDate> HistorySqlStorage::datesForStatusBuddy(const Buddy &buddy, const HistorySearchParameters &search)
+QList<DatesModelItem> HistorySqlStorage::datesForStatusBuddy(const Buddy &buddy, const HistorySearchParameters &search)
 {
 	kdebugf();
 
 	if (!buddy)
-		return QList<QDate>();
+		return QList<DatesModelItem>();
 
 	QMutexLocker locker(&DatabaseMutex);
 
 	QSqlQuery query(Database);
-	QString queryString = "SELECT DISTINCT substr(set_time,0,11) as date FROM kadu_statuses WHERE " + buddyContactsWhere(buddy);
+	QString queryString = "SELECT count(1), substr(set_time,0,11) FROM";
+	queryString += " (select set_time FROM kadu_statuses WHERE " + buddyContactsWhere(buddy);
 
 	if (!search.query().isEmpty())
 		queryString += " AND description LIKE :description";
@@ -802,6 +803,9 @@ QList<QDate> HistorySqlStorage::datesForStatusBuddy(const Buddy &buddy, const Hi
 		queryString += " AND substr(set_time,0,11) >= :fromDate";
 	if (search.toDate().isValid())
 		queryString += " AND substr(set_time,0,11) <= :toDate";
+
+	queryString += "order by set_time DESC, rowid DESC)";
+	queryString += "group by substr(set_time,0,11) order by set_time ASC";
 
 	query.prepare(queryString);
 
@@ -812,15 +816,18 @@ QList<QDate> HistorySqlStorage::datesForStatusBuddy(const Buddy &buddy, const Hi
 	if (search.toDate().isValid())
 		query.bindValue(":toDate", search.toDate());
 
-	QList<QDate> dates;
+	QList<DatesModelItem> dates;
 
 	executeQuery(query);
 
+	QDate date;
 	while (query.next())
 	{
-		QDate date = query.value(0).toDate();
-		if (date.isValid())
-			dates.append(date);
+		date = query.value(1).toDate();
+		if (!date.isValid())
+			continue;
+
+		dates.append(DatesModelItem(date, query.value(0).toInt(), QString()));
 	}
 
 	return dates;
@@ -852,27 +859,6 @@ QList<TimedStatus> HistorySqlStorage::statuses(const Buddy &buddy, const QDate &
 	statuses = statusesFromQuery(query);
 
 	return statuses;
-}
-
-int HistorySqlStorage::statusBuddyCount(const Buddy &buddy, const QDate &date)
-{
-	kdebugf();
-
-	QMutexLocker locker(&DatabaseMutex);
-
-	QSqlQuery query(Database);
-	QString queryString = "SELECT COUNT(contact) FROM kadu_statuses WHERE " + buddyContactsWhere(buddy);
-	if (!date.isNull())
-		queryString += " AND substr(set_time,0,11) = :date";
-	query.prepare(queryString);
-
-	if (!date.isNull())
-		query.bindValue(":date", date.toString(Qt::ISODate));
-
-	executeQuery(query);
-	query.next();
-
-	return query.value(0).toInt();
 }
 
 void HistorySqlStorage::executeQuery(QSqlQuery &query)

@@ -543,7 +543,7 @@ QList<Buddy> History::statusBuddiesList(const HistorySearchParameters &search)
 	return CurrentStorage->statusBuddiesList(search);
 }
 
-QList<QDate> History::datesForStatusBuddy(const Buddy &buddy, const HistorySearchParameters &search)
+QList<DatesModelItem> History::datesForStatusBuddy(const Buddy &buddy, const HistorySearchParameters &search)
 {
 	kdebugf();
 
@@ -555,13 +555,6 @@ QList<TimedStatus> History::statuses(const Buddy &buddy, const QDate &date, int 
 	kdebugf();
 
 	return CurrentStorage->statuses(buddy, date, limit);
-}
-
-int History::statusBuddyCount(const Buddy &buddy, const QDate &date)
-{
-	kdebugf();
-
-	return CurrentStorage->statusBuddyCount(buddy, date);
 }
 
 QList<QString> History::smsRecipientsList(const HistorySearchParameters &search)

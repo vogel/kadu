@@ -24,21 +24,19 @@
 #include "chat/chat.h"
 #include "model/roles.h"
 
+#include "model/dates-model-item.h"
 #include "history-tree-item.h"
 #include "history.h"
 
 #include "buddy-status-dates-model.h"
 
-BuddyStatusDatesModel::BuddyStatusDatesModel(const Buddy &buddy, const QList<QDate> &dates, QObject *parent) :
+BuddyStatusDatesModel::BuddyStatusDatesModel(const Buddy &buddy, const QList<DatesModelItem> &dates, QObject *parent) :
 		QAbstractListModel(parent), MyBuddy(buddy), Dates(dates)
 {
-	Cache = new QMap<QDate, ItemCachedData>();
 }
 
 BuddyStatusDatesModel::~BuddyStatusDatesModel()
 {
-	delete Cache;
-	Cache = 0;
 }
 
 int BuddyStatusDatesModel::columnCount(const QModelIndex &parent) const
@@ -68,23 +66,6 @@ QVariant BuddyStatusDatesModel::headerData(int section, Qt::Orientation orientat
 	return QVariant();
 }
 
-int BuddyStatusDatesModel::fetchSize(const QDate &date) const
-{
-	return History::instance()->statusBuddyCount(MyBuddy, date);
-}
-
-BuddyStatusDatesModel::ItemCachedData BuddyStatusDatesModel::fetchCachedData(const QDate &date) const
-{
-	if (Cache->contains(date))
-		return Cache->value(date);
-
-	ItemCachedData cache;
-	cache.size = fetchSize(date);
-	Cache->insert(date, cache);
-
-	return cache;
-}
-
 QVariant BuddyStatusDatesModel::data(const QModelIndex &index, int role) const
 {
 	if (!MyBuddy)
@@ -102,8 +83,8 @@ QVariant BuddyStatusDatesModel::data(const QModelIndex &index, int role) const
 		{
 			switch (col)
 			{
-				case 0: return Dates.at(row).toString("dd.MM.yyyy");
-				case 1: return fetchCachedData(Dates.at(row)).size;
+				case 0: return Dates.at(row).Date.toString("dd.MM.yyyy");
+				case 1: return Dates.at(row).Count;
 			}
 
 			return QVariant();
@@ -111,7 +92,7 @@ QVariant BuddyStatusDatesModel::data(const QModelIndex &index, int role) const
 
 		case HistoryItemRole: return QVariant::fromValue<HistoryTreeItem>(HistoryTreeItem(MyBuddy));
 		case BuddyRole: return QVariant::fromValue<Buddy>(MyBuddy);
-		case DateRole: return Dates.at(row);
+		case DateRole: return Dates.at(row).Date;
 	}
 
 	return QVariant();
@@ -122,10 +103,8 @@ void BuddyStatusDatesModel::setBuddy(const Buddy &buddy)
 	MyBuddy = buddy;
 }
 
-void BuddyStatusDatesModel::setDates(const QList<QDate> &dates)
+void BuddyStatusDatesModel::setDates(const QList<DatesModelItem> &dates)
 {
-	Cache->clear();
-
 	if (!Dates.isEmpty())
 	{
 		beginRemoveRows(QModelIndex(), 0, Dates.size() - 1);
@@ -143,5 +122,13 @@ void BuddyStatusDatesModel::setDates(const QList<QDate> &dates)
 
 QModelIndex BuddyStatusDatesModel::indexForDate(const QDate &date)
 {
-	return index(Dates.indexOf(date));
+	int i = 0;
+	foreach (const DatesModelItem &item, Dates)
+	{
+		if (item.Date == date)
+			return index(i);
+		++i;
+	}
+
+	return index(-1);
 }
