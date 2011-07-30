@@ -17,6 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtGui/QTextDocument>
+
 #include "configuration/configuration-file.h"
 #include "notify/notification-manager.h"
 #include "notify/notify-event.h"
@@ -51,7 +53,7 @@ void FirewallNotification::notify(const Chat &chat, const Contact &sender, const
 	notification->setTitle(tr("Message was blocked"));
 	notification->setText(config_file.readEntry("Firewall", "notification_syntax",
 		tr("%u writes")).replace("%u", sender.ownerBuddy().display()).remove("%m"));
-	notification->setDetails(message);
+	notification->setDetails(Qt::escape(message));
 	NotificationManager::instance()->notify(notification);
 }
 

@@ -42,18 +42,27 @@ class FreedesktopNotify : public Notifier, public ConfigurationAwareObject
 	virtual ~FreedesktopNotify();
 
 	QDBusInterface *KNotify;
-	QRegExp StripHTML;
+	QRegExp StripBr;
+	QRegExp StripHtml;
+	QRegExp StripUnsupportedHtml;
 	QMap<unsigned int, Notification *> NotificationMap;
 	QQueue<unsigned int> IdQueue;
 
+	bool CustomTimeout;
 	int Timeout;
 	bool ShowContentMessage;
 	int CiteSign;
 
+	bool KdePlasmaNotifications;
+	bool IsXCanonicalAppendSupported;
 	bool UseFreedesktopStandard;
 	bool ServerSupportsActions;
-	bool ServerSupportsHtml;
-	bool ServerCapabilitesReqiuresChecking;
+	bool ServerSupportsBody;
+	bool ServerSupportsHyperlinks;
+	bool ServerSupportsMarkup;
+	bool ServerCapabilitiesRequireChecking;
+
+	QString DesktopEntry;
 
 	void import_0_9_0_Configuration();
 	void createDefaultConfiguration();

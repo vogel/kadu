@@ -98,7 +98,8 @@ void EncryptionNgNotification::notifyPublicKeySendError(Contact contact, const Q
 {
 	EncryptionNgNotification *notification = new EncryptionNgNotification("encryption-ng/publicKeySendError");
 	notification->setTitle(tr("Encryption"));
-	notification->setText(tr("Error \"%3\" during sending public key to: %1 (%2)").arg(contact.ownerBuddy().display()).arg(contact.id()).arg(error));
+	notification->setText(tr("Error sending public key to: %1 (%2)").arg(contact.ownerBuddy().display()).arg(contact.id()));
+	notification->setDetails(error);
 	NotificationManager::instance()->notify(notification);
 }
 
@@ -106,7 +107,8 @@ void EncryptionNgNotification::notifyEncryptionError(const QString &error)
 {
 	EncryptionNgNotification *notification = new EncryptionNgNotification("encryption-ng/encryptionError");
 	notification->setTitle(tr("Encryption"));
-	notification->setText(tr("Error occured during encryption: %1").arg(error));
+	notification->setText(tr("Error occured during encryption"));
+	notification->setDetails(error);
 	NotificationManager::instance()->notify(notification);
 }
 

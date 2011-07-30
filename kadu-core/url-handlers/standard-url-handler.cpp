@@ -39,7 +39,7 @@ bool StandardUrlHandler::isUrlValid(const QByteArray &url)
 	return UrlRegExp.exactMatch(QString::fromUtf8(url));
 }
 
-void StandardUrlHandler::convertUrlsToHtml(HtmlDocument &document)
+void StandardUrlHandler::convertUrlsToHtml(HtmlDocument &document, bool generateOnlyHrefAttr)
 {
 	for (int i = 0; i < document.countElements(); ++i)
 	{
@@ -66,11 +66,19 @@ void StandardUrlHandler::convertUrlsToHtml(HtmlDocument &document)
 			displayLink = Qt::escape(text.mid(index, index + (LinkFoldTreshold / 2)) + "..."
 					+ text.mid(length - (LinkFoldTreshold / 2), LinkFoldTreshold / 2));
 
-			// prepare string for KaduWebView::convertClipboardHtml()
-			link = "<a folded=\"1\" displaystr=\"" + displayLink + "\" href=\"" + aLink + "\" title=\"" + aLink + "\">" + displayLink + "</a>";
+			if (generateOnlyHrefAttr)
+				link = "<a href=\"" + aLink + "\">" + displayLink + "</a>";
+			else
+				// prepare string for KaduWebView::convertClipboardHtml()
+				link = "<a folded=\"1\" displaystr=\"" + displayLink + "\" href=\"" + aLink + "\" title=\"" + aLink + "\">" + displayLink + "</a>";
 		}
 		else
-			link = "<a href=\"" + aLink + "\" title=\"" + aLink + "\">" + displayLink + "</a>";
+		{
+			if (generateOnlyHrefAttr)
+				link = "<a href=\"" + aLink + "\">" + displayLink + "</a>";
+			else
+				link = "<a href=\"" + aLink + "\" title=\"" + aLink + "\">" + displayLink + "</a>";
+		}
 
 		document.splitElement(i, index, length);
 		document.setElementValue(i, link, true);

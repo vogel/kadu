@@ -33,7 +33,7 @@ public:
 
 	bool isUrlValid(const QByteArray &url);
 
-	void convertUrlsToHtml(HtmlDocument &document);
+	void convertUrlsToHtml(HtmlDocument &document, bool generateOnlyHrefAttr);
 
 	void openUrl(const QByteArray &url, bool disableMenu);
 

@@ -86,17 +86,15 @@ ConnectionErrorNotification::ConnectionErrorNotification(Account account, const 
 {
 	setTitle(tr("Connection error"));
 
-	QString text = tr("Connection error on account: %1 (%2)").arg(account.id()).arg(account.accountIdentity().name());
+	setText(tr("Connection error on account: %1 (%2)").arg(account.id()).arg(account.accountIdentity().name()));
 
 	if (!ErrorMessage.isEmpty())
 	{
 		if (ErrorServer.isEmpty())
-			text += QString("<br />") + ErrorMessage;
+			setDetails(ErrorMessage);
 		else
-			text += QString("<br />%1 (%2)").arg(ErrorMessage).arg(ErrorServer);
+			setDetails(QString("%1 (%2)").arg(ErrorMessage).arg(ErrorServer));
 	}
-
-	setText(text);
 
 	ActiveErrors[account].append(ErrorMessage);
 }

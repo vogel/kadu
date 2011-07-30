@@ -44,7 +44,10 @@ void ChatNotifier::sendNotificationToChatWidget(Notification *notification, Chat
 {
 	Message message = Message::create();
 	message.setMessageChat(chatWidget->chat());
-	message.setContent(notification->text());
+	QString content = notification->text();
+	if (!notification->details().isEmpty())
+		content += "<br/> <small>" + notification->details() + "</small>";
+	message.setContent(content);
 	message.setReceiveDate(QDateTime::currentDateTime());
 	message.setSendDate(QDateTime::currentDateTime());
 	message.setStatus(MessageStatusReceived);

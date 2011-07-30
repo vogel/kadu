@@ -126,7 +126,7 @@ About::About(QWidget *parent) :
 	HtmlDocument authors_html;
 	authors_html.parseHtml(authors);
 	MailUrlHandler *handler = new MailUrlHandler;
-	handler->convertUrlsToHtml(authors_html);
+	handler->convertUrlsToHtml(authors_html, true);
 	delete handler;
 	tb_authors->setHtml(authors_html.generateHtml());
 
