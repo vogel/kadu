@@ -65,11 +65,11 @@
     </message>
     <message>
         <source>Do not quote messages older than</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie cytuj wiadomości starszych niż</translation>
     </message>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished">Kadu</translation>
+        <translation>Kadu</translation>
     </message>
 </context>
 <context>

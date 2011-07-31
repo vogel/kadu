@@ -69,11 +69,11 @@
     </message>
     <message>
         <source>Chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Rozmowa</translation>
     </message>
     <message>
         <source>Always Use Tabs</source>
-        <translation type="unfinished"></translation>
+        <translation>Zawsze używaj kart</translation>
     </message>
 </context>
 <context>

@@ -87,22 +87,22 @@
     </message>
     <message>
         <source>Error sending public key to: %1 (%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>Wystąpił błąd podczas wysyłania klucza do:  %1 (%2)</translation>
     </message>
     <message>
         <source>Error occured during encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>Wystąpił błąd podczas szyfrowania</translation>
     </message>
 </context>
 <context>
     <name>EncryptionNgPlugin</name>
     <message>
         <source>Encryption</source>
-        <translation type="unfinished">Szyfrowanie</translation>
+        <translation>Szyfrowanie</translation>
     </message>
     <message>
         <source>The QCA OSSL plugin for libqca2 is not present!</source>
-        <translation type="unfinished">Wtyczka QCA OSSL dla libqca2 nie jest dostępna!</translation>
+        <translation>Wtyczka QCA OSSL dla libqca2 jest niedostępna!</translation>
     </message>
 </context>
 <context>

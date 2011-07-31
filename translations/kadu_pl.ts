@@ -839,7 +839,7 @@ To poważne zagrożenie bezpieczeństwa!</translation>
     </message>
     <message>
         <source>Kadu needs to be restarted before changes to the language settings will take effect.</source>
-        <translation>Aby zastosować zmiany języka Kadu musi zostać uruchomione ponownie</translation>
+        <translation>Aby zastosować zmiany języka Kadu musi zostać uruchomione ponownie.</translation>
     </message>
     <message>
         <source>Web and E-Mail</source>
@@ -1089,23 +1089,23 @@ znajomych po połączeniu się z serwerem</translation>
     </message>
     <message>
         <source>Contact state change notification position</source>
-        <translation type="unfinished"></translation>
+        <translation>Pozycja powiadomienia o zmianie stanu kontaktu</translation>
     </message>
     <message>
         <source>Beginning of title</source>
-        <translation type="unfinished"></translation>
+        <translation>Początek tytułu</translation>
     </message>
     <message>
         <source>End of title</source>
-        <translation type="unfinished"></translation>
+        <translation>Koniec tytuły</translation>
     </message>
     <message>
         <source>Custom composing notification syntax</source>
-        <translation type="unfinished"></translation>
+        <translation>Własna składnia powiadomień o pisaniu</translation>
     </message>
     <message>
         <source>Move the Window to the Active Desktop</source>
-        <translation type="unfinished"></translation>
+        <translation>Przenieś okno na aktywny pulpit</translation>
     </message>
     <message>
         <source>Switch Desktop Making the Window Visible</source>
@@ -1113,79 +1113,79 @@ znajomych po połączeniu się z serwerem</translation>
     </message>
     <message>
         <source>Set status</source>
-        <translation type="unfinished"></translation>
+        <translation>Zmieniaj status</translation>
     </message>
     <message>
         <source>Per Account</source>
-        <translation type="unfinished"></translation>
+        <translation>dla  poszczególnych kont</translation>
     </message>
     <message>
         <source>Per Identity</source>
-        <translation type="unfinished"></translation>
+        <translation>dla poszczególnych tożsamości</translation>
     </message>
     <message>
         <source>For All Accounts</source>
-        <translation type="unfinished"></translation>
+        <translation>dla wszystkich kont</translation>
     </message>
     <message>
         <source>Last Status</source>
-        <translation type="unfinished"></translation>
+        <translation>Ostatni status</translation>
     </message>
     <message>
         <source>Free for Chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Chętny do rozmowy</translation>
     </message>
     <message>
         <source>Do Not Disturb</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie przeszkadzać</translation>
     </message>
     <message>
         <source>My font color</source>
-        <translation type="unfinished"></translation>
+        <translation>Mój kolor czcionki</translation>
     </message>
     <message>
         <source>Buddy&apos;s font color</source>
-        <translation type="unfinished"></translation>
+        <translation>Kolor czcionki znajomego</translation>
     </message>
     <message>
         <source>My nick color</source>
-        <translation type="unfinished"></translation>
+        <translation>Kolor mojego pseudonimu</translation>
     </message>
     <message>
         <source>Buddy&apos;s nick color</source>
-        <translation type="unfinished"></translation>
+        <translation>Kolor pseudonimu znajomego</translation>
     </message>
     <message>
         <source>My messages&apos; background</source>
-        <translation type="unfinished"></translation>
+        <translation>Tło moich wiadomości</translation>
     </message>
     <message>
         <source>Buddy&apos;s messages&apos; background</source>
-        <translation type="unfinished"></translation>
+        <translation>Tło wiadomości znajomego</translation>
     </message>
     <message>
         <source>Use custom chat background color</source>
-        <translation type="unfinished"></translation>
+        <translation>Używaj własnego koloru tła  rozmowy</translation>
     </message>
     <message>
         <source>Chat background</source>
-        <translation type="unfinished"></translation>
+        <translation>Tło rozmowy</translation>
     </message>
     <message>
         <source>Use custom text edit colors</source>
-        <translation type="unfinished"></translation>
+        <translation>Używaj własnych kolorów w polu edycji</translation>
     </message>
     <message>
         <source>Text edit background</source>
-        <translation type="unfinished"></translation>
+        <translation>Tło pola edycji</translation>
     </message>
     <message>
         <source>Text edit font</source>
-        <translation type="unfinished"></translation>
+        <translation>Czcionka pola edycji</translation>
     </message>
     <message>
         <source>Force custom font in chat window</source>
-        <translation type="unfinished"></translation>
+        <translation>Wymuś własną czcionkę w oknie rozmowy</translation>
     </message>
     <message>
         <source>Force custom font even for chat styles which define their own fonts (most Adium styles do that)</source>
@@ -1193,19 +1193,19 @@ znajomych po połączeniu się z serwerem</translation>
     </message>
     <message>
         <source>Information panel</source>
-        <translation type="unfinished"></translation>
+        <translation>Panel informacyjny</translation>
     </message>
     <message>
         <source>Scale All Emoticons</source>
-        <translation type="unfinished"></translation>
+        <translation>Skaluj wszystkie emotikony</translation>
     </message>
     <message>
         <source>Scale Only Static Emoticons</source>
-        <translation type="unfinished"></translation>
+        <translation>Skaluj tylko statyczne emotikony</translation>
     </message>
     <message>
         <source>Do Not Scale Emoticons</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie skaluj emotikon</translation>
     </message>
     <message>
         <source>Show expanding control</source>
@@ -1217,23 +1217,23 @@ znajomych po połączeniu się z serwerem</translation>
     </message>
     <message>
         <source>Open chat window only when I am online</source>
-        <translation type="unfinished"></translation>
+        <translation>Otwieraj okno rozmowy tylko gdy jestem dostępny</translation>
     </message>
     <message>
         <source>Never Remove Recent Chats</source>
-        <translation type="unfinished"></translation>
+        <translation>Nigdy nie usuwaj ostatnich rozmów</translation>
     </message>
     <message>
         <source>Contacts&apos; states</source>
-        <translation type="unfinished"></translation>
+        <translation>Stan kontaktów</translation>
     </message>
     <message>
         <source>Show state notifications in chats</source>
-        <translation type="unfinished"></translation>
+        <translation>Pokazuj powiadomienia o zmianie stanu podczas rozmowy</translation>
     </message>
     <message>
         <source>Show state notifications in windows&apos; titles</source>
-        <translation type="unfinished"></translation>
+        <translation>Pokazuj powiadomienia o zmianie stanu w tytule okna</translation>
     </message>
     <message>
         <source>Syntax:
@@ -1304,7 +1304,7 @@ znajomych po połączeniu się z serwerem</translation>
     </message>
     <message>
         <source>Qt %2 (compiled with Qt %3)</source>
-        <translation type="unfinished"></translation>
+        <translation>Qt %2 (skompilowane z Qt %3)</translation>
     </message>
 </context>
 <context>
@@ -1415,11 +1415,11 @@ znajomych po połączeniu się z serwerem</translation>
     </message>
     <message>
         <source>User ID:</source>
-        <translation>Identyfikator użytkownika</translation>
+        <translation>Identyfikator użytkownika:</translation>
     </message>
     <message>
         <source>Mobile number:</source>
-        <translation>Numer telefonu komórkowego</translation>
+        <translation>Numer telefonu komórkowego:</translation>
     </message>
     <message>
         <source>E-mail address:</source>
@@ -1463,7 +1463,7 @@ znajomych po połączeniu się z serwerem</translation>
     </message>
     <message>
         <source>Merging mobile number with buddy is not supported. Please use edit buddy window.</source>
-        <translation>Scalenie numeru telefonu nie jest możliwe. Proszę użyć okna edycji kontaktu</translation>
+        <translation>Scalenie numeru telefonu nie jest możliwe. Proszę użyć okna edycji kontaktu.</translation>
     </message>
     <message>
         <source>Entered e-mail is invalid</source>
@@ -1522,7 +1522,7 @@ znajomych po połączeniu się z serwerem</translation>
     <name>BuddyAvatarWidget</name>
     <message>
         <source>Remove Custom Photo...</source>
-        <translation>Usuń przypisane zdjęcie</translation>
+        <translation>Usuń przypisane zdjęcie...</translation>
     </message>
     <message>
         <source>Change Photo...</source>
@@ -1764,11 +1764,11 @@ znajomych po połączeniu się z serwerem</translation>
     <name>ChatNotification</name>
     <message>
         <source>Chat</source>
-        <translation type="unfinished">Rozmowa</translation>
+        <translation>Rozmowa</translation>
     </message>
     <message>
         <source>Ignore</source>
-        <translation type="unfinished">Ignoruj</translation>
+        <translation>Ignoruj</translation>
     </message>
 </context>
 <context>
@@ -1864,11 +1864,11 @@ zostaną zignorowane. Czy na pewno chcesz opuścić konferencję?</translation>
     </message>
     <message>
         <source>(Composing...)</source>
-        <translation type="unfinished"></translation>
+        <translation>(Pisze...)</translation>
     </message>
     <message>
         <source>(Inactive)</source>
-        <translation type="unfinished"></translation>
+        <translation>(Nieaktywny)</translation>
     </message>
 </context>
 <context>
@@ -2012,7 +2012,7 @@ zostaną zignorowane. Czy na pewno chcesz opuścić konferencję?</translation>
     </message>
     <message>
         <source>The following contacts present on server were not found on your local contact list:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>Następujące kontakty znajdują się na serwerze, ale nie zostały znalezione na lokalnej liście kontaktów:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;</translation>
     </message>
     <message>
         <source>The following contacts present on server were found on your local contact list under different buddy display names:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;</source>
@@ -2024,7 +2024,7 @@ zostaną zignorowane. Czy na pewno chcesz opuścić konferencję?</translation>
     </message>
     <message>
         <source>Do you want to apply the above changes to your contact list?</source>
-        <translation type="unfinished"></translation>
+        <translation>Czy chcesz wprowadzić powyższe zmiany do listy kontaków?</translation>
     </message>
     <message>
         <source>The following contacts from your list were not found in file:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;Do you want to remove them from contact list?</source>
@@ -2193,11 +2193,11 @@ Jest to prawdopodobnie dalsza część pliku &lt;b&gt;%5&lt;/b&gt;
     </message>
     <message>
         <source>Stop</source>
-        <translation type="unfinished">Zatrzymaj</translation>
+        <translation>Zatrzymaj</translation>
     </message>
     <message>
         <source>Start</source>
-        <translation type="unfinished"></translation>
+        <translation>Rozpocznij</translation>
     </message>
 </context>
 <context>
@@ -2400,11 +2400,11 @@ Jest to prawdopodobnie dalsza część pliku &lt;b&gt;%5&lt;/b&gt;
     <name>HtmlMessagesRenderer</name>
     <message>
         <source>%1 is active</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 jest aktywny</translation>
     </message>
     <message>
         <source>%1 is composing...</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 pisze...</translation>
     </message>
     <message>
         <source>%1 is gone</source>
@@ -2412,7 +2412,7 @@ Jest to prawdopodobnie dalsza część pliku &lt;b&gt;%5&lt;/b&gt;
     </message>
     <message>
         <source>%1 is inactive</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 jest nieaktywny</translation>
     </message>
     <message>
         <source>%1 has paused composing</source>
@@ -2688,7 +2688,7 @@ Jest to prawdopodobnie dalsza część pliku &lt;b&gt;%5&lt;/b&gt;
     </message>
     <message>
         <source>Advanced chat&apos;s look configuration</source>
-        <translation type="unfinished"></translation>
+        <translation>Zaawansowana konfiguracja wyglądu okna rozmowy</translation>
     </message>
 </context>
 <context>
@@ -2988,7 +2988,7 @@ Klient: %3</translation>
     <name>Plugin</name>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished">Kadu</translation>
+        <translation>Kadu</translation>
     </message>
     <message>
         <source>Cannot load %1 plugin library.:
@@ -3009,19 +3009,19 @@ Maybe it&apos;s not Kadu-compatible plugin.</source>
     <name>PluginsManager</name>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished">Kadu</translation>
+        <translation>Kadu</translation>
     </message>
     <message>
         <source>Required plugin %1 was not found</source>
-        <translation type="unfinished"></translation>
+        <translation>Wymagana wtyczka %1 nie została znaleziona</translation>
     </message>
     <message>
         <source>Plugin %1 conflicts with: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Wtyczka %1 jest w konflikcie z: %2</translation>
     </message>
     <message>
         <source>Plugin %1 cannot be deactivated because it is being used by the following plugins:%2</source>
-        <translation type="unfinished"></translation>
+        <translation>Wtyczka %1 nie może zostać wyładowana ponieważ jest wykorzystywana przez:%2</translation>
     </message>
 </context>
 <context>
@@ -3137,7 +3137,7 @@ Maybe it&apos;s not Kadu-compatible plugin.</source>
     </message>
     <message>
         <source>Uin:</source>
-        <translation>Numer GG</translation>
+        <translation>Numer GG:</translation>
     </message>
     <message>
         <source>Personal Data</source>
@@ -3165,7 +3165,7 @@ Maybe it&apos;s not Kadu-compatible plugin.</source>
     </message>
     <message>
         <source>to:</source>
-        <translation>do</translation>
+        <translation>do:</translation>
     </message>
     <message>
         <source>City:</source>
@@ -3193,15 +3193,15 @@ Maybe it&apos;s not Kadu-compatible plugin.</source>
     </message>
     <message>
         <source>We don&apos;t offer contacts search feature for your network yet.</source>
-        <translation>Wyszukiwanie kontaktów dla tej sieci nie jest wspierane</translation>
+        <translation>Wyszukiwanie kontaktów dla tej sieci nie jest wspierane.</translation>
     </message>
     <message>
         <source>Cannot search contacts in offline mode.</source>
-        <translation>Nie można szukać kontaktów w trybie &quot;niedostępny&quot;</translation>
+        <translation>Nie można szukać kontaktów w trybie &quot;niedostępny&quot;.</translation>
     </message>
     <message>
         <source>There were no results of your search.</source>
-        <translation>Nie było żadnych wyników Twojego wyszukiwania</translation>
+        <translation>Nie było żadnych wyników Twojego wyszukiwania.</translation>
     </message>
 </context>
 <context>
