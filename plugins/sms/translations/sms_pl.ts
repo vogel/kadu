@@ -78,7 +78,8 @@
     <message>
         <source>Check this box if your sms application does not understand arguments: number &amp;message&amp;
 Arguments should be separated with spaces. %k argument is converted to number, %m to message</source>
-        <translation type="unfinished"></translation>
+        <translation>Zaznacz to pole, jeśli twoja aplikacja sms nie przyjmuje argumentów: numer &amp;wiadomość&amp;
+Argumenty powinny być rozdzielone spacjami. Argument %k jest traktowany jak numer, %m jako wiadomość</translation>
     </message>
 </context>
 <context>

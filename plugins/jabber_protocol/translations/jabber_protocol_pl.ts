@@ -5,23 +5,23 @@
     <name>@default</name>
     <message>
         <source>Jabber/XMPP</source>
-        <translation type="unfinished"></translation>
+        <translation>Jabber/XMPP</translation>
     </message>
     <message>
         <source>Connection</source>
-        <translation type="unfinished">Połączenie</translation>
+        <translation>Połączenie</translation>
     </message>
     <message>
         <source>Data transfers</source>
-        <translation type="unfinished"></translation>
+        <translation>Transmisja danych</translation>
     </message>
     <message>
         <source>Port</source>
-        <translation type="unfinished">Port</translation>
+        <translation>Port</translation>
     </message>
     <message>
         <source>External address</source>
-        <translation type="unfinished"></translation>
+        <translation>Adres zewnętrzny</translation>
     </message>
 </context>
 <context>
@@ -300,7 +300,9 @@
         <source>Invalid data entered in required fields.
 
 Password entered in both fields (&quot;Password&quot; and &quot;Retype password&quot;) must be the same!</source>
-        <translation type="unfinished"></translation>
+        <translation>Wymagane pola wypełniono nieprawidłowo.
+
+Hasło w obu polach (&quot;Hasło&quot; oraz &quot;Powtórz hasło&quot;) musi być identyczne!</translation>
     </message>
 </context>
 <context>
@@ -424,7 +426,9 @@ Password entered in both fields (&quot;Password&quot; and &quot;Retype password&
         <source>Invalid data entered in required fields.
 
 Password entered in both fields (&quot;New password&quot; and &quot;Retype password&quot;) must be the same!</source>
-        <translation type="unfinished"></translation>
+        <translation>Wymagane pola wypełniono nieprawidłowo.
+
+Hasło w obu polach (&quot;Nowe Hasło&quot; oraz &quot;Powtórz hasło&quot;) musi być identyczne!</translation>
     </message>
 </context>
 <context>
@@ -835,7 +839,15 @@ Currently supports:
   JEP-0025
 
 Copyright (C) 2003 Justin Karneges</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 v1.0
+
+Utility to demonstrate the Iris XMPP library.
+
+Currently supports:
+  draft-ietf-xmpp-core-21
+  JEP-0025
+
+Copyright (C) 2003 Justin Karneges</translation>
     </message>
     <message>
         <source>Error</source>
@@ -847,27 +859,27 @@ Copyright (C) 2003 Justin Karneges</source>
     </message>
     <message>
         <source>You must specify a host:port for the proxy.</source>
-        <translation type="unfinished"></translation>
+        <translation>Musisz podać adres hosta oraz port dla proxy.</translation>
     </message>
     <message>
         <source>You must at least enter a URL to use http poll.</source>
-        <translation type="unfinished"></translation>
+        <translation>You must at least enter a URL to use http poll.</translation>
     </message>
     <message>
         <source>Please enter the proxy host in the form &apos;host:port&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Please enter the proxy host in the form &apos;host:port&apos;.</translation>
     </message>
     <message>
         <source>Please enter the host in the form &apos;host:port&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Please enter the host in the form &apos;host:port&apos;.</translation>
     </message>
     <message>
         <source>Error: SSF Min is greater than SSF Max.</source>
-        <translation type="unfinished"></translation>
+        <translation>Error: SSF Min is greater than SSF Max.</translation>
     </message>
     <message>
         <source>Error: TLS not available.  Disable any TLS options.</source>
-        <translation type="unfinished"></translation>
+        <translation>Error: TLS not available.  Disable any TLS options.</translation>
     </message>
     <message>
         <source>&amp;Disconnect</source>
@@ -876,15 +888,16 @@ Copyright (C) 2003 Justin Karneges</source>
     <message>
         <source>Bad XML input (%1,%2): %3
 Please correct and try again.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nieprawidłowy XML (%1,%2): %3
+Proszę poprawić i spróbować ponownie.</translation>
     </message>
     <message>
         <source>Bad Stanza &apos;%1&apos;.  Must be &apos;message&apos;, &apos;presence&apos;, or &apos;iq&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation>Bad Stanza &apos;%1&apos;.  Must be &apos;message&apos;, &apos;presence&apos;, or &apos;iq&apos;</translation>
     </message>
     <message>
         <source>You must enter at least one stanza!</source>
-        <translation type="unfinished"></translation>
+        <translation>You must enter at least one stanza!</translation>
     </message>
     <message>
         <source>Password</source>
@@ -906,11 +919,11 @@ Please correct and try again.</source>
     <name>XMPP::Features::FeatureName</name>
     <message>
         <source>ERROR: Incorrect usage of Features class</source>
-        <translation type="unfinished"></translation>
+        <translation>ERROR: Incorrect usage of Features class</translation>
     </message>
     <message>
         <source>None</source>
-        <translation type="unfinished">Żaden</translation>
+        <translation>Żaden</translation>
     </message>
     <message>
         <source>Register</source>
@@ -922,15 +935,15 @@ Please correct and try again.</source>
     </message>
     <message>
         <source>Groupchat</source>
-        <translation type="unfinished"></translation>
+        <translation>Konferencja</translation>
     </message>
     <message>
         <source>Gateway</source>
-        <translation type="unfinished"></translation>
+        <translation>Brama</translation>
     </message>
     <message>
         <source>Service Discovery</source>
-        <translation type="unfinished"></translation>
+        <translation>Przeglądanie Usług</translation>
     </message>
     <message>
         <source>VCard</source>
@@ -949,7 +962,7 @@ Please correct and try again.</source>
     <name>XMPP::JT_VCard</name>
     <message>
         <source>No VCard available</source>
-        <translation type="unfinished"></translation>
+        <translation>Wizytówka VCard niedostępna</translation>
     </message>
 </context>
 <context>
@@ -1098,7 +1111,7 @@ Szczegóły: %1</translation>
     </message>
     <message>
         <source>Server failed mutual authentication</source>
-        <translation type="unfinished"></translation>
+        <translation>Serwer nie przeszedł autentykacji</translation>
     </message>
     <message>
         <source>Encryption required for chosen SASL mechanism</source>
@@ -1114,11 +1127,11 @@ Szczegóły: %1</translation>
     </message>
     <message>
         <source>Invalid realm</source>
-        <translation type="unfinished"></translation>
+        <translation>Nieprawidłowa domena</translation>
     </message>
     <message>
         <source>SASL mechanism too weak for this account</source>
-        <translation type="unfinished"></translation>
+        <translation>Mechanizm SASL jest za słaby dla tego konta</translation>
     </message>
     <message>
         <source>Not authorized</source>
@@ -1145,11 +1158,11 @@ Szczegóły: %1</translation>
     <name>XMPP::Stanza::Error::Private</name>
     <message>
         <source>Bad request</source>
-        <translation type="unfinished"></translation>
+        <translation>Błędne żądanie</translation>
     </message>
     <message>
         <source>The sender has sent XML that is malformed or that cannot be processed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Otrzymany XML jest nieprawidłowy.</translation>
     </message>
     <message>
         <source>Conflict</source>
@@ -1157,7 +1170,7 @@ Szczegóły: %1</translation>
     </message>
     <message>
         <source>Access cannot be granted because an existing resource or session exists with the same name or address.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie można uzyskać dostępu, ponieważ istnieje już zasób lub sesja o tej samej nazwie lub adresie.</translation>
     </message>
     <message>
         <source>Feature not implemented</source>
@@ -1165,23 +1178,23 @@ Szczegóły: %1</translation>
     </message>
     <message>
         <source>The feature requested is not implemented by the recipient or server and therefore cannot be processed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Funkcjonalność niewspierana przez serwer lub odbiorcę.</translation>
     </message>
     <message>
         <source>Forbidden</source>
-        <translation type="unfinished"></translation>
+        <translation>Brak dostępu</translation>
     </message>
     <message>
         <source>The requesting entity does not possess the required permissions to perform the action.</source>
-        <translation type="unfinished"></translation>
+        <translation>Zgłaszający żadanie nie posiada uprawnień do jego wykonania.</translation>
     </message>
     <message>
         <source>Gone</source>
-        <translation type="unfinished"></translation>
+        <translation>Nieobecny</translation>
     </message>
     <message>
         <source>The recipient or server can no longer be contacted at this address.</source>
-        <translation type="unfinished"></translation>
+        <translation>Odbiorca lub serwer nie jest już dostępny pod tym adresem.</translation>
     </message>
     <message>
         <source>Internal server error</source>
@@ -1189,23 +1202,23 @@ Szczegóły: %1</translation>
     </message>
     <message>
         <source>The server could not process the stanza because of a misconfiguration or an otherwise-undefined internal server error.</source>
-        <translation type="unfinished"></translation>
+        <translation>Niewyjaśniony błąd po stronie serwera.</translation>
     </message>
     <message>
         <source>Item not found</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie odnaleziono obiektu</translation>
     </message>
     <message>
         <source>The addressed JID or item requested cannot be found.</source>
-        <translation type="unfinished"></translation>
+        <translation>Wskazany użytkownik nie został odnaleziony.</translation>
     </message>
     <message>
         <source>JID malformed</source>
-        <translation type="unfinished"></translation>
+        <translation>Nieprawidłowy JID</translation>
     </message>
     <message>
         <source>The sending entity has provided or communicated an XMPP address (e.g., a value of the &apos;to&apos; attribute) or aspect thereof (e.g., a resource identifier) that does not adhere to the syntax defined in Addressing Scheme.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nieznany błąd</translation>
     </message>
     <message>
         <source>Not acceptable</source>
@@ -1213,7 +1226,7 @@ Szczegóły: %1</translation>
     </message>
     <message>
         <source>The recipient or server understands the request but is refusing to process it because it does not meet criteria defined by the recipient or server (e.g., a local policy regarding acceptable words in messages).</source>
-        <translation type="unfinished"></translation>
+        <translation>Odbiorca odrzucił żądanie.</translation>
     </message>
     <message>
         <source>Not allowed</source>
