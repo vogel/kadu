@@ -2988,15 +2988,15 @@ Maybe it&apos;s not Kadu-compatible plugin.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Required module %1 was not found</source>
+        <source>Required plugin %1 was not found</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Module %1 conflicts with: %2</source>
+        <source>Plugin %1 conflicts with: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Module %1 cannot be deactivated because it is being used by the following modules:%2</source>
+        <source>Plugin %1 cannot be deactivated because it is being used by the following plugins:%2</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3249,10 +3249,6 @@ Maybe it&apos;s not Kadu-compatible plugin.</source>
 </context>
 <context>
     <name>StatusChangedNotification</name>
-    <message>
-        <source>&lt;b&gt;%1&lt;/b&gt; changed status to &lt;i&gt;%2&lt;/i&gt;&lt;br/&gt; &lt;small&gt;%3&lt;/small&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>&lt;b&gt;%1&lt;/b&gt; changed status to &lt;i&gt;%2&lt;/i&gt;</source>
         <translation type="unfinished"></translation>

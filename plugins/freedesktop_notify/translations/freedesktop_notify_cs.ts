@@ -11,10 +11,6 @@
         <source>General</source>
         <translation>Obecné</translation>
     </message>
-    <message>
-        <source>Timeout</source>
-        <translation>Časové omezení</translation>
-    </message>
     <message numerus="yes">
         <source>%n second(s)</source>
         <translation>
@@ -37,6 +33,14 @@
     </message>
     <message>
         <source>System notifications</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use custom expiration timeout</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Expiration timeout</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

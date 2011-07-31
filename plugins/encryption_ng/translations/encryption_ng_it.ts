@@ -86,12 +86,12 @@
         <translation>La chiave pubblica è stata inviata a: %1 (%2)</translation>
     </message>
     <message>
-        <source>Error &quot;%3&quot; during sending public key to: %1 (%2)</source>
-        <translation>Errore &quot;%3&quot; durante l&apos;invio della chiave pubblica: %1 (%2)</translation>
+        <source>Error sending public key to: %1 (%2)</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Error occured during encryption: %1</source>
-        <translation>Errore verificatosi durante la cifratura: %1</translation>
+        <source>Error occured during encryption</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

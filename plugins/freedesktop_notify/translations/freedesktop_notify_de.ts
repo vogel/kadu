@@ -11,10 +11,6 @@
         <source>General</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>Timeout</source>
-        <translation>Timeout</translation>
-    </message>
     <message numerus="yes">
         <source>%n second(s)</source>
         <translation type="unfinished">
@@ -36,6 +32,14 @@
     </message>
     <message>
         <source>System notifications</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use custom expiration timeout</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Expiration timeout</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

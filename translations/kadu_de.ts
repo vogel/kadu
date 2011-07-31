@@ -3006,16 +3006,16 @@ Vielleicht ist das Modul nich Kadu-kompatibel.</translation>
         <translation>Kadu</translation>
     </message>
     <message>
-        <source>Required module %1 was not found</source>
-        <translation>Erforderliches Modul %1 wurde nicht gefunden</translation>
+        <source>Required plugin %1 was not found</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Module %1 conflicts with: %2</source>
-        <translation>Modul %1 kollidiert mit: %2</translation>
+        <source>Plugin %1 conflicts with: %2</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Module %1 cannot be deactivated because it is being used by the following modules:%2</source>
-        <translation>Das Modul %1 kann nicht deaktiviert werden, das es von folgenden Modulen benötigt wird: %2</translation>
+        <source>Plugin %1 cannot be deactivated because it is being used by the following plugins:%2</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3267,10 +3267,6 @@ Vielleicht ist das Modul nich Kadu-kompatibel.</translation>
 </context>
 <context>
     <name>StatusChangedNotification</name>
-    <message>
-        <source>&lt;b&gt;%1&lt;/b&gt; changed status to &lt;i&gt;%2&lt;/i&gt;&lt;br/&gt; &lt;small&gt;%3&lt;/small&gt;</source>
-        <translation>&lt;b&gt;%1&lt;/b&gt; änderte Zustand in &lt;i&gt;%2&lt;/i&gt;&lt;br/&gt; &lt;small&gt;%3&lt;/small&gt;</translation>
-    </message>
     <message>
         <source>&lt;b&gt;%1&lt;/b&gt; changed status to &lt;i&gt;%2&lt;/i&gt;</source>
         <translation>&lt;b&gt;%1&lt;/b&gt; änderte Zustand in &lt;i&gt;%2&lt;/i&gt;</translation>
