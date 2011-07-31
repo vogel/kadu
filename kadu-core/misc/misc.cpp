@@ -59,7 +59,7 @@ QString replacedNewLine(const QString &text, const QString &newLineText)
 
 QRect properGeometry(const QRect &rect)
 {
-	QRect geometry(rect);
+	QRect geometry(rect.normalized());
 	QRect availableGeometry = QApplication::desktop()->availableGeometry(geometry.center());
 
 	// correct size
@@ -101,7 +101,7 @@ void saveWindowGeometry(const QWidget *w, const QString &section, const QString 
 void loadWindowGeometry(QWidget *w, const QString &section, const QString &name, int defaultX, int defaultY, int defaultWidth, int defaultHeight)
 {
 	QRect rect = config_file.readRectEntry(section, name);
-	if ((rect.height() == 0) || (rect.width() == 0))
+	if (!rect.isValid() || rect.height() == 0 || rect.width() == 0)
 		rect.setRect(defaultX, defaultY, defaultWidth, defaultHeight);
 	rect = properGeometry(rect);
 
