@@ -94,21 +94,7 @@ QRect properGeometry(const QRect &rect)
 
 void saveWindowGeometry(const QWidget *w, const QString &section, const QString &name)
 {
-#if defined(Q_OS_MAC) || defined(Q_WS_MAEMO_5)
-	/* Dorr: on Mac OS X make sure the window will not be greater than desktop what
-	 * sometimes happends during widget resizing (because of bug in Qt?),
-	 * on Maemo prevent from widgets greater than screen.
-	 */
-	QRect screen = QApplication::desktop()->availableGeometry(w);
-	QRect geometry(w->geometry());
-	if (geometry.height() > screen.height())
-		geometry.setHeight(screen.height());
-	if (geometry.width() > screen.width())
-		geometry.setWidth(screen.width());
-	config_file.writeEntry(section, name, geometry);
-#else
 	config_file.writeEntry(section, name, w->geometry());
-#endif
 }
 
 void loadWindowGeometry(QWidget *w, const QString &section, const QString &name, int defaultX, int defaultY, int defaultWidth, int defaultHeight)
