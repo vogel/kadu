@@ -29,19 +29,19 @@
     </message>
     <message>
         <source>System</source>
-        <translation type="unfinished"></translation>
+        <translation>System</translation>
     </message>
     <message>
         <source>System notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Powiadomienia systemowe</translation>
     </message>
     <message>
         <source>Use custom expiration timeout</source>
-        <translation type="unfinished"></translation>
+        <translation>Użyj własnego czasu zanikania</translation>
     </message>
     <message>
         <source>Expiration timeout</source>
-        <translation type="unfinished"></translation>
+        <translation>Czas zanikania</translation>
     </message>
 </context>
 </TS>

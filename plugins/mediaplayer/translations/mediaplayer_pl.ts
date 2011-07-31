@@ -113,15 +113,15 @@ Win+ Enter/Backspace/Left/Right/Up/Down.</translation>
     </message>
     <message>
         <source>Add in the Front</source>
-        <translation type="unfinished"></translation>
+        <translation>Dodaj na początku</translation>
     </message>
     <message>
         <source>Add at the Back</source>
-        <translation type="unfinished"></translation>
+        <translation>Dodaj na końcu</translation>
     </message>
     <message>
         <source>Replace &apos;#{player}&apos; Tag</source>
-        <translation type="unfinished"></translation>
+        <translation>Zastąp znacznik &quot;#{player}&quot;</translation>
     </message>
 </context>
 <context>

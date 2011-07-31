@@ -53,7 +53,7 @@
     </message>
     <message>
         <source>No Icon</source>
-        <translation type="unfinished"></translation>
+        <translation>Brak ikony</translation>
     </message>
 </context>
 <context>

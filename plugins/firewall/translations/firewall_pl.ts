@@ -141,7 +141,7 @@
     </message>
     <message>
         <source>Module will ask the question typed below, if someone wants talk to you and you do not have him on your list.</source>
-        <translation type="unfinished"></translation>
+        <translation>Wtyczka wyśle poniższe zapytanie kiedy ktoś nieznajdujący się na liście będzie chciał rozpocząć rozmowę.</translation>
     </message>
 </context>
 <context>

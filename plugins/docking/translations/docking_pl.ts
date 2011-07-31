@@ -29,15 +29,15 @@
     </message>
     <message>
         <source>Blinking Envelope</source>
-        <translation type="unfinished"></translation>
+        <translation>Mrugająca</translation>
     </message>
     <message>
         <source>Static Envelope</source>
-        <translation type="unfinished"></translation>
+        <translation>Statyczna</translation>
     </message>
     <message>
         <source>Animated Envelope</source>
-        <translation type="unfinished"></translation>
+        <translation>Animowana</translation>
     </message>
 </context>
 <context>

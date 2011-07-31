@@ -113,55 +113,55 @@ Czy chcesz mimo to odebrać ten obrazek?</translation>
     </message>
     <message>
         <source>Unable to connect, server has not been found</source>
-        <translation type="unfinished">Połączenie niemożliwe, serwer nie znaleziony</translation>
+        <translation>Połączenie niemożliwe, serwer nie został znaleziony</translation>
     </message>
     <message>
         <source>Unable to connect</source>
-        <translation type="unfinished">Połączenie niemożliwe</translation>
+        <translation>Połączenie niemożliwe</translation>
     </message>
     <message>
         <source>Please change your email in &quot;Change password / email&quot; window. Leave new password field blank.</source>
-        <translation type="unfinished">Zmień swój e-mail w oknie &quot;Zmień hasło / e-mai&quot;. Pole nowe hasło pozostaw puste.</translation>
+        <translation>Zmień swój e-mail w oknie &quot;Zmień hasło / e-mai&quot;. Pole nowe hasło pozostaw puste.</translation>
     </message>
     <message>
         <source>Unable to connect, server has returned unknown data</source>
-        <translation type="unfinished">Połączenie niemożliwe, serwer odpowiedział nieznanymi danymi</translation>
+        <translation>Połączenie niemożliwe, serwer odpowiedział nieznanymi danymi</translation>
     </message>
     <message>
         <source>Unable to connect, connection break during reading</source>
-        <translation type="unfinished">Połączenie niemożliwe, połączenie przerwane w czasie odczytu</translation>
+        <translation>Połączenie niemożliwe, połączenie przerwane w czasie odczytu</translation>
     </message>
     <message>
         <source>Unable to connect, connection break during writing</source>
-        <translation type="unfinished">Połączenie niemożliwe, połączenie przerwane w czasie zapisu</translation>
+        <translation>Połączenie niemożliwe, połączenie przerwane w czasie zapisu</translation>
     </message>
     <message>
         <source>Unable to connect, invalid password</source>
-        <translation type="unfinished"></translation>
+        <translation>Połączenie niemożliwe, nieprawidłowe hasło</translation>
     </message>
     <message>
         <source>Unable to connect, error of negotiation TLS</source>
-        <translation type="unfinished">Połączenie niemożliwe, błąd negocjacji TLS</translation>
+        <translation>Połączenie niemożliwe, błąd negocjacji TLS</translation>
     </message>
     <message>
         <source>Too many connection attempts with bad password!</source>
-        <translation type="unfinished">Zbyt wiele połączeń z użyciem błędnego hasła!</translation>
+        <translation>Zbyt wiele połączeń z użyciem błędnego hasła!</translation>
     </message>
     <message>
         <source>Unable to connect, servers are down</source>
-        <translation type="unfinished">Połączenie nie możliwe, serwery są niedostępne</translation>
+        <translation>Połączenie niemożliwe, serwery są niedostępne</translation>
     </message>
     <message>
         <source>Connection broken</source>
-        <translation type="unfinished">Zerwane połączenie</translation>
+        <translation>Zerwane połączenie</translation>
     </message>
     <message>
         <source>Connection timeout!</source>
-        <translation type="unfinished">Przekroczenie czasu połączenia!</translation>
+        <translation>Przekroczenie czasu połączenia!</translation>
     </message>
     <message>
         <source>Disconnection has occurred</source>
-        <translation type="unfinished">Nastąpiło rozłączenie</translation>
+        <translation>Nastąpiło rozłączenie</translation>
     </message>
 </context>
 <context>
@@ -267,7 +267,9 @@ Czy chcesz mimo to odebrać ten obrazek?</translation>
         <source>Error data typed in required fields.
 
 Passwords typed in both fields (&quot;Password&quot; and &quot;Retype Password&quot;) must be the same!</source>
-        <translation type="unfinished"></translation>
+        <translation>Błędne dane w wymaganych polach.
+
+Hasło wpisane w polach (&quot;Hasło&quot; i &quot;Powtórz hasło&quot;) muszą być takie same!</translation>
     </message>
 </context>
 <context>
@@ -386,7 +388,9 @@ Passwords typed in both fields (&quot;Password&quot; and &quot;Retype Password&q
         <source>Error data typed in required fields.
 
 Passwords typed in both fields (&quot;Password&quot; and &quot;Retype Password&quot;) must be the same!</source>
-        <translation type="unfinished"></translation>
+        <translation>Błędne dane w wymaganych polach.
+
+Hasło wpisane w polach (&quot;Hasło&quot; i &quot;Powtórz hasło&quot;) muszą być takie same!</translation>
     </message>
 </context>
 <context>
@@ -545,15 +549,15 @@ Passwords typed in both fields (&quot;Password&quot; and &quot;Retype Password&q
     </message>
     <message>
         <source>External ip</source>
-        <translation type="unfinished"></translation>
+        <translation>Zewnętrzny adres IP</translation>
     </message>
     <message>
         <source>External port</source>
-        <translation type="unfinished"></translation>
+        <translation>Zewnętrzny port</translation>
     </message>
     <message>
         <source>You have to compile libgadu with SSL support to be able to enable encrypted connection</source>
-        <translation type="unfinished"></translation>
+        <translation>Libgadu skompilowane ze wsparciem dla SSL jest wymagane aby aktywować szyfrowane połączenie</translation>
     </message>
 </context>
 <context>
@@ -621,11 +625,11 @@ Passwords typed in both fields (&quot;Password&quot; and &quot;Retype Password&q
     <name>GaduProtocolPlugin</name>
     <message>
         <source>Gadu-Gadu Protocol</source>
-        <translation type="unfinished"></translation>
+        <translation>Protokół Gadu-Gadu</translation>
     </message>
     <message>
         <source>Cannot load Gadu-Gadu Protocol plugin. Please compile libgadu with zlib support.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie można załadować wtyczki Gadu-Gadu. Libgadu ze wsparciem dla zlib jest wymagane.</translation>
     </message>
 </context>
 <context>
