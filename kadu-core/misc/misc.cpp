@@ -92,10 +92,25 @@ QRect properGeometry(const QRect &rect)
 	return geometry;
 }
 
+QRect windowGeometry(const QWidget *w)
+{
+	// it has to be symmetric to what setWindowGeometry() does
+	return QRect(w->pos(), w->size());
+}
+
+void setWindowGeometry(QWidget *w, const QRect &geometry)
+{
+	QRect rect = properGeometry(geometry);
+
+	// setGeometry() will do no good here, refer to Qt docs and Kadu bug #2262
+	// note it has to be symmetric to what windowGeometry() does
+	w->resize(rect.size());
+	w->move(rect.topLeft());
+}
+
 void saveWindowGeometry(const QWidget *w, const QString &section, const QString &name)
 {
-	QRect rect(w->pos(), w->size());
-	config_file.writeEntry(section, name, rect);
+	config_file.writeEntry(section, name, windowGeometry(w));
 }
 
 void loadWindowGeometry(QWidget *w, const QString &section, const QString &name, int defaultX, int defaultY, int defaultWidth, int defaultHeight)
@@ -103,11 +118,8 @@ void loadWindowGeometry(QWidget *w, const QString &section, const QString &name,
 	QRect rect = config_file.readRectEntry(section, name);
 	if (!rect.isValid() || rect.height() == 0 || rect.width() == 0)
 		rect.setRect(defaultX, defaultY, defaultWidth, defaultHeight);
-	rect = properGeometry(rect);
 
-	// setGeometry() will do no good here, refer to Qt docs and Kadu bug #2262
-	w->resize(rect.size());
-	w->move(rect.topLeft());
+	setWindowGeometry(w, rect);
 }
 
 QString pwHash(const QString &text)
