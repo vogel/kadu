@@ -74,7 +74,8 @@ OpenChatWith::OpenChatWith() :
 	
 	int width = QDesktopWidget().availableGeometry().width()*0.25;
 	int height = QDesktopWidget().availableGeometry().height()*0.3;
-	setGeometry(QDesktopWidget().availableGeometry().center().x()-width/2, QDesktopWidget().availableGeometry().center().y()-height/2, width, height);
+	QRect rect(QDesktopWidget().availableGeometry().center().x()-width/2, QDesktopWidget().availableGeometry().center().y()-height/2, width, height);
+	setWindowGeometry(this, rect);
 
 	MainLayout = new QVBoxLayout(this);
 	MainLayout->setMargin(0);

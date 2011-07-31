@@ -34,6 +34,7 @@
 #include "gui/windows/main-window.h"
 #include "icons/kadu-icon.h"
 #include "misc/path-conversion.h"
+#include "misc/misc.h"
 
 #include "plugins/docking/docking.h"
 
@@ -124,7 +125,7 @@ void SimpleView::simpleViewToggle(bool activate)
 		SimpleViewActive = activate;
 
 		flags = MainWindowHandle->windowFlags();
-		mr = MainWindowHandle->geometry();
+		mr = windowGeometry(MainWindowHandle);
 
 		if (SimpleViewActive)
 		{
@@ -179,7 +180,7 @@ void SimpleView::simpleViewToggle(bool activate)
 
 			MainWindowHandle->setWindowFlags(flags | Qt::FramelessWindowHint);
 
-			MainWindowHandle->setGeometry(r);
+			setWindowGeometry(MainWindowHandle, r);
 
 			if (Borderless)
 				BuddiesListWidgetHandle->view()->setStyleSheet(QString("QTreeView { border-style: none; }") + BuddiesListViewStyle);
@@ -195,7 +196,7 @@ void SimpleView::simpleViewToggle(bool activate)
 
 			MainWindowHandle->setWindowFlags(flags & ~(Qt::FramelessWindowHint));
 
-			MainWindowHandle->setGeometry(r);
+			setWindowGeometry(MainWindowHandle, r);
 
 			/* Status button */
 			StatusButtonsHandle->setVisible(config_file.readBoolEntry("Look", "ShowStatusButton"));
