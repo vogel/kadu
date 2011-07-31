@@ -59,7 +59,7 @@ QString replacedNewLine(const QString &text, const QString &newLineText)
 
 QRect properGeometry(const QRect &rect)
 {
-	QRect geometry(rect);
+	QRect geometry(rect.normalized());
 	QRect availableGeometry = QApplication::desktop()->availableGeometry(geometry.center());
 
 	// correct size
@@ -92,32 +92,34 @@ QRect properGeometry(const QRect &rect)
 	return geometry;
 }
 
+QRect windowGeometry(const QWidget *w)
+{
+	// it has to be symmetric to what setWindowGeometry() does
+	return QRect(w->pos(), w->size());
+}
+
+void setWindowGeometry(QWidget *w, const QRect &geometry)
+{
+	QRect rect = properGeometry(geometry);
+
+	// setGeometry() will do no good here, refer to Qt docs and Kadu bug #2262
+	// note it has to be symmetric to what windowGeometry() does
+	w->resize(rect.size());
+	w->move(rect.topLeft());
+}
+
 void saveWindowGeometry(const QWidget *w, const QString &section, const QString &name)
 {
-#if defined(Q_OS_MAC) || defined(Q_WS_MAEMO_5)
-	/* Dorr: on Mac OS X make sure the window will not be greater than desktop what
-	 * sometimes happends during widget resizing (because of bug in Qt?),
-	 * on Maemo prevent from widgets greater than screen.
-	 */
-	QRect screen = QApplication::desktop()->availableGeometry(w);
-	QRect geometry(w->geometry());
-	if (geometry.height() > screen.height())
-		geometry.setHeight(screen.height());
-	if (geometry.width() > screen.width())
-		geometry.setWidth(screen.width());
-	config_file.writeEntry(section, name, geometry);
-#else
-	config_file.writeEntry(section, name, w->geometry());
-#endif
+	config_file.writeEntry(section, name, windowGeometry(w));
 }
 
 void loadWindowGeometry(QWidget *w, const QString &section, const QString &name, int defaultX, int defaultY, int defaultWidth, int defaultHeight)
 {
 	QRect rect = config_file.readRectEntry(section, name);
-	if ((rect.height() == 0) || (rect.width() == 0))
+	if (!rect.isValid() || rect.height() == 0 || rect.width() == 0)
 		rect.setRect(defaultX, defaultY, defaultWidth, defaultHeight);
-	rect = properGeometry(rect);
-	w->setGeometry(rect);
+
+	setWindowGeometry(w, rect);
 }
 
 QString pwHash(const QString &text)

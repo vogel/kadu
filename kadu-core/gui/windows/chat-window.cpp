@@ -157,7 +157,7 @@ void ChatWindow::kaduRestoreGeometry()
 	{
 		QRect geom = cgd->windowGeometry();
 
-		setGeometry(geom);
+		setWindowGeometry(this, geom);
 		currentChatWidget->setGeometry(geom);
 
 		currentChatWidget->kaduRestoreGeometry();
