@@ -59,7 +59,7 @@ void DesktopAwareObject::desktopModified()
 	if (!Widget->isWindow())
 		return;
 
-	QRect rect(Widget->pos(), Widget->size());
+	QRect rect = windowGeometry(Widget);
 	QRect properRect = properGeometry(rect);
 	if (properRect != rect)
 	{
