@@ -91,7 +91,7 @@ PluginsManager * PluginsManager::instance()
 	{
 		Instance = new PluginsManager();
 		// do not move to contructor
-		// Instance variable must be available ModulesManager::load method
+		// Instance variable must be available PluginsManager::load method
 		Instance->ensureLoaded();
 	}
 
@@ -160,11 +160,11 @@ void PluginsManager::load()
 		}
 	}
 
-	foreach (const QString &moduleName, installedPlugins())
-		if (!Plugins.contains(moduleName))
+	foreach (const QString &pluginName, installedPlugins())
+		if (!Plugins.contains(pluginName))
 		{
-			Plugin *plugin = new Plugin(moduleName, this);
-			Plugins.insert(moduleName, plugin);
+			Plugin *plugin = new Plugin(pluginName, this);
+			Plugins.insert(pluginName, plugin);
 		}
 
 	if (!loadAttribute<bool>("imported_from_09", false))
@@ -293,7 +293,7 @@ void PluginsManager::activateProtocolPlugins()
 	}
 
 	// if not all plugins were loaded properly
-	// save the list of modules
+	// save the list of plugins
 	if (saveList)
 		ConfigurationManager::instance()->flush();
 }
@@ -334,7 +334,7 @@ void PluginsManager::activatePlugins()
 	}
 
 	// if not all plugins were loaded properly or new plugin was added
-	// save the list of modules
+	// save the list of plugins
 	if (saveList)
 		ConfigurationManager::instance()->flush();
 }
@@ -353,11 +353,11 @@ void PluginsManager::deactivatePlugins()
 	foreach (Plugin *plugin, Plugins)
 		if (plugin->isActive())
 		{
-			kdebugm(KDEBUG_INFO, "module: %s, usage: %d\n", qPrintable(plugin->name()), plugin->usageCounter());
+			kdebugm(KDEBUG_INFO, "plugin: %s, usage: %d\n", qPrintable(plugin->name()), plugin->usageCounter());
 		}
 
-	// unloading all not used modules
-	// as long as any module were unloaded
+	// unloading all not used plugins
+	// as long as any plugin were unloaded
 
 	bool deactivated;
 	do
@@ -371,12 +371,12 @@ void PluginsManager::deactivatePlugins()
 	}
 	while (deactivated);
 
-	// we cannot unload more modules in normal way
+	// we cannot unload more plugins in normal way
 	// so we are making it brutal ;)
 	QList<Plugin *> active = activePlugins();
 	foreach (Plugin *plugin, active)
 	{
-		kdebugm(KDEBUG_PANIC, "WARNING! Could not deactivate module %s, killing\n", qPrintable(plugin->name()));
+		kdebugm(KDEBUG_PANIC, "WARNING! Could not deactivate plugin %s, killing\n", qPrintable(plugin->name()));
 		deactivatePlugin(plugin, true);
 	}
 
@@ -500,7 +500,7 @@ bool PluginsManager::activateDependencies(Plugin *plugin)
 	{
 		if (!Plugins.contains(dependencyName))
 		{
-			MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Required module %1 was not found").arg(dependencyName));
+			MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Required plugin %1 was not found").arg(dependencyName));
 			return false;
 		}
 
@@ -527,14 +527,14 @@ bool PluginsManager::activateDependencies(Plugin *plugin)
  */
 QString PluginsManager::activeDependentPluginNames(const QString &pluginName) const
 {
-	QString modules;
+	QString plugins;
 
 	foreach (Plugin *possibleDependentPlugin, Plugins)
 		if (possibleDependentPlugin->isValid() && possibleDependentPlugin->isActive())
 			if (possibleDependentPlugin->info()->dependencies().contains(pluginName))
-				modules += "\n- " + possibleDependentPlugin->name();
+				plugins += "\n- " + possibleDependentPlugin->name();
 
-	return modules;
+	return plugins;
 }
 
 /**
@@ -562,7 +562,7 @@ bool PluginsManager::activatePlugin(Plugin *plugin)
 	QString conflict = findActiveConflict(plugin);
 	if (!conflict.isEmpty())
 	{
-		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Module %1 conflicts with: %2").arg(plugin->name(), conflict));
+		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Plugin %1 conflicts with: %2").arg(plugin->name(), conflict));
 		result = false;
 	}
 	else
@@ -595,7 +595,7 @@ bool PluginsManager::deactivatePlugin(Plugin *plugin, bool force)
 
 	if (plugin->usageCounter() > 0 && !force)
 	{
-		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Module %1 cannot be deactivated because it is being used by the following modules:%2").arg(plugin->name()).arg(activeDependentPluginNames(plugin->name())));
+		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Plugin %1 cannot be deactivated because it is being used by the following plugins:%2").arg(plugin->name()).arg(activeDependentPluginNames(plugin->name())));
 		kdebugf2();
 		return false;
 	}

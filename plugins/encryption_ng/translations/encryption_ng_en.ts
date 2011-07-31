@@ -86,11 +86,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Error &quot;%3&quot; during sending public key to: %1 (%2)</source>
+        <source>Error sending public key to: %1 (%2)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Error occured during encryption: %1</source>
+        <source>Error occured during encryption</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
