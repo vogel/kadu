@@ -266,17 +266,8 @@ void ContactShared::protocolRegistered(ProtocolFactory *protocolFactory)
 
 void ContactShared::protocolUnregistered(ProtocolFactory *protocolFactory)
 {
-	ensureLoaded();
-
-	// HACK for dangling contacts causing crashes on exit/plugin unload
-	if (Id.isEmpty())
-		return;
-
-	if (!ContactAccount || ContactAccount.protocolName() != protocolFactory->name())
-		return;
-
+	Q_UNUSED(protocolFactory)
 // 	protocol unregistered means auto-deleting all contact details, so we cannot set them to zero here
-// 	setDetails(0);
 }
 
 void ContactShared::detailsAdded()
