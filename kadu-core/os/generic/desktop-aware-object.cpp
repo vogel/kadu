@@ -68,7 +68,7 @@ void DesktopAwareObject::desktopModified()
 		// TODO is it still needed?
 		Widget->hide();
 
-		// refer to loadWindowGeometry() why not using here QWidget::setGeometry()
+		// refer to setWindowGeometry() why not using here QWidget::setGeometry()
 		Widget->resize(properRect.size());
 		Widget->move(properRect.topLeft());
 
