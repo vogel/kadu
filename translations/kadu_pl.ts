@@ -443,7 +443,7 @@ To poważne zagrożenie bezpieczeństwa!</translation>
     </message>
     <message>
         <source>Manage modules</source>
-        <translation>Zarządzaj modułami</translation>
+        <translation>Zarządzaj wtyczkami</translation>
     </message>
     <message>
         <source>Open chat with...</source>
@@ -1109,7 +1109,7 @@ znajomych po połączeniu się z serwerem</translation>
     </message>
     <message>
         <source>Switch Desktop Making the Window Visible</source>
-        <translation type="unfinished"></translation>
+        <translation>Przełączenie Pulpitu Aktywuje Okno</translation>
     </message>
     <message>
         <source>Set status</source>
@@ -1189,7 +1189,7 @@ znajomych po połączeniu się z serwerem</translation>
     </message>
     <message>
         <source>Force custom font even for chat styles which define their own fonts (most Adium styles do that)</source>
-        <translation type="unfinished"></translation>
+        <translation>Wymuś własną czcionkę także w stylach rozmów definiujących własne czcionki (robi to większość styli Adium)</translation>
     </message>
     <message>
         <source>Information panel</source>
@@ -1209,11 +1209,11 @@ znajomych po połączeniu się z serwerem</translation>
     </message>
     <message>
         <source>Show expanding control</source>
-        <translation type="unfinished"></translation>
+        <translation>Pokaż kontrolkę rozwijania</translation>
     </message>
     <message>
         <source>Tiled and Centered</source>
-        <translation type="unfinished"></translation>
+        <translation>Kafelki wyśrodkowane</translation>
     </message>
     <message>
         <source>Open chat window only when I am online</source>
@@ -1241,14 +1241,19 @@ znajomych po połączeniu się z serwerem</translation>
 #{message} - message content, #{messageId} - message id, #{messageStatus} - message status value, #{backgroundColor} - background color of message, #{fontColor} - font color of message, #{nickColor} - font color of nick, #{sentDate} - when message was sent, #{receivedDate} - when message was received, #{separator} - separator between messages,
 &lt;kadu:header&gt;...&lt;/kadu:header&gt; - content will not be displayed in &apos;Remove repeated headers&apos; mode,
 &lt;kadu:top&gt;...&lt;/kadu:top&gt; - content will be included once at the begining of the document</source>
-        <translation type="unfinished"></translation>
+        <translation>Składnia:
+%s - status, %d - opis, %i - adres IP, %n - nick, %a - nazwa na liście kontaktów, %f - imię, %r - nazwisko, %m - numer telefonu komórkowego, %u - identyfikator użytkownika w sieci, %g - grupa, %e - adres e-mail, %z - płeć (0/1/2),
+#{message} - treść wiadomości, #{messageId} - identyfikator wiadomości, #{messageStatus} - status wiadomości, #{backgroundColor} - kolor tła wiadomości, #{fontColor} - kolor czcionki, #{nickColor} - kolor czcionki nicka, #{sentDate} - data wysłania wiadomości, #{receivedDate} - data otrzymania wiadomości, #{separator} - separator wiadomości,
+&lt;kadu:header&gt;...&lt;/kadu:header&gt; - treść nie będzie wyświetlana w trybie &apos;Usuń powtarzające się nagłówki&apos;,
+&lt;kadu:top&gt;...&lt;/kadu:top&gt; - treść będzie dołączona raz, na początku dokumentu</translation>
     </message>
     <message>
         <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
 %r - surname, %m - mobile, %u - uin, %g - group
 %h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size, %z - gender (0/1/2)
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Składnia: %s - status, %d - opis, %i - ip, %n - nick, %a - nazwa na liście kontaktów, %f - imię
+%r - nazwisko, %m - nr tel. komórkowego, %u - identyfikator użytkownika w sieci, %g - grupa, %e - email, %z - płeć (0/1/2)</translation>
     </message>
     <message>
         <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
@@ -1257,7 +1262,10 @@ znajomych po połączeniu się z serwerem</translation>
 #{protocol} - protocol that triggered event,
 #{event} - name of event,
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Składnia: %s - status, %d - opis, %i - ip, %n - nick, %a - nazwa na liście kontaktów, %f - imię
+%r - nazwisko, %m - nr tel. komórkowego, %u - identyfikator użytkownika w sieci, %g - grupa, %e - email, %z - płeć (0/1/2),
+#{protocol} - protokół, który wygenerował zdarzenie,
+#{event} - nazwa zdarzenia,</translation>
     </message>
 </context>
 <context>
@@ -1677,7 +1685,7 @@ znajomych po połączeniu się z serwerem</translation>
     </message>
     <message>
         <source>Protocol used by this buddy&apos;s contact does not allow changing buddy&apos;s name client-side</source>
-        <translation type="unfinished"></translation>
+        <translation>Sieć używana przez tego znajomego nie pozwala na zmianę nazwy kontaktu</translation>
     </message>
 </context>
 <context>
@@ -2016,11 +2024,11 @@ zostaną zignorowane. Czy na pewno chcesz opuścić konferencję?</translation>
     </message>
     <message>
         <source>The following contacts present on server were found on your local contact list under different buddy display names:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>Następujące kontakty na serwerze znajdują się na liście kontaktół pod innymi nazwami:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;</translation>
     </message>
     <message>
         <source>Moreover, the following contacts present on server were found on your local contact list under different buddy display names:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>Ponadto następujące kontakty na serwerze znajdują się na liście kontaktół pod innymi nazwami:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;</translation>
     </message>
     <message>
         <source>Do you want to apply the above changes to your contact list?</source>
@@ -2028,7 +2036,7 @@ zostaną zignorowane. Czy na pewno chcesz opuścić konferencję?</translation>
     </message>
     <message>
         <source>The following contacts from your list were not found in file:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;Do you want to remove them from contact list?</source>
-        <translation type="unfinished"></translation>
+        <translation>Następujące kontakty z listy nie zostały odnalezione w pliku:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;Czy chcesz usunąć je z listy kontaktów?</translation>
     </message>
 </context>
 <context>
@@ -2408,7 +2416,7 @@ Jest to prawdopodobnie dalsza część pliku &lt;b&gt;%5&lt;/b&gt;
     </message>
     <message>
         <source>%1 is gone</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 jest nieobecny</translation>
     </message>
     <message>
         <source>%1 is inactive</source>
@@ -2416,7 +2424,7 @@ Jest to prawdopodobnie dalsza część pliku &lt;b&gt;%5&lt;/b&gt;
     </message>
     <message>
         <source>%1 has paused composing</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 przerwał pisanie</translation>
     </message>
 </context>
 <context>
@@ -2666,7 +2674,7 @@ Jest to prawdopodobnie dalsza część pliku &lt;b&gt;%5&lt;/b&gt;
     </message>
     <message>
         <source>Show Myself Buddy</source>
-        <translation type="unfinished"></translation>
+        <translation>Pokazuj Mój Kontakt Na Liście Znajomych</translation>
     </message>
 </context>
 <context>
@@ -2732,7 +2740,7 @@ Jest to prawdopodobnie dalsza część pliku &lt;b&gt;%5&lt;/b&gt;
     <name>ModulesWindow</name>
     <message>
         <source>Manage Modules</source>
-        <translation>Zarządca modułów</translation>
+        <translation>Zarządca Wtyczek</translation>
     </message>
     <message>
         <source>Info</source>
@@ -2764,17 +2772,17 @@ Jest to prawdopodobnie dalsza część pliku &lt;b&gt;%5&lt;/b&gt;
     </message>
     <message>
         <source>&lt;b&gt;Module:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Depends on:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Conflicts with:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Provides:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Author:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Version:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Description:&lt;/b&gt;</source>
-        <translation>&lt;b&gt;Moduł:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Wymaga:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Konflikt z:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Dostarcza:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Autor:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Wersja:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Opis:&lt;/b&gt;</translation>
+        <translation>&lt;b&gt;Wtyczka:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Wymaga:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Konflikt z:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Dostarcza:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Autor:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Wersja:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Opis:&lt;/b&gt;</translation>
     </message>
     <message>
         <source>&lt;b&gt;Module: &lt;/b&gt;%1&lt;br/&gt;&lt;b&gt;Depends on: &lt;/b&gt;%2&lt;br/&gt;&lt;b&gt;Conflicts with: &lt;/b&gt;%3&lt;br/&gt;&lt;b&gt;Provides: &lt;/b&gt;%4&lt;br/&gt;&lt;b&gt;Author: &lt;/b&gt;%5&lt;br/&gt;&lt;b&gt;Version: &lt;/b&gt;%6&lt;br/&gt;&lt;b&gt;Description: &lt;/b&gt;%7</source>
-        <translation>&lt;b&gt;Moduł: &lt;/b&gt;%1&lt;br/&gt;&lt;b&gt;Wymaga: &lt;/b&gt;%2&lt;br/&gt;&lt;b&gt;Konflikt z: &lt;/b&gt;%3&lt;br/&gt;&lt;b&gt;Dostarcza: &lt;/b&gt;%4&lt;br/&gt;&lt;b&gt;Autor: &lt;/b&gt;%5&lt;br/&gt;&lt;b&gt;Wersja: &lt;/b&gt;%6&lt;br/&gt;&lt;b&gt;Opis: &lt;/b&gt;%7</translation>
+        <translation>&lt;b&gt;Wtyczka: &lt;/b&gt;%1&lt;br/&gt;&lt;b&gt;Wymaga: &lt;/b&gt;%2&lt;br/&gt;&lt;b&gt;Konflikt z: &lt;/b&gt;%3&lt;br/&gt;&lt;b&gt;Dostarcza: &lt;/b&gt;%4&lt;br/&gt;&lt;b&gt;Autor: &lt;/b&gt;%5&lt;br/&gt;&lt;b&gt;Wersja: &lt;/b&gt;%6&lt;br/&gt;&lt;b&gt;Opis: &lt;/b&gt;%7</translation>
     </message>
     <message>
         <source>This dialog box allows you to manage installed modules. Modules are responsible for numerous vital features like playing sounds or message encryption.
 You can load (or unload) them by double-clicking on their names.</source>
-        <translation>To okno dialogowe daje możliwość zarządzania zainstalowanymi modułami. Moduły są odpowiedzialne za wiele funkcji takich jak odtwarzanie dźwięków lub szyfrowanie wiadomości.
-Jeśli zechcesz włączyć (lub wyłączyć) któryś z nich, wystarczy dwukrotnie kliknąć na jego nazwie. Modułu statycznego nie można wyłączyć.</translation>
+        <translation>To okno dialogowe daje możliwość zarządzania zainstalowanymi wtyczkami. Wtyczki są odpowiedzialne za wiele funkcji takich jak odtwarzanie dźwięków lub szyfrowanie wiadomości.
+Jeśli zechcesz włączyć (lub wyłączyć) którąś z nich, wystarczy dwukrotnie kliknąć na jej nazwie.</translation>
     </message>
 </context>
 <context>
@@ -2993,16 +3001,18 @@ Klient: %3</translation>
     <message>
         <source>Cannot load %1 plugin library.:
 %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie można załadować wtyczki %1.:
+%2</translation>
     </message>
     <message>
         <source>Cannot find required object in module %1.
 Maybe it&apos;s not Kadu-compatible plugin.</source>
-        <translation type="unfinished"></translation>
+        <translation>Wtyczka %1 nie zawiera wymaganych funkcji.
+Być może nie jest zgodna z Kadu.</translation>
     </message>
     <message>
         <source>Module initialization routine for %1 failed.</source>
-        <translation type="unfinished">Inicjacja modułu %1 nieudana.</translation>
+        <translation>Inicjacja wtyczki %1 nieudana.</translation>
     </message>
 </context>
 <context>
