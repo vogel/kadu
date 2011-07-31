@@ -60,6 +60,7 @@ class DetailsHolder
 {
 	DetailsClass *Details;
 
+	bool DeletionInProgress;
 	/**
 	 * @author Rafal 'Vogel' Malinowski
 	 * @short Sets new details.
@@ -104,9 +105,12 @@ class DetailsHolder
 
 		detailsAboutToBeRemoved();
 
-		DetailsClass *deleteMe = Details;
-		Details = 0;
-		delete deleteMe;
+		if (!DeletionInProgress)
+		{
+			DetailsClass *deleteMe = Details;
+			Details = 0;
+			delete deleteMe;
+		}
 
 		detailsRemoved();
 		afterDetailsRemoved();
@@ -120,7 +124,7 @@ protected:
 	 * Contructs object with empty details.
 	 */
 	DetailsHolder() :
-			Details(0)
+		Details(0), DeletionInProgress(false)
 	{
 	}
 
@@ -227,14 +231,16 @@ public:
 
 	void detailsDestroyed()
 	{
-		if (!Details)
+		if (!Details || DeletionInProgress)
 			return;
 
+		DeletionInProgress = true;
 		detailsAboutToBeRemoved();
 		Details = 0;
 
 		detailsRemoved();
 		afterDetailsRemoved();
+		DeletionInProgress = false;
 	}
 
 };
