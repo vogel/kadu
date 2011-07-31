@@ -59,12 +59,19 @@ void DesktopAwareObject::desktopModified()
 	if (!Widget->isWindow())
 		return;
 
-	QRect geometry = properGeometry(Widget->geometry());
-	if (geometry != Widget->geometry())
+	QRect rect(Widget->pos(), Widget->size());
+	QRect properRect = properGeometry(rect);
+	if (properRect != rect)
 	{
 		bool visible = Widget->isVisible();
-		Widget->hide(); // workaround for window frame positioning
-		Widget->setGeometry(geometry);
+		// workaround for window frame positioning
+		// TODO is it still needed?
+		Widget->hide();
+
+		// refer to loadWindowGeometry() why not using here QWidget::setGeometry()
+		Widget->resize(properRect.size());
+		Widget->move(properRect.topLeft());
+
 		if (visible)
 			Widget->show();
 	}
