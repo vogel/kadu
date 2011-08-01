@@ -943,7 +943,7 @@ Proszę poprawić i spróbować ponownie.</translation>
     </message>
     <message>
         <source>Service Discovery</source>
-        <translation>Przeglądanie Usług</translation>
+		<translation>Przeglądanie usług</translation>
     </message>
     <message>
         <source>VCard</source>

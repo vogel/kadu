@@ -1109,7 +1109,7 @@ znajomych po połączeniu się z serwerem</translation>
     </message>
     <message>
         <source>Switch Desktop Making the Window Visible</source>
-        <translation>Przełączenie Pulpitu Aktywuje Okno</translation>
+		<translation>Przełączenie pulpitu aktywuje okno</translation>
     </message>
     <message>
         <source>Set status</source>
@@ -2598,7 +2598,7 @@ Jest to prawdopodobnie dalsza część pliku &lt;b&gt;%5&lt;/b&gt;
     </message>
     <message>
         <source>Show Information Panel</source>
-        <translation>Pokazuj panel informacyjny</translation>
+		<translation>Pokaż panel informacyjny</translation>
     </message>
     <message>
         <source>Show Blocked Buddies</source>
@@ -2674,7 +2674,7 @@ Jest to prawdopodobnie dalsza część pliku &lt;b&gt;%5&lt;/b&gt;
     </message>
     <message>
         <source>Show Myself Buddy</source>
-        <translation>Pokazuj Mój Kontakt Na Liście Znajomych</translation>
+		<translation>Pokaż mnie na liście</translation>
     </message>
 </context>
 <context>
@@ -2740,7 +2740,7 @@ Jest to prawdopodobnie dalsza część pliku &lt;b&gt;%5&lt;/b&gt;
     <name>ModulesWindow</name>
     <message>
         <source>Manage Modules</source>
-        <translation>Zarządca Wtyczek</translation>
+		<translation>Zarządca wtyczek</translation>
     </message>
     <message>
         <source>Info</source>
@@ -3012,7 +3012,7 @@ Być może nie jest zgodna z Kadu.</translation>
     </message>
     <message>
         <source>Module initialization routine for %1 failed.</source>
-        <translation>Inicjacja wtyczki %1 nieudana.</translation>
+		<translation>Inicjalizacja wtyczki %1 nieudana.</translation>
     </message>
 </context>
 <context>
