@@ -250,28 +250,18 @@ void DockingManager::trayMousePressEvent(QMouseEvent * e)
 			return;
 		}
 
-		if (kadu->isMinimized())
-		{
-			kadu->showNormal();
-			_activateWindow(kadu);
-			return;
-		}
-		else if (kadu->isVisible()
+		if (kadu->isMinimized() || !kadu->isVisible()
 #ifndef Q_WS_WIN
 				// NOTE: It won't work as expected on Windows since when you click on tray icon,
 				// the tray will become active and any other window will loose focus.
 				// See bug #1915.
-				&& _isActiveWindow(kadu)
+				|| !_isActiveWindow(kadu)
 #endif
 				)
-		{
-			kadu->hide();
-		}
-		else
-		{
-			kadu->show();
 			_activateWindow(kadu);
-		}
+		else
+			kadu->hide();
+
 		return;
 	}
 
@@ -488,7 +478,8 @@ void DockingManager::dockIconClicked()
 
 	if (kadu->isMinimized())
 	{
-		kadu->showNormal();
+		kadu->setWindowState(kadu->windowState() & ~Qt::WindowMinimized);
+		kadu->show();
 		showMinimizedChats();
 		return;
 	}

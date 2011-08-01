@@ -25,6 +25,10 @@
 	{
 		// we need to ensure we operate on widget's window, if not passed
 		window = window->window();
+		// unminimize
+		window->setWindowState(window->windowState() & ~Qt::WindowMinimized);
+		// show window (in case it's hidden)
+		window->show();
 		// unshade the window if needed (important!)
 		if( X11_isWindowShaded( QX11Info::display(), window->winId() ) )
 			X11_shadeWindow( QX11Info::display(), window->winId(), false );
@@ -51,8 +55,6 @@
 			}
 		}
 		// activate
-		if( window->isMinimized() )
-			window->showNormal(); // unminimize
 		X11_setActiveWindow( QX11Info::display(), window->winId() );
 		window->activateWindow();
 		window->raise();
@@ -70,8 +72,9 @@
 
 	void _activateWindow( QWidget *window )
 	{
-		// we need to ensure we operate on widget's window, if not passed
 		window = window->window();
+		window->setWindowState(window->windowState() & ~Qt::WindowMinimized);
+		window->show();
 		window->activateWindow();
 		window->raise();
 		SetForegroundWindow((HWND)(window->winId()));
@@ -86,8 +89,9 @@
 
 	void _activateWindow( QWidget *window )
 	{
-		if (window->isMinimized())
-			window->showNormal();
+		window = window->window();
+		window->setWindowState(window->windowState() & ~Qt::WindowMinimized);
+		window->show();
 		window->activateWindow();
 		window->raise();
 	}
