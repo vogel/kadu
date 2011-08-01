@@ -2674,7 +2674,7 @@ Jest to prawdopodobnie dalsza część pliku &lt;b&gt;%5&lt;/b&gt;
     </message>
     <message>
         <source>Show Myself Buddy</source>
-		<translation>Pokaż mnie na liście</translation>
+		<translation>Pokaż mnie na liście znajomych</translation>
     </message>
 </context>
 <context>
