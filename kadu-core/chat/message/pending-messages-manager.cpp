@@ -205,6 +205,9 @@ Message PendingMessagesManager::firstPendingMessage()
 
 void PendingMessagesManager::itemAboutToBeAdded(Message message)
 {
+	// just ensure that owner buddy is managed - we need it to be shown on contact list
+	BuddyManager::instance()->byContact(message.messageSender(), ActionCreateAndAdd);
+
 	emit messageAboutToBeAdded(message);
 }
 
@@ -223,4 +226,13 @@ void PendingMessagesManager::itemRemoved(Message message)
 {
 //	BuddyPreferredManager::instance()->updatePreferred(message.messageSender().ownerBuddy());
 	emit messageRemoved(message);
+}
+
+void PendingMessagesManager::loaded()
+{
+	SimpleManager<Message>::loaded();
+
+	// just ensure that all owner buddies are managed - we need them to be shown on contact list
+	foreach (const Message &message, items())
+		BuddyManager::instance()->byContact(message.messageSender(), ActionCreateAndAdd);
 }
