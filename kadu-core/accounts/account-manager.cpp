@@ -300,6 +300,8 @@ void AccountManager::providePassword(Account account)
 
 void AccountManager::loaded()
 {
+	Manager<Account>::loaded();
+
 	foreach (const Account &account, allItems())
 		account.accountContact().setOwnerBuddy(Core::instance()->myself());
 }

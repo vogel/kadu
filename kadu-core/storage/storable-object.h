@@ -146,6 +146,8 @@ protected:
 
 	virtual void load();
 
+	virtual void loaded() { };
+
 public:
 	StorableObject();
 	virtual ~StorableObject();
@@ -175,8 +177,6 @@ public:
 
 	virtual void store();
 	virtual bool shouldStore();
-
-	virtual void loaded() { };
 	/**
 	 * @author Rafal 'Vogel' Malinowski
 	 * @short Returns current object state.

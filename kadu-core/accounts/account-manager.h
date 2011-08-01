@@ -49,8 +49,6 @@ class KADUAPI AccountManager : public QObject, public Manager<Account>
 	void detailsLoaded(Account account);
 	void detailsUnloaded(Account account);
 
-	virtual void loaded();
-
 private slots:
 	void passwordProvided(const QVariant &data, const QString &password, bool permament);
 
@@ -65,6 +63,8 @@ protected:
 	virtual void itemRegistered(Account item);
 	virtual void itemAboutToBeUnregisterd(Account item);
 	virtual void itemUnregistered(Account item);
+
+	virtual void loaded();
 
 public:
 	static AccountManager * instance();
