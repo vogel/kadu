@@ -12,6 +12,8 @@
 * freedesktop_notify: #2163, #2263 fixed: properly support all popular notifications daemons (beevvy)
 * history: chat dates list speedup (WhE)
 * gui: #2262 fixed: Kadu windows were being restored on wrong coordinates on KWin 4.7 and probably more X11 window managers (beevvy)
+* storage: #2227 fixed: fixed occasional crash on Kadu exit or protocol plugin unload (WhE)
+* chat: fixed showing anonymous buddies with pending messages on contact list (beevvy)
 
 +++ version 0.10.0-beta2
 * freedesktop_notify, hints: #2195 fixed: enable Freedesktop notifications in favor of hints on X11 by default (beevvy)
