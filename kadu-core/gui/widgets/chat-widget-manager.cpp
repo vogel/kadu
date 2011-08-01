@@ -436,10 +436,7 @@ void ChatWidgetManager::messageReceived(const Message &message)
 	else
 	{
 		if (AutoRaise)
-		{
-			Core::instance()->kaduWindow()->showNormal();
-			Core::instance()->kaduWindow()->setFocus();
-		}
+			_activateWindow(Core::instance()->kaduWindow());
 
 		if (OpenChatOnMessage)
 		{

@@ -167,7 +167,7 @@ SingleWindow::~SingleWindow()
 	if (!Core::instance()->isClosing())
 	{
 		loadWindowGeometry(kadu, "General", "Geometry", 0, 50, 205, 465);
-		kadu->showNormal();
+		kadu->show();
 	}
 }
 
