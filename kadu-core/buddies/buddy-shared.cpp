@@ -147,7 +147,7 @@ void BuddyShared::load()
 			CustomData[name] = customDataElement.text();
 	}
 
-	doClearGroups();
+	Groups.clear();
 	QDomElement groupsNode = configurationStorage->getNode(parent, "ContactGroups", XmlConfigFile::ModeFind);
 	if (!groupsNode.isNull())
 	{
@@ -247,7 +247,7 @@ void BuddyShared::aboutToBeRemoved()
 		contact.setOwnerBuddy(Buddy::null);
 
 	Contacts.clear();
-	doClearGroups();
+	Groups.clear();
 
 	AvatarManager::instance()->removeItem(BuddyAvatar);
 	BuddyAvatar = Avatar::null;
@@ -387,12 +387,6 @@ bool BuddyShared::showInAllGroup()
 			return false;
 
 	return true;
-}
-
-void BuddyShared::doClearGroups()
-{
-	while (!Groups.isEmpty())
-		doRemoveFromGroup(Groups.at(0));
 }
 
 bool BuddyShared::doAddToGroup(const Group &group)
