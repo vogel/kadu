@@ -62,6 +62,8 @@ protected:
 	virtual void itemAboutToBeRemoved(Message message);
 	virtual void itemRemoved(Message message);
 
+	virtual void loaded();
+
 public:
 	static PendingMessagesManager * instance();
 

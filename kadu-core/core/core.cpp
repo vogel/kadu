@@ -39,6 +39,7 @@
 #include "avatars/avatar-manager.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/group-manager.h"
+#include "chat/message/pending-messages-manager.h"
 #include "configuration/configuration-file.h"
 #include "configuration/configuration-manager.h"
 #include "configuration/main-configuration-holder.h"
@@ -390,6 +391,10 @@ void Core::init()
 	AccountManager::instance()->ensureLoaded();
 	BuddyManager::instance()->ensureLoaded();
 	ContactManager::instance()->ensureLoaded();
+	// Without that PendingMessagesManager is loaded while filtering buddies list for the first time.
+	// It has to happen earlier because PendingMessagesManager::loaded() might add buddies to the BuddyManager
+	// which (the buddies) otherwise will not be taken into account by buddies list before its next update.
+	PendingMessagesManager::instance()->ensureLoaded();
 	AvatarManager::instance(); // initialize that
 }
 
