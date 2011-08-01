@@ -100,7 +100,6 @@ class KADUAPI BuddyShared : public QObject, public Shared
 
 	bool doAddToGroup(const Group &group);
 	bool doRemoveFromGroup(const Group &group);
-	void doClearGroups();
 
 private slots:
 	void groupAboutToBeRemoved();
