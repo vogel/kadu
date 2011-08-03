@@ -76,9 +76,8 @@ TokenWidget::~TokenWidget()
 void TokenWidget::tokenFetched(const QString &tokenId, const QPixmap &tokenImage)
 {
 	WaitMovie->stop();
-	TokenImage->setMovie(0);
-
 	TokenImage->setPixmap(tokenImage);
+
 	TokenId = tokenId;
 }
 
@@ -86,7 +85,9 @@ void TokenWidget::refreshToken()
 {
 	WaitMovie->start();
 	TokenImage->setMovie(WaitMovie);
+	TokenCode->clear();
 
+	TokenId.clear();
 	Fetcher->fetchToken();
 }
 

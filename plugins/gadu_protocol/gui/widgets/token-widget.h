@@ -44,7 +44,6 @@ class TokenWidget : public QWidget
 
 private slots:
 	void tokenFetched(const QString &tokenId, const QPixmap &tokenImage);
-	void refreshToken();
 
 public:
 	explicit TokenWidget(QWidget *parent = 0);
@@ -53,6 +52,9 @@ public:
 	QString tokenId();
 	QString tokenValue();
 	void setTokenValue(const QString &tokenValue);
+
+public slots:
+	void refreshToken();
 
 signals:
 	void modified();
