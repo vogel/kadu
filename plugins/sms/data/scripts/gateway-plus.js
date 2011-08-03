@@ -135,7 +135,7 @@ PlusGatewaySmsSender.prototype = {
 			"0" + separator +
 			"0" + separator;
 
-		network.setUnicode(true);
+		network.setUtf8(true);
 		network.setHeader("Content-Type", "text/x-gwt-rpc; charset=utf-8");
 		network.setHeader("Accept-Encoding", "gzip, deflate");
 		network.setHeader("X-GWT-Module-Base", "http://www1.plus.pl/bsm/");

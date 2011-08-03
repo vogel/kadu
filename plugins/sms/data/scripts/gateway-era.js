@@ -82,7 +82,7 @@ EraGatewaySmsSender.prototype = {
 			return;
 		}
 
-		network.setUnicode(false);
+		network.setUtf8(false);
 		this.reply = network.post(postUrl, postData);
 		this.reply.finished.connect(this, this.smsSent);
 	},
