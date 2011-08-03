@@ -88,7 +88,12 @@ void DescriptionManager::import()
 void DescriptionManager::truncate()
 {
 	while (!StringList.isEmpty() && StringList.size() > MaxNumberOfDescriptions)
-		removeDescription(StringList.last());
+	{
+		// We need a copy here, otherwise removeDescription() will emit singal descriptionRemoved()
+		// with a reference to QString which will be already removed by then.
+		QString last = StringList.last();
+		removeDescription(last);
+	}
 }
 
 void DescriptionManager::configurationUpdated()
