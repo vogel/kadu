@@ -184,7 +184,7 @@ void JabberActions::updateShowXmlConsoleMenu()
 	foreach (const Account &account, AccountManager::instance()->items())
 		if (account.protocolName() == QLatin1String("jabber"))
 		{
-			QAction *action = new QAction(account.id(), ShowXmlConsoleMenu);
+			QAction *action = new QAction(QString("%1 (%2)").arg(account.accountIdentity().name(), account.id()), ShowXmlConsoleMenu);
 			action->setData(QVariant::fromValue(account));
 			ShowXmlConsoleMenu->addAction(action);
 		}
