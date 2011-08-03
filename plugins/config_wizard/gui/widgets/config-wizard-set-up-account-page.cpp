@@ -105,6 +105,9 @@ void ConfigWizardSetUpAccountPage::acceptPage()
 
 void ConfigWizardSetUpAccountPage::accountCreated(Account account)
 {
+	if (!account)
+		return;
+
 	account.importProxySettings();
 	AccountManager::instance()->addItem(account);
 	account.accountContact().setOwnerBuddy(Core::instance()->myself());

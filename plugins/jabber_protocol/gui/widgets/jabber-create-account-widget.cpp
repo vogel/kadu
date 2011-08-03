@@ -335,7 +335,10 @@ void JabberCreateAccountWidget::resetGui()
 void JabberCreateAccountWidget::jidRegistered(const QString &jid, const QString &tlsDomain)
 {
 	if (jid.isEmpty())
+	{
+		emit accountCreated(Account());
 		return;
+	}
 
 	Account jabberAccount = Account::create();
 	jabberAccount.setProtocolName("jabber");

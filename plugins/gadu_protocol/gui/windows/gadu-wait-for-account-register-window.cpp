@@ -49,7 +49,7 @@ GaduWaitForAccountRegisterWindow::~GaduWaitForAccountRegisterWindow()
 {
 }
 
-void GaduWaitForAccountRegisterWindow::registerNewAccountFinished(GaduServerRegisterAccount* gsra)
+void GaduWaitForAccountRegisterWindow::registerNewAccountFinished(GaduServerRegisterAccount *gsra)
 {
 	if (gsra && gsra->result())
 	{
@@ -66,6 +66,5 @@ void GaduWaitForAccountRegisterWindow::registerNewAccountFinished(GaduServerRegi
 		emit uinRegistered(0);
 	}
 
-	if (gsra)
-		delete gsra;
+	delete gsra;
 }

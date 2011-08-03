@@ -188,7 +188,10 @@ void GaduCreateAccountWidget::cancel()
 void GaduCreateAccountWidget::uinRegistered(UinType uin)
 {
 	if (!uin)
+	{
+		emit accountCreated(Account());
 		return;
+	}
 
 	Account gaduAccount = Account::create();
 	gaduAccount.setAccountIdentity(IdentityCombo->currentIdentity());
