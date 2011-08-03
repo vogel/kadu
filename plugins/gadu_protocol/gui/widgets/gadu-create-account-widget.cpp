@@ -187,6 +187,9 @@ void GaduCreateAccountWidget::cancel()
 
 void GaduCreateAccountWidget::uinRegistered(UinType uin)
 {
+	// in any case that token will not be valid anymore
+	MyTokenWidget->refreshToken();
+
 	if (!uin)
 	{
 		emit accountCreated(Account());
