@@ -28,18 +28,12 @@
 #include "network-access-manager-wrapper.h"
 
 NetworkAccessManagerWrapper::NetworkAccessManagerWrapper(QScriptEngine *engine, QObject *parent) :
-	QNetworkAccessManager(parent), Engine(engine)
+		QNetworkAccessManager(parent), Engine(engine), Unicode(false)
 {
-	Unicode = false;
 }
 
 NetworkAccessManagerWrapper::~NetworkAccessManagerWrapper()
 {
-}
-
-void NetworkAccessManagerWrapper::setUnicode(bool unicode)
-{
-	Unicode = unicode;
 }
 
 QScriptValue NetworkAccessManagerWrapper::get(const QString &url)
@@ -47,20 +41,28 @@ QScriptValue NetworkAccessManagerWrapper::get(const QString &url)
 	return Engine->newQObject(new NetworkReplyWrapper(QNetworkAccessManager::get(QNetworkRequest(url))));
 }
 
+void NetworkAccessManagerWrapper::setHeader(const QString &headerName, const QString &headerValue)
+{
+	// Note that QtScript by default doesn't support conversion to QByteArray,
+	// so we cannot simply convert arguments to QByteArray.
+	Headers.insert(headerName.toAscii(), headerValue.toAscii());
+}
+
+void NetworkAccessManagerWrapper::clearHeaders()
+{
+	Headers.clear();
+}
+
 QScriptValue NetworkAccessManagerWrapper::post(const QString &url, const QString &data)
 {
-	QByteArray requestData;
 	QNetworkRequest request;
 	request.setUrl(url);
+	for (QMap<QByteArray, QByteArray>::const_iterator i = Headers.constBegin(); i != Headers.constEnd(); ++i)
+		request.setRawHeader(i.key(), i.value());
 
+	QByteArray requestData;
 	if (Unicode)
-	{
-		request.setRawHeader("Content-Type", "text/x-gwt-rpc; charset=utf-8");
-		request.setRawHeader("Accept-Encoding", "gzip, deflate");
-		request.setRawHeader("X-GWT-Module-Base", "http://www1.plus.pl/bsm/");
-		request.setRawHeader("X-GWT-Permutation", "22E4064F5698D299DC724EC04F1478DC");
 		requestData = data.toUtf8();
-	}
 	else
 		requestData = data.toAscii();
 

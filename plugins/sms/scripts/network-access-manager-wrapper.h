@@ -21,6 +21,7 @@
 #ifndef NETWORK_ACCESS_MANAGER_WRAPPER_H
 #define NETWORK_ACCESS_MANAGER_WRAPPER_H
 
+#include <QtCore/QMap>
 #include <QtNetwork/QNetworkAccessManager>
 #include <QtScript/QScriptValue>
 
@@ -30,15 +31,20 @@ class NetworkAccessManagerWrapper : public QNetworkAccessManager
 
 	QScriptEngine *Engine;
 	bool Unicode;
+	QMap<QByteArray, QByteArray> Headers;
 
 public:
 	explicit NetworkAccessManagerWrapper(QScriptEngine *engine, QObject *parent = 0);
 	virtual ~NetworkAccessManagerWrapper();
 
 public slots:
+	void setUnicode(bool unicode) { Unicode = unicode; }
+	void setHeader(const QString &headerName, const QString &headerValue);
+	void clearHeaders();
+
 	QScriptValue get(const QString &url);
 	QScriptValue post(const QString &url, const QString &data);
-	void setUnicode(bool unicode);
+
 };
 
 #endif // NETWORK_ACCESS_MANAGER_WRAPPER_H
