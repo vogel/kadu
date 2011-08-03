@@ -472,3 +472,11 @@ QString GaduProtocol::statusPixmapPath()
 {
 	return QLatin1String("gadu-gadu");
 }
+
+void GaduProtocol::configurationUpdated()
+{
+#ifdef DEBUG_ENABLED
+	// 8 bits for gadu debug
+	gg_debug_level = debug_mask & 255;
+#endif
+}
