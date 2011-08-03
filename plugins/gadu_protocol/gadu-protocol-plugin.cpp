@@ -49,6 +49,13 @@ int GaduProtocolPlugin::init(bool firstLoad)
 	if (ProtocolsManager::instance()->hasProtocolFactory("gadu"))
 		return 0;
 
+#ifdef DEBUG_ENABLED
+	// 8 bits for gadu debug
+	gg_debug_level = debug_mask & 255;
+#else
+	gg_debug_level = 0;
+#endif
+
 	if (!gg_libgadu_check_feature(GG_LIBGADU_FEATURE_USERLIST100))
 	{
 		MessageDialog::exec(KaduIcon("dialog-error"), tr("Gadu-Gadu Protocol"),
@@ -56,13 +63,6 @@ int GaduProtocolPlugin::init(bool firstLoad)
 
 		return -1;
 	}
-
-#ifdef DEBUG_ENABLED
-	// 8 bits for gadu debug
-	gg_debug_level = debug_mask & 255;
-#else
-	gg_debug_level = 0;
-#endif
 
 	gg_proxy_host = 0;
 	gg_proxy_username = 0;

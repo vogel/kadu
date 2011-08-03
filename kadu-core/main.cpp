@@ -277,7 +277,7 @@ int main(int argc, char *argv[])
 
 	if (debug_mask == -2)
 	{
-		debug_mask = config_file.readNumEntry("General", "DEBUG_MASK", -1);
+		debug_mask = config_file.readNumEntry("General", "DEBUG_MASK", KDEBUG_ALL & ~KDEBUG_FUNCTION_END);
 		d = getenv("DEBUG_MASK");
 		if (d)
 			debug_mask = atol(d);

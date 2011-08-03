@@ -30,6 +30,8 @@
 
 #include <libgadu.h>
 
+#include "configuration/configuration-aware-object.h"
+
 #include "services/gadu-avatar-service.h"
 #include "services/gadu-chat-image-service.h"
 #include "services/gadu-chat-service.h"
@@ -53,7 +55,7 @@ class GaduContactDetails;
 class GaduContactListHandler;
 class GaduProtocolSocketNotifiers;
 
-class GADUAPI GaduProtocol : public Protocol
+class GADUAPI GaduProtocol : public Protocol, public ConfigurationAwareObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(GaduProtocol)
@@ -130,6 +132,8 @@ protected:
 	virtual void sendStatusToServer();
 
 	virtual void disconnectedCleanup();
+
+	virtual void configurationUpdated();
 
 public:
 	GaduProtocol(Account account, ProtocolFactory *factory);
