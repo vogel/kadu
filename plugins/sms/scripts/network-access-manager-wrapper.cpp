@@ -28,7 +28,7 @@
 #include "network-access-manager-wrapper.h"
 
 NetworkAccessManagerWrapper::NetworkAccessManagerWrapper(QScriptEngine *engine, QObject *parent) :
-		QNetworkAccessManager(parent), Engine(engine), Unicode(false)
+		QNetworkAccessManager(parent), Engine(engine), Utf8(false)
 {
 }
 
@@ -61,7 +61,7 @@ QScriptValue NetworkAccessManagerWrapper::post(const QString &url, const QString
 		request.setRawHeader(i.key(), i.value());
 
 	QByteArray requestData;
-	if (Unicode)
+	if (Utf8)
 		requestData = data.toUtf8();
 	else
 		requestData = data.toAscii();

@@ -104,7 +104,7 @@ GatewaySmsSender.prototype = {
 		postData += "&respInfo=";
 		postData += "1";
 
-		network.setUnicode(false);
+		network.setUtf8(false);
 		this.reply = network.post(url, postData);
 		this.reply.finished.connect(this, this.smsSent);
 	},

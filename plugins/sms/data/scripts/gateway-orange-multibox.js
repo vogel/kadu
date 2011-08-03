@@ -91,6 +91,7 @@ OMGatewaySmsSender.prototype = {
 			postData += "/formhandler/ProxyProfileFormhandler.login=loguj&_D:/ptk/map/infoportal/portlet/header/";
 			postData += "formhandler/ProxyProfileFormhandler.login=+&x=0&y=0&_DARGS=/gear/infoportal/header/user-box.jsp";
 
+			network.setUtf8(false);
 			this.reply = network.post(logInUrl, postData);
 			this.reply.finished.connect(this, this.getForm);
 		}
@@ -148,6 +149,7 @@ OMGatewaySmsSender.prototype = {
 
 		var sendSMSUrl = "http://www.orange.pl/portal/map/map/message_box?_DARGS=/gear/mapmessagebox/smsform.jsp";
 
+		network.setUtf8(false);
 		this.reply = network.post(sendSMSUrl, postString);
 		this.reply.finished.connect(this, this.smsSent);
 	},

@@ -30,7 +30,7 @@ class NetworkAccessManagerWrapper : public QNetworkAccessManager
 	Q_OBJECT
 
 	QScriptEngine *Engine;
-	bool Unicode;
+	bool Utf8;
 	QMap<QByteArray, QByteArray> Headers;
 
 public:
@@ -38,7 +38,7 @@ public:
 	virtual ~NetworkAccessManagerWrapper();
 
 public slots:
-	void setUnicode(bool unicode) { Unicode = unicode; }
+	void setUtf8(bool utf8) { Utf8 = utf8; }
 	void setHeader(const QString &headerName, const QString &headerValue);
 	void clearHeaders();
 
