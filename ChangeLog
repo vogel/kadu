@@ -1,3 +1,6 @@
++++ version 0.10.0
+* sms: small changes that will ease updating gateway scripts (beevvy)
+
 +++ version 0.10.0-rc1
 * gadu: #2257 fixed: fixed very unlikely possibility to needlessly and confusingly ask whether to import contacts from server on clean installation (beevvy)
 * gadu: fixed sending new contact list version to server after renaming a group (beevvy)
