@@ -141,8 +141,11 @@ void Hint::createLabels(const QPixmap &pixmap)
 	{
 		icon = new QLabel(this);
 		icon->setPixmap(pixmap);
-		icon->resize(pixmap.size());
+		icon->setContentsMargins(0, 0, margin + 4, 0);
 		icon->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+		// Without setting fixed size right margin is sometimes not respected on Windows.
+		// If you cannot reproduce, try setting MarginSize to 5 px.
+		icon->setFixedSize(icon->sizeHint());
 		labels->addWidget(icon, 0, Qt::AlignTop);
 	}
 
@@ -150,7 +153,6 @@ void Hint::createLabels(const QPixmap &pixmap)
 	label->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::MinimumExpanding);
 	label->setTextInteractionFlags(Qt::NoTextInteraction);
 	label->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
-	label->setContentsMargins(margin + 4, 0, 0, 0);
 	labels->addWidget(label);
 }
 
