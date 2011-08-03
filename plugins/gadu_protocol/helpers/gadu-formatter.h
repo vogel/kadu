@@ -24,18 +24,20 @@
 #ifndef GADU_FORMATTER_H
 #define GADU_FORMATTER_H
 
-#include "gadu-protocol.h"
+#include "../gadu-exports.h"
+#include "../gadu-protocol.h"
 
+class Account;
 class FormattedMessage;
 
 namespace GaduFormatter
 {
-	unsigned int computeFormatsSize(const FormattedMessage &message);
-	unsigned char * createFormats(Account account, const FormattedMessage &message, unsigned int &size);
+	GADUAPI unsigned int computeFormatsSize(const FormattedMessage &message);
+	GADUAPI unsigned char * createFormats(Account account, const FormattedMessage &message, unsigned int &size);
 
-	QString createImageId(GaduProtocol::UinType sender, unsigned int size, unsigned int crc32);
+	GADUAPI QString createImageId(GaduProtocol::UinType sender, unsigned int size, unsigned int crc32);
 
-	FormattedMessage createMessage(Account account, Contact contact, const QString &content, unsigned char *formats,
+	GADUAPI FormattedMessage createMessage(Account account, Contact contact, const QString &content, unsigned char *formats,
 			unsigned int size, bool receiveImages);
 
 }
