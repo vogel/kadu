@@ -32,7 +32,7 @@
 #include "config-wizard-set-up-account-page.h"
 
 ConfigWizardSetUpAccountPage::ConfigWizardSetUpAccountPage(QWidget *parent) :
-		ConfigWizardPage(parent), AccountWidget(0)
+		ConfigWizardPage(parent), AccountWidget(0), AccountSuccessfullyCreated(false)
 {
 	setDescription(tr("<p>Please enter your account data.</p><p>Go back if you want to select a different Account Setup option.</p>"));
 
@@ -93,10 +93,14 @@ void ConfigWizardSetUpAccountPage::cleanupPage()
 
 bool ConfigWizardSetUpAccountPage::validatePage()
 {
-	if (AccountWidget)
-		AccountWidget->apply();
+	if (!AccountWidget)
+		return true;
 
-	return true;
+	AccountWidget->apply();
+
+	// apply() call should have blocked until accountCreated() was emitted,
+	// so AccountSuccessfullyCreated should now be filled.
+	return AccountSuccessfullyCreated;
 }
 
 void ConfigWizardSetUpAccountPage::acceptPage()
@@ -106,11 +110,16 @@ void ConfigWizardSetUpAccountPage::acceptPage()
 void ConfigWizardSetUpAccountPage::accountCreated(Account account)
 {
 	if (!account)
+	{
+		AccountSuccessfullyCreated = false;
 		return;
+	}
 
 	account.importProxySettings();
 	AccountManager::instance()->addItem(account);
 	account.accountContact().setOwnerBuddy(Core::instance()->myself());
+
+	AccountSuccessfullyCreated = true;
 
 	ConfigurationManager::instance()->flush();
 }

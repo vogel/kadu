@@ -31,6 +31,7 @@ class ConfigWizardSetUpAccountPage : public ConfigWizardPage
 	Q_OBJECT
 
 	ModalConfigurationWidget *AccountWidget;
+	bool AccountSuccessfullyCreated;
 
 	void createGui();
 
