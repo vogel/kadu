@@ -31,6 +31,13 @@ if (NOT KADU_DO_NOT_FIND)
 		PATH_SUFFIXES include/kadu
 	)
 
+	if (WIN32)
+		find_path (KADU_SDK_UTILS_DIR
+			plugins/plugver.bat
+			PATHS ${KADU_SEARCH_DIRS} ${CMAKE_CURRENT_SOURCE_DIR}/../..
+		)
+	endif (WIN32)
+
 	if (KADU_INCLUDE_DIR)
 		if (NOT KADU_FIND_QUIETLY)
 			message (STATUS "Found Kadu headers: ${KADU_INCLUDE_DIR}/kadu")
@@ -189,7 +196,8 @@ macro (kadu_plugin)
 		# wygeneruj plik z wersja modulu
 		set (PLUGIN_SOURCES ${PLUGIN_SOURCES} ${PLUGIN_NAME}.rc)
 		add_custom_command (OUTPUT ${PLUGIN_NAME}.rc
-			COMMAND ${CMAKE_SOURCE_DIR}/plugins/plugver.bat ARGS ${CMAKE_CURRENT_SOURCE_DIR}/${PLUGIN_NAME}.desc ${PLUGIN_NAME}.rc
+			COMMAND ${KADU_SDK_UTILS_DIR}/plugins/plugver.bat
+			ARGS ${CMAKE_CURRENT_SOURCE_DIR}/${PLUGIN_NAME}.desc ${CMAKE_CURRENT_BINARY_DIR}/${PLUGIN_NAME}.rc
 			WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
 			DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${PLUGIN_NAME}.desc
 			COMMENT "Building RC source ${PLUGIN_NAME}.rc"
