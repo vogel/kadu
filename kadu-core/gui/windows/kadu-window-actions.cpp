@@ -71,6 +71,7 @@
 #include "os/generic/url-opener.h"
 #include "parser/parser.h"
 #include "plugins/plugins-manager.h"
+#include "protocols/protocol.h"
 #include "status/status-changer-manager.h"
 #include "status/status-container-manager.h"
 #include "url-handlers/url-handler-manager.h"
@@ -79,6 +80,19 @@
 #include "debug.h"
 
 #include "kadu-window-actions.h"
+
+void hideNoMultilogonAccounts(Action *action)
+{
+	bool hasMultilogonAccount = false;
+	foreach (const Account &account, AccountManager::instance()->items())
+		if (account.protocolHandler() && account.protocolHandler()->multilogonService())
+		{
+			hasMultilogonAccount = true;
+			break;
+		}
+
+	action->setVisible(hasMultilogonAccount);
+}
 
 void disableContainsSelfUles(Action *action)
 {
@@ -183,8 +197,10 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 	ShowMultilogons = new ActionDescription(this,
 		ActionDescription::TypeMainMenu, "showMultilogonsAction",
 		this, SLOT(showMultilogonsActionActivated(QAction *, bool)),
-		KaduIcon("kadu_icons/multilogon"), tr("Multilogons...")
+		KaduIcon("kadu_icons/multilogon"), tr("Multilogons..."), false,
+		hideNoMultilogonAccounts
 	);
+	connect(ShowMultilogons, SIGNAL(actionCreated(Action *)), this, SLOT(showMultilogonsActionCreated(Action *)));
 
 	ManageModules = new ActionDescription(this,
 		ActionDescription::TypeMainMenu, "manageModulesAction",
@@ -408,6 +424,12 @@ void KaduWindowActions::statusChanged(StatusContainer *container, Status status)
 
 	if (container == StatusContainerManager::instance()->defaultStatusContainer() && container != StatusContainerManager::instance())
 		statusChanged(StatusContainerManager::instance(), status);
+}
+
+void KaduWindowActions::showMultilogonsActionCreated(Action *action)
+{
+	connect(AccountManager::instance(), SIGNAL(accountRegistered(Account)), action, SLOT(checkState()));
+	connect(AccountManager::instance(), SIGNAL(accountUnregistered(Account)), action, SLOT(checkState()));
 }
 
 void KaduWindowActions::inactiveUsersActionCreated(Action *action)
