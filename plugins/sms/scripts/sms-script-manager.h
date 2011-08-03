@@ -23,6 +23,8 @@
 
 #include <QtCore/QObject>
 
+class QFileInfo;
+class QDir;
 class QScriptEngine;
 
 class NetworkAccessManagerWrapper;
@@ -44,13 +46,14 @@ class SmsScriptsManager : public QObject
 	SmsScriptsManager();
 	virtual ~SmsScriptsManager();
 
+	void loadScripts(const QDir &dir);
 	void init();
 
 public:
 	static SmsScriptsManager * instance();
 	static void destroyInstance();
 
-	void loadScript(const QString &fileName);
+	void loadScript(const QFileInfo &fileInfo);
 
 	QScriptEngine * engine() { return Engine; }
 

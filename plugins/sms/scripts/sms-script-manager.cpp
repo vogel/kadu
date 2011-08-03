@@ -22,6 +22,7 @@
 
 #include <QtCore/QDir>
 #include <QtCore/QFile>
+#include <QtCore/QFileInfo>
 #include <QtCore/QTextStream>
 #include <QtGui/QMainWindow>
 #include <QtScript/QScriptEngine>
@@ -77,30 +78,45 @@ void SmsScriptsManager::init()
 // 	debuger->attachTo(Engine);
 // 	debuger->standardWindow()->show();
 
-	loadScript(dataPath("kadu/plugins/data/sms/scripts/gateway.js"));
-
-	QDir scriptDirectory(dataPath("kadu/plugins/data/sms/scripts/"));
-	if (scriptDirectory.exists())
+	QString scriptPath = profilePath("plugins/data/sms/scripts/gateway.js");
+	if (QFile::exists(scriptPath))
+		loadScript(scriptPath);
+	else
 	{
-		QStringList filters;
-		filters.append("gateway-*.js");
-
-		QFileInfoList gateways = scriptDirectory.entryInfoList(filters);
-		foreach (const QFileInfo &gatewayFile, gateways)
-			loadScript(gatewayFile.filePath());
+		scriptPath = dataPath("kadu/plugins/data/sms/scripts/gateway.js");
+		if (QFile::exists(scriptPath))
+			loadScript(scriptPath);
+		// TODO: maybe we should return here if no gateway.js was found?
 	}
+
+	// scripts from profile path can replace the ones from data path if the file name is the same
+	loadScripts(QDir(profilePath("plugins/data/sms/scripts/")));
+	loadScripts(QDir(dataPath("kadu/plugins/data/sms/scripts/")));
 }
 
-void SmsScriptsManager::loadScript(const QString &fileName)
+void SmsScriptsManager::loadScripts(const QDir &dir)
 {
-	QFile file(fileName);
-	if (!file.exists())
+	if (!dir.exists())
 		return;
 
+	QFileInfoList gateways = dir.entryInfoList(QStringList("gateway-*.js"));
+	foreach (const QFileInfo &gatewayFile, gateways)
+		loadScript(gatewayFile);
+}
+
+void SmsScriptsManager::loadScript(const QFileInfo &fileInfo)
+{
+	if (!fileInfo.exists())
+		return;
+
+	// We want file name exluding the path - file from a higher priority dir can
+	// replace a file of the same name from different dir.
+	QString fileName = fileInfo.fileName();
 	if (LoadedFiles.contains(fileName))
 		return;
 	LoadedFiles.append(fileName);
 
+	QFile file(fileInfo.absoluteFilePath());
 	if (!file.open(QFile::ReadOnly))
 		return;
 
