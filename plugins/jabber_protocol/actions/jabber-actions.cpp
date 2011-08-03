@@ -169,7 +169,7 @@ void JabberActions::askForSubscriptionActionActivated(QAction *sender)
 void JabberActions::showXmlConsoleActionCreated(Action *action)
 {
 	action->setMenu(ShowXmlConsoleMenu);
-	action->setEnabled(!ShowXmlConsoleMenu->actions().isEmpty());
+	action->setVisible(!ShowXmlConsoleMenu->actions().isEmpty());
 }
 
 void JabberActions::showXmlConsoleActionActivated(QAction *sender)
@@ -191,7 +191,7 @@ void JabberActions::updateShowXmlConsoleMenu()
 
 	bool enable = !ShowXmlConsoleMenu->actions().isEmpty();
 	foreach (Action *action, ShowXmlConsole->actions())
-		action->setEnabled(enable);
+		action->setVisible(enable);
 }
 
 void JabberActions::insertMenuToMainWindow()
