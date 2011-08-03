@@ -85,7 +85,7 @@ public:
 	static void destroyInstance();
 	static FreedesktopNotify * instance();
 
-	virtual CallbackCapacity callbackCapacity() { return ServerSupportsActions ? CallbackSupported : CallbackNotSupported; }
+	virtual CallbackCapacity callbackCapacity();
 
 	virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = 0) { Q_UNUSED(parent); return 0; }
 	virtual void notify(Notification *notification);
