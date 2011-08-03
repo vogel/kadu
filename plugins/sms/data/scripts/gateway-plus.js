@@ -136,6 +136,10 @@ PlusGatewaySmsSender.prototype = {
 			"0" + separator;
 
 		network.setUnicode(true);
+		network.setHeader("Content-Type", "text/x-gwt-rpc; charset=utf-8");
+		network.setHeader("Accept-Encoding", "gzip, deflate");
+		network.setHeader("X-GWT-Module-Base", "http://www1.plus.pl/bsm/");
+		network.setHeader("X-GWT-Permutation", "22E4064F5698D299DC724EC04F1478DC");
 		this.reply = network.post(postUrl, postData);
 		this.reply.finished.connect(this, this.smsSent);
 	},
