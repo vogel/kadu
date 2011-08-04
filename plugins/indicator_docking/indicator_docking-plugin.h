@@ -16,6 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+
 #ifndef INDICATOR_DOCKING_PLUGIN_H
 #define INDICATOR_DOCKING_PLUGIN_H
 
@@ -36,4 +37,4 @@ public:
 
 };
 
-#endif // indicator_docking_PLUGIN_H
+#endif // INDICATOR_DOCKING_PLUGIN_H

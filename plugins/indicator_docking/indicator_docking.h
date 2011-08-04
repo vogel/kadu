@@ -42,31 +42,28 @@ class IndicatorDocking : public Notifier, public Docker
 	Q_OBJECT
 
 	static IndicatorDocking *Instance;
-	QIndicate::Server* Server;
-	QMap<QString, QIndicate::Indicator*> IndicatorsMap;
-	QMap<QString, bool> IndicatorsVisible; 
+
+	QIndicate::Server *Server;
+	QMap<QString, QIndicate::Indicator *> IndicatorsMap;
+	QMap<QString, bool> IndicatorsVisible;
 	QMap<QString, Chat> ChatsMap;
 	QMap<QString, ContactSet> ContactsMap;
 	QMap<QString, QImage> AvatarsMap;
 	QScopedPointer<QMouseEvent> EventForShowMainWindow;
 
-	explicit IndicatorDocking(QObject *parent = 0);
-	virtual ~IndicatorDocking();	
-	
-	void createDefaultConfiguration();
-	
-	void deleteAllIndicators();
+	IndicatorDocking();
+	virtual ~IndicatorDocking();
 
-	void deleteIndicator(const QString name);
+	void createDefaultConfiguration();
+
+	void deleteAllIndicators();
+	void deleteIndicator(const QString &name);
 
 private slots:
 	void showMainWindow();
-
-	void displayIndicator(QIndicate::Indicator* indicator);
-
-	void notificationClosed(Notification* notification);
-
-	void chatWidgetActivated(ChatWidget *);
+	void displayIndicator(QIndicate::Indicator *indicator);
+	void notificationClosed(Notification *notification);
+	void chatWidgetActivated();
 
 public:
 	static IndicatorDocking * instance();
@@ -74,19 +71,14 @@ public:
 	static void destroyInstance();
 
 	virtual void notify(Notification *notification);
-	
-	virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = 0) { Q_UNUSED(parent); return 0; }
-	
+	virtual NotifierConfigurationWidget * createConfigurationWidget(QWidget *parent = 0) { Q_UNUSED(parent); return 0; }
 	virtual CallbackCapacity callbackCapacity() { return CallbackNotSupported; }
 
 	virtual void changeTrayIcon(const KaduIcon &icon) { Q_UNUSED(icon); return; }
-	
 	virtual void changeTrayMovie(const QString &moviePath) { Q_UNUSED(moviePath); return; }
-	
 	virtual void changeTrayTooltip(const QString &tooltip) { Q_UNUSED(tooltip); return; }
-	
 	virtual QPoint trayPosition() { return QPoint(0, 0); }
 
 };
 
-#endif
+#endif // INDICATOR_DOCKING_H

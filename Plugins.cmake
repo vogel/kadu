@@ -112,7 +112,7 @@ endif (UNIX)
 
 if (UNIX AND NOT APPLE)
 	list (APPEND COMPILE_PLUGINS
-	
+
 	# docking
 		# Indicator docking support
 		indicator_docking
