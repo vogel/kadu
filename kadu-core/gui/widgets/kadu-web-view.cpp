@@ -159,7 +159,7 @@ void KaduWebView::mouseMoveEvent(QMouseEvent *e)
 	QMimeData *originalData = new QMimeData();
 	foreach (const QString &format, clipboard->mimeData(QClipboard::Clipboard)->formats())
 		originalData->setData(format, clipboard->mimeData(QClipboard::Clipboard)->data(format));
-	page()->triggerAction(QWebPage::Copy);
+	triggerPageAction(QWebPage::Copy);
 	textCopied();
 
 	mimeData->setText(clipboard->mimeData()->text());
