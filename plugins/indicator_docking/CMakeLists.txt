@@ -31,7 +31,20 @@ kadu_plugin (indicator_docking
 )
 
 if (NOT INDICATORS_PARENT_DIR)
-	set (INDICATORS_PARENT_DIR "/usr/share")
+	if (${CMAKE_INSTALL_PREFIX} MATCHES "/usr/*")
+		set (INDICATORS_PARENT_DIR "/usr/share")
+	else (${CMAKE_INSTALL_PREFIX} MATCHES "/usr/*")
+		if (NOT "$ENV{XDG_CONFIG_HOME}" STREQUAL "")
+			set (INDICATORS_PARENT_DIR "$ENV{XDG_CONFIG_HOME}")
+		else (NOT "$ENV{XDG_CONFIG_HOME}" STREQUAL "")
+			if (NOT "$ENV{HOME}" STREQUAL "")
+				set (INDICATORS_PARENT_DIR "$ENV{HOME}/.config")
+			else (NOT "$ENV{HOME}" STREQUAL "")
+				set (INDICATORS_PARENT_DIR "${CMAKE_INSTALL_PREFIX}/share")
+			endif (NOT "$ENV{HOME}" STREQUAL "")
+		endif (NOT "$ENV{XDG_CONFIG_HOME}" STREQUAL "")
+	endif (${CMAKE_INSTALL_PREFIX} MATCHES "/usr/*")
+
 	message (STATUS "INDICATORS_PARENT_DIR not specified. Using default: ${INDICATORS_PARENT_DIR}")
 endif (NOT INDICATORS_PARENT_DIR)
 
