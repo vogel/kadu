@@ -235,9 +235,9 @@ void ChatWidget::configurationUpdated()
 
 bool ChatWidget::keyPressEventHandled(QKeyEvent *e)
 {
-	if (e->matches(QKeySequence::Copy))
+	if (e->matches(QKeySequence::Copy) && !MessagesView->selectedText().isEmpty())
 	{
-		MessagesView->page()->action(QWebPage::Copy)->trigger();
+		MessagesView->triggerPageAction(QWebPage::Copy);
 		return true;
 	}
 

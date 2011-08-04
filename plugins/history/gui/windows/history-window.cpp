@@ -797,8 +797,8 @@ void HistoryWindow::keyPressEvent(QKeyEvent *e)
 		e->accept();
 		close();
 	}
-	else if (e == QKeySequence::Copy)
-		ContentBrowser->pageAction(QWebPage::Copy)->trigger();
+	else if (e == QKeySequence::Copy && !ContentBrowser->selectedText().isEmpty())
+		ContentBrowser->triggerPageAction(QWebPage::Copy);
 	else
 		QWidget::keyPressEvent(e);
 }
