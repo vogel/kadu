@@ -57,7 +57,6 @@ IndicatorDocking::IndicatorDocking() :
 {
 	Server = QIndicate::Server::defaultInstance();
 	Server->setDesktopFile(desktopFilePath());
-	Server->setCount(0);
 	Server->setType("message.im");
 	Server->show();
 
@@ -76,7 +75,6 @@ IndicatorDocking::~IndicatorDocking()
 	disconnect(Server, SIGNAL(serverDisplay()), this, SLOT(showMainWindow()));
 	disconnect(ChatWidgetManager::instance(), SIGNAL(chatWidgetActivated(ChatWidget *)), this, SLOT(chatWidgetActivated()));
 	deleteAllIndicators();
-	Server->hide();
 }
 
 void IndicatorDocking::showMainWindow()
