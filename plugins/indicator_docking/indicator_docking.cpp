@@ -98,27 +98,27 @@ void IndicatorDocking::notify(Notification *notification)
 
 	Chat chat = chatNotification->chat();
 	Contact contact = *chat.contacts().constBegin();
-	QString contactName = contact.ownerBuddy().display();
-	if (contactName.isEmpty())
+	QString buddyName = contact.ownerBuddy().display();
+	if (buddyName.isEmpty())
 		return;
 
 	QIndicate::Indicator *indicator;
-	if (IndicatorsMap.contains(contactName))
+	if (IndicatorsMap.contains(buddyName))
 	{
-		indicator = IndicatorsMap[contactName];
-		ChatsMap[contactName] = chat;
+		indicator = IndicatorsMap[buddyName];
+		ChatsMap[buddyName] = chat;
 	}
 	else
 	{
 		indicator = new QIndicate::Indicator(Server);
-		IndicatorsMap[contactName] = indicator;
-		ChatsMap[contactName] = chat;
-		ContactsMap[contactName] = chat.contacts();
-		indicator->setNameProperty(contactName);
+		IndicatorsMap[buddyName] = indicator;
+		ChatsMap[buddyName] = chat;
+		ContactsMap[buddyName] = chat.contacts();
+		indicator->setNameProperty(buddyName);
 
 		Avatar avatar = contact.contactAvatar();
-		AvatarsMap[contactName] = QImage(avatar.pixmap().toImage().scaled(20, 20, Qt::KeepAspectRatio, Qt::SmoothTransformation));
-		indicator->setIconProperty(AvatarsMap[contactName]);
+		AvatarsMap[buddyName] = QImage(avatar.pixmap().toImage().scaled(20, 20, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+		indicator->setIconProperty(AvatarsMap[buddyName]);
 
 		connect(indicator, SIGNAL(display(QIndicate::Indicator*)), SLOT(displayIndicator(QIndicate::Indicator*)));
 	}
@@ -127,7 +127,7 @@ void IndicatorDocking::notify(Notification *notification)
 	indicator->setTimeProperty(QDateTime::currentDateTime());
 	indicator->setDrawAttentionProperty(true);
 	indicator->show();
-	IndicatorsVisible[contactName] = true;
+	IndicatorsVisible[buddyName] = true;
 }
 
 void IndicatorDocking::notificationClosed(Notification *notification)
@@ -137,11 +137,11 @@ void IndicatorDocking::notificationClosed(Notification *notification)
 		return;
 
 	Contact contact = *chatNotification->chat().contacts().begin();
-	QString contactName = contact.ownerBuddy().display();
-	if (contactName.isEmpty())
+	QString buddyName = contact.ownerBuddy().display();
+	if (buddyName.isEmpty())
 		return;
 
-	deleteIndicator(contactName);
+	deleteIndicator(buddyName);
 }
 
 void IndicatorDocking::chatWidgetActivated()
