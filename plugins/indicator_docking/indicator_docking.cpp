@@ -106,25 +106,19 @@ void IndicatorDocking::notify(Notification *notification)
 		return;
 
 	Chat chat = chatNotification->chat();
-	Contact contact = *chat.contacts().constBegin();
-	QString buddyName = contact.ownerBuddy().display();
-	if (buddyName.isEmpty())
+	if (!chat)
 		return;
 
-	QIndicate::Indicator *indicator;
-	if (IndicatorsMap.contains(buddyName))
+	QIndicate::Indicator *indicator = IndicatorsMap.key(chat);
+	if (!indicator)
 	{
-		indicator = IndicatorsMap[buddyName];
-		ChatsMap[buddyName] = chat;
-	}
-	else
-	{
-		indicator = new QIndicate::Indicator(this);
-		IndicatorsMap[buddyName] = indicator;
-		ChatsMap[buddyName] = chat;
-		indicator->setNameProperty(buddyName);
+		Contact firstContact = *chat.contacts().constBegin();
 
-		Avatar avatar = contact.contactAvatar();
+		indicator = new QIndicate::Indicator(this);
+		IndicatorsMap.insert(indicator, chat);
+		indicator->setNameProperty(firstContact.ownerBuddy().display());
+
+		Avatar avatar = firstContact.contactAvatar();
 		if (avatar && !avatar.pixmap().isNull())
 			indicator->setIconProperty(avatar.pixmap().toImage().scaled(20, 20, Qt::KeepAspectRatio, Qt::SmoothTransformation));
 
@@ -143,12 +137,11 @@ void IndicatorDocking::notificationClosed(Notification *notification)
 	if (!chatNotification)
 		return;
 
-	Contact contact = *chatNotification->chat().contacts().begin();
-	QString buddyName = contact.ownerBuddy().display();
-	if (buddyName.isEmpty())
+	Chat chat = chatNotification->chat();
+	if (!chat)
 		return;
 
-	deleteIndicator(buddyName);
+	deleteIndicator(chat);
 }
 
 void IndicatorDocking::chatWidgetActivated()
@@ -158,24 +151,30 @@ void IndicatorDocking::chatWidgetActivated()
 
 void IndicatorDocking::displayIndicator(QIndicate::Indicator *indicator)
 {
-	QString indicatorName = indicator->nameProperty();
-	if (!ChatsMap.contains(indicatorName))
+	Chat chat = IndicatorsMap.value(indicator);
+	if (!chat)
 		return;
 
-	Chat chat = ChatsMap[indicatorName];
 	ChatWidgetManager::instance()->openPendingMessages(chat);
 	//Don't have to deleteIndicator when you call chatWidgetActivated
 }
 
-void IndicatorDocking::deleteIndicator(const QString &name)
+void IndicatorDocking::deleteIndicator(const Chat &chat)
 {
-	if (IndicatorsMap.contains(name))
-		IndicatorsMap[name]->hide();
+	QIndicate::Indicator *indicator = IndicatorsMap.key(chat);
+	if (!indicator)
+		return;
+
+	indicator->hide();
 }
 
 void IndicatorDocking::deleteAllIndicators()
 {
-	qDeleteAll(IndicatorsMap);
+	QMap<QIndicate::Indicator *, Chat>::const_iterator it = IndicatorsMap.constBegin();
+	QMap<QIndicate::Indicator *, Chat>::const_iterator end = IndicatorsMap.constEnd();
+	for (; it != end; ++it)
+		delete it.key();
+
 	IndicatorsMap.clear();
 }
 
