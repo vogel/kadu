@@ -52,7 +52,7 @@ IndicatorDocking * IndicatorDocking::instance()
 }
 
 IndicatorDocking::IndicatorDocking() :
-		Notifier("indicator_notify", QT_TRANSLATE_NOOP("@default", "Indicator"), KaduIcon("external_modules/mail-internet-mail")),
+		Notifier("IndicatorNotify", QT_TRANSLATE_NOOP("@default", "Indicator"), KaduIcon("external_modules/mail-internet-mail")),
 		EventForShowMainWindow(new QMouseEvent(QEvent::MouseButtonPress, QPoint(0, 0), Qt::LeftButton, Qt::LeftButton, Qt::NoModifier))
 {
 	Server = QIndicate::Server::defaultInstance();
@@ -178,6 +178,6 @@ void IndicatorDocking::deleteAllIndicators()
 
 void IndicatorDocking::createDefaultConfiguration()
 {
-	config_file.addVariable("Notify", "NewChat_Indicator", true);
-	config_file.addVariable("Notify", "NewMessage_Indicator", true);
+	config_file.addVariable("Notify", "NewChat_IndicatorNotify", true);
+	config_file.addVariable("Notify", "NewMessage_IndicatorNotify", true);
 }
