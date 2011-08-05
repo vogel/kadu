@@ -126,8 +126,8 @@ void IndicatorDocking::notify(Notification *notification)
 		indicator->setNameProperty(buddyName);
 
 		Avatar avatar = contact.contactAvatar();
-		AvatarsMap[buddyName] = QImage(avatar.pixmap().toImage().scaled(20, 20, Qt::KeepAspectRatio, Qt::SmoothTransformation));
-		indicator->setIconProperty(AvatarsMap[buddyName]);
+		if (avatar && !avatar.pixmap().isNull())
+			indicator->setIconProperty(avatar.pixmap().toImage().scaled(20, 20, Qt::KeepAspectRatio, Qt::SmoothTransformation));
 
 		connect(indicator, SIGNAL(display(QIndicate::Indicator*)), SLOT(displayIndicator(QIndicate::Indicator*)));
 	}

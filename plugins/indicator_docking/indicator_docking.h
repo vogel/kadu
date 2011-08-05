@@ -27,7 +27,6 @@
 
 #include "plugins/docking/docker.h"
 
-class QImage;
 class QMouseEvent;
 
 namespace QIndicate
@@ -50,7 +49,6 @@ class IndicatorDocking : public Notifier, public Docker
 	QMap<QString, bool> IndicatorsVisible;
 	QMap<QString, Chat> ChatsMap;
 	QMap<QString, ContactSet> ContactsMap;
-	QMap<QString, QImage> AvatarsMap;
 	QScopedPointer<QMouseEvent> EventForShowMainWindow;
 
 	IndicatorDocking();
