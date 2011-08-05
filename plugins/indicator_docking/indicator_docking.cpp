@@ -17,17 +17,25 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QEvent>
 #include <QtCore/QPoint>
+#include <QtGui/QImage>
 #include <QtGui/QMouseEvent>
 
+#include <libindicate-qt/qindicateserver.h>
+
 #include "avatars/avatar.h"
-#include "configuration/configuration-file.h"
-#include "core/core.h"
+#include "buddies/buddy.h"
+#include "chat/chat.h"
 #include "chat/chat-manager.h"
+#include "configuration/configuration-file.h"
+#include "contacts/contact.h"
+#include "contacts/contact-set.h"
+#include "core/core.h"
+#include "gui/widgets/chat-widget-manager.h"
+#include "misc/path-conversion.h"
 #include "notify/chat-notification.h"
-#include "notify/notification.h"
 #include "notify/notification-manager.h"
+
 #include "plugins/docking/docking.h"
 
 #include "indicator_docking.h"

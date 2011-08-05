@@ -18,6 +18,7 @@
  */
 
 #include "indicator_docking.h"
+
 #include "indicator_docking-plugin.h"
 
 IndicatorDockingPlugin::~IndicatorDockingPlugin()

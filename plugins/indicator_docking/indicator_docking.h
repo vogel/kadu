@@ -20,22 +20,24 @@
 #ifndef INDICATOR_DOCKING_H
 #define INDICATOR_DOCKING_H
 
-#include <QtCore/QObject>
-#include <QtCore/QDebug>
 #include <QtCore/QMap>
-#include <QtGui/QImage>
+#include <QtCore/QScopedPointer>
 
 #include "notify/notifier.h"
-#include "gui/widgets/chat-widget-manager.h"
+
 #include "plugins/docking/docker.h"
-#include "misc/path-conversion.h"
-#include "core/core.h"
-#include "debug.h"
-#include "exports.h"
 
-#include <libindicate-qt/qindicateserver.h>
-#include <libindicate-qt/qindicateindicator.h>
+class QImage;
+class QMouseEvent;
 
+namespace QIndicate
+{
+	class Indicator;
+	class Server;
+}
+
+class Chat;
+class ContactSet;
 
 class IndicatorDocking : public Notifier, public Docker
 {
@@ -80,5 +82,9 @@ public:
 	virtual QPoint trayPosition() { return QPoint(0, 0); }
 
 };
+
+// for MOC
+#include <libindicate-qt/qindicateindicator.h>
+#include "notify/notification.h"
 
 #endif // INDICATOR_DOCKING_H
