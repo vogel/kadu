@@ -72,8 +72,11 @@ IndicatorDocking::IndicatorDocking() :
 IndicatorDocking::~IndicatorDocking()
 {
 	NotificationManager::instance()->unregisterNotifier(this);
+	DockingManager::instance()->setDocker(0);
+
 	disconnect(Server, SIGNAL(serverDisplay()), this, SLOT(showMainWindow()));
 	disconnect(ChatWidgetManager::instance(), SIGNAL(chatWidgetActivated(ChatWidget *)), this, SLOT(chatWidgetActivated()));
+
 	deleteAllIndicators();
 }
 
