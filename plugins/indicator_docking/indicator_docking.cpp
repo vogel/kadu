@@ -136,7 +136,6 @@ void IndicatorDocking::notify(Notification *notification)
 	indicator->setTimeProperty(QDateTime::currentDateTime());
 	indicator->setDrawAttentionProperty(true);
 	indicator->show();
-	IndicatorsVisible[buddyName] = true;
 }
 
 void IndicatorDocking::notificationClosed(Notification *notification)
@@ -172,11 +171,8 @@ void IndicatorDocking::displayIndicator(QIndicate::Indicator *indicator)
 
 void IndicatorDocking::deleteIndicator(const QString &name)
 {
-	if (IndicatorsVisible.contains(name) && IndicatorsVisible[name] && IndicatorsMap.contains(name))
-	{
-		IndicatorsVisible[name] = false;
+	if (IndicatorsMap.contains(name))
 		IndicatorsMap[name]->hide();
-	}
 }
 
 void IndicatorDocking::deleteAllIndicators()

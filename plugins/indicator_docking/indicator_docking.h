@@ -46,7 +46,6 @@ class IndicatorDocking : public Notifier, public Docker
 
 	QIndicate::Server *Server;
 	QMap<QString, QIndicate::Indicator *> IndicatorsMap;
-	QMap<QString, bool> IndicatorsVisible;
 	QMap<QString, Chat> ChatsMap;
 	QMap<QString, ContactSet> ContactsMap;
 	QScopedPointer<QMouseEvent> EventForShowMainWindow;
