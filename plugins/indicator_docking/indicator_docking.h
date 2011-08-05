@@ -36,7 +36,6 @@ namespace QIndicate
 }
 
 class Chat;
-class ContactSet;
 
 class IndicatorDocking : public Notifier, public Docker
 {
@@ -47,7 +46,6 @@ class IndicatorDocking : public Notifier, public Docker
 	QIndicate::Server *Server;
 	QMap<QString, QIndicate::Indicator *> IndicatorsMap;
 	QMap<QString, Chat> ChatsMap;
-	QMap<QString, ContactSet> ContactsMap;
 	QScopedPointer<QMouseEvent> EventForShowMainWindow;
 
 	IndicatorDocking();

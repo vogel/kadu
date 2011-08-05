@@ -122,7 +122,6 @@ void IndicatorDocking::notify(Notification *notification)
 		indicator = new QIndicate::Indicator(this);
 		IndicatorsMap[buddyName] = indicator;
 		ChatsMap[buddyName] = chat;
-		ContactsMap[buddyName] = chat.contacts();
 		indicator->setNameProperty(buddyName);
 
 		Avatar avatar = contact.contactAvatar();
@@ -163,8 +162,7 @@ void IndicatorDocking::displayIndicator(QIndicate::Indicator *indicator)
 	if (!ChatsMap.contains(indicatorName))
 		return;
 
-	ContactSet contacts = ContactsMap[indicatorName];
-	Chat chat = ChatManager::instance()->findChat(contacts);
+	Chat chat = ChatsMap[indicatorName];
 	ChatWidgetManager::instance()->openPendingMessages(chat);
 	//Don't have to deleteIndicator when you call chatWidgetActivated
 }
