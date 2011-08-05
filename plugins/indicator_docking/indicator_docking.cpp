@@ -61,7 +61,7 @@ IndicatorDocking * IndicatorDocking::instance()
 
 IndicatorDocking::IndicatorDocking() :
 		Notifier("IndicatorNotify", QT_TRANSLATE_NOOP("@default", "Indicator"), KaduIcon("external_modules/mail-internet-mail")),
-		EventForShowMainWindow(new QMouseEvent(QEvent::MouseButtonPress, QPoint(0, 0), Qt::LeftButton, Qt::LeftButton, Qt::NoModifier))
+		EventForShowMainWindow(new QMouseEvent(QEvent::MouseButtonPress, QPoint(0, 0), Qt::LeftButton, Qt::LeftButton, Qt::ControlModifier))
 {
 	Server = QIndicate::Server::defaultInstance();
 	Server->setDesktopFile(desktopFilePath());
