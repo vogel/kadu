@@ -119,7 +119,7 @@ void IndicatorDocking::notify(Notification *notification)
 	}
 	else
 	{
-		indicator = new QIndicate::Indicator(Server);
+		indicator = new QIndicate::Indicator(this);
 		IndicatorsMap[buddyName] = indicator;
 		ChatsMap[buddyName] = chat;
 		ContactsMap[buddyName] = chat.contacts();
