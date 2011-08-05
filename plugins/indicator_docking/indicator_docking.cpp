@@ -155,7 +155,7 @@ void IndicatorDocking::displayIndicator(QIndicate::Indicator *indicator)
 	if (!chat)
 		return;
 
-	ChatWidgetManager::instance()->openPendingMessages(chat);
+	ChatWidgetManager::instance()->openPendingMessages(chat, true);
 	//Don't have to deleteIndicator when you call chatWidgetActivated
 }
 
