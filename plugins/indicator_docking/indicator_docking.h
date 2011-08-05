@@ -17,8 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef indicator_docking_H
-#define indicator_docking_H
+#ifndef INDICATOR_DOCKING_H
+#define INDICATOR_DOCKING_H
 
 #include <QtCore/QObject>
 #include <QtCore/QDebug>
@@ -26,15 +26,9 @@
 #include <QtGui/QImage>
 
 #include "notify/notifier.h"
-#include "notify/notification-manager.h"
-#include "notify/notification.h"
-#include "notify/chat-notification.h"
 #include "gui/widgets/chat-widget-manager.h"
-#include "plugins/docking/docking.h"
 #include "plugins/docking/docker.h"
-#include "avatars/avatar.h"
 #include "misc/path-conversion.h"
-#include "chat/chat-manager.h"
 #include "core/core.h"
 #include "debug.h"
 #include "exports.h"
@@ -59,13 +53,19 @@ class IndicatorDocking : public Notifier, public Docker
 	explicit IndicatorDocking(QObject *parent = 0);
 	virtual ~IndicatorDocking();	
 	
+	void createDefaultConfiguration();
+	
 	void deleteAllIndicators();
+
 	void deleteIndicator(const QString name);
 
 private slots:
 	void showMainWindow();
+
 	void displayIndicator(QIndicate::Indicator* indicator);
+
 	void notificationClosed(Notification* notification);
+
 	void chatWidgetActivated(ChatWidget *);
 
 public:
@@ -74,14 +74,19 @@ public:
 	static void destroyInstance();
 
 	virtual void notify(Notification *notification);
+	
 	virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = 0) { Q_UNUSED(parent); return 0; }
+	
 	virtual CallbackCapacity callbackCapacity() { return CallbackNotSupported; }
 
 	virtual void changeTrayIcon(const KaduIcon &icon) { Q_UNUSED(icon); return; }
+	
 	virtual void changeTrayMovie(const QString &moviePath) { Q_UNUSED(moviePath); return; }
+	
 	virtual void changeTrayTooltip(const QString &tooltip) { Q_UNUSED(tooltip); return; }
+	
 	virtual QPoint trayPosition() { return QPoint(0, 0); }
-};
 
+};
 
 #endif

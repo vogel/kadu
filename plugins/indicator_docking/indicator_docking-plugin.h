@@ -16,8 +16,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef indicator_docking_PLUGIN_H
-#define indicator_docking_PLUGIN_H
+#ifndef INDICATOR_DOCKING_PLUGIN_H
+#define INDICATOR_DOCKING_PLUGIN_H
 
 #include <QtCore/QObject>
 
@@ -33,6 +33,7 @@ public:
 
 	virtual int init(bool firstLoad);
 	virtual void done();
+
 };
 
 #endif // indicator_docking_PLUGIN_H

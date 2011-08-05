@@ -9,7 +9,6 @@ set (KADU_FIND_REQUIRED true)
 include (FindKadu)
 include (FindPkgConfig)
 
-find_package(PkgConfig REQUIRED) 
 pkg_search_module(INDICATEQT REQUIRED indicate-qt) 
 
 include_directories(${INDICATEQT_INCLUDE_DIRS}) 
@@ -27,11 +26,13 @@ set (MOC_SOURCES
 kadu_plugin (indicator_docking
 	PLUGIN_SOURCES ${SOURCES}
 	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
-	PLUGIN_LIBRARIES ${INDICATEQT_LIBRARIES} 
+	PLUGIN_LIBRARIES ${INDICATEQT_LIBRARIES}
+	PLUGIN_DEPENDENCIES docking
 )
 
-if (NOT INDICATORS_PARENT_DIR)
-    set (INDICATORS_PARENT_DIR "/usr/share")  
+if (NOT INDICATORS_PARENT_DIR)	
+	set (INDICATORS_PARENT_DIR "/usr/share")
+	message (STATUS "INDICATORS_PARENT_DIR not specified. Using default: ${INDICATORS_PARENT_DIR}")
 endif (NOT INDICATORS_PARENT_DIR)
 
 # Pin Kadu to Messangigng Menu
