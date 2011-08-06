@@ -90,7 +90,19 @@ IndicatorDocking::~IndicatorDocking()
 	disconnect(ChatWidgetManager::instance(), SIGNAL(chatWidgetActivated(ChatWidget*)), this, SLOT(chatWidgetActivated(ChatWidget*)));
 	disconnect(ChatWidgetManager::instance(), SIGNAL(chatWidgetCreated(ChatWidget*)), this, SLOT(chatWidgetCreated(ChatWidget*)));
 
-	deleteAllIndicators();
+	QSet<QIndicate::Indicator *> indicatorsToDelete;
+	QMultiMap<QIndicate::Indicator *, ChatNotification *>::const_iterator it = IndicatorsMap.constBegin();
+	QMultiMap<QIndicate::Indicator *, ChatNotification *>::const_iterator end = IndicatorsMap.constEnd();
+	for (; it != end; ++it)
+	{
+		disconnect(it.value(), SIGNAL(closed(Notification*)), this, SLOT(notificationClosed(Notification*)));
+		it.value()->release();
+		// because it is a multimap, keys may repeat
+		indicatorsToDelete.insert(it.key());
+	}
+
+	IndicatorsMap.clear();
+	qDeleteAll(indicatorsToDelete);
 }
 
 void IndicatorDocking::showMainWindow()
@@ -283,23 +295,6 @@ void IndicatorDocking::removeNotification(ChatNotification *chatNotification)
 
 	if (!IndicatorsMap.contains(indicator))
 		indicator->hide();
-}
-
-void IndicatorDocking::deleteAllIndicators()
-{
-	QSet<QIndicate::Indicator *> indicatorsToDelete;
-	QMultiMap<QIndicate::Indicator *, ChatNotification *>::const_iterator it = IndicatorsMap.constBegin();
-	QMultiMap<QIndicate::Indicator *, ChatNotification *>::const_iterator end = IndicatorsMap.constEnd();
-	for (; it != end; ++it)
-	{
-		disconnect(it.value(), SIGNAL(closed(Notification*)), this, SLOT(notificationClosed(Notification*)));
-		it.value()->release();
-		// because it is a multimap, keys may repeat
-		indicatorsToDelete.insert(it.key());
-	}
-
-	IndicatorsMap.clear();
-	qDeleteAll(indicatorsToDelete);
 }
 
 void IndicatorDocking::createDefaultConfiguration()
