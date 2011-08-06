@@ -91,9 +91,8 @@ IndicatorDocking::~IndicatorDocking()
 	disconnect(ChatWidgetManager::instance(), SIGNAL(chatWidgetCreated(ChatWidget*)), this, SLOT(chatWidgetCreated(ChatWidget*)));
 
 	QSet<QIndicate::Indicator *> indicatorsToDelete;
-	QMultiMap<QIndicate::Indicator *, ChatNotification *>::const_iterator it = IndicatorsMap.constBegin();
-	QMultiMap<QIndicate::Indicator *, ChatNotification *>::const_iterator end = IndicatorsMap.constEnd();
-	for (; it != end; ++it)
+	IndMMap::const_iterator end = IndicatorsMap.constEnd();
+	for (IndMMap::const_iterator it = IndicatorsMap.constBegin(); it != end; ++it)
 	{
 		disconnect(it.value(), SIGNAL(closed(Notification*)), this, SLOT(notificationClosed(Notification*)));
 		it.value()->release();
@@ -128,7 +127,7 @@ void IndicatorDocking::notify(Notification *notification)
 
 	// First we need to search for exactly the same chat.
 	QIndicate::Indicator *indicator = 0;
-	QMultiMap<QIndicate::Indicator *, ChatNotification *>::iterator it = iteratorForChat(chat);
+	IndMMap::iterator it = iteratorForChat(chat);
 	if (it != IndicatorsMap.end())
 	{
 		disconnect(it.value(), SIGNAL(closed(Notification*)), this, SLOT(notificationClosed(Notification*)));
@@ -145,8 +144,8 @@ void IndicatorDocking::notify(Notification *notification)
 		ChatDetailsAggregate *aggregateChatDetails = qobject_cast<ChatDetailsAggregate *>(aggregateChat.details());
 		if (aggregateChatDetails)
 		{
-			QMultiMap<QIndicate::Indicator *, ChatNotification *>::const_iterator it = IndicatorsMap.constBegin();
-			QMultiMap<QIndicate::Indicator *, ChatNotification *>::const_iterator end = IndicatorsMap.constEnd();
+			IndMMap::const_iterator it = IndicatorsMap.constBegin();
+			IndMMap::const_iterator end = IndicatorsMap.constEnd();
 			for (; it != end; ++it)
 				if (aggregateChatDetails->chats().contains(it.value()->chat()))
 				{
@@ -213,7 +212,7 @@ void IndicatorDocking::chatWidgetActivated(ChatWidget *chatWidget)
 	if (!chat)
 		return;
 
-	QMultiMap<QIndicate::Indicator *, ChatNotification *>::iterator it = iteratorForChat(chat);
+	IndMMap::iterator it = iteratorForChat(chat);
 	if (it != IndicatorsMap.end())
 		removeNotification(it.value());
 }
@@ -241,8 +240,8 @@ void IndicatorDocking::chatWidgetCreated(ChatWidget *chatWidget)
 	{
 		foundSomething = false;
 
-		QMultiMap<QIndicate::Indicator *, ChatNotification *>::const_iterator it = IndicatorsMap.constBegin();
-		QMultiMap<QIndicate::Indicator *, ChatNotification *>::const_iterator end = IndicatorsMap.constEnd();
+		IndMMap::const_iterator it = IndicatorsMap.constBegin();
+		IndMMap::const_iterator end = IndicatorsMap.constEnd();
 		for (; it != end; ++it)
 			if (aggregateChatDetails->chats().contains(it.value()->chat()))
 			{
@@ -271,7 +270,7 @@ void IndicatorDocking::removeNotification(ChatNotification *chatNotification)
 	if (!chatNotification)
 		return;
 
-	QMultiMap<QIndicate::Indicator *, ChatNotification *>::iterator it = iteratorForChat(chatNotification->chat());
+	IndMMap::iterator it = iteratorForChat(chatNotification->chat());
 	if (it == IndicatorsMap.end())
 		return;
 
@@ -286,12 +285,12 @@ void IndicatorDocking::removeNotification(ChatNotification *chatNotification)
 
 QMap<QIndicate::Indicator *, ChatNotification *>::iterator IndicatorDocking::iteratorForChat(const Chat &chat)
 {
-	QMultiMap<QIndicate::Indicator *, ChatNotification *>::iterator end = IndicatorsMap.end();
+	IndMMap::iterator end = IndicatorsMap.end();
 
 	if (!chat)
 		return end;
 
-	for (QMultiMap<QIndicate::Indicator *, ChatNotification *>::iterator it = IndicatorsMap.begin(); it != end; ++it)
+	for (IndMMap::iterator it = IndicatorsMap.begin(); it != end; ++it)
 		if (it.value()->chat() == chat)
 			return it;
 

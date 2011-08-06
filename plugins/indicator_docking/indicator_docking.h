@@ -45,8 +45,10 @@ class IndicatorDocking : public Notifier, public Docker
 
 	static IndicatorDocking *Instance;
 
+	typedef QMultiMap<QIndicate::Indicator *, ChatNotification *> IndMMap;
+
 	QIndicate::Server *Server;
-	QMultiMap<QIndicate::Indicator *, ChatNotification *> IndicatorsMap;
+	IndMMap IndicatorsMap;
 	QScopedPointer<QMouseEvent> EventForShowMainWindow;
 
 	IndicatorDocking();
@@ -54,7 +56,7 @@ class IndicatorDocking : public Notifier, public Docker
 
 	void createDefaultConfiguration();
 
-	QMultiMap<QIndicate::Indicator *, ChatNotification *>::iterator iteratorForChat(const Chat &chat);
+	IndMMap::iterator iteratorForChat(const Chat &chat);
 
 	void removeNotification(ChatNotification *chatNotification);
 
