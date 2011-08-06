@@ -237,7 +237,7 @@ void IndicatorDocking::displayIndicator(QIndicate::Indicator *indicator)
 	if (!chatNotification)
 		return;
 
-	ChatWidgetManager::instance()->openPendingMessages(chatNotification->chat(), true);
+	chatNotification->openChat();
 
 	// chatWidgetActivated() or chatWidgetCreated() slot will take care of deleting indicator
 }
