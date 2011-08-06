@@ -53,7 +53,7 @@ class IndicatorDocking : public Notifier, public Docker
 	void createDefaultConfiguration();
 
 	void deleteAllIndicators();
-	void deleteIndicator(ChatNotification *chatNotification);
+	void removeNotification(ChatNotification *chatNotification);
 
 private slots:
 	void showMainWindow();

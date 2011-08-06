@@ -189,7 +189,7 @@ void IndicatorDocking::notificationClosed(Notification *notification)
 	if (!chatNotification)
 		return;
 
-	deleteIndicator(chatNotification);
+	removeNotification(chatNotification);
 }
 
 void IndicatorDocking::chatWidgetActivated()
@@ -208,7 +208,7 @@ void IndicatorDocking::displayIndicator(QIndicate::Indicator *indicator)
 	//Don't have to deleteIndicator when you call chatWidgetActivated
 }
 
-void IndicatorDocking::deleteIndicator(ChatNotification *chatNotification)
+void IndicatorDocking::removeNotification(ChatNotification *chatNotification)
 {
 	QIndicate::Indicator *indicator = 0;
 	QMultiMap<QIndicate::Indicator *, ChatNotification *>::iterator it = IndicatorsMap.begin();
@@ -217,6 +217,8 @@ void IndicatorDocking::deleteIndicator(ChatNotification *chatNotification)
 		if (it.value() == chatNotification)
 		{
 			indicator = it.key();
+			disconnect(it.value(), SIGNAL(closed(Notification*)), this, SLOT(notificationClosed(Notification*)));
+			it.value()->release();
 			IndicatorsMap.erase(it);
 			break;
 		}
