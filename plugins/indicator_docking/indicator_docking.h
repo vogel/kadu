@@ -36,6 +36,7 @@ namespace QIndicate
 }
 
 class ChatNotification;
+class ChatWidget;
 
 class IndicatorDocking : public Notifier, public Docker
 {
@@ -59,7 +60,8 @@ private slots:
 	void showMainWindow();
 	void displayIndicator(QIndicate::Indicator *indicator);
 	void notificationClosed(Notification *notification);
-	void chatWidgetActivated();
+	void chatWidgetActivated(ChatWidget *chatWidget);
+	void chatWidgetCreated(ChatWidget *chatWidget);
 
 public:
 	static IndicatorDocking * instance();

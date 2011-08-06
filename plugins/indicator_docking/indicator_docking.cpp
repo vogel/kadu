@@ -72,7 +72,8 @@ IndicatorDocking::IndicatorDocking() :
 	Server->show();
 
 	connect(Server, SIGNAL(serverDisplay()), this, SLOT(showMainWindow()));
-	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetActivated(ChatWidget *)), this, SLOT(chatWidgetActivated()));
+	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetActivated(ChatWidget*)), this, SLOT(chatWidgetActivated(ChatWidget*)));
+	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetCreated(ChatWidget*)), this, SLOT(chatWidgetCreated(ChatWidget*)));
 
 	createDefaultConfiguration();
 
@@ -86,7 +87,8 @@ IndicatorDocking::~IndicatorDocking()
 	DockingManager::instance()->setDocker(0);
 
 	disconnect(Server, SIGNAL(serverDisplay()), this, SLOT(showMainWindow()));
-	disconnect(ChatWidgetManager::instance(), SIGNAL(chatWidgetActivated(ChatWidget *)), this, SLOT(chatWidgetActivated()));
+	disconnect(ChatWidgetManager::instance(), SIGNAL(chatWidgetActivated(ChatWidget*)), this, SLOT(chatWidgetActivated(ChatWidget*)));
+	disconnect(ChatWidgetManager::instance(), SIGNAL(chatWidgetCreated(ChatWidget*)), this, SLOT(chatWidgetCreated(ChatWidget*)));
 
 	deleteAllIndicators();
 }
@@ -192,9 +194,61 @@ void IndicatorDocking::notificationClosed(Notification *notification)
 	removeNotification(chatNotification);
 }
 
-void IndicatorDocking::chatWidgetActivated()
+void IndicatorDocking::chatWidgetActivated(ChatWidget *chatWidget)
 {
-	deleteAllIndicators();
+	// When a chat widget is activated, it contains only messages from its own chat, not aggregate chat.
+
+	if (!chatWidget)
+		return;
+
+	Chat chat = chatWidget->chat();
+	if (!chat)
+		return;
+
+	QMultiMap<QIndicate::Indicator *, ChatNotification *>::const_iterator it = IndicatorsMap.constBegin();
+	QMultiMap<QIndicate::Indicator *, ChatNotification *>::const_iterator end = IndicatorsMap.constEnd();
+	for (; it != end; ++it)
+		if (it.value()->chat() == chat)
+		{
+			removeNotification(it.value());
+			break;
+		}
+}
+
+void IndicatorDocking::chatWidgetCreated(ChatWidget *chatWidget)
+{
+	// When a chat widget is created, it is filled with all messages from given aggregate chat.
+
+	if (!chatWidget)
+		return;
+
+	Chat chat = chatWidget->chat();
+	if (!chat)
+		return;
+
+	Chat aggregateChat = AggregateChatManager::instance()->aggregateChat(chat);
+	ChatDetailsAggregate *aggregateChatDetails = qobject_cast<ChatDetailsAggregate *>(aggregateChat.details());
+	if (!aggregateChatDetails)
+		return;
+
+	// It is suboptimal, but remember that IndicatorsMap will be rather small.
+	// It can't be done this way in one pass because removeNotification() modifies IndicatorsMap's structure.
+	bool foundSomething;
+	do
+	{
+		foundSomething = false;
+
+		QMultiMap<QIndicate::Indicator *, ChatNotification *>::const_iterator it = IndicatorsMap.constBegin();
+		QMultiMap<QIndicate::Indicator *, ChatNotification *>::const_iterator end = IndicatorsMap.constEnd();
+		for (; it != end; ++it)
+			if (aggregateChatDetails->chats().contains(it.value()->chat()))
+			{
+				foundSomething = true;
+				removeNotification(it.value());
+				break;
+			}
+	}
+	while (foundSomething);
 }
 
 void IndicatorDocking::displayIndicator(QIndicate::Indicator *indicator)
@@ -205,7 +259,8 @@ void IndicatorDocking::displayIndicator(QIndicate::Indicator *indicator)
 		return;
 
 	ChatWidgetManager::instance()->openPendingMessages(chatNotification->chat(), true);
-	//Don't have to deleteIndicator when you call chatWidgetActivated
+
+	// chatWidgetActivated() or chatWidgetCreated() slot will take care of deleting indicator
 }
 
 void IndicatorDocking::removeNotification(ChatNotification *chatNotification)
