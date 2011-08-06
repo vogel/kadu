@@ -35,6 +35,7 @@ namespace QIndicate
 	class Server;
 }
 
+class Chat;
 class ChatNotification;
 class ChatWidget;
 
@@ -52,6 +53,8 @@ class IndicatorDocking : public Notifier, public Docker
 	virtual ~IndicatorDocking();
 
 	void createDefaultConfiguration();
+
+	QMultiMap<QIndicate::Indicator *, ChatNotification *>::iterator iteratorForChat(const Chat &chat);
 
 	void removeNotification(ChatNotification *chatNotification);
 

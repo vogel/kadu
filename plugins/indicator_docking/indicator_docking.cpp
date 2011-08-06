@@ -128,19 +128,15 @@ void IndicatorDocking::notify(Notification *notification)
 
 	// First we need to search for exactly the same chat.
 	QIndicate::Indicator *indicator = 0;
-	QMultiMap<QIndicate::Indicator *, ChatNotification *>::iterator it = IndicatorsMap.begin();
-	QMultiMap<QIndicate::Indicator *, ChatNotification *>::iterator end = IndicatorsMap.end();
-	for (; it != end; ++it)
-		if (it.value()->chat() == chat)
-		{
-			disconnect(it.value(), SIGNAL(closed(Notification*)), this, SLOT(notificationClosed(Notification*)));
-			it.value()->release();
-			it.value() = chatNotification;
-			indicator = it.key();
-			break;
-		}
-
-	if (!indicator)
+	QMultiMap<QIndicate::Indicator *, ChatNotification *>::iterator it = iteratorForChat(chat);
+	if (it != IndicatorsMap.end())
+	{
+		disconnect(it.value(), SIGNAL(closed(Notification*)), this, SLOT(notificationClosed(Notification*)));
+		it.value()->release();
+		it.value() = chatNotification;
+		indicator = it.key();
+	}
+	else
 	{
 		// Now, if we didn't find the same chat, we need to check if it is a message from a contact of a buddy we already have.
 		// TODO: It should be somehow supported by core. Currently this API is way too hard to use.
@@ -217,14 +213,9 @@ void IndicatorDocking::chatWidgetActivated(ChatWidget *chatWidget)
 	if (!chat)
 		return;
 
-	QMultiMap<QIndicate::Indicator *, ChatNotification *>::const_iterator it = IndicatorsMap.constBegin();
-	QMultiMap<QIndicate::Indicator *, ChatNotification *>::const_iterator end = IndicatorsMap.constEnd();
-	for (; it != end; ++it)
-		if (it.value()->chat() == chat)
-		{
-			removeNotification(it.value());
-			break;
-		}
+	QMultiMap<QIndicate::Indicator *, ChatNotification *>::iterator it = iteratorForChat(chat);
+	if (it != IndicatorsMap.end())
+		removeNotification(it.value());
 }
 
 void IndicatorDocking::chatWidgetCreated(ChatWidget *chatWidget)
@@ -277,24 +268,34 @@ void IndicatorDocking::displayIndicator(QIndicate::Indicator *indicator)
 
 void IndicatorDocking::removeNotification(ChatNotification *chatNotification)
 {
-	QIndicate::Indicator *indicator = 0;
-	QMultiMap<QIndicate::Indicator *, ChatNotification *>::iterator it = IndicatorsMap.begin();
-	QMultiMap<QIndicate::Indicator *, ChatNotification *>::iterator end = IndicatorsMap.end();
-	for (; it != end; ++it)
-		if (it.value() == chatNotification)
-		{
-			indicator = it.key();
-			disconnect(it.value(), SIGNAL(closed(Notification*)), this, SLOT(notificationClosed(Notification*)));
-			it.value()->release();
-			IndicatorsMap.erase(it);
-			break;
-		}
-
-	if (!indicator)
+	if (!chatNotification)
 		return;
+
+	QMultiMap<QIndicate::Indicator *, ChatNotification *>::iterator it = iteratorForChat(chatNotification->chat());
+	if (it == IndicatorsMap.end())
+		return;
+
+	QIndicate::Indicator *indicator = it.key();
+	disconnect(it.value(), SIGNAL(closed(Notification*)), this, SLOT(notificationClosed(Notification*)));
+	it.value()->release();
+	IndicatorsMap.erase(it);
 
 	if (!IndicatorsMap.contains(indicator))
 		indicator->hide();
+}
+
+QMap<QIndicate::Indicator *, ChatNotification *>::iterator IndicatorDocking::iteratorForChat(const Chat &chat)
+{
+	QMultiMap<QIndicate::Indicator *, ChatNotification *>::iterator end = IndicatorsMap.end();
+
+	if (!chat)
+		return end;
+
+	for (QMultiMap<QIndicate::Indicator *, ChatNotification *>::iterator it = IndicatorsMap.begin(); it != end; ++it)
+		if (it.value()->chat() == chat)
+			return it;
+
+	return end;
 }
 
 void IndicatorDocking::createDefaultConfiguration()
