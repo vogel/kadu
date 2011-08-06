@@ -20,6 +20,7 @@
 #include <QtCore/QList>
 #include <QtCore/QPoint>
 #include <QtCore/QSet>
+#include <QtCore/QTimer>
 #include <QtGui/QImage>
 #include <QtGui/QMouseEvent>
 
@@ -31,13 +32,14 @@
 #include "chat/chat.h"
 #include "chat/chat-details-aggregate.h"
 #include "chat/chat-manager.h"
+#include "chat/message/pending-messages-manager.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact.h"
 #include "contacts/contact-set.h"
 #include "core/core.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "misc/path-conversion.h"
-#include "notify/chat-notification.h"
+#include "notify/new-message-notification.h"
 #include "notify/notification-manager.h"
 
 #include "plugins/docking/docking.h"
@@ -80,6 +82,8 @@ IndicatorDocking::IndicatorDocking() :
 
 	DockingManager::instance()->setDocker(this);
 	NotificationManager::instance()->registerNotifier(this);
+
+	QTimer::singleShot(0, this, SLOT(indicatePendingMessages()));
 }
 
 IndicatorDocking::~IndicatorDocking()
@@ -103,6 +107,13 @@ IndicatorDocking::~IndicatorDocking()
 
 	IndicatorsMap.clear();
 	qDeleteAll(indicatorsToDelete);
+}
+
+void IndicatorDocking::indicatePendingMessages()
+{
+	if (config_file.readBoolEntry("Notify", "NewChat_IndicatorNotify") && !NotificationManager::instance()->silentMode())
+		foreach (const Message &message, PendingMessagesManager::instance()->items())
+			notify(new MessageNotification(MessageNotification::NewChat, message));
 }
 
 void IndicatorDocking::showMainWindow()
