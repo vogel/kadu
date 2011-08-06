@@ -35,7 +35,7 @@ namespace QIndicate
 	class Server;
 }
 
-class Chat;
+class ChatNotification;
 
 class IndicatorDocking : public Notifier, public Docker
 {
@@ -44,7 +44,7 @@ class IndicatorDocking : public Notifier, public Docker
 	static IndicatorDocking *Instance;
 
 	QIndicate::Server *Server;
-	QMultiMap<QIndicate::Indicator *, Chat> IndicatorsMap;
+	QMultiMap<QIndicate::Indicator *, ChatNotification *> IndicatorsMap;
 	QScopedPointer<QMouseEvent> EventForShowMainWindow;
 
 	IndicatorDocking();
@@ -53,7 +53,7 @@ class IndicatorDocking : public Notifier, public Docker
 	void createDefaultConfiguration();
 
 	void deleteAllIndicators();
-	void deleteIndicator(const Chat &chat);
+	void deleteIndicator(ChatNotification *chatNotification);
 
 private slots:
 	void showMainWindow();
