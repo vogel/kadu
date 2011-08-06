@@ -20,8 +20,8 @@
 #ifndef INDICATOR_DOCKING_H
 #define INDICATOR_DOCKING_H
 
-#include <QtCore/QMap>
 #include <QtCore/QScopedPointer>
+#include <QtCore/QMultiMap>
 
 #include "notify/notifier.h"
 
@@ -44,7 +44,7 @@ class IndicatorDocking : public Notifier, public Docker
 	static IndicatorDocking *Instance;
 
 	QIndicate::Server *Server;
-	QMap<QIndicate::Indicator *, Chat> IndicatorsMap;
+	QMultiMap<QIndicate::Indicator *, Chat> IndicatorsMap;
 	QScopedPointer<QMouseEvent> EventForShowMainWindow;
 
 	IndicatorDocking();

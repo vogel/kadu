@@ -25,7 +25,9 @@
 
 #include "avatars/avatar.h"
 #include "buddies/buddy.h"
+#include "chat/aggregate-chat-manager.h"
 #include "chat/chat.h"
+#include "chat/chat-details-aggregate.h"
 #include "chat/chat-manager.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact.h"
@@ -109,20 +111,49 @@ void IndicatorDocking::notify(Notification *notification)
 	if (!chat)
 		return;
 
+	// First we need to search for exactly the same chat.
 	QIndicate::Indicator *indicator = IndicatorsMap.key(chat);
 	if (!indicator)
 	{
-		Contact firstContact = *chat.contacts().constBegin();
+		// Now, if we didn't find the same chat, we need to check if it is a message from a contact of a buddy we already have.
+		// TODO: It should be somehow supported by core. Currently this API is way too hard to use.
 
-		indicator = new QIndicate::Indicator(this);
-		IndicatorsMap.insert(indicator, chat);
-		indicator->setNameProperty(firstContact.ownerBuddy().display());
+		Chat aggregateChat = AggregateChatManager::instance()->aggregateChat(chat);
+		ChatDetailsAggregate *aggregateChatDetails = qobject_cast<ChatDetailsAggregate *>(aggregateChat.details());
+		if (aggregateChatDetails)
+		{
+			QMultiMap<QIndicate::Indicator *, Chat>::const_iterator it = IndicatorsMap.constBegin();
+			QMultiMap<QIndicate::Indicator *, Chat>::const_iterator end = IndicatorsMap.constEnd();
+			for (; it != end; ++it)
+				if (aggregateChatDetails->chats().contains(it.value()))
+				{
+					indicator = it.key();
+					break;
+				}
+		}
 
-		Avatar avatar = firstContact.contactAvatar();
-		if (avatar && !avatar.pixmap().isNull())
-			indicator->setIconProperty(avatar.pixmap().toImage().scaled(20, 20, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+		if (!indicator)
+		{
+			Contact firstContact = *chat.contacts().constBegin();
 
-		connect(indicator, SIGNAL(display(QIndicate::Indicator*)), SLOT(displayIndicator(QIndicate::Indicator*)));
+			indicator = new QIndicate::Indicator(this);
+			IndicatorsMap.insert(indicator, chat);
+			indicator->setNameProperty(firstContact.ownerBuddy().display());
+
+			Avatar avatar = firstContact.contactAvatar();
+			if (avatar && !avatar.pixmap().isNull())
+				indicator->setIconProperty(avatar.pixmap().toImage().scaled(20, 20, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+
+			connect(indicator, SIGNAL(display(QIndicate::Indicator*)), SLOT(displayIndicator(QIndicate::Indicator*)));
+		}
+		else
+		{
+			IndicatorsMap.insertMulti(indicator, chat);
+
+			Avatar avatar = chat.contacts().constBegin()->contactAvatar();
+			if (avatar && !avatar.pixmap().isNull())
+				indicator->setIconProperty(avatar.pixmap().toImage().scaled(20, 20, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+		}
 	}
 
 	connect(notification, SIGNAL(closed(Notification*)), this, SLOT(notificationClosed(Notification*)));
@@ -151,6 +182,7 @@ void IndicatorDocking::chatWidgetActivated()
 
 void IndicatorDocking::displayIndicator(QIndicate::Indicator *indicator)
 {
+	// In case we have multiple chats for that indicator, the most recently inserted one will be opened.
 	Chat chat = IndicatorsMap.value(indicator);
 	if (!chat)
 		return;
@@ -170,8 +202,8 @@ void IndicatorDocking::deleteIndicator(const Chat &chat)
 
 void IndicatorDocking::deleteAllIndicators()
 {
-	QMap<QIndicate::Indicator *, Chat>::const_iterator it = IndicatorsMap.constBegin();
-	QMap<QIndicate::Indicator *, Chat>::const_iterator end = IndicatorsMap.constEnd();
+	QMultiMap<QIndicate::Indicator *, Chat>::const_iterator it = IndicatorsMap.constBegin();
+	QMultiMap<QIndicate::Indicator *, Chat>::const_iterator end = IndicatorsMap.constEnd();
 	for (; it != end; ++it)
 		delete it.key();
 
