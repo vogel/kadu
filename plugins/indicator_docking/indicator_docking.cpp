@@ -17,6 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QList>
 #include <QtCore/QPoint>
 #include <QtCore/QSet>
 #include <QtGui/QImage>
@@ -140,21 +141,21 @@ void IndicatorDocking::notify(Notification *notification)
 		// Now, if we didn't find the same chat, we need to check if it is a message from a contact of a buddy we already have.
 		// TODO: It should be somehow supported by core. Currently this API is way too hard to use.
 
-		Chat aggregateChat = AggregateChatManager::instance()->aggregateChat(chat);
-		ChatDetailsAggregate *aggregateChatDetails = qobject_cast<ChatDetailsAggregate *>(aggregateChat.details());
-		if (aggregateChatDetails)
+		QList<IndMMap::iterator> iterators = iteratorsForAggregateChat(chat);
+		if (!iterators.isEmpty())
 		{
-			IndMMap::const_iterator it = IndicatorsMap.constBegin();
-			IndMMap::const_iterator end = IndicatorsMap.constEnd();
-			for (; it != end; ++it)
-				if (aggregateChatDetails->chats().contains(it.value()->chat()))
-				{
-					indicator = it.key();
-					break;
-				}
-		}
+			indicator = iterators.at(0).key();
 
-		if (!indicator)
+			IndicatorsMap.insertMulti(indicator, chatNotification);
+
+			if (chat.contacts().count() == 1)
+			{
+				Avatar avatar = chat.contacts().constBegin()->contactAvatar();
+				if (avatar && !avatar.pixmap().isNull())
+					indicator->setIconProperty(avatar.pixmap().toImage().scaled(20, 20, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+			}
+		}
+		else
 		{
 			indicator = new QIndicate::Indicator(this);
 			IndicatorsMap.insert(indicator, chatNotification);
@@ -172,17 +173,6 @@ void IndicatorDocking::notify(Notification *notification)
 			}
 
 			connect(indicator, SIGNAL(display(QIndicate::Indicator*)), SLOT(displayIndicator(QIndicate::Indicator*)));
-		}
-		else
-		{
-			IndicatorsMap.insertMulti(indicator, chatNotification);
-
-			if (chat.contacts().count() == 1)
-			{
-				Avatar avatar = chat.contacts().constBegin()->contactAvatar();
-				if (avatar && !avatar.pixmap().isNull())
-					indicator->setIconProperty(avatar.pixmap().toImage().scaled(20, 20, Qt::KeepAspectRatio, Qt::SmoothTransformation));
-			}
 		}
 	}
 
@@ -228,29 +218,16 @@ void IndicatorDocking::chatWidgetCreated(ChatWidget *chatWidget)
 	if (!chat)
 		return;
 
-	Chat aggregateChat = AggregateChatManager::instance()->aggregateChat(chat);
-	ChatDetailsAggregate *aggregateChatDetails = qobject_cast<ChatDetailsAggregate *>(aggregateChat.details());
-	if (!aggregateChatDetails)
-		return;
+	QList<IndMMap::iterator> iterators = iteratorsForAggregateChat(chat);
 
-	// It is suboptimal, but remember that IndicatorsMap will be rather small.
-	// It can't be done this way in one pass because removeNotification() modifies IndicatorsMap's structure.
-	bool foundSomething;
-	do
-	{
-		foundSomething = false;
+	// It can't be done this way in one pass because removeNotification() modifies IndicatorsMap's structure
+	// and thus invalidates existing iterators.
+	QList<ChatNotification *> notificationsToRemove;
+	foreach (const IndMMap::iterator &it, iterators)
+		notificationsToRemove.append(it.value());
 
-		IndMMap::const_iterator it = IndicatorsMap.constBegin();
-		IndMMap::const_iterator end = IndicatorsMap.constEnd();
-		for (; it != end; ++it)
-			if (aggregateChatDetails->chats().contains(it.value()->chat()))
-			{
-				foundSomething = true;
-				removeNotification(it.value());
-				break;
-			}
-	}
-	while (foundSomething);
+	foreach (ChatNotification *chatNotification, notificationsToRemove)
+		removeNotification(chatNotification);
 }
 
 void IndicatorDocking::displayIndicator(QIndicate::Indicator *indicator)
@@ -295,6 +272,26 @@ QMap<QIndicate::Indicator *, ChatNotification *>::iterator IndicatorDocking::ite
 			return it;
 
 	return end;
+}
+
+QList<IndicatorDocking::IndMMap::iterator> IndicatorDocking::iteratorsForAggregateChat(const Chat &chat)
+{
+	QList<IndMMap::iterator> list;
+
+	if (!chat)
+		return list;
+
+	Chat aggregateChat = AggregateChatManager::instance()->aggregateChat(chat);
+	ChatDetailsAggregate *aggregateChatDetails = qobject_cast<ChatDetailsAggregate *>(aggregateChat.details());
+	if (!aggregateChatDetails)
+		return list;
+
+	IndMMap::iterator end = IndicatorsMap.end();
+	for (IndMMap::iterator it = IndicatorsMap.begin(); it != end; ++it)
+		if (aggregateChatDetails->chats().contains(it.value()->chat()))
+			list.append(it);
+
+	return list;
 }
 
 void IndicatorDocking::createDefaultConfiguration()

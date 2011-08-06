@@ -27,6 +27,7 @@
 
 #include "plugins/docking/docker.h"
 
+template<typename T> class QList;
 class QMouseEvent;
 
 namespace QIndicate
@@ -57,6 +58,7 @@ class IndicatorDocking : public Notifier, public Docker
 	void createDefaultConfiguration();
 
 	IndMMap::iterator iteratorForChat(const Chat &chat);
+	QList<IndMMap::iterator> iteratorsForAggregateChat(const Chat &chat);
 
 	void removeNotification(ChatNotification *chatNotification);
 
