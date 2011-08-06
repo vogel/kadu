@@ -147,15 +147,20 @@ void IndicatorDocking::notify(Notification *notification)
 
 		if (!indicator)
 		{
-			Contact firstContact = *chat.contacts().constBegin();
-
 			indicator = new QIndicate::Indicator(this);
 			IndicatorsMap.insert(indicator, chatNotification);
-			indicator->setNameProperty(firstContact.ownerBuddy().display());
 
-			Avatar avatar = firstContact.contactAvatar();
-			if (avatar && !avatar.pixmap().isNull())
-				indicator->setIconProperty(avatar.pixmap().toImage().scaled(20, 20, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+			if (chat.contacts().count() > 1)
+				indicator->setNameProperty(chat.name());
+			else
+			{
+				Contact contact = *chat.contacts().constBegin();
+				indicator->setNameProperty(contact.ownerBuddy().display());
+
+				Avatar avatar = contact.contactAvatar();
+				if (avatar && !avatar.pixmap().isNull())
+					indicator->setIconProperty(avatar.pixmap().toImage().scaled(20, 20, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+			}
 
 			connect(indicator, SIGNAL(display(QIndicate::Indicator*)), SLOT(displayIndicator(QIndicate::Indicator*)));
 		}
@@ -163,9 +168,12 @@ void IndicatorDocking::notify(Notification *notification)
 		{
 			IndicatorsMap.insertMulti(indicator, chatNotification);
 
-			Avatar avatar = chat.contacts().constBegin()->contactAvatar();
-			if (avatar && !avatar.pixmap().isNull())
-				indicator->setIconProperty(avatar.pixmap().toImage().scaled(20, 20, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+			if (chat.contacts().count() == 1)
+			{
+				Avatar avatar = chat.contacts().constBegin()->contactAvatar();
+				if (avatar && !avatar.pixmap().isNull())
+					indicator->setIconProperty(avatar.pixmap().toImage().scaled(20, 20, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+			}
 		}
 	}
 
