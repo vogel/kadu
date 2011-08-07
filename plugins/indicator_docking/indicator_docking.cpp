@@ -199,6 +199,7 @@ void IndicatorDocking::notify(Notification *notification)
 	}
 
 	connect(chatNotification, SIGNAL(closed(Notification*)), this, SLOT(notificationClosed(Notification*)));
+	// TODO: set correct time for pending messages as well
 	indicator->setTimeProperty(QDateTime::currentDateTime());
 	indicator->setDrawAttentionProperty(true);
 	indicator->show();
@@ -279,7 +280,7 @@ void IndicatorDocking::removeNotification(ChatNotification *chatNotification)
 	IndicatorsMap.erase(it);
 
 	if (!IndicatorsMap.contains(indicator))
-		indicator->hide();
+		delete indicator;
 }
 
 QMap<QIndicate::Indicator *, ChatNotification *>::iterator IndicatorDocking::iteratorForChat(const Chat &chat)
