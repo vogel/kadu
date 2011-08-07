@@ -73,6 +73,8 @@ private slots:
 	void chatWidgetActivated(ChatWidget *chatWidget);
 	void chatWidgetCreated(ChatWidget *chatWidget);
 
+	void silentModeToggled(bool silentMode);
+
 public:
 	static IndicatorDocking * instance();
 	static void createInstance();

@@ -77,6 +77,7 @@ IndicatorDocking::IndicatorDocking() :
 	connect(Server, SIGNAL(serverDisplay()), this, SLOT(showMainWindow()));
 	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetActivated(ChatWidget*)), this, SLOT(chatWidgetActivated(ChatWidget*)));
 	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetCreated(ChatWidget*)), this, SLOT(chatWidgetCreated(ChatWidget*)));
+	connect(NotificationManager::instance(), SIGNAL(silentModeToggled(bool)), this, SLOT(silentModeToggled(bool)));
 
 	createDefaultConfiguration();
 
@@ -114,6 +115,15 @@ void IndicatorDocking::indicatePendingMessages()
 	if (config_file.readBoolEntry("Notify", "NewChat_IndicatorNotify") && !NotificationManager::instance()->silentMode())
 		foreach (const Message &message, PendingMessagesManager::instance()->items())
 			notify(new MessageNotification(MessageNotification::NewChat, message));
+}
+
+void IndicatorDocking::silentModeToggled(bool silentMode)
+{
+	foreach (QIndicate::Indicator *indicator, IndicatorsMap.uniqueKeys())
+		indicator->setDrawAttentionProperty(!silentMode);
+
+	if (!silentMode)
+		indicatePendingMessages();
 }
 
 void IndicatorDocking::showMainWindow()
