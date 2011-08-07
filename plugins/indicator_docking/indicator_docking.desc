@@ -1,9 +1,9 @@
 [Module]
 Description=Kadu Message Indicator integrate plugin
 Description[pl]=Wtyczka integruj±ca Kadu z Message Indicator (u¿ywanym m.in. w Ubuntu)
-Author=Marcin Dawidziuk
+Author=Marcin Dawidziuk, Kadu Team
 Dependencies=docking
 Provides=notify_method docking_method
 Conflicts=docking_method
-Version=0.5
+Version=1.0
 Plugin=true
