@@ -99,15 +99,14 @@ private slots:
 	void setAddContactEnabled();
 	void setAccountFilter();
 
-protected slots:
-	virtual void accept();
-	virtual void reject();
-
 public:
 	explicit AddBuddyWindow(QWidget *parent = 0, const Buddy &buddy = Buddy::null, bool forceBuddyAccount = false);
 	virtual ~AddBuddyWindow();
 
 	void setGroup(Group group);
+
+public slots:
+	virtual void accept();
 
 };
 

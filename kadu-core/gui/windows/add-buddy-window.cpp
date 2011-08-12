@@ -570,11 +570,6 @@ void AddBuddyWindow::accept()
 		QDialog::accept();
 }
 
-void AddBuddyWindow::reject()
-{
-	QDialog::reject();
-}
-
 void AddBuddyWindow::askForAuthorization(const Contact &contact)
 {
 	Account account = AccountCombo->currentAccount();
