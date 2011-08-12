@@ -44,7 +44,7 @@ BuddyList BuddySet::toBuddyList() const
 QList<Contact> BuddySet::getAllContacts() const
 {
 	QList<Contact> allContacts;
-	foreach (const Buddy &buddy, toList())
+	foreach (const Buddy &buddy, *this)
 		allContacts.append(buddy.contacts());
 
 	return allContacts;
