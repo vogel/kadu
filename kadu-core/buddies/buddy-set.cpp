@@ -36,6 +36,15 @@ BuddySet::BuddySet(Buddy buddy)
 	insert(buddy);
 }
 
+bool BuddySet::isAllAnonymous() const
+{
+	foreach (const Buddy &buddy, *this)
+		if (!buddy.isAnonymous())
+			return false;
+
+	return true;
+}
+
 BuddyList BuddySet::toBuddyList() const
 {
 	return toList();

@@ -43,8 +43,10 @@ public:
 	BuddySet();
 	explicit BuddySet(Buddy buddy);
 
+	bool isAllAnonymous() const;
 	BuddyList toBuddyList() const;
 	QList<Contact> getAllContacts() const;
+
 };
 
 uint qHash(const BuddySet &buddySet);
