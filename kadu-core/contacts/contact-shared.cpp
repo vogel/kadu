@@ -200,9 +200,11 @@ void ContactShared::doSetOwnerBuddy(const Buddy &buddy, bool emitSignals)
 	 */
 	Contact guard(this);
 
-	bool reattaching = OwnerBuddy && !OwnerBuddy.isAnonymous() && buddy && !buddy.isAnonymous();
+	bool oldIsNotAnonymous = !OwnerBuddy.isAnonymous();
+	bool newIsNotAnonymous = !buddy.isAnonymous();
+	bool reattaching = oldIsNotAnonymous && newIsNotAnonymous;
 
-	detach(reattaching, emitSignals);
+	detach(reattaching, emitSignals && oldIsNotAnonymous);
 
 	OwnerBuddy = buddy;
 
@@ -211,7 +213,7 @@ void ContactShared::doSetOwnerBuddy(const Buddy &buddy, bool emitSignals)
 	if (!OwnerBuddy)
 		OwnerBuddy = BuddyManager::instance()->byContact(this, ActionCreate);
 
-	attach(reattaching, emitSignals);
+	attach(reattaching, emitSignals && newIsNotAnonymous);
 }
 
 void ContactShared::setOwnerBuddy(const Buddy &buddy)
