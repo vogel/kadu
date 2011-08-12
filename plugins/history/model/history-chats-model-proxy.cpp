@@ -21,7 +21,9 @@
 
 #include <stdio.h>
 
+#include "contacts/contact-set.h"
 #include "buddies/buddy.h"
+#include "buddies/buddy-set.h"
 #include "buddies/filter/abstract-buddy-filter.h"
 #include "chat/filter/chat-filter.h"
 #include "chat/type/chat-type.h"
@@ -82,7 +84,17 @@ bool HistoryChatsModelProxy::lessThan(const QModelIndex &left, const QModelIndex
 	Chat rightChat = right.data(ChatRole).value<Chat>();
 
 	if (!leftChat.isNull() && !rightChat.isNull())
+	{
+		bool isLeftAllAnonymous = leftChat.contacts().toBuddySet().isAllAnonymous();
+		bool isRightAllAnonymous = rightChat.contacts().toBuddySet().isAllAnonymous();
+
+		if (isLeftAllAnonymous && !isRightAllAnonymous)
+			return false;
+		if (isRightAllAnonymous && !isLeftAllAnonymous)
+			return true;
+
 		return compareNames(leftChat.name(), rightChat.name()) < 0;
+	}
 
 	ChatType *leftType = left.data(ChatTypeRole).value<ChatType *>();
 	ChatType *rightType = right.data(ChatTypeRole).value<ChatType *>();
