@@ -36,18 +36,16 @@ protected:
 	virtual void accountRegistered(Account account);
 	virtual void accountUnregistered(Account account);
 
-	virtual void doSetStatus(Status newStatus);
-
 public:
 	explicit AllAccountsStatusContainer(QObject *parent = 0);
 	virtual ~AllAccountsStatusContainer();
 
 	virtual QString statusContainerName()  { return QString(); }
 
-	virtual void setStatus(Status newStatus, bool flush = true);
+	virtual void setStatus(Status newStatus);
 	virtual Status status();
 	virtual bool isStatusSettingInProgress();
-	virtual void setDescription(const QString &description, bool flush = true);
+	virtual void setDescription(const QString &description);
 
 	virtual int maxDescriptionLength();
 

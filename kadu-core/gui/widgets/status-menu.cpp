@@ -72,7 +72,8 @@ void StatusMenu::changeStatus(QAction *action)
 
 	Status status(MyStatusContainer->status());
 	status.setType(statusType->name());
-	MyStatusContainer->setStatus(status, true);
+	MyStatusContainer->setStatus(status);
+	MyStatusContainer->storeStatus(status);
 }
 
 void StatusMenu::changeDescription()

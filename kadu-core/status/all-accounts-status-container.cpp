@@ -52,13 +52,6 @@ void AllAccountsStatusContainer::accountUnregistered(Account account)
 	}
 }
 
-void AllAccountsStatusContainer::doSetStatus(Status status)
-{
-	foreach (const Account &account, Accounts)
-		if (account)
-			account.data()->setStatus(status, false);
-}
-
 Status AllAccountsStatusContainer::status()
 {
 	Account account = AccountManager::bestAccount(Accounts);
@@ -105,16 +98,18 @@ int AllAccountsStatusContainer::maxDescriptionLength()
 	return account ? account.data()->maxDescriptionLength() : -1;
 }
 
-void AllAccountsStatusContainer::setStatus(Status status, bool flush)
+void AllAccountsStatusContainer::setStatus(Status status)
 {
 	foreach (const Account &account, Accounts)
-		account.data()->setStatus(status, flush);
+		if (account)
+			account.data()->setStatus(status);
 }
 
-void AllAccountsStatusContainer::setDescription(const QString &description, bool flush)
+void AllAccountsStatusContainer::setDescription(const QString &description)
 {
 	foreach (const Account &account, Accounts)
-		account.data()->setDescription(description, flush);
+		if (account)
+			account.data()->setDescription(description);
 }
 
 void AllAccountsStatusContainer::setDefaultStatus(const QString &startupStatus, bool offlineToInvisible,
