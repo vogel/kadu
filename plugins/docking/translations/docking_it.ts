@@ -24,8 +24,8 @@
         <translation>Visualizza notifiche sulla barra</translation>
     </message>
     <message>
-        <source>New message tray icon</source>
-        <translation>Icona del nuovo messaggio sulla barra</translation>
+        <source>New chat tray icon</source>
+        <translation>Icona del nuovo chat sulla barra</translation>
     </message>
     <message>
         <source>Blinking Envelope</source>

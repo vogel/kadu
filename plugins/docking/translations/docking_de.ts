@@ -24,8 +24,8 @@
         <translation>Zeige Sprechblasen am Dock</translation>
     </message>
     <message>
-        <source>New message tray icon</source>
-        <translation>Dock-Symbol für neue Nachrichten</translation>
+        <source>New chat tray icon</source>
+        <translation>Dock-Symbol für neuen Chat</translation>
     </message>
     <message>
         <source>Blinking Envelope</source>

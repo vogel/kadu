@@ -24,7 +24,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>New message tray icon</source>
+        <source>New chat tray icon</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

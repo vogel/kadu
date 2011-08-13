@@ -24,8 +24,8 @@
         <translation>Pokaż podpowiedź w tacce systemowej</translation>
     </message>
     <message>
-        <source>New message tray icon</source>
-        <translation>Ikona nowej wiadomości</translation>
+        <source>New chat tray icon</source>
+        <translation>Ikona nowej rozmowy</translation>
     </message>
     <message>
         <source>Blinking Envelope</source>
