@@ -53,7 +53,7 @@ private slots:
 
 public:
 	static void getSubscription(Contact contact, QObject* receiver, const char* slot);
-	
+
 	explicit SubscriptionWindow(Contact contact, QWidget* parent = 0);
 	virtual ~SubscriptionWindow();
 
