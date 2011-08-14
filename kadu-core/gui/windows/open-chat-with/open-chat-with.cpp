@@ -36,7 +36,9 @@
 #include "buddies/buddy-shared.h"
 #include "chat/chat-manager.h"
 #include "configuration/xml-configuration-file.h"
+#include "contacts/contact.h"
 #include "contacts/contact-manager.h"
+#include "contacts/contact-set.h"
 #include "core/core.h"
 #include "gui/widgets/buddies-list-view.h"
 #include "gui/widgets/chat-widget-manager.h"
@@ -212,8 +214,25 @@ void OpenChatWith::openChat()
 		return;
 	}
 
-	foreach (const Contact &contact, contacts)
-		ContactManager::instance()->addItem(contact);
+	// In case a contact was added to the manager after BuddiesWidget was created,
+	// ensure that we don't add actually duplicate contacts to the manager.
+	ContactSet knownContacts;
+	for (ContactSet::iterator it = contacts.begin(), end = contacts.end(); it != end; )
+	{
+		Contact knownContact = ContactManager::instance()->byId(it->contactAccount(), it->id(), ActionReturnNull);
+		if (knownContact)
+		{
+			it = contacts.erase(it);
+			knownContacts.insert(knownContact);
+		}
+		else
+		{
+			ContactManager::instance()->addItem(knownContact);
+			++it;
+		}
+	}
+
+	contacts.unite(knownContacts);
 
 	BuddySet buddies = contacts.toBuddySet();
 

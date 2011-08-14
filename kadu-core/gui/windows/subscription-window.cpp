@@ -60,10 +60,18 @@ SubscriptionWindow::SubscriptionWindow(Contact contact, QWidget *parent) :
 	setAttribute(Qt::WA_DeleteOnClose);
 	setWindowTitle(tr("New Contact Request"));
 
+	// It'd be too unsafe to not add this contact to the manager now and rely later on addItem()
+	// as the contact might be added in the meantime. See bug #2222.
+	Contact knownContact = ContactManager::instance()->byId(CurrentContact.contactAccount(), CurrentContact.id(), ActionReturnNull);
+	if (knownContact)
+		CurrentContact = knownContact;
+	else
+		ContactManager::instance()->addItem(CurrentContact);
+
 	QGridLayout *layout = new QGridLayout(this);
 	layout->setColumnStretch(2, 4);
 
-	QLabel *messageLabel = new QLabel(tr("<b>%1</b> wants to be able to chat with you.").arg(contact.id()), this);
+	QLabel *messageLabel = new QLabel(tr("<b>%1</b> wants to be able to chat with you.").arg(CurrentContact.id()), this);
 
 	QLabel *groupLabel = new QLabel(tr("Add in Group") + ':', this);
 
@@ -129,8 +137,6 @@ void SubscriptionWindow::accepted()
 		emit requestAccepted(CurrentContact, true);
 		close();
 	}
-
-	ContactManager::instance()->addItem(CurrentContact);
 
 	Buddy buddy;
 	if (!MergeContact->isChecked())
