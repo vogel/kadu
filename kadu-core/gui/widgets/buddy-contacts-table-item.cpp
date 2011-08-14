@@ -107,7 +107,7 @@ bool BuddyContactsTableItem::isAddValid() const
 
 	Protocol *handler = ItemAccount.protocolHandler();
 	if (!handler)
-		return true;
+		return false;
 
 	if (handler->protocolFactory()->validateId(Id) != QValidator::Acceptable)
 		return false;
@@ -130,7 +130,7 @@ bool BuddyContactsTableItem::isEditValid() const
 
 	Protocol *handler = ItemAccount.protocolHandler();
 	if (!handler)
-		return true;
+		return false;
 
 	if (handler->protocolFactory()->validateId(Id) != QValidator::Acceptable)
 		return false;
