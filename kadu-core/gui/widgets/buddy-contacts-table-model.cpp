@@ -137,6 +137,14 @@ void BuddyContactsTableModel::performItemActionEdit(BuddyContactsTableItem *item
 
 	contact.setPriority(item->itemContactPriority());
 
+	if (contact.contactAccount() == item->itemAccount() && contact.id() == item->id())
+		return;
+
+	// First we need to remove existing contact from the manager to avoid duplicates.
+	Contact existingContact = ContactManager::instance()->byId(item->itemAccount(), item->id(), ActionReturnNull);
+	if (existingContact)
+		ContactManager::instance()->removeItem(existingContact);
+
 	if (contact.contactAccount() != item->itemAccount())
 	{
 		// allow protocol handlers to handle that
@@ -148,7 +156,8 @@ void BuddyContactsTableModel::performItemActionEdit(BuddyContactsTableItem *item
 		ContactManager::instance()->addItem(contact);
 		sendAuthorization(contact);
 	}
-	else if (contact.id() != item->id())
+	// else means that contact.id() != item->id()
+	else
 	{
 		contact.setId(item->id());
 		sendAuthorization(contact);
