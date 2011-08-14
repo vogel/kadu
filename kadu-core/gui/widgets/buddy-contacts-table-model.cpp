@@ -152,8 +152,8 @@ void BuddyContactsTableModel::performItemActionEdit(BuddyContactsTableItem *item
 		ContactManager::instance()->removeItem(contact);
 		contact.setContactAccount(item->itemAccount());
 		contact.setId(item->id());
-		contact.setOwnerBuddy(ModelBuddy);
 		ContactManager::instance()->addItem(contact);
+		contact.setOwnerBuddy(ModelBuddy);
 		sendAuthorization(contact);
 	}
 	// else means that contact.id() != item->id()
