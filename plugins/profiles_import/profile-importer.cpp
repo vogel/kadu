@@ -77,8 +77,7 @@ bool ProfileImporter::import(const Identity &identity)
 	QList<Buddy> buddies = GaduImporter::import065Buddies(importedAccount, xmlQuery);
 	foreach (const Buddy &buddy, buddies)
 	{
-		foreach (const Contact &contact, buddy.contacts())
-			ContactManager::instance()->addItem(contact);
+		// GaduImporter returns contacts already added to the ContactManager.
 
 		Buddy existingBuddy = BuddyManager::instance()->byDisplay(buddy.display(), ActionReturnNull);
 		if (existingBuddy)

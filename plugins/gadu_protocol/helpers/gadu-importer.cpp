@@ -257,8 +257,5 @@ void GaduImporter::buddyAdded(Buddy &buddy)
 	// take 1st one
 	Account account = allGaduAccounts.at(0);
 
-	Contact contact = importGaduContact(account, buddy);
-
-	if (contact)
-		ContactManager::instance()->addItem(contact);
+	importGaduContact(account, buddy);
 }
