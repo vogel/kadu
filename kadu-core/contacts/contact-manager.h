@@ -50,6 +50,8 @@ class KADUAPI ContactManager : public QObject, public Manager<Contact>
 	void detailsUnloaded(Contact item);
 
 private slots:
+	void removeDuplicateContacts();
+
 	void contactDataUpdated();
 	void idChanged(const QString &oldId);
 	void dirtinessChanged();
@@ -60,6 +62,8 @@ private slots:
 	void detached(Buddy previousBuddy);
 
 protected:
+	virtual void loaded();
+
 	virtual void itemAboutToBeRegistered(Contact item);
 	virtual void itemRegistered(Contact item);
 	virtual void itemAboutToBeUnregisterd(Contact item);

@@ -19,6 +19,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QPair>
+#include <QtCore/QTimer>
+
 #include "buddies/buddy.h"
 #include "buddies/buddy-shared.h"
 #include "configuration/configuration-manager.h"
@@ -271,4 +274,40 @@ void ContactManager::contactDataUpdated()
 	Contact contact(sender());
 	if (!contact.isNull())
 		emit contactUpdated(contact);
+}
+
+// This is needed to fix up configurations broken by bug #2222 (present in 0.9.x).
+// It can be removed when we will stop supporting upgrades from 0.9.x.
+void ContactManager::removeDuplicateContacts()
+{
+	QMap<QPair<Account, QString>, Contact> uniqueContacts;
+
+	foreach (const Contact &contact, allItems())
+	{
+		QMap<QPair<Account, QString>, Contact>::iterator it = uniqueContacts.find(qMakePair(contact.contactAccount(), contact.id()));
+		if (it != uniqueContacts.end())
+		{
+			if (it->ownerBuddy().isAnonymous())
+			{
+				removeItem(*it);
+				it->setUuid(contact.uuid());
+				*it = contact;
+			}
+			else
+			{
+				removeItem(contact);
+				contact.setUuid(it->uuid());
+			}
+		}
+		else
+			uniqueContacts.insert(qMakePair(contact.contactAccount(), contact.id()), contact);
+	}
+}
+
+void ContactManager::loaded()
+{
+	Manager<Contact>::loaded();
+
+	// delay it so that everything needed will be loaded when we call this method
+	QTimer::singleShot(0, this, SLOT(removeDuplicateContacts()));
 }
