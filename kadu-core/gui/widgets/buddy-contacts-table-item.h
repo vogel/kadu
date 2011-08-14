@@ -52,7 +52,6 @@ public:
 	virtual ~BuddyContactsTableItem() {}
 
 	Contact itemContact() const { return ItemContact; }
-	void setItemContact(Contact contact);
 
 	int itemContactPriority() const { return ItemContactPriority; }
 	void setItemContactPriority(int itemContactPriority);
