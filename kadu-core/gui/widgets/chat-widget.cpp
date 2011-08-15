@@ -586,25 +586,34 @@ void ChatWidget::verticalSplitterMoved(int pos, int index)
 
 void ChatWidget::kaduRestoreGeometry()
 {
-	ChatGeometryData *cgd = chat().data()->moduleStorableData<ChatGeometryData>("chat-geometry", ChatWidgetManager::instance(), false);
+	if (!HorizontalSplitter)
+		return;
 
-	if (cgd && HorizontalSplitter)
-	{
-		QList<int> horizSizes = cgd->widgetHorizontalSizes();
-		if (!horizSizes.empty())
-			HorizontalSplitter->setSizes(horizSizes);
-	}
+	if (!chat())
+		return;
+
+	ChatGeometryData *cgd = chat().data()->moduleStorableData<ChatGeometryData>("chat-geometry", ChatWidgetManager::instance(), false);
+	if (!cgd)
+		return;
+
+	QList<int> horizSizes = cgd->widgetHorizontalSizes();
+	if (!horizSizes.isEmpty())
+		HorizontalSplitter->setSizes(horizSizes);
 }
 
 void ChatWidget::kaduStoreGeometry()
 {
-  	ChatGeometryData *cgd = chat().data()->moduleStorableData<ChatGeometryData>("chat-geometry", ChatWidgetManager::instance(), true);
+	if (!HorizontalSplitter)
+		return;
+
+	if (!chat())
+		return;
+
+	ChatGeometryData *cgd = chat().data()->moduleStorableData<ChatGeometryData>("chat-geometry", ChatWidgetManager::instance(), true);
 	if (!cgd)
 		return;
 
-	if (HorizontalSplitter)
-		cgd->setWidgetHorizontalSizes(HorizontalSplitter->sizes());
-
+	cgd->setWidgetHorizontalSizes(HorizontalSplitter->sizes());
 	cgd->store();
 }
 
