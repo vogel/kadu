@@ -4,6 +4,7 @@
 * gui, history: #2268 fixed: do not try to copy anything to clipboard if selection is empty (beevvy)
 * contacts: #2222 fixed: fixed rare problems with certain contacts disappearing every time when added (beevvy)
 * jabber: #2275 fixed: fixed compilation on FreeBSD (c0rn)
+* gui: fixed Adium messages styles compatibility with QtWebKit 2.2 that comes with Qt 4.8 (beevvy)
 
 +++ version 0.10.0-rc1
 * gadu: #2257 fixed: fixed very unlikely possibility to needlessly and confusingly ask whether to import contacts from server on clean installation (beevvy)

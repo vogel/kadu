@@ -60,7 +60,7 @@ BuddyInfoPanel::~BuddyInfoPanel()
 
 void BuddyInfoPanel::configurationUpdated()
 {
-	setUserFont(config_file.readFontEntry("Look", "PanelFont").toString());
+	setUserFont(config_file.readFontEntry("Look", "PanelFont").toString(), true);
 
 	EmoticonsManager::instance()->configurationUpdated();
 
