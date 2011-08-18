@@ -246,8 +246,5 @@ void ChatMessagesView::scrollToBottom()
 
 void ChatMessagesView::configurationUpdated()
 {
-	if (ChatConfigurationHolder::instance()->forceCustomChatFont())
-		setUserFont(ChatConfigurationHolder::instance()->chatFont().toString());
-	else
-		setUserFont(QString());
+	setUserFont(ChatConfigurationHolder::instance()->chatFont().toString(), ChatConfigurationHolder::instance()->forceCustomChatFont());
 }

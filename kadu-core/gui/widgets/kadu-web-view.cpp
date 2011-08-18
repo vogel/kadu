@@ -390,24 +390,27 @@ void KaduWebView::convertClipboardHtml(QClipboard::Mode mode)
 	QApplication::clipboard()->setMimeData(data, mode);
 }
 
-void KaduWebView::setUserFont(const QString &fontString)
+void KaduWebView::setUserFont(const QString &fontString, bool force)
 {
+	QString style;
+
 	if (fontString.isEmpty())
-		settings()->setUserStyleSheetUrl(QString());
+		style = "* { font-family: sans-serif; }";
 	else
 	{
 		QFont font;
 		font.fromString(fontString);
-		QString style = QString("* { %1 }").arg(userFontStyle(font));
-		QString url = QString("data:text/css;charset=utf-8;base64,%1").arg(QString(style.toUtf8().toBase64()));
-		settings()->setUserStyleSheetUrl(url);
+		style = QString("* { %1 }").arg(userFontStyle(font, force));
 	}
+
+	QString url = QString("data:text/css;charset=utf-8;base64,%1").arg(QString(style.toUtf8().toBase64()));
+	settings()->setUserStyleSheetUrl(url);
 }
 
-QString KaduWebView::userFontStyle(const QFont &font)
+QString KaduWebView::userFontStyle(const QFont &font, bool force)
 {
-	QString style = QString("font-family:%1 !important;").arg(font.family());
-	if (font.pointSize() != -1)
+	QString style = "font-family:" + font.family() + (force ? " !important;" : ";");
+	if (force && font.pointSize() != -1)
 		style += QString(" font-size:%1pt;").arg(font.pointSize());
 	return style;
 }
