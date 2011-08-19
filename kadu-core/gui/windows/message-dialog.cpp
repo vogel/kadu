@@ -32,8 +32,11 @@
 
 #include "message-dialog.h"
 
-void MessageDialog::show(const KaduIcon &icon, const QString &title, const QString &text, QMessageBox::StandardButtons buttons,
-			QWidget *parent, Qt::WindowFlags f)
+namespace MessageDialog
+{
+
+static QMessageBox * createMessageBox(const KaduIcon &icon, const QString &title, const QString &text,
+		QMessageBox::StandardButtons buttons, QWidget *parent, Qt::WindowFlags f)
 {
 	QMessageBox *mb = new QMessageBox(QMessageBox::NoIcon, title, text, buttons, parent, f);
 	mb->setAttribute(Qt::WA_DeleteOnClose, true);
@@ -43,23 +46,26 @@ void MessageDialog::show(const KaduIcon &icon, const QString &title, const QStri
 	if (!pixmap.isNull())
 		mb->setIconPixmap(pixmap);
 
+	return mb;
+}
+
+void show(const KaduIcon &icon, const QString &title, const QString &text,
+		QMessageBox::StandardButtons buttons, QWidget *parent, Qt::WindowFlags f)
+{
+	QMessageBox *mb = createMessageBox(icon, title, text, buttons, parent, f);
 	mb->show();
 }
 
-int MessageDialog::exec(const KaduIcon &icon, const QString &title, const QString &text, QMessageBox::StandardButtons buttons,
-			QWidget *parent, Qt::WindowFlags f)
+int exec(const KaduIcon &icon, const QString &title, const QString &text,
+		QMessageBox::StandardButtons buttons, QWidget *parent, Qt::WindowFlags f)
 {
-	QMessageBox mb(QMessageBox::NoIcon, title, text, buttons, parent, f);
-
-	int iconSize = mb.style()->pixelMetric(QStyle::PM_MessageBoxIconSize, 0, &mb);
-	QPixmap pixmap(icon.icon().pixmap(iconSize, iconSize));
-	if (!pixmap.isNull())
-		mb.setIconPixmap(pixmap);
-
-	return mb.exec();
+	QMessageBox *mb = createMessageBox(icon, title, text, buttons, parent, f);
+	return mb->exec();
 }
 
-bool MessageDialog::ask(const KaduIcon &icon, const QString &title, const QString &text, QWidget *parent, Qt::WindowFlags f)
+bool ask(const KaduIcon &icon, const QString &title, const QString &text, QWidget *parent, Qt::WindowFlags f)
 {
 	return QMessageBox::Yes == exec(icon, title, text, QMessageBox::Yes | QMessageBox::No, parent, f);
 }
+
+} // namespace
