@@ -56,8 +56,8 @@
 		}
 		// activate
 		X11_setActiveWindow( QX11Info::display(), window->winId() );
-		window->activateWindow();
 		window->raise();
+		window->activateWindow();
 	}
 
 #elif defined(Q_OS_WIN)
@@ -76,8 +76,8 @@
 		window = window->window();
 		window->setWindowState(window->windowState() & ~Qt::WindowMinimized);
 		window->show();
-		window->activateWindow();
 		window->raise();
+		window->activateWindow();
 		SetForegroundWindow((HWND)(window->winId()));
 	}
 
@@ -93,8 +93,8 @@
 		window = window->window();
 		window->setWindowState(window->windowState() & ~Qt::WindowMinimized);
 		window->show();
-		window->activateWindow();
 		window->raise();
+		window->activateWindow();
 	}
 
 #endif
