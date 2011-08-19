@@ -67,6 +67,7 @@
 
 	bool _isActiveWindow( QWidget *window )
 	{
+		// !isMinimized() is a workaround for QTBUG-19026
 		return window->isActiveWindow() && !window->isMinimized();
 	}
 
@@ -100,11 +101,12 @@
 
 bool _isWindowActiveOrFullyVisible( QWidget *window )
 {
-	// we need to ensure we operate on widget's window, if not passed
-	window = window->window();
 #ifdef Q_WS_X11
 	if( _isActiveWindow( window ) )
 		return true;
+
+	// we need to ensure we operate on widget's window, if not passed
+	window = window->window();
 
 	Display *display = QX11Info::display();
 	WId wId = window->winId();
