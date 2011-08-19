@@ -25,13 +25,16 @@
 #include <QtGui/QMessageBox>
 
 #include "accounts/account.h"
+#include "chat/chat.h"
 #include "chat/chat-manager.h"
 #include "configuration/configuration-file.h"
+#include "contacts/contact-set.h"
 #include "core/core.h"
 #include "file-transfer/file-transfer.h"
 #include "file-transfer/file-transfer-actions.h"
 #include "file-transfer/file-transfer-handler.h"
 #include "file-transfer/file-transfer-notifications.h"
+#include "gui/widgets/chat-widget-manager.h"
 #include "gui/windows/file-transfer-window.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-dialog.h"
@@ -184,10 +187,14 @@ void FileTransferManager::acceptFileTransfer(FileTransfer transfer)
 
 		if (!haveFileName && fi.exists())
 		{
+			QWidget *parent = 0;
+			Chat chat = ChatManager::instance()->findChat(ContactSet(transfer.peer()), false);
+			if (chat)
+				parent = ChatWidgetManager::instance()->byChat(chat, false);
+
 			QString question;
 			question = tr("File %1 already exists.").arg(fileName);
-
-			switch (QMessageBox::question(0, tr("Save file"), question, tr("Overwrite"), tr("Resume"),
+			switch (QMessageBox::question(parent, tr("Save file"), question, tr("Overwrite"), tr("Resume"),
 			                                 tr("Select another file"), 0, 2))
 			{
 				case 0:

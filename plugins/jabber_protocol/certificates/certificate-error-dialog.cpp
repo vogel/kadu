@@ -29,6 +29,9 @@
 #include <QMessageBox>
 #include <QPushButton>
 
+#include "core/core.h"
+#include "gui/windows/kadu-window.h"
+
 #include "certificates/certificate-helpers.h"
 #include "certificates/certificate-error-dialog.h"
 #include "certificates/certificate-display-dialog.h"
@@ -39,7 +42,8 @@ CertificateErrorDialog::CertificateErrorDialog(const QString& title, const QStri
 	int result, QCA::Validity validity, const QString &domainOverride, QString &tlsOverrideDomain)
 	: QObject(), certificate_(cert), result_(result), validity_(validity), domainOverride_(domainOverride), host_(host), tlsOverrideDomain_(tlsOverrideDomain)
 {
-	messageBox_ = new QMessageBox(QMessageBox::Warning, title, QObject::tr("The %1 certificate failed the authenticity test.").arg(host));
+	messageBox_ = new QMessageBox(QMessageBox::Warning, title,tr("The %1 certificate failed the authenticity test.").arg(host),
+			QMessageBox::NoButton, Core::instance()->kaduWindow());
 	messageBox_->setInformativeText(CertificateHelpers::resultToString(result, validity));
 
 	detailsButton_ = messageBox_->addButton(QObject::tr("&Details..."), QMessageBox::ActionRole);

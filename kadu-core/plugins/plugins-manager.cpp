@@ -51,9 +51,7 @@
 
 #include "configuration/configuration-file.h"
 #include "configuration/configuration-manager.h"
-#include "core/core.h"
 #include "gui/hot-key.h"
-#include "gui/windows/kadu-window.h"
 #include "gui/windows/modules-window.h"
 #include "gui/windows/message-dialog.h"
 #include "misc/path-conversion.h"
@@ -499,7 +497,8 @@ bool PluginsManager::activateDependencies(Plugin *plugin)
 	{
 		if (!Plugins.contains(dependencyName))
 		{
-			MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Required plugin %1 was not found").arg(dependencyName));
+			MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Required plugin %1 was not found").arg(dependencyName),
+					QMessageBox::Ok, ModulesWindow::instance());
 			return false;
 		}
 
@@ -561,7 +560,8 @@ bool PluginsManager::activatePlugin(Plugin *plugin)
 	QString conflict = findActiveConflict(plugin);
 	if (!conflict.isEmpty())
 	{
-		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Plugin %1 conflicts with: %2").arg(plugin->name(), conflict));
+		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Plugin %1 conflicts with: %2").arg(plugin->name(), conflict),
+				QMessageBox::Ok, ModulesWindow::instance());
 		result = false;
 	}
 	else
@@ -594,7 +594,8 @@ bool PluginsManager::deactivatePlugin(Plugin *plugin, bool force)
 
 	if (plugin->usageCounter() > 0 && !force)
 	{
-		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Plugin %1 cannot be deactivated because it is being used by the following plugins:%2").arg(plugin->name()).arg(activeDependentPluginNames(plugin->name())));
+		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Plugin %1 cannot be deactivated because it is being used by the following plugins:%2").arg(plugin->name()).arg(activeDependentPluginNames(plugin->name())),
+				QMessageBox::Ok, ModulesWindow::instance());
 		kdebugf2();
 		return false;
 	}

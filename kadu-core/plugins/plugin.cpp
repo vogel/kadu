@@ -24,6 +24,7 @@
 
 #include "configuration/configuration-file.h"
 #include "gui/windows/message-dialog.h"
+#include "gui/windows/modules-window.h"
 #include "misc/path-conversion.h"
 #include "plugins/generic-plugin.h"
 #include "plugins/plugin-info.h"
@@ -175,7 +176,8 @@ bool Plugin::activate()
 	if (!PluginLoader->load())
 	{
 		QString err = PluginLoader->errorString();
-		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Cannot load %1 plugin library.:\n%2").arg(Name, err));
+		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Cannot load %1 plugin library.:\n%2").arg(Name, err),
+				QMessageBox::Ok, ModulesWindow::instance());
 		kdebugm(KDEBUG_ERROR, "cannot load %s because of: %s\n", qPrintable(Name), qPrintable(err));
 		kdebugf2();
 		return false;
@@ -188,7 +190,7 @@ bool Plugin::activate()
 	if (!PluginObject)
 	{
 		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Cannot find required object in module %1.\n"
-				"Maybe it's not Kadu-compatible plugin.").arg(Name));
+				"Maybe it's not Kadu-compatible plugin.").arg(Name), QMessageBox::Ok, ModulesWindow::instance());
 
 		delete PluginLoader;
 		PluginLoader = 0;
@@ -203,7 +205,8 @@ bool Plugin::activate()
 
 	if (res != 0)
 	{
-		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Module initialization routine for %1 failed.").arg(Name));
+		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Module initialization routine for %1 failed.").arg(Name),
+				QMessageBox::Ok, ModulesWindow::instance());
 
 		PluginLoader->unload();
 		delete PluginLoader;

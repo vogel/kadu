@@ -478,7 +478,8 @@ void Firewall::filterOutgoingMessage(Chat chat, QString &msg, bool &stop)
 
 			if (!SecuredTemporaryAllowed.contains(buddy))
 			{
-				switch (QMessageBox::warning(0, "Kadu", tr("Are you sure you want to send this message?"), tr("&Yes"), tr("Yes and allow until chat closed"), tr("&No"), 2, 2))
+				switch (QMessageBox::warning(ChatWidgetManager::instance()->byChat(chat, false), "Kadu",
+						tr("Are you sure you want to send this message?"), tr("&Yes"), tr("Yes and allow until chat closed"), tr("&No"), 2, 2))
 				{
 						default:
 							stop = true;
