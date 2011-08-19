@@ -508,7 +508,7 @@ bool PluginsManager::activateDependencies(Plugin *plugin)
 		if (!activatePlugin(plugin))
 			return false;
 
-		if (plugin->info()->loadByDefault())
+		if (Plugin::PluginStateNew == plugin->state() && plugin->info()->loadByDefault())
 			plugin->setState(Plugin::PluginStateEnabled);
 	}
 
