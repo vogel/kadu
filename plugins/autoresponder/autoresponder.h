@@ -67,13 +67,7 @@ class AutoResponder : public ConfigurationUiHandler, ConfigurationAwareObject, A
 	public slots:
 		void filterIncomingMessage(Chat chat, Contact sender, QString &message, time_t time, bool &ignore);
 
-		/**
-			\fn void chatOpenedClosed(ChatWidget *chat)
-			Slot jest wywoływany przy otwieraniu lub po zamknięciu
-			okna chat.
-			\param chat okno wiadomości
-		**/
-		void chatOpenedClosed(ChatWidget *chat, bool activate = false);
+		void chatWidgetClosed(ChatWidget *chat);
 };
 
 /** @} */
