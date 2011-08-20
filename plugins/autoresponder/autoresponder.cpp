@@ -56,10 +56,8 @@ AutoResponder::AutoResponder(QObject *parent) :
 
 	triggerAllAccountsRegistered();
 
-	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetOpen(ChatWidget *, bool)),
-			this, SLOT(chatOpenedClosed(ChatWidget *, bool)));
 	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetDestroying(ChatWidget *)),
-			this, SLOT(chatOpenedClosed(ChatWidget *)));
+			this, SLOT(chatWidgetClosed(ChatWidget *)));
 
 	createDefaultConfiguration();
 	configurationUpdated();
@@ -71,10 +69,8 @@ AutoResponder::~AutoResponder()
 {
 	kdebugf();
 
-	disconnect(ChatWidgetManager::instance(), SIGNAL(chatWidgetOpen(ChatWidget *, bool)),
-			this, SLOT(chatOpenedClosed(ChatWidget *, bool)));
 	disconnect(ChatWidgetManager::instance(), SIGNAL(chatWidgetDestroying(ChatWidget *)),
-			this, SLOT(chatOpenedClosed(ChatWidget *)));
+			this, SLOT(chatWidgetClosed(ChatWidget *)));
 
 	kdebugf2();
 }
@@ -179,9 +175,8 @@ void AutoResponder::filterIncomingMessage(Chat chat, Contact sender, QString &me
 	kdebugf2();
 }
 
-void AutoResponder::chatOpenedClosed(ChatWidget *chatWidget, bool activate)
+void AutoResponder::chatWidgetClosed(ChatWidget *chatWidget)
 {
-	Q_UNUSED(activate)
 	Chat chat = chatWidget->chat();
 	foreach (const Contact &contact, chat.contacts())
 		repliedUsers.remove(contact);
