@@ -64,13 +64,13 @@
 #include "gui/windows/main-configuration-window.h"
 #include "gui/windows/merge-buddies-window.h"
 #include "gui/windows/message-dialog.h"
+#include "gui/windows/modules-window.h"
 #include "gui/windows/multilogon-window.h"
 #include "gui/windows/search-window.h"
 #include "gui/windows/your-accounts.h"
 #include "misc/misc.h"
 #include "os/generic/url-opener.h"
 #include "parser/parser.h"
-#include "plugins/plugins-manager.h"
 #include "protocols/protocol.h"
 #include "status/status-changer-manager.h"
 #include "status/status-container-manager.h"
@@ -204,7 +204,7 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 
 	ManageModules = new ActionDescription(this,
 		ActionDescription::TypeMainMenu, "manageModulesAction",
-		PluginsManager::instance(), SLOT(showWindow(QAction *, bool)),
+		this, SLOT(manageModulesActionActivated(QAction *, bool)),
 		KaduIcon("kadu_icons/plugins"), tr("Plugins...")
 	);
 	ManageModules->setShortcut("kadu_modulesmanager", Qt::ApplicationShortcut);
@@ -587,6 +587,14 @@ void KaduWindowActions::showMultilogonsActionActivated(QAction *sender, bool tog
 	Q_UNUSED(toggled)
 
 	MultilogonWindow::instance()->show();
+}
+
+void KaduWindowActions::manageModulesActionActivated(QAction *sender, bool toggled)
+{
+	Q_UNUSED(sender)
+	Q_UNUSED(toggled)
+
+	ModulesWindow::show();
 }
 
 void KaduWindowActions::exitKaduActionActivated(QAction *sender, bool toggled)

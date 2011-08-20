@@ -91,8 +91,6 @@ class KADUAPI PluginsManager : public QObject, public StorableObject
 
 	QMap<QString, Plugin *> Plugins;
 
-	ModulesWindow *Window;
-
 	PluginsManager();
 	virtual ~PluginsManager();
 
@@ -107,9 +105,6 @@ class KADUAPI PluginsManager : public QObject, public StorableObject
 	bool activateDependencies(Plugin *plugin);
 
 	QString activeDependentPluginNames(const QString &pluginName) const;
-
-private slots:
-	void dialogDestroyed();
 
 protected:
 	virtual void load();
@@ -135,9 +130,6 @@ public:
 
 	void usePlugin(const QString &pluginName);
 	void releasePlugin(const QString &pluginName);
-
-public slots:
-	void showWindow(QAction *sender, bool toggled);
 
 };
 

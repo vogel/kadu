@@ -56,8 +56,13 @@ class ModulesWindow : public QWidget, DesktopAwareObject
 {
 	Q_OBJECT
 
+	static ModulesWindow *Instance;
+
 	QTreeWidget *ModulesList;
 	QLabel *ModuleInfo;
+
+	ModulesWindow();
+	virtual ~ModulesWindow();
 
 	QTreeWidgetItem * getSelected();
 
@@ -74,13 +79,9 @@ protected:
 	virtual void keyPressEvent(QKeyEvent *event);
 
 public:
-	/**
-		\fn ModulesWindow()
-		Konstruktor standardowy.
-	**/
-	ModulesWindow(QWidget *parent = 0);
-	~ModulesWindow();
+	static ModulesWindow * instance();
+	static void show();
 
 };
 
-#endif
+#endif // KADU_MODULES_WINDOW

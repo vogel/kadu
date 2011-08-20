@@ -105,8 +105,7 @@ PluginsManager * PluginsManager::instance()
  * Creates new PluginsManager, registers it in ConfigurationManager singleton.
  * Storage status is set to Storage::StateNotLoaded.
  */
-PluginsManager::PluginsManager() :
-		Plugins(), Window(0)
+PluginsManager::PluginsManager()
 {
 	ConfigurationManager::instance()->registerStorableObject(this);
 
@@ -640,40 +639,4 @@ void PluginsManager::releasePlugin(const QString &pluginName)
 {
 	if (Plugins.contains(pluginName))
 		Plugins.value(pluginName)->decUsage();
-}
-
-/**
- * @author Rafał 'Vogel' Malinowski
- * @short Shows plugins manager window
- * @todo remove
- */
-void PluginsManager::showWindow(QAction *sender, bool toggled)
-{
-	Q_UNUSED(sender)
-	Q_UNUSED(toggled)
-
-	kdebugf();
-
-	if (!Window)
-	{
-		Window = new ModulesWindow();
-		connect(Window, SIGNAL(destroyed()), this, SLOT(dialogDestroyed()));
-		Window->show();
-	}
-
-	_activateWindow(Window);
-
-	kdebugf2();
-}
-
-/**
- * @author Rafał 'Vogel' Malinowski
- * @short Called after plugins manager window got closed
- * @todo remove
- */
-void PluginsManager::dialogDestroyed()
-{
-	kdebugf();
-	Window = 0;
-	kdebugf2();
 }

@@ -42,6 +42,7 @@
 #include <QtGui/QKeyEvent>
 #include <QtGui/QScrollBar>
 
+#include "activate.h"
 #include "configuration/configuration-file.h"
 #include "configuration/configuration-manager.h"
 #include "icons/kadu-icon.h"
@@ -50,8 +51,23 @@
 
 #include "modules-window.h"
 
-ModulesWindow::ModulesWindow(QWidget *parent)
-	: QWidget(parent, Qt::Window), DesktopAwareObject(this),
+ModulesWindow * ModulesWindow::Instance = 0;
+
+ModulesWindow * ModulesWindow::instance()
+{
+	return Instance;
+}
+
+void ModulesWindow::show()
+{
+	if (!Instance)
+		Instance = new ModulesWindow();
+
+	_activateWindow(Instance);
+}
+
+ModulesWindow::ModulesWindow()
+	: QWidget(0, Qt::Window), DesktopAwareObject(this),
 	ModulesList(0), ModuleInfo(0)
 {
 	kdebugf();
