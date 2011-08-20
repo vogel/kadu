@@ -46,7 +46,7 @@ void disableNonFileTransferContacts(Action *action)
 
 	const ContactSet &contacts = action->contacts();
 
-	if (!contacts.count())
+	if (contacts.isEmpty())
 		return;
 
 	foreach (const Contact &contact, contacts)
@@ -100,7 +100,7 @@ void FileTransferActions::sendFileActionActivated(QAction *sender, bool toggled)
 		return;
 
 	ContactSet contacts = action->contacts();
-	if (contacts.count())
+	if (!contacts.isEmpty())
 		selectFilesAndSend(contacts);
 
 	kdebugf2();
@@ -127,7 +127,7 @@ QStringList FileTransferActions::selectFilesToSend()
 void FileTransferActions::selectFilesAndSend(const ContactSet &contacts)
 {
 	QStringList files = selectFilesToSend();
-	if (!files.count())
+	if (files.isEmpty())
 	{
 		kdebugf2();
 		return;

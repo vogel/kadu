@@ -134,7 +134,7 @@ void NotifyTreeWidget::refresh()
 	if (!currentName.isNull())
 	{
 		QList<QTreeWidgetItem *> items = findItems(currentName, Qt::MatchExactly, 0);
-		if (items.count())
+		if (!items.isEmpty())
 			setCurrentItem(items.at(0));
 	}
 

@@ -98,7 +98,7 @@ void ImageLink::filterIncomingMessage(Chat chat, Contact sender, QString &messag
 		ImageRegExp.indexIn(message);
 		QStringList list = ImageRegExp.capturedTexts();
 
-		if (ImageRegExp.matchedLength() > 0 && list.size() > 0)
+		if (ImageRegExp.matchedLength() > 0 && !list.isEmpty())
 			insertCodeIntoChatWindow(chat, sender, getImageCode(list[0]));
 	}
 

@@ -116,7 +116,7 @@ void ActionDescription::configurationUpdated()
 			action->setShortcutContext(ShortcutContext);
 		}
 	}
-	else if (MappedActions.count() > 0)
+	else if (!MappedActions.isEmpty())
 	{
 		MappedActions.values().at(0)->setShortcut(HotKey::shortCutFromFile("ShortCuts", ShortcutItem));
 		MappedActions.values().at(0)->setShortcutContext(ShortcutContext);

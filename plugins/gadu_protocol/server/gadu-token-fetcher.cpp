@@ -57,7 +57,7 @@ void GaduTokenFetcher::tokenReceivedSlot(int id, bool error)
 	Q_UNUSED(error)
 
 	QByteArray data = Http.readAll();
-	if (data.size() == 0)
+	if (data.isEmpty())
 		return;
 
 	if (TokenId.isEmpty())

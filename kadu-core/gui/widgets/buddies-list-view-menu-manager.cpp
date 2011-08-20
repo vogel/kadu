@@ -143,7 +143,7 @@ QMenu * BuddiesListViewMenuManager::menu(QWidget *parent, ActionDataSource *acti
 
 				if (protocolFactory && protocolFactory->protocolMenuManager())
 				{
-					if (!first && protocolFactory->protocolMenuManager()->protocolActions().size() > 0)
+					if (!first && !protocolFactory->protocolMenuManager()->protocolActions().isEmpty())
 						actions->addSeparator();
 
 					foreach (ActionDescription *actionDescription, protocolFactory->protocolMenuManager()->protocolActions())

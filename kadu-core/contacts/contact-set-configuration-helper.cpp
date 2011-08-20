@@ -72,7 +72,7 @@ void ContactSetConfigurationHelper::saveToConfiguration(StorableObject *parent, 
 
 void ContactSetConfigurationHelper::saveToConfiguration(XmlConfigFile *configurationStorage, QDomElement contactSetNode, const ContactSet &contactSet)
 {
-	while (contactSetNode.childNodes().count())
+	while (!contactSetNode.childNodes().isEmpty())
 		contactSetNode.removeChild(contactSetNode.childNodes().at(0));
 
 	foreach (const Contact &c, contactSet)

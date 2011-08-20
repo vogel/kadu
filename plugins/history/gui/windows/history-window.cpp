@@ -559,7 +559,7 @@ void HistoryWindow::dateCurrentChanged(const QModelIndex &current, const QModelI
 			QList<TimedStatus> statuses;
 			if (buddy && date.isValid())
 				statuses = History::instance()->statuses(buddy, date);
-			if (buddy.contacts().size() > 0)
+			if (!buddy.contacts().isEmpty())
 				ContentBrowser->setChat(ChatManager::instance()->findChat(ContactSet(buddy.contacts().at(0)), true));
 			ContentBrowser->appendMessages(statusesToMessages(statuses));
 			break;
@@ -664,7 +664,7 @@ void HistoryWindow::showMainPopupMenu(const QPoint &pos)
 		case HistoryTypeStatus:
 		{
 			Buddy buddy = treeItem.buddy();
-			if (!buddy || buddy.contacts().size() == 0)
+			if (!buddy || buddy.contacts().isEmpty())
 				return;
 
 			menu.reset(BuddiesListViewMenuManager::instance()->menu(this, this, buddy.contacts()));
@@ -705,7 +705,7 @@ void HistoryWindow::showDetailsPopupMenu(const QPoint &pos)
 	HistoryTreeItem treeItem = DetailsListView->indexAt(pos).data(HistoryItemRole).value<HistoryTreeItem>();
 	if (treeItem.type() == HistoryTypeChat && treeItem.chat())
 		isValid = true;
-	else if (treeItem.type() == HistoryTypeStatus && treeItem.buddy() && treeItem.buddy().contacts().size() > 0)
+	else if (treeItem.type() == HistoryTypeStatus && treeItem.buddy() && !treeItem.buddy().contacts().isEmpty())
 		isValid = true;
 	else if (treeItem.type() == HistoryTypeSms && !treeItem.smsRecipient().isEmpty())
 		isValid = true;
@@ -771,7 +771,7 @@ void HistoryWindow::removeHistoryEntriesPerDate()
 	HistoryTreeItem treeItem = DetailsListView->currentIndex().data(HistoryItemRole).value<HistoryTreeItem>();
 	if (treeItem.type() == HistoryTypeChat && treeItem.chat())
 		History::instance()->currentStorage()->clearChatHistory(treeItem.chat(), date);
-	else if (treeItem.type() == HistoryTypeStatus && treeItem.buddy() && treeItem.buddy().contacts().size() > 0)
+	else if (treeItem.type() == HistoryTypeStatus && treeItem.buddy() && !treeItem.buddy().contacts().isEmpty())
 		History::instance()->currentStorage()->clearStatusHistory(treeItem.buddy(), date);
 	else if (treeItem.type() == HistoryTypeSms && !treeItem.smsRecipient().isEmpty())
 		History::instance()->currentStorage()->clearSmsHistory(treeItem.smsRecipient(), date);

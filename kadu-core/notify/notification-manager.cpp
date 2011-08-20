@@ -690,7 +690,7 @@ void checkNotify(Action *action)
 {
 	kdebugf();
 
-	action->setEnabled(action->buddies().count());
+	action->setEnabled(!action->buddies().isEmpty());
 
 	bool on = true;
 	foreach (const Buddy &buddy, action->contacts().toBuddySet())

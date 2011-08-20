@@ -79,9 +79,10 @@ WordFix::WordFix(QObject *parent) :
 			while (!s.atEnd())
 			{
 				pair = s.readLine().split('|');
-				if (pair.count() <= 0)
+				if (pair.isEmpty())
 					continue;
 
+				// TODO why we are not checking if there are actually at least 2 items?
 				wordsList[pair.at(0)] = pair.at(1);
 			}
 			defList.close();

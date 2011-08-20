@@ -51,9 +51,9 @@ void JabberContactPersonalInfoService::fetchingVCardFinished()
 		if (bday.isValid() && !bday.isNull())
 			CurrentBuddy.setBirthYear(bday.year());
 
-		if (vcard.addressList().count() > 0)
+		if (!vcard.addressList().isEmpty())
 			CurrentBuddy.setCity(vcard.addressList().at(0).locality);
-		if (vcard.emailList().count() > 0)
+		if (!vcard.emailList().isEmpty())
 			CurrentBuddy.setEmail(vcard.emailList().at(0).userid);
 		CurrentBuddy.setWebsite(vcard.url());
 

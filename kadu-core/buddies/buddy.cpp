@@ -167,7 +167,7 @@ QList<Contact> Buddy::contacts() const
 
 bool Buddy::hasContact(Account account) const
 {
-	return isNull() ? false : data()->contacts(account).count() > 0;
+	return isNull() ? false : !data()->contacts(account).isEmpty();
 }
 
 QString Buddy::id(Account account) const
@@ -250,7 +250,7 @@ Buddy Buddy::dummy()
 
 	if (!AccountManager::instance()->defaultAccount().isNull())
 		account = AccountManager::instance()->defaultAccount();
-	else if (ProtocolsManager::instance()->protocolFactories().count())
+	else if (!ProtocolsManager::instance()->protocolFactories().isEmpty())
 	{
 		account = Account::create();
 		ProtocolFactory *firstProto = ProtocolsManager::instance()->protocolFactories().at(0) ;

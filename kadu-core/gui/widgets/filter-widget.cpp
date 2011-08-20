@@ -148,7 +148,7 @@ void FilterWidget::filterTextChanged(const QString &s)
 	}
 	else
 	{
-		if (!isVisible() || View->selectionModel()->selectedIndexes().count() == 0)
+		if (!isVisible() || View->selectionModel()->selectedIndexes().isEmpty())
 		{
 			View->setCurrentIndex(View->model()->index(0, 0));
 			View->selectionModel()->select(View->model()->index(0, 0), QItemSelectionModel::SelectCurrent);

@@ -350,12 +350,10 @@ void ChatWidgetManager::openPendingMessages(const Chat &chat, bool forceActivate
 		PendingMessagesManager::instance()->removeItem(message);
 	}
 
-	if (messages.size())
-	{
+	if (!messages.isEmpty())
 		// TODO: Lame API
-		if (!chatWidget->countMessages())
+		if (0 == chatWidget->countMessages())
 			chatWidget->appendMessages(messages, true);
-	}
 
 	kdebugf2();
 }

@@ -163,7 +163,7 @@ void disableNoEMail(Action *action)
 void disableIfContactSelected(Action *action)
 {
 	if (action && action->dataSource())
-		action->setEnabled(!action->dataSource()->hasContactSelected() && action->dataSource()->buddies().count());
+		action->setEnabled(!action->dataSource()->hasContactSelected() && !action->dataSource()->buddies().isEmpty());
 
 	if (action->buddies().contains(Core::instance()->myself()))
 		action->setEnabled(false);

@@ -359,7 +359,7 @@ int main(int argc, char *argv[])
 	QtLocalPeer *peer = new QtLocalPeer(qApp, profilePath());
 	if (peer->isClient())
 	{
-		if (ids.count())
+		if (!ids.isEmpty())
 			foreach (const QString &id, ids)
 				peer->sendMessage(id, 1000);
 		else

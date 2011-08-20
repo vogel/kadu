@@ -71,7 +71,7 @@ void GaduUrlHandler::convertUrlsToHtml(HtmlDocument &document, bool generateOnly
 void GaduUrlHandler::openUrl(const QByteArray &url, bool disableMenu)
 {
 	QList<Account> gaduAccounts = AccountManager::instance()->byProtocolName("gadu");
-	if (!gaduAccounts.count())
+	if (gaduAccounts.isEmpty())
 		return;
 
 	QString gaduId = QString::fromUtf8(url);

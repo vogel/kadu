@@ -345,7 +345,7 @@ void ChatWidgetActions::moreActionsActionActivated(QAction *sender, bool toggled
 		return;
 
 	QList<QWidget *> widgets = sender->associatedWidgets();
-	if (widgets.size() == 0)
+	if (widgets.isEmpty())
 		return;
 
 	QWidget *widget = widgets.at(widgets.size() - 1);
@@ -578,7 +578,7 @@ void ChatWidgetActions::colorSelectorActionActivated(QAction *sender, bool toggl
 		return;
 
 	QList<QWidget *> widgets = sender->associatedWidgets();
-	if (widgets.size() == 0)
+	if (widgets.isEmpty())
 		return;
 
 	chatEditBox->openColorSelector(widgets.at(widgets.size() - 1));
@@ -593,7 +593,7 @@ void ChatWidgetActions::insertEmoticonActionActivated(QAction *sender, bool togg
 		return;
 
 	QList<QWidget *> widgets = sender->associatedWidgets();
-	if (widgets.size() == 0)
+	if (widgets.isEmpty())
 		return;
 
 	chatEditBox->openEmoticonSelector(widgets.at(widgets.size() - 1));

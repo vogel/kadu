@@ -74,7 +74,7 @@ void ConfigTab::configGroupBoxDestroyed(QObject *obj)
 
 	MyConfigGroupBoxes.remove(static_cast<ConfigGroupBox *>(obj)->name());
 
-	if (MyConfigGroupBoxes.count() == 0)
+	if (MyConfigGroupBoxes.isEmpty())
 		deleteLater();
 }
 

@@ -162,7 +162,7 @@ void GaduServersManager::configurationUpdated()
 
 GaduServersManager::GaduServer GaduServersManager::getServer(bool onlyTls)
 {
-	if (0 == GoodServers.count())
+	if (GoodServers.isEmpty())
 	{
 		GoodServers = BadServers;
 		BadServers.clear();

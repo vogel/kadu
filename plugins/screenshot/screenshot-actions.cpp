@@ -118,7 +118,7 @@ void ScreenshotActions::screenshotActionActivated(QAction *sender, bool toggled)
 	if (CurrentChatWidget)
 	{
 		QList<QWidget *> widgets = sender->associatedWidgets();
-		if (widgets.size() == 0)
+		if (widgets.isEmpty())
 			return;
 
 		QWidget *widget = widgets[widgets.size() - 1];

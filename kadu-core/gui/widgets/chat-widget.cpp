@@ -520,7 +520,7 @@ bool ChatWidget::decodeLocalFiles(QDropEvent *event, QStringList &files)
 				files.append(file);
 		}
 	}
-	return files.count() > 0;
+	return !files.isEmpty();
 
 }
 

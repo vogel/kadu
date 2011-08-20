@@ -191,7 +191,7 @@ void OpenChatWith::inputChanged(const QString &text)
 
 	if (!text.isEmpty())
 	{
-		if (!IsTyping || BuddiesWidget->selectionModel()->selectedIndexes().count() == 0)
+		if (!IsTyping || BuddiesWidget->selectionModel()->selectedIndexes().isEmpty())
 		{
 			BuddiesWidget->setCurrentIndex(BuddiesWidget->model()->index(0, 0));
 			BuddiesWidget->selectionModel()->select(BuddiesWidget->model()->index(0, 0), QItemSelectionModel::SelectCurrent);

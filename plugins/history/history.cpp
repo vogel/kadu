@@ -80,7 +80,7 @@ void disableNonHistoryContacts(Action *action)
 	action->setEnabled(false);
 	ContactSet contacts = action->contacts();
 
-	if (!contacts.count())
+	if (contacts.isEmpty())
 		return;
 
 	foreach (const Contact &contact, contacts)
@@ -191,7 +191,7 @@ void History::showHistoryActionActivated(QAction *sender, bool toggled)
 	if (chatWidget)
 	{
 		QList<QWidget *> widgets = sender->associatedWidgets();
-		if (widgets.size() == 0)
+		if (widgets.isEmpty())
 			return;
 
 		QWidget *widget = widgets.at(widgets.size() - 1);

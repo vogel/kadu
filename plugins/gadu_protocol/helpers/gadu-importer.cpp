@@ -251,7 +251,7 @@ void GaduImporter::buddyAdded(Buddy &buddy)
 		return;
 
 	QList<Account> allGaduAccounts = AccountManager::instance()->byProtocolName("gadu");
-	if (0 == allGaduAccounts.count())
+	if (allGaduAccounts.isEmpty())
 		return;
 
 	// take 1st one

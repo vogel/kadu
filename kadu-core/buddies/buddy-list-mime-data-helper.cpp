@@ -39,7 +39,7 @@ QStringList BuddyListMimeDataHelper::mimeTypes()
 
 QMimeData * BuddyListMimeDataHelper::toMimeData(const BuddyList &buddyList)
 {
-	if (!buddyList.count())
+	if (buddyList.isEmpty())
 		return 0;
 
 	QMimeData *mimeData = new QMimeData();

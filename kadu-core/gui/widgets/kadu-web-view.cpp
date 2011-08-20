@@ -290,7 +290,7 @@ void KaduWebView::saveImage()
 	{
 		if (fd.data()->exec() != QFileDialog::Accepted)
 			break;
-		if (fd.data()->selectedFiles().count() < 1)
+		if (fd.data()->selectedFiles().isEmpty())
 			break;
 
 		QString file = fd.data()->selectedFiles().at(0);

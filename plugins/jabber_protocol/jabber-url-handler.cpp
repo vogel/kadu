@@ -87,7 +87,7 @@ void JabberUrlHandler::convertUrlsToHtml(HtmlDocument &document, bool generateOn
 void JabberUrlHandler::openUrl(const QByteArray &url, bool disableMenu)
 {
 	QList<Account> jabberAccounts = AccountManager::instance()->byProtocolName("jabber");
-	if (!jabberAccounts.count())
+	if (jabberAccounts.isEmpty())
 		return;
 
 	QString jabberId = QString::fromUtf8(url);

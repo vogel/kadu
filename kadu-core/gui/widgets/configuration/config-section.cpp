@@ -126,7 +126,7 @@ void ConfigSection::configTabDestroyed(QObject *obj)
 
 	TabWidget->setTabBarVisible(ConfigTabs.count() > 1);
 
-	if (ConfigTabs.count() == 0)
+	if (ConfigTabs.isEmpty())
 		deleteLater();
 }
 

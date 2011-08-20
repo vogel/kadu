@@ -59,12 +59,13 @@ void AntistringConfiguration::configurationUpdated()
 void AntistringConfiguration::addCondition(const QString &conditionString)
 {
 	QStringList conditionPair = conditionString.split('\t');
-	if (conditionPair.count() <= 0)
+	if (conditionPair.isEmpty())
 		return;
 
 	bool ok;
 	int factor = conditionPair[0].toInt(&ok, 10);
 	if (ok)
+		// TODO why we are not checking if there are two items?
 		Conditions.append(qMakePair(conditionPair[1], factor));
 }
 

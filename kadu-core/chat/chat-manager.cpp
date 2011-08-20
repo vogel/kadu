@@ -184,7 +184,7 @@ Chat ChatManager::findChat(const ContactSet &contacts, bool create)
 
 	ensureLoaded();
 
-	if (contacts.size() == 0)
+	if (contacts.isEmpty())
 		return Chat::null;
 
 	// check if every contact has the same account

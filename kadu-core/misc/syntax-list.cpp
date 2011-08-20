@@ -101,7 +101,7 @@ void SyntaxList::reload()
 			insert(fi.baseName(), info);
 	}
 
-	if (count() == 0)
+	if (isEmpty())
 	{
 		info.global = false;
 		insert("custom", info);

@@ -258,7 +258,7 @@ void MediaPlayer::mediaPlayerMenuActivated(QAction *sender, bool toggled)
 	if (chatWidget)
 	{
 		QList<QWidget *> widgets = sender->associatedWidgets();
-		if (widgets.size() == 0)
+		if (widgets.isEmpty())
 			return;
 
 		QWidget *widget = widgets[widgets.size() - 1];

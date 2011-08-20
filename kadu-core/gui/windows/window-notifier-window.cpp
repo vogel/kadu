@@ -85,7 +85,7 @@ void WindowNotifierWindow::createGui()
 
 	const QList<Notification::Callback> callbacks = CurrentNotification->getCallbacks();
 
-	if (callbacks.size())
+	if (!callbacks.isEmpty())
 		foreach(const Notification::Callback &i, callbacks)
 			addButton(buttons, i.Caption, i.Slot);
 	else
