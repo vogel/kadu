@@ -25,8 +25,9 @@
 #include <QtCore/QFile>
 #include <QtCore/QTextStream>
 #include <QtCore/QTimer>
-#include <QtGui/QMessageBox>
 
+#include "gui/windows/message-dialog.h"
+#include "icons/kadu-icon.h"
 #include "status/status-changer-manager.h"
 
 #include "autostatus-status-changer.h"
@@ -90,7 +91,7 @@ bool Autostatus::readDescriptionList()
 {
 	if (!QFile::exists(Configuration.statusFilePath()))
 	{
-		QMessageBox::information(NULL, "Autostatus", "File does not exist !");
+		MessageDialog::show(KaduIcon("dialog-information"), "Autostatus", "File does not exist !");
 		return false;
 	}
 

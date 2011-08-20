@@ -27,9 +27,10 @@
  */
 
 #include <QtCrypto>
-#include <QMessageBox>
 
 #include "debug.h"
+#include "gui/windows/message-dialog.h"
+#include "icons/kadu-icon.h"
 #include "misc/path-conversion.h"
 
 #include "certificates/certificate-helpers.h"
@@ -237,7 +238,7 @@ void MiniClient::cs_warning(int err)
 {
 	if (err == ClientStream::WarnNoTLS && force_ssl) {
 		close();
-		QMessageBox::critical(0, tr("Server Error"), tr("The server does not support TLS encryption."));
+		MessageDialog::show(KaduIcon("dialog-error"), tr("Server Error"), tr("The server does not support TLS encryption."));
 	}
 	else {
 		stream->continueAfterWarning();
@@ -251,7 +252,7 @@ void MiniClient::cs_error(int err)
 	JabberClient::getErrorInfo(err, conn, stream, tlsHandler, &str, &reconn);
 	close();
 
-	QMessageBox::critical(0, tr("Server Error"), tr("There was an error communicating with the Jabber server.\nDetails: %1").arg(str));
+	MessageDialog::show(KaduIcon("dialog-error"), tr("Server Error"), tr("There was an error communicating with the Jabber server.\nDetails: %1").arg(str));
 	error();
 }
 
