@@ -178,6 +178,7 @@ ModulesWindow::ModulesWindow()
 ModulesWindow::~ModulesWindow()
 {
 	kdebugf();
+	Instance = 0;
  	saveWindowGeometry(this, "General", "ModulesWindowGeometry");
 	kdebugf2();
 }
