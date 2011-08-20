@@ -24,6 +24,7 @@
 
 #include "buddies/buddy.h"
 #include "buddies/buddy-shared.h"
+#include "configuration/configuration-file.h"
 #include "configuration/configuration-manager.h"
 #include "contacts/contact.h"
 #include "contacts/contact-parser-tags.h"
@@ -302,12 +303,15 @@ void ContactManager::removeDuplicateContacts()
 		else
 			uniqueContacts.insert(qMakePair(contact.contactAccount(), contact.id()), contact);
 	}
+
+	config_file.writeEntry("General", "ContactsImportedFrom0_9", true);
 }
 
 void ContactManager::loaded()
 {
 	Manager<Contact>::loaded();
 
-	// delay it so that everything needed will be loaded when we call this method
-	QTimer::singleShot(0, this, SLOT(removeDuplicateContacts()));
+	if (!config_file.readBoolEntry("General", "ContactsImportedFrom0_9", false))
+		// delay it so that everything needed will be loaded when we call this method
+		QTimer::singleShot(0, this, SLOT(removeDuplicateContacts()));
 }
