@@ -47,7 +47,6 @@
 
 #include "configuration/configuration-aware-object.h"
 #include "core/crash-aware-object.h"
-#include "buddies/buddy-remove-predicate-object.h"
 #include "gui/actions/action.h"
 #include "gui/actions/action-description.h"
 #include "gui/widgets/buddies-list-view-menu-manager.h"
@@ -70,7 +69,7 @@ class ChatWidget;
 class HistorySaveThread;
 class HistoryWindow;
 
-class HISTORYAPI History : public ConfigurationUiHandler, ConfigurationAwareObject, BuddyRemovePredicateObject, CrashAwareObject
+class HISTORYAPI History : public ConfigurationUiHandler, ConfigurationAwareObject, CrashAwareObject
 {
 	Q_OBJECT
 
@@ -113,7 +112,6 @@ class HISTORYAPI History : public ConfigurationUiHandler, ConfigurationAwareObje
 	void createActionDescriptions();
 	void deleteActionDescriptions();
 	virtual void configurationUpdated();
-	virtual bool removeContactFromStorage(Buddy buddy);
 	void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
 
 private slots:

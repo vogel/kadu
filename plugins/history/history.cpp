@@ -470,19 +470,6 @@ void History::configurationUpdated()
 	kdebugf2();
 }
 
-bool History::removeContactFromStorage(Buddy buddy)
-{
-	if (!CurrentStorage)
-		return true;
-
-	// TODO: optimize
-	foreach (const Chat &chat, ChatManager::instance()->items())
-		if (chat.contacts().toBuddySet().contains(buddy) && !CurrentStorage->chatDates(chat, HistorySearchParameters()).isEmpty())
-			return false;
-
-	return true;
-}
-
 void History::registerStorage(HistoryStorage *storage)
 {
 	CurrentStorage = storage;

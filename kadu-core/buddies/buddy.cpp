@@ -29,7 +29,6 @@
 #include "avatars/avatar-manager.h"
 #include "avatars/avatar-shared.h"
 #include "buddies/buddy-manager.h"
-#include "buddies/buddy-remove-predicate-object.h"
 #include "buddies/buddy-shared.h"
 #include "configuration/configuration-manager.h"
 #include "configuration/xml-configuration-file.h"
@@ -97,14 +96,6 @@ void Buddy::importConfiguration()
 {
 	if (data())
 		data()->importConfiguration();
-}
-
-void Buddy::ensureStored()
-{
-	if ((!isNull() && !isAnonymous()) || (isAnonymous() && !BuddyRemovePredicateObject::inquireAll(*this)))
-		data()->ensureStored();
-	else
-		data()->removeFromStorage();
 }
 
 QSharedPointer<StoragePoint> Buddy::storagePointForModuleData(const QString& module, bool create) const

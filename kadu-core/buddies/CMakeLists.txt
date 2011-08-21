@@ -8,7 +8,6 @@ set (buddies_SRCS
 	buddy-manager.cpp
 	buddy-or-contact.cpp
 	buddy-preferred-manager.cpp
-	buddy-remove-predicate-object.cpp
 	buddy-search-criteria.cpp
 	buddy-set.cpp
 	buddy-shared.cpp
