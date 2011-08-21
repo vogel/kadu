@@ -127,6 +127,17 @@ void Plugin::store()
 }
 
 /**
+ * @author Bartosz 'beevvy' Brachaczek
+ * @short Reimplemented from StorableObject::shouldStore().
+ *
+ * Reimplemented from StorableObject::shouldStore(). Returns false if State is PluginStateNew.
+ */
+bool Plugin::shouldStore()
+{
+	return NamedStorableObject::shouldStore() && PluginStateNew != state();
+}
+
+/**
  * @author Rafał 'Vogel' Malinowski
  * @short Returns true if this plugin should be activated.
  * @return true if this plugin should be activated

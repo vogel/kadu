@@ -132,6 +132,7 @@ public:
 	virtual QString name() const { return Name; }
 
 	virtual void store();
+	virtual bool shouldStore();
 
 	bool shouldBeActivated();
 
