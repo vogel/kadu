@@ -172,6 +172,8 @@ bool Plugin::activate(PluginActivationReason reason)
 	if (Active)
 		return true;
 
+	ensureLoaded();
+
 	PluginLoader = new QPluginLoader(libPath("kadu/plugins/"SO_PREFIX + Name + "." SO_EXT));
 	PluginLoader->setLoadHints(QLibrary::ExportExternalSymbolsHint);
 
