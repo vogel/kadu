@@ -227,11 +227,12 @@ void ModulesWindow::loadItemPlugin(Plugin *itemPlugin)
 
 void ModulesWindow::unloadItemPlugin(Plugin *itemPlugin)
 {
-	PluginsManager::instance()->deactivatePlugin(itemPlugin, PluginDeactivationReasonUserRequest);
+	if (PluginsManager::instance()->deactivatePlugin(itemPlugin, PluginDeactivationReasonUserRequest))
+	{
+		refreshList();
 
-	refreshList();
-
-	ConfigurationManager::instance()->flush();
+		ConfigurationManager::instance()->flush();
+	}
 }
 
 void ModulesWindow::refreshList()
