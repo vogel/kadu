@@ -190,7 +190,7 @@ void ModulesWindow::moduleAction(QTreeWidgetItem *)
 
 	Plugin *plugin = PluginsManager::instance()->plugins().value(selectedItem->text(0));
 
-	if (plugin->state() == Plugin::PluginStateEnabled)
+	if (plugin->isActive())
 		unloadItemPlugin(plugin);
 	else
 		loadItemPlugin(plugin);
