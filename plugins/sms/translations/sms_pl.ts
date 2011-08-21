@@ -52,8 +52,8 @@
         <translation>Wyślij SMS</translation>
     </message>
     <message>
-        <source>SMS Era Gateway</source>
-        <translation>Bramka SMS Era</translation>
+		<source>SMS T-Mobile.pl Gateway</source>
+		<translation>Bramka SMS T-Mobile.pl</translation>
     </message>
     <message>
         <source>Sponsored</source>

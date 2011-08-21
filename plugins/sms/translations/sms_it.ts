@@ -52,7 +52,7 @@
         <translation>Manda SMS</translation>
     </message>
     <message>
-        <source>SMS Era Gateway</source>
+		<source>SMS T-Mobile.pl Gateway</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
