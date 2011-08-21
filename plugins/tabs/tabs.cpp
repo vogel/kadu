@@ -145,7 +145,7 @@ TabsManager::~TabsManager()
 	if (!Core::instance()->isClosing())
 		for (int i = TabDialog->count() - 1; i >= 0; i--)
 			detachChat(static_cast<ChatWidget *>(TabDialog->widget(i)));
-	else if (config_file.readBoolEntry("Chat", "SaveOpenedWindows", true))// saveTabs()
+	else
 		ensureStored();
 
 	delete TabDialog;
@@ -649,6 +649,11 @@ void TabsManager::store()
 		else if (DetachedChats.indexOf(chatWidget) != -1)
 			window_elem.setAttribute("type", "detachedChat");
 	}
+}
+
+bool TabsManager::shouldStore()
+{
+	return StorableObject::shouldStore() && config_file.readBoolEntry("Chat", "SaveOpenedWindows", true);
 }
 
 void TabsManager::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)

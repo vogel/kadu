@@ -96,6 +96,7 @@ protected:
 	virtual void configurationUpdated();
 	virtual void load();
 	virtual void store();
+	virtual bool shouldStore();
 
 public:
 	explicit TabsManager(QObject *parent = 0);
