@@ -117,6 +117,7 @@ set (gui_SRCS
 	windows/modules-window.cpp
 	windows/multilogon-window.cpp
 	windows/password-window.cpp
+	windows/plugin-error-dialog.cpp
 	windows/progress-window.cpp
 	windows/search-window.cpp
 	windows/search-window-actions.cpp
@@ -246,6 +247,7 @@ set (gui_MOC_SRCS
 	windows/modules-window.h
 	windows/multilogon-window.h
 	windows/password-window.h
+	windows/plugin-error-dialog.h
 	windows/progress-window.h
 	windows/search-window.h
 	windows/search-window-actions.h
