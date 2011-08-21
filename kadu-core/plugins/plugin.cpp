@@ -19,6 +19,7 @@
 
 #include <QtCore/QFileInfo>
 #include <QtCore/QPluginLoader>
+#include <QtCore/QTimer>
 #include <QtCore/QTranslator>
 #include <QtGui/QApplication>
 
@@ -364,5 +365,5 @@ void Plugin::activationError(const QString &errorMessage, PluginActivationReason
 	if (offerLoadInFutureChoice)
 		connect(errorDialog, SIGNAL(accepted(bool)), this, SLOT(setStateEnabledIfInactive(bool)));
 
-	errorDialog->open();
+	QTimer::singleShot(0, errorDialog, SLOT(open()));
 }
