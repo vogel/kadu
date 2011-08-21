@@ -54,6 +54,8 @@ ScreenshotWidget::ScreenshotWidget(QWidget *parent) :
 		XInternAtom( QX11Info::display(), "_NET_WM_STATE_SKIP_PAGER"  , False )
 	};
 	XChangeProperty( QX11Info::display(), window()->winId(), win_state, XA_ATOM, 32, PropModeReplace, (unsigned char*)&win_state_setting, 3 );
+	// prevent compositing suspension on KDE4
+	setAttribute( Qt::WA_TranslucentBackground, true );
 #endif
 
 	QHBoxLayout *layout = new QHBoxLayout(this);
