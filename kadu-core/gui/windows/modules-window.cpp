@@ -217,9 +217,9 @@ void ModulesWindow::moduleAction(QTreeWidgetItem *)
 
 void ModulesWindow::loadItemPlugin(Plugin *itemPlugin)
 {
-	if (PluginsManager::instance()->activatePlugin(itemPlugin, PluginActivationReasonUserRequest))
-		itemPlugin->setState(Plugin::PluginStateEnabled);
+	PluginsManager::instance()->activatePlugin(itemPlugin, PluginActivationReasonUserRequest);
 
+	// do it unconditionally as dependent plugins might have been loaded even if the requested one failed to do so
 	refreshList();
 
 	ConfigurationManager::instance()->flush();

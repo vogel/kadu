@@ -165,6 +165,9 @@ public:
 	 * @return plugin state
 	 *
 	 * Returns plugin state.
+	 *
+	 * Note that plugin state describes only its state on configuration. All combinations
+	 * of state() and isActive() are possible, except state PluginStateNew and plugin active.
 	 */
 	PluginState state() { ensureLoaded(); return State; }
 	void setState(PluginState state);

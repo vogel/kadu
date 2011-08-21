@@ -220,9 +220,19 @@ bool Plugin::activate(PluginActivationReason reason)
 
 	UsageCounter = 0;
 
-	kdebugf2();
+	/* This is perfectly intentional. We have to set state to either enabled or disabled, as new
+	 * means that it was never loaded. If the only reason to load the plugin was because some other
+	 * plugin depended upon it, set state to disabled as we don't want that plugin to be loaded
+	 * next time when its reverse dependency will not be loaded. Otherwise set state to enabled.
+	 */
+	if (PluginActivationReasonDependency != reason)
+		setState(PluginStateEnabled);
+	else
+		setState(PluginStateDisabled);
 
 	Active = true;
+
+	kdebugf2();
 
 	return true;
 }
@@ -301,6 +311,9 @@ void Plugin::unloadTranslations()
  *
  * This method changes state of plugin. Set state to PluginStateEnabled to make this plugin
  * activate at every Kadu run.
+ *
+ * Please do not call this method unless you are absolutely sure the plugin had been loaded
+ * at least once.
  */
 void Plugin::setState(Plugin::PluginState state)
 {
@@ -313,15 +326,20 @@ void Plugin::setState(Plugin::PluginState state)
  * @author Bartosz 'beevvy' Brachaczek
  * @short Sets state enablement of plugin if it is inactive.
  *
- * If this plugin is active, this method does nothing.
+ * If this plugin is active or its state is PluginStateNew, this method does nothing.
  *
- * If this plugin is inactive, this method sets its state to PluginStateEnabled if \p enable
- * is true, otherwise to PluginStateDisabled.
+ * Otherwise, this method sets its state to PluginStateEnabled if \p enable is true.
+ * If \p enable is false, this method sets the plugin's state to PluginStateDisabled.
  */
 void Plugin::setStateEnabledIfInactive(bool enable)
 {
-	if (!isActive())
-		setState(enable ? PluginStateEnabled : PluginStateDisabled);
+	if (isActive())
+		return;
+
+	if (PluginStateNew == state())
+		return;
+
+	setState(enable ? PluginStateEnabled : PluginStateDisabled);
 }
 
 /**

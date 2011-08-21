@@ -264,8 +264,6 @@ void PluginsManager::activateProtocolPlugins()
 
 			if (!activatePlugin(plugin, activationReason))
 				saveList = true;
-			else
-				plugin->setState(Plugin::PluginStateEnabled);
 		}
 	}
 
@@ -296,8 +294,6 @@ void PluginsManager::activatePlugins()
 
 			if (!activatePlugin(plugin, activationReason))
 				saveList = true;
-			else
-				plugin->setState(Plugin::PluginStateEnabled);
 		}
 
 	foreach (Plugin *pluginToReplace, Plugins)
@@ -308,10 +304,7 @@ void PluginsManager::activatePlugins()
 		foreach (Plugin *replacementPlugin, Plugins)
 			if (replacementPlugin->state() == Plugin::PluginStateNew && replacementPlugin->isValid() && replacementPlugin->info()->replaces().contains(pluginToReplace->name()))
 				if (activatePlugin(replacementPlugin, PluginActivationReasonNewDefault))
-				{
-					replacementPlugin->setState(Plugin::PluginStateEnabled);
 					saveList = true; // list has changed
-				}
 	}
 
 	// if not all plugins were loaded properly or new plugin was added
@@ -495,9 +488,6 @@ bool PluginsManager::activateDependencies(Plugin *plugin)
 
 		if (!activatePlugin(dependencyPlugin, activationReason))
 			return false;
-
-		if (PluginActivationReasonNewDefault == activationReason)
-			plugin->setState(Plugin::PluginStateEnabled);
 	}
 
 	return true;
@@ -560,8 +550,6 @@ bool PluginsManager::activatePlugin(Plugin *plugin, PluginActivationReason reaso
 
 	if (result)
 		incDependenciesUsageCount(plugin);
-	else
-		plugin->setState(Plugin::PluginStateDisabled);
 
 	return result;
 }
