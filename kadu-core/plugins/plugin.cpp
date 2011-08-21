@@ -23,7 +23,7 @@
 #include <QtGui/QApplication>
 
 #include "configuration/configuration-file.h"
-#include "gui/windows/message-dialog.h"
+#include "gui/windows/plugin-error-dialog.h"
 #include "gui/windows/modules-window.h"
 #include "misc/path-conversion.h"
 #include "plugins/generic-plugin.h"
@@ -153,6 +153,7 @@ bool Plugin::shouldBeActivated()
 /**
  * @author Rafał 'Vogel' Malinowski
  * @short Activates plugin and retursn true if plugin is active.
+ * @param reason plugin activation reason
  * @return true if plugin is active after method return
  *
  * This method loads plugin library file (if exists) and set up  GenericPlugin object from this library.
@@ -160,12 +161,12 @@ bool Plugin::shouldBeActivated()
  * paramer set to true if this plugin's state  if PluginStateNew. If this methods returns value different
  * than 0, plugin is deactivated and false value is returned.
  *
- * Translations must be loaded before GenericPlugin::init() is called.
+ * Translations must be loaded before the root component of the plugin is instantiated.
  *
  * This method returns true if plugin is active after method returns - especially when plugin was active
  * before this call.
  */
-bool Plugin::activate()
+bool Plugin::activate(PluginActivationReason reason)
 {
 	if (Active)
 		return true;
@@ -176,9 +177,10 @@ bool Plugin::activate()
 	if (!PluginLoader->load())
 	{
 		QString err = PluginLoader->errorString();
-		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Cannot load %1 plugin library.:\n%2").arg(Name, err),
-				QMessageBox::Ok, ModulesWindow::instance());
 		kdebugm(KDEBUG_ERROR, "cannot load %s because of: %s\n", qPrintable(Name), qPrintable(err));
+
+		activationError(tr("Cannot load %1 plugin library.:\n%2").arg(Name, err), reason);
+
 		kdebugf2();
 		return false;
 	}
@@ -189,8 +191,7 @@ bool Plugin::activate()
 	PluginObject = qobject_cast<GenericPlugin *>(PluginLoader->instance());
 	if (!PluginObject)
 	{
-		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Cannot find required object in module %1.\n"
-				"Maybe it's not Kadu-compatible plugin.").arg(Name), QMessageBox::Ok, ModulesWindow::instance());
+		activationError(tr("Cannot find required object in module %1.\nMaybe it's not Kadu-compatible plugin.").arg(Name), reason);
 
 		delete PluginLoader;
 		PluginLoader = 0;
@@ -205,8 +206,7 @@ bool Plugin::activate()
 
 	if (res != 0)
 	{
-		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Module initialization routine for %1 failed.").arg(Name),
-				QMessageBox::Ok, ModulesWindow::instance());
+		activationError(tr("Module initialization routine for %1 failed.").arg(Name), reason);
 
 		PluginLoader->unload();
 		delete PluginLoader;
@@ -307,4 +307,41 @@ void Plugin::setState(Plugin::PluginState state)
 	ensureLoaded();
 
 	State = state;
+}
+
+/**
+ * @author Bartosz 'beevvy' Brachaczek
+ * @short Sets state enablement of plugin if it is inactive.
+ *
+ * If this plugin is active, this method does nothing.
+ *
+ * If this plugin is inactive, this method sets its state to PluginStateEnabled if \p enable
+ * is true, otherwise to PluginStateDisabled.
+ */
+void Plugin::setStateEnabledIfInactive(bool enable)
+{
+	if (!isActive())
+		setState(enable ? PluginStateEnabled : PluginStateDisabled);
+}
+
+/**
+ * @author Bartosz 'beevvy' Brachaczek
+ * @short Shows activation error to the user.
+ * @param errorMessage error message that will be displayer to the user
+ * @param activationReason plugin activation reason
+ * @todo it really shouldn't call gui classes directly
+ *
+ * This method creates new PluginErrorDialog with message \p errorMessage and opens it. Depending on
+ * \p activationReason, it also intructs the dialog wheter to offer the user choice wheter to try
+ * to load this plugin automatically in future.
+ */
+void Plugin::activationError(const QString &errorMessage, PluginActivationReason activationReason)
+{
+	bool offerLoadInFutureChoice = (PluginActivationReasonKnownDefault == activationReason);
+
+	PluginErrorDialog *errorDialog = new PluginErrorDialog(errorMessage, offerLoadInFutureChoice, ModulesWindow::instance());
+	if (offerLoadInFutureChoice)
+		connect(errorDialog, SIGNAL(accepted(bool)), this, SLOT(setStateEnabledIfInactive(bool)));
+
+	errorDialog->open();
 }

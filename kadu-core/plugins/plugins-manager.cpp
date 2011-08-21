@@ -282,9 +282,13 @@ void PluginsManager::activateProtocolPlugins()
 
 		if (plugin->shouldBeActivated())
 		{
-			if (!activatePlugin(plugin))
+			PluginActivationReason activationReason = (plugin->state() == Plugin::PluginStateNew)
+					? PluginActivationReasonNewDefault
+					: PluginActivationReasonKnownDefault;
+
+			if (!activatePlugin(plugin, activationReason))
 				saveList = true;
-			else if (plugin->info()->loadByDefault())
+			else
 				plugin->setState(Plugin::PluginStateEnabled);
 		}
 	}
@@ -310,9 +314,13 @@ void PluginsManager::activatePlugins()
 	foreach (Plugin *plugin, Plugins)
 		if (plugin->shouldBeActivated())
 		{
-			if (!activatePlugin(plugin))
+			PluginActivationReason activationReason = (plugin->state() == Plugin::PluginStateNew)
+					? PluginActivationReasonNewDefault
+					: PluginActivationReasonKnownDefault;
+
+			if (!activatePlugin(plugin, activationReason))
 				saveList = true;
-			else if (plugin->info()->loadByDefault())
+			else
 				plugin->setState(Plugin::PluginStateEnabled);
 		}
 
@@ -323,7 +331,7 @@ void PluginsManager::activatePlugins()
 
 		foreach (Plugin *replacementPlugin, Plugins)
 			if (replacementPlugin->state() == Plugin::PluginStateNew && replacementPlugin->isValid() && replacementPlugin->info()->replaces().contains(pluginToReplace->name()))
-				if (activatePlugin(replacementPlugin))
+				if (activatePlugin(replacementPlugin, PluginActivationReasonNewDefault))
 				{
 					replacementPlugin->setState(Plugin::PluginStateEnabled);
 					saveList = true; // list has changed
@@ -483,7 +491,6 @@ QString PluginsManager::findActiveConflict(Plugin *plugin) const
  * @short Activates (recursively) all dependencies.
  * @param plugin plugin for which dependencies will be activated
  * @return true if all dependencies were activated
- * @todo remove MessageDialog from this methods, this is not a GUI class
  *
  * Activates all dependencies of plugin and dependencies of these dependencies. If any dependency
  * is not found a message will be displayed to the user and false will be returned. * 
@@ -495,18 +502,25 @@ bool PluginsManager::activateDependencies(Plugin *plugin)
 
 	foreach (const QString &dependencyName, plugin->info()->dependencies())
 	{
-		if (!Plugins.contains(dependencyName))
+		Plugin *dependencyPlugin = Plugins.value(dependencyName);
+		if (!dependencyPlugin)
 		{
-			MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Required plugin %1 was not found").arg(dependencyName),
-					QMessageBox::Ok, ModulesWindow::instance());
+			plugin->activationError(tr("Required plugin %1 was not found").arg(dependencyName), PluginActivationReasonDependency);
 			return false;
 		}
 
-		Plugin *plugin = Plugins.value(dependencyName);
-		if (!activatePlugin(plugin))
+		PluginActivationReason activationReason;
+		if (Plugin::PluginStateEnabled == dependencyPlugin->state())
+			activationReason = PluginActivationReasonKnownDefault;
+		else if (Plugin::PluginStateNew == dependencyPlugin->state() && dependencyPlugin->info()->loadByDefault())
+			activationReason = PluginActivationReasonNewDefault;
+		else
+			activationReason = PluginActivationReasonDependency;
+
+		if (!activatePlugin(dependencyPlugin, activationReason))
 			return false;
 
-		if (Plugin::PluginStateNew == plugin->state() && plugin->info()->loadByDefault())
+		if (PluginActivationReasonNewDefault == activationReason)
 			plugin->setState(Plugin::PluginStateEnabled);
 	}
 
@@ -539,18 +553,20 @@ QString PluginsManager::activeDependentPluginNames(const QString &pluginName) co
  * @author Rafał 'Vogel' Malinowski
  * @short Activates given plugin and all its dependencies.
  * @param plugin plugin to activate
+ * @param reason plugin activation reason
  * @return true, if plugin was successfully activated
- * @todo remove message box
  *
  * This method activates given plugin and all its dependencies. Plugin can be activated only when no conflict
  * is found and all dependencies can be activated. In other case false is returned and plugin will not be activated.
  * Please note that no dependency plugin activated in this method will be automatically deactivated if
  * this method fails, so list of active plugins can be changed even if plugin could not be activated.
  *
+ * \p reason will be passed to Plugin::activate() method.
+ *
  * After successfull activation all dependencies are locked using incDependenciesUsageCount() and cannot be
  * deactivated without deactivating plugin. Plugin::usageCounter() of dependencies is increased.
  */
-bool PluginsManager::activatePlugin(Plugin *plugin)
+bool PluginsManager::activatePlugin(Plugin *plugin, PluginActivationReason reason)
 {
 	if (plugin->isActive())
 		return true;
@@ -560,12 +576,11 @@ bool PluginsManager::activatePlugin(Plugin *plugin)
 	QString conflict = findActiveConflict(plugin);
 	if (!conflict.isEmpty())
 	{
-		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Plugin %1 conflicts with: %2").arg(plugin->name(), conflict),
-				QMessageBox::Ok, ModulesWindow::instance());
+		plugin->activationError(tr("Plugin %1 conflicts with: %2").arg(plugin->name(), conflict), reason);
 		result = false;
 	}
 	else
-		result = activateDependencies(plugin) && plugin->activate();
+		result = activateDependencies(plugin) && plugin->activate(reason);
 
 	if (result)
 		incDependenciesUsageCount(plugin);
@@ -594,7 +609,7 @@ bool PluginsManager::deactivatePlugin(Plugin *plugin, bool force)
 
 	if (plugin->usageCounter() > 0 && !force)
 	{
-		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Plugin %1 cannot be deactivated because it is being used by the following plugins:%2").arg(plugin->name()).arg(activeDependentPluginNames(plugin->name())),
+		MessageDialog::show(KaduIcon("dialog-error"), tr("Kadu"), tr("Plugin %1 cannot be deactivated because it is being used by the following plugins:%2").arg(plugin->name()).arg(activeDependentPluginNames(plugin->name())),
 				QMessageBox::Ok, ModulesWindow::instance());
 		kdebugf2();
 		return false;

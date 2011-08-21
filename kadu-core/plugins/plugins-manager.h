@@ -35,8 +35,9 @@
 #include <QtCore/QMap>
 #include <QtGui/QWidget>
 
-#include "storage/storable-object.h"
 #include "exports.h"
+#include "plugins/plugins-common.h"
+#include "storage/storable-object.h"
 
 class QCheckBox;
 class QLabel;
@@ -125,7 +126,7 @@ public:
 	void activatePlugins();
 	void deactivatePlugins();
 
-	bool activatePlugin(Plugin *plugin);
+	bool activatePlugin(Plugin *plugin, PluginActivationReason reason);
 	bool deactivatePlugin(Plugin *plugin, bool force);
 
 	void usePlugin(const QString &pluginName);

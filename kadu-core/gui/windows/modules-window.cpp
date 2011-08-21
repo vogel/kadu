@@ -217,7 +217,7 @@ void ModulesWindow::moduleAction(QTreeWidgetItem *)
 
 void ModulesWindow::loadItemPlugin(Plugin *itemPlugin)
 {
-	if (PluginsManager::instance()->activatePlugin(itemPlugin))
+	if (PluginsManager::instance()->activatePlugin(itemPlugin, PluginActivationReasonUserRequest))
 		itemPlugin->setState(Plugin::PluginStateEnabled);
 
 	refreshList();

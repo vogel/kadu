@@ -22,6 +22,7 @@
 
 #include <QtCore/QObject>
 
+#include "plugins/plugins-common.h"
 #include "plugins/plugins-manager.h"
 
 #include "storage/named-storable-object.h"
@@ -115,6 +116,9 @@ private:
 	void loadTranslations();
 	void unloadTranslations();
 
+private slots:
+	void setStateEnabledIfInactive(bool enable);
+
 protected:
 	virtual void load();
 
@@ -131,8 +135,10 @@ public:
 
 	bool shouldBeActivated();
 
-	bool activate();
+	bool activate(PluginActivationReason reason);
 	void deactivate();
+
+	void activationError(const QString &errorMessage, PluginActivationReason activationReason);
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
