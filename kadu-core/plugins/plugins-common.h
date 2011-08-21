@@ -28,4 +28,11 @@ enum PluginActivationReason
 	PluginActivationReasonUserRequest,
 };
 
+enum PluginDeactivationReason
+{
+	PluginDeactivationReasonUserRequest,
+	PluginDeactivationReasonExiting,
+	PluginDeactivationReasonExitingForce,
+};
+
 #endif // PLUGINS_COMMON_H

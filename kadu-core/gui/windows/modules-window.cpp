@@ -227,8 +227,7 @@ void ModulesWindow::loadItemPlugin(Plugin *itemPlugin)
 
 void ModulesWindow::unloadItemPlugin(Plugin *itemPlugin)
 {
-	if (PluginsManager::instance()->deactivatePlugin(itemPlugin, false))
-		itemPlugin->setState(Plugin::PluginStateDisabled);
+	PluginsManager::instance()->deactivatePlugin(itemPlugin, PluginDeactivationReasonUserRequest);
 
 	refreshList();
 

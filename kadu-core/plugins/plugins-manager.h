@@ -122,7 +122,7 @@ public:
 	void deactivatePlugins();
 
 	bool activatePlugin(Plugin *plugin, PluginActivationReason reason);
-	bool deactivatePlugin(Plugin *plugin, bool force);
+	bool deactivatePlugin(Plugin *plugin, PluginDeactivationReason reason);
 
 	void usePlugin(const QString &pluginName);
 	void releasePlugin(const QString &pluginName);

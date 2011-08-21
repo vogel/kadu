@@ -244,7 +244,7 @@ bool Plugin::activate(PluginActivationReason reason)
  * If plugin is active, its GenericPlugin::done() method is called and then all data is removed from
  * memory - plugin library file and plugin translations.
  */
-void Plugin::deactivate()
+void Plugin::deactivate(PluginDeactivationReason reason)
 {
 	if (!Active)
 		return;
@@ -264,6 +264,9 @@ void Plugin::deactivate()
 	unloadTranslations();
 
 	Active = false;
+
+	if (PluginDeactivationReasonUserRequest == reason)
+		setState(PluginStateDisabled);
 }
 
 /**

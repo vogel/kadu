@@ -340,7 +340,7 @@ void PluginsManager::deactivatePlugins()
 		deactivated = false;
 		foreach (Plugin *plugin, active)
 			if (plugin->usageCounter() == 0)
-				if (deactivatePlugin(plugin, false))
+				if (deactivatePlugin(plugin, PluginDeactivationReasonExiting))
 					deactivated = true;
 	}
 	while (deactivated);
@@ -351,7 +351,7 @@ void PluginsManager::deactivatePlugins()
 	foreach (Plugin *plugin, active)
 	{
 		kdebugm(KDEBUG_PANIC, "WARNING! Could not deactivate plugin %s, killing\n", qPrintable(plugin->name()));
-		deactivatePlugin(plugin, true);
+		deactivatePlugin(plugin, PluginDeactivationReasonExitingForce);
 	}
 
 }
@@ -558,20 +558,20 @@ bool PluginsManager::activatePlugin(Plugin *plugin, PluginActivationReason reaso
  * @author Rafał 'Vogel' Malinowski
  * @short Deactivates given plugin.
  * @param plugin plugin to deactivate
- * @param force if true, no check for usage will be performed
+ * @param reason plugin deactivation reason
  * @return true, if plugin was successfully deactivated
  * @todo remove message box
  *
  * This method deactivates given plugin. Deactivation can be performed only when plugin is no longed in use (its
- * Plugin::usageCounter() returns 0) or when force parameter is set to true.
+ * Plugin::usageCounter() returns 0) or \p reason is PluginDeactivationReasonExitingForce.
  *
  * After successfull deactivation all dependenecies are released - their Plugin::usageCounter() is decreaced.
  */
-bool PluginsManager::deactivatePlugin(Plugin *plugin, bool force)
+bool PluginsManager::deactivatePlugin(Plugin* plugin, PluginDeactivationReason reason)
 {
-	kdebugmf(KDEBUG_FUNCTION_START, "name:'%s' force:%d usage: %d\n", qPrintable(plugin->name()), force, plugin->usageCounter());
+	kdebugmf(KDEBUG_FUNCTION_START, "name:'%s' reason:%d usage: %d\n", qPrintable(plugin->name()), (int)reason, plugin->usageCounter());
 
-	if (plugin->usageCounter() > 0 && !force)
+	if (plugin->usageCounter() > 0 && PluginDeactivationReasonExitingForce != reason)
 	{
 		MessageDialog::show(KaduIcon("dialog-error"), tr("Kadu"), tr("Plugin %1 cannot be deactivated because it is being used by the following plugins:%2").arg(plugin->name()).arg(activeDependentPluginNames(plugin->name())),
 				QMessageBox::Ok, ModulesWindow::instance());
@@ -582,7 +582,7 @@ bool PluginsManager::deactivatePlugin(Plugin *plugin, bool force)
 	foreach (const QString &i, plugin->info()->dependencies())
 		releasePlugin(i);
 
-	plugin->deactivate();
+	plugin->deactivate(reason);
 	return true;
 }
 
