@@ -79,10 +79,12 @@ void printBacktrace(const QString &header)
 	fflush(stderr);
 }
 
+#ifdef Q_WS_X11
 QString desktopFilePath()
 {
 	return QLatin1String(KADU_DESKTOP_FILE_PATH);
 }
+#endif
 
 QString homePath()
 {
