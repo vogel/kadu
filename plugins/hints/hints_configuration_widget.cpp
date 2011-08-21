@@ -40,7 +40,7 @@
 HintsConfigurationWidget::HintsConfigurationWidget(QWidget *parent)
 	: NotifierConfigurationWidget(parent)
 {
-	preview = new QLabel(tr("<b>Preview</b> text"), this);
+	preview = new QLabel(tr("<b>Here</b> you can see the preview"), this);
 	preview->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
 	preview->setMargin(3);
 

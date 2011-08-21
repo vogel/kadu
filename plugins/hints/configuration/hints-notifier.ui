@@ -3,7 +3,7 @@
 	<section name="Notifications">
 		<tab name="Hints">
 			<group-box name="Look">
-				<label caption="&lt;b&gt;Text&lt;/b&gt; preview" id="preview" />
+				<label caption="&lt;b&gt;Here&lt;/b&gt; you can see the preview" id="preview" />
 				<select-font caption="Font" config-section="Hints" config-item="_font" id="font" />
 				<color-button caption="Font color" config-section="Hints" config-item="_fgcolor" id="fgcolor" />
 				<color-button caption="Background color" config-section="Hints" config-item="_bgcolor" id="bgcolor" />

@@ -20,7 +20,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QApplication>
 #include <QtGui/QPalette>
 #include <QtGui/QSpinBox>
 
@@ -46,7 +45,7 @@ HintsConfigurationWindow::HintsConfigurationWindow(const QString &eventName, Not
 
 	preview = static_cast<ConfigLabel *>(widget()->widgetById("preview"));
 	preview->setMargin(3);
-	preview->setText(qApp->translate("HintsConfigurationWidget", "<b>Preview</b> text"), false);
+	preview->setText(tr("<b>Here</b> you can see the preview"), false);
 
 	connect(static_cast<ConfigSelectFont *>(widget()->widgetById("font")), SIGNAL(fontChanged(QFont)),
 			this, SLOT(fontChanged(QFont)));
