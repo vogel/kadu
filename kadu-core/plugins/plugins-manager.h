@@ -94,7 +94,6 @@ class KADUAPI PluginsManager : public QObject, public StorableObject
 	void incDependenciesUsageCount(Plugin *plugin);
 
 	void importFrom09();
-	void ensureLoadedAtLeastOnce(const QString &moduleName);
 
 	QStringList installedPlugins() const;
 
