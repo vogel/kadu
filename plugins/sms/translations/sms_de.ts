@@ -52,8 +52,8 @@
         <translation>Sende SMS</translation>
     </message>
     <message>
-        <source>SMS Era Gateway</source>
-        <translation>Server SMS Era</translation>
+		<source>SMS T-Mobile.pl Gateway</source>
+		<translation>Server T-Mobile.pl Era</translation>
     </message>
     <message>
         <source>Sponsored</source>

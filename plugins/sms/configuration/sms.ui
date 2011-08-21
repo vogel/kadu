@@ -13,7 +13,7 @@
 				<line-edit caption="SMS custom string" config-section="SMS" config-item="SmsString" id="sms/customString" />
 			</group-box>
 			<group-box name="Gateways">
-				<combo-box caption="SMS Era Gateway" config-section="SMS" config-item="EraGateway" id="default_sms/eraGateway">
+				<combo-box caption="SMS T-Mobile.pl Gateway" config-section="SMS" config-item="EraGateway" id="default_sms/eraGateway">
 					<item caption="Sponsored" value="Sponsored" />
 					<item caption="OmnixMultimedia" value="OmnixMultimedia" />
 				</combo-box>

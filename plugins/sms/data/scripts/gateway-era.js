@@ -20,7 +20,7 @@
 
 GatewayEra.prototype = {
 	name: function() {
-		return "Era";
+		return "T-Mobile.PL";
 	},
 
 	id: function() {
