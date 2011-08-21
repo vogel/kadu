@@ -86,10 +86,6 @@ class KADUAPI PluginsManager : public QObject, public StorableObject
 
 	static PluginsManager *Instance;
 
-	/* to remove when all modules became plugins */
-	typedef int InitModuleFunc(bool);
-	typedef void CloseModuleFunc(void);
-
 	QMap<QString, Plugin *> Plugins;
 
 	PluginsManager();
