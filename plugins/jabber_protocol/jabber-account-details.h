@@ -67,12 +67,11 @@ private:
 
 protected:
 	virtual void load();
+	virtual void store();
 
 public:
 	explicit JabberAccountDetails(AccountShared *data);
 	virtual ~JabberAccountDetails();
-
-	virtual void store();
 
 	PROPERTY_DEF(QString, resource, setResource, Resource)
 	PROPERTY_DEF(bool, autoResource, setAutoResource, AutoResource)

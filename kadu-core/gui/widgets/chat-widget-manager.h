@@ -74,6 +74,7 @@ private slots:
 
 protected:
 	virtual void load();
+	virtual void store();
 
 	virtual void configurationUpdated();
 
@@ -89,8 +90,6 @@ public:
 	const QHash<Chat , ChatWidget *> & chats() const;
 
 	ChatWidget * byChat(const Chat &chat, bool create = false) const;
-
-	virtual void store();
 
 	void activateChatWidget(ChatWidget *chatwidget, bool forceActivate);
 

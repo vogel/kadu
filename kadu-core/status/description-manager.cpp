@@ -82,7 +82,7 @@ void DescriptionManager::import()
 
 	truncate();
 
-	store();
+	ensureStored();
 }
 
 void DescriptionManager::truncate()

@@ -36,11 +36,6 @@ unsigned int GaduContactDetails::uin()
 	return mainData()->id().toUInt();
 }
 
-
-void GaduContactDetails::store()
-{
-}
-
 void GaduContactDetails::setGaduFlags(int gaduFlags)
 {
 	GaduFlags = gaduFlags;

@@ -541,8 +541,8 @@ void Firewall::import_0_6_5_configuration()
 		if (!bfd)
 			continue;
 
-		bfd->setSecuredSending(true);;
-		bfd->store();
+		bfd->setSecuredSending(true);
+		bfd->ensureStored();
 	}
 
 	config_file.removeVariable("Firewall", "Secured_list");

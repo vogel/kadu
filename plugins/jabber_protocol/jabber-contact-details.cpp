@@ -36,7 +36,3 @@ JabberContactDetails::JabberContactDetails(ContactShared *contactShared, QObject
 JabberContactDetails::~JabberContactDetails()
 {
 }
-
-void JabberContactDetails::store()
-{
-}

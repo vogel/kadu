@@ -30,6 +30,7 @@ class MobileNumber : public UuidStorableObject
 
 protected:
 	virtual void load();
+	virtual void store();
 
 public:
 	MobileNumber();
@@ -38,8 +39,6 @@ public:
 
 	virtual StorableObject * storageParent();
 	virtual QString storageNodeName() { return QLatin1String("MobileNumber"); }
-
-	virtual void store();
 
 	const QString & number() const { return Number; };
 	void setNumber(const QString &number) { Number = number; };

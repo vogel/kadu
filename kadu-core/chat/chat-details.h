@@ -50,6 +50,8 @@ class ChatDetails : public QObject, public Details<ChatShared>
 {
 	Q_OBJECT
 
+	friend class ChatShared;
+
 public:
 	/**
 	 * @author Rafal 'Vogel' Malinowski

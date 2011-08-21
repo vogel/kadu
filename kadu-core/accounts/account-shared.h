@@ -77,6 +77,8 @@ private:
 
 protected:
 	virtual void load();
+	virtual void store();
+	virtual bool shouldStore();
 
 	// TODO: 0.11, fix this
 	// hack, changing details does not trigger this
@@ -100,8 +102,6 @@ public:
 	virtual StorableObject * storageParent();
 	virtual QString storageNodeName();
 
-	virtual void store();
-	virtual bool shouldStore();
 	virtual void aboutToBeRemoved();
 
 	Contact accountContact();

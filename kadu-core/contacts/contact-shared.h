@@ -64,6 +64,8 @@ class KADUAPI ContactShared : public QObject, public Shared, public DetailsHolde
 
 protected:
 	virtual void load();
+	virtual void store();
+	virtual bool shouldStore();
 
 	virtual void emitUpdated();
 
@@ -85,8 +87,6 @@ public:
 	virtual StorableObject * storageParent();
 	virtual QString storageNodeName();
 
-	virtual void store();
-	virtual bool shouldStore();
 	virtual void aboutToBeRemoved();
 
 	KaduShared_PropertyRead(const Account &, contactAccount, ContactAccount)

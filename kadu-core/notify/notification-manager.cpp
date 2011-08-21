@@ -246,7 +246,7 @@ void NotificationManager::notifyAboutUserActionActivated(QAction *sender, bool t
 		if (bnd->notify() == on)
 		{
 			bnd->setNotify(!on);
-			bnd->store();
+			bnd->ensureStored();
 		}
 	}
 
@@ -584,7 +584,7 @@ void NotificationManager::groupUpdated()
 			continue;
 
 		bnd->setNotify(notify);
-		bnd->store();
+		bnd->ensureStored();
 	}
 }
 

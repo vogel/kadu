@@ -132,7 +132,7 @@ void ChatWidgetManager::closeAllWindows()
 {
 	kdebugf();
 
-	store();
+	ensureStored();
 
 	QHash<Chat, ChatWidget *>::iterator i = Chats.begin();
 	while (i != Chats.end())

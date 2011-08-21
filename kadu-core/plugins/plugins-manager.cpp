@@ -188,7 +188,7 @@ void PluginsManager::store()
 	StorableObject::store();
 
 	foreach (Plugin *plugin, Plugins)
-		plugin->store();
+		plugin->ensureStored();
 }
 
 /**

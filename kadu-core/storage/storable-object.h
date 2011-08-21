@@ -146,6 +146,9 @@ protected:
 
 	virtual void load();
 
+	virtual void store();
+	virtual bool shouldStore();
+
 	virtual void loaded() { };
 
 public:
@@ -175,8 +178,6 @@ public:
 
 	const QSharedPointer<StoragePoint> & storage();
 
-	virtual void store();
-	virtual bool shouldStore();
 	/**
 	 * @author Rafal 'Vogel' Malinowski
 	 * @short Returns current object state.

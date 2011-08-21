@@ -45,6 +45,7 @@ class KADUAPI GroupShared : public QObject, public Shared
 
 protected:
 	virtual void load();
+	virtual void store();
 	virtual void emitUpdated();
 
 public:
@@ -57,7 +58,6 @@ public:
 	virtual StorableObject * storageParent();
 	virtual QString storageNodeName();
 
-	virtual void store();
 	virtual void aboutToBeRemoved();
 
 	KaduShared_PropertyRead(const QString &, name, Name)

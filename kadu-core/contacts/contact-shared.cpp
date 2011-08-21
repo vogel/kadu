@@ -290,7 +290,7 @@ void ContactShared::detailsAboutToBeRemoved()
 {
 	// do not store contacts that are not in contact manager
 	if (ContactManager::instance()->allItems().contains(uuid()))
-		details()->store();
+		details()->ensureStored();
 
 	detach(false, true);
 }

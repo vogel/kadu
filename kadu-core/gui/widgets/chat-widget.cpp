@@ -614,7 +614,7 @@ void ChatWidget::kaduStoreGeometry()
 		return;
 
 	cgd->setWidgetHorizontalSizes(HorizontalSplitter->sizes());
-	cgd->store();
+	cgd->ensureStored();
 }
 
 void ChatWidget::showEvent(QShowEvent *e)

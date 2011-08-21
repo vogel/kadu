@@ -50,6 +50,7 @@ private slots:
 
 protected:
 	virtual void load();
+	virtual void store();
 	virtual void emitUpdated();
 
 public:
@@ -58,8 +59,6 @@ public:
 
 	explicit FileTransferShared(const QUuid &uuid = QUuid());
 	virtual ~FileTransferShared();
-
-	virtual void store();
 
 	virtual StorableObject * storageParent();
 	virtual QString storageNodeName();

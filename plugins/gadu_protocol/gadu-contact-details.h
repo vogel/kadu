@@ -34,11 +34,12 @@ class GaduContactDetails : public ContactDetails
 
 	int GaduFlags;
 
+protected:
+	virtual bool shoulStore() { return false; }
+
 public:
 	explicit GaduContactDetails(ContactShared *contactShared, QObject *parent = 0);
 	virtual ~GaduContactDetails();
-
-	virtual void store();
 
 	GaduProtocol::UinType uin();
 

@@ -143,7 +143,7 @@ void BuddyDeleteWindow::accept()
 
 	foreach (const Buddy &buddy, BuddiesToDelete)
 		deleteBuddy(buddy);
-	BuddyManager::instance()->store();
+	BuddyManager::instance()->ensureStored();
 }
 
 void BuddyDeleteWindow::reject()

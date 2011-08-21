@@ -243,7 +243,7 @@ void FirewallConfigurationUiHandler::configurationApplied()
 			continue;
 
 		bfd->setSecuredSending(true);
-		bfd->store();
+		bfd->ensureStored();
 	}
 
 	count = AllList->count();
@@ -260,7 +260,7 @@ void FirewallConfigurationUiHandler::configurationApplied()
 			continue;
 
 		bfd->setSecuredSending(false);
-		bfd->store();
+		bfd->ensureStored();
 	}
 
 	config_file.writeEntry("Firewall", "question", QuestionEdit->toPlainText());

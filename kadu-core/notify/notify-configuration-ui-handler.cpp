@@ -263,7 +263,7 @@ void NotifyConfigurationUiHandler::configurationWindowApplied()
 			continue;
 
 		bnd->setNotify(true);
-		bnd->store();
+		bnd->ensureStored();
 	}
 
 	count = allUsers->count();
@@ -280,7 +280,7 @@ void NotifyConfigurationUiHandler::configurationWindowApplied()
 			continue;
 
 		bnd->setNotify(false);
-		bnd->store();
+		bnd->ensureStored();
 	}
 
 	foreach (NotifyEvent *notifyEvent, NotificationManager::instance()->notifyEvents())

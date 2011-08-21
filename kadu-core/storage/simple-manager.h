@@ -211,7 +211,6 @@ protected:
 		loaded();
 	}
 
-public:
 	/**
 	 * @author Rafal 'Vogel' Malinowski
 	 * @short Stores all items to configuration file.
@@ -230,6 +229,7 @@ public:
 			item.ensureStored();
 	}
 
+public:
 	/**
 	 * @author Rafal 'Vogel' Malinowski
 	 * @short Returns item by index.

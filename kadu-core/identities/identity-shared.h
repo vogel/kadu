@@ -39,6 +39,7 @@ class KADUAPI IdentityShared : public BaseStatusContainer, public Shared
 
 protected:
 	virtual void load();
+	virtual void store();
 
 public:
 	static IdentityShared * loadStubFromStorage(const QSharedPointer<StoragePoint> &accountStoragePoint);
@@ -50,7 +51,6 @@ public:
 	virtual StorableObject * storageParent();
 	virtual QString storageNodeName();
 
-	virtual void store();
 	virtual void aboutToBeRemoved();
 
 	void addAccount(const Account &account);

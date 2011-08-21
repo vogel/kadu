@@ -99,5 +99,5 @@ void EncryptioNgSimliteKeyImporter::importKeys(const Account &account)
 	foreach (const QFileInfo &fileInfo, fileInfoList)
 		importKey(account, fileInfo);
 
-	KeysManager::instance()->store();
+	KeysManager::instance()->ensureStored();
 }

@@ -107,6 +107,8 @@ private slots:
 
 protected:
 	virtual void load();
+	virtual void store();
+	virtual bool shouldStore();
 	virtual void emitUpdated();
 
 public:
@@ -122,8 +124,6 @@ public:
 	void importConfiguration(const QDomElement &parent);
 	void importConfiguration(); // imports configuration from custom data values
 
-	virtual void store();
-	virtual bool shouldStore();
 	virtual void aboutToBeRemoved();
 
 	QString id(const Account &account);

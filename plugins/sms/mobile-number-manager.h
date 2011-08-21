@@ -42,12 +42,11 @@ protected:
 	virtual QSharedPointer<StoragePoint> createStoragePoint();
 
 	virtual void load();
+	virtual void store();
 
 public:
 	static MobileNumberManager * instance();
 	static void destroyInstance();
-
-	virtual void store();
 
 	void registerNumber(QString number, QString gatewayId);
 	void unregisterNumber(QString number);

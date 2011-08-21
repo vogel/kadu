@@ -139,7 +139,7 @@ void StorableObject::store()
 	ensureLoaded();
 
 	foreach (ModuleData *moduleData, ModulesStorableData)
-		moduleData->store();
+		moduleData->ensureStored();
 }
 
 /**
@@ -249,7 +249,7 @@ void StorableObject::moduleDataDestroyed(const QString &moduleName, ModuleData *
 
 	if (ModulesStorableData.contains(moduleName) && ModulesStorableData.value(moduleName) == moduleData)
 	{
-		moduleData->store();
+		moduleData->ensureStored();
 		ModulesStorableData.remove(moduleName);
 	}
 }

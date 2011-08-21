@@ -173,7 +173,7 @@ void ChatWindow::kaduStoreGeometry()
 		return;
 
 	cgd->setWindowGeometry(geometry());
-	cgd->store();
+	cgd->ensureStored();
 }
 
 void ChatWindow::closeEvent(QCloseEvent *e)

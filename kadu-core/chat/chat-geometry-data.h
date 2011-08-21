@@ -41,12 +41,12 @@ class ChatGeometryData : public ModuleData
 
 protected:
 	virtual void load();
+	virtual void store();
 
 public:
 	ChatGeometryData(const QString &moduleName, StorableObject *parent, QObject *qobjectParent);
 	virtual ~ChatGeometryData();
 
-	virtual void store();
 	virtual QString name() const;
 
 	Property(QRect, windowGeometry, WindowGeometry)

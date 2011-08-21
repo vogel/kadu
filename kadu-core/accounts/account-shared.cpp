@@ -256,7 +256,7 @@ void AccountShared::detailsAdded()
 
 void AccountShared::detailsAboutToBeRemoved()
 {
-	details()->store();
+	details()->ensureStored();
 }
 
 void AccountShared::detailsRemoved()

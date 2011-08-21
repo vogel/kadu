@@ -42,6 +42,8 @@ class ENCRYPTIONAPI KeyShared : public QObject, public Shared
 
 protected:
 	virtual void load();
+	virtual void store();
+	virtual bool shouldStore();
 
 	virtual void emitUpdated();
 
@@ -55,8 +57,6 @@ public:
 	virtual StorableObject * storageParent();
 	virtual QString storageNodeName();
 
-	virtual void store();
-	virtual bool shouldStore();
 	virtual void aboutToBeRemoved();
 
 	QString filePath();

@@ -49,6 +49,7 @@ protected:
 	QStringList StringList;
 
 	virtual void load();
+	virtual void store();
 
 public:
 	StorableStringList();
@@ -62,7 +63,6 @@ public:
 	 * This method determines names of these subnodes.
 	 */
 	virtual QString storageItemNodeName() = 0;
-	virtual void store();
 
 	const QStringList & content() const;
 

@@ -49,12 +49,11 @@ class GaduAccountDetails : public AccountDetails
 
 protected:
 	virtual void load();
+	virtual void store();
 
 public:
 	explicit GaduAccountDetails(AccountShared *data);
 	virtual ~GaduAccountDetails();
-
-	virtual void store();
 
 	UinType uin();
 

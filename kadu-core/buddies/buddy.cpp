@@ -99,10 +99,10 @@ void Buddy::importConfiguration()
 		data()->importConfiguration();
 }
 
-void Buddy::store()
+void Buddy::ensureStored()
 {
 	if ((!isNull() && !isAnonymous()) || (isAnonymous() && !BuddyRemovePredicateObject::inquireAll(*this)))
-		data()->store();
+		data()->ensureStored();
 	else
 		data()->removeFromStorage();
 }

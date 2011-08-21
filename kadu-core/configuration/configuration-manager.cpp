@@ -65,7 +65,7 @@ void ConfigurationManager::load()
 void ConfigurationManager::store()
 {
 	foreach (StorableObject *object, RegisteredStorableObjects)
-		object->store();
+		object->ensureStored();
 
 	xml_config_file->rootElement().setAttribute("uuid", Uuid.toString());
 }
@@ -83,7 +83,7 @@ void ConfigurationManager::registerStorableObject(StorableObject *object)
 
 void ConfigurationManager::unregisterStorableObject(StorableObject *object)
 {
-	object->store();
+	object->ensureStored();
 
 	RegisteredStorableObjects.removeAll(object);
 }

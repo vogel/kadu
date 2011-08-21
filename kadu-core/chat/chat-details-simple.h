@@ -48,13 +48,12 @@ class ChatDetailsSimple : public ChatDetails
 
 protected:
 	virtual void load();
+	virtual void store();
+	virtual bool shouldStore();
 
 public:
 	explicit ChatDetailsSimple(ChatShared *chatData);
 	virtual ~ChatDetailsSimple();
-
-	virtual void store();
-	virtual bool shouldStore();
 
 	virtual ChatType * type() const;
 	virtual ContactSet contacts() const;

@@ -101,7 +101,7 @@ void HistoryImportThread::run()
 			break;
 
 		historyImporterChatData->setImported(true);
-		historyImporterChatData->store();
+		historyImporterChatData->ensureStored();
 		// force sync for every chat
 		History::instance()->forceSync();
 	}

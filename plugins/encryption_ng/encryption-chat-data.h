@@ -51,12 +51,12 @@ private slots:
 
 protected:
 	virtual void load();
+	virtual void store();
 
 public:
 	explicit EncryptionChatData(const QString &moduleName, StorableObject *parent, QObject *qobjectParent);
 	virtual ~EncryptionChatData();
 
-	virtual void store();
 	virtual QString name() const;
 
 	Property(bool, encrypt, Encrypt)

@@ -95,6 +95,7 @@ private slots:
 protected:
 	virtual void configurationUpdated();
 	virtual void load();
+	virtual void store();
 
 public:
 	explicit TabsManager(QObject *parent = 0);
@@ -103,8 +104,6 @@ public:
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
 
 	bool detachChat(ChatWidget *chat);
-
-	virtual void store();
 
 	virtual StorableObject * storageParent() { return 0; }
 	virtual QString storageNodeName() { return QLatin1String("ModuleTabs"); }

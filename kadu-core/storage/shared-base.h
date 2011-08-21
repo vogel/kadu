@@ -471,18 +471,6 @@ public:
 
 	/**
 	 * @author Rafal 'Vogel' Malinowski
-	 * @short Delegates store method to Shared object.
-	 *
-	 * @see Shared::store
-	 */
-	void store()
-	{
-		if (!isNull())
-			Data->store();
-	}
-
-	/**
-	 * @author Rafal 'Vogel' Malinowski
 	 * @short Delegates ensureStored method to Shared object.
 	 *
 	 * @see Shared::ensureStored

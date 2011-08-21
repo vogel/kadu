@@ -127,7 +127,7 @@ void MobileNumberManager::store()
 	StorableObject::store();
 
 	foreach (MobileNumber *number, Numbers)
-		number->store();
+		number->ensureStored();
 }
 
 QString MobileNumberManager::gatewayId(const QString &mobileNumber)

@@ -155,7 +155,7 @@ void ChatShared::store()
 	storeValue("Account", ChatAccount.uuid().toString());
 
 	if (details())
-		details()->store();
+		details()->ensureStored();
 }
 
 /**
@@ -258,7 +258,7 @@ void ChatShared::detailsAdded()
  */
 void ChatShared::detailsAboutToBeRemoved()
 {
-	details()->store();
+	details()->ensureStored();
 }
 
 void ChatShared::detailsRemoved()

@@ -100,12 +100,12 @@ void BuddyOptionsConfigurationWidget::save()
 	if (bnd)
 	{
 		bnd->setNotify(NotifyCheckBox->isChecked());
-		bnd->store();
+		bnd->ensureStored();
 	}
 	if (ckd)
 	{
 		ckd->setHideDescription(HideDescriptionCheckBox->isChecked());
-		ckd->store();
+		ckd->ensureStored();
 	}
 }
 

@@ -104,6 +104,7 @@ class KADUAPI PluginsManager : public QObject, public StorableObject
 
 protected:
 	virtual void load();
+	virtual void store();
 
 public:
 	static PluginsManager * instance();
@@ -111,8 +112,6 @@ public:
 	// storage implementation
 	virtual StorableObject * storageParent() { return 0; }
 	virtual QString storageNodeName() { return QLatin1String("Plugins"); }
-
-	virtual void store();
 
 	const QMap<QString, Plugin *> & plugins() const { return Plugins; }
 	QList<Plugin *> activePlugins() const;

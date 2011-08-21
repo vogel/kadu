@@ -121,6 +121,8 @@ private slots:
 
 protected:
 	virtual void load();
+	virtual void store();
+	virtual bool shouldStore();
 
 public:
 	Plugin(const QString &name, QObject *parent = 0);
@@ -130,9 +132,6 @@ public:
 	virtual StorableObject* storageParent() { return PluginsManager::instance(); }
 	virtual QString storageNodeName() { return QLatin1String("Plugin"); }
 	virtual QString name() const { return Name; }
-
-	virtual void store();
-	virtual bool shouldStore();
 
 	bool shouldBeActivated();
 
