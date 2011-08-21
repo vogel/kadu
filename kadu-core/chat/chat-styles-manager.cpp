@@ -358,7 +358,7 @@ void ChatStylesManager::mainConfigurationWindowCreated(MainConfigurationWindow *
 	if (!defaultVariant.isEmpty() && VariantListCombo->findText(defaultVariant) == -1)
 		VariantListCombo->insertItem(0, defaultVariant);
 
-	QString newVariant = CurrentEngine->currentStyleVariant().isNull()
+	QString newVariant = CurrentEngine->currentStyleVariant().isEmpty()
 			? defaultVariant
 			: CurrentEngine->currentStyleVariant();
 	variantChangedSlot(newVariant);

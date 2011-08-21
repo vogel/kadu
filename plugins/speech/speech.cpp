@@ -163,7 +163,7 @@ void Speech::say(const QString &s, const QString &path,
 	QString t, dev, soundSystem;
 	QStringList list;
 
-	if (path.isNull())
+	if (path.isEmpty())
 	{
 		t = config_file.readEntry("Speech","SpeechProgram", "powiedz");
 		klatt = config_file.readBoolEntry("Speech", "KlattSynt");

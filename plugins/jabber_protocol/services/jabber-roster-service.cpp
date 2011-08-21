@@ -49,7 +49,7 @@ JabberRosterService::~JabberRosterService()
 
 const QString & JabberRosterService::itemDisplay(const XMPP::RosterItem &item)
 {
-	if (!item.name().isNull())
+	if (!item.name().isEmpty())
 		return item.name();
 	else
 		return item.jid().bare();

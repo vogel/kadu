@@ -151,7 +151,7 @@ QString profilePath(const QString &subpath)
 		QString pwd = QDir::currentPath();
 
 #ifdef Q_OS_MAC
-		if (config_dir.isNull())
+		if (config_dir.isEmpty())
 			path = QString("%1/Library/Kadu/").arg(home);
 		else if (config_dir.startsWith("./"))
 		{
@@ -176,7 +176,7 @@ QString profilePath(const QString &subpath)
 				path = QString("%1/%2/").arg(home).arg(config_dir);
 		}
 #elif defined(Q_OS_WIN)
-		if (config_dir.isNull())
+		if (config_dir.isEmpty())
 			path = QString("%1/Kadu/").arg(home);
 		else if (config_dir.startsWith("./") || config_dir.startsWith(".\\"))
 		{
@@ -201,7 +201,7 @@ QString profilePath(const QString &subpath)
 				path = QString("%1/%2/").arg(home).arg(config_dir);
 		}
 #else
-		if (config_dir.isNull())
+		if (config_dir.isEmpty())
 			path = QString("%1/.kadu/").arg(home);
 		else if (config_dir.startsWith("./"))
 		{
