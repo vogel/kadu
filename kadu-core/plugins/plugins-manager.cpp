@@ -232,38 +232,14 @@ void PluginsManager::importFrom09()
 			loadedPlugins.append("hints");
 	}
 
-	ensureLoadedAtLeastOnce("gadu_protocol");
-	ensureLoadedAtLeastOnce("jabber_protocol");
-	ensureLoadedAtLeastOnce("sql_history");
-	ensureLoadedAtLeastOnce("history_migration");
-	ensureLoadedAtLeastOnce("profiles_import");
-
 	foreach (Plugin *plugin, Plugins)
 		if (allPlugins.contains(plugin->name()))
 		{
 			if (loadedPlugins.contains(plugin->name()))
 				plugin->setState(Plugin::PluginStateEnabled);
-			else
+			else if (everLoaded.contains(plugin->name()))
 				plugin->setState(Plugin::PluginStateDisabled);
 		}
-}
-
-/**
- * @author Rafał 'Vogel' Malinowski
- * @short Enure that given plugin was/will be activated at least once.
- * @param pluginName name of plugin to check
- *
- * This method is used to fix broken configurations that had importand modules marked
- * as unloaded without even loading them one time. Do not call this method, it is used
- * internally by importFrom09().
- */
-void PluginsManager::ensureLoadedAtLeastOnce(const QString& pluginName)
-{
-	if (!Plugins.contains(pluginName))
-		return;
-
-	if (Plugin::PluginStateNew == Plugins.value(pluginName)->state())
-		Plugins.value(pluginName)->setState(Plugin::PluginStateEnabled);
 }
 
 /**
