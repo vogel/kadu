@@ -54,6 +54,8 @@ class CropImageWidget : public QGraphicsView
 	bool IsMouseButtonPressed;
 	bool WasDoubleClick;
 
+	QRect OldCropRect;
+
 	void normalizeCropRect();
 	void updateCropRectDisplay();
 

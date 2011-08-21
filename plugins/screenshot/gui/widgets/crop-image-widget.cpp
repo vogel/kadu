@@ -180,6 +180,10 @@ void CropImageWidget::crop()
 
 void CropImageWidget::updateToolBoxFileSizeHint()
 {
+	if (CropRect.normalized() == OldCropRect)
+		return;
+	OldCropRect = CropRect.normalized();
+
 	QBuffer buffer;
 	QPixmap pixmap = croppedPixmap();
 
