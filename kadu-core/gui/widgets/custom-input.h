@@ -1,5 +1,6 @@
 /*
  * %kadu copyright begin%
+ * Copyright 2011 Piotr Dąbrowski (ultr@ultr.pl)
  * Copyright 2008, 2009 Piotr Galiszewski (piotr.galiszewski@kadu.im)
  * Copyright 2006 Adrian Smarzewski (adrian@kadu.net)
  * Copyright 2005, 2007 Marcin Ślusarz (joi@kadu.net)
@@ -70,7 +71,10 @@ protected:
 		\param e wska�nik do obiektu obs�uguj�cego klamenu
 	**/
 	virtual void contextMenuEvent(QContextMenuEvent *e);
-	
+
+	virtual bool canInsertFromMimeData(const QMimeData *source) const;
+	virtual void insertFromMimeData(const QMimeData *source);
+
 public:
 	/*! Typ wyliczeniowy mowi�cy o rodzaju pisanych znak�w */
 	enum

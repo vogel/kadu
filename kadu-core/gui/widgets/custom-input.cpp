@@ -1,5 +1,6 @@
 /*
  * %kadu copyright begin%
+ * Copyright 2011 Piotr Dąbrowski (ultr@ultr.pl)
  * Copyright 2011 Sławomir Stępień (s.stepien@interia.pl)
  * Copyright 2007 Dawid Stawiarski (neeo@kadu.net)
  * Copyright 2010 Bartosz Brachaczek (b.brachaczek@gmail.com)
@@ -24,12 +25,19 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QBuffer>
+#include <QtCore/QDir>
+#include <QtCore/QFile>
+#include <QtCore/QScopedPointer>
+#include <QtCore/QUrl>
 #include <QtGui/QAction>
+#include <QtGui/QImageReader>
 #include <QtGui/QKeyEvent>
 #include <QtGui/QMenu>
-#include <QtCore/QScopedPointer>
 
 #include "gui/hot-key.h"
+#include "protocols/services/chat-image-service.h"
+#include "protocols/protocol.h"
 #include "debug.h"
 
 #include "custom-input.h"
@@ -41,6 +49,8 @@ CustomInput::CustomInput(Chat chat, QWidget *parent) :
 	kdebugf();
 
 	setAcceptRichText(false);
+
+	setAcceptDrops(true);
 
 	connect(this, SIGNAL(copyAvailable(bool)), this, SLOT(setCopyPossible(bool)));
 	connect(this, SIGNAL(cursorPositionChanged()), this, SLOT(cursorPositionChangedSlot()));
@@ -212,4 +222,66 @@ void CustomInput::cursorPositionChangedSlot()
 void CustomInput::setCopyPossible(bool available)
 {
 	CopyPossible = available;
+}
+
+bool CustomInput::canInsertFromMimeData(const QMimeData *source) const
+{
+	if (CurrentChat.chatAccount().protocolHandler() && CurrentChat.chatAccount().protocolHandler()->chatImageService())
+	{
+		if (source->hasUrls())
+			return true;
+		if (source->hasFormat(QLatin1String("application/x-qt-image")))
+			return true;
+	}
+	return QTextEdit::canInsertFromMimeData(source);
+}
+
+void CustomInput::insertFromMimeData(const QMimeData *source)
+{
+	if (!CurrentChat.chatAccount().protocolHandler() || !CurrentChat.chatAccount().protocolHandler()->chatImageService())
+	{
+		QTextEdit::insertFromMimeData(source);
+		return;
+	}
+
+	QString path;
+
+	if (source->hasUrls())
+	{
+		QUrl url = source->urls().first();
+		if (!url.isEmpty() && url.scheme() == "kaduimg")
+			path = QDir::cleanPath(ChatImageService::imagesPath() + url.path());
+		else if (!url.isEmpty() && url.scheme() == "file")
+		{
+			path = QDir::cleanPath(url.path());
+			if (QImage(path).isNull())
+				path.clear();
+		}
+	}
+
+	if (path.isEmpty() && source->hasFormat(QLatin1String("application/x-qt-image")))
+	{
+		QByteArray imagedata = source->data(QLatin1String("application/x-qt-image"));
+		QBuffer buffer(&imagedata);
+		buffer.open(QIODevice::ReadOnly);
+		QString ext = QImageReader(&buffer).format().toLower();
+		QString filename = "drop" + QString::number(QDateTime::currentDateTime().toTime_t()) + "." + ext;
+		path = QDir::cleanPath(ChatImageService::imagesPath() + filename);
+		QFile file(path);
+		if (file.open(QIODevice::WriteOnly | QIODevice::Truncate))
+		{
+			file.write(imagedata);
+			file.close();
+		}
+		else
+			path.clear();
+	}
+
+	if (!path.isEmpty())
+	{
+		insertPlainText(QString("[IMAGE %1]").arg(path));
+		return;
+	}
+
+	QTextEdit::insertFromMimeData(source);
 }
