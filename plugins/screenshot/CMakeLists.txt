@@ -49,6 +49,9 @@ set (CONFIGURATION_FILES
 	data/configuration/screenshot.ui
 )
 
+include (FindX11)
+include_directories (${X11_INCLUDE_DIR})
+
 kadu_plugin (screenshot
 	PLUGIN_SOURCES ${SOURCES}
 	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
