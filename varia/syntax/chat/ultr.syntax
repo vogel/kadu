@@ -50,7 +50,7 @@
 		else
 			this.style.whiteSpace = 'nowrap';
 	">
-		<span style="position:relative; cursor:text; -webkit-user-select:text;">#{message}</span>
+		<span style="position:relative; cursor:auto; -webkit-user-select:text;">#{message}</span>
 	</div>
 </div>
 <script>
