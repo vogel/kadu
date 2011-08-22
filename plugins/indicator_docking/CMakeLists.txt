@@ -19,9 +19,11 @@ set (MOC_SOURCES
 	indicator_docking-plugin.h
 )
 
-pkg_search_module(INDICATEQT REQUIRED indicate-qt)
+pkg_search_module (INDICATEQT REQUIRED indicate-qt)
 
-include_directories(${INDICATEQT_INCLUDE_DIRS})
+link_directories (${INDICATEQT_LIBRARY_DIRS})
+add_definitions (${INDICATEQT_CFLAGS_OTHER})
+include_directories (${INDICATEQT_INCLUDE_DIRS})
 
 kadu_plugin (indicator_docking
 	PLUGIN_SOURCES ${SOURCES}
