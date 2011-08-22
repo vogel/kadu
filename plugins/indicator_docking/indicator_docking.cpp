@@ -109,6 +109,8 @@ IndicatorDocking::~IndicatorDocking()
 
 	IndicatorsMap.clear();
 	qDeleteAll(indicatorsToDelete);
+
+	Server->hide();
 }
 
 void IndicatorDocking::indicatePendingMessages()
