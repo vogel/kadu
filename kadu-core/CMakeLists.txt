@@ -83,6 +83,8 @@ if (UNIX AND NOT APPLE)
 		message (FATAL_ERROR "Could not find X11 libraries")
 	endif (X11_FOUND)
 
+	include_directories (${X11_INCLUDE_DIR})
+
 	if (USE_X11_XFIXES)
 		if (X11_Xfixes_FOUND)
 			message (STATUS "Found X11 Xfixes extension: ${X11_Xfixes_LIB}")

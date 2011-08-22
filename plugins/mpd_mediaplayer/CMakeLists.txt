@@ -31,6 +31,7 @@ set (CONFIGURATION_FILES
 
 pkg_search_module (LIBMPDCLIENT REQUIRED libmpdclient)
 include_directories (${LIBMPDCLIENT_INCLUDE_DIRS})
+link_directories (${LIBMPDCLIENT_LIBRARY_DIRS})
 
 kadu_plugin (mpd_mediaplayer
 	PLUGIN_SOURCES ${SOURCES}

@@ -20,6 +20,7 @@ if (UNIX AND NOT APPLE)
 		message (FATAL_ERROR "Could not find X11 Screen Saver extension")
 	endif (X11_Xscreensaver_FOUND)
 
+	include_directories (${X11_INCLUDE_DIR})
 	set (LIBRARIES ${X11_Xscreensaver_LIB})
 
 	set (SOURCES
