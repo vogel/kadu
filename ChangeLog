@@ -1,15 +1,15 @@
 +++ version 0.11.0-alpha1
-* plugins: #2272 fixed: added possibility to tell Kadu to try to load plugin which failing to load on next Kadu run (beevvy)
+* plugins: #2272 fixed: added possibility to tell Kadu to try to load plugin failing to load on next Kadu run (beevvy)
 
 +++ version 0.10.0
 * sms: small changes that will ease updating gateway scripts (beevvy)
 * config_wizard: #2264 fixed: if creating new account failed, do not go to next config wizard page (beevvy)
 * gui, history: #2268 fixed: do not try to copy anything to clipboard if selection is empty (beevvy)
 * contacts: #2222 fixed: fixed rare problems with certain contacts disappearing every time when added (beevvy)
-* jabber: #2275 fixed: fixed compilation on FreeBSD (c0rn)
 * gui: fixed Adium messages styles compatibility with QtWebKit 2.2 that comes with Qt 4.8 (beevvy)
 * autoresponder: if responding only once is set, opening or activating chat widget now does not cause Kadu to responsd again (only closing chat widget does that) (beevvy)
 * screenshot: #2284 fixed: prevent compositing suspension on KDE4 (ultr)
+* build: #2275, #2287 fixed: fixed compilation on FreeBSD (c0rn, wisnia, beevvy)
 
 +++ version 0.10.0-rc1
 * gadu: #2257 fixed: fixed very unlikely possibility to needlessly and confusingly ask whether to import contacts from server on clean installation (beevvy)
