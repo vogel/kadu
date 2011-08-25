@@ -108,7 +108,8 @@ typedef OSStatus (*InstallEventLoopIdleTimerPtr)(EventLoopRef inEventLoop,
 						 EventLoopTimerRef *  outTimer);
 
 
-Idle::Idle()
+Idle::Idle(QObject *parent) :
+		QObject(parent)
 {
 	// May already be init'ed.
 	if (mTimerRef == 0)
@@ -132,8 +133,7 @@ Idle::Idle()
 	}
 }
 
-Idle::~Idle(QObject *parent) :
-		QObject(parent)
+Idle::~Idle()
 {
 	RemoveEventLoopTimer(mTimerRef);
 	mTimerRef = 0;

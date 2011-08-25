@@ -286,7 +286,7 @@ void DockingManager::statusIconChanged(const KaduIcon &icon)
 
 	defaultToolTip();
 #ifdef Q_OS_MAC
-	qApp->setWindowIcon(icon);
+	qApp->setWindowIcon(icon.icon());
 #endif
 }
 

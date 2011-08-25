@@ -129,7 +129,7 @@ Core::~Core()
 	PluginsManager::instance()->deactivatePlugins();
 
 #ifdef Q_OS_MAC
-	setIcon(KaduIcon("kadu_icons/kadu").icon());
+	setIcon(KaduIcon("kadu_icons/kadu"));
 #endif // Q_OS_MAC
 
 	MainConfigurationHolder::destroyInstance();
