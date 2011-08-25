@@ -99,7 +99,11 @@ macro (kadu_source_subdirectories CURRENT_TARGET)
 		)
 	endforeach (ARG)
 
+if (APPLE)
+	target_link_libraries (${CURRENT_TARGET} ${ARGN})
+else (APPLE)
 	target_link_libraries (${CURRENT_TARGET} -Wl,--start-group -Wl,--whole-archive ${ARGN} -Wl,--no-whole-archive -Wl,--end-group)
+endif (APPLE)
 endmacro (kadu_source_subdirectories)
 
 include (cmake/FindKadu.cmake)
