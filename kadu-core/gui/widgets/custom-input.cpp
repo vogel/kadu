@@ -35,8 +35,8 @@
 #include "custom-input.h"
 #include "custom-input-menu-manager.h"
 
-CustomInput::CustomInput(QWidget *parent) :
-		QTextEdit(parent), CopyPossible(false), autosend_enabled(true)
+CustomInput::CustomInput(Chat chat, QWidget *parent) :
+		QTextEdit(parent), CurrentChat(chat), CopyPossible(false), autosend_enabled(true)
 {
 	kdebugf();
 

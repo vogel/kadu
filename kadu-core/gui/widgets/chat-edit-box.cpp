@@ -60,7 +60,7 @@ ChatEditBox::ChatEditBox(const Chat &chat, QWidget *parent) :
 {
 	chatEditBoxes.append(this);
 
-	InputBox = new CustomInput(this);
+	InputBox = new CustomInput(CurrentChat, this);
 	InputBox->setWordWrapMode(QTextOption::WordWrap);
 #ifdef Q_WS_MAEMO_5
 	InputBox->setMinimumHeight(64);

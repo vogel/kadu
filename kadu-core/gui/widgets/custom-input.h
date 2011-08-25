@@ -26,6 +26,8 @@
 
 #include <QtGui/QTextEdit>
 
+#include "chat/chat.h"
+
 #include "exports.h"
 
 /**
@@ -35,6 +37,8 @@
 class KADUAPI CustomInput : public QTextEdit
 {
 	Q_OBJECT
+
+	Chat CurrentChat;
 
 	bool CopyPossible;
 
@@ -81,7 +85,7 @@ public:
 		\param parent rodzic okna
 		\param name nazwa obiektu
 	**/
-	CustomInput(QWidget *parent = 0);
+	CustomInput(Chat chat, QWidget *parent = 0);
 
 public slots:
 	/**
