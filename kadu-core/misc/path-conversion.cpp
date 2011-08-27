@@ -101,7 +101,7 @@ QString homePath()
 		{
 			WCHAR homepath[MAX_PATH + 1];
 			// there is unfortunately no way to get this path from Qt4 API
-			if (!SUCCEEDED(SHGetFolderPathW(NULL, CSIDL_APPDATA, NULL, 0, homepath)))
+			if (SUCCEEDED(SHGetFolderPathW(NULL, CSIDL_APPDATA, NULL, 0, homepath)))
 				path = QString::fromUtf16((const ushort *)homepath);
 			else
 				path = QDir::homePath();
