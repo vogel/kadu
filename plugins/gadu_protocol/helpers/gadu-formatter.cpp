@@ -234,25 +234,24 @@ FormattedMessage createMessage(Account account, Contact contact, const QString &
 		return result;
 	}
 
-	bool first = true;
+	bool first = true, hasImage = false, prevHasImage = false;
 	unsigned int memoryPosition = 0;
 	unsigned int prevTextPosition = 0;
 	unsigned int textPosition = 0;
 	unsigned int images = 0;
-
-	struct gg_msg_richtext_format prevFormat;
-	struct gg_msg_richtext_format format;
-	struct gg_msg_richtext_color prevColor;
-	struct gg_msg_richtext_color color;
-	struct gg_msg_richtext_image image;
+	struct gg_msg_richtext_format format, prevFormat;
+	struct gg_msg_richtext_color color, prevColor;
+	struct gg_msg_richtext_image image, prevImage;
 
 	while (memoryPosition + sizeof(format) <= size)
 	{
+		hasImage = false;
+
 		memcpy(&format, formats + memoryPosition, sizeof(format));
 		memoryPosition += sizeof(format);
 		textPosition = gg_fix16(format.position);
 
-		if (first && format.position > 0)
+		if (first && textPosition > 0)
 			result << FormattedMessagePart(content.left(textPosition), false, false, false, QColor());
 
 		if (format.font & GG_FONT_IMAGE)
@@ -261,35 +260,51 @@ FormattedMessage createMessage(Account account, Contact contact, const QString &
 
 			if (memoryPosition + sizeof(image) <= size)
 			{
-				memcpy(&image, formats + memoryPosition, sizeof(image));
+				if (receiveImages && images <= MAX_NUMBER_OF_IMAGES)
+				{
+					hasImage = true;
+					memcpy(&image, formats + memoryPosition, sizeof(image));
+				}
 				memoryPosition += sizeof(image);
 			}
 		}
-		else
+		else if (format.font & GG_FONT_COLOR)
 		{
 			if (memoryPosition + sizeof(color) <= size)
-				if (format.font & GG_FONT_COLOR)
-				{
-					memcpy(&color, formats + memoryPosition, sizeof(color));
-					memoryPosition += sizeof(color);
-				}
+			{
+				memcpy(&color, formats + memoryPosition, sizeof(color));
+				memoryPosition += sizeof(color);
+			}
 		}
 
-		if (!first && textPosition > prevTextPosition)
-			appendToMessage(account, result, contact, content.mid(prevTextPosition, textPosition - prevTextPosition),
-					prevFormat, prevColor, image, receiveImages && images <= MAX_NUMBER_OF_IMAGES);
-		else
-			first = false;
+		if (!first && (prevHasImage || hasImage || textPosition > prevTextPosition))
+		{
+			QString text;
+			if (!prevHasImage)
+			{
+				if (textPosition > prevTextPosition)
+					text = content.mid(prevTextPosition, textPosition - prevTextPosition);
+				else
+					text = content.mid(prevTextPosition, content.length() - prevTextPosition);
+			}
+
+			appendToMessage(account, result, contact, text, prevFormat, prevColor, prevImage, prevHasImage);
+		}
 
 		if (textPosition > prevTextPosition)
 			prevTextPosition = textPosition;
 
 		prevFormat = format;
 		prevColor = color;
+		prevImage = image;
+		prevHasImage = hasImage;
+		first = false;
 	}
 
-	appendToMessage(account, result, contact, content.mid(prevTextPosition, content.length() - prevTextPosition),
-			prevFormat, prevColor, image, receiveImages && images <= MAX_NUMBER_OF_IMAGES);
+	QString text;
+	if (!prevHasImage)
+		text = content.mid(prevTextPosition, content.length() - prevTextPosition);
+	appendToMessage(account, result, contact, text, prevFormat, prevColor, prevImage, prevHasImage);
 
 	return result;
 }
