@@ -66,6 +66,11 @@ class KADUAPI FormattedMessagePart
 
 public:
 	/**
+	 * Creates empty message part.
+	 */
+	FormattedMessagePart() : IsImage(false) {}
+
+	/**
 	 * Creates text message part with formatting.
 	 * @arg content content of message
 	 * @arg bold if true, the whole part is presented with bold font
@@ -80,6 +85,7 @@ public:
 	 * @arg imagePath local image path
 	 */
 	explicit FormattedMessagePart(const QString &imagePath);
+
 	virtual ~FormattedMessagePart();
 
 	bool isImage() const { return IsImage; }
