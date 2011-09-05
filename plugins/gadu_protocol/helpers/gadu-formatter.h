@@ -32,12 +32,11 @@ class FormattedMessage;
 
 namespace GaduFormatter
 {
-	GADUAPI unsigned int computeFormatsSize(const FormattedMessage &message);
 	GADUAPI unsigned char * createFormats(Account account, const FormattedMessage &message, unsigned int &size);
 
 	GADUAPI QString createImageId(GaduProtocol::UinType sender, unsigned int size, unsigned int crc32);
 
-	GADUAPI FormattedMessage createMessage(Account account, Contact contact, const QString &content, unsigned char *formats,
+	GADUAPI FormattedMessage createMessage(Account account, Contact contact, const QString &content, const unsigned char *formats,
 			unsigned int size, bool receiveImages);
 
 }
