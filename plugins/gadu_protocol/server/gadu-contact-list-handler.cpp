@@ -75,7 +75,10 @@ GaduContactListHandler::~GaduContactListHandler()
 
 void GaduContactListHandler::setUpContactList(const QList<Contact> &contacts)
 {
-	if (contacts.isEmpty())
+	QList<Contact> sendList = contacts;
+	sendList.removeAll(Protocol->account().accountContact());
+
+	if (sendList.isEmpty())
 	{
 		gg_notify_ex(Protocol->gaduSession(), 0, 0, 0);
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Userlist is empty\n");
@@ -83,9 +86,6 @@ void GaduContactListHandler::setUpContactList(const QList<Contact> &contacts)
 		AlreadySent = true;
 		return;
 	}
-
-	QList<Contact> sendList = contacts;
-	sendList.removeAll(Protocol->account().accountContact());
 
 	int count = sendList.count();
 	QScopedArrayPointer<UinType> uins(new UinType[count]);
