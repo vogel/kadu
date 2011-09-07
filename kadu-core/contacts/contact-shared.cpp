@@ -151,13 +151,16 @@ void ContactShared::emitUpdated()
 	emit updated();
 }
 
-void ContactShared::detach(bool reattaching, bool emitSignals)
+void ContactShared::detach(bool resetBuddy, bool reattaching, bool emitSignals)
 {
-	if (!details())
-		return;
-
 	if (!OwnerBuddy)
 		return;
+
+	if (!details())
+	{
+		OwnerBuddy = Buddy::null;
+		return;
+	}
 
 	/* NOTE: This guard is needed to delay deleting this object when removing
 	 * Contact from Buddy which holds last reference to it and thus wants to
@@ -166,26 +169,38 @@ void ContactShared::detach(bool reattaching, bool emitSignals)
 	 */
 	Contact guard(this);
 
+	Buddy oldBuddy = OwnerBuddy;
+
+	emitSignals = emitSignals && !oldBuddy.isAnonymous();
+
 	if (emitSignals)
 		emit aboutToBeDetached(reattaching);
 
-	OwnerBuddy.removeContact(this);
+	oldBuddy.removeContact(this);
+
+	// TODO This is far from ideal. In the moment OwnerBuddy emitted contactRemoved()
+	// this contact still had owner buddy set. Hopefully nothing depends on correct behavior here.
+	if (resetBuddy)
+		OwnerBuddy = Buddy::null;
 
 	if (emitSignals)
-		emit detached(OwnerBuddy);
+		emit detached(oldBuddy);
 }
 
-void ContactShared::attach(bool reattaching, bool emitSignals)
+void ContactShared::attach(const Buddy &buddy, bool reattaching, bool emitSignals)
 {
-	if (!details())
+	if (!details() || !buddy)
+	{
+		OwnerBuddy = buddy;
 		return;
+	}
 
-	if (!OwnerBuddy)
-		return;
+	emitSignals = emitSignals && !buddy.isAnonymous();
 
 	if (emitSignals)
-		emit aboutToBeAttached(OwnerBuddy);
+		emit aboutToBeAttached(buddy);
 
+	OwnerBuddy = buddy;
 	OwnerBuddy.addContact(this);
 
 	if (emitSignals)
@@ -200,20 +215,12 @@ void ContactShared::doSetOwnerBuddy(const Buddy &buddy, bool emitSignals)
 	 */
 	Contact guard(this);
 
-	bool oldIsNotAnonymous = !OwnerBuddy.isAnonymous();
-	bool newIsNotAnonymous = !buddy.isAnonymous();
-	bool reattaching = oldIsNotAnonymous && newIsNotAnonymous;
-
-	detach(reattaching, emitSignals && oldIsNotAnonymous);
-
-	OwnerBuddy = buddy;
-
-	// TODO: make it pretty
 	// don't allow empty buddy to be set, use at least anonymous one
-	if (!OwnerBuddy)
-		OwnerBuddy = BuddyManager::instance()->byContact(this, ActionCreate);
+	Buddy targetBuddy = buddy.isNull() ? Buddy::create() : buddy;
+	bool reattaching = !OwnerBuddy.isAnonymous() && !targetBuddy.isAnonymous();
 
-	attach(reattaching, emitSignals && newIsNotAnonymous);
+	detach(true, reattaching, emitSignals);
+	attach(targetBuddy, reattaching, emitSignals);
 }
 
 void ContactShared::setOwnerBuddy(const Buddy &buddy)
@@ -283,7 +290,7 @@ void ContactShared::detailsAdded()
 
 void ContactShared::afterDetailsAdded()
 {
-	attach(false, true);
+	attach(OwnerBuddy, false, true);
 }
 
 void ContactShared::detailsAboutToBeRemoved()
@@ -292,7 +299,7 @@ void ContactShared::detailsAboutToBeRemoved()
 	if (ContactManager::instance()->allItems().contains(uuid()))
 		details()->ensureStored();
 
-	detach(false, true);
+	detach(false, false, true);
 }
 
 void ContactShared::detailsRemoved()
