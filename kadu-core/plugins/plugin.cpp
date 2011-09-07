@@ -31,18 +31,6 @@
 
 #include "plugin.h"
 
-#if defined(Q_OS_WIN)
-	#define SO_EXT "dll"
-	#define SO_EXT_LEN 3
-	#define SO_PREFIX ""
-	#define SO_PREFIX_LEN 0
-#else
-	#define SO_EXT "so"
-	#define SO_EXT_LEN 2
-	#define SO_PREFIX "lib"
-	#define SO_PREFIX_LEN 3
-#endif
-
 /**
  * @author Rafał 'Vogel' Malinowski
  * @short Creates new Plugin object and loads PluginInfo data.

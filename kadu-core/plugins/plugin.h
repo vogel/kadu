@@ -26,6 +26,25 @@
 
 #include "storage/named-storable-object.h"
 
+
+#ifdef Q_OS_MAC
+	#define SO_EXT "dylib"
+	#define SO_EXT_LEN 5
+	#define SO_PREFIX "lib"
+	#define SO_PREFIX_LEN 3
+#elif defined(Q_OS_WIN)
+	#define SO_EXT "dll"
+	#define SO_EXT_LEN 3
+	#define SO_PREFIX ""
+	#define SO_PREFIX_LEN 0
+#else
+	#define SO_EXT "so"
+	#define SO_EXT_LEN 2
+	#define SO_PREFIX "lib"
+	#define SO_PREFIX_LEN 3
+#endif
+
+
 class QLibrary;
 class QPluginLoader;
 class QTranslator;
