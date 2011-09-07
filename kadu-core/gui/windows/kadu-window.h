@@ -112,10 +112,6 @@ private:
 	virtual void compositingEnabled();
 	virtual void compositingDisabled();
 
-#ifdef Q_OS_MAC
-	QMenuBar* menuBar() const;
-#endif
-
 private slots:
 	void openChatWindow(Chat chat);
 	void buddyActivated(const Buddy &buddy);
@@ -158,6 +154,10 @@ public:
 
 	ActionDataSource * actionSource();
 	BuddyInfoPanel * infoPanel() { return InfoPanel; }
+
+#ifdef Q_OS_MAC
+	QMenuBar* menuBar() const;
+#endif
 
 signals:
 	void keyPressed(QKeyEvent *e);
