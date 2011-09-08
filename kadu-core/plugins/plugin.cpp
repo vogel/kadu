@@ -33,6 +33,17 @@
 
 #include "plugin.h"
 
+#ifdef Q_OS_MAC
+	#define SO_PREFIX "lib"
+	#define SO_EXT "dylib"
+#elif defined(Q_OS_WIN)
+	#define SO_PREFIX ""
+	#define SO_EXT "dll"
+#else
+	#define SO_PREFIX "lib"
+	#define SO_EXT "so"
+#endif
+
 /**
  * @author Rafał 'Vogel' Malinowski
  * @short Creates new Plugin object and loads PluginInfo data.
