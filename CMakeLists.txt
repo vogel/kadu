@@ -100,7 +100,7 @@ macro (kadu_source_subdirectories CURRENT_TARGET)
 	endforeach (ARG)
 
 if (APPLE)
-	target_link_libraries (${CURRENT_TARGET} ${ARGN})
+	target_link_libraries (${CURRENT_TARGET} -Wl,-all_load ${ARGN})
 else (APPLE)
 	target_link_libraries (${CURRENT_TARGET} -Wl,--start-group -Wl,--whole-archive ${ARGN} -Wl,--no-whole-archive -Wl,--end-group)
 endif (APPLE)
