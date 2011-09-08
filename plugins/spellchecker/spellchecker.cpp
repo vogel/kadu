@@ -24,10 +24,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifdef HAVE_ASPELL
+#if defined(HAVE_ASPELL)
 #define ASPELL_STATIC
 #include <aspell.h>
-#else
+#elif defined(HAVE_ENCHANT)
 #include <enchant++.h>
 #endif
 
@@ -37,6 +37,10 @@
 #include <QtGui/QLabel>
 #include <QtGui/QListWidget>
 #include <QtGui/QPushButton>
+
+#if defined(Q_WS_MAC)
+#include "macspellchecker.h"
+#endif
 
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/chat-widget.h"
@@ -53,7 +57,7 @@
 #include "configuration/spellchecker-configuration.h"
 #include "spellchecker.h"
 
-#ifdef HAVE_ENCHANT
+#if defined(HAVE_ENCHANT)
 typedef std::pair<SpellChecker::Checkers *, QStringList *> DescWrapper;
 
 static void enchantDictDescribe(const char * const langTag, const char * const providerName,
@@ -77,13 +81,13 @@ SpellChecker::SpellChecker(QObject *parent) :
 	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetCreated(ChatWidget *)),
 			this, SLOT(chatCreated(ChatWidget *)));
 
-#ifdef HAVE_ASPELL
+#if defined(HAVE_ASPELL)
 	// prepare configuration of spellchecker
 	SpellConfig = new_aspell_config();
 	aspell_config_replace(SpellConfig, "encoding", "utf-8");
 	aspell_config_replace(SpellConfig, "sug-mode", "ultra");
 
-#ifdef Q_OS_WIN32
+#if defined(Q_OS_WIN32)
 	aspell_config_replace(SpellConfig, "dict-dir", qPrintable(dataPath("aspell/dict")));
 	aspell_config_replace(SpellConfig, "data-dir", qPrintable(dataPath("aspell/data")));
 	aspell_config_replace(SpellConfig, "prefix", qPrintable(profilePath("dicts")));
@@ -98,7 +102,7 @@ SpellChecker::~SpellChecker()
 
 	Highlighter::removeAll();
 
-#ifdef HAVE_ASPELL
+#if defined(HAVE_ASPELL)
 	delete_aspell_config(SpellConfig);
 
 	foreach (AspellSpeller *speller, MyCheckers)
@@ -106,13 +110,14 @@ SpellChecker::~SpellChecker()
 #else
 	qDeleteAll(MyCheckers);
 #endif
+
 }
 
 QStringList SpellChecker::notCheckedLanguages()
 {
 	QStringList result;
 
-#ifdef HAVE_ASPELL
+#if defined(HAVE_ASPELL)
 	AspellDictInfoList *dlist;
 	AspellDictInfoEnumeration *dels;
 	const AspellDictInfo *entry;
@@ -125,7 +130,7 @@ QStringList SpellChecker::notCheckedLanguages()
 		if (!MyCheckers.contains(entry->name))
 			result.push_back(entry->name);
 	delete_aspell_dict_info_enumeration(dels);
-#else
+#elif defined(HAVE_ENCHANT)
 	DescWrapper aWrapper(&MyCheckers, &result);
 	enchant::Broker::instance()->list_dicts(enchantDictDescribe, &aWrapper);
 #endif
@@ -146,7 +151,7 @@ bool SpellChecker::addCheckedLang(const QString &name)
 	if (MyCheckers.contains(name))
 		return true;
 
-#ifdef HAVE_ASPELL
+#if defined(HAVE_ASPELL)
 	aspell_config_replace(SpellConfig, "lang", name.toAscii().constData());
 
 	// create spell checker using prepared configuration
@@ -158,7 +163,7 @@ bool SpellChecker::addCheckedLang(const QString &name)
 	}
 	else
 		MyCheckers[name] = to_aspell_speller(possibleErr);
-#else
+#elif defined(HAVE_ENCHANT)
 	try
 	{
 		MyCheckers[name] = enchant::Broker::instance()->request_dict(name.toStdString());
@@ -168,6 +173,8 @@ bool SpellChecker::addCheckedLang(const QString &name)
 		MessageDialog::show(KaduIcon("dialog-error"), tr("Kadu"), e.what());
 		return false;
 	}
+#elif defined(Q_WS_MAC)
+	MyCheckers[name] = new MacSpellChecker();
 #endif
 
 	if (MyCheckers.size() == 1)
@@ -182,7 +189,7 @@ void SpellChecker::removeCheckedLang(const QString &name)
 	Checkers::iterator checker = MyCheckers.find(name);
 	if (checker != MyCheckers.end())
 	{
-#ifdef HAVE_ASPELL
+#if defined(HAVE_ASPELL)
 		delete_aspell_speller(checker.value());
 #else
 		delete checker.value();
@@ -193,7 +200,7 @@ void SpellChecker::removeCheckedLang(const QString &name)
 
 void SpellChecker::buildCheckers()
 {
-#ifdef HAVE_ASPELL
+#if defined(HAVE_ASPELL)
 	foreach (AspellSpeller *speller, MyCheckers)
 		delete_aspell_speller(speller);
 #else
@@ -201,7 +208,7 @@ void SpellChecker::buildCheckers()
 #endif
 	MyCheckers.clear();
 
-#ifdef HAVE_ASPELL
+#if defined(HAVE_ASPELL)
 	if (SpellcheckerConfiguration::instance()->accents())
 		aspell_config_replace(SpellConfig, "ignore-accents", "true");
 	else
@@ -286,7 +293,7 @@ void SpellChecker::mainConfigurationWindowCreated(MainConfigurationWindow *mainC
 	connect(mainConfigurationWindow, SIGNAL(configurationWindowApplied()),
 			this, SLOT(configurationWindowApplied()));
 
-#ifndef HAVE_ASPELL
+#if defined(HAVE_ASPELL)
 	mainConfigurationWindow->widget()->widgetById("spellchecker/ignoreCase")->hide();
 #endif
 
@@ -331,31 +338,34 @@ void SpellChecker::configurationWindowApplied()
 
 bool SpellChecker::checkWord(const QString &word)
 {
+	bool isWordValid = false;
+
 	if (MyCheckers.isEmpty())
 		return true;
-
-	bool isWordValid = false;
+	
 	if (!word.contains(QRegExp("\\D")))
 		isWordValid = true;
 	else
 		for (Checkers::const_iterator it = MyCheckers.constBegin(); it != MyCheckers.constEnd(); ++it)
-#ifdef HAVE_ASPELL
+#if defined(HAVE_ASPELL)
 			if (aspell_speller_check(it.value(), word.toUtf8().constData(), -1))
-#else
+#elif defined(HAVE_ENCHANT)
 			if (it.value()->check(word.toUtf8().constData()))
+#elif defined(Q_WS_MAC)
+			if (it.value()->isCorrect(word.toUtf8().constData()))
 #endif
 			{
 				isWordValid = true;
 				break;
 			}
-
 	return isWordValid;
 }
 
 QStringList SpellChecker::buildSuggestList(const QString &word)
 {
 	QStringList suggestWordList;
-#ifdef HAVE_ASPELL
+
+#if defined(HAVE_ASPELL)
 	QTextCodec *codec = QTextCodec::codecForName("utf-8");
 #endif
 
@@ -369,7 +379,7 @@ QStringList SpellChecker::buildSuggestList(const QString &word)
 	for (Checkers::const_iterator it = MyCheckers.constBegin(); it != MyCheckers.constEnd(); ++it)
 	{
 		wordsForLanguage = suggesterWordCount;
-#ifdef HAVE_ASPELL
+#if defined(HAVE_ASPELL)
 		const AspellWordList *aspellTmpList = aspell_speller_suggest(it.value(), word.toUtf8().constData(), -1);
 
 		if (!aspell_word_list_empty(aspellTmpList))
@@ -388,7 +398,7 @@ QStringList SpellChecker::buildSuggestList(const QString &word)
 
 			delete_aspell_string_enumeration(aspellStringEnum);
 		}
-#else
+#elif defined(HAVE_ENCHANT)
 		size_t numberOfSuggs;
 		EnchantBroker *broker = enchant_broker_init();
 		EnchantDict *dict = enchant_broker_request_dict(broker, it.key().toUtf8().constData());
@@ -413,6 +423,8 @@ QStringList SpellChecker::buildSuggestList(const QString &word)
 		enchant_dict_free_string_list(dict, suggs);
 		enchant_broker_free_dict(broker, dict);
 		enchant_broker_free(broker);
+#elif defined(Q_WS_MAC)
+		suggestWordList.append(it.value()->suggestions(word));
 #endif
 	}
 
