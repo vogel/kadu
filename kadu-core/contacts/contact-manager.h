@@ -58,8 +58,8 @@ private slots:
 
 	void aboutToBeAttached(Buddy nearFutureBuddy);
 	void attached(bool reattached);
-	void aboutToBeDetached(bool reattaching);
-	void detached(Buddy previousBuddy);
+	void aboutToBeDetached();
+	void detached(Buddy previousBuddy, bool reattaching);
 
 protected:
 	virtual void loaded();
@@ -87,8 +87,8 @@ signals:
 	void contactAboutToBeRemoved(Contact contact);
 	void contactRemoved(Contact contact);
 
-	void contactAboutToBeDetached(Contact contact, bool reattaching);
-	void contactDetached(Contact contact, Buddy previousBuddy);
+	void contactAboutToBeDetached(Contact contact);
+	void contactDetached(Contact contact, Buddy previousBuddy, bool reattaching);
 	void contactAboutToBeAttached(Contact contact, Buddy nearFutureBuddy);
 	void contactAttached(Contact contact, bool reattached);
 

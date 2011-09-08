@@ -174,7 +174,7 @@ void ContactShared::detach(bool resetBuddy, bool reattaching, bool emitSignals)
 	emitSignals = emitSignals && !oldBuddy.isAnonymous();
 
 	if (emitSignals)
-		emit aboutToBeDetached(reattaching);
+		emit aboutToBeDetached();
 
 	oldBuddy.removeContact(this);
 
@@ -184,7 +184,7 @@ void ContactShared::detach(bool resetBuddy, bool reattaching, bool emitSignals)
 		OwnerBuddy = Buddy::null;
 
 	if (emitSignals)
-		emit detached(oldBuddy);
+		emit detached(oldBuddy, reattaching);
 }
 
 void ContactShared::attach(const Buddy &buddy, bool reattaching, bool emitSignals)

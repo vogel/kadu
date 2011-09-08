@@ -112,8 +112,8 @@ public:
 	KaduShared_Property(short int, maximumImageSize, MaximumImageSize)
 
 signals:
-	void aboutToBeDetached(bool reattaching);
-	void detached(const Buddy &previousBuddy);
+	void aboutToBeDetached();
+	void detached(const Buddy &previousBuddy, bool reattaching);
 	void aboutToBeAttached(const Buddy &nearFutureBuddy);
 	void attached(bool reattached);
 

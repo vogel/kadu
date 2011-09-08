@@ -92,8 +92,8 @@ JabberProtocol::~JabberProtocol()
 
 void JabberProtocol::connectContactManagerSignals()
 {
-	connect(ContactManager::instance(), SIGNAL(contactAboutToBeDetached(Contact, bool)),
-			this, SLOT(contactAboutToBeDetached(Contact, bool)));
+	connect(ContactManager::instance(), SIGNAL(contactDetached(Contact, Buddy, bool)),
+			this, SLOT(contactDetached(Contact, Buddy, bool)));
 	connect(ContactManager::instance(), SIGNAL(contactAttached(Contact, bool)),
 			this, SLOT(contactAttached(Contact, bool)));
 	connect(ContactManager::instance(), SIGNAL(contactIdChanged(Contact, const QString &)),
@@ -105,8 +105,8 @@ void JabberProtocol::connectContactManagerSignals()
 
 void JabberProtocol::disconnectContactManagerSignals()
 {
-	disconnect(ContactManager::instance(), SIGNAL(contactAboutToBeDetached(Contact, bool)),
-			this, SLOT(contactAboutToBeDetached(Contact, bool)));
+	disconnect(ContactManager::instance(), SIGNAL(contactDetached(Contact, Buddy, bool)),
+			this, SLOT(contactDetached(Contact, Buddy, bool)));
 	disconnect(ContactManager::instance(), SIGNAL(contactAttached(Contact, bool)),
 			this, SLOT(contactAttached(Contact, bool)));
 	disconnect(ContactManager::instance(), SIGNAL(contactIdChanged(Contact, const QString &)),
@@ -331,6 +331,17 @@ void JabberProtocol::notifyAboutPresenceChanged(const XMPP::Jid &jid, const XMPP
 	}
 }
 
+void JabberProtocol::contactDetached(Contact contact, Buddy previousBuddy, bool reattaching)
+{
+	Q_UNUSED(previousBuddy)
+
+	if (reattaching)
+		return;
+
+	if (CurrentRosterService)
+		CurrentRosterService->removeContact(contact);
+}
+
 void JabberProtocol::contactAttached(Contact contact, bool reattached)
 {
 	if (reattached)
@@ -341,15 +352,6 @@ void JabberProtocol::contactAttached(Contact contact, bool reattached)
 
 	if (CurrentRosterService)
 		CurrentRosterService->addContact(contact);
-}
-
-void JabberProtocol::contactAboutToBeDetached(Contact contact, bool reattached)
-{
-	if (reattached)
-		return;
-
-	if (CurrentRosterService)
-		CurrentRosterService->removeContact(contact);
 }
 
 void JabberProtocol::buddyUpdated(Buddy &buddy)

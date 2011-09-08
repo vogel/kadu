@@ -87,7 +87,7 @@ private slots:
 
 	void slotClientDebugMessage (const QString &msg);
 
-	void contactAboutToBeDetached(Contact contact, bool reattached);
+	void contactDetached(Contact contact, Buddy previousBuddy, bool reattaching);
 	void contactAttached(Contact contact, bool reattached);
 	void contactUpdated(Contact contact);
 

@@ -60,10 +60,10 @@ BuddiesModel::BuddiesModel(QObject *parent) :
 	connect(cm, SIGNAL(contactAboutToBeAttached(Contact, Buddy)),
 			this, SLOT(contactAboutToBeAttached(Contact, Buddy)));
 	connect(cm, SIGNAL(contactAttached(Contact, bool)),
-			this, SLOT(contactAttached(Contact, bool)));
-	connect(cm, SIGNAL(contactAboutToBeDetached(Contact, bool)),
-			this, SLOT(contactAboutToBeDetached(Contact, bool)));
-	connect(cm, SIGNAL(contactDetached(Contact, Buddy)),
+			this, SLOT(contactAttached(Contact)));
+	connect(cm, SIGNAL(contactAboutToBeDetached(Contact)),
+			this, SLOT(contactAboutToBeDetached(Contact)));
+	connect(cm, SIGNAL(contactDetached(Contact, Buddy, bool)),
 			this, SLOT(contactDetached(Contact, Buddy)));
 	connect(cm, SIGNAL(contactUpdated(Contact&)),
 			   this, SLOT(contactUpdated(Contact&)));
@@ -89,10 +89,10 @@ BuddiesModel::~BuddiesModel()
 	disconnect(cm, SIGNAL(contactAboutToBeAttached(Contact, Buddy)),
 			this, SLOT(contactAboutToBeAttached(Contact, Buddy)));
 	disconnect(cm, SIGNAL(contactAttached(Contact, bool)),
-			this, SLOT(contactAttached(Contact, bool)));
-	disconnect(cm, SIGNAL(contactAboutToBeDetached(Contact, bool)),
-			this, SLOT(contactAboutToBeDetached(Contact, bool)));
-	disconnect(cm, SIGNAL(contactDetached(Contact, Buddy)),
+			this, SLOT(contactAttached(Contact)));
+	disconnect(cm, SIGNAL(contactAboutToBeDetached(Contact)),
+			this, SLOT(contactAboutToBeDetached(Contact)));
+	disconnect(cm, SIGNAL(contactDetached(Contact, Buddy, bool)),
 			this, SLOT(contactDetached(Contact, Buddy)));
 	disconnect(cm, SIGNAL(contactUpdated(Contact&)),
 			   this, SLOT(contactUpdated(Contact&)));
@@ -192,10 +192,8 @@ void BuddiesModel::contactAboutToBeAttached(Contact contact, Buddy nearFutureBud
 	beginInsertRows(index, count, count);
 }
 
-void BuddiesModel::contactAttached(Contact contact, bool reattached)
+void BuddiesModel::contactAttached(Contact contact)
 {
-	Q_UNUSED(reattached)
-
 	Buddy buddy = contact.ownerBuddy();
 
 	QModelIndex index = indexForValue(buddy);
@@ -205,10 +203,8 @@ void BuddiesModel::contactAttached(Contact contact, bool reattached)
 	endInsertRows();
 }
 
-void BuddiesModel::contactAboutToBeDetached(Contact contact, bool reattached)
+void BuddiesModel::contactAboutToBeDetached(Contact contact)
 {
-	Q_UNUSED(reattached)
-
 	Buddy buddy = contact.ownerBuddy();
 
 	QModelIndex index = indexForValue(buddy);
