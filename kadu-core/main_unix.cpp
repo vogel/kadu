@@ -27,6 +27,7 @@
 #include <sys/time.h>
 #include <sys/types.h>
 
+#include "activate.h"
 #include "configuration/xml-configuration-file.h"
 #include "core/core.h"
 #include "core/crash-aware-object.h"
@@ -126,7 +127,7 @@ static void kadu_signal_handler(int signal)
 	else if (signal == SIGUSR1)
 	{
 		kdebugm(KDEBUG_INFO, "ok, got a signal to show up\n");
-		Core::instance()->kaduWindow()->show();
+		_activateWindow(Core::instance()->kaduWindow());
 	}
 	else if (signal == SIGINT || signal == SIGTERM)
 		qApp->quit();
