@@ -38,7 +38,8 @@ class KADUAPI ContactListService : public QObject
 	Protocol *CurrentProtocol;
 
 	bool askForAddingContacts(const QMap<Buddy, Contact> &contactsToAdd, const QMap<Buddy, Contact> &contactsToRename);
-	QVector<Contact> performAddsAndRenames(const QMap<Buddy, Contact> &contactsToAdd, const QMap<Buddy, Contact> &contactsToRename);
+	QVector<Contact> performAdds(const QMap<Buddy, Contact> &contactsToAdd);
+	void performRenames(const QMap<Buddy, Contact> &contactsToRename);
 	QVector<Contact> registerBuddies(const BuddyList &buddies);
 
 public:

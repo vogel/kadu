@@ -78,7 +78,7 @@ bool ContactListService::askForAddingContacts(const QMap<Buddy, Contact> &contac
 	return MessageDialog::ask(KaduIcon("dialog-question"), tr("Kadu"), questionString);
 }
 
-QVector<Contact> ContactListService::performAddsAndRenames(const QMap<Buddy, Contact> &contactsToAdd, const QMap<Buddy, Contact> &contactsToRename)
+QVector<Contact> ContactListService::performAdds(const QMap<Buddy, Contact> &contactsToAdd)
 {
 	QVector<Contact> resultContacts;
 
@@ -90,6 +90,11 @@ QVector<Contact> ContactListService::performAddsAndRenames(const QMap<Buddy, Con
 		resultContacts.append(i.value());
 	}
 
+	return resultContacts;
+}
+
+void ContactListService::performRenames(const QMap<Buddy, Contact> &contactsToRename)
+{
 	BuddyList buddiesToRemove;
 	for (QMap<Buddy, Contact>::const_iterator i = contactsToRename.constBegin(); i != contactsToRename.constEnd(); i++)
 	{
@@ -97,13 +102,10 @@ QVector<Contact> ContactListService::performAddsAndRenames(const QMap<Buddy, Con
 		buddiesToRemove.append(i.value().ownerBuddy());
 		i.value().setOwnerBuddy(i.key());
 		i.value().setDirty(false);
-		resultContacts.append(i.value());
 	}
 
 	foreach (const Buddy &buddy, buddiesToRemove)
 		BuddyManager::instance()->removeBuddyIfEmpty(buddy, true);
-
-	return resultContacts;
 }
 
 QVector<Contact> ContactListService::registerBuddies(const BuddyList &buddies)
@@ -141,12 +143,14 @@ QVector<Contact> ContactListService::registerBuddies(const BuddyList &buddies)
 				{
 					if (knownContact.ownerBuddy().isAnonymous())
 						contactsToAdd.insert(targetBuddy, knownContact);
-					else if (knownContact.ownerBuddy() != targetBuddy)
-						contactsToRename.insert(targetBuddy, knownContact);
 					else
 					{
-						knownContact.setDirty(false);
 						resultContacts.append(knownContact);
+
+						if (knownContact.ownerBuddy() != targetBuddy)
+							contactsToRename.insert(targetBuddy, knownContact);
+						else
+							knownContact.setDirty(false);
 					}
 
 					personalInfoSourceBuddies.insert(targetBuddy, buddy);
@@ -163,7 +167,8 @@ QVector<Contact> ContactListService::registerBuddies(const BuddyList &buddies)
 	if (haveToAskForAddingContacts() && !askForAddingContacts(contactsToAdd, contactsToRename))
 		return resultContacts;
 
-	resultContacts += performAddsAndRenames(contactsToAdd, contactsToRename);
+	resultContacts += performAdds(contactsToAdd);
+	performRenames( contactsToRename);
 
 	for (QMap<Buddy, Buddy>::const_iterator i = personalInfoSourceBuddies.constBegin(); i != personalInfoSourceBuddies.constEnd(); i++)
 	{
