@@ -256,7 +256,7 @@ for FILE in `ls ${DEST}/Kadu.app/kadu/plugins/*.dylib`; do
 	update_bindings ${FILE}
 done
 
-#echo "log: stripping binaries"
-#strip -x ${FM_DIR}/Qt*  ${CNT_DIR}/plugins/imageformats/* ${MACOS_DIR}/kadu
+echo "log: stripping binaries"
+strip -x ${FM_DIR}/Qt*  ${CNT_DIR}/plugins/imageformats/* ${MACOS_DIR}/kadu
 
 echo "log: everything done"
