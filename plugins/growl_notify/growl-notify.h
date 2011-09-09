@@ -1,5 +1,5 @@
-#ifndef WINDOW_NOTIFY_H
-#define WINDOW_NOTIFY_H
+#ifndef GROWL_NOTIFY_H
+#define GROWL_NOTIFY_H
 
 #include "notify/notifier.h"
 #include "gui/windows/main-configuration-window.h"
@@ -28,7 +28,7 @@ public:
 
 	virtual void notify(Notification *notification);
 	virtual CallbackCapacity callbackCapacity() { return CallbackNotSupported; }
-	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) {};
+	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
 	virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = 0);
 	void createDefaultConfiguration();
 
