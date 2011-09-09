@@ -27,11 +27,11 @@ set (TRANSLATION_SOURCES
 	translations/growl_notify_pl.ts
 )
 
+set (GROWL_LIBRARIES "-framework Growl -framework CoreFoundation")
+
 kadu_plugin (growl_notify
 	PLUGIN_SOURCES ${SOURCES}
 	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
 	PLUGIN_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
-	PLUGIN_LIBRARIES ${LIBRARIES}
+	PLUGIN_LIBRARIES ${GROWL_LIBRARIES}
 )
-
-set_target_properties (growl_notify PROPERTIES LINK_FLAGS "-undefined dynamic_lookup -framework Growl -framework CoreFoundation")

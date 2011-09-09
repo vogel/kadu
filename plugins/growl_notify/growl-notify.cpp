@@ -45,6 +45,8 @@
 #include "icons/icons-manager.h"
 #include "debug.h"
 
+GrowlNotify *GrowlNotify::Instance = NULL;
+
 GrowlNotify::GrowlNotify(QObject *parent) : Notifier("Growl", "Growl", KaduIcon("kadu_icons/notify-hints"), parent)
 {
 	kdebugf();
@@ -72,7 +74,7 @@ int GrowlNotify::init(bool firstLoad)
 
 	if (!grow_is_installed())
 	{
-		QMessageBox::information(0, tr("Error"), tr("Growl is not installed in your system"));
+		QMessageBox::information(NULL, tr("Error"), tr("Growl is not installed in your system"));
 		return 1;
 	}
 
@@ -147,6 +149,11 @@ void GrowlNotify::notify(Notification *notification)
 	//notification->release(); //released withing notification_timeout/notification_clicked
 
 	kdebugf2();
+}
+
+void GrowlNotify::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
+{
+	Q_UNUSED(mainConfigurationWindow);
 }
 
 void GrowlNotify::createDefaultConfiguration()
