@@ -4,7 +4,7 @@
 		<tab name="Tabs">
 			<group-box name="General">
 				<check-box caption="Use tabs by default" config-section="Chat" config-item="DefaultTabs" id="tabs/DefaultTabs" />
-				<spin-box caption="Minimum number of tabs" config-section="Chat" config-item="MinTabs" min-value="1" max-value="255" step="1" special-value="Always Use Tabs" id="tabs/MinTabs"/>
+				<spin-box caption="Minimum number of tabs" config-section="Chat" config-item="MinTabs" min-value="1" max-value="255" step="1" id="tabs/MinTabs"/>
 				<check-box caption="Tabs at the bottom of the window" config-section="Chat" config-item="TabsBelowChats" />
 				<check-box caption="Conferences in tabs" config-section="Chat" config-item="ConferencesInTabs" />
 				<check-box caption="Closing tabs using button from titlebar" config-section="Tabs" config-item="OldStyleClosing" tool-tip="&lt;nobr&gt;&lt;b&gt;Warning: This option has know bug!&lt;/b&gt;&lt;/nobr&gt;&lt;br&gt;If there is open more than one tab then exiting from KDE will be stopped by this module." />
