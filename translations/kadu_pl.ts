@@ -1117,7 +1117,7 @@ znajomych po połączeniu się z serwerem</translation>
     </message>
     <message>
         <source>Per Account</source>
-        <translation>dla  poszczególnych kont</translation>
+        <translation>dla poszczególnych kont</translation>
     </message>
     <message>
         <source>Per Identity</source>
@@ -2009,7 +2009,7 @@ zostaną zignorowane. Czy na pewno chcesz opuścić konferencję?</translation>
     </message>
     <message>
         <source>Connection error on account: %1 (%2)</source>
-        <translation>Błąd połaczenia konta %1 (%2)</translation>
+        <translation>Błąd połączenia konta %1 (%2)</translation>
     </message>
 </context>
 <context>
