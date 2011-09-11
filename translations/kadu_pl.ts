@@ -2019,19 +2019,23 @@ zostaną zignorowane. Czy na pewno chcesz opuścić konferencję?</translation>
         <translation>Kadu</translation>
     </message>
     <message>
-        <source>The following contacts present on server were not found on your local contact list:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;</source>
-        <translation>Kadu od wersji 0.10.0 automatycznie synchronizuje listę kontaktów Gadu-Gadu z serwerem. Teraz nastąpi pierwsza synchronizacja.&lt;br/&gt;&lt;br/&gt;Następujące kontakty znajdują się na serwerze, ale nie zostały znalezione na lokalnej liście kontaktów:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;Jeśli nie zgodzisz się na dodanie tych kontaktów do lokalnej listy, zostaną one usunięte z serwera.&lt;br/&gt;&lt;br/&gt;</translation>
+        <source>Kadu since version 0.10.0 automatically synchronizes Gadu-Gadu contact list with server. Now the first synchronization will be performed.&lt;br/&gt;&lt;br/&gt;</source>
+        <translation>Kadu od wersji 0.10.0 automatycznie synchronizuje listę kontaktów Gadu-Gadu z serwerem. Teraz nastąpi pierwsza synchronizacja.&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <source>The following contacts present on server were found on your local contact list under different buddy display names:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;</source>
-        <translation>Kadu od wersji 0.10.0 automatycznie synchronizuje listę kontaktów Gadu-Gadu z serwerem. Teraz nastąpi pierwsza synchronizacja.&lt;br/&gt;&lt;br/&gt;Następujące kontakty z lokalnej listy znajdują się na serwerze pod innymi nazwami:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;&lt;br/&gt;</translation>
+        <source>The following contacts present on the server were not found on your local contact list:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;If you do not agree to add those contacts to your local list, they will be removed from the server.&lt;br/&gt;&lt;br/&gt;</source>
+        <translation>Następujące kontakty znajdują się na serwerze, ale nie zostały znalezione na lokalnej liście kontaktów:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;Jeśli nie zgodzisz się na dodanie tych kontaktów do lokalnej listy, zostaną one usunięte z serwera.&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <source>Moreover, the following contacts present on server were found on your local contact list under different buddy display names:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;</source>
+        <source>The following contacts from your local list are present on the server under different names:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;&lt;br/&gt;</source>
+        <translation>Następujące kontakty z lokalnej listy znajdują się na serwerze pod innymi nazwami:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;&lt;br/&gt;</translation>
+    </message>
+    <message>
+        <source>Moreover, the following contacts from your local list are present on the server under different names:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;&lt;br/&gt;</source>
         <translation>Ponadto następujące kontakty z lokalnej listy znajdują się na serwerze pod innymi nazwami:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <source>Do you want to apply the above changes to your contact list?</source>
+        <source>Do you want to apply the above changes to your local contact list? Regardless of your choice, it will be sent to the server after making possible changes.</source>
         <translation>Czy chcesz wprowadzić powyższe zmiany do lokalnej listy kontaków? Niezależnie od wyboru, zostanie ona po dokonaniu ewentualnych zmian wysłana na serwer.</translation>
     </message>
     <message>

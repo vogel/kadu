@@ -41,8 +41,11 @@ ContactListService::~ContactListService()
 
 bool ContactListService::askForAddingContacts(const QMap<Buddy, Contact> &contactsToAdd, const QMap<Buddy, Contact> &contactsToRename)
 {
-	QString toAddString;
-	QString toRenameString;
+	if (contactsToAdd.isEmpty() && contactsToRename.isEmpty())
+		return true;
+
+	QString questionString = tr("Kadu since version 0.10.0 automatically synchronizes Gadu-Gadu contact list with server. "
+			"Now the first synchronization will be performed.<br/><br/>");
 
 	if (!contactsToAdd.isEmpty())
 	{
@@ -50,8 +53,9 @@ bool ContactListService::askForAddingContacts(const QMap<Buddy, Contact> &contac
 		for (QMap<Buddy, Contact>::const_iterator i = contactsToAdd.constBegin(); i != contactsToAdd.constEnd(); i++)
 			contactsToAddStrings.append(i.key().display() + " (" + i.value().id() + ')');
 
-		toAddString = tr("The following contacts present on server were not found on your local contact list:<br/>"
-				"<b>%1</b>.<br/>").arg(contactsToAddStrings.join("</b>, <b>"));
+		questionString += tr("The following contacts present on the server were not found on your local contact list:<br/>"
+				"<b>%1</b>.<br/>If you do not agree to add those contacts to your local list, "
+				"they will be removed from the server.<br/><br/>").arg(contactsToAddStrings.join("</b>, <b>"));
 	}
 
 	if (!contactsToRename.isEmpty())
@@ -60,19 +64,16 @@ bool ContactListService::askForAddingContacts(const QMap<Buddy, Contact> &contac
 		for (QMap<Buddy, Contact>::const_iterator i = contactsToRename.constBegin(); i != contactsToRename.constEnd(); i++)
 			contactsToRenameStrings.append(i.value().ownerBuddy().display() + " (" + i.value().id() + ") -> " + i.key().display());
 
-		if (toAddString.isEmpty())
-			toRenameString = tr("The following contacts present on server were found on your local contact list "
-					"under different buddy display names:<br/><b>%1</b>.<br/>").arg(contactsToRenameStrings.join("</b>, <b>"));
+		if (contactsToAdd.isEmpty())
+			questionString += tr("The following contacts from your local list are present on the server under different names:<br/>"
+					"<b>%1</b>.<br/><br/>").arg(contactsToRenameStrings.join("</b>, <b>"));
 		else
-			toRenameString = tr("Moreover, the following contacts present on server were found on your local contact list "
-					"under different buddy display names:<br/><b>%1</b>.<br/>").arg(contactsToRenameStrings.join("</b>, <b>"));
+			questionString += tr("Moreover, the following contacts from your local list are present on the server under different names:<br/>"
+					"<b>%1</b>.<br/><br/>").arg(contactsToRenameStrings.join("</b>, <b>"));
 	}
 
-	QString questionString = toAddString + toRenameString;
-	if (questionString.isEmpty())
-		return true;
-
-	questionString += tr("Do you want to apply the above changes to your contact list?");
+	questionString += tr("Do you want to apply the above changes to your local contact list? "
+			"Regardless of your choice, it will be sent to the server after making possible changes.");
 
 	return MessageDialog::ask(KaduIcon("dialog-question"), tr("Kadu"), questionString);
 }
