@@ -23,7 +23,7 @@
 
 #include <QtCore/QAbstractListModel>
 #include <QtCore/QDate>
-#include <QtCore/QList>
+#include <QtCore/QVector>
 
 #include "buddies/buddy.h"
 
@@ -34,10 +34,10 @@ class BuddyStatusDatesModel : public QAbstractListModel
 	Q_OBJECT
 
 	Buddy MyBuddy;
-	QList<DatesModelItem> Dates;
+	QVector<DatesModelItem> Dates;
 
 public:
-	BuddyStatusDatesModel(const Buddy &buddy, const QList<DatesModelItem> &dates, QObject *parent = 0);
+	BuddyStatusDatesModel(const Buddy &buddy, const QVector<DatesModelItem> &dates, QObject *parent = 0);
 	virtual ~BuddyStatusDatesModel();
 
 	virtual int columnCount(const QModelIndex &parent) const;
@@ -47,7 +47,7 @@ public:
 	virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 
 	void setBuddy(const Buddy &buddy);
-	void setDates(const QList<DatesModelItem> &dates);
+	void setDates(const QVector<DatesModelItem> &dates);
 
 	QModelIndex indexForDate(const QDate &date);
 

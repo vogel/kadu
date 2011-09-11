@@ -34,10 +34,10 @@ class ChatDatesModel : public QAbstractListModel
 	Q_OBJECT
 
 	Chat MyChat;
-	QList<DatesModelItem> Dates;
+	QVector<DatesModelItem> Dates;
 
 public:
-	ChatDatesModel(const Chat &chat, const QList<DatesModelItem> &dates, QObject *parent = 0);
+	ChatDatesModel(const Chat &chat, const QVector<DatesModelItem> &dates, QObject *parent = 0);
 	virtual ~ChatDatesModel();
 
 	virtual int columnCount(const QModelIndex &parent) const;
@@ -47,7 +47,7 @@ public:
 	virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 
 	void setChat(const Chat &chat);
-	void setDates(const QList<DatesModelItem> &dates);
+	void setDates(const QVector<DatesModelItem> &dates);
 
 	QModelIndex indexForDate(const QDate &date);
 

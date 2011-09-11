@@ -102,7 +102,7 @@ class HistoryWindow : public MainWindow
 	void smsRecipientActivated(const QString &recipient);
 	void treeItemActivated(const HistoryTreeItem &item);
 
-	QList<Message> statusesToMessages(const QList<TimedStatus> &statuses);
+	QVector<Message> statusesToMessages(const QList<TimedStatus> &statuses);
 
 private slots:
 	void treeCurrentChanged(const QModelIndex &current, const QModelIndex &previous);

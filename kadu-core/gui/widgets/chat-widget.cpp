@@ -193,7 +193,7 @@ void ChatWidget::createContactsList()
 	BuddiesWidget->setShowAnonymous(true);
 	BuddiesWidget->view()->setItemsExpandable(false);
 	BuddiesWidget->setMinimumSize(QSize(30, 30));
-	BuddiesWidget->view()->setModel(new ContactListModel(CurrentChat.contacts().toContactList(), this));
+	BuddiesWidget->view()->setModel(new ContactListModel(CurrentChat.contacts().toContactVector(), this));
 	BuddiesWidget->view()->setRootIsDecorated(false);
 	BuddiesWidget->view()->setShowAccountName(false);
 	BuddiesWidget->view()->setContextMenuEnabled(true);

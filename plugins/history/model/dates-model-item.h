@@ -28,6 +28,7 @@ struct DatesModelItem
 	int Count;
 	QString Title;
 
+	DatesModelItem() {}
 	DatesModelItem(const QDate &date, int count, const QString &title)
 		: Date(date), Count(count), Title(title)
 	{

@@ -81,7 +81,7 @@ void BuddyManager::importConfiguration(XmlConfigFile *configurationStorage)
 		return;
 
 	contactsNode.setTagName("OldContacts");
-	QList<QDomElement> contactElements = configurationStorage->getNodes(contactsNode, "Contact");
+	QVector<QDomElement> contactElements = configurationStorage->getNodes(contactsNode, "Contact");
 	foreach (const QDomElement &contactElement, contactElements)
 	{
 		Buddy buddy = Buddy::create();

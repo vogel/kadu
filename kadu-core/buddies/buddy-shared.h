@@ -132,7 +132,7 @@ public:
 
 	void addContact(const Contact &contact);
 	void removeContact(const Contact &contact);
-	QList<Contact> contacts(const Account &account);
+	QVector<Contact> contacts(const Account &account);
 	const QList<Contact> & contacts();
 
 	void sortContacts();

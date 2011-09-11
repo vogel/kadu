@@ -51,32 +51,6 @@ AccountManager * AccountManager::instance()
 	return Instance;
 }
 
-Account AccountManager::bestAccount(QList<Account> accounts)
-{
-	Account result;
-	if (accounts.isEmpty())
-		return result;
-
-	foreach (const Account &account, accounts)
-		if (account.details() && account.data())
-		{
-			// TODO: hack
-			bool newConnected = account.data()->protocolHandler() && account.data()->protocolHandler()->isConnected();
-			bool oldConnected = false;
-			if (result)
-				oldConnected = result.data()->protocolHandler() && result.data()->protocolHandler()->isConnected();
-
-			if (!result || (newConnected && !oldConnected)  || (account.protocolName() == "gadu" && result.protocolName() != "gadu"))
-			{
-				result = account;
-				if (newConnected && result.protocolName() == "gadu")
-					break;
-			}
-		}
-
-	return result;
-}
-
 AccountManager::AccountManager()
 {
 	ConfigurationManager::instance()->registerStorableObject(this);
@@ -189,13 +163,13 @@ Account AccountManager::bestAccount()
 	return bestAccount(items());
 }
 
-const QList<Account> AccountManager::byIdentity(Identity identity)
+const QVector<Account> AccountManager::byIdentity(Identity identity)
 {
 	QMutexLocker locker(&mutex());
 
 	ensureLoaded();
 
-	QList<Account> list;
+	QVector<Account> list;
 	foreach (const Account &account, allItems())
 		if (account.accountIdentity() == identity)
 			list.append(account);
@@ -216,13 +190,13 @@ Account AccountManager::byId(const QString& protocolName, const QString& id)
 	return Account::null;
 }
 
-const QList<Account> AccountManager::byProtocolName(const QString &name)
+const QVector<Account> AccountManager::byProtocolName(const QString &name)
 {
 	QMutexLocker locker(&mutex());
 
 	ensureLoaded();
 
-	QList<Account> list;
+	QVector<Account> list;
 	foreach (const Account &account, allItems())
 		if (account.protocolName() == name)
 			list.append(account);
@@ -265,7 +239,7 @@ void AccountManager::removeAccountAndBuddies(Account account)
 {
 	account.setRemoving(true);
 
-	QList<Contact> contacts = ContactManager::instance()->contacts(account);
+	QVector<Contact> contacts = ContactManager::instance()->contacts(account);
 	foreach (const Contact &contact, contacts)
 		BuddyManager::instance()->clearOwnerAndRemoveEmptyBuddy(contact);
 

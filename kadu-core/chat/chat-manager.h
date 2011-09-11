@@ -25,7 +25,7 @@
 #ifndef CHAT_MANAGER_H
 #define CHAT_MANAGER_H
 
-#include <QtCore/QList>
+#include <QtCore/QVector>
 #include <QtCore/QObject>
 #include <QtCore/QUuid>
 

@@ -20,6 +20,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QVector>
+
 #include "chat/chat-manager.h"
 #include "chat/message/message.h"
 #include "configuration/configuration-file.h"

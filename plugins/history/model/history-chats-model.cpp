@@ -48,7 +48,7 @@ void HistoryChatsModel::chatTypeRegistered(ChatType *chatType)
 
 	beginInsertRows(QModelIndex(), Chats.size(), Chats.size());
 	ChatKeys.append(chatType);
-	Chats.insert(ChatKeys.size() - 1, QList<Chat>());
+	Chats.insert(ChatKeys.size() - 1, QVector<Chat>());
 	endInsertRows();
 }
 
@@ -59,7 +59,7 @@ void HistoryChatsModel::chatTypeUnregistered(ChatType *chatType)
 
 	int index = ChatKeys.indexOf(chatType);
 	beginRemoveRows(QModelIndex(), index, index);
-	Chats.removeAt(index);
+	Chats.remove(index);
 	ChatKeys.removeAt(index);
 	endRemoveRows();
 }
@@ -136,7 +136,7 @@ QVariant HistoryChatsModel::chatData(const QModelIndex &index, int role) const
 	if (index.internalId() < 0 || index.internalId() >= Chats.size())
 		return QVariant();
 
-	const QList<Chat> &chats = Chats.at(index.internalId());
+	const QVector<Chat> &chats = Chats.at(index.internalId());
 	if (index.row() < 0 || index.row() >= chats.size())
 		return QVariant();
 
@@ -268,7 +268,7 @@ void HistoryChatsModel::addChat(const Chat &chat)
 	endInsertRows();
 }
 
-void HistoryChatsModel::setChats(const QList<Chat> &chats)
+void HistoryChatsModel::setChats(const QVector<Chat> &chats)
 {
 	clearChats();
 
@@ -296,7 +296,7 @@ void HistoryChatsModel::clearSmsRecipients()
 	}
 }
 
-void HistoryChatsModel::setStatusBuddies(const QList<Buddy> &buddies)
+void HistoryChatsModel::setStatusBuddies(const QVector<Buddy> &buddies)
 {
 	clearStatusBuddies();
 

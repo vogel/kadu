@@ -424,7 +424,7 @@ void HistorySqlStorage::deleteHistory(const Buddy &buddy)
 	executeQuery(query);
 }
 
-QList<Chat> HistorySqlStorage::chats(const HistorySearchParameters &search)
+QVector<Chat> HistorySqlStorage::chats(const HistorySearchParameters &search)
 {
 	kdebugf();
 
@@ -449,7 +449,7 @@ QList<Chat> HistorySqlStorage::chats(const HistorySearchParameters &search)
 	if (search.toDate().isValid())
 		query.bindValue(":toDate", search.toDate());
 
-	QList<Chat> chats;
+	QVector<Chat> chats;
 
 	executeQuery(query);
 
@@ -463,12 +463,12 @@ QList<Chat> HistorySqlStorage::chats(const HistorySearchParameters &search)
 	return chats;
 }
 
-QList<DatesModelItem> HistorySqlStorage::chatDates(const Chat &chat, const HistorySearchParameters &search)
+QVector<DatesModelItem> HistorySqlStorage::chatDates(const Chat &chat, const HistorySearchParameters &search)
 {
 	kdebugf();
 
 	if (!chat)
-		return QList<DatesModelItem>();
+		return QVector<DatesModelItem>();
 
 	QMutexLocker locker(&DatabaseMutex);
 
@@ -494,7 +494,7 @@ QList<DatesModelItem> HistorySqlStorage::chatDates(const Chat &chat, const Histo
 	if (search.toDate().isValid())
 		query.bindValue(":toDate", search.toDate());
 
-	QList<DatesModelItem> dates;
+	QVector<DatesModelItem> dates;
 	executeQuery(query);
 
 	int count;
@@ -529,7 +529,7 @@ QList<DatesModelItem> HistorySqlStorage::chatDates(const Chat &chat, const Histo
 	return dates;
 }
 
-QList<Message> HistorySqlStorage::messages(const Chat &chat, const QDate &date, int limit)
+QVector<Message> HistorySqlStorage::messages(const Chat &chat, const QDate &date, int limit)
 {
 	kdebugf();
 
@@ -543,7 +543,7 @@ QList<Message> HistorySqlStorage::messages(const Chat &chat, const QDate &date, 
 	if (0 != limit)
 		queryString += " LIMIT :limit";
 
-	QList<Message> messages;
+	QVector<Message> messages;
 	query.prepare(queryString);
 
 	if (!date.isNull())
@@ -556,13 +556,13 @@ QList<Message> HistorySqlStorage::messages(const Chat &chat, const QDate &date, 
 	return messages;
 }
 
-QList<Message> HistorySqlStorage::messagesSince(const Chat &chat, const QDate &date)
+QVector<Message> HistorySqlStorage::messagesSince(const Chat &chat, const QDate &date)
 {
 	kdebugf();
 
 	QMutexLocker locker(&DatabaseMutex);
 
-	QList<Message> messages;
+	QVector<Message> messages;
 	if (date.isNull())
 		return messages;
 
@@ -581,11 +581,11 @@ QList<Message> HistorySqlStorage::messagesSince(const Chat &chat, const QDate &d
 	return messages;
 }
 
-QList<Message> HistorySqlStorage::messagesBackTo(const Chat &chat, const QDateTime &datetime, int limit)
+QVector<Message> HistorySqlStorage::messagesBackTo(const Chat &chat, const QDateTime &datetime, int limit)
 {
 	DatabaseMutex.lock();
 
-	QList<Message> result;
+	QVector<Message> result;
 
 	QSqlQuery query(Database);
 	// we want last *limit* messages, so we have to invert sorting here
@@ -605,7 +605,7 @@ QList<Message> HistorySqlStorage::messagesBackTo(const Chat &chat, const QDateTi
 	DatabaseMutex.unlock();
 
 	// se comment above
-	QList<Message> inverted;
+	QVector<Message> inverted;
 	inverted.reserve(result.size());
 
 	for (int i = result.size() - 1; i >= 0; --i)
@@ -648,12 +648,12 @@ QList<QString> HistorySqlStorage::smsRecipientsList(const HistorySearchParameter
 	return recipients;
 }
 
-QList<DatesModelItem> HistorySqlStorage::datesForSmsRecipient(const QString &recipient, const HistorySearchParameters &search)
+QVector<DatesModelItem> HistorySqlStorage::datesForSmsRecipient(const QString &recipient, const HistorySearchParameters &search)
 {
 	kdebugf();
 
 	if (recipient.isEmpty())
-		return QList<DatesModelItem>();
+		return QVector<DatesModelItem>();
 
 	QMutexLocker locker(&DatabaseMutex);
 
@@ -681,7 +681,7 @@ QList<DatesModelItem> HistorySqlStorage::datesForSmsRecipient(const QString &rec
 	if (search.toDate().isValid())
 		query.bindValue(":toDate", search.toDate());
 
-	QList<DatesModelItem> dates;
+	QVector<DatesModelItem> dates;
 	executeQuery(query);
 
 	while (query.next())
@@ -696,7 +696,7 @@ QList<DatesModelItem> HistorySqlStorage::datesForSmsRecipient(const QString &rec
 	return dates;
 }
 
-QList<Message> HistorySqlStorage::sms(const QString &recipient, const QDate &date, int limit)
+QVector<Message> HistorySqlStorage::sms(const QString &recipient, const QDate &date, int limit)
 {
 	kdebugf();
 
@@ -719,12 +719,12 @@ QList<Message> HistorySqlStorage::sms(const QString &recipient, const QDate &dat
 		query.bindValue(":limit", limit);
 	executeQuery(query);
 
-	QList<Message> result = smsFromQuery(query);
+	QVector<Message> result = smsFromQuery(query);
 
 	return result;
 }
 
-QList<Buddy> HistorySqlStorage::statusBuddiesList(const HistorySearchParameters &search)
+QVector<Buddy> HistorySqlStorage::statusBuddiesList(const HistorySearchParameters &search)
 {
 	kdebugf();
 
@@ -749,7 +749,7 @@ QList<Buddy> HistorySqlStorage::statusBuddiesList(const HistorySearchParameters 
 	if (search.toDate().isValid())
 		query.bindValue(":toDate", search.toDate());
 
-	QList<Buddy> buddies;
+	QVector<Buddy> buddies;
 	QSet<Contact> usedContacts;
 
 	executeQuery(query);
@@ -768,12 +768,12 @@ QList<Buddy> HistorySqlStorage::statusBuddiesList(const HistorySearchParameters 
 	return buddies;
 }
 
-QList<DatesModelItem> HistorySqlStorage::datesForStatusBuddy(const Buddy &buddy, const HistorySearchParameters &search)
+QVector<DatesModelItem> HistorySqlStorage::datesForStatusBuddy(const Buddy &buddy, const HistorySearchParameters &search)
 {
 	kdebugf();
 
 	if (!buddy)
-		return QList<DatesModelItem>();
+		return QVector<DatesModelItem>();
 
 	QMutexLocker locker(&DatabaseMutex);
 
@@ -800,7 +800,7 @@ QList<DatesModelItem> HistorySqlStorage::datesForStatusBuddy(const Buddy &buddy,
 	if (search.toDate().isValid())
 		query.bindValue(":toDate", search.toDate());
 
-	QList<DatesModelItem> dates;
+	QVector<DatesModelItem> dates;
 
 	executeQuery(query);
 
@@ -866,9 +866,9 @@ void HistorySqlStorage::executeQuery(QSqlQuery &query)
 }
 
 
-QList<Message> HistorySqlStorage::messagesFromQuery(QSqlQuery &query)
+QVector<Message> HistorySqlStorage::messagesFromQuery(QSqlQuery &query)
 {
-	QList<Message> messages;
+	QVector<Message> messages;
 	while (query.next())
 	{
 		bool outgoing = QVariant(query.value(5).toString().split('=').last()).toBool();
@@ -922,9 +922,9 @@ QList<TimedStatus> HistorySqlStorage::statusesFromQuery(QSqlQuery &query)
 	return statuses;
 }
 
-QList<Message> HistorySqlStorage::smsFromQuery(QSqlQuery &query)
+QVector<Message> HistorySqlStorage::smsFromQuery(QSqlQuery &query)
 {
-	QList<Message> messages;
+	QVector<Message> messages;
 
 	while (query.next())
 	{

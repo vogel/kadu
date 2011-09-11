@@ -44,7 +44,7 @@ class KADUAPI ChatDetailsAggregate : public ChatDetails
 {
 	Q_OBJECT
 
-	QList<Chat> Chats;
+	QVector<Chat> Chats;
 
 public:
 	explicit ChatDetailsAggregate(ChatShared *chatData);
@@ -56,8 +56,8 @@ public:
 	virtual ContactSet contacts() const;
 	virtual QString name() const;
 
-	void setChats(const QList<Chat> &chats);
-	const QList<Chat> & chats() const;
+	void setChats(const QVector<Chat> &chats);
+	const QVector<Chat> & chats() const;
 
 };
 

@@ -33,10 +33,10 @@ class ContactListModel : public QAbstractItemModel, public AbstractBuddiesModel
 {
 	Q_OBJECT
 
-	QList<Contact> List;
+	QVector<Contact> List;
 
 public:
-	explicit ContactListModel(const QList<Contact> &list, QObject *parent = 0);
+	explicit ContactListModel(const QVector<Contact> &list, QObject *parent = 0);
 	virtual ~ContactListModel();
 
 	virtual QModelIndex index(int row, int column, const QModelIndex& parent = QModelIndex()) const;

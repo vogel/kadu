@@ -223,13 +223,13 @@ Contact ContactManager::byId(Account account, const QString &id, NotFoundAction 
 	return contact;
 }
 
-QList<Contact> ContactManager::contacts(Account account)
+QVector<Contact> ContactManager::contacts(Account account)
 {
 	QMutexLocker locker(&mutex());
 
 	ensureLoaded();
 
-	QList<Contact> contacts;
+	QVector<Contact> contacts;
 
 	if (account.isNull())
 		return contacts;
@@ -250,13 +250,13 @@ const QList<Contact> & ContactManager::dirtyContacts()
 	return DirtyContacts;
 }
 
-QList<Contact> ContactManager::dirtyContacts(Account account)
+QVector<Contact> ContactManager::dirtyContacts(Account account)
 {
 	QMutexLocker locker(&mutex());
 
 	ensureLoaded();
 
-	QList<Contact> contacts;
+	QVector<Contact> contacts;
 
 	if (account.isNull())
 		return contacts;

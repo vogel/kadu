@@ -298,11 +298,11 @@ void BuddyShared::removeContact(const Contact &contact)
 	dataUpdated();
 }
 
-QList<Contact> BuddyShared::contacts(const Account &account)
+QVector<Contact> BuddyShared::contacts(const Account &account)
 {
 	ensureLoaded();
 
-	QList<Contact> contacts;
+	QVector<Contact> contacts;
 	foreach (const Contact &contact, Contacts)
 		if (contact.contactAccount() == account)
 			contacts.append(contact);
@@ -321,7 +321,7 @@ QString BuddyShared::id(const Account &account)
 {
 	ensureLoaded();
 
-	QList<Contact> contactslist;
+	QVector<Contact> contactslist;
 	contactslist = contacts(account);
 	if (!contactslist.isEmpty())
 		return contactslist.at(0).id();

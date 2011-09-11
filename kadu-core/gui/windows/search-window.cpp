@@ -121,7 +121,7 @@ SearchWindow::SearchWindow(QWidget *parent, Buddy buddy) :
 
 	if (CurrentSearchCriteria.SearchBuddy)
 	{
-		QList<Contact> contacts = CurrentSearchCriteria.SearchBuddy.contacts(CurrentAccount);
+		QVector<Contact> contacts = CurrentSearchCriteria.SearchBuddy.contacts(CurrentAccount);
 		Contact contact = contacts.isEmpty() ? Contact::null : contacts.at(0);
 		if (contact)
 			// it should call uinTyped() slot
@@ -459,7 +459,7 @@ void SearchWindow::newSearchResults(const BuddyList &buddies)
 {
 	foreach (const Buddy &buddy, buddies)
 	{
-		QList<Contact> contacts = buddy.contacts(CurrentAccount);
+		QVector<Contact> contacts = buddy.contacts(CurrentAccount);
 		Contact contact = contacts.isEmpty() ? Contact::null : contacts.at(0);
 		QList<QTreeWidgetItem *> items = ResultsListWidget->findItems(contact.id(), Qt::MatchExactly, 1);
 		QTreeWidgetItem *treeItem = items.isEmpty() ? 0 : items.at(0);

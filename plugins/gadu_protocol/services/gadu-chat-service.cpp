@@ -72,7 +72,7 @@ bool GaduChatService::sendMessage(const Chat &chat, FormattedMessage &message, b
 	kdebugf();
 
 	QString plain = message.toPlain();
-	QList<Contact> contacts = chat.contacts().toContactList();
+	QVector<Contact> contacts = chat.contacts().toContactVector();
 
 	unsigned int uinsCount = 0;
 	unsigned int formatsSize = 0;

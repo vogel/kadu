@@ -243,20 +243,20 @@ void XmlConfigFile::removeChildren(QDomElement parent)
 	}
 }
 
-void XmlConfigFile::removeNodes(QDomElement parentNode, const QList<QDomElement> &elements)
+void XmlConfigFile::removeNodes(QDomElement parentNode, const QVector<QDomElement> &elements)
 {
 	foreach (const QDomElement &element, elements)
 		parentNode.removeChild(element);
 }
 
-void XmlConfigFile::removeNamedNodes(QDomElement parentNode, const QList<QDomElement> &elements, const QString &name)
+void XmlConfigFile::removeNamedNodes(QDomElement parentNode, const QVector<QDomElement> &elements, const QString &name)
 {
 	foreach (const QDomElement &element, elements)
 		if (isElementNamed(element, name))
 			parentNode.removeChild(element);
 }
 
-void XmlConfigFile::removeUuidNodes(QDomElement parentNode, const QList<QDomElement> &elements, const QString &uuid)
+void XmlConfigFile::removeUuidNodes(QDomElement parentNode, const QVector<QDomElement> &elements, const QString &uuid)
 {
 	foreach (const QDomElement &element, elements)
 		if (isElementUuid(element, uuid))
@@ -302,7 +302,7 @@ QDomElement XmlConfigFile::getNode(QDomElement parentNode, const QString &nodeTa
 {
 	if (ModeCreate == getMode)
 	{
-		QList<QDomElement> nodes = getNodes(parentNode, nodeTagName);
+		QVector<QDomElement> nodes = getNodes(parentNode, nodeTagName);
 		removeNodes(parentNode, nodes);
 	}
 	else if (ModeAppend != getMode)
@@ -328,7 +328,7 @@ QDomElement XmlConfigFile::getNamedNode(QDomElement parentNode, const QString &n
 	if (ModeAppend == getMode)
 		return result;
 
-	QList<QDomElement> nodes = getNodes(parentNode, nodeTagName);
+	QVector<QDomElement> nodes = getNodes(parentNode, nodeTagName);
 
 	if (ModeCreate == getMode)
 		removeNamedNodes(parentNode, nodes, nodeName);
@@ -353,7 +353,7 @@ QDomElement XmlConfigFile::getUuidNode(QDomElement parentNode, const QString &no
 	if (ModeAppend == getMode)
 		return result;
 
-	QList<QDomElement> nodes = getNodes(parentNode, nodeTagName);
+	QVector<QDomElement> nodes = getNodes(parentNode, nodeTagName);
 
 	if (ModeCreate == getMode)
 		removeUuidNodes(parentNode, nodes, nodeUuid);
@@ -372,9 +372,9 @@ QDomElement XmlConfigFile::getUuidNode(QDomElement parentNode, const QString &no
 	return result;
 }
 
-QList<QDomElement> XmlConfigFile::getNodes(const QDomElement &parent, const QString &nodeTagName)
+QVector<QDomElement> XmlConfigFile::getNodes(const QDomElement &parent, const QString &nodeTagName)
 {
-	QList<QDomElement> result;
+	QVector<QDomElement> result;
 
 	for (QDomElement elem = parent.firstChildElement(nodeTagName); !elem.isNull(); elem = elem.nextSiblingElement(nodeTagName))
 	    result.append(elem);

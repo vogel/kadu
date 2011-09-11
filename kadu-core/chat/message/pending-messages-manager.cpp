@@ -131,11 +131,11 @@ Chat PendingMessagesManager::chatForContact(const Contact &contact)
 	return Chat::null;
 }
 
-QList<Message> PendingMessagesManager::pendingMessagesForContact(const Contact &contact)
+QVector<Message> PendingMessagesManager::pendingMessagesForContact(const Contact &contact)
 {
 	QMutexLocker locker(&mutex());
 
-	QList<Message> result;
+	QVector<Message> result;
 
 	foreach (const Message &message, items())
 		if (message.isPending() && message.messageChat().contacts().contains(contact))
@@ -144,11 +144,11 @@ QList<Message> PendingMessagesManager::pendingMessagesForContact(const Contact &
 	return result;
 }
 
-QList<Message> PendingMessagesManager::pendingMessagesForBuddy(const Buddy &buddy)
+QVector<Message> PendingMessagesManager::pendingMessagesForBuddy(const Buddy &buddy)
 {
 	QMutexLocker locker(&mutex());
 
-	QList<Message> result;
+	QVector<Message> result;
 	QSet<Contact> contacts = buddy.contacts().toSet();
 
 	foreach (const Message &message, items())
@@ -158,17 +158,18 @@ QList<Message> PendingMessagesManager::pendingMessagesForBuddy(const Buddy &budd
 	return result;
 }
 
-QList<Message> PendingMessagesManager::pendingMessagesForChat(const Chat &chat)
+QVector<Message> PendingMessagesManager::pendingMessagesForChat(const Chat &chat)
 {
 	QMutexLocker locker(&mutex());
 
-	QList<Message> result;
+	QVector<Message> result;
 	QSet<Chat> chats;
 
 	ChatDetails *details = chat.details();
 	ChatDetailsAggregate *aggregateDetails = qobject_cast<ChatDetailsAggregate *>(details);
 	if (aggregateDetails)
-		chats = aggregateDetails->chats().toSet();
+		foreach (const Chat &ch, aggregateDetails->chats())
+			chats.insert(ch);
 	else
 		chats.insert(chat);
 
@@ -179,11 +180,11 @@ QList<Message> PendingMessagesManager::pendingMessagesForChat(const Chat &chat)
 	return result;
 }
 
-QList<Message> PendingMessagesManager::pendingMessages()
+QVector<Message> PendingMessagesManager::pendingMessages()
 {
 	QMutexLocker locker(&mutex());
 
-	QList<Message> result;
+	QVector<Message> result;
 
 	foreach (const Message &message, items())
 		if (message.isPending())

@@ -26,10 +26,10 @@
 #include <QtCore/QAbstractItemModel>
 #include <QtCore/QMap>
 
+#include "buddies/buddy.h"
+#include "chat/chat.h"
 #include "chat/type/chat-type-aware-object.h"
 
-class Buddy;
-class Chat;
 class ChatType;
 
 class HistoryChatsModel : public QAbstractItemModel, ChatTypeAwareObject
@@ -37,9 +37,9 @@ class HistoryChatsModel : public QAbstractItemModel, ChatTypeAwareObject
 	Q_OBJECT
 
 	QList<ChatType *> ChatKeys;
-	QList<QList<Chat> > Chats;
+	QVector<QVector<Chat> > Chats;
 
-	QList<Buddy> StatusBuddies;
+	QVector<Buddy> StatusBuddies;
 	QList<QString> SmsRecipients;
 
 	void clearChats();
@@ -70,8 +70,8 @@ public:
 
 	virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 
-	void setChats(const QList<Chat> &chats);
-	void setStatusBuddies(const QList<Buddy> &buddies);
+	void setChats(const QVector<Chat> &chats);
+	void setStatusBuddies(const QVector<Buddy> &buddies);
 	void setSmsRecipients(const QList<QString> &smsRecipients);
 
 	QModelIndex chatTypeIndex(ChatType *type) const;

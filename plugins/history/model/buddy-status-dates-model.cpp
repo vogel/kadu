@@ -30,7 +30,7 @@
 
 #include "buddy-status-dates-model.h"
 
-BuddyStatusDatesModel::BuddyStatusDatesModel(const Buddy &buddy, const QList<DatesModelItem> &dates, QObject *parent) :
+BuddyStatusDatesModel::BuddyStatusDatesModel(const Buddy &buddy, const QVector<DatesModelItem> &dates, QObject *parent) :
 		QAbstractListModel(parent), MyBuddy(buddy), Dates(dates)
 {
 }
@@ -103,7 +103,7 @@ void BuddyStatusDatesModel::setBuddy(const Buddy &buddy)
 	MyBuddy = buddy;
 }
 
-void BuddyStatusDatesModel::setDates(const QList<DatesModelItem> &dates)
+void BuddyStatusDatesModel::setDates(const QVector<DatesModelItem> &dates)
 {
 	if (!Dates.isEmpty())
 	{

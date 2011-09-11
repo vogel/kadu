@@ -17,6 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QVector>
+
 #include "configuration/xml-configuration-file.h"
 
 #include "profile-data-manager.h"
@@ -28,7 +30,7 @@ QDomElement ProfileDataManager::getProfilesNode()
 		return QDomElement();
 
 	QDomElement configFile;
-	QList<QDomElement> configFiles = xml_config_file->getNodes(deprecated, "ConfigFile");
+	QVector<QDomElement> configFiles = xml_config_file->getNodes(deprecated, "ConfigFile");
 
 	foreach (const QDomElement &cf, configFiles)
 		if (cf.attribute("name").endsWith("kadu.conf"))
@@ -51,7 +53,7 @@ QList<ProfileData> ProfileDataManager::readProfileData()
 	if (groupProfiles.isNull())
 		return result;
 
-	QList<QDomElement> profiles = xml_config_file->getNodes(groupProfiles, "Profile");
+	QVector<QDomElement> profiles = xml_config_file->getNodes(groupProfiles, "Profile");
 	foreach (const QDomElement &profile, profiles)
 	{
 		if (profile.attribute("imported") != "yes")

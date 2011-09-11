@@ -174,7 +174,7 @@ void JabberRosterService::downloadRoster()
 	InRequest = true;
 
 	// flag roster for delete
-	ContactsForDelete = ContactManager::instance()->contacts(Protocol->account());
+	ContactsForDelete = ContactManager::instance()->contacts(Protocol->account()).toList();
 	ContactsForDelete.removeAll(Protocol->account().accountContact());
 
 	Protocol->client()->requestRoster();

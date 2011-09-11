@@ -29,6 +29,7 @@
 
 #include "chat.h"
 
+
 KaduSharedBaseClassImpl(Chat)
 
 /**

@@ -40,7 +40,7 @@ public:
 	ContactSet();
 	explicit ContactSet(const Contact &contact);
 
-	QList<Contact> toContactList() const;
+	QVector<Contact> toContactVector() const;
 	BuddySet toBuddySet() const;
 	Contact toContact() const;
 

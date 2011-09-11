@@ -146,9 +146,9 @@ void Buddy::removeContact(Contact contact) const
 		data()->removeContact(contact);
 }
 
-QList<Contact> Buddy::contacts(Account account) const
+QVector<Contact> Buddy::contacts(Account account) const
 {
-	return isNull() ? QList<Contact>() : data()->contacts(account);
+	return isNull() ? QVector<Contact>() : data()->contacts(account);
 }
 
 QList<Contact> Buddy::contacts() const

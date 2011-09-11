@@ -38,7 +38,7 @@ BuddySearchCriteria::~BuddySearchCriteria()
 void BuddySearchCriteria::reqUin(Account account, const QString &uin)
 {
 	// TODO ???
-	QList<Contact> contactslist = SearchBuddy.contacts(account);
+	QVector<Contact> contactslist = SearchBuddy.contacts(account);
 	Contact contact = contactslist.isEmpty() ? Contact::null : contactslist.at(0);
 	if (!contact)
 	{

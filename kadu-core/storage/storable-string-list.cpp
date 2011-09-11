@@ -19,6 +19,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QVector>
+
 #include "storable-string-list.h"
 
 /**
@@ -52,7 +54,8 @@ void StorableStringList::load()
 	XmlConfigFile *storageFile = storage()->storage();
 	QDomElement point = storage()->point();
 
-	QList<QDomElement> elements = storageFile->getNodes(point, storageItemNodeName());
+	QVector<QDomElement> elements = storageFile->getNodes(point, storageItemNodeName());
+	StringList.reserve(elements.size());
 	foreach (const QDomElement &element, elements)
 		StringList.append(element.text());
 }

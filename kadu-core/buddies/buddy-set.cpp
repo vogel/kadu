@@ -50,11 +50,12 @@ BuddyList BuddySet::toBuddyList() const
 	return toList();
 }
 
-QList<Contact> BuddySet::getAllContacts() const
+QVector<Contact> BuddySet::getAllContacts() const
 {
-	QList<Contact> allContacts;
+	QVector<Contact> allContacts;
 	foreach (const Buddy &buddy, *this)
-		allContacts.append(buddy.contacts());
+		foreach (const Contact &contact, buddy.contacts())
+			allContacts.append(contact);
 
 	return allContacts;
 }
