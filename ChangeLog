@@ -1,3 +1,6 @@
++++ version 0.10.1
+* gadu: clearer contact list synchronization message when updating from <0.10.0 (beevvy)
+
 +++ version 0.10.0
 * sms: small changes that will ease updating gateway scripts (beevvy)
 * config_wizard: #2264 fixed: if creating new account failed, do not go to next config wizard page (beevvy)
