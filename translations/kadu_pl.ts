@@ -515,7 +515,7 @@ To poważne zagrożenie bezpieczeństwa!</translation>
     </message>
     <message>
         <source>Clear recent chats list on exit</source>
-        <translation>Wyczyść listę ostatnich rozmowów przy wyłączeniu</translation>
+        <translation>Wyczyść listę ostatnich rozmów przy wychodzeniu z programu</translation>
     </message>
     <message>
         <source>Closing</source>
