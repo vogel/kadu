@@ -4,6 +4,7 @@
 
 +++ version 0.10.1
 * gadu: clearer contact list synchronization message when updating from <0.10.0 (beevvy)
+* build: support defining plugins to be compiled through commandline -DCOMPILE_PLUGINS=... argument (beevvy)
 
 +++ version 0.10.0
 * sms: small changes that will ease updating gateway scripts (beevvy)
