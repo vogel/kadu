@@ -128,6 +128,15 @@ if (NOT COMPILE_PLUGINS)
 			# Easily take screenshots and send as images
 			screenshot
 		)
+
+		if (WITH_LIBINDICATE_QT)
+			list (APPEND COMPILE_PLUGINS
+
+			# docking
+				# Indicator docking support
+				indicator_docking
+			)
+		endif (WITH_LIBINDICATE_QT)
 	endif (UNIX AND NOT APPLE)
 
 	if (APPLE)
