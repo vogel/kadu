@@ -19,6 +19,10 @@ set (MOC_SOURCES
 	indicator_docking-plugin.h
 )
 
+if (NOT WITH_LIBINDICATE_QT)
+	message (SEND_ERROR "You need to compile core with -DWITH_LIBINDICATE_QT=ON. Aborting. If you are compiling outside of Kadu core sources, make sure it is compiled with libindicate-qt support and redefine the required macro here.")
+endif (NOT WITH_LIBINDICATE_QT)
+
 pkg_search_module (INDICATEQT REQUIRED indicate-qt)
 
 link_directories (${INDICATEQT_LIBRARY_DIRS})

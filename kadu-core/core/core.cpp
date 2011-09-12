@@ -35,6 +35,10 @@
 
 #include <QtCrypto>
 
+#if WITH_LIBINDICATE_QT
+#include <libindicate-qt/qindicateserver.h>
+#endif
+
 #include "accounts/account-manager.h"
 #include "avatars/avatar-manager.h"
 #include "buddies/buddy-manager.h"
@@ -396,6 +400,11 @@ void Core::init()
 	// which (the buddies) otherwise will not be taken into account by buddies list before its next update.
 	PendingMessagesManager::instance()->ensureLoaded();
 	AvatarManager::instance(); // initialize that
+
+#if WITH_LIBINDICATE_QT
+	// Use a symbol from libindicate-qt so that it will not get dropped for example by --as-needed.
+	(void)QIndicate::Server::defaultInstance();
+#endif
 }
 
 void Core::initialized()

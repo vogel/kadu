@@ -59,6 +59,8 @@ set (kadu_SUBDIRS
 
 qt4_wrap_cpp (MOC_FILES ${kadu_MOC_SRCS})
 
+set (ADDITIONAL_LIBRARIES "")
+
 if (WIN32)
 	if (NOT MINGW_QCA_DIR)
 		message (SEND_ERROR " Pass path to libqca2 -DMINGW_QCA_DIR=path")
@@ -76,6 +78,21 @@ add_definitions (${QCA2_CFLAGS_OTHER})
 include_directories (${QCA2_INCLUDE_DIRS})
 
 if (UNIX AND NOT APPLE)
+	if (WITH_LIBINDICATE_QT)
+		# We need to link core to libindicate-qt so that indicator_docking
+		# doesn't crash at unloading. And it crashes mainly because dbus-glib
+		# doesn't support being dlclose()'d, so there is no better workaround.
+		pkg_search_module (INDICATEQT REQUIRED indicate-qt)
+		link_directories (${INDICATEQT_LIBRARY_DIRS})
+		add_definitions (${INDICATEQT_CFLAGS_OTHER})
+		include_directories (${INDICATEQT_INCLUDE_DIRS})
+		list (APPEND ADDITIONAL_LIBRARIES ${INDICATEQT_LIBRARIES})
+	endif (WITH_LIBINDICATE_QT)
+
+	if (${NETWORK_IMPLEMENTATION} STREQUAL "ntrack")
+		list (APPEND ADDITIONAL_LIBRARIES ${QNTRACK_LIBRARIES})
+	endif (${NETWORK_IMPLEMENTATION} STREQUAL "ntrack")
+
 	include (FindX11)
 	if (X11_FOUND)
 		message (STATUS "Found X11 libraries: ${X11_X11_LIB}")
@@ -120,7 +137,7 @@ if (WIN32)
 		COMPILE_DEFINITIONS KADULIB
 		LINK_INTERFACE_LIBRARIES ""
 	)
-	target_link_libraries (kadu_core ${QT_LIBRARIES} ${QCA2_LIBRARIES})
+	target_link_libraries (kadu_core ${QT_LIBRARIES} ${QCA2_LIBRARIES} ${ADDITIONAL_LIBRARIES})
 
 	if (MINGW)
 		exec_program (windres ${CMAKE_CURRENT_SOURCE_DIR}
@@ -160,7 +177,7 @@ else (WIN32)
 		LINK_INTERFACE_LIBRARIES ""
 	)
 
-	target_link_libraries (kadu ${QT_LIBRARIES} ${QCA2_LIBRARIES} ${CMAKE_DL_LIBS})
+	target_link_libraries (kadu ${QT_LIBRARIES} ${QCA2_LIBRARIES} ${CMAKE_DL_LIBS} ${ADDITIONAL_LIBRARIES})
 
 	if (UNIX AND NOT APPLE)
 		target_link_libraries (kadu ${X11_X11_LIB})
@@ -170,10 +187,6 @@ else (WIN32)
 		endif (USE_X11_XFIXES)
 	endif (UNIX AND NOT APPLE)
 endif (WIN32)
-
-if (${NETWORK_IMPLEMENTATION} STREQUAL "ntrack")
-	target_link_libraries (kadu ${QNTRACK_LIBRARIES})
-endif (${NETWORK_IMPLEMENTATION} STREQUAL "ntrack")
 
 install (TARGETS kadu DESTINATION ${KADU_BIN_DIR})
 

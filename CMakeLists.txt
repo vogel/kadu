@@ -10,8 +10,10 @@ option (BUILD_PLUGINS "Switch to Off if you do not want to build plugins" ON)
 option (INSTALL_CMAKE_MODULE "Install cmake modules" ON)
 if (UNIX)
 	option (SIG_HANDLING_ENABLED "Define if you want system signals handling" ON)
+
 	if (UNIX AND NOT APPLE)
 		option (USE_X11_XFIXES "Use X11 XFixes extension (Desktop Linux)" ON)
+		option (WITH_LIBINDICATE_QT "Compile with Messaging Menu (Ayatana) support trough libindicate-qt" OFF)
 	endif (UNIX AND NOT APPLE)
 endif (UNIX)
 

@@ -113,10 +113,6 @@ endif (UNIX)
 if (UNIX AND NOT APPLE)
 	list (APPEND COMPILE_PLUGINS
 
-	# docking
-		# Indicator docking support
-		indicator_docking
-
 	# notifiers
 		# Freedesktop notification support
 		freedesktop_notify
@@ -131,6 +127,15 @@ if (UNIX AND NOT APPLE)
 		# Easily take screenshots and send as images
 		screenshot
 	)
+
+	if (WITH_LIBINDICATE_QT)
+		list (APPEND COMPILE_PLUGINS
+
+		# docking
+			# Indicator docking support
+			indicator_docking
+		)
+	endif (WITH_LIBINDICATE_QT)
 endif (UNIX AND NOT APPLE)
 
 if (APPLE)

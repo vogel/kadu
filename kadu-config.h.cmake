@@ -11,3 +11,4 @@
 
 #cmakedefine01 SIG_HANDLING_ENABLED
 #cmakedefine01 HAVE_EXECINFO
+#cmakedefine01 WITH_LIBINDICATE_QT
