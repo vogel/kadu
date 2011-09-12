@@ -35,10 +35,6 @@
 
 #include <QtCrypto>
 
-#if WITH_LIBINDICATE_QT
-#include <libindicate-qt/qindicateserver.h>
-#endif
-
 #include "accounts/account-manager.h"
 #include "avatars/avatar-manager.h"
 #include "buddies/buddy-manager.h"
@@ -72,6 +68,10 @@
 #include "icons/icons-manager.h"
 #include "kadu-config.h"
 #include "updates.h"
+
+#if WITH_LIBINDICATE_QT
+#include <libindicate-qt/qindicateserver.h>
+#endif
 
 #include "core.h"
 
