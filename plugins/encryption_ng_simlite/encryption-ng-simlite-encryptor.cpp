@@ -23,24 +23,10 @@
 #include "plugins/encryption_ng/keys/keys-manager.h"
 #include "plugins/encryption_ng/notify/encryption-ng-notification.h"
 
+#include "encryption-ng-simlite-common.h"
 #include "pkcs1_certificate.h"
 
 #include "encryption-ng-simlite-encryptor.h"
-
-#define BEGIN_RSA_PUBLIC_KEY "-----BEGIN RSA PUBLIC KEY-----"
-#define END_RSA_PUBLIC_KEY "-----END RSA PUBLIC KEY-----"
-
-#define BEGIN_RSA_PUBLIC_KEY_LENGTH strlen(BEGIN_RSA_PUBLIC_KEY)
-#define END_RSA_PUBLIC_KEY_LENGTH strlen(END_RSA_PUBLIC_KEY)
-
-#define SIM_MAGIC_V1_1 0x91
-#define SIM_MAGIC_V1_2 0x23
-typedef struct {
-	unsigned char init[8];
-	uint8_t magicFirstPart;
-	uint8_t magicSecondPart;
-	uint8_t flags;
-} sim_message_header;
 
 EncryptioNgSimliteEncryptor::EncryptioNgSimliteEncryptor(const Contact &contact, EncryptionProvider *provider, QObject *parent) :
 		Encryptor(provider, parent), MyContact(contact)
@@ -149,8 +135,7 @@ QByteArray EncryptioNgSimliteEncryptor::encrypt(const QByteArray &data)
 	}
 
 	//create an initialisation vector (8 zeros)
-	char ivec[8] = {0, 0, 0, 0, 0, 0, 0, 0};
-	QCA::InitializationVector iv(QByteArray(ivec, 8));
+	QCA::InitializationVector iv(QByteArray(8, '\x00'));
 	//encrypt the message using the Blowfish key:
 	//create a 128 bit Blowfish cipher object using Cipher Block Chaining (CBC) mode,
 	//with default padding and for encoding
@@ -163,8 +148,8 @@ QByteArray EncryptioNgSimliteEncryptor::encrypt(const QByteArray &data)
 	head.magicFirstPart = SIM_MAGIC_V1_1;
 	head.magicSecondPart = SIM_MAGIC_V1_2;
 	//fill the iv in the header with some random bytes (using IV is a simple way)
-	QCA::InitializationVector headIV(8);
-	memcpy(head.init, headIV.data(), 8);
+	QCA::InitializationVector headIV(sizeof(head.init));
+	memcpy(head.init, headIV.constData(), sizeof(head.init));
 
 	//the actual encryption
 	// NOTE: Kadu internally works with Unicode and our simlite works with CP-1250, so we have to
