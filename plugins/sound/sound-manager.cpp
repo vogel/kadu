@@ -31,6 +31,7 @@
  */
 
 #include <QtCore/QFile>
+#include <QtCore/QThread>
 
 #include "configuration/configuration-file.h"
 #include "debug.h"
@@ -65,7 +66,15 @@ SoundManager::SoundManager() :
 
 	setMute(!config_file.readBoolEntry("Sounds", "PlaySound"));
 
-	PlayThread = new SoundPlayThread(this);
+
+	PlayThread = new QThread();
+	PlayThreadObject = new SoundPlayThread();
+	PlayThreadObject->moveToThread(PlayThread);
+
+	connect(PlayThread, SIGNAL(started()), PlayThreadObject, SLOT(start()));
+	connect(PlayThreadObject, SIGNAL(finished()), PlayThread, SLOT(quit()), Qt::DirectConnection);
+	connect(PlayThreadObject, SIGNAL(finished()), PlayThread, SLOT(deleteLater()), Qt::DirectConnection);
+
 	PlayThread->start();
 
 	kdebugf2();
@@ -75,7 +84,8 @@ SoundManager::~SoundManager()
 {
 	kdebugf();
 
-	PlayThread->end();
+	PlayThreadObject->end();
+
 	PlayThread->wait(5000);
 	if (PlayThread->isRunning())
 	{
@@ -126,7 +136,7 @@ void SoundManager::playFile(const QString &path, bool force)
 		return;
 
 	if (Player && QFile::exists(path))
-		PlayThread->play(Player, path);
+		PlayThreadObject->play(Player, path);
 }
 
 void SoundManager::playSoundByName(const QString &soundName)

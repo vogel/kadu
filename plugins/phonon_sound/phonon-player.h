@@ -23,8 +23,10 @@
 #ifndef PHONON_SOUND_H
 #define PHONON_SOUND_H
 
+#include <QtCore/QMutex>
 #include <QtCore/QObject>
 #include <QtCore/QString>
+#include <QtCore/QWaitCondition>
 
 #include "plugins/sound/sound-player.h"
 
@@ -46,6 +48,12 @@ class PhononPlayer : public SoundPlayer
 	PhononPlayer();
 	virtual ~PhononPlayer();
 
+	QMutex MediaObjectMutex;
+	QWaitCondition MediaObjectCreation;
+
+private slots:
+	void createMediaObject();
+
 public:
 	static void createInstance();
 	static void destroyInstance();
@@ -53,6 +61,8 @@ public:
 
 	virtual void playSound(const QString &path);
 
+signals:
+	void createRequest();
 };
 
 #endif // PHONON_SOUND_H
