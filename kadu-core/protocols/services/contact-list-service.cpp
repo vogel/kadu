@@ -186,7 +186,7 @@ QVector<Contact> ContactListService::registerBuddies(const BuddyList &buddies)
 
 void ContactListService::setBuddiesList(const BuddyList &buddies, bool removeOldAutomatically)
 {
-	QList<Contact> unImportedContacts = ContactManager::instance()->contacts(CurrentProtocol->account());
+	QList<Contact> unImportedContacts = ContactManager::instance()->contacts(CurrentProtocol->account()).toList();
 
 	foreach (const Contact &myselfContact, Core::instance()->myself().contacts(CurrentProtocol->account()))
 		unImportedContacts.removeAll(myselfContact);

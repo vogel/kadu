@@ -71,7 +71,7 @@ class KADUAPI Manager : public StorableObject
 	QMutex Mutex;
 
 	QMap<QUuid, Item> Items;
-	QList<Item> ItemsWithDetails;
+	QVector<Item> ItemsWithDetails;
 
 protected:
 	/**
@@ -268,7 +268,7 @@ protected:
 			return;
 
 		itemAboutToBeUnregisterd(item);
-		ItemsWithDetails.removeAll(item);
+		ItemsWithDetails.remove(ItemsWithDetails.indexOf(item));
 		itemUnregistered(item);
 	}
 
@@ -294,7 +294,7 @@ protected:
 		if (itemsNode.isNull())
 			return;
 
-		QList<QDomElement> itemElements = storage()->storage()->getNodes(itemsNode, storageNodeItemName());
+		QVector<QDomElement> itemElements = storage()->storage()->getNodes(itemsNode, storageNodeItemName());
 
 		foreach (const QDomElement &itemElement, itemElements)
 		{
@@ -440,7 +440,7 @@ public:
 	 *
 	 * Return list of registered items.
 	 */
-	const QList<Item> & items()
+	const QVector<Item> & items()
 	{
 		QMutexLocker locker(&Mutex);
 

@@ -73,10 +73,10 @@ GaduContactListHandler::~GaduContactListHandler()
 			this, SLOT(contactDetached(Contact, Buddy, bool)));
 }
 
-void GaduContactListHandler::setUpContactList(const QList<Contact> &contacts)
+void GaduContactListHandler::setUpContactList(const QVector<Contact> &contacts)
 {
-	QList<Contact> sendList = contacts;
-	sendList.removeAll(Protocol->account().accountContact());
+	QVector<Contact> sendList = contacts;
+        sendList.remove(sendList.indexOf(Protocol->account().accountContact()));
 
 	if (sendList.isEmpty())
 	{

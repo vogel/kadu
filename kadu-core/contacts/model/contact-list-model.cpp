@@ -23,7 +23,7 @@
 
 #include "contact-list-model.h"
 
-ContactListModel::ContactListModel(const QList<Contact> &list, QObject *parent) :
+ContactListModel::ContactListModel(const QVector<Contact> &list, QObject *parent) :
 		QAbstractItemModel(parent), List(list)
 {
 }

@@ -26,6 +26,7 @@
 #include <phonon/phononnamespace.h>
 
 #include "plugins/sound/sound-manager.h"
+#include "plugins/sound/sound-play-thread.h"
 
 #include "debug.h"
 
@@ -50,7 +51,8 @@ PhononPlayer * PhononPlayer::instance()
 	return Instance;
 }
 
-PhononPlayer::PhononPlayer()
+PhononPlayer::PhononPlayer() :
+    Media(0)
 {
 	kdebugf();
 
@@ -60,19 +62,50 @@ PhononPlayer::PhononPlayer()
 	if (type == 0 || !QMetaType::isRegistered(type))
 		qRegisterMetaType<Phonon::MediaSource>("MediaSource");
 
-	Media = Phonon::createPlayer(Phonon::NotificationCategory);
+	// Queued connection, bacause this signal will be emitted from different thread
+	connect(this, SIGNAL(createRequest()), this, SLOT(createMediaObject()), Qt::QueuedConnection);
 
 	kdebugf2();
 }
 
 PhononPlayer::~PhononPlayer()
 {
-	Media->deleteLater();
+	delete Media;
+}
+
+void PhononPlayer::createMediaObject()
+{
+	MediaObjectMutex.lock();
+
+	// this methos is always called from main thread
+	Media = Phonon::createPlayer(Phonon::NotificationCategory);
+
+	MediaObjectCreation.wakeAll();
+	MediaObjectMutex.unlock();
+
 }
 
 void PhononPlayer::playSound(const QString &path)
 {
 	kdebugf();
+
+	if (!Media)
+	{
+		MediaObjectMutex.lock();
+
+		// Double check of !Media is required. We are not locking whole playSound method but only when
+		// media object doesn't exists. In theory it is possible that two thread will be checking this at the same time,
+		// so the second check prevents possible race condition.
+		// Probably it will be never a problem in Kadu, as single thread is accessing this method, but this code is technically
+		// more correct
+		if (!Media)
+		{
+			emit createRequest();
+
+			MediaObjectCreation.wait(&MediaObjectMutex);
+		}
+		MediaObjectMutex.unlock();
+	}
 
 	Media->setCurrentSource(path);
 	Media->play();

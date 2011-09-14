@@ -238,7 +238,7 @@ void History::showMoreMessages(QAction *action)
 	Chat chat = AggregateChatManager::instance()->aggregateChat(chatWidget->chat());
 
 	chatMessagesView->setForcePruneDisabled(0 != days);
-	QList<Message> messages;
+	QVector<Message> messages;
 
 	if (-1 == days)
 	{
@@ -294,7 +294,7 @@ void History::chatCreated(ChatWidget *chatWidget)
 	if (!chatMessagesView)
 		return;
 
-	QList<Message> messages;
+	QVector<Message> messages;
 
 	unsigned int chatHistoryQuotation = qMax(ChatHistoryCitation, PendingMessagesManager::instance()->pendingMessagesForChat(chatWidget->chat()).size());
 
@@ -502,35 +502,35 @@ void History::unregisterStorage(HistoryStorage *storage)
 	CurrentStorage = 0;
 }
 
-QList<Chat> History::chatsList(const HistorySearchParameters &search)
+QVector<Chat> History::chatsList(const HistorySearchParameters &search)
 {
 	kdebugf();
 
 	return CurrentStorage->chats(search);
 }
 
-QList<DatesModelItem> History::datesForChat(const Chat &chat, const HistorySearchParameters &search)
+QVector<DatesModelItem> History::datesForChat(const Chat &chat, const HistorySearchParameters &search)
 {
 	kdebugf();
 
 	return CurrentStorage->chatDates(chat, search);
 }
 
-QList<Message> History::messages(const Chat &chat, const QDate &date, int limit)
+QVector<Message> History::messages(const Chat &chat, const QDate &date, int limit)
 {
 	kdebugf();
 
 	return CurrentStorage->messages(chat, date, limit);
 }
 
-QList<Buddy> History::statusBuddiesList(const HistorySearchParameters &search)
+QVector<Buddy> History::statusBuddiesList(const HistorySearchParameters &search)
 {
 	kdebugf();
 
 	return CurrentStorage->statusBuddiesList(search);
 }
 
-QList<DatesModelItem> History::datesForStatusBuddy(const Buddy &buddy, const HistorySearchParameters &search)
+QVector<DatesModelItem> History::datesForStatusBuddy(const Buddy &buddy, const HistorySearchParameters &search)
 {
 	kdebugf();
 
@@ -551,14 +551,14 @@ QList<QString> History::smsRecipientsList(const HistorySearchParameters &search)
 	return CurrentStorage->smsRecipientsList(search);
 }
 
-QList<DatesModelItem> History::datesForSmsRecipient(const QString &recipient, const HistorySearchParameters &search)
+QVector<DatesModelItem> History::datesForSmsRecipient(const QString &recipient, const HistorySearchParameters &search)
 {
 	kdebugf();
 
 	return CurrentStorage->datesForSmsRecipient(recipient, search);
 }
 
-QList<Message> History::sms(const QString &recipient, const QDate &date, int limit)
+QVector<Message> History::sms(const QString &recipient, const QDate &date, int limit)
 {
 	kdebugf();
 

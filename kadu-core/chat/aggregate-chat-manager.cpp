@@ -63,7 +63,7 @@ void AggregateChatManager::chatAdded(const Chat &chat)
 
 	if (!AggregateChats.contains(buddies))
 	{
-		QList<Chat> chats;
+		QVector<Chat> chats;
 		chats.append(chat);
 		AggregateChats.insert(buddies, chats);
 	}
@@ -78,7 +78,7 @@ void AggregateChatManager::chatRemoved(const Chat &chat)
 	if (!AggregateChats.contains(buddies))
 		return;
 
-	AggregateChats[buddies].removeAll(chat);
+	AggregateChats[buddies].remove(AggregateChats[buddies].indexOf(chat));
 	if (AggregateChats.value(buddies).isEmpty())
 		AggregateChats.remove(buddies);
 }
@@ -101,7 +101,7 @@ Chat AggregateChatManager::aggregateChat(const BuddySet &buddies)
 	if (!AggregateChats.contains(buddies))
 		return Chat::null;
 
-	QList<Chat> chats = AggregateChats.value(buddies);
+	QVector<Chat> chats = AggregateChats.value(buddies);
 	if (chats.count() <= 1)
 		return Chat::null;
 

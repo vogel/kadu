@@ -24,7 +24,7 @@
 
 #include <QtCore/QAbstractListModel>
 #include <QtCore/QDate>
-#include <QtCore/QList>
+#include <QtCore/QVector>
 
 #include "buddies/buddy.h"
 
@@ -35,10 +35,10 @@ class SmsDatesModel : public QAbstractListModel
 	Q_OBJECT
 
 	QString Recipient;
-	QList<DatesModelItem> Dates;
+	QVector<DatesModelItem> Dates;
 
 public:
-	SmsDatesModel(const QString &recipient, const QList<DatesModelItem> &dates, QObject *parent = 0);
+	SmsDatesModel(const QString &recipient, const QVector<DatesModelItem> &dates, QObject *parent = 0);
 	virtual ~SmsDatesModel();
 
 	virtual int columnCount(const QModelIndex &parent) const;
@@ -48,7 +48,7 @@ public:
 	virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 
 	void setRecipient(const QString &recipient);
-	void setDates(const QList<DatesModelItem> &dates);
+	void setDates(const QVector<DatesModelItem> &dates);
 
 	QModelIndex indexForDate(const QDate &date);
 

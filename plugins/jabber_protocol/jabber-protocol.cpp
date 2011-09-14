@@ -359,7 +359,7 @@ void JabberProtocol::buddyUpdated(Buddy &buddy)
 	if (!isConnected())
 		return;
 
-	QList<Contact> contacts = buddy.contacts(account());
+	QVector<Contact> contacts = buddy.contacts(account());
 	if (contacts.isEmpty() || buddy.isAnonymous())
 		return;
 

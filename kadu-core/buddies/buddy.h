@@ -84,7 +84,7 @@ public:
 
 // 	void setData(BuddyShared *data) { Data = data; }  // TODO: 0.10 tricky merge, this should work well ;)
 
-	QList<Contact> contacts(Account account) const;
+	QVector<Contact> contacts(Account account) const;
 	QList<Contact> contacts() const;
 	bool hasContact(Account account) const;
 

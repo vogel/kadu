@@ -188,7 +188,7 @@ void BuddiesModel::contactAboutToBeAttached(Contact contact, Buddy nearFutureBud
 	if (!index.isValid())
 		return;
 
-	int count = nearFutureBuddy.contacts().length();
+	int count = nearFutureBuddy.contacts().size();
 	beginInsertRows(index, count, count);
 }
 

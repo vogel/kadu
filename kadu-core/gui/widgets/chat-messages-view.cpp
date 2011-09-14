@@ -187,7 +187,7 @@ void ChatMessagesView::appendMessage(MessageRenderInfo *message)
 	emit messagesUpdated();
 }
 
-void ChatMessagesView::appendMessages(const QList<Message> &messages)
+void ChatMessagesView::appendMessages(const QVector<Message> &messages)
 {
 	kdebugf2();
 

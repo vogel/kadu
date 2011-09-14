@@ -29,7 +29,7 @@
 
 #include "chat-dates-model.h"
 
-ChatDatesModel::ChatDatesModel(const Chat &chat, const QList<DatesModelItem> &dates, QObject *parent) :
+ChatDatesModel::ChatDatesModel(const Chat &chat, const QVector<DatesModelItem> &dates, QObject *parent) :
 		QAbstractListModel(parent), MyChat(chat), Dates(dates)
 {
 }
@@ -106,7 +106,7 @@ void ChatDatesModel::setChat(const Chat &chat)
 	MyChat = chat;
 }
 
-void ChatDatesModel::setDates(const QList<DatesModelItem> &dates)
+void ChatDatesModel::setDates(const QVector<DatesModelItem> &dates)
 {
 	if (!Dates.isEmpty())
 	{

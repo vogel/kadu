@@ -35,9 +35,14 @@ ContactSet::ContactSet(const Contact &contact)
 	insert(contact);
 }
 
-QList<Contact> ContactSet::toContactList() const
+QVector<Contact> ContactSet::toContactVector() const
 {
-	return toList();
+	QVector<Contact> result;
+	result.reserve(size());
+	foreach (const Contact &contact, *this)
+		result.append(contact);
+
+	return result;
 }
 
 BuddySet ContactSet::toBuddySet() const

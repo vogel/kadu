@@ -59,9 +59,9 @@ class HistorySqlStorage : public HistoryStorage
 	QString buddyContactsWhere(const Buddy &buddy);
 
 	void executeQuery(QSqlQuery &query);
-	QList<Message> messagesFromQuery(QSqlQuery &query);
+	QVector<Message> messagesFromQuery(QSqlQuery &query);
 	QList<TimedStatus> statusesFromQuery(QSqlQuery &query);
-	QList<Message> smsFromQuery(QSqlQuery &query);
+	QVector<Message> smsFromQuery(QSqlQuery &query);
 
 private slots:
 	virtual void messageReceived(const Message &message);
@@ -71,20 +71,20 @@ public:
 	explicit HistorySqlStorage(QObject *parent = 0);
 	virtual ~HistorySqlStorage();
 
-	virtual QList<Chat> chats(const HistorySearchParameters &search);
+	virtual QVector<Chat> chats(const HistorySearchParameters &search);
 
-	virtual QList<DatesModelItem> chatDates(const Chat &chat, const HistorySearchParameters &search);
-	virtual QList<Message> messages(const Chat &chat, const QDate &date = QDate(), int limit = 0);
-	virtual QList<Message> messagesSince(const Chat &chat, const QDate &date);
-	virtual QList<Message> messagesBackTo(const Chat &chat, const QDateTime &datetime, int limit);
+	virtual QVector<DatesModelItem> chatDates(const Chat &chat, const HistorySearchParameters &search);
+	virtual QVector<Message> messages(const Chat &chat, const QDate &date = QDate(), int limit = 0);
+	virtual QVector<Message> messagesSince(const Chat &chat, const QDate &date);
+	virtual QVector<Message> messagesBackTo(const Chat &chat, const QDateTime &datetime, int limit);
 
-	virtual QList<Buddy> statusBuddiesList(const HistorySearchParameters &search);
-	virtual QList<DatesModelItem> datesForStatusBuddy(const Buddy &buddy, const HistorySearchParameters &search);
+	virtual QVector<Buddy> statusBuddiesList(const HistorySearchParameters &search);
+	virtual QVector<DatesModelItem> datesForStatusBuddy(const Buddy &buddy, const HistorySearchParameters &search);
 	virtual QList<TimedStatus> statuses(const Buddy &buddy, const QDate &date = QDate(), int limit = 0);
 
 	virtual QList<QString> smsRecipientsList(const HistorySearchParameters &search);
-	virtual QList<DatesModelItem> datesForSmsRecipient(const QString &recipient, const HistorySearchParameters &search);
-	virtual QList<Message> sms(const QString &recipient, const QDate &date = QDate(), int limit = 0);
+	virtual QVector<DatesModelItem> datesForSmsRecipient(const QString &recipient, const HistorySearchParameters &search);
+	virtual QVector<Message> sms(const QString &recipient, const QDate &date = QDate(), int limit = 0);
 
 	virtual void appendMessage(const Message &message);
 	virtual void appendStatus(const Contact &contact, const Status &status, const QDateTime &time = QDateTime::currentDateTime());

@@ -76,10 +76,10 @@ public:
 	virtual QString storageNodeItemName() { return QLatin1String("Contact"); }
 
 	Contact byId(Account account, const QString &id, NotFoundAction = ActionCreate);
-	QList<Contact> contacts(Account account);
+	QVector<Contact> contacts(Account account);
 
 	const QList<Contact> & dirtyContacts();
-	QList<Contact> dirtyContacts(Account account);
+	QVector<Contact> dirtyContacts(Account account);
 
 signals:
 	void contactAboutToBeAdded(Contact contact);

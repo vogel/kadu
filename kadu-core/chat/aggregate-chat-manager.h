@@ -49,7 +49,7 @@ class KADUAPI AggregateChatManager : public QObject
 
 	static AggregateChatManager *Instance;
 
-	QHash<BuddySet, QList<Chat> > AggregateChats;
+	QHash<BuddySet, QVector<Chat> > AggregateChats;
 
 	AggregateChatManager();
 	~AggregateChatManager();

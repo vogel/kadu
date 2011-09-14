@@ -317,7 +317,7 @@ void ChatWidgetManager::deletePendingMessages(const Chat &chat)
 {
 	kdebugf();
 
-	QList<Message> messages = PendingMessagesManager::instance()->pendingMessagesForChat(chat);
+	QVector<Message> messages = PendingMessagesManager::instance()->pendingMessagesForChat(chat);
 	foreach (Message message, messages)
 	{
 		message.setPending(false);
@@ -341,7 +341,7 @@ void ChatWidgetManager::openPendingMessages(const Chat &chat, bool forceActivate
 		return;
 
 	Chat aggregateChat = AggregateChatManager::instance()->aggregateChat(chat);
-	QList<Message> pendingMessages = PendingMessagesManager::instance()->pendingMessagesForChat(aggregateChat ? aggregateChat : chat);
+	QVector<Message> pendingMessages = PendingMessagesManager::instance()->pendingMessagesForChat(aggregateChat ? aggregateChat : chat);
 
 	foreach (Message message, pendingMessages)
 	{

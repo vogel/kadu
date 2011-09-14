@@ -79,7 +79,7 @@ GroupTabBar::GroupTabBar(QWidget *parent) :
 			config_file.readFontEntry("Look", "UserboxFont").pointSize(), QFont::Bold));
 	setIconSize(QSize(16, 16));
 
-	QList<Group> groups = GroupManager::instance()->items();
+	QList<Group> groups = GroupManager::instance()->items().toList();
 	qStableSort(groups.begin(), groups.end(), compareGroups);
 	foreach (const Group &group, groups)
 		addGroup(group);

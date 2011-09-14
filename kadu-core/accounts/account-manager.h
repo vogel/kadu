@@ -27,6 +27,7 @@
 #include <QtCore/QUuid>
 
 #include "accounts/account.h"
+#include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
 #include "storage/manager.h"
 #include "exports.h"
@@ -69,7 +70,32 @@ protected:
 public:
 	static AccountManager * instance();
 
-	static Account bestAccount(QList<Account> accounts);
+	template<template <class> class Container>
+	static Account bestAccount(const Container<Account> &accounts)
+	{
+		Account result;
+		if (accounts.isEmpty())
+			return result;
+
+		foreach (const Account &account, accounts)
+			if (account.details() && account.data())
+			{
+				// TODO: hack
+				bool newConnected = account.data()->protocolHandler() && account.data()->protocolHandler()->isConnected();
+				bool oldConnected = false;
+				if (result)
+					oldConnected = result.data()->protocolHandler() && result.data()->protocolHandler()->isConnected();
+
+				if (!result || (newConnected && !oldConnected)  || (account.protocolName() == "gadu" && result.protocolName() != "gadu"))
+				{
+					result = account;
+					if (newConnected && result.protocolName() == "gadu")
+						break;
+				}
+			}
+
+		return result;
+	}
 
 	virtual QString storageNodeName() { return QLatin1String("Accounts"); }
 	virtual QString storageNodeItemName() { return QLatin1String("Account"); }
@@ -77,9 +103,9 @@ public:
 	Account defaultAccount();
 	Account bestAccount();
 
-	const QList<Account> byIdentity(Identity identity);
+	const QVector<Account> byIdentity(Identity identity);
 	Account byId(const QString &protocolName, const QString &id);
-	const QList<Account> byProtocolName(const QString &name);
+	const QVector<Account> byProtocolName(const QString &name);
 
 	Status status();
 

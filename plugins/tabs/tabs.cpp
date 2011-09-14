@@ -588,7 +588,7 @@ void TabsManager::load()
 	if (itemsNode.isNull())
 		return;
 
-	QList<QDomElement> itemElements = storage()->storage()->getNodes(itemsNode, "Tab");
+	QVector<QDomElement> itemElements = storage()->storage()->getNodes(itemsNode, "Tab");
 	foreach (const QDomElement &element, itemElements)
 	{
 		QUuid chatId(element.attribute("chat"));

@@ -160,9 +160,9 @@ void HistoryWindow::createGui()
 	DetailsListView = new QTreeView(rightWidget);
 	rightLayout->addWidget(DetailsListView);
 
-	MyChatDatesModel = new ChatDatesModel(Chat::null, QList<DatesModelItem>(), this);
-	MyBuddyStatusDatesModel = new BuddyStatusDatesModel(Buddy::null, QList<DatesModelItem>(), this);
-	MySmsDatesModel = new SmsDatesModel(QString(), QList<DatesModelItem>(), this);
+	MyChatDatesModel = new ChatDatesModel(Chat::null, QVector<DatesModelItem>(), this);
+	MyBuddyStatusDatesModel = new BuddyStatusDatesModel(Buddy::null, QVector<DatesModelItem>(), this);
+	MySmsDatesModel = new SmsDatesModel(QString(), QVector<DatesModelItem>(), this);
 
 	DetailsListView->setRootIsDecorated(false);
 	DetailsListView->setUniformRowHeights(true);
@@ -277,8 +277,8 @@ void HistoryWindow::updateData()
 	HistoryTreeItem treeItem = index.data(HistoryItemRole).value<HistoryTreeItem>();
 
 	QSet<Chat> usedChats;
-	QList<Chat> chatsList = History::instance()->chatsList(Search);
-	QList<Chat> result;
+	QVector<Chat> chatsList = History::instance()->chatsList(Search);
+	QVector<Chat> result;
 
 	foreach (const Chat &chat, chatsList)
 	{
@@ -404,7 +404,7 @@ void HistoryWindow::chatActivated(const Chat &chat)
 			: QModelIndex();
 	QDate date = selectedIndex.data(DateRole).toDate();
 
-	QList<DatesModelItem> chatDates = History::instance()->datesForChat(chat, Search);
+	QVector<DatesModelItem> chatDates = History::instance()->datesForChat(chat, Search);
 	MyChatDatesModel->setChat(chat);
 	MyChatDatesModel->setDates(chatDates);
 
@@ -436,7 +436,7 @@ void HistoryWindow::statusBuddyActivated(const Buddy &buddy)
 
 	QDate date = selectedIndex.data(DateRole).toDate();
 
-	QList<DatesModelItem> statusDates = History::instance()->datesForStatusBuddy(buddy, Search);
+	QVector<DatesModelItem> statusDates = History::instance()->datesForStatusBuddy(buddy, Search);
 	MyBuddyStatusDatesModel->setBuddy(buddy);
 	MyBuddyStatusDatesModel->setDates(statusDates);
 
@@ -469,7 +469,7 @@ void HistoryWindow::smsRecipientActivated(const QString& recipient)
 
 	QDate date = selectedIndex.data(DateRole).toDate();
 
-	QList<DatesModelItem> smsDates = History::instance()->datesForSmsRecipient(recipient, Search);
+	QVector<DatesModelItem> smsDates = History::instance()->datesForSmsRecipient(recipient, Search);
 	MySmsDatesModel->setRecipient(recipient);
 	MySmsDatesModel->setDates(smsDates);
 
@@ -545,7 +545,7 @@ void HistoryWindow::dateCurrentChanged(const QModelIndex &current, const QModelI
 		case HistoryTypeChat:
 		{
 			Chat chat = treeItem.chat();
-			QList<Message> messages;
+			QVector<Message> messages;
 			if (chat && date.isValid())
 				messages = History::instance()->messages(chat, date);
 			ContentBrowser->setChat(chat);
@@ -568,7 +568,7 @@ void HistoryWindow::dateCurrentChanged(const QModelIndex &current, const QModelI
 		case HistoryTypeSms:
 		{
 			QString recipient = treeItem.smsRecipient();
-			QList<Message> sms;
+			QVector<Message> sms;
 			if (!recipient.isEmpty() && date.isValid())
 				sms = History::instance()->sms(recipient, date);
 			ContentBrowser->setChat(Chat::null);
@@ -584,9 +584,9 @@ void HistoryWindow::dateCurrentChanged(const QModelIndex &current, const QModelI
 	kdebugf2();
 }
 
-QList<Message> HistoryWindow::statusesToMessages(const QList<TimedStatus> &statuses)
+QVector<Message> HistoryWindow::statusesToMessages(const QList<TimedStatus> &statuses)
 {
-	QList<Message> messages;
+	QVector<Message> messages;
 
 	foreach (const TimedStatus &timedStatus, statuses)
 	{
@@ -653,7 +653,7 @@ void HistoryWindow::showMainPopupMenu(const QPoint &pos)
 			if (!chat)
 				return;
 
-			menu.reset(BuddiesListViewMenuManager::instance()->menu(this, this, chat.contacts().toContactList()));
+			menu.reset(BuddiesListViewMenuManager::instance()->menu(this, this, chat.contacts().toContactVector().toList()));
 			menu->addSeparator();
 			menu->addAction(KaduIcon("kadu_icons/clear-history").icon(),
 					tr("&Clear Chat History"), this, SLOT(clearChatHistory()));

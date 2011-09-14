@@ -37,6 +37,8 @@
 
 #include "sound-exports.h"
 
+class QThread;
+
 class SoundPlayer;
 class SoundPlayThread;
 
@@ -50,7 +52,8 @@ class SOUNDAPI SoundManager : public QObject
 
 	bool Mute;
 
-	SoundPlayThread *PlayThread;
+	SoundPlayThread *PlayThreadObject;
+	QThread *PlayThread;
 
 	SoundManager();
 	virtual ~SoundManager();

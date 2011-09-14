@@ -78,10 +78,10 @@ public:
 	Chat chatForBuddy(const Buddy &buddy);
 	Chat chatForContact(const Contact &contact);
 
-	QList<Message> pendingMessagesForContact(const Contact &contact);
-	QList<Message> pendingMessagesForBuddy(const Buddy &buddy);
-	QList<Message> pendingMessagesForChat(const Chat &chat);
-	QList<Message> pendingMessages();
+	QVector<Message> pendingMessagesForContact(const Contact &contact);
+	QVector<Message> pendingMessagesForBuddy(const Buddy &buddy);
+	QVector<Message> pendingMessagesForChat(const Chat &chat);
+	QVector<Message> pendingMessages();
 
 	Message firstPendingMessage();
 

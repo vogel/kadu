@@ -28,17 +28,16 @@
 
 #include "sound-play-thread.h"
 
-SoundPlayThread::SoundPlayThread(QObject *parent) :
-		QThread(parent), End(false), Play(false), Player(0)
+SoundPlayThread::SoundPlayThread() :
+		End(false), Play(false), Player(0)
 {
-	setTerminationEnabled(true);
 }
 
 SoundPlayThread::~SoundPlayThread()
 {
 }
 
-void SoundPlayThread::run()
+void SoundPlayThread::start()
 {
 	kdebugf();
 
@@ -64,6 +63,10 @@ void SoundPlayThread::run()
 			Play = false;
 		}
 	}
+
+	emit finished();
+
+	deleteLater();
 
 	kdebugf2();
 }

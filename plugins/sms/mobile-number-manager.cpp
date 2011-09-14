@@ -21,6 +21,7 @@
  */
 
 #include <QtCore/QtAlgorithms>
+#include <QtCore/QVector>
 
 #include "configuration/configuration-manager.h"
 
@@ -103,7 +104,7 @@ void MobileNumberManager::load()
 	if (mobileNumbersNode.isNull())
 		return;
 
-	QList<QDomElement> mobileNumberNodes = storage()->storage()->getNodes(mobileNumbersNode, "MobileNumber");
+	QVector<QDomElement> mobileNumberNodes = storage()->storage()->getNodes(mobileNumbersNode, "MobileNumber");
 	foreach (QDomElement mobileNumberElement, mobileNumberNodes)
 	{
 		if (mobileNumberElement.isNull())

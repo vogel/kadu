@@ -28,6 +28,7 @@
 #include <QtCore/QMutexLocker>
 #include <QtCore/QObject>
 #include <QtCore/QUuid>
+#include <QtCore/QVector>
 
 #include "configuration/configuration-manager.h"
 #include "storage/manager-common.h"
@@ -67,7 +68,7 @@ class SimpleManager : public StorableObject
 {
 	QMutex Mutex;
 
-	QList<Item> Items;
+	QVector<Item> Items;
 
 protected:
 	/**
@@ -194,7 +195,7 @@ protected:
 		if (itemsNode.isNull())
 			return;
 
-		QList<QDomElement> itemElements = storage()->storage()->getNodes(itemsNode, storageNodeItemName());
+		QVector<QDomElement> itemElements = storage()->storage()->getNodes(itemsNode, storageNodeItemName());
 		Items.reserve(itemElements.count());
 
 		foreach (const QDomElement &itemElement, itemElements)
@@ -320,7 +321,7 @@ public:
 	 *
 	 * Return list of items.
 	 */
-	const QList<Item> & items()
+	const QVector<Item> & items()
 	{
 		QMutexLocker locker(&Mutex);
 
@@ -374,7 +375,7 @@ public:
 		itemAboutToBeRemoved(item);
 		item.aboutToBeRemoved();
 
-		Items.removeAll(item);
+		Items.remove(Items.indexOf(item));
 
 		item.remove();
 		itemRemoved(item);

@@ -230,10 +230,10 @@ void GaduImporter::importIgnored()
 	if (ignored.isNull())
 		return;
 
-	QList<QDomElement> ignoredGroups = xml_config_file->getNodes(ignored, "IgnoredGroup");
+	QVector<QDomElement> ignoredGroups = xml_config_file->getNodes(ignored, "IgnoredGroup");
 	foreach (const QDomElement &ignoredGroup, ignoredGroups)
 	{
-		QList<QDomElement> ignoredContacts = xml_config_file->getNodes(ignoredGroup, "IgnoredContact");
+		QVector<QDomElement> ignoredContacts = xml_config_file->getNodes(ignoredGroup, "IgnoredContact");
 		if (1 == ignoredContacts.count())
 		{
 			QDomElement ignoredContact = ignoredContacts.at(0);
@@ -250,7 +250,7 @@ void GaduImporter::buddyAdded(Buddy &buddy)
 	if (buddy.customData("uin").isEmpty())
 		return;
 
-	QList<Account> allGaduAccounts = AccountManager::instance()->byProtocolName("gadu");
+	QVector<Account> allGaduAccounts = AccountManager::instance()->byProtocolName("gadu");
 	if (allGaduAccounts.isEmpty())
 		return;
 

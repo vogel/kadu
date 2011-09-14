@@ -88,7 +88,7 @@ public:
 	void appendMessage(const Message &message);
 	void appendMessage(MessageRenderInfo *message);
 
-	void appendMessages(const QList<Message> &messages);
+	void appendMessages(const QVector<Message> &messages);
 	void appendMessages(const QList<MessageRenderInfo *> &messages);
 
  	unsigned int countMessages();

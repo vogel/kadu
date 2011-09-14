@@ -126,7 +126,7 @@ void PluginsManager::load()
 	QDomElement itemsNode = storage()->point();
 	if (!itemsNode.isNull())
 	{
-		QList<QDomElement> pluginElements = storage()->storage()->getNodes(itemsNode, QLatin1String("Plugin"));
+		QVector<QDomElement> pluginElements = storage()->storage()->getNodes(itemsNode, QLatin1String("Plugin"));
 
 		foreach (const QDomElement &pluginElement, pluginElements)
 		{

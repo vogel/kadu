@@ -378,8 +378,8 @@ void GaduProtocol::setUpFileTransferService(bool forceClose)
 
 void GaduProtocol::sendUserList()
 {
-	QList<Contact> contacts = ContactManager::instance()->contacts(account());
-	QList<Contact> contactsToSend;
+	QVector<Contact> contacts = ContactManager::instance()->contacts(account());
+	QVector<Contact> contactsToSend;
 
 	foreach (const Contact &contact, contacts)
 		if (!contact.ownerBuddy().isAnonymous())

@@ -70,7 +70,7 @@ void GaduUrlHandler::convertUrlsToHtml(HtmlDocument &document, bool generateOnly
 
 void GaduUrlHandler::openUrl(const QByteArray &url, bool disableMenu)
 {
-	QList<Account> gaduAccounts = AccountManager::instance()->byProtocolName("gadu");
+	QVector<Account> gaduAccounts = AccountManager::instance()->byProtocolName("gadu");
 	if (gaduAccounts.isEmpty())
 		return;
 

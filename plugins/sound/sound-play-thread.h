@@ -21,13 +21,13 @@
 #ifndef SOUND_PLAY_THREAD_H
 #define SOUND_PLAY_THREAD_H
 
+#include <QtCore/QObject>
 #include <QtCore/QMutex>
-#include <QtCore/QThread>
 #include <QtCore/QWaitCondition>
 
 class SoundPlayer;
 
-class SoundPlayThread : public QThread
+class SoundPlayThread : public QObject
 {
 	Q_OBJECT
 
@@ -43,16 +43,19 @@ class SoundPlayThread : public QThread
 private slots:
 	void playerDestroyed();
 
-protected:
-	virtual void run();
-
 public:
-	explicit SoundPlayThread(QObject *parent = 0);
+	explicit SoundPlayThread();
 	virtual ~SoundPlayThread();
 
 	void end();
 
 	void play(SoundPlayer *player, const QString &path);
+
+public slots:
+	void start();
+
+signals:
+	void finished();
 
 };
 

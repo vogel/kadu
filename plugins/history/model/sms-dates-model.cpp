@@ -30,7 +30,7 @@
 
 #include "sms-dates-model.h"
 
-SmsDatesModel::SmsDatesModel(const QString &recipient, const QList<DatesModelItem> &dates, QObject *parent) :
+SmsDatesModel::SmsDatesModel(const QString &recipient, const QVector<DatesModelItem> &dates, QObject *parent) :
 		QAbstractListModel(parent), Recipient(recipient), Dates(dates)
 {
 }
@@ -102,7 +102,7 @@ void SmsDatesModel::setRecipient(const QString &recipient)
 	Recipient = recipient;
 }
 
-void SmsDatesModel::setDates(const QList<DatesModelItem> &dates)
+void SmsDatesModel::setDates(const QVector<DatesModelItem> &dates)
 {
 	if (!Dates.isEmpty())
 	{
