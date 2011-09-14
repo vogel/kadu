@@ -147,6 +147,7 @@ QByteArray EncryptioNgSimliteEncryptor::encrypt(const QByteArray &data)
 	//put the magic number into it
 	head.magicFirstPart = SIM_MAGIC_V1_1;
 	head.magicSecondPart = SIM_MAGIC_V1_2;
+	head.flags = SIM_FLAG_SUPPORT_UTF8;
 	//fill the iv in the header with some random bytes (using IV is a simple way)
 	QCA::InitializationVector headIV(sizeof(head.init));
 	memcpy(head.init, headIV.constData(), sizeof(head.init));

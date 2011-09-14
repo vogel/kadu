@@ -169,5 +169,11 @@ QByteArray EncryptioNgSimliteDecryptor::decrypt(const QByteArray &data, bool *ok
 
 	//the message has been decrypted! :D
 	//put it into the input/output byte array
-	return cp2unicode(plainText.constData() + sizeof(sim_message_header)).toUtf8();
+	QByteArray result;
+	if (head.flags & SIM_FLAG_UTF8_MESSAGE)
+		result = plainText.constData() + sizeof(sim_message_header);
+	else
+		result = cp2unicode(plainText.constData() + sizeof(sim_message_header)).toUtf8();
+
+	return result;
 }

@@ -35,6 +35,9 @@
 #define SIM_MAGIC_V1_1 0x91
 #define SIM_MAGIC_V1_2 0x23
 
+#define SIM_FLAG_SUPPORT_UTF8 0x01
+#define SIM_FLAG_UTF8_MESSAGE 0x02
+
 struct sim_message_header
 {
 	uint8_t init[8];
