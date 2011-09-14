@@ -25,6 +25,7 @@
 
 #include "encryption_exports.h"
 
+class Chat;
 class EncryptionProvider;
 
 class ENCRYPTIONAPI Decryptor : public QObject
@@ -39,7 +40,7 @@ public:
 
 	EncryptionProvider * provider() { return Provider; }
 
-	virtual QByteArray decrypt(const QByteArray &data, bool *ok = 0) = 0;
+	virtual QByteArray decrypt(const QByteArray &data, Chat chat, bool *ok = 0) = 0;
 
 };
 

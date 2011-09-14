@@ -19,8 +19,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <stdint.h>
-
+#include "chat/chat.h"
 #include "misc/coding-conversion.h"
 #include "plugins/encryption_ng/keys/key.h"
 #include "plugins/encryption_ng/keys/keys-manager.h"
@@ -112,8 +111,10 @@ QCA::PrivateKey EncryptioNgSimliteDecryptor::getPrivateKey(const Key &key)
 	return privateKey;
 }
 
-QByteArray EncryptioNgSimliteDecryptor::decrypt(const QByteArray &data, bool *ok)
+QByteArray EncryptioNgSimliteDecryptor::decrypt(const QByteArray &data, Chat chat, bool *ok)
 {
+	Q_UNUSED(chat)
+
 	if (ok)
 		*ok = false;
 
