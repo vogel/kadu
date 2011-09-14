@@ -24,6 +24,7 @@
 #include "plugins/encryption_ng/keys/key.h"
 #include "plugins/encryption_ng/keys/keys-manager.h"
 
+#include "encryption-ng-simlite-chat-data.h"
 #include "encryption-ng-simlite-common.h"
 #include "pkcs1_certificate.h"
 
@@ -113,8 +114,6 @@ QCA::PrivateKey EncryptioNgSimliteDecryptor::getPrivateKey(const Key &key)
 
 QByteArray EncryptioNgSimliteDecryptor::decrypt(const QByteArray &data, Chat chat, bool *ok)
 {
-	Q_UNUSED(chat)
-
 	if (ok)
 		*ok = false;
 
@@ -175,6 +174,12 @@ QByteArray EncryptioNgSimliteDecryptor::decrypt(const QByteArray &data, Chat cha
 		result = plainText.constData() + sizeof(sim_message_header);
 	else
 		result = cp2unicode(plainText.constData() + sizeof(sim_message_header)).toUtf8();
+
+	if (chat)
+	{
+		EncryptionNgSimliteChatData *encryptionChatData = chat.data()->moduleStorableData<EncryptionNgSimliteChatData>("encryption-ng-simlite", this, true);
+		encryptionChatData->setSupportUtf(head.flags & SIM_FLAG_SUPPORT_UTF8);
+	}
 
 	return result;
 }
