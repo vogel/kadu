@@ -1,5 +1,6 @@
 +++ version 0.10.1
 * gadu: clearer contact list synchronization message when updating from <0.10.0 (beevvy)
+* jabber: #2320 fixed: removing buddies owning Facebook contacts from of all their groups (beevvy)
 
 +++ version 0.10.0
 * sms: small changes that will ease updating gateway scripts (beevvy)
