@@ -44,7 +44,7 @@ extern "C" {
 
 #include "growlnotifier.h"
 
-static bool IsNotifying;
+static bool IsNotifying = false;
 
 /**
  * \brief Converts a QString to a CoreFoundation string, preserving Unicode.
