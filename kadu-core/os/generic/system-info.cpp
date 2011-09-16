@@ -202,19 +202,19 @@ SystemInfo::SystemInfo()
 	time(&x);
 	char str[256];
 	char fmt[32];
+
 	strcpy(fmt, "%z");
-	strftime(str, 256, fmt, localtime(&x));
-	if (strcmp(fmt, str))
+	if (strftime(str, sizeof(str), fmt, localtime(&x)) > 0)
 	{
 		QString s = str;
-		if(s.at(0) == '+')
-			s.remove(0,1);
-		s.truncate(s.length() - 2);
+		if (s.at(0) == '+')
+			s.remove(0, 1);
+		if (s.length() > 2)
+			s.truncate(s.length() - 2);
 		TimezoneOffset = s.toInt();
 	}
 	strcpy(fmt, "%Z");
-	strftime(str, 256, fmt, localtime(&x));
-	if (strcmp(fmt, str))
+	if (strftime(str, sizeof(str), fmt, localtime(&x)) > 0)
 		Timezone = str;
 #endif
 #if defined(Q_WS_X11)
@@ -236,12 +236,19 @@ SystemInfo::SystemInfo()
 	#endif
 #elif defined(Q_WS_MAC)
 	SInt32 minor_version, major_version, bug_fix;
-	Gestalt(gestaltSystemVersionMajor, &major_version);
-	Gestalt(gestaltSystemVersionMinor, &minor_version);
-	Gestalt(gestaltSystemVersionBugFix, &bug_fix);
-	OsFullName = QString("MacOS X %1.%2.%3").arg(major_version).arg(minor_version).arg(bug_fix);
+	if (Gestalt(gestaltSystemVersionMajor, &major_version) == noErr &&
+		Gestalt(gestaltSystemVersionMinor, &minor_version) == noErr &&
+		Gestalt(gestaltSystemVersionBugFix, &bug_fix) == noErr)
+	{
+		OsVersion = QString("%1.%2.%3").arg(major_version).arg(minor_version).arg(bug_fix);
+		OsFullName = QString("MacOS X %1.%2.%3").arg(major_version).arg(minor_version).arg(bug_fix);
+	}
+	else
+	{
+		OsVersion = "10.x";
+		OsFullName = "MacOS X 10.x";
+	}
 	OsName = "MacOS X";
-	OsVersion = QString("%1.%2.%3").arg(major_version, minor_version, bug_fix);
 #endif
 
 #if defined(Q_WS_WIN)
