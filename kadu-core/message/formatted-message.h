@@ -50,7 +50,7 @@ class KADUAPI FormattedMessage
 	static QString saveInImagesPath(const QString &filePath);
 	static void parseImages(FormattedMessage &message, const QString &messageString, bool b, bool i, bool u, QColor color);
 
-	QList<FormattedMessagePart> Parts;
+	QVector<FormattedMessagePart> Parts;
 
 public:
 	/**
@@ -81,25 +81,19 @@ public:
 	 * Returns all parts that composes this message.
 	 * @return All parts that composes this message.
 	 */
-	const QList<FormattedMessagePart> & parts() const;
-
-	/**
-	 * Prepend a new part to message.
-	 * @arg part New part to pepend.
-	 */
-	void prepend(FormattedMessagePart part);
+	const QVector<FormattedMessagePart> & parts() const;
 
 	/**
 	 * Append a new part to message.
 	 * @arg part New part to append.
 	 */
-	void append(FormattedMessagePart part);
+	void append(const FormattedMessagePart &part);
 
 	/**
 	 * Append a new part to message.
 	 * @arg part New part to append.
 	 */
-	FormattedMessage & operator << (FormattedMessagePart part);
+	FormattedMessage & operator << (const FormattedMessagePart &part);
 
 	/**
 	 * Returns true if message does not have any parts or if all parts are empty.

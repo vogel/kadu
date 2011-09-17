@@ -160,22 +160,17 @@ FormattedMessage::~FormattedMessage()
 {
 }
 
-const QList<FormattedMessagePart> & FormattedMessage::parts() const
+const QVector<FormattedMessagePart> & FormattedMessage::parts() const
 {
 	return Parts;
 }
 
-void FormattedMessage::prepend(FormattedMessagePart part)
-{
-	Parts.prepend(part);
-}
-
-void FormattedMessage::append(FormattedMessagePart part)
+void FormattedMessage::append(const FormattedMessagePart &part)
 {
 	Parts.append(part);
 }
 
-FormattedMessage & FormattedMessage::operator << (FormattedMessagePart part)
+FormattedMessage & FormattedMessage::operator << (const FormattedMessagePart &part)
 {
 	Parts << part;
 	return *this;
