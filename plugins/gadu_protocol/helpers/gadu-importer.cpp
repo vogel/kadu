@@ -152,6 +152,9 @@ void GaduImporter::importAccounts()
 	if (alreadyImported())
 		return;
 
+	if (AccountManager::instance()->byId("gadu", config_file.readEntry("General", "UIN")))
+		return;
+
 	Account defaultGaduGadu = Account::create();
 	defaultGaduGadu.setProtocolName("gadu");
 

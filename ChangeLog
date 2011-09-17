@@ -6,6 +6,7 @@
 * gadu: clearer contact list synchronization message when updating from <0.10.0 (beevvy)
 * build: support defining plugins to be compiled through commandline -DCOMPILE_PLUGINS=... argument (beevvy)
 * jabber: #2320 fixed: removing buddies owning Facebook contacts from of all their groups (beevvy)
+* gadu, jabber: #2321 fixed: do not allow to add two identical accounts (beevvy)
 
 +++ version 0.10.0
 * sms: small changes that will ease updating gateway scripts (beevvy)

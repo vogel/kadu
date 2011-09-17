@@ -53,6 +53,8 @@ GaduAddAccountWidget::GaduAddAccountWidget(bool showButtons, QWidget *parent) :
 {
 	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
+	connect(AccountManager::instance(), SIGNAL(accountRegistered(Account)), this, SLOT(dataChanged()));
+
 	createGui(showButtons);
 	resetGui();
 }
@@ -167,6 +169,7 @@ void GaduAddAccountWidget::dataChanged()
 
 	bool valid = !AccountId->text().isEmpty()
 			&& !AccountPassword->text().isEmpty()
+			&& !AccountManager::instance()->byId("gadu", AccountId->text())
 			&& Identity->currentIdentity();
 
 	AddAccountButton->setEnabled(valid);
