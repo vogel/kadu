@@ -65,7 +65,7 @@ BuddiesListViewItemPainter::~BuddiesListViewItemPainter()
 void BuddiesListViewItemPainter::fixColors()
 {
 #ifdef Q_OS_WIN
-	// http://kadu.net/mantis/view.php?id=1531
+	// Kadu bug #1531
 	// http://bugreports.qt.nokia.com/browse/QTBUG-15637
 	// for windows only
 	Option.palette.setColor(QPalette::All, QPalette::HighlightedText, Option.palette.color(QPalette::Active, QPalette::Text));

@@ -102,10 +102,10 @@ About::About(QWidget *parent) :
 	about_layout->addWidget(new QLabel("IRC:\nirc.freenode.net - #kadu", wb_about));
 	about_layout->addSpacing(10);
 	about_layout->addWidget(new QLabel(tr("Support:"), wb_about));
-	about_layout->addWidget(new KaduLink("http://www.kadu.net/forum/", wb_about));
+	about_layout->addWidget(new KaduLink("http://www.kadu.im/forum/", wb_about));
 	about_layout->addSpacing(20);
 	about_layout->addWidget(new QLabel("(C) 2001-2011 Kadu Team", wb_about));
-	about_layout->addWidget(new KaduLink("http://www.kadu.net/", wb_about));
+	about_layout->addWidget(new KaduLink("http://www.kadu.im/", wb_about));
 	about_layout->addStretch(100);
 
 	// create our info widgets
@@ -163,8 +163,8 @@ About::About(QWidget *parent) :
 	HtmlDocument changelog_html;
 	changelog_html.parseHtml(changelog);
 	changelog = changelog_html.generateHtml();
-	// #bug_no -> Mantis URL
-	changelog.replace(QRegExp("#(\\d+)"), "<a href=\"http://www.kadu.net/mantis/view.php?id=\\1\">#\\1</a>");
+	// #bug_no -> Redmine URL
+	changelog.replace(QRegExp("#(\\d+)"), "<a href=\"http://www.kadu.im/redmine/issues/\\1\">#\\1</a>");
 	// bold headers with green "+++"
 	changelog.replace(QRegExp("(^|<br/>)\\+\\+\\+([^<]*)<br/>"), "\\1<b><span style=\"color:green;\">+++</span>\\2</b><br/>");
 	// bold subsystem names preceded by nice green bullets instead of "*"

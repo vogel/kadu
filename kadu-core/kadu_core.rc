@@ -22,7 +22,7 @@ BEGIN
 		VALUE "LegalCopyright", "Kadu Team\0"
 		VALUE "FileVersion", VERSION
 		VALUE "OriginalFilename", "kadu_core.dll\0"
-		VALUE "URL", "http://www.kadu.net/\0"
+		VALUE "URL", "http://www.kadu.im/\0"
 		VALUE "Comments", BUILD_DESCRIPTION
 		END
 	END

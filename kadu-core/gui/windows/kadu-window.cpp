@@ -255,7 +255,6 @@ void KaduWindow::createHelpMenu()
 	insertMenuActionDescription(Actions->Bugs, MenuHelp);
 	HelpMenu->addSeparator();
 	insertMenuActionDescription(Actions->GetInvolved, MenuHelp);
-	insertMenuActionDescription(Actions->Support, MenuHelp);
 	insertMenuActionDescription(Actions->Translate, MenuHelp);
 	HelpMenu->addSeparator();
 	insertMenuActionDescription(Actions->About, MenuHelp);

@@ -107,9 +107,9 @@ void GroupsComboBox::currentIndexChangedSlot(int index)
 	QAction *action = modelIndex.data(ActionRole).value<QAction *>();
 	if (action == CreateNewGroupAction)
 	{
-		// this is needed to fix Mantis bugs #1674 and #1690
+		// this is needed to fix bugs #1674 and #1690
 		// as this action has to be activated by the user, otherwise we have to ignore it and reset combo box
-		// TODO 0.9: try to redo this as this is a bit tricky
+		// TODO: try to redo this as this is a bit tricky
 		if (!InActivatedSlot)
 			QMetaObject::invokeMethod(this, "resetComboBox", Qt::QueuedConnection);
 		return;

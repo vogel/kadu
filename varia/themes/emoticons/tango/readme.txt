@@ -1,7 +1,7 @@
-This is emoticons Tango theme for Kadu Instant Messenger ( http://www.kadu.net/ )
+This is emoticons Tango theme for Kadu Instant Messenger ( http://www.kadu.im/ )
 Theme maintainer: Piotr Pe¸zowski(floss _at_ pelzowski  DOT  eu)
 
-If you have any questions ask maintainer directly or ask on http://www.kadu.net/forum/  
+If you have any questions ask maintainer directly or ask on http://www.kadu.im/forum/  
 Tango emoticons theme is licensed under the GNU General Public License. (http://www.gnu.org/licenses/gpl.html or see 'license' file). Oryginaly made for Pidgin (http://pidgin.im/) by Hylke Bons (http://bomahy.nl/hylke/blog/)
 
 

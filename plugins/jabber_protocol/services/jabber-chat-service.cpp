@@ -111,7 +111,7 @@ void JabberChatService::clientMessageReceived(const XMPP::Message &msg)
 	if (msg.body().isEmpty())
 		return;
 
-	// skip messages with type error == Cancel (fixes mantis #1642)
+	// skip messages with type error == Cancel (fixes bug #1642)
 	if (msg.type() == "error")
 		return;
 
