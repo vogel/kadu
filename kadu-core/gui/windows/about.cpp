@@ -116,10 +116,11 @@ About::About(QWidget *parent) :
 	tb_authors->viewport()->setAutoFillBackground(false);
 	tb_authors->setTextInteractionFlags(Qt::TextBrowserInteraction);
 	QString authors = loadFile("AUTHORS");
+	authors.remove(QRegExp("[<>]"));
+	authors = Qt::escape(authors);
 	// convert the email addresses
 	authors.replace(" (at) ", "@");
 	authors.replace(" (dot) ", ".");
-	authors.remove(QRegExp("[<>]"));
 	authors.prepend("<b>");
 	authors.replace("\n   ", "</b><br/>&nbsp;&nbsp;&nbsp;");
 	authors.replace('\n', QLatin1String("</b><br/><b>"));
@@ -135,7 +136,7 @@ About::About(QWidget *parent) :
 	tb_thanks->setReadOnly(true);
 	tb_thanks->setFrameStyle(QFrame::NoFrame);
 	tb_thanks->viewport()->setAutoFillBackground(false);
-	QString thanks = loadFile("THANKS");
+	QString thanks = Qt::escape(loadFile("THANKS"));
 	thanks.prepend("<b>");
 	thanks.replace("\n\n", QLatin1String("</b><br/><br/>"));
 	thanks.replace("\n   ", "<br/>&nbsp;&nbsp;&nbsp;");
@@ -157,7 +158,7 @@ About::About(QWidget *parent) :
 	tb_changelog->setOpenLinks(false);
 	tb_changelog->setFrameStyle(QFrame::NoFrame);
 	tb_changelog->viewport()->setAutoFillBackground(false);
-	QString changelog = loadFile("ChangeLog");
+	QString changelog = Qt::escape(loadFile("ChangeLog"));
 	changelog.replace('\n', "<br/>");
 	HtmlDocument changelog_html;
 	changelog_html.parseHtml(changelog);
