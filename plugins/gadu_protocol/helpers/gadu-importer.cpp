@@ -146,13 +146,16 @@ QList<Buddy> GaduImporter::import065Buddies(Account account, QXmlQuery &xmlQuery
 
 void GaduImporter::importAccounts()
 {
-	if (0 == config_file.readNumEntry("General", "UIN"))
+	quint32 importUin = config_file.readUnsignedNumEntry("General", "UIN");
+	if (0 == importUin)
 		return;
 
 	if (alreadyImported())
 		return;
 
-	if (AccountManager::instance()->byId("gadu", config_file.readEntry("General", "UIN")))
+	QString importUinString = QString::number(importUin);
+
+	if (AccountManager::instance()->byId("gadu", importUinString))
 		return;
 
 	Account defaultGaduGadu = Account::create();
@@ -164,8 +167,8 @@ void GaduImporter::importAccounts()
 	if (!IdentityManager::instance()->items().isEmpty())
 		defaultGaduGadu.setAccountIdentity(IdentityManager::instance()->items().at(0));
 
-	defaultGaduGadu.setId(config_file.readEntry("General", "UIN"));
-	defaultGaduGadu.setPassword(pwHash(config_file.readEntry("General", "Password")).toUtf8().constData());
+	defaultGaduGadu.setId(importUinString);
+	defaultGaduGadu.setPassword(pwHash(config_file.readEntry("General", "Password")));
 	defaultGaduGadu.setRememberPassword(true);
 	defaultGaduGadu.setHasPassword(!defaultGaduGadu.password().isEmpty());
 	defaultGaduGadu.setPrivateStatus(config_file.readBoolEntry("General", "PrivateStatus"));
