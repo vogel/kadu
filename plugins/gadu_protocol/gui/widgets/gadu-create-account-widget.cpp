@@ -34,7 +34,6 @@
 #include <QtGui/QRadioButton>
 #include <QtGui/QVBoxLayout>
 
-#include "accounts/account-manager.h"
 #include "gui/widgets/identities-combo-box.h"
 #include "gui/windows/message-dialog.h"
 #include "identities/identity-manager.h"

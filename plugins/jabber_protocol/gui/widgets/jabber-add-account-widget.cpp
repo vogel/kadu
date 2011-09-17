@@ -33,6 +33,7 @@
 #include <QtGui/QRadioButton>
 #include <QtGui/QVBoxLayout>
 
+#include "accounts/account-manager.h"
 #include "gui/widgets/choose-identity-widget.h"
 #include "gui/windows/message-dialog.h"
 #include "identities/identity-manager.h"
@@ -49,6 +50,8 @@ JabberAddAccountWidget::JabberAddAccountWidget(JabberProtocolFactory *factory, b
 		AccountAddWidget(parent), Factory(factory)
 {
 	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+
+	connect(AccountManager::instance(), SIGNAL(accountRegistered(Account)), this, SLOT(dataChanged()));
 
 	createGui(showButtons);
 	resetGui();
@@ -148,6 +151,7 @@ void JabberAddAccountWidget::dataChanged()
 	bool valid = !Username->text().isEmpty()
 			&& !AccountPassword->text().isEmpty()
 			&& !Domain->currentText().isEmpty()
+			&& !AccountManager::instance()->byId("jabber", Username->text() + '@' + Domain->currentText())
 			&& Identity->currentIdentity();
 
 	AddAccountButton->setEnabled(valid);

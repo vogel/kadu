@@ -37,6 +37,7 @@
 #include <QtGui/QRadioButton>
 #include <QtGui/QVBoxLayout>
 
+#include "accounts/account-manager.h"
 #include "gui/windows/message-dialog.h"
 #include "gui/windows/jabber-wait-for-account-register-window.h"
 #include "icons/icons-manager.h"
@@ -57,6 +58,8 @@ JabberCreateAccountWidget::JabberCreateAccountWidget(bool showButtons, QWidget *
 	ssl_ = 0;
 	legacy_ssl_probe_ = true;
 	port_ = 5222U;
+
+	connect(AccountManager::instance(), SIGNAL(accountRegistered(Account)), this, SLOT(dataChanged()));
 
 	createGui(showButtons);
 	resetGui();
@@ -261,6 +264,7 @@ void JabberCreateAccountWidget::dataChanged()
 			&& !Username->text().isEmpty()
 			&& !NewPassword->text().isEmpty()
 			&& !ReNewPassword->text().isEmpty()
+			&& !AccountManager::instance()->byId("jabber", Username->text() + '@' + Domain->currentText())
 			&& IdentityCombo->currentIdentity();
 
 	RegisterAccountButton->setEnabled(valid);
