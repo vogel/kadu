@@ -110,7 +110,7 @@ void HtmlMessagesRenderer::appendMessages(const QList<MessageRenderInfo *> &mess
 
 //  Do not prune messages here. When we are adding many massages to renderer, probably
 //  we want all of them to be visible on message view. This also fixes crash from
-//  http://kadu.net/mantis/view.php?id=1963 . This crash occured, when we are trying to
+//  bug #1963 . This crash occured, when we are trying to
 //  cite more messages from history, than our message pruning setting
 //	pruneMessages();
 

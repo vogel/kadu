@@ -31,7 +31,7 @@ BEGIN
 #else
 		VALUE "OriginalFilename", "kadu.exe"
 #endif
-		VALUE "URL", "http://www.kadu.net/"
+		VALUE "URL", "http://www.kadu.im/"
 		VALUE "Comments", BUILD_DESCRIPTION
 		END
 	END

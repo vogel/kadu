@@ -84,9 +84,9 @@ UpdatesDialog::~UpdatesDialog()
 void UpdatesDialog::downloadClicked()
 {
 	if (config_file.readEntry("General", "Language") == "pl")
-		UrlOpener::openUrl("http://www.kadu.net/w/Pobierz");
+		UrlOpener::openUrl("http://www.kadu.im/w/Pobierz");
 	else
-		UrlOpener::openUrl("http://www.kadu.net/w/English:Download");
+		UrlOpener::openUrl("http://www.kadu.im/w/English:Download");
 }
 
 void UpdatesDialog::accepted()

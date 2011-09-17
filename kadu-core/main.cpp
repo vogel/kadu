@@ -333,7 +333,7 @@ int main(int argc, char *argv[])
 	if (!QDir(data_dir).isReadable())
 	{
 		fprintf(stderr, "data directory (%s) is NOT readable, exiting...\n", qPrintable(data_dir));
-		fprintf(stderr, "look at: http://www.kadu.net/msgs/data_dir_not_readable/\n");
+		fprintf(stderr, "look at: http://www.kadu.im/w/Uprawnienia_do_katalogu_z_danymi\n");
 		fflush(stderr);
 
 		delete xml_config_file;

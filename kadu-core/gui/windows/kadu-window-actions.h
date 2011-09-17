@@ -98,7 +98,6 @@ private slots:
 	void openSearchActionActivated(QAction *sender, bool toggled);
 	void helpActionActivated(QAction *sender, bool toggled);
 	void bugsActionActivated(QAction *sender, bool toggled);
-	void supportActionActivated(QAction *sender, bool toggled);
 	void getInvolvedActionActivated(QAction *sender, bool toggled);
 	void aboutActionActivated(QAction *sender, bool toggled);
 	void translateActionActivated(QAction *sender, bool toggled);

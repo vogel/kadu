@@ -53,7 +53,7 @@ void HistoryImportThread::run()
 	// we have to use this guard as a parent for HistoryImporterChatData
 	// without this there is a backtrace:
 	// "Warning: QObject: Cannot create children for a parent that is in a different thread."
-	// and Kadu is crashing as in http://kadu.net/mantis/view.php?id=1938
+	// and Kadu is crashing as in bug #1938
 	QObject *guard = new QObject();
 
 	History::instance()->setSyncEnabled(false);

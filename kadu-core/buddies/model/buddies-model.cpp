@@ -146,7 +146,7 @@ void BuddiesModel::buddyAdded(Buddy &buddy)
 	// force refresh on proxy sorring model
 	// setDynamicSortFilter does not work properly when adding/removing items, only when changing item data
 	// this is Qt bug
-	// see: http://kadu.net/mantis/view.php?id=2167
+	// see bug #2167
 	QModelIndex index = indexForValue(buddy);
 	emit dataChanged(index, index);
 }

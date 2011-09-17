@@ -247,12 +247,6 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 		KaduIcon("kadu_icons/report-a-bug"), tr("Report a Bug...")
 	);
 
-	Support = new ActionDescription(this,
-		ActionDescription::TypeMainMenu, "supportAction",
-		this, SLOT(supportActionActivated(QAction *, bool)),
-		KaduIcon("kadu_icons/support-us"), tr("Support Us...")
-	);
-
 	GetInvolved = new ActionDescription(this,
 		ActionDescription::TypeMainMenu, "getInvolvedAction",
 		this, SLOT(getInvolvedActionActivated(QAction *, bool)),
@@ -665,9 +659,9 @@ void KaduWindowActions::helpActionActivated(QAction *sender, bool toggled)
 	Q_UNUSED(toggled)
 
 	if (config_file.readEntry("General", "Language") == "pl")
-		UrlOpener::openUrl("http://www.kadu.net/w/Pomoc_online");
+		UrlOpener::openUrl("http://www.kadu.im/w/Pomoc_online");
 	else
-		UrlOpener::openUrl("http://www.kadu.net/w/English:Kadu:Help_online");
+		UrlOpener::openUrl("http://www.kadu.im/w/English:Kadu:Help");
 }
 
 void KaduWindowActions::bugsActionActivated(QAction *sender, bool toggled)
@@ -676,20 +670,9 @@ void KaduWindowActions::bugsActionActivated(QAction *sender, bool toggled)
 	Q_UNUSED(toggled)
 
 	if (config_file.readEntry("General", "Language") == "pl")
-		UrlOpener::openUrl("http://www.kadu.net/w/Bledy");
+		UrlOpener::openUrl("http://www.kadu.im/w/B%C5%82%C4%99dy");
 	else
-		UrlOpener::openUrl("http://www.kadu.net/w/English:Bugs");
-}
-
-void KaduWindowActions::supportActionActivated(QAction *sender, bool toggled)
-{
-	Q_UNUSED(sender)
-	Q_UNUSED(toggled)
-
-	if (config_file.readEntry("General", "Language") == "pl")
-		UrlOpener::openUrl("http://www.kadu.net/w/Kadu:Site_support");
-	else
-		UrlOpener::openUrl("http://www.kadu.net/w/English:Kadu:Site_support");
+		UrlOpener::openUrl("http://www.kadu.im/w/English:Bugs");
 }
 
 void KaduWindowActions::getInvolvedActionActivated(QAction *sender, bool toggled)
@@ -698,9 +681,9 @@ void KaduWindowActions::getInvolvedActionActivated(QAction *sender, bool toggled
 	Q_UNUSED(toggled)
 
 	if (config_file.readEntry("General", "Language") == "pl")
-		UrlOpener::openUrl("http://www.kadu.net/w/Dolacz");
+		UrlOpener::openUrl("http://www.kadu.im/w/Do%C5%82%C4%85cz");
 	else
-		UrlOpener::openUrl("http://www.kadu.net/w/English:GetInvolved");
+		UrlOpener::openUrl("http://www.kadu.im/w/English:GetInvolved");
 }
 
 void KaduWindowActions::aboutActionActivated(QAction *sender, bool toggled)

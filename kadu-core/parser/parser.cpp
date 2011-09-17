@@ -189,7 +189,7 @@ ParserToken Parser::parsePercentSyntax(const QString &s, int &idx, const BuddyOr
 	switch (s.at(idx).toAscii())
 	{
 		// 'o' does not work so we should just ignore it
-		// see: http://kadu.net/mantis/view.php?id=2199
+		// see bug #2199
 		case 'o':
 		// 't' was removed in commit 48d3cd65 during 0.9 (aka 0.6.6) release cycle
 		case 't':
