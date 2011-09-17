@@ -7,6 +7,7 @@
 * build: support defining plugins to be compiled through commandline -DCOMPILE_PLUGINS=... argument (beevvy)
 * jabber: #2320 fixed: removing buddies owning Facebook contacts from of all their groups (beevvy)
 * gadu, jabber: #2321 fixed: do not allow to add two identical accounts (beevvy)
+* gui: #2308 fixed: collapse items on buddies list when disabling expanding control (beevvy)
 
 +++ version 0.10.0
 * sms: small changes that will ease updating gateway scripts (beevvy)

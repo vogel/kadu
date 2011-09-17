@@ -329,7 +329,11 @@ void BuddiesListView::setContextMenuEnabled(bool enabled)
 
 void BuddiesListView::configurationUpdated()
 {
-	setRootIsDecorated(config_file.readBoolEntry("Look", "ShowExpandingControl", false));
+	bool showExpandingControl = config_file.readBoolEntry("Look", "ShowExpandingControl", false);
+
+	if (rootIsDecorated() && !showExpandingControl)
+		collapseAll();
+	setRootIsDecorated(showExpandingControl);
 }
 
 void BuddiesListView::contextMenuEvent(QContextMenuEvent *event)
