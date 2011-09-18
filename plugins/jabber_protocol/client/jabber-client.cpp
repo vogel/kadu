@@ -339,15 +339,7 @@ void JabberClient::disconnect()
 
 void JabberClient::disconnect(XMPP::Status &reason)
 {
-	if (JabberClientStream && JabberClientStream->isActive())
-	{
-		XMPP::JT_Presence *pres = new JT_Presence(rootTask());
-		reason.setIsAvailable( false);
-		pres->pres( reason);
-		pres->go();
-
-		JabberClientStream->close();
-	}
+	Client->setPresence(reason);
 	cleanUp();
 }
 
@@ -621,6 +613,7 @@ void JabberClient::setPresence(const XMPP::Status &status)
 	newStatus.setCapsVersion(capsVersion());
 	newStatus.setCapsHashAlgorithm(QLatin1String("sha-1"));
 	newStatus.setCapsExt(capsExt());
+	newStatus.setStatus(status.status());
 
 	JabberAccountDetails *jabberAccountDetails = dynamic_cast<JabberAccountDetails *>(Protocol->account().details());
 	if (jabberAccountDetails)
@@ -648,9 +641,7 @@ void JabberClient::setPresence(const XMPP::Status &status)
 		{
 			kdebug("Sending new presence to the server.\n");
 
-			XMPP::JT_Presence * task = new XMPP::JT_Presence(rootTask());
-			task->pres(newStatus);
-			task->go(true);
+			client()->setPresence(newStatus);
 		}
 		else
 		{
