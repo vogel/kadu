@@ -163,7 +163,7 @@ void Updates::run()
 
 	UpdateChecked = true;
 
-	HttpClient = new QHttp("www.kadu.net", 80, this);
+	HttpClient = new QHttp("www.kadu.im", 80, this);
 	connect(HttpClient, SIGNAL(readyRead(const QHttpResponseHeader &)),
 			this, SLOT(gotUpdatesInfo(const QHttpResponseHeader &)));
 	HttpClient->get(Query);
