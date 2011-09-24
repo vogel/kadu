@@ -38,7 +38,6 @@
 #include "icons/kadu-icon.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocol-state-machine.h"
-#include "status/status-changer-manager.h"
 #include "status/status-type-manager.h"
 #include "status/status.h"
 #include "debug.h"
@@ -117,6 +116,12 @@ void Protocol::disconnectedCleanup()
 
 void Protocol::setStatus(Status status)
 {
+	LoginStatus = status;
+	doSetStatus(status);
+}
+
+void Protocol::doSetStatus(Status status)
+{
 	// If we are in logging-in state and user requested stopping connecting,
 	// CurrentStatus and status are both offline but we still have to emit
 	// stateMachineLogout() signal to actually stop connecting.
@@ -137,7 +142,7 @@ void Protocol::setStatus(Status status)
 
 Status Protocol::loginStatus() const
 {
-	return StatusChangerManager::instance()->realStatus(account().statusContainer());
+	return LoginStatus;
 }
 
 Status Protocol::status() const

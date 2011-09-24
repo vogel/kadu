@@ -69,7 +69,11 @@ class KADUAPI Protocol : public QObject
 
 	Account CurrentAccount;
 
+	// real status, can be offline after connection error
 	Status CurrentStatus;
+	// status used by user to login, after connection error its value does not change
+	// it can only by changed by user
+	Status LoginStatus;
 
 	void setAllOffline();
 
@@ -94,6 +98,8 @@ protected:
 
 	virtual void disconnectedCleanup();
 	void statusChanged(Status newStatus);
+
+	void doSetStatus(Status status);
 
 protected slots:
 	void loggedIn();
@@ -126,6 +132,7 @@ public:
 	bool isConnected();
 	bool isConnecting();
 
+	// method called by user
 	void setStatus(Status status);
 	Status status() const;
 	virtual int maxDescriptionLength() { return -1; }
