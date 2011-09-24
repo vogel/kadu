@@ -399,7 +399,7 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 
 	connect(StatusChangerManager::instance(), SIGNAL(statusChanged(StatusContainer *, Status)), this, SLOT(statusChanged(StatusContainer *, Status)));
 	foreach (StatusContainer *statusContainer, StatusContainerManager::instance()->statusContainers())
-		statusChanged(statusContainer, StatusChangerManager::instance()->realStatus(statusContainer));
+		statusChanged(statusContainer, statusContainer->status());
 }
 
 KaduWindowActions::~KaduWindowActions()
