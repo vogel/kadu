@@ -65,9 +65,6 @@ Protocol::Protocol(Account account, ProtocolFactory *factory) :
 	connect(Machine, SIGNAL(loggedOutOfflineStateEntered()), this, SLOT(loggedOutAnyStateEntered()));
 	connect(Machine, SIGNAL(wantToLogInStateEntered()), this, SLOT(wantToLogInStateEntered()));
 	connect(Machine, SIGNAL(passwordRequiredStateEntered()), this, SLOT(passwordRequiredStateEntered()));
-
-	connect(StatusChangerManager::instance(), SIGNAL(statusChanged(StatusContainer*,Status)),
-			this, SLOT(statusChanged(StatusContainer*,Status)));
 }
 
 Protocol::~Protocol()
@@ -120,24 +117,6 @@ void Protocol::disconnectedCleanup()
 
 void Protocol::setStatus(Status status)
 {
-	StatusChangerManager::instance()->setStatus(account().statusContainer(), status);
-}
-
-Status Protocol::loginStatus() const
-{
-	return StatusChangerManager::instance()->realStatus(account().statusContainer());
-}
-
-Status Protocol::status() const
-{
-	return CurrentStatus;
-}
-
-void Protocol::statusChanged(StatusContainer *container, Status status)
-{
-	if (!container || container != account().statusContainer())
-		return;
-
 	// If we are in logging-in state and user requested stopping connecting,
 	// CurrentStatus and status are both offline but we still have to emit
 	// stateMachineLogout() signal to actually stop connecting.
@@ -154,6 +133,16 @@ void Protocol::statusChanged(StatusContainer *container, Status status)
 	}
 	else
 		emit stateMachineLogout();
+}
+
+Status Protocol::loginStatus() const
+{
+	return StatusChangerManager::instance()->realStatus(account().statusContainer());
+}
+
+Status Protocol::status() const
+{
+	return CurrentStatus;
 }
 
 void Protocol::loggedIn()

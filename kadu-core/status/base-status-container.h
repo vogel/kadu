@@ -34,10 +34,17 @@ class KADUAPI BaseStatusContainer : public StatusContainer
 
 	StorableObject *MyStorableObject;
 
+private slots:
+	void statusChanged(StatusContainer *container, Status status);
+
+protected:
+	virtual void doSetStatus(Status status) = 0;
+
 public:
 	explicit BaseStatusContainer(StorableObject *storableObject);
 	virtual ~BaseStatusContainer();
 
+	virtual void setStatus(Status newStatus);
 	virtual void setDescription(const QString &description);
 
 	virtual void setDefaultStatus(const QString &startupStatus, bool offlineToInvisible,

@@ -41,6 +41,13 @@ protected:
 	virtual void load();
 	virtual void store();
 
+	// do nothing, this method wil not be called for IdentityShared
+	// all invocations to setStatus are followed to AccountShared classes
+	virtual void doSetStatus(Status status)
+	{
+		Q_UNUSED(status)
+	}
+
 public:
 	static IdentityShared * loadStubFromStorage(const QSharedPointer<StoragePoint> &accountStoragePoint);
 	static IdentityShared * loadFromStorage(const QSharedPointer<StoragePoint> &accountStoragePoint);

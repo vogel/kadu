@@ -335,7 +335,7 @@ QString AccountShared::statusContainerName()
 	return Id;
 }
 
-void AccountShared::setStatus(Status newStatus)
+void AccountShared::doSetStatus(Status newStatus)
 {
 	if (ProtocolHandler)
 		ProtocolHandler->setStatus(newStatus);

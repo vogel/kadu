@@ -21,6 +21,7 @@
 
 #include "configuration/configuration-file.h"
 #include "configuration/configuration-manager.h"
+#include "status/status-changer-manager.h"
 #include "storage/storable-object.h"
 
 #include "base-status-container.h"
@@ -28,10 +29,14 @@
 BaseStatusContainer::BaseStatusContainer(StorableObject *storableObject) :
 		MyStorableObject(storableObject)
 {
+	connect(StatusChangerManager::instance(), SIGNAL(statusChanged(StatusContainer*,Status)),
+	        this, SLOT(statusChanged(StatusContainer*,Status)));
 }
 
 BaseStatusContainer::~BaseStatusContainer()
 {
+	disconnect(StatusChangerManager::instance(), SIGNAL(statusChanged(StatusContainer*,Status)),
+	        this, SLOT(statusChanged(StatusContainer*,Status)));
 }
 
 void BaseStatusContainer::setDescription(const QString &description)
@@ -73,6 +78,17 @@ void BaseStatusContainer::setDefaultStatus(const QString &startupStatus, bool of
 	status.setDescription(description);
 
 	setStatus(status);
+}
+
+void BaseStatusContainer::setStatus(Status status)
+{
+	StatusChangerManager::instance()->setStatus(this, status);
+}
+
+void BaseStatusContainer::statusChanged(StatusContainer *container, Status status)
+{
+	if (this == container)
+		doSetStatus(status);
 }
 
 void BaseStatusContainer::storeStatus(Status status)

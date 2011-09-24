@@ -74,8 +74,6 @@ class KADUAPI Protocol : public QObject
 	void setAllOffline();
 
 private slots:
-	void statusChanged(StatusContainer *container, Status status);
-
 	// state machine slots
 	void prepareStateMachine();
 
