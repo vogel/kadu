@@ -4,6 +4,7 @@
 * screenshot: #2285 fixed: update the pixmap only if the crop rect changed (ultr)
 * screenshot: #2286 fixed: intelligent toolbox positioning (ultr)
 * gui: added support for images drag&drop in chat edit box (ultr)
+* gui: #2077 fixed: untoggle disabled actions (Vogel)
 
 +++ version 0.10.1
 * gadu: clearer contact list synchronization message when updating from <0.10.0 (beevvy)

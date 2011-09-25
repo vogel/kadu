@@ -114,6 +114,9 @@ ActionDataSource * Action::dataSource()
 
 void Action::changedSlot()
 {
+	if (isCheckable() && isChecked() && !isEnabled())
+		setChecked(false);
+
 	emit changed(this);
 }
 
