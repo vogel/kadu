@@ -38,7 +38,6 @@ class KADUAPI StatusChangerManager : public QObject
 	static StatusChangerManager *Instance;
 
 	QMap<StatusContainer *, Status> Statuses;
-	QMap<StatusContainer *, Status> RealStatuses;
 	QList<StatusChanger *> StatusChangers;
 
 	StatusChangerManager();

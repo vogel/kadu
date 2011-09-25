@@ -93,7 +93,6 @@ void StatusChangerManager::statusChanged(StatusContainer *container)
 	Status status = Statuses.value(container);
 	for (int i = 0; i < StatusChangers.count(); i++)
 		StatusChangers.at(i)->changeStatus(container, status);
-	RealStatuses.insert(container, status);
 
 	emit statusChanged(container, status);
 
@@ -111,7 +110,7 @@ void StatusChangerManager::setStatus(StatusContainer *statusContainer, Status st
 
 Status StatusChangerManager::manuallySetStatus(StatusContainer *statusContainer)
 {
-	if (RealStatuses.contains(statusContainer))
-		return RealStatuses.value(statusContainer);
+	if (Statuses.contains(statusContainer))
+		return Statuses.value(statusContainer);
 	return Status("Offline");
 }
