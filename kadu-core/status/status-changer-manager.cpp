@@ -109,15 +109,6 @@ void StatusChangerManager::setStatus(StatusContainer *statusContainer, Status st
 	}
 }
 
-Status StatusChangerManager::realStatus(StatusContainer *statusContainer)
-{
-	if (RealStatuses.contains(statusContainer))
-		return RealStatuses.value(statusContainer);
-	if (Statuses.contains(statusContainer))
-		return Statuses.value(statusContainer);
-	return Status("Offline");
-}
-
 Status StatusChangerManager::manuallySetStatus(StatusContainer *statusContainer)
 {
 	if (RealStatuses.contains(statusContainer))
