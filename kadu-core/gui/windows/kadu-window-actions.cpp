@@ -72,7 +72,6 @@
 #include "os/generic/url-opener.h"
 #include "parser/parser.h"
 #include "protocols/protocol.h"
-#include "status/status-changer-manager.h"
 #include "status/status-container-manager.h"
 #include "url-handlers/url-handler-manager.h"
 
@@ -396,28 +395,10 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 		KaduIcon("kadu_icons/change-status"), tr("Change Status")
 	);
 	connect(ChangeStatus, SIGNAL(actionCreated(Action *)), this, SLOT(changeStatusActionCreated(Action *)));
-
-	connect(StatusChangerManager::instance(), SIGNAL(statusChanged(StatusContainer *, Status)), this, SLOT(statusChanged(StatusContainer *, Status)));
-	foreach (StatusContainer *statusContainer, StatusContainerManager::instance()->statusContainers())
-		statusChanged(statusContainer, statusContainer->status());
 }
 
 KaduWindowActions::~KaduWindowActions()
 {
-}
-
-void KaduWindowActions::statusChanged(StatusContainer *container, Status status)
-{
-	if (!container)
-		return;
-
-	KaduIcon icon = container->statusIcon(status);
-	foreach (Action *action, ChangeStatus->actions())
-		if (action->statusContainer() == container)
-			action->setIcon(icon);
-
-	if (container == StatusContainerManager::instance()->defaultStatusContainer() && container != StatusContainerManager::instance())
-		statusChanged(StatusContainerManager::instance(), status);
 }
 
 void KaduWindowActions::showMultilogonsActionCreated(Action *action)
@@ -503,6 +484,7 @@ void KaduWindowActions::changeStatusActionCreated(Action *action)
 	StatusContainer *statusContainer = action->statusContainer();
 	if (statusContainer)
 	{
+		// TODO: 0.11.0 check if we have a memory leak here
 		StatusIcon *icon = new StatusIcon(statusContainer, action);
 		connect(icon, SIGNAL(iconUpdated(KaduIcon)), action, SLOT(setIcon(KaduIcon)));
 		action->setIcon(icon->icon());
