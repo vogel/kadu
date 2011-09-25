@@ -121,6 +121,7 @@ private slots:
 	void enqueueMessage(const Message &);
 	void contactStatusChanged(Contact contact, Status oldStatus);
 
+	void showHistoryActionCreated(Action *action);
 	void showHistoryActionActivated(QAction *sender, bool toggled);
 	void showMoreMessages(QAction *action);
 	void clearHistoryActionActivated(QAction *sender, bool toggled);

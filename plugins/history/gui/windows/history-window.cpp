@@ -89,7 +89,7 @@ void HistoryWindow::show(const Chat &chat)
 		aggregate = chat;
 
 	if (!Instance)
-	    Instance = new HistoryWindow();
+		Instance = new HistoryWindow();
 
 
 	Instance->updateData();

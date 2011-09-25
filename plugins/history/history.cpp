@@ -150,6 +150,8 @@ void History::createActionDescriptions()
 		KaduIcon("kadu_icons/history"), tr("View Chat History"), false
 	);
 	ShowHistoryActionDescription->setShortcut("kadu_viewhistory");
+	connect(ShowHistoryActionDescription, SIGNAL(actionCreated(Action*)), this, SLOT(showHistoryActionCreated(Action *)));
+
 	BuddiesListViewMenuManager::instance()->addActionDescription(ShowHistoryActionDescription, BuddiesListViewMenuItem::MenuCategoryView, 100);
 	Core::instance()->kaduWindow()->insertMenuActionDescription(ShowHistoryActionDescription, KaduWindow::MenuKadu, 5);
 
@@ -171,6 +173,39 @@ void History::deleteActionDescriptions()
 	ShowHistoryActionDescription = 0;
 }
 
+void History::showHistoryActionCreated(Action *action)
+{
+	ChatEditBox *chatEditBox = qobject_cast<ChatEditBox *>(action->parent());
+	Chat chat = action->chat();
+
+	// not a menu
+	if (!chatEditBox || chat != chatEditBox->chat())
+		return;
+
+	ChatWidget *chatWidget = chatEditBox->chatWidget();
+	if (!chatWidget)
+		return;
+
+	// TODO: check if this is proper parenting
+	QMenu *menu = new QMenu(qobject_cast<QWidget *>(action->parent()));
+
+	if (config_file.readBoolEntry("Chat", "ChatPrune", false))
+	{
+		int prune = config_file.readNumEntry("Chat", "ChatPruneLen", 20);
+		menu->addAction(tr("Show last %1 messages").arg(prune))->setData(0);
+		menu->addSeparator();
+	}
+
+	menu->addAction(tr("Show messages since yesterday"))->setData(1);
+	menu->addAction(tr("Show messages from last 7 days"))->setData(7);
+	menu->addAction(tr("Show messages from last 30 days"))->setData(30);
+	menu->addAction(tr("Show whole history"))->setData(-1);
+
+	connect(menu, SIGNAL(triggered(QAction *)), this, SLOT(showMoreMessages(QAction *)));
+
+	action->setMenu(menu);
+}
+
 void History::showHistoryActionActivated(QAction *sender, bool toggled)
 {
 	Q_UNUSED(toggled)
@@ -179,41 +214,8 @@ void History::showHistoryActionActivated(QAction *sender, bool toggled)
 	if (!action)
 		return;
 
-	ChatEditBox *chatEditBox = qobject_cast<ChatEditBox *>(sender->parent());
 	Chat chat = action->chat();
-	if (!chatEditBox || chat != chatEditBox->chat())
-	{
-		HistoryWindow::show(chat);
-		return;
-	}
-
-	ChatWidget *chatWidget = chatEditBox->chatWidget();
-	if (chatWidget)
-	{
-		QList<QWidget *> widgets = sender->associatedWidgets();
-		if (widgets.isEmpty())
-			return;
-
-		QWidget *widget = widgets.at(widgets.size() - 1);
-
-		QScopedPointer<QMenu> menu(new QMenu(chatWidget));
-
-		if (config_file.readBoolEntry("Chat", "ChatPrune", false))
-		{
-			int prune = config_file.readNumEntry("Chat", "ChatPruneLen", 20);
-			menu->addAction(tr("Show last %1 messages").arg(prune))->setData(0);
-			menu->addSeparator();
-		}
-
-		menu->addAction(tr("Show messages since yesterday"))->setData(1);
-		menu->addAction(tr("Show messages from last 7 days"))->setData(7);
-		menu->addAction(tr("Show messages from last 30 days"))->setData(30);
-		menu->addAction(tr("Show whole history"))->setData(-1);
-
-		connect(menu.data(), SIGNAL(triggered(QAction *)), this, SLOT(showMoreMessages(QAction *)));
-
-		menu->exec(widget->mapToGlobal(QPoint(0, widget->height())));
-	}
+	HistoryWindow::show(chat);
 }
 
 void History::showMoreMessages(QAction *action)
