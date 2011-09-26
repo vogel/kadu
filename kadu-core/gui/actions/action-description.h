@@ -31,7 +31,7 @@
 class Action;
 class ActionDataSource;
 
-class KADUAPI ActionDescription : public QObject, ConfigurationAwareObject
+class KADUAPI ActionDescription : public QObject, protected ConfigurationAwareObject
 {
 	Q_OBJECT
 

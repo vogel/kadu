@@ -9,6 +9,7 @@ set (KADU_FIND_REQUIRED true)
 include (FindKadu)
 
 kadu_api_directories (plugins/history
+	actions
 	gui/windows
 	gui
 	model
@@ -18,6 +19,8 @@ kadu_api_directories (plugins/history
 )
 
 set (SOURCES
+	actions/show-history-action-description.cpp
+
 	gui/windows/history-window.cpp
 
 	model/buddy-status-dates-model.cpp
@@ -38,6 +41,8 @@ set (SOURCES
 )
 
 set (MOC_SOURCES
+	actions/show-history-action-description.h
+
 	gui/windows/history-window.h
 
 	model/buddy-status-dates-model.h

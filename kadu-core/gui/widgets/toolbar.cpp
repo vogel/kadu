@@ -169,7 +169,7 @@ QToolButton * ToolBar::createPushButton(QAction *before, ToolBarAction &action)
 		button->setToolButtonStyle(action.style);
 
 		if (action.action->menu())
-			button->setPopupMode(QToolButton::MenuButtonPopup	);
+			button->setPopupMode(QToolButton::MenuButtonPopup);
 	}
 
 	return button;
