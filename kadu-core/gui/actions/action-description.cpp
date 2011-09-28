@@ -117,6 +117,11 @@ void ActionDescription::setShortcut(QString configItem, Qt::ShortcutContext cont
 	configurationUpdated();
 }
 
+void ActionDescription::actionTriggeredSlot(QAction *sender, bool toggled)
+{
+	actionTriggered(sender, toggled);
+}
+
 Action * ActionDescription::createAction(ActionDataSource *dataSource, QObject *parent)
 {
 	if (MappedActions.contains(dataSource))
@@ -125,10 +130,7 @@ Action * ActionDescription::createAction(ActionDataSource *dataSource, QObject *
 	Action *result = new Action(this, dataSource, parent);
 	MappedActions.insert(dataSource, result);
 
-	connect(result, SIGNAL(aboutToBeDestroyed(Action *)), this, SLOT(actionAboutToBeDestroyed(Action *)));
-	if (Object && Slot)
-		connect(result, SIGNAL(triggered(QAction *, bool)), Object, Slot);
-
+	actionInstanceCreated(result);
 	emit actionCreated(result);
 
 	if (ShortcutContext != Qt::ApplicationShortcut)
@@ -141,6 +143,12 @@ Action * ActionDescription::createAction(ActionDataSource *dataSource, QObject *
 		result->setShortcut(HotKey::shortCutFromFile("ShortCuts", ShortcutItem));
 		result->setShortcutContext(ShortcutContext);
 	}
+
+	connect(result, SIGNAL(triggered(QAction *, bool)), this, SLOT(actionTriggeredSlot(QAction *, bool)));
+	connect(result, SIGNAL(aboutToBeDestroyed(Action *)), this, SLOT(actionAboutToBeDestroyed(Action *)));
+	if (Object && Slot)
+		connect(result, SIGNAL(triggered(QAction *, bool)), Object, Slot);
+
 	return result;
 }
 

@@ -33,12 +33,13 @@ class HISTORYAPI ShowHistoryActionDescription : public ActionDescription
 	int ChatHistoryQuotationTime;
 
 private slots:
-	void actionCreated(Action *action);
-	void actionActivated(QAction *sender, bool toggled);
 	void showMoreMessages(QAction *action);
 
 protected:
 	virtual void configurationUpdated();
+
+	virtual void actionInstanceCreated(Action *action);
+	virtual void actionTriggered(QAction *sender, bool toggled);
 
 public:
 	ShowHistoryActionDescription(QObject *parent);

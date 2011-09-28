@@ -36,14 +36,11 @@ ShowHistoryActionDescription::ShowHistoryActionDescription(QObject *parent) :
 {
 	setType(ActionDescription::TypeUser);
 	setName("showHistoryAction");
-	setConnection(this, SLOT(actionActivated(QAction*,bool)));
 	setIcon(KaduIcon("kadu_icons/history"));
 	setText(tr("View Chat History"));
 	setShortcut("kadu_viewhistory");
 
 	registerAction();
-
-	connect(this, SIGNAL(actionCreated(Action*)), this, SLOT(actionCreated(Action *)));
 
 	configurationUpdated();
 }
@@ -59,11 +56,8 @@ void ShowHistoryActionDescription::configurationUpdated()
 	ChatHistoryQuotationTime = config_file.readNumEntry("History", "ChatHistoryQuotationTime", -744);
 }
 
-void ShowHistoryActionDescription::actionCreated(Action *action)
+void ShowHistoryActionDescription::actionInstanceCreated(Action *action)
 {
-	// TODO: find out why without this line this action does not work in main window
-	connect(action, SIGNAL(triggered(QAction *, bool)), this, SLOT(actionActivated(QAction*,bool)));
-
 	ChatEditBox *chatEditBox = qobject_cast<ChatEditBox *>(action->parent());
 	Chat chat = action->chat();
 
@@ -95,7 +89,7 @@ void ShowHistoryActionDescription::actionCreated(Action *action)
 	action->setMenu(menu);
 }
 
-void ShowHistoryActionDescription::actionActivated(QAction *sender, bool toggled)
+void ShowHistoryActionDescription::actionTriggered(QAction *sender, bool toggled)
 {
 	Q_UNUSED(toggled)
 

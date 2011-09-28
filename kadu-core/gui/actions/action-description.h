@@ -28,6 +28,8 @@
 #include "configuration/configuration-aware-object.h"
 #include "icons/kadu-icon.h"
 
+class QAction;
+
 class Action;
 class ActionDataSource;
 
@@ -70,12 +72,27 @@ private:
 
 private slots:
 	void actionAboutToBeDestroyed(Action *action);
+	void actionTriggeredSlot(QAction *sender, bool toggled);
 
 protected:
 	ActionDescription(QObject *parent);
 
 	void registerAction();
 	void unregisterAction();
+
+	// TODO: rename to actionCreated after actionCreated slot is removed
+	// TODO: make abstract when actions are moved to new API
+	virtual void actionInstanceCreated(Action *action)
+	{
+		Q_UNUSED(action)
+	}
+
+	// TODO: make abstract when actions are moved to new API
+	virtual void actionTriggered(QAction *sender, bool toggled)
+	{
+		Q_UNUSED(sender)
+		Q_UNUSED(toggled)
+	}
 
 	virtual void connectNotify(const char *signal);
 	virtual void configurationUpdated();
