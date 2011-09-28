@@ -140,7 +140,7 @@ void AccountAvatarWidget::changeButtonClicked()
 
 void AccountAvatarWidget::changeAvatar()
 {
-	QString fileName = QFileDialog::getOpenFileName(this, tr("Select avatar file"), QString(), "Images (*.jpeg *.jpg *.png)");
+	QString fileName = QFileDialog::getOpenFileName(this, tr("Select avatar file"), QString(), tr("Images (*.jpeg *.jpg *.png);;All Files (*)"));
 	if (fileName.isEmpty())
 		return;
 

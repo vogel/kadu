@@ -90,7 +90,7 @@ void AccountBuddyListWidget::restoreFromFile()
 	if (!service)
 		return;
 
-	QString fileName = QFileDialog::getOpenFileName(this, tr("Select file"), QString(), "Contact list files (*.txt *.xml)", 0);
+	QString fileName = QFileDialog::getOpenFileName(this, tr("Select file"), QString(), tr("Contact List Files (*.txt *.xml);;All Files (*)"), 0);
 	if (fileName.isEmpty())
 		return;
 
@@ -121,7 +121,7 @@ void AccountBuddyListWidget::storeToFile()
 	if (!service)
 		return;
 
-	QString fileName = QFileDialog::getSaveFileName(this, tr("Select file"), QString(), "Contact list files (*.txt)", 0);
+	QString fileName = QFileDialog::getSaveFileName(this, tr("Select file"), QString(), tr("Contact List Files (*.txt)"), 0);
 	if (fileName.isEmpty())
 		return;
 

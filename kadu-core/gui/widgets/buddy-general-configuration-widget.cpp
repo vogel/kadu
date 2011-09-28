@@ -23,7 +23,6 @@
 
 #include <QtGui/QCheckBox>
 #include <QtGui/QDialogButtonBox>
-#include <QtGui/QFileDialog>
 #include <QtGui/QFormLayout>
 #include <QtGui/QGridLayout>
 #include <QtGui/QGroupBox>
