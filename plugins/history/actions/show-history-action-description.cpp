@@ -56,18 +56,18 @@ void ShowHistoryActionDescription::configurationUpdated()
 	ChatHistoryQuotationTime = config_file.readNumEntry("History", "ChatHistoryQuotationTime", -744);
 }
 
-void ShowHistoryActionDescription::actionInstanceCreated(Action *action)
+QMenu * ShowHistoryActionDescription::menuForAction(Action *action)
 {
 	ChatEditBox *chatEditBox = qobject_cast<ChatEditBox *>(action->parent());
 	Chat chat = action->chat();
 
 	// not a menu
 	if (!chatEditBox || chat != chatEditBox->chat())
-		return;
+		return 0;
 
 	ChatWidget *chatWidget = chatEditBox->chatWidget();
 	if (!chatWidget)
-		return;
+		return 0;
 
 	// TODO: check if this is proper parenting
 	QMenu *menu = new QMenu(qobject_cast<QWidget *>(action->parent()));
@@ -86,7 +86,7 @@ void ShowHistoryActionDescription::actionInstanceCreated(Action *action)
 
 	connect(menu, SIGNAL(triggered(QAction *)), this, SLOT(showMoreMessages(QAction *)));
 
-	action->setMenu(menu);
+	return menu;
 }
 
 void ShowHistoryActionDescription::actionTriggered(QAction *sender, bool toggled)

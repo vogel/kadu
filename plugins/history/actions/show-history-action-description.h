@@ -38,7 +38,7 @@ private slots:
 protected:
 	virtual void configurationUpdated();
 
-	virtual void actionInstanceCreated(Action *action);
+	virtual QMenu * menuForAction(Action *action);
 	virtual void actionTriggered(QAction *sender, bool toggled);
 
 public:

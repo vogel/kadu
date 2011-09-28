@@ -122,6 +122,20 @@ void ActionDescription::actionTriggeredSlot(QAction *sender, bool toggled)
 	actionTriggered(sender, toggled);
 }
 
+QMenu * ActionDescription::menuForAction(Action *action)
+{
+	Q_UNUSED(action)
+
+	return 0;
+}
+
+void ActionDescription::actionInstanceCreated(Action *action)
+{
+	QMenu *menu = menuForAction(action);
+	if (menu)
+		action->setMenu(menu);
+}
+
 Action * ActionDescription::createAction(ActionDataSource *dataSource, QObject *parent)
 {
 	if (MappedActions.contains(dataSource))

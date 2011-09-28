@@ -29,6 +29,7 @@
 #include "icons/kadu-icon.h"
 
 class QAction;
+class QMenu;
 
 class Action;
 class ActionDataSource;
@@ -81,11 +82,7 @@ protected:
 	void unregisterAction();
 
 	// TODO: rename to actionCreated after actionCreated slot is removed
-	// TODO: make abstract when actions are moved to new API
-	virtual void actionInstanceCreated(Action *action)
-	{
-		Q_UNUSED(action)
-	}
+	virtual void actionInstanceCreated(Action *action);
 
 	// TODO: make abstract when actions are moved to new API
 	virtual void actionTriggered(QAction *sender, bool toggled)
@@ -93,6 +90,8 @@ protected:
 		Q_UNUSED(sender)
 		Q_UNUSED(toggled)
 	}
+
+	virtual QMenu * menuForAction(Action *action);
 
 	virtual void connectNotify(const char *signal);
 	virtual void configurationUpdated();
