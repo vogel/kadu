@@ -35,7 +35,14 @@ ActionDescription::ActionDescription(QObject *parent, ActionType type, const QSt
 {
 	deleted = 0;
 
-	Actions::instance()->insert(this);
+	registerAction();
+}
+
+ActionDescription::ActionDescription(QObject *parent) :
+		QObject(parent), Type(TypeAll), Object(0), Slot(0),
+		Checkable(false), EnableCallback(0), ShortcutContext(Qt::WidgetShortcut)
+{
+	deleted = 0;
 }
 
 ActionDescription::~ActionDescription()
@@ -43,6 +50,17 @@ ActionDescription::~ActionDescription()
 	deleted = 1;
 	qDeleteAll(MappedActions);
 	MappedActions.clear();
+
+	unregisterAction();
+}
+
+void ActionDescription::registerAction()
+{
+	Actions::instance()->insert(this);
+}
+
+void ActionDescription::unregisterAction()
+{
 	Actions::instance()->remove(this);
 }
 
@@ -53,6 +71,42 @@ void ActionDescription::actionAboutToBeDestroyed(Action *action)
 
 	if (action && MappedActions.contains(action->dataSource()))
 		MappedActions.remove(action->dataSource());
+}
+
+void ActionDescription::setType(ActionType type)
+{
+	Type = type;
+}
+
+void ActionDescription::setName(const QString &name)
+{
+	Name = name;
+}
+
+void ActionDescription::setConnection(QObject *object, const char *slot)
+{
+	Object = object;
+	Slot = slot;
+}
+
+void ActionDescription::setIcon(const KaduIcon &icon)
+{
+	Icon = icon;
+}
+
+void ActionDescription::setText(const QString &text)
+{
+	Text = text;
+}
+
+void ActionDescription::setCheckable(bool checkable)
+{
+	Checkable = checkable;
+}
+
+void ActionDescription::setActionCallback(ActionBoolCallback enableCallback)
+{
+	EnableCallback = enableCallback;
 }
 
 void ActionDescription::setShortcut(QString configItem, Qt::ShortcutContext context)

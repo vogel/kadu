@@ -72,6 +72,11 @@ private slots:
 	void actionAboutToBeDestroyed(Action *action);
 
 protected:
+	ActionDescription(QObject *parent);
+
+	void registerAction();
+	void unregisterAction();
+
 	virtual void connectNotify(const char *signal);
 	virtual void configurationUpdated();
 
@@ -80,17 +85,25 @@ public:
 			const KaduIcon &icon, const QString &text, bool checkable = false, ActionBoolCallback enableCallback = 0);
 	virtual ~ActionDescription();
 
-	const QString & name() const { return Name; }
 	Action * createAction(ActionDataSource *dataSource, QObject *parent);
 	QList<Action *> actions();
 	Action * action(ActionDataSource *dataSource);
 
-	const QString & text() const { return Text; }
+	void setType(ActionType type);
+	void setName(const QString &name);
+	void setConnection(QObject *object, const char *slot);
+	void setIcon(const KaduIcon &icon);
+	void setText(const QString &text);
+	void setCheckable(bool checkable);
+	void setActionCallback(ActionBoolCallback enableCallback);
+
+	ActionType type() const { return Type; }
+	const QString & name() const { return Name; }
 	const KaduIcon & icon() const { return Icon; }
+	const QString & text() const { return Text; }
+	bool isCheckable() const { return Checkable; }
 
 	void setShortcut(QString configItem, Qt::ShortcutContext context = Qt::WindowShortcut);
-
-	ActionType type() { return Type; }
 
 signals:
 	void actionCreated(Action *);

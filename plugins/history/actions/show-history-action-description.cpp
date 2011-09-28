@@ -32,11 +32,17 @@
 #include "show-history-action-description.h"
 
 ShowHistoryActionDescription::ShowHistoryActionDescription(QObject *parent) :
-		ActionDescription(parent, ActionDescription::TypeUser, "showHistoryAction",
-				this, SLOT(actionActivated(QAction*,bool)),
-				KaduIcon("kadu_icons/history"), tr("View Chat History"), false)
+		ActionDescription(parent)
 {
+	setType(ActionDescription::TypeUser);
+	setName("showHistoryAction");
+	setConnection(this, SLOT(actionActivated(QAction*,bool)));
+	setIcon(KaduIcon("kadu_icons/history"));
+	setText(tr("View Chat History"));
 	setShortcut("kadu_viewhistory");
+
+	registerAction();
+
 	connect(this, SIGNAL(actionCreated(Action*)), this, SLOT(actionCreated(Action *)));
 
 	configurationUpdated();
