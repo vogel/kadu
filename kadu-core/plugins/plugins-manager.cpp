@@ -455,7 +455,7 @@ bool PluginsManager::activateDependencies(Plugin *plugin)
 	foreach (const QString &dependencyName, plugin->info()->dependencies())
 	{
 		Plugin *dependencyPlugin = Plugins.value(dependencyName);
-		if (!dependencyPlugin)
+		if (!dependencyPlugin || !dependencyPlugin->isValid())
 		{
 			plugin->activationError(tr("Required plugin %1 was not found").arg(dependencyName), PluginActivationReasonDependency);
 			return false;
