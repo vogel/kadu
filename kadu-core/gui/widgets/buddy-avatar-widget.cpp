@@ -104,7 +104,7 @@ void BuddyAvatarWidget::buttonClicked()
 
 void BuddyAvatarWidget::changeAvatar()
 {
-	QString newAvatar = QFileDialog::getOpenFileName(this, tr("Select new photo"), QString(), "Image Files (*.png *.jpg *.bmp)", 0);
+	QString newAvatar = QFileDialog::getOpenFileName(this, tr("Select new photo"), QString(), tr("Images (*.png *.jpg *.bmp);;All Files (*)"), 0);
 	if (newAvatar.isEmpty())
 		return;
 

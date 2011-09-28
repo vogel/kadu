@@ -135,7 +135,7 @@ GroupPropertiesWindow::GroupPropertiesWindow(Group editedGroup, QWidget *parent)
 void GroupPropertiesWindow::selectIcon()
 {
 	QString file = QFileDialog::getOpenFileName(this, tr("Choose an icon"), config_file.readEntry("GroupIcon", "recentPath", "~/"),
-					tr("Icons (*.png *.xpm *.jpg)"));
+					tr("Icons (*.png *.xpm *.jpg)") + ";;All Files (*)");
 	if (!file.isEmpty())
 	{
 		QFileInfo fileInfo(file);
