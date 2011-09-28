@@ -457,7 +457,8 @@ bool PluginsManager::activateDependencies(Plugin *plugin)
 
 	foreach (const QString &dependencyName, plugin->info()->dependencies())
 	{
-		if (!Plugins.contains(dependencyName))
+		Plugin *dependencyPlugin = Plugins.value(dependencyName);
+		if (!dependencyPlugin || !dependencyPlugin->isValid())
 		{
 			MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Required plugin %1 was not found").arg(dependencyName));
 			return false;
