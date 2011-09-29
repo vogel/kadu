@@ -17,34 +17,30 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SHOW_HISTORY_ACTION_DESCRIPTION_H
-#define SHOW_HISTORY_ACTION_DESCRIPTION_H
+#ifndef CHANGE_STATUS_ACTION_H
+#define CHANGE_STATUS_ACTION_H
 
 #include <QtGui/QAction>
 
-#include "history_exports.h"
-
 #include "gui/actions/action-description.h"
 
-class HISTORYAPI ShowHistoryActionDescription : public ActionDescription
+class ChangeStatusAction : public ActionDescription
 {
 	Q_OBJECT
 
-	int ChatHistoryQuotationTime;
-
-private slots:
-	void showMoreMessages(QAction *action);
-
 protected:
-	virtual void configurationUpdated();
-
 	virtual QMenu * menuForAction(Action *action);
-	virtual void actionTriggered(QAction *sender, bool toggled);
+	virtual void actionInstanceCreated(Action *action);
 
 public:
-	explicit ShowHistoryActionDescription(QObject *parent);
-	virtual ~ShowHistoryActionDescription();
+	explicit ChangeStatusAction(QObject *parent);
+	virtual ~ChangeStatusAction();
+
+	virtual QToolButton::ToolButtonPopupMode buttonPopupMode()
+	{
+		return QToolButton::InstantPopup;
+	}
 
 };
 
-#endif // SHOW_HISTORY_ACTION_DESCRIPTION_H
+#endif // CHANGE_STATUS_ACTION_H

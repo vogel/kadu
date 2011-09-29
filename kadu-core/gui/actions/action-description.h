@@ -24,6 +24,7 @@
 
 #include <QtCore/QMap>
 #include <QtCore/QObject>
+#include <QtGui/QToolButton>
 
 #include "configuration/configuration-aware-object.h"
 #include "icons/kadu-icon.h"
@@ -120,6 +121,11 @@ public:
 	bool isCheckable() const { return Checkable; }
 
 	void setShortcut(QString configItem, Qt::ShortcutContext context = Qt::WindowShortcut);
+
+	virtual QToolButton::ToolButtonPopupMode buttonPopupMode()
+	{
+		return QToolButton::MenuButtonPopup;
+	}
 
 signals:
 	void actionCreated(Action *);

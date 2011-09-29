@@ -60,6 +60,7 @@ public:
 
 signals:
 	void menuRecreated();
+
 };
 
 #endif // STATUS_MENU_H

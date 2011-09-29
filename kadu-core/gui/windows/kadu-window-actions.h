@@ -32,6 +32,7 @@ class QAction;
 class Action;
 class ActionDataSource;
 class ActionDescription;
+class ChangeStatusAction;
 class MainWindow;
 class StatusContainer;
 
@@ -71,7 +72,7 @@ class KaduWindowActions : QObject, ConfigurationAwareObject
 	ActionDescription *ShowDescriptions;
 	ActionDescription *OnlineAndDescriptionUsers;
 	ActionDescription *EditUser;
-	ActionDescription *ChangeStatus;
+	ChangeStatusAction *ChangeStatus;
 
 private slots:
 	void statusChanged(StatusContainer *container, Status status);
@@ -82,7 +83,6 @@ private slots:
 	void showDescriptionsActionCreated(Action *action);
 	void onlineAndDescUsersActionCreated(Action *action);
 	void editUserActionCreated(Action *action);
-	void changeStatusActionCreated(Action *action);
 	void showInfoPanelActionCreated(Action *action);
 	void showBlockedActionCreated(Action *action);
 	void showMyselfActionCreated(Action *action);
@@ -118,7 +118,6 @@ private slots:
 	void showDescriptionsActionActivated(QAction *sender, bool toggled);
 	void onlineAndDescUsersActionActivated(QAction *sender, bool toggled);
 	void editUserActionActivated(QAction *sender, bool toggled);
-	void changeStatusActionActivated(QAction *sender, bool toggled);
 
 protected:
 	virtual void configurationUpdated();

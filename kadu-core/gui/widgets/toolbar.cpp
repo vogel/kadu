@@ -168,8 +168,12 @@ QToolButton * ToolBar::createPushButton(QAction *before, ToolBarAction &action)
 		button->installEventFilter(watcher);
 		button->setToolButtonStyle(action.style);
 
-		if (action.action->menu())
-			button->setPopupMode(QToolButton::MenuButtonPopup);
+		if (action.action->menu() && Actions::instance()->contains(action.actionName))
+		{
+			ActionDescription *actionDescription = Actions::instance()->value(action.actionName);
+			if (actionDescription)
+				button->setPopupMode(actionDescription->buttonPopupMode());
+		}
 	}
 
 	return button;
