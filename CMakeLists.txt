@@ -4,10 +4,9 @@ project (kadu)
 set (QT_MIN_VERSION "4.7.0")
 set (CMAKE_MIN_VERSION "2.6.0")
 set (CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
-option (BUILD_PLUGINS "Switch to Off if you do not want to build plugins" ON)
 
 # configuration
-option (INSTALL_CMAKE_MODULE "Install cmake modules" ON)
+option (BUILD_PLUGINS "Switch to Off if you do not want to build plugins" ON)
 if (UNIX)
 	option (SIG_HANDLING_ENABLED "Define if you want system signals handling" ON)
 
@@ -108,14 +107,15 @@ else (APPLE)
 endif (APPLE)
 endmacro (kadu_source_subdirectories)
 
+set (KADU_INSTALLS_SDK TRUE)
 include (cmake/FindKadu.cmake)
 include_directories (${CMAKE_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/kadu-core ${QT_INCLUDES})
 
-if (INSTALL_CMAKE_MODULE)
+if (INSTALL_SDK)
 	install (FILES cmake/FindKadu.cmake DESTINATION ${KADU_CMAKE_MODULES_DIR})
 	install (PROGRAMS translations/plugintsupdate.sh DESTINATION ${KADU_PLUGINS_DIR}/sdk)
 	install (FILES translations/configuration-ui.xsl DESTINATION ${KADU_PLUGINS_DIR}/sdk)
-endif (INSTALL_CMAKE_MODULE)
+endif (INSTALL_SDK)
 
 # build
 configure_file (${CMAKE_SOURCE_DIR}/kadu-config.h.cmake ${CMAKE_BINARY_DIR}/kadu-config.h)

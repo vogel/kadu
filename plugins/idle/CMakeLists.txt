@@ -6,6 +6,7 @@ set (QT_MIN_VERSION "4.7.0")
 set (CMAKE_MIN_VERSION "2.6.0")
 
 set (KADU_FIND_REQUIRED true)
+set (KADU_INSTALLS_SDK TRUE)
 include (FindKadu)
 
 kadu_api_directories (plugins/idle
