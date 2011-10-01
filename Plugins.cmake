@@ -164,8 +164,9 @@ if (NOT COMPILE_PLUGINS)
 	# Sort the list so plugins will be built in alphabetical order
 	list (SORT COMPILE_PLUGINS)
 else (NOT COMPILE_PLUGINS)
-	# Convert to list with two commands
-	string (REGEX REPLACE "[ ,]" ";" COMPILE_PLUGINS "${COMPILE_PLUGINS}")
+	# Replace whitespace and commas with semicolons
+	string (REGEX REPLACE "[ \t\n\r,]" ";" COMPILE_PLUGINS "${COMPILE_PLUGINS}")
+	# Convert to list
 	set (COMPILE_PLUGINS ${COMPILE_PLUGINS})
 
 	# Remove empty entries
