@@ -39,7 +39,6 @@
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
 #include "buddies/buddy.h"
-#include "buddies/buddy-shared.h"
 #include "chat/chat-styles-manager.h"
 #include "chat/message/message-render-info.h"
 #include "chat/style-engines/chat-style-engine.h"

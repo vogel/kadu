@@ -24,7 +24,6 @@
 #include "accounts/account.h"
 #include "chat/chat-details.h"
 #include "chat/chat-manager.h"
-#include "chat/chat-shared.h"
 #include "contacts/contact-set.h"
 
 #include "chat.h"

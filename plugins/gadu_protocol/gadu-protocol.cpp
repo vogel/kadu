@@ -35,7 +35,6 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
-#include "accounts/account-shared.h"
 #include "avatars/avatar-manager.h"
 #include "buddies/buddy-manager.h"
 #include "chat/chat.h"

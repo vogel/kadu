@@ -25,20 +25,19 @@
 #include <QtCore/QDateTime>
 #include <QtCore/QSharedData>
 
-#include "chat/chat.h"
 #include "chat/message/message-common.h"
-#include "contacts/contact.h"
 #include "storage/shared.h"
 
 class Chat;
+class Contact;
 
 class MessageShared : public QObject, public Shared
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(MessageShared)
 
-	Chat MessageChat;
-	Contact MessageSender;
+	Chat *MessageChat;
+	Contact *MessageSender;
 	QString Content;
 	QDateTime ReceiveDate;
 	QDateTime SendDate;
@@ -65,8 +64,8 @@ public:
 
 	void setStatus(MessageStatus status);
 
-	KaduShared_Property(const Chat &, messageChat, MessageChat)
-	KaduShared_Property(const Contact &, messageSender, MessageSender)
+	KaduShared_PropertyDeclCRW(Chat, messageChat, MessageChat)
+	KaduShared_PropertyDeclCRW(Contact, messageSender, MessageSender)
 	KaduShared_Property(const QString &, content, Content)
 	KaduShared_Property(const QDateTime &, receiveDate, ReceiveDate)
 	KaduShared_Property(const QDateTime &, sendDate, SendDate)

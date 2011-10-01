@@ -24,6 +24,8 @@
 #include <QtGui/QImageReader>
 
 #include "avatars/avatar-manager.h"
+#include "buddies/buddy.h"
+#include "contacts/contact.h"
 #include "misc/misc.h"
 
 #include "avatar-shared.h"
@@ -48,11 +50,16 @@ AvatarShared::AvatarShared(const QUuid &uuid) :
 		Shared(uuid)
 {
 	AvatarsDir = profilePath("avatars/");
+	AvatarBuddy = new Buddy();
+	AvatarContact = new Contact();
 }
 
 AvatarShared::~AvatarShared()
 {
 	ref.ref();
+
+	delete AvatarContact;
+	delete AvatarBuddy;
 }
 
 StorableObject * AvatarShared::storageParent()
@@ -144,11 +151,11 @@ void AvatarShared::aboutToBeRemoved()
 	Avatar guard(this);
 
 	// cleanup references
-	AvatarBuddy.setBuddyAvatar(Avatar::null);
-	AvatarContact.setContactAvatar(Avatar::null);
+	AvatarBuddy->setBuddyAvatar(Avatar::null);
+	AvatarContact->setContactAvatar(Avatar::null);
 
-	AvatarBuddy = Buddy::null;
-	AvatarContact = Contact::null;
+	*AvatarBuddy = Buddy::null;
+	*AvatarContact = Contact::null;
 
 	QFile avatarFile(filePath());
 	if (avatarFile.exists())
@@ -175,3 +182,6 @@ void AvatarShared::emitUpdated()
 {
 	emit updated();
 }
+
+KaduShared_PropertyPtrDefCRW(AvatarShared, Buddy, avatarBuddy, AvatarBuddy)
+KaduShared_PropertyPtrDefCRW(AvatarShared, Contact, avatarContact, AvatarContact)

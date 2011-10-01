@@ -21,7 +21,6 @@
  */
 
 #include "accounts/account.h"
-#include "buddies/buddy-shared.h"
 #include "contacts/contact.h"
 #include "contacts/contact-manager.h"
 #include "icons/kadu-icon.h"

@@ -28,7 +28,6 @@
 #include "buddies/buddy-manager.h"
 #include "contacts/contact.h"
 #include "contacts/contact-manager.h"
-#include "contacts/contact-shared.h"
 #include "core/core.h"
 #include "misc/misc.h"
 #include "debug.h"

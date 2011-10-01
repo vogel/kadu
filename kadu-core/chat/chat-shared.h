@@ -24,11 +24,11 @@
 #ifndef CHAT_SHARED_H
 #define CHAT_SHARED_H
 
-#include "accounts/account.h"
 #include "chat/type/chat-type-aware-object.h"
 #include "storage/details-holder.h"
 #include "storage/shared.h"
 
+class Account;
 class BuddySet;
 class Chat;
 class ChatDetails;
@@ -54,7 +54,7 @@ class KADUAPI ChatShared : public QObject, public Shared, public DetailsHolder<C
 	Q_OBJECT
 	Q_DISABLE_COPY(ChatShared)
 
-	Account ChatAccount;
+	Account *ChatAccount;
 	QString Type;
 	bool IgnoreAllMessages;
 
@@ -94,7 +94,7 @@ public:
 	 * Every chat is assigned to account. All contacts in every chat must
 	 * belong to the same account as chat.
 	 */
-	KaduShared_Property(const Account &, chatAccount, ChatAccount);
+	KaduShared_PropertyDeclCRW(Account, chatAccount, ChatAccount);
 
 	/**
 	 * @author Rafal 'Vogel' Malinowski

@@ -40,7 +40,6 @@
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
 #include "buddies/buddy-manager.h"
-#include "buddies/buddy-shared.h"
 #include "buddies/group.h"
 #include "buddies/group-manager.h"
 #include "chat/message/message.h"

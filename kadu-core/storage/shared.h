@@ -119,6 +119,93 @@
 	KaduShared_PropertyBoolWrite(capitalized_name)
 
 /**
+ * @author Bartosz 'beevvy' Brachaczek
+ * @short Declares getter for given property of StorableObject.
+ * @param type type of property
+ * @param name name of getter
+ *
+ * Declares getter for given property of @link StorableObject @endlink.
+ */
+#define KaduShared_PropertyReadDecl(type, name) \
+	type name();
+
+/**
+ * @author Bartosz 'beevvy' Brachaczek
+ * @short Declares setter for given property of StorableObject.
+ * @param type type of property
+ * @param name name of value parameter
+ * @param capitalized_name name of property (setter will be called set##capitalized_name)
+ *
+ * Declares setter for given property of @link StorableObject @endlink. Setter is called set##capitalized_name).
+ */
+#define KaduShared_PropertyWriteDecl(type, name, capitalized_name) \
+	void set##capitalized_name(type name);
+
+/**
+ * @author Bartosz 'beevvy' Brachaczek
+ * @short Declares getter and setter for given property of StorableObject.
+ * @param type type of property
+ * @param name name of value parameter
+ * @param capitalized_name name of property.
+ *
+ * Declares both getter and setter for given property of @link StorableObject @endlink.
+ * Getter is called name, setter is called set##capitalized_name).
+ * Argument of the setter will be a const reference to 'type'.
+ */
+#define KaduShared_PropertyDeclCRW(type, name, capitalized_name) \
+	KaduShared_PropertyReadDecl(type, name) \
+	KaduShared_PropertyWriteDecl(const type &, name, capitalized_name)
+
+/**
+ * @author Bartosz 'beevvy' Brachaczek
+ * @short Defines getter for given pointed property of StorableObject.
+ * @param class_name class name
+ * @param type type of property
+ * @param name name of getter
+ * @param capitalized_name name of property
+ *
+ * Defines getter for given pointed property of @link StorableObject @endlink. Value of property is always
+ * valid because this method calls @link<StorableObject::ensureLoaded @endLink, so object is always
+ * fully loaded before this method returns. Getter is called name.
+ */
+#define KaduShared_PropertyPtrReadDef(class_name, type, name, capitalized_name) \
+	type class_name::name() { ensureLoaded(); return *capitalized_name; }
+
+/**
+ * @author Bartosz 'beevvy' Brachaczek
+ * @short Defines setter for given pointed property of StorableObject.
+ * @param class_name class name
+ * @param type type of property
+ * @param name name of value parameter
+ * @param capitalized_name name of property (setter will be called set##capitalized_name)
+ *
+ * Defines setter for given pointed property of @link StorableObject @endlink. Value of property will not be
+ * ovveriden by load, because this method calls @link<StorableObject::ensureLoaded @endLink, so object is always
+ * fully loaded before this method returns. Setter is called set##capitalized_name).
+ * Calls @link dataUpdated @endlink method after data is changed.
+ */
+#define KaduShared_PropertyPtrWriteDef(class_name, type, name, capitalized_name) \
+	void class_name::set##capitalized_name(type name) { ensureLoaded(); if (*capitalized_name != name) { *capitalized_name = name; dataUpdated(); } }
+
+/**
+ * @author Bartosz 'beevvy' Brachaczek
+ * @short Defines getter and setter for given pointed property of StorableObject.
+ * @param class_name class name
+ * @param type type of property
+ * @param name name of value parameter
+ * @param capitalized_name name of property.
+ *
+ * Defines both getter and setter for given pointed property of @link StorableObject @endlink. Value of property will
+ * always be valid, because these methods calls @link<StorableObject::ensureLoaded @endLink, so object is always
+ * fully loaded before this method returns. Getter is called name, setter is called set##capitalized_name).
+ * Setter calls @link dataUpdated @endlink method after data is changed.
+ * Argument of the setter will be a const reference to 'type'.
+ */
+#define KaduShared_PropertyPtrDefCRW(class_name, type, name, capitalized_name) \
+	KaduShared_PropertyPtrReadDef(class_name, type, name, capitalized_name) \
+	KaduShared_PropertyPtrWriteDef(class_name, const type &, name, capitalized_name)
+
+/**
  * @author Rafal 'Vogel' Malinowski
  * @class Shared
  * @short UuidStorableObject that acts like QSharedData - can be used as data for many SharedBase object.

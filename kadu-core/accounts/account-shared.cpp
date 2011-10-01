@@ -25,7 +25,7 @@
 #include "accounts/account-manager.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact-manager.h"
-#include "contacts/contact.h"
+#include "identities/identity.h"
 #include "identities/identity-manager.h"
 #include "icons/kadu-icon.h"
 #include "misc/misc.h"
@@ -55,6 +55,8 @@ AccountShared::AccountShared(const QUuid &uuid) :
 		BaseStatusContainer(this), Shared(uuid),
 		ProtocolHandler(0), RememberPassword(false), HasPassword(false), Removing(false)
 {
+	AccountIdentity = new Identity();
+	AccountContact = new Contact();
 }
 
 AccountShared::~AccountShared()
@@ -65,6 +67,9 @@ AccountShared::~AccountShared()
 
 	delete ProtocolHandler;
 	ProtocolHandler = 0;
+
+	delete AccountContact;
+	delete AccountIdentity;
 }
 
 StorableObject * AccountShared::storageParent()
@@ -117,7 +122,7 @@ void AccountShared::store()
 
 	Shared::store();
 
-	storeValue("Identity", AccountIdentity.uuid().toString());
+	storeValue("Identity", AccountIdentity->uuid().toString());
 
 	storeValue("Protocol", ProtocolName);
 	storeValue("Id", id());
@@ -272,16 +277,16 @@ void AccountShared::doSetAccountIdentity(const Identity &accountIdentity)
 	 */
 	Account guard(this);
 
-	AccountIdentity.removeAccount(this);
-	AccountIdentity = accountIdentity;
-	AccountIdentity.addAccount(this);
+	AccountIdentity->removeAccount(this);
+	*AccountIdentity = accountIdentity;
+	AccountIdentity->addAccount(this);
 }
 
 void AccountShared::setAccountIdentity(const Identity &accountIdentity)
 {
 	ensureLoaded();
 
-	if (AccountIdentity == accountIdentity)
+	if (*AccountIdentity == accountIdentity)
 		return;
 
 	doSetAccountIdentity(accountIdentity);
@@ -305,7 +310,7 @@ void AccountShared::setProtocolName(const QString &protocolName)
 void AccountShared::doSetId(const QString &id)
 {
 	Id = id;
-	AccountContact.setId(id);
+	AccountContact->setId(id);
 }
 
 void AccountShared::setId(const QString &id)
@@ -324,10 +329,10 @@ Contact AccountShared::accountContact()
 {
 	ensureLoaded();
 
-	if (!AccountContact)
-		AccountContact = ContactManager::instance()->byId(this, Id, ActionCreateAndAdd);
+	if (!*AccountContact)
+		*AccountContact = ContactManager::instance()->byId(this, Id, ActionCreateAndAdd);
 
-	return AccountContact;
+	return *AccountContact;
 }
 
 QString AccountShared::statusContainerName()
@@ -417,3 +422,5 @@ void AccountShared::fileTransferServiceChanged(FileTransferService *service)
 	else
 		emit fileTransferServiceUnregistered();
 }
+
+KaduShared_PropertyPtrReadDef(AccountShared, Identity, accountIdentity, AccountIdentity)

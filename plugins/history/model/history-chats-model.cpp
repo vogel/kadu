@@ -21,6 +21,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "buddies/buddy.h"
 #include "chat/chat.h"
 #include "chat/type/chat-type-manager.h"
 #include "icons/kadu-icon.h"

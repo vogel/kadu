@@ -17,7 +17,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "buddies/buddy-shared.h"
 #include "chat/message/message-render-info.h"
 #include "contacts/contact-set.h"
 #include "gui/widgets/chat-widget-manager.h"

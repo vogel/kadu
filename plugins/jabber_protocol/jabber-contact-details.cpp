@@ -20,8 +20,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "contacts/contact-shared.h"
-
 #include "iris/xmpp.h"
 #include "utils/jid-util.h"
 

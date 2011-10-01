@@ -27,13 +27,13 @@
 #include <QtXml/QDomNamedNodeMap>
 
 #include "accounts/account.h"
+#include "avatars/avatar.h"
 #include "avatars/avatar-manager.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/group.h"
 #include "buddies/group-manager.h"
 #include "configuration/xml-configuration-file.h"
 #include "contacts/contact.h"
-#include "contacts/contact-shared.h"
 #include "contacts/contact-manager.h"
 #include "storage/storage-point.h"
 
@@ -58,11 +58,14 @@ BuddyShared::BuddyShared(const QUuid &uuid) :
 		BirthYear(0), Gender(GenderUnknown), PreferHigherStatuses(true),
 		Anonymous(true), Blocked(false), OfflineTo(false)
 {
+	BuddyAvatar = new Avatar();
 }
 
 BuddyShared::~BuddyShared()
 {
 	ref.ref();
+
+	delete BuddyAvatar;
 }
 
 StorableObject * BuddyShared::storageParent()
@@ -163,7 +166,7 @@ void BuddyShared::load()
 		}
 	}
 
-	BuddyAvatar = AvatarManager::instance()->byUuid(loadValue<QString>("Avatar"));
+	*BuddyAvatar = AvatarManager::instance()->byUuid(loadValue<QString>("Avatar"));
 	Display = loadValue<QString>("Display");
 	FirstName = loadValue<QString>("FirstName");
 	LastName = loadValue<QString>("LastName");
@@ -196,10 +199,10 @@ void BuddyShared::store()
 	foreach (const QString &key, CustomData.keys())
 		configurationStorage->createNamedTextNode(customDataValues, "CustomDataValue", key, CustomData.value(key));
 
-	if (BuddyAvatar.uuid().isNull())
+	if (BuddyAvatar->uuid().isNull())
 		removeValue("Avatar");
 	else
-		storeValue("Avatar", BuddyAvatar.uuid().toString());
+		storeValue("Avatar", BuddyAvatar->uuid().toString());
 
 	storeValue("Display", Display);
 	storeValue("FirstName", FirstName);
@@ -249,8 +252,8 @@ void BuddyShared::aboutToBeRemoved()
 	Contacts.clear();
 	Groups.clear();
 
-	AvatarManager::instance()->removeItem(BuddyAvatar);
-	BuddyAvatar = Avatar::null;
+	AvatarManager::instance()->removeItem(*BuddyAvatar);
+	*BuddyAvatar = Avatar::null;
 }
 
 void BuddyShared::addContact(const Contact &contact)
@@ -458,3 +461,5 @@ void BuddyShared::markContactsDirty()
 	foreach (const Contact &contact, Contacts)
 		contact.setDirty(true);
 }
+
+KaduShared_PropertyPtrDefCRW(BuddyShared, Avatar, buddyAvatar, BuddyAvatar)

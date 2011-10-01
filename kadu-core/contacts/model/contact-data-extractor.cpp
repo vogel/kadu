@@ -26,7 +26,6 @@
 #include "avatars/avatar.h"
 #include "contacts/contact.h"
 #include "buddies/buddy-kadu-data.h"
-#include "buddies/buddy-shared.h"
 #include "icons/kadu-icon.h"
 #include "model/roles.h"
 

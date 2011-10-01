@@ -34,9 +34,7 @@
 #include <QtCore/QUuid>
 #include <QtXml/QDomElement>
 
-#include "avatars/avatar.h"
 #include "buddies/buddy-gender.h"
-#include "buddies/group.h"
 #include "storage/shared.h"
 
 #include "exports.h"
@@ -66,7 +64,9 @@
 	BuddyShared_PropertySubscriptionDirtyWrite(capitalized_name)
 
 class Account;
+class Avatar;
 class Contact;
+class Group;
 class XmlConfigFile;
 
 class KADUAPI BuddyShared : public QObject, public Shared
@@ -77,7 +77,7 @@ class KADUAPI BuddyShared : public QObject, public Shared
 	QMap<QString, QString> CustomData;
 	QList<Contact> Contacts;
 
-	Avatar BuddyAvatar;
+	Avatar *BuddyAvatar;
 	QString Display;
 	QString FirstName;
 	QString LastName;
@@ -147,7 +147,7 @@ public:
 	void addToGroup(const Group &group);
 	void removeFromGroup(const Group &group);
 
-	KaduShared_Property(const Avatar &, buddyAvatar, BuddyAvatar)
+	KaduShared_PropertyDeclCRW(Avatar, buddyAvatar, BuddyAvatar)
 	BuddyShared_PropertyDirty(const QString &, display, Display)
 	BuddyShared_PropertyDirty(const QString &, firstName, FirstName)
 	BuddyShared_PropertyDirty(const QString &, lastName, LastName)

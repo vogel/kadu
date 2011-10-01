@@ -30,7 +30,6 @@
 #include "accounts/account.h"
 #include "avatars/avatar.h"
 #include "avatars/avatar-manager.h"
-#include "avatars/avatar-shared.h"
 #include "misc/path-conversion.h"
 
 #include "server/gadu-avatar-data-parser.h"

@@ -20,7 +20,6 @@
 
 #include "chat/chat-manager.h"
 #include "contacts/contact-set.h"
-#include "contacts/contact-shared.h"
 #include "protocols/services/chat-service.h"
 #include "protocols/protocol.h"
 

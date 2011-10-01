@@ -24,6 +24,7 @@
 #include <QtCore/QAbstractListModel>
 #include <QtCore/QDate>
 #include <QtCore/QList>
+#include <QtCore/QVector>
 
 #include "chat/chat.h"
 

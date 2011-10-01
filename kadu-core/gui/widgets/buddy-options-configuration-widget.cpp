@@ -26,7 +26,6 @@
 #include <QtGui/QVBoxLayout>
 
 #include "buddies/buddy-kadu-data.h"
-#include "buddies/buddy-shared.h"
 #include "configuration/configuration-file.h"
 #include "notify/buddy-notify-data.h"
 #include "notify/notification-manager.h"

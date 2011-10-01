@@ -22,7 +22,6 @@
  */
 
 #include "accounts/account.h"
-#include "contacts/contact-shared.h"
 
 #include "buddy-search-criteria.h"
 

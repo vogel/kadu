@@ -31,7 +31,6 @@
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
 #include "buddies/buddy-manager.h"
-#include "buddies/buddy-shared.h"
 #include "chat/chat-details.h"
 #include "chat/chat-details-aggregate.h"
 #include "chat/chat-manager.h"

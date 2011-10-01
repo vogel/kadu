@@ -20,12 +20,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "accounts/account.h"
 #include "accounts/account-manager.h"
 #include "avatars/avatar.h"
 #include "avatars/avatar-manager.h"
-#include "avatars/avatar-shared.h"
 #include "buddies/buddy-manager.h"
-#include "buddies/buddy-shared.h"
 #include "contacts/contact-details.h"
 #include "contacts/contact-manager.h"
 #include "protocols/protocol.h"
@@ -52,6 +51,9 @@ ContactShared::ContactShared(const QUuid &uuid) :
 		Shared(uuid),
 		Priority(-1), MaximumImageSize(0), Blocking(false), Dirty(true), Port(0)
 {
+	ContactAccount = new Account();
+	ContactAvatar = new Avatar();
+	OwnerBuddy = new Buddy();
 }
 
 ContactShared::~ContactShared()
@@ -59,6 +61,10 @@ ContactShared::~ContactShared()
 	ref.ref();
 
 	triggerAllProtocolsUnregistered();
+
+	delete OwnerBuddy;
+	delete ContactAvatar;
+	delete ContactAccount;
 }
 
 StorableObject * ContactShared::storageParent()
@@ -84,7 +90,7 @@ void ContactShared::load()
 	
 	Dirty = loadValue<bool>("Dirty", true);
 
-	ContactAccount = AccountManager::instance()->byUuid(loadValue<QString>("Account"));
+	*ContactAccount = AccountManager::instance()->byUuid(loadValue<QString>("Account"));
 
 	QString buddyUuid = loadValue<QString>("Buddy");
 	if (buddyUuid.isNull())
@@ -99,7 +105,7 @@ void ContactShared::load()
 				storage()->point().removeChild(avatars.at(0));
 	}
 
-	ContactAvatar = AvatarManager::instance()->byUuid(loadValue<QString>("Avatar"));
+	*ContactAvatar = AvatarManager::instance()->byUuid(loadValue<QString>("Avatar"));
 
 	triggerAllProtocolsRegistered();
 }
@@ -107,11 +113,11 @@ void ContactShared::load()
 void ContactShared::aboutToBeRemoved()
 {
 	// clean up references
-	ContactAccount = Account::null;
-	OwnerBuddy = Buddy::null;
+	*ContactAccount = Account::null;
+	*OwnerBuddy = Buddy::null;
 
-	AvatarManager::instance()->removeItem(ContactAvatar);
-	ContactAvatar = Avatar::null;
+	AvatarManager::instance()->removeItem(*ContactAvatar);
+	*ContactAvatar = Avatar::null;
 
 	setDetails(0);
 }
@@ -128,13 +134,13 @@ void ContactShared::store()
 	storeValue("Id", Id);
 	storeValue("Priority", Priority);
 	storeValue("Dirty", Dirty);
-	storeValue("Account", ContactAccount.uuid().toString());
-	storeValue("Buddy", !OwnerBuddy.isAnonymous()
-			? OwnerBuddy.uuid().toString()
+	storeValue("Account", ContactAccount->uuid().toString());
+	storeValue("Buddy", !OwnerBuddy->isAnonymous()
+			? OwnerBuddy->uuid().toString()
 			: QString());
 
-	if (ContactAvatar)
-		storeValue("Avatar", ContactAvatar.uuid().toString());
+	if (*ContactAvatar)
+		storeValue("Avatar", ContactAvatar->uuid().toString());
 
 	removeValue("Contact");
 }
@@ -143,7 +149,7 @@ bool ContactShared::shouldStore()
 {
 	ensureLoaded();
 
-	return UuidStorableObject::shouldStore() && !Id.isEmpty() && !ContactAccount.uuid().isNull();
+	return UuidStorableObject::shouldStore() && !Id.isEmpty() && !ContactAccount->uuid().isNull();
 }
 
 void ContactShared::emitUpdated()
@@ -153,12 +159,12 @@ void ContactShared::emitUpdated()
 
 void ContactShared::detach(bool resetBuddy, bool reattaching, bool emitSignals)
 {
-	if (!OwnerBuddy)
+	if (!*OwnerBuddy)
 		return;
 
 	if (!details())
 	{
-		OwnerBuddy = Buddy::null;
+		*OwnerBuddy = Buddy::null;
 		return;
 	}
 
@@ -169,7 +175,7 @@ void ContactShared::detach(bool resetBuddy, bool reattaching, bool emitSignals)
 	 */
 	Contact guard(this);
 
-	Buddy oldBuddy = OwnerBuddy;
+	Buddy oldBuddy = *OwnerBuddy;
 
 	emitSignals = emitSignals && !oldBuddy.isAnonymous();
 
@@ -181,7 +187,7 @@ void ContactShared::detach(bool resetBuddy, bool reattaching, bool emitSignals)
 	// TODO This is far from ideal. In the moment OwnerBuddy emitted contactRemoved()
 	// this contact still had owner buddy set. Hopefully nothing depends on correct behavior here.
 	if (resetBuddy)
-		OwnerBuddy = Buddy::null;
+		*OwnerBuddy = Buddy::null;
 
 	if (emitSignals)
 		emit detached(oldBuddy, reattaching);
@@ -191,7 +197,7 @@ void ContactShared::attach(const Buddy &buddy, bool reattaching, bool emitSignal
 {
 	if (!details() || !buddy)
 	{
-		OwnerBuddy = buddy;
+		*OwnerBuddy = buddy;
 		return;
 	}
 
@@ -200,8 +206,8 @@ void ContactShared::attach(const Buddy &buddy, bool reattaching, bool emitSignal
 	if (emitSignals)
 		emit aboutToBeAttached(buddy);
 
-	OwnerBuddy = buddy;
-	OwnerBuddy.addContact(this);
+	*OwnerBuddy = buddy;
+	OwnerBuddy->addContact(this);
 
 	if (emitSignals)
 		emit attached(reattaching);
@@ -217,7 +223,7 @@ void ContactShared::doSetOwnerBuddy(const Buddy &buddy, bool emitSignals)
 
 	// don't allow empty buddy to be set, use at least anonymous one
 	Buddy targetBuddy = buddy.isNull() ? Buddy::create() : buddy;
-	bool reattaching = !OwnerBuddy.isAnonymous() && !targetBuddy.isAnonymous();
+	bool reattaching = !OwnerBuddy->isAnonymous() && !targetBuddy.isAnonymous();
 
 	detach(true, reattaching, emitSignals);
 	attach(targetBuddy, reattaching, emitSignals);
@@ -227,7 +233,7 @@ void ContactShared::setOwnerBuddy(const Buddy &buddy)
 {
 	ensureLoaded();
 
-	if (OwnerBuddy == buddy)
+	if (*OwnerBuddy == buddy)
 		return;
 
 	/* NOTE: This guard is needed to avoid deleting this object when removing
@@ -246,16 +252,16 @@ void ContactShared::setContactAccount(const Account &account)
 {
 	ensureLoaded();
 
-	if (ContactAccount == account)
+	if (*ContactAccount == account)
 		return;
 
-	if (ContactAccount && ContactAccount.protocolHandler() && ContactAccount.protocolHandler()->protocolFactory())
-		protocolUnregistered(ContactAccount.protocolHandler()->protocolFactory());
+	if (*ContactAccount && ContactAccount->protocolHandler() && ContactAccount->protocolHandler()->protocolFactory())
+		protocolUnregistered(ContactAccount->protocolHandler()->protocolFactory());
 
-	ContactAccount = account;
+	*ContactAccount = account;
 
-	if (ContactAccount && ContactAccount.protocolHandler() && ContactAccount.protocolHandler()->protocolFactory())
-		protocolRegistered(ContactAccount.protocolHandler()->protocolFactory());
+	if (*ContactAccount && ContactAccount->protocolHandler() && ContactAccount->protocolHandler()->protocolFactory())
+		protocolRegistered(ContactAccount->protocolHandler()->protocolFactory());
 
 	dataUpdated();
 }
@@ -267,7 +273,7 @@ void ContactShared::protocolRegistered(ProtocolFactory *protocolFactory)
 	if (details())
 		return;
 
-	if (!ContactAccount || ContactAccount.protocolName() != protocolFactory->name())
+	if (!*ContactAccount || ContactAccount->protocolName() != protocolFactory->name())
 		return;
 
 	setDetails(protocolFactory->createContactDetails(this));
@@ -290,7 +296,7 @@ void ContactShared::detailsAdded()
 
 void ContactShared::afterDetailsAdded()
 {
-	attach(OwnerBuddy, false, true);
+	attach(*OwnerBuddy, false, true);
 }
 
 void ContactShared::detailsAboutToBeRemoved()
@@ -335,3 +341,7 @@ void ContactShared::setDirty(bool dirty)
 	dataUpdated();
 	emit dirtinessChanged();
 }
+
+KaduShared_PropertyPtrReadDef(ContactShared, Account, contactAccount, ContactAccount)
+KaduShared_PropertyPtrDefCRW(ContactShared, Avatar, contactAvatar, ContactAvatar)
+KaduShared_PropertyPtrReadDef(ContactShared, Buddy, ownerBuddy, OwnerBuddy)

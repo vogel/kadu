@@ -26,9 +26,9 @@
 #include <QtCore/QObject>
 #include <QtCore/QUuid>
 
-#include "contacts/contact-shared.h"
-#include "storage/manager.h"
+#include "contacts/contact.h"
 #include "exports.h"
+#include "storage/manager.h"
 
 class Account;
 class Contact;

@@ -27,7 +27,6 @@
 #include "chat/type/chat-type-manager.h"
 #include "chat/chat-details-conference.h"
 #include "chat/chat-details-simple.h"
-#include "contacts/contact-shared.h"
 
 #include "chat/chat-manager.h"
 

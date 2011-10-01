@@ -24,10 +24,10 @@
 
 #include <QtCrypto>
 
-#include "contacts/contact.h"
-
 #include "storage/shared.h"
 #include "../encryption_exports.h"
+
+class Contact;
 
 class ENCRYPTIONAPI KeyShared : public QObject, public Shared
 {
@@ -35,7 +35,7 @@ class ENCRYPTIONAPI KeyShared : public QObject, public Shared
 	Q_DISABLE_COPY(KeyShared)
 
 	QString KeyType;
-	Contact KeyContact;
+	Contact *KeyContact;
 	QCA::SecureArray Key;
 
 	QString KeysDir;
@@ -63,8 +63,8 @@ public:
 
 	bool isEmpty();
 
+	KaduShared_PropertyDeclCRW(Contact, keyContact, KeyContact)
 	KaduShared_Property(const QString &, keyType, KeyType)
-	KaduShared_Property(const Contact &, keyContact, KeyContact)
 	KaduShared_Property(const QCA::SecureArray &, key, Key)
 
 signals:

@@ -21,7 +21,6 @@
 
 #include "accounts/account-manager.h"
 #include "buddies/buddy-set.h"
-#include "buddies/buddy-shared.h"
 #include "protocols/protocol.h"
 
 #include "chat/aggregate-chat-manager.h"

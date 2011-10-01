@@ -22,6 +22,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "accounts/account.h"
 #include "accounts/account-manager.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-set.h"
@@ -72,6 +73,7 @@ ChatShared * ChatShared::loadFromStorage(const QSharedPointer<StoragePoint> &sto
 ChatShared::ChatShared(const QUuid &uuid) :
 		Shared(uuid), IgnoreAllMessages(false)
 {
+	ChatAccount = new Account();
 }
 
 /**
@@ -86,6 +88,8 @@ ChatShared::~ChatShared()
 	ref.ref();
 
 	triggerAllChatTypesUnregistered();
+
+	delete ChatAccount;
 }
 
 /**
@@ -131,7 +135,7 @@ void ChatShared::load()
 	Shared::load();
 
 	Type = loadValue<QString>("Type");
-	ChatAccount = AccountManager::instance()->byUuid(QUuid(loadValue<QString>("Account")));
+	*ChatAccount = AccountManager::instance()->byUuid(QUuid(loadValue<QString>("Account")));
 
 	triggerAllChatTypesRegistered();
 }
@@ -152,7 +156,7 @@ void ChatShared::store()
 	Shared::store();
 
 	storeValue("Type", Type);
-	storeValue("Account", ChatAccount.uuid().toString());
+	storeValue("Account", ChatAccount->uuid().toString());
 
 	if (details())
 		details()->ensureStored();
@@ -172,7 +176,7 @@ bool ChatShared::shouldStore()
 	ensureLoaded();
 
 	return UuidStorableObject::shouldStore()
-			&& !ChatAccount.uuid().isNull()
+			&& !ChatAccount->uuid().isNull()
 			&& (!details() || details()->shouldStore());
 }
 
@@ -185,7 +189,7 @@ bool ChatShared::shouldStore()
  */
 void ChatShared::aboutToBeRemoved()
 {
-	ChatAccount = Account::null;
+	*ChatAccount = Account::null;
 	setDetails(0);
 }
 
@@ -295,3 +299,5 @@ QString ChatShared::name()
 
 	return details() ? details()->name() : QString();
 }
+
+KaduShared_PropertyPtrDefCRW(ChatShared, Account, chatAccount, ChatAccount);

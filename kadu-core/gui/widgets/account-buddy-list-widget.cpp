@@ -27,13 +27,11 @@
 #include <QtGui/QVBoxLayout>
 
 #include "buddies/buddy-manager.h"
-#include "buddies/buddy-shared.h"
 #include "buddies/filter/account-buddy-filter.h"
 #include "buddies/filter/anonymous-buddy-filter.h"
 #include "buddies/model/buddies-model.h"
 #include "buddies/model/buddies-model-proxy.h"
 #include "contacts/contact.h"
-#include "contacts/contact-shared.h"
 #include "contacts/contact-details.h"
 #include "contacts/contact-manager.h"
 #include "gui/widgets/buddies-list-widget.h"

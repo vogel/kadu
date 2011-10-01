@@ -28,7 +28,6 @@
 #include <QtCore/QTimer>
 
 #include "buddies/buddy-set.h"
-#include "buddies/buddy-shared.h"
 #include "chat/chat-manager.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact-manager.h"

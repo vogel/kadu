@@ -26,9 +26,10 @@
 
 #include <QtCore/QObject>
 
-#include "contacts/contact-shared.h"
 #include "storage/details.h"
 #include "exports.h"
+
+class ContactShared;
 
 class KADUAPI ContactDetails : public QObject, public Details<ContactShared>
 {
@@ -39,5 +40,8 @@ public:
 	virtual ~ContactDetails();
 
 };
+
+// for MOC
+#include "contacts/contact-shared.h"
 
 #endif // CONTACT_DETAILS_H

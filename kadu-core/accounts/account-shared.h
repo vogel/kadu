@@ -24,21 +24,18 @@
 #ifndef ACCOUNT_SHARED_H
 #define ACCOUNT_SHARED_H
 
-#include <QtCore/QObject>
-#include <QtCore/QSharedData>
-#include <QtCore/QUuid>
 #include <QtNetwork/QHostAddress>
 
 #include "accounts/account-proxy-settings.h"
-#include "contacts/contact.h"
-#include "identities/identity.h"
 #include "protocols/protocols-aware-object.h"
 #include "status/base-status-container.h"
 #include "storage/details-holder.h"
 #include "storage/shared.h"
 
 class AccountDetails;
+class Contact;
 class FileTransferService;
+class Identity;
 class Protocol;
 class ProtocolFactory;
 class StatusType;
@@ -52,8 +49,8 @@ private:
 	QString ProtocolName;
 	Protocol *ProtocolHandler;
 
-	Identity AccountIdentity;
-	Contact AccountContact;
+	Identity *AccountIdentity;
+	Contact *AccountContact;
 
 	QString Id;
 
@@ -106,8 +103,7 @@ public:
 
 	Contact accountContact();
 
-	void setAccountIdentity(const Identity &accountIdentity);
-	KaduShared_PropertyRead(const Identity &, accountIdentity, AccountIdentity)
+	KaduShared_PropertyDeclCRW(Identity, accountIdentity, AccountIdentity)
 
 	void setProtocolName(const QString &protocolName);
 	KaduShared_PropertyRead(const QString &, protocolName, ProtocolName)
@@ -164,6 +160,7 @@ signals:
 };
 
 // for MOC
+#include "contacts/contact.h"
 #include "status/status.h"
 
 #endif // ACCOUNT_SHARED_H

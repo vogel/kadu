@@ -25,11 +25,12 @@
 
 #include <QtCore/QAbstractItemModel>
 #include <QtCore/QMap>
+#include <QtCore/QVector>
 
-#include "buddies/buddy.h"
-#include "chat/chat.h"
 #include "chat/type/chat-type-aware-object.h"
 
+class Buddy;
+class Chat;
 class ChatType;
 
 class HistoryChatsModel : public QAbstractItemModel, ChatTypeAwareObject

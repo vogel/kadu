@@ -20,9 +20,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "chat/chat.h"
 #include "chat/message/message.h"
 #include "chat/message/pending-messages-manager.h"
 #include "chat/chat-manager.h"
+#include "contacts/contact.h"
 #include "contacts/contact-manager.h"
 
 #include "message-shared.h"
@@ -44,11 +46,16 @@ MessageShared * MessageShared::loadFromStorage(const QSharedPointer<StoragePoint
 MessageShared::MessageShared(const QUuid &uuid) :
 		Shared(uuid), Status(MessageStatusUnknown), Type(MessageTypeUnknown), Pending(false)
 {
+	MessageChat = new Chat();
+	MessageSender = new Contact();
 }
 
 MessageShared::~MessageShared()
 {
 	ref.ref();
+
+	delete MessageSender;
+	delete MessageChat;
 }
 
 StorableObject * MessageShared::storageParent()
@@ -68,8 +75,8 @@ void MessageShared::load()
 
 	Shared::load();
 
-	MessageChat = ChatManager::instance()->byUuid(loadValue<QString>("Chat"));
-	MessageSender = ContactManager::instance()->byUuid(loadValue<QString>("Sender"));
+	*MessageChat = ChatManager::instance()->byUuid(loadValue<QString>("Chat"));
+	*MessageSender = ContactManager::instance()->byUuid(loadValue<QString>("Sender"));
 	Content = loadValue<QString>("Content");
 	ReceiveDate = loadValue<QDateTime>("ReceiveDate");
 	SendDate = loadValue<QDateTime>("SendDate");
@@ -86,8 +93,8 @@ void MessageShared::store()
 
 	Shared::store();
 
-	storeValue("Chat", MessageChat.uuid().toString());
-	storeValue("Sender", messageSender().uuid().toString());
+	storeValue("Chat", MessageChat->uuid().toString());
+	storeValue("Sender", MessageSender->uuid().toString());
 	storeValue("Content", Content);
 	storeValue("ReceiveDate", ReceiveDate);
 	storeValue("SendDate", SendDate);
@@ -104,8 +111,8 @@ bool MessageShared::shouldStore()
 	// only store pending messages
 	// all other messages are stored by history plugin
 	return UuidStorableObject::shouldStore()
-			&& !MessageSender.uuid().isNull()
-			&& !MessageChat.uuid().isNull()
+			&& !MessageSender->uuid().isNull()
+			&& !MessageChat->uuid().isNull()
 			&& Pending;
 }
 
@@ -125,3 +132,6 @@ void MessageShared::setStatus(MessageStatus status)
 		emit statusChanged(Status);
 	}
 }
+
+KaduShared_PropertyPtrDefCRW(MessageShared, Chat, messageChat, MessageChat)
+KaduShared_PropertyPtrDefCRW(MessageShared, Contact, messageSender, MessageSender)

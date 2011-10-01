@@ -33,6 +33,7 @@
 #include <QtXml/QDomElement>
 
 #include "buddies/buddy-gender.h"
+#include "buddies/buddy-shared.h"
 #include "storage/shared-base.h"
 #include "exports.h"
 

@@ -21,7 +21,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "avatars/avatar-shared.h"
 #include "contacts/contact.h"
 #include "misc/path-conversion.h"
 

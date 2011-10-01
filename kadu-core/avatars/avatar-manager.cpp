@@ -26,7 +26,6 @@
 #include "accounts/account.h"
 #include "avatars/avatar.h"
 #include "avatars/avatar-job-manager.h"
-#include "avatars/avatar-shared.h"
 #include "configuration/configuration-manager.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"

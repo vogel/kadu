@@ -37,7 +37,6 @@
 #include "avatars/avatar.h"
 #include "avatars/avatar-manager.h"
 #include "buddies/buddy-manager.h"
-#include "buddies/buddy-shared.h"
 #include "contacts/contact.h"
 #include "contacts/contact-manager.h"
 #include "gui/widgets/buddy-avatar-widget.h"

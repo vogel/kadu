@@ -33,7 +33,6 @@
 #include "buddies/model/buddy-list-model.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-set.h"
-#include "buddies/buddy-shared.h"
 #include "chat/chat-manager.h"
 #include "configuration/xml-configuration-file.h"
 #include "contacts/contact.h"

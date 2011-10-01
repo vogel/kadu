@@ -25,7 +25,6 @@
 #include "contacts/contact.h"
 
 #include "keys/key.h"
-#include "keys/key-shared.h"
 
 #include "keys-manager.h"
 

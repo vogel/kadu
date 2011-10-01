@@ -21,7 +21,6 @@
 #include <QtGui/QApplication>
 
 #include "buddies/buddy.h"
-#include "buddies/buddy-shared.h"
 
 #include "history.h"
 

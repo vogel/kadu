@@ -21,7 +21,6 @@
  */
 
 #include "chat/chat.h"
-#include "chat/message/message-shared.h"
 #include "contacts/contact.h"
 
 #include "message.h"

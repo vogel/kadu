@@ -23,26 +23,26 @@
 #define CONTACT_SHARED_H
 
 #include <QtCore/QObject>
-#include <QtCore/QSharedData>
-#include <QtCore/QUuid>
+#include <QtNetwork/QHostAddress>
 
-#include "accounts/account.h"
-#include "avatars/avatar.h"
-#include "buddies/buddy.h"
 #include "contacts/contact-details.h"
 #include "protocols/protocols-aware-object.h"
 #include "status/status.h"
 #include "storage/details-holder.h"
 #include "storage/shared.h"
 
+class Account;
+class Avatar;
+class Buddy;
+
 class KADUAPI ContactShared : public QObject, public Shared, public DetailsHolder<ContactDetails>, ProtocolsAwareObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(ContactShared)
 
-	Account ContactAccount;
-	Avatar ContactAvatar;
-	Buddy OwnerBuddy;
+	Account *ContactAccount;
+	Avatar *ContactAvatar;
+	Buddy *OwnerBuddy;
 	QString Id;
 	int Priority;
 	short int MaximumImageSize;
@@ -89,19 +89,15 @@ public:
 
 	virtual void aboutToBeRemoved();
 
-	KaduShared_PropertyRead(const Account &, contactAccount, ContactAccount)
-	void setContactAccount(const Account &account);
-
-	KaduShared_Property(const Avatar &, contactAvatar, ContactAvatar)
-	KaduShared_PropertyRead(const Buddy &, ownerBuddy, OwnerBuddy)
-	void setOwnerBuddy(const Buddy &buddy);
-
 	KaduShared_PropertyRead(const QString &, id, Id)
 	void setId(const QString &id);
 
 	KaduShared_PropertyBoolRead(Dirty)
 	void setDirty(bool dirty);
 
+	KaduShared_PropertyDeclCRW(Account, contactAccount, ContactAccount)
+	KaduShared_PropertyDeclCRW(Avatar, contactAvatar, ContactAvatar)
+	KaduShared_PropertyDeclCRW(Buddy, ownerBuddy, OwnerBuddy)
 	KaduShared_Property(int, priority, Priority)
 	KaduShared_Property(const Status &, currentStatus, CurrentStatus)
 	KaduShared_PropertyBool(Blocking)
@@ -123,4 +119,8 @@ signals:
 
 };
 
+// for MOC
+#include "buddies/buddy.h"
+
 #endif // CONTACT_SHARED_H
+

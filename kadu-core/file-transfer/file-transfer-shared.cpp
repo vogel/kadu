@@ -18,7 +18,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "accounts/account.h"
 #include "accounts/account-manager.h"
+#include "contacts/contact.h"
 #include "contacts/contact-manager.h"
 #include "file-transfer/file-transfer-handler.h"
 #include "file-transfer/file-transfer-manager.h"
@@ -47,11 +49,14 @@ FileTransferShared::FileTransferShared(const QUuid &uuid) :
 		TransferType(TypeReceive), TransferStatus(StatusNotConnected),
 		TransferError(ErrorOk), Handler(0)
 {
+	Peer = new Contact();
 }
 
 FileTransferShared::~FileTransferShared()
 {
 	ref.ref();
+
+	delete Peer;
 }
 
 StorableObject * FileTransferShared::storageParent()
@@ -71,7 +76,7 @@ void FileTransferShared::load()
 
 	StorableObject::load();
 
-	Peer = ContactManager::instance()->byUuid(loadValue<QString>("Peer"));
+	*Peer = ContactManager::instance()->byUuid(loadValue<QString>("Peer"));
 	LocalFileName = loadValue<QString>("LocalFileName");
 	RemoteFileName = loadValue<QString>("RemoteFileName");
 	TransferType = ("Send" == loadValue<QString>("TransferType")) ? TypeSend : TypeReceive;
@@ -89,7 +94,7 @@ void FileTransferShared::store()
 
 	ensureLoaded();
 
-	storeValue("Peer", Peer.uuid().toString());
+	storeValue("Peer", Peer->uuid().toString());
 	storeValue("LocalFileName", LocalFileName);
 	storeValue("RemoteFileName", RemoteFileName);
 	storeValue("TransferType", TypeSend == TransferType ? "Send" : "Receive");
@@ -142,7 +147,7 @@ void FileTransferShared::createHandler()
 	if (Handler)
 		return;
 
-	Protocol *protocol = Peer.contactAccount().protocolHandler();
+	Protocol *protocol = Peer->contactAccount().protocolHandler();
 	if (!protocol)
 		return;
 
@@ -163,3 +168,5 @@ void FileTransferShared::handlerDestroyed()
 	Handler = 0;
 	dataUpdated();
 }
+
+KaduShared_PropertyPtrDefCRW(FileTransferShared, Contact, peer, Peer)

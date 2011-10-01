@@ -23,10 +23,10 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
+#include "avatars/avatar.h"
 #include "configuration/xml-configuration-file.h"
 #include "contacts/contact-details.h"
 #include "contacts/contact-manager.h"
-#include "contacts/contact-shared.h"
 #include "buddies/buddy-manager.h"
 #include "storage/storage-point.h"
 

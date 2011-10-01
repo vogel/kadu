@@ -30,7 +30,6 @@
 #include "buddies/group-manager.h"
 #include "contacts/contact.h"
 #include "contacts/contact-manager.h"
-#include "contacts/contact-shared.h"
 
 #include "protocols/protocol.h"
 

@@ -28,10 +28,11 @@
 #include "misc/misc.h"
 #include "protocols/protocol.h"
 
-#include "identity-shared.h"
 #include "status/status-type-manager.h"
 #include "status/status-type.h"
 #include "status/status-group.h"
+
+#include "identity-shared.h"
 
 IdentityShared * IdentityShared::loadStubFromStorage(const QSharedPointer<StoragePoint> &storagePoint)
 {

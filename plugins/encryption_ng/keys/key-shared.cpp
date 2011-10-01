@@ -21,6 +21,7 @@
 #include <QtCore/QDir>
 #include <QtCore/QFile>
 
+#include "contacts/contact.h"
 #include "contacts/contact-manager.h"
 #include "misc/misc.h"
 
@@ -48,11 +49,14 @@ KeyShared::KeyShared(const QUuid &uuid) :
 		Shared(uuid)
 {
 	KeysDir = profilePath("keys/");
+	KeyContact = new Contact();
 }
 
 KeyShared::~KeyShared()
 {
 	ref.ref();
+
+	delete KeyContact;
 }
 
 StorableObject * KeyShared::storageParent()
@@ -79,7 +83,7 @@ void KeyShared::load()
 	Shared::load();
 
 	KeyType = loadValue<QString>("KeyType");
-	KeyContact = ContactManager::instance()->byUuid(loadValue<QString>("Contact"));
+	*KeyContact = ContactManager::instance()->byUuid(loadValue<QString>("Contact"));
 
 	QFile keyFile(filePath());
 	if (keyFile.exists() && keyFile.open(QFile::ReadOnly))
@@ -99,7 +103,7 @@ void KeyShared::store()
 	Shared::store();
 
 	storeValue("KeyType", KeyType);
-	storeValue("Contact", KeyContact.uuid().toString());
+	storeValue("Contact", KeyContact->uuid().toString());
 
 	QDir keysDir(KeysDir + KeyType);
 	if (!keysDir.exists())
@@ -128,7 +132,7 @@ bool KeyShared::shouldStore()
 {
 	ensureLoaded();
 
-	return UuidStorableObject::shouldStore() && !Key.isEmpty() && KeyContact;
+	return UuidStorableObject::shouldStore() && !Key.isEmpty() && *KeyContact;
 }
 
 void KeyShared::aboutToBeRemoved()
@@ -149,3 +153,5 @@ void KeyShared::emitUpdated()
 {
 	emit updated();
 }
+
+KaduShared_PropertyPtrDefCRW(KeyShared, Contact, keyContact, KeyContact)

@@ -21,10 +21,10 @@
 #ifndef FILE_TRANSFER_SHARED_H
 #define FILE_TRANSFER_SHARED_H
 
-#include "accounts/account.h"
 #include "file-transfer/file-transfer-enums.h"
 #include "storage/shared.h"
 
+class Contact;
 class FileTransferHandler;
 
 class KADUAPI FileTransferShared : public QObject, public Shared
@@ -32,7 +32,7 @@ class KADUAPI FileTransferShared : public QObject, public Shared
 	Q_OBJECT
 	Q_DISABLE_COPY(FileTransferShared)
 
-	Contact Peer;
+	Contact *Peer;
 	QString LocalFileName;
 	QString RemoteFileName;
 
@@ -68,7 +68,7 @@ public:
 	void setHandler(FileTransferHandler *handler);
 	void createHandler();
 
-	KaduShared_Property(const Contact &, peer, Peer)
+	KaduShared_PropertyDeclCRW(Contact, peer, Peer)
 	KaduShared_Property(const QString &, localFileName, LocalFileName)
 	KaduShared_Property(const QString &, remoteFileName, RemoteFileName)
 	KaduShared_Property(unsigned long, fileSize, FileSize)

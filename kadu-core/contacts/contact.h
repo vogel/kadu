@@ -29,6 +29,7 @@
 #include <QtXml/QDomElement>
 
 #include "buddies/buddy.h"
+#include "contacts/contact-shared.h"
 #include "status/status.h"
 #include "storage/shared-base.h"
 

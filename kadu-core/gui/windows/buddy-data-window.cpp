@@ -50,7 +50,6 @@
 #include "accounts/account-manager.h"
 #include "activate.h"
 #include "buddies/buddy-manager.h"
-#include "buddies/buddy-shared.h"
 #include "buddies/group.h"
 #include "buddies/group-manager.h"
 #include "configuration/configuration-file.h"

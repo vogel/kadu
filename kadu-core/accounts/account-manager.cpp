@@ -22,7 +22,6 @@
  */
 
 #include "accounts/account.h"
-#include "accounts/account-shared.h"
 #include "accounts/accounts-aware-object.h"
 #include "buddies/buddy-manager.h"
 #include "configuration/configuration-file.h"

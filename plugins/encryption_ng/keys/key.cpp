@@ -20,8 +20,6 @@
 
 #include "contacts/contact.h"
 
-#include "keys/key-shared.h"
-
 #include "key.h"
 
 KaduSharedBaseClassImpl(Key)

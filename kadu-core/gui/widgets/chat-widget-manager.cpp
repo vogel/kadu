@@ -30,7 +30,6 @@
 #include "chat/aggregate-chat-manager.h"
 #include "chat/message/message.h"
 #include "chat/message/message-render-info.h"
-#include "chat/message/message-shared.h"
 #include "chat/message/pending-messages-manager.h"
 #include "chat/chat-manager.h"
 #include "chat/recent-chat-manager.h"

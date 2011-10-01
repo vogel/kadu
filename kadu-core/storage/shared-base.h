@@ -132,7 +132,7 @@ private:
  *
  * Declares getter and setter for a delegated property of @link Shared @endlink class stored in
  * @link SharedBase @endlink. Getter is named 'name'. Setter is named 'set##capitalized_name'.
- * Argument of the setter wil be a const reference to 'type'.
+ * Argument of the setter will be a const reference to 'type'.
  */
 #define KaduSharedBase_PropertyCRW(type, name, capitalized_name) \
 	KaduSharedBase_PropertyRead(type, name, capitalized_name) \

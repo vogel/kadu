@@ -37,7 +37,6 @@
 #include "accounts/account-manager.h"
 #include "buddies/model/buddy-list-model.h"
 #include "buddies/buddy.h"
-#include "buddies/buddy-shared.h"
 #include "buddies/buddy-set.h"
 #include "chat/chat-geometry-data.h"
 #include "chat/chat-manager.h"

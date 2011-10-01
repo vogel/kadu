@@ -18,7 +18,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "chat/chat-shared.h"
 #include "configuration/encryption-ng-configuration.h"
 #include "contacts/contact-set.h"
 #include "decryptor.h"

@@ -18,8 +18,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "contacts/contact-shared.h"
-
 #include "gadu-contact-details.h"
 
 GaduContactDetails::GaduContactDetails(ContactShared *contactShared, QObject *parent) :

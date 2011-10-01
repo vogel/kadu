@@ -32,7 +32,6 @@
 #include <QtCore/QObject>
 
 #include "chat/message/message.h"
-#include "chat/message/message-shared.h"
 #include "storage/simple-manager.h"
 
 #include "exports.h"
