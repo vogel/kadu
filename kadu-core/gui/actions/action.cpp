@@ -20,6 +20,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtGui/QMenu>
+
 #include "accounts/account-manager.h"
 #include "buddies/buddy.h"
 #include "buddies/buddy-set.h"
@@ -55,6 +57,12 @@ Action::Action(ActionDescription *description, ActionDataSource *dataSource, QOb
 Action::~Action()
 {
 	emit aboutToBeDestroyed(this);
+
+	// we are real owner of this menu
+	if (menu()) {
+		delete menu();
+		setMenu(0);
+	}
 }
 
 Contact Action::contact()
