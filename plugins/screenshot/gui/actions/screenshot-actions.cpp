@@ -24,37 +24,11 @@
 #include <QtGui/QAction>
 #include <QtGui/QMenu>
 
-#include "debug.h"
-#include "gui/actions/action.h"
-#include "gui/actions/action-description.h"
-#include "gui/widgets/chat-edit-box.h"
-#include "gui/widgets/chat-widget.h"
-#include "protocols/protocol.h"
-
-#include "screenshot.h"
+#include "gui/actions/screenshot-action.h"
 
 #include "screenshot-actions.h"
 
 ScreenshotActions *ScreenshotActions::Instance = 0;
-
-static void disableNoChatImageService(Action *action)
-{
-	action->setEnabled(false);
-
-	ChatEditBox *chatEditBox = qobject_cast<ChatEditBox *>(action->parent());
-	if (!chatEditBox)
-		return;
-
-	Account account = action->chat().chatAccount();
-	if (!account)
-		return;
-
-	Protocol *protocol = account.protocolHandler();
-	if (!protocol)
-		return;
-
-	action->setEnabled(protocol->chatImageService());
-}
 
 void ScreenshotActions::registerActions()
 {
@@ -75,71 +49,11 @@ ScreenshotActions * ScreenshotActions::instance()
 	return Instance;
 }
 
-ScreenshotActions::ScreenshotActions() :
-		CurrentChatWidget(0)
+ScreenshotActions::ScreenshotActions()
 {
-	// Chat toolbar button
-	ScreenShotActionDescription = new ActionDescription(this,
-			ActionDescription::TypeChat, "ScreenShotAction",
-			this, SLOT(screenshotActionActivated(QAction *, bool)),
-			KaduIcon("external_modules/screenshot-camera-photo"),
-			tr("ScreenShot"), false,
-			disableNoChatImageService
-	);
-
-	createMenu();
+	ScreenShotActionDescription = new ScreenshotAction(this);
 }
 
 ScreenshotActions::~ScreenshotActions()
 {
-	delete Menu;
-	Menu = 0;
-}
-
-void ScreenshotActions::createMenu()
-{
-	Menu = new QMenu();
-	Menu->addAction(tr("Simple shot"), this, SLOT(takeStandardShotSlot()));
-	Menu->addAction(tr("With chat window hidden"), this, SLOT(takeShotWithChatWindowHiddenSlot()));
-	Menu->addAction(tr("Window shot"), this, SLOT(takeWindowShotSlot()));
-}
-
-void ScreenshotActions::screenshotActionActivated(QAction *sender, bool toggled)
-{
-	Q_UNUSED(toggled)
-
-	kdebugf();
-
-	ChatEditBox *chatEditBox = qobject_cast<ChatEditBox *>(sender->parent());
-	if (!chatEditBox)
-		return;
-
-	CurrentChatWidget = chatEditBox->chatWidget();
-	if (CurrentChatWidget)
-	{
-		QList<QWidget *> widgets = sender->associatedWidgets();
-		if (widgets.isEmpty())
-			return;
-
-		QWidget *widget = widgets[widgets.size() - 1];
-		Menu->popup(widget->mapToGlobal(QPoint(0, widget->height())));
-	}
-}
-
-void ScreenshotActions::takeStandardShotSlot()
-{
-	if (CurrentChatWidget)
-		(new ScreenShot(CurrentChatWidget))->takeStandardShot();
-}
-
-void ScreenshotActions::takeShotWithChatWindowHiddenSlot()
-{
-	if (CurrentChatWidget)
-		(new ScreenShot(CurrentChatWidget))->takeShotWithChatWindowHidden();
-}
-
-void ScreenshotActions::takeWindowShotSlot()
-{
-	if (CurrentChatWidget)
-		(new ScreenShot(CurrentChatWidget))->takeWindowShot();
 }
