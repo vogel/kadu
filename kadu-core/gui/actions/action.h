@@ -80,8 +80,7 @@ public:
 	 * object like contacts, buddies, chats and status containers that are required to properly
 	 * execute each action invocation.
 	 *
-	 * Provided ActionDescription must not be null, ActionDataSource can be null - no Kadu data
-	 * will be available to this action in this case.
+	 * Provided ActionDescription and ActionDataSource must not be null.
 	 */
 	Action(ActionDescription *description, ActionDataSource *dataSource, QObject *parent);
 	virtual ~Action();
@@ -91,8 +90,7 @@ public:
 	 * @short Returns Contact instance if current invocation is connected with exactly one Contact.
 	 *
 	 * Returns Contact instance is current invocation is connected with exactly one Contact. If no
-	 * ActionDataSource is available or it returns 0 or more than one Contact instance, Contact:null
-	 * will be returned.
+	 * ActionDataSource returns 0 or more than one Contact instance, Contact:null will be returned.
 	 */
 	Contact contact();
 
@@ -100,8 +98,7 @@ public:
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Returns ContactSet instance for current invocation.
 	 *
-	 * Returns ContactSet instance for current invocation. If no ActionDataSource is available empty
-	 * set is returned.
+	 * Returns ContactSet instance for current invocation.
 	 */
 	ContactSet contacts();
 
@@ -110,8 +107,7 @@ public:
 	 * @short Returns Buddy instance if current invocation is connected with exactly one Buddy.
 	 *
 	 * Returns Buddy instance is current invocation is connected with exactly one Buddy. If no
-	 * ActionDataSource is available or it returns 0 or more than one Buddy instance, Buddy:null
-	 * will be returned.
+	 * ActionDataSource returns 0 or more than one Buddy instance, Buddy:null will be returned.
 	 */
 	Buddy buddy();
 
@@ -119,8 +115,7 @@ public:
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Returns BuddySet instance for current invocation.
 	 *
-	 * Returns BuddySet instance for current invocation. If no ActionDataSource is available empty
-	 * set is returned.
+	 * Returns BuddySet instance for current invocation.
 	 */
 	BuddySet buddies();
 
@@ -128,8 +123,7 @@ public:
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Returns Chat instance for current invocation.
 	 *
-	 * Returns Chat instance for current invocation. If no ActionDataSource is available Chat::null
-	 * set is returned.
+	 * Returns Chat instance for current invocation.
 	 */
 	Chat chat();
 
@@ -137,8 +131,7 @@ public:
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Returns StatusContainer instance for current invocation.
 	 *
-	 * Returns StatusContainer instance for current invocation. If no ActionDataSource is available
-	 * null value is returned.
+	 * Returns StatusContainer instance for current invocation.
 	 */
 	StatusContainer * statusContainer();
 
@@ -146,7 +139,7 @@ public:
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Returns ActionDataSource instance for current invocation.
 	 *
-	 * Returns ActionDataSource instance for current invocation. May return null.
+	 * Returns ActionDataSource instance for current invocation. Never returns null.
 	 */
 	ActionDataSource *dataSource();
 

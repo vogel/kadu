@@ -37,6 +37,9 @@
 Action::Action(ActionDescription *description, ActionDataSource *dataSource, QObject *parent) :
 		QAction(parent), Description(description), DataSource(dataSource)
 {
+	Q_ASSERT(0 != description);
+	Q_ASSERT(0 != dataSource);
+
 	setText(Description->Text);
 
 	if (!Description->icon().isNull())
@@ -76,10 +79,7 @@ Contact Action::contact()
 
 ContactSet Action::contacts()
 {
-	if (DataSource)
-		return DataSource->contacts();
-	else
-		return ContactSet();
+	return DataSource->contacts();
 }
 
 Buddy Action::buddy()
@@ -93,26 +93,17 @@ Buddy Action::buddy()
 
 BuddySet Action::buddies()
 {
-	if (DataSource)
-		return DataSource->buddies();
-	else
-		return BuddySet();
+	return DataSource->buddies();
 }
 
 Chat Action::chat()
 {
-	if (DataSource)
-		return DataSource->chat();
-	else
-		return Chat::null;
+	return DataSource->chat();
 }
 
 StatusContainer * Action::statusContainer()
 {
-	if (DataSource)
-		return DataSource->statusContainer();
-	else
-		return 0;
+	return DataSource->statusContainer();
 }
 
 ActionDataSource * Action::dataSource()
