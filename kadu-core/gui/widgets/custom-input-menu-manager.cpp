@@ -20,6 +20,7 @@
 #include <QtGui/QMenu>
 
 #include "gui/actions/action.h"
+#include "gui/actions/action-data-source.h"
 #include "gui/actions/action-description.h"
 
 #include "custom-input-menu-manager.h"
@@ -71,31 +72,46 @@ QMenu * CustomInputMenuManager::menu(QWidget *parent)
 {
 	QMenu *menu = new QMenu(parent);
 
-	sortInputContextMenu();
-	QList<CustomInputMenuItem>::const_iterator i = InputContextMenu.constBegin();
-	CustomInputMenuItem::CustomInputMenuCategory lastCategory = CustomInputMenuItem::MenuCategoryTextEdit;
-	bool first = true;
+	QWidget *actionDataSourceWidget = parent;
+	ActionDataSource *actionDataSource = 0;
 
-	while (i != InputContextMenu.constEnd())
+	while (actionDataSourceWidget)
 	{
-		if ((!first) && (i->category() != lastCategory))
-			menu->addSeparator();
-
-		Action *action = i->actionDescription()->createAction(0, parent);
-
-		if (i->category() == CustomInputMenuItem::MenuCategorySuggestion)
-			action->setFont(QFont(QString(), -1, QFont::Bold));
-
-		menu->addAction(action);
-		action->checkState();
-
-		lastCategory = i->category();
-		first = false;
-		++i;
+		actionDataSource = dynamic_cast<ActionDataSource *>(actionDataSourceWidget);
+		if (actionDataSource)
+			break;
+		else
+			actionDataSourceWidget = actionDataSourceWidget->parentWidget();
 	}
 
-	if (!first)
-		menu->addSeparator();
+	if (actionDataSource)
+	{
+		sortInputContextMenu();
+		QList<CustomInputMenuItem>::const_iterator i = InputContextMenu.constBegin();
+		CustomInputMenuItem::CustomInputMenuCategory lastCategory = CustomInputMenuItem::MenuCategoryTextEdit;
+		bool first = true;
+
+		while (i != InputContextMenu.constEnd())
+		{
+			if ((!first) && (i->category() != lastCategory))
+				menu->addSeparator();
+
+			Action *action = i->actionDescription()->createAction(actionDataSource, parent);
+
+			if (i->category() == CustomInputMenuItem::MenuCategorySuggestion)
+				action->setFont(QFont(QString(), -1, QFont::Bold));
+
+			menu->addAction(action);
+			action->checkState();
+
+			lastCategory = i->category();
+			first = false;
+			++i;
+		}
+
+		if (!first)
+			menu->addSeparator();
+	}
 
 	return menu;
 }
