@@ -29,25 +29,6 @@
 
 #include "screenshot-action.h"
 
-static void disableNoChatImageService(Action *action)
-{
-	action->setEnabled(false);
-
-	ChatEditBox *chatEditBox = qobject_cast<ChatEditBox *>(action->parent());
-	if (!chatEditBox)
-		return;
-
-	Account account = action->chat().chatAccount();
-	if (!account)
-		return;
-
-	Protocol *protocol = account.protocolHandler();
-	if (!protocol)
-		return;
-
-	action->setEnabled(protocol->chatImageService());
-}
-
 ScreenshotAction::ScreenshotAction(QObject *parent) :
 		ActionDescription(parent)
 {
@@ -55,7 +36,6 @@ ScreenshotAction::ScreenshotAction(QObject *parent) :
 	setName("ScreenShotAction");
 	setIcon(KaduIcon("external_modules/screenshot-camera-photo"));
 	setText(tr("ScreenShot"));
-	setActionCallback(disableNoChatImageService);
 
 	registerAction();
 }
@@ -92,6 +72,25 @@ void ScreenshotAction::actionTriggered(QAction *sender, bool toggled)
 	Q_UNUSED(toggled)
 
 	takeStandardShotSlot(findChatWidget(sender));
+}
+
+void ScreenshotAction::updateActionState(Action *action)
+{
+	action->setEnabled(false);
+
+	ChatEditBox *chatEditBox = qobject_cast<ChatEditBox *>(action->parent());
+	if (!chatEditBox)
+		return;
+
+	Account account = action->chat().chatAccount();
+	if (!account)
+		return;
+
+	Protocol *protocol = account.protocolHandler();
+	if (!protocol)
+		return;
+
+	action->setEnabled(protocol->chatImageService());
 }
 
 ChatWidget * ScreenshotAction::findChatWidget(QObject *object)

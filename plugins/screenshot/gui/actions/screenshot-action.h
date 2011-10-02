@@ -40,6 +40,7 @@ private slots:
 protected:
 	virtual QMenu * menuForAction(Action *action);
 	virtual void actionTriggered(QAction *sender, bool toggled);
+	virtual void updateActionState(Action *action);
 
 public:
 	explicit ScreenshotAction(QObject *parent);
