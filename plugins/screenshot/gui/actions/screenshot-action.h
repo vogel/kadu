@@ -30,7 +30,7 @@ class ScreenshotAction : public ActionDescription
 {
 	Q_OBJECT
 
-	ChatWidget * findChatWidget(QObject *obejct = 0);
+	ChatWidget * findChatWidget(QObject *obejct);
 
 private slots:
 	void takeStandardShotSlot(ChatWidget *chatWidget = 0);

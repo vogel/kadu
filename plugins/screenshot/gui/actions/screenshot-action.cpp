@@ -96,8 +96,6 @@ void ScreenshotAction::actionTriggered(QAction *sender, bool toggled)
 
 ChatWidget * ScreenshotAction::findChatWidget(QObject *object)
 {
-	if (!object)
-		object = sender();
 	while (object) {
 		ChatEditBox *chatEditBox = qobject_cast<ChatEditBox *>(object);
 		if (chatEditBox)
@@ -113,21 +111,21 @@ void ScreenshotAction::takeStandardShotSlot(ChatWidget *chatWidget)
 {
 	// in case of non-menu call
 	if (!chatWidget)
-		chatWidget = findChatWidget();
+		chatWidget = findChatWidget(sender());
 	if (chatWidget)
 		(new ScreenShot(chatWidget))->takeStandardShot();
 }
 
 void ScreenshotAction::takeShotWithChatWindowHiddenSlot()
 {
-	ChatWidget *chatWidget = findChatWidget();
+	ChatWidget *chatWidget = findChatWidget(sender());
 	if (chatWidget)
 		(new ScreenShot(chatWidget))->takeShotWithChatWindowHidden();
 }
 
 void ScreenshotAction::takeWindowShotSlot()
 {
-	ChatWidget *chatWidget = findChatWidget();
+	ChatWidget *chatWidget = findChatWidget(sender());
 	if (chatWidget)
 		(new ScreenShot(chatWidget))->takeWindowShot();
 }
