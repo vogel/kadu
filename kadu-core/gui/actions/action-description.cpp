@@ -136,6 +136,12 @@ void ActionDescription::actionInstanceCreated(Action *action)
 		action->setMenu(menu);
 }
 
+void ActionDescription::updateActionState(Action *action)
+{
+	if (EnableCallback)
+		(*EnableCallback)(action);
+}
+
 Action * ActionDescription::createAction(ActionDataSource *dataSource, QObject *parent)
 {
 	if (MappedActions.contains(dataSource))

@@ -131,8 +131,7 @@ void Action::triggeredSlot(bool checked)
 
 void Action::checkState()
 {
-	if (Description->EnableCallback)
-		(*Description->EnableCallback)(this);
+	Description->updateActionState(this);
 }
 
 void Action::updateIcon()

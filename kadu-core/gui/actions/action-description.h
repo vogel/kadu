@@ -180,6 +180,16 @@ protected:
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
+	 * @short Updates enabled/disabled state of given action.
+	 * @param action action to update state for
+	 *
+	 * This method is called by by Action class when it requies to update its own state (like disabled/enable).
+	 * By defult this method calls EnableCallback callback for this action.
+	 */
+	virtual void updateActionState(Action *action);
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
 	 * @short Creates menu for given new instance of Action.
 	 * @param action action to create menu for
 	 *
