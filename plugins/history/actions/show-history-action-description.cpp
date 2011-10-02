@@ -69,8 +69,8 @@ QMenu * ShowHistoryActionDescription::menuForAction(Action *action)
 	if (!chatWidget)
 		return 0;
 
-	// TODO: check if this is proper parenting
-	QMenu *menu = new QMenu(qobject_cast<QWidget *>(action->parent()));
+	// no parents for menu as it is destroyed manually by Action class
+	QMenu *menu = new QMenu();
 
 	if (config_file.readBoolEntry("Chat", "ChatPrune", false))
 	{

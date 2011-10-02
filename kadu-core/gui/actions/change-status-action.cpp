@@ -47,7 +47,8 @@ QMenu * ChangeStatusAction::menuForAction(Action *action)
 	if (!container)
 		return 0;
 
-	QMenu *menu = new QMenu(action->parentWidget());
+	// no parents for menu as it is destroyed manually by Action class
+	QMenu *menu = new QMenu();
 	new StatusMenu(container, false, menu);
 	return menu;
 }

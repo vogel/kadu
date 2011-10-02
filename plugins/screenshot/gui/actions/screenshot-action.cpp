@@ -77,8 +77,8 @@ QMenu * ScreenshotAction::menuForAction(Action *action)
 	if (!chatWidget)
 		return 0;
 
-	// TODO: check if this is proper parenting
-	QMenu *menu = new QMenu(qobject_cast<QWidget *>(action->parent()));
+	// no parents for menu as it is destroyed manually by Action class
+	QMenu *menu = new QMenu();
 	menu->addAction(tr("Simple shot"), this, SLOT(takeStandardShotSlot()));
 	menu->addAction(tr("With chat window hidden"), this, SLOT(takeShotWithChatWindowHiddenSlot()));
 	menu->addAction(tr("Window shot"), this, SLOT(takeWindowShotSlot()));
