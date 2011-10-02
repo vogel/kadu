@@ -48,33 +48,33 @@ class ActionDataSource
 public:
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns contact set for given action.
+	 * @short Returns contact set for given action data source.
 	 *
-	 * Returns contact set for given action. May return empty contact set.
+	 * Returns contact set for given action data source. May return empty contact set.
 	 */
 	virtual ContactSet contacts() = 0;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns buddy set for given action.
+	 * @short Returns buddy set for given action data source.
 	 *
-	 * Returns buddy set for given action. May return empty buddy set.
+	 * Returns buddy set for given action data source. May return empty buddy set.
 	 */
 	virtual BuddySet buddies() = 0;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns chat for given action.
+	 * @short Returns chat for given action data source.
 	 *
-	 * Returns chat given action. May return empty chat.
+	 * Returns chat given action data source. May return empty chat.
 	 */
 	virtual Chat chat() = 0;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns status container for given action.
+	 * @short Returns status container for given action data source.
 	 *
-	 * Returns status container for given action. May return null.
+	 * Returns status container for given action data source. May return null.
 	 */
 	virtual StatusContainer * statusContainer() = 0;
 
