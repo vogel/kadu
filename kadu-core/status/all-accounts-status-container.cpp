@@ -105,13 +105,6 @@ void AllAccountsStatusContainer::setStatus(Status status)
 			account.data()->setStatus(status);
 }
 
-void AllAccountsStatusContainer::setDescription(const QString &description)
-{
-	foreach (const Account &account, Accounts)
-		if (account)
-			account.data()->setDescription(description);
-}
-
 void AllAccountsStatusContainer::setDefaultStatus(const QString &startupStatus, bool offlineToInvisible,
 		const QString &startupDescription, bool StartupLastDescription)
 {

@@ -237,16 +237,10 @@ QString StatusContainerManager::statusContainerName()
 	return tr("All");
 }
 
-void StatusContainerManager::setStatus(Status newStatus)
+void StatusContainerManager::setStatus(Status status)
 {
 	foreach (StatusContainer *container, StatusContainers)
-		container->setStatus(newStatus);
-}
-
-void StatusContainerManager::setDescription(const QString &description)
-{
-	foreach (StatusContainer *container, StatusContainers)
-		container->setDescription(description);
+		container->setStatus(status);
 }
 
 Status StatusContainerManager::status()

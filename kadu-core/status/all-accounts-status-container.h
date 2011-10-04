@@ -45,7 +45,6 @@ public:
 	virtual void setStatus(Status newStatus);
 	virtual Status status();
 	virtual bool isStatusSettingInProgress();
-	virtual void setDescription(const QString &description);
 
 	virtual int maxDescriptionLength();
 

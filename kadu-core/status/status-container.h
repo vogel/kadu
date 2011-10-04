@@ -46,8 +46,6 @@ public:
 	virtual Status status() = 0;
 	virtual bool isStatusSettingInProgress() = 0;
 
-	virtual void setDescription(const QString &description) = 0;
-
 	virtual QString statusDisplayName() = 0;
 
 	virtual KaduIcon statusIcon() = 0;

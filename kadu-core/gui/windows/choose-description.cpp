@@ -87,7 +87,7 @@ ChooseDescription::ChooseDescription(StatusContainer *statusContainer, QWidget *
 	Description->setEditable(true);
 	Description->setInsertPolicy(QComboBox::NoInsert);
 	Description->completer()->setCaseSensitivity(Qt::CaseSensitive);
-	Description->setEditText(MyStatusContainer->status().description());
+	Description->setEditText(StatusChangerManager::instance()->manuallySetStatus(MyStatusContainer).description());
 	connect(Description, SIGNAL(activated(int)), this, SLOT(activated(int)));
 
 	OkButton = new QPushButton(tr("&OK"), this);
@@ -161,8 +161,11 @@ void ChooseDescription::setDescription()
 	if (config_file.readBoolEntry("General", "ParseStatus", false))
 		description = Parser::parse(description, BuddyOrContact(Core::instance()->myself()), false);
 
-	MyStatusContainer->setDescription(description);
-	MyStatusContainer->storeStatus(StatusChangerManager::instance()->manuallySetStatus(MyStatusContainer));
+	Status status = StatusChangerManager::instance()->manuallySetStatus(MyStatusContainer);
+	status.setDescription(description);
+
+	StatusChangerManager::instance()->setStatus(MyStatusContainer, status);
+	MyStatusContainer->storeStatus(status);
 }
 
 void ChooseDescription::activated(int index)

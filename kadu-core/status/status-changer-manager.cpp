@@ -94,7 +94,7 @@ void StatusChangerManager::statusChanged(StatusContainer *container)
 	for (int i = 0; i < StatusChangers.count(); i++)
 		StatusChangers.at(i)->changeStatus(container, status);
 
-	emit statusChanged(container, status);
+	container->setStatus(status);
 
 	kdebugf2();
 }

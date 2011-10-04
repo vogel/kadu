@@ -175,7 +175,7 @@ void AccountShared::setDisconnectStatus()
 	else
 		disconnectStatus.setDescription(disconnectDescription);
 
-	setStatus(disconnectStatus);
+	StatusChangerManager::instance()->setStatus(this, disconnectStatus);
 }
 
 void AccountShared::useProtocolFactory(ProtocolFactory *factory)
@@ -335,7 +335,7 @@ QString AccountShared::statusContainerName()
 	return Id;
 }
 
-void AccountShared::doSetStatus(Status newStatus)
+void AccountShared::setStatus(Status newStatus)
 {
 	if (ProtocolHandler)
 		ProtocolHandler->setStatus(newStatus);

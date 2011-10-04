@@ -55,9 +55,6 @@ public:
 	void setStatus(StatusContainer *statusContainer, Status status);
 	Status manuallySetStatus(StatusContainer *statusContainer);
 
-signals:
-	void statusChanged(StatusContainer *container, Status status);
-
 };
 
 #include "accounts/account.h" // for MOC

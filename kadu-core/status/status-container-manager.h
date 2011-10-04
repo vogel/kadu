@@ -88,7 +88,6 @@ public:
 	StatusContainer * defaultStatusContainer() const { return DefaultStatusContainer; }
 
 	virtual void setStatus(Status newStatus);
-	virtual void setDescription(const QString &description);
 	virtual Status status();
 	virtual bool isStatusSettingInProgress();
 
