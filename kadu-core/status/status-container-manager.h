@@ -24,21 +24,17 @@
 #define STATUS_CONTAINER_MANAGER_H
 
 #include "accounts/accounts-aware-object.h"
-#include "configuration/configuration-aware-object.h"
 #include "identities/identities-aware-object.h"
 #include "status/status-container.h"
 
 class AllAccountsStatusContainer;
 
-class KADUAPI StatusContainerManager : public StatusContainer,
-		public ConfigurationAwareObject, private AccountsAwareObject, private IdentitiesAwareObject
+class KADUAPI StatusContainerManager : public StatusContainer, private AccountsAwareObject, private IdentitiesAwareObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(StatusContainerManager)
 
 	static StatusContainerManager *Instance;
-
-	bool CoreInitialized;
 
 	StatusContainerManager();
 	virtual ~StatusContainerManager();
@@ -48,11 +44,6 @@ class KADUAPI StatusContainerManager : public StatusContainer,
 	QList<StatusContainer *> StatusContainers;
 	StatusContainer *DefaultStatusContainer;
 	AllAccountsStatusContainer *AllAccountsContainer;
-
-	QString StartupStatus;
-	QString StartupDescription;
-	bool StartupLastDescription;
-	bool OfflineToInvisible;
 
 	void cleanStatusContainers();
 	void addAllAccounts();
@@ -73,8 +64,6 @@ protected:
 
 	virtual void identityAdded(Identity identity);
 	virtual void identityRemoved(Identity identity);
-
-	virtual void configurationUpdated();
 
 public:
 	static StatusContainerManager * instance();
@@ -106,19 +95,9 @@ public:
 	virtual QString statusNamePrefix();
 
 	virtual Status getDefaultStatus(const QString &startupStatus, bool offlineToInvisible,
-				      const QString &startupDescription, bool startupLastDescription)
-	{
-		Q_UNUSED(startupStatus)
-		Q_UNUSED(offlineToInvisible)
-		Q_UNUSED(startupDescription)
-		Q_UNUSED(startupLastDescription)
-
-		return Status();
-	}
+				      const QString &startupDescription, bool startupLastDescription);
 
 	virtual void storeStatus(Status status);
-
-	void coreInitialized();
 
 signals:
 	void statusContainerAboutToBeRegistered(StatusContainer *);

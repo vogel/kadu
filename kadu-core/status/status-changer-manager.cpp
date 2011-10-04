@@ -19,6 +19,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "configuration/configuration-file.h"
 #include "status/status-changer.h"
 #include "status/status-container-manager.h"
 #include "debug.h"
@@ -35,12 +36,51 @@ StatusChangerManager * StatusChangerManager::instance()
 	return Instance;
 }
 
-StatusChangerManager::StatusChangerManager()
+StatusChangerManager::StatusChangerManager() :
+		CoreInitialized(false)
 {
+	configurationUpdated();
 }
 
 StatusChangerManager::~StatusChangerManager()
 {
+}
+
+void StatusChangerManager::setDefaultStatus(StatusContainer *statusContainer)
+{
+	Status status = statusContainer->getDefaultStatus(StartupStatus, OfflineToInvisible, StartupDescription, StartupLastDescription);
+	StatusChangerManager::instance()->setStatus(statusContainer, status);
+}
+
+void StatusChangerManager::coreInitialized()
+{
+	CoreInitialized = true;
+	foreach (StatusContainer *statusContainer, StatusContainerManager::instance()->statusContainers())
+		setDefaultStatus(statusContainer);
+}
+
+void StatusChangerManager::configurationUpdated()
+{
+	StartupStatus = config_file.readEntry("General", "StartupStatus");
+	StartupLastDescription = config_file.readBoolEntry("General", "StartupLastDescription");
+	StartupDescription = config_file.readEntry("General", "StartupDescription");
+	OfflineToInvisible = config_file.readBoolEntry("General", "StartupStatusInvisibleWhenLastWasOffline") && StartupStatus != "Offline";
+
+	if (StartupStatus.isEmpty())
+		StartupStatus = "LastStatus";
+	else if (StartupStatus == "Busy")
+		StartupStatus =  "Away";
+}
+
+void StatusChangerManager::statusContainerRegistered(StatusContainer *statusContainer)
+{
+	if (CoreInitialized)
+		setDefaultStatus(statusContainer);
+}
+
+void StatusChangerManager::statusContainerUnregistered(StatusContainer *statusContainer)
+{
+	Q_UNUSED(statusContainer);
 }
 
 void StatusChangerManager::registerStatusChanger(StatusChanger *statusChanger)

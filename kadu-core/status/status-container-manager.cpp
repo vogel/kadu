@@ -23,14 +23,12 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
-#include "configuration/configuration-file.h"
 #include "configuration/main-configuration-holder.h"
 #include "core/core.h"
 #include "identities/identity-manager.h"
 #include "icons/kadu-icon.h"
 #include "protocols/protocol.h"
 #include "status/all-accounts-status-container.h"
-#include "status/status-changer-manager.h"
 #include "status/status-container-aware-object.h"
 #include "status/status-type-manager.h"
 #include "status/status-type.h"
@@ -48,11 +46,9 @@ StatusContainerManager * StatusContainerManager::instance()
 }
 
 StatusContainerManager::StatusContainerManager() :
-		StatusContainer(0), CoreInitialized(false), DefaultStatusContainer(0)
+		StatusContainer(0), DefaultStatusContainer(0)
 {
 	AllAccountsContainer = new AllAccountsStatusContainer(this);
-
-	configurationUpdated();
 
 	if (MainConfigurationHolder::instance()->isSetStatusPerIdentity())
 		triggerAllIdentitiesAdded();
@@ -120,19 +116,6 @@ void StatusContainerManager::identityRemoved(Identity identity)
 		unregisterStatusContainer(identity);
 }
 
-void StatusContainerManager::configurationUpdated()
-{
-	StartupStatus = config_file.readEntry("General", "StartupStatus");
-	StartupLastDescription = config_file.readBoolEntry("General", "StartupLastDescription");
-	StartupDescription = config_file.readEntry("General", "StartupDescription");
-	OfflineToInvisible = config_file.readBoolEntry("General", "StartupStatusInvisibleWhenLastWasOffline") && StartupStatus != "Offline";
-
-	if (StartupStatus.isEmpty())
-		StartupStatus = "LastStatus";
-	else if (StartupStatus == "Busy")
-		StartupStatus =  "Away";
-}
-
 void StatusContainerManager::cleanStatusContainers()
 {
 	while (!StatusContainers.isEmpty())
@@ -191,12 +174,6 @@ void StatusContainerManager::registerStatusContainer(StatusContainer *statusCont
 	StatusContainerAwareObject::notifyStatusContainerRegistered(statusContainer);
 
 	connect(statusContainer, SIGNAL(statusUpdated()), this, SIGNAL(statusUpdated()));
-
-	if (CoreInitialized)
-	{
-		Status status = statusContainer->getDefaultStatus(StartupStatus, OfflineToInvisible, StartupDescription, StartupLastDescription);
-		StatusChangerManager::instance()->setStatus(statusContainer, status);
-	}
 }
 
 void StatusContainerManager::unregisterStatusContainer(StatusContainer *statusContainer)
@@ -215,16 +192,6 @@ void StatusContainerManager::unregisterStatusContainer(StatusContainer *statusCo
 	}
 
 	disconnect(statusContainer, SIGNAL(statusUpdated()), this, SIGNAL(statusUpdated()));
-}
-
-void StatusContainerManager::coreInitialized()
-{
-	CoreInitialized = true;
-	foreach (StatusContainer *statusContainer, StatusContainers)
-	{
-		Status status = statusContainer->getDefaultStatus(StartupStatus, OfflineToInvisible, StartupDescription, StartupLastDescription);
-		StatusChangerManager::instance()->setStatus(statusContainer, status);
-	}
 }
 
 bool StatusContainerManager::allStatusEqual(StatusType *type)

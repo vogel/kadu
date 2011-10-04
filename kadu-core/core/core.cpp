@@ -409,7 +409,9 @@ void Core::init()
 
 void Core::initialized()
 {
-	StatusContainerManager::instance()->coreInitialized();
+	// create instance
+	StatusContainerManager::instance();
+	StatusChangerManager::instance()->coreInitialized();
 }
 
 void Core::storeConfiguration()

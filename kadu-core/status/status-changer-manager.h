@@ -24,18 +24,26 @@
 
 #include <QtCore/QMap>
 
+#include "configuration/configuration-aware-object.h"
 #include "status/status.h"
+#include "status/status-container-aware-object.h"
 
 class Account;
 class StatusChanger;
 class StatusContainer;
 
-class KADUAPI StatusChangerManager : public QObject
+class KADUAPI StatusChangerManager : public QObject, private StatusContainerAwareObject, private ConfigurationAwareObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(StatusChangerManager)
 
 	static StatusChangerManager *Instance;
+
+	bool CoreInitialized;
+	QString StartupStatus;
+	QString StartupDescription;
+	bool StartupLastDescription;
+	bool OfflineToInvisible;
 
 	QMap<StatusContainer *, Status> Statuses;
 	QList<StatusChanger *> StatusChangers;
@@ -43,11 +51,21 @@ class KADUAPI StatusChangerManager : public QObject
 	StatusChangerManager();
 	virtual ~StatusChangerManager();
 
+	void setDefaultStatus(StatusContainer *statusContainer);
+
 private slots:
-	void statusChanged(StatusContainer *container = 0);
+	void statusChanged(StatusContainer *statusContainer = 0);
+
+protected:
+	void configurationUpdated();
+
+	void statusContainerRegistered(StatusContainer *statusContainer);
+	void statusContainerUnregistered(StatusContainer *statusContainer);
 
 public:
 	static StatusChangerManager * instance();
+
+	void coreInitialized();
 
 	void registerStatusChanger(StatusChanger *statusChanger);
 	void unregisterStatusChanger(StatusChanger *statusChanger);
