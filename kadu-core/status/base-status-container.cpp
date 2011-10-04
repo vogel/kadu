@@ -21,7 +21,6 @@
 
 #include "configuration/configuration-file.h"
 #include "configuration/configuration-manager.h"
-#include "status/status-changer-manager.h"
 #include "storage/storable-object.h"
 
 #include "base-status-container.h"
@@ -35,11 +34,11 @@ BaseStatusContainer::~BaseStatusContainer()
 {
 }
 
-void BaseStatusContainer::setDefaultStatus(const QString &startupStatus, bool offlineToInvisible,
+Status BaseStatusContainer::getDefaultStatus(const QString &startupStatus, bool offlineToInvisible,
 		const QString &startupDescription, bool StartupLastDescription)
 {
 	if (!MyStorableObject->isValidStorage())
-		return;
+		return Status();
 
 	QString description;
 	if (StartupLastDescription)
@@ -66,7 +65,7 @@ void BaseStatusContainer::setDefaultStatus(const QString &startupStatus, bool of
 	status.setType(name);
 	status.setDescription(description);
 
-	StatusChangerManager::instance()->setStatus(this, status);
+	return status;
 }
 
 void BaseStatusContainer::storeStatus(Status status)

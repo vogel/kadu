@@ -105,13 +105,15 @@ public:
 
 	virtual QString statusNamePrefix();
 
-	virtual void setDefaultStatus(const QString &startupStatus, bool offlineToInvisible,
+	virtual Status getDefaultStatus(const QString &startupStatus, bool offlineToInvisible,
 				      const QString &startupDescription, bool startupLastDescription)
 	{
 		Q_UNUSED(startupStatus)
 		Q_UNUSED(offlineToInvisible)
 		Q_UNUSED(startupDescription)
 		Q_UNUSED(startupLastDescription)
+
+		return Status();
 	}
 
 	virtual void storeStatus(Status status);

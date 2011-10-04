@@ -105,11 +105,14 @@ void AllAccountsStatusContainer::setStatus(Status status)
 			account.data()->setStatus(status);
 }
 
-void AllAccountsStatusContainer::setDefaultStatus(const QString &startupStatus, bool offlineToInvisible,
+Status AllAccountsStatusContainer::getDefaultStatus(const QString &startupStatus, bool offlineToInvisible,
 		const QString &startupDescription, bool StartupLastDescription)
 {
-	foreach (const Account &account, Accounts)
-		account.data()->setDefaultStatus(startupStatus, offlineToInvisible, startupDescription, StartupLastDescription);
+	Account account = AccountManager::bestAccount(Accounts);
+	if (account)
+		return account.data()->getDefaultStatus(startupStatus, offlineToInvisible, startupDescription, StartupLastDescription);
+	else
+		return Status();
 }
 
 void AllAccountsStatusContainer::storeStatus(Status status)

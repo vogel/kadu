@@ -30,6 +30,7 @@
 #include "icons/kadu-icon.h"
 #include "protocols/protocol.h"
 #include "status/all-accounts-status-container.h"
+#include "status/status-changer-manager.h"
 #include "status/status-container-aware-object.h"
 #include "status/status-type-manager.h"
 #include "status/status-type.h"
@@ -192,7 +193,10 @@ void StatusContainerManager::registerStatusContainer(StatusContainer *statusCont
 	connect(statusContainer, SIGNAL(statusUpdated()), this, SIGNAL(statusUpdated()));
 
 	if (CoreInitialized)
-		statusContainer->setDefaultStatus(StartupStatus, OfflineToInvisible, StartupDescription, StartupLastDescription);
+	{
+		Status status = statusContainer->getDefaultStatus(StartupStatus, OfflineToInvisible, StartupDescription, StartupLastDescription);
+		StatusChangerManager::instance()->setStatus(statusContainer, status);
+	}
 }
 
 void StatusContainerManager::unregisterStatusContainer(StatusContainer *statusContainer)
@@ -217,7 +221,10 @@ void StatusContainerManager::coreInitialized()
 {
 	CoreInitialized = true;
 	foreach (StatusContainer *statusContainer, StatusContainers)
-		statusContainer->setDefaultStatus(StartupStatus, OfflineToInvisible, StartupDescription, StartupLastDescription);
+	{
+		Status status = statusContainer->getDefaultStatus(StartupStatus, OfflineToInvisible, StartupDescription, StartupLastDescription);
+		StatusChangerManager::instance()->setStatus(statusContainer, status);
+	}
 }
 
 bool StatusContainerManager::allStatusEqual(StatusType *type)
