@@ -38,7 +38,7 @@
 #include "parser/parser.h"
 #include "status/description-manager.h"
 #include "status/description-model.h"
-#include "status/status-changer-manager.h"
+#include "status/status-setter.h"
 
 #include "activate.h"
 #include "debug.h"
@@ -87,7 +87,7 @@ ChooseDescription::ChooseDescription(StatusContainer *statusContainer, QWidget *
 	Description->setEditable(true);
 	Description->setInsertPolicy(QComboBox::NoInsert);
 	Description->completer()->setCaseSensitivity(Qt::CaseSensitive);
-	Description->setEditText(StatusChangerManager::instance()->manuallySetStatus(MyStatusContainer).description());
+	Description->setEditText(StatusSetter::instance()->manuallySetStatus(MyStatusContainer).description());
 	connect(Description, SIGNAL(activated(int)), this, SLOT(activated(int)));
 
 	OkButton = new QPushButton(tr("&OK"), this);
@@ -161,10 +161,10 @@ void ChooseDescription::setDescription()
 	if (config_file.readBoolEntry("General", "ParseStatus", false))
 		description = Parser::parse(description, BuddyOrContact(Core::instance()->myself()), false);
 
-	Status status = StatusChangerManager::instance()->manuallySetStatus(MyStatusContainer);
+	Status status = StatusSetter::instance()->manuallySetStatus(MyStatusContainer);
 	status.setDescription(description);
 
-	StatusChangerManager::instance()->setStatus(MyStatusContainer, status);
+	StatusSetter::instance()->setStatus(MyStatusContainer, status);
 	MyStatusContainer->storeStatus(status);
 }
 

@@ -58,8 +58,8 @@
 #include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/services/chat-service.h"
-#include "status/status-changer-manager.h"
 #include "status/status-container-manager.h"
+#include "status/status-setter.h"
 #include "status/status-type.h"
 #include "status/status-type-manager.h"
 #include "url-handlers/url-handler-manager.h"
@@ -409,9 +409,7 @@ void Core::init()
 
 void Core::initialized()
 {
-	// create instance
-	StatusContainerManager::instance();
-	StatusChangerManager::instance()->coreInitialized();
+	StatusSetter::instance()->coreInitialized();
 }
 
 void Core::storeConfiguration()

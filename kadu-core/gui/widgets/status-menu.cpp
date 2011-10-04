@@ -28,8 +28,8 @@
 #include "gui/windows/choose-description.h"
 #include "protocols/protocol.h"
 #include "status/status-actions.h"
-#include "status/status-changer-manager.h"
 #include "status/status-group.h"
+#include "status/status-setter.h"
 #include "status/status-type.h"
 #include "status/status-type-manager.h"
 
@@ -71,10 +71,10 @@ void StatusMenu::changeStatus(QAction *action)
 	if (!statusType)
 		return;
 
-	Status status(StatusChangerManager::instance()->manuallySetStatus(MyStatusContainer));
+	Status status(StatusSetter::instance()->manuallySetStatus(MyStatusContainer));
 	status.setType(statusType->name());
 
-	StatusChangerManager::instance()->setStatus(MyStatusContainer, status);
+	StatusSetter::instance()->setStatus(MyStatusContainer, status);
 	MyStatusContainer->storeStatus(status);
 }
 

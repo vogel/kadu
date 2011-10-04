@@ -19,7 +19,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "configuration/configuration-file.h"
 #include "status/status-changer.h"
 #include "status/status-container-manager.h"
 #include "debug.h"
@@ -36,51 +35,12 @@ StatusChangerManager * StatusChangerManager::instance()
 	return Instance;
 }
 
-StatusChangerManager::StatusChangerManager() :
-		CoreInitialized(false)
+StatusChangerManager::StatusChangerManager()
 {
-	configurationUpdated();
 }
 
 StatusChangerManager::~StatusChangerManager()
 {
-}
-
-void StatusChangerManager::setDefaultStatus(StatusContainer *statusContainer)
-{
-	Status status = statusContainer->getDefaultStatus(StartupStatus, OfflineToInvisible, StartupDescription, StartupLastDescription);
-	StatusChangerManager::instance()->setStatus(statusContainer, status);
-}
-
-void StatusChangerManager::coreInitialized()
-{
-	CoreInitialized = true;
-	foreach (StatusContainer *statusContainer, StatusContainerManager::instance()->statusContainers())
-		setDefaultStatus(statusContainer);
-}
-
-void StatusChangerManager::configurationUpdated()
-{
-	StartupStatus = config_file.readEntry("General", "StartupStatus");
-	StartupLastDescription = config_file.readBoolEntry("General", "StartupLastDescription");
-	StartupDescription = config_file.readEntry("General", "StartupDescription");
-	OfflineToInvisible = config_file.readBoolEntry("General", "StartupStatusInvisibleWhenLastWasOffline") && StartupStatus != "Offline";
-
-	if (StartupStatus.isEmpty())
-		StartupStatus = "LastStatus";
-	else if (StartupStatus == "Busy")
-		StartupStatus =  "Away";
-}
-
-void StatusChangerManager::statusContainerRegistered(StatusContainer *statusContainer)
-{
-	if (CoreInitialized)
-		setDefaultStatus(statusContainer);
-}
-
-void StatusChangerManager::statusContainerUnregistered(StatusContainer *statusContainer)
-{
-	Q_UNUSED(statusContainer);
 }
 
 void StatusChangerManager::registerStatusChanger(StatusChanger *statusChanger)
@@ -117,28 +77,6 @@ void StatusChangerManager::unregisterStatusChanger(StatusChanger *statusChanger)
 	kdebugf2();
 }
 
-void StatusChangerManager::statusChanged(StatusContainer *container)
-{
-	if (!container)
-	{
-		foreach (StatusContainer *statusContainer, StatusContainerManager::instance()->statusContainers())
-			if (statusContainer)
-				statusChanged(statusContainer);
-
-		return;
-	}
-
-	kdebugf();
-
-	Status status = Statuses.value(container);
-	for (int i = 0; i < StatusChangers.count(); i++)
-		StatusChangers.at(i)->changeStatus(container, status);
-
-	container->setStatus(status);
-
-	kdebugf2();
-}
-
 void StatusChangerManager::setStatus(StatusContainer *statusContainer, Status status)
 {
 	if (statusContainer)
@@ -153,4 +91,25 @@ Status StatusChangerManager::manuallySetStatus(StatusContainer *statusContainer)
 	if (Statuses.contains(statusContainer))
 		return Statuses.value(statusContainer);
 	return Status("Offline");
+}
+
+void StatusChangerManager::statusChanged(StatusContainer *container)
+{
+	if (!container)
+	{
+		foreach (StatusContainer *statusContainer, StatusContainerManager::instance()->statusContainers())
+			if (statusContainer)
+				statusChanged(statusContainer);
+
+		return;
+	}
+
+	if (Statuses.contains(container))
+	{
+		Status status = Statuses.value(container);
+		for (int i = 0; i < StatusChangers.count(); i++)
+			StatusChangers.at(i)->changeStatus(container, status);
+
+		container->setStatus(status);
+	}
 }
