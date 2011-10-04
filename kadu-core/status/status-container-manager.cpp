@@ -47,7 +47,7 @@ StatusContainerManager * StatusContainerManager::instance()
 }
 
 StatusContainerManager::StatusContainerManager() :
-		StatusContainer(0), AllowSetDefaultStatus(false), DefaultStatusContainer(0)
+		StatusContainer(0), CoreInitialized(false), DefaultStatusContainer(0)
 {
 	AllAccountsContainer = new AllAccountsStatusContainer(this);
 
@@ -191,7 +191,7 @@ void StatusContainerManager::registerStatusContainer(StatusContainer *statusCont
 
 	connect(statusContainer, SIGNAL(statusUpdated()), this, SIGNAL(statusUpdated()));
 
-	if (AllowSetDefaultStatus)
+	if (CoreInitialized)
 		statusContainer->setDefaultStatus(StartupStatus, OfflineToInvisible, StartupDescription, StartupLastDescription);
 }
 
@@ -213,15 +213,11 @@ void StatusContainerManager::unregisterStatusContainer(StatusContainer *statusCo
 	disconnect(statusContainer, SIGNAL(statusUpdated()), this, SIGNAL(statusUpdated()));
 }
 
-void StatusContainerManager::setAllowSetDefaultStatus(bool allowSetDefaultStatus)
+void StatusContainerManager::coreInitialized()
 {
-	if (AllowSetDefaultStatus == allowSetDefaultStatus)
-		return;
-
-	AllowSetDefaultStatus = allowSetDefaultStatus;
-	if (AllowSetDefaultStatus)
-		foreach (StatusContainer *statusContainer, StatusContainers)
-			statusContainer->setDefaultStatus(StartupStatus, OfflineToInvisible, StartupDescription, StartupLastDescription);
+	CoreInitialized = true;
+	foreach (StatusContainer *statusContainer, StatusContainers)
+		statusContainer->setDefaultStatus(StartupStatus, OfflineToInvisible, StartupDescription, StartupLastDescription);
 }
 
 bool StatusContainerManager::allStatusEqual(StatusType *type)

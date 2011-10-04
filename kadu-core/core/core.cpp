@@ -409,7 +409,7 @@ void Core::init()
 
 void Core::initialized()
 {
-	StatusContainerManager::instance()->setAllowSetDefaultStatus(true);
+	StatusContainerManager::instance()->coreInitialized();
 }
 
 void Core::storeConfiguration()
