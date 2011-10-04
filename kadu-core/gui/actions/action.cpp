@@ -20,6 +20,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtGui/QMenu>
+
 #include "accounts/account-manager.h"
 #include "buddies/buddy.h"
 #include "buddies/buddy-set.h"
@@ -35,6 +37,9 @@
 Action::Action(ActionDescription *description, ActionDataSource *dataSource, QObject *parent) :
 		QAction(parent), Description(description), DataSource(dataSource)
 {
+	Q_ASSERT(0 != description);
+	Q_ASSERT(0 != dataSource);
+
 	setText(Description->Text);
 
 	if (!Description->icon().isNull())
@@ -55,6 +60,12 @@ Action::Action(ActionDescription *description, ActionDataSource *dataSource, QOb
 Action::~Action()
 {
 	emit aboutToBeDestroyed(this);
+
+	// we are real owner of this menu
+	if (menu()) {
+		delete menu();
+		setMenu(0);
+	}
 }
 
 Contact Action::contact()
@@ -68,10 +79,7 @@ Contact Action::contact()
 
 ContactSet Action::contacts()
 {
-	if (DataSource)
-		return DataSource->contacts();
-	else
-		return ContactSet();
+	return DataSource->contacts();
 }
 
 Buddy Action::buddy()
@@ -85,26 +93,17 @@ Buddy Action::buddy()
 
 BuddySet Action::buddies()
 {
-	if (DataSource)
-		return DataSource->buddies();
-	else
-		return BuddySet();
+	return DataSource->buddies();
 }
 
 Chat Action::chat()
 {
-	if (DataSource)
-		return DataSource->chat();
-	else
-		return Chat::null;
+	return DataSource->chat();
 }
 
 StatusContainer * Action::statusContainer()
 {
-	if (DataSource)
-		return DataSource->statusContainer();
-	else
-		return 0;
+	return DataSource->statusContainer();
 }
 
 ActionDataSource * Action::dataSource()
@@ -132,8 +131,7 @@ void Action::triggeredSlot(bool checked)
 
 void Action::checkState()
 {
-	if (Description->EnableCallback)
-		(*Description->EnableCallback)(this);
+	Description->updateActionState(this);
 }
 
 void Action::updateIcon()

@@ -5,6 +5,7 @@ set (gui_SRCS
 	actions/action.cpp
 	actions/actions.cpp
 	actions/action-description.cpp
+	actions/change-status-action.cpp
 
 	widgets/account-buddy-list-widget.cpp
 	widgets/account-avatar-widget.cpp
@@ -139,6 +140,7 @@ set (gui_MOC_SRCS
 	actions/action.h
 	actions/actions.h
 	actions/action-description.h
+	actions/change-status-action.h
 
 	widgets/account-add-widget.h
 	widgets/account-avatar-widget.h

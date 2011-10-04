@@ -11,6 +11,8 @@ include (FindKadu)
 set (SOURCES
 	configuration/gui/screenshot-configuration-ui-handler.cpp
 	configuration/screen-shot-configuration.cpp
+	gui/actions/screenshot-action.cpp
+	gui/actions/screenshot-actions.cpp
 	gui/graphics-items/handler-rect-item.cpp
 	gui/graphics-items/selection-frame-item.cpp
 	gui/widgets/crop-image-widget.cpp
@@ -19,7 +21,6 @@ set (SOURCES
 	notify/screenshot-notification.cpp
 	pixmap-grabber.cpp
 	screenshot.cpp
-	screenshot-actions.cpp
 	screenshot-plugin.cpp
 	screen-shot-saver.cpp
 	screenshot-taker.cpp
@@ -27,13 +28,14 @@ set (SOURCES
 
 set (MOC_SOURCES
 	configuration/gui/screenshot-configuration-ui-handler.h
+	gui/actions/screenshot-action.h
+	gui/actions/screenshot-actions.h
 	gui/graphics-items/handler-rect-item.h
 	gui/widgets/crop-image-widget.h
 	gui/widgets/screenshot-tool-box.h
 	gui/widgets/screenshot-widget.h
 	notify/screenshot-notification.h
 	screenshot.h
-	screenshot-actions.h
 	screenshot-plugin.h
 	screen-shot-saver.h
 	screenshot-taker.h

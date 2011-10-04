@@ -160,12 +160,20 @@ QToolButton * ToolBar::createPushButton(QAction *before, ToolBarAction &action)
 	insertAction(before, action.action);
 
 	QToolButton *button = qobject_cast<QToolButton *>(widgetForAction(action.action));
+
 	action.widget = button;
 	if (button)
 	{
 		connect(button, SIGNAL(pressed()), this, SLOT(widgetPressed()));
 		button->installEventFilter(watcher);
 		button->setToolButtonStyle(action.style);
+
+		if (action.action->menu() && Actions::instance()->contains(action.actionName))
+		{
+			ActionDescription *actionDescription = Actions::instance()->value(action.actionName);
+			if (actionDescription)
+				button->setPopupMode(actionDescription->buttonPopupMode());
+		}
 	}
 
 	return button;

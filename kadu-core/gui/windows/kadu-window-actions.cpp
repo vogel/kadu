@@ -49,6 +49,7 @@
 #include "gui/status-icon.h"
 #include "gui/actions/action.h"
 #include "gui/actions/actions.h"
+#include "gui/actions/change-status-action.h"
 #include "gui/widgets/buddies-list-view.h"
 #include "gui/widgets/buddies-list-view-delegate-configuration.h"
 #include "gui/widgets/buddies-list-view-menu-manager.h"
@@ -389,11 +390,7 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 	// The last ActionDescription will send ActionAdded signal
 	Actions::instance()->unblockSignals();
 
-	ChangeStatus = new ActionDescription(this,
-		ActionDescription::TypeGlobal, "openStatusAction",
-		this, SLOT(changeStatusActionActivated(QAction *, bool)),
-		KaduIcon("kadu_icons/change-status"), tr("Change Status")
-	);
+	ChangeStatus = new ChangeStatusAction(this);
 	connect(ChangeStatus, SIGNAL(actionCreated(Action *)), this, SLOT(changeStatusActionCreated(Action *)));
 
 	connect(StatusChangerManager::instance(), SIGNAL(statusChanged(StatusContainer *, Status)), this, SLOT(statusChanged(StatusContainer *, Status)));
@@ -494,17 +491,6 @@ void KaduWindowActions::editUserActionCreated(Action *action)
 	{
 		action->setIcon(KaduIcon("contact-new"));
 		action->setText(tr("Add Buddy..."));
-	}
-}
-
-void KaduWindowActions::changeStatusActionCreated(Action *action)
-{
-	StatusContainer *statusContainer = action->statusContainer();
-	if (statusContainer)
-	{
-		StatusIcon *icon = new StatusIcon(statusContainer, action);
-		connect(icon, SIGNAL(iconUpdated(KaduIcon)), action, SLOT(setIcon(KaduIcon)));
-		action->setIcon(icon->icon());
 	}
 }
 
@@ -973,23 +959,6 @@ void KaduWindowActions::editUserActionActivated(ActionDataSource *source)
 		BuddyDataWindow::instance(buddy, Core::instance()->kaduWindow())->show();
 
 	kdebugf2();
-}
-
-void KaduWindowActions::changeStatusActionActivated(QAction *sender, bool toggled)
-{
-	Q_UNUSED(toggled)
-
-	Action *action = qobject_cast<Action *>(sender);
-	if (!action)
-		return;
-
-	StatusContainer *container = action->statusContainer();
-	if (!container)
-		return;
-
-	QScopedPointer<QMenu> menu(new QMenu());
-	new StatusMenu(container, false, menu.data());
-	menu->exec(QCursor::pos());
 }
 
 void KaduWindowActions::configurationUpdated()

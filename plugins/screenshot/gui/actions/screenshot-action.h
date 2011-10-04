@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2010, 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -17,47 +17,35 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SCREENSHOT_ACTIONS_H
-#define SCREENSHOT_ACTIONS_H
+#ifndef SCREENSHOT_ACTION_H
+#define SCREENSHOT_ACTION_H
 
-#include <QtCore/QObject>
+#include <QtGui/QAction>
 
-class QAction;
-class QMenu;
+#include "gui/actions/action-description.h"
 
-class ActionDescription;
 class ChatWidget;
 
-class ScreenshotActions : public QObject
+class ScreenshotAction : public ActionDescription
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(ScreenshotActions)
 
-	static ScreenshotActions *Instance;
-
-	ActionDescription *ScreenShotActionDescription;
-	QMenu *Menu;
-
-	ChatWidget *CurrentChatWidget;
-
-	ScreenshotActions();
-	virtual ~ScreenshotActions();
-
-	void createMenu();
+	ChatWidget * findChatWidget(QObject *obejct);
 
 private slots:
-	void screenshotActionActivated(QAction *sender, bool toggled);
-
-	void takeStandardShotSlot();
+	void takeStandardShotSlot(ChatWidget *chatWidget = 0);
 	void takeShotWithChatWindowHiddenSlot();
 	void takeWindowShotSlot();
 
-public:
-	static void registerActions();
-	static void unregisterActions();
+protected:
+	virtual QMenu * menuForAction(Action *action);
+	virtual void actionTriggered(QAction *sender, bool toggled);
+	virtual void updateActionState(Action *action);
 
-	static ScreenshotActions * instance();
+public:
+	explicit ScreenshotAction(QObject *parent);
+	virtual ~ScreenshotAction();
 
 };
 
-#endif // SCREENSHOT_ACTIONS_H
+#endif // SCREENSHOT_ACTION_H

@@ -68,6 +68,7 @@ class Account;
 class ChatWidget;
 class HistorySaveThread;
 class HistoryWindow;
+class ShowHistoryActionDescription;
 
 class HISTORYAPI History : public ConfigurationUiHandler, ConfigurationAwareObject, CrashAwareObject
 {
@@ -91,8 +92,7 @@ class HISTORYAPI History : public ConfigurationUiHandler, ConfigurationAwareObje
 
 	HistoryStorage *CurrentStorage;
 
-	ActionDescription *ShowHistoryActionDescription;
-	ActionDescription *ShowMoreMessagesInChatWidgetActionDescription;
+	ShowHistoryActionDescription *ShowHistoryActionDescriptionInstance;
 	ActionDescription *ClearHistoryActionDescription;
 
 	QLabel *dontCiteOldMessagesLabel;
@@ -121,8 +121,6 @@ private slots:
 	void enqueueMessage(const Message &);
 	void contactStatusChanged(Contact contact, Status oldStatus);
 
-	void showHistoryActionActivated(QAction *sender, bool toggled);
-	void showMoreMessages(QAction *action);
 	void clearHistoryActionActivated(QAction *sender, bool toggled);
 
 	void chatCreated(ChatWidget *chatWidget);

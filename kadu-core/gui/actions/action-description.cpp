@@ -35,7 +35,14 @@ ActionDescription::ActionDescription(QObject *parent, ActionType type, const QSt
 {
 	deleted = 0;
 
-	Actions::instance()->insert(this);
+	registerAction();
+}
+
+ActionDescription::ActionDescription(QObject *parent) :
+		QObject(parent), Type(TypeAll), Object(0), Slot(0),
+		Checkable(false), EnableCallback(0), ShortcutContext(Qt::WidgetShortcut)
+{
+	deleted = 0;
 }
 
 ActionDescription::~ActionDescription()
@@ -43,6 +50,17 @@ ActionDescription::~ActionDescription()
 	deleted = 1;
 	qDeleteAll(MappedActions);
 	MappedActions.clear();
+
+	unregisterAction();
+}
+
+void ActionDescription::registerAction()
+{
+	Actions::instance()->insert(this);
+}
+
+void ActionDescription::unregisterAction()
+{
 	Actions::instance()->remove(this);
 }
 
@@ -55,12 +73,73 @@ void ActionDescription::actionAboutToBeDestroyed(Action *action)
 		MappedActions.remove(action->dataSource());
 }
 
+void ActionDescription::setType(ActionType type)
+{
+	Type = type;
+}
+
+void ActionDescription::setName(const QString &name)
+{
+	Name = name;
+}
+
+void ActionDescription::setConnection(QObject *object, const char *slot)
+{
+	Object = object;
+	Slot = slot;
+}
+
+void ActionDescription::setIcon(const KaduIcon &icon)
+{
+	Icon = icon;
+}
+
+void ActionDescription::setText(const QString &text)
+{
+	Text = text;
+}
+
+void ActionDescription::setCheckable(bool checkable)
+{
+	Checkable = checkable;
+}
+
+void ActionDescription::setActionCallback(ActionBoolCallback enableCallback)
+{
+	EnableCallback = enableCallback;
+}
+
 void ActionDescription::setShortcut(QString configItem, Qt::ShortcutContext context)
 {
 	ShortcutItem = configItem;
 	ShortcutContext = context;
 
 	configurationUpdated();
+}
+
+void ActionDescription::actionTriggeredSlot(QAction *sender, bool toggled)
+{
+	actionTriggered(sender, toggled);
+}
+
+QMenu * ActionDescription::menuForAction(Action *action)
+{
+	Q_UNUSED(action)
+
+	return 0;
+}
+
+void ActionDescription::actionInstanceCreated(Action *action)
+{
+	QMenu *menu = menuForAction(action);
+	if (menu)
+		action->setMenu(menu);
+}
+
+void ActionDescription::updateActionState(Action *action)
+{
+	if (EnableCallback)
+		(*EnableCallback)(action);
 }
 
 Action * ActionDescription::createAction(ActionDataSource *dataSource, QObject *parent)
@@ -71,10 +150,7 @@ Action * ActionDescription::createAction(ActionDataSource *dataSource, QObject *
 	Action *result = new Action(this, dataSource, parent);
 	MappedActions.insert(dataSource, result);
 
-	connect(result, SIGNAL(aboutToBeDestroyed(Action *)), this, SLOT(actionAboutToBeDestroyed(Action *)));
-	if (Object && Slot)
-		connect(result, SIGNAL(triggered(QAction *, bool)), Object, Slot);
-
+	actionInstanceCreated(result);
 	emit actionCreated(result);
 
 	if (ShortcutContext != Qt::ApplicationShortcut)
@@ -87,6 +163,12 @@ Action * ActionDescription::createAction(ActionDataSource *dataSource, QObject *
 		result->setShortcut(HotKey::shortCutFromFile("ShortCuts", ShortcutItem));
 		result->setShortcutContext(ShortcutContext);
 	}
+
+	connect(result, SIGNAL(triggered(QAction *, bool)), this, SLOT(actionTriggeredSlot(QAction *, bool)));
+	connect(result, SIGNAL(aboutToBeDestroyed(Action *)), this, SLOT(actionAboutToBeDestroyed(Action *)));
+	if (Object && Slot)
+		connect(result, SIGNAL(triggered(QAction *, bool)), Object, Slot);
+
 	return result;
 }
 

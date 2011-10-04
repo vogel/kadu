@@ -66,6 +66,7 @@
 
 #include "debug.h"
 
+#include "actions/show-history-action-description.h"
 #include "gui/windows/history-window.h"
 #include "model/dates-model-item.h"
 #include "history-save-thread.h"
@@ -143,14 +144,10 @@ History::~History()
 
 void History::createActionDescriptions()
 {
-	ShowHistoryActionDescription = new ActionDescription(this,
-		ActionDescription::TypeUser, "showHistoryAction",
-		this, SLOT(showHistoryActionActivated(QAction *, bool)),
-		KaduIcon("kadu_icons/history"), tr("View Chat History"), false
-	);
-	ShowHistoryActionDescription->setShortcut("kadu_viewhistory");
-	BuddiesListViewMenuManager::instance()->addActionDescription(ShowHistoryActionDescription, BuddiesListViewMenuItem::MenuCategoryView, 100);
-	Core::instance()->kaduWindow()->insertMenuActionDescription(ShowHistoryActionDescription, KaduWindow::MenuKadu, 5);
+	ShowHistoryActionDescriptionInstance = new ShowHistoryActionDescription(this);
+
+	BuddiesListViewMenuManager::instance()->addActionDescription(ShowHistoryActionDescriptionInstance, BuddiesListViewMenuItem::MenuCategoryView, 100);
+	Core::instance()->kaduWindow()->insertMenuActionDescription(ShowHistoryActionDescriptionInstance, KaduWindow::MenuKadu, 5);
 
 	ClearHistoryActionDescription = new ActionDescription(this,
 		ActionDescription::TypeUser, "clearHistoryAction",
@@ -163,100 +160,11 @@ void History::createActionDescriptions()
 
 void History::deleteActionDescriptions()
 {
-	BuddiesListViewMenuManager::instance()->removeActionDescription(ShowHistoryActionDescription);
-	Core::instance()->kaduWindow()->removeMenuActionDescription(ShowHistoryActionDescription);
+	BuddiesListViewMenuManager::instance()->removeActionDescription(ShowHistoryActionDescriptionInstance);
+	Core::instance()->kaduWindow()->removeMenuActionDescription(ShowHistoryActionDescriptionInstance);
 
-	delete ShowHistoryActionDescription;
-	ShowHistoryActionDescription = 0;
-}
-
-void History::showHistoryActionActivated(QAction *sender, bool toggled)
-{
-	Q_UNUSED(toggled)
-
-	Action *action = qobject_cast<Action *>(sender);
-	if (!action)
-		return;
-
-	ChatEditBox *chatEditBox = qobject_cast<ChatEditBox *>(sender->parent());
-	Chat chat = action->chat();
-	if (!chatEditBox || chat != chatEditBox->chat())
-	{
-		HistoryWindow::show(chat);
-		return;
-	}
-
-	ChatWidget *chatWidget = chatEditBox->chatWidget();
-	if (chatWidget)
-	{
-		QList<QWidget *> widgets = sender->associatedWidgets();
-		if (widgets.isEmpty())
-			return;
-
-		QWidget *widget = widgets.at(widgets.size() - 1);
-
-		QScopedPointer<QMenu> menu(new QMenu(chatWidget));
-
-		if (config_file.readBoolEntry("Chat", "ChatPrune", false))
-		{
-			int prune = config_file.readNumEntry("Chat", "ChatPruneLen", 20);
-			menu->addAction(tr("Show last %1 messages").arg(prune))->setData(0);
-			menu->addSeparator();
-		}
-
-		menu->addAction(tr("Show messages since yesterday"))->setData(1);
-		menu->addAction(tr("Show messages from last 7 days"))->setData(7);
-		menu->addAction(tr("Show messages from last 30 days"))->setData(30);
-		menu->addAction(tr("Show whole history"))->setData(-1);
-
-		connect(menu.data(), SIGNAL(triggered(QAction *)), this, SLOT(showMoreMessages(QAction *)));
-
-		menu->exec(widget->mapToGlobal(QPoint(0, widget->height())));
-	}
-}
-
-void History::showMoreMessages(QAction *action)
-{
-	if (!CurrentStorage)
-		return;
-
-	ChatWidget *chatWidget = qobject_cast<ChatWidget *>(sender()->parent());
-	if (!chatWidget)
-		return;
-
-	bool ok;
-	int days = action->data().toInt(&ok);
-
-	if (!ok)
-		return;
-
-	ChatMessagesView *chatMessagesView = chatWidget->chatMessagesView();
-	if (!chatMessagesView)
-		return;
-
-	Chat chat = AggregateChatManager::instance()->aggregateChat(chatWidget->chat());
-
-	chatMessagesView->setForcePruneDisabled(0 != days);
-	QVector<Message> messages;
-
-	if (-1 == days)
-	{
-		HistoryWindow::show(chatWidget->chat());
-		return;
-	}
-	else if (0 != days)
-	{
-		QDate since = QDate::currentDate().addDays(-days);
-		messages = CurrentStorage->messagesSince(chat ? chat : chatWidget->chat(), since);
-	}
-	else
-	{
-		QDateTime backTo = QDateTime::currentDateTime().addDays(ChatHistoryQuotationTime/24);
-		messages = CurrentStorage->messagesBackTo(chat ? chat : chatWidget->chat(), backTo, config_file.readNumEntry("Chat", "ChatPruneLen", 20));
-	}
-
-	chatMessagesView->clearMessages();
-	chatMessagesView->appendMessages(messages);
+	delete ShowHistoryActionDescriptionInstance;
+	ShowHistoryActionDescriptionInstance = 0;
 }
 
 void History::clearHistoryActionActivated(QAction *sender, bool toggled)
