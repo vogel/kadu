@@ -391,7 +391,6 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 	Actions::instance()->unblockSignals();
 
 	ChangeStatus = new ChangeStatusAction(this);
-	connect(ChangeStatus, SIGNAL(actionCreated(Action *)), this, SLOT(changeStatusActionCreated(Action *)));
 
 	connect(StatusChangerManager::instance(), SIGNAL(statusChanged(StatusContainer *, Status)), this, SLOT(statusChanged(StatusContainer *, Status)));
 	foreach (StatusContainer *statusContainer, StatusContainerManager::instance()->statusContainers())
