@@ -308,6 +308,13 @@ QString StatusContainerManager::statusNamePrefix()
 	return tr("All") + ' ';
 }
 
+Status StatusContainerManager::getDefaultStatus(const QString &startupStatus, bool offlineToInvisible, const QString &startupDescription, bool startupLastDescription)
+{
+	return DefaultStatusContainer
+			? DefaultStatusContainer->getDefaultStatus(startupStatus, offlineToInvisible, startupDescription, startupLastDescription)
+			: Status();
+}
+
 void StatusContainerManager::storeStatus(Status status)
 {
 	foreach (StatusContainer *statusContainer, StatusContainers)
