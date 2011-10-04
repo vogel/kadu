@@ -72,7 +72,7 @@ class KADUAPI Protocol : public QObject
 	// real status, can be offline after connection error
 	Status CurrentStatus;
 	// status used by user to login, after connection error its value does not change
-	// it can only by changed by user
+	// it can only by changed by user or status changer
 	Status LoginStatus;
 
 	void setAllOffline();

@@ -174,7 +174,7 @@ void Protocol::connectionError()
 
 void Protocol::connectionClosed()
 {
-	setStatus(Status());
+	doSetStatus(Status());
 	statusChanged(Status());
 
 	emit stateMachineConnectionClosed();
