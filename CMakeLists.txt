@@ -7,26 +7,7 @@ set (CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 cmake_minimum_required (VERSION 2.8.0 FATAL_ERROR)
 
 # configuration
-option (BUILD_PLUGINS "Switch to Off if you do not want to build plugins" ON)
-if (UNIX)
-	option (SIG_HANDLING_ENABLED "Define if you want system signals handling" ON)
-
-	if (UNIX AND NOT APPLE)
-		option (USE_X11_XFIXES "Use X11 XFixes extension (Desktop Linux)" ON)
-		option (WITH_LIBINDICATE_QT "Compile with Messaging Menu (Ayatana) support trough libindicate-qt" OFF)
-	endif (UNIX AND NOT APPLE)
-endif (UNIX)
-
-if (NOT NETWORK_IMPLEMENTATION)
-	include ("cmake/FindQNtrack.cmake")
-	if (QNTRACK_FOUND)
-		set (NETWORK_IMPLEMENTATION "ntrack" CACHE STRING "Select network-aware implementation (Qt/ntrack/dummy)" FORCE)
-		message (STATUS "No NETWORK_IMPLEMENTATION defined. Autodetected implementation: ntrack")
-	else (QNTRACK_FOUND)
-		set (NETWORK_IMPLEMENTATION "Qt" CACHE STRING "Select network-aware implementation (Qt/ntrack/dummy)" FORCE)
-		message (STATUS "No NETWORK_IMPLEMENTATION defined. Autodetected implementation: Qt")
-	endif (QNTRACK_FOUND)
-endif (NOT NETWORK_IMPLEMENTATION)
+option (BUILD_PLUGINS "Switch to OFF if you do not want to build plugins" ON)
 
 if (NOT BUILD_DESCRIPTION)
 	set (BUILD_DESCRIPTION "Compiled from sources" CACHE STRING "Build description" FORCE)
@@ -83,26 +64,8 @@ if (NOT WIN32)
 	endif (SIG_HANDLING_ENABLED)
 endif (NOT WIN32)
 
-# macros
-macro (kadu_source_subdirectories CURRENT_TARGET)
-	foreach (ARG ${ARGN})
-		add_subdirectory (${ARG})
-		link_directories (${ARG})
-
-		add_dependencies (${CURRENT_TARGET}
-			${ARG}
-		)
-	endforeach (ARG)
-
-if (APPLE)
-	target_link_libraries (${CURRENT_TARGET} -Wl,-all_load ${ARGN})
-else (APPLE)
-	target_link_libraries (${CURRENT_TARGET} -Wl,--start-group -Wl,--whole-archive ${ARGN} -Wl,--no-whole-archive -Wl,--end-group)
-endif (APPLE)
-endmacro (kadu_source_subdirectories)
-
 set (KADU_INSTALLS_SDK TRUE)
-include (cmake/FindKadu.cmake)
+include (FindKadu)
 include_directories (${CMAKE_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/kadu-core ${QT_INCLUDES})
 
 if (INSTALL_SDK)

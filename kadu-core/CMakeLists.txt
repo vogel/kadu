@@ -1,3 +1,23 @@
+if (UNIX)
+	option (SIG_HANDLING_ENABLED "Define if you want system signals handling" ON)
+
+	if (UNIX AND NOT APPLE)
+		option (USE_X11_XFIXES "Use X11 XFixes extension (Desktop Linux)" ON)
+		option (WITH_LIBINDICATE_QT "Compile with Messaging Menu (Ayatana) support trough libindicate-qt" OFF)
+	endif (UNIX AND NOT APPLE)
+endif (UNIX)
+
+if (NOT NETWORK_IMPLEMENTATION)
+	include (FindQNtrack)
+	if (QNTRACK_FOUND)
+		set (NETWORK_IMPLEMENTATION "ntrack" CACHE STRING "Select network-aware implementation (Qt/ntrack/dummy)" FORCE)
+		message (STATUS "No NETWORK_IMPLEMENTATION defined. Autodetected implementation: ntrack")
+	else (QNTRACK_FOUND)
+		set (NETWORK_IMPLEMENTATION "Qt" CACHE STRING "Select network-aware implementation (Qt/ntrack/dummy)" FORCE)
+		message (STATUS "No NETWORK_IMPLEMENTATION defined. Autodetected implementation: Qt")
+	endif (QNTRACK_FOUND)
+endif (NOT NETWORK_IMPLEMENTATION)
+
 set (kadu_SRCS
 	activate.cpp
 	debug.cpp
@@ -123,6 +143,23 @@ if (UNIX AND NOT APPLE)
 		DEPENDS ${DESKTOP_ENTRY}
 	)
 endif (UNIX AND NOT APPLE)
+
+macro (kadu_source_subdirectories CURRENT_TARGET)
+	foreach (ARG ${ARGN})
+		add_subdirectory (${ARG})
+		link_directories (${ARG})
+
+		add_dependencies (${CURRENT_TARGET}
+			${ARG}
+		)
+	endforeach (ARG)
+
+	if (APPLE)
+		target_link_libraries (${CURRENT_TARGET} -Wl,-all_load ${ARGN})
+	else (APPLE)
+		target_link_libraries (${CURRENT_TARGET} -Wl,--start-group -Wl,--whole-archive ${ARGN} -Wl,--no-whole-archive -Wl,--end-group)
+	endif (APPLE)
+endmacro (kadu_source_subdirectories)
 
 if (WIN32)
 	set (kadu_SRCS
