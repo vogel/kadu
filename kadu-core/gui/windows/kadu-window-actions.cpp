@@ -94,17 +94,6 @@ void hideNoMultilogonAccounts(Action *action)
 	action->setVisible(hasMultilogonAccount);
 }
 
-void disableContainsSelfUles(Action *action)
-{
-	if (action->buddies().contains(Core::instance()->myself()))
-	{
-		action->setEnabled(false);
-		return;
-	}
-
-	action->setEnabled(true);
-}
-
 void checkBuddyProperties(Action *action)
 {
 	kdebugf();

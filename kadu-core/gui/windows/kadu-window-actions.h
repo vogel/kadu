@@ -132,7 +132,6 @@ public:
 };
 
 void disableNonIdUles(Action *action);
-void disableContainsSelfUles(Action *action);
 void disableNotOneUles(Action *action);
 void disableNoContact(Action *action);
 void disableNoDescription(Action *action);
