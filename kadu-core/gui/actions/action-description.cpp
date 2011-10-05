@@ -144,10 +144,16 @@ void ActionDescription::updateActionState(Action *action)
 
 Action * ActionDescription::createAction(ActionDataSource *dataSource, QObject *parent)
 {
-	if (MappedActions.contains(dataSource))
-		return MappedActions.value(dataSource);
+	Action *result = MappedActions.value(dataSource);
+	if (result)
+	{
+		if (result->parent() != parent)
+			qWarning("ActionDescription::createAction(): requested action for already known dataSource but with different parent\n");
 
-	Action *result = new Action(this, dataSource, parent);
+		return result;
+	}
+
+	result = new Action(this, dataSource, parent);
 	MappedActions.insert(dataSource, result);
 
 	actionInstanceCreated(result);
