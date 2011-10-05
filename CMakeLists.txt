@@ -2,8 +2,9 @@ project (kadu)
 
 # minimal required versions
 set (QT_MIN_VERSION "4.7.0")
-set (CMAKE_MIN_VERSION "2.6.0")
 set (CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+
+cmake_minimum_required (VERSION 2.8.0 FATAL_ERROR)
 
 # configuration
 option (BUILD_PLUGINS "Switch to Off if you do not want to build plugins" ON)
@@ -30,13 +31,6 @@ endif (NOT NETWORK_IMPLEMENTATION)
 if (NOT BUILD_DESCRIPTION)
 	set (BUILD_DESCRIPTION "Compiled from sources" CACHE STRING "Build description" FORCE)
 endif (NOT BUILD_DESCRIPTION)
-
-# build version string if cmake < 2.6.3
-if (NOT DEFINED CMAKE_VERSION)
-	set (CMAKE_VERSION "${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}.${CMAKE_PATCH_VERSION}")
-endif (NOT DEFINED CMAKE_VERSION)
-
-cmake_minimum_required (VERSION ${CMAKE_MIN_VERSION} FATAL_ERROR)
 
 if (COMMAND cmake_policy)
 	cmake_policy (SET CMP0003 NEW)
