@@ -26,12 +26,4 @@ set (contacts_MOC_SRCS
 	model/contact-list-model.h
 )
 
-qt4_wrap_cpp (contacts_MOC_FILES ${contacts_MOC_SRCS})
-
-add_library (contacts
-	STATIC
-	${contacts_SRCS}
-	${contacts_MOC_FILES}
-)
-
-set_target_properties (contacts PROPERTIES COMPILE_DEFINITIONS KADULIB)
+kadu_subdirectory (contacts "${contacts_SRCS}" "${contacts_MOC_SRCS}" "")

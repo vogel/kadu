@@ -29,12 +29,4 @@ set (accounts_MOC_SRCS
 	model/accounts-proxy-model.h
 )
 
-qt4_wrap_cpp (accounts_MOC_FILES ${accounts_MOC_SRCS})
-
-add_library (accounts
-	STATIC
-	${accounts_SRCS}
-	${accounts_MOC_FILES}
-)
-
-set_target_properties (accounts PROPERTIES COMPILE_DEFINITIONS KADULIB)
+kadu_subdirectory (accounts "${accounts_SRCS}" "${accounts_MOC_SRCS}" "")

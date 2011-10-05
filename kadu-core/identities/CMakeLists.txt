@@ -12,13 +12,4 @@ set (identities_MOC_SRCS
 	identity-shared.h
 )
 
-qt4_wrap_cpp (identities_MOC_FILES ${identities_MOC_SRCS})
-
-add_library (identities
-	STATIC
-	${identities_SRCS}
-	${identities_MOC_FILES}
-)
-
-set_target_properties (identities PROPERTIES COMPILE_DEFINITIONS KADULIB)
-
+kadu_subdirectory (identities "${identities_SRCS}" "${identities_MOC_SRCS}" "")

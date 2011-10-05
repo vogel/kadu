@@ -27,12 +27,4 @@ set (status_MOC_SRCS
 	status-container-manager.h
 )
 
-qt4_wrap_cpp (status_MOC_FILES ${status_MOC_SRCS})
-
-add_library (status
-	STATIC
-	${status_SRCS}
-	${status_MOC_FILES}
-)
-
-set_target_properties (status PROPERTIES COMPILE_DEFINITIONS KADULIB)
+kadu_subdirectory (status "${status_SRCS}" "${status_MOC_SRCS}" "")

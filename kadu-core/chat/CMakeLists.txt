@@ -63,12 +63,4 @@ set (chat_MOC_SRCS
 	type/chat-type-simple.h
 )
 
-qt4_wrap_cpp (chat_MOC_FILES ${chat_MOC_SRCS})
-
-add_library (chat
-	STATIC
-	${chat_SRCS}
-	${chat_MOC_FILES}
-)
-
-set_target_properties (chat PROPERTIES COMPILE_DEFINITIONS KADULIB)
+kadu_subdirectory (chat "${chat_SRCS}" "${chat_MOC_SRCS}" "")

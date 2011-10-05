@@ -9,12 +9,4 @@ set (plugins_MOC_SRCS
 	plugins-manager.h
 )
 
-qt4_wrap_cpp (plugins_MOC_FILES ${plugins_MOC_SRCS})
-
-add_library (plugins
-	STATIC
-	${plugins_SRCS}
-	${plugins_MOC_FILES}
-)
-
-set_target_properties (plugins PROPERTIES COMPILE_DEFINITIONS KADULIB)
+kadu_subdirectory (plugins "${plugins_SRCS}" "${plugins_MOC_SRCS}" "")

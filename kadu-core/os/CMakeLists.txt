@@ -17,12 +17,4 @@ if (MINGW)
 	)
 endif (MINGW)
 
-qt4_wrap_cpp (os_MOC_FILES ${os_MOC_SRCS})
-
-add_library (os
-	STATIC
-	${os_SRCS}
-	${os_MOC_FILES}
-)
-
-set_target_properties (os PROPERTIES COMPILE_DEFINITIONS KADULIB)
+kadu_subdirectory (os "${os_SRCS}" "${os_MOC_SRCS}" "")

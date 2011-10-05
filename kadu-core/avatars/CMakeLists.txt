@@ -13,12 +13,4 @@ set (avatars_MOC_SRCS
 	avatar-shared.h
 )
 
-qt4_wrap_cpp (avatars_MOC_FILES ${avatars_MOC_SRCS})
-
-add_library (avatars
-	STATIC
-	${avatars_SRCS}
-	${avatars_MOC_FILES}
-)
-
-set_target_properties (avatars PROPERTIES COMPILE_DEFINITIONS KADULIB)
+kadu_subdirectory (avatars "${avatars_SRCS}" "${avatars_MOC_SRCS}" "")

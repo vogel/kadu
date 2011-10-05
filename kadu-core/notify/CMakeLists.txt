@@ -27,12 +27,4 @@ set (notify_MOC_SRCS
 	window-notifier.h
 )
 
-qt4_wrap_cpp (notify_MOC_FILES ${notify_MOC_SRCS})
-
-add_library (notify
-	STATIC
-	${notify_SRCS}
-	${notify_MOC_FILES}
-)
-
-set_target_properties (notify PROPERTIES COMPILE_DEFINITIONS KADULIB)
+kadu_subdirectory (notify "${notify_SRCS}" "${notify_MOC_SRCS}" "")

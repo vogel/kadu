@@ -21,12 +21,4 @@ set (configuration_MOC_SRCS
 	toolbar-configuration-manager.h
 )
 
-qt4_wrap_cpp (configuration_MOC_FILES ${configuration_MOC_SRCS})
-
-add_library (configuration
-	STATIC
-	${configuration_SRCS}
-	${configuration_MOC_FILES}
-)
-
-set_target_properties (configuration PROPERTIES COMPILE_DEFINITIONS KADULIB)
+kadu_subdirectory (configuration "${configuration_SRCS}" "${configuration_MOC_SRCS}" "")

@@ -263,12 +263,4 @@ set (gui_MOC_SRCS
 	windows/open-chat-with/open-chat-with-runner-manager.h
 )
 
-qt4_wrap_cpp (gui_MOC_FILES ${gui_MOC_SRCS})
-
-add_library (gui
-	STATIC
-	${gui_SRCS}
-	${gui_MOC_FILES}
-)
-
-set_target_properties (gui PROPERTIES COMPILE_DEFINITIONS KADULIB)
+kadu_subdirectory (gui "${gui_SRCS}" "${gui_MOC_SRCS}" "")

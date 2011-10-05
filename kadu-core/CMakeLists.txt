@@ -1,3 +1,13 @@
+if (NOT MSVC)
+	option (FAST_LINKING "Enable for faster linking, optimized for low RAM (works best with GCC and GNU ld)" ON)
+else (NOT MSVC)
+	option (FAST_LINKING "Enable for faster linking, optimized for low RAM (works best with GCC and GNU ld)" OFF)
+endif (NOT MSVC)
+
+if (FAST_LINKING)
+	message (STATUS "Fast linking enabled")
+endif (FAST_LINKING)
+
 if (UNIX)
 	option (SIG_HANDLING_ENABLED "Define if you want system signals handling" ON)
 
@@ -29,14 +39,12 @@ set (kadu_SRCS
 )
 
 if (UNIX AND NOT APPLE)
-	set (kadu_SRCS
-		${kadu_SRCS}
+	list (APPEND kadu_SRCS
 		os/x11tools.cpp
 	)
 endif (UNIX AND NOT APPLE)
 if (NOT WIN32)
-	set (kadu_SRCS
-		${kadu_SRCS}
+	list (APPEND kadu_SRCS
 		os/qtsingleapplication/qtlocalpeer.cpp
 		os/qtsingleapplication/qtlockedfile.cpp
 	)
@@ -144,33 +152,69 @@ if (UNIX AND NOT APPLE)
 	)
 endif (UNIX AND NOT APPLE)
 
+macro (kadu_subdirectory SUBDIR SRCS MOC_SRCS ADDITIONAL_INCLUDES)
+	set (MOC_FILES "")
+	if (NOT "${MOC_SRCS}" STREQUAL "")
+		qt4_wrap_cpp (MOC_FILES ${MOC_SRCS})
+	endif (NOT "${MOC_SRCS}" STREQUAL "")
+
+	if (FAST_LINKING)
+		add_library (${SUBDIR}
+			STATIC
+			${SRCS}
+			${MOC_FILES}
+		)
+		set_target_properties (${SUBDIR} PROPERTIES COMPILE_DEFINITIONS KADULIB)
+	else (FAST_LINKING)
+		set (tmp "")
+		foreach (SRC ${SRCS})
+			set (tmp "${tmp};${SUBDIR}/${SRC}")
+		endforeach (SRC)
+
+		# HACK to make this variable visible to the parent directory (i.e., kadu-core)
+		set (${SUBDIR}_SRCS "${tmp};${MOC_FILES}" CACHE INTERNAL "")
+		set (${SUBDIR}_INCLUDES "${ADDITIONAL_INCLUDES}" CACHE INTERNAL "")
+	endif (FAST_LINKING)
+endmacro (kadu_subdirectory)
+
 macro (kadu_source_subdirectories CURRENT_TARGET)
 	foreach (ARG ${ARGN})
 		add_subdirectory (${ARG})
-		link_directories (${ARG})
 
-		add_dependencies (${CURRENT_TARGET}
-			${ARG}
-		)
+		if (FAST_LINKING)
+			link_directories (${ARG})
+			add_dependencies (${CURRENT_TARGET}
+				${ARG}
+			)
+		else (FAST_LINKING)
+			list (APPEND kadu_SRCS "${${ARG}_SRCS}")
+			include_directories (${${ARG}_INCLUDES})
+		endif (FAST_LINKING)
 	endforeach (ARG)
 
-	if (APPLE)
-		target_link_libraries (${CURRENT_TARGET} -Wl,-all_load ${ARGN})
-	else (APPLE)
-		target_link_libraries (${CURRENT_TARGET} -Wl,--start-group -Wl,--whole-archive ${ARGN} -Wl,--no-whole-archive -Wl,--end-group)
-	endif (APPLE)
+	if (FAST_LINKING)
+		if (APPLE)
+			target_link_libraries (${CURRENT_TARGET} -Wl,-all_load ${ARGN})
+		else (APPLE)
+			target_link_libraries (${CURRENT_TARGET} -Wl,--start-group -Wl,--whole-archive ${ARGN} -Wl,--no-whole-archive -Wl,--end-group)
+		endif (APPLE)
+	endif (FAST_LINKING)
 endmacro (kadu_source_subdirectories)
 
 if (WIN32)
-	set (kadu_SRCS
-		${kadu_SRCS}
+	list (APPEND kadu_SRCS
 		os/qtsingleapplication/qtlocalpeer.cpp
 		os/qtsingleapplication/qtlockedfile.cpp
 		os/qtsingleapplication/qtlockedfile_win.cpp
 	)
 
+	if (NOT FAST_LINKING)
+		kadu_source_subdirectories (kadu_core ${kadu_SUBDIRS})
+	endif (NOT FAST_LINKING)
 	add_library (kadu_core SHARED ${kadu_SRCS} ${MOC_FILES} kadu_core.rc)
-	kadu_source_subdirectories (kadu_core ${kadu_SUBDIRS})
+	if (FAST_LINKING)
+		kadu_source_subdirectories (kadu_core ${kadu_SUBDIRS})
+	endif (FAST_LINKING)
 
 	set_target_properties (kadu_core PROPERTIES
 		COMPILE_DEFINITIONS KADULIB
@@ -206,9 +250,13 @@ if (WIN32)
 		FILES_MATCHING PATTERN "*.h" PATTERN ".svn" EXCLUDE
 	)
 else (WIN32)
+	if (NOT FAST_LINKING)
+		kadu_source_subdirectories (kadu ${kadu_SUBDIRS})
+	endif (NOT FAST_LINKING)
 	add_executable (kadu main.cpp main_unix.cpp os/qtsingleapplication/qtlockedfile_unix.cpp ${kadu_SRCS} ${MOC_FILES})
-
-	kadu_source_subdirectories (kadu ${kadu_SUBDIRS})
+	if (FAST_LINKING)
+		kadu_source_subdirectories (kadu ${kadu_SUBDIRS})
+	endif (FAST_LINKING)
 
 	set_target_properties (kadu PROPERTIES
 		ENABLE_EXPORTS ON

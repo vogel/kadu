@@ -3,9 +3,4 @@ set (parser_SRCS
 	parser-token.cpp
 )
 
-add_library (parser
-	STATIC
-	${parser_SRCS}
-)
-
-set_target_properties (parser PROPERTIES COMPILE_DEFINITIONS KADULIB)
+kadu_subdirectory (parser "${parser_SRCS}" "" "")

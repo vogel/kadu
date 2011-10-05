@@ -12,12 +12,4 @@ set (emoticons_MOC_SRCS
 	emoticons-manager.h
 )
 
-qt4_wrap_cpp (emoticons_MOC_FILES ${emoticons_MOC_SRCS})
-
-add_library (emoticons
-	STATIC
-	${emoticons_SRCS}
-	${emoticons_MOC_FILES}
-)
-
-set_target_properties (emoticons PROPERTIES COMPILE_DEFINITIONS KADULIB)
+kadu_subdirectory (emoticons "${emoticons_SRCS}" "${emoticons_MOC_SRCS}" "")

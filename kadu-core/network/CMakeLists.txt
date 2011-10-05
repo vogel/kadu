@@ -49,15 +49,7 @@ else (${NETWORK_IMPLEMENTATION} STREQUAL "Qt")
 	)
 endif (${NETWORK_IMPLEMENTATION} STREQUAL "Qt")
 
-qt4_wrap_cpp (network_MOC_FILES ${network_MOC_SRCS})
-
-add_library (network
-	STATIC
-	${network_SRCS}
-	${network_MOC_FILES}
-)
-
-set_target_properties (network PROPERTIES COMPILE_DEFINITIONS KADULIB)
-
 include_directories (${CMAKE_CURRENT_BINARY_DIR})
-configure_file (${CMAKE_CURRENT_SOURCE_DIR}/kadu-network-config.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/kadu-network-config.h)
+configure_file (kadu-network-config.h.cmake kadu-network-config.h)
+
+kadu_subdirectory (network "${network_SRCS}" "${network_MOC_SRCS}" "${CMAKE_CURRENT_BINARY_DIR}")

@@ -8,12 +8,4 @@ set (icons_MOC_SRCS
 	kadu-icon.h
 )
 
-qt4_wrap_cpp (icons_MOC_FILES ${icons_MOC_SRCS})
-
-add_library (icons
-	STATIC
-	${icons_SRCS}
-	${icons_MOC_FILES}
-)
-
-set_target_properties (icons PROPERTIES COMPILE_DEFINITIONS KADULIB)
+kadu_subdirectory (icons "${icons_SRCS}" "${icons_MOC_SRCS}" "")

@@ -67,12 +67,4 @@ set (buddies_MOC_SRCS
 	model/groups-model.h
 )
 
-qt4_wrap_cpp (buddies_MOC_FILES ${buddies_MOC_SRCS})
-
-add_library (buddies
-	STATIC
-	${buddies_SRCS}
-	${buddies_MOC_FILES}
-)
-
-set_target_properties (buddies PROPERTIES COMPILE_DEFINITIONS KADULIB)
+kadu_subdirectory (buddies "${buddies_SRCS}" "${buddies_MOC_SRCS}" "")

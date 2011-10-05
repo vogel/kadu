@@ -10,12 +10,4 @@ set (multilogon_MOC_SRCS
 	multilogon-session.h
 )
 
-qt4_wrap_cpp (multilogon_MOC_FILES ${multilogon_MOC_SRCS})
-
-add_library (multilogon
-	STATIC
-	${multilogon_SRCS}
-	${multilogon_MOC_FILES}
-)
-
-set_target_properties (multilogon PROPERTIES COMPILE_DEFINITIONS KADULIB)
+kadu_subdirectory (multilogon "${multilogon_SRCS}" "${multilogon_MOC_SRCS}" "")

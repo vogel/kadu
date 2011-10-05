@@ -41,12 +41,4 @@ set (protocols_MOC_SRCS
 	protocol-state-machine.h
 )
 
-qt4_wrap_cpp (protocols_MOC_FILES ${protocols_MOC_SRCS})
-
-add_library (protocols
-	STATIC
-	${protocols_SRCS}
-	${protocols_MOC_FILES}
-)
-
-set_target_properties (protocols PROPERTIES COMPILE_DEFINITIONS KADULIB)
+kadu_subdirectory (protocols "${protocols_SRCS}" "${protocols_MOC_SRCS}" "")

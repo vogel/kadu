@@ -11,12 +11,4 @@ set (themes_MOC_SRCS
 	theme-manager.h
 )
 
-qt4_wrap_cpp (themes_MOC_FILES ${themes_MOC_SRCS})
-
-add_library (themes
-	STATIC
-	${themes_SRCS}
-	${themes_MOC_FILES}
-)
-
-set_target_properties (themes PROPERTIES COMPILE_DEFINITIONS KADULIB)
+kadu_subdirectory (themes "${themes_SRCS}" "${themes_MOC_SRCS}" "")

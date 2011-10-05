@@ -12,12 +12,4 @@ set (storage_MOC_SRCS
 	module-data.h
 )
 
-qt4_wrap_cpp (storage_MOC_FILES ${storage_MOC_SRCS})
-
-add_library (storage
-	STATIC
-	${storage_SRCS}
-	${storage_MOC_FILES}
-)
-
-set_target_properties (storage PROPERTIES COMPILE_DEFINITIONS KADULIB)
+kadu_subdirectory (storage "${storage_SRCS}" "${storage_MOC_SRCS}" "")
