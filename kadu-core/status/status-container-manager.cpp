@@ -275,10 +275,10 @@ QString StatusContainerManager::statusNamePrefix()
 	return tr("All") + ' ';
 }
 
-Status StatusContainerManager::getDefaultStatus(const QString &startupStatus, bool offlineToInvisible, const QString &startupDescription, bool startupLastDescription)
+Status StatusContainerManager::loadStatus()
 {
 	return DefaultStatusContainer
-			? DefaultStatusContainer->getDefaultStatus(startupStatus, offlineToInvisible, startupDescription, startupLastDescription)
+			? DefaultStatusContainer->loadStatus()
 			: Status();
 }
 

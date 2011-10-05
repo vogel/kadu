@@ -94,9 +94,7 @@ public:
 
 	virtual QString statusNamePrefix();
 
-	virtual Status getDefaultStatus(const QString &startupStatus, bool offlineToInvisible,
-				      const QString &startupDescription, bool startupLastDescription);
-
+	virtual Status loadStatus();
 	virtual void storeStatus(Status status);
 
 signals:

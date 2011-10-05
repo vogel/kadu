@@ -56,8 +56,7 @@ public:
 
 	virtual QList<StatusType *> supportedStatusTypes();
 
-	virtual Status getDefaultStatus(const QString &startupStatus, bool offlineToInvisible,
-				      const QString &startupDescription, bool StartupLastDescription);
+	virtual Status loadStatus();
 	virtual void storeStatus(Status status);
 
 };

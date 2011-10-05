@@ -34,32 +34,13 @@ BaseStatusContainer::~BaseStatusContainer()
 {
 }
 
-Status BaseStatusContainer::getDefaultStatus(const QString &startupStatus, bool offlineToInvisible,
-		const QString &startupDescription, bool StartupLastDescription)
+Status BaseStatusContainer::loadStatus()
 {
 	if (!MyStorableObject->isValidStorage())
 		return Status();
 
-	QString description;
-	if (StartupLastDescription)
-		description = MyStorableObject->loadValue<QString>("LastStatusDescription");
-	else
-		description = startupDescription;
-
-	QString name;
-	if (startupStatus == "LastStatus")
-	{
-		name = MyStorableObject->loadValue<QString>("LastStatusName");
-		if (name.isEmpty())
-			name = "Online";
-		else if ("Offline" == name && offlineToInvisible)
-			name = "Invisible";
-	}
-	else
-		name = startupStatus;
-
-	if ("Offline" == name && offlineToInvisible)
-		name = "Invisible";
+	QString name = MyStorableObject->loadValue<QString>("LastStatusName");
+	QString description = MyStorableObject->loadValue<QString>("LastStatusDescription");
 
 	Status status;
 	status.setType(name);

@@ -45,7 +45,19 @@ StatusSetter::~StatusSetter()
 
 void StatusSetter::setDefaultStatus(StatusContainer *statusContainer)
 {
-	Status status = statusContainer->getDefaultStatus(StartupStatus, OfflineToInvisible, StartupDescription, StartupLastDescription);
+	Status status = statusContainer->loadStatus();
+
+	if (!StartupLastDescription)
+		status.setDescription(StartupDescription);
+
+	if (StartupStatus != "LastStatus")
+		status.setType(StartupStatus);
+
+	if (status.type().isEmpty())
+		status.setType("Online");
+	else if ("Offline" == status.type() && OfflineToInvisible)
+		status.setType("Invisible");
+
 	StatusSetter::instance()->setStatus(statusContainer, status);
 }
 
