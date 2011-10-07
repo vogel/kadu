@@ -153,16 +153,16 @@ if (UNIX AND NOT APPLE)
 endif (UNIX AND NOT APPLE)
 
 macro (kadu_subdirectory SUBDIR SRCS MOC_SRCS ADDITIONAL_INCLUDES)
-	set (MOC_FILES "")
-	if (NOT "${MOC_SRCS}" STREQUAL "")
-		qt4_wrap_cpp (MOC_FILES ${MOC_SRCS})
-	endif (NOT "${MOC_SRCS}" STREQUAL "")
-
 	if (FAST_LINKING)
+		set (${SUBDIR}_MOC_FILES "")
+		if (NOT "${MOC_SRCS}" STREQUAL "")
+			qt4_wrap_cpp (${SUBDIR}_MOC_FILES ${MOC_SRCS})
+		endif (NOT "${MOC_SRCS}" STREQUAL "")
+
 		add_library (${SUBDIR}
 			STATIC
 			${SRCS}
-			${MOC_FILES}
+			${${SUBDIR}_MOC_FILES}
 		)
 		set_target_properties (${SUBDIR} PROPERTIES COMPILE_DEFINITIONS KADULIB)
 	else (FAST_LINKING)
@@ -171,8 +171,14 @@ macro (kadu_subdirectory SUBDIR SRCS MOC_SRCS ADDITIONAL_INCLUDES)
 			set (tmp "${tmp};${SUBDIR}/${SRC}")
 		endforeach (SRC)
 
-		# HACK to make this variable visible to the parent directory (i.e., kadu-core)
-		set (${SUBDIR}_SRCS "${tmp};${MOC_FILES}" CACHE INTERNAL "")
+		set (tmp_moc "")
+		foreach (MOC_SRC ${MOC_SRCS})
+			set (tmp_moc "${tmp_moc};${SUBDIR}/${MOC_SRC}")
+		endforeach (MOC_SRC)
+
+		# HACK to make these variables visible to the parent directory (i.e., kadu-core)
+		set (${SUBDIR}_SRCS "${tmp}" CACHE INTERNAL "")
+		set (${SUBDIR}_MOC_SRCS "${tmp_moc}" CACHE INTERNAL "")
 		set (${SUBDIR}_INCLUDES "${ADDITIONAL_INCLUDES}" CACHE INTERNAL "")
 	endif (FAST_LINKING)
 endmacro (kadu_subdirectory)
@@ -188,6 +194,7 @@ macro (kadu_source_subdirectories CURRENT_TARGET)
 			)
 		else (FAST_LINKING)
 			list (APPEND kadu_SRCS "${${ARG}_SRCS}")
+			qt4_wrap_cpp (MOC_FILES "${${ARG}_MOC_SRCS}")
 			include_directories (${${ARG}_INCLUDES})
 		endif (FAST_LINKING)
 	endforeach (ARG)
