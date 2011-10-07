@@ -15,7 +15,7 @@ if (EMOTICON_THEMES)
 	add_dependencies (kadu emoticons_themes)
 
 	install (DIRECTORY ${EMOTICON_THEMES}
-		DESTINATION share/kadu/themes/emoticons
+		DESTINATION ${KADU_DATA_DIR}/themes/emoticons
 		PATTERN ".svn" EXCLUDE
 		PATTERN "readme.txt"
 		PATTERN "emots.txt"

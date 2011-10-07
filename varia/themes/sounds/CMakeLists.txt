@@ -14,7 +14,7 @@ if (SOUND_THEMES)
 	add_dependencies (kadu sound_themes)
 
 	install (DIRECTORY ${SOUND_THEMES}
-		DESTINATION share/kadu/themes/sounds
+		DESTINATION ${KADU_DATA_DIR}/themes/sounds
 		PATTERN ".svn" EXCLUDE
 		PATTERN "*.wav"
 		PATTERN "*.txt"
