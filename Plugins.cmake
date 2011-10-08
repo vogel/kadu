@@ -172,3 +172,5 @@ else (NOT COMPILE_PLUGINS)
 	# Remove empty entries
 	list (REMOVE_ITEM COMPILE_PLUGINS "")
 endif (NOT COMPILE_PLUGINS)
+
+set (COMPILE_PLUGINS "${COMPILE_PLUGINS}" CACHE STRING "Plugins to compile" FORCE)
