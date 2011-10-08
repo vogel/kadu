@@ -271,8 +271,12 @@ macro (kadu_plugin)
 	install (TARGETS ${PLUGIN_NAME} RUNTIME DESTINATION ${KADU_PLUGINS_LIBDIR} LIBRARY DESTINATION ${KADU_PLUGINS_LIBDIR})
 
 	cmake_policy(SET CMP0002 OLD)
-	add_custom_target (tsupdate
+	if (NOT TARGET tsupdate)
+		add_custom_target (tsupdate)
+	endif (NOT TARGET tsupdate)
+	add_custom_target (${PLUGIN_NAME}-tsupdate
 		${CMAKE_INSTALL_PREFIX}/${KADU_PLUGINS_DIR}/sdk/plugintsupdate.sh "${CMAKE_CURRENT_SOURCE_DIR}"
 	)
+	add_dependencies (tsupdate ${PLUGIN_NAME}-tsupdate)
 	cmake_policy(SET CMP0002 NEW)
 endmacro (kadu_plugin)
