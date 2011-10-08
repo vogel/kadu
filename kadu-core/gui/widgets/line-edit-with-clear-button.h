@@ -24,9 +24,11 @@
 
 #include <QtGui/QLineEdit>
 
+#include "exports.h"
+
 class LineEditClearButton;
 
-class LineEditWithClearButton : public QLineEdit
+class KADUAPI LineEditWithClearButton : public QLineEdit
 {
 	Q_OBJECT
 
