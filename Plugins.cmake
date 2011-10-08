@@ -105,7 +105,7 @@ if (NOT COMPILE_PLUGINS)
 
 		# mediaplayer
 			# MPD mediaplayer support (disabled by default because of dependencies but is supposed to work good)
-	#		mpd_mediaplayer
+			mpd_mediaplayer
 			# MPRIS Media Players support
 			mprisplayer_mediaplayer
 		)
