@@ -104,7 +104,7 @@ if (UNIX)
 
 	# mediaplayer
 		# MPD mediaplayer support
-#		mpd_mediaplayer
+		mpd_mediaplayer
 		# MPRIS Media Players support
 		mprisplayer_mediaplayer
 	)
