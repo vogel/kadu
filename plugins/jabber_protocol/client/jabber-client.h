@@ -131,15 +131,15 @@ namespace XMPP
 
 		bool PepAvailable;
 
-		/**
-		* Delete all member classes and reset the class to a predefined state.
-		*/
-		void cleanUp();
-
 		void setPEPAvailable(bool b);
 
 		// TODO 0.10: move this to proper place:
 		QString calculateCapsVersion(const DiscoItem::Identity &identity, const QStringList &features);
+
+                /**
+                 * Delete all member classes and reset the class to a predefined state.
+                 */
+                void cleanUp();
 
 	private slots:
 		/* update the penalty timer */
