@@ -3,5 +3,5 @@ Description=Antistring
 Description[pl]=Ochrona przed ³añcuszkami
 Author=PK Team, Dorregaray
 LoadByDefault=false
-Version=0.3
+Version=core
 Plugin=true

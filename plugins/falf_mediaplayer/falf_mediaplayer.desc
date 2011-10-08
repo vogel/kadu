@@ -5,5 +5,5 @@ Author=amdfanatyk
 Provides=media_player
 Conflicts=media_player
 Dependencies=mediaplayer
-Version=2.3
+Version=core
 Plugin=true

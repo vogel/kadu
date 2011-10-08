@@ -5,5 +5,5 @@ Author=Googie, Vogel, Dorr
 Provides=media_player
 Conflicts=media_player
 Dependencies=mediaplayer
-Version=2.0
+Version=core
 Plugin=true

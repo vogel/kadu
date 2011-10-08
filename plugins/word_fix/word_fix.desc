@@ -3,5 +3,5 @@ Description=Automatic word replacement
 Description[pl]=Automatyczna zamiana s³ów
 Author=PK Team, Dorregaray
 LoadByDefault=false
-Version=0.4
+Version=core
 Plugin=true
