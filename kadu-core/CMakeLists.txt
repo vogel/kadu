@@ -193,10 +193,9 @@ macro (kadu_subdirectory SUBDIR SRCS MOC_SRCS ADDITIONAL_INCLUDES)
 			set (tmp_moc "${tmp_moc};${SUBDIR}/${MOC_SRC}")
 		endforeach (MOC_SRC)
 
-		# HACK to make these variables visible to the parent directory (i.e., kadu-core)
-		set (${SUBDIR}_SRCS "${tmp}" CACHE INTERNAL "")
-		set (${SUBDIR}_MOC_SRCS "${tmp_moc}" CACHE INTERNAL "")
-		set (${SUBDIR}_INCLUDES "${ADDITIONAL_INCLUDES}" CACHE INTERNAL "")
+		set (${SUBDIR}_SRCS "${tmp}" PARENT_SCOPE)
+		set (${SUBDIR}_MOC_SRCS "${tmp_moc}" PARENT_SCOPE)
+		set (${SUBDIR}_INCLUDES "${ADDITIONAL_INCLUDES}" PARENT_SCOPE)
 	endif (FAST_LINKING)
 endmacro (kadu_subdirectory)
 
