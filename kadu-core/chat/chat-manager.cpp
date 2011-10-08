@@ -28,7 +28,7 @@
 #include "chat/chat-details-conference.h"
 #include "chat/chat-details-simple.h"
 
-#include "chat/chat-manager.h"
+#include "chat-manager.h"
 
 ChatManager * ChatManager::Instance = 0;
 

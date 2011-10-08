@@ -40,7 +40,7 @@ FormattedMessagePart::FormattedMessagePart(const QString &imagePath) :
 {
 	if (!ImagePath.isEmpty())
 	{
-		Content = QChar::Nbsp;
+		Content = QChar(QChar::Nbsp);
 		IsImage = true;
 	}
 }

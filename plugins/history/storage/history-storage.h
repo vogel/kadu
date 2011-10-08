@@ -33,7 +33,7 @@
 
 #include "../history_exports.h"
 
-class DatesModelItem;
+struct DatesModelItem;
 class HistorySearchParameters;
 class Message;
 class Status;

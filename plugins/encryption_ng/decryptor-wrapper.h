@@ -39,7 +39,7 @@ private slots:
 	void decryptorDestroyed(QObject *decryptor);
 
 public:
-	DecryptorWrapper(const Chat &chat, EncryptionProviderManager *provider, QObject *parent = 0);
+	DecryptorWrapper(const Chat &chat, EncryptionProviderManager *providerManager, QObject *parent = 0);
 	virtual ~DecryptorWrapper() {}
 
 	virtual QByteArray decrypt(const QByteArray &data, bool *ok = 0);

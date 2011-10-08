@@ -28,7 +28,7 @@
 
 #include "chat/chat.h"
 
-class DatesModelItem;
+struct DatesModelItem;
 
 class ChatDatesModel : public QAbstractListModel
 {

@@ -27,7 +27,7 @@
 
 #include "buddies/buddy.h"
 
-class DatesModelItem;
+struct DatesModelItem;
 
 class BuddyStatusDatesModel : public QAbstractListModel
 {

@@ -20,13 +20,13 @@
 
 #include "decryptor-wrapper.h"
 
-DecryptorWrapper::DecryptorWrapper(const Chat &chat, EncryptionProviderManager *provider, QObject *parent) :
-		Decryptor(provider, parent), MyChat(chat)
+DecryptorWrapper::DecryptorWrapper(const Chat &chat, EncryptionProviderManager *providerManager, QObject *parent) :
+		Decryptor(providerManager, parent), MyChat(chat)
 {
-	connect(provider, SIGNAL(providerRegistered(EncryptionProvider*)),
+	connect(providerManager, SIGNAL(providerRegistered(EncryptionProvider*)),
 			this, SLOT(providerRegistered(EncryptionProvider*)));
 
-	foreach (EncryptionProvider *provider, provider->providers())
+	foreach (EncryptionProvider *provider, providerManager->providers())
 		providerRegistered(provider);
 }
 

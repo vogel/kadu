@@ -62,7 +62,7 @@ public:
 	explicit SingleWindowManager(QObject *parent = 0);
 	virtual ~SingleWindowManager();
 
-	virtual void mainConfigurationWindowCreated(MainConfigurationWindow */*mainConfigurationWindow*/) {};
+	virtual void mainConfigurationWindowCreated(MainConfigurationWindow * /*mainConfigurationWindow*/) {};
 
 };
 

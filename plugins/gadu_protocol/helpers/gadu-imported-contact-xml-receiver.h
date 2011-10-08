@@ -25,12 +25,13 @@
 #include <QtXmlPatterns/QXmlNamePool>
 
 #include "buddies/buddy.h"
+#include "buddies/buddy-list.h"
 
 class GaduImportedContactXmlReceiver : public QAbstractXmlReceiver
 {
 	const QXmlNamePool &XmlNamePool;
 
-	QList<Buddy> ImportedBuddies;
+	BuddyList ImportedBuddies;
 	Buddy CurrentBuddy;
 
 protected:
@@ -51,7 +52,7 @@ public:
 	GaduImportedContactXmlReceiver(const QXmlNamePool &xmlNamePool);
 	~GaduImportedContactXmlReceiver();
 
-	const QList<Buddy> & importedBuddies() { return ImportedBuddies; }
+	const BuddyList & importedBuddies() { return ImportedBuddies; }
 
 };
 
