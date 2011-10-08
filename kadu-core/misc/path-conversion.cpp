@@ -24,6 +24,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <cstdio>
+
 #include <QtCore/QtGlobal>
 #include <QtCore/QDir>
 #include <QtGui/QApplication>
@@ -39,12 +41,6 @@
 #include "kadu-config.h"
 
 #include "path-conversion.h"
-
-#ifndef Q_OS_WIN
-#include <cstdio>
-#include <pwd.h>
-#include <stdlib.h>
-#endif
 
 #if HAVE_EXECINFO
 #include <execinfo.h>
@@ -107,12 +103,7 @@ QString homePath()
 				path = QDir::homePath();
 		}
 #else
-		// TODO passwd usage is probably unneeded. If you are 100% sure it's the case, please remove.
-		struct passwd *pw;
-		if ((pw = getpwuid(getuid())))
-			path = QString::fromLocal8Bit(pw->pw_dir);
-		else
-			path = QDir::homePath();
+		path = QDir::homePath();
 #endif
 
 		Parser::GlobalVariables["HOME"] = path;
