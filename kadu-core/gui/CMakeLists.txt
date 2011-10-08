@@ -259,6 +259,12 @@ set (gui_MOC_SRCS
 	windows/open-chat-with/open-chat-with-runner-manager.h
 )
 
+if (MINGW)
+	set_source_files_properties (windows/open-chat-with/open-chat-with.cpp PROPERTIES
+		COMPILE_FLAGS "-fno-strict-aliasing"
+	)
+endif (MINGW)
+
 qt4_wrap_cpp (gui_MOC_FILES ${gui_MOC_SRCS})
 
 add_library (gui
