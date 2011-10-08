@@ -11,10 +11,18 @@ endif (FAST_LINKING)
 if (UNIX)
 	option (SIG_HANDLING_ENABLED "Define if you want system signals handling" ON)
 
-	if (UNIX AND NOT APPLE)
+	if (NOT APPLE)
 		option (USE_X11_XFIXES "Use X11 XFixes extension (Desktop Linux)" ON)
-		option (WITH_LIBINDICATE_QT "Compile with Messaging Menu (Ayatana) support trough libindicate-qt" OFF)
-	endif (UNIX AND NOT APPLE)
+
+		pkg_search_module (INDICATEQT indicate-qt)
+		if (INDICATEQT_FOUND)
+			message (STATUS "libindicate-qt devel found. Enabling Ayatana support")
+			option (WITH_LIBINDICATE_QT "Compile with Messaging Menu (Ayatana) support trough libindicate-qt" ON)
+		else (INDICATEQT_FOUND)
+			message (STATUS "libindicate-qt devel NOT FOUND. Disabling Ayatana support")
+			option (WITH_LIBINDICATE_QT "Compile with Messaging Menu (Ayatana) support trough libindicate-qt" OFF)
+		endif (INDICATEQT_FOUND)
+	endif (NOT APPLE)
 endif (UNIX)
 
 if (NOT NETWORK_IMPLEMENTATION)
@@ -120,7 +128,6 @@ if (UNIX AND NOT APPLE)
 		# We need to link core to libindicate-qt so that indicator_docking
 		# doesn't crash at unloading. And it crashes mainly because dbus-glib
 		# doesn't support being dlclose()'d, so there is no better workaround.
-		pkg_search_module (INDICATEQT REQUIRED indicate-qt)
 		link_directories (${INDICATEQT_LIBRARY_DIRS})
 		add_definitions (${INDICATEQT_CFLAGS_OTHER})
 		include_directories (${INDICATEQT_INCLUDE_DIRS})
