@@ -136,12 +136,12 @@ namespace XMPP
 		// TODO 0.10: move this to proper place:
 		QString calculateCapsVersion(const DiscoItem::Identity &identity, const QStringList &features);
 
+	private slots:
                 /**
                  * Delete all member classes and reset the class to a predefined state.
                  */
                 void cleanUp();
 
-	private slots:
 		/* update the penalty timer */
 		void slotUpdatePenaltyTime();
 

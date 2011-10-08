@@ -6,7 +6,6 @@
 * gui: added support for images drag&drop in chat edit box (ultr)
 * gui: #2077 fixed: untoggle disabled actions (Vogel)
 * history: #2197 fixed: show history button now has proper implementation of menu (Vogel)
-* jabber: #2305 fixed: setting XMPP offline status with status message works now (Juzef)
 
 +++ version 0.10.1
 * gadu: clearer contact list synchronization message when updating from <0.10.0 (beevvy)
@@ -15,6 +14,7 @@
 * gadu, jabber: #2321 fixed: do not allow to add two identical accounts (beevvy)
 * gui: #2308 fixed: collapse items on buddies list when disabling expanding control (beevvy)
 * gui: #2313 fixed: use bigger z-index for compositing icon in adium chat styles (Vogel)
+* jabber: #2305 fixed: setting XMPP offline status with status message works now (Juzef)
 
 +++ version 0.10.0
 * sms: small changes that will ease updating gateway scripts (beevvy)
