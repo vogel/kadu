@@ -125,8 +125,8 @@ public:
 
 	virtual QString statusContainerName();
 
-	virtual Status status();
 	virtual void setStatus(Status newStatus);
+	virtual Status status();
 	virtual bool isStatusSettingInProgress();
 	virtual int maxDescriptionLength();
 

@@ -75,8 +75,6 @@ class KaduWindowActions : QObject, ConfigurationAwareObject
 	ChangeStatusAction *ChangeStatus;
 
 private slots:
-	void statusChanged(StatusContainer *container, Status status);
-
 	void showMultilogonsActionCreated(Action *action);
 	void inactiveUsersActionCreated(Action *action);
 	void descriptionUsersActionCreated(Action *action);

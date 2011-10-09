@@ -23,7 +23,6 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
-#include "configuration/configuration-file.h"
 #include "configuration/main-configuration-holder.h"
 #include "core/core.h"
 #include "identities/identity-manager.h"
@@ -47,11 +46,9 @@ StatusContainerManager * StatusContainerManager::instance()
 }
 
 StatusContainerManager::StatusContainerManager() :
-		StatusContainer(0), AllowSetDefaultStatus(false), DefaultStatusContainer(0)
+		StatusContainer(0), DefaultStatusContainer(0)
 {
 	AllAccountsContainer = new AllAccountsStatusContainer(this);
-
-	configurationUpdated();
 
 	if (MainConfigurationHolder::instance()->isSetStatusPerIdentity())
 		triggerAllIdentitiesAdded();
@@ -119,19 +116,6 @@ void StatusContainerManager::identityRemoved(Identity identity)
 		unregisterStatusContainer(identity);
 }
 
-void StatusContainerManager::configurationUpdated()
-{
-	StartupStatus = config_file.readEntry("General", "StartupStatus");
-	StartupLastDescription = config_file.readBoolEntry("General", "StartupLastDescription");
-	StartupDescription = config_file.readEntry("General", "StartupDescription");
-	OfflineToInvisible = config_file.readBoolEntry("General", "StartupStatusInvisibleWhenLastWasOffline") && StartupStatus != "Offline";
-
-	if (StartupStatus.isEmpty())
-		StartupStatus = "LastStatus";
-	else if (StartupStatus == "Busy")
-		StartupStatus =  "Away";
-}
-
 void StatusContainerManager::cleanStatusContainers()
 {
 	while (!StatusContainers.isEmpty())
@@ -190,9 +174,6 @@ void StatusContainerManager::registerStatusContainer(StatusContainer *statusCont
 	StatusContainerAwareObject::notifyStatusContainerRegistered(statusContainer);
 
 	connect(statusContainer, SIGNAL(statusUpdated()), this, SIGNAL(statusUpdated()));
-
-	if (AllowSetDefaultStatus)
-		statusContainer->setDefaultStatus(StartupStatus, OfflineToInvisible, StartupDescription, StartupLastDescription);
 }
 
 void StatusContainerManager::unregisterStatusContainer(StatusContainer *statusContainer)
@@ -213,19 +194,11 @@ void StatusContainerManager::unregisterStatusContainer(StatusContainer *statusCo
 	disconnect(statusContainer, SIGNAL(statusUpdated()), this, SIGNAL(statusUpdated()));
 }
 
-void StatusContainerManager::setAllowSetDefaultStatus(bool allowSetDefaultStatus)
+bool StatusContainerManager::allStatusOfType(StatusType *type)
 {
-	if (AllowSetDefaultStatus == allowSetDefaultStatus)
-		return;
+	if (!type)
+		return false;
 
-	AllowSetDefaultStatus = allowSetDefaultStatus;
-	if (AllowSetDefaultStatus)
-		foreach (StatusContainer *statusContainer, StatusContainers)
-			statusContainer->setDefaultStatus(StartupStatus, OfflineToInvisible, StartupDescription, StartupLastDescription);
-}
-
-bool StatusContainerManager::allStatusEqual(StatusType *type)
-{
 	foreach (StatusContainer *container, StatusContainers)
 		if (container->status().type() != type->name())
 			return false;
@@ -237,16 +210,10 @@ QString StatusContainerManager::statusContainerName()
 	return tr("All");
 }
 
-void StatusContainerManager::setStatus(Status newStatus)
+void StatusContainerManager::setStatus(Status status)
 {
 	foreach (StatusContainer *container, StatusContainers)
-		container->setStatus(newStatus);
-}
-
-void StatusContainerManager::setDescription(const QString &description)
-{
-	foreach (StatusContainer *container, StatusContainers)
-		container->setDescription(description);
+		container->setStatus(status);
 }
 
 Status StatusContainerManager::status()
@@ -309,6 +276,13 @@ int StatusContainerManager::maxDescriptionLength()
 QString StatusContainerManager::statusNamePrefix()
 {
 	return tr("All") + ' ';
+}
+
+Status StatusContainerManager::loadStatus()
+{
+	return DefaultStatusContainer
+			? DefaultStatusContainer->loadStatus()
+			: Status();
 }
 
 void StatusContainerManager::storeStatus(Status status)

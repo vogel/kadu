@@ -72,7 +72,6 @@
 #include "os/generic/url-opener.h"
 #include "parser/parser.h"
 #include "protocols/protocol.h"
-#include "status/status-changer-manager.h"
 #include "status/status-container-manager.h"
 #include "url-handlers/url-handler-manager.h"
 
@@ -380,28 +379,10 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 	Actions::instance()->unblockSignals();
 
 	ChangeStatus = new ChangeStatusAction(this);
-
-	connect(StatusChangerManager::instance(), SIGNAL(statusChanged(StatusContainer *, Status)), this, SLOT(statusChanged(StatusContainer *, Status)));
-	foreach (StatusContainer *statusContainer, StatusContainerManager::instance()->statusContainers())
-		statusChanged(statusContainer, StatusChangerManager::instance()->realStatus(statusContainer));
 }
 
 KaduWindowActions::~KaduWindowActions()
 {
-}
-
-void KaduWindowActions::statusChanged(StatusContainer *container, Status status)
-{
-	if (!container)
-		return;
-
-	KaduIcon icon = container->statusIcon(status);
-	foreach (Action *action, ChangeStatus->actions())
-		if (action->statusContainer() == container)
-			action->setIcon(icon);
-
-	if (container == StatusContainerManager::instance()->defaultStatusContainer() && container != StatusContainerManager::instance())
-		statusChanged(StatusContainerManager::instance(), status);
 }
 
 void KaduWindowActions::showMultilogonsActionCreated(Action *action)

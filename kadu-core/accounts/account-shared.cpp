@@ -31,7 +31,7 @@
 #include "misc/misc.h"
 #include "protocols/protocol.h"
 #include "protocols/protocols-manager.h"
-#include "status/status-changer-manager.h"
+#include "status/status-setter.h"
 
 #include "account-shared.h"
 
@@ -180,7 +180,7 @@ void AccountShared::setDisconnectStatus()
 	else
 		disconnectStatus.setDescription(disconnectDescription);
 
-	setStatus(disconnectStatus);
+	StatusSetter::instance()->setStatus(this, disconnectStatus);
 }
 
 void AccountShared::useProtocolFactory(ProtocolFactory *factory)

@@ -29,6 +29,7 @@
 #include "protocols/protocol.h"
 #include "status/status-actions.h"
 #include "status/status-group.h"
+#include "status/status-setter.h"
 #include "status/status-type.h"
 #include "status/status-type-manager.h"
 
@@ -70,9 +71,10 @@ void StatusMenu::changeStatus(QAction *action)
 	if (!statusType)
 		return;
 
-	Status status(MyStatusContainer->status());
+	Status status(StatusSetter::instance()->manuallySetStatus(MyStatusContainer));
 	status.setType(statusType->name());
-	MyStatusContainer->setStatus(status);
+
+	StatusSetter::instance()->setStatus(MyStatusContainer, status);
 	MyStatusContainer->storeStatus(status);
 }
 

@@ -38,7 +38,6 @@
 #include "icons/kadu-icon.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocol-state-machine.h"
-#include "status/status-changer-manager.h"
 #include "status/status-type-manager.h"
 #include "status/status.h"
 #include "debug.h"
@@ -65,9 +64,6 @@ Protocol::Protocol(Account account, ProtocolFactory *factory) :
 	connect(Machine, SIGNAL(loggedOutOfflineStateEntered()), this, SLOT(loggedOutAnyStateEntered()));
 	connect(Machine, SIGNAL(wantToLogInStateEntered()), this, SLOT(wantToLogInStateEntered()));
 	connect(Machine, SIGNAL(passwordRequiredStateEntered()), this, SLOT(passwordRequiredStateEntered()));
-
-	connect(StatusChangerManager::instance(), SIGNAL(statusChanged(StatusContainer*,Status)),
-			this, SLOT(statusChanged(StatusContainer*,Status)));
 }
 
 Protocol::~Protocol()
@@ -120,24 +116,12 @@ void Protocol::disconnectedCleanup()
 
 void Protocol::setStatus(Status status)
 {
-	StatusChangerManager::instance()->setStatus(account().statusContainer(), status);
+	LoginStatus = status;
+	doSetStatus(status);
 }
 
-Status Protocol::loginStatus() const
+void Protocol::doSetStatus(Status status)
 {
-	return StatusChangerManager::instance()->realStatus(account().statusContainer());
-}
-
-Status Protocol::status() const
-{
-	return CurrentStatus;
-}
-
-void Protocol::statusChanged(StatusContainer *container, Status status)
-{
-	if (!container || container != account().statusContainer())
-		return;
-
 	// If we are in logging-in state and user requested stopping connecting,
 	// CurrentStatus and status are both offline but we still have to emit
 	// stateMachineLogout() signal to actually stop connecting.
@@ -154,6 +138,16 @@ void Protocol::statusChanged(StatusContainer *container, Status status)
 	}
 	else
 		emit stateMachineLogout();
+}
+
+Status Protocol::loginStatus() const
+{
+	return LoginStatus;
+}
+
+Status Protocol::status() const
+{
+	return CurrentStatus;
 }
 
 void Protocol::loggedIn()
@@ -180,7 +174,7 @@ void Protocol::connectionError()
 
 void Protocol::connectionClosed()
 {
-	setStatus(Status());
+	doSetStatus(Status());
 	statusChanged(Status());
 
 	emit stateMachineConnectionClosed();

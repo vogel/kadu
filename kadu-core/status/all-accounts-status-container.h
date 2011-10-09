@@ -45,7 +45,6 @@ public:
 	virtual void setStatus(Status newStatus);
 	virtual Status status();
 	virtual bool isStatusSettingInProgress();
-	virtual void setDescription(const QString &description);
 
 	virtual int maxDescriptionLength();
 
@@ -57,8 +56,7 @@ public:
 
 	virtual QList<StatusType *> supportedStatusTypes();
 
-	virtual void setDefaultStatus(const QString &startupStatus, bool offlineToInvisible,
-				      const QString &startupDescription, bool StartupLastDescription);
+	virtual Status loadStatus();
 	virtual void storeStatus(Status status);
 
 };

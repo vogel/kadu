@@ -155,7 +155,7 @@ void StatusActions::statusUpdated()
 		{
 			// For 'All xxx' status menu items - check only if all accounts have the same status
 			if (StatusContainerManager::instance() == MyStatusContainer)
-				action->setChecked(StatusContainerManager::instance()->allStatusEqual(statusType));
+				action->setChecked(StatusContainerManager::instance()->allStatusOfType(statusType));
 			else
 				action->setChecked(statusTypeName == statusType->name());
 		}

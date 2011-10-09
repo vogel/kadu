@@ -48,7 +48,7 @@ public:
 
 	const QString & group() const { return Group; }
 
-	const QString & displayName() const { return DisplayName; };
+	const QString & displayName() const { return DisplayName; }
 
 	const QString & description() const { return Description; }
 	void setDescription(const QString &description) { Description = description; }

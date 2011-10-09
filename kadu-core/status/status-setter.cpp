@@ -1,0 +1,103 @@
+/*
+ * %kadu copyright begin%
+ * Copyright 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * %kadu copyright end%
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of
+ * the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#include "configuration/configuration-file.h"
+#include "status/status-changer-manager.h"
+#include "status/status-container-manager.h"
+
+#include "status-setter.h"
+
+StatusSetter * StatusSetter::Instance = 0;
+
+StatusSetter * StatusSetter::instance()
+{
+	if (0 == Instance)
+		Instance = new StatusSetter();
+
+	return Instance;
+}
+
+StatusSetter::StatusSetter() :
+		CoreInitialized(false)
+{
+	configurationUpdated();
+}
+
+StatusSetter::~StatusSetter()
+{
+}
+
+void StatusSetter::setDefaultStatus(StatusContainer *statusContainer)
+{
+	Status status = statusContainer->loadStatus();
+
+	if (!StartupLastDescription)
+		status.setDescription(StartupDescription);
+
+	if (StartupStatus != "LastStatus")
+		status.setType(StartupStatus);
+
+	if (status.type().isEmpty())
+		status.setType("Online");
+	else if ("Offline" == status.type() && OfflineToInvisible)
+		status.setType("Invisible");
+
+	StatusSetter::instance()->setStatus(statusContainer, status);
+}
+
+void StatusSetter::coreInitialized()
+{
+	CoreInitialized = true;
+	foreach (StatusContainer *statusContainer, StatusContainerManager::instance()->statusContainers())
+		setDefaultStatus(statusContainer);
+}
+
+void StatusSetter::configurationUpdated()
+{
+	StartupStatus = config_file.readEntry("General", "StartupStatus");
+	StartupLastDescription = config_file.readBoolEntry("General", "StartupLastDescription");
+	StartupDescription = config_file.readEntry("General", "StartupDescription");
+	OfflineToInvisible = config_file.readBoolEntry("General", "StartupStatusInvisibleWhenLastWasOffline") && StartupStatus != "Offline";
+
+	if (StartupStatus.isEmpty())
+		StartupStatus = "LastStatus";
+	else if (StartupStatus == "Busy")
+		StartupStatus =  "Away";
+}
+
+void StatusSetter::statusContainerRegistered(StatusContainer *statusContainer)
+{
+	if (CoreInitialized)
+		setDefaultStatus(statusContainer);
+}
+
+void StatusSetter::statusContainerUnregistered(StatusContainer *statusContainer)
+{
+	Q_UNUSED(statusContainer);
+}
+
+void StatusSetter::setStatus(StatusContainer *statusContainer, Status status)
+{
+	StatusChangerManager::instance()->setStatus(statusContainer, status);
+}
+
+Status StatusSetter::manuallySetStatus(StatusContainer *statusContainer)
+{
+	return StatusChangerManager::instance()->manuallySetStatus(statusContainer);
+}
