@@ -44,26 +44,26 @@ ScreenshotAction::~ScreenshotAction()
 {
 }
 
-QMenu * ScreenshotAction::menuForAction(Action *action)
+void ScreenshotAction::actionInstanceCreated(Action *action)
 {
 	ChatEditBox *chatEditBox = qobject_cast<ChatEditBox *>(action->parent());
-	Chat chat = action->chat();
+	if (!chatEditBox || !chatEditBox->chatWidget())
+		return;
+
+	QVariant chatWidgetData = (qlonglong)chatEditBox->chatWidget();
+	action->setData(chatWidgetData);
 
 	// not a menu
-	if (!chatEditBox || chat != chatEditBox->chat())
-		return 0;
-
-	ChatWidget *chatWidget = chatEditBox->chatWidget();
-	if (!chatWidget)
-		return 0;
+	if (action->chat() != chatEditBox->chat())
+		return;
 
 	// no parents for menu as it is destroyed manually by Action class
 	QMenu *menu = new QMenu();
-	menu->addAction(tr("Simple shot"), this, SLOT(takeStandardShotSlot()));
-	menu->addAction(tr("With chat window hidden"), this, SLOT(takeShotWithChatWindowHiddenSlot()));
-	menu->addAction(tr("Window shot"), this, SLOT(takeWindowShotSlot()));
+	menu->addAction(tr("Simple shot"), this, SLOT(takeStandardShotSlot()))->setData(chatWidgetData);
+	menu->addAction(tr("With chat window hidden"), this, SLOT(takeShotWithChatWindowHiddenSlot()))->setData(chatWidgetData);
+	menu->addAction(tr("Window shot"), this, SLOT(takeWindowShotSlot()))->setData(chatWidgetData);
 
-	return menu;
+	action->setMenu(menu);
 }
 
 void ScreenshotAction::actionTriggered(QAction *sender, bool toggled)
@@ -95,15 +95,10 @@ void ScreenshotAction::updateActionState(Action *action)
 
 ChatWidget * ScreenshotAction::findChatWidget(QObject *object)
 {
-	while (object) {
-		ChatEditBox *chatEditBox = qobject_cast<ChatEditBox *>(object);
-		if (chatEditBox)
-			return chatEditBox->chatWidget();
-
-		object = object->parent();
-	}
-
-	return 0;
+	QAction *action = qobject_cast<QAction *>(object);
+	if (!action)
+		return 0;
+	return static_cast<ChatWidget *>((void*)(action->data().toLongLong()));
 }
 
 void ScreenshotAction::takeStandardShotSlot(ChatWidget *chatWidget)

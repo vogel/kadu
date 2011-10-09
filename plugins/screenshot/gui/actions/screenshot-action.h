@@ -38,7 +38,7 @@ private slots:
 	void takeWindowShotSlot();
 
 protected:
-	virtual QMenu * menuForAction(Action *action);
+	virtual void actionInstanceCreated(Action *action);
 	virtual void actionTriggered(QAction *sender, bool toggled);
 	virtual void updateActionState(Action *action);
 

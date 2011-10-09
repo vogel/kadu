@@ -32,13 +32,19 @@ class HISTORYAPI ShowHistoryActionDescription : public ActionDescription
 
 	int ChatHistoryQuotationTime;
 
+	void showDaysMessages(QAction *action, int days);
+
 private slots:
-	void showMoreMessages(QAction *action);
+	void showPruneMessages();
+	void showOneDayMessages();
+	void show7DaysMessages();
+	void show30DaysMessages();
+	void showAllMessages();
 
 protected:
 	virtual void configurationUpdated();
 
-	virtual QMenu * menuForAction(Action *action);
+	virtual void actionInstanceCreated(Action *action);
 	virtual void actionTriggered(QAction *sender, bool toggled);
 
 public:
