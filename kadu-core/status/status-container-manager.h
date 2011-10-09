@@ -238,7 +238,7 @@ public:
 	 *
 	 * Returns true if statuses of all acvite status containers are of given type.
 	 */
-	bool allStatusEqual(StatusType *type);
+	bool allStatusOfType(StatusType *type);
 
 	// StatusContainer Implementation
 

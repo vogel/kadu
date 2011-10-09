@@ -194,8 +194,11 @@ void StatusContainerManager::unregisterStatusContainer(StatusContainer *statusCo
 	disconnect(statusContainer, SIGNAL(statusUpdated()), this, SIGNAL(statusUpdated()));
 }
 
-bool StatusContainerManager::allStatusEqual(StatusType *type)
+bool StatusContainerManager::allStatusOfType(StatusType *type)
 {
+	if (!type)
+		return false;
+
 	foreach (StatusContainer *container, StatusContainers)
 		if (container->status().type() != type->name())
 			return false;
