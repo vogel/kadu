@@ -206,7 +206,11 @@ void gadu_resolver_cleanup(void **priv_data, int force)
 
 	if (data->wfd != -1)
 	{
+#ifdef Q_OS_WIN
+		closesocket(data->wfd);
+#else
 		close(data->wfd);
+#endif
 		data->wfd = -1;
 	}
 	delete data;
