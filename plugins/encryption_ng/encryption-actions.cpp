@@ -140,7 +140,7 @@ EncryptionActions::~EncryptionActions()
 
 	disconnect(EncryptionProviderManager::instance(), SIGNAL(canEncryptChanged(Chat)), this, SLOT(canEncryptChanged(Chat)));
 
-	delete GenerateKeysMenu;
+	// actions is owner of menu, no need to delete here
 	GenerateKeysMenu = 0;
 }
 

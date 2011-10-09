@@ -106,7 +106,8 @@ JabberActions::~JabberActions()
 {
 	Core::instance()->kaduWindow()->removeMenuActionDescription(ShowXmlConsole);
 
-	delete ShowXmlConsoleMenu;
+	// action is owner of this object
+	ShowXmlConsoleMenu = 0;
 }
 
 Contact JabberActions::contactFromAction(QAction *action)
