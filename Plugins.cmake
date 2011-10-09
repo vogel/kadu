@@ -104,7 +104,7 @@ if (NOT COMPILE_PLUGINS)
 		list (APPEND COMPILE_PLUGINS
 
 		# mediaplayer
-			# MPD mediaplayer support (disabled by default because of dependencies but is supposed to work good)
+			# MPD mediaplayer support
 			mpd_mediaplayer
 			# MPRIS Media Players support
 			mprisplayer_mediaplayer
