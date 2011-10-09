@@ -105,6 +105,9 @@ int GaduProtocol::maxDescriptionLength()
 
 void GaduProtocol::sendStatusToServer()
 {
+	if (!GaduSession)
+		return;
+
 	Status newStatus = status();
 
 	int friends = account().privateStatus() ? GG_STATUS_FRIENDS_MASK : 0;
