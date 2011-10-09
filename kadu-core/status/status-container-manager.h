@@ -39,6 +39,7 @@ class AllAccountsStatusContainer;
  * @author Rafał 'Vogel' Malinowski
  * @short Class responsible for managing list of active status container.
  * @see StatusContainer
+ * @see StatusContainerAwareObject
  *
  * This class is responsible for managing list of active status containers. For current Kadu implementation
  * this list can be either:
@@ -52,6 +53,8 @@ class AllAccountsStatusContainer;
  *
  * StatusContainerManager is also a status container that delegates all of its getters to default status container (first
  * registered) and setters to all active status containers.
+ *
+ * Each class of type StatusContainerAwareObject is notified about registered and unregistered status contianers.
  */
 class KADUAPI StatusContainerManager : public StatusContainer, private AccountsAwareObject, private IdentitiesAwareObject
 {
