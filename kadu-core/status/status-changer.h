@@ -28,6 +28,27 @@
 class Status;
 class StatusContainer;
 
+/**
+ * @addtogroup Status
+ * @{
+ */
+
+/**
+ * @class StatusChanger
+ * @author Rafał 'Vogel' Malinowski
+ * @short Class responsible for changing status.
+ * @see StatusChangerManager
+ *
+ * This class is responsible for changing user status according to some rules. For example, implementation of this class
+ * from media player plugin can add title of current song before or after user set description. Implemenation from
+ * autoaway plugin can lower availability of current status depending of user activity.
+ *
+ * All instances of StatusChanger subclasses are registered in StatusChangerManager. Their changeStatus methods
+ * are called in order depending of priority (lower number of priority means that this class will be used first).
+ *
+ * Every StatusChanger can emit statusChanged signal to inform StatusChangerManager that status must be recalculated,
+ * because some conditions may have changed (like currently playing song or user activity).
+ */
 class KADUAPI StatusChanger : public QObject
 {
 	Q_OBJECT
@@ -35,16 +56,54 @@ class KADUAPI StatusChanger : public QObject
 	int Priority;
 
 public:
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Creates new instance of StatusChanger.
+	 * @param priority priority of given StatusChanger
+	 * @param parent parent of given StatusChanger
+	 *
+	 * Creates new instance of StatusChanger. Lower number of priority means that this class will be used first in
+	 * status calculations.
+	 */
 	explicit StatusChanger(int priority, QObject *parent = 0);
 	virtual ~StatusChanger();
 
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Returns priority of this StatusChanger.
+	 * @return priority of this StatusChanger
+	 *
+	 * Returns priority of this StatusChanger. Lower number of priority means that this class will be used first in
+	 * status calculations.
+	 */
 	int priority();
 
-	virtual void changeStatus(StatusContainer *container, Status &status) = 0;
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Method called to change given status.
+	 * @param statusContainer status container of given status
+	 * @param status status to change
+	 *
+	 * Reimplement this method to change status in any way. Status is passed as reference for performance reasons.
+	 */
+	virtual void changeStatus(StatusContainer *statusContainer, Status &status) = 0;
 
 signals:
-	void statusChanged(StatusContainer *);
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Signal emited when status for given status container needs recalculation.
+	 * @param statusContainer container that requires status recalculation
+	 *
+	 * Emit this status when StatusChangerManager should recalculate status for given container (for example
+	 * when currently playing song changed or user activity changed). Use 0 for statusContainer if all
+	 * statuses needs to be recalculated.
+	 */
+	void statusChanged(StatusContainer *statusContainer);
 
 };
+
+/**
+ * @}
+ */
 
 #endif // STATUS_CHANGER_H
