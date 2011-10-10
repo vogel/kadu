@@ -31,6 +31,8 @@
 
 #include "contacts/contact-manager.h"
 #include "misc/misc.h"
+#include "status/status-type-data.h"
+#include "status/status-type-manager.h"
 #include "debug.h"
 
 #include "infos.h"
@@ -86,7 +88,7 @@ InfosDialog::InfosDialog(const LastSeen &lastSeen, QWidget *parent) :
 				<< ip
 				<< contact.dnsName()
 				<< desc
-				<< contact.currentStatus().type()
+				<< StatusTypeManager::instance()->statusTypeData(contact.currentStatus().type()).name()
 				<< lastSeen[qMakePair(contact.contactAccount().protocolName(), contact.id())];
 
 		listView->addTopLevelItem(new QTreeWidgetItem(labels));

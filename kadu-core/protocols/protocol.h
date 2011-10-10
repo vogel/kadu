@@ -143,7 +143,7 @@ public:
 
 	KaduIcon statusIcon();
 	KaduIcon statusIcon(const Status &status);
-	KaduIcon statusIcon(const QString &statusType);
+	KaduIcon statusIcon(const StatusType statusType);
 
 	KaduIcon icon();
 

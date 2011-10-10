@@ -19,45 +19,23 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef STATUS_TYPE
-#define STATUS_TYPE
+#ifndef STATUS_TYPE_H
+#define STATUS_TYPE_H
 
-#include <QtCore/QString>
 #include <QtCore/QVariant>
 
-#include "status/status-type-group.h"
-
-#include "exports.h"
-
-class KADUAPI StatusType
+enum StatusType
 {
-	QString Name;
-	QString DisplayName;
-	QString IconName;
-
-	StatusTypeGroup TypeGroup;
-
-	int SortIndex;
-
-public:
-	static bool lessThan(const StatusType *left, const StatusType *right);
-
-	StatusType(const QString &name, const QString &displayName, const QString &iconName, StatusTypeGroup typeGroup, int sortIndex);
-
-	const QString & name() const { return Name; }
-	const QString & displayName() const { return DisplayName; }
-	const QString & iconName() const { return IconName; }
-
-	StatusTypeGroup typeGroup() { return TypeGroup; }
-
-	int sortIndex() { return SortIndex; }
-
-	bool operator < (const StatusType &compare) const;
-	bool operator == (const StatusType &compare) const;
-	bool operator != (const StatusType &compare) const;
-
+	StatusTypeNone = -1,
+	StatusTypeFreeForChat = 0,
+	StatusTypeOnline = 10,
+	StatusTypeAway = 20,
+	StatusTypeNotAvailable = 30,
+	StatusTypeDoNotDisturb = 40,
+	StatusTypeInvisible = 50,
+	StatusTypeOffline = 60
 };
 
-Q_DECLARE_METATYPE(StatusType *)
+Q_DECLARE_METATYPE(StatusType)
 
-#endif // STATUS_TYPE
+#endif // STATUS_TYPE_H

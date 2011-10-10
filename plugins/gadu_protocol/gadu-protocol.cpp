@@ -206,7 +206,7 @@ void GaduProtocol::connectedToServer()
 	loggedIn();
 
 	// workaround about servers errors
-	if ("Invisible" == status().type())
+	if (StatusTypeInvisible == status().type())
 		sendStatusToServer();
 
 	kdebugf2();

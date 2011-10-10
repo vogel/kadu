@@ -66,7 +66,7 @@ void StatusIcon::blink()
 	BlinkOffline = !BlinkOffline;
 
 	if (BlinkOffline)
-		setIcon(MyStatusContainer->statusIcon(Status(QLatin1String("Offline"))));
+		setIcon(MyStatusContainer->statusIcon(StatusTypeOffline));
 	else
 		setIcon(MyStatusContainer->statusIcon());
 }

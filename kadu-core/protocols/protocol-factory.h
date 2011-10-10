@@ -45,8 +45,9 @@ class ContactShared;
 class KaduIcon;
 class Protocol;
 class ProtocolMenuManager;
-class StatusType;
 class StoragePoint;
+
+enum StatusType;
 
 class KADUAPI ProtocolFactory : public QObject
 {
@@ -61,7 +62,7 @@ public:
 	virtual AccountEditWidget * newEditAccountWidget(Account, QWidget *parent = 0) = 0;
 	virtual QWidget * newContactPersonalInfoWidget(Contact contact, QWidget *parent = 0) = 0;
 	virtual ProtocolMenuManager * protocolMenuManager() { return 0; }
-	virtual QList<StatusType *> supportedStatusTypes() = 0;
+	virtual QList<StatusType> supportedStatusTypes() = 0;
 	virtual QString idLabel() = 0;
 	virtual QValidator::State validateId(QString id) = 0;
 	virtual bool canRegister() { return true; }

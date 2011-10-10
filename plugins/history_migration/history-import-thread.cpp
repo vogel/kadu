@@ -158,32 +158,32 @@ void HistoryImportThread::importEntry(const Chat &chat, const HistoryEntry &entr
 		}
 		case HistoryEntry::StatusChange:
 		{
-			QString statusStr;
+			StatusType statusType;
 			switch (entry.Status)
 			{
 				case HistoryEntry::Online:
-					statusStr = "Online";
+					statusType = StatusTypeOnline;
 					break;
 				case HistoryEntry::Busy:
-					statusStr = "Away";
+					statusType = StatusTypeAway;
 					break;
 				case HistoryEntry::Invisible:
-					statusStr = "Invisible";
+					statusType = StatusTypeInvisible;
 					break;
 				case HistoryEntry::FFC:
-					statusStr = "FreeForChat";
+					statusType = StatusTypeFreeForChat;
 					break;
 				case HistoryEntry::DND:
-					statusStr = "DoNotDisturb";
+					statusType = StatusTypeDoNotDisturb;
 					break;
 				case HistoryEntry::Offline:
-					statusStr = "Offline";
+					statusType = StatusTypeOffline;
 					break;
 				default:
 					return;
 			}
 
-			Status status(statusStr, entry.Content);
+			Status status(statusType, entry.Content);
 			Contact contact = ContactManager::instance()->byId(GaduAccount, QString::number(entry.Uin), ActionCreateAndAdd);
 			History::instance()->currentStorage()->appendStatus(contact, status, entry.Date);
 			ImportedEntries++;

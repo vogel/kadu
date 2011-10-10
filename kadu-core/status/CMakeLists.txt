@@ -10,7 +10,7 @@ set (status_SRCS
 	status-container-aware-object.cpp
 	status-container-manager.cpp
 	status-setter.cpp
-	status-type.cpp
+	status-type-data.cpp
 	status-type-manager.cpp
 )
 

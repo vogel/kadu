@@ -17,28 +17,18 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GADU_PROTOCOL_HELPER_H
-#define GADU_PROTOCOL_HELPER_H
+#include "status-type-data.h"
 
-#include "status/status-type.h"
-
-#include "gadu-exports.h"
-
-#include "gadu-protocol.h"
-
-namespace GaduProtocolHelper
+StatusTypeData::StatusTypeData()
 {
-	GADUAPI StatusType statusTypeFromGaduStatus(unsigned int index);
-	GADUAPI bool isBlockingStatus(unsigned int index);
-	GADUAPI unsigned int gaduStatusFromStatus(const Status &status);
-
-	GADUAPI QString connectionErrorMessage(GaduProtocol::GaduError error);
-	GADUAPI bool isConnectionErrorFatal(GaduProtocol::GaduError error);
-
-	GADUAPI Buddy searchResultToBuddy(Account account, gg_pubdir50_t res, int number);
-
-	GADUAPI UinType uin(Contact contact);
-	GADUAPI GaduContactDetails * gaduContactDetails(Contact contact);
 }
 
-#endif // GADU_PROTOCOL_HELPER_H
+StatusTypeData::StatusTypeData(StatusType type, const QString &name, const QString &displayName, const QString &iconName, StatusTypeGroup typeGroup) :
+		Type(type), Name(name), DisplayName(displayName), IconName(iconName), TypeGroup(typeGroup)
+{
+}
+
+StatusTypeData::StatusTypeData(const StatusTypeData &copyMe) :
+		Type(copyMe.Type), Name(copyMe.Name), DisplayName(copyMe.DisplayName), IconName(copyMe.IconName), TypeGroup(copyMe.TypeGroup)
+{
+}

@@ -29,24 +29,25 @@
 #include <QtCore/QMetaType>
 #include <QtCore/QString>
 
+#include "status/status-type.h"
 #include "status/status-type-group.h"
 
 #include "exports.h"
 
 class KADUAPI Status
 {
-	QString Type;
+	StatusType Type;
 	StatusTypeGroup Group;
 	QString Description;
 	QString DisplayName;
 
 public:
-	explicit Status(const QString &type = QString(), const QString &description = QString());
+	explicit Status(const StatusType statusType = StatusTypeOffline, const QString &description = QString());
 	Status(const Status &copyme);
 	~Status();
 
-	const QString & type() const { return Type; }
-	void setType(const QString &type);
+	StatusType type() const { return Type; }
+	void setType(StatusType type);
 
 	StatusTypeGroup group() const { return Group; }
 

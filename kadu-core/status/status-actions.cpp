@@ -30,7 +30,9 @@
 #include "status/status-container.h"
 #include "status/status-container-manager.h"
 #include "status/status-type.h"
+#include "status/status-type-data.h"
 #include "status/status-type-group.h"
+#include "status/status-type-manager.h"
 #include "icons/icons-manager.h"
 
 #include "status-actions.h"
@@ -60,15 +62,17 @@ void StatusActions::createActions()
 	StatusTypeGroup currentGroup = StatusTypeGroupNone;
 	bool setDescriptionAdded = false;
 
-	foreach (StatusType *statusType, MyStatusTypes)
+	foreach (StatusType statusType, MyStatusTypes)
 	{
-		if (0 == statusType)
+		if (StatusTypeNone == statusType)
 			continue;
 
-		if (StatusTypeGroupNone == currentGroup)
-			currentGroup = statusType->typeGroup();
+		const StatusTypeData & typeData = StatusTypeManager::instance()->statusTypeData(statusType);
 
-		if (!setDescriptionAdded && statusType->typeGroup() == StatusTypeGroupOffline)
+		if (StatusTypeGroupNone == currentGroup)
+			currentGroup = typeData.typeGroup();
+
+		if (!setDescriptionAdded && typeData.typeGroup() == StatusTypeGroupOffline)
 		{
 			if (!Actions.isEmpty())
 				Actions.append(createSeparator());
@@ -76,13 +80,13 @@ void StatusActions::createActions()
 			setDescriptionAdded = true;
 		}
 
-		if (statusType->typeGroup() != currentGroup)
+		if (typeData.typeGroup() != currentGroup)
 		{
 			Actions.append(createSeparator());
-			currentGroup = statusType->typeGroup();
+			currentGroup = typeData.typeGroup();
 		}
 
-		QAction *action = createStatusAction(statusType);
+		QAction *action = createStatusAction(typeData);
 		Actions.append(action);
 	}
 
@@ -103,14 +107,14 @@ QAction * StatusActions::createSeparator()
 	return separator;
 }
 
-QAction * StatusActions::createStatusAction(StatusType *statusType)
+QAction * StatusActions::createStatusAction(const StatusTypeData &typeData)
 {
-	KaduIcon icon = MyStatusContainer->statusIcon(statusType->name());
+	KaduIcon icon = MyStatusContainer->statusIcon(typeData.type());
 	QAction *statusAction = ChangeStatusActionGroup->addAction(icon.icon(), IncludePrefix
-			? MyStatusContainer->statusNamePrefix() + statusType->displayName()
-			: statusType->displayName());
+			? MyStatusContainer->statusNamePrefix() + typeData.displayName()
+			: typeData.displayName());
 	statusAction->setCheckable(true);
-	statusAction->setData(QVariant::fromValue(statusType));
+	statusAction->setData(QVariant::fromValue(typeData.type()));
 
 	return statusAction;
 }
@@ -140,15 +144,15 @@ void StatusActions::statusUpdated()
 		createActions();
 	}
 
-	const QString &statusTypeName = MyStatusContainer->status().type();
+	const StatusType currentStatusType = MyStatusContainer->status().type();
 
 	foreach (QAction *action, ChangeStatusActionGroup->actions())
 	{
-		StatusType *statusType = action->data().value<StatusType *>();
-		if (!statusType)
+		StatusType statusType = action->data().value<StatusType>();
+		if (StatusTypeNone == statusType)
 			continue;
 
-		action->setIcon(MyStatusContainer->statusIcon(statusType->name()).icon());
+		action->setIcon(MyStatusContainer->statusIcon(statusType).icon());
 
 		if (!MyStatusContainer->isStatusSettingInProgress())
 		{
@@ -156,7 +160,7 @@ void StatusActions::statusUpdated()
 			if (StatusContainerManager::instance() == MyStatusContainer)
 				action->setChecked(StatusContainerManager::instance()->allStatusOfType(statusType));
 			else
-				action->setChecked(statusTypeName == statusType->name());
+				action->setChecked(currentStatusType == statusType);
 		}
 		else
 			action->setChecked(false);
@@ -167,10 +171,10 @@ void StatusActions::iconThemeChanged()
 {
 	foreach (QAction *action, ChangeStatusActionGroup->actions())
 	{
-		StatusType *statusType = action->data().value<StatusType *>();
-		if (!statusType)
+		StatusType statusType = action->data().value<StatusType>();
+		if (StatusTypeNone == statusType)
 			continue;
 
-		action->setIcon(MyStatusContainer->statusIcon(statusType->name()).icon());
+		action->setIcon(MyStatusContainer->statusIcon(statusType).icon());
 	}
 }

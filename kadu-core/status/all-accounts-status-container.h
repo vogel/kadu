@@ -52,9 +52,9 @@ public:
 
 	virtual KaduIcon statusIcon();
 	virtual KaduIcon statusIcon(const Status &status);
-	virtual KaduIcon statusIcon(const QString &statusType);
+	virtual KaduIcon statusIcon(const StatusType statusType);
 
-	virtual QList<StatusType *> supportedStatusTypes();
+	virtual QList<StatusType> supportedStatusTypes();
 
 	virtual Status loadStatus();
 	virtual void storeStatus(Status status);

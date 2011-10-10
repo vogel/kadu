@@ -58,6 +58,8 @@
 #include "model/roles.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocol-menu-manager.h"
+#include "status/status-type-data.h"
+#include "status/status-type-manager.h"
 #include "activate.h"
 #include "debug.h"
 
@@ -594,11 +596,13 @@ QVector<Message> HistoryWindow::statusesToMessages(const QList<TimedStatus> &sta
 		message.setStatus(MessageStatusReceived);
 		message.setType(MessageTypeReceived);
 
+		const StatusTypeData &typeData = StatusTypeManager::instance()->statusTypeData(timedStatus.status().type());
+
 		if (timedStatus.status().description().isEmpty())
-			message.setContent(timedStatus.status().type());
+			message.setContent(typeData.name());
 		else
 			message.setContent(QString("%1 with description: %2")
-					.arg(timedStatus.status().type())
+					.arg(typeData.name())
 					.arg(timedStatus.status().description()));
 
 		message.setReceiveDate(timedStatus.dateTime());

@@ -194,13 +194,13 @@ void StatusContainerManager::unregisterStatusContainer(StatusContainer *statusCo
 	disconnect(statusContainer, SIGNAL(statusUpdated()), this, SIGNAL(statusUpdated()));
 }
 
-bool StatusContainerManager::allStatusOfType(StatusType *type)
+bool StatusContainerManager::allStatusOfType(StatusType type)
 {
-	if (!type)
+	if (StatusTypeNone == type)
 		return false;
 
 	foreach (StatusContainer *container, StatusContainers)
-		if (container->status().type() != type->name())
+		if (container->status().type() != type)
 			return false;
 	return true;
 }
@@ -245,25 +245,24 @@ KaduIcon StatusContainerManager::statusIcon()
 KaduIcon StatusContainerManager::statusIcon(const Status &status)
 {
 	if (!DefaultStatusContainer)
-		return StatusTypeManager::instance()->statusIcon("common", "Offline", false, false);
+		return StatusTypeManager::instance()->statusIcon("common", StatusTypeOffline, false, false);
 
 	return StatusTypeManager::instance()->statusIcon("common", status.type(), status.hasDescription(), false);
 }
 
-KaduIcon StatusContainerManager::statusIcon(const QString &statusType)
+KaduIcon StatusContainerManager::statusIcon(const StatusType statusType)
 {
 	if (!DefaultStatusContainer)
-		return StatusTypeManager::instance()->statusIcon("common", "Offline", false, false);
+		return StatusTypeManager::instance()->statusIcon("common", StatusTypeOffline, false, false);
 
 	return StatusTypeManager::instance()->statusIcon("common", statusType, false, false);
 }
 
-QList<StatusType *> StatusContainerManager::supportedStatusTypes()
+QList<StatusType> StatusContainerManager::supportedStatusTypes()
 {
 	return DefaultStatusContainer
 			? DefaultStatusContainer->supportedStatusTypes()
-			: QList<StatusType *>();
-// 			: StatusTypeManager::instance()->statusTypes();
+			: QList<StatusType>();
 }
 
 int StatusContainerManager::maxDescriptionLength()

@@ -26,11 +26,13 @@
 #include <QtCore/QList>
 #include <QtCore/QObject>
 
+#include "status/status-type.h"
+
 class QAction;
 class QActionGroup;
 
 class StatusContainer;
-class StatusType;
+class StatusTypeData;
 
 class StatusActions : public QObject
 {
@@ -42,12 +44,12 @@ class StatusActions : public QObject
 	QActionGroup *ChangeStatusActionGroup;
 	QAction *ChangeDescription;
 	QList<QAction *> Actions;
-	QList<StatusType *> MyStatusTypes;
+	QList<StatusType> MyStatusTypes;
 
 	void createActions();
 	void createBasicActions();
 	QAction * createSeparator();
-	QAction * createStatusAction(StatusType *statusType);
+	QAction * createStatusAction(const StatusTypeData & typeData);
 
 	void cleanUpActions();
 

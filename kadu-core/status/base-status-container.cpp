@@ -21,6 +21,8 @@
 
 #include "configuration/configuration-file.h"
 #include "configuration/configuration-manager.h"
+#include "status/status-type-data.h"
+#include "status/status-type-manager.h"
 #include "storage/storable-object.h"
 
 #include "base-status-container.h"
@@ -43,7 +45,7 @@ Status BaseStatusContainer::loadStatus()
 	QString description = MyStorableObject->loadValue<QString>("LastStatusDescription");
 
 	Status status;
-	status.setType(name);
+	status.setType(StatusTypeManager::instance()->fromName(name));
 	status.setDescription(description);
 
 	return status;
@@ -55,7 +57,7 @@ void BaseStatusContainer::storeStatus(Status status)
 		return;
 
 	MyStorableObject->storeValue("LastStatusDescription", status.description());
-	MyStorableObject->storeValue("LastStatusName", status.type());
+	MyStorableObject->storeValue("LastStatusName", StatusTypeManager::instance()->statusTypeData(status.type()).name());
 
 	ConfigurationManager::instance()->flush();
 }

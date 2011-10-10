@@ -66,12 +66,9 @@ void StatusMenu::aboutToHide()
 
 void StatusMenu::changeStatus(QAction *action)
 {
-	StatusType *statusType = action->data().value<StatusType *>();
-	if (!statusType)
-		return;
-
+	StatusType statusType = action->data().value<StatusType>();
 	Status status(StatusSetter::instance()->manuallySetStatus(MyStatusContainer));
-	status.setType(statusType->name());
+	status.setType(statusType);
 
 	StatusSetter::instance()->setStatus(MyStatusContainer, status);
 	MyStatusContainer->storeStatus(status);

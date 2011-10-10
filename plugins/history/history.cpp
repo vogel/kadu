@@ -303,7 +303,7 @@ QPair<Contact, Status> History::dequeueUnsavedStatusChange()
 	QMutexLocker locker(&UnsavedDataMutex);
 
 	if (UnsavedStatusChanges.isEmpty())
-		return qMakePair(Contact::null, Status("Offline"));
+		return qMakePair(Contact::null, Status());
 
 	return UnsavedStatusChanges.dequeue();
 }

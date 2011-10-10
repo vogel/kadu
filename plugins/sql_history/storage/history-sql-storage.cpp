@@ -45,6 +45,7 @@
 #include "misc/misc.h"
 #include "misc/path-conversion.h"
 #include "gui/widgets/chat-widget.h"
+#include "status/status-type-manager.h"
 
 #include "plugins/history/model/dates-model-item.h"
 #include "plugins/history/history.h"
@@ -910,7 +911,7 @@ QList<TimedStatus> HistorySqlStorage::statusesFromQuery(QSqlQuery &query)
 			continue;
 
 		Status status;
-		status.setType(query.value(1).toString());
+		status.setType(StatusTypeManager::instance()->fromName(query.value(1).toString()));
 		status.setDescription(query.value(2).toString());
 
 		TimedStatus timedStatus(status, query.value(3).toDateTime());

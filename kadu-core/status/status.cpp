@@ -21,6 +21,7 @@
  */
 
 #include "status/status-type.h"
+#include "status/status-type-data.h"
 #include "status/status-type-group.h"
 #include "status/status-type-manager.h"
 
@@ -28,10 +29,10 @@
 
 #include <stdio.h>
 
-Status::Status(const QString &type, const QString &description) :
+Status::Status(const StatusType statusType, const QString &description) :
 		Description(description)
 {
-	setType(type);
+	setType(statusType);
 }
 
 Status::Status(const Status& copyme) :
@@ -44,25 +45,16 @@ Status::~Status()
 {
 }
 
-void Status::setType(const QString& type)
+void Status::setType(const StatusType type)
 {
 	Group = StatusTypeGroupOffline;
 	DisplayName = "Offline";
 
 	Type = type;
 
-	StatusType *statusType = StatusTypeManager::instance()->statusType(Type);
-	if (!statusType)
-	{
-		Type = "Offline";
-		Group = StatusTypeGroupOffline;
-		return;
-	}
-	else
-	{
-		DisplayName = statusType->displayName();
-		Group = statusType->typeGroup();
-	}
+	const StatusTypeData & typeData = StatusTypeManager::instance()->statusTypeData(Type);
+	DisplayName = typeData.displayName();
+	Group = typeData.typeGroup();
 }
 
 bool Status::isDisconnected() const
@@ -72,16 +64,7 @@ bool Status::isDisconnected() const
 
 bool Status::operator < (const Status &compare) const
 {
-	StatusType *left = StatusTypeManager::instance()->statusType(Type);
-	StatusType *right = StatusTypeManager::instance()->statusType(compare.Type);
-
-	if (!left)
-		return true;
-
-	if (!right)
-		return false;
-
-	return *left < *right;
+	return Type < compare.Type;
 }
 
 bool Status::operator == (const Status &compare) const

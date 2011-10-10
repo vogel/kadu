@@ -32,7 +32,7 @@ class GaduProtocolFactory : public ProtocolFactory
 	Q_DISABLE_COPY(GaduProtocolFactory)
 
 	static GaduProtocolFactory *Instance;
-	QList<StatusType *> SupportedStatusTypes;
+	QList<StatusType> SupportedStatusTypes;
 
 	GaduProtocolFactory();
 
@@ -49,7 +49,7 @@ public:
 	virtual AccountCreateWidget * newCreateAccountWidget(bool showButtons, QWidget *parent);
 	virtual AccountEditWidget * newEditAccountWidget(Account, QWidget *parent);
 	virtual QWidget * newContactPersonalInfoWidget(Contact contact, QWidget *parent = 0);
-	virtual QList<StatusType *> supportedStatusTypes();
+	virtual QList<StatusType> supportedStatusTypes();
 	virtual QString idLabel();
 	virtual QValidator::State validateId(QString id);
 	virtual bool canRemoveAvatar() { return false; } // this is so lame for gadu-gadu, so so lame ...

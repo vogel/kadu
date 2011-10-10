@@ -186,16 +186,16 @@ KaduIcon IdentityShared::statusIcon(const Status &status)
 	return account ? account.data()->statusIcon(status) : KaduIcon();
 }
 
-KaduIcon IdentityShared::statusIcon(const QString &statusType)
+KaduIcon IdentityShared::statusIcon(const StatusType statusType)
 {
 	Account account = AccountManager::bestAccount(Accounts);
 	return account ? account.data()->statusIcon(statusType) : KaduIcon();
 }
 
-QList<StatusType *> IdentityShared::supportedStatusTypes()
+QList<StatusType> IdentityShared::supportedStatusTypes()
 {
 	Account account = AccountManager::bestAccount(Accounts);
-	return account ? account.data()->supportedStatusTypes() : QList<StatusType *>();
+	return account ? account.data()->supportedStatusTypes() : QList<StatusType>();
 }
 
 int IdentityShared::maxDescriptionLength()
