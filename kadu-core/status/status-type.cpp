@@ -17,8 +17,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "status/status-group.h"
-
 #include "status-type.h"
 
 bool StatusType::lessThan(const StatusType *left, const StatusType *right)
@@ -26,26 +24,26 @@ bool StatusType::lessThan(const StatusType *left, const StatusType *right)
 	return *left < *right;
 }
 
-StatusType::StatusType(const QString &name, const QString &displayName, const QString &iconName, StatusGroup *statusGroup, int sortIndex) :
-		Name(name), DisplayName(displayName), IconName(iconName), MyStatusGroup(statusGroup), SortIndex(sortIndex)
+StatusType::StatusType(const QString &name, const QString &displayName, const QString &iconName, StatusTypeGroup typeGroup, int sortIndex) :
+		Name(name), DisplayName(displayName), IconName(iconName), TypeGroup(typeGroup), SortIndex(sortIndex)
 {
 }
 
 bool StatusType::operator < (const StatusType &compare) const
 {
-	if (*MyStatusGroup < *compare.MyStatusGroup)
+	if (TypeGroup < compare.TypeGroup)
 		return true;
-	if (MyStatusGroup == compare.MyStatusGroup)
+	if (TypeGroup == compare.TypeGroup)
 		return SortIndex < compare.SortIndex;
 	return false;
 }
 
 bool StatusType::operator == (const StatusType &compare) const
 {
-	return (MyStatusGroup == compare.MyStatusGroup) && (SortIndex == compare.SortIndex);
+	return (TypeGroup == compare.TypeGroup) && (SortIndex == compare.SortIndex);
 }
 
 bool StatusType::operator != (const StatusType &compare) const
 {
-	return (MyStatusGroup != compare.MyStatusGroup) || (SortIndex != compare.SortIndex);
+	return (TypeGroup != compare.TypeGroup) || (SortIndex != compare.SortIndex);
 }

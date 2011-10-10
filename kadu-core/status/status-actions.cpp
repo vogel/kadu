@@ -29,8 +29,8 @@
 #include "protocols/protocol.h"
 #include "status/status-container.h"
 #include "status/status-container-manager.h"
-#include "status/status-group.h"
 #include "status/status-type.h"
+#include "status/status-type-group.h"
 #include "icons/icons-manager.h"
 
 #include "status-actions.h"
@@ -57,7 +57,7 @@ void StatusActions::createActions()
 	createBasicActions();
 
 	MyStatusTypes = MyStatusContainer->supportedStatusTypes();
-	StatusGroup *currentGroup = 0;
+	StatusTypeGroup currentGroup = StatusTypeGroupNone;
 	bool setDescriptionAdded = false;
 
 	foreach (StatusType *statusType, MyStatusTypes)
@@ -65,11 +65,10 @@ void StatusActions::createActions()
 		if (0 == statusType)
 			continue;
 
-		if (0 == currentGroup)
-			currentGroup = statusType->statusGroup();
+		if (StatusTypeGroupNone == currentGroup)
+			currentGroup = statusType->typeGroup();
 
-		if (!setDescriptionAdded && statusType->statusGroup() &&
-				statusType->statusGroup()->sortIndex() >= StatusGroup::StatusGroupSortIndexAfterSetDescription)
+		if (!setDescriptionAdded && statusType->typeGroup() == StatusTypeGroupOffline)
 		{
 			if (!Actions.isEmpty())
 				Actions.append(createSeparator());
@@ -77,10 +76,10 @@ void StatusActions::createActions()
 			setDescriptionAdded = true;
 		}
 
-		if (statusType->statusGroup() != currentGroup)
+		if (statusType->typeGroup() != currentGroup)
 		{
 			Actions.append(createSeparator());
-			currentGroup = statusType->statusGroup();
+			currentGroup = statusType->typeGroup();
 		}
 
 		QAction *action = createStatusAction(statusType);

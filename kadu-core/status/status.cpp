@@ -20,8 +20,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "status/status-group.h"
 #include "status/status-type.h"
+#include "status/status-type-group.h"
 #include "status/status-type-manager.h"
 
 #include "status.h"
@@ -46,7 +46,7 @@ Status::~Status()
 
 void Status::setType(const QString& type)
 {
-	Group = "Offline";
+	Group = StatusTypeGroupOffline;
 	DisplayName = "Offline";
 
 	Type = type;
@@ -55,19 +55,19 @@ void Status::setType(const QString& type)
 	if (!statusType)
 	{
 		Type = "Offline";
+		Group = StatusTypeGroupOffline;
 		return;
 	}
 	else
+	{
 		DisplayName = statusType->displayName();
-
-	StatusGroup *statusGroup = statusType->statusGroup();
-	if (statusGroup)
-		Group = statusGroup->name();
+		Group = statusType->typeGroup();
+	}
 }
 
 bool Status::isDisconnected() const
 {
-	return "Offline" == Group;
+	return StatusTypeGroupOffline == Group;
 }
 
 bool Status::operator < (const Status &compare) const

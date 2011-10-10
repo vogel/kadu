@@ -26,7 +26,6 @@
 #include <QtGui/QApplication>
 
 #include "icons/kadu-icon.h"
-#include "status/status-group-manager.h"
 #include "status/status-type.h"
 
 #include "status-type-manager.h"
@@ -42,18 +41,13 @@ StatusTypeManager * StatusTypeManager::instance()
 
 StatusTypeManager::StatusTypeManager()
 {
-	StatusGroup *online = StatusGroupManager::instance()->statusGroup("Online");
-	StatusGroup *busy = StatusGroupManager::instance()->statusGroup("Away");
-	StatusGroup *invisible = StatusGroupManager::instance()->statusGroup("Invisible");
-	StatusGroup *offline = StatusGroupManager::instance()->statusGroup("Offline");
-
-	registerStatusType("FreeForChat", qApp->translate("@default", "Free for chat"), "free_for_chat", online, 0);
-	registerStatusType("Online", qApp->translate("@default", "Online"), "online", online, 20);
-	registerStatusType("Away", qApp->translate("@default", "Away"), "away", busy, 0);
-	registerStatusType("NotAvailable", qApp->translate("@default", "Not available"), "not_available", busy, 20);
-	registerStatusType("DoNotDisturb", qApp->translate("@default", "Do not disturb"), "do_not_disturb", busy, 40);
-	registerStatusType("Invisible", qApp->translate("@default", "Invisible"), "invisible", invisible, 0);
-	registerStatusType("Offline", qApp->translate("@default", "Offline"), "offline", offline, 0);
+	registerStatusType("FreeForChat", qApp->translate("@default", "Free for chat"), "free_for_chat", StatusTypeGroupOnline, 0);
+	registerStatusType("Online", qApp->translate("@default", "Online"), "online", StatusTypeGroupOnline, 20);
+	registerStatusType("Away", qApp->translate("@default", "Away"), "away", StatusTypeGroupDoNotDisturb, 0);
+	registerStatusType("NotAvailable", qApp->translate("@default", "Not available"), "not_available", StatusTypeGroupDoNotDisturb, 20);
+	registerStatusType("DoNotDisturb", qApp->translate("@default", "Do not disturb"), "do_not_disturb", StatusTypeGroupDoNotDisturb, 40);
+	registerStatusType("Invisible", qApp->translate("@default", "Invisible"), "invisible", StatusTypeGroupInvisible, 0);
+	registerStatusType("Offline", qApp->translate("@default", "Offline"), "offline", StatusTypeGroupOffline, 0);
 }
 
 StatusTypeManager::~StatusTypeManager()
@@ -62,7 +56,7 @@ StatusTypeManager::~StatusTypeManager()
 }
 
 void StatusTypeManager::registerStatusType(const QString &name, const QString &displayName,
-		const QString &iconName, StatusGroup *statusGroup, int sortIndex)
+		const QString &iconName, StatusTypeGroup typeGroup, int sortIndex)
 {
 	foreach (StatusType *st, StatusTypes)
 	{
@@ -73,7 +67,7 @@ void StatusTypeManager::registerStatusType(const QString &name, const QString &d
 		return;
 	}
 
-	StatusType *newType = new StatusType(name, displayName, iconName, statusGroup, sortIndex);
+	StatusType *newType = new StatusType(name, displayName, iconName, typeGroup, sortIndex);
 	StatusTypes.append(newType);
 	StatusTypesCounter[newType] = 1;
 }

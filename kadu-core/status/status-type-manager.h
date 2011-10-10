@@ -31,8 +31,8 @@
 class QString;
 
 class KaduIcon;
-class StatusGroup;
 class StatusType;
+enum StatusTypeGroup;
 
 class KADUAPI StatusTypeManager
 {
@@ -50,11 +50,11 @@ public:
 	static StatusTypeManager * instance();
 
 	void registerStatusType(const QString &name, const QString &displayName, const QString &iconName,
-			StatusGroup *statusGroup, int sortIndex);
+			StatusTypeGroup typeGroup, int sortIndex);
 	void unregisterStatusType(const QString &name);
 
 	StatusType * statusType(const QString &name);
-	
+
 	KaduIcon statusIcon(const QString &protocol, const QString &type,
 			bool description, bool mobile);
 

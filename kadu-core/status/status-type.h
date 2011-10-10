@@ -25,9 +25,9 @@
 #include <QtCore/QString>
 #include <QtCore/QVariant>
 
-#include "exports.h"
+#include "status/status-type-group.h"
 
-class StatusGroup;
+#include "exports.h"
 
 class KADUAPI StatusType
 {
@@ -35,20 +35,20 @@ class KADUAPI StatusType
 	QString DisplayName;
 	QString IconName;
 
-	StatusGroup *MyStatusGroup;
+	StatusTypeGroup TypeGroup;
 
 	int SortIndex;
 
 public:
 	static bool lessThan(const StatusType *left, const StatusType *right);
 
-	StatusType(const QString &name, const QString &displayName, const QString &iconName, StatusGroup *statusType, int sortIndex);
+	StatusType(const QString &name, const QString &displayName, const QString &iconName, StatusTypeGroup typeGroup, int sortIndex);
 
 	const QString & name() const { return Name; }
 	const QString & displayName() const { return DisplayName; }
 	const QString & iconName() const { return IconName; }
 
-	StatusGroup *statusGroup() { return MyStatusGroup; }
+	StatusTypeGroup typeGroup() { return TypeGroup; }
 
 	int sortIndex() { return SortIndex; }
 

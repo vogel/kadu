@@ -219,9 +219,9 @@ bool GaduChatService::ignoreImages(Contact sender)
 
 	return sender.ownerBuddy().isAnonymous() ||
 		(
-			"Offline" == Protocol->status().group() ||
+			StatusTypeGroupOffline == Protocol->status().group() ||
 			(
-				("Invisible" == Protocol->status().group()) &&
+				(StatusTypeGroupInvisible == Protocol->status().group()) &&
 				!gaduAccountDetails->receiveImagesDuringInvisibility()
 			)
 		);

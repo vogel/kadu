@@ -76,7 +76,7 @@ void AutoAwayStatusChanger::changeStatus(StatusContainer *container, Status &sta
 		return;
 	}
 
-	if (status.group() == "Invisible")
+	if (status.group() == StatusTypeGroupInvisible)
 		return;
 
 	if (changeStatusTo == ChangeStatusToInvisible)
@@ -86,7 +86,7 @@ void AutoAwayStatusChanger::changeStatus(StatusContainer *container, Status &sta
 		return;
 	}
 
-	if (status.group() == "Away")
+	if (status.group() == StatusTypeGroupDoNotDisturb)
 		return;
 
 	if (changeStatusTo == ChangeStatusToBusy)

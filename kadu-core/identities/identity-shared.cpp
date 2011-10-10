@@ -30,7 +30,6 @@
 
 #include "status/status-type-manager.h"
 #include "status/status-type.h"
-#include "status/status-group.h"
 
 #include "identity-shared.h"
 

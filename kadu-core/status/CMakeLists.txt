@@ -9,8 +9,6 @@ set (status_SRCS
 	status-changer-manager.cpp
 	status-container-aware-object.cpp
 	status-container-manager.cpp
-	status-group.cpp
-	status-group-manager.cpp
 	status-setter.cpp
 	status-type.cpp
 	status-type-manager.cpp

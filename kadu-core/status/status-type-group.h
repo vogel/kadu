@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -17,24 +17,16 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "status-group.h"
+#ifndef STATUS_TYPE_GROUP_H
+#define STATUS_TYPE_GROUP_H
 
-StatusGroup::StatusGroup(const QString &name, int sortIndex) :
-		Name(name), SortIndex(sortIndex)
+enum StatusTypeGroup
 {
-}
+	StatusTypeGroupNone = -1,
+	StatusTypeGroupOnline = 0,
+	StatusTypeGroupDoNotDisturb = 10,
+	StatusTypeGroupInvisible = 20,
+	StatusTypeGroupOffline = 30
+};
 
-bool StatusGroup::operator < (const StatusGroup&compare) const
-{
-	return SortIndex < compare.SortIndex;
-}
-
-bool StatusGroup::operator == (const StatusGroup&compare) const
-{
-	return SortIndex == compare.SortIndex;
-}
-
-bool StatusGroup::operator != (const StatusGroup&compare) const
-{
-	return SortIndex != compare.SortIndex;
-}
+#endif // STATUS_TYPE_GROUP_H

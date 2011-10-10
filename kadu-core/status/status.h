@@ -29,12 +29,14 @@
 #include <QtCore/QMetaType>
 #include <QtCore/QString>
 
+#include "status/status-type-group.h"
+
 #include "exports.h"
 
 class KADUAPI Status
 {
 	QString Type;
-	QString Group;
+	StatusTypeGroup Group;
 	QString Description;
 	QString DisplayName;
 
@@ -46,7 +48,7 @@ public:
 	const QString & type() const { return Type; }
 	void setType(const QString &type);
 
-	const QString & group() const { return Group; }
+	StatusTypeGroup group() const { return Group; }
 
 	const QString & displayName() const { return DisplayName; }
 
