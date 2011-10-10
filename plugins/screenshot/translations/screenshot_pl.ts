@@ -119,7 +119,7 @@ Powinien być większy.</translation>
     </message>
 </context>
 <context>
-    <name>ScreenshotActions</name>
+    <name>ScreenshotAction</name>
     <message>
         <source>ScreenShot</source>
         <translation>ScreenShot</translation>
