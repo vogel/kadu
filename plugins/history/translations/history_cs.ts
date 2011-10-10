@@ -105,12 +105,19 @@
 <context>
     <name>History</name>
     <message>
-        <source>View Chat History</source>
-        <translation>Zobrazit historii rozhovoru</translation>
-    </message>
-    <message>
         <source>Clear History</source>
         <translation>Smazat historii</translation>
+    </message>
+    <message>
+        <source>%1 day(s) %2 hour(s)</source>
+        <translation>%1 den(y) %2 hodina(y)</translation>
+    </message>
+</context>
+<context>
+    <name>ShowHistoryActionDescription</name>
+    <message>
+        <source>View Chat History</source>
+        <translation>Zobrazit historii rozhovoru</translation>
     </message>
     <message>
         <source>Show last %1 messages</source>
@@ -131,10 +138,6 @@
     <message>
         <source>Show whole history</source>
         <translation>Ukázat celou historii</translation>
-    </message>
-    <message>
-        <source>%1 day(s) %2 hour(s)</source>
-        <translation>%1 den(y) %2 hodina(y)</translation>
     </message>
 </context>
 <context>

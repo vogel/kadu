@@ -105,12 +105,19 @@
 <context>
     <name>History</name>
     <message>
-        <source>View Chat History</source>
-        <translation>Pokaż historię rozmów</translation>
-    </message>
-    <message>
         <source>Clear History</source>
         <translation>Wyczyść historię</translation>
+    </message>
+    <message>
+        <source>%1 day(s) %2 hour(s)</source>
+        <translation>%1 dzień(dni) %2 godzina(y)</translation>
+    </message>
+</context>
+<context>
+    <name>ShowHistoryActionDescription</name>
+    <message>
+        <source>View Chat History</source>
+        <translation>Pokaż historię rozmów</translation>
     </message>
     <message>
         <source>Show last %1 messages</source>
@@ -131,10 +138,6 @@
     <message>
         <source>Show whole history</source>
         <translation>Wyświetl całą historię</translation>
-    </message>
-    <message>
-        <source>%1 day(s) %2 hour(s)</source>
-        <translation>%1 dzień(dni) %2 godzina(y)</translation>
     </message>
 </context>
 <context>
