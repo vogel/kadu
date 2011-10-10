@@ -124,13 +124,22 @@ void ShowHistoryActionDescription::showDaysMessages(QAction *action, int days)
 	if (!History::instance()->currentStorage())
 		return;
 
+	Action *act = qobject_cast<Action *>(action);
+	Chat actionChat = act ? act->chat() : Chat::null;
+
 	ChatWidget *chatWidget = static_cast<ChatWidget *>((void*)(action->data().toLongLong()));
 	if (!chatWidget)
+	{
+		HistoryWindow::show(actionChat);
 		return;
+	}
 
 	ChatMessagesView *chatMessagesView = chatWidget->chatMessagesView();
 	if (!chatMessagesView)
+	{
+		HistoryWindow::show(actionChat);
 		return;
+	}
 
 	Chat chat = AggregateChatManager::instance()->aggregateChat(chatWidget->chat());
 
