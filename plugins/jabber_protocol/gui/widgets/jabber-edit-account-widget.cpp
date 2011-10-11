@@ -46,7 +46,6 @@
 #include "configuration/configuration-file.h"
 #include "gui/widgets/account-avatar-widget.h"
 #include "gui/widgets/account-buddy-list-widget.h"
-#include "gui/widgets/proxy-group-box.h"
 #include "gui/windows/message-dialog.h"
 #include "identities/identity-manager.h"
 #include "protocols/services/avatar-service.h"
@@ -159,10 +158,6 @@ void JabberEditAccountWidget::createConnectionTab(QTabWidget *tabWidget)
 
 	QVBoxLayout *layout = new QVBoxLayout(conenctionTab);
 	createGeneralGroupBox(layout);
-
-	Proxy = new ProxyGroupBox(account(), tr("Proxy"), this);
-	connect(Proxy, SIGNAL(stateChanged(ModalConfigurationWidgetState)), this, SLOT(dataChanged()));
-	layout->addWidget(Proxy);
 
 	layout->addStretch(100);
 }
@@ -394,7 +389,6 @@ void JabberEditAccountWidget::dataChanged()
 		&& AccountDetails->dataTransferProxy() == DataTransferProxy->text()
 		&& AccountDetails->sendGoneNotification() == SendGoneNotification->isChecked()
 		&& AccountDetails->sendTypingNotification() == SendTypingNotification->isChecked()
-		&& StateNotChanged == Proxy->state()
 		&& !PersonalInfoWidget->isModified())
 	{
 		resetState();
@@ -449,8 +443,6 @@ void JabberEditAccountWidget::loadAccountDetailsData()
 
 	SendGoneNotification->setChecked(AccountDetails->sendGoneNotification());
 	SendTypingNotification->setChecked(AccountDetails->sendTypingNotification());
-
-	Proxy->loadProxyData();
 }
 
 void JabberEditAccountWidget::apply()
@@ -476,7 +468,6 @@ void JabberEditAccountWidget::apply()
 	AccountDetails->setDataTransferProxy(DataTransferProxy->text());
 	AccountDetails->setSendGoneNotification(SendGoneNotification->isChecked());
 	AccountDetails->setSendTypingNotification(SendTypingNotification->isChecked());
-	Proxy->apply();
 
 	if (PersonalInfoWidget->isModified())
 		PersonalInfoWidget->apply();
@@ -491,7 +482,6 @@ void JabberEditAccountWidget::cancel()
 {
 	loadAccountData();
 	loadAccountDetailsData();
-	Proxy->cancel();
 	PersonalInfoWidget->cancel();
 
 	IdentityManager::instance()->removeUnused();

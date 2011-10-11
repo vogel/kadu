@@ -44,7 +44,6 @@
 #include "gui/widgets/account-avatar-widget.h"
 #include "gui/widgets/account-buddy-list-widget.h"
 #include "gui/widgets/identities-combo-box.h"
-#include "gui/widgets/proxy-group-box.h"
 #include "identities/identity-manager.h"
 #include "protocols/services/avatar-service.h"
 #include "protocols/services/contact-list-service.h"
@@ -69,7 +68,6 @@ GaduEditAccountWidget::GaduEditAccountWidget(Account account, QWidget *parent) :
 
 	createGui();
 	loadAccountData();
-	loadConnectionData();
 	resetState();
 }
 
@@ -184,10 +182,6 @@ void GaduEditAccountWidget::createConnectionTab(QTabWidget *tabWidget)
 
 	QVBoxLayout *layout = new QVBoxLayout(conenctionTab);
 	createGeneralGroupBox(layout);
-
-	Proxy = new ProxyGroupBox(account(), tr("Proxy"), this);
-	connect(Proxy, SIGNAL(stateChanged(ModalConfigurationWidgetState)), this, SLOT(dataChanged()));
-	layout->addWidget(Proxy);
 
 	layout->addStretch(100);
 }
@@ -365,8 +359,6 @@ void GaduEditAccountWidget::apply()
 		Details->setExternalPort(ExternalPort->text().toUInt());
 	}
 
-	Proxy->apply();
-
 	config_file.writeEntry("Network", "isDefServers", useDefaultServers->isChecked());
 	config_file.writeEntry("Network", "Server", ipAddresses->text());
 	GaduServersManager::instance()->buildServerList();
@@ -387,8 +379,6 @@ void GaduEditAccountWidget::apply()
 void GaduEditAccountWidget::cancel()
 {
 	loadAccountData();
-	loadConnectionData();
-	Proxy->cancel();
 	gpiw->cancel();
 
 	IdentityManager::instance()->removeUnused();
@@ -424,7 +414,6 @@ void GaduEditAccountWidget::dataChanged()
 		&& config_file.readEntry("Network", "Server") == ipAddresses->text()
 		&& (!gg_libgadu_check_feature(GG_LIBGADU_FEATURE_SSL) || Details->tlsEncryption() == UseTlsEncryption->isChecked())
 		&& Details->sendTypingNotification() == SendTypingNotification->isChecked()
-		&& StateNotChanged == Proxy->state()
 		&& !gpiw->isModified()
 
 		&& Details->externalIp() == ExternalIp->text()
@@ -482,11 +471,6 @@ void GaduEditAccountWidget::loadAccountData()
 
 	useDefaultServers->setChecked(config_file.readBoolEntry("Network", "isDefServers", true));
 	ipAddresses->setText(config_file.readEntry("Network", "Server"));
-}
-
-void GaduEditAccountWidget::loadConnectionData()
-{
-	Proxy->loadProxyData();
 }
 
 void GaduEditAccountWidget::removeAccount()
