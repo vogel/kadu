@@ -67,8 +67,8 @@ void NetworkProxyShared::load()
 	Address = loadValue<QString>("Address");
 	Port = loadValue<int>("Port", 0);
 	RequiresAuthentication = loadValue<bool>("RequiresAuthentication", false);
-	User = loadValue<bool>("User");
-	Password = loadValue<bool>("Password");
+	User = loadValue<QString>("User");
+	Password = loadValue<QString>("Password");
 }
 
 void NetworkProxyShared::store()

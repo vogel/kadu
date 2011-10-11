@@ -40,8 +40,6 @@ class KADUAPI NetworkProxyManager : public QObject, public SimpleManager<Network
 	NetworkProxyManager();
 	virtual ~NetworkProxyManager();
 
-	void importConfiguration();
-
 private slots:
 	void networkProxyDataUpdated();
 
@@ -59,6 +57,9 @@ public:
 
 	virtual QString storageNodeName() { return QLatin1String("Proxys"); }
 	virtual QString storageNodeItemName() { return QLatin1String("Proxy"); }
+
+	NetworkProxy byConfiguration(const QString &address, int port, bool requiresAuthentication,
+	                             const QString &user, const QString &password, NotFoundAction action);
 
 signals:
 	void networkProxyAboutToBeAdded(NetworkProxy networkProxy);

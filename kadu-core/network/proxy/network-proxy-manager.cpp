@@ -19,6 +19,7 @@
 
 #include <QtXml/QDomElement>
 
+#include "accounts/account-manager.h"
 #include "configuration/xml-configuration-file.h"
 #include "storage/storage-point.h"
 
@@ -44,24 +45,9 @@ NetworkProxyManager::~NetworkProxyManager()
 	ConfigurationManager::instance()->unregisterStorableObject(this);
 }
 
-void NetworkProxyManager::importConfiguration()
-{
-	QMutexLocker locker(&mutex());
-
-	// TODO: implement
-}
-
 void NetworkProxyManager::load()
 {
 	QMutexLocker locker(&mutex());
-
-	QDomElement NetworkProxysNode = xml_config_file->getNode("Proxys", XmlConfigFile::ModeFind);
-	if (NetworkProxysNode.isNull())
-	{
-		importConfiguration();
-		setState(StateLoaded);
-		return;
-	}
 
 	SimpleManager<NetworkProxy>::load();
 }
@@ -71,6 +57,35 @@ void NetworkProxyManager::store()
 	QMutexLocker locker(&mutex());
 
 	SimpleManager<NetworkProxy>::store();
+}
+
+NetworkProxy NetworkProxyManager::byConfiguration(const QString &address, int port, bool requiresAuthentication,
+                                                  const QString &user, const QString &password, NotFoundAction action)
+{
+	foreach (const NetworkProxy &networkProxy, items())
+	{
+		if (networkProxy.address() == address &&
+		       networkProxy.port() == port &&
+		       networkProxy.requiresAuthentication() == requiresAuthentication &&
+		       networkProxy.user() == user &&
+		       networkProxy.password() == password)
+			return  networkProxy;
+	}
+
+	if (ActionReturnNull == action)
+		return NetworkProxy::null;
+
+	NetworkProxy networkProxy = NetworkProxy::create();
+	networkProxy.setAddress(address);
+	networkProxy.setPort(port);
+	networkProxy.setRequiresAuthentication(requiresAuthentication);
+	networkProxy.setUser(user);
+	networkProxy.setPassword(password);
+
+	if (ActionCreateAndAdd == action)
+		addItem(networkProxy);
+
+	return networkProxy;
 }
 
 void NetworkProxyManager::networkProxyDataUpdated()

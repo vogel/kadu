@@ -29,6 +29,7 @@
 #include "identities/identity-manager.h"
 #include "icons/kadu-icon.h"
 #include "misc/misc.h"
+#include "network/proxy/network-proxy-manager.h"
 #include "protocols/protocol.h"
 #include "protocols/protocols-manager.h"
 #include "status/status-setter.h"
@@ -82,6 +83,20 @@ QString AccountShared::storageNodeName()
 	return QLatin1String("Account");
 }
 
+NetworkProxy AccountShared::loadNetworkProxy()
+{
+	QString address = loadValue<QString>("ProxyHost");
+	if (address.isEmpty())
+		return NetworkProxy::null;
+
+	int port = loadValue<int>("ProxyPort");
+	bool requiresAuthentication = loadValue<bool>("ProxyRequiresAuthentication");
+	QString user = loadValue<QString>("ProxyUser");
+	QString password = loadValue<QString>("ProxyPassword");
+
+	return NetworkProxyManager::instance()->byConfiguration(address, port, requiresAuthentication, user, password, ActionCreateAndAdd);
+}
+
 void AccountShared::load()
 {
 	if (!isValidStorage())
@@ -111,6 +126,8 @@ void AccountShared::load()
 	ProxySettings.setPassword(loadValue<QString>("ProxyPassword"));
 
 	PrivateStatus = loadValue<bool>("PrivateStatus", true);
+
+	loadNetworkProxy();
 
 	triggerAllProtocolsRegistered();
 }

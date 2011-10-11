@@ -36,6 +36,7 @@ class AccountDetails;
 class Contact;
 class FileTransferService;
 class Identity;
+class NetworkProxy;
 class Protocol;
 class ProtocolFactory;
 class StatusType;
@@ -71,6 +72,8 @@ private:
 
 	void doSetAccountIdentity(const Identity &accountIdentity);
 	void doSetId(const QString &id);
+
+	NetworkProxy loadNetworkProxy();
 
 protected:
 	virtual void load();
