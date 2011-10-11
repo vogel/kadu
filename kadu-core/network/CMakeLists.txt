@@ -1,9 +1,16 @@
 set (network_SRCS
+	proxy/network-proxy.cpp
+	proxy/network-proxy-manager.cpp
+	proxy/network-proxy-shared.cpp
+
 	network-aware-object.cpp
 	network-manager.cpp
 )
 
 set (network_MOC_SRCS
+	proxy/network-proxy-manager.h
+	proxy/network-proxy-shared.h
+
 	network-manager.h
 )
 

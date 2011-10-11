@@ -1,0 +1,103 @@
+/*
+ * %kadu copyright begin%
+ * Copyright 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * %kadu copyright end%
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of
+ * the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#include <QtXml/QDomElement>
+
+#include "configuration/xml-configuration-file.h"
+#include "storage/storage-point.h"
+
+#include "network-proxy-manager.h"
+
+NetworkProxyManager *NetworkProxyManager::Instance = 0;
+
+NetworkProxyManager * NetworkProxyManager::instance()
+{
+	if (!Instance)
+		Instance = new NetworkProxyManager();
+
+	return Instance;
+}
+
+NetworkProxyManager::NetworkProxyManager()
+{
+	ConfigurationManager::instance()->registerStorableObject(this);
+}
+
+NetworkProxyManager::~NetworkProxyManager()
+{
+	ConfigurationManager::instance()->unregisterStorableObject(this);
+}
+
+void NetworkProxyManager::importConfiguration()
+{
+	QMutexLocker locker(&mutex());
+
+	// TODO: implement
+}
+
+void NetworkProxyManager::load()
+{
+	QMutexLocker locker(&mutex());
+
+	QDomElement NetworkProxysNode = xml_config_file->getNode("Proxys", XmlConfigFile::ModeFind);
+	if (NetworkProxysNode.isNull())
+	{
+		importConfiguration();
+		setState(StateLoaded);
+		return;
+	}
+
+	SimpleManager<NetworkProxy>::load();
+}
+
+void NetworkProxyManager::store()
+{
+	QMutexLocker locker(&mutex());
+
+	SimpleManager<NetworkProxy>::store();
+}
+
+void NetworkProxyManager::networkProxyDataUpdated()
+{
+	NetworkProxy networkProxy(sender());
+	if (!networkProxy.isNull())
+		emit networkProxyUpdated(networkProxy);
+}
+
+void NetworkProxyManager::itemAboutToBeAdded(NetworkProxy item)
+{
+	connect(item, SIGNAL(updated()), this, SLOT(networkProxyDataUpdated()));
+	emit networkProxyAboutToBeAdded(item);
+}
+
+void NetworkProxyManager::itemAdded(NetworkProxy item)
+{
+	emit networkProxyAdded(item);
+}
+
+void NetworkProxyManager::itemAboutToBeRemoved(NetworkProxy item)
+{
+	emit networkProxyAboutToBeRemoved(item);
+}
+
+void NetworkProxyManager::itemRemoved(NetworkProxy item)
+{
+	disconnect(item, SIGNAL(updated()), this, SLOT(networkProxyDataUpdated()));
+	emit networkProxyRemoved(item);
+}
