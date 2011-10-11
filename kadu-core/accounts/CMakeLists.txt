@@ -2,7 +2,6 @@ set (accounts_SRCS
 	account.cpp
 	account-details.cpp
 	account-manager.cpp
-	account-proxy-settings.cpp
 	account-shared.cpp
 	accounts-aware-object.cpp
 

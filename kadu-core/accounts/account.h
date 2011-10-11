@@ -31,9 +31,9 @@
 #include "storage/shared-base.h"
 
 class AccountDetails;
-class AccountProxySettings;
 class Contact;
 class Identity;
+class NetworkProxy;
 class Protocol;
 class ProtocolFactory;
 class XmlConfigFile;
@@ -54,8 +54,6 @@ public:
 	Account(const Account &copy);
 	virtual ~Account();
 
-	void importProxySettings();
-
 	/**
 	 * Returns appropriate StatusContainer for this Account, i.e. its Identity's
 	 * StatusContainer in Simple Mode and this Account's otherwise. If you want to get
@@ -75,7 +73,7 @@ public:
 	KaduSharedBase_Property(bool, rememberPassword, RememberPassword)
 	KaduSharedBase_Property(bool, hasPassword, HasPassword)
 	KaduSharedBase_PropertyCRW(QString, password, Password)
-	KaduSharedBase_PropertyCRW(AccountProxySettings, proxySettings, ProxySettings)
+	KaduSharedBase_PropertyCRW(NetworkProxy, proxy, Proxy)
 	KaduSharedBase_Property(bool, privateStatus, PrivateStatus)
 	KaduSharedBase_Property(bool, removing, Removing)
 

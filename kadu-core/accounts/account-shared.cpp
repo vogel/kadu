@@ -83,18 +83,30 @@ QString AccountShared::storageNodeName()
 	return QLatin1String("Account");
 }
 
-NetworkProxy AccountShared::loadNetworkProxy()
+void AccountShared::importNetworkProxy()
 {
 	QString address = loadValue<QString>("ProxyHost");
-	if (address.isEmpty())
-		return NetworkProxy::null;
 
 	int port = loadValue<int>("ProxyPort");
 	bool requiresAuthentication = loadValue<bool>("ProxyRequiresAuthentication");
 	QString user = loadValue<QString>("ProxyUser");
 	QString password = loadValue<QString>("ProxyPassword");
 
-	return NetworkProxyManager::instance()->byConfiguration(address, port, requiresAuthentication, user, password, ActionCreateAndAdd);
+	NetworkProxy importedProxy;
+
+	if (!address.isEmpty())
+		importedProxy = NetworkProxyManager::instance()->byConfiguration(
+		            address, port, requiresAuthentication, user, password, ActionCreateAndAdd);
+
+	if (loadValue<bool>("UseProxy"))
+		Proxy = importedProxy;
+
+	removeValue("UseProxy");
+	removeValue("ProxyHost");
+	removeValue("ProxyPort");
+	removeValue("ProxyRequiresAuthentication");
+	removeValue("ProxyUser");
+	removeValue("ProxyPassword");
 }
 
 void AccountShared::load()
@@ -118,16 +130,10 @@ void AccountShared::load()
 	if (RememberPassword)
 		Password = pwHash(loadValue<QString>("Password"));
 
-	ProxySettings.setEnabled(loadValue<bool>("UseProxy"));
-	ProxySettings.setAddress(loadValue<QString>("ProxyHost"));
-	ProxySettings.setPort(loadValue<int>("ProxyPort"));
-	ProxySettings.setRequiresAuthentication(loadValue<bool>("ProxyRequiresAuthentication"));
-	ProxySettings.setUser(loadValue<QString>("ProxyUser"));
-	ProxySettings.setPassword(loadValue<QString>("ProxyPassword"));
-
-	PrivateStatus = loadValue<bool>("PrivateStatus", true);
-
-	loadNetworkProxy();
+	if (hasValue("UseProxy"))
+		importNetworkProxy();
+	else
+		Proxy = NetworkProxyManager::instance()->byUuid(loadValue<QString>("Proxy"));
 
 	triggerAllProtocolsRegistered();
 }
@@ -140,6 +146,7 @@ void AccountShared::store()
 	Shared::store();
 
 	storeValue("Identity", AccountIdentity->uuid().toString());
+	storeValue("Proxy", Proxy.uuid().toString());
 
 	storeValue("Protocol", ProtocolName);
 	storeValue("Id", id());
@@ -149,13 +156,6 @@ void AccountShared::store()
 		storeValue("Password", pwHash(password()));
 	else
 		removeValue("Password");
-
-	storeValue("UseProxy", ProxySettings.enabled());
-	storeValue("ProxyHost", ProxySettings.address());
-	storeValue("ProxyPort", ProxySettings.port());
-	storeValue("ProxyRequiresAuthentication", ProxySettings.requiresAuthentication());
-	storeValue("ProxyUser", ProxySettings.user());
-	storeValue("ProxyPassword", ProxySettings.password());
 
 	storeValue("PrivateStatus", PrivateStatus);
 }

@@ -115,7 +115,6 @@ void ConfigWizardSetUpAccountPage::accountCreated(Account account)
 		return;
 	}
 
-	account.importProxySettings();
 	AccountManager::instance()->addItem(account);
 	account.accountContact().setOwnerBuddy(Core::instance()->myself());
 

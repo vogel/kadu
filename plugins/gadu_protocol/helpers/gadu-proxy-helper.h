@@ -22,12 +22,12 @@
 
 #include "gadu-exports.h"
 
-class AccountProxySettings;
+class NetworkProxy;
 
 namespace GaduProxyHelper
 {
 	GADUAPI void cleanUpProxySettings();
-	GADUAPI void setupProxy(AccountProxySettings proxySettings);
+	GADUAPI void setupProxy(NetworkProxy networkProxy);
 }
 
 #endif // GADU_PROXY_HELPER_H

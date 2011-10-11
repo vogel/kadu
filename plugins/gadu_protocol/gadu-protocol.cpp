@@ -174,7 +174,7 @@ void GaduProtocol::login()
 		return;
 	}
 
-	GaduProxyHelper::setupProxy(account().proxySettings());
+	GaduProxyHelper::setupProxy(account().proxy());
 
 	setupLoginParams();
 	GaduSession = gg_login(&GaduLoginParams);

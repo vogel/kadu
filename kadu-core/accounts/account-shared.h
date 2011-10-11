@@ -26,7 +26,7 @@
 
 #include <QtNetwork/QHostAddress>
 
-#include "accounts/account-proxy-settings.h"
+#include "network/proxy/network-proxy.h"
 #include "protocols/protocols-aware-object.h"
 #include "status/base-status-container.h"
 #include "storage/details-holder.h"
@@ -36,7 +36,6 @@ class AccountDetails;
 class Contact;
 class FileTransferService;
 class Identity;
-class NetworkProxy;
 class Protocol;
 class ProtocolFactory;
 class StatusType;
@@ -59,7 +58,7 @@ private:
 	bool HasPassword;
 	QString Password;
 
-	AccountProxySettings ProxySettings;
+	NetworkProxy Proxy;
 
 	short int MaximumImageSize;
 
@@ -73,7 +72,7 @@ private:
 	void doSetAccountIdentity(const Identity &accountIdentity);
 	void doSetId(const QString &id);
 
-	NetworkProxy loadNetworkProxy();
+	void importNetworkProxy();
 
 protected:
 	virtual void load();
@@ -121,7 +120,7 @@ public:
 	KaduShared_Property(bool, rememberPassword, RememberPassword)
 	KaduShared_Property(bool, hasPassword, HasPassword)
 	KaduShared_Property(const QString &, password, Password)
-	KaduShared_Property(const AccountProxySettings &, proxySettings, ProxySettings)
+	KaduShared_Property(const NetworkProxy &, proxy, Proxy)
 	KaduShared_Property(bool, removing, Removing)
 
 	// StatusContainer implementation
