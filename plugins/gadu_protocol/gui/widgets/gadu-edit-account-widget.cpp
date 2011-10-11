@@ -44,6 +44,7 @@
 #include "gui/widgets/account-avatar-widget.h"
 #include "gui/widgets/account-buddy-list-widget.h"
 #include "gui/widgets/identities-combo-box.h"
+#include "gui/widgets/proxy-combo-box.h"
 #include "identities/identity-manager.h"
 #include "protocols/services/avatar-service.h"
 #include "protocols/services/contact-list-service.h"
@@ -329,6 +330,13 @@ void GaduEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
 	externalLayout->addWidget(ExternalPort);
 
 	generalLayout->addLayout(externalLayout, 4, 0, 1, 4);
+
+	QLabel *proxyLabel = new QLabel(tr("Proxy configuration"), general);
+	ProxyCombo = new ProxyComboBox(general);
+	connect(ProxyCombo, SIGNAL(proxyChanged(NetworkProxy)), this, SLOT(dataChanged()));
+
+	generalLayout->addWidget(proxyLabel, 5, 1);
+	generalLayout->addWidget(ProxyCombo, 5, 2);
 }
 
 void GaduEditAccountWidget::apply()
@@ -339,6 +347,7 @@ void GaduEditAccountWidget::apply()
 	account().setPassword(AccountPassword->text());
 	account().setHasPassword(!AccountPassword->text().isEmpty());
 	account().setPrivateStatus(!PrivateStatus->isChecked());
+	account().setProxy(ProxyCombo->currentProxy());
 
 	if (Details)
 	{
@@ -400,6 +409,7 @@ void GaduEditAccountWidget::dataChanged()
 		&& account().rememberPassword() == RememberPassword->isChecked()
 		&& account().password() == AccountPassword->text()
 		&& account().privateStatus() != PrivateStatus->isChecked()
+		&& account().proxy() == ProxyCombo->currentProxy()
 		&& Details->limitImageSize() == LimitImageSize->isChecked()
 		&& Details->maximumImageSize() == MaximumImageSize->value()
 		&& Details->imageSizeAsk() == ImageSizeAsk->isChecked()
@@ -447,6 +457,7 @@ void GaduEditAccountWidget::loadAccountData()
 	RememberPassword->setChecked(account().rememberPassword());
 	AccountPassword->setText(account().password());
 	PrivateStatus->setChecked(!account().privateStatus());
+	ProxyCombo->setCurrentProxy(account().proxy());;
 
 	GaduAccountDetails *details = dynamic_cast<GaduAccountDetails *>(account().details());
 	if (details)

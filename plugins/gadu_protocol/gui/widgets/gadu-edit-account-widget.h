@@ -37,6 +37,7 @@ class QVBoxLayout;
 class GaduAccountDetails;
 class GaduPersonalInfoWidget;
 class IdentitiesComboBox;
+class ProxyComboBox;
 
 class GaduEditAccountWidget : public AccountEditWidget
 {
@@ -70,6 +71,8 @@ class GaduEditAccountWidget : public AccountEditWidget
 
 	QLineEdit *ExternalIp;
 	QLineEdit *ExternalPort;
+
+	ProxyComboBox *ProxyCombo;
 
 	QPushButton *ApplyButton;
 	QPushButton *CancelButton;
