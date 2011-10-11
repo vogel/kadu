@@ -47,6 +47,7 @@
 #include "gui/widgets/account-avatar-widget.h"
 #include "gui/widgets/account-buddy-list-widget.h"
 #include "gui/windows/message-dialog.h"
+#include "gui/widgets/proxy-combo-box.h"
 #include "identities/identity-manager.h"
 #include "protocols/services/avatar-service.h"
 #include "icons/icons-manager.h"
@@ -261,6 +262,19 @@ void JabberEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
 	connect(DataTransferProxy, SIGNAL(textEdited(QString)), this, SLOT(dataChanged()));
 	dataTransferLayout->addWidget(DataTransferProxy);
 	vboxLayout2->addLayout(dataTransferLayout);
+
+	QHBoxLayout *proxyLayout = new QHBoxLayout();
+	proxyLayout->setSpacing(6);
+	proxyLayout->setMargin(0);
+
+	QLabel *proxyLabel = new QLabel(tr("Proxy configuration"), general);
+	ProxyCombo = new ProxyComboBox(general);
+	connect(ProxyCombo, SIGNAL(proxyChanged(NetworkProxy)), this, SLOT(dataChanged()));
+
+	proxyLayout->addWidget(proxyLabel);
+	proxyLayout->addWidget(ProxyCombo);
+
+	vboxLayout2->addLayout(proxyLayout);
 }
 
 void JabberEditAccountWidget::createOptionsTab(QTabWidget *tabWidget)
@@ -377,6 +391,7 @@ void JabberEditAccountWidget::dataChanged()
 		&& account().id() == AccountId->text()
 		&& account().rememberPassword() == RememberPassword->isChecked()
 		&& account().password() == AccountPassword->text()
+		&& account().proxy() == ProxyCombo->currentProxy()
 		&& AccountDetails->useCustomHostPort() == CustomHostPort->isChecked()
 		&& AccountDetails->customHost() == CustomHost->displayText()
 		&& AccountDetails->customPort() == CustomPort->displayText().toInt()
@@ -421,6 +436,7 @@ void JabberEditAccountWidget::loadAccountData()
 	AccountId->setText(account().id());
 	RememberPassword->setChecked(account().rememberPassword());
 	AccountPassword->setText(account().password());
+	ProxyCombo->setCurrentProxy(account().proxy());
 }
 
 void JabberEditAccountWidget::loadAccountDetailsData()
@@ -456,6 +472,7 @@ void JabberEditAccountWidget::apply()
 	account().setRememberPassword(RememberPassword->isChecked());
 	account().setPassword(AccountPassword->text());
 	account().setHasPassword(!AccountPassword->text().isEmpty());
+	account().setProxy(ProxyCombo->currentProxy());
 	AccountDetails->setUseCustomHostPort(CustomHostPort->isChecked());
 	AccountDetails->setCustomHost(CustomHost->text());
 	AccountDetails->setCustomPort(CustomPort->text().toInt());

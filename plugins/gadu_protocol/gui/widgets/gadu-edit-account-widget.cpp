@@ -457,7 +457,7 @@ void GaduEditAccountWidget::loadAccountData()
 	RememberPassword->setChecked(account().rememberPassword());
 	AccountPassword->setText(account().password());
 	PrivateStatus->setChecked(!account().privateStatus());
-	ProxyCombo->setCurrentProxy(account().proxy());;
+	ProxyCombo->setCurrentProxy(account().proxy());
 
 	GaduAccountDetails *details = dynamic_cast<GaduAccountDetails *>(account().details());
 	if (details)

@@ -41,7 +41,7 @@ class QLineEdit;
 class QTabWidget;
 class QVBoxLayout;
 
-class ChooseIdentityWidget;
+class ProxyComboBox;
 
 class JabberEditAccountWidget : public AccountEditWidget
 {
@@ -78,6 +78,8 @@ class JabberEditAccountWidget : public AccountEditWidget
 
 	QCheckBox *SendTypingNotification;
 	QCheckBox *SendGoneNotification;
+
+	ProxyComboBox *ProxyCombo;
 
 	QPushButton *ApplyButton;
 	QPushButton *CancelButton;
