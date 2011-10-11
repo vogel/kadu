@@ -267,7 +267,7 @@ void JabberClient::connect(const XMPP::Jid &jid, const QString &password, bool a
 		XMPP::AdvancedConnector::Proxy proxySettings;
 
 		proxySettings.setHttpConnect(proxy.address(), proxy.port());
-		if (proxy.requiresAuthentication())
+		if (!proxy.user().isEmpty())
 			proxySettings.setUserPass(proxy.user(), proxy.password());
 
 		JabberClientConnector->setProxy(proxySettings);

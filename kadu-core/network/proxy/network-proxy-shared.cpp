@@ -38,7 +38,7 @@ NetworkProxyShared * NetworkProxyShared::loadFromStorage(const QSharedPointer<St
 }
 
 NetworkProxyShared::NetworkProxyShared(const QUuid &uuid) :
-		Shared(uuid), Port(0), RequiresAuthentication(false)
+		Shared(uuid), Port(0)
 {
 }
 
@@ -66,7 +66,6 @@ void NetworkProxyShared::load()
 
 	Address = loadValue<QString>("Address");
 	Port = loadValue<int>("Port", 0);
-	RequiresAuthentication = loadValue<bool>("RequiresAuthentication", false);
 	User = loadValue<QString>("User");
 	Password = loadValue<QString>("Password");
 }
@@ -82,7 +81,6 @@ void NetworkProxyShared::store()
 
 	storeValue("Address", Address);
 	storeValue("Port", Port);
-	storeValue("RequiresAuthentication", RequiresAuthentication);
 	storeValue("User", User);
 	storeValue("Password", Password);
 }

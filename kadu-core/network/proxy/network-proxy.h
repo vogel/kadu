@@ -43,7 +43,6 @@ public:
 
 	KaduSharedBase_PropertyCRW(QString, address, Address)
 	KaduSharedBase_Property(int, port, Port)
-	KaduSharedBase_Property(bool, requiresAuthentication, RequiresAuthentication)
 	KaduSharedBase_PropertyCRW(QString, user, User)
 	KaduSharedBase_PropertyCRW(QString, password, Password)
 

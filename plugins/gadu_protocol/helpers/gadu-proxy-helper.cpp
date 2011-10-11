@@ -58,7 +58,7 @@ void GaduProxyHelper::setupProxy(NetworkProxy networkProxy)
 	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "gg_proxy_host = %s\n", gg_proxy_host);
 	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "gg_proxy_port = %d\n", gg_proxy_port);
 
-	if (networkProxy.requiresAuthentication() && !networkProxy.user().isEmpty())
+	if (!networkProxy.user().isEmpty())
 	{
 		gg_proxy_username = strdup(unicode2latin(networkProxy.user()).constData());
 		gg_proxy_password = strdup(unicode2latin(networkProxy.password()).constData());

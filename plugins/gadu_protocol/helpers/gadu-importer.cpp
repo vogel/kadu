@@ -113,10 +113,9 @@ Account GaduImporter::import065Account(QXmlQuery &xmlQuery)
 		int port = readEntry(xmlQuery, "Network", "ProxyPort").toUInt();
 		QString user = readEntry(xmlQuery, "Network", "ProxyUser").toString();
 		QString password = readEntry(xmlQuery, "Network", "ProxyPassword").toString();
-		bool requireAuthentication = !user.isEmpty();
 
 		NetworkProxy networkProxy = NetworkProxyManager::instance()->byConfiguration(
-		            address, port, requireAuthentication, user, password, ActionCreateAndAdd);
+		            address, port, user, password, ActionCreateAndAdd);
 		if (readEntry(xmlQuery, "Network", "UseProxy").toBool())
 			result.setProxy(networkProxy);
 	}
@@ -186,10 +185,9 @@ void GaduImporter::importAccounts()
 		int port = config_file.readNumEntry("Network", "ProxyPort");
 		QString user = config_file.readEntry("Network", "ProxyUser");
 		QString password = config_file.readEntry("Network", "ProxyPassword");
-		bool requireAuthentication = !user.isEmpty();
 
 		NetworkProxy networkProxy = NetworkProxyManager::instance()->byConfiguration(
-		            address, port, requireAuthentication, user, password, ActionCreateAndAdd);
+		            address, port, user, password, ActionCreateAndAdd);
 		if (config_file.readBoolEntry("Network", "UseProxy"))
 			defaultGaduGadu.setProxy(networkProxy);
 	}

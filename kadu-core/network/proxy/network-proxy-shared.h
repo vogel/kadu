@@ -33,7 +33,6 @@ class KADUAPI NetworkProxyShared : public QObject, public Shared
 
 	QString Address;
 	int Port;
-	bool RequiresAuthentication;
 	QString User;
 	QString Password;
 
@@ -54,7 +53,6 @@ public:
 
 	KaduShared_Property(const QString &, address, Address)
 	KaduShared_Property(int, port, Port)
-	KaduShared_Property(bool, requiresAuthentication, RequiresAuthentication)
 	KaduShared_Property(const QString &, user, User)
 	KaduShared_Property(const QString &, password, Password)
 

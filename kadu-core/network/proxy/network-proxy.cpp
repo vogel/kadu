@@ -69,6 +69,5 @@ NetworkProxy::~NetworkProxy()
 
 KaduSharedBase_PropertyDefCRW(NetworkProxy, QString, address, Address, QString())
 KaduSharedBase_PropertyDef(NetworkProxy, int, port, Port, 0)
-KaduSharedBase_PropertyDef(NetworkProxy, bool, requiresAuthentication, RequiresAuthentication, false)
 KaduSharedBase_PropertyDefCRW(NetworkProxy, QString, user, User, QString())
 KaduSharedBase_PropertyDefCRW(NetworkProxy, QString, password, Password, QString())

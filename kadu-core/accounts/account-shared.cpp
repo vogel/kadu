@@ -92,11 +92,17 @@ void AccountShared::importNetworkProxy()
 	QString user = loadValue<QString>("ProxyUser");
 	QString password = loadValue<QString>("ProxyPassword");
 
+	if (!requiresAuthentication)
+	{
+		user.clear();
+		password.clear();
+	}
+
 	NetworkProxy importedProxy;
 
 	if (!address.isEmpty())
 		importedProxy = NetworkProxyManager::instance()->byConfiguration(
-		            address, port, requiresAuthentication, user, password, ActionCreateAndAdd);
+		            address, port, user, password, ActionCreateAndAdd);
 
 	if (loadValue<bool>("UseProxy"))
 		Proxy = importedProxy;

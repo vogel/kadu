@@ -59,14 +59,13 @@ void NetworkProxyManager::store()
 	SimpleManager<NetworkProxy>::store();
 }
 
-NetworkProxy NetworkProxyManager::byConfiguration(const QString &address, int port, bool requiresAuthentication,
+NetworkProxy NetworkProxyManager::byConfiguration(const QString &address, int port,
                                                   const QString &user, const QString &password, NotFoundAction action)
 {
 	foreach (const NetworkProxy &networkProxy, items())
 	{
 		if (networkProxy.address() == address &&
 		       networkProxy.port() == port &&
-		       networkProxy.requiresAuthentication() == requiresAuthentication &&
 		       networkProxy.user() == user &&
 		       networkProxy.password() == password)
 			return  networkProxy;
@@ -78,7 +77,6 @@ NetworkProxy NetworkProxyManager::byConfiguration(const QString &address, int po
 	NetworkProxy networkProxy = NetworkProxy::create();
 	networkProxy.setAddress(address);
 	networkProxy.setPort(port);
-	networkProxy.setRequiresAuthentication(requiresAuthentication);
 	networkProxy.setUser(user);
 	networkProxy.setPassword(password);
 
