@@ -1,4 +1,7 @@
 set (network_SRCS
+	proxy/model/network-proxy-model.cpp
+	proxy/model/network-proxy-proxy-model.cpp
+
 	proxy/network-proxy.cpp
 	proxy/network-proxy-manager.cpp
 	proxy/network-proxy-shared.cpp
@@ -8,6 +11,9 @@ set (network_SRCS
 )
 
 set (network_MOC_SRCS
+	proxy/model/network-proxy-model.h
+	proxy/model/network-proxy-proxy-model.h
+
 	proxy/network-proxy-manager.h
 	proxy/network-proxy-shared.h
 
