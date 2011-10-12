@@ -60,7 +60,6 @@ public:
 	virtual QFlags<Qt::ItemFlag> flags(const QModelIndex &index) const;
 
 	virtual QModelIndex parent(const QModelIndex &child) const;
-	virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
 	virtual QVariant data(const QModelIndex &index, int role) const;
 
 	// D&D

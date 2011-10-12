@@ -109,17 +109,6 @@ QModelIndex BuddiesModelBase::parent(const QModelIndex &child) const
 		return index(child.internalId(), 0, QModelIndex());
 }
 
-QVariant BuddiesModelBase::headerData(int section, Qt::Orientation orientation, int role) const
-{
-	if (role != Qt::DisplayRole)
-		return QVariant();
-
-	if (orientation == Qt::Horizontal)
-		return QString("Column %1").arg(section);
-	else
-		return QString("Row %1").arg(section);
-}
-
 Contact BuddiesModelBase::buddyDefaultContact(const QModelIndex &index) const
 {
 	Buddy buddy = buddyAt(index);

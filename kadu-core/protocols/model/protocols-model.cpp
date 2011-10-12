@@ -71,15 +71,6 @@ QVariant ProtocolsModel::data(const QModelIndex &index, int role) const
 	}
 }
 
-QVariant ProtocolsModel::headerData(int section, Qt::Orientation orientation, int role) const
-{
-	Q_UNUSED(section)
-	Q_UNUSED(orientation)
-	Q_UNUSED(role)
-
-	return QVariant();
-}
-
 ProtocolFactory * ProtocolsModel::protocolFactory(const QModelIndex &index) const
 {
 	if (!index.isValid())

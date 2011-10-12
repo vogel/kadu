@@ -91,17 +91,6 @@ QVariant NetworkProxyModel::data(const QModelIndex &index, int role) const
 	}
 }
 
-QVariant NetworkProxyModel::headerData(int section, Qt::Orientation orientation, int role) const
-{
-	if (role != Qt::DisplayRole)
-		return QVariant();
-
-	if (orientation == Qt::Horizontal)
-		return QString("Column %1").arg(section);
-	else
-		return QString("Row %1").arg(section);
-}
-
 NetworkProxy NetworkProxyModel::networkProxy(const QModelIndex &index) const
 {
 	if (!index.isValid())

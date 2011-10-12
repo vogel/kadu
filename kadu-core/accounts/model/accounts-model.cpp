@@ -97,17 +97,6 @@ QVariant AccountsModel::data(const QModelIndex &index, int role) const
 	}
 }
 
-QVariant AccountsModel::headerData(int section, Qt::Orientation orientation, int role) const
-{
-	if (role != Qt::DisplayRole)
-		return QVariant();
-
-	if (orientation == Qt::Horizontal)
-		return QString("Column %1").arg(section);
-	else
-		return QString("Row %1").arg(section);
-}
-
 Account AccountsModel::account(const QModelIndex &index) const
 {
 	if (!index.isValid())

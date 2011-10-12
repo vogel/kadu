@@ -45,7 +45,6 @@ public:
 	virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
 
 	virtual QVariant data(const QModelIndex &index, int role) const;
-	virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
 
 	NetworkProxy networkProxy(const QModelIndex &index) const;
 	int networkProxyIndex(NetworkProxy networkProxy) const;

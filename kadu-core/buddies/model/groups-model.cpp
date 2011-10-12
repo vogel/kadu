@@ -80,17 +80,6 @@ QVariant GroupsModel::data(const QModelIndex &index, int role) const
 	}
 }
 
-QVariant GroupsModel::headerData(int section, Qt::Orientation orientation, int role) const
-{
-	if (role != Qt::DisplayRole)
-		return QVariant();
-
-	if (orientation == Qt::Horizontal)
-		return QString("Column %1").arg(section);
-	else
-		return QString("Row %1").arg(section);
-}
-
 Group GroupsModel::group(const QModelIndex &index) const
 {
 	if (!index.isValid())
