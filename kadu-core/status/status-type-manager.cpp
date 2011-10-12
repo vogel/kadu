@@ -47,11 +47,11 @@ StatusTypeManager::StatusTypeManager()
 	StatusTypes.insert(StatusTypeOnline,
 	                   StatusTypeData(StatusTypeOnline, "Online", qApp->translate("@default", "Online"), "online", StatusTypeGroupOnline));
 	StatusTypes.insert(StatusTypeAway,
-	                   StatusTypeData(StatusTypeAway, "Away", qApp->translate("@default", "Away"), "away", StatusTypeGroupDoNotDisturb));
+	                   StatusTypeData(StatusTypeAway, "Away", qApp->translate("@default", "Away"), "away", StatusTypeGroupAway));
 	StatusTypes.insert(StatusTypeNotAvailable,
-	                   StatusTypeData(StatusTypeNotAvailable, "NotAvailable", qApp->translate("@default", "Not available"), "not_available", StatusTypeGroupDoNotDisturb));
+	                   StatusTypeData(StatusTypeNotAvailable, "NotAvailable", qApp->translate("@default", "Not available"), "not_available", StatusTypeGroupAway));
 	StatusTypes.insert(StatusTypeDoNotDisturb,
-	                   StatusTypeData(StatusTypeDoNotDisturb, "DoNotDisturb", qApp->translate("@default", "Do not disturb"), "do_not_disturb", StatusTypeGroupDoNotDisturb));
+	                   StatusTypeData(StatusTypeDoNotDisturb, "DoNotDisturb", qApp->translate("@default", "Do not disturb"), "do_not_disturb", StatusTypeGroupAway));
 	StatusTypes.insert(StatusTypeInvisible,
 	                   StatusTypeData(StatusTypeInvisible, "Invisible", qApp->translate("@default", "Invisible"), "invisible", StatusTypeGroupInvisible));
 	StatusTypes.insert(StatusTypeOffline,

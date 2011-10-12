@@ -24,7 +24,7 @@ enum StatusTypeGroup
 {
 	StatusTypeGroupNone = -1,
 	StatusTypeGroupOnline = 0,
-	StatusTypeGroupDoNotDisturb = 10,
+	StatusTypeGroupAway = 10,
 	StatusTypeGroupInvisible = 20,
 	StatusTypeGroupOffline = 30
 };

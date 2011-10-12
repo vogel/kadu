@@ -86,7 +86,7 @@ void AutoAwayStatusChanger::changeStatus(StatusContainer *container, Status &sta
 		return;
 	}
 
-	if (status.group() == StatusTypeGroupDoNotDisturb)
+	if (status.group() == StatusTypeGroupAway)
 		return;
 
 	if (changeStatusTo == ChangeStatusToBusy)

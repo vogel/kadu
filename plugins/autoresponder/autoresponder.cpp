@@ -155,7 +155,7 @@ void AutoResponder::filterIncomingMessage(Chat chat, Contact sender, QString &me
 	// Na chwilę obecną busy == away
 	if ((statusAvailable && protocol->status().group() == StatusTypeGroupOnline)
 			|| (statusInvisible && protocol->status().group() == StatusTypeGroupInvisible)
-			|| (statusBusy && protocol->status().group() == StatusTypeGroupDoNotDisturb))
+			|| (statusBusy && protocol->status().group() == StatusTypeGroupAway))
 	{
 		ChatService *chatService = protocol->chatService();
 		if (!chatService)
