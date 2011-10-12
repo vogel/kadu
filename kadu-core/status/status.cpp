@@ -47,9 +47,6 @@ Status::~Status()
 
 void Status::setType(const StatusType type)
 {
-	Group = StatusTypeGroupOffline;
-	DisplayName = "Offline";
-
 	Type = type;
 
 	const StatusTypeData & typeData = StatusTypeManager::instance()->statusTypeData(Type);
