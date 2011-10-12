@@ -102,6 +102,12 @@ void setWindowGeometry(QWidget *w, const QRect &geometry)
 {
 	QRect rect = properGeometry(geometry);
 
+#ifdef Q_OS_MAC
+	// Looks like availableGeometry() does not work correctly on Mac OS X, so we need a workaround.
+	if (rect.y() < 20)
+		rect.setY(20);
+#endif
+
 	// setGeometry() will do no good here, refer to Qt docs and Kadu bug #2262
 	// note it has to be symmetric to what windowGeometry() does
 	w->resize(rect.size());
