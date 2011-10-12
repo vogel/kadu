@@ -144,7 +144,7 @@ void StatusActions::statusUpdated()
 		createActions();
 	}
 
-	const StatusType currentStatusType = MyStatusContainer->status().type();
+	StatusType currentStatusType = MyStatusContainer->status().type();
 
 	foreach (QAction *action, ChangeStatusActionGroup->actions())
 	{

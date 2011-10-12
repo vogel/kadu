@@ -250,7 +250,7 @@ KaduIcon StatusContainerManager::statusIcon(const Status &status)
 	return StatusTypeManager::instance()->statusIcon("common", status.type(), status.hasDescription(), false);
 }
 
-KaduIcon StatusContainerManager::statusIcon(const StatusType statusType)
+KaduIcon StatusContainerManager::statusIcon(StatusType statusType)
 {
 	if (!DefaultStatusContainer)
 		return StatusTypeManager::instance()->statusIcon("common", StatusTypeOffline, false, false);

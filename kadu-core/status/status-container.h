@@ -151,7 +151,7 @@ public:
 	 * same status type can be different, as Kadu supports per-protocol icons. One-account status containers
 	 * use per-protocol icons. This icon does not have description mark.
 	 */
-	virtual KaduIcon statusIcon(const StatusType statusType) = 0;
+	virtual KaduIcon statusIcon(StatusType statusType) = 0;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski

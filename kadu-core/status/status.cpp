@@ -29,7 +29,7 @@
 
 #include <stdio.h>
 
-Status::Status(const StatusType statusType, const QString &description) :
+Status::Status(StatusType statusType, const QString &description) :
 		Description(description)
 {
 	setType(statusType);
@@ -45,7 +45,7 @@ Status::~Status()
 {
 }
 
-void Status::setType(const StatusType type)
+void Status::setType(StatusType type)
 {
 	Type = type;
 

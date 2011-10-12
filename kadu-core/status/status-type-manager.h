@@ -53,7 +53,7 @@ public:
 	StatusType fromName(const QString &name);
 	const StatusTypeData statusTypeData(const StatusType statusType);
 
-	KaduIcon statusIcon(const QString &protocol, const StatusType statusType,
+	KaduIcon statusIcon(const QString &protocol, StatusType statusType,
 			bool description, bool mobile);
 
 };

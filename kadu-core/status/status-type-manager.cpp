@@ -70,14 +70,14 @@ StatusType StatusTypeManager::fromName(const QString &name)
 	return StatusTypeOffline;
 }
 
-const StatusTypeData StatusTypeManager::statusTypeData(const StatusType statusType)
+const StatusTypeData StatusTypeManager::statusTypeData(StatusType statusType)
 {
 	if (StatusTypes.contains(statusType))
 		return StatusTypes.value(statusType);
 	return StatusTypes.value(StatusTypeOffline);
 }
 
-KaduIcon StatusTypeManager::statusIcon(const QString &protocol, const StatusType statusType, bool description, bool mobile)
+KaduIcon StatusTypeManager::statusIcon(const QString &protocol, StatusType statusType, bool description, bool mobile)
 {
 	const StatusTypeData & statusTypeData = this->statusTypeData(statusType);
 

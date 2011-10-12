@@ -388,7 +388,7 @@ KaduIcon AccountShared::statusIcon(const Status &status)
 		return KaduIcon();
 }
 
-KaduIcon AccountShared::statusIcon(const StatusType statusType)
+KaduIcon AccountShared::statusIcon(StatusType statusType)
 {
 	if (ProtocolHandler)
 		return ProtocolHandler->statusIcon(statusType);

@@ -318,7 +318,7 @@ public:
 	 *
 	 * Returns generic (without protocol badge) icon of given status type. Icon won't have description mark.
 	 */
-	virtual KaduIcon statusIcon(const StatusType statusType);
+	virtual KaduIcon statusIcon(StatusType statusType);
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski

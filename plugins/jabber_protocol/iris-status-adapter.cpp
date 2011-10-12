@@ -57,7 +57,7 @@ namespace IrisStatusAdapter
 	XMPP::Status toIrisStatus(Status status)
 	{
 		XMPP::Status s = XMPP::Status();
-		const StatusType type = status.type();
+		StatusType type = status.type();
 
 		if (StatusTypeOnline == type)
 			s.setType(XMPP::Status::Online);
