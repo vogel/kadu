@@ -33,6 +33,7 @@
 #include "buddies/buddy.h"
 #include "buddies/buddy-set.h"
 #include "gui/actions/action.h"
+#include "gui/actions/actions.h"
 #include "gui/widgets/buddies-list-view.h"
 #include "gui/widgets/toolbar.h"
 #include "core/core.h"
@@ -59,10 +60,18 @@ MainWindow::MainWindow(const QString &windowName, QWidget *parent) :
 {
 	connect(ConfigurationManager::instance()->toolbarConfigurationManager(), SIGNAL(configurationUpdated()),
 			this, SLOT(refreshToolBars()));
+	connect(Actions::instance(), SIGNAL(actionLoaded(ActionDescription*)),
+			this, SLOT(actionLoadedOrUnloaded(ActionDescription*)));
+	connect(Actions::instance(), SIGNAL(actionUnloaded(ActionDescription*)),
+			this, SLOT(actionLoadedOrUnloaded(ActionDescription*)));
 }
 
 MainWindow::~MainWindow()
 {
+	disconnect(Actions::instance(), SIGNAL(actionUnloaded(ActionDescription*)),
+			this, SLOT(actionLoadedOrUnloaded(ActionDescription*)));
+	disconnect(Actions::instance(), SIGNAL(actionLoaded(ActionDescription*)),
+			this, SLOT(actionLoadedOrUnloaded(ActionDescription*)));
 	disconnect(ConfigurationManager::instance()->toolbarConfigurationManager(), SIGNAL(configurationUpdated()),
 			this, SLOT(refreshToolBars()));
 }
@@ -303,6 +312,12 @@ void MainWindow::writeToolBarsToConfig(Qt::ToolBarArea area)
 
 		toolBar->writeToConfig(dockAreaConfig);
 	}
+}
+
+void MainWindow::actionLoadedOrUnloaded(ActionDescription *action)
+{
+	if (supportsActionType(action->type()))
+		refreshToolBars();
 }
 
 void MainWindow::refreshToolBars()

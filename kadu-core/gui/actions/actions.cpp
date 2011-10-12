@@ -45,7 +45,7 @@ void Actions::insert(ActionDescription *action)
 	QMap<QString, ActionDescription *>::insert(action->name(), action);
 
 	if (!BlockSignals)
-		emit actionLoaded(action->name());
+		emit actionLoaded(action);
 }
 
 void Actions::remove(ActionDescription *action)
@@ -53,7 +53,7 @@ void Actions::remove(ActionDescription *action)
 	QMap<QString, ActionDescription *>::remove(action->name());
 
 	if (!Core::instance()->isClosing())
-		emit actionUnloaded(action->name());
+		emit actionUnloaded(action);
 }
 
 QAction * Actions::createAction(const QString &name, MainWindow *kaduMainWindow)

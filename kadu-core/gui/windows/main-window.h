@@ -58,6 +58,7 @@ class KADUAPI MainWindow : public QMainWindow, public ActionDataSource, DesktopA
 	void loadToolBarsFromConfigNode(QDomElement dockareaConfig, Qt::ToolBarArea area);
 
 private slots:
+	void actionLoadedOrUnloaded(ActionDescription *action);
 	void toolbarUpdated();
     void toolbarRemoved(ToolBar *toolBar);
 

@@ -120,22 +120,22 @@ signals:
 	/**
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Signal emited after an action type was registerd.
-	 * @param actionName name of registered action.
+	 * @param action registered action.
 	 *
-	 * Signal emited after an action type was registerd. When Actions object is in block signals state, this
+	 * Signal emited after an action type was registered. When Actions object is in block signals state, this
 	 * signal is not emited.
 	 */
-	void actionLoaded(const QString &actionName);
+	void actionLoaded(ActionDescription *action);
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Signal emited after an action type was unregisterd.
-	 * @param actionName name of unregistered action.
+	 * @param action unregistered action.
 	 *
-	 * Signal emited after an action type was unregisterd. When Actions object is in block signals state, this
+	 * Signal emited after an action type was unregistered. When Actions object is in block signals state, this
 	 * signal is not emited.
 	 */
-	void actionUnloaded(const QString &actionName);
+	void actionUnloaded(ActionDescription *action);
 
 };
 
