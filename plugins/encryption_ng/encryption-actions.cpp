@@ -28,6 +28,7 @@
 #include "contacts/contact-set.h"
 #include "core/core.h"
 #include "gui/actions/action.h"
+#include "gui/actions/actions.h"
 #include "gui/actions/action-description.h"
 #include "gui/widgets/buddies-list-view-menu-manager.h"
 #include "gui/widgets/chat-edit-box.h"
@@ -99,6 +100,8 @@ void EncryptionActions::unregisterActions()
 
 EncryptionActions::EncryptionActions()
 {
+	Actions::instance()->blockSignals();
+
 	GenerateKeysActionDescription = new ActionDescription(this,
 			ActionDescription::TypeMainMenu, "encryptionGenerateKeysAction",
 			this, 0, KaduIcon("security-high"), tr("Generate Encryption Keys")
@@ -120,6 +123,9 @@ EncryptionActions::EncryptionActions()
 			KaduIcon("security-high"), tr("Encrypt"),
 			true, checkCanEncrypt
 	);
+
+	// The last ActionDescription will send actionLoaded() signal.
+	Actions::instance()->unblockSignals();
 
 	SendPublicKeyActionDescription = new ActionDescription(this,
 		ActionDescription::TypeUser, "sendPublicKeyAction",

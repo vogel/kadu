@@ -54,6 +54,7 @@
 #include "buddies/buddy.h"
 #include "contacts/contact-set.h"
 #include "core/core.h"
+#include "gui/actions/actions.h"
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/chat-edit-box.h"
@@ -144,10 +145,15 @@ History::~History()
 
 void History::createActionDescriptions()
 {
+	Actions::instance()->blockSignals();
+
 	ShowHistoryActionDescriptionInstance = new ShowHistoryActionDescription(this);
 
 	BuddiesListViewMenuManager::instance()->addActionDescription(ShowHistoryActionDescriptionInstance, BuddiesListViewMenuItem::MenuCategoryView, 100);
 	Core::instance()->kaduWindow()->insertMenuActionDescription(ShowHistoryActionDescriptionInstance, KaduWindow::MenuKadu, 5);
+
+	// The last ActionDescription will send actionLoaded() signal.
+	Actions::instance()->unblockSignals();
 
 	ClearHistoryActionDescription = new ActionDescription(this,
 		ActionDescription::TypeUser, "clearHistoryAction",

@@ -46,6 +46,7 @@
 #include "contacts/contact-set.h"
 #include "core/core.h"
 #include "gui/actions/action.h"
+#include "gui/actions/actions.h"
 #include "gui/actions/action-description.h"
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-widget-manager.h"
@@ -111,12 +112,17 @@ TabsManager::TabsManager(QObject *parent) :
 	// pozycja tabów
 	configurationUpdated();
 
+	Actions::instance()->blockSignals();
+
 	OpenInNewTabActionDescription = new ActionDescription(this,
 		ActionDescription::TypeUser, "openInNewTabAction",
 		this, SLOT(onNewTab(QAction *, bool)),
 		KaduIcon("internet-group-chat"), tr("Chat in New Tab"), false, disableNewTab
 	);
 	BuddiesListViewMenuManager::instance()->addActionDescription(OpenInNewTabActionDescription, BuddiesListViewMenuItem::MenuCategoryChat, 200);
+
+	// The last ActionDescription will send actionLoaded() signal.
+	Actions::instance()->unblockSignals();
 
 	AttachToTabsActionDescription = new ActionDescription(this,
 		ActionDescription::TypeChat, "attachToTabsAction",

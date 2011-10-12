@@ -211,6 +211,7 @@ ChatWidgetActions::ChatWidgetActions(QObject *parent) : QObject(parent)
 		KaduIcon("internet-group-chat"), tr("&Chat"), false,
 		disableNoChat
 	);
+	BuddiesListViewMenuManager::instance()->addActionDescription(OpenChat, BuddiesListViewMenuItem::MenuCategoryChat, 25);
 
 	OpenWith = new ActionDescription(0,
 		ActionDescription::TypeGlobal, "openChatWithAction",
@@ -219,7 +220,7 @@ ChatWidgetActions::ChatWidgetActions(QObject *parent) : QObject(parent)
 	);
 	OpenWith->setShortcut("kadu_openchatwith", Qt::ApplicationShortcut);
 
-	// The last ActionDescription will send ActionAdded signal
+	// The last ActionDescription will send actionLoaded() signal.
 	Actions::instance()->unblockSignals();
 
 	InsertEmoticon = new ActionDescription(0,
@@ -234,8 +235,6 @@ ChatWidgetActions::ChatWidgetActions(QObject *parent) : QObject(parent)
 		this, SLOT(colorSelectorActionActivated(QAction *, bool)),
 		KaduIcon("kadu_icons/change-color"), tr("Change Color")
 	);*/
-
-	BuddiesListViewMenuManager::instance()->addActionDescription(OpenChat, BuddiesListViewMenuItem::MenuCategoryChat, 25);
 }
 
 ChatWidgetActions::~ChatWidgetActions()

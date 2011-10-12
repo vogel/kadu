@@ -18,6 +18,7 @@
  */
 
 #include "core/core.h"
+#include "gui/actions/actions.h"
 #include "gui/actions/action-description.h"
 #include "gui/windows/kadu-window.h"
 
@@ -51,10 +52,15 @@ ProfilesImportActions::ProfilesImportActions() :
 {
 	if (!ProfileDataManager::readProfileData().isEmpty())
 	{
+		Actions::instance()->blockSignals();
+
 		ImportProfiles = new ActionDescription(this, ActionDescription::TypeGlobal, "import_profiles",
 				this, SLOT(importProfilesActionActivated(QAction*, bool)), KaduIcon(),
 				tr("Import profiles..."), false);
 		Core::instance()->kaduWindow()->insertMenuActionDescription(ImportProfiles, KaduWindow::MenuTools);
+
+		// The last ActionDescription will send actionLoaded() signal.
+		Actions::instance()->unblockSignals();
 	}
 
 	ImportExternalProfile = new ActionDescription(this, ActionDescription::TypeGlobal, "import_external_profile",

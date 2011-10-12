@@ -36,6 +36,7 @@
 #include "configuration/configuration-file.h"
 
 #include "gui/actions/action.h"
+#include "gui/actions/actions.h"
 #include "gui/actions/action-description.h"
 
 #include "gui/widgets/chat-edit-box.h"
@@ -144,6 +145,8 @@ MediaPlayer::MediaPlayer()
 	foreach (ChatWidget *it, ChatWidgetManager::instance()->chats())
 		chatWidgetCreated(it);
 
+	Actions::instance()->blockSignals();
+
 	enableMediaPlayerStatuses = new ActionDescription(
 		this, ActionDescription::TypeGlobal, "enableMediaPlayerStatusesAction",
 		this, SLOT(mediaPlayerStatusChangerActivated(QAction *, bool)),
@@ -179,6 +182,10 @@ MediaPlayer::MediaPlayer()
 		this, SLOT(incrVolume()),
 		KaduIcon("audio-volume-high"), tr("Volume Up"), false
 	);
+
+	// The last ActionDescription will send actionLoaded() signal.
+	Actions::instance()->unblockSignals();
+
 	volDownAction = new ActionDescription(
 		this, ActionDescription::TypeChat, "mediaplayer_vol_down",
 		this, SLOT(decrVolume()),

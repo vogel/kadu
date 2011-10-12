@@ -375,7 +375,7 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 	DeleteUsers->setShortcut("kadu_deleteuser");
 	BuddiesListViewMenuManager::instance()->addActionDescription(DeleteUsers, BuddiesListViewMenuItem::MenuCategoryManagement, 1000);
 
-	// The last ActionDescription will send ActionAdded signal
+	// The last ActionDescription will send actionLoaded() signal.
 	Actions::instance()->unblockSignals();
 
 	ChangeStatus = new ChangeStatusAction(this);

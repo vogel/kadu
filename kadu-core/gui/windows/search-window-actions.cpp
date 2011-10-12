@@ -24,6 +24,7 @@
 #include <QtGui/QTreeWidget>
 
 #include "gui/actions/action.h"
+#include "gui/actions/actions.h"
 #include "gui/actions/action-description.h"
 #include "gui/windows/search-window.h"
 
@@ -41,6 +42,8 @@ SearchWindowActions * SearchWindowActions::instance()
 
 SearchWindowActions::SearchWindowActions()
 {
+	Actions::instance()->blockSignals();
+
 	FirstSearch = new ActionDescription(this,
 		ActionDescription::TypeSearch, "firstSearchAction",
 		this, SLOT(firstSearchActionActivated(QAction*)),
@@ -75,6 +78,9 @@ SearchWindowActions::SearchWindowActions()
 		KaduIcon("contact-new"), tr("Add selected user")
 	);
 	connect(AddFound, SIGNAL(actionCreated(Action*)), this, SLOT(actionsFoundActionCreated(Action*)));
+
+	// The last ActionDescription will send actionLoaded() signal.
+	Actions::instance()->unblockSignals();
 
 	ChatFound = new ActionDescription(this,
 		ActionDescription::TypeSearch, "chatSearchedAction",

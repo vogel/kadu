@@ -26,6 +26,7 @@
 #include "contacts/contact.h"
 #include "core/core.h"
 #include "gui/actions/action.h"
+#include "gui/actions/actions.h"
 #include "gui/actions/action-description.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/xml-console.h"
@@ -74,6 +75,8 @@ void JabberActions::unregisterActions()
 
 JabberActions::JabberActions()
 {
+	Actions::instance()->blockSignals();
+
 	ShowXmlConsole = new ActionDescription(this, ActionDescription::TypeMainMenu, "showXmlConsole",
 			0, 0, KaduIcon(), tr("Show XML Console for Account"));
 	connect(ShowXmlConsole, SIGNAL(actionCreated(Action*)), this, SLOT(showXmlConsoleActionCreated(Action*)));
@@ -97,6 +100,10 @@ JabberActions::JabberActions()
 	RemoveSubscription = new ActionDescription(this, ActionDescription::TypeUser, "rosterRemoveSubscription",
 			this, SLOT(removeSubscriptionActionActivated(QAction*)), KaduIcon(), tr("Remove Subscription"),
 			false, disableNoRosterContact);
+
+	// The last ActionDescription will send actionLoaded() signal.
+	Actions::instance()->unblockSignals();
+
 	AskForSubscription = new ActionDescription(this, ActionDescription::TypeUser, "rosterAskForSubscription",
 			this, SLOT(askForSubscriptionActionActivated(QAction*)), KaduIcon(), tr("Ask for Subscription"),
 			false, disableNoRosterContact);
