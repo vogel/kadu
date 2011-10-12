@@ -46,7 +46,6 @@
 #include "gui/windows/kadu-window-actions.h"
 #include "gui/windows/message-dialog.h"
 #include "gui/windows/open-chat-with/open-chat-with.h"
-#include "gui/windows/search-window.h"
 
 #include "custom-input.h"
 #include "debug.h"
@@ -198,13 +197,6 @@ ChatWidgetActions::ChatWidgetActions(QObject *parent) : QObject(parent)
 		disableEmptyTextBox
 	);
 	connect(Send, SIGNAL(actionCreated(Action *)), this, SLOT(sendActionCreated(Action *)));
-
-	Whois = new ActionDescription(0,
-		ActionDescription::TypeChat, "whoisAction",
-		this, SLOT(whoisActionActivated(QAction *, bool)),
-		KaduIcon("edit-find"), tr("Search this User in Directory"), false,
-		disableNoContact
-	);
 
 	BlockUser = new ActionDescription(0,
 		ActionDescription::TypeUser, "blockUserAction",
@@ -462,30 +454,6 @@ void ChatWidgetActions::sendActionActivated(QAction *sender, bool toggled)
 	ChatWidget *chatWidget = chatEditBox->chatWidget();
 	if (chatWidget)
 		chatWidget->sendMessage();
-
-	kdebugf2();
-}
-
-void ChatWidgetActions::whoisActionActivated(QAction *sender, bool toggled)
-{
-	Q_UNUSED(toggled)
-
-	kdebugf();
-
-	Action *action = qobject_cast<Action *>(sender);
-	if (!action)
-		return;
-
-	Buddy buddy = action->buddy();
-	if (!buddy)
-	{
-		(new SearchWindow(Core::instance()->kaduWindow()))->show();
-		return;
-	}
-
-	SearchWindow *sd = new SearchWindow(Core::instance()->kaduWindow(), buddy);
-	sd->show();
-	sd->firstSearch();
 
 	kdebugf2();
 }

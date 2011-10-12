@@ -815,7 +815,10 @@ void KaduWindowActions::lookupInDirectoryActionActivated(QAction *sender, bool t
 
 	Buddy buddy = action->buddy();
 	if (!buddy)
+	{
+		(new SearchWindow(Core::instance()->kaduWindow()))->show();
 		return;
+	}
 
 	SearchWindow *sd = new SearchWindow(Core::instance()->kaduWindow(), buddy);
 	sd->show();

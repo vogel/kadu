@@ -254,7 +254,7 @@ bool ChatWidget::keyPressEventHandled(QKeyEvent *e)
 
 	if (HotKey::shortCut(e,"ShortCuts", "kadu_searchuser"))
 	{
-		Actions::instance()->createAction("whoisAction", InputBox)->activate(QAction::Trigger);
+		Actions::instance()->createAction("lookupUserInfoAction", InputBox)->activate(QAction::Trigger);
 		return true;
 	}
 

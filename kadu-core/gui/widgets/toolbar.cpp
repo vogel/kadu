@@ -664,6 +664,9 @@ void ToolBar::loadFromConfig(const QDomElement &toolbar_element)
 			actionName += QString::number(ToolBarSeparator::token());
 		else if (actionName == "__spacer")
 			actionName += QString::number(ToolBarSpacer::token());
+		// TODO: remove when we stop supporting migration from 0.10.x
+		else if (actionName == "whoisAction")
+			actionName = "lookupUserInfoAction";
 
 		if (windowHasAction(actionName, true))
 			continue;

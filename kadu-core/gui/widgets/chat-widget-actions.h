@@ -43,7 +43,6 @@ class ChatWidgetActions : public QObject, ConfigurationAwareObject
 	ActionDescription *Italic;
 	ActionDescription *Underline;
 	ActionDescription *Send;
-	ActionDescription *Whois;
 	ActionDescription *BlockUser;
 	ActionDescription *OpenChat;
 	ActionDescription *OpenWith;
@@ -68,7 +67,6 @@ private slots:
 	void italicActionActivated(QAction *sender, bool toggled);
 	void underlineActionActivated(QAction *sender, bool toggled);
 	void sendActionActivated(QAction *sender, bool toggled);
-	void whoisActionActivated(QAction *sender, bool toggled);
 	void blockUserActionActivated(QAction *sender, bool toggled);
 	void openChatActionActivated(QAction *sender, bool toggled);
 	void openChatWithActionActivated(QAction *sender, bool toggled);
