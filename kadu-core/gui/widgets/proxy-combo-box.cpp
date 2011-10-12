@@ -17,6 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "gui/windows/proxy-edit-window.h"
 #include "model/roles.h"
 #include "network/proxy/model/network-proxy-model.h"
 #include "network/proxy/model/network-proxy-proxy-model.h"
@@ -24,9 +25,14 @@
 #include "proxy-combo-box.h"
 
 ProxyComboBox::ProxyComboBox(QWidget *parent) :
-		KaduComboBox<NetworkProxy>(parent)
+    KaduComboBox<NetworkProxy>(parent), InActivatedSlot(false)
 {
 	Model = new NetworkProxyModel(this);
+
+	EditProxyAction = new QAction(tr("Edit proxy configuration..."), this);
+	EditProxyAction->setData("editProxyConfiguration");
+
+	ActionsModel->addAfterAction(EditProxyAction);
 
 	setUpModel(Model, new NetworkProxyProxyModel(this));
 
@@ -34,6 +40,7 @@ ProxyComboBox::ProxyComboBox(QWidget *parent) :
 			this, SLOT(updateValueBeforeChange()));
 	connect(model(), SIGNAL(rowsRemoved(const QModelIndex &, int, int)),
 			this, SLOT(rowsRemoved(const QModelIndex &, int, int)));
+	connect(this, SIGNAL(activated(int)), this, SLOT(activatedSlot(int)));
 	connect(this, SIGNAL(currentIndexChanged(int)), this, SLOT(currentIndexChangedSlot(int)));
 }
 
@@ -49,6 +56,19 @@ void ProxyComboBox::setCurrentProxy(NetworkProxy networkProxy)
 NetworkProxy ProxyComboBox::currentProxy()
 {
 	return currentValue();
+}
+
+void ProxyComboBox::activatedSlot(int index)
+{
+	InActivatedSlot = true;
+
+	QModelIndex modelIndex = this->model()->index(index, modelColumn(), rootModelIndex());
+	QAction *action = modelIndex.data(ActionRole).value<QAction *>();
+
+	if (action == EditProxyAction)
+		ProxyEditWindow::show();
+
+	InActivatedSlot = false;
 }
 
 void ProxyComboBox::currentIndexChangedSlot(int index)

@@ -36,6 +36,8 @@ public:
 	NetworkProxyProxyModel(QObject *parent = 0);
 	virtual ~NetworkProxyProxyModel();
 
+	virtual QModelIndex indexForValue(const QVariant &value) const;
+
 };
 
 #endif // NETWORK_PROXY_PROXY_MODEL_H

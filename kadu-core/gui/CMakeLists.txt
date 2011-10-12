@@ -120,6 +120,7 @@ set (gui_SRCS
 	windows/password-window.cpp
 	windows/plugin-error-dialog.cpp
 	windows/progress-window.cpp
+	windows/proxy-edit-window.cpp
 	windows/search-window.cpp
 	windows/search-window-actions.cpp
 	windows/subscription-window.cpp
@@ -251,6 +252,7 @@ set (gui_MOC_SRCS
 	windows/password-window.h
 	windows/plugin-error-dialog.h
 	windows/progress-window.h
+	windows/proxy-edit-window.h
 	windows/search-window.h
 	windows/search-window-actions.h
 	windows/subscription-window.h

@@ -19,6 +19,7 @@
 
 #include "model/roles.h"
 #include "network/proxy/network-proxy.h"
+#include "network/proxy/model/network-proxy-model.h"
 
 #include "network-proxy-proxy-model.h"
 
@@ -56,4 +57,13 @@ bool NetworkProxyProxyModel::lessThan(const QModelIndex &left, const QModelIndex
 
 	int displayCompare = compareNames(leftNetworkProxy.address(), rightNetworkProxy.address());
 	return displayCompare < 0;
+}
+
+QModelIndex NetworkProxyProxyModel::indexForValue(const QVariant &value) const
+{
+	NetworkProxyModel *model = qobject_cast<NetworkProxyModel *>(sourceModel());
+	if (!model)
+		return QModelIndex();
+
+	return mapFromSource(model->indexForValue(value));
 }

@@ -32,7 +32,11 @@ class ProxyComboBox : public KaduComboBox<NetworkProxy>
 
 	NetworkProxyModel *Model;
 
+	bool InActivatedSlot;
+	QAction *EditProxyAction;
+
 private slots:
+	void activatedSlot(int index);
 	void currentIndexChangedSlot(int index);
 	void updateValueBeforeChange();
 	void rowsRemoved(const QModelIndex &parent, int start, int end);
