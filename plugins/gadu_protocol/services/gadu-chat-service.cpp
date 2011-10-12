@@ -35,7 +35,6 @@
 #include "core/core.h"
 #include "gui/windows/message-dialog.h"
 #include "misc/misc.h"
-#include "status/status-group.h"
 #include "status/status-type.h"
 
 #include "debug.h"
