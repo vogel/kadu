@@ -196,7 +196,7 @@ KaduIcon Protocol::statusIcon(const Status &status)
 	return StatusTypeManager::instance()->statusIcon(statusPixmapPath(), status.type(), !status.description().isEmpty(), false);
 }
 
-KaduIcon Protocol::statusIcon(const QString &statusType)
+KaduIcon Protocol::statusIcon(StatusType statusType)
 {
 	return StatusTypeManager::instance()->statusIcon(statusPixmapPath(), statusType, false, false);
 }

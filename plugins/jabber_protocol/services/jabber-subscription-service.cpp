@@ -76,7 +76,6 @@ void JabberSubscriptionService::subscription(const XMPP::Jid &jid, const QString
 				 * that the contact is offline now.
 			*/
 			Status offlineStatus;
-			offlineStatus.setType("Offline");
 			Contact contact = ContactManager::instance()->byId(Protocol->account(), jid.bare(), ActionReturnNull);
 
 			if (contact)

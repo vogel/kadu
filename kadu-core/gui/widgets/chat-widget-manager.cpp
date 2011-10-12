@@ -438,7 +438,7 @@ void ChatWidgetManager::messageReceived(const Message &message)
 		if (OpenChatOnMessage)
 		{
 			Protocol *handler = message.messageChat().chatAccount().protocolHandler();
-			if (OpenChatOnMessageWhenOnline && (!handler || (handler->status().group() != "Online")))
+			if (OpenChatOnMessageWhenOnline && (!handler || (handler->status().group() != StatusTypeGroupOnline)))
 			{
 				qApp->alert(Core::instance()->kaduWindow());
 				message.setPending(true);

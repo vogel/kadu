@@ -24,10 +24,10 @@
 #define STATUS_CONTAINER_H
 
 #include "status/status.h"
+#include "status/status-type.h"
 #include "exports.h"
 
 class KaduIcon;
-class StatusType;
 
 /**
  * @addtogroup Status
@@ -144,14 +144,14 @@ public:
 	/**
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Returns icon for given status type
-	 * @param statusType status tye to get icon for
+	 * @param statusType status type to get icon for
 	 * @return icon for given status type
 	 *
 	 * This method returns icon for given status type. Icons returned by different StatusContainers for the
 	 * same status type can be different, as Kadu supports per-protocol icons. One-account status containers
 	 * use per-protocol icons. This icon does not have description mark.
 	 */
-	virtual KaduIcon statusIcon(const QString &statusType) = 0;
+	virtual KaduIcon statusIcon(StatusType statusType) = 0;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -164,7 +164,7 @@ public:
 	 *
 	 * For multiaccount containers intersection of status types supported by its protocols is returned.
 	 */
-	virtual QList<StatusType *> supportedStatusTypes() = 0;
+	virtual QList<StatusType> supportedStatusTypes() = 0;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski

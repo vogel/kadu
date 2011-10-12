@@ -90,7 +90,7 @@ Status StatusChangerManager::manuallySetStatus(StatusContainer *statusContainer)
 {
 	if (Statuses.contains(statusContainer))
 		return Statuses.value(statusContainer);
-	return Status("Offline");
+	return Status();
 }
 
 void StatusChangerManager::statusChanged(StatusContainer *container)

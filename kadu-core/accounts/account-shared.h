@@ -38,7 +38,8 @@ class FileTransferService;
 class Identity;
 class Protocol;
 class ProtocolFactory;
-class StatusType;
+
+enum StatusType;
 
 class KADUAPI AccountShared : public BaseStatusContainer, public Shared, public DetailsHolder<AccountDetails>, ProtocolsAwareObject
 {
@@ -134,9 +135,9 @@ public:
 
 	virtual KaduIcon statusIcon();
 	virtual KaduIcon statusIcon(const Status &status);
-	virtual KaduIcon statusIcon(const QString &statusType);
+	virtual KaduIcon statusIcon(StatusType statusType);
 
-	virtual QList<StatusType *> supportedStatusTypes();
+	virtual QList<StatusType> supportedStatusTypes();
 
 	// TODO: 0.11, find better API
 	// this is only for GG now

@@ -173,7 +173,7 @@ void AccountShared::setDisconnectStatus()
 	QString disconnectDescription = config_file.readEntry("General", "DisconnectDescription");
 
 	Status disconnectStatus;
-	disconnectStatus.setType("Offline");
+	disconnectStatus.setType(StatusTypeOffline);
 
 	if (disconnectWithCurrentDescription)
 		disconnectStatus.setDescription(status().description());
@@ -388,7 +388,7 @@ KaduIcon AccountShared::statusIcon(const Status &status)
 		return KaduIcon();
 }
 
-KaduIcon AccountShared::statusIcon(const QString &statusType)
+KaduIcon AccountShared::statusIcon(StatusType statusType)
 {
 	if (ProtocolHandler)
 		return ProtocolHandler->statusIcon(statusType);
@@ -407,12 +407,12 @@ void AccountShared::setPrivateStatus(bool isPrivate)
 		ProtocolHandler->changePrivateMode();
 }
 
-QList<StatusType *> AccountShared::supportedStatusTypes()
+QList<StatusType> AccountShared::supportedStatusTypes()
 {
 	if (ProtocolHandler)
 		return ProtocolHandler->protocolFactory()->supportedStatusTypes();
 	else
-		return QList<StatusType *>();
+		return QList<StatusType>();
 }
 
 void AccountShared::fileTransferServiceChanged(FileTransferService *service)

@@ -1,7 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2010 Bartosz Brachaczek (b.brachaczek@gmail.com)
- * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -18,34 +17,16 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef STATUS_GROUP
-#define STATUS_GROUP
+#ifndef STATUS_TYPE_GROUP_H
+#define STATUS_TYPE_GROUP_H
 
-#include <QtCore/QString>
-
-class StatusGroup
+enum StatusTypeGroup
 {
-public:
-	enum StatusGroupSortIndex
-	{
-		StatusGroupSortIndexAfterSetDescription = 101
-	};
-
-private:
-	QString Name;
-	int SortIndex;
-
-public:
-	StatusGroup(const QString &name, int sortIndex);
-
-	const QString & name() const { return Name; }
-
-	int sortIndex() const { return SortIndex; }
-
-	bool operator < (const StatusGroup&compare) const;
-	bool operator == (const StatusGroup&compare) const;
-	bool operator != (const StatusGroup&compare) const;
-
+	StatusTypeGroupNone = -1,
+	StatusTypeGroupOnline = 0,
+	StatusTypeGroupAway = 10,
+	StatusTypeGroupInvisible = 20,
+	StatusTypeGroupOffline = 30
 };
 
-#endif // STATUS_GROUP
+#endif // STATUS_TYPE_GROUP_H

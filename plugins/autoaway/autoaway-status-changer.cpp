@@ -71,34 +71,34 @@ void AutoAwayStatusChanger::changeStatus(StatusContainer *container, Status &sta
 
 	if (changeStatusTo == ChangeStatusToOffline)
 	{
-		status.setType("Offline");
+		status.setType(StatusTypeOffline);
 		status.setDescription(description);
 		return;
 	}
 
-	if (status.group() == "Invisible")
+	if (status.group() == StatusTypeGroupInvisible)
 		return;
 
 	if (changeStatusTo == ChangeStatusToInvisible)
 	{
-		status.setType("Invisible");
+		status.setType(StatusTypeInvisible);
 		status.setDescription(description);
 		return;
 	}
 
-	if (status.group() == "Away")
+	if (status.group() == StatusTypeGroupAway)
 		return;
 
 	if (changeStatusTo == ChangeStatusToBusy)
 	{
-		status.setType("Away");
+		status.setType(StatusTypeAway);
 		status.setDescription(description);
 		return;
 	}
 
 	if (changeStatusTo == ChangeStatusToExtendedAway)
 	{
-		status.setType("NotAvailable");
+		status.setType(StatusTypeNotAvailable);
 		status.setDescription(description);
 		return;
 	}

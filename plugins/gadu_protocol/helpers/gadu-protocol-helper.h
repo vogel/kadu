@@ -20,13 +20,15 @@
 #ifndef GADU_PROTOCOL_HELPER_H
 #define GADU_PROTOCOL_HELPER_H
 
+#include "status/status-type.h"
+
 #include "gadu-exports.h"
 
 #include "gadu-protocol.h"
 
 namespace GaduProtocolHelper
 {
-	GADUAPI QString statusTypeFromGaduStatus(unsigned int index);
+	GADUAPI StatusType statusTypeFromGaduStatus(unsigned int index);
 	GADUAPI bool isBlockingStatus(unsigned int index);
 	GADUAPI unsigned int gaduStatusFromStatus(const Status &status);
 

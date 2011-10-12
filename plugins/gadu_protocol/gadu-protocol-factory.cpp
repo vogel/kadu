@@ -31,7 +31,6 @@
 #include "gui/widgets/gadu-create-account-widget.h"
 #include "gui/widgets/gadu-edit-account-widget.h"
 #include "status/status-type.h"
-#include "status/status-type-manager.h"
 
 #include "gadu-account-details.h"
 #include "gadu-contact-details.h"
@@ -56,15 +55,12 @@ void GaduProtocolFactory::destroyInstance()
 
 GaduProtocolFactory::GaduProtocolFactory()
 {
-	StatusTypeManager *statusTypeManager = StatusTypeManager::instance();
-	SupportedStatusTypes.append(statusTypeManager->statusType("FreeForChat"));
-	SupportedStatusTypes.append(statusTypeManager->statusType("Online"));
-	SupportedStatusTypes.append(statusTypeManager->statusType("Away"));
-	SupportedStatusTypes.append(statusTypeManager->statusType("DoNotDisturb"));
-	SupportedStatusTypes.append(statusTypeManager->statusType("Invisible"));
-	SupportedStatusTypes.append(statusTypeManager->statusType("Offline"));
-
-	qSort(SupportedStatusTypes.begin(), SupportedStatusTypes.end(), StatusType::lessThan);
+	SupportedStatusTypes.append(StatusTypeFreeForChat);
+	SupportedStatusTypes.append(StatusTypeOnline);
+	SupportedStatusTypes.append(StatusTypeAway);
+	SupportedStatusTypes.append(StatusTypeDoNotDisturb);
+	SupportedStatusTypes.append(StatusTypeInvisible);
+	SupportedStatusTypes.append(StatusTypeOffline);
 }
 
 Protocol * GaduProtocolFactory::createProtocolHandler(Account account)
@@ -103,7 +99,7 @@ AccountEditWidget * GaduProtocolFactory::newEditAccountWidget(Account account, Q
 	return result;
 }
 
-QList<StatusType *> GaduProtocolFactory::supportedStatusTypes()
+QList<StatusType> GaduProtocolFactory::supportedStatusTypes()
 {
 	return SupportedStatusTypes;
 }

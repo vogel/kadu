@@ -26,8 +26,8 @@
 #include <QtGui/QApplication>
 
 #include "icons/kadu-icon.h"
-#include "status/status-group-manager.h"
 #include "status/status-type.h"
+#include "status/status-type-data.h"
 
 #include "status-type-manager.h"
 
@@ -42,78 +42,48 @@ StatusTypeManager * StatusTypeManager::instance()
 
 StatusTypeManager::StatusTypeManager()
 {
-	StatusGroup *online = StatusGroupManager::instance()->statusGroup("Online");
-	StatusGroup *busy = StatusGroupManager::instance()->statusGroup("Away");
-	StatusGroup *invisible = StatusGroupManager::instance()->statusGroup("Invisible");
-	StatusGroup *offline = StatusGroupManager::instance()->statusGroup("Offline");
-
-	registerStatusType("FreeForChat", qApp->translate("@default", "Free for chat"), "free_for_chat", online, 0);
-	registerStatusType("Online", qApp->translate("@default", "Online"), "online", online, 20);
-	registerStatusType("Away", qApp->translate("@default", "Away"), "away", busy, 0);
-	registerStatusType("NotAvailable", qApp->translate("@default", "Not available"), "not_available", busy, 20);
-	registerStatusType("DoNotDisturb", qApp->translate("@default", "Do not disturb"), "do_not_disturb", busy, 40);
-	registerStatusType("Invisible", qApp->translate("@default", "Invisible"), "invisible", invisible, 0);
-	registerStatusType("Offline", qApp->translate("@default", "Offline"), "offline", offline, 0);
+	StatusTypes.insert(StatusTypeFreeForChat,
+	                   StatusTypeData(StatusTypeFreeForChat, "FreeForChat", qApp->translate("@default", "Free for chat"), "free_for_chat", StatusTypeGroupOnline));
+	StatusTypes.insert(StatusTypeOnline,
+	                   StatusTypeData(StatusTypeOnline, "Online", qApp->translate("@default", "Online"), "online", StatusTypeGroupOnline));
+	StatusTypes.insert(StatusTypeAway,
+	                   StatusTypeData(StatusTypeAway, "Away", qApp->translate("@default", "Away"), "away", StatusTypeGroupAway));
+	StatusTypes.insert(StatusTypeNotAvailable,
+	                   StatusTypeData(StatusTypeNotAvailable, "NotAvailable", qApp->translate("@default", "Not available"), "not_available", StatusTypeGroupAway));
+	StatusTypes.insert(StatusTypeDoNotDisturb,
+	                   StatusTypeData(StatusTypeDoNotDisturb, "DoNotDisturb", qApp->translate("@default", "Do not disturb"), "do_not_disturb", StatusTypeGroupAway));
+	StatusTypes.insert(StatusTypeInvisible,
+	                   StatusTypeData(StatusTypeInvisible, "Invisible", qApp->translate("@default", "Invisible"), "invisible", StatusTypeGroupInvisible));
+	StatusTypes.insert(StatusTypeOffline,
+	                   StatusTypeData(StatusTypeOffline, "Offline", qApp->translate("@default", "Offline"), "offline", StatusTypeGroupOffline));
 }
 
 StatusTypeManager::~StatusTypeManager()
 {
-	qDeleteAll(StatusTypes);
 }
 
-void StatusTypeManager::registerStatusType(const QString &name, const QString &displayName,
-		const QString &iconName, StatusGroup *statusGroup, int sortIndex)
+StatusType StatusTypeManager::fromName(const QString &name)
 {
-	foreach (StatusType *st, StatusTypes)
-	{
-		if (name != st->name())
-			continue;
-
-		StatusTypesCounter[st]++;
-		return;
-	}
-
-	StatusType *newType = new StatusType(name, displayName, iconName, statusGroup, sortIndex);
-	StatusTypes.append(newType);
-	StatusTypesCounter[newType] = 1;
+	foreach (StatusType statusType, StatusTypes.keys())
+		if (StatusTypes.value(statusType).name() == name)
+			return statusType;
+	return StatusTypeOffline;
 }
 
-void StatusTypeManager::unregisterStatusType(const QString &name)
+const StatusTypeData StatusTypeManager::statusTypeData(StatusType statusType)
 {
-	foreach (StatusType *st, StatusTypes)
-	{
-		if (name != st->name())
-			continue;
-
-		int newCount = StatusTypesCounter.contains(st) ? --StatusTypesCounter[st] : 0;
-		if (0 != newCount)
-			return;
-
-		StatusTypesCounter.remove(st);
-		StatusTypes.removeAll(st);
-		delete st;
-		return;
-	}
+	if (StatusTypes.contains(statusType))
+		return StatusTypes.value(statusType);
+	return StatusTypes.value(StatusTypeOffline);
 }
 
-StatusType * StatusTypeManager::statusType(const QString& name)
+KaduIcon StatusTypeManager::statusIcon(const QString &protocol, StatusType statusType, bool description, bool mobile)
 {
-	foreach (StatusType *st, StatusTypes)
-		if (name == st->name())
-			return st;
-
-	return 0;
-}
-
-KaduIcon StatusTypeManager::statusIcon(const QString &protocol, const QString &type, bool description, bool mobile)
-{
-	StatusType *statusType = this->statusType(type);
-	if (!statusType)
-		return KaduIcon();
+	const StatusTypeData & statusTypeData = this->statusTypeData(statusType);
 
 	QString iconName = QString("protocols/%1/%2%3%4")
 			.arg(protocol)
-			.arg(statusType->iconName())
+			.arg(statusTypeData.iconName())
 			.arg(description ? QLatin1String("_d") : QString())
 			.arg(mobile ? QLatin1String("_m") : QString());
 

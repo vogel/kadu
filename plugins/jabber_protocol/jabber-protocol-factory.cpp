@@ -25,7 +25,6 @@
 #include "icons/kadu-icon.h"
 #include "misc/misc.h"
 #include "status/status-type.h"
-#include "status/status-type-manager.h"
 
 #include "actions/jabber-protocol-menu-manager.h"
 #include "gui/widgets/jabber-contact-personal-info-widget.h"
@@ -54,15 +53,12 @@ void JabberProtocolFactory::destroyInstance()
 
 JabberProtocolFactory::JabberProtocolFactory()
 {
-	StatusTypeManager *statusTypeManager = StatusTypeManager::instance();
-	SupportedStatusTypes.append(statusTypeManager->statusType("Online"));
-	SupportedStatusTypes.append(statusTypeManager->statusType("FreeForChat"));
-	SupportedStatusTypes.append(statusTypeManager->statusType("DoNotDisturb"));
-	SupportedStatusTypes.append(statusTypeManager->statusType("Away"));
-	SupportedStatusTypes.append(statusTypeManager->statusType("NotAvailable"));
-	SupportedStatusTypes.append(statusTypeManager->statusType("Offline"));
-
-	qSort(SupportedStatusTypes.begin(), SupportedStatusTypes.end(), StatusType::lessThan);
+	SupportedStatusTypes.append(StatusTypeOnline);
+	SupportedStatusTypes.append(StatusTypeFreeForChat);
+	SupportedStatusTypes.append(StatusTypeDoNotDisturb);
+	SupportedStatusTypes.append(StatusTypeAway);
+	SupportedStatusTypes.append(StatusTypeNotAvailable);
+	SupportedStatusTypes.append(StatusTypeOffline);
 }
 
 KaduIcon JabberProtocolFactory::icon()
@@ -106,7 +102,7 @@ AccountEditWidget * JabberProtocolFactory::newEditAccountWidget(Account account,
 	return result;
 }
 
-QList<StatusType *> JabberProtocolFactory::supportedStatusTypes()
+QList<StatusType> JabberProtocolFactory::supportedStatusTypes()
 {
 	return SupportedStatusTypes;
 }

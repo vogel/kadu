@@ -28,37 +28,37 @@
 #define GG_STATUS_INVISIBLE2 0x0009
 #define GG8_DESCRIPTION_MASK 0x00ff
 
-QString GaduProtocolHelper::statusTypeFromGaduStatus(unsigned int index)
+StatusType GaduProtocolHelper::statusTypeFromGaduStatus(unsigned int index)
 {
 	switch (index & GG8_DESCRIPTION_MASK)
 	{
 		case GG_STATUS_FFC_DESCR:
 		case GG_STATUS_FFC:
-			return "FreeForChat";
+			return StatusTypeFreeForChat;
 
 		case GG_STATUS_AVAIL_DESCR:
 		case GG_STATUS_AVAIL:
-			return "Online";
+			return StatusTypeOnline;
 
 		case GG_STATUS_BUSY_DESCR:
 		case GG_STATUS_BUSY:
-			return "Away";
+			return StatusTypeAway;
 
 		case GG_STATUS_DND_DESCR:
 		case GG_STATUS_DND:
-			return "DoNotDisturb";
+			return StatusTypeDoNotDisturb;
 
 		case GG_STATUS_INVISIBLE_DESCR:
 		case GG_STATUS_INVISIBLE:
 		case GG_STATUS_INVISIBLE2:
-			return "Invisible";
+			return StatusTypeInvisible;
 
 		case GG_STATUS_BLOCKED:
 		case GG_STATUS_NOT_AVAIL_DESCR:
 		case GG_STATUS_NOT_AVAIL:
 
 		default:
-			return "Offline";
+			return StatusTypeOffline;
 	}
 }
 
@@ -70,21 +70,21 @@ bool GaduProtocolHelper::isBlockingStatus(unsigned int index)
 unsigned int GaduProtocolHelper::gaduStatusFromStatus(const Status &status)
 {
 	bool hasDescription = !status.description().isEmpty();
-	const QString &type = status.type();
+	StatusType type = status.type();
 
-	if ("FreeForChat" == type)
+	if (StatusTypeFreeForChat == type)
 		return hasDescription ? GG_STATUS_FFC_DESCR : GG_STATUS_FFC;
 
-	if ("Online" == type)
+	if (StatusTypeOnline == type)
 		return hasDescription ? GG_STATUS_AVAIL_DESCR : GG_STATUS_AVAIL;
 
-	if ("Away" == type || "NotAvailable" == type)
+	if (StatusTypeAway == type || StatusTypeNotAvailable == type)
 		return hasDescription ? GG_STATUS_BUSY_DESCR : GG_STATUS_BUSY;
 
-	if ("DoNotDisturb" == type)
+	if (StatusTypeDoNotDisturb == type)
 		return hasDescription ? GG_STATUS_DND_DESCR : GG_STATUS_DND;
 
-	if ("Invisible" == type)
+	if (StatusTypeInvisible == type)
 		return hasDescription ? GG_STATUS_INVISIBLE_DESCR : GG_STATUS_INVISIBLE;
 
 	return hasDescription ? GG_STATUS_NOT_AVAIL_DESCR : GG_STATUS_NOT_AVAIL;

@@ -32,7 +32,7 @@ class JabberProtocolFactory : public ProtocolFactory
 	Q_DISABLE_COPY(JabberProtocolFactory)
 
 	static JabberProtocolFactory *Instance;
-	QList<StatusType *> SupportedStatusTypes;
+	QList<StatusType> SupportedStatusTypes;
 
 public:
 	static void createInstance();
@@ -48,7 +48,7 @@ public:
 	virtual AccountEditWidget* newEditAccountWidget(Account, QWidget*);
 	virtual QWidget * newContactPersonalInfoWidget(Contact contact, QWidget *parent = 0);
     virtual ProtocolMenuManager * protocolMenuManager();
-	virtual QList<StatusType *> supportedStatusTypes();
+	virtual QList<StatusType> supportedStatusTypes();
 	virtual QString idLabel();
 	virtual QValidator::State validateId(QString id);
 	virtual bool allowChangeServer();

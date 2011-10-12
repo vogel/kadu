@@ -26,13 +26,15 @@
 #include <QtCore/QList>
 #include <QtCore/QMap>
 
+#include "status/status-type.h"
+#include "status/status-type-group.h"
+
 #include "exports.h"
 
 class QString;
 
 class KaduIcon;
-class StatusGroup;
-class StatusType;
+class StatusTypeData;
 
 class KADUAPI StatusTypeManager
 {
@@ -40,8 +42,7 @@ class KADUAPI StatusTypeManager
 
 	static StatusTypeManager *Instance;
 
-	QList<StatusType *> StatusTypes;
-	QMap<StatusType *, int> StatusTypesCounter;
+	QMap<StatusType, StatusTypeData> StatusTypes;
 
 	StatusTypeManager();
 	~StatusTypeManager();
@@ -49,16 +50,11 @@ class KADUAPI StatusTypeManager
 public:
 	static StatusTypeManager * instance();
 
-	void registerStatusType(const QString &name, const QString &displayName, const QString &iconName,
-			StatusGroup *statusGroup, int sortIndex);
-	void unregisterStatusType(const QString &name);
+	StatusType fromName(const QString &name);
+	const StatusTypeData statusTypeData(const StatusType statusType);
 
-	StatusType * statusType(const QString &name);
-	
-	KaduIcon statusIcon(const QString &protocol, const QString &type,
+	KaduIcon statusIcon(const QString &protocol, StatusType statusType,
 			bool description, bool mobile);
-
-	const QList<StatusType *> & statusTypes() const { return StatusTypes; }
 
 };
 

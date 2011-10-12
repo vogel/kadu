@@ -40,6 +40,7 @@
 #include "icons/kadu-icon.h"
 #include "misc/misc.h"
 #include "status/status-type.h"
+#include "status/status-type-data.h"
 #include "status/status-type-manager.h"
 
 #include "debug.h"
@@ -143,7 +144,7 @@ QString Parser::executeCmd(const QString &cmd)
 	QProcess executor;
 	executor.start(s);
 	executor.closeWriteChannel();
-	
+
 	QString ret;
 	if (executor.waitForFinished())
 		ret = executor.readAll();
@@ -206,9 +207,8 @@ ParserToken Parser::parsePercentSyntax(const QString &s, int &idx, const BuddyOr
 					pe.setContent(qApp->translate("@default", "Blocking"));
 				else
 				{
-					StatusType *type = StatusTypeManager::instance()->statusType(contact.currentStatus().type());
-					if (type)
-						pe.setContent(type->displayName());
+					const StatusTypeData & typeData = StatusTypeManager::instance()->statusTypeData(contact.currentStatus().type());
+					pe.setContent(typeData.displayName());
 				}
 			}
 

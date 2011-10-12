@@ -20,6 +20,7 @@
 #include "configuration/configuration-file.h"
 #include "status/status-changer-manager.h"
 #include "status/status-container-manager.h"
+#include "status/status-type-manager.h"
 
 #include "status-setter.h"
 
@@ -51,12 +52,12 @@ void StatusSetter::setDefaultStatus(StatusContainer *statusContainer)
 		status.setDescription(StartupDescription);
 
 	if (StartupStatus != "LastStatus")
-		status.setType(StartupStatus);
+		status.setType(StatusTypeManager::instance()->fromName(StartupStatus));
 
-	if (status.type().isEmpty())
-		status.setType("Online");
-	else if ("Offline" == status.type() && OfflineToInvisible)
-		status.setType("Invisible");
+	if (StatusTypeNone == status.type())
+		status.setType(StatusTypeOnline);
+	else if (StatusTypeOffline == status.type() && OfflineToInvisible)
+		status.setType(StatusTypeInvisible);
 
 	StatusSetter::instance()->setStatus(statusContainer, status);
 }

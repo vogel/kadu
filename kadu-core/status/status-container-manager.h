@@ -241,7 +241,7 @@ public:
 	 *
 	 * Returns true if statuses of all acvite status containers are of given type.
 	 */
-	bool allStatusOfType(StatusType *type);
+	bool allStatusOfType(StatusType type);
 
 	// StatusContainer Implementation
 
@@ -313,11 +313,12 @@ public:
 	/**
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Returns generic icon of given status type
+	 * @param statusType type of status to get icon from
 	 * @return generic icon of given status type
 	 *
 	 * Returns generic (without protocol badge) icon of given status type. Icon won't have description mark.
 	 */
-	virtual KaduIcon statusIcon(const QString &statusType);
+	virtual KaduIcon statusIcon(StatusType statusType);
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -326,7 +327,7 @@ public:
 	 *
 	 * Returns list of default status container supported status types. If no default status container is available, empty list is returned.
 	 */
-	virtual QList<StatusType *> supportedStatusTypes();
+	virtual QList<StatusType> supportedStatusTypes();
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski

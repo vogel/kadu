@@ -31,20 +31,20 @@ namespace IrisStatusAdapter
 	{
 		Status newstatus;
 		if (status.isAvailable())
-			newstatus.setType("Online");
+			newstatus.setType(StatusTypeOnline);
 		else if (status.isInvisible())
-			newstatus.setType("DoNotDisturb");
+			newstatus.setType(StatusTypeDoNotDisturb);
 		else
-			newstatus.setType("Offline");
+			newstatus.setType(StatusTypeOffline);
 
 		if (status.show() == "away")
-			newstatus.setType("Away");
+			newstatus.setType(StatusTypeAway);
 		else if (status.show() == "xa")
-			newstatus.setType("NotAvailable");
+			newstatus.setType(StatusTypeNotAvailable);
 		else if (status.show() == "dnd")
-			newstatus.setType("DoNotDisturb");
+			newstatus.setType(StatusTypeDoNotDisturb);
 		else if (status.show() == "chat")
-			newstatus.setType("FreeForChat");
+			newstatus.setType(StatusTypeFreeForChat);
 
 		QString description = status.status();
 		description.replace("\r\n", "\n");
@@ -57,19 +57,19 @@ namespace IrisStatusAdapter
 	XMPP::Status toIrisStatus(Status status)
 	{
 		XMPP::Status s = XMPP::Status();
-		const QString &type = status.type();
+		StatusType type = status.type();
 
-		if ("Online" == type)
+		if (StatusTypeOnline == type)
 			s.setType(XMPP::Status::Online);
-		else if ("FreeForChat" == type)
+		else if (StatusTypeFreeForChat == type)
 			s.setType(XMPP::Status::FFC);
-		else if ("DoNotDisturb" == type)
+		else if (StatusTypeDoNotDisturb == type)
 			s.setType(XMPP::Status::DND);
-		else if ("NotAvailable" == type)
+		else if (StatusTypeNotAvailable == type)
 			s.setType(XMPP::Status::XA);
-		else if ("Away" == type)
+		else if (StatusTypeAway == type)
 			s.setType(XMPP::Status::Away);
-		else if ("Invisible" == type)
+		else if (StatusTypeInvisible == type)
 			s.setType(XMPP::Status::DND);
 		else
 			s.setType(XMPP::Status::Offline);
@@ -86,10 +86,10 @@ namespace IrisStatusAdapter
 	  	if (status1.type() == status2.type())
 			return true;
 
-		if (status1.type() == "Invisible" && status2.type() == "DoNotDisturb")
+		if (status1.type() == StatusTypeInvisible && status2.type() == StatusTypeDoNotDisturb)
 			return true;
 
-		if (status1.type() == "DoNotDisturb" && status2.type() == "Invisible")
+		if (status1.type() == StatusTypeDoNotDisturb && status2.type() == StatusTypeInvisible)
 			return true;
 
 		return false;

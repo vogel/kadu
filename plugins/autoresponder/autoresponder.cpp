@@ -42,6 +42,7 @@
 #include "misc/path-conversion.h"
 #include "parser/parser.h"
 #include "protocols/services/chat-service.h"
+#include "status/status-type-group.h"
 
 #include "autoresponder.h"
 
@@ -151,12 +152,10 @@ void AutoResponder::filterIncomingMessage(Chat chat, Contact sender, QString &me
 		return;
 	}
 
-	// Na chwilę obecną busy == away gdyż:
-	// status-type-manager.cpp:
-	//   StatusGroup *busy = StatusGroupManager::instance()->statusGroup("Away");
-	if ((statusAvailable && protocol->status().group() == "Online")
-			|| (statusBusy && protocol->status().group() == "Away")
-			|| (statusInvisible && protocol->status().group() == "Invisible"))
+	// Na chwilę obecną busy == away
+	if ((statusAvailable && protocol->status().group() == StatusTypeGroupOnline)
+			|| (statusInvisible && protocol->status().group() == StatusTypeGroupInvisible)
+			|| (statusBusy && protocol->status().group() == StatusTypeGroupAway))
 	{
 		ChatService *chatService = protocol->chatService();
 		if (!chatService)
