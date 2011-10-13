@@ -93,10 +93,10 @@ void Account::importProxySettings()
 		data()->setProxySettings(defaultAccount.proxySettings()); // data is copied
 }
 
-StatusContainer * Account::statusContainer()
+StatusContainer * Account::statusContainer() const
 {
-	if (MainConfigurationHolder::instance()->isSetStatusPerIdentity())
-		return accountIdentity().data();
+	if (!data())
+		return 0;
 	else
 		return data()->statusContainer();
 }

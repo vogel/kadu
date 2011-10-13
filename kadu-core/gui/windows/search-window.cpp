@@ -479,7 +479,7 @@ void SearchWindow::newSearchResults(const BuddyList &buddies)
 			strings << QString() << contact.id() << buddy.firstName()
 					<< buddy.city() << buddy.nickName() << QString::number(buddy.birthYear());
 			treeItem = new QTreeWidgetItem(ResultsListWidget, strings);
-			treeItem->setIcon(0, contact.contactAccount().data()->statusContainer()->statusIcon(contact.currentStatus()).icon());
+			treeItem->setIcon(0, contact.contactAccount().statusContainer()->statusIcon(contact.currentStatus()).icon());
 		}
 	}
 

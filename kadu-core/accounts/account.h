@@ -55,14 +55,7 @@ public:
 
 	void importProxySettings();
 
-	/**
-	 * Returns appropriate StatusContainer for this Account, i.e. its Identity's
-	 * StatusContainer in Simple Mode and this Account's otherwise. If you want to get
-	 * status information that is specific for this Account, e.g., non-generic status
-	 * icon, you probably want to call something like account.data()->statusIcon()
-	 * rather than using this method.
-	 */
-	StatusContainer * statusContainer();
+	StatusContainer * statusContainer() const;
 
 	KaduSharedBase_PropertyCRW(Identity, accountIdentity, AccountIdentity)
 	KaduSharedBase_PropertyRead(QSharedPointer<StoragePoint>, storage, Storage)

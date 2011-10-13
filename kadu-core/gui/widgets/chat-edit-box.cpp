@@ -33,6 +33,7 @@
 #include "chat/chat.h"
 #include "configuration/chat-configuration-holder.h"
 #include "configuration/configuration-file.h"
+#include "configuration/main-configuration-holder.h"
 #include "configuration/xml-configuration-file.h"
 #include "contacts/contact.h"
 #include "contacts/contact-set.h"
@@ -43,8 +44,10 @@
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/color-selector.h"
 #include "gui/windows/message-dialog.h"
+#include "identities/identity.h"
 #include "protocols/protocol.h"
 #include "protocols/services/chat-image-service.h"
+#include "status/status-container-manager.h"
 
 #include "chat-widget.h"
 #include "custom-input.h"
@@ -151,7 +154,12 @@ BuddiesListView * ChatEditBox::buddiesListView()
 
 StatusContainer * ChatEditBox::statusContainer()
 {
-	return CurrentChat.chatAccount().statusContainer();
+	if (MainConfigurationHolder::instance()->isSetStatusPerIdentity())
+		return CurrentChat.chatAccount().accountIdentity().data();
+	else if (MainConfigurationHolder::instance()->isSetStatusPerAccount())
+		return CurrentChat.chatAccount().statusContainer();
+	else
+		return StatusContainerManager::instance();
 }
 
 ContactSet ChatEditBox::contacts()

@@ -52,8 +52,8 @@ QVariant ContactDataExtractor::data(const Contact &contact, int role, bool useBu
 				return KaduIcon("kadu_icons/blocking").icon();
 
 			// TODO generic icon
-			return !contact.contactAccount().isNull()
-					? contact.contactAccount().data()->statusContainer()->statusIcon(contact.currentStatus()).icon()
+			return contact.contactAccount().statusContainer()
+					? contact.contactAccount().statusContainer()->statusIcon(contact.currentStatus()).icon()
 					: QIcon();
 		}
 		case BuddyRole:

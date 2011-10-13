@@ -52,11 +52,13 @@
 #include "gui/windows/kadu-window-actions.h"
 #include "gui/hot-key.h"
 #include "icons/kadu-icon.h"
+#include "identities/identity.h"
 #include "model/roles.h"
 #include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocol-menu-manager.h"
 #include "protocols/protocols-manager.h"
+#include "status/status-container-manager.h"
 
 #include "buddies-list-view-delegate.h"
 #include "buddies-list-view-menu-manager.h"
@@ -595,7 +597,12 @@ Chat BuddiesListView::chat()
 
 StatusContainer * BuddiesListView::statusContainer()
 {
-	return currentChat().chatAccount().statusContainer();
+	if (MainConfigurationHolder::instance()->isSetStatusPerIdentity())
+		return currentChat().chatAccount().accountIdentity().data();
+	else if (MainConfigurationHolder::instance()->isSetStatusPerAccount())
+		return currentChat().chatAccount().statusContainer();
+	else
+		return StatusContainerManager::instance();
 }
 
 bool BuddiesListView::hasContactSelected()
