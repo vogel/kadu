@@ -34,6 +34,7 @@
 class QString;
 
 class KaduIcon;
+class Status;
 class StatusTypeData;
 
 class KADUAPI StatusTypeManager
@@ -53,8 +54,7 @@ public:
 	StatusType fromName(const QString &name);
 	const StatusTypeData statusTypeData(const StatusType statusType);
 
-	KaduIcon statusIcon(const QString &protocol, StatusType statusType,
-			bool description, bool mobile);
+	KaduIcon statusIcon(const QString &protocol, const Status &status);
 
 };
 

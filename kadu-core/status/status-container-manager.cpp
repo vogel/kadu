@@ -238,9 +238,9 @@ KaduIcon StatusContainerManager::statusIcon()
 KaduIcon StatusContainerManager::statusIcon(const Status &status)
 {
 	if (!DefaultStatusContainer)
-		return StatusTypeManager::instance()->statusIcon("common", StatusTypeOffline, false, false);
+		return StatusTypeManager::instance()->statusIcon("common", StatusTypeOffline);
 
-	return StatusTypeManager::instance()->statusIcon("common", status.type(), status.hasDescription(), false);
+	return StatusTypeManager::instance()->statusIcon("common", status);
 }
 
 QList<StatusType> StatusContainerManager::supportedStatusTypes()

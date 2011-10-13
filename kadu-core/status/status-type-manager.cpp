@@ -26,6 +26,7 @@
 #include <QtGui/QApplication>
 
 #include "icons/kadu-icon.h"
+#include "status/status.h"
 #include "status/status-type.h"
 #include "status/status-type-data.h"
 
@@ -77,15 +78,14 @@ const StatusTypeData StatusTypeManager::statusTypeData(StatusType statusType)
 	return StatusTypes.value(StatusTypeOffline);
 }
 
-KaduIcon StatusTypeManager::statusIcon(const QString &protocol, StatusType statusType, bool description, bool mobile)
+KaduIcon StatusTypeManager::statusIcon(const QString &protocol, const Status &status)
 {
-	const StatusTypeData & statusTypeData = this->statusTypeData(statusType);
+	const StatusTypeData & statusTypeData = this->statusTypeData(status.type());
 
-	QString iconName = QString("protocols/%1/%2%3%4")
+	QString iconName = QString("protocols/%1/%2%3")
 			.arg(protocol)
 			.arg(statusTypeData.iconName())
-			.arg(description ? QLatin1String("_d") : QString())
-			.arg(mobile ? QLatin1String("_m") : QString());
+			.arg(status.description().isEmpty() ? QString() : QLatin1String("_d"));
 
 	return KaduIcon(iconName, "16x16");
 }

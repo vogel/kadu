@@ -62,8 +62,7 @@ static QString getStatusIconPath(BuddyOrContact buddyOrContact)
 		if (protocol)
 		{
 			const Status &status = contact.currentStatus();
-			return StatusTypeManager::instance()->statusIcon(
-					protocol->statusPixmapPath(), status.type(), !status.description().isEmpty(), false).webKitPath();
+			return StatusTypeManager::instance()->statusIcon(protocol->statusPixmapPath(), status).webKitPath();
 		}
 	}
 
