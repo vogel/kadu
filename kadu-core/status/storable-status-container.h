@@ -28,6 +28,20 @@
 
 class StorableObject;
 
+/**
+ * @addtogroup Status
+ * @{
+ */
+
+/**
+ * @class StorableStatusContainer
+ * @author Rafał 'Vogel' Malinowski
+ * @short Status container that can store and load status from storable object.
+ * @see StorableObject
+ * @see StatusSetter
+ *
+ * This class is status container that can store and load status from storable object.
+ */
 class KADUAPI StorableStatusContainer : public StatusContainer
 {
 	Q_OBJECT
@@ -35,12 +49,39 @@ class KADUAPI StorableStatusContainer : public StatusContainer
 	StorableObject *MyStorableObject;
 
 public:
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Creates new StorableStatusContainer instance.
+	 * @param storableObject storable object to store status in
+	 *
+	 * This constructor creates new StorableStatusContainer instance associated with given storableObject.
+	 * Each status loading and storing will be performed using this storable object.
+	 */
 	explicit StorableStatusContainer(StorableObject *storableObject);
 	virtual ~StorableStatusContainer();
 
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Return status stored in storable object.
+	 * @return stored status.
+	 *
+	 * Return status stored in storable object.
+	 */
 	virtual Status loadStatus();
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Stores given status in storable object.
+	 * @param status status to store
+	 *
+	 * Stores given status in storable object.
+	 */
 	virtual void storeStatus(Status status);
 
 };
+
+/**
+ * @}
+ */
 
 #endif // BASE_STATUS_CONTAINER_H
