@@ -61,7 +61,7 @@ void ChangeStatusAction::actionInstanceCreated(Action *action)
 	if (statusContainer)
 	{
 		StatusIcon *icon = new StatusIcon(statusContainer, action);
-		connect(icon, SIGNAL(iconUpdated(KaduIcon)), this, SLOT(setIcon(KaduIcon)));
-		setIcon(icon->icon());
+		connect(icon, SIGNAL(iconUpdated(KaduIcon)), action, SLOT(setIcon(KaduIcon)));
+		action->setIcon(icon->icon());
 	}
 }
