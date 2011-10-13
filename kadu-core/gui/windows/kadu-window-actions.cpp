@@ -376,6 +376,8 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 	BuddiesListViewMenuManager::instance()->addActionDescription(DeleteUsers, BuddiesListViewMenuItem::MenuCategoryManagement, 1000);
 
 	// The last ActionDescription will send actionLoaded() signal.
+	// TODO It will not reflect all action types (see MainWindow::actionLoadedOrUnloaded() method)
+	// but will work good since KaduActions is created very early. Of course we still need a better mechanism for that.
 	Actions::instance()->unblockSignals();
 
 	ChangeStatus = new ChangeStatusAction(this);

@@ -29,7 +29,6 @@
 #include "file-transfer/file-transfer-handler.h"
 #include "file-transfer/file-transfer-manager.h"
 #include "gui/actions/action.h"
-#include "gui/actions/actions.h"
 #include "gui/actions/action-description.h"
 #include "gui/widgets/buddies-list-view-menu-manager.h"
 #include "gui/windows/kadu-window.h"
@@ -66,8 +65,6 @@ void disableNonFileTransferContacts(Action *action)
 FileTransferActions::FileTransferActions(QObject *parent)
 		: QObject(parent)
 {
-	Actions::instance()->blockSignals();
-
 	SendFileActionDescription = new ActionDescription(this,
 		ActionDescription::TypeUser, "sendFileAction",
 		this, SLOT(sendFileActionActivated(QAction *, bool)),
@@ -76,9 +73,6 @@ FileTransferActions::FileTransferActions(QObject *parent)
 	);
 	SendFileActionDescription->setShortcut("kadu_sendfile");
 	BuddiesListViewMenuManager::instance()->addActionDescription(SendFileActionDescription, BuddiesListViewMenuItem::MenuCategoryActions, 100);
-
-	// The last ActionDescription will send actionLoaded() signal.
-	Actions::instance()->unblockSignals();
 
 	FileTransferWindowActionDescription = new ActionDescription(this,
 		ActionDescription::TypeMainMenu, "sendFileWindowAction",

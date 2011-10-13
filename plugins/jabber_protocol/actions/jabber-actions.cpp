@@ -75,8 +75,6 @@ void JabberActions::unregisterActions()
 
 JabberActions::JabberActions()
 {
-	Actions::instance()->blockSignals();
-
 	ShowXmlConsole = new ActionDescription(this, ActionDescription::TypeMainMenu, "showXmlConsole",
 			0, 0, KaduIcon(), tr("Show XML Console for Account"));
 	connect(ShowXmlConsole, SIGNAL(actionCreated(Action*)), this, SLOT(showXmlConsoleActionCreated(Action*)));
@@ -93,6 +91,8 @@ JabberActions::JabberActions()
 			this, SLOT(updateShowXmlConsoleMenu()));
 	connect(AccountManager::instance(), SIGNAL(accountUnregistered(Account)),
 			this, SLOT(updateShowXmlConsoleMenu()));
+
+	Actions::instance()->blockSignals();
 
 	ResendSubscription = new ActionDescription(this, ActionDescription::TypeUser, "rosterResendSubscription",
 			this, SLOT(resendSubscriptionActionActivated(QAction*)), KaduIcon(), tr("Resend Subscription"),

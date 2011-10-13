@@ -205,6 +205,9 @@ ChatWidgetActions::ChatWidgetActions(QObject *parent) : QObject(parent)
 		checkBlocking
 	);
 
+	// The last ActionDescription of each type will send actionLoaded() signal.
+	Actions::instance()->unblockSignals();
+
 	OpenChat = new ActionDescription(0,
 		ActionDescription::TypeUser, "chatAction",
 		this, SLOT(openChatActionActivated(QAction *, bool)),
@@ -219,9 +222,6 @@ ChatWidgetActions::ChatWidgetActions(QObject *parent) : QObject(parent)
 		KaduIcon("internet-group-chat"), tr("Open Chat with...")
 	);
 	OpenWith->setShortcut("kadu_openchatwith", Qt::ApplicationShortcut);
-
-	// The last ActionDescription will send actionLoaded() signal.
-	Actions::instance()->unblockSignals();
 
 	InsertEmoticon = new ActionDescription(0,
 		ActionDescription::TypeChat, "insertEmoticonAction",

@@ -145,13 +145,14 @@ MediaPlayer::MediaPlayer()
 	foreach (ChatWidget *it, ChatWidgetManager::instance()->chats())
 		chatWidgetCreated(it);
 
-	Actions::instance()->blockSignals();
-
 	enableMediaPlayerStatuses = new ActionDescription(
 		this, ActionDescription::TypeGlobal, "enableMediaPlayerStatusesAction",
 		this, SLOT(mediaPlayerStatusChangerActivated(QAction *, bool)),
 		KaduIcon("external_modules/mediaplayer-media-playback-play"), tr("Enable MediaPlayer Statuses"), true
 	);
+
+	Actions::instance()->blockSignals();
+
 	mediaPlayerMenu = new ActionDescription(
 		this, ActionDescription::TypeChat, "mediaplayer_button",
 		this, SLOT(mediaPlayerMenuActivated(QAction *, bool)),
