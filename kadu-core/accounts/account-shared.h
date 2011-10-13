@@ -58,6 +58,7 @@ private:
 	bool HasPassword;
 	QString Password;
 
+	bool UseDefaultProxy;
 	NetworkProxy Proxy;
 
 	short int MaximumImageSize;
@@ -120,6 +121,7 @@ public:
 	KaduShared_Property(bool, rememberPassword, RememberPassword)
 	KaduShared_Property(bool, hasPassword, HasPassword)
 	KaduShared_Property(const QString &, password, Password)
+	KaduShared_Property(bool, useDefaultProxy, UseDefaultProxy)
 	KaduShared_Property(const NetworkProxy &, proxy, Proxy)
 	KaduShared_Property(bool, removing, Removing)
 

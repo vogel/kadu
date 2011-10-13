@@ -34,6 +34,7 @@ class ProxyComboBox : public KaduComboBox<NetworkProxy>
 
 	bool InActivatedSlot;
 	QAction *EditProxyAction;
+	QAction *DefaultProxyAction;
 
 private slots:
 	void activatedSlot(int index);
@@ -47,8 +48,11 @@ protected:
 	virtual ActionsProxyModel::ActionVisibility selectVisibility() const;
 
 public:
-	explicit ProxyComboBox(QWidget *parent = 0);
+	explicit ProxyComboBox(bool includeDefaultProxy, QWidget *parent = 0);
 	virtual ~ProxyComboBox();
+
+	void selectDefaultProxy();
+	bool isDefaultProxySelected();
 
 	void setCurrentProxy(NetworkProxy networkProxy);
 	NetworkProxy currentProxy();

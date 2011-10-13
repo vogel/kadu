@@ -58,6 +58,7 @@ public:
 	virtual QString storageNodeName() { return QLatin1String("Proxys"); }
 	virtual QString storageNodeItemName() { return QLatin1String("Proxy"); }
 
+	NetworkProxy defaultProxy();
 	NetworkProxy byConfiguration(const QString &address, int port,
 	                             const QString &user, const QString &password, NotFoundAction action);
 

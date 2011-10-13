@@ -273,7 +273,7 @@ MainConfigurationWindow::MainConfigurationWindow() :
 	if (proxyGroupBox)
 	{
 		NetworkProxy defaultProxy = NetworkProxyManager::instance()->byUuid(config_file.readEntry("Network", "DefaultProxy"));
-		ProxyWidget = new ProxyComboBox(this);
+		ProxyWidget = new ProxyComboBox(false, this);
 		ProxyWidget->setCurrentProxy(defaultProxy);
 		proxyGroupBox->addWidgets(new QLabel(tr("Default proxy:"), this), ProxyWidget);
 	}

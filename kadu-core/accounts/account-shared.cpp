@@ -137,9 +137,16 @@ void AccountShared::load()
 		Password = pwHash(loadValue<QString>("Password"));
 
 	if (hasValue("UseProxy"))
+	{
+		UseDefaultProxy = false;
 		importNetworkProxy();
+	}
 	else
-		Proxy = NetworkProxyManager::instance()->byUuid(loadValue<QString>("Proxy"));
+	{
+		UseDefaultProxy = loadValue<bool>("UseDefaultProxy", true);
+		if (!UseDefaultProxy)
+			Proxy = NetworkProxyManager::instance()->byUuid(loadValue<QString>("Proxy"));
+	}
 
 	triggerAllProtocolsRegistered();
 }
@@ -152,7 +159,11 @@ void AccountShared::store()
 	Shared::store();
 
 	storeValue("Identity", AccountIdentity->uuid().toString());
-	storeValue("Proxy", Proxy.uuid().toString());
+	storeValue("UseDefaultProxy", UseDefaultProxy);
+	if (UseDefaultProxy)
+		removeValue("Proxy");
+	else
+		storeValue("Proxy", Proxy.uuid().toString());
 
 	storeValue("Protocol", ProtocolName);
 	storeValue("Id", id());

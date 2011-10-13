@@ -45,6 +45,7 @@
 #include "contacts/contact-manager.h"
 #include "gui/windows/message-dialog.h"
 #include "gui/windows/password-window.h"
+#include "network/proxy/network-proxy-manager.h"
 #include "qt/long-validator.h"
 #include "status/status.h"
 #include "status/status-type.h"
@@ -174,7 +175,9 @@ void GaduProtocol::login()
 		return;
 	}
 
-	GaduProxyHelper::setupProxy(account().proxy());
+	GaduProxyHelper::setupProxy(account().useDefaultProxy()
+			? NetworkProxyManager::instance()->defaultProxy()
+			: account().proxy());
 
 	setupLoginParams();
 	GaduSession = gg_login(&GaduLoginParams);

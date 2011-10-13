@@ -32,6 +32,7 @@
 
 #include "accounts/account.h"
 #include "identities/identity.h"
+#include "network/proxy/network-proxy-manager.h"
 #include "debug.h"
 
 #include "certificates/certificate-helpers.h"
@@ -261,7 +262,10 @@ void JabberClient::connect(const XMPP::Jid &jid, const QString &password, bool a
 	if (useXMPP09())
 		JabberClientConnector->setOptProbe(probeSSL());
 
-	NetworkProxy proxy = Protocol->account().proxy();
+	NetworkProxy proxy = Protocol->account().useDefaultProxy()
+			? NetworkProxyManager::instance()->defaultProxy()
+			: Protocol->account().proxy();
+
 	if (proxy && !proxy.address().isEmpty())
 	{
 		XMPP::AdvancedConnector::Proxy proxySettings;

@@ -268,8 +268,8 @@ void JabberEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
 	proxyLayout->setMargin(0);
 
 	QLabel *proxyLabel = new QLabel(tr("Proxy configuration"), general);
-	ProxyCombo = new ProxyComboBox(general);
-	connect(ProxyCombo, SIGNAL(proxyChanged(NetworkProxy)), this, SLOT(dataChanged()));
+	ProxyCombo = new ProxyComboBox(true, general);
+	connect(ProxyCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(dataChanged()));
 
 	proxyLayout->addWidget(proxyLabel);
 	proxyLayout->addWidget(ProxyCombo);
@@ -392,6 +392,7 @@ void JabberEditAccountWidget::dataChanged()
 		&& account().rememberPassword() == RememberPassword->isChecked()
 		&& account().password() == AccountPassword->text()
 		&& account().proxy() == ProxyCombo->currentProxy()
+		&& account().useDefaultProxy() == ProxyCombo->isDefaultProxySelected()
 		&& AccountDetails->useCustomHostPort() == CustomHostPort->isChecked()
 		&& AccountDetails->customHost() == CustomHost->displayText()
 		&& AccountDetails->customPort() == CustomPort->displayText().toInt()
@@ -436,7 +437,11 @@ void JabberEditAccountWidget::loadAccountData()
 	AccountId->setText(account().id());
 	RememberPassword->setChecked(account().rememberPassword());
 	AccountPassword->setText(account().password());
-	ProxyCombo->setCurrentProxy(account().proxy());
+
+	if (account().useDefaultProxy())
+		ProxyCombo->selectDefaultProxy();
+	else
+		ProxyCombo->setCurrentProxy(account().proxy());
 }
 
 void JabberEditAccountWidget::loadAccountDetailsData()
@@ -472,6 +477,7 @@ void JabberEditAccountWidget::apply()
 	account().setRememberPassword(RememberPassword->isChecked());
 	account().setPassword(AccountPassword->text());
 	account().setHasPassword(!AccountPassword->text().isEmpty());
+	account().setUseDefaultProxy(ProxyCombo->isDefaultProxySelected());
 	account().setProxy(ProxyCombo->currentProxy());
 	AccountDetails->setUseCustomHostPort(CustomHostPort->isChecked());
 	AccountDetails->setCustomHost(CustomHost->text());

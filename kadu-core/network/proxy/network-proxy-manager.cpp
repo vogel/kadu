@@ -20,6 +20,7 @@
 #include <QtXml/QDomElement>
 
 #include "accounts/account-manager.h"
+#include "configuration/configuration-file.h"
 #include "configuration/xml-configuration-file.h"
 #include "storage/storage-point.h"
 
@@ -57,6 +58,11 @@ void NetworkProxyManager::store()
 	QMutexLocker locker(&mutex());
 
 	SimpleManager<NetworkProxy>::store();
+}
+
+NetworkProxy NetworkProxyManager::defaultProxy()
+{
+	return byUuid(config_file.readEntry("Network", "DefaultProxy"));
 }
 
 NetworkProxy NetworkProxyManager::byConfiguration(const QString &address, int port,

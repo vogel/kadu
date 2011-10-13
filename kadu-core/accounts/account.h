@@ -73,6 +73,7 @@ public:
 	KaduSharedBase_Property(bool, rememberPassword, RememberPassword)
 	KaduSharedBase_Property(bool, hasPassword, HasPassword)
 	KaduSharedBase_PropertyCRW(QString, password, Password)
+	KaduSharedBase_Property(bool, useDefaultProxy, UseDefaultProxy)
 	KaduSharedBase_PropertyCRW(NetworkProxy, proxy, Proxy)
 	KaduSharedBase_Property(bool, privateStatus, PrivateStatus)
 	KaduSharedBase_Property(bool, removing, Removing)
