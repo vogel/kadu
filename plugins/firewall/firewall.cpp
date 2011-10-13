@@ -59,6 +59,7 @@ Nowa funkcjonalnosc - Dorregaray
 #include "notify/notification.h"
 #include "misc/misc.h"
 #include "protocols/services/chat-service.h"
+#include "status/status-container.h"
 
 #include "buddy-firewall-data.h"
 #include "firewall-notification.h"

@@ -56,6 +56,7 @@
 #include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/services/search-service.h"
+#include "status/status-container.h"
 #include "qt/long-validator.h"
 
 #include "search-window.h"
@@ -101,7 +102,7 @@ SearchWindow::SearchWindow(QWidget *parent, Buddy buddy) :
 				CurrentAccount = account;
 				break;
 			}
-		
+
 		if (CurrentAccount.isNull())
 			CurrentAccount = AccountManager::instance()->defaultAccount();
 	}
@@ -349,7 +350,7 @@ void SearchWindow::stopSearch()
 	if ((PersonalDataRadioButton->isChecked() && !isPersonalDataEmpty()) ||
 			(UinRadioButton->isChecked() && !UinEdit->text().isEmpty()))
 		setActionEnabled(SearchWindowActions::instance()->FirstSearch, true);
-	
+
 	if (!ResultsListWidget->selectedItems().isEmpty())
 	{
 		if (PersonalDataRadioButton->isChecked() && !isPersonalDataEmpty())
@@ -358,7 +359,7 @@ void SearchWindow::stopSearch()
 		setActionEnabled(SearchWindowActions::instance()->AddFound, true);
 		setActionEnabled(SearchWindowActions::instance()->ChatFound, true);
 	}
-	
+
 	if (ResultsListWidget->topLevelItemCount() > 0)
 		setActionEnabled(SearchWindowActions::instance()->ClearResults, true);
 }
@@ -478,7 +479,7 @@ void SearchWindow::newSearchResults(const BuddyList &buddies)
 			strings << QString() << contact.id() << buddy.firstName()
 					<< buddy.city() << buddy.nickName() << QString::number(buddy.birthYear());
 			treeItem = new QTreeWidgetItem(ResultsListWidget, strings);
-			treeItem->setIcon(0, contact.contactAccount().data()->statusIcon(contact.currentStatus()).icon());
+			treeItem->setIcon(0, contact.contactAccount().data()->statusContainer()->statusIcon(contact.currentStatus()).icon());
 		}
 	}
 

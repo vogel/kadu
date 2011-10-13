@@ -38,6 +38,7 @@
 #include "parser/parser.h"
 #include "status/description-manager.h"
 #include "status/description-model.h"
+#include "status/status-container.h"
 #include "status/status-setter.h"
 
 #include "activate.h"

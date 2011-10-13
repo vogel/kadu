@@ -38,7 +38,7 @@ AllAccountsStatusContainer::~AllAccountsStatusContainer()
 void AllAccountsStatusContainer::accountRegistered(Account account)
 {
 	Accounts.append(account);
-	connect(account, SIGNAL(statusUpdated()), this, SIGNAL(statusUpdated()));
+	connect(account.data()->statusContainer(), SIGNAL(statusUpdated()), this, SIGNAL(statusUpdated()));
 
 	emit statusUpdated();
 }
@@ -47,7 +47,7 @@ void AllAccountsStatusContainer::accountUnregistered(Account account)
 {
 	if (Accounts.removeAll(account) > 0)
 	{
-		disconnect(account, SIGNAL(statusUpdated()), this, SIGNAL(statusUpdated()));
+		disconnect(account.data()->statusContainer(), SIGNAL(statusUpdated()), this, SIGNAL(statusUpdated()));
 		emit statusUpdated();
 	}
 }
@@ -55,13 +55,13 @@ void AllAccountsStatusContainer::accountUnregistered(Account account)
 Status AllAccountsStatusContainer::status()
 {
 	Account account = AccountManager::bestAccount(Accounts);
-	return account ? account.data()->status() : Status();
+	return account ? account.data()->statusContainer()->status() : Status();
 }
 
 bool AllAccountsStatusContainer::isStatusSettingInProgress()
 {
 	Account account = AccountManager::bestAccount(Accounts);
-	return account ? account.data()->isStatusSettingInProgress() : false;
+	return account ? account.data()->statusContainer()->isStatusSettingInProgress() : false;
 }
 
 KaduIcon AllAccountsStatusContainer::statusIcon()
@@ -72,33 +72,33 @@ KaduIcon AllAccountsStatusContainer::statusIcon()
 KaduIcon AllAccountsStatusContainer::statusIcon(const Status &status)
 {
 	Account account = AccountManager::bestAccount(Accounts);
-	return account ? account.data()->statusIcon(status) : KaduIcon();
+	return account ? account.data()->statusContainer()->statusIcon(status) : KaduIcon();
 }
 
 QList<StatusType> AllAccountsStatusContainer::supportedStatusTypes()
 {
 	Account account = AccountManager::bestAccount(Accounts);
-	return account ? account.data()->supportedStatusTypes() : QList<StatusType>();
+	return account ? account.data()->statusContainer()->supportedStatusTypes() : QList<StatusType>();
 }
 
 int AllAccountsStatusContainer::maxDescriptionLength()
 {
 	Account account = AccountManager::bestAccount(Accounts);
-	return account ? account.data()->maxDescriptionLength() : -1;
+	return account ? account.data()->statusContainer()->maxDescriptionLength() : -1;
 }
 
 void AllAccountsStatusContainer::setStatus(Status status)
 {
 	foreach (const Account &account, Accounts)
 		if (account)
-			account.data()->setStatus(status);
+			account.data()->statusContainer()->setStatus(status);
 }
 
 Status AllAccountsStatusContainer::loadStatus()
 {
 	Account account = AccountManager::bestAccount(Accounts);
 	if (account)
-		return account.data()->loadStatus();
+		return account.data()->statusContainer()->loadStatus();
 	else
 		return Status();
 }
@@ -106,5 +106,5 @@ Status AllAccountsStatusContainer::loadStatus()
 void AllAccountsStatusContainer::storeStatus(Status status)
 {
 	foreach (const Account &account, Accounts)
-		account.data()->storeStatus(status);
+		account.data()->statusContainer()->storeStatus(status);
 }

@@ -105,7 +105,7 @@ void IdentityShared::addAccount(const Account &account)
 	ensureLoaded();
 
 	Accounts.append(account);
-	connect(account, SIGNAL(statusUpdated()), this, SIGNAL(statusUpdated()));
+	connect(account.data()->statusContainer(), SIGNAL(statusUpdated()), this, SIGNAL(statusUpdated()));
 
 	emit statusUpdated();
 }
@@ -119,7 +119,7 @@ void IdentityShared::removeAccount(const Account &account)
 
 	if (Accounts.removeAll(account) > 0)
 	{
-		disconnect(account, SIGNAL(statusUpdated()), this, SIGNAL(statusUpdated()));
+		disconnect(account.data()->statusContainer(), SIGNAL(statusUpdated()), this, SIGNAL(statusUpdated()));
 		emit statusUpdated();
 	}
 }
@@ -155,19 +155,19 @@ void IdentityShared::setStatus(Status status)
 
 	foreach (const Account &account, Accounts)
 		if (account)
-			account.data()->setStatus(status);
+			account.data()->statusContainer()->setStatus(status);
 }
 
 Status IdentityShared::status()
 {
 	Account account = AccountManager::bestAccount(Accounts);
-	return account ? account.data()->status() : Status();
+	return account ? account.data()->statusContainer()->status() : Status();
 }
 
 bool IdentityShared::isStatusSettingInProgress()
 {
 	Account account = AccountManager::bestAccount(Accounts);
-	return account ? account.data()->isStatusSettingInProgress() : false;
+	return account ? account.data()->statusContainer()->isStatusSettingInProgress() : false;
 }
 
 KaduIcon IdentityShared::statusIcon()
@@ -178,17 +178,17 @@ KaduIcon IdentityShared::statusIcon()
 KaduIcon IdentityShared::statusIcon(const Status &status)
 {
 	Account account = AccountManager::bestAccount(Accounts);
-	return account ? account.data()->statusIcon(status) : KaduIcon();
+	return account ? account.data()->statusContainer()->statusIcon(status) : KaduIcon();
 }
 
 QList<StatusType> IdentityShared::supportedStatusTypes()
 {
 	Account account = AccountManager::bestAccount(Accounts);
-	return account ? account.data()->supportedStatusTypes() : QList<StatusType>();
+	return account ? account.data()->statusContainer()->supportedStatusTypes() : QList<StatusType>();
 }
 
 int IdentityShared::maxDescriptionLength()
 {
 	Account account = AccountManager::bestAccount(Accounts);
-	return account ? account.data()->maxDescriptionLength() : -1;
+	return account ? account.data()->statusContainer()->maxDescriptionLength() : -1;
 }

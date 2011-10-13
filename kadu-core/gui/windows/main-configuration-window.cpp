@@ -61,6 +61,7 @@
 #include "gui/windows/syntax-editor-window.h"
 #include "misc/misc.h"
 #include "status/status.h"
+#include "status/status-container.h"
 #include "themes/icon-theme-manager.h"
 #include "themes/emoticon-theme-manager.h"
 
@@ -197,8 +198,8 @@ MainConfigurationWindow::MainConfigurationWindow() :
 	Account account = AccountManager::instance()->defaultAccount();
 	if (!account.isNull() && account.protocolHandler())
 	{
-		disconnectDescription->setMaxLength(account.data()->maxDescriptionLength());
-		onStartupSetDescription->setMaxLength(account.data()->maxDescriptionLength());
+		disconnectDescription->setMaxLength(account.data()->statusContainer()->maxDescriptionLength());
+		onStartupSetDescription->setMaxLength(account.data()->statusContainer()->maxDescriptionLength());
 	}
 	connect(widget()->widgetById("showAvatars"), SIGNAL(toggled(bool)), widget()->widgetById("avatarBorder"), SLOT(setEnabled(bool)));
 	connect(widget()->widgetById("showAvatars"), SIGNAL(toggled(bool)), widget()->widgetById("avatarGreyOut"), SLOT(setEnabled(bool)));

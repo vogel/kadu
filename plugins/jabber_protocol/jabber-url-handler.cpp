@@ -33,6 +33,7 @@
 #include "gui/widgets/chat-widget-manager.h"
 #include "icons/kadu-icon.h"
 #include "misc/misc.h"
+#include "status/status-container.h"
 
 #include "jabber-url-handler.h"
 
@@ -112,13 +113,13 @@ void JabberUrlHandler::openUrl(const QByteArray &url, bool disableMenu)
 		QScopedPointer<QMenu> menu(new QMenu());
 
 		QStringList ids;
-		foreach (const Account &account, jabberAccounts)
+		foreach (Account account, jabberAccounts)
 		{
 			ids.clear();
 			ids.append(account.id());
 			ids.append(jabberId);
 
-			menu->addAction(account.data()->statusIcon().icon(), account.id())->setData(ids);
+			menu->addAction(account.statusContainer()->statusIcon().icon(), account.id())->setData(ids);
 		}
 
 		connect(menu.data(), SIGNAL(triggered(QAction *)), this, SLOT(accountSelected(QAction *)));

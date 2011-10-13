@@ -28,6 +28,7 @@
 #include "gui/windows/choose-description.h"
 #include "protocols/protocol.h"
 #include "status/status-actions.h"
+#include "status/status-container.h"
 #include "status/status-setter.h"
 #include "status/status-type.h"
 #include "status/status-type-manager.h"

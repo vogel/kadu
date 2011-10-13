@@ -24,6 +24,7 @@
 #include "chat/message/pending-messages-manager.h"
 #include "contacts/contact-set.h"
 #include "gui/widgets/chat-widget-manager.h"
+#include "status/status-container.h"
 
 #include "buddies/buddy-preferred-manager.h"
 
@@ -161,10 +162,10 @@ Contact BuddyPreferredManager::morePreferredContactByStatus(const Contact &c1, c
 	if (!c2 || (account && c2.contactAccount() != account))
 		return c1;
 
-	if (c1.contactAccount().data()->status().isDisconnected() && !c2.contactAccount().data()->status().isDisconnected())
+	if (c1.contactAccount().data()->statusContainer()->status().isDisconnected() && !c2.contactAccount().data()->statusContainer()->status().isDisconnected())
 		return c2;
 
-	if (c2.contactAccount().data()->status().isDisconnected() && !c1.contactAccount().data()->status().isDisconnected())
+	if (c2.contactAccount().data()->statusContainer()->status().isDisconnected() && !c1.contactAccount().data()->statusContainer()->status().isDisconnected())
 		return c1;
 
 	return Contact::contactWithHigherStatus(c1, c2);

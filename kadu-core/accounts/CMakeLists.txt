@@ -4,6 +4,7 @@ set (accounts_SRCS
 	account-manager.cpp
 	account-proxy-settings.cpp
 	account-shared.cpp
+	account-status-container.cpp
 	accounts-aware-object.cpp
 
 	filter/have-multilogon-filter.cpp
@@ -18,6 +19,7 @@ set (accounts_SRCS
 set (accounts_MOC_SRCS
 	account-manager.h
 	account-shared.h
+	account-status-container.h
 
 	filter/abstract-account-filter.h
 	filter/have-multilogon-filter.h

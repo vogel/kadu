@@ -28,6 +28,7 @@
 #include "buddies/buddy-kadu-data.h"
 #include "icons/kadu-icon.h"
 #include "model/roles.h"
+#include "status/status-container.h"
 
 #include "contact-data-extractor.h"
 
@@ -52,7 +53,7 @@ QVariant ContactDataExtractor::data(const Contact &contact, int role, bool useBu
 
 			// TODO generic icon
 			return !contact.contactAccount().isNull()
-					? contact.contactAccount().data()->statusIcon(contact.currentStatus()).icon()
+					? contact.contactAccount().data()->statusContainer()->statusIcon(contact.currentStatus()).icon()
 					: QIcon();
 		}
 		case BuddyRole:

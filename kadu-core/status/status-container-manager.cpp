@@ -124,8 +124,8 @@ void StatusContainerManager::cleanStatusContainers()
 
 void StatusContainerManager::addAllAccounts()
 {
-	foreach (const Account &account, AccountManager::instance()->items())
-		registerStatusContainer(account);
+	foreach (Account account, AccountManager::instance()->items())
+		registerStatusContainer(account.statusContainer());
 }
 
 void StatusContainerManager::addAllIdentities()

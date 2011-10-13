@@ -33,6 +33,7 @@
 #include "gui/widgets/chat-widget-manager.h"
 #include "icons/kadu-icon.h"
 #include "misc/misc.h"
+#include "status/status-container.h"
 
 #include "gadu-url-handler.h"
 
@@ -96,13 +97,13 @@ void GaduUrlHandler::openUrl(const QByteArray &url, bool disableMenu)
 		QScopedPointer<QMenu> menu(new QMenu());
 
 		QStringList ids;
-		foreach (const Account &account, gaduAccounts)
+		foreach (Account account, gaduAccounts)
 		{
 			ids.clear();
 			ids.append(account.id());
 			ids.append(gaduId);
 
-			menu->addAction(account.data()->statusIcon().icon(), account.id())->setData(ids);
+			menu->addAction(account.statusContainer()->statusIcon().icon(), account.id())->setData(ids);
 		}
 
 		connect(menu.data(), SIGNAL(triggered(QAction *)), this, SLOT(accountSelected(QAction *)));

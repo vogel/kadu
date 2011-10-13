@@ -28,27 +28,29 @@
 
 #include "accounts/account-proxy-settings.h"
 #include "protocols/protocols-aware-object.h"
-#include "status/storable-status-container.h"
+#include "status/status.h"
 #include "storage/details-holder.h"
 #include "storage/shared.h"
 
 class AccountDetails;
+class AccountStatusContainer;
 class Contact;
 class FileTransferService;
 class Identity;
 class Protocol;
 class ProtocolFactory;
+class StatusContainer;
 
-enum StatusType;
-
-class KADUAPI AccountShared : public StorableStatusContainer, public Shared, public DetailsHolder<AccountDetails>, ProtocolsAwareObject
+class KADUAPI AccountShared : public QObject, public Shared, public DetailsHolder<AccountDetails>, ProtocolsAwareObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(AccountShared)
 
-private:
+	friend class AccountStatusContainer;
+
 	QString ProtocolName;
 	Protocol *ProtocolHandler;
+	AccountStatusContainer *MyStatusContainer;
 
 	Identity *AccountIdentity;
 	Contact *AccountContact;
@@ -104,6 +106,8 @@ public:
 
 	Contact accountContact();
 
+	StatusContainer * statusContainer();
+
 	KaduShared_PropertyDeclCRW(Identity, accountIdentity, AccountIdentity)
 
 	void setProtocolName(const QString &protocolName);
@@ -121,20 +125,6 @@ public:
 	KaduShared_Property(const QString &, password, Password)
 	KaduShared_Property(const AccountProxySettings &, proxySettings, ProxySettings)
 	KaduShared_Property(bool, removing, Removing)
-
-	// StatusContainer implementation
-
-	virtual QString statusContainerName();
-
-	virtual void setStatus(Status newStatus);
-	virtual Status status();
-	virtual bool isStatusSettingInProgress();
-	virtual int maxDescriptionLength();
-
-	virtual KaduIcon statusIcon();
-	virtual KaduIcon statusIcon(const Status &status);
-
-	virtual QList<StatusType> supportedStatusTypes();
 
 	// TODO: 0.11, find better API
 	// this is only for GG now

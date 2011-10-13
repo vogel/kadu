@@ -23,6 +23,7 @@
 
 #include "accounts/account-details.h"
 #include "accounts/account-manager.h"
+#include "accounts/account-status-container.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact-manager.h"
 #include "identities/identity.h"
@@ -52,8 +53,9 @@ AccountShared * AccountShared::loadFromStorage(const QSharedPointer<StoragePoint
 }
 
 AccountShared::AccountShared(const QUuid &uuid) :
-		StorableStatusContainer(this), Shared(uuid),
-		ProtocolHandler(0), RememberPassword(false), HasPassword(false), Removing(false)
+		QObject(), Shared(uuid),
+		ProtocolHandler(0), MyStatusContainer(new AccountStatusContainer(this)),
+		RememberPassword(false), HasPassword(false), Removing(false)
 {
 	AccountIdentity = new Identity();
 	AccountContact = new Contact();
@@ -64,6 +66,9 @@ AccountShared::~AccountShared()
 	ref.ref();
 
 	triggerAllProtocolsUnregistered();
+
+	delete MyStatusContainer;
+	MyStatusContainer = 0;
 
 	delete ProtocolHandler;
 	ProtocolHandler = 0;
@@ -176,11 +181,11 @@ void AccountShared::setDisconnectStatus()
 	disconnectStatus.setType(StatusTypeOffline);
 
 	if (disconnectWithCurrentDescription)
-		disconnectStatus.setDescription(status().description());
+		disconnectStatus.setDescription(MyStatusContainer->status().description());
 	else
 		disconnectStatus.setDescription(disconnectDescription);
 
-	StatusSetter::instance()->setStatus(this, disconnectStatus);
+	StatusSetter::instance()->setStatus(MyStatusContainer, disconnectStatus);
 }
 
 void AccountShared::useProtocolFactory(ProtocolFactory *factory)
@@ -189,7 +194,7 @@ void AccountShared::useProtocolFactory(ProtocolFactory *factory)
 
 	if (ProtocolHandler)
 	{
-		disconnect(ProtocolHandler, SIGNAL(statusChanged(Account, Status)), this, SIGNAL(statusUpdated()));
+		disconnect(ProtocolHandler, SIGNAL(statusChanged(Account, Status)), MyStatusContainer, SLOT(triggerStatusUpdated()));
 		disconnect(ProtocolHandler, SIGNAL(contactStatusChanged(Contact, Status)),
 				   this, SIGNAL(buddyStatusChanged(Contact, Status)));
 		disconnect(ProtocolHandler, SIGNAL(connected(Account)), this, SIGNAL(connected()));
@@ -216,14 +221,14 @@ void AccountShared::useProtocolFactory(ProtocolFactory *factory)
 
 	if (ProtocolHandler)
 	{
-		connect(ProtocolHandler, SIGNAL(statusChanged(Account, Status)), this, SIGNAL(statusUpdated()));
+		connect(ProtocolHandler, SIGNAL(statusChanged(Account, Status)), MyStatusContainer, SLOT(triggerStatusUpdated()));
 		connect(ProtocolHandler, SIGNAL(contactStatusChanged(Contact, Status)),
 				this, SIGNAL(buddyStatusChanged(Contact, Status)));
 		connect(ProtocolHandler, SIGNAL(connected(Account)), this, SIGNAL(connected()));
 		connect(ProtocolHandler, SIGNAL(disconnected(Account)), this, SIGNAL(disconnected()));
 	}
 
-	emit statusUpdated();
+	MyStatusContainer->triggerStatusUpdated();
 }
 
 void AccountShared::protocolRegistered(ProtocolFactory *factory)
@@ -335,52 +340,9 @@ Contact AccountShared::accountContact()
 	return *AccountContact;
 }
 
-QString AccountShared::statusContainerName()
+StatusContainer * AccountShared::statusContainer()
 {
-	return Id;
-}
-
-void AccountShared::setStatus(Status newStatus)
-{
-	if (ProtocolHandler)
-		ProtocolHandler->setStatus(newStatus);
-}
-
-Status AccountShared::status()
-{
-	if (ProtocolHandler)
-		return ProtocolHandler->status();
-	else
-		return Status();
-}
-
-bool AccountShared::isStatusSettingInProgress()
-{
-	if (ProtocolHandler)
-		return ProtocolHandler->isConnecting();
-	else
-		return false;
-}
-
-int AccountShared::maxDescriptionLength()
-{
-	if (ProtocolHandler)
-		return ProtocolHandler->maxDescriptionLength();
-	else
-		return 0;
-}
-
-KaduIcon AccountShared::statusIcon()
-{
-	return statusIcon(status());
-}
-
-KaduIcon AccountShared::statusIcon(const Status &status)
-{
-	if (ProtocolHandler)
-		return ProtocolHandler->statusIcon(status);
-	else
-		return KaduIcon();
+	return MyStatusContainer;
 }
 
 void AccountShared::setPrivateStatus(bool isPrivate)
@@ -392,14 +354,6 @@ void AccountShared::setPrivateStatus(bool isPrivate)
 
 	if (ProtocolHandler)
 		ProtocolHandler->changePrivateMode();
-}
-
-QList<StatusType> AccountShared::supportedStatusTypes()
-{
-	if (ProtocolHandler)
-		return ProtocolHandler->protocolFactory()->supportedStatusTypes();
-	else
-		return QList<StatusType>();
 }
 
 void AccountShared::fileTransferServiceChanged(FileTransferService *service)

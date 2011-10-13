@@ -98,7 +98,7 @@ StatusContainer * Account::statusContainer()
 	if (MainConfigurationHolder::instance()->isSetStatusPerIdentity())
 		return accountIdentity().data();
 	else
-		return data();
+		return data()->statusContainer();
 }
 
 KaduSharedBase_PropertyDefCRW(Account, Identity, accountIdentity, AccountIdentity, Identity::null)

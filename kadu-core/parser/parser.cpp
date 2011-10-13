@@ -39,6 +39,7 @@
 #include "parser/parser-token.h"
 #include "icons/kadu-icon.h"
 #include "misc/misc.h"
+#include "status/status-container.h"
 #include "status/status-type.h"
 #include "status/status-type-data.h"
 #include "status/status-type-manager.h"
