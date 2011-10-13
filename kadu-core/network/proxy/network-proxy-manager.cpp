@@ -60,6 +60,11 @@ void NetworkProxyManager::store()
 	SimpleManager<NetworkProxy>::store();
 }
 
+void NetworkProxyManager::setDefaultProxy(NetworkProxy proxy)
+{
+	config_file.writeEntry("Network", "DefaultProxy", proxy.uuid().toString());
+}
+
 NetworkProxy NetworkProxyManager::defaultProxy()
 {
 	return byUuid(config_file.readEntry("Network", "DefaultProxy"));

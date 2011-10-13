@@ -272,7 +272,7 @@ MainConfigurationWindow::MainConfigurationWindow() :
 	ConfigGroupBox *proxyGroupBox = widget()->configGroupBox("Kadu", "Advanced", "Proxy");
 	if (proxyGroupBox)
 	{
-		NetworkProxy defaultProxy = NetworkProxyManager::instance()->byUuid(config_file.readEntry("Network", "DefaultProxy"));
+		NetworkProxy defaultProxy = NetworkProxyManager::instance()->defaultProxy();
 		ProxyWidget = new ProxyComboBox(false, this);
 		ProxyWidget->setCurrentProxy(defaultProxy);
 		proxyGroupBox->addWidgets(new QLabel(tr("Default proxy:"), this), ProxyWidget);
@@ -314,7 +314,7 @@ void MainConfigurationWindow::show()
 
 void MainConfigurationWindow::configurationWindowAppliedSlot()
 {
-	config_file.writeEntry("Network", "DefaultProxy", ProxyWidget->currentProxy().uuid().toString());
+	NetworkProxyManager::instance()->setDefaultProxy(ProxyWidget->currentProxy());
 }
 
 void MainConfigurationWindow::onChangeStartupStatus(int index)
