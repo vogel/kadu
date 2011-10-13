@@ -28,7 +28,7 @@
 
 #include "accounts/account-proxy-settings.h"
 #include "protocols/protocols-aware-object.h"
-#include "status/base-status-container.h"
+#include "status/storable-status-container.h"
 #include "storage/details-holder.h"
 #include "storage/shared.h"
 
@@ -41,7 +41,7 @@ class ProtocolFactory;
 
 enum StatusType;
 
-class KADUAPI AccountShared : public BaseStatusContainer, public Shared, public DetailsHolder<AccountDetails>, ProtocolsAwareObject
+class KADUAPI AccountShared : public StorableStatusContainer, public Shared, public DetailsHolder<AccountDetails>, ProtocolsAwareObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(AccountShared)

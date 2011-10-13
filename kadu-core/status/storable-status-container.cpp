@@ -25,18 +25,18 @@
 #include "status/status-type-manager.h"
 #include "storage/storable-object.h"
 
-#include "base-status-container.h"
+#include "storable-status-container.h"
 
-BaseStatusContainer::BaseStatusContainer(StorableObject *storableObject) :
+StorableStatusContainer::StorableStatusContainer(StorableObject *storableObject) :
 		MyStorableObject(storableObject)
 {
 }
 
-BaseStatusContainer::~BaseStatusContainer()
+StorableStatusContainer::~StorableStatusContainer()
 {
 }
 
-Status BaseStatusContainer::loadStatus()
+Status StorableStatusContainer::loadStatus()
 {
 	if (!MyStorableObject->isValidStorage())
 		return Status();
@@ -51,7 +51,7 @@ Status BaseStatusContainer::loadStatus()
 	return status;
 }
 
-void BaseStatusContainer::storeStatus(Status status)
+void StorableStatusContainer::storeStatus(Status status)
 {
 	if (!MyStorableObject->isValidStorage())
 		return;

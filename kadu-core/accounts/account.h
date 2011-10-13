@@ -27,7 +27,6 @@
 #include <QtXml/QDomElement>
 
 #include "accounts/account-shared.h"
-#include "status/base-status-container.h"
 #include "storage/shared-base.h"
 
 class AccountDetails;

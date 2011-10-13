@@ -1,6 +1,5 @@
 set (status_SRCS
 	all-accounts-status-container.cpp
-	base-status-container.cpp
 	description-manager.cpp
 	description-model.cpp
 	status.cpp
@@ -12,11 +11,11 @@ set (status_SRCS
 	status-setter.cpp
 	status-type-data.cpp
 	status-type-manager.cpp
+	storable-status-container.cpp
 )
 
 set (status_MOC_SRCS
 	all-accounts-status-container.h
-	base-status-container.h
 	description-manager.h
 	description-model.h
 	status-actions.h
@@ -24,6 +23,7 @@ set (status_MOC_SRCS
 	status-changer-manager.h
 	status-container.h
 	status-container-manager.h
+	storable-status-container.h
 )
 
 kadu_subdirectory (status "${status_SRCS}" "${status_MOC_SRCS}" "")

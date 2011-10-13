@@ -52,7 +52,7 @@ AccountShared * AccountShared::loadFromStorage(const QSharedPointer<StoragePoint
 }
 
 AccountShared::AccountShared(const QUuid &uuid) :
-		BaseStatusContainer(this), Shared(uuid),
+		StorableStatusContainer(this), Shared(uuid),
 		ProtocolHandler(0), RememberPassword(false), HasPassword(false), Removing(false)
 {
 	AccountIdentity = new Identity();

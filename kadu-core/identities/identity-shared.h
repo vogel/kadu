@@ -23,12 +23,12 @@
 #ifndef IDENTITY_SHARED_H
 #define IDENTITY_SHARED_H
 
-#include "status/base-status-container.h"
+#include "status/storable-status-container.h"
 #include "storage/shared.h"
 
 class Account;
 
-class KADUAPI IdentityShared : public BaseStatusContainer, public Shared
+class KADUAPI IdentityShared : public StorableStatusContainer, public Shared
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(IdentityShared)

@@ -28,15 +28,15 @@
 
 class StorableObject;
 
-class KADUAPI BaseStatusContainer : public StatusContainer
+class KADUAPI StorableStatusContainer : public StatusContainer
 {
 	Q_OBJECT
 
 	StorableObject *MyStorableObject;
 
 public:
-	explicit BaseStatusContainer(StorableObject *storableObject);
-	virtual ~BaseStatusContainer();
+	explicit StorableStatusContainer(StorableObject *storableObject);
+	virtual ~StorableStatusContainer();
 
 	virtual Status loadStatus();
 	virtual void storeStatus(Status status);
