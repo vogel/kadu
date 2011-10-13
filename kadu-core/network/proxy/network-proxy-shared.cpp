@@ -89,3 +89,13 @@ void NetworkProxyShared::emitUpdated()
 {
 	emit updated();
 }
+
+QString NetworkProxyShared::displayName()
+{
+	ensureLoaded();
+
+	if (User.isEmpty())
+		return Address + ":" + QString::number(Port);
+	else
+		return User + "@" + Address + ":" + QString::number(Port);
+}

@@ -71,14 +71,7 @@ QVariant NetworkProxyModel::data(const QModelIndex &index, int role) const
 	switch (role)
 	{
 		case Qt::DisplayRole:
-		{
-			QString display;
-			if (proxy.user().isEmpty())
-				display = proxy.address() + ":" + QString::number(proxy.port());
-			else
-				display = proxy.user() + "@" + proxy.address() + ":" + QString::number(proxy.port());
-			return display;
-		}
+			return proxy.displayName();
 
 		case NetworkProxyRole:
 			return QVariant::fromValue<NetworkProxy>(proxy);

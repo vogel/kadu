@@ -45,6 +45,7 @@ public:
 	KaduSharedBase_Property(int, port, Port)
 	KaduSharedBase_PropertyCRW(QString, user, User)
 	KaduSharedBase_PropertyCRW(QString, password, Password)
+	KaduSharedBase_PropertyRead(QString, displayName, DisplayName)
 
 };
 

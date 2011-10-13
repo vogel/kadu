@@ -56,6 +56,8 @@ public:
 	KaduShared_Property(const QString &, user, User)
 	KaduShared_Property(const QString &, password, Password)
 
+	QString displayName();
+
 signals:
 	void updated();
 
