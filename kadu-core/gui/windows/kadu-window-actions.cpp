@@ -50,6 +50,7 @@
 #include "gui/actions/action.h"
 #include "gui/actions/actions.h"
 #include "gui/actions/change-status-action.h"
+#include "gui/actions/default-proxy-action.h"
 #include "gui/widgets/buddies-list-view.h"
 #include "gui/widgets/buddies-list-view-delegate-configuration.h"
 #include "gui/widgets/buddies-list-view-menu-manager.h"
@@ -379,6 +380,7 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 	Actions::instance()->unblockSignals();
 
 	ChangeStatus = new ChangeStatusAction(this);
+	DefaultProxy = new DefaultProxyAction(this);
 }
 
 KaduWindowActions::~KaduWindowActions()
