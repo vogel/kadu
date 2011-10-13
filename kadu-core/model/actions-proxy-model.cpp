@@ -330,12 +330,7 @@ QVariant ActionsProxyModel::data(const QModelIndex &proxyIndex, int role) const
 			return action->icon();
 
 		case Qt::FontRole:
-		{
-			QFont font;
-			if (!action->data().isNull())
-				font.setItalic(true);
-			return font;
-		}
+			return action->font();
 
 		case ActionRole:
 			return QVariant::fromValue<QAction *>(action);

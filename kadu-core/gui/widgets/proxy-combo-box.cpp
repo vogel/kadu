@@ -30,6 +30,9 @@ ProxyComboBox::ProxyComboBox(QWidget *parent) :
 	Model = new NetworkProxyModel(this);
 
 	EditProxyAction = new QAction(tr("Edit proxy configuration..."), this);
+	QFont editProxyActionFont = EditProxyAction->font();
+	editProxyActionFont.setItalic(true);
+	EditProxyAction->setFont(editProxyActionFont);
 	EditProxyAction->setData("editProxyConfiguration");
 
 	ActionsModel->addAfterAction(EditProxyAction);

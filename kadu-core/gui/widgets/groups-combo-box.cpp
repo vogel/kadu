@@ -40,6 +40,9 @@ GroupsComboBox::GroupsComboBox(QWidget *parent) :
 	SourceProxyModel->sort(0);
 
 	CreateNewGroupAction = new QAction(tr("Create a new group..."), this);
+	QFont createNewGroupActionFont = CreateNewGroupAction->font();
+	createNewGroupActionFont.setItalic(true);
+	CreateNewGroupAction->setFont(createNewGroupActionFont);
 	CreateNewGroupAction->setData("createNewGroup");
 
 	ActionsModel->addAfterAction(CreateNewGroupAction);
