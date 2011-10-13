@@ -370,11 +370,6 @@ int AccountShared::maxDescriptionLength()
 		return 0;
 }
 
-QString AccountShared::statusDisplayName()
-{
-	return status().displayName();
-}
-
 KaduIcon AccountShared::statusIcon()
 {
 	return statusIcon(status());

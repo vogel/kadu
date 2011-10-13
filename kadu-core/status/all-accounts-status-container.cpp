@@ -64,11 +64,6 @@ bool AllAccountsStatusContainer::isStatusSettingInProgress()
 	return account ? account.data()->isStatusSettingInProgress() : false;
 }
 
-QString AllAccountsStatusContainer::statusDisplayName()
-{
-	return status().displayName();
-}
-
 KaduIcon AllAccountsStatusContainer::statusIcon()
 {
 	return statusIcon(status());

@@ -64,7 +64,7 @@ void StatusButton::updateStatus()
 	if (DisplayStatusName)
 	{
 		setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-		setText(MyStatusContainer->statusDisplayName());
+		setText(MyStatusContainer->status().displayName());
 		setToolTip(QString());
 	}
 	else

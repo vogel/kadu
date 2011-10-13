@@ -283,15 +283,6 @@ public:
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns status display name of default status container.
-	 * @return status display name of default status container
-	 *
-	 * Returns status display name of default status container. If no default status container is available, returns "Offline" string.
-	 */
-	virtual QString statusDisplayName();
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
 	 * @short Returns generic icon of status of default status container.
 	 * @return generic icon of status of default status container
 	 *

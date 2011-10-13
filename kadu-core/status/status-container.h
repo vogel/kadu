@@ -113,15 +113,6 @@ public:
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns display name for this container status.
-	 * @return display name for this container status
-	 *
-	 * This method returns display name for status returned by status method.
-	 */
-	virtual QString statusDisplayName() = 0;
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
 	 * @short Returns icon for this container status.
 	 * @return icon for this container status
 	 *

@@ -230,13 +230,6 @@ bool StatusContainerManager::isStatusSettingInProgress()
 			: false;
 }
 
-QString StatusContainerManager::statusDisplayName()
-{
-	return DefaultStatusContainer
-			? DefaultStatusContainer->statusDisplayName()
-			: tr("Offline");
-}
-
 KaduIcon StatusContainerManager::statusIcon()
 {
 	return statusIcon(status());

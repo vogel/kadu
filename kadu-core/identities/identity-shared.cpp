@@ -170,11 +170,6 @@ bool IdentityShared::isStatusSettingInProgress()
 	return account ? account.data()->isStatusSettingInProgress() : false;
 }
 
-QString IdentityShared::statusDisplayName()
-{
-	return status().displayName();
-}
-
 KaduIcon IdentityShared::statusIcon()
 {
 	return statusIcon(status());

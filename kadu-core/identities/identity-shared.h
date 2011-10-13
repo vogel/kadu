@@ -71,8 +71,6 @@ public:
 	virtual bool isStatusSettingInProgress();
 	virtual int maxDescriptionLength();
 
-	virtual QString statusDisplayName();
-
 	virtual KaduIcon statusIcon();
 	virtual KaduIcon statusIcon(const Status &status);
 	virtual KaduIcon statusIcon(StatusType statusType);
