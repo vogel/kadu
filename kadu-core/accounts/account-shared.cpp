@@ -383,14 +383,6 @@ KaduIcon AccountShared::statusIcon(const Status &status)
 		return KaduIcon();
 }
 
-KaduIcon AccountShared::statusIcon(StatusType statusType)
-{
-	if (ProtocolHandler)
-		return ProtocolHandler->statusIcon(statusType);
-	else
-		return KaduIcon();
-}
-
 void AccountShared::setPrivateStatus(bool isPrivate)
 {
 	if (PrivateStatus == isPrivate)

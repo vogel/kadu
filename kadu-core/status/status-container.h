@@ -134,18 +134,6 @@ public:
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns icon for given status type
-	 * @param statusType status type to get icon for
-	 * @return icon for given status type
-	 *
-	 * This method returns icon for given status type. Icons returned by different StatusContainers for the
-	 * same status type can be different, as Kadu supports per-protocol icons. One-account status containers
-	 * use per-protocol icons. This icon does not have description mark.
-	 */
-	virtual KaduIcon statusIcon(StatusType statusType) = 0;
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
 	 * @short Returns list of supported status types.
 	 * @return list of supported status types
 	 *

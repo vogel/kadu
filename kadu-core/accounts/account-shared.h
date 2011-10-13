@@ -133,7 +133,6 @@ public:
 
 	virtual KaduIcon statusIcon();
 	virtual KaduIcon statusIcon(const Status &status);
-	virtual KaduIcon statusIcon(StatusType statusType);
 
 	virtual QList<StatusType> supportedStatusTypes();
 

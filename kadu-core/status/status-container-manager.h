@@ -303,16 +303,6 @@ public:
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns generic icon of given status type
-	 * @param statusType type of status to get icon from
-	 * @return generic icon of given status type
-	 *
-	 * Returns generic (without protocol badge) icon of given status type. Icon won't have description mark.
-	 */
-	virtual KaduIcon statusIcon(StatusType statusType);
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
 	 * @short Returns list of default status container supported status types.
 	 * @return list of default status container supported status types
 	 *

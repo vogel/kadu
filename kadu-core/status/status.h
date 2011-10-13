@@ -42,7 +42,7 @@ class KADUAPI Status
 	QString DisplayName;
 
 public:
-	explicit Status(StatusType statusType = StatusTypeOffline, const QString &description = QString());
+	Status(StatusType statusType = StatusTypeOffline, const QString &description = QString());
 	Status(const Status &copyme);
 	~Status();
 

@@ -196,11 +196,6 @@ KaduIcon Protocol::statusIcon(const Status &status)
 	return StatusTypeManager::instance()->statusIcon(statusPixmapPath(), status.type(), !status.description().isEmpty(), false);
 }
 
-KaduIcon Protocol::statusIcon(StatusType statusType)
-{
-	return StatusTypeManager::instance()->statusIcon(statusPixmapPath(), statusType, false, false);
-}
-
 void Protocol::loggingInStateEntered()
 {
 	if (!CurrentAccount.details() || account().id().isEmpty())

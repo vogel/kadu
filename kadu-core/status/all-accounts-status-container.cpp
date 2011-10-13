@@ -75,12 +75,6 @@ KaduIcon AllAccountsStatusContainer::statusIcon(const Status &status)
 	return account ? account.data()->statusIcon(status) : KaduIcon();
 }
 
-KaduIcon AllAccountsStatusContainer::statusIcon(StatusType statusType)
-{
-	Account account = AccountManager::bestAccount(Accounts);
-	return account ? account.data()->statusIcon(statusType) : KaduIcon();
-}
-
 QList<StatusType> AllAccountsStatusContainer::supportedStatusTypes()
 {
 	Account account = AccountManager::bestAccount(Accounts);
