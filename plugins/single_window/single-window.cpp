@@ -117,11 +117,13 @@ SingleWindow::SingleWindow()
 	/* conquer all already open chats ;) */
 	foreach (ChatWidget *chat, ChatWidgetManager::instance()->chats())
 	{
-		if (chat->parent())
-			chat->parent()->deleteLater();
+		if (chat->parentWidget())
+			chat->parentWidget()->deleteLater();
 		else
 			chat->kaduRestoreGeometry();
-		onOpenChat(chat);
+
+		bool dummy;
+		onNewChat(chat, dummy);
 	}
 
 	kadu->show();
