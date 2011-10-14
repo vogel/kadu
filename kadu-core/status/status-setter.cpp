@@ -65,8 +65,7 @@ void StatusSetter::setDefaultStatus(StatusContainer *statusContainer)
 void StatusSetter::coreInitialized()
 {
 	CoreInitialized = true;
-	foreach (StatusContainer *statusContainer, StatusContainerManager::instance()->statusContainers())
-		setDefaultStatus(statusContainer);
+	triggerAllStatusContainerRegistered();
 }
 
 void StatusSetter::configurationUpdated()

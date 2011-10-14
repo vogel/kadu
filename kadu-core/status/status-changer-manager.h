@@ -129,7 +129,7 @@ public:
 	 * @short Returns manually (unchanged) status from given StatusContainer.
 	 * @param statusContainer StatusContainer to get status from.
 	 *
-	 * This methods stores returns manually set status from given StatusContainer. This is the last status that was
+	 * This methods returns manually set status from given StatusContainer. This is the last status that was
 	 * set using StatusChangerManager::setStatus method.
 	 */
 	Status manuallySetStatus(StatusContainer *statusContainer);
