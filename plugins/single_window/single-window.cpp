@@ -115,17 +115,13 @@ SingleWindow::SingleWindow()
 	connect(kadu, SIGNAL(keyPressed(QKeyEvent *)), this, SLOT(onkaduKeyPressed(QKeyEvent *)));
 
 	/* conquer all already open chats ;) */
-	foreach (const Chat &c, ChatManager::instance()->allItems())
+	foreach (ChatWidget *chat, ChatWidgetManager::instance()->chats())
 	{
-		ChatWidget *chat = ChatWidgetManager::instance()->byChat(c, true);
-		if (chat)
-		{
-			if (chat->parent())
-				chat->parent()->deleteLater();
-			else
-				chat->kaduRestoreGeometry();
-			onOpenChat(chat);
-		}
+		if (chat->parent())
+			chat->parent()->deleteLater();
+		else
+			chat->kaduRestoreGeometry();
+		onOpenChat(chat);
 	}
 
 	kadu->show();

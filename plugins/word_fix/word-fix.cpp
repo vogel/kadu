@@ -35,7 +35,6 @@
 #include <QtGui/QGroupBox>
 #include <QtGui/QScrollBar>
 
-#include "chat/chat-manager.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/chat-widget-manager.h"
@@ -58,14 +57,8 @@ WordFix::WordFix(QObject *parent) :
 	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetDestroying(ChatWidget *)),
 		this, SLOT(chatDestroying(ChatWidget *)));
 
-	foreach (const Chat &c, ChatManager::instance()->allItems())
-	{
-		ChatWidget *chat = ChatWidgetManager::instance()->byChat(c, true);
-		if (chat)
-		{
-			connectToChat(chat);
-		}
-	}
+	foreach (ChatWidget *chat, ChatWidgetManager::instance()->chats())
+		connectToChat(chat);
 
 	// Loading list
 	QString data = config_file.readEntry("word_fix", "WordFix_list");
@@ -116,14 +109,8 @@ WordFix::~WordFix()
 	disconnect(ChatWidgetManager::instance(), SIGNAL(chatWidgetDestroying(ChatWidget *)),
 		this, SLOT(chatDestroying(ChatWidget *)));
 
-	foreach (const Chat &c, ChatManager::instance()->allItems())
-	{
-		ChatWidget *chat = ChatWidgetManager::instance()->byChat(c, true);
-		if (chat)
-		{
-			disconnectFromChat(chat);
-		}
-	}
+	foreach (ChatWidget *chat, ChatWidgetManager::instance()->chats())
+		disconnectFromChat(chat);
 
 	kdebugf2();
 }
