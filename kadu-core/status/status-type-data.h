@@ -27,9 +27,28 @@
 #include "status/status-type-group.h"
 
 #include "exports.h"
+/**
+ * @addtogroup Status
+ * @{
+ */
 
+/**
+ * @class StatusTypeData
+ * @author Rafał 'Vogel' Malinowski
+ * @short Extendend information about StatusType enum values.
+ * @see StatusType
+ * @see StatusTypeManager
+ *
+ * This class contains extended information about StatusType enums. If C++ allowed for enums with fields, this class
+ * would be merged with StatusType.
+ *
+ * StatusTypeData instances can be only aquired by StatusTypeManager methods. Use instances of this class to get
+ * additional info like status type name, display name, icon or type group.
+ */
 class KADUAPI StatusTypeData
 {
+	friend class StatusTypeManager;
+
 	StatusType Type;
 	QString Name;
 	QString DisplayName;
@@ -37,17 +56,64 @@ class KADUAPI StatusTypeData
 
 	StatusTypeGroup TypeGroup;
 
+	StatusTypeData(StatusType type, const QString &name, const QString &displayName, const QString &iconName, StatusTypeGroup typeGroup);
+
 public:
 	StatusTypeData();
-	StatusTypeData(StatusType type, const QString &name, const QString &displayName, const QString &iconName, StatusTypeGroup typeGroup);
 	StatusTypeData(const StatusTypeData &copyMe);
 
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Returns StatusType enum value associated with this object.
+	 * @return StatusType enum value associated with this object
+	 *
+	 * Returns StatusType enum value associated with this object.
+	 */
 	StatusType type() const { return Type; }
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Returns name of status type associated with this object.
+	 * @return name of status type associated with this object
+	 *
+	 * Returns name of status type associated with this object. This name can be used to store
+	 * status type in configuration files. StatusTypeData can be restored from name using
+	 * StatusTypeManager::byName method.
+	 */
 	const QString & name() const { return Name; }
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Returns display name of status type associated with this object.
+	 * @return display name of status type associated with this object
+	 *
+	 * Returns display name of status type associated with this object.
+	 */
 	const QString & displayName() const { return DisplayName; }
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Returns icon name associated with this status type.
+	 * @return icon name associated with this status type
+	 *
+	 * Returns icon name associated with this status type.
+	 */
 	const QString & iconName() const { return IconName; }
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Returns StatusTypeGroup enum value associated with this status type.
+	 * @return StatusTypeGroup enum value associated with this status type
+	 *
+	 * Returns StatusTypeGroup enum value associated with this status type.
+	 */
 	StatusTypeGroup typeGroup() const { return TypeGroup; }
 
 };
+
+/**
+ * @addtogroup Status
+ * @}
+ */
 
 #endif // STATUS_TYPE_DATA_H
