@@ -208,31 +208,12 @@ public:
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns count of active status contianers.
-	 * @return count of active status contianers
+	 * @short Returns list of active status contianers.
+	 * @return list of active status contianers
 	 *
-	 * Returns count of active status contianers.
-	 */
-	unsigned int count() const { return StatusContainers.count(); }
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns count of active status contianers.
-	 * @return count of active status contianers
-	 *
-	 * Returns count of active status contianers.
+	 * Returns list of active status contianers.
 	 */
 	const QList<StatusContainer *> & statusContainers() const { return StatusContainers; }
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns default status container.
-	 * @return default status container
-	 *
-	 * Returns default status container. Default status container is the first registered one (or the next one, if first registered
-	 * was unregistered).
-	 */
-	StatusContainer * defaultStatusContainer() const { return DefaultStatusContainer; }
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
