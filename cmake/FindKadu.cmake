@@ -98,6 +98,8 @@ if (NOT MSVC)
 		set (CMAKE_CXX_FLAGS "-mtune=i686 -pipe ${CMAKE_CXX_FLAGS}")
 	endif (MINGW)
 else (NOT MSVC)
+	set (CMAKE_C_FLAGS "/MP ${CMAKE_C_FLAGS}")
+	set (CMAKE_CXX_FLAGS "/MP ${CMAKE_CXX_FLAGS}")
 	add_definitions (/D_CRT_SECURE_NO_WARNINGS=1)
 endif (NOT MSVC)
 
