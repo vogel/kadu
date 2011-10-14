@@ -43,7 +43,6 @@
 #include <QtGui/QMouseEvent>
 
 #include "activate.h"
-#include "accounts/account-manager.h"
 #include "chat/message/pending-messages-manager.h"
 #include "configuration/configuration-file.h"
 #include "core/core.h"
@@ -214,7 +213,7 @@ void DockingManager::defaultToolTip()
 {
 	if (config_file.readBoolEntry("General", "ShowTooltipInTray"))
 	{
-		Status status = AccountManager::instance()->status();
+		Status status = StatusContainerManager::instance()->status();
 
 		QString tiptext;
 		tiptext.append(tr("Current status:\n%1").arg(status.displayName()));

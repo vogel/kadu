@@ -203,16 +203,6 @@ const QVector<Account> AccountManager::byProtocolName(const QString &name)
 	return list;
 }
 
-Status AccountManager::status()
-{
-	QMutexLocker locker(&mutex());
-
-	Account account = defaultAccount();
-	return account.statusContainer()
-			? account.statusContainer()->status()
-			: Status();
-}
-
 void AccountManager::accountDataUpdated()
 {
 	QMutexLocker locker(&mutex());

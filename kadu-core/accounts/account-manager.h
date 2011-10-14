@@ -107,8 +107,6 @@ public:
 	Account byId(const QString &protocolName, const QString &id);
 	const QVector<Account> byProtocolName(const QString &name);
 
-	Status status();
-
 	void removeAccountAndBuddies(Account account);
 
 public slots:
