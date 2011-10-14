@@ -54,11 +54,11 @@ public:
 	void selectDefaultProxy();
 	bool isDefaultProxySelected();
 
-	void setCurrentProxy(NetworkProxy networkProxy);
+	void setCurrentProxy(const NetworkProxy &networkProxy);
 	NetworkProxy currentProxy();
 
 signals:
-	void proxyChanged(NetworkProxy networkProxy, NetworkProxy lastNetworkProxy = NetworkProxy::null);
+	void proxyChanged(const NetworkProxy &networkProxy, const NetworkProxy &lastNetworkProxy = NetworkProxy::null);
 
 };
 

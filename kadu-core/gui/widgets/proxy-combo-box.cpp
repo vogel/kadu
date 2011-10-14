@@ -76,7 +76,7 @@ bool ProxyComboBox::isDefaultProxySelected()
 		return false;
 }
 
-void ProxyComboBox::setCurrentProxy(NetworkProxy networkProxy)
+void ProxyComboBox::setCurrentProxy(const NetworkProxy &networkProxy)
 {
 	setCurrentValue(networkProxy);
 }

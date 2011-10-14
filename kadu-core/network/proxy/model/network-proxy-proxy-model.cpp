@@ -38,7 +38,7 @@ NetworkProxyProxyModel::~NetworkProxyProxyModel()
 {
 }
 
-int NetworkProxyProxyModel::compareNames(QString n1, QString n2) const
+int NetworkProxyProxyModel::compareNames(const QString &n1, const QString &n2) const
 {
 	return BrokenStringCompare
 			? n1.toLower().localeAwareCompare(n2.toLower())

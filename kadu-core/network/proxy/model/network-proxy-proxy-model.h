@@ -27,7 +27,7 @@ class NetworkProxyProxyModel : public QSortFilterProxyModel
 	Q_OBJECT
 
 	bool BrokenStringCompare;
-	int compareNames(QString n1, QString n2) const;
+	int compareNames(const QString &n1, const QString &n2) const;
 
 protected:
 	virtual bool lessThan(const QModelIndex &left, const QModelIndex &right) const;

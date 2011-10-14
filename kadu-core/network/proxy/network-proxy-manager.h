@@ -24,18 +24,22 @@
 #include <QtCore/QObject>
 #include <QtCore/QString>
 
+#include "configuration/configuration-aware-object.h"
+#include "network/proxy/network-proxy.h"
 #include "storage/simple-manager.h"
 
 #include "exports.h"
 
 class NetworkProxy;
 
-class KADUAPI NetworkProxyManager : public QObject, public SimpleManager<NetworkProxy>
+class KADUAPI NetworkProxyManager : public QObject, public SimpleManager<NetworkProxy>, ConfigurationAwareObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(NetworkProxyManager)
 
 	static NetworkProxyManager *Instance;
+
+	NetworkProxy DefaultProxy;
 
 	NetworkProxyManager();
 	virtual ~NetworkProxyManager();
@@ -52,14 +56,16 @@ protected:
 	virtual void itemAboutToBeRemoved(NetworkProxy item);
 	virtual void itemRemoved(NetworkProxy item);
 
+	virtual void configurationUpdated();
+
 public:
 	static NetworkProxyManager * instance();
 
 	virtual QString storageNodeName() { return QLatin1String("Proxys"); }
 	virtual QString storageNodeItemName() { return QLatin1String("Proxy"); }
 
-	void setDefaultProxy(NetworkProxy proxy);
-	NetworkProxy defaultProxy();
+	void setDefaultProxy(const NetworkProxy &proxy);
+	const NetworkProxy &defaultProxy();
 
 	NetworkProxy byConfiguration(const QString &address, int port,
 	                             const QString &user, const QString &password, NotFoundAction action);

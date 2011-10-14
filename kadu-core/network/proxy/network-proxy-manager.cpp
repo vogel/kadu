@@ -39,6 +39,8 @@ NetworkProxyManager * NetworkProxyManager::instance()
 NetworkProxyManager::NetworkProxyManager()
 {
 	ConfigurationManager::instance()->registerStorableObject(this);
+
+	configurationUpdated();
 }
 
 NetworkProxyManager::~NetworkProxyManager()
@@ -60,14 +62,20 @@ void NetworkProxyManager::store()
 	SimpleManager<NetworkProxy>::store();
 }
 
-void NetworkProxyManager::setDefaultProxy(NetworkProxy proxy)
+void NetworkProxyManager::configurationUpdated()
 {
-	config_file.writeEntry("Network", "DefaultProxy", proxy.uuid().toString());
+	DefaultProxy = byUuid(config_file.readEntry("Network", "DefaultProxy"));
 }
 
-NetworkProxy NetworkProxyManager::defaultProxy()
+void NetworkProxyManager::setDefaultProxy(const NetworkProxy &proxy)
 {
-	return byUuid(config_file.readEntry("Network", "DefaultProxy"));
+	DefaultProxy = proxy;
+	config_file.writeEntry("Network", "DefaultProxy", DefaultProxy.uuid().toString());
+}
+
+const NetworkProxy & NetworkProxyManager::defaultProxy()
+{
+	return DefaultProxy;
 }
 
 NetworkProxy NetworkProxyManager::byConfiguration(const QString &address, int port,

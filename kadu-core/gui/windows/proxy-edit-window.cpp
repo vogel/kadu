@@ -131,7 +131,7 @@ void ProxyEditWindow::createGui()
 	SaveButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogApplyButton), tr("Add"), this);
 	connect(SaveButton, SIGNAL(clicked()), this, SLOT(saveProxyButtonClicked()));
 	CancelButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton), tr("Cancel"), this);
-	connect(SaveButton, SIGNAL(clicked()), this, SLOT(cancelButtonClicked()));
+	connect(CancelButton, SIGNAL(clicked()), this, SLOT(cancelButtonClicked()));
 	RemoveButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton), tr("Remove"), this);
 	connect(RemoveButton, SIGNAL(clicked(bool)), this, SLOT(removeButtonClicked()));
 
@@ -261,10 +261,9 @@ ModalConfigurationWidgetState ProxyEditWindow::state(NetworkProxy proxy)
 
 	if (!changed)
 		return StateNotChanged;
-	if (valid)
-		return StateChangedDataValid;
-	else
-		return StateChangedDataInvalid;
+	return valid
+			? StateChangedDataValid
+			: StateChangedDataInvalid;
 }
 
 ModalConfigurationWidgetState ProxyEditWindow::state()
