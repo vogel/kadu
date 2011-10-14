@@ -24,17 +24,59 @@
 
 #include <QtCore/QVariant>
 
+/**
+ * @addtogroup Status
+ * @{
+ */
+
+/**
+ * @enum StatusType
+ * @author Rafał 'Vogel' Malinowski
+ * @short Status type enum.
+ * @see StatusTypeGroup
+ *
+ * This enum describes possible types of statuses.
+ */
 enum StatusType
 {
+	/**
+	 * Empty (invalid) status type.
+	 */
 	StatusTypeNone = -1,
+	/**
+	 * Free for chat status type.
+	 */
 	StatusTypeFreeForChat = 0,
+	/**
+	 * Online status type.
+	 */
 	StatusTypeOnline = 10,
+	/**
+	 * Away status type.
+	 */
 	StatusTypeAway = 20,
+	/**
+	 * Not available status type.
+	 */
 	StatusTypeNotAvailable = 30,
+	/**
+	 * Do not disturb status type.
+	 */
 	StatusTypeDoNotDisturb = 40,
+	/**
+	 * Invisible status type.
+	 */
 	StatusTypeInvisible = 50,
+	/**
+	 * Offline status type.
+	 */
 	StatusTypeOffline = 60
 };
+
+/**
+ * @addtogroup Status
+ * @}
+ */
 
 Q_DECLARE_METATYPE(StatusType)
 

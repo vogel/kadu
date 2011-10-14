@@ -44,7 +44,7 @@ enum StatusTypeGroup
 	 */
 	StatusTypeGroupOnline = 0,
 	/**
-	 * Away status type group. Contains "Away" and "Do not disturb" status types.
+	 * Away status type group. Contains "Away", "Not available" and "Do not disturb" status types.
 	 */
 	StatusTypeGroupAway = 10,
 	/**
