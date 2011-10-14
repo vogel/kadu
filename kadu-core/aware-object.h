@@ -30,7 +30,7 @@
 #define KADU_AWARE_CLASS(class) template<> QList<class *> AwareObject<class>::Objects = QList<class *>();
 
 template<class T>
-class KADUAPI AwareObject
+class AwareObject
 {
 
 protected:
