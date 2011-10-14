@@ -27,6 +27,7 @@
 #include "status/status-type-group.h"
 
 #include "exports.h"
+
 /**
  * @addtogroup Status
  * @{

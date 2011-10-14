@@ -37,6 +37,20 @@ class KaduIcon;
 class Status;
 class StatusTypeData;
 
+/**
+ * @addtogroup StatusTypeManager
+ * @{
+ */
+
+/**
+ * @class StatusTypeManager
+ * @author Rafał 'Vogel' Malinowski
+ * @short Manager containing StatusTypeData instances for each StatusType enum value.
+ * @see StatusType
+ * @see StatusTypeData
+ *
+ * This singleton class contains instances of StatusTypeData for each value of StatusType enum.
+ */
 class KADUAPI StatusTypeManager
 {
 	Q_DISABLE_COPY(StatusTypeManager)
@@ -49,13 +63,54 @@ class KADUAPI StatusTypeManager
 	~StatusTypeManager();
 
 public:
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Returns StatusTypeManager singleton instance.
+	 * @return StatusTypeManager singleton instance
+	 *
+	 * Returns StatusTypeManager singleton instance.
+	 */
 	static StatusTypeManager * instance();
 
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Returns StatusType enum value with given name.
+	 * @param name of StatusType enum to search for
+	 * @return StatusType enum value with given name
+	 *
+	 * Returns StatusType enum value with given name. If no valid enum value is found, StatusTypeOffline
+	 * is returned.
+	 */
 	StatusType fromName(const QString &name);
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Returns StatusTypeData instance for given StatusType enum value.
+	 * @param statusType StatusType enum value
+	 * @return StatusTypeData instance for given StatusType enum value
+	 *
+	 * Returns StatusTypeData instance for given StatusType enum value. If no valid StatusTypeData instance
+	 * is found, valud for StatusTypeOffline is returned.
+	 */
 	const StatusTypeData statusTypeData(const StatusType statusType);
 
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Returns icon for given status in given protocol.
+	 * @param protocol protocol name
+	 * @param status status
+	 * @return icon for given status in given protocol
+	 *
+	 * Returns icon for given status in given protocol. Icons can be differen per protocols, status type
+	 * and status description.
+	 */
 	KaduIcon statusIcon(const QString &protocol, const Status &status);
 
 };
+
+/**
+ * @addtogroup Status
+ * @}
+ */
 
 #endif // STATUS_TYPE_MANAGER
