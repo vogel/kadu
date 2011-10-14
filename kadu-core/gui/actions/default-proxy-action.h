@@ -17,17 +17,38 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GADU_PROXY_HELPER_H
-#define GADU_PROXY_HELPER_H
+#ifndef DEFAULT_PROXY_ACTION_H
+#define DEFAULT_PROXY_ACTION_H
 
-#include "gadu-exports.h"
+#include <QtGui/QAction>
+
+#include "gui/actions/action-description.h"
 
 class NetworkProxy;
 
-namespace GaduProxyHelper
+class DefaultProxyAction : public ActionDescription
 {
-	GADUAPI void cleanUpProxySettings();
-	GADUAPI void setupProxy(NetworkProxy networkProxy);
-}
+	Q_OBJECT
 
-#endif // GADU_PROXY_HELPER_H
+	void populateMenu(QMenu *menu, QActionGroup *actionGroup, NetworkProxy defaultProxy);
+
+private slots:
+	void prepareMenu();
+	void selectProxyActionTriggered(QAction *action);
+	void editProxyConfiguration();
+
+protected:
+	virtual QMenu * menuForAction(Action *action);
+
+public:
+	explicit DefaultProxyAction(QObject *parent);
+	virtual ~DefaultProxyAction();
+
+	virtual QToolButton::ToolButtonPopupMode buttonPopupMode()
+	{
+		return QToolButton::InstantPopup;
+	}
+
+};
+
+#endif // DEFAULT_PROXY_ACTION_H

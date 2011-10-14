@@ -26,7 +26,7 @@
 
 #include <QtNetwork/QHostAddress>
 
-#include "accounts/account-proxy-settings.h"
+#include "network/proxy/network-proxy.h"
 #include "protocols/protocols-aware-object.h"
 #include "status/status.h"
 #include "storage/details-holder.h"
@@ -61,7 +61,8 @@ class KADUAPI AccountShared : public QObject, public Shared, public DetailsHolde
 	bool HasPassword;
 	QString Password;
 
-	AccountProxySettings ProxySettings;
+	bool UseDefaultProxy;
+	NetworkProxy Proxy;
 
 	short int MaximumImageSize;
 
@@ -74,6 +75,8 @@ class KADUAPI AccountShared : public QObject, public Shared, public DetailsHolde
 
 	void doSetAccountIdentity(const Identity &accountIdentity);
 	void doSetId(const QString &id);
+
+	void importNetworkProxy();
 
 protected:
 	virtual void load();
@@ -123,7 +126,8 @@ public:
 	KaduShared_Property(bool, rememberPassword, RememberPassword)
 	KaduShared_Property(bool, hasPassword, HasPassword)
 	KaduShared_Property(const QString &, password, Password)
-	KaduShared_Property(const AccountProxySettings &, proxySettings, ProxySettings)
+	KaduShared_Property(bool, useDefaultProxy, UseDefaultProxy)
+	KaduShared_Property(const NetworkProxy &, proxy, Proxy)
 	KaduShared_Property(bool, removing, Removing)
 
 	// TODO: 0.11, find better API

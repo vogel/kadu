@@ -1,7 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2010 Bartosz Brachaczek (b.brachaczek@gmail.com)
- * Copyright 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -18,40 +17,39 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef IDENTITY_MODEL_H
-#define IDENTITY_MODEL_H
+#ifndef NETWORK_PROXY_MODEL_H
+#define NETWORK_PROXY_MODEL_H
 
 #include <QtCore/QAbstractListModel>
 #include <QtCore/QModelIndex>
 
 #include "model/kadu-abstract-model.h"
+#include "network/proxy/network-proxy.h"
 
-class Identity;
-
-class IdentityModel : public QAbstractListModel, public KaduAbstractModel
+class NetworkProxyModel : public QAbstractListModel, public KaduAbstractModel
 {
 	Q_OBJECT
 
 private slots:
-	void identityAboutToBeAdded(Identity identity);
-	void identityAdded(Identity identity);
-	void identityAboutToBeRemoved(Identity identity);
-	void identityRemoved(Identity identity);
+	void networkProxyUpdated(NetworkProxy networkProxy);
+	void networkProxyAboutToBeAdded(NetworkProxy networkProxy);
+	void networkProxyAdded(NetworkProxy networkProxy);
+	void networkProxyAboutToBeRemoved(NetworkProxy networkProxy);
+	void networkProxyRemoved(NetworkProxy networkProxy);
 
 public:
-	explicit IdentityModel(QObject *parent = 0);
-	virtual ~IdentityModel();
+	explicit NetworkProxyModel(QObject *parent = 0);
+	virtual ~NetworkProxyModel();
 
+	virtual int columnCount(const QModelIndex &parent) const;
 	virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
 
 	virtual QVariant data(const QModelIndex &index, int role) const;
 
-	Identity identity(const QModelIndex &index) const;
-	int identityIndex(Identity identity) const;
+	NetworkProxy networkProxy(const QModelIndex &index) const;
+	int networkProxyIndex(NetworkProxy networkProxy) const;
 	virtual QModelIndex indexForValue(const QVariant &value) const;
 
 };
 
-#include "identities/identity.h" // for MOC
-
-#endif // IDENTITY_MODEL_H
+#endif // NETWORK_PROXY_MODEL_H

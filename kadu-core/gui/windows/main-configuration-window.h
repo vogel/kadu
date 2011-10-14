@@ -12,6 +12,7 @@ class BuddyListBackgroundColorsWidget;
 class ConfigComboBox;
 class ConfigLineEdit;
 class Preview;
+class ProxyComboBox;
 class SyntaxEditorWindow;
 
 class MainConfigurationWindow;
@@ -64,6 +65,7 @@ class KADUAPI MainConfigurationWindow : public ConfigurationWindow, CompositingA
 	ConfigComboBox *emoticonsThemeComboBox;
 	ConfigComboBox *emoticonsScalingComboBox;
 	BuddyListBackgroundColorsWidget *buddyColors;
+	ProxyComboBox *ProxyWidget;
 
 	explicit MainConfigurationWindow();
 
@@ -88,6 +90,8 @@ private slots:
 	void setEmoticonThemes();
 
 	void chatPreviewSyntaxChanged(const QString &syntaxName);
+
+	void configurationWindowAppliedSlot();
 
 public:
 	static MainConfigurationWindow * instance();

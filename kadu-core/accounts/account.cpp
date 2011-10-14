@@ -23,7 +23,6 @@
 
 #include "accounts/account-details.h"
 #include "accounts/account-manager.h"
-#include "accounts/account-proxy-settings.h"
 #include "buddies/buddy-manager.h"
 #include "configuration/configuration-file.h"
 #include "configuration/main-configuration-holder.h"
@@ -83,16 +82,6 @@ Account::~Account()
 {
 }
 
-void Account::importProxySettings()
-{
-	if (isNull())
-		return;
-
-	Account defaultAccount = AccountManager::instance()->defaultAccount();
-	if (defaultAccount)
-		data()->setProxySettings(defaultAccount.proxySettings()); // data is copied
-}
-
 StatusContainer * Account::statusContainer() const
 {
 	if (!data())
@@ -111,6 +100,7 @@ KaduSharedBase_PropertyDefCRW(Account, QString, id, Id, QString())
 KaduSharedBase_PropertyDef(Account, bool, rememberPassword, RememberPassword, true)
 KaduSharedBase_PropertyDef(Account, bool, hasPassword, HasPassword, false)
 KaduSharedBase_PropertyDefCRW(Account, QString, password, Password, QString())
-KaduSharedBase_PropertyDefCRW(Account, AccountProxySettings, proxySettings, ProxySettings, AccountProxySettings())
+KaduSharedBase_PropertyDef(Account, bool, useDefaultProxy, UseDefaultProxy, true)
+KaduSharedBase_PropertyDefCRW(Account, NetworkProxy, proxy, Proxy, NetworkProxy::null)
 KaduSharedBase_PropertyDef(Account, bool, privateStatus, PrivateStatus, true)
 KaduSharedBase_PropertyDef(Account, bool, removing, Removing, true)

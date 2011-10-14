@@ -32,6 +32,7 @@
 
 #include "accounts/account.h"
 #include "identities/identity.h"
+#include "network/proxy/network-proxy-manager.h"
 #include "debug.h"
 
 #include "certificates/certificate-helpers.h"
@@ -261,13 +262,16 @@ void JabberClient::connect(const XMPP::Jid &jid, const QString &password, bool a
 	if (useXMPP09())
 		JabberClientConnector->setOptProbe(probeSSL());
 
-	AccountProxySettings proxy = Protocol->account().proxySettings();
-	if (proxy.enabled())
+	NetworkProxy proxy = Protocol->account().useDefaultProxy()
+			? NetworkProxyManager::instance()->defaultProxy()
+			: Protocol->account().proxy();
+
+	if (proxy && !proxy.address().isEmpty())
 	{
 		XMPP::AdvancedConnector::Proxy proxySettings;
 
 		proxySettings.setHttpConnect(proxy.address(), proxy.port());
-		if (proxy.requiresAuthentication())
+		if (!proxy.user().isEmpty())
 			proxySettings.setUserPass(proxy.user(), proxy.password());
 
 		JabberClientConnector->setProxy(proxySettings);
@@ -282,7 +286,7 @@ void JabberClient::connect(const XMPP::Jid &jid, const QString &password, bool a
 		JabberTLS->setTrustedCertificates(CertificateHelpers::allCertificates(CertificateHelpers::getCertificateStoreDirs()));
 		JabberTLSHandler = new QCATLSHandler(JabberTLS);
 		JabberTLSHandler->setXMPPCertCheck(true);
-		
+
 		JabberAccountDetails *jabberAccountDetails = dynamic_cast<JabberAccountDetails *>(Protocol->account().details());
 		if (jabberAccountDetails)
 		{
@@ -435,7 +439,7 @@ void JabberClient::slotTLSHandshaken()
 	QString domain = jabberAccountDetails->tlsOverrideDomain();
 	QString host = jabberAccountDetails->useCustomHostPort() ? jabberAccountDetails->customHost() : XMPP::Jid(Protocol->account().id()).domain();
 	QByteArray cert = jabberAccountDetails->tlsOverrideCert();
-	
+
 	if (CertificateHelpers::checkCertificate(JabberTLS, JabberTLSHandler, domain,
 		QString("%1: ").arg(Protocol->account().accountIdentity().name()) + tr("Server Authentication"), host, Protocol))
 		JabberTLSHandler->continueAfterHandshake();

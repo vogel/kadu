@@ -6,6 +6,7 @@ set (gui_SRCS
 	actions/actions.cpp
 	actions/action-description.cpp
 	actions/change-status-action.cpp
+	actions/default-proxy-action.cpp
 
 	widgets/account-buddy-list-widget.cpp
 	widgets/account-avatar-widget.cpp
@@ -57,7 +58,7 @@ set (gui_SRCS
 	widgets/progress-icon.cpp
 	widgets/progress-label.cpp
 	widgets/protocols-combo-box.cpp
-	widgets/proxy-group-box.cpp
+	widgets/proxy-combo-box.cpp
 	widgets/preview.cpp
 	widgets/select-buddy-combo-box.cpp
 	widgets/select-buddy-popup.cpp
@@ -120,6 +121,7 @@ set (gui_SRCS
 	windows/password-window.cpp
 	windows/plugin-error-dialog.cpp
 	windows/progress-window.cpp
+	windows/proxy-edit-window.cpp
 	windows/search-window.cpp
 	windows/search-window-actions.cpp
 	windows/subscription-window.cpp
@@ -141,6 +143,7 @@ set (gui_MOC_SRCS
 	actions/actions.h
 	actions/action-description.h
 	actions/change-status-action.h
+	actions/default-proxy-action.h
 
 	widgets/account-add-widget.h
 	widgets/account-avatar-widget.h
@@ -188,10 +191,10 @@ set (gui_MOC_SRCS
 	widgets/path-edit.h
 	widgets/path-list-edit.h
 	widgets/preview.h
+	widgets/proxy-combo-box.h
 	widgets/progress-icon.h
 	widgets/progress-label.h
 	widgets/protocols-combo-box.h
-	widgets/proxy-group-box.h
 	widgets/select-buddy-combo-box.h
 	widgets/select-buddy-popup.h
 	widgets/select-file.h
@@ -251,6 +254,7 @@ set (gui_MOC_SRCS
 	windows/password-window.h
 	windows/plugin-error-dialog.h
 	windows/progress-window.h
+	windows/proxy-edit-window.h
 	windows/search-window.h
 	windows/search-window-actions.h
 	windows/subscription-window.h

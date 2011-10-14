@@ -36,6 +36,9 @@ IdentitiesComboBox::IdentitiesComboBox(bool includeSelectIdentity, QWidget *pare
 	setUpModel(new IdentityModel(this));
 
 	CreateNewIdentityAction = new QAction(tr("Create a new identity..."), this);
+	QFont createNewIdentityActionFont = CreateNewIdentityAction->font();
+	createNewIdentityActionFont.setItalic(true);
+	CreateNewIdentityAction->setFont(createNewIdentityActionFont);
 	CreateNewIdentityAction->setData("createNewIdentity");
 
 	ActionsModel->addAfterAction(CreateNewIdentityAction);

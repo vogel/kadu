@@ -17,17 +17,27 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GADU_PROXY_HELPER_H
-#define GADU_PROXY_HELPER_H
+#ifndef NETWORK_PROXY_PROXY_MODEL_H
+#define NETWORK_PROXY_PROXY_MODEL_H
 
-#include "gadu-exports.h"
+#include <QtGui/QSortFilterProxyModel>
 
-class NetworkProxy;
-
-namespace GaduProxyHelper
+class NetworkProxyProxyModel : public QSortFilterProxyModel
 {
-	GADUAPI void cleanUpProxySettings();
-	GADUAPI void setupProxy(NetworkProxy networkProxy);
-}
+	Q_OBJECT
 
-#endif // GADU_PROXY_HELPER_H
+	bool BrokenStringCompare;
+	int compareNames(const QString &n1, const QString &n2) const;
+
+protected:
+	virtual bool lessThan(const QModelIndex &left, const QModelIndex &right) const;
+
+public:
+	NetworkProxyProxyModel(QObject *parent = 0);
+	virtual ~NetworkProxyProxyModel();
+
+	virtual QModelIndex indexForValue(const QVariant &value) const;
+
+};
+
+#endif // NETWORK_PROXY_PROXY_MODEL_H

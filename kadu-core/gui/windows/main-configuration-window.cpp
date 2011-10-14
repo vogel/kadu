@@ -32,6 +32,7 @@
 #include <QtCore/QList>
 #include <QtCore/QPair>
 #include <QtGui/QApplication>
+#include <QtGui/QLabel>
 #include <QtGui/QStyleFactory>
 
 #include "configuration/config-file-data-manager.h"
@@ -49,6 +50,7 @@
 #include "gui/widgets/buddy-info-panel.h"
 #include "gui/widgets/configuration/buddy-list-background-colors-widget.h"
 #include "gui/widgets/configuration/config-combo-box.h"
+#include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/config-line-edit.h"
 #include "gui/widgets/configuration/config-preview.h"
 #include "gui/widgets/configuration/config-slider.h"
@@ -56,10 +58,13 @@
 #include "gui/widgets/configuration/config-path-list-edit.h"
 #include "gui/widgets/configuration/config-check-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"
+#include "gui/widgets/proxy-combo-box.h"
 #include "gui/widgets/tool-tip-class-manager.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/syntax-editor-window.h"
 #include "misc/misc.h"
+#include "network/proxy/network-proxy.h"
+#include "network/proxy/network-proxy-manager.h"
 #include "status/status.h"
 #include "status/status-container.h"
 #include "themes/icon-theme-manager.h"
@@ -169,6 +174,8 @@ MainConfigurationWindow::MainConfigurationWindow() :
 {
 	setWindowRole("kadu-configuration");
 
+	connect(this, SIGNAL(configurationWindowApplied()), this, SLOT(configurationWindowAppliedSlot()));
+
 	widget()->appendUiFile(dataPath("kadu/configuration/dialog.ui"));
 
 #if !defined(DEBUG_ENABLED) || defined(Q_OS_WIN)
@@ -263,6 +270,15 @@ MainConfigurationWindow::MainConfigurationWindow() :
 
 	buddyColors = new BuddyListBackgroundColorsWidget(this);
 
+	ConfigGroupBox *proxyGroupBox = widget()->configGroupBox("Kadu", "Advanced", "Proxy");
+	if (proxyGroupBox)
+	{
+		NetworkProxy defaultProxy = NetworkProxyManager::instance()->defaultProxy();
+		ProxyWidget = new ProxyComboBox(false, this);
+		ProxyWidget->setCurrentProxy(defaultProxy);
+		proxyGroupBox->addWidgets(new QLabel(tr("Default proxy:"), this), ProxyWidget);
+	}
+
 	triggerCompositingStateChanged();
 }
 
@@ -295,6 +311,11 @@ void MainConfigurationWindow::show()
 	}
 
 	ConfigurationWindow::show();
+}
+
+void MainConfigurationWindow::configurationWindowAppliedSlot()
+{
+	NetworkProxyManager::instance()->setDefaultProxy(ProxyWidget->currentProxy());
 }
 
 void MainConfigurationWindow::onChangeStartupStatus(int index)

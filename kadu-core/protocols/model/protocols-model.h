@@ -45,7 +45,6 @@ public:
 	virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
 
 	virtual QVariant data(const QModelIndex &index, int role) const;
-	virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
 
 	ProtocolFactory * protocolFactory(const QModelIndex &index) const;
 	int protocolFactoryIndex(ProtocolFactory *protocolFactory) const;

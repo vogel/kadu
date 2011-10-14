@@ -30,6 +30,7 @@
 #include "identities/identity-manager.h"
 #include "icons/kadu-icon.h"
 #include "misc/misc.h"
+#include "network/proxy/network-proxy-manager.h"
 #include "protocols/protocol.h"
 #include "protocols/protocols-manager.h"
 #include "status/status-setter.h"
@@ -87,6 +88,38 @@ QString AccountShared::storageNodeName()
 	return QLatin1String("Account");
 }
 
+void AccountShared::importNetworkProxy()
+{
+	QString address = loadValue<QString>("ProxyHost");
+
+	int port = loadValue<int>("ProxyPort");
+	bool requiresAuthentication = loadValue<bool>("ProxyRequiresAuthentication");
+	QString user = loadValue<QString>("ProxyUser");
+	QString password = loadValue<QString>("ProxyPassword");
+
+	if (!requiresAuthentication)
+	{
+		user.clear();
+		password.clear();
+	}
+
+	NetworkProxy importedProxy;
+
+	if (!address.isEmpty())
+		importedProxy = NetworkProxyManager::instance()->byConfiguration(
+		            address, port, user, password, ActionCreateAndAdd);
+
+	if (loadValue<bool>("UseProxy"))
+		Proxy = importedProxy;
+
+	removeValue("UseProxy");
+	removeValue("ProxyHost");
+	removeValue("ProxyPort");
+	removeValue("ProxyRequiresAuthentication");
+	removeValue("ProxyUser");
+	removeValue("ProxyPassword");
+}
+
 void AccountShared::load()
 {
 	if (!isValidStorage())
@@ -108,14 +141,17 @@ void AccountShared::load()
 	if (RememberPassword)
 		Password = pwHash(loadValue<QString>("Password"));
 
-	ProxySettings.setEnabled(loadValue<bool>("UseProxy"));
-	ProxySettings.setAddress(loadValue<QString>("ProxyHost"));
-	ProxySettings.setPort(loadValue<int>("ProxyPort"));
-	ProxySettings.setRequiresAuthentication(loadValue<bool>("ProxyRequiresAuthentication"));
-	ProxySettings.setUser(loadValue<QString>("ProxyUser"));
-	ProxySettings.setPassword(loadValue<QString>("ProxyPassword"));
-
-	PrivateStatus = loadValue<bool>("PrivateStatus", true);
+	if (hasValue("UseProxy"))
+	{
+		UseDefaultProxy = false;
+		importNetworkProxy();
+	}
+	else
+	{
+		UseDefaultProxy = loadValue<bool>("UseDefaultProxy", true);
+		if (!UseDefaultProxy)
+			Proxy = NetworkProxyManager::instance()->byUuid(loadValue<QString>("Proxy"));
+	}
 
 	triggerAllProtocolsRegistered();
 }
@@ -128,6 +164,11 @@ void AccountShared::store()
 	Shared::store();
 
 	storeValue("Identity", AccountIdentity->uuid().toString());
+	storeValue("UseDefaultProxy", UseDefaultProxy);
+	if (UseDefaultProxy)
+		removeValue("Proxy");
+	else
+		storeValue("Proxy", Proxy.uuid().toString());
 
 	storeValue("Protocol", ProtocolName);
 	storeValue("Id", id());
@@ -137,13 +178,6 @@ void AccountShared::store()
 		storeValue("Password", pwHash(password()));
 	else
 		removeValue("Password");
-
-	storeValue("UseProxy", ProxySettings.enabled());
-	storeValue("ProxyHost", ProxySettings.address());
-	storeValue("ProxyPort", ProxySettings.port());
-	storeValue("ProxyRequiresAuthentication", ProxySettings.requiresAuthentication());
-	storeValue("ProxyUser", ProxySettings.user());
-	storeValue("ProxyPassword", ProxySettings.password());
 
 	storeValue("PrivateStatus", PrivateStatus);
 }

@@ -36,6 +36,7 @@
 #include "identities/identity-manager.h"
 #include "protocols/protocols-manager.h"
 #include "misc/misc.h"
+#include "network/proxy/network-proxy-manager.h"
 
 #include "helpers/gadu-imported-contact-xml-receiver.h"
 #include "gadu-account-details.h"
@@ -106,15 +107,18 @@ Account GaduImporter::import065Account(QXmlQuery &xmlQuery)
 	accountDetails->setReceiveImagesDuringInvisibility(readEntry(xmlQuery, "Chat", "ReceiveImagesDuringInvisibility").toBool());
 	accountDetails->setMaximumImageRequests(readEntry(xmlQuery, "Chat", "MaxImageRequests").toUInt());
 
-	AccountProxySettings proxySettings;
-	proxySettings.setEnabled(readEntry(xmlQuery, "Network", "UseProxy").toBool());
-	proxySettings.setAddress(readEntry(xmlQuery, "Network", "ProxyHost").toString());
-	proxySettings.setPort(readEntry(xmlQuery, "Network", "ProxyPort").toUInt());
-	proxySettings.setUser(readEntry(xmlQuery, "Network", "ProxyUser").toString());
-	proxySettings.setPassword(readEntry(xmlQuery, "Network", "ProxyPassword").toString());
-	proxySettings.setRequiresAuthentication(!proxySettings.user().isEmpty());
+	QString address = readEntry(xmlQuery, "Network", "ProxyHost").toString();
+	if (!address.isEmpty())
+	{
+		int port = readEntry(xmlQuery, "Network", "ProxyPort").toUInt();
+		QString user = readEntry(xmlQuery, "Network", "ProxyUser").toString();
+		QString password = readEntry(xmlQuery, "Network", "ProxyPassword").toString();
 
-	result.setProxySettings(proxySettings);
+		NetworkProxy networkProxy = NetworkProxyManager::instance()->byConfiguration(
+		            address, port, user, password, ActionCreateAndAdd);
+		if (readEntry(xmlQuery, "Network", "UseProxy").toBool())
+			result.setProxy(networkProxy);
+	}
 
 	return result;
 }
@@ -175,15 +179,18 @@ void GaduImporter::importAccounts()
 	accountDetails->setReceiveImagesDuringInvisibility(config_file.readBoolEntry("Chat", "ReceiveImagesDuringInvisibility"));
 	accountDetails->setMaximumImageRequests(config_file.readNumEntry("Chat", "MaxImageRequests"));
 
-	AccountProxySettings proxySettings;
-	proxySettings.setEnabled(config_file.readBoolEntry("Network", "UseProxy"));
-	proxySettings.setAddress(config_file.readEntry("Network", "ProxyHost"));
-	proxySettings.setPort(config_file.readNumEntry("Network", "ProxyPort"));
-	proxySettings.setUser(config_file.readEntry("Network", "ProxyUser"));
-	proxySettings.setPassword(config_file.readEntry("Network", "ProxyPassword"));
-	proxySettings.setRequiresAuthentication(!proxySettings.user().isEmpty());
+	QString address = config_file.readEntry("Network", "ProxyHost");
+	if (!address.isEmpty())
+	{
+		int port = config_file.readNumEntry("Network", "ProxyPort");
+		QString user = config_file.readEntry("Network", "ProxyUser");
+		QString password = config_file.readEntry("Network", "ProxyPassword");
 
-	defaultGaduGadu.setProxySettings(proxySettings);
+		NetworkProxy networkProxy = NetworkProxyManager::instance()->byConfiguration(
+		            address, port, user, password, ActionCreateAndAdd);
+		if (config_file.readBoolEntry("Network", "UseProxy"))
+			defaultGaduGadu.setProxy(networkProxy);
+	}
 
 	accountDetails->import_0_6_5_LastStatus();
 

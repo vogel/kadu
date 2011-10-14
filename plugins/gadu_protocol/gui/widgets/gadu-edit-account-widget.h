@@ -37,7 +37,7 @@ class QVBoxLayout;
 class GaduAccountDetails;
 class GaduPersonalInfoWidget;
 class IdentitiesComboBox;
-class ProxyGroupBox;
+class ProxyComboBox;
 
 class GaduEditAccountWidget : public AccountEditWidget
 {
@@ -62,7 +62,6 @@ class GaduEditAccountWidget : public AccountEditWidget
 	IdentitiesComboBox *Identities;
 
 	GaduPersonalInfoWidget *gpiw;
-	ProxyGroupBox *Proxy;
 
 	QCheckBox *useDefaultServers;
 	QLineEdit *ipAddresses;
@@ -72,6 +71,8 @@ class GaduEditAccountWidget : public AccountEditWidget
 
 	QLineEdit *ExternalIp;
 	QLineEdit *ExternalPort;
+
+	ProxyComboBox *ProxyCombo;
 
 	QPushButton *ApplyButton;
 	QPushButton *CancelButton;
@@ -85,7 +86,6 @@ class GaduEditAccountWidget : public AccountEditWidget
 	void createOptionsTab(QTabWidget *);
 
 	void loadAccountData();
-	void loadConnectionData();
 
 	void resetState();
 

@@ -33,6 +33,7 @@ class Action;
 class ActionDataSource;
 class ActionDescription;
 class ChangeStatusAction;
+class DefaultProxyAction;
 class MainWindow;
 class StatusContainer;
 
@@ -72,7 +73,9 @@ class KaduWindowActions : QObject, ConfigurationAwareObject
 	ActionDescription *ShowDescriptions;
 	ActionDescription *OnlineAndDescriptionUsers;
 	ActionDescription *EditUser;
+
 	ChangeStatusAction *ChangeStatus;
+	DefaultProxyAction *DefaultProxy;
 
 private slots:
 	void showMultilogonsActionCreated(Action *action);
