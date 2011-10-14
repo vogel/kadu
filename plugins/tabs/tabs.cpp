@@ -356,9 +356,9 @@ void TabsManager::insertTab(ChatWidget* chat)
 	bool restoreChatGeometry = true;
 
 	// jeśli jest otwarty chatwindow przypisany do chat to zostanie on zamknięty
-	if (chat->parent())
+	if (chat->parentWidget())
 	{
-		chat->parent()->deleteLater();
+		chat->parentWidget()->deleteLater();
 		restoreChatGeometry = false;
 	}
 
@@ -483,7 +483,7 @@ void TabsManager::onTimer()
 
 void TabsManager::onTabAttach(QAction *sender, bool toggled)
 {
-	ChatEditBox *chatEditBox = qobject_cast<ChatEditBox *>(sender->parent());
+	ChatEditBox *chatEditBox = qobject_cast<ChatEditBox *>(sender->parentWidget());
 	if (!chatEditBox)
 		return;
 
@@ -548,7 +548,7 @@ void TabsManager::onMenuActionCloseAll()
 
 void TabsManager::attachToTabsActionCreated(Action *action)
 {
-	ChatEditBox *chatEditBox = qobject_cast<ChatEditBox *>(action->parent());
+	ChatEditBox *chatEditBox = qobject_cast<ChatEditBox *>(action->parentWidget());
 	if (!chatEditBox)
 		return;
 
