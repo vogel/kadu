@@ -28,7 +28,7 @@
 #include "debug.h"
 
 ConfigProxyComboBox::ConfigProxyComboBox(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager) :
-		ProxyComboBox(false, parentConfigGroupBox->widget()), ConfigWidgetValue(parentConfigGroupBox, dataManager), Label(0), ShowDefault(false)
+		ProxyComboBox(parentConfigGroupBox->widget()), ConfigWidgetValue(parentConfigGroupBox, dataManager), Label(0), ShowDefault(false)
 {
 }
 
@@ -59,10 +59,14 @@ void ConfigProxyComboBox::loadConfiguration()
 	if (!dataManager)
 		return;
 
-	if (DefaultItem.isEmpty() || !dataManager->readEntry(section, DefaultItem).toBool())
+	if (DefaultItem.isEmpty())
 		setCurrentProxy(NetworkProxyManager::instance()->byUuid(dataManager->readEntry(section, item).toString()));
-	else
+
+	QVariant defaultValue = dataManager->readEntry(section, DefaultItem);
+	if (defaultValue.isNull() || defaultValue.toBool())
 		selectDefaultProxy();
+	else
+		setCurrentProxy(NetworkProxyManager::instance()->byUuid(dataManager->readEntry(section, item).toString()));
 }
 
 void ConfigProxyComboBox::saveConfiguration()
@@ -98,6 +102,9 @@ bool ConfigProxyComboBox::fromDomElement(QDomElement domElement)
 {
 	ShowDefault = QVariant(domElement.attribute("show-default", "false")).toBool();
 	DefaultItem = domElement.attribute("config-item-default");
+
+	if (ShowDefault)
+		enableDefaultProxyAction();
 
 	return ConfigWidgetValue::fromDomElement(domElement);
 }

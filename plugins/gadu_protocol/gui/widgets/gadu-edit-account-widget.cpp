@@ -332,7 +332,8 @@ void GaduEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
 	generalLayout->addLayout(externalLayout, 4, 0, 1, 4);
 
 	QLabel *proxyLabel = new QLabel(tr("Proxy configuration"), general);
-	ProxyCombo = new ProxyComboBox(true, general);
+	ProxyCombo = new ProxyComboBox(general);
+	ProxyCombo->enableDefaultProxyAction();
 	connect(ProxyCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(dataChanged()));
 
 	generalLayout->addWidget(proxyLabel, 5, 1);

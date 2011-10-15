@@ -26,8 +26,8 @@
 
 #define DEFAULT_PROXY_INDEX 1
 
-ProxyComboBox::ProxyComboBox(bool includeDefaultProxy, QWidget *parent) :
-		KaduComboBox<NetworkProxy>(parent), InActivatedSlot(false)
+ProxyComboBox::ProxyComboBox(QWidget *parent) :
+		KaduComboBox<NetworkProxy>(parent), InActivatedSlot(false), DefaultProxyAction(0)
 {
 	Model = new NetworkProxyModel(this);
 	setUpModel(Model, new NetworkProxyProxyModel(this));
@@ -37,17 +37,6 @@ ProxyComboBox::ProxyComboBox(bool includeDefaultProxy, QWidget *parent) :
 	editProxyActionFont.setItalic(true);
 	EditProxyAction->setFont(editProxyActionFont);
 	EditProxyAction->setData("editProxyConfiguration");
-
-	if (includeDefaultProxy)
-	{
-		DefaultProxyAction = new QAction(tr(" - Use Default Proxy - "), this);
-		DefaultProxyAction->setData("defaultProxy");
-		DefaultProxyAction->setFont(QFont());
-		ActionsModel->addBeforeAction(DefaultProxyAction);
-	}
-	else
-		DefaultProxyAction = 0;
-
 	ActionsModel->addAfterAction(EditProxyAction);
 
 	connect(model(), SIGNAL(rowsAboutToBeRemoved(const QModelIndex &, int, int)),
@@ -60,6 +49,14 @@ ProxyComboBox::ProxyComboBox(bool includeDefaultProxy, QWidget *parent) :
 
 ProxyComboBox::~ProxyComboBox()
 {
+}
+
+void ProxyComboBox::enableDefaultProxyAction()
+{
+	DefaultProxyAction = new QAction(tr(" - Use Default Proxy - "), this);
+	DefaultProxyAction->setData("defaultProxy");
+	DefaultProxyAction->setFont(QFont());
+	ActionsModel->addBeforeAction(DefaultProxyAction);
 }
 
 void ProxyComboBox::selectDefaultProxy()

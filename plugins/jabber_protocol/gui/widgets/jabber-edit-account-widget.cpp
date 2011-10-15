@@ -268,7 +268,8 @@ void JabberEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
 	proxyLayout->setMargin(0);
 
 	QLabel *proxyLabel = new QLabel(tr("Proxy configuration"), general);
-	ProxyCombo = new ProxyComboBox(true, general);
+	ProxyCombo = new ProxyComboBox(general);
+	ProxyCombo->enableDefaultProxyAction();
 	connect(ProxyCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(dataChanged()));
 
 	proxyLayout->addWidget(proxyLabel);

@@ -49,9 +49,10 @@ protected:
 	virtual ActionsProxyModel::ActionVisibility selectVisibility() const;
 
 public:
-	explicit ProxyComboBox(bool includeDefaultProxy, QWidget *parent = 0);
+	explicit ProxyComboBox(QWidget *parent = 0);
 	virtual ~ProxyComboBox();
 
+	void enableDefaultProxyAction();
 	void selectDefaultProxy();
 	bool isDefaultProxySelected();
 
