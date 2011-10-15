@@ -73,7 +73,6 @@ class JabberEditAccountWidget : public AccountEditWidget
 	QLabel *PriorityLabel;
 	QLineEdit *Priority;
 
-	QLabel *DataTransferProxyLabel;
 	QLineEdit *DataTransferProxy;
 
 	QCheckBox *SendTypingNotification;

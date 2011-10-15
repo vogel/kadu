@@ -254,9 +254,9 @@ void JabberEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
 	dataTransferLayout->setSpacing(6);
 	dataTransferLayout->setMargin(0);
 
-	DataTransferProxyLabel = new QLabel(general);
-	DataTransferProxyLabel->setText(tr("Data transfer proxy") + ':');
-	dataTransferLayout->addWidget(DataTransferProxyLabel);
+	QLabel *dataTransferProxyLabel = new QLabel(general);
+	dataTransferProxyLabel->setText(tr("Data transfer proxy") + ':');
+	dataTransferLayout->addWidget(dataTransferProxyLabel);
 
 	DataTransferProxy = new QLineEdit(general);
 	connect(DataTransferProxy, SIGNAL(textEdited(QString)), this, SLOT(dataChanged()));
