@@ -95,7 +95,7 @@ DockingManager * DockingManager::instance()
 }
 
 DockingManager::DockingManager() :
-        CurrentDocker(0), AllAccountsMenu(0), newMessageIcon(StaticEnvelope), icon_timer(new QTimer(this)), blink(false)
+        CurrentDocker(0), DockMenuNeedsUpdate(true), AllAccountsMenu(0), newMessageIcon(StaticEnvelope), icon_timer(new QTimer(this)), blink(false)
 {
 	kdebugf();
 
@@ -114,6 +114,7 @@ DockingManager::DockingManager() :
 	connect(IconsManager::instance(), SIGNAL(themeChanged()), this, SLOT(iconThemeChanged()));
 
 	DockMenu = new QMenu();
+	connect(DockMenu, SIGNAL(aboutToShow()), this, SLOT(contextMenuAboutToBeShown()));
 
 #ifdef Q_OS_MAC
 	MacDockMenu = new QMenu();
@@ -123,8 +124,6 @@ DockingManager::DockingManager() :
 	connect(CloseKaduAction, SIGNAL(triggered()), qApp, SLOT(quit()));
 
 	configurationUpdated();
-
-	updateContextMenu();
 
 	kdebugf2();
 }
@@ -146,9 +145,6 @@ DockingManager::~DockingManager()
 	delete MacDockMenu;
 	MacDockMenu = 0;
 #endif
-
-	delete icon_timer;
-	icon_timer = 0;
 }
 
 void DockingManager::changeIcon()
@@ -323,7 +319,18 @@ void DockingManager::setDocker(Docker *docker)
 	}
 }
 
+void DockingManager::contextMenuAboutToBeShown()
+{
+	if (DockMenuNeedsUpdate)
+		doUpdateContextMenu();
+}
+
 void DockingManager::updateContextMenu()
+{
+	DockMenuNeedsUpdate = true;
+}
+
+void DockingManager::doUpdateContextMenu()
 {
 	if (AllAccountsMenu)
 	{
@@ -381,6 +388,8 @@ void DockingManager::updateContextMenu()
 		DockMenu->addSeparator();
 	}
 	DockMenu->addAction(CloseKaduAction);
+
+	DockMenuNeedsUpdate = false;
 }
 
 void DockingManager::containerStatusChanged()

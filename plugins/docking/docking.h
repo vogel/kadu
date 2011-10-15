@@ -56,6 +56,7 @@ class DOCKINGAPI DockingManager : public QObject, ConfigurationAwareObject, Stat
 
 	Docker *CurrentDocker;
 
+	bool DockMenuNeedsUpdate;
 	QMenu *DockMenu;
  #ifdef Q_OS_MAC
 	QMenu *MacDockMenu;
@@ -82,6 +83,8 @@ class DOCKINGAPI DockingManager : public QObject, ConfigurationAwareObject, Stat
 	DockingManager();
 	virtual ~DockingManager();
 
+	void doUpdateContextMenu();
+
 private slots:
 	void statusIconChanged(const KaduIcon &icon);
 	void changeIcon();
@@ -90,6 +93,7 @@ private slots:
 	void searchingForTrayPosition(QPoint &point);
 	void iconThemeChanged();
 
+	void contextMenuAboutToBeShown();
 	void updateContextMenu();
 
 	void containerStatusChanged();
