@@ -28,13 +28,14 @@ if (NOT KADU_DO_NOT_FIND)
 	find_path (KADU_INCLUDE_DIR
 		kadu-core/kadu-application.h
 		PATHS ${KADU_SEARCH_DIRS} ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/../..
-		PATH_SUFFIXES include/kadu
+		PATH_SUFFIXES include/kadu sdk/include
 	)
 
 	if (WIN32)
 		find_path (KADU_SDK_UTILS_DIR
-			plugins/plugver.bat
-			PATHS ${KADU_SEARCH_DIRS} ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/../..
+			plugver.bat
+			PATHS ${KADU_SEARCH_DIRS} ${CMAKE_CURRENT_SOURCE_DIR}/plugins ${CMAKE_CURRENT_SOURCE_DIR}/..
+			PATH_SUFFIXES sdk
 		)
 	endif (WIN32)
 
@@ -62,9 +63,9 @@ if (CMAKE_COMPILER_IS_GNUCXX)
 endif (CMAKE_COMPILER_IS_GNUCXX)
 
 option (ENABLE_DEVELOPER_BUILD "Turn on some features helpful during development process (has nothing to do with debugging symbols)" OFF)
-if (KADU_INSTALLS_SDK)
-	option (INSTALL_SDK "Install SDK (API headers, cmake modules)" ON)
-endif (KADU_INSTALLS_SDK)
+if (KADU_INSTALLS_SDK OR WIN32)
+	option (INSTALL_SDK "Install SDK (API headers, CMake modules, MSVC program libraries)" ON)
+endif (KADU_INSTALLS_SDK OR WIN32)
 
 if (CMAKE_BUILD_TYPE STREQUAL "Debug" OR ENABLE_DEVELOPER_BUILD OR WIN32)
 	set (DEBUG_ENABLED 1)
@@ -103,27 +104,7 @@ else (NOT MSVC)
 	add_definitions (/D_CRT_SECURE_NO_WARNINGS=1)
 endif (NOT MSVC)
 
-if (NOT KADU_DATADIR)
-	set (KADU_DATADIR ${CMAKE_INSTALL_PREFIX}/share)
-endif (NOT KADU_DATADIR)
-if (NOT KADU_LIBDIR)
-	set (KADU_LIBDIR ${CMAKE_INSTALL_PREFIX}/lib${LIB_SUFFIX})
-endif (NOT KADU_LIBDIR)
-if (NOT KADU_BINDIR)
-	set (KADU_BINDIR ${CMAKE_INSTALL_PREFIX}/bin)
-endif (NOT KADU_BINDIR)
-if (NOT KADU_INSTALL_INCLUDE_DIR)
-	set (KADU_INSTALL_INCLUDE_DIR ${CMAKE_INSTALL_PREFIX}/include)
-endif (NOT KADU_INSTALL_INCLUDE_DIR)
-if (NOT KADU_CMAKE_MODULES_DIR)
-	set (KADU_CMAKE_MODULES_DIR ${CMAKE_INSTALL_PREFIX}/share/cmake/Modules)
-endif (NOT KADU_CMAKE_MODULES_DIR)
-if (NOT KADU_DESKTOP_FILE_DIR)
-	set (KADU_DESKTOP_FILE_DIR ${CMAKE_INSTALL_PREFIX}/share/applications)
-endif (NOT KADU_DESKTOP_FILE_DIR)
-if (NOT KADU_DESKTOP_FILE_NAME)
-	set (KADU_DESKTOP_FILE_NAME kadu.desktop)
-endif (NOT KADU_DESKTOP_FILE_NAME)
+# installation paths
 
 if (WIN32)
 	set (KADU_DATA_DIR ".")
@@ -137,6 +118,46 @@ endif (WIN32)
 
 set (KADU_PLUGINS_DIR ${KADU_DATA_DIR}/plugins)
 
+if (NOT KADU_DATADIR)
+	set (KADU_DATADIR ${CMAKE_INSTALL_PREFIX}/share)
+endif (NOT KADU_DATADIR)
+if (NOT KADU_LIBDIR)
+	set (KADU_LIBDIR ${CMAKE_INSTALL_PREFIX}/lib${LIB_SUFFIX})
+endif (NOT KADU_LIBDIR)
+if (NOT KADU_BINDIR)
+	set (KADU_BINDIR ${CMAKE_INSTALL_PREFIX}/bin)
+endif (NOT KADU_BINDIR)
+if (WIN32 AND NOT KADU_SDK_DIR)
+	set (KADU_SDK_DIR ${CMAKE_INSTALL_PREFIX}/sdk)
+endif (WIN32 AND NOT KADU_SDK_DIR)
+if (NOT KADU_PLUGINS_SDK_DIR)
+	if (WIN32)
+		set (KADU_PLUGINS_SDK_DIR ${KADU_SDK_DIR})
+	else (WIN32)
+		set (KADU_PLUGINS_SDK_DIR ${KADU_PLUGINS_DIR}/sdk)
+	endif (WIN32)
+endif (NOT KADU_PLUGINS_SDK_DIR)
+if (NOT KADU_INSTALL_INCLUDE_DIR)
+	if (WIN32)
+		set (KADU_INSTALL_INCLUDE_DIR ${KADU_SDK_DIR}/include)
+	else (WIN32)
+		set (KADU_INSTALL_INCLUDE_DIR ${CMAKE_INSTALL_PREFIX}/include/kadu)
+	endif (WIN32)
+endif (NOT KADU_INSTALL_INCLUDE_DIR)
+if (NOT KADU_CMAKE_MODULES_DIR)
+	if (WIN32)
+		set (KADU_CMAKE_MODULES_DIR ${KADU_SDK_DIR}/cmake/Modules)
+	else (WIN32)
+		set (KADU_CMAKE_MODULES_DIR ${CMAKE_INSTALL_PREFIX}/share/cmake/Modules)
+	endif (WIN32)
+endif (NOT KADU_CMAKE_MODULES_DIR)
+if (NOT KADU_DESKTOP_FILE_DIR)
+	set (KADU_DESKTOP_FILE_DIR ${CMAKE_INSTALL_PREFIX}/share/applications)
+endif (NOT KADU_DESKTOP_FILE_DIR)
+if (NOT KADU_DESKTOP_FILE_NAME)
+	set (KADU_DESKTOP_FILE_NAME kadu.desktop)
+endif (NOT KADU_DESKTOP_FILE_NAME)
+
 macro (kadu_api_directories INCLUDE_DIR)
 	if (NOT KADU_INSTALLS_SDK)
 		message (FATAL_ERROR "kadu_api_directories called but KADU_INSTALLS_SDK is not set")
@@ -145,7 +166,7 @@ macro (kadu_api_directories INCLUDE_DIR)
 	if (INSTALL_SDK)
 		foreach (ARG ${ARGN})
 			file (GLOB API_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/${ARG}/*.h)
-			install (FILES ${API_HEADERS} DESTINATION ${KADU_INSTALL_INCLUDE_DIR}/kadu/${INCLUDE_DIR}/${ARG})
+			install (FILES ${API_HEADERS} DESTINATION ${KADU_INSTALL_INCLUDE_DIR}/${INCLUDE_DIR}/${ARG})
 		endforeach (ARG)
 	endif (INSTALL_SDK)
 endmacro (kadu_api_directories)
@@ -207,15 +228,12 @@ macro (kadu_plugin)
 		# wygeneruj plik z wersja modulu
 		set (PLUGIN_SOURCES ${PLUGIN_SOURCES} ${PLUGIN_NAME}.rc)
 		add_custom_command (OUTPUT ${PLUGIN_NAME}.rc
-			COMMAND ${KADU_SDK_UTILS_DIR}/plugins/plugver.bat
+			COMMAND ${KADU_SDK_UTILS_DIR}/plugver.bat
 			ARGS ${CMAKE_CURRENT_SOURCE_DIR}/${PLUGIN_NAME}.desc ${CMAKE_CURRENT_BINARY_DIR}/${PLUGIN_NAME}.rc
 			WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
 			DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${PLUGIN_NAME}.desc
 			COMMENT "Building RC source ${PLUGIN_NAME}.rc"
 		)
-
-		# naglowki do SDK
-		install (DIRECTORY "." DESTINATION ${KADU_DATA_DIR}/kadu-sdk/include/kadu-plugins/${PLUGIN_NAME} FILES_MATCHING PATTERN "*.h" PATTERN ".svn" EXCLUDE)
 	endif (WIN32)
 
 	install (FILES ${PLUGIN_NAME}.desc
@@ -265,11 +283,16 @@ macro (kadu_plugin)
 
 	if (WIN32)
 		target_link_libraries (${PLUGIN_NAME} kadu_core ${PLUGIN_DEPENDENCIES} ${QT_LIBRARIES})
-		install (TARGETS ${PLUGIN_NAME} ARCHIVE DESTINATION ${KADU_DATA_DIR}/kadu-sdk/lib)
+
+		if (INSTALL_SDK)
+			install (TARGETS ${PLUGIN_NAME} ARCHIVE DESTINATION ${KADU_SDK_DIR}/lib)
+		endif (INSTALL_SDK)
 	endif (WIN32)
+
 	if (APPLE)
 		set_target_properties (${PLUGIN_NAME} PROPERTIES LINK_FLAGS "-undefined dynamic_lookup")
 	endif (APPLE)
+
 	install (TARGETS ${PLUGIN_NAME} RUNTIME DESTINATION ${KADU_PLUGINS_LIBDIR} LIBRARY DESTINATION ${KADU_PLUGINS_LIBDIR})
 
 	if (NOT MSVC)

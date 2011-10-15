@@ -25,3 +25,8 @@ add_dependencies (kadu translations)
 install (FILES ${TRANSLATION_FILES} ${LANGAUGE_FILES}
 	DESTINATION ${KADU_DATA_DIR}/translations
 )
+
+if (INSTALL_SDK)
+	install (PROGRAMS plugintsupdate.sh DESTINATION ${KADU_PLUGINS_SDK_DIR})
+	install (FILES configuration-ui.xsl DESTINATION ${KADU_PLUGINS_SDK_DIR})
+endif (INSTALL_SDK)

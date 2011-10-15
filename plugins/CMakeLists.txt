@@ -1,5 +1,4 @@
 if (BUILD_PLUGINS)
-
 	if (NOT WIN32)
 		find_program (AWK gawk awk)
 		if (AWK)
@@ -29,5 +28,9 @@ if (BUILD_PLUGINS)
 		endif (WIN32)
 		add_subdirectory (${PLUGIN})
 	endforeach (PLUGIN)
-
 endif (BUILD_PLUGINS)
+
+if (WIN32 AND INSTALL_SDK)
+	install (FILES plugin.rc DESTINATION ${KADU_PLUGINS_SDK_DIR})
+	install (FILES plugver.bat DESTINATION ${KADU_PLUGINS_SDK_DIR})
+endif (WIN32 AND INSTALL_SDK)

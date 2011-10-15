@@ -262,16 +262,15 @@ if (WIN32)
 	target_link_libraries (kadu kadu_core ${QT_QTMAIN_LIBRARY} ${QT_LIBRARIES} ws2_32)
 	target_link_libraries (kadu_c kadu_core ${QT_LIBRARIES} ws2_32)
 
-	install (TARGETS kadu_core
-		RUNTIME DESTINATION ${KADU_BIN_DIR}
-		ARCHIVE DESTINATION ${KADU_DATA_DIR}/kadu-sdk/lib
-		LIBRARY DESTINATION ${KADU_DATA_DIR}/kadu-sdk/lib
-	)
+	if (INSTALL_SDK)
+		install (TARGETS kadu_core
+			ARCHIVE DESTINATION ${KADU_SDK_DIR}/lib
+			LIBRARY DESTINATION ${KADU_SDK_DIR}/lib
+		)
+	endif (INSTALL_SDK)
+
+	install (TARGETS kadu_core RUNTIME DESTINATION ${KADU_BIN_DIR})
 	install (TARGETS kadu_c DESTINATION ${KADU_BIN_DIR})
-	install (DIRECTORY "."
-		DESTINATION ${KADU_DATA_DIR}/kadu-sdk/include/kadu-core
-		FILES_MATCHING PATTERN "*.h" PATTERN ".svn" EXCLUDE
-	)
 else (WIN32)
 	if (NOT FAST_LINKING)
 		kadu_source_subdirectories (kadu ${kadu_SUBDIRS})
