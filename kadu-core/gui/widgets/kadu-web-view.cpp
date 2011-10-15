@@ -100,8 +100,8 @@ void KaduWebView::setPage(QWebPage *page)
 	connect(page, SIGNAL(linkClicked(const QUrl &)), this, SLOT(hyperlinkClicked(const QUrl &)));
 	connect(page, SIGNAL(loadStarted()), this, SLOT(loadStarted()));
 	connect(page, SIGNAL(loadFinished(bool)), this, SLOT(loadFinishedSlot(bool)));
-	connect(page->action(QWebPage::Copy), SIGNAL(triggered()), this, SLOT(textCopied()));
-	connect(page->action(QWebPage::DownloadImageToDisk), SIGNAL(triggered()), this, SLOT(saveImage()));
+	connect(pageAction(QWebPage::Copy), SIGNAL(triggered()), this, SLOT(textCopied()));
+	connect(pageAction(QWebPage::DownloadImageToDisk), SIGNAL(triggered()), this, SLOT(saveImage()));
 }
 
 void KaduWebView::contextMenuEvent(QContextMenuEvent *e)
@@ -159,8 +159,8 @@ void KaduWebView::mouseMoveEvent(QMouseEvent *e)
 	QMimeData *originalData = new QMimeData();
 	foreach (const QString &format, clipboard->mimeData(QClipboard::Clipboard)->formats())
 		originalData->setData(format, clipboard->mimeData(QClipboard::Clipboard)->data(format));
-	triggerPageAction(QWebPage::Copy);
-	textCopied();
+	// Do not use triggerPageAction(), see bug #2345.
+	pageAction(QWebPage::Copy)->trigger();
 
 	mimeData->setText(clipboard->mimeData()->text());
 	mimeData->setHtml(clipboard->mimeData()->html());
