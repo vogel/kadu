@@ -20,13 +20,14 @@
 #ifndef PROXY_COMBO_BOX_H
 #define PROXY_COMBO_BOX_H
 
+#include "exports.h"
 #include "network/proxy/network-proxy.h"
 
 #include "gui/widgets/kadu-combo-box.h"
 
 class NetworkProxyModel;
 
-class ProxyComboBox : public KaduComboBox<NetworkProxy>
+class KADUAPI ProxyComboBox : public KaduComboBox<NetworkProxy>
 {
 	Q_OBJECT
 
