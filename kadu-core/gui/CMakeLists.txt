@@ -84,6 +84,7 @@ set (gui_SRCS
 	widgets/configuration/config-list-widget.cpp
 	widgets/configuration/config-path-list-edit.cpp
 	widgets/configuration/config-preview.cpp
+	widgets/configuration/config-proxy-combo-box.cpp
 	widgets/configuration/config-radio-button.cpp
 	widgets/configuration/config-select-file.cpp
 	widgets/configuration/config-select-font.cpp
@@ -221,6 +222,7 @@ set (gui_MOC_SRCS
 	widgets/configuration/config-list-widget.h
 	widgets/configuration/config-path-list-edit.h
 	widgets/configuration/config-preview.h
+	widgets/configuration/config-proxy-combo-box.h
 	widgets/configuration/config-radio-button.h
 	widgets/configuration/config-section.h
 	widgets/configuration/config-select-file.h

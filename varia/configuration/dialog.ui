@@ -35,6 +35,7 @@
 
 		<tab name="Advanced">
 			<group-box name="Proxy">
+				<proxy-combo-box caption="Default proxy" config-section="Network" config-item="DefaultProxy" />
 			</group-box>
 			<group-box name="Parser">
 				<check-box caption="Allow executing commands by parser" config-section="General" config-item="AllowExecutingFromParser" />

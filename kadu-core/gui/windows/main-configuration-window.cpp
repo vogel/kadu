@@ -64,7 +64,6 @@
 #include "gui/windows/syntax-editor-window.h"
 #include "misc/misc.h"
 #include "network/proxy/network-proxy.h"
-#include "network/proxy/network-proxy-manager.h"
 #include "status/status.h"
 #include "status/status-container.h"
 #include "themes/icon-theme-manager.h"
@@ -174,8 +173,6 @@ MainConfigurationWindow::MainConfigurationWindow() :
 {
 	setWindowRole("kadu-configuration");
 
-	connect(this, SIGNAL(configurationWindowApplied()), this, SLOT(configurationWindowAppliedSlot()));
-
 	widget()->appendUiFile(dataPath("kadu/configuration/dialog.ui"));
 
 #if !defined(DEBUG_ENABLED) || defined(Q_OS_WIN)
@@ -270,15 +267,6 @@ MainConfigurationWindow::MainConfigurationWindow() :
 
 	buddyColors = new BuddyListBackgroundColorsWidget(this);
 
-	ConfigGroupBox *proxyGroupBox = widget()->configGroupBox("Kadu", "Advanced", "Proxy");
-	if (proxyGroupBox)
-	{
-		NetworkProxy defaultProxy = NetworkProxyManager::instance()->defaultProxy();
-		ProxyWidget = new ProxyComboBox(false, this);
-		ProxyWidget->setCurrentProxy(defaultProxy);
-		proxyGroupBox->addWidgets(new QLabel(tr("Default proxy:"), this), ProxyWidget);
-	}
-
 	triggerCompositingStateChanged();
 }
 
@@ -311,11 +299,6 @@ void MainConfigurationWindow::show()
 	}
 
 	ConfigurationWindow::show();
-}
-
-void MainConfigurationWindow::configurationWindowAppliedSlot()
-{
-	NetworkProxyManager::instance()->setDefaultProxy(ProxyWidget->currentProxy());
 }
 
 void MainConfigurationWindow::onChangeStartupStatus(int index)

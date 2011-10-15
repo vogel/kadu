@@ -54,6 +54,7 @@
 #include "gui/widgets/configuration/config-radio-button.h"
 #include "gui/widgets/configuration/config-select-file.h"
 #include "gui/widgets/configuration/config-preview.h"
+#include "gui/widgets/configuration/config-proxy-combo-box.h"
 #include "gui/widgets/configuration/config-slider.h"
 #include "gui/widgets/configuration/config-label.h"
 #include "gui/widgets/configuration/config-list-widget.h"
@@ -337,6 +338,8 @@ ConfigWidget * ConfigurationWidget::appendUiElementFromDom(QDomNode uiElementNod
 		widget = new ConfigSelectFile(configGroupBox, DataManager);
 	else if (tagName == "preview")
 		widget = new ConfigPreview(configGroupBox, DataManager);
+	else if (tagName == "proxy-combo-box")
+		widget = new ConfigProxyComboBox(configGroupBox, DataManager);
 	else if (tagName == "slider")
 		widget = new ConfigSlider(configGroupBox, DataManager);
 	else if (tagName == "label")
