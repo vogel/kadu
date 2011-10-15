@@ -95,7 +95,8 @@ DockingManager * DockingManager::instance()
 }
 
 DockingManager::DockingManager() :
-        CurrentDocker(0), DockMenuNeedsUpdate(true), AllAccountsMenu(0), newMessageIcon(StaticEnvelope), icon_timer(new QTimer(this)), blink(false)
+		CurrentDocker(0), KaduWindowLastTimeVisible(true), DockMenuNeedsUpdate(true), AllAccountsMenu(0),
+		newMessageIcon(StaticEnvelope), icon_timer(new QTimer(this)), blink(false)
 {
 	kdebugf();
 
@@ -120,6 +121,13 @@ DockingManager::DockingManager() :
 	MacDockMenu = new QMenu();
 	qt_mac_set_dock_menu(MacDockMenu);
 #endif
+
+	ShowKaduAction = new QAction(tr("&Restore"), this);
+	connect(ShowKaduAction, SIGNAL(triggered()), this, SLOT(showKaduWindow()));
+
+	HideKaduAction = new QAction(tr("&Minimize"), this);
+	connect(HideKaduAction, SIGNAL(triggered()), this, SLOT(hideKaduWindow()));
+
 	CloseKaduAction = new QAction(KaduIcon("application-exit").icon(), tr("&Exit Kadu"), this);
 	connect(CloseKaduAction, SIGNAL(triggered()), qApp, SLOT(quit()));
 
@@ -223,6 +231,18 @@ void DockingManager::defaultToolTip()
 	}
 }
 
+void DockingManager::showKaduWindow()
+{
+	_activateWindow(Core::instance()->kaduWindow());
+}
+
+void DockingManager::hideKaduWindow()
+{
+	KaduWindow *kaduWindow = Core::instance()->kaduWindow();
+	if (kaduWindow->docked())
+		kaduWindow->window()->hide();
+}
+
 void DockingManager::trayMousePressEvent(QMouseEvent * e)
 {
 	kdebugf();
@@ -254,9 +274,9 @@ void DockingManager::trayMousePressEvent(QMouseEvent * e)
 				|| !_isActiveWindow(kadu)
 #endif
 				)
-			_activateWindow(kadu);
+			showKaduWindow();
 		else
-			kadu->hide();
+			hideKaduWindow();
 
 		return;
 	}
@@ -321,7 +341,7 @@ void DockingManager::setDocker(Docker *docker)
 
 void DockingManager::contextMenuAboutToBeShown()
 {
-	if (DockMenuNeedsUpdate)
+	if (DockMenuNeedsUpdate || Core::instance()->kaduWindow()->window()->isVisible() != KaduWindowLastTimeVisible)
 		doUpdateContextMenu();
 }
 
@@ -387,6 +407,9 @@ void DockingManager::doUpdateContextMenu()
 
 		DockMenu->addSeparator();
 	}
+
+	KaduWindowLastTimeVisible = Core::instance()->kaduWindow()->window()->isVisible();
+	DockMenu->addAction(KaduWindowLastTimeVisible ? HideKaduAction : ShowKaduAction);
 	DockMenu->addAction(CloseKaduAction);
 
 	DockMenuNeedsUpdate = false;
@@ -495,7 +518,7 @@ void DockingManager::dockIconClicked()
 	else if (kadu->isVisible())
 	{
 		//raczej nie bedziemy ukrywac okna klikajac ikonke w docku
-		//kadu->hide();
+		//hideKaduWindow();
 	}
 	else
 	{

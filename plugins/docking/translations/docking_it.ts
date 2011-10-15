@@ -59,6 +59,14 @@ Descrizione:
 %2</translation>
     </message>
     <message>
+        <source>&amp;Restore</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Minimize</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>&amp;Exit Kadu</source>
         <translation>&amp;Esci da Kadu</translation>
     </message>

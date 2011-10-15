@@ -59,6 +59,14 @@ Opis:
 %2</translation>
     </message>
     <message>
+        <source>&amp;Restore</source>
+        <translation>P&amp;rzywróć</translation>
+    </message>
+    <message>
+        <source>&amp;Minimize</source>
+        <translation>&amp;Minimalizuj</translation>
+    </message>
+    <message>
         <source>&amp;Exit Kadu</source>
         <translation>&amp;Zakończ Kadu</translation>
     </message>

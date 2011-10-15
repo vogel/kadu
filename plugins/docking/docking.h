@@ -56,6 +56,7 @@ class DOCKINGAPI DockingManager : public QObject, ConfigurationAwareObject, Stat
 
 	Docker *CurrentDocker;
 
+	bool KaduWindowLastTimeVisible;
 	bool DockMenuNeedsUpdate;
 	QMenu *DockMenu;
  #ifdef Q_OS_MAC
@@ -64,6 +65,8 @@ class DOCKINGAPI DockingManager : public QObject, ConfigurationAwareObject, Stat
 
 	StatusMenu *AllAccountsMenu;
 
+	QAction *ShowKaduAction;
+	QAction *HideKaduAction;
 	QAction *CloseKaduAction;
 	QAction *containersSeparator;
 
@@ -92,6 +95,9 @@ private slots:
 	void pendingMessageDeleted();
 	void searchingForTrayPosition(QPoint &point);
 	void iconThemeChanged();
+
+	void showKaduWindow();
+	void hideKaduWindow();
 
 	void contextMenuAboutToBeShown();
 	void updateContextMenu();

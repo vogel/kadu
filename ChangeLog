@@ -6,6 +6,7 @@
 * gui: #2313 fixed: use bigger z-index for compositing icon in adium chat styles (Vogel)
 * gui: #2077 fixed: untoggle disabled actions (Vogel)
 * jabber: #2305 fixed: setting XMPP offline status with status message works now (Juzef)
+* docking: #2347 fixed: added "Restore" and "Minimize" actions to tray context menu (beevvy)
 
 +++ version 0.10.0
 * sms: small changes that will ease updating gateway scripts (beevvy)
