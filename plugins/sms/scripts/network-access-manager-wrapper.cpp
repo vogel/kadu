@@ -19,9 +19,13 @@
  */
 
 #include <QtCore/QUrl>
+#include <QtNetwork/QNetworkProxy>
 #include <QtNetwork/QNetworkReply>
 #include <QtNetwork/QNetworkRequest>
 #include <QtScript/QScriptEngine>
+
+#include "configuration/configuration-file.h"
+#include "network/proxy/network-proxy-manager.h"
 
 #include "scripts/network-reply-wrapper.h"
 
@@ -30,10 +34,36 @@
 NetworkAccessManagerWrapper::NetworkAccessManagerWrapper(QScriptEngine *engine, QObject *parent) :
 		QNetworkAccessManager(parent), Engine(engine), Utf8(false)
 {
+	configurationUpdated();
 }
 
 NetworkAccessManagerWrapper::~NetworkAccessManagerWrapper()
 {
+}
+
+void NetworkAccessManagerWrapper::configurationUpdated()
+{
+	NetworkProxy networkProxy;
+
+	if (config_file.readBoolEntry("SMS", "DefaultProxy", true))
+		networkProxy = NetworkProxyManager::instance()->defaultProxy();
+	else
+		networkProxy = NetworkProxyManager::instance()->byUuid(config_file.readEntry("SMS", "Proxy"));
+
+	QNetworkProxy proxy;
+
+	if (networkProxy)
+	{
+		proxy.setType(QNetworkProxy::HttpProxy);
+		proxy.setHostName(networkProxy.address());
+		proxy.setPort(networkProxy.port());
+		proxy.setUser(networkProxy.user());
+		proxy.setPassword(networkProxy.password());
+	}
+	else
+		proxy.setType(QNetworkProxy::NoProxy);
+
+	setProxy(proxy);
 }
 
 QScriptValue NetworkAccessManagerWrapper::get(const QString &url)

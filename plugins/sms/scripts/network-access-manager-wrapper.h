@@ -25,13 +25,18 @@
 #include <QtNetwork/QNetworkAccessManager>
 #include <QtScript/QScriptValue>
 
-class NetworkAccessManagerWrapper : public QNetworkAccessManager
+#include "configuration/configuration-aware-object.h"
+
+class NetworkAccessManagerWrapper : public QNetworkAccessManager, ConfigurationAwareObject
 {
 	Q_OBJECT
 
 	QScriptEngine *Engine;
 	bool Utf8;
 	QMap<QByteArray, QByteArray> Headers;
+
+protected:
+	void configurationUpdated();
 
 public:
 	explicit NetworkAccessManagerWrapper(QScriptEngine *engine, QObject *parent = 0);
