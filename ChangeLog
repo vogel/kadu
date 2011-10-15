@@ -7,6 +7,7 @@
 * gui: #2077 fixed: untoggle disabled actions (Vogel)
 * jabber: #2305 fixed: setting XMPP offline status with status message works now (Juzef)
 * docking: #2347 fixed: added "Restore" and "Minimize" actions to tray context menu (beevvy)
+* gui: #2345 fixed: fixed Ctrl+C text copying with emoticons (beevvy)
 
 +++ version 0.10.0
 * sms: small changes that will ease updating gateway scripts (beevvy)

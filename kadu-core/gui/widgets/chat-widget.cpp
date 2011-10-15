@@ -237,7 +237,8 @@ bool ChatWidget::keyPressEventHandled(QKeyEvent *e)
 {
 	if (e->matches(QKeySequence::Copy) && !MessagesView->selectedText().isEmpty())
 	{
-		MessagesView->triggerPageAction(QWebPage::Copy);
+		// Do not use triggerPageAction(), see bug #2345.
+		MessagesView->pageAction(QWebPage::Copy)->trigger();
 		return true;
 	}
 

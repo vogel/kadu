@@ -428,7 +428,8 @@ void KaduWindow::keyPressEvent(QKeyEvent *e)
 		}
 	}
 	else if (e->matches(QKeySequence::Copy) && !InfoPanel->selectedText().isEmpty())
-		InfoPanel->triggerPageAction(QWebPage::Copy);
+		// Do not use triggerPageAction(), see bug #2345.
+		InfoPanel->pageAction(QWebPage::Copy)->trigger();
 
 	emit keyPressed(e);
 
