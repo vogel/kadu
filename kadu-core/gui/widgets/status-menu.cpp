@@ -36,9 +36,9 @@
 #include "status-menu.h"
 
 StatusMenu::StatusMenu(StatusContainer *statusContainer, bool includePrefix, QMenu *menu) :
-		QObject(menu), Menu(menu), MyStatusContainer(statusContainer)
+		QObject(menu), Menu(menu), StatusContainers(statusContainer->subStatusContainers())
 {
-	Actions = new StatusActions(MyStatusContainer, includePrefix, this);
+	Actions = new StatusActions(statusContainer, includePrefix, this);
 
 	connect(Actions, SIGNAL(statusActionsRecreated()), this, SLOT(addStatusActions()));
 	connect(Actions, SIGNAL(statusActionsRecreated()), this, SIGNAL(menuRecreated()));
@@ -68,14 +68,18 @@ void StatusMenu::aboutToHide()
 void StatusMenu::changeStatus(QAction *action)
 {
 	StatusType statusType = action->data().value<StatusType>();
-	Status status(StatusSetter::instance()->manuallySetStatus(MyStatusContainer));
-	status.setType(statusType);
 
-	StatusSetter::instance()->setStatus(MyStatusContainer, status);
-	MyStatusContainer->storeStatus(status);
+	foreach (StatusContainer *container, StatusContainers)
+	{
+		Status status(StatusSetter::instance()->manuallySetStatus(container));
+		status.setType(statusType);
+
+		StatusSetter::instance()->setStatus(container, status);
+		container->storeStatus(status);
+	}
 }
 
 void StatusMenu::changeDescription()
 {
-	ChooseDescription::showDialog(MyStatusContainer, MousePositionBeforeMenuHide);
+	ChooseDescription::showDialog(StatusContainers, MousePositionBeforeMenuHide, Menu);
 }

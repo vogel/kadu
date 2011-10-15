@@ -274,3 +274,8 @@ void StatusContainerManager::storeStatus(Status status)
 	foreach (StatusContainer *statusContainer, StatusContainers)
 		statusContainer->storeStatus(status);
 }
+
+QList<StatusContainer *> StatusContainerManager::subStatusContainers()
+{
+	return StatusContainers;
+}

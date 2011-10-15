@@ -55,9 +55,9 @@ class KADUAPI StatusContainer : public QObject
 	friend class Core;
 
 public:
-	explicit StatusContainer(QObject *parent = 0) : QObject(parent) {}
+	explicit StatusContainer(QObject *parent = 0);
 
-	virtual ~StatusContainer() {}
+	virtual ~StatusContainer();
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -182,6 +182,20 @@ public:
 	 * Stores given status.
 	 */
 	virtual void storeStatus(Status status) = 0;
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Returns list of sub status containers.
+	 * @return list of sub status containers
+	 *
+	 * Status containers can contain other status containers. This method returns list of real status
+	 * containers for given aggregator. For now all implementations but StatusContainerManager returns list
+	 * containing only one object - this object.
+	 *
+	 * StatusContainerManager returns list of all registered status containers - that can be list of accounts,
+	 * identities or an instance of AllAccountsStatusContainer.
+	 */
+	virtual QList<StatusContainer *> subStatusContainers();
 
 signals:
 	/**

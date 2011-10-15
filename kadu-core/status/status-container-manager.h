@@ -327,6 +327,16 @@ public:
 	 */
 	virtual void storeStatus(Status status);
 
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Returns list of sub status containers.
+	 * @return list of sub status containers
+	 *
+	 * Returns list of all registered status containers - that can be list of accounts, identities or an
+	 * instance of AllAccountsStatusContainer.
+	 */
+	virtual QList<StatusContainer *> subStatusContainers();
+
 signals:
 	/**
 	 * @author Rafał 'Vogel' Malinowski

@@ -26,7 +26,6 @@
 #include <QtGui/QDialog>
 
 #include "os/generic/desktop-aware-object.h"
-#include "status/status.h"
 
 class QComboBox;
 class QLabel;
@@ -37,17 +36,18 @@ class ChooseDescription : public QDialog, DesktopAwareObject
 {
 	Q_OBJECT
 
-	static QMap<StatusContainer *, ChooseDescription *> Dialogs;
+	static QMap<QWidget *, ChooseDescription *> Dialogs;
 
 	QComboBox *Description;
 	QLabel *AvailableChars;
 	QPushButton *OkButton;
 
-	StatusContainer *MyStatusContainer;
+	QList<StatusContainer *> StatusContainers;
+	StatusContainer *FirstStatusContainer;
 
 	void setPosition(const QPoint &position);
 
-	explicit ChooseDescription(StatusContainer *statusContainer, QWidget *parent = 0);
+	explicit ChooseDescription(const QList<StatusContainer *> &statusContainerList, QWidget *parent = 0);
 	virtual ~ChooseDescription();
 
 private slots:
@@ -57,7 +57,7 @@ private slots:
 	void currentDescriptionChanged(const QString &);
 
 public:
-	static ChooseDescription * showDialog(StatusContainer *statusContainer, const QPoint &position = QPoint());
+	static void showDialog(const QList<StatusContainer *> &statusContainerList, const QPoint &position, QWidget *parent);
 
 	virtual QSize sizeHint() const;
 

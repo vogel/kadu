@@ -26,8 +26,6 @@
 #include <QtCore/QObject>
 #include <QtCore/QPoint>
 
-#include "status/status.h"
-
 #include "exports.h"
 
 class QAction;
@@ -46,7 +44,7 @@ class KADUAPI StatusMenu : public QObject
 
 	QPoint MousePositionBeforeMenuHide;
 
-	StatusContainer *MyStatusContainer;
+	QList<StatusContainer *> StatusContainers;
 
 private slots:
 	void addStatusActions();
