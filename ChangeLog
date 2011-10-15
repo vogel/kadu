@@ -6,6 +6,7 @@
 * gui: added support for images drag&drop in chat edit box (ultr)
 * gui: #2077 fixed: untoggle disabled actions (Vogel)
 * history: #2197 fixed: show history button now has proper implementation of menu (Vogel)
+* gui: do not set custom font for the groups tab bar (beevvy)
 
 +++ version 0.10.1
 * gadu: clearer contact list synchronization message when updating from <0.10.0 (beevvy)

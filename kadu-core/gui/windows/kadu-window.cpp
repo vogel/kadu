@@ -498,8 +498,6 @@ void KaduWindow::configurationUpdated()
 {
 	QString bgColor = config_file.readColorEntry("Look","UserboxBgColor").name();
 	QString alternateBgColor = config_file.readColorEntry("Look","UserboxAlternateBgColor").name();
-	QFont userboxFont = QFont(config_file.readFontEntry("Look", "UserboxFont"));
-	GroupBar->setFont(QFont(userboxFont.family(), userboxFont.pointSize(), 75));
 
 	setDocked(Docked);
 

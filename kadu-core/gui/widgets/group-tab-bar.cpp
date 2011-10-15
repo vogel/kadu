@@ -74,9 +74,6 @@ GroupTabBar::GroupTabBar(QWidget *parent) :
 	setMovable(true);
 
 	setShape(QTabBar::RoundedWest);
-
-	setFont(QFont(config_file.readFontEntry("Look", "UserboxFont").family(),
-			config_file.readFontEntry("Look", "UserboxFont").pointSize(), QFont::Bold));
 	setIconSize(QSize(16, 16));
 
 	QList<Group> groups = GroupManager::instance()->items().toList();
