@@ -70,8 +70,8 @@ void AutoHide::timerTimeoutSlot()
 		if (IdlePlugin::idle()->secondsIdle() >= IdleTime)
 		{
 			KaduWindow *window = Core::instance()->kaduWindow();
-			if (window && window->docked())
-				window->hide();
+			if (window->docked())
+				window->window()->hide();
 		}
 	}
 }
