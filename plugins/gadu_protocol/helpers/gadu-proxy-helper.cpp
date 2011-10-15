@@ -19,7 +19,6 @@
 
 #include <libgadu.h>
 
-#include "accounts/account-proxy-settings.h"
 #include "misc/coding-conversion.h"
 #include "network/proxy/network-proxy.h"
 #include "debug.h"
