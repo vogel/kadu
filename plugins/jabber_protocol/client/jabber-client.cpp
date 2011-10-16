@@ -88,7 +88,6 @@ JabberClient::JabberClient(JabberProtocol *protocol, QObject *parent) :
 
 	Client->setCapsVersion(capsVersion());
 	Client->setFeatures(Features(features));
-	Client->setTimeZone(timeZoneName(), timeZoneOffset());
 
 	serverInfoManager = new ServerInfoManager(Client, Client);
 	QObject::connect(serverInfoManager, SIGNAL(featuresChanged()),
@@ -193,8 +192,6 @@ void JabberClient::cleanUp()
 	setClientVersion(QString());
 	setOSName(QString());
 
-	setTimeZone("UTC", 0);
-
 	setIgnoreTLSWarnings(false);
 }
 
@@ -213,12 +210,6 @@ void JabberClient::setOverrideHost(bool flag, const QString &server, int port)
 	OverrideHost = flag;
 	Server = server;
 	Port = port;
-}
-
-void JabberClient::setTimeZone(const QString &timeZoneName, int timeZoneOffset)
-{
-	TimeZoneName = timeZoneName;
-	TimeZoneOffset = timeZoneOffset;
 }
 
 int JabberClient::getPenaltyTime()

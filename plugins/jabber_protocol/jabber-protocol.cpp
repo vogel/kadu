@@ -222,7 +222,6 @@ void JabberProtocol::login()
 	}
 
 	JabberClient->setOSName(SystemInfo::instance()->osFullName());
-	JabberClient->setTimeZone(SystemInfo::instance()->timezone(), SystemInfo::instance()->timezoneOffset());
 	JabberClient->setClientName("Kadu");
 	JabberClient->setClientVersion(Core::instance()->version());
 

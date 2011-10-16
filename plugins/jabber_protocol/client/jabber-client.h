@@ -121,10 +121,6 @@ namespace XMPP
 		// client information
 		QString ClientName, ClientVersion, OsName;
 
-		// timezone information
-		QString TimeZoneName;
-		int TimeZoneOffset;
-
 		// Caps(JEP-0115: Entity Capabilities) information
 		QString CapsNode, CapsVersion;
 		DiscoItem::Identity DiscoIdentity;
@@ -422,21 +418,6 @@ namespace XMPP
 		 * @return the DiscoItem::Identity for this client.
 		 */
 		const DiscoItem::Identity & discoIdentity() const { return DiscoIdentity; }
-
-		/**
-		 * Set timezone information. Default is UTC.
-		 */
-		void setTimeZone(const QString &timeZoneName, int timeZoneOffset);
-
-		/**
-		 * Return timezone name.
-		 */
-		const QString & timeZoneName() const { return TimeZoneName; }
-
-		/**
-		 * Return timezone offset.
-		 */
-		int timeZoneOffset() const { return TimeZoneOffset; }
 
 		/**
 		 * This method can be used to implement a penalty

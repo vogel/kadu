@@ -9,6 +9,7 @@
 * docking: #2347 fixed: added "Restore" and "Minimize" actions to tray context menu (beevvy)
 * gui: #2345 fixed: fixed Ctrl+C text copying with emoticons (beevvy)
 * jabber: #2328 fixed: wrong timezone offset calculation on Windows (mziab)
+* jabber: #2329 fixed: XEP-0091 and other timestamps not decoded as UTC (mziab, beevvy)
 
 +++ version 0.10.0
 * sms: small changes that will ease updating gateway scripts (beevvy)
