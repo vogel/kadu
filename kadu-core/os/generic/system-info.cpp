@@ -260,7 +260,7 @@ SystemInfo::SystemInfo()
 	int bias = i.Bias;
 	if(inDST)
 		bias += i.DaylightBias;
-	TimezoneOffset = -bias;
+	TimezoneOffset = -bias / 60;
 	Timezone.clear();
 	for(int n = 0; n < 32; ++n)
 	{
