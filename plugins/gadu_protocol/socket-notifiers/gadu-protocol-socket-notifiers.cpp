@@ -105,9 +105,6 @@ void GaduProtocolSocketNotifiers::handleEventMsg(struct gg_event *e)
 	if (0 == e->event.msg.sender)
 		return;
 
-	Contact contact = ContactManager::instance()->byId(CurrentAccount, QString::number(e->event.msg.sender));
-	Buddy sender = contact.ownerBuddy();
-
 	if (GG_CLASS_CTCP == e->event.msg.msgclass) // old DCC6, not supported now
 		return;
 
