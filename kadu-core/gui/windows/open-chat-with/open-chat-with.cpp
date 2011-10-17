@@ -227,7 +227,8 @@ void OpenChatWith::openChat()
 		}
 		else
 		{
-			ContactManager::instance()->addItem(knownContact);
+			it->setDirty(false);
+			ContactManager::instance()->addItem(*it);
 			++it;
 		}
 	}

@@ -66,7 +66,10 @@ SubscriptionWindow::SubscriptionWindow(Contact contact, QWidget *parent) :
 	if (knownContact)
 		CurrentContact = knownContact;
 	else
+	{
+		CurrentContact.setDirty(false);
 		ContactManager::instance()->addItem(CurrentContact);
+	}
 
 	QGridLayout *layout = new QGridLayout(this);
 	layout->setColumnStretch(2, 4);
