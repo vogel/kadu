@@ -217,7 +217,8 @@ Contact ContactManager::byId(Account account, const QString &id, NotFoundAction 
 
 	Buddy buddy = Buddy::create();
 	contact.setOwnerBuddy(buddy);
-	
+	contact.setDirty(false);
+
 	return contact;
 }
 
