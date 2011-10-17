@@ -330,6 +330,19 @@ void ContactShared::setId(const QString &id)
 	emit idChanged(oldId);
 }
 
+/**
+ * Sets state if this contact to \p dirty. All contacts are dirty by default.
+ *
+ * Dirty contacts with anonymous owner buddies are considered dirty removed and will
+ * never be added to roster as long as this state lasts and will in effect be removed
+ * from remote roster. Dirty contacts with not anonymous owner buddies are considered
+ * dirty added and will always be added to roster, even if remote roster marked
+ * them as removed.
+ *
+ * When adding contacts with anononymous owner buddies to the manager, always make sure
+ * to mark them not dirty, otherwise they will be considered dirty removed and will
+ * not be added to roster if remote roster says so, which is probably not what one expects.
+ */
 void ContactShared::setDirty(bool dirty)
 {
 	ensureLoaded();
