@@ -75,7 +75,7 @@ public:
 	virtual QString storageNodeName() { return QLatin1String("Contacts"); }
 	virtual QString storageNodeItemName() { return QLatin1String("Contact"); }
 
-	Contact byId(Account account, const QString &id, NotFoundAction = ActionCreate);
+	Contact byId(Account account, const QString &id, NotFoundAction action);
 	QVector<Contact> contacts(Account account);
 
 	const QList<Contact> & dirtyContacts();
