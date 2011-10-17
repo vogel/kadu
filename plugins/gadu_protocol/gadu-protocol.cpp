@@ -395,7 +395,7 @@ void GaduProtocol::sendUserList()
 
 void GaduProtocol::socketContactStatusChanged(UinType uin, unsigned int status, const QString &description, unsigned int maxImageSize)
 {
-	Contact contact = ContactManager::instance()->byId(account(), QString::number(uin));
+	Contact contact = ContactManager::instance()->byId(account(), QString::number(uin), ActionReturnNull);
 	Buddy buddy = contact.ownerBuddy();
 
 	if (buddy.isAnonymous())

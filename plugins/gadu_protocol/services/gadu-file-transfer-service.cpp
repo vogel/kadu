@@ -74,10 +74,7 @@ bool GaduFileTransferService::connectionAcceptable(UinType uin, UinType peerUin)
 	if (!gaduAccountDetails)
 		return false;
 
-	Contact contact = ContactManager::instance()->byId(Protocol->account(), QString::number(peerUin));
-	if (contact.isNull())
-		return false;
-
+	Contact contact = ContactManager::instance()->byId(Protocol->account(), QString::number(peerUin), ActionReturnNull);
 	Buddy buddy = contact.ownerBuddy();
 	if (uin != gaduAccountDetails->uin() || buddy.isAnonymous())
 	{
