@@ -11,6 +11,7 @@
 * jabber: #2328 fixed: wrong timezone offset calculation on Windows (mziab)
 * jabber: #2329 fixed: XEP-0091 and other timestamps not decoded as UTC (mziab, beevvy)
 * gadu: fixed possibility to remove contacts from list both locally and on server in some cases when importing new contacts from server (beevvy)
+* core: #2292 fixed: incorrect application abort when trying to save file with default extension under KDE and possibly more issues (beevvy)
 
 +++ version 0.10.0
 * sms: small changes that will ease updating gateway scripts (beevvy)
