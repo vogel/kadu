@@ -1,21 +1,21 @@
 +++ version 0.11.0-alpha1
 * plugins: #2272 fixed: added possibility to tell Kadu to try to load plugin failing to load on next Kadu run (beevvy)
 * gadu: fixed compatibility with advanced message formatting including text mixed with multiple images (beevvy)
+* build: support defining plugins to be compiled through commandline -DCOMPILE_PLUGINS=... argument (beevvy)
 * screenshot: #2285 fixed: update the pixmap only if the crop rect changed (ultr)
 * screenshot: #2286 fixed: intelligent toolbox positioning (ultr)
 * gui: added support for images drag&drop in chat edit box (ultr)
-* gui: #2077 fixed: untoggle disabled actions (Vogel)
 * history: #2197 fixed: show history button now has proper implementation of menu (Vogel)
 * gui: do not set custom font for the groups tab bar (beevvy)
 * sms: #3 fixed: added proxy setting for SMS sending (Vogel)
 
 +++ version 0.10.1
 * gadu: clearer contact list synchronization message when updating from <0.10.0 (beevvy)
-* build: support defining plugins to be compiled through commandline -DCOMPILE_PLUGINS=... argument (beevvy)
 * jabber: #2320 fixed: removing buddies owning Facebook contacts from of all their groups (beevvy)
 * gadu, jabber: #2321 fixed: do not allow to add two identical accounts (beevvy)
 * gui: #2308 fixed: collapse items on buddies list when disabling expanding control (beevvy)
 * gui: #2313 fixed: use bigger z-index for compositing icon in adium chat styles (Vogel)
+* gui: #2077 fixed: untoggle disabled actions (Vogel)
 * jabber: #2305 fixed: setting XMPP offline status with status message works now (Juzef)
 * docking: #2347 fixed: added "Restore" and "Minimize" actions to tray context menu (beevvy)
 * gui: #2345 fixed: fixed Ctrl+C text copying with emoticons (beevvy)
