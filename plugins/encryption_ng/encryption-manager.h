@@ -67,7 +67,7 @@ public:
 	void setGenerator(KeyGenerator *generator);
 	KeyGenerator * generator();
 
-	bool setEncryptionEnabled(const Chat &chat, bool enable);
+	bool setEncryptionEnabled(const Chat &chat, bool enable, bool overrideChatDataSetting);
 
 };
 

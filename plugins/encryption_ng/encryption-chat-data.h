@@ -38,12 +38,20 @@ class EncryptionChatData : public ModuleData
 {
 	Q_OBJECT
 
+public:
+	enum EncryptState {
+		EncryptStateDefault,
+		EncryptStateEnabled,
+		EncryptStateDisabled,
+	};
+
+private:
 	Encryptor *ChatEncryptor;
 	Decryptor *ChatDecryptor;
 
-	bool Encrypt;
+	EncryptState Encrypt;
 
-	bool importEncrypt();
+	EncryptState importEncrypt();
 
 private slots:
 	void encryptorDestroyed();
@@ -52,6 +60,7 @@ private slots:
 protected:
 	virtual void load();
 	virtual void store();
+	virtual bool shouldStore();
 
 public:
 	explicit EncryptionChatData(const QString &moduleName, StorableObject *parent, QObject *qobjectParent);
@@ -59,7 +68,7 @@ public:
 
 	virtual QString name() const;
 
-	Property(bool, encrypt, Encrypt)
+	Property(EncryptState, encrypt, Encrypt)
 
 	void setEncryptor(Encryptor *encryptor);
 	Encryptor * encryptor();

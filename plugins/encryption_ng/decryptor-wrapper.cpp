@@ -56,8 +56,6 @@ void DecryptorWrapper::decryptorDestroyed(QObject *decryptor)
 
 QByteArray DecryptorWrapper::decrypt(const QByteArray &data, Chat chat, bool *ok)
 {
-	Q_UNUSED(chat)
-
 	QByteArray decrypted = data;
 
 	if (ok)
