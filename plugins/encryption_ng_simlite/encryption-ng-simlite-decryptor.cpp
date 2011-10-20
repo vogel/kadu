@@ -177,8 +177,13 @@ QByteArray EncryptioNgSimliteDecryptor::decrypt(const QByteArray &data, Chat cha
 
 	if (chat)
 	{
-		EncryptionNgSimliteChatData *encryptionChatData = chat.data()->moduleStorableData<EncryptionNgSimliteChatData>("encryption-ng-simlite", this, true);
-		encryptionChatData->setSupportUtf(head.flags & SIM_FLAG_SUPPORT_UTF8);
+		bool supportUtf = (head.flags & SIM_FLAG_SUPPORT_UTF8);
+
+		// if the interlocutor doesn't support UTF, we don't necessarily need to create EncryptionNgSimliteChatData object if it doesn't exist yet
+		EncryptionNgSimliteChatData *encryptionChatData =
+				chat.data()->moduleStorableData<EncryptionNgSimliteChatData>("encryption-ng-simlite", this, supportUtf);
+		if (encryptionChatData)
+			encryptionChatData->setSupportUtf(supportUtf);
 	}
 
 	return result;
