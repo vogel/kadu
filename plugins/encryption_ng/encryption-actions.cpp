@@ -197,7 +197,7 @@ void EncryptionActions::enableEncryptionActionActivated(QAction *sender, bool to
 	if (!action->chat())
 		return;
 
-	if (!EncryptionManager::instance()->setEncryptionEnabled(action->chat(), toggled))
+	if (!EncryptionManager::instance()->setEncryptionEnabled(action->chat(), toggled) && toggled)
 	{
 		// disable it, we could not enable encryption for this contact
 		sender->setEnabled(false);
