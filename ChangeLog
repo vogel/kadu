@@ -8,6 +8,7 @@
 * history: #2197 fixed: show history button now has proper implementation of menu (Vogel)
 * gui: do not set custom font for the groups tab bar (beevvy)
 * sms: #3 fixed: added proxy setting for SMS sending (Vogel)
+* encryption_ng_simlite: support UTF-8 messages and use if the interlocutor supports them (beevvy)
 
 +++ version 0.10.1
 * gadu: clearer contact list synchronization message when updating from <0.10.0 (beevvy)

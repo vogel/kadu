@@ -18,29 +18,18 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "chat/chat.h"
+#include "chat/chat-manager.h"
 #include "misc/coding-conversion.h"
 #include "plugins/encryption_ng/keys/key.h"
 #include "plugins/encryption_ng/keys/keys-manager.h"
 #include "plugins/encryption_ng/notify/encryption-ng-notification.h"
 
+#include "encryption-ng-simlite-chat-data.h"
+#include "encryption-ng-simlite-common.h"
 #include "pkcs1_certificate.h"
 
 #include "encryption-ng-simlite-encryptor.h"
-
-#define BEGIN_RSA_PUBLIC_KEY "-----BEGIN RSA PUBLIC KEY-----"
-#define END_RSA_PUBLIC_KEY "-----END RSA PUBLIC KEY-----"
-
-#define BEGIN_RSA_PUBLIC_KEY_LENGTH strlen(BEGIN_RSA_PUBLIC_KEY)
-#define END_RSA_PUBLIC_KEY_LENGTH strlen(END_RSA_PUBLIC_KEY)
-
-#define SIM_MAGIC_V1_1 0x91
-#define SIM_MAGIC_V1_2 0x23
-typedef struct {
-	unsigned char init[8];
-	uint8_t magicFirstPart;
-	uint8_t magicSecondPart;
-	uint8_t flags;
-} sim_message_header;
 
 EncryptioNgSimliteEncryptor::EncryptioNgSimliteEncryptor(const Contact &contact, EncryptionProvider *provider, QObject *parent) :
 		Encryptor(provider, parent), MyContact(contact)
@@ -148,9 +137,17 @@ QByteArray EncryptioNgSimliteEncryptor::encrypt(const QByteArray &data)
 		return data;
 	}
 
+	bool supportUtf8 = false;
+	Chat chat = ChatManager::instance()->findChat(ContactSet(MyContact), false);
+	if (chat)
+	{
+		EncryptionNgSimliteChatData *encryptionChatData = chat.data()->moduleStorableData<EncryptionNgSimliteChatData>("encryption-ng-simlite", this, false);
+		if (encryptionChatData)
+			supportUtf8 = encryptionChatData->supportUtf();
+	}
+
 	//create an initialisation vector (8 zeros)
-	char ivec[8] = {0, 0, 0, 0, 0, 0, 0, 0};
-	QCA::InitializationVector iv(QByteArray(ivec, 8));
+	QCA::InitializationVector iv(QByteArray(8, '\x00'));
 	//encrypt the message using the Blowfish key:
 	//create a 128 bit Blowfish cipher object using Cipher Block Chaining (CBC) mode,
 	//with default padding and for encoding
@@ -162,14 +159,26 @@ QByteArray EncryptioNgSimliteEncryptor::encrypt(const QByteArray &data)
 	//put the magic number into it
 	head.magicFirstPart = SIM_MAGIC_V1_1;
 	head.magicSecondPart = SIM_MAGIC_V1_2;
+	head.flags = SIM_FLAG_SUPPORT_UTF8;
+	if (supportUtf8)
+		head.flags |= SIM_FLAG_UTF8_MESSAGE;
 	//fill the iv in the header with some random bytes (using IV is a simple way)
-	QCA::InitializationVector headIV(8);
-	memcpy(head.init, headIV.data(), 8);
+	QCA::InitializationVector headIV(sizeof(head.init));
+	memcpy(head.init, headIV.constData(), sizeof(head.init));
 
 	//the actual encryption
-	// NOTE: Kadu internally works with Unicode and our simlite works with CP-1250, so we have to
-	// manually replace each Line Separator (U+2028) with Line Feed (\n).
-	QByteArray encryptedData = QByteArray((const char *)&head, sizeof(sim_message_header)) + unicode2cp(QString::fromUtf8(data).replace(QChar::LineSeparator, QLatin1Char('\n')));
+	QByteArray encryptedData;
+	encryptedData.resize(sizeof(head));
+	memcpy(encryptedData.data(), &head, sizeof(head));
+	if (supportUtf8)
+		encryptedData += data;
+	else
+	{
+		// we have to replace each Line Separator (U+2028) with Line Feed (\n)
+		QString cp1250String = QString::fromUtf8(data).replace(QChar::LineSeparator, QLatin1Char('\n'));
+		encryptedData += unicode2cp(cp1250String);
+	}
+
 	QCA::SecureArray encrypted = cipher.process(encryptedData);
 
 	if (!cipher.ok())

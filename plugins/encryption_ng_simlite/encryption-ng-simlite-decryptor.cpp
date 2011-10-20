@@ -19,30 +19,16 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <stdint.h>
-
+#include "chat/chat.h"
 #include "misc/coding-conversion.h"
 #include "plugins/encryption_ng/keys/key.h"
 #include "plugins/encryption_ng/keys/keys-manager.h"
 
+#include "encryption-ng-simlite-chat-data.h"
+#include "encryption-ng-simlite-common.h"
 #include "pkcs1_certificate.h"
 
 #include "encryption-ng-simlite-decryptor.h"
-
-#define BEGIN_RSA_PRIVATE_KEY "-----BEGIN RSA PRIVATE KEY-----"
-#define END_RSA_PRIVATE_KEY "-----END RSA PRIVATE KEY-----"
-
-#define BEGIN_RSA_PRIVATE_KEY_LENGTH strlen(BEGIN_RSA_PRIVATE_KEY)
-#define END_RSA_PRIVATE_KEY_LENGTH strlen(END_RSA_PRIVATE_KEY)
-
-#define SIM_MAGIC_V1_1 0x91
-#define SIM_MAGIC_V1_2 0x23
-typedef struct {
-	unsigned char init[8];
-	uint8_t magicFirstPart;
-	uint8_t magicSecondPart;
-	uint8_t flags;
-} sim_message_header;
 
 EncryptioNgSimliteDecryptor::EncryptioNgSimliteDecryptor(const Account &account, EncryptionProvider *provider, QObject *parent) :
 		Decryptor(provider, parent), MyAccount(account)
@@ -126,7 +112,7 @@ QCA::PrivateKey EncryptioNgSimliteDecryptor::getPrivateKey(const Key &key)
 	return privateKey;
 }
 
-QByteArray EncryptioNgSimliteDecryptor::decrypt(const QByteArray &data, bool *ok)
+QByteArray EncryptioNgSimliteDecryptor::decrypt(const QByteArray &data, Chat chat, bool *ok)
 {
 	if (ok)
 		*ok = false;
@@ -155,8 +141,7 @@ QByteArray EncryptioNgSimliteDecryptor::decrypt(const QByteArray &data, bool *ok
 		return data;
 
 	//recreate the initialization vector (should be the same as the one used for ciphering)
-	char ivec[8] = {0, 0, 0, 0, 0, 0, 0, 0};
-	QCA::InitializationVector iv(QByteArray(ivec, 8));
+	QCA::InitializationVector iv(QByteArray(8, '\x00'));
 	//now that we have the symmetric Blowfish key, we can decrypt the message;
 	//create a 128 bit Blowfish cipher object using Cipher Block Chaining (CBC) mode,
 	//with default padding and for decoding
@@ -175,7 +160,7 @@ QByteArray EncryptioNgSimliteDecryptor::decrypt(const QByteArray &data, bool *ok
 	//extract the header from the decrypted data and check if the magic number is
 	//correct
 	sim_message_header head;
-	memcpy(&head, plainText.data(), sizeof(sim_message_header));
+	memcpy(&head, plainText.constData(), sizeof(sim_message_header));
 	if (head.magicFirstPart != SIM_MAGIC_V1_1 || head.magicSecondPart != SIM_MAGIC_V1_2)
 		return data;
 
@@ -184,5 +169,17 @@ QByteArray EncryptioNgSimliteDecryptor::decrypt(const QByteArray &data, bool *ok
 
 	//the message has been decrypted! :D
 	//put it into the input/output byte array
-	return cp2unicode(&plainText.data()[sizeof(sim_message_header)]).toUtf8();
+	QByteArray result;
+	if (head.flags & SIM_FLAG_UTF8_MESSAGE)
+		result = plainText.constData() + sizeof(sim_message_header);
+	else
+		result = cp2unicode(plainText.constData() + sizeof(sim_message_header)).toUtf8();
+
+	if (chat)
+	{
+		EncryptionNgSimliteChatData *encryptionChatData = chat.data()->moduleStorableData<EncryptionNgSimliteChatData>("encryption-ng-simlite", this, true);
+		encryptionChatData->setSupportUtf(head.flags & SIM_FLAG_SUPPORT_UTF8);
+	}
+
+	return result;
 }
