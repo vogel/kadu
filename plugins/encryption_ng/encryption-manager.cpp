@@ -106,17 +106,25 @@ bool EncryptionManager::setEncryptionEnabled(const Chat &chat, bool enable)
 	EncryptionChatData *encryptionChatData = chat.data()->moduleStorableData<EncryptionChatData>("encryption-ng", this, true);
 	if (enable)
 	{
-		// just in case release previous one
 		Encryptor *encryptor = encryptionChatData->encryptor();
-		if (encryptor)
-			encryptor->provider()->releaseEncryptor(chat, encryptor);
+		bool enableSucceeded;
 
-		encryptor = EncryptionProviderManager::instance()->acquireEncryptor(chat);
-		encryptionChatData->setEncryptor(encryptor);
+		if (encryptor && encryptor->provider() == EncryptionProviderManager::instance()->defaultEncryptorProvider(chat))
+			enableSucceeded = true;
+		else
+		{
+			if (encryptor)
+				encryptor->provider()->releaseEncryptor(chat, encryptor);
 
-		EncryptionActions::instance()->checkEnableEncryption(chat, 0 != encryptor);
-		encryptionChatData->setEncrypt(0 != encryptor);
-		return 0 != encryptor;
+			encryptor = EncryptionProviderManager::instance()->acquireEncryptor(chat);
+			encryptionChatData->setEncryptor(encryptor);
+			enableSucceeded = (0 != encryptor);
+		}
+
+		encryptionChatData->setEncrypt(enableSucceeded);
+		EncryptionActions::instance()->checkEnableEncryption(chat, enableSucceeded);
+
+		return enableSucceeded;
 	}
 	else
 	{
@@ -125,8 +133,8 @@ bool EncryptionManager::setEncryptionEnabled(const Chat &chat, bool enable)
 			encryptor->provider()->releaseEncryptor(chat, encryptor);
 		encryptionChatData->setEncryptor(0);
 		encryptionChatData->setEncrypt(false);
-
 		EncryptionActions::instance()->checkEnableEncryption(chat, false);
+
 		return true; // we can always disable
 	}
 }

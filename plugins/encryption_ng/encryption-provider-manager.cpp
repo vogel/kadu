@@ -96,11 +96,16 @@ bool EncryptionProviderManager::canDecrypt(const Chat &chat)
 
 bool EncryptionProviderManager::canEncrypt(const Chat &chat)
 {
+	return (0 != defaultEncryptorProvider(chat));
+}
+
+EncryptionProvider * EncryptionProviderManager::defaultEncryptorProvider(const Chat &chat)
+{
 	foreach (EncryptionProvider *provider, Providers)
 		if (provider->canEncrypt(chat))
-			return true;
+			return provider;
 
-	return false;
+	return 0;
 }
 
 Decryptor * EncryptionProviderManager::acquireDecryptor(const Chat &chat)
@@ -110,14 +115,11 @@ Decryptor * EncryptionProviderManager::acquireDecryptor(const Chat &chat)
 
 Encryptor * EncryptionProviderManager::acquireEncryptor(const Chat &chat)
 {
-	foreach (EncryptionProvider *provider, Providers)
-	{
-		Encryptor *result = provider->acquireEncryptor(chat);
-		if (result)
-			return result;
-	}
+	EncryptionProvider *provider = defaultEncryptorProvider(chat);
+	if (!provider)
+		return 0;
 
-	return 0;
+	return provider->acquireEncryptor(chat);
 }
 
 void EncryptionProviderManager::releaseDecryptor(const Chat &chat, Decryptor *decryptor)

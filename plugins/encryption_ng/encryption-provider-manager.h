@@ -61,6 +61,8 @@ public:
 	bool canEncrypt(const Chat &chat);
 	bool canDecrypt(const Chat &chat);
 
+	EncryptionProvider * defaultEncryptorProvider(const Chat &chat);
+
 	virtual Encryptor * acquireEncryptor(const Chat &chat);
 	virtual Decryptor * acquireDecryptor(const Chat &chat);
 

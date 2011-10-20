@@ -131,9 +131,6 @@ Decryptor * EncryptioNgSimliteProvider::acquireDecryptor(const Chat &chat)
 	if (1 != chat.contacts().size())
 		return 0;
 
-	if (!Decryptors.contains(chat.chatAccount()))
-		return 0;
-
 	return Decryptors.value(chat.chatAccount());
 }
 
