@@ -147,10 +147,10 @@ void EncryptionManager::filterRawIncomingMessage(Chat chat, Contact sender, QByt
 	if (!chat)
 		return;
 
-	EncryptionChatData *encryptionChatData = chat.data()->moduleStorableData<EncryptionChatData>("encryption-ng", this, true);
-	if (!encryptionChatData)
+	if (!EncryptionProviderManager::instance()->canDecrypt(chat))
 		return;
 
+	EncryptionChatData *encryptionChatData = chat.data()->moduleStorableData<EncryptionChatData>("encryption-ng", this, true);
 	if (!encryptionChatData->decryptor())
 		encryptionChatData->setDecryptor(EncryptionProviderManager::instance()->acquireDecryptor(chat));
 
@@ -177,6 +177,9 @@ void EncryptionManager::chatWidgetCreated(ChatWidget *chatWidget)
 {
 	Chat chat = chatWidget->chat();
 	if (!chat.data())
+		return;
+
+	if (!EncryptionProviderManager::instance()->canEncrypt(chat))
 		return;
 
 	EncryptionChatData *encryptionChatData = chat.data()->moduleStorableData<EncryptionChatData>("encryption-ng", this, true);
