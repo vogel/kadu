@@ -98,7 +98,7 @@ class ModuleData;
  *
  * Every plugin can attach any data to any StorableObject by using @link moduleData @endlink
  * system. It allows to create named subnodes of arbitrary types under main XML node
- * of StorableObject. All module data object are stored as ModuleData subnodes and are
+ * of StorableObject. All module data objects are stored as ModuleData subnodes and are
  * identified by 'name' attribute, that has to be unique per ModuleData subtype.
  */
 class KADUAPI StorableObject
@@ -304,11 +304,11 @@ template<class T>
 	 * @short Loads storable ModuleData data from XML node (as subnode).
 	 * @param T type of returned value (must be class that inherits from @link ModuleData @endlink)
 	 * @param module name of module to be loaded
-	 * @param qobjectParent QObject parent of new object, it will be responsible for deleting data on module unloading
-	 * @param create when true this method can create new ModuleData (if non present)
+	 * @param qobjectParent QObject parent of new object, it will be responsible for deleting data on plugin unloading
+	 * @param create when true this method will create new ModuleData node (if not present)
 	 * @return value of XML subnode, as an object
 	 *
-	 * Loads object from XML subnode 'modules' with type T. If subnode is non present
+	 * Loads object from XML subnode 'modules' with type T. If node is not present
 	 * and create is false this method will return NULL value, else it will at least
 	 * create new object with default values.
 	 */

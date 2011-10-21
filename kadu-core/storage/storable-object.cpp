@@ -43,7 +43,7 @@ StorableObject::~StorableObject()
 	Destroying = true;
 
 	qDeleteAll(ModulesStorableData);
-	// TODO: 0.10.0, memory leak
+	// TODO: 0.11, memory leak
 // 	foreach (void *moduleData, ModulesData)
 // 		delete moduleData;
 }
@@ -129,7 +129,7 @@ const QSharedPointer<StoragePoint> & StorableObject::storage()
  * @author Rafal 'Vogel' Malinowski
  * @short Stores object data in XML node.
  *
- * Stores all module data object by calling store method on these objects.
+ * Stores all module data object by calling ensureStored() method on these objects.
  * Reimplementations of this method should store all needed object data
  * using storeValue and storeAttribute methods and should call super class
  * method.
@@ -146,10 +146,12 @@ void StorableObject::store()
  * @author Rafal 'Vogel' Malinowski
  * @short Determines if object is worth to be stored.
  * @return true if object should be stored, defaults to true
- * @todo this method is used only in managers, in 0.10 it should be used in every place
  *
- * If object is incomplete or invalid this method should return false
- * so it will not be stored in persistent storage.
+ * If object is incomplete, invalid or unneeded in storage, this method should return false
+ * so it will not be stored in persistent storage. It is a good practice to reimplement this
+ * method. Value returned by super class should be always considered.
+ *
+ * Default implementation returns true.
  */
 bool StorableObject::shouldStore()
 {
@@ -236,8 +238,8 @@ void StorableObject::removeModuleData(const QString& module)
  * @param moduleName name of ModuleData
  * @param moduleData destroyed object
  *
- * Method is called by ModuleData class in its destructor, so it can be removed
- * from this object.
+ * Method is called by a ModuleData object in its destructor, so it can be removed
+ * from this object. Before it is removed, StorableObject::ensureStored() is called on it.
  */
 void StorableObject::moduleDataDestroyed(const QString &moduleName, ModuleData *moduleData)
 {

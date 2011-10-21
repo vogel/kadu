@@ -41,8 +41,7 @@
  * with attribute 'name'.
  *
  * ModuleData object are assigned to normal @link<StoragePoint> StoragePoint @endlink object.
- * This class represents data that every module can add to all important objects in
- * project Kadu.
+ * This class represents data that every plugin can add to all important objects in Kadu.
  */
 class KADUAPI ModuleData : public QObject, public NamedStorableObject
 {
