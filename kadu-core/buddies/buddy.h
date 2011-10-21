@@ -74,8 +74,6 @@ public:
 	void importConfiguration(const QDomElement &parent);
 	void importConfiguration(); // import configuration from customDataValues
 
-	QSharedPointer<StoragePoint> storagePointForModuleData(const QString &module, bool create = false) const;
-
 	QString customData(const QString &key);
 	void setCustomData(const QString &key, const QString &value);
 	void removeCustomData(const QString &key);

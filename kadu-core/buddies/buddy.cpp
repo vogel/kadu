@@ -95,11 +95,6 @@ void Buddy::importConfiguration()
 		data()->importConfiguration();
 }
 
-QSharedPointer<StoragePoint> Buddy::storagePointForModuleData(const QString& module, bool create) const
-{
-	return data()->storagePointForModuleData(module, create);
-}
-
 QString Buddy::customData(const QString &key)
 {
 	return isNull() ? QString() : data()->customData()[key];
