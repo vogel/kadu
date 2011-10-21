@@ -28,7 +28,7 @@
 #include "buddy-kadu-data.h"
 
 BuddyKaduData::BuddyKaduData(const QString &moduleName, StorableObject *parent, QObject *qobjectParent) :
-		ModuleData(moduleName, parent, qobjectParent)
+		ModuleData(moduleName, parent, qobjectParent), HideDescription(false)
 {
 }
 
@@ -43,7 +43,7 @@ void BuddyKaduData::load()
 
 	StorableObject::load();
 
-	HideDescription = loadValue<bool>("HideDescription");
+	HideDescription = loadValue<bool>("HideDescription", false);
 }
 
 void BuddyKaduData::store()
@@ -52,6 +52,11 @@ void BuddyKaduData::store()
 		return;
 
 	storeValue("HideDescription", HideDescription);
+}
+
+bool BuddyKaduData::shouldStore()
+{
+	return ModuleData::shouldStore() && HideDescription;
 }
 
 QString BuddyKaduData::name() const

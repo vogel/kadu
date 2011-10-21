@@ -47,6 +47,11 @@ void HistoryImporterChatData::store()
 	storeValue("Imported", Imported);
 }
 
+bool HistoryImporterChatData::shouldStore()
+{
+	return ModuleData::shouldStore() && Imported;
+}
+
 QString HistoryImporterChatData::name() const
 {
 	return QLatin1String("history-importer");

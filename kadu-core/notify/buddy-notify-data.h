@@ -39,6 +39,7 @@ class BuddyNotifyData : public ModuleData
 protected:
 	virtual void load();
 	virtual void store();
+	virtual bool shouldStore();
 
 public:
 	BuddyNotifyData(const QString &moduleName, StorableObject *parent, QObject *qobjectParent);

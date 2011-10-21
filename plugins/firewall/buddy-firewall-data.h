@@ -37,6 +37,7 @@ class BuddyFirewallData : public ModuleData
 protected:
 	virtual void load();
 	virtual void store();
+	virtual bool shouldStore();
 
 public:
 	BuddyFirewallData(const QString &moduleName, StorableObject *parent, QObject *qobjectParent);

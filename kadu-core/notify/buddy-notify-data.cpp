@@ -56,6 +56,11 @@ void BuddyNotifyData::store()
 	storeValue("Notify", Notify);
 }
 
+bool BuddyNotifyData::shouldStore()
+{
+	return ModuleData::shouldStore() && Notify;
+}
+
 QString BuddyNotifyData::name() const
 {
 	return QLatin1String("notify");

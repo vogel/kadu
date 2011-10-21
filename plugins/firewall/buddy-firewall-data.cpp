@@ -54,6 +54,11 @@ void BuddyFirewallData::store()
 	storeValue("FirewallSecuredSending", SecuredSending);
 }
 
+bool BuddyFirewallData::shouldStore()
+{
+	return ModuleData::shouldStore() && SecuredSending;
+}
+
 QString BuddyFirewallData::name() const
 {
 	return QLatin1String("firewall-secured-sending");
