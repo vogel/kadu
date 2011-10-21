@@ -22,6 +22,7 @@
 #ifndef CHAT_GEOMETRY_DATA_H
 #define CHAT_GEOMETRY_DATA_H
 
+#include <QtCore/QList>
 #include <QtCore/QRect>
 
 #include "storage/module-data.h"
@@ -29,19 +30,19 @@
 #undef Property
 #define Property(type, name, capitalized_name) \
 	type name() { ensureLoaded(); return capitalized_name; } \
-	void set##capitalized_name(const type &name) { ensureLoaded(); capitalized_name = name; }
+	void set##capitalized_name(type name) { ensureLoaded(); capitalized_name = name; }
 
 class ChatGeometryData : public ModuleData
 {
 	Q_OBJECT
 
 	QRect WindowGeometry;
-	QList<int> WidgetVerticalSizes;
 	QList<int> WidgetHorizontalSizes;
 
 protected:
 	virtual void load();
 	virtual void store();
+	virtual bool shouldStore();
 
 public:
 	ChatGeometryData(const QString &moduleName, StorableObject *parent, QObject *qobjectParent);
@@ -49,10 +50,8 @@ public:
 
 	virtual QString name() const;
 
-	Property(QRect, windowGeometry, WindowGeometry)
-	// TODO 0.10: remove
-	Property(QList<int>, widgetVerticalSizes, WidgetVerticalSizes)
-	Property(QList<int>, widgetHorizontalSizes, WidgetHorizontalSizes)
+	Property(const QRect &, windowGeometry, WindowGeometry)
+	Property(const QList<int> &, widgetHorizontalSizes, WidgetHorizontalSizes)
 
 };
 

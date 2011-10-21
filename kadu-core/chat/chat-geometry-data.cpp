@@ -45,7 +45,6 @@ void ChatGeometryData::load()
 
 	WindowGeometry = stringToRect(loadValue<QString>("WindowGeometry"));
 	WidgetHorizontalSizes = stringToIntList(loadValue<QString>("WidgetHorizontalSizes"));
-	WidgetVerticalSizes = stringToIntList(loadValue<QString>("WidgetVerticalSizes"));
 }
 
 void ChatGeometryData::store()
@@ -53,9 +52,24 @@ void ChatGeometryData::store()
 	if (!isValidStorage())
 		return;
 
-	storeValue("WindowGeometry", rectToString(WindowGeometry));
-	storeValue("WidgetHorizontalSizes", intListToString(WidgetHorizontalSizes));
-	storeValue("WidgetVerticalSizes", intListToString(WidgetVerticalSizes));
+	if (WindowGeometry.isValid())
+		storeValue("WindowGeometry", rectToString(WindowGeometry));
+	else
+		removeValue("WindowGeometry");
+
+	if (!WidgetHorizontalSizes.isEmpty())
+		storeValue("WidgetHorizontalSizes", intListToString(WidgetHorizontalSizes));
+	else
+		removeValue("WidgetHorizontalSizes");
+
+	removeValue("WidgetVerticalSizes");
+}
+
+bool ChatGeometryData::shouldStore()
+{
+	ensureLoaded();
+
+	return ModuleData::shouldStore() && (WindowGeometry.isValid() || !WidgetHorizontalSizes.isEmpty());
 }
 
 QString ChatGeometryData::name() const

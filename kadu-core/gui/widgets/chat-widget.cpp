@@ -634,20 +634,11 @@ void ChatWidget::setUpVerticalSizes()
 		return;
 	}
 
-	ChatGeometryData *cgd = chat().data()->moduleStorableData<ChatGeometryData>("chat-geometry", ChatWidgetManager::instance(), false);
-	// no window has set up common height yet, so we use this data
 	QList<int> vertSizes;
-	if (cgd)
-		vertSizes = cgd->widgetVerticalSizes();
+	int h = height();
+	vertSizes.append(h / 3 * 2 + h % 3);
+	vertSizes.append(h / 3);
 
-	// if we dont have default values, we just make some up!
-	if (vertSizes.count() != 2 || vertSizes.at(0) == 0 || vertSizes.at(1) == 0)
-	{
-		int h = height() / 3;
-		vertSizes.clear();
-		vertSizes.append(h * 2);
-		vertSizes.append(h);
-	}
 	VerticalSplitter->setSizes(vertSizes);
 	SplittersInitialized = true;
 	ChatEditBoxSizeManager::instance()->setCommonHeight(vertSizes.at(1));
