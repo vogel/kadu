@@ -117,22 +117,13 @@ void BuddyShared::importConfiguration()
 
 void BuddyShared::load()
 {
-	QSharedPointer<StoragePoint> sp(storage());
-	if (!sp)
+	if (!isValidStorage())
 		return;
 
 	Shared::load();
 
-	XmlConfigFile *configurationStorage = sp->storage();
-	QDomElement parent = sp->point();
-
-	if (parent.hasAttribute("type"))
-	{
-		Anonymous = (1 == parent.attribute("type").toInt());
-		parent.removeAttribute("type");
-	}
-	else
-		Anonymous = loadValue<bool>("Anonymous", true);
+	XmlConfigFile *configurationStorage = storage()->storage();
+	QDomElement parent = storage()->point();
 
 	QDomElement customDataValues = configurationStorage->getNode(parent, "CustomDataValues", XmlConfigFile::ModeFind);
 	QDomNodeList customDataValuesList = customDataValues.elementsByTagName("CustomDataValue");
@@ -149,6 +140,8 @@ void BuddyShared::load()
 		if (!name.isEmpty())
 			CustomData[name] = customDataElement.text();
 	}
+
+	Anonymous = false;
 
 	Groups.clear();
 	QDomElement groupsNode = configurationStorage->getNode(parent, "ContactGroups", XmlConfigFile::ModeFind);
@@ -183,24 +176,23 @@ void BuddyShared::load()
 
 void BuddyShared::store()
 {
-	QSharedPointer<StoragePoint> sp(storage());
-	if (!sp)
+	if (!isValidStorage())
 		return;
 
 	Shared::store();
 
-	XmlConfigFile *configurationStorage = sp->storage();
-	QDomElement parent = sp->point();
+	XmlConfigFile *configurationStorage = storage()->storage();
+	QDomElement parent = storage()->point();
 
 	QDomElement customDataValues = configurationStorage->getNode(parent, "CustomDataValues", XmlConfigFile::ModeCreate);
 
 	foreach (const QString &key, CustomData.keys())
 		configurationStorage->createNamedTextNode(customDataValues, "CustomDataValue", key, CustomData.value(key));
 
-	if (BuddyAvatar->uuid().isNull())
-		removeValue("Avatar");
-	else
+	if (!BuddyAvatar->uuid().isNull())
 		storeValue("Avatar", BuddyAvatar->uuid().toString());
+	else
+		removeValue("Avatar");
 
 	storeValue("Display", Display);
 	storeValue("FirstName", FirstName);
@@ -210,11 +202,12 @@ void BuddyShared::store()
 	storeValue("Mobile", Mobile);
 	storeValue("Email", Email);
 	storeValue("Website", Website);
-	storeValue("Anonymous", Anonymous);
 	storeValue("Blocked", Blocked);
 	storeValue("OfflineTo", OfflineTo);
 	storeValue("Gender", (int)Gender);
 	storeValue("PreferHigherStatuses", PreferHigherStatuses);
+
+	removeValue("Anonymous");
 
 	if (!Groups.isEmpty())
 	{
