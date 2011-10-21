@@ -22,6 +22,7 @@
  */
 
 #include <QtCore/QDateTime>
+#include <QtCore/QScopedPointer>
 
 #include "chat/chat.h"
 #include "chat/chat-manager.h"
@@ -54,7 +55,7 @@ void HistoryImportThread::run()
 	// without this there is a backtrace:
 	// "Warning: QObject: Cannot create children for a parent that is in a different thread."
 	// and Kadu is crashing as in bug #1938
-	QObject *guard = new QObject();
+	QScopedPointer<QObject> guard(new QObject());
 
 	History::instance()->setSyncEnabled(false);
 
@@ -76,7 +77,7 @@ void HistoryImportThread::run()
 		QList<HistoryEntry> entries = HistoryMigrationHelper::historyEntries(Path, uinsList);
 
 		// guard as a parent. See above
-		HistoryImporterChatData *historyImporterChatData = chat.data()->moduleStorableData<HistoryImporterChatData>("history-importer", guard, true);
+		HistoryImporterChatData *historyImporterChatData = chat.data()->moduleStorableData<HistoryImporterChatData>("history-importer", guard.data(), true);
 		if (historyImporterChatData->imported())
 		{
 			ImportedEntries += entries.count();
@@ -105,9 +106,6 @@ void HistoryImportThread::run()
 		// force sync for every chat
 		History::instance()->forceSync();
 	}
-
-	// delete guard, so HistoryImporterChatData is properly destroyed
-	delete guard;
 
 	History::instance()->setSyncEnabled(true);
 }
