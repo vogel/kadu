@@ -89,20 +89,13 @@ void BuddyOptionsConfigurationWidget::save()
 	MyBuddy.setBlocked(BlockCheckBox->isChecked());
 	MyBuddy.setOfflineTo(!OfflineToCheckBox->isChecked());
 
-	BuddyNotifyData *bnd = 0;
-	BuddyKaduData *ckd = 0;
 	if (MyBuddy.data())
 	{
-		bnd = MyBuddy.data()->moduleStorableData<BuddyNotifyData>("notify", NotificationManager::instance(), true);
-		ckd = MyBuddy.data()->moduleStorableData<BuddyKaduData>("kadu", 0, true);
-	}
-	if (bnd)
-	{
+		BuddyNotifyData *bnd = MyBuddy.data()->moduleStorableData<BuddyNotifyData>("notify", NotificationManager::instance(), true);
 		bnd->setNotify(NotifyCheckBox->isChecked());
 		bnd->ensureStored();
-	}
-	if (ckd)
-	{
+
+		BuddyKaduData *ckd = MyBuddy.data()->moduleStorableData<BuddyKaduData>("kadu", 0, true);
 		ckd->setHideDescription(HideDescriptionCheckBox->isChecked());
 		ckd->ensureStored();
 	}

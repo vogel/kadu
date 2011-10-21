@@ -236,12 +236,7 @@ void FirewallConfigurationUiHandler::configurationApplied()
 		if (buddy.isNull() || buddy.isAnonymous())
 			continue;
 
-		BuddyFirewallData *bfd = 0;
-		if (buddy.data())
-			bfd = buddy.data()->moduleStorableData<BuddyFirewallData>("firewall-secured-sending", Firewall::instance(), true);
-		if (!bfd)
-			continue;
-
+		BuddyFirewallData *bfd = buddy.data()->moduleStorableData<BuddyFirewallData>("firewall-secured-sending", Firewall::instance(), true);
 		bfd->setSecuredSending(true);
 		bfd->ensureStored();
 	}
@@ -253,12 +248,7 @@ void FirewallConfigurationUiHandler::configurationApplied()
 		if (buddy.isNull() || buddy.isAnonymous())
 			continue;
 
-		BuddyFirewallData *bfd = 0;
-		if (buddy.data())
-			bfd = buddy.data()->moduleStorableData<BuddyFirewallData>("firewall-secured-sending", Firewall::instance(), true);
-		if (!bfd)
-			continue;
-
+		BuddyFirewallData *bfd = buddy.data()->moduleStorableData<BuddyFirewallData>("firewall-secured-sending", Firewall::instance(), true);
 		bfd->setSecuredSending(false);
 		bfd->ensureStored();
 	}

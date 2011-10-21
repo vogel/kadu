@@ -169,9 +169,6 @@ void ChatWindow::kaduStoreGeometry()
 	currentChatWidget->kaduStoreGeometry();
 
 	ChatGeometryData *cgd = currentChatWidget->chat().data()->moduleStorableData<ChatGeometryData>("chat-geometry", ChatWidgetManager::instance(), true);
-	if (!cgd)
-		return;
-
 	cgd->setWindowGeometry(geometry());
 	cgd->ensureStored();
 }

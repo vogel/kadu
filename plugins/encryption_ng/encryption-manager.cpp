@@ -186,11 +186,11 @@ void EncryptionManager::chatWidgetCreated(ChatWidget *chatWidget)
 	if (!EncryptionProviderManager::instance()->canEncrypt(chat))
 		return;
 
-	EncryptionChatData *encryptionChatData = chat.data()->moduleStorableData<EncryptionChatData>("encryption-ng", this, true);
-	bool encryptFromDefault = (encryptionChatData->encrypt() == EncryptionChatData::EncryptStateDefault
-			&& EncryptionNgConfiguration::instance()->encryptByDefault());
+	EncryptionChatData *encryptionChatData = chat.data()->moduleStorableData<EncryptionChatData>("encryption-ng", this, false);
+	bool encryptFromDefault = (!encryptionChatData || encryptionChatData->encrypt() == EncryptionChatData::EncryptStateDefault)
+			&& EncryptionNgConfiguration::instance()->encryptByDefault();
 
-	if (encryptFromDefault || encryptionChatData->encrypt() == EncryptionChatData::EncryptStateEnabled)
+	if (encryptFromDefault || (encryptionChatData && encryptionChatData->encrypt() == EncryptionChatData::EncryptStateEnabled))
 		setEncryptionEnabled(chat, true, !encryptFromDefault);
 }
 

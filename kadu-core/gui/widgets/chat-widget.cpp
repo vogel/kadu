@@ -610,9 +610,6 @@ void ChatWidget::kaduStoreGeometry()
 		return;
 
 	ChatGeometryData *cgd = chat().data()->moduleStorableData<ChatGeometryData>("chat-geometry", ChatWidgetManager::instance(), true);
-	if (!cgd)
-		return;
-
 	cgd->setWidgetHorizontalSizes(HorizontalSplitter->sizes());
 	cgd->ensureStored();
 }

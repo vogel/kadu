@@ -247,7 +247,7 @@ void StorableObject::moduleDataDestroyed(const QString &moduleName, ModuleData *
 	if (ModulesData.contains(moduleName) && ModulesData.value(moduleName) == moduleData)
 		ModulesData.remove(moduleName);
 
-	if (ModulesStorableData.contains(moduleName) && ModulesStorableData.value(moduleName) == moduleData)
+	if (ModulesStorableData.value(moduleName) == moduleData)
 	{
 		moduleData->ensureStored();
 		ModulesStorableData.remove(moduleName);

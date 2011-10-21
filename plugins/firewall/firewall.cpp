@@ -470,12 +470,13 @@ void Firewall::filterOutgoingMessage(Chat chat, QString &msg, bool &stop)
 		{
 			Buddy buddy = contact.ownerBuddy();
 
-			BuddyFirewallData *bfd = 0;
 			if (buddy.data())
-				bfd = buddy.data()->moduleStorableData<BuddyFirewallData>("firewall-secured-sending", Firewall::instance(), false);
+			{
+				BuddyFirewallData *bfd = buddy.data()->moduleStorableData<BuddyFirewallData>("firewall-secured-sending", Firewall::instance(), false);
 
-			if (!bfd || !bfd->securedSending())
-				return;
+				if (!bfd || !bfd->securedSending())
+					return;
+			}
 
 			if (!SecuredTemporaryAllowed.contains(buddy))
 			{
@@ -536,12 +537,7 @@ void Firewall::import_0_6_5_configuration()
 		if (buddy.isNull() || buddy.isAnonymous())
 			continue;
 
-		BuddyFirewallData *bfd = 0;
-		if (buddy.data())
-			bfd = buddy.data()->moduleStorableData<BuddyFirewallData>("firewall-secured-sending", Firewall::instance(), true);
-		if (!bfd)
-			continue;
-
+		BuddyFirewallData *bfd = buddy.data()->moduleStorableData<BuddyFirewallData>("firewall-secured-sending", Firewall::instance(), true);
 		bfd->setSecuredSending(true);
 		bfd->ensureStored();
 	}

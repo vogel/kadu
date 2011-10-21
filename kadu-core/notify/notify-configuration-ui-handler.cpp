@@ -160,10 +160,7 @@ void NotifyConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurat
 	foreach (const Buddy &buddy, BuddyManager::instance()->items())
 		if (!buddy.isAnonymous())
 		{
-			BuddyNotifyData *bnd = 0;
-			if (buddy.data())
-				bnd = buddy.data()->moduleStorableData<BuddyNotifyData>("notify", NotificationManager::instance(), false);
-
+			BuddyNotifyData *bnd = buddy.data()->moduleStorableData<BuddyNotifyData>("notify", NotificationManager::instance(), false);
 			if (!bnd || !bnd->notify())
 				allUsers->addItem(buddy.display());
 			else
@@ -255,12 +252,7 @@ void NotifyConfigurationUiHandler::configurationWindowApplied()
 		if (buddy.isNull() || buddy.isAnonymous())
 			continue;
 
-		BuddyNotifyData *bnd = 0;
-		if (buddy.data())
-			bnd = buddy.data()->moduleStorableData<BuddyNotifyData>("notify", NotificationManager::instance(), true);
-		if (!bnd)
-			continue;
-
+		BuddyNotifyData *bnd = buddy.data()->moduleStorableData<BuddyNotifyData>("notify", NotificationManager::instance(), true);
 		bnd->setNotify(true);
 		bnd->ensureStored();
 	}
@@ -272,12 +264,7 @@ void NotifyConfigurationUiHandler::configurationWindowApplied()
 		if (buddy.isNull() || buddy.isAnonymous())
 			continue;
 
-		BuddyNotifyData *bnd = 0;
-		if (buddy.data())
-			bnd = buddy.data()->moduleStorableData<BuddyNotifyData>("notify", NotificationManager::instance(), true);
-		if (!bnd)
-			continue;
-
+		BuddyNotifyData *bnd = buddy.data()->moduleStorableData<BuddyNotifyData>("notify", NotificationManager::instance(), true);
 		bnd->setNotify(false);
 		bnd->ensureStored();
 	}

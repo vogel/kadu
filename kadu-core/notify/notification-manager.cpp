@@ -213,17 +213,16 @@ void NotificationManager::notifyAboutUserActionActivated(QAction *sender, bool t
 
 	bool on = true;
 	foreach (const Buddy &buddy, buddies)
-	{
-		BuddyNotifyData *bnd = 0;
 		if (buddy.data())
-			bnd = buddy.data()->moduleStorableData<BuddyNotifyData>("notify", this, false);
-
-		if (!bnd || !bnd->notify())
 		{
-			on = false;
-			break;
+			BuddyNotifyData *bnd = buddy.data()->moduleStorableData<BuddyNotifyData>("notify", this, false);
+
+			if (!bnd || !bnd->notify())
+			{
+				on = false;
+				break;
+			}
 		}
-	}
 
 	if (NotifyAboutAll)
 	{
@@ -236,12 +235,7 @@ void NotificationManager::notifyAboutUserActionActivated(QAction *sender, bool t
 		if (buddy.isNull() || buddy.isAnonymous())
 			continue;
 
-		BuddyNotifyData *bnd = 0;
-		if (buddy.data())
-			bnd = buddy.data()->moduleStorableData<BuddyNotifyData>("notify", this, true);
-		if (!bnd)
-			continue;
-
+		BuddyNotifyData *bnd = buddy.data()->moduleStorableData<BuddyNotifyData>("notify", this, true);
 		if (bnd->notify() == on)
 		{
 			bnd->setNotify(!on);
@@ -576,12 +570,7 @@ void NotificationManager::groupUpdated()
 		if (buddy.isNull() || buddy.isAnonymous() || buddy.groups().contains(group))
 			continue;
 
-		BuddyNotifyData *bnd = 0;
-		if (buddy.data())
-			buddy.data()->moduleStorableData<BuddyNotifyData>("notify", this, true);
-		if (!bnd)
-			continue;
-
+		BuddyNotifyData *bnd = buddy.data()->moduleStorableData<BuddyNotifyData>("notify", this, true);
 		bnd->setNotify(notify);
 		bnd->ensureStored();
 	}
@@ -693,17 +682,15 @@ void checkNotify(Action *action)
 
 	bool on = true;
 	foreach (const Buddy &buddy, action->contacts().toBuddySet())
-	{
-		BuddyNotifyData *bnd = 0;
 		if (buddy.data())
-			bnd = buddy.data()->moduleStorableData<BuddyNotifyData>("notify", NotificationManager::instance(), false);
-
-		if (!bnd || !bnd->notify())
 		{
-			on = false;
-			break;
+			BuddyNotifyData *bnd = buddy.data()->moduleStorableData<BuddyNotifyData>("notify", NotificationManager::instance(), false);
+			if (!bnd || !bnd->notify())
+			{
+				on = false;
+				break;
+			}
 		}
-	}
 
 	action->setChecked(on);
 
