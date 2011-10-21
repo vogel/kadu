@@ -286,8 +286,8 @@ void NotifyConfigurationUiHandler::configurationWindowApplied()
 		if (gui.ConfigurationWidget)
 			gui.ConfigurationWidget->saveNotifyConfigurations();
 
-		foreach (const QString &eventKey, gui.Events.keys())
-			config_file.writeEntry("Notify", eventKey + '_' + notifier->name(), gui.Events[eventKey]);
+		for (QMap<QString, bool>::const_iterator it = gui.Events.constBegin(), end = gui.Events.constEnd(); it != end; ++it)
+			config_file.writeEntry("Notify", it.key() + '_' + notifier->name(), it.value());
 	}
 }
 

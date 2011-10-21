@@ -186,8 +186,8 @@ void BuddyShared::store()
 
 	QDomElement customDataValues = configurationStorage->getNode(parent, "CustomDataValues", XmlConfigFile::ModeCreate);
 
-	foreach (const QString &key, CustomData.keys())
-		configurationStorage->createNamedTextNode(customDataValues, "CustomDataValue", key, CustomData.value(key));
+	for (QMap<QString, QString>::const_iterator it = CustomData.constBegin(), end = CustomData.constEnd(); it != end; ++it)
+		configurationStorage->createNamedTextNode(customDataValues, "CustomDataValue", it.key(), it.value());
 
 	if (!BuddyAvatar->uuid().isNull())
 		storeValue("Avatar", BuddyAvatar->uuid().toString());

@@ -180,13 +180,13 @@ void ChatWidgetManager::store()
 
 	if (config_file.readBoolEntry("Chat", "SaveOpenedWindows", true))
 	{
-		foreach (const Chat &chat, Chats.keys())
+		for (QHash<Chat , ChatWidget *>::const_iterator it = Chats.constBegin(), end = Chats.constEnd(); it != end; ++it)
 		{
-			Protocol *protocolHandler = chat.chatAccount().protocolHandler();
-			if (!protocolHandler || !protocolHandler->protocolFactory() || !qobject_cast<ChatWindow *>(Chats.value(chat)->window()))
+			Protocol *protocolHandler = it.key().chatAccount().protocolHandler();
+			if (!protocolHandler || !protocolHandler->protocolFactory() || !qobject_cast<ChatWindow *>(it.value()->window()))
 					continue;
 
-			StringList.append(chat.uuid().toString());
+			StringList.append(it.key().uuid().toString());
 		}
 	}
 

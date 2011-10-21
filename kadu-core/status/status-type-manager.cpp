@@ -65,9 +65,9 @@ StatusTypeManager::~StatusTypeManager()
 
 StatusType StatusTypeManager::fromName(const QString &name)
 {
-	foreach (StatusType statusType, StatusTypes.keys())
-		if (StatusTypes.value(statusType).name() == name)
-			return statusType;
+	for (QMap<StatusType, StatusTypeData>::const_iterator it = StatusTypes.constBegin(), end = StatusTypes.constEnd(); it != end; ++it)
+		if (it.value().name() == name)
+			return it.key();
 	return StatusTypeOffline;
 }
 

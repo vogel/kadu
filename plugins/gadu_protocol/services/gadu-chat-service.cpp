@@ -368,16 +368,15 @@ void GaduChatService::handleEventAck(struct gg_event *e)
 void GaduChatService::removeTimeoutUndeliveredMessages()
 {
 	QDateTime now = QDateTime::currentDateTime();
-	QList<int> toRemove;
+	QHash<int, Message>::iterator it = UndeliveredMessages.begin();
 
-	foreach (int messageId, UndeliveredMessages.keys())
-		if (UndeliveredMessages[messageId].sendDate().addSecs(MAX_DELIVERY_TIME) < now)
-			toRemove.append(messageId);
-
-	foreach (int messageId, toRemove)
-	{
-		UndeliveredMessages[messageId].setStatus(MessageStatusWontDeliver);
-		emit messageStatusChanged(UndeliveredMessages[messageId], StatusRejectedTimeout);
-		UndeliveredMessages.remove(messageId);
-	}
+	while (it != UndeliveredMessages.end())
+		if (it.value().sendDate().addSecs(MAX_DELIVERY_TIME) < now)
+		{
+			it = UndeliveredMessages.erase(it);
+			it.value().setStatus(MessageStatusWontDeliver);
+			emit messageStatusChanged(it.value(), StatusRejectedTimeout);
+		}
+		else
+			++it;
 }

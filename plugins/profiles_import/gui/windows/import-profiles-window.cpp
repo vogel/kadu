@@ -100,13 +100,13 @@ void ImportProfilesWindow::createProfileList(QGridLayout *layout)
 }
 void ImportProfilesWindow::accept()
 {
-	foreach (QCheckBox *importCheckBox, ProfileCheckBoxes.keys())
+	for (QMap<QCheckBox *, ProfileData>::const_iterator it = ProfileCheckBoxes.constBegin(), end = ProfileCheckBoxes.constEnd(); it != end; ++it)
 	{
-		if (!importCheckBox->isChecked())
+		if (!it.key()->isChecked())
 			continue;
 
-		ProfileData profile = ProfileCheckBoxes[importCheckBox];
-		bool importHistory = HistoryCheckBoxes[importCheckBox]->isChecked();
+		const ProfileData &profile = it.value();
+		bool importHistory = HistoryCheckBoxes.value(it.key())->isChecked();
 
 		QString path = profile.Path.startsWith('/')
 				? profile.Path
