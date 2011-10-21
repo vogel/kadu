@@ -139,7 +139,7 @@ private:
 	QMap<QString, void *> ModulesData;
 
 	friend class ModuleData;
-	void moduleDataDestroyed(const QString &moduleName, ModuleData *moduleData);
+	void moduleDataAboutToBeDestroyed(const QString &moduleName, ModuleData *moduleData);
 
 protected:
 	virtual QSharedPointer<StoragePoint> createStoragePoint();

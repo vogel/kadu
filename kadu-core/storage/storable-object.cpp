@@ -236,14 +236,14 @@ void StorableObject::removeModuleData(const QString& module)
 
 /**
  * @author Rafal 'Vogel' Malinowski
- * @short Called when ModuleData is destroyed, to remove it from this object.
+ * @short Called when ModuleData is about to be destroyed, to remove it from this object.
  * @param moduleName name of ModuleData
- * @param moduleData destroyed object
+ * @param moduleData object about to be destroyed
  *
  * Method is called by a ModuleData object in its destructor, so it can be removed
  * from this object. Before it is removed, StorableObject::ensureStored() is called on it.
  */
-void StorableObject::moduleDataDestroyed(const QString &moduleName, ModuleData *moduleData)
+void StorableObject::moduleDataAboutToBeDestroyed(const QString &moduleName, ModuleData *moduleData)
 {
 	if (Destroying)
 		return;

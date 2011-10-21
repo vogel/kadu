@@ -39,7 +39,7 @@ ModuleData::ModuleData(const QString &moduleName, StorableObject *storageParent,
 ModuleData::~ModuleData()
 {
 	if (CurrentStorageParent)
-		CurrentStorageParent->moduleDataDestroyed(ModuleName, this);
+		CurrentStorageParent->moduleDataAboutToBeDestroyed(ModuleName, this);
 }
 
 /**
