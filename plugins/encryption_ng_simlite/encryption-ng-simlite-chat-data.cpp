@@ -53,5 +53,7 @@ QString EncryptionNgSimliteChatData::name() const
 
 bool EncryptionNgSimliteChatData::shouldStore()
 {
+	ensureLoaded();
+
 	return ModuleData::shouldStore() && SupportUtf;
 }

@@ -84,6 +84,8 @@ void EncryptionChatData::store()
 
 bool EncryptionChatData::shouldStore()
 {
+	ensureLoaded();
+
 	return ModuleData::shouldStore() && (Encrypt != EncryptStateDefault);
 }
 

@@ -56,6 +56,8 @@ void BuddyKaduData::store()
 
 bool BuddyKaduData::shouldStore()
 {
+	ensureLoaded();
+
 	return ModuleData::shouldStore() && HideDescription;
 }
 

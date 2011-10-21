@@ -183,8 +183,6 @@ void BuddyShared::load()
 
 void BuddyShared::store()
 {
-	ensureLoaded();
-
 	QSharedPointer<StoragePoint> sp(storage());
 	if (!sp)
 		return;

@@ -133,6 +133,8 @@ void Plugin::store()
  */
 bool Plugin::shouldStore()
 {
+	ensureLoaded();
+
 	return NamedStorableObject::shouldStore() && PluginStateNew != state();
 }
 

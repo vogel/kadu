@@ -56,6 +56,8 @@ void BuddyFirewallData::store()
 
 bool BuddyFirewallData::shouldStore()
 {
+	ensureLoaded();
+
 	return ModuleData::shouldStore() && SecuredSending;
 }
 

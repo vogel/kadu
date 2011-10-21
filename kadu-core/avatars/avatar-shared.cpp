@@ -117,8 +117,6 @@ void AvatarShared::storeAvatar()
 	if (!isValidStorage())
 		return;
 
-	ensureLoaded();
-
 	Shared::store();
 
 	storeValue("LastUpdated", LastUpdated);

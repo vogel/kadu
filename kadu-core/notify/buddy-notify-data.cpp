@@ -58,6 +58,8 @@ void BuddyNotifyData::store()
 
 bool BuddyNotifyData::shouldStore()
 {
+	ensureLoaded();
+
 	return ModuleData::shouldStore() && Notify;
 }
 

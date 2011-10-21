@@ -104,6 +104,8 @@ void ChatDetailsSimple::store()
  */
 bool ChatDetailsSimple::shouldStore()
 {
+	ensureLoaded();
+
 	return StorableObject::shouldStore()
 			&& !CurrentContact.uuid().isNull();
 }

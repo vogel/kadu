@@ -195,6 +195,8 @@ void StorableObject::ensureLoaded()
  */
 void StorableObject::ensureStored()
 {
+	ensureLoaded();
+
 	if (shouldStore())
 		store();
 	else

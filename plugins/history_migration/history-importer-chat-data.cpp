@@ -49,6 +49,8 @@ void HistoryImporterChatData::store()
 
 bool HistoryImporterChatData::shouldStore()
 {
+	ensureLoaded();
+
 	return ModuleData::shouldStore() && Imported;
 }
 

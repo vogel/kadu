@@ -88,6 +88,8 @@ void ChatDetailsConference::store()
  */
 bool ChatDetailsConference::shouldStore()
 {
+	ensureLoaded();
+
 	return StorableObject::shouldStore() && !Contacts.isEmpty();
 }
 
