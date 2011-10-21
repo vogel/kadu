@@ -110,7 +110,7 @@ void BuddyOptionsConfigurationWidget::save()
 
 void BuddyOptionsConfigurationWidget::configurationUpdated()
 {
-	NotifyCheckBox->setEnabled(!config_file.readBoolEntry("Notify", "NotifyAboutAll"));
+	NotifyCheckBox->setVisible(!config_file.readBoolEntry("Notify", "NotifyAboutAll"));
 }
 
 void BuddyOptionsConfigurationWidget::updateOfflineTo()
