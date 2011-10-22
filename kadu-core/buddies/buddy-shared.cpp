@@ -223,7 +223,7 @@ bool BuddyShared::shouldStore()
 {
 	ensureLoaded();
 
-    return UuidStorableObject::shouldStore() && !isAnonymous();
+	return UuidStorableObject::shouldStore() && !isAnonymous();
 }
 
 void BuddyShared::aboutToBeRemoved()

@@ -44,6 +44,11 @@ Status StorableStatusContainer::loadStatus()
 	QString name = MyStorableObject->loadValue<QString>("LastStatusName");
 	QString description = MyStorableObject->loadValue<QString>("LastStatusDescription");
 
+	// if no status is available in storage, then this status container is a new one
+	// so we need to connect ASAP
+	if (name.isEmpty())
+		name = "Online";
+
 	Status status;
 	status.setType(StatusTypeManager::instance()->fromName(name));
 	status.setDescription(description);
