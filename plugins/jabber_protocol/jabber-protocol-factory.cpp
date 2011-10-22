@@ -53,11 +53,12 @@ void JabberProtocolFactory::destroyInstance()
 
 JabberProtocolFactory::JabberProtocolFactory()
 {
-	SupportedStatusTypes.append(StatusTypeOnline);
+	// already sorted
 	SupportedStatusTypes.append(StatusTypeFreeForChat);
-	SupportedStatusTypes.append(StatusTypeDoNotDisturb);
+	SupportedStatusTypes.append(StatusTypeOnline);
 	SupportedStatusTypes.append(StatusTypeAway);
 	SupportedStatusTypes.append(StatusTypeNotAvailable);
+	SupportedStatusTypes.append(StatusTypeDoNotDisturb);
 	SupportedStatusTypes.append(StatusTypeOffline);
 }
 

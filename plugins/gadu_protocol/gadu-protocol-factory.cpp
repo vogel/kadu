@@ -55,6 +55,7 @@ void GaduProtocolFactory::destroyInstance()
 
 GaduProtocolFactory::GaduProtocolFactory()
 {
+	// already sorted
 	SupportedStatusTypes.append(StatusTypeFreeForChat);
 	SupportedStatusTypes.append(StatusTypeOnline);
 	SupportedStatusTypes.append(StatusTypeAway);
