@@ -43,7 +43,6 @@ ProxyComboBox::ProxyComboBox(QWidget *parent) :
 			this, SLOT(updateValueBeforeChange()));
 	connect(model(), SIGNAL(rowsRemoved(const QModelIndex &, int, int)),
 			this, SLOT(rowsRemoved(const QModelIndex &, int, int)));
-	connect(this, SIGNAL(activated(int)), this, SLOT(activatedSlot(int)));
 	connect(this, SIGNAL(currentIndexChanged(int)), this, SLOT(currentIndexChangedSlot(int)));
 }
 
@@ -83,21 +82,18 @@ NetworkProxy ProxyComboBox::currentProxy()
 	return currentValue();
 }
 
-void ProxyComboBox::activatedSlot(int index)
+void ProxyComboBox::currentIndexChangedSlot(int index)
 {
-	InActivatedSlot = true;
-
 	QModelIndex modelIndex = this->model()->index(index, modelColumn(), rootModelIndex());
 	QAction *action = modelIndex.data(ActionRole).value<QAction *>();
 
 	if (action == EditProxyAction)
+	{
 		ProxyEditWindow::show();
+		setCurrentValue(CurrentValue);
+		return;
+	}
 
-	InActivatedSlot = false;
-}
-
-void ProxyComboBox::currentIndexChangedSlot(int index)
-{
 	if (KaduComboBox<NetworkProxy>::currentIndexChangedSlot(index))
 		emit proxyChanged(CurrentValue, ValueBeforeChange);
 }

@@ -38,7 +38,6 @@ class KADUAPI ProxyComboBox : public KaduComboBox<NetworkProxy>
 	QAction *DefaultProxyAction;
 
 private slots:
-	void activatedSlot(int index);
 	void currentIndexChangedSlot(int index);
 	void updateValueBeforeChange();
 	void rowsRemoved(const QModelIndex &parent, int start, int end);
