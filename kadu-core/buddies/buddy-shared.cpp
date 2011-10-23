@@ -75,16 +75,13 @@ void BuddyShared::collectGarbage()
 	CollectingGarbage = true;
 
 	// 1 is for current Buddy
-	int numberOfReferences = 1 + Contacts.length() + (*BuddyAvatar ? 1 : 0);
-	if (numberOfReferences != (int)ref)
-	{
-		CollectingGarbage = false;
-		return;
-	}
+	int numberOfReferences = 1 + (*BuddyAvatar ? 1 : 0);
 
 	foreach (const Contact &contact, Contacts)
 		if (contact)
 		{
+			numberOfReferences++;
+
 			// 1 is for current BuddyShared
 			int contactNumberOfReferences = 1 + (contact.data()->contactAvatar() ? 1 : 0);
 			if (contactNumberOfReferences != (int)(contact.data()->ref))
@@ -93,6 +90,12 @@ void BuddyShared::collectGarbage()
 				return;
 			}
 		}
+
+	if (numberOfReferences != (int)ref)
+	{
+		CollectingGarbage = false;
+		return;
+	}
 
 	foreach (const Contact &contact, Contacts)
 		contact.removeOwnerBuddy();
