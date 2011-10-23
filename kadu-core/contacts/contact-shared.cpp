@@ -87,7 +87,7 @@ void ContactShared::load()
 	Id = loadValue<QString>("Id");
 
 	Priority = loadValue<int>("Priority", -1);
-	
+
 	Dirty = loadValue<bool>("Dirty", true);
 
 	*ContactAccount = AccountManager::instance()->byUuid(loadValue<QString>("Account"));
@@ -221,12 +221,9 @@ void ContactShared::doSetOwnerBuddy(const Buddy &buddy, bool emitSignals)
 	 */
 	Contact guard(this);
 
-	// don't allow empty buddy to be set, use at least anonymous one
-	Buddy targetBuddy = buddy.isNull() ? Buddy::create() : buddy;
-	bool reattaching = !OwnerBuddy->isAnonymous() && !targetBuddy.isAnonymous();
-
+	bool reattaching = !OwnerBuddy->isAnonymous() && !buddy.isAnonymous();
 	detach(true, reattaching, emitSignals);
-	attach(targetBuddy, reattaching, emitSignals);
+	attach(buddy, reattaching, emitSignals);
 }
 
 void ContactShared::setOwnerBuddy(const Buddy &buddy)
@@ -242,10 +239,16 @@ void ContactShared::setOwnerBuddy(const Buddy &buddy)
 	 */
 	Contact guard(this);
 
-	doSetOwnerBuddy(buddy, true);
+	// don't allow empty buddy to be set, use at least anonymous one
+	Buddy targetBuddy = buddy.isNull() ? Buddy::create() : buddy;
+	doSetOwnerBuddy(targetBuddy, true);
 	setDirty(true);
-
 	dataUpdated();
+}
+
+void ContactShared::removeOwnerBuddy()
+{
+	doSetOwnerBuddy(Buddy::null, true);
 }
 
 void ContactShared::setContactAccount(const Account &account)

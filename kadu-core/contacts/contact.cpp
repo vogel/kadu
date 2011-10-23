@@ -76,13 +76,11 @@ Contact::~Contact()
 {
 }
 
-/*
-void Contact::refreshDNSName()
+void Contact::removeOwnerBuddy() const
 {
-	if (!(Address.isNull()))
-		connect(new DNSHandler(Id, Address), SIGNAL(result(const QString &, const QString &)),
-				this, SLOT(setDNSName(const QString &, const QString &)));
-}*/
+	if (data())
+		data()->removeOwnerBuddy();
+}
 
 Contact Contact::contactWithHigherStatus(const Contact &c1, const Contact &c2)
 {

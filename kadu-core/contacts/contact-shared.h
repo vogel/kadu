@@ -98,6 +98,8 @@ public:
 	KaduShared_PropertyDeclCRW(Account, contactAccount, ContactAccount)
 	KaduShared_PropertyDeclCRW(Avatar, contactAvatar, ContactAvatar)
 	KaduShared_PropertyDeclCRW(Buddy, ownerBuddy, OwnerBuddy)
+	void removeOwnerBuddy();
+
 	KaduShared_Property(int, priority, Priority)
 	KaduShared_Property(const Status &, currentStatus, CurrentStatus)
 	KaduShared_PropertyBool(Blocking)

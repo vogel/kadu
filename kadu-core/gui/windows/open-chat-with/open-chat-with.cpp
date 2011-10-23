@@ -72,7 +72,7 @@ OpenChatWith::OpenChatWith() :
 
 	setWindowTitle(tr("Open chat with..."));
 	setAttribute(Qt::WA_DeleteOnClose);
-	
+
 	int width = QDesktopWidget().availableGeometry().width()*0.25;
 	int height = QDesktopWidget().availableGeometry().height()*0.3;
 	QRect rect(QDesktopWidget().availableGeometry().center().x()-width/2, QDesktopWidget().availableGeometry().center().y()-height/2, width, height);
@@ -180,9 +180,9 @@ void OpenChatWith::inputChanged(const QString &text)
 {
 	kdebugf();
 
-	BuddyList matchingContacts;
-	if (!text.isEmpty())
-		matchingContacts = OpenChatWithRunnerManager::instance()->matchingContacts(text);
+	BuddyList matchingContacts = text.isEmpty()
+			? BuddyList()
+			: OpenChatWithRunnerManager::instance()->matchingContacts(text);
 
 	delete ListModel;
 	ListModel = new BuddyListModel(matchingContacts, this);

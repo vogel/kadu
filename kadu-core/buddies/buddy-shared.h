@@ -74,6 +74,8 @@ class KADUAPI BuddyShared : public QObject, public Shared
 	Q_OBJECT
 	Q_DISABLE_COPY(BuddyShared)
 
+	bool CollectingGarbage;
+
 	QMap<QString, QString> CustomData;
 	QList<Contact> Contacts;
 
@@ -117,6 +119,8 @@ public:
 
 	explicit BuddyShared(const QUuid &uuid = QUuid());
 	virtual ~BuddyShared();
+
+	void collectGarbage();
 
 	virtual StorableObject * storageParent();
 	virtual QString storageNodeName();

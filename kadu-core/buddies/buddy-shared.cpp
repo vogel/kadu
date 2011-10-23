@@ -54,7 +54,7 @@ BuddyShared * BuddyShared::loadFromStorage(const QSharedPointer<StoragePoint> &b
 }
 
 BuddyShared::BuddyShared(const QUuid &uuid) :
-		Shared(uuid),
+		Shared(uuid), CollectingGarbage(false),
 		BirthYear(0), Gender(GenderUnknown), PreferHigherStatuses(true),
 		Anonymous(true), Blocked(false), OfflineTo(false)
 {
@@ -64,8 +64,39 @@ BuddyShared::BuddyShared(const QUuid &uuid) :
 BuddyShared::~BuddyShared()
 {
 	ref.ref();
-
 	delete BuddyAvatar;
+}
+
+void BuddyShared::collectGarbage()
+{
+	if (CollectingGarbage)
+		return;
+
+	CollectingGarbage = true;
+
+	int numberOfReferences = Contacts.length() + (BuddyAvatar ? 1 : 0);
+	if (numberOfReferences != (int)ref)
+	{
+		CollectingGarbage = false;
+		return;
+	}
+
+	foreach (const Contact &contact, Contacts)
+		if (contact)
+		{
+			// 1 is for current buddy
+			int contactNumberOfReferences = 1 + (contact.data()->contactAvatar() ? 1 : 0);
+			if (contactNumberOfReferences != (int)(contact.data()->ref))
+			{
+				CollectingGarbage = false;
+				return;
+			}
+		}
+
+	foreach (const Contact &contact, Contacts)
+		contact.removeOwnerBuddy();
+
+	CollectingGarbage = false;
 }
 
 StorableObject * BuddyShared::storageParent()

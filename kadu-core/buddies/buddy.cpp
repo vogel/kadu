@@ -81,6 +81,8 @@ Buddy::Buddy(const Buddy &copy) :
 
 Buddy::~Buddy()
 {
+	if (data())
+		data()->collectGarbage();
 }
 
 void Buddy::importConfiguration(const QDomElement &parent)
