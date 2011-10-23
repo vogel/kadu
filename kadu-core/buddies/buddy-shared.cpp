@@ -238,7 +238,10 @@ void BuddyShared::store()
 	storeValue("Gender", (int)Gender);
 	storeValue("PreferHigherStatuses", PreferHigherStatuses);
 
-	removeValue("Anonymous");
+	// This buddy can't be anonymous, otherwise we wouldn't be storing them. Though,
+	// we need to store Anonymous=false, otherwise we will break downgrade to Kadu <0.11.0.
+	// TODO when we change configuration format (or just file name): remove it
+	storeValue("Anonymous", false);
 
 	if (!Groups.isEmpty())
 	{
