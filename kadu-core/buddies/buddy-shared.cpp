@@ -172,8 +172,6 @@ void BuddyShared::load()
 			CustomData[name] = customDataElement.text();
 	}
 
-	Anonymous = false;
-
 	Groups.clear();
 	QDomElement groupsNode = configurationStorage->getNode(parent, "ContactGroups", XmlConfigFile::ModeFind);
 	if (!groupsNode.isNull())
@@ -203,6 +201,11 @@ void BuddyShared::load()
 	OfflineTo = loadValue<bool>("OfflineTo", false);
 	Gender = (BuddyGender)loadValue<int>("Gender", 0);
 	PreferHigherStatuses = loadValue<bool>("PreferHigherStatuses", true);
+
+	// Some crazy bug causes entries like <Buddy uuid="xxx..."/> to be stored to the configuration file
+	// after using open-chat-with. We must not treat them as not anonymous (i.e., present on contact list) buddies,
+	// hence this workaround.
+	Anonymous = Display.isEmpty();
 }
 
 void BuddyShared::store()
@@ -225,7 +228,11 @@ void BuddyShared::store()
 	else
 		removeValue("Avatar");
 
+	// should not happen, but who knows...
+	if (Display.isEmpty())
+		Display = uuid().toString();
 	storeValue("Display", Display);
+
 	storeValue("FirstName", FirstName);
 	storeValue("LastName", LastName);
 	storeValue("NickName", NickName);
