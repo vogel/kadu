@@ -266,13 +266,11 @@ void AddBuddyWindow::createGui()
 
 void AddBuddyWindow::addFakeAccountsToComboBox()
 {
-	ActionsProxyModel *actionsModel = AccountCombo->actionsModel();
-
 	MobileAccountAction = new QAction(KaduIcon("phone").icon(), tr("Mobile"), AccountCombo);
-	actionsModel->addAfterAction(MobileAccountAction);
+	AccountCombo->addAfterAction(MobileAccountAction);
 
 	EmailAccountAction = new QAction(KaduIcon("mail-message-new").icon(), tr("E-mail"), AccountCombo);
-	actionsModel->addAfterAction(EmailAccountAction);
+	AccountCombo->addAfterAction(EmailAccountAction);
 }
 
 void AddBuddyWindow::displayErrorMessage(const QString &message)
@@ -287,12 +285,12 @@ void AddBuddyWindow::setGroup(Group group)
 
 bool AddBuddyWindow::isMobileAccount()
 {
-	return (MobileAccountAction && AccountCombo->data(ActionRole).value<QAction *>() == MobileAccountAction);
+	return (MobileAccountAction && AccountCombo->currentAction() == MobileAccountAction);
 }
 
 bool AddBuddyWindow::isEmailAccount()
 {
-	return (EmailAccountAction && AccountCombo->data(ActionRole).value<QAction *>() == EmailAccountAction);
+	return (EmailAccountAction && AccountCombo->currentAction() == EmailAccountAction);
 }
 
 void AddBuddyWindow::accountChanged(Account account, Account lastAccount)

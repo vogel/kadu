@@ -37,7 +37,7 @@ IdentitiesComboBox::IdentitiesComboBox(bool includeSelectIdentity, QWidget *pare
 	setUpModel(new IdentityModel(this));
 
 	if (includeSelectIdentity)
-		actionsModel()->addBeforeAction(new QAction(tr(" - Select identity - "), this));
+		addBeforeAction(new QAction(tr(" - Select identity - "), this));
 
 	CreateNewIdentityAction = new QAction(tr("Create a new identity..."), this);
 	QFont createNewIdentityActionFont = CreateNewIdentityAction->font();
@@ -45,7 +45,7 @@ IdentitiesComboBox::IdentitiesComboBox(bool includeSelectIdentity, QWidget *pare
 	CreateNewIdentityAction->setFont(createNewIdentityActionFont);
 	CreateNewIdentityAction->setData("createNewIdentity");
 
-	actionsModel()->addAfterAction(CreateNewIdentityAction);
+	addAfterAction(CreateNewIdentityAction);
 
 	setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 

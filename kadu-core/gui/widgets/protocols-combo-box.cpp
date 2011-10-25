@@ -34,8 +34,8 @@ ProtocolsComboBox::ProtocolsComboBox(QWidget *parent) :
 
 	ProxyModel = new ProtocolsModelProxy(this);
 	setUpModel(new ProtocolsModel(this), ProxyModel);
-	actionsModel()->addBeforeAction(new QAction(tr(" - Select network - "), this),
-	                                ActionsProxyModel::NotVisibleWithOneRowSourceModel);
+	addBeforeAction(new QAction(tr(" - Select network - "), this),
+	                ActionsProxyModel::NotVisibleWithOneRowSourceModel);
 
 	connect(this, SIGNAL(currentIndexChanged(int)), this, SLOT(currentIndexChangedSlot(int)));
 }

@@ -38,7 +38,7 @@ GroupsComboBox::GroupsComboBox(QWidget *parent) :
 	setDataRole(GroupRole);
 	setUpModel(new GroupsModel(this), proxyModel);
 
-	actionsModel()->addBeforeAction(new QAction(tr(" - Select group - "), this));
+	addBeforeAction(new QAction(tr(" - Select group - "), this));
 
 	proxyModel->setDynamicSortFilter(true);
 	proxyModel->sort(0);
@@ -49,7 +49,7 @@ GroupsComboBox::GroupsComboBox(QWidget *parent) :
 	CreateNewGroupAction->setFont(createNewGroupActionFont);
 	CreateNewGroupAction->setData("createNewGroup");
 
-	actionsModel()->addAfterAction(CreateNewGroupAction);
+	addAfterAction(CreateNewGroupAction);
 
 	setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 

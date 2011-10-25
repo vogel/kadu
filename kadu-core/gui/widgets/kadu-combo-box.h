@@ -64,8 +64,10 @@ public:
 	explicit KaduComboBox(QWidget *parent = 0);
 	virtual ~KaduComboBox();
 
-	QVariant data(int role) const;
-	ActionsProxyModel * actionsModel() const { return ActionsModel; }
+	void addBeforeAction(QAction *action, ActionsProxyModel::ActionVisibility actionVisibility = ActionsProxyModel::AlwaysVisible);
+	void addAfterAction(QAction *action, ActionsProxyModel::ActionVisibility actionVisibility = ActionsProxyModel::AlwaysVisible);
+
+	QAction * currentAction();
 
 };
 

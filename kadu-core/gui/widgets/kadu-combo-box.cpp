@@ -18,6 +18,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "model/roles.h"
+
 #include "kadu-combo-box.h"
 
 KaduComboBox::KaduComboBox(QWidget *parent) :
@@ -33,6 +35,21 @@ KaduComboBox::~KaduComboBox()
 void KaduComboBox::setDataRole(int dataRole)
 {
 	DataRole = dataRole;
+}
+
+void KaduComboBox::addBeforeAction(QAction *action, ActionsProxyModel::ActionVisibility actionVisibility)
+{
+	ActionsModel->addBeforeAction(action, actionVisibility);
+}
+
+void KaduComboBox::addAfterAction(QAction *action, ActionsProxyModel::ActionVisibility actionVisibility)
+{
+	ActionsModel->addAfterAction(action, actionVisibility);
+}
+
+QAction * KaduComboBox::currentAction()
+{
+	return ActionsModel->index(currentIndex(), modelColumn()).data(ActionRole).value<QAction *>();
 }
 
 /**
@@ -166,9 +183,4 @@ void KaduComboBox::rowsRemoved(const QModelIndex &parent, int start, int end)
 
 	if (!compare(CurrentValue, ValueBeforeChange))
 		setCurrentIndex(0);
-}
-
-QVariant KaduComboBox::data(int role) const
-{
-	return ActionsModel->index(currentIndex(), modelColumn()).data(role);
 }

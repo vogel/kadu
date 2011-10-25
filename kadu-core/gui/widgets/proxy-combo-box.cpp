@@ -33,14 +33,14 @@ ProxyComboBox::ProxyComboBox(QWidget *parent) :
 
 	Model = new NetworkProxyModel(this);
 	setUpModel(Model, new NetworkProxyProxyModel(this));
-	actionsModel()->addBeforeAction(new QAction(tr(" - No proxy - "), this));
+	addBeforeAction(new QAction(tr(" - No proxy - "), this));
 
 	EditProxyAction = new QAction(tr("Edit proxy configuration..."), this);
 	QFont editProxyActionFont = EditProxyAction->font();
 	editProxyActionFont.setItalic(true);
 	EditProxyAction->setFont(editProxyActionFont);
 	EditProxyAction->setData("editProxyConfiguration");
-	actionsModel()->addAfterAction(EditProxyAction);
+	addAfterAction(EditProxyAction);
 
 	connect(this, SIGNAL(currentIndexChanged(int)), this, SLOT(currentIndexChangedSlot(int)));
 }
@@ -54,7 +54,7 @@ void ProxyComboBox::enableDefaultProxyAction()
 	DefaultProxyAction = new QAction(tr(" - Use Default Proxy - "), this);
 	DefaultProxyAction->setData("defaultProxy");
 	DefaultProxyAction->setFont(QFont());
-	actionsModel()->addBeforeAction(DefaultProxyAction);
+	addBeforeAction(DefaultProxyAction);
 }
 
 void ProxyComboBox::selectDefaultProxy()

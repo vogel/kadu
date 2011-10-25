@@ -37,7 +37,7 @@ SelectBuddyComboBox::SelectBuddyComboBox(QWidget *parent) :
 
 	ProxyModel = new BuddiesModelProxy(this);
 	setUpModel(new BuddiesModel(this), ProxyModel);
-	actionsModel()->addBeforeAction(new QAction(tr(" - Select buddy - "), this));
+	addBeforeAction(new QAction(tr(" - Select buddy - "), this));
 
 	Popup = new SelectBuddyPopup();
 	Popup->view()->proxyModel()->setSortByStatus(false);
