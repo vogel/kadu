@@ -29,8 +29,11 @@
 ProxyComboBox::ProxyComboBox(QWidget *parent) :
 		KaduComboBox(parent), InActivatedSlot(false), DefaultProxyAction(0)
 {
+	setDataRole(NetworkProxyRole);
+
 	Model = new NetworkProxyModel(this);
 	setUpModel(Model, new NetworkProxyProxyModel(this));
+	actionsModel()->addBeforeAction(new QAction(tr(" - No proxy - "), this));
 
 	EditProxyAction = new QAction(tr("Edit proxy configuration..."), this);
 	QFont editProxyActionFont = EditProxyAction->font();
@@ -97,19 +100,4 @@ void ProxyComboBox::currentIndexChangedSlot(int index)
 bool ProxyComboBox::compare(QVariant value, QVariant previousValue) const
 {
 	return value.value<NetworkProxy>() == previousValue.value<NetworkProxy>();
-}
-
-int ProxyComboBox::preferredDataRole() const
-{
-	return NetworkProxyRole;
-}
-
-QString ProxyComboBox::selectString() const
-{
-	return tr(" - No proxy - ");
-}
-
-ActionsProxyModel::ActionVisibility ProxyComboBox::selectVisibility() const
-{
-	return ActionsProxyModel::AlwaysVisible;
 }

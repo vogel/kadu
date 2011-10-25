@@ -32,17 +32,12 @@ class AccountsComboBox : public KaduComboBox
 	Q_OBJECT
 
 	AccountsModel *Model;
-	bool IncludeSelectAccount;
 
 private slots:
 	void currentIndexChangedSlot(int index);
 
 protected:
 	virtual bool compare(QVariant value, QVariant previousValue) const;
-
-	virtual int preferredDataRole() const;
-	virtual QString selectString() const;
-	virtual ActionsProxyModel::ActionVisibility selectVisibility() const;
 
 public:
 	explicit AccountsComboBox(bool includeSelectAccount, QWidget *parent = 0);

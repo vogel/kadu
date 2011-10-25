@@ -34,7 +34,10 @@
 GroupsComboBox::GroupsComboBox(QWidget *parent) :
 		KaduComboBox(parent), InActivatedSlot(false)
 {
+	setDataRole(GroupRole);
 	setUpModel(new GroupsModel(this), new QSortFilterProxyModel(this));
+
+	actionsModel()->addBeforeAction(new QAction(tr(" - Select group - "), this));
 
 	static_cast<QSortFilterProxyModel *>(SourceProxyModel)->setDynamicSortFilter(true);
 	SourceProxyModel->sort(0);
@@ -125,14 +128,4 @@ void GroupsComboBox::currentIndexChangedSlot(int index)
 bool GroupsComboBox::compare(QVariant value, QVariant previousValue) const
 {
 	return value.value<Group>() == previousValue.value<Group>();
-}
-
-int GroupsComboBox::preferredDataRole() const
-{
-	return GroupRole;
-}
-
-QString GroupsComboBox::selectString() const
-{
-	return tr(" - Select group - ");
 }

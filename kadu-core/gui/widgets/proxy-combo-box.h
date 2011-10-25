@@ -43,10 +43,6 @@ private slots:
 protected:
 	virtual bool compare(QVariant value, QVariant previousValue) const;
 
-	virtual int preferredDataRole() const;
-	virtual QString selectString() const;
-	virtual ActionsProxyModel::ActionVisibility selectVisibility() const;
-
 public:
 	explicit ProxyComboBox(QWidget *parent = 0);
 	virtual ~ProxyComboBox();

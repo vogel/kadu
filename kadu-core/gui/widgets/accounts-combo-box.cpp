@@ -27,11 +27,16 @@
 #include "accounts-combo-box.h"
 
 AccountsComboBox::AccountsComboBox(bool includeSelectAccount, QWidget *parent) :
-		KaduComboBox(parent), IncludeSelectAccount(includeSelectAccount)
+		KaduComboBox(parent)
 {
-	Model = new AccountsModel(this);
+	setDataRole(AccountRole);
 
+	Model = new AccountsModel(this);
 	setUpModel(Model, new AccountsProxyModel(this));
+
+	if (includeSelectAccount)
+		actionsModel()->addBeforeAction(new QAction(tr(" - Select account - "), this),
+		                                ActionsProxyModel::NotVisibleWithOneRowSourceModel);
 
 	connect(this, SIGNAL(currentIndexChanged(int)), this, SLOT(currentIndexChangedSlot(int)));
 }
@@ -64,21 +69,6 @@ void AccountsComboBox::currentIndexChangedSlot(int index)
 bool AccountsComboBox::compare(QVariant value, QVariant previousValue) const
 {
 	return value.value<Account>() == previousValue.value<Account>();
-}
-
-int AccountsComboBox::preferredDataRole() const
-{
-	return AccountRole;
-}
-
-QString AccountsComboBox::selectString() const
-{
-	return IncludeSelectAccount ? tr(" - Select account - ") : QString();
-}
-
-ActionsProxyModel::ActionVisibility AccountsComboBox::selectVisibility() const
-{
-	return ActionsProxyModel::NotVisibleWithOneRowSourceModel;
 }
 
 void AccountsComboBox::addFilter(AbstractAccountFilter *filter)

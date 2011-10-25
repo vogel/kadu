@@ -21,7 +21,7 @@
 #include "kadu-combo-box.h"
 
 KaduComboBox::KaduComboBox(QWidget *parent) :
-		QComboBox(parent),
+		QComboBox(parent), DataRole(0),
 		SourceModel(0), SourceProxyModel(0), ActionsModel(new ActionsProxyModel(this))
 {
 }
@@ -30,9 +30,9 @@ KaduComboBox::~KaduComboBox()
 {
 }
 
-ActionsProxyModel::ActionVisibility KaduComboBox::selectVisibility() const
+void KaduComboBox::setDataRole(int dataRole)
 {
-	return ActionsProxyModel::AlwaysVisible;
+	DataRole = dataRole;
 }
 
 /**
@@ -56,9 +56,6 @@ void KaduComboBox::setUpModel(QAbstractItemModel *sourceModel, QAbstractProxyMod
 		SourceProxyModel = 0;
 		return;
 	}
-
-	if (!selectString().isEmpty())
-		ActionsModel->addBeforeAction(new QAction(selectString(), this), selectVisibility());
 
 	if (SourceProxyModel)
 	{
@@ -109,7 +106,7 @@ void KaduComboBox::setCurrentValue(QVariant value)
 QVariant KaduComboBox::currentValue()
 {
 	if (SourceModel)
-		CurrentValue = ActionsModel->index(currentIndex(), modelColumn()).data(preferredDataRole());
+		CurrentValue = ActionsModel->index(currentIndex(), modelColumn()).data(DataRole);
 	return CurrentValue;
 }
 

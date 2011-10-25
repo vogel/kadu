@@ -42,9 +42,6 @@ private slots:
 protected:
 	virtual bool compare(QVariant value, QVariant previousValue) const;
 
-	virtual int preferredDataRole() const;
-	virtual QString selectString() const;
-
 public:
 	explicit GroupsComboBox(QWidget *parent = 0);
 	virtual ~GroupsComboBox();

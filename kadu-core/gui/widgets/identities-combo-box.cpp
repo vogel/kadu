@@ -31,9 +31,13 @@
 #include "identities-combo-box.h"
 
 IdentitiesComboBox::IdentitiesComboBox(bool includeSelectIdentity, QWidget *parent) :
-		KaduComboBox(parent), InActivatedSlot(false), IncludeSelectIdentity(includeSelectIdentity)
+		KaduComboBox(parent), InActivatedSlot(false)
 {
+	setDataRole(IdentityRole);
 	setUpModel(new IdentityModel(this));
+
+	if (includeSelectIdentity)
+		actionsModel()->addBeforeAction(new QAction(tr(" - Select identity - "), this));
 
 	CreateNewIdentityAction = new QAction(tr("Create a new identity..."), this);
 	QFont createNewIdentityActionFont = CreateNewIdentityAction->font();
@@ -121,14 +125,4 @@ void IdentitiesComboBox::currentIndexChangedSlot(int index)
 bool IdentitiesComboBox::compare(QVariant value, QVariant previousValue) const
 {
 	return value.value<Identity>() == previousValue.value<Identity>();
-}
-
-int IdentitiesComboBox::preferredDataRole() const
-{
-	return IdentityRole;
-}
-
-QString IdentitiesComboBox::selectString() const
-{
-	return IncludeSelectIdentity ? tr(" - Select identity - ") : QString();
 }

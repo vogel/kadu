@@ -30,7 +30,10 @@
 ProtocolsComboBox::ProtocolsComboBox(QWidget *parent) :
 		KaduComboBox(parent)
 {
+	setDataRole(ProtocolRole);
 	setUpModel(new ProtocolsModel(this), new ProtocolsModelProxy(this));
+	actionsModel()->addBeforeAction(new QAction(tr(" - Select network - "), this),
+	                                ActionsProxyModel::NotVisibleWithOneRowSourceModel);
 
 	connect(this, SIGNAL(currentIndexChanged(int)), this, SLOT(currentIndexChangedSlot(int)));
 }
@@ -41,40 +44,24 @@ ProtocolsComboBox::~ProtocolsComboBox()
 
 void ProtocolsComboBox::setCurrentProtocol(ProtocolFactory *protocol)
 {
-	setCurrentValue(qVariantFromValue((void *)protocol));
+	setCurrentValue(QVariant::fromValue<ProtocolFactory *>(protocol));
 }
 
 ProtocolFactory * ProtocolsComboBox::currentProtocol()
 {
-	return (ProtocolFactory *)(currentValue().value<void *>());
+	return currentValue().value<ProtocolFactory *>();
 }
 
 void ProtocolsComboBox::currentIndexChangedSlot(int index)
 {
 	if (KaduComboBox::currentIndexChangedSlot(index))
-		emit protocolChanged((ProtocolFactory *)(CurrentValue.value<void *>()),
-		                     (ProtocolFactory *)(ValueBeforeChange.value<void *>()));
+		emit protocolChanged(CurrentValue.value<ProtocolFactory *>(),
+		                     ValueBeforeChange.value<ProtocolFactory *>());
 }
 
 bool ProtocolsComboBox::compare(QVariant value, QVariant previousValue) const
 {
-	return (ProtocolFactory *)(value.value<void *>()) ==
-	        (ProtocolFactory *)(previousValue.value<void *>());
-}
-
-int ProtocolsComboBox::preferredDataRole() const
-{
-	return ProtocolRole;
-}
-
-QString ProtocolsComboBox::selectString() const
-{
-	return tr(" - Select network - ");
-}
-
-ActionsProxyModel::ActionVisibility ProtocolsComboBox::selectVisibility() const
-{
-	return ActionsProxyModel::NotVisibleWithOneRowSourceModel;
+	return value.value<ProtocolFactory *>() == previousValue.value<ProtocolFactory *>();
 }
 
 void ProtocolsComboBox::addFilter(AbstractProtocolFilter *filter)

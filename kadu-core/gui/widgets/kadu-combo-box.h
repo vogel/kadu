@@ -35,6 +35,8 @@ class KaduComboBox : public QComboBox
 {
 	Q_OBJECT
 
+	int DataRole;
+
 private slots:
 	void rowsRemoved(const QModelIndex &parent, int start, int end);
 	void updateValueBeforeChange();
@@ -47,11 +49,9 @@ protected:
 	QAbstractProxyModel *SourceProxyModel;
 	ActionsProxyModel *ActionsModel;
 
-	virtual bool compare(QVariant value, QVariant previousValue) const = 0;
+	void setDataRole(int dataRole);
 
-	virtual int preferredDataRole() const = 0;
-	virtual QString selectString() const = 0;
-	virtual ActionsProxyModel::ActionVisibility selectVisibility() const;
+	virtual bool compare(QVariant value, QVariant previousValue) const = 0;
 
 	void setUpModel(QAbstractItemModel *sourceModel, QAbstractProxyModel *sourceProxyModel = 0);
 

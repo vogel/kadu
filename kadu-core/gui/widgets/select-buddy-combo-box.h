@@ -41,9 +41,6 @@ private slots:
 protected:
 	virtual bool compare(QVariant value, QVariant previousValue) const;
 
-	virtual int preferredDataRole() const;
-	virtual QString selectString() const;
-
 	virtual void showPopup();
 	virtual void hidePopup();
 

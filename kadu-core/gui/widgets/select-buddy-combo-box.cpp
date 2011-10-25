@@ -33,7 +33,9 @@
 SelectBuddyComboBox::SelectBuddyComboBox(QWidget *parent) :
 		KaduComboBox(parent)
 {
+	setDataRole(BuddyRole);
 	setUpModel(new BuddiesModel(this), new BuddiesModelProxy(this));
+	actionsModel()->addBeforeAction(new QAction(tr(" - Select buddy - "), this));
 
 	Popup = new SelectBuddyPopup();
 	Popup->view()->proxyModel()->setSortByStatus(false);
@@ -75,16 +77,6 @@ void SelectBuddyComboBox::currentIndexChangedSlot(int index)
 bool SelectBuddyComboBox::compare(QVariant value, QVariant previousValue) const
 {
 	return value.value<Buddy>() == previousValue.value<Buddy>();
-}
-
-int SelectBuddyComboBox::preferredDataRole() const
-{
-	return BuddyRole;
-}
-
-QString SelectBuddyComboBox::selectString() const
-{
-	return tr(" - Select buddy - ");
 }
 
 void SelectBuddyComboBox::showPopup()
