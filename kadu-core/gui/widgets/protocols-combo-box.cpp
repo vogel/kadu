@@ -28,14 +28,10 @@
 #include "protocols-combo-box.h"
 
 ProtocolsComboBox::ProtocolsComboBox(QWidget *parent) :
-		KaduComboBox<ProtocolFactory *>(parent)
+		KaduComboBox(parent)
 {
 	setUpModel(new ProtocolsModel(this), new ProtocolsModelProxy(this));
 
-	connect(model(), SIGNAL(rowsAboutToBeRemoved(const QModelIndex &, int, int)),
-			this, SLOT(updateValueBeforeChange()));
-	connect(model(), SIGNAL(rowsRemoved(const QModelIndex &, int, int)),
-			this, SLOT(rowsRemoved(const QModelIndex &, int, int)));
 	connect(this, SIGNAL(currentIndexChanged(int)), this, SLOT(currentIndexChangedSlot(int)));
 }
 
@@ -45,28 +41,25 @@ ProtocolsComboBox::~ProtocolsComboBox()
 
 void ProtocolsComboBox::setCurrentProtocol(ProtocolFactory *protocol)
 {
-	setCurrentValue(protocol);
+	setCurrentValue(qVariantFromValue((void *)protocol));
 }
 
 ProtocolFactory * ProtocolsComboBox::currentProtocol()
 {
-	return currentValue();
+	return (ProtocolFactory *)(currentValue().value<void *>());
 }
 
 void ProtocolsComboBox::currentIndexChangedSlot(int index)
 {
-	if (KaduComboBox<ProtocolFactory *>::currentIndexChangedSlot(index))
-		emit protocolChanged(CurrentValue, ValueBeforeChange);
+	if (KaduComboBox::currentIndexChangedSlot(index))
+		emit protocolChanged((ProtocolFactory *)(CurrentValue.value<void *>()),
+		                     (ProtocolFactory *)(ValueBeforeChange.value<void *>()));
 }
 
-void ProtocolsComboBox::updateValueBeforeChange()
+bool ProtocolsComboBox::compare(QVariant value, QVariant previousValue) const
 {
-	KaduComboBox<ProtocolFactory *>::updateValueBeforeChange();
-}
-
-void ProtocolsComboBox::rowsRemoved(const QModelIndex &parent, int start, int end)
-{
-	KaduComboBox<ProtocolFactory *>::rowsRemoved(parent, start, end);
+	return (ProtocolFactory *)(value.value<void *>()) ==
+	        (ProtocolFactory *)(previousValue.value<void *>());
 }
 
 int ProtocolsComboBox::preferredDataRole() const

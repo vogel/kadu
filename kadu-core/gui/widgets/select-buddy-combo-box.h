@@ -29,7 +29,7 @@
 class AbstractBuddyFilter;
 class SelectBuddyPopup;
 
-class KADUAPI SelectBuddyComboBox : public KaduComboBox<Buddy>
+class KADUAPI SelectBuddyComboBox : public KaduComboBox
 {
 	Q_OBJECT
 
@@ -37,10 +37,10 @@ class KADUAPI SelectBuddyComboBox : public KaduComboBox<Buddy>
 
 private slots:
 	void currentIndexChangedSlot(int index);
-	void updateValueBeforeChange();
-	void rowsRemoved(const QModelIndex &parent, int start, int end);
 
 protected:
+	virtual bool compare(QVariant value, QVariant previousValue) const;
+
 	virtual int preferredDataRole() const;
 	virtual QString selectString() const;
 

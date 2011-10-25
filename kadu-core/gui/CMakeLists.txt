@@ -49,6 +49,7 @@ set (gui_SRCS
 	widgets/group-tab-bar.cpp
 	widgets/groups-combo-box.cpp
 	widgets/identities-combo-box.cpp
+	widgets/kadu-combo-box.cpp
 	widgets/kadu-web-view.cpp
 	widgets/line-edit-clear-button.cpp
 	widgets/line-edit-with-clear-button.cpp
@@ -185,6 +186,7 @@ set (gui_MOC_SRCS
 	widgets/group-tab-bar.h
 	widgets/groups-combo-box.h
 	widgets/identities-combo-box.h
+	widgets/kadu-combo-box.h
 	widgets/kadu-web-view.h
 	widgets/line-edit-clear-button.h
 	widgets/line-edit-with-clear-button.h

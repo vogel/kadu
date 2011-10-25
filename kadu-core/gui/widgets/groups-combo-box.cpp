@@ -32,7 +32,7 @@
 #include "groups-combo-box.h"
 
 GroupsComboBox::GroupsComboBox(QWidget *parent) :
-		KaduComboBox<Group>(parent), InActivatedSlot(false)
+		KaduComboBox(parent), InActivatedSlot(false)
 {
 	setUpModel(new GroupsModel(this), new QSortFilterProxyModel(this));
 
@@ -49,10 +49,6 @@ GroupsComboBox::GroupsComboBox(QWidget *parent) :
 
 	setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 
-	connect(model(), SIGNAL(rowsAboutToBeRemoved(const QModelIndex &, int, int)),
-			this, SLOT(updateValueBeforeChange()));
-	connect(model(), SIGNAL(rowsRemoved(const QModelIndex &, int, int)),
-			this, SLOT(rowsRemoved(const QModelIndex &, int, int)));
 	connect(this, SIGNAL(activated(int)), this, SLOT(activatedSlot(int)));
 	connect(this, SIGNAL(currentIndexChanged(int)), this, SLOT(currentIndexChangedSlot(int)));
 }
@@ -68,7 +64,7 @@ void GroupsComboBox::setCurrentGroup(Group group)
 
 Group GroupsComboBox::currentGroup()
 {
-	return currentValue();
+	return currentValue().value<Group>();
 }
 
 void GroupsComboBox::resetComboBox()
@@ -92,13 +88,18 @@ void GroupsComboBox::activatedSlot(int index)
 				tr("Please enter the name for the new group:"), QLineEdit::Normal,
 				QString(), &ok);
 
-		ok = ok && GroupManager::instance()->acceptableGroupName(newGroupName, true);
+		if (ok)
+		{
+			ok = GroupManager::instance()->acceptableGroupName(newGroupName, true);
 
-		Group switchToGroup = GroupManager::instance()->byName(newGroupName, ok);
-		if (switchToGroup)
-			setCurrentGroup(switchToGroup);
+			Group switchToGroup = GroupManager::instance()->byName(newGroupName, ok);
+			if (switchToGroup)
+				setCurrentGroup(switchToGroup);
+			else
+				setCurrentIndex(0);
+		}
 		else
-			setCurrentIndex(0);
+			setCurrentValue(CurrentValue);
 	}
 
 	InActivatedSlot = false;
@@ -118,17 +119,12 @@ void GroupsComboBox::currentIndexChangedSlot(int index)
 		return;
 	}
 
-	KaduComboBox<Group>::currentIndexChangedSlot(index);
+	KaduComboBox::currentIndexChangedSlot(index);
 }
 
-void GroupsComboBox::updateValueBeforeChange()
+bool GroupsComboBox::compare(QVariant value, QVariant previousValue) const
 {
-	KaduComboBox<Group>::updateValueBeforeChange();
-}
-
-void GroupsComboBox::rowsRemoved(const QModelIndex &parent, int start, int end)
-{
-	KaduComboBox<Group>::rowsRemoved(parent, start, end);
+	return value.value<Group>() == previousValue.value<Group>();
 }
 
 int GroupsComboBox::preferredDataRole() const

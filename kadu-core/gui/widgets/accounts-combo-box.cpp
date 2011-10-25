@@ -27,16 +27,12 @@
 #include "accounts-combo-box.h"
 
 AccountsComboBox::AccountsComboBox(bool includeSelectAccount, QWidget *parent) :
-		KaduComboBox<Account>(parent), IncludeSelectAccount(includeSelectAccount)
+		KaduComboBox(parent), IncludeSelectAccount(includeSelectAccount)
 {
 	Model = new AccountsModel(this);
 
 	setUpModel(Model, new AccountsProxyModel(this));
 
-	connect(model(), SIGNAL(rowsAboutToBeRemoved(const QModelIndex &, int, int)),
-			this, SLOT(updateValueBeforeChange()));
-	connect(model(), SIGNAL(rowsRemoved(const QModelIndex &, int, int)),
-			this, SLOT(rowsRemoved(const QModelIndex &, int, int)));
 	connect(this, SIGNAL(currentIndexChanged(int)), this, SLOT(currentIndexChangedSlot(int)));
 }
 
@@ -51,7 +47,7 @@ void AccountsComboBox::setCurrentAccount(Account account)
 
 Account AccountsComboBox::currentAccount()
 {
-	return currentValue();
+	return currentValue().value<Account>();
 }
 
 void AccountsComboBox::setIncludeIdInDisplay(bool includeIdInDisplay)
@@ -61,18 +57,13 @@ void AccountsComboBox::setIncludeIdInDisplay(bool includeIdInDisplay)
 
 void AccountsComboBox::currentIndexChangedSlot(int index)
 {
-	if (KaduComboBox<Account>::currentIndexChangedSlot(index))
-		emit accountChanged(CurrentValue, ValueBeforeChange);
+	if (KaduComboBox::currentIndexChangedSlot(index))
+		emit accountChanged(CurrentValue.value<Account>(), ValueBeforeChange.value<Account>());
 }
 
-void AccountsComboBox::updateValueBeforeChange()
+bool AccountsComboBox::compare(QVariant value, QVariant previousValue) const
 {
-	KaduComboBox<Account>::updateValueBeforeChange();
-}
-
-void AccountsComboBox::rowsRemoved(const QModelIndex &parent, int start, int end)
-{
-	KaduComboBox<Account>::rowsRemoved(parent, start, end);
+	return value.value<Account>() == previousValue.value<Account>();
 }
 
 int AccountsComboBox::preferredDataRole() const

@@ -31,7 +31,7 @@
 #include "identities-combo-box.h"
 
 IdentitiesComboBox::IdentitiesComboBox(bool includeSelectIdentity, QWidget *parent) :
-		KaduComboBox<Identity>(parent), InActivatedSlot(false), IncludeSelectIdentity(includeSelectIdentity)
+		KaduComboBox(parent), InActivatedSlot(false), IncludeSelectIdentity(includeSelectIdentity)
 {
 	setUpModel(new IdentityModel(this));
 
@@ -45,10 +45,6 @@ IdentitiesComboBox::IdentitiesComboBox(bool includeSelectIdentity, QWidget *pare
 
 	setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 
-	connect(model(), SIGNAL(rowsAboutToBeRemoved(const QModelIndex &, int, int)),
-			this, SLOT(updateValueBeforeChange()));
-	connect(model(), SIGNAL(rowsRemoved(const QModelIndex &, int, int)),
-			this, SLOT(rowsRemoved(const QModelIndex &, int, int)));
 	connect(this, SIGNAL(activated(int)), this, SLOT(activatedSlot(int)));
 	connect(this, SIGNAL(currentIndexChanged(int)), this, SLOT(currentIndexChangedSlot(int)));
 }
@@ -65,7 +61,7 @@ void IdentitiesComboBox::setCurrentIdentity(Identity identity)
 
 Identity IdentitiesComboBox::currentIdentity()
 {
-	return currentValue();
+	return currentValue().value<Identity>();
 }
 
 void IdentitiesComboBox::resetComboBox()
@@ -89,11 +85,16 @@ void IdentitiesComboBox::activatedSlot(int index)
 				tr("Please enter the name for the new identity:"), QLineEdit::Normal,
 				QString(), &ok);
 
-		Identity identityToSwitch = IdentityManager::instance()->byName(identityName, ok);
-		if (identityToSwitch)
-			setCurrentIdentity(identityToSwitch);
+		if (ok)
+		{
+			Identity identityToSwitch = IdentityManager::instance()->byName(identityName, true);
+			if (identityToSwitch)
+				setCurrentIdentity(identityToSwitch);
+			else
+				setCurrentIndex(0);
+		}
 		else
-			setCurrentIndex(0);
+			setCurrentValue(CurrentValue);
 	}
 
 	InActivatedSlot = false;
@@ -113,18 +114,13 @@ void IdentitiesComboBox::currentIndexChangedSlot(int index)
 		return;
 	}
 
-	if (KaduComboBox<Identity>::currentIndexChangedSlot(index))
-		emit identityChanged(CurrentValue);
+	if (KaduComboBox::currentIndexChangedSlot(index))
+		emit identityChanged(CurrentValue.value<Identity>());
 }
 
-void IdentitiesComboBox::updateValueBeforeChange()
+bool IdentitiesComboBox::compare(QVariant value, QVariant previousValue) const
 {
-	KaduComboBox<Identity>::updateValueBeforeChange();
-}
-
-void IdentitiesComboBox::rowsRemoved(const QModelIndex &parent, int start, int end)
-{
-	KaduComboBox<Identity>::rowsRemoved(parent, start, end);
+	return value.value<Identity>() == previousValue.value<Identity>();
 }
 
 int IdentitiesComboBox::preferredDataRole() const

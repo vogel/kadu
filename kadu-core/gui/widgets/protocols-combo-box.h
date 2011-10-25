@@ -29,17 +29,17 @@
 
 class AbstractProtocolFilter;
 
-class KADUAPI ProtocolsComboBox : public KaduComboBox<ProtocolFactory *>
+class KADUAPI ProtocolsComboBox : public KaduComboBox
 {
 	Q_OBJECT
 	Q_PROPERTY(ProtocolFactory* currentProtocol READ currentProtocol WRITE setCurrentProtocol)
 
 private slots:
 	void currentIndexChangedSlot(int index);
-	void updateValueBeforeChange();
-	void rowsRemoved(const QModelIndex &parent, int start, int end);
 
 protected:
+	virtual bool compare(QVariant value, QVariant previousValue) const;
+
 	virtual int preferredDataRole() const;
 	virtual QString selectString() const;
 	virtual ActionsProxyModel::ActionVisibility selectVisibility() const;

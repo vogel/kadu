@@ -26,7 +26,7 @@
 #include "buddies/group.h"
 #include "gui/widgets/kadu-combo-box.h"
 
-class GroupsComboBox : public KaduComboBox<Group>
+class GroupsComboBox : public KaduComboBox
 {
 	Q_OBJECT
 
@@ -38,10 +38,10 @@ private slots:
 	void resetComboBox();
 	void activatedSlot(int index);
 	void currentIndexChangedSlot(int index);
-	void updateValueBeforeChange();
-	void rowsRemoved(const QModelIndex &parent, int start, int end);
 
 protected:
+	virtual bool compare(QVariant value, QVariant previousValue) const;
+
 	virtual int preferredDataRole() const;
 	virtual QString selectString() const;
 

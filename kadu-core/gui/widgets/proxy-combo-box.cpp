@@ -27,7 +27,7 @@
 #define DEFAULT_PROXY_INDEX 1
 
 ProxyComboBox::ProxyComboBox(QWidget *parent) :
-		KaduComboBox<NetworkProxy>(parent), InActivatedSlot(false), DefaultProxyAction(0)
+		KaduComboBox(parent), InActivatedSlot(false), DefaultProxyAction(0)
 {
 	Model = new NetworkProxyModel(this);
 	setUpModel(Model, new NetworkProxyProxyModel(this));
@@ -39,10 +39,6 @@ ProxyComboBox::ProxyComboBox(QWidget *parent) :
 	EditProxyAction->setData("editProxyConfiguration");
 	ActionsModel->addAfterAction(EditProxyAction);
 
-	connect(model(), SIGNAL(rowsAboutToBeRemoved(const QModelIndex &, int, int)),
-			this, SLOT(updateValueBeforeChange()));
-	connect(model(), SIGNAL(rowsRemoved(const QModelIndex &, int, int)),
-			this, SLOT(rowsRemoved(const QModelIndex &, int, int)));
 	connect(this, SIGNAL(currentIndexChanged(int)), this, SLOT(currentIndexChangedSlot(int)));
 }
 
@@ -79,7 +75,7 @@ void ProxyComboBox::setCurrentProxy(const NetworkProxy &networkProxy)
 
 NetworkProxy ProxyComboBox::currentProxy()
 {
-	return currentValue();
+	return currentValue().value<NetworkProxy>();
 }
 
 void ProxyComboBox::currentIndexChangedSlot(int index)
@@ -94,18 +90,13 @@ void ProxyComboBox::currentIndexChangedSlot(int index)
 		return;
 	}
 
-	if (KaduComboBox<NetworkProxy>::currentIndexChangedSlot(index))
-		emit proxyChanged(CurrentValue, ValueBeforeChange);
+	if (KaduComboBox::currentIndexChangedSlot(index))
+		emit proxyChanged(CurrentValue.value<NetworkProxy>(), ValueBeforeChange.value<NetworkProxy>());
 }
 
-void ProxyComboBox::updateValueBeforeChange()
+bool ProxyComboBox::compare(QVariant value, QVariant previousValue) const
 {
-	KaduComboBox<NetworkProxy>::updateValueBeforeChange();
-}
-
-void ProxyComboBox::rowsRemoved(const QModelIndex &parent, int start, int end)
-{
-	KaduComboBox<NetworkProxy>::rowsRemoved(parent, start, end);
+	return value.value<NetworkProxy>() == previousValue.value<NetworkProxy>();
 }
 
 int ProxyComboBox::preferredDataRole() const

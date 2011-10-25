@@ -27,7 +27,7 @@
 class AbstractAccountFilter;
 class AccountsModel;
 
-class AccountsComboBox : public KaduComboBox<Account>
+class AccountsComboBox : public KaduComboBox
 {
 	Q_OBJECT
 
@@ -36,10 +36,10 @@ class AccountsComboBox : public KaduComboBox<Account>
 
 private slots:
 	void currentIndexChangedSlot(int index);
-	void updateValueBeforeChange();
-	void rowsRemoved(const QModelIndex &parent, int start, int end);
 
 protected:
+	virtual bool compare(QVariant value, QVariant previousValue) const;
+
 	virtual int preferredDataRole() const;
 	virtual QString selectString() const;
 	virtual ActionsProxyModel::ActionVisibility selectVisibility() const;

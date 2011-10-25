@@ -27,7 +27,7 @@
 
 class NetworkProxyModel;
 
-class KADUAPI ProxyComboBox : public KaduComboBox<NetworkProxy>
+class KADUAPI ProxyComboBox : public KaduComboBox
 {
 	Q_OBJECT
 
@@ -39,10 +39,10 @@ class KADUAPI ProxyComboBox : public KaduComboBox<NetworkProxy>
 
 private slots:
 	void currentIndexChangedSlot(int index);
-	void updateValueBeforeChange();
-	void rowsRemoved(const QModelIndex &parent, int start, int end);
 
 protected:
+	virtual bool compare(QVariant value, QVariant previousValue) const;
+
 	virtual int preferredDataRole() const;
 	virtual QString selectString() const;
 	virtual ActionsProxyModel::ActionVisibility selectVisibility() const;
