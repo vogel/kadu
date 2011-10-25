@@ -40,7 +40,7 @@ ProxyComboBox::ProxyComboBox(QWidget *parent) :
 	editProxyActionFont.setItalic(true);
 	EditProxyAction->setFont(editProxyActionFont);
 	EditProxyAction->setData("editProxyConfiguration");
-	ActionsModel->addAfterAction(EditProxyAction);
+	actionsModel()->addAfterAction(EditProxyAction);
 
 	connect(this, SIGNAL(currentIndexChanged(int)), this, SLOT(currentIndexChangedSlot(int)));
 }
@@ -54,7 +54,7 @@ void ProxyComboBox::enableDefaultProxyAction()
 	DefaultProxyAction = new QAction(tr(" - Use Default Proxy - "), this);
 	DefaultProxyAction->setData("defaultProxy");
 	DefaultProxyAction->setFont(QFont());
-	ActionsModel->addBeforeAction(DefaultProxyAction);
+	actionsModel()->addBeforeAction(DefaultProxyAction);
 }
 
 void ProxyComboBox::selectDefaultProxy()

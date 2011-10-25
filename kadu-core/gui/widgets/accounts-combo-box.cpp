@@ -32,7 +32,8 @@ AccountsComboBox::AccountsComboBox(bool includeSelectAccount, QWidget *parent) :
 	setDataRole(AccountRole);
 
 	Model = new AccountsModel(this);
-	setUpModel(Model, new AccountsProxyModel(this));
+	ProxyModel = new AccountsProxyModel(this);
+	setUpModel(Model, ProxyModel);
 
 	if (includeSelectAccount)
 		actionsModel()->addBeforeAction(new QAction(tr(" - Select account - "), this),
@@ -73,10 +74,10 @@ bool AccountsComboBox::compare(QVariant value, QVariant previousValue) const
 
 void AccountsComboBox::addFilter(AbstractAccountFilter *filter)
 {
-	static_cast<AccountsProxyModel *>(SourceProxyModel)->addFilter(filter);
+	ProxyModel->addFilter(filter);
 }
 
 void AccountsComboBox::removeFilter(AbstractAccountFilter *filter)
 {
-	static_cast<AccountsProxyModel *>(SourceProxyModel)->removeFilter(filter);
+	ProxyModel->removeFilter(filter);
 }

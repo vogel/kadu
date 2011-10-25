@@ -31,7 +31,9 @@ ProtocolsComboBox::ProtocolsComboBox(QWidget *parent) :
 		KaduComboBox(parent)
 {
 	setDataRole(ProtocolRole);
-	setUpModel(new ProtocolsModel(this), new ProtocolsModelProxy(this));
+
+	ProxyModel = new ProtocolsModelProxy(this);
+	setUpModel(new ProtocolsModel(this), ProxyModel);
 	actionsModel()->addBeforeAction(new QAction(tr(" - Select network - "), this),
 	                                ActionsProxyModel::NotVisibleWithOneRowSourceModel);
 
@@ -66,10 +68,10 @@ bool ProtocolsComboBox::compare(QVariant value, QVariant previousValue) const
 
 void ProtocolsComboBox::addFilter(AbstractProtocolFilter *filter)
 {
-	static_cast<ProtocolsModelProxy *>(SourceProxyModel)->addFilter(filter);
+	ProxyModel->addFilter(filter);
 }
 
 void ProtocolsComboBox::removeFilter(AbstractProtocolFilter *filter)
 {
-	static_cast<ProtocolsModelProxy *>(SourceProxyModel)->removeFilter(filter);
+	ProxyModel->removeFilter(filter);
 }

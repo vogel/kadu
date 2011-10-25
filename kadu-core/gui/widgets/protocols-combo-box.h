@@ -28,11 +28,14 @@
 #include "exports.h"
 
 class AbstractProtocolFilter;
+class ProtocolsModelProxy;
 
 class KADUAPI ProtocolsComboBox : public KaduComboBox
 {
 	Q_OBJECT
 	Q_PROPERTY(ProtocolFactory* currentProtocol READ currentProtocol WRITE setCurrentProtocol)
+
+	ProtocolsModelProxy *ProxyModel;
 
 private slots:
 	void currentIndexChangedSlot(int index);

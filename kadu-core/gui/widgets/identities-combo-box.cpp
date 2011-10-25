@@ -45,7 +45,7 @@ IdentitiesComboBox::IdentitiesComboBox(bool includeSelectIdentity, QWidget *pare
 	CreateNewIdentityAction->setFont(createNewIdentityActionFont);
 	CreateNewIdentityAction->setData("createNewIdentity");
 
-	ActionsModel->addAfterAction(CreateNewIdentityAction);
+	actionsModel()->addAfterAction(CreateNewIdentityAction);
 
 	setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 

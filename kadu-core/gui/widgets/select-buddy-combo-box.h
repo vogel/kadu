@@ -27,6 +27,7 @@
 #include "exports.h"
 
 class AbstractBuddyFilter;
+class BuddiesModelProxy;
 class SelectBuddyPopup;
 
 class KADUAPI SelectBuddyComboBox : public KaduComboBox
@@ -34,6 +35,7 @@ class KADUAPI SelectBuddyComboBox : public KaduComboBox
 	Q_OBJECT
 
 	SelectBuddyPopup *Popup;
+	BuddiesModelProxy *ProxyModel;
 
 private slots:
 	void currentIndexChangedSlot(int index);

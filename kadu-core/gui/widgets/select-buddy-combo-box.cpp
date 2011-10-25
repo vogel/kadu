@@ -34,13 +34,15 @@ SelectBuddyComboBox::SelectBuddyComboBox(QWidget *parent) :
 		KaduComboBox(parent)
 {
 	setDataRole(BuddyRole);
-	setUpModel(new BuddiesModel(this), new BuddiesModelProxy(this));
+
+	ProxyModel = new BuddiesModelProxy(this);
+	setUpModel(new BuddiesModel(this), ProxyModel);
 	actionsModel()->addBeforeAction(new QAction(tr(" - Select buddy - "), this));
 
 	Popup = new SelectBuddyPopup();
 	Popup->view()->proxyModel()->setSortByStatus(false);
 
-	static_cast<BuddiesModelProxy *>(SourceProxyModel)->setSortByStatus(false);
+	ProxyModel->setSortByStatus(false);
 
 	AnonymousBuddyFilter *anonymousFilter = new AnonymousBuddyFilter(this);
 	anonymousFilter->setEnabled(true);
@@ -94,12 +96,12 @@ void SelectBuddyComboBox::hidePopup()
 
 void SelectBuddyComboBox::addFilter(AbstractBuddyFilter *filter)
 {
-	static_cast<BuddiesModelProxy *>(SourceProxyModel)->addFilter(filter);
+	ProxyModel->addFilter(filter);
 	Popup->view()->addFilter(filter);
 }
 
 void SelectBuddyComboBox::removeFilter(AbstractBuddyFilter *filter)
 {
-	static_cast<BuddiesModelProxy *>(SourceProxyModel)->removeFilter(filter);
+	ProxyModel->removeFilter(filter);
 	Popup->view()->removeFilter(filter);
 }

@@ -26,12 +26,14 @@
 
 class AbstractAccountFilter;
 class AccountsModel;
+class AccountsProxyModel;
 
 class AccountsComboBox : public KaduComboBox
 {
 	Q_OBJECT
 
 	AccountsModel *Model;
+	AccountsProxyModel *ProxyModel;
 
 private slots:
 	void currentIndexChangedSlot(int index);

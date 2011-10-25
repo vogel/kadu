@@ -34,13 +34,14 @@
 GroupsComboBox::GroupsComboBox(QWidget *parent) :
 		KaduComboBox(parent), InActivatedSlot(false)
 {
+	QSortFilterProxyModel *proxyModel = new QSortFilterProxyModel(this);
 	setDataRole(GroupRole);
-	setUpModel(new GroupsModel(this), new QSortFilterProxyModel(this));
+	setUpModel(new GroupsModel(this), proxyModel);
 
 	actionsModel()->addBeforeAction(new QAction(tr(" - Select group - "), this));
 
-	static_cast<QSortFilterProxyModel *>(SourceProxyModel)->setDynamicSortFilter(true);
-	SourceProxyModel->sort(0);
+	proxyModel->setDynamicSortFilter(true);
+	proxyModel->sort(0);
 
 	CreateNewGroupAction = new QAction(tr("Create a new group..."), this);
 	QFont createNewGroupActionFont = CreateNewGroupAction->font();
@@ -48,7 +49,7 @@ GroupsComboBox::GroupsComboBox(QWidget *parent) :
 	CreateNewGroupAction->setFont(createNewGroupActionFont);
 	CreateNewGroupAction->setData("createNewGroup");
 
-	ActionsModel->addAfterAction(CreateNewGroupAction);
+	actionsModel()->addAfterAction(CreateNewGroupAction);
 
 	setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 
