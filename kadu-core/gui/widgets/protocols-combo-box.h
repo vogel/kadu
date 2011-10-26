@@ -38,10 +38,8 @@ class KADUAPI ProtocolsComboBox : public ActionsComboBox
 
 	ProtocolsModelProxy *ProxyModel;
 
-private slots:
-	void currentIndexChangedSlot(int index);
-
 protected:
+	virtual void valueChanged(QVariant value, QVariant previousValue);
 	virtual bool compare(QVariant value, QVariant previousValue) const;
 
 public:

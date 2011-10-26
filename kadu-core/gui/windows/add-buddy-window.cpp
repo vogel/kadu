@@ -134,7 +134,7 @@ void AddBuddyWindow::createGui()
 		layout->addWidget(UserNameEdit, 0, 1);
 	}
 
-	AccountCombo = new AccountsComboBox(MyBuddy.isNull(), this);
+	AccountCombo = new AccountsComboBox(MyBuddy.isNull(), ActionsProxyModel::AlwaysVisible, this);
 	AccountCombo->setIncludeIdInDisplay(true);
 
 	AccountComboIdFilter = new IdValidityFilter(AccountCombo);

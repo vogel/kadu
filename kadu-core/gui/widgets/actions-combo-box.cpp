@@ -24,8 +24,11 @@
 
 ActionsComboBox::ActionsComboBox(QWidget *parent) :
 		QComboBox(parent), DataRole(0),
-		SourceModel(0), SourceProxyModel(0), ActionsModel(new ActionsProxyModel(this))
+		SourceModel(0), SourceProxyModel(0), ActionsModel(new ActionsProxyModel(this)),
+		LastIndex(-1)
 {
+	connect(this, SIGNAL(activated(int)), this, SLOT(activatedSlot(int)));
+	connect(this, SIGNAL(currentIndexChanged(int)), this, SLOT(currentIndexChangedSlot(int)));
 }
 
 ActionsComboBox::~ActionsComboBox()
@@ -50,6 +53,48 @@ void ActionsComboBox::addAfterAction(QAction *action, ActionsProxyModel::ActionV
 QAction * ActionsComboBox::currentAction()
 {
 	return ActionsModel->index(currentIndex(), modelColumn()).data(ActionRole).value<QAction *>();
+}
+
+void ActionsComboBox::activatedSlot(int index)
+{
+	QModelIndex modelIndex = ActionsModel->index(index, modelColumn(), rootModelIndex());
+	QAction *action = modelIndex.data(ActionRole).value<QAction *>();
+
+	if (!action)
+		return;
+
+	// actions with "true" in data are unselectable
+	if (!action->data().isNull() && action->data().toBool())
+		setCurrentIndex(LastIndex);
+
+	action->trigger();
+}
+
+void ActionsComboBox::currentIndexChangedSlot(int index)
+{
+	QModelIndex modelIndex = ActionsModel->index(index, modelColumn(), rootModelIndex());
+	QAction *action = modelIndex.data(ActionRole).value<QAction *>();
+
+	// actions with "true" in data are unselectable
+	if (!action || action->data().isNull() || !action->data().toBool())
+		LastIndex = index;
+
+	if ((index >= 0) && (index < count()))
+	{
+		updateValueBeforeChange(); // sets ValueBeforeChange variable
+		currentValue(); // sets CurrentValue variable
+
+		if (!compare(CurrentValue, ValueBeforeChange))
+			valueChanged(CurrentValue, ValueBeforeChange);
+	}
+	else
+		setCurrentIndex(0);
+}
+
+void ActionsComboBox::valueChanged(QVariant value, QVariant previousValue)
+{
+	Q_UNUSED(value)
+	Q_UNUSED(previousValue)
 }
 
 /**
@@ -129,31 +174,6 @@ QVariant ActionsComboBox::currentValue()
 
 /**
  * @author Bartosz 'beevvy' Brachaczek
- * @author Rafal 'Vogel' Malinowski
- * @return whether current value changed
- *
- * Makes sure that correct current value is set after the index has changed
- * and returns true in case current value actually has changed, otherwise
- * false.
- */
-bool ActionsComboBox::currentIndexChangedSlot(int index)
-{
-	if (index < 0 || (index >= count() && count() != 0))
-		setCurrentIndex(0);
-	else
-	{
-		updateValueBeforeChange(); // sets ValueBeforeChange variable
-		currentValue(); // sets CurrentValue variable
-
-		if (!compare(CurrentValue, ValueBeforeChange))
-			return true;
-	}
-
-	return false;
-}
-
-/**
- * @author Bartosz 'beevvy' Brachaczek
  *
  * Updates ValueBeforeChange field.
  *
@@ -182,5 +202,10 @@ void ActionsComboBox::rowsRemoved(const QModelIndex &parent, int start, int end)
 		return;
 
 	if (!compare(CurrentValue, ValueBeforeChange))
-		setCurrentIndex(0);
+		reset();
+}
+
+void ActionsComboBox::reset()
+{
+	setCurrentIndex(0);
 }

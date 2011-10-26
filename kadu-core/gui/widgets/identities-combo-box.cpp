@@ -43,14 +43,12 @@ IdentitiesComboBox::IdentitiesComboBox(bool includeSelectIdentity, QWidget *pare
 	QFont createNewIdentityActionFont = CreateNewIdentityAction->font();
 	createNewIdentityActionFont.setItalic(true);
 	CreateNewIdentityAction->setFont(createNewIdentityActionFont);
-	CreateNewIdentityAction->setData("createNewIdentity");
+	CreateNewIdentityAction->setData(true);
+	connect(CreateNewIdentityAction, SIGNAL(triggered()), this, SLOT(createNewIdentity()));
 
 	addAfterAction(CreateNewIdentityAction);
 
 	setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
-
-	connect(this, SIGNAL(activated(int)), this, SLOT(activatedSlot(int)));
-	connect(this, SIGNAL(currentIndexChanged(int)), this, SLOT(currentIndexChangedSlot(int)));
 }
 
 IdentitiesComboBox::~IdentitiesComboBox()
@@ -68,58 +66,27 @@ Identity IdentitiesComboBox::currentIdentity()
 	return currentValue().value<Identity>();
 }
 
-void IdentitiesComboBox::resetComboBox()
+void IdentitiesComboBox::createNewIdentity()
 {
-	if (!InActivatedSlot)
-		setCurrentIndex(0);
-}
+	bool ok;
 
-void IdentitiesComboBox::activatedSlot(int index)
-{
-	InActivatedSlot = true;
+	QString identityName = QInputDialog::getText(this, tr("New Identity"),
+			tr("Please enter the name for the new identity:"), QLineEdit::Normal,
+			QString(), &ok);
 
-	QModelIndex modelIndex = this->model()->index(index, modelColumn(), rootModelIndex());
-	QAction *action = modelIndex.data(ActionRole).value<QAction *>();
-
-	if (action == CreateNewIdentityAction)
-	{
-		bool ok;
-
-		QString identityName = QInputDialog::getText(this, tr("New Identity"),
-				tr("Please enter the name for the new identity:"), QLineEdit::Normal,
-				QString(), &ok);
-
-		if (ok)
-		{
-			Identity identityToSwitch = IdentityManager::instance()->byName(identityName, true);
-			if (identityToSwitch)
-				setCurrentIdentity(identityToSwitch);
-			else
-				setCurrentIndex(0);
-		}
-		else
-			setCurrentValue(CurrentValue);
-	}
-
-	InActivatedSlot = false;
-}
-
-void IdentitiesComboBox::currentIndexChangedSlot(int index)
-{
-	QModelIndex modelIndex = this->model()->index(index, modelColumn(), rootModelIndex());
-	QAction *action = modelIndex.data(ActionRole).value<QAction *>();
-	if (action == CreateNewIdentityAction)
-	{
-		// this is needed to fix bugs #1674 and #1690
-		// as this action has to be activated by the user, otherwise we have to ignore it and reset combo box
-		// TODO: try to redo this as this is a bit tricky
-		if (!InActivatedSlot)
-			QMetaObject::invokeMethod(this, "resetComboBox", Qt::QueuedConnection);
+	if (!ok)
 		return;
-	}
 
-	if (ActionsComboBox::currentIndexChangedSlot(index))
-		emit identityChanged(CurrentValue.value<Identity>());
+	Identity newIdentity = IdentityManager::instance()->byName(identityName, true);
+	if (newIdentity)
+		setCurrentIdentity(newIdentity);
+}
+
+void IdentitiesComboBox::valueChanged(QVariant value, QVariant previousValue)
+{
+	Q_UNUSED(previousValue)
+
+	emit identityChanged(value.value<Identity>());
 }
 
 bool IdentitiesComboBox::compare(QVariant value, QVariant previousValue) const

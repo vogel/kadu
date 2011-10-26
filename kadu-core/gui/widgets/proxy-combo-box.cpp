@@ -39,10 +39,10 @@ ProxyComboBox::ProxyComboBox(QWidget *parent) :
 	QFont editProxyActionFont = EditProxyAction->font();
 	editProxyActionFont.setItalic(true);
 	EditProxyAction->setFont(editProxyActionFont);
-	EditProxyAction->setData("editProxyConfiguration");
-	addAfterAction(EditProxyAction);
+	EditProxyAction->setData(true);
+	connect(EditProxyAction, SIGNAL(triggered()), this, SLOT(editProxy()));
 
-	connect(this, SIGNAL(currentIndexChanged(int)), this, SLOT(currentIndexChangedSlot(int)));
+	addAfterAction(EditProxyAction);
 }
 
 ProxyComboBox::~ProxyComboBox()
@@ -52,7 +52,6 @@ ProxyComboBox::~ProxyComboBox()
 void ProxyComboBox::enableDefaultProxyAction()
 {
 	DefaultProxyAction = new QAction(tr(" - Use Default Proxy - "), this);
-	DefaultProxyAction->setData("defaultProxy");
 	DefaultProxyAction->setFont(QFont());
 	addBeforeAction(DefaultProxyAction);
 }
@@ -81,23 +80,25 @@ NetworkProxy ProxyComboBox::currentProxy()
 	return currentValue().value<NetworkProxy>();
 }
 
-void ProxyComboBox::currentIndexChangedSlot(int index)
+void ProxyComboBox::editProxy()
 {
-	QModelIndex modelIndex = this->model()->index(index, modelColumn(), rootModelIndex());
-	QAction *action = modelIndex.data(ActionRole).value<QAction *>();
+	ProxyEditWindow::show();
+}
 
-	if (action == EditProxyAction)
-	{
-		ProxyEditWindow::show();
-		setCurrentValue(CurrentValue);
-		return;
-	}
-
-	if (ActionsComboBox::currentIndexChangedSlot(index))
-		emit proxyChanged(CurrentValue.value<NetworkProxy>(), ValueBeforeChange.value<NetworkProxy>());
+void ProxyComboBox::valueChanged(QVariant value, QVariant previousValue)
+{
+	emit proxyChanged(value.value<NetworkProxy>(), previousValue.value<NetworkProxy>());
 }
 
 bool ProxyComboBox::compare(QVariant value, QVariant previousValue) const
 {
 	return value.value<NetworkProxy>() == previousValue.value<NetworkProxy>();
+}
+
+void ProxyComboBox::reset()
+{
+	if (DefaultProxyAction)
+		setCurrentIndex(DEFAULT_PROXY_INDEX);
+	else
+		setCurrentIndex(0);
 }

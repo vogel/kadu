@@ -35,9 +35,7 @@ class GroupsComboBox : public ActionsComboBox
 	QAction *CreateNewGroupAction;
 
 private slots:
-	void resetComboBox();
-	void activatedSlot(int index);
-	void currentIndexChangedSlot(int index);
+	void createNewGroup();
 
 protected:
 	virtual bool compare(QVariant value, QVariant previousValue) const;

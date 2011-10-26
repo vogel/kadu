@@ -35,11 +35,10 @@ class KADUAPI IdentitiesComboBox : public ActionsComboBox
 	QAction *CreateNewIdentityAction;
 
 private slots:
-	void resetComboBox();
-	void activatedSlot(int index);
-	void currentIndexChangedSlot(int index);
+	void createNewIdentity();
 
 protected:
+	virtual void valueChanged(QVariant value, QVariant previousValue);
 	virtual bool compare(QVariant value, QVariant previousValue) const;
 
 public:

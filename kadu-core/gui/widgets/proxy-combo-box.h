@@ -38,14 +38,17 @@ class KADUAPI ProxyComboBox : public ActionsComboBox
 	QAction *DefaultProxyAction;
 
 private slots:
-	void currentIndexChangedSlot(int index);
+	void editProxy();
 
 protected:
+	virtual void valueChanged(QVariant value, QVariant previousValue);
 	virtual bool compare(QVariant value, QVariant previousValue) const;
 
 public:
 	explicit ProxyComboBox(QWidget *parent = 0);
 	virtual ~ProxyComboBox();
+
+	virtual void reset();
 
 	void enableDefaultProxyAction();
 	void selectDefaultProxy();

@@ -35,14 +35,13 @@ class AccountsComboBox : public ActionsComboBox
 	AccountsModel *Model;
 	AccountsProxyModel *ProxyModel;
 
-private slots:
-	void currentIndexChangedSlot(int index);
-
 protected:
+	virtual void valueChanged(QVariant value, QVariant previousValue);
 	virtual bool compare(QVariant value, QVariant previousValue) const;
 
 public:
-	explicit AccountsComboBox(bool includeSelectAccount, QWidget *parent = 0);
+	explicit AccountsComboBox(bool includeSelectAccount, ActionsProxyModel::ActionVisibility visibility,
+	                          QWidget *parent = 0);
 	virtual ~AccountsComboBox();
 
 	void setCurrentAccount(Account account);

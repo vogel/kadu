@@ -49,9 +49,6 @@ SelectBuddyComboBox::SelectBuddyComboBox(QWidget *parent) :
 	addFilter(anonymousFilter);
 
 	connect(Popup, SIGNAL(buddySelected(Buddy)), this, SLOT(setCurrentBuddy(Buddy)));
-	connect(model(), SIGNAL(rowsAboutToBeRemoved(const QModelIndex &, int, int)),
-			this, SLOT(updateValueBeforeChange()));
-	connect(this, SIGNAL(currentIndexChanged(int)), this, SLOT(currentIndexChangedSlot(int)));
 }
 
 SelectBuddyComboBox::~SelectBuddyComboBox()
@@ -70,10 +67,11 @@ Buddy SelectBuddyComboBox::currentBuddy()
 	return currentValue().value<Buddy>();
 }
 
-void SelectBuddyComboBox::currentIndexChangedSlot(int index)
+void SelectBuddyComboBox::valueChanged(QVariant value, QVariant previousValue)
 {
-	if (ActionsComboBox::currentIndexChangedSlot(index))
-		emit buddyChanged(CurrentValue.value<Buddy>());
+	Q_UNUSED(previousValue)
+
+	emit buddyChanged(value.value<Buddy>());
 }
 
 bool SelectBuddyComboBox::compare(QVariant value, QVariant previousValue) const
@@ -86,7 +84,7 @@ void SelectBuddyComboBox::showPopup()
 	QRect geom(mapToGlobal(rect().bottomLeft()), QSize(geometry().width(), Popup->height()));
 	setWindowGeometry(Popup, geom);
 
-	Popup->show(CurrentValue.value<Buddy>());
+	Popup->show(currentBuddy());
 }
 
 void SelectBuddyComboBox::hidePopup()

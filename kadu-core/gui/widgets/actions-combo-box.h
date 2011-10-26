@@ -41,16 +41,22 @@ class ActionsComboBox : public QComboBox
 	QAbstractProxyModel *SourceProxyModel;
 	ActionsProxyModel *ActionsModel;
 
+	QVariant CurrentValue;
+	QVariant ValueBeforeChange;
+
+	int LastIndex;
+
 private slots:
+	void activatedSlot(int index);
+	void currentIndexChangedSlot(int index);
+
 	void rowsRemoved(const QModelIndex &parent, int start, int end);
 	void updateValueBeforeChange();
 
 protected:
-	QVariant CurrentValue;
-	QVariant ValueBeforeChange;
-
 	void setDataRole(int dataRole);
 
+	virtual void valueChanged(QVariant value, QVariant previousValue);
 	virtual bool compare(QVariant value, QVariant previousValue) const = 0;
 
 	void setUpModel(QAbstractItemModel *sourceModel, QAbstractProxyModel *sourceProxyModel = 0);
@@ -58,11 +64,11 @@ protected:
 	void setCurrentValue(QVariant value);
 	QVariant currentValue();
 
-	bool currentIndexChangedSlot(int index);
-
 public:
 	explicit ActionsComboBox(QWidget *parent = 0);
 	virtual ~ActionsComboBox();
+
+	virtual void reset();
 
 	void addBeforeAction(QAction *action, ActionsProxyModel::ActionVisibility actionVisibility = ActionsProxyModel::AlwaysVisible);
 	void addAfterAction(QAction *action, ActionsProxyModel::ActionVisibility actionVisibility = ActionsProxyModel::AlwaysVisible);

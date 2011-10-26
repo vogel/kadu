@@ -35,26 +35,26 @@ GroupsComboBox::GroupsComboBox(QWidget *parent) :
 		ActionsComboBox(parent), InActivatedSlot(false)
 {
 	QSortFilterProxyModel *proxyModel = new QSortFilterProxyModel(this);
+
 	setDataRole(GroupRole);
-	setUpModel(new GroupsModel(this), proxyModel);
 
 	addBeforeAction(new QAction(tr(" - Select group - "), this));
-
-	proxyModel->setDynamicSortFilter(true);
-	proxyModel->sort(0);
 
 	CreateNewGroupAction = new QAction(tr("Create a new group..."), this);
 	QFont createNewGroupActionFont = CreateNewGroupAction->font();
 	createNewGroupActionFont.setItalic(true);
 	CreateNewGroupAction->setFont(createNewGroupActionFont);
-	CreateNewGroupAction->setData("createNewGroup");
+	CreateNewGroupAction->setData(true);
+
+	connect(CreateNewGroupAction, SIGNAL(triggered()), this, SLOT(createNewGroup()));
 
 	addAfterAction(CreateNewGroupAction);
 
-	setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
+	setUpModel(new GroupsModel(this), proxyModel);
+	proxyModel->setDynamicSortFilter(true);
+	proxyModel->sort(0);
 
-	connect(this, SIGNAL(activated(int)), this, SLOT(activatedSlot(int)));
-	connect(this, SIGNAL(currentIndexChanged(int)), this, SLOT(currentIndexChangedSlot(int)));
+	setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 }
 
 GroupsComboBox::~GroupsComboBox()
@@ -71,59 +71,24 @@ Group GroupsComboBox::currentGroup()
 	return currentValue().value<Group>();
 }
 
-void GroupsComboBox::resetComboBox()
+void GroupsComboBox::createNewGroup()
 {
-	if (!InActivatedSlot)
-		setCurrentIndex(0);
-}
+	bool ok;
 
-void GroupsComboBox::activatedSlot(int index)
-{
-	InActivatedSlot = true;
+	QString newGroupName = QInputDialog::getText(this, tr("New Group"),
+			tr("Please enter the name for the new group:"), QLineEdit::Normal,
+			QString(), &ok);
 
-	QModelIndex modelIndex = model()->index(index, modelColumn(), rootModelIndex());
-	QAction *action = modelIndex.data(ActionRole).value<QAction *>();
-
-	if (action == CreateNewGroupAction)
-	{
-		bool ok;
-
-		QString newGroupName = QInputDialog::getText(this, tr("New Group"),
-				tr("Please enter the name for the new group:"), QLineEdit::Normal,
-				QString(), &ok);
-
-		if (ok)
-		{
-			ok = GroupManager::instance()->acceptableGroupName(newGroupName, true);
-
-			Group switchToGroup = GroupManager::instance()->byName(newGroupName, ok);
-			if (switchToGroup)
-				setCurrentGroup(switchToGroup);
-			else
-				setCurrentIndex(0);
-		}
-		else
-			setCurrentValue(CurrentValue);
-	}
-
-	InActivatedSlot = false;
-}
-
-void GroupsComboBox::currentIndexChangedSlot(int index)
-{
-	QModelIndex modelIndex = model()->index(index, modelColumn(), rootModelIndex());
-	QAction *action = modelIndex.data(ActionRole).value<QAction *>();
-	if (action == CreateNewGroupAction)
-	{
-		// this is needed to fix bugs #1674 and #1690
-		// as this action has to be activated by the user, otherwise we have to ignore it and reset combo box
-		// TODO: try to redo this as this is a bit tricky
-		if (!InActivatedSlot)
-			QMetaObject::invokeMethod(this, "resetComboBox", Qt::QueuedConnection);
+	if (!ok)
 		return;
-	}
 
-	ActionsComboBox::currentIndexChangedSlot(index);
+	ok = GroupManager::instance()->acceptableGroupName(newGroupName, true);
+	if (!ok)
+		return;
+
+	Group newGroup = GroupManager::instance()->byName(newGroupName, ok);
+	if (newGroup)
+		setCurrentGroup(newGroup);
 }
 
 bool GroupsComboBox::compare(QVariant value, QVariant previousValue) const

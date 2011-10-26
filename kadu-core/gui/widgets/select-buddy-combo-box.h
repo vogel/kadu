@@ -38,10 +38,8 @@ class KADUAPI SelectBuddyComboBox : public ActionsComboBox
 	SelectBuddyPopup *Popup;
 	BuddiesModelProxy *ProxyModel;
 
-private slots:
-	void currentIndexChangedSlot(int index);
-
 protected:
+	void valueChanged(QVariant value, QVariant previousValue);
 	virtual bool compare(QVariant value, QVariant previousValue) const;
 
 	virtual void showPopup();

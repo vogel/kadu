@@ -26,7 +26,7 @@
 
 #include "accounts-combo-box.h"
 
-AccountsComboBox::AccountsComboBox(bool includeSelectAccount, QWidget *parent) :
+AccountsComboBox::AccountsComboBox(bool includeSelectAccount, ActionsProxyModel::ActionVisibility visibility, QWidget *parent) :
 		ActionsComboBox(parent)
 {
 	setDataRole(AccountRole);
@@ -36,10 +36,7 @@ AccountsComboBox::AccountsComboBox(bool includeSelectAccount, QWidget *parent) :
 	setUpModel(Model, ProxyModel);
 
 	if (includeSelectAccount)
-		addBeforeAction(new QAction(tr(" - Select account - "), this),
-		                ActionsProxyModel::NotVisibleWithOneRowSourceModel);
-
-	connect(this, SIGNAL(currentIndexChanged(int)), this, SLOT(currentIndexChangedSlot(int)));
+		addBeforeAction(new QAction(tr(" - Select account - "), this), visibility);
 }
 
 AccountsComboBox::~AccountsComboBox()
@@ -61,10 +58,9 @@ void AccountsComboBox::setIncludeIdInDisplay(bool includeIdInDisplay)
 	Model->setIncludeIdInDisplay(includeIdInDisplay);
 }
 
-void AccountsComboBox::currentIndexChangedSlot(int index)
+void AccountsComboBox::valueChanged(QVariant value, QVariant previousValue)
 {
-	if (ActionsComboBox::currentIndexChangedSlot(index))
-		emit accountChanged(CurrentValue.value<Account>(), ValueBeforeChange.value<Account>());
+	emit accountChanged(value.value<Account>(), previousValue.value<Account>());
 }
 
 bool AccountsComboBox::compare(QVariant value, QVariant previousValue) const
