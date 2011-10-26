@@ -27,7 +27,7 @@
 #include "accounts-combo-box.h"
 
 AccountsComboBox::AccountsComboBox(bool includeSelectAccount, QWidget *parent) :
-		KaduComboBox(parent)
+		ActionsComboBox(parent)
 {
 	setDataRole(AccountRole);
 
@@ -63,7 +63,7 @@ void AccountsComboBox::setIncludeIdInDisplay(bool includeIdInDisplay)
 
 void AccountsComboBox::currentIndexChangedSlot(int index)
 {
-	if (KaduComboBox::currentIndexChangedSlot(index))
+	if (ActionsComboBox::currentIndexChangedSlot(index))
 		emit accountChanged(CurrentValue.value<Account>(), ValueBeforeChange.value<Account>());
 }
 

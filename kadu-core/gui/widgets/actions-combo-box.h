@@ -18,8 +18,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef KADU_COMBO_BOX_H
-#define KADU_COMBO_BOX_H
+#ifndef ACTIONS_COMBO_BOX_H
+#define ACTIONS_COMBO_BOX_H
 
 #include <QtCore/QAbstractItemModel>
 #include <QtCore/QString>
@@ -31,7 +31,7 @@
 #include "model/actions-proxy-model.h"
 #include "model/kadu-abstract-model.h"
 
-class KaduComboBox : public QComboBox
+class ActionsComboBox : public QComboBox
 {
 	Q_OBJECT
 
@@ -61,8 +61,8 @@ protected:
 	bool currentIndexChangedSlot(int index);
 
 public:
-	explicit KaduComboBox(QWidget *parent = 0);
-	virtual ~KaduComboBox();
+	explicit ActionsComboBox(QWidget *parent = 0);
+	virtual ~ActionsComboBox();
 
 	void addBeforeAction(QAction *action, ActionsProxyModel::ActionVisibility actionVisibility = ActionsProxyModel::AlwaysVisible);
 	void addAfterAction(QAction *action, ActionsProxyModel::ActionVisibility actionVisibility = ActionsProxyModel::AlwaysVisible);
@@ -71,4 +71,4 @@ public:
 
 };
 
-#endif // KADU_COMBO_BOX_H
+#endif // ACTIONS_COMBO_BOX_H

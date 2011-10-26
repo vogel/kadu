@@ -24,9 +24,9 @@
 #define GROUPS_COMBO_BOX_H
 
 #include "buddies/group.h"
-#include "gui/widgets/kadu-combo-box.h"
+#include "gui/widgets/actions-combo-box.h"
 
-class GroupsComboBox : public KaduComboBox
+class GroupsComboBox : public ActionsComboBox
 {
 	Q_OBJECT
 

@@ -22,13 +22,13 @@
 #define ACCOUNTS_COMBO_BOX_H
 
 #include "accounts/account.h"
-#include "gui/widgets/kadu-combo-box.h"
+#include "gui/widgets/actions-combo-box.h"
 
 class AbstractAccountFilter;
 class AccountsModel;
 class AccountsProxyModel;
 
-class AccountsComboBox : public KaduComboBox
+class AccountsComboBox : public ActionsComboBox
 {
 	Q_OBJECT
 

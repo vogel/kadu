@@ -27,7 +27,7 @@
 #define DEFAULT_PROXY_INDEX 1
 
 ProxyComboBox::ProxyComboBox(QWidget *parent) :
-		KaduComboBox(parent), InActivatedSlot(false), DefaultProxyAction(0)
+		ActionsComboBox(parent), InActivatedSlot(false), DefaultProxyAction(0)
 {
 	setDataRole(NetworkProxyRole);
 
@@ -93,7 +93,7 @@ void ProxyComboBox::currentIndexChangedSlot(int index)
 		return;
 	}
 
-	if (KaduComboBox::currentIndexChangedSlot(index))
+	if (ActionsComboBox::currentIndexChangedSlot(index))
 		emit proxyChanged(CurrentValue.value<NetworkProxy>(), ValueBeforeChange.value<NetworkProxy>());
 }
 

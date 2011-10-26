@@ -23,14 +23,15 @@
 #define SELECT_BUDDY_COMBO_BOX_H
 
 #include "buddies/buddy.h"
-#include "gui/widgets/kadu-combo-box.h"
 #include "exports.h"
+
+#include "gui/widgets/actions-combo-box.h"
 
 class AbstractBuddyFilter;
 class BuddiesModelProxy;
 class SelectBuddyPopup;
 
-class KADUAPI SelectBuddyComboBox : public KaduComboBox
+class KADUAPI SelectBuddyComboBox : public ActionsComboBox
 {
 	Q_OBJECT
 

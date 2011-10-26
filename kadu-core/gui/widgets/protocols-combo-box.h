@@ -23,14 +23,15 @@
 #ifndef PROTOCOLS_COMBO_BOX_H
 #define PROTOCOLS_COMBO_BOX_H
 
-#include "gui/widgets/kadu-combo-box.h"
 #include "protocols/protocol-factory.h"
 #include "exports.h"
+
+#include "gui/widgets/actions-combo-box.h"
 
 class AbstractProtocolFilter;
 class ProtocolsModelProxy;
 
-class KADUAPI ProtocolsComboBox : public KaduComboBox
+class KADUAPI ProtocolsComboBox : public ActionsComboBox
 {
 	Q_OBJECT
 	Q_PROPERTY(ProtocolFactory* currentProtocol READ currentProtocol WRITE setCurrentProtocol)

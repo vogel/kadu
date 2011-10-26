@@ -31,7 +31,7 @@
 #include "identities-combo-box.h"
 
 IdentitiesComboBox::IdentitiesComboBox(bool includeSelectIdentity, QWidget *parent) :
-		KaduComboBox(parent), InActivatedSlot(false)
+		ActionsComboBox(parent), InActivatedSlot(false)
 {
 	setDataRole(IdentityRole);
 	setUpModel(new IdentityModel(this));
@@ -118,7 +118,7 @@ void IdentitiesComboBox::currentIndexChangedSlot(int index)
 		return;
 	}
 
-	if (KaduComboBox::currentIndexChangedSlot(index))
+	if (ActionsComboBox::currentIndexChangedSlot(index))
 		emit identityChanged(CurrentValue.value<Identity>());
 }
 

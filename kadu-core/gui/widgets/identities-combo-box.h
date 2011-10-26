@@ -23,10 +23,10 @@
 #define IDENTITIES_COMBO_BOX_H
 
 #include "identities/identity.h"
-#include "gui/widgets/kadu-combo-box.h"
+#include "gui/widgets/actions-combo-box.h"
 #include "exports.h"
 
-class KADUAPI IdentitiesComboBox : public KaduComboBox
+class KADUAPI IdentitiesComboBox : public ActionsComboBox
 {
 	Q_OBJECT
 

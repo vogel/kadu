@@ -31,7 +31,7 @@
 #include "select-buddy-combo-box.h"
 
 SelectBuddyComboBox::SelectBuddyComboBox(QWidget *parent) :
-		KaduComboBox(parent)
+		ActionsComboBox(parent)
 {
 	setDataRole(BuddyRole);
 
@@ -72,7 +72,7 @@ Buddy SelectBuddyComboBox::currentBuddy()
 
 void SelectBuddyComboBox::currentIndexChangedSlot(int index)
 {
-	if (KaduComboBox::currentIndexChangedSlot(index))
+	if (ActionsComboBox::currentIndexChangedSlot(index))
 		emit buddyChanged(CurrentValue.value<Buddy>());
 }
 

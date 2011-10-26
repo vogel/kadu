@@ -32,7 +32,7 @@
 #include "groups-combo-box.h"
 
 GroupsComboBox::GroupsComboBox(QWidget *parent) :
-		KaduComboBox(parent), InActivatedSlot(false)
+		ActionsComboBox(parent), InActivatedSlot(false)
 {
 	QSortFilterProxyModel *proxyModel = new QSortFilterProxyModel(this);
 	setDataRole(GroupRole);
@@ -123,7 +123,7 @@ void GroupsComboBox::currentIndexChangedSlot(int index)
 		return;
 	}
 
-	KaduComboBox::currentIndexChangedSlot(index);
+	ActionsComboBox::currentIndexChangedSlot(index);
 }
 
 bool GroupsComboBox::compare(QVariant value, QVariant previousValue) const

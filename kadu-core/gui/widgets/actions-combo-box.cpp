@@ -20,34 +20,34 @@
 
 #include "model/roles.h"
 
-#include "kadu-combo-box.h"
+#include "actions-combo-box.h"
 
-KaduComboBox::KaduComboBox(QWidget *parent) :
+ActionsComboBox::ActionsComboBox(QWidget *parent) :
 		QComboBox(parent), DataRole(0),
 		SourceModel(0), SourceProxyModel(0), ActionsModel(new ActionsProxyModel(this))
 {
 }
 
-KaduComboBox::~KaduComboBox()
+ActionsComboBox::~ActionsComboBox()
 {
 }
 
-void KaduComboBox::setDataRole(int dataRole)
+void ActionsComboBox::setDataRole(int dataRole)
 {
 	DataRole = dataRole;
 }
 
-void KaduComboBox::addBeforeAction(QAction *action, ActionsProxyModel::ActionVisibility actionVisibility)
+void ActionsComboBox::addBeforeAction(QAction *action, ActionsProxyModel::ActionVisibility actionVisibility)
 {
 	ActionsModel->addBeforeAction(action, actionVisibility);
 }
 
-void KaduComboBox::addAfterAction(QAction *action, ActionsProxyModel::ActionVisibility actionVisibility)
+void ActionsComboBox::addAfterAction(QAction *action, ActionsProxyModel::ActionVisibility actionVisibility)
 {
 	ActionsModel->addAfterAction(action, actionVisibility);
 }
 
-QAction * KaduComboBox::currentAction()
+QAction * ActionsComboBox::currentAction()
 {
 	return ActionsModel->index(currentIndex(), modelColumn()).data(ActionRole).value<QAction *>();
 }
@@ -61,14 +61,14 @@ QAction * KaduComboBox::currentAction()
  * Sets up the model in combo box. Must be called before any signals are
  * connected to/from the model.
  */
-void KaduComboBox::setUpModel(QAbstractItemModel *sourceModel, QAbstractProxyModel *sourceProxyModel)
+void ActionsComboBox::setUpModel(QAbstractItemModel *sourceModel, QAbstractProxyModel *sourceProxyModel)
 {
 	SourceModel = sourceModel;
 	SourceProxyModel = sourceProxyModel;
 
 	if (!dynamic_cast<KaduAbstractModel *>(SourceModel))
 	{
-		qDebug("KaduComboBox::setUpModel(): error: sourceModel not an instace of KaduAbstractModel");
+		qDebug("ActionsComboBox::setUpModel(): error: sourceModel not an instace of KaduAbstractModel");
 		SourceModel = 0;
 		SourceProxyModel = 0;
 		return;
@@ -100,7 +100,7 @@ void KaduComboBox::setUpModel(QAbstractItemModel *sourceModel, QAbstractProxyMod
  * and update current value (note that it has to be called when
  * currentIndexChanged() signal is emitted by a combo box).
  */
-void KaduComboBox::setCurrentValue(QVariant value)
+void ActionsComboBox::setCurrentValue(QVariant value)
 {
 	if (!SourceModel)
 		return;
@@ -120,7 +120,7 @@ void KaduComboBox::setCurrentValue(QVariant value)
  * Makes sure current value is set to the value pointed by current index
  * and returns that value.
  */
-QVariant KaduComboBox::currentValue()
+QVariant ActionsComboBox::currentValue()
 {
 	if (SourceModel)
 		CurrentValue = ActionsModel->index(currentIndex(), modelColumn()).data(DataRole);
@@ -136,7 +136,7 @@ QVariant KaduComboBox::currentValue()
  * and returns true in case current value actually has changed, otherwise
  * false.
  */
-bool KaduComboBox::currentIndexChangedSlot(int index)
+bool ActionsComboBox::currentIndexChangedSlot(int index)
 {
 	if (index < 0 || (index >= count() && count() != 0))
 		setCurrentIndex(0);
@@ -160,7 +160,7 @@ bool KaduComboBox::currentIndexChangedSlot(int index)
  * Needs to be called whenever rowsToBeRemoved() signal is emitted from
  * the model.
  */
-void KaduComboBox::updateValueBeforeChange()
+void ActionsComboBox::updateValueBeforeChange()
 {
 	ValueBeforeChange = CurrentValue;
 }
@@ -173,7 +173,7 @@ void KaduComboBox::updateValueBeforeChange()
  *
  * Needs to be called whenever rowsRemoved() signal is emitted from the model.
  */
-void KaduComboBox::rowsRemoved(const QModelIndex &parent, int start, int end)
+void ActionsComboBox::rowsRemoved(const QModelIndex &parent, int start, int end)
 {
 	Q_UNUSED(start)
 	Q_UNUSED(end)

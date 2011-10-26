@@ -28,7 +28,7 @@
 #include "protocols-combo-box.h"
 
 ProtocolsComboBox::ProtocolsComboBox(QWidget *parent) :
-		KaduComboBox(parent)
+		ActionsComboBox(parent)
 {
 	setDataRole(ProtocolRole);
 
@@ -56,7 +56,7 @@ ProtocolFactory * ProtocolsComboBox::currentProtocol()
 
 void ProtocolsComboBox::currentIndexChangedSlot(int index)
 {
-	if (KaduComboBox::currentIndexChangedSlot(index))
+	if (ActionsComboBox::currentIndexChangedSlot(index))
 		emit protocolChanged(CurrentValue.value<ProtocolFactory *>(),
 		                     ValueBeforeChange.value<ProtocolFactory *>());
 }

@@ -11,6 +11,7 @@ set (gui_SRCS
 	widgets/account-buddy-list-widget.cpp
 	widgets/account-avatar-widget.cpp
 	widgets/accounts-combo-box.cpp
+	widgets/actions-combo-box.cpp
 	widgets/buddies-list-view.cpp
 	widgets/buddies-list-view-avatar-painter.cpp
 	widgets/buddies-list-view-delegate.cpp
@@ -49,7 +50,6 @@ set (gui_SRCS
 	widgets/group-tab-bar.cpp
 	widgets/groups-combo-box.cpp
 	widgets/identities-combo-box.cpp
-	widgets/kadu-combo-box.cpp
 	widgets/kadu-web-view.cpp
 	widgets/line-edit-clear-button.cpp
 	widgets/line-edit-with-clear-button.cpp
@@ -153,6 +153,7 @@ set (gui_MOC_SRCS
 	widgets/account-create-widget.h
 	widgets/account-edit-widget.h
 	widgets/accounts-combo-box.h
+	widgets/actions-combo-box.h
 	widgets/buddies-list-view.h
 	widgets/buddies-list-view-delegate.h
 	widgets/buddies-list-widget.h
@@ -186,7 +187,6 @@ set (gui_MOC_SRCS
 	widgets/group-tab-bar.h
 	widgets/groups-combo-box.h
 	widgets/identities-combo-box.h
-	widgets/kadu-combo-box.h
 	widgets/kadu-web-view.h
 	widgets/line-edit-clear-button.h
 	widgets/line-edit-with-clear-button.h
