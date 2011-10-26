@@ -337,6 +337,8 @@ void ProxyEditWindow::selectProxy(NetworkProxy proxy)
 {
 	ProxyView->selectionModel()->clearSelection();
 	ProxyView->selectionModel()->select(ProxyProxyModel->indexForValue(proxy), QItemSelectionModel::Select);
+
+	SaveButton->setText(tr("Save"));
 }
 
 void ProxyEditWindow::dataChanged()
