@@ -89,8 +89,8 @@ void ActionsComboBox::currentIndexChangedSlot(int index)
 
 	if ((index >= 0) && (index < count()))
 	{
-		updateValueBeforeChange(); // sets ValueBeforeChange variable
-		currentValue(); // sets CurrentValue variable
+		ValueBeforeChange = CurrentValue;
+		CurrentValue = ActionsModel->index(index, modelColumn()).data(DataRole);
 
 		if (!compare(CurrentValue, ValueBeforeChange))
 			valueChanged(CurrentValue, ValueBeforeChange);
@@ -137,10 +137,10 @@ void ActionsComboBox::setUpModel(QAbstractItemModel *sourceModel, QAbstractProxy
 
 	setModel(ActionsModel);
 
+	connect(ActionsModel, SIGNAL(rowsAboutToBeRemoved(const QModelIndex &, int, int)),
+			this, SLOT(rowsAboutToBeRemoved(const QModelIndex &, int, int)));
 	connect(ActionsModel, SIGNAL(rowsRemoved(const QModelIndex &, int, int)),
 			this, SLOT(rowsRemoved(const QModelIndex &, int, int)));
-	connect(ActionsModel, SIGNAL(rowsAboutToBeRemoved(const QModelIndex &, int, int)),
-			this, SLOT(updateValueBeforeChange()));
 }
 
 /**
@@ -175,8 +175,6 @@ void ActionsComboBox::setCurrentValue(QVariant value)
  */
 QVariant ActionsComboBox::currentValue()
 {
-	if (SourceModel)
-		CurrentValue = ActionsModel->index(currentIndex(), modelColumn()).data(DataRole);
 	return CurrentValue;
 }
 
@@ -188,8 +186,14 @@ QVariant ActionsComboBox::currentValue()
  * Needs to be called whenever rowsToBeRemoved() signal is emitted from
  * the model.
  */
-void ActionsComboBox::updateValueBeforeChange()
+void ActionsComboBox::rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end)
 {
+	Q_UNUSED(start)
+	Q_UNUSED(end)
+
+	if (parent != rootModelIndex())
+		return;
+
 	ValueBeforeChange = CurrentValue;
 }
 

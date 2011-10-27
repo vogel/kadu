@@ -52,8 +52,8 @@ private slots:
 	void activatedSlot(int index);
 	void currentIndexChangedSlot(int index);
 
+	void rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end);
 	void rowsRemoved(const QModelIndex &parent, int start, int end);
-	void updateValueBeforeChange();
 
 protected:
 	void setDataRole(int dataRole);
