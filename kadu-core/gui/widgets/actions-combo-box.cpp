@@ -89,11 +89,11 @@ void ActionsComboBox::currentIndexChangedSlot(int index)
 
 	if ((index >= 0) && (index < count()))
 	{
-		ValueBeforeChange = CurrentValue;
+		QVariant lastValue = CurrentValue;
 		CurrentValue = ActionsModel->index(index, modelColumn()).data(DataRole);
 
-		if (!compare(CurrentValue, ValueBeforeChange))
-			valueChanged(CurrentValue, ValueBeforeChange);
+		if (!compare(CurrentValue, lastValue))
+			valueChanged(CurrentValue, lastValue);
 	}
 	else
 		setCurrentIndex(0);
@@ -137,8 +137,6 @@ void ActionsComboBox::setUpModel(QAbstractItemModel *sourceModel, QAbstractProxy
 
 	setModel(ActionsModel);
 
-	connect(ActionsModel, SIGNAL(rowsAboutToBeRemoved(const QModelIndex &, int, int)),
-			this, SLOT(rowsAboutToBeRemoved(const QModelIndex &, int, int)));
 	connect(ActionsModel, SIGNAL(rowsRemoved(const QModelIndex &, int, int)),
 			this, SLOT(rowsRemoved(const QModelIndex &, int, int)));
 }
@@ -181,25 +179,6 @@ QVariant ActionsComboBox::currentValue()
 /**
  * @author Bartosz 'beevvy' Brachaczek
  *
- * Updates ValueBeforeChange field.
- *
- * Needs to be called whenever rowsToBeRemoved() signal is emitted from
- * the model.
- */
-void ActionsComboBox::rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end)
-{
-	Q_UNUSED(start)
-	Q_UNUSED(end)
-
-	if (parent != rootModelIndex())
-		return;
-
-	ValueBeforeChange = CurrentValue;
-}
-
-/**
- * @author Bartosz 'beevvy' Brachaczek
- *
  * Makes sure that if currently selected item was removed from the model,
  * current index is set to 0.
  *
@@ -207,13 +186,10 @@ void ActionsComboBox::rowsAboutToBeRemoved(const QModelIndex &parent, int start,
  */
 void ActionsComboBox::rowsRemoved(const QModelIndex &parent, int start, int end)
 {
-	Q_UNUSED(start)
-	Q_UNUSED(end)
-
 	if (parent != rootModelIndex())
 		return;
 
-	if (!compare(CurrentValue, ValueBeforeChange))
+	if ((LastIndex >= start) && (LastIndex <= end))
 		reset();
 }
 
