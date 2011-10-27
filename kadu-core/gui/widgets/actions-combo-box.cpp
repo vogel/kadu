@@ -55,6 +55,16 @@ QAction * ActionsComboBox::currentAction()
 	return ActionsModel->index(currentIndex(), modelColumn()).data(ActionRole).value<QAction *>();
 }
 
+bool ActionsComboBox::isActionSelectable(QAction *action)
+{
+	if (!action) // every non-action is selectable
+		return true;
+	if (action->data().isNull()) // by default every action is selectable
+		return true;
+	// check if action has 'unselectable' flag set to true
+	return !action->data().toBool();
+}
+
 void ActionsComboBox::activatedSlot(int index)
 {
 	QModelIndex modelIndex = ActionsModel->index(index, modelColumn(), rootModelIndex());
@@ -63,8 +73,7 @@ void ActionsComboBox::activatedSlot(int index)
 	if (!action)
 		return;
 
-	// actions with "true" in data are unselectable
-	if (!action->data().isNull() && action->data().toBool())
+	if (!isActionSelectable(action))
 		setCurrentIndex(LastIndex);
 
 	action->trigger();
@@ -75,8 +84,7 @@ void ActionsComboBox::currentIndexChangedSlot(int index)
 	QModelIndex modelIndex = ActionsModel->index(index, modelColumn(), rootModelIndex());
 	QAction *action = modelIndex.data(ActionRole).value<QAction *>();
 
-	// actions with "true" in data are unselectable
-	if (!action || action->data().isNull() || !action->data().toBool())
+	if (isActionSelectable(action))
 		LastIndex = index;
 
 	if ((index >= 0) && (index < count()))

@@ -46,6 +46,8 @@ class ActionsComboBox : public QComboBox
 
 	int LastIndex;
 
+	bool isActionSelectable(QAction *action);
+
 private slots:
 	void activatedSlot(int index);
 	void currentIndexChangedSlot(int index);
