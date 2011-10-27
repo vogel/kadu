@@ -38,7 +38,7 @@ private slots:
 	void createNewGroup();
 
 protected:
-	virtual bool compare(QVariant value, QVariant previousValue) const;
+	virtual bool compare(const QVariant &left, const QVariant &right) const;
 
 public:
 	explicit GroupsComboBox(QWidget *parent = 0);

@@ -33,8 +33,7 @@
 IdentitiesComboBox::IdentitiesComboBox(bool includeSelectIdentity, QWidget *parent) :
 		ActionsComboBox(parent), InActivatedSlot(false)
 {
-	setDataRole(IdentityRole);
-	setUpModel(new IdentityModel(this));
+	setUpModel(IdentityRole, new IdentityModel(this));
 
 	if (includeSelectIdentity)
 		addBeforeAction(new QAction(tr(" - Select identity - "), this));
@@ -82,14 +81,14 @@ void IdentitiesComboBox::createNewIdentity()
 		setCurrentIdentity(newIdentity);
 }
 
-void IdentitiesComboBox::valueChanged(QVariant value, QVariant previousValue)
+void IdentitiesComboBox::valueChanged(const QVariant &value, const QVariant &previousValue)
 {
 	Q_UNUSED(previousValue)
 
 	emit identityChanged(value.value<Identity>());
 }
 
-bool IdentitiesComboBox::compare(QVariant value, QVariant previousValue) const
+bool IdentitiesComboBox::compare(const QVariant &left, const QVariant &right) const
 {
-	return value.value<Identity>() == previousValue.value<Identity>();
+	return left.value<Identity>() == right.value<Identity>();
 }

@@ -32,10 +32,8 @@
 ProtocolsComboBox::ProtocolsComboBox(QWidget *parent) :
 		ActionsComboBox(parent)
 {
-	setDataRole(ProtocolRole);
-
 	ProxyModel = new ProtocolsModelProxy(this);
-	setUpModel(new ProtocolsModel(this), ProxyModel);
+	setUpModel(ProtocolRole, new ProtocolsModel(this), ProxyModel);
 	addBeforeAction(new QAction(tr(" - Select network - "), this), ActionsProxyModel::NotVisibleWithOneRowSourceModel);
 }
 
@@ -53,15 +51,15 @@ ProtocolFactory * ProtocolsComboBox::currentProtocol()
 	return currentValue().value<ProtocolFactory *>();
 }
 
-void ProtocolsComboBox::valueChanged(QVariant value, QVariant previousValue)
+void ProtocolsComboBox::valueChanged(const QVariant &value, const QVariant &previousValue)
 {
 	emit protocolChanged(value.value<ProtocolFactory *>(),
 	                     previousValue.value<ProtocolFactory *>());
 }
 
-bool ProtocolsComboBox::compare(QVariant value, QVariant previousValue) const
+bool ProtocolsComboBox::compare(const QVariant &left, const QVariant &right) const
 {
-	return value.value<ProtocolFactory *>() == previousValue.value<ProtocolFactory *>();
+	return left.value<ProtocolFactory *>() == right.value<ProtocolFactory *>();
 }
 
 void ProtocolsComboBox::addFilter(AbstractProtocolFilter *filter)

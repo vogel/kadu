@@ -36,8 +36,6 @@ GroupsComboBox::GroupsComboBox(QWidget *parent) :
 {
 	QSortFilterProxyModel *proxyModel = new QSortFilterProxyModel(this);
 
-	setDataRole(GroupRole);
-
 	addBeforeAction(new QAction(tr(" - Select group - "), this));
 
 	CreateNewGroupAction = new QAction(tr("Create a new group..."), this);
@@ -50,7 +48,7 @@ GroupsComboBox::GroupsComboBox(QWidget *parent) :
 
 	addAfterAction(CreateNewGroupAction);
 
-	setUpModel(new GroupsModel(this), proxyModel);
+	setUpModel(GroupRole, new GroupsModel(this), proxyModel);
 	proxyModel->setDynamicSortFilter(true);
 	proxyModel->sort(0);
 
@@ -91,7 +89,7 @@ void GroupsComboBox::createNewGroup()
 		setCurrentGroup(newGroup);
 }
 
-bool GroupsComboBox::compare(QVariant value, QVariant previousValue) const
+bool GroupsComboBox::compare(const QVariant &left, const QVariant &right) const
 {
-	return value.value<Group>() == previousValue.value<Group>();
+	return left.value<Group>() == right.value<Group>();
 }

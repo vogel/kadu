@@ -31,10 +31,8 @@
 ProxyComboBox::ProxyComboBox(QWidget *parent) :
 		ActionsComboBox(parent), InActivatedSlot(false), DefaultProxyAction(0)
 {
-	setDataRole(NetworkProxyRole);
-
 	Model = new NetworkProxyModel(this);
-	setUpModel(Model, new NetworkProxyProxyModel(this));
+	setUpModel(NetworkProxyRole, Model, new NetworkProxyProxyModel(this));
 	addBeforeAction(new QAction(tr(" - No proxy - "), this));
 
 	EditProxyAction = new QAction(tr("Edit proxy configuration..."), this);
@@ -87,17 +85,17 @@ void ProxyComboBox::editProxy()
 	ProxyEditWindow::show();
 }
 
-void ProxyComboBox::valueChanged(QVariant value, QVariant previousValue)
+void ProxyComboBox::valueChanged(const QVariant &value, const QVariant &previousValue)
 {
 	emit proxyChanged(value.value<NetworkProxy>(), previousValue.value<NetworkProxy>());
 }
 
-bool ProxyComboBox::compare(QVariant value, QVariant previousValue) const
+bool ProxyComboBox::compare(const QVariant &left, const QVariant &right) const
 {
-	return value.value<NetworkProxy>() == previousValue.value<NetworkProxy>();
+	return left.value<NetworkProxy>() == right.value<NetworkProxy>();
 }
 
-void ProxyComboBox::reset()
+void ProxyComboBox::resetSelection()
 {
 	if (DefaultProxyAction)
 		setCurrentIndex(DEFAULT_PROXY_INDEX);

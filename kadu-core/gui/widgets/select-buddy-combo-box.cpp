@@ -35,10 +35,8 @@
 SelectBuddyComboBox::SelectBuddyComboBox(QWidget *parent) :
 		ActionsComboBox(parent)
 {
-	setDataRole(BuddyRole);
-
 	ProxyModel = new BuddiesModelProxy(this);
-	setUpModel(new BuddiesModel(this), ProxyModel);
+	setUpModel(BuddyRole, new BuddiesModel(this), ProxyModel);
 	addBeforeAction(new QAction(tr(" - Select buddy - "), this));
 
 	Popup = new SelectBuddyPopup();
@@ -69,16 +67,16 @@ Buddy SelectBuddyComboBox::currentBuddy()
 	return currentValue().value<Buddy>();
 }
 
-void SelectBuddyComboBox::valueChanged(QVariant value, QVariant previousValue)
+void SelectBuddyComboBox::valueChanged(const QVariant &value, const QVariant &previousValue)
 {
 	Q_UNUSED(previousValue)
 
 	emit buddyChanged(value.value<Buddy>());
 }
 
-bool SelectBuddyComboBox::compare(QVariant value, QVariant previousValue) const
+bool SelectBuddyComboBox::compare(const QVariant &left, const QVariant &right) const
 {
-	return value.value<Buddy>() == previousValue.value<Buddy>();
+	return left.value<Buddy>() == right.value<Buddy>();
 }
 
 void SelectBuddyComboBox::showPopup()

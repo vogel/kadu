@@ -31,11 +31,9 @@
 AccountsComboBox::AccountsComboBox(bool includeSelectAccount, ActionsProxyModel::ActionVisibility visibility, QWidget *parent) :
 		ActionsComboBox(parent)
 {
-	setDataRole(AccountRole);
-
 	Model = new AccountsModel(this);
 	ProxyModel = new AccountsProxyModel(this);
-	setUpModel(Model, ProxyModel);
+	setUpModel(AccountRole, Model, ProxyModel);
 
 	if (includeSelectAccount)
 		addBeforeAction(new QAction(tr(" - Select account - "), this), visibility);
@@ -60,14 +58,14 @@ void AccountsComboBox::setIncludeIdInDisplay(bool includeIdInDisplay)
 	Model->setIncludeIdInDisplay(includeIdInDisplay);
 }
 
-void AccountsComboBox::valueChanged(QVariant value, QVariant previousValue)
+void AccountsComboBox::valueChanged(const QVariant &value, const QVariant &previousValue)
 {
 	emit accountChanged(value.value<Account>(), previousValue.value<Account>());
 }
 
-bool AccountsComboBox::compare(QVariant value, QVariant previousValue) const
+bool AccountsComboBox::compare(const QVariant &left, const QVariant &right) const
 {
-	return value.value<Account>() == previousValue.value<Account>();
+	return left.value<Account>() == right.value<Account>();
 }
 
 void AccountsComboBox::addFilter(AbstractAccountFilter *filter)

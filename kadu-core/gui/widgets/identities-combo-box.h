@@ -38,8 +38,8 @@ private slots:
 	void createNewIdentity();
 
 protected:
-	virtual void valueChanged(QVariant value, QVariant previousValue);
-	virtual bool compare(QVariant value, QVariant previousValue) const;
+	virtual void valueChanged(const QVariant &value, const QVariant &previousValue);
+	virtual bool compare(const QVariant &left, const QVariant &right) const;
 
 public:
 	explicit IdentitiesComboBox(bool includeSelectIdentity, QWidget *parent = 0);

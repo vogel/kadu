@@ -83,39 +83,18 @@ void ActionsComboBox::currentIndexChangedSlot(int index)
 		valueChanged(currentValue, lastValue);
 }
 
-/**
- * @author Bartosz 'beevvy' Brachaczek
- *
- * Makes sure that if currently selected item was removed from the model,
- * current index is set to 0.
- *
- * Needs to be called whenever rowsRemoved() signal is emitted from the model.
- */
 void ActionsComboBox::rowsRemoved(const QModelIndex &parent, int start, int end)
 {
 	if (parent != rootModelIndex())
 		return;
 
 	if ((LastIndex >= start) && (LastIndex <= end))
-		reset();
+		resetSelection();
 }
 
-void ActionsComboBox::setDataRole(int dataRole)
+void ActionsComboBox::setUpModel(int dataRole, QAbstractItemModel *sourceModel, QAbstractProxyModel *sourceProxyModel)
 {
 	DataRole = dataRole;
-}
-
-/**
- * @author Bartosz 'beevvy' Brachaczek
- * @author Rafal 'Vogel' Malinowski
- * @param sourceModel the model to be set (must be an instance of KaduAbstractModel)
- * @param sourceProxyModel (optional) proxy model to be set
- *
- * Sets up the model in combo box. Must be called before any signals are
- * connected to/from the model.
- */
-void ActionsComboBox::setUpModel(QAbstractItemModel *sourceModel, QAbstractProxyModel *sourceProxyModel)
-{
 	SourceModel = sourceModel;
 	SourceProxyModel = sourceProxyModel;
 
@@ -141,17 +120,7 @@ void ActionsComboBox::setUpModel(QAbstractItemModel *sourceModel, QAbstractProxy
 			this, SLOT(rowsRemoved(const QModelIndex &, int, int)));
 }
 
-/**
- * @author Bartosz 'beevvy' Brachaczek
- * @author Rafal 'Vogel' Malinowski
- * @param value value to be set
- *
- * Sets current value to the value in argument. If the value has
- * actually changed, currentIndexChangedSlot() should return true
- * and update current value (note that it has to be called when
- * currentIndexChanged() signal is emitted by a combo box).
- */
-void ActionsComboBox::setCurrentValue(QVariant value)
+void ActionsComboBox::setCurrentValue(const QVariant &value)
 {
 	if (!SourceModel)
 		return;
@@ -163,20 +132,12 @@ void ActionsComboBox::setCurrentValue(QVariant value)
 	setCurrentIndex(index.row());
 }
 
-/**
- * @author Bartosz 'beevvy' Brachaczek
- * @author Rafal 'Vogel' Malinowski
- * @return current value
- *
- * Makes sure current value is set to the value pointed by current index
- * and returns that value.
- */
 QVariant ActionsComboBox::currentValue()
 {
 	return ActionsModel->index(currentIndex(), modelColumn()).data(DataRole);
 }
 
-void ActionsComboBox::valueChanged(QVariant value, QVariant previousValue)
+void ActionsComboBox::valueChanged(const QVariant &value, const QVariant &previousValue)
 {
 	Q_UNUSED(value)
 	Q_UNUSED(previousValue)
@@ -197,7 +158,7 @@ QAction * ActionsComboBox::currentAction()
 	return ActionsModel->index(currentIndex(), modelColumn()).data(ActionRole).value<QAction *>();
 }
 
-void ActionsComboBox::reset()
+void ActionsComboBox::resetSelection()
 {
 	setCurrentIndex(0);
 }
