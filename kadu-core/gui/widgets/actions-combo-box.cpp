@@ -81,22 +81,24 @@ void ActionsComboBox::activatedSlot(int index)
 
 void ActionsComboBox::currentIndexChangedSlot(int index)
 {
+	if (index < 0 || index >= count())
+	{
+		setCurrentIndex(0);
+		return;
+	}
+
 	QModelIndex modelIndex = ActionsModel->index(index, modelColumn(), rootModelIndex());
+	QModelIndex lastModelIndex = ActionsModel->index(LastIndex, modelColumn(), rootModelIndex());
+
 	QAction *action = modelIndex.data(ActionRole).value<QAction *>();
+	QVariant lastValue = lastModelIndex.data(DataRole);
+	QVariant currentValue = ActionsModel->index(index, modelColumn()).data(DataRole);
 
 	if (isActionSelectable(action))
 		LastIndex = index;
 
-	if ((index >= 0) && (index < count()))
-	{
-		QVariant lastValue = CurrentValue;
-		CurrentValue = ActionsModel->index(index, modelColumn()).data(DataRole);
-
-		if (!compare(CurrentValue, lastValue))
-			valueChanged(CurrentValue, lastValue);
-	}
-	else
-		setCurrentIndex(0);
+	if (!compare(currentValue, lastValue))
+		valueChanged(currentValue, lastValue);
 }
 
 void ActionsComboBox::valueChanged(QVariant value, QVariant previousValue)
@@ -173,7 +175,7 @@ void ActionsComboBox::setCurrentValue(QVariant value)
  */
 QVariant ActionsComboBox::currentValue()
 {
-	return CurrentValue;
+	return ActionsModel->index(currentIndex(), modelColumn()).data(DataRole);
 }
 
 /**

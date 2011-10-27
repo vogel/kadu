@@ -41,8 +41,6 @@ class ActionsComboBox : public QComboBox
 	QAbstractProxyModel *SourceProxyModel;
 	ActionsProxyModel *ActionsModel;
 
-	QVariant CurrentValue;
-
 	int LastIndex;
 
 	bool isActionSelectable(QAction *action);
