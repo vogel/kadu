@@ -18,14 +18,16 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtGui/QAction>
+
 #include "model/roles.h"
 
 #include "actions-combo-box.h"
 
 ActionsComboBox::ActionsComboBox(QWidget *parent) :
-		QComboBox(parent), DataRole(0),
+		QComboBox(parent),
 		SourceModel(0), SourceProxyModel(0), ActionsModel(new ActionsProxyModel(this)),
-		LastIndex(-1)
+		DataRole(0), LastIndex(-1)
 {
 	connect(this, SIGNAL(activated(int)), this, SLOT(activatedSlot(int)));
 	connect(this, SIGNAL(currentIndexChanged(int)), this, SLOT(currentIndexChangedSlot(int)));
@@ -33,26 +35,6 @@ ActionsComboBox::ActionsComboBox(QWidget *parent) :
 
 ActionsComboBox::~ActionsComboBox()
 {
-}
-
-void ActionsComboBox::setDataRole(int dataRole)
-{
-	DataRole = dataRole;
-}
-
-void ActionsComboBox::addBeforeAction(QAction *action, ActionsProxyModel::ActionVisibility actionVisibility)
-{
-	ActionsModel->addBeforeAction(action, actionVisibility);
-}
-
-void ActionsComboBox::addAfterAction(QAction *action, ActionsProxyModel::ActionVisibility actionVisibility)
-{
-	ActionsModel->addAfterAction(action, actionVisibility);
-}
-
-QAction * ActionsComboBox::currentAction()
-{
-	return ActionsModel->index(currentIndex(), modelColumn()).data(ActionRole).value<QAction *>();
 }
 
 bool ActionsComboBox::isActionSelectable(QAction *action)
@@ -101,10 +83,26 @@ void ActionsComboBox::currentIndexChangedSlot(int index)
 		valueChanged(currentValue, lastValue);
 }
 
-void ActionsComboBox::valueChanged(QVariant value, QVariant previousValue)
+/**
+ * @author Bartosz 'beevvy' Brachaczek
+ *
+ * Makes sure that if currently selected item was removed from the model,
+ * current index is set to 0.
+ *
+ * Needs to be called whenever rowsRemoved() signal is emitted from the model.
+ */
+void ActionsComboBox::rowsRemoved(const QModelIndex &parent, int start, int end)
 {
-	Q_UNUSED(value)
-	Q_UNUSED(previousValue)
+	if (parent != rootModelIndex())
+		return;
+
+	if ((LastIndex >= start) && (LastIndex <= end))
+		reset();
+}
+
+void ActionsComboBox::setDataRole(int dataRole)
+{
+	DataRole = dataRole;
 }
 
 /**
@@ -178,21 +176,25 @@ QVariant ActionsComboBox::currentValue()
 	return ActionsModel->index(currentIndex(), modelColumn()).data(DataRole);
 }
 
-/**
- * @author Bartosz 'beevvy' Brachaczek
- *
- * Makes sure that if currently selected item was removed from the model,
- * current index is set to 0.
- *
- * Needs to be called whenever rowsRemoved() signal is emitted from the model.
- */
-void ActionsComboBox::rowsRemoved(const QModelIndex &parent, int start, int end)
+void ActionsComboBox::valueChanged(QVariant value, QVariant previousValue)
 {
-	if (parent != rootModelIndex())
-		return;
+	Q_UNUSED(value)
+	Q_UNUSED(previousValue)
+}
 
-	if ((LastIndex >= start) && (LastIndex <= end))
-		reset();
+void ActionsComboBox::addBeforeAction(QAction *action, ActionsProxyModel::ActionVisibility actionVisibility)
+{
+	ActionsModel->addBeforeAction(action, actionVisibility);
+}
+
+void ActionsComboBox::addAfterAction(QAction *action, ActionsProxyModel::ActionVisibility actionVisibility)
+{
+	ActionsModel->addAfterAction(action, actionVisibility);
+}
+
+QAction * ActionsComboBox::currentAction()
+{
+	return ActionsModel->index(currentIndex(), modelColumn()).data(ActionRole).value<QAction *>();
 }
 
 void ActionsComboBox::reset()

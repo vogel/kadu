@@ -17,6 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtGui/QAction>
+
 #include "gui/windows/proxy-edit-window.h"
 #include "model/roles.h"
 #include "network/proxy/model/network-proxy-model.h"

@@ -21,26 +21,23 @@
 #ifndef ACTIONS_COMBO_BOX_H
 #define ACTIONS_COMBO_BOX_H
 
-#include <QtCore/QAbstractItemModel>
-#include <QtCore/QString>
-#include <QtCore/QVariant>
-#include <QtGui/QAbstractProxyModel>
-#include <QtGui/QAction>
 #include <QtGui/QComboBox>
 
 #include "model/actions-proxy-model.h"
+
 #include "model/kadu-abstract-model.h"
+
+class QAbstractProxyModel;
 
 class ActionsComboBox : public QComboBox
 {
 	Q_OBJECT
 
-	int DataRole;
-
 	QAbstractItemModel *SourceModel;
 	QAbstractProxyModel *SourceProxyModel;
 	ActionsProxyModel *ActionsModel;
 
+	int DataRole;
 	int LastIndex;
 
 	bool isActionSelectable(QAction *action);
@@ -53,25 +50,24 @@ private slots:
 
 protected:
 	void setDataRole(int dataRole);
-
-	virtual void valueChanged(QVariant value, QVariant previousValue);
-	virtual bool compare(QVariant value, QVariant previousValue) const = 0;
-
 	void setUpModel(QAbstractItemModel *sourceModel, QAbstractProxyModel *sourceProxyModel = 0);
 
 	void setCurrentValue(QVariant value);
 	QVariant currentValue();
 
+	virtual void valueChanged(QVariant value, QVariant previousValue);
+	virtual bool compare(QVariant value, QVariant previousValue) const = 0;
+
 public:
 	explicit ActionsComboBox(QWidget *parent = 0);
 	virtual ~ActionsComboBox();
-
-	virtual void reset();
 
 	void addBeforeAction(QAction *action, ActionsProxyModel::ActionVisibility actionVisibility = ActionsProxyModel::AlwaysVisible);
 	void addAfterAction(QAction *action, ActionsProxyModel::ActionVisibility actionVisibility = ActionsProxyModel::AlwaysVisible);
 
 	QAction * currentAction();
+
+	virtual void reset();
 
 };
 
