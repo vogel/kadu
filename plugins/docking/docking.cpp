@@ -94,10 +94,14 @@ DockingManager * DockingManager::instance()
 }
 
 DockingManager::DockingManager() :
-		CurrentDocker(0), KaduWindowLastTimeVisible(true), DockMenuNeedsUpdate(true), AllAccountsMenu(0),
+		CurrentDocker(0), DockMenuNeedsUpdate(true), AllAccountsMenu(0),
 		newMessageIcon(StaticEnvelope), icon_timer(new QTimer(this)), blink(false)
 {
 	kdebugf();
+
+#ifdef Q_WS_X11
+	KaduWindowLastTimeVisible = true;
+#endif
 
 	createDefaultConfiguration();
 
@@ -121,11 +125,13 @@ DockingManager::DockingManager() :
 	qt_mac_set_dock_menu(MacDockMenu);
 #endif
 
+#ifdef Q_WS_X11
 	ShowKaduAction = new QAction(tr("&Restore"), this);
 	connect(ShowKaduAction, SIGNAL(triggered()), this, SLOT(showKaduWindow()));
 
 	HideKaduAction = new QAction(tr("&Minimize"), this);
 	connect(HideKaduAction, SIGNAL(triggered()), this, SLOT(hideKaduWindow()));
+#endif
 
 	CloseKaduAction = new QAction(KaduIcon("application-exit").icon(), tr("&Exit Kadu"), this);
 	connect(CloseKaduAction, SIGNAL(triggered()), qApp, SLOT(quit()));
@@ -340,7 +346,11 @@ void DockingManager::setDocker(Docker *docker)
 
 void DockingManager::contextMenuAboutToBeShown()
 {
-	if (DockMenuNeedsUpdate || Core::instance()->kaduWindow()->window()->isVisible() != KaduWindowLastTimeVisible)
+	if (DockMenuNeedsUpdate
+#ifdef Q_WS_X11
+			|| Core::instance()->kaduWindow()->window()->isVisible() != KaduWindowLastTimeVisible
+#endif
+			)
 		doUpdateContextMenu();
 }
 
@@ -407,8 +417,10 @@ void DockingManager::doUpdateContextMenu()
 		DockMenu->addSeparator();
 	}
 
+#ifdef Q_WS_X11
 	KaduWindowLastTimeVisible = Core::instance()->kaduWindow()->window()->isVisible();
 	DockMenu->addAction(KaduWindowLastTimeVisible ? HideKaduAction : ShowKaduAction);
+#endif
 	DockMenu->addAction(CloseKaduAction);
 
 	DockMenuNeedsUpdate = false;

@@ -56,17 +56,21 @@ class DOCKINGAPI DockingManager : public QObject, ConfigurationAwareObject, Stat
 
 	Docker *CurrentDocker;
 
+#ifdef Q_WS_X11
 	bool KaduWindowLastTimeVisible;
+#endif
 	bool DockMenuNeedsUpdate;
 	QMenu *DockMenu;
- #ifdef Q_OS_MAC
+#ifdef Q_OS_MAC
 	QMenu *MacDockMenu;
- #endif
+#endif
 
 	StatusMenu *AllAccountsMenu;
 
+#ifdef Q_WS_X11
 	QAction *ShowKaduAction;
 	QAction *HideKaduAction;
+#endif
 	QAction *CloseKaduAction;
 	QAction *containersSeparator;
 
