@@ -55,6 +55,13 @@ class HistorySqlStorage : public HistoryStorage
 	void initKaduStatusesTable();
 	void initKaduSmsTable();
 
+	void import010History();
+
+	int findOrCreateChat(const Chat &chat);
+	int findOrCreateContact(const Contact &contact);
+	int saveMessageContent(const Message &message);
+	int findOrCreateDate(const QDate &date);
+
 	QString chatWhere(const Chat &chat);
 	QString buddyContactsWhere(const Buddy &buddy);
 
