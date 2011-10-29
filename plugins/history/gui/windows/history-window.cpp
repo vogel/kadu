@@ -88,8 +88,6 @@ void HistoryWindow::show(const Chat &chat)
 		return;
 	}
 
-	QDateTime before = QDateTime::currentDateTime();
-
 	Chat aggregate = AggregateChatManager::instance()->aggregateChat(chat);
 	if (!aggregate)
 		aggregate = chat;
@@ -102,10 +100,6 @@ void HistoryWindow::show(const Chat &chat)
 
 	Instance->setVisible(true);
 	_activateWindow(Instance);
-
-	QDateTime after = QDateTime::currentDateTime();
-	int delay = after.time().msec() - before.time().msec();
-	kdebugm(KDEBUG_INFO, "otwarcie okna historii: %d ms\n", delay);
 }
 
 HistoryWindow::HistoryWindow(QWidget *parent) :

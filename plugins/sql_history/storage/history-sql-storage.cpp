@@ -141,7 +141,7 @@ void HistorySqlStorage::import010History()
 	<< "CREATE TABLE kadu_chats (id INTEGER PRIMARY KEY AUTOINCREMENT, uuid VARCHAR(16));"
 	<< "CREATE TABLE kadu_contacts (id INTEGER PRIMARY KEY AUTOINCREMENT, uuid VARCHAR(16));"
 	<< "CREATE TABLE kadu_message_contents (id INTEGER PRIMARY KEY AUTOINCREMENT, content TEXT, attributes VARCHAR(25));"
-	<< "CREATE TABLE kadu_dates (id INTEGER PRIMARY KEY AUTOINCREMENT, date VARCHAR(8));"
+	<< "CREATE TABLE kadu_dates (id INTEGER PRIMARY KEY AUTOINCREMENT, date INTEGER);"
 
 	<< "ALTER TABLE kadu_messages RENAME TO kadu_messages_old;"
 
@@ -193,6 +193,9 @@ void HistorySqlStorage::initKaduMessagesTable()
 	executeQuery(query);
 
 	query.prepare("PRAGMA synchronous = OFF;");
+	executeQuery(query);
+
+	query.prepare("PRAGMA foreign_keys = ON;");
 	executeQuery(query);
 
 	query.prepare(
@@ -282,43 +285,40 @@ void HistorySqlStorage::initKaduSmsTable()
 
 void HistorySqlStorage::initIndexes()
 {
-	/*QSqlQuery query(Database);
+	QSqlQuery query(Database);
 
-	query.prepare("CREATE INDEX IF NOT EXISTS kadu_messages_chat ON kadu_messages (chat)");
+	query.prepare("CREATE INDEX IF NOT EXISTS kadu_chat_pk ON kadu_chats (id)");
 	executeQuery(query);
 
-	query.prepare("CREATE INDEX IF NOT EXISTS kadu_messages_chat_receive_time_rowid ON kadu_messages (chat, receive_time, rowid)");
+	query.prepare("CREATE INDEX IF NOT EXISTS kadu_chat_uuid ON kadu_chats (uuid)");
 	executeQuery(query);
 
-	query.prepare("DROP INDEX IF EXISTS kadu_messages_chat_receive_time");
+	query.prepare("CREATE INDEX IF NOT EXISTS kadu_contact_pk ON kadu_contacts (id)");
 	executeQuery(query);
 
-	query.prepare("DROP INDEX IF EXISTS kadu_messages_chat_receive_time_date");
+	query.prepare("CREATE INDEX IF NOT EXISTS kadu_contact_uuid ON kadu_contacts (uuid)");
 	executeQuery(query);
 
-	query.prepare("DROP INDEX IF EXISTS kadu_messages_chat_receive_time_send_time");
+	query.prepare("CREATE INDEX IF NOT EXISTS kadu_dates_pk ON kadu_dates (id)");
+	executeQuery(query);
+	
+	query.prepare("CREATE INDEX IF NOT EXISTS kadu_dates_val ON kadu_dates (date)");
 	executeQuery(query);
 
-	query.prepare("DROP INDEX IF EXISTS kadu_messages_chat_receive_time_date_send_time");
+	query.prepare("CREATE INDEX IF NOT EXISTS kadu_content_pk ON kadu_message_contents (id)");
 	executeQuery(query);
 
-	query.prepare("CREATE INDEX IF NOT EXISTS kadu_statuses_contact ON kadu_statuses (contact)");
+	query.prepare("CREATE INDEX IF NOT EXISTS kadu_msg_chat ON kadu_messages (chat_id)");
 	executeQuery(query);
 
-	query.prepare("CREATE INDEX IF NOT EXISTS kadu_statuses_contact_time ON kadu_statuses (contact, set_time)");
+	query.prepare("CREATE INDEX IF NOT EXISTS kadu_msg_contact ON kadu_messages (contact_id)");
 	executeQuery(query);
 
-	query.prepare("DROP INDEX IF EXISTS kadu_statuses_contact_time_date");
+	query.prepare("CREATE INDEX IF NOT EXISTS kadu_msg_date ON kadu_messages (date_id)");
 	executeQuery(query);
 
-	query.prepare("CREATE INDEX IF NOT EXISTS kadu_sms_receipient ON kadu_sms (receipient)");
+	query.prepare("CREATE INDEX IF NOT EXISTS kadu_msg_content ON kadu_messages (content_id)");
 	executeQuery(query);
-
-	query.prepare("CREATE INDEX IF NOT EXISTS kadu_sms_receipient_time ON kadu_sms (receipient, send_time)");
-	executeQuery(query);
-
-	query.prepare("DROP INDEX IF EXISTS kadu_sms_receipient_time_date");
-	executeQuery(query);*/
 }
 
 void HistorySqlStorage::initQueries()
@@ -641,7 +641,7 @@ QVector<Chat> HistorySqlStorage::chats(const HistorySearchParameters &search)
 	QMutexLocker locker(&DatabaseMutex);
 
 	QString joins = !search.query().isEmpty() || search.fromDate().isValid() || search.toDate().isValid()
-		? "LEFT JOIN kadu_messages ON (kadu_chats.id=kadu_messages.chat_id) LEFT JOIN kadu_message_contents ON (kadu_message_contents.id=kadu_messages.content_id) "
+		? "LEFT JOIN kadu_messages km ON (kadu_chats.id=km.chat_id) LEFT JOIN kadu_dates kd ON (kd.id=km.date_id) LEFT JOIN kadu_message_contents ON (kadu_message_contents.id=kadu_messages.content_id) "
 		: "";
 
 	QSqlQuery query(Database);
@@ -650,18 +650,18 @@ QVector<Chat> HistorySqlStorage::chats(const HistorySearchParameters &search)
 	if (!search.query().isEmpty())
 		queryString += " AND content LIKE :content";
 	if (search.fromDate().isValid())
-		queryString += " AND substr(receive_time,0,11) >= :fromDate";
+		queryString += " AND date >= :fromDate";
 	if (search.toDate().isValid())
-		queryString += " AND substr(receive_time,0,11) <= :toDate";
+		queryString += " AND date <= :toDate";
 
 	query.prepare(queryString);
 
 	if (!search.query().isEmpty())
 		query.bindValue(":content", QString('%' + search.query() + '%'));
 	if (search.fromDate().isValid())
-		query.bindValue(":fromDate", search.fromDate());
+		query.bindValue(":fromDate", search.fromDate().toString("yyyyMMdd"));
 	if (search.toDate().isValid())
-		query.bindValue(":toDate", search.toDate());
+		query.bindValue(":toDate", search.toDate().toString("yyyyMMdd"));
 
 	QVector<Chat> chats;
 
@@ -687,18 +687,21 @@ QVector<DatesModelItem> HistorySqlStorage::chatDates(const Chat &chat, const His
 	QMutexLocker locker(&DatabaseMutex);
 
 	QSqlQuery query(Database);
-	QString queryString = "SELECT count(1), date, content FROM";
-	queryString += " (SELECT km.rowid, date, content FROM kadu_messages km LEFT JOIN kadu_message_contents kmc ON (km.content_id=kmc.id) LEFT JOIN kadu_dates d ON (km.date_id=d.id) LEFT JOIN kadu_chats chat ON (km.chat_id=chat.id) WHERE " + chatWhere(chat);
+	QString queryString = "SELECT count(1), date, date_id, content FROM";
+	queryString += " (SELECT km.rowid, date, date_id, content FROM kadu_messages km "
+		"LEFT JOIN kadu_message_contents kmc ON (km.content_id=kmc.id) "
+		"LEFT JOIN kadu_dates d ON (km.date_id=d.id) "
+		"LEFT JOIN kadu_chats chat ON (km.chat_id=chat.id) WHERE " + chatWhere(chat);
 	if (!search.query().isEmpty())
-		queryString += " AND kmc.content LIKE :content";
+	  queryString += " AND kmc.content LIKE :content";
 	if (search.fromDate().isValid())
-		queryString += " AND date >= :fromDate";
+	  queryString += " AND date >= :fromDate";
 	if (search.toDate().isValid())
-		queryString += " AND date <= :toDate";
-	queryString += " ORDER BY date DESC, km.rowid DESC )";
-	queryString += " GROUP BY date";
-	queryString += " ORDER BY date ASC, rowid ASC";
-
+	  queryString += " AND date <= :toDate";
+	queryString += " ORDER BY date_id DESC, km.rowid DESC )";
+	queryString += " GROUP BY date_id";
+	queryString += " ORDER BY date_id ASC, rowid ASC";
+	
 	query.prepare(queryString);
 
 	if (!search.query().isEmpty())
@@ -758,7 +761,7 @@ QVector<Message> HistorySqlStorage::messages(const Chat &chat, const QDate &date
 			"LEFT JOIN kadu_message_contents kmc ON (kadu_messages.content_id=kmc.id) WHERE " + chatWhere(chat);
 	if (!date.isNull())
 		queryString += " AND date = :date";
-	queryString += " ORDER BY kadu_messages.receive_time ASC, kadu_messages.rowid ASC";
+	queryString += " ORDER BY kadu_messages.date_id ASC, kadu_messages.rowid ASC";
 	if (0 != limit)
 		queryString += " LIMIT :limit";
 
@@ -791,7 +794,7 @@ QVector<Message> HistorySqlStorage::messagesSince(const Chat &chat, const QDate 
 			"LEFT JOIN kadu_dates d ON (kadu_messages.date_id=d.id) "
 			"LEFT JOIN kadu_contacts con ON (kadu_messages.contact_id=con.id) "
 			"LEFT JOIN kadu_message_contents kmc ON (kadu_messages.content_id=kmc.id) WHERE " + chatWhere(chat) +
-			" AND date >= :date ORDER BY receive_time ASC, kadu_messages.rowid ASC";
+			" AND date >= :date ORDER BY date_id ASC, kadu_messages.rowid ASC";
 	query.prepare(queryString);
 
 	query.bindValue(":chat", chat.uuid().toString());
@@ -818,7 +821,7 @@ QVector<Message> HistorySqlStorage::messagesBackTo(const Chat &chat, const QDate
 			"LEFT JOIN kadu_dates d ON (kadu_messages.date_id=d.id) "
 			"LEFT JOIN kadu_contacts con ON (kadu_messages.contact_id=con.id) "
 			"LEFT JOIN kadu_message_contents kmc ON (kadu_messages.content_id=kmc.id) WHERE " + chatWhere(chat) +
-			" AND date >= :date ORDER BY receive_time DESC, kadu_messages.rowid DESC LIMIT :limit";
+			" AND date >= :date ORDER BY date_id DESC, kadu_messages.rowid DESC LIMIT :limit";
 	query.prepare(queryString);
 
 	query.bindValue(":chat", chat.uuid().toString());
@@ -1078,20 +1081,16 @@ void HistorySqlStorage::executeQuery(QSqlQuery &query)
 
 	query.setForwardOnly(true);
 
-// 	QDateTime before = QDateTime::currentDateTime();
+	QDateTime before = QDateTime::currentDateTime();
 	query.exec();
-// 	QDateTime after = QDateTime::currentDateTime();
+	QDateTime after = QDateTime::currentDateTime();
 	kdebugm(KDEBUG_INFO, "db query: %s\n", qPrintable(query.executedQuery()));
-// 	printf("[%s]\n[%d.%d]-[%d.%d]/%d.%d\n", qPrintable(query.executedQuery()),
-// 			before.toTime_t(), before.time().msec(),
-// 			after.toTime_t(), after.time().msec(),
-// 			after.toTime_t() - before.toTime_t(),
-// 			after.time().msec() - before.time().msec());
-
-
-
+	printf("[%s]\n[%d.%d]-[%d.%d]/%d.%d\n", qPrintable(query.executedQuery()),
+			before.toTime_t(), before.time().msec(),
+			after.toTime_t(), after.time().msec(),
+			after.toTime_t() - before.toTime_t(),
+			after.time().msec() - before.time().msec());
 }
-
 
 QVector<Message> HistorySqlStorage::messagesFromQuery(QSqlQuery &query)
 {
