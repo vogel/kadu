@@ -20,13 +20,14 @@
 
 #include <QtGui/QAction>
 
+#include "model/model-chain.h"
 #include "model/roles.h"
 
 #include "actions-combo-box.h"
 
 ActionsComboBox::ActionsComboBox(QWidget *parent) :
 		QComboBox(parent),
-		SourceModel(0), SourceProxyModel(0), ActionsModel(new ActionsProxyModel(this)),
+		Chain(0), ActionsModel(new ActionsProxyModel(this)),
 		DataRole(0), LastIndex(-1)
 {
 	connect(this, SIGNAL(activated(int)), this, SLOT(activatedSlot(int)));
@@ -94,26 +95,18 @@ void ActionsComboBox::rowsRemoved(const QModelIndex &parent, int start, int end)
 
 void ActionsComboBox::setUpModel(int dataRole, QAbstractItemModel *sourceModel, QAbstractProxyModel *sourceProxyModel)
 {
+	ModelChain *chain = new ModelChain(sourceModel, this);
+	if (sourceProxyModel)
+		chain->addProxyModel(sourceProxyModel);
+	setUpModel(dataRole, chain);
+}
+
+void ActionsComboBox::setUpModel(int dataRole, ModelChain *modelChain)
+{
 	DataRole = dataRole;
-	SourceModel = sourceModel;
-	SourceProxyModel = sourceProxyModel;
+	Chain = modelChain;
 
-	if (!dynamic_cast<KaduAbstractModel *>(SourceModel))
-	{
-		qDebug("ActionsComboBox::setUpModel(): error: sourceModel not an instace of KaduAbstractModel");
-		SourceModel = 0;
-		SourceProxyModel = 0;
-		return;
-	}
-
-	if (SourceProxyModel)
-	{
-		SourceProxyModel->setSourceModel(SourceModel);
-		ActionsModel->setSourceModel(SourceProxyModel);
-	}
-	else
-		ActionsModel->setSourceModel(SourceModel);
-
+	Chain->addProxyModel(ActionsModel);
 	setModel(ActionsModel);
 
 	connect(ActionsModel, SIGNAL(rowsRemoved(const QModelIndex &, int, int)),
@@ -122,13 +115,7 @@ void ActionsComboBox::setUpModel(int dataRole, QAbstractItemModel *sourceModel, 
 
 void ActionsComboBox::setCurrentValue(const QVariant &value)
 {
-	if (!SourceModel)
-		return;
-
-	QModelIndex index = dynamic_cast<KaduAbstractModel *>(SourceModel)->indexForValue(value);
-	if (SourceProxyModel)
-		index = SourceProxyModel->mapFromSource(index);
-	index = ActionsModel->mapFromSource(index);
+	QModelIndex index = Chain->indexForValue(value);
 	setCurrentIndex(index.row());
 }
 

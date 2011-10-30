@@ -43,7 +43,7 @@ void ModelChain::addProxyModel(QAbstractProxyModel *proxyModel)
 	Q_ASSERT(proxyModel);
 
 	if (ProxyModels.empty())
-		proxyModel->setSourceModel(proxyModel);
+		proxyModel->setSourceModel(Model);
 	else
 		proxyModel->setSourceModel(ProxyModels.last());
 

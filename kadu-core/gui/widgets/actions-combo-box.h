@@ -29,6 +29,8 @@
 
 class QAbstractProxyModel;
 
+class ModelChain;
+
 /**
  * @addtogroup Gui
  * @{
@@ -55,8 +57,7 @@ class ActionsComboBox : public QComboBox
 {
 	Q_OBJECT
 
-	QAbstractItemModel *SourceModel;
-	QAbstractProxyModel *SourceProxyModel;
+	ModelChain *Chain;
 	ActionsProxyModel *ActionsModel;
 
 	int DataRole;
@@ -107,13 +108,14 @@ protected:
 	 * @author Bartosz 'beevvy' Brachaczek
 	 * @author Rafal 'Vogel' Malinowski
 	 * @short Sets up model for combo box.
-  * @param dataRole role used to get data from model
+	* @param dataRole role used to get data from model
 	 * @param sourceModel the model to be set (must be an instance of KaduAbstractModel)
 	 * @param sourceProxyModel (optional) proxy model to be set
 	 *
 	 * Sets up the model in combo box. Must be called before any signals are connected to/from the model.
 	 */
 	void setUpModel(int dataRole, QAbstractItemModel *sourceModel, QAbstractProxyModel *sourceProxyModel = 0);
+	void setUpModel(int dataRole, ModelChain *modelChain);
 
 	/**
 	 * @author Bartosz 'beevvy' Brachaczek
