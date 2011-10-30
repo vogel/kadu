@@ -76,6 +76,9 @@ bool AccountsProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sour
 
 void AccountsProxyModel::addFilter(AbstractAccountFilter *filter)
 {
+	if (Filters.contains(filter))
+		return;
+
 	Filters.append(filter);
 	invalidateFilter();
 	connect(filter, SIGNAL(filterChanged()), this, SLOT(filterChangedSlot()));
@@ -83,6 +86,9 @@ void AccountsProxyModel::addFilter(AbstractAccountFilter *filter)
 
 void AccountsProxyModel::removeFilter(AbstractAccountFilter *filter)
 {
+	if (!Filters.contains(filter))
+		return;
+
 	Filters.removeAll(filter);
 	invalidateFilter();
 	disconnect(filter, SIGNAL(filterChanged()), this, SLOT(filterChangedSlot()));

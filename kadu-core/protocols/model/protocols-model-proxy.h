@@ -34,7 +34,7 @@ class ProtocolsModelProxy : public QSortFilterProxyModel
 
 	bool BrokenStringCompare;
 	int compareNames(QString n1, QString n2) const;
-	
+
 private slots:
 	void modelDestroyed();
 
@@ -50,6 +50,7 @@ public:
 
 	void addFilter(AbstractProtocolFilter *filter);
 	void removeFilter(AbstractProtocolFilter *filter);
+
 };
 
 #endif // PROTOCOLS_MODEL_PROXY

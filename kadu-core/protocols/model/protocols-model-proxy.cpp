@@ -103,6 +103,9 @@ bool ProtocolsModelProxy::filterAcceptsRow(int sourceRow, const QModelIndex &sou
 
 void ProtocolsModelProxy::addFilter(AbstractProtocolFilter *filter)
 {
+	if (ProtocolFilters.contains(filter))
+		return;
+
 	ProtocolFilters.append(filter);
 	invalidateFilter();
 	connect(filter, SIGNAL(filterChanged()), this, SLOT(invalidate()));
@@ -110,6 +113,9 @@ void ProtocolsModelProxy::addFilter(AbstractProtocolFilter *filter)
 
 void ProtocolsModelProxy::removeFilter(AbstractProtocolFilter *filter)
 {
+	if (!ProtocolFilters.contains(filter))
+		return;
+
 	ProtocolFilters.removeAll(filter);
 	invalidateFilter();
 	disconnect(filter, SIGNAL(filterChanged()), this, SLOT(invalidate()));

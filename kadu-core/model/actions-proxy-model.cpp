@@ -39,7 +39,8 @@ ActionsProxyModel::~ActionsProxyModel()
 
 void ActionsProxyModel::updateVisibleActions(QList<QAction *> &visibleActions, const QList<ActionWithVisibility> &actions, int globalPosition)
 {
-	int i = 0, sourceModelRowCount = sourceModel() ? sourceModel()->rowCount() : 0;
+	int i = 0;
+	int sourceModelRowCount = sourceModel() ? sourceModel()->rowCount() : 0;
 
 	foreach (const ActionWithVisibility &action, actions)
 	{
@@ -187,6 +188,7 @@ void ActionsProxyModel::sourceRowsInserted(const QModelIndex &sourceParent, int 
 	Q_UNUSED(end)
 
 	endInsertRows();
+
 	updateVisibleBeforeActions();
 	updateVisibleAfterActions();
 }
@@ -223,6 +225,7 @@ void ActionsProxyModel::sourceRowsRemoved(const QModelIndex &sourceParent, int s
 	Q_UNUSED(end)
 
 	endRemoveRows();
+
 	updateVisibleBeforeActions();
 	updateVisibleAfterActions();
 }

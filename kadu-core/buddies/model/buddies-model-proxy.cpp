@@ -172,6 +172,9 @@ bool BuddiesModelProxy::filterAcceptsRow(int sourceRow, const QModelIndex &sourc
 
 void BuddiesModelProxy::addFilter(AbstractBuddyFilter *filter)
 {
+	if (BuddyFilters.contains(filter))
+		return;
+
 	BuddyFilters.append(filter);
 	invalidateFilter();
 	connect(filter, SIGNAL(filterChanged()), this, SLOT(invalidate()));
@@ -179,6 +182,9 @@ void BuddiesModelProxy::addFilter(AbstractBuddyFilter *filter)
 
 void BuddiesModelProxy::removeFilter(AbstractBuddyFilter *filter)
 {
+	if (!BuddyFilters.contains(filter))
+		return;
+
 	BuddyFilters.removeAll(filter);
 	invalidateFilter();
 	disconnect(filter, SIGNAL(filterChanged()), this, SLOT(invalidate()));
