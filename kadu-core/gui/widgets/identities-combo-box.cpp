@@ -27,13 +27,15 @@
 #include "identities/identity-manager.h"
 #include "identities/model/identity-model.h"
 #include "model/roles.h"
+#include "model/model-chain.h"
 
 #include "identities-combo-box.h"
 
 IdentitiesComboBox::IdentitiesComboBox(bool includeSelectIdentity, QWidget *parent) :
 		ActionsComboBox(parent), InActivatedSlot(false)
 {
-	setUpModel(IdentityRole, new IdentityModel(this));
+	ModelChain *chain = new ModelChain(new IdentityModel(this), this);
+	setUpModel(IdentityRole, chain);
 
 	if (includeSelectIdentity)
 		addBeforeAction(new QAction(tr(" - Select identity - "), this));

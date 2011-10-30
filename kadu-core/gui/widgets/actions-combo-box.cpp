@@ -93,14 +93,6 @@ void ActionsComboBox::rowsRemoved(const QModelIndex &parent, int start, int end)
 		resetSelection();
 }
 
-void ActionsComboBox::setUpModel(int dataRole, QAbstractItemModel *sourceModel, QAbstractProxyModel *sourceProxyModel)
-{
-	ModelChain *chain = new ModelChain(sourceModel, this);
-	if (sourceProxyModel)
-		chain->addProxyModel(sourceProxyModel);
-	setUpModel(dataRole, chain);
-}
-
 void ActionsComboBox::setUpModel(int dataRole, ModelChain *modelChain)
 {
 	DataRole = dataRole;

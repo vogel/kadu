@@ -28,6 +28,7 @@
 #include "buddies/group-manager.h"
 #include "buddies/model/groups-model.h"
 #include "model/roles.h"
+#include "model/model-chain.h"
 
 #include "groups-combo-box.h"
 
@@ -48,7 +49,9 @@ GroupsComboBox::GroupsComboBox(QWidget *parent) :
 
 	addAfterAction(CreateNewGroupAction);
 
-	setUpModel(GroupRole, new GroupsModel(this), proxyModel);
+	ModelChain *chain = new ModelChain(new GroupsModel(this), this);
+	chain->addProxyModel(proxyModel);
+	setUpModel(GroupRole, chain);
 	proxyModel->setDynamicSortFilter(true);
 	proxyModel->sort(0);
 

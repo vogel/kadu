@@ -25,6 +25,7 @@
 #include "accounts/model/accounts-model.h"
 #include "accounts/model/accounts-proxy-model.h"
 #include "model/roles.h"
+#include "model/model-chain.h"
 
 #include "accounts-combo-box.h"
 
@@ -33,7 +34,10 @@ AccountsComboBox::AccountsComboBox(bool includeSelectAccount, ActionsProxyModel:
 {
 	Model = new AccountsModel(this);
 	ProxyModel = new AccountsProxyModel(this);
-	setUpModel(AccountRole, Model, ProxyModel);
+
+	ModelChain *chain = new ModelChain(Model, this);
+	chain->addProxyModel(ProxyModel);
+	setUpModel(AccountRole, chain);
 
 	if (includeSelectAccount)
 		addBeforeAction(new QAction(tr(" - Select account - "), this), visibility);

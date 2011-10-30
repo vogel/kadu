@@ -21,6 +21,7 @@
 
 #include "gui/windows/proxy-edit-window.h"
 #include "model/roles.h"
+#include "model/model-chain.h"
 #include "network/proxy/model/network-proxy-model.h"
 #include "network/proxy/model/network-proxy-proxy-model.h"
 
@@ -32,7 +33,10 @@ ProxyComboBox::ProxyComboBox(QWidget *parent) :
 		ActionsComboBox(parent), InActivatedSlot(false), DefaultProxyAction(0)
 {
 	Model = new NetworkProxyModel(this);
-	setUpModel(NetworkProxyRole, Model, new NetworkProxyProxyModel(this));
+	ModelChain *chain = new ModelChain(Model, this);
+	chain->addProxyModel(new NetworkProxyProxyModel(this));
+
+	setUpModel(NetworkProxyRole, chain);
 	addBeforeAction(new QAction(tr(" - No proxy - "), this));
 
 	EditProxyAction = new QAction(tr("Edit proxy configuration..."), this);

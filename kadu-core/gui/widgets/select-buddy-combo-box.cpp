@@ -29,6 +29,7 @@
 #include "gui/widgets/select-buddy-popup.h"
 #include "misc/misc.h"
 #include "model/roles.h"
+#include "model/model-chain.h"
 
 #include "select-buddy-combo-box.h"
 
@@ -36,7 +37,10 @@ SelectBuddyComboBox::SelectBuddyComboBox(QWidget *parent) :
 		ActionsComboBox(parent)
 {
 	ProxyModel = new BuddiesModelProxy(this);
-	setUpModel(BuddyRole, new BuddiesModel(this), ProxyModel);
+	ModelChain *chain = new ModelChain(new BuddiesModel(this), this);
+	chain->addProxyModel(ProxyModel);
+
+	setUpModel(BuddyRole, chain);
 	addBeforeAction(new QAction(tr(" - Select buddy - "), this));
 
 	Popup = new SelectBuddyPopup();

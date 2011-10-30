@@ -35,6 +35,7 @@ class ModelChain;
  * @addtogroup Gui
  * @{
  */
+
 /**
  * @class ActionsComboBox
  * @author Bartosz 'beevvy' Brachaczek
@@ -108,13 +109,12 @@ protected:
 	 * @author Bartosz 'beevvy' Brachaczek
 	 * @author Rafal 'Vogel' Malinowski
 	 * @short Sets up model for combo box.
-	* @param dataRole role used to get data from model
-	 * @param sourceModel the model to be set (must be an instance of KaduAbstractModel)
-	 * @param sourceProxyModel (optional) proxy model to be set
+	 * @param dataRole role used to get data from model
+	 * @param modelChain chain of models to use as data source
 	 *
 	 * Sets up the model in combo box. Must be called before any signals are connected to/from the model.
+	 * Parameter modelChain is modified in this method.
 	 */
-	void setUpModel(int dataRole, QAbstractItemModel *sourceModel, QAbstractProxyModel *sourceProxyModel = 0);
 	void setUpModel(int dataRole, ModelChain *modelChain);
 
 	/**
