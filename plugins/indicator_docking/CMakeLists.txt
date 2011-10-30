@@ -36,24 +36,11 @@ kadu_plugin (indicator_docking
 	PLUGIN_DEPENDENCIES docking
 )
 
-if (NOT INDICATORS_PARENT_DIR)
-	if (${CMAKE_INSTALL_PREFIX} MATCHES "/usr/*")
-		set (INDICATORS_PARENT_DIR "/usr/share")
-	else (${CMAKE_INSTALL_PREFIX} MATCHES "/usr/*")
-		if (NOT "$ENV{XDG_CONFIG_HOME}" STREQUAL "")
-			set (INDICATORS_PARENT_DIR "$ENV{XDG_CONFIG_HOME}")
-		else (NOT "$ENV{XDG_CONFIG_HOME}" STREQUAL "")
-			if (NOT "$ENV{HOME}" STREQUAL "")
-				set (INDICATORS_PARENT_DIR "$ENV{HOME}/.config")
-			else (NOT "$ENV{HOME}" STREQUAL "")
-				set (INDICATORS_PARENT_DIR "${CMAKE_INSTALL_PREFIX}/share")
-			endif (NOT "$ENV{HOME}" STREQUAL "")
-		endif (NOT "$ENV{XDG_CONFIG_HOME}" STREQUAL "")
-	endif (${CMAKE_INSTALL_PREFIX} MATCHES "/usr/*")
-
-	message (STATUS "INDICATORS_PARENT_DIR not specified. Using default: ${INDICATORS_PARENT_DIR}")
-endif (NOT INDICATORS_PARENT_DIR)
+if (NOT INDICATORS_DIR)
+	set (INDICATORS_DIR "${CMAKE_INSTALL_PREFIX}/share/indicators/messages/applications")
+	message (STATUS "INDICATORS_DIR not specified. Using default: ${INDICATORS_DIR}")
+endif (NOT INDICATORS_DIR)
 
 # Pin Kadu to Messaging Menu
 file (WRITE ${CMAKE_BINARY_DIR}/kadu "${KADU_DESKTOP_FILE_DIR}/${KADU_DESKTOP_FILE_NAME}\n") 
-install (FILES ${CMAKE_BINARY_DIR}/kadu DESTINATION ${INDICATORS_PARENT_DIR}/indicators/messages/applications/)
+install (FILES ${CMAKE_BINARY_DIR}/kadu DESTINATION "${INDICATORS_DIR}")
