@@ -86,10 +86,9 @@ void AccountsProxyModel::addFilter(AbstractAccountFilter *filter)
 
 void AccountsProxyModel::removeFilter(AbstractAccountFilter *filter)
 {
-	if (!Filters.contains(filter))
+	if (Filters.removeAll(filter) <= 0)
 		return;
 
-	Filters.removeAll(filter);
 	invalidateFilter();
 	disconnect(filter, SIGNAL(filterChanged()), this, SLOT(filterChangedSlot()));
 }

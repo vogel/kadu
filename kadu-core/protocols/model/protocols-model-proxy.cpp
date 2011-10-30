@@ -113,10 +113,9 @@ void ProtocolsModelProxy::addFilter(AbstractProtocolFilter *filter)
 
 void ProtocolsModelProxy::removeFilter(AbstractProtocolFilter *filter)
 {
-	if (!ProtocolFilters.contains(filter))
+	if (ProtocolFilters.removeAll(filter) <= 0)
 		return;
 
-	ProtocolFilters.removeAll(filter);
 	invalidateFilter();
 	disconnect(filter, SIGNAL(filterChanged()), this, SLOT(invalidate()));
 }

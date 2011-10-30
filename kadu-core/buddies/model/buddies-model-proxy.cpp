@@ -182,16 +182,18 @@ void BuddiesModelProxy::addFilter(AbstractBuddyFilter *filter)
 
 void BuddiesModelProxy::removeFilter(AbstractBuddyFilter *filter)
 {
-	if (!BuddyFilters.contains(filter))
+	if (BuddyFilters.removeAll(filter) <= 0)
 		return;
 
-	BuddyFilters.removeAll(filter);
 	invalidateFilter();
 	disconnect(filter, SIGNAL(filterChanged()), this, SLOT(invalidate()));
 }
 
 void BuddiesModelProxy::addFilter(AbstractContactFilter *filter)
 {
+	if (ContactFilters.contains(filter))
+		return;
+
 	ContactFilters.append(filter);
 	invalidateFilter();
 	connect(filter, SIGNAL(filterChanged()), this, SLOT(invalidate()));
@@ -199,7 +201,9 @@ void BuddiesModelProxy::addFilter(AbstractContactFilter *filter)
 
 void BuddiesModelProxy::removeFilter(AbstractContactFilter *filter)
 {
-	ContactFilters.removeAll(filter);
+	if (ContactFilters.removeAll(filter) <= 0)
+		return;
+
 	invalidateFilter();
 	disconnect(filter, SIGNAL(filterChanged()), this, SLOT(invalidate()));
 }
