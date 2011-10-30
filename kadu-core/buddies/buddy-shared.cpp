@@ -84,6 +84,8 @@ void BuddyShared::collectGarbage()
 
 	foreach (const Contact &contact, Contacts)
 	{
+		Q_ASSERT(!contact.isNull());
+
 		// 1 is for current BuddyShared
 		int contactNumberOfReferences = 1 + (contact.data()->contactAvatar() ? 1 : 0);
 		if (contactNumberOfReferences != (int)(contact.data()->ref))
