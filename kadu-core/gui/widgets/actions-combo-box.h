@@ -25,10 +25,6 @@
 
 #include "model/actions-proxy-model.h"
 
-#include "model/kadu-abstract-model.h"
-
-class QAbstractProxyModel;
-
 class ModelChain;
 
 /**
