@@ -79,9 +79,9 @@ configure_file (${CMAKE_CURRENT_SOURCE_DIR}/cmake_uninstall.cmake.in ${CMAKE_CUR
 
 add_custom_target (uninstall "${CMAKE_COMMAND}" -P "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake")
 
-include (Plugins.cmake)
-
+# kadu-core sets WITH_LIBINDICATE_QT option which is used by Plugins.cmake
 add_subdirectory (kadu-core)
+include (Plugins.cmake)
 add_subdirectory (plugins)
 add_subdirectory (varia)
 add_subdirectory (translations)
