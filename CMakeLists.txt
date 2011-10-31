@@ -6,9 +6,6 @@ set (CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 cmake_minimum_required (VERSION 2.8.0 FATAL_ERROR)
 
-# configuration
-option (BUILD_PLUGINS "Switch to OFF if you do not want to build plugins" ON)
-
 if (NOT BUILD_DESCRIPTION)
 	set (BUILD_DESCRIPTION "Compiled from sources" CACHE STRING "Build description" FORCE)
 endif (NOT BUILD_DESCRIPTION)

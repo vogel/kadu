@@ -1,3 +1,5 @@
+option (BUILD_PLUGINS "Switch to OFF if you do not want to build plugins" ON)
+
 if (BUILD_PLUGINS)
 	if (NOT WIN32)
 		find_program (AWK gawk awk)
