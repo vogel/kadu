@@ -94,6 +94,19 @@ void hideNoMultilogonAccounts(Action *action)
 	action->setVisible(hasMultilogonAccount);
 }
 
+void hideNoSearchServiceAccounts(Action *action)
+{
+	bool hasSearchServiceAccount = false;
+	foreach (const Account &account, AccountManager::instance()->items())
+		if (account.protocolHandler() && account.protocolHandler()->searchService())
+		{
+			hasSearchServiceAccount = true;
+			break;
+		}
+
+	action->setVisible(hasSearchServiceAccount);
+}
+
 void checkBuddyProperties(Action *action)
 {
 	kdebugf();
@@ -124,6 +137,13 @@ void checkBuddyProperties(Action *action)
 	}
 
 	kdebugf2();
+}
+
+void disableNoSearchService(Action *action)
+{
+	action->setEnabled(action->contact()
+			&& action->contact().contactAccount().protocolHandler()
+			&& action->contact().contactAccount().protocolHandler()->searchService());
 }
 
 void disableNoContact(Action *action)
@@ -221,8 +241,10 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 	OpenSearch = new ActionDescription(this,
 		ActionDescription::TypeGlobal, "openSearchAction",
 		this, SLOT(openSearchActionActivated(QAction *, bool)),
-		KaduIcon("edit-find"), tr("Search for Buddy...")
+		KaduIcon("edit-find"), tr("Search for Buddy..."), false,
+		hideNoSearchServiceAccounts
 	);
+	connect(OpenSearch, SIGNAL(actionCreated(Action*)), this, SLOT(openSearchActionCreated(Action*)));
 
 	Help = new ActionDescription(this,
 		ActionDescription::TypeMainMenu, "helpAction",
@@ -311,7 +333,7 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 		ActionDescription::TypeUser, "lookupUserInfoAction",
 		this, SLOT(lookupInDirectoryActionActivated(QAction *, bool)),
 		KaduIcon("edit-find"), tr("Search in Directory"), false,
-		disableNoContact
+		disableNoSearchService
 	);
 
 	InactiveUsers = new ActionDescription(this,
@@ -390,6 +412,12 @@ KaduWindowActions::~KaduWindowActions()
 }
 
 void KaduWindowActions::showMultilogonsActionCreated(Action *action)
+{
+	connect(AccountManager::instance(), SIGNAL(accountRegistered(Account)), action, SLOT(checkState()));
+	connect(AccountManager::instance(), SIGNAL(accountUnregistered(Account)), action, SLOT(checkState()));
+}
+
+void KaduWindowActions::openSearchActionCreated(Action *action)
 {
 	connect(AccountManager::instance(), SIGNAL(accountRegistered(Account)), action, SLOT(checkState()));
 	connect(AccountManager::instance(), SIGNAL(accountUnregistered(Account)), action, SLOT(checkState()));

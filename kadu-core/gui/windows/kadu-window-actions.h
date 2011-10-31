@@ -79,6 +79,7 @@ class KaduWindowActions : QObject, ConfigurationAwareObject
 
 private slots:
 	void showMultilogonsActionCreated(Action *action);
+	void openSearchActionCreated(Action *action);
 	void inactiveUsersActionCreated(Action *action);
 	void descriptionUsersActionCreated(Action *action);
 	void showDescriptionsActionCreated(Action *action);
