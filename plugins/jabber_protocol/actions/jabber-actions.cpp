@@ -76,7 +76,7 @@ void JabberActions::unregisterActions()
 JabberActions::JabberActions()
 {
 	ShowXmlConsole = new ActionDescription(this, ActionDescription::TypeMainMenu, "showXmlConsole",
-			0, 0, KaduIcon(), tr("Show XML Console for Account"));
+			0, 0, KaduIcon(), tr("Show XML Console"));
 	connect(ShowXmlConsole, SIGNAL(actionCreated(Action*)), this, SLOT(showXmlConsoleActionCreated(Action*)));
 
 	// HACK: It is needed bacause of loading protocol modules before creating GUI.

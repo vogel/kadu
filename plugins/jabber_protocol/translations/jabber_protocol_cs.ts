@@ -197,8 +197,8 @@
 <context>
     <name>JabberActions</name>
     <message>
-        <source>Show XML Console for Account</source>
-        <translation>Ukázat konzoli XML pro účet</translation>
+        <source>Show XML Console</source>
+        <translation>Ukázat konzoli XML</translation>
     </message>
     <message>
         <source>Resend Subscription</source>

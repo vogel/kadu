@@ -197,8 +197,8 @@
 <context>
     <name>JabberActions</name>
     <message>
-        <source>Show XML Console for Account</source>
-        <translation>Zeige XML-Konsole für das Konto</translation>
+        <source>Show XML Console</source>
+        <translation>Zeige XML-Konsole</translation>
     </message>
     <message>
         <source>Resend Subscription</source>
