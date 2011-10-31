@@ -74,7 +74,7 @@ SmsActions::SmsActions()
 	);
 	sendSmsActionDescription->setShortcut("kadu_sendsms");
 	BuddiesListViewMenuManager::instance()->addActionDescription(sendSmsActionDescription, BuddiesListViewMenuItem::MenuCategoryActions, 100);
-	Core::instance()->kaduWindow()->insertMenuActionDescription(sendSmsActionDescription, KaduWindow::MenuContacts, 5);
+	Core::instance()->kaduWindow()->insertMenuActionDescription(sendSmsActionDescription, KaduWindow::MenuBuddies, 5);
 }
 
 SmsActions::~SmsActions()

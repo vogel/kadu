@@ -60,7 +60,7 @@ public:
 	enum MenuType
 	{
 		MenuKadu,
-		MenuContacts,
+		MenuBuddies,
 		MenuTools,
 		MenuHelp
 	};

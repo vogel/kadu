@@ -219,18 +219,18 @@ void KaduWindow::createContactsMenu()
 	ContactsMenu = new QMenu(this);
 	ContactsMenu->setTitle(tr("&Buddies"));
 
-	insertMenuActionDescription(Actions->AddUser, MenuContacts);
-	insertMenuActionDescription(Actions->AddGroup, MenuContacts);
-	insertMenuActionDescription(Actions->OpenSearch, MenuContacts);
+	insertMenuActionDescription(Actions->AddUser, MenuBuddies);
+	insertMenuActionDescription(Actions->AddGroup, MenuBuddies);
+	insertMenuActionDescription(Actions->OpenSearch, MenuBuddies);
 
 	ContactsMenu->addSeparator();
-	insertMenuActionDescription(ChatWidgetManager::instance()->actions()->openChatWith(), MenuContacts);
+	insertMenuActionDescription(ChatWidgetManager::instance()->actions()->openChatWith(), MenuBuddies);
 
 	ContactsMenu->addSeparator();
-	insertMenuActionDescription(Actions->InactiveUsers, MenuContacts);
-	insertMenuActionDescription(Actions->ShowBlockedBuddies, MenuContacts);
-	insertMenuActionDescription(Actions->ShowMyself, MenuContacts);
-	insertMenuActionDescription(Actions->ShowInfoPanel, MenuContacts);
+	insertMenuActionDescription(Actions->InactiveUsers, MenuBuddies);
+	insertMenuActionDescription(Actions->ShowBlockedBuddies, MenuBuddies);
+	insertMenuActionDescription(Actions->ShowMyself, MenuBuddies);
+	insertMenuActionDescription(Actions->ShowInfoPanel, MenuBuddies);
 
 	menuBar()->addMenu(ContactsMenu);
 }
@@ -549,7 +549,7 @@ void KaduWindow::insertMenuActionDescription(ActionDescription *actionDescriptio
 		case MenuKadu:
 			menu = KaduMenu;
 			break;
-		case MenuContacts:
+		case MenuBuddies:
 			menu = ContactsMenu;
 			break;
 		case MenuTools:
@@ -587,7 +587,7 @@ void KaduWindow::removeMenuActionDescription(ActionDescription *actionDescriptio
 		case MenuKadu:
 			KaduMenu->removeAction(action);
 			break;
-		case MenuContacts:
+		case MenuBuddies:
 			ContactsMenu->removeAction(action);
 			break;
 		case MenuTools:
