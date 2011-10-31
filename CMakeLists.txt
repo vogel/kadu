@@ -6,9 +6,9 @@ set (CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 cmake_minimum_required (VERSION 2.8.0 FATAL_ERROR)
 
-if (NOT BUILD_DESCRIPTION)
+if (WIN32 AND NOT BUILD_DESCRIPTION)
 	set (BUILD_DESCRIPTION "Compiled from sources" CACHE STRING "Build description" FORCE)
-endif (NOT BUILD_DESCRIPTION)
+endif (WIN32 AND NOT BUILD_DESCRIPTION)
 
 if (COMMAND cmake_policy)
 	cmake_policy (SET CMP0003 NEW)
