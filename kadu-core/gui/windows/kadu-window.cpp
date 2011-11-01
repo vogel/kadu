@@ -39,8 +39,8 @@
 #include "buddies/model/buddies-model.h"
 #include "buddies/filter/group-buddy-filter.h"
 #include "chat/model/chats-model.h"
+#include "chat/model/chats-proxy-model.h"
 #include "chat/type/chat-type-manager.h"
-#include "chat/chat-manager.h"
 #include "chat/recent-chat-manager.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact.h"
@@ -180,7 +180,10 @@ QWidget * KaduWindow::createBuddiesWidget(QWidget *parent)
 QWidget * KaduWindow::createChatsWidget(QWidget *parent)
 {
 	QTreeView *chatWidget = new QTreeView(parent);
-	chatWidget->setModel(new ChatsModel(chatWidget));
+	ChatsModel *chatsModel = new ChatsModel(chatWidget);
+	ChatsProxyModel *chatsProxyModel = new ChatsProxyModel(chatWidget);
+	chatsProxyModel->setSourceModel(chatsModel);
+	chatWidget->setModel(chatsProxyModel);
 
 	return chatWidget;
 }
