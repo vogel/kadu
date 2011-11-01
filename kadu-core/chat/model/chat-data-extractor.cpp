@@ -35,7 +35,13 @@ QVariant ChatDataExtractor::data(const Chat &chat, int role)
 	switch (role)
 	{
 		case Qt::DisplayRole:
+		{
+			if (!chat.display().isEmpty())
+				return chat.display();
+			if (!chat.name().isEmpty())
+				return chat.name();
 			return chat.uuid().toString();
+		}
 		case Qt::DecorationRole:
 		{
 			QString chatTypeName = chat.type();
