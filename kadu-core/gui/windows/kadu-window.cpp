@@ -27,6 +27,7 @@
 #include <QtGui/QApplication>
 #include <QtGui/QCloseEvent>
 #include <QtGui/QHBoxLayout>
+#include <QtGui/QLabel>
 #include <QtGui/QMenu>
 #include <QtGui/QMenuBar>
 #include <QtGui/QPushButton>
@@ -120,8 +121,18 @@ void KaduWindow::createGui()
 	MainLayout->setMargin(0);
 	MainLayout->setSpacing(0);
 
-	Split = new QSplitter(Qt::Vertical, this);
-	MainLayout->addWidget(Split);
+	QTabWidget *buddiesChatView = new QTabWidget(this);
+	MainLayout->addWidget(buddiesChatView);
+	buddiesChatView->addTab(createBuddiesWidget(buddiesChatView), tr("Buddies"));
+	buddiesChatView->addTab(createChatsWidget(buddiesChatView), tr("Chats"));
+
+	setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+	setCentralWidget(MainWidget);
+}
+
+QWidget * KaduWindow::createBuddiesWidget(QWidget *parent)
+{
+	Split = new QSplitter(Qt::Vertical, parent);
 
 	QWidget* hbox = new QWidget(Split);
 	QHBoxLayout *hboxLayout = new QHBoxLayout(hbox);
@@ -163,8 +174,12 @@ void KaduWindow::createGui()
 
 	Split->setSizes(splitSizes);
 
-	setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
-	setCentralWidget(MainWidget);
+	return Split;
+}
+
+QWidget * KaduWindow::createChatsWidget(QWidget *parent)
+{
+	return new QTreeView(parent);
 }
 
 void KaduWindow::createMenu()

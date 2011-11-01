@@ -101,6 +101,9 @@ private:
 	bool CompositingEnabled;
 
 	void createGui();
+	QWidget *createBuddiesWidget(QWidget *parent);
+	QWidget *createChatsWidget(QWidget *parent);
+
 	void createMenu();
 	void createKaduMenu();
 	void createContactsMenu();
