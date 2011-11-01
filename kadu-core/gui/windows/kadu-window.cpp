@@ -27,7 +27,6 @@
 #include <QtGui/QApplication>
 #include <QtGui/QCloseEvent>
 #include <QtGui/QHBoxLayout>
-#include <QtGui/QLabel>
 #include <QtGui/QMenu>
 #include <QtGui/QMenuBar>
 #include <QtGui/QPushButton>
@@ -39,6 +38,7 @@
 #include "buddies/buddy-set.h"
 #include "buddies/model/buddies-model.h"
 #include "buddies/filter/group-buddy-filter.h"
+#include "chat/model/chats-model.h"
 #include "chat/type/chat-type-manager.h"
 #include "chat/chat-manager.h"
 #include "chat/recent-chat-manager.h"
@@ -179,7 +179,10 @@ QWidget * KaduWindow::createBuddiesWidget(QWidget *parent)
 
 QWidget * KaduWindow::createChatsWidget(QWidget *parent)
 {
-	return new QTreeView(parent);
+	QTreeView *chatWidget = new QTreeView(parent);
+	chatWidget->setModel(new ChatsModel(chatWidget));
+
+	return chatWidget;
 }
 
 void KaduWindow::createMenu()
