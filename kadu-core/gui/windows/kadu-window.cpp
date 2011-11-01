@@ -38,6 +38,7 @@
 #include "buddies/buddy-set.h"
 #include "buddies/model/buddies-model.h"
 #include "buddies/filter/group-buddy-filter.h"
+#include "chat/filter/chat-named-filter.h"
 #include "chat/model/chats-model.h"
 #include "chat/model/chats-proxy-model.h"
 #include "chat/type/chat-type-manager.h"
@@ -182,7 +183,10 @@ QWidget * KaduWindow::createChatsWidget(QWidget *parent)
 	QTreeView *chatWidget = new QTreeView(parent);
 	ChatsModel *chatsModel = new ChatsModel(chatWidget);
 	ChatsProxyModel *chatsProxyModel = new ChatsProxyModel(chatWidget);
+
 	chatsProxyModel->setSourceModel(chatsModel);
+	chatsProxyModel->addFilter(new ChatNamedFilter(chatsProxyModel));
+
 	chatWidget->setModel(chatsProxyModel);
 
 	return chatWidget;

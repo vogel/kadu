@@ -12,6 +12,7 @@ set (chat_SRCS
 	recent-chat-manager.cpp
 
 	filter/chat-name-filter.cpp
+	filter/chat-named-filter.cpp
 
 	message/formatted-message.cpp
 	message/formatted-message-part.cpp
@@ -53,6 +54,7 @@ set (chat_MOC_SRCS
 
 	filter/chat-filter.h
 	filter/chat-name-filter.h
+	filter/chat-named-filter.h
 
 	message/message-render-info.h
 	message/pending-messages-manager.h
