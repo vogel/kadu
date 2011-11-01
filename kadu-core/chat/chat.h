@@ -98,6 +98,7 @@ public:
 	 */
 	KaduSharedBase_PropertyCRW(QString, type, Type)
 
+	KaduSharedBase_PropertyCRW(QString, display, Display)
 	KaduSharedBase_PropertyBool(IgnoreAllMessages)
 
 };

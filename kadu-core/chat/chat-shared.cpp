@@ -134,8 +134,9 @@ void ChatShared::load()
 
 	Shared::load();
 
-	Type = loadValue<QString>("Type");
 	*ChatAccount = AccountManager::instance()->byUuid(QUuid(loadValue<QString>("Account")));
+	Display = loadValue<QString>("Display");
+	Type = loadValue<QString>("Type");
 
 	triggerAllChatTypesRegistered();
 }
@@ -155,8 +156,9 @@ void ChatShared::store()
 
 	Shared::store();
 
-	storeValue("Type", Type);
 	storeValue("Account", ChatAccount->uuid().toString());
+	storeValue("Display", Display);
+	storeValue("Type", Type);
 
 	if (details())
 		details()->ensureStored();
@@ -301,3 +303,4 @@ QString ChatShared::name()
 }
 
 KaduShared_PropertyPtrDefCRW(ChatShared, Account, chatAccount, ChatAccount);
+

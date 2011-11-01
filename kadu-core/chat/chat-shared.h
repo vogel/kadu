@@ -55,6 +55,7 @@ class KADUAPI ChatShared : public QObject, public Shared, public DetailsHolder<C
 	Q_DISABLE_COPY(ChatShared)
 
 	Account *ChatAccount;
+	QString Display;
 	QString Type;
 	bool IgnoreAllMessages;
 
@@ -95,6 +96,8 @@ public:
 	 * belong to the same account as chat.
 	 */
 	KaduShared_PropertyDeclCRW(Account, chatAccount, ChatAccount);
+
+	KaduShared_Property(const QString &, display, Display);
 
 	/**
 	 * @author Rafal 'Vogel' Malinowski
