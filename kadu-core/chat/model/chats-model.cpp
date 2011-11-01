@@ -19,6 +19,8 @@
 
 #include "chat/model/chat-data-extractor.h"
 #include "chat/chat-manager.h"
+#include "contacts/model/contact-data-extractor.h"
+#include "contacts/contact-set.h"
 #include "model/roles.h"
 
 #include "chats-model.h"
@@ -68,8 +70,14 @@ int ChatsModel::columnCount(const QModelIndex &parent) const
 
 int ChatsModel::rowCount(const QModelIndex &parent) const
 {
-	if (parent.isValid())
+	if (parent.parent().isValid())
 		return 0;
+
+	if (parent.isValid())
+	{
+		const Chat &chat = chatAt(parent);
+		return chat.contacts().size();
+	}
 
 	return ChatManager::instance()->count();
 }
@@ -102,6 +110,18 @@ QVariant ChatsModel::data(const QModelIndex &index, int role) const
 			return ChatRole;
 
 		return ChatDataExtractor::data(chatAt(index), role);
+	}
+
+	if (!parentIndex.parent().isValid())
+	{
+
+		const Chat &chat = chatAt(parentIndex);
+		const QList<Contact> &contacts = chat.contacts().toList();
+
+		if (index.row() >= contacts.size())
+			return QVariant();
+
+		return ContactDataExtractor::data(contacts.at(index.row()), role, true);
 	}
 
 	return QVariant();
