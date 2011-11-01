@@ -20,6 +20,9 @@ set (chat_SRCS
 	message/pending-messages-manager.cpp
 	message/message-shared.cpp
 
+	model/chat-data-extractor.cpp
+	model/chats-model.cpp
+
 	style-engines/chat-engine-adium/adium-style.cpp
 	style-engines/chat-engine-adium/adium-time-formatter.cpp
 	style-engines/chat-engine-adium/chat-engine-adium.cpp
@@ -53,6 +56,8 @@ set (chat_MOC_SRCS
 	message/message-render-info.h
 	message/pending-messages-manager.h
 	message/message-shared.h
+
+	model/chats-model.h
 
 	style-engines/chat-engine-adium/chat-engine-adium.h
 	style-engines/chat-engine-kadu/chat-engine-kadu.h
