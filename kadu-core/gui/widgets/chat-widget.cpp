@@ -27,6 +27,7 @@
 
 #include <QtCore/QFileInfo>
 #include <QtGui/QIcon>
+#include <QtGui/QInputDialog>
 #include <QtGui/QKeyEvent>
 #include <QtGui/QPushButton>
 #include <QtGui/QShortcut>
@@ -200,12 +201,18 @@ void ChatWidget::createContactsList()
 	connect(BuddiesWidget->view(), SIGNAL(chatActivated(Chat)),
 			Core::instance()->kaduWindow(), SLOT(openChatWindow(Chat)));
 
+	QPushButton *nameConference = new QPushButton(tr("Name\nconference"), contactsListContainer);
+	nameConference->setStyleSheet("text-align: center;");
+	nameConference->setMinimumWidth(BuddiesWidget->minimumWidth());
+	connect(nameConference, SIGNAL(clicked()), this, SLOT(nameConference()));
+
 	QPushButton *leaveConference = new QPushButton(tr("Leave\nconference"), contactsListContainer);
 	leaveConference->setStyleSheet("text-align: center;");
 	leaveConference->setMinimumWidth(BuddiesWidget->minimumWidth());
 	connect(leaveConference, SIGNAL(clicked()), this, SLOT(leaveConference()));
 
 	layout->addWidget(BuddiesWidget);
+	layout->addWidget(nameConference);
 	layout->addWidget(leaveConference);
 
 	QList<int> sizes;
@@ -734,6 +741,22 @@ void ChatWidget::contactActivityChanged(ChatStateService::ContactActivity state,
 
 		MessagesView->appendMessage(message);
 	}
+}
+
+void ChatWidget::nameConference()
+{
+	if (!CurrentChat)
+		return;
+
+	bool ok;
+	QString conferenceName = QInputDialog::getText(this, tr("Name conference"),
+	                                               tr("Please enter the name for this conference"),
+	                                               QLineEdit::Normal, CurrentChat.display(), &ok);
+
+	if (!ok)
+		return;
+
+	CurrentChat.setDisplay(conferenceName);
 }
 
 void ChatWidget::leaveConference()

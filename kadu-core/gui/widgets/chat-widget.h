@@ -208,6 +208,7 @@ public slots:
 	void makeActive();
 	void markAllMessagesRead();
 
+	void nameConference();
 	void leaveConference();
 
 	/**
