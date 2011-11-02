@@ -37,8 +37,8 @@ ChatsModel::ChatsModel(QObject *parent) :
 			this, SLOT(chatAboutToBeRemoved(Chat)));
 	connect(manager, SIGNAL(chatRemoved(Chat)),
 			this, SLOT(chatRemoved(Chat)));
-	connect(manager, SIGNAL(chatUpdated(Chat)),
-			this, SLOT(chatUpdated(Chat)));
+	connect(manager, SIGNAL(chatUpdated(const Chat &)),
+			this, SLOT(chatUpdated(const Chat &)));
 }
 
 ChatsModel::~ChatsModel()
@@ -52,8 +52,8 @@ ChatsModel::~ChatsModel()
 			this, SLOT(chatAboutToBeRemoved(Chat)));
 	disconnect(manager, SIGNAL(chatRemoved(Chat)),
 			this, SLOT(chatRemoved(Chat)));
-	disconnect(manager, SIGNAL(chatUpdated(Chat)),
-			this, SLOT(chatUpdated(Chat)));
+	disconnect(manager, SIGNAL(chatUpdated(const Chat &)),
+			this, SLOT(chatUpdated(const Chat &)));
 }
 
 QModelIndex ChatsModel::index(int row, int column, const QModelIndex &parent) const
@@ -160,7 +160,7 @@ void ChatsModel::chatRemoved(Chat chat)
 	endRemoveRows();
 }
 
-void ChatsModel::chatUpdated(Chat chat)
+void ChatsModel::chatUpdated(const Chat &chat)
 {
 	QModelIndex index = indexForValue(chat);
 	if (index.isValid())

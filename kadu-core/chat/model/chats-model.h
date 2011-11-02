@@ -34,7 +34,7 @@ private slots:
 	void chatAboutToBeRemoved(Chat chat);
 	void chatRemoved(Chat chat);
 
-	void chatUpdated(Chat chat);
+	void chatUpdated(const Chat &chat);
 
 public:
 	explicit ChatsModel(QObject *parent = 0);

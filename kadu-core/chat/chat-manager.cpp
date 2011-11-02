@@ -55,6 +55,8 @@ ChatManager::~ChatManager()
 
 void ChatManager::itemAboutToBeRegistered(Chat item)
 {
+	connect(item, SIGNAL(updated()), this, SLOT(chatDataUpdated()));
+
 	emit chatAboutToBeAdded(item);
 }
 
@@ -65,6 +67,8 @@ void ChatManager::itemRegistered(Chat item)
 
 void ChatManager::itemAboutToBeUnregisterd(Chat item)
 {
+	disconnect(item, SIGNAL(updated()), this, SLOT(chatDataUpdated()));
+
 	emit chatAboutToBeRemoved(item);
 }
 
@@ -244,4 +248,11 @@ Chat ChatManager::findChat(const ContactSet &contacts, bool create)
 
 	addItem(chat);
 	return chat;
+}
+
+void ChatManager::chatDataUpdated()
+{
+	Chat chat(sender());
+	if (!chat.isNull())
+		emit chatUpdated(chat);
 }
