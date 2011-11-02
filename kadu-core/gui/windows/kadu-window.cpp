@@ -55,6 +55,7 @@
 #include "gui/widgets/buddies-list-widget.h"
 #include "gui/widgets/chat-widget-actions.h"
 #include "gui/widgets/chat-widget-manager.h"
+#include "gui/widgets/chats-tree-view.h"
 #include "gui/widgets/group-tab-bar.h"
 #include "gui/widgets/kadu-web-view.h"
 #include "gui/windows/kadu-window-actions.h"
@@ -180,7 +181,7 @@ QWidget * KaduWindow::createBuddiesWidget(QWidget *parent)
 
 QWidget * KaduWindow::createChatsWidget(QWidget *parent)
 {
-	QTreeView *chatWidget = new QTreeView(parent);
+	ChatsTreeView *chatWidget = new ChatsTreeView(parent);
 	ChatsModel *chatsModel = new ChatsModel(chatWidget);
 	ChatsProxyModel *chatsProxyModel = new ChatsProxyModel(chatWidget);
 

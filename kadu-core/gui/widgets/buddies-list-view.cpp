@@ -67,23 +67,10 @@
 #include "tool-tip-class-manager.h"
 
 BuddiesListView::BuddiesListView(QWidget *parent) :
-		QTreeView(parent), Delegate(0), ProxyModel(new BuddiesModelProxy(this)),
+		KaduTreeView(parent), Delegate(0), ProxyModel(new BuddiesModelProxy(this)),
 		BackgroundImageMode(BackgroundNone), BackgroundTemporaryFile(0), ContextMenuEnabled(false)
 {
 	setAnimated(BackgroundImageMode == BackgroundNone);
-#ifndef Q_WS_MAEMO_5
-	/* Disable as we use kinetic scrolling by default */
-	setDragEnabled(true);
-#endif
-	setItemsExpandable(true);
-	setExpandsOnDoubleClick(false);
-	setHeaderHidden(true);
-	setMouseTracking(true);
-	setSelectionMode(QAbstractItemView::ExtendedSelection);
-#ifndef Q_WS_MAEMO_5
-	setUniformRowHeights(false);
-#endif
-	setWordWrap(true);
 
 	Delegate = new BuddiesListViewDelegate(this);
 	setItemDelegate(Delegate);

@@ -25,7 +25,6 @@
 #ifndef BUDDIES_LIST_VIEW_H
 #define BUDDIES_LIST_VIEW_H
 
-#include <QtGui/QTreeView>
 #include <QtCore/QDateTime>
 #include <QtCore/QTimer>
 
@@ -35,6 +34,8 @@
 #include "configuration/configuration-aware-object.h"
 #include "contacts/contact.h"
 #include "gui/actions/action-data-source.h"
+
+#include "gui/widgets/kadu-tree-view.h"
 
 class QContextMenuEvent;
 class QModelIndex;
@@ -50,7 +51,7 @@ class BuddiesModelProxy;
 class ContactNoUnloadedAccountFilter;
 class ContactSet;
 
-class BuddiesListView : public QTreeView, public ActionDataSource, ConfigurationAwareObject
+class BuddiesListView : public KaduTreeView, public ActionDataSource, ConfigurationAwareObject
 {
 	Q_OBJECT
 
