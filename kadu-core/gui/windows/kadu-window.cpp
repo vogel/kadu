@@ -185,7 +185,10 @@ QWidget * KaduWindow::createChatsWidget(QWidget *parent)
 	ChatsProxyModel *chatsProxyModel = new ChatsProxyModel(chatWidget);
 
 	chatsProxyModel->setSourceModel(chatsModel);
-	chatsProxyModel->addFilter(new ChatNamedFilter(chatsProxyModel));
+
+	ChatNamedFilter *chatNamedFilter = new ChatNamedFilter(chatsProxyModel);
+	chatNamedFilter->setEnabled(true);
+	chatsProxyModel->addFilter(chatNamedFilter);
 
 	chatWidget->setModel(chatsProxyModel);
 

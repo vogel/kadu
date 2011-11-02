@@ -22,7 +22,7 @@
 #include "chat-named-filter.h"
 
 ChatNamedFilter::ChatNamedFilter(QObject *parent) :
-		ChatFilter(parent), Enabled(true)
+		ChatFilter(parent), Enabled(false)
 {
 }
 
