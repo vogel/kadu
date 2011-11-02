@@ -39,6 +39,7 @@ set (gui_SRCS
 	widgets/chat-widget-actions.cpp
 	widgets/chat-widget-manager.cpp
 	widgets/chats-tree-view.cpp
+	widgets/chats-tree-view-delegate.cpp
 	widgets/choose-identity-widget.cpp
 	widgets/color-button.cpp
 	widgets/color-selector.cpp
@@ -52,6 +53,7 @@ set (gui_SRCS
 	widgets/groups-combo-box.cpp
 	widgets/identities-combo-box.cpp
 	widgets/kadu-tree-view.cpp
+	widgets/kadu-tree-view-delegate.cpp
 	widgets/kadu-web-view.cpp
 	widgets/line-edit-clear-button.cpp
 	widgets/line-edit-with-clear-button.cpp
@@ -179,6 +181,7 @@ set (gui_MOC_SRCS
 	widgets/chat-widget-actions.h
 	widgets/chat-widget-manager.h
 	widgets/chats-tree-view.h
+	widgets/chats-tree-view-delegate.h
 	widgets/choose-identity-widget.h
 	widgets/color-button.h
 	widgets/color-selector.h
@@ -191,6 +194,7 @@ set (gui_MOC_SRCS
 	widgets/groups-combo-box.h
 	widgets/identities-combo-box.h
 	widgets/kadu-tree-view.h
+	widgets/kadu-tree-view-delegate.h
 	widgets/kadu-web-view.h
 	widgets/line-edit-clear-button.h
 	widgets/line-edit-with-clear-button.h

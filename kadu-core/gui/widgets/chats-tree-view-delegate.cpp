@@ -17,18 +17,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "gui/widgets/chats-tree-view-delegate.h"
+#include "chats-tree-view-delegate.h"
 
-#include "chats-tree-view.h"
-
-ChatsTreeView::ChatsTreeView(QWidget *parent) :
-		KaduTreeView(parent)
+ChatsTreeViewDelegate::ChatsTreeViewDelegate(QObject *parent) :
+		KaduTreeViewDelegate(parent)
 {
-	setAnimated(true);
-	setItemDelegate(new ChatsTreeViewDelegate(this));
-	setRootIsDecorated(false);
 }
 
-ChatsTreeView::~ChatsTreeView()
+ChatsTreeViewDelegate::~ChatsTreeViewDelegate()
 {
 }

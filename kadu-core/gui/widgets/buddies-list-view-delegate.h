@@ -28,11 +28,10 @@
 
 #undef check
 
-#include <QtGui/QItemDelegate>
-
 #include "buddies/buddy.h"
 #include "chat/message/message.h"
 #include "gui/widgets/buddies-list-view-delegate-configuration.h"
+#include "gui/widgets/kadu-tree-view-delegate.h"
 
 class AbstractBuddiesModel;
 class Account;
@@ -41,16 +40,11 @@ class ChatWidget;
 class Contact;
 class Status;
 
-class BuddiesListViewDelegate : public QItemDelegate
+class BuddiesListViewDelegate : public KaduTreeViewDelegate
 {
 	Q_OBJECT
 
 	AbstractBuddiesModel *Model;
-	BuddiesListViewDelegateConfiguration Configuration;
-
-	bool UseConfigurationColors;
-
-	QStyleOptionViewItemV4 getOptions(const QModelIndex &index, const QStyleOptionViewItem &option) const;
 
 private slots:
 	void avatarUpdated(Avatar avatar);
@@ -64,15 +58,6 @@ public:
 	virtual ~BuddiesListViewDelegate();
 
 	virtual void setModel(AbstractBuddiesModel *model);
-
-	virtual void setShowAccountName(bool show);
-
-	BuddiesListViewDelegateConfiguration & configuration() { return Configuration; }
-
-	void useConfigurationColors(bool use) { UseConfigurationColors = use; }
-
-	virtual QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const;
-	virtual void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
 
 };
 

@@ -39,7 +39,7 @@
 #include "buddies-list-view-delegate.h"
 
 BuddiesListViewDelegate::BuddiesListViewDelegate(QObject *parent) :
-		QItemDelegate(parent), Model(0), Configuration(parent), UseConfigurationColors(false)
+		KaduTreeViewDelegate(parent), Model(0)
 {
 	connect(AvatarManager::instance(), SIGNAL(avatarUpdated(Avatar)), this, SLOT(avatarUpdated(Avatar)));
 	connect(ContactManager::instance(), SIGNAL(contactUpdated(Contact&)), this, SLOT(contactUpdated(Contact&)));
@@ -105,45 +105,4 @@ void BuddiesListViewDelegate::messageStatusChanged(Message message)
 void BuddiesListViewDelegate::modelDestroyed()
 {
 	Model = 0;
-}
-
-void BuddiesListViewDelegate::setShowAccountName(bool showAccountName)
-{
-	Configuration.setShowAccountName(showAccountName);
-}
-
-QStyleOptionViewItemV4 BuddiesListViewDelegate::getOptions(const QModelIndex &index, const QStyleOptionViewItem &option) const
-{
-	QStyleOptionViewItemV4 opt = setOptions(index, option);
-
-	const QStyleOptionViewItemV2 *v2 = qstyleoption_cast<const QStyleOptionViewItemV2 *>(&option);
-	opt.features = v2
-		? v2->features
-		: QStyleOptionViewItemV2::ViewItemFeatures(QStyleOptionViewItemV2::None);
-	const QStyleOptionViewItemV3 *v3 = qstyleoption_cast<const QStyleOptionViewItemV3 *>(&option);
-	opt.locale = v3 ? v3->locale : QLocale();
-	opt.widget = v3 ? v3->widget : 0;
-
-	return opt;
-}
-
-QSize BuddiesListViewDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
-{
-	BuddiesListViewItemPainter buddyPainter(Configuration, getOptions(index, option), index, UseConfigurationColors);
-	return QSize(0, buddyPainter.height());
-}
-
-void BuddiesListViewDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
-{
-	QStyleOptionViewItemV4 options = getOptions(index, option);
-
-	const QAbstractItemView *widget = qobject_cast<const QAbstractItemView *>(options.widget);
-	if (!widget)
-		return;
-
-	QStyle *style = widget->style();
-	style->drawControl(QStyle::CE_ItemViewItem, &options, painter, widget);
-
-	BuddiesListViewItemPainter buddyPainter(Configuration, options, index, UseConfigurationColors);
-	buddyPainter.paint(painter);
 }
