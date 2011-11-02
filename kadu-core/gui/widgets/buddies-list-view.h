@@ -31,7 +31,6 @@
 #include "buddies/buddy.h"
 #include "buddies/buddy-or-contact.h"
 #include "chat/chat.h"
-#include "configuration/configuration-aware-object.h"
 #include "contacts/contact.h"
 #include "gui/actions/action-data-source.h"
 
@@ -39,7 +38,6 @@
 
 class QContextMenuEvent;
 class QModelIndex;
-class QTemporaryFile;
 
 class AbstractBuddyFilter;
 class AbstractBuddiesModel;
@@ -51,23 +49,12 @@ class BuddiesModelProxy;
 class ContactNoUnloadedAccountFilter;
 class ContactSet;
 
-class BuddiesListView : public KaduTreeView, public ActionDataSource, ConfigurationAwareObject
+class BuddiesListView : public KaduTreeView, public ActionDataSource
 {
 	Q_OBJECT
 
 	friend class BuddiesListViewDelegateConfiguration;
 
-public:
-	enum BackgroundMode
-	{
-		BackgroundNone,
-		BackgroundCentered,
-		BackgroundTiled,
-		BackgroundTiledAndCentered,
-		BackgroundStretched
-	};
-
-private:
 	BuddiesListViewDelegate *Delegate;
 	BuddiesModelProxy *ProxyModel;
 
@@ -85,12 +72,6 @@ private:
 	BuddyOrContact ToolTipItem;
 	QTimer ToolTipTimeoutTimer;
 
-	QString BackgroundColor;
-	QString AlternateBackgroundColor;
-	BackgroundMode BackgroundImageMode;
-	QString BackgroundImageFile;
-	QTemporaryFile *BackgroundTemporaryFile;
-
 	bool ContextMenuEnabled;
 
 private slots:
@@ -102,8 +83,6 @@ private slots:
 	void toolTipHide(bool waitForAnother = true);
 
 protected:
-	virtual void configurationUpdated();
-
 	virtual void contextMenuEvent(QContextMenuEvent *event);
 	virtual void keyPressEvent(QKeyEvent *event);
 
@@ -113,8 +92,6 @@ protected:
 	virtual void mousePressEvent(QMouseEvent *event);
 	virtual void mouseReleaseEvent(QMouseEvent *event);
 	virtual void mouseMoveEvent(QMouseEvent *event);
-
-	virtual void resizeEvent(QResizeEvent *event);
 
 	virtual void hideEvent(QHideEvent *event);
 
@@ -151,8 +128,6 @@ public:
 
 	BuddiesListViewDelegateConfiguration & delegateConfiguration();
 
-	void setBackground(const QString& backgroundColor, const QString& alternateColor, const QString& file = QString(), BuddiesListView::BackgroundMode mode = BackgroundNone);
-	void updateBackground();
 	void updateLayout() { updateGeometries(); }
 
 	void setContextMenuEnabled(bool enabled);

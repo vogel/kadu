@@ -47,6 +47,7 @@ class ActionDescription;
 class ActionSource;
 class BuddyInfoPanel;
 class BuddiesListWidget;
+class ChatsTreeView;
 class GroupTabBar;
 class KaduWebView;
 class KaduWindowActions;
@@ -88,6 +89,7 @@ private:
 	GroupTabBar *GroupBar;
 
 	BuddiesListWidget *ContactsWidget;
+	ChatsTreeView *ChatsTree;
 
 	QWidget *MainWidget;
 	QVBoxLayout *MainLayout;

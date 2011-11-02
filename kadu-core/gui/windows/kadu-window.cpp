@@ -181,9 +181,9 @@ QWidget * KaduWindow::createBuddiesWidget(QWidget *parent)
 
 QWidget * KaduWindow::createChatsWidget(QWidget *parent)
 {
-	ChatsTreeView *chatWidget = new ChatsTreeView(parent);
-	ChatsModel *chatsModel = new ChatsModel(chatWidget);
-	ChatsProxyModel *chatsProxyModel = new ChatsProxyModel(chatWidget);
+	ChatsTree = new ChatsTreeView(parent);
+	ChatsModel *chatsModel = new ChatsModel(ChatsTree);
+	ChatsProxyModel *chatsProxyModel = new ChatsProxyModel(ChatsTree);
 
 	chatsProxyModel->setSourceModel(chatsModel);
 
@@ -191,9 +191,9 @@ QWidget * KaduWindow::createChatsWidget(QWidget *parent)
 	chatNamedFilter->setEnabled(true);
 	chatsProxyModel->addFilter(chatNamedFilter);
 
-	chatWidget->setModel(chatsProxyModel);
+	ChatsTree->setModel(chatsProxyModel);
 
-	return chatWidget;
+	return ChatsTree;
 }
 
 void KaduWindow::createMenu()
@@ -547,17 +547,28 @@ void KaduWindow::configurationUpdated()
 
 	if (config_file.readBoolEntry("Look", "UseUserboxBackground", true))
 	{
-		QString type = config_file.readEntry("Look", "UserboxBackgroundDisplayStyle");
-		ContactsWidget->view()->setBackground(bgColor, alternateBgColor,
-			config_file.readEntry("Look", "UserboxBackground"),
-			type == "Centered" ? BuddiesListView::BackgroundCentered
-			: type == "Tiled" ? BuddiesListView::BackgroundTiled
-			: type == "Stretched" ? BuddiesListView::BackgroundStretched
-			: type == "TiledAndCentered" ? BuddiesListView::BackgroundTiledAndCentered
-			: BuddiesListView::BackgroundNone);
+		QString typeName = config_file.readEntry("Look", "UserboxBackgroundDisplayStyle");
+
+		KaduTreeView::BackgroundMode type;
+		if (typeName == "Centered")
+			type = KaduTreeView::BackgroundCentered;
+		else if (typeName == "Tiled")
+			type = KaduTreeView::BackgroundTiled;
+		else if (typeName == "Stretched")
+			type = KaduTreeView::BackgroundStretched;
+		else if (typeName == "TiledAndCentered")
+			type = KaduTreeView::BackgroundTiledAndCentered;
+		else
+			type = BuddiesListView::BackgroundNone;
+
+		ContactsWidget->view()->setBackground(bgColor, alternateBgColor, config_file.readEntry("Look", "UserboxBackground"), type);
+		ChatsTree->setBackground(bgColor, alternateBgColor, config_file.readEntry("Look", "UserboxBackground"), type);
 	}
 	else
+	{
 		ContactsWidget->view()->setBackground(bgColor, alternateBgColor);
+		ChatsTree->setBackground(bgColor, alternateBgColor);
+	}
 
 	ChangeStatusButtons->setVisible(config_file.readBoolEntry("Look", "ShowStatusButton"));
 

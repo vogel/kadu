@@ -22,13 +22,43 @@
 
 #include <QtGui/QTreeView>
 
-class KaduTreeView : public QTreeView
+#include "configuration/configuration-aware-object.h"
+
+class QTemporaryFile;
+
+class KaduTreeView : public QTreeView, ConfigurationAwareObject
 {
 	Q_OBJECT
 
 public:
+	enum BackgroundMode
+	{
+		BackgroundNone,
+		BackgroundCentered,
+		BackgroundTiled,
+		BackgroundTiledAndCentered,
+		BackgroundStretched
+	};
+
+private:
+	QString BackgroundColor;
+	QString AlternateBackgroundColor;
+	BackgroundMode BackgroundImageMode;
+	QString BackgroundImageFile;
+	QTemporaryFile *BackgroundTemporaryFile;
+
+protected:
+	virtual void configurationUpdated();
+
+	virtual void resizeEvent(QResizeEvent *event);
+
+public:
 	explicit KaduTreeView(QWidget *parent = 0);
 	virtual ~KaduTreeView();
+
+	void setBackground(const QString& backgroundColor, const QString& alternateColor,
+	                   const QString& file = QString(), KaduTreeView::BackgroundMode mode = BackgroundNone);
+	void updateBackground();
 
 };
 

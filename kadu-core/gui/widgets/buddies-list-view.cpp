@@ -67,11 +67,8 @@
 #include "tool-tip-class-manager.h"
 
 BuddiesListView::BuddiesListView(QWidget *parent) :
-		KaduTreeView(parent), Delegate(0), ProxyModel(new BuddiesModelProxy(this)),
-		BackgroundImageMode(BackgroundNone), BackgroundTemporaryFile(0), ContextMenuEnabled(false)
+		KaduTreeView(parent), Delegate(0), ProxyModel(new BuddiesModelProxy(this)), ContextMenuEnabled(false)
 {
-	setAnimated(BackgroundImageMode == BackgroundNone);
-
 	Delegate = new BuddiesListViewDelegate(this);
 	setItemDelegate(Delegate);
 
@@ -82,8 +79,6 @@ BuddiesListView::BuddiesListView(QWidget *parent) :
 
 	connect(&ToolTipTimeoutTimer, SIGNAL(timeout()), this, SLOT(toolTipTimeout()));
 	connect(this, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(doubleClickedSlot(const QModelIndex &)));
-
-	configurationUpdated();
 }
 
 BuddiesListView::~BuddiesListView()
@@ -316,15 +311,6 @@ void BuddiesListView::setContextMenuEnabled(bool enabled)
 	ContextMenuEnabled = enabled;
 }
 
-void BuddiesListView::configurationUpdated()
-{
-	bool showExpandingControl = config_file.readBoolEntry("Look", "ShowExpandingControl", false);
-
-	if (rootIsDecorated() && !showExpandingControl)
-		collapseAll();
-	setRootIsDecorated(showExpandingControl);
-}
-
 void BuddiesListView::contextMenuEvent(QContextMenuEvent *event)
 {
 	if (!ContextMenuEnabled)
@@ -407,15 +393,6 @@ void BuddiesListView::mouseMoveEvent(QMouseEvent *event)
 	toolTipRestart(event->pos());
 }
 
-void BuddiesListView::resizeEvent(QResizeEvent *event)
-{
-	QTreeView::resizeEvent(event);
-	if (BackgroundImageMode == BackgroundStretched)
-		updateBackground();
-
-	scheduleDelayedItemsLayout();
-}
-
 void BuddiesListView::currentChanged(const QModelIndex &current, const QModelIndex &previous)
 {
 	QTreeView::currentChanged(current, previous);
@@ -441,88 +418,6 @@ void BuddiesListView::doubleClickedSlot(const QModelIndex &index)
 {
 	if (index.isValid())
 		triggerActivate(index);
-}
-
-void BuddiesListView::setBackground(const QString &backgroundColor, const QString &alternateColor, const QString &file, BackgroundMode mode)
-{
-	BackgroundColor = backgroundColor;
-	AlternateBackgroundColor = alternateColor;
-	setAnimated(mode == BackgroundNone);
-	BackgroundImageMode = mode;
-	BackgroundImageFile = file;
-	updateBackground();
-}
-
-void BuddiesListView::updateBackground()
-{
-	// TODO fix image "Stretched" + update on resize event - write image into resource tree
-	QString style;
-	style.append("QTreeView::branch:has-siblings:!adjoins-item { border-image: none; image: none }");
-	style.append("QTreeView::branch:has-siblings:adjoins-item { border-image: none; image: none }");
-	style.append("QTreeView::branch:has-childres:!has-siblings:adjoins-item { border-image: none; image: none }");
-	if (config_file.readBoolEntry("Look", "AlignUserboxIconsTop"))
-	{
-		style.append("QTreeView::branch:has-children:!has-siblings:closed, QTreeView::branch:closed:has-children:has-siblings "
-		     "{ border-image: none; image: url(" + KaduIcon("kadu_icons/stylesheet-branch-closed", "16x16").fullPath() + "); margin-top: 4px; image-position: top }");
-		style.append("QTreeView::branch:open:has-children:!has-siblings, QTreeView::branch:open:has-children:has-siblings "
-			"{ border-image: none; image: url(" + KaduIcon("kadu_icons/stylesheet-branch-open", "16x16").fullPath() + "); image-position: top; margin-top: 8px }");
-	}
-	else
-	{
- 		style.append("QTreeView::branch:has-children:!has-siblings:closed, QTreeView::branch:closed:has-children:has-siblings "
-		     "{ border-image: none; image: url(" + KaduIcon("kadu_icons/stylesheet-branch-closed", "16x16").fullPath() + ") }");
-		style.append("QTreeView::branch:open:has-children:!has-siblings, QTreeView::branch:open:has-children:has-siblings "
-			"{ border-image: none; image: url(" + KaduIcon("kadu_icons/stylesheet-branch-open", "16x16").fullPath() + ") }");
-	}
-
-	style.append("QTreeView { background-color: transparent;");
-
-	QString viewportStyle(QString("QWidget { background-color: %1;").arg(BackgroundColor));
-
-	if (BackgroundImageMode == BackgroundNone)
-	{
-		setAlternatingRowColors(true);
-		style.append(QString("alternate-background-color: %1;").arg(AlternateBackgroundColor));
-	}
-	else
-	{
-		setAlternatingRowColors(false);
-
-		if (BackgroundImageMode != BackgroundTiled && BackgroundImageMode != BackgroundTiledAndCentered)
-			viewportStyle.append("background-repeat: no-repeat;");
-
-		if (BackgroundImageMode == BackgroundCentered || BackgroundImageMode == BackgroundTiledAndCentered)
-			viewportStyle.append("background-position: center;");
-
-		if (BackgroundImageMode == BackgroundStretched)
-		{
-			// style.append("background-size: 100% 100%;"); will work in 4.6 maybe?
-			QImage image(BackgroundImageFile);
-			if (!image.isNull())
-			{
-				delete BackgroundTemporaryFile;
-				BackgroundTemporaryFile = new QTemporaryFile(QDir::tempPath() + "/kadu_background_XXXXXX.png", this);
-
-				if (BackgroundTemporaryFile->open())
-				{
-					QImage stretched = image.scaled(viewport()->width(), viewport()->height(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-					if (stretched.save(BackgroundTemporaryFile, "PNG"))
-						viewportStyle.append(QString("background-image: url(%1);").arg(BackgroundTemporaryFile->fileName()));
-					BackgroundTemporaryFile->close();
-				}
-			}
-		}
-		else
-			viewportStyle.append(QString("background-image: url(%1);").arg(BackgroundImageFile));
-
-		viewportStyle.append("background-attachment: fixed;");
-	}
-
-	style.append("}");
-	viewportStyle.append("}");
-
-	setStyleSheet(style);
-	viewport()->setStyleSheet(viewportStyle);
 }
 
 // Tool Tips

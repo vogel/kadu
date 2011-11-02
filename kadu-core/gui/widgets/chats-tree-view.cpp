@@ -24,9 +24,7 @@
 ChatsTreeView::ChatsTreeView(QWidget *parent) :
 		KaduTreeView(parent)
 {
-	setAnimated(true);
 	setItemDelegate(new ChatsTreeViewDelegate(this));
-	setRootIsDecorated(false);
 }
 
 ChatsTreeView::~ChatsTreeView()
