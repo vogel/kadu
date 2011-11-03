@@ -21,6 +21,7 @@
 
 #include "gui/actions/action.h"
 #include "gui/actions/action-data-source.h"
+#include "gui/actions/action-data-source-provider.h"
 #include "gui/actions/action-description.h"
 
 #include "custom-input-menu-manager.h"
@@ -77,9 +78,12 @@ QMenu * CustomInputMenuManager::menu(QWidget *parent)
 
 	while (actionDataSourceWidget)
 	{
-		actionDataSource = dynamic_cast<ActionDataSource *>(actionDataSourceWidget);
-		if (actionDataSource)
+		ActionDataSourceProvider *actionDataSourceProvider = dynamic_cast<ActionDataSourceProvider *>(actionDataSourceWidget);
+		if (actionDataSourceProvider)
+		{
+			actionDataSource = actionDataSourceProvider->actionDataSource();
 			break;
+		}
 		else
 			actionDataSourceWidget = actionDataSourceWidget->parentWidget();
 	}

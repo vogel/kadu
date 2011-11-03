@@ -28,6 +28,7 @@
 #include <QtXml/QDomElement>
 
 #include "gui/actions/action-data-source.h"
+#include "gui/actions/action-data-source-provider.h"
 #include "gui/actions/action-description.h"
 #include "os/generic/desktop-aware-object.h"
 
@@ -44,7 +45,7 @@ class ContactSet;
 class StatusContainer;
 class ToolBar;
 
-class KADUAPI MainWindow : public QMainWindow, public ActionDataSource, DesktopAwareObject
+class KADUAPI MainWindow : public QMainWindow, public ActionDataSource, public ActionDataSourceProvider, DesktopAwareObject
 {
 	Q_OBJECT
 
@@ -104,6 +105,9 @@ public:
 
 	void actionAdded(Action *action);
 	bool hasAction(const QString &actionName, ToolBar *exclude = 0);
+
+	// ActionDataSourceProvider implementation
+	ActionDataSource * actionDataSource() { return this; }
 
 public slots:
 	void addTopToolbar();

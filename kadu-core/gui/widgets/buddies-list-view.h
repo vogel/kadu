@@ -33,6 +33,7 @@
 #include "chat/chat.h"
 #include "contacts/contact.h"
 #include "gui/actions/action-data-source.h"
+#include "gui/actions/action-data-source-provider.h"
 
 #include "gui/widgets/kadu-tree-view.h"
 
@@ -49,7 +50,7 @@ class BuddiesModelProxy;
 class ContactNoUnloadedAccountFilter;
 class ContactSet;
 
-class BuddiesListView : public KaduTreeView, public ActionDataSource
+class BuddiesListView : public KaduTreeView, public ActionDataSource, public ActionDataSourceProvider
 {
 	Q_OBJECT
 
@@ -136,8 +137,11 @@ public:
 	virtual BuddySet buddies();
 	virtual ContactSet contacts();
 	virtual Chat chat();
-    virtual StatusContainer * statusContainer();
+	virtual StatusContainer * statusContainer();
 	virtual bool hasContactSelected();
+
+	// ActionDataSourceProvider implementation
+	virtual ActionDataSource * actionDataSource() { return this; }
 
 signals:
 	void chatActivated(Chat chat);
