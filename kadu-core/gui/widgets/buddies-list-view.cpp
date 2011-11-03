@@ -48,6 +48,7 @@
 #include "contacts/filter/contact-no-unloaded-account-filter.h"
 #include "gui/actions/action.h"
 #include "gui/actions/action-description.h"
+#include "gui/actions/base-action-data-source.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/windows/kadu-window-actions.h"
 #include "gui/hot-key.h"
@@ -69,6 +70,9 @@
 BuddiesListView::BuddiesListView(QWidget *parent) :
 		KaduTreeView(parent), Delegate(0), ProxyModel(new BuddiesModelProxy(this)), ContextMenuEnabled(false)
 {
+	ActionData = new BaseActionDataSource();
+	connect(MainConfigurationHolder::instance(), SIGNAL(setStatusModeChanged()), this, SLOT(updateActionData()));
+
 	Delegate = new BuddiesListViewDelegate(this);
 	setItemDelegate(Delegate);
 
@@ -83,6 +87,8 @@ BuddiesListView::BuddiesListView(QWidget *parent) :
 
 BuddiesListView::~BuddiesListView()
 {
+	delete ActionData;
+	ActionData = 0;
 }
 
 void BuddiesListView::setModel(QAbstractItemModel *model)
@@ -320,7 +326,7 @@ void BuddiesListView::contextMenuEvent(QContextMenuEvent *event)
 	if (buddy.isNull())
 		return;
 
-	QScopedPointer<QMenu> menu(BuddiesListViewMenuManager::instance()->menu(this, this, buddy.contacts()));
+	QScopedPointer<QMenu> menu(BuddiesListViewMenuManager::instance()->menu(this, ActionData, buddy.contacts()));
 	menu->exec(event->globalPos());
 }
 
@@ -333,9 +339,9 @@ void BuddiesListView::keyPressEvent(QKeyEvent *event)
 {
 	// TODO 0.10.0: add proper shortcuts handling
 	if (HotKey::shortCut(event, "ShortCuts", "kadu_deleteuser"))
-		KaduWindowActions::deleteUserActionActivated(this);
+		KaduWindowActions::deleteUserActionActivated(ActionData);
 	else if (HotKey::shortCut(event, "ShortCuts", "kadu_persinfo"))
-		KaduWindowActions::editUserActionActivated(this);
+		KaduWindowActions::editUserActionActivated(ActionData);
 	else
 		switch (event->key())
 		{
@@ -408,8 +414,38 @@ void BuddiesListView::currentChanged(const QModelIndex &current, const QModelInd
 		emit currentChanged(buddyOrContact);
 }
 
+void BuddiesListView::updateActionData()
+{
+	ActionData->setBuddies(selectedBuddies());
+	ActionData->setContacts(selectedContacts());
+	ActionData->setChat(currentChat());
+
+	ActionData->setHasContactSelected(false);
+	QModelIndexList selectionList = selectedIndexes();
+	foreach (const QModelIndex &selection, selectionList)
+		if (ContactRole == selection.data(ItemTypeRole).toInt())
+		{
+			ActionData->setHasContactSelected(true);
+			break;
+		}
+
+	if (MainConfigurationHolder::instance()->isSetStatusPerIdentity())
+		ActionData->setStatusContainer(currentChat().chatAccount().accountIdentity().data());
+	else if (MainConfigurationHolder::instance()->isSetStatusPerAccount())
+		ActionData->setStatusContainer(currentChat().chatAccount().statusContainer());
+	else
+		ActionData->setStatusContainer(StatusContainerManager::instance());
+}
+
+ActionDataSource * BuddiesListView::actionDataSource()
+{
+	return ActionData;
+}
+
 void BuddiesListView::selectionChanged(const QItemSelection &selected, const QItemSelection &deselected)
 {
+	updateActionData();
+
 	QTreeView::selectionChanged(selected, deselected);
 	emit buddySelectionChanged();
 }
@@ -460,41 +496,6 @@ void BuddiesListView::toolTipHide(bool waitForAnother)
 		ToolTipTimeoutTimer.start(TOOL_TIP_TIMEOUT);
 	else
 		ToolTipTimeoutTimer.stop();
-}
-
-BuddySet BuddiesListView::buddies()
-{
-	return selectedBuddies();
-}
-
-ContactSet BuddiesListView::contacts()
-{
-	return selectedContacts();
-}
-
-Chat BuddiesListView::chat()
-{
-	return currentChat();
-}
-
-StatusContainer * BuddiesListView::statusContainer()
-{
-	if (MainConfigurationHolder::instance()->isSetStatusPerIdentity())
-		return currentChat().chatAccount().accountIdentity().data();
-	else if (MainConfigurationHolder::instance()->isSetStatusPerAccount())
-		return currentChat().chatAccount().statusContainer();
-	else
-		return StatusContainerManager::instance();
-}
-
-bool BuddiesListView::hasContactSelected()
-{
-	QModelIndexList selectionList = selectedIndexes();
-	foreach (const QModelIndex &selection, selectionList)
-		if (ContactRole == selection.data(ItemTypeRole).toInt())
-			return true;
-
-	return false;
 }
 
 void BuddiesListView::hideEvent(QHideEvent *event)

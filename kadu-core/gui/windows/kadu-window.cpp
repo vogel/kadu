@@ -520,7 +520,7 @@ Chat KaduWindow::chat()
 bool KaduWindow::hasContactSelected()
 {
 	return ContactsWidget
-			? ContactsWidget->view()->hasContactSelected()
+			? ContactsWidget->view()->actionDataSource()->hasContactSelected()
 			: false;
 }
 
@@ -660,7 +660,7 @@ void KaduWindow::createDefaultToolbars(QDomElement parentConfig)
 
 ActionDataSource * KaduWindow::actionSource()
 {
-	return buddiesListView();
+	return buddiesListView()->actionDataSource();
 }
 
 void KaduWindow::setDocked(bool docked)

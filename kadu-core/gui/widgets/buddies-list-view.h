@@ -42,6 +42,7 @@ class QModelIndex;
 
 class AbstractBuddyFilter;
 class AbstractBuddiesModel;
+class BaseActionDataSource;
 class Buddy;
 class BuddySet;
 class BuddiesListViewDelegate;
@@ -50,7 +51,7 @@ class BuddiesModelProxy;
 class ContactNoUnloadedAccountFilter;
 class ContactSet;
 
-class BuddiesListView : public KaduTreeView, public ActionDataSource, public ActionDataSourceProvider
+class BuddiesListView : public KaduTreeView, public ActionDataSourceProvider
 {
 	Q_OBJECT
 
@@ -60,6 +61,8 @@ class BuddiesListView : public KaduTreeView, public ActionDataSource, public Act
 	BuddiesModelProxy *ProxyModel;
 
 	ContactNoUnloadedAccountFilter *HideUnloadedFilter;
+
+	BaseActionDataSource *ActionData;
 
 	BuddyOrContact buddyOrContactAt(const QModelIndex &index) const;
 	Buddy buddyAt(const QModelIndex &index) const;
@@ -82,6 +85,9 @@ private slots:
 	void toolTipTimeout();
 	void toolTipRestart(QPoint pos);
 	void toolTipHide(bool waitForAnother = true);
+
+	// Actions
+	void updateActionData();
 
 protected:
 	virtual void contextMenuEvent(QContextMenuEvent *event);
@@ -133,15 +139,8 @@ public:
 
 	void setContextMenuEnabled(bool enabled);
 
-	// ActionDataSource implementation
-	virtual BuddySet buddies();
-	virtual ContactSet contacts();
-	virtual Chat chat();
-	virtual StatusContainer * statusContainer();
-	virtual bool hasContactSelected();
-
 	// ActionDataSourceProvider implementation
-	virtual ActionDataSource * actionDataSource() { return this; }
+	virtual ActionDataSource * actionDataSource();
 
 signals:
 	void chatActivated(Chat chat);
