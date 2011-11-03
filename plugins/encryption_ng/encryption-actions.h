@@ -29,6 +29,7 @@
 class Action;
 class ActionDescription;
 class Contact;
+class EnableEncryptionActionDescription;
 
 class EncryptionActions : public QObject, AccountsAwareObject
 {
@@ -37,7 +38,7 @@ class EncryptionActions : public QObject, AccountsAwareObject
 
 	static EncryptionActions *Instance;
 
-	ActionDescription *EnableEncryptionActionDescription;
+	EnableEncryptionActionDescription *EnableEncryptionActionDescriptionInstance;
 	ActionDescription *GenerateKeysActionDescription;
 	QMenu *GenerateKeysMenu;
 
@@ -47,12 +48,9 @@ class EncryptionActions : public QObject, AccountsAwareObject
 	void updateGenerateKeysMenu();
 
 private slots:
-	void canEncryptChanged(const Chat &chat);
-
 	void generateKeysActionCreated(Action *action);
 
 	void generateKeysActionActivated(QAction *action);
-	void enableEncryptionActionActivated(QAction *sender, bool toggled);
 
 protected:
 	virtual void accountRegistered(Account account);

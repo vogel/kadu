@@ -32,25 +32,13 @@
 #include "identities/identity.h"
 #include "protocols/protocol.h"
 
+#include "actions/enable-encryption-action-description.h"
 #include "actions/send-public-key-action-description.h"
 #include "keys/key.h"
 #include "encryption-manager.h"
-#include "encryption-provider-manager.h"
 #include "key-generator.h"
 
 #include "encryption-actions.h"
-
-static void checkCanEncrypt(Action *action)
-{
-	Chat chat = action->chat();
-	if (!chat)
-	{
-		action->setEnabled(false);
-		return;
-	}
-
-	action->setEnabled(EncryptionProviderManager::instance()->canEncrypt(chat));
-}
 
 EncryptionActions * EncryptionActions::Instance = 0;
 
@@ -80,36 +68,16 @@ EncryptionActions::EncryptionActions()
 
 	updateGenerateKeysMenu();
 
-	EnableEncryptionActionDescription = new ActionDescription(this,
-			ActionDescription::TypeChat, "encryptionAction",
-			this, SLOT(enableEncryptionActionActivated(QAction *, bool)),
-			KaduIcon("security-high"), tr("Encrypt"),
-			true, checkCanEncrypt
-	);
-
+	EnableEncryptionActionDescriptionInstance = new EnableEncryptionActionDescription(this);
 	new SendPublicKeyActionDescription(this);
-
-	connect(EncryptionProviderManager::instance(), SIGNAL(canEncryptChanged(Chat)), this, SLOT(canEncryptChanged(Chat)));
 }
 
 EncryptionActions::~EncryptionActions()
 {
 	Core::instance()->kaduWindow()->removeMenuActionDescription(GenerateKeysActionDescription);
 
-	disconnect(EncryptionProviderManager::instance(), SIGNAL(canEncryptChanged(Chat)), this, SLOT(canEncryptChanged(Chat)));
-
 	// actions is owner of menu, no need to delete here
 	GenerateKeysMenu = 0;
-}
-
-void EncryptionActions::canEncryptChanged(const Chat &chat)
-{
-	// there is only as much actions as chat windows, so this is not really N^2 when
-	// this slot is called for each chat when new encryption implementation is loaded/unloaded
-	// so no need to optimize it
-	foreach (Action *action, EnableEncryptionActionDescription->actions())
-		if (action->chat() == chat)
-			action->checkState();
 }
 
 void EncryptionActions::generateKeysActionCreated(Action *action)
@@ -139,23 +107,6 @@ void EncryptionActions::generateKeysActionActivated(QAction *action)
 		MessageDialog::exec(KaduIcon("dialog-information"), tr("Encryption"), tr("Keys have been generated"));
 	else
 		MessageDialog::exec(KaduIcon("dialog-error"), tr("Encryption"), tr("Error generating keys"));
-}
-
-void EncryptionActions::enableEncryptionActionActivated(QAction *sender, bool toggled)
-{
-	Action *action = qobject_cast<Action *>(sender);
-	if (!action)
-		return;
-
-	if (!action->chat())
-		return;
-
-	if (!EncryptionManager::instance()->setEncryptionEnabled(action->chat(), toggled, true) && toggled)
-	{
-		// disable it, we could not enable encryption for this contact
-		sender->setEnabled(false);
-		sender->setChecked(false);
-	}
 }
 
 void EncryptionActions::accountRegistered(Account account)
@@ -194,7 +145,7 @@ void EncryptionActions::checkEnableEncryption(const Chat &chat, bool check)
 	// there is only as much actions as chat windows, so this is not really N^2 when
 	// this slot is called for each chat when new encryption implementation is loaded/unloaded
 	// so no need to optimize it
-	foreach (Action *action, EnableEncryptionActionDescription->actions())
+	foreach (Action *action, EnableEncryptionActionDescriptionInstance->actions())
 		if (action->chat() == chat)
 			action->setChecked(check);
 }

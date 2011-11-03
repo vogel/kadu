@@ -37,6 +37,13 @@
     </message>
 </context>
 <context>
+    <name>EnableEncryptionActionDescription</name>
+    <message>
+        <source>Encrypt</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>SendPublicKeyActionDescription</name>
     <message>
         <source>Send My Public Key</source>
@@ -51,10 +58,6 @@
     <name>EncryptionActions</name>
     <message>
         <source>Generate Encryption Keys</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Encrypt</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

@@ -37,6 +37,13 @@
     </message>
 </context>
 <context>
+    <name>EnableEncryptionActionDescription</name>
+    <message>
+        <source>Encrypt</source>
+        <translation>Zašifrovat</translation>
+    </message>
+</context>
+<context>
     <name>SendPublicKeyActionDescription</name>
     <message>
         <source>Send My Public Key</source>
@@ -49,10 +56,6 @@
 </context>
 <context>
     <name>EncryptionActions</name>
-    <message>
-        <source>Encrypt</source>
-        <translation>Zašifrovat</translation>
-    </message>
     <message>
         <source>Generate Encryption Keys</source>
         <translation type="unfinished"></translation>
