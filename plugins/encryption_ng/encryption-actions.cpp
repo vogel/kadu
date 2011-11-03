@@ -99,18 +99,15 @@ void EncryptionActions::unregisterActions()
 
 EncryptionActions::EncryptionActions()
 {
+	GenerateKeysMenu = new QMenu(0);
+	connect(GenerateKeysMenu, SIGNAL(triggered(QAction*)), this, SLOT(generateKeysActionActivated(QAction*)));
+
 	GenerateKeysActionDescription = new ActionDescription(this,
 			ActionDescription::TypeMainMenu, "encryptionGenerateKeysAction",
 			this, 0, KaduIcon("security-high"), tr("Generate Encryption Keys")
 	);
 	connect(GenerateKeysActionDescription, SIGNAL(actionCreated(Action*)), this, SLOT(generateKeysActionCreated(Action*)));
-
-	// HACK: It is needed bacause of loading protocol modules before creating GUI.
-	// TODO 0.10: Fix it!
-	QMetaObject::invokeMethod(this, "insertMenuToMainWindow", Qt::QueuedConnection);
-
-	GenerateKeysMenu = new QMenu(0);
-	connect(GenerateKeysMenu, SIGNAL(triggered(QAction*)), this, SLOT(generateKeysActionActivated(QAction*)));
+	Core::instance()->kaduWindow()->insertMenuActionDescription(GenerateKeysActionDescription, KaduWindow::MenuTools);
 
 	updateGenerateKeysMenu();
 
@@ -128,7 +125,7 @@ EncryptionActions::EncryptionActions()
 		false, checkSendKey
 	);
 	BuddiesListViewMenuManager::instance()->addListActionDescription(SendPublicKeyActionDescription,
-			BuddiesListViewMenuItem::MenuCategoryManagement, 20);;
+			BuddiesListViewMenuItem::MenuCategoryManagement, 20);
 
 	connect(EncryptionProviderManager::instance(), SIGNAL(canEncryptChanged(Chat)), this, SLOT(canEncryptChanged(Chat)));
 }
@@ -142,11 +139,6 @@ EncryptionActions::~EncryptionActions()
 
 	// actions is owner of menu, no need to delete here
 	GenerateKeysMenu = 0;
-}
-
-void EncryptionActions::insertMenuToMainWindow()
-{
-	Core::instance()->kaduWindow()->insertMenuActionDescription(GenerateKeysActionDescription, KaduWindow::MenuTools);
 }
 
 void EncryptionActions::canEncryptChanged(const Chat &chat)

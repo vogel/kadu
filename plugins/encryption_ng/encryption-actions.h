@@ -49,8 +49,6 @@ class EncryptionActions : public QObject, AccountsAwareObject
 	void sendPublicKey(const Contact &contact);
 
 private slots:
-	void insertMenuToMainWindow();
-
 	void canEncryptChanged(const Chat &chat);
 
 	void generateKeysActionCreated(Action *action);
