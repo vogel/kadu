@@ -494,36 +494,6 @@ BuddiesListView * KaduWindow::buddiesListView()
 			: 0;
 }
 
-StatusContainer * KaduWindow::statusContainer()
-{
-	return actionDataSource()->statusContainer();
-}
-
-ContactSet KaduWindow::contacts()
-{
-	return actionDataSource()->contacts();
-}
-
-BuddySet KaduWindow::buddies()
-{
-	return actionDataSource()->buddies();
-}
-
-Chat KaduWindow::chat()
-{
-	return actionDataSource()->chat();
-}
-
-bool KaduWindow::hasContactSelected()
-{
-	return actionDataSource()->hasContactSelected();
-}
-
-ActionDataSource * KaduWindow::actionDataSource()
-{
-	return ActionData;
-}
-
 void KaduWindow::configurationUpdated()
 {
 	QString bgColor = config_file.readColorEntry("Look","UserboxBgColor").name();
@@ -581,7 +551,7 @@ void KaduWindow::insertMenuActionDescription(ActionDescription *actionDescriptio
 	if (!actionDescription)
 		return;
 
-	Action *action = actionDescription->createAction(this, this);
+	Action *action = actionDescription->createAction(actionDataSource(), this);
 	QMenu *menu = 0;
 
 	switch (type)
@@ -667,4 +637,9 @@ void KaduWindow::setDocked(bool docked)
 {
 	Docked = docked;
 	qApp->setQuitOnLastWindowClosed(!Docked);
+}
+
+ActionDataSource * KaduWindow::actionDataSource()
+{
+	return ActionData;
 }

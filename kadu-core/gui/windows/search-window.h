@@ -107,12 +107,6 @@ public:
 	void addFound();
 	void chatFound();
 
-	virtual StatusContainer * statusContainer();
-	virtual ContactSet contacts();
-	virtual BuddySet buddies();
-	virtual Chat chat();
-	virtual bool hasContactSelected();
-
 	// ActionDataSourceProvider implementation
 	ActionDataSource * actionDataSource();
 

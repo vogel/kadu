@@ -666,7 +666,7 @@ void HistoryWindow::showMainPopupMenu(const QPoint &pos)
 			if (!chat)
 				return;
 
-			menu.reset(BuddiesListViewMenuManager::instance()->menu(this, this, chat.contacts().toContactVector().toList()));
+			menu.reset(BuddiesListViewMenuManager::instance()->menu(this, actionDataSource(), chat.contacts().toContactVector().toList()));
 			menu->addSeparator();
 			menu->addAction(KaduIcon("kadu_icons/clear-history").icon(),
 					tr("&Clear Chat History"), this, SLOT(clearChatHistory()));
@@ -680,7 +680,7 @@ void HistoryWindow::showMainPopupMenu(const QPoint &pos)
 			if (!buddy || buddy.contacts().isEmpty())
 				return;
 
-			menu.reset(BuddiesListViewMenuManager::instance()->menu(this, this, buddy.contacts()));
+			menu.reset(BuddiesListViewMenuManager::instance()->menu(this, actionDataSource(), buddy.contacts()));
 			menu->addSeparator();
 			menu->addAction(KaduIcon("kadu_icons/clear-history").icon(),
 					tr("&Clear Status History"), this, SLOT(clearStatusHistory()));
@@ -877,31 +877,6 @@ void HistoryWindow::dateFilteringEnabled(int state)
 		Search.setToDate(QDate());
 		updateData();
 	}
-}
-
-StatusContainer * HistoryWindow::statusContainer()
-{
-	return actionDataSource()->statusContainer();
-}
-
-ContactSet HistoryWindow::contacts()
-{
-	return actionDataSource()->contacts();
-}
-
-BuddySet HistoryWindow::buddies()
-{
-	return actionDataSource()->buddies();
-}
-
-Chat HistoryWindow::chat()
-{
-	return actionDataSource()->chat();
-}
-
-bool HistoryWindow::hasContactSelected()
-{
-	return actionDataSource()->hasContactSelected();
 }
 
 ActionDataSource * HistoryWindow::actionDataSource()

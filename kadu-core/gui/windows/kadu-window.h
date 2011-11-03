@@ -137,13 +137,6 @@ protected:
 
 	virtual bool supportsActionType(ActionDescription::ActionType type);
 
-	virtual StatusContainer * statusContainer();
-
-	virtual ContactSet contacts();
-	virtual BuddySet buddies();
-	virtual Chat chat();
-	virtual bool hasContactSelected();
-
 	virtual void configurationUpdated();
 
 public:

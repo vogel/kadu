@@ -75,12 +75,6 @@ public:
 
 	void setAutoSend(bool autoSend);
 
-	virtual StatusContainer * statusContainer();
-	virtual ContactSet contacts();
-	virtual BuddySet buddies();
-	virtual Chat chat();
-	virtual bool hasContactSelected();
-
 	// ActionDataSourceProvider implementation
 	ActionDataSource * actionDataSource();
 

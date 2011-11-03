@@ -149,12 +149,6 @@ public:
 	virtual ChatWidget * chatWidget() { return 0; }
 	virtual BuddiesListView * buddiesListView() { return 0; }
 
-	virtual StatusContainer * statusContainer();
-	virtual ContactSet contacts();
-	virtual BuddySet buddies();
-	virtual Chat chat();
-	virtual bool hasContactSelected();
-
 	// ActionDataSourceProvider implementation
 	ActionDataSource * actionDataSource();
 

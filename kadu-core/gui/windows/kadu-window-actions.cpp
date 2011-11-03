@@ -967,15 +967,17 @@ void KaduWindowActions::editUserActionActivated(ActionDataSource *source)
 
 void KaduWindowActions::configurationUpdated()
 {
-	if (ShowInfoPanel->action(Core::instance()->kaduWindow())->isChecked() != config_file.readBoolEntry("Look", "ShowInfoPanel"))
-		ShowInfoPanel->action(Core::instance()->kaduWindow())->trigger();
+	ActionDataSource *actionData = Core::instance()->kaduWindow()->actionDataSource();
 
-	if (InactiveUsers->action(Core::instance()->kaduWindow())->isChecked() != config_file.readBoolEntry("General", "ShowOffline"))
-		InactiveUsers->action(Core::instance()->kaduWindow())->trigger();
+	if (ShowInfoPanel->action(actionData)->isChecked() != config_file.readBoolEntry("Look", "ShowInfoPanel"))
+		ShowInfoPanel->action(actionData)->trigger();
 
-	if (ShowBlockedBuddies->action(Core::instance()->kaduWindow())->isChecked() != config_file.readBoolEntry("General", "ShowBlocked"))
-		ShowBlockedBuddies->action(Core::instance()->kaduWindow())->trigger();
+	if (InactiveUsers->action(actionData)->isChecked() != config_file.readBoolEntry("General", "ShowOffline"))
+		InactiveUsers->action(actionData)->trigger();
 
-	if (ShowMyself->action(Core::instance()->kaduWindow())->isChecked() != config_file.readBoolEntry("General", "ShowMyself"))
-		ShowMyself->action(Core::instance()->kaduWindow())->trigger();
+	if (ShowBlockedBuddies->action(actionData)->isChecked() != config_file.readBoolEntry("General", "ShowBlocked"))
+		ShowBlockedBuddies->action(actionData)->trigger();
+
+	if (ShowMyself->action(actionData)->isChecked() != config_file.readBoolEntry("General", "ShowMyself"))
+		ShowMyself->action(actionData)->trigger();
 }

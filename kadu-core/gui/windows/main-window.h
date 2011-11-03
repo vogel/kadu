@@ -45,7 +45,7 @@ class ContactSet;
 class StatusContainer;
 class ToolBar;
 
-class KADUAPI MainWindow : public QMainWindow, public ActionDataSource, public ActionDataSourceProvider, DesktopAwareObject
+class KADUAPI MainWindow : public QMainWindow, public ActionDataSourceProvider, DesktopAwareObject
 {
 	Q_OBJECT
 
@@ -105,9 +105,6 @@ public:
 
 	void actionAdded(Action *action);
 	bool hasAction(const QString &actionName, ToolBar *exclude = 0);
-
-	// ActionDataSourceProvider implementation
-	ActionDataSource * actionDataSource() { return this; }
 
 public slots:
 	void addTopToolbar();

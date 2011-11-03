@@ -66,7 +66,7 @@ void ShowHistoryActionDescription::actionInstanceCreated(Action *action)
 	action->setData(chatWidgetData);
 
 	// not a menu
-	if (action->chat() != chatEditBox->chat())
+	if (action->chat() != chatEditBox->actionDataSource()->chat())
 		return;
 
 	// no parents for menu as it is destroyed manually by Action class

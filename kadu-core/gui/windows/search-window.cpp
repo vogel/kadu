@@ -597,34 +597,9 @@ void SearchWindow::selectionChanged()
 
 void SearchWindow::setActionEnabled(ActionDescription *actionDescription, bool enable)
 {
-	Action *action = actionDescription->action(this);
+	Action *action = actionDescription->action(actionDataSource());
 	if (action)
 		action->setEnabled(enable);
-}
-
-StatusContainer * SearchWindow::statusContainer()
-{
-	return actionDataSource()->statusContainer();
-}
-
-ContactSet SearchWindow::contacts()
-{
-	return actionDataSource()->contacts();
-}
-
-BuddySet SearchWindow::buddies()
-{
-	return actionDataSource()->buddies();
-}
-
-Chat SearchWindow::chat()
-{
-	return actionDataSource()->chat();
-}
-
-bool SearchWindow::hasContactSelected()
-{
-	return actionDataSource()->hasContactSelected();
 }
 
 ActionDataSource * SearchWindow::actionDataSource()

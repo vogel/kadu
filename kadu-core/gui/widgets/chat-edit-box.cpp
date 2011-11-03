@@ -115,12 +115,12 @@ ChatEditBox::~ChatEditBox()
 
 void ChatEditBox::fontChanged(QFont font)
 {
-	if (ChatWidgetManager::instance()->actions()->bold()->action(this))
-		ChatWidgetManager::instance()->actions()->bold()->action(this)->setChecked(font.bold());
-	if (ChatWidgetManager::instance()->actions()->italic()->action(this))
-		ChatWidgetManager::instance()->actions()->italic()->action(this)->setChecked(font.italic());
-	if (ChatWidgetManager::instance()->actions()->underline()->action(this))
-		ChatWidgetManager::instance()->actions()->underline()->action(this)->setChecked(font.underline());
+	if (ChatWidgetManager::instance()->actions()->bold()->action(actionDataSource()))
+		ChatWidgetManager::instance()->actions()->bold()->action(actionDataSource())->setChecked(font.bold());
+	if (ChatWidgetManager::instance()->actions()->italic()->action(actionDataSource()))
+		ChatWidgetManager::instance()->actions()->italic()->action(actionDataSource())->setChecked(font.italic());
+	if (ChatWidgetManager::instance()->actions()->underline()->action(actionDataSource()))
+		ChatWidgetManager::instance()->actions()->underline()->action(actionDataSource())->setChecked(font.underline());
 }
 
 void ChatEditBox::colorSelectorActionCreated(Action *action)
@@ -353,31 +353,6 @@ void ChatEditBox::setColorFromCurrentText(bool force)
 	p.fill(CurrentColor);
 
 	action->QAction::setIcon(p);
-}
-
-StatusContainer * ChatEditBox::statusContainer()
-{
-	return actionDataSource()->statusContainer();
-}
-
-ContactSet ChatEditBox::contacts()
-{
-	return actionDataSource()->contacts();
-}
-
-BuddySet ChatEditBox::buddies()
-{
-	return actionDataSource()->buddies();
-}
-
-Chat ChatEditBox::chat()
-{
-	return actionDataSource()->chat();
-}
-
-bool ChatEditBox::hasContactSelected()
-{
-	return actionDataSource()->hasContactSelected();
 }
 
 ActionDataSource * ChatEditBox::actionDataSource()

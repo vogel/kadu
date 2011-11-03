@@ -396,7 +396,7 @@ bool MainWindow::hasAction(const QString &actionName, ToolBar *exclude)
 
 Contact MainWindow::contact()
 {
-	ContactSet contactSet = contacts();
+	ContactSet contactSet = actionDataSource()->contacts();
 	return 1 == contactSet.count()
 			? *contactSet.constBegin()
 			: Contact::null;
@@ -404,7 +404,7 @@ Contact MainWindow::contact()
 
 Buddy MainWindow::buddy()
 {
-	BuddySet buddySet = buddies();
+	BuddySet buddySet = actionDataSource()->buddies();
 	return 1 == buddySet.count()
 			? *buddySet.constBegin()
 			: Buddy::null;
