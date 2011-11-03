@@ -80,7 +80,8 @@ extern void qt_mac_set_menubar_icons(bool enable);
 #endif
 
 KaduWindow::KaduWindow(QWidget *parent) :
-		MainWindow(QString(), parent), Docked(false), ContactsWidget(0), CompositingEnabled(false)
+		MainWindow(new KaduWindowActionDataSource(), QString(), parent), Docked(false),
+		ContactsWidget(0), CompositingEnabled(false)
 {
 	setWindowRole("kadu-main");
 
@@ -98,7 +99,8 @@ KaduWindow::KaduWindow(QWidget *parent) :
 	// we need to create gui first, then actions, then menus
 	// TODO: fix it in 0.10 or whenever
 	createGui();
-	ActionData = new KaduWindowActionDataSource(ContactsWidget->view()->actionDataSource());
+	ActionData = static_cast<KaduWindowActionDataSource *>(actionDataSource());
+	ActionData->setForwardActionDataSource(ContactsWidget->view()->actionDataSource());
 
 	Actions = new KaduWindowActions(this);
 	loadToolBarsFromConfig();
@@ -637,9 +639,4 @@ void KaduWindow::setDocked(bool docked)
 {
 	Docked = docked;
 	qApp->setQuitOnLastWindowClosed(!Docked);
-}
-
-ActionDataSource * KaduWindow::actionDataSource()
-{
-	return ActionData;
 }

@@ -54,6 +54,8 @@ class KADUAPI MainWindow : public QMainWindow, public ActionDataSourceProvider, 
 	QString WindowName;
 	bool TransparencyEnabled;
 
+	ActionDataSource *ActionData;
+
 	ToolBar * newToolbar(QWidget *parent);
 
 	void loadToolBarsFromConfigNode(QDomElement dockareaConfig, Qt::ToolBarArea area);
@@ -61,7 +63,7 @@ class KADUAPI MainWindow : public QMainWindow, public ActionDataSourceProvider, 
 private slots:
 	void actionLoadedOrUnloaded(ActionDescription *action);
 	void toolbarUpdated();
-    void toolbarRemoved(ToolBar *toolBar);
+	void toolbarRemoved(ToolBar *toolBar);
 
 protected:
 	void loadToolBarsFromConfig();
@@ -90,7 +92,7 @@ protected slots:
 public:
 	static MainWindow * findMainWindow(QWidget *widget);
 
-	MainWindow(const QString &windowName, QWidget *parent);
+	MainWindow(ActionDataSource *actionData, const QString &windowName, QWidget *parent);
 	virtual ~MainWindow();
 
 	const QString & windowName() { return WindowName; }
@@ -105,6 +107,9 @@ public:
 
 	void actionAdded(Action *action);
 	bool hasAction(const QString &actionName, ToolBar *exclude = 0);
+
+	// ActionDataSourceProvider implementation
+	ActionDataSource * actionDataSource();
 
 public slots:
 	void addTopToolbar();

@@ -27,8 +27,10 @@ class KaduWindowActionDataSource : public ActionDataSource
 	ActionDataSource *ForwardActionDataSource;
 
 public:
-	KaduWindowActionDataSource(ActionDataSource *forwardActionDataSource);
+	KaduWindowActionDataSource();
 	virtual ~KaduWindowActionDataSource();
+
+	void setForwardActionDataSource(ActionDataSource *forwardActionDataSource);
 
 	virtual ContactSet contacts();
 	virtual BuddySet buddies();

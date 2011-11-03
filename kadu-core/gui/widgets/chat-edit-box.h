@@ -75,9 +75,6 @@ public:
 
 	void setAutoSend(bool autoSend);
 
-	// ActionDataSourceProvider implementation
-	ActionDataSource * actionDataSource();
-
 public slots:
 	void addEmoticon(const QString &emoticon);
 	void changeColor(const QColor &newColor);

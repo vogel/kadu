@@ -76,7 +76,7 @@ void SearchWindow::createDefaultToolbars(const QDomElement &toolbarsConfig)
 }
 
 SearchWindow::SearchWindow(QWidget *parent, Buddy buddy) :
-		MainWindow("search", parent),
+		MainWindow(new BaseActionDataSource(), "search", parent),
 		CurrentSearchService(0), UinEdit(0), FirstNameEdit(0), LastNameEdit(0), NickNameEdit(0),
 		StartBirthYearEdit(0), EndBirthYearEdit(0), CityEdit(0),
 		GenderComboBox(0), OnlyActiveCheckBox(0), UinRadioButton(0), PersonalDataRadioButton(0),
@@ -87,8 +87,7 @@ SearchWindow::SearchWindow(QWidget *parent, Buddy buddy) :
 	setAttribute(Qt::WA_DeleteOnClose);
 	setWindowTitle(tr("Search User in Directory"));
 
-	ActionData = new BaseActionDataSource();
-	ActionData->setHasContactSelected(true);
+	static_cast<BaseActionDataSource *>(actionDataSource())->setHasContactSelected(true);
 
 	if (buddy)
 	{
@@ -142,9 +141,6 @@ SearchWindow::SearchWindow(QWidget *parent, Buddy buddy) :
 SearchWindow::~SearchWindow()
 {
 	saveWindowGeometry(this, "General", "SearchWindowGeometry");
-
-	delete ActionData;
-	ActionData = 0;
 }
 
 void SearchWindow::createGui()
@@ -600,9 +596,4 @@ void SearchWindow::setActionEnabled(ActionDescription *actionDescription, bool e
 	Action *action = actionDescription->action(actionDataSource());
 	if (action)
 		action->setEnabled(enable);
-}
-
-ActionDataSource * SearchWindow::actionDataSource()
-{
-	return ActionData;
 }

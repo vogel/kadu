@@ -94,7 +94,6 @@ void HistoryWindow::show(const Chat &chat)
 	if (!Instance)
 		Instance = new HistoryWindow();
 
-
 	Instance->updateData();
 	Instance->selectChat(aggregate);
 
@@ -103,7 +102,7 @@ void HistoryWindow::show(const Chat &chat)
 }
 
 HistoryWindow::HistoryWindow(QWidget *parent) :
-		MainWindow("history", parent)
+		MainWindow(new BaseActionDataSource(), "history", parent)
 {
 	kdebugf();
 
@@ -121,7 +120,7 @@ HistoryWindow::HistoryWindow(QWidget *parent) :
 	DetailsPopupMenu = new QMenu(this);
 	DetailsPopupMenu->addAction(KaduIcon("kadu_icons/clear-history").icon(), tr("&Remove entries"), this, SLOT(removeHistoryEntriesPerDate()));
 
-	ActionData = new BaseActionDataSource();
+	ActionData = static_cast<BaseActionDataSource *>(actionDataSource());
 	updateActionsData();
 
 	kdebugf2();
@@ -132,9 +131,6 @@ HistoryWindow::~HistoryWindow()
 	kdebugf();
 
 	saveWindowGeometry(this, "History", "HistoryDialogGeometry");
-
-	delete ActionData;
-	ActionData = 0;
 
 	Instance = 0;
 
@@ -877,9 +873,4 @@ void HistoryWindow::dateFilteringEnabled(int state)
 		Search.setToDate(QDate());
 		updateData();
 	}
-}
-
-ActionDataSource * HistoryWindow::actionDataSource()
-{
-	return ActionData;
 }

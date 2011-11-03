@@ -55,9 +55,12 @@ MainWindow * MainWindow::findMainWindow(QWidget *widget)
 	return 0;
 }
 
-MainWindow::MainWindow(const QString &windowName, QWidget *parent) :
-		QMainWindow(parent), DesktopAwareObject(this),  WindowName(windowName), TransparencyEnabled(false)
+MainWindow::MainWindow(ActionDataSource *actionData, const QString &windowName, QWidget *parent) :
+		QMainWindow(parent), DesktopAwareObject(this),  WindowName(windowName), TransparencyEnabled(false),
+		ActionData(actionData)
 {
+	Q_ASSERT(0 != ActionData);
+
 	connect(ConfigurationManager::instance()->toolbarConfigurationManager(), SIGNAL(configurationUpdated()),
 			this, SLOT(refreshToolBars()));
 	connect(Actions::instance(), SIGNAL(actionLoaded(ActionDescription*)),
@@ -74,6 +77,9 @@ MainWindow::~MainWindow()
 			this, SLOT(actionLoadedOrUnloaded(ActionDescription*)));
 	disconnect(ConfigurationManager::instance()->toolbarConfigurationManager(), SIGNAL(configurationUpdated()),
 			this, SLOT(refreshToolBars()));
+
+	delete ActionData;
+	ActionData = 0;
 }
 
 void MainWindow::loadToolBarsFromConfig()
@@ -461,4 +467,9 @@ void MainWindow::toolbarRemoved(ToolBar *toolBar)
 	toolBar->deleteLater();
 
 	toolbarUpdated();
+}
+
+ActionDataSource * MainWindow::actionDataSource()
+{
+	return ActionData;
 }

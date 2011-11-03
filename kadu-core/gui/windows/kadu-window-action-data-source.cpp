@@ -24,8 +24,8 @@
 
 #include "kadu-window-action-data-source.h"
 
-KaduWindowActionDataSource::KaduWindowActionDataSource(ActionDataSource *forwardActionDataSource) :
-		ForwardActionDataSource(forwardActionDataSource)
+KaduWindowActionDataSource::KaduWindowActionDataSource() :
+		ForwardActionDataSource(0)
 {
 }
 
@@ -33,19 +33,30 @@ KaduWindowActionDataSource::~KaduWindowActionDataSource()
 {
 }
 
+void KaduWindowActionDataSource::setForwardActionDataSource(ActionDataSource *forwardActionDataSource)
+{
+	ForwardActionDataSource = forwardActionDataSource;
+}
+
 ContactSet KaduWindowActionDataSource::contacts()
 {
-	return ForwardActionDataSource->contacts();
+	return ForwardActionDataSource
+			? ForwardActionDataSource->contacts()
+			: ContactSet();
 }
 
 BuddySet KaduWindowActionDataSource::buddies()
 {
-	return ForwardActionDataSource->buddies();
+	return ForwardActionDataSource
+			? ForwardActionDataSource->buddies()
+			: BuddySet();
 }
 
 Chat KaduWindowActionDataSource::chat()
 {
-	return ForwardActionDataSource->chat();
+	return ForwardActionDataSource
+			? ForwardActionDataSource->chat()
+			: Chat::null;
 }
 
 StatusContainer * KaduWindowActionDataSource::statusContainer()
@@ -55,5 +66,7 @@ StatusContainer * KaduWindowActionDataSource::statusContainer()
 
 bool KaduWindowActionDataSource::hasContactSelected()
 {
-	return ForwardActionDataSource->hasContactSelected();
+	return ForwardActionDataSource
+			? ForwardActionDataSource->hasContactSelected()
+			: false;
 }

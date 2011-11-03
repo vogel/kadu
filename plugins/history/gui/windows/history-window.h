@@ -149,9 +149,6 @@ public:
 	virtual ChatWidget * chatWidget() { return 0; }
 	virtual BuddiesListView * buddiesListView() { return 0; }
 
-	// ActionDataSourceProvider implementation
-	ActionDataSource * actionDataSource();
-
 };
 
 class HistoryChatsModel;

@@ -156,9 +156,6 @@ public:
 	ActionDataSource * actionSource();
 	BuddyInfoPanel * infoPanel() { return InfoPanel; }
 
-	// ActionDataSourceProvider implementation
-	ActionDataSource * actionDataSource();
-
 #ifdef Q_OS_MAC
 	QMenuBar* menuBar() const;
 #endif

@@ -60,11 +60,11 @@
 QList<ChatEditBox *> chatEditBoxes;
 
 ChatEditBox::ChatEditBox(const Chat &chat, QWidget *parent) :
-		MainWindow("chat", parent), CurrentChat(chat)
+		MainWindow(new BaseActionDataSource(), "chat", parent), CurrentChat(chat)
 {
 	chatEditBoxes.append(this);
 
-	ActionData = new BaseActionDataSource();
+	ActionData = static_cast<BaseActionDataSource *>(actionDataSource());
 	ActionData->setChat(CurrentChat);
 	ActionData->setContacts(CurrentChat.contacts());
 	ActionData->setBuddies(CurrentChat.contacts().toBuddySet());
@@ -108,9 +108,6 @@ ChatEditBox::~ChatEditBox()
 	disconnect(InputBox, SIGNAL(cursorPositionChanged()), this, SLOT(cursorPositionChanged()));
 
 	chatEditBoxes.removeAll(this);
-
-	delete ActionData;
-	ActionData = 0;
 }
 
 void ChatEditBox::fontChanged(QFont font)
@@ -353,9 +350,4 @@ void ChatEditBox::setColorFromCurrentText(bool force)
 	p.fill(CurrentColor);
 
 	action->QAction::setIcon(p);
-}
-
-ActionDataSource * ChatEditBox::actionDataSource()
-{
-	return ActionData;
 }

@@ -68,8 +68,6 @@ class KADUAPI SearchWindow : public MainWindow
 	bool SearchInProgress;
 	bool DoNotTransferFocus; // TODO: remove
 
-	BaseActionDataSource *ActionData;
-
 	void createGui();
 
 	QTreeWidgetItem * selectedItem() const;
@@ -106,9 +104,6 @@ public:
 
 	void addFound();
 	void chatFound();
-
-	// ActionDataSourceProvider implementation
-	ActionDataSource * actionDataSource();
 
 public slots:
 	void firstSearch();
