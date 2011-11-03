@@ -100,6 +100,7 @@ kadu_api_directories (plugins/jabber_protocol
 set (SOURCES
 	actions/jabber-actions.cpp
 	actions/jabber-protocol-menu-manager.cpp
+	actions/show-xml-console-action-description.cpp
 
 	certificates/certificate-display-dialog.cpp
 	certificates/certificate-error-dialog.cpp
@@ -168,6 +169,7 @@ set (SOURCES
 
 set (MOC_SOURCES
 	actions/jabber-actions.h
+	actions/show-xml-console-action-description.h
 
 	certificates/certificate-display-dialog.h
 	certificates/certificate-error-dialog.h

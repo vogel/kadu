@@ -40,8 +40,6 @@ class JabberActions : QObject
 	ActionDescription *ResendSubscription;
 	ActionDescription *RemoveSubscription;
 	ActionDescription *AskForSubscription;
-	ActionDescription *ShowXmlConsole;
-	QMenu *ShowXmlConsoleMenu;
 
 	Contact contactFromAction(QAction *action);
 	JabberSubscriptionService * subscriptionServiceFromContact(const Contact &contact);
@@ -53,12 +51,6 @@ private slots:
 	void resendSubscriptionActionActivated(QAction *sender);
 	void removeSubscriptionActionActivated(QAction *sender);
 	void askForSubscriptionActionActivated(QAction *sender);
-
-	void showXmlConsoleActionCreated(Action *action);
-	void showXmlConsoleActionActivated(QAction *sender);
-	void updateShowXmlConsoleMenu();
-
-	void insertMenuToMainWindow();
 
 public:
 	static void registerActions();

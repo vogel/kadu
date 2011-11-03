@@ -195,11 +195,14 @@
     </message>
 </context>
 <context>
-    <name>JabberActions</name>
+    <name>ShowXmlConsoleActionDescription</name>
     <message>
         <source>Show XML Console</source>
         <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>JabberActions</name>
     <message>
         <source>Resend Subscription</source>
         <translation type="unfinished"></translation>
