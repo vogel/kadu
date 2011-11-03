@@ -48,6 +48,7 @@
 #include "chat/type/chat-type-manager.h"
 #include "chat/aggregate-chat-manager.h"
 #include "gui/actions/actions.h"
+#include "gui/actions/base-action-data-source.h"
 #include "gui/widgets/buddies-list-view-menu-manager.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/delayed-line-edit.h"
@@ -120,6 +121,9 @@ HistoryWindow::HistoryWindow(QWidget *parent) :
 	DetailsPopupMenu = new QMenu(this);
 	DetailsPopupMenu->addAction(KaduIcon("kadu_icons/clear-history").icon(), tr("&Remove entries"), this, SLOT(removeHistoryEntriesPerDate()));
 
+	ActionData = new BaseActionDataSource();
+	updateActionsData();
+
 	kdebugf2();
 }
 
@@ -128,6 +132,9 @@ HistoryWindow::~HistoryWindow()
 	kdebugf();
 
 	saveWindowGeometry(this, "History", "HistoryDialogGeometry");
+
+	delete ActionData;
+	ActionData = 0;
 
 	Instance = 0;
 
@@ -261,6 +268,8 @@ void HistoryWindow::connectGui()
 {
 	connect(ChatsTree->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),
 			this, SLOT(treeCurrentChanged(QModelIndex,QModelIndex)));
+	connect(ChatsTree->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),
+			this, SLOT(updateActionsData()));
 
 	ChatsTree->setContextMenuPolicy(Qt::CustomContextMenu);
 	connect(ChatsTree, SIGNAL(customContextMenuRequested(QPoint)),
@@ -808,7 +817,15 @@ void HistoryWindow::keyPressEvent(QKeyEvent *e)
 		QWidget::keyPressEvent(e);
 }
 
-ContactSet HistoryWindow::contacts()
+void HistoryWindow::updateActionsData()
+{
+	ContactSet contacts = selectedContacts();
+	ActionData->setContacts(contacts);
+	ActionData->setBuddies(contacts.toBuddySet());
+	ActionData->setChat(selectedChat());
+}
+
+ContactSet HistoryWindow::selectedContacts() const
 {
 	Chat chat = ChatsTree->currentIndex().data(ChatRole).value<Chat>();
 	if (chat)
@@ -824,12 +841,7 @@ ContactSet HistoryWindow::contacts()
 	return contacts;
 }
 
-BuddySet HistoryWindow::buddies()
-{
-	return contacts().toBuddySet();
-}
-
-Chat HistoryWindow::chat()
+Chat HistoryWindow::selectedChat() const
 {
 	Chat chat = ChatsTree->currentIndex().data(ChatRole).value<Chat>();
 	ChatDetails *details = chat.details();
@@ -865,4 +877,34 @@ void HistoryWindow::dateFilteringEnabled(int state)
 		Search.setToDate(QDate());
 		updateData();
 	}
+}
+
+StatusContainer * HistoryWindow::statusContainer()
+{
+	return actionDataSource()->statusContainer();
+}
+
+ContactSet HistoryWindow::contacts()
+{
+	return actionDataSource()->contacts();
+}
+
+BuddySet HistoryWindow::buddies()
+{
+	return actionDataSource()->buddies();
+}
+
+Chat HistoryWindow::chat()
+{
+	return actionDataSource()->chat();
+}
+
+bool HistoryWindow::hasContactSelected()
+{
+	return actionDataSource()->hasContactSelected();
+}
+
+ActionDataSource * HistoryWindow::actionDataSource()
+{
+	return ActionData;
 }
