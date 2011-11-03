@@ -50,6 +50,7 @@ class BuddiesListWidget;
 class ChatsTreeView;
 class GroupTabBar;
 class KaduWebView;
+class KaduWindowActionDataSource;
 class KaduWindowActions;
 class StatusButtons;
 
@@ -101,6 +102,8 @@ private:
 	QWidget *WindowParent;
 
 	bool CompositingEnabled;
+
+	KaduWindowActionDataSource *ActionData;
 
 	void createGui();
 	QWidget *createBuddiesWidget(QWidget *parent);
@@ -159,6 +162,9 @@ public:
 
 	ActionDataSource * actionSource();
 	BuddyInfoPanel * infoPanel() { return InfoPanel; }
+
+	// ActionDataSourceProvider implementation
+	ActionDataSource * actionDataSource();
 
 #ifdef Q_OS_MAC
 	QMenuBar* menuBar() const;

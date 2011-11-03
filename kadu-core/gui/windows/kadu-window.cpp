@@ -58,6 +58,7 @@
 #include "gui/widgets/chats-tree-view.h"
 #include "gui/widgets/group-tab-bar.h"
 #include "gui/widgets/kadu-web-view.h"
+#include "gui/windows/kadu-window-action-data-source.h"
 #include "gui/windows/kadu-window-actions.h"
 #include "gui/widgets/status-buttons.h"
 #include "gui/widgets/status-menu.h"
@@ -97,6 +98,8 @@ KaduWindow::KaduWindow(QWidget *parent) :
 	// we need to create gui first, then actions, then menus
 	// TODO: fix it in 0.10 or whenever
 	createGui();
+	ActionData = new KaduWindowActionDataSource(ContactsWidget->view()->actionDataSource());
+
 	Actions = new KaduWindowActions(this);
 	loadToolBarsFromConfig();
 	createMenu();
@@ -493,35 +496,32 @@ BuddiesListView * KaduWindow::buddiesListView()
 
 StatusContainer * KaduWindow::statusContainer()
 {
-	return StatusContainerManager::instance();
+	return actionDataSource()->statusContainer();
 }
 
 ContactSet KaduWindow::contacts()
 {
-	return ContactsWidget
-			? ContactsWidget->view()->actionDataSource()->contacts()
-			: ContactSet();
+	return actionDataSource()->contacts();
 }
 
 BuddySet KaduWindow::buddies()
 {
-	return ContactsWidget
-			? ContactsWidget->view()->actionDataSource()->buddies()
-			: BuddySet();
+	return actionDataSource()->buddies();
 }
 
 Chat KaduWindow::chat()
 {
-	return ContactsWidget
-			? ContactsWidget->view()->actionDataSource()->chat()
-			: Chat::null;
+	return actionDataSource()->chat();
 }
 
 bool KaduWindow::hasContactSelected()
 {
-	return ContactsWidget
-			? ContactsWidget->view()->actionDataSource()->hasContactSelected()
-			: false;
+	return actionDataSource()->hasContactSelected();
+}
+
+ActionDataSource * KaduWindow::actionDataSource()
+{
+	return ActionData;
 }
 
 void KaduWindow::configurationUpdated()

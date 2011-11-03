@@ -118,6 +118,7 @@ set (gui_SRCS
 	windows/file-transfer-window.cpp
 	windows/group-properties-window.cpp
 	windows/kadu-window.cpp
+	windows/kadu-window-action-data-source.cpp
 	windows/kadu-window-actions.cpp
 	windows/main-configuration-window.cpp
 	windows/main-window.cpp
