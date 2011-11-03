@@ -55,7 +55,7 @@
     </message>
 </context>
 <context>
-    <name>EncryptionActions</name>
+    <name>GenerateKeysActionDescription</name>
     <message>
         <source>Generate Encryption Keys</source>
         <translation>Genera chiavi</translation>

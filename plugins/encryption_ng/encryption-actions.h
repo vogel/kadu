@@ -23,7 +23,6 @@
 #include <QtCore/QObject>
 #include <QtGui/QAction>
 
-#include "accounts/accounts-aware-object.h"
 #include "chat/chat.h"
 
 class Action;
@@ -31,7 +30,7 @@ class ActionDescription;
 class Contact;
 class EnableEncryptionActionDescription;
 
-class EncryptionActions : public QObject, AccountsAwareObject
+class EncryptionActions : public QObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(EncryptionActions)
@@ -39,22 +38,9 @@ class EncryptionActions : public QObject, AccountsAwareObject
 	static EncryptionActions *Instance;
 
 	EnableEncryptionActionDescription *EnableEncryptionActionDescriptionInstance;
-	ActionDescription *GenerateKeysActionDescription;
-	QMenu *GenerateKeysMenu;
 
 	EncryptionActions();
 	virtual ~EncryptionActions();
-
-	void updateGenerateKeysMenu();
-
-private slots:
-	void generateKeysActionCreated(Action *action);
-
-	void generateKeysActionActivated(QAction *action);
-
-protected:
-	virtual void accountRegistered(Account account);
-	virtual void accountUnregistered(Account account);
 
 public:
 	static void registerActions();
