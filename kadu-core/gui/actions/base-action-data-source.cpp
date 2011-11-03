@@ -20,7 +20,7 @@
 #include "base-action-data-source.h"
 
 BaseActionDataSource::BaseActionDataSource() :
-		HasContactSelected(false)
+		CurrentStatusContainer(0), HasContactSelected(false)
 {
 }
 

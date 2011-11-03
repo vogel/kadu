@@ -38,6 +38,7 @@ class QRadioButton;
 class QTreeWidget;
 class QTreeWidgetItem;
 
+class BaseActionDataSource;
 class SearchService;
 
 class KADUAPI SearchWindow : public MainWindow
@@ -66,7 +67,9 @@ class KADUAPI SearchWindow : public MainWindow
 
 	bool SearchInProgress;
 	bool DoNotTransferFocus; // TODO: remove
-	
+
+	BaseActionDataSource *ActionData;
+
 	void createGui();
 
 	QTreeWidgetItem * selectedItem() const;
@@ -96,11 +99,6 @@ public:
 
 	virtual bool supportsActionType(ActionDescription::ActionType type) { return (type & ActionDescription::TypeSearch); }
 	virtual BuddiesListView * buddiesListView() { return 0; }
-	virtual StatusContainer * statusContainer() { return 0; }
-	virtual ContactSet contacts() { return ContactSet(); }
-	virtual BuddySet buddies() { return BuddySet(); }
-	virtual Chat chat() { return Chat::null; }
-	virtual bool hasContactSelected() { return true; } // we really have contacts now
 
 	void nextSearch();
 	void stopSearch();
@@ -108,6 +106,15 @@ public:
 
 	void addFound();
 	void chatFound();
+
+	virtual StatusContainer * statusContainer();
+	virtual ContactSet contacts();
+	virtual BuddySet buddies();
+	virtual Chat chat();
+	virtual bool hasContactSelected();
+
+	// ActionDataSourceProvider implementation
+	ActionDataSource * actionDataSource();
 
 public slots:
 	void firstSearch();

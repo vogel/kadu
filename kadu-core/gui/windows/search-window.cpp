@@ -46,6 +46,7 @@
 #include "contacts/contact-set.h"
 #include "core/core.h"
 #include "icons/kadu-icon.h"
+#include "gui/actions/base-action-data-source.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/windows/add-buddy-window.h"
 #include "gui/windows/kadu-window.h"
@@ -85,6 +86,9 @@ SearchWindow::SearchWindow(QWidget *parent, Buddy buddy) :
 
 	setAttribute(Qt::WA_DeleteOnClose);
 	setWindowTitle(tr("Search User in Directory"));
+
+	ActionData = new BaseActionDataSource();
+	ActionData->setHasContactSelected(true);
 
 	if (buddy)
 	{
@@ -137,7 +141,10 @@ SearchWindow::SearchWindow(QWidget *parent, Buddy buddy) :
 
 SearchWindow::~SearchWindow()
 {
- 	saveWindowGeometry(this, "General", "SearchWindowGeometry");
+	saveWindowGeometry(this, "General", "SearchWindowGeometry");
+
+	delete ActionData;
+	ActionData = 0;
 }
 
 void SearchWindow::createGui()
@@ -593,4 +600,34 @@ void SearchWindow::setActionEnabled(ActionDescription *actionDescription, bool e
 	Action *action = actionDescription->action(this);
 	if (action)
 		action->setEnabled(enable);
+}
+
+StatusContainer * SearchWindow::statusContainer()
+{
+	return actionDataSource()->statusContainer();
+}
+
+ContactSet SearchWindow::contacts()
+{
+	return actionDataSource()->contacts();
+}
+
+BuddySet SearchWindow::buddies()
+{
+	return actionDataSource()->buddies();
+}
+
+Chat SearchWindow::chat()
+{
+	return actionDataSource()->chat();
+}
+
+bool SearchWindow::hasContactSelected()
+{
+	return actionDataSource()->hasContactSelected();
+}
+
+ActionDataSource * SearchWindow::actionDataSource()
+{
+	return ActionData;
 }
