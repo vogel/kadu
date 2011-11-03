@@ -39,6 +39,7 @@
 #include "contacts/contact-set.h"
 #include "emoticons/emoticon-selector.h"
 #include "gui/actions/action.h"
+#include "gui/actions/base-action-data-source.h"
 #include "gui/widgets/chat-edit-box-size-manager.h"
 #include "gui/widgets/chat-widget-actions.h"
 #include "gui/widgets/chat-widget-manager.h"
@@ -62,6 +63,15 @@ ChatEditBox::ChatEditBox(const Chat &chat, QWidget *parent) :
 		MainWindow("chat", parent), CurrentChat(chat)
 {
 	chatEditBoxes.append(this);
+
+	ActionData = new BaseActionDataSource();
+	ActionData->setChat(CurrentChat);
+	ActionData->setContacts(CurrentChat.contacts());
+	ActionData->setBuddies(CurrentChat.contacts().toBuddySet());
+	ActionData->setHasContactSelected(false);
+	updateActionData();
+
+	connect(MainConfigurationHolder::instance(), SIGNAL(setStatusModeChanged()), this, SLOT(updateActionData()));
 
 	InputBox = new CustomInput(CurrentChat, this);
 	InputBox->setWordWrapMode(QTextOption::WordWrap);
@@ -98,6 +108,9 @@ ChatEditBox::~ChatEditBox()
 	disconnect(InputBox, SIGNAL(cursorPositionChanged()), this, SLOT(cursorPositionChanged()));
 
 	chatEditBoxes.removeAll(this);
+
+	delete ActionData;
+	ActionData = 0;
 }
 
 void ChatEditBox::fontChanged(QFont font)
@@ -152,28 +165,14 @@ BuddiesListView * ChatEditBox::buddiesListView()
 	return 0;
 }
 
-StatusContainer * ChatEditBox::statusContainer()
+void ChatEditBox::updateActionData()
 {
 	if (MainConfigurationHolder::instance()->isSetStatusPerIdentity())
-		return CurrentChat.chatAccount().accountIdentity().data();
+		ActionData->setStatusContainer(CurrentChat.chatAccount().accountIdentity().data());
 	else if (MainConfigurationHolder::instance()->isSetStatusPerAccount())
-		return CurrentChat.chatAccount().statusContainer();
+		ActionData->setStatusContainer(CurrentChat.chatAccount().statusContainer());
 	else
-		return StatusContainerManager::instance();
-}
-
-ContactSet ChatEditBox::contacts()
-{
-	ChatWidget *cw = chatWidget();
-	if (cw)
-		return cw->chat().contacts();
-
-	return ContactSet();
-}
-
-BuddySet ChatEditBox::buddies()
-{
-	return contacts().toBuddySet();
+		ActionData->setStatusContainer(StatusContainerManager::instance());
 }
 
 ChatWidget * ChatEditBox::chatWidget()
@@ -354,4 +353,34 @@ void ChatEditBox::setColorFromCurrentText(bool force)
 	p.fill(CurrentColor);
 
 	action->QAction::setIcon(p);
+}
+
+StatusContainer * ChatEditBox::statusContainer()
+{
+	return actionDataSource()->statusContainer();
+}
+
+ContactSet ChatEditBox::contacts()
+{
+	return actionDataSource()->contacts();
+}
+
+BuddySet ChatEditBox::buddies()
+{
+	return actionDataSource()->buddies();
+}
+
+Chat ChatEditBox::chat()
+{
+	return actionDataSource()->chat();
+}
+
+bool ChatEditBox::hasContactSelected()
+{
+	return actionDataSource()->hasContactSelected();
+}
+
+ActionDataSource * ChatEditBox::actionDataSource()
+{
+	return ActionData;
 }

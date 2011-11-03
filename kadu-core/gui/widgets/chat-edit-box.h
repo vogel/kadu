@@ -30,6 +30,7 @@
 #include "exports.h"
 
 class Action;
+class BaseActionDataSource;
 class ChatWidget;
 class CustomInput;
 
@@ -41,10 +42,14 @@ class KADUAPI ChatEditBox : public MainWindow, public ConfigurationAwareObject
 	CustomInput *InputBox;
 	QColor CurrentColor;
 
+	BaseActionDataSource *ActionData;
+
 	void setColorFromCurrentText(bool force);
 
 private slots:
 	void configurationUpdated();
+
+	void updateActionData();
 
 	void fontChanged(QFont font);
 	void colorSelectorActionCreated(Action *action);
@@ -61,11 +66,6 @@ public:
 
 	virtual bool supportsActionType(ActionDescription::ActionType type);
 	virtual BuddiesListView * buddiesListView();
-	virtual StatusContainer * statusContainer();
-	virtual ContactSet contacts();
-	virtual BuddySet buddies();
-	virtual Chat chat() { return CurrentChat; }
-	virtual bool hasContactSelected() { return false; } // we cannot select one contact, we can only select buddies
 
 	ChatWidget * chatWidget();
 
@@ -74,6 +74,15 @@ public:
 	void openInsertImageDialog();
 
 	void setAutoSend(bool autoSend);
+
+	virtual StatusContainer * statusContainer();
+	virtual ContactSet contacts();
+	virtual BuddySet buddies();
+	virtual Chat chat();
+	virtual bool hasContactSelected();
+
+	// ActionDataSourceProvider implementation
+	ActionDataSource * actionDataSource();
 
 public slots:
 	void addEmoticon(const QString &emoticon);
