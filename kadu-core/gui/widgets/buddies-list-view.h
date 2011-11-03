@@ -78,6 +78,10 @@ class BuddiesListView : public KaduTreeView, public ActionDataSourceProvider
 
 	bool ContextMenuEnabled;
 
+	ContactSet selectedContacts() const;
+	BuddySet selectedBuddies() const;
+	Chat currentChat() const;
+
 private slots:
 	void doubleClickedSlot(const QModelIndex &index);
 
@@ -124,14 +128,6 @@ public:
 	void useConfigurationColors(bool use);
 
 	void selectBuddy(Buddy buddy);
-
-	Contact currentContact() const;
-	ContactSet selectedContacts() const;
-
-	Buddy currentBuddy() const;
-	BuddySet selectedBuddies() const;
-
-	Chat currentChat() const;
 
 	BuddiesListViewDelegateConfiguration & delegateConfiguration();
 

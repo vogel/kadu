@@ -135,11 +135,6 @@ void BuddiesListView::selectBuddy(Buddy buddy)
 	setCurrentIndex(ProxyModel->indexForValue(buddy));
 }
 
-Contact BuddiesListView::currentContact() const
-{
-	return contactAt(currentIndex());
-}
-
 ContactSet BuddiesListView::selectedContacts() const
 {
 	ContactSet result;
@@ -153,11 +148,6 @@ ContactSet BuddiesListView::selectedContacts() const
 	}
 
 	return result;
-}
-
-Buddy BuddiesListView::currentBuddy() const
-{
-	return buddyAt(currentIndex());
 }
 
 BuddySet BuddiesListView::selectedBuddies() const
@@ -295,7 +285,7 @@ Chat BuddiesListView::currentChat() const
 	if (!account)
 		return ChatManager::instance()->findChat(buddies, true);
 	else
-	    return ChatManager::instance()->findChat(contacts, true);
+		return ChatManager::instance()->findChat(contacts, true);
 }
 
 void BuddiesListView::triggerActivate(const QModelIndex& index)

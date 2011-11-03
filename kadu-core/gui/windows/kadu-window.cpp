@@ -499,21 +499,21 @@ StatusContainer * KaduWindow::statusContainer()
 ContactSet KaduWindow::contacts()
 {
 	return ContactsWidget
-			? ContactsWidget->view()->selectedContacts()
+			? ContactsWidget->view()->actionDataSource()->contacts()
 			: ContactSet();
 }
 
 BuddySet KaduWindow::buddies()
 {
 	return ContactsWidget
-			? ContactsWidget->view()->selectedBuddies()
+			? ContactsWidget->view()->actionDataSource()->buddies()
 			: BuddySet();
 }
 
 Chat KaduWindow::chat()
 {
 	return ContactsWidget
-			? ContactsWidget->view()->currentChat()
+			? ContactsWidget->view()->actionDataSource()->chat()
 			: Chat::null;
 }
 
