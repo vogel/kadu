@@ -5,6 +5,7 @@ set (gui_SRCS
 	actions/action.cpp
 	actions/actions.cpp
 	actions/action-description.cpp
+	actions/base-action-data-source.cpp
 	actions/change-status-action.cpp
 	actions/default-proxy-action.cpp
 
