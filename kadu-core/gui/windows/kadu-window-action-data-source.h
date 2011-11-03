@@ -24,6 +24,8 @@
 
 class KaduWindowActionDataSource : public ActionDataSource
 {
+	Q_OBJECT
+
 	ActionDataSource *ForwardActionDataSource;
 
 public:

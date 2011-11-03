@@ -103,6 +103,9 @@ void BuddiesListView::setModel(QAbstractItemModel *model)
 	QTreeView::setModel(ProxyModel);
 
 	ProxyModel->addFilter(HideUnloadedFilter);
+
+	connect(selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
+	        this, SLOT(updateActionData()));
 }
 
 void BuddiesListView::addFilter(AbstractBuddyFilter *filter)
@@ -406,6 +409,8 @@ void BuddiesListView::currentChanged(const QModelIndex &current, const QModelInd
 
 void BuddiesListView::updateActionData()
 {
+	ActionData->blockChangedSignal();
+
 	ActionData->setBuddies(selectedBuddies());
 	ActionData->setContacts(selectedContacts());
 	ActionData->setChat(currentChat());
@@ -425,19 +430,13 @@ void BuddiesListView::updateActionData()
 		ActionData->setStatusContainer(currentChat().chatAccount().statusContainer());
 	else
 		ActionData->setStatusContainer(StatusContainerManager::instance());
+
+	ActionData->unblockChangedSignal();
 }
 
 ActionDataSource * BuddiesListView::actionDataSource()
 {
 	return ActionData;
-}
-
-void BuddiesListView::selectionChanged(const QItemSelection &selected, const QItemSelection &deselected)
-{
-	updateActionData();
-
-	QTreeView::selectionChanged(selected, deselected);
-	emit buddySelectionChanged();
 }
 
 void BuddiesListView::doubleClickedSlot(const QModelIndex &index)

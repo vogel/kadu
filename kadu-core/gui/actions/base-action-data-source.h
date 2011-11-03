@@ -28,15 +28,25 @@
 
 class BaseActionDataSource : public ActionDataSource
 {
+	Q_OBJECT
+
+	bool ChangedSignalBlocked;
+	bool Changed;
+
 	ContactSet Contacts;
 	BuddySet Buddies;
 	Chat CurrentChat;
 	StatusContainer *CurrentStatusContainer;
 	bool HasContactSelected;
 
+	void dataUpdated();
+
 public:
 	BaseActionDataSource();
 	virtual ~BaseActionDataSource();
+
+	void blockChangedSignal();
+	void unblockChangedSignal();
 
 	virtual ContactSet contacts();
 	void setContacts(const ContactSet &contacts);

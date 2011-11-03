@@ -54,6 +54,7 @@ Action::Action(ActionDescription *description, ActionDataSource *dataSource, QOb
 	connect(this, SIGNAL(hovered()), this, SLOT(hoveredSlot()));
 	connect(this, SIGNAL(triggered(bool)), this, SLOT(triggeredSlot(bool)));
 
+	connect(dataSource, SIGNAL(changed()), this, SLOT(checkState()));
 	checkState();
 }
 

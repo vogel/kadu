@@ -816,9 +816,12 @@ void HistoryWindow::keyPressEvent(QKeyEvent *e)
 void HistoryWindow::updateActionsData()
 {
 	ContactSet contacts = selectedContacts();
+
+	ActionData->blockChangedSignal();
 	ActionData->setContacts(contacts);
 	ActionData->setBuddies(contacts.toBuddySet());
 	ActionData->setChat(selectedChat());
+	ActionData->unblockChangedSignal();
 }
 
 ContactSet HistoryWindow::selectedContacts() const

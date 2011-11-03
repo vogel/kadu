@@ -149,7 +149,9 @@ set (gui_MOC_SRCS
 
 	actions/action.h
 	actions/actions.h
+	actions/action-data-source.h
 	actions/action-description.h
+	actions/base-action-data-source.h
 	actions/change-status-action.h
 	actions/default-proxy-action.h
 
@@ -259,6 +261,7 @@ set (gui_MOC_SRCS
 	windows/file-transfer-window.h
 	windows/group-properties-window.h
 	windows/kadu-window.h
+	windows/kadu-window-action-data-source.h
 	windows/kadu-window-actions.h
 	windows/main-configuration-window.h
 	windows/main-window.h

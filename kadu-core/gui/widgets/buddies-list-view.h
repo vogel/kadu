@@ -108,7 +108,6 @@ protected:
 
 protected slots:
 	virtual void currentChanged(const QModelIndex &current, const QModelIndex &previous);
-	virtual void selectionChanged( const QItemSelection &selected, const QItemSelection &deselected);
 
 public:
 	static bool shouldEventGoToFilter(QKeyEvent *event);
@@ -142,7 +141,6 @@ signals:
 	void chatActivated(Chat chat);
 	void buddyActivated(Buddy buddy);
 
-	void buddySelectionChanged();
 	void currentChanged(BuddyOrContact buddyOrContact);
 
 };

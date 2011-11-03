@@ -65,11 +65,14 @@ ChatEditBox::ChatEditBox(const Chat &chat, QWidget *parent) :
 	chatEditBoxes.append(this);
 
 	ActionData = static_cast<BaseActionDataSource *>(actionDataSource());
+
+	ActionData->blockChangedSignal();
 	ActionData->setChat(CurrentChat);
 	ActionData->setContacts(CurrentChat.contacts());
 	ActionData->setBuddies(CurrentChat.contacts().toBuddySet());
 	ActionData->setHasContactSelected(false);
 	updateActionData();
+	ActionData->unblockChangedSignal();
 
 	connect(MainConfigurationHolder::instance(), SIGNAL(setStatusModeChanged()), this, SLOT(updateActionData()));
 

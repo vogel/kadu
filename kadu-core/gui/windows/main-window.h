@@ -49,8 +49,6 @@ class KADUAPI MainWindow : public QMainWindow, public ActionDataSourceProvider, 
 {
 	Q_OBJECT
 
-	friend class Actions;
-
 	QString WindowName;
 	bool TransparencyEnabled;
 
@@ -105,7 +103,6 @@ public:
 	Contact contact();
 	Buddy buddy();
 
-	void actionAdded(Action *action);
 	bool hasAction(const QString &actionName, ToolBar *exclude = 0);
 
 	// ActionDataSourceProvider implementation

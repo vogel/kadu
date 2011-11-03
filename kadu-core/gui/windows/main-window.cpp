@@ -382,12 +382,6 @@ void MainWindow::addRightToolbar()
 	toolbarUpdated();
 }
 
-void MainWindow::actionAdded(Action *action)
-{
-	if (buddiesListView())
-		connect(buddiesListView(), SIGNAL(buddySelectionChanged()), action, SLOT(checkState()));
-}
-
 bool MainWindow::hasAction(const QString &actionName, ToolBar *exclude)
 {
 	foreach (QObject *object, children())

@@ -20,6 +20,8 @@
 #ifndef ACTION_DATA_SOURCE_H
 #define ACTION_DATA_SOURCE_H
 
+#include <QtCore/QObject>
+
 class BuddySet;
 class Chat;
 class ContactSet;
@@ -43,8 +45,10 @@ class StatusContainer;
  * Data for each ActionDataSource may be different depending on current state of window - like selection
  * of items in buddies list view, or may be constant - like list of buddies in classic chat window.
  */
-class ActionDataSource
+class ActionDataSource : public QObject
 {
+	Q_OBJECT
+
 public:
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -81,6 +85,9 @@ public:
 	// for now this is a hack for "delete buddy" action
 	// i don't know real solution, but this is ok now
 	virtual bool hasContactSelected() = 0;
+
+signals:
+	void changed();
 
 };
 

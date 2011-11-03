@@ -20,12 +20,35 @@
 #include "base-action-data-source.h"
 
 BaseActionDataSource::BaseActionDataSource() :
+		ChangedSignalBlocked(false), Changed(false),
 		CurrentStatusContainer(0), HasContactSelected(false)
 {
 }
 
 BaseActionDataSource::~BaseActionDataSource()
 {
+}
+
+void BaseActionDataSource::blockChangedSignal()
+{
+	ChangedSignalBlocked = true;
+}
+
+void BaseActionDataSource::unblockChangedSignal()
+{
+	if (Changed)
+		emit changed();
+
+	ChangedSignalBlocked = false;
+	Changed = false;
+}
+
+void BaseActionDataSource::dataUpdated()
+{
+	if (ChangedSignalBlocked)
+		Changed = true;
+	else
+		emit changed();
 }
 
 ContactSet BaseActionDataSource::contacts()
@@ -35,7 +58,11 @@ ContactSet BaseActionDataSource::contacts()
 
 void BaseActionDataSource::setContacts(const ContactSet &contacts)
 {
-	Contacts = contacts;
+	if (Contacts != contacts)
+	{
+		Contacts = contacts;
+		dataUpdated();
+	}
 }
 
 BuddySet BaseActionDataSource::buddies()
@@ -45,7 +72,11 @@ BuddySet BaseActionDataSource::buddies()
 
 void BaseActionDataSource::setBuddies(const BuddySet &buddies)
 {
-	Buddies = buddies;
+	if (Buddies != buddies)
+	{
+		Buddies = buddies;
+		dataUpdated();
+	}
 }
 
 Chat BaseActionDataSource::chat()
@@ -55,7 +86,11 @@ Chat BaseActionDataSource::chat()
 
 void BaseActionDataSource::setChat(const Chat &chat)
 {
-	CurrentChat = chat;
+	if (CurrentChat != chat)
+	{
+		CurrentChat = chat;
+		dataUpdated();
+	}
 }
 
 StatusContainer * BaseActionDataSource::statusContainer()
@@ -65,7 +100,11 @@ StatusContainer * BaseActionDataSource::statusContainer()
 
 void BaseActionDataSource::setStatusContainer(StatusContainer *statusContainer)
 {
-	CurrentStatusContainer = statusContainer;
+	if (CurrentStatusContainer != statusContainer)
+	{
+		CurrentStatusContainer = statusContainer;
+		dataUpdated();
+	}
 }
 
 bool BaseActionDataSource::hasContactSelected()
@@ -75,5 +114,9 @@ bool BaseActionDataSource::hasContactSelected()
 
 void BaseActionDataSource::setHasContactSelected(bool hasContactSelected)
 {
-	HasContactSelected = hasContactSelected;
+	if (HasContactSelected != hasContactSelected)
+	{
+		HasContactSelected = hasContactSelected;
+		dataUpdated();
+	}
 }

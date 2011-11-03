@@ -35,7 +35,15 @@ KaduWindowActionDataSource::~KaduWindowActionDataSource()
 
 void KaduWindowActionDataSource::setForwardActionDataSource(ActionDataSource *forwardActionDataSource)
 {
+	if (ForwardActionDataSource)
+		disconnect(ForwardActionDataSource, SIGNAL(changed()), this, SIGNAL(changed()));
+
 	ForwardActionDataSource = forwardActionDataSource;
+
+	if (ForwardActionDataSource)
+		connect(ForwardActionDataSource, SIGNAL(changed()), this, SIGNAL(changed()));
+
+	emit changed();
 }
 
 ContactSet KaduWindowActionDataSource::contacts()
