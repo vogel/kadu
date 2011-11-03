@@ -37,11 +37,7 @@
     </message>
 </context>
 <context>
-    <name>EncryptionActions</name>
-    <message>
-        <source>Encrypt</source>
-        <translation>Zašifrovat</translation>
-    </message>
+    <name>SendPublicKeyActionDescription</name>
     <message>
         <source>Send My Public Key</source>
         <translation>Poslat můj veřejný klíč</translation>
@@ -49,6 +45,13 @@
     <message>
         <source>No public key available</source>
         <translation>Žádný veřejný klíč není dostupný</translation>
+    </message>
+</context>
+<context>
+    <name>EncryptionActions</name>
+    <message>
+        <source>Encrypt</source>
+        <translation>Zašifrovat</translation>
     </message>
     <message>
         <source>Generate Encryption Keys</source>

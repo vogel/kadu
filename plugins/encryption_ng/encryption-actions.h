@@ -38,7 +38,6 @@ class EncryptionActions : public QObject, AccountsAwareObject
 	static EncryptionActions *Instance;
 
 	ActionDescription *EnableEncryptionActionDescription;
-	ActionDescription *SendPublicKeyActionDescription;
 	ActionDescription *GenerateKeysActionDescription;
 	QMenu *GenerateKeysMenu;
 
@@ -46,7 +45,6 @@ class EncryptionActions : public QObject, AccountsAwareObject
 	virtual ~EncryptionActions();
 
 	void updateGenerateKeysMenu();
-	void sendPublicKey(const Contact &contact);
 
 private slots:
 	void canEncryptChanged(const Chat &chat);
@@ -55,7 +53,6 @@ private slots:
 
 	void generateKeysActionActivated(QAction *action);
 	void enableEncryptionActionActivated(QAction *sender, bool toggled);
-	void sendPublicKeyActionActivated(QAction *sender, bool toggled);
 
 protected:
 	virtual void accountRegistered(Account account);

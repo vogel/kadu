@@ -37,6 +37,17 @@
     </message>
 </context>
 <context>
+    <name>SendPublicKeyActionDescription</name>
+    <message>
+        <source>Send My Public Key</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No public key available</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>EncryptionActions</name>
     <message>
         <source>Generate Encryption Keys</source>
@@ -44,10 +55,6 @@
     </message>
     <message>
         <source>Encrypt</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Send My Public Key</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -68,10 +75,6 @@
     </message>
     <message>
         <source>Error generating keys</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>No public key available</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

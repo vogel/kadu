@@ -37,14 +37,21 @@
     </message>
 </context>
 <context>
+    <name>SendPublicKeyActionDescription</name>
+    <message>
+        <source>Send My Public Key</source>
+        <translation>Wyślij mój klucz publiczny</translation>
+    </message>
+    <message>
+        <source>No public key available</source>
+        <translation>Brak klucza publicznego</translation>
+    </message>
+</context>
+<context>
     <name>EncryptionActions</name>
     <message>
         <source>Encrypt</source>
         <translation>Szyfruj</translation>
-    </message>
-    <message>
-        <source>Send My Public Key</source>
-        <translation>Wyślij mój klucz publiczny</translation>
     </message>
     <message>
         <source>Encryption</source>
@@ -65,10 +72,6 @@
     <message>
         <source>Error generating keys</source>
         <translation>Błąd generowania kluczy</translation>
-    </message>
-    <message>
-        <source>No public key available</source>
-        <translation>Brak klucza publicznego</translation>
     </message>
     <message>
         <source>Generate Encryption Keys</source>

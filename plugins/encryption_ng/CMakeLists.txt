@@ -19,6 +19,8 @@ kadu_api_directories (plugins/encryption_ng
 )
 
 set (SOURCES
+	actions/send-public-key-action-description.cpp
+
 	configuration/encryption-ng-configuration.cpp
 
 	keys/keys-manager.cpp
@@ -39,6 +41,8 @@ set (SOURCES
 )
 
 set (MOC_SOURCES
+	actions/send-public-key-action-description.h
+
 	keys/keys-manager.h
 	keys/key-shared.h
 

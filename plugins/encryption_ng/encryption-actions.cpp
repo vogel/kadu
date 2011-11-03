@@ -23,23 +23,17 @@
 
 #include "accounts/account-manager.h"
 #include "chat/chat.h"
-#include "chat/chat-manager.h"
-#include "contacts/contact.h"
-#include "contacts/contact-set.h"
 #include "core/core.h"
 #include "gui/actions/action.h"
 #include "gui/actions/action-description.h"
-#include "gui/widgets/buddies-list-view-menu-manager.h"
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-dialog.h"
 #include "identities/identity.h"
-#include "protocols/services/chat-service.h"
 #include "protocols/protocol.h"
 
+#include "actions/send-public-key-action-description.h"
 #include "keys/key.h"
-#include "keys/keys-manager.h"
-#include "notify/encryption-ng-notification.h"
 #include "encryption-manager.h"
 #include "encryption-provider-manager.h"
 #include "key-generator.h"
@@ -56,31 +50,6 @@ static void checkCanEncrypt(Action *action)
 	}
 
 	action->setEnabled(EncryptionProviderManager::instance()->canEncrypt(chat));
-}
-
-static void checkSendKey(Action *action)
-{
-	action->setEnabled(false);
-
-	ContactSet contacts = action->contacts();
-	if (contacts.isEmpty())
-		return;
-
-	if (action->buddies().contains(Core::instance()->myself()))
-		return;
-
-	foreach (const Contact &contact, contacts)
-	{
-		Contact accountContact = contact.contactAccount().accountContact();
-		// TODO: this should depend on submodule and not be hardcoded
-		// TODO 0.10:
-		Key key = KeysManager::instance()->byContactAndType(accountContact, "simlite", ActionReturnNull);
-		if (key)
-		{
-			action->setEnabled(true);
-			return;
-		}
-	}
 }
 
 EncryptionActions * EncryptionActions::Instance = 0;
@@ -118,21 +87,13 @@ EncryptionActions::EncryptionActions()
 			true, checkCanEncrypt
 	);
 
-	SendPublicKeyActionDescription = new ActionDescription(this,
-		ActionDescription::TypeUser, "sendPublicKeyAction",
-		this, SLOT(sendPublicKeyActionActivated(QAction *, bool)),
-		KaduIcon("security-high"), tr("Send My Public Key"),
-		false, checkSendKey
-	);
-	BuddiesListViewMenuManager::instance()->addListActionDescription(SendPublicKeyActionDescription,
-			BuddiesListViewMenuItem::MenuCategoryManagement, 20);
+	new SendPublicKeyActionDescription(this);
 
 	connect(EncryptionProviderManager::instance(), SIGNAL(canEncryptChanged(Chat)), this, SLOT(canEncryptChanged(Chat)));
 }
 
 EncryptionActions::~EncryptionActions()
 {
-	BuddiesListViewMenuManager::instance()->removeListActionDescription(SendPublicKeyActionDescription);
 	Core::instance()->kaduWindow()->removeMenuActionDescription(GenerateKeysActionDescription);
 
 	disconnect(EncryptionProviderManager::instance(), SIGNAL(canEncryptChanged(Chat)), this, SLOT(canEncryptChanged(Chat)));
@@ -197,18 +158,6 @@ void EncryptionActions::enableEncryptionActionActivated(QAction *sender, bool to
 	}
 }
 
-void EncryptionActions::sendPublicKeyActionActivated(QAction *sender, bool toggled)
-{
-	Q_UNUSED(toggled)
-
-	Action *action = qobject_cast<Action *>(sender);
-	if (!action)
-		return;
-
-	foreach (const Contact &contact, action->contacts())
-		sendPublicKey(contact);
-}
-
 void EncryptionActions::accountRegistered(Account account)
 {
 	Q_UNUSED(account)
@@ -238,33 +187,6 @@ void EncryptionActions::updateGenerateKeysMenu()
 	bool enable = !GenerateKeysMenu->actions().isEmpty();
 	foreach (Action *action, GenerateKeysActionDescription->actions())
 		action->setEnabled(enable);
-}
-
-void EncryptionActions::sendPublicKey(const Contact &contact)
-{
-	Account account = contact.contactAccount();
-	Protocol *protocol = account.protocolHandler();
-	if (!protocol)
-		return;
-
-	ChatService *chatService = protocol->chatService();
-	if (!chatService)
-		return;
-
-	Key key = KeysManager::instance()->byContactAndType(account.accountContact(), "simlite", ActionReturnNull);
-	if (!key)
-	{
-		EncryptionNgNotification::notifyPublicKeySendError(contact, tr("No public key available"));
-		return;
-	}
-
-	ContactSet contacts;
-	contacts.insert(contact);
-
-	Chat chat = ChatManager::instance()->findChat(contacts, true);
-	chatService->sendMessage(chat, QString::fromUtf8(key.key().data()), true);
-
-	EncryptionNgNotification::notifyPublicKeySent(contact);
 }
 
 void EncryptionActions::checkEnableEncryption(const Chat &chat, bool check)
