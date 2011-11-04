@@ -256,8 +256,8 @@ void AddBuddyWindow::createGui()
 	connect(MergeBuddy, SIGNAL(toggled(bool)), DisplayNameEdit, SLOT(setDisabled(bool)));
 	connect(MergeBuddy, SIGNAL(toggled(bool)), AllowToSeeMeCheck, SLOT(setDisabled(bool)));
 	connect(MergeBuddy, SIGNAL(toggled(bool)), this, SLOT(setAddContactEnabled()));
-	connect(SelectBuddy, SIGNAL(buddyChanged(Buddy)), this, SLOT(setAddContactEnabled()));
-	connect(SelectBuddy, SIGNAL(buddyChanged(Buddy)), this, SLOT(setAccountFilter()));
+	connect(SelectBuddy, SIGNAL(currentIndexChanged(int)), this, SLOT(setAddContactEnabled()));
+	connect(SelectBuddy, SIGNAL(currentIndexChanged(int)), this, SLOT(setAccountFilter()));
 
 	setAddContactEnabled();
 	setAccountFilter();

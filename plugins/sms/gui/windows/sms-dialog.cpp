@@ -100,7 +100,7 @@ void SmsDialog::createGui()
 	mobileFilter->setEnabled(true);
 	RecipientComboBox->addFilter(mobileFilter);
 
-	connect(RecipientComboBox, SIGNAL(buddyChanged(Buddy)), this, SLOT(recipientBuddyChanged(Buddy)));
+	connect(RecipientComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(recipientBuddyChanged()));
 	recipientLayout->addWidget(RecipientComboBox);
 
 	formLayout->addRow(tr("Recipient") + ':', recipientWidget);
@@ -173,9 +173,9 @@ void SmsDialog::setRecipient(const QString &phone)
 	kdebugf2();
 }
 
-void SmsDialog::recipientBuddyChanged(Buddy buddy)
+void SmsDialog::recipientBuddyChanged()
 {
-	RecipientEdit->setText(buddy.mobile());
+	RecipientEdit->setText(RecipientComboBox->currentBuddy().mobile());
 }
 
 void SmsDialog::recipientNumberChanged(const QString &number)

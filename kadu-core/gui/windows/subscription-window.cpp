@@ -102,9 +102,6 @@ SubscriptionWindow::SubscriptionWindow(Contact contact, QWidget *parent) :
 
 	connect(MergeContact, SIGNAL(toggled(bool)), SelectContact, SLOT(setEnabled(bool)));
 	connect(MergeContact, SIGNAL(toggled(bool)), VisibleName, SLOT(setDisabled(bool)));
-	connect(MergeContact, SIGNAL(toggled(bool)), this, SLOT(setAddContactEnabled()));
-	connect(SelectContact, SIGNAL(buddyChanged(Buddy)), this, SLOT(setAddContactEnabled()));
-	connect(SelectContact, SIGNAL(buddyChanged(Buddy)), this, SLOT(setAccountFilter()));
 
 	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
 

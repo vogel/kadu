@@ -40,7 +40,7 @@ class MergeBuddiesWindow : public QDialog, DesktopAwareObject
 	void createGui();
 
 private slots:
-	void selectedBuddyChanged(Buddy);
+	void selectedBuddyChanged();
 
 protected slots:
 	virtual void accept();

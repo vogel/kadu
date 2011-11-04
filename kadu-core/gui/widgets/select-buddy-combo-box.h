@@ -39,7 +39,6 @@ class KADUAPI SelectBuddyComboBox : public ActionsComboBox
 	BuddiesModelProxy *ProxyModel;
 
 protected:
-	virtual void valueChanged(const QVariant &value, const QVariant &previousValue);
 	virtual bool compare(const QVariant &left, const QVariant &right) const;
 
 	virtual void showPopup();
@@ -56,9 +55,6 @@ public:
 
 public slots:
 	void setCurrentBuddy(Buddy buddy);
-
-signals:
-	void buddyChanged(Buddy buddy);
 
 };
 

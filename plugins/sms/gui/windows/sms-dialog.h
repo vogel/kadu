@@ -53,7 +53,7 @@ class SmsDialog : public QWidget, ConfigurationAwareObject
 	void createGui();
 
 private slots:
-    void recipientBuddyChanged(Buddy buddy);
+    void recipientBuddyChanged();
 	void recipientNumberChanged(const QString &number);
 
 	void editReturnPressed();

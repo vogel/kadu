@@ -65,7 +65,7 @@ void MergeBuddiesWindow::createGui()
 	NonBuddyFilter *filter = new NonBuddyFilter(SelectCombo);
 	filter->setBuddy(MyBuddy);
 	SelectCombo->addFilter(filter);
-	connect(SelectCombo, SIGNAL(buddyChanged(Buddy)), this, SLOT(selectedBuddyChanged(Buddy)));
+	connect(SelectCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(selectedBuddyChanged()));
 	chooseLayout->addWidget(SelectCombo);
 
 	layout->addStretch(100);
@@ -84,9 +84,9 @@ void MergeBuddiesWindow::createGui()
 	buttons->addButton(cancel, QDialogButtonBox::DestructiveRole);
 }
 
-void MergeBuddiesWindow::selectedBuddyChanged(Buddy buddy)
+void MergeBuddiesWindow::selectedBuddyChanged()
 {
-	MergeButton->setEnabled(!buddy.isNull());
+	MergeButton->setEnabled(!SelectCombo->currentBuddy().isNull());
 }
 
 void MergeBuddiesWindow::accept()

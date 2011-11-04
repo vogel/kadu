@@ -71,13 +71,6 @@ Buddy SelectBuddyComboBox::currentBuddy()
 	return currentValue().value<Buddy>();
 }
 
-void SelectBuddyComboBox::valueChanged(const QVariant &value, const QVariant &previousValue)
-{
-	Q_UNUSED(previousValue)
-
-	emit buddyChanged(value.value<Buddy>());
-}
-
 bool SelectBuddyComboBox::compare(const QVariant &left, const QVariant &right) const
 {
 	return left.value<Buddy>() == right.value<Buddy>();
