@@ -83,13 +83,6 @@ void IdentitiesComboBox::createNewIdentity()
 		setCurrentIdentity(newIdentity);
 }
 
-void IdentitiesComboBox::valueChanged(const QVariant &value, const QVariant &previousValue)
-{
-	Q_UNUSED(previousValue)
-
-	emit identityChanged(value.value<Identity>());
-}
-
 bool IdentitiesComboBox::compare(const QVariant &left, const QVariant &right) const
 {
 	return left.value<Identity>() == right.value<Identity>();

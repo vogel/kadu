@@ -89,7 +89,7 @@ void GaduCreateAccountWidget::createGui(bool showButtons)
 	layout->addRow(tr("E-Mail Address") + ':', EMail);
 
 	IdentityCombo = new IdentitiesComboBox(true, this);
-	connect(IdentityCombo, SIGNAL(identityChanged(Identity)), this, SLOT(dataChanged()));
+	connect(IdentityCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(dataChanged()));
 	layout->addRow(tr("Account Identity") + ':', IdentityCombo);
 
 	QLabel *infoLabel = new QLabel(tr("<font size='-1'><i>Select or enter the identity that will be associated with this account.</i></font>"), this);

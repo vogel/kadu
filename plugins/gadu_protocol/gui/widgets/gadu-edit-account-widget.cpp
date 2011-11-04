@@ -143,7 +143,7 @@ void GaduEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
 	connect(changePasswordLabel, SIGNAL(linkActivated(QString)), this, SLOT(changePasssword()));
 
 	Identities = new IdentitiesComboBox(false, this);
-	connect(Identities, SIGNAL(identityChanged(Identity)), this, SLOT(dataChanged()));
+	connect(Identities, SIGNAL(currentIndexChanged(int)), this, SLOT(dataChanged()));
 	formLayout->addRow(tr("Account Identity") + ':', Identities);
 
 	QLabel *infoLabel = new QLabel(tr("<font size='-1'><i>Select or enter the identity that will be associated with this account.</i></font>"), this);

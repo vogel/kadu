@@ -38,7 +38,6 @@ private slots:
 	void createNewIdentity();
 
 protected:
-	virtual void valueChanged(const QVariant &value, const QVariant &previousValue);
 	virtual bool compare(const QVariant &left, const QVariant &right) const;
 
 public:
@@ -47,9 +46,6 @@ public:
 
 	void setCurrentIdentity(Identity identity);
 	Identity currentIdentity();
-
-signals:
-	void identityChanged(Identity identity);
 
 };
 

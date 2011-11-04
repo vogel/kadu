@@ -62,7 +62,7 @@ void ImportProfileWindow::createGui()
 
 	SelectIdentity = new IdentitiesComboBox(this);
 	layout->addRow(new QLabel(tr("Select imported account identity:")), SelectIdentity);
-	connect(SelectIdentity, SIGNAL(identityChanged(Identity)), this, SLOT(validate()));
+	connect(SelectIdentity, SIGNAL(currentIndexChanged(int)), this, SLOT(validate()));
 
 	ImportHistory = new QCheckBox(tr("Import history"), this);
 	ImportHistory->setChecked(true);
