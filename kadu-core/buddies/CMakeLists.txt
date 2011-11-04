@@ -28,7 +28,6 @@ set (buddies_SRCS
 	filter/online-and-description-buddy-filter.cpp
 	filter/pending-messages-filter.cpp
 
-	model/abstract-buddies-model.cpp
 	model/buddy-data-extractor.cpp
 	model/buddy-list-model.cpp
 	model/buddies-model.cpp

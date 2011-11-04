@@ -24,16 +24,16 @@
 
 #include <QtGui/QSortFilterProxyModel>
 
-#include "abstract-buddies-model.h"
+#include "model/kadu-abstract-model.h"
 
 class AbstractBuddyFilter;
 class AbstractContactFilter;
 
-class BuddiesModelProxy : public QSortFilterProxyModel, public AbstractBuddiesModel
+class BuddiesModelProxy : public QSortFilterProxyModel, public KaduAbstractModel
 {
 	Q_OBJECT
 
-	AbstractBuddiesModel *SourceBuddyModel;
+	KaduAbstractModel *SourceModel;
 	QList<AbstractBuddyFilter *> BuddyFilters;
 	QList<AbstractContactFilter *> ContactFilters;
 
@@ -45,9 +45,6 @@ private slots:
 	void modelDestroyed();
 
 protected:
-	// AbstractBuddiesModel implementation
-	virtual Buddy buddyAt(const QModelIndex &index) const;
-
 	virtual bool lessThan(const QModelIndex &left, const QModelIndex &right) const;
 	virtual bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
 
@@ -65,7 +62,7 @@ public:
 
 	void setSortByStatus(bool sortByStatus);
 
-	// AbstractBuddiesModel implementation
+	// KaduAbstractModel implementation
 	virtual QModelIndex indexForValue(const QVariant &value) const;
 
 };

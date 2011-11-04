@@ -37,7 +37,7 @@
 #include "buddies-model-proxy.h"
 
 BuddiesModelProxy::BuddiesModelProxy(QObject *parent)
-	: QSortFilterProxyModel(parent), SourceBuddyModel(0), SortByStatus(true)
+	: QSortFilterProxyModel(parent), SourceModel(0), SortByStatus(true)
 {
 	setDynamicSortFilter(true);
 	sort(0);
@@ -59,11 +59,11 @@ BuddiesModelProxy::~BuddiesModelProxy()
 
 void BuddiesModelProxy::setSourceModel(QAbstractItemModel *sourceModel)
 {
-	QAbstractItemModel *oldModel = dynamic_cast<QAbstractItemModel *>(SourceBuddyModel);
+	QAbstractItemModel *oldModel = dynamic_cast<QAbstractItemModel *>(SourceModel);
 	if (oldModel)
 		disconnect(oldModel, SIGNAL(destroyed()), this, SLOT(modelDestroyed()));
 
-	SourceBuddyModel = dynamic_cast<AbstractBuddiesModel *>(sourceModel);
+	SourceModel = dynamic_cast<KaduAbstractModel *>(sourceModel);
 	QSortFilterProxyModel::setSourceModel(sourceModel);
 
 	if (sourceModel)
@@ -88,13 +88,13 @@ void BuddiesModelProxy::setSortByStatus(bool sortByStatus)
 
 void BuddiesModelProxy::modelDestroyed()
 {
-	SourceBuddyModel = 0;
+	SourceModel = 0;
 	QSortFilterProxyModel::setSourceModel(0);
 }
 
 bool BuddiesModelProxy::lessThan(const QModelIndex &left, const QModelIndex &right) const
 {
-	if (!SourceBuddyModel)
+	if (!SourceModel)
 		return QSortFilterProxyModel::lessThan(left, right);
 
 	Buddy leftBuddy = left.data(BuddyRole).value<Buddy>();
@@ -209,15 +209,10 @@ void BuddiesModelProxy::removeFilter(AbstractContactFilter *filter)
 	disconnect(filter, SIGNAL(filterChanged()), this, SLOT(invalidate()));
 }
 
-Buddy BuddiesModelProxy::buddyAt(const QModelIndex &index) const
-{
-	return mapToSource(index).data(BuddyRole).value<Buddy>();
-}
-
 QModelIndex BuddiesModelProxy::indexForValue(const QVariant &value) const
 {
-	if (!SourceBuddyModel)
+	if (!SourceModel)
 		return QModelIndex();
 
-	return mapFromSource(SourceBuddyModel->indexForValue(value));
+	return mapFromSource(SourceModel->indexForValue(value));
 }

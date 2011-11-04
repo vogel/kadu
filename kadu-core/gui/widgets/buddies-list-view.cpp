@@ -93,10 +93,6 @@ BuddiesListView::~BuddiesListView()
 
 void BuddiesListView::setModel(QAbstractItemModel *model)
 {
-	AbstractBuddiesModel *buddiesModel = dynamic_cast<AbstractBuddiesModel *>(model);
-	if (!buddiesModel)
-		return;
-
 	ProxyModel->setSourceModel(model);
 
 	Delegate->setModel(ProxyModel);

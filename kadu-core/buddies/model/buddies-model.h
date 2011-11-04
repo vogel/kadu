@@ -56,7 +56,7 @@ private slots:
 
 protected:
 	// AbstractContactsModel implementation
-	virtual Buddy buddyAt(const QModelIndex &index) const;
+	virtual Buddy buddyAt(int index) const;
 
 public:
 	explicit BuddiesModel(QObject *parent = 0);

@@ -28,17 +28,15 @@
 #include "accounts/account.h"
 #include "accounts/accounts-aware-object.h"
 #include "buddies/buddy.h"
+#include "model/kadu-abstract-model.h"
 #include "status/status.h"
-
-#include "abstract-buddies-model.h"
 
 class QModelIndex;
 
-class BuddiesModelBase : public QAbstractItemModel, public AbstractBuddiesModel, public AccountsAwareObject
+class BuddiesModelBase : public QAbstractItemModel, public KaduAbstractModel, public AccountsAwareObject
 {
 	Q_OBJECT
 
-	Contact buddyDefaultContact(const QModelIndex &index) const;
 	Contact buddyContact(const QModelIndex &index, int accountIndex) const;
 
 private slots:
@@ -47,6 +45,8 @@ private slots:
 protected:
 	virtual void accountRegistered(Account account);
 	virtual void accountUnregistered(Account account);
+
+	virtual Buddy buddyAt(int index) const = 0;
 
 public:
 	explicit BuddiesModelBase(QObject *parent = 0);

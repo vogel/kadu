@@ -41,7 +41,6 @@ class QContextMenuEvent;
 class QModelIndex;
 
 class AbstractBuddyFilter;
-class AbstractBuddiesModel;
 class BaseActionDataSource;
 class Buddy;
 class BuddySet;

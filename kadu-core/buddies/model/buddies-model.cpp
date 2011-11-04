@@ -106,15 +106,12 @@ int BuddiesModel::rowCount(const QModelIndex &parent) const
 	return BuddyManager::instance()->count() + (IncludeMyself ? 1 : 0);
 }
 
-Buddy BuddiesModel::buddyAt(const QModelIndex &index) const
+Buddy BuddiesModel::buddyAt(int index) const
 {
-	QModelIndex parent = index.parent();
-	int row = parent.isValid() ? parent.row() : index.row();
-
-	if (IncludeMyself && (row == BuddyManager::instance()->count()))
+	if (IncludeMyself && (index == BuddyManager::instance()->count()))
 		return Core::instance()->myself();
 	else
-		return BuddyManager::instance()->byIndex(row);
+		return BuddyManager::instance()->byIndex(index);
 }
 
 QModelIndex BuddiesModel::indexForValue(const QVariant &value) const
@@ -167,7 +164,7 @@ void BuddiesModel::buddyRemoved(Buddy &buddy)
 void BuddiesModel::myselfBuddyUpdated()
 {
 	if (IncludeMyself)
-	{ 
+	{
 		Buddy myself = Core::instance()->myself();
 		buddyUpdated(myself);
 	}

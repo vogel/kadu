@@ -41,7 +41,7 @@ class BuddyListModel : public BuddiesModelBase
 
 protected:
 	// AbstractContactsModel implementation
-	virtual Buddy buddyAt(const QModelIndex& index) const;
+	virtual Buddy buddyAt(int index) const;
 
 public:
 	explicit BuddyListModel(const BuddyList &list, QObject *parent = 0);

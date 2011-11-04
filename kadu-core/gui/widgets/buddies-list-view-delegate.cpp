@@ -31,10 +31,10 @@
 #include "avatars/avatar.h"
 #include "avatars/avatar-manager.h"
 #include "buddies/buddy-preferred-manager.h"
-#include "buddies/model/abstract-buddies-model.h"
 #include "chat/message/pending-messages-manager.h"
 #include "contacts/contact-manager.h"
 #include "gui/widgets/buddies-list-view-item-painter.h"
+#include "model/kadu-abstract-model.h"
 
 #include "buddies-list-view-delegate.h"
 
@@ -57,7 +57,7 @@ BuddiesListViewDelegate::~BuddiesListViewDelegate()
 	disconnect(PendingMessagesManager::instance(), SIGNAL(messageRemoved(Message)), this, SLOT(messageStatusChanged(Message)));
 }
 
-void BuddiesListViewDelegate::setModel(AbstractBuddiesModel *model)
+void BuddiesListViewDelegate::setModel(KaduAbstractModel *model)
 {
 	Model = model;
 	QAbstractItemModel *itemModel = dynamic_cast<QAbstractItemModel *>(Model);
