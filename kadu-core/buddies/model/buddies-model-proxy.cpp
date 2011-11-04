@@ -28,6 +28,7 @@
 #include "chat/message/pending-messages-manager.h"
 #include "contacts/filter/abstract-contact-filter.h"
 #include "contacts/contact.h"
+#include "model/roles.h"
 #include "status/status.h"
 #include "status/status-type.h"
 
@@ -96,8 +97,8 @@ bool BuddiesModelProxy::lessThan(const QModelIndex &left, const QModelIndex &rig
 	if (!SourceBuddyModel)
 		return QSortFilterProxyModel::lessThan(left, right);
 
-	Buddy leftBuddy = SourceBuddyModel->buddyAt(left);
-	Buddy rightBuddy = SourceBuddyModel->buddyAt(right);
+	Buddy leftBuddy = left.data(BuddyRole).value<Buddy>();
+	Buddy rightBuddy = right.data(BuddyRole).value<Buddy>();
 
 	if (leftBuddy.contacts().isEmpty() && !rightBuddy.contacts().isEmpty())
 		return false;
@@ -152,14 +153,14 @@ bool BuddiesModelProxy::filterAcceptsRow(int sourceRow, const QModelIndex &sourc
 {
 	if (sourceParent.isValid())
 	{
-		Contact contact = SourceBuddyModel->contactAt(sourceModel()->index(sourceRow, 0, sourceParent));
+		Contact contact = sourceModel()->index(sourceRow, 0, sourceParent).data(ContactRole).value<Contact>();
 		foreach (AbstractContactFilter *filter, ContactFilters)
 			if (!filter->acceptContact(contact))
 				return false;
 	}
 	else
 	{
-		Buddy buddy = SourceBuddyModel->buddyAt(sourceModel()->index(sourceRow, 0, sourceParent));
+		Buddy buddy = sourceModel()->index(sourceRow, 0, sourceParent).data(BuddyRole).value<Buddy>();
 		foreach (AbstractBuddyFilter *filter, BuddyFilters)
 			if (!filter->acceptBuddy(buddy))
 				return false;
@@ -210,10 +211,7 @@ void BuddiesModelProxy::removeFilter(AbstractContactFilter *filter)
 
 Buddy BuddiesModelProxy::buddyAt(const QModelIndex &index) const
 {
-	if (!SourceBuddyModel)
-		return Buddy::null;
-
-	return SourceBuddyModel->buddyAt(mapToSource(index));
+	return mapToSource(index).data(BuddyRole).value<Buddy>();
 }
 
 QModelIndex BuddiesModelProxy::indexForValue(const QVariant &value) const

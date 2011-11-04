@@ -39,6 +39,10 @@ class BuddyListModel : public BuddiesModelBase
 
 	BuddyList List;
 
+protected:
+	// AbstractContactsModel implementation
+	virtual Buddy buddyAt(const QModelIndex& index) const;
+
 public:
 	explicit BuddyListModel(const BuddyList &list, QObject *parent = 0);
 	virtual ~BuddyListModel();
@@ -46,7 +50,6 @@ public:
 	virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
 
 	// AbstractContactsModel implementation
-	virtual Buddy buddyAt(const QModelIndex& index) const;
 	virtual QModelIndex indexForValue(const QVariant &value) const;
 
 };

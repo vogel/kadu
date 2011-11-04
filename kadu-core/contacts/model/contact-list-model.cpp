@@ -61,7 +61,7 @@ QVariant ContactListModel::data(const QModelIndex &index, int role) const
 
 Contact ContactListModel::contactAt(const QModelIndex &index) const
 {
-    int row = index.row();
+	int row = index.row();
 	if (row < 0 || row >= List.size())
 		return Contact::null;
 

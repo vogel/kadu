@@ -32,7 +32,7 @@ class Contact;
 
 class AbstractBuddiesModel : public KaduAbstractModel
 {
-public:
+protected:
 	virtual Buddy buddyAt(const QModelIndex &index) const;
 	virtual Contact contactAt(const QModelIndex &index) const;
 

@@ -45,6 +45,9 @@ private slots:
 	void modelDestroyed();
 
 protected:
+	// AbstractBuddiesModel implementation
+	virtual Buddy buddyAt(const QModelIndex &index) const;
+
 	virtual bool lessThan(const QModelIndex &left, const QModelIndex &right) const;
 	virtual bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
 
@@ -63,7 +66,6 @@ public:
 	void setSortByStatus(bool sortByStatus);
 
 	// AbstractBuddiesModel implementation
-	virtual Buddy buddyAt(const QModelIndex &index) const;
 	virtual QModelIndex indexForValue(const QVariant &value) const;
 
 };

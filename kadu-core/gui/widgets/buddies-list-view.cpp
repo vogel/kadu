@@ -183,20 +183,12 @@ BuddyOrContact BuddiesListView::buddyOrContactAt(const QModelIndex &index) const
 
 Buddy BuddiesListView::buddyAt(const QModelIndex &index) const
 {
-	const AbstractBuddiesModel *model = dynamic_cast<const AbstractBuddiesModel *>(index.model());
-	if (!model)
-		return Buddy::null;
-
-	return model->buddyAt(index);
+	return index.data(BuddyRole).value<Buddy>();
 }
 
 Contact BuddiesListView::contactAt(const QModelIndex &index) const
 {
-	const AbstractBuddiesModel *model = dynamic_cast<const AbstractBuddiesModel *>(index.model());
-	if (!model)
-		return Contact::null;
-
-	return model->contactAt(index);
+	return index.data(ContactRole).value<Contact>();
 }
 
 Chat BuddiesListView::chatForIndex(const QModelIndex &index) const

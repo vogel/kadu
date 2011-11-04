@@ -35,6 +35,10 @@ class ContactListModel : public QAbstractItemModel, public AbstractBuddiesModel
 
 	QVector<Contact> List;
 
+protected:
+	// AbstractContactsModel implementation
+	virtual Contact contactAt(const QModelIndex &index) const;
+
 public:
 	explicit ContactListModel(const QVector<Contact> &list, QObject *parent = 0);
 	virtual ~ContactListModel();
@@ -48,7 +52,6 @@ public:
 	virtual QVariant data(const QModelIndex &index, int role) const;
 
 	// AbstractContactsModel implementation
-    virtual Contact contactAt(const QModelIndex &index) const;
 	virtual QModelIndex indexForValue(const QVariant &value) const;
 
 };
