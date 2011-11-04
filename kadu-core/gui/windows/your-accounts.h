@@ -78,6 +78,7 @@ class KADUAPI YourAccounts : public QWidget, AccountsAwareObject, DesktopAwareOb
 	bool ForceWidgetChange;
 
 	ProtocolsComboBox *Protocols;
+	ProtocolFactory *LastProtocol;
 	QWidget *CreateAddAccountContainer;
 
 	QMap<ProtocolFactory *, AccountCreateWidget *> CreateWidgets;
@@ -106,7 +107,7 @@ class KADUAPI YourAccounts : public QWidget, AccountsAwareObject, DesktopAwareOb
 	bool canChangeWidget();
 
 private slots:
-	void protocolChanged(ProtocolFactory *protocolFactory, ProtocolFactory *lastProtocolFactory);
+	void protocolChanged();
 
 	void accountCreated(Account account);
 	void accountSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected);

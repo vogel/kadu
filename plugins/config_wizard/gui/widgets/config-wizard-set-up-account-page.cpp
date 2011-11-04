@@ -103,10 +103,6 @@ bool ConfigWizardSetUpAccountPage::validatePage()
 	return AccountSuccessfullyCreated;
 }
 
-void ConfigWizardSetUpAccountPage::acceptPage()
-{
-}
-
 void ConfigWizardSetUpAccountPage::accountCreated(Account account)
 {
 	if (!account)

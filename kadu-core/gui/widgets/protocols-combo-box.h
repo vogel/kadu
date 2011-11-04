@@ -39,7 +39,6 @@ class KADUAPI ProtocolsComboBox : public ActionsComboBox
 	ProtocolsModelProxy *ProxyModel;
 
 protected:
-	virtual void valueChanged(const QVariant &value, const QVariant &previousValue);
 	virtual bool compare(const QVariant &left, const QVariant &right) const;
 
 public:
@@ -51,9 +50,6 @@ public:
 
 	void addFilter(AbstractProtocolFilter *filter);
 	void removeFilter(AbstractProtocolFilter *filter);
-
-signals:
-	void protocolChanged(ProtocolFactory *protocol = 0, ProtocolFactory *lastProtocol = 0);
 
 };
 

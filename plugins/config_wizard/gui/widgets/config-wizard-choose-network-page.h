@@ -31,6 +31,7 @@ class ConfigWizardChooseNetworkPage : public ConfigWizardPage
 {
 	Q_OBJECT
 
+	ProtocolFactory *LastProtocol;
 	ProtocolsComboBox *SelectProtocol;
 
 	QRadioButton *SetUpExisting;
@@ -40,14 +41,11 @@ class ConfigWizardChooseNetworkPage : public ConfigWizardPage
 	void createGui();
 
 public slots:
-	void protocolChanged(ProtocolFactory *protocol, ProtocolFactory *lastProtocol);
+	void protocolChanged();
 
 public:
 	explicit ConfigWizardChooseNetworkPage(QWidget *parent = 0);
 	virtual ~ConfigWizardChooseNetworkPage();
-
-    virtual void initializePage();
-	virtual void acceptPage();
 
 };
 

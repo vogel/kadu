@@ -57,12 +57,6 @@ ProtocolFactory * ProtocolsComboBox::currentProtocol()
 	return currentValue().value<ProtocolFactory *>();
 }
 
-void ProtocolsComboBox::valueChanged(const QVariant &value, const QVariant &previousValue)
-{
-	emit protocolChanged(value.value<ProtocolFactory *>(),
-	                     previousValue.value<ProtocolFactory *>());
-}
-
 bool ProtocolsComboBox::compare(const QVariant &left, const QVariant &right) const
 {
 	return left.value<ProtocolFactory *>() == right.value<ProtocolFactory *>();

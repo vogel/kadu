@@ -67,7 +67,7 @@ YourAccounts *YourAccounts::Instance = 0;
 
 YourAccounts::YourAccounts(QWidget *parent) :
 		QWidget(parent), DesktopAwareObject(this), CurrentWidget(0), IsCurrentWidgetEditAccount(false),
-		ForceWidgetChange(false), CanRegisterFilter(new CanRegisterProtocolFilter())
+		ForceWidgetChange(false), LastProtocol(0), CanRegisterFilter(new CanRegisterProtocolFilter())
 {
 	setWindowRole("kadu-your-accounts");
 
@@ -219,8 +219,8 @@ void YourAccounts::createAccountWidget()
 
 	newAccountLayout->addWidget(MainAccountGroupBox, Qt::AlignTop);
 
-	connect(Protocols, SIGNAL(protocolChanged(ProtocolFactory*, ProtocolFactory*)),
-			this, SLOT(protocolChanged(ProtocolFactory*, ProtocolFactory*)));
+	connect(Protocols, SIGNAL(currentIndexChanged(int)),
+			this, SLOT(protocolChanged()));
 
 	switchToCreateMode();
 }
@@ -291,18 +291,18 @@ AccountEditWidget * YourAccounts::getAccountEditWidget(Account account)
 	return editWidget;
 }
 
-void YourAccounts::protocolChanged(ProtocolFactory *protocolFactory, ProtocolFactory *lastProtocolFactory)
+void YourAccounts::protocolChanged()
 {
-	Q_UNUSED(protocolFactory)
-
-	if (canChangeWidget())
-		updateCurrentWidget();
-	else
+	if (!canChangeWidget())
 	{
 		ForceWidgetChange = true;
-		Protocols->setCurrentProtocol(lastProtocolFactory);
+		Protocols->setCurrentProtocol(LastProtocol);
 		ForceWidgetChange = false;
+		return;
 	}
+
+	updateCurrentWidget();
+	LastProtocol = Protocols->currentProtocol();
 }
 
 void YourAccounts::updateCurrentWidget()

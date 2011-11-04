@@ -49,8 +49,6 @@ public:
 	virtual void cleanupPage();
 	virtual bool validatePage();
 
-	virtual void acceptPage();
-
 };
 
 #endif // CONFIG_WIZARD_SET_UP_ACCOUNT_PAGE_H
