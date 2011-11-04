@@ -167,6 +167,11 @@ void YourAccounts::switchToCreateMode()
 	MainAccountLabel->setText(tr("<font size='+2'><b>Create New Account</b></font>"));
 	MainAccountGroupBox->setTitle(tr("Create New Account"));
 #endif
+
+	QWidget *widget = getAccountCreateWidget(Protocols->currentProtocol());
+	CreateAddStack->setCurrentWidget(widget);
+	CurrentWidget = qobject_cast<ModalConfigurationWidget *>(widget);
+
 	Protocols->addFilter(CanRegisterFilter);
 }
 
@@ -176,6 +181,11 @@ void YourAccounts::switchToAddMode()
 	MainAccountLabel->setText(tr("<font size='+2'><b>Add Existing Account</b></font>"));
 	MainAccountGroupBox->setTitle(tr("Setup an Existing Account"));
 #endif
+
+	QWidget *widget = getAccountAddWidget(Protocols->currentProtocol());
+	CreateAddStack->setCurrentWidget(widget);
+	CurrentWidget = qobject_cast<ModalConfigurationWidget *>(widget);
+
 	Protocols->removeFilter(CanRegisterFilter);
 }
 
@@ -307,8 +317,6 @@ void YourAccounts::protocolChanged()
 
 void YourAccounts::updateCurrentWidget()
 {
-	QWidget *widget = 0;
-
 	QModelIndexList selection = AccountsView->selectionModel()->selectedIndexes();
 	if (1 != selection.size())
 		return;
@@ -332,21 +340,9 @@ void YourAccounts::updateCurrentWidget()
 
 	MainStack->setCurrentWidget(CreateAddAccountContainer);
 	if (action == CreateNewAccountAction)
-	{
-		widget = getAccountCreateWidget(Protocols->currentProtocol());
 		switchToCreateMode();
-	}
 	else if (action == AddExistingAccountAction)
-	{
-		widget = getAccountAddWidget(Protocols->currentProtocol());
 		switchToAddMode();
-	}
-
-	CreateAddStack->setVisible(0 != widget);
-	if (widget)
-		CreateAddStack->setCurrentWidget(widget);
-
-	CurrentWidget = qobject_cast<ModalConfigurationWidget *>(widget);
 }
 
 bool YourAccounts::canChangeWidget()
