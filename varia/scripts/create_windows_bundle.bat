@@ -118,7 +118,6 @@ xcopy %QT_DIR%\QtCore%QT_DEBUG_SUFFIX%4.dll        %DESTINATION%\ /C /H /R /Y /Q
 xcopy %QT_DIR%\QtGui%QT_DEBUG_SUFFIX%4.dll         %DESTINATION%\ /C /H /R /Y /Q
 xcopy %QT_DIR%\QtNetwork%QT_DEBUG_SUFFIX%4.dll     %DESTINATION%\ /C /H /R /Y /Q
 xcopy %QT_DIR%\QtScript%QT_DEBUG_SUFFIX%4.dll      %DESTINATION%\ /C /H /R /Y /Q
-xcopy %QT_DIR%\QtScriptTools%QT_DEBUG_SUFFIX%4.dll %DESTINATION%\ /C /H /R /Y /Q
 xcopy %QT_DIR%\QtSql%QT_DEBUG_SUFFIX%4.dll         %DESTINATION%\ /C /H /R /Y /Q
 xcopy %QT_DIR%\QtSvg%QT_DEBUG_SUFFIX%4.dll         %DESTINATION%\ /C /H /R /Y /Q
 xcopy %QT_DIR%\QtWebKit%QT_DEBUG_SUFFIX%4.dll      %DESTINATION%\ /C /H /R /Y /Q

@@ -168,7 +168,7 @@ function update_bindings {
 	install_name_tool -change ${QTDIR}/lib/QtGui.framework/Versions/4/QtGui                 @executable_path/../Frameworks/QtGui                     ${BIN}
 	install_name_tool -change ${QTDIR}/lib/QtNetwork.framework/Versions/4/QtNetwork         @executable_path/../Frameworks/QtNetwork                 ${BIN}
 	install_name_tool -change ${QTDIR}/lib/QtScript.framework/Versions/4/QtScript           @executable_path/../Frameworks/QtScript                  ${BIN}
-	install_name_tool -change ${QTDIR}/lib/QtScriptTools.framework/Versions/4/QtScriptTools @executable_path/../Frameworks/QtScriptTools             ${BIN}
+#	install_name_tool -change ${QTDIR}/lib/QtScriptTools.framework/Versions/4/QtScriptTools @executable_path/../Frameworks/QtScriptTools             ${BIN}
 	install_name_tool -change ${QTDIR}/lib/QtSql.framework/Versions/4/QtSql                 @executable_path/../Frameworks/QtSql                     ${BIN}
 	install_name_tool -change ${QTDIR}/lib/QtSvg.framework/Versions/4/QtSvg                 @executable_path/../Frameworks/QtSvg                     ${BIN}
 	install_name_tool -change ${QTDIR}/lib/QtWebKit.framework/Versions/4/QtWebKit           @executable_path/../Frameworks/QtWebKit                  ${BIN}
@@ -194,7 +194,7 @@ copy_framework QtXml
 copy_framework QtSql
 copy_framework QtSvg
 copy_framework QtScript
-copy_framework QtScriptTools
+#copy_framework QtScriptTools
 copy_framework QtNetwork
 copy_framework QtCore
 #copy_framework QtDBus

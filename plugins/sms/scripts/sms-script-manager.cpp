@@ -20,17 +20,19 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#define SMS_USE_DEBUGGER 0
+
 #include <QtCore/QDir>
 #include <QtCore/QFile>
 #include <QtCore/QFileInfo>
 #include <QtCore/QTextStream>
 #include <QtGui/QMainWindow>
 #include <QtScript/QScriptEngine>
-#ifndef Q_OS_MAC
+#if SMS_USE_DEBUGGER
 #include <QtScriptTools/QScriptEngineDebugger>
 #endif
-#include "misc/path-conversion.h"
 
+#include "misc/path-conversion.h"
 #include "gui/windows/sms-token-reader.h"
 #include "scripts/network-access-manager-wrapper.h"
 
@@ -74,9 +76,11 @@ SmsScriptsManager::~SmsScriptsManager()
 
 void SmsScriptsManager::init()
 {
-// 	QScriptEngineDebugger* debuger = new QScriptEngineDebugger(this);
-// 	debuger->attachTo(Engine);
-// 	debuger->standardWindow()->show();
+#if SMS_USE_DEBUGGER
+ 	QScriptEngineDebugger *debugger = new QScriptEngineDebugger(this);
+ 	debugger->attachTo(Engine);
+ 	debugger->standardWindow()->show();
+#endif
 
 	QString scriptPath = profilePath("plugins/data/sms/scripts/gateway.js");
 	if (QFile::exists(scriptPath))
