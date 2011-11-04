@@ -36,7 +36,6 @@ class AccountsComboBox : public ActionsComboBox
 	AccountsProxyModel *ProxyModel;
 
 protected:
-	virtual void valueChanged(const QVariant &value, const QVariant &previousValue);
 	virtual bool compare(const QVariant &left, const QVariant &right) const;
 
 public:
@@ -51,9 +50,6 @@ public:
 
 	void addFilter(AbstractAccountFilter *filter);
 	void removeFilter(AbstractAccountFilter *filter);
-
-signals:
-	void accountChanged(Account account, Account lastAccount = Account::null);
 
 };
 

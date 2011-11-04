@@ -91,7 +91,7 @@ void MultilogonWindow::createGui()
 	selectAccountLayout->addWidget(Accounts);
 	selectAccountLayout->addStretch(1);
 
-	connect(Accounts, SIGNAL(accountChanged(Account)), this, SLOT(accountChanged()));
+	connect(Accounts, SIGNAL(currentIndexChanged(int)), this, SLOT(accountChanged()));
 
 	layout->addWidget(selectAccountWidget);
 
@@ -153,9 +153,7 @@ MultilogonSession * MultilogonWindow::multilogonSession()
 
 void MultilogonWindow::accountChanged()
 {
-	QAbstractItemModel *model = SessionsTable->model();
-	if (model)
-		delete model;
+	delete SessionsTable->model();
 
 	MultilogonService *service = multilogonService();
 	if (!service)

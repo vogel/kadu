@@ -62,11 +62,6 @@ void AccountsComboBox::setIncludeIdInDisplay(bool includeIdInDisplay)
 	Model->setIncludeIdInDisplay(includeIdInDisplay);
 }
 
-void AccountsComboBox::valueChanged(const QVariant &value, const QVariant &previousValue)
-{
-	emit accountChanged(value.value<Account>(), previousValue.value<Account>());
-}
-
 bool AccountsComboBox::compare(const QVariant &left, const QVariant &right) const
 {
 	return left.value<Account>() == right.value<Account>();

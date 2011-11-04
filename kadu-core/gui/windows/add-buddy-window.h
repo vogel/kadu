@@ -52,6 +52,7 @@ class AddBuddyWindow : public QDialog, DesktopAwareObject
 	QLineEdit *UserNameEdit;
 	QAction *MobileAccountAction; // TODO: hack
 	QAction *EmailAccountAction; // TODO: hack
+	Account LastSelectedAccount;
 	AccountsComboBox *AccountCombo;
 	IdValidityFilter *AccountComboIdFilter;
 	GroupsComboBox *GroupCombo;
@@ -94,7 +95,7 @@ class AddBuddyWindow : public QDialog, DesktopAwareObject
 #endif
 
 private slots:
-	void accountChanged(Account account, Account lastAccount);
+	void accountChanged();
 	void updateGui();
 	void setAddContactEnabled();
 	void setAccountFilter();

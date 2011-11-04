@@ -249,7 +249,7 @@ void AddBuddyWindow::createGui()
 	setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 #endif
 
-	connect(AccountCombo, SIGNAL(accountChanged(Account, Account)), this, SLOT(accountChanged(Account, Account)));
+	connect(AccountCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(accountChanged()));
 	connect(AccountCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(updateGui()));
 	connect(AccountCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(setAddContactEnabled()));
 	connect(MergeBuddy, SIGNAL(toggled(bool)), SelectBuddy, SLOT(setEnabled(bool)));
@@ -261,7 +261,7 @@ void AddBuddyWindow::createGui()
 
 	setAddContactEnabled();
 	setAccountFilter();
-	accountChanged(MyAccount, Account::null);
+	accountChanged();
 	updateGui();
 }
 
@@ -294,12 +294,14 @@ bool AddBuddyWindow::isEmailAccount()
 	return (EmailAccountAction && AccountCombo->currentAction() == EmailAccountAction);
 }
 
-void AddBuddyWindow::accountChanged(Account account, Account lastAccount)
+void AddBuddyWindow::accountChanged()
 {
-	if (lastAccount && lastAccount.protocolHandler())
+	Account account = AccountCombo->currentAccount();
+
+	if (LastSelectedAccount && LastSelectedAccount.protocolHandler())
 	{
-		disconnect(lastAccount.protocolHandler(), SIGNAL(connected(Account)), this, SLOT(setAddContactEnabled()));
-		disconnect(lastAccount.protocolHandler(), SIGNAL(disconnected(Account)), this, SLOT(setAddContactEnabled()));
+		disconnect(LastSelectedAccount.protocolHandler(), SIGNAL(connected(Account)), this, SLOT(setAddContactEnabled()));
+		disconnect(LastSelectedAccount.protocolHandler(), SIGNAL(disconnected(Account)), this, SLOT(setAddContactEnabled()));
 	}
 
 	if (!account || !account.protocolHandler() || !account.protocolHandler()->rosterService())
@@ -315,6 +317,8 @@ void AddBuddyWindow::accountChanged(Account account, Account lastAccount)
 		AskForAuthorization->setEnabled(true);
 		AskForAuthorization->setChecked(true);
 	}
+
+	LastSelectedAccount = account;
 }
 
 void AddBuddyWindow::updateAccountGui()

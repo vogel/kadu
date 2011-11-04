@@ -46,7 +46,7 @@ QWidget * BuddyContactsTableDelegate::createEditor(QWidget *parent, const QStyle
 	                                                          ActionsProxyModel::NotVisibleWithOneRowSourceModel,
 	                                                          parent);
 	// this connect does not work withour Account
-	connect(accountsComboBox, SIGNAL(accountChanged(Account)), this, SLOT(dataChanged()));
+	connect(accountsComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(dataChanged()));
 
 	return accountsComboBox;
 }
