@@ -37,9 +37,6 @@ class GroupsComboBox : public ActionsComboBox
 private slots:
 	void createNewGroup();
 
-protected:
-	virtual bool compare(const QVariant &left, const QVariant &right) const;
-
 public:
 	explicit GroupsComboBox(QWidget *parent = 0);
 	virtual ~GroupsComboBox();

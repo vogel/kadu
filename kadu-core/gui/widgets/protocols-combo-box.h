@@ -38,9 +38,6 @@ class KADUAPI ProtocolsComboBox : public ActionsComboBox
 
 	ProtocolsModelProxy *ProxyModel;
 
-protected:
-	virtual bool compare(const QVariant &left, const QVariant &right) const;
-
 public:
 	explicit ProtocolsComboBox(QWidget *parent = 0);
 	virtual ~ProtocolsComboBox();

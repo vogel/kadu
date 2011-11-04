@@ -35,9 +35,6 @@ class AccountsComboBox : public ActionsComboBox
 	AccountsModel *Model;
 	AccountsProxyModel *ProxyModel;
 
-protected:
-	virtual bool compare(const QVariant &left, const QVariant &right) const;
-
 public:
 	explicit AccountsComboBox(bool includeSelectAccount, ActionsProxyModel::ActionVisibility visibility,
 	                          QWidget *parent = 0);

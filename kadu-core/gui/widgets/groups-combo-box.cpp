@@ -91,8 +91,3 @@ void GroupsComboBox::createNewGroup()
 	if (newGroup)
 		setCurrentGroup(newGroup);
 }
-
-bool GroupsComboBox::compare(const QVariant &left, const QVariant &right) const
-{
-	return left.value<Group>() == right.value<Group>();
-}

@@ -79,18 +79,6 @@ void ActionsComboBox::currentIndexChangedSlot(int index)
 
 	if (isActionSelectable(action))
 		LastIndex = index;
-
-	if (!compare(currentValue, lastValue))
-		valueChanged(currentValue, lastValue);
-}
-
-void ActionsComboBox::rowsRemoved(const QModelIndex &parent, int start, int end)
-{
-	if (parent != rootModelIndex())
-		return;
-
-	if ((LastIndex >= start) && (LastIndex <= end))
-		resetSelection();
 }
 
 void ActionsComboBox::setUpModel(int dataRole, ModelChain *modelChain)
@@ -100,9 +88,6 @@ void ActionsComboBox::setUpModel(int dataRole, ModelChain *modelChain)
 
 	Chain->addProxyModel(ActionsModel);
 	setModel(ActionsModel);
-
-	connect(ActionsModel, SIGNAL(rowsRemoved(const QModelIndex &, int, int)),
-			this, SLOT(rowsRemoved(const QModelIndex &, int, int)));
 }
 
 void ActionsComboBox::setCurrentValue(const QVariant &value)
@@ -114,12 +99,6 @@ void ActionsComboBox::setCurrentValue(const QVariant &value)
 QVariant ActionsComboBox::currentValue()
 {
 	return ActionsModel->index(currentIndex(), modelColumn()).data(DataRole);
-}
-
-void ActionsComboBox::valueChanged(const QVariant &value, const QVariant &previousValue)
-{
-	Q_UNUSED(value)
-	Q_UNUSED(previousValue)
 }
 
 void ActionsComboBox::addBeforeAction(QAction *action, ActionsProxyModel::ActionVisibility actionVisibility)
@@ -135,9 +114,4 @@ void ActionsComboBox::addAfterAction(QAction *action, ActionsProxyModel::ActionV
 QAction * ActionsComboBox::currentAction()
 {
 	return ActionsModel->index(currentIndex(), modelColumn()).data(ActionRole).value<QAction *>();
-}
-
-void ActionsComboBox::resetSelection()
-{
-	setCurrentIndex(0);
 }

@@ -40,15 +40,9 @@ class KADUAPI ProxyComboBox : public ActionsComboBox
 private slots:
 	void editProxy();
 
-protected:
-	virtual void valueChanged(const QVariant &value, const QVariant &previousValue);
-	virtual bool compare(const QVariant &left, const QVariant &right) const;
-
 public:
 	explicit ProxyComboBox(QWidget *parent = 0);
 	virtual ~ProxyComboBox();
-
-	virtual void resetSelection();
 
 	void enableDefaultProxyAction();
 	void selectDefaultProxy();
@@ -56,9 +50,6 @@ public:
 
 	void setCurrentProxy(const NetworkProxy &networkProxy);
 	NetworkProxy currentProxy();
-
-signals:
-	void proxyChanged(const NetworkProxy &networkProxy, const NetworkProxy &lastNetworkProxy = NetworkProxy::null);
 
 };
 

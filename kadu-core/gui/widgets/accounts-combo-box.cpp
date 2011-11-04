@@ -62,11 +62,6 @@ void AccountsComboBox::setIncludeIdInDisplay(bool includeIdInDisplay)
 	Model->setIncludeIdInDisplay(includeIdInDisplay);
 }
 
-bool AccountsComboBox::compare(const QVariant &left, const QVariant &right) const
-{
-	return left.value<Account>() == right.value<Account>();
-}
-
 void AccountsComboBox::addFilter(AbstractAccountFilter *filter)
 {
 	ProxyModel->addFilter(filter);

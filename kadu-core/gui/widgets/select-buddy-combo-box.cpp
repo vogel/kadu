@@ -71,11 +71,6 @@ Buddy SelectBuddyComboBox::currentBuddy()
 	return currentValue().value<Buddy>();
 }
 
-bool SelectBuddyComboBox::compare(const QVariant &left, const QVariant &right) const
-{
-	return left.value<Buddy>() == right.value<Buddy>();
-}
-
 void SelectBuddyComboBox::showPopup()
 {
 	QRect geom(mapToGlobal(rect().bottomLeft()), QSize(geometry().width(), Popup->height()));

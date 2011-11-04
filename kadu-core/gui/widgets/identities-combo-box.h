@@ -37,9 +37,6 @@ class KADUAPI IdentitiesComboBox : public ActionsComboBox
 private slots:
 	void createNewIdentity();
 
-protected:
-	virtual bool compare(const QVariant &left, const QVariant &right) const;
-
 public:
 	explicit IdentitiesComboBox(bool includeSelectIdentity, QWidget *parent = 0);
 	virtual ~IdentitiesComboBox();

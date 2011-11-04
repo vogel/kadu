@@ -88,21 +88,3 @@ void ProxyComboBox::editProxy()
 {
 	ProxyEditWindow::show();
 }
-
-void ProxyComboBox::valueChanged(const QVariant &value, const QVariant &previousValue)
-{
-	emit proxyChanged(value.value<NetworkProxy>(), previousValue.value<NetworkProxy>());
-}
-
-bool ProxyComboBox::compare(const QVariant &left, const QVariant &right) const
-{
-	return left.value<NetworkProxy>() == right.value<NetworkProxy>();
-}
-
-void ProxyComboBox::resetSelection()
-{
-	if (DefaultProxyAction)
-		setCurrentIndex(DEFAULT_PROXY_INDEX);
-	else
-		setCurrentIndex(0);
-}

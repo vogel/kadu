@@ -57,11 +57,6 @@ ProtocolFactory * ProtocolsComboBox::currentProtocol()
 	return currentValue().value<ProtocolFactory *>();
 }
 
-bool ProtocolsComboBox::compare(const QVariant &left, const QVariant &right) const
-{
-	return left.value<ProtocolFactory *>() == right.value<ProtocolFactory *>();
-}
-
 void ProtocolsComboBox::addFilter(AbstractProtocolFilter *filter)
 {
 	ProxyModel->addFilter(filter);

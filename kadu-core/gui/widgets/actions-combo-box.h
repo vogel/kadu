@@ -40,15 +40,14 @@ class ModelChain;
  * @see ActionsProxyModel
  *
  * This class is an extension to QComboBox that uses ActionsProxyModel as data source. This allows this widget
- * to have actions like "select", "create new" or "edit. Actions can be marked as unselectable. Unselectable action
- * can only be triggerred, selection is immediately restored to previous value item or selectable action. Two methods
- * are available to add actions: addBeforeAction (to add action at the begining of list) and addAfterAction (to add
+ * to have actions like "select", "create new" or "edit". Actions can be marked as unselectable. Unselectable action
+ * can only be triggered, selection is immediately restored to the previous value item or selectable action. Two methods
+ * are available for adding actions: addBeforeAction() (to add action at the begining of list) and addAfterAction() (to add
  * action at the end of list). Method currentAction() is available for getting currently selected action.
  *
  * Data is stored in model that derives from QAbstractItemModel and KaduAbstractModel classes. It is possible to
- * use proxy model derivered from QAbstractProxyModel. Data is stored as QVariant object with role passed in
- * protected setUpModel method. As QVariants cannot be compared directly, compare(QVariant, QVariant) abstract
- * method must be reimplemented in each derivered class.
+ * use proxy model derived from QAbstractProxyModel. Data is stored as QVariant object with role passed in
+ * protected setUpModel method.
  */
 class ActionsComboBox : public QComboBox
 {
@@ -81,24 +80,10 @@ private slots:
 	 * @short Method called after selected index has changed.
 	 * @param index new selected index index
 	 *
-	 * This slot is called when current selected is changed by user or from code. If new index doe not contains unselectable
-	 * action then this index is stored as safe selectable index. If this change in selection changed current selected
-	 * value (checked by compare(QVariant, QVariant) method) then valueChanged(QVariant, QVariant) abstract method is called.
+	 * This slot is called when current selected is changed by user or from code. If new index does not contain unselectable
+	 * action then this index is stored as safe selectable index.
 	 */
 	void currentIndexChangedSlot(int index);
-
-	/**
-	 * @author Bartosz 'beevvy' Brachaczek
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Method called after some rows were removed from model.
-	 * @param parent parent index of removed rows
-	 * @param start first removed row under parent
-	 * @param end last removed row under parent
-	 *
-	 * This slot is called after some rows were removed from model. If current index was in these rows
-	 * reset() virtual method is called to restore this widget to valid state.
-	 */
-	void rowsRemoved(const QModelIndex &parent, int start, int end);
 
 protected:
 	/**
@@ -132,28 +117,6 @@ protected:
 	 * Returns current value.
 	 */
 	QVariant currentValue();
-
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short This method is called every time selected value has changed.
-	 * @param value new selected value
-	 * @param previousValue previous selected value
-	 *
-	 * This method is called every time selected value has changed.
-	 */
-	virtual void valueChanged(const QVariant &value, const QVariant &previousValue);
-
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Compares two QVariant objects.
-	 * @param left value to compare
-	 * @param right value to compare
-	 * @return true if both values are equal
-	 *
-	 * As QVariants aren't comparable this method must be reimplemted in every derived class to allow comparison
-	 * of QVariants. This method return true when both values are equal.
-	 */
-	virtual bool compare(const QVariant &left, const QVariant &right) const = 0;
 
 public:
 	explicit ActionsComboBox(QWidget *parent = 0);
@@ -191,15 +154,6 @@ public:
 	 * Returns currently selected action.
 	 */
 	QAction * currentAction();
-
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Resets this combo box selection.
-	 *
-	 * Resets this combo box selection after currently selected item was removed from model. Default implementations
-	 * sets selection index to 0.
-	 */
-	virtual void resetSelection();
 
 };
 
