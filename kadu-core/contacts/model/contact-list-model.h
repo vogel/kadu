@@ -34,9 +34,6 @@ class ContactListModel : public QAbstractItemModel, public KaduAbstractModel
 
 	QVector<Contact> List;
 
-protected:
-	virtual Contact contactAt(const QModelIndex &index) const;
-
 public:
 	explicit ContactListModel(const QVector<Contact> &list, QObject *parent = 0);
 	virtual ~ContactListModel();

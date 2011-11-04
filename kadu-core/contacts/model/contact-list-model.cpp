@@ -56,16 +56,12 @@ QModelIndex ContactListModel::parent(const QModelIndex &child) const
 
 QVariant ContactListModel::data(const QModelIndex &index, int role) const
 {
-	return ContactDataExtractor::data(contactAt(index), role, true);
-}
-
-Contact ContactListModel::contactAt(const QModelIndex &index) const
-{
 	int row = index.row();
-	if (row < 0 || row >= List.size())
-		return Contact::null;
+	const Contact &contact = (row < 0 || row >= List.size())
+			? Contact::null
+			: List.at(row);
 
-	return List.at(row);
+	return ContactDataExtractor::data(contact, role, true);
 }
 
 QModelIndex ContactListModel::indexForValue(const QVariant &value) const
