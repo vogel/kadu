@@ -43,11 +43,6 @@ GenerateKeysActionDescription::GenerateKeysActionDescription(QObject *parent) :
 	setIcon(KaduIcon("security-high"));
 	setText(tr("Generate Encryption Keys"));
 
-	GenerateKeysMenu = new QMenu();
-	connect(GenerateKeysMenu, SIGNAL(triggered(QAction*)),
-			this, SLOT(menuActionTriggered(QAction*)));
-	updateGenerateKeysMenu();
-
 	registerAction();
 
 	connect(AccountManager::instance(), SIGNAL(accountRegistered(Account)),
@@ -60,33 +55,69 @@ GenerateKeysActionDescription::GenerateKeysActionDescription(QObject *parent) :
 
 GenerateKeysActionDescription::~GenerateKeysActionDescription()
 {
+	// actions will delete theirs menus
 	Core::instance()->kaduWindow()->removeMenuActionDescription(this);
-
-	// actions is owner of menu, no need to delete here
-	GenerateKeysMenu = 0;
 }
 
 void GenerateKeysActionDescription::actionInstanceCreated(Action *action)
 {
-	action->setMenu(GenerateKeysMenu);
-	action->setEnabled(!GenerateKeysMenu->isEmpty());
+	Q_UNUSED(action)
+
+	// It may look like it was suboptimal but in reality there will be
+	// only one action instance.
+	updateGenerateKeysMenu();
+}
+
+void GenerateKeysActionDescription::actionTriggered(QAction *sender, bool toggled)
+{
+	Q_UNUSED(toggled)
+
+	menuActionTriggered(sender);
 }
 
 void GenerateKeysActionDescription::updateGenerateKeysMenu()
 {
-	GenerateKeysMenu->clear();
-
-	foreach (const Account &account, AccountManager::instance()->items())
-		if (account.data() && account.details())
-		{
-			QAction *action = new QAction(QString("%1 (%2)").arg(account.accountIdentity().name()).arg(account.id()), GenerateKeysMenu);
-			action->setData(QVariant::fromValue(account));
-			GenerateKeysMenu->addAction(action);
-		}
-
-	bool enable = !GenerateKeysMenu->actions().isEmpty();
 	foreach (Action *action, actions())
-		action->setEnabled(enable);
+	{
+		QMenu *menu = action->menu();
+		if (AccountManager::instance()->items().count() < 2)
+		{
+			delete menu;
+			action->setMenu(0);
+
+			if (AccountManager::instance()->items().isEmpty())
+			{
+				action->setData(QVariant());
+				action->setEnabled(false);
+			}
+			else
+			{
+				action->setData(QVariant::fromValue(AccountManager::instance()->items().at(0)));
+				action->setEnabled(true);
+			}
+		}
+		else
+		{
+			if (menu)
+				menu->clear();
+			else
+			{
+				menu = new QMenu();
+				action->setMenu(menu);
+				connect(menu, SIGNAL(triggered(QAction*)),
+						this, SLOT(menuActionTriggered(QAction*)));
+			}
+
+			foreach (const Account &account, AccountManager::instance()->items())
+			{
+				QAction *menuAction = menu->addAction(QString("%1 (%2)").arg(account.accountIdentity().name(), account.id()));
+				menuAction->setData(QVariant::fromValue(account));
+			}
+
+			action->setData(QVariant());
+			action->setEnabled(true);
+		}
+	}
 }
 
 void GenerateKeysActionDescription::menuActionTriggered(QAction *action)

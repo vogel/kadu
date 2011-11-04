@@ -26,14 +26,13 @@ class GenerateKeysActionDescription : public ActionDescription
 {
 	Q_OBJECT
 
-	QMenu *GenerateKeysMenu;
-
 private slots:
 	void updateGenerateKeysMenu();
 	void menuActionTriggered(QAction *action);
 
 protected:
 	virtual void actionInstanceCreated(Action *action);
+	virtual void actionTriggered(QAction *sender, bool toggled);
 
 public:
 	explicit GenerateKeysActionDescription(QObject *parent);
