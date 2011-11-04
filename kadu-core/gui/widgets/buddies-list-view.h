@@ -106,9 +106,6 @@ protected:
 
 	virtual void hideEvent(QHideEvent *event);
 
-protected slots:
-	virtual void currentChanged(const QModelIndex &current, const QModelIndex &previous);
-
 public:
 	static bool shouldEventGoToFilter(QKeyEvent *event);
 
@@ -140,8 +137,6 @@ public:
 signals:
 	void chatActivated(Chat chat);
 	void buddyActivated(Buddy buddy);
-
-	void currentChanged(BuddyOrContact buddyOrContact);
 
 };
 

@@ -392,21 +392,6 @@ void BuddiesListView::mouseMoveEvent(QMouseEvent *event)
 	toolTipRestart(event->pos());
 }
 
-void BuddiesListView::currentChanged(const QModelIndex &current, const QModelIndex &previous)
-{
-	QTreeView::currentChanged(current, previous);
-
-	if (!current.isValid())
-	{
-		emit currentChanged(BuddyOrContact());
-		return;
-	}
-
-	BuddyOrContact buddyOrContact = buddyOrContactAt(current);
-	if (BuddyOrContact::ItemNone != buddyOrContact.type())
-		emit currentChanged(buddyOrContact);
-}
-
 void BuddiesListView::updateActionData()
 {
 	ActionData->blockChangedSignal();
