@@ -38,11 +38,6 @@ ShowXmlConsoleActionDescription::ShowXmlConsoleActionDescription(QObject *parent
 	setName("showXmlConsole");
 	setText(tr("Show XML Console"));
 
-	ShowXmlConsoleMenu = new QMenu();
-	updateShowXmlConsoleMenu();
-	connect(ShowXmlConsoleMenu, SIGNAL(triggered(QAction*)),
-			this, SLOT(menuActionTriggered(QAction*)));
-
 	registerAction();
 
 	connect(AccountManager::instance(), SIGNAL(accountRegistered(Account)),
@@ -57,10 +52,8 @@ ShowXmlConsoleActionDescription::ShowXmlConsoleActionDescription(QObject *parent
 
 ShowXmlConsoleActionDescription::~ShowXmlConsoleActionDescription()
 {
+	// actions will delete their menus
 	Core::instance()->kaduWindow()->removeMenuActionDescription(this);
-
-	// action is owner of this object
-	ShowXmlConsoleMenu = 0;
 }
 
 void ShowXmlConsoleActionDescription::insertMenuActionDescription()
@@ -70,25 +63,65 @@ void ShowXmlConsoleActionDescription::insertMenuActionDescription()
 
 void ShowXmlConsoleActionDescription::actionInstanceCreated(Action *action)
 {
-	action->setMenu(ShowXmlConsoleMenu);
-	action->setVisible(!ShowXmlConsoleMenu->actions().isEmpty());
+	Q_UNUSED(action)
+
+	// It may look like it was suboptimal but in reality there will be
+	// only one action instance.
+	updateShowXmlConsoleMenu();
+}
+
+void ShowXmlConsoleActionDescription::actionTriggered(QAction *sender, bool toggled)
+{
+	Q_UNUSED(toggled)
+
+	menuActionTriggered(sender);
 }
 
 void ShowXmlConsoleActionDescription::updateShowXmlConsoleMenu()
 {
-	ShowXmlConsoleMenu->clear();
+	QVector<Account> jabberAccounts = AccountManager::instance()->byProtocolName("jabber");
 
-	foreach (const Account &account, AccountManager::instance()->items())
-		if (account.protocolName() == QLatin1String("jabber"))
-		{
-			QAction *action = new QAction(QString("%1 (%2)").arg(account.accountIdentity().name(), account.id()), ShowXmlConsoleMenu);
-			action->setData(QVariant::fromValue(account));
-			ShowXmlConsoleMenu->addAction(action);
-		}
-
-	bool enable = !ShowXmlConsoleMenu->actions().isEmpty();
 	foreach (Action *action, actions())
-		action->setVisible(enable);
+	{
+		QMenu *menu = action->menu();
+		if (jabberAccounts.isEmpty() || 1 == AccountManager::instance()->items().count())
+		{
+			delete menu;
+			action->setMenu(0);
+
+			if (jabberAccounts.isEmpty())
+			{
+				action->setData(QVariant());
+				action->setVisible(false);
+			}
+			else
+			{
+				action->setData(QVariant::fromValue(jabberAccounts.at(0)));
+				action->setVisible(true);
+			}
+		}
+		else
+		{
+			if (menu)
+				menu->clear();
+			else
+			{
+				menu = new QMenu();
+				action->setMenu(menu);
+				connect(menu, SIGNAL(triggered(QAction*)),
+						this, SLOT(menuActionTriggered(QAction*)));
+			}
+
+			foreach (const Account &account, jabberAccounts)
+			{
+				QAction *menuAction = menu->addAction(QString("%1 (%2)").arg(account.accountIdentity().name(), account.id()));
+				menuAction->setData(QVariant::fromValue(account));
+			}
+
+			action->setData(QVariant());
+			action->setVisible(true);
+		}
+	}
 }
 
 void ShowXmlConsoleActionDescription::menuActionTriggered(QAction *action)

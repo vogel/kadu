@@ -26,8 +26,6 @@ class ShowXmlConsoleActionDescription : public ActionDescription
 {
 	Q_OBJECT
 
-	QMenu *ShowXmlConsoleMenu;
-
 private slots:
 	void insertMenuActionDescription();
 	void updateShowXmlConsoleMenu();
@@ -35,6 +33,7 @@ private slots:
 
 protected:
 	virtual void actionInstanceCreated(Action *action);
+	virtual void actionTriggered(QAction *sender, bool toggled);
 
 public:
 	explicit ShowXmlConsoleActionDescription(QObject *parent);
