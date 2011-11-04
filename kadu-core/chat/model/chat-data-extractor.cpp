@@ -53,6 +53,8 @@ QVariant ChatDataExtractor::data(const Chat &chat, int role)
 		}
 		case AccountRole:
 			return QVariant::fromValue(chat.chatAccount());
+		case ChatRole:
+			return QVariant::fromValue(chat);
 		case ItemTypeRole:
 			return ChatRole;
 		default:
