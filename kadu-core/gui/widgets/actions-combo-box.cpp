@@ -30,7 +30,9 @@ ActionsComboBox::ActionsComboBox(QWidget *parent) :
 		Chain(0), ActionsModel(new ActionsProxyModel(this)),
 		DataRole(0), LastIndex(-1)
 {
-	connect(this, SIGNAL(activated(int)), this, SLOT(activatedSlot(int)));
+	// Queued connection is needed here so that we do not depend on which signal is emitted first:
+	// activated() or currentIndexChanged() (we depend on correct LastIndex in activatedSlot()).
+	connect(this, SIGNAL(activated(int)), this, SLOT(activatedSlot(int)), Qt::QueuedConnection);
 	connect(this, SIGNAL(currentIndexChanged(int)), this, SLOT(currentIndexChangedSlot(int)));
 }
 
