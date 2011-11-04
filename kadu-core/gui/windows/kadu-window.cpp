@@ -133,8 +133,20 @@ void KaduWindow::createGui()
 	buddiesChatView->addTab(createBuddiesWidget(buddiesChatView), tr("Buddies"));
 	buddiesChatView->addTab(createChatsWidget(buddiesChatView), tr("Chats"));
 
+	connect(buddiesChatView, SIGNAL(currentChanged(int)), this, SLOT(buddiesChatViewChanged(int)));
+
 	setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
 	setCentralWidget(MainWidget);
+}
+
+void KaduWindow::buddiesChatViewChanged(int index)
+{
+	if (0 == index)
+		ActionData->setForwardActionDataSource(ContactsWidget->view()->actionDataSource());
+	else if (1 == index)
+		ActionData->setForwardActionDataSource(ChatsTree->actionDataSource());
+	else
+		ActionData->setForwardActionDataSource(0);
 }
 
 QWidget * KaduWindow::createBuddiesWidget(QWidget *parent)

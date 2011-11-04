@@ -130,6 +130,8 @@ private slots:
 
 	void iconThemeChanged();
 
+	void buddiesChatViewChanged(int index);
+
 protected:
 	virtual void closeEvent(QCloseEvent *);
 	virtual void keyPressEvent(QKeyEvent *);

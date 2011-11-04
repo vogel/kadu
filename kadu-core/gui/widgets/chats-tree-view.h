@@ -20,15 +20,28 @@
 #ifndef CHATS_TREE_VIEW_H
 #define CHATS_TREE_VIEW_H
 
+#include "gui/actions/action-data-source-provider.h"
 #include "gui/widgets/kadu-tree-view.h"
 
-class ChatsTreeView : public KaduTreeView
+class BaseActionDataSource;
+
+class ChatsTreeView : public KaduTreeView, public ActionDataSourceProvider
 {
 	Q_OBJECT
+
+	BaseActionDataSource *ActionData;
+
+private slots:
+	void updateActionData();
 
 public:
 	explicit ChatsTreeView(QWidget *parent = 0);
 	virtual ~ChatsTreeView();
+
+	virtual void setModel(QAbstractItemModel *model);
+
+	// ActionDataSourceProvider implementation
+	virtual ActionDataSource * actionDataSource();
 
 };
 

@@ -17,16 +17,56 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "gui/actions/base-action-data-source.h"
 #include "gui/widgets/chats-tree-view-delegate.h"
+#include "model/roles.h"
 
 #include "chats-tree-view.h"
 
 ChatsTreeView::ChatsTreeView(QWidget *parent) :
-		KaduTreeView(parent)
+		KaduTreeView(parent), ActionData(new BaseActionDataSource())
 {
 	setItemDelegate(new ChatsTreeViewDelegate(this));
 }
 
 ChatsTreeView::~ChatsTreeView()
 {
+	delete ActionData;
+	ActionData = 0;
+}
+
+void ChatsTreeView::setModel(QAbstractItemModel *model)
+{
+	KaduTreeView::setModel(model);
+
+	connect(selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
+	        this, SLOT(updateActionData()));
+	updateActionData();
+}
+
+void ChatsTreeView::updateActionData()
+{
+	ActionData->blockChangedSignal();
+
+	QModelIndexList selectionList = selectedIndexes();
+	if (1 == selectionList.size())
+	{
+		const Chat &selectedChat = selectionList.at(0).data(ChatRole).value<Chat>();
+		ActionData->setBuddies(selectedChat.contacts().toBuddySet());
+		ActionData->setContacts(selectedChat.contacts());
+		ActionData->setChat(selectedChat);
+	}
+	else
+	{
+		ActionData->setBuddies(BuddySet());
+		ActionData->setContacts(ContactSet());
+		ActionData->setChat(Chat::null);
+	}
+
+	ActionData->unblockChangedSignal();
+}
+
+ActionDataSource * ChatsTreeView::actionDataSource()
+{
+	return ActionData;
 }
