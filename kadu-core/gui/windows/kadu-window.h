@@ -122,7 +122,7 @@ private:
 
 private slots:
 	void openChatWindow(Chat chat);
-	void buddyActivated(const Buddy &buddy);
+	void buddyActivatedSlot(const Buddy &buddy);
 
 	void invalidateRecentChatsMenu();
 	void updateRecentChatsMenu();
@@ -165,6 +165,8 @@ public:
 signals:
 	void keyPressed(QKeyEvent *e);
 	void parentChanged(QWidget *oldParent);
+
+	void buddyActivated(const Buddy &buddy);
 
 };
 

@@ -64,7 +64,7 @@ SmsActions * SmsActions::instance()
 
 SmsActions::SmsActions()
 {
-	connect(Core::instance()->kaduWindow()->buddiesListView(), SIGNAL(buddyActivated(Buddy)),
+	connect(Core::instance()->kaduWindow(), SIGNAL(buddyActivated(Buddy)),
 			this, SLOT(buddyActivated(Buddy)));
 
 	sendSmsActionDescription = new ActionDescription(this,
@@ -79,7 +79,7 @@ SmsActions::SmsActions()
 
 SmsActions::~SmsActions()
 {
-	disconnect(Core::instance()->kaduWindow()->buddiesListView(), SIGNAL(buddyActivated(Buddy)),
+	disconnect(Core::instance()->kaduWindow(), SIGNAL(buddyActivated(Buddy)),
 			this, SLOT(buddyActivated(Buddy)));
 
 	BuddiesListViewMenuManager::instance()->removeActionDescription(sendSmsActionDescription);
