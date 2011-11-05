@@ -32,7 +32,6 @@
 
 #include "buddies/filter/anonymous-without-messages-buddy-filter.h"
 #include "buddies/filter/buddy-name-filter.h"
-#include "buddies/filter/pending-messages-filter.h"
 #include "gui/widgets/buddies-list-view.h"
 #include "icons/icons-manager.h"
 
@@ -51,7 +50,6 @@ BuddiesListWidget::BuddiesListWidget(FilterPosition filterPosition, QWidget *par
 		this, SLOT(nameFilterChanged(const QString &)));
 
 	View = new BuddiesListView(this);
-	View->addFilter(new PendingMessagesFilter(this));
 
 	AnonymousFilter = new AnonymousWithoutMessagesBuddyFilter(this);
 	AnonymousFilter->setEnabled(true);

@@ -90,6 +90,7 @@ private:
 	GroupTabBar *GroupBar;
 
 	BuddiesListWidget *ContactsWidget;
+	BuddiesModelProxy *ProxyModel;
 	ChatsTreeView *ChatsTree;
 
 	QWidget *MainWidget;

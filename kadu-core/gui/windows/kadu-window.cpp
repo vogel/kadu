@@ -37,7 +37,11 @@
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-set.h"
 #include "buddies/model/buddies-model.h"
+#include "buddies/model/buddies-model-proxy.h"
+#include "buddies/filter/anonymous-without-messages-buddy-filter.h"
+#include "buddies/filter/buddy-name-filter.h"
 #include "buddies/filter/group-buddy-filter.h"
+#include "buddies/filter/pending-messages-filter.h"
 #include "chat/filter/chat-named-filter.h"
 #include "chat/model/chats-model.h"
 #include "chat/model/chats-proxy-model.h"
@@ -62,6 +66,7 @@
 #include "gui/windows/kadu-window-actions.h"
 #include "gui/widgets/status-buttons.h"
 #include "gui/widgets/status-menu.h"
+#include "model/model-chain.h"
 #include "notify/notification-manager.h"
 #include "os/generic/url-opener.h"
 #include "status/status-container-manager.h"
@@ -161,8 +166,16 @@ QWidget * KaduWindow::createBuddiesWidget(QWidget *parent)
 	GroupBar = new GroupTabBar(this);
 
 	ContactsWidget = new BuddiesListWidget(BuddiesListWidget::FilterAtTop, hbox);
+
+	ModelChain *chain = new ModelChain(new BuddiesModel(this), this);
+	ProxyModel = new BuddiesModelProxy(chain);
+	ProxyModel->addFilter(new PendingMessagesFilter(ProxyModel));
+	ProxyModel->addFilter(ContactsWidget->anonymousFilter());
+	ProxyModel->addFilter(ContactsWidget->nameFilter());
+	chain->addProxyModel(ProxyModel);
+
 	ContactsWidget->view()->useConfigurationColors(true);
-	ContactsWidget->view()->setModel(new BuddiesModel(this));
+	ContactsWidget->view()->setChain(chain);
 	ContactsWidget->view()->addFilter(GroupBar->filter());
 	ContactsWidget->view()->setContextMenuEnabled(true);
 
@@ -510,7 +523,7 @@ BuddiesListView * KaduWindow::buddiesListView()
 
 BuddiesModelProxy * KaduWindow::buddiesProxyModel()
 {
-	return ContactsWidget->view()->proxyModel();
+	return ProxyModel;
 }
 
 void KaduWindow::configurationUpdated()
