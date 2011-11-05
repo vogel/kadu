@@ -47,7 +47,6 @@ class BuddySet;
 class BuddiesListViewDelegate;
 class BuddiesListViewDelegateConfiguration;
 class BuddiesModelProxy;
-class ContactNoUnloadedAccountFilter;
 class ContactSet;
 
 class BuddiesListView : public KaduTreeView, public ActionDataSourceProvider
@@ -58,8 +57,6 @@ class BuddiesListView : public KaduTreeView, public ActionDataSourceProvider
 
 	BuddiesListViewDelegate *Delegate;
 	BuddiesModelProxy *ProxyModel;
-
-	ContactNoUnloadedAccountFilter *HideUnloadedFilter;
 
 	BaseActionDataSource *ActionData;
 

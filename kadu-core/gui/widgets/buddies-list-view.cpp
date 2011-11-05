@@ -78,9 +78,6 @@ BuddiesListView::BuddiesListView(QWidget *parent) :
 	Delegate = new BuddiesListViewDelegate(this);
 	setItemDelegate(Delegate);
 
-	HideUnloadedFilter = new ContactNoUnloadedAccountFilter(this);
-	HideUnloadedFilter->setEnabled(true);
-
 	ToolTipTimeoutTimer.setSingleShot(true);
 
 	connect(&ToolTipTimeoutTimer, SIGNAL(timeout()), this, SLOT(toolTipTimeout()));
@@ -103,7 +100,9 @@ void BuddiesListView::setModel(QAbstractItemModel *model)
 
 	QTreeView::setModel(ProxyModel);
 
-	ProxyModel->addFilter(HideUnloadedFilter);
+	ContactNoUnloadedAccountFilter *hideUnloadedFilter = new ContactNoUnloadedAccountFilter(this);
+	hideUnloadedFilter->setEnabled(true);
+	ProxyModel->addFilter(hideUnloadedFilter);
 
 	connect(selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
 	        this, SLOT(updateActionData()));
