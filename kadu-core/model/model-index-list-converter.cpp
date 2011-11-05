@@ -75,6 +75,33 @@ Chat ModelIndexListConverter::chatByPendingMessages(const QModelIndex &index) co
 		return PendingMessagesManager::instance()->chatForContact(index.data(ContactRole).value<Contact>());
 }
 
+Chat ModelIndexListConverter::chatFromBuddies() const
+{
+	BuddySet buddies;
+	foreach (const QModelIndex &index, ModelIndexList)
+		if (index.data(ItemTypeRole) == BuddyRole)
+			buddies.insert(index.data(BuddyRole).value<Buddy>());
+		else
+			return Chat::null;
+
+	return ChatManager::instance()->findChat(buddies, true);
+}
+
+Chat ModelIndexListConverter::chatFromContacts(const Account &account) const
+{
+	ContactSet contacts;
+	foreach (const QModelIndex &index, ModelIndexList)
+	{
+		Contact contact = contactForAccount(index, account);
+		if (!contact)
+			return Chat::null;
+
+		contacts.insert(contact);
+	}
+
+	return ChatManager::instance()->findChat(contacts, true);
+}
+
 Account ModelIndexListConverter::commonAccount() const
 {
 	foreach (const QModelIndex &index, ModelIndexList)
@@ -102,7 +129,6 @@ Contact ModelIndexListConverter::contactForAccount(const QModelIndex &index, con
 	return Contact::null;
 }
 
-// TODO 0.11.0: This method is too big. Review and split
 void ModelIndexListConverter::buildChat()
 {
 	if (ModelIndexList.size() == 1)
@@ -114,27 +140,7 @@ void ModelIndexListConverter::buildChat()
 
 	const Account &account = commonAccount();
 	if (!account)
-	{
-		BuddySet buddies;
-		foreach (const QModelIndex &index, ModelIndexList)
-			if (index.data(ItemTypeRole) == BuddyRole)
-				buddies.insert(index.data(BuddyRole).value<Buddy>());
-			else
-				return;
-
-		ComputedChat = ChatManager::instance()->findChat(buddies, true);
-		return;
-	}
-
-	ContactSet contacts;
-	foreach (const QModelIndex &index, ModelIndexList)
-	{
-		Contact contact = contactForAccount(index, account);
-		if (!contact)
-			return;
-
-		contacts.insert(contact);
-	}
-
-	ComputedChat = ChatManager::instance()->findChat(contacts, true);
+		ComputedChat = chatFromBuddies();
+	else
+		ComputedChat = chatFromContacts(account);
 }
