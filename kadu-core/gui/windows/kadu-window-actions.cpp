@@ -428,7 +428,7 @@ void KaduWindowActions::inactiveUsersActionCreated(Action *action)
 	MainWindow *window = qobject_cast<MainWindow *>(action->parentWidget());
 	if (!window)
 		return;
-	if (!window->buddiesListView())
+	if (!window->buddiesProxyModel())
 		return;
 
 	bool enabled = config_file.readBoolEntry("General", "ShowOffline");
@@ -438,7 +438,7 @@ void KaduWindowActions::inactiveUsersActionCreated(Action *action)
 	action->setData(QVariant::fromValue(ofcf));
 	action->setChecked(enabled);
 
-	window->buddiesListView()->addFilter(ofcf);
+	window->buddiesProxyModel()->addFilter(ofcf);
 }
 
 void KaduWindowActions::descriptionUsersActionCreated(Action *action)
@@ -446,7 +446,7 @@ void KaduWindowActions::descriptionUsersActionCreated(Action *action)
 	MainWindow *window = qobject_cast<MainWindow *>(action->parentWidget());
 	if (!window)
 		return;
-	if (!window->buddiesListView())
+	if (!window->buddiesProxyModel())
 		return;
 
 	bool enabled = !config_file.readBoolEntry("General", "ShowWithoutDescription");
@@ -456,7 +456,7 @@ void KaduWindowActions::descriptionUsersActionCreated(Action *action)
 	action->setData(QVariant::fromValue(hdcf));
 	action->setChecked(enabled);
 
-	window->buddiesListView()->addFilter(hdcf);
+	window->buddiesProxyModel()->addFilter(hdcf);
 }
 
 void KaduWindowActions::showDescriptionsActionCreated(Action *action)
@@ -470,7 +470,7 @@ void KaduWindowActions::onlineAndDescUsersActionCreated(Action *action)
 	MainWindow *window = qobject_cast<MainWindow *>(action->parentWidget());
 	if (!window)
 		return;
-	if (!window->buddiesListView())
+	if (!window->buddiesProxyModel())
 		return;
 
 	bool enabled = config_file.readBoolEntry("General", "ShowOnlineAndDescription");
@@ -480,7 +480,7 @@ void KaduWindowActions::onlineAndDescUsersActionCreated(Action *action)
 	action->setData(QVariant::fromValue(oadcf));
 	action->setChecked(enabled);
 
-	window->buddiesListView()->addFilter(oadcf);
+	window->buddiesProxyModel()->addFilter(oadcf);
 }
 
 void KaduWindowActions::editUserActionCreated(Action *action)
@@ -505,7 +505,7 @@ void KaduWindowActions::showBlockedActionCreated(Action *action)
 	MainWindow *window = qobject_cast<MainWindow *>(action->parentWidget());
 	if (!window)
 		return;
-	if (!window->buddiesListView())
+	if (!window->buddiesProxyModel())
 		return;
 
 	bool enabled = config_file.readBoolEntry("General", "ShowBlocked");
@@ -515,7 +515,7 @@ void KaduWindowActions::showBlockedActionCreated(Action *action)
 	action->setData(QVariant::fromValue(ibf));
 	action->setChecked(enabled);
 
-	window->buddiesListView()->addFilter(ibf);
+	window->buddiesProxyModel()->addFilter(ibf);
 }
 
 void KaduWindowActions::showMyselfActionCreated(Action *action)
@@ -523,15 +523,11 @@ void KaduWindowActions::showMyselfActionCreated(Action *action)
 	MainWindow *window = qobject_cast<MainWindow *>(action->parentWidget());
 	if (!window)
 		return;
-	if (!window->buddiesListView())
-		return;
-
-	BuddiesModelProxy *proxyModel = qobject_cast<BuddiesModelProxy *>(window->buddiesListView()->model());
-	if (!proxyModel)
+	if (!window->buddiesProxyModel())
 		return;
 
 	bool enabled = config_file.readBoolEntry("General", "ShowMyself", false);
-	BuddiesModel *model = qobject_cast<BuddiesModel *>(proxyModel->sourceModel());
+	BuddiesModel *model = qobject_cast<BuddiesModel *>(window->buddiesProxyModel()->sourceModel());
 	if (model)
 	{
 		model->setIncludeMyself(enabled);
@@ -722,13 +718,10 @@ void KaduWindowActions::showMyselfActionActivated(QAction *sender, bool toggled)
 	MainWindow *window = qobject_cast<MainWindow *>(sender->parentWidget());
 	if (!window)
 		return;
-	if (!window->buddiesListView())
+	if (!window->buddiesProxyModel())
 		return;
 
-	BuddiesModelProxy *proxyModel = qobject_cast<BuddiesModelProxy *>(window->buddiesListView()->model());
-	if (!proxyModel)
-		return;
-	BuddiesModel *model = qobject_cast<BuddiesModel *>(proxyModel->sourceModel());
+	BuddiesModel *model = qobject_cast<BuddiesModel *>(window->buddiesProxyModel()->sourceModel());
 	if (model)
 	{
 		model->setIncludeMyself(toggled);
@@ -907,19 +900,10 @@ void KaduWindowActions::descriptionUsersActionActivated(QAction *sender, bool to
 
 void KaduWindowActions::showDescriptionsActionActivated(QAction *sender, bool toggled)
 {
+	Q_UNUSED(sender)
+
 	config_file.writeEntry("Look", "ShowDesc", toggled);
-
-	Action *action = qobject_cast<Action *>(sender);
-	if (!action)
-		return;
-
-	MainWindow *window = qobject_cast<MainWindow *>(action->parentWidget());
-	if (!window)
-		return;
-	if (!window->buddiesListView())
-		return;
-
-	window->buddiesListView()->delegateConfiguration().configurationUpdated();
+	ConfigurationAwareObject::notifyAll();
 }
 
 void KaduWindowActions::onlineAndDescUsersActionActivated(QAction *sender, bool toggled)
