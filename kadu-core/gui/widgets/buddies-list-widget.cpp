@@ -53,14 +53,12 @@ BuddiesListWidget::BuddiesListWidget(FilterPosition filterPosition, QWidget *par
 
 	AnonymousFilter = new AnonymousWithoutMessagesBuddyFilter(this);
 	AnonymousFilter->setEnabled(true);
-	View->addFilter(AnonymousFilter);
 
 	NameFilterWidget->setView(View);
 #ifndef Q_OS_MAC
 	NameFilterWidget->hide(); // hide by default
 #endif
 	NameFilter = new BuddyNameFilter(this);
-	View->addFilter(NameFilter);
 
 	if (FilterAtTop == filterPosition)
 	{

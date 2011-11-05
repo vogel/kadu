@@ -40,7 +40,6 @@
 class QContextMenuEvent;
 class QModelIndex;
 
-class AbstractBuddyFilter;
 class BaseActionDataSource;
 class Buddy;
 class BuddySet;
@@ -58,7 +57,6 @@ class BuddiesListView : public KaduTreeView, public ActionDataSourceProvider
 
 	BuddiesListViewDelegate *Delegate;
 	ModelChain *Chain;
-	BuddiesModelProxy *ProxyModel;
 
 	BaseActionDataSource *ActionData;
 
@@ -103,15 +101,8 @@ public:
 	explicit BuddiesListView(QWidget *parent = 0);
 	virtual ~BuddiesListView();
 
-	// Note that model has to inherit AbstractBuddyModel.
-	virtual void setModel(QAbstractItemModel *model);
 	virtual void setChain(ModelChain *chain);
 	virtual ModelChain * chain() const;
-
-	void addFilter(AbstractBuddyFilter *filter);
-	void removeFilter(AbstractBuddyFilter *filter);
-
-	BuddiesModelProxy * proxyModel() { return ProxyModel; }
 
 	void setShowAccountName(bool show);
 	void useConfigurationColors(bool use);

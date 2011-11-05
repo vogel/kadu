@@ -31,7 +31,6 @@
 #include <QtGui/QContextMenuEvent>
 #include <QtGui/QImage>
 #include <QtGui/QMenu>
-#include <QtGui/QSortFilterProxyModel>
 
 #include "accounts/account.h"
 #include "buddies/buddy.h"
@@ -70,7 +69,7 @@
 #include "tool-tip-class-manager.h"
 
 BuddiesListView::BuddiesListView(QWidget *parent) :
-		KaduTreeView(parent), Delegate(0), Chain(0), ProxyModel(new BuddiesModelProxy(this)), ContextMenuEnabled(false)
+		KaduTreeView(parent), Delegate(0), Chain(0), ContextMenuEnabled(false)
 {
 	ActionData = new BaseActionDataSource();
 	connect(MainConfigurationHolder::instance(), SIGNAL(setStatusModeChanged()), this, SLOT(updateActionData()));
@@ -90,17 +89,6 @@ BuddiesListView::~BuddiesListView()
 	ActionData = 0;
 }
 
-void BuddiesListView::setModel(QAbstractItemModel *model)
-{
-	ModelChain *chain = new ModelChain(model, this);
-	chain->addProxyModel(ProxyModel);
-	setChain(chain);
-
-	ContactNoUnloadedAccountFilter *hideUnloadedFilter = new ContactNoUnloadedAccountFilter(this);
-	hideUnloadedFilter->setEnabled(true);
-	ProxyModel->addFilter(hideUnloadedFilter);
-}
-
 void BuddiesListView::setChain(ModelChain *chain)
 {
 	Chain = chain;
@@ -115,16 +103,6 @@ void BuddiesListView::setChain(ModelChain *chain)
 ModelChain * BuddiesListView::chain() const
 {
 	return Chain;
-}
-
-void BuddiesListView::addFilter(AbstractBuddyFilter *filter)
-{
-	ProxyModel->addFilter(filter);
-}
-
-void BuddiesListView::removeFilter(AbstractBuddyFilter *filter)
-{
-	ProxyModel->removeFilter(filter);
 }
 
 void BuddiesListView::setShowAccountName(bool show)
