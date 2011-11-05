@@ -40,6 +40,7 @@
 #include "emoticons/emoticon-selector.h"
 #include "gui/actions/action.h"
 #include "gui/actions/base-action-data-source.h"
+#include "gui/widgets/buddies-list-view.h"
 #include "gui/widgets/chat-edit-box-size-manager.h"
 #include "gui/widgets/chat-widget-actions.h"
 #include "gui/widgets/chat-widget-manager.h"
@@ -156,11 +157,11 @@ bool ChatEditBox::supportsActionType(ActionDescription::ActionType type)
 	return (type == ActionDescription::TypeGlobal || type == ActionDescription::TypeChat || type == ActionDescription::TypeUser);
 }
 
-BuddiesListView * ChatEditBox::buddiesListView()
+BuddiesModelProxy * ChatEditBox::buddiesProxyModel()
 {
 	ChatWidget *cw = chatWidget();
 	if (cw && cw->chat().contacts().count() > 1)
-		return cw->contactsListWidget();
+		return cw->contactsListWidget()->proxyModel();
 
 	return 0;
 }

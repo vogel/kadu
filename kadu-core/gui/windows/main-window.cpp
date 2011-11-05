@@ -467,11 +467,3 @@ ActionDataSource * MainWindow::actionDataSource()
 {
 	return ActionData;
 }
-
-BuddiesModelProxy * MainWindow::buddiesProxyModel()
-{
-	if (buddiesListView())
-		return buddiesListView()->proxyModel();
-	else
-		return 0;
-}

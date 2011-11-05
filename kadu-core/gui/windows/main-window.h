@@ -99,8 +99,7 @@ public:
 	virtual QMenu * createPopupMenu() { return 0; }
 
 	virtual bool supportsActionType(ActionDescription::ActionType type) = 0;
-	virtual BuddiesListView * buddiesListView() = 0;
-	virtual BuddiesModelProxy * buddiesProxyModel();
+	virtual BuddiesModelProxy * buddiesProxyModel() = 0;
 
 	Contact contact();
 	Buddy buddy();

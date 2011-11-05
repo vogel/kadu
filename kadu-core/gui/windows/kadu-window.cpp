@@ -505,9 +505,12 @@ bool KaduWindow::supportsActionType(ActionDescription::ActionType type)
 
 BuddiesListView * KaduWindow::buddiesListView()
 {
-	return ContactsWidget
-			? ContactsWidget->view()
-			: 0;
+	return ContactsWidget->view();
+}
+
+BuddiesModelProxy * KaduWindow::buddiesProxyModel()
+{
+	return ContactsWidget->view()->proxyModel();
 }
 
 void KaduWindow::configurationUpdated()

@@ -65,7 +65,7 @@ public:
 	CustomInput * inputBox();
 
 	virtual bool supportsActionType(ActionDescription::ActionType type);
-	virtual BuddiesListView * buddiesListView();
+	virtual BuddiesModelProxy * buddiesProxyModel();
 
 	ChatWidget * chatWidget();
 

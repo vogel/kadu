@@ -96,7 +96,7 @@ public:
 	virtual ~SearchWindow();
 
 	virtual bool supportsActionType(ActionDescription::ActionType type) { return (type & ActionDescription::TypeSearch); }
-	virtual BuddiesListView * buddiesListView() { return 0; }
+	virtual BuddiesModelProxy * buddiesProxyModel() { return 0; }
 
 	void nextSearch();
 	void stopSearch();

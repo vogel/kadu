@@ -148,6 +148,7 @@ public:
 	virtual ~KaduWindow();
 
 	virtual BuddiesListView * buddiesListView();
+	virtual BuddiesModelProxy * buddiesProxyModel();
 
 	void insertMenuActionDescription(ActionDescription *actionDescription, MenuType Type, int pos = -1);
 	void removeMenuActionDescription(ActionDescription *actionDescription);
