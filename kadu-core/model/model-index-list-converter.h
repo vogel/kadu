@@ -39,6 +39,7 @@ class ModelIndexListConverter
 	void buildChat();
 
 	Chat chatByPendingMessages(const QModelIndex &index) const;
+	Account commonAccount() const;
 
 public:
 	explicit ModelIndexListConverter(const QModelIndexList &modelIndexList);

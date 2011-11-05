@@ -75,6 +75,21 @@ Chat ModelIndexListConverter::chatByPendingMessages(const QModelIndex &index) co
 		return PendingMessagesManager::instance()->chatForContact(index.data(ContactRole).value<Contact>());
 }
 
+Account ModelIndexListConverter::commonAccount() const
+{
+	foreach (const QModelIndex &index, ModelIndexList)
+	{
+		if (index.data(ItemTypeRole) != BuddyRole)
+		{
+			const Contact &contact = index.data(ContactRole).value<Contact>();
+			if (contact)
+				return contact.contactAccount();
+		}
+	}
+
+	return Account::null;
+}
+
 // TODO 0.11.0: This method is too big. Review and split
 void ModelIndexListConverter::buildChat()
 {
@@ -88,7 +103,8 @@ void ModelIndexListConverter::buildChat()
 	BuddySet buddies;
 	Contact contact;
 	ContactSet contacts;
-	Account account;
+
+	const Account &account = commonAccount();
 
 	foreach (const QModelIndex &index, ModelIndexList)
 	{
@@ -97,24 +113,7 @@ void ModelIndexListConverter::buildChat()
 			if (index.data(ItemTypeRole) == BuddyRole)
 				buddies.insert(index.data(BuddyRole).value<Buddy>());
 			else
-			{
-				contact = index.data(ContactRole).value<Contact>();
-				if (!contact)
-					return;
-
-				contacts.insert(contact);
-
-				account = contact.contactAccount();
-
-				foreach (const Buddy &buddy, buddies)
-				{
-					contact = BuddyPreferredManager::instance()->preferredContact(buddy, account);
-					if (!contact)
-						return;
-
-					contacts.insert(contact);
-				}
-			}
+				return;
 		}
 		else
 		{
