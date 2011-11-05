@@ -35,11 +35,12 @@
 #include "contacts/contact-manager.h"
 #include "gui/widgets/buddies-list-view-item-painter.h"
 #include "model/kadu-abstract-model.h"
+#include "model/model-chain.h"
 
 #include "buddies-list-view-delegate.h"
 
 BuddiesListViewDelegate::BuddiesListViewDelegate(QObject *parent) :
-		KaduTreeViewDelegate(parent), Model(0)
+		KaduTreeViewDelegate(parent), Chain(0)
 {
 	connect(AvatarManager::instance(), SIGNAL(avatarUpdated(Avatar)), this, SLOT(avatarUpdated(Avatar)));
 	connect(ContactManager::instance(), SIGNAL(contactUpdated(Contact&)), this, SLOT(contactUpdated(Contact&)));
@@ -57,17 +58,20 @@ BuddiesListViewDelegate::~BuddiesListViewDelegate()
 	disconnect(PendingMessagesManager::instance(), SIGNAL(messageRemoved(Message)), this, SLOT(messageStatusChanged(Message)));
 }
 
-void BuddiesListViewDelegate::setModel(KaduAbstractModel *model)
+void BuddiesListViewDelegate::setChain(ModelChain *chain)
 {
-	Model = model;
-	QAbstractItemModel *itemModel = dynamic_cast<QAbstractItemModel *>(Model);
-	if (itemModel)
-		connect(itemModel, SIGNAL(destroyed(QObject *)), this, SLOT(modelDestroyed()));
+	if (Chain)
+		disconnect(Chain, SIGNAL(destroyed(QObject *)), this, SLOT(modelDestroyed()));
+
+	Chain = chain;
+
+	if (Chain)
+		connect(Chain, SIGNAL(destroyed(QObject *)), this, SLOT(modelDestroyed()));
 }
 
 void BuddiesListViewDelegate::avatarUpdated(Avatar avatar)
 {
-	if (!Model)
+	if (!Chain)
 		return;
 
 	if (avatar.avatarContact())
@@ -75,25 +79,25 @@ void BuddiesListViewDelegate::avatarUpdated(Avatar avatar)
 		Buddy buddy = avatar.avatarContact().ownerBuddy();
 		Contact contact = avatar.avatarContact();
 
-		QModelIndex buddyIndex = Model->indexForValue(buddy);
+		QModelIndex buddyIndex = Chain->indexForValue(buddy);
 		QModelIndex contactIndex = buddyIndex.child(buddy.contacts().indexOf(contact), 0);
 		emit sizeHintChanged(buddyIndex);
 		emit sizeHintChanged(contactIndex);
 	}
 	else if (avatar.avatarBuddy())
-		emit sizeHintChanged(Model->indexForValue(avatar.avatarBuddy()));
+		emit sizeHintChanged(Chain->indexForValue(avatar.avatarBuddy()));
 }
 
 void BuddiesListViewDelegate::contactUpdated(Contact &contact)
 {
-	if (Model)
-		emit sizeHintChanged(Model->indexForValue(contact.ownerBuddy()));
+	if (Chain)
+		emit sizeHintChanged(Chain->indexForValue(contact.ownerBuddy()));
 }
 
 void BuddiesListViewDelegate::buddyUpdated(Buddy &buddy)
 {
-	if (Model)
-		emit sizeHintChanged(Model->indexForValue(buddy));
+	if (Chain)
+		emit sizeHintChanged(Chain->indexForValue(buddy));
 }
 
 void BuddiesListViewDelegate::messageStatusChanged(Message message)
@@ -102,7 +106,7 @@ void BuddiesListViewDelegate::messageStatusChanged(Message message)
 	buddyUpdated(buddy);
 }
 
-void BuddiesListViewDelegate::modelDestroyed()
+void BuddiesListViewDelegate::chainDestroyed()
 {
-	Model = 0;
+	Chain = 0;
 }

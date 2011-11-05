@@ -33,31 +33,31 @@
 #include "gui/widgets/buddies-list-view-delegate-configuration.h"
 #include "gui/widgets/kadu-tree-view-delegate.h"
 
-class KaduAbstractModel;
 class Account;
 class Avatar;
 class ChatWidget;
 class Contact;
+class ModelChain;
 class Status;
 
 class BuddiesListViewDelegate : public KaduTreeViewDelegate
 {
 	Q_OBJECT
 
-	KaduAbstractModel *Model;
+	ModelChain *Chain;
 
 private slots:
 	void avatarUpdated(Avatar avatar);
 	void contactUpdated(Contact &contact);
 	void buddyUpdated(Buddy &buddy);
 	void messageStatusChanged(Message message);
-	void modelDestroyed();
+	void chainDestroyed();
 
 public:
 	explicit BuddiesListViewDelegate(QObject *parent = 0);
 	virtual ~BuddiesListViewDelegate();
 
-	virtual void setModel(KaduAbstractModel *model);
+	virtual void setChain(ModelChain *chain);
 
 };
 

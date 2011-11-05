@@ -54,6 +54,7 @@
 #include "gui/hot-key.h"
 #include "icons/kadu-icon.h"
 #include "identities/identity.h"
+#include "model/model-chain.h"
 #include "model/model-index-list-converter.h"
 #include "model/roles.h"
 #include "protocols/protocol.h"
@@ -96,7 +97,10 @@ void BuddiesListView::setModel(QAbstractItemModel *model)
 {
 	ProxyModel->setSourceModel(model);
 
-	Delegate->setModel(ProxyModel);
+	ModelChain *chain = new ModelChain(model, Delegate);
+	chain->addProxyModel(ProxyModel);
+	Delegate->setChain(chain);
+
 	QTreeView::setModel(ProxyModel);
 
 	ProxyModel->addFilter(HideUnloadedFilter);
