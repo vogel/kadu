@@ -115,8 +115,6 @@ public:
 	void setShowAccountName(bool show);
 	void useConfigurationColors(bool use);
 
-	void selectBuddy(Buddy buddy);
-
 	BuddiesListViewDelegateConfiguration & delegateConfiguration();
 
 	void updateLayout() { updateGeometries(); }

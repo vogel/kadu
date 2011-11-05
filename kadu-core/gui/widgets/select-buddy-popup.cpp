@@ -25,6 +25,7 @@
 #include "buddies/buddy-manager.h"
 #include "buddies/filter/buddy-name-filter.h"
 #include "buddies/model/buddies-model.h"
+#include "buddies/model/buddies-model-proxy.h"
 #include "gui/widgets/buddies-list-view.h"
 #include "model/roles.h"
 
@@ -60,7 +61,8 @@ void SelectBuddyPopup::show(Buddy buddy)
 	nameFilterWidget()->setFocus();
 #endif
 
-	view()->selectBuddy(buddy);
+	QModelIndex index = view()->proxyModel()->indexForValue(buddy);
+	view()->setCurrentIndex(index);
 	BuddiesListWidget::show();
 }
 

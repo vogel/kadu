@@ -130,11 +130,6 @@ BuddiesListViewDelegateConfiguration & BuddiesListView::delegateConfiguration()
 	return Delegate->configuration();
 }
 
-void BuddiesListView::selectBuddy(Buddy buddy)
-{
-	setCurrentIndex(ProxyModel->indexForValue(buddy));
-}
-
 BuddyOrContact BuddiesListView::buddyOrContactAt(const QModelIndex &index) const
 {
 	switch (index.data(ItemTypeRole).toInt())
