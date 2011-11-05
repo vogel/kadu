@@ -30,7 +30,6 @@
 #include "buddies/filter/account-buddy-filter.h"
 #include "buddies/filter/anonymous-buddy-filter.h"
 #include "buddies/model/buddies-model.h"
-#include "buddies/model/buddies-model-proxy.h"
 #include "contacts/contact.h"
 #include "contacts/contact-details.h"
 #include "contacts/contact-manager.h"
@@ -52,9 +51,7 @@ AccountBuddyListWidget::AccountBuddyListWidget(Account account, QWidget *parent)
 	layout->setSpacing(5);
 
 	BuddiesWidget = new BuddiesListWidget(BuddiesListWidget::FilterAtTop, this);
-	BuddiesModelProxy *model = new BuddiesModelProxy(this);
-	model->setSourceModel(new BuddiesModel(this));
-	BuddiesWidget->view()->setModel(model);
+	BuddiesWidget->view()->setModel(new BuddiesModel(this));
 	BuddiesWidget->setMinimumSize(QSize(30, 30));
 
 	QWidget *buttons = new QWidget(this);
