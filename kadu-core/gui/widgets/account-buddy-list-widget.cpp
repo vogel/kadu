@@ -30,12 +30,14 @@
 #include "buddies/filter/account-buddy-filter.h"
 #include "buddies/filter/anonymous-buddy-filter.h"
 #include "buddies/model/buddies-model.h"
+#include "buddies/model/buddies-model-proxy.h"
 #include "contacts/contact.h"
 #include "contacts/contact-details.h"
 #include "contacts/contact-manager.h"
 #include "gui/widgets/buddies-list-widget.h"
 #include "gui/widgets/buddies-list-view.h"
 #include "gui/windows/message-dialog.h"
+#include "model/model-chain.h"
 
 #include "debug.h"
 #include "protocols/protocol.h"
@@ -50,8 +52,21 @@ AccountBuddyListWidget::AccountBuddyListWidget(Account account, QWidget *parent)
 	layout->setContentsMargins(0, 0, 0, 0);
 	layout->setSpacing(5);
 
+	ModelChain *chain = new ModelChain(new BuddiesModel(this), this);
+	BuddiesModelProxy *proxyModel = new BuddiesModelProxy(chain);
+
+	AccountBuddyFilter *accountFilter = new AccountBuddyFilter(CurrentAccount, this);
+	accountFilter->setEnabled(true);
+	AnonymousBuddyFilter *anonymousFilter = new AnonymousBuddyFilter(this);
+	anonymousFilter->setEnabled(true);
+
+	proxyModel->addFilter(accountFilter);
+	proxyModel->addFilter(anonymousFilter);
+
+	chain->addProxyModel(proxyModel);
+
 	BuddiesWidget = new BuddiesListWidget(BuddiesListWidget::FilterAtTop, this);
-	BuddiesWidget->view()->setModel(new BuddiesModel(this));
+	BuddiesWidget->view()->setChain(chain);
 	BuddiesWidget->setMinimumSize(QSize(30, 30));
 
 	QWidget *buttons = new QWidget(this);
@@ -69,14 +84,6 @@ AccountBuddyListWidget::AccountBuddyListWidget(Account account, QWidget *parent)
 
 	layout->addWidget(BuddiesWidget);
 	layout->addWidget(buttons);
-
-	AccountBuddyFilter *accountFilter = new AccountBuddyFilter(CurrentAccount, this);
-	accountFilter->setEnabled(true);
-	AnonymousBuddyFilter *anonymousFilter = new AnonymousBuddyFilter(this);
-	anonymousFilter->setEnabled(true);
-
-	BuddiesWidget->view()->addFilter(accountFilter);
-	BuddiesWidget->view()->addFilter(anonymousFilter);
 }
 
 void AccountBuddyListWidget::restoreFromFile()
