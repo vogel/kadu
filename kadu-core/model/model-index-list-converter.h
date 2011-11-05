@@ -40,6 +40,7 @@ class ModelIndexListConverter
 
 	Chat chatByPendingMessages(const QModelIndex &index) const;
 	Account commonAccount() const;
+	Contact contactForAccount(const QModelIndex &inde, const Account &account) const;
 
 public:
 	explicit ModelIndexListConverter(const QModelIndexList &modelIndexList);

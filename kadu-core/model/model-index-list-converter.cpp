@@ -90,6 +90,18 @@ Account ModelIndexListConverter::commonAccount() const
 	return Account::null;
 }
 
+Contact ModelIndexListConverter::contactForAccount(const QModelIndex &index, const Account &account) const
+{
+	if (index.data(ItemTypeRole) == BuddyRole)
+		return BuddyPreferredManager::instance()->preferredContact(index.data(BuddyRole).value<Buddy>(), account);
+
+	const Contact &contact = index.data(ContactRole).value<Contact>();
+	if (contact.contactAccount() == account)
+		return contact;
+
+	return Contact::null;
+}
+
 // TODO 0.11.0: This method is too big. Review and split
 void ModelIndexListConverter::buildChat()
 {
@@ -117,25 +129,11 @@ void ModelIndexListConverter::buildChat()
 	ContactSet contacts;
 	foreach (const QModelIndex &index, ModelIndexList)
 	{
-		if (index.data(ItemTypeRole) == BuddyRole)
-		{
-			const Contact &contact = BuddyPreferredManager::instance()->preferredContact(index.data(BuddyRole).value<Buddy>(), account);
-			if (!contact)
-				return;
+		Contact contact = contactForAccount(index, account);
+		if (!contact)
+			return;
 
-			contacts.insert(contact);
-		}
-		else
-		{
-			const Contact &contact = index.data(ContactRole).value<Contact>();
-			if (!contact)
-				return;
-
-			if (contact.contactAccount() == account)
-				contacts.insert(contact);
-			else
-				return;
-		}
+		contacts.insert(contact);
 	}
 
 	ComputedChat = ChatManager::instance()->findChat(contacts, true);
