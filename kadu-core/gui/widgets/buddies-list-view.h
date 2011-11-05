@@ -48,6 +48,7 @@ class BuddiesListViewDelegate;
 class BuddiesListViewDelegateConfiguration;
 class BuddiesModelProxy;
 class ContactSet;
+class ModelChain;
 
 class BuddiesListView : public KaduTreeView, public ActionDataSourceProvider
 {
@@ -56,6 +57,7 @@ class BuddiesListView : public KaduTreeView, public ActionDataSourceProvider
 	friend class BuddiesListViewDelegateConfiguration;
 
 	BuddiesListViewDelegate *Delegate;
+	ModelChain *Chain;
 	BuddiesModelProxy *ProxyModel;
 
 	BaseActionDataSource *ActionData;
@@ -103,6 +105,7 @@ public:
 
 	// Note that model has to inherit AbstractBuddyModel.
 	virtual void setModel(QAbstractItemModel *model);
+	virtual void setChain(ModelChain *chain);
 
 	void addFilter(AbstractBuddyFilter *filter);
 	void removeFilter(AbstractBuddyFilter *filter);

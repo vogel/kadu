@@ -70,7 +70,7 @@
 #include "tool-tip-class-manager.h"
 
 BuddiesListView::BuddiesListView(QWidget *parent) :
-		KaduTreeView(parent), Delegate(0), ProxyModel(new BuddiesModelProxy(this)), ContextMenuEnabled(false)
+		KaduTreeView(parent), Delegate(0), Chain(0), ProxyModel(new BuddiesModelProxy(this)), ContextMenuEnabled(false)
 {
 	ActionData = new BaseActionDataSource();
 	connect(MainConfigurationHolder::instance(), SIGNAL(setStatusModeChanged()), this, SLOT(updateActionData()));
@@ -92,17 +92,21 @@ BuddiesListView::~BuddiesListView()
 
 void BuddiesListView::setModel(QAbstractItemModel *model)
 {
-	ProxyModel->setSourceModel(model);
-
-	ModelChain *chain = new ModelChain(model, Delegate);
+	ModelChain *chain = new ModelChain(model, this);
 	chain->addProxyModel(ProxyModel);
-	Delegate->setChain(chain);
-
-	QTreeView::setModel(ProxyModel);
+	setChain(chain);
 
 	ContactNoUnloadedAccountFilter *hideUnloadedFilter = new ContactNoUnloadedAccountFilter(this);
 	hideUnloadedFilter->setEnabled(true);
 	ProxyModel->addFilter(hideUnloadedFilter);
+}
+
+void BuddiesListView::setChain(ModelChain *chain)
+{
+	Chain = chain;
+	Delegate->setChain(Chain);
+
+	QTreeView::setModel(Chain->lastModel());
 
 	connect(selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
 	        this, SLOT(updateActionData()));
