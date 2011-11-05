@@ -36,6 +36,7 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
+#include "buddies/model/buddies-model-proxy.h"
 #include "buddies/model/buddy-list-model.h"
 #include "buddies/buddy.h"
 #include "buddies/buddy-set.h"
@@ -62,6 +63,7 @@
 #include "gui/widgets/color-selector.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-dialog.h"
+#include "model/model-chain.h"
 #include "parser/parser.h"
 #include "protocols/protocol.h"
 
@@ -77,7 +79,7 @@
 
 ChatWidget::ChatWidget(const Chat &chat, QWidget *parent) :
 		QWidget(parent), CurrentChat(chat),
-		BuddiesWidget(0), InputBox(0), HorizontalSplitter(0),
+		BuddiesWidget(0), ProxyModel(0), InputBox(0), HorizontalSplitter(0),
 		IsComposing(false), CurrentContactActivity(ChatStateService::StateNone),
 		SplittersInitialized(false), NewMessagesCount(0)
 {
@@ -193,7 +195,12 @@ void ChatWidget::createContactsList()
 	BuddiesWidget->setShowAnonymous(true);
 	BuddiesWidget->view()->setItemsExpandable(false);
 	BuddiesWidget->setMinimumSize(QSize(30, 30));
-	BuddiesWidget->view()->setModel(new ContactListModel(CurrentChat.contacts().toContactVector(), this));
+
+	ModelChain *chain = new ModelChain(new ContactListModel(CurrentChat.contacts().toContactVector(), this), this);
+	ProxyModel = new BuddiesModelProxy(chain);
+	chain->addProxyModel(ProxyModel);
+
+	BuddiesWidget->view()->setChain(chain);
 	BuddiesWidget->view()->setRootIsDecorated(false);
 	BuddiesWidget->view()->setShowAccountName(false);
 	BuddiesWidget->view()->setContextMenuEnabled(true);
@@ -501,7 +508,7 @@ CustomInput * ChatWidget::edit() const
 
 BuddiesModelProxy * ChatWidget::buddiesProxyModel() const
 {
-	return BuddiesWidget ? BuddiesWidget->view()->proxyModel() : 0;
+	return ProxyModel;
 }
 
 unsigned int ChatWidget::countMessages() const

@@ -59,6 +59,7 @@ class KADUAPI ChatWidget : public QWidget, public ConfigurationAwareObject
 
 	ChatMessagesView *MessagesView;
 	BuddiesListWidget *BuddiesWidget;
+	BuddiesModelProxy *ProxyModel;
 	ChatEditBox *InputBox;
 
 	QSplitter *VerticalSplitter;
