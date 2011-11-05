@@ -172,11 +172,11 @@ QWidget * KaduWindow::createBuddiesWidget(QWidget *parent)
 	ProxyModel->addFilter(new PendingMessagesFilter(ProxyModel));
 	ProxyModel->addFilter(ContactsWidget->anonymousFilter());
 	ProxyModel->addFilter(ContactsWidget->nameFilter());
+	ProxyModel->addFilter(GroupBar->filter());
 	chain->addProxyModel(ProxyModel);
 
 	ContactsWidget->view()->useConfigurationColors(true);
 	ContactsWidget->view()->setChain(chain);
-	ContactsWidget->view()->addFilter(GroupBar->filter());
 	ContactsWidget->view()->setContextMenuEnabled(true);
 
 	connect(ContactsWidget->view(), SIGNAL(chatActivated(Chat)), this, SLOT(openChatWindow(Chat)));
