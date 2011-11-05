@@ -37,6 +37,7 @@
 class QContextMenuEvent;
 
 class BuddiesListView;
+class BuddiesModelProxy;
 class Buddy;
 class BuddySet;
 class Chat;
@@ -99,6 +100,7 @@ public:
 
 	virtual bool supportsActionType(ActionDescription::ActionType type) = 0;
 	virtual BuddiesListView * buddiesListView() = 0;
+	virtual BuddiesModelProxy * buddiesProxyModel();
 
 	Contact contact();
 	Buddy buddy();
