@@ -41,6 +41,7 @@ class QSplitter;
 
 class BuddiesListView;
 class BuddiesListWidget;
+class BuddiesModelProxy;
 class ChatEditBox;
 class ChatMessagesView;
 class ChatWidget;
@@ -139,7 +140,7 @@ public:
 	void repaintMessages();
 
 	CustomInput * edit() const;
-	BuddiesListView * contactsListWidget() const;
+	BuddiesModelProxy * buddiesProxyModel() const;
 	ChatEditBox * getChatEditBox() const { return InputBox; }
 	ChatMessagesView * chatMessagesView() const { return MessagesView; }
 

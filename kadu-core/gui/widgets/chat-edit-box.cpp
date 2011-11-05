@@ -161,7 +161,7 @@ BuddiesModelProxy * ChatEditBox::buddiesProxyModel()
 {
 	ChatWidget *cw = chatWidget();
 	if (cw && cw->chat().contacts().count() > 1)
-		return cw->contactsListWidget()->proxyModel();
+		return cw->buddiesProxyModel();
 
 	return 0;
 }

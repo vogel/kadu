@@ -499,9 +499,9 @@ CustomInput * ChatWidget::edit() const
 	return InputBox ? InputBox->inputBox() : 0;
 }
 
-BuddiesListView * ChatWidget::contactsListWidget() const
+BuddiesModelProxy * ChatWidget::buddiesProxyModel() const
 {
-	return BuddiesWidget ? BuddiesWidget->view() : 0;
+	return BuddiesWidget ? BuddiesWidget->view()->proxyModel() : 0;
 }
 
 unsigned int ChatWidget::countMessages() const
