@@ -54,6 +54,7 @@
 #include "gui/hot-key.h"
 #include "icons/kadu-icon.h"
 #include "identities/identity.h"
+#include "model/model-index-list-converter.h"
 #include "model/roles.h"
 #include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
@@ -134,57 +135,17 @@ void BuddiesListView::selectBuddy(Buddy buddy)
 	setCurrentIndex(ProxyModel->indexForValue(buddy));
 }
 
-ContactSet BuddiesListView::selectedContacts() const
-{
-	ContactSet result;
-
-	QModelIndexList selectionList = selectedIndexes();
-	foreach (const QModelIndex &selection, selectionList)
-	{
-		Contact contact = contactAt(selection);
-		if (contact)
-			result.insert(contact);
-	}
-
-	return result;
-}
-
-BuddySet BuddiesListView::selectedBuddies() const
-{
-	BuddySet result;
-
-	QModelIndexList selectionList = selectedIndexes();
-	foreach (const QModelIndex &selection, selectionList)
-	{
-		Buddy buddy = buddyAt(selection);
-		if (buddy)
-			result.insert(buddy);
-	}
-
-	return result;
-}
-
 BuddyOrContact BuddiesListView::buddyOrContactAt(const QModelIndex &index) const
 {
 	switch (index.data(ItemTypeRole).toInt())
 	{
 		case BuddyRole:
-			return buddyAt(index);
+			return index.data(BuddyRole).value<Buddy>();
 		case ContactRole:
-			return contactAt(index);
+			return index.data(ContactRole).value<Contact>();
 	}
 
 	return BuddyOrContact();
-}
-
-Buddy BuddiesListView::buddyAt(const QModelIndex &index) const
-{
-	return index.data(BuddyRole).value<Buddy>();
-}
-
-Contact BuddiesListView::contactAt(const QModelIndex &index) const
-{
-	return index.data(ContactRole).value<Contact>();
 }
 
 Chat BuddiesListView::chatForIndex(const QModelIndex &index) const
@@ -192,91 +153,11 @@ Chat BuddiesListView::chatForIndex(const QModelIndex &index) const
 	if (!index.isValid())
 		return Chat::null;
 
-	Contact con = contactAt(index);
-	if (con.isNull())
+	const Contact &contact = index.data(ContactRole).value<Contact>();
+	if (!contact)
 		return Chat::null;
 
-	return ChatManager::instance()->findChat(ContactSet(con));
-}
-
-Chat BuddiesListView::chatByPendingMessages(const QModelIndex &index) const
-{
-	if (index.data(ItemTypeRole) == BuddyRole)
-		return PendingMessagesManager::instance()->chatForBuddy(buddyAt(index));
-	else
-		return PendingMessagesManager::instance()->chatForContact(contactAt(index));
-}
-
-// TODO 0.10.0: This method is too big. Review and split
-Chat BuddiesListView::currentChat() const
-{
-	BuddySet buddies;
-	Contact contact;
-	ContactSet contacts;
-	Account account;
-
-	QModelIndexList selectionList = selectedIndexes();
-	if (selectionList.count() == 1)
-	{
-		Chat chat = chatByPendingMessages(selectionList.at(0));
-		if (chat)
-			return chat;
-	}
-
-	foreach (const QModelIndex &selection, selectionList)
-	{
-		if (!account)
-		{
-			if (selection.data(ItemTypeRole) == BuddyRole)
-				buddies.insert(buddyAt(selection));
-			else
-			{
-				contact = contactAt(selection);
-				if (!contact)
-					return Chat::null;
-
-				contacts.insert(contact);
-
-				account = contact.contactAccount();
-
-				foreach (const Buddy &buddy, buddies)
-				{
-					contact = BuddyPreferredManager::instance()->preferredContact(buddy, account);
-					if (!contact)
-						return Chat::null;
-
-					contacts.insert(contact);
-				}
-			}
-		}
-		else
-		{
-			if (selection.data(ItemTypeRole) == BuddyRole)
-			{
-				contact = BuddyPreferredManager::instance()->preferredContact(buddyAt(selection), account);
-				if (!contact)
-					return Chat::null;
-
-				contacts.insert(contact);
-			}
-			else
-			{
-				contact = contactAt(selection);
-				if (!contact)
-					return Chat::null;
-
-				if (contact.contactAccount() == account)
-					contacts.insert(contact);
-				else
-					return Chat::null;
-			}
-		}
-	}
-
-	if (!account)
-		return ChatManager::instance()->findChat(buddies, true);
-	else
-		return ChatManager::instance()->findChat(contacts, true);
+	return ChatManager::instance()->findChat(ContactSet(contact));
 }
 
 void BuddiesListView::triggerActivate(const QModelIndex& index)
@@ -284,8 +165,8 @@ void BuddiesListView::triggerActivate(const QModelIndex& index)
 	// we need to fetch these 2 object first
 	// because afer calling buddyActivated or chatActivate index can became invalid
 	// because of changing filters and stuff
-	Chat chat = currentChat();
-	Buddy buddy = buddyAt(index);
+	const Chat &chat = ActionData->chat();
+	const Buddy &buddy = index.data(BuddyRole).value<Buddy>();
 
 	if (buddy)
 		emit buddyActivated(buddy);
@@ -303,7 +184,7 @@ void BuddiesListView::contextMenuEvent(QContextMenuEvent *event)
 	if (!ContextMenuEnabled)
 		return;
 
-	Buddy buddy = buddyAt(indexAt(event->pos()));
+	Buddy buddy = indexAt(event->pos()).data(BuddyRole).value<Buddy>();
 	if (buddy.isNull())
 		return;
 
@@ -382,11 +263,15 @@ void BuddiesListView::mouseMoveEvent(QMouseEvent *event)
 
 void BuddiesListView::updateActionData()
 {
+	ModelIndexListConverter converter(selectedIndexes());
+
 	ActionData->blockChangedSignal();
 
-	ActionData->setBuddies(selectedBuddies());
-	ActionData->setContacts(selectedContacts());
-	ActionData->setChat(currentChat());
+	ActionData->setBuddies(converter.buddySet());
+	ActionData->setContacts(converter.contactSet());
+
+	const Chat &chat = converter.chat();
+	ActionData->setChat(chat);
 
 	ActionData->setHasContactSelected(false);
 	QModelIndexList selectionList = selectedIndexes();
@@ -398,9 +283,9 @@ void BuddiesListView::updateActionData()
 		}
 
 	if (MainConfigurationHolder::instance()->isSetStatusPerIdentity())
-		ActionData->setStatusContainer(currentChat().chatAccount().accountIdentity().data());
+		ActionData->setStatusContainer(chat.chatAccount().accountIdentity().data());
 	else if (MainConfigurationHolder::instance()->isSetStatusPerAccount())
-		ActionData->setStatusContainer(currentChat().chatAccount().statusContainer());
+		ActionData->setStatusContainer(chat.chatAccount().statusContainer());
 	else
 		ActionData->setStatusContainer(StatusContainerManager::instance());
 

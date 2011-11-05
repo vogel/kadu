@@ -64,22 +64,15 @@ class BuddiesListView : public KaduTreeView, public ActionDataSourceProvider
 	BaseActionDataSource *ActionData;
 
 	BuddyOrContact buddyOrContactAt(const QModelIndex &index) const;
-	Buddy buddyAt(const QModelIndex &index) const;
-	Contact contactAt(const QModelIndex &index) const;
 	void triggerActivate(const QModelIndex &index);
 
 	Chat chatForIndex(const QModelIndex &index) const;
-	Chat chatByPendingMessages(const QModelIndex &index) const;
 
 	// Tool tips
 	BuddyOrContact ToolTipItem;
 	QTimer ToolTipTimeoutTimer;
 
 	bool ContextMenuEnabled;
-
-	ContactSet selectedContacts() const;
-	BuddySet selectedBuddies() const;
-	Chat currentChat() const;
 
 private slots:
 	void doubleClickedSlot(const QModelIndex &index);
