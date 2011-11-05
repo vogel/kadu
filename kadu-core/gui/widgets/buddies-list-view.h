@@ -106,6 +106,7 @@ public:
 	// Note that model has to inherit AbstractBuddyModel.
 	virtual void setModel(QAbstractItemModel *model);
 	virtual void setChain(ModelChain *chain);
+	virtual ModelChain * chain() const;
 
 	void addFilter(AbstractBuddyFilter *filter);
 	void removeFilter(AbstractBuddyFilter *filter);

@@ -112,6 +112,11 @@ void BuddiesListView::setChain(ModelChain *chain)
 	        this, SLOT(updateActionData()));
 }
 
+ModelChain * BuddiesListView::chain() const
+{
+	return Chain;
+}
+
 void BuddiesListView::addFilter(AbstractBuddyFilter *filter)
 {
 	ProxyModel->addFilter(filter);
