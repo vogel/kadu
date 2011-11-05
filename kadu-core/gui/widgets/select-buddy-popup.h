@@ -24,11 +24,15 @@
 
 class QModelIndex;
 
+class AbstractBuddyFilter;
+class BuddiesModelProxy;
 class Buddy;
 
 class SelectBuddyPopup : public BuddiesListWidget
 {
 	Q_OBJECT
+
+	BuddiesModelProxy *ProxyModel;
 
 private slots:
 	void itemClicked(const QModelIndex &index);
@@ -38,6 +42,9 @@ public:
 	virtual ~SelectBuddyPopup();
 
 	void show(Buddy buddy);
+
+	void addFilter(AbstractBuddyFilter *filter);
+	void removeFilter(AbstractBuddyFilter *filter);
 
 signals:
 	void buddySelected(Buddy buddy);

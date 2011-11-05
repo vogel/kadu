@@ -23,11 +23,13 @@
 #include <QtGui/QLineEdit>
 
 #include "buddies/buddy-manager.h"
+#include "buddies/filter/anonymous-without-messages-buddy-filter.h"
 #include "buddies/filter/buddy-name-filter.h"
 #include "buddies/model/buddies-model.h"
 #include "buddies/model/buddies-model-proxy.h"
 #include "gui/widgets/buddies-list-view.h"
 #include "model/roles.h"
+#include "model/model-chain.h"
 
 #include "select-buddy-popup.h"
 
@@ -36,14 +38,19 @@ SelectBuddyPopup::SelectBuddyPopup(QWidget *parent) :
 {
 	setWindowFlags(Qt::Popup);
 
-	BuddiesModel *model = new BuddiesModel(this);
+	ModelChain *chain = new ModelChain(new BuddiesModel(this), this);
+	ProxyModel = new BuddiesModelProxy(chain);
+	ProxyModel->setSortByStatus(false);
+	ProxyModel->addFilter(anonymousFilter());
+	ProxyModel->addFilter(nameFilter());
+	chain->addProxyModel(ProxyModel);
 
 	connect(view(), SIGNAL(clicked(QModelIndex)), this, SLOT(itemClicked(QModelIndex)));
 	connect(view(), SIGNAL(buddyActivated(Buddy)), this, SIGNAL(buddySelected(Buddy)));
 	connect(view(), SIGNAL(buddyActivated(Buddy)), this, SLOT(close()));
 
 	view()->setItemsExpandable(false);
-	view()->setModel(model);
+	view()->setChain(chain);
 	view()->setRootIsDecorated(false);
 	view()->setShowAccountName(false);
 	view()->setSelectionMode(QAbstractItemView::SingleSelection);
@@ -61,7 +68,7 @@ void SelectBuddyPopup::show(Buddy buddy)
 	nameFilterWidget()->setFocus();
 #endif
 
-	QModelIndex index = view()->proxyModel()->indexForValue(buddy);
+	QModelIndex index = view()->chain()->indexForValue(buddy);
 	view()->setCurrentIndex(index);
 	BuddiesListWidget::show();
 }
@@ -75,4 +82,14 @@ void SelectBuddyPopup::itemClicked(const QModelIndex &index)
 		return;
 
 	emit buddySelected(buddy);
+}
+
+void SelectBuddyPopup::addFilter(AbstractBuddyFilter *filter)
+{
+	ProxyModel->addFilter(filter);
+}
+
+void SelectBuddyPopup::removeFilter(AbstractBuddyFilter *filter)
+{
+	ProxyModel->removeFilter(filter);
 }

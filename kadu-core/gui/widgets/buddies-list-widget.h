@@ -70,7 +70,9 @@ public:
 
 	BuddiesListView * view() { return View; }
 	QWidget * nameFilterWidget() { return NameFilterWidget; }
-	BuddyNameFilter * nameFilter() { return NameFilter; }
+
+	AnonymousWithoutMessagesBuddyFilter * anonymousFilter() const { return AnonymousFilter; }
+	BuddyNameFilter * nameFilter() const { return NameFilter; }
 
 };
 
