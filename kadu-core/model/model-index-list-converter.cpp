@@ -100,47 +100,43 @@ void ModelIndexListConverter::buildChat()
 			return;
 	}
 
-	BuddySet buddies;
-	Contact contact;
-	ContactSet contacts;
-
 	const Account &account = commonAccount();
-
-	foreach (const QModelIndex &index, ModelIndexList)
+	if (!account)
 	{
-		if (!account)
-		{
+		BuddySet buddies;
+		foreach (const QModelIndex &index, ModelIndexList)
 			if (index.data(ItemTypeRole) == BuddyRole)
 				buddies.insert(index.data(BuddyRole).value<Buddy>());
 			else
 				return;
+
+		ComputedChat = ChatManager::instance()->findChat(buddies, true);
+		return;
+	}
+
+	ContactSet contacts;
+	foreach (const QModelIndex &index, ModelIndexList)
+	{
+		if (index.data(ItemTypeRole) == BuddyRole)
+		{
+			const Contact &contact = BuddyPreferredManager::instance()->preferredContact(index.data(BuddyRole).value<Buddy>(), account);
+			if (!contact)
+				return;
+
+			contacts.insert(contact);
 		}
 		else
 		{
-			if (index.data(ItemTypeRole) == BuddyRole)
-			{
-				contact = BuddyPreferredManager::instance()->preferredContact(index.data(BuddyRole).value<Buddy>(), account);
-				if (!contact)
-					return;
+			const Contact &contact = index.data(ContactRole).value<Contact>();
+			if (!contact)
+				return;
 
+			if (contact.contactAccount() == account)
 				contacts.insert(contact);
-			}
 			else
-			{
-				contact = index.data(ContactRole).value<Contact>();
-				if (!contact)
-					return;
-
-				if (contact.contactAccount() == account)
-					contacts.insert(contact);
-				else
-					return;
-			}
+				return;
 		}
 	}
 
-	if (!account)
-		ComputedChat = ChatManager::instance()->findChat(buddies, true);
-	else
-		ComputedChat = ChatManager::instance()->findChat(contacts, true);
+	ComputedChat = ChatManager::instance()->findChat(contacts, true);
 }
