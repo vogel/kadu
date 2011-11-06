@@ -44,7 +44,6 @@
 #include "chat/message/pending-messages-manager.h"
 #include "configuration/configuration-file.h"
 #include "configuration/main-configuration-holder.h"
-#include "contacts/filter/contact-no-unloaded-account-filter.h"
 #include "gui/actions/action.h"
 #include "gui/actions/action-description.h"
 #include "gui/actions/base-action-data-source.h"
