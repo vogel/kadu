@@ -27,9 +27,15 @@
 ModelIndexListConverter::ModelIndexListConverter(const QModelIndexList &modelIndexList) :
 		ModelIndexList(modelIndexList)
 {
+	buildRoles();
 	buildBuddySet();
 	buildContactSet();
 	buildChat();
+}
+
+RoleSet ModelIndexListConverter::roles() const
+{
+	return ComputedRoles;
 }
 
 BuddySet ModelIndexListConverter::buddySet() const
@@ -45,6 +51,12 @@ ContactSet ModelIndexListConverter::contactSet() const
 Chat ModelIndexListConverter::chat() const
 {
 	return ComputedChat;
+}
+
+void ModelIndexListConverter::buildRoles()
+{
+	foreach (const QModelIndex &selection, ModelIndexList)
+		ComputedRoles.insert(selection.data(ItemTypeRole).toInt());
 }
 
 void ModelIndexListConverter::buildBuddySet()

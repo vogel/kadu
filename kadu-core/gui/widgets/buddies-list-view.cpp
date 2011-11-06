@@ -247,19 +247,12 @@ void BuddiesListView::updateActionData()
 
 	ActionData->blockChangedSignal();
 
+	ActionData->setRoles(converter.roles());
 	ActionData->setBuddies(converter.buddySet());
 	ActionData->setContacts(converter.contactSet());
 
 	const Chat &chat = converter.chat();
 	ActionData->setChat(chat);
-
-	RoleSet roles;
-
-	QModelIndexList selectionList = selectedIndexes();
-	foreach (const QModelIndex &selection, selectionList)
-		roles.insert(selection.data(ItemTypeRole).toInt());
-
-	ActionData->setRoles(roles);
 
 	if (MainConfigurationHolder::instance()->isSetStatusPerIdentity())
 		ActionData->setStatusContainer(chat.chatAccount().accountIdentity().data());

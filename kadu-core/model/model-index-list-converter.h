@@ -22,18 +22,21 @@
 
 #include <QtCore/QModelIndexList>
 
+#include "buddies/buddy-set.h"
 #include "chat/chat.h"
 #include "contacts/contact-set.h"
-#include "buddies/buddy-set.h"
+#include "model/roles.h"
 
 class ModelIndexListConverter
 {
 	const QModelIndexList &ModelIndexList;
 
+	RoleSet ComputedRoles;
 	BuddySet ComputedBuddySet;
 	ContactSet ComputedContactSet;
 	Chat ComputedChat;
 
+	void buildRoles();
 	void buildBuddySet();
 	void buildContactSet();
 	void buildChat();
@@ -48,6 +51,7 @@ class ModelIndexListConverter
 public:
 	explicit ModelIndexListConverter(const QModelIndexList &modelIndexList);
 
+	RoleSet roles() const;
 	BuddySet buddySet() const;
 	ContactSet contactSet() const;
 	Chat chat() const;
