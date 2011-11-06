@@ -46,7 +46,6 @@ class Action;
 class ActionDescription;
 class ActionSource;
 class BuddyInfoPanel;
-class ChatsTreeView;
 class FilteredTreeView;
 class GroupBuddyFilter;
 class GroupTabBar;
@@ -94,7 +93,7 @@ private:
 	BuddiesListView *BuddiesView;
 	BuddiesModelProxy *ProxyModel;
 	GroupBuddyFilter *GroupFilter;
-	ChatsTreeView *ChatsTree;
+	BuddiesListView *ChatsTree;
 
 	QWidget *MainWidget;
 	QVBoxLayout *MainLayout;

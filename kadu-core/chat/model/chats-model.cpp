@@ -177,7 +177,10 @@ Chat ChatsModel::chatAt(const QModelIndex &index) const
 
 QModelIndex ChatsModel::indexForValue(const QVariant &value) const
 {
-	Chat chat = value.value<Chat>();
+	const Chat &chat = value.value<Chat>();
+	if (!chat)
+		return QModelIndex();
+
 	int result = ChatManager::instance()->indexOf(chat);
 
 	return index(result, 0);

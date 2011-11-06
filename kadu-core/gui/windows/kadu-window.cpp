@@ -205,7 +205,7 @@ QWidget * KaduWindow::createBuddiesWidget(QWidget *parent)
 	connect(BuddiesView, SIGNAL(currentChanged(BuddyOrContact)), InfoPanel, SLOT(displayItem(BuddyOrContact)));
 
 	if (!config_file.readBoolEntry("Look", "ShowInfoPanel"))
-		InfoPanel->setVisible(false);;
+		InfoPanel->setVisible(false);
 
 	ChangeStatusButtons = new StatusButtons(this);
 	MainLayout->addWidget(ChangeStatusButtons);
@@ -225,17 +225,20 @@ QWidget * KaduWindow::createBuddiesWidget(QWidget *parent)
 
 QWidget * KaduWindow::createChatsWidget(QWidget *parent)
 {
-	ChatsTree = new ChatsTreeView(parent);
-	ChatsModel *chatsModel = new ChatsModel(ChatsTree);
-	ChatsProxyModel *chatsProxyModel = new ChatsProxyModel(ChatsTree);
+	ChatsTree = new BuddiesListView(parent);
+	ChatsTree->setContextMenuEnabled(true);
 
-	chatsProxyModel->setSourceModel(chatsModel);
+	ModelChain *chain = new ModelChain(new ChatsModel(ChatsTree), ChatsTree);
+
+	ChatsProxyModel *chatsProxyModel = new ChatsProxyModel(chain);
 
 	ChatNamedFilter *chatNamedFilter = new ChatNamedFilter(chatsProxyModel);
 	chatNamedFilter->setEnabled(true);
 	chatsProxyModel->addFilter(chatNamedFilter);
 
-	ChatsTree->setModel(chatsProxyModel);
+	chain->addProxyModel(chatsProxyModel);
+
+	ChatsTree->setChain(chain);
 
 	return ChatsTree;
 }

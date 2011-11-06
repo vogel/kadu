@@ -23,8 +23,9 @@
 #include <QtCore/QAbstractItemModel>
 
 #include "chat/chat.h"
+#include "model/kadu-abstract-model.h"
 
-class ChatsModel : public QAbstractItemModel
+class ChatsModel : public QAbstractItemModel, public KaduAbstractModel
 {
 	Q_OBJECT
 
