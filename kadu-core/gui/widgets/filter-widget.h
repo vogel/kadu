@@ -29,9 +29,8 @@
 #	include <Carbon/Carbon.h>
 #endif
 
-class BuddiesListView;
-
 class QLineEdit;
+class QTreeView;
 
 class KADUAPI FilterWidget : public QWidget
 {
@@ -43,7 +42,7 @@ class KADUAPI FilterWidget : public QWidget
 #else
 	QLineEdit *NameFilterEdit;
 #endif
-	BuddiesListView *View;
+	QTreeView *View;
 	bool sendKeyEventToView(QKeyEvent *);
 
 
@@ -58,7 +57,7 @@ public:
 	virtual ~FilterWidget();
 
 	void setFilter(const QString &filter);
-	void setView(BuddiesListView *view);
+	void setView(QTreeView *view);
 
 signals:
 	void textChanged(const QString &text);

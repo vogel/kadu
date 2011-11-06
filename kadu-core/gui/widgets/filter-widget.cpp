@@ -219,7 +219,7 @@ void FilterWidget::setFilter(const QString &filter)
 #endif
 }
 
-void FilterWidget::setView(BuddiesListView *view)
+void FilterWidget::setView(QTreeView *view)
 {
 	View = view;
 }
