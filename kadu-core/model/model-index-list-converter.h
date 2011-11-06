@@ -31,14 +31,14 @@ class ModelIndexListConverter
 {
 	const QModelIndexList &ModelIndexList;
 
-	RoleSet ComputedRoles;
-	BuddySet ComputedBuddySet;
-	ContactSet ComputedContactSet;
+	RoleSet Roles;
+	BuddySet Buddies;
+	ContactSet Contacts;
 	Chat ComputedChat;
 
 	void buildRoles();
-	void buildBuddySet();
-	void buildContactSet();
+	void buildBuddies();
+	void buildContacts();
 	void buildChat();
 
 	Chat chatByPendingMessages(const QModelIndex &index) const;
@@ -52,8 +52,8 @@ public:
 	explicit ModelIndexListConverter(const QModelIndexList &modelIndexList);
 
 	RoleSet roles() const;
-	BuddySet buddySet() const;
-	ContactSet contactSet() const;
+	BuddySet buddies() const;
+	ContactSet contacts() const;
 	Chat chat() const;
 
 };

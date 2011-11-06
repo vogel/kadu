@@ -248,8 +248,8 @@ void BuddiesListView::updateActionData()
 	ActionData->blockChangedSignal();
 
 	ActionData->setRoles(converter.roles());
-	ActionData->setBuddies(converter.buddySet());
-	ActionData->setContacts(converter.contactSet());
+	ActionData->setBuddies(converter.buddies());
+	ActionData->setContacts(converter.contacts());
 
 	const Chat &chat = converter.chat();
 	ActionData->setChat(chat);

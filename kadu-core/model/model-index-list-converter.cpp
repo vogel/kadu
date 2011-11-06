@@ -28,24 +28,24 @@ ModelIndexListConverter::ModelIndexListConverter(const QModelIndexList &modelInd
 		ModelIndexList(modelIndexList)
 {
 	buildRoles();
-	buildBuddySet();
-	buildContactSet();
+	buildBuddies();
+	buildContacts();
 	buildChat();
 }
 
 RoleSet ModelIndexListConverter::roles() const
 {
-	return ComputedRoles;
+	return Roles;
 }
 
-BuddySet ModelIndexListConverter::buddySet() const
+BuddySet ModelIndexListConverter::buddies() const
 {
-	return ComputedBuddySet;
+	return Buddies;
 }
 
-ContactSet ModelIndexListConverter::contactSet() const
+ContactSet ModelIndexListConverter::contacts() const
 {
-	return ComputedContactSet;
+	return Contacts;
 }
 
 Chat ModelIndexListConverter::chat() const
@@ -56,26 +56,26 @@ Chat ModelIndexListConverter::chat() const
 void ModelIndexListConverter::buildRoles()
 {
 	foreach (const QModelIndex &selection, ModelIndexList)
-		ComputedRoles.insert(selection.data(ItemTypeRole).toInt());
+		Roles.insert(selection.data(ItemTypeRole).toInt());
 }
 
-void ModelIndexListConverter::buildBuddySet()
+void ModelIndexListConverter::buildBuddies()
 {
 	foreach (const QModelIndex &index, ModelIndexList)
 	{
 		const Buddy &buddy = index.data(BuddyRole).value<Buddy>();
 		if (buddy)
-			ComputedBuddySet.insert(buddy);
+			Buddies.insert(buddy);
 	}
 }
 
-void ModelIndexListConverter::buildContactSet()
+void ModelIndexListConverter::buildContacts()
 {
 	foreach (const QModelIndex &index, ModelIndexList)
 	{
 		const Contact &contact = index.data(ContactRole).value<Contact>();
 		if (contact)
-			ComputedContactSet.insert(contact);
+			Contacts.insert(contact);
 	}
 }
 
