@@ -24,17 +24,18 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QHBoxLayout>
 #include <QtGui/QKeyEvent>
-#include <QtGui/QLabel>
-#include <QtGui/QLineEdit>
+#include <QtGui/QTreeView>
 #include <QtGui/QVBoxLayout>
 
-#include "buddies/filter/buddy-name-filter.h"
-#include "gui/widgets/buddies-list-view.h"
-#include "icons/icons-manager.h"
+#include "gui/widgets/filter-widget.h"
 
 #include "buddies-list-widget.h"
+
+bool BuddiesListWidget::shouldEventGoToFilter(QKeyEvent *event)
+{
+	return !event->text().isEmpty() && event->text().at(0).isPrint();
+}
 
 BuddiesListWidget::BuddiesListWidget(FilterPosition filterPosition, QWidget *parent) :
 		QWidget(parent), CurrentFilterPosition(filterPosition), View(0)
@@ -93,14 +94,9 @@ void BuddiesListWidget::setTreeView(QTreeView *treeView)
 	insertView();
 }
 
-void BuddiesListWidget::clearFilter()
-{
-	NameFilterWidget->setFilter(QString());
-}
-
 void BuddiesListWidget::keyPressEvent(QKeyEvent *event)
 {
-	if (BuddiesListView::shouldEventGoToFilter(event))
+	if (shouldEventGoToFilter(event))
 	{
 		NameFilterWidget->setFilter(event->text());
 		NameFilterWidget->setFocus(Qt::OtherFocusReason);

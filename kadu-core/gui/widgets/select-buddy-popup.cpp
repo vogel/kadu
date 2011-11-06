@@ -28,6 +28,7 @@
 #include "buddies/model/buddies-model.h"
 #include "buddies/model/buddies-model-proxy.h"
 #include "gui/widgets/buddies-list-view.h"
+#include "gui/widgets/filter-widget.h"
 #include "model/roles.h"
 #include "model/model-chain.h"
 
@@ -75,7 +76,7 @@ SelectBuddyPopup::~SelectBuddyPopup()
 void SelectBuddyPopup::show(Buddy buddy)
 {
 #ifndef Q_WS_MAEMO_5
-	nameFilterWidget()->setFocus();
+	filterWidget()->setFocus();
 #endif
 
 	QModelIndex index = View->chain()->indexForValue(buddy);

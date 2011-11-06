@@ -96,8 +96,6 @@ protected:
 	virtual void hideEvent(QHideEvent *event);
 
 public:
-	static bool shouldEventGoToFilter(QKeyEvent *event);
-
 	explicit BuddiesListView(QWidget *parent = 0);
 	virtual ~BuddiesListView();
 

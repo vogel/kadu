@@ -25,6 +25,7 @@
 class QModelIndex;
 
 class AbstractBuddyFilter;
+class BuddiesListView;
 class BuddiesModelProxy;
 class Buddy;
 

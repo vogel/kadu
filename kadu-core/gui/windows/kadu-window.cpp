@@ -61,6 +61,7 @@
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/chats-tree-view.h"
 #include "gui/widgets/group-tab-bar.h"
+#include "gui/widgets/filter-widget.h"
 #include "gui/widgets/kadu-web-view.h"
 #include "gui/windows/kadu-window-action-data-source.h"
 #include "gui/windows/kadu-window-actions.h"
@@ -348,7 +349,7 @@ void KaduWindow::compositingEnabled()
 			GroupBar->setAutoFillBackground(true);
 			InfoPanel->setAutoFillBackground(true);
 			ChangeStatusButtons->setAutoFillBackground(true);
-			ContactsWidget->nameFilterWidget()->setAutoFillBackground(true);
+			ContactsWidget->filterWidget()->setAutoFillBackground(true);
 			BuddiesView->verticalScrollBar()->setAutoFillBackground(true);
 			// TODO: find a way to paint this QFrame outside its viewport still allowing the viewport to be transparent
 			BuddiesView->setFrameShape(QFrame::NoFrame);
@@ -373,7 +374,7 @@ void KaduWindow::compositingDisabled()
 		GroupBar->setAutoFillBackground(false);
 		InfoPanel->setAutoFillBackground(false);
 		ChangeStatusButtons->setAutoFillBackground(false);
-		ContactsWidget->nameFilterWidget()->setAutoFillBackground(false);
+		ContactsWidget->filterWidget()->setAutoFillBackground(false);
 		BuddiesView->verticalScrollBar()->setAutoFillBackground(false);
 		BuddiesView->setFrameShape(QFrame::StyledPanel);
 		for (int i = 1; i < Split->count(); ++i)
@@ -511,7 +512,7 @@ void KaduWindow::changeEvent(QEvent *event)
 	if (event->type() == QEvent::ActivationChange)
 	{
 		if (!_isActiveWindow(this))
-			ContactsWidget->clearFilter();
+			ContactsWidget->filterWidget()->setFilter(QString());
 	}
 	if (event->type() == QEvent::ParentChange)
 	{

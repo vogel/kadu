@@ -40,6 +40,7 @@
 #include "contacts/contact-set.h"
 #include "core/core.h"
 #include "gui/widgets/buddies-list-view.h"
+#include "gui/widgets/buddies-list-widget.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/line-edit-with-clear-button.h"
 #include "misc/misc.h"
@@ -163,7 +164,7 @@ void OpenChatWith::keyPressEvent(QKeyEvent *e)
 			break;
 	}
 
-	if (BuddiesListView::shouldEventGoToFilter(e))
+	if (BuddiesListWidget::shouldEventGoToFilter(e))
 	{
 		ContactID->setText(e->text());
 		ContactID->setFocus(Qt::OtherFocusReason);

@@ -28,13 +28,12 @@
 
 #include <QtGui/QWidget>
 
-#include "gui/widgets/filter-widget.h"
 #include "exports.h"
 
+class QTreeView;
 class QVBoxLayout;
 
-class BuddiesListView;
-class MainWindow;
+class FilterWidget;
 
 class KADUAPI BuddiesListWidget : public QWidget
 {
@@ -61,15 +60,15 @@ protected:
 	virtual void keyPressEvent(QKeyEvent *event);
 
 public:
+	static bool shouldEventGoToFilter(QKeyEvent *event);
+
 	explicit BuddiesListWidget(FilterPosition filterPosition, QWidget *parent = 0);
 	virtual ~BuddiesListWidget();
 
+	FilterWidget * filterWidget() { return NameFilterWidget; }
+
 	void setPosition(FilterPosition filterPosition);
 	void setTreeView(QTreeView *treeView);
-
-	void clearFilter();
-
-	QWidget * nameFilterWidget() { return NameFilterWidget; }
 
 signals:
 	void filterChanged(const QString &filterText);

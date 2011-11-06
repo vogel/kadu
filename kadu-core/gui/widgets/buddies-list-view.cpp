@@ -47,6 +47,7 @@
 #include "gui/actions/action.h"
 #include "gui/actions/action-description.h"
 #include "gui/actions/base-action-data-source.h"
+#include "gui/widgets/buddies-list-widget.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/windows/kadu-window-actions.h"
 #include "gui/hot-key.h"
@@ -176,11 +177,6 @@ void BuddiesListView::contextMenuEvent(QContextMenuEvent *event)
 	menu->exec(event->globalPos());
 }
 
-bool BuddiesListView::shouldEventGoToFilter(QKeyEvent *event)
-{
-	return !event->text().isEmpty() && event->text().at(0).isPrint();
-}
-
 void BuddiesListView::keyPressEvent(QKeyEvent *event)
 {
 	// TODO 0.10.0: add proper shortcuts handling
@@ -196,7 +192,7 @@ void BuddiesListView::keyPressEvent(QKeyEvent *event)
 				triggerActivate(currentIndex());
 				break;
 			default:
-				if (shouldEventGoToFilter(event))
+				if (BuddiesListWidget::shouldEventGoToFilter(event))
 					event->ignore();
 				else
 					QTreeView::keyPressEvent(event);
