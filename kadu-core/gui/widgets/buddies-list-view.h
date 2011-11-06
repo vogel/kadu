@@ -71,6 +71,8 @@ class BuddiesListView : public KaduTreeView, public ActionDataSourceProvider
 
 	bool ContextMenuEnabled;
 
+	StatusContainer * statusContainerForChat(const Chat &chat) const;
+
 private slots:
 	void doubleClickedSlot(const QModelIndex &index);
 

@@ -241,6 +241,16 @@ void BuddiesListView::mouseMoveEvent(QMouseEvent *event)
 	toolTipRestart(event->pos());
 }
 
+StatusContainer * BuddiesListView::statusContainerForChat(const Chat &chat) const
+{
+	if (MainConfigurationHolder::instance()->isSetStatusPerIdentity())
+		return chat.chatAccount().accountIdentity().data();
+	else if (MainConfigurationHolder::instance()->isSetStatusPerAccount())
+		return chat.chatAccount().statusContainer();
+	else
+		return StatusContainerManager::instance();
+}
+
 void BuddiesListView::updateActionData()
 {
 	ModelIndexListConverter converter(selectedIndexes());
@@ -250,16 +260,8 @@ void BuddiesListView::updateActionData()
 	ActionData->setRoles(converter.roles());
 	ActionData->setBuddies(converter.buddies());
 	ActionData->setContacts(converter.contacts());
-
-	const Chat &chat = converter.chat();
-	ActionData->setChat(chat);
-
-	if (MainConfigurationHolder::instance()->isSetStatusPerIdentity())
-		ActionData->setStatusContainer(chat.chatAccount().accountIdentity().data());
-	else if (MainConfigurationHolder::instance()->isSetStatusPerAccount())
-		ActionData->setStatusContainer(chat.chatAccount().statusContainer());
-	else
-		ActionData->setStatusContainer(StatusContainerManager::instance());
+	ActionData->setChat(converter.chat());
+	ActionData->setStatusContainer(statusContainerForChat(converter.chat()));
 
 	ActionData->unblockChangedSignal();
 }
