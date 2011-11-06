@@ -658,7 +658,7 @@ void HistoryWindow::showMainPopupMenu(const QPoint &pos)
 			if (!chat)
 				return;
 
-			menu.reset(BuddiesListViewMenuManager::instance()->menu(this, actionDataSource(), chat.contacts().toContactVector().toList()));
+			menu.reset(BuddiesListViewMenuManager::instance()->menu(this, actionDataSource()));
 			menu->addSeparator();
 			menu->addAction(KaduIcon("kadu_icons/clear-history").icon(),
 					tr("&Clear Chat History"), this, SLOT(clearChatHistory()));
@@ -672,7 +672,7 @@ void HistoryWindow::showMainPopupMenu(const QPoint &pos)
 			if (!buddy || buddy.contacts().isEmpty())
 				return;
 
-			menu.reset(BuddiesListViewMenuManager::instance()->menu(this, actionDataSource(), buddy.contacts()));
+			menu.reset(BuddiesListViewMenuManager::instance()->menu(this, actionDataSource()));
 			menu->addSeparator();
 			menu->addAction(KaduIcon("kadu_icons/clear-history").icon(),
 					tr("&Clear Status History"), this, SLOT(clearStatusHistory()));

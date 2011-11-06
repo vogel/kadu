@@ -105,10 +105,8 @@ void BuddiesListViewMenuManager::removeListActionDescription(ActionDescription *
 }
 
 // TODO: refactor, split
-QMenu * BuddiesListViewMenuManager::menu(QWidget *parent, ActionDataSource *actionDataSource, const QList<Contact> &contacts)
+QMenu * BuddiesListViewMenuManager::menu(QWidget *parent, ActionDataSource *actionDataSource)
 {
-	Q_UNUSED(contacts)
-
 	sortBuddiesContexMenu();
 	sortBuddyListActions();
 

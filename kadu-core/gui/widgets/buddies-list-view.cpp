@@ -169,11 +169,7 @@ void BuddiesListView::contextMenuEvent(QContextMenuEvent *event)
 	if (!ContextMenuEnabled)
 		return;
 
-	Buddy buddy = indexAt(event->pos()).data(BuddyRole).value<Buddy>();
-	if (buddy.isNull())
-		return;
-
-	QScopedPointer<QMenu> menu(BuddiesListViewMenuManager::instance()->menu(this, ActionData, buddy.contacts()));
+	QScopedPointer<QMenu> menu(BuddiesListViewMenuManager::instance()->menu(this, ActionData));
 	menu->exec(event->globalPos());
 }
 
