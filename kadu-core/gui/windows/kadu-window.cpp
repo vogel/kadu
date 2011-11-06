@@ -239,6 +239,8 @@ QWidget * KaduWindow::createChatsWidget(QWidget *parent)
 
 	ChatsTree->setChain(chain);
 
+	connect(ChatsTree, SIGNAL(chatActivated(Chat)), this, SLOT(openChatWindow(Chat)));
+
 	return ChatsTree;
 }
 
