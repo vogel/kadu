@@ -28,13 +28,10 @@
 #include "buddies/buddy-list.h"
 #include "buddies/group.h"
 
-class GroupBuddyFilter;
-
 class KADUAPI GroupTabBar : public QTabBar, ConfigurationAwareObject
 {
 	Q_OBJECT
 
-	GroupBuddyFilter *Filter;
 	// for dnd support
 	Group currentGroup;
 	BuddyList currentBuddies;
@@ -82,7 +79,8 @@ public:
 
 	void addGroup(const Group &group);
 
-	GroupBuddyFilter * filter() { return Filter; }
+signals:
+	void currentGroupChanged(const Group &group);
 
 };
 

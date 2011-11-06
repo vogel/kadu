@@ -87,7 +87,7 @@ extern void qt_mac_set_menubar_icons(bool enable);
 
 KaduWindow::KaduWindow(QWidget *parent) :
 		MainWindow(new KaduWindowActionDataSource(), QString(), parent), Docked(false),
-		ContactsWidget(0), CompositingEnabled(false)
+		ContactsWidget(0), GroupFilter(0), CompositingEnabled(false)
 {
 	setWindowRole("kadu-main");
 
@@ -182,7 +182,11 @@ QWidget * KaduWindow::createBuddiesWidget(QWidget *parent)
 	connect(ContactsWidget, SIGNAL(filterChanged(QString)), nameFilter, SLOT(setName(QString)));
 
 	ProxyModel->addFilter(nameFilter);
-	ProxyModel->addFilter(GroupBar->filter());
+
+	GroupFilter = new GroupBuddyFilter(ProxyModel);
+	connect(GroupBar, SIGNAL(currentGroupChanged(Group)), GroupFilter, SLOT(setGroup(Group)));
+
+	ProxyModel->addFilter(GroupFilter);
 	chain->addProxyModel(ProxyModel);
 
 	BuddiesView->useConfigurationColors(true);
@@ -585,6 +589,11 @@ void KaduWindow::configurationUpdated()
 	ChangeStatusButtons->setVisible(config_file.readBoolEntry("Look", "ShowStatusButton"));
 
 	triggerCompositingStateChanged();
+
+	if (config_file.readBoolEntry("Look", "DisplayGroupTabs", true))
+		GroupFilter->setAllGroupShown(config_file.readBoolEntry("Look", "ShowGroupAll", true));
+	else
+		GroupFilter->setAllGroupShown(true);
 }
 
 void KaduWindow::insertMenuActionDescription(ActionDescription *actionDescription, MenuType type, int pos)

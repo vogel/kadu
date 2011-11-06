@@ -48,6 +48,7 @@ class ActionSource;
 class BuddyInfoPanel;
 class ChatsTreeView;
 class FilteredTreeView;
+class GroupBuddyFilter;
 class GroupTabBar;
 class KaduWebView;
 class KaduWindowActionDataSource;
@@ -92,6 +93,7 @@ private:
 	FilteredTreeView *ContactsWidget;
 	BuddiesListView *BuddiesView;
 	BuddiesModelProxy *ProxyModel;
+	GroupBuddyFilter *GroupFilter;
 	ChatsTreeView *ChatsTree;
 
 	QWidget *MainWidget;

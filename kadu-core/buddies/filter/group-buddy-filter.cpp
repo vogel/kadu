@@ -34,7 +34,7 @@ GroupBuddyFilter::GroupBuddyFilter(QObject *parent) :
 			this, SIGNAL(filterChanged()));
 }
 
-void GroupBuddyFilter::setGroup(Group group)
+void GroupBuddyFilter::setGroup(const Group &group)
 {
 	if (CurrentGroup == group)
 		return;
