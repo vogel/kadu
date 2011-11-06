@@ -61,12 +61,12 @@ BuddiesListViewDelegate::~BuddiesListViewDelegate()
 void BuddiesListViewDelegate::setChain(ModelChain *chain)
 {
 	if (Chain)
-		disconnect(Chain, SIGNAL(destroyed(QObject *)), this, SLOT(modelDestroyed()));
+		disconnect(Chain, SIGNAL(destroyed(QObject *)), this, SLOT(chainDestroyed()));
 
 	Chain = chain;
 
 	if (Chain)
-		connect(Chain, SIGNAL(destroyed(QObject *)), this, SLOT(modelDestroyed()));
+		connect(Chain, SIGNAL(destroyed(QObject *)), this, SLOT(chainDestroyed()));
 }
 
 void BuddiesListViewDelegate::avatarUpdated(Avatar avatar)
