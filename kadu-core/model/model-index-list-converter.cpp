@@ -79,28 +79,35 @@ void ModelIndexListConverter::buildContacts()
 	}
 }
 
-Chat ModelIndexListConverter::chatByPendingMessages(const QModelIndex &index) const
+Chat ModelIndexListConverter::chatFromIndex(const QModelIndex &index) const
 {
-	if (index.data(ItemTypeRole) == BuddyRole)
-		return PendingMessagesManager::instance()->chatForBuddy(index.data(BuddyRole).value<Buddy>());
-	else
-		return PendingMessagesManager::instance()->chatForContact(index.data(ContactRole).value<Contact>());
+	switch (index.data(ItemTypeRole).toInt())
+	{
+		case ChatRole:
+			return index.data(ChatRole).value<Chat>();
+		case BuddyRole:
+			return PendingMessagesManager::instance()->chatForBuddy(index.data(BuddyRole).value<Buddy>());
+		case ContactRole:
+			return PendingMessagesManager::instance()->chatForContact(index.data(ContactRole).value<Contact>());
+	}
+
+	return Chat::null;
 }
 
 Chat ModelIndexListConverter::chatFromBuddies() const
 {
 	BuddySet buddies;
 	foreach (const QModelIndex &index, ModelIndexList)
-		if (index.data(ItemTypeRole) == BuddyRole)
-			buddies.insert(index.data(BuddyRole).value<Buddy>());
-		else
-			return Chat::null;
+		buddies.insert(index.data(BuddyRole).value<Buddy>());
 
 	return ChatManager::instance()->findChat(buddies, true);
 }
 
 Chat ModelIndexListConverter::chatFromContacts(const Account &account) const
 {
+	if (!account)
+		return Chat::null;
+
 	ContactSet contacts;
 	foreach (const QModelIndex &index, ModelIndexList)
 	{
@@ -118,7 +125,7 @@ Account ModelIndexListConverter::commonAccount() const
 {
 	foreach (const QModelIndex &index, ModelIndexList)
 	{
-		if (index.data(ItemTypeRole) != BuddyRole)
+		if (index.data(ItemTypeRole) == ContactRole)
 		{
 			const Contact &contact = index.data(ContactRole).value<Contact>();
 			if (contact)
@@ -145,14 +152,24 @@ void ModelIndexListConverter::buildChat()
 {
 	if (ModelIndexList.size() == 1)
 	{
-		ComputedChat = chatByPendingMessages(ModelIndexList.at(0));
+		ComputedChat = chatFromIndex(ModelIndexList.at(0));
 		if (ComputedChat)
 			return;
 	}
 
-	const Account &account = commonAccount();
-	if (!account)
+	// more than one item selected and a Chat selected
+	// we can not return one chat in this situation
+	if (Roles.contains(ChatRole))
+		return;
+
+	// only buddies selected
+	if (Roles.contains(BuddyRole) && Roles.size() == 1)
+	{
 		ComputedChat = chatFromBuddies();
-	else
-		ComputedChat = chatFromContacts(account);
+		return;
+	}
+
+	// buddies and contacts selected
+	if (Roles.contains(ContactRole))
+		ComputedChat = chatFromContacts(commonAccount());
 }

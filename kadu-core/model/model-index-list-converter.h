@@ -41,7 +41,7 @@ class ModelIndexListConverter
 	void buildContacts();
 	void buildChat();
 
-	Chat chatByPendingMessages(const QModelIndex &index) const;
+	Chat chatFromIndex(const QModelIndex &index) const;
 	Chat chatFromBuddies() const;
 	Chat chatFromContacts(const Account &account) const;
 
