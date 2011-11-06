@@ -32,6 +32,7 @@ class SelectBuddyPopup : public BuddiesListWidget
 {
 	Q_OBJECT
 
+	BuddiesListView *View;
 	BuddiesModelProxy *ProxyModel;
 
 private slots:

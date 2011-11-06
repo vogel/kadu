@@ -29,6 +29,7 @@
 #include "buddies/buddy-manager.h"
 #include "buddies/filter/account-buddy-filter.h"
 #include "buddies/filter/anonymous-buddy-filter.h"
+#include "buddies/filter/buddy-name-filter.h"
 #include "buddies/model/buddies-model.h"
 #include "buddies/model/buddies-model-proxy.h"
 #include "contacts/contact.h"
@@ -66,7 +67,12 @@ AccountBuddyListWidget::AccountBuddyListWidget(Account account, QWidget *parent)
 	chain->addProxyModel(proxyModel);
 
 	BuddiesWidget = new BuddiesListWidget(BuddiesListWidget::FilterAtTop, this);
-	BuddiesWidget->view()->setChain(chain);
+	proxyModel->addFilter(BuddiesWidget->nameFilter());
+
+	BuddiesListView *view = new BuddiesListView(BuddiesWidget);
+	view->setChain(chain);
+
+	BuddiesWidget->setTreeView(view);
 	BuddiesWidget->setMinimumSize(QSize(30, 30));
 
 	QWidget *buttons = new QWidget(this);

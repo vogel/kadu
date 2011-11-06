@@ -38,6 +38,9 @@ SelectBuddyPopup::SelectBuddyPopup(QWidget *parent) :
 {
 	setWindowFlags(Qt::Popup);
 
+	View = new BuddiesListView(this);
+	setTreeView(View);
+
 	ModelChain *chain = new ModelChain(new BuddiesModel(this), this);
 	ProxyModel = new BuddiesModelProxy(chain);
 	ProxyModel->setSortByStatus(false);
@@ -49,15 +52,15 @@ SelectBuddyPopup::SelectBuddyPopup(QWidget *parent) :
 	ProxyModel->addFilter(nameFilter());
 	chain->addProxyModel(ProxyModel);
 
-	connect(view(), SIGNAL(clicked(QModelIndex)), this, SLOT(itemClicked(QModelIndex)));
-	connect(view(), SIGNAL(buddyActivated(Buddy)), this, SIGNAL(buddySelected(Buddy)));
-	connect(view(), SIGNAL(buddyActivated(Buddy)), this, SLOT(close()));
+	connect(View, SIGNAL(clicked(QModelIndex)), this, SLOT(itemClicked(QModelIndex)));
+	connect(View, SIGNAL(buddyActivated(Buddy)), this, SIGNAL(buddySelected(Buddy)));
+	connect(View, SIGNAL(buddyActivated(Buddy)), this, SLOT(close()));
 
-	view()->setItemsExpandable(false);
-	view()->setChain(chain);
-	view()->setRootIsDecorated(false);
-	view()->setShowAccountName(false);
-	view()->setSelectionMode(QAbstractItemView::SingleSelection);
+	View->setItemsExpandable(false);
+	View->setChain(chain);
+	View->setRootIsDecorated(false);
+	View->setShowAccountName(false);
+	View->setSelectionMode(QAbstractItemView::SingleSelection);
 
 	nameFilter()->setIgnoreNextFilters(false);
 }
@@ -72,8 +75,8 @@ void SelectBuddyPopup::show(Buddy buddy)
 	nameFilterWidget()->setFocus();
 #endif
 
-	QModelIndex index = view()->chain()->indexForValue(buddy);
-	view()->setCurrentIndex(index);
+	QModelIndex index = View->chain()->indexForValue(buddy);
+	View->setCurrentIndex(index);
 	BuddiesListWidget::show();
 }
 

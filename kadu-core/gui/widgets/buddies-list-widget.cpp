@@ -37,39 +37,62 @@
 #include "buddies-list-widget.h"
 
 BuddiesListWidget::BuddiesListWidget(FilterPosition filterPosition, QWidget *parent) :
-		QWidget(parent)
+		QWidget(parent), CurrentFilterPosition(filterPosition), View(0)
 {
-	QVBoxLayout *layout = new QVBoxLayout(this);
-	layout->setMargin(0);
-	layout->setSpacing(0);
+	Layout = new QVBoxLayout(this);
+	Layout->setMargin(0);
+	Layout->setSpacing(0);
 
 	NameFilterWidget = new FilterWidget(this);
 
 	connect(NameFilterWidget, SIGNAL(textChanged(const QString &)),
 		this, SLOT(nameFilterChanged(const QString &)));
 
-	View = new BuddiesListView(this);
-
-	NameFilterWidget->setView(View);
 #ifndef Q_OS_MAC
 	NameFilterWidget->hide(); // hide by default
 #endif
 	NameFilter = new BuddyNameFilter(this);
 
-	if (FilterAtTop == filterPosition)
-	{
-		layout->addWidget(NameFilterWidget);
-		layout->addWidget(View);
-	}
-	else
-	{
-		layout->addWidget(View);
-		layout->addWidget(NameFilterWidget);
-	}
+	Layout->addWidget(NameFilterWidget);
 }
 
 BuddiesListWidget::~BuddiesListWidget()
 {
+}
+
+void BuddiesListWidget::removeView()
+{
+	if (View)
+		Layout->removeWidget(View);
+}
+
+void BuddiesListWidget::insertView()
+{
+	if (!View)
+		return;
+
+	if (FilterAtTop == CurrentFilterPosition)
+		Layout->insertWidget(1, View);
+	else
+		Layout->insertWidget(0, View);
+}
+
+void BuddiesListWidget::setPosition(FilterPosition filterPosition)
+{
+	if (CurrentFilterPosition == filterPosition)
+		return;
+
+	removeView();
+	CurrentFilterPosition = filterPosition;
+	insertView();
+}
+
+void BuddiesListWidget::setTreeView(QTreeView *treeView)
+{
+	removeView();
+	View = treeView;
+	NameFilterWidget->setView(View);
+	insertView();
 }
 
 void BuddiesListWidget::clearFilter()

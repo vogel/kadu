@@ -105,7 +105,7 @@ KaduWindow::KaduWindow(QWidget *parent) :
 	// TODO: fix it in 0.10 or whenever
 	createGui();
 	ActionData = static_cast<KaduWindowActionDataSource *>(actionDataSource());
-	ActionData->setForwardActionDataSource(ContactsWidget->view()->actionDataSource());
+	ActionData->setForwardActionDataSource(BuddiesView->actionDataSource());
 
 	Actions = new KaduWindowActions(this);
 	loadToolBarsFromConfig();
@@ -147,7 +147,7 @@ void KaduWindow::createGui()
 void KaduWindow::buddiesChatViewChanged(int index)
 {
 	if (0 == index)
-		ActionData->setForwardActionDataSource(ContactsWidget->view()->actionDataSource());
+		ActionData->setForwardActionDataSource(BuddiesView->actionDataSource());
 	else if (1 == index)
 		ActionData->setForwardActionDataSource(ChatsTree->actionDataSource());
 	else
@@ -166,6 +166,8 @@ QWidget * KaduWindow::createBuddiesWidget(QWidget *parent)
 	GroupBar = new GroupTabBar(this);
 
 	ContactsWidget = new BuddiesListWidget(BuddiesListWidget::FilterAtTop, hbox);
+	BuddiesView = new BuddiesListView(ContactsWidget);
+	ContactsWidget->setTreeView(BuddiesView);
 
 	ModelChain *chain = new ModelChain(new BuddiesModel(this), this);
 	ProxyModel = new BuddiesModelProxy(chain);
@@ -179,12 +181,12 @@ QWidget * KaduWindow::createBuddiesWidget(QWidget *parent)
 	ProxyModel->addFilter(GroupBar->filter());
 	chain->addProxyModel(ProxyModel);
 
-	ContactsWidget->view()->useConfigurationColors(true);
-	ContactsWidget->view()->setChain(chain);
-	ContactsWidget->view()->setContextMenuEnabled(true);
+	BuddiesView->useConfigurationColors(true);
+	BuddiesView->setChain(chain);
+	BuddiesView->setContextMenuEnabled(true);
 
-	connect(ContactsWidget->view(), SIGNAL(chatActivated(Chat)), this, SLOT(openChatWindow(Chat)));
-	connect(ContactsWidget->view(), SIGNAL(buddyActivated(Buddy)), this, SLOT(buddyActivatedSlot(Buddy)));
+	connect(BuddiesView, SIGNAL(chatActivated(Chat)), this, SLOT(openChatWindow(Chat)));
+	connect(BuddiesView, SIGNAL(buddyActivated(Buddy)), this, SLOT(buddyActivatedSlot(Buddy)));
 
 	hboxLayout->addWidget(GroupBar);
 	hboxLayout->setStretchFactor(GroupBar, 1);
@@ -192,7 +194,7 @@ QWidget * KaduWindow::createBuddiesWidget(QWidget *parent)
 	hboxLayout->setStretchFactor(ContactsWidget, 100);
 
 	InfoPanel = new BuddyInfoPanel(Split);
-	connect(ContactsWidget->view(), SIGNAL(currentChanged(BuddyOrContact)), InfoPanel, SLOT(displayItem(BuddyOrContact)));
+	connect(BuddiesView, SIGNAL(currentChanged(BuddyOrContact)), InfoPanel, SLOT(displayItem(BuddyOrContact)));
 
 	if (!config_file.readBoolEntry("Look", "ShowInfoPanel"))
 		InfoPanel->setVisible(false);;
@@ -344,9 +346,9 @@ void KaduWindow::compositingEnabled()
 			InfoPanel->setAutoFillBackground(true);
 			ChangeStatusButtons->setAutoFillBackground(true);
 			ContactsWidget->nameFilterWidget()->setAutoFillBackground(true);
-			ContactsWidget->view()->verticalScrollBar()->setAutoFillBackground(true);
+			BuddiesView->verticalScrollBar()->setAutoFillBackground(true);
 			// TODO: find a way to paint this QFrame outside its viewport still allowing the viewport to be transparent
-			ContactsWidget->view()->setFrameShape(QFrame::NoFrame);
+			BuddiesView->setFrameShape(QFrame::NoFrame);
 			for (int i = 1; i < Split->count(); ++i)
 			{
 				QSplitterHandle *splitterHandle = Split->handle(i);
@@ -369,8 +371,8 @@ void KaduWindow::compositingDisabled()
 		InfoPanel->setAutoFillBackground(false);
 		ChangeStatusButtons->setAutoFillBackground(false);
 		ContactsWidget->nameFilterWidget()->setAutoFillBackground(false);
-		ContactsWidget->view()->verticalScrollBar()->setAutoFillBackground(false);
-		ContactsWidget->view()->setFrameShape(QFrame::StyledPanel);
+		BuddiesView->verticalScrollBar()->setAutoFillBackground(false);
+		BuddiesView->setFrameShape(QFrame::StyledPanel);
 		for (int i = 1; i < Split->count(); ++i)
 		{
 			QSplitterHandle *splitterHandle = Split->handle(i);
@@ -522,7 +524,7 @@ bool KaduWindow::supportsActionType(ActionDescription::ActionType type)
 
 BuddiesListView * KaduWindow::buddiesListView()
 {
-	return ContactsWidget->view();
+	return BuddiesView;
 }
 
 BuddiesModelProxy * KaduWindow::buddiesProxyModel()
@@ -567,12 +569,12 @@ void KaduWindow::configurationUpdated()
 		else
 			type = BuddiesListView::BackgroundNone;
 
-		ContactsWidget->view()->setBackground(bgColor, alternateBgColor, config_file.readEntry("Look", "UserboxBackground"), type);
+		BuddiesView->setBackground(bgColor, alternateBgColor, config_file.readEntry("Look", "UserboxBackground"), type);
 		ChatsTree->setBackground(bgColor, alternateBgColor, config_file.readEntry("Look", "UserboxBackground"), type);
 	}
 	else
 	{
-		ContactsWidget->view()->setBackground(bgColor, alternateBgColor);
+		BuddiesView->setBackground(bgColor, alternateBgColor);
 		ChatsTree->setBackground(bgColor, alternateBgColor);
 	}
 

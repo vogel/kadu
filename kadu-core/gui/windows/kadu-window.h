@@ -90,6 +90,7 @@ private:
 	GroupTabBar *GroupBar;
 
 	BuddiesListWidget *ContactsWidget;
+	BuddiesListView *BuddiesView;
 	BuddiesModelProxy *ProxyModel;
 	ChatsTreeView *ChatsTree;
 

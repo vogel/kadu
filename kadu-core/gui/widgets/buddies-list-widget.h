@@ -31,6 +31,8 @@
 #include "gui/widgets/filter-widget.h"
 #include "exports.h"
 
+class QVBoxLayout;
+
 class BuddyNameFilter;
 class BuddiesListView;
 class MainWindow;
@@ -47,10 +49,16 @@ public:
 	};
 
 private:
-	FilterWidget *NameFilterWidget;
+	FilterPosition CurrentFilterPosition;
 
-	BuddiesListView *View;
+	QVBoxLayout *Layout;
+	FilterWidget *NameFilterWidget;
+	QTreeView *View;
+
 	BuddyNameFilter *NameFilter;
+
+	void removeView();
+	void insertView();
 
 private slots:
 	void nameFilterChanged(const QString &filter);
@@ -62,9 +70,11 @@ public:
 	explicit BuddiesListWidget(FilterPosition filterPosition, QWidget *parent = 0);
 	virtual ~BuddiesListWidget();
 
+	void setPosition(FilterPosition filterPosition);
+	void setTreeView(QTreeView *treeView);
+
 	void clearFilter();
 
-	BuddiesListView * view() { return View; }
 	QWidget * nameFilterWidget() { return NameFilterWidget; }
 
 	BuddyNameFilter * nameFilter() const { return NameFilter; }

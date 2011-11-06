@@ -36,6 +36,7 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
+#include "buddies/filter/buddy-name-filter.h"
 #include "buddies/model/buddies-model-proxy.h"
 #include "buddies/model/buddy-list-model.h"
 #include "buddies/buddy.h"
@@ -192,20 +193,25 @@ void ChatWidget::createContactsList()
 	layout->setSpacing(0);
 
 	BuddiesWidget = new BuddiesListWidget(BuddiesListWidget::FilterAtTop, this);
-	BuddiesWidget->view()->setItemsExpandable(false);
 	BuddiesWidget->setMinimumSize(QSize(30, 30));
+
+	BuddiesListView *view = new BuddiesListView(BuddiesWidget);
+	view->setItemsExpandable(false);
 
 	ModelChain *chain = new ModelChain(new ContactListModel(CurrentChat.contacts().toContactVector(), this), this);
 	ProxyModel = new BuddiesModelProxy(chain);
+	ProxyModel->addFilter(BuddiesWidget->nameFilter());
 	chain->addProxyModel(ProxyModel);
 
-	BuddiesWidget->view()->setChain(chain);
-	BuddiesWidget->view()->setRootIsDecorated(false);
-	BuddiesWidget->view()->setShowAccountName(false);
-	BuddiesWidget->view()->setContextMenuEnabled(true);
+	view->setChain(chain);
+	view->setRootIsDecorated(false);
+	view->setShowAccountName(false);
+	view->setContextMenuEnabled(true);
 
-	connect(BuddiesWidget->view(), SIGNAL(chatActivated(Chat)),
+	connect(view, SIGNAL(chatActivated(Chat)),
 			Core::instance()->kaduWindow(), SLOT(openChatWindow(Chat)));
+
+	BuddiesWidget->setTreeView(view);
 
 	QPushButton *nameConference = new QPushButton(tr("Name\nconference"), contactsListContainer);
 	nameConference->setStyleSheet("text-align: center;");
