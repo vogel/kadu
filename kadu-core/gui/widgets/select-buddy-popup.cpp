@@ -49,7 +49,10 @@ SelectBuddyPopup::SelectBuddyPopup(QWidget *parent) :
 	anonymousFilter->setEnabled(true);
 	ProxyModel->addFilter(anonymousFilter);
 
-	ProxyModel->addFilter(nameFilter());
+	BuddyNameFilter *nameFilter = new BuddyNameFilter(ProxyModel);
+	connect(this, SIGNAL(filterChanged(QString)), nameFilter, SLOT(setName(QString)));
+
+	ProxyModel->addFilter(nameFilter);
 	chain->addProxyModel(ProxyModel);
 
 	connect(View, SIGNAL(clicked(QModelIndex)), this, SLOT(itemClicked(QModelIndex)));
@@ -62,7 +65,7 @@ SelectBuddyPopup::SelectBuddyPopup(QWidget *parent) :
 	View->setShowAccountName(false);
 	View->setSelectionMode(QAbstractItemView::SingleSelection);
 
-	nameFilter()->setIgnoreNextFilters(false);
+	nameFilter->setIgnoreNextFilters(false);
 }
 
 SelectBuddyPopup::~SelectBuddyPopup()

@@ -33,7 +33,6 @@
 
 class QVBoxLayout;
 
-class BuddyNameFilter;
 class BuddiesListView;
 class MainWindow;
 
@@ -55,8 +54,6 @@ private:
 	FilterWidget *NameFilterWidget;
 	QTreeView *View;
 
-	BuddyNameFilter *NameFilter;
-
 	void removeView();
 	void insertView();
 
@@ -74,7 +71,8 @@ public:
 
 	QWidget * nameFilterWidget() { return NameFilterWidget; }
 
-	BuddyNameFilter * nameFilter() const { return NameFilter; }
+signals:
+	void filterChanged(const QString &filterText);
 
 };
 

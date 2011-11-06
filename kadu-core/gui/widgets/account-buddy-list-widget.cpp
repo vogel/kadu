@@ -67,7 +67,10 @@ AccountBuddyListWidget::AccountBuddyListWidget(Account account, QWidget *parent)
 	chain->addProxyModel(proxyModel);
 
 	BuddiesWidget = new BuddiesListWidget(BuddiesListWidget::FilterAtTop, this);
-	proxyModel->addFilter(BuddiesWidget->nameFilter());
+
+	BuddyNameFilter *nameFilter = new BuddyNameFilter(proxyModel);
+	connect(BuddiesWidget, SIGNAL(filterChanged(QString)), nameFilter, SLOT(setName(QString)));
+	proxyModel->addFilter(nameFilter);
 
 	BuddiesListView *view = new BuddiesListView(BuddiesWidget);
 	view->setChain(chain);

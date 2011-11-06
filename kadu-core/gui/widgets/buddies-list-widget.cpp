@@ -43,11 +43,9 @@ BuddiesListWidget::BuddiesListWidget(FilterPosition filterPosition, QWidget *par
 	Layout->setMargin(0);
 	Layout->setSpacing(0);
 
-	NameFilter = new BuddyNameFilter(this);
-
 	NameFilterWidget = new FilterWidget(this);
 	connect(NameFilterWidget, SIGNAL(textChanged(const QString &)),
-		NameFilter, SLOT(setName(const QString &)));
+		this, SIGNAL(filterChanged(const QString &)));
 
 #ifndef Q_OS_MAC
 	NameFilterWidget->hide(); // hide by default

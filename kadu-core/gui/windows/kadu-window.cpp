@@ -177,7 +177,10 @@ QWidget * KaduWindow::createBuddiesWidget(QWidget *parent)
 	anonymousFilter->setEnabled(true);
 	ProxyModel->addFilter(anonymousFilter);
 
-	ProxyModel->addFilter(ContactsWidget->nameFilter());
+	BuddyNameFilter *nameFilter = new BuddyNameFilter(ProxyModel);
+	connect(ContactsWidget, SIGNAL(filterChanged(QString)), nameFilter, SLOT(setName(QString)));
+
+	ProxyModel->addFilter(nameFilter);
 	ProxyModel->addFilter(GroupBar->filter());
 	chain->addProxyModel(ProxyModel);
 

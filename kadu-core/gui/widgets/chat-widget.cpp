@@ -200,7 +200,11 @@ void ChatWidget::createContactsList()
 
 	ModelChain *chain = new ModelChain(new ContactListModel(CurrentChat.contacts().toContactVector(), this), this);
 	ProxyModel = new BuddiesModelProxy(chain);
-	ProxyModel->addFilter(BuddiesWidget->nameFilter());
+
+	BuddyNameFilter *nameFilter = new BuddyNameFilter(ProxyModel);
+	connect(BuddiesWidget, SIGNAL(filterChanged(QString)), nameFilter, SLOT(setName(QString)));
+
+	ProxyModel->addFilter(nameFilter);
 	chain->addProxyModel(ProxyModel);
 
 	view->setChain(chain);
