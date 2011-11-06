@@ -192,7 +192,6 @@ void ChatWidget::createContactsList()
 	layout->setSpacing(0);
 
 	BuddiesWidget = new BuddiesListWidget(BuddiesListWidget::FilterAtTop, this);
-	BuddiesWidget->setShowAnonymous(true);
 	BuddiesWidget->view()->setItemsExpandable(false);
 	BuddiesWidget->setMinimumSize(QSize(30, 30));
 

@@ -23,7 +23,7 @@
 #include <QtGui/QLineEdit>
 
 #include "buddies/buddy-manager.h"
-#include "buddies/filter/anonymous-without-messages-buddy-filter.h"
+#include "buddies/filter/anonymous-buddy-filter.h"
 #include "buddies/filter/buddy-name-filter.h"
 #include "buddies/model/buddies-model.h"
 #include "buddies/model/buddies-model-proxy.h"
@@ -41,7 +41,11 @@ SelectBuddyPopup::SelectBuddyPopup(QWidget *parent) :
 	ModelChain *chain = new ModelChain(new BuddiesModel(this), this);
 	ProxyModel = new BuddiesModelProxy(chain);
 	ProxyModel->setSortByStatus(false);
-	ProxyModel->addFilter(anonymousFilter());
+
+	AnonymousBuddyFilter *anonymousFilter = new AnonymousBuddyFilter(ProxyModel);
+	anonymousFilter->setEnabled(true);
+	ProxyModel->addFilter(anonymousFilter);
+
 	ProxyModel->addFilter(nameFilter());
 	chain->addProxyModel(ProxyModel);
 

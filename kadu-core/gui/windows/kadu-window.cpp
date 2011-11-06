@@ -170,7 +170,11 @@ QWidget * KaduWindow::createBuddiesWidget(QWidget *parent)
 	ModelChain *chain = new ModelChain(new BuddiesModel(this), this);
 	ProxyModel = new BuddiesModelProxy(chain);
 	ProxyModel->addFilter(new PendingMessagesFilter(ProxyModel));
-	ProxyModel->addFilter(ContactsWidget->anonymousFilter());
+
+	AnonymousWithoutMessagesBuddyFilter *anonymousFilter = new AnonymousWithoutMessagesBuddyFilter(ProxyModel);
+	anonymousFilter->setEnabled(true);
+	ProxyModel->addFilter(anonymousFilter);
+
 	ProxyModel->addFilter(ContactsWidget->nameFilter());
 	ProxyModel->addFilter(GroupBar->filter());
 	chain->addProxyModel(ProxyModel);

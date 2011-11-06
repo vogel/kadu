@@ -55,9 +55,9 @@ AccountBuddyListWidget::AccountBuddyListWidget(Account account, QWidget *parent)
 	ModelChain *chain = new ModelChain(new BuddiesModel(this), this);
 	BuddiesModelProxy *proxyModel = new BuddiesModelProxy(chain);
 
-	AccountBuddyFilter *accountFilter = new AccountBuddyFilter(CurrentAccount, this);
+	AccountBuddyFilter *accountFilter = new AccountBuddyFilter(CurrentAccount, proxyModel);
 	accountFilter->setEnabled(true);
-	AnonymousBuddyFilter *anonymousFilter = new AnonymousBuddyFilter(this);
+	AnonymousBuddyFilter *anonymousFilter = new AnonymousBuddyFilter(proxyModel);
 	anonymousFilter->setEnabled(true);
 
 	proxyModel->addFilter(accountFilter);

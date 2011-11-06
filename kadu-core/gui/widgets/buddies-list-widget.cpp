@@ -30,7 +30,6 @@
 #include <QtGui/QLineEdit>
 #include <QtGui/QVBoxLayout>
 
-#include "buddies/filter/anonymous-without-messages-buddy-filter.h"
 #include "buddies/filter/buddy-name-filter.h"
 #include "gui/widgets/buddies-list-view.h"
 #include "icons/icons-manager.h"
@@ -50,9 +49,6 @@ BuddiesListWidget::BuddiesListWidget(FilterPosition filterPosition, QWidget *par
 		this, SLOT(nameFilterChanged(const QString &)));
 
 	View = new BuddiesListView(this);
-
-	AnonymousFilter = new AnonymousWithoutMessagesBuddyFilter(this);
-	AnonymousFilter->setEnabled(true);
 
 	NameFilterWidget->setView(View);
 #ifndef Q_OS_MAC
@@ -79,11 +75,6 @@ BuddiesListWidget::~BuddiesListWidget()
 void BuddiesListWidget::clearFilter()
 {
 	NameFilterWidget->setFilter(QString());
-}
-
-void BuddiesListWidget::setShowAnonymous(bool show)
-{
-	AnonymousFilter->setEnabled(!show);
 }
 
 void BuddiesListWidget::nameFilterChanged(const QString &filter)

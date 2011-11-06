@@ -31,7 +31,6 @@
 #include "gui/widgets/filter-widget.h"
 #include "exports.h"
 
-class AnonymousWithoutMessagesBuddyFilter;
 class BuddyNameFilter;
 class BuddiesListView;
 class MainWindow;
@@ -51,7 +50,6 @@ private:
 	FilterWidget *NameFilterWidget;
 
 	BuddiesListView *View;
-	AnonymousWithoutMessagesBuddyFilter *AnonymousFilter;
 	BuddyNameFilter *NameFilter;
 
 private slots:
@@ -66,12 +64,9 @@ public:
 
 	void clearFilter();
 
-	void setShowAnonymous(bool show);
-
 	BuddiesListView * view() { return View; }
 	QWidget * nameFilterWidget() { return NameFilterWidget; }
 
-	AnonymousWithoutMessagesBuddyFilter * anonymousFilter() const { return AnonymousFilter; }
 	BuddyNameFilter * nameFilter() const { return NameFilter; }
 
 };
