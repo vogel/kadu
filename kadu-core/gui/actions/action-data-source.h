@@ -22,6 +22,8 @@
 
 #include <QtCore/QObject>
 
+#include "model/roles.h"
+
 class BuddySet;
 class Chat;
 class ContactSet;
@@ -82,9 +84,7 @@ public:
 	 */
 	virtual StatusContainer * statusContainer() = 0;
 
-	// for now this is a hack for "delete buddy" action
-	// i don't know real solution, but this is ok now
-	virtual bool hasContactSelected() = 0;
+	virtual RoleSet roles() = 0;
 
 signals:
 	void changed();

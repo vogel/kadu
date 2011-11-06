@@ -71,7 +71,6 @@ ChatEditBox::ChatEditBox(const Chat &chat, QWidget *parent) :
 	ActionData->setChat(CurrentChat);
 	ActionData->setContacts(CurrentChat.contacts());
 	ActionData->setBuddies(CurrentChat.contacts().toBuddySet());
-	ActionData->setHasContactSelected(false);
 	updateActionData();
 	ActionData->unblockChangedSignal();
 

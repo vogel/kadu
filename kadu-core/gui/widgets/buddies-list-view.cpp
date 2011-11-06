@@ -253,14 +253,13 @@ void BuddiesListView::updateActionData()
 	const Chat &chat = converter.chat();
 	ActionData->setChat(chat);
 
-	ActionData->setHasContactSelected(false);
+	RoleSet roles;
+
 	QModelIndexList selectionList = selectedIndexes();
 	foreach (const QModelIndex &selection, selectionList)
-		if (ContactRole == selection.data(ItemTypeRole).toInt())
-		{
-			ActionData->setHasContactSelected(true);
-			break;
-		}
+		roles.insert(selection.data(ItemTypeRole).toInt());
+
+	ActionData->setRoles(roles);
 
 	if (MainConfigurationHolder::instance()->isSetStatusPerIdentity())
 		ActionData->setStatusContainer(chat.chatAccount().accountIdentity().data());

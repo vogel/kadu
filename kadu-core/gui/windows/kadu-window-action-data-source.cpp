@@ -72,9 +72,9 @@ StatusContainer * KaduWindowActionDataSource::statusContainer()
 	return StatusContainerManager::instance();
 }
 
-bool KaduWindowActionDataSource::hasContactSelected()
+RoleSet KaduWindowActionDataSource::roles()
 {
 	return ForwardActionDataSource
-			? ForwardActionDataSource->hasContactSelected()
-			: false;
+			? ForwardActionDataSource->roles()
+			: RoleSet();
 }

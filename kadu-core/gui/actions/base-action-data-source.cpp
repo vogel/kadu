@@ -20,8 +20,7 @@
 #include "base-action-data-source.h"
 
 BaseActionDataSource::BaseActionDataSource() :
-		ChangedSignalBlocked(false), Changed(false),
-		CurrentStatusContainer(0), HasContactSelected(false)
+		ChangedSignalBlocked(false), Changed(false), CurrentStatusContainer(0)
 {
 }
 
@@ -107,16 +106,16 @@ void BaseActionDataSource::setStatusContainer(StatusContainer *statusContainer)
 	}
 }
 
-bool BaseActionDataSource::hasContactSelected()
+RoleSet BaseActionDataSource::roles()
 {
-	return HasContactSelected;
+	return Roles;
 }
 
-void BaseActionDataSource::setHasContactSelected(bool hasContactSelected)
+void BaseActionDataSource::setRoles(const RoleSet &roles)
 {
-	if (HasContactSelected != hasContactSelected)
+	if (Roles != roles)
 	{
-		HasContactSelected = hasContactSelected;
+		Roles = roles;
 		dataUpdated();
 	}
 }

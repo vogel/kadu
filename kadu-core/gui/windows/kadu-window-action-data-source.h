@@ -38,7 +38,7 @@ public:
 	virtual BuddySet buddies();
 	virtual Chat chat();
 	virtual StatusContainer * statusContainer();
-	virtual bool hasContactSelected();
+	virtual RoleSet roles();
 
 };
 

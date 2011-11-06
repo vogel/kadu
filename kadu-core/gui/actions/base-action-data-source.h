@@ -23,6 +23,7 @@
 #include "buddies/buddy-set.h"
 #include "chat/chat.h"
 #include "contacts/contact-set.h"
+#include "model/roles.h"
 
 #include "gui/actions/action-data-source.h"
 
@@ -37,7 +38,7 @@ class BaseActionDataSource : public ActionDataSource
 	BuddySet Buddies;
 	Chat CurrentChat;
 	StatusContainer *CurrentStatusContainer;
-	bool HasContactSelected;
+	RoleSet Roles;
 
 	void dataUpdated();
 
@@ -60,8 +61,8 @@ public:
 	virtual StatusContainer * statusContainer();
 	void setStatusContainer(StatusContainer *statusContainer);
 
-	virtual bool hasContactSelected();
-	void setHasContactSelected(bool hasContactSelected);
+	virtual RoleSet roles();
+	void setRoles(const RoleSet &roles);
 
 };
 

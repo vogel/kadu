@@ -87,7 +87,9 @@ SearchWindow::SearchWindow(QWidget *parent, Buddy buddy) :
 	setAttribute(Qt::WA_DeleteOnClose);
 	setWindowTitle(tr("Search User in Directory"));
 
-	static_cast<BaseActionDataSource *>(actionDataSource())->setHasContactSelected(true);
+	RoleSet roles;
+	roles.insert(ContactRole);
+	static_cast<BaseActionDataSource *>(actionDataSource())->setRoles(roles);
 
 	if (buddy)
 	{

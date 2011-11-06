@@ -70,6 +70,7 @@
 #include "gui/windows/search-window.h"
 #include "gui/windows/your-accounts.h"
 #include "misc/misc.h"
+#include "model/roles.h"
 #include "os/generic/url-opener.h"
 #include "parser/parser.h"
 #include "protocols/protocol.h"
@@ -172,7 +173,7 @@ void disableNoEMail(Action *action)
 void disableIfContactSelected(Action *action)
 {
 	if (action && action->dataSource())
-		action->setEnabled(!action->dataSource()->hasContactSelected() && !action->dataSource()->buddies().isEmpty());
+		action->setEnabled(!action->dataSource()->roles().contains(ContactRole) && !action->dataSource()->buddies().isEmpty());
 
 	if (action->buddies().contains(Core::instance()->myself()))
 		action->setEnabled(false);

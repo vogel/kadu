@@ -46,6 +46,7 @@
 #include "gui/windows/kadu-window-actions.h"
 #include "gui/windows/message-dialog.h"
 #include "gui/windows/open-chat-with/open-chat-with.h"
+#include "model/roles.h"
 
 #include "custom-input.h"
 #include "debug.h"
@@ -106,7 +107,7 @@ static void checkBlocking(Action *action)
 	}
 
 	if (action && action->dataSource())
-		action->setEnabled(!action->dataSource()->hasContactSelected());
+		action->setEnabled(!action->dataSource()->roles().contains(ContactRole));
 
 	bool on = false;
 	foreach (const Buddy &buddy, buddies)

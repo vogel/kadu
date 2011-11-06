@@ -26,6 +26,7 @@
 #include "gui/actions/action.h"
 #include "gui/actions/action-data-source.h"
 #include "gui/actions/action-description.h"
+#include "model/roles.h"
 #include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocol-menu-manager.h"
@@ -130,7 +131,7 @@ QMenu * BuddiesListViewMenuManager::menu(QWidget *parent, ActionDataSource *acti
 		first = false;
 	}
 
-	if (actionDataSource->hasContactSelected())
+	if (actionDataSource->roles().contains(ContactRole))
 	{
 		if (1 == actionDataSource->contacts().size())
 		{

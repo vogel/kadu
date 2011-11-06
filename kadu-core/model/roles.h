@@ -23,6 +23,8 @@
 #ifndef ROLES_H
 #define ROLES_H
 
+#include <QtCore/QSet>
+
 const int KaduRoles = 1000;
 
 const int BuddyRole = KaduRoles + 1;
@@ -43,5 +45,7 @@ const int IdentityRole = KaduRoles + 15;
 const int ItemTypeRole = KaduRoles + 16;
 const int MultilogonSessionRole = KaduRoles + 17;
 const int NetworkProxyRole = KaduRoles + 18;
+
+typedef QSet<int> RoleSet;
 
 #endif // ROLES_H
