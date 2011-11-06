@@ -43,15 +43,15 @@ BuddiesListWidget::BuddiesListWidget(FilterPosition filterPosition, QWidget *par
 	Layout->setMargin(0);
 	Layout->setSpacing(0);
 
-	NameFilterWidget = new FilterWidget(this);
+	NameFilter = new BuddyNameFilter(this);
 
+	NameFilterWidget = new FilterWidget(this);
 	connect(NameFilterWidget, SIGNAL(textChanged(const QString &)),
-		this, SLOT(nameFilterChanged(const QString &)));
+		NameFilter, SLOT(setName(const QString &)));
 
 #ifndef Q_OS_MAC
 	NameFilterWidget->hide(); // hide by default
 #endif
-	NameFilter = new BuddyNameFilter(this);
 
 	Layout->addWidget(NameFilterWidget);
 }
@@ -98,11 +98,6 @@ void BuddiesListWidget::setTreeView(QTreeView *treeView)
 void BuddiesListWidget::clearFilter()
 {
 	NameFilterWidget->setFilter(QString());
-}
-
-void BuddiesListWidget::nameFilterChanged(const QString &filter)
-{
-	NameFilter->setName(filter);
 }
 
 void BuddiesListWidget::keyPressEvent(QKeyEvent *event)

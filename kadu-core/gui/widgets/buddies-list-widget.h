@@ -60,9 +60,6 @@ private:
 	void removeView();
 	void insertView();
 
-private slots:
-	void nameFilterChanged(const QString &filter);
-
 protected:
 	virtual void keyPressEvent(QKeyEvent *event);
 

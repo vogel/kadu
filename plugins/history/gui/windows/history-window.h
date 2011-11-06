@@ -114,7 +114,6 @@ private slots:
 	void treeCurrentChanged(const QModelIndex &current, const QModelIndex &previous);
 	void dateCurrentChanged(const QModelIndex &current, const QModelIndex &previous);
 
-	void filterLineChanged(const QString &filterText);
 	void searchTextChanged(const QString &searchText);
 	void fromDateChanged(const QDate &date);
 	void toDateChanged(const QDate &date);

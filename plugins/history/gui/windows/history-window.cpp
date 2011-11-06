@@ -191,7 +191,6 @@ void HistoryWindow::createChatTree(QWidget *parent)
 	QVBoxLayout *layout = new QVBoxLayout(chatsWidget);
 
 	FilterWidget *filterWidget = new FilterWidget(chatsWidget);
-	connect(filterWidget, SIGNAL(textChanged(const QString &)), this, SLOT(filterLineChanged(const QString &)));
 	layout->addWidget(filterWidget);
 
 	ChatsTree = new QTreeView(parent);
@@ -204,9 +203,12 @@ void HistoryWindow::createChatTree(QWidget *parent)
 	ChatsModelProxy->setSourceModel(ChatsModel);
 
 	StatusBuddyNameFilter = new BuddyNameFilter(this);
+	connect(filterWidget, SIGNAL(textChanged(const QString &)), StatusBuddyNameFilter, SLOT(setName(const QString &)));
 	ChatsModelProxy->addBuddyFilter(StatusBuddyNameFilter);
 
 	NameFilter = new ChatNameFilter(this);
+	connect(filterWidget, SIGNAL(textChanged(const QString &)), NameFilter, SLOT(setName(const QString &)));
+
 	ChatsModelProxy->addChatFilter(NameFilter);
 
 	ChatsTree->setModel(ChatsModelProxy);
@@ -617,12 +619,6 @@ QVector<Message> HistoryWindow::statusesToMessages(const QList<TimedStatus> &sta
 	}
 
 	return messages;
-}
-
-void HistoryWindow::filterLineChanged(const QString &filterText)
-{
-	NameFilter->setName(filterText);
-	StatusBuddyNameFilter->setName(filterText);
 }
 
 void HistoryWindow::searchTextChanged(const QString &searchText)

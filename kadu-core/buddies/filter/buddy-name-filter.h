@@ -40,8 +40,10 @@ public:
 	virtual bool acceptBuddy(const Buddy &buddy);
 	virtual bool ignoreNextFilters(const Buddy &buddy);
 
-	void setName(const QString &name);
 	void setIgnoreNextFilters(bool ignoreNextFilters);
+
+public slots:
+	void setName(const QString &name);
 
 };
 
