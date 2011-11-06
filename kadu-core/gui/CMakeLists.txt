@@ -38,8 +38,6 @@ set (gui_SRCS
 	widgets/chat-widget.cpp
 	widgets/chat-widget-actions.cpp
 	widgets/chat-widget-manager.cpp
-	widgets/chats-tree-view.cpp
-	widgets/chats-tree-view-delegate.cpp
 	widgets/choose-identity-widget.cpp
 	widgets/color-button.cpp
 	widgets/color-selector.cpp
@@ -183,8 +181,6 @@ set (gui_MOC_SRCS
 	widgets/chat-widget.h
 	widgets/chat-widget-actions.h
 	widgets/chat-widget-manager.h
-	widgets/chats-tree-view.h
-	widgets/chats-tree-view-delegate.h
 	widgets/choose-identity-widget.h
 	widgets/color-button.h
 	widgets/color-selector.h

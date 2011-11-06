@@ -58,7 +58,6 @@
 #include "gui/widgets/buddies-list-view.h"
 #include "gui/widgets/chat-widget-actions.h"
 #include "gui/widgets/chat-widget-manager.h"
-#include "gui/widgets/chats-tree-view.h"
 #include "gui/widgets/group-tab-bar.h"
 #include "gui/widgets/filter-widget.h"
 #include "gui/widgets/filtered-tree-view.h"
