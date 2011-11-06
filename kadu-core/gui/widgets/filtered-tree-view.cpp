@@ -30,14 +30,14 @@
 
 #include "gui/widgets/filter-widget.h"
 
-#include "buddies-list-widget.h"
+#include "filtered-tree-view.h"
 
-bool BuddiesListWidget::shouldEventGoToFilter(QKeyEvent *event)
+bool FilteredTreeView::shouldEventGoToFilter(QKeyEvent *event)
 {
 	return !event->text().isEmpty() && event->text().at(0).isPrint();
 }
 
-BuddiesListWidget::BuddiesListWidget(FilterPosition filterPosition, QWidget *parent) :
+FilteredTreeView::FilteredTreeView(FilterPosition filterPosition, QWidget *parent) :
 		QWidget(parent), CurrentFilterPosition(filterPosition), View(0)
 {
 	Layout = new QVBoxLayout(this);
@@ -55,17 +55,17 @@ BuddiesListWidget::BuddiesListWidget(FilterPosition filterPosition, QWidget *par
 	Layout->addWidget(NameFilterWidget);
 }
 
-BuddiesListWidget::~BuddiesListWidget()
+FilteredTreeView::~FilteredTreeView()
 {
 }
 
-void BuddiesListWidget::removeView()
+void FilteredTreeView::removeView()
 {
 	if (View)
 		Layout->removeWidget(View);
 }
 
-void BuddiesListWidget::insertView()
+void FilteredTreeView::insertView()
 {
 	if (!View)
 		return;
@@ -76,7 +76,7 @@ void BuddiesListWidget::insertView()
 		Layout->insertWidget(0, View);
 }
 
-void BuddiesListWidget::setPosition(FilterPosition filterPosition)
+void FilteredTreeView::setPosition(FilterPosition filterPosition)
 {
 	if (CurrentFilterPosition == filterPosition)
 		return;
@@ -86,7 +86,7 @@ void BuddiesListWidget::setPosition(FilterPosition filterPosition)
 	insertView();
 }
 
-void BuddiesListWidget::setTreeView(QTreeView *treeView)
+void FilteredTreeView::setTreeView(QTreeView *treeView)
 {
 	removeView();
 	View = treeView;
@@ -94,7 +94,7 @@ void BuddiesListWidget::setTreeView(QTreeView *treeView)
 	insertView();
 }
 
-void BuddiesListWidget::keyPressEvent(QKeyEvent *event)
+void FilteredTreeView::keyPressEvent(QKeyEvent *event)
 {
 	if (shouldEventGoToFilter(event))
 	{

@@ -35,7 +35,7 @@
 #include "select-buddy-popup.h"
 
 SelectBuddyPopup::SelectBuddyPopup(QWidget *parent) :
-		BuddiesListWidget(FilterAtBottom, parent)
+		FilteredTreeView(FilterAtBottom, parent)
 {
 	setWindowFlags(Qt::Popup);
 
@@ -81,7 +81,7 @@ void SelectBuddyPopup::show(Buddy buddy)
 
 	QModelIndex index = View->chain()->indexForValue(buddy);
 	View->setCurrentIndex(index);
-	BuddiesListWidget::show();
+	FilteredTreeView::show();
 }
 
 void SelectBuddyPopup::itemClicked(const QModelIndex &index)

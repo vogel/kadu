@@ -56,12 +56,12 @@
 #include "gui/actions/action.h"
 #include "gui/widgets/buddy-info-panel.h"
 #include "gui/widgets/buddies-list-view.h"
-#include "gui/widgets/buddies-list-widget.h"
 #include "gui/widgets/chat-widget-actions.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/chats-tree-view.h"
 #include "gui/widgets/group-tab-bar.h"
 #include "gui/widgets/filter-widget.h"
+#include "gui/widgets/filtered-tree-view.h"
 #include "gui/widgets/kadu-web-view.h"
 #include "gui/windows/kadu-window-action-data-source.h"
 #include "gui/windows/kadu-window-actions.h"
@@ -166,7 +166,7 @@ QWidget * KaduWindow::createBuddiesWidget(QWidget *parent)
 
 	GroupBar = new GroupTabBar(this);
 
-	ContactsWidget = new BuddiesListWidget(BuddiesListWidget::FilterAtTop, hbox);
+	ContactsWidget = new FilteredTreeView(FilteredTreeView::FilterAtTop, hbox);
 	BuddiesView = new BuddiesListView(ContactsWidget);
 	ContactsWidget->setTreeView(BuddiesView);
 

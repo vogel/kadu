@@ -23,8 +23,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef BUDDIES_LIST_WIDGET_H
-#define BUDDIES_LIST_WIDGET_H
+#ifndef FILTERED_TREE_VIEW_H
+#define FILTERED_TREE_VIEW_H
 
 #include <QtGui/QWidget>
 
@@ -35,7 +35,7 @@ class QVBoxLayout;
 
 class FilterWidget;
 
-class KADUAPI BuddiesListWidget : public QWidget
+class KADUAPI FilteredTreeView : public QWidget
 {
 	Q_OBJECT
 
@@ -62,8 +62,8 @@ protected:
 public:
 	static bool shouldEventGoToFilter(QKeyEvent *event);
 
-	explicit BuddiesListWidget(FilterPosition filterPosition, QWidget *parent = 0);
-	virtual ~BuddiesListWidget();
+	explicit FilteredTreeView(FilterPosition filterPosition, QWidget *parent = 0);
+	virtual ~FilteredTreeView();
 
 	FilterWidget * filterWidget() { return NameFilterWidget; }
 
@@ -75,4 +75,4 @@ signals:
 
 };
 
-#endif //BUDDIES_LIST_WIDGET_H
+#endif // FILTERED_TREE_VIEW_H

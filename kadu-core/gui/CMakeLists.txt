@@ -20,7 +20,6 @@ set (gui_SRCS
 	widgets/buddies-list-view-item-painter.cpp
 	widgets/buddies-list-view-menu-item.cpp
 	widgets/buddies-list-view-menu-manager.cpp
-	widgets/buddies-list-widget.cpp
 	widgets/buddy-avatar-widget.cpp
 	widgets/buddy-contacts-table-delegate.cpp
 	widgets/buddy-contacts-table-item.cpp
@@ -50,6 +49,7 @@ set (gui_SRCS
 	widgets/delayed-line-edit.cpp
 	widgets/file-transfer-widget.cpp
 	widgets/filter-widget.cpp
+	widgets/filtered-tree-view.cpp
 	widgets/group-tab-bar.cpp
 	widgets/groups-combo-box.cpp
 	widgets/identities-combo-box.cpp
@@ -164,7 +164,6 @@ set (gui_MOC_SRCS
 	widgets/actions-combo-box.h
 	widgets/buddies-list-view.h
 	widgets/buddies-list-view-delegate.h
-	widgets/buddies-list-widget.h
 	widgets/buddy-avatar-widget.h
 	widgets/buddy-contacts-table-delegate.h
 	widgets/buddy-contacts-table-item.h
@@ -194,6 +193,7 @@ set (gui_MOC_SRCS
 	widgets/delayed-line-edit.h
 	widgets/file-transfer-widget.h
 	widgets/filter-widget.h
+	widgets/filtered-tree-view.h
 	widgets/group-tab-bar.h
 	widgets/groups-combo-box.h
 	widgets/identities-combo-box.h

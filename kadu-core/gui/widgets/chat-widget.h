@@ -40,12 +40,12 @@
 class QSplitter;
 
 class BuddiesListView;
-class BuddiesListWidget;
 class BuddiesModelProxy;
 class ChatEditBox;
 class ChatMessagesView;
 class ChatWidget;
 class CustomInput;
+class FilteredTreeView;
 class MessageRenderInfo;
 class Protocol;
 
@@ -58,7 +58,7 @@ class KADUAPI ChatWidget : public QWidget, public ConfigurationAwareObject
 	Chat CurrentChat;
 
 	ChatMessagesView *MessagesView;
-	BuddiesListWidget *BuddiesWidget;
+	FilteredTreeView *BuddiesWidget;
 	BuddiesModelProxy *ProxyModel;
 	ChatEditBox *InputBox;
 

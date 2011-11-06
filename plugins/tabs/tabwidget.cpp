@@ -25,8 +25,8 @@
 
 #include <QtGui/QDrag>
 
-#include "gui/widgets/buddies-list-widget.h"
 #include "gui/widgets/chat-widget.h"
+#include "gui/widgets/filtered-tree-view.h"
 #include "gui/windows/open-chat-with/open-chat-with.h"
 
 #include "configuration/configuration-file.h"
@@ -211,7 +211,7 @@ void TabWidget::dropEvent(QDropEvent* e)
 	QStringList ules;
 
 	// Jezeli dnd pochodzil z userboxa probujemy dodac nowa karte
-	if (qobject_cast<BuddiesListWidget *>(e->source()) && false)/*UlesDrag::decode(e, ules))*/
+	if (qobject_cast<FilteredTreeView *>(e->source()) && false)/*UlesDrag::decode(e, ules))*/
 	{
 		if (tabBar()->tabAt(e->pos()) != -1)
 		// Jezeli w miejscu upuszczenia jest karta, dodajemy na jej pozycji

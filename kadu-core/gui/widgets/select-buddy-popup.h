@@ -20,7 +20,7 @@
 #ifndef SELECT_BUDDY_POPUP_H
 #define SELECT_BUDDY_POPUP_H
 
-#include "gui/widgets/buddies-list-widget.h"
+#include "gui/widgets/filtered-tree-view.h"
 
 class QModelIndex;
 
@@ -29,7 +29,7 @@ class BuddiesListView;
 class BuddiesModelProxy;
 class Buddy;
 
-class SelectBuddyPopup : public BuddiesListWidget
+class SelectBuddyPopup : public FilteredTreeView
 {
 	Q_OBJECT
 

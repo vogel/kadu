@@ -46,8 +46,8 @@ class Action;
 class ActionDescription;
 class ActionSource;
 class BuddyInfoPanel;
-class BuddiesListWidget;
 class ChatsTreeView;
+class FilteredTreeView;
 class GroupTabBar;
 class KaduWebView;
 class KaduWindowActionDataSource;
@@ -89,7 +89,7 @@ private:
 	bool RecentChatsMenuNeedsUpdate;
 	GroupTabBar *GroupBar;
 
-	BuddiesListWidget *ContactsWidget;
+	FilteredTreeView *ContactsWidget;
 	BuddiesListView *BuddiesView;
 	BuddiesModelProxy *ProxyModel;
 	ChatsTreeView *ChatsTree;

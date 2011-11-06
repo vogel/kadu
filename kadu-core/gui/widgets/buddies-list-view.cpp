@@ -47,8 +47,8 @@
 #include "gui/actions/action.h"
 #include "gui/actions/action-description.h"
 #include "gui/actions/base-action-data-source.h"
-#include "gui/widgets/buddies-list-widget.h"
 #include "gui/widgets/chat-widget-manager.h"
+#include "gui/widgets/filtered-tree-view.h"
 #include "gui/windows/kadu-window-actions.h"
 #include "gui/hot-key.h"
 #include "icons/kadu-icon.h"
@@ -192,7 +192,7 @@ void BuddiesListView::keyPressEvent(QKeyEvent *event)
 				triggerActivate(currentIndex());
 				break;
 			default:
-				if (BuddiesListWidget::shouldEventGoToFilter(event))
+				if (FilteredTreeView::shouldEventGoToFilter(event))
 					event->ignore();
 				else
 					QTreeView::keyPressEvent(event);
