@@ -20,6 +20,7 @@
 #include "gui/actions/base-action-data-source.h"
 #include "gui/widgets/chats-tree-view-delegate.h"
 #include "model/roles.h"
+#include "model/model-index-list-converter.h"
 
 #include "chats-tree-view.h"
 
@@ -46,22 +47,14 @@ void ChatsTreeView::setModel(QAbstractItemModel *model)
 
 void ChatsTreeView::updateActionData()
 {
+	ModelIndexListConverter converter(selectedIndexes());
+
 	ActionData->blockChangedSignal();
 
-	QModelIndexList selectionList = selectedIndexes();
-	if (1 == selectionList.size())
-	{
-		const Chat &selectedChat = selectionList.at(0).data(ChatRole).value<Chat>();
-		ActionData->setBuddies(selectedChat.contacts().toBuddySet());
-		ActionData->setContacts(selectedChat.contacts());
-		ActionData->setChat(selectedChat);
-	}
-	else
-	{
-		ActionData->setBuddies(BuddySet());
-		ActionData->setContacts(ContactSet());
-		ActionData->setChat(Chat::null);
-	}
+	ActionData->setRoles(converter.roles());
+	ActionData->setBuddies(converter.buddies());
+	ActionData->setContacts(converter.contacts());
+	ActionData->setChat(converter.chat());
 
 	ActionData->unblockChangedSignal();
 }
