@@ -16,7 +16,6 @@ set (gui_SRCS
 	widgets/avatar-painter.cpp
 	widgets/buddies-list-view.cpp
 	widgets/buddies-list-view-delegate.cpp
-	widgets/buddies-list-view-delegate-configuration.cpp
 	widgets/buddies-list-view-item-painter.cpp
 	widgets/buddies-list-view-menu-item.cpp
 	widgets/buddies-list-view-menu-manager.cpp
@@ -72,6 +71,7 @@ set (gui_SRCS
 	widgets/status-buttons.cpp
 	widgets/status-menu.cpp
 	widgets/syntax-editor.cpp
+	widgets/talkable-delegate-configuration.cpp
 	widgets/toolbar.cpp
 	widgets/tool-tip-class-manager.cpp
 

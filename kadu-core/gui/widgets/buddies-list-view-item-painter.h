@@ -26,11 +26,11 @@
 class QTextDocument;
 class QTreeView;
 
-class BuddiesListViewDelegateConfiguration;
+class TalkableDelegateConfiguration;
 
 class BuddiesListViewItemPainter
 {
-	const BuddiesListViewDelegateConfiguration &Configuration;
+	const TalkableDelegateConfiguration &Configuration;
 	QStyleOptionViewItemV4 Option;
 	const QModelIndex &Index;
 	const QTreeView *Widget;
@@ -94,7 +94,7 @@ class BuddiesListViewItemPainter
 	void paintDescription(QPainter *painter);
 
 public:
-	BuddiesListViewItemPainter(const BuddiesListViewDelegateConfiguration &configuration, QStyleOptionViewItemV4 option, const QModelIndex &index, bool useConfigurationColors);
+	BuddiesListViewItemPainter(const TalkableDelegateConfiguration &configuration, QStyleOptionViewItemV4 option, const QModelIndex &index, bool useConfigurationColors);
 	~BuddiesListViewItemPainter();
 
 	QPixmap buddyAvatar() const;

@@ -22,13 +22,13 @@
 
 #include <QtGui/QItemDelegate>
 
-#include "gui/widgets/buddies-list-view-delegate-configuration.h"
+#include "gui/widgets/talkable-delegate-configuration.h"
 
 class KaduTreeViewDelegate : public QItemDelegate
 {
 	Q_OBJECT
 
-	BuddiesListViewDelegateConfiguration Configuration;
+	TalkableDelegateConfiguration Configuration;
 
 	bool UseConfigurationColors;
 
@@ -40,7 +40,7 @@ public:
 
 	virtual void setShowAccountName(bool show);
 
-	BuddiesListViewDelegateConfiguration & configuration() { return Configuration; }
+	TalkableDelegateConfiguration & configuration() { return Configuration; }
 
 	void useConfigurationColors(bool use) { UseConfigurationColors = use; }
 

@@ -34,13 +34,13 @@
 #include "chat/message/pending-messages-manager.h"
 #include "contacts/contact.h"
 #include "gui/widgets/avatar-painter.h"
-#include "gui/widgets/buddies-list-view-delegate-configuration.h"
+#include "gui/widgets/talkable-delegate-configuration.h"
 #include "identities/identity.h"
 #include "model/roles.h"
 
 #include "buddies-list-view-item-painter.h"
 
-BuddiesListViewItemPainter::BuddiesListViewItemPainter(const BuddiesListViewDelegateConfiguration &configuration, QStyleOptionViewItemV4 option, const QModelIndex &index, bool useConfigurationColors) :
+BuddiesListViewItemPainter::BuddiesListViewItemPainter(const TalkableDelegateConfiguration &configuration, QStyleOptionViewItemV4 option, const QModelIndex &index, bool useConfigurationColors) :
 		Configuration(configuration), Option(option), Index(index),
 		UseConfigurationColors(useConfigurationColors),
 		FontMetrics(Configuration.font()),

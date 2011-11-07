@@ -27,12 +27,12 @@
 #include <QtGui/QStyleOptionViewItem>
 
 #include "contacts/contact.h"
-#include "gui/widgets/buddies-list-view-delegate-configuration.h"
+#include "gui/widgets/talkable-delegate-configuration.h"
 #include "model/roles.h"
 
 #include "avatar-painter.h"
 
-AvatarPainter::AvatarPainter(const BuddiesListViewDelegateConfiguration &configuration, const QStyleOptionViewItemV4 &option, const QRect &avatarRect, const QModelIndex &index) :
+AvatarPainter::AvatarPainter(const TalkableDelegateConfiguration &configuration, const QStyleOptionViewItemV4 &option, const QRect &avatarRect, const QModelIndex &index) :
 		Configuration(configuration), Option(option), AvatarRect(avatarRect), Index(index)
 {
 	Avatar = Index.data(AvatarRole).value<QPixmap>();

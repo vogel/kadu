@@ -27,11 +27,11 @@
 class QModelIndex;
 class QStyleOptionViewItemV4;
 
-class BuddiesListViewDelegateConfiguration;
+class TalkableDelegateConfiguration;
 
 class AvatarPainter
 {
-	const BuddiesListViewDelegateConfiguration &Configuration;
+	const TalkableDelegateConfiguration &Configuration;
 	const QStyleOptionViewItemV4 &Option;
 	const QRect &AvatarRect;
 	const QModelIndex &Index;
@@ -47,7 +47,7 @@ class AvatarPainter
 	void doPaint(QPainter *painter, const QRect &rect);
 
 public:
-	AvatarPainter(const BuddiesListViewDelegateConfiguration &configuration, const QStyleOptionViewItemV4 &option, const QRect &avatarRect, const QModelIndex &index);
+	AvatarPainter(const TalkableDelegateConfiguration &configuration, const QStyleOptionViewItemV4 &option, const QRect &avatarRect, const QModelIndex &index);
 
 	void paint(QPainter *painter);
 

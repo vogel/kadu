@@ -44,7 +44,7 @@ class BaseActionDataSource;
 class Buddy;
 class BuddySet;
 class BuddiesListViewDelegate;
-class BuddiesListViewDelegateConfiguration;
+class TalkableDelegateConfiguration;
 class BuddiesModelProxy;
 class ContactSet;
 class ModelChain;
@@ -53,7 +53,7 @@ class BuddiesListView : public KaduTreeView, public ActionDataSourceProvider
 {
 	Q_OBJECT
 
-	friend class BuddiesListViewDelegateConfiguration;
+	friend class TalkableDelegateConfiguration;
 
 	BuddiesListViewDelegate *Delegate;
 	ModelChain *Chain;
@@ -107,7 +107,7 @@ public:
 	void setShowAccountName(bool show);
 	void useConfigurationColors(bool use);
 
-	BuddiesListViewDelegateConfiguration & delegateConfiguration();
+	TalkableDelegateConfiguration & delegateConfiguration();
 
 	void updateLayout() { updateGeometries(); }
 

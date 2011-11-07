@@ -19,8 +19,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef BUDDIES_LIST_VIEW_DELEGATE_CONFIGURATION_H
-#define BUDDIES_LIST_VIEW_DELEGATE_CONFIGURATION_H
+#ifndef TALKABLE_DELEGATE_CONFIGURATION_H
+#define TALKABLE_DELEGATE_CONFIGURATION_H
 
 #include <QtGui/QColor>
 #include <QtGui/QFont>
@@ -30,9 +30,9 @@
 
 class BuddiesListView;
 
-class BuddiesListViewDelegateConfiguration : private ConfigurationAwareObject
+class TalkableDelegateConfiguration : private ConfigurationAwareObject
 {
-	Q_DISABLE_COPY(BuddiesListViewDelegateConfiguration)
+	Q_DISABLE_COPY(TalkableDelegateConfiguration)
 
 	BuddiesListView *ListView;
 
@@ -55,7 +55,7 @@ class BuddiesListViewDelegateConfiguration : private ConfigurationAwareObject
 	QPixmap MessagePixmap;
 
 public:
-	BuddiesListViewDelegateConfiguration(QObject *listView);
+	explicit TalkableDelegateConfiguration(QObject *listView);
 
 	void setShowAccountName(bool showAccountName) { ShowAccountName = showAccountName; }
 
@@ -81,4 +81,4 @@ public:
 
 };
 
-#endif // BUDDIES_LIST_VIEW_DELEGATE_CONFIGURATION_H
+#endif // TALKABLE_DELEGATE_CONFIGURATION_H

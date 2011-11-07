@@ -23,9 +23,9 @@
 #include "gui/widgets/buddies-list-view.h"
 #include "icons/kadu-icon.h"
 
-#include "buddies-list-view-delegate-configuration.h"
+#include "talkable-delegate-configuration.h"
 
-BuddiesListViewDelegateConfiguration::BuddiesListViewDelegateConfiguration(QObject *listView) :
+TalkableDelegateConfiguration::TalkableDelegateConfiguration(QObject *listView) :
 		ShowAccountName(true)
 {
 	ListView = qobject_cast<BuddiesListView *>(listView);
@@ -36,7 +36,7 @@ BuddiesListViewDelegateConfiguration::BuddiesListViewDelegateConfiguration(QObje
 	configurationUpdated();
 }
 
-void BuddiesListViewDelegateConfiguration::configurationUpdated()
+void TalkableDelegateConfiguration::configurationUpdated()
 {
 	Font = config_file.readFontEntry("Look", "UserboxFont");
 	BoldFont = Font;

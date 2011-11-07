@@ -115,7 +115,7 @@ void BuddiesListView::useConfigurationColors(bool use)
 	Delegate->useConfigurationColors(use);
 }
 
-BuddiesListViewDelegateConfiguration & BuddiesListView::delegateConfiguration()
+TalkableDelegateConfiguration & BuddiesListView::delegateConfiguration()
 {
 	return Delegate->configuration();
 }
