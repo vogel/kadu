@@ -19,7 +19,7 @@
 
 #include <QtGui/QAbstractItemView>
 
-#include "gui/widgets/buddies-list-view-item-painter.h"
+#include "gui/widgets/talkable-painter.h"
 
 #include "kadu-tree-view-delegate.h"
 
@@ -54,8 +54,8 @@ QStyleOptionViewItemV4 KaduTreeViewDelegate::getOptions(const QModelIndex &index
 
 QSize KaduTreeViewDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-	BuddiesListViewItemPainter buddyPainter(Configuration, getOptions(index, option), index, UseConfigurationColors);
-	return QSize(0, buddyPainter.height());
+	TalkablePainter talkablePainter(Configuration, getOptions(index, option), index, UseConfigurationColors);
+	return QSize(0, talkablePainter.height());
 }
 
 void KaduTreeViewDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
@@ -69,7 +69,7 @@ void KaduTreeViewDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 	QStyle *style = widget->style();
 	style->drawControl(QStyle::CE_ItemViewItem, &options, painter, widget);
 
-	BuddiesListViewItemPainter buddyPainter(Configuration, options, index, UseConfigurationColors);
-	buddyPainter.paint(painter);
+	TalkablePainter talkablePainter(Configuration, options, index, UseConfigurationColors);
+	talkablePainter.paint(painter);
 }
 

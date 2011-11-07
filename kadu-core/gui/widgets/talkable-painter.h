@@ -18,8 +18,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef BUDDIES_LIST_VIEW_ITEM_PAINTER_H
-#define BUDDIES_LIST_VIEW_ITEM_PAINTER_H
+#ifndef TALKABLE_PAINTER_H
+#define TALKABLE_PAINTER_H
 
 #include <QtGui/QStyleOption>
 
@@ -28,7 +28,7 @@ class QTreeView;
 
 class TalkableDelegateConfiguration;
 
-class BuddiesListViewItemPainter
+class TalkablePainter
 {
 	const TalkableDelegateConfiguration &Configuration;
 	QStyleOptionViewItemV4 Option;
@@ -94,8 +94,8 @@ class BuddiesListViewItemPainter
 	void paintDescription(QPainter *painter);
 
 public:
-	BuddiesListViewItemPainter(const TalkableDelegateConfiguration &configuration, QStyleOptionViewItemV4 option, const QModelIndex &index, bool useConfigurationColors);
-	~BuddiesListViewItemPainter();
+	TalkablePainter(const TalkableDelegateConfiguration &configuration, QStyleOptionViewItemV4 option, const QModelIndex &index, bool useConfigurationColors);
+	~TalkablePainter();
 
 	QPixmap buddyAvatar() const;
 	QPixmap buddyIcon() const;
@@ -105,4 +105,4 @@ public:
 
 };
 
-#endif // BUDDIES_LIST_VIEW_ITEM_PAINTER_H
+#endif // TALKABLE_PAINTER_H

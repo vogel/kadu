@@ -33,7 +33,6 @@
 #include "buddies/buddy-preferred-manager.h"
 #include "chat/message/pending-messages-manager.h"
 #include "contacts/contact-manager.h"
-#include "gui/widgets/buddies-list-view-item-painter.h"
 #include "model/kadu-abstract-model.h"
 #include "model/model-chain.h"
 

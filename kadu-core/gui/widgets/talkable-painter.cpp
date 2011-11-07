@@ -38,9 +38,9 @@
 #include "identities/identity.h"
 #include "model/roles.h"
 
-#include "buddies-list-view-item-painter.h"
+#include "talkable-painter.h"
 
-BuddiesListViewItemPainter::BuddiesListViewItemPainter(const TalkableDelegateConfiguration &configuration, QStyleOptionViewItemV4 option, const QModelIndex &index, bool useConfigurationColors) :
+TalkablePainter::TalkablePainter(const TalkableDelegateConfiguration &configuration, QStyleOptionViewItemV4 option, const QModelIndex &index, bool useConfigurationColors) :
 		Configuration(configuration), Option(option), Index(index),
 		UseConfigurationColors(useConfigurationColors),
 		FontMetrics(Configuration.font()),
@@ -56,13 +56,13 @@ BuddiesListViewItemPainter::BuddiesListViewItemPainter(const TalkableDelegateCon
 	VFrameMargin = style->pixelMetric(QStyle::PM_FocusFrameVMargin, 0, Widget);
 }
 
-BuddiesListViewItemPainter::~BuddiesListViewItemPainter()
+TalkablePainter::~TalkablePainter()
 {
 	delete DescriptionDocument;
 	DescriptionDocument = 0;
 }
 
-void BuddiesListViewItemPainter::fixColors()
+void TalkablePainter::fixColors()
 {
 #ifdef Q_OS_WIN
 	// Kadu bug #1531
@@ -73,7 +73,7 @@ void BuddiesListViewItemPainter::fixColors()
 #endif
 }
 
-QColor BuddiesListViewItemPainter::textColor() const
+QColor TalkablePainter::textColor() const
 {
 	QPalette::ColorGroup colorGroup = drawDisabled()
 			? QPalette::Disabled
@@ -86,7 +86,7 @@ QColor BuddiesListViewItemPainter::textColor() const
 	return Option.palette.color(colorGroup, colorRole);
 }
 
-bool BuddiesListViewItemPainter::useBold() const
+bool TalkablePainter::useBold() const
 {
 	if (showMessagePixmap())
 		return true;
@@ -106,7 +106,7 @@ bool BuddiesListViewItemPainter::useBold() const
 	return !status.isDisconnected();
 }
 
-bool BuddiesListViewItemPainter::showMessagePixmap() const
+bool TalkablePainter::showMessagePixmap() const
 {
 	if (Index.parent().isValid()) // contact
 	{
@@ -120,7 +120,7 @@ bool BuddiesListViewItemPainter::showMessagePixmap() const
 	}
 }
 
-bool BuddiesListViewItemPainter::showAccountName() const
+bool TalkablePainter::showAccountName() const
 {
 	if (Index.parent().isValid())
 		return true;
@@ -128,7 +128,7 @@ bool BuddiesListViewItemPainter::showAccountName() const
 	return Option.state & QStyle::State_MouseOver && Configuration.showAccountName();
 }
 
-bool BuddiesListViewItemPainter::showDescription() const
+bool TalkablePainter::showDescription() const
 {
 	if (!Configuration.showDescription())
 		return false;
@@ -137,7 +137,7 @@ bool BuddiesListViewItemPainter::showDescription() const
 	return !description.isEmpty();
 }
 
-void BuddiesListViewItemPainter::computeIconRect()
+void TalkablePainter::computeIconRect()
 {
 	IconRect = QRect(0, 0, 0, 0);
 
@@ -156,7 +156,7 @@ void BuddiesListViewItemPainter::computeIconRect()
 	IconRect.moveTo(topLeft);
 }
 
-void BuddiesListViewItemPainter::computeMessageIconRect()
+void TalkablePainter::computeMessageIconRect()
 {
 	MessageIconRect = QRect(0, 0, 0, 0);
 	if (!showMessagePixmap())
@@ -178,7 +178,7 @@ void BuddiesListViewItemPainter::computeMessageIconRect()
 	MessageIconRect.moveTo(topLeft);
 }
 
-void BuddiesListViewItemPainter::computeAvatarRect()
+void TalkablePainter::computeAvatarRect()
 {
 	AvatarRect = QRect(0, 0, 0, 0);
 	if (!Configuration.showAvatars())
@@ -195,29 +195,29 @@ void BuddiesListViewItemPainter::computeAvatarRect()
 	AvatarRect.moveTop(ItemRect.top());
 }
 
-QString BuddiesListViewItemPainter::getAccountName()
+QString TalkablePainter::getAccountName()
 {
 	Account account = Index.data(AccountRole).value<Account>();
 	return account.accountIdentity().name();
 }
 
-QString BuddiesListViewItemPainter::getName()
+QString TalkablePainter::getName()
 {
 	return Index.data(Qt::DisplayRole).toString();
 }
 
-bool BuddiesListViewItemPainter::drawSelected() const
+bool TalkablePainter::drawSelected() const
 {
 	return Option.state & QStyle::State_Selected;
 }
 
-bool BuddiesListViewItemPainter::drawDisabled() const
+bool TalkablePainter::drawDisabled() const
 {
 	Buddy buddy = Index.data(BuddyRole).value<Buddy>();
 	return buddy.isOfflineTo();
 }
 
-QTextDocument * BuddiesListViewItemPainter::createDescriptionDocument(const QString &text, int width, QColor color) const
+QTextDocument * TalkablePainter::createDescriptionDocument(const QString &text, int width, QColor color) const
 {
 	QString description = Qt::escape(text);
 	description.replace('\n', Configuration.showMultiLineDescription() ? QLatin1String("<br/>") : QLatin1String(" "));
@@ -242,7 +242,7 @@ QTextDocument * BuddiesListViewItemPainter::createDescriptionDocument(const QStr
 	return doc;
 }
 
-QTextDocument * BuddiesListViewItemPainter::getDescriptionDocument(int width)
+QTextDocument * TalkablePainter::getDescriptionDocument(int width)
 {
 	if (DescriptionDocument)
 		return DescriptionDocument;
@@ -256,7 +256,7 @@ QTextDocument * BuddiesListViewItemPainter::getDescriptionDocument(int width)
 	return DescriptionDocument;
 }
 
-void BuddiesListViewItemPainter::computeAccountNameRect()
+void TalkablePainter::computeAccountNameRect()
 {
 	AccountNameRect = QRect(0, 0, 0, 0);
 	if (!showAccountName())
@@ -273,7 +273,7 @@ void BuddiesListViewItemPainter::computeAccountNameRect()
 	AccountNameRect.moveTop(ItemRect.top());
 }
 
-void BuddiesListViewItemPainter::computeNameRect()
+void TalkablePainter::computeNameRect()
 {
 	NameRect = QRect(0, 0, 0, 0);
 
@@ -302,7 +302,7 @@ void BuddiesListViewItemPainter::computeNameRect()
 	NameRect.setHeight(fontMetrics().height());
 }
 
-void BuddiesListViewItemPainter::computeDescriptionRect()
+void TalkablePainter::computeDescriptionRect()
 {
 	DescriptionRect = QRect(0, 0, 0, 0);
 
@@ -320,7 +320,7 @@ void BuddiesListViewItemPainter::computeDescriptionRect()
 	DescriptionRect.setHeight((int)getDescriptionDocument(DescriptionRect.width())->size().height());
 }
 
-void BuddiesListViewItemPainter::computeLayout()
+void TalkablePainter::computeLayout()
 {
 	computeIconRect();
 	computeMessageIconRect();
@@ -330,17 +330,17 @@ void BuddiesListViewItemPainter::computeLayout()
 	computeDescriptionRect();
 }
 
-QPixmap BuddiesListViewItemPainter::buddyAvatar() const
+QPixmap TalkablePainter::buddyAvatar() const
 {
 	return Index.data(AvatarRole).value<QPixmap>();
 }
 
-QPixmap BuddiesListViewItemPainter::buddyIcon() const
+QPixmap TalkablePainter::buddyIcon() const
 {
 	return Index.data(Qt::DecorationRole).value<QIcon>().pixmap(16, 16);
 }
 
-const QFontMetrics & BuddiesListViewItemPainter::fontMetrics()
+const QFontMetrics & TalkablePainter::fontMetrics()
 {
 	if (useBold())
 		return BoldFontMetrics;
@@ -348,7 +348,7 @@ const QFontMetrics & BuddiesListViewItemPainter::fontMetrics()
 		return FontMetrics;
 }
 
-int BuddiesListViewItemPainter::itemIndentation()
+int TalkablePainter::itemIndentation()
 {
 	int level = 0;
 
@@ -361,7 +361,7 @@ int BuddiesListViewItemPainter::itemIndentation()
 	return level * Widget->indentation();
 }
 
-int BuddiesListViewItemPainter::height()
+int TalkablePainter::height()
 {
 	if (!Widget)
 		return 0;
@@ -386,7 +386,7 @@ int BuddiesListViewItemPainter::height()
 	return wholeRect.height() + 2 * VFrameMargin;
 }
 
-void BuddiesListViewItemPainter::paintDebugRect(QPainter *painter, QRect rect, QColor color) const
+void TalkablePainter::paintDebugRect(QPainter *painter, QRect rect, QColor color) const
 {
 	painter->save();
 	painter->setPen(color);
@@ -394,7 +394,7 @@ void BuddiesListViewItemPainter::paintDebugRect(QPainter *painter, QRect rect, Q
 	painter->restore();
 }
 
-void BuddiesListViewItemPainter::paintIcon(QPainter *painter)
+void TalkablePainter::paintIcon(QPainter *painter)
 {
 	QPixmap icon = buddyIcon();
 	if (icon.isNull())
@@ -403,7 +403,7 @@ void BuddiesListViewItemPainter::paintIcon(QPainter *painter)
 	painter->drawPixmap(IconRect, icon);
 }
 
-void BuddiesListViewItemPainter::paintMessageIcon(QPainter *painter)
+void TalkablePainter::paintMessageIcon(QPainter *painter)
 {
 	if (!showMessagePixmap())
 		return;
@@ -411,7 +411,7 @@ void BuddiesListViewItemPainter::paintMessageIcon(QPainter *painter)
 	painter->drawPixmap(MessageIconRect, Configuration.messagePixmap());
 }
 
-void BuddiesListViewItemPainter::paintAvatar(QPainter *painter)
+void TalkablePainter::paintAvatar(QPainter *painter)
 {
 	QRect rect = AvatarRect.adjusted(VFrameMargin, HFrameMargin, -VFrameMargin, -HFrameMargin);
 
@@ -419,7 +419,7 @@ void BuddiesListViewItemPainter::paintAvatar(QPainter *painter)
 	avatarPainter.paint(painter);
 }
 
-void BuddiesListViewItemPainter::paintAccountName(QPainter *painter)
+void TalkablePainter::paintAccountName(QPainter *painter)
 {
 	if (!showAccountName())
 		return;
@@ -428,7 +428,7 @@ void BuddiesListViewItemPainter::paintAccountName(QPainter *painter)
 	painter->drawText(AccountNameRect, getAccountName());
 }
 
-void BuddiesListViewItemPainter::paintName(QPainter *painter)
+void TalkablePainter::paintName(QPainter *painter)
 {
 	if (useBold())
 		painter->setFont(Configuration.boldFont());
@@ -438,7 +438,7 @@ void BuddiesListViewItemPainter::paintName(QPainter *painter)
 	painter->drawText(NameRect, fontMetrics().elidedText(getName(), Qt::ElideRight, NameRect.width()));
 }
 
-void BuddiesListViewItemPainter::paintDescription(QPainter *painter)
+void TalkablePainter::paintDescription(QPainter *painter)
 {
 	if (!showDescription())
 		return;
@@ -450,7 +450,7 @@ void BuddiesListViewItemPainter::paintDescription(QPainter *painter)
 	painter->restore();
 }
 
-void BuddiesListViewItemPainter::paint(QPainter *painter)
+void TalkablePainter::paint(QPainter *painter)
 {
 	ItemRect = Option.rect;
 	ItemRect.adjust(HFrameMargin, VFrameMargin, -HFrameMargin, -VFrameMargin);
