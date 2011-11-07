@@ -15,7 +15,6 @@ set (gui_SRCS
 	widgets/actions-combo-box.cpp
 	widgets/avatar-painter.cpp
 	widgets/buddies-list-view.cpp
-	widgets/buddies-list-view-delegate.cpp
 	widgets/buddies-list-view-item-painter.cpp
 	widgets/buddies-list-view-menu-item.cpp
 	widgets/buddies-list-view-menu-manager.cpp
@@ -71,6 +70,7 @@ set (gui_SRCS
 	widgets/status-buttons.cpp
 	widgets/status-menu.cpp
 	widgets/syntax-editor.cpp
+	widgets/talkable-delegate.cpp
 	widgets/talkable-delegate-configuration.cpp
 	widgets/toolbar.cpp
 	widgets/tool-tip-class-manager.cpp
@@ -161,7 +161,6 @@ set (gui_MOC_SRCS
 	widgets/accounts-combo-box.h
 	widgets/actions-combo-box.h
 	widgets/buddies-list-view.h
-	widgets/buddies-list-view-delegate.h
 	widgets/buddy-avatar-widget.h
 	widgets/buddy-contacts-table-delegate.h
 	widgets/buddy-contacts-table-item.h
@@ -214,6 +213,7 @@ set (gui_MOC_SRCS
 	widgets/status-buttons.h
 	widgets/status-menu.h
 	widgets/syntax-editor.h
+	widgets/talkable-delegate.h
 	widgets/toolbar.h
 
 	widgets/configuration/buddy-list-background-colors-widget.h

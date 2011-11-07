@@ -49,6 +49,7 @@
 #include "gui/actions/base-action-data-source.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/filtered-tree-view.h"
+#include "gui/widgets/talkable-delegate.h"
 #include "gui/windows/kadu-window-actions.h"
 #include "gui/hot-key.h"
 #include "icons/kadu-icon.h"
@@ -62,7 +63,6 @@
 #include "protocols/protocols-manager.h"
 #include "status/status-container-manager.h"
 
-#include "buddies-list-view-delegate.h"
 #include "buddies-list-view-menu-manager.h"
 
 #include "buddies-list-view.h"
@@ -74,7 +74,7 @@ BuddiesListView::BuddiesListView(QWidget *parent) :
 	ActionData = new BaseActionDataSource();
 	connect(MainConfigurationHolder::instance(), SIGNAL(setStatusModeChanged()), this, SLOT(updateActionData()));
 
-	Delegate = new BuddiesListViewDelegate(this);
+	Delegate = new TalkableDelegate(this);
 	setItemDelegate(Delegate);
 
 	ToolTipTimeoutTimer.setSingleShot(true);

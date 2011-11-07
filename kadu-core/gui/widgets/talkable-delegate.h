@@ -23,8 +23,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef BUDDIES_LIST_VIEW_DELEGATE_H
-#define BUDDIES_LIST_VIEW_DELEGATE_H
+#ifndef TALKABLE_DELEGATE_H
+#define TALKABLE_DELEGATE_H
 
 #undef check
 
@@ -33,14 +33,11 @@
 #include "gui/widgets/talkable-delegate-configuration.h"
 #include "gui/widgets/kadu-tree-view-delegate.h"
 
-class Account;
 class Avatar;
-class ChatWidget;
 class Contact;
 class ModelChain;
-class Status;
 
-class BuddiesListViewDelegate : public KaduTreeViewDelegate
+class TalkableDelegate : public KaduTreeViewDelegate
 {
 	Q_OBJECT
 
@@ -54,8 +51,8 @@ private slots:
 	void chainDestroyed();
 
 public:
-	explicit BuddiesListViewDelegate(QObject *parent = 0);
-	virtual ~BuddiesListViewDelegate();
+	explicit TalkableDelegate(QObject *parent = 0);
+	virtual ~TalkableDelegate();
 
 	virtual void setChain(ModelChain *chain);
 
@@ -65,4 +62,4 @@ public:
 #include "avatars/avatar.h"
 #include "contacts/contact.h"
 
-#endif // BUDDIES_LIST_VIEW_DELEGATE_H
+#endif // TALKABLE_DELEGATE_H

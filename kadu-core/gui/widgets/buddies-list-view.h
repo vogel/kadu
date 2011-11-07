@@ -43,11 +43,11 @@ class QModelIndex;
 class BaseActionDataSource;
 class Buddy;
 class BuddySet;
-class BuddiesListViewDelegate;
-class TalkableDelegateConfiguration;
 class BuddiesModelProxy;
 class ContactSet;
 class ModelChain;
+class TalkableDelegate;
+class TalkableDelegateConfiguration;
 
 class BuddiesListView : public KaduTreeView, public ActionDataSourceProvider
 {
@@ -55,7 +55,7 @@ class BuddiesListView : public KaduTreeView, public ActionDataSourceProvider
 
 	friend class TalkableDelegateConfiguration;
 
-	BuddiesListViewDelegate *Delegate;
+	TalkableDelegate *Delegate;
 	ModelChain *Chain;
 
 	BaseActionDataSource *ActionData;

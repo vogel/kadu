@@ -37,9 +37,9 @@
 #include "model/kadu-abstract-model.h"
 #include "model/model-chain.h"
 
-#include "buddies-list-view-delegate.h"
+#include "talkable-delegate.h"
 
-BuddiesListViewDelegate::BuddiesListViewDelegate(QObject *parent) :
+TalkableDelegate::TalkableDelegate(QObject *parent) :
 		KaduTreeViewDelegate(parent), Chain(0)
 {
 	connect(AvatarManager::instance(), SIGNAL(avatarUpdated(Avatar)), this, SLOT(avatarUpdated(Avatar)));
@@ -49,7 +49,7 @@ BuddiesListViewDelegate::BuddiesListViewDelegate(QObject *parent) :
 	connect(PendingMessagesManager::instance(), SIGNAL(messageRemoved(Message)), this, SLOT(messageStatusChanged(Message)));
 }
 
-BuddiesListViewDelegate::~BuddiesListViewDelegate()
+TalkableDelegate::~TalkableDelegate()
 {
 	disconnect(AvatarManager::instance(), SIGNAL(avatarUpdated(Avatar)), this, SLOT(avatarUpdated(Avatar)));
 	disconnect(ContactManager::instance(), SIGNAL(contactUpdated(Contact&)), this, SLOT(contactUpdated(Contact&)));
@@ -58,7 +58,7 @@ BuddiesListViewDelegate::~BuddiesListViewDelegate()
 	disconnect(PendingMessagesManager::instance(), SIGNAL(messageRemoved(Message)), this, SLOT(messageStatusChanged(Message)));
 }
 
-void BuddiesListViewDelegate::setChain(ModelChain *chain)
+void TalkableDelegate::setChain(ModelChain *chain)
 {
 	if (Chain)
 		disconnect(Chain, SIGNAL(destroyed(QObject *)), this, SLOT(chainDestroyed()));
@@ -69,7 +69,7 @@ void BuddiesListViewDelegate::setChain(ModelChain *chain)
 		connect(Chain, SIGNAL(destroyed(QObject *)), this, SLOT(chainDestroyed()));
 }
 
-void BuddiesListViewDelegate::avatarUpdated(Avatar avatar)
+void TalkableDelegate::avatarUpdated(Avatar avatar)
 {
 	if (!Chain)
 		return;
@@ -88,25 +88,25 @@ void BuddiesListViewDelegate::avatarUpdated(Avatar avatar)
 		emit sizeHintChanged(Chain->indexForValue(avatar.avatarBuddy()));
 }
 
-void BuddiesListViewDelegate::contactUpdated(Contact &contact)
+void TalkableDelegate::contactUpdated(Contact &contact)
 {
 	if (Chain)
 		emit sizeHintChanged(Chain->indexForValue(contact.ownerBuddy()));
 }
 
-void BuddiesListViewDelegate::buddyUpdated(Buddy &buddy)
+void TalkableDelegate::buddyUpdated(Buddy &buddy)
 {
 	if (Chain)
 		emit sizeHintChanged(Chain->indexForValue(buddy));
 }
 
-void BuddiesListViewDelegate::messageStatusChanged(Message message)
+void TalkableDelegate::messageStatusChanged(Message message)
 {
 	Buddy buddy = message.messageSender().ownerBuddy();
 	buddyUpdated(buddy);
 }
 
-void BuddiesListViewDelegate::chainDestroyed()
+void TalkableDelegate::chainDestroyed()
 {
 	Chain = 0;
 }
