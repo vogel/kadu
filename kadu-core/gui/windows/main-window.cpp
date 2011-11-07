@@ -34,7 +34,7 @@
 #include "buddies/buddy-set.h"
 #include "gui/actions/action.h"
 #include "gui/actions/actions.h"
-#include "gui/widgets/buddies-list-view.h"
+#include "gui/widgets/talkable-tree-view.h"
 #include "gui/widgets/toolbar.h"
 #include "core/core.h"
 

@@ -30,8 +30,8 @@
 #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
 
-#include "gui/widgets/buddies-list-view.h"
 #include "gui/widgets/line-edit-with-clear-button.h"
+#include "gui/widgets/talkable-tree-view.h"
 
 #include "filter-widget.h"
 

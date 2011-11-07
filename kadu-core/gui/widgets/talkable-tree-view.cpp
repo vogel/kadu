@@ -50,6 +50,7 @@
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/filtered-tree-view.h"
 #include "gui/widgets/talkable-delegate.h"
+#include "gui/widgets/tool-tip-class-manager.h"
 #include "gui/windows/kadu-window-actions.h"
 #include "gui/hot-key.h"
 #include "icons/kadu-icon.h"
@@ -65,10 +66,9 @@
 
 #include "buddies-list-view-menu-manager.h"
 
-#include "buddies-list-view.h"
-#include "tool-tip-class-manager.h"
+#include "talkable-tree-view.h"
 
-BuddiesListView::BuddiesListView(QWidget *parent) :
+TalkableTreeView::TalkableTreeView(QWidget *parent) :
 		KaduTreeView(parent), Delegate(0), Chain(0), ContextMenuEnabled(false)
 {
 	ActionData = new BaseActionDataSource();
@@ -83,13 +83,13 @@ BuddiesListView::BuddiesListView(QWidget *parent) :
 	connect(this, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(doubleClickedSlot(const QModelIndex &)));
 }
 
-BuddiesListView::~BuddiesListView()
+TalkableTreeView::~TalkableTreeView()
 {
 	delete ActionData;
 	ActionData = 0;
 }
 
-void BuddiesListView::setChain(ModelChain *chain)
+void TalkableTreeView::setChain(ModelChain *chain)
 {
 	Chain = chain;
 	Delegate->setChain(Chain);
@@ -100,27 +100,27 @@ void BuddiesListView::setChain(ModelChain *chain)
 	        this, SLOT(updateActionData()));
 }
 
-ModelChain * BuddiesListView::chain() const
+ModelChain * TalkableTreeView::chain() const
 {
 	return Chain;
 }
 
-void BuddiesListView::setShowAccountName(bool show)
+void TalkableTreeView::setShowAccountName(bool show)
 {
 	Delegate->setShowAccountName(show);
 }
 
-void BuddiesListView::useConfigurationColors(bool use)
+void TalkableTreeView::useConfigurationColors(bool use)
 {
 	Delegate->useConfigurationColors(use);
 }
 
-TalkableDelegateConfiguration & BuddiesListView::delegateConfiguration()
+TalkableDelegateConfiguration & TalkableTreeView::delegateConfiguration()
 {
 	return Delegate->configuration();
 }
 
-BuddyOrContact BuddiesListView::buddyOrContactAt(const QModelIndex &index) const
+BuddyOrContact TalkableTreeView::buddyOrContactAt(const QModelIndex &index) const
 {
 	switch (index.data(ItemTypeRole).toInt())
 	{
@@ -133,7 +133,7 @@ BuddyOrContact BuddiesListView::buddyOrContactAt(const QModelIndex &index) const
 	return BuddyOrContact();
 }
 
-Chat BuddiesListView::chatForIndex(const QModelIndex &index) const
+Chat TalkableTreeView::chatForIndex(const QModelIndex &index) const
 {
 	if (!index.isValid())
 		return Chat::null;
@@ -145,7 +145,7 @@ Chat BuddiesListView::chatForIndex(const QModelIndex &index) const
 	return ChatManager::instance()->findChat(ContactSet(contact));
 }
 
-void BuddiesListView::triggerActivate(const QModelIndex& index)
+void TalkableTreeView::triggerActivate(const QModelIndex& index)
 {
 	// we need to fetch these 2 object first
 	// because afer calling buddyActivated or chatActivate index can became invalid
@@ -159,12 +159,12 @@ void BuddiesListView::triggerActivate(const QModelIndex& index)
 		emit chatActivated(chat);
 }
 
-void BuddiesListView::setContextMenuEnabled(bool enabled)
+void TalkableTreeView::setContextMenuEnabled(bool enabled)
 {
 	ContextMenuEnabled = enabled;
 }
 
-void BuddiesListView::contextMenuEvent(QContextMenuEvent *event)
+void TalkableTreeView::contextMenuEvent(QContextMenuEvent *event)
 {
 	if (!ContextMenuEnabled)
 		return;
@@ -173,7 +173,7 @@ void BuddiesListView::contextMenuEvent(QContextMenuEvent *event)
 	menu->exec(event->globalPos());
 }
 
-void BuddiesListView::keyPressEvent(QKeyEvent *event)
+void TalkableTreeView::keyPressEvent(QKeyEvent *event)
 {
 	// TODO 0.10.0: add proper shortcuts handling
 	if (HotKey::shortCut(event, "ShortCuts", "kadu_deleteuser"))
@@ -197,7 +197,7 @@ void BuddiesListView::keyPressEvent(QKeyEvent *event)
 	toolTipHide(false);
 }
 
-void BuddiesListView::wheelEvent(QWheelEvent *event)
+void TalkableTreeView::wheelEvent(QWheelEvent *event)
 {
 	QTreeView::wheelEvent(event);
 
@@ -208,13 +208,13 @@ void BuddiesListView::wheelEvent(QWheelEvent *event)
 		toolTipHide(false);
 }
 
-void BuddiesListView::leaveEvent(QEvent *event)
+void TalkableTreeView::leaveEvent(QEvent *event)
 {
 	QTreeView::leaveEvent(event);
 	toolTipHide(false);
 }
 
-void BuddiesListView::mousePressEvent(QMouseEvent *event)
+void TalkableTreeView::mousePressEvent(QMouseEvent *event)
 {
 	QTreeView::mousePressEvent(event);
 
@@ -225,19 +225,19 @@ void BuddiesListView::mousePressEvent(QMouseEvent *event)
 	toolTipHide();
 }
 
-void BuddiesListView::mouseReleaseEvent(QMouseEvent *event)
+void TalkableTreeView::mouseReleaseEvent(QMouseEvent *event)
 {
 	QTreeView::mouseReleaseEvent(event);
 	toolTipRestart(event->pos());
 }
 
-void BuddiesListView::mouseMoveEvent(QMouseEvent *event)
+void TalkableTreeView::mouseMoveEvent(QMouseEvent *event)
 {
 	QTreeView::mouseMoveEvent(event);
 	toolTipRestart(event->pos());
 }
 
-StatusContainer * BuddiesListView::statusContainerForChat(const Chat &chat) const
+StatusContainer * TalkableTreeView::statusContainerForChat(const Chat &chat) const
 {
 	if (MainConfigurationHolder::instance()->isSetStatusPerIdentity())
 		return chat.chatAccount().accountIdentity().data();
@@ -247,7 +247,7 @@ StatusContainer * BuddiesListView::statusContainerForChat(const Chat &chat) cons
 		return StatusContainerManager::instance();
 }
 
-void BuddiesListView::updateActionData()
+void TalkableTreeView::updateActionData()
 {
 	ModelIndexListConverter converter(selectedIndexes());
 
@@ -262,12 +262,12 @@ void BuddiesListView::updateActionData()
 	ActionData->unblockChangedSignal();
 }
 
-ActionDataSource * BuddiesListView::actionDataSource()
+ActionDataSource * TalkableTreeView::actionDataSource()
 {
 	return ActionData;
 }
 
-void BuddiesListView::doubleClickedSlot(const QModelIndex &index)
+void TalkableTreeView::doubleClickedSlot(const QModelIndex &index)
 {
 	if (index.isValid())
 		triggerActivate(index);
@@ -275,7 +275,7 @@ void BuddiesListView::doubleClickedSlot(const QModelIndex &index)
 
 // Tool Tips
 
-void BuddiesListView::toolTipTimeout()
+void TalkableTreeView::toolTipTimeout()
 {
 	if (BuddyOrContact::ItemNone != ToolTipItem.type())
 	{
@@ -286,7 +286,7 @@ void BuddiesListView::toolTipTimeout()
 
 #define TOOL_TIP_TIMEOUT 1000
 
-void BuddiesListView::toolTipRestart(QPoint pos)
+void TalkableTreeView::toolTipRestart(QPoint pos)
 {
 	BuddyOrContact item = buddyOrContactAt(indexAt(pos));
 
@@ -305,7 +305,7 @@ void BuddiesListView::toolTipRestart(QPoint pos)
 	ToolTipTimeoutTimer.start(TOOL_TIP_TIMEOUT);
 }
 
-void BuddiesListView::toolTipHide(bool waitForAnother)
+void TalkableTreeView::toolTipHide(bool waitForAnother)
 {
 	ToolTipClassManager::instance()->hideToolTip();
 
@@ -315,7 +315,7 @@ void BuddiesListView::toolTipHide(bool waitForAnother)
 		ToolTipTimeoutTimer.stop();
 }
 
-void BuddiesListView::hideEvent(QHideEvent *event)
+void TalkableTreeView::hideEvent(QHideEvent *event)
 {
 	toolTipHide(false);
 	QTreeView::hideEvent(event);

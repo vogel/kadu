@@ -55,17 +55,17 @@
 #include "gui/hot-key.h"
 #include "gui/actions/action.h"
 #include "gui/widgets/buddy-info-panel.h"
-#include "gui/widgets/buddies-list-view.h"
 #include "gui/widgets/chat-widget-actions.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/group-tab-bar.h"
 #include "gui/widgets/filter-widget.h"
 #include "gui/widgets/filtered-tree-view.h"
 #include "gui/widgets/kadu-web-view.h"
-#include "gui/windows/kadu-window-action-data-source.h"
-#include "gui/windows/kadu-window-actions.h"
 #include "gui/widgets/status-buttons.h"
 #include "gui/widgets/status-menu.h"
+#include "gui/widgets/talkable-tree-view.h"
+#include "gui/windows/kadu-window-action-data-source.h"
+#include "gui/windows/kadu-window-actions.h"
 #include "model/model-chain.h"
 #include "notify/notification-manager.h"
 #include "os/generic/url-opener.h"
@@ -166,7 +166,7 @@ QWidget * KaduWindow::createBuddiesWidget(QWidget *parent)
 	GroupBar = new GroupTabBar(this);
 
 	ContactsWidget = new FilteredTreeView(FilteredTreeView::FilterAtTop, hbox);
-	BuddiesView = new BuddiesListView(ContactsWidget);
+	BuddiesView = new TalkableTreeView(ContactsWidget);
 	ContactsWidget->setTreeView(BuddiesView);
 
 	ModelChain *chain = new ModelChain(new BuddiesModel(this), this);
@@ -224,7 +224,7 @@ QWidget * KaduWindow::createBuddiesWidget(QWidget *parent)
 
 QWidget * KaduWindow::createChatsWidget(QWidget *parent)
 {
-	ChatsTree = new BuddiesListView(parent);
+	ChatsTree = new TalkableTreeView(parent);
 	ChatsTree->setContextMenuEnabled(true);
 
 	ModelChain *chain = new ModelChain(new ChatsModel(ChatsTree), ChatsTree);
@@ -534,7 +534,7 @@ bool KaduWindow::supportsActionType(ActionDescription::ActionType type)
 	return type & (ActionDescription::TypeGlobal | ActionDescription::TypeUserList | ActionDescription::TypeUser);
 }
 
-BuddiesListView * KaduWindow::buddiesListView()
+TalkableTreeView * KaduWindow::talkableTreeView()
 {
 	return BuddiesView;
 }
@@ -579,7 +579,7 @@ void KaduWindow::configurationUpdated()
 		else if (typeName == "TiledAndCentered")
 			type = KaduTreeView::BackgroundTiledAndCentered;
 		else
-			type = BuddiesListView::BackgroundNone;
+			type = KaduTreeView::BackgroundNone;
 
 		BuddiesView->setBackground(bgColor, alternateBgColor, config_file.readEntry("Look", "UserboxBackground"), type);
 		ChatsTree->setBackground(bgColor, alternateBgColor, config_file.readEntry("Look", "UserboxBackground"), type);
@@ -685,7 +685,7 @@ void KaduWindow::createDefaultToolbars(QDomElement parentConfig)
 
 ActionDataSource * KaduWindow::actionSource()
 {
-	return buddiesListView()->actionDataSource();
+	return talkableTreeView()->actionDataSource();
 }
 
 void KaduWindow::setDocked(bool docked)

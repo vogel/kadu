@@ -27,8 +27,8 @@
 #include "buddies/filter/buddy-name-filter.h"
 #include "buddies/model/buddies-model.h"
 #include "buddies/model/buddies-model-proxy.h"
-#include "gui/widgets/buddies-list-view.h"
 #include "gui/widgets/filter-widget.h"
+#include "gui/widgets/talkable-tree-view.h"
 #include "model/roles.h"
 #include "model/model-chain.h"
 
@@ -39,7 +39,7 @@ SelectBuddyPopup::SelectBuddyPopup(QWidget *parent) :
 {
 	setWindowFlags(Qt::Popup);
 
-	View = new BuddiesListView(this);
+	View = new TalkableTreeView(this);
 	setTreeView(View);
 
 	ModelChain *chain = new ModelChain(new BuddiesModel(this), this);

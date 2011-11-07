@@ -39,10 +39,10 @@
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
 #include "core/core.h"
-#include "gui/widgets/buddies-list-view.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/filtered-tree-view.h"
 #include "gui/widgets/line-edit-with-clear-button.h"
+#include "gui/widgets/talkable-tree-view.h"
 #include "misc/misc.h"
 #include "os/generic/url-opener.h"
 
@@ -88,7 +88,7 @@ OpenChatWith::OpenChatWith() :
 	connect(ContactID, SIGNAL(textChanged(const QString &)), this, SLOT(inputChanged(const QString &)));
 	MainLayout->addWidget(ContactID);
 
-	BuddiesWidget = new BuddiesListView(this);
+	BuddiesWidget = new TalkableTreeView(this);
 	connect(BuddiesWidget, SIGNAL(chatActivated(Chat)), this, SLOT(openChat()));
 	MainLayout->addWidget(BuddiesWidget);
 

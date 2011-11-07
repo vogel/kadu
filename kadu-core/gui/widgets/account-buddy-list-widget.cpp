@@ -35,8 +35,8 @@
 #include "contacts/contact.h"
 #include "contacts/contact-details.h"
 #include "contacts/contact-manager.h"
-#include "gui/widgets/buddies-list-view.h"
 #include "gui/widgets/filtered-tree-view.h"
+#include "gui/widgets/talkable-tree-view.h"
 #include "gui/windows/message-dialog.h"
 #include "model/model-chain.h"
 
@@ -72,7 +72,7 @@ AccountBuddyListWidget::AccountBuddyListWidget(Account account, QWidget *parent)
 	connect(BuddiesWidget, SIGNAL(filterChanged(QString)), nameFilter, SLOT(setName(QString)));
 	proxyModel->addFilter(nameFilter);
 
-	BuddiesListView *view = new BuddiesListView(BuddiesWidget);
+	TalkableTreeView *view = new TalkableTreeView(BuddiesWidget);
 	view->setChain(chain);
 
 	BuddiesWidget->setTreeView(view);

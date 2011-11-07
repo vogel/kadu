@@ -25,15 +25,15 @@
 class QModelIndex;
 
 class AbstractBuddyFilter;
-class BuddiesListView;
 class BuddiesModelProxy;
 class Buddy;
+class TalkableTreeView;
 
 class SelectBuddyPopup : public FilteredTreeView
 {
 	Q_OBJECT
 
-	BuddiesListView *View;
+	TalkableTreeView *View;
 	BuddiesModelProxy *ProxyModel;
 
 private slots:

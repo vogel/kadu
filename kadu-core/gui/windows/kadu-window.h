@@ -53,6 +53,7 @@ class KaduWebView;
 class KaduWindowActionDataSource;
 class KaduWindowActions;
 class StatusButtons;
+class TalkableTreeView;
 
 class KADUAPI KaduWindow : public MainWindow, private ConfigurationAwareObject, CompositingAwareObject
 {
@@ -90,10 +91,10 @@ private:
 	GroupTabBar *GroupBar;
 
 	FilteredTreeView *ContactsWidget;
-	BuddiesListView *BuddiesView;
+	TalkableTreeView *BuddiesView;
 	BuddiesModelProxy *ProxyModel;
 	GroupBuddyFilter *GroupFilter;
-	BuddiesListView *ChatsTree;
+	TalkableTreeView *ChatsTree;
 
 	QWidget *MainWidget;
 	QVBoxLayout *MainLayout;
@@ -150,7 +151,7 @@ public:
 	explicit KaduWindow(QWidget *parent = 0);
 	virtual ~KaduWindow();
 
-	virtual BuddiesListView * buddiesListView();
+	virtual TalkableTreeView * talkableTreeView();
 	virtual BuddiesModelProxy * buddiesProxyModel();
 
 	void insertMenuActionDescription(ActionDescription *actionDescription, MenuType Type, int pos = -1);

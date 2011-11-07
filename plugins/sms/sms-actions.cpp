@@ -27,10 +27,10 @@
 #include "core/core.h"
 #include "gui/actions/action.h"
 #include "gui/actions/action-description.h"
-#include "gui/widgets/buddies-list-view.h"
 #include "gui/widgets/buddies-list-view-menu-manager.h"
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-widget.h"
+#include "gui/widgets/talkable-tree-view.h"
 #include "gui/windows/kadu-window.h"
 #include "debug.h"
 

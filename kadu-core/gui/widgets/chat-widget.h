@@ -39,7 +39,6 @@
 
 class QSplitter;
 
-class BuddiesListView;
 class BuddiesModelProxy;
 class ChatEditBox;
 class ChatMessagesView;

@@ -36,7 +36,6 @@
 
 class QContextMenuEvent;
 
-class BuddiesListView;
 class BuddiesModelProxy;
 class Buddy;
 class BuddySet;

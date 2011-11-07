@@ -20,7 +20,7 @@
  */
 
 #include "configuration/configuration-file.h"
-#include "gui/widgets/buddies-list-view.h"
+#include "gui/widgets/talkable-tree-view.h"
 #include "icons/kadu-icon.h"
 
 #include "talkable-delegate-configuration.h"
@@ -28,7 +28,7 @@
 TalkableDelegateConfiguration::TalkableDelegateConfiguration(QObject *listView) :
 		ShowAccountName(true)
 {
-	ListView = qobject_cast<BuddiesListView *>(listView);
+	ListView = qobject_cast<TalkableTreeView *>(listView);
 
 	DefaultAvatarSize = QSize(32, 32);
 	MessagePixmap = KaduIcon("protocols/common/message").icon().pixmap(16, 16);

@@ -28,13 +28,13 @@
 
 #include "configuration/configuration-aware-object.h"
 
-class BuddiesListView;
+class TalkableTreeView;
 
 class TalkableDelegateConfiguration : private ConfigurationAwareObject
 {
 	Q_DISABLE_COPY(TalkableDelegateConfiguration)
 
-	BuddiesListView *ListView;
+	TalkableTreeView *ListView;
 
 	QFont Font;
 	QFont BoldFont;

@@ -22,8 +22,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef BUDDIES_LIST_VIEW_H
-#define BUDDIES_LIST_VIEW_H
+#ifndef TALKABLE_TREE_VIEW_H
+#define TALKABLE_TREE_VIEW_H
 
 #include <QtCore/QDateTime>
 #include <QtCore/QTimer>
@@ -49,7 +49,7 @@ class ModelChain;
 class TalkableDelegate;
 class TalkableDelegateConfiguration;
 
-class BuddiesListView : public KaduTreeView, public ActionDataSourceProvider
+class TalkableTreeView : public KaduTreeView, public ActionDataSourceProvider
 {
 	Q_OBJECT
 
@@ -98,8 +98,8 @@ protected:
 	virtual void hideEvent(QHideEvent *event);
 
 public:
-	explicit BuddiesListView(QWidget *parent = 0);
-	virtual ~BuddiesListView();
+	explicit TalkableTreeView(QWidget *parent = 0);
+	virtual ~TalkableTreeView();
 
 	virtual void setChain(ModelChain *chain);
 	virtual ModelChain * chain() const;
@@ -122,4 +122,4 @@ signals:
 
 };
 
-#endif // BUDDIES_LIST_VIEW_H
+#endif // TALKABLE_TREE_VIEW_H

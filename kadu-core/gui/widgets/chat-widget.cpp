@@ -55,13 +55,13 @@
 #include "gui/hot-key.h"
 #include "gui/actions/action.h"
 #include "gui/actions/actions.h"
-#include "gui/widgets/buddies-list-view.h"
 #include "gui/widgets/chat-edit-box-size-manager.h"
 #include "gui/widgets/chat-messages-view.h"
 #include "gui/widgets/chat-widget-actions.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/color-selector.h"
 #include "gui/widgets/filtered-tree-view.h"
+#include "gui/widgets/talkable-tree-view.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-dialog.h"
 #include "model/model-chain.h"
@@ -195,7 +195,7 @@ void ChatWidget::createContactsList()
 	BuddiesWidget = new FilteredTreeView(FilteredTreeView::FilterAtTop, this);
 	BuddiesWidget->setMinimumSize(QSize(30, 30));
 
-	BuddiesListView *view = new BuddiesListView(BuddiesWidget);
+	TalkableTreeView *view = new TalkableTreeView(BuddiesWidget);
 	view->setItemsExpandable(false);
 
 	ModelChain *chain = new ModelChain(new ContactListModel(CurrentChat.contacts().toContactVector(), this), this);
