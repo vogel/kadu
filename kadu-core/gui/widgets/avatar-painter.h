@@ -41,7 +41,7 @@ class AvatarPainter
 	bool greyOut();
 
 	QString cacheKey();
-	void createCacheItem();
+	QPixmap getOrCreateCacheItem();
 	void paintFromCache(QPainter *painter);
 
 	void doPaint(QPainter *painter, const QRect &rect);

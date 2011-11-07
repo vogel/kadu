@@ -56,8 +56,14 @@ QString AvatarPainter::cacheKey()
 			.arg(Option.state & QStyle::State_Selected ? 1 : 0);
 }
 
-void AvatarPainter::createCacheItem()
+QPixmap AvatarPainter::getOrCreateCacheItem()
 {
+	QString key = cacheKey();
+
+	QPixmap cached;
+	if (QPixmapCache::find(key, &cached))
+		return cached;
+
 	QPixmap item = QPixmap(AvatarRect.size());
 	item.fill(QColor(0, 0, 0, 0));
 
@@ -67,20 +73,14 @@ void AvatarPainter::createCacheItem()
 	doPaint(&cachePainter, rect);
 	cachePainter.end();
 
-	QPixmapCache::insert(cacheKey(), item);
+	QPixmapCache::insert(key, item);
+
+	return item;
 }
 
 void AvatarPainter::paintFromCache(QPainter *painter)
 {
-	QString key = cacheKey();
-	QPixmap cached;
-
-	if (!QPixmapCache::find(key, &cached))
-	{
-		createCacheItem();
-		if (!QPixmapCache::find(key, &cached))
-			return; // cache error;
-	}
+	QPixmap cached = getOrCreateCacheItem();
 
 	painter->drawPixmap(AvatarRect, cached);
 }
