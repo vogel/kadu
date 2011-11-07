@@ -33,7 +33,7 @@
 #include "buddies/buddy-preferred-manager.h"
 #include "chat/message/pending-messages-manager.h"
 #include "contacts/contact.h"
-#include "gui/widgets/buddies-list-view-avatar-painter.h"
+#include "gui/widgets/avatar-painter.h"
 #include "gui/widgets/buddies-list-view-delegate-configuration.h"
 #include "identities/identity.h"
 #include "model/roles.h"
@@ -415,7 +415,7 @@ void BuddiesListViewItemPainter::paintAvatar(QPainter *painter)
 {
 	QRect rect = AvatarRect.adjusted(VFrameMargin, HFrameMargin, -VFrameMargin, -HFrameMargin);
 
-	BuddiesListViewAvatarPainter avatarPainter(Configuration, Option, rect, Index);
+	AvatarPainter avatarPainter(Configuration, Option, rect, Index);
 	avatarPainter.paint(painter);
 }
 

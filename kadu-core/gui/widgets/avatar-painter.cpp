@@ -30,15 +30,15 @@
 #include "gui/widgets/buddies-list-view-delegate-configuration.h"
 #include "model/roles.h"
 
-#include "buddies-list-view-avatar-painter.h"
+#include "avatar-painter.h"
 
-BuddiesListViewAvatarPainter::BuddiesListViewAvatarPainter(const BuddiesListViewDelegateConfiguration &configuration, const QStyleOptionViewItemV4 &option, const QRect &avatarRect, const QModelIndex &index) :
+AvatarPainter::AvatarPainter(const BuddiesListViewDelegateConfiguration &configuration, const QStyleOptionViewItemV4 &option, const QRect &avatarRect, const QModelIndex &index) :
 		Configuration(configuration), Option(option), AvatarRect(avatarRect), Index(index)
 {
 	Avatar = Index.data(AvatarRole).value<QPixmap>();
 }
 
-bool BuddiesListViewAvatarPainter::greyOut()
+bool AvatarPainter::greyOut()
 {
 	if (!Configuration.avatarGreyOut())
 		return false;
@@ -47,7 +47,7 @@ bool BuddiesListViewAvatarPainter::greyOut()
 	return contact.currentStatus().isDisconnected();
 }
 
-QString BuddiesListViewAvatarPainter::cacheKey()
+QString AvatarPainter::cacheKey()
 {
 	return QString("msi-%1-%2,%3,%4")
 			.arg(Avatar.cacheKey())
@@ -56,7 +56,7 @@ QString BuddiesListViewAvatarPainter::cacheKey()
 			.arg(Option.state & QStyle::State_Selected ? 1 : 0);
 }
 
-void BuddiesListViewAvatarPainter::createCacheItem()
+void AvatarPainter::createCacheItem()
 {
 	QPixmap item = QPixmap(AvatarRect.size());
 	item.fill(QColor(0, 0, 0, 0));
@@ -70,7 +70,7 @@ void BuddiesListViewAvatarPainter::createCacheItem()
 	QPixmapCache::insert(cacheKey(), item);
 }
 
-void BuddiesListViewAvatarPainter::paintFromCache(QPainter *painter)
+void AvatarPainter::paintFromCache(QPainter *painter)
 {
 	QString key = cacheKey();
 	QPixmap cached;
@@ -85,7 +85,7 @@ void BuddiesListViewAvatarPainter::paintFromCache(QPainter *painter)
 	painter->drawPixmap(AvatarRect, cached);
 }
 
-void BuddiesListViewAvatarPainter::doPaint(QPainter *painter, const QRect &rect)
+void AvatarPainter::doPaint(QPainter *painter, const QRect &rect)
 {
 	QPixmap displayAvatar;
 
@@ -109,7 +109,7 @@ void BuddiesListViewAvatarPainter::doPaint(QPainter *painter, const QRect &rect)
 		painter->drawRect(displayRect);
 }
 
-void BuddiesListViewAvatarPainter::paint(QPainter *painter)
+void AvatarPainter::paint(QPainter *painter)
 {
 	if (!Configuration.showAvatars() || AvatarRect.isEmpty() || Avatar.isNull())
 		return;

@@ -13,8 +13,8 @@ set (gui_SRCS
 	widgets/account-avatar-widget.cpp
 	widgets/accounts-combo-box.cpp
 	widgets/actions-combo-box.cpp
+	widgets/avatar-painter.cpp
 	widgets/buddies-list-view.cpp
-	widgets/buddies-list-view-avatar-painter.cpp
 	widgets/buddies-list-view-delegate.cpp
 	widgets/buddies-list-view-delegate-configuration.cpp
 	widgets/buddies-list-view-item-painter.cpp

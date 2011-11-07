@@ -18,8 +18,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef BUDDIES_LIST_VIEW_AVATAR_PAINTER_H
-#define BUDDIES_LIST_VIEW_AVATAR_PAINTER_H
+#ifndef AVATAR_PAINTER_H
+#define AVATAR_PAINTER_H
 
 #include <QtCore/QString>
 #include <QtGui/QPixmap>
@@ -29,7 +29,7 @@ class QStyleOptionViewItemV4;
 
 class BuddiesListViewDelegateConfiguration;
 
-class BuddiesListViewAvatarPainter
+class AvatarPainter
 {
 	const BuddiesListViewDelegateConfiguration &Configuration;
 	const QStyleOptionViewItemV4 &Option;
@@ -47,10 +47,10 @@ class BuddiesListViewAvatarPainter
 	void doPaint(QPainter *painter, const QRect &rect);
 
 public:
-	BuddiesListViewAvatarPainter(const BuddiesListViewDelegateConfiguration &configuration, const QStyleOptionViewItemV4 &option, const QRect &avatarRect, const QModelIndex &index);
+	AvatarPainter(const BuddiesListViewDelegateConfiguration &configuration, const QStyleOptionViewItemV4 &option, const QRect &avatarRect, const QModelIndex &index);
 
 	void paint(QPainter *painter);
 
 };
 
-#endif // BUDDIES_LIST_VIEW_AVATAR_PAINTER_H
+#endif // AVATAR_PAINTER_H
