@@ -215,7 +215,7 @@ ChatWidgetActions::ChatWidgetActions(QObject *parent) : QObject(parent)
 		KaduIcon("internet-group-chat"), tr("&Chat"), false,
 		disableNoChat
 	);
-	BuddiesListViewMenuManager::instance()->addActionDescription(OpenChat, BuddiesListViewMenuItem::MenuCategoryChat, 25);
+	BuddiesListViewMenuManager::instance()->addActionDescription(OpenChat, TalkableMenuItem::CategoryChat, 25);
 
 	OpenWith = new ActionDescription(0,
 		ActionDescription::TypeGlobal, "openChatWithAction",

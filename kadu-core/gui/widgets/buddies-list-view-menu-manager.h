@@ -25,7 +25,7 @@
 
 #include <QtCore/QObject>
 
-#include "gui/widgets/buddies-list-view-menu-item.h"
+#include "gui/widgets/talkable-menu-item.h"
 #include "exports.h"
 
 class QMenu;
@@ -42,10 +42,10 @@ class KADUAPI BuddiesListViewMenuManager : public QObject
 
 	static BuddiesListViewMenuManager *Instance;
 
-	QList<BuddiesListViewMenuItem> BuddiesContexMenu;
+	QList<TalkableMenuItem> BuddiesContexMenu;
 	bool BuddiesContexMenuSorted;
 
-	QList<BuddiesListViewMenuItem> BuddyListActions;
+	QList<TalkableMenuItem> BuddyListActions;
 	bool BuddyListActionsSorted;
 
 	BuddiesListViewMenuManager();
@@ -56,10 +56,10 @@ class KADUAPI BuddiesListViewMenuManager : public QObject
 public:
 	static BuddiesListViewMenuManager * instance();
 
-	void addActionDescription(ActionDescription *actionDescription, BuddiesListViewMenuItem::BuddiesListViewMenuCategory category, int priority);
+	void addActionDescription(ActionDescription *actionDescription, TalkableMenuItem::MenuCategory category, int priority);
 	void removeActionDescription(ActionDescription *actionDescription);
 
-	void addListActionDescription(ActionDescription *actionDescription, BuddiesListViewMenuItem::BuddiesListViewMenuCategory category, int priority);
+	void addListActionDescription(ActionDescription *actionDescription, TalkableMenuItem::MenuCategory category, int priority);
 	void removeListActionDescription(ActionDescription *actionDescription);
 
 	QMenu * menu(QWidget *parent, ActionDataSource *actionDataSource);

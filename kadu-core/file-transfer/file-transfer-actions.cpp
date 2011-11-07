@@ -72,7 +72,7 @@ FileTransferActions::FileTransferActions(QObject *parent)
 		disableNonFileTransferContacts
 	);
 	SendFileActionDescription->setShortcut("kadu_sendfile");
-	BuddiesListViewMenuManager::instance()->addActionDescription(SendFileActionDescription, BuddiesListViewMenuItem::MenuCategoryActions, 100);
+	BuddiesListViewMenuManager::instance()->addActionDescription(SendFileActionDescription, TalkableMenuItem::CategoryActions, 100);
 
 	FileTransferWindowActionDescription = new ActionDescription(this,
 		ActionDescription::TypeMainMenu, "sendFileWindowAction",

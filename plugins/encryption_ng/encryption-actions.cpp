@@ -128,7 +128,7 @@ EncryptionActions::EncryptionActions()
 		false, checkSendKey
 	);
 	BuddiesListViewMenuManager::instance()->addListActionDescription(SendPublicKeyActionDescription,
-			BuddiesListViewMenuItem::MenuCategoryManagement, 20);;
+			TalkableMenuItem::CategoryManagement, 20);;
 
 	connect(EncryptionProviderManager::instance(), SIGNAL(canEncryptChanged(Chat)), this, SLOT(canEncryptChanged(Chat)));
 }

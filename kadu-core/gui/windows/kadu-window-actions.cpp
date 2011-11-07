@@ -304,14 +304,14 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 		KaduIcon("edit-copy"), tr("Copy Description"), false,
 		disableNoDescription
 	);
-	BuddiesListViewMenuManager::instance()->addListActionDescription(CopyDescription, BuddiesListViewMenuItem::MenuCategoryActions, 10);
+	BuddiesListViewMenuManager::instance()->addListActionDescription(CopyDescription, TalkableMenuItem::CategoryActions, 10);
 
 	CopyPersonalInfo = new ActionDescription(this,
 		ActionDescription::TypeUser, "copyPersonalInfoAction",
 		this, SLOT(copyPersonalInfoActionActivated(QAction *, bool)),
 		KaduIcon("kadu_icons/copy-personal-info"), tr("Copy Personal Info")
 	);
-	BuddiesListViewMenuManager::instance()->addListActionDescription(CopyPersonalInfo, BuddiesListViewMenuItem::MenuCategoryActions, 20);
+	BuddiesListViewMenuManager::instance()->addListActionDescription(CopyPersonalInfo, TalkableMenuItem::CategoryActions, 20);
 
 	OpenDescriptionLink = new ActionDescription(this,
 		ActionDescription::TypeUser, "openDescriptionLinkAction",
@@ -319,7 +319,7 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 		KaduIcon("go-jump"), tr("Open Description Link in Browser..."), false,
 		disableNoDescriptionUrl
 	);
-	BuddiesListViewMenuManager::instance()->addListActionDescription(OpenDescriptionLink, BuddiesListViewMenuItem::MenuCategoryActions, 30);
+	BuddiesListViewMenuManager::instance()->addListActionDescription(OpenDescriptionLink, TalkableMenuItem::CategoryActions, 30);
 
 	WriteEmail = new ActionDescription(this,
 		ActionDescription::TypeUser, "writeEmailAction",
@@ -327,7 +327,7 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 		KaduIcon("mail-message-new"), tr("Send E-Mail"), false,
 		disableNoEMail
 	);
-	BuddiesListViewMenuManager::instance()->addActionDescription(WriteEmail, BuddiesListViewMenuItem::MenuCategoryActions, 200);
+	BuddiesListViewMenuManager::instance()->addActionDescription(WriteEmail, TalkableMenuItem::CategoryActions, 200);
 	connect(WriteEmail, SIGNAL(actionCreated(Action *)), this, SLOT(writeEmailActionCreated(Action *)));
 
 	LookupUserInfo = new ActionDescription(this,
@@ -378,7 +378,7 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 		checkBuddyProperties
 	);
 	connect(EditUser, SIGNAL(actionCreated(Action *)), this, SLOT(editUserActionCreated(Action *)));
-	BuddiesListViewMenuManager::instance()->addActionDescription(EditUser, BuddiesListViewMenuItem::MenuCategoryView, 0);
+	BuddiesListViewMenuManager::instance()->addActionDescription(EditUser, TalkableMenuItem::CategoryView, 0);
 
 	MergeContact = new ActionDescription(this,
 		ActionDescription::TypeUser, "mergeContactAction",
@@ -386,9 +386,9 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 		KaduIcon("kadu_icons/merge-buddies"), tr("Merge Buddies..."), false,
 		disableMerge
 	);
-	BuddiesListViewMenuManager::instance()->addActionDescription(MergeContact, BuddiesListViewMenuItem::MenuCategoryManagement, 100);
+	BuddiesListViewMenuManager::instance()->addActionDescription(MergeContact, TalkableMenuItem::CategoryManagement, 100);
 
-	BuddiesListViewMenuManager::instance()->addActionDescription(ChatWidgetManager::instance()->actions()->blockUser(), BuddiesListViewMenuItem::MenuCategoryManagement, 500);
+	BuddiesListViewMenuManager::instance()->addActionDescription(ChatWidgetManager::instance()->actions()->blockUser(), TalkableMenuItem::CategoryManagement, 500);
 
 	DeleteUsers = new ActionDescription(this,
 		ActionDescription::TypeUser, "deleteUsersAction",
@@ -397,7 +397,7 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 		disableIfContactSelected
 	);
 	DeleteUsers->setShortcut("kadu_deleteuser");
-	BuddiesListViewMenuManager::instance()->addActionDescription(DeleteUsers, BuddiesListViewMenuItem::MenuCategoryManagement, 1000);
+	BuddiesListViewMenuManager::instance()->addActionDescription(DeleteUsers, TalkableMenuItem::CategoryManagement, 1000);
 
 	// The last ActionDescription will send actionLoaded() signal.
 	// TODO It will not reflect all action types (see MainWindow::actionLoadedOrUnloaded() method)

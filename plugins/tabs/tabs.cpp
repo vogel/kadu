@@ -116,7 +116,7 @@ TabsManager::TabsManager(QObject *parent) :
 		this, SLOT(onNewTab(QAction *, bool)),
 		KaduIcon("internet-group-chat"), tr("Chat in New Tab"), false, disableNewTab
 	);
-	BuddiesListViewMenuManager::instance()->addActionDescription(OpenInNewTabActionDescription, BuddiesListViewMenuItem::MenuCategoryChat, 200);
+	BuddiesListViewMenuManager::instance()->addActionDescription(OpenInNewTabActionDescription, TalkableMenuItem::CategoryChat, 200);
 
 	AttachToTabsActionDescription = new ActionDescription(this,
 		ActionDescription::TypeChat, "attachToTabsAction",

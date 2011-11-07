@@ -1,5 +1,6 @@
 /*
  * %kadu copyright begin%
+ * Copyright 2010 Bartosz Brachaczek (b.brachaczek@gmail.com)
  * Copyright 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
@@ -17,16 +18,36 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "buddies-list-view-menu-item.h"
+#ifndef TALKABLE_MENU_ITEM_H
+#define TALKABLE_MENU_ITEM_H
 
-BuddiesListViewMenuItem::BuddiesListViewMenuItem(ActionDescription *action, BuddiesListViewMenuCategory category, int priority) :
-		Action(action), Category(category), Priority(priority)
-{
-}
+class ActionDescription;
 
-bool BuddiesListViewMenuItem::operator < (const BuddiesListViewMenuItem &compareTo) const
+class TalkableMenuItem
 {
-	if (Category == compareTo.Category)
-		return Priority < compareTo.Priority;
-	return Category < compareTo.Category;
-}
+public:
+	enum MenuCategory
+	{
+		CategoryChat,
+		CategoryActions,
+		CategoryView,
+		CategoryManagement
+	};
+
+private:
+	ActionDescription *Action;
+	MenuCategory Category;
+	int Priority;
+
+public:
+	TalkableMenuItem(ActionDescription *action, MenuCategory category, int priority);
+
+	bool operator < (const TalkableMenuItem &compareTo) const;
+
+	ActionDescription * actionDescription() { return Action; }
+	MenuCategory category() const { return Category; }
+	int priority() const { return Priority; }
+
+};
+
+#endif // TALKABLE_MENU_ITEM_H

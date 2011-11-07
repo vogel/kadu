@@ -66,15 +66,15 @@ void BuddiesListViewMenuManager::sortBuddyListActions()
 	}
 }
 
-void BuddiesListViewMenuManager::addActionDescription(ActionDescription *actionDescription, BuddiesListViewMenuItem::BuddiesListViewMenuCategory category, int priority)
+void BuddiesListViewMenuManager::addActionDescription(ActionDescription *actionDescription, TalkableMenuItem::MenuCategory category, int priority)
 {
-	BuddiesContexMenu.append(BuddiesListViewMenuItem(actionDescription, category, priority));
+	BuddiesContexMenu.append(TalkableMenuItem(actionDescription, category, priority));
 	BuddiesContexMenuSorted = false;
 }
 
 void BuddiesListViewMenuManager::removeActionDescription(ActionDescription *actionDescription)
 {
-	QList<BuddiesListViewMenuItem>::iterator i = BuddiesContexMenu.begin();
+	QList<TalkableMenuItem>::iterator i = BuddiesContexMenu.begin();
 
 	while (i != BuddiesContexMenu.end())
 	{
@@ -85,15 +85,15 @@ void BuddiesListViewMenuManager::removeActionDescription(ActionDescription *acti
 	}
 }
 
-void BuddiesListViewMenuManager::addListActionDescription(ActionDescription *actionDescription, BuddiesListViewMenuItem::BuddiesListViewMenuCategory category, int priority)
+void BuddiesListViewMenuManager::addListActionDescription(ActionDescription *actionDescription, TalkableMenuItem::MenuCategory category, int priority)
 {
-	BuddyListActions.append(BuddiesListViewMenuItem(actionDescription, category, priority));
+	BuddyListActions.append(TalkableMenuItem(actionDescription, category, priority));
 	BuddyListActionsSorted = false;
 }
 
 void BuddiesListViewMenuManager::removeListActionDescription(ActionDescription *actionDescription)
 {
-	QList<BuddiesListViewMenuItem>::iterator i = BuddyListActions.begin();
+	QList<TalkableMenuItem>::iterator i = BuddyListActions.begin();
 
 	while (i != BuddyListActions.end())
 	{
@@ -114,9 +114,9 @@ QMenu * BuddiesListViewMenuManager::menu(QWidget *parent, ActionDataSource *acti
 
 	QMenu *actions = new QMenu(tr("More Actions..."), menu);
 
-	BuddiesListViewMenuItem::BuddiesListViewMenuCategory lastCategory = BuddiesListViewMenuItem::MenuCategoryChat;
+	TalkableMenuItem::MenuCategory lastCategory = TalkableMenuItem::CategoryChat;
 	bool first = true;
-	foreach (BuddiesListViewMenuItem menuItem, BuddyListActions)
+	foreach (TalkableMenuItem menuItem, BuddyListActions)
 	{
 		if (!first && lastCategory != menuItem.category())
 			actions->addSeparator();
@@ -159,13 +159,13 @@ QMenu * BuddiesListViewMenuManager::menu(QWidget *parent, ActionDataSource *acti
 		}
 	}
 
-	lastCategory = BuddiesListViewMenuItem::MenuCategoryChat;
+	lastCategory = TalkableMenuItem::CategoryChat;
 	first = true;
-	foreach (BuddiesListViewMenuItem menuItem, BuddiesContexMenu)
+	foreach (TalkableMenuItem menuItem, BuddiesContexMenu)
 	{
 		if (!first && lastCategory != menuItem.category())
 		{
-			if (menuItem.category() > BuddiesListViewMenuItem::MenuCategoryActions)
+			if (menuItem.category() > TalkableMenuItem::CategoryActions)
 				menu->addMenu(actions);
 			menu->addSeparator();
 		}
