@@ -49,10 +49,10 @@
 #include "chat/aggregate-chat-manager.h"
 #include "gui/actions/actions.h"
 #include "gui/actions/base-action-data-source.h"
-#include "gui/widgets/buddies-list-view-menu-manager.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/delayed-line-edit.h"
 #include "gui/widgets/filter-widget.h"
+#include "gui/widgets/talkable-menu-manager.h"
 #include "gui/windows/message-dialog.h"
 #include "icons/kadu-icon.h"
 #include "misc/misc.h"
@@ -658,7 +658,7 @@ void HistoryWindow::showMainPopupMenu(const QPoint &pos)
 			if (!chat)
 				return;
 
-			menu.reset(BuddiesListViewMenuManager::instance()->menu(this, actionDataSource()));
+			menu.reset(TalkableMenuManager::instance()->menu(this, actionDataSource()));
 			menu->addSeparator();
 			menu->addAction(KaduIcon("kadu_icons/clear-history").icon(),
 					tr("&Clear Chat History"), this, SLOT(clearChatHistory()));
@@ -672,7 +672,7 @@ void HistoryWindow::showMainPopupMenu(const QPoint &pos)
 			if (!buddy || buddy.contacts().isEmpty())
 				return;
 
-			menu.reset(BuddiesListViewMenuManager::instance()->menu(this, actionDataSource()));
+			menu.reset(TalkableMenuManager::instance()->menu(this, actionDataSource()));
 			menu->addSeparator();
 			menu->addAction(KaduIcon("kadu_icons/clear-history").icon(),
 					tr("&Clear Status History"), this, SLOT(clearStatusHistory()));

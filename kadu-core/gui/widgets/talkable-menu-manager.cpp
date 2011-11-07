@@ -31,84 +31,84 @@
 #include "protocols/protocol-factory.h"
 #include "protocols/protocol-menu-manager.h"
 
-#include "buddies-list-view-menu-manager.h"
+#include "talkable-menu-manager.h"
 
-BuddiesListViewMenuManager * BuddiesListViewMenuManager::Instance = 0;
+TalkableMenuManager * TalkableMenuManager::Instance = 0;
 
-BuddiesListViewMenuManager * BuddiesListViewMenuManager::instance()
+TalkableMenuManager * TalkableMenuManager::instance()
 {
 	if (!Instance)
-		Instance = new BuddiesListViewMenuManager();
+		Instance = new TalkableMenuManager();
 
 	return Instance;
 }
 
-BuddiesListViewMenuManager::BuddiesListViewMenuManager() :
-		BuddiesContexMenuSorted(true), BuddyListActionsSorted(true)
+TalkableMenuManager::TalkableMenuManager() :
+		ContexMenuSorted(true), ActionsSorted(true)
 {
 }
 
-void BuddiesListViewMenuManager::sortBuddiesContexMenu()
+void TalkableMenuManager::sortContexMenu()
 {
-	if (!BuddiesContexMenuSorted)
+	if (!ContexMenuSorted)
 	{
-		qSort(BuddiesContexMenu);
-		BuddiesContexMenuSorted = true;
+		qSort(ContexMenu);
+		ContexMenuSorted = true;
 	}
 }
 
-void BuddiesListViewMenuManager::sortBuddyListActions()
+void TalkableMenuManager::sortActions()
 {
-	if (!BuddyListActionsSorted)
+	if (!ActionsSorted)
 	{
-		qSort(BuddyListActions);
-		BuddyListActionsSorted = true;
+		qSort(Actions);
+		ActionsSorted = true;
 	}
 }
 
-void BuddiesListViewMenuManager::addActionDescription(ActionDescription *actionDescription, TalkableMenuItem::MenuCategory category, int priority)
+void TalkableMenuManager::addActionDescription(ActionDescription *actionDescription, TalkableMenuItem::MenuCategory category, int priority)
 {
-	BuddiesContexMenu.append(TalkableMenuItem(actionDescription, category, priority));
-	BuddiesContexMenuSorted = false;
+	ContexMenu.append(TalkableMenuItem(actionDescription, category, priority));
+	ContexMenuSorted = false;
 }
 
-void BuddiesListViewMenuManager::removeActionDescription(ActionDescription *actionDescription)
+void TalkableMenuManager::removeActionDescription(ActionDescription *actionDescription)
 {
-	QList<TalkableMenuItem>::iterator i = BuddiesContexMenu.begin();
+	QList<TalkableMenuItem>::iterator i = ContexMenu.begin();
 
-	while (i != BuddiesContexMenu.end())
+	while (i != ContexMenu.end())
 	{
 		if ((*i).actionDescription() == actionDescription)
-			i = BuddiesContexMenu.erase(i);
+			i = ContexMenu.erase(i);
 		else
 			++i;
 	}
 }
 
-void BuddiesListViewMenuManager::addListActionDescription(ActionDescription *actionDescription, TalkableMenuItem::MenuCategory category, int priority)
+void TalkableMenuManager::addListActionDescription(ActionDescription *actionDescription, TalkableMenuItem::MenuCategory category, int priority)
 {
-	BuddyListActions.append(TalkableMenuItem(actionDescription, category, priority));
-	BuddyListActionsSorted = false;
+	Actions.append(TalkableMenuItem(actionDescription, category, priority));
+	ActionsSorted = false;
 }
 
-void BuddiesListViewMenuManager::removeListActionDescription(ActionDescription *actionDescription)
+void TalkableMenuManager::removeListActionDescription(ActionDescription *actionDescription)
 {
-	QList<TalkableMenuItem>::iterator i = BuddyListActions.begin();
+	QList<TalkableMenuItem>::iterator i = Actions.begin();
 
-	while (i != BuddyListActions.end())
+	while (i != Actions.end())
 	{
 		if ((*i).actionDescription() == actionDescription)
-			i = BuddyListActions.erase(i);
+			i = Actions.erase(i);
 		else
 			++i;
 	}
 }
 
 // TODO: refactor, split
-QMenu * BuddiesListViewMenuManager::menu(QWidget *parent, ActionDataSource *actionDataSource)
+QMenu * TalkableMenuManager::menu(QWidget *parent, ActionDataSource *actionDataSource)
 {
-	sortBuddiesContexMenu();
-	sortBuddyListActions();
+	sortContexMenu();
+	sortActions();
 
 	QMenu *menu = new QMenu(parent);
 
@@ -116,7 +116,7 @@ QMenu * BuddiesListViewMenuManager::menu(QWidget *parent, ActionDataSource *acti
 
 	TalkableMenuItem::MenuCategory lastCategory = TalkableMenuItem::CategoryChat;
 	bool first = true;
-	foreach (TalkableMenuItem menuItem, BuddyListActions)
+	foreach (TalkableMenuItem menuItem, Actions)
 	{
 		if (!first && lastCategory != menuItem.category())
 			actions->addSeparator();
@@ -161,7 +161,7 @@ QMenu * BuddiesListViewMenuManager::menu(QWidget *parent, ActionDataSource *acti
 
 	lastCategory = TalkableMenuItem::CategoryChat;
 	first = true;
-	foreach (TalkableMenuItem menuItem, BuddiesContexMenu)
+	foreach (TalkableMenuItem menuItem, ContexMenu)
 	{
 		if (!first && lastCategory != menuItem.category())
 		{

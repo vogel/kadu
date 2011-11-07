@@ -149,7 +149,7 @@ void History::createActionDescriptions()
 
 	ShowHistoryActionDescriptionInstance = new ShowHistoryActionDescription(this);
 
-	BuddiesListViewMenuManager::instance()->addActionDescription(ShowHistoryActionDescriptionInstance, TalkableMenuItem::CategoryView, 100);
+	TalkableMenuManager::instance()->addActionDescription(ShowHistoryActionDescriptionInstance, TalkableMenuItem::CategoryView, 100);
 	Core::instance()->kaduWindow()->insertMenuActionDescription(ShowHistoryActionDescriptionInstance, KaduWindow::MenuKadu, 5);
 
 	// The last ActionDescription will send actionLoaded() signal.
@@ -166,7 +166,7 @@ void History::createActionDescriptions()
 
 void History::deleteActionDescriptions()
 {
-	BuddiesListViewMenuManager::instance()->removeActionDescription(ShowHistoryActionDescriptionInstance);
+	TalkableMenuManager::instance()->removeActionDescription(ShowHistoryActionDescriptionInstance);
 	Core::instance()->kaduWindow()->removeMenuActionDescription(ShowHistoryActionDescriptionInstance);
 
 	delete ShowHistoryActionDescriptionInstance;

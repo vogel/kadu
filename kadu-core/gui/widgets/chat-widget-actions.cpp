@@ -36,11 +36,11 @@
 #include "emoticons/emoticons.h"
 #include "gui/actions/action.h"
 #include "gui/actions/actions.h"
-#include "gui/widgets/buddies-list-view-menu-manager.h"
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-messages-view.h"
 #include "gui/widgets/chat-widget.h"
 #include "gui/widgets/chat-widget-manager.h"
+#include "gui/widgets/talkable-menu-manager.h"
 #include "gui/widgets/toolbar.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/kadu-window-actions.h"
@@ -215,7 +215,7 @@ ChatWidgetActions::ChatWidgetActions(QObject *parent) : QObject(parent)
 		KaduIcon("internet-group-chat"), tr("&Chat"), false,
 		disableNoChat
 	);
-	BuddiesListViewMenuManager::instance()->addActionDescription(OpenChat, TalkableMenuItem::CategoryChat, 25);
+	TalkableMenuManager::instance()->addActionDescription(OpenChat, TalkableMenuItem::CategoryChat, 25);
 
 	OpenWith = new ActionDescription(0,
 		ActionDescription::TypeGlobal, "openChatWithAction",

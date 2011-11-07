@@ -29,8 +29,8 @@
 #include "core/core.h"
 #include "gui/actions/action.h"
 #include "gui/actions/action-description.h"
-#include "gui/widgets/buddies-list-view-menu-manager.h"
 #include "gui/widgets/chat-edit-box.h"
+#include "gui/widgets/talkable-menu-manager.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-dialog.h"
 #include "identities/identity.h"
@@ -127,7 +127,7 @@ EncryptionActions::EncryptionActions()
 		KaduIcon("security-high"), tr("Send My Public Key"),
 		false, checkSendKey
 	);
-	BuddiesListViewMenuManager::instance()->addListActionDescription(SendPublicKeyActionDescription,
+	TalkableMenuManager::instance()->addListActionDescription(SendPublicKeyActionDescription,
 			TalkableMenuItem::CategoryManagement, 20);;
 
 	connect(EncryptionProviderManager::instance(), SIGNAL(canEncryptChanged(Chat)), this, SLOT(canEncryptChanged(Chat)));
@@ -135,7 +135,7 @@ EncryptionActions::EncryptionActions()
 
 EncryptionActions::~EncryptionActions()
 {
-	BuddiesListViewMenuManager::instance()->removeListActionDescription(SendPublicKeyActionDescription);
+	TalkableMenuManager::instance()->removeListActionDescription(SendPublicKeyActionDescription);
 	Core::instance()->kaduWindow()->removeMenuActionDescription(GenerateKeysActionDescription);
 
 	disconnect(EncryptionProviderManager::instance(), SIGNAL(canEncryptChanged(Chat)), this, SLOT(canEncryptChanged(Chat)));

@@ -51,11 +51,11 @@
 #include "gui/actions/actions.h"
 #include "gui/actions/change-status-action.h"
 #include "gui/actions/default-proxy-action.h"
-#include "gui/widgets/buddies-list-view-menu-manager.h"
 #include "gui/widgets/chat-widget-actions.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/buddy-info-panel.h"
 #include "gui/widgets/status-menu.h"
+#include "gui/widgets/talkable-menu-manager.h"
 #include "gui/windows/add-buddy-window.h"
 #include "gui/windows/buddy-data-window.h"
 #include "gui/windows/buddy-delete-window.h"
@@ -304,14 +304,14 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 		KaduIcon("edit-copy"), tr("Copy Description"), false,
 		disableNoDescription
 	);
-	BuddiesListViewMenuManager::instance()->addListActionDescription(CopyDescription, TalkableMenuItem::CategoryActions, 10);
+	TalkableMenuManager::instance()->addListActionDescription(CopyDescription, TalkableMenuItem::CategoryActions, 10);
 
 	CopyPersonalInfo = new ActionDescription(this,
 		ActionDescription::TypeUser, "copyPersonalInfoAction",
 		this, SLOT(copyPersonalInfoActionActivated(QAction *, bool)),
 		KaduIcon("kadu_icons/copy-personal-info"), tr("Copy Personal Info")
 	);
-	BuddiesListViewMenuManager::instance()->addListActionDescription(CopyPersonalInfo, TalkableMenuItem::CategoryActions, 20);
+	TalkableMenuManager::instance()->addListActionDescription(CopyPersonalInfo, TalkableMenuItem::CategoryActions, 20);
 
 	OpenDescriptionLink = new ActionDescription(this,
 		ActionDescription::TypeUser, "openDescriptionLinkAction",
@@ -319,7 +319,7 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 		KaduIcon("go-jump"), tr("Open Description Link in Browser..."), false,
 		disableNoDescriptionUrl
 	);
-	BuddiesListViewMenuManager::instance()->addListActionDescription(OpenDescriptionLink, TalkableMenuItem::CategoryActions, 30);
+	TalkableMenuManager::instance()->addListActionDescription(OpenDescriptionLink, TalkableMenuItem::CategoryActions, 30);
 
 	WriteEmail = new ActionDescription(this,
 		ActionDescription::TypeUser, "writeEmailAction",
@@ -327,7 +327,7 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 		KaduIcon("mail-message-new"), tr("Send E-Mail"), false,
 		disableNoEMail
 	);
-	BuddiesListViewMenuManager::instance()->addActionDescription(WriteEmail, TalkableMenuItem::CategoryActions, 200);
+	TalkableMenuManager::instance()->addActionDescription(WriteEmail, TalkableMenuItem::CategoryActions, 200);
 	connect(WriteEmail, SIGNAL(actionCreated(Action *)), this, SLOT(writeEmailActionCreated(Action *)));
 
 	LookupUserInfo = new ActionDescription(this,
@@ -378,7 +378,7 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 		checkBuddyProperties
 	);
 	connect(EditUser, SIGNAL(actionCreated(Action *)), this, SLOT(editUserActionCreated(Action *)));
-	BuddiesListViewMenuManager::instance()->addActionDescription(EditUser, TalkableMenuItem::CategoryView, 0);
+	TalkableMenuManager::instance()->addActionDescription(EditUser, TalkableMenuItem::CategoryView, 0);
 
 	MergeContact = new ActionDescription(this,
 		ActionDescription::TypeUser, "mergeContactAction",
@@ -386,9 +386,9 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 		KaduIcon("kadu_icons/merge-buddies"), tr("Merge Buddies..."), false,
 		disableMerge
 	);
-	BuddiesListViewMenuManager::instance()->addActionDescription(MergeContact, TalkableMenuItem::CategoryManagement, 100);
+	TalkableMenuManager::instance()->addActionDescription(MergeContact, TalkableMenuItem::CategoryManagement, 100);
 
-	BuddiesListViewMenuManager::instance()->addActionDescription(ChatWidgetManager::instance()->actions()->blockUser(), TalkableMenuItem::CategoryManagement, 500);
+	TalkableMenuManager::instance()->addActionDescription(ChatWidgetManager::instance()->actions()->blockUser(), TalkableMenuItem::CategoryManagement, 500);
 
 	DeleteUsers = new ActionDescription(this,
 		ActionDescription::TypeUser, "deleteUsersAction",
@@ -397,7 +397,7 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 		disableIfContactSelected
 	);
 	DeleteUsers->setShortcut("kadu_deleteuser");
-	BuddiesListViewMenuManager::instance()->addActionDescription(DeleteUsers, TalkableMenuItem::CategoryManagement, 1000);
+	TalkableMenuManager::instance()->addActionDescription(DeleteUsers, TalkableMenuItem::CategoryManagement, 1000);
 
 	// The last ActionDescription will send actionLoaded() signal.
 	// TODO It will not reflect all action types (see MainWindow::actionLoadedOrUnloaded() method)

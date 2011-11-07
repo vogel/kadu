@@ -30,7 +30,7 @@
 #include "file-transfer/file-transfer-manager.h"
 #include "gui/actions/action.h"
 #include "gui/actions/action-description.h"
-#include "gui/widgets/buddies-list-view-menu-manager.h"
+#include "gui/widgets/talkable-menu-manager.h"
 #include "gui/windows/kadu-window.h"
 #include "protocols/services/file-transfer-service.h"
 #include "protocols/protocol.h"
@@ -72,7 +72,7 @@ FileTransferActions::FileTransferActions(QObject *parent)
 		disableNonFileTransferContacts
 	);
 	SendFileActionDescription->setShortcut("kadu_sendfile");
-	BuddiesListViewMenuManager::instance()->addActionDescription(SendFileActionDescription, TalkableMenuItem::CategoryActions, 100);
+	TalkableMenuManager::instance()->addActionDescription(SendFileActionDescription, TalkableMenuItem::CategoryActions, 100);
 
 	FileTransferWindowActionDescription = new ActionDescription(this,
 		ActionDescription::TypeMainMenu, "sendFileWindowAction",
@@ -85,7 +85,7 @@ FileTransferActions::FileTransferActions(QObject *parent)
 
 FileTransferActions::~FileTransferActions()
 {
-	BuddiesListViewMenuManager::instance()->removeActionDescription(SendFileActionDescription);
+	TalkableMenuManager::instance()->removeActionDescription(SendFileActionDescription);
 	Core::instance()->kaduWindow()->removeMenuActionDescription(FileTransferWindowActionDescription);
 }
 

@@ -50,6 +50,7 @@
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/filtered-tree-view.h"
 #include "gui/widgets/talkable-delegate.h"
+#include "gui/widgets/talkable-menu-manager.h"
 #include "gui/widgets/tool-tip-class-manager.h"
 #include "gui/windows/kadu-window-actions.h"
 #include "gui/hot-key.h"
@@ -63,8 +64,6 @@
 #include "protocols/protocol-menu-manager.h"
 #include "protocols/protocols-manager.h"
 #include "status/status-container-manager.h"
-
-#include "buddies-list-view-menu-manager.h"
 
 #include "talkable-tree-view.h"
 
@@ -169,7 +168,7 @@ void TalkableTreeView::contextMenuEvent(QContextMenuEvent *event)
 	if (!ContextMenuEnabled)
 		return;
 
-	QScopedPointer<QMenu> menu(BuddiesListViewMenuManager::instance()->menu(this, ActionData));
+	QScopedPointer<QMenu> menu(TalkableMenuManager::instance()->menu(this, ActionData));
 	menu->exec(event->globalPos());
 }
 

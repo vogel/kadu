@@ -20,8 +20,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef BUDDIES_LIST_VIEW_MENU_MANAGER_H
-#define BUDDIES_LIST_VIEW_MENU_MANAGER_H
+#ifndef TALKABLE_MENU_MANAGER_H
+#define TALKABLE_MENU_MANAGER_H
 
 #include <QtCore/QObject>
 
@@ -35,26 +35,26 @@ class ActionDataSource;
 class ActionDescription;
 class Contact;
 
-class KADUAPI BuddiesListViewMenuManager : public QObject
+class KADUAPI TalkableMenuManager : public QObject
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(BuddiesListViewMenuManager)
+	Q_DISABLE_COPY(TalkableMenuManager)
 
-	static BuddiesListViewMenuManager *Instance;
+	static TalkableMenuManager *Instance;
 
-	QList<TalkableMenuItem> BuddiesContexMenu;
-	bool BuddiesContexMenuSorted;
+	QList<TalkableMenuItem> ContexMenu;
+	bool ContexMenuSorted;
 
-	QList<TalkableMenuItem> BuddyListActions;
-	bool BuddyListActionsSorted;
+	QList<TalkableMenuItem> Actions;
+	bool ActionsSorted;
 
-	BuddiesListViewMenuManager();
+	TalkableMenuManager();
 
-	void sortBuddiesContexMenu();
-	void sortBuddyListActions();
+	void sortContexMenu();
+	void sortActions();
 
 public:
-	static BuddiesListViewMenuManager * instance();
+	static TalkableMenuManager * instance();
 
 	void addActionDescription(ActionDescription *actionDescription, TalkableMenuItem::MenuCategory category, int priority);
 	void removeActionDescription(ActionDescription *actionDescription);
@@ -66,4 +66,4 @@ public:
 
 };
 
-#endif // BUDDIES_LIST_VIEW_MENU_MANAGER_H
+#endif // TALKABLE_MENU_MANAGER_H

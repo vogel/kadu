@@ -14,7 +14,6 @@ set (gui_SRCS
 	widgets/accounts-combo-box.cpp
 	widgets/actions-combo-box.cpp
 	widgets/avatar-painter.cpp
-	widgets/buddies-list-view-menu-manager.cpp
 	widgets/buddy-avatar-widget.cpp
 	widgets/buddy-contacts-table-delegate.cpp
 	widgets/buddy-contacts-table-item.cpp
@@ -70,6 +69,7 @@ set (gui_SRCS
 	widgets/talkable-delegate.cpp
 	widgets/talkable-delegate-configuration.cpp
 	widgets/talkable-menu-item.cpp
+	widgets/talkable-menu-manager.cpp
 	widgets/talkable-painter.cpp
 	widgets/talkable-tree-view.cpp
 	widgets/toolbar.cpp
@@ -168,7 +168,6 @@ set (gui_MOC_SRCS
 	widgets/buddy-contacts-table.h
 	widgets/buddy-general-configuration-widget.h
 	widgets/buddy-groups-configuration-widget.h
-	widgets/buddies-list-view-menu-manager.h
 	widgets/buddy-personal-info-configuration-widget.h
 	widgets/buddy-options-configuration-widget.h
 	widgets/buddy-info-panel.h
@@ -213,6 +212,7 @@ set (gui_MOC_SRCS
 	widgets/status-menu.h
 	widgets/syntax-editor.h
 	widgets/talkable-delegate.h
+	widgets/talkable-menu-manager.h
 	widgets/talkable-tree-view.h
 	widgets/toolbar.h
 

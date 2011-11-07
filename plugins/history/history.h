@@ -49,7 +49,7 @@
 #include "core/crash-aware-object.h"
 #include "gui/actions/action.h"
 #include "gui/actions/action-description.h"
-#include "gui/widgets/buddies-list-view-menu-manager.h"
+#include "gui/widgets/talkable-menu-manager.h"
 #include "gui/windows/main-configuration-window.h"
 #include "protocols/protocol.h"
 #include "storage/history-storage.h"
