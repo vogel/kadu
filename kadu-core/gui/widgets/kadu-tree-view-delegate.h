@@ -35,7 +35,7 @@ class KaduTreeViewDelegate : public QItemDelegate
 	QStyleOptionViewItemV4 getOptions(const QModelIndex &index, const QStyleOptionViewItem &option) const;
 
 public:
-	explicit KaduTreeViewDelegate(QObject *parent = 0);
+	explicit KaduTreeViewDelegate(TalkableTreeView *parent = 0);
 	virtual ~KaduTreeViewDelegate();
 
 	virtual void setShowAccountName(bool show);

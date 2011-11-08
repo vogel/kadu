@@ -51,7 +51,7 @@ private slots:
 	void chainDestroyed();
 
 public:
-	explicit TalkableDelegate(QObject *parent = 0);
+	explicit TalkableDelegate(TalkableTreeView *parent = 0);
 	virtual ~TalkableDelegate();
 
 	virtual void setChain(ModelChain *chain);

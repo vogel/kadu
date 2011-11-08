@@ -55,7 +55,7 @@ class TalkableDelegateConfiguration : private ConfigurationAwareObject
 	QPixmap MessagePixmap;
 
 public:
-	explicit TalkableDelegateConfiguration(QObject *listView);
+	explicit TalkableDelegateConfiguration(TalkableTreeView *listView);
 
 	void setShowAccountName(bool showAccountName) { ShowAccountName = showAccountName; }
 

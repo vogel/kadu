@@ -20,10 +20,11 @@
 #include <QtGui/QAbstractItemView>
 
 #include "gui/widgets/talkable-painter.h"
+#include "gui/widgets/talkable-tree-view.h"
 
 #include "kadu-tree-view-delegate.h"
 
-KaduTreeViewDelegate::KaduTreeViewDelegate(QObject *parent) :
+KaduTreeViewDelegate::KaduTreeViewDelegate(TalkableTreeView *parent) :
 		QItemDelegate(parent), Configuration(parent), UseConfigurationColors(false)
 {
 }

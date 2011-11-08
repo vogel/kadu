@@ -25,10 +25,10 @@
 
 #include "talkable-delegate-configuration.h"
 
-TalkableDelegateConfiguration::TalkableDelegateConfiguration(QObject *listView) :
-		ShowAccountName(true)
+TalkableDelegateConfiguration::TalkableDelegateConfiguration(TalkableTreeView *listView) :
+		ListView(listView), ShowAccountName(true)
 {
-	ListView = qobject_cast<TalkableTreeView *>(listView);
+	Q_ASSERT(ListView);
 
 	DefaultAvatarSize = QSize(32, 32);
 	MessagePixmap = KaduIcon("protocols/common/message").icon().pixmap(16, 16);
@@ -57,6 +57,5 @@ void TalkableDelegateConfiguration::configurationUpdated()
 	DescriptionColor = config_file.readColorEntry("Look", "DescriptionColor");
 	FontColor = config_file.readColorEntry("Look", "UserboxFgColor");
 
-	if (ListView)
-		ListView->scheduleDelayedItemsLayout();
+	ListView->scheduleDelayedItemsLayout();
 }

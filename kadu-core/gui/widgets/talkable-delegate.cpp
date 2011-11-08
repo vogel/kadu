@@ -38,7 +38,7 @@
 
 #include "talkable-delegate.h"
 
-TalkableDelegate::TalkableDelegate(QObject *parent) :
+TalkableDelegate::TalkableDelegate(TalkableTreeView *parent) :
 		KaduTreeViewDelegate(parent), Chain(0)
 {
 	connect(AvatarManager::instance(), SIGNAL(avatarUpdated(Avatar)), this, SLOT(avatarUpdated(Avatar)));
