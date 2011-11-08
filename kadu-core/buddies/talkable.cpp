@@ -30,52 +30,64 @@ Talkable::Talkable() :
 }
 
 Talkable::Talkable(const Buddy &buddy) :
-		Type(ItemBuddy), MyBuddy(buddy), MyContact(BuddyPreferredManager::instance()->preferredContact(buddy))
+		Type(ItemBuddy), MyBuddy(buddy)
 {
 }
 
 Talkable::Talkable(const Contact &contact) :
-		Type(ItemContact), MyBuddy(contact.ownerBuddy()), MyContact(contact)
+		Type(ItemContact), MyContact(contact)
 {
 }
 
 Talkable::Talkable(const Talkable &copyMe)
 {
 	Type = copyMe.Type;
-	MyBuddy = copyMe.MyBuddy;
-	MyContact = copyMe.MyContact;
-}
 
-Talkable & Talkable::operator = (const Buddy &buddy)
-{
-	Type = ItemBuddy;
-	MyBuddy = buddy;
-	MyContact = BuddyPreferredManager::instance()->preferredContact(buddy);
-
-	return *this;
-}
-
-Talkable & Talkable::operator = (const Contact &contact)
-{
-	Type = ItemContact;
-	MyBuddy = contact.ownerBuddy();
-	MyContact = contact;
-
-	return *this;
+	switch (Type)
+	{
+		case ItemBuddy:
+			MyBuddy = copyMe.MyBuddy;
+			break;
+		case ItemContact:
+			MyContact = copyMe.MyContact;
+			break;
+		default:
+			break;
+	}
 }
 
 Talkable & Talkable::operator = (const Talkable &copyMe)
 {
 	Type = copyMe.Type;
-	MyBuddy = copyMe.MyBuddy;
-	MyContact = copyMe.MyContact;
+
+	switch (Type)
+	{
+		case ItemBuddy:
+			MyBuddy = copyMe.MyBuddy;
+			break;
+		case ItemContact:
+			MyContact = copyMe.MyContact;
+			break;
+		default:
+			break;
+	}
 
 	return *this;
 }
 
 bool Talkable::operator == (const Talkable &compareTo) const
 {
-	return (Type == compareTo.Type) && (MyBuddy == compareTo.MyBuddy) && (MyContact == compareTo.MyContact);
+	if (Type != compareTo.Type)
+		return false;
+
+	switch (Type)
+	{
+		case ItemNone: return true;
+		case ItemBuddy: return MyBuddy == compareTo.MyBuddy;
+		case ItemContact: return MyContact == compareTo.MyContact;
+		default:
+			return false;
+	}
 }
 
 bool Talkable::operator != (const Talkable &compareTo) const
@@ -83,39 +95,67 @@ bool Talkable::operator != (const Talkable &compareTo) const
 	return !(*this == compareTo);
 }
 
+Buddy Talkable::buddy() const
+{
+	switch (Type)
+	{
+		case ItemBuddy: return MyBuddy;
+		case ItemContact: return MyContact.ownerBuddy();
+		default:
+			return Buddy::null;
+	}
+}
+
+Contact Talkable::contact() const
+{
+	switch (Type)
+	{
+		case ItemBuddy: return BuddyPreferredManager::instance()->preferredContact(MyBuddy);
+		case ItemContact: return MyContact;
+		default:
+			return Contact::null;
+	}
+}
+
 bool Talkable::isEmpty() const
 {
-	return !MyBuddy && !MyContact;
+	switch (Type)
+	{
+		case ItemBuddy: return MyBuddy.isNull();
+		case ItemContact: return MyContact.isNull();
+		default:
+			return true;
+	}
 }
 
 Avatar Talkable::avatar() const
 {
 	Avatar avatar;
 	if (Talkable::ItemBuddy == Type)
-		avatar = MyBuddy.buddyAvatar();
+		avatar = buddy().buddyAvatar();
 
 	if (!avatar || avatar.pixmap().isNull())
-		avatar = MyContact.contactAvatar();
+		avatar = contact().contactAvatar();
 
 	return avatar;
 }
 
 bool Talkable::isBlocked() const
 {
-	return MyBuddy.isBlocked();
+	return buddy().isBlocked();
 }
 
 bool Talkable::isBlocking() const
 {
-	return MyContact.isBlocking();
+	return contact().isBlocking();
 }
 
 Account Talkable::account() const
 {
-	return MyContact.contactAccount();
+	return contact().contactAccount();
 }
 
 Status Talkable::currentStatus() const
 {
-	return MyContact.currentStatus();
+	return contact().currentStatus();
 }

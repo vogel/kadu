@@ -47,16 +47,15 @@ public:
 	Talkable(const Contact &contact);
 	Talkable(const Talkable &copyMe);
 
-	Talkable & operator = (const Buddy &buddy);
-	Talkable & operator = (const Contact &contact);
 	Talkable & operator = (const Talkable &copyMe);
 
 	bool operator == (const Talkable &compareTo) const;
 	bool operator != (const Talkable &compareTo) const;
 
 	ItemType type() const { return Type; }
-	Buddy buddy() const { return MyBuddy; }
-	Contact contact() const { return MyContact; }
+
+	Buddy buddy() const;
+	Contact contact() const;
 
 	bool isEmpty() const;
 
