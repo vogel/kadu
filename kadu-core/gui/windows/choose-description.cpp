@@ -165,7 +165,7 @@ void ChooseDescription::setDescription()
 	DescriptionManager::instance()->addDescription(description);
 
 	if (config_file.readBoolEntry("General", "ParseStatus", false))
-		description = Parser::parse(description, BuddyOrContact(Core::instance()->myself()), false);
+		description = Parser::parse(description, Talkable(Core::instance()->myself()), false);
 
 	foreach (StatusContainer *container, StatusContainers)
 	{

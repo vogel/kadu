@@ -46,7 +46,7 @@ Preview::Preview(QWidget *parent)
 	p.setBrush(QPalette::Base, Qt::transparent);
 	page()->setPalette(p);
 	setAttribute(Qt::WA_OpaquePaintEvent, false);
-	
+
 	configurationUpdated();
 }
 
@@ -71,14 +71,14 @@ void Preview::syntaxChanged(const QString &content)
 	{
 		KaduChatSyntax syntax(content);
 
-		text = Parser::parse(syntax.top(), BuddyOrContact(contact), true);
+		text = Parser::parse(syntax.top(), Talkable(contact), true);
 
 		Contact contact = *contacts.constBegin();
 		for (int i = 0; i < count; i++)
-			text += Parser::parse(syntax.withHeader(), BuddyOrContact(contact), objectsToParse.at(i));
+			text += Parser::parse(syntax.withHeader(), Talkable(contact), objectsToParse.at(i));
 	}
 	else
-		text = Parser::parse(syntax, BuddyOrContact(Buddy::dummy()));
+		text = Parser::parse(syntax, Talkable(Buddy::dummy()));
 
 	emit needFixup(text);
 

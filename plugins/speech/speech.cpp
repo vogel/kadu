@@ -250,7 +250,7 @@ void Speech::notify(Notification *notification)
 		if (chat)
 		{
 			Contact contact = *chat.contacts().begin();
-			text = Parser::parse(syntax, BuddyOrContact(contact), notification);
+			text = Parser::parse(syntax, Talkable(contact), notification);
 		}
 		else
 			text= Parser::parse(syntax, notification);

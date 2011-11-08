@@ -119,7 +119,7 @@ TalkableDelegateConfiguration & TalkableTreeView::delegateConfiguration()
 	return Delegate->configuration();
 }
 
-BuddyOrContact TalkableTreeView::buddyOrContactAt(const QModelIndex &index) const
+Talkable TalkableTreeView::talkableAt(const QModelIndex &index) const
 {
 	switch (index.data(ItemTypeRole).toInt())
 	{
@@ -129,7 +129,7 @@ BuddyOrContact TalkableTreeView::buddyOrContactAt(const QModelIndex &index) cons
 			return index.data(ContactRole).value<Contact>();
 	}
 
-	return BuddyOrContact();
+	return Talkable();
 }
 
 Chat TalkableTreeView::chatForIndex(const QModelIndex &index) const
@@ -276,7 +276,7 @@ void TalkableTreeView::doubleClickedSlot(const QModelIndex &index)
 
 void TalkableTreeView::toolTipTimeout()
 {
-	if (BuddyOrContact::ItemNone != ToolTipItem.type())
+	if (Talkable::ItemNone != ToolTipItem.type())
 	{
 		ToolTipClassManager::instance()->showToolTip(QCursor::pos(), ToolTipItem);
 		ToolTipTimeoutTimer.stop();
@@ -287,9 +287,9 @@ void TalkableTreeView::toolTipTimeout()
 
 void TalkableTreeView::toolTipRestart(QPoint pos)
 {
-	BuddyOrContact item = buddyOrContactAt(indexAt(pos));
+	Talkable item = talkableAt(indexAt(pos));
 
-	if (BuddyOrContact::ItemNone != item.type())
+	if (Talkable::ItemNone != item.type())
 	{
 		if (item != ToolTipItem)
 			toolTipHide();
@@ -298,7 +298,7 @@ void TalkableTreeView::toolTipRestart(QPoint pos)
 	else
 	{
 		toolTipHide();
-		ToolTipItem = BuddyOrContact();
+		ToolTipItem = Talkable();
 	}
 
 	ToolTipTimeoutTimer.start(TOOL_TIP_TIMEOUT);

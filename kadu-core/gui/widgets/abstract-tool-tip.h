@@ -23,13 +23,13 @@
 
 class QPoint;
 
-class BuddyOrContact;
+class Talkable;
 
 class AbstractToolTip
 {
 
 public:
-	virtual void showToolTip(const QPoint &point, BuddyOrContact buddyOrContact) = 0;
+	virtual void showToolTip(const QPoint &point, Talkable talkable) = 0;
 	virtual void hideToolTip() = 0;
 
 };

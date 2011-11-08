@@ -55,14 +55,14 @@
 #define ENCODE_INCLUDE_CHARS " %[{\\$@#}]`\'"
 
 QMap<QString, QString> Parser::GlobalVariables;
-QMap<QString, Parser::BuddyOrContactTagCallback> Parser::RegisteredBuddyOrContactTags;
+QMap<QString, Parser::TalkableTagCallback> Parser::RegisteredTalkableTags;
 QMap<QString, Parser::ObjectTagCallback> Parser::RegisteredObjectTags;
 
-bool Parser::registerTag(const QString &name, BuddyOrContactTagCallback func)
+bool Parser::registerTag(const QString &name, TalkableTagCallback func)
 {
 	kdebugf();
 
-	if (RegisteredBuddyOrContactTags.contains(name))
+	if (RegisteredTalkableTags.contains(name))
 	{
 		kdebugmf(KDEBUG_ERROR | KDEBUG_FUNCTION_END, "tag %s already registered!\n", qPrintable(name));
 		return false;
@@ -74,7 +74,7 @@ bool Parser::registerTag(const QString &name, BuddyOrContactTagCallback func)
 		return false;
 	}
 
-	RegisteredBuddyOrContactTags.insert(name, func);
+	RegisteredTalkableTags.insert(name, func);
 
 	kdebugf2();
 	return true;
@@ -84,13 +84,13 @@ bool Parser::unregisterTag(const QString &name)
 {
 	kdebugf();
 
-	if (!RegisteredBuddyOrContactTags.contains(name))
+	if (!RegisteredTalkableTags.contains(name))
 	{
-		kdebugmf(KDEBUG_ERROR | KDEBUG_FUNCTION_END, "BuddyOrContact tag %s not registered!\n", qPrintable(name));
+		kdebugmf(KDEBUG_ERROR | KDEBUG_FUNCTION_END, "Talkable tag %s not registered!\n", qPrintable(name));
 		return false;
 	}
 
-	RegisteredBuddyOrContactTags.remove(name);
+	RegisteredTalkableTags.remove(name);
 
 	kdebugf2();
 	return true;
@@ -106,9 +106,9 @@ bool Parser::registerObjectTag(const QString &name, ObjectTagCallback func)
 		return false;
 	}
 
-	if (RegisteredBuddyOrContactTags.contains(name))
+	if (RegisteredTalkableTags.contains(name))
 	{
-		kdebugmf(KDEBUG_ERROR | KDEBUG_FUNCTION_END, "tag %s already registered (as BuddyOrContact tag)!\n", qPrintable(name));
+		kdebugmf(KDEBUG_ERROR | KDEBUG_FUNCTION_END, "tag %s already registered (as Talkable tag)!\n", qPrintable(name));
 		return false;
 	}
 
@@ -180,13 +180,13 @@ bool Parser::isActionParserTokenAtTop(const QStack<ParserToken> &parseStack, con
 	return found;
 }
 
-ParserToken Parser::parsePercentSyntax(const QString &s, int &idx, const BuddyOrContact &buddyOrContact, bool escape)
+ParserToken Parser::parsePercentSyntax(const QString &s, int &idx, const Talkable &talkable, bool escape)
 {
 	ParserToken pe;
 	pe.setType(PT_STRING);
 
-	Buddy buddy = buddyOrContact.buddy();
-	Contact contact = buddyOrContact.contact();
+	Buddy buddy = talkable.buddy();
+	Contact contact = talkable.contact();
 
 	switch (s.at(idx).toAscii())
 	{
@@ -430,7 +430,7 @@ QString Parser::joinParserTokens(const ContainerClass &parseStack)
 	return joined;
 }
 
-QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QObject * const object, bool escape)
+QString Parser::parse(const QString &s, Talkable talkable, const QObject * const object, bool escape)
 {
 	kdebugmf(KDEBUG_DUMP, "%s escape=%i\n", qPrintable(s), escape);
 
@@ -481,7 +481,7 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 			if (idx == len)
 				break;
 
-			pe = parsePercentSyntax(s, idx, buddyOrContact, escape);
+			pe = parsePercentSyntax(s, idx, talkable, escape);
 			pe.encodeContent(QByteArray(), ENCODE_INCLUDE_CHARS);
 
 			parseStack.push(pe);
@@ -696,8 +696,8 @@ QString Parser::parse(const QString &s, BuddyOrContact buddyOrContact, const QOb
 
 						pe.setType(PT_STRING);
 
-						if (RegisteredBuddyOrContactTags.contains(content))
-							pe.setContent(RegisteredBuddyOrContactTags[content](buddyOrContact));
+						if (RegisteredTalkableTags.contains(content))
+							pe.setContent(RegisteredTalkableTags[content](talkable));
 						else if (object && RegisteredObjectTags.contains(content))
 							pe.setContent(RegisteredObjectTags[content](object));
 						else

@@ -115,81 +115,81 @@ static QString getUptime(bool formatted)
 }
 
 /** Returns current time (without secs) */
-static QString parseTime(BuddyOrContact buddyOrContact)
+static QString parseTime(Talkable talkable)
 {
-	Q_UNUSED(buddyOrContact)
+	Q_UNUSED(talkable)
 
 	return QDateTime::currentDateTime().toString("h:mm");
 }
 
 /** Returns current time (with secs) */
-static QString parseLongTime(BuddyOrContact buddyOrContact)
+static QString parseLongTime(Talkable talkable)
 {
-	Q_UNUSED(buddyOrContact)
+	Q_UNUSED(talkable)
 
 	return QDateTime::currentDateTime().toString("hh:mm:ss");
 }
 
 /** Returns current date (without year) */
-static QString parseDate(BuddyOrContact buddyOrContact)
+static QString parseDate(Talkable talkable)
 {
-	Q_UNUSED(buddyOrContact)
+	Q_UNUSED(talkable)
 
 	return QDateTime::currentDateTime().toString("dd-MM");
 }
 
 /** Returns current date (with year) */
-static QString parseLongDate(BuddyOrContact buddyOrContact)
+static QString parseLongDate(Talkable talkable)
 {
-	Q_UNUSED(buddyOrContact)
+	Q_UNUSED(talkable)
 
 	return QDateTime::currentDateTime().toString("dd-MM-yyyy");
 }
 
 /** Returns time of Kadu start (without seconds) */
-static QString parseStartTime(BuddyOrContact buddyOrContact)
+static QString parseStartTime(Talkable talkable)
 {
-	Q_UNUSED(buddyOrContact)
+	Q_UNUSED(talkable)
 
 	return started.toString("hh:mm");
 }
 
 /** Returns time of Kadu start (with seconds) */
-static QString parseLongStartTime(BuddyOrContact buddyOrContact)
+static QString parseLongStartTime(Talkable talkable)
 {
-	Q_UNUSED(buddyOrContact)
+	Q_UNUSED(talkable)
 
 	return started.toString("dd-MM-yy hh:mm:ss");
 }
 
 /** Returns system uptime (seconds) */
-static QString parseUptime(BuddyOrContact buddyOrContact)
+static QString parseUptime(Talkable talkable)
 {
-	Q_UNUSED(buddyOrContact)
+	Q_UNUSED(talkable)
 
 	return getUptime(false);
 }
 
 /** Returns system uptime (formatted) */
-static QString parseLongUptime(BuddyOrContact buddyOrContact)
+static QString parseLongUptime(Talkable talkable)
 {
-	Q_UNUSED(buddyOrContact)
+	Q_UNUSED(talkable)
 
 	return getUptime(true);
 }
 
 /** Returns Kadu uptime */
-static QString parseKaduUptime(BuddyOrContact buddyOrContact)
+static QString parseKaduUptime(Talkable talkable)
 {
-	Q_UNUSED(buddyOrContact)
+	Q_UNUSED(talkable)
 
 	return getKaduUptime(false);
 }
 
 /** Returns Kadu uptime (formatted) */
-static QString parseLongKaduUptime(BuddyOrContact buddyOrContact)
+static QString parseLongKaduUptime(Talkable talkable)
 {
-	Q_UNUSED(buddyOrContact)
+	Q_UNUSED(talkable)
 
 	return getKaduUptime(true);
 }

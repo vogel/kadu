@@ -30,14 +30,14 @@
 
 #include "contact-parser-tags.h"
 
-static QString getAvatarPath(BuddyOrContact buddyOrContact)
+static QString getAvatarPath(Talkable talkable)
 {
 	Avatar avatar;
-	if (BuddyOrContact::ItemBuddy == buddyOrContact.type())
-		avatar = buddyOrContact.buddy().buddyAvatar();
+	if (Talkable::ItemBuddy == talkable.type())
+		avatar = talkable.buddy().buddyAvatar();
 
 	if (!avatar || avatar.pixmap().isNull())
-		avatar = buddyOrContact.contact().contactAvatar();
+		avatar = talkable.contact().contactAvatar();
 
 	if (!avatar || avatar.pixmap().isNull())
 		return QString();
@@ -45,10 +45,10 @@ static QString getAvatarPath(BuddyOrContact buddyOrContact)
 	return webKitPath(avatar.filePath());
 }
 
-static QString getStatusIconPath(BuddyOrContact buddyOrContact)
+static QString getStatusIconPath(Talkable talkable)
 {
-	Buddy buddy = buddyOrContact.buddy();
-	Contact contact = buddyOrContact.contact();
+	Buddy buddy = talkable.buddy();
+	Contact contact = talkable.contact();
 
 	if (buddy.isBlocked())
 		return KaduIcon("kadu_icons", "16x16", "blocked").webKitPath();

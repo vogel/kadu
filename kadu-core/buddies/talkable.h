@@ -19,14 +19,14 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef BUDDY_OR_CONTACT_H
-#define BUDDY_OR_CONTACT_H
+#ifndef TALKABLE_H
+#define TALKABLE_H
 
 #include "buddies/buddy.h"
 #include "contacts/contact.h"
 #include "exports.h"
 
-class KADUAPI BuddyOrContact
+class KADUAPI Talkable
 {
 public:
 	enum ItemType
@@ -42,17 +42,17 @@ private:
 	Contact MyContact;
 
 public:
-	BuddyOrContact();
-	BuddyOrContact(const Buddy &buddy);
-	BuddyOrContact(const Contact &contact);
-	BuddyOrContact(const BuddyOrContact &copyMe);
+	Talkable();
+	Talkable(const Buddy &buddy);
+	Talkable(const Contact &contact);
+	Talkable(const Talkable &copyMe);
 
-	BuddyOrContact & operator = (const Buddy &buddy);
-	BuddyOrContact & operator = (const Contact &contact);
-	BuddyOrContact & operator = (const BuddyOrContact &copyMe);
+	Talkable & operator = (const Buddy &buddy);
+	Talkable & operator = (const Contact &contact);
+	Talkable & operator = (const Talkable &copyMe);
 
-	bool operator == (const BuddyOrContact &compareTo) const;
-	bool operator != (const BuddyOrContact &compareTo) const;
+	bool operator == (const Talkable &compareTo) const;
+	bool operator != (const Talkable &compareTo) const;
 
 	ItemType type() const { return Type; }
 	Buddy buddy() const { return MyBuddy; }
@@ -60,4 +60,4 @@ public:
 
 };
 
-#endif // BUDDY_OR_CONTACT_H
+#endif // TALKABLE_H

@@ -177,7 +177,7 @@ void BuddyInfoPanel::disconnectItem()
 	}
 }
 
-void BuddyInfoPanel::displayItem(BuddyOrContact item)
+void BuddyInfoPanel::displayItem(Talkable item)
 {
 	disconnectItem();
 	Item = item;

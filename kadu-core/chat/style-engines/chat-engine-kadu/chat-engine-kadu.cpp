@@ -152,7 +152,7 @@ QString KaduChatStyleEngine::formatMessage(MessageRenderInfo *message, MessageRe
 		message->setSeparatorSize(separatorSize);
 
 		Contact sender = msg.messageSender();
-		return Parser::parse(format, BuddyOrContact(sender), message, true);
+		return Parser::parse(format, Talkable(sender), message, true);
 	}
 	else
 	{
@@ -182,7 +182,7 @@ QString KaduChatStyleEngine::formatMessage(MessageRenderInfo *message, MessageRe
 		message->setSeparatorSize(separatorSize);
 
 		Contact sender = msg.messageSender();
-		return Parser::parse(format, BuddyOrContact(sender), message, true);
+		return Parser::parse(format, Talkable(sender), message, true);
 	}
 }
 
@@ -203,7 +203,7 @@ void KaduChatStyleEngine::repaintMessages(HtmlMessagesRenderer *renderer)
 	text += QString("<script>%1</script>").arg(jsCode);
 
 	Contact contact = renderer->chat().contacts().count() == 1 ? *(renderer->chat().contacts().constBegin()) : Contact();
-	text += Parser::parse(CurrentChatSyntax.top(), BuddyOrContact(contact), true);
+	text += Parser::parse(CurrentChatSyntax.top(), Talkable(contact), true);
 
 	MessageRenderInfo *prevMessage = 0;
 	foreach (MessageRenderInfo *message, renderer->messages())
@@ -217,7 +217,7 @@ void KaduChatStyleEngine::repaintMessages(HtmlMessagesRenderer *renderer)
 		text += messageText;
 		prevMessage = message;
 	}
-	renderer->setLastMessage(prevMessage);	
+	renderer->setLastMessage(prevMessage);
 
 	text += "</body></html>";
 
@@ -257,7 +257,7 @@ void KaduChatStyleEngine::prepareStylePreview(Preview *preview, QString styleNam
 	KaduChatSyntax syntax(SyntaxList::readSyntax("chat", styleName, QString()));
 
 	Contact contact = preview->getContactList().count() == 1 ? *(preview->getContactList().constBegin()) : Contact();
-	QString text = Parser::parse(syntax.top(), BuddyOrContact(contact), true);
+	QString text = Parser::parse(syntax.top(), Talkable(contact), true);
 
 	int count = preview->getObjectsToParse().count();
 	if (count)
@@ -267,7 +267,7 @@ void KaduChatStyleEngine::prepareStylePreview(Preview *preview, QString styleNam
 		{
 			message = qobject_cast<MessageRenderInfo *>(preview->getObjectsToParse().at(i));
 			Contact sender = message->message().messageSender();
-			text += Parser::parse(syntax.withHeader(), BuddyOrContact(sender), message);
+			text += Parser::parse(syntax.withHeader(), Talkable(sender), message);
 		}
 	}
 	preview->setHtml(QString("<html><head><style type='text/css'>%1</style></head><body>%2</body>").arg(ChatStylesManager::instance()->mainStyle(), text));

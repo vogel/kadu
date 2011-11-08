@@ -475,9 +475,9 @@ void HintManager::setLayoutDirection()
 	kdebugf2();
 }
 
-void HintManager::prepareOverUserHint(QFrame *tipFrame, QLabel *tipLabel, BuddyOrContact buddyOrContact)
+void HintManager::prepareOverUserHint(QFrame *tipFrame, QLabel *tipLabel, Talkable talkable)
 {
-	QString text = Parser::parse(config_file.readEntry("Hints", "MouseOverUserSyntax"), buddyOrContact);
+	QString text = Parser::parse(config_file.readEntry("Hints", "MouseOverUserSyntax"), talkable);
 
 	/* Dorr: the file:// in img tag doesn't generate the image on hint.
 	 * for compatibility with other syntaxes we're allowing to put the file://
@@ -506,7 +506,7 @@ void HintManager::prepareOverUserHint(QFrame *tipFrame, QLabel *tipLabel, BuddyO
 	tipFrame->setFixedSize(tipLabel->sizeHint() + QSize(2 * FRAME_WIDTH, 2 * FRAME_WIDTH));
 }
 
-void HintManager::showToolTip(const QPoint &point, BuddyOrContact buddyOrContact)
+void HintManager::showToolTip(const QPoint &point, Talkable talkable)
 {
 	kdebugf();
 
@@ -529,7 +529,7 @@ void HintManager::showToolTip(const QPoint &point, BuddyOrContact buddyOrContact
 
 	lay->addWidget(tipLabel);
 
-	prepareOverUserHint(tipFrame, tipLabel, buddyOrContact);
+	prepareOverUserHint(tipFrame, tipLabel, talkable);
 
 	double opacity = config_file.readNumEntry("Hints", "HintOverUser_transparency", 0);
 	opacity = 1 - opacity/100;

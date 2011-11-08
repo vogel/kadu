@@ -201,7 +201,7 @@ QWidget * KaduWindow::createBuddiesWidget(QWidget *parent)
 	hboxLayout->setStretchFactor(ContactsWidget, 100);
 
 	InfoPanel = new BuddyInfoPanel(Split);
-	connect(BuddiesView, SIGNAL(currentChanged(BuddyOrContact)), InfoPanel, SLOT(displayItem(BuddyOrContact)));
+	connect(BuddiesView, SIGNAL(currentChanged(Talkable)), InfoPanel, SLOT(displayItem(Talkable)));
 
 	if (!config_file.readBoolEntry("Look", "ShowInfoPanel"))
 		InfoPanel->setVisible(false);

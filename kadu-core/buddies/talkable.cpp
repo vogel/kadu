@@ -20,31 +20,31 @@
 
 #include "buddies/buddy-preferred-manager.h"
 
-#include "buddy-or-contact.h"
+#include "talkable.h"
 
-BuddyOrContact::BuddyOrContact() :
+Talkable::Talkable() :
 		Type(ItemNone)
 {
 }
 
-BuddyOrContact::BuddyOrContact(const Buddy &buddy) :
+Talkable::Talkable(const Buddy &buddy) :
 		Type(ItemBuddy), MyBuddy(buddy), MyContact(BuddyPreferredManager::instance()->preferredContact(buddy))
 {
 }
 
-BuddyOrContact::BuddyOrContact(const Contact &contact) :
+Talkable::Talkable(const Contact &contact) :
 		Type(ItemContact), MyBuddy(contact.ownerBuddy()), MyContact(contact)
 {
 }
 
-BuddyOrContact::BuddyOrContact(const BuddyOrContact &copyMe)
+Talkable::Talkable(const Talkable &copyMe)
 {
 	Type = copyMe.Type;
 	MyBuddy = copyMe.MyBuddy;
 	MyContact = copyMe.MyContact;
 }
 
-BuddyOrContact & BuddyOrContact::operator = (const Buddy &buddy)
+Talkable & Talkable::operator = (const Buddy &buddy)
 {
 	Type = ItemBuddy;
 	MyBuddy = buddy;
@@ -53,7 +53,7 @@ BuddyOrContact & BuddyOrContact::operator = (const Buddy &buddy)
 	return *this;
 }
 
-BuddyOrContact & BuddyOrContact::operator = (const Contact &contact)
+Talkable & Talkable::operator = (const Contact &contact)
 {
 	Type = ItemContact;
 	MyBuddy = contact.ownerBuddy();
@@ -62,7 +62,7 @@ BuddyOrContact & BuddyOrContact::operator = (const Contact &contact)
 	return *this;
 }
 
-BuddyOrContact & BuddyOrContact::operator = (const BuddyOrContact &copyMe)
+Talkable & Talkable::operator = (const Talkable &copyMe)
 {
 	Type = copyMe.Type;
 	MyBuddy = copyMe.MyBuddy;
@@ -71,12 +71,12 @@ BuddyOrContact & BuddyOrContact::operator = (const BuddyOrContact &copyMe)
 	return *this;
 }
 
-bool BuddyOrContact::operator == (const BuddyOrContact &compareTo) const
+bool Talkable::operator == (const Talkable &compareTo) const
 {
 	return (Type == compareTo.Type) && (MyBuddy == compareTo.MyBuddy) && (MyContact == compareTo.MyContact);
 }
 
-bool BuddyOrContact::operator != (const BuddyOrContact &compareTo) const
+bool Talkable::operator != (const Talkable &compareTo) const
 {
 	return !(*this == compareTo);
 }

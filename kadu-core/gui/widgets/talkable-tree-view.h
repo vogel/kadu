@@ -29,7 +29,7 @@
 #include <QtCore/QTimer>
 
 #include "buddies/buddy.h"
-#include "buddies/buddy-or-contact.h"
+#include "buddies/talkable.h"
 #include "chat/chat.h"
 #include "contacts/contact.h"
 #include "gui/actions/action-data-source.h"
@@ -60,13 +60,13 @@ class TalkableTreeView : public KaduTreeView, public ActionDataSourceProvider
 
 	BaseActionDataSource *ActionData;
 
-	BuddyOrContact buddyOrContactAt(const QModelIndex &index) const;
+	Talkable talkableAt(const QModelIndex &index) const;
 	void triggerActivate(const QModelIndex &index);
 
 	Chat chatForIndex(const QModelIndex &index) const;
 
 	// Tool tips
-	BuddyOrContact ToolTipItem;
+	Talkable ToolTipItem;
 	QTimer ToolTipTimeoutTimer;
 
 	bool ContextMenuEnabled;

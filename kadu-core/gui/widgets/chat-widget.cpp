@@ -325,7 +325,7 @@ void ChatWidget::refreshTitle()
 		QString conferenceContents = ChatConfigurationHolder::instance()->conferenceContents();
 		QStringList contactslist;
 		foreach (Contact contact, chat().contacts())
-			contactslist.append(Parser::parse(conferenceContents.isEmpty() ? "%a" : conferenceContents, BuddyOrContact(contact), false));
+			contactslist.append(Parser::parse(conferenceContents.isEmpty() ? "%a" : conferenceContents, Talkable(contact), false));
 
 		title.append(contactslist.join(", "));
 	}
@@ -336,12 +336,12 @@ void ChatWidget::refreshTitle()
 		if (ChatConfigurationHolder::instance()->chatContents().isEmpty())
 		{
 			if (contact.ownerBuddy().isAnonymous())
-				title = Parser::parse(tr("Chat with ") + "%a", BuddyOrContact(contact), false);
+				title = Parser::parse(tr("Chat with ") + "%a", Talkable(contact), false);
 			else
-				title = Parser::parse(tr("Chat with ") + "%a (%s[: %d])", BuddyOrContact(contact), false);
+				title = Parser::parse(tr("Chat with ") + "%a (%s[: %d])", Talkable(contact), false);
 		}
 		else
-			title = Parser::parse(ChatConfigurationHolder::instance()->chatContents(), BuddyOrContact(contact), false);
+			title = Parser::parse(ChatConfigurationHolder::instance()->chatContents(), Talkable(contact), false);
 
 		if (ChatConfigurationHolder::instance()->contactStateWindowTitle())
 		{
