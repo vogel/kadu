@@ -23,6 +23,7 @@
 #define TALKABLE_H
 
 #include "buddies/buddy.h"
+#include "chat/chat.h"
 #include "contacts/contact.h"
 #include "exports.h"
 
@@ -33,18 +34,21 @@ public:
 	{
 		ItemNone,
 		ItemBuddy,
-		ItemContact
+		ItemContact,
+		ItemChat
 	};
 
 private:
 	ItemType Type;
 	Buddy MyBuddy;
 	Contact MyContact;
+	Chat MyChat;
 
 public:
 	Talkable();
 	Talkable(const Buddy &buddy);
 	Talkable(const Contact &contact);
+	Talkable(const Chat &chat);
 	Talkable(const Talkable &copyMe);
 
 	Talkable & operator = (const Talkable &copyMe);
@@ -56,6 +60,7 @@ public:
 
 	Buddy buddy() const;
 	Contact contact() const;
+	Chat chat() const;
 
 	bool isEmpty() const;
 
