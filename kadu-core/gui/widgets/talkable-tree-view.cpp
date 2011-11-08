@@ -153,7 +153,7 @@ void TalkableTreeView::triggerActivate(const QModelIndex& index)
 	const Buddy &buddy = index.data(BuddyRole).value<Buddy>();
 
 	if (buddy)
-		emit buddyActivated(buddy);
+		emit talkableActivated(Talkable(buddy));
 	if (chat)
 		emit chatActivated(chat);
 }

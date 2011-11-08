@@ -57,8 +57,7 @@ SelectBuddyPopup::SelectBuddyPopup(QWidget *parent) :
 	chain->addProxyModel(ProxyModel);
 
 	connect(View, SIGNAL(clicked(QModelIndex)), this, SLOT(itemClicked(QModelIndex)));
-	connect(View, SIGNAL(buddyActivated(Buddy)), this, SIGNAL(buddySelected(Buddy)));
-	connect(View, SIGNAL(buddyActivated(Buddy)), this, SLOT(close()));
+	connect(View, SIGNAL(talkableActivated(Talkable)), this, SLOT(talkableActivated(Talkable)));
 
 	View->setItemsExpandable(false);
 	View->setChain(chain);
@@ -93,6 +92,16 @@ void SelectBuddyPopup::itemClicked(const QModelIndex &index)
 		return;
 
 	emit buddySelected(buddy);
+}
+
+void SelectBuddyPopup::talkableActivated(const Talkable &talkable)
+{
+	const Buddy &buddy = talkable.buddy();
+	if (buddy)
+	{
+		emit buddySelected(buddy);
+		close();
+	}
 }
 
 void SelectBuddyPopup::addFilter(AbstractBuddyFilter *filter)

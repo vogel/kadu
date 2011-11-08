@@ -118,7 +118,7 @@ public:
 
 signals:
 	void chatActivated(Chat chat);
-	void buddyActivated(Buddy buddy);
+	void talkableActivated(Talkable talkable);
 
 };
 

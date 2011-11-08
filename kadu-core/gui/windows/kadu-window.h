@@ -32,6 +32,7 @@
 
 #include "chat/chat.h"
 #include "buddies/buddy-list.h"
+#include "buddies/talkable.h"
 #include "gui/windows/main-window.h"
 #include "os/generic/compositing-aware-object.h"
 #include "exports.h"
@@ -126,7 +127,7 @@ private:
 
 private slots:
 	void openChatWindow(Chat chat);
-	void buddyActivatedSlot(const Buddy &buddy);
+	void talkableActivatedSlot(const Talkable &talkable);
 
 	void invalidateRecentChatsMenu();
 	void updateRecentChatsMenu();
@@ -171,7 +172,7 @@ signals:
 	void keyPressed(QKeyEvent *e);
 	void parentChanged(QWidget *oldParent);
 
-	void buddyActivated(const Buddy &buddy);
+	void talkableActivated(const Talkable &talkable);
 
 };
 

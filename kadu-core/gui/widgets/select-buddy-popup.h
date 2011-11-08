@@ -20,6 +20,8 @@
 #ifndef SELECT_BUDDY_POPUP_H
 #define SELECT_BUDDY_POPUP_H
 
+#include "buddies/talkable.h"
+
 #include "gui/widgets/filtered-tree-view.h"
 
 class QModelIndex;
@@ -38,6 +40,7 @@ class SelectBuddyPopup : public FilteredTreeView
 
 private slots:
 	void itemClicked(const QModelIndex &index);
+	void talkableActivated(const Talkable &talkable);
 
 public:
 	explicit SelectBuddyPopup(QWidget *parent = 0);

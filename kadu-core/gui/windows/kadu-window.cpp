@@ -193,7 +193,7 @@ QWidget * KaduWindow::createBuddiesWidget(QWidget *parent)
 	BuddiesView->setContextMenuEnabled(true);
 
 	connect(BuddiesView, SIGNAL(chatActivated(Chat)), this, SLOT(openChatWindow(Chat)));
-	connect(BuddiesView, SIGNAL(buddyActivated(Buddy)), this, SLOT(buddyActivatedSlot(Buddy)));
+	connect(BuddiesView, SIGNAL(talkableActivated(Talkable)), this, SLOT(talkableActivatedSlot(Talkable)));
 
 	hboxLayout->addWidget(GroupBar);
 	hboxLayout->setStretchFactor(GroupBar, 1);
@@ -404,13 +404,14 @@ void KaduWindow::openChatWindow(Chat chat)
 	}
 }
 
-void KaduWindow::buddyActivatedSlot(const Buddy &buddy)
+void KaduWindow::talkableActivatedSlot(const Talkable &talkable)
 {
+	const Buddy &buddy = talkable.buddy();
 	if (buddy.contacts().isEmpty() && buddy.mobile().isEmpty() && !buddy.email().isEmpty())
 		if (buddy.email().indexOf(UrlHandlerManager::instance()->mailRegExp()) == 0)
 			UrlOpener::openEmail(buddy.email().toUtf8());
 
-	emit buddyActivated(buddy);
+	emit talkableActivated(talkable);
 }
 
 void KaduWindow::invalidateRecentChatsMenu()

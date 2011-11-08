@@ -64,8 +64,8 @@ SmsActions * SmsActions::instance()
 
 SmsActions::SmsActions()
 {
-	connect(Core::instance()->kaduWindow(), SIGNAL(buddyActivated(Buddy)),
-			this, SLOT(buddyActivated(Buddy)));
+	connect(Core::instance()->kaduWindow(), SIGNAL(talkableActivated(Talkable)),
+			this, SLOT(talkableActivated(Talkable)));
 
 	sendSmsActionDescription = new ActionDescription(this,
 		ActionDescription::TypeGlobal, "sendSmsAction",
@@ -79,8 +79,8 @@ SmsActions::SmsActions()
 
 SmsActions::~SmsActions()
 {
-	disconnect(Core::instance()->kaduWindow(), SIGNAL(buddyActivated(Buddy)),
-			this, SLOT(buddyActivated(Buddy)));
+	disconnect(Core::instance()->kaduWindow(), SIGNAL(talkableActivated(Talkable)),
+			this, SLOT(talkableActivated(Talkable)));
 
 	TalkableMenuManager::instance()->removeActionDescription(sendSmsActionDescription);
 	Core::instance()->kaduWindow()->removeMenuActionDescription(sendSmsActionDescription);
@@ -93,8 +93,9 @@ void SmsActions::newSms(const QString &mobile)
 	smsDialog->show();
 }
 
-void SmsActions::buddyActivated(Buddy buddy)
+void SmsActions::talkableActivated(const Talkable &talkable)
 {
+	const Buddy &buddy = talkable.buddy();
 	if (buddy.contacts().isEmpty() && !buddy.mobile().isEmpty())
 		newSms(buddy.mobile());
 }
