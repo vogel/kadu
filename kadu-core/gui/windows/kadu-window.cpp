@@ -192,7 +192,6 @@ QWidget * KaduWindow::createBuddiesWidget(QWidget *parent)
 	BuddiesView->setChain(chain);
 	BuddiesView->setContextMenuEnabled(true);
 
-	connect(BuddiesView, SIGNAL(chatActivated(Chat)), this, SLOT(openChatWindow(Chat)));
 	connect(BuddiesView, SIGNAL(talkableActivated(Talkable)), this, SLOT(talkableActivatedSlot(Talkable)));
 
 	hboxLayout->addWidget(GroupBar);
@@ -239,7 +238,7 @@ QWidget * KaduWindow::createChatsWidget(QWidget *parent)
 
 	ChatsTree->setChain(chain);
 
-	connect(ChatsTree, SIGNAL(chatActivated(Chat)), this, SLOT(openChatWindow(Chat)));
+	connect(ChatsTree, SIGNAL(talkableActivated(Talkable)), this, SLOT(talkableActivatedSlot(Talkable)));
 
 	return ChatsTree;
 }
@@ -395,17 +394,15 @@ void KaduWindow::compositingDisabled()
 	}
 }
 
-void KaduWindow::openChatWindow(Chat chat)
+void KaduWindow::talkableActivatedSlot(const Talkable &talkable)
 {
-	if (!chat.contacts().toBuddySet().contains(Core::instance()->myself()))
+	const Chat &chat = talkable.chat();
+	if (chat && !chat.contacts().toBuddySet().contains(Core::instance()->myself()))
 	{
 		ChatWidgetManager::instance()->sendMessage(chat);
 		return;
 	}
-}
 
-void KaduWindow::talkableActivatedSlot(const Talkable &talkable)
-{
 	const Buddy &buddy = talkable.buddy();
 	if (buddy.contacts().isEmpty() && buddy.mobile().isEmpty() && !buddy.email().isEmpty())
 		if (buddy.email().indexOf(UrlHandlerManager::instance()->mailRegExp()) == 0)

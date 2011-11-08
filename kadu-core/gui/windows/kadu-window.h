@@ -126,9 +126,6 @@ private:
 	virtual void compositingDisabled();
 
 private slots:
-	void openChatWindow(Chat chat);
-	void talkableActivatedSlot(const Talkable &talkable);
-
 	void invalidateRecentChatsMenu();
 	void updateRecentChatsMenu();
 	void openRecentChats(QAction *action);
@@ -167,6 +164,9 @@ public:
 #ifdef Q_OS_MAC
 	QMenuBar* menuBar() const;
 #endif
+
+public slots:
+	void talkableActivatedSlot(const Talkable &talkable);
 
 signals:
 	void keyPressed(QKeyEvent *e);

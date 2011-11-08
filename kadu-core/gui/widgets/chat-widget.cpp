@@ -212,8 +212,8 @@ void ChatWidget::createContactsList()
 	view->setShowAccountName(false);
 	view->setContextMenuEnabled(true);
 
-	connect(view, SIGNAL(chatActivated(Chat)),
-			Core::instance()->kaduWindow(), SLOT(openChatWindow(Chat)));
+	connect(view, SIGNAL(talkableActivated(Talkable)),
+			Core::instance()->kaduWindow(), SLOT(talkableActivatedSlot(Talkable)));
 
 	BuddiesWidget->setTreeView(view);
 

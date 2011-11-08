@@ -124,38 +124,26 @@ Talkable TalkableTreeView::talkableAt(const QModelIndex &index) const
 	switch (index.data(ItemTypeRole).toInt())
 	{
 		case BuddyRole:
-			return index.data(BuddyRole).value<Buddy>();
+			return Talkable(index.data(BuddyRole).value<Buddy>());
 		case ContactRole:
-			return index.data(ContactRole).value<Contact>();
+			return Talkable(index.data(ContactRole).value<Contact>());
+		case ChatRole:
+			return Talkable(index.data(ChatRole).value<Chat>());
 	}
 
 	return Talkable();
 }
 
-Chat TalkableTreeView::chatForIndex(const QModelIndex &index) const
-{
-	if (!index.isValid())
-		return Chat::null;
-
-	const Contact &contact = index.data(ContactRole).value<Contact>();
-	if (!contact)
-		return Chat::null;
-
-	return ChatManager::instance()->findChat(ContactSet(contact));
-}
-
 void TalkableTreeView::triggerActivate(const QModelIndex& index)
 {
-	// we need to fetch these 2 object first
-	// because afer calling buddyActivated or chatActivate index can became invalid
-	// because of changing filters and stuff
-	const Chat &chat = ActionData->chat();
-	const Buddy &buddy = index.data(BuddyRole).value<Buddy>();
+	// ActionData->chat() can be different that Chat talkable on this index
+	// if more than one non-chat items are selected at the same time
+	const Talkable &talkable = ActionData->chat().isNull()
+			? talkableAt(index)
+			: Talkable(ActionData->chat());
 
-	if (buddy)
-		emit talkableActivated(Talkable(buddy));
-	if (chat)
-		emit chatActivated(chat);
+	if (!talkable.isEmpty())
+		emit talkableActivated(talkable);
 }
 
 void TalkableTreeView::setContextMenuEnabled(bool enabled)

@@ -63,8 +63,6 @@ class TalkableTreeView : public KaduTreeView, public ActionDataSourceProvider
 	Talkable talkableAt(const QModelIndex &index) const;
 	void triggerActivate(const QModelIndex &index);
 
-	Chat chatForIndex(const QModelIndex &index) const;
-
 	// Tool tips
 	Talkable ToolTipItem;
 	QTimer ToolTipTimeoutTimer;
@@ -117,8 +115,7 @@ public:
 	virtual ActionDataSource * actionDataSource();
 
 signals:
-	void chatActivated(Chat chat);
-	void talkableActivated(Talkable talkable);
+	void talkableActivated(const Talkable &talkable);
 
 };
 
