@@ -58,6 +58,14 @@ public:
 	Buddy buddy() const { return MyBuddy; }
 	Contact contact() const { return MyContact; }
 
+	bool isEmpty() const;
+
+	Avatar avatar() const;
+	bool isBlocked() const;
+	bool isBlocking() const;
+	Account account() const;
+	Status currentStatus() const;
+
 };
 
 #endif // TALKABLE_H

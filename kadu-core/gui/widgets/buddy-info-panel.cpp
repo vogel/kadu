@@ -186,7 +186,7 @@ void BuddyInfoPanel::displayItem(Talkable item)
 	if (!isVisible())
 		return;
 
-	if (!item.contact() && !item.buddy())
+	if (item.isEmpty())
 	{
 		setHtml("<body bgcolor=\"" + BackgroundColor + "\"></body>");
 		return;

@@ -21,7 +21,6 @@
 
 #include "accounts/account.h"
 #include "avatars/avatar.h"
-#include "buddies/buddy-preferred-manager.h"
 #include "icons/kadu-icon.h"
 #include "misc/path-conversion.h"
 #include "parser/parser.h"
@@ -32,38 +31,23 @@
 
 static QString getAvatarPath(Talkable talkable)
 {
-	Avatar avatar;
-	if (Talkable::ItemBuddy == talkable.type())
-		avatar = talkable.buddy().buddyAvatar();
-
-	if (!avatar || avatar.pixmap().isNull())
-		avatar = talkable.contact().contactAvatar();
-
-	if (!avatar || avatar.pixmap().isNull())
-		return QString();
-
+	const Avatar &avatar = talkable.avatar();
 	return webKitPath(avatar.filePath());
 }
 
 static QString getStatusIconPath(Talkable talkable)
 {
-	Buddy buddy = talkable.buddy();
-	Contact contact = talkable.contact();
-
-	if (buddy.isBlocked())
+	if (talkable.isBlocked())
 		return KaduIcon("kadu_icons", "16x16", "blocked").webKitPath();
 
-	if (contact.isBlocking())
+	if (talkable.isBlocking())
 		return KaduIcon("kadu_icons", "16x16", "blocking").webKitPath();
 
-	if (contact.contactAccount())
+	Protocol *protocol = talkable.account().protocolHandler();
+	if (protocol)
 	{
-		Protocol *protocol = contact.contactAccount().protocolHandler();
-		if (protocol)
-		{
-			const Status &status = contact.currentStatus();
-			return StatusTypeManager::instance()->statusIcon(protocol->statusPixmapPath(), status).webKitPath();
-		}
+		const Status &status = talkable.currentStatus();
+		return StatusTypeManager::instance()->statusIcon(protocol->statusPixmapPath(), status).webKitPath();
 	}
 
 	return QString();

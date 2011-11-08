@@ -18,7 +18,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "avatars/avatar.h"
 #include "buddies/buddy-preferred-manager.h"
+#include "model/roles.h"
 
 #include "talkable.h"
 
@@ -79,4 +81,41 @@ bool Talkable::operator == (const Talkable &compareTo) const
 bool Talkable::operator != (const Talkable &compareTo) const
 {
 	return !(*this == compareTo);
+}
+
+bool Talkable::isEmpty() const
+{
+	return !MyBuddy && !MyContact;
+}
+
+Avatar Talkable::avatar() const
+{
+	Avatar avatar;
+	if (Talkable::ItemBuddy == Type)
+		avatar = MyBuddy.buddyAvatar();
+
+	if (!avatar || avatar.pixmap().isNull())
+		avatar = MyContact.contactAvatar();
+
+	return avatar;
+}
+
+bool Talkable::isBlocked() const
+{
+	return MyBuddy.isBlocked();
+}
+
+bool Talkable::isBlocking() const
+{
+	return MyContact.isBlocking();
+}
+
+Account Talkable::account() const
+{
+	return MyContact.contactAccount();
+}
+
+Status Talkable::currentStatus() const
+{
+	return MyContact.currentStatus();
 }
