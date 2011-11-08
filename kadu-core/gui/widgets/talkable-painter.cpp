@@ -49,6 +49,7 @@ TalkablePainter::TalkablePainter(const TalkableDelegateConfiguration &configurat
 		DescriptionDocument(0)
 {
 	Widget = static_cast<const QTreeView *>(option.widget);
+	Q_ASSERT(Widget);
 
 	QStyle *style = Widget->style();
 
@@ -141,17 +142,17 @@ void TalkablePainter::computeIconRect()
 {
 	IconRect = QRect(0, 0, 0, 0);
 
-	QPixmap icon = buddyIcon();
-	if (icon.isNull())
+	QPixmap paintedIcon = icon();
+	if (paintedIcon.isNull())
 		return;
 
 	QPoint topLeft = ItemRect.topLeft();
-	IconRect = icon.rect();
+	IconRect = paintedIcon.rect();
 
 	if (!Configuration.alignTop())
-		topLeft.setY(topLeft.y() + (ItemRect.height() - icon.height()) / 2);
-	else if (fontMetrics().lineSpacing() > icon.height())
-		topLeft.setY(topLeft.y() + (fontMetrics().lineSpacing() - icon.height()) / 2);
+		topLeft.setY(topLeft.y() + (ItemRect.height() - paintedIcon.height()) / 2);
+	else if (fontMetrics().lineSpacing() > paintedIcon.height())
+		topLeft.setY(topLeft.y() + (fontMetrics().lineSpacing() - paintedIcon.height()) / 2);
 
 	IconRect.moveTo(topLeft);
 }
@@ -186,7 +187,7 @@ void TalkablePainter::computeAvatarRect()
 
 	AvatarRect.setWidth(Configuration.defaultAvatarSize().width() + 2 * HFrameMargin);
 
-	if (!buddyAvatar().isNull())
+	if (!avatar().isNull())
 		AvatarRect.setHeight(Configuration.defaultAvatarSize().height() + 2 * VFrameMargin);
 	else
 		AvatarRect.setHeight(1); // just a placeholder
@@ -330,12 +331,12 @@ void TalkablePainter::computeLayout()
 	computeDescriptionRect();
 }
 
-QPixmap TalkablePainter::buddyAvatar() const
+QPixmap TalkablePainter::avatar() const
 {
 	return Index.data(AvatarRole).value<QPixmap>();
 }
 
-QPixmap TalkablePainter::buddyIcon() const
+QPixmap TalkablePainter::icon() const
 {
 	return Index.data(Qt::DecorationRole).value<QIcon>().pixmap(16, 16);
 }
@@ -363,9 +364,6 @@ int TalkablePainter::itemIndentation()
 
 int TalkablePainter::height()
 {
-	if (!Widget)
-		return 0;
-
 	ItemRect = QRect(0, 0, 0, 20);
 
 	QHeaderView *header = Widget->header();
@@ -396,11 +394,11 @@ void TalkablePainter::paintDebugRect(QPainter *painter, QRect rect, QColor color
 
 void TalkablePainter::paintIcon(QPainter *painter)
 {
-	QPixmap icon = buddyIcon();
-	if (icon.isNull())
+	QPixmap paintedIcon = icon();
+	if (paintedIcon.isNull())
 		return;
 
-	painter->drawPixmap(IconRect, icon);
+	painter->drawPixmap(IconRect, paintedIcon);
 }
 
 void TalkablePainter::paintMessageIcon(QPainter *painter)

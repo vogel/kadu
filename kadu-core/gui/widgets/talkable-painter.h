@@ -97,8 +97,8 @@ public:
 	TalkablePainter(const TalkableDelegateConfiguration &configuration, QStyleOptionViewItemV4 option, const QModelIndex &index, bool useConfigurationColors);
 	~TalkablePainter();
 
-	QPixmap buddyAvatar() const;
-	QPixmap buddyIcon() const;
+	QPixmap avatar() const;
+	QPixmap icon() const;
 
 	int height();
 	void paint(QPainter *painter);
