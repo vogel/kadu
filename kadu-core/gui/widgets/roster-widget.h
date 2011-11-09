@@ -28,6 +28,10 @@
 #include "gui/actions/action-data-source-provider.h"
 #include "os/generic/compositing-aware-object.h"
 
+class QButtonGroup;
+class QPushButton;
+class QStackedWidget;
+
 class BuddiesModelProxy;
 class FilteredTreeView;
 class GroupBuddyFilter;
@@ -47,6 +51,11 @@ class RosterWidget : public QWidget, public ActionDataSourceProvider, Configurat
 	GroupBuddyFilter *GroupFilter;
 	TalkableTreeView *ChatsTree;
 
+	QStackedWidget *TalkableViews;
+	QButtonGroup *ViewButtonGroup;
+	QPushButton *BuddiesViewButton;
+	QPushButton *ChatsViewButton;
+
 	KaduWindowActionDataSource *ActionData;
 
 	bool CompositingEnabled;
@@ -60,7 +69,7 @@ class RosterWidget : public QWidget, public ActionDataSourceProvider, Configurat
 	QWidget * createChatsWidget(QWidget *parent);
 
 private slots:
-	void talkableViewChanged(int index);
+	void viewButtonClicked();
 
 protected:
 	void configurationUpdated();

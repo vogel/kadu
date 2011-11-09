@@ -17,9 +17,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtGui/QButtonGroup>
 #include <QtGui/QHBoxLayout>
+#include <QtGui/QPushButton>
 #include <QtGui/QScrollBar>
-#include <QtGui/QTabWidget>
+#include <QtGui/QStackedWidget>
 
 #include "buddies/filter/anonymous-without-messages-buddy-filter.h"
 #include "buddies/filter/buddy-name-filter.h"
@@ -58,25 +60,50 @@ RosterWidget::~RosterWidget()
 
 void RosterWidget::createGui()
 {
-	QHBoxLayout *layout = new QHBoxLayout(this);
+	QVBoxLayout *layout = new QVBoxLayout(this);
 
-	QTabWidget *talkableViews = new QTabWidget(this);
-	layout->addWidget(talkableViews);
+	QWidget *selectViewButtons = new QWidget(this);
+	QHBoxLayout *selectViewButtonsLayout = new QHBoxLayout(selectViewButtons);
 
-	talkableViews->addTab(createBuddiesWidget(talkableViews), tr("Buddies"));
-	talkableViews->addTab(createChatsWidget(talkableViews), tr("Chats"));
+	ViewButtonGroup = new QButtonGroup(this);
 
-	connect(talkableViews, SIGNAL(currentChanged(int)), this, SLOT(talkableViewChanged(int)));
+	BuddiesViewButton = new QPushButton(tr("Buddies"), this);
+	BuddiesViewButton->setCheckable(true);
+
+	ChatsViewButton = new QPushButton(tr("Chats"), this);
+	ChatsViewButton->setCheckable(true);
+
+	ViewButtonGroup->addButton(BuddiesViewButton);
+	ViewButtonGroup->addButton(ChatsViewButton);
+	BuddiesViewButton->setChecked(true);
+	connect(ViewButtonGroup, SIGNAL(buttonClicked(int)), this, SLOT(viewButtonClicked()));
+
+	selectViewButtonsLayout->addWidget(BuddiesViewButton);
+	selectViewButtonsLayout->addWidget(ChatsViewButton);
+	selectViewButtonsLayout->addStretch(1);
+
+	TalkableViews = new QStackedWidget(this);
+	TalkableViews->addWidget(createBuddiesWidget(TalkableViews));
+	TalkableViews->addWidget(createChatsWidget(TalkableViews));
+
+	layout->addWidget(selectViewButtons);
+	layout->addWidget(TalkableViews);
+
+	viewButtonClicked();
 }
 
-void RosterWidget::talkableViewChanged(int index)
+void RosterWidget::viewButtonClicked()
 {
-	if (0 == index)
-		ActionData->setForwardActionDataSource(BuddiesTree->actionDataSource());
-	else if (1 == index)
+	if (ViewButtonGroup->checkedButton() == ChatsViewButton)
+	{
+		TalkableViews->setCurrentIndex(1);
 		ActionData->setForwardActionDataSource(ChatsTree->actionDataSource());
+	}
 	else
-		ActionData->setForwardActionDataSource(0);
+	{
+		TalkableViews->setCurrentIndex(0);
+		ActionData->setForwardActionDataSource(BuddiesTree->actionDataSource());
+	}
 }
 
 void RosterWidget::configurationUpdated()
