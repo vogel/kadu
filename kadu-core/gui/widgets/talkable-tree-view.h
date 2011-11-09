@@ -95,6 +95,8 @@ protected:
 
 	virtual void hideEvent(QHideEvent *event);
 
+	virtual void currentChanged(const QModelIndex &current, const QModelIndex &previous);
+
 public:
 	explicit TalkableTreeView(QWidget *parent = 0);
 	virtual ~TalkableTreeView();
@@ -116,6 +118,7 @@ public:
 
 signals:
 	void talkableActivated(const Talkable &talkable);
+	void currentChanged(const Talkable &talkable);
 
 };
 

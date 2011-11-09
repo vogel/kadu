@@ -307,3 +307,10 @@ void TalkableTreeView::hideEvent(QHideEvent *event)
 	toolTipHide(false);
 	QTreeView::hideEvent(event);
 }
+
+void TalkableTreeView::currentChanged(const QModelIndex &current, const QModelIndex &previous)
+{
+	Q_UNUSED(previous);
+
+	emit currentChanged(talkableAt(current));
+}
