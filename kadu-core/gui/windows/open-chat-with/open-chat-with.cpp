@@ -242,8 +242,7 @@ void OpenChatWith::openChat()
 
 	BuddySet buddies = contacts.toBuddySet();
 
-	Chat chat = ChatManager::instance()->findChat(contacts);
-	printf("  [%s]\n", qPrintable(chat.uuid().toString()));
+	const Chat &chat = ChatManager::instance()->findChat(contacts);
 	if (chat)
 	{
 		ChatWidgetManager::instance()->openPendingMessages(chat, true);
@@ -251,7 +250,7 @@ void OpenChatWith::openChat()
 		return;
 	}
 
-	Buddy buddy = *buddies.constBegin();
+	const Buddy &buddy = *buddies.constBegin();
 	if (buddy.mobile().isEmpty() && !buddy.email().isEmpty())
 		UrlOpener::openEmail(buddy.email().toUtf8());
 
