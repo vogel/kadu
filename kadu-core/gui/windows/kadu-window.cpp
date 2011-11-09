@@ -24,32 +24,17 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QApplication>
 #include <QtGui/QCloseEvent>
-#include <QtGui/QHBoxLayout>
 #include <QtGui/QMenu>
 #include <QtGui/QMenuBar>
-#include <QtGui/QPushButton>
-#include <QtGui/QScrollBar>
 #include <QtGui/QSplitter>
+#include <QtGui/QVBoxLayout>
 
-#include "accounts/account-manager.h"
-#include "buddies/buddy-manager.h"
 #include "buddies/buddy-set.h"
-#include "buddies/model/buddies-model.h"
-#include "buddies/model/buddies-model-proxy.h"
-#include "buddies/filter/anonymous-without-messages-buddy-filter.h"
-#include "buddies/filter/buddy-name-filter.h"
-#include "buddies/filter/group-buddy-filter.h"
-#include "buddies/filter/pending-messages-filter.h"
-#include "chat/filter/chat-named-filter.h"
-#include "chat/model/chats-model.h"
-#include "chat/model/chats-proxy-model.h"
 #include "chat/type/chat-type-manager.h"
 #include "chat/recent-chat-manager.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact.h"
-#include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
 #include "core/core.h"
 #include "gui/hot-key.h"
@@ -57,19 +42,13 @@
 #include "gui/widgets/buddy-info-panel.h"
 #include "gui/widgets/chat-widget-actions.h"
 #include "gui/widgets/chat-widget-manager.h"
-#include "gui/widgets/group-tab-bar.h"
-#include "gui/widgets/filter-widget.h"
-#include "gui/widgets/filtered-tree-view.h"
-#include "gui/widgets/kadu-web-view.h"
+#include "gui/widgets/roster-widget.h"
 #include "gui/widgets/status-buttons.h"
-#include "gui/widgets/status-menu.h"
 #include "gui/widgets/talkable-tree-view.h"
 #include "gui/windows/kadu-window-action-data-source.h"
 #include "gui/windows/kadu-window-actions.h"
-#include "model/model-chain.h"
 #include "notify/notification-manager.h"
 #include "os/generic/url-opener.h"
-#include "status/status-container-manager.h"
 #include "url-handlers/url-handler-manager.h"
 #include "activate.h"
 
@@ -86,7 +65,7 @@ extern void qt_mac_set_menubar_icons(bool enable);
 
 KaduWindow::KaduWindow(QWidget *parent) :
 		MainWindow(new KaduWindowActionDataSource(), QString(), parent), Docked(false),
-		ContactsWidget(0), GroupFilter(0), CompositingEnabled(false)
+		CompositingEnabled(false)
 {
 	setWindowRole("kadu-main");
 
@@ -104,8 +83,9 @@ KaduWindow::KaduWindow(QWidget *parent) :
 	// we need to create gui first, then actions, then menus
 	// TODO: fix it in 0.10 or whenever
 	createGui();
+
 	ActionData = static_cast<KaduWindowActionDataSource *>(actionDataSource());
-	ActionData->setForwardActionDataSource(BuddiesView->actionDataSource());
+	ActionData->setForwardActionDataSource(Roster->actionDataSource());
 
 	Actions = new KaduWindowActions(this);
 	loadToolBarsFromConfig();
@@ -133,85 +113,18 @@ void KaduWindow::createGui()
 	MainLayout->setMargin(0);
 	MainLayout->setSpacing(0);
 
-	QTabWidget *buddiesChatView = new QTabWidget(this);
-	MainLayout->addWidget(buddiesChatView);
-	buddiesChatView->addTab(createBuddiesWidget(buddiesChatView), tr("Buddies"));
-	buddiesChatView->addTab(createChatsWidget(buddiesChatView), tr("Chats"));
+	Split = new QSplitter(Qt::Vertical, MainWidget);
 
-	connect(buddiesChatView, SIGNAL(currentChanged(int)), this, SLOT(buddiesChatViewChanged(int)));
-
-	setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
-	setCentralWidget(MainWidget);
-}
-
-void KaduWindow::buddiesChatViewChanged(int index)
-{
-	if (0 == index)
-		ActionData->setForwardActionDataSource(BuddiesView->actionDataSource());
-	else if (1 == index)
-		ActionData->setForwardActionDataSource(ChatsTree->actionDataSource());
-	else
-		ActionData->setForwardActionDataSource(0);
-}
-
-ModelChain * KaduWindow::createBuddiesModelChain()
-{
-	ModelChain *chain = new ModelChain(new BuddiesModel(this), this);
-	ProxyModel = new BuddiesModelProxy(chain);
-	ProxyModel->addFilter(new PendingMessagesFilter(ProxyModel));
-
-	AnonymousWithoutMessagesBuddyFilter *anonymousFilter = new AnonymousWithoutMessagesBuddyFilter(ProxyModel);
-	anonymousFilter->setEnabled(true);
-	ProxyModel->addFilter(anonymousFilter);
-
-	BuddyNameFilter *nameFilter = new BuddyNameFilter(ProxyModel);
-	connect(ContactsWidget, SIGNAL(filterChanged(QString)), nameFilter, SLOT(setName(QString)));
-	ProxyModel->addFilter(nameFilter);
-
-	GroupFilter = new GroupBuddyFilter(ProxyModel);
-	connect(GroupBar, SIGNAL(currentGroupChanged(Group)), GroupFilter, SLOT(setGroup(Group)));
-	ProxyModel->addFilter(GroupFilter);
-
-	chain->addProxyModel(ProxyModel);
-
-	return chain;
-}
-
-QWidget * KaduWindow::createBuddiesWidget(QWidget *parent)
-{
-	Split = new QSplitter(Qt::Vertical, parent);
-
-	QWidget* hbox = new QWidget(Split);
-	QHBoxLayout *hboxLayout = new QHBoxLayout(hbox);
-	hboxLayout->setMargin(0);
-	hboxLayout->setSpacing(0);
-
-	GroupBar = new GroupTabBar(this);
-
-	ContactsWidget = new FilteredTreeView(FilteredTreeView::FilterAtTop, hbox);
-	BuddiesView = new TalkableTreeView(ContactsWidget);
-	ContactsWidget->setTreeView(BuddiesView);
-
-	BuddiesView->useConfigurationColors(true);
-	BuddiesView->setChain(createBuddiesModelChain());
-	BuddiesView->setContextMenuEnabled(true);
-
-	connect(BuddiesView, SIGNAL(talkableActivated(Talkable)), this, SLOT(talkableActivatedSlot(Talkable)));
-
-	hboxLayout->addWidget(GroupBar);
-	hboxLayout->setStretchFactor(GroupBar, 1);
-	hboxLayout->addWidget(ContactsWidget);
-	hboxLayout->setStretchFactor(ContactsWidget, 100);
-
+	Roster = new RosterWidget(Split);
 	InfoPanel = new BuddyInfoPanel(Split);
-	connect(BuddiesView, SIGNAL(currentChanged(Talkable)), InfoPanel, SLOT(displayItem(Talkable)));
+
+	connect(Roster, SIGNAL(currentChanged(Talkable)), InfoPanel, SLOT(displayItem(Talkable)));
+	connect(Roster, SIGNAL(talkableActivated(Talkable)), this, SLOT(talkableActivatedSlot(Talkable)));
+
+	ChangeStatusButtons = new StatusButtons(this);
 
 	if (!config_file.readBoolEntry("Look", "ShowInfoPanel"))
 		InfoPanel->setVisible(false);
-
-	ChangeStatusButtons = new StatusButtons(this);
-	MainLayout->addWidget(ChangeStatusButtons);
-
 	if (!config_file.readBoolEntry("Look", "ShowStatusButton"))
 		ChangeStatusButtons->hide();
 
@@ -222,33 +135,11 @@ QWidget * KaduWindow::createBuddiesWidget(QWidget *parent)
 
 	Split->setSizes(splitSizes);
 
-	return Split;
-}
+	MainLayout->addWidget(Split);
+	MainLayout->addWidget(ChangeStatusButtons);
 
-ModelChain * KaduWindow::createChatsModelChain()
-{
-	ModelChain *chain = new ModelChain(new ChatsModel(ChatsTree), ChatsTree);
-
-	ChatsProxyModel *chatsProxyModel = new ChatsProxyModel(chain);
-
-	ChatNamedFilter *chatNamedFilter = new ChatNamedFilter(chatsProxyModel);
-	chatNamedFilter->setEnabled(true);
-	chatsProxyModel->addFilter(chatNamedFilter);
-
-	chain->addProxyModel(chatsProxyModel);
-
-	return chain;
-}
-
-QWidget * KaduWindow::createChatsWidget(QWidget *parent)
-{
-	ChatsTree = new TalkableTreeView(parent);
-	ChatsTree->setContextMenuEnabled(true);
-	ChatsTree->setChain(createChatsModelChain());
-
-	connect(ChatsTree, SIGNAL(talkableActivated(Talkable)), this, SLOT(talkableActivatedSlot(Talkable)));
-
-	return ChatsTree;
+	setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+	setCentralWidget(MainWidget);
 }
 
 void KaduWindow::createMenu()
@@ -354,52 +245,46 @@ QMenuBar* KaduWindow::menuBar() const
 
 void KaduWindow::compositingEnabled()
 {
-	if (config_file.readBoolEntry("Look", "UserboxTransparency"))
+	if (!config_file.readBoolEntry("Look", "UserboxTransparency"))
 	{
-		if (!CompositingEnabled)
-		{
-			CompositingEnabled = true;
-			setTransparency(true);
-			menuBar()->setAutoFillBackground(true);
-			GroupBar->setAutoFillBackground(true);
-			InfoPanel->setAutoFillBackground(true);
-			ChangeStatusButtons->setAutoFillBackground(true);
-			ContactsWidget->filterWidget()->setAutoFillBackground(true);
-			BuddiesView->verticalScrollBar()->setAutoFillBackground(true);
-			// TODO: find a way to paint this QFrame outside its viewport still allowing the viewport to be transparent
-			BuddiesView->setFrameShape(QFrame::NoFrame);
-			for (int i = 1; i < Split->count(); ++i)
-			{
-				QSplitterHandle *splitterHandle = Split->handle(i);
-				splitterHandle->setAutoFillBackground(true);
-			}
-			configurationUpdated();
-		}
-	}
-	else
 		compositingDisabled();
+		return;
+	}
+
+	if (CompositingEnabled)
+		return;
+
+	CompositingEnabled = true;
+	setTransparency(true);
+	menuBar()->setAutoFillBackground(true);
+	InfoPanel->setAutoFillBackground(true);
+	ChangeStatusButtons->setAutoFillBackground(true);
+	for (int i = 1; i < Split->count(); ++i)
+	{
+		QSplitterHandle *splitterHandle = Split->handle(i);
+		splitterHandle->setAutoFillBackground(true);
+	}
+
+	configurationUpdated();
 }
 
 void KaduWindow::compositingDisabled()
 {
-	if (CompositingEnabled)
+	if (!CompositingEnabled)
+		return;
+
+	CompositingEnabled = false;
+	menuBar()->setAutoFillBackground(false);
+	InfoPanel->setAutoFillBackground(false);
+	ChangeStatusButtons->setAutoFillBackground(false);
+	for (int i = 1; i < Split->count(); ++i)
 	{
-		CompositingEnabled = false;
-		menuBar()->setAutoFillBackground(false);
-		GroupBar->setAutoFillBackground(false);
-		InfoPanel->setAutoFillBackground(false);
-		ChangeStatusButtons->setAutoFillBackground(false);
-		ContactsWidget->filterWidget()->setAutoFillBackground(false);
-		BuddiesView->verticalScrollBar()->setAutoFillBackground(false);
-		BuddiesView->setFrameShape(QFrame::StyledPanel);
-		for (int i = 1; i < Split->count(); ++i)
-		{
-			QSplitterHandle *splitterHandle = Split->handle(i);
-			splitterHandle->setAutoFillBackground(false);
-		}
-		setTransparency(false);
-		configurationUpdated();
+		QSplitterHandle *splitterHandle = Split->handle(i);
+		splitterHandle->setAutoFillBackground(false);
 	}
+	setTransparency(false);
+
+	configurationUpdated();
 }
 
 void KaduWindow::talkableActivatedSlot(const Talkable &talkable)
@@ -474,11 +359,11 @@ void KaduWindow::storeConfiguration()
 
 	if (config_file.readBoolEntry("Look", "ShowInfoPanel"))
 	{
-		config_file.writeEntry("General", "UserBoxHeight", ContactsWidget->size().height());
+		config_file.writeEntry("General", "UserBoxHeight", Roster->size().height());
 		config_file.writeEntry("General", "DescriptionHeight", InfoPanel->size().height());
 	}
 	if (config_file.readBoolEntry("Look", "ShowStatusButton"))
-		config_file.writeEntry("General", "UserBoxHeight", ContactsWidget->size().height());
+		config_file.writeEntry("General", "UserBoxHeight", Roster->size().height());
 }
 
 void KaduWindow::closeEvent(QCloseEvent *e)
@@ -526,7 +411,7 @@ void KaduWindow::changeEvent(QEvent *event)
 	if (event->type() == QEvent::ActivationChange)
 	{
 		if (!_isActiveWindow(this))
-			ContactsWidget->filterWidget()->setFilter(QString());
+			Roster->clearFilter();
 	}
 	if (event->type() == QEvent::ParentChange)
 	{
@@ -542,68 +427,21 @@ bool KaduWindow::supportsActionType(ActionDescription::ActionType type)
 
 TalkableTreeView * KaduWindow::talkableTreeView()
 {
-	return BuddiesView;
+	return Roster->talkableTreeView();
 }
 
 BuddiesModelProxy * KaduWindow::buddiesProxyModel()
 {
-	return ProxyModel;
+	return Roster->buddiesProxyModel();
 }
 
 void KaduWindow::configurationUpdated()
 {
-	QString bgColor = config_file.readColorEntry("Look","UserboxBgColor").name();
-	QString alternateBgColor = config_file.readColorEntry("Look","UserboxAlternateBgColor").name();
-
 	setDocked(Docked);
-
-	if (CompositingEnabled && config_file.readBoolEntry("Look", "UserboxTransparency"))
-	{
-		int alpha = config_file.readNumEntry("Look", "UserboxAlpha");
-
-		QColor color(bgColor);
-		bgColor = QString("rgba(%1,%2,%3,%4)").arg(color.red()).arg(color.green()).arg(color.blue()).arg(alpha);
-
-		color = QColor(alternateBgColor);
-		alternateBgColor = QString("rgba(%1,%2,%3,%4)").arg(color.red()).arg(color.green()).arg(color.blue()).arg(alpha);
-
-		if (!bgColor.compare(alternateBgColor))
-			alternateBgColor = QString("transparent");
-	}
-
-	if (config_file.readBoolEntry("Look", "UseUserboxBackground", true))
-	{
-		QString typeName = config_file.readEntry("Look", "UserboxBackgroundDisplayStyle");
-
-		KaduTreeView::BackgroundMode type;
-		if (typeName == "Centered")
-			type = KaduTreeView::BackgroundCentered;
-		else if (typeName == "Tiled")
-			type = KaduTreeView::BackgroundTiled;
-		else if (typeName == "Stretched")
-			type = KaduTreeView::BackgroundStretched;
-		else if (typeName == "TiledAndCentered")
-			type = KaduTreeView::BackgroundTiledAndCentered;
-		else
-			type = KaduTreeView::BackgroundNone;
-
-		BuddiesView->setBackground(bgColor, alternateBgColor, config_file.readEntry("Look", "UserboxBackground"), type);
-		ChatsTree->setBackground(bgColor, alternateBgColor, config_file.readEntry("Look", "UserboxBackground"), type);
-	}
-	else
-	{
-		BuddiesView->setBackground(bgColor, alternateBgColor);
-		ChatsTree->setBackground(bgColor, alternateBgColor);
-	}
 
 	ChangeStatusButtons->setVisible(config_file.readBoolEntry("Look", "ShowStatusButton"));
 
 	triggerCompositingStateChanged();
-
-	if (config_file.readBoolEntry("Look", "DisplayGroupTabs", true))
-		GroupFilter->setAllGroupShown(config_file.readBoolEntry("Look", "ShowGroupAll", true));
-	else
-		GroupFilter->setAllGroupShown(true);
 }
 
 void KaduWindow::insertMenuActionDescription(ActionDescription *actionDescription, MenuType type, int pos)

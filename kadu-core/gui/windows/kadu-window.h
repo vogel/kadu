@@ -40,20 +40,14 @@
 class QSplitter;
 class QMenu;
 class QMenuBar;
-class QPushButton;
 class QVBoxLayout;
 
 class Action;
 class ActionDescription;
-class ActionSource;
 class BuddyInfoPanel;
-class FilteredTreeView;
-class GroupBuddyFilter;
-class GroupTabBar;
-class KaduWebView;
 class KaduWindowActionDataSource;
 class KaduWindowActions;
-class ModelChain;
+class RosterWidget;
 class StatusButtons;
 class TalkableTreeView;
 
@@ -90,17 +84,11 @@ private:
 	QMenu *RecentChatsMenu;
 	QAction *RecentChatsMenuAction;
 	bool RecentChatsMenuNeedsUpdate;
-	GroupTabBar *GroupBar;
-
-	FilteredTreeView *ContactsWidget;
-	TalkableTreeView *BuddiesView;
-	BuddiesModelProxy *ProxyModel;
-	GroupBuddyFilter *GroupFilter;
-	TalkableTreeView *ChatsTree;
 
 	QWidget *MainWidget;
 	QVBoxLayout *MainLayout;
 
+	RosterWidget *Roster;
 	QMenu *StatusButtonMenu;
 	StatusButtons *ChangeStatusButtons;
 	QPoint LastPositionBeforeStatusMenuHide;
@@ -111,12 +99,7 @@ private:
 
 	KaduWindowActionDataSource *ActionData;
 
-	ModelChain * createBuddiesModelChain();
-	ModelChain * createChatsModelChain();
-
 	void createGui();
-	QWidget * createBuddiesWidget(QWidget *parent);
-	QWidget * createChatsWidget(QWidget *parent);
 
 	void createMenu();
 	void createKaduMenu();
@@ -135,8 +118,6 @@ private slots:
 	void openRecentChats(QAction *action);
 
 	void iconThemeChanged();
-
-	void buddiesChatViewChanged(int index);
 
 protected:
 	virtual void closeEvent(QCloseEvent *);

@@ -58,6 +58,7 @@ set (gui_SRCS
 	widgets/protocols-combo-box.cpp
 	widgets/proxy-combo-box.cpp
 	widgets/preview.cpp
+	widgets/roster-widget.cpp
 	widgets/select-buddy-combo-box.cpp
 	widgets/select-buddy-popup.cpp
 	widgets/select-file.cpp
@@ -203,6 +204,7 @@ set (gui_MOC_SRCS
 	widgets/progress-icon.h
 	widgets/progress-label.h
 	widgets/protocols-combo-box.h
+	widgets/roster-widget.h
 	widgets/select-buddy-combo-box.h
 	widgets/select-buddy-popup.h
 	widgets/select-file.h
