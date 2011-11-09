@@ -154,6 +154,29 @@ void KaduWindow::buddiesChatViewChanged(int index)
 		ActionData->setForwardActionDataSource(0);
 }
 
+ModelChain * KaduWindow::createBuddiesModelChain()
+{
+	ModelChain *chain = new ModelChain(new BuddiesModel(this), this);
+	ProxyModel = new BuddiesModelProxy(chain);
+	ProxyModel->addFilter(new PendingMessagesFilter(ProxyModel));
+
+	AnonymousWithoutMessagesBuddyFilter *anonymousFilter = new AnonymousWithoutMessagesBuddyFilter(ProxyModel);
+	anonymousFilter->setEnabled(true);
+	ProxyModel->addFilter(anonymousFilter);
+
+	BuddyNameFilter *nameFilter = new BuddyNameFilter(ProxyModel);
+	connect(ContactsWidget, SIGNAL(filterChanged(QString)), nameFilter, SLOT(setName(QString)));
+	ProxyModel->addFilter(nameFilter);
+
+	GroupFilter = new GroupBuddyFilter(ProxyModel);
+	connect(GroupBar, SIGNAL(currentGroupChanged(Group)), GroupFilter, SLOT(setGroup(Group)));
+	ProxyModel->addFilter(GroupFilter);
+
+	chain->addProxyModel(ProxyModel);
+
+	return chain;
+}
+
 QWidget * KaduWindow::createBuddiesWidget(QWidget *parent)
 {
 	Split = new QSplitter(Qt::Vertical, parent);
@@ -169,27 +192,8 @@ QWidget * KaduWindow::createBuddiesWidget(QWidget *parent)
 	BuddiesView = new TalkableTreeView(ContactsWidget);
 	ContactsWidget->setTreeView(BuddiesView);
 
-	ModelChain *chain = new ModelChain(new BuddiesModel(this), this);
-	ProxyModel = new BuddiesModelProxy(chain);
-	ProxyModel->addFilter(new PendingMessagesFilter(ProxyModel));
-
-	AnonymousWithoutMessagesBuddyFilter *anonymousFilter = new AnonymousWithoutMessagesBuddyFilter(ProxyModel);
-	anonymousFilter->setEnabled(true);
-	ProxyModel->addFilter(anonymousFilter);
-
-	BuddyNameFilter *nameFilter = new BuddyNameFilter(ProxyModel);
-	connect(ContactsWidget, SIGNAL(filterChanged(QString)), nameFilter, SLOT(setName(QString)));
-
-	ProxyModel->addFilter(nameFilter);
-
-	GroupFilter = new GroupBuddyFilter(ProxyModel);
-	connect(GroupBar, SIGNAL(currentGroupChanged(Group)), GroupFilter, SLOT(setGroup(Group)));
-
-	ProxyModel->addFilter(GroupFilter);
-	chain->addProxyModel(ProxyModel);
-
 	BuddiesView->useConfigurationColors(true);
-	BuddiesView->setChain(chain);
+	BuddiesView->setChain(createBuddiesModelChain());
 	BuddiesView->setContextMenuEnabled(true);
 
 	connect(BuddiesView, SIGNAL(talkableActivated(Talkable)), this, SLOT(talkableActivatedSlot(Talkable)));
@@ -221,11 +225,8 @@ QWidget * KaduWindow::createBuddiesWidget(QWidget *parent)
 	return Split;
 }
 
-QWidget * KaduWindow::createChatsWidget(QWidget *parent)
+ModelChain * KaduWindow::createChatsModelChain()
 {
-	ChatsTree = new TalkableTreeView(parent);
-	ChatsTree->setContextMenuEnabled(true);
-
 	ModelChain *chain = new ModelChain(new ChatsModel(ChatsTree), ChatsTree);
 
 	ChatsProxyModel *chatsProxyModel = new ChatsProxyModel(chain);
@@ -236,7 +237,14 @@ QWidget * KaduWindow::createChatsWidget(QWidget *parent)
 
 	chain->addProxyModel(chatsProxyModel);
 
-	ChatsTree->setChain(chain);
+	return chain;
+}
+
+QWidget * KaduWindow::createChatsWidget(QWidget *parent)
+{
+	ChatsTree = new TalkableTreeView(parent);
+	ChatsTree->setContextMenuEnabled(true);
+	ChatsTree->setChain(createChatsModelChain());
 
 	connect(ChatsTree, SIGNAL(talkableActivated(Talkable)), this, SLOT(talkableActivatedSlot(Talkable)));
 

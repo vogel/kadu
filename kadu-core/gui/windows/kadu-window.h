@@ -53,6 +53,7 @@ class GroupTabBar;
 class KaduWebView;
 class KaduWindowActionDataSource;
 class KaduWindowActions;
+class ModelChain;
 class StatusButtons;
 class TalkableTreeView;
 
@@ -110,9 +111,12 @@ private:
 
 	KaduWindowActionDataSource *ActionData;
 
+	ModelChain * createBuddiesModelChain();
+	ModelChain * createChatsModelChain();
+
 	void createGui();
-	QWidget *createBuddiesWidget(QWidget *parent);
-	QWidget *createChatsWidget(QWidget *parent);
+	QWidget * createBuddiesWidget(QWidget *parent);
+	QWidget * createChatsWidget(QWidget *parent);
 
 	void createMenu();
 	void createKaduMenu();
