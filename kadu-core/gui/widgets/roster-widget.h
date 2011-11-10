@@ -35,6 +35,7 @@ class QStackedWidget;
 class BuddiesModelProxy;
 class FilteredTreeView;
 class GroupBuddyFilter;
+class GroupChatFilter;
 class GroupTabBar;
 class ProxyActionContext;
 class ModelChain;
@@ -48,7 +49,8 @@ class RosterWidget : public QWidget, public ActionContextProvider, Configuration
 	FilteredTreeView *BuddiesWidget;
 	TalkableTreeView *BuddiesTree;
 	BuddiesModelProxy *ProxyModel;
-	GroupBuddyFilter *GroupFilter;
+	GroupBuddyFilter *BuddyGroupFilter;
+	GroupChatFilter *ChatGroupFilter;
 	TalkableTreeView *ChatsTree;
 
 	QStackedWidget *TalkableViews;

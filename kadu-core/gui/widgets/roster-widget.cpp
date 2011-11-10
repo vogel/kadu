@@ -30,6 +30,7 @@
 #include "buddies/model/buddies-model.h"
 #include "buddies/model/buddies-model-proxy.h"
 #include "chat/filter/chat-named-filter.h"
+#include "chat/filter/group-chat-filter.h"
 #include "chat/model/chats-model.h"
 #include "chat/model/chats-proxy-model.h"
 #include "configuration/configuration-file.h"
@@ -167,9 +168,15 @@ void RosterWidget::configurationUpdated()
 	triggerCompositingStateChanged();
 
 	if (config_file.readBoolEntry("Look", "DisplayGroupTabs", true))
-		GroupFilter->setAllGroupShown(config_file.readBoolEntry("Look", "ShowGroupAll", true));
+	{
+		BuddyGroupFilter->setAllGroupShown(config_file.readBoolEntry("Look", "ShowGroupAll", true));
+		ChatGroupFilter->setAllGroupShown(config_file.readBoolEntry("Look", "ShowGroupAll", true));
+	}
 	else
-		GroupFilter->setAllGroupShown(true);
+	{
+		BuddyGroupFilter->setAllGroupShown(true);
+		ChatGroupFilter->setAllGroupShown(config_file.readBoolEntry("Look", "ShowGroupAll", true));
+	}
 }
 
 void RosterWidget::compositingEnabled()
@@ -222,9 +229,9 @@ ModelChain * RosterWidget::createBuddiesModelChain()
 	connect(BuddiesWidget, SIGNAL(filterChanged(QString)), nameFilter, SLOT(setName(QString)));
 	ProxyModel->addFilter(nameFilter);
 
-	GroupFilter = new GroupBuddyFilter(ProxyModel);
-	connect(GroupBar, SIGNAL(currentGroupChanged(Group)), GroupFilter, SLOT(setGroup(Group)));
-	ProxyModel->addFilter(GroupFilter);
+	BuddyGroupFilter = new GroupBuddyFilter(ProxyModel);
+	connect(GroupBar, SIGNAL(currentGroupChanged(Group)), BuddyGroupFilter, SLOT(setGroup(Group)));
+	ProxyModel->addFilter(BuddyGroupFilter);
 
 	chain->addProxyModel(ProxyModel);
 
@@ -240,6 +247,10 @@ ModelChain * RosterWidget::createChatsModelChain()
 	ChatNamedFilter *chatNamedFilter = new ChatNamedFilter(chatsProxyModel);
 	chatNamedFilter->setEnabled(true);
 	chatsProxyModel->addFilter(chatNamedFilter);
+
+	ChatGroupFilter = new GroupChatFilter(chatsProxyModel);
+	connect(GroupBar, SIGNAL(currentGroupChanged(Group)), ChatGroupFilter, SLOT(setGroup(Group)));
+	chatsProxyModel->addFilter(ChatGroupFilter);
 
 	chain->addProxyModel(chatsProxyModel);
 

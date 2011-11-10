@@ -13,6 +13,7 @@ set (chat_SRCS
 
 	filter/chat-name-filter.cpp
 	filter/chat-named-filter.cpp
+	filter/group-chat-filter.cpp
 
 	message/formatted-message.cpp
 	message/formatted-message-part.cpp
@@ -55,6 +56,7 @@ set (chat_MOC_SRCS
 	filter/chat-filter.h
 	filter/chat-name-filter.h
 	filter/chat-named-filter.h
+	filter/group-chat-filter.h
 
 	message/message-render-info.h
 	message/pending-messages-manager.h
