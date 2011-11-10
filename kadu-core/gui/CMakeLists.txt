@@ -2,6 +2,9 @@ set (gui_SRCS
 	hot-key.cpp
 	status-icon.cpp
 
+	actions/chat/edit-chat-action.cpp
+	actions/chat/leave-chat-action.cpp
+
 	actions/action.cpp
 	actions/actions.cpp
 	actions/action-description.cpp
@@ -145,6 +148,9 @@ set (gui_SRCS
 set (gui_MOC_SRCS
 	hot-key.h
 	status-icon.h
+
+	actions/chat/edit-chat-action.h
+	actions/chat/leave-chat-action.h
 
 	actions/action.h
 	actions/actions.h

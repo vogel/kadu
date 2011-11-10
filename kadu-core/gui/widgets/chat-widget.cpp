@@ -29,9 +29,9 @@
 #include <QtGui/QIcon>
 #include <QtGui/QInputDialog>
 #include <QtGui/QKeyEvent>
-#include <QtGui/QPushButton>
 #include <QtGui/QShortcut>
 #include <QtGui/QSplitter>
+#include <QtGui/QToolBar>
 #include <QtGui/QVBoxLayout>
 
 #include "accounts/account.h"
@@ -166,12 +166,12 @@ void ChatWidget::createGui()
 	connect(shortcut, SIGNAL(activated()), MessagesView, SLOT(pageDown()));
 	HorizontalSplitter->addWidget(MessagesView);
 
-	if (CurrentChat.contacts().count() > 1)
-		createContactsList();
-
 	InputBox = new ChatEditBox(CurrentChat, this);
 	InputBox->setSizePolicy(QSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored));
 	InputBox->setMinimumHeight(10);
+
+	if (CurrentChat.contacts().count() > 1)
+		createContactsList();
 
 	VerticalSplitter->addWidget(HorizontalSplitter);
 	VerticalSplitter->setStretchFactor(0, 1);
@@ -217,19 +217,12 @@ void ChatWidget::createContactsList()
 
 	BuddiesWidget->setTreeView(view);
 
-	QPushButton *nameConference = new QPushButton(tr("Name\nconference"), contactsListContainer);
-	nameConference->setStyleSheet("text-align: center;");
-	nameConference->setMinimumWidth(BuddiesWidget->minimumWidth());
-	connect(nameConference, SIGNAL(clicked()), this, SLOT(nameConference()));
+	QToolBar *toolBar = new QToolBar(contactsListContainer);
+	toolBar->addAction(Actions::instance()->createAction("editChatAction", InputBox->actionContext(), toolBar));
+	toolBar->addAction(Actions::instance()->createAction("leaveChatAction", InputBox->actionContext(), toolBar));
 
-	QPushButton *leaveConference = new QPushButton(tr("Leave\nconference"), contactsListContainer);
-	leaveConference->setStyleSheet("text-align: center;");
-	leaveConference->setMinimumWidth(BuddiesWidget->minimumWidth());
-	connect(leaveConference, SIGNAL(clicked()), this, SLOT(leaveConference()));
-
+	layout->addWidget(toolBar);
 	layout->addWidget(BuddiesWidget);
-	layout->addWidget(nameConference);
-	layout->addWidget(leaveConference);
 
 	QList<int> sizes;
 	sizes.append(3);
@@ -759,30 +752,8 @@ void ChatWidget::contactActivityChanged(ChatStateService::ContactActivity state,
 	}
 }
 
-void ChatWidget::nameConference()
+void ChatWidget::close()
 {
-	if (!CurrentChat)
-		return;
-
-	bool ok;
-	QString conferenceName = QInputDialog::getText(this, tr("Name conference"),
-	                                               tr("Please enter the name for this conference"),
-	                                               QLineEdit::Normal, CurrentChat.display(), &ok);
-
-	if (!ok)
-		return;
-
-	CurrentChat.setDisplay(conferenceName);
-}
-
-void ChatWidget::leaveConference()
-{
-	if (!MessageDialog::ask(KaduIcon("dialog-warning"), tr("Kadu"), tr("All messages received in this conference will be ignored\nfrom now on. Are you sure you want to leave this conference?"), this))
-		return;
-
-	if (CurrentChat)
-		CurrentChat.setIgnoreAllMessages(true);
-
 	emit closed();
 }
 

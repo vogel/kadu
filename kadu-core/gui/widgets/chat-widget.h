@@ -171,6 +171,8 @@ public:
 
 	unsigned int countMessages() const;
 
+	void close();
+
 public slots:
 
 	/**
@@ -208,9 +210,6 @@ public slots:
 
 	void makeActive();
 	void markAllMessagesRead();
-
-	void nameConference();
-	void leaveConference();
 
 	/**
 	 * @author Rafal 'Vogel' Malinowski

@@ -36,6 +36,8 @@
 #include "emoticons/emoticons.h"
 #include "gui/actions/action.h"
 #include "gui/actions/actions.h"
+#include "gui/actions/chat/edit-chat-action.h"
+#include "gui/actions/chat/leave-chat-action.h"
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-messages-view.h"
 #include "gui/widgets/chat-widget.h"
@@ -236,6 +238,9 @@ ChatWidgetActions::ChatWidgetActions(QObject *parent) : QObject(parent)
 		this, SLOT(colorSelectorActionActivated(QAction *, bool)),
 		KaduIcon("kadu_icons/change-color"), tr("Change Color")
 	);*/
+
+	EditChat = new EditChatAction(this);
+	LeaveChat = new LeaveChatAction(this);
 }
 
 ChatWidgetActions::~ChatWidgetActions()

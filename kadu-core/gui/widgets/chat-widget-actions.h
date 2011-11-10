@@ -30,6 +30,8 @@ class QAction;
 class Action;
 class ActionDescription;
 class Buddy;
+class EditChatAction;
+class LeaveChatAction;
 
 class ChatWidgetActions : public QObject, ConfigurationAwareObject
 {
@@ -48,6 +50,9 @@ class ChatWidgetActions : public QObject, ConfigurationAwareObject
 	ActionDescription *OpenWith;
 	ActionDescription *InsertEmoticon;
 // 	ActionDescription *ColorSelector;
+
+	EditChatAction *EditChat;
+	LeaveChatAction *LeaveChat;
 
 	void autoSendActionCheck();
 	void insertEmoticonsActionCheck();
