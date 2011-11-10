@@ -33,6 +33,7 @@ class BuddySet;
 class Chat;
 class ChatDetails;
 class ContactSet;
+class Group;
 
 /**
  * @addtogroup Chat
@@ -58,6 +59,13 @@ class KADUAPI ChatShared : public QObject, public Shared, public DetailsHolder<C
 	QString Display;
 	QString Type;
 	bool IgnoreAllMessages;
+	QList<Group> Groups;
+
+	bool doAddToGroup(const Group &group);
+	bool doRemoveFromGroup(const Group &group);
+
+private slots:
+	void groupAboutToBeRemoved();
 
 protected:
 	virtual void load();
@@ -87,6 +95,13 @@ public:
 
 	ContactSet contacts();
 	QString name();
+
+	KaduShared_PropertyRead(const QList<Group> &, groups, Groups)
+	void setGroups(const QList<Group> &groups);
+	bool showInAllGroup();
+	bool isInGroup(const Group &group);
+	void addToGroup(const Group &group);
+	void removeFromGroup(const Group &group);
 
 	/**
 	 * @author Rafal 'Vogel' Malinowski

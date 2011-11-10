@@ -64,6 +64,11 @@ public:
 
 	virtual ~Chat();
 
+	bool showInAllGroup() const;
+	bool isInGroup(Group group) const;
+	void addToGroup(Group group);
+	void removeFromGroup(Group group);
+
 	KaduSharedBase_PropertyRead(ContactSet, contacts, Contacts)
 	KaduSharedBase_PropertyRead(QString, name, Name)
 
@@ -100,6 +105,7 @@ public:
 
 	KaduSharedBase_PropertyCRW(QString, display, Display)
 	KaduSharedBase_PropertyBool(IgnoreAllMessages)
+	KaduSharedBase_PropertyCRW(QList<Group>, groups, Groups)
 
 };
 
@@ -108,5 +114,8 @@ public:
  */
 
 Q_DECLARE_METATYPE(Chat)
+
+// for MOC
+#include "buddies/group.h"
 
 #endif // CHAT_H

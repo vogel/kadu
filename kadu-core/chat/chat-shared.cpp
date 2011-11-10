@@ -26,6 +26,7 @@
 #include "accounts/account-manager.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-set.h"
+#include "buddies/group-manager.h"
 #include "chat/type/chat-type.h"
 #include "chat/chat-details.h"
 #include "chat/chat-manager.h"
@@ -134,6 +135,26 @@ void ChatShared::load()
 
 	Shared::load();
 
+	XmlConfigFile *configurationStorage = storage()->storage();
+	QDomElement parent = storage()->point();
+
+	Groups.clear();
+
+	QDomElement groupsNode = configurationStorage->getNode(parent, "ChatGroups", XmlConfigFile::ModeFind);
+	if (!groupsNode.isNull())
+	{
+		QDomNodeList groupsList = groupsNode.elementsByTagName("Group");
+
+		int count = groupsList.count();
+		for (int i = 0; i < count; i++)
+		{
+			QDomElement groupElement = groupsList.at(i).toElement();
+			if (groupElement.isNull())
+				continue;
+			doAddToGroup(GroupManager::instance()->byUuid(groupElement.text()));
+		}
+	}
+
 	*ChatAccount = AccountManager::instance()->byUuid(QUuid(loadValue<QString>("Account")));
 	Display = loadValue<QString>("Display");
 	Type = loadValue<QString>("Type");
@@ -156,9 +177,21 @@ void ChatShared::store()
 
 	Shared::store();
 
+	XmlConfigFile *configurationStorage = storage()->storage();
+	QDomElement parent = storage()->point();
+
 	storeValue("Account", ChatAccount->uuid().toString());
 	storeValue("Display", Display);
 	storeValue("Type", Type);
+
+	if (!Groups.isEmpty())
+	{
+		QDomElement groupsNode = configurationStorage->getNode(parent, "ChatGroups", XmlConfigFile::ModeCreate);
+		foreach (const Group &group, Groups)
+			configurationStorage->appendTextNode(groupsNode, "Group", group.uuid().toString());
+	}
+	else
+		configurationStorage->removeNode(parent, "ChatGroups");
 
 	if (details())
 		details()->ensureStored();
@@ -192,6 +225,7 @@ bool ChatShared::shouldStore()
 void ChatShared::aboutToBeRemoved()
 {
 	*ChatAccount = Account::null;
+	Groups.clear();
 	setDetails(0);
 }
 
@@ -302,5 +336,85 @@ QString ChatShared::name()
 	return details() ? details()->name() : QString();
 }
 
-KaduShared_PropertyPtrDefCRW(ChatShared, Account, chatAccount, ChatAccount);
+void ChatShared::setGroups(const QList<Group> &groups)
+{
+	ensureLoaded();
 
+	if (Groups == groups)
+		return;
+
+	QList<Group> groupsToRemove = Groups;
+
+	foreach (const Group &group, groups)
+		if (groupsToRemove.removeAll(group) <= 0)
+			doAddToGroup(group);
+
+	foreach (const Group &group, groupsToRemove)
+		doRemoveFromGroup(group);
+
+	dataUpdated();
+}
+
+bool ChatShared::isInGroup(const Group &group)
+{
+	ensureLoaded();
+
+	return Groups.contains(group);
+}
+
+bool ChatShared::showInAllGroup()
+{
+	ensureLoaded();
+
+	foreach (const Group &group, Groups)
+		if (group && !group.showInAllGroup())
+			return false;
+
+	return true;
+}
+
+bool ChatShared::doAddToGroup(const Group &group)
+{
+	if (!group || Groups.contains(group))
+		return false;
+
+	Groups.append(group);
+	connect(group, SIGNAL(groupAboutToBeRemoved()), this, SLOT(groupAboutToBeRemoved()));
+
+	return true;
+}
+
+bool ChatShared::doRemoveFromGroup(const Group &group)
+{
+	if (Groups.removeAll(group) <= 0)
+		return false;
+
+	disconnect(group, SIGNAL(groupAboutToBeRemoved()), this, SLOT(groupAboutToBeRemoved()));
+
+	return true;
+}
+
+void ChatShared::addToGroup(const Group &group)
+{
+	ensureLoaded();
+
+	if (doAddToGroup(group))
+		dataUpdated();
+}
+
+void ChatShared::removeFromGroup(const Group &group)
+{
+	ensureLoaded();
+
+	if (doRemoveFromGroup(group))
+		dataUpdated();
+}
+
+void ChatShared::groupAboutToBeRemoved()
+{
+	Group group(sender());
+	if (!group.isNull())
+		removeFromGroup(group);
+}
+
+KaduShared_PropertyPtrDefCRW(ChatShared, Account, chatAccount, ChatAccount);
