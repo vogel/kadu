@@ -120,6 +120,10 @@ void ActionDescription::setShortcut(QString configItem, Qt::ShortcutContext cont
 void ActionDescription::actionTriggeredSlot(QAction *sender, bool toggled)
 {
 	actionTriggered(sender, toggled);
+
+	Action *action = qobject_cast<Action *>(sender);
+	if (action)
+		triggered(sender->parentWidget(), action->context(), toggled);
 }
 
 QMenu * ActionDescription::menuForAction(Action *action)

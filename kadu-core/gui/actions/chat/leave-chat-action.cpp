@@ -18,7 +18,7 @@
  */
 
 #include "chat/chat.h"
-#include "gui/actions/action.h"
+#include "gui/actions/action-context.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/windows/message-dialog.h"
 
@@ -39,13 +39,11 @@ LeaveChatAction::~LeaveChatAction()
 {
 }
 
-void LeaveChatAction::actionTriggered(QAction *sender, bool toggled)
+void LeaveChatAction::triggered(QWidget *widget, ActionContext *context, bool toggled)
 {
 	Q_UNUSED(toggled)
 
-	Action *action = qobject_cast<Action *>(sender);
-	Chat chat = action ? action->chat() : Chat::null;
-
+	const Chat &chat = context->chat();
 	if (!chat)
 		return;
 
@@ -53,7 +51,7 @@ void LeaveChatAction::actionTriggered(QAction *sender, bool toggled)
 	if (!chatWidget)
 		return;
 
-	if (!MessageDialog::ask(KaduIcon("dialog-warning"), tr("Kadu"), tr("All messages received in this conference will be ignored\nfrom now on. Are you sure you want to leave this conference?"), sender->parentWidget()))
+	if (!MessageDialog::ask(KaduIcon("dialog-warning"), tr("Kadu"), tr("All messages received in this conference will be ignored\nfrom now on. Are you sure you want to leave this conference?"), widget))
 		return;
 
 	chat.setIgnoreAllMessages(true);

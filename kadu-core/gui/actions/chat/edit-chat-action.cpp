@@ -20,7 +20,7 @@
 #include <QtGui/QInputDialog>
 
 #include "chat/chat.h"
-#include "gui/actions/action.h"
+#include "gui/actions/action-context.h"
 
 #include "edit-chat-action.h"
 
@@ -39,18 +39,16 @@ EditChatAction::~EditChatAction()
 {
 }
 
-void EditChatAction::actionTriggered(QAction *sender, bool toggled)
+void EditChatAction::triggered(QWidget *widget, ActionContext *context, bool toggled)
 {
 	Q_UNUSED(toggled)
 
-	Action *action = qobject_cast<Action *>(sender);
-	Chat chat = action ? action->chat() : Chat::null;
-
+	const Chat &chat = context->chat();
 	if (!chat)
 		return;
 
 	bool ok;
-	QString conferenceName = QInputDialog::getText(sender->parentWidget(), tr("Name conference"),
+	QString conferenceName = QInputDialog::getText(widget, tr("Name conference"),
 	                                               tr("Please enter the name for this conference"),
 	                                               QLineEdit::Normal, chat.display(), &ok);
 

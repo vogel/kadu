@@ -29,7 +29,7 @@ class EditChatAction : public ActionDescription
 	Q_OBJECT
 
 protected:
-	virtual void actionTriggered(QAction *sender, bool toggled);
+	virtual void triggered(QWidget *widget, ActionContext *context, bool toggled);
 
 public:
 	explicit EditChatAction(QObject *parent);

@@ -180,6 +180,28 @@ protected:
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
+	 * @todo make abstract when actions are moved to new API
+	 * @short Called when instance of Action is triggered.
+	 * @param widget parent widget of triggered action
+	 * @param context context of triggered action
+	 * @param toggled true, if action was toggled on
+	 *
+	 * This method is called automatically when instance of QAction is triggered.
+	 *
+	 * By defult this method does nothing.
+	 *
+	 * Old implementations of actions uses object and slot parameters in constructor to get notification
+	 * about action triggering.
+	 */
+	virtual void triggered(QWidget *widget, ActionContext *context, bool toggled)
+	{
+		Q_UNUSED(widget)
+		Q_UNUSED(context)
+		Q_UNUSED(toggled)
+	}
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
 	 * @short Updates enabled/disabled state of given action.
 	 * @param action action to update state for
 	 *
