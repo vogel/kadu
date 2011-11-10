@@ -19,40 +19,44 @@
 	height: 18px;
 	top: 0px;
 	}
-.message {
-	margin-left: 0px;
-	padding: 0px 11px 12px 0px;
+	
+.messagebox {
+	display: table;
+	width:100%;
 	}
-.messagetop {
-	position: relative;
-	height: 12px;
-	top: -8px;
-	padding: 0px 0px 0px 0px;
-	margin: 0px 12px 0px 12px;
+.messagetop, .messagemid, .messagebot {
+	display: table-row;
 	}
-.messagetopleft {
-	position: relative;
-	float: left;
-	height: 12px;
-	top: 0px;
-	left: -12px;
-	padding: 0px 12px 0px 0px;
-	margin: 0px -13px 0px 0px;
+.messagetopleft, .messagetopcenter, .messagetopright,
+.messagemidleft, .messagemidcenter, .messagemidright,
+.messagebotleft, .messagebotcenter, .messagebotright {
+	display: table-cell;
 	}
-.messagetopright {
-	position: relative;
-	float: right;
+.messagetopleft, .messagemidleft, .messagebotleft {
+	width: 12px;
+	}
+.messagetopright, .messagemidright, .messagebotright {
+	width: 12px;
+	}
+.messagetopleft, .messagetopcenter, .messagetopright {
 	height: 12px;
-	top: 0px;
-	right: -12px;
-	padding: 0px 0px 0px 12px;
-	margin: 0px 0px 0px -13px;
+	}
+.messagebotleft, .messagebotcenter, .messagebotright {
+	height: 24px;
 	}
 .messagetextcontainer {
-	position: relative;
-	margin: -8px 0px 0px 0px;
-	padding: 0px 0px 0px 12px;
+	position:relative;
+	margin-top:-3px;
+	margin-bottom:-11px;
+  }
+.message {
+	margin-left: 0px;
 	}
+.messagebox {
+	margin-top:-8px;
+	margin-bottom:8px;
+	}
+
 .status {
 	position: relative;
 	top: 0px;

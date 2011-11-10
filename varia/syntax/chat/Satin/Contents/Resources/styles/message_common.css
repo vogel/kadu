@@ -2,33 +2,62 @@ body {
 	background: #FFFFFF url("../images/background.png") bottom fixed repeat-x;
 	}
 
-.content .message {
-	background: url("../images/message/message_bot_right.png") bottom right no-repeat;
-	}
-.context .message {
-	background: url("../images/message/message_context_bot_right.png") bottom right no-repeat;
-	}
-.content .messagetextcontainer {
-	background: url("../images/message/message_bot_left.png") bottom left no-repeat;
-	}
-.context .messagetextcontainer {
-	background: url("../images/message/message_context_bot_left.png") bottom left no-repeat;
-	}
-.content .messagetop {
-	background: url("../images/message/message_top_fill.png") top repeat-x;
-	}
-.context .messagetop {
-	background: url("../images/message/message_context_top_fill.png") top repeat-x;
-	}
 .content .messagetopleft {
-	background: url("../images/message/message_top_left.png") left top no-repeat;
+	background: url("../images/message/message_top_left.png") no-repeat;
 	}
-.context .messagetopleft {
-	background: url("../images/message/message_context_top_left.png") left top no-repeat;
+.content .messagetopcenter {
+	background: url("../images/message/message_top_fill.png") repeat-x;
 	}
 .content .messagetopright {
-	background: url("../images/message/message_top_right.png") right top no-repeat;
+	background: url("../images/message/message_top_right.png") no-repeat;
+	}
+
+.content .messagemidleft {
+	background: url("../images/message/message_mid_left.png") repeat-y;
+	}
+.content .messagemidcenter {
+	background: url("../images/message/message_mid_fill.png") repeat;
+	}
+.content .messagemidright {
+	background: url("../images/message/message_mid_right.png") repeat-y;
+	}
+
+.content .messagebotleft {
+	background: url("../images/message/message_bot_left.png") no-repeat;
+	}
+.content .messagebotcenter {
+	background: url("../images/message/message_bot_fill.png") repeat-x;
+	}
+.content .messagebotright {
+	background: url("../images/message/message_bot_right.png") no-repeat;
+	}
+
+.context .messagetopleft {
+	background: url("../images/message/message_top_left.png") no-repeat;
+	}
+.context .messagetopcenter {
+	background: url("../images/message/message_top_fill.png") repeat-x;
 	}
 .context .messagetopright {
-	background: url("../images/message/message_context_top_right.png") right top no-repeat;
+	background: url("../images/message/message_top_right.png") no-repeat;
+	}
+
+.context .messagemidleft {
+	background: url("../images/message/message_mid_left.png") repeat-y;
+	}
+.context .messagemidcenter {
+	background: url("../images/message/message_mid_fill.png") repeat;
+	}
+.context .messagemidright {
+	background: url("../images/message/message_mid_right.png") repeat-y;
+	}
+
+.context .messagebotleft {
+	background: url("../images/message/message_bot_left.png") no-repeat;
+	}
+.context .messagebotcenter {
+	background: url("../images/message/message_bot_fill.png") repeat-x;
+	}
+.context .messagebotright {
+	background: url("../images/message/message_bot_right.png") no-repeat;
 	}
