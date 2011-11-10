@@ -106,8 +106,8 @@ static void checkBlocking(Action *action)
 		return;
 	}
 
-	if (action && action->dataSource())
-		action->setEnabled(!action->dataSource()->roles().contains(ContactRole));
+	if (action && action->context())
+		action->setEnabled(!action->context()->roles().contains(ContactRole));
 
 	bool on = false;
 	foreach (const Buddy &buddy, buddies)
@@ -356,9 +356,9 @@ void ChatWidgetActions::moreActionsActionActivated(QAction *sender, bool toggled
 
 		ActionDescription *actionDescription = Actions::instance()->value(actionName);
 		if (ActionDescription::TypeChat == actionDescription->type())
-			menu.addAction(Actions::instance()->createAction(actionName, chatEditBox->actionDataSource(), chatEditBox));
+			menu.addAction(Actions::instance()->createAction(actionName, chatEditBox->actionContext(), chatEditBox));
 		else if (ActionDescription::TypeUser == actionDescription->type())
-			subMenu->addAction(Actions::instance()->createAction(actionName, chatEditBox->actionDataSource(), chatEditBox));
+			subMenu->addAction(Actions::instance()->createAction(actionName, chatEditBox->actionContext(), chatEditBox));
 	}
 
 	menu.addSeparator();

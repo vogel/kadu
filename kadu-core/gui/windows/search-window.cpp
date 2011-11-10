@@ -46,7 +46,7 @@
 #include "contacts/contact-set.h"
 #include "core/core.h"
 #include "icons/kadu-icon.h"
-#include "gui/actions/base-action-data-source.h"
+#include "gui/actions/base-action-context.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/windows/add-buddy-window.h"
 #include "gui/windows/kadu-window.h"
@@ -76,7 +76,7 @@ void SearchWindow::createDefaultToolbars(const QDomElement &toolbarsConfig)
 }
 
 SearchWindow::SearchWindow(QWidget *parent, Buddy buddy) :
-		MainWindow(new BaseActionDataSource(), "search", parent),
+		MainWindow(new BaseActionContext(), "search", parent),
 		CurrentSearchService(0), UinEdit(0), FirstNameEdit(0), LastNameEdit(0), NickNameEdit(0),
 		StartBirthYearEdit(0), EndBirthYearEdit(0), CityEdit(0),
 		GenderComboBox(0), OnlyActiveCheckBox(0), UinRadioButton(0), PersonalDataRadioButton(0),
@@ -89,7 +89,7 @@ SearchWindow::SearchWindow(QWidget *parent, Buddy buddy) :
 
 	RoleSet roles;
 	roles.insert(ContactRole);
-	static_cast<BaseActionDataSource *>(actionDataSource())->setRoles(roles);
+	static_cast<BaseActionContext *>(actionContext())->setRoles(roles);
 
 	if (buddy)
 	{
@@ -595,7 +595,7 @@ void SearchWindow::selectionChanged()
 
 void SearchWindow::setActionEnabled(ActionDescription *actionDescription, bool enable)
 {
-	Action *action = actionDescription->action(actionDataSource());
+	Action *action = actionDescription->action(actionContext());
 	if (action)
 		action->setEnabled(enable);
 }

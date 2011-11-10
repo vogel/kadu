@@ -278,13 +278,13 @@ bool ChatWidget::keyPressEventHandled(QKeyEvent *e)
 
 	if (HotKey::shortCut(e,"ShortCuts", "kadu_searchuser"))
 	{
-		Actions::instance()->createAction("lookupUserInfoAction", InputBox->actionDataSource(), InputBox)->activate(QAction::Trigger);
+		Actions::instance()->createAction("lookupUserInfoAction", InputBox->actionContext(), InputBox)->activate(QAction::Trigger);
 		return true;
 	}
 
 	if (HotKey::shortCut(e,"ShortCuts", "kadu_openchatwith"))
 	{
-		Actions::instance()->createAction("openChatWithAction", InputBox->actionDataSource(), InputBox)->activate(QAction::Trigger);
+		Actions::instance()->createAction("openChatWithAction", InputBox->actionContext(), InputBox)->activate(QAction::Trigger);
 		return true;
 	}
 
@@ -438,15 +438,15 @@ void ChatWidget::resetEditBox()
 	InputBox->inputBox()->clear();
 
 	Action *action;
-	action = ChatWidgetManager::instance()->actions()->bold()->action(InputBox->actionDataSource());
+	action = ChatWidgetManager::instance()->actions()->bold()->action(InputBox->actionContext());
 	if (action)
 		InputBox->inputBox()->setFontWeight(action->isChecked() ? QFont::Bold : QFont::Normal);
 
-	action = ChatWidgetManager::instance()->actions()->italic()->action(InputBox->actionDataSource());
+	action = ChatWidgetManager::instance()->actions()->italic()->action(InputBox->actionContext());
 	if (action)
 		InputBox->inputBox()->setFontItalic(action->isChecked());
 
-	action = ChatWidgetManager::instance()->actions()->underline()->action(InputBox->actionDataSource());
+	action = ChatWidgetManager::instance()->actions()->underline()->action(InputBox->actionContext());
 	if (action)
 		InputBox->inputBox()->setFontUnderline(action->isChecked());
 }

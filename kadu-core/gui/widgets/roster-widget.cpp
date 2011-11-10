@@ -36,8 +36,8 @@
 #include "gui/widgets/filter-widget.h"
 #include "gui/widgets/filtered-tree-view.h"
 #include "gui/widgets/group-tab-bar.h"
+#include "gui/windows/proxy-action-context.h"
 #include "gui/widgets/talkable-tree-view.h"
-#include "gui/windows/kadu-window-action-data-source.h"
 #include "model/model-chain.h"
 
 #include "roster-widget.h"
@@ -45,17 +45,17 @@
 RosterWidget::RosterWidget(QWidget *parent) :
 		QWidget(parent), CompositingEnabled(false)
 {
-	ActionData = new KaduWindowActionDataSource();
+	Context = new ProxyActionContext();
 	createGui();
-	ActionData->setForwardActionDataSource(BuddiesTree->actionDataSource());
+	Context->setForwardActionContext(BuddiesTree->actionContext());
 
 	configurationUpdated();
 }
 
 RosterWidget::~RosterWidget()
 {
-	delete ActionData;
-	ActionData = 0;
+	delete Context;
+	Context = 0;
 }
 
 void RosterWidget::createGui()
@@ -97,12 +97,12 @@ void RosterWidget::viewButtonClicked()
 	if (ViewButtonGroup->checkedButton() == ChatsViewButton)
 	{
 		TalkableViews->setCurrentIndex(1);
-		ActionData->setForwardActionDataSource(ChatsTree->actionDataSource());
+		Context->setForwardActionContext(ChatsTree->actionContext());
 	}
 	else
 	{
 		TalkableViews->setCurrentIndex(0);
-		ActionData->setForwardActionDataSource(BuddiesTree->actionDataSource());
+		Context->setForwardActionContext(BuddiesTree->actionContext());
 	}
 }
 
@@ -282,9 +282,9 @@ BuddiesModelProxy * RosterWidget::buddiesProxyModel()
 	return ProxyModel;
 }
 
-ActionDataSource * RosterWidget::actionDataSource()
+ActionContext * RosterWidget::actionContext()
 {
-	return ActionData;
+	return Context;
 }
 
 void RosterWidget::clearFilter()

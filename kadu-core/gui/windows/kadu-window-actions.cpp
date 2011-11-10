@@ -172,8 +172,8 @@ void disableNoEMail(Action *action)
 
 void disableIfContactSelected(Action *action)
 {
-	if (action && action->dataSource())
-		action->setEnabled(!action->dataSource()->roles().contains(ContactRole) && !action->dataSource()->buddies().isEmpty());
+	if (action && action->context())
+		action->setEnabled(!action->context()->roles().contains(ContactRole) && !action->context()->buddies().isEmpty());
 
 	if (action->buddies().contains(Core::instance()->myself()))
 		action->setEnabled(false);
@@ -863,10 +863,10 @@ void KaduWindowActions::deleteUsersActionActivated(QAction *sender, bool toggled
 	if (!action)
 		return;
 
-	deleteUserActionActivated(action->dataSource());
+	deleteUserActionActivated(action->context());
 }
 
-void KaduWindowActions::deleteUserActionActivated(ActionDataSource *source)
+void KaduWindowActions::deleteUserActionActivated(ActionContext *source)
 {
 	kdebugf();
 
@@ -929,10 +929,10 @@ void KaduWindowActions::editUserActionActivated(QAction *sender, bool toggled)
 	if (!action)
 		return;
 
-	editUserActionActivated(action->dataSource());
+	editUserActionActivated(action->context());
 }
 
-void KaduWindowActions::editUserActionActivated(ActionDataSource *source)
+void KaduWindowActions::editUserActionActivated(ActionContext *source)
 {
 	kdebugf();
 
@@ -952,17 +952,17 @@ void KaduWindowActions::editUserActionActivated(ActionDataSource *source)
 
 void KaduWindowActions::configurationUpdated()
 {
-	ActionDataSource *actionData = Core::instance()->kaduWindow()->actionDataSource();
+	ActionContext *context = Core::instance()->kaduWindow()->actionContext();
 
-	if (ShowInfoPanel->action(actionData)->isChecked() != config_file.readBoolEntry("Look", "ShowInfoPanel"))
-		ShowInfoPanel->action(actionData)->trigger();
+	if (ShowInfoPanel->action(context)->isChecked() != config_file.readBoolEntry("Look", "ShowInfoPanel"))
+		ShowInfoPanel->action(context)->trigger();
 
-	if (InactiveUsers->action(actionData)->isChecked() != config_file.readBoolEntry("General", "ShowOffline"))
-		InactiveUsers->action(actionData)->trigger();
+	if (InactiveUsers->action(context)->isChecked() != config_file.readBoolEntry("General", "ShowOffline"))
+		InactiveUsers->action(context)->trigger();
 
-	if (ShowBlockedBuddies->action(actionData)->isChecked() != config_file.readBoolEntry("General", "ShowBlocked"))
-		ShowBlockedBuddies->action(actionData)->trigger();
+	if (ShowBlockedBuddies->action(context)->isChecked() != config_file.readBoolEntry("General", "ShowBlocked"))
+		ShowBlockedBuddies->action(context)->trigger();
 
-	if (ShowMyself->action(actionData)->isChecked() != config_file.readBoolEntry("General", "ShowMyself"))
-		ShowMyself->action(actionData)->trigger();
+	if (ShowMyself->action(context)->isChecked() != config_file.readBoolEntry("General", "ShowMyself"))
+		ShowMyself->action(context)->trigger();
 }

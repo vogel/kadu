@@ -28,7 +28,7 @@
 class QMenu;
 class QWidget;
 
-class ActionDataSource;
+class ActionContext;
 class ActionDescription;
 
 class KADUAPI CustomInputMenuManager : public QObject

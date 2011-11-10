@@ -25,7 +25,7 @@
 #include "accounts/account-manager.h"
 #include "buddies/buddy.h"
 #include "buddies/buddy-set.h"
-#include "gui/actions/action-data-source.h"
+#include "gui/actions/action-context.h"
 #include "gui/actions/action-description.h"
 #include "gui/hot-key.h"
 #include "icons/icons-manager.h"
@@ -34,11 +34,11 @@
 
 #include "action.h"
 
-Action::Action(ActionDescription *description, ActionDataSource *dataSource, QObject *parent) :
-		QAction(parent), Description(description), DataSource(dataSource)
+Action::Action(ActionDescription *description, ActionContext *context, QObject *parent) :
+		QAction(parent), Description(description), Context(context)
 {
 	Q_ASSERT(0 != description);
-	Q_ASSERT(0 != dataSource);
+	Q_ASSERT(0 != context);
 
 	setText(Description->Text);
 
@@ -54,7 +54,7 @@ Action::Action(ActionDescription *description, ActionDataSource *dataSource, QOb
 	connect(this, SIGNAL(hovered()), this, SLOT(hoveredSlot()));
 	connect(this, SIGNAL(triggered(bool)), this, SLOT(triggeredSlot(bool)));
 
-	connect(dataSource, SIGNAL(changed()), this, SLOT(checkState()));
+	connect(context, SIGNAL(changed()), this, SLOT(checkState()));
 	checkState();
 }
 
@@ -80,7 +80,7 @@ Contact Action::contact()
 
 ContactSet Action::contacts()
 {
-	return DataSource->contacts();
+	return Context->contacts();
 }
 
 Buddy Action::buddy()
@@ -94,22 +94,22 @@ Buddy Action::buddy()
 
 BuddySet Action::buddies()
 {
-	return DataSource->buddies();
+	return Context->buddies();
 }
 
 Chat Action::chat()
 {
-	return DataSource->chat();
+	return Context->chat();
 }
 
 StatusContainer * Action::statusContainer()
 {
-	return DataSource->statusContainer();
+	return Context->statusContainer();
 }
 
-ActionDataSource * Action::dataSource()
+ActionContext * Action::context()
 {
-	return DataSource;
+	return Context;
 }
 
 void Action::changedSlot()

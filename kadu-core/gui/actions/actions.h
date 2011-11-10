@@ -28,9 +28,8 @@
 class QAction;
 
 class Action;
-class ActionDataSource;
+class ActionContext;
 class ActionDescription;
-class MainWindow;
 
 /**
  * @addtogroup Actions
@@ -85,13 +84,13 @@ public:
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Creates new QAction instance for kadu main window.
 	 * @param name name of action to create
-	 * @param dataSource context of action
+	 * @param context context of action
 	 * @param parent parent object of action
 	 *
 	 * This method creates new instance of given action for given context. Signal actionCreated is emited after
 	 * creation, no matter what blocking signals state is.
 	 */
-	QAction * createAction(const QString &name, ActionDataSource *dataSource, QObject *parent);
+	QAction * createAction(const QString &name, ActionContext *context, QObject *parent);
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski

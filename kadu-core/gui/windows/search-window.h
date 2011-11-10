@@ -38,7 +38,7 @@ class QRadioButton;
 class QTreeWidget;
 class QTreeWidgetItem;
 
-class BaseActionDataSource;
+class BaseActionContext;
 class SearchService;
 
 class KADUAPI SearchWindow : public MainWindow

@@ -17,17 +17,17 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef BASE_ACTION_DATA_SOURCE_H
-#define BASE_ACTION_DATA_SOURCE_H
+#ifndef BASE_ACTION_CONTEXT_H
+#define BASE_ACTION_CONTEXT_H
 
 #include "buddies/buddy-set.h"
 #include "chat/chat.h"
 #include "contacts/contact-set.h"
 #include "model/roles.h"
 
-#include "gui/actions/action-data-source.h"
+#include "gui/actions/action-context.h"
 
-class BaseActionDataSource : public ActionDataSource
+class BaseActionContext : public ActionContext
 {
 	Q_OBJECT
 
@@ -43,8 +43,8 @@ class BaseActionDataSource : public ActionDataSource
 	void dataUpdated();
 
 public:
-	BaseActionDataSource();
-	virtual ~BaseActionDataSource();
+	BaseActionContext();
+	virtual ~BaseActionContext();
 
 	void blockChangedSignal();
 	void unblockChangedSignal();
@@ -66,4 +66,4 @@ public:
 
 };
 
-#endif // BASE_ACTION_DATA_SOURCE_H
+#endif // BASE_ACTION_CONTEXT_H

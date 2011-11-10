@@ -48,7 +48,7 @@
 #include "chat/type/chat-type-manager.h"
 #include "chat/aggregate-chat-manager.h"
 #include "gui/actions/actions.h"
-#include "gui/actions/base-action-data-source.h"
+#include "gui/actions/base-action-context.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/delayed-line-edit.h"
 #include "gui/widgets/filter-widget.h"
@@ -102,7 +102,7 @@ void HistoryWindow::show(const Chat &chat)
 }
 
 HistoryWindow::HistoryWindow(QWidget *parent) :
-		MainWindow(new BaseActionDataSource(), "history", parent)
+		MainWindow(new BaseActionContext(), "history", parent)
 {
 	kdebugf();
 
@@ -120,8 +120,8 @@ HistoryWindow::HistoryWindow(QWidget *parent) :
 	DetailsPopupMenu = new QMenu(this);
 	DetailsPopupMenu->addAction(KaduIcon("kadu_icons/clear-history").icon(), tr("&Remove entries"), this, SLOT(removeHistoryEntriesPerDate()));
 
-	ActionData = static_cast<BaseActionDataSource *>(actionDataSource());
-	updateActionsData();
+	Context = static_cast<BaseActionContext *>(actionContext());
+	updateContext();
 
 	kdebugf2();
 }
@@ -267,7 +267,7 @@ void HistoryWindow::connectGui()
 	connect(ChatsTree->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),
 			this, SLOT(treeCurrentChanged(QModelIndex,QModelIndex)));
 	connect(ChatsTree->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),
-			this, SLOT(updateActionsData()));
+			this, SLOT(updateContext()));
 
 	ChatsTree->setContextMenuPolicy(Qt::CustomContextMenu);
 	connect(ChatsTree, SIGNAL(customContextMenuRequested(QPoint)),
@@ -658,7 +658,7 @@ void HistoryWindow::showMainPopupMenu(const QPoint &pos)
 			if (!chat)
 				return;
 
-			menu.reset(TalkableMenuManager::instance()->menu(this, actionDataSource()));
+			menu.reset(TalkableMenuManager::instance()->menu(this, actionContext()));
 			menu->addSeparator();
 			menu->addAction(KaduIcon("kadu_icons/clear-history").icon(),
 					tr("&Clear Chat History"), this, SLOT(clearChatHistory()));
@@ -672,7 +672,7 @@ void HistoryWindow::showMainPopupMenu(const QPoint &pos)
 			if (!buddy || buddy.contacts().isEmpty())
 				return;
 
-			menu.reset(TalkableMenuManager::instance()->menu(this, actionDataSource()));
+			menu.reset(TalkableMenuManager::instance()->menu(this, actionContext()));
 			menu->addSeparator();
 			menu->addAction(KaduIcon("kadu_icons/clear-history").icon(),
 					tr("&Clear Status History"), this, SLOT(clearStatusHistory()));
@@ -809,15 +809,15 @@ void HistoryWindow::keyPressEvent(QKeyEvent *e)
 		QWidget::keyPressEvent(e);
 }
 
-void HistoryWindow::updateActionsData()
+void HistoryWindow::updateContext()
 {
 	ContactSet contacts = selectedContacts();
 
-	ActionData->blockChangedSignal();
-	ActionData->setContacts(contacts);
-	ActionData->setBuddies(contacts.toBuddySet());
-	ActionData->setChat(selectedChat());
-	ActionData->unblockChangedSignal();
+	Context->blockChangedSignal();
+	Context->setContacts(contacts);
+	Context->setBuddies(contacts.toBuddySet());
+	Context->setChat(selectedChat());
+	Context->unblockChangedSignal();
 }
 
 ContactSet HistoryWindow::selectedContacts() const

@@ -30,7 +30,7 @@
 class QAction;
 
 class Action;
-class ActionDataSource;
+class ActionContext;
 class ActionDescription;
 class ChangeStatusAction;
 class DefaultProxyAction;
@@ -125,8 +125,8 @@ protected:
 	virtual void configurationUpdated();
 
 public:
-	static void deleteUserActionActivated(ActionDataSource *source);
-	static void editUserActionActivated(ActionDataSource *source);
+	static void deleteUserActionActivated(ActionContext *source);
+	static void editUserActionActivated(ActionContext *source);
 
 	explicit KaduWindowActions(QObject *parent);
 	virtual ~KaduWindowActions();

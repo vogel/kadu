@@ -25,7 +25,7 @@
 #include "buddies/talkable.h"
 
 #include "configuration/configuration-aware-object.h"
-#include "gui/actions/action-data-source-provider.h"
+#include "gui/actions/action-context-provider.h"
 #include "os/generic/compositing-aware-object.h"
 
 class QButtonGroup;
@@ -36,11 +36,11 @@ class BuddiesModelProxy;
 class FilteredTreeView;
 class GroupBuddyFilter;
 class GroupTabBar;
-class KaduWindowActionDataSource;
+class ProxyActionContext;
 class ModelChain;
 class TalkableTreeView;
 
-class RosterWidget : public QWidget, public ActionDataSourceProvider, ConfigurationAwareObject, CompositingAwareObject
+class RosterWidget : public QWidget, public ActionContextProvider, ConfigurationAwareObject, CompositingAwareObject
 {
 	Q_OBJECT
 
@@ -56,7 +56,7 @@ class RosterWidget : public QWidget, public ActionDataSourceProvider, Configurat
 	QPushButton *BuddiesViewButton;
 	QPushButton *ChatsViewButton;
 
-	KaduWindowActionDataSource *ActionData;
+	ProxyActionContext *Context;
 
 	bool CompositingEnabled;
 
@@ -87,8 +87,8 @@ public:
 	TalkableTreeView * talkableTreeView();
 	BuddiesModelProxy * buddiesProxyModel();
 
-	// ActionDataSourceProvider implementation
-	virtual ActionDataSource * actionDataSource();
+	// ActionContextProvider implementation
+	virtual ActionContext * actionContext();
 
 signals:
 	void currentChanged(const Talkable &talkable);

@@ -17,23 +17,23 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "base-action-data-source.h"
+#include "base-action-context.h"
 
-BaseActionDataSource::BaseActionDataSource() :
+BaseActionContext::BaseActionContext() :
 		ChangedSignalBlocked(false), Changed(false), CurrentStatusContainer(0)
 {
 }
 
-BaseActionDataSource::~BaseActionDataSource()
+BaseActionContext::~BaseActionContext()
 {
 }
 
-void BaseActionDataSource::blockChangedSignal()
+void BaseActionContext::blockChangedSignal()
 {
 	ChangedSignalBlocked = true;
 }
 
-void BaseActionDataSource::unblockChangedSignal()
+void BaseActionContext::unblockChangedSignal()
 {
 	if (Changed)
 		emit changed();
@@ -42,7 +42,7 @@ void BaseActionDataSource::unblockChangedSignal()
 	Changed = false;
 }
 
-void BaseActionDataSource::dataUpdated()
+void BaseActionContext::dataUpdated()
 {
 	if (ChangedSignalBlocked)
 		Changed = true;
@@ -50,12 +50,12 @@ void BaseActionDataSource::dataUpdated()
 		emit changed();
 }
 
-ContactSet BaseActionDataSource::contacts()
+ContactSet BaseActionContext::contacts()
 {
 	return Contacts;
 }
 
-void BaseActionDataSource::setContacts(const ContactSet &contacts)
+void BaseActionContext::setContacts(const ContactSet &contacts)
 {
 	if (Contacts != contacts)
 	{
@@ -64,12 +64,12 @@ void BaseActionDataSource::setContacts(const ContactSet &contacts)
 	}
 }
 
-BuddySet BaseActionDataSource::buddies()
+BuddySet BaseActionContext::buddies()
 {
 	return Buddies;
 }
 
-void BaseActionDataSource::setBuddies(const BuddySet &buddies)
+void BaseActionContext::setBuddies(const BuddySet &buddies)
 {
 	if (Buddies != buddies)
 	{
@@ -78,12 +78,12 @@ void BaseActionDataSource::setBuddies(const BuddySet &buddies)
 	}
 }
 
-Chat BaseActionDataSource::chat()
+Chat BaseActionContext::chat()
 {
 	return CurrentChat;
 }
 
-void BaseActionDataSource::setChat(const Chat &chat)
+void BaseActionContext::setChat(const Chat &chat)
 {
 	if (CurrentChat != chat)
 	{
@@ -92,12 +92,12 @@ void BaseActionDataSource::setChat(const Chat &chat)
 	}
 }
 
-StatusContainer * BaseActionDataSource::statusContainer()
+StatusContainer * BaseActionContext::statusContainer()
 {
 	return CurrentStatusContainer;
 }
 
-void BaseActionDataSource::setStatusContainer(StatusContainer *statusContainer)
+void BaseActionContext::setStatusContainer(StatusContainer *statusContainer)
 {
 	if (CurrentStatusContainer != statusContainer)
 	{
@@ -106,12 +106,12 @@ void BaseActionDataSource::setStatusContainer(StatusContainer *statusContainer)
 	}
 }
 
-RoleSet BaseActionDataSource::roles()
+RoleSet BaseActionContext::roles()
 {
 	return Roles;
 }
 
-void BaseActionDataSource::setRoles(const RoleSet &roles)
+void BaseActionContext::setRoles(const RoleSet &roles)
 {
 	if (Roles != roles)
 	{

@@ -211,7 +211,7 @@ void OpenChatWith::inputChanged(const QString &text)
 
 void OpenChatWith::openChat()
 {
-	ContactSet contacts = BuddiesWidget->actionDataSource()->contacts();
+	ContactSet contacts = BuddiesWidget->actionContext()->contacts();
 
 	if (contacts.isEmpty())
 	{

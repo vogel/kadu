@@ -42,10 +42,10 @@
 #include "gui/widgets/buddy-info-panel.h"
 #include "gui/widgets/chat-widget-actions.h"
 #include "gui/widgets/chat-widget-manager.h"
+#include "gui/windows/proxy-action-context.h"
 #include "gui/widgets/roster-widget.h"
 #include "gui/widgets/status-buttons.h"
 #include "gui/widgets/talkable-tree-view.h"
-#include "gui/windows/kadu-window-action-data-source.h"
 #include "gui/windows/kadu-window-actions.h"
 #include "notify/notification-manager.h"
 #include "os/generic/url-opener.h"
@@ -64,7 +64,7 @@ extern void qt_mac_set_menubar_icons(bool enable);
 #endif
 
 KaduWindow::KaduWindow(QWidget *parent) :
-		MainWindow(new KaduWindowActionDataSource(), QString(), parent), Docked(false),
+		MainWindow(new ProxyActionContext(), QString(), parent), Docked(false),
 		CompositingEnabled(false)
 {
 	setWindowRole("kadu-main");
@@ -84,8 +84,8 @@ KaduWindow::KaduWindow(QWidget *parent) :
 	// TODO: fix it in 0.10 or whenever
 	createGui();
 
-	ActionData = static_cast<KaduWindowActionDataSource *>(actionDataSource());
-	ActionData->setForwardActionDataSource(Roster->actionDataSource());
+	Context = static_cast<ProxyActionContext *>(actionContext());
+	Context->setForwardActionContext(Roster->actionContext());
 
 	Actions = new KaduWindowActions(this);
 	loadToolBarsFromConfig();
@@ -450,7 +450,7 @@ void KaduWindow::insertMenuActionDescription(ActionDescription *actionDescriptio
 	if (!actionDescription)
 		return;
 
-	Action *action = actionDescription->createAction(actionDataSource(), this);
+	Action *action = actionDescription->createAction(actionContext(), this);
 	QMenu *menu = 0;
 
 	switch (type)
@@ -525,11 +525,6 @@ void KaduWindow::createDefaultToolbars(QDomElement parentConfig)
 	addToolButton(toolbarConfig, "addGroupAction", Qt::ToolButtonTextUnderIcon);
 	addToolButton(toolbarConfig, "muteSoundsAction", Qt::ToolButtonTextUnderIcon);
 #endif
-}
-
-ActionDataSource * KaduWindow::actionSource()
-{
-	return talkableTreeView()->actionDataSource();
 }
 
 void KaduWindow::setDocked(bool docked)

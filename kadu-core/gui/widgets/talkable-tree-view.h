@@ -32,15 +32,15 @@
 #include "buddies/talkable.h"
 #include "chat/chat.h"
 #include "contacts/contact.h"
-#include "gui/actions/action-data-source.h"
-#include "gui/actions/action-data-source-provider.h"
+#include "gui/actions/action-context.h"
+#include "gui/actions/action-context-provider.h"
 
 #include "gui/widgets/kadu-tree-view.h"
 
 class QContextMenuEvent;
 class QModelIndex;
 
-class BaseActionDataSource;
+class BaseActionContext;
 class Buddy;
 class BuddySet;
 class BuddiesModelProxy;
@@ -49,7 +49,7 @@ class ModelChain;
 class TalkableDelegate;
 class TalkableDelegateConfiguration;
 
-class TalkableTreeView : public KaduTreeView, public ActionDataSourceProvider
+class TalkableTreeView : public KaduTreeView, public ActionContextProvider
 {
 	Q_OBJECT
 
@@ -58,7 +58,7 @@ class TalkableTreeView : public KaduTreeView, public ActionDataSourceProvider
 	TalkableDelegate *Delegate;
 	ModelChain *Chain;
 
-	BaseActionDataSource *ActionData;
+	BaseActionContext *Context;
 
 	Talkable talkableAt(const QModelIndex &index) const;
 	void triggerActivate(const QModelIndex &index);
@@ -80,7 +80,7 @@ private slots:
 	void toolTipHide(bool waitForAnother = true);
 
 	// Actions
-	void updateActionData();
+	void updateContext();
 
 protected:
 	virtual void contextMenuEvent(QContextMenuEvent *event);
@@ -113,8 +113,8 @@ public:
 
 	void setContextMenuEnabled(bool enabled);
 
-	// ActionDataSourceProvider implementation
-	virtual ActionDataSource * actionDataSource();
+	// ActionContextProvider implementation
+	virtual ActionContext * actionContext();
 
 signals:
 	void talkableActivated(const Talkable &talkable);

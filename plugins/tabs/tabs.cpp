@@ -495,7 +495,7 @@ void TabsManager::onTabAttach(QAction *sender, bool toggled)
 		detachChat(chatWidget);
 	else
 	{
-		if (chatEditBox->actionDataSource()->contacts().count() != 1 && !ConfigConferencesInTabs)
+		if (chatEditBox->actionContext()->contacts().count() != 1 && !ConfigConferencesInTabs)
 			return;
 		NewChats.clear();
 		insertTab(chatWidget);

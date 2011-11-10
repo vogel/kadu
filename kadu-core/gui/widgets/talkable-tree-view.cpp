@@ -46,7 +46,7 @@
 #include "configuration/main-configuration-holder.h"
 #include "gui/actions/action.h"
 #include "gui/actions/action-description.h"
-#include "gui/actions/base-action-data-source.h"
+#include "gui/actions/base-action-context.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/filtered-tree-view.h"
 #include "gui/widgets/talkable-delegate.h"
@@ -70,8 +70,8 @@
 TalkableTreeView::TalkableTreeView(QWidget *parent) :
 		KaduTreeView(parent), Delegate(0), Chain(0), ContextMenuEnabled(false)
 {
-	ActionData = new BaseActionDataSource();
-	connect(MainConfigurationHolder::instance(), SIGNAL(setStatusModeChanged()), this, SLOT(updateActionData()));
+	Context = new BaseActionContext();
+	connect(MainConfigurationHolder::instance(), SIGNAL(setStatusModeChanged()), this, SLOT(updateContext()));
 
 	Delegate = new TalkableDelegate(this);
 	setItemDelegate(Delegate);
@@ -84,8 +84,8 @@ TalkableTreeView::TalkableTreeView(QWidget *parent) :
 
 TalkableTreeView::~TalkableTreeView()
 {
-	delete ActionData;
-	ActionData = 0;
+	delete Context;
+	Context = 0;
 }
 
 void TalkableTreeView::setChain(ModelChain *chain)
@@ -96,7 +96,7 @@ void TalkableTreeView::setChain(ModelChain *chain)
 	QTreeView::setModel(Chain->lastModel());
 
 	connect(selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
-	        this, SLOT(updateActionData()));
+	        this, SLOT(updateContext()));
 }
 
 ModelChain * TalkableTreeView::chain() const
@@ -136,11 +136,11 @@ Talkable TalkableTreeView::talkableAt(const QModelIndex &index) const
 
 void TalkableTreeView::triggerActivate(const QModelIndex& index)
 {
-	// ActionData->chat() can be different that Chat talkable on this index
+	// Context->chat() can be different that Chat talkable on this index
 	// if more than one non-chat items are selected at the same time
-	const Talkable &talkable = ActionData->chat().isNull()
+	const Talkable &talkable = Context->chat().isNull()
 			? talkableAt(index)
-			: Talkable(ActionData->chat());
+			: Talkable(Context->chat());
 
 	if (!talkable.isEmpty())
 		emit talkableActivated(talkable);
@@ -156,7 +156,7 @@ void TalkableTreeView::contextMenuEvent(QContextMenuEvent *event)
 	if (!ContextMenuEnabled)
 		return;
 
-	QScopedPointer<QMenu> menu(TalkableMenuManager::instance()->menu(this, ActionData));
+	QScopedPointer<QMenu> menu(TalkableMenuManager::instance()->menu(this, Context));
 	menu->exec(event->globalPos());
 }
 
@@ -164,9 +164,9 @@ void TalkableTreeView::keyPressEvent(QKeyEvent *event)
 {
 	// TODO 0.10.0: add proper shortcuts handling
 	if (HotKey::shortCut(event, "ShortCuts", "kadu_deleteuser"))
-		KaduWindowActions::deleteUserActionActivated(ActionData);
+		KaduWindowActions::deleteUserActionActivated(Context);
 	else if (HotKey::shortCut(event, "ShortCuts", "kadu_persinfo"))
-		KaduWindowActions::editUserActionActivated(ActionData);
+		KaduWindowActions::editUserActionActivated(Context);
 	else
 		switch (event->key())
 		{
@@ -234,24 +234,24 @@ StatusContainer * TalkableTreeView::statusContainerForChat(const Chat &chat) con
 		return StatusContainerManager::instance();
 }
 
-void TalkableTreeView::updateActionData()
+void TalkableTreeView::updateContext()
 {
 	ModelIndexListConverter converter(selectedIndexes());
 
-	ActionData->blockChangedSignal();
+	Context->blockChangedSignal();
 
-	ActionData->setRoles(converter.roles());
-	ActionData->setBuddies(converter.buddies());
-	ActionData->setContacts(converter.contacts());
-	ActionData->setChat(converter.chat());
-	ActionData->setStatusContainer(statusContainerForChat(converter.chat()));
+	Context->setRoles(converter.roles());
+	Context->setBuddies(converter.buddies());
+	Context->setContacts(converter.contacts());
+	Context->setChat(converter.chat());
+	Context->setStatusContainer(statusContainerForChat(converter.chat()));
 
-	ActionData->unblockChangedSignal();
+	Context->unblockChangedSignal();
 }
 
-ActionDataSource * TalkableTreeView::actionDataSource()
+ActionContext * TalkableTreeView::actionContext()
 {
-	return ActionData;
+	return Context;
 }
 
 void TalkableTreeView::doubleClickedSlot(const QModelIndex &index)

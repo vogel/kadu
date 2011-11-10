@@ -5,7 +5,7 @@ set (gui_SRCS
 	actions/action.cpp
 	actions/actions.cpp
 	actions/action-description.cpp
-	actions/base-action-data-source.cpp
+	actions/base-action-context.cpp
 	actions/change-status-action.cpp
 	actions/default-proxy-action.cpp
 
@@ -117,7 +117,6 @@ set (gui_SRCS
 	windows/file-transfer-window.cpp
 	windows/group-properties-window.cpp
 	windows/kadu-window.cpp
-	windows/kadu-window-action-data-source.cpp
 	windows/kadu-window-actions.cpp
 	windows/main-configuration-window.cpp
 	windows/main-window.cpp
@@ -128,6 +127,7 @@ set (gui_SRCS
 	windows/password-window.cpp
 	windows/plugin-error-dialog.cpp
 	windows/progress-window.cpp
+	windows/proxy-action-context.cpp
 	windows/proxy-edit-window.cpp
 	windows/search-window.cpp
 	windows/search-window-actions.cpp
@@ -148,9 +148,9 @@ set (gui_MOC_SRCS
 
 	actions/action.h
 	actions/actions.h
-	actions/action-data-source.h
+	actions/action-context.h
 	actions/action-description.h
-	actions/base-action-data-source.h
+	actions/base-action-context.h
 	actions/change-status-action.h
 	actions/default-proxy-action.h
 
@@ -259,7 +259,6 @@ set (gui_MOC_SRCS
 	windows/file-transfer-window.h
 	windows/group-properties-window.h
 	windows/kadu-window.h
-	windows/kadu-window-action-data-source.h
 	windows/kadu-window-actions.h
 	windows/main-configuration-window.h
 	windows/main-window.h
@@ -269,6 +268,7 @@ set (gui_MOC_SRCS
 	windows/password-window.h
 	windows/plugin-error-dialog.h
 	windows/progress-window.h
+	windows/proxy-action-context.h
 	windows/proxy-edit-window.h
 	windows/search-window.h
 	windows/search-window-actions.h

@@ -17,33 +17,29 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ACTION_DATA_SOURCE_PROVIDER_H
-#define ACTION_DATA_SOURCE_PROVIDER_H
+#ifndef PROXY_ACTION_CONTEXT_H
+#define PROXY_ACTION_CONTEXT_H
 
-class ActionDataSource;
+#include "gui/actions/action-context.h"
 
-/**
- * @addtogroup Actions
- * @{
- */
-
-/**
- * @class ActionDataSourceProvider
- * @author Rafał 'Vogel' Malinowski
- * @short Interface used by classes that have access to ActionDataSource instances.
- *
- * This inteface is implemented by all classes/widgets that have access to ActionDataSource instances.
- * For example, all main windows must implement this interface.
- */
-class ActionDataSourceProvider
+class ProxyActionContext : public ActionContext
 {
+	Q_OBJECT
+
+	ActionContext *ForwardActionContext;
+
 public:
-	virtual ActionDataSource * actionDataSource() = 0;
+	ProxyActionContext();
+	virtual ~ProxyActionContext();
+
+	void setForwardActionContext(ActionContext *forwardActionContext);
+
+	virtual ContactSet contacts();
+	virtual BuddySet buddies();
+	virtual Chat chat();
+	virtual StatusContainer * statusContainer();
+	virtual RoleSet roles();
 
 };
 
-/**
- * @}
- */
-
-#endif // ACTION_DATA_SOURCE_PROVIDER_H
+#endif // PROXY_ACTION_CONTEXT_H

@@ -30,7 +30,7 @@
 #include "exports.h"
 
 class Action;
-class BaseActionDataSource;
+class BaseActionContext;
 class ChatWidget;
 class CustomInput;
 
@@ -42,14 +42,14 @@ class KADUAPI ChatEditBox : public MainWindow, public ConfigurationAwareObject
 	CustomInput *InputBox;
 	QColor CurrentColor;
 
-	BaseActionDataSource *ActionData;
+	BaseActionContext *Context;
 
 	void setColorFromCurrentText(bool force);
 
 private slots:
 	void configurationUpdated();
 
-	void updateActionData();
+	void updateContext();
 
 	void fontChanged(QFont font);
 	void colorSelectorActionCreated(Action *action);

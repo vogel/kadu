@@ -56,12 +56,12 @@ void Actions::remove(ActionDescription *action)
 		emit actionUnloaded(action);
 }
 
-QAction * Actions::createAction(const QString &name, ActionDataSource *dataSource, QObject *parent)
+QAction * Actions::createAction(const QString &name, ActionContext *context, QObject *parent)
 {
 	if (!contains(name))
 		return 0;
 
-	Action *result = value(name)->createAction(dataSource, parent);
+	Action *result = value(name)->createAction(context, parent);
 
 	emit actionCreated(result);
 

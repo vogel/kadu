@@ -17,8 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ACTION_DATA_SOURCE_H
-#define ACTION_DATA_SOURCE_H
+#ifndef ACTION_CONTEXT_H
+#define ACTION_CONTEXT_H
 
 #include <QtCore/QObject>
 
@@ -35,7 +35,7 @@ class StatusContainer;
  */
 
 /**
- * @class ActionDataSource
+ * @class ActionContext
  * @author Rafał 'Vogel' Malinowski
  * @short Interface responsible for storing data required for proper Action behavior.
  *
@@ -44,10 +44,10 @@ class StatusContainer;
  * about contacts, buddies, chats and status containers is transfered using this interface. Each window
  * or widgets that can contain action must implement this interface.
  *
- * Data for each ActionDataSource may be different depending on current state of window - like selection
+ * Data for each ActionContext may be different depending on current state of window - like selection
  * of items in buddies list view, or may be constant - like list of buddies in classic chat window.
  */
-class ActionDataSource : public QObject
+class ActionContext : public QObject
 {
 	Q_OBJECT
 
@@ -95,4 +95,4 @@ signals:
  * @}
  */
 
-#endif // ACTION_DATA_SOURCE_H
+#endif // ACTION_CONTEXT_H

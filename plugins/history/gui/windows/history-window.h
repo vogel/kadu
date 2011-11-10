@@ -36,7 +36,7 @@
 #include "history.h"
 #include "history_exports.h"
 
-class BaseActionDataSource;
+class BaseActionContext;
 class BuddyNameFilter;
 class BuddyStatusDatesModel;
 class ChatDatesModel;
@@ -85,7 +85,7 @@ class HistoryWindow : public MainWindow
 
 	HistorySearchParameters Search;
 
-	BaseActionDataSource *ActionData;
+	BaseActionContext *Context;
 
 	explicit HistoryWindow(QWidget *parent = 0);
 
@@ -130,7 +130,7 @@ private slots:
 
 	void selectQueryText();
 
-	void updateActionsData();
+	void updateContext();
 
 protected:
 	virtual void keyPressEvent(QKeyEvent *e);

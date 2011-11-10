@@ -45,7 +45,7 @@ class QVBoxLayout;
 class Action;
 class ActionDescription;
 class BuddyInfoPanel;
-class KaduWindowActionDataSource;
+class ProxyActionContext;
 class KaduWindowActions;
 class RosterWidget;
 class StatusButtons;
@@ -97,7 +97,7 @@ private:
 
 	bool CompositingEnabled;
 
-	KaduWindowActionDataSource *ActionData;
+	ProxyActionContext *Context;
 
 	void createGui();
 
@@ -143,7 +143,6 @@ public:
 	void setDocked(bool);
 	bool docked() { return Docked; }
 
-	ActionDataSource * actionSource();
 	BuddyInfoPanel * infoPanel() { return InfoPanel; }
 
 #ifdef Q_OS_MAC

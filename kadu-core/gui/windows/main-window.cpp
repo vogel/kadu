@@ -55,11 +55,11 @@ MainWindow * MainWindow::findMainWindow(QWidget *widget)
 	return 0;
 }
 
-MainWindow::MainWindow(ActionDataSource *actionData, const QString &windowName, QWidget *parent) :
+MainWindow::MainWindow(ActionContext *context, const QString &windowName, QWidget *parent) :
 		QMainWindow(parent), DesktopAwareObject(this),  WindowName(windowName), TransparencyEnabled(false),
-		ActionData(actionData)
+		Context(context)
 {
-	Q_ASSERT(0 != ActionData);
+	Q_ASSERT(0 != Context);
 
 	connect(ConfigurationManager::instance()->toolbarConfigurationManager(), SIGNAL(configurationUpdated()),
 			this, SLOT(refreshToolBars()));
@@ -78,8 +78,8 @@ MainWindow::~MainWindow()
 	disconnect(ConfigurationManager::instance()->toolbarConfigurationManager(), SIGNAL(configurationUpdated()),
 			this, SLOT(refreshToolBars()));
 
-	delete ActionData;
-	ActionData = 0;
+	delete Context;
+	Context = 0;
 }
 
 void MainWindow::loadToolBarsFromConfig()
@@ -396,7 +396,7 @@ bool MainWindow::hasAction(const QString &actionName, ToolBar *exclude)
 
 Contact MainWindow::contact()
 {
-	ContactSet contactSet = actionDataSource()->contacts();
+	ContactSet contactSet = actionContext()->contacts();
 	return 1 == contactSet.count()
 			? *contactSet.constBegin()
 			: Contact::null;
@@ -404,7 +404,7 @@ Contact MainWindow::contact()
 
 Buddy MainWindow::buddy()
 {
-	BuddySet buddySet = actionDataSource()->buddies();
+	BuddySet buddySet = actionContext()->buddies();
 	return 1 == buddySet.count()
 			? *buddySet.constBegin()
 			: Buddy::null;
@@ -463,7 +463,7 @@ void MainWindow::toolbarRemoved(ToolBar *toolBar)
 	toolbarUpdated();
 }
 
-ActionDataSource * MainWindow::actionDataSource()
+ActionContext * MainWindow::actionContext()
 {
-	return ActionData;
+	return Context;
 }

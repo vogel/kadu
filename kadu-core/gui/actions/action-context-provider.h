@@ -17,29 +17,33 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef KADU_WINDOW_ACTION_DATA_SOURCE_H
-#define KADU_WINDOW_ACTION_DATA_SOURCE_H
+#ifndef ACTION_CONTEXT_PROVIDER_H
+#define ACTION_CONTEXT_PROVIDER_H
 
-#include "gui/actions/action-data-source.h"
+class ActionContext;
 
-class KaduWindowActionDataSource : public ActionDataSource
+/**
+ * @addtogroup Actions
+ * @{
+ */
+
+/**
+ * @class ActionContextProvider
+ * @author Rafał 'Vogel' Malinowski
+ * @short Interface used by classes that have access to ActionContext instances.
+ *
+ * This inteface is implemented by all classes/widgets that have access to ActionContext instances.
+ * For example, all main windows must implement this interface.
+ */
+class ActionContextProvider
 {
-	Q_OBJECT
-
-	ActionDataSource *ForwardActionDataSource;
-
 public:
-	KaduWindowActionDataSource();
-	virtual ~KaduWindowActionDataSource();
-
-	void setForwardActionDataSource(ActionDataSource *forwardActionDataSource);
-
-	virtual ContactSet contacts();
-	virtual BuddySet buddies();
-	virtual Chat chat();
-	virtual StatusContainer * statusContainer();
-	virtual RoleSet roles();
+	virtual ActionContext * actionContext() = 0;
 
 };
 
-#endif // KADU_WINDOW_ACTION_DATA_SOURCE_H
+/**
+ * @}
+ */
+
+#endif // ACTION_CONTEXT_PROVIDER_H

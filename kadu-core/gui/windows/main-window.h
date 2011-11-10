@@ -27,8 +27,8 @@
 #include <QtGui/QMainWindow>
 #include <QtXml/QDomElement>
 
-#include "gui/actions/action-data-source.h"
-#include "gui/actions/action-data-source-provider.h"
+#include "gui/actions/action-context.h"
+#include "gui/actions/action-context-provider.h"
 #include "gui/actions/action-description.h"
 #include "os/generic/desktop-aware-object.h"
 
@@ -45,14 +45,14 @@ class ContactSet;
 class StatusContainer;
 class ToolBar;
 
-class KADUAPI MainWindow : public QMainWindow, public ActionDataSourceProvider, DesktopAwareObject
+class KADUAPI MainWindow : public QMainWindow, public ActionContextProvider, DesktopAwareObject
 {
 	Q_OBJECT
 
 	QString WindowName;
 	bool TransparencyEnabled;
 
-	ActionDataSource *ActionData;
+	ActionContext *Context;
 
 	ToolBar * newToolbar(QWidget *parent);
 
@@ -90,7 +90,7 @@ protected slots:
 public:
 	static MainWindow * findMainWindow(QWidget *widget);
 
-	MainWindow(ActionDataSource *actionData, const QString &windowName, QWidget *parent);
+	MainWindow(ActionContext *context, const QString &windowName, QWidget *parent);
 	virtual ~MainWindow();
 
 	const QString & windowName() { return WindowName; }
@@ -105,8 +105,8 @@ public:
 
 	bool hasAction(const QString &actionName, ToolBar *exclude = 0);
 
-	// ActionDataSourceProvider implementation
-	ActionDataSource * actionDataSource();
+	// ActionContextProvider implementation
+	ActionContext * actionContext();
 
 public slots:
 	void addTopToolbar();

@@ -20,8 +20,8 @@
 #include <QtGui/QMenu>
 
 #include "gui/actions/action.h"
-#include "gui/actions/action-data-source.h"
-#include "gui/actions/action-data-source-provider.h"
+#include "gui/actions/action-context.h"
+#include "gui/actions/action-context-provider.h"
 #include "gui/actions/action-description.h"
 
 #include "custom-input-menu-manager.h"
@@ -73,22 +73,22 @@ QMenu * CustomInputMenuManager::menu(QWidget *parent)
 {
 	QMenu *menu = new QMenu(parent);
 
-	QWidget *actionDataSourceWidget = parent;
-	ActionDataSource *actionDataSource = 0;
+	QWidget *actionContextWidget = parent;
+	ActionContext *actionContext = 0;
 
-	while (actionDataSourceWidget)
+	while (actionContextWidget)
 	{
-		ActionDataSourceProvider *actionDataSourceProvider = dynamic_cast<ActionDataSourceProvider *>(actionDataSourceWidget);
-		if (actionDataSourceProvider)
+		ActionContextProvider *actionContextProvider = dynamic_cast<ActionContextProvider *>(actionContextWidget);
+		if (actionContextProvider)
 		{
-			actionDataSource = actionDataSourceProvider->actionDataSource();
+			actionContext = actionContextProvider->actionContext();
 			break;
 		}
 		else
-			actionDataSourceWidget = actionDataSourceWidget->parentWidget();
+			actionContextWidget = actionContextWidget->parentWidget();
 	}
 
-	if (actionDataSource)
+	if (actionContext)
 	{
 		sortInputContextMenu();
 		QList<CustomInputMenuItem>::const_iterator i = InputContextMenu.constBegin();
@@ -100,7 +100,7 @@ QMenu * CustomInputMenuManager::menu(QWidget *parent)
 			if ((!first) && (i->category() != lastCategory))
 				menu->addSeparator();
 
-			Action *action = i->actionDescription()->createAction(actionDataSource, parent);
+			Action *action = i->actionDescription()->createAction(actionContext, parent);
 
 			if (i->category() == CustomInputMenuItem::MenuCategorySuggestion)
 				action->setFont(QFont(QString(), -1, QFont::Bold));

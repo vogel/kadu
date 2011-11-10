@@ -24,7 +24,7 @@
 #include "accounts/account.h"
 #include "contacts/contact-set.h"
 #include "gui/actions/action.h"
-#include "gui/actions/action-data-source.h"
+#include "gui/actions/action-context.h"
 #include "gui/actions/action-description.h"
 #include "model/roles.h"
 #include "protocols/protocol.h"
@@ -105,7 +105,7 @@ void TalkableMenuManager::removeListActionDescription(ActionDescription *actionD
 }
 
 // TODO: refactor, split
-QMenu * TalkableMenuManager::menu(QWidget *parent, ActionDataSource *actionDataSource)
+QMenu * TalkableMenuManager::menu(QWidget *parent, ActionContext *actionContext)
 {
 	sortContexMenu();
 	sortActions();
@@ -121,7 +121,7 @@ QMenu * TalkableMenuManager::menu(QWidget *parent, ActionDataSource *actionDataS
 		if (!first && lastCategory != menuItem.category())
 			actions->addSeparator();
 
-		Action *action = menuItem.actionDescription()->createAction(actionDataSource, parent);
+		Action *action = menuItem.actionDescription()->createAction(actionContext, parent);
 		actions->addAction(action);
 		action->checkState();
 
@@ -129,11 +129,11 @@ QMenu * TalkableMenuManager::menu(QWidget *parent, ActionDataSource *actionDataS
 		first = false;
 	}
 
-	if (actionDataSource->roles().contains(ContactRole))
+	if (actionContext->roles().contains(ContactRole))
 	{
-		if (1 == actionDataSource->contacts().size())
+		if (1 == actionContext->contacts().size())
 		{
-			Contact contact = *actionDataSource->contacts().constBegin();
+			Contact contact = *actionContext->contacts().constBegin();
 
 			if (contact.contactAccount() && contact.contactAccount().protocolHandler())
 			{
@@ -148,7 +148,7 @@ QMenu * TalkableMenuManager::menu(QWidget *parent, ActionDataSource *actionDataS
 					foreach (ActionDescription *actionDescription, protocolFactory->protocolMenuManager()->protocolActions())
 						if (actionDescription)
 						{
-							Action *action = actionDescription->createAction(actionDataSource, parent);
+							Action *action = actionDescription->createAction(actionContext, parent);
 							actions->addAction(action);
 							action->checkState();
 						}
@@ -170,7 +170,7 @@ QMenu * TalkableMenuManager::menu(QWidget *parent, ActionDataSource *actionDataS
 			menu->addSeparator();
 		}
 
-		Action *action = menuItem.actionDescription()->createAction(actionDataSource, parent);
+		Action *action = menuItem.actionDescription()->createAction(actionContext, parent);
 		menu->addAction(action);
 		action->checkState();
 

@@ -31,7 +31,7 @@
 class QMenu;
 class QWidget;
 
-class ActionDataSource;
+class ActionContext;
 class ActionDescription;
 class Contact;
 
@@ -62,7 +62,7 @@ public:
 	void addListActionDescription(ActionDescription *actionDescription, TalkableMenuItem::MenuCategory category, int priority);
 	void removeListActionDescription(ActionDescription *actionDescription);
 
-	QMenu * menu(QWidget *parent, ActionDataSource *actionDataSource);
+	QMenu * menu(QWidget *parent, ActionContext *actionContext);
 
 };
 
