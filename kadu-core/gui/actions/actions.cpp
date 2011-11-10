@@ -56,12 +56,12 @@ void Actions::remove(ActionDescription *action)
 		emit actionUnloaded(action);
 }
 
-QAction * Actions::createAction(const QString &name, MainWindow *kaduMainWindow)
+QAction * Actions::createAction(const QString &name, ActionDataSource *dataSource, QObject *parent)
 {
 	if (!contains(name))
 		return 0;
 
-	Action *result = value(name)->createAction(kaduMainWindow->actionDataSource(), kaduMainWindow);
+	Action *result = value(name)->createAction(dataSource, parent);
 
 	emit actionCreated(result);
 

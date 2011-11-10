@@ -278,13 +278,13 @@ bool ChatWidget::keyPressEventHandled(QKeyEvent *e)
 
 	if (HotKey::shortCut(e,"ShortCuts", "kadu_searchuser"))
 	{
-		Actions::instance()->createAction("lookupUserInfoAction", InputBox)->activate(QAction::Trigger);
+		Actions::instance()->createAction("lookupUserInfoAction", InputBox->actionDataSource(), InputBox)->activate(QAction::Trigger);
 		return true;
 	}
 
 	if (HotKey::shortCut(e,"ShortCuts", "kadu_openchatwith"))
 	{
-		Actions::instance()->createAction("openChatWithAction", InputBox)->activate(QAction::Trigger);
+		Actions::instance()->createAction("openChatWithAction", InputBox->actionDataSource(), InputBox)->activate(QAction::Trigger);
 		return true;
 	}
 

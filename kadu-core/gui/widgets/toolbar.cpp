@@ -156,7 +156,7 @@ QToolButton * ToolBar::createPushButton(QAction *before, ToolBarAction &action)
 	if (!kaduMainWindow->supportsActionType(Actions::instance()->value(action.actionName)->type()))
 		return 0;
 
-	action.action = Actions::instance()->createAction(action.actionName, kaduMainWindow);
+	action.action = Actions::instance()->createAction(action.actionName, kaduMainWindow->actionDataSource(), kaduMainWindow);
 	insertAction(before, action.action);
 
 	QToolButton *button = qobject_cast<QToolButton *>(widgetForAction(action.action));

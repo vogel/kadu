@@ -356,9 +356,9 @@ void ChatWidgetActions::moreActionsActionActivated(QAction *sender, bool toggled
 
 		ActionDescription *actionDescription = Actions::instance()->value(actionName);
 		if (ActionDescription::TypeChat == actionDescription->type())
-			menu.addAction(Actions::instance()->createAction(actionName, chatEditBox));
+			menu.addAction(Actions::instance()->createAction(actionName, chatEditBox->actionDataSource(), chatEditBox));
 		else if (ActionDescription::TypeUser == actionDescription->type())
-			subMenu->addAction(Actions::instance()->createAction(actionName, chatEditBox));
+			subMenu->addAction(Actions::instance()->createAction(actionName, chatEditBox->actionDataSource(), chatEditBox));
 	}
 
 	menu.addSeparator();
