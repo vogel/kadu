@@ -134,6 +134,8 @@ public:
 	Chat findChat(const BuddySet &buddies, bool create = true);
 	Chat findChat(const ContactSet &contacts, bool create = true);
 
+	Chat byDisplay(const QString &display);
+
 signals:
 	/**
 	 * @author Rafal 'Vogel' Malinowski

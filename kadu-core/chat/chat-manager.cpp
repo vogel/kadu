@@ -250,6 +250,22 @@ Chat ChatManager::findChat(const ContactSet &contacts, bool create)
 	return chat;
 }
 
+Chat ChatManager::byDisplay(const QString &display)
+{
+	QMutexLocker locker(&mutex());
+
+	ensureLoaded();
+
+	if (display.isEmpty())
+		return Chat::null;
+
+	foreach (const Chat &chat, items())
+		if (display == chat.display())
+			return chat;
+
+	return Chat::null;
+}
+
 void ChatManager::chatDataUpdated()
 {
 	Chat chat(sender());
