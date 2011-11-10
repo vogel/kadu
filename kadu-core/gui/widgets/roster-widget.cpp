@@ -78,16 +78,30 @@ void RosterWidget::createGui()
 	BuddiesViewButton->setChecked(true);
 	connect(ViewButtonGroup, SIGNAL(buttonClicked(int)), this, SLOT(viewButtonClicked()));
 
+	selectViewButtonsLayout->setContentsMargins(0, 0, 0, 0);
+	selectViewButtonsLayout->setSpacing(0);
 	selectViewButtonsLayout->addWidget(BuddiesViewButton);
 	selectViewButtonsLayout->addWidget(ChatsViewButton);
 	selectViewButtonsLayout->addStretch(1);
+
+	GroupBar = new GroupTabBar(this);
 
 	TalkableViews = new QStackedWidget(this);
 	TalkableViews->addWidget(createBuddiesWidget(TalkableViews));
 	TalkableViews->addWidget(createChatsWidget(TalkableViews));
 
+	QWidget* hbox = new QWidget(this);
+	QHBoxLayout *hboxLayout = new QHBoxLayout(hbox);
+	hboxLayout->setMargin(0);
+	hboxLayout->setSpacing(0);
+
+	hboxLayout->addWidget(GroupBar);
+	hboxLayout->setStretchFactor(GroupBar, 1);
+	hboxLayout->addWidget(TalkableViews);
+	hboxLayout->setStretchFactor(TalkableViews, 100);
+
 	layout->addWidget(selectViewButtons);
-	layout->addWidget(TalkableViews);
+	layout->addWidget(hbox);
 
 	viewButtonClicked();
 }
@@ -234,13 +248,6 @@ ModelChain * RosterWidget::createChatsModelChain()
 
 QWidget * RosterWidget::createBuddiesWidget(QWidget *parent)
 {
-	QWidget* hbox = new QWidget(parent);
-	QHBoxLayout *hboxLayout = new QHBoxLayout(hbox);
-	hboxLayout->setMargin(0);
-	hboxLayout->setSpacing(0);
-
-	GroupBar = new GroupTabBar(this);
-
 	BuddiesWidget = new FilteredTreeView(FilteredTreeView::FilterAtTop, parent);
 	BuddiesTree = new TalkableTreeView(BuddiesWidget);
 	BuddiesWidget->setTreeView(BuddiesTree);
@@ -252,12 +259,7 @@ QWidget * RosterWidget::createBuddiesWidget(QWidget *parent)
 	connect(BuddiesTree, SIGNAL(talkableActivated(Talkable)), this, SIGNAL(talkableActivated(Talkable)));
 	connect(BuddiesTree, SIGNAL(currentChanged(Talkable)), this, SIGNAL(currentChanged(Talkable)));
 
-	hboxLayout->addWidget(GroupBar);
-	hboxLayout->setStretchFactor(GroupBar, 1);
-	hboxLayout->addWidget(BuddiesWidget);
-	hboxLayout->setStretchFactor(BuddiesWidget, 100);
-
-	return hbox;
+	return BuddiesWidget;
 }
 
 QWidget * RosterWidget::createChatsWidget(QWidget *parent)
