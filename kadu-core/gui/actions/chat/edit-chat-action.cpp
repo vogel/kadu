@@ -17,10 +17,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QInputDialog>
-
 #include "chat/chat.h"
+#include "core/core.h"
 #include "gui/actions/action-context.h"
+#include "gui/windows/chat-data-window.h"
+#include "gui/windows/kadu-window.h"
 
 #include "edit-chat-action.h"
 
@@ -41,19 +42,12 @@ EditChatAction::~EditChatAction()
 
 void EditChatAction::triggered(QWidget *widget, ActionContext *context, bool toggled)
 {
+	Q_UNUSED(widget)
 	Q_UNUSED(toggled)
 
 	const Chat &chat = context->chat();
 	if (!chat)
 		return;
 
-	bool ok;
-	QString conferenceName = QInputDialog::getText(widget, tr("Name conference"),
-	                                               tr("Please enter the name for this conference"),
-	                                               QLineEdit::Normal, chat.display(), &ok);
-
-	if (!ok)
-		return;
-
-	chat.setDisplay(conferenceName);
+	ChatDataWindow::instance(chat, Core::instance()->kaduWindow())->show();
 }
