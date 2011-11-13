@@ -28,8 +28,6 @@
 #include <QtGui/QAbstractItemView>
 
 #include "accounts/account.h"
-#include "avatars/avatar.h"
-#include "avatars/avatar-manager.h"
 #include "buddies/buddy-preferred-manager.h"
 #include "chat/message/pending-messages-manager.h"
 #include "contacts/contact-manager.h"
@@ -41,7 +39,6 @@
 TalkableDelegate::TalkableDelegate(TalkableTreeView *parent) :
 		KaduTreeViewDelegate(parent), Chain(0)
 {
-	connect(AvatarManager::instance(), SIGNAL(avatarUpdated(Avatar)), this, SLOT(avatarUpdated(Avatar)));
 	connect(ContactManager::instance(), SIGNAL(contactUpdated(Contact&)), this, SLOT(contactUpdated(Contact&)));
 	connect(BuddyPreferredManager::instance(), SIGNAL(buddyUpdated(Buddy&)), this, SLOT(buddyUpdated(Buddy&)));
 	connect(PendingMessagesManager::instance(), SIGNAL(messageAdded(Message)), this, SLOT(messageStatusChanged(Message)));
@@ -50,7 +47,6 @@ TalkableDelegate::TalkableDelegate(TalkableTreeView *parent) :
 
 TalkableDelegate::~TalkableDelegate()
 {
-	disconnect(AvatarManager::instance(), SIGNAL(avatarUpdated(Avatar)), this, SLOT(avatarUpdated(Avatar)));
 	disconnect(ContactManager::instance(), SIGNAL(contactUpdated(Contact&)), this, SLOT(contactUpdated(Contact&)));
 	disconnect(BuddyPreferredManager::instance(), SIGNAL(buddyUpdated(Buddy&)), this, SLOT(buddyUpdated(Buddy&)));
 	disconnect(PendingMessagesManager::instance(), SIGNAL(messageAdded(Message)), this, SLOT(messageStatusChanged(Message)));
@@ -68,27 +64,18 @@ void TalkableDelegate::setChain(ModelChain *chain)
 		connect(Chain, SIGNAL(destroyed(QObject *)), this, SLOT(chainDestroyed()));
 }
 
-void TalkableDelegate::avatarUpdated(Avatar avatar)
+void TalkableDelegate::contactUpdated(Contact &contact)
 {
 	if (!Chain)
 		return;
 
-	if (avatar.avatarContact())
-	{
-		Buddy buddy = avatar.avatarContact().ownerBuddy();
-		Contact contact = avatar.avatarContact();
+	const Buddy &buddy = contact.ownerBuddy();
 
-		QModelIndex buddyIndex = Chain->indexForValue(buddy);
-		QModelIndex contactIndex = buddyIndex.child(buddy.contacts().indexOf(contact), 0);
-		emit sizeHintChanged(buddyIndex);
-		emit sizeHintChanged(contactIndex);
-	}
-}
+	const QModelIndex &buddyIndex = Chain->indexForValue(buddy);
+	const QModelIndex &contactIndex = buddyIndex.child(buddy.contacts().indexOf(contact), 0);
 
-void TalkableDelegate::contactUpdated(Contact &contact)
-{
-	if (Chain)
-		emit sizeHintChanged(Chain->indexForValue(contact.ownerBuddy()));
+	emit sizeHintChanged(buddyIndex);
+	emit sizeHintChanged(contactIndex);
 }
 
 void TalkableDelegate::buddyUpdated(Buddy &buddy)

@@ -76,7 +76,7 @@ void BuddyShared::collectGarbage()
 	CollectingGarbage = true;
 
 	// 1 is for current Buddy
-	int numberOfReferences = 1 + Contacts.length();
+	const int numberOfReferences = 1 + Contacts.length();
 	if (numberOfReferences != (int)ref)
 	{
 		CollectingGarbage = false;
@@ -88,7 +88,7 @@ void BuddyShared::collectGarbage()
 		Q_ASSERT(!contact.isNull());
 
 		// 1 is for current BuddyShared
-		int contactNumberOfReferences = 1 + (contact.data()->contactAvatar() ? 1 : 0);
+		const int contactNumberOfReferences = 1;
 		if (contactNumberOfReferences != (int)(contact.data()->ref))
 		{
 			CollectingGarbage = false;

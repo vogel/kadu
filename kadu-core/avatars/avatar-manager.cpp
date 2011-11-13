@@ -208,7 +208,6 @@ Avatar AvatarManager::byContact(Contact contact, NotFoundAction action)
 		return Avatar::null;
 
 	Avatar avatar = Avatar::create();
-	avatar.setAvatarContact(contact);
 	contact.setContactAvatar(avatar);
 
 	if (ActionCreateAndAdd == action)

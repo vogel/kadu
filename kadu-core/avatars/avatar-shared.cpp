@@ -50,14 +50,11 @@ AvatarShared::AvatarShared(const QUuid &uuid) :
 		Shared(uuid)
 {
 	AvatarsDir = profilePath("avatars/");
-	AvatarContact = new Contact();
 }
 
 AvatarShared::~AvatarShared()
 {
 	ref.ref();
-
-	delete AvatarContact;
 }
 
 StorableObject * AvatarShared::storageParent()
@@ -146,10 +143,6 @@ void AvatarShared::aboutToBeRemoved()
 	 */
 	Avatar guard(this);
 
-	// cleanup references
-	AvatarContact->setContactAvatar(Avatar::null);
-	*AvatarContact = Contact::null;
-
 	QFile avatarFile(filePath());
 	if (avatarFile.exists())
 		avatarFile.remove();
@@ -175,5 +168,3 @@ void AvatarShared::emitUpdated()
 {
 	emit updated();
 }
-
-KaduShared_PropertyPtrDefCRW(AvatarShared, Contact, avatarContact, AvatarContact)

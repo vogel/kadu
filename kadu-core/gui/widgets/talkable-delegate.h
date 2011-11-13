@@ -33,7 +33,6 @@
 #include "gui/widgets/talkable-delegate-configuration.h"
 #include "gui/widgets/kadu-tree-view-delegate.h"
 
-class Avatar;
 class Contact;
 class ModelChain;
 
@@ -44,7 +43,6 @@ class TalkableDelegate : public KaduTreeViewDelegate
 	ModelChain *Chain;
 
 private slots:
-	void avatarUpdated(Avatar avatar);
 	void contactUpdated(Contact &contact);
 	void buddyUpdated(Buddy &buddy);
 	void messageStatusChanged(Message message);
@@ -59,7 +57,6 @@ public:
 };
 
 // for MOC
-#include "avatars/avatar.h"
 #include "contacts/contact.h"
 
 #endif // TALKABLE_DELEGATE_H
