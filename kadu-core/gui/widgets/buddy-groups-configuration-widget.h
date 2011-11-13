@@ -28,8 +28,7 @@
 
 #include "exports.h"
 
-class QCheckBox;
-class QScrollArea;
+class QListWidget;
 
 class KADUAPI BuddyGroupsConfigurationWidget : public QWidget
 {
@@ -37,8 +36,7 @@ class KADUAPI BuddyGroupsConfigurationWidget : public QWidget
 
 	Buddy MyBuddy;
 
-	QScrollArea *Groups;
-	QList<QCheckBox *> GroupCheckBoxList;
+	QListWidget *GroupList;
 
 	void createGui();
 
