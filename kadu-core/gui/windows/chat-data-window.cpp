@@ -22,14 +22,12 @@
 #include <QtGui/QKeyEvent>
 #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
-#include <QtGui/QComboBox>
 #include <QtGui/QPushButton>
-#include <QtGui/QScrollArea>
 #include <QtGui/QVBoxLayout>
 
 #include "buddies/group.h"
-#include "buddies/group-manager.h"
 #include "chat/chat-manager.h"
+#include "gui/widgets/group-list.h"
 #include "icons/icons-manager.h"
 #include "misc/misc.h"
 #include "activate.h"
@@ -84,40 +82,26 @@ void ChatDataWindow::createGui()
 	QVBoxLayout *layout = new QVBoxLayout(this);
 
 	QWidget *nameWidget = new QWidget(this);
-	layout->addWidget(nameWidget);
 
 	QHBoxLayout *nameLayout = new QHBoxLayout(nameWidget);
 
 	QLabel *numberLabel = new QLabel(tr("Visible Name") + ':', nameWidget);
-	nameLayout->addWidget(numberLabel);
 
 	DisplayEdit = new QLineEdit(nameWidget);
 	DisplayEdit->setText(MyChat.display());
+
+	nameLayout->addWidget(numberLabel);
 	nameLayout->addWidget(DisplayEdit);
 
 	QLabel *groupsLabel = new QLabel(tr("Add this chat to the groups below by checking the box next to the appropriate groups."), this);
 	groupsLabel->setWordWrap(true);
 
+	ChatGroupList = new GroupList(this);
+	ChatGroupList->setCheckedGroups(MyChat.groups());
+
+	layout->addWidget(nameWidget);
 	layout->addWidget(groupsLabel);
-
-	QScrollArea *groups = new QScrollArea(this);
-	layout->addWidget(groups);
-
-	groups->setFrameShape(QFrame::NoFrame);
-	groups->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-	groups->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
-
-	QVBoxLayout *groupsLayout = new QVBoxLayout(groups);
-
-	foreach (const Group &group, GroupManager::instance()->items())
-	{
-		QCheckBox *groupCheckBox = new QCheckBox(group.name(), groups);
-		groupCheckBox->setChecked(MyChat.isInGroup(group));
-		groupsLayout->addWidget(groupCheckBox);
-		GroupCheckBoxList.append(groupCheckBox);
-	}
-
-	layout->addStretch(1);
+	layout->addWidget(ChatGroupList);
 
 	createButtons(layout);
 
@@ -148,12 +132,7 @@ void ChatDataWindow::updateChat()
 	MyChat.blockUpdatedSignal();
 
 	MyChat.setDisplay(DisplayEdit->text());
-	foreach (const Group &group, MyChat.groups())
-		MyChat.removeFromGroup(group);
-
-	foreach (QCheckBox *groupBox, GroupCheckBoxList)
-		if (groupBox->isChecked())
-			MyChat.addToGroup(GroupManager::instance()->byName(groupBox->text()));
+	MyChat.setGroups(ChatGroupList->checkedGroups());
 
 	MyChat.unblockUpdatedSignal();
 }

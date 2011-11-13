@@ -27,9 +27,10 @@
 
 #include "exports.h"
 
-class QCheckBox;
 class QLineEdit;
 class QPushButton;
+
+class GroupList;
 
 class KADUAPI ChatDataWindow : public QWidget
 {
@@ -40,7 +41,7 @@ class KADUAPI ChatDataWindow : public QWidget
 	Chat MyChat;
 
 	QLineEdit *DisplayEdit;
-	QList<QCheckBox *> GroupCheckBoxList;
+	GroupList *ChatGroupList;
 
 	QPushButton *OkButton;
 	QPushButton *ApplyButton;
