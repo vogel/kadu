@@ -1,4 +1,4 @@
-"/*
+/*
  * %kadu copyright begin%
  * Copyright 2011 Piotr Dąbrowski (ultr@ultr.pl)
  * Copyright 2010, 2011 Bartosz Brachaczek (b.brachaczek@gmail.com)
@@ -63,6 +63,6 @@ void EncryptionActions::checkEnableEncryption(const Chat &chat, bool check)
 	// this slot is called for each chat when new encryption implementation is loaded/unloaded
 	// so no need to optimize it
 	foreach (Action *action, EnableEncryptionActionDescriptionInstance->actions())
-		if (action->chat() == chat)
+		if (action->context()->chat() == chat)
 			action->setChecked(check);
 }

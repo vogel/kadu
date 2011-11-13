@@ -25,7 +25,8 @@
 #include "contacts/contact-set.h"
 #include "core/core.h"
 #include "gui/actions/action.h"
-#include "gui/widgets/buddies-list-view-menu-manager.h"
+#include "gui/actions/action-context.h"
+#include "gui/widgets/talkable-menu-manager.h"
 #include "protocols/services/chat-service.h"
 
 #include "keys/keys-manager.h"
@@ -43,13 +44,13 @@ SendPublicKeyActionDescription::SendPublicKeyActionDescription(QObject *parent) 
 
 	registerAction();
 
-	BuddiesListViewMenuManager::instance()->addListActionDescription(this,
-			BuddiesListViewMenuItem::MenuCategoryManagement, 20);
+	TalkableMenuManager::instance()->addListActionDescription(this,
+			TalkableMenuItem::CategoryManagement, 20);
 }
 
 SendPublicKeyActionDescription::~SendPublicKeyActionDescription()
 {
-	BuddiesListViewMenuManager::instance()->removeListActionDescription(this);
+	TalkableMenuManager::instance()->removeListActionDescription(this);
 }
 
 void SendPublicKeyActionDescription::actionTriggered(QAction *sender, bool toggled)
@@ -60,7 +61,7 @@ void SendPublicKeyActionDescription::actionTriggered(QAction *sender, bool toggl
 	if (!action)
 		return;
 
-	foreach (const Contact &contact, action->contacts())
+	foreach (const Contact &contact, action->context()->contacts())
 		sendPublicKey(contact);
 }
 
@@ -68,11 +69,11 @@ void SendPublicKeyActionDescription::updateActionState(Action *action)
 {
 	action->setEnabled(false);
 
-	ContactSet contacts = action->contacts();
+	ContactSet contacts = action->context()->contacts();
 	if (contacts.isEmpty())
 		return;
 
-	if (action->buddies().contains(Core::instance()->myself()))
+	if (action->context()->buddies().contains(Core::instance()->myself()))
 		return;
 
 	foreach (const Contact &contact, contacts)

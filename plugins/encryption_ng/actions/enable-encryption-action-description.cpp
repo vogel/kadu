@@ -21,6 +21,7 @@
 
 #include "chat/chat.h"
 #include "gui/actions/action.h"
+#include "gui/actions/action-context.h"
 
 #include "encryption-manager.h"
 #include "encryption-provider-manager.h"
@@ -54,10 +55,10 @@ void EnableEncryptionActionDescription::actionTriggered(QAction *sender, bool to
 	if (!action)
 		return;
 
-	if (!action->chat())
+	if (!action->context()->chat())
 		return;
 
-	if (!EncryptionManager::instance()->setEncryptionEnabled(action->chat(), toggled, true) && toggled)
+	if (!EncryptionManager::instance()->setEncryptionEnabled(action->context()->chat(), toggled, true) && toggled)
 	{
 		// disable it, we could not enable encryption for this contact
 		sender->setEnabled(false);
@@ -67,7 +68,7 @@ void EnableEncryptionActionDescription::actionTriggered(QAction *sender, bool to
 
 void EnableEncryptionActionDescription::updateActionState(Action *action)
 {
-	Chat chat = action->chat();
+	Chat chat = action->context()->chat();
 	action->setEnabled(chat && EncryptionProviderManager::instance()->canEncrypt(chat));
 }
 
@@ -77,6 +78,6 @@ void EnableEncryptionActionDescription::canEncryptChanged(const Chat &chat)
 	// this slot is called for each chat when new encryption implementation is loaded/unloaded
 	// so no need to optimize it
 	foreach (Action *action, actions())
-		if (action->chat() == chat)
+		if (action->context()->chat() == chat)
 			action->checkState();
 }
