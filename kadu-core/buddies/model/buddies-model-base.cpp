@@ -144,6 +144,29 @@ QVariant BuddiesModelBase::data(const QModelIndex &index, int role) const
 		return ContactDataExtractor::data(buddyContact(parentIndex, index.row()), role, false);
 }
 
+QModelIndexList BuddiesModelBase::indexListForValue(const QVariant &value) const
+{
+	QModelIndexList result;
+
+	const Buddy &buddy = value.value<Buddy>();
+	if (buddy)
+	{
+		result.append(index(buddyIndex(buddy), 0));
+		return result;
+	}
+
+	const Contact &contact = value.value<Contact>();
+	if (contact)
+	{
+		const int contactIndexInBuddy = buddy.contacts().indexOf(contact);
+		result.append(index(buddyIndex(buddy), 0).child(contactIndexInBuddy, 0));
+		return result;
+	}
+
+
+	return result;
+}
+
 // D&D
 
 QStringList BuddiesModelBase::mimeTypes() const

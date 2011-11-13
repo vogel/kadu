@@ -46,6 +46,7 @@ protected:
 	virtual void accountRegistered(Account account);
 	virtual void accountUnregistered(Account account);
 
+	virtual int buddyIndex(const Buddy &buddy) const = 0;
 	virtual Buddy buddyAt(int index) const = 0;
 
 public:
@@ -61,6 +62,9 @@ public:
 
 	virtual QModelIndex parent(const QModelIndex &child) const;
 	virtual QVariant data(const QModelIndex &index, int role) const;
+
+	// AbstractContactsModel implementation
+	virtual QModelIndexList indexListForValue(const QVariant &value) const;
 
 	// D&D
 	virtual QStringList mimeTypes() const;

@@ -55,7 +55,7 @@ private slots:
 	void contactUpdated(Contact &contact);
 
 protected:
-	// AbstractContactsModel implementation
+	virtual int buddyIndex(const Buddy &buddy) const;
 	virtual Buddy buddyAt(int index) const;
 
 public:
@@ -63,9 +63,6 @@ public:
 	virtual ~BuddiesModel();
 
 	virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
-
-	// AbstractContactsModel implementation
-	virtual QModelIndexList indexListForValue(const QVariant &value) const;
 
 	void setIncludeMyself(bool includeMyself);
 	bool includeMyself() const { return IncludeMyself; }

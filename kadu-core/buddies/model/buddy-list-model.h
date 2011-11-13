@@ -33,6 +33,8 @@
 
 #include "buddies-model-base.h"
 
+class Buddy;
+
 class BuddyListModel : public BuddiesModelBase
 {
 	Q_OBJECT
@@ -40,7 +42,7 @@ class BuddyListModel : public BuddiesModelBase
 	BuddyList List;
 
 protected:
-	// AbstractContactsModel implementation
+	virtual int buddyIndex(const Buddy &buddy) const;
 	virtual Buddy buddyAt(int index) const;
 
 public:
@@ -48,9 +50,6 @@ public:
 	virtual ~BuddyListModel();
 
 	virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
-
-	// AbstractContactsModel implementation
-	virtual QModelIndexList indexListForValue(const QVariant &value) const;
 
 };
 

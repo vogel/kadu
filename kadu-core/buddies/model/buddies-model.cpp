@@ -106,25 +106,20 @@ int BuddiesModel::rowCount(const QModelIndex &parent) const
 	return BuddyManager::instance()->count() + (IncludeMyself ? 1 : 0);
 }
 
+int BuddiesModel::buddyIndex(const Buddy &buddy) const
+{
+	if (IncludeMyself && buddy == Core::instance()->myself())
+		return BuddyManager::instance()->count();
+	else
+		return BuddyManager::instance()->indexOf(buddy);
+}
+
 Buddy BuddiesModel::buddyAt(int index) const
 {
 	if (IncludeMyself && (index == BuddyManager::instance()->count()))
 		return Core::instance()->myself();
 	else
 		return BuddyManager::instance()->byIndex(index);
-}
-
-QModelIndexList BuddiesModel::indexListForValue(const QVariant &value) const
-{
-	QModelIndexList result;
-
-	const Buddy &buddy = value.value<Buddy>();
-	if (IncludeMyself && buddy == Core::instance()->myself())
-		result.append(index(BuddyManager::instance()->count(), 0));
-	else
-		result.append(index(BuddyManager::instance()->indexOf(buddy), 0));
-
-	return result;
 }
 
 void BuddiesModel::buddyAboutToBeAdded(Buddy &buddy)

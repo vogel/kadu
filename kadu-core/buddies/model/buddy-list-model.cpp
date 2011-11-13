@@ -47,17 +47,15 @@ int BuddyListModel::rowCount(const QModelIndex &parent) const
 		: List.count();
 }
 
+int BuddyListModel::buddyIndex(const Buddy &buddy) const
+{
+	return List.indexOf(buddy);
+}
+
 Buddy BuddyListModel::buddyAt(int index) const
 {
 	if (index >= 0 && index < List.size())
 		return List.at(index);
 	else
 		return Buddy::null;
-}
-
-QModelIndexList BuddyListModel::indexListForValue(const QVariant &value) const
-{
-	QModelIndexList result;
-	result.append(index(List.indexOf(value.value<Buddy>()), 0));
-	return result;
 }
