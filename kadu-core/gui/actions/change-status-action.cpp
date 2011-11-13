@@ -21,6 +21,7 @@
 #include <QtGui/QMenu>
 
 #include "gui/actions/action.h"
+#include "gui/actions/action-context.h"
 #include "gui/widgets/status-menu.h"
 #include "gui/status-icon.h"
 
@@ -43,7 +44,7 @@ ChangeStatusAction::~ChangeStatusAction()
 
 QMenu * ChangeStatusAction::menuForAction(Action *action)
 {
-	StatusContainer *container = action->statusContainer();
+	StatusContainer *container = action->context()->statusContainer();
 	if (!container)
 		return 0;
 
@@ -57,7 +58,7 @@ void ChangeStatusAction::actionInstanceCreated(Action *action)
 {
 	ActionDescription::actionInstanceCreated(action);
 
-	StatusContainer *statusContainer = action->statusContainer();
+	StatusContainer *statusContainer = action->context()->statusContainer();
 	if (statusContainer)
 	{
 		StatusIcon *icon = new StatusIcon(statusContainer, action);

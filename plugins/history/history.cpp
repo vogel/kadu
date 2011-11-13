@@ -79,7 +79,7 @@ void disableNonHistoryContacts(Action *action)
 {
 	kdebugf();
 	action->setEnabled(false);
-	ContactSet contacts = action->contacts();
+	const ContactSet &contacts = action->context()->contacts();
 
 	if (contacts.isEmpty())
 		return;
@@ -184,8 +184,8 @@ void History::clearHistoryActionActivated(QAction *sender, bool toggled)
 	if (!action)
 		return;
 
-	if (action->chat())
-		CurrentStorage->clearChatHistory(action->chat());
+	if (action->context()->chat())
+		CurrentStorage->clearChatHistory(action->context()->chat());
 }
 
 void History::chatCreated(ChatWidget *chatWidget)

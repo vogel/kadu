@@ -113,13 +113,14 @@ void checkBuddyProperties(Action *action)
 {
 	kdebugf();
 
-	if (!action->buddy())
+	const Buddy &buddy = action->context()->buddies().toBuddy();
+	if (!buddy)
 	{
 		action->setEnabled(false);
 		return;
 	}
 
-	if (action->buddies().contains(Core::instance()->myself()))
+	if (buddy == Core::instance()->myself())
 	{
 		action->setEnabled(false);
 		return;
@@ -127,7 +128,7 @@ void checkBuddyProperties(Action *action)
 
 	action->setEnabled(true);
 
-	if (action->buddy().isAnonymous())
+	if (buddy.isAnonymous())
 	{
 		action->setIcon(KaduIcon("contact-new"));
 		action->setText(qApp->translate("KaduWindowActions", "Add Buddy..."));
@@ -143,29 +144,30 @@ void checkBuddyProperties(Action *action)
 
 void disableNoSearchService(Action *action)
 {
-	action->setEnabled(action->contact()
-			&& action->contact().contactAccount().protocolHandler()
-			&& action->contact().contactAccount().protocolHandler()->searchService());
+	const Contact &contact = action->context()->contacts().toContact();
+	action->setEnabled(contact
+			&& contact.contactAccount().protocolHandler()
+			&& contact.contactAccount().protocolHandler()->searchService());
 }
 
 void disableNoContact(Action *action)
 {
-	action->setEnabled(action->contact());
+	action->setEnabled(action->context()->contacts().toContact());
 }
 
 void disableNoDescription(Action *action)
 {
-	action->setEnabled(!action->contact().currentStatus().description().isEmpty());
+	action->setEnabled(!action->context()->contacts().toContact().currentStatus().description().isEmpty());
 }
 
 void disableNoDescriptionUrl(Action *action)
 {
-	action->setEnabled(action->contact().currentStatus().description().indexOf(UrlHandlerManager::instance()->urlRegExp()) >= 0);
+	action->setEnabled(action->context()->contacts().toContact().currentStatus().description().indexOf(UrlHandlerManager::instance()->urlRegExp()) >= 0);
 }
 
 void disableNoEMail(Action *action)
 {
-	const Buddy &buddy = action->buddy();
+	const Buddy &buddy = action->context()->buddies().toBuddy();
 	bool hasMail = !buddy.email().isEmpty() && buddy.email().indexOf(UrlHandlerManager::instance()->mailRegExp()) == 0;
 
 	action->setEnabled(hasMail);
@@ -176,7 +178,7 @@ void disableIfContactSelected(Action *action)
 	if (action && action->context())
 		action->setEnabled(!action->context()->roles().contains(ContactRole) && !action->context()->buddies().isEmpty());
 
-	if (action->buddies().contains(Core::instance()->myself()))
+	if (action->context()->buddies().contains(Core::instance()->myself()))
 		action->setEnabled(false);
 }
 
@@ -184,7 +186,7 @@ void disableMerge(Action *action)
 {
 	disableIfContactSelected(action);
 
-	if (1 != action->buddies().size())
+	if (1 != action->context()->buddies().size())
 		action->setEnabled(false);
 }
 
@@ -489,7 +491,7 @@ void KaduWindowActions::onlineAndDescUsersActionCreated(Action *action)
 
 void KaduWindowActions::editUserActionCreated(Action *action)
 {
-	Buddy buddy = action->buddy();
+	const Buddy &buddy = action->context()->buddies().toBuddy();
 	action->setEnabled(buddy);
 
 	if (buddy && buddy.isAnonymous())
@@ -541,8 +543,9 @@ void KaduWindowActions::showMyselfActionCreated(Action *action)
 
 void KaduWindowActions::writeEmailActionCreated(Action *action)
 {
-	if (action->buddy())
-		connect(action->buddy(), SIGNAL(updated()), action, SLOT(checkState()));
+	const Buddy &buddy = action->context()->buddies().toBuddy();
+	if (buddy)
+		connect(buddy, SIGNAL(updated()), action, SLOT(checkState()));
 }
 
 void KaduWindowActions::configurationActionActivated(QAction *sender, bool toggled)
@@ -597,7 +600,7 @@ void KaduWindowActions::addUserActionActivated(QAction *sender, bool toggled)
 	if (!action)
 		return;
 
-	Buddy buddy = action->buddy();
+	const Buddy &buddy = action->context()->buddies().toBuddy();
 
 	if (buddy.isAnonymous())
 		(new AddBuddyWindow(action->parentWidget(), buddy, true))->show();
@@ -617,7 +620,7 @@ void KaduWindowActions::mergeContactActionActivated(QAction *sender, bool toggle
 	if (!action)
 		return;
 
-	Buddy buddy = action->buddy();
+	const Buddy &buddy = action->context()->buddies().toBuddy();
 	if (buddy)
 	{
 		MergeBuddiesWindow *mergeBuddiesWindow = new MergeBuddiesWindow(buddy);
@@ -743,7 +746,7 @@ void KaduWindowActions::writeEmailActionActivated(QAction *sender, bool toggled)
 	if (!action)
 		return;
 
-	Buddy buddy = action->buddy();
+	const Buddy &buddy = action->context()->buddies().toBuddy();
 	if (!buddy)
 		return;
 
@@ -763,12 +766,11 @@ void KaduWindowActions::copyDescriptionActionActivated(QAction *sender, bool tog
 	if (!action)
 		return;
 
-	Contact data = action->contact();
-
-	if (!data)
+	const Contact &contact = action->context()->contacts().toContact();
+	if (!contact)
 		return;
 
-	QString description = data.currentStatus().description();
+	const QString &description = contact.currentStatus().description();
 	if (description.isEmpty())
 		return;
 
@@ -788,12 +790,11 @@ void KaduWindowActions::openDescriptionLinkActionActivated(QAction *sender, bool
 	if (!action)
 		return;
 
-	Contact data = action->contact();
-
-	if (!data)
+	const Contact &contact = action->context()->contacts().toContact();
+	if (!contact)
 		return;
 
-	QString description = data.currentStatus().description();
+	const QString &description = contact.currentStatus().description();
 	if (description.isEmpty())
 		return;
 
@@ -815,7 +816,7 @@ void KaduWindowActions::copyPersonalInfoActionActivated(QAction *sender, bool to
 	if (!action)
 		return;
 
-	ContactSet contacts = action->contacts();
+	ContactSet contacts = action->context()->contacts();
 
 	QStringList infoList;
 	QString copyPersonalDataSyntax = config_file.readEntry("General", "CopyPersonalDataSyntax", tr("Contact: %a[ (%u)]\n[First name: %f\n][Last name: %r\n][Mobile: %m\n]"));
@@ -842,7 +843,7 @@ void KaduWindowActions::lookupInDirectoryActionActivated(QAction *sender, bool t
 	if (!action)
 		return;
 
-	Buddy buddy = action->buddy();
+	const Buddy &buddy = action->context()->buddies().toBuddy();
 	if (!buddy)
 	{
 		(new SearchWindow(Core::instance()->kaduWindow()))->show();

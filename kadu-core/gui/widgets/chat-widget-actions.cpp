@@ -87,7 +87,7 @@ static void disableNoChatImageService(Action *action)
 	if (!chatEditBox)
 		return;
 
-	Account account = action->chat().chatAccount();
+	Account account = action->context()->chat().chatAccount();
 	if (!account)
 		return;
 
@@ -100,7 +100,7 @@ static void disableNoChatImageService(Action *action)
 
 static void checkBlocking(Action *action)
 {
-	BuddySet buddies = action->buddies();
+	BuddySet buddies = action->context()->buddies();
 
 	if (!buddies.count() || buddies.contains(Core::instance()->myself()))
 	{
@@ -126,7 +126,7 @@ static void disableNoGadu(Action *action)
 {
 	action->setEnabled(false);
 
-	Chat chat = action->chat();
+	Chat chat = action->context()->chat();
 	if (!chat)
 		return;
 
@@ -473,7 +473,7 @@ void ChatWidgetActions::blockUserActionActivated(QAction *sender, bool toggled)
 	if (!action)
 		return;
 
-	BuddySet buddies = action->buddies();
+	BuddySet buddies = action->context()->buddies();
 	if (buddies.isEmpty())
 		return;
 
@@ -502,9 +502,9 @@ void ChatWidgetActions::updateBlockingActions(Buddy buddy)
 
 	foreach (Action *action, BlockUser->actions())
 	{
-		ContactSet contacts = action->contacts();
-		if (1 == contacts.size())
-			if (buddyContacts.contains(*contacts.constBegin()))
+		Contact contact = action->context()->contacts().toContact();
+		if (contact)
+			if (buddyContacts.contains(contact))
 				action->setChecked(buddy.isBlocked());
 	}
 }
@@ -519,7 +519,7 @@ void ChatWidgetActions::openChatActionActivated(QAction *sender, bool toggled)
 	if (!action)
 		return;
 
-	Chat chat = action->chat();
+	Chat chat = action->context()->chat();
 	if (chat)
 		ChatWidgetManager::instance()->openPendingMessages(chat, true);
 

@@ -64,7 +64,7 @@
 
 static void disableNewTab(Action *action)
 {
-	action->setEnabled(action->chat());
+	action->setEnabled(action->context()->chat());
 
 	if (config_file.readBoolEntry("Chat", "DefaultTabs"))
 		action->setText(qApp->translate("TabsManager", "Chat in New Window"));
@@ -320,7 +320,7 @@ void TabsManager::onNewTab(QAction *sender, bool toggled)
 	if (!action)
 		return;
 
-	Chat chat = action->chat();
+	Chat chat = action->context()->chat();
 	if (!chat)
 		return;
 
@@ -368,7 +368,7 @@ void TabsManager::insertTab(ChatWidget* chat)
 
 	foreach (Action *action, AttachToTabsActionDescription->actions())
 	{
-		if (action->contacts() == contacts)
+		if (action->context()->contacts() == contacts)
 			action->setChecked(true);
 	}
 
@@ -556,7 +556,7 @@ void TabsManager::attachToTabsActionCreated(Action *action)
 	if (!chatWidget)
 		return;
 
-	ContactSet contacts = action->contacts();
+	ContactSet contacts = action->context()->contacts();
 
 	if (contacts.count() != 1 && !ConfigConferencesInTabs && TabDialog->indexOf(chatWidget) == -1)
 		action->setEnabled(false);

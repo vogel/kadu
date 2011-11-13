@@ -106,5 +106,5 @@ void SmsActions::sendSmsActionActivated(QAction *sender)
 	if (!action)
 		return;
 
-	newSms(action->buddy().mobile());
+	newSms(action->context()->buddies().toBuddy().mobile());
 }

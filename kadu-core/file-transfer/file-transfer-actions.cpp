@@ -44,7 +44,7 @@ void disableNonFileTransferContacts(Action *action)
 
 	action->setEnabled(false);
 
-	const ContactSet &contacts = action->contacts();
+	const ContactSet &contacts = action->context()->contacts();
 
 	if (contacts.isEmpty())
 		return;
@@ -99,7 +99,7 @@ void FileTransferActions::sendFileActionActivated(QAction *sender, bool toggled)
 	if (!action)
 		return;
 
-	ContactSet contacts = action->contacts();
+	ContactSet contacts = action->context()->contacts();
 	if (!contacts.isEmpty())
 		selectFilesAndSend(contacts);
 

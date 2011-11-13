@@ -69,44 +69,6 @@ Action::~Action()
 	}
 }
 
-Contact Action::contact()
-{
-	ContactSet contactSet = contacts();
-	if (1 != contactSet.count())
-		return Contact::null;
-	else
-		return *contactSet.constBegin();
-}
-
-ContactSet Action::contacts()
-{
-	return Context->contacts();
-}
-
-Buddy Action::buddy()
-{
-	BuddySet buddySet = buddies();
-	if (1 != buddySet.count())
-		return Buddy::null;
-	else
-		return *buddySet.constBegin();
-}
-
-BuddySet Action::buddies()
-{
-	return Context->buddies();
-}
-
-Chat Action::chat()
-{
-	return Context->chat();
-}
-
-StatusContainer * Action::statusContainer()
-{
-	return Context->statusContainer();
-}
-
 ActionContext * Action::context()
 {
 	return Context;
@@ -147,10 +109,10 @@ void Action::setIcon(const KaduIcon &icon)
 
 void disableEmptyContacts(Action *action)
 {
-	action->setEnabled(!action->contacts().isEmpty());
+	action->setEnabled(!action->context()->contacts().isEmpty());
 }
 
 void disableNoChat(Action *action)
 {
-	action->setEnabled(action->chat());
+	action->setEnabled(action->context()->chat());
 }

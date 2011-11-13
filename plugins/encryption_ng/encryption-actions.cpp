@@ -48,7 +48,7 @@
 
 static void checkCanEncrypt(Action *action)
 {
-	Chat chat = action->chat();
+	Chat chat = action->context()->chat();
 	if (!chat)
 	{
 		action->setEnabled(false);
@@ -62,11 +62,11 @@ static void checkSendKey(Action *action)
 {
 	action->setEnabled(false);
 
-	ContactSet contacts = action->contacts();
+	const ContactSet &contacts = action->context()->contacts();
 	if (contacts.isEmpty())
 		return;
 
-	if (action->buddies().contains(Core::instance()->myself()))
+	if (action->context()->buddies().contains(Core::instance()->myself()))
 		return;
 
 	foreach (const Contact &contact, contacts)
@@ -155,7 +155,7 @@ void EncryptionActions::canEncryptChanged(const Chat &chat)
 	// this slot is called for each chat when new encryption implementation is loaded/unloaded
 	// so no need to optimize it
 	foreach (Action *action, EnableEncryptionActionDescription->actions())
-		if (action->chat() == chat)
+		if (action->context()->chat() == chat)
 			action->checkState();
 }
 
@@ -194,10 +194,10 @@ void EncryptionActions::enableEncryptionActionActivated(QAction *sender, bool to
 	if (!action)
 		return;
 
-	if (!action->chat())
+	if (!action->context()->chat())
 		return;
 
-	if (!EncryptionManager::instance()->setEncryptionEnabled(action->chat(), toggled, true) && toggled)
+	if (!EncryptionManager::instance()->setEncryptionEnabled(action->context()->chat(), toggled, true) && toggled)
 	{
 		// disable it, we could not enable encryption for this contact
 		sender->setEnabled(false);
@@ -213,7 +213,7 @@ void EncryptionActions::sendPublicKeyActionActivated(QAction *sender, bool toggl
 	if (!action)
 		return;
 
-	foreach (const Contact &contact, action->contacts())
+	foreach (const Contact &contact, action->context()->contacts())
 		sendPublicKey(contact);
 }
 
@@ -281,6 +281,6 @@ void EncryptionActions::checkEnableEncryption(const Chat &chat, bool check)
 	// this slot is called for each chat when new encryption implementation is loaded/unloaded
 	// so no need to optimize it
 	foreach (Action *action, EnableEncryptionActionDescription->actions())
-		if (action->chat() == chat)
+		if (action->context()->chat() == chat)
 			action->setChecked(check);
 }

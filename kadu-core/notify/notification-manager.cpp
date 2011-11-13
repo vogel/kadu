@@ -209,7 +209,7 @@ void NotificationManager::notifyAboutUserActionActivated(QAction *sender, bool t
 	if (!action)
 		return;
 
-	BuddySet buddies = action->buddies();
+	const BuddySet &buddies = action->context()->buddies();
 
 	bool on = true;
 	foreach (const Buddy &buddy, buddies)
@@ -244,7 +244,7 @@ void NotificationManager::notifyAboutUserActionActivated(QAction *sender, bool t
 	}
 
 	foreach (Action *action, notifyAboutUserActionDescription->actions())
-		if (action->contacts().toBuddySet() == buddies)
+		if (action->context()->contacts().toBuddySet() == buddies)
 			action->setChecked(!on);
 
 	kdebugf2();
@@ -678,10 +678,10 @@ void checkNotify(Action *action)
 {
 	kdebugf();
 
-	action->setEnabled(!action->buddies().isEmpty());
+	action->setEnabled(!action->context()->buddies().isEmpty());
 
 	bool on = true;
-	foreach (const Buddy &buddy, action->contacts().toBuddySet())
+	foreach (const Buddy &buddy, action->context()->contacts().toBuddySet())
 		if (buddy.data())
 		{
 			BuddyNotifyData *bnd = buddy.data()->moduleStorableData<BuddyNotifyData>("notify", NotificationManager::instance(), false);

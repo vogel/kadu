@@ -87,56 +87,6 @@ public:
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns Contact instance if current invocation is connected with exactly one Contact.
-	 *
-	 * Returns Contact instance is current invocation is connected with exactly one Contact. If no
-	 * ActionContext returns 0 or more than one Contact instance, Contact:null will be returned.
-	 */
-	Contact contact();
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns ContactSet instance for current invocation.
-	 *
-	 * Returns ContactSet instance for current invocation.
-	 */
-	ContactSet contacts();
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns Buddy instance if current invocation is connected with exactly one Buddy.
-	 *
-	 * Returns Buddy instance is current invocation is connected with exactly one Buddy. If no
-	 * ActionContext returns 0 or more than one Buddy instance, Buddy:null will be returned.
-	 */
-	Buddy buddy();
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns BuddySet instance for current invocation.
-	 *
-	 * Returns BuddySet instance for current invocation.
-	 */
-	BuddySet buddies();
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns Chat instance for current invocation.
-	 *
-	 * Returns Chat instance for current invocation.
-	 */
-	Chat chat();
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns StatusContainer instance for current invocation.
-	 *
-	 * Returns StatusContainer instance for current invocation.
-	 */
-	StatusContainer * statusContainer();
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
 	 * @short Returns ActionContext instance for current invocation.
 	 *
 	 * Returns ActionContext instance for current invocation. Never returns null.
