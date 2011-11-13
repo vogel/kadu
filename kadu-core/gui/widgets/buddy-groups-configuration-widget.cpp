@@ -22,12 +22,11 @@
 #include <QtGui/QCheckBox>
 #include <QtGui/QGroupBox>
 #include <QtGui/QLabel>
-#include <QtGui/QListWidget>
 #include <QtGui/QVBoxLayout>
 
 #include "contacts/contact.h"
 #include "buddies/group.h"
-#include "buddies/group-manager.h"
+#include "gui/widgets/group-list.h"
 #include "misc/misc.h"
 
 #include "buddy-groups-configuration-widget.h"
@@ -51,34 +50,14 @@ void BuddyGroupsConfigurationWidget::createGui()
 	QLabel *label = new QLabel(tr("Add <b>%1</b> to the groups below by checking the box next to the appropriate groups.").arg(MyBuddy.display()), this);
 	label->setWordWrap(true);
 
+	BuddyGroupList = new GroupList(this);
+	BuddyGroupList->setCheckedGroups(MyBuddy.groups());
+
 	layout->addWidget(label);
-
-	GroupList = new QListWidget(this);
-
-	foreach (const Group &group, GroupManager::instance()->items())
-	{
-		QListWidgetItem *item = new QListWidgetItem(GroupList);
-		item->setText(group.name());
-
-		if (MyBuddy.isInGroup(group))
-			item->setCheckState(Qt::Checked);
-		else
-			item->setCheckState(Qt::Unchecked);
-	}
-
-	layout->addWidget(GroupList);
+	layout->addWidget(BuddyGroupList);
 }
 
 void BuddyGroupsConfigurationWidget::save()
 {
-	foreach (const Group &group, MyBuddy.groups())
-		MyBuddy.removeFromGroup(group);
-
-	const int count = GroupList->count();
-	for (int i = 0; i < count; i++)
-	{
-		const QListWidgetItem * const item = GroupList->item(i);
-		if (item->checkState() == Qt::Checked)
-			MyBuddy.addToGroup(GroupManager::instance()->byName(item->text()));
-	}
+	MyBuddy.setGroups(BuddyGroupList->checkedGroups());
 }

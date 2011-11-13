@@ -28,7 +28,7 @@
 
 #include "exports.h"
 
-class QListWidget;
+class GroupList;
 
 class KADUAPI BuddyGroupsConfigurationWidget : public QWidget
 {
@@ -36,7 +36,7 @@ class KADUAPI BuddyGroupsConfigurationWidget : public QWidget
 
 	Buddy MyBuddy;
 
-	QListWidget *GroupList;
+	GroupList *BuddyGroupList;
 
 	void createGui();
 
