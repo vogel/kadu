@@ -729,16 +729,14 @@ void TabsManager::openTabWith(QStringList altnicks, int index)
 
 QString TabsManager::formatTabName(ChatWidget * chatWidget)
 {
-	int contactsCount = chatWidget->chat().contacts().count();
+	const Chat &chat = chatWidget->chat();
+	int contactsCount = chat.contacts().count();
 
-	QString TabName;
-
+	if (!chat.display().isEmpty())
+		return chat.display();
 	if (contactsCount > 1)
-		TabName = tr("Conference [%1]").arg(contactsCount);
-	else
-		TabName = chatWidget->chat().name();
-
-	return TabName;
+		return tr("Conference [%1]").arg(contactsCount);
+	return chat.name();
 }
 
 void TabsManager::closeChat()
