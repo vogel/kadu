@@ -36,8 +36,8 @@
 
 #include "buddies-model-proxy.h"
 
-BuddiesModelProxy::BuddiesModelProxy(QObject *parent)
-	: QSortFilterProxyModel(parent), SourceModel(0), SortByStatus(true)
+BuddiesModelProxy::BuddiesModelProxy(QObject *parent) :
+		QSortFilterProxyModel(parent), SortByStatus(true)
 {
 	setDynamicSortFilter(true);
 	sort(0);
@@ -57,19 +57,6 @@ BuddiesModelProxy::~BuddiesModelProxy()
 
 }
 
-void BuddiesModelProxy::setSourceModel(QAbstractItemModel *sourceModel)
-{
-	QAbstractItemModel *oldModel = dynamic_cast<QAbstractItemModel *>(SourceModel);
-	if (oldModel)
-		disconnect(oldModel, SIGNAL(destroyed()), this, SLOT(modelDestroyed()));
-
-	SourceModel = dynamic_cast<KaduAbstractModel *>(sourceModel);
-	QSortFilterProxyModel::setSourceModel(sourceModel);
-
-	if (sourceModel)
-		connect(sourceModel, SIGNAL(destroyed()), this, SLOT(modelDestroyed()));
-}
-
 int BuddiesModelProxy::compareNames(const QString &n1, const QString &n2) const
 {
 	return BrokenStringCompare
@@ -86,19 +73,10 @@ void BuddiesModelProxy::setSortByStatus(bool sortByStatus)
 	invalidate();
 }
 
-void BuddiesModelProxy::modelDestroyed()
-{
-	SourceModel = 0;
-	QSortFilterProxyModel::setSourceModel(0);
-}
-
 bool BuddiesModelProxy::lessThan(const QModelIndex &left, const QModelIndex &right) const
 {
-	if (!SourceModel)
-		return QSortFilterProxyModel::lessThan(left, right);
-
-	Buddy leftBuddy = left.data(BuddyRole).value<Buddy>();
-	Buddy rightBuddy = right.data(BuddyRole).value<Buddy>();
+	const Buddy &leftBuddy = left.data(BuddyRole).value<Buddy>();
+	const Buddy &rightBuddy = right.data(BuddyRole).value<Buddy>();
 
 	if (leftBuddy.contacts().isEmpty() && !rightBuddy.contacts().isEmpty())
 		return false;
@@ -110,8 +88,8 @@ bool BuddiesModelProxy::lessThan(const QModelIndex &left, const QModelIndex &rig
 	if (!leftBuddy.isBlocked() && rightBuddy.isBlocked())
 		return true;
 
-	bool leftHasPendingMessages = PendingMessagesManager::instance()->hasPendingMessagesForBuddy(leftBuddy);
-	bool rightHasPendingMessages = PendingMessagesManager::instance()->hasPendingMessagesForBuddy(rightBuddy);
+	const bool leftHasPendingMessages = PendingMessagesManager::instance()->hasPendingMessagesForBuddy(leftBuddy);
+	const bool rightHasPendingMessages = PendingMessagesManager::instance()->hasPendingMessagesForBuddy(rightBuddy);
 	if (!leftHasPendingMessages && rightHasPendingMessages)
 		return false;
 	if (leftHasPendingMessages && !rightHasPendingMessages)
@@ -119,11 +97,8 @@ bool BuddiesModelProxy::lessThan(const QModelIndex &left, const QModelIndex &rig
 
 	if (SortByStatus)
 	{
-		Account leftAccount = BuddyPreferredManager::instance()->preferredAccount(leftBuddy);
-		Account rightAccount = BuddyPreferredManager::instance()->preferredAccount(rightBuddy);
-
-		Contact leftContact = BuddyPreferredManager::instance()->preferredContact(leftBuddy, false);
-		Contact rightContact = BuddyPreferredManager::instance()->preferredContact(rightBuddy, false);
+		const Contact &leftContact = BuddyPreferredManager::instance()->preferredContact(leftBuddy, false);
+		const Contact &rightContact = BuddyPreferredManager::instance()->preferredContact(rightBuddy, false);
 
 		if (leftContact.isBlocking() && !rightContact.isBlocking())
 			return false;
@@ -131,10 +106,10 @@ bool BuddiesModelProxy::lessThan(const QModelIndex &left, const QModelIndex &rig
 		if (!leftContact.isBlocking() && rightContact.isBlocking())
 			return true;
 
-		Status leftStatus = !leftContact.isNull()
+		const Status &leftStatus = !leftContact.isNull()
 				? leftContact.currentStatus()
 				: Status();
-		Status rightStatus = !rightContact.isNull()
+		const Status &rightStatus = !rightContact.isNull()
 				? rightContact.currentStatus()
 				: Status();
 
@@ -145,7 +120,7 @@ bool BuddiesModelProxy::lessThan(const QModelIndex &left, const QModelIndex &rig
 			return true;
 	}
 
-	int displayCompare = compareNames(leftBuddy.display(), rightBuddy.display());
+	const int displayCompare = compareNames(leftBuddy.display(), rightBuddy.display());
 	return displayCompare < 0;
 }
 
@@ -153,14 +128,14 @@ bool BuddiesModelProxy::filterAcceptsRow(int sourceRow, const QModelIndex &sourc
 {
 	if (sourceParent.isValid())
 	{
-		Contact contact = sourceModel()->index(sourceRow, 0, sourceParent).data(ContactRole).value<Contact>();
+		const Contact &contact = sourceModel()->index(sourceRow, 0, sourceParent).data(ContactRole).value<Contact>();
 		foreach (AbstractContactFilter *filter, ContactFilters)
 			if (!filter->acceptContact(contact))
 				return false;
 	}
 	else
 	{
-		Buddy buddy = sourceModel()->index(sourceRow, 0, sourceParent).data(BuddyRole).value<Buddy>();
+		const Buddy &buddy = sourceModel()->index(sourceRow, 0, sourceParent).data(BuddyRole).value<Buddy>();
 		foreach (AbstractBuddyFilter *filter, BuddyFilters)
 			if (!filter->acceptBuddy(buddy))
 				return false;
@@ -207,12 +182,4 @@ void BuddiesModelProxy::removeFilter(AbstractContactFilter *filter)
 
 	invalidateFilter();
 	disconnect(filter, SIGNAL(filterChanged()), this, SLOT(invalidate()));
-}
-
-QModelIndex BuddiesModelProxy::indexForValue(const QVariant &value) const
-{
-	if (!SourceModel)
-		return QModelIndex();
-
-	return mapFromSource(SourceModel->indexForValue(value));
 }

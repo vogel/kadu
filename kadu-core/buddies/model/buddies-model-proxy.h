@@ -24,25 +24,19 @@
 
 #include <QtGui/QSortFilterProxyModel>
 
-#include "model/kadu-abstract-model.h"
-
 class AbstractBuddyFilter;
 class AbstractContactFilter;
 
-class BuddiesModelProxy : public QSortFilterProxyModel, public KaduAbstractModel
+class BuddiesModelProxy : public QSortFilterProxyModel
 {
 	Q_OBJECT
 
-	KaduAbstractModel *SourceModel;
 	QList<AbstractBuddyFilter *> BuddyFilters;
 	QList<AbstractContactFilter *> ContactFilters;
 
 	bool BrokenStringCompare;
 	bool SortByStatus;
 	int compareNames(const QString &n1, const QString &n2) const;
-
-private slots:
-	void modelDestroyed();
 
 protected:
 	virtual bool lessThan(const QModelIndex &left, const QModelIndex &right) const;
@@ -52,8 +46,6 @@ public:
 	explicit BuddiesModelProxy(QObject *parent = 0);
 	virtual ~BuddiesModelProxy();
 
-	virtual void setSourceModel(QAbstractItemModel *sourceModel);
-
 	void addFilter(AbstractBuddyFilter *filter);
 	void removeFilter(AbstractBuddyFilter *filter);
 
@@ -61,9 +53,6 @@ public:
 	void removeFilter(AbstractContactFilter *filter);
 
 	void setSortByStatus(bool sortByStatus);
-
-	// KaduAbstractModel implementation
-	virtual QModelIndex indexForValue(const QVariant &value) const;
 
 };
 
