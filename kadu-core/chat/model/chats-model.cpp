@@ -143,14 +143,21 @@ void ChatsModel::chatAdded(Chat chat)
 	// setDynamicSortFilter does not work properly when adding/removing items, only when changing item data
 	// this is Qt bug
 	// see bug #2167
-	QModelIndex index = indexForValue(chat);
+
+	const QModelIndexList &indexes = indexListForValue(chat);
+	Q_ASSERT(indexes.size() == 1);
+
+	const QModelIndex &index = indexes.at(0);
 	emit dataChanged(index, index);
 }
 
 void ChatsModel::chatAboutToBeRemoved(Chat chat)
 {
-	int index = indexForValue(chat).row();
-	beginRemoveRows(QModelIndex(), index, index);
+	const QModelIndexList &indexes = indexListForValue(chat);
+	Q_ASSERT(indexes.size() == 1);
+
+	const QModelIndex &index = indexes.at(0);
+	beginRemoveRows(QModelIndex(), index.row(), index.row());
 }
 
 void ChatsModel::chatRemoved(Chat chat)
@@ -162,26 +169,52 @@ void ChatsModel::chatRemoved(Chat chat)
 
 void ChatsModel::chatUpdated(const Chat &chat)
 {
-	QModelIndex index = indexForValue(chat);
+	const QModelIndexList &indexes = indexListForValue(chat);
+	Q_ASSERT(indexes.size() == 1);
+
+	const QModelIndex &index = indexes.at(0);
 	if (index.isValid())
 		emit dataChanged(index, index);
 }
 
 Chat ChatsModel::chatAt(const QModelIndex &index) const
 {
-	QModelIndex parent = index.parent();
-	int row = parent.isValid() ? parent.row() : index.row();
+	const QModelIndex &parent = index.parent();
+	const int row = parent.isValid() ? parent.row() : index.row();
 
 	return ChatManager::instance()->byIndex(row);
 }
 
-QModelIndex ChatsModel::indexForValue(const QVariant &value) const
+QModelIndexList ChatsModel::indexListForValue(const QVariant &value) const
 {
+	QModelIndexList result;
+
 	const Chat &chat = value.value<Chat>();
-	if (!chat)
-		return QModelIndex();
 
-	int result = ChatManager::instance()->indexOf(chat);
+	if (chat)
+	{
+		result.append(index(ChatManager::instance()->indexOf(chat), 0));
+		return result;
+	}
 
-	return index(result, 0);
+	const Contact &contact = value.value<Contact>();
+	if (contact)
+	{
+		const QVector<Chat> &chats = ChatManager::instance()->items();
+		const int count = chats.count();
+
+		for (int i = 0; i < count; i++)
+		{
+			const Chat &chat = chats.at(i);
+			const QList<Contact> &contacts = chat.contacts().toList();
+			const int contactIndex = contacts.indexOf(contact);
+
+			if (-1 != contactIndex)
+				result.append(index(i, 0).child(contactIndex, 0));
+		}
+
+		return result;
+	}
+
+	return result;
 }

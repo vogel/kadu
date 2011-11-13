@@ -20,13 +20,14 @@
 #ifndef KADU_ABSTRACT_MODEL_H
 #define KADU_ABSTRACT_MODEL_H
 
-class QModelIndex;
+#include <QtCore/QModelIndexList>
+
 class QVariant;
 
 class KaduAbstractModel
 {
 public:
-	virtual QModelIndex indexForValue(const QVariant &value) const = 0;
+	virtual QModelIndexList indexListForValue(const QVariant &value) const = 0;
 
 };
 

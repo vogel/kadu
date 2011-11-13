@@ -69,19 +69,32 @@ void TalkableDelegate::contactUpdated(Contact &contact)
 	if (!Chain)
 		return;
 
+	const QModelIndexList &contactsIndexList = Chain->indexListForValue(contact);
+	foreach (const QModelIndex &contactIndex, contactsIndexList)
+		emit sizeHintChanged(contactIndex);
+
 	const Buddy &buddy = contact.ownerBuddy();
+	const QModelIndexList &buddyIndexList = Chain->indexListForValue(buddy);
+	const int contactIndexInBuddy = buddy.contacts().indexOf(contact);
 
-	const QModelIndex &buddyIndex = Chain->indexForValue(buddy);
-	const QModelIndex &contactIndex = buddyIndex.child(buddy.contacts().indexOf(contact), 0);
+	foreach (const QModelIndex &buddyIndex, buddyIndexList)
+	{
+		const QModelIndex &contactIndex = buddyIndex.child(contactIndexInBuddy, 0);
 
-	emit sizeHintChanged(buddyIndex);
-	emit sizeHintChanged(contactIndex);
+		emit sizeHintChanged(buddyIndex);
+		emit sizeHintChanged(contactIndex);
+	}
 }
 
 void TalkableDelegate::buddyUpdated(Buddy &buddy)
 {
-	if (Chain)
-		emit sizeHintChanged(Chain->indexForValue(buddy));
+	if (!Chain)
+		return;
+
+	const QModelIndexList &buddyIndexList = Chain->indexListForValue(buddy);
+
+	foreach (const QModelIndex &buddyIndex, buddyIndexList)
+		emit sizeHintChanged(buddyIndex);
 }
 
 void TalkableDelegate::messageStatusChanged(Message message)

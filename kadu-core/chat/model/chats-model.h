@@ -52,7 +52,7 @@ public:
 	virtual QVariant data(const QModelIndex &index, int role) const;
 
 	virtual Chat chatAt(const QModelIndex &index) const;
-	virtual QModelIndex indexForValue(const QVariant &value) const;
+	virtual QModelIndexList indexListForValue(const QVariant &value) const;
 
 };
 

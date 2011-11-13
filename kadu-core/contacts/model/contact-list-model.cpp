@@ -64,15 +64,19 @@ QVariant ContactListModel::data(const QModelIndex &index, int role) const
 	return ContactDataExtractor::data(contact, role, true);
 }
 
-QModelIndex ContactListModel::indexForValue(const QVariant &value) const
+QModelIndexList ContactListModel::indexListForValue(const QVariant &value) const
 {
-	int i = 0;
-	foreach (const Contact &contact, List)
+	QModelIndexList result;
+
+	const Buddy &buddy = value.value<Buddy>();
+
+	const int size = List.size();
+	for (int i = 0; i < size; i++)
 	{
-		if (contact.ownerBuddy() == value.value<Buddy>())
-			return createIndex(i, 0, 0);
-		i++;
+		const Contact &contact = List.at(i);
+		if (contact.ownerBuddy() == buddy)
+			result.append(createIndex(i, 0, 0));
 	}
 
-	return QModelIndex();
+	return result;
 }

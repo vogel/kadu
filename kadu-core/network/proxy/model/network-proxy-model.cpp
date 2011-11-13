@@ -100,14 +100,19 @@ int NetworkProxyModel::networkProxyIndex(NetworkProxy networkProxy) const
 	return NetworkProxyManager::instance()->indexOf(networkProxy);
 }
 
-QModelIndex NetworkProxyModel::indexForValue(const QVariant &value) const
+QModelIndexList NetworkProxyModel::indexListForValue(const QVariant &value) const
 {
-	return createIndex(networkProxyIndex(value.value<NetworkProxy>()), 0, 0);
+	QModelIndexList result;
+	result.append(createIndex(networkProxyIndex(value.value<NetworkProxy>()), 0, 0));
+	return result;
 }
 
 void NetworkProxyModel::networkProxyUpdated(NetworkProxy networkProxy)
 {
-	QModelIndex index = indexForValue(networkProxy);
+	const QModelIndexList &indexes = indexListForValue(networkProxy);
+	Q_ASSERT(indexes.size() == 1);
+
+	const QModelIndex &index = indexes.at(0);
 	emit dataChanged(index, index);
 }
 

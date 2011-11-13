@@ -55,7 +55,9 @@ Buddy BuddyListModel::buddyAt(int index) const
 		return Buddy::null;
 }
 
-QModelIndex BuddyListModel::indexForValue(const QVariant &value) const
+QModelIndexList BuddyListModel::indexListForValue(const QVariant &value) const
 {
-	return index(List.indexOf(value.value<Buddy>()), 0);
+	QModelIndexList result;
+	result.append(index(List.indexOf(value.value<Buddy>()), 0));
+	return result;
 }

@@ -107,7 +107,10 @@ void ActionsComboBox::setUpModel(int dataRole, ModelChain *modelChain)
 
 void ActionsComboBox::setCurrentValue(const QVariant &value)
 {
-	QModelIndex index = Chain->indexForValue(value);
+	const QModelIndexList &indexes = Chain->indexListForValue(value);
+	Q_ASSERT(indexes.size() == 1);
+
+	const QModelIndex &index = indexes.at(0);
 	setCurrentIndex(index.row());
 }
 

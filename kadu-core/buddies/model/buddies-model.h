@@ -65,7 +65,7 @@ public:
 	virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
 
 	// AbstractContactsModel implementation
-	virtual QModelIndex indexForValue(const QVariant &value) const;
+	virtual QModelIndexList indexListForValue(const QVariant &value) const;
 
 	void setIncludeMyself(bool includeMyself);
 	bool includeMyself() const { return IncludeMyself; }

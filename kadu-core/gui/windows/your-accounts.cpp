@@ -439,7 +439,11 @@ void YourAccounts::accountCreated(Account account)
 void YourAccounts::selectAccount(Account account)
 {
 	AccountsView->selectionModel()->clearSelection();
-	AccountsView->selectionModel()->select(MyAccountsModel->indexForValue(account), QItemSelectionModel::Select);
+
+	const QModelIndexList &indexes = MyAccountsModel->indexListForValue(account);
+	Q_ASSERT(indexes.size() == 1);
+
+	AccountsView->selectionModel()->select(indexes.at(0), QItemSelectionModel::Select);
 }
 
 void YourAccounts::accountSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected)

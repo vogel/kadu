@@ -97,9 +97,11 @@ int GroupsModel::groupIndex(Group group) const
 }
 
 
-QModelIndex GroupsModel::indexForValue(const QVariant &value) const
+QModelIndexList GroupsModel::indexListForValue(const QVariant &value) const
 {
-	return createIndex(groupIndex(value.value<Group>()), 0, 0);
+	QModelIndexList result;
+	result.append(createIndex(groupIndex(value.value<Group>()), 0, 0));
+	return result;
 }
 
 void GroupsModel::groupAboutToBeAdded(Group group)

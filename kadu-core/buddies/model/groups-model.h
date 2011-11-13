@@ -48,7 +48,7 @@ public:
 
 	Group group(const QModelIndex &index) const;
 	int groupIndex(Group group) const;
-	virtual QModelIndex indexForValue(const QVariant &value) const;
+	virtual QModelIndexList indexListForValue(const QVariant &value) const;
 
 };
 

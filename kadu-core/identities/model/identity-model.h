@@ -48,7 +48,7 @@ public:
 
 	Identity identity(const QModelIndex &index) const;
 	int identityIndex(Identity identity) const;
-	virtual QModelIndex indexForValue(const QVariant &value) const;
+	virtual QModelIndexList indexListForValue(const QVariant &value) const;
 
 };
 

@@ -47,7 +47,7 @@ public:
 	virtual QVariant data(const QModelIndex &index, int role) const;
 
 	// KaduAbstractModel implementation
-	virtual QModelIndex indexForValue(const QVariant &value) const;
+	virtual QModelIndexList indexListForValue(const QVariant &value) const;
 
 };
 

@@ -48,7 +48,7 @@ public:
 
 	ProtocolFactory * protocolFactory(const QModelIndex &index) const;
 	int protocolFactoryIndex(ProtocolFactory *protocolFactory) const;
-	virtual QModelIndex indexForValue(const QVariant &value) const;
+	virtual QModelIndexList indexListForValue(const QVariant &value) const;
 
 };
 

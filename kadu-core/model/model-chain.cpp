@@ -63,14 +63,24 @@ QAbstractItemModel * ModelChain::lastModel() const
 	return Model;
 }
 
-QModelIndex ModelChain::indexForValue(const QVariant &value) const
+QModelIndexList ModelChain::indexListForValue(const QVariant &value) const
 {
 	Q_ASSERT(Model);
 	Q_ASSERT(KaduModel);
 
-	QModelIndex index = KaduModel->indexForValue(value);
-	foreach (QAbstractProxyModel *proxyModel, ProxyModels)
-		index = proxyModel->mapFromSource(index);
+	QModelIndexList indexes = KaduModel->indexListForValue(value);
+	QModelIndexList result;
 
-	return index;
+	const int size = indexes.size();
+	result.reserve(size);
+
+	for (int i = 0; i < size; i++)
+	{
+		QModelIndex index = indexes.at(i);
+		foreach (QAbstractProxyModel *proxyModel, ProxyModels)
+			index = proxyModel->mapFromSource(index);
+		result.append(index);
+	}
+
+	return result;
 }

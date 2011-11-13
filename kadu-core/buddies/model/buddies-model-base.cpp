@@ -66,10 +66,10 @@ void BuddiesModelBase::buddyStatusChanged(Contact contact, Status oldStatus)
 {
 	Q_UNUSED(oldStatus)
 
-	QModelIndex index = indexForValue(contact.ownerBuddy());
-
-	if (index.isValid())
-		emit dataChanged(index, index);
+	const QModelIndexList& indexes = indexListForValue(contact.ownerBuddy());
+	foreach (const QModelIndex &index, indexes)
+		if (index.isValid())
+			emit dataChanged(index, index);
 }
 
 QModelIndex BuddiesModelBase::index(int row, int column, const QModelIndex &parent) const

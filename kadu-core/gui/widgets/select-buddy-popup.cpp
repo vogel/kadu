@@ -78,7 +78,10 @@ void SelectBuddyPopup::show(Buddy buddy)
 	filterWidget()->setFocus();
 #endif
 
-	QModelIndex index = View->chain()->indexForValue(buddy);
+	const QModelIndexList &indexes = View->chain()->indexListForValue(buddy);
+	Q_ASSERT(indexes.size() == 1);
+
+	const QModelIndex &index = indexes.at(0);
 	View->setCurrentIndex(index);
 	FilteredTreeView::show();
 }
