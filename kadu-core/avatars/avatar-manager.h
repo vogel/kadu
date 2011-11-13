@@ -31,6 +31,7 @@
 #include "exports.h"
 
 class AvatarService;
+class Buddy;
 class Contact;
 
 class KADUAPI AvatarManager : public QObject, public SimpleManager<Avatar>, AccountsAwareObject

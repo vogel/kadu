@@ -83,8 +83,6 @@ void TalkableDelegate::avatarUpdated(Avatar avatar)
 		emit sizeHintChanged(buddyIndex);
 		emit sizeHintChanged(contactIndex);
 	}
-	else if (avatar.avatarBuddy())
-		emit sizeHintChanged(Chain->indexForValue(avatar.avatarBuddy()));
 }
 
 void TalkableDelegate::contactUpdated(Contact &contact)
