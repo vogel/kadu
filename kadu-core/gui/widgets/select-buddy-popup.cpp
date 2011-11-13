@@ -23,31 +23,49 @@
 #include <QtGui/QLineEdit>
 
 #include "buddies/buddy-manager.h"
+#include "buddies/filter/anonymous-buddy-filter.h"
 #include "buddies/filter/buddy-name-filter.h"
 #include "buddies/model/buddies-model.h"
-#include "gui/widgets/buddies-list-view.h"
+#include "buddies/model/buddies-model-proxy.h"
+#include "gui/widgets/filter-widget.h"
+#include "gui/widgets/talkable-tree-view.h"
 #include "model/roles.h"
+#include "model/model-chain.h"
 
 #include "select-buddy-popup.h"
 
 SelectBuddyPopup::SelectBuddyPopup(QWidget *parent) :
-		BuddiesListWidget(FilterAtBottom, parent)
+		FilteredTreeView(FilterAtBottom, parent)
 {
 	setWindowFlags(Qt::Popup);
 
-	BuddiesModel *model = new BuddiesModel(this);
+	View = new TalkableTreeView(this);
+	setTreeView(View);
 
-	connect(view(), SIGNAL(clicked(QModelIndex)), this, SLOT(itemClicked(QModelIndex)));
-	connect(view(), SIGNAL(buddyActivated(Buddy)), this, SIGNAL(buddySelected(Buddy)));
-	connect(view(), SIGNAL(buddyActivated(Buddy)), this, SLOT(close()));
+	ModelChain *chain = new ModelChain(new BuddiesModel(this), this);
+	ProxyModel = new BuddiesModelProxy(chain);
+	ProxyModel->setSortByStatus(false);
 
-	view()->setItemsExpandable(false);
-	view()->setModel(model);
-	view()->setRootIsDecorated(false);
-	view()->setShowAccountName(false);
-	view()->setSelectionMode(QAbstractItemView::SingleSelection);
+	AnonymousBuddyFilter *anonymousFilter = new AnonymousBuddyFilter(ProxyModel);
+	anonymousFilter->setEnabled(true);
+	ProxyModel->addFilter(anonymousFilter);
 
-	nameFilter()->setIgnoreNextFilters(false);
+	BuddyNameFilter *nameFilter = new BuddyNameFilter(ProxyModel);
+	connect(this, SIGNAL(filterChanged(QString)), nameFilter, SLOT(setName(QString)));
+
+	ProxyModel->addFilter(nameFilter);
+	chain->addProxyModel(ProxyModel);
+
+	connect(View, SIGNAL(clicked(QModelIndex)), this, SLOT(itemClicked(QModelIndex)));
+	connect(View, SIGNAL(talkableActivated(Talkable)), this, SLOT(talkableActivated(Talkable)));
+
+	View->setItemsExpandable(false);
+	View->setChain(chain);
+	View->setRootIsDecorated(false);
+	View->setShowAccountName(false);
+	View->setSelectionMode(QAbstractItemView::SingleSelection);
+
+	nameFilter->setIgnoreNextFilters(false);
 }
 
 SelectBuddyPopup::~SelectBuddyPopup()
@@ -57,11 +75,15 @@ SelectBuddyPopup::~SelectBuddyPopup()
 void SelectBuddyPopup::show(Buddy buddy)
 {
 #ifndef Q_WS_MAEMO_5
-	nameFilterWidget()->setFocus();
+	filterWidget()->setFocus();
 #endif
 
-	view()->selectBuddy(buddy);
-	BuddiesListWidget::show();
+	const QModelIndexList &indexes = View->chain()->indexListForValue(buddy);
+	Q_ASSERT(indexes.size() == 1);
+
+	const QModelIndex &index = indexes.at(0);
+	View->setCurrentIndex(index);
+	FilteredTreeView::show();
 }
 
 void SelectBuddyPopup::itemClicked(const QModelIndex &index)
@@ -73,4 +95,24 @@ void SelectBuddyPopup::itemClicked(const QModelIndex &index)
 		return;
 
 	emit buddySelected(buddy);
+}
+
+void SelectBuddyPopup::talkableActivated(const Talkable &talkable)
+{
+	const Buddy &buddy = talkable.buddy();
+	if (buddy)
+	{
+		emit buddySelected(buddy);
+		close();
+	}
+}
+
+void SelectBuddyPopup::addFilter(AbstractBuddyFilter *filter)
+{
+	ProxyModel->addFilter(filter);
+}
+
+void SelectBuddyPopup::removeFilter(AbstractBuddyFilter *filter)
+{
+	ProxyModel->removeFilter(filter);
 }

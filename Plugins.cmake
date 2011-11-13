@@ -83,8 +83,8 @@ set (DEFAULT_PLUGINS
 	last_seen
 	# Imports profiles from old Kadu
 	profiles_import
-	# Simple view
-	simpleview
+	# Simple view - neww port for 0.11.0
+	# simpleview
 	# Single window mode
 	single_window
 	# Sms gateway support

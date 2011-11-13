@@ -89,10 +89,11 @@ int IdentityModel::identityIndex(Identity identity) const
 	return IdentityManager::instance()->indexOf(identity);
 }
 
-
-QModelIndex IdentityModel::indexForValue(const QVariant &value) const
+QModelIndexList IdentityModel::indexListForValue(const QVariant &value) const
 {
-	return createIndex(identityIndex(value.value<Identity>()), 0, 0);
+	QModelIndexList result;
+	result.append(createIndex(identityIndex(value.value<Identity>()), 0, 0));
+	return result;
 }
 
 void IdentityModel::identityAboutToBeAdded(Identity identity)

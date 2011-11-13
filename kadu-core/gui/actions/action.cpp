@@ -25,7 +25,7 @@
 #include "accounts/account-manager.h"
 #include "buddies/buddy.h"
 #include "buddies/buddy-set.h"
-#include "gui/actions/action-data-source.h"
+#include "gui/actions/action-context.h"
 #include "gui/actions/action-description.h"
 #include "gui/hot-key.h"
 #include "icons/icons-manager.h"
@@ -34,11 +34,11 @@
 
 #include "action.h"
 
-Action::Action(ActionDescription *description, ActionDataSource *dataSource, QObject *parent) :
-		QAction(parent), Description(description), DataSource(dataSource)
+Action::Action(ActionDescription *description, ActionContext *context, QObject *parent) :
+		QAction(parent), Description(description), Context(context)
 {
 	Q_ASSERT(0 != description);
-	Q_ASSERT(0 != dataSource);
+	Q_ASSERT(0 != context);
 
 	setText(Description->Text);
 
@@ -54,6 +54,7 @@ Action::Action(ActionDescription *description, ActionDataSource *dataSource, QOb
 	connect(this, SIGNAL(hovered()), this, SLOT(hoveredSlot()));
 	connect(this, SIGNAL(triggered(bool)), this, SLOT(triggeredSlot(bool)));
 
+	connect(context, SIGNAL(changed()), this, SLOT(checkState()));
 	checkState();
 }
 
@@ -68,47 +69,9 @@ Action::~Action()
 	}
 }
 
-Contact Action::contact()
+ActionContext * Action::context()
 {
-	ContactSet contactSet = contacts();
-	if (1 != contactSet.count())
-		return Contact::null;
-	else
-		return *contactSet.constBegin();
-}
-
-ContactSet Action::contacts()
-{
-	return DataSource->contacts();
-}
-
-Buddy Action::buddy()
-{
-	BuddySet buddySet = buddies();
-	if (1 != buddySet.count())
-		return Buddy::null;
-	else
-		return *buddySet.constBegin();
-}
-
-BuddySet Action::buddies()
-{
-	return DataSource->buddies();
-}
-
-Chat Action::chat()
-{
-	return DataSource->chat();
-}
-
-StatusContainer * Action::statusContainer()
-{
-	return DataSource->statusContainer();
-}
-
-ActionDataSource * Action::dataSource()
-{
-	return DataSource;
+	return Context;
 }
 
 void Action::changedSlot()
@@ -146,10 +109,10 @@ void Action::setIcon(const KaduIcon &icon)
 
 void disableEmptyContacts(Action *action)
 {
-	action->setEnabled(!action->contacts().isEmpty());
+	action->setEnabled(!action->context()->contacts().isEmpty());
 }
 
 void disableNoChat(Action *action)
 {
-	action->setEnabled(action->chat());
+	action->setEnabled(action->context()->chat());
 }

@@ -45,6 +45,8 @@ public:
 
 	bool isAllAnonymous() const;
 	BuddyList toBuddyList() const;
+	Buddy toBuddy() const;
+
 	QVector<Contact> getAllContacts() const;
 
 };

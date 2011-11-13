@@ -27,7 +27,8 @@
 #include <QtGui/QMainWindow>
 #include <QtXml/QDomElement>
 
-#include "gui/actions/action-data-source.h"
+#include "gui/actions/action-context.h"
+#include "gui/actions/action-context-provider.h"
 #include "gui/actions/action-description.h"
 #include "os/generic/desktop-aware-object.h"
 
@@ -35,7 +36,7 @@
 
 class QContextMenuEvent;
 
-class BuddiesListView;
+class BuddiesModelProxy;
 class Buddy;
 class BuddySet;
 class Chat;
@@ -44,14 +45,14 @@ class ContactSet;
 class StatusContainer;
 class ToolBar;
 
-class KADUAPI MainWindow : public QMainWindow, public ActionDataSource, DesktopAwareObject
+class KADUAPI MainWindow : public QMainWindow, public ActionContextProvider, DesktopAwareObject
 {
 	Q_OBJECT
 
-	friend class Actions;
-
 	QString WindowName;
 	bool TransparencyEnabled;
+
+	ActionContext *Context;
 
 	ToolBar * newToolbar(QWidget *parent);
 
@@ -60,7 +61,7 @@ class KADUAPI MainWindow : public QMainWindow, public ActionDataSource, DesktopA
 private slots:
 	void actionLoadedOrUnloaded(ActionDescription *action);
 	void toolbarUpdated();
-    void toolbarRemoved(ToolBar *toolBar);
+	void toolbarRemoved(ToolBar *toolBar);
 
 protected:
 	void loadToolBarsFromConfig();
@@ -89,7 +90,7 @@ protected slots:
 public:
 	static MainWindow * findMainWindow(QWidget *widget);
 
-	MainWindow(const QString &windowName, QWidget *parent);
+	MainWindow(ActionContext *context, const QString &windowName, QWidget *parent);
 	virtual ~MainWindow();
 
 	const QString & windowName() { return WindowName; }
@@ -97,13 +98,15 @@ public:
 	virtual QMenu * createPopupMenu() { return 0; }
 
 	virtual bool supportsActionType(ActionDescription::ActionType type) = 0;
-	virtual BuddiesListView * buddiesListView() = 0;
+	virtual BuddiesModelProxy * buddiesProxyModel() = 0;
 
 	Contact contact();
 	Buddy buddy();
 
-	void actionAdded(Action *action);
 	bool hasAction(const QString &actionName, ToolBar *exclude = 0);
+
+	// ActionContextProvider implementation
+	ActionContext * actionContext();
 
 public slots:
 	void addTopToolbar();

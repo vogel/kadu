@@ -239,7 +239,7 @@ void ExecNotify::notify(Notification *notification)
 
 		Contact contact = *contacts.constBegin();
 		foreach (QString it, s)
-			result.append(Parser::parse(it.replace("%ids", sendersString), BuddyOrContact(contact), notification));
+			result.append(Parser::parse(it.replace("%ids", sendersString), Talkable(contact), notification));
 	}
 	else
 		foreach (const QString &it, s)

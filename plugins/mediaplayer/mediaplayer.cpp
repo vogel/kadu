@@ -760,8 +760,8 @@ void MediaPlayer::configurationUpdated()
 
 	if (mediaplayerStatus == NULL)
 	{
-		if (enableMediaPlayerStatuses->action(Core::instance()->kaduWindow()->actionSource()))
-			enabled = enableMediaPlayerStatuses->action(Core::instance()->kaduWindow()->actionSource())->isChecked();
+		if (enableMediaPlayerStatuses->action(Core::instance()->kaduWindow()->actionContext()))
+			enabled = enableMediaPlayerStatuses->action(Core::instance()->kaduWindow()->actionContext())->isChecked();
 		Core::instance()->kaduWindow()->removeMenuActionDescription(enableMediaPlayerStatuses);
 	}
 	else
@@ -780,8 +780,8 @@ void MediaPlayer::configurationUpdated()
 	else
 	{
 		Core::instance()->kaduWindow()->insertMenuActionDescription(enableMediaPlayerStatuses, KaduWindow::MenuKadu);
-		if (enableMediaPlayerStatuses->action(Core::instance()->kaduWindow()->actionSource()))
-			enableMediaPlayerStatuses->action(Core::instance()->kaduWindow()->actionSource())->setChecked(enabled);
+		if (enableMediaPlayerStatuses->action(Core::instance()->kaduWindow()->actionContext()))
+			enableMediaPlayerStatuses->action(Core::instance()->kaduWindow()->actionContext())->setChecked(enabled);
 	}
 
 	mediaPlayerStatusChanger->changePositionInStatus((MediaPlayerStatusChanger::ChangeDescriptionTo)config_file.readNumEntry("MediaPlayer", "statusPosition"));

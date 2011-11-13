@@ -56,27 +56,27 @@ QModelIndex ContactListModel::parent(const QModelIndex &child) const
 
 QVariant ContactListModel::data(const QModelIndex &index, int role) const
 {
-	return ContactDataExtractor::data(contactAt(index), role, true);
+	int row = index.row();
+	const Contact &contact = (row < 0 || row >= List.size())
+			? Contact::null
+			: List.at(row);
+
+	return ContactDataExtractor::data(contact, role, true);
 }
 
-Contact ContactListModel::contactAt(const QModelIndex &index) const
+QModelIndexList ContactListModel::indexListForValue(const QVariant &value) const
 {
-    int row = index.row();
-	if (row < 0 || row >= List.size())
-		return Contact::null;
+	QModelIndexList result;
 
-	return List.at(row);
-}
+	const Buddy &buddy = value.value<Buddy>();
 
-QModelIndex ContactListModel::indexForValue(const QVariant &value) const
-{
-	int i = 0;
-	foreach (const Contact &contact, List)
+	const int size = List.size();
+	for (int i = 0; i < size; i++)
 	{
-		if (contact.ownerBuddy() == value.value<Buddy>())
-			return createIndex(i, 0, 0);
-		i++;
+		const Contact &contact = List.at(i);
+		if (contact.ownerBuddy() == buddy)
+			result.append(createIndex(i, 0, 0));
 	}
 
-	return QModelIndex();
+	return result;
 }

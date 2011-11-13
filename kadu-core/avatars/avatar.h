@@ -31,7 +31,6 @@
 #include "storage/shared-base.h"
 #include "exports.h"
 
-class Buddy;
 class Contact;
 class StoragePoint;
 
@@ -54,8 +53,6 @@ public:
 	virtual void storeAvatar();
 
 	KaduSharedBase_PropertyBoolRead(Empty)
-	KaduSharedBase_PropertyCRW(Buddy, avatarBuddy, AvatarBuddy)
-	KaduSharedBase_PropertyCRW(Contact, avatarContact, AvatarContact)
 	KaduSharedBase_PropertyCRW(QDateTime, lastUpdated, LastUpdated)
 	KaduSharedBase_PropertyCRW(QDateTime, nextUpdate, NextUpdate)
 	KaduSharedBase_PropertyCRW(QPixmap, pixmap, Pixmap)

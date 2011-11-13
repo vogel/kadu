@@ -39,12 +39,12 @@
 
 class QSplitter;
 
-class BuddiesListView;
-class BuddiesListWidget;
+class BuddiesModelProxy;
 class ChatEditBox;
 class ChatMessagesView;
 class ChatWidget;
 class CustomInput;
+class FilteredTreeView;
 class MessageRenderInfo;
 class Protocol;
 
@@ -57,7 +57,8 @@ class KADUAPI ChatWidget : public QWidget, public ConfigurationAwareObject
 	Chat CurrentChat;
 
 	ChatMessagesView *MessagesView;
-	BuddiesListWidget *BuddiesWidget;
+	FilteredTreeView *BuddiesWidget;
+	BuddiesModelProxy *ProxyModel;
 	ChatEditBox *InputBox;
 
 	QSplitter *VerticalSplitter;
@@ -139,7 +140,7 @@ public:
 	void repaintMessages();
 
 	CustomInput * edit() const;
-	BuddiesListView * contactsListWidget() const;
+	BuddiesModelProxy * buddiesProxyModel() const;
 	ChatEditBox * getChatEditBox() const { return InputBox; }
 	ChatMessagesView * chatMessagesView() const { return MessagesView; }
 
@@ -169,6 +170,8 @@ public:
 	void kaduRestoreGeometry();
 
 	unsigned int countMessages() const;
+
+	void close();
 
 public slots:
 
@@ -207,8 +210,6 @@ public slots:
 
 	void makeActive();
 	void markAllMessagesRead();
-
-	void leaveConference();
 
 	/**
 	 * @author Rafal 'Vogel' Malinowski

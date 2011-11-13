@@ -60,8 +60,6 @@ static bool compareGroups(Group g1, Group g2)
 GroupTabBar::GroupTabBar(QWidget *parent) :
 		QTabBar(parent), ShowAllGroup(true), HadAnyUngrouppedBuddy(false), AutoGroupTabPosition(-1)
 {
-	Filter = new GroupBuddyFilter(this);
-
 	setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding));
 
 #ifdef Q_OS_MAC
@@ -93,13 +91,10 @@ GroupTabBar::GroupTabBar(QWidget *parent) :
 
 	if (!config_file.readBoolEntry("Look", "DisplayGroupTabs", true))
 	{
-		Filter->setAllGroupShown(true);
 		setCurrentIndex(AutoGroupTabPosition);
 		setVisible(false);
 		return;
 	}
-
-	Filter->setAllGroupShown(ShowAllGroup);
 
 	int currentGroup = config_file.readNumEntry("Look", "CurrentGroupTab", 0);
 	if (currentGroup == currentIndex())
@@ -202,7 +197,7 @@ void GroupTabBar::addGroup(const Group &group)
 
 void GroupTabBar::currentChangedSlot(int index)
 {
-	Filter->setGroup(GroupManager::instance()->byUuid(tabData(index).toString()));
+	emit currentGroupChanged(GroupManager::instance()->byUuid(tabData(index).toString()));
 }
 
 void GroupTabBar::groupAdded(Group group)
@@ -456,7 +451,6 @@ void GroupTabBar::configurationUpdated()
 	{
 		disconnect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy&)), this, SLOT(checkForUngroupedBuddies()));
 
-		Filter->setAllGroupShown(true);
 		for (int i = 0; i < count(); ++i)
 			if (!GroupManager::instance()->byUuid(tabData(i).toString()))
 			{
@@ -476,8 +470,7 @@ void GroupTabBar::configurationUpdated()
 	if (oldShowAllGroup != ShowAllGroup)
 	{
 		updateAutoGroupTab(oldShowAllGroup);
-		Filter->setAllGroupShown(ShowAllGroup);
-		
+
 		if (ShowAllGroup)
 			disconnect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy&)), this, SLOT(checkForUngroupedBuddies()));
 		else

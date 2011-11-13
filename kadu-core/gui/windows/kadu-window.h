@@ -32,6 +32,7 @@
 
 #include "chat/chat.h"
 #include "buddies/buddy-list.h"
+#include "buddies/talkable.h"
 #include "gui/windows/main-window.h"
 #include "os/generic/compositing-aware-object.h"
 #include "exports.h"
@@ -39,18 +40,16 @@
 class QSplitter;
 class QMenu;
 class QMenuBar;
-class QPushButton;
 class QVBoxLayout;
 
 class Action;
 class ActionDescription;
-class ActionSource;
 class BuddyInfoPanel;
-class BuddiesListWidget;
-class GroupTabBar;
-class KaduWebView;
+class ProxyActionContext;
 class KaduWindowActions;
+class RosterWidget;
 class StatusButtons;
+class TalkableTreeView;
 
 class KADUAPI KaduWindow : public MainWindow, private ConfigurationAwareObject, CompositingAwareObject
 {
@@ -85,13 +84,11 @@ private:
 	QMenu *RecentChatsMenu;
 	QAction *RecentChatsMenuAction;
 	bool RecentChatsMenuNeedsUpdate;
-	GroupTabBar *GroupBar;
-
-	BuddiesListWidget *ContactsWidget;
 
 	QWidget *MainWidget;
 	QVBoxLayout *MainLayout;
 
+	RosterWidget *Roster;
 	QMenu *StatusButtonMenu;
 	StatusButtons *ChangeStatusButtons;
 	QPoint LastPositionBeforeStatusMenuHide;
@@ -100,7 +97,10 @@ private:
 
 	bool CompositingEnabled;
 
+	ProxyActionContext *Context;
+
 	void createGui();
+
 	void createMenu();
 	void createKaduMenu();
 	void createContactsMenu();
@@ -113,9 +113,6 @@ private:
 	virtual void compositingDisabled();
 
 private slots:
-	void openChatWindow(Chat chat);
-	void buddyActivated(const Buddy &buddy);
-
 	void invalidateRecentChatsMenu();
 	void updateRecentChatsMenu();
 	void openRecentChats(QAction *action);
@@ -129,13 +126,6 @@ protected:
 
 	virtual bool supportsActionType(ActionDescription::ActionType type);
 
-	virtual StatusContainer * statusContainer();
-
-	virtual ContactSet contacts();
-	virtual BuddySet buddies();
-	virtual Chat chat();
-	virtual bool hasContactSelected();
-
 	virtual void configurationUpdated();
 
 public:
@@ -144,7 +134,8 @@ public:
 	explicit KaduWindow(QWidget *parent = 0);
 	virtual ~KaduWindow();
 
-	virtual BuddiesListView * buddiesListView();
+	virtual TalkableTreeView * talkableTreeView();
+	virtual BuddiesModelProxy * buddiesProxyModel();
 
 	void insertMenuActionDescription(ActionDescription *actionDescription, MenuType Type, int pos = -1);
 	void removeMenuActionDescription(ActionDescription *actionDescription);
@@ -152,16 +143,20 @@ public:
 	void setDocked(bool);
 	bool docked() { return Docked; }
 
-	ActionDataSource * actionSource();
 	BuddyInfoPanel * infoPanel() { return InfoPanel; }
 
 #ifdef Q_OS_MAC
 	QMenuBar* menuBar() const;
 #endif
 
+public slots:
+	void talkableActivatedSlot(const Talkable &talkable);
+
 signals:
 	void keyPressed(QKeyEvent *e);
 	void parentChanged(QWidget *oldParent);
+
+	void talkableActivated(const Talkable &talkable);
 
 };
 

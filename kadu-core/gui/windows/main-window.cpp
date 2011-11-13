@@ -34,7 +34,7 @@
 #include "buddies/buddy-set.h"
 #include "gui/actions/action.h"
 #include "gui/actions/actions.h"
-#include "gui/widgets/buddies-list-view.h"
+#include "gui/widgets/talkable-tree-view.h"
 #include "gui/widgets/toolbar.h"
 #include "core/core.h"
 
@@ -55,9 +55,12 @@ MainWindow * MainWindow::findMainWindow(QWidget *widget)
 	return 0;
 }
 
-MainWindow::MainWindow(const QString &windowName, QWidget *parent) :
-		QMainWindow(parent), DesktopAwareObject(this),  WindowName(windowName), TransparencyEnabled(false)
+MainWindow::MainWindow(ActionContext *context, const QString &windowName, QWidget *parent) :
+		QMainWindow(parent), DesktopAwareObject(this),  WindowName(windowName), TransparencyEnabled(false),
+		Context(context)
 {
+	Q_ASSERT(0 != Context);
+
 	connect(ConfigurationManager::instance()->toolbarConfigurationManager(), SIGNAL(configurationUpdated()),
 			this, SLOT(refreshToolBars()));
 	connect(Actions::instance(), SIGNAL(actionLoaded(ActionDescription*)),
@@ -74,6 +77,9 @@ MainWindow::~MainWindow()
 			this, SLOT(actionLoadedOrUnloaded(ActionDescription*)));
 	disconnect(ConfigurationManager::instance()->toolbarConfigurationManager(), SIGNAL(configurationUpdated()),
 			this, SLOT(refreshToolBars()));
+
+	delete Context;
+	Context = 0;
 }
 
 void MainWindow::loadToolBarsFromConfig()
@@ -376,12 +382,6 @@ void MainWindow::addRightToolbar()
 	toolbarUpdated();
 }
 
-void MainWindow::actionAdded(Action *action)
-{
-	if (buddiesListView())
-		connect(buddiesListView(), SIGNAL(buddySelectionChanged()), action, SLOT(checkState()));
-}
-
 bool MainWindow::hasAction(const QString &actionName, ToolBar *exclude)
 {
 	foreach (QObject *object, children())
@@ -396,7 +396,7 @@ bool MainWindow::hasAction(const QString &actionName, ToolBar *exclude)
 
 Contact MainWindow::contact()
 {
-	ContactSet contactSet = contacts();
+	ContactSet contactSet = actionContext()->contacts();
 	return 1 == contactSet.count()
 			? *contactSet.constBegin()
 			: Contact::null;
@@ -404,7 +404,7 @@ Contact MainWindow::contact()
 
 Buddy MainWindow::buddy()
 {
-	BuddySet buddySet = buddies();
+	BuddySet buddySet = actionContext()->buddies();
 	return 1 == buddySet.count()
 			? *buddySet.constBegin()
 			: Buddy::null;
@@ -461,4 +461,9 @@ void MainWindow::toolbarRemoved(ToolBar *toolBar)
 	toolBar->deleteLater();
 
 	toolbarUpdated();
+}
+
+ActionContext * MainWindow::actionContext()
+{
+	return Context;
 }

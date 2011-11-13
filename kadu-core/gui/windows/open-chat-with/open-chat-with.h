@@ -32,9 +32,10 @@ class QLabel;
 class QPushButton;
 class QVBoxLayout;
 
-class BuddiesListView;
 class BuddyListModel;
 class LineEditWithClearButton;
+class ModelChain;
+class TalkableTreeView;
 
 class KADUAPI OpenChatWith : public QWidget, DesktopAwareObject
 {
@@ -46,12 +47,13 @@ class KADUAPI OpenChatWith : public QWidget, DesktopAwareObject
 
 	bool IsTyping;
 
-	BuddiesListView *BuddiesWidget;
+	TalkableTreeView *BuddiesWidget;
 	LineEditWithClearButton *ContactID;
 	QVBoxLayout *MainLayout;
 	OpenChatWithRunner *OpenChatRunner;
 
 	BuddyListModel *ListModel;
+	ModelChain *Chain;
 
 private slots:
 	void inputAccepted();

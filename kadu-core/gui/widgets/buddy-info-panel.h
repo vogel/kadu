@@ -22,7 +22,7 @@
 #ifndef BUDDY_INFO_PANEL_H
 #define BUDDY_INFO_PANEL_H
 
-#include "buddies/buddy-or-contact.h"
+#include "buddies/talkable.h"
 #include "configuration/configuration-aware-object.h"
 #include "contacts/contact.h"
 
@@ -32,7 +32,7 @@ class BuddyInfoPanel : public KaduWebView, private ConfigurationAwareObject
 {
 	Q_OBJECT
 
-	BuddyOrContact Item;
+	Talkable Item;
 	QString Template;
 	QString Syntax;
 	QString BackgroundColor;
@@ -53,7 +53,7 @@ public:
 	virtual void setVisible(bool visible);
 
 public slots:
-	void displayItem(BuddyOrContact item);
+	void displayItem(Talkable item);
 	void update();
 	void styleFixup(QString &syntax);
 

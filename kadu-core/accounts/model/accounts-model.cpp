@@ -113,15 +113,18 @@ int AccountsModel::accountIndex(Account account) const
 	return AccountManager::instance()->indexOf(account);
 }
 
-QModelIndex AccountsModel::indexForValue(const QVariant &value) const
+QModelIndexList AccountsModel::indexListForValue(const QVariant &value) const
 {
-	return createIndex(accountIndex(value.value<Account>()), 0, 0);
+	QModelIndexList result;
+	result.append(createIndex(accountIndex(value.value<Account>()), 0, 0));
+	return result;
 }
 
 void AccountsModel::accountUpdated(Account account)
 {
-	QModelIndex index = indexForValue(account);
-	emit dataChanged(index, index);
+	const QModelIndexList &indexes = indexListForValue(account);
+	foreach (const QModelIndex &index, indexes)
+		emit dataChanged(index, index);
 }
 
 void AccountsModel::accountAboutToBeRegistered(Account account)

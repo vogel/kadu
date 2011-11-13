@@ -62,6 +62,9 @@ class KADUAPI ContactShared : public QObject, public Shared, public DetailsHolde
 
 	void doSetOwnerBuddy(const Buddy &buddy, bool emitSignals);
 
+private slots:
+	void avatarUpdated();
+
 protected:
 	virtual void load();
 	virtual void store();
@@ -96,7 +99,10 @@ public:
 	void setDirty(bool dirty);
 
 	KaduShared_PropertyDeclCRW(Account, contactAccount, ContactAccount)
-	KaduShared_PropertyDeclCRW(Avatar, contactAvatar, ContactAvatar)
+
+	KaduShared_PropertyReadDecl(Avatar, contactAvatar)
+	void setContactAvatar(const Avatar &contactAvatar);
+
 	KaduShared_PropertyDeclCRW(Buddy, ownerBuddy, OwnerBuddy)
 	void removeOwnerBuddy();
 

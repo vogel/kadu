@@ -27,14 +27,17 @@
 
 #include <QtCore/QFileInfo>
 #include <QtGui/QIcon>
+#include <QtGui/QInputDialog>
 #include <QtGui/QKeyEvent>
-#include <QtGui/QPushButton>
 #include <QtGui/QShortcut>
 #include <QtGui/QSplitter>
+#include <QtGui/QToolBar>
 #include <QtGui/QVBoxLayout>
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
+#include "buddies/filter/buddy-name-filter.h"
+#include "buddies/model/buddies-model-proxy.h"
 #include "buddies/model/buddy-list-model.h"
 #include "buddies/buddy.h"
 #include "buddies/buddy-set.h"
@@ -52,15 +55,16 @@
 #include "gui/hot-key.h"
 #include "gui/actions/action.h"
 #include "gui/actions/actions.h"
-#include "gui/widgets/buddies-list-view.h"
-#include "gui/widgets/buddies-list-widget.h"
 #include "gui/widgets/chat-edit-box-size-manager.h"
 #include "gui/widgets/chat-messages-view.h"
 #include "gui/widgets/chat-widget-actions.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/color-selector.h"
+#include "gui/widgets/filtered-tree-view.h"
+#include "gui/widgets/talkable-tree-view.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-dialog.h"
+#include "model/model-chain.h"
 #include "parser/parser.h"
 #include "protocols/protocol.h"
 
@@ -76,7 +80,7 @@
 
 ChatWidget::ChatWidget(const Chat &chat, QWidget *parent) :
 		QWidget(parent), CurrentChat(chat),
-		BuddiesWidget(0), InputBox(0), HorizontalSplitter(0),
+		BuddiesWidget(0), ProxyModel(0), InputBox(0), HorizontalSplitter(0),
 		IsComposing(false), CurrentContactActivity(ChatStateService::StateNone),
 		SplittersInitialized(false), NewMessagesCount(0)
 {
@@ -162,12 +166,12 @@ void ChatWidget::createGui()
 	connect(shortcut, SIGNAL(activated()), MessagesView, SLOT(pageDown()));
 	HorizontalSplitter->addWidget(MessagesView);
 
-	if (CurrentChat.contacts().count() > 1)
-		createContactsList();
-
 	InputBox = new ChatEditBox(CurrentChat, this);
 	InputBox->setSizePolicy(QSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored));
 	InputBox->setMinimumHeight(10);
+
+	if (CurrentChat.contacts().count() > 1)
+		createContactsList();
 
 	VerticalSplitter->addWidget(HorizontalSplitter);
 	VerticalSplitter->setStretchFactor(0, 1);
@@ -188,25 +192,37 @@ void ChatWidget::createContactsList()
 	layout->setContentsMargins(0, 0, 0, 0);
 	layout->setSpacing(0);
 
-	BuddiesWidget = new BuddiesListWidget(BuddiesListWidget::FilterAtTop, this);
-	BuddiesWidget->setShowAnonymous(true);
-	BuddiesWidget->view()->setItemsExpandable(false);
+	BuddiesWidget = new FilteredTreeView(FilteredTreeView::FilterAtTop, this);
 	BuddiesWidget->setMinimumSize(QSize(30, 30));
-	BuddiesWidget->view()->setModel(new ContactListModel(CurrentChat.contacts().toContactVector(), this));
-	BuddiesWidget->view()->setRootIsDecorated(false);
-	BuddiesWidget->view()->setShowAccountName(false);
-	BuddiesWidget->view()->setContextMenuEnabled(true);
 
-	connect(BuddiesWidget->view(), SIGNAL(chatActivated(Chat)),
-			Core::instance()->kaduWindow(), SLOT(openChatWindow(Chat)));
+	TalkableTreeView *view = new TalkableTreeView(BuddiesWidget);
+	view->setItemsExpandable(false);
 
-	QPushButton *leaveConference = new QPushButton(tr("Leave\nconference"), contactsListContainer);
-	leaveConference->setStyleSheet("text-align: center;");
-	leaveConference->setMinimumWidth(BuddiesWidget->minimumWidth());
-	connect(leaveConference, SIGNAL(clicked()), this, SLOT(leaveConference()));
+	ModelChain *chain = new ModelChain(new ContactListModel(CurrentChat.contacts().toContactVector(), this), this);
+	ProxyModel = new BuddiesModelProxy(chain);
 
+	BuddyNameFilter *nameFilter = new BuddyNameFilter(ProxyModel);
+	connect(BuddiesWidget, SIGNAL(filterChanged(QString)), nameFilter, SLOT(setName(QString)));
+
+	ProxyModel->addFilter(nameFilter);
+	chain->addProxyModel(ProxyModel);
+
+	view->setChain(chain);
+	view->setRootIsDecorated(false);
+	view->setShowAccountName(false);
+	view->setContextMenuEnabled(true);
+
+	connect(view, SIGNAL(talkableActivated(Talkable)),
+			Core::instance()->kaduWindow(), SLOT(talkableActivatedSlot(Talkable)));
+
+	BuddiesWidget->setTreeView(view);
+
+	QToolBar *toolBar = new QToolBar(contactsListContainer);
+	toolBar->addAction(Actions::instance()->createAction("editChatAction", InputBox->actionContext(), toolBar));
+	toolBar->addAction(Actions::instance()->createAction("leaveChatAction", InputBox->actionContext(), toolBar));
+
+	layout->addWidget(toolBar);
 	layout->addWidget(BuddiesWidget);
-	layout->addWidget(leaveConference);
 
 	QList<int> sizes;
 	sizes.append(3);
@@ -255,13 +271,13 @@ bool ChatWidget::keyPressEventHandled(QKeyEvent *e)
 
 	if (HotKey::shortCut(e,"ShortCuts", "kadu_searchuser"))
 	{
-		Actions::instance()->createAction("lookupUserInfoAction", InputBox)->activate(QAction::Trigger);
+		Actions::instance()->createAction("lookupUserInfoAction", InputBox->actionContext(), InputBox)->activate(QAction::Trigger);
 		return true;
 	}
 
 	if (HotKey::shortCut(e,"ShortCuts", "kadu_openchatwith"))
 	{
-		Actions::instance()->createAction("openChatWithAction", InputBox)->activate(QAction::Trigger);
+		Actions::instance()->createAction("openChatWithAction", InputBox->actionContext(), InputBox)->activate(QAction::Trigger);
 		return true;
 	}
 
@@ -302,7 +318,7 @@ void ChatWidget::refreshTitle()
 		QString conferenceContents = ChatConfigurationHolder::instance()->conferenceContents();
 		QStringList contactslist;
 		foreach (Contact contact, chat().contacts())
-			contactslist.append(Parser::parse(conferenceContents.isEmpty() ? "%a" : conferenceContents, BuddyOrContact(contact), false));
+			contactslist.append(Parser::parse(conferenceContents.isEmpty() ? "%a" : conferenceContents, Talkable(contact), false));
 
 		title.append(contactslist.join(", "));
 	}
@@ -313,12 +329,12 @@ void ChatWidget::refreshTitle()
 		if (ChatConfigurationHolder::instance()->chatContents().isEmpty())
 		{
 			if (contact.ownerBuddy().isAnonymous())
-				title = Parser::parse(tr("Chat with ") + "%a", BuddyOrContact(contact), false);
+				title = Parser::parse(tr("Chat with ") + "%a", Talkable(contact), false);
 			else
-				title = Parser::parse(tr("Chat with ") + "%a (%s[: %d])", BuddyOrContact(contact), false);
+				title = Parser::parse(tr("Chat with ") + "%a (%s[: %d])", Talkable(contact), false);
 		}
 		else
-			title = Parser::parse(ChatConfigurationHolder::instance()->chatContents(), BuddyOrContact(contact), false);
+			title = Parser::parse(ChatConfigurationHolder::instance()->chatContents(), Talkable(contact), false);
 
 		if (ChatConfigurationHolder::instance()->contactStateWindowTitle())
 		{
@@ -415,15 +431,15 @@ void ChatWidget::resetEditBox()
 	InputBox->inputBox()->clear();
 
 	Action *action;
-	action = ChatWidgetManager::instance()->actions()->bold()->action(InputBox);
+	action = ChatWidgetManager::instance()->actions()->bold()->action(InputBox->actionContext());
 	if (action)
 		InputBox->inputBox()->setFontWeight(action->isChecked() ? QFont::Bold : QFont::Normal);
 
-	action = ChatWidgetManager::instance()->actions()->italic()->action(InputBox);
+	action = ChatWidgetManager::instance()->actions()->italic()->action(InputBox->actionContext());
 	if (action)
 		InputBox->inputBox()->setFontItalic(action->isChecked());
 
-	action = ChatWidgetManager::instance()->actions()->underline()->action(InputBox);
+	action = ChatWidgetManager::instance()->actions()->underline()->action(InputBox->actionContext());
 	if (action)
 		InputBox->inputBox()->setFontUnderline(action->isChecked());
 }
@@ -492,9 +508,9 @@ CustomInput * ChatWidget::edit() const
 	return InputBox ? InputBox->inputBox() : 0;
 }
 
-BuddiesListView * ChatWidget::contactsListWidget() const
+BuddiesModelProxy * ChatWidget::buddiesProxyModel() const
 {
-	return BuddiesWidget ? BuddiesWidget->view() : 0;
+	return ProxyModel;
 }
 
 unsigned int ChatWidget::countMessages() const
@@ -736,14 +752,8 @@ void ChatWidget::contactActivityChanged(ChatStateService::ContactActivity state,
 	}
 }
 
-void ChatWidget::leaveConference()
+void ChatWidget::close()
 {
-	if (!MessageDialog::ask(KaduIcon("dialog-warning"), tr("Kadu"), tr("All messages received in this conference will be ignored\nfrom now on. Are you sure you want to leave this conference?"), this))
-		return;
-
-	if (CurrentChat)
-		CurrentChat.setIgnoreAllMessages(true);
-
 	emit closed();
 }
 

@@ -33,7 +33,7 @@ class QAction;
 class QMenu;
 
 class Action;
-class ActionDataSource;
+class ActionContext;
 
 /**
  * @addtogroup Actions
@@ -53,7 +53,7 @@ class ActionDataSource;
  * For each action each window gets its own instance of Action class created by given ActionDescription
  * object. This is required because each window contains different objects (like chats, contacts and
  * buddies) and may have different conditions for enabling/disabling actions. Windows are mapped
- * as ActionDataSource interfaces - each type of window or widget can have its own implementation
+ * as ActionContext interfaces - each type of window or widget can have its own implementation
  * of this interface.
  *
  * Actions can be simple actions or actions with menu. If action has menu, it has to implement
@@ -94,7 +94,7 @@ public:
 private:
 	friend class Action;
 
-	QMap<ActionDataSource *, Action *> MappedActions;
+	QMap<ActionContext *, Action *> MappedActions;
 	int deleted;
 
 	ActionType Type;
@@ -180,6 +180,28 @@ protected:
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
+	 * @todo make abstract when actions are moved to new API
+	 * @short Called when instance of Action is triggered.
+	 * @param widget parent widget of triggered action
+	 * @param context context of triggered action
+	 * @param toggled true, if action was toggled on
+	 *
+	 * This method is called automatically when instance of QAction is triggered.
+	 *
+	 * By defult this method does nothing.
+	 *
+	 * Old implementations of actions uses object and slot parameters in constructor to get notification
+	 * about action triggering.
+	 */
+	virtual void triggered(QWidget *widget, ActionContext *context, bool toggled)
+	{
+		Q_UNUSED(widget)
+		Q_UNUSED(context)
+		Q_UNUSED(toggled)
+	}
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
 	 * @short Updates enabled/disabled state of given action.
 	 * @param action action to update state for
 	 *
@@ -218,16 +240,16 @@ public:
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Creates instance of Action for given ActionDataSource.
-	 * @param dataSource dataSource of new Action instance
+	 * @short Creates instance of Action for given ActionContext.
+	 * @param context context of new Action instance
 	 * @param parent parent of new Action instance
 	 *
-	 * This method creates new instance of Action for given ActionDataSource or returns existing one, if action for
-	 * given ActionDataSource was already created. Each ActionDataSource will have different instance of Actions.
+	 * This method creates new instance of Action for given ActionContext or returns existing one, if action for
+	 * given ActionContext was already created. Each ActionContext will have different instance of Actions.
 	 *
 	 * This method calls actionInstanceCreated and emits actionCreated if new instance were created.
 	 */
-	Action * createAction(ActionDataSource *dataSource, QObject *parent);
+	Action * createAction(ActionContext *context, QObject *parent);
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -239,12 +261,12 @@ public:
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns Action instance connected with given ActionDataSource.
-	 * @param dataSource ActionDataSource to search Action for
+	 * @short Returns Action instance connected with given ActionContext.
+	 * @param context ActionContext to search Action for
 	 *
-	 * Returns Action instance connected with given ActionDataSource or 0 when no Action was created.
+	 * Returns Action instance connected with given ActionContext or 0 when no Action was created.
 	 */
-	Action * action(ActionDataSource *dataSource);
+	Action * action(ActionContext *context);
 
 	void setType(ActionType type);
 	void setName(const QString &name);

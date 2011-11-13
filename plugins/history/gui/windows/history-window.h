@@ -36,6 +36,7 @@
 #include "history.h"
 #include "history_exports.h"
 
+class BaseActionContext;
 class BuddyNameFilter;
 class BuddyStatusDatesModel;
 class ChatDatesModel;
@@ -84,6 +85,8 @@ class HistoryWindow : public MainWindow
 
 	HistorySearchParameters Search;
 
+	BaseActionContext *Context;
+
 	explicit HistoryWindow(QWidget *parent = 0);
 
 	void createGui();
@@ -102,13 +105,15 @@ class HistoryWindow : public MainWindow
 	void smsRecipientActivated(const QString &recipient);
 	void treeItemActivated(const HistoryTreeItem &item);
 
+	ContactSet selectedContacts() const;
+	Chat selectedChat() const;
+
 	QVector<Message> statusesToMessages(const QList<TimedStatus> &statuses);
 
 private slots:
 	void treeCurrentChanged(const QModelIndex &current, const QModelIndex &previous);
 	void dateCurrentChanged(const QModelIndex &current, const QModelIndex &previous);
 
-	void filterLineChanged(const QString &filterText);
 	void searchTextChanged(const QString &searchText);
 	void fromDateChanged(const QDate &date);
 	void toDateChanged(const QDate &date);
@@ -125,10 +130,14 @@ private slots:
 
 	void selectQueryText();
 
+	void updateContext();
+
 protected:
 	virtual void keyPressEvent(QKeyEvent *e);
 
 public:
+	static void show(const Chat &chat);
+
 	virtual ~HistoryWindow();
 
 	virtual QTreeView * detailsListView() { return DetailsListView; }
@@ -136,15 +145,9 @@ public:
 	virtual ChatMessagesView * contentBrowser() { return ContentBrowser; }
 
 	virtual bool supportsActionType(ActionDescription::ActionType type);
-	virtual ContactSet contacts();
-	virtual BuddySet buddies();
-	virtual Chat chat();
 	virtual ChatWidget * chatWidget() { return 0; }
-	virtual BuddiesListView * buddiesListView() { return 0; }
-	virtual StatusContainer* statusContainer() { return 0; }
-	virtual bool hasContactSelected() { return false; } // we can select only buddies here
+	virtual BuddiesModelProxy * buddiesProxyModel() { return 0; }
 
-	static void show(const Chat &chat);
 };
 
 class HistoryChatsModel;

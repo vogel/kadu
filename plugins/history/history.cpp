@@ -79,7 +79,7 @@ void disableNonHistoryContacts(Action *action)
 {
 	kdebugf();
 	action->setEnabled(false);
-	ContactSet contacts = action->contacts();
+	const ContactSet &contacts = action->context()->contacts();
 
 	if (contacts.isEmpty())
 		return;
@@ -149,7 +149,7 @@ void History::createActionDescriptions()
 
 	ShowHistoryActionDescriptionInstance = new ShowHistoryActionDescription(this);
 
-	BuddiesListViewMenuManager::instance()->addActionDescription(ShowHistoryActionDescriptionInstance, BuddiesListViewMenuItem::MenuCategoryView, 100);
+	TalkableMenuManager::instance()->addActionDescription(ShowHistoryActionDescriptionInstance, TalkableMenuItem::CategoryView, 100);
 	Core::instance()->kaduWindow()->insertMenuActionDescription(ShowHistoryActionDescriptionInstance, KaduWindow::MenuKadu, 5);
 
 	// The last ActionDescription will send actionLoaded() signal.
@@ -166,7 +166,7 @@ void History::createActionDescriptions()
 
 void History::deleteActionDescriptions()
 {
-	BuddiesListViewMenuManager::instance()->removeActionDescription(ShowHistoryActionDescriptionInstance);
+	TalkableMenuManager::instance()->removeActionDescription(ShowHistoryActionDescriptionInstance);
 	Core::instance()->kaduWindow()->removeMenuActionDescription(ShowHistoryActionDescriptionInstance);
 
 	delete ShowHistoryActionDescriptionInstance;
@@ -184,8 +184,8 @@ void History::clearHistoryActionActivated(QAction *sender, bool toggled)
 	if (!action)
 		return;
 
-	if (action->chat())
-		CurrentStorage->clearChatHistory(action->chat());
+	if (action->context()->chat())
+		CurrentStorage->clearChatHistory(action->context()->chat());
 }
 
 void History::chatCreated(ChatWidget *chatWidget)

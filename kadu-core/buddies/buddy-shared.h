@@ -104,6 +104,7 @@ class KADUAPI BuddyShared : public QObject, public Shared
 	bool doRemoveFromGroup(const Group &group);
 
 private slots:
+	void avatarUpdated();
 	void groupAboutToBeRemoved();
 	void markContactsDirty();
 
@@ -151,7 +152,9 @@ public:
 	void addToGroup(const Group &group);
 	void removeFromGroup(const Group &group);
 
-	KaduShared_PropertyDeclCRW(Avatar, buddyAvatar, BuddyAvatar)
+	KaduShared_PropertyReadDecl(Avatar, buddyAvatar)
+	void setBuddyAvatar(const Avatar &buddyAvatar);
+
 	BuddyShared_PropertyDirty(const QString &, display, Display)
 	BuddyShared_PropertyDirty(const QString &, firstName, FirstName)
 	BuddyShared_PropertyDirty(const QString &, lastName, LastName)

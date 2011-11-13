@@ -6,7 +6,6 @@ set (buddies_SRCS
 	buddy-list.cpp
 	buddy-list-mime-data-helper.cpp
 	buddy-manager.cpp
-	buddy-or-contact.cpp
 	buddy-preferred-manager.cpp
 	buddy-search-criteria.cpp
 	buddy-set.cpp
@@ -14,6 +13,7 @@ set (buddies_SRCS
 	group.cpp
 	group-manager.cpp
 	group-shared.cpp
+	talkable.cpp
 
 	filter/account-buddy-filter.cpp
 	filter/anonymous-buddy-filter.cpp
@@ -28,7 +28,6 @@ set (buddies_SRCS
 	filter/online-and-description-buddy-filter.cpp
 	filter/pending-messages-filter.cpp
 
-	model/abstract-buddies-model.cpp
 	model/buddy-data-extractor.cpp
 	model/buddy-list-model.cpp
 	model/buddies-model.cpp

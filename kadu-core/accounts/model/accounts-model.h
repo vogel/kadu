@@ -51,7 +51,7 @@ public:
 
 	Account account(const QModelIndex &index) const;
 	int accountIndex(Account account) const;
-	virtual QModelIndex indexForValue(const QVariant &value) const;
+	virtual QModelIndexList indexListForValue(const QVariant &value) const;
 
 	void setIncludeIdInDisplay(bool includeIdInDisplay);
 

@@ -65,6 +65,7 @@ BuddyShared::~BuddyShared()
 {
 	ref.ref();
 	delete BuddyAvatar;
+	BuddyAvatar = 0;
 }
 
 void BuddyShared::collectGarbage()
@@ -75,7 +76,7 @@ void BuddyShared::collectGarbage()
 	CollectingGarbage = true;
 
 	// 1 is for current Buddy
-	int numberOfReferences = 1 + Contacts.length() + (*BuddyAvatar ? 1 : 0);
+	const int numberOfReferences = 1 + Contacts.length();
 	if (numberOfReferences != (int)ref)
 	{
 		CollectingGarbage = false;
@@ -87,7 +88,7 @@ void BuddyShared::collectGarbage()
 		Q_ASSERT(!contact.isNull());
 
 		// 1 is for current BuddyShared
-		int contactNumberOfReferences = 1 + (contact.data()->contactAvatar() ? 1 : 0);
+		const int contactNumberOfReferences = 1;
 		if (contactNumberOfReferences != (int)(contact.data()->ref))
 		{
 			CollectingGarbage = false;
@@ -190,7 +191,7 @@ void BuddyShared::load()
 		}
 	}
 
-	*BuddyAvatar = AvatarManager::instance()->byUuid(loadValue<QString>("Avatar"));
+	setBuddyAvatar(AvatarManager::instance()->byUuid(loadValue<QString>("Avatar")));
 	Display = loadValue<QString>("Display");
 	FirstName = loadValue<QString>("FirstName");
 	LastName = loadValue<QString>("LastName");
@@ -287,7 +288,7 @@ void BuddyShared::aboutToBeRemoved()
 	Groups.clear();
 
 	AvatarManager::instance()->removeItem(*BuddyAvatar);
-	*BuddyAvatar = Avatar::null;
+	setBuddyAvatar(Avatar::null);
 }
 
 void BuddyShared::addContact(const Contact &contact)
@@ -386,6 +387,26 @@ void BuddyShared::normalizePriorities()
 void BuddyShared::emitUpdated()
 {
 	emit updated();
+}
+
+void BuddyShared::avatarUpdated()
+{
+	dataUpdated();
+}
+
+void BuddyShared::setBuddyAvatar(const Avatar &buddyAvatar)
+{
+	if (*BuddyAvatar == buddyAvatar)
+		return;
+
+	if (*BuddyAvatar)
+		disconnect(*BuddyAvatar, SIGNAL(updated()), this, SLOT(avatarUpdated()));
+
+	*BuddyAvatar = buddyAvatar;
+	dataUpdated();
+
+	if (*BuddyAvatar)
+		connect(*BuddyAvatar, SIGNAL(updated()), this, SLOT(avatarUpdated()));
 }
 
 void BuddyShared::setGroups(const QList<Group> &groups)
@@ -496,4 +517,4 @@ void BuddyShared::markContactsDirty()
 		contact.setDirty(true);
 }
 
-KaduShared_PropertyPtrDefCRW(BuddyShared, Avatar, buddyAvatar, BuddyAvatar)
+KaduShared_PropertyPtrReadDef(BuddyShared, Avatar, buddyAvatar, BuddyAvatar)

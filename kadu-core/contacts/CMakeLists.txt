@@ -7,8 +7,6 @@ set (contacts_SRCS
 	contact-set-configuration-helper.cpp
 	contact-shared.cpp
 
-	filter/contact-no-unloaded-account-filter.cpp
-
 	model/buddy-contact-model.cpp
 	model/contact-data-extractor.cpp
 	model/contact-list-model.cpp
@@ -20,7 +18,6 @@ set (contacts_MOC_SRCS
 	contact-shared.h
 
 	filter/abstract-contact-filter.h
-	filter/contact-no-unloaded-account-filter.h
 
 	model/buddy-contact-model.h
 	model/contact-list-model.h

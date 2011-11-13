@@ -37,11 +37,11 @@ static void disableNoRosterContact(Action *action)
 {
 	action->setEnabled(false);
 
-	Contact contact = action->contact();
+	const Contact &contact = action->context()->contacts().toContact();
 	if (!contact)
 		return;
 
-	if (action->buddies().contains(Core::instance()->myself()))
+	if (action->context()->buddies().contains(Core::instance()->myself()))
 		return;
 
 	Account account = contact.contactAccount();
@@ -99,7 +99,7 @@ Contact JabberActions::contactFromAction(QAction *action)
 	if (!kaduAction)
 		return Contact::null;
 
-	return kaduAction->contact();
+	return kaduAction->context()->contacts().toContact();
 }
 
 JabberSubscriptionService * JabberActions::subscriptionServiceFromContact(const Contact& contact)

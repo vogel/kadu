@@ -119,9 +119,33 @@ Chat::~Chat()
 {
 }
 
+bool Chat::isInGroup(Group group) const
+{
+	return isNull() ? false : data()->isInGroup(group);
+}
+
+bool Chat::showInAllGroup() const
+{
+	return isNull() ? false : data()->showInAllGroup();
+}
+
+void Chat::addToGroup(Group group)
+{
+	if (!isNull() && !data()->isInGroup(group))
+		data()->addToGroup(group);
+
+}
+void Chat::removeFromGroup(Group group)
+{
+	if (!isNull() && data()->isInGroup(group))
+		data()->removeFromGroup(group);
+}
+
 KaduSharedBase_PropertyReadDef(Chat, ContactSet, contacts, Contacts, ContactSet())
 KaduSharedBase_PropertyReadDef(Chat, QString, name, Name, QString())
 KaduSharedBase_PropertyDef(Chat, ChatDetails *, details, Details, 0)
 KaduSharedBase_PropertyDefCRW(Chat, Account, chatAccount, ChatAccount, Account::null)
 KaduSharedBase_PropertyDefCRW(Chat, QString, type, Type, QString())
+KaduSharedBase_PropertyDefCRW(Chat, QString, display, Display, QString())
 KaduSharedBase_PropertyBoolDef(Chat, IgnoreAllMessages, false)
+KaduSharedBase_PropertyDefCRW(Chat, QList<Group>, groups, Groups, QList<Group>())

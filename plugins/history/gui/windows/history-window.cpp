@@ -48,10 +48,11 @@
 #include "chat/type/chat-type-manager.h"
 #include "chat/aggregate-chat-manager.h"
 #include "gui/actions/actions.h"
-#include "gui/widgets/buddies-list-view-menu-manager.h"
+#include "gui/actions/base-action-context.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/delayed-line-edit.h"
 #include "gui/widgets/filter-widget.h"
+#include "gui/widgets/talkable-menu-manager.h"
 #include "gui/windows/message-dialog.h"
 #include "icons/kadu-icon.h"
 #include "misc/misc.h"
@@ -93,7 +94,6 @@ void HistoryWindow::show(const Chat &chat)
 	if (!Instance)
 		Instance = new HistoryWindow();
 
-
 	Instance->updateData();
 	Instance->selectChat(aggregate);
 
@@ -102,7 +102,7 @@ void HistoryWindow::show(const Chat &chat)
 }
 
 HistoryWindow::HistoryWindow(QWidget *parent) :
-		MainWindow("history", parent)
+		MainWindow(new BaseActionContext(), "history", parent)
 {
 	kdebugf();
 
@@ -119,6 +119,9 @@ HistoryWindow::HistoryWindow(QWidget *parent) :
 
 	DetailsPopupMenu = new QMenu(this);
 	DetailsPopupMenu->addAction(KaduIcon("kadu_icons/clear-history").icon(), tr("&Remove entries"), this, SLOT(removeHistoryEntriesPerDate()));
+
+	Context = static_cast<BaseActionContext *>(actionContext());
+	updateContext();
 
 	kdebugf2();
 }
@@ -188,7 +191,6 @@ void HistoryWindow::createChatTree(QWidget *parent)
 	QVBoxLayout *layout = new QVBoxLayout(chatsWidget);
 
 	FilterWidget *filterWidget = new FilterWidget(chatsWidget);
-	connect(filterWidget, SIGNAL(textChanged(const QString &)), this, SLOT(filterLineChanged(const QString &)));
 	layout->addWidget(filterWidget);
 
 	ChatsTree = new QTreeView(parent);
@@ -201,9 +203,12 @@ void HistoryWindow::createChatTree(QWidget *parent)
 	ChatsModelProxy->setSourceModel(ChatsModel);
 
 	StatusBuddyNameFilter = new BuddyNameFilter(this);
+	connect(filterWidget, SIGNAL(textChanged(const QString &)), StatusBuddyNameFilter, SLOT(setName(const QString &)));
 	ChatsModelProxy->addBuddyFilter(StatusBuddyNameFilter);
 
 	NameFilter = new ChatNameFilter(this);
+	connect(filterWidget, SIGNAL(textChanged(const QString &)), NameFilter, SLOT(setName(const QString &)));
+
 	ChatsModelProxy->addChatFilter(NameFilter);
 
 	ChatsTree->setModel(ChatsModelProxy);
@@ -261,6 +266,8 @@ void HistoryWindow::connectGui()
 {
 	connect(ChatsTree->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),
 			this, SLOT(treeCurrentChanged(QModelIndex,QModelIndex)));
+	connect(ChatsTree->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),
+			this, SLOT(updateContext()));
 
 	ChatsTree->setContextMenuPolicy(Qt::CustomContextMenu);
 	connect(ChatsTree, SIGNAL(customContextMenuRequested(QPoint)),
@@ -614,12 +621,6 @@ QVector<Message> HistoryWindow::statusesToMessages(const QList<TimedStatus> &sta
 	return messages;
 }
 
-void HistoryWindow::filterLineChanged(const QString &filterText)
-{
-	NameFilter->setName(filterText);
-	StatusBuddyNameFilter->setName(filterText);
-}
-
 void HistoryWindow::searchTextChanged(const QString &searchText)
 {
 	Search.setQuery(searchText);
@@ -657,7 +658,7 @@ void HistoryWindow::showMainPopupMenu(const QPoint &pos)
 			if (!chat)
 				return;
 
-			menu.reset(BuddiesListViewMenuManager::instance()->menu(this, this, chat.contacts().toContactVector().toList()));
+			menu.reset(TalkableMenuManager::instance()->menu(this, actionContext()));
 			menu->addSeparator();
 			menu->addAction(KaduIcon("kadu_icons/clear-history").icon(),
 					tr("&Clear Chat History"), this, SLOT(clearChatHistory()));
@@ -671,7 +672,7 @@ void HistoryWindow::showMainPopupMenu(const QPoint &pos)
 			if (!buddy || buddy.contacts().isEmpty())
 				return;
 
-			menu.reset(BuddiesListViewMenuManager::instance()->menu(this, this, buddy.contacts()));
+			menu.reset(TalkableMenuManager::instance()->menu(this, actionContext()));
 			menu->addSeparator();
 			menu->addAction(KaduIcon("kadu_icons/clear-history").icon(),
 					tr("&Clear Status History"), this, SLOT(clearStatusHistory()));
@@ -808,7 +809,18 @@ void HistoryWindow::keyPressEvent(QKeyEvent *e)
 		QWidget::keyPressEvent(e);
 }
 
-ContactSet HistoryWindow::contacts()
+void HistoryWindow::updateContext()
+{
+	ContactSet contacts = selectedContacts();
+
+	Context->blockChangedSignal();
+	Context->setContacts(contacts);
+	Context->setBuddies(contacts.toBuddySet());
+	Context->setChat(selectedChat());
+	Context->unblockChangedSignal();
+}
+
+ContactSet HistoryWindow::selectedContacts() const
 {
 	Chat chat = ChatsTree->currentIndex().data(ChatRole).value<Chat>();
 	if (chat)
@@ -824,12 +836,7 @@ ContactSet HistoryWindow::contacts()
 	return contacts;
 }
 
-BuddySet HistoryWindow::buddies()
-{
-	return contacts().toBuddySet();
-}
-
-Chat HistoryWindow::chat()
+Chat HistoryWindow::selectedChat() const
 {
 	Chat chat = ChatsTree->currentIndex().data(ChatRole).value<Chat>();
 	ChatDetails *details = chat.details();

@@ -60,7 +60,7 @@ SimpleView::SimpleView() :
 
 	KaduWindowHandle = Core::instance()->kaduWindow();
 	MainWindowHandle = KaduWindowHandle->findMainWindow(KaduWindowHandle);
-	buddiesListViewHandle = MainWindowHandle->buddiesListView();
+	buddiesListViewHandle = KaduWindowHandle->buddiesListView();
 	BuddiesListWidgetHandle = qobject_cast<BuddiesListWidget *>(buddiesListViewHandle->parentWidget());
 	GroupTabBarHandle = KaduWindowHandle->findChild<GroupTabBar *>();
 	StatusButtonsHandle = KaduWindowHandle->findChild<StatusButtons *>();

@@ -106,27 +106,20 @@ int BuddiesModel::rowCount(const QModelIndex &parent) const
 	return BuddyManager::instance()->count() + (IncludeMyself ? 1 : 0);
 }
 
-Buddy BuddiesModel::buddyAt(const QModelIndex &index) const
+int BuddiesModel::buddyIndex(const Buddy &buddy) const
 {
-	QModelIndex parent = index.parent();
-	int row = parent.isValid() ? parent.row() : index.row();
-
-	if (IncludeMyself && (row == BuddyManager::instance()->count()))
-		return Core::instance()->myself();
+	if (IncludeMyself && buddy == Core::instance()->myself())
+		return BuddyManager::instance()->count();
 	else
-		return BuddyManager::instance()->byIndex(row);
+		return BuddyManager::instance()->indexOf(buddy);
 }
 
-QModelIndex BuddiesModel::indexForValue(const QVariant &value) const
+Buddy BuddiesModel::buddyAt(int index) const
 {
-	Buddy buddy = value.value<Buddy>();
-	int result;
-	if (IncludeMyself && buddy == Core::instance()->myself())
-		result = BuddyManager::instance()->count();
+	if (IncludeMyself && (index == BuddyManager::instance()->count()))
+		return Core::instance()->myself();
 	else
-		result = BuddyManager::instance()->indexOf(buddy);
-
-	return index(result, 0);
+		return BuddyManager::instance()->byIndex(index);
 }
 
 void BuddiesModel::buddyAboutToBeAdded(Buddy &buddy)
@@ -139,22 +132,27 @@ void BuddiesModel::buddyAboutToBeAdded(Buddy &buddy)
 
 void BuddiesModel::buddyAdded(Buddy &buddy)
 {
-	Q_UNUSED(buddy)
-
 	endInsertRows();
 
 	// force refresh on proxy sorring model
 	// setDynamicSortFilter does not work properly when adding/removing items, only when changing item data
 	// this is Qt bug
 	// see bug #2167
-	QModelIndex index = indexForValue(buddy);
+
+	const QModelIndexList &indexes = indexListForValue(buddy);
+	Q_ASSERT(indexes.size() == 1);
+
+	const QModelIndex &index = indexes.at(0);
 	emit dataChanged(index, index);
 }
 
 void BuddiesModel::buddyAboutToBeRemoved(Buddy &buddy)
 {
-	int index = indexForValue(buddy).row();
-	beginRemoveRows(QModelIndex(), index, index);
+	const QModelIndexList &indexes = indexListForValue(buddy);
+	Q_ASSERT(indexes.size() == 1);
+
+	const QModelIndex &index = indexes.at(0);
+	beginRemoveRows(QModelIndex(), index.row(), index.row());
 }
 
 void BuddiesModel::buddyRemoved(Buddy &buddy)
@@ -167,7 +165,7 @@ void BuddiesModel::buddyRemoved(Buddy &buddy)
 void BuddiesModel::myselfBuddyUpdated()
 {
 	if (IncludeMyself)
-	{ 
+	{
 		Buddy myself = Core::instance()->myself();
 		buddyUpdated(myself);
 	}
@@ -175,16 +173,21 @@ void BuddiesModel::myselfBuddyUpdated()
 
 void BuddiesModel::buddyUpdated(Buddy &buddy)
 {
-	QModelIndex index = indexForValue(buddy);
-	if (index.isValid())
-		emit dataChanged(index, index);
+	const QModelIndexList &indexes = indexListForValue(buddy);
+	Q_ASSERT(indexes.size() == 1);
+
+	const QModelIndex &index = indexes.at(0);
+	emit dataChanged(index, index);
 }
 
 void BuddiesModel::contactAboutToBeAttached(Contact contact, Buddy nearFutureBuddy)
 {
 	Q_UNUSED(contact)
 
-	QModelIndex index = indexForValue(nearFutureBuddy);
+	const QModelIndexList &indexes = indexListForValue(nearFutureBuddy);
+	Q_ASSERT(indexes.size() == 1);
+
+	const QModelIndex &index = indexes.at(0);
 	if (!index.isValid())
 		return;
 
@@ -194,9 +197,12 @@ void BuddiesModel::contactAboutToBeAttached(Contact contact, Buddy nearFutureBud
 
 void BuddiesModel::contactAttached(Contact contact)
 {
-	Buddy buddy = contact.ownerBuddy();
+	const Buddy &buddy = contact.ownerBuddy();
 
-	QModelIndex index = indexForValue(buddy);
+	const QModelIndexList &indexes = indexListForValue(buddy);
+	Q_ASSERT(indexes.size() == 1);
+
+	const QModelIndex &index = indexes.at(0);
 	if (!index.isValid())
 		return;
 
@@ -205,9 +211,12 @@ void BuddiesModel::contactAttached(Contact contact)
 
 void BuddiesModel::contactAboutToBeDetached(Contact contact)
 {
-	Buddy buddy = contact.ownerBuddy();
+	const Buddy &buddy = contact.ownerBuddy();
 
-	QModelIndex index = indexForValue(buddy);
+	const QModelIndexList &indexes = indexListForValue(buddy);
+	Q_ASSERT(indexes.size() == 1);
+
+	const QModelIndex &index = indexes.at(0);
 	if (!index.isValid())
 		return;
 
@@ -219,7 +228,10 @@ void BuddiesModel::contactDetached(Contact contact, Buddy previousBuddy)
 {
 	Q_UNUSED(contact)
 
-	QModelIndex index = indexForValue(previousBuddy);
+	const QModelIndexList &indexes = indexListForValue(previousBuddy);
+	Q_ASSERT(indexes.size() == 1);
+
+	const QModelIndex &index = indexes.at(0);
 	if (!index.isValid())
 		return;
 
@@ -228,18 +240,18 @@ void BuddiesModel::contactDetached(Contact contact, Buddy previousBuddy)
 
 void BuddiesModel::contactUpdated(Contact &contact)
 {
-	if (!contact)
-		return;
-
-	Buddy buddy = contact.ownerBuddy();
+	const Buddy &buddy = contact.ownerBuddy();
 	if (!buddy)
 		return;
 
-	QModelIndex indexOfBuddy = indexForValue(buddy);
+	const QModelIndexList &indexes = indexListForValue(buddy);
+	Q_ASSERT(indexes.size() == 1);
+
+	const QModelIndex &indexOfBuddy = indexes.at(0);
 	if (!indexOfBuddy.isValid())
 		return;
 
-	QModelIndex contactIndex = index(buddy.contacts().indexOf(contact), 0, indexOfBuddy);
+	const QModelIndex &contactIndex = index(buddy.contacts().indexOf(contact), 0, indexOfBuddy);
 
 	emit dataChanged(indexOfBuddy, indexOfBuddy);
 	emit dataChanged(contactIndex, contactIndex);

@@ -66,10 +66,10 @@ void BuddiesModelBase::buddyStatusChanged(Contact contact, Status oldStatus)
 {
 	Q_UNUSED(oldStatus)
 
-	QModelIndex index = indexForValue(contact.ownerBuddy());
-
-	if (index.isValid())
-		emit dataChanged(index, index);
+	const QModelIndexList& indexes = indexListForValue(contact.ownerBuddy());
+	foreach (const QModelIndex &index, indexes)
+		if (index.isValid())
+			emit dataChanged(index, index);
 }
 
 QModelIndex BuddiesModelBase::index(int row, int column, const QModelIndex &parent) const
@@ -89,7 +89,7 @@ int BuddiesModelBase::rowCount(const QModelIndex &parentIndex) const
 	if (!parentIndex.isValid() || parent(parentIndex).isValid())
 		return 0;
 
-	Buddy buddy = buddyAt(parentIndex);
+	const Buddy &buddy = parentIndex.data(BuddyRole).value<Buddy>();
 	return buddy.contacts().count();
 }
 
@@ -109,19 +109,10 @@ QModelIndex BuddiesModelBase::parent(const QModelIndex &child) const
 		return index(child.internalId(), 0, QModelIndex());
 }
 
-Contact BuddiesModelBase::buddyDefaultContact(const QModelIndex &index) const
-{
-	Buddy buddy = buddyAt(index);
-	if (buddy.isNull())
-		return Contact::null;
-
-	return BuddyPreferredManager::instance()->preferredContact(buddy);
-}
-
 Contact BuddiesModelBase::buddyContact(const QModelIndex &index, int accountIndex) const
 {
-	Buddy buddy = buddyAt(index);
-	if (buddy.isNull())
+	const Buddy &buddy = index.data(BuddyRole).value<Buddy>();
+	if (!buddy)
 		return Contact::null;
 
 	QList<Contact> contacts = buddy.contacts();
@@ -142,13 +133,38 @@ QVariant BuddiesModelBase::data(const QModelIndex &index, int role) const
 		if (ItemTypeRole == role)
 			return BuddyRole;
 
-		Contact contact = buddyDefaultContact(index);
+		const Buddy &buddy = buddyAt(index.row());
+		const Contact &contact = BuddyPreferredManager::instance()->preferredContact(buddy);
+
 		return !contact.isNull()
 				? ContactDataExtractor::data(contact, role, true)
-				: BuddyDataExtractor::data(buddyAt(index), role);
+				: BuddyDataExtractor::data(buddy, role);
 	}
 	else
 		return ContactDataExtractor::data(buddyContact(parentIndex, index.row()), role, false);
+}
+
+QModelIndexList BuddiesModelBase::indexListForValue(const QVariant &value) const
+{
+	QModelIndexList result;
+
+	const Buddy &buddy = value.value<Buddy>();
+	if (buddy)
+	{
+		result.append(index(buddyIndex(buddy), 0));
+		return result;
+	}
+
+	const Contact &contact = value.value<Contact>();
+	if (contact)
+	{
+		const int contactIndexInBuddy = buddy.contacts().indexOf(contact);
+		result.append(index(buddyIndex(buddy), 0).child(contactIndexInBuddy, 0));
+		return result;
+	}
+
+
+	return result;
 }
 
 // D&D

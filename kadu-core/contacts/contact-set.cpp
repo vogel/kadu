@@ -58,5 +58,5 @@ Contact ContactSet::toContact() const
 	if (count() != 1)
 		return Contact::null;
 
-	return (*constBegin());
+	return *constBegin();
 }

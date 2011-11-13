@@ -48,7 +48,7 @@ public:
 
 	NetworkProxy networkProxy(const QModelIndex &index) const;
 	int networkProxyIndex(NetworkProxy networkProxy) const;
-	virtual QModelIndex indexForValue(const QVariant &value) const;
+	virtual QModelIndexList indexListForValue(const QVariant &value) const;
 
 };
 

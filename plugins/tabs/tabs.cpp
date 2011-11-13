@@ -49,8 +49,8 @@
 #include "gui/actions/action-description.h"
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-widget-manager.h"
-#include "gui/widgets/buddies-list-view-menu-manager.h"
 #include "gui/widgets/configuration/configuration-widget.h"
+#include "gui/widgets/talkable-menu-manager.h"
 #include "gui/widgets/toolbar.h"
 #include "icons/kadu-icon.h"
 #include "protocols/protocol.h"
@@ -64,7 +64,7 @@
 
 static void disableNewTab(Action *action)
 {
-	action->setEnabled(action->chat());
+	action->setEnabled(action->context()->chat());
 
 	if (config_file.readBoolEntry("Chat", "DefaultTabs"))
 		action->setText(qApp->translate("TabsManager", "Chat in New Window"));
@@ -116,7 +116,7 @@ TabsManager::TabsManager(QObject *parent) :
 		this, SLOT(onNewTab(QAction *, bool)),
 		KaduIcon("internet-group-chat"), tr("Chat in New Tab"), false, disableNewTab
 	);
-	BuddiesListViewMenuManager::instance()->addActionDescription(OpenInNewTabActionDescription, BuddiesListViewMenuItem::MenuCategoryChat, 200);
+	TalkableMenuManager::instance()->addActionDescription(OpenInNewTabActionDescription, TalkableMenuItem::CategoryChat, 200);
 
 	AttachToTabsActionDescription = new ActionDescription(this,
 		ActionDescription::TypeChat, "attachToTabsAction",
@@ -135,7 +135,7 @@ TabsManager::~TabsManager()
 {
 	kdebugf();
 
-	BuddiesListViewMenuManager::instance()->removeActionDescription(OpenInNewTabActionDescription);
+	TalkableMenuManager::instance()->removeActionDescription(OpenInNewTabActionDescription);
 
 	disconnect(ChatWidgetManager::instance(), 0, this, 0);
 
@@ -320,7 +320,7 @@ void TabsManager::onNewTab(QAction *sender, bool toggled)
 	if (!action)
 		return;
 
-	Chat chat = action->chat();
+	Chat chat = action->context()->chat();
 	if (!chat)
 		return;
 
@@ -368,7 +368,7 @@ void TabsManager::insertTab(ChatWidget* chat)
 
 	foreach (Action *action, AttachToTabsActionDescription->actions())
 	{
-		if (action->contacts() == contacts)
+		if (action->context()->contacts() == contacts)
 			action->setChecked(true);
 	}
 
@@ -495,7 +495,7 @@ void TabsManager::onTabAttach(QAction *sender, bool toggled)
 		detachChat(chatWidget);
 	else
 	{
-		if (chatEditBox->contacts().count()!=1 && !ConfigConferencesInTabs)
+		if (chatEditBox->actionContext()->contacts().count() != 1 && !ConfigConferencesInTabs)
 			return;
 		NewChats.clear();
 		insertTab(chatWidget);
@@ -556,7 +556,7 @@ void TabsManager::attachToTabsActionCreated(Action *action)
 	if (!chatWidget)
 		return;
 
-	ContactSet contacts = action->contacts();
+	ContactSet contacts = action->context()->contacts();
 
 	if (contacts.count() != 1 && !ConfigConferencesInTabs && TabDialog->indexOf(chatWidget) == -1)
 		action->setEnabled(false);

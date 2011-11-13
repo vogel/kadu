@@ -39,10 +39,12 @@
 #include "contacts/contact-set.h"
 #include "emoticons/emoticon-selector.h"
 #include "gui/actions/action.h"
+#include "gui/actions/base-action-context.h"
 #include "gui/widgets/chat-edit-box-size-manager.h"
 #include "gui/widgets/chat-widget-actions.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/color-selector.h"
+#include "gui/widgets/talkable-tree-view.h"
 #include "gui/windows/message-dialog.h"
 #include "identities/identity.h"
 #include "protocols/protocol.h"
@@ -59,9 +61,20 @@
 QList<ChatEditBox *> chatEditBoxes;
 
 ChatEditBox::ChatEditBox(const Chat &chat, QWidget *parent) :
-		MainWindow("chat", parent), CurrentChat(chat)
+		MainWindow(new BaseActionContext(), "chat", parent), CurrentChat(chat)
 {
 	chatEditBoxes.append(this);
+
+	Context = static_cast<BaseActionContext *>(actionContext());
+
+	Context->blockChangedSignal();
+	Context->setChat(CurrentChat);
+	Context->setContacts(CurrentChat.contacts());
+	Context->setBuddies(CurrentChat.contacts().toBuddySet());
+	updateContext();
+	Context->unblockChangedSignal();
+
+	connect(MainConfigurationHolder::instance(), SIGNAL(setStatusModeChanged()), this, SLOT(updateContext()));
 
 	InputBox = new CustomInput(CurrentChat, this);
 	InputBox->setWordWrapMode(QTextOption::WordWrap);
@@ -102,12 +115,12 @@ ChatEditBox::~ChatEditBox()
 
 void ChatEditBox::fontChanged(QFont font)
 {
-	if (ChatWidgetManager::instance()->actions()->bold()->action(this))
-		ChatWidgetManager::instance()->actions()->bold()->action(this)->setChecked(font.bold());
-	if (ChatWidgetManager::instance()->actions()->italic()->action(this))
-		ChatWidgetManager::instance()->actions()->italic()->action(this)->setChecked(font.italic());
-	if (ChatWidgetManager::instance()->actions()->underline()->action(this))
-		ChatWidgetManager::instance()->actions()->underline()->action(this)->setChecked(font.underline());
+	if (ChatWidgetManager::instance()->actions()->bold()->action(actionContext()))
+		ChatWidgetManager::instance()->actions()->bold()->action(actionContext())->setChecked(font.bold());
+	if (ChatWidgetManager::instance()->actions()->italic()->action(actionContext()))
+		ChatWidgetManager::instance()->actions()->italic()->action(actionContext())->setChecked(font.italic());
+	if (ChatWidgetManager::instance()->actions()->underline()->action(actionContext()))
+		ChatWidgetManager::instance()->actions()->underline()->action(actionContext())->setChecked(font.underline());
 }
 
 void ChatEditBox::colorSelectorActionCreated(Action *action)
@@ -143,37 +156,23 @@ bool ChatEditBox::supportsActionType(ActionDescription::ActionType type)
 	return (type == ActionDescription::TypeGlobal || type == ActionDescription::TypeChat || type == ActionDescription::TypeUser);
 }
 
-BuddiesListView * ChatEditBox::buddiesListView()
+BuddiesModelProxy * ChatEditBox::buddiesProxyModel()
 {
 	ChatWidget *cw = chatWidget();
 	if (cw && cw->chat().contacts().count() > 1)
-		return cw->contactsListWidget();
+		return cw->buddiesProxyModel();
 
 	return 0;
 }
 
-StatusContainer * ChatEditBox::statusContainer()
+void ChatEditBox::updateContext()
 {
 	if (MainConfigurationHolder::instance()->isSetStatusPerIdentity())
-		return CurrentChat.chatAccount().accountIdentity().data();
+		Context->setStatusContainer(CurrentChat.chatAccount().accountIdentity().data());
 	else if (MainConfigurationHolder::instance()->isSetStatusPerAccount())
-		return CurrentChat.chatAccount().statusContainer();
+		Context->setStatusContainer(CurrentChat.chatAccount().statusContainer());
 	else
-		return StatusContainerManager::instance();
-}
-
-ContactSet ChatEditBox::contacts()
-{
-	ChatWidget *cw = chatWidget();
-	if (cw)
-		return cw->chat().contacts();
-
-	return ContactSet();
-}
-
-BuddySet ChatEditBox::buddies()
-{
-	return contacts().toBuddySet();
+		Context->setStatusContainer(StatusContainerManager::instance());
 }
 
 ChatWidget * ChatEditBox::chatWidget()

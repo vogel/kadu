@@ -25,8 +25,8 @@
 #include "buddies/filter/buddy-name-filter.h"
 #include "buddies/model/buddies-model.h"
 #include "buddies/model/buddies-model-proxy.h"
-#include "gui/widgets/buddies-list-view.h"
 #include "gui/widgets/select-buddy-popup.h"
+#include "gui/widgets/talkable-tree-view.h"
 #include "misc/misc.h"
 #include "model/roles.h"
 #include "model/model-chain.h"
@@ -36,17 +36,15 @@
 SelectBuddyComboBox::SelectBuddyComboBox(QWidget *parent) :
 		ActionsComboBox(parent)
 {
-	ProxyModel = new BuddiesModelProxy(this);
 	ModelChain *chain = new ModelChain(new BuddiesModel(this), this);
+	ProxyModel = new BuddiesModelProxy(chain);
+	ProxyModel->setSortByStatus(false);
 	chain->addProxyModel(ProxyModel);
 
 	setUpModel(BuddyRole, chain);
 	addBeforeAction(new QAction(tr(" - Select buddy - "), this));
 
 	Popup = new SelectBuddyPopup();
-	Popup->view()->proxyModel()->setSortByStatus(false);
-
-	ProxyModel->setSortByStatus(false);
 
 	AnonymousBuddyFilter *anonymousFilter = new AnonymousBuddyFilter(this);
 	anonymousFilter->setEnabled(true);
@@ -87,11 +85,11 @@ void SelectBuddyComboBox::hidePopup()
 void SelectBuddyComboBox::addFilter(AbstractBuddyFilter *filter)
 {
 	ProxyModel->addFilter(filter);
-	Popup->view()->addFilter(filter);
+	Popup->addFilter(filter);
 }
 
 void SelectBuddyComboBox::removeFilter(AbstractBuddyFilter *filter)
 {
 	ProxyModel->removeFilter(filter);
-	Popup->view()->removeFilter(filter);
+	Popup->removeFilter(filter);
 }

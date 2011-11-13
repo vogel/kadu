@@ -105,7 +105,7 @@ void ContactShared::load()
 				storage()->point().removeChild(avatars.at(0));
 	}
 
-	*ContactAvatar = AvatarManager::instance()->byUuid(loadValue<QString>("Avatar"));
+	setContactAvatar(AvatarManager::instance()->byUuid(loadValue<QString>("Avatar")));
 
 	triggerAllProtocolsRegistered();
 }
@@ -117,7 +117,7 @@ void ContactShared::aboutToBeRemoved()
 	*OwnerBuddy = Buddy::null;
 
 	AvatarManager::instance()->removeItem(*ContactAvatar);
-	*ContactAvatar = Avatar::null;
+	setContactAvatar(Avatar::null);
 
 	setDetails(0);
 }
@@ -358,6 +358,26 @@ void ContactShared::setDirty(bool dirty)
 	emit dirtinessChanged();
 }
 
+void ContactShared::avatarUpdated()
+{
+	dataUpdated();
+}
+
+void ContactShared::setContactAvatar(const Avatar &contactAvatar)
+{
+	if (*ContactAvatar == contactAvatar)
+		return;
+
+	if (*ContactAvatar)
+		disconnect(*ContactAvatar, SIGNAL(updated()), this, SLOT(avatarUpdated()));
+
+	*ContactAvatar = contactAvatar;
+	dataUpdated();
+
+	if (*ContactAvatar)
+		connect(*ContactAvatar, SIGNAL(updated()), this, SLOT(avatarUpdated()));
+}
+
 KaduShared_PropertyPtrReadDef(ContactShared, Account, contactAccount, ContactAccount)
-KaduShared_PropertyPtrDefCRW(ContactShared, Avatar, contactAvatar, ContactAvatar)
+KaduShared_PropertyPtrReadDef(ContactShared, Avatar, contactAvatar, ContactAvatar)
 KaduShared_PropertyPtrReadDef(ContactShared, Buddy, ownerBuddy, OwnerBuddy)

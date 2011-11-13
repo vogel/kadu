@@ -69,8 +69,8 @@ void ActionDescription::actionAboutToBeDestroyed(Action *action)
 	if (deleted)
 		return;
 
-	if (action && MappedActions.contains(action->dataSource()))
-		MappedActions.remove(action->dataSource());
+	if (action && MappedActions.contains(action->context()))
+		MappedActions.remove(action->context());
 }
 
 void ActionDescription::setType(ActionType type)
@@ -120,6 +120,10 @@ void ActionDescription::setShortcut(QString configItem, Qt::ShortcutContext cont
 void ActionDescription::actionTriggeredSlot(QAction *sender, bool toggled)
 {
 	actionTriggered(sender, toggled);
+
+	Action *action = qobject_cast<Action *>(sender);
+	if (action)
+		triggered(sender->parentWidget(), action->context(), toggled);
 }
 
 QMenu * ActionDescription::menuForAction(Action *action)
@@ -142,19 +146,19 @@ void ActionDescription::updateActionState(Action *action)
 		(*EnableCallback)(action);
 }
 
-Action * ActionDescription::createAction(ActionDataSource *dataSource, QObject *parent)
+Action * ActionDescription::createAction(ActionContext *context, QObject *parent)
 {
-	Action *result = MappedActions.value(dataSource);
+	Action *result = MappedActions.value(context);
 	if (result)
 	{
 		if (result->parent() != parent)
-			qWarning("ActionDescription::createAction(): requested action for already known dataSource but with different parent\n");
+			qWarning("ActionDescription::createAction(): requested action for already known context but with different parent\n");
 
 		return result;
 	}
 
-	result = new Action(this, dataSource, parent);
-	MappedActions.insert(dataSource, result);
+	result = new Action(this, context, parent);
+	MappedActions.insert(context, result);
 
 	actionInstanceCreated(result);
 	emit actionCreated(result);
@@ -183,10 +187,10 @@ QList<Action *> ActionDescription::actions()
 	return MappedActions.values();
 }
 
-Action * ActionDescription::action(ActionDataSource *dataSource)
+Action * ActionDescription::action(ActionContext *context)
 {
-	if (MappedActions.contains(dataSource))
-		return MappedActions.value(dataSource);
+	if (MappedActions.contains(context))
+		return MappedActions.value(context);
 	else
 		return 0;
 }

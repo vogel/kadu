@@ -177,7 +177,7 @@ void BuddyInfoPanel::disconnectItem()
 	}
 }
 
-void BuddyInfoPanel::displayItem(BuddyOrContact item)
+void BuddyInfoPanel::displayItem(Talkable item)
 {
 	disconnectItem();
 	Item = item;
@@ -186,7 +186,7 @@ void BuddyInfoPanel::displayItem(BuddyOrContact item)
 	if (!isVisible())
 		return;
 
-	if (!item.contact() && !item.buddy())
+	if (item.isEmpty())
 	{
 		setHtml("<body bgcolor=\"" + BackgroundColor + "\"></body>");
 		return;

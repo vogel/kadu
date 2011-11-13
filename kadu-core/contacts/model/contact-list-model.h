@@ -25,11 +25,10 @@
 #include <QtCore/QAbstractListModel>
 #include <QtCore/QModelIndex>
 
-#include "buddies/model/abstract-buddies-model.h"
+#include "model/kadu-abstract-model.h"
 #include "contacts/contact.h"
 
-// TODO: yes, inheritance is not intuitional with this one, needs to be fixed after realease
-class ContactListModel : public QAbstractItemModel, public AbstractBuddiesModel
+class ContactListModel : public QAbstractItemModel, public KaduAbstractModel
 {
 	Q_OBJECT
 
@@ -47,9 +46,8 @@ public:
 	virtual QModelIndex parent(const QModelIndex &child) const;
 	virtual QVariant data(const QModelIndex &index, int role) const;
 
-	// AbstractContactsModel implementation
-    virtual Contact contactAt(const QModelIndex &index) const;
-	virtual QModelIndex indexForValue(const QVariant &value) const;
+	// KaduAbstractModel implementation
+	virtual QModelIndexList indexListForValue(const QVariant &value) const;
 
 };
 

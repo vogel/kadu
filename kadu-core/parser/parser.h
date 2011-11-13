@@ -26,7 +26,7 @@
 
 #include <QtCore/QMap>
 
-#include "buddies/buddy-or-contact.h"
+#include "buddies/talkable.h"
 #include "parser/parser-token-type.h"
 
 #include "exports.h"
@@ -38,15 +38,15 @@ class ParserToken;
 class KADUAPI Parser
 {
 	typedef QString (*ObjectTagCallback)(const QObject * const);
-	typedef QString (*BuddyOrContactTagCallback)(BuddyOrContact);
+	typedef QString (*TalkableTagCallback)(Talkable);
 
-	static QMap<QString, BuddyOrContactTagCallback> RegisteredBuddyOrContactTags;
+	static QMap<QString, TalkableTagCallback> RegisteredTalkableTags;
 	static QMap<QString, ObjectTagCallback> RegisteredObjectTags;
 
 	static QString executeCmd(const QString &cmd);
 
 	static bool isActionParserTokenAtTop(const QStack<ParserToken> &parseStack, const QVector<ParserTokenType> &acceptedTokens);
-	static ParserToken parsePercentSyntax(const QString &s, int &idx, const BuddyOrContact &buddyOrContact, bool escape);
+	static ParserToken parsePercentSyntax(const QString &s, int &idx, const Talkable &talkable, bool escape);
 
 	template<typename ContainerClass>
 	static QString joinParserTokens(const ContainerClass &parseStack);
@@ -56,15 +56,15 @@ public:
 
 	static QString parse(const QString &s, const QObject * const object, bool escape = true)
 	{
-		return parse(s, BuddyOrContact(), object, escape);
+		return parse(s, Talkable(), object, escape);
 	}
-	static QString parse(const QString &s, BuddyOrContact buddyOrContact, bool escape = true)
+	static QString parse(const QString &s, Talkable talkable, bool escape = true)
 	{
-		return parse(s, buddyOrContact, 0, escape);
+		return parse(s, talkable, 0, escape);
 	}
-	static QString parse(const QString &s, BuddyOrContact buddyOrContact, const QObject * const object, bool escape = true);
+	static QString parse(const QString &s, Talkable talkable, const QObject * const object, bool escape = true);
 
-	static bool registerTag(const QString &name, BuddyOrContactTagCallback);
+	static bool registerTag(const QString &name, TalkableTagCallback);
 	static bool unregisterTag(const QString &name);
 
 	static bool registerObjectTag(const QString &name, ObjectTagCallback);

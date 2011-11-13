@@ -165,7 +165,7 @@ void AutoResponder::filterIncomingMessage(Chat chat, Contact sender, QString &me
 		}
 
 		chatService->sendMessage(chat, tr("KADU AUTORESPONDER:") + '\n'
-				+ Parser::parse(autoRespondText, BuddyOrContact(sender)), true);
+				+ Parser::parse(autoRespondText, Talkable(sender)), true);
 		// dołączamy użytkowników, którym odpowiedziano
 		foreach (const Contact &contact, chat.contacts())
 			repliedUsers.insert(contact);

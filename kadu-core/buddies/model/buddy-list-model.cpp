@@ -47,17 +47,15 @@ int BuddyListModel::rowCount(const QModelIndex &parent) const
 		: List.count();
 }
 
-Buddy BuddyListModel::buddyAt(const QModelIndex &index) const
+int BuddyListModel::buddyIndex(const Buddy &buddy) const
 {
-	QModelIndex parent = index.parent();
-	return parent.isValid()
-		? List.at(parent.row())
-		: index.isValid()
-			? List.at(index.row())
-			: Buddy::null;
+	return List.indexOf(buddy);
 }
 
-QModelIndex BuddyListModel::indexForValue(const QVariant &value) const
+Buddy BuddyListModel::buddyAt(int index) const
 {
-	return index(List.indexOf(value.value<Buddy>()), 0);
+	if (index >= 0 && index < List.size())
+		return List.at(index);
+	else
+		return Buddy::null;
 }

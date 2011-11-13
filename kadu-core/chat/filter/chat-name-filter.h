@@ -52,6 +52,7 @@ public:
 
 	virtual bool acceptChat(const Chat &chat);
 
+public slots:
 	void setName(const QString &name);
 
 };

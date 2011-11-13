@@ -29,14 +29,16 @@
 #include "buddies/buddy-manager.h"
 #include "buddies/filter/account-buddy-filter.h"
 #include "buddies/filter/anonymous-buddy-filter.h"
+#include "buddies/filter/buddy-name-filter.h"
 #include "buddies/model/buddies-model.h"
 #include "buddies/model/buddies-model-proxy.h"
 #include "contacts/contact.h"
 #include "contacts/contact-details.h"
 #include "contacts/contact-manager.h"
-#include "gui/widgets/buddies-list-widget.h"
-#include "gui/widgets/buddies-list-view.h"
+#include "gui/widgets/filtered-tree-view.h"
+#include "gui/widgets/talkable-tree-view.h"
 #include "gui/windows/message-dialog.h"
+#include "model/model-chain.h"
 
 #include "debug.h"
 #include "protocols/protocol.h"
@@ -51,10 +53,29 @@ AccountBuddyListWidget::AccountBuddyListWidget(Account account, QWidget *parent)
 	layout->setContentsMargins(0, 0, 0, 0);
 	layout->setSpacing(5);
 
-	BuddiesWidget = new BuddiesListWidget(BuddiesListWidget::FilterAtTop, this);
-	BuddiesModelProxy *model = new BuddiesModelProxy(this);
-	model->setSourceModel(new BuddiesModel(this));
-	BuddiesWidget->view()->setModel(model);
+	ModelChain *chain = new ModelChain(new BuddiesModel(this), this);
+	BuddiesModelProxy *proxyModel = new BuddiesModelProxy(chain);
+
+	AccountBuddyFilter *accountFilter = new AccountBuddyFilter(CurrentAccount, proxyModel);
+	accountFilter->setEnabled(true);
+	AnonymousBuddyFilter *anonymousFilter = new AnonymousBuddyFilter(proxyModel);
+	anonymousFilter->setEnabled(true);
+
+	proxyModel->addFilter(accountFilter);
+	proxyModel->addFilter(anonymousFilter);
+
+	chain->addProxyModel(proxyModel);
+
+	BuddiesWidget = new FilteredTreeView(FilteredTreeView::FilterAtTop, this);
+
+	BuddyNameFilter *nameFilter = new BuddyNameFilter(proxyModel);
+	connect(BuddiesWidget, SIGNAL(filterChanged(QString)), nameFilter, SLOT(setName(QString)));
+	proxyModel->addFilter(nameFilter);
+
+	TalkableTreeView *view = new TalkableTreeView(BuddiesWidget);
+	view->setChain(chain);
+
+	BuddiesWidget->setTreeView(view);
 	BuddiesWidget->setMinimumSize(QSize(30, 30));
 
 	QWidget *buttons = new QWidget(this);
@@ -72,14 +93,6 @@ AccountBuddyListWidget::AccountBuddyListWidget(Account account, QWidget *parent)
 
 	layout->addWidget(BuddiesWidget);
 	layout->addWidget(buttons);
-
-	AccountBuddyFilter *accountFilter = new AccountBuddyFilter(CurrentAccount, this);
-	accountFilter->setEnabled(true);
-	AnonymousBuddyFilter *anonymousFilter = new AnonymousBuddyFilter(this);
-	anonymousFilter->setEnabled(true);
-
-	BuddiesWidget->view()->addFilter(accountFilter);
-	BuddiesWidget->view()->addFilter(anonymousFilter);
 }
 
 void AccountBuddyListWidget::restoreFromFile()

@@ -2,9 +2,13 @@ set (gui_SRCS
 	hot-key.cpp
 	status-icon.cpp
 
+	actions/chat/edit-chat-action.cpp
+	actions/chat/leave-chat-action.cpp
+
 	actions/action.cpp
 	actions/actions.cpp
 	actions/action-description.cpp
+	actions/base-action-context.cpp
 	actions/change-status-action.cpp
 	actions/default-proxy-action.cpp
 
@@ -12,14 +16,7 @@ set (gui_SRCS
 	widgets/account-avatar-widget.cpp
 	widgets/accounts-combo-box.cpp
 	widgets/actions-combo-box.cpp
-	widgets/buddies-list-view.cpp
-	widgets/buddies-list-view-avatar-painter.cpp
-	widgets/buddies-list-view-delegate.cpp
-	widgets/buddies-list-view-delegate-configuration.cpp
-	widgets/buddies-list-view-item-painter.cpp
-	widgets/buddies-list-view-menu-item.cpp
-	widgets/buddies-list-view-menu-manager.cpp
-	widgets/buddies-list-widget.cpp
+	widgets/avatar-painter.cpp
 	widgets/buddy-avatar-widget.cpp
 	widgets/buddy-contacts-table-delegate.cpp
 	widgets/buddy-contacts-table-item.cpp
@@ -47,9 +44,13 @@ set (gui_SRCS
 	widgets/delayed-line-edit.cpp
 	widgets/file-transfer-widget.cpp
 	widgets/filter-widget.cpp
+	widgets/filtered-tree-view.cpp
+	widgets/group-list.cpp
 	widgets/group-tab-bar.cpp
 	widgets/groups-combo-box.cpp
 	widgets/identities-combo-box.cpp
+	widgets/kadu-tree-view.cpp
+	widgets/kadu-tree-view-delegate.cpp
 	widgets/kadu-web-view.cpp
 	widgets/line-edit-clear-button.cpp
 	widgets/line-edit-with-clear-button.cpp
@@ -61,6 +62,7 @@ set (gui_SRCS
 	widgets/protocols-combo-box.cpp
 	widgets/proxy-combo-box.cpp
 	widgets/preview.cpp
+	widgets/roster-widget.cpp
 	widgets/select-buddy-combo-box.cpp
 	widgets/select-buddy-popup.cpp
 	widgets/select-file.cpp
@@ -69,6 +71,12 @@ set (gui_SRCS
 	widgets/status-buttons.cpp
 	widgets/status-menu.cpp
 	widgets/syntax-editor.cpp
+	widgets/talkable-delegate.cpp
+	widgets/talkable-delegate-configuration.cpp
+	widgets/talkable-menu-item.cpp
+	widgets/talkable-menu-manager.cpp
+	widgets/talkable-painter.cpp
+	widgets/talkable-tree-view.cpp
 	widgets/toolbar.cpp
 	widgets/tool-tip-class-manager.cpp
 
@@ -107,6 +115,7 @@ set (gui_SRCS
 	windows/buddy-data-window.cpp
 	windows/buddy-data-window-aware-object.cpp
 	windows/buddy-delete-window.cpp
+	windows/chat-data-window.cpp
 	windows/chat-window.cpp
 	windows/choose-description.cpp
 	windows/configuration-window.cpp
@@ -123,6 +132,7 @@ set (gui_SRCS
 	windows/password-window.cpp
 	windows/plugin-error-dialog.cpp
 	windows/progress-window.cpp
+	windows/proxy-action-context.cpp
 	windows/proxy-edit-window.cpp
 	windows/search-window.cpp
 	windows/search-window-actions.cpp
@@ -141,9 +151,14 @@ set (gui_MOC_SRCS
 	hot-key.h
 	status-icon.h
 
+	actions/chat/edit-chat-action.h
+	actions/chat/leave-chat-action.h
+
 	actions/action.h
 	actions/actions.h
+	actions/action-context.h
 	actions/action-description.h
+	actions/base-action-context.h
 	actions/change-status-action.h
 	actions/default-proxy-action.h
 
@@ -154,9 +169,6 @@ set (gui_MOC_SRCS
 	widgets/account-edit-widget.h
 	widgets/accounts-combo-box.h
 	widgets/actions-combo-box.h
-	widgets/buddies-list-view.h
-	widgets/buddies-list-view-delegate.h
-	widgets/buddies-list-widget.h
 	widgets/buddy-avatar-widget.h
 	widgets/buddy-contacts-table-delegate.h
 	widgets/buddy-contacts-table-item.h
@@ -165,7 +177,6 @@ set (gui_MOC_SRCS
 	widgets/buddy-contacts-table.h
 	widgets/buddy-general-configuration-widget.h
 	widgets/buddy-groups-configuration-widget.h
-	widgets/buddies-list-view-menu-manager.h
 	widgets/buddy-personal-info-configuration-widget.h
 	widgets/buddy-options-configuration-widget.h
 	widgets/buddy-info-panel.h
@@ -184,9 +195,13 @@ set (gui_MOC_SRCS
 	widgets/delayed-line-edit.h
 	widgets/file-transfer-widget.h
 	widgets/filter-widget.h
+	widgets/filtered-tree-view.h
+	widgets/group-list.h
 	widgets/group-tab-bar.h
 	widgets/groups-combo-box.h
 	widgets/identities-combo-box.h
+	widgets/kadu-tree-view.h
+	widgets/kadu-tree-view-delegate.h
 	widgets/kadu-web-view.h
 	widgets/line-edit-clear-button.h
 	widgets/line-edit-with-clear-button.h
@@ -198,6 +213,7 @@ set (gui_MOC_SRCS
 	widgets/progress-icon.h
 	widgets/progress-label.h
 	widgets/protocols-combo-box.h
+	widgets/roster-widget.h
 	widgets/select-buddy-combo-box.h
 	widgets/select-buddy-popup.h
 	widgets/select-file.h
@@ -206,6 +222,9 @@ set (gui_MOC_SRCS
 	widgets/status-buttons.h
 	widgets/status-menu.h
 	widgets/syntax-editor.h
+	widgets/talkable-delegate.h
+	widgets/talkable-menu-manager.h
+	widgets/talkable-tree-view.h
 	widgets/toolbar.h
 
 	widgets/configuration/buddy-list-background-colors-widget.h
@@ -243,6 +262,7 @@ set (gui_MOC_SRCS
 	windows/add-buddy-window.h
 	windows/buddy-data-window.h
 	windows/buddy-delete-window.h
+	windows/chat-data-window.h
 	windows/chat-window.h
 	windows/choose-description.h
 	windows/configuration-window.h
@@ -258,6 +278,7 @@ set (gui_MOC_SRCS
 	windows/password-window.h
 	windows/plugin-error-dialog.h
 	windows/progress-window.h
+	windows/proxy-action-context.h
 	windows/proxy-edit-window.h
 	windows/search-window.h
 	windows/search-window-actions.h

@@ -20,11 +20,11 @@
 #ifndef MODEL_CHAIN_H
 #define MODEL_CHAIN_H
 
+#include <QtCore/QModelIndexList>
 #include <QtCore/QObject>
 
 class QAbstractItemModel;
 class QAbstractProxyModel;
-class QModelIndex;
 
 class KaduAbstractModel;
 
@@ -40,7 +40,7 @@ class KaduAbstractModel;
  *
  * This class bundles model and list of proxy models into one object that allows to easily
  * get index of given element in last proxy model. First model of chain must be of type QAbstractProxyModel
- * and must derive from KaduAbstractModel interface to provide indexForValue method.
+ * and must derive from KaduAbstractModel interface to provide indexListForValue method.
  */
 class ModelChain : public QObject
 {
@@ -94,14 +94,14 @@ public:
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns index of given value in last proxy model.
+	 * @short Returns list of indexes of given value in last proxy model.
 	 * @return index of given value in last proxy model
 	 *
-	 * Returns index of given value in last proxy model. This method uses KaduAbstractModel::indexForValue
-	 * on base model to get first index. Then it uses mapFromSource on each proxy model to finally
-	 * get index on last model in chain.
+	 * Returns list of indexes of given value in last proxy model. This method uses KaduAbstractModel::indexListForValue
+	 * on base model to get first list of indexes. Then it uses mapFromSource on each proxy model to finally
+	 * get indexes on last model in chain.
 	 */
-	QModelIndex indexForValue(const QVariant &value) const;
+	QModelIndexList indexListForValue(const QVariant &value) const;
 
 };
 

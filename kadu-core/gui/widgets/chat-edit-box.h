@@ -30,6 +30,7 @@
 #include "exports.h"
 
 class Action;
+class BaseActionContext;
 class ChatWidget;
 class CustomInput;
 
@@ -41,10 +42,14 @@ class KADUAPI ChatEditBox : public MainWindow, public ConfigurationAwareObject
 	CustomInput *InputBox;
 	QColor CurrentColor;
 
+	BaseActionContext *Context;
+
 	void setColorFromCurrentText(bool force);
 
 private slots:
 	void configurationUpdated();
+
+	void updateContext();
 
 	void fontChanged(QFont font);
 	void colorSelectorActionCreated(Action *action);
@@ -60,12 +65,7 @@ public:
 	CustomInput * inputBox();
 
 	virtual bool supportsActionType(ActionDescription::ActionType type);
-	virtual BuddiesListView * buddiesListView();
-	virtual StatusContainer * statusContainer();
-	virtual ContactSet contacts();
-	virtual BuddySet buddies();
-	virtual Chat chat() { return CurrentChat; }
-	virtual bool hasContactSelected() { return false; } // we cannot select one contact, we can only select buddies
+	virtual BuddiesModelProxy * buddiesProxyModel();
 
 	ChatWidget * chatWidget();
 

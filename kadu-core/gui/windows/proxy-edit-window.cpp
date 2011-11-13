@@ -336,7 +336,12 @@ bool ProxyEditWindow::canChangeProxy(const QItemSelection &selection)
 void ProxyEditWindow::selectProxy(NetworkProxy proxy)
 {
 	ProxyView->selectionModel()->clearSelection();
-	ProxyView->selectionModel()->select(ProxyProxyModel->indexForValue(proxy), QItemSelectionModel::Select);
+
+	const QModelIndexList &proxyIndexes = ProxyModel->indexListForValue(proxy);
+	Q_ASSERT(proxyIndexes.size() == 1);
+
+	const QModelIndex &index = ProxyProxyModel->mapFromSource(proxyIndexes.first());
+	ProxyView->selectionModel()->select(index, QItemSelectionModel::Select);
 
 	SaveButton->setText(tr("Save"));
 }

@@ -97,6 +97,9 @@ class KADUAPI ChatManager : public QObject, public Manager<Chat>
 	void detailsLoaded(Chat chat);
 	void detailsUnloaded(Chat chat);
 
+private slots:
+	void chatDataUpdated();
+
 protected:
 	virtual void itemAboutToBeRegistered(Chat item);
 	virtual void itemRegistered(Chat item);
@@ -130,6 +133,8 @@ public:
 
 	Chat findChat(const BuddySet &buddies, bool create = true);
 	Chat findChat(const ContactSet &contacts, bool create = true);
+
+	Chat byDisplay(const QString &display);
 
 signals:
 	/**
@@ -175,6 +180,8 @@ signals:
 	 * chat loses its full data.
 	 */
 	void chatRemoved(Chat chat);
+
+	void chatUpdated(const Chat &chat);
 
 };
 

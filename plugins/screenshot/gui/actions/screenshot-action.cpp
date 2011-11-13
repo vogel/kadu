@@ -54,7 +54,7 @@ void ScreenshotAction::actionInstanceCreated(Action *action)
 	action->setData(chatWidgetData);
 
 	// not a menu
-	if (action->chat() != chatEditBox->chat())
+	if (action->context()->chat() != chatEditBox->actionContext()->chat())
 		return;
 
 	// no parents for menu as it is destroyed manually by Action class
@@ -82,7 +82,7 @@ void ScreenshotAction::updateActionState(Action *action)
 	if (!chatEditBox)
 		return;
 
-	Account account = action->chat().chatAccount();
+	const Account &account = action->context()->chat().chatAccount();
 	if (!account)
 		return;
 

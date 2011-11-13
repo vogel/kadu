@@ -36,10 +36,12 @@ class GroupBuddyFilter : public AbstractBuddyFilter
 public:
 	GroupBuddyFilter(QObject *parent = 0);
 
-	void setGroup(Group group);
 	virtual bool acceptBuddy(const Buddy &buddy);
 
 	void setAllGroupShown(bool shown);
+
+public slots:
+	void setGroup(const Group &group);
 
 };
 

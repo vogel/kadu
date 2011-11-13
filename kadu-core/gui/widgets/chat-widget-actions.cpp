@@ -36,16 +36,19 @@
 #include "emoticons/emoticons.h"
 #include "gui/actions/action.h"
 #include "gui/actions/actions.h"
-#include "gui/widgets/buddies-list-view-menu-manager.h"
+#include "gui/actions/chat/edit-chat-action.h"
+#include "gui/actions/chat/leave-chat-action.h"
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-messages-view.h"
 #include "gui/widgets/chat-widget.h"
 #include "gui/widgets/chat-widget-manager.h"
+#include "gui/widgets/talkable-menu-manager.h"
 #include "gui/widgets/toolbar.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/kadu-window-actions.h"
 #include "gui/windows/message-dialog.h"
 #include "gui/windows/open-chat-with/open-chat-with.h"
+#include "model/roles.h"
 
 #include "custom-input.h"
 #include "debug.h"
@@ -84,7 +87,7 @@ static void disableNoChatImageService(Action *action)
 	if (!chatEditBox)
 		return;
 
-	Account account = action->chat().chatAccount();
+	Account account = action->context()->chat().chatAccount();
 	if (!account)
 		return;
 
@@ -97,7 +100,7 @@ static void disableNoChatImageService(Action *action)
 
 static void checkBlocking(Action *action)
 {
-	BuddySet buddies = action->buddies();
+	BuddySet buddies = action->context()->buddies();
 
 	if (!buddies.count() || buddies.contains(Core::instance()->myself()))
 	{
@@ -105,8 +108,8 @@ static void checkBlocking(Action *action)
 		return;
 	}
 
-	if (action && action->dataSource())
-		action->setEnabled(!action->dataSource()->hasContactSelected());
+	if (action && action->context())
+		action->setEnabled(!action->context()->roles().contains(ContactRole));
 
 	bool on = false;
 	foreach (const Buddy &buddy, buddies)
@@ -123,7 +126,7 @@ static void disableNoGadu(Action *action)
 {
 	action->setEnabled(false);
 
-	Chat chat = action->chat();
+	Chat chat = action->context()->chat();
 	if (!chat)
 		return;
 
@@ -214,7 +217,7 @@ ChatWidgetActions::ChatWidgetActions(QObject *parent) : QObject(parent)
 		KaduIcon("internet-group-chat"), tr("&Chat"), false,
 		disableNoChat
 	);
-	BuddiesListViewMenuManager::instance()->addActionDescription(OpenChat, BuddiesListViewMenuItem::MenuCategoryChat, 25);
+	TalkableMenuManager::instance()->addActionDescription(OpenChat, TalkableMenuItem::CategoryChat, 25);
 
 	OpenWith = new ActionDescription(0,
 		ActionDescription::TypeGlobal, "openChatWithAction",
@@ -235,6 +238,9 @@ ChatWidgetActions::ChatWidgetActions(QObject *parent) : QObject(parent)
 		this, SLOT(colorSelectorActionActivated(QAction *, bool)),
 		KaduIcon("kadu_icons/change-color"), tr("Change Color")
 	);*/
+
+	EditChat = new EditChatAction(this);
+	LeaveChat = new LeaveChatAction(this);
 }
 
 ChatWidgetActions::~ChatWidgetActions()
@@ -355,9 +361,9 @@ void ChatWidgetActions::moreActionsActionActivated(QAction *sender, bool toggled
 
 		ActionDescription *actionDescription = Actions::instance()->value(actionName);
 		if (ActionDescription::TypeChat == actionDescription->type())
-			menu.addAction(Actions::instance()->createAction(actionName, chatEditBox));
+			menu.addAction(Actions::instance()->createAction(actionName, chatEditBox->actionContext(), chatEditBox));
 		else if (ActionDescription::TypeUser == actionDescription->type())
-			subMenu->addAction(Actions::instance()->createAction(actionName, chatEditBox));
+			subMenu->addAction(Actions::instance()->createAction(actionName, chatEditBox->actionContext(), chatEditBox));
 	}
 
 	menu.addSeparator();
@@ -467,7 +473,7 @@ void ChatWidgetActions::blockUserActionActivated(QAction *sender, bool toggled)
 	if (!action)
 		return;
 
-	BuddySet buddies = action->buddies();
+	BuddySet buddies = action->context()->buddies();
 	if (buddies.isEmpty())
 		return;
 
@@ -496,9 +502,9 @@ void ChatWidgetActions::updateBlockingActions(Buddy buddy)
 
 	foreach (Action *action, BlockUser->actions())
 	{
-		ContactSet contacts = action->contacts();
-		if (1 == contacts.size())
-			if (buddyContacts.contains(*contacts.constBegin()))
+		Contact contact = action->context()->contacts().toContact();
+		if (contact)
+			if (buddyContacts.contains(contact))
 				action->setChecked(buddy.isBlocked());
 	}
 }
@@ -513,7 +519,7 @@ void ChatWidgetActions::openChatActionActivated(QAction *sender, bool toggled)
 	if (!action)
 		return;
 
-	Chat chat = action->chat();
+	Chat chat = action->context()->chat();
 	if (chat)
 		ChatWidgetManager::instance()->openPendingMessages(chat, true);
 

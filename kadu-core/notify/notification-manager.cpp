@@ -48,9 +48,9 @@
 #include "contacts/contact-manager.h"
 #include "core/core.h"
 #include "gui/actions/action.h"
-#include "gui/widgets/buddies-list-view-menu-manager.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/custom-input.h"
+#include "gui/widgets/talkable-menu-manager.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/main-configuration-window.h"
 #include "gui/windows/main-window.h"
@@ -209,7 +209,7 @@ void NotificationManager::notifyAboutUserActionActivated(QAction *sender, bool t
 	if (!action)
 		return;
 
-	BuddySet buddies = action->buddies();
+	const BuddySet &buddies = action->context()->buddies();
 
 	bool on = true;
 	foreach (const Buddy &buddy, buddies)
@@ -244,7 +244,7 @@ void NotificationManager::notifyAboutUserActionActivated(QAction *sender, bool t
 	}
 
 	foreach (Action *action, notifyAboutUserActionDescription->actions())
-		if (action->contacts().toBuddySet() == buddies)
+		if (action->context()->contacts().toBuddySet() == buddies)
 			action->setChecked(!on);
 
 	kdebugf2();
@@ -678,10 +678,10 @@ void checkNotify(Action *action)
 {
 	kdebugf();
 
-	action->setEnabled(!action->buddies().isEmpty());
+	action->setEnabled(!action->context()->buddies().isEmpty());
 
 	bool on = true;
-	foreach (const Buddy &buddy, action->contacts().toBuddySet())
+	foreach (const Buddy &buddy, action->context()->contacts().toBuddySet())
 		if (buddy.data())
 		{
 			BuddyNotifyData *bnd = buddy.data()->moduleStorableData<BuddyNotifyData>("notify", NotificationManager::instance(), false);

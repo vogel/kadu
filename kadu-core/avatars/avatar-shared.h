@@ -27,16 +27,11 @@
 
 #include "storage/shared.h"
 
-class Buddy;
-class Contact;
-
 class KADUAPI AvatarShared : public QObject, public Shared
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(AvatarShared)
 
-	Buddy *AvatarBuddy;
-	Contact *AvatarContact;
 	QDateTime LastUpdated;
 	QDateTime NextUpdate;
 	QString FilePath;
@@ -72,8 +67,6 @@ public:
 	void setPixmap(const QPixmap &pixmap);
 	KaduShared_PropertyRead(const QPixmap &, pixmap, Pixmap)
 
-	KaduShared_PropertyDeclCRW(Buddy, avatarBuddy, AvatarBuddy)
-	KaduShared_PropertyDeclCRW(Contact, avatarContact, AvatarContact)
 	KaduShared_Property(const QDateTime &, lastUpdated, LastUpdated)
 	KaduShared_Property(const QDateTime &, nextUpdate, NextUpdate)
 

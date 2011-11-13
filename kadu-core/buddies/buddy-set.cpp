@@ -49,6 +49,14 @@ BuddyList BuddySet::toBuddyList() const
 	return toList();
 }
 
+Buddy BuddySet::toBuddy() const
+{
+	if (count() != 1)
+		return Buddy::null;
+
+	return *constBegin();
+}
+
 QVector<Contact> BuddySet::getAllContacts() const
 {
 	QVector<Contact> allContacts;

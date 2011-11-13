@@ -39,10 +39,12 @@
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
 #include "core/core.h"
-#include "gui/widgets/buddies-list-view.h"
 #include "gui/widgets/chat-widget-manager.h"
+#include "gui/widgets/filtered-tree-view.h"
 #include "gui/widgets/line-edit-with-clear-button.h"
+#include "gui/widgets/talkable-tree-view.h"
 #include "misc/misc.h"
+#include "model/model-chain.h"
 #include "os/generic/url-opener.h"
 
 #include "activate.h"
@@ -64,7 +66,7 @@ OpenChatWith * OpenChatWith::instance()
 }
 
 OpenChatWith::OpenChatWith() :
-	QWidget(0, Qt::Window), DesktopAwareObject(this), IsTyping(false), ListModel(0)
+	QWidget(0, Qt::Window), DesktopAwareObject(this), IsTyping(false), ListModel(0), Chain(0)
 {
 	kdebugf();
 
@@ -87,8 +89,8 @@ OpenChatWith::OpenChatWith() :
 	connect(ContactID, SIGNAL(textChanged(const QString &)), this, SLOT(inputChanged(const QString &)));
 	MainLayout->addWidget(ContactID);
 
-	BuddiesWidget = new BuddiesListView(this);
-	connect(BuddiesWidget, SIGNAL(chatActivated(Chat)), this, SLOT(openChat()));
+	BuddiesWidget = new TalkableTreeView(this);
+	connect(BuddiesWidget, SIGNAL(talkableActivated(Talkable)), this, SLOT(openChat()));
 	MainLayout->addWidget(BuddiesWidget);
 
 	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
@@ -117,8 +119,8 @@ OpenChatWith::~OpenChatWith()
 	delete OpenChatRunner;
 	OpenChatRunner = 0;
 
-	delete ListModel;
-	ListModel = 0;
+	delete Chain;
+	Chain = 0;
 }
 
 bool OpenChatWith::eventFilter(QObject *obj, QEvent *e)
@@ -163,7 +165,7 @@ void OpenChatWith::keyPressEvent(QKeyEvent *e)
 			break;
 	}
 
-	if (BuddiesListView::shouldEventGoToFilter(e))
+	if (FilteredTreeView::shouldEventGoToFilter(e))
 	{
 		ContactID->setText(e->text());
 		ContactID->setFocus(Qt::OtherFocusReason);
@@ -184,9 +186,13 @@ void OpenChatWith::inputChanged(const QString &text)
 			? BuddyList()
 			: OpenChatWithRunnerManager::instance()->matchingContacts(text);
 
+	delete Chain;
 	delete ListModel;
+
 	ListModel = new BuddyListModel(matchingContacts, this);
-	BuddiesWidget->setModel(ListModel);
+	Chain = new ModelChain(ListModel, this);
+
+	BuddiesWidget->setChain(Chain);
 
 	if (!text.isEmpty())
 	{
@@ -205,7 +211,7 @@ void OpenChatWith::inputChanged(const QString &text)
 
 void OpenChatWith::openChat()
 {
-	ContactSet contacts = BuddiesWidget->selectedContacts();
+	ContactSet contacts = BuddiesWidget->actionContext()->contacts();
 
 	if (contacts.isEmpty())
 	{
@@ -236,7 +242,7 @@ void OpenChatWith::openChat()
 
 	BuddySet buddies = contacts.toBuddySet();
 
-	Chat chat = ChatManager::instance()->findChat(contacts);
+	const Chat &chat = ChatManager::instance()->findChat(contacts);
 	if (chat)
 	{
 		ChatWidgetManager::instance()->openPendingMessages(chat, true);
@@ -244,7 +250,7 @@ void OpenChatWith::openChat()
 		return;
 	}
 
-	Buddy buddy = *buddies.constBegin();
+	const Buddy &buddy = *buddies.constBegin();
 	if (buddy.mobile().isEmpty() && !buddy.email().isEmpty())
 		UrlOpener::openEmail(buddy.email().toUtf8());
 

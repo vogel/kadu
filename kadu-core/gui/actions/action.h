@@ -30,7 +30,7 @@
 
 #include "exports.h"
 
-class ActionDataSource;
+class ActionContext;
 class ActionDescription;
 class Buddy;
 class BuddySet;
@@ -59,7 +59,7 @@ class KADUAPI Action : public QAction
 	Q_OBJECT
 
 	ActionDescription *Description;
-	ActionDataSource *DataSource;
+	ActionContext *Context;
 
 private slots:
 	void changedSlot();
@@ -69,79 +69,29 @@ private slots:
 public:
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Creates new Action instance based on ActionDescription with given ActionDataSource.
+	 * @short Creates new Action instance based on ActionDescription with given ActionContext.
 	 * @param description description of this action
-	 * @param dataSource data source of this action
+	 * @param context data source of this action
 	 * @param parent parent of this action
 	 *
 	 * This method creates new instance of Action class. Action is based on description provided as
 	 * ActionDescription class (it stored shortcuts, icons, titles and many more information). This
-	 * instance of Action will use provided ActionDataSource instance to get information about Kadu
+	 * instance of Action will use provided ActionContext instance to get information about Kadu
 	 * object like contacts, buddies, chats and status containers that are required to properly
 	 * execute each action invocation.
 	 *
-	 * Provided ActionDescription and ActionDataSource must not be null.
+	 * Provided ActionDescription and ActionContext must not be null.
 	 */
-	Action(ActionDescription *description, ActionDataSource *dataSource, QObject *parent);
+	Action(ActionDescription *description, ActionContext *context, QObject *parent);
 	virtual ~Action();
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns Contact instance if current invocation is connected with exactly one Contact.
+	 * @short Returns ActionContext instance for current invocation.
 	 *
-	 * Returns Contact instance is current invocation is connected with exactly one Contact. If no
-	 * ActionDataSource returns 0 or more than one Contact instance, Contact:null will be returned.
+	 * Returns ActionContext instance for current invocation. Never returns null.
 	 */
-	Contact contact();
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns ContactSet instance for current invocation.
-	 *
-	 * Returns ContactSet instance for current invocation.
-	 */
-	ContactSet contacts();
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns Buddy instance if current invocation is connected with exactly one Buddy.
-	 *
-	 * Returns Buddy instance is current invocation is connected with exactly one Buddy. If no
-	 * ActionDataSource returns 0 or more than one Buddy instance, Buddy:null will be returned.
-	 */
-	Buddy buddy();
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns BuddySet instance for current invocation.
-	 *
-	 * Returns BuddySet instance for current invocation.
-	 */
-	BuddySet buddies();
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns Chat instance for current invocation.
-	 *
-	 * Returns Chat instance for current invocation.
-	 */
-	Chat chat();
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns StatusContainer instance for current invocation.
-	 *
-	 * Returns StatusContainer instance for current invocation.
-	 */
-	StatusContainer * statusContainer();
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns ActionDataSource instance for current invocation.
-	 *
-	 * Returns ActionDataSource instance for current invocation. Never returns null.
-	 */
-	ActionDataSource *dataSource();
+	ActionContext *context();
 
 public slots:
 	/**

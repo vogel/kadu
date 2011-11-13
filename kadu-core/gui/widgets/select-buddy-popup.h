@@ -20,24 +20,36 @@
 #ifndef SELECT_BUDDY_POPUP_H
 #define SELECT_BUDDY_POPUP_H
 
-#include "gui/widgets/buddies-list-widget.h"
+#include "buddies/talkable.h"
+
+#include "gui/widgets/filtered-tree-view.h"
 
 class QModelIndex;
 
+class AbstractBuddyFilter;
+class BuddiesModelProxy;
 class Buddy;
+class TalkableTreeView;
 
-class SelectBuddyPopup : public BuddiesListWidget
+class SelectBuddyPopup : public FilteredTreeView
 {
 	Q_OBJECT
 
+	TalkableTreeView *View;
+	BuddiesModelProxy *ProxyModel;
+
 private slots:
 	void itemClicked(const QModelIndex &index);
+	void talkableActivated(const Talkable &talkable);
 
 public:
 	explicit SelectBuddyPopup(QWidget *parent = 0);
 	virtual ~SelectBuddyPopup();
 
 	void show(Buddy buddy);
+
+	void addFilter(AbstractBuddyFilter *filter);
+	void removeFilter(AbstractBuddyFilter *filter);
 
 signals:
 	void buddySelected(Buddy buddy);

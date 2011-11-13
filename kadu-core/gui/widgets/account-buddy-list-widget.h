@@ -31,8 +31,8 @@
 
 #include "exports.h"
 
-class BuddiesListWidget;
 class ContactListService;
+class FilteredTreeView;
 
 class KADUAPI AccountBuddyListWidget : public QWidget
 {
@@ -40,7 +40,7 @@ class KADUAPI AccountBuddyListWidget : public QWidget
 
 	Account CurrentAccount;
 
-	BuddiesListWidget *BuddiesWidget;
+	FilteredTreeView *BuddiesWidget;
 
 private slots:
 	void restoreFromFile();

@@ -22,12 +22,11 @@
 #include <QtGui/QCheckBox>
 #include <QtGui/QGroupBox>
 #include <QtGui/QLabel>
-#include <QtGui/QScrollArea>
 #include <QtGui/QVBoxLayout>
 
 #include "contacts/contact.h"
 #include "buddies/group.h"
-#include "buddies/group-manager.h"
+#include "gui/widgets/group-list.h"
 #include "misc/misc.h"
 
 #include "buddy-groups-configuration-widget.h"
@@ -51,35 +50,14 @@ void BuddyGroupsConfigurationWidget::createGui()
 	QLabel *label = new QLabel(tr("Add <b>%1</b> to the groups below by checking the box next to the appropriate groups.").arg(MyBuddy.display()), this);
 	label->setWordWrap(true);
 
+	BuddyGroupList = new GroupList(this);
+	BuddyGroupList->setCheckedGroups(MyBuddy.groups());
+
 	layout->addWidget(label);
-	layout->addSpacing(64);
-
-	Groups = new QScrollArea(this);
-	layout->addWidget(Groups);
-
-	Groups->setFrameShape(QFrame::NoFrame);
-	Groups->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-	Groups->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
-
-	QVBoxLayout *groupsLayout = new QVBoxLayout(Groups);
-
-	foreach (const Group &group, GroupManager::instance()->items())
-	{
-		QCheckBox *groupCheckBox = new QCheckBox(group.name(), Groups);
-		groupCheckBox->setChecked(MyBuddy.isInGroup(group));
-		groupsLayout->addWidget(groupCheckBox);
-		GroupCheckBoxList.append(groupCheckBox);
-	}
-
-	groupsLayout->addStretch(100);
+	layout->addWidget(BuddyGroupList);
 }
 
 void BuddyGroupsConfigurationWidget::save()
 {
-	foreach (const Group &group, MyBuddy.groups())
-		MyBuddy.removeFromGroup(group);
-
-	foreach (QCheckBox *groupBox, GroupCheckBoxList)
-		if (groupBox->isChecked())
-			MyBuddy.addToGroup(GroupManager::instance()->byName(groupBox->text()));
+	MyBuddy.setGroups(BuddyGroupList->checkedGroups());
 }

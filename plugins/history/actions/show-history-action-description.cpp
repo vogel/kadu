@@ -66,7 +66,7 @@ void ShowHistoryActionDescription::actionInstanceCreated(Action *action)
 	action->setData(chatWidgetData);
 
 	// not a menu
-	if (action->chat() != chatEditBox->chat())
+	if (action->context()->chat() != chatEditBox->actionContext()->chat())
 		return;
 
 	// no parents for menu as it is destroyed manually by Action class
@@ -125,7 +125,7 @@ void ShowHistoryActionDescription::showDaysMessages(QAction *action, int days)
 		return;
 
 	Action *act = qobject_cast<Action *>(action);
-	Chat actionChat = act ? act->chat() : Chat::null;
+	Chat actionChat = act ? act->context()->chat() : Chat::null;
 
 	ChatWidget *chatWidget = static_cast<ChatWidget *>((void*)(action->data().toLongLong()));
 	if (!chatWidget)
