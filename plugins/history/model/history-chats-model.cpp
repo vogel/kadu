@@ -146,7 +146,10 @@ QVariant HistoryChatsModel::chatData(const QModelIndex &index, int role) const
 	switch (role)
 	{
 		case Qt::DisplayRole:
-			return chat.name();
+			if (chat.display().isEmpty())
+				return chat.name();
+			else
+				return chat.display();
 
 		case ChatRole:
 			return QVariant::fromValue<Chat>(chat);
