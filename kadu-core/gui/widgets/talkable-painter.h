@@ -49,7 +49,6 @@ class TalkablePainter
 	QRect ItemRect;
 
 	QRect IconRect;
-	QRect MessageIconRect;
 	QRect AvatarRect;
 	QRect AccountNameRect;
 	QRect NameRect;
@@ -76,7 +75,6 @@ class TalkablePainter
 	bool showDescription() const;
 
 	void computeIconRect();
-	void computeMessageIconRect();
 	void computeAvatarRect();
 	void computeAccountNameRect();
 	void computeNameRect();
@@ -87,7 +85,6 @@ class TalkablePainter
 	void paintDebugRect(QPainter *painter, QRect rect, QColor color) const;
 
 	void paintIcon(QPainter *painter);
-	void paintMessageIcon(QPainter *painter);
 	void paintAvatar(QPainter *painter);
 	void paintAccountName(QPainter *painter);
 	void paintName(QPainter *painter);

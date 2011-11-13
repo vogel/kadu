@@ -157,28 +157,6 @@ void TalkablePainter::computeIconRect()
 	IconRect.moveTo(topLeft);
 }
 
-void TalkablePainter::computeMessageIconRect()
-{
-	MessageIconRect = QRect(0, 0, 0, 0);
-	if (!showMessagePixmap())
-		return;
-
-	const QPixmap &icon = Configuration.messagePixmap();
-
-	QPoint topLeft = ItemRect.topLeft();
-	MessageIconRect = icon.rect();
-
-	if (!Configuration.alignTop())
-		topLeft.setY(topLeft.y() + (ItemRect.height() - icon.height()) / 2);
-	else
-		topLeft.setY(topLeft.y() + (fontMetrics().lineSpacing() + 3 - icon.height()) / 2);
-
-	if (!IconRect.isEmpty())
-		topLeft.setX(IconRect.right() + VFrameMargin);
-
-	MessageIconRect.moveTo(topLeft);
-}
-
 void TalkablePainter::computeAvatarRect()
 {
 	AvatarRect = QRect(0, 0, 0, 0);
@@ -278,8 +256,8 @@ void TalkablePainter::computeNameRect()
 {
 	NameRect = QRect(0, 0, 0, 0);
 
-	int left = qMax(IconRect.right(), MessageIconRect.right());
-	if (!IconRect.isEmpty() || !MessageIconRect.isEmpty())
+	int left = IconRect.right();
+	if (!IconRect.isEmpty())
 		left += HFrameMargin;
 	else
 		left = ItemRect.left();
@@ -324,7 +302,6 @@ void TalkablePainter::computeDescriptionRect()
 void TalkablePainter::computeLayout()
 {
 	computeIconRect();
-	computeMessageIconRect();
 	computeAvatarRect();
 	computeAccountNameRect();
 	computeNameRect();
@@ -375,7 +352,6 @@ int TalkablePainter::height()
 	computeLayout();
 
 	QRect wholeRect = IconRect;
-	wholeRect |= MessageIconRect;
 	wholeRect |= AvatarRect;
 	wholeRect |= AccountNameRect;
 	wholeRect |= NameRect;
@@ -394,19 +370,17 @@ void TalkablePainter::paintDebugRect(QPainter *painter, QRect rect, QColor color
 
 void TalkablePainter::paintIcon(QPainter *painter)
 {
+	if (showMessagePixmap())
+	{
+		painter->drawPixmap(IconRect, Configuration.messagePixmap());
+		return;
+	}
+
 	const QPixmap &paintedIcon = icon();
 	if (paintedIcon.isNull())
 		return;
 
 	painter->drawPixmap(IconRect, paintedIcon);
-}
-
-void TalkablePainter::paintMessageIcon(QPainter *painter)
-{
-	if (!showMessagePixmap())
-		return;
-
-	painter->drawPixmap(MessageIconRect, Configuration.messagePixmap());
 }
 
 void TalkablePainter::paintAvatar(QPainter *painter)
@@ -471,7 +445,6 @@ void TalkablePainter::paint(QPainter *painter)
 	}
 
 	paintIcon(painter);
-	paintMessageIcon(painter);
 	paintAvatar(painter);
 	paintAccountName(painter);
 	paintName(painter);
@@ -480,7 +453,6 @@ void TalkablePainter::paint(QPainter *painter)
 	/*
 	paintDebugRect(painter, ItemRect, QColor(255, 0, 0));
 	paintDebugRect(painter, IconRect, QColor(0, 255, 0));
-	paintDebugRect(painter, MessageIconRect, QColor(255, 255, 0));
 	paintDebugRect(painter, AvatarRect, QColor(0, 0, 255));
 	paintDebugRect(painter, AccountNameRect, QColor(255, 0, 255));
 	paintDebugRect(painter, NameRect, QColor(0, 255, 255));
