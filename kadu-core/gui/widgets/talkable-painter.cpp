@@ -51,7 +51,7 @@ TalkablePainter::TalkablePainter(const TalkableDelegateConfiguration &configurat
 	Widget = static_cast<const QTreeView *>(option.widget);
 	Q_ASSERT(Widget);
 
-	QStyle *style = Widget->style();
+	const QStyle * const style = Widget->style();
 
 	HFrameMargin = style->pixelMetric(QStyle::PM_FocusFrameHMargin, 0, Widget);
 	VFrameMargin = style->pixelMetric(QStyle::PM_FocusFrameVMargin, 0, Widget);
@@ -76,11 +76,11 @@ void TalkablePainter::fixColors()
 
 QColor TalkablePainter::textColor() const
 {
-	QPalette::ColorGroup colorGroup = drawDisabled()
+	const QPalette::ColorGroup colorGroup = drawDisabled()
 			? QPalette::Disabled
 			: QPalette::Normal;
 
-	QPalette::ColorRole colorRole = drawSelected()
+	const QPalette::ColorRole colorRole = drawSelected()
 			? QPalette::HighlightedText
 			: QPalette::Text;
 
@@ -95,7 +95,7 @@ bool TalkablePainter::useBold() const
 	if (!Configuration.showBold())
 		return false;
 
-	Contact contact = Index.data(ContactRole).value<Contact>();
+	const Contact &contact = Index.data(ContactRole).value<Contact>();
 	if (!contact)
 		return false;
 	if (contact.isBlocking())
@@ -103,7 +103,7 @@ bool TalkablePainter::useBold() const
 	if (contact.ownerBuddy().isBlocked())
 		return false;
 
-	Status status = Index.data(StatusRole).value<Status>();
+	const Status &status = Index.data(StatusRole).value<Status>();
 	return !status.isDisconnected();
 }
 
@@ -111,12 +111,12 @@ bool TalkablePainter::showMessagePixmap() const
 {
 	if (Index.parent().isValid()) // contact
 	{
-		Contact contact = Index.data(ContactRole).value<Contact>();
+		const Contact &contact = Index.data(ContactRole).value<Contact>();
 		return contact && PendingMessagesManager::instance()->hasPendingMessagesForContact(contact);
 	}
 	else
 	{
-		Buddy buddy = Index.data(BuddyRole).value<Buddy>();
+		const Buddy &buddy = Index.data(BuddyRole).value<Buddy>();
 		return buddy && PendingMessagesManager::instance()->hasPendingMessagesForBuddy(buddy);
 	}
 }
@@ -134,7 +134,7 @@ bool TalkablePainter::showDescription() const
 	if (!Configuration.showDescription())
 		return false;
 
-	QString description = Index.data(DescriptionRole).toString();
+	const QString &description = Index.data(DescriptionRole).toString();
 	return !description.isEmpty();
 }
 
@@ -142,7 +142,7 @@ void TalkablePainter::computeIconRect()
 {
 	IconRect = QRect(0, 0, 0, 0);
 
-	QPixmap paintedIcon = icon();
+	const QPixmap &paintedIcon = icon();
 	if (paintedIcon.isNull())
 		return;
 
@@ -163,7 +163,7 @@ void TalkablePainter::computeMessageIconRect()
 	if (!showMessagePixmap())
 		return;
 
-	QPixmap icon = Configuration.messagePixmap();
+	const QPixmap &icon = Configuration.messagePixmap();
 
 	QPoint topLeft = ItemRect.topLeft();
 	MessageIconRect = icon.rect();
@@ -198,7 +198,7 @@ void TalkablePainter::computeAvatarRect()
 
 QString TalkablePainter::getAccountName()
 {
-	Account account = Index.data(AccountRole).value<Account>();
+	const Account &account = Index.data(AccountRole).value<Account>();
 	return account.accountIdentity().name();
 }
 
@@ -214,16 +214,16 @@ bool TalkablePainter::drawSelected() const
 
 bool TalkablePainter::drawDisabled() const
 {
-	Buddy buddy = Index.data(BuddyRole).value<Buddy>();
+	const Buddy &buddy = Index.data(BuddyRole).value<Buddy>();
 	return buddy.isOfflineTo();
 }
 
 QTextDocument * TalkablePainter::createDescriptionDocument(const QString &text, int width, QColor color) const
 {
-	QString description = Qt::escape(text);
-	description.replace('\n', Configuration.showMultiLineDescription() ? QLatin1String("<br/>") : QLatin1String(" "));
+	const QString &description = Qt::escape(text)
+	        .replace('\n', Configuration.showMultiLineDescription() ? QLatin1String("<br/>") : QLatin1String(" "));
 
-	QTextDocument *doc = new QTextDocument();
+	QTextDocument * const doc = new QTextDocument();
 
 	doc->setDefaultFont(Configuration.descriptionFont());
 	if (color.isValid())
@@ -250,7 +250,7 @@ QTextDocument * TalkablePainter::getDescriptionDocument(int width)
 
 	fixColors();
 
-	QColor color = drawSelected() || drawDisabled() || !UseConfigurationColors
+	const QColor &color = drawSelected() || drawDisabled() || !UseConfigurationColors
 			? textColor()
 			: Configuration.descriptionColor();
 	DescriptionDocument = createDescriptionDocument(Index.data(DescriptionRole).toString(), width, color);
@@ -263,9 +263,9 @@ void TalkablePainter::computeAccountNameRect()
 	if (!showAccountName())
 		return;
 
-	QString accountDisplay = getAccountName();
+	const QString &accountDisplay = getAccountName();
 
-	int accountDisplayWidth = DescriptionFontMetrics.width(accountDisplay);
+	const int accountDisplayWidth = DescriptionFontMetrics.width(accountDisplay);
 
 	AccountNameRect.setWidth(accountDisplayWidth);
 	AccountNameRect.setHeight(DescriptionFontMetrics.height());
@@ -366,7 +366,7 @@ int TalkablePainter::height()
 {
 	ItemRect = QRect(0, 0, 0, 20);
 
-	QHeaderView *header = Widget->header();
+	const QHeaderView * const header = Widget->header();
 	if (header)
 		ItemRect.setWidth(header->sectionSize(0) - itemIndentation());
 
@@ -394,7 +394,7 @@ void TalkablePainter::paintDebugRect(QPainter *painter, QRect rect, QColor color
 
 void TalkablePainter::paintIcon(QPainter *painter)
 {
-	QPixmap paintedIcon = icon();
+	const QPixmap &paintedIcon = icon();
 	if (paintedIcon.isNull())
 		return;
 
@@ -411,7 +411,7 @@ void TalkablePainter::paintMessageIcon(QPainter *painter)
 
 void TalkablePainter::paintAvatar(QPainter *painter)
 {
-	QRect rect = AvatarRect.adjusted(VFrameMargin, HFrameMargin, -VFrameMargin, -HFrameMargin);
+	const QRect &rect = AvatarRect.adjusted(VFrameMargin, HFrameMargin, -VFrameMargin, -HFrameMargin);
 
 	AvatarPainter avatarPainter(Configuration, Option, rect, Index);
 	avatarPainter.paint(painter);
