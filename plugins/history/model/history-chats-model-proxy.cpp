@@ -93,7 +93,10 @@ bool HistoryChatsModelProxy::lessThan(const QModelIndex &left, const QModelIndex
 		if (isRightAllAnonymous && !isLeftAllAnonymous)
 			return true;
 
-		return compareNames(leftChat.name(), rightChat.name()) < 0;
+		const QString &leftName = leftChat.display().isEmpty() ? leftChat.name() : leftChat.display();
+		const QString &rightName = rightChat.display().isEmpty() ? rightChat.name() : rightChat.display();
+
+		return compareNames(leftName, rightName) < 0;
 	}
 
 	ChatType *leftType = left.data(ChatTypeRole).value<ChatType *>();
