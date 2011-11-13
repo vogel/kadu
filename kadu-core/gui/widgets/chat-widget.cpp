@@ -307,6 +307,13 @@ void ChatWidget::refreshTitle()
 	kdebugf();
 	QString title;
 
+	if (!chat().display().isEmpty())
+	{
+		title = chat().display();
+		setTitle(title);
+		return;
+	}
+
 	int contactsCount = chat().contacts().count();
 	kdebugmf(KDEBUG_FUNCTION_START, "chat().contacts().size() = %d\n", contactsCount);
 	if (contactsCount > 1)
