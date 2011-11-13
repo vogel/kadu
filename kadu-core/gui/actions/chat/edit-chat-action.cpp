@@ -17,8 +17,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "buddies/buddy-set.h"
 #include "chat/chat.h"
 #include "core/core.h"
+#include "gui/actions/action.h"
 #include "gui/actions/action-context.h"
 #include "gui/windows/chat-data-window.h"
 #include "gui/windows/kadu-window.h"
@@ -31,13 +33,19 @@ EditChatAction::EditChatAction(QObject *parent) :
 	setType(ActionDescription::TypeChat);
 	setName("editChatAction");
 	setIcon(KaduIcon("x-office-address-book"));
-	setText(tr("Edit"));
+	setText(tr("Edit Chat Data"));
 
 	registerAction();
 }
 
 EditChatAction::~EditChatAction()
 {
+}
+
+void EditChatAction::updateActionState(Action *action)
+{
+	const Chat &chat = action->context()->chat();
+	action->setEnabled(chat && chat.contacts().size() > 1);
 }
 
 void EditChatAction::triggered(QWidget *widget, ActionContext *context, bool toggled)

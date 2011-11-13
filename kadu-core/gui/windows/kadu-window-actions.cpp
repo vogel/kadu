@@ -51,6 +51,7 @@
 #include "gui/actions/actions.h"
 #include "gui/actions/change-status-action.h"
 #include "gui/actions/default-proxy-action.h"
+#include "gui/actions/chat/edit-chat-action.h"
 #include "gui/widgets/chat-widget-actions.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/buddy-info-panel.h"
@@ -379,6 +380,8 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 	);
 	connect(EditUser, SIGNAL(actionCreated(Action *)), this, SLOT(editUserActionCreated(Action *)));
 	TalkableMenuManager::instance()->addActionDescription(EditUser, TalkableMenuItem::CategoryView, 0);
+	TalkableMenuManager::instance()->addActionDescription(ChatWidgetManager::instance()->actions()->editChat(),
+	                                                      TalkableMenuItem::CategoryView, 5);
 
 	MergeContact = new ActionDescription(this,
 		ActionDescription::TypeUser, "mergeContactAction",

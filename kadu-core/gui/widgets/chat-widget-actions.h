@@ -85,14 +85,16 @@ public:
 	explicit ChatWidgetActions(QObject *parent);
 	virtual ~ChatWidgetActions();
 
-	ActionDescription * bold() { return Bold; }
-	ActionDescription * italic() { return Italic; }
-	ActionDescription * underline() { return Underline; }
-	ActionDescription * send() { return Send; }
-	ActionDescription * blockUser() { return BlockUser; }
-	ActionDescription * openChatWith() { return OpenWith; }
+	ActionDescription * bold() const { return Bold; }
+	ActionDescription * italic() const { return Italic; }
+	ActionDescription * underline() const { return Underline; }
+	ActionDescription * send() const { return Send; }
+	ActionDescription * blockUser() const { return BlockUser; }
+	ActionDescription * openChatWith() const { return OpenWith; }
 // 	ActionDescription * colorSelector() { return ColorSelector; }
-	ActionDescription * insertEmoticon() { return InsertEmoticon; }
+	ActionDescription * insertEmoticon() const { return InsertEmoticon; }
+
+	EditChatAction * editChat() const { return EditChat; }
 
 };
 
