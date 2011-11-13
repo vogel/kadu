@@ -45,6 +45,7 @@ set (gui_SRCS
 	widgets/file-transfer-widget.cpp
 	widgets/filter-widget.cpp
 	widgets/filtered-tree-view.cpp
+	widgets/group-list.cpp
 	widgets/group-tab-bar.cpp
 	widgets/groups-combo-box.cpp
 	widgets/identities-combo-box.cpp
@@ -195,6 +196,7 @@ set (gui_MOC_SRCS
 	widgets/file-transfer-widget.h
 	widgets/filter-widget.h
 	widgets/filtered-tree-view.h
+	widgets/group-list.h
 	widgets/group-tab-bar.h
 	widgets/groups-combo-box.h
 	widgets/identities-combo-box.h
