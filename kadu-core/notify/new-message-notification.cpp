@@ -70,12 +70,12 @@ MessageNotification::MessageNotification(MessageType messageType, const Message 
 
 	if (messageType == NewChat)
 	{
-		setTitle("New chat");
+		setTitle(tr("New chat"));
 		syntax = tr("Chat with <b>%1</b>");
 	}
 	else
 	{
-		setTitle("New message");
+		setTitle(tr("New message"));
 		syntax = tr("New message from <b>%1</b>");
 	}
 

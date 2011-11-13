@@ -48,7 +48,7 @@ void CenzorNotification::unregisterNotifiactions()
 void CenzorNotification::notifyCenzored(const Chat &chat)
 {
 	CenzorNotification *notification = new CenzorNotification(chat);
-	notification->setTitle("Cenzor");
+	notification->setTitle(tr("Cenzor"));
 	notification->setText(tr("Message was cenzored"));
 	notification->setDetails(tr("Your interlocutor used obscene word and became admonished"));
 	NotificationManager::instance()->notify(notification);
