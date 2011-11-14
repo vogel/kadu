@@ -495,8 +495,6 @@ void ChatWidget::sendMessage()
 	if (ComposingTimer.isActive())
 		composingStopped();
 
-	emit messageSentAndConfirmed(CurrentChat, message.toHtml());
-
 	emit messageSent(this);
 	kdebugf2();
 }

@@ -236,17 +236,6 @@ signals:
 	**/
 	void messageSent(ChatWidget *chat);
 
-	/**
-		\fn void messageSentAndConfirmed(ContactList receivers, const QString& message)
-		This signal is emitted when message was sent
-		and it was confirmed.
-		When confirmations are turned off signal is
-		emitted immediately after message was send
-		just like messageSent() signal.
-		\param receivers list of receivers
-		\param message the message
-	**/
-	void messageSentAndConfirmed(Chat chat, const QString &message);
 	void messageReceived(Chat chat);
 
 	/**

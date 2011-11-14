@@ -107,8 +107,6 @@ signals:
 	void chatWidgetOpen(ChatWidget *chatwidget);
 	void chatWidgetTitlesUpdated();
 
-	void messageSentAndConfirmed(Chat chat, const QString& message);
-
 };
 
 #endif // CHAT_WIDGET_MANAGER_H
