@@ -66,6 +66,7 @@ class KADUAPI ChatWidgetManager : public QObject, ConfigurationAwareObject, Stor
 	QList<MessageRenderInfo *> readPendingMessages(const Chat &chat);
 
 private slots:
+	void chatWidgetDestroyed();
 	void messageSent(const Message &message);
 
 protected:
@@ -89,8 +90,6 @@ public:
 	void activateChatWidget(ChatWidget *chatwidget);
 
 	void openPendingMessages();
-
-	void unregisterChatWidget(ChatWidget *chatwidget);
 
 public slots:
 	// for imagelink module

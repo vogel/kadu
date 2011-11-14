@@ -217,24 +217,6 @@ const QHash<Chat , ChatWidget *> & ChatWidgetManager::chats() const
 	return Chats;
 }
 
-void ChatWidgetManager::unregisterChatWidget(ChatWidget *chatwidget)
-{
-	kdebugf();
-
-	if (!Chats.contains(chatwidget->chat()))
-		return;
-
-	Chats.remove(chatwidget->chat());
-
-//	if (chatwidget->chat().contacts().count() == 1)
-//	{
-//		Contact contact = chatwidget->chat().contacts().toContact();
-//		BuddyPreferredManager::instance()->updatePreferred(contact.ownerBuddy());
-//	}
-
-	emit chatWidgetDestroying(chatwidget);
-}
-
 ChatWidget * ChatWidgetManager::byChat(const Chat &chat) const
 {
 	return Chats.contains(chat)
@@ -263,6 +245,7 @@ ChatWidget * ChatWidgetManager::createChatWidget(const Chat &chat)
 
 	connect(chatWidget, SIGNAL(messageSentAndConfirmed(Chat , const QString &)),
 		this, SIGNAL(messageSentAndConfirmed(Chat , const QString &)));
+	connect(chatWidget, SIGNAL(destroyed()), this, SLOT(chatWidgetDestroyed()));
 
 //	if (chatWidget->chat().contacts().count() == 1)
 //	{
@@ -273,6 +256,26 @@ ChatWidget * ChatWidgetManager::createChatWidget(const Chat &chat)
 	emit chatWidgetCreated(chatWidget);
 
 	return chatWidget;
+}
+
+void ChatWidgetManager::chatWidgetDestroyed()
+{
+	ChatWidget *chatWidget = qobject_cast<ChatWidget *>(sender());
+	if (!chatWidget)
+		return;
+
+	if (!Chats.contains(chatWidget->chat()))
+		return;
+
+	Chats.remove(chatWidget->chat());
+
+//	if (chatwidget->chat().contacts().count() == 1)
+//	{
+//		Contact contact = chatwidget->chat().contacts().toContact();
+//		BuddyPreferredManager::instance()->updatePreferred(contact.ownerBuddy());
+//	}
+
+	emit chatWidgetDestroying(chatWidget);
 }
 
 ChatWidget * ChatWidgetManager::openChatWidget(const Chat &chat)

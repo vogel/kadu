@@ -129,8 +129,6 @@ ChatWidget::~ChatWidget()
 	kdebugf();
 	ComposingTimer.stop();
 
-	ChatWidgetManager::instance()->unregisterChatWidget(this);
-
 	if (currentProtocol() && currentProtocol()->chatStateService())
 		currentProtocol()->chatStateService()->chatWidgetClosed(chat());
 
