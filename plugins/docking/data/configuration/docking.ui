@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration-ui>
 	<section name="Kadu">
-		<tab name="Tray">
-			<group-box name="General">
+		<tab name="General">
+			<group-box name="Tray">
 				<check-box caption="Start docked" config-section="General" config-item="RunDocked" />
 				<check-box caption="Show tooltip in tray" config-section="General" config-item="ShowTooltipInTray" />
 				<combo-box caption="New chat tray icon" config-section="Look" config-item="NewMessageIcon">

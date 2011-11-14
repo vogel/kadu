@@ -3,11 +3,9 @@
 
 	<section name="Kadu" icon="kadu_icons/section-kadu">
 		<tab name="General">
-			<group-box name="Nickname">
+			<group-box name="Personal">
 				<line-edit caption="Nickname" config-section="General" config-item="Nick" />
 				<label caption="Enter a nickname for your account." />
-			</group-box>
-			<group-box name="Default Language">
 				<combo-box caption="Language" config-section="General" config-item="Language" id="languages" tool-tip="Choose your language" />
 				<label caption="Kadu needs to be restarted before changes to the language settings will take effect." />
 				<!-- <label caption="Kadu will use [regional application] as the default network in this configuration." />
@@ -34,20 +32,14 @@
 		</tab>
 
 		<tab name="Advanced">
-			<group-box name="Proxy">
+			<group-box name="Advanced">
 				<proxy-combo-box caption="Default proxy" config-section="Network" config-item="DefaultProxy" />
-			</group-box>
-			<group-box name="Parser">
 				<check-box caption="Allow executing commands by parser" config-section="General" config-item="AllowExecutingFromParser" />
-			</group-box>
-			<group-box name="Window Activation Method" id="windowActivationMethodGroup">
 				<combo-box caption="Select method" config-section="General" config-item="WindowActivationMethod" id="windowActivationMethod" >
 					<item value="0" caption="Move the Window to the Active Desktop" />
 					<item value="1" caption="Switch Desktop Making the Window Visible" />
 				</combo-box>
-			</group-box>
-			<group-box name="Debugging" id="debug">
-				<line-edit caption="Debugging mask" config-section="General" config-item="DEBUG_MASK" />
+				<line-edit caption="Debugging mask" config-section="General" config-item="DEBUG_MASK" id="debug" />
 			</group-box>
 		</tab>
 	</section>
