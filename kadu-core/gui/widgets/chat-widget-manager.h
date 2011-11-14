@@ -60,7 +60,7 @@ class KADUAPI ChatWidgetManager : public QObject, ConfigurationAwareObject, Stor
 	void autoSendActionCheck();
 	void insertEmoticonActionEnabled();
 
-	ChatWidget * openChatWidget(const Chat &chat, bool forceActivate = false);
+	ChatWidget * openChatWidget(const Chat &chat);
 
 	QList<MessageRenderInfo *> readPendingMessages(const Chat &chat);
 
@@ -97,7 +97,7 @@ public slots:
 	// for imagelink module
 	void messageReceived(const Message &message);
 
-	void openChat(const Chat &chat, bool forceActivate = true);
+	void openChat(const Chat &chat);
 
 	void closeChat(const Chat &chat);
 	void closeAllChats(const Buddy &buddy);

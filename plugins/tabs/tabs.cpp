@@ -607,7 +607,7 @@ void TabsManager::load()
 				ForceTabs = true;
 			else if (element.attribute("type") == "detachedChat")
 				NoTabs = true;
-			ChatWidgetManager::instance()->openChat(chat, false);
+			ChatWidgetManager::instance()->openChat(chat);
 		}
 		else if (element.attribute("type") == "tab")
 			insertTab(chatWidget);

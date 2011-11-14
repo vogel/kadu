@@ -260,7 +260,7 @@ void ChatWidgetManager::activateChatWidget(ChatWidget *chatwidget)
 	emit chatWidgetOpen(chatwidget, true);
 }
 
-ChatWidget * ChatWidgetManager::openChatWidget(const Chat &chat, bool forceActivate)
+ChatWidget * ChatWidgetManager::openChatWidget(const Chat &chat)
 {
 	kdebugf();
 
@@ -270,8 +270,7 @@ ChatWidget * ChatWidgetManager::openChatWidget(const Chat &chat, bool forceActiv
 	ChatWidget *chatWidget = byChat(chat);
 	if (chatWidget)
 	{
-		if (forceActivate)
-			activateChatWidget(chatWidget);
+		activateChatWidget(chatWidget);
 		return chatWidget;
 	}
 
@@ -285,10 +284,7 @@ ChatWidget * ChatWidgetManager::openChatWidget(const Chat &chat, bool forceActiv
 	connect(chatWidget, SIGNAL(messageSentAndConfirmed(Chat , const QString &)),
 		this, SIGNAL(messageSentAndConfirmed(Chat , const QString &)));
 
-	if (forceActivate) //TODO 0.10.0:
-	{
-		chatWidget->makeActive();
-	}
+	chatWidget->makeActive();
 
 //	if (chatWidget->chat().contacts().count() == 1)
 //	{
@@ -297,7 +293,7 @@ ChatWidget * ChatWidgetManager::openChatWidget(const Chat &chat, bool forceActiv
 //	}
 
 	emit chatWidgetCreated(chatWidget);
-	emit chatWidgetOpen(chatWidget, forceActivate);
+	emit chatWidgetOpen(chatWidget, true);
 
 	kdebugf2();
 
@@ -335,12 +331,12 @@ QList<MessageRenderInfo *> ChatWidgetManager::readPendingMessages(const Chat &ch
 	return messages;
 }
 
-void ChatWidgetManager::openChat(const Chat &chat, bool forceActivate)
+void ChatWidgetManager::openChat(const Chat &chat)
 {
 	if (!chat)
 		return;
 
-	ChatWidget *chatWidget = openChatWidget(chat, forceActivate);
+	ChatWidget *chatWidget = openChatWidget(chat);
 	if (!chatWidget)
 		return;
 
