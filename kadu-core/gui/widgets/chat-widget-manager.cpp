@@ -320,20 +320,13 @@ void ChatWidgetManager::deletePendingMessages(const Chat &chat)
 	kdebugf2();
 }
 
-void ChatWidgetManager::openChat(const Chat &chat, bool forceActivate)
+QList<MessageRenderInfo *> ChatWidgetManager::readPendingMessages(const Chat &chat)
 {
-	if (!chat)
-		return;
+	const Chat &aggregateChat = AggregateChatManager::instance()->aggregateChat(chat);
+	const QVector<Message> &pendingMessages = PendingMessagesManager::instance()->pendingMessagesForChat(
+	            aggregateChat ? aggregateChat : chat);
 
 	QList<MessageRenderInfo *> messages;
-
-	ChatWidget *chatWidget = openChatWidget(chat, forceActivate);
-	if (!chatWidget)
-		return;
-
-	Chat aggregateChat = AggregateChatManager::instance()->aggregateChat(chat);
-	QVector<Message> pendingMessages = PendingMessagesManager::instance()->pendingMessagesForChat(aggregateChat ? aggregateChat : chat);
-
 	foreach (Message message, pendingMessages)
 	{
 		messages.append(new MessageRenderInfo(message));
@@ -341,6 +334,19 @@ void ChatWidgetManager::openChat(const Chat &chat, bool forceActivate)
 		PendingMessagesManager::instance()->removeItem(message);
 	}
 
+	return messages;
+}
+
+void ChatWidgetManager::openChat(const Chat &chat, bool forceActivate)
+{
+	if (!chat)
+		return;
+
+	ChatWidget *chatWidget = openChatWidget(chat, forceActivate);
+	if (!chatWidget)
+		return;
+
+	const QList<MessageRenderInfo *> &messages = readPendingMessages(chat);
 	if (!messages.isEmpty())
 		// TODO: Lame API
 		if (0 == chatWidget->countMessages())

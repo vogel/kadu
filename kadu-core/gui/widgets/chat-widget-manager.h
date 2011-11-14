@@ -62,6 +62,8 @@ class KADUAPI ChatWidgetManager : public QObject, ConfigurationAwareObject, Stor
 
 	ChatWidget * openChatWidget(const Chat &chat, bool forceActivate = false);
 
+	QList<MessageRenderInfo *> readPendingMessages(const Chat &chat);
+
 private slots:
 	void messageSent(const Message &message);
 
