@@ -303,8 +303,6 @@ ChatWidget * ChatWidgetManager::openChatWidget(const Chat &chat, bool forceActiv
 //	}
 
 	emit chatWidgetCreated(chatWidget);
-// TODO: remove, it is so stupid ...
-	emit chatWidgetCreated(chatWidget, time(0));
 	emit chatWidgetOpen(chatWidget, forceActivate);
 
 	kdebugf2();

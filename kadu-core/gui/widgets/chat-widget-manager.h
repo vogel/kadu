@@ -156,14 +156,6 @@ signals:
 	void chatWidgetActivated(ChatWidget *chatwidget);
 
 	/**
-		\fn void chatCreated(const UserGroup group)
-	 	Sygna� ten jest wysy�any po utworzeniu nowego okna chat
-		\param chat nowe okno chat
-		\param time time of pending message that created a chat or 0 if not applicable
-	**/
-	void chatWidgetCreated(ChatWidget *chatwidget, time_t time);
-
-	/**
 		\fn void chatDestroying(const UserGroup group)
 	 	Sygna� ten jest wysy�any przed zamnkni�ciem okna chat
 		\param chat zamykane okno
