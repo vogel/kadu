@@ -87,7 +87,6 @@ ChatWidget::ChatWidget(const Chat &chat, QWidget *parent) :
 	kdebugf();
 
 	setAcceptDrops(true);
-	ChatWidgetManager::instance()->registerChatWidget(this);
 
 	createGui();
 	configurationUpdated();

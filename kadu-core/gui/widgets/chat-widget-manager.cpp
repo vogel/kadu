@@ -217,12 +217,6 @@ const QHash<Chat , ChatWidget *> & ChatWidgetManager::chats() const
 	return Chats;
 }
 
-void ChatWidgetManager::registerChatWidget(ChatWidget *chatwidget)
-{
-	kdebugf();
-	Chats.insert(chatwidget->chat(), chatwidget);
-}
-
 void ChatWidgetManager::unregisterChatWidget(ChatWidget *chatwidget)
 {
 	kdebugf();
@@ -260,6 +254,7 @@ ChatWidget * ChatWidgetManager::createChatWidget(const Chat &chat)
 		return 0;
 
 	ChatWidget *chatWidget = new ChatWidget(chat);
+	Chats.insert(chat, chatWidget);
 
 	bool handled = false;
 	emit handleNewChatWidget(chatWidget, handled);

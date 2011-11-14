@@ -90,7 +90,6 @@ public:
 
 	void openPendingMessages();
 
-	void registerChatWidget(ChatWidget *chatwidget);
 	void unregisterChatWidget(ChatWidget *chatwidget);
 
 public slots:
