@@ -505,7 +505,7 @@ void DockingManager::showMinimizedChats()
 {
 	foreach (ChatWidget *chat, ChatWidgetManager::instance()->chats())
 	{
-		ChatWidgetManager::instance()->activateChatWidget(chat, false);
+		ChatWidgetManager::instance()->activateChatWidget(chat);
 	}
 }
 

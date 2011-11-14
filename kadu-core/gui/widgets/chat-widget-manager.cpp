@@ -250,11 +250,8 @@ ChatWidget * ChatWidgetManager::byChat(const Chat &chat, bool create) const
 		: 0;
 }
 
-void ChatWidgetManager::activateChatWidget(ChatWidget *chatwidget, bool forceActivate)
+void ChatWidgetManager::activateChatWidget(ChatWidget *chatwidget)
 {
-	// TODO: 0.10.0
-	Q_UNUSED(forceActivate)
-
 	QWidget *win = chatwidget->window();
 	Q_UNUSED(win) // only in debug mode
 
@@ -273,7 +270,8 @@ ChatWidget * ChatWidgetManager::openChatWidget(const Chat &chat, bool forceActiv
 	ChatWidget *chatWidget = byChat(chat);
 	if (chatWidget)
 	{
-		activateChatWidget(chatWidget, forceActivate);
+		if (forceActivate)
+			activateChatWidget(chatWidget);
 		return chatWidget;
 	}
 

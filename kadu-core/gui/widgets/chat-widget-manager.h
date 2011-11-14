@@ -85,7 +85,7 @@ public:
 	const QHash<Chat, ChatWidget *> & chats() const;
 	ChatWidget * byChat(const Chat &chat, bool create = false) const;
 
-	void activateChatWidget(ChatWidget *chatwidget, bool forceActivate);
+	void activateChatWidget(ChatWidget *chatwidget);
 
 	void openPendingMessages();
 	void deletePendingMessages(const Chat &chat);
