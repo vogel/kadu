@@ -241,13 +241,11 @@ void ChatWidgetManager::unregisterChatWidget(ChatWidget *chatwidget)
 	emit chatWidgetDestroying(chatwidget);
 }
 
-ChatWidget * ChatWidgetManager::byChat(const Chat &chat, bool create) const
+ChatWidget * ChatWidgetManager::byChat(const Chat &chat) const
 {
-	Q_UNUSED(create)
-
 	return Chats.contains(chat)
-		? Chats.value(chat)
-		: 0;
+			? Chats.value(chat)
+			: 0;
 }
 
 void ChatWidgetManager::activateChatWidget(ChatWidget *chatwidget)

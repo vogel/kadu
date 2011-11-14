@@ -83,7 +83,7 @@ public:
 	ChatWidgetActions * actions() { return Actions; }
 
 	const QHash<Chat, ChatWidget *> & chats() const;
-	ChatWidget * byChat(const Chat &chat, bool create = false) const;
+	ChatWidget * byChat(const Chat &chat) const;
 
 	void activateChatWidget(ChatWidget *chatwidget);
 
