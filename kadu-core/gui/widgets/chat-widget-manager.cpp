@@ -189,29 +189,6 @@ void ChatWidgetManager::store()
 	StorableStringList::store();
 }
 
-void ChatWidgetManager::insertEmoticonActionEnabled()
-{
-	QString toolTip;
-	bool enabled;
-
-	if ((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle") == EmoticonsStyleNone)
-	{
-		toolTip =  tr("Insert emoticon - enable in configuration");
-		enabled = false;
-	}
-	else
-	{
-		toolTip = tr("Insert emoticon");
-		enabled = true;
-	}
-
- 	foreach (Action *action, Actions->insertEmoticon()->actions())
-	{
-		action->setToolTip(toolTip);
-		action->setEnabled(enabled);
-	}
-}
-
 const QHash<Chat , ChatWidget *> & ChatWidgetManager::chats() const
 {
 	return Chats;
@@ -353,8 +330,6 @@ void ChatWidgetManager::configurationUpdated()
 	OpenChatOnMessage = config_file.readBoolEntry("Chat", "OpenChatOnMessage");
 	AutoRaise = config_file.readBoolEntry("General","AutoRaise");
 	OpenChatOnMessageWhenOnline = config_file.readBoolEntry("Chat", "OpenChatOnMessageWhenOnline");
-
-	insertEmoticonActionEnabled();
 
 	kdebugf2();
 }

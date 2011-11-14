@@ -57,9 +57,6 @@ class KADUAPI ChatWidgetManager : public QObject, ConfigurationAwareObject, Stor
 	ChatWidgetManager();
 	virtual ~ChatWidgetManager();
 
-	void autoSendActionCheck();
-	void insertEmoticonActionEnabled();
-
 	ChatWidget * createChatWidget(const Chat &chat);
 	ChatWidget * openChatWidget(const Chat &chat);
 

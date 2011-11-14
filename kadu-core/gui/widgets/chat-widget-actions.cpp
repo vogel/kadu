@@ -291,18 +291,25 @@ void ChatWidgetActions::insertEmoticonActionCreated(Action *action)
 
 void ChatWidgetActions::insertEmoticonsActionCheck()
 {
-	if (config_file.readEntry("Chat","EmoticonsTheme").isEmpty())
-		foreach (Action *action, InsertEmoticon->actions())
-		{
-			action->setToolTip(tr("Insert emoticon - enable in configuration"));
-			action->setEnabled(false);
-		}
+	QString toolTip;
+	bool enabled;
+
+	if ((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle") == EmoticonsStyleNone)
+	{
+		toolTip =  tr("Insert emoticon - enable in configuration");
+		enabled = false;
+	}
 	else
-		foreach (Action *action, InsertEmoticon->actions())
-		{
-			action->setToolTip(tr("Insert Emoticon"));
-			action->setEnabled(true);
-		}
+	{
+		toolTip = tr("Insert emoticon");
+		enabled = true;
+	}
+
+ 	foreach (Action *action, InsertEmoticon->actions())
+	{
+		action->setToolTip(toolTip);
+		action->setEnabled(enabled);
+	}
 }
 
 void ChatWidgetActions::autoSendActionCheck()
