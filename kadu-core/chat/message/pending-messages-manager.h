@@ -74,6 +74,8 @@ public:
 	bool hasPendingMessagesForChat(const Chat &chat);
 	bool hasPendingMessages();
 
+	void deletePendingMessagesForChat(const Chat &chat);
+
 	Chat chatForBuddy(const Buddy &buddy);
 	Chat chatForContact(const Contact &contact);
 

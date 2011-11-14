@@ -107,6 +107,18 @@ bool PendingMessagesManager::hasPendingMessages()
 	return false;
 }
 
+void PendingMessagesManager::deletePendingMessagesForChat(const Chat &chat)
+{
+	QMutexLocker locker(&mutex());
+
+	const QVector<Message> &messages = pendingMessagesForChat(chat);
+	foreach (Message message, messages)
+	{
+		message.setPending(false);
+		removeItem(message);
+	}
+}
+
 Chat PendingMessagesManager::chatForBuddy(const Buddy &buddy)
 {
 	QMutexLocker locker(&mutex());

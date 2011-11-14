@@ -34,6 +34,7 @@
 #include <QtGui/QLabel>
 #include <QtGui/QVBoxLayout>
 
+#include "chat/message/pending-messages-manager.h"
 #include "contacts/contact.h"
 #include "configuration/configuration-file.h"
 #include "core/core.h"
@@ -321,7 +322,7 @@ void HintManager::processButtonPress(const QString &buttonName, Hint *hint)
 
 		case 2:
 			if (hint->chat() && config_file.readBoolEntry("Hints", "DeletePendingMsgWhenHintDeleted"))
-				ChatWidgetManager::instance()->deletePendingMessages(hint->chat());
+				PendingMessagesManager::instance()->deletePendingMessagesForChat(hint->chat());
 
 			hint->discardNotification();
 			deleteHintAndUpdate(hint);

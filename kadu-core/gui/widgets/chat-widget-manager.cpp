@@ -294,20 +294,6 @@ ChatWidget * ChatWidgetManager::openChatWidget(const Chat &chat)
 	return chatWidget;
 }
 
-void ChatWidgetManager::deletePendingMessages(const Chat &chat)
-{
-	kdebugf();
-
-	QVector<Message> messages = PendingMessagesManager::instance()->pendingMessagesForChat(chat);
-	foreach (Message message, messages)
-	{
-		message.setPending(false);
-		PendingMessagesManager::instance()->removeItem(message);
-	}
-
-	kdebugf2();
-}
-
 QList<MessageRenderInfo *> ChatWidgetManager::readPendingMessages(const Chat &chat)
 {
 	const Chat &aggregateChat = AggregateChatManager::instance()->aggregateChat(chat);
