@@ -254,21 +254,12 @@ void ChatWidgetManager::activateChatWidget(ChatWidget *chatwidget)
 	emit chatWidgetOpen(chatwidget);
 }
 
-ChatWidget * ChatWidgetManager::openChatWidget(const Chat &chat)
+ChatWidget * ChatWidgetManager::createChatWidget(const Chat &chat)
 {
-	kdebugf();
-
 	if (!chat)
 		return 0;
 
-	ChatWidget *chatWidget = byChat(chat);
-	if (chatWidget)
-	{
-		activateChatWidget(chatWidget);
-		return chatWidget;
-	}
-
-	chatWidget = new ChatWidget(chat);
+	ChatWidget *chatWidget = new ChatWidget(chat);
 
 	bool handled = false;
 	emit handleNewChatWidget(chatWidget, handled);
@@ -285,9 +276,20 @@ ChatWidget * ChatWidgetManager::openChatWidget(const Chat &chat)
 //	}
 
 	emit chatWidgetCreated(chatWidget);
-	activateChatWidget(chatWidget);
 
-	kdebugf2();
+	return chatWidget;
+}
+
+ChatWidget * ChatWidgetManager::openChatWidget(const Chat &chat)
+{
+	if (!chat)
+		return 0;
+
+	ChatWidget *chatWidget = byChat(chat);
+	if (!chatWidget)
+		chatWidget = createChatWidget(chat);
+	if (chatWidget)
+		activateChatWidget(chatWidget);
 
 	return chatWidget;
 }

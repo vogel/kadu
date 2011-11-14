@@ -60,6 +60,7 @@ class KADUAPI ChatWidgetManager : public QObject, ConfigurationAwareObject, Stor
 	void autoSendActionCheck();
 	void insertEmoticonActionEnabled();
 
+	ChatWidget * createChatWidget(const Chat &chat);
 	ChatWidget * openChatWidget(const Chat &chat);
 
 	QList<MessageRenderInfo *> readPendingMessages(const Chat &chat);
