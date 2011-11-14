@@ -23,7 +23,6 @@
 #include <QtGui/QScrollBar>
 #include <QtGui/QStackedWidget>
 
-#include "buddies/filter/anonymous-without-messages-buddy-filter.h"
 #include "buddies/filter/buddy-name-filter.h"
 #include "buddies/filter/group-buddy-filter.h"
 #include "buddies/filter/pending-messages-filter.h"
@@ -220,10 +219,6 @@ ModelChain * RosterWidget::createBuddiesModelChain()
 	ModelChain *chain = new ModelChain(new BuddiesModel(this), this);
 	ProxyModel = new BuddiesModelProxy(chain);
 	ProxyModel->addFilter(new PendingMessagesFilter(ProxyModel));
-
-	AnonymousWithoutMessagesBuddyFilter *anonymousFilter = new AnonymousWithoutMessagesBuddyFilter(ProxyModel);
-	anonymousFilter->setEnabled(true);
-	ProxyModel->addFilter(anonymousFilter);
 
 	BuddyNameFilter *nameFilter = new BuddyNameFilter(ProxyModel);
 	connect(BuddiesWidget, SIGNAL(filterChanged(QString)), nameFilter, SLOT(setName(QString)));

@@ -17,7 +17,6 @@ set (buddies_SRCS
 
 	filter/account-buddy-filter.cpp
 	filter/anonymous-buddy-filter.cpp
-	filter/anonymous-without-messages-buddy-filter.cpp
 	filter/blocked-buddy-filter.cpp
 	filter/buddy-name-filter.cpp
 	filter/group-buddy-filter.cpp
@@ -48,7 +47,6 @@ set (buddies_MOC_SRCS
 	filter/abstract-buddy-filter.h
 	filter/account-buddy-filter.h
 	filter/anonymous-buddy-filter.h
-	filter/anonymous-without-messages-buddy-filter.h
 	filter/blocked-buddy-filter.h
 	filter/buddy-name-filter.h
 	filter/group-buddy-filter.h
