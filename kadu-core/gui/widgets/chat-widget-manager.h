@@ -22,8 +22,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CHAT_WIDGET_MANAGER
-#define CHAT_WIDGET_MANAGER
+#ifndef CHAT_WIDGET_MANAGER_H
+#define CHAT_WIDGET_MANAGER_H
 
 #include <QtCore/QTimer>
 
@@ -38,13 +38,6 @@
 class ActionDescription;
 class ChatWidgetActions;
 class Protocol;
-
-/**
-	Klasa pozwalaj�ca zarz�dza� otwartymi oknami rozm�w: otwiera�,
-	zamykac, szuka� okna ze wgl�du na list� u�ytkownik�w itp.
-	\class ChatManagerOld
-	\brief Klasa zarz�dzaj�ca oknami ChatWidget
-**/
 
 class KADUAPI ChatWidgetManager : public QObject, ConfigurationAwareObject, StorableStringList
 {
@@ -87,39 +80,16 @@ public:
 
 	ChatWidgetActions * actions() { return Actions; }
 
-	const QHash<Chat , ChatWidget *> & chats() const;
-
+	const QHash<Chat, ChatWidget *> & chats() const;
 	ChatWidget * byChat(const Chat &chat, bool create = false) const;
 
 	void activateChatWidget(ChatWidget *chatwidget, bool forceActivate);
 
 	void openPendingMessages(const Chat &chat, bool forceActivate = false);
-
 	void openPendingMessages(bool forceActivate = false);
-
-	/**
-		\fn void deletePendingMsgs(ContactList users)
-		Funkcja usuwa zakolejkowane wiadomo�ci
-		z u�ytkownikami "users"
-		\param users lista u�ytkownik�w identyfikuj�cych okno
-	**/
 	void deletePendingMessages(const Chat &chat);
 
-	/**
-		\fn int registerChatWidget(ChatWidget* chatwidget)
-		Dodaje okno do menad�era
-		\param chat wska�nik do okna ktore chcemy doda�
-		\return zwraca numer naszego okna po zarejestrowaniu
-	**/
 	void registerChatWidget(ChatWidget *chatwidget);
-
-	/**
-		\fn void unregisterChatWidget(ChatWidget* chatwidget)
-		Funkcja wyrejestrowuje okno z managera \n
-		Zapisuje w�asno�ci okna \n
-		wysy�a sygna� chatDestroying i chatDestroyed
-		\param chat okno kt�re b�dzie wyrejestrowane
-	**/
 	void unregisterChatWidget(ChatWidget *chatwidget);
 
 public slots:
@@ -130,59 +100,21 @@ public slots:
 
 	void closeChat(const Chat &chat);
 	void closeAllChats(const Buddy &buddy);
-
-	/**
-		\fn void closeAllWindows()
-		Funkcja zamyka wszystkie okna chat
-	**/
 	void closeAllWindows();
 
 signals:
-	/**
-		\fn void handleNewChatWidget(ChatWidget *chatwidget, bool &handled)
-	 	Sygna� ten jest wysy�any po utworzeniu nowego okna chat.
-		Je�li zmienna handled zostanie ustawiona na true, to
-		niezostanie utworzony nowy obiekt ChatWindiw
-		\param chat nowe okno chat
-	**/
 	void handleNewChatWidget(ChatWidget *chatwidget, bool &handled);
-	/**
-		\fn void chatWidgetCreated(ChatWidget *chat)
-	 	Sygna� ten jest wysy�any po utworzeniu nowego okna chat
-		\param chat nowe okno chat
-	**/
-	void chatWidgetCreated(ChatWidget *chatwidget);
 
+	void chatWidgetCreated(ChatWidget *chatwidget);
 	void chatWidgetActivated(ChatWidget *chatwidget);
 
-	/**
-		\fn void chatDestroying(const UserGroup group)
-	 	Sygna� ten jest wysy�any przed zamnkni�ciem okna chat
-		\param chat zamykane okno
-	**/
 	void chatWidgetDestroying(ChatWidget *chatwidget);
 
-	/**
-		\fn void chatOpen(ContactList users)
-		Sygna� ten jest wysy�aniy podczas ka�dej pr�by
-		otwarcia nowego okna chat nawet je�li ju� taki istnieje
-		\param chat otwarte okno
-	**/
 	void chatWidgetOpen(ChatWidget *chatwidget, bool activate);
-
 	void chatWidgetTitlesUpdated();
 
-	/**
-		\fn void messageSentAndConfirmed(Chat chat, const QString& message)
-		This signal is emitted when message was sent
-		and it was confirmed.
-		When confirmations are turned off signal is
-		emitted immediately after message was send.
-		\param receivers list of receivers
-		\param message the message
-	**/
 	void messageSentAndConfirmed(Chat chat, const QString& message);
 
 };
 
-#endif // CHAT_WIDGET_MANAGER
+#endif // CHAT_WIDGET_MANAGER_H
