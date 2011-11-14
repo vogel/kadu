@@ -291,7 +291,7 @@ void TabsManager::onMessageReceived(Chat chat)
 {
 	kdebugf();
 
-	ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(chat, false);
+	ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(chat);
 	if (!chatWidget)
 		return;
 
