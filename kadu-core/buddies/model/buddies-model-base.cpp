@@ -158,7 +158,7 @@ QModelIndexList BuddiesModelBase::indexListForValue(const QVariant &value) const
 	const Contact &contact = value.value<Contact>();
 	if (contact)
 	{
-		const int contactIndexInBuddy = buddy.contacts().indexOf(contact);
+		const int contactIndexInBuddy = contact.ownerBuddy().contacts().indexOf(contact);
 		result.append(index(buddyIndex(buddy), 0).child(contactIndexInBuddy, 0));
 		return result;
 	}
