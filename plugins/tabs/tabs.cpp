@@ -276,10 +276,10 @@ void TabsManager::onTabChange(int index)
 	chat->edit()->setFocus();
 }
 
-void TabsManager::onOpenChat(ChatWidget *chat, bool activate)
+void TabsManager::onOpenChat(ChatWidget *chat)
 {
 	kdebugf();
-	if (activate && chat && TabDialog->indexOf(chat)!=-1)
+	if (chat && TabDialog->indexOf(chat)!=-1)
 	{
 		TabDialog->setWindowState(TabDialog->windowState() & ~Qt::WindowMinimized);
 		TabDialog->setCurrentWidget(chat);

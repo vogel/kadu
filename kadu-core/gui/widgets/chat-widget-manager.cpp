@@ -253,7 +253,7 @@ ChatWidget * ChatWidgetManager::byChat(const Chat &chat, bool create) const
 void ChatWidgetManager::activateChatWidget(ChatWidget *chatwidget)
 {
 	chatwidget->activate();
-	emit chatWidgetOpen(chatwidget, true);
+	emit chatWidgetOpen(chatwidget);
 }
 
 ChatWidget * ChatWidgetManager::openChatWidget(const Chat &chat)

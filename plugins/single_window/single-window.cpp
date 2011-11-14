@@ -107,7 +107,7 @@ SingleWindow::SingleWindow()
 
 	connect(ChatWidgetManager::instance(), SIGNAL(handleNewChatWidget(ChatWidget *,bool &)),
 			this, SLOT(onNewChat(ChatWidget *,bool &)));
-	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetOpen(ChatWidget *, bool)),
+	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetOpen(ChatWidget *)),
 			this, SLOT(onOpenChat(ChatWidget *)));
 	connect(Core::instance(), SIGNAL(mainIconChanged(const KaduIcon &)),
 		this, SLOT(onStatusPixmapChanged(const KaduIcon &)));
@@ -139,7 +139,7 @@ SingleWindow::~SingleWindow()
 
 	disconnect(ChatWidgetManager::instance(), SIGNAL(handleNewChatWidget(ChatWidget *,bool &)),
 			this, SLOT(onNewChat(ChatWidget *,bool &)));
-	disconnect(ChatWidgetManager::instance(), SIGNAL(chatWidgetOpen(ChatWidget *, bool)),
+	disconnect(ChatWidgetManager::instance(), SIGNAL(chatWidgetOpen(ChatWidget *)),
 			this, SLOT(onOpenChat(ChatWidget *)));
 	disconnect(Core::instance(), SIGNAL(mainIconChanged(const KaduIcon &)),
 			this, SLOT(onStatusPixmapChanged(const KaduIcon &)));

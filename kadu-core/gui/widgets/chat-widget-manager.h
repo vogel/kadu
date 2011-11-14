@@ -111,7 +111,7 @@ signals:
 
 	void chatWidgetDestroying(ChatWidget *chatwidget);
 
-	void chatWidgetOpen(ChatWidget *chatwidget, bool activate);
+	void chatWidgetOpen(ChatWidget *chatwidget);
 	void chatWidgetTitlesUpdated();
 
 	void messageSentAndConfirmed(Chat chat, const QString& message);
