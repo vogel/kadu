@@ -100,11 +100,11 @@ void JabberUrlHandler::openUrl(const QByteArray &url, bool disableMenu)
 
 	if (jabberAccounts.count() == 1 || disableMenu)
 	{
-		Contact contact = ContactManager::instance()->byId(jabberAccounts[0], jabberId, ActionCreateAndAdd);
-		Chat chat = ChatManager::instance()->findChat(ContactSet(contact));
+		const Contact &contact = ContactManager::instance()->byId(jabberAccounts[0], jabberId, ActionCreateAndAdd);
+		const Chat &chat = ChatManager::instance()->findChat(ContactSet(contact));
 		if (chat)
 		{
-			ChatWidgetManager::instance()->openPendingMessages(chat);
+			ChatWidgetManager::instance()->openChat(chat);
 			return;
 		}
 	}
@@ -130,17 +130,16 @@ void JabberUrlHandler::openUrl(const QByteArray &url, bool disableMenu)
 
 void JabberUrlHandler::accountSelected(QAction *action)
 {
-	QStringList ids = action->data().toStringList();
+	const QStringList &ids = action->data().toStringList();
 
 	if (ids.count() != 2)
 		return;
 
-	Account account = AccountManager::instance()->byId("jabber", ids[0]);
+	const Account &account = AccountManager::instance()->byId("jabber", ids[0]);
 	if (!account)
 		return;
 
-	Contact contact = ContactManager::instance()->byId(account, ids[1], ActionCreateAndAdd);
-	Chat chat = ChatManager::instance()->findChat(ContactSet(contact));
-	if (chat)
-		ChatWidgetManager::instance()->openPendingMessages(chat);
+	const Contact &contact = ContactManager::instance()->byId(account, ids[1], ActionCreateAndAdd);
+	const Chat &chat = ChatManager::instance()->findChat(ContactSet(contact));
+	ChatWidgetManager::instance()->openChat(chat);
 }

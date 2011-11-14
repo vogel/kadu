@@ -163,11 +163,7 @@ void ChatWidgetManager::load()
 		if (chatId.isNull())
 			continue;
 
-		Chat chat = ChatManager::instance()->byUuid(chatId);
-		if (!chat)
-			continue;
-
-		openPendingMessages(chat);
+		openChatWidget(ChatManager::instance()->byUuid(chatId));
 	}
 }
 
@@ -324,10 +320,8 @@ void ChatWidgetManager::deletePendingMessages(const Chat &chat)
 	kdebugf2();
 }
 
-void ChatWidgetManager::openPendingMessages(const Chat &chat, bool forceActivate)
+void ChatWidgetManager::openChat(const Chat &chat, bool forceActivate)
 {
-	kdebugf();
-
 	if (!chat)
 		return;
 
@@ -351,35 +345,12 @@ void ChatWidgetManager::openPendingMessages(const Chat &chat, bool forceActivate
 		// TODO: Lame API
 		if (0 == chatWidget->countMessages())
 			chatWidget->appendMessages(messages, true);
-
-	kdebugf2();
 }
 
 void ChatWidgetManager::openPendingMessages()
 {
-	kdebugf();
-
-	Message message = PendingMessagesManager::instance()->firstPendingMessage();
-	if (message)
-		openPendingMessages(message.messageChat());
-
-	kdebugf2();
-}
-
-void ChatWidgetManager::sendMessage(const Chat &chat)
-{
-	kdebugf();
-
-	if (PendingMessagesManager::instance()->hasPendingMessagesForChat(chat))
-	{
-		openPendingMessages(chat);
-		return;
-	}
-
-	if (chat)
-		openChatWidget(chat, true);
-
-	kdebugf2();
+	const Message &message = PendingMessagesManager::instance()->firstPendingMessage();
+	openChat(message.messageChat());
 }
 
 void ChatWidgetManager::closeChat(const Chat &chat)

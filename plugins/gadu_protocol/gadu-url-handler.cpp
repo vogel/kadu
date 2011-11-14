@@ -84,11 +84,11 @@ void GaduUrlHandler::openUrl(const QByteArray &url, bool disableMenu)
 
 	if (gaduAccounts.count() == 1 || disableMenu)
 	{
-		Contact contact = ContactManager::instance()->byId(gaduAccounts[0], gaduId, ActionCreateAndAdd);
-		Chat chat = ChatManager::instance()->findChat(ContactSet(contact));
+		const Contact &contact = ContactManager::instance()->byId(gaduAccounts[0], gaduId, ActionCreateAndAdd);
+		const Chat &chat = ChatManager::instance()->findChat(ContactSet(contact));
 		if (chat)
 		{
-			ChatWidgetManager::instance()->openPendingMessages(chat);
+			ChatWidgetManager::instance()->openChat(chat);
 			return;
 		}
 	}
@@ -126,5 +126,5 @@ void GaduUrlHandler::accountSelected(QAction *action)
 	Contact contact = ContactManager::instance()->byId(account, ids[1], ActionCreateAndAdd);
 	Chat chat = ChatManager::instance()->findChat(ContactSet(contact));
 	if (chat)
-		ChatWidgetManager::instance()->openPendingMessages(chat);
+		ChatWidgetManager::instance()->openChat(chat);
 }

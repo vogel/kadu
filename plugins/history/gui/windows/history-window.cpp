@@ -721,14 +721,8 @@ void HistoryWindow::showDetailsPopupMenu(const QPoint &pos)
 
 void HistoryWindow::openChat()
 {
-	kdebugf();
-	Chat chat = ChatsTree->currentIndex().data(ChatRole).value<Chat>();
-	if (!chat)
-		return;
-
-	ChatWidgetManager::instance()->openPendingMessages(chat);
-
-	kdebugf2();
+	const Chat &chat = ChatsTree->currentIndex().data(ChatRole).value<Chat>();
+	ChatWidgetManager::instance()->openChat(chat);
 }
 
 void HistoryWindow::clearChatHistory()

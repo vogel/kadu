@@ -292,7 +292,7 @@ void KaduWindow::talkableActivatedSlot(const Talkable &talkable)
 	const Chat &chat = talkable.chat();
 	if (chat && !chat.contacts().toBuddySet().contains(Core::instance()->myself()))
 	{
-		ChatWidgetManager::instance()->sendMessage(chat);
+		ChatWidgetManager::instance()->openChat(chat);
 		return;
 	}
 
@@ -335,9 +335,7 @@ void KaduWindow::updateRecentChatsMenu()
 
 void KaduWindow::openRecentChats(QAction *action)
 {
-	kdebugf();
-	ChatWidgetManager::instance()->openPendingMessages(action->data().value<Chat>());
-	kdebugf2();
+	ChatWidgetManager::instance()->openChat(action->data().value<Chat>());
 }
 
 void KaduWindow::iconThemeChanged()

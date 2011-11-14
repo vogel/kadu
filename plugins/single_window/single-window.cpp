@@ -157,7 +157,7 @@ SingleWindow::~SingleWindow()
 			Chat oldchat = chat->chat();
 			tabs->removeTab(i);
 			delete chat;
-			ChatWidgetManager::instance()->openPendingMessages(oldchat);
+			ChatWidgetManager::instance()->openChat(oldchat);
 		}
 	}
 

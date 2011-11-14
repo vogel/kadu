@@ -85,7 +85,6 @@ public:
 
 	void activateChatWidget(ChatWidget *chatwidget, bool forceActivate);
 
-	void openPendingMessages(const Chat &chat, bool forceActivate = true);
 	void openPendingMessages();
 	void deletePendingMessages(const Chat &chat);
 
@@ -96,7 +95,7 @@ public slots:
 	// for imagelink module
 	void messageReceived(const Message &message);
 
-	void sendMessage(const Chat &chat);
+	void openChat(const Chat &chat, bool forceActivate = true);
 
 	void closeChat(const Chat &chat);
 	void closeAllChats(const Buddy &buddy);

@@ -328,12 +328,11 @@ void SearchWindow::addFound()
 
 void SearchWindow::chatFound()
 {
-	ContactSet contacts = selectedContacts();
+	const ContactSet &contacts = selectedContacts();
 	if (!contacts.isEmpty())
 	{
-		Chat chat = ChatManager::instance()->findChat(contacts, true);
-		if (chat)
-			ChatWidgetManager::instance()->openPendingMessages(chat);
+		const Chat &chat = ChatManager::instance()->findChat(contacts, true);
+		ChatWidgetManager::instance()->openChat(chat);
 	}
 }
 
