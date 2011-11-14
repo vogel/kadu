@@ -163,7 +163,7 @@ void ChatWidgetManager::load()
 		if (chatId.isNull())
 			continue;
 
-		openChatWidget(ChatManager::instance()->byUuid(chatId));
+		openChat(ChatManager::instance()->byUuid(chatId));
 	}
 }
 
@@ -422,7 +422,7 @@ void ChatWidgetManager::messageReceived(const Message &message)
 			}
 
 			// TODO: it is lame
-			openChatWidget(chat);
+			openChat(chat);
 			chatWidget = byChat(chat);
 
 			MessageRenderInfo *messageRenderInfo = new MessageRenderInfo(message);
@@ -447,7 +447,7 @@ void ChatWidgetManager::messageSent(const Message &message)
 
 	if (!chatWidget)
 	{
-		openChatWidget(chat);
+		openChat(chat);
 		chatWidget = byChat(chat);
 	}
 
