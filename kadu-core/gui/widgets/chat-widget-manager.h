@@ -89,8 +89,6 @@ public:
 
 	void activateChatWidget(ChatWidget *chatwidget);
 
-	void openPendingMessages();
-
 public slots:
 	// for imagelink module
 	void messageReceived(const Message &message);

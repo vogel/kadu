@@ -325,12 +325,6 @@ void ChatWidgetManager::openChat(const Chat &chat)
 			chatWidget->appendMessages(messages, true);
 }
 
-void ChatWidgetManager::openPendingMessages()
-{
-	const Message &message = PendingMessagesManager::instance()->firstPendingMessage();
-	openChat(message.messageChat());
-}
-
 void ChatWidgetManager::closeChat(const Chat &chat)
 {
 	ChatWidget *chatWidget = byChat(chat);
