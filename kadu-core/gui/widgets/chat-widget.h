@@ -208,7 +208,7 @@ public slots:
 	**/
 	void clearChatWindow();
 
-	void makeActive();
+	void activate();
 	void markAllMessagesRead();
 
 	/**

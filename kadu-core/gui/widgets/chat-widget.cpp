@@ -585,12 +585,12 @@ Protocol *ChatWidget::currentProtocol() const
 	return CurrentChat.chatAccount().protocolHandler();
 }
 
-void ChatWidget::makeActive()
+void ChatWidget::activate()
 {
-	kdebugf();
-	QWidget *win = this->window();
-	_activateWindow(win);
-	kdebugf2();
+	QWidget *window = this->window();
+	kdebugm(KDEBUG_INFO, "window: %p\n", window);
+
+	_activateWindow(window);
 }
 
 void ChatWidget::markAllMessagesRead()

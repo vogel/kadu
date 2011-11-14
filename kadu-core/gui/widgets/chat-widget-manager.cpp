@@ -252,11 +252,7 @@ ChatWidget * ChatWidgetManager::byChat(const Chat &chat, bool create) const
 
 void ChatWidgetManager::activateChatWidget(ChatWidget *chatwidget)
 {
-	QWidget *win = chatwidget->window();
-	Q_UNUSED(win) // only in debug mode
-
-	kdebugm(KDEBUG_INFO, "parent: %p\n", win);
-	chatwidget->makeActive();
+	chatwidget->activate();
 	emit chatWidgetOpen(chatwidget, true);
 }
 
@@ -284,8 +280,6 @@ ChatWidget * ChatWidgetManager::openChatWidget(const Chat &chat)
 	connect(chatWidget, SIGNAL(messageSentAndConfirmed(Chat , const QString &)),
 		this, SIGNAL(messageSentAndConfirmed(Chat , const QString &)));
 
-	chatWidget->makeActive();
-
 //	if (chatWidget->chat().contacts().count() == 1)
 //	{
 //		Contact contact = chatWidget->chat().contacts().toContact();
@@ -293,7 +287,7 @@ ChatWidget * ChatWidgetManager::openChatWidget(const Chat &chat)
 //	}
 
 	emit chatWidgetCreated(chatWidget);
-	emit chatWidgetOpen(chatWidget, true);
+	activateChatWidget(chatWidget);
 
 	kdebugf2();
 
