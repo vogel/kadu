@@ -167,7 +167,7 @@ void ChatWidgetManager::load()
 		if (!chat)
 			continue;
 
-		openPendingMessages(chat, true);
+		openPendingMessages(chat);
 	}
 }
 
@@ -355,13 +355,13 @@ void ChatWidgetManager::openPendingMessages(const Chat &chat, bool forceActivate
 	kdebugf2();
 }
 
-void ChatWidgetManager::openPendingMessages(bool forceActivate)
+void ChatWidgetManager::openPendingMessages()
 {
 	kdebugf();
 
 	Message message = PendingMessagesManager::instance()->firstPendingMessage();
 	if (message)
-		openPendingMessages(message.messageChat(), forceActivate);
+		openPendingMessages(message.messageChat());
 
 	kdebugf2();
 }
@@ -372,7 +372,7 @@ void ChatWidgetManager::sendMessage(const Chat &chat)
 
 	if (PendingMessagesManager::instance()->hasPendingMessagesForChat(chat))
 	{
-		openPendingMessages(chat, true);
+		openPendingMessages(chat);
 		return;
 	}
 

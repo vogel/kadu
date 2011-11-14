@@ -245,7 +245,7 @@ void OpenChatWith::openChat()
 	const Chat &chat = ChatManager::instance()->findChat(contacts);
 	if (chat)
 	{
-		ChatWidgetManager::instance()->openPendingMessages(chat, true);
+		ChatWidgetManager::instance()->openPendingMessages(chat);
 		close();
 		return;
 	}

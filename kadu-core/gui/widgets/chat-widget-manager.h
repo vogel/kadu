@@ -85,8 +85,8 @@ public:
 
 	void activateChatWidget(ChatWidget *chatwidget, bool forceActivate);
 
-	void openPendingMessages(const Chat &chat, bool forceActivate = false);
-	void openPendingMessages(bool forceActivate = false);
+	void openPendingMessages(const Chat &chat, bool forceActivate = true);
+	void openPendingMessages();
 	void deletePendingMessages(const Chat &chat);
 
 	void registerChatWidget(ChatWidget *chatwidget);

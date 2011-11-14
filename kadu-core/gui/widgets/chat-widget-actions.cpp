@@ -521,7 +521,7 @@ void ChatWidgetActions::openChatActionActivated(QAction *sender, bool toggled)
 
 	Chat chat = action->context()->chat();
 	if (chat)
-		ChatWidgetManager::instance()->openPendingMessages(chat, true);
+		ChatWidgetManager::instance()->openPendingMessages(chat);
 
 	kdebugf2();
 }

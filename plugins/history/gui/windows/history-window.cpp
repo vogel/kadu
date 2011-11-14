@@ -726,7 +726,7 @@ void HistoryWindow::openChat()
 	if (!chat)
 		return;
 
-	ChatWidgetManager::instance()->openPendingMessages(chat, true);
+	ChatWidgetManager::instance()->openPendingMessages(chat);
 
 	kdebugf2();
 }

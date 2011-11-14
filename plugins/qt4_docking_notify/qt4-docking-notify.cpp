@@ -134,7 +134,7 @@ void Qt4Notify::notify(Notification *notification)
 void Qt4Notify::messageClicked()
 {
 	if (chat)
-		ChatWidgetManager::instance()->openPendingMessages(chat, true);
+		ChatWidgetManager::instance()->openPendingMessages(chat);
 }
 
 NotifierConfigurationWidget *Qt4Notify::createConfigurationWidget(QWidget *parent)
