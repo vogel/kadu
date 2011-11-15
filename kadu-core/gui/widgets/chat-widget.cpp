@@ -425,9 +425,7 @@ void ChatWidget::appendSystemMessage(const QString &rawContent, const QString &b
 void ChatWidget::newMessage(MessageRenderInfo *messageRenderInfo)
 {
 	MessagesView->appendMessage(messageRenderInfo);
-
 	LastMessageTime = QDateTime::currentDateTime();
-	CurrentChat.setUnreadMessagesCount(CurrentChat.unreadMessagesCount() + 1);
 
  	emit messageReceived(CurrentChat);
 }

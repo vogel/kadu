@@ -462,6 +462,12 @@ void Core::kaduWindowDestroyed()
 	Window = 0;
 }
 
+void Core::messageReceivedSlot(const Message &message)
+{
+	message.messageChat().setUnreadMessagesCount(message.messageChat().unreadMessagesCount() + 1);
+	emit messageReceived(message);
+}
+
 void Core::accountRegistered(Account account)
 {
 	Protocol *protocol = account.protocolHandler();
@@ -472,7 +478,7 @@ void Core::accountRegistered(Account account)
 	if (chatService)
 	{
 		connect(chatService, SIGNAL(messageReceived(const Message &)),
-			this, SIGNAL(messageReceived(const Message &)));
+			this, SLOT(messageReceivedSlot(const Message &)));
 		connect(chatService, SIGNAL(messageSent(const Message &)),
 			this, SIGNAL(messageSent(const Message &)));
 	}
