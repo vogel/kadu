@@ -209,6 +209,8 @@ ChatWidget * ChatWidgetManager::createChatWidget(const Chat &chat)
 	ChatWidget *chatWidget = new ChatWidget(chat);
 	Chats.insert(chat, chatWidget);
 
+	connect(chatWidget, SIGNAL(widgetDestroyed()), this, SLOT(chatWidgetDestroyed()));
+
 	bool handled = false;
 	emit handleNewChatWidget(chatWidget, handled);
 	if (!handled)
@@ -230,6 +232,8 @@ void ChatWidgetManager::chatWidgetDestroyed()
 	ChatWidget *chatWidget = qobject_cast<ChatWidget *>(sender());
 	if (!chatWidget)
 		return;
+
+	disconnect(chatWidget, SIGNAL(widgetDestroyed()), this, SLOT(chatWidgetDestroyed()));
 
 	if (!Chats.contains(chatWidget->chat()))
 		return;
