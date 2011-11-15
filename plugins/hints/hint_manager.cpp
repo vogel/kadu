@@ -84,7 +84,7 @@ HintManager::HintManager(QObject *parent) :
 	layout->setMargin(0);
 
 	connect(hint_timer, SIGNAL(timeout()), this, SLOT(oneSecond()));
-	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetActivated(ChatWidget *)), this, SLOT(chatWidgetActivated(ChatWidget *)));
+	connect(ChatWidgetManager::instance(), SIGNAL(allMessagesRead(ChatWidget *)), this, SLOT(allMessagesRead(ChatWidget *)));
 
 	const QString default_hints_syntax(QT_TRANSLATE_NOOP("HintManager", "<table>"
 "<tr>"
@@ -128,7 +128,7 @@ HintManager::~HintManager()
 	NotificationManager::instance()->unregisterNotifier(this);
 
 	disconnect(this, SIGNAL(searchingForTrayPosition(QPoint &)), Core::instance(), SIGNAL(searchingForTrayPosition(QPoint &)));
-	disconnect(ChatWidgetManager::instance(), SIGNAL(chatWidgetActivated(ChatWidget *)), this, SLOT(chatWidgetActivated(ChatWidget *)));
+	disconnect(ChatWidgetManager::instance(), SIGNAL(allMessagesRead(ChatWidget *)), this, SLOT(allMessagesRead(ChatWidget *)));
 
 	delete tipFrame;
 	tipFrame = 0;
@@ -370,7 +370,7 @@ void HintManager::openChat(Hint *hint)
 	kdebugf2();
 }
 
-void HintManager::chatWidgetActivated(ChatWidget *chatWidget)
+void HintManager::allMessagesRead(ChatWidget *chatWidget)
 {
 	QPair<Chat , QString> newChat = qMakePair(chatWidget->chat(), QString("NewChat"));
 	QPair<Chat , QString> newMessage = qMakePair(chatWidget->chat(), QString("NewMessage"));

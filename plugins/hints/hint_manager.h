@@ -119,7 +119,7 @@ private slots:
 	**/
 	void openChat(Hint *hint);
 
-	void chatWidgetActivated(ChatWidget *chat);
+	void allMessagesRead(ChatWidget *chat);
 
 	/**
 		usuwa wszystkie dymki

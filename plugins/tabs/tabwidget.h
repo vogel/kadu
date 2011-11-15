@@ -200,7 +200,7 @@ public slots:
 signals:
 	void contextMenu(QWidget *w, const QPoint &pos);
 	void openTab(QStringList altnicks, int index);
-	void chatWidgetActivated(ChatWidget *chatWidget);
+	void allMessagesRead(ChatWidget *chatWidget);
 };
 
 #endif // TABS_TABWIDGET_H

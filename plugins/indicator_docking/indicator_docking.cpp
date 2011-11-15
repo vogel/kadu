@@ -62,7 +62,7 @@ void IndicatorDocking::destroyInstance()
 }
 
 IndicatorDocking * IndicatorDocking::instance()
-{ 
+{
 	return Instance;
 }
 
@@ -76,7 +76,7 @@ IndicatorDocking::IndicatorDocking() :
 	Server->show();
 
 	connect(Server, SIGNAL(serverDisplay()), this, SLOT(showMainWindow()));
-	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetActivated(ChatWidget*)), this, SLOT(chatWidgetActivated(ChatWidget*)));
+	connect(ChatWidgetManager::instance(), SIGNAL(allMessagesRead(ChatWidget*)), this, SLOT(allMessagesRead(ChatWidget*)));
 	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetCreated(ChatWidget*)), this, SLOT(chatWidgetCreated(ChatWidget*)));
 	connect(NotificationManager::instance(), SIGNAL(silentModeToggled(bool)), this, SLOT(silentModeToggled(bool)));
 
@@ -94,7 +94,7 @@ IndicatorDocking::~IndicatorDocking()
 	DockingManager::instance()->setDocker(0);
 
 	disconnect(Server, SIGNAL(serverDisplay()), this, SLOT(showMainWindow()));
-	disconnect(ChatWidgetManager::instance(), SIGNAL(chatWidgetActivated(ChatWidget*)), this, SLOT(chatWidgetActivated(ChatWidget*)));
+	disconnect(ChatWidgetManager::instance(), SIGNAL(allMessagesRead(ChatWidget*)), this, SLOT(allMessagesRead(ChatWidget*)));
 	disconnect(ChatWidgetManager::instance(), SIGNAL(chatWidgetCreated(ChatWidget*)), this, SLOT(chatWidgetCreated(ChatWidget*)));
 
 	QSet<QIndicate::Indicator *> indicatorsToDelete;
@@ -216,7 +216,7 @@ void IndicatorDocking::notificationClosed(Notification *notification)
 	removeNotification(chatNotification);
 }
 
-void IndicatorDocking::chatWidgetActivated(ChatWidget *chatWidget)
+void IndicatorDocking::allMessagesRead(ChatWidget *chatWidget)
 {
 	// When a chat widget is activated, it contains only messages from its own chat, not aggregate chat.
 
@@ -264,7 +264,7 @@ void IndicatorDocking::displayIndicator(QIndicate::Indicator *indicator)
 
 	chatNotification->openChat();
 
-	// chatWidgetActivated() or chatWidgetCreated() slot will take care of deleting indicator
+	// allMessagesRead() or chatWidgetCreated() slot will take care of deleting indicator
 }
 
 void IndicatorDocking::removeNotification(ChatNotification *chatNotification)

@@ -234,7 +234,7 @@ void TabWidget::changeEvent(QEvent *event)
 		if (chat && _isActiveWindow(this))
 		{
 			chat->markAllMessagesRead();
-			emit chatWidgetActivated(chat);
+			emit allMessagesRead(chat);
 		}
 		kdebugf2();
 	}

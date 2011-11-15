@@ -71,7 +71,7 @@ private slots:
 
 	void notificationClosed(Notification *notification);
 
-	void chatWidgetActivated(ChatWidget *chatWidget);
+	void allMessagesRead(ChatWidget *chatWidget);
 	void chatWidgetCreated(ChatWidget *chatWidget);
 
 	void silentModeToggled(bool silentMode);

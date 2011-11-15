@@ -129,7 +129,8 @@ public slots:
 	void closeChat();
 
 signals:
-	void chatWidgetActivated(ChatWidget *);
+	void allMessagesRead(ChatWidget *);
+
 };
 
 #endif // TABS_TABS_H

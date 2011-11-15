@@ -74,7 +74,7 @@ public slots:
 	void alertNewMessage();
 
 signals:
-	void chatWidgetActivated(ChatWidget *);
+	void allMessagesRead(ChatWidget *);
 
 };
 

@@ -101,10 +101,10 @@ TabsManager::TabsManager(QObject *parent) :
 	loadWindowGeometry(TabDialog, "Chat", "TabWindowsGeometry", 30, 30, 550, 400);
 
 	// sygnal wysylany po aktywacji chata. Jest odbierany przez m.in hint-managera (po aktywacji chata znikaja dymki))
-	connect(this, SIGNAL(chatWidgetActivated(ChatWidget *)),
-			ChatWidgetManager::instance(), SIGNAL(chatWidgetActivated(ChatWidget *)));
-	connect(TabDialog, SIGNAL(chatWidgetActivated(ChatWidget *)),
-			ChatWidgetManager::instance(), SIGNAL(chatWidgetActivated(ChatWidget *)));
+	connect(this, SIGNAL(allMessagesRead(ChatWidget *)),
+			ChatWidgetManager::instance(), SIGNAL(allMessagesRead(ChatWidget *)));
+	connect(TabDialog, SIGNAL(allMessagesRead(ChatWidget *)),
+			ChatWidgetManager::instance(), SIGNAL(allMessagesRead(ChatWidget *)));
 
 	makePopupMenu();
 
@@ -271,7 +271,7 @@ void TabsManager::onTabChange(int index)
 	TabDialog->setWindowTitle(chat->title());
 	TabDialog->setWindowIcon(chat->icon());
 
-	emit chatWidgetActivated(chat);
+	emit allMessagesRead(chat);
 	// ustawiamy focus na pole edycji chata
 	chat->edit()->setFocus();
 }

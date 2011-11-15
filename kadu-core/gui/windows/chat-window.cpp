@@ -83,8 +83,8 @@ ChatWindow::ChatWindow(ChatWidget *chatWidget, QWidget *parent) :
 	connect(currentChatWidget, SIGNAL(titleChanged(ChatWidget *, const QString &)), this, SLOT(updateTitle()));
 	connect(currentChatWidget, SIGNAL(messageReceived(Chat)), this, SLOT(alertNewMessage()));
 	connect(title_timer, SIGNAL(timeout()), this, SLOT(blinkTitle()));
-	connect(this, SIGNAL(chatWidgetActivated(ChatWidget *)),
-			ChatWidgetManager::instance(), SIGNAL(chatWidgetActivated(ChatWidget *)));
+	connect(this, SIGNAL(allMessagesRead(ChatWidget *)),
+			ChatWidgetManager::instance(), SIGNAL(allMessagesRead(ChatWidget *)));
 
 }
 
@@ -96,7 +96,7 @@ ChatWindow::~ChatWindow()
 void ChatWindow::configurationUpdated()
 {
 	triggerCompositingStateChanged();
-  
+
 	showNewMessagesNum = config_file.readBoolEntry("Chat", "NewMessagesInChatTitle", false);
 	blinkChatTitle = config_file.readBoolEntry("Chat", "BlinkChatTitle", true);
 
@@ -250,7 +250,7 @@ void ChatWindow::changeEvent(QEvent *event)
 
 			title_timer->stop();
 
-			emit chatWidgetActivated(currentChatWidget);
+			emit allMessagesRead(currentChatWidget);
 		}
 		kdebugf2();
 	}
