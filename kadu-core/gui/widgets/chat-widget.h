@@ -110,13 +110,6 @@ public:
 
 	Chat chat() const { return CurrentChat; }
 
-	/**
-		Dodaje now� wiadomos� systemow� do okna.
-
-		@param rawContent tre�� wiadomo�ci w postaci HTML
-		@param backgroundColor kolor t�a wiadomo�ci (format HTML)
-		@param fontColor kolor wiadomo�ci (format HTML)
-	 **/
 	void appendSystemMessage(const QString &rawContent, const QString &backgroundColor, const QString &fontColor);
 
 	/**
@@ -130,13 +123,6 @@ public:
 		**/
 	void newMessage(MessageRenderInfo *message);
 
-	/**
-		\fn void repaintMessages()
-		Od�wie�a zawarto�� okna uwzgl�dniaj�c ewentualne
-		zmiany dokonane w kt�rej� wiadomo�ci z listy
-		uzyskanej za pomoc� metody chatMessages(),
-		dodanie nowych wiadomo�ci lub usuni�cie istniej�cych.
-	**/
 	void repaintMessages();
 
 	CustomInput * edit() const;
@@ -174,38 +160,11 @@ public:
 	void close();
 
 public slots:
-
-	/**
-		\fn void appendMessages(const QValueList<MessageRenderInfo *> &)
-		Slot dodaj wiadomo�ci do okna
-		\param messages lista wiadomo�ci
-	**/
 	void appendMessages(const QList<MessageRenderInfo *> &, bool pending = false);
-
-	/**
-	\fn void appendMessage(MessageRenderInfo *)
-		Slot dodaj wiadomo�� do okna
-		\param messages lista wiadomo�ci
-	**/
 	void appendMessage(MessageRenderInfo *, bool pending = false);
 
-	/**
-		\fn void sendMessage()
-		Slot wywo�ywany po naci�ni�ciu przycisku
-		do wysy�ania wiadomo�ci
-	**/
 	void sendMessage();
-
-	/**
-		\fn void colorSelectorAboutToClose()
-		Slot zostaje wywo�any przy zamykaniu okna wyboru ikonek
-	**/
 	void colorSelectorAboutToClose();
-
-	/**
-		\fn void clearChatWindow()
-		Slot czyszcz�cy okno rozmowy
-	**/
 	void clearChatWindow();
 
 	void activate();
@@ -218,33 +177,10 @@ public slots:
 	void refreshTitle();
 
 signals:
-	/**
-		\fn void messageSendRequested(Chat* chat)
-		Sygnal jest emitowany gdy uzytkownik wyda polecenie
-		wyslania wiadomosci, np klikajac na guzik "wyslij".
-		\param chat wska�nik do okna kt�re emituje sygna�
-	**/
 	void messageSendRequested(ChatWidget *chat);
-
-	/**
-		\fn void messageSent(Chat* chat)
-		Sygnal jest emitowany gdy zakonczy sie proces
-		wysylania wiadomosci i zwiazanych z tym czynnosci.
-		Oczywiscie nie wiemy czy wiadomosc dotarla.
-		\param chat wska�nik do okna rozmowy,
-		 kt�re emitowa�o sygna�
-	**/
 	void messageSent(ChatWidget *chat);
-
 	void messageReceived(Chat chat);
 
-	/**
-		\fn void fileDropped(const UserGroupusers, const QString& fileName)
-		Sygna� jest emitowany, gdy w oknie Chat
-		upuszczono plik.
-		\param users lista u�ytkownik�w
-		\param fileName nazwa pliku
-	**/
 	void fileDropped(Chat chat, const QString &fileName);
 
 	void iconChanged();
