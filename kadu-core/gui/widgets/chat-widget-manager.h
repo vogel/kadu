@@ -84,8 +84,6 @@ public:
 	const QHash<Chat, ChatWidget *> & chats() const;
 	ChatWidget * byChat(const Chat &chat) const;
 
-	void activateChatWidget(ChatWidget *chatwidget);
-
 public slots:
 	// for imagelink module
 	void messageReceived(const Message &message);

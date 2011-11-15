@@ -201,12 +201,6 @@ ChatWidget * ChatWidgetManager::byChat(const Chat &chat) const
 			: 0;
 }
 
-void ChatWidgetManager::activateChatWidget(ChatWidget *chatwidget)
-{
-	chatwidget->activate();
-	emit chatWidgetOpen(chatwidget);
-}
-
 ChatWidget * ChatWidgetManager::createChatWidget(const Chat &chat)
 {
 	if (!chat)
@@ -262,7 +256,10 @@ ChatWidget * ChatWidgetManager::openChatWidget(const Chat &chat)
 	if (!chatWidget)
 		chatWidget = createChatWidget(chat);
 	if (chatWidget)
-		activateChatWidget(chatWidget);
+	{
+		chatWidget->activate();
+		emit chatWidgetOpen(chatWidget);
+	}
 
 	return chatWidget;
 }

@@ -510,9 +510,7 @@ void DockingManager::unregisterModuleAction(QAction *action)
 void DockingManager::showMinimizedChats()
 {
 	foreach (ChatWidget *chat, ChatWidgetManager::instance()->chats())
-	{
-		ChatWidgetManager::instance()->activateChatWidget(chat);
-	}
+		chat->activate();
 }
 
 void DockingManager::dockIconClicked()
