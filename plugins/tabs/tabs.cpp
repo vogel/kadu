@@ -87,8 +87,8 @@ TabsManager::TabsManager(QObject *parent) :
 			this, SLOT(onNewChat(ChatWidget *, bool &)));
 	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetDestroying(ChatWidget *)),
 			this, SLOT(onDestroyingChat(ChatWidget *)));
-	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetOpen(ChatWidget *, bool)),
-			this, SLOT(onOpenChat(ChatWidget *, bool)));
+	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetOpen(ChatWidget *)),
+			this, SLOT(onOpenChat(ChatWidget *)));
 
 	connect(&Timer, SIGNAL(timeout()), this, SLOT(onTimer()));
 
