@@ -83,9 +83,6 @@ ChatWindow::ChatWindow(ChatWidget *chatWidget, QWidget *parent) :
 	connect(currentChatWidget, SIGNAL(titleChanged(ChatWidget *, const QString &)), this, SLOT(updateTitle()));
 	connect(currentChatWidget, SIGNAL(messageReceived(Chat)), this, SLOT(alertNewMessage()));
 	connect(title_timer, SIGNAL(timeout()), this, SLOT(blinkTitle()));
-	connect(this, SIGNAL(allMessagesRead(ChatWidget *)),
-			ChatWidgetManager::instance(), SIGNAL(allMessagesRead(ChatWidget *)));
-
 }
 
 ChatWindow::~ChatWindow()
@@ -247,10 +244,7 @@ void ChatWindow::changeEvent(QEvent *event)
 		{
 			currentChatWidget->markAllMessagesRead();
 			setWindowTitle(currentChatWidget->title());
-
 			title_timer->stop();
-
-			emit allMessagesRead(currentChatWidget);
 		}
 		kdebugf2();
 	}

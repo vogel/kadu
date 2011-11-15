@@ -593,6 +593,7 @@ void ChatWidget::activate()
 void ChatWidget::markAllMessagesRead()
 {
 	NewMessagesCount = 0;
+	emit allMessagesRead(this);
 }
 
 void ChatWidget::verticalSplitterMoved(int pos, int index)
