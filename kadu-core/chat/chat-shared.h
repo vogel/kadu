@@ -60,6 +60,7 @@ class KADUAPI ChatShared : public QObject, public Shared, public DetailsHolder<C
 	QString Type;
 	bool IgnoreAllMessages;
 	QList<Group> Groups;
+	quint16 UnreadMessagesCount;
 
 	bool doAddToGroup(const Group &group);
 	bool doRemoveFromGroup(const Group &group);
@@ -128,6 +129,8 @@ public:
 
 	// temporary, not stored, lost after program close
 	KaduShared_PropertyBool(IgnoreAllMessages)
+
+	KaduShared_Property(quint16, unreadMessagesCount, UnreadMessagesCount);
 
 signals:
 	void updated();

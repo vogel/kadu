@@ -72,7 +72,7 @@ ChatShared * ChatShared::loadFromStorage(const QSharedPointer<StoragePoint> &sto
  * created.
  */
 ChatShared::ChatShared(const QUuid &uuid) :
-		Shared(uuid), IgnoreAllMessages(false)
+		Shared(uuid), IgnoreAllMessages(false), UnreadMessagesCount(0)
 {
 	ChatAccount = new Account();
 }
