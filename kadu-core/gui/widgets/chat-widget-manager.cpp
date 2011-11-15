@@ -220,7 +220,7 @@ ChatWidget * ChatWidgetManager::createChatWidget(const Chat &chat)
 	if (!handled)
 		(new ChatWindow(chatWidget))->show();
 
-	connect(chatWidget, SIGNAL(destroyed()), this, SLOT(chatWidgetDestroyed()));
+	connect(chatWidget, SIGNAL(widgetDestroyed()), this, SLOT(chatWidgetDestroyed()));
 
 //	if (chatWidget->chat().contacts().count() == 1)
 //	{
