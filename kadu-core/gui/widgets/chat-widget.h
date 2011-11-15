@@ -164,7 +164,6 @@ public slots:
 	void clearChatWindow();
 
 	void activate();
-	void markAllMessagesRead();
 
 	/**
 	 * @author Rafal 'Vogel' Malinowski

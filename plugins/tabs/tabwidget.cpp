@@ -232,7 +232,7 @@ void TabWidget::changeEvent(QEvent *event)
 		kdebugf();
 		ChatWidget *chat = static_cast<ChatWidget *>(currentWidget());
 		if (chat && _isActiveWindow(this))
-			chat->markAllMessagesRead();
+			chat->chat().setUnreadMessagesCount(0);
 		kdebugf2();
 	}
 }

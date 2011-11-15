@@ -242,7 +242,7 @@ void ChatWindow::changeEvent(QEvent *event)
 		kdebugf();
 		if (_isActiveWindow(this))
 		{
-			currentChatWidget->markAllMessagesRead();
+			currentChatWidget->chat().setUnreadMessagesCount(0);
 			setWindowTitle(currentChatWidget->title());
 			title_timer->stop();
 		}
@@ -267,7 +267,7 @@ void ChatWindow::alertNewMessage()
 		}
 	}
 	else
-		currentChatWidget->markAllMessagesRead();
+		currentChatWidget->chat().setUnreadMessagesCount(0);
 }
 
 void ChatWindow::setWindowTitle(const QString &title)

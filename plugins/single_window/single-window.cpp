@@ -271,7 +271,7 @@ void SingleWindow::onNewMessage(Chat chat)
 	}
 	else
 	{
-		w->markAllMessagesRead();
+		w->chat().setUnreadMessagesCount(0);
 	}
 }
 
@@ -289,7 +289,7 @@ void SingleWindow::onTabChange(int index)
 		title.truncate(pos);
 	tabs->setTabText(index, title);
 
-	w->markAllMessagesRead();
+	w->chat().setUnreadMessagesCount(0);
 }
 
 void SingleWindow::onkaduKeyPressed(QKeyEvent *e)

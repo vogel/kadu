@@ -265,7 +265,7 @@ void TabsManager::onTabChange(int index)
 	TabDialog->setWindowTitle(chat->title());
 	TabDialog->setWindowIcon(chat->icon());
 
-	chat->markAllMessagesRead();
+	chat->chat().setUnreadMessagesCount(0);
 	// ustawiamy focus na pole edycji chata
 	chat->edit()->setFocus();
 }
@@ -299,7 +299,7 @@ void TabsManager::onMessageReceived(Chat chat)
 		}
 	}
 	else
-		chatWidget->markAllMessagesRead();
+		chatWidget->chat().setUnreadMessagesCount(0);
 
 	kdebugf2();
 }
@@ -421,7 +421,7 @@ void TabsManager::onTimer()
 
 				if (currentChat == chat)
 				{
-					chat->markAllMessagesRead();
+					chat->chat().setUnreadMessagesCount(0);
 					TabDialog->setTabIcon(i, chat->icon());
 					ChatsWithNewMessages.removeAll(chat);
 				}

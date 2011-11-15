@@ -588,11 +588,6 @@ void ChatWidget::activate()
 	_activateWindow(window);
 }
 
-void ChatWidget::markAllMessagesRead()
-{
-	CurrentChat.setUnreadMessagesCount(0);
-}
-
 void ChatWidget::verticalSplitterMoved(int pos, int index)
 {
 	Q_UNUSED(pos)
