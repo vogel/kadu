@@ -440,7 +440,7 @@ void TabsManager::onTimer()
 					else
 					{
 						if (ConfigShowNewMessagesNum)
-							TabDialog->setWindowTitle('[' + QString::number(chat->newMessagesCount()) + "] " + chat->title());
+							TabDialog->setWindowTitle('[' + QString::number(chat->chat().unreadMessagesCount()) + "] " + chat->title());
 						else
 							TabDialog->setWindowTitle(chat->title());
 					}
@@ -452,10 +452,10 @@ void TabsManager::onTimer()
 					TabDialog->setWindowTitle(chat->title());
 			}
 
-			if (chat->newMessagesCount() > 0)
+			if (chat->chat().unreadMessagesCount() > 0)
 			{
-				TabDialog->setTabText(i, QString("%1 [%2]").arg(formatTabName(chat)).arg(chat->newMessagesCount()));
-				TabDialog->setTabToolTip(i, QString("%1\n%2 new message(s)").arg(chat->title()).arg(chat->newMessagesCount()));
+				TabDialog->setTabText(i, QString("%1 [%2]").arg(formatTabName(chat)).arg(chat->chat().unreadMessagesCount()));
+				TabDialog->setTabToolTip(i, QString("%1\n%2 new message(s)").arg(chat->title()).arg(chat->chat().unreadMessagesCount()));
 			}
 			else
 			{

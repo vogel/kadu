@@ -74,8 +74,6 @@ class KADUAPI ChatWidget : public QWidget, public ConfigurationAwareObject
 
 	QDateTime LastMessageTime;
 
-	unsigned int NewMessagesCount;
-
 	void createGui();
 	void createContactsList();
 
@@ -135,8 +133,6 @@ public:
 	virtual void dragMoveEvent(QDragMoveEvent *e);
 
 	Protocol * currentProtocol() const;
-
-	unsigned int newMessagesCount() const { return NewMessagesCount; }
 
 	const QString & title() { return Title; }
 	void setTitle(const QString &title);

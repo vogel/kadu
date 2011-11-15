@@ -265,7 +265,7 @@ void SingleWindow::onNewMessage(Chat chat)
 			int pos = title.indexOf(" [");
 			if (pos > -1)
 				title.truncate(pos);
-			title += QString(" [%1]").arg(w->newMessagesCount());
+			title += QString(" [%1]").arg(w->chat().unreadMessagesCount());
 			tabs->setTabText(index, title);
 		}
 	}

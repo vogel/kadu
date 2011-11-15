@@ -82,7 +82,7 @@ ChatWidget::ChatWidget(const Chat &chat, QWidget *parent) :
 		QWidget(parent), CurrentChat(chat),
 		BuddiesWidget(0), ProxyModel(0), InputBox(0), HorizontalSplitter(0),
 		IsComposing(false), CurrentContactActivity(ChatStateService::StateNone),
-		SplittersInitialized(false), NewMessagesCount(0)
+		SplittersInitialized(false)
 {
 	kdebugf();
 
@@ -427,7 +427,7 @@ void ChatWidget::newMessage(MessageRenderInfo *messageRenderInfo)
 	MessagesView->appendMessage(messageRenderInfo);
 
 	LastMessageTime = QDateTime::currentDateTime();
-	NewMessagesCount++;
+	CurrentChat.setUnreadMessagesCount(CurrentChat.unreadMessagesCount() + 1);
 
  	emit messageReceived(CurrentChat);
 }
@@ -592,7 +592,7 @@ void ChatWidget::activate()
 
 void ChatWidget::markAllMessagesRead()
 {
-	NewMessagesCount = 0;
+	CurrentChat.setUnreadMessagesCount(0);
 	emit allMessagesRead(this);
 }
 
