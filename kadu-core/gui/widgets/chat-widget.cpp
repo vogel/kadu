@@ -593,7 +593,6 @@ void ChatWidget::activate()
 void ChatWidget::markAllMessagesRead()
 {
 	CurrentChat.setUnreadMessagesCount(0);
-	emit allMessagesRead(this);
 }
 
 void ChatWidget::verticalSplitterMoved(int pos, int index)

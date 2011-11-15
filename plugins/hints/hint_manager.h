@@ -25,6 +25,7 @@
 #ifndef HINT_MANAGER_H
 #define HINT_MANAGER_H
 
+#include "chat/chat.h"
 #include "configuration/configuration-aware-object.h"
 #include "gui/widgets/abstract-tool-tip.h"
 #include "notify/notifier.h"
@@ -119,7 +120,7 @@ private slots:
 	**/
 	void openChat(Hint *hint);
 
-	void allMessagesRead(ChatWidget *chat);
+	void chatUpdated(const Chat &chat);
 
 	/**
 		usuwa wszystkie dymki

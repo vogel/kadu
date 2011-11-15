@@ -173,8 +173,6 @@ public slots:
 	void refreshTitle();
 
 signals:
-	void allMessagesRead(ChatWidget *chat);
-
 	void messageSendRequested(ChatWidget *chat);
 	void messageSent(ChatWidget *chat);
 	void messageReceived(Chat chat);

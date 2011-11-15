@@ -214,9 +214,6 @@ ChatWidget * ChatWidgetManager::createChatWidget(const Chat &chat)
 	if (!handled)
 		(new ChatWindow(chatWidget))->show();
 
-	connect(chatWidget, SIGNAL(allMessagesRead(ChatWidget*)), this, SIGNAL(allMessagesRead(ChatWidget*)));
-	connect(chatWidget, SIGNAL(widgetDestroyed()), this, SLOT(chatWidgetDestroyed()));
-
 //	if (chatWidget->chat().contacts().count() == 1)
 //	{
 //		Contact contact = chatWidget->chat().contacts().toContact();
@@ -233,9 +230,6 @@ void ChatWidgetManager::chatWidgetDestroyed()
 	ChatWidget *chatWidget = qobject_cast<ChatWidget *>(sender());
 	if (!chatWidget)
 		return;
-
-	disconnect(chatWidget, SIGNAL(allMessagesRead(ChatWidget*)), this, SIGNAL(allMessagesRead(ChatWidget*)));
-	disconnect(chatWidget, SIGNAL(widgetDestroyed()), this, SLOT(chatWidgetDestroyed()));
 
 	if (!Chats.contains(chatWidget->chat()))
 		return;

@@ -98,7 +98,6 @@ signals:
 	void handleNewChatWidget(ChatWidget *chatwidget, bool &handled);
 
 	void chatWidgetCreated(ChatWidget *chatwidget);
-	void allMessagesRead(ChatWidget *chatwidget);
 
 	void chatWidgetDestroying(ChatWidget *chatwidget);
 

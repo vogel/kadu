@@ -76,7 +76,7 @@ IndicatorDocking::IndicatorDocking() :
 	Server->show();
 
 	connect(Server, SIGNAL(serverDisplay()), this, SLOT(showMainWindow()));
-	connect(ChatWidgetManager::instance(), SIGNAL(allMessagesRead(ChatWidget*)), this, SLOT(allMessagesRead(ChatWidget*)));
+	connect(ChatManager::instance(), SIGNAL(chatUpdated(Chat)), this, SLOT(chatUpdated(Chat)));
 	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetCreated(ChatWidget*)), this, SLOT(chatWidgetCreated(ChatWidget*)));
 	connect(NotificationManager::instance(), SIGNAL(silentModeToggled(bool)), this, SLOT(silentModeToggled(bool)));
 
@@ -94,7 +94,7 @@ IndicatorDocking::~IndicatorDocking()
 	DockingManager::instance()->setDocker(0);
 
 	disconnect(Server, SIGNAL(serverDisplay()), this, SLOT(showMainWindow()));
-	disconnect(ChatWidgetManager::instance(), SIGNAL(allMessagesRead(ChatWidget*)), this, SLOT(allMessagesRead(ChatWidget*)));
+	disconnect(ChatManager::instance(), SIGNAL(chatUpdated(Chat)), this, SLOT(chatUpdated(Chat)));
 	disconnect(ChatWidgetManager::instance(), SIGNAL(chatWidgetCreated(ChatWidget*)), this, SLOT(chatWidgetCreated(ChatWidget*)));
 
 	QSet<QIndicate::Indicator *> indicatorsToDelete;
@@ -216,14 +216,9 @@ void IndicatorDocking::notificationClosed(Notification *notification)
 	removeNotification(chatNotification);
 }
 
-void IndicatorDocking::allMessagesRead(ChatWidget *chatWidget)
+void IndicatorDocking::chatUpdated(const Chat &chat)
 {
 	// When a chat widget is activated, it contains only messages from its own chat, not aggregate chat.
-
-	if (!chatWidget)
-		return;
-
-	Chat chat = chatWidget->chat();
 	if (!chat)
 		return;
 
@@ -264,7 +259,7 @@ void IndicatorDocking::displayIndicator(QIndicate::Indicator *indicator)
 
 	chatNotification->openChat();
 
-	// allMessagesRead() or chatWidgetCreated() slot will take care of deleting indicator
+	// chatUpdated() or chatWidgetCreated() slot will take care of deleting indicator
 }
 
 void IndicatorDocking::removeNotification(ChatNotification *chatNotification)

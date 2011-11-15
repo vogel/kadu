@@ -24,6 +24,7 @@
 #include <QtCore/QScopedPointer>
 #include <QtCore/QMultiMap>
 
+#include "chat/chat.h"
 #include "notify/notifier.h"
 
 #include "plugins/docking/docker.h"
@@ -37,7 +38,6 @@ namespace QIndicate
 	class Server;
 }
 
-class Chat;
 class ChatNotification;
 class ChatWidget;
 
@@ -71,7 +71,7 @@ private slots:
 
 	void notificationClosed(Notification *notification);
 
-	void allMessagesRead(ChatWidget *chatWidget);
+	void chatUpdated(const Chat &chat);
 	void chatWidgetCreated(ChatWidget *chatWidget);
 
 	void silentModeToggled(bool silentMode);
