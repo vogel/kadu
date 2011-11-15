@@ -219,7 +219,7 @@ void IndicatorDocking::notificationClosed(Notification *notification)
 void IndicatorDocking::chatUpdated(const Chat &chat)
 {
 	// When a chat widget is activated, it contains only messages from its own chat, not aggregate chat.
-	if (!chat)
+	if (!chat || chat.unreadMessagesCount() > 0)
 		return;
 
 	IndMMap::iterator it = iteratorForChat(chat);
