@@ -133,7 +133,9 @@ void Qt4Notify::notify(Notification *notification)
 
 void Qt4Notify::messageClicked()
 {
-	ChatWidgetManager::instance()->openChat(chat);
+	ChatWidget *chatWidget = ChatWidgetManager::instance()->openChat(chat);
+	if (chatWidget)
+		chatWidget->activate();
 }
 
 NotifierConfigurationWidget *Qt4Notify::createConfigurationWidget(QWidget *parent)

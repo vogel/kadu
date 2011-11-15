@@ -258,10 +258,7 @@ ChatWidget * ChatWidgetManager::openChatWidget(const Chat &chat)
 	if (!chatWidget)
 		chatWidget = createChatWidget(chat);
 	if (chatWidget)
-	{
-		chatWidget->activate();
 		emit chatWidgetOpen(chatWidget);
-	}
 
 	return chatWidget;
 }
@@ -283,20 +280,22 @@ QList<MessageRenderInfo *> ChatWidgetManager::readPendingMessages(const Chat &ch
 	return messages;
 }
 
-void ChatWidgetManager::openChat(const Chat &chat)
+ChatWidget * ChatWidgetManager::openChat(const Chat &chat)
 {
 	if (!chat)
-		return;
+		return 0;
 
 	ChatWidget *chatWidget = openChatWidget(chat);
 	if (!chatWidget)
-		return;
+		return 0;
 
 	const QList<MessageRenderInfo *> &messages = readPendingMessages(chat);
 	if (!messages.isEmpty())
 		// TODO: Lame API
 		if (0 == chatWidget->countMessages())
 			chatWidget->appendMessages(messages, true);
+
+	return chatWidget;
 }
 
 void ChatWidgetManager::closeChat(const Chat &chat)

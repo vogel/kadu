@@ -88,7 +88,7 @@ public slots:
 	// for imagelink module
 	void messageReceived(const Message &message);
 
-	void openChat(const Chat &chat);
+	ChatWidget * openChat(const Chat &chat);
 
 	void closeChat(const Chat &chat);
 	void closeAllChats(const Buddy &buddy);
