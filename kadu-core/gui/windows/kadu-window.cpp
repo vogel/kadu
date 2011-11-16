@@ -40,6 +40,7 @@
 #include "gui/hot-key.h"
 #include "gui/actions/action.h"
 #include "gui/widgets/buddy-info-panel.h"
+#include "gui/widgets/chat-widget.h"
 #include "gui/widgets/chat-widget-actions.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/windows/proxy-action-context.h"

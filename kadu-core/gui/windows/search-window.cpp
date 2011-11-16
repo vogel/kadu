@@ -47,6 +47,7 @@
 #include "core/core.h"
 #include "icons/kadu-icon.h"
 #include "gui/actions/base-action-context.h"
+#include "gui/widgets/chat-widget.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/windows/add-buddy-window.h"
 #include "gui/windows/kadu-window.h"

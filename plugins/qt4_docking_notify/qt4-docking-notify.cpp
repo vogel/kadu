@@ -31,6 +31,7 @@
 #include "notify/notification-manager.h"
 #include "notify/notification.h"
 
+#include "gui/widgets/chat-widget.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/windows/message-dialog.h"
 #include "configuration/configuration-file.h"

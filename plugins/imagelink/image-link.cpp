@@ -27,6 +27,7 @@
 #include "contacts/contact-set.h"
 #include "debug.h"
 #include "gui/widgets/chat-messages-view.h"
+#include "gui/widgets/chat-widget.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "protocols/services/chat-service.h"
 

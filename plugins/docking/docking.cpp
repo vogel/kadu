@@ -46,6 +46,7 @@
 #include "chat/message/pending-messages-manager.h"
 #include "configuration/configuration-file.h"
 #include "core/core.h"
+#include "gui/widgets/chat-widget.h"
 #include "gui/widgets/status-menu.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/main-configuration-window.h"

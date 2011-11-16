@@ -48,6 +48,7 @@
 #include "contacts/contact-manager.h"
 #include "core/core.h"
 #include "gui/actions/action.h"
+#include "gui/widgets/chat-widget.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/custom-input.h"
 #include "gui/widgets/talkable-menu-manager.h"

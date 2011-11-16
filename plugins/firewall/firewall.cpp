@@ -51,6 +51,7 @@ Nowa funkcjonalnosc - Dorregaray
 #include "configuration/configuration-file.h"
 #include "core/core.h"
 #include "debug.h"
+#include "gui/widgets/chat-widget.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/search-window.h"

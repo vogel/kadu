@@ -21,8 +21,10 @@
  */
 
 #include "buddies/buddy.h"
+#include "chat/chat.h"
 #include "chat/message/pending-messages-manager.h"
 #include "contacts/contact-set.h"
+#include "gui/widgets/chat-widget.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "status/status-container.h"
 

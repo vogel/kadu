@@ -49,6 +49,7 @@
 #include "chat/aggregate-chat-manager.h"
 #include "gui/actions/actions.h"
 #include "gui/actions/base-action-context.h"
+#include "gui/widgets/chat-widget.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/delayed-line-edit.h"
 #include "gui/widgets/filter-widget.h"

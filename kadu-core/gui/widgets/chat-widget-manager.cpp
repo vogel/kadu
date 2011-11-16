@@ -23,43 +23,24 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "accounts/account.h"
-#include "accounts/account-manager.h"
-#include "buddies/buddy-manager.h"
-#include "buddies/buddy-preferred-manager.h"
+#include <QtGui/QApplication>
+
 #include "chat/aggregate-chat-manager.h"
-#include "chat/message/message.h"
 #include "chat/message/message-render-info.h"
 #include "chat/message/pending-messages-manager.h"
 #include "chat/chat-manager.h"
-#include "chat/recent-chat-manager.h"
 #include "configuration/configuration-file.h"
-#include "configuration/configuration-manager.h"
-#include "configuration/xml-configuration-file.h"
 #include "contacts/contact.h"
 #include "contacts/contact-set.h"
 #include "core/core.h"
-#include "emoticons/emoticons-manager.h"
-#include "gui/actions/action.h"
-#include "gui/actions/actions.h"
-#include "gui/widgets/chat-edit-box.h"
+#include "gui/widgets/chat-widget.h"
 #include "gui/widgets/chat-widget-actions.h"
 #include "gui/widgets/chat-widget-container.h"
-#include "gui/widgets/custom-input.h"
-#include "gui/widgets/talkable-menu-manager.h"
 #include "gui/windows/chat-window.h"
 #include "gui/windows/kadu-window.h"
-#include "gui/windows/kadu-window-actions.h"
-#include "gui/windows/message-dialog.h"
-#include "gui/windows/open-chat-with/open-chat-with.h"
-#include "protocols/protocol-factory.h"
-#include "protocols/protocols-manager.h"
-
-#include "activate.h"
-#include "debug.h"
 #include "icons/icons-manager.h"
-#include "misc/misc.h"
-#include "search.h"
+#include "protocols/protocol-factory.h"
+#include "activate.h"
 
 #include "chat-widget-manager.h"
 
@@ -79,7 +60,6 @@ ChatWidgetManager * ChatWidgetManager::instance()
 
 ChatWidgetManager::ChatWidgetManager()
 {
-	kdebugf();
 	setState(StateNotLoaded);
 
 	MessageRenderInfo::registerParserTags();
@@ -92,24 +72,17 @@ ChatWidgetManager::ChatWidgetManager()
 	Actions = new ChatWidgetActions(this);
 
 	configurationUpdated();
-
-	kdebugf2();
 }
 
 
 ChatWidgetManager::~ChatWidgetManager()
 {
-	kdebugf();
-
 	MessageRenderInfo::unregisterParserTags();
 
 	disconnect(Core::instance(), SIGNAL(messageReceived(const Message &)),
 			this, SLOT(messageReceived(const Message &)));
 
 	closeAllWindows();
-
-
-	kdebugf2();
 }
 
 StorableObject * ChatWidgetManager::storageParent()
@@ -129,8 +102,6 @@ QString ChatWidgetManager::storageItemNodeName()
 
 void ChatWidgetManager::closeAllWindows()
 {
-	kdebugf();
-
 	ensureStored();
 
 	QHash<Chat, ChatWidget *>::iterator i = Chats.begin();
@@ -145,8 +116,6 @@ void ChatWidgetManager::closeAllWindows()
 		}
 		++i;
 	}
-
-	kdebugf2();
 }
 
 void ChatWidgetManager::load()
@@ -298,7 +267,7 @@ void ChatWidgetManager::closeAllChats(const Buddy &buddy)
 {
 	foreach (const Contact &contact, buddy.contacts())
 	{
-		Chat chat = ChatManager::instance()->findChat(ContactSet(contact), false);
+		const Chat &chat = ChatManager::instance()->findChat(ContactSet(contact), false);
 		if (chat)
 			closeChat(chat);
 	}
@@ -306,20 +275,14 @@ void ChatWidgetManager::closeAllChats(const Buddy &buddy)
 
 void ChatWidgetManager::configurationUpdated()
 {
-	kdebugf();
-
 	OpenChatOnMessage = config_file.readBoolEntry("Chat", "OpenChatOnMessage");
 	AutoRaise = config_file.readBoolEntry("General","AutoRaise");
-	OpenChatOnMessageWhenOnline = config_file.readBoolEntry("Chat", "OpenChatOnMessageWhenOnline");
-
-	kdebugf2();
+	OpenChatOnMessageWhenOnline = config_file.readBoolEntry("Chat", "OpenChatOnMessageWhenOnline");;
 }
 
 // TODO 0.10.0:, move to core or somewhere else
 void ChatWidgetManager::messageReceived(const Message &message)
 {
-	kdebugf();
-
 	const Chat &chat = message.messageChat();
 	ChatWidget *chatWidget = byChat(chat, false);
 	if (chatWidget)
@@ -359,8 +322,6 @@ void ChatWidgetManager::messageReceived(const Message &message)
 			PendingMessagesManager::instance()->addItem(message);
 		}
 	}
-
-	kdebugf2();
 }
 
 void ChatWidgetManager::messageSent(const Message &message)

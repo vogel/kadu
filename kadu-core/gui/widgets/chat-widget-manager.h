@@ -25,18 +25,16 @@
 #ifndef CHAT_WIDGET_MANAGER_H
 #define CHAT_WIDGET_MANAGER_H
 
-#include <QtCore/QTimer>
-
-#include "buddies/buddy-list.h"
+#include "buddies/buddy.h"
 #include "chat/message/message.h"
 #include "configuration/configuration-aware-object.h"
-#include "gui/widgets/chat-widget.h"
 #include "storage/storable-string-list.h"
 
 #include "exports.h"
 
-class ActionDescription;
+class ChatWidget;
 class ChatWidgetActions;
+class MessageRenderInfo;
 class Protocol;
 
 class KADUAPI ChatWidgetManager : public QObject, ConfigurationAwareObject, StorableStringList
@@ -48,7 +46,7 @@ class KADUAPI ChatWidgetManager : public QObject, ConfigurationAwareObject, Stor
 
 	ChatWidgetActions *Actions;
 
-	QHash<Chat , ChatWidget *> Chats;
+	QHash<Chat, ChatWidget *> Chats;
 
 	bool AutoRaise;
 	bool OpenChatOnMessage;
@@ -96,8 +94,6 @@ signals:
 
 	void chatWidgetCreated(ChatWidget *chatwidget);
 	void chatWidgetDestroying(ChatWidget *chatwidget);
-
-	void chatWidgetTitlesUpdated();
 
 };
 

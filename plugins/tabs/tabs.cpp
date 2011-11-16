@@ -48,6 +48,7 @@
 #include "gui/actions/action.h"
 #include "gui/actions/action-description.h"
 #include "gui/widgets/chat-edit-box.h"
+#include "gui/widgets/chat-widget.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/talkable-menu-manager.h"
