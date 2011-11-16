@@ -189,7 +189,7 @@ void ChatWidgetManager::store()
 	StorableStringList::store();
 }
 
-const QHash<Chat , ChatWidget *> & ChatWidgetManager::chats() const
+const QHash<Chat, ChatWidget *> & ChatWidgetManager::chats() const
 {
 	return Chats;
 }
@@ -214,7 +214,11 @@ ChatWidget * ChatWidgetManager::createChatWidget(const Chat &chat)
 	bool handled = false;
 	emit handleNewChatWidget(chatWidget, handled);
 	if (!handled)
-		(new ChatWindow(chatWidget))->show();
+	{
+		ChatWindow *chatWindow = new ChatWindow(chatWidget);
+		chatWidget->setContainer(chatWindow);
+		chatWindow->show();
+	}
 
 //	if (chatWidget->chat().contacts().count() == 1)
 //	{
@@ -301,12 +305,8 @@ ChatWidget * ChatWidgetManager::openChat(const Chat &chat)
 void ChatWidgetManager::closeChat(const Chat &chat)
 {
 	ChatWidget *chatWidget = byChat(chat);
-	if (chatWidget)
-	{
-		ChatWidgetContainer *container = dynamic_cast<ChatWidgetContainer *>(chatWidget->window());
-		if (container)
-			container->closeChatWidget(chatWidget);
-	}
+	if (chatWidget && chatWidget->container())
+		chatWidget->container()->closeChatWidget(chatWidget);
 }
 
 void ChatWidgetManager::closeAllChats(const Buddy &buddy)

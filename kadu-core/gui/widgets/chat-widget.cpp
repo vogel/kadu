@@ -79,7 +79,7 @@
 #include "chat-widget.h"
 
 ChatWidget::ChatWidget(const Chat &chat, QWidget *parent) :
-		QWidget(parent), CurrentChat(chat),
+		QWidget(parent), CurrentChat(chat), Container(0),
 		BuddiesWidget(0), ProxyModel(0), InputBox(0), HorizontalSplitter(0),
 		IsComposing(false), CurrentContactActivity(ChatStateService::StateNone),
 		SplittersInitialized(false)
@@ -135,6 +135,16 @@ ChatWidget::~ChatWidget()
 		currentProtocol()->chatStateService()->chatWidgetClosed(chat());
 
 	kdebugmf(KDEBUG_FUNCTION_END, "chat destroyed\n");
+}
+
+void ChatWidget::setContainer(ChatWidgetContainer *container)
+{
+	Container = container;
+}
+
+ChatWidgetContainer * ChatWidget::container() const
+{
+	return Container;
 }
 
 void ChatWidget::createGui()

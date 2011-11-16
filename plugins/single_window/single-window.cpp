@@ -178,6 +178,8 @@ void SingleWindow::changeRosterPos(int newRosterPos)
 void SingleWindow::onNewChat(ChatWidget *w, bool &handled)
 {
 	handled = true;
+	w->setContainer(this);
+
 	QString title = w->chat().name();
 
 	tabs->addTab(w, w->icon(), title);

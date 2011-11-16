@@ -23,8 +23,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CHAT_CONTAINER_H
-#define CHAT_CONTAINER_H
+#ifndef CHAT_WIDGET_CONTAINER_H
+#define CHAT_WIDGET_CONTAINER_H
 
 class ChatWidget;
 
@@ -38,10 +38,13 @@ public:
 	virtual ~ChatWidgetContainer() {}
 
 	/**
-		Closes given chat widget in this ChatContainer.
+		@short Closes given chat widget in this ChatWidgetContainer.
+		@param chatWidget chat widget to close
+
+		Closes given chat widget in this ChatWidgetContainer.
 	 **/
-	virtual void closeChatWidget(ChatWidget *chat) = 0;
+	virtual void closeChatWidget(ChatWidget *chatWidget) = 0;
 
 };
 
-#endif // CHAT_CONTAINER_H
+#endif // CHAT_WIDGET_CONTAINER_H

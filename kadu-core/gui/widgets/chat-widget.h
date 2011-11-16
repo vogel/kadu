@@ -43,6 +43,7 @@ class BuddiesModelProxy;
 class ChatEditBox;
 class ChatMessagesView;
 class ChatWidget;
+class ChatWidgetContainer;
 class CustomInput;
 class FilteredTreeView;
 class MessageRenderInfo;
@@ -55,6 +56,8 @@ class KADUAPI ChatWidget : public QWidget, public ConfigurationAwareObject
 	friend class ChatWidgetManager;
 
 	Chat CurrentChat;
+
+	ChatWidgetContainer *Container;
 
 	ChatMessagesView *MessagesView;
 	FilteredTreeView *BuddiesWidget;
@@ -107,6 +110,9 @@ public:
 	virtual ~ChatWidget();
 
 	Chat chat() const { return CurrentChat; }
+
+	void setContainer(ChatWidgetContainer *container);
+	ChatWidgetContainer * container() const;
 
 	void appendSystemMessage(const QString &rawContent, const QString &backgroundColor, const QString &fontColor);
 

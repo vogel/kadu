@@ -366,6 +366,8 @@ void TabsManager::insertTab(ChatWidget* chat)
 			action->setChecked(true);
 	}
 
+	chat->setContainer(TabDialog);
+
 	// Ustawiam tytul karty w zaleznosci od tego czy mamy do czynienia z rozmowa czy z konferencja
 	TabDialog->insertTab(TargetTabs, chat, chat->icon(), formatTabName(chat));
 
