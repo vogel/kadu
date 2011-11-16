@@ -18,6 +18,7 @@ set (chat_SRCS
 	message/formatted-message.cpp
 	message/formatted-message-part.cpp
 	message/message.cpp
+	message/message-manager.cpp
 	message/message-render-info.cpp
 	message/pending-messages-manager.cpp
 	message/message-shared.cpp
@@ -58,6 +59,7 @@ set (chat_MOC_SRCS
 	filter/chat-named-filter.h
 	filter/group-chat-filter.h
 
+	message/message-manager.h
 	message/message-render-info.h
 	message/pending-messages-manager.h
 	message/message-shared.h

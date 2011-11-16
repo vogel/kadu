@@ -26,6 +26,7 @@
 #include <QtGui/QApplication>
 
 #include "chat/aggregate-chat-manager.h"
+#include "chat/message/message-manager.h"
 #include "chat/message/message-render-info.h"
 #include "chat/message/pending-messages-manager.h"
 #include "chat/chat-manager.h"
@@ -64,7 +65,7 @@ ChatWidgetManager::ChatWidgetManager()
 
 	MessageRenderInfo::registerParserTags();
 
-	connect(Core::instance(), SIGNAL(messageReceived(const Message &)),
+	connect(MessageManager::instance(), SIGNAL(messageReceived(const Message &)),
 			this, SLOT(messageReceived(const Message &)));
 	connect(Core::instance(), SIGNAL(messageSent(const Message &)),
 			this, SLOT(messageSent(const Message &)));
@@ -79,7 +80,7 @@ ChatWidgetManager::~ChatWidgetManager()
 {
 	MessageRenderInfo::unregisterParserTags();
 
-	disconnect(Core::instance(), SIGNAL(messageReceived(const Message &)),
+	disconnect(MessageManager::instance(), SIGNAL(messageReceived(const Message &)),
 			this, SLOT(messageReceived(const Message &)));
 
 	closeAllWindows();

@@ -24,6 +24,7 @@
 
 #include "chat/chat-manager.h"
 #include "chat/message/message.h"
+#include "chat/message/message-manager.h"
 #include "configuration/configuration-file.h"
 #include "core/core.h"
 
@@ -56,7 +57,7 @@ RecentChatManager::RecentChatManager()
 
 	configurationUpdated();
 
-	connect(Core::instance(), SIGNAL(messageReceived(Message)),
+	connect(MessageManager::instance(), SIGNAL(messageReceived(Message)),
 			this, SLOT(onNewMessage(Message)));
 	connect(Core::instance(), SIGNAL(messageSent(Message)),
 			this, SLOT(onNewMessage(Message)));

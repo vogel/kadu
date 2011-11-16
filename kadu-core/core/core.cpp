@@ -39,6 +39,7 @@
 #include "avatars/avatar-manager.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/group-manager.h"
+#include "chat/message/message-manager.h"
 #include "chat/message/pending-messages-manager.h"
 #include "configuration/configuration-file.h"
 #include "configuration/configuration-manager.h"
@@ -399,6 +400,7 @@ void Core::init()
 	// It has to happen earlier because PendingMessagesManager::loaded() might add buddies to the BuddyManager
 	// which (the buddies) otherwise will not be taken into account by buddies list before its next update.
 	PendingMessagesManager::instance()->ensureLoaded();
+	MessageManager::instance(); // initialize that
 	AvatarManager::instance(); // initialize that
 
 #if WITH_LIBINDICATE_QT
@@ -462,12 +464,6 @@ void Core::kaduWindowDestroyed()
 	Window = 0;
 }
 
-void Core::messageReceivedSlot(const Message &message)
-{
-	message.messageChat().setUnreadMessagesCount(message.messageChat().unreadMessagesCount() + 1);
-	emit messageReceived(message);
-}
-
 void Core::accountRegistered(Account account)
 {
 	Protocol *protocol = account.protocolHandler();
@@ -476,12 +472,8 @@ void Core::accountRegistered(Account account)
 
 	ChatService *chatService = protocol->chatService();
 	if (chatService)
-	{
-		connect(chatService, SIGNAL(messageReceived(const Message &)),
-			this, SLOT(messageReceivedSlot(const Message &)));
 		connect(chatService, SIGNAL(messageSent(const Message &)),
 			this, SIGNAL(messageSent(const Message &)));
-	}
 
 	connect(protocol, SIGNAL(connecting(Account)), this, SIGNAL(connecting()));
 	connect(protocol, SIGNAL(connected(Account)), this, SIGNAL(connected()));
@@ -496,12 +488,8 @@ void Core::accountUnregistered(Account account)
 	{
 		ChatService *chatService = protocol->chatService();
 		if (chatService)
-		{
-			disconnect(chatService, SIGNAL(messageReceived(const Message &)),
-				this, SIGNAL(messageReceived(const Message &)));
 			disconnect(chatService, SIGNAL(messageSent(const Message &)),
 				this, SIGNAL(messageSent(const Message &)));
-		}
 
 		disconnect(protocol, SIGNAL(connecting(Account)), this, SIGNAL(connecting()));
 		disconnect(protocol, SIGNAL(connected(Account)), this, SIGNAL(connected()));
