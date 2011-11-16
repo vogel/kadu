@@ -364,7 +364,9 @@ void HintManager::openChat(Hint *hint)
 		if ((hint->getNotification()->type() != "NewChat") && (hint->getNotification()->type() != "NewMessage"))
 			return;
 
-	ChatWidgetManager::instance()->openChat(hint->chat());
+	ChatWidget * const chatWidget = ChatWidgetManager::instance()->openChat(hint->chat());
+	if (chatWidget)
+		chatWidget->activate();
 
 	deleteHintAndUpdate(hint);
 

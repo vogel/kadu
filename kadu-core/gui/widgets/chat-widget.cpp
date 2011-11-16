@@ -58,6 +58,7 @@
 #include "gui/widgets/chat-edit-box-size-manager.h"
 #include "gui/widgets/chat-messages-view.h"
 #include "gui/widgets/chat-widget-actions.h"
+#include "gui/widgets/chat-widget-container.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/color-selector.h"
 #include "gui/widgets/filtered-tree-view.h"
@@ -592,10 +593,8 @@ Protocol *ChatWidget::currentProtocol() const
 
 void ChatWidget::activate()
 {
-	QWidget *window = this->window();
-	kdebugm(KDEBUG_INFO, "window: %p\n", window);
-
-	_activateWindow(window);
+	if (Container)
+		Container->activateChatWidget(this);
 }
 
 void ChatWidget::verticalSplitterMoved(int pos, int index)

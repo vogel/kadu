@@ -104,7 +104,7 @@ void JabberUrlHandler::openUrl(const QByteArray &url, bool disableMenu)
 		const Chat &chat = ChatManager::instance()->findChat(ContactSet(contact));
 		if (chat)
 		{
-			ChatWidget *chatWidget = ChatWidgetManager::instance()->openChat(chat);
+			ChatWidget * const chatWidget = ChatWidgetManager::instance()->openChat(chat);
 			if (chatWidget)
 				chatWidget->activate();
 			return;
@@ -143,7 +143,7 @@ void JabberUrlHandler::accountSelected(QAction *action)
 
 	const Contact &contact = ContactManager::instance()->byId(account, ids[1], ActionCreateAndAdd);
 	const Chat &chat = ChatManager::instance()->findChat(ContactSet(contact));
-	ChatWidget *chatWidget = ChatWidgetManager::instance()->openChat(chat);
+	ChatWidget * const chatWidget = ChatWidgetManager::instance()->openChat(chat);
 	if (chatWidget)
 		chatWidget->activate();
 }

@@ -87,8 +87,6 @@ TabsManager::TabsManager(QObject *parent) :
 			this, SLOT(onNewChat(ChatWidget *, bool &)));
 	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetDestroying(ChatWidget *)),
 			this, SLOT(onDestroyingChat(ChatWidget *)));
-	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetOpen(ChatWidget *)),
-			this, SLOT(onOpenChat(ChatWidget *)));
 
 	connect(&Timer, SIGNAL(timeout()), this, SLOT(onTimer()));
 
@@ -268,17 +266,6 @@ void TabsManager::onTabChange(int index)
 	chat->chat().setUnreadMessagesCount(0);
 	// ustawiamy focus na pole edycji chata
 	chat->edit()->setFocus();
-}
-
-void TabsManager::onOpenChat(ChatWidget *chat)
-{
-	kdebugf();
-	if (chat && TabDialog->indexOf(chat)!=-1)
-	{
-		TabDialog->setWindowState(TabDialog->windowState() & ~Qt::WindowMinimized);
-		TabDialog->setCurrentWidget(chat);
-	}
-	kdebugf2();
 }
 
 void TabsManager::onMessageReceived(Chat chat)
@@ -568,8 +555,11 @@ bool TabsManager::detachChat(ChatWidget *chat)
 	Chat oldChat = chat->chat();
 	delete chat;
 
+	// omg this is bad
 	NoTabs = true;
-	ChatWidgetManager::instance()->openChat(oldChat);
+	ChatWidget * const chatWidget = ChatWidgetManager::instance()->openChat(oldChat);
+	if (chatWidget)
+		chatWidget->activate();
 	return true;
 }
 

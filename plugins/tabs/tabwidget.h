@@ -173,12 +173,14 @@ public:
 	*/
 	void configurationUpdated();
 
+	virtual void activateChatWidget(ChatWidget *chatWidget);
+
 	/**
 	* Metoda wywoływana w momencie ignorowania/blokowania kontaktu
 	* Informuje, który chat powinien zostać zamknięty
 	* @param chat który powinien zostać zamknięty
 	*/
-	void closeChatWidget(ChatWidget *chat);
+	virtual void closeChatWidget(ChatWidget *chatWidget);
 
 public slots:
 	/**

@@ -20,6 +20,7 @@
 #include "core/core.h"
 #include "icons/kadu-icon.h"
 #include "misc/misc.h"
+#include "activate.h"
 #include "debug.h"
 
 #include "single-window.h"
@@ -107,8 +108,6 @@ SingleWindow::SingleWindow()
 
 	connect(ChatWidgetManager::instance(), SIGNAL(handleNewChatWidget(ChatWidget *,bool &)),
 			this, SLOT(onNewChat(ChatWidget *,bool &)));
-	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetOpen(ChatWidget *)),
-			this, SLOT(onOpenChat(ChatWidget *)));
 	connect(Core::instance(), SIGNAL(mainIconChanged(const KaduIcon &)),
 		this, SLOT(onStatusPixmapChanged(const KaduIcon &)));
 
@@ -139,8 +138,6 @@ SingleWindow::~SingleWindow()
 
 	disconnect(ChatWidgetManager::instance(), SIGNAL(handleNewChatWidget(ChatWidget *,bool &)),
 			this, SLOT(onNewChat(ChatWidget *,bool &)));
-	disconnect(ChatWidgetManager::instance(), SIGNAL(chatWidgetOpen(ChatWidget *)),
-			this, SLOT(onOpenChat(ChatWidget *)));
 	disconnect(Core::instance(), SIGNAL(mainIconChanged(const KaduIcon &)),
 			this, SLOT(onStatusPixmapChanged(const KaduIcon &)));
 
@@ -188,15 +185,6 @@ void SingleWindow::onNewChat(ChatWidget *w, bool &handled)
 	connect(w->edit(), SIGNAL(keyPressed(QKeyEvent *, CustomInput *, bool &)),
 		this, SLOT(onChatKeyPressed(QKeyEvent *, CustomInput *, bool &)));
 	connect(w, SIGNAL(iconChanged()), this, SLOT(onIconChanged()));
-
-	onOpenChat(w);
-}
-
-void SingleWindow::onOpenChat(ChatWidget *w)
-{
-	setWindowState(windowState() & ~Qt::WindowMinimized);
-	tabs->setCurrentWidget(w);
-	w->edit()->setFocus();
 }
 
 void SingleWindow::closeTab(int index)
@@ -243,14 +231,27 @@ void SingleWindow::resizeEvent(QResizeEvent *event)
 	split->resize(newSize);
 }
 
-void SingleWindow::closeChatWidget(ChatWidget *w)
+void SingleWindow::activateChatWidget(ChatWidget *chatWidget)
 {
-	if (w)
-	{
-		int index = tabs->indexOf(w);
-		if (index >= 0)
-			closeTab(index);
-	}
+	int index = tabs->indexOf(chatWidget);
+	if (index < 0)
+		return;
+
+	setWindowState(windowState() & ~Qt::WindowMinimized);
+	_activateWindow(window());
+
+	tabs->setCurrentIndex(index);
+	chatWidget->edit()->setFocus();
+}
+
+void SingleWindow::closeChatWidget(ChatWidget *chatWidget)
+{
+	if (!chatWidget)
+		return;
+
+	int index = tabs->indexOf(chatWidget);
+	if (index >= 0)
+		closeTab(index);
 }
 
 void SingleWindow::onNewMessage(Chat chat)

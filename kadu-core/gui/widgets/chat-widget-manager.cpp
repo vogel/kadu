@@ -261,8 +261,6 @@ ChatWidget * ChatWidgetManager::openChatWidget(const Chat &chat)
 	ChatWidget *chatWidget = byChat(chat);
 	if (!chatWidget)
 		chatWidget = createChatWidget(chat);
-	if (chatWidget)
-		emit chatWidgetOpen(chatWidget);
 
 	return chatWidget;
 }

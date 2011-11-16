@@ -82,10 +82,22 @@ TabWidget::~TabWidget()
 {
 }
 
-void TabWidget::closeChatWidget(ChatWidget *chat)
+void TabWidget::activateChatWidget(ChatWidget *chatWidget)
 {
-	if (chat)
-		delete chat;
+	int index = indexOf(chatWidget);
+	if (index < 0)
+		return;
+
+	setWindowState(windowState() & ~Qt::WindowMinimized);
+	_activateWindow(window());
+
+	setCurrentIndex(index);
+	chatWidget->edit()->setFocus();
+}
+
+void TabWidget::closeChatWidget(ChatWidget *chatWidget)
+{
+	delete chatWidget;
 }
 
 void TabWidget::closeEvent(QCloseEvent *e)

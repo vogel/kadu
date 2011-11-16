@@ -58,7 +58,9 @@ public:
 
 	ChatWidget * chatWidget() const { return currentChatWidget; }
 
-	void closeChatWidget(ChatWidget *chatWidget);
+	virtual void activateChatWidget(ChatWidget *chatWidget);
+	virtual void closeChatWidget(ChatWidget *chatWidget);
+
 	void setWindowTitle(const QString &title);
 
 public slots:

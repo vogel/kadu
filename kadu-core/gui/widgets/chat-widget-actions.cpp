@@ -526,7 +526,9 @@ void ChatWidgetActions::openChatActionActivated(QAction *sender, bool toggled)
 	if (!action)
 		return;
 
-	ChatWidgetManager::instance()->openChat(action->context()->chat());
+	ChatWidget * const chatWidget = ChatWidgetManager::instance()->openChat(action->context()->chat());
+	if (chatWidget)
+		chatWidget->activate();
 
 	kdebugf2();
 }

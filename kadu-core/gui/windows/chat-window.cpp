@@ -278,9 +278,19 @@ void ChatWindow::setWindowTitle(const QString &title)
 	QWidget::setWindowTitle(escaped.replace(QLatin1String("[*]"), QLatin1String("[*][*]")));
 }
 
+void ChatWindow::activateChatWidget(ChatWidget *chatWidget)
+{
+	Q_UNUSED(chatWidget)
+	Q_ASSERT(chatWidget == currentChatWidget);
+
+	// we can be embeded in other window...
+	_activateWindow(window());
+}
+
 void ChatWindow::closeChatWidget(ChatWidget *chatWidget)
 {
 	Q_UNUSED(chatWidget)
+	Q_ASSERT(chatWidget == currentChatWidget);
 
 	close();
 }

@@ -29,20 +29,29 @@
 class ChatWidget;
 
 /**
-	@class ChatWidgetContainer
-	@brief Abstract class for parents of ChatWidget objects.
-**/
+ * @class ChatWidgetContainer
+ * @brief Abstract class for parents of ChatWidget objects.
+ */
 class ChatWidgetContainer
 {
 public:
 	virtual ~ChatWidgetContainer() {}
 
 	/**
-		@short Closes given chat widget in this ChatWidgetContainer.
-		@param chatWidget chat widget to close
+	 * @short Activates given chat widget in this ChatWidgetContainer.
+	 * @param chatWidget chat widget to activate
+	 *
+	 * Activates given chat widget in this ChatWidgetContainer. This container window will be
+	 * activated if neccessary.
+	 */
+	virtual void activateChatWidget(ChatWidget *chatWidget) = 0;
 
-		Closes given chat widget in this ChatWidgetContainer.
-	 **/
+	/**
+	 * @short Closes given chat widget in this ChatWidgetContainer.
+	 * @param chatWidget chat widget to close
+	 *
+	 * Closes given chat widget in this ChatWidgetContainer.
+	 */
 	virtual void closeChatWidget(ChatWidget *chatWidget) = 0;
 
 };
