@@ -43,6 +43,7 @@
 #include "buddies/group.h"
 #include "buddies/group-manager.h"
 #include "chat/message/message.h"
+#include "chat/message/message-manager.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact.h"
 #include "contacts/contact-manager.h"
@@ -64,7 +65,6 @@
 #include "notify/notifier.h"
 #include "notify/notify-configuration-ui-handler.h"
 #include "notify/window-notifier.h"
-#include "protocols/services/chat-service.h"
 #include "protocols/services/multilogon-service.h"
 #include "status/status-container-manager.h"
 
@@ -142,6 +142,7 @@ void NotificationManager::init()
 	configurationUpdated();
 	connect(SilentModeActionDescription, SIGNAL(actionCreated(Action *)), this, SLOT(silentModeActionCreated(Action *)));
 
+	connect(MessageManager::instance(), SIGNAL(messageReceived(Message)), this, SLOT(messageReceived(Message)));
 	connect(StatusContainerManager::instance(), SIGNAL(statusUpdated()), this, SLOT(statusUpdated()));
 
 	foreach (const Group &group, GroupManager::instance()->items())
@@ -291,11 +292,6 @@ void NotificationManager::accountRegistered(Account account)
 			this, SLOT(contactStatusChanged(Contact, Status)));
 	connect(account, SIGNAL(connected()), this, SLOT(accountConnected()));
 
-	ChatService *chatService = protocol->chatService();
-	if (chatService)
-		connect(chatService, SIGNAL(messageReceived(const Message &)),
-				this, SLOT(messageReceived(const Message &)));
-
 	MultilogonService *multilogonService = protocol->multilogonService();
 	if (multilogonService)
 	{
@@ -316,11 +312,6 @@ void NotificationManager::accountUnregistered(Account account)
 	disconnect(account, SIGNAL(buddyStatusChanged(Contact, Status)),
 			this, SLOT(contactStatusChanged(Contact, Status)));
 	disconnect(account, SIGNAL(connected()), this, SLOT(accountConnected()));
-
-	ChatService *chatService = protocol->chatService();
-	if (chatService)
-		disconnect(chatService, SIGNAL(messageReceived(const Message &)),
-				this, SLOT(messageReceived(const Message &)));
 
 	MultilogonService *multilogonService = protocol->multilogonService();
 	if (multilogonService)

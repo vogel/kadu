@@ -49,6 +49,7 @@
 #include "chat/chat.h"
 #include "chat/chat-manager.h"
 #include "chat/message/message.h"
+#include "chat/message/message-manager.h"
 #include "chat/message/pending-messages-manager.h"
 #include "configuration/configuration-file.h"
 #include "buddies/buddy.h"
@@ -126,6 +127,8 @@ History::History() :
 		this, SLOT(accountRegistered(Account)));
 	connect(AccountManager::instance(), SIGNAL(accountUnregistered(Account)),
 		this, SLOT(accountUnregistered(Account)));
+	connect(MessageManager::instance(), SIGNAL(messageReceived(Message)),
+		this, SLOT(enqueueMessage(Message)));
 
 	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetCreated(ChatWidget *)), this, SLOT(chatCreated(ChatWidget *)));
 
@@ -137,6 +140,10 @@ History::History() :
 History::~History()
 {
 	kdebugf();
+
+	disconnect(MessageManager::instance(), SIGNAL(messageReceived(Message)),
+		this, SLOT(enqueueMessage(Message)));
+
 	stopSaveThread();
 	deleteActionDescriptions();
 
@@ -234,12 +241,8 @@ void History::accountRegistered(Account account)
 
 	ChatService *service = account.protocolHandler()->chatService();
 	if (service)
-	{
-		connect(service, SIGNAL(messageReceived(const Message &)),
-				this, SLOT(enqueueMessage(const Message &)));
 		connect(service, SIGNAL(messageSent(const Message &)),
 				this, SLOT(enqueueMessage(const Message &)));
-	}
 }
 
 void History::accountUnregistered(Account account)
@@ -252,12 +255,8 @@ void History::accountUnregistered(Account account)
 
 	ChatService *service = account.protocolHandler()->chatService();
 	if (service)
-	{
-		disconnect(service, SIGNAL(messageReceived(const Message &)),
-				this, SLOT(enqueueMessage(const Message &)));
 		disconnect(service, SIGNAL(messageSent(const Message &)),
 				this, SLOT(enqueueMessage(const Message &)));
-	}
 }
 
 void History::enqueueMessage(const Message &message)
