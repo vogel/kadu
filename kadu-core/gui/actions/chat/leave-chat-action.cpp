@@ -47,7 +47,7 @@ void LeaveChatAction::triggered(QWidget *widget, ActionContext *context, bool to
 	if (!chat)
 		return;
 
-	ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(chat);
+	ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(chat, false);
 	if (!chatWidget)
 		return;
 

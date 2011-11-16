@@ -292,7 +292,7 @@ void KaduWindow::talkableActivatedSlot(const Talkable &talkable)
 	const Chat &chat = talkable.chat();
 	if (chat && !chat.contacts().toBuddySet().contains(Core::instance()->myself()))
 	{
-		ChatWidget * const chatWidget = ChatWidgetManager::instance()->openChat(chat);
+		ChatWidget * const chatWidget = ChatWidgetManager::instance()->byChat(chat, true);
 		if (chatWidget)
 			chatWidget->activate();
 		return;
@@ -321,7 +321,7 @@ void KaduWindow::updateRecentChatsMenu()
 	RecentChatsMenu->clear();
 
 	foreach (const Chat &chat, RecentChatManager::instance()->recentChats())
-		if (!ChatWidgetManager::instance()->byChat(chat))
+		if (!ChatWidgetManager::instance()->byChat(chat, false))
 		{
 			ChatType *type = ChatTypeManager::instance()->chatType(chat.type());
 			QAction *action = new QAction(type ? type->icon().icon() : QIcon(), chat.name(), RecentChatsMenu);
@@ -337,7 +337,7 @@ void KaduWindow::updateRecentChatsMenu()
 
 void KaduWindow::openRecentChats(QAction *action)
 {
-	ChatWidget * const chatWidget = ChatWidgetManager::instance()->openChat(action->data().value<Chat>());
+	ChatWidget * const chatWidget = ChatWidgetManager::instance()->byChat(action->data().value<Chat>(), true);
 	if (chatWidget)
 		chatWidget->activate();
 }

@@ -154,7 +154,7 @@ SingleWindow::~SingleWindow()
 			Chat oldchat = chat->chat();
 			tabs->removeTab(i);
 			delete chat;
-			ChatWidgetManager::instance()->openChat(oldchat);
+			ChatWidgetManager::instance()->byChat(oldchat, true);
 		}
 	}
 
@@ -256,7 +256,7 @@ void SingleWindow::closeChatWidget(ChatWidget *chatWidget)
 
 void SingleWindow::onNewMessage(Chat chat)
 {
-	ChatWidget *w = ChatWidgetManager::instance()->byChat(chat);
+	ChatWidget *w = ChatWidgetManager::instance()->byChat(chat, false);
 	if (w != tabs->currentWidget())
 	{
 		int index = tabs->indexOf(w);

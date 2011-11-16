@@ -272,7 +272,7 @@ void TabsManager::onMessageReceived(Chat chat)
 {
 	kdebugf();
 
-	ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(chat);
+	ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(chat, false);
 	if (!chatWidget)
 		return;
 
@@ -305,7 +305,7 @@ void TabsManager::onNewTab(QAction *sender, bool toggled)
 	if (!chat)
 		return;
 
-	ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(chat);
+	ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(chat, false);
 	// exists - bring to front
 	if (chatWidget)
 	{
@@ -324,7 +324,7 @@ void TabsManager::onNewTab(QAction *sender, bool toggled)
 		else if (chat.contacts().count() == 1 || ConfigConferencesInTabs)
 			ForceTabs = true;
 
-		ChatWidgetManager::instance()->openChat(chat);
+		ChatWidgetManager::instance()->byChat(chat, true);
 	}
 
 	kdebugf2();
@@ -557,7 +557,7 @@ bool TabsManager::detachChat(ChatWidget *chat)
 
 	// omg this is bad
 	NoTabs = true;
-	ChatWidget * const chatWidget = ChatWidgetManager::instance()->openChat(oldChat);
+	ChatWidget * const chatWidget = ChatWidgetManager::instance()->byChat(oldChat, true);
 	if (chatWidget)
 		chatWidget->activate();
 	return true;
@@ -586,14 +586,14 @@ void TabsManager::load()
 		if (!chat)
 			continue;
 
-		ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(chat);
+		ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(chat, false);
 		if (!chatWidget)
 		{
 			if (element.attribute("type") == "tab")
 				ForceTabs = true;
 			else if (element.attribute("type") == "detachedChat")
 				NoTabs = true;
-			ChatWidgetManager::instance()->openChat(chat);
+			ChatWidgetManager::instance()->byChat(chat, true);
 		}
 		else if (element.attribute("type") == "tab")
 			insertTab(chatWidget);

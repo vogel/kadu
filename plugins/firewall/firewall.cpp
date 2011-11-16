@@ -460,7 +460,7 @@ void Firewall::filterOutgoingMessage(Chat chat, QString &msg, bool &stop)
 		if (!chat)
 			continue;
 
-		if (contact.ownerBuddy().isAnonymous() && ChatWidgetManager::instance()->byChat(chat))
+		if (contact.ownerBuddy().isAnonymous() && ChatWidgetManager::instance()->byChat(chat, false))
 			Passed.insert(contact);
 	}
 
@@ -480,7 +480,7 @@ void Firewall::filterOutgoingMessage(Chat chat, QString &msg, bool &stop)
 
 			if (!SecuredTemporaryAllowed.contains(buddy))
 			{
-				switch (QMessageBox::warning(ChatWidgetManager::instance()->byChat(chat), "Kadu",
+				switch (QMessageBox::warning(ChatWidgetManager::instance()->byChat(chat, false), "Kadu",
 						tr("Are you sure you want to send this message?"), tr("&Yes"), tr("Yes and allow until chat closed"), tr("&No"), 2, 2))
 				{
 						default:

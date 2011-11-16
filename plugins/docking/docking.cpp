@@ -251,7 +251,7 @@ void DockingManager::hideKaduWindow()
 void DockingManager::openPendingMessages()
 {
 	const Message &message = PendingMessagesManager::instance()->firstPendingMessage();
-	ChatWidget * const chatWidget = ChatWidgetManager::instance()->openChat(message.messageChat());
+	ChatWidget * const chatWidget = ChatWidgetManager::instance()->byChat(message.messageChat(), true);
 	if (chatWidget)
 		chatWidget->activate();
 }

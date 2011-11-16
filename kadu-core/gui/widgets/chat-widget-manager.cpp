@@ -163,7 +163,7 @@ void ChatWidgetManager::load()
 		if (chatId.isNull())
 			continue;
 
-		openChat(ChatManager::instance()->byUuid(chatId));
+		byChat(ChatManager::instance()->byUuid(chatId), true);
 	}
 }
 
@@ -194,11 +194,22 @@ const QHash<Chat, ChatWidget *> & ChatWidgetManager::chats() const
 	return Chats;
 }
 
-ChatWidget * ChatWidgetManager::byChat(const Chat &chat) const
+ChatWidget * ChatWidgetManager::byChat(const Chat &chat, const bool create)
 {
-	return Chats.contains(chat)
-			? Chats.value(chat)
-			: 0;
+	if (!chat)
+		return 0;
+
+	if (Chats.contains(chat))
+		return Chats.value(chat);
+
+	if (!create)
+		return 0;
+
+	ChatWidget * const chatWidget = createChatWidget(chat);
+	if (chatWidget)
+		Chats.insert(chat, chatWidget);
+
+	return chatWidget;
 }
 
 ChatWidget * ChatWidgetManager::createChatWidget(const Chat &chat)
@@ -225,6 +236,12 @@ ChatWidget * ChatWidgetManager::createChatWidget(const Chat &chat)
 //		Contact contact = chatWidget->chat().contacts().toContact();
 //		BuddyPreferredManager::instance()->updatePreferred(contact.ownerBuddy());
 //	}
+
+	const QList<MessageRenderInfo *> &messages = readPendingMessages(chat);
+	if (!messages.isEmpty())
+		// TODO: Lame API
+		if (0 == chatWidget->countMessages())
+			chatWidget->appendMessages(messages, true);
 
 	emit chatWidgetCreated(chatWidget);
 
@@ -253,18 +270,6 @@ void ChatWidgetManager::chatWidgetDestroyed()
 	emit chatWidgetDestroying(chatWidget);
 }
 
-ChatWidget * ChatWidgetManager::openChatWidget(const Chat &chat)
-{
-	if (!chat)
-		return 0;
-
-	ChatWidget *chatWidget = byChat(chat);
-	if (!chatWidget)
-		chatWidget = createChatWidget(chat);
-
-	return chatWidget;
-}
-
 QList<MessageRenderInfo *> ChatWidgetManager::readPendingMessages(const Chat &chat)
 {
 	const Chat &aggregateChat = AggregateChatManager::instance()->aggregateChat(chat);
@@ -282,27 +287,9 @@ QList<MessageRenderInfo *> ChatWidgetManager::readPendingMessages(const Chat &ch
 	return messages;
 }
 
-ChatWidget * ChatWidgetManager::openChat(const Chat &chat)
-{
-	if (!chat)
-		return 0;
-
-	ChatWidget *chatWidget = openChatWidget(chat);
-	if (!chatWidget)
-		return 0;
-
-	const QList<MessageRenderInfo *> &messages = readPendingMessages(chat);
-	if (!messages.isEmpty())
-		// TODO: Lame API
-		if (0 == chatWidget->countMessages())
-			chatWidget->appendMessages(messages, true);
-
-	return chatWidget;
-}
-
 void ChatWidgetManager::closeChat(const Chat &chat)
 {
-	ChatWidget *chatWidget = byChat(chat);
+	ChatWidget * const chatWidget = byChat(chat, false);
 	if (chatWidget && chatWidget->container())
 		chatWidget->container()->closeChatWidget(chatWidget);
 }
@@ -333,8 +320,8 @@ void ChatWidgetManager::messageReceived(const Message &message)
 {
 	kdebugf();
 
-	Chat chat = message.messageChat();
-	ChatWidget *chatWidget = byChat(chat);
+	const Chat &chat = message.messageChat();
+	ChatWidget *chatWidget = byChat(chat, false);
 	if (chatWidget)
 	{
 		MessageRenderInfo *messageRenderInfo = new MessageRenderInfo(message);
@@ -357,11 +344,13 @@ void ChatWidgetManager::messageReceived(const Message &message)
 			}
 
 			// TODO: it is lame
-			openChat(chat);
-			chatWidget = byChat(chat);
+			chatWidget = byChat(chat, true);
 
-			MessageRenderInfo *messageRenderInfo = new MessageRenderInfo(message);
-			chatWidget->newMessage(messageRenderInfo);
+			if (chatWidget)
+			{
+				MessageRenderInfo *messageRenderInfo = new MessageRenderInfo(message);
+				chatWidget->newMessage(messageRenderInfo);
+			}
 		}
 		else
 		{
@@ -376,18 +365,11 @@ void ChatWidgetManager::messageReceived(const Message &message)
 
 void ChatWidgetManager::messageSent(const Message &message)
 {
-	Chat chat = message.messageChat();
-	ChatWidget *chatWidget = byChat(chat);
-	MessageRenderInfo *messageRenderInfo = new MessageRenderInfo(message);
-
-	if (!chatWidget)
-	{
-		openChat(chat);
-		chatWidget = byChat(chat);
-	}
-
+	const Chat &chat = message.messageChat();
+	ChatWidget * const chatWidget = byChat(chat, true);
 	if (!chatWidget)
 		return;
 
+	MessageRenderInfo * const messageRenderInfo = new MessageRenderInfo(message);
 	chatWidget->appendMessage(messageRenderInfo);
 }

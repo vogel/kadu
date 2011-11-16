@@ -58,7 +58,6 @@ class KADUAPI ChatWidgetManager : public QObject, ConfigurationAwareObject, Stor
 	virtual ~ChatWidgetManager();
 
 	ChatWidget * createChatWidget(const Chat &chat);
-	ChatWidget * openChatWidget(const Chat &chat);
 
 	QList<MessageRenderInfo *> readPendingMessages(const Chat &chat);
 
@@ -82,13 +81,11 @@ public:
 	ChatWidgetActions * actions() { return Actions; }
 
 	const QHash<Chat, ChatWidget *> & chats() const;
-	ChatWidget * byChat(const Chat &chat) const;
+	ChatWidget * byChat(const Chat &chat, const bool create);
 
 public slots:
 	// for imagelink module
 	void messageReceived(const Message &message);
-
-	ChatWidget * openChat(const Chat &chat);
 
 	void closeChat(const Chat &chat);
 	void closeAllChats(const Buddy &buddy);

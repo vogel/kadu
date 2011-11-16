@@ -190,7 +190,7 @@ void FileTransferManager::acceptFileTransfer(FileTransfer transfer)
 			QWidget *parent = 0;
 			Chat chat = ChatManager::instance()->findChat(ContactSet(transfer.peer()), false);
 			if (chat)
-				parent = ChatWidgetManager::instance()->byChat(chat);
+				parent = ChatWidgetManager::instance()->byChat(chat, false);
 
 			QString question;
 			question = tr("File %1 already exists.").arg(fileName);

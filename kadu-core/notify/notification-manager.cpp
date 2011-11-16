@@ -403,7 +403,7 @@ void NotificationManager::messageReceived(const Message &message)
 {
 	kdebugf();
 
-	ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(message.messageChat());
+	ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(message.messageChat(), false);
 	if (!chatWidget)
 		notify(new MessageNotification(MessageNotification::NewChat, message));
 	else if (!NewMessageOnlyIfInactive || !_isWindowActiveOrFullyVisible(chatWidget))

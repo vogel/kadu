@@ -722,7 +722,7 @@ void HistoryWindow::showDetailsPopupMenu(const QPoint &pos)
 void HistoryWindow::openChat()
 {
 	const Chat &chat = ChatsTree->currentIndex().data(ChatRole).value<Chat>();
-	ChatWidget * const chatWidget = ChatWidgetManager::instance()->openChat(chat);
+	ChatWidget * const chatWidget = ChatWidgetManager::instance()->byChat(chat, true);
 	if (chatWidget)
 		chatWidget->activate();
 }

@@ -35,7 +35,7 @@ void ChatNotification::openChat()
 {
 	close();
 
-	ChatWidget * const chatWidget = ChatWidgetManager::instance()->openChat(chat());
+	ChatWidget * const chatWidget = ChatWidgetManager::instance()->byChat(chat(), true);
 	if (chatWidget)
 		chatWidget->activate();
 }

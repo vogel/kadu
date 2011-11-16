@@ -245,7 +245,7 @@ void OpenChatWith::openChat()
 	const Chat &chat = ChatManager::instance()->findChat(contacts);
 	if (chat)
 	{
-		ChatWidget * const chatWidget = ChatWidgetManager::instance()->openChat(chat);
+		ChatWidget * const chatWidget = ChatWidgetManager::instance()->byChat(chat, true);
 		if (chatWidget)
 			chatWidget->activate();
 
