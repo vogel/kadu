@@ -31,6 +31,7 @@
 #include "accounts/account.h"
 #include "buddies/buddy.h"
 #include "buddies/buddy-preferred-manager.h"
+#include "chat/chat.h"
 #include "chat/message/pending-messages-manager.h"
 #include "contacts/contact.h"
 #include "gui/widgets/avatar-painter.h"
@@ -109,16 +110,30 @@ bool TalkablePainter::useBold() const
 
 bool TalkablePainter::showMessagePixmap() const
 {
-	if (Index.parent().isValid()) // contact
+	switch (Index.data(ItemTypeRole).toUInt())
 	{
-		const Contact &contact = Index.data(ContactRole).value<Contact>();
-		return contact && PendingMessagesManager::instance()->hasPendingMessagesForContact(contact);
+		case ChatRole:
+		{
+			const Chat &chat = Index.data(ChatRole).value<Chat>();
+			if (!chat)
+				return false;
+			if (chat.unreadMessagesCount() > 0)
+				return true;
+			return PendingMessagesManager::instance()->hasPendingMessagesForChat(chat);
+		}
+		case BuddyRole:
+		{
+			const Buddy &buddy = Index.data(BuddyRole).value<Buddy>();
+			return buddy && PendingMessagesManager::instance()->hasPendingMessagesForBuddy(buddy);
+		}
+		case ContactRole:
+		{
+			const Contact &contact = Index.data(ContactRole).value<Contact>();
+			return contact && PendingMessagesManager::instance()->hasPendingMessagesForContact(contact);
+		}
 	}
-	else
-	{
-		const Buddy &buddy = Index.data(BuddyRole).value<Buddy>();
-		return buddy && PendingMessagesManager::instance()->hasPendingMessagesForBuddy(buddy);
-	}
+
+	return false;
 }
 
 bool TalkablePainter::showAccountName() const
