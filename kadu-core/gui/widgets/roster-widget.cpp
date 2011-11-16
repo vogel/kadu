@@ -29,6 +29,8 @@
 #include "buddies/model/buddies-model.h"
 #include "buddies/model/buddies-model-proxy.h"
 #include "chat/filter/chat-named-filter.h"
+#include "chat/filter/chat-or-filter.h"
+#include "chat/filter/chat-unread-filter.h"
 #include "chat/filter/group-chat-filter.h"
 #include "chat/model/chats-model.h"
 #include "chat/model/chats-proxy-model.h"
@@ -239,9 +241,17 @@ ModelChain * RosterWidget::createChatsModelChain()
 
 	ChatsProxyModel *chatsProxyModel = new ChatsProxyModel(chain);
 
+	ChatOrFilter *chatOrFilter = new ChatOrFilter(chatsProxyModel);
+
 	ChatNamedFilter *chatNamedFilter = new ChatNamedFilter(chatsProxyModel);
 	chatNamedFilter->setEnabled(true);
-	chatsProxyModel->addFilter(chatNamedFilter);
+	chatOrFilter->addFilter(chatNamedFilter);
+
+	ChatUnreadFilter *chatUnreadFilter = new ChatUnreadFilter(chatsProxyModel);
+	chatUnreadFilter->setEnabled(true);
+	chatOrFilter->addFilter(chatUnreadFilter);
+
+	chatsProxyModel->addFilter(chatOrFilter);
 
 	ChatGroupFilter = new GroupChatFilter(chatsProxyModel);
 	connect(GroupBar, SIGNAL(currentGroupChanged(Group)), ChatGroupFilter, SLOT(setGroup(Group)));
