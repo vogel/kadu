@@ -64,7 +64,6 @@
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-dialog.h"
 #include "misc/path-conversion.h"
-#include "protocols/services/chat-service.h"
 
 #include "debug.h"
 
@@ -128,6 +127,8 @@ History::History() :
 	connect(AccountManager::instance(), SIGNAL(accountUnregistered(Account)),
 		this, SLOT(accountUnregistered(Account)));
 	connect(MessageManager::instance(), SIGNAL(messageReceived(Message)),
+		this, SLOT(enqueueMessage(Message)));
+	connect(MessageManager::instance(), SIGNAL(messageSent(Message)),
 		this, SLOT(enqueueMessage(Message)));
 
 	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetCreated(ChatWidget *)), this, SLOT(chatCreated(ChatWidget *)));
@@ -238,11 +239,6 @@ void History::accountRegistered(Account account)
 
 	connect(account, SIGNAL(buddyStatusChanged(Contact, Status)),
 			this, SLOT(contactStatusChanged(Contact, Status)));
-
-	ChatService *service = account.protocolHandler()->chatService();
-	if (service)
-		connect(service, SIGNAL(messageSent(const Message &)),
-				this, SLOT(enqueueMessage(const Message &)));
 }
 
 void History::accountUnregistered(Account account)

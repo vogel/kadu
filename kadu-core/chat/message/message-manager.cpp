@@ -55,6 +55,8 @@ void MessageManager::accountRegistered(Account account)
 
 	connect(chatService, SIGNAL(messageReceived(const Message &)),
 	        this, SLOT(messageReceivedSlot(const Message &)));
+	connect(chatService, SIGNAL(messageSent(const Message &)),
+	        this, SIGNAL(messageSent(const Message &)));
 }
 
 void MessageManager::accountUnregistered(Account account)
@@ -69,6 +71,8 @@ void MessageManager::accountUnregistered(Account account)
 
 	disconnect(chatService, SIGNAL(messageReceived(const Message &)),
 	        this, SLOT(messageReceivedSlot(const Message &)));
+	disconnect(chatService, SIGNAL(messageSent(const Message &)),
+	        this, SIGNAL(messageSent(const Message &)));
 }
 
 void MessageManager::messageReceivedSlot(const Message &message)

@@ -58,7 +58,6 @@
 #include "plugins/plugins-manager.h"
 #include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
-#include "protocols/services/chat-service.h"
 #include "status/status-container-manager.h"
 #include "status/status-setter.h"
 #include "status/status-type.h"
@@ -470,11 +469,6 @@ void Core::accountRegistered(Account account)
 	if (!protocol)
 		return;
 
-	ChatService *chatService = protocol->chatService();
-	if (chatService)
-		connect(chatService, SIGNAL(messageSent(const Message &)),
-			this, SIGNAL(messageSent(const Message &)));
-
 	connect(protocol, SIGNAL(connecting(Account)), this, SIGNAL(connecting()));
 	connect(protocol, SIGNAL(connected(Account)), this, SIGNAL(connected()));
 	connect(protocol, SIGNAL(disconnected(Account)), this, SIGNAL(disconnected()));
@@ -486,11 +480,6 @@ void Core::accountUnregistered(Account account)
 
 	if (protocol)
 	{
-		ChatService *chatService = protocol->chatService();
-		if (chatService)
-			disconnect(chatService, SIGNAL(messageSent(const Message &)),
-				this, SIGNAL(messageSent(const Message &)));
-
 		disconnect(protocol, SIGNAL(connecting(Account)), this, SIGNAL(connecting()));
 		disconnect(protocol, SIGNAL(connected(Account)), this, SIGNAL(connected()));
 		disconnect(protocol, SIGNAL(disconnected(Account)), this, SIGNAL(disconnected()));

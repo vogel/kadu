@@ -49,6 +49,7 @@ public:
 
 signals:
 	void messageReceived(const Message &message);
+	void messageSent(const Message &message);
 
 };
 

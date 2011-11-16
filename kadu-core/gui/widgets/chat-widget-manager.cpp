@@ -67,7 +67,7 @@ ChatWidgetManager::ChatWidgetManager()
 
 	connect(MessageManager::instance(), SIGNAL(messageReceived(const Message &)),
 			this, SLOT(messageReceived(const Message &)));
-	connect(Core::instance(), SIGNAL(messageSent(const Message &)),
+	connect(MessageManager::instance(), SIGNAL(messageSent(const Message &)),
 			this, SLOT(messageSent(const Message &)));
 
 	Actions = new ChatWidgetActions(this);
