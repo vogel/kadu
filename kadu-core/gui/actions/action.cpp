@@ -30,7 +30,6 @@
 #include "gui/hot-key.h"
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
-#include "protocols/services/chat-service.h"
 
 #include "action.h"
 
