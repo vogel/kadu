@@ -243,7 +243,13 @@ void PendingMessagesManager::loaded()
 {
 	SimpleManager<Message>::loaded();
 
-	// just ensure that all owner buddies are managed - we need them to be shown on contact list
 	foreach (const Message &message, items())
+	{
+		// just ensure that all owner buddies are managed - we need them to be shown on contact list
 		BuddyManager::instance()->byContact(message.messageSender(), ActionCreateAndAdd);
+
+		// each pending message is unread message of its chat
+		const Chat &chat = message.messageChat();
+		chat.setUnreadMessagesCount(chat.unreadMessagesCount() + 1);
+	}
 }
