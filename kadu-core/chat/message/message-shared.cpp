@@ -127,9 +127,10 @@ void MessageShared::setStatus(MessageStatus status)
 
 	if (status != Status)
 	{
+		MessageStatus oldStatus = Status;
 		Status = status;
 		dataUpdated();
-		emit statusChanged(Status);
+		emit statusChanged(oldStatus);
 	}
 }
 

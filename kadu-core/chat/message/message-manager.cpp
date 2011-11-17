@@ -92,12 +92,16 @@ void MessageManager::itemAboutToBeAdded(Message item)
 
 void MessageManager::itemAdded(Message item)
 {
+	connect(item, SIGNAL(updated()), this, SLOT(messageDataUpdated()));
+	connect(item, SIGNAL(statusChanged(MessageStatus)), this, SLOT(messageStatusChangedSlot(MessageStatus)));
 	emit messageAdded(item);
 }
 
 void MessageManager::itemAboutToBeRemoved(Message item)
 {
 	emit messageAboutToBeRemoved(item);
+	disconnect(item, SIGNAL(updated()), this, SLOT(messageDataUpdated()));
+	disconnect(item, SIGNAL(statusChanged(MessageStatus)), this, SLOT(messageStatusChangedSlot(MessageStatus)));
 }
 
 void MessageManager::itemRemoved(Message item)
@@ -112,4 +116,13 @@ void MessageManager::messageDataUpdated()
 	Message message(sender());
 	if (message)
 		emit messageUpdated(message);
+}
+
+void MessageManager::messageStatusChangedSlot(MessageStatus previousStatus)
+{
+	QMutexLocker locker(&mutex());
+
+	Message message(sender());
+	if (message)
+		emit messageStatusChanged(message, previousStatus);
 }

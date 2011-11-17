@@ -40,6 +40,7 @@ class KADUAPI MessageManager : public QObject, public SimpleManager<Message>, Ac
 
 private slots:
 	void messageDataUpdated();
+	void messageStatusChangedSlot(MessageStatus previousStatus);
 
 	void messageReceivedSlot(const Message &message);
 
@@ -70,6 +71,7 @@ signals:
 	void messageRemoved(const Message &message);
 
 	void messageUpdated(const Message &message);
+	void messageStatusChanged(const Message &message, MessageStatus previousStatus);
 
 };
 
