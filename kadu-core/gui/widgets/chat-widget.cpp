@@ -43,6 +43,7 @@
 #include "buddies/buddy-set.h"
 #include "chat/chat-geometry-data.h"
 #include "chat/chat-manager.h"
+#include "chat/message/message-manager.h"
 #include "chat/message/message-render-info.h"
 #include "chat/type/chat-type-manager.h"
 #include "configuration/chat-configuration-holder.h"
@@ -424,10 +425,13 @@ void ChatWidget::appendSystemMessage(const QString &rawContent, const QString &b
 	message.setType(MessageTypeSystem);
 	message.setContent(rawContent);
 	message.setSendDate(QDateTime::currentDateTime());
+	message.setStatus(MessageStatusReceived);
 	MessageRenderInfo *messageRenderInfo = new MessageRenderInfo(message);
 	messageRenderInfo->setBackgroundColor(backgroundColor)
 		.setFontColor(fontColor)
 		.setNickColor(fontColor);
+
+	MessageManager::instance()->addItem(message);
 
 	MessagesView->appendMessage(messageRenderInfo);
 }
@@ -750,9 +754,12 @@ void ChatWidget::contactActivityChanged(ChatStateService::ContactActivity state,
 		message.setMessageChat(CurrentChat);
 		message.setType(MessageTypeSystem);
 		message.setMessageSender(contact);
+		message.setStatus(MessageStatusReceived);
 		message.setContent(msg);
 		message.setSendDate(QDateTime::currentDateTime());
 		message.setReceiveDate(QDateTime::currentDateTime());
+
+		MessageManager::instance()->addItem(message);
 
 		MessagesView->appendMessage(message);
 	}

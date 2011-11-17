@@ -22,6 +22,7 @@
 
 #include <QtCore/QString>
 
+#include "chat/message/message-manager.h"
 #include "chat/message/message-render-info.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact-set.h"
@@ -146,6 +147,8 @@ void ImageLink::insertCodeIntoChatWindow(Chat chat, Contact sender, const QStrin
 	message.setContent(code);
 	message.setReceiveDate(QDateTime::currentDateTime());
 	message.setSendDate(QDateTime::currentDateTime());
+
+	MessageManager::instance()->addItem(message);
 
 	ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(chat, false);
 	if (!chatWidget)

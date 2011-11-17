@@ -82,6 +82,8 @@ bool MessageManager::shouldStore()
 
 void MessageManager::messageReceivedSlot(const Message &message)
 {
+	addItem(message);
+
 	emit messageReceived(message);
 }
 

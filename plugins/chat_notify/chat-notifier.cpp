@@ -17,6 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "chat/message/message-manager.h"
 #include "chat/message/message-render-info.h"
 #include "contacts/contact-set.h"
 #include "gui/widgets/chat-widget.h"
@@ -53,6 +54,8 @@ void ChatNotifier::sendNotificationToChatWidget(Notification *notification, Chat
 	message.setStatus(MessageStatusReceived);
 	message.setType(MessageTypeSystem);
 	message.setPending(false);
+
+	MessageManager::instance()->addItem(message);
 
 	chatWidget->appendMessage(new MessageRenderInfo(message));
 }
