@@ -36,9 +36,11 @@
 
 #include "activate.h"
 
+#include "tabs.h"
+
 #include "tabwidget.h"
 
-TabWidget::TabWidget()
+TabWidget::TabWidget(TabsManager *manager) : Manager(manager)
 {
 	setWindowRole("kadu-tabs");
 
@@ -93,6 +95,25 @@ void TabWidget::activateChatWidget(ChatWidget *chatWidget)
 
 	setCurrentIndex(index);
 	chatWidget->edit()->setFocus();
+}
+
+void TabWidget::alertChatWidget(ChatWidget *chatWidget)
+{
+	if (!chatWidget)
+		return;
+
+	if (currentWidget() == chatWidget && _isWindowActiveOrFullyVisible(this))
+	{
+		chatWidget->chat().setUnreadMessagesCount(0);
+		return;
+	}
+
+	if (!Manager->ChatsWithNewMessages.contains(chatWidget))
+	{
+		Manager->ChatsWithNewMessages.append(chatWidget);
+		if (!Manager->Timer.isActive())
+			QMetaObject::invokeMethod(Manager, "onTimer", Qt::QueuedConnection);
+	}
 }
 
 void TabWidget::closeChatWidget(ChatWidget *chatWidget)

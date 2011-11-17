@@ -244,6 +244,31 @@ void SingleWindow::activateChatWidget(ChatWidget *chatWidget)
 	chatWidget->edit()->setFocus();
 }
 
+void SingleWindow::alertChatWidget(ChatWidget *chatWidget)
+{
+	if (!chatWidget)
+		return;
+
+	if (chatWidget == tabs->currentWidget() && _isWindowActiveOrFullyVisible(this))
+	{
+		chatWidget->chat().setUnreadMessagesCount(0);
+		return;
+	}
+
+	int index = tabs->indexOf(chatWidget);
+	tabs->setTabIcon(index, KaduIcon("protocols/common/message").icon());
+
+	if (config_file.readBoolEntry("SingleWindow", "NumMessagesInTab", false))
+	{
+		QString title = tabs->tabText(index);
+		int pos = title.indexOf(" [");
+		if (pos > -1)
+			title.truncate(pos);
+		title += QString(" [%1]").arg(chatWidget->chat().unreadMessagesCount());
+		tabs->setTabText(index, title);
+	}
+}
+
 void SingleWindow::closeChatWidget(ChatWidget *chatWidget)
 {
 	if (!chatWidget)
@@ -252,30 +277,6 @@ void SingleWindow::closeChatWidget(ChatWidget *chatWidget)
 	int index = tabs->indexOf(chatWidget);
 	if (index >= 0)
 		closeTab(index);
-}
-
-void SingleWindow::onNewMessage(Chat chat)
-{
-	ChatWidget *w = ChatWidgetManager::instance()->byChat(chat, false);
-	if (w != tabs->currentWidget())
-	{
-		int index = tabs->indexOf(w);
-		tabs->setTabIcon(index, KaduIcon("protocols/common/message").icon());
-
-		if (config_file.readBoolEntry("SingleWindow", "NumMessagesInTab", false))
-		{
-			QString title = tabs->tabText(index);
-			int pos = title.indexOf(" [");
-			if (pos > -1)
-				title.truncate(pos);
-			title += QString(" [%1]").arg(w->chat().unreadMessagesCount());
-			tabs->setTabText(index, title);
-		}
-	}
-	else
-	{
-		w->chat().setUnreadMessagesCount(0);
-	}
 }
 
 void SingleWindow::onTabChange(int index)

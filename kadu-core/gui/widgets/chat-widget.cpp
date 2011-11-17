@@ -447,10 +447,13 @@ void ChatWidget::appendSystemMessage(const QString &rawContent, const QString &b
 void ChatWidget::newMessage(const Message &message)
 {
 	MessagesView->appendMessage(message);
-	if (message.type() == MessageTypeReceived || message.type() == MessageTypeSystem)
-		LastReceivedMessageTime = QDateTime::currentDateTime();
 
- 	emit messageReceived(CurrentChat);
+	if (message.type() == MessageTypeReceived || message.type() == MessageTypeSystem)
+	{
+		LastReceivedMessageTime = QDateTime::currentDateTime();
+		if (Container)
+			Container->alertChatWidget(this);
+	}
 }
 
 void ChatWidget::resetEditBox()

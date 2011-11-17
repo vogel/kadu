@@ -91,7 +91,7 @@ TabsManager::TabsManager(QObject *parent) :
 
 	connect(&Timer, SIGNAL(timeout()), this, SLOT(onTimer()));
 
-	TabDialog = new TabWidget();
+	TabDialog = new TabWidget(this);
 	TabDialog->setContextMenuPolicy(Qt::CustomContextMenu);
 	connect(TabDialog, SIGNAL(currentChanged(int)), this, SLOT(onTabChange(int)));
 	connect(TabDialog, SIGNAL(contextMenu(QWidget *, const QPoint &)),
@@ -212,7 +212,6 @@ void TabsManager::onDestroyingChat(ChatWidget* chat)
 	DetachedChats.removeAll(chat);
 	ChatsWithNewMessages.removeAll(chat);
 	disconnect(chat->edit(), SIGNAL(keyPressed(QKeyEvent*, CustomInput*, bool&)), TabDialog, SLOT(chatKeyPressed(QKeyEvent*, CustomInput*, bool&)));
-	disconnect(chat, SIGNAL(messageReceived(Chat)), this, SLOT(onMessageReceived(Chat)));
 	disconnect(chat, SIGNAL(closed()), this, SLOT(closeChat()));
 	disconnect(chat, SIGNAL(iconChanged()), this, SLOT(onIconChanged()));
 	disconnect(chat, SIGNAL(titleChanged(ChatWidget *, const QString &)), this, SLOT(onTitleChanged(ChatWidget *, const QString &)));
@@ -267,29 +266,6 @@ void TabsManager::onTabChange(int index)
 	chat->chat().setUnreadMessagesCount(0);
 	// ustawiamy focus na pole edycji chata
 	chat->edit()->setFocus();
-}
-
-void TabsManager::onMessageReceived(Chat chat)
-{
-	kdebugf();
-
-	ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(chat, false);
-	if (!chatWidget)
-		return;
-
-	if (TabDialog->currentWidget() != chatWidget || !_isWindowActiveOrFullyVisible(TabDialog))
-	{
-		if (!ChatsWithNewMessages.contains(chatWidget))
-		{
-			ChatsWithNewMessages.append(chatWidget);
-			if (!Timer.isActive())
-				QMetaObject::invokeMethod(this, "onTimer", Qt::QueuedConnection);
-		}
-	}
-	else
-		chatWidget->chat().setUnreadMessagesCount(0);
-
-	kdebugf2();
 }
 
 void TabsManager::onNewTab(QAction *sender, bool toggled)
@@ -371,8 +347,6 @@ void TabsManager::insertTab(ChatWidget* chat)
 
 	connect(chat->edit(), SIGNAL(keyPressed(QKeyEvent*, CustomInput*, bool&)),
 			TabDialog, SLOT(chatKeyPressed(QKeyEvent*, CustomInput*, bool&)));
-	// Podlaczamy sie do nowej wiadomości w chacie, tylko jesli dodany on zostal do kart
-	connect(chat, SIGNAL(messageReceived(Chat)),this, SLOT(onMessageReceived(Chat)));
 	connect(chat, SIGNAL(closed()), this, SLOT(closeChat()));
 	connect(chat, SIGNAL(iconChanged()), this, SLOT(onIconChanged()));
 	connect(chat, SIGNAL(titleChanged(ChatWidget * , const QString &)),

@@ -34,6 +34,7 @@ public:
 	~SingleWindow();
 
 	virtual void activateChatWidget(ChatWidget *chatWidget);
+	virtual void alertChatWidget(ChatWidget *chatWidget);
 	virtual void closeChatWidget(ChatWidget *chatWidget);
 
 	int rosterPosition() { return rosterPos; }

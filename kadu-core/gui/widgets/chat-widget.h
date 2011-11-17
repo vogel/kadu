@@ -172,7 +172,6 @@ public slots:
 signals:
 	void messageSendRequested(ChatWidget *chat);
 	void messageSent(ChatWidget *chat);
-	void messageReceived(Chat chat);
 
 	void fileDropped(Chat chat, const QString &fileName);
 

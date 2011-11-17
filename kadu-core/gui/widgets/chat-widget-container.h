@@ -47,6 +47,14 @@ public:
 	virtual void activateChatWidget(ChatWidget *chatWidget) = 0;
 
 	/**
+	 * @short Send alert about given chat widget in this ChatWidgetContainer.
+	 * @param chatWidget chat widget to send alert about
+	 *
+	 * Send alert about given chat widget in this ChatWidgetContainer.
+	 */
+	virtual void alertChatWidget(ChatWidget *chatWidget) = 0;
+
+	/**
 	 * @short Closes given chat widget in this ChatWidgetContainer.
 	 * @param chatWidget chat widget to close
 	 *

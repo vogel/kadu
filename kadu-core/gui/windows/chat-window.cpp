@@ -81,7 +81,6 @@ ChatWindow::ChatWindow(ChatWidget *chatWidget, QWidget *parent) :
 	connect(currentChatWidget, SIGNAL(closed()), this, SLOT(close()));
 	connect(currentChatWidget, SIGNAL(iconChanged()), this, SLOT(updateIcon()));
 	connect(currentChatWidget, SIGNAL(titleChanged(ChatWidget *, const QString &)), this, SLOT(updateTitle()));
-	connect(currentChatWidget, SIGNAL(messageReceived(Chat)), this, SLOT(alertNewMessage()));
 	connect(title_timer, SIGNAL(timeout()), this, SLOT(blinkTitle()));
 }
 
@@ -250,26 +249,6 @@ void ChatWindow::changeEvent(QEvent *event)
 	}
 }
 
-void ChatWindow::alertNewMessage()
-{
-	if (!_isWindowActiveOrFullyVisible(this))
-	{
-		if (blinkChatTitle)
-		{
-			if (!title_timer->isActive())
-				blinkTitle(); // blinking is able to show new messages also...
-			qApp->alert(this); // TODO: make notifier from this
-		}
-		else if (showNewMessagesNum) // ... so we check this condition as 'else'
-		{
-			showNewMessagesNumInTitle();
-			qApp->alert(this); // TODO: make notifier from this
-		}
-	}
-	else
-		currentChatWidget->chat().setUnreadMessagesCount(0);
-}
-
 void ChatWindow::setWindowTitle(const QString &title)
 {
 	// qt treats [*] as 'modified placeholder'
@@ -285,6 +264,28 @@ void ChatWindow::activateChatWidget(ChatWidget *chatWidget)
 
 	// we can be embeded in other window...
 	_activateWindow(window());
+}
+
+void ChatWindow::alertChatWidget(ChatWidget *chatWidget)
+{
+	Q_UNUSED(chatWidget)
+	Q_ASSERT(chatWidget == currentChatWidget);
+
+	if (_isWindowActiveOrFullyVisible(this))
+	{
+		currentChatWidget->chat().setUnreadMessagesCount(0);
+		return;
+	}
+
+	qApp->alert(this); // TODO: make notifier from this
+
+	if (blinkChatTitle)
+	{
+		if (!title_timer->isActive())
+			blinkTitle(); // blinking is able to show new messages also...
+	}
+	else if (showNewMessagesNum) // ... so we check this condition as 'else'
+		showNewMessagesNumInTitle();
 }
 
 void ChatWindow::closeChatWidget(ChatWidget *chatWidget)
