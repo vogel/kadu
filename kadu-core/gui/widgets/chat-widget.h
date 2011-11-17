@@ -76,7 +76,7 @@ class KADUAPI ChatWidget : public QWidget, public ConfigurationAwareObject
 
 	QString Title;
 
-	QDateTime LastMessageTime;
+	QDateTime LastReceivedMessageTime;
 
 	void createGui();
 	void createContactsList();
@@ -144,7 +144,7 @@ public:
 	 */
 	QIcon icon();
 
-	const QDateTime & lastMessageTime() const { return LastMessageTime; }
+	const QDateTime & lastReceivedMessageTime() const { return LastReceivedMessageTime; }
 
 	void kaduStoreGeometry();
 	void kaduRestoreGeometry();

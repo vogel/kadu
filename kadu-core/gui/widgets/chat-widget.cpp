@@ -411,7 +411,7 @@ void ChatWidget::appendMessages(const QList<Message> &messages, bool pending)
 	MessagesView->appendMessages(messageRenderInfos);
 
 	if (pending)
-		LastMessageTime = QDateTime::currentDateTime();
+		LastReceivedMessageTime = QDateTime::currentDateTime();
 }
 
 void ChatWidget::appendMessage(const Message &message, bool pending)
@@ -419,7 +419,7 @@ void ChatWidget::appendMessage(const Message &message, bool pending)
 	MessagesView->appendMessage(new MessageRenderInfo(message));
 
 	if (pending)
-		LastMessageTime = QDateTime::currentDateTime();
+		LastReceivedMessageTime = QDateTime::currentDateTime();
 }
 
 void ChatWidget::appendSystemMessage(const QString &rawContent, const QString &backgroundColor, const QString &fontColor)
@@ -444,7 +444,7 @@ void ChatWidget::appendSystemMessage(const QString &rawContent, const QString &b
 void ChatWidget::newMessage(const Message &message)
 {
 	MessagesView->appendMessage(message);
-	LastMessageTime = QDateTime::currentDateTime();
+	LastReceivedMessageTime = QDateTime::currentDateTime();
 
  	emit messageReceived(CurrentChat);
 }

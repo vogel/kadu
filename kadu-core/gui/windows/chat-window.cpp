@@ -179,7 +179,7 @@ void ChatWindow::closeEvent(QCloseEvent *e)
 		unsigned int period = config_file.readUnsignedNumEntry("Chat",
 			"ChatCloseTimerPeriod", 2);
 
-		if (QDateTime::currentDateTime() < currentChatWidget->lastMessageTime().addSecs(period))
+		if (QDateTime::currentDateTime() < currentChatWidget->lastReceivedMessageTime().addSecs(period))
 		{
 			if (!MessageDialog::ask(KaduIcon("dialog-question"), tr("Kadu"), tr("New message received, close window anyway?")))
 			{
