@@ -422,7 +422,11 @@ void ChatWidget::appendMessage(const Message &message)
 {
 	MessagesView->appendMessage(new MessageRenderInfo(message));
 	if (message.type() == MessageTypeReceived || message.type() == MessageTypeSystem)
+	{
 		LastReceivedMessageTime = QDateTime::currentDateTime();
+		if (Container)
+			Container->alertChatWidget(this);
+	}
 }
 
 void ChatWidget::appendSystemMessage(const QString &rawContent, const QString &backgroundColor, const QString &fontColor)
@@ -441,19 +445,6 @@ void ChatWidget::appendSystemMessage(const QString &rawContent, const QString &b
 	MessageManager::instance()->addItem(message);
 
 	MessagesView->appendMessage(messageRenderInfo);
-}
-
-/* invoked from outside when new message arrives, this is the window to the world */
-void ChatWidget::newMessage(const Message &message)
-{
-	MessagesView->appendMessage(message);
-
-	if (message.type() == MessageTypeReceived || message.type() == MessageTypeSystem)
-	{
-		LastReceivedMessageTime = QDateTime::currentDateTime();
-		if (Container)
-			Container->alertChatWidget(this);
-	}
 }
 
 void ChatWidget::resetEditBox()

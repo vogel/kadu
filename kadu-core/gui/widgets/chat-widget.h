@@ -117,8 +117,6 @@ public:
 
 	void appendSystemMessage(const QString &rawContent, const QString &backgroundColor, const QString &fontColor);
 
-	void newMessage(const Message &message);
-
 	void repaintMessages();
 
 	CustomInput * edit() const;

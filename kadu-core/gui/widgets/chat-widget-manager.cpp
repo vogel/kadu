@@ -287,7 +287,7 @@ void ChatWidgetManager::messageReceived(const Message &message)
 	const Chat &chat = message.messageChat();
 	ChatWidget *chatWidget = byChat(chat, false);
 	if (chatWidget)
-		chatWidget->newMessage(message);
+		chatWidget->appendMessage(message);
 	else
 	{
 		if (AutoRaise)
@@ -308,7 +308,7 @@ void ChatWidgetManager::messageReceived(const Message &message)
 			chatWidget = byChat(chat, true);
 
 			if (chatWidget)
-				chatWidget->newMessage(message);
+				chatWidget->appendMessage(message);
 		}
 		else
 		{
