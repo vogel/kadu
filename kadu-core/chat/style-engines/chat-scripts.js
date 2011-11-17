@@ -3,9 +3,10 @@
 // MessageStatus enum vaules identical with those defined in kadu-core/chat/message/message-common.h
 StatusUnknown = 0;
 StatusReceived = 1;
-StatusSent = 2;
-StatusDelivered = 3;
-StatusWontDeliver = 4;
+StatusRead = 2;
+StatusSent = 3;
+StatusDelivered = 4;
+StatusWontDeliver = 5;
 
 // ContactActivity enum vaules identical with those defined in protocols/services/chat-state-service.h
 StateActive = 0;
@@ -51,7 +52,7 @@ function kadu_appendMessage(html)
 	node.appendChild(documentFragment);
 	var body = document.getElementsByTagName('body')[0];
 	for (var k in scriptnodes)
-		body.appendChild(scriptnodes[k]);	
+		body.appendChild(scriptnodes[k]);
 }
 
 function kadu_takeScriptNodes(node)

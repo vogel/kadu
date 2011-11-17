@@ -28,9 +28,10 @@ enum MessageStatus
 {
 	MessageStatusUnknown = 0,
 	MessageStatusReceived = 1,
-	MessageStatusSent = 2,
-	MessageStatusDelivered = 3,
-	MessageStatusWontDeliver = 4,
+	MessageStatusRead = 2,
+	MessageStatusSent = 3,
+	MessageStatusDelivered = 4,
+	MessageStatusWontDeliver = 5
 };
 
 enum MessageType
@@ -38,7 +39,7 @@ enum MessageType
 	MessageTypeUnknown,
 	MessageTypeReceived,
 	MessageTypeSent,
-	MessageTypeSystem,
+	MessageTypeSystem
 };
 
 #endif // MESSAGE_COMMON_H
