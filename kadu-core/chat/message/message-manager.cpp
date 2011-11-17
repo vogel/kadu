@@ -75,8 +75,41 @@ void MessageManager::accountUnregistered(Account account)
 	        this, SIGNAL(messageSent(const Message &)));
 }
 
+bool MessageManager::shouldStore()
+{
+	return false;
+}
+
 void MessageManager::messageReceivedSlot(const Message &message)
 {
-	message.messageChat().setUnreadMessagesCount(message.messageChat().unreadMessagesCount() + 1);
 	emit messageReceived(message);
+}
+
+void MessageManager::itemAboutToBeAdded(Message item)
+{
+	emit messageAboutToBeAdded(item);
+}
+
+void MessageManager::itemAdded(Message item)
+{
+	emit messageAdded(item);
+}
+
+void MessageManager::itemAboutToBeRemoved(Message item)
+{
+	emit messageAboutToBeRemoved(item);
+}
+
+void MessageManager::itemRemoved(Message item)
+{
+	emit messageRemoved(item);
+}
+
+void MessageManager::messageDataUpdated()
+{
+	QMutexLocker locker(&mutex());
+
+	Message message(sender());
+	if (message)
+		emit messageUpdated(message);
 }
