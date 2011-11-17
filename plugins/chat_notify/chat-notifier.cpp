@@ -57,7 +57,7 @@ void ChatNotifier::sendNotificationToChatWidget(Notification *notification, Chat
 
 	MessageManager::instance()->addItem(message);
 
-	chatWidget->appendMessage(new MessageRenderInfo(message));
+	chatWidget->appendMessage(message);
 }
 
 void ChatNotifier::notify(Notification *notification)

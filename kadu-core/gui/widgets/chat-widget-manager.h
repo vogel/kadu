@@ -34,7 +34,6 @@
 
 class ChatWidget;
 class ChatWidgetActions;
-class MessageRenderInfo;
 class Protocol;
 
 /**
@@ -84,7 +83,7 @@ class KADUAPI ChatWidgetManager : public QObject, ConfigurationAwareObject, Stor
 	/**
 	 * @todo remove - reading pending messages should be out of scope of this class
 	 */
-	QList<MessageRenderInfo *> readPendingMessages(const Chat &chat);
+	QList<Message> readPendingMessages(const Chat &chat);
 
 private slots:
 	/**

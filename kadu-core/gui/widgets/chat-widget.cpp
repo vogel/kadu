@@ -402,17 +402,21 @@ QIcon ChatWidget::icon()
 	return KaduIcon("internet-group-chat").icon();
 }
 
-void ChatWidget::appendMessages(const QList<MessageRenderInfo *> &messages, bool pending)
+void ChatWidget::appendMessages(const QList<Message> &messages, bool pending)
 {
-	MessagesView->appendMessages(messages);
+	QList<MessageRenderInfo *> messageRenderInfos;
+	foreach (const Message &message, messages)
+		messageRenderInfos.append(new MessageRenderInfo(message));
+
+	MessagesView->appendMessages(messageRenderInfos);
 
 	if (pending)
 		LastMessageTime = QDateTime::currentDateTime();
 }
 
-void ChatWidget::appendMessage(MessageRenderInfo *message, bool pending)
+void ChatWidget::appendMessage(const Message &message, bool pending)
 {
-	MessagesView->appendMessage(message);
+	MessagesView->appendMessage(new MessageRenderInfo(message));
 
 	if (pending)
 		LastMessageTime = QDateTime::currentDateTime();
@@ -437,9 +441,9 @@ void ChatWidget::appendSystemMessage(const QString &rawContent, const QString &b
 }
 
 /* invoked from outside when new message arrives, this is the window to the world */
-void ChatWidget::newMessage(MessageRenderInfo *messageRenderInfo)
+void ChatWidget::newMessage(const Message &message)
 {
-	MessagesView->appendMessage(messageRenderInfo);
+	MessagesView->appendMessage(message);
 	LastMessageTime = QDateTime::currentDateTime();
 
  	emit messageReceived(CurrentChat);

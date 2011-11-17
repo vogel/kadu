@@ -33,6 +33,7 @@
 #include <QtGui/QWidget>
 
 #include "chat/chat.h"
+#include "chat/message/message.h"
 #include "configuration/configuration-aware-object.h"
 #include "protocols/services/chat-state-service.h"
 #include "exports.h"
@@ -116,16 +117,7 @@ public:
 
 	void appendSystemMessage(const QString &rawContent, const QString &backgroundColor, const QString &fontColor);
 
-	/**
-		\fn void newMessage(Account account, ContactList senders, const QString &message, time_t time)
-		Add new message to window
-
-		\param account account on which the message was received
-		\param senders list of sender
-		\param message message content
-		\param time czas
-		**/
-	void newMessage(MessageRenderInfo *message);
+	void newMessage(const Message &message);
 
 	void repaintMessages();
 
@@ -162,8 +154,8 @@ public:
 	void close();
 
 public slots:
-	void appendMessages(const QList<MessageRenderInfo *> &, bool pending = false);
-	void appendMessage(MessageRenderInfo *, bool pending = false);
+	void appendMessages(const QList<Message> &messages, bool pending = false);
+	void appendMessage(const Message &message, bool pending = false);
 
 	void sendMessage();
 	void colorSelectorAboutToClose();
