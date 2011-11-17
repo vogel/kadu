@@ -213,7 +213,7 @@ ChatWidget * ChatWidgetManager::createChatWidget(const Chat &chat)
 	if (!messages.isEmpty())
 		// TODO: Lame API
 		if (0 == chatWidget->countMessages())
-			chatWidget->appendMessages(messages, true);
+			chatWidget->appendMessages(messages);
 
 	return chatWidget;
 }

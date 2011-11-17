@@ -402,23 +402,26 @@ QIcon ChatWidget::icon()
 	return KaduIcon("internet-group-chat").icon();
 }
 
-void ChatWidget::appendMessages(const QList<Message> &messages, bool pending)
+void ChatWidget::appendMessages(const QList<Message> &messages)
 {
+	bool received = false;
+
 	QList<MessageRenderInfo *> messageRenderInfos;
 	foreach (const Message &message, messages)
+	{
+		received |= (message.type() == MessageTypeReceived || message.type() == MessageTypeSystem);
 		messageRenderInfos.append(new MessageRenderInfo(message));
+	}
 
 	MessagesView->appendMessages(messageRenderInfos);
-
-	if (pending)
+	if (received)
 		LastReceivedMessageTime = QDateTime::currentDateTime();
 }
 
-void ChatWidget::appendMessage(const Message &message, bool pending)
+void ChatWidget::appendMessage(const Message &message)
 {
 	MessagesView->appendMessage(new MessageRenderInfo(message));
-
-	if (pending)
+	if (message.type() == MessageTypeReceived || message.type() == MessageTypeSystem)
 		LastReceivedMessageTime = QDateTime::currentDateTime();
 }
 
@@ -444,7 +447,8 @@ void ChatWidget::appendSystemMessage(const QString &rawContent, const QString &b
 void ChatWidget::newMessage(const Message &message)
 {
 	MessagesView->appendMessage(message);
-	LastReceivedMessageTime = QDateTime::currentDateTime();
+	if (message.type() == MessageTypeReceived || message.type() == MessageTypeSystem)
+		LastReceivedMessageTime = QDateTime::currentDateTime();
 
  	emit messageReceived(CurrentChat);
 }

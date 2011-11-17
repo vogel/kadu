@@ -154,8 +154,8 @@ public:
 	void close();
 
 public slots:
-	void appendMessages(const QList<Message> &messages, bool pending = false);
-	void appendMessage(const Message &message, bool pending = false);
+	void appendMessages(const QList<Message> &messages);
+	void appendMessage(const Message &message);
 
 	void sendMessage();
 	void colorSelectorAboutToClose();
