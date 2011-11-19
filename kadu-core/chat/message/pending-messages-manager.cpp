@@ -97,19 +97,6 @@ QVector<Message> PendingMessagesManager::pendingMessagesForChat(const Chat &chat
 	return result;
 }
 
-QVector<Message> PendingMessagesManager::pendingMessages()
-{
-	QMutexLocker locker(&mutex());
-
-	QVector<Message> result;
-
-	foreach (const Message &message, items())
-		if (message.isPending())
-			result.append(message);
-
-	return result;
-}
-
 Message PendingMessagesManager::firstPendingMessage()
 {
 	QMutexLocker locker(&mutex());

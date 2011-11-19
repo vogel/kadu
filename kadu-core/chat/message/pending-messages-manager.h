@@ -72,7 +72,6 @@ public:
 	void deletePendingMessagesForChat(const Chat &chat);
 
 	QVector<Message> pendingMessagesForChat(const Chat &chat);
-	QVector<Message> pendingMessages();
 
 	Message firstPendingMessage();
 
