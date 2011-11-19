@@ -43,6 +43,7 @@
 #include <QtGui/QMouseEvent>
 
 #include "activate.h"
+#include "chat/message/message-manager.h"
 #include "chat/message/pending-messages-manager.h"
 #include "configuration/configuration-file.h"
 #include "core/core.h"
@@ -111,8 +112,10 @@ DockingManager::DockingManager() :
 
 	connect(icon_timer, SIGNAL(timeout()), this, SLOT(changeIcon()));
 
-	connect(PendingMessagesManager::instance(), SIGNAL(messageAdded(Message)), this, SLOT(pendingMessageAdded()));
-	connect(PendingMessagesManager::instance(), SIGNAL(messageRemoved(Message)), this, SLOT(pendingMessageDeleted()));
+	connect(MessageManager::instance(), SIGNAL(unreadMessageAdded(Message)),
+	        this, SLOT(unreadMessageAdded()));
+	connect(MessageManager::instance(), SIGNAL(unreadMessageRemoved(Message)),
+	        this, SLOT(unreadMessageRemoved()));
 
 	connect(Core::instance(), SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(searchingForTrayPosition(QPoint&)));
 
@@ -146,8 +149,10 @@ DockingManager::~DockingManager()
 {
 	kdebugf();
 
-	disconnect(PendingMessagesManager::instance(), SIGNAL(messageAdded(Message)), this, SLOT(pendingMessageAdded()));
-	disconnect(PendingMessagesManager::instance(), SIGNAL(messageRemoved(Message)), this, SLOT(pendingMessageDeleted()));
+	disconnect(MessageManager::instance(), SIGNAL(unreadMessageAdded(Message)),
+	           this, SLOT(unreadMessageAdded()));
+	disconnect(MessageManager::instance(), SIGNAL(unreadMessageRemoved(Message)),
+	           this, SLOT(unreadMessageRemoved()));
 
 //	disconnect(kadu, SIGNAL(searchingForTrayPosition(QPoint&)), this, SIGNAL(searchingForTrayPosition(QPoint&)));
 
@@ -164,7 +169,7 @@ DockingManager::~DockingManager()
 void DockingManager::changeIcon()
 {
 	kdebugf();
-	if (!PendingMessagesManager::instance()->hasPendingMessages() && !icon_timer->isActive())
+	if (!MessageManager::instance()->hasUnreadMessages() && !icon_timer->isActive())
 		return;
 
 	switch (newMessageIcon)
@@ -199,23 +204,23 @@ void DockingManager::changeIcon()
 	}
 }
 
-void DockingManager::pendingMessageAdded()
+void DockingManager::unreadMessageAdded()
 {
 	changeIcon();
 #ifdef Q_OS_MAC
-	MacDockingHelper::instance()->overlay(PendingMessagesManager::instance()->pendingMessages().count());
+	MacDockingHelper::instance()->overlay(MessageManager::instance()->unreadMessagesCount());
 	if (!NotificationManager::instance()->silentMode())
 		MacDockingHelper::instance()->startBounce();
 #endif
 }
 
-void DockingManager::pendingMessageDeleted()
+void DockingManager::unreadMessageRemoved()
 {
 #ifdef Q_OS_MAC
-	MacDockingHelper::instance()->overlay(PendingMessagesManager::instance()->pendingMessages().count());
+	MacDockingHelper::instance()->overlay(MessageManager::instance()->unreadMessagesCount());
 	MacDockingHelper::instance()->stopBounce();
 #endif
-	if (!PendingMessagesManager::instance()->hasPendingMessages())
+	if (!MessageManager::instance()->hasUnreadMessages())
 		if (CurrentDocker)
 			CurrentDocker->changeTrayIcon(defaultIcon());
 }
@@ -274,7 +279,7 @@ void DockingManager::trayMousePressEvent(QMouseEvent * e)
 		emit mousePressLeftButton();
 		kdebugm(KDEBUG_INFO, "minimized: %d, visible: %d\n", kadu->isMinimized(), kadu->isVisible());
 
-		if (PendingMessagesManager::instance()->hasPendingMessages() && (e->modifiers() != Qt::ControlModifier))
+		if (MessageManager::instance()->hasUnreadMessages() && (e->modifiers() != Qt::ControlModifier))
 		{
 			openPendingMessages();
 			return;
@@ -308,7 +313,7 @@ void DockingManager::statusIconChanged(const KaduIcon &icon)
 {
 	kdebugf();
 
-	if (PendingMessagesManager::instance()->hasPendingMessages() || icon_timer->isActive())
+	if (MessageManager::instance()->hasUnreadMessages() || icon_timer->isActive())
 		return;
 
 	if (CurrentDocker)
@@ -520,7 +525,7 @@ void DockingManager::dockIconClicked()
 {
 	QWidget *kadu = Core::instance()->kaduWindow()->window();
 
-	if (PendingMessagesManager::instance()->hasPendingMessages())
+	if (MessageManager::instance()->hasUnreadMessages())
 	{
 		openPendingMessages();
 		return;
