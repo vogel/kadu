@@ -91,15 +91,6 @@ void PendingMessagesManager::unreadMessageRemoved(const Message &message)
 	removeItem(message);
 }
 
-void PendingMessagesManager::deletePendingMessagesForChat(const Chat &chat)
-{
-	QMutexLocker locker(&mutex());
-
-	const QVector<Message> &messages = pendingMessagesForChat(chat);
-	foreach (Message message, messages)
-		removeItem(message);
-}
-
 QVector<Message> PendingMessagesManager::pendingMessagesForChat(const Chat &chat)
 {
 	QMutexLocker locker(&mutex());

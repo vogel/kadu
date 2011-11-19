@@ -73,7 +73,6 @@ public:
 	virtual QString storageNodeName() { return QLatin1String("PendingMessages"); }
 	virtual QString storageNodeItemName() { return QLatin1String("Message"); }
 
-	void deletePendingMessagesForChat(const Chat &chat);
 	QVector<Message> pendingMessagesForChat(const Chat &chat);
 
 };
