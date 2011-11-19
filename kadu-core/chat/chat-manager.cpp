@@ -41,22 +41,16 @@ ChatManager * ChatManager::Instance = 0;
 ChatManager *  ChatManager::instance()
 {
 	if (0 == Instance)
+	{
 		Instance = new ChatManager();
+		Instance->init();
+	}
 
 	return Instance;
 }
 
 ChatManager::ChatManager()
 {
-	foreach (const Message &message, MessageManager::instance()->allUnreadMessages())
-		unreadMessageAdded(message);
-
-	// for unknown reason queued collection is not possible here
-	// TODO: learn why
-	connect(MessageManager::instance(), SIGNAL(unreadMessageAdded(Message)),
-	        this, SLOT(unreadMessageAdded(Message)));
-	connect(MessageManager::instance(), SIGNAL(unreadMessageRemoved(Message)),
-	        this, SLOT(unreadMessageRemoved(Message)));
 }
 
 ChatManager::~ChatManager()
@@ -68,6 +62,17 @@ ChatManager::~ChatManager()
 
 	foreach (const Message &message, MessageManager::instance()->allUnreadMessages())
 		unreadMessageRemoved(message);
+}
+
+void ChatManager::init()
+{
+	foreach (const Message &message, MessageManager::instance()->allUnreadMessages())
+		unreadMessageAdded(message);
+
+	connect(MessageManager::instance(), SIGNAL(unreadMessageAdded(Message)),
+	        this, SLOT(unreadMessageAdded(Message)));
+	connect(MessageManager::instance(), SIGNAL(unreadMessageRemoved(Message)),
+	        this, SLOT(unreadMessageRemoved(Message)));
 }
 
 void ChatManager::itemAboutToBeRegistered(Chat item)

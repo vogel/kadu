@@ -40,27 +40,16 @@ ContactManager * ContactManager::Instance = 0;
 ContactManager * ContactManager::instance()
 {
 	if (0 == Instance)
+	{
 		Instance = new ContactManager();
+		Instance->init();
+	}
 
 	return Instance;
 }
 
 ContactManager::ContactManager()
 {
-	// needed for QueuedConnection
-	qRegisterMetaType<Contact>("Contact");
-
-	ContactParserTags::registerParserTags();
-
-	foreach (const Message &message, MessageManager::instance()->allUnreadMessages())
-		unreadMessageAdded(message);
-
-	// for unknown reason queued collection is needed here
-	// TODO: learn why
-	connect(MessageManager::instance(), SIGNAL(unreadMessageAdded(Message)),
-	        this, SLOT(unreadMessageAdded(Message)), Qt::QueuedConnection);
-	connect(MessageManager::instance(), SIGNAL(unreadMessageRemoved(Message)),
-	        this, SLOT(unreadMessageRemoved(Message)), Qt::QueuedConnection);
 }
 
 ContactManager::~ContactManager()
@@ -74,6 +63,22 @@ ContactManager::~ContactManager()
 		unreadMessageRemoved(message);
 
 	ContactParserTags::unregisterParserTags();
+}
+
+void ContactManager::init()
+{
+	// needed for QueuedConnection
+	qRegisterMetaType<Contact>("Contact");
+
+	ContactParserTags::registerParserTags();
+
+	foreach (const Message &message, MessageManager::instance()->allUnreadMessages())
+		unreadMessageAdded(message);
+
+	connect(MessageManager::instance(), SIGNAL(unreadMessageAdded(Message)),
+	        this, SLOT(unreadMessageAdded(Message)));
+	connect(MessageManager::instance(), SIGNAL(unreadMessageRemoved(Message)),
+	        this, SLOT(unreadMessageRemoved(Message)));
 }
 
 void ContactManager::idChanged(const QString &oldId)

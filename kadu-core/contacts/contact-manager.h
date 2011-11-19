@@ -46,6 +46,8 @@ class KADUAPI ContactManager : public QObject, public Manager<Contact>
 	ContactManager();
 	virtual ~ContactManager();
 
+	void init();
+
 	friend class ContactShared;
 	void detailsLoaded(Contact item);
 	void detailsUnloaded(Contact item);

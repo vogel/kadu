@@ -36,19 +36,26 @@ ProtocolsManager * ProtocolsManager::Instance = 0;
 ProtocolsManager * ProtocolsManager::instance()
 {
 	if (0 == Instance)
+	{
 		Instance = new ProtocolsManager();
+		Instance->init();
+	}
 
 	return Instance;
 }
 
 ProtocolsManager::ProtocolsManager()
 {
-	ConnectionErrorNotification::registerEvent();
 }
 
 ProtocolsManager::~ProtocolsManager()
 {
 	ConnectionErrorNotification::unregisterEvent();
+}
+
+void ProtocolsManager::init()
+{
+	ConnectionErrorNotification::registerEvent();
 }
 
 void ProtocolsManager::registerProtocolFactory(ProtocolFactory *factory)

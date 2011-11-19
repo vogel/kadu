@@ -16,7 +16,9 @@ class KADUAPI ProtocolsManager : public QObject
 	static ProtocolsManager * Instance;
 
 	ProtocolsManager();
-	~ProtocolsManager();
+	virtual ~ProtocolsManager();
+
+	void init();
 
 	QList<ProtocolFactory *> Factories;
 

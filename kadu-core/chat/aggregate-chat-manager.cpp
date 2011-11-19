@@ -32,19 +32,16 @@ AggregateChatManager * AggregateChatManager::Instance = 0;
 AggregateChatManager * AggregateChatManager::instance()
 {
 	if (!Instance)
+	{
 		Instance = new AggregateChatManager();
+		Instance->init();
+	}
 
 	return Instance;
 }
 
-
 AggregateChatManager::AggregateChatManager()
 {
-	connect(ChatManager::instance(), SIGNAL(chatAdded(Chat)), this, SLOT(chatAdded(Chat)));
-	connect(ChatManager::instance(), SIGNAL(chatRemoved(Chat)), this, SLOT(chatRemoved(Chat)));
-
-	foreach (const Chat &chat, ChatManager::instance()->allItems())
-		chatAdded(chat);
 }
 
 AggregateChatManager::~AggregateChatManager()
@@ -54,6 +51,15 @@ AggregateChatManager::~AggregateChatManager()
 
 	foreach (const Chat &chat, ChatManager::instance()->allItems())
 		chatRemoved(chat);
+}
+
+void AggregateChatManager::init()
+{
+	connect(ChatManager::instance(), SIGNAL(chatAdded(Chat)), this, SLOT(chatAdded(Chat)));
+	connect(ChatManager::instance(), SIGNAL(chatRemoved(Chat)), this, SLOT(chatRemoved(Chat)));
+
+	foreach (const Chat &chat, ChatManager::instance()->allItems())
+		chatAdded(chat);
 }
 
 void AggregateChatManager::chatAdded(const Chat &chat)

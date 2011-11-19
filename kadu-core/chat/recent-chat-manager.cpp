@@ -41,12 +41,24 @@ RecentChatManager * RecentChatManager::Instance = 0;
 RecentChatManager * RecentChatManager::instance()
 {
 	if (0 == Instance)
+	{
 		Instance = new RecentChatManager();
+		Instance->init();
+	}
 
 	return Instance;
 }
 
 RecentChatManager::RecentChatManager()
+{
+}
+
+RecentChatManager::~RecentChatManager()
+{
+	ConfigurationManager::instance()->unregisterStorableObject(this);
+}
+
+void RecentChatManager::init()
 {
 	setState(StateNotLoaded);
 	ConfigurationManager::instance()->registerStorableObject(this);
@@ -60,11 +72,6 @@ RecentChatManager::RecentChatManager()
 			this, SLOT(onNewMessage(Message)));
 	connect(MessageManager::instance(), SIGNAL(messageSent(Message)),
 			this, SLOT(onNewMessage(Message)));
-}
-
-RecentChatManager::~RecentChatManager()
-{
-	ConfigurationManager::instance()->unregisterStorableObject(this);
 }
 
 /**

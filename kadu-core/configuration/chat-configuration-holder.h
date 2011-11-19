@@ -34,6 +34,8 @@ class ChatConfigurationHolder : public ConfigurationHolder
 	static ChatConfigurationHolder *Instance;
 	explicit ChatConfigurationHolder();
 
+	void init();
+
 	bool AutoSend;
 	bool NiceDateFormat;
 	int EmoticonsStyle;

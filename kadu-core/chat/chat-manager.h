@@ -94,6 +94,8 @@ class KADUAPI ChatManager : public QObject, public Manager<Chat>
 	ChatManager();
 	virtual ~ChatManager();
 
+	void init();
+
 	friend class ChatShared;
 	void detailsLoaded(Chat chat);
 	void detailsUnloaded(Chat chat);

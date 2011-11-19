@@ -57,7 +57,10 @@ ChatStylesManager * ChatStylesManager::Instance = 0;
 ChatStylesManager * ChatStylesManager::instance()
 {
 	if (0 == Instance)
+	{
 		Instance = new ChatStylesManager();
+		Instance->init();
+	}
 
 	return Instance;
 }
@@ -65,6 +68,16 @@ ChatStylesManager * ChatStylesManager::instance()
 ChatStylesManager::ChatStylesManager() :
 		CurrentEngine(0), SyntaxListCombo(0), EditButton(0), DeleteButton(0),
 		VariantListCombo(0), TurnOnTransparency(0), EnginePreview(0)
+{
+}
+
+ChatStylesManager::~ChatStylesManager()
+{
+	unregisterChatStyleEngine("Kadu");
+	unregisterChatStyleEngine("Adium");
+}
+
+void ChatStylesManager::init()
 {
 	//FIXME:
 	KaduEngine = new KaduChatStyleEngine(this);
@@ -75,12 +88,6 @@ ChatStylesManager::ChatStylesManager() :
 
 	loadStyles();
 	configurationUpdated();
-}
-
-ChatStylesManager::~ChatStylesManager()
-{
-	unregisterChatStyleEngine("Kadu");
-	unregisterChatStyleEngine("Adium");
 }
 
 void ChatStylesManager::registerChatStyleEngine(const QString &name, ChatStyleEngine *engine)
