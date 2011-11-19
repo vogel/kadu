@@ -111,9 +111,9 @@ public:
 	 * Every chat is assigned to account. All contacts in every chat must
 	 * belong to the same account as chat.
 	 */
-	KaduShared_PropertyDeclCRW(Account, chatAccount, ChatAccount);
+	KaduShared_PropertyDeclCRW(Account, chatAccount, ChatAccount)
 
-	KaduShared_Property(const QString &, display, Display);
+	KaduShared_Property(const QString &, display, Display)
 
 	/**
 	 * @author Rafal 'Vogel' Malinowski
@@ -125,12 +125,12 @@ public:
 	 * and 'conference' (for on-to-many chats). Other what types could be: 'irc-room' (for irc room
 	 * chats).
 	 */
-	KaduShared_Property(const QString &, type, Type);
+	KaduShared_Property(const QString &, type, Type)
 
 	// temporary, not stored, lost after program close
 	KaduShared_PropertyBool(IgnoreAllMessages)
 
-	KaduShared_Property(quint16, unreadMessagesCount, UnreadMessagesCount);
+	KaduShared_Property(quint16, unreadMessagesCount, UnreadMessagesCount)
 
 signals:
 	void updated();
