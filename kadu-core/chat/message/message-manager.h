@@ -64,6 +64,7 @@ public:
 
 	void markAllMessagesAsRead(const Chat &chat);
 
+	Message unreadMessage() const;
 	Message unreadMessageForBuddy(const Buddy &buddy) const;
 	Message unreadMessageForContact(const Contact &contact) const;
 

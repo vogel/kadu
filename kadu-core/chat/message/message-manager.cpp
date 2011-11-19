@@ -134,6 +134,14 @@ void MessageManager::markAllMessagesAsRead(const Chat &chat)
 	}
 }
 
+Message MessageManager::unreadMessage() const
+{
+	if (UnreadMessages.empty())
+		return Message::null;
+	else
+		return UnreadMessages.constBegin().value();
+}
+
 Message MessageManager::unreadMessageForBuddy(const Buddy &buddy) const
 {
 	QMultiMap<Chat, Message>::const_iterator i = UnreadMessages.constBegin();
