@@ -64,7 +64,7 @@ class IndicatorDocking : public Notifier, public Docker
 	void removeNotification(ChatNotification *chatNotification);
 
 private slots:
-	void indicatePendingMessages();
+	void indicateUnreadMessages();
 
 	void showMainWindow();
 	void displayIndicator(QIndicate::Indicator *indicator);

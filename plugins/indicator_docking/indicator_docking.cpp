@@ -33,7 +33,7 @@
 #include "chat/chat.h"
 #include "chat/chat-details-aggregate.h"
 #include "chat/chat-manager.h"
-#include "chat/message/pending-messages-manager.h"
+#include "chat/message/message-manager.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact.h"
 #include "contacts/contact-set.h"
@@ -85,7 +85,7 @@ IndicatorDocking::IndicatorDocking() :
 	DockingManager::instance()->setDocker(this);
 	NotificationManager::instance()->registerNotifier(this);
 
-	QTimer::singleShot(0, this, SLOT(indicatePendingMessages()));
+	QTimer::singleShot(0, this, SLOT(indicateUnreadMessages()));
 }
 
 IndicatorDocking::~IndicatorDocking()
@@ -113,10 +113,10 @@ IndicatorDocking::~IndicatorDocking()
 	Server->hide();
 }
 
-void IndicatorDocking::indicatePendingMessages()
+void IndicatorDocking::indicateUnreadMessages()
 {
 	if (config_file.readBoolEntry("Notify", "NewChat_IndicatorNotify") && !NotificationManager::instance()->silentMode())
-		foreach (const Message &message, PendingMessagesManager::instance()->items())
+		foreach (const Message &message, MessageManager::instance()->allUnreadMessages())
 			notify(new MessageNotification(MessageNotification::NewChat, message));
 }
 
@@ -126,7 +126,7 @@ void IndicatorDocking::silentModeToggled(bool silentMode)
 		indicator->setDrawAttentionProperty(!silentMode);
 
 	if (!silentMode)
-		indicatePendingMessages();
+		indicateUnreadMessages();
 }
 
 void IndicatorDocking::showMainWindow()
