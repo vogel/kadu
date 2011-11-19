@@ -124,7 +124,11 @@ bool TalkablePainter::showMessagePixmap() const
 		case BuddyRole:
 		{
 			const Buddy &buddy = Index.data(BuddyRole).value<Buddy>();
-			return buddy && PendingMessagesManager::instance()->hasPendingMessagesForBuddy(buddy);
+			if (!buddy)
+				return false;
+			if (buddy.unreadMessagesCount() > 0)
+				return true;
+			return PendingMessagesManager::instance()->hasPendingMessagesForBuddy(buddy);
 		}
 		case ContactRole:
 		{
