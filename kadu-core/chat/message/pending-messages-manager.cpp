@@ -50,7 +50,10 @@ PendingMessagesManager * PendingMessagesManager::Instance = 0;
 PendingMessagesManager * PendingMessagesManager::instance()
 {
 	if (0 == Instance)
+	{
 		Instance = new PendingMessagesManager();
+		Instance->init();
+	}
 
 	return Instance;
 }
@@ -61,6 +64,31 @@ PendingMessagesManager::PendingMessagesManager()
 
 PendingMessagesManager::~PendingMessagesManager()
 {
+}
+
+void PendingMessagesManager::init()
+{
+	connect(MessageManager::instance(), SIGNAL(unreadMessageAdded(Message)),
+	        this, SLOT(unreadMessageAdded(Message)));
+	connect(MessageManager::instance(), SIGNAL(unreadMessageRemoved(Message)),
+	        this, SLOT(unreadMessageRemoved(Message)));
+}
+
+void PendingMessagesManager::unreadMessageAdded(const Message &message)
+{
+	if (items().contains(message))
+		return;
+
+	// message is not pending if it is in chat widget
+	if (ChatWidgetManager::instance()->byChat(message.messageChat(), false))
+		return;
+
+	addItem(message);
+}
+
+void PendingMessagesManager::unreadMessageRemoved(const Message &message)
+{
+	removeItem(message);
 }
 
 void PendingMessagesManager::deletePendingMessagesForChat(const Chat &chat)

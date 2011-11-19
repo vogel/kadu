@@ -28,7 +28,6 @@
 #include "chat/aggregate-chat-manager.h"
 #include "chat/message/message-manager.h"
 #include "chat/message/message-render-info.h"
-#include "chat/message/pending-messages-manager.h"
 #include "chat/chat-manager.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact.h"
@@ -251,7 +250,6 @@ QList<Message> ChatWidgetManager::loadUnreadMessages(const Chat &chat)
 	{
 		messages.append(message);
 		MessageManager::instance()->removeUnreadMessage(message);
-		PendingMessagesManager::instance()->removeItem(message);
 	}
 
 	return messages;
@@ -299,7 +297,6 @@ void ChatWidgetManager::messageReceived(const Message &message)
 			if (OpenChatOnMessageWhenOnline && (!handler || (handler->status().group() != StatusTypeGroupOnline)))
 			{
 				qApp->alert(Core::instance()->kaduWindow());
-				PendingMessagesManager::instance()->addItem(message);
 				return;
 			}
 
@@ -312,7 +309,6 @@ void ChatWidgetManager::messageReceived(const Message &message)
 		else
 		{
 			qApp->alert(Core::instance()->kaduWindow());
-			PendingMessagesManager::instance()->addItem(message);
 		}
 	}
 }
