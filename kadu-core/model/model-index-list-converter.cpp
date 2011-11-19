@@ -19,7 +19,7 @@
 
 #include "buddies/buddy-preferred-manager.h"
 #include "chat/chat-manager.h"
-#include "chat/message/pending-messages-manager.h"
+#include "chat/message/message-manager.h"
 #include "model/roles.h"
 
 #include "model-index-list-converter.h"
@@ -86,9 +86,9 @@ Chat ModelIndexListConverter::chatFromIndex(const QModelIndex &index) const
 		case ChatRole:
 			return index.data(ChatRole).value<Chat>();
 		case BuddyRole:
-			return PendingMessagesManager::instance()->chatForBuddy(index.data(BuddyRole).value<Buddy>());
+			return MessageManager::instance()->unreadMessageForBuddy(index.data(BuddyRole).value<Buddy>()).messageChat();
 		case ContactRole:
-			return PendingMessagesManager::instance()->chatForContact(index.data(ContactRole).value<Contact>());
+			return MessageManager::instance()->unreadMessageForContact(index.data(ContactRole).value<Contact>()).messageChat();
 	}
 
 	return Chat::null;
