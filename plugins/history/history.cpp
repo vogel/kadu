@@ -50,7 +50,6 @@
 #include "chat/chat-manager.h"
 #include "chat/message/message.h"
 #include "chat/message/message-manager.h"
-#include "chat/message/pending-messages-manager.h"
 #include "configuration/configuration-file.h"
 #include "buddies/buddy.h"
 #include "contacts/contact-set.h"
@@ -217,7 +216,7 @@ void History::chatCreated(ChatWidget *chatWidget)
 
 	QVector<Message> messages;
 
-	unsigned int chatHistoryQuotation = qMax(ChatHistoryCitation, PendingMessagesManager::instance()->pendingMessagesForChat(chatWidget->chat()).size());
+	unsigned int chatHistoryQuotation = qMax(ChatHistoryCitation, qint32(chatWidget->chat().unreadMessagesCount()));
 
 	Chat chat = AggregateChatManager::instance()->aggregateChat(chatWidget->chat());
 
