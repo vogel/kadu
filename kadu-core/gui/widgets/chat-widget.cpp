@@ -442,7 +442,7 @@ void ChatWidget::appendSystemMessage(const QString &rawContent, const QString &b
 		.setFontColor(fontColor)
 		.setNickColor(fontColor);
 
-	MessageManager::instance()->addItem(message);
+	MessageManager::instance()->addUnreadMessage(message);
 
 	MessagesView->appendMessage(messageRenderInfo);
 }
@@ -761,7 +761,7 @@ void ChatWidget::contactActivityChanged(ChatStateService::ContactActivity state,
 		message.setSendDate(QDateTime::currentDateTime());
 		message.setReceiveDate(QDateTime::currentDateTime());
 
-		MessageManager::instance()->addItem(message);
+		MessageManager::instance()->addUnreadMessage(message);
 
 		MessagesView->appendMessage(message);
 	}

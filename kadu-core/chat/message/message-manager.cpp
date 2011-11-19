@@ -75,56 +75,17 @@ void MessageManager::accountUnregistered(Account account)
 	        this, SIGNAL(messageSent(const Message &)));
 }
 
-bool MessageManager::shouldStore()
-{
-	return false;
-}
-
 void MessageManager::messageReceivedSlot(const Message &message)
 {
-	addItem(message);
-
 	emit messageReceived(message);
 }
 
-void MessageManager::itemAboutToBeAdded(Message item)
+void MessageManager::addUnreadMessage(const Message &message)
 {
-	emit messageAboutToBeAdded(item);
+	emit unreadMessageAdded(message);
 }
 
-void MessageManager::itemAdded(Message item)
+void MessageManager::removeUnreadMessage(const Message &message)
 {
-	connect(item, SIGNAL(updated()), this, SLOT(messageDataUpdated()));
-	connect(item, SIGNAL(statusChanged(MessageStatus)), this, SLOT(messageStatusChangedSlot(MessageStatus)));
-	emit messageAdded(item);
-}
-
-void MessageManager::itemAboutToBeRemoved(Message item)
-{
-	emit messageAboutToBeRemoved(item);
-	disconnect(item, SIGNAL(updated()), this, SLOT(messageDataUpdated()));
-	disconnect(item, SIGNAL(statusChanged(MessageStatus)), this, SLOT(messageStatusChangedSlot(MessageStatus)));
-}
-
-void MessageManager::itemRemoved(Message item)
-{
-	emit messageRemoved(item);
-}
-
-void MessageManager::messageDataUpdated()
-{
-	QMutexLocker locker(&mutex());
-
-	Message message(sender());
-	if (message)
-		emit messageUpdated(message);
-}
-
-void MessageManager::messageStatusChangedSlot(MessageStatus previousStatus)
-{
-	QMutexLocker locker(&mutex());
-
-	Message message(sender());
-	if (message)
-		emit messageStatusChanged(message, previousStatus);
+	emit unreadMessageRemoved(message);
 }

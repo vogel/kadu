@@ -28,7 +28,7 @@
 
 #include "exports.h"
 
-class KADUAPI MessageManager : public QObject, public SimpleManager<Message>, AccountsAwareObject
+class KADUAPI MessageManager : public QObject, AccountsAwareObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(MessageManager)
@@ -39,39 +39,24 @@ class KADUAPI MessageManager : public QObject, public SimpleManager<Message>, Ac
 	virtual ~MessageManager();
 
 private slots:
-	void messageDataUpdated();
-	void messageStatusChangedSlot(MessageStatus previousStatus);
-
 	void messageReceivedSlot(const Message &message);
 
 protected:
-	virtual bool shouldStore();
-
 	virtual void accountRegistered(Account account);
 	virtual void accountUnregistered(Account account);
-
-	virtual void itemAboutToBeAdded(Message item);
-	virtual void itemAdded(Message item);
-	virtual void itemAboutToBeRemoved(Message item);
-	virtual void itemRemoved(Message item);
 
 public:
 	static MessageManager * instance();
 
-	virtual QString storageNodeName() { return QLatin1String("Messages"); }
-	virtual QString storageNodeItemName() { return QLatin1String("Message"); }
+	void addUnreadMessage(const Message &message);
+	void removeUnreadMessage(const Message &message);
 
 signals:
 	void messageReceived(const Message &message);
 	void messageSent(const Message &message);
 
-	void messageAboutToBeAdded(const Message &message);
-	void messageAdded(const Message &message);
-	void messageAboutToBeRemoved(const Message &message);
-	void messageRemoved(const Message &message);
-
-	void messageUpdated(const Message &message);
-	void messageStatusChanged(const Message &message, MessageStatus previousStatus);
+	void unreadMessageAdded(const Message &message);
+	void unreadMessageRemoved(const Message &message);
 
 };
 

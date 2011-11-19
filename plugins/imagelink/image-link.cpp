@@ -148,7 +148,7 @@ void ImageLink::insertCodeIntoChatWindow(Chat chat, Contact sender, const QStrin
 	message.setReceiveDate(QDateTime::currentDateTime());
 	message.setSendDate(QDateTime::currentDateTime());
 
-	MessageManager::instance()->addItem(message);
+	MessageManager::instance()->addUnreadMessage(message);
 
 	ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(chat, false);
 	if (!chatWidget)

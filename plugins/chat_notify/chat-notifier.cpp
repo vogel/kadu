@@ -55,7 +55,7 @@ void ChatNotifier::sendNotificationToChatWidget(Notification *notification, Chat
 	message.setType(MessageTypeSystem);
 	message.setPending(false);
 
-	MessageManager::instance()->addItem(message);
+	MessageManager::instance()->addUnreadMessage(message);
 
 	chatWidget->appendMessage(message);
 }
