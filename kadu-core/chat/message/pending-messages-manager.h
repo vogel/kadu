@@ -63,9 +63,7 @@ private slots:
 
 protected:
 	virtual void itemAboutToBeAdded(Message message);
-	virtual void itemAdded(Message message);
 	virtual void itemAboutToBeRemoved(Message message);
-	virtual void itemRemoved(Message message);
 
 	virtual void loaded();
 
@@ -77,12 +75,6 @@ public:
 
 	void deletePendingMessagesForChat(const Chat &chat);
 	QVector<Message> pendingMessagesForChat(const Chat &chat);
-
-signals:
-	void messageAboutToBeAdded(Message message);
-	void messageAdded(Message message);
-	void messageAboutToBeRemoved(Message message);
-	void messageRemoved(Message message);
 
 };
 

@@ -128,27 +128,11 @@ void PendingMessagesManager::itemAboutToBeAdded(Message message)
 	BuddyManager::instance()->byContact(message.messageSender(), ActionCreateAndAdd);
 
 	message.setPending(true);
-
-	emit messageAboutToBeAdded(message);
-}
-
-void PendingMessagesManager::itemAdded(Message message)
-{
-//	BuddyPreferredManager::instance()->updatePreferred(message.messageSender().ownerBuddy());
-	emit messageAdded(message);
 }
 
 void PendingMessagesManager::itemAboutToBeRemoved(Message message)
 {
 	message.setPending(false);
-
-	emit messageAboutToBeRemoved(message);
-}
-
-void PendingMessagesManager::itemRemoved(Message message)
-{
-//	BuddyPreferredManager::instance()->updatePreferred(message.messageSender().ownerBuddy());
-	emit messageRemoved(message);
 }
 
 void PendingMessagesManager::loaded()
