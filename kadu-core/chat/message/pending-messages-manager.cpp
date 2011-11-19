@@ -94,17 +94,6 @@ QVector<Message> PendingMessagesManager::pendingMessagesForChat(const Chat &chat
 	return result;
 }
 
-Message PendingMessagesManager::firstPendingMessage()
-{
-	QMutexLocker locker(&mutex());
-
-	const QVector<Message> &messages = items();
-	if (!messages.isEmpty())
-		return messages.at(0);
-
-	return Message::null;
-}
-
 void PendingMessagesManager::itemAboutToBeAdded(Message message)
 {
 	// just ensure that owner buddy is managed - we need it to be shown on contact list

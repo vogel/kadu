@@ -70,10 +70,7 @@ public:
 	virtual QString storageNodeItemName() { return QLatin1String("Message"); }
 
 	void deletePendingMessagesForChat(const Chat &chat);
-
 	QVector<Message> pendingMessagesForChat(const Chat &chat);
-
-	Message firstPendingMessage();
 
 signals:
 	void messageAboutToBeAdded(Message message);
