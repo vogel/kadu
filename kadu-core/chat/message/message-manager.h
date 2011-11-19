@@ -28,6 +28,8 @@
 
 #include "exports.h"
 
+class Buddy;
+
 class KADUAPI MessageManager : public QObject, AccountsAwareObject
 {
 	Q_OBJECT
@@ -61,6 +63,9 @@ public:
 	quint8 unreadMessagesCount() const;
 
 	void markAllMessagesAsRead(const Chat &chat);
+
+	Message unreadMessageForBuddy(const Buddy &buddy) const;
+	Message unreadMessageForContact(const Contact &contact) const;
 
 signals:
 	void messageReceived(const Message &message);

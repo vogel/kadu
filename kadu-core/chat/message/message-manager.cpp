@@ -133,3 +133,34 @@ void MessageManager::markAllMessagesAsRead(const Chat &chat)
 		emit unreadMessageRemoved(message);
 	}
 }
+
+Message MessageManager::unreadMessageForBuddy(const Buddy &buddy) const
+{
+	QMultiMap<Chat, Message>::const_iterator i = UnreadMessages.constBegin();
+	QMultiMap<Chat, Message>::const_iterator end = UnreadMessages.constEnd();
+
+	const QList<Contact> &contacts = buddy.contacts();
+	while (i != end)
+	{
+		const Message &message = i.value();
+		if (contacts.contains(message.messageSender()))
+			return message;
+	}
+
+	return Message::null;
+}
+
+Message MessageManager::unreadMessageForContact(const Contact &contact) const
+{
+	QMultiMap<Chat, Message>::const_iterator i = UnreadMessages.constBegin();
+	QMultiMap<Chat, Message>::const_iterator end = UnreadMessages.constEnd();
+
+	while (i != end)
+	{
+		const Message &message = i.value();
+		if (contact == message.messageSender())
+			return message;
+	}
+
+	return Message::null;
+}
