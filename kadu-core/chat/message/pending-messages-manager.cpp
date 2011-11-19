@@ -97,33 +97,6 @@ Chat PendingMessagesManager::chatForContact(const Contact &contact)
 	return Chat::null;
 }
 
-QVector<Message> PendingMessagesManager::pendingMessagesForContact(const Contact &contact)
-{
-	QMutexLocker locker(&mutex());
-
-	QVector<Message> result;
-
-	foreach (const Message &message, items())
-		if (message.isPending() && message.messageChat().contacts().contains(contact))
-			result.append(message);
-
-	return result;
-}
-
-QVector<Message> PendingMessagesManager::pendingMessagesForBuddy(const Buddy &buddy)
-{
-	QMutexLocker locker(&mutex());
-
-	QVector<Message> result;
-	QSet<Contact> contacts = buddy.contacts().toSet();
-
-	foreach (const Message &message, items())
-		if (message.isPending() && !message.messageChat().contacts().intersect(contacts).isEmpty())
-			result.append(message);
-
-	return result;
-}
-
 QVector<Message> PendingMessagesManager::pendingMessagesForChat(const Chat &chat)
 {
 	QMutexLocker locker(&mutex());

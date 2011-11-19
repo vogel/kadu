@@ -74,8 +74,6 @@ public:
 	Chat chatForBuddy(const Buddy &buddy);
 	Chat chatForContact(const Contact &contact);
 
-	QVector<Message> pendingMessagesForContact(const Contact &contact);
-	QVector<Message> pendingMessagesForBuddy(const Buddy &buddy);
 	QVector<Message> pendingMessagesForChat(const Chat &chat);
 	QVector<Message> pendingMessages();
 
