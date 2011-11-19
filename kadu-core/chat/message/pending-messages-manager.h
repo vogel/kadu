@@ -72,7 +72,6 @@ public:
 	bool hasPendingMessagesForContact(const Contact &contact);
 	bool hasPendingMessagesForBuddy(const Buddy &buddy);
 	bool hasPendingMessagesForChat(const Chat &chat);
-	bool hasPendingMessages();
 
 	void deletePendingMessagesForChat(const Chat &chat);
 

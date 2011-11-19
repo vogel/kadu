@@ -97,17 +97,6 @@ bool PendingMessagesManager::hasPendingMessagesForChat(const Chat &chat)
 	return false;
 }
 
-bool PendingMessagesManager::hasPendingMessages()
-{
-	QMutexLocker locker(&mutex());
-
-	foreach (const Message &message, items())
-		if (message.isPending())
-			return true;
-
-	return false;
-}
-
 void PendingMessagesManager::deletePendingMessagesForChat(const Chat &chat)
 {
 	QMutexLocker locker(&mutex());
