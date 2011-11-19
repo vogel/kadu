@@ -29,7 +29,7 @@
 
 #include "accounts/account.h"
 #include "buddies/buddy-preferred-manager.h"
-#include "chat/message/pending-messages-manager.h"
+#include "chat/message/message-manager.h"
 #include "contacts/contact-manager.h"
 #include "model/kadu-abstract-model.h"
 #include "model/model-chain.h"
@@ -41,16 +41,16 @@ TalkableDelegate::TalkableDelegate(TalkableTreeView *parent) :
 {
 	connect(ContactManager::instance(), SIGNAL(contactUpdated(Contact&)), this, SLOT(contactUpdated(Contact&)));
 	connect(BuddyPreferredManager::instance(), SIGNAL(buddyUpdated(Buddy&)), this, SLOT(buddyUpdated(Buddy&)));
-	connect(PendingMessagesManager::instance(), SIGNAL(messageAdded(Message)), this, SLOT(messageStatusChanged(Message)));
-	connect(PendingMessagesManager::instance(), SIGNAL(messageRemoved(Message)), this, SLOT(messageStatusChanged(Message)));
+	connect(MessageManager::instance(), SIGNAL(unreadMessageAdded(Message)), this, SLOT(messageStatusChanged(Message)));
+	connect(MessageManager::instance(), SIGNAL(unreadMessageRemoved(Message)), this, SLOT(messageStatusChanged(Message)));
 }
 
 TalkableDelegate::~TalkableDelegate()
 {
 	disconnect(ContactManager::instance(), SIGNAL(contactUpdated(Contact&)), this, SLOT(contactUpdated(Contact&)));
 	disconnect(BuddyPreferredManager::instance(), SIGNAL(buddyUpdated(Buddy&)), this, SLOT(buddyUpdated(Buddy&)));
-	disconnect(PendingMessagesManager::instance(), SIGNAL(messageAdded(Message)), this, SLOT(messageStatusChanged(Message)));
-	disconnect(PendingMessagesManager::instance(), SIGNAL(messageRemoved(Message)), this, SLOT(messageStatusChanged(Message)));
+	disconnect(MessageManager::instance(), SIGNAL(unreadMessageAdded(Message)), this, SLOT(messageStatusChanged(Message)));
+	disconnect(MessageManager::instance(), SIGNAL(unreadMessageRemoved(Message)), this, SLOT(messageStatusChanged(Message)));
 }
 
 void TalkableDelegate::setChain(ModelChain *chain)

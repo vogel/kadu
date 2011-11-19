@@ -115,29 +115,17 @@ bool TalkablePainter::showMessagePixmap() const
 		case ChatRole:
 		{
 			const Chat &chat = Index.data(ChatRole).value<Chat>();
-			if (!chat)
-				return false;
-			if (chat.unreadMessagesCount() > 0)
-				return true;
-			return PendingMessagesManager::instance()->hasPendingMessagesForChat(chat);
+			return chat.unreadMessagesCount() > 0;
 		}
 		case BuddyRole:
 		{
 			const Buddy &buddy = Index.data(BuddyRole).value<Buddy>();
-			if (!buddy)
-				return false;
-			if (buddy.unreadMessagesCount() > 0)
-				return true;
-			return PendingMessagesManager::instance()->hasPendingMessagesForBuddy(buddy);
+			return buddy.unreadMessagesCount() > 0;
 		}
 		case ContactRole:
 		{
 			const Contact &contact = Index.data(ContactRole).value<Contact>();
-			if (!contact)
-				return false;
-			if (contact.unreadMessagesCount() > 0)
-				return true;
-			return PendingMessagesManager::instance()->hasPendingMessagesForContact(contact);
+			return contact.unreadMessagesCount() > 0;
 		}
 	}
 
