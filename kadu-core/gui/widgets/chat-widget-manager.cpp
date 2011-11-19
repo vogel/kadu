@@ -209,7 +209,7 @@ ChatWidget * ChatWidgetManager::createChatWidget(const Chat &chat)
 
 	emit chatWidgetCreated(chatWidget);
 
-	const QList<Message> &messages = readPendingMessages(chat);
+	const QList<Message> &messages = loadUnreadMessages(chat);
 	if (!messages.isEmpty())
 		// TODO: Lame API
 		if (0 == chatWidget->countMessages())
@@ -240,16 +240,17 @@ void ChatWidgetManager::chatWidgetDestroyed()
 	emit chatWidgetDestroying(chatWidget);
 }
 
-QList<Message> ChatWidgetManager::readPendingMessages(const Chat &chat)
+QList<Message> ChatWidgetManager::loadUnreadMessages(const Chat &chat)
 {
 	const Chat &aggregateChat = AggregateChatManager::instance()->aggregateChat(chat);
-	const QVector<Message> &pendingMessages = PendingMessagesManager::instance()->pendingMessagesForChat(
-	            aggregateChat ? aggregateChat : chat);
+	const Chat &unreadChat = aggregateChat ? aggregateChat : chat;
+	const QList<Message> &unreadMessages = MessageManager::instance()->chatUnreadMessages(unreadChat);
 
 	QList<Message> messages;
-	foreach (Message message, pendingMessages)
+	foreach (const Message &message, unreadMessages)
 	{
 		messages.append(message);
+		MessageManager::instance()->removeUnreadMessage(message);
 		PendingMessagesManager::instance()->removeItem(message);
 	}
 

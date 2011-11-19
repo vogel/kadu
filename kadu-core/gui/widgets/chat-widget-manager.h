@@ -83,7 +83,7 @@ class KADUAPI ChatWidgetManager : public QObject, ConfigurationAwareObject, Stor
 	/**
 	 * @todo remove - reading pending messages should be out of scope of this class
 	 */
-	QList<Message> readPendingMessages(const Chat &chat);
+	QList<Message> loadUnreadMessages(const Chat &chat);
 
 private slots:
 	/**
