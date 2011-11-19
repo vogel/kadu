@@ -107,3 +107,4 @@ KaduSharedBase_PropertyDefCRW(Contact, QHostAddress, address, Address, QHostAddr
 KaduSharedBase_PropertyDef(Contact, unsigned int, port, Port, 0)
 KaduSharedBase_PropertyDefCRW(Contact, QString, dnsName, DnsName, QString())
 KaduSharedBase_PropertyDef(Contact, short int, maximumImageSize, MaximumImageSize, 0)
+KaduSharedBase_PropertyDef(Contact, quint16, unreadMessagesCount, UnreadMessagesCount, 0)

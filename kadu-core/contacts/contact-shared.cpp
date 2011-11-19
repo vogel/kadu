@@ -49,7 +49,8 @@ ContactShared * ContactShared::loadFromStorage(const QSharedPointer<StoragePoint
 
 ContactShared::ContactShared(const QUuid &uuid) :
 		Shared(uuid),
-		Priority(-1), MaximumImageSize(0), Blocking(false), Dirty(true), Port(0)
+		Priority(-1), MaximumImageSize(0), UnreadMessagesCount(0),
+		Blocking(false), Dirty(true), Port(0)
 {
 	ContactAccount = new Account();
 	ContactAvatar = new Avatar();
