@@ -44,7 +44,6 @@
 
 #include "activate.h"
 #include "chat/message/message-manager.h"
-#include "chat/message/pending-messages-manager.h"
 #include "configuration/configuration-file.h"
 #include "core/core.h"
 #include "gui/widgets/chat-widget.h"

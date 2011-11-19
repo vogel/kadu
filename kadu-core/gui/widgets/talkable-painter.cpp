@@ -32,7 +32,6 @@
 #include "buddies/buddy.h"
 #include "buddies/buddy-preferred-manager.h"
 #include "chat/chat.h"
-#include "chat/message/pending-messages-manager.h"
 #include "contacts/contact.h"
 #include "gui/widgets/avatar-painter.h"
 #include "gui/widgets/talkable-delegate-configuration.h"
