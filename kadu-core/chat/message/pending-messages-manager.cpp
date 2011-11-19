@@ -69,10 +69,7 @@ void PendingMessagesManager::deletePendingMessagesForChat(const Chat &chat)
 
 	const QVector<Message> &messages = pendingMessagesForChat(chat);
 	foreach (Message message, messages)
-	{
-		message.setPending(false);
 		removeItem(message);
-	}
 }
 
 QVector<Message> PendingMessagesManager::pendingMessagesForChat(const Chat &chat)
@@ -113,6 +110,8 @@ void PendingMessagesManager::itemAboutToBeAdded(Message message)
 	// just ensure that owner buddy is managed - we need it to be shown on contact list
 	BuddyManager::instance()->byContact(message.messageSender(), ActionCreateAndAdd);
 
+	message.setPending(true);
+
 	emit messageAboutToBeAdded(message);
 }
 
@@ -124,6 +123,8 @@ void PendingMessagesManager::itemAdded(Message message)
 
 void PendingMessagesManager::itemAboutToBeRemoved(Message message)
 {
+	message.setPending(false);
+
 	emit messageAboutToBeRemoved(message);
 }
 

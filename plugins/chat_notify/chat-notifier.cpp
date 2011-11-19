@@ -53,7 +53,6 @@ void ChatNotifier::sendNotificationToChatWidget(Notification *notification, Chat
 	message.setSendDate(QDateTime::currentDateTime());
 	message.setStatus(MessageStatusReceived);
 	message.setType(MessageTypeSystem);
-	message.setPending(false);
 
 	MessageManager::instance()->addUnreadMessage(message);
 

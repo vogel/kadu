@@ -250,7 +250,6 @@ QList<Message> ChatWidgetManager::readPendingMessages(const Chat &chat)
 	foreach (Message message, pendingMessages)
 	{
 		messages.append(message);
-		message.setPending(false);
 		PendingMessagesManager::instance()->removeItem(message);
 	}
 
@@ -299,7 +298,6 @@ void ChatWidgetManager::messageReceived(const Message &message)
 			if (OpenChatOnMessageWhenOnline && (!handler || (handler->status().group() != StatusTypeGroupOnline)))
 			{
 				qApp->alert(Core::instance()->kaduWindow());
-				message.setPending(true);
 				PendingMessagesManager::instance()->addItem(message);
 				return;
 			}
@@ -313,7 +311,6 @@ void ChatWidgetManager::messageReceived(const Message &message)
 		else
 		{
 			qApp->alert(Core::instance()->kaduWindow());
-			message.setPending(true);
 			PendingMessagesManager::instance()->addItem(message);
 		}
 	}
