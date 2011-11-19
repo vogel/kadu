@@ -37,8 +37,7 @@ class KADUAPI MessageManager : public QObject, AccountsAwareObject
 
 	static MessageManager * Instance;
 
-	QMultiMap<Chat, Message> UnreadMessages;
-	quint8 UnreadMessagesCount;
+	QList<Message> UnreadMessages;
 
 	MessageManager();
 	virtual ~MessageManager();
@@ -58,7 +57,9 @@ public:
 	void addUnreadMessage(const Message &message);
 	void removeUnreadMessage(const Message &message);
 
-	const QList<Message> allUnreadMessages() const;
+	const QList<Message> & allUnreadMessages() const;
+	QList<Message> chatUnreadMessages(const Chat &chat) const;
+
 	bool hasUnreadMessages() const;
 	quint8 unreadMessagesCount() const;
 

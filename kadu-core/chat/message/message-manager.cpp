@@ -18,6 +18,7 @@
  */
 
 #include "accounts/account.h"
+#include "chat/chat-details-aggregate.h"
 #include "protocols/protocol.h"
 #include "protocols/services/chat-service.h"
 
@@ -36,8 +37,7 @@ MessageManager * MessageManager::instance()
 	return Instance;
 }
 
-MessageManager::MessageManager() :
-		UnreadMessagesCount(0)
+MessageManager::MessageManager()
 {
 }
 
@@ -92,42 +92,61 @@ void MessageManager::messageReceivedSlot(const Message &message)
 
 void MessageManager::addUnreadMessage(const Message &message)
 {
-	UnreadMessages.insert(message.messageChat(), message);
-	UnreadMessagesCount++;
+	UnreadMessages.append(message);
 
 	emit unreadMessageAdded(message);
 }
 
 void MessageManager::removeUnreadMessage(const Message &message)
 {
-	UnreadMessages.remove(message.messageChat(), message);
-	UnreadMessagesCount--;
+	UnreadMessages.removeAll(message);
 
 	emit unreadMessageRemoved(message);
 }
 
-const QList<Message> MessageManager::allUnreadMessages() const
+const QList<Message> & MessageManager::allUnreadMessages() const
 {
-	return UnreadMessages.values();
+	return UnreadMessages;
+}
+
+QList<Message> MessageManager::chatUnreadMessages(const Chat &chat) const
+{
+	QList<Message> result;
+	QSet<Chat> chats;
+
+	ChatDetails *details = chat.details();
+	ChatDetailsAggregate *aggregateDetails = qobject_cast<ChatDetailsAggregate *>(details);
+
+	if (aggregateDetails)
+		foreach (const Chat &ch, aggregateDetails->chats())
+			chats.insert(ch);
+	else
+		chats.insert(chat);
+
+	foreach (const Message &message, UnreadMessages)
+		if (chats.contains(message.messageChat()))
+			result.append(message);
+
+	return result;
 }
 
 bool MessageManager::hasUnreadMessages() const
 {
-	return UnreadMessagesCount > 0;
+	return !UnreadMessages.isEmpty();
 }
 
 quint8 MessageManager::unreadMessagesCount() const
 {
-	return UnreadMessagesCount;
+	return UnreadMessages.count();
 }
 
 void MessageManager::markAllMessagesAsRead(const Chat &chat)
 {
-	QList<Message> messages = UnreadMessages.values(chat);
+	const QList<Message> &messages = chatUnreadMessages(chat);
+
 	foreach (const Message &message, messages)
 	{
-		UnreadMessagesCount--;
-		UnreadMessages.remove(chat, message);
+		UnreadMessages.removeAll(message);
 
 		message.setStatus(MessageStatusRead);
 		emit unreadMessageRemoved(message);
@@ -139,36 +158,24 @@ Message MessageManager::unreadMessage() const
 	if (UnreadMessages.empty())
 		return Message::null;
 	else
-		return UnreadMessages.constBegin().value();
+		return UnreadMessages.at(0);
 }
 
 Message MessageManager::unreadMessageForBuddy(const Buddy &buddy) const
 {
-	QMultiMap<Chat, Message>::const_iterator i = UnreadMessages.constBegin();
-	QMultiMap<Chat, Message>::const_iterator end = UnreadMessages.constEnd();
-
 	const QList<Contact> &contacts = buddy.contacts();
-	while (i != end)
-	{
-		const Message &message = i.value();
+	foreach (const Message &message, UnreadMessages)
 		if (contacts.contains(message.messageSender()))
 			return message;
-	}
 
 	return Message::null;
 }
 
 Message MessageManager::unreadMessageForContact(const Contact &contact) const
 {
-	QMultiMap<Chat, Message>::const_iterator i = UnreadMessages.constBegin();
-	QMultiMap<Chat, Message>::const_iterator end = UnreadMessages.constEnd();
-
-	while (i != end)
-	{
-		const Message &message = i.value();
+	foreach (const Message &message, UnreadMessages)
 		if (contact == message.messageSender())
 			return message;
-	}
 
 	return Message::null;
 }
