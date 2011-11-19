@@ -53,6 +53,7 @@ public:
 	void addUnreadMessage(const Message &message);
 	void removeUnreadMessage(const Message &message);
 
+	const QList<Message> allUnreadMessages();
 	void markAllMessagesAsRead(const Chat &chat);
 
 signals:

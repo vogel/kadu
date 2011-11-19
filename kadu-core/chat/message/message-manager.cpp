@@ -96,6 +96,11 @@ void MessageManager::removeUnreadMessage(const Message &message)
 	emit unreadMessageRemoved(message);
 }
 
+const QList<Message> MessageManager::allUnreadMessages()
+{
+	return UnreadMessages.values();
+}
+
 void MessageManager::markAllMessagesAsRead(const Chat &chat)
 {
 	const QList<Message> &messages = UnreadMessages.values(chat);
