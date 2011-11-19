@@ -279,38 +279,44 @@ void ChatWidgetManager::configurationUpdated()
 	OpenChatOnMessageWhenOnline = config_file.readBoolEntry("Chat", "OpenChatOnMessageWhenOnline");;
 }
 
-// TODO 0.10.0:, move to core or somewhere else
+bool ChatWidgetManager::shouldOpenChatWidget(const Message &message)
+{
+	if (!OpenChatOnMessage)
+		return false;
+
+	const Protocol * const handler = message.messageChat().chatAccount().protocolHandler();
+	if (!handler)
+		return false;
+
+	if (!OpenChatOnMessageWhenOnline)
+		return true;
+
+	return StatusTypeGroupOnline == handler->status().group();
+}
+
 void ChatWidgetManager::messageReceived(const Message &message)
 {
 	const Chat &chat = message.messageChat();
-	ChatWidget *chatWidget = byChat(chat, false);
-	if (chatWidget)
-		chatWidget->appendMessage(message);
-	else
+	ChatWidget *alreadyOpenedChatWidget = byChat(chat, false);
+
+	if (alreadyOpenedChatWidget)
 	{
-		if (AutoRaise)
-			_activateWindow(Core::instance()->kaduWindow());
-
-		if (OpenChatOnMessage)
-		{
-			Protocol *handler = message.messageChat().chatAccount().protocolHandler();
-			if (OpenChatOnMessageWhenOnline && (!handler || (handler->status().group() != StatusTypeGroupOnline)))
-			{
-				qApp->alert(Core::instance()->kaduWindow());
-				return;
-			}
-
-			// TODO: it is lame
-			chatWidget = byChat(chat, true);
-
-			if (chatWidget)
-				chatWidget->appendMessage(message);
-		}
-		else
-		{
-			qApp->alert(Core::instance()->kaduWindow());
-		}
+		alreadyOpenedChatWidget->appendMessage(message);
+		return;
 	}
+
+	if (AutoRaise)
+		_activateWindow(Core::instance()->kaduWindow());
+
+	if (!shouldOpenChatWidget(message))
+	{
+		qApp->alert(Core::instance()->kaduWindow());
+		return;
+	}
+
+	ChatWidget *newChatWidget = byChat(chat, true);
+	if (newChatWidget)
+		newChatWidget->appendMessage(message);
 }
 
 void ChatWidgetManager::messageSent(const Message &message)

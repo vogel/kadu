@@ -85,6 +85,8 @@ class KADUAPI ChatWidgetManager : public QObject, ConfigurationAwareObject, Stor
 	 */
 	QList<Message> loadUnreadMessages(const Chat &chat);
 
+	bool shouldOpenChatWidget(const Message &message);
+
 private slots:
 	/**
 	 * @short Slot called when ChatWidget is destroyed.
