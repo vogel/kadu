@@ -369,14 +369,20 @@ void GaduChatService::removeTimeoutUndeliveredMessages()
 {
 	QDateTime now = QDateTime::currentDateTime();
 	QHash<int, Message>::iterator it = UndeliveredMessages.begin();
+	QVector<Message> removedMessages;
 
 	while (it != UndeliveredMessages.end())
 		if (it.value().sendDate().addSecs(MAX_DELIVERY_TIME) < now)
 		{
+			removedMessages.append(it.value());
 			it = UndeliveredMessages.erase(it);
-			it.value().setStatus(MessageStatusWontDeliver);
-			emit messageStatusChanged(it.value(), StatusRejectedTimeout);
 		}
 		else
 			++it;
+
+	foreach (const Message &message, removedMessages)
+	{
+		message.setStatus(MessageStatusWontDeliver);
+		emit messageStatusChanged(message, StatusRejectedTimeout);
+	}
 }
