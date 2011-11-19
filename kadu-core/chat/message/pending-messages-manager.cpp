@@ -91,28 +91,6 @@ void PendingMessagesManager::unreadMessageRemoved(const Message &message)
 	removeItem(message);
 }
 
-QVector<Message> PendingMessagesManager::pendingMessagesForChat(const Chat &chat)
-{
-	QMutexLocker locker(&mutex());
-
-	QVector<Message> result;
-	QSet<Chat> chats;
-
-	ChatDetails *details = chat.details();
-	ChatDetailsAggregate *aggregateDetails = qobject_cast<ChatDetailsAggregate *>(details);
-	if (aggregateDetails)
-		foreach (const Chat &ch, aggregateDetails->chats())
-			chats.insert(ch);
-	else
-		chats.insert(chat);
-
-	foreach (const Message &message, items())
-		if (chats.contains(message.messageChat()))
-			result.append(message);
-
-	return result;
-}
-
 void PendingMessagesManager::itemAboutToBeAdded(Message message)
 {
 	// just ensure that owner buddy is managed - we need it to be shown on contact list
