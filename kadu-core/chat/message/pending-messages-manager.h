@@ -71,9 +71,6 @@ public:
 
 	void deletePendingMessagesForChat(const Chat &chat);
 
-	Chat chatForBuddy(const Buddy &buddy);
-	Chat chatForContact(const Contact &contact);
-
 	QVector<Message> pendingMessagesForChat(const Chat &chat);
 	QVector<Message> pendingMessages();
 
