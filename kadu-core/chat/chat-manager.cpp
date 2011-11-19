@@ -48,14 +48,26 @@ ChatManager *  ChatManager::instance()
 
 ChatManager::ChatManager()
 {
-	connect(MessageManager::instance(), SIGNAL(unreadMessageAdded(Message)), this, SLOT(unreadMessageAdded(Message)));
-	connect(MessageManager::instance(), SIGNAL(unreadMessageRemoved(Message)), this, SLOT(unreadMessageRemoved(Message)));
+	foreach (const Message &message, MessageManager::instance()->allUnreadMessages())
+		unreadMessageAdded(message);
+
+	// for unknown reason queued collection is not possible here
+	// TODO: learn why
+	connect(MessageManager::instance(), SIGNAL(unreadMessageAdded(Message)),
+	        this, SLOT(unreadMessageAdded(Message)));
+	connect(MessageManager::instance(), SIGNAL(unreadMessageRemoved(Message)),
+	        this, SLOT(unreadMessageRemoved(Message)));
 }
 
 ChatManager::~ChatManager()
 {
-	disconnect(MessageManager::instance(), SIGNAL(unreadMessageAdded(Message)), this, SLOT(unreadMessageAdded(Message)));
-	disconnect(MessageManager::instance(), SIGNAL(unreadMessageRemoved(Message)), this, SLOT(unreadMessageRemoved(Message)));
+	disconnect(MessageManager::instance(), SIGNAL(unreadMessageAdded(Message)),
+	           this, SLOT(unreadMessageAdded(Message)));
+	disconnect(MessageManager::instance(), SIGNAL(unreadMessageRemoved(Message)),
+	           this, SLOT(unreadMessageRemoved(Message)));
+
+	foreach (const Message &message, MessageManager::instance()->allUnreadMessages())
+		unreadMessageRemoved(message);
 }
 
 void ChatManager::itemAboutToBeRegistered(Chat item)
