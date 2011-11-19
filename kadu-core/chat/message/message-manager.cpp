@@ -84,10 +84,26 @@ void MessageManager::messageReceivedSlot(const Message &message)
 
 void MessageManager::addUnreadMessage(const Message &message)
 {
+	UnreadMessages.insert(message.messageChat(), message);
+
 	emit unreadMessageAdded(message);
 }
 
 void MessageManager::removeUnreadMessage(const Message &message)
 {
+	UnreadMessages.remove(message.messageChat(), message);
+
 	emit unreadMessageRemoved(message);
+}
+
+void MessageManager::markAllMessagesAsRead(const Chat &chat)
+{
+	const QList<Message> &messages = UnreadMessages.values(chat);
+	foreach (const Message &message, messages)
+	{
+		message.setStatus(MessageStatusRead);
+		emit unreadMessageRemoved(message);
+	}
+
+	UnreadMessages.remove(chat);
 }

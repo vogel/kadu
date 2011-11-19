@@ -25,15 +25,14 @@
 
 #include <QtGui/QDrag>
 
+#include "chat/message/message-manager.h"
+#include "configuration/configuration-file.h"
 #include "gui/widgets/chat-widget.h"
 #include "gui/widgets/filtered-tree-view.h"
 #include "gui/windows/open-chat-with/open-chat-with.h"
-
-#include "configuration/configuration-file.h"
 #include "gui/hot-key.h"
 #include "icons/kadu-icon.h"
 #include "misc/misc.h"
-
 #include "activate.h"
 
 #include "tabs.h"
@@ -104,7 +103,7 @@ void TabWidget::alertChatWidget(ChatWidget *chatWidget)
 
 	if (currentWidget() == chatWidget && _isWindowActiveOrFullyVisible(this))
 	{
-		chatWidget->chat().setUnreadMessagesCount(0);
+		MessageManager::instance()->markAllMessagesAsRead(chatWidget->chat());
 		return;
 	}
 
@@ -265,7 +264,7 @@ void TabWidget::changeEvent(QEvent *event)
 		kdebugf();
 		ChatWidget *chat = static_cast<ChatWidget *>(currentWidget());
 		if (chat && _isActiveWindow(this))
-			chat->chat().setUnreadMessagesCount(0);
+			MessageManager::instance()->markAllMessagesAsRead(chat->chat());
 		kdebugf2();
 	}
 }

@@ -32,6 +32,7 @@
 #include <QtGui/QDesktopWidget>
 #include <QtGui/QVBoxLayout>
 
+#include "chat/message/message-manager.h"
 #include "chat/type/chat-type.h"
 #include "chat/chat-details.h"
 #include "chat/chat-geometry-data.h"
@@ -241,7 +242,8 @@ void ChatWindow::changeEvent(QEvent *event)
 		kdebugf();
 		if (_isActiveWindow(this))
 		{
-			currentChatWidget->chat().setUnreadMessagesCount(0);
+
+			MessageManager::instance()->markAllMessagesAsRead(currentChatWidget->chat());
 			setWindowTitle(currentChatWidget->title());
 			title_timer->stop();
 		}
@@ -273,7 +275,7 @@ void ChatWindow::alertChatWidget(ChatWidget *chatWidget)
 
 	if (_isWindowActiveOrFullyVisible(this))
 	{
-		currentChatWidget->chat().setUnreadMessagesCount(0);
+		MessageManager::instance()->markAllMessagesAsRead(currentChatWidget->chat());
 		return;
 	}
 

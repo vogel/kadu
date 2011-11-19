@@ -11,6 +11,7 @@
 #include <QtGui/QKeyEvent>
 #include <QtCore/QStringList>
 
+#include "chat/message/message-manager.h"
 #include "configuration/configuration-file.h"
 #include "gui/widgets/chat-widget.h"
 #include "gui/widgets/chat-widget-manager.h"
@@ -251,7 +252,7 @@ void SingleWindow::alertChatWidget(ChatWidget *chatWidget)
 
 	if (chatWidget == tabs->currentWidget() && _isWindowActiveOrFullyVisible(this))
 	{
-		chatWidget->chat().setUnreadMessagesCount(0);
+		MessageManager::instance()->markAllMessagesAsRead(chatWidget->chat());
 		return;
 	}
 
@@ -293,7 +294,7 @@ void SingleWindow::onTabChange(int index)
 		title.truncate(pos);
 	tabs->setTabText(index, title);
 
-	w->chat().setUnreadMessagesCount(0);
+	MessageManager::instance()->markAllMessagesAsRead(w->chat());
 }
 
 void SingleWindow::onkaduKeyPressed(QKeyEvent *e)

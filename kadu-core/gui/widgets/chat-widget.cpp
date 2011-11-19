@@ -404,24 +404,24 @@ QIcon ChatWidget::icon()
 
 void ChatWidget::appendMessages(const QList<Message> &messages)
 {
-	bool received = false;
+	bool unread = false;
 
 	QList<MessageRenderInfo *> messageRenderInfos;
 	foreach (const Message &message, messages)
 	{
-		received |= (message.type() == MessageTypeReceived || message.type() == MessageTypeSystem);
 		messageRenderInfos.append(new MessageRenderInfo(message));
+		unread = unread || message.status() == MessageStatusReceived;
 	}
 
 	MessagesView->appendMessages(messageRenderInfos);
-	if (received)
+	if (unread)
 		LastReceivedMessageTime = QDateTime::currentDateTime();
 }
 
 void ChatWidget::appendMessage(const Message &message)
 {
 	MessagesView->appendMessage(new MessageRenderInfo(message));
-	if (message.type() == MessageTypeReceived || message.type() == MessageTypeSystem)
+	if (message.status() == MessageStatusReceived)
 	{
 		LastReceivedMessageTime = QDateTime::currentDateTime();
 		if (Container)

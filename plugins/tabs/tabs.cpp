@@ -40,6 +40,7 @@
 #include "buddies/buddy-list.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-set.h"
+#include "chat/message/message-manager.h"
 #include "configuration/configuration-file.h"
 #include "configuration/configuration-manager.h"
 #include "configuration/xml-configuration-file.h"
@@ -263,7 +264,7 @@ void TabsManager::onTabChange(int index)
 	TabDialog->setWindowTitle(chat->title());
 	TabDialog->setWindowIcon(chat->icon());
 
-	chat->chat().setUnreadMessagesCount(0);
+	MessageManager::instance()->markAllMessagesAsRead(chat);
 	// ustawiamy focus na pole edycji chata
 	chat->edit()->setFocus();
 }
@@ -385,7 +386,7 @@ void TabsManager::onTimer()
 
 				if (currentChat == chat)
 				{
-					chat->chat().setUnreadMessagesCount(0);
+					MessageManager::instance()->markAllMessagesAsRead(chat);
 					TabDialog->setTabIcon(i, chat->icon());
 					ChatsWithNewMessages.removeAll(chat);
 				}
