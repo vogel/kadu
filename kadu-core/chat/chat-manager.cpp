@@ -24,6 +24,7 @@
 
 #include "accounts/account-manager.h"
 #include "buddies/buddy-preferred-manager.h"
+#include "chat/message/message-manager.h"
 #include "chat/type/chat-type-manager.h"
 #include "chat/chat-details-conference.h"
 #include "chat/chat-details-simple.h"
@@ -47,10 +48,14 @@ ChatManager *  ChatManager::instance()
 
 ChatManager::ChatManager()
 {
+	connect(MessageManager::instance(), SIGNAL(unreadMessageAdded(Message)), this, SLOT(unreadMessageAdded(Message)));
+	connect(MessageManager::instance(), SIGNAL(unreadMessageRemoved(Message)), this, SLOT(unreadMessageRemoved(Message)));
 }
 
 ChatManager::~ChatManager()
 {
+	disconnect(MessageManager::instance(), SIGNAL(unreadMessageAdded(Message)), this, SLOT(unreadMessageAdded(Message)));
+	disconnect(MessageManager::instance(), SIGNAL(unreadMessageRemoved(Message)), this, SLOT(unreadMessageRemoved(Message)));
 }
 
 void ChatManager::itemAboutToBeRegistered(Chat item)
@@ -271,4 +276,18 @@ void ChatManager::chatDataUpdated()
 	Chat chat(sender());
 	if (!chat.isNull())
 		emit chatUpdated(chat);
+}
+
+void ChatManager::unreadMessageAdded(const Message &message)
+{
+	const Chat &chat = message.messageChat();
+	chat.setUnreadMessagesCount(chat.unreadMessagesCount() + 1);
+}
+
+void ChatManager::unreadMessageRemoved(const Message &message)
+{
+	const Chat &chat = message.messageChat();
+	quint16 unreadMessagesCount = chat.unreadMessagesCount();
+	if (unreadMessagesCount > 0)
+		chat.setUnreadMessagesCount(unreadMessagesCount - 1);
 }

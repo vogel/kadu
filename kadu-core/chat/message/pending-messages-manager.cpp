@@ -31,6 +31,7 @@
 #include "accounts/account-manager.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-preferred-manager.h"
+#include "chat/message/message-manager.h"
 #include "chat/chat-details.h"
 #include "chat/chat-details-aggregate.h"
 #include "chat/chat-manager.h"
@@ -249,7 +250,6 @@ void PendingMessagesManager::loaded()
 		BuddyManager::instance()->byContact(message.messageSender(), ActionCreateAndAdd);
 
 		// each pending message is unread message of its chat
-		const Chat &chat = message.messageChat();
-		chat.setUnreadMessagesCount(chat.unreadMessagesCount() + 1);
+		MessageManager::instance()->addUnreadMessage(message);
 	}
 }

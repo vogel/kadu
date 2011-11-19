@@ -77,6 +77,8 @@ void MessageManager::accountUnregistered(Account account)
 
 void MessageManager::messageReceivedSlot(const Message &message)
 {
+	addUnreadMessage(message);
+
 	emit messageReceived(message);
 }
 
