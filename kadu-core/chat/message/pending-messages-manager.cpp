@@ -63,40 +63,6 @@ PendingMessagesManager::~PendingMessagesManager()
 {
 }
 
-// TODO: optimize
-bool PendingMessagesManager::hasPendingMessagesForContact(const Contact &contact)
-{
-	QMutexLocker locker(&mutex());
-
-	foreach (const Message &message, items())
-		if (message.isPending() && message.messageSender() == contact)
-			return true;
-
-	return false;
-}
-
-bool PendingMessagesManager::hasPendingMessagesForBuddy(const Buddy &buddy)
-{
-	QMutexLocker locker(&mutex());
-
-	foreach (const Message &message, items())
-		if (message.isPending() && buddy.contacts().contains(message.messageSender()))
-			return true;
-
-	return false;
-}
-
-bool PendingMessagesManager::hasPendingMessagesForChat(const Chat &chat)
-{
-	QMutexLocker locker(&mutex());
-
-	foreach (const Message &message, items())
-		if (message.isPending() && message.messageChat() == chat)
-			return true;
-
-	return false;
-}
-
 void PendingMessagesManager::deletePendingMessagesForChat(const Chat &chat)
 {
 	QMutexLocker locker(&mutex());

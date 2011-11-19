@@ -69,10 +69,6 @@ public:
 	virtual QString storageNodeName() { return QLatin1String("PendingMessages"); }
 	virtual QString storageNodeItemName() { return QLatin1String("Message"); }
 
-	bool hasPendingMessagesForContact(const Contact &contact);
-	bool hasPendingMessagesForBuddy(const Buddy &buddy);
-	bool hasPendingMessagesForChat(const Chat &chat);
-
 	void deletePendingMessagesForChat(const Chat &chat);
 
 	Chat chatForBuddy(const Buddy &buddy);
