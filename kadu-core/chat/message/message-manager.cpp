@@ -28,19 +28,27 @@ MessageManager * MessageManager::Instance = 0;
 MessageManager * MessageManager::instance()
 {
 	if (0 == Instance)
+	{
 		Instance = new MessageManager();
+		Instance->init();
+	}
 
 	return Instance;
 }
 
-MessageManager::MessageManager()
+MessageManager::MessageManager() :
+		UnreadMessagesCount(0)
 {
-	triggerAllAccountsRegistered();
 }
 
 MessageManager::~MessageManager()
 {
 	triggerAllAccountsUnregistered();
+}
+
+void MessageManager::init()
+{
+	triggerAllAccountsRegistered();
 }
 
 void MessageManager::accountRegistered(Account account)
@@ -85,6 +93,7 @@ void MessageManager::messageReceivedSlot(const Message &message)
 void MessageManager::addUnreadMessage(const Message &message)
 {
 	UnreadMessages.insert(message.messageChat(), message);
+	UnreadMessagesCount++;
 
 	emit unreadMessageAdded(message);
 }
@@ -92,23 +101,35 @@ void MessageManager::addUnreadMessage(const Message &message)
 void MessageManager::removeUnreadMessage(const Message &message)
 {
 	UnreadMessages.remove(message.messageChat(), message);
+	UnreadMessagesCount--;
 
 	emit unreadMessageRemoved(message);
 }
 
-const QList<Message> MessageManager::allUnreadMessages()
+const QList<Message> MessageManager::allUnreadMessages() const
 {
 	return UnreadMessages.values();
 }
 
+bool MessageManager::hasUnreadMessages() const
+{
+	return UnreadMessagesCount > 0;
+}
+
+quint8 MessageManager::unreadMessagesCount() const
+{
+	return UnreadMessagesCount;
+}
+
 void MessageManager::markAllMessagesAsRead(const Chat &chat)
 {
-	const QList<Message> &messages = UnreadMessages.values(chat);
+	QList<Message> messages = UnreadMessages.values(chat);
 	foreach (const Message &message, messages)
 	{
+		UnreadMessagesCount--;
+		UnreadMessages.remove(chat, message);
+
 		message.setStatus(MessageStatusRead);
 		emit unreadMessageRemoved(message);
 	}
-
-	UnreadMessages.remove(chat);
 }
