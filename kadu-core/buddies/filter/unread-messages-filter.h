@@ -17,23 +17,23 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PENDING_MESSAGES_FILTER_H
-#define PENDING_MESSAGES_FILTER_H
+#ifndef UNREAD_MESSAGES_FILTER_H
+#define UNREAD_MESSAGES_FILTER_H
 
 #include "buddies/filter/abstract-buddy-filter.h"
 #include "exports.h"
 
-class PendingMessagesFilter : public AbstractBuddyFilter
+class UnreadMessagesFilter : public AbstractBuddyFilter
 {
 	Q_OBJECT
 
 public:
-	explicit PendingMessagesFilter(QObject *parent = 0);
-	virtual ~PendingMessagesFilter();
+	explicit UnreadMessagesFilter(QObject *parent = 0);
+	virtual ~UnreadMessagesFilter();
 
 	virtual bool acceptBuddy(const Buddy &buddy);
 	virtual bool ignoreNextFilters(const Buddy &buddy);
 
 };
 
-#endif // PENDING_MESSAGES_FILTER_H
+#endif // UNREAD_MESSAGES_FILTER_H

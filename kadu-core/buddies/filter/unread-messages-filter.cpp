@@ -17,30 +17,34 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "chat/message/pending-messages-manager.h"
+#include "chat/message/message-manager.h"
 
-#include "pending-messages-filter.h"
+#include "unread-messages-filter.h"
 
-PendingMessagesFilter::PendingMessagesFilter(QObject *parent) :
+UnreadMessagesFilter::UnreadMessagesFilter(QObject *parent) :
 		AbstractBuddyFilter(parent)
 {
-	connect(PendingMessagesManager::instance(), SIGNAL(messageAdded(Message)),
+	connect(MessageManager::instance(), SIGNAL(unreadMessageAdded(Message)),
 			this, SIGNAL(filterChanged()));
-	connect(PendingMessagesManager::instance(), SIGNAL(messageRemoved(Message)),
+	connect(MessageManager::instance(), SIGNAL(unreadMessageRemoved(Message)),
 			this, SIGNAL(filterChanged()));
 }
 
-PendingMessagesFilter::~PendingMessagesFilter()
+UnreadMessagesFilter::~UnreadMessagesFilter()
 {
+	disconnect(MessageManager::instance(), SIGNAL(unreadMessageAdded(Message)),
+			this, SIGNAL(filterChanged()));
+	disconnect(MessageManager::instance(), SIGNAL(unreadMessageRemoved(Message)),
+			this, SIGNAL(filterChanged()));
 }
 
-bool PendingMessagesFilter::acceptBuddy(const Buddy &buddy)
+bool UnreadMessagesFilter::acceptBuddy(const Buddy &buddy)
 {
 	Q_UNUSED(buddy)
 	return true;
 }
 
-bool PendingMessagesFilter::ignoreNextFilters(const Buddy &buddy)
+bool UnreadMessagesFilter::ignoreNextFilters(const Buddy &buddy)
 {
-	return PendingMessagesManager::instance()->hasPendingMessagesForBuddy(buddy);
+	return buddy.unreadMessagesCount() > 0;
 }

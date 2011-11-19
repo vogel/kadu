@@ -25,7 +25,7 @@
 
 #include "buddies/filter/buddy-name-filter.h"
 #include "buddies/filter/group-buddy-filter.h"
-#include "buddies/filter/pending-messages-filter.h"
+#include "buddies/filter/unread-messages-filter.h"
 #include "buddies/model/buddies-model.h"
 #include "buddies/model/buddies-model-proxy.h"
 #include "chat/filter/chat-named-filter.h"
@@ -220,7 +220,7 @@ ModelChain * RosterWidget::createBuddiesModelChain()
 {
 	ModelChain *chain = new ModelChain(new BuddiesModel(this), this);
 	ProxyModel = new BuddiesModelProxy(chain);
-	ProxyModel->addFilter(new PendingMessagesFilter(ProxyModel));
+	ProxyModel->addFilter(new UnreadMessagesFilter(ProxyModel));
 
 	BuddyNameFilter *nameFilter = new BuddyNameFilter(ProxyModel);
 	connect(BuddiesWidget, SIGNAL(filterChanged(QString)), nameFilter, SLOT(setName(QString)));
