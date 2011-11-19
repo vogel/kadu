@@ -23,6 +23,7 @@
 #include <QtCore/QTimer>
 
 #include "buddies/buddy.h"
+#include "chat/message/message-manager.h"
 #include "configuration/configuration-file.h"
 #include "configuration/configuration-manager.h"
 #include "contacts/contact.h"
@@ -50,10 +51,28 @@ ContactManager::ContactManager()
 	qRegisterMetaType<Contact>("Contact");
 
 	ContactParserTags::registerParserTags();
+
+	foreach (const Message &message, MessageManager::instance()->allUnreadMessages())
+		unreadMessageAdded(message);
+
+	// for unknown reason queued collection is needed here
+	// TODO: learn why
+	connect(MessageManager::instance(), SIGNAL(unreadMessageAdded(Message)),
+	        this, SLOT(unreadMessageAdded(Message)), Qt::QueuedConnection);
+	connect(MessageManager::instance(), SIGNAL(unreadMessageRemoved(Message)),
+	        this, SLOT(unreadMessageRemoved(Message)), Qt::QueuedConnection);
 }
 
 ContactManager::~ContactManager()
 {
+	disconnect(MessageManager::instance(), SIGNAL(unreadMessageAdded(Message)),
+	           this, SLOT(unreadMessageAdded(Message)));
+	disconnect(MessageManager::instance(), SIGNAL(unreadMessageRemoved(Message)),
+	           this, SLOT(unreadMessageRemoved(Message)));
+
+	foreach (const Message &message, MessageManager::instance()->allUnreadMessages())
+		unreadMessageRemoved(message);
+
 	ContactParserTags::unregisterParserTags();
 }
 
@@ -81,6 +100,20 @@ void ContactManager::dirtinessChanged()
 		else
 			DirtyContacts.removeAll(contact);
 	}
+}
+
+void ContactManager::unreadMessageAdded(const Message &message)
+{
+	const Contact &contact = message.messageSender();
+	contact.setUnreadMessagesCount(contact.unreadMessagesCount() + 1);
+}
+
+void ContactManager::unreadMessageRemoved(const Message &message)
+{
+	const Contact &contact = message.messageSender();
+	quint16 unreadMessagesCount = contact.unreadMessagesCount();
+	if (unreadMessagesCount > 0)
+		contact.setUnreadMessagesCount(unreadMessagesCount - 1);
 }
 
 void ContactManager::aboutToBeDetached()
