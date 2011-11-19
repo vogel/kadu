@@ -517,4 +517,15 @@ void BuddyShared::markContactsDirty()
 		contact.setDirty(true);
 }
 
+quint8 BuddyShared::unreadMessagesCount()
+{
+	ensureLoaded();
+
+	quint8 result = 0;
+	foreach (const Contact &contact, Contacts)
+		result += contact.unreadMessagesCount();
+
+	return result;
+}
+
 KaduShared_PropertyPtrReadDef(BuddyShared, Avatar, buddyAvatar, BuddyAvatar)
