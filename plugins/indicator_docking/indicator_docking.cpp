@@ -38,6 +38,7 @@
 #include "contacts/contact-set.h"
 #include "contacts/contact.h"
 #include "core/core.h"
+#include "gui/widgets/chat-widget.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "message/message-manager.h"
 #include "misc/path-conversion.h"
