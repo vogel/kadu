@@ -91,7 +91,7 @@ class DOCKINGAPI DockingManager : public QObject, ConfigurationAwareObject, Stat
 	virtual ~DockingManager();
 
 	void doUpdateContextMenu();
-	void openPendingMessages();
+	void openUnreadMessages();
 
 private slots:
 	void statusIconChanged(const KaduIcon &icon);

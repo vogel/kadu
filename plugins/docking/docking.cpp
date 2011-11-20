@@ -253,7 +253,7 @@ void DockingManager::hideKaduWindow()
 		kaduWindow->window()->hide();
 }
 
-void DockingManager::openPendingMessages()
+void DockingManager::openUnreadMessages()
 {
 	const Message &message = MessageManager::instance()->unreadMessage();
 	ChatWidget * const chatWidget = ChatWidgetManager::instance()->byChat(message.messageChat(), true);
@@ -267,7 +267,7 @@ void DockingManager::trayMousePressEvent(QMouseEvent * e)
 	if (e->button() == Qt::MidButton)
 	{
 		emit mousePressMidButton();
-		openPendingMessages();
+		openUnreadMessages();
 		return;
 	}
 
@@ -280,7 +280,7 @@ void DockingManager::trayMousePressEvent(QMouseEvent * e)
 
 		if (MessageManager::instance()->hasUnreadMessages() && (e->modifiers() != Qt::ControlModifier))
 		{
-			openPendingMessages();
+			openUnreadMessages();
 			return;
 		}
 
@@ -526,7 +526,7 @@ void DockingManager::dockIconClicked()
 
 	if (MessageManager::instance()->hasUnreadMessages())
 	{
-		openPendingMessages();
+		openUnreadMessages();
 		return;
 	}
 
