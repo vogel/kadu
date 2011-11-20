@@ -61,7 +61,7 @@ public:
 	QList<Message> chatUnreadMessages(const Chat &chat) const;
 
 	bool hasUnreadMessages() const;
-	quint8 unreadMessagesCount() const;
+	quint16 unreadMessagesCount() const;
 
 	void markAllMessagesAsRead(const Chat &chat);
 

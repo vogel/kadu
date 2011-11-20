@@ -135,7 +135,7 @@ bool MessageManager::hasUnreadMessages() const
 	return !UnreadMessages.isEmpty();
 }
 
-quint8 MessageManager::unreadMessagesCount() const
+quint16 MessageManager::unreadMessagesCount() const
 {
 	return UnreadMessages.count();
 }

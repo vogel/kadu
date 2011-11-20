@@ -517,11 +517,11 @@ void BuddyShared::markContactsDirty()
 		contact.setDirty(true);
 }
 
-quint8 BuddyShared::unreadMessagesCount()
+quint16 BuddyShared::unreadMessagesCount()
 {
 	ensureLoaded();
 
-	quint8 result = 0;
+	quint16 result = 0;
 	foreach (const Contact &contact, Contacts)
 		result += contact.unreadMessagesCount();
 

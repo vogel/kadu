@@ -173,7 +173,7 @@ public:
 	BuddyShared_PropertySubscriptionDirty(Blocked)
 	BuddyShared_PropertySubscriptionDirty(OfflineTo)
 
-	quint8 unreadMessagesCount();
+	quint16 unreadMessagesCount();
 
 signals:
 	void contactAboutToBeAdded(const Contact &contact);
