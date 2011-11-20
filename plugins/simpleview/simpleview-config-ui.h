@@ -1,5 +1,6 @@
 /*
  * %kadu copyright begin%
+ * Copyright 2011 Piotr Galiszewski (piotr.galiszewski@kadu.im)
  * Copyright 2010 Przemysław Rudy (prudy1@o2.pl)
  * %kadu copyright end%
  *

@@ -1,5 +1,6 @@
 /*
  * %kadu copyright begin%
+ * Copyright 2008 Michał Podsiadlik (michal@kadu.net)
  * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *

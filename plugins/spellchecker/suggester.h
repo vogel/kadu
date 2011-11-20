@@ -1,6 +1,8 @@
 /*
  * %kadu copyright begin%
  * Copyright 2011 Sławomir Stępień (s.stepien@interia.pl)
+ * Copyright 2011 Bartosz Brachaczek (b.brachaczek@gmail.com)
+ * Copyright 2011 Slawomir Stepien (s.stepien@interia.pl)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
