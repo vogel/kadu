@@ -18,7 +18,10 @@
  */
 
 #include "accounts/account.h"
+#include "buddies/buddy-manager.h"
+#include "chat/message/pending-messages-manager.h"
 #include "chat/chat-details-aggregate.h"
+#include "gui/widgets/chat-widget-manager.h"
 #include "protocols/protocol.h"
 #include "protocols/services/chat-service.h"
 
@@ -94,12 +97,26 @@ void MessageManager::addUnreadMessage(const Message &message)
 {
 	UnreadMessages.append(message);
 
+	// message is pending if chat widget is not open
+	if (!ChatWidgetManager::instance()->byChat(message.messageChat(), false))
+	{
+		// just ensure that owner buddy is managed - we need it to be shown on contact list
+		// todo: rethink this one
+		BuddyManager::instance()->byContact(message.messageSender(), ActionCreateAndAdd);
+
+		PendingMessagesManager::instance()->addItem(message);
+		message.setPending(true);
+	}
+
 	emit unreadMessageAdded(message);
 }
 
 void MessageManager::removeUnreadMessage(const Message &message)
 {
 	UnreadMessages.removeAll(message);
+
+	PendingMessagesManager::instance()->removeItem(message);
+	message.setPending(false);
 
 	emit unreadMessageRemoved(message);
 }

@@ -55,16 +55,7 @@ class KADUAPI PendingMessagesManager : public QObject, public SimpleManager<Mess
 	PendingMessagesManager();
 	virtual ~PendingMessagesManager();
 
-	void init();
-
-private slots:
-	void unreadMessageAdded(const Message &message);
-	void unreadMessageRemoved(const Message &message);
-
 protected:
-	virtual void itemAboutToBeAdded(Message message);
-	virtual void itemAboutToBeRemoved(Message message);
-
 	virtual void loaded();
 
 public:
