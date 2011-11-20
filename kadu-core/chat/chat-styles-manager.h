@@ -57,6 +57,8 @@ class KADUAPI ChatStylesManager : public QObject, ConfigurationAwareObject, Comp
 	static ChatStylesManager *Instance;
 	ChatStylesManager();
 
+	void init();
+
 	QMap<QString, ChatStyleEngine *> RegisteredEngines;
 	QList<ChatMessagesView *> ChatViews;
 	QMap<QString, StyleInfo> AvailableStyles;

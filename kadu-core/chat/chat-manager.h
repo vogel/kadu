@@ -29,6 +29,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QUuid>
 
+#include "chat/message/message.h"
 #include "storage/manager.h"
 
 #include "chat.h"
@@ -93,12 +94,17 @@ class KADUAPI ChatManager : public QObject, public Manager<Chat>
 	ChatManager();
 	virtual ~ChatManager();
 
+	void init();
+
 	friend class ChatShared;
 	void detailsLoaded(Chat chat);
 	void detailsUnloaded(Chat chat);
 
 private slots:
 	void chatDataUpdated();
+
+	void unreadMessageAdded(const Message &message);
+	void unreadMessageRemoved(const Message &message);
 
 protected:
 	virtual void itemAboutToBeRegistered(Chat item);

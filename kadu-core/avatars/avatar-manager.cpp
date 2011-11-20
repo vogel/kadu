@@ -41,12 +41,25 @@ AvatarManager * AvatarManager::Instance = 0;
 AvatarManager * AvatarManager::instance()
 {
 	if (!Instance)
+	{
 		Instance = new AvatarManager();
+		Instance->init();
+	}
 
 	return Instance;
 }
 
 AvatarManager::AvatarManager()
+{
+}
+
+AvatarManager::~AvatarManager()
+{
+	triggerAllAccountsUnregistered();
+	disconnect(ContactManager::instance(), SIGNAL(contactAdded(Contact)), this, SLOT(contactAdded(Contact)));
+}
+
+void AvatarManager::init()
 {
 	triggerAllAccountsRegistered();
 
@@ -56,12 +69,6 @@ AvatarManager::AvatarManager()
 	connect(ContactManager::instance(), SIGNAL(contactAdded(Contact)), this, SLOT(contactAdded(Contact)));
 
 	UpdateTimer->start();
-}
-
-AvatarManager::~AvatarManager()
-{
-	triggerAllAccountsUnregistered();
-	disconnect(ContactManager::instance(), SIGNAL(contactAdded(Contact)), this, SLOT(contactAdded(Contact)));
 }
 
 void AvatarManager::itemAboutToBeAdded(Avatar item)

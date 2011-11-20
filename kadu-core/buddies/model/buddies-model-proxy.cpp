@@ -25,7 +25,7 @@
 #include "buddies/filter/abstract-buddy-filter.h"
 #include "buddies/buddy.h"
 #include "buddies/buddy-preferred-manager.h"
-#include "chat/message/pending-messages-manager.h"
+#include "chat/message/message-manager.h"
 #include "contacts/filter/abstract-contact-filter.h"
 #include "contacts/contact.h"
 #include "model/roles.h"
@@ -46,9 +46,9 @@ BuddiesModelProxy::BuddiesModelProxy(QObject *parent) :
 	if (BrokenStringCompare)
 		fprintf(stderr, "There's something wrong with native string compare function. Applying workaround (slower).\n");
 
-	connect(PendingMessagesManager::instance(), SIGNAL(messageAdded(Message)),
+	connect(MessageManager::instance(), SIGNAL(unreadMessageAdded(Message)),
 			this, SLOT(invalidate()));
-	connect(PendingMessagesManager::instance(), SIGNAL(messageRemoved(Message)),
+	connect(MessageManager::instance(), SIGNAL(unreadMessageRemoved(Message)),
 			this, SLOT(invalidate()));
 }
 
@@ -88,11 +88,11 @@ bool BuddiesModelProxy::lessThan(const QModelIndex &left, const QModelIndex &rig
 	if (!leftBuddy.isBlocked() && rightBuddy.isBlocked())
 		return true;
 
-	const bool leftHasPendingMessages = PendingMessagesManager::instance()->hasPendingMessagesForBuddy(leftBuddy);
-	const bool rightHasPendingMessages = PendingMessagesManager::instance()->hasPendingMessagesForBuddy(rightBuddy);
-	if (!leftHasPendingMessages && rightHasPendingMessages)
+	const bool leftHasUnreadMessages = leftBuddy.unreadMessagesCount() > 0;
+	const bool rightHasUnreadMessages = rightBuddy.unreadMessagesCount() > 0;
+	if (!leftHasUnreadMessages && rightHasUnreadMessages)
 		return false;
-	if (leftHasPendingMessages && !rightHasPendingMessages)
+	if (leftHasUnreadMessages && !rightHasUnreadMessages)
 		return true;
 
 	if (SortByStatus)

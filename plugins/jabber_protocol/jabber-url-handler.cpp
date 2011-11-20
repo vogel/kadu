@@ -30,6 +30,7 @@
 #include "contacts/contact.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
+#include "gui/widgets/chat-widget.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "icons/kadu-icon.h"
 #include "misc/misc.h"
@@ -100,11 +101,13 @@ void JabberUrlHandler::openUrl(const QByteArray &url, bool disableMenu)
 
 	if (jabberAccounts.count() == 1 || disableMenu)
 	{
-		Contact contact = ContactManager::instance()->byId(jabberAccounts[0], jabberId, ActionCreateAndAdd);
-		Chat chat = ChatManager::instance()->findChat(ContactSet(contact));
+		const Contact &contact = ContactManager::instance()->byId(jabberAccounts[0], jabberId, ActionCreateAndAdd);
+		const Chat &chat = ChatManager::instance()->findChat(ContactSet(contact));
 		if (chat)
 		{
-			ChatWidgetManager::instance()->openPendingMessages(chat, true);
+			ChatWidget * const chatWidget = ChatWidgetManager::instance()->byChat(chat, true);
+			if (chatWidget)
+				chatWidget->activate();
 			return;
 		}
 	}
@@ -130,17 +133,18 @@ void JabberUrlHandler::openUrl(const QByteArray &url, bool disableMenu)
 
 void JabberUrlHandler::accountSelected(QAction *action)
 {
-	QStringList ids = action->data().toStringList();
+	const QStringList &ids = action->data().toStringList();
 
 	if (ids.count() != 2)
 		return;
 
-	Account account = AccountManager::instance()->byId("jabber", ids[0]);
+	const Account &account = AccountManager::instance()->byId("jabber", ids[0]);
 	if (!account)
 		return;
 
-	Contact contact = ContactManager::instance()->byId(account, ids[1], ActionCreateAndAdd);
-	Chat chat = ChatManager::instance()->findChat(ContactSet(contact));
-	if (chat)
-		ChatWidgetManager::instance()->openPendingMessages(chat, true);
+	const Contact &contact = ContactManager::instance()->byId(account, ids[1], ActionCreateAndAdd);
+	const Chat &chat = ChatManager::instance()->findChat(ContactSet(contact));
+	ChatWidget * const chatWidget = ChatWidgetManager::instance()->byChat(chat, true);
+	if (chatWidget)
+		chatWidget->activate();
 }

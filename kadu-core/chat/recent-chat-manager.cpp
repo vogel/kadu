@@ -24,8 +24,8 @@
 
 #include "chat/chat-manager.h"
 #include "chat/message/message.h"
+#include "chat/message/message-manager.h"
 #include "configuration/configuration-file.h"
-#include "core/core.h"
 
 #include "recent-chat-manager.h"
 
@@ -41,12 +41,24 @@ RecentChatManager * RecentChatManager::Instance = 0;
 RecentChatManager * RecentChatManager::instance()
 {
 	if (0 == Instance)
+	{
 		Instance = new RecentChatManager();
+		Instance->init();
+	}
 
 	return Instance;
 }
 
 RecentChatManager::RecentChatManager()
+{
+}
+
+RecentChatManager::~RecentChatManager()
+{
+	ConfigurationManager::instance()->unregisterStorableObject(this);
+}
+
+void RecentChatManager::init()
 {
 	setState(StateNotLoaded);
 	ConfigurationManager::instance()->registerStorableObject(this);
@@ -56,15 +68,10 @@ RecentChatManager::RecentChatManager()
 
 	configurationUpdated();
 
-	connect(Core::instance(), SIGNAL(messageReceived(Message)),
+	connect(MessageManager::instance(), SIGNAL(messageReceived(Message)),
 			this, SLOT(onNewMessage(Message)));
-	connect(Core::instance(), SIGNAL(messageSent(Message)),
+	connect(MessageManager::instance(), SIGNAL(messageSent(Message)),
 			this, SLOT(onNewMessage(Message)));
-}
-
-RecentChatManager::~RecentChatManager()
-{
-	ConfigurationManager::instance()->unregisterStorableObject(this);
 }
 
 /**

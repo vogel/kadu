@@ -17,8 +17,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "chat/message/message-manager.h"
 #include "chat/message/message-render-info.h"
 #include "contacts/contact-set.h"
+#include "gui/widgets/chat-widget.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "notify/chat-notification.h"
 
@@ -51,9 +53,10 @@ void ChatNotifier::sendNotificationToChatWidget(Notification *notification, Chat
 	message.setSendDate(QDateTime::currentDateTime());
 	message.setStatus(MessageStatusReceived);
 	message.setType(MessageTypeSystem);
-	message.setPending(false);
 
-	chatWidget->appendMessage(new MessageRenderInfo(message));
+	MessageManager::instance()->addUnreadMessage(message);
+
+	chatWidget->appendMessage(message);
 }
 
 void ChatNotifier::notify(Notification *notification)

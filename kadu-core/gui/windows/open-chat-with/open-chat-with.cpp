@@ -39,6 +39,7 @@
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
 #include "core/core.h"
+#include "gui/widgets/chat-widget.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/filtered-tree-view.h"
 #include "gui/widgets/line-edit-with-clear-button.h"
@@ -245,7 +246,10 @@ void OpenChatWith::openChat()
 	const Chat &chat = ChatManager::instance()->findChat(contacts);
 	if (chat)
 	{
-		ChatWidgetManager::instance()->openPendingMessages(chat, true);
+		ChatWidget * const chatWidget = ChatWidgetManager::instance()->byChat(chat, true);
+		if (chatWidget)
+			chatWidget->activate();
+
 		close();
 		return;
 	}

@@ -24,6 +24,7 @@
 #include <QtCore/QScopedPointer>
 #include <QtCore/QMultiMap>
 
+#include "chat/chat.h"
 #include "notify/notifier.h"
 
 #include "plugins/docking/docker.h"
@@ -37,7 +38,6 @@ namespace QIndicate
 	class Server;
 }
 
-class Chat;
 class ChatNotification;
 class ChatWidget;
 
@@ -64,14 +64,14 @@ class IndicatorDocking : public Notifier, public Docker
 	void removeNotification(ChatNotification *chatNotification);
 
 private slots:
-	void indicatePendingMessages();
+	void indicateUnreadMessages();
 
 	void showMainWindow();
 	void displayIndicator(QIndicate::Indicator *indicator);
 
 	void notificationClosed(Notification *notification);
 
-	void chatWidgetActivated(ChatWidget *chatWidget);
+	void chatUpdated(const Chat &chat);
 	void chatWidgetCreated(ChatWidget *chatWidget);
 
 	void silentModeToggled(bool silentMode);

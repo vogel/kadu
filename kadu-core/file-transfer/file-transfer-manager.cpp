@@ -34,6 +34,7 @@
 #include "file-transfer/file-transfer-actions.h"
 #include "file-transfer/file-transfer-handler.h"
 #include "file-transfer/file-transfer-notifications.h"
+#include "gui/widgets/chat-widget.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/windows/file-transfer-window.h"
 #include "gui/windows/kadu-window.h"

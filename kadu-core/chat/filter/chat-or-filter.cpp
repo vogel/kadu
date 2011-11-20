@@ -17,23 +17,39 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PENDING_MESSAGES_FILTER_H
-#define PENDING_MESSAGES_FILTER_H
+#include "chat/chat.h"
 
-#include "buddies/filter/abstract-buddy-filter.h"
-#include "exports.h"
+#include "chat-or-filter.h"
 
-class PendingMessagesFilter : public AbstractBuddyFilter
+ChatOrFilter::ChatOrFilter(QObject *parent) :
+		ChatFilter(parent)
 {
-	Q_OBJECT
+}
 
-public:
-	explicit PendingMessagesFilter(QObject *parent = 0);
-	virtual ~PendingMessagesFilter();
+bool ChatOrFilter::acceptChat(const Chat &chat)
+{
+	foreach (ChatFilter * const filter, Filters)
+		if (filter->acceptChat(chat))
+			return true;
 
-	virtual bool acceptBuddy(const Buddy &buddy);
-	virtual bool ignoreNextFilters(const Buddy &buddy);
+	return false;
+}
 
-};
+void ChatOrFilter::addFilter(ChatFilter *const filter)
+{
+	if (Filters.contains(filter))
+		return;
 
-#endif // PENDING_MESSAGES_FILTER_H
+	Filters.append(filter);
+	connect(filter, SIGNAL(filterChanged()), this, SIGNAL(filterChanged()));
+	emit filterChanged();
+}
+
+void ChatOrFilter::removeFilter(ChatFilter *const filter)
+{
+	if (Filters.removeAll(filter) == 0)
+		return;
+
+	disconnect(filter, SIGNAL(filterChanged()), this, SIGNAL(filterChanged()));
+	emit filterChanged();
+}

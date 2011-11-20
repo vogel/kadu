@@ -55,6 +55,8 @@ class KADUAPI ChatTypeManager : public QObject
 	ChatTypeManager();
 	virtual ~ChatTypeManager();
 
+	void init();
+
 public:
 	static ChatTypeManager * instance();
 

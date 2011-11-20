@@ -33,7 +33,7 @@
 #include "chat/chat.h"
 #include "chat/chat-details-aggregate.h"
 #include "chat/chat-manager.h"
-#include "chat/message/pending-messages-manager.h"
+#include "chat/message/message-manager.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact.h"
 #include "contacts/contact-set.h"
@@ -62,7 +62,7 @@ void IndicatorDocking::destroyInstance()
 }
 
 IndicatorDocking * IndicatorDocking::instance()
-{ 
+{
 	return Instance;
 }
 
@@ -76,7 +76,7 @@ IndicatorDocking::IndicatorDocking() :
 	Server->show();
 
 	connect(Server, SIGNAL(serverDisplay()), this, SLOT(showMainWindow()));
-	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetActivated(ChatWidget*)), this, SLOT(chatWidgetActivated(ChatWidget*)));
+	connect(ChatManager::instance(), SIGNAL(chatUpdated(Chat)), this, SLOT(chatUpdated(Chat)));
 	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetCreated(ChatWidget*)), this, SLOT(chatWidgetCreated(ChatWidget*)));
 	connect(NotificationManager::instance(), SIGNAL(silentModeToggled(bool)), this, SLOT(silentModeToggled(bool)));
 
@@ -85,7 +85,7 @@ IndicatorDocking::IndicatorDocking() :
 	DockingManager::instance()->setDocker(this);
 	NotificationManager::instance()->registerNotifier(this);
 
-	QTimer::singleShot(0, this, SLOT(indicatePendingMessages()));
+	QTimer::singleShot(0, this, SLOT(indicateUnreadMessages()));
 }
 
 IndicatorDocking::~IndicatorDocking()
@@ -94,7 +94,7 @@ IndicatorDocking::~IndicatorDocking()
 	DockingManager::instance()->setDocker(0);
 
 	disconnect(Server, SIGNAL(serverDisplay()), this, SLOT(showMainWindow()));
-	disconnect(ChatWidgetManager::instance(), SIGNAL(chatWidgetActivated(ChatWidget*)), this, SLOT(chatWidgetActivated(ChatWidget*)));
+	disconnect(ChatManager::instance(), SIGNAL(chatUpdated(Chat)), this, SLOT(chatUpdated(Chat)));
 	disconnect(ChatWidgetManager::instance(), SIGNAL(chatWidgetCreated(ChatWidget*)), this, SLOT(chatWidgetCreated(ChatWidget*)));
 
 	QSet<QIndicate::Indicator *> indicatorsToDelete;
@@ -113,10 +113,10 @@ IndicatorDocking::~IndicatorDocking()
 	Server->hide();
 }
 
-void IndicatorDocking::indicatePendingMessages()
+void IndicatorDocking::indicateUnreadMessages()
 {
 	if (config_file.readBoolEntry("Notify", "NewChat_IndicatorNotify") && !NotificationManager::instance()->silentMode())
-		foreach (const Message &message, PendingMessagesManager::instance()->items())
+		foreach (const Message &message, MessageManager::instance()->allUnreadMessages())
 			notify(new MessageNotification(MessageNotification::NewChat, message));
 }
 
@@ -126,7 +126,7 @@ void IndicatorDocking::silentModeToggled(bool silentMode)
 		indicator->setDrawAttentionProperty(!silentMode);
 
 	if (!silentMode)
-		indicatePendingMessages();
+		indicateUnreadMessages();
 }
 
 void IndicatorDocking::showMainWindow()
@@ -216,15 +216,10 @@ void IndicatorDocking::notificationClosed(Notification *notification)
 	removeNotification(chatNotification);
 }
 
-void IndicatorDocking::chatWidgetActivated(ChatWidget *chatWidget)
+void IndicatorDocking::chatUpdated(const Chat &chat)
 {
 	// When a chat widget is activated, it contains only messages from its own chat, not aggregate chat.
-
-	if (!chatWidget)
-		return;
-
-	Chat chat = chatWidget->chat();
-	if (!chat)
+	if (!chat || chat.unreadMessagesCount() > 0)
 		return;
 
 	IndMMap::iterator it = iteratorForChat(chat);
@@ -264,7 +259,7 @@ void IndicatorDocking::displayIndicator(QIndicate::Indicator *indicator)
 
 	chatNotification->openChat();
 
-	// chatWidgetActivated() or chatWidgetCreated() slot will take care of deleting indicator
+	// chatUpdated() or chatWidgetCreated() slot will take care of deleting indicator
 }
 
 void IndicatorDocking::removeNotification(ChatNotification *chatNotification)

@@ -57,7 +57,10 @@ ChatStylesManager * ChatStylesManager::Instance = 0;
 ChatStylesManager * ChatStylesManager::instance()
 {
 	if (0 == Instance)
+	{
 		Instance = new ChatStylesManager();
+		Instance->init();
+	}
 
 	return Instance;
 }
@@ -65,6 +68,16 @@ ChatStylesManager * ChatStylesManager::instance()
 ChatStylesManager::ChatStylesManager() :
 		CurrentEngine(0), SyntaxListCombo(0), EditButton(0), DeleteButton(0),
 		VariantListCombo(0), TurnOnTransparency(0), EnginePreview(0)
+{
+}
+
+ChatStylesManager::~ChatStylesManager()
+{
+	unregisterChatStyleEngine("Kadu");
+	unregisterChatStyleEngine("Adium");
+}
+
+void ChatStylesManager::init()
 {
 	//FIXME:
 	KaduEngine = new KaduChatStyleEngine(this);
@@ -75,12 +88,6 @@ ChatStylesManager::ChatStylesManager() :
 
 	loadStyles();
 	configurationUpdated();
-}
-
-ChatStylesManager::~ChatStylesManager()
-{
-	unregisterChatStyleEngine("Kadu");
-	unregisterChatStyleEngine("Adium");
 }
 
 void ChatStylesManager::registerChatStyleEngine(const QString &name, ChatStyleEngine *engine)
@@ -395,27 +402,27 @@ void ChatStylesManager::preparePreview(Preview *preview)
 
 	connect(preview, SIGNAL(destroyed()), chat, SLOT(deleteLater()));
 
-	Message messageSent = Message::create();
-	messageSent.setMessageChat(chat);
-	messageSent.setType(MessageTypeSent);
-	messageSent.setMessageSender(chat.chatAccount().accountContact());
-	messageSent.setContent(tr("Your message"));
-	messageSent.setReceiveDate(QDateTime::currentDateTime());
-	messageSent.setSendDate(QDateTime::currentDateTime());
+	Message sentMessage = Message::create();
+	sentMessage.setMessageChat(chat);
+	sentMessage.setType(MessageTypeSent);
+	sentMessage.setMessageSender(chat.chatAccount().accountContact());
+	sentMessage.setContent(tr("Your message"));
+	sentMessage.setReceiveDate(QDateTime::currentDateTime());
+	sentMessage.setSendDate(QDateTime::currentDateTime());
 
-	MessageRenderInfo *messageRenderInfo = new MessageRenderInfo(messageSent);
+	MessageRenderInfo *messageRenderInfo = new MessageRenderInfo(sentMessage);
 	messageRenderInfo->setSeparatorSize(CfgHeaderSeparatorHeight);
 	preview->addObjectToParse(BuddyPreferredManager::instance()->preferredContact(Core::instance()->myself()), messageRenderInfo);
 
-	Message messageReceived = Message::create();
-	messageReceived.setMessageChat(chat);
-	messageReceived.setType(MessageTypeReceived);
-	messageReceived.setMessageSender(BuddyPreferredManager::instance()->preferredContact(example));
-	messageReceived.setContent(tr("Message from Your friend"));
-	messageReceived.setReceiveDate(QDateTime::currentDateTime());
-	messageReceived.setSendDate(QDateTime::currentDateTime());
+	Message receivedMessage = Message::create();
+	receivedMessage.setMessageChat(chat);
+	receivedMessage.setType(MessageTypeReceived);
+	receivedMessage.setMessageSender(BuddyPreferredManager::instance()->preferredContact(example));
+	receivedMessage.setContent(tr("Message from Your friend"));
+	receivedMessage.setReceiveDate(QDateTime::currentDateTime());
+	receivedMessage.setSendDate(QDateTime::currentDateTime());
 
-	messageRenderInfo = new MessageRenderInfo(messageReceived);
+	messageRenderInfo = new MessageRenderInfo(receivedMessage);
 	messageRenderInfo->setSeparatorSize(CfgHeaderSeparatorHeight);
 	preview->addObjectToParse(BuddyPreferredManager::instance()->preferredContact(example), messageRenderInfo);
 }

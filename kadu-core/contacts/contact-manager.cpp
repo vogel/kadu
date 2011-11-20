@@ -23,6 +23,7 @@
 #include <QtCore/QTimer>
 
 #include "buddies/buddy.h"
+#include "chat/message/message-manager.h"
 #include "configuration/configuration-file.h"
 #include "configuration/configuration-manager.h"
 #include "contacts/contact.h"
@@ -39,22 +40,45 @@ ContactManager * ContactManager::Instance = 0;
 ContactManager * ContactManager::instance()
 {
 	if (0 == Instance)
+	{
 		Instance = new ContactManager();
+		Instance->init();
+	}
 
 	return Instance;
 }
 
 ContactManager::ContactManager()
 {
-	// needed for QueuedConnection
-	qRegisterMetaType<Contact>("Contact");
-
-	ContactParserTags::registerParserTags();
 }
 
 ContactManager::~ContactManager()
 {
+	disconnect(MessageManager::instance(), SIGNAL(unreadMessageAdded(Message)),
+	           this, SLOT(unreadMessageAdded(Message)));
+	disconnect(MessageManager::instance(), SIGNAL(unreadMessageRemoved(Message)),
+	           this, SLOT(unreadMessageRemoved(Message)));
+
+	foreach (const Message &message, MessageManager::instance()->allUnreadMessages())
+		unreadMessageRemoved(message);
+
 	ContactParserTags::unregisterParserTags();
+}
+
+void ContactManager::init()
+{
+	// needed for QueuedConnection
+	qRegisterMetaType<Contact>("Contact");
+
+	ContactParserTags::registerParserTags();
+
+	foreach (const Message &message, MessageManager::instance()->allUnreadMessages())
+		unreadMessageAdded(message);
+
+	connect(MessageManager::instance(), SIGNAL(unreadMessageAdded(Message)),
+	        this, SLOT(unreadMessageAdded(Message)));
+	connect(MessageManager::instance(), SIGNAL(unreadMessageRemoved(Message)),
+	        this, SLOT(unreadMessageRemoved(Message)));
 }
 
 void ContactManager::idChanged(const QString &oldId)
@@ -81,6 +105,20 @@ void ContactManager::dirtinessChanged()
 		else
 			DirtyContacts.removeAll(contact);
 	}
+}
+
+void ContactManager::unreadMessageAdded(const Message &message)
+{
+	const Contact &contact = message.messageSender();
+	contact.setUnreadMessagesCount(contact.unreadMessagesCount() + 1);
+}
+
+void ContactManager::unreadMessageRemoved(const Message &message)
+{
+	const Contact &contact = message.messageSender();
+	quint16 unreadMessagesCount = contact.unreadMessagesCount();
+	if (unreadMessagesCount > 0)
+		contact.setUnreadMessagesCount(unreadMessagesCount - 1);
 }
 
 void ContactManager::aboutToBeDetached()

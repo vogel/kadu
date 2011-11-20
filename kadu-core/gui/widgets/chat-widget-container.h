@@ -23,25 +23,45 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CHAT_CONTAINER_H
-#define CHAT_CONTAINER_H
+#ifndef CHAT_WIDGET_CONTAINER_H
+#define CHAT_WIDGET_CONTAINER_H
 
 class ChatWidget;
 
 /**
-	@class ChatWidgetContainer
-	@brief Abstract class for parents of ChatWidget objects.
-**/
+ * @class ChatWidgetContainer
+ * @brief Abstract class for parents of ChatWidget objects.
+ */
 class ChatWidgetContainer
 {
 public:
 	virtual ~ChatWidgetContainer() {}
 
 	/**
-		Closes given chat widget in this ChatContainer.
-	 **/
-	virtual void closeChatWidget(ChatWidget *chat) = 0;
+	 * @short Activates given chat widget in this ChatWidgetContainer.
+	 * @param chatWidget chat widget to activate
+	 *
+	 * Activates given chat widget in this ChatWidgetContainer. This container window will be
+	 * activated if neccessary.
+	 */
+	virtual void activateChatWidget(ChatWidget *chatWidget) = 0;
+
+	/**
+	 * @short Send alert about given chat widget in this ChatWidgetContainer.
+	 * @param chatWidget chat widget to send alert about
+	 *
+	 * Send alert about given chat widget in this ChatWidgetContainer.
+	 */
+	virtual void alertChatWidget(ChatWidget *chatWidget) = 0;
+
+	/**
+	 * @short Closes given chat widget in this ChatWidgetContainer.
+	 * @param chatWidget chat widget to close
+	 *
+	 * Closes given chat widget in this ChatWidgetContainer.
+	 */
+	virtual void closeChatWidget(ChatWidget *chatWidget) = 0;
 
 };
 
-#endif // CHAT_CONTAINER_H
+#endif // CHAT_WIDGET_CONTAINER_H

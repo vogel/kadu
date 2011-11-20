@@ -34,6 +34,8 @@
 #include <QtGui/QLabel>
 #include <QtGui/QVBoxLayout>
 
+#include "chat/message/message-manager.h"
+#include "chat/chat-manager.h"
 #include "contacts/contact.h"
 #include "configuration/configuration-file.h"
 #include "core/core.h"
@@ -83,7 +85,7 @@ HintManager::HintManager(QObject *parent) :
 	layout->setMargin(0);
 
 	connect(hint_timer, SIGNAL(timeout()), this, SLOT(oneSecond()));
-	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetActivated(ChatWidget *)), this, SLOT(chatWidgetActivated(ChatWidget *)));
+	connect(ChatManager::instance(), SIGNAL(chatUpdated(Chat)), this, SLOT(chatUpdated(Chat)));
 
 	const QString default_hints_syntax(QT_TRANSLATE_NOOP("HintManager", "<table>"
 "<tr>"
@@ -127,7 +129,7 @@ HintManager::~HintManager()
 	NotificationManager::instance()->unregisterNotifier(this);
 
 	disconnect(this, SIGNAL(searchingForTrayPosition(QPoint &)), Core::instance(), SIGNAL(searchingForTrayPosition(QPoint &)));
-	disconnect(ChatWidgetManager::instance(), SIGNAL(chatWidgetActivated(ChatWidget *)), this, SLOT(chatWidgetActivated(ChatWidget *)));
+	disconnect(ChatManager::instance(), SIGNAL(chatUpdated(Chat)), this, SLOT(chatUpdated(Chat)));
 
 	delete tipFrame;
 	tipFrame = 0;
@@ -321,7 +323,14 @@ void HintManager::processButtonPress(const QString &buttonName, Hint *hint)
 
 		case 2:
 			if (hint->chat() && config_file.readBoolEntry("Hints", "DeletePendingMsgWhenHintDeleted"))
-				ChatWidgetManager::instance()->deletePendingMessages(hint->chat());
+			{
+				QList<Message> unreadMessages = MessageManager::instance()->chatUnreadMessages(hint->chat());
+				foreach (const Message &message, unreadMessages)
+				{
+					message.setStatus(MessageStatusRead);
+					MessageManager::instance()->removeUnreadMessage(message);
+				}
+			}
 
 			hint->discardNotification();
 			deleteHintAndUpdate(hint);
@@ -362,17 +371,22 @@ void HintManager::openChat(Hint *hint)
 		if ((hint->getNotification()->type() != "NewChat") && (hint->getNotification()->type() != "NewMessage"))
 			return;
 
-	ChatWidgetManager::instance()->openPendingMessages(hint->chat(), true);
+	ChatWidget * const chatWidget = ChatWidgetManager::instance()->byChat(hint->chat(), true);
+	if (chatWidget)
+		chatWidget->activate();
 
 	deleteHintAndUpdate(hint);
 
 	kdebugf2();
 }
 
-void HintManager::chatWidgetActivated(ChatWidget *chatWidget)
+void HintManager::chatUpdated(const Chat &chat)
 {
-	QPair<Chat , QString> newChat = qMakePair(chatWidget->chat(), QString("NewChat"));
-	QPair<Chat , QString> newMessage = qMakePair(chatWidget->chat(), QString("NewMessage"));
+	if (chat.unreadMessagesCount() > 0)
+		return;
+
+	QPair<Chat, QString> newChat = qMakePair(chat, QString("NewChat"));
+	QPair<Chat, QString> newMessage = qMakePair(chat, QString("NewMessage"));
 
 	if (linkedHints.contains(newChat))
 	{
@@ -387,7 +401,7 @@ void HintManager::chatWidgetActivated(ChatWidget *chatWidget)
 
 	foreach (Hint *h, hints)
 	{
-		if (h->chat() == (chatWidget->chat()) && !h->requireManualClosing())
+		if (h->chat() == chat && !h->requireManualClosing())
 			deleteHint(h);
 	}
 

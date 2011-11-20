@@ -19,6 +19,7 @@
  */
 
 #include "chat/chat.h"
+#include "gui/widgets/chat-widget.h"
 #include "gui/widgets/chat-widget-manager.h"
 
 #include "chat-notification.h"
@@ -33,6 +34,8 @@ ChatNotification::ChatNotification(const Chat &chat, const QString &type, const 
 void ChatNotification::openChat()
 {
 	close();
-			
-	ChatWidgetManager::instance()->openPendingMessages(chat(), true);
+
+	ChatWidget * const chatWidget = ChatWidgetManager::instance()->byChat(chat(), true);
+	if (chatWidget)
+		chatWidget->activate();
 }

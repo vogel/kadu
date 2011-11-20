@@ -23,13 +23,14 @@
 #include <QtGui/QScrollBar>
 #include <QtGui/QStackedWidget>
 
-#include "buddies/filter/anonymous-without-messages-buddy-filter.h"
 #include "buddies/filter/buddy-name-filter.h"
 #include "buddies/filter/group-buddy-filter.h"
-#include "buddies/filter/pending-messages-filter.h"
+#include "buddies/filter/unread-messages-filter.h"
 #include "buddies/model/buddies-model.h"
 #include "buddies/model/buddies-model-proxy.h"
 #include "chat/filter/chat-named-filter.h"
+#include "chat/filter/chat-or-filter.h"
+#include "chat/filter/chat-unread-filter.h"
 #include "chat/filter/group-chat-filter.h"
 #include "chat/model/chats-model.h"
 #include "chat/model/chats-proxy-model.h"
@@ -219,11 +220,7 @@ ModelChain * RosterWidget::createBuddiesModelChain()
 {
 	ModelChain *chain = new ModelChain(new BuddiesModel(this), this);
 	ProxyModel = new BuddiesModelProxy(chain);
-	ProxyModel->addFilter(new PendingMessagesFilter(ProxyModel));
-
-	AnonymousWithoutMessagesBuddyFilter *anonymousFilter = new AnonymousWithoutMessagesBuddyFilter(ProxyModel);
-	anonymousFilter->setEnabled(true);
-	ProxyModel->addFilter(anonymousFilter);
+	ProxyModel->addFilter(new UnreadMessagesFilter(ProxyModel));
 
 	BuddyNameFilter *nameFilter = new BuddyNameFilter(ProxyModel);
 	connect(BuddiesWidget, SIGNAL(filterChanged(QString)), nameFilter, SLOT(setName(QString)));
@@ -244,9 +241,17 @@ ModelChain * RosterWidget::createChatsModelChain()
 
 	ChatsProxyModel *chatsProxyModel = new ChatsProxyModel(chain);
 
+	ChatOrFilter *chatOrFilter = new ChatOrFilter(chatsProxyModel);
+
 	ChatNamedFilter *chatNamedFilter = new ChatNamedFilter(chatsProxyModel);
 	chatNamedFilter->setEnabled(true);
-	chatsProxyModel->addFilter(chatNamedFilter);
+	chatOrFilter->addFilter(chatNamedFilter);
+
+	ChatUnreadFilter *chatUnreadFilter = new ChatUnreadFilter(chatsProxyModel);
+	chatUnreadFilter->setEnabled(true);
+	chatOrFilter->addFilter(chatUnreadFilter);
+
+	chatsProxyModel->addFilter(chatOrFilter);
 
 	ChatGroupFilter = new GroupChatFilter(chatsProxyModel);
 	connect(GroupBar, SIGNAL(currentGroupChanged(Group)), ChatGroupFilter, SLOT(setGroup(Group)));

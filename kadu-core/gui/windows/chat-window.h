@@ -58,23 +58,16 @@ public:
 
 	ChatWidget * chatWidget() const { return currentChatWidget; }
 
-	void closeChatWidget(ChatWidget *chatWidget);
+	virtual void activateChatWidget(ChatWidget *chatWidget);
+	virtual void alertChatWidget(ChatWidget *chatWidget);
+	virtual void closeChatWidget(ChatWidget *chatWidget);
+
 	void setWindowTitle(const QString &title);
 
 public slots:
 	// TODO: rename
 	void blinkTitle();
 	void showNewMessagesNumInTitle();
-
-	/**
-		\fn void alertNewMessage()
-		Slot informuj�cy o nowej wiadomo�ci
-		mruganie je�li okno jest nieaktywne
-	**/
-	void alertNewMessage();
-
-signals:
-	void chatWidgetActivated(ChatWidget *);
 
 };
 

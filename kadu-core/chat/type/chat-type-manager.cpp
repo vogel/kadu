@@ -35,20 +35,28 @@ ChatTypeManager * ChatTypeManager::Instance = 0;
 ChatTypeManager * ChatTypeManager::instance()
 {
 	if (0 == Instance)
+	{
 		Instance = new ChatTypeManager();
+		Instance->init();
+	}
 
 	return Instance;
 }
 
 ChatTypeManager::ChatTypeManager()
 {
-	addChatType(new ChatTypeSimple());
-	addChatType(new ChatTypeConference());
 }
 
 ChatTypeManager::~ChatTypeManager()
 {
 }
+
+void ChatTypeManager::init()
+{
+	addChatType(new ChatTypeSimple());
+	addChatType(new ChatTypeConference());
+}
+
 
 /**
  * @author Rafal 'Vogel' Malinowski

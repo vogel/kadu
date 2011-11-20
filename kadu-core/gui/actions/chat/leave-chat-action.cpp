@@ -19,6 +19,7 @@
 
 #include "chat/chat.h"
 #include "gui/actions/action-context.h"
+#include "gui/widgets/chat-widget.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/windows/message-dialog.h"
 
@@ -47,7 +48,7 @@ void LeaveChatAction::triggered(QWidget *widget, ActionContext *context, bool to
 	if (!chat)
 		return;
 
-	ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(chat);
+	ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(chat, false);
 	if (!chatWidget)
 		return;
 

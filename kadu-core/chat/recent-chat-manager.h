@@ -69,6 +69,8 @@ class KADUAPI RecentChatManager : public QObject, public StorableObject, private
 	RecentChatManager();
 	virtual ~RecentChatManager();
 
+	void init();
+
 	void addRecentChat(Chat chat, QDateTime datetime = QDateTime::currentDateTime());
 	void removeRecentChat(Chat chat);
 

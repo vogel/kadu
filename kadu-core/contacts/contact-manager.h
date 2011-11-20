@@ -26,6 +26,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QUuid>
 
+#include "chat/message/message.h"
 #include "contacts/contact.h"
 #include "exports.h"
 #include "storage/manager.h"
@@ -45,6 +46,8 @@ class KADUAPI ContactManager : public QObject, public Manager<Contact>
 	ContactManager();
 	virtual ~ContactManager();
 
+	void init();
+
 	friend class ContactShared;
 	void detailsLoaded(Contact item);
 	void detailsUnloaded(Contact item);
@@ -55,6 +58,9 @@ private slots:
 	void contactDataUpdated();
 	void idChanged(const QString &oldId);
 	void dirtinessChanged();
+
+	void unreadMessageAdded(const Message &message);
+	void unreadMessageRemoved(const Message &message);
 
 	void aboutToBeAttached(Buddy nearFutureBuddy);
 	void attached(bool reattached);

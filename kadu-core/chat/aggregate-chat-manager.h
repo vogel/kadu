@@ -52,7 +52,9 @@ class KADUAPI AggregateChatManager : public QObject
 	QHash<BuddySet, QVector<Chat> > AggregateChats;
 
 	AggregateChatManager();
-	~AggregateChatManager();
+	virtual ~AggregateChatManager();
+
+	void init();
 
 private slots:
 	void chatAdded(const Chat &chat);

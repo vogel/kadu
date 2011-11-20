@@ -24,6 +24,7 @@
 
 #include "accounts/account-manager.h"
 #include "buddies/buddy-preferred-manager.h"
+#include "chat/message/message-manager.h"
 #include "chat/type/chat-type-manager.h"
 #include "chat/chat-details-conference.h"
 #include "chat/chat-details-simple.h"
@@ -40,7 +41,10 @@ ChatManager * ChatManager::Instance = 0;
 ChatManager *  ChatManager::instance()
 {
 	if (0 == Instance)
+	{
 		Instance = new ChatManager();
+		Instance->init();
+	}
 
 	return Instance;
 }
@@ -51,6 +55,24 @@ ChatManager::ChatManager()
 
 ChatManager::~ChatManager()
 {
+	disconnect(MessageManager::instance(), SIGNAL(unreadMessageAdded(Message)),
+	           this, SLOT(unreadMessageAdded(Message)));
+	disconnect(MessageManager::instance(), SIGNAL(unreadMessageRemoved(Message)),
+	           this, SLOT(unreadMessageRemoved(Message)));
+
+	foreach (const Message &message, MessageManager::instance()->allUnreadMessages())
+		unreadMessageRemoved(message);
+}
+
+void ChatManager::init()
+{
+	foreach (const Message &message, MessageManager::instance()->allUnreadMessages())
+		unreadMessageAdded(message);
+
+	connect(MessageManager::instance(), SIGNAL(unreadMessageAdded(Message)),
+	        this, SLOT(unreadMessageAdded(Message)));
+	connect(MessageManager::instance(), SIGNAL(unreadMessageRemoved(Message)),
+	        this, SLOT(unreadMessageRemoved(Message)));
 }
 
 void ChatManager::itemAboutToBeRegistered(Chat item)
@@ -137,7 +159,7 @@ Chat ChatManager::findChat(const BuddySet &buddies, bool create)
 
 	if (buddies.count() == 1)
 	{
-		Contact contact = BuddyPreferredManager::instance()->preferredContactByPendingMessages(*buddies.constBegin());
+		Contact contact = BuddyPreferredManager::instance()->preferredContactByUnreadMessages(*buddies.constBegin());
 		if (!contact)
 			contact = BuddyPreferredManager::instance()->preferredContact(*buddies.constBegin());
 
@@ -271,4 +293,18 @@ void ChatManager::chatDataUpdated()
 	Chat chat(sender());
 	if (!chat.isNull())
 		emit chatUpdated(chat);
+}
+
+void ChatManager::unreadMessageAdded(const Message &message)
+{
+	const Chat &chat = message.messageChat();
+	chat.setUnreadMessagesCount(chat.unreadMessagesCount() + 1);
+}
+
+void ChatManager::unreadMessageRemoved(const Message &message)
+{
+	const Chat &chat = message.messageChat();
+	quint16 unreadMessagesCount = chat.unreadMessagesCount();
+	if (unreadMessagesCount > 0)
+		chat.setUnreadMessagesCount(unreadMessagesCount - 1);
 }

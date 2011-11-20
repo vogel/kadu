@@ -17,30 +17,26 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "chat/message/pending-messages-manager.h"
+#ifndef CHAT_OR_FILTER_H
+#define CHAT_OR_FILTER_H
 
-#include "pending-messages-filter.h"
+#include "chat/filter/chat-filter.h"
+#include "exports.h"
 
-PendingMessagesFilter::PendingMessagesFilter(QObject *parent) :
-		AbstractBuddyFilter(parent)
+class KADUAPI ChatOrFilter : public ChatFilter
 {
-	connect(PendingMessagesManager::instance(), SIGNAL(messageAdded(Message)),
-			this, SIGNAL(filterChanged()));
-	connect(PendingMessagesManager::instance(), SIGNAL(messageRemoved(Message)),
-			this, SIGNAL(filterChanged()));
-}
+	Q_OBJECT
 
-PendingMessagesFilter::~PendingMessagesFilter()
-{
-}
+	QList<ChatFilter *> Filters;
 
-bool PendingMessagesFilter::acceptBuddy(const Buddy &buddy)
-{
-	Q_UNUSED(buddy)
-	return true;
-}
+public:
+	ChatOrFilter(QObject *parent = 0);
 
-bool PendingMessagesFilter::ignoreNextFilters(const Buddy &buddy)
-{
-	return PendingMessagesManager::instance()->hasPendingMessagesForBuddy(buddy);
-}
+	virtual bool acceptChat(const Chat &chat);
+
+	void addFilter(ChatFilter * const filter);
+	void removeFilter(ChatFilter * const filter);
+
+};
+
+#endif // CHAT_OR_FILTER_H

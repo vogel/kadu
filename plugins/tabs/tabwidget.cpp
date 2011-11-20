@@ -25,20 +25,21 @@
 
 #include <QtGui/QDrag>
 
+#include "chat/message/message-manager.h"
+#include "configuration/configuration-file.h"
 #include "gui/widgets/chat-widget.h"
 #include "gui/widgets/filtered-tree-view.h"
 #include "gui/windows/open-chat-with/open-chat-with.h"
-
-#include "configuration/configuration-file.h"
 #include "gui/hot-key.h"
 #include "icons/kadu-icon.h"
 #include "misc/misc.h"
-
 #include "activate.h"
+
+#include "tabs.h"
 
 #include "tabwidget.h"
 
-TabWidget::TabWidget()
+TabWidget::TabWidget(TabsManager *manager) : Manager(manager)
 {
 	setWindowRole("kadu-tabs");
 
@@ -82,10 +83,41 @@ TabWidget::~TabWidget()
 {
 }
 
-void TabWidget::closeChatWidget(ChatWidget *chat)
+void TabWidget::activateChatWidget(ChatWidget *chatWidget)
 {
-	if (chat)
-		delete chat;
+	int index = indexOf(chatWidget);
+	if (index < 0)
+		return;
+
+	setWindowState(windowState() & ~Qt::WindowMinimized);
+	_activateWindow(window());
+
+	setCurrentIndex(index);
+	chatWidget->edit()->setFocus();
+}
+
+void TabWidget::alertChatWidget(ChatWidget *chatWidget)
+{
+	if (!chatWidget)
+		return;
+
+	if (currentWidget() == chatWidget && _isWindowActiveOrFullyVisible(this))
+	{
+		MessageManager::instance()->markAllMessagesAsRead(chatWidget->chat());
+		return;
+	}
+
+	if (!Manager->ChatsWithNewMessages.contains(chatWidget))
+	{
+		Manager->ChatsWithNewMessages.append(chatWidget);
+		if (!Manager->Timer.isActive())
+			QMetaObject::invokeMethod(Manager, "onTimer", Qt::QueuedConnection);
+	}
+}
+
+void TabWidget::closeChatWidget(ChatWidget *chatWidget)
+{
+	delete chatWidget;
 }
 
 void TabWidget::closeEvent(QCloseEvent *e)
@@ -232,10 +264,7 @@ void TabWidget::changeEvent(QEvent *event)
 		kdebugf();
 		ChatWidget *chat = static_cast<ChatWidget *>(currentWidget());
 		if (chat && _isActiveWindow(this))
-		{
-			chat->markAllMessagesRead();
-			emit chatWidgetActivated(chat);
-		}
+			MessageManager::instance()->markAllMessagesAsRead(chat->chat());
 		kdebugf2();
 	}
 }

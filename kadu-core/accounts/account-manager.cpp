@@ -45,22 +45,29 @@ AccountManager * AccountManager::Instance = 0;
 AccountManager * AccountManager::instance()
 {
 	if (0 == Instance)
+	{
 		Instance = new AccountManager();
+		Instance->init();
+	}
 
 	return Instance;
 }
 
 AccountManager::AccountManager()
 {
-	ConfigurationManager::instance()->registerStorableObject(this);
-
-	// needed for QueuedConnection
-	qRegisterMetaType<Account>("Account");
 }
 
 AccountManager::~AccountManager()
 {
 	ConfigurationManager::instance()->unregisterStorableObject(this);
+}
+
+void AccountManager::init()
+{
+	ConfigurationManager::instance()->registerStorableObject(this);
+
+	// needed for QueuedConnection
+	qRegisterMetaType<Account>("Account");
 }
 
 void AccountManager::itemAdded(Account item)

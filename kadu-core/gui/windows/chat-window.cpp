@@ -32,6 +32,7 @@
 #include <QtGui/QDesktopWidget>
 #include <QtGui/QVBoxLayout>
 
+#include "chat/message/message-manager.h"
 #include "chat/type/chat-type.h"
 #include "chat/chat-details.h"
 #include "chat/chat-geometry-data.h"
@@ -81,11 +82,7 @@ ChatWindow::ChatWindow(ChatWidget *chatWidget, QWidget *parent) :
 	connect(currentChatWidget, SIGNAL(closed()), this, SLOT(close()));
 	connect(currentChatWidget, SIGNAL(iconChanged()), this, SLOT(updateIcon()));
 	connect(currentChatWidget, SIGNAL(titleChanged(ChatWidget *, const QString &)), this, SLOT(updateTitle()));
-	connect(currentChatWidget, SIGNAL(messageReceived(Chat)), this, SLOT(alertNewMessage()));
 	connect(title_timer, SIGNAL(timeout()), this, SLOT(blinkTitle()));
-	connect(this, SIGNAL(chatWidgetActivated(ChatWidget *)),
-			ChatWidgetManager::instance(), SIGNAL(chatWidgetActivated(ChatWidget *)));
-
 }
 
 ChatWindow::~ChatWindow()
@@ -96,11 +93,11 @@ ChatWindow::~ChatWindow()
 void ChatWindow::configurationUpdated()
 {
 	triggerCompositingStateChanged();
-  
+
 	showNewMessagesNum = config_file.readBoolEntry("Chat", "NewMessagesInChatTitle", false);
 	blinkChatTitle = config_file.readBoolEntry("Chat", "BlinkChatTitle", true);
 
-	if (currentChatWidget->newMessagesCount())
+	if (currentChatWidget->chat().unreadMessagesCount())
 		blinkTitle();
 }
 
@@ -182,7 +179,7 @@ void ChatWindow::closeEvent(QCloseEvent *e)
 		unsigned int period = config_file.readUnsignedNumEntry("Chat",
 			"ChatCloseTimerPeriod", 2);
 
-		if (QDateTime::currentDateTime() < currentChatWidget->lastMessageTime().addSecs(period))
+		if (QDateTime::currentDateTime() < currentChatWidget->lastReceivedMessageTime().addSecs(period))
 		{
 			if (!MessageDialog::ask(KaduIcon("dialog-question"), tr("Kadu"), tr("New message received, close window anyway?")))
 			{
@@ -205,7 +202,7 @@ void ChatWindow::updateTitle()
 	setWindowTitle(currentChatWidget->title());
 
 	// TODO 0.10.0: is that really needed here? this method is called only on chat widget title change
-	if (showNewMessagesNum && currentChatWidget->newMessagesCount()) // if we don't have new messages or don't want them to be shown
+	if (showNewMessagesNum && currentChatWidget->chat().unreadMessagesCount()) // if we don't have new messages or don't want them to be shown
 		showNewMessagesNumInTitle();
 }
 
@@ -234,7 +231,7 @@ void ChatWindow::blinkTitle()
 void ChatWindow::showNewMessagesNumInTitle()
 {
 	if (!_isActiveWindow(this))
-		setWindowTitle('[' + QString::number(currentChatWidget->newMessagesCount()) + "] " + currentChatWidget->title());
+		setWindowTitle('[' + QString::number(currentChatWidget->chat().unreadMessagesCount()) + "] " + currentChatWidget->title());
 }
 
 void ChatWindow::changeEvent(QEvent *event)
@@ -245,35 +242,13 @@ void ChatWindow::changeEvent(QEvent *event)
 		kdebugf();
 		if (_isActiveWindow(this))
 		{
-			currentChatWidget->markAllMessagesRead();
+
+			MessageManager::instance()->markAllMessagesAsRead(currentChatWidget->chat());
 			setWindowTitle(currentChatWidget->title());
-
 			title_timer->stop();
-
-			emit chatWidgetActivated(currentChatWidget);
 		}
 		kdebugf2();
 	}
-}
-
-void ChatWindow::alertNewMessage()
-{
-	if (!_isWindowActiveOrFullyVisible(this))
-	{
-		if (blinkChatTitle)
-		{
-			if (!title_timer->isActive())
-				blinkTitle(); // blinking is able to show new messages also...
-			qApp->alert(this); // TODO: make notifier from this
-		}
-		else if (showNewMessagesNum) // ... so we check this condition as 'else'
-		{
-			showNewMessagesNumInTitle();
-			qApp->alert(this); // TODO: make notifier from this
-		}
-	}
-	else
-		currentChatWidget->markAllMessagesRead();
 }
 
 void ChatWindow::setWindowTitle(const QString &title)
@@ -284,9 +259,41 @@ void ChatWindow::setWindowTitle(const QString &title)
 	QWidget::setWindowTitle(escaped.replace(QLatin1String("[*]"), QLatin1String("[*][*]")));
 }
 
+void ChatWindow::activateChatWidget(ChatWidget *chatWidget)
+{
+	Q_UNUSED(chatWidget)
+	Q_ASSERT(chatWidget == currentChatWidget);
+
+	// we can be embeded in other window...
+	_activateWindow(window());
+}
+
+void ChatWindow::alertChatWidget(ChatWidget *chatWidget)
+{
+	Q_UNUSED(chatWidget)
+	Q_ASSERT(chatWidget == currentChatWidget);
+
+	if (_isWindowActiveOrFullyVisible(this))
+	{
+		MessageManager::instance()->markAllMessagesAsRead(currentChatWidget->chat());
+		return;
+	}
+
+	qApp->alert(this); // TODO: make notifier from this
+
+	if (blinkChatTitle)
+	{
+		if (!title_timer->isActive())
+			blinkTitle(); // blinking is able to show new messages also...
+	}
+	else if (showNewMessagesNum) // ... so we check this condition as 'else'
+		showNewMessagesNumInTitle();
+}
+
 void ChatWindow::closeChatWidget(ChatWidget *chatWidget)
 {
 	Q_UNUSED(chatWidget)
+	Q_ASSERT(chatWidget == currentChatWidget);
 
 	close();
 }

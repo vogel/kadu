@@ -23,43 +23,24 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "accounts/account.h"
-#include "accounts/account-manager.h"
-#include "buddies/buddy-manager.h"
-#include "buddies/buddy-preferred-manager.h"
+#include <QtGui/QApplication>
+
 #include "chat/aggregate-chat-manager.h"
-#include "chat/message/message.h"
+#include "chat/message/message-manager.h"
 #include "chat/message/message-render-info.h"
-#include "chat/message/pending-messages-manager.h"
 #include "chat/chat-manager.h"
-#include "chat/recent-chat-manager.h"
 #include "configuration/configuration-file.h"
-#include "configuration/configuration-manager.h"
-#include "configuration/xml-configuration-file.h"
 #include "contacts/contact.h"
 #include "contacts/contact-set.h"
 #include "core/core.h"
-#include "emoticons/emoticons-manager.h"
-#include "gui/actions/action.h"
-#include "gui/actions/actions.h"
-#include "gui/widgets/chat-edit-box.h"
+#include "gui/widgets/chat-widget.h"
 #include "gui/widgets/chat-widget-actions.h"
 #include "gui/widgets/chat-widget-container.h"
-#include "gui/widgets/custom-input.h"
-#include "gui/widgets/talkable-menu-manager.h"
 #include "gui/windows/chat-window.h"
 #include "gui/windows/kadu-window.h"
-#include "gui/windows/kadu-window-actions.h"
-#include "gui/windows/message-dialog.h"
-#include "gui/windows/open-chat-with/open-chat-with.h"
-#include "protocols/protocol-factory.h"
-#include "protocols/protocols-manager.h"
-
-#include "activate.h"
-#include "debug.h"
 #include "icons/icons-manager.h"
-#include "misc/misc.h"
-#include "search.h"
+#include "protocols/protocol-factory.h"
+#include "activate.h"
 
 #include "chat-widget-manager.h"
 
@@ -79,37 +60,29 @@ ChatWidgetManager * ChatWidgetManager::instance()
 
 ChatWidgetManager::ChatWidgetManager()
 {
-	kdebugf();
 	setState(StateNotLoaded);
 
 	MessageRenderInfo::registerParserTags();
 
-	connect(Core::instance(), SIGNAL(messageReceived(const Message &)),
+	connect(MessageManager::instance(), SIGNAL(messageReceived(const Message &)),
 			this, SLOT(messageReceived(const Message &)));
-	connect(Core::instance(), SIGNAL(messageSent(const Message &)),
+	connect(MessageManager::instance(), SIGNAL(messageSent(const Message &)),
 			this, SLOT(messageSent(const Message &)));
 
 	Actions = new ChatWidgetActions(this);
 
 	configurationUpdated();
-
-	kdebugf2();
 }
 
 
 ChatWidgetManager::~ChatWidgetManager()
 {
-	kdebugf();
-
 	MessageRenderInfo::unregisterParserTags();
 
-	disconnect(Core::instance(), SIGNAL(messageReceived(const Message &)),
+	disconnect(MessageManager::instance(), SIGNAL(messageReceived(const Message &)),
 			this, SLOT(messageReceived(const Message &)));
 
 	closeAllWindows();
-
-
-	kdebugf2();
 }
 
 StorableObject * ChatWidgetManager::storageParent()
@@ -129,8 +102,6 @@ QString ChatWidgetManager::storageItemNodeName()
 
 void ChatWidgetManager::closeAllWindows()
 {
-	kdebugf();
-
 	ensureStored();
 
 	QHash<Chat, ChatWidget *>::iterator i = Chats.begin();
@@ -145,8 +116,6 @@ void ChatWidgetManager::closeAllWindows()
 		}
 		++i;
 	}
-
-	kdebugf2();
 }
 
 void ChatWidgetManager::load()
@@ -163,11 +132,7 @@ void ChatWidgetManager::load()
 		if (chatId.isNull())
 			continue;
 
-		Chat chat = ChatManager::instance()->byUuid(chatId);
-		if (!chat)
-			continue;
-
-		openPendingMessages(chat, true);
+		byChat(ChatManager::instance()->byUuid(chatId), true);
 	}
 }
 
@@ -193,107 +158,46 @@ void ChatWidgetManager::store()
 	StorableStringList::store();
 }
 
-void ChatWidgetManager::insertEmoticonActionEnabled()
-{
-	QString toolTip;
-	bool enabled;
-
-	if ((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle") == EmoticonsStyleNone)
-	{
-		toolTip =  tr("Insert emoticon - enable in configuration");
-		enabled = false;
-	}
-	else
-	{
-		toolTip = tr("Insert emoticon");
-		enabled = true;
-	}
-
- 	foreach (Action *action, Actions->insertEmoticon()->actions())
-	{
-		action->setToolTip(toolTip);
-		action->setEnabled(enabled);
-	}
-}
-
-const QHash<Chat , ChatWidget *> & ChatWidgetManager::chats() const
+const QHash<Chat, ChatWidget *> & ChatWidgetManager::chats() const
 {
 	return Chats;
 }
 
-void ChatWidgetManager::registerChatWidget(ChatWidget *chatwidget)
+ChatWidget * ChatWidgetManager::byChat(const Chat &chat, const bool create)
 {
-	kdebugf();
-	Chats.insert(chatwidget->chat(), chatwidget);
-}
-
-void ChatWidgetManager::unregisterChatWidget(ChatWidget *chatwidget)
-{
-	kdebugf();
-
-	if (!Chats.contains(chatwidget->chat()))
-		return;
-
-	Chats.remove(chatwidget->chat());
-
-//	if (chatwidget->chat().contacts().count() == 1)
-//	{
-//		Contact contact = chatwidget->chat().contacts().toContact();
-//		BuddyPreferredManager::instance()->updatePreferred(contact.ownerBuddy());
-//	}
-
-	emit chatWidgetDestroying(chatwidget);
-}
-
-ChatWidget * ChatWidgetManager::byChat(const Chat &chat, bool create) const
-{
-	Q_UNUSED(create)
-
-	return Chats.contains(chat)
-		? Chats.value(chat)
-		: 0;
-}
-
-void ChatWidgetManager::activateChatWidget(ChatWidget *chatwidget, bool forceActivate)
-{
-	// TODO: 0.10.0
-	Q_UNUSED(forceActivate)
-
-	QWidget *win = chatwidget->window();
-	Q_UNUSED(win) // only in debug mode
-
-	kdebugm(KDEBUG_INFO, "parent: %p\n", win);
-	chatwidget->makeActive();
-	emit chatWidgetOpen(chatwidget, true);
-}
-
-ChatWidget * ChatWidgetManager::openChatWidget(const Chat &chat, bool forceActivate)
-{
-	kdebugf();
-
 	if (!chat)
 		return 0;
 
-	ChatWidget *chatWidget = byChat(chat);
-	if (chatWidget)
-	{
-		activateChatWidget(chatWidget, forceActivate);
-		return chatWidget;
-	}
+	if (Chats.contains(chat))
+		return Chats.value(chat);
 
-	chatWidget = new ChatWidget(chat);
+	if (!create)
+		return 0;
+
+	ChatWidget * const chatWidget = createChatWidget(chat);
+	if (chatWidget)
+		Chats.insert(chat, chatWidget);
+
+	return chatWidget;
+}
+
+ChatWidget * ChatWidgetManager::createChatWidget(const Chat &chat)
+{
+	if (!chat)
+		return 0;
+
+	ChatWidget *chatWidget = new ChatWidget(chat);
+	Chats.insert(chat, chatWidget);
+
+	connect(chatWidget, SIGNAL(widgetDestroyed()), this, SLOT(chatWidgetDestroyed()));
 
 	bool handled = false;
 	emit handleNewChatWidget(chatWidget, handled);
 	if (!handled)
-		(new ChatWindow(chatWidget))->show();
-
-	connect(chatWidget, SIGNAL(messageSentAndConfirmed(Chat , const QString &)),
-		this, SIGNAL(messageSentAndConfirmed(Chat , const QString &)));
-
-	if (forceActivate) //TODO 0.10.0:
 	{
-		chatWidget->makeActive();
+		ChatWindow *chatWindow = new ChatWindow(chatWidget);
+		chatWidget->setContainer(chatWindow);
+		chatWindow->show();
 	}
 
 //	if (chatWidget->chat().contacts().count() == 1)
@@ -303,103 +207,66 @@ ChatWidget * ChatWidgetManager::openChatWidget(const Chat &chat, bool forceActiv
 //	}
 
 	emit chatWidgetCreated(chatWidget);
-// TODO: remove, it is so stupid ...
-	emit chatWidgetCreated(chatWidget, time(0));
-	emit chatWidgetOpen(chatWidget, forceActivate);
 
-	kdebugf2();
+	const QList<Message> &messages = loadUnreadMessages(chat);
+	if (!messages.isEmpty())
+		// TODO: Lame API
+		if (0 == chatWidget->countMessages())
+			chatWidget->appendMessages(messages);
 
 	return chatWidget;
 }
 
-void ChatWidgetManager::deletePendingMessages(const Chat &chat)
+void ChatWidgetManager::chatWidgetDestroyed()
 {
-	kdebugf();
-
-	QVector<Message> messages = PendingMessagesManager::instance()->pendingMessagesForChat(chat);
-	foreach (Message message, messages)
-	{
-		message.setPending(false);
-		PendingMessagesManager::instance()->removeItem(message);
-	}
-
-	kdebugf2();
-}
-
-void ChatWidgetManager::openPendingMessages(const Chat &chat, bool forceActivate)
-{
-	kdebugf();
-
-	if (!chat)
-		return;
-
-	QList<MessageRenderInfo *> messages;
-
-	ChatWidget *chatWidget = openChatWidget(chat, forceActivate);
+	ChatWidget *chatWidget = qobject_cast<ChatWidget *>(sender());
 	if (!chatWidget)
 		return;
 
-	Chat aggregateChat = AggregateChatManager::instance()->aggregateChat(chat);
-	QVector<Message> pendingMessages = PendingMessagesManager::instance()->pendingMessagesForChat(aggregateChat ? aggregateChat : chat);
+	disconnect(chatWidget, SIGNAL(widgetDestroyed()), this, SLOT(chatWidgetDestroyed()));
 
-	foreach (Message message, pendingMessages)
-	{
-		messages.append(new MessageRenderInfo(message));
-		message.setPending(false);
-		PendingMessagesManager::instance()->removeItem(message);
-	}
-
-	if (!messages.isEmpty())
-		// TODO: Lame API
-		if (0 == chatWidget->countMessages())
-			chatWidget->appendMessages(messages, true);
-
-	kdebugf2();
-}
-
-void ChatWidgetManager::openPendingMessages(bool forceActivate)
-{
-	kdebugf();
-
-	Message message = PendingMessagesManager::instance()->firstPendingMessage();
-	if (message)
-		openPendingMessages(message.messageChat(), forceActivate);
-
-	kdebugf2();
-}
-
-void ChatWidgetManager::sendMessage(const Chat &chat)
-{
-	kdebugf();
-
-	if (PendingMessagesManager::instance()->hasPendingMessagesForChat(chat))
-	{
-		openPendingMessages(chat, true);
+	if (!Chats.contains(chatWidget->chat()))
 		return;
+
+	Chats.remove(chatWidget->chat());
+
+//	if (chatwidget->chat().contacts().count() == 1)
+//	{
+//		Contact contact = chatwidget->chat().contacts().toContact();
+//		BuddyPreferredManager::instance()->updatePreferred(contact.ownerBuddy());
+//	}
+
+	emit chatWidgetDestroying(chatWidget);
+}
+
+QList<Message> ChatWidgetManager::loadUnreadMessages(const Chat &chat)
+{
+	const Chat &aggregateChat = AggregateChatManager::instance()->aggregateChat(chat);
+	const Chat &unreadChat = aggregateChat ? aggregateChat : chat;
+	const QList<Message> &unreadMessages = MessageManager::instance()->chatUnreadMessages(unreadChat);
+
+	QList<Message> messages;
+	foreach (const Message &message, unreadMessages)
+	{
+		messages.append(message);
+		MessageManager::instance()->removeUnreadMessage(message);
 	}
 
-	if (chat)
-		openChatWidget(chat, true);
-
-	kdebugf2();
+	return messages;
 }
 
 void ChatWidgetManager::closeChat(const Chat &chat)
 {
-	ChatWidget *chatWidget = byChat(chat);
-	if (chatWidget)
-	{
-		ChatWidgetContainer *container = dynamic_cast<ChatWidgetContainer *>(chatWidget->window());
-		if (container)
-			container->closeChatWidget(chatWidget);
-	}
+	ChatWidget * const chatWidget = byChat(chat, false);
+	if (chatWidget && chatWidget->container())
+		chatWidget->container()->closeChatWidget(chatWidget);
 }
 
 void ChatWidgetManager::closeAllChats(const Buddy &buddy)
 {
 	foreach (const Contact &contact, buddy.contacts())
 	{
-		Chat chat = ChatManager::instance()->findChat(ContactSet(contact), false);
+		const Chat &chat = ChatManager::instance()->findChat(ContactSet(contact), false);
 		if (chat)
 			closeChat(chat);
 	}
@@ -407,77 +274,57 @@ void ChatWidgetManager::closeAllChats(const Buddy &buddy)
 
 void ChatWidgetManager::configurationUpdated()
 {
-	kdebugf();
-
 	OpenChatOnMessage = config_file.readBoolEntry("Chat", "OpenChatOnMessage");
 	AutoRaise = config_file.readBoolEntry("General","AutoRaise");
-	OpenChatOnMessageWhenOnline = config_file.readBoolEntry("Chat", "OpenChatOnMessageWhenOnline");
-
-	insertEmoticonActionEnabled();
-
-	kdebugf2();
+	OpenChatOnMessageWhenOnline = config_file.readBoolEntry("Chat", "OpenChatOnMessageWhenOnline");;
 }
 
-// TODO 0.10.0:, move to core or somewhere else
+bool ChatWidgetManager::shouldOpenChatWidget(const Message &message)
+{
+	if (!OpenChatOnMessage)
+		return false;
+
+	const Protocol * const handler = message.messageChat().chatAccount().protocolHandler();
+	if (!handler)
+		return false;
+
+	if (!OpenChatOnMessageWhenOnline)
+		return true;
+
+	return StatusTypeGroupOnline == handler->status().group();
+}
+
 void ChatWidgetManager::messageReceived(const Message &message)
 {
-	kdebugf();
+	const Chat &chat = message.messageChat();
+	ChatWidget *alreadyOpenedChatWidget = byChat(chat, false);
 
-	Chat chat = message.messageChat();
-	ChatWidget *chatWidget = byChat(chat);
-	if (chatWidget)
+	if (alreadyOpenedChatWidget)
 	{
-		MessageRenderInfo *messageRenderInfo = new MessageRenderInfo(message);
-		chatWidget->newMessage(messageRenderInfo);
-	}
-	else
-	{
-		if (AutoRaise)
-			_activateWindow(Core::instance()->kaduWindow());
-
-		if (OpenChatOnMessage)
-		{
-			Protocol *handler = message.messageChat().chatAccount().protocolHandler();
-			if (OpenChatOnMessageWhenOnline && (!handler || (handler->status().group() != StatusTypeGroupOnline)))
-			{
-				qApp->alert(Core::instance()->kaduWindow());
-				message.setPending(true);
-				PendingMessagesManager::instance()->addItem(message);
-				return;
-			}
-
-			// TODO: it is lame
-			openChatWidget(chat);
-			chatWidget = byChat(chat);
-
-			MessageRenderInfo *messageRenderInfo = new MessageRenderInfo(message);
-			chatWidget->newMessage(messageRenderInfo);
-		}
-		else
-		{
-			qApp->alert(Core::instance()->kaduWindow());
-			message.setPending(true);
-			PendingMessagesManager::instance()->addItem(message);
-		}
+		alreadyOpenedChatWidget->appendMessage(message);
+		return;
 	}
 
-	kdebugf2();
+	if (AutoRaise)
+		_activateWindow(Core::instance()->kaduWindow());
+
+	if (!shouldOpenChatWidget(message))
+	{
+		qApp->alert(Core::instance()->kaduWindow());
+		return;
+	}
+
+	ChatWidget *newChatWidget = byChat(chat, true);
+	if (newChatWidget)
+		newChatWidget->appendMessage(message);
 }
 
 void ChatWidgetManager::messageSent(const Message &message)
 {
-	Chat chat = message.messageChat();
-	ChatWidget *chatWidget = byChat(chat);
-	MessageRenderInfo *messageRenderInfo = new MessageRenderInfo(message);
-
-	if (!chatWidget)
-	{
-		openChatWidget(chat);
-		chatWidget = byChat(chat);
-	}
-
+	const Chat &chat = message.messageChat();
+	ChatWidget * const chatWidget = byChat(chat, true);
 	if (!chatWidget)
 		return;
 
-	chatWidget->appendMessage(messageRenderInfo);
+	chatWidget->appendMessage(message);
 }

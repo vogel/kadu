@@ -21,8 +21,9 @@
  */
 
 #include "buddies/buddy.h"
-#include "chat/message/pending-messages-manager.h"
+#include "chat/chat.h"
 #include "contacts/contact-set.h"
+#include "gui/widgets/chat-widget.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "status/status-container.h"
 
@@ -68,7 +69,7 @@ Contact BuddyPreferredManager::preferredContact(const Buddy &buddy, const Accoun
 	}
 
 	Contact contact;
-	contact = preferredContactByPendingMessages(buddy, account);
+	contact = preferredContactByUnreadMessages(buddy, account);
 	if (contact)
 		return contact;
 
@@ -107,7 +108,7 @@ Account BuddyPreferredManager::preferredAccount(const Buddy &buddy, bool include
 void BuddyPreferredManager::updatePreferred(Buddy buddy)
 {
 	Contact contact;
-	contact = preferredContactByPendingMessages(buddy);
+	contact = preferredContactByUnreadMessages(buddy);
 	if (!contact)
 		contact = preferredContactByChatWidgets(buddy);
 
@@ -119,13 +120,13 @@ void BuddyPreferredManager::updatePreferred(Buddy buddy)
 	emit buddyUpdated(buddy);
 }
 
-Contact BuddyPreferredManager::preferredContactByPendingMessages(const Buddy &buddy, const Account &account)
+Contact BuddyPreferredManager::preferredContactByUnreadMessages(const Buddy &buddy, const Account &account)
 {
 	Contact result;
-	foreach (const Message &message, PendingMessagesManager::instance()->pendingMessagesForBuddy(buddy))
+	foreach (const Contact &contact, buddy.contacts())
 	{
-		Contact contact = message.messageSender();
-		result = morePreferredContactByStatus(result, contact, account);
+		if (contact.unreadMessagesCount() > 0)
+			result = morePreferredContactByStatus(result, contact, account);
 	}
 	return result;
 }

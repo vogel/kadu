@@ -176,7 +176,7 @@ MainConfigurationWindow::MainConfigurationWindow() :
 	widget()->appendUiFile(dataPath("kadu/configuration/dialog.ui"));
 
 #if !defined(DEBUG_ENABLED) || defined(Q_OS_WIN)
-	widget()->widgetById("debug")->parentWidget()->hide();
+	widget()->widgetById("debug")->hide();
 #endif
 
 #ifndef Q_OS_WIN
@@ -184,7 +184,7 @@ MainConfigurationWindow::MainConfigurationWindow() :
 #endif
 
 #ifndef Q_WS_X11
-	widget()->widgetById("windowActivationMethodGroup")->hide();
+	widget()->widgetById("windowActivationMethod")->hide();
 	widget()->widgetById("notify/fullscreenSilentMode")->hide();
 #endif
 

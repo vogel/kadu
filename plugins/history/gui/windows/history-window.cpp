@@ -49,6 +49,7 @@
 #include "chat/aggregate-chat-manager.h"
 #include "gui/actions/actions.h"
 #include "gui/actions/base-action-context.h"
+#include "gui/widgets/chat-widget.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/delayed-line-edit.h"
 #include "gui/widgets/filter-widget.h"
@@ -721,14 +722,10 @@ void HistoryWindow::showDetailsPopupMenu(const QPoint &pos)
 
 void HistoryWindow::openChat()
 {
-	kdebugf();
-	Chat chat = ChatsTree->currentIndex().data(ChatRole).value<Chat>();
-	if (!chat)
-		return;
-
-	ChatWidgetManager::instance()->openPendingMessages(chat, true);
-
-	kdebugf2();
+	const Chat &chat = ChatsTree->currentIndex().data(ChatRole).value<Chat>();
+	ChatWidget * const chatWidget = ChatWidgetManager::instance()->byChat(chat, true);
+	if (chatWidget)
+		chatWidget->activate();
 }
 
 void HistoryWindow::clearChatHistory()

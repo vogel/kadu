@@ -43,6 +43,7 @@
 #include "buddies/buddy-set.h"
 #include "chat/chat-geometry-data.h"
 #include "chat/chat-manager.h"
+#include "chat/message/message-manager.h"
 #include "chat/message/message-render-info.h"
 #include "chat/type/chat-type-manager.h"
 #include "configuration/chat-configuration-holder.h"
@@ -58,6 +59,7 @@
 #include "gui/widgets/chat-edit-box-size-manager.h"
 #include "gui/widgets/chat-messages-view.h"
 #include "gui/widgets/chat-widget-actions.h"
+#include "gui/widgets/chat-widget-container.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/color-selector.h"
 #include "gui/widgets/filtered-tree-view.h"
@@ -79,15 +81,14 @@
 #include "chat-widget.h"
 
 ChatWidget::ChatWidget(const Chat &chat, QWidget *parent) :
-		QWidget(parent), CurrentChat(chat),
+		QWidget(parent), CurrentChat(chat), Container(0),
 		BuddiesWidget(0), ProxyModel(0), InputBox(0), HorizontalSplitter(0),
 		IsComposing(false), CurrentContactActivity(ChatStateService::StateNone),
-		SplittersInitialized(false), NewMessagesCount(0)
+		SplittersInitialized(false)
 {
 	kdebugf();
 
 	setAcceptDrops(true);
-	ChatWidgetManager::instance()->registerChatWidget(this);
 
 	createGui();
 	configurationUpdated();
@@ -130,12 +131,22 @@ ChatWidget::~ChatWidget()
 	kdebugf();
 	ComposingTimer.stop();
 
-	ChatWidgetManager::instance()->unregisterChatWidget(this);
+	emit widgetDestroyed();
 
 	if (currentProtocol() && currentProtocol()->chatStateService())
 		currentProtocol()->chatStateService()->chatWidgetClosed(chat());
 
 	kdebugmf(KDEBUG_FUNCTION_END, "chat destroyed\n");
+}
+
+void ChatWidget::setContainer(ChatWidgetContainer *container)
+{
+	Container = container;
+}
+
+ChatWidgetContainer * ChatWidget::container() const
+{
+	return Container;
 }
 
 void ChatWidget::createGui()
@@ -391,20 +402,31 @@ QIcon ChatWidget::icon()
 	return KaduIcon("internet-group-chat").icon();
 }
 
-void ChatWidget::appendMessages(const QList<MessageRenderInfo *> &messages, bool pending)
+void ChatWidget::appendMessages(const QList<Message> &messages)
 {
-	MessagesView->appendMessages(messages);
+	bool unread = false;
 
-	if (pending)
-		LastMessageTime = QDateTime::currentDateTime();
+	QList<MessageRenderInfo *> messageRenderInfos;
+	foreach (const Message &message, messages)
+	{
+		messageRenderInfos.append(new MessageRenderInfo(message));
+		unread = unread || message.status() == MessageStatusReceived;
+	}
+
+	MessagesView->appendMessages(messageRenderInfos);
+	if (unread)
+		LastReceivedMessageTime = QDateTime::currentDateTime();
 }
 
-void ChatWidget::appendMessage(MessageRenderInfo *message, bool pending)
+void ChatWidget::appendMessage(const Message &message)
 {
-	MessagesView->appendMessage(message);
-
-	if (pending)
-		LastMessageTime = QDateTime::currentDateTime();
+	MessagesView->appendMessage(new MessageRenderInfo(message));
+	if (message.status() == MessageStatusReceived)
+	{
+		LastReceivedMessageTime = QDateTime::currentDateTime();
+		if (Container)
+			Container->alertChatWidget(this);
+	}
 }
 
 void ChatWidget::appendSystemMessage(const QString &rawContent, const QString &backgroundColor, const QString &fontColor)
@@ -414,23 +436,15 @@ void ChatWidget::appendSystemMessage(const QString &rawContent, const QString &b
 	message.setType(MessageTypeSystem);
 	message.setContent(rawContent);
 	message.setSendDate(QDateTime::currentDateTime());
+	message.setStatus(MessageStatusReceived);
 	MessageRenderInfo *messageRenderInfo = new MessageRenderInfo(message);
 	messageRenderInfo->setBackgroundColor(backgroundColor)
 		.setFontColor(fontColor)
 		.setNickColor(fontColor);
 
+	MessageManager::instance()->addUnreadMessage(message);
+
 	MessagesView->appendMessage(messageRenderInfo);
-}
-
-/* invoked from outside when new message arrives, this is the window to the world */
-void ChatWidget::newMessage(MessageRenderInfo *messageRenderInfo)
-{
-	MessagesView->appendMessage(messageRenderInfo);
-
-	LastMessageTime = QDateTime::currentDateTime();
-	NewMessagesCount++;
-
- 	emit messageReceived(CurrentChat);
 }
 
 void ChatWidget::resetEditBox()
@@ -497,8 +511,6 @@ void ChatWidget::sendMessage()
 	// composing had stopped.
 	if (ComposingTimer.isActive())
 		composingStopped();
-
-	emit messageSentAndConfirmed(CurrentChat, message.toHtml());
 
 	emit messageSent(this);
 	kdebugf2();
@@ -585,17 +597,10 @@ Protocol *ChatWidget::currentProtocol() const
 	return CurrentChat.chatAccount().protocolHandler();
 }
 
-void ChatWidget::makeActive()
+void ChatWidget::activate()
 {
-	kdebugf();
-	QWidget *win = this->window();
-	_activateWindow(win);
-	kdebugf2();
-}
-
-void ChatWidget::markAllMessagesRead()
-{
-	NewMessagesCount = 0;
+	if (Container)
+		Container->activateChatWidget(this);
 }
 
 void ChatWidget::verticalSplitterMoved(int pos, int index)
@@ -751,9 +756,12 @@ void ChatWidget::contactActivityChanged(ChatStateService::ContactActivity state,
 		message.setMessageChat(CurrentChat);
 		message.setType(MessageTypeSystem);
 		message.setMessageSender(contact);
+		message.setStatus(MessageStatusReceived);
 		message.setContent(msg);
 		message.setSendDate(QDateTime::currentDateTime());
 		message.setReceiveDate(QDateTime::currentDateTime());
+
+		MessageManager::instance()->addUnreadMessage(message);
 
 		MessagesView->appendMessage(message);
 	}

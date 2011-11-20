@@ -17,7 +17,6 @@ set (buddies_SRCS
 
 	filter/account-buddy-filter.cpp
 	filter/anonymous-buddy-filter.cpp
-	filter/anonymous-without-messages-buddy-filter.cpp
 	filter/blocked-buddy-filter.cpp
 	filter/buddy-name-filter.cpp
 	filter/group-buddy-filter.cpp
@@ -26,7 +25,7 @@ set (buddies_SRCS
 	filter/non-buddy-filter.cpp
 	filter/offline-buddy-filter.cpp
 	filter/online-and-description-buddy-filter.cpp
-	filter/pending-messages-filter.cpp
+	filter/unread-messages-filter.cpp
 
 	model/buddy-data-extractor.cpp
 	model/buddy-list-model.cpp
@@ -48,7 +47,6 @@ set (buddies_MOC_SRCS
 	filter/abstract-buddy-filter.h
 	filter/account-buddy-filter.h
 	filter/anonymous-buddy-filter.h
-	filter/anonymous-without-messages-buddy-filter.h
 	filter/blocked-buddy-filter.h
 	filter/buddy-name-filter.h
 	filter/group-buddy-filter.h
@@ -57,7 +55,7 @@ set (buddies_MOC_SRCS
 	filter/non-buddy-filter.h
 	filter/offline-buddy-filter.h
 	filter/online-and-description-buddy-filter.h
-	filter/pending-messages-filter.h
+	filter/unread-messages-filter.h
 
 	model/buddy-list-model.h
 	model/buddies-model.h

@@ -11,6 +11,7 @@
 #include <QtGui/QKeyEvent>
 #include <QtCore/QStringList>
 
+#include "chat/message/message-manager.h"
 #include "configuration/configuration-file.h"
 #include "gui/widgets/chat-widget.h"
 #include "gui/widgets/chat-widget-manager.h"
@@ -20,6 +21,7 @@
 #include "core/core.h"
 #include "icons/kadu-icon.h"
 #include "misc/misc.h"
+#include "activate.h"
 #include "debug.h"
 
 #include "single-window.h"
@@ -107,8 +109,6 @@ SingleWindow::SingleWindow()
 
 	connect(ChatWidgetManager::instance(), SIGNAL(handleNewChatWidget(ChatWidget *,bool &)),
 			this, SLOT(onNewChat(ChatWidget *,bool &)));
-	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetOpen(ChatWidget *, bool)),
-			this, SLOT(onOpenChat(ChatWidget *)));
 	connect(Core::instance(), SIGNAL(mainIconChanged(const KaduIcon &)),
 		this, SLOT(onStatusPixmapChanged(const KaduIcon &)));
 
@@ -139,8 +139,6 @@ SingleWindow::~SingleWindow()
 
 	disconnect(ChatWidgetManager::instance(), SIGNAL(handleNewChatWidget(ChatWidget *,bool &)),
 			this, SLOT(onNewChat(ChatWidget *,bool &)));
-	disconnect(ChatWidgetManager::instance(), SIGNAL(chatWidgetOpen(ChatWidget *, bool)),
-			this, SLOT(onOpenChat(ChatWidget *)));
 	disconnect(Core::instance(), SIGNAL(mainIconChanged(const KaduIcon &)),
 			this, SLOT(onStatusPixmapChanged(const KaduIcon &)));
 
@@ -157,7 +155,7 @@ SingleWindow::~SingleWindow()
 			Chat oldchat = chat->chat();
 			tabs->removeTab(i);
 			delete chat;
-			ChatWidgetManager::instance()->openPendingMessages(oldchat, true);
+			ChatWidgetManager::instance()->byChat(oldchat, true);
 		}
 	}
 
@@ -178,6 +176,8 @@ void SingleWindow::changeRosterPos(int newRosterPos)
 void SingleWindow::onNewChat(ChatWidget *w, bool &handled)
 {
 	handled = true;
+	w->setContainer(this);
+
 	QString title = w->chat().name();
 
 	tabs->addTab(w, w->icon(), title);
@@ -186,15 +186,6 @@ void SingleWindow::onNewChat(ChatWidget *w, bool &handled)
 	connect(w->edit(), SIGNAL(keyPressed(QKeyEvent *, CustomInput *, bool &)),
 		this, SLOT(onChatKeyPressed(QKeyEvent *, CustomInput *, bool &)));
 	connect(w, SIGNAL(iconChanged()), this, SLOT(onIconChanged()));
-
-	onOpenChat(w);
-}
-
-void SingleWindow::onOpenChat(ChatWidget *w)
-{
-	setWindowState(windowState() & ~Qt::WindowMinimized);
-	tabs->setCurrentWidget(w);
-	w->edit()->setFocus();
 }
 
 void SingleWindow::closeTab(int index)
@@ -241,38 +232,52 @@ void SingleWindow::resizeEvent(QResizeEvent *event)
 	split->resize(newSize);
 }
 
-void SingleWindow::closeChatWidget(ChatWidget *w)
+void SingleWindow::activateChatWidget(ChatWidget *chatWidget)
 {
-	if (w)
+	int index = tabs->indexOf(chatWidget);
+	if (index < 0)
+		return;
+
+	setWindowState(windowState() & ~Qt::WindowMinimized);
+	_activateWindow(window());
+
+	tabs->setCurrentIndex(index);
+	chatWidget->edit()->setFocus();
+}
+
+void SingleWindow::alertChatWidget(ChatWidget *chatWidget)
+{
+	if (!chatWidget)
+		return;
+
+	if (chatWidget == tabs->currentWidget() && _isWindowActiveOrFullyVisible(this))
 	{
-		int index = tabs->indexOf(w);
-		if (index >= 0)
-			closeTab(index);
+		MessageManager::instance()->markAllMessagesAsRead(chatWidget->chat());
+		return;
+	}
+
+	int index = tabs->indexOf(chatWidget);
+	tabs->setTabIcon(index, KaduIcon("protocols/common/message").icon());
+
+	if (config_file.readBoolEntry("SingleWindow", "NumMessagesInTab", false))
+	{
+		QString title = tabs->tabText(index);
+		int pos = title.indexOf(" [");
+		if (pos > -1)
+			title.truncate(pos);
+		title += QString(" [%1]").arg(chatWidget->chat().unreadMessagesCount());
+		tabs->setTabText(index, title);
 	}
 }
 
-void SingleWindow::onNewMessage(Chat chat)
+void SingleWindow::closeChatWidget(ChatWidget *chatWidget)
 {
-	ChatWidget *w = ChatWidgetManager::instance()->byChat(chat);
-	if (w != tabs->currentWidget())
-	{
-		int index = tabs->indexOf(w);
-		tabs->setTabIcon(index, KaduIcon("protocols/common/message").icon());
+	if (!chatWidget)
+		return;
 
-		if (config_file.readBoolEntry("SingleWindow", "NumMessagesInTab", false))
-		{
-			QString title = tabs->tabText(index);
-			int pos = title.indexOf(" [");
-			if (pos > -1)
-				title.truncate(pos);
-			title += QString(" [%1]").arg(w->newMessagesCount());
-			tabs->setTabText(index, title);
-		}
-	}
-	else
-	{
-		w->markAllMessagesRead();
-	}
+	int index = tabs->indexOf(chatWidget);
+	if (index >= 0)
+		closeTab(index);
 }
 
 void SingleWindow::onTabChange(int index)
@@ -289,7 +294,7 @@ void SingleWindow::onTabChange(int index)
 		title.truncate(pos);
 	tabs->setTabText(index, title);
 
-	w->markAllMessagesRead();
+	MessageManager::instance()->markAllMessagesAsRead(w->chat());
 }
 
 void SingleWindow::onkaduKeyPressed(QKeyEvent *e)

@@ -51,6 +51,10 @@ class TabsManager : public ConfigurationUiHandler, ConfigurationAwareObject, Sto
 {
 	Q_OBJECT
 
+	// just for fun, this code is so bad already
+	// that one more friend class wont do a difference
+	friend class TabWidget;
+
 	void createDefaultConfiguration();
 
 	ActionDescription *OpenInNewTabActionDescription;
@@ -90,7 +94,6 @@ private slots:
 	void onMenuActionDetachAll();
 	void onMenuActionClose();
 	void onMenuActionCloseAll();
-	void onMessageReceived(Chat chat);
 
 protected:
 	virtual void configurationUpdated();
@@ -112,7 +115,6 @@ public:
 public slots:
 	void onNewChat(ChatWidget *chat, bool &handled);
 	void onDestroyingChat(ChatWidget *chat);
-	void onOpenChat(ChatWidget *chat, bool activate);
 	void onIconChanged();
 	void onTitleChanged(ChatWidget *chatChanged, const QString &newTitle);
 
@@ -128,8 +130,6 @@ public slots:
 
 	void closeChat();
 
-signals:
-	void chatWidgetActivated(ChatWidget *);
 };
 
 #endif // TABS_TABS_H

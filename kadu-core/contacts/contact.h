@@ -76,6 +76,7 @@ public:
 	KaduSharedBase_Property(unsigned int, port, Port)
 	KaduSharedBase_PropertyCRW(QString, dnsName, DnsName)
 	KaduSharedBase_Property(short int, maximumImageSize, MaximumImageSize)
+	KaduSharedBase_Property(quint16, unreadMessagesCount, UnreadMessagesCount)
 
 };
 

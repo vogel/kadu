@@ -1,8 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2010, 2011 Piotr Galiszewski (piotr.galiszewski@kadu.im)
- * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
- * Copyright 2009 Bartłomiej Zimoń (uzi18@o2.pl)
+ * Copyright 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -19,27 +17,25 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ANONYMOUS_WITHOUT_MESSAGES_BUDDY_FILTER_H
-#define ANONYMOUS_WITHOUT_MESSAGES_BUDDY_FILTER_H
+#ifndef CHAT_UNREAD_FILTER_H
+#define CHAT_UNREAD_FILTER_H
 
-#include <QtCore/QMetaType>
+#include "chat/filter/chat-filter.h"
+#include "exports.h"
 
-#include "abstract-buddy-filter.h"
-
-class AnonymousWithoutMessagesBuddyFilter : public AbstractBuddyFilter
+class KADUAPI ChatUnreadFilter : public ChatFilter
 {
 	Q_OBJECT
 
 	bool Enabled;
 
 public:
-	AnonymousWithoutMessagesBuddyFilter(QObject *parent = 0);
+	ChatUnreadFilter(QObject *parent = 0);
+
+	virtual bool acceptChat(const Chat &chat);
 
 	void setEnabled(bool enabled);
-	virtual bool acceptBuddy(const Buddy &buddy);
 
 };
 
-Q_DECLARE_METATYPE(AnonymousWithoutMessagesBuddyFilter *)
-
-#endif // ANONYMOUS_WITHOUT_MESSAGES_BUDDY_FILTER_H
+#endif // CHAT_UNREAD_FILTER_H

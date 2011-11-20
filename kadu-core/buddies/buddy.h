@@ -119,6 +119,7 @@ public:
 	KaduSharedBase_PropertyBool(Ignored)
 	KaduSharedBase_PropertyBool(Blocked)
 	KaduSharedBase_PropertyBool(OfflineTo)
+	KaduSharedBase_PropertyRead(quint16, unreadMessagesCount, UnreadMessagesCount)
 
 };
 

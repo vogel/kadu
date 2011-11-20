@@ -47,6 +47,7 @@
 #include "core/core.h"
 #include "icons/kadu-icon.h"
 #include "gui/actions/base-action-context.h"
+#include "gui/widgets/chat-widget.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/windows/add-buddy-window.h"
 #include "gui/windows/kadu-window.h"
@@ -328,12 +329,13 @@ void SearchWindow::addFound()
 
 void SearchWindow::chatFound()
 {
-	ContactSet contacts = selectedContacts();
+	const ContactSet &contacts = selectedContacts();
 	if (!contacts.isEmpty())
 	{
-		Chat chat = ChatManager::instance()->findChat(contacts, true);
-		if (chat)
-			ChatWidgetManager::instance()->openPendingMessages(chat, true);
+		const Chat &chat = ChatManager::instance()->findChat(contacts, true);
+		ChatWidget * const chatWidget = ChatWidgetManager::instance()->byChat(chat, true);
+		if (chatWidget)
+			chatWidget->activate();
 	}
 }
 

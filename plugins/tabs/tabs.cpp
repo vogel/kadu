@@ -40,6 +40,7 @@
 #include "buddies/buddy-list.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-set.h"
+#include "chat/message/message-manager.h"
 #include "configuration/configuration-file.h"
 #include "configuration/configuration-manager.h"
 #include "configuration/xml-configuration-file.h"
@@ -48,6 +49,7 @@
 #include "gui/actions/action.h"
 #include "gui/actions/action-description.h"
 #include "gui/widgets/chat-edit-box.h"
+#include "gui/widgets/chat-widget.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/talkable-menu-manager.h"
@@ -87,24 +89,16 @@ TabsManager::TabsManager(QObject *parent) :
 			this, SLOT(onNewChat(ChatWidget *, bool &)));
 	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetDestroying(ChatWidget *)),
 			this, SLOT(onDestroyingChat(ChatWidget *)));
-	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetOpen(ChatWidget *, bool)),
-			this, SLOT(onOpenChat(ChatWidget *, bool)));
 
 	connect(&Timer, SIGNAL(timeout()), this, SLOT(onTimer()));
 
-	TabDialog = new TabWidget();
+	TabDialog = new TabWidget(this);
 	TabDialog->setContextMenuPolicy(Qt::CustomContextMenu);
 	connect(TabDialog, SIGNAL(currentChanged(int)), this, SLOT(onTabChange(int)));
 	connect(TabDialog, SIGNAL(contextMenu(QWidget *, const QPoint &)),
 			this, SLOT(onContextMenu(QWidget *, const QPoint &)));
 
 	loadWindowGeometry(TabDialog, "Chat", "TabWindowsGeometry", 30, 30, 550, 400);
-
-	// sygnal wysylany po aktywacji chata. Jest odbierany przez m.in hint-managera (po aktywacji chata znikaja dymki))
-	connect(this, SIGNAL(chatWidgetActivated(ChatWidget *)),
-			ChatWidgetManager::instance(), SIGNAL(chatWidgetActivated(ChatWidget *)));
-	connect(TabDialog, SIGNAL(chatWidgetActivated(ChatWidget *)),
-			ChatWidgetManager::instance(), SIGNAL(chatWidgetActivated(ChatWidget *)));
 
 	makePopupMenu();
 
@@ -219,7 +213,6 @@ void TabsManager::onDestroyingChat(ChatWidget* chat)
 	DetachedChats.removeAll(chat);
 	ChatsWithNewMessages.removeAll(chat);
 	disconnect(chat->edit(), SIGNAL(keyPressed(QKeyEvent*, CustomInput*, bool&)), TabDialog, SLOT(chatKeyPressed(QKeyEvent*, CustomInput*, bool&)));
-	disconnect(chat, SIGNAL(messageReceived(Chat)), this, SLOT(onMessageReceived(Chat)));
 	disconnect(chat, SIGNAL(closed()), this, SLOT(closeChat()));
 	disconnect(chat, SIGNAL(iconChanged()), this, SLOT(onIconChanged()));
 	disconnect(chat, SIGNAL(titleChanged(ChatWidget *, const QString &)), this, SLOT(onTitleChanged(ChatWidget *, const QString &)));
@@ -271,43 +264,9 @@ void TabsManager::onTabChange(int index)
 	TabDialog->setWindowTitle(chat->title());
 	TabDialog->setWindowIcon(chat->icon());
 
-	emit chatWidgetActivated(chat);
+	MessageManager::instance()->markAllMessagesAsRead(chat);
 	// ustawiamy focus na pole edycji chata
 	chat->edit()->setFocus();
-}
-
-void TabsManager::onOpenChat(ChatWidget *chat, bool activate)
-{
-	kdebugf();
-	if (activate && chat && TabDialog->indexOf(chat)!=-1)
-	{
-		TabDialog->setWindowState(TabDialog->windowState() & ~Qt::WindowMinimized);
-		TabDialog->setCurrentWidget(chat);
-	}
-	kdebugf2();
-}
-
-void TabsManager::onMessageReceived(Chat chat)
-{
-	kdebugf();
-
-	ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(chat, false);
-	if (!chatWidget)
-		return;
-
-	if (TabDialog->currentWidget() != chatWidget || !_isWindowActiveOrFullyVisible(TabDialog))
-	{
-		if (!ChatsWithNewMessages.contains(chatWidget))
-		{
-			ChatsWithNewMessages.append(chatWidget);
-			if (!Timer.isActive())
-				QMetaObject::invokeMethod(this, "onTimer", Qt::QueuedConnection);
-		}
-	}
-	else
-		chatWidget->markAllMessagesRead();
-
-	kdebugf2();
 }
 
 void TabsManager::onNewTab(QAction *sender, bool toggled)
@@ -324,7 +283,7 @@ void TabsManager::onNewTab(QAction *sender, bool toggled)
 	if (!chat)
 		return;
 
-	ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(chat);
+	ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(chat, false);
 	// exists - bring to front
 	if (chatWidget)
 	{
@@ -343,7 +302,7 @@ void TabsManager::onNewTab(QAction *sender, bool toggled)
 		else if (chat.contacts().count() == 1 || ConfigConferencesInTabs)
 			ForceTabs = true;
 
-		ChatWidgetManager::instance()->openPendingMessages(chat, true);
+		ChatWidgetManager::instance()->byChat(chat, true);
 	}
 
 	kdebugf2();
@@ -372,6 +331,8 @@ void TabsManager::insertTab(ChatWidget* chat)
 			action->setChecked(true);
 	}
 
+	chat->setContainer(TabDialog);
+
 	// Ustawiam tytul karty w zaleznosci od tego czy mamy do czynienia z rozmowa czy z konferencja
 	TabDialog->insertTab(TargetTabs, chat, chat->icon(), formatTabName(chat));
 
@@ -387,8 +348,6 @@ void TabsManager::insertTab(ChatWidget* chat)
 
 	connect(chat->edit(), SIGNAL(keyPressed(QKeyEvent*, CustomInput*, bool&)),
 			TabDialog, SLOT(chatKeyPressed(QKeyEvent*, CustomInput*, bool&)));
-	// Podlaczamy sie do nowej wiadomości w chacie, tylko jesli dodany on zostal do kart
-	connect(chat, SIGNAL(messageReceived(Chat)),this, SLOT(onMessageReceived(Chat)));
 	connect(chat, SIGNAL(closed()), this, SLOT(closeChat()));
 	connect(chat, SIGNAL(iconChanged()), this, SLOT(onIconChanged()));
 	connect(chat, SIGNAL(titleChanged(ChatWidget * , const QString &)),
@@ -427,7 +386,7 @@ void TabsManager::onTimer()
 
 				if (currentChat == chat)
 				{
-					chat->markAllMessagesRead();
+					MessageManager::instance()->markAllMessagesAsRead(chat);
 					TabDialog->setTabIcon(i, chat->icon());
 					ChatsWithNewMessages.removeAll(chat);
 				}
@@ -446,7 +405,7 @@ void TabsManager::onTimer()
 					else
 					{
 						if (ConfigShowNewMessagesNum)
-							TabDialog->setWindowTitle('[' + QString::number(chat->newMessagesCount()) + "] " + chat->title());
+							TabDialog->setWindowTitle('[' + QString::number(chat->chat().unreadMessagesCount()) + "] " + chat->title());
 						else
 							TabDialog->setWindowTitle(chat->title());
 					}
@@ -458,10 +417,10 @@ void TabsManager::onTimer()
 					TabDialog->setWindowTitle(chat->title());
 			}
 
-			if (chat->newMessagesCount() > 0)
+			if (chat->chat().unreadMessagesCount() > 0)
 			{
-				TabDialog->setTabText(i, QString("%1 [%2]").arg(formatTabName(chat)).arg(chat->newMessagesCount()));
-				TabDialog->setTabToolTip(i, QString("%1\n%2 new message(s)").arg(chat->title()).arg(chat->newMessagesCount()));
+				TabDialog->setTabText(i, QString("%1 [%2]").arg(formatTabName(chat)).arg(chat->chat().unreadMessagesCount()));
+				TabDialog->setTabToolTip(i, QString("%1\n%2 new message(s)").arg(chat->title()).arg(chat->chat().unreadMessagesCount()));
 			}
 			else
 			{
@@ -572,8 +531,11 @@ bool TabsManager::detachChat(ChatWidget *chat)
 	Chat oldChat = chat->chat();
 	delete chat;
 
+	// omg this is bad
 	NoTabs = true;
-	ChatWidgetManager::instance()->openPendingMessages(oldChat, true);
+	ChatWidget * const chatWidget = ChatWidgetManager::instance()->byChat(oldChat, true);
+	if (chatWidget)
+		chatWidget->activate();
 	return true;
 }
 
@@ -600,14 +562,14 @@ void TabsManager::load()
 		if (!chat)
 			continue;
 
-		ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(chat);
+		ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(chat, false);
 		if (!chatWidget)
 		{
 			if (element.attribute("type") == "tab")
 				ForceTabs = true;
 			else if (element.attribute("type") == "detachedChat")
 				NoTabs = true;
-			ChatWidgetManager::instance()->openPendingMessages(chat);
+			ChatWidgetManager::instance()->byChat(chat, true);
 		}
 		else if (element.attribute("type") == "tab")
 			insertTab(chatWidget);
@@ -722,7 +684,7 @@ void TabsManager::openTabWith(QStringList altnicks, int index)
 	// Jeśli chat nie istnieje to go tworzymy z wymuszonym dodaniem go do kart
 		force_tabs=true;
 		target_tabs=index;
-		ChatWidgetManager::instance()->openPendingMessages(contacts, true);
+		ChatWidgetManager::instance()->openChat(contacts);
 	}
 	*/
 }

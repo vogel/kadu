@@ -42,6 +42,8 @@ class KADUAPI GroupManager : public QObject, public SimpleManager<Group>
 	GroupManager();
 	virtual ~GroupManager();
 
+	void init();
+
 	void importConfiguration();
 
 private slots:

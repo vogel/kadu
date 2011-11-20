@@ -37,24 +37,31 @@
 
 #include "group-manager.h"
 
-GroupManager *GroupManager::Instance = 0;
+GroupManager * GroupManager::Instance = 0;
 
 GroupManager * GroupManager::instance()
 {
 	if (!Instance)
+	{
 		Instance = new GroupManager();
+		Instance->init();
+	}
 
 	return Instance;
 }
 
 GroupManager::GroupManager()
 {
-	ConfigurationManager::instance()->registerStorableObject(this);
 }
 
 GroupManager::~GroupManager()
 {
 	ConfigurationManager::instance()->unregisterStorableObject(this);
+}
+
+void GroupManager::init()
+{
+	ConfigurationManager::instance()->registerStorableObject(this);
 }
 
 void GroupManager::importConfiguration()

@@ -22,11 +22,13 @@
 
 #include <QtCore/QString>
 
+#include "chat/message/message-manager.h"
 #include "chat/message/message-render-info.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact-set.h"
 #include "debug.h"
 #include "gui/widgets/chat-messages-view.h"
+#include "gui/widgets/chat-widget.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "protocols/services/chat-service.h"
 
@@ -146,7 +148,9 @@ void ImageLink::insertCodeIntoChatWindow(Chat chat, Contact sender, const QStrin
 	message.setReceiveDate(QDateTime::currentDateTime());
 	message.setSendDate(QDateTime::currentDateTime());
 
-	ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(chat);
+	MessageManager::instance()->addUnreadMessage(message);
+
+	ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(chat, false);
 	if (!chatWidget)
 		ChatWidgetManager::instance()->messageReceived(message);
 	else

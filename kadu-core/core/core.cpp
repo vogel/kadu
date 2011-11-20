@@ -39,7 +39,7 @@
 #include "avatars/avatar-manager.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/group-manager.h"
-#include "chat/message/pending-messages-manager.h"
+#include "chat/message/message-manager.h"
 #include "configuration/configuration-file.h"
 #include "configuration/configuration-manager.h"
 #include "configuration/main-configuration-holder.h"
@@ -57,7 +57,6 @@
 #include "plugins/plugins-manager.h"
 #include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
-#include "protocols/services/chat-service.h"
 #include "status/status-container-manager.h"
 #include "status/status-setter.h"
 #include "status/status-type.h"
@@ -395,10 +394,10 @@ void Core::init()
 	AccountManager::instance()->ensureLoaded();
 	BuddyManager::instance()->ensureLoaded();
 	ContactManager::instance()->ensureLoaded();
-	// Without that PendingMessagesManager is loaded while filtering buddies list for the first time.
-	// It has to happen earlier because PendingMessagesManager::loaded() might add buddies to the BuddyManager
+	// Without that MessageManager is loaded while filtering buddies list for the first time.
+	// It has to happen earlier because MessageManager::loaded() might add buddies to the BuddyManager
 	// which (the buddies) otherwise will not be taken into account by buddies list before its next update.
-	PendingMessagesManager::instance()->ensureLoaded();
+	MessageManager::instance()->ensureLoaded();
 	AvatarManager::instance(); // initialize that
 
 #if WITH_LIBINDICATE_QT
@@ -468,15 +467,6 @@ void Core::accountRegistered(Account account)
 	if (!protocol)
 		return;
 
-	ChatService *chatService = protocol->chatService();
-	if (chatService)
-	{
-		connect(chatService, SIGNAL(messageReceived(const Message &)),
-			this, SIGNAL(messageReceived(const Message &)));
-		connect(chatService, SIGNAL(messageSent(const Message &)),
-			this, SIGNAL(messageSent(const Message &)));
-	}
-
 	connect(protocol, SIGNAL(connecting(Account)), this, SIGNAL(connecting()));
 	connect(protocol, SIGNAL(connected(Account)), this, SIGNAL(connected()));
 	connect(protocol, SIGNAL(disconnected(Account)), this, SIGNAL(disconnected()));
@@ -488,15 +478,6 @@ void Core::accountUnregistered(Account account)
 
 	if (protocol)
 	{
-		ChatService *chatService = protocol->chatService();
-		if (chatService)
-		{
-			disconnect(chatService, SIGNAL(messageReceived(const Message &)),
-				this, SIGNAL(messageReceived(const Message &)));
-			disconnect(chatService, SIGNAL(messageSent(const Message &)),
-				this, SIGNAL(messageSent(const Message &)));
-		}
-
 		disconnect(protocol, SIGNAL(connecting(Account)), this, SIGNAL(connecting()));
 		disconnect(protocol, SIGNAL(connected(Account)), this, SIGNAL(connected()));
 		disconnect(protocol, SIGNAL(disconnected(Account)), this, SIGNAL(disconnected()));

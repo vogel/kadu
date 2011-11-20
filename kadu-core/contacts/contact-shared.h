@@ -46,6 +46,7 @@ class KADUAPI ContactShared : public QObject, public Shared, public DetailsHolde
 	QString Id;
 	int Priority;
 	short int MaximumImageSize;
+	quint16 UnreadMessagesCount;
 
 	Status CurrentStatus;
 	bool Blocking;
@@ -114,6 +115,7 @@ public:
 	KaduShared_Property(unsigned int, port, Port)
 	KaduShared_Property(const QString &, dnsName, DnsName)
 	KaduShared_Property(short int, maximumImageSize, MaximumImageSize)
+	KaduShared_Property(quint16, unreadMessagesCount, UnreadMessagesCount)
 
 signals:
 	void aboutToBeDetached();

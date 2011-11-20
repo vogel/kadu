@@ -26,12 +26,20 @@ ChatConfigurationHolder *ChatConfigurationHolder::Instance = 0;
 
 ChatConfigurationHolder * ChatConfigurationHolder::instance()
 {
-	if (0 == Instance)
+	if (!Instance)
+	{
 		Instance = new ChatConfigurationHolder();
+		Instance->init();
+	}
+
 	return Instance;
 }
 
 ChatConfigurationHolder::ChatConfigurationHolder()
+{
+}
+
+void ChatConfigurationHolder::init()
 {
 	configurationUpdated();
 }
@@ -70,6 +78,6 @@ void ChatConfigurationHolder::configurationUpdated()
 
 	UseTransparency = config_file.readBoolEntry("Chat", "UseTransparency");
 
-	
+
 	emit chatConfigurationUpdated();
 }

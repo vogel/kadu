@@ -75,7 +75,13 @@ public:
 	KaduShared_Property(const QString &, id, Id)
 
 signals:
-	void statusChanged(MessageStatus);
+	/**
+	 * @short Signal emited when message status was changed.
+	 * @param previousStatus status before change
+	 *
+	 * This signal is emited when message status changes.
+	 */
+	void statusChanged(MessageStatus previousStatus);
 
 	void updated();
 

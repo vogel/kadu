@@ -31,6 +31,7 @@
 #include "notify/notification-manager.h"
 #include "notify/notification.h"
 
+#include "gui/widgets/chat-widget.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/windows/message-dialog.h"
 #include "configuration/configuration-file.h"
@@ -133,8 +134,9 @@ void Qt4Notify::notify(Notification *notification)
 
 void Qt4Notify::messageClicked()
 {
-	if (chat)
-		ChatWidgetManager::instance()->openPendingMessages(chat, true);
+	ChatWidget * const chatWidget = ChatWidgetManager::instance()->byChat(chat, true);
+	if (chatWidget)
+		chatWidget->activate();
 }
 
 NotifierConfigurationWidget *Qt4Notify::createConfigurationWidget(QWidget *parent)
@@ -145,14 +147,14 @@ NotifierConfigurationWidget *Qt4Notify::createConfigurationWidget(QWidget *paren
 
 void Qt4Notify::import_0_6_5_configuration()
 {
-    	config_file.addVariable("Qt4DockingNotify", "Event_StatusChanged/ToAway_timeout",
-		    config_file.readEntry("Qt4DockingNotify", "Event_StatusChanged/ToBusy_timeout"));
-	config_file.addVariable("Qt4DockingNotify", "Event_StatusChanged/ToAway_syntax",
-		    config_file.readEntry("Qt4DockingNotify", "Event_StatusChanged/ToBusy_timeout"));
 	config_file.addVariable("Qt4DockingNotify", "Event_StatusChanged/ToAway_timeout",
-		    config_file.readEntry("Qt4DockingNotify", "Event_StatusChanged/ToBusy_title"));
+		config_file.readEntry("Qt4DockingNotify", "Event_StatusChanged/ToBusy_timeout"));
+	config_file.addVariable("Qt4DockingNotify", "Event_StatusChanged/ToAway_syntax",
+		config_file.readEntry("Qt4DockingNotify", "Event_StatusChanged/ToBusy_timeout"));
+	config_file.addVariable("Qt4DockingNotify", "Event_StatusChanged/ToAway_timeout",
+		config_file.readEntry("Qt4DockingNotify", "Event_StatusChanged/ToBusy_title"));
 	config_file.addVariable("Qt4DockingNotify", "Event_StatusChanged/ToAway_icon",
-		    config_file.readEntry("Qt4DockingNotify", "Event_StatusChanged/ToBusy_icon"));
+		config_file.readEntry("Qt4DockingNotify", "Event_StatusChanged/ToBusy_icon"));
 }
 
 void Qt4Notify::createDefaultConfiguration()

@@ -31,7 +31,7 @@
 #include "accounts/account.h"
 #include "buddies/buddy.h"
 #include "buddies/buddy-preferred-manager.h"
-#include "chat/message/pending-messages-manager.h"
+#include "chat/chat.h"
 #include "contacts/contact.h"
 #include "gui/widgets/avatar-painter.h"
 #include "gui/widgets/talkable-delegate-configuration.h"
@@ -109,16 +109,26 @@ bool TalkablePainter::useBold() const
 
 bool TalkablePainter::showMessagePixmap() const
 {
-	if (Index.parent().isValid()) // contact
+	switch (Index.data(ItemTypeRole).toUInt())
 	{
-		const Contact &contact = Index.data(ContactRole).value<Contact>();
-		return contact && PendingMessagesManager::instance()->hasPendingMessagesForContact(contact);
+		case ChatRole:
+		{
+			const Chat &chat = Index.data(ChatRole).value<Chat>();
+			return chat.unreadMessagesCount() > 0;
+		}
+		case BuddyRole:
+		{
+			const Buddy &buddy = Index.data(BuddyRole).value<Buddy>();
+			return buddy.unreadMessagesCount() > 0;
+		}
+		case ContactRole:
+		{
+			const Contact &contact = Index.data(ContactRole).value<Contact>();
+			return contact.unreadMessagesCount() > 0;
+		}
 	}
-	else
-	{
-		const Buddy &buddy = Index.data(BuddyRole).value<Buddy>();
-		return buddy && PendingMessagesManager::instance()->hasPendingMessagesForBuddy(buddy);
-	}
+
+	return false;
 }
 
 bool TalkablePainter::showAccountName() const
@@ -198,7 +208,7 @@ bool TalkablePainter::drawDisabled() const
 
 QTextDocument * TalkablePainter::createDescriptionDocument(const QString &text, int width, QColor color) const
 {
-	const QString &description = Qt::escape(text)
+	QString description = Qt::escape(text)
 	        .replace('\n', Configuration.showMultiLineDescription() ? QLatin1String("<br/>") : QLatin1String(" "));
 
 	QTextDocument * const doc = new QTextDocument();

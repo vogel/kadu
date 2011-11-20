@@ -19,6 +19,7 @@
 
 #include "chat/filter/chat-filter.h"
 #include "chat/model/chats-model.h"
+#include "model/roles.h"
 
 #include "chats-proxy-model.h"
 
@@ -64,6 +65,14 @@ void ChatsProxyModel::modelDestroyed()
 
 bool ChatsProxyModel::lessThan(const QModelIndex &left, const QModelIndex &right) const
 {
+	const Chat &leftChat = left.data(ChatRole).value<Chat>();
+	const Chat &rightChat = right.data(ChatRole).value<Chat>();
+
+	if (leftChat.unreadMessagesCount() > 0 && rightChat.unreadMessagesCount() == 0)
+		return -1;
+	if (leftChat.unreadMessagesCount() == 0 && rightChat.unreadMessagesCount() > 0)
+		return 1;
+
 	const QString &leftChatDisplay = left.data().toString();
 	const QString &rightChatDisplay = right.data().toString();
 

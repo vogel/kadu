@@ -13,13 +13,15 @@ set (chat_SRCS
 
 	filter/chat-name-filter.cpp
 	filter/chat-named-filter.cpp
+	filter/chat-or-filter.cpp
+	filter/chat-unread-filter.cpp
 	filter/group-chat-filter.cpp
 
 	message/formatted-message.cpp
 	message/formatted-message-part.cpp
 	message/message.cpp
+	message/message-manager.cpp
 	message/message-render-info.cpp
-	message/pending-messages-manager.cpp
 	message/message-shared.cpp
 
 	model/chat-data-extractor.cpp
@@ -56,10 +58,12 @@ set (chat_MOC_SRCS
 	filter/chat-filter.h
 	filter/chat-name-filter.h
 	filter/chat-named-filter.h
+	filter/chat-or-filter.h
+	filter/chat-unread-filter.h
 	filter/group-chat-filter.h
 
+	message/message-manager.h
 	message/message-render-info.h
-	message/pending-messages-manager.h
 	message/message-shared.h
 
 	model/chats-model.h

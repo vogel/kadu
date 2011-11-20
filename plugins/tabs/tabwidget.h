@@ -38,6 +38,8 @@
 
 #include "debug.h"
 
+class TabsManager;
+
 class TabBar: public QTabBar
 {
 	Q_OBJECT
@@ -79,6 +81,8 @@ class TabWidget: public QTabWidget, public ChatWidgetContainer, CompositingAware
 
 	QToolButton *CloseChatButton;
 	QToolButton *OpenChatButton;
+
+	TabsManager *Manager;
 
 	/**
 	* Zmienna konfiguracyjna
@@ -150,8 +154,8 @@ protected:
 	virtual void compositingDisabled();
 
 public:
-	TabWidget();
-    virtual ~TabWidget();
+	explicit TabWidget(TabsManager *manager);
+	virtual ~TabWidget();
 
 	/**
 	* Zmienia aktualną kartę na tą po lewej stronie
@@ -173,12 +177,15 @@ public:
 	*/
 	void configurationUpdated();
 
+	virtual void activateChatWidget(ChatWidget *chatWidget);
+	virtual void alertChatWidget(ChatWidget *chatWidget);
+
 	/**
 	* Metoda wywoływana w momencie ignorowania/blokowania kontaktu
 	* Informuje, który chat powinien zostać zamknięty
 	* @param chat który powinien zostać zamknięty
 	*/
-	void closeChatWidget(ChatWidget *chat);
+	virtual void closeChatWidget(ChatWidget *chatWidget);
 
 public slots:
 	/**
@@ -200,7 +207,7 @@ public slots:
 signals:
 	void contextMenu(QWidget *w, const QPoint &pos);
 	void openTab(QStringList altnicks, int index);
-	void chatWidgetActivated(ChatWidget *chatWidget);
+
 };
 
 #endif // TABS_TABWIDGET_H

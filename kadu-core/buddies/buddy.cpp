@@ -288,3 +288,4 @@ KaduSharedBase_PropertyDef(Buddy, bool, preferHigherStatuses, PreferHigherStatus
 KaduSharedBase_PropertyBoolDef(Buddy, Anonymous, true)
 KaduSharedBase_PropertyBoolDef(Buddy, Blocked, false)
 KaduSharedBase_PropertyBoolDef(Buddy, OfflineTo, false)
+KaduSharedBase_PropertyReadDef(Buddy, quint16, unreadMessagesCount, UnreadMessagesCount, 0)

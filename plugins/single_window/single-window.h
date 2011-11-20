@@ -32,12 +32,15 @@ protected:
 public:
 	SingleWindow();
 	~SingleWindow();
-	void closeChatWidget(ChatWidget *);
+
+	virtual void activateChatWidget(ChatWidget *chatWidget);
+	virtual void alertChatWidget(ChatWidget *chatWidget);
+	virtual void closeChatWidget(ChatWidget *chatWidget);
+
 	int rosterPosition() { return rosterPos; }
 	void changeRosterPos(int newRosterPos);
 
 public slots:
-	void onOpenChat(ChatWidget *w);
 	void onNewChat(ChatWidget *w, bool &handled);
 	void onNewMessage(Chat chat);
 	void onTabChange(int index);
