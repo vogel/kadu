@@ -25,11 +25,11 @@
 
 #include "accounts/account.h"
 #include "avatars/avatar.h"
-#include "buddies/buddy.h"
 #include "buddies/buddy-preferred-manager.h"
-#include "core/core.h"
+#include "buddies/buddy.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact-manager.h"
+#include "core/core.h"
 #include "emoticons/emoticons-manager.h"
 #include "misc/syntax-list.h"
 #include "parser/parser.h"

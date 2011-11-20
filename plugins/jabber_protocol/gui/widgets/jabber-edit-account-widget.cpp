@@ -25,7 +25,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCrypto>
 #include <QtCore/QWeakPointer>
 #include <QtGui/QApplication>
 #include <QtGui/QCheckBox>
@@ -40,17 +39,18 @@
 #include <QtGui/QMessageBox>
 #include <QtGui/QTabWidget>
 #include <QtGui/QVBoxLayout>
+#include <QtCrypto>
 
-#include "accounts/account.h"
 #include "accounts/account-manager.h"
+#include "accounts/account.h"
 #include "configuration/configuration-file.h"
 #include "gui/widgets/account-avatar-widget.h"
 #include "gui/widgets/account-buddy-list-widget.h"
-#include "gui/windows/message-dialog.h"
 #include "gui/widgets/proxy-combo-box.h"
+#include "gui/windows/message-dialog.h"
+#include "icons/icons-manager.h"
 #include "identities/identity-manager.h"
 #include "protocols/services/avatar-service.h"
-#include "icons/icons-manager.h"
 
 #include "gui/windows/jabber-change-password-window.h"
 

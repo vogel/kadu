@@ -21,13 +21,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "accounts/account.h"
 #include "accounts/account-manager.h"
+#include "accounts/account.h"
 #include "avatars/avatar.h"
+#include "buddies/buddy-manager.h"
 #include "configuration/xml-configuration-file.h"
 #include "contacts/contact-details.h"
 #include "contacts/contact-manager.h"
-#include "buddies/buddy-manager.h"
 #include "storage/storage-point.h"
 
 #include "contact.h"

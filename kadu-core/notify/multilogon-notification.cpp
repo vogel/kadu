@@ -19,8 +19,8 @@
 
 #include "multilogon/multilogon-session.h"
 #include "notify/notify-event.h"
-#include "protocols/services/multilogon-service.h"
 #include "protocols/protocol.h"
+#include "protocols/services/multilogon-service.h"
 
 #include "multilogon-notification.h"
 

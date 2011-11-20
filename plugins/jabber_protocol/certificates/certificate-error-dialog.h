@@ -27,8 +27,8 @@
 #ifndef CERTIFICATEERRORDIALOG_H
 #define CERTIFICATEERRORDIALOG_H
 
-#include <QtCrypto>
 #include <QString>
+#include <QtCrypto>
 
 #include "accounts/account.h"
 

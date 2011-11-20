@@ -32,8 +32,8 @@
 #include <QtGui/QDesktopServices>
 #include <QtGui/QDesktopWidget>
 
-#include "accounts/account.h"
 #include "accounts/account-manager.h"
+#include "accounts/account.h"
 #include "buddies/buddy-list.h"
 #include "buddies/buddy-set.h"
 #include "configuration/configuration-file.h"

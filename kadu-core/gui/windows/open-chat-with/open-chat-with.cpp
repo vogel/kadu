@@ -28,19 +28,19 @@
 #include <QtGui/QPushButton>
 #include <QtGui/QVBoxLayout>
 
-#include "accounts/account.h"
 #include "accounts/account-manager.h"
-#include "buddies/model/buddy-list-model.h"
+#include "accounts/account.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-set.h"
+#include "buddies/model/buddy-list-model.h"
 #include "chat/chat-manager.h"
 #include "configuration/xml-configuration-file.h"
-#include "contacts/contact.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
+#include "contacts/contact.h"
 #include "core/core.h"
-#include "gui/widgets/chat-widget.h"
 #include "gui/widgets/chat-widget-manager.h"
+#include "gui/widgets/chat-widget.h"
 #include "gui/widgets/filtered-tree-view.h"
 #include "gui/widgets/line-edit-with-clear-button.h"
 #include "gui/widgets/talkable-tree-view.h"

@@ -22,15 +22,15 @@
  */
 
 #include "accounts/account-manager.h"
-#include "buddies/filter/abstract-buddy-filter.h"
-#include "buddies/buddy.h"
 #include "buddies/buddy-preferred-manager.h"
-#include "contacts/filter/abstract-contact-filter.h"
+#include "buddies/buddy.h"
+#include "buddies/filter/abstract-buddy-filter.h"
 #include "contacts/contact.h"
+#include "contacts/filter/abstract-contact-filter.h"
 #include "message/message-manager.h"
 #include "model/roles.h"
-#include "status/status.h"
 #include "status/status-type.h"
+#include "status/status.h"
 
 #include "buddies-model.h"
 

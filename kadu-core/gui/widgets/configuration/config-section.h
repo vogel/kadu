@@ -23,8 +23,8 @@
 #ifndef CONFIG_SECTION_H
 #define CONFIG_SECTION_H
 
-#include <QtCore/QObject>
 #include <QtCore/QMap>
+#include <QtCore/QObject>
 
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/configuration/kadu-tab-widget.h"

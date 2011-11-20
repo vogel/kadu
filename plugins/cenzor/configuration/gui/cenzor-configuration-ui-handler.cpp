@@ -17,8 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/configuration/config-group-box.h"
+#include "gui/widgets/configuration/configuration-widget.h"
 #include "misc/path-conversion.h"
 
 #include "configuration/cenzor-configuration.h"

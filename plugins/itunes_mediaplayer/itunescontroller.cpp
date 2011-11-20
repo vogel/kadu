@@ -46,11 +46,11 @@
  *	</dict>
  */
 
-#include <QtGlobal>
-#include <QtCore/QString>
-#include <QtCore/QTime>
 #include <QtCore/QDateTime>
 #include <QtCore/QScopedArrayPointer>
+#include <QtCore/QString>
+#include <QtCore/QTime>
+#include <QtGlobal>
 
 #include <CoreFoundation/CoreFoundation.h>
 

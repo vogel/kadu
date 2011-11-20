@@ -21,8 +21,8 @@
 
 #include "configuration/configuration-file.h"
 #include "gui/windows/main-configuration-window.h"
-#include "plugins/plugin.h"
 #include "plugins/plugin-info.h"
+#include "plugins/plugin.h"
 #include "plugins/plugins-manager.h"
 
 #include "plugins/mediaplayer/mediaplayer.h"

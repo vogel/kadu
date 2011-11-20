@@ -20,10 +20,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "status/status-type.h"
 #include "status/status-type-data.h"
 #include "status/status-type-group.h"
 #include "status/status-type-manager.h"
+#include "status/status-type.h"
 
 #include "status.h"
 

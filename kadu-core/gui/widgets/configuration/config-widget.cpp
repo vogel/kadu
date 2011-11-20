@@ -22,8 +22,8 @@
 #include <QtGui/QApplication>
 #include <QtXml/QDomElement>
 
-#include "gui/widgets/configuration/config-widget.h"
 #include "gui/widgets/configuration/config-group-box.h"
+#include "gui/widgets/configuration/config-widget.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 
 #include "debug.h"

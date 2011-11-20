@@ -26,8 +26,8 @@
 #include <QtGui/QMouseEvent>
 #ifdef Q_WS_X11
 #include <QtGui/QX11Info>
-#include <X11/Xlib.h>
 #include <X11/Xatom.h>
+#include <X11/Xlib.h>
 #endif
 
 #include "configuration/configuration-file.h"

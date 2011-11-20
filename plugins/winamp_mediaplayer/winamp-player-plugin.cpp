@@ -19,8 +19,8 @@
 
 #include "plugins/mediaplayer/mediaplayer.h"
 
-#include "winamp.h"
 #include "winamp-player-plugin.h"
+#include "winamp.h"
 
 WinampMediaplayerPlugin::~WinampMediaplayerPlugin()
 {

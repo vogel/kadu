@@ -19,8 +19,8 @@
 #ifndef JABBER_RESOURCE_POOL_H
 #define JABBER_RESOURCE_POOL_H
 
-#include <QtCore/QObject>
 #include <QtCore/QList>
+#include <QtCore/QObject>
 
 #include <im.h>
 

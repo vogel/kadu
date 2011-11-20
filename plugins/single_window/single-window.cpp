@@ -7,17 +7,17 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QtCore/QStringList>
 #include <QtGui/QCloseEvent>
 #include <QtGui/QKeyEvent>
-#include <QtCore/QStringList>
 
 #include "configuration/configuration-file.h"
-#include "gui/widgets/chat-widget.h"
+#include "core/core.h"
+#include "gui/hot-key.h"
 #include "gui/widgets/chat-widget-manager.h"
+#include "gui/widgets/chat-widget.h"
 #include "gui/widgets/custom-input.h"
 #include "gui/windows/kadu-window.h"
-#include "gui/hot-key.h"
-#include "core/core.h"
 #include "icons/kadu-icon.h"
 #include "message/message-manager.h"
 #include "misc/misc.h"

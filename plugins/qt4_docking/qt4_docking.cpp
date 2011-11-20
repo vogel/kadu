@@ -32,9 +32,9 @@
 
 #include "configuration/configuration-file.h"
 #include "core/core.h"
+#include "icons/kadu-icon.h"
 #include "debug.h"
 #include "exports.h"
-#include "icons/kadu-icon.h"
 
 #include "qt4_docking.h"
 

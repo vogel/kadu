@@ -31,18 +31,18 @@
 #include <QtGui/QApplication>
 #include <QtGui/QLineEdit>
 
-#include "accounts/account.h"
 #include "accounts/account-manager.h"
+#include "accounts/account.h"
 #include "configuration/configuration-file.h"
-#include "debug.h"
-#include "gui/widgets/chat-widget.h"
 #include "gui/widgets/chat-widget-manager.h"
+#include "gui/widgets/chat-widget.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/windows/main-configuration-window.h"
 #include "misc/path-conversion.h"
 #include "parser/parser.h"
 #include "protocols/services/chat-service.h"
 #include "status/status-type-group.h"
+#include "debug.h"
 
 #include "autoresponder.h"
 

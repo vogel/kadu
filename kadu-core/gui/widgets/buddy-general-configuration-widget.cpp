@@ -32,13 +32,13 @@
 #include <QtGui/QTreeView>
 #include <QtGui/QVBoxLayout>
 
-#include "accounts/account.h"
 #include "accounts/account-manager.h"
-#include "avatars/avatar.h"
+#include "accounts/account.h"
 #include "avatars/avatar-manager.h"
+#include "avatars/avatar.h"
 #include "buddies/buddy-manager.h"
-#include "contacts/contact.h"
 #include "contacts/contact-manager.h"
+#include "contacts/contact.h"
 #include "gui/widgets/buddy-avatar-widget.h"
 #include "gui/widgets/buddy-contacts-table.h"
 #include "gui/windows/message-dialog.h"
@@ -46,8 +46,8 @@
 #include "misc/misc.h"
 #include "model/actions-proxy-model.h"
 #include "model/roles.h"
-#include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
+#include "protocols/protocol.h"
 
 #include "buddy-general-configuration-widget.h"
 

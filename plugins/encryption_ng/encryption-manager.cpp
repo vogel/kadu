@@ -18,10 +18,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "gui/widgets/chat-widget.h"
 #include "gui/widgets/chat-widget-manager.h"
-#include "protocols/services/chat-service.h"
+#include "gui/widgets/chat-widget.h"
 #include "protocols/protocol.h"
+#include "protocols/services/chat-service.h"
 
 #include "configuration/encryption-ng-configuration.h"
 #include "decryptor.h"

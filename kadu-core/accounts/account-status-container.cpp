@@ -19,8 +19,8 @@
 
 #include "configuration/configuration-file.h"
 #include "icons/kadu-icon.h"
-#include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
+#include "protocols/protocol.h"
 
 #include "account-status-container.h"
 

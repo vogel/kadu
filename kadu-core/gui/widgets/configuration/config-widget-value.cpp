@@ -20,8 +20,8 @@
 #include <QtGui/QApplication>
 #include <QtXml/QDomElement>
 
-#include "gui/widgets/configuration/config-widget-value.h"
 #include "gui/widgets/configuration/config-group-box.h"
+#include "gui/widgets/configuration/config-widget-value.h"
 
 #include "debug.h"
 

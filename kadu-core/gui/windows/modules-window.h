@@ -34,8 +34,8 @@
 #include <QtGui/QWidget>
 
 #include "os/generic/desktop-aware-object.h"
-#include "plugins/plugin.h"
 #include "plugins/plugin-info.h"
+#include "plugins/plugin.h"
 #include "plugins/plugins-manager.h"
 
 class QCheckBox;

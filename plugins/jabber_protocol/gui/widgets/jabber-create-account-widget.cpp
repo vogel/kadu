@@ -38,8 +38,8 @@
 #include <QtGui/QVBoxLayout>
 
 #include "accounts/account-manager.h"
-#include "gui/windows/message-dialog.h"
 #include "gui/windows/jabber-wait-for-account-register-window.h"
+#include "gui/windows/message-dialog.h"
 #include "icons/icons-manager.h"
 #include "identities/identity-manager.h"
 #include "protocols/protocols-manager.h"

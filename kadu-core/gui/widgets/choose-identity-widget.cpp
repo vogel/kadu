@@ -22,8 +22,8 @@
 #include <QtGui/QLineEdit>
 #include <QtGui/QVBoxLayout>
 
-#include "identities/identity.h"
 #include "identities/identity-manager.h"
+#include "identities/identity.h"
 
 #include "choose-identity-widget.h"
 

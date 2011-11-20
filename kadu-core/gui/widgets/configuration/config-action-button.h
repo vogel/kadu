@@ -22,8 +22,9 @@
 #define CONFIG_ACTION_BUTTON_H
 
 #include <QtGui/QPushButton>
-#include "gui/widgets/configuration/config-widget.h"
+
 #include "configuration/configuration-window-data-manager.h"
+#include "gui/widgets/configuration/config-widget.h"
 
 class ConfigGroupBox;
 

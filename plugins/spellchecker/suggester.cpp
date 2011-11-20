@@ -20,15 +20,15 @@
 #include <QtGui/QMouseEvent>
 #include <QtGui/QTextEdit>
 
-#include "gui/actions/action.h"
 #include "gui/actions/action-description.h"
-#include "gui/widgets/custom-input.h"
+#include "gui/actions/action.h"
 #include "gui/widgets/custom-input-menu-manager.h"
+#include "gui/widgets/custom-input.h"
 #include "icons/kadu-icon.h"
 
 #include "configuration/spellchecker-configuration.h"
-#include "spellchecker.h"
 #include "spellchecker-plugin.h"
+#include "spellchecker.h"
 
 #include "suggester.h"
 

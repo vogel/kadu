@@ -23,13 +23,13 @@
 
 #include "accounts/account.h"
 #include "contacts/contact-set.h"
-#include "gui/actions/action.h"
 #include "gui/actions/action-context.h"
 #include "gui/actions/action-description.h"
+#include "gui/actions/action.h"
 #include "model/roles.h"
-#include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocol-menu-manager.h"
+#include "protocols/protocol.h"
 
 #include "talkable-menu-manager.h"
 

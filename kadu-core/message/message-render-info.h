@@ -29,8 +29,8 @@
 #include <QtCore/QDateTime>
 #include <QtCore/QString>
 
-#include "buddies/buddy.h"
 #include "buddies/buddy-list.h"
+#include "buddies/buddy.h"
 #include "message/message.h"
 #include "protocols/protocol.h"
 

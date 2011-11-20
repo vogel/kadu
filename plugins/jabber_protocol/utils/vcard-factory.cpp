@@ -25,12 +25,12 @@
  * Copyright (C) 2003  Michail Pishchagin
  */
 
-#include <QObject>
-#include <QMap>
+#include <QDir>
 #include <QDomDocument>
 #include <QFile>
+#include <QMap>
+#include <QObject>
 #include <QTextStream>
-#include <QDir>
 #include <QtAlgorithms>
 
 #include "misc/path-conversion.h"

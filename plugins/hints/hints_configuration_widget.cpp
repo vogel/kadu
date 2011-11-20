@@ -28,8 +28,8 @@
 #include <QtGui/QPushButton>
 
 #include "configuration/configuration-file.h"
-#include "gui/widgets/configuration/notify-group-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"
+#include "gui/widgets/configuration/notify-group-box.h"
 #include "activate.h"
 #include "debug.h"
 

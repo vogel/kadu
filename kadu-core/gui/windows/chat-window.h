@@ -3,8 +3,8 @@
 
 #include <QtGui/QWidget>
 
-#include "gui/widgets/chat-widget-container.h"
 #include "configuration/configuration-aware-object.h"
+#include "gui/widgets/chat-widget-container.h"
 #include "os/generic/compositing-aware-object.h"
 #include "os/generic/desktop-aware-object.h"
 #include "exports.h"

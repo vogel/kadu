@@ -22,8 +22,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QSound>
 #include <QtGui/QApplication>
+#include <QtGui/QSound>
 
 #include "gui/windows/message-dialog.h"
 #include "plugins/sound/sound-manager.h"

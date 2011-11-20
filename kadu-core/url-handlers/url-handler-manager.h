@@ -25,8 +25,8 @@
 #include <QtCore/QList>
 #include <QtCore/QMap>
 
-#include "html_document.h"
 #include "exports.h"
+#include "html_document.h"
 
 class MailUrlHandler;
 class StandardUrlHandler;

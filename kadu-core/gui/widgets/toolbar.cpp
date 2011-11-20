@@ -26,8 +26,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QTimer>
 #include <QtCore/QTextStream>
+#include <QtCore/QTimer>
 #include <QtGui/QContextMenuEvent>
 #include <QtGui/QCursor>
 #include <QtGui/QDragEnterEvent>
@@ -42,10 +42,10 @@
 #include "gui/windows/main-window.h"
 #include "gui/windows/message-dialog.h"
 
-#include "debug.h"
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "misc/misc.h"
+#include "debug.h"
 
 #include "toolbar.h"
 

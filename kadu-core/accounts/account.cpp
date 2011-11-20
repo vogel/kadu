@@ -27,14 +27,14 @@
 #include "configuration/configuration-file.h"
 #include "configuration/main-configuration-holder.h"
 #include "configuration/xml-configuration-file.h"
-#include "contacts/contact.h"
 #include "contacts/contact-details.h"
 #include "contacts/contact-manager.h"
+#include "contacts/contact.h"
 #include "identities/identity.h"
-#include "protocols/protocol.h"
-#include "protocols/protocol-factory.h"
-#include "protocols/protocols-manager.h"
 #include "misc/misc.h"
+#include "protocols/protocol-factory.h"
+#include "protocols/protocol.h"
+#include "protocols/protocols-manager.h"
 
 #include "account.h"
 

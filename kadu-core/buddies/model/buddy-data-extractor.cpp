@@ -20,8 +20,8 @@
 
 #include <QtCore/QVariant>
 
-#include "buddies/buddy.h"
 #include "buddies/buddy-preferred-manager.h"
+#include "buddies/buddy.h"
 #include "icons/kadu-icon.h"
 #include "model/roles.h"
 

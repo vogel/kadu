@@ -20,8 +20,8 @@
  */
 
 #include "chat/chat.h"
-#include "gui/actions/action.h"
 #include "gui/actions/action-context.h"
+#include "gui/actions/action.h"
 
 #include "encryption-manager.h"
 #include "encryption-provider-manager.h"

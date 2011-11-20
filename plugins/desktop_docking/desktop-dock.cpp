@@ -33,15 +33,15 @@
 #include <QtGui/QMovie>
 
 #include "configuration/configuration-file.h"
-#include "debug.h"
 #include "icons/kadu-icon.h"
+#include "debug.h"
 
 #include "plugins/docking/docking.h"
 
 #include "gui/windows/desktop-dock-window.h"
 
-#include "desktop-dock.h"
 #include <gui/widgets/configuration/configuration-widget.h>
+#include "desktop-dock.h"
 
 DesktopDock * DesktopDock::Instance = 0;
 

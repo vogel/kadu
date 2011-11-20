@@ -24,10 +24,10 @@
 
 #include <QtCore/QCoreApplication>
 #include <QtCore/QDir>
-#include <QtGui/QComboBox>
 #include <QtGui/QCheckBox>
-#include <QtGui/QLabel>
+#include <QtGui/QComboBox>
 #include <QtGui/QHBoxLayout>
+#include <QtGui/QLabel>
 #include <QtGui/QPalette>
 #include <QtGui/QPushButton>
 
@@ -42,9 +42,9 @@
 #include "core/core.h"
 #include "emoticons/emoticons-manager.h"
 #include "gui/widgets/chat-messages-view.h"
-#include "gui/widgets/preview.h"
-#include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/configuration/config-group-box.h"
+#include "gui/widgets/configuration/configuration-widget.h"
+#include "gui/widgets/preview.h"
 #include "gui/windows/message-dialog.h"
 #include "message/message-render-info.h"
 #include "misc/misc.h"

@@ -20,8 +20,8 @@
 
 #include "chat/chat-manager.h"
 #include "contacts/contact-set.h"
-#include "protocols/services/chat-service.h"
 #include "protocols/protocol.h"
+#include "protocols/services/chat-service.h"
 
 #include "plugins/encryption_ng/keys/keys-manager.h"
 

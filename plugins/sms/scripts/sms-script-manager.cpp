@@ -32,8 +32,8 @@
 #include <QtScriptTools/QScriptEngineDebugger>
 #endif
 
-#include "misc/path-conversion.h"
 #include "gui/windows/sms-token-reader.h"
+#include "misc/path-conversion.h"
 #include "scripts/network-access-manager-wrapper.h"
 
 #include "sms-script-manager.h"

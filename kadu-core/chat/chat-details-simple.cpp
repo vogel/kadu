@@ -23,8 +23,8 @@
 
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-set.h"
-#include "chat/type/chat-type-manager.h"
 #include "chat/chat.h"
+#include "chat/type/chat-type-manager.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
 

@@ -62,8 +62,8 @@
 
 #elif defined(Q_OS_WIN)
 
-	#include <windows.h>
 	#include <stdio.h>
+	#include <windows.h>
 
 	bool _isActiveWindow( QWidget *window )
 	{

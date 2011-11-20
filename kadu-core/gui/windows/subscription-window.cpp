@@ -33,9 +33,9 @@
 #include <QtGui/QVBoxLayout>
 
 #include "accounts/account.h"
-#include "buddies/model/groups-model.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/group-manager.h"
+#include "buddies/model/groups-model.h"
 #include "contacts/contact-manager.h"
 #include "gui/widgets/groups-combo-box.h"
 #include "gui/widgets/select-buddy-combo-box.h"

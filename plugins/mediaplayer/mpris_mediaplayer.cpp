@@ -29,18 +29,18 @@
  * See http://mpris.org/ for more details about the standard
  */
 
+#include <QtCore/QDateTime>
 #include <QtCore/QString>
 #include <QtCore/QStringList>
-#include <QtDBus/QDBusInterface>
 #include <QtDBus/QDBusConnection>
+#include <QtDBus/QDBusInterface>
 #include <QtDBus/QDBusMetaType>
 #include <QtDBus/QDBusReply>
-#include <QtCore/QDateTime>
 
 #include "debug.h"
 #include "mediaplayer.h"
-#include "mpris_mediaplayer.h"
 #include "mpris_controller.h"
+#include "mpris_mediaplayer.h"
 
 MPRISMediaPlayer::MPRISMediaPlayer(QString n, QString s) :
 		service(s), name(n)

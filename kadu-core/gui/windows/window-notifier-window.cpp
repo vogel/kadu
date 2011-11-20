@@ -23,9 +23,9 @@
 #include <QtGui/QPushButton>
 #include <QtGui/QVBoxLayout>
 
+#include "icons/icons-manager.h"
 #include "notify/notification.h"
 #include "debug.h"
-#include "icons/icons-manager.h"
 
 #include "window-notifier-window.h"
 

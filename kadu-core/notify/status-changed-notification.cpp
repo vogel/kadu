@@ -25,8 +25,8 @@
 
 #include "accounts/account.h"
 #include "chat/chat-manager.h"
-#include "contacts/contact.h"
 #include "contacts/contact-set.h"
+#include "contacts/contact.h"
 #include "icons/kadu-icon.h"
 #include "notify/notify-event.h"
 #include "protocols/protocol.h"

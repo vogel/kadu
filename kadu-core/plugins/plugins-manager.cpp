@@ -52,15 +52,15 @@
 #include "configuration/configuration-file.h"
 #include "configuration/configuration-manager.h"
 #include "gui/hot-key.h"
-#include "gui/windows/modules-window.h"
 #include "gui/windows/message-dialog.h"
+#include "gui/windows/modules-window.h"
+#include "icons/icons-manager.h"
 #include "misc/path-conversion.h"
 #include "plugins/generic-plugin.h"
-#include "plugins/plugin.h"
 #include "plugins/plugin-info.h"
+#include "plugins/plugin.h"
 #include "activate.h"
 #include "debug.h"
-#include "icons/icons-manager.h"
 
 #include "plugins-manager.h"
 

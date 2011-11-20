@@ -35,12 +35,12 @@
 #include <QtGui/QInputDialog>
 #include <QtGui/QMenu>
 
-#include "configuration/configuration-file.h"
 #include "buddies/buddy-list-mime-data-helper.h"
 #include "buddies/buddy-manager.h"
-#include "buddies/group.h"
-#include "buddies/group-manager.h"
 #include "buddies/filter/group-buddy-filter.h"
+#include "buddies/group-manager.h"
+#include "buddies/group.h"
+#include "configuration/configuration-file.h"
 #include "core/core.h"
 #include "gui/windows/add-buddy-window.h"
 #include "gui/windows/group-properties-window.h"

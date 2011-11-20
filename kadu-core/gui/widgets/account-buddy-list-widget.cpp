@@ -30,19 +30,19 @@
 #include "buddies/filter/account-buddy-filter.h"
 #include "buddies/filter/anonymous-buddy-filter.h"
 #include "buddies/filter/buddy-name-filter.h"
-#include "buddies/model/buddies-model.h"
 #include "buddies/model/buddies-model-proxy.h"
-#include "contacts/contact.h"
+#include "buddies/model/buddies-model.h"
 #include "contacts/contact-details.h"
 #include "contacts/contact-manager.h"
+#include "contacts/contact.h"
 #include "gui/widgets/filtered-tree-view.h"
 #include "gui/widgets/talkable-tree-view.h"
 #include "gui/windows/message-dialog.h"
 #include "model/model-chain.h"
 
-#include "debug.h"
 #include "protocols/protocol.h"
 #include "protocols/services/contact-list-service.h"
+#include "debug.h"
 
 #include "account-buddy-list-widget.h"
 

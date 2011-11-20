@@ -20,8 +20,8 @@
 
 #include <QtCore/QTimer>
 
-#include "avatars/avatar.h"
 #include "avatars/avatar-manager.h"
+#include "avatars/avatar.h"
 #include "contacts/contact.h"
 #include "protocols/protocol.h"
 #include "protocols/services/avatar-service.h"

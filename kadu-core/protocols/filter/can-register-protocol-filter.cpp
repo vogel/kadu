@@ -17,8 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
+#include "protocols/protocol.h"
 
 #include "can-register-protocol-filter.h"
 

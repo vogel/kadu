@@ -18,8 +18,8 @@
  */
 
 #include "accounts/account.h"
-#include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
+#include "protocols/protocol.h"
 
 #include "protocol-filter.h"
 

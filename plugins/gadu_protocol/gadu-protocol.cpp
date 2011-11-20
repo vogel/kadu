@@ -33,27 +33,27 @@
 #include <arpa/inet.h>
 #endif
 
-#include "accounts/account.h"
 #include "accounts/account-manager.h"
+#include "accounts/account.h"
 #include "avatars/avatar-manager.h"
 #include "buddies/buddy-manager.h"
-#include "chat/chat.h"
 #include "chat/chat-manager.h"
+#include "chat/chat.h"
 #include "configuration/configuration-file.h"
-#include "core/core.h"
 #include "contacts/contact-manager.h"
+#include "core/core.h"
 #include "gui/windows/message-dialog.h"
 #include "gui/windows/password-window.h"
 #include "message/formatted-message.h"
 #include "network/proxy/network-proxy-manager.h"
 #include "qt/long-validator.h"
-#include "status/status.h"
-#include "status/status-type.h"
 #include "status/status-type-manager.h"
+#include "status/status-type.h"
+#include "status/status.h"
 
-#include "debug.h"
 #include "icons/icons-manager.h"
 #include "misc/misc.h"
+#include "debug.h"
 
 #include "server/gadu-contact-list-handler.h"
 #include "server/gadu-servers-manager.h"

@@ -29,8 +29,8 @@
 #include <QtGui/QTreeView>
 
 #include "accounts/account.h"
-#include "buddies/buddy.h"
 #include "buddies/buddy-preferred-manager.h"
+#include "buddies/buddy.h"
 #include "chat/chat.h"
 #include "contacts/contact.h"
 #include "gui/widgets/avatar-painter.h"

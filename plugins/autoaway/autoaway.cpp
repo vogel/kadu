@@ -31,16 +31,16 @@
 #include <QtGui/QApplication>
 #include <QtGui/QCheckBox>
 #include <QtGui/QLineEdit>
-#include <QtGui/QSpinBox>
 #include <QtGui/QLineEdit>
+#include <QtGui/QSpinBox>
 
 #include "accounts/account.h"
 #include "configuration/configuration-file.h"
 #include "core/core.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/windows/main-configuration-window.h"
-#include "parser/parser.h"
 #include "misc/path-conversion.h"
+#include "parser/parser.h"
 #include "status/status-changer-manager.h"
 #include "debug.h"
 

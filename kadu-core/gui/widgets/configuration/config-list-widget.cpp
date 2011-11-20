@@ -23,9 +23,9 @@
 #include <QtGui/QLabel>
 #include <QtXml/QDomElement>
 
-#include "gui/widgets/configuration/config-list-widget.h"
-#include "gui/widgets/configuration/config-group-box.h"
 #include "configuration/configuration-window-data-manager.h"
+#include "gui/widgets/configuration/config-group-box.h"
+#include "gui/widgets/configuration/config-list-widget.h"
 
 #include "debug.h"
 

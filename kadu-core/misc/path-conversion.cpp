@@ -26,14 +26,14 @@
 
 #include <cstdio>
 
-#include <QtCore/QtGlobal>
 #include <QtCore/QDir>
+#include <QtCore/QtGlobal>
 #include <QtGui/QApplication>
 
 #ifdef Q_OS_WIN
-#include <windows.h>
-#include <shlobj.h>
 #include <QFile>
+#include <shlobj.h>
+#include <windows.h>
 #endif
 
 #include "parser/parser.h"

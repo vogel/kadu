@@ -42,11 +42,11 @@
 #include <QtGui/QKeyEvent>
 #include <QtGui/QScrollBar>
 
-#include "activate.h"
 #include "configuration/configuration-file.h"
 #include "configuration/configuration-manager.h"
 #include "icons/kadu-icon.h"
 #include "misc/misc.h"
+#include "activate.h"
 #include "debug.h"
 
 #include "modules-window.h"

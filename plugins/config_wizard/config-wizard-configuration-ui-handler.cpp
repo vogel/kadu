@@ -21,13 +21,13 @@
 
 #include <QtGui/QAction>
 
-#include "activate.h"
 #include "configuration/configuration-file.h"
 #include "core/core.h"
 #include "gui/actions/action-description.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/windows/kadu-window.h"
 #include "misc/path-conversion.h"
+#include "activate.h"
 #include "debug.h"
 
 #include "gui/windows/config-wizard-window.h"

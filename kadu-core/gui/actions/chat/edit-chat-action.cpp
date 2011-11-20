@@ -20,8 +20,8 @@
 #include "buddies/buddy-set.h"
 #include "chat/chat.h"
 #include "core/core.h"
-#include "gui/actions/action.h"
 #include "gui/actions/action-context.h"
+#include "gui/actions/action.h"
 #include "gui/windows/chat-data-window.h"
 #include "gui/windows/kadu-window.h"
 

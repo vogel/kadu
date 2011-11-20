@@ -19,8 +19,8 @@
  */
 
 #include "chat/chat.h"
-#include "gui/widgets/chat-widget.h"
 #include "gui/widgets/chat-widget-manager.h"
+#include "gui/widgets/chat-widget.h"
 
 #include "chat-notification.h"
 

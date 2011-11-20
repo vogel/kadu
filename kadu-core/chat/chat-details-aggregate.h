@@ -24,8 +24,8 @@
 #ifndef CHAT_DETAILS_AGGREGATE_H
 #define CHAT_DETAILS_AGGREGATE_H
 
-#include "contacts/contact.h"
 #include "chat/chat-details.h"
+#include "contacts/contact.h"
 #include "exports.h"
 
 /**

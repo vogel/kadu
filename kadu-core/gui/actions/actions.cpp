@@ -19,8 +19,8 @@
  */
 
 #include "core/core.h"
-#include "gui/actions/action.h"
 #include "gui/actions/action-description.h"
+#include "gui/actions/action.h"
 #include "gui/windows/main-window.h"
 
 #include "actions.h"

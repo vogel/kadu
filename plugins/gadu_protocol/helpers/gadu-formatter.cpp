@@ -27,8 +27,8 @@
 
 #include <QtGui/QApplication>
 
-#include "accounts/account.h"
 #include "accounts/account-manager.h"
+#include "accounts/account.h"
 #include "buddies/buddy-manager.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact-manager.h"

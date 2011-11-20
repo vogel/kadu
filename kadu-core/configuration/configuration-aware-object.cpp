@@ -19,8 +19,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "configuration-holder.h"
 #include "misc/misc.h"
+#include "configuration-holder.h"
 
 #include "configuration-aware-object.h"
 

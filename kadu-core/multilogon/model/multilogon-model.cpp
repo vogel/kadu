@@ -20,8 +20,8 @@
 #include "multilogon/multilogon-session.h"
 #include "protocols/services/multilogon-service.h"
 
-#include "multilogon-model.h"
 #include <model/roles.h>
+#include "multilogon-model.h"
 
 MultilogonModel::MultilogonModel(MultilogonService *service, QObject *parent) :
 		QAbstractTableModel(parent), Service(service)

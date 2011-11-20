@@ -26,21 +26,21 @@
  * See COPYING for details.
  */
 
-#include <QtDebug>
-#include <QtCrypto>
-#include <QStringList>
-#include <QDomDocument>
 #include <QDebug>
 #include <QDir>
+#include <QDomDocument>
 #include <QFile>
 #include <QMessageBox>
+#include <QStringList>
+#include <QtCrypto>
+#include <QtDebug>
 
 #include "xmpp.h"
 
 #include "misc/path-conversion.h"
 
-#include "certificates/certificate-helpers.h"
 #include "certificates/certificate-error-dialog.h"
+#include "certificates/certificate-helpers.h"
 #include "certificates/trusted-certificates-manager.h"
 #include "client/mini-client.h"
 #include "jabber-protocol.h"

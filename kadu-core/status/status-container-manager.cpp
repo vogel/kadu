@@ -21,18 +21,18 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "accounts/account.h"
 #include "accounts/account-manager.h"
+#include "accounts/account.h"
 #include "configuration/main-configuration-holder.h"
 #include "core/core.h"
-#include "identities/identity-manager.h"
+#include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
+#include "identities/identity-manager.h"
 #include "protocols/protocol.h"
 #include "status/all-accounts-status-container.h"
 #include "status/status-container-aware-object.h"
 #include "status/status-type-manager.h"
 #include "status/status-type.h"
-#include "icons/icons-manager.h"
 
 #include "status-container-manager.h"
 

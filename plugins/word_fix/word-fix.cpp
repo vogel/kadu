@@ -21,29 +21,29 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QFile>
 #include <QtCore/QRegExp>
 #include <QtCore/QString>
-#include <QtCore/QFile>
 #include <QtCore/QTextStream>
-#include <QtGui/QTreeWidget>
-#include <QtGui/QTreeWidgetItem>
 #include <QtGui/QGridLayout>
+#include <QtGui/QGroupBox>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QLabel>
-#include <QtGui/QPushButton>
 #include <QtGui/QLineEdit>
-#include <QtGui/QGroupBox>
+#include <QtGui/QPushButton>
 #include <QtGui/QScrollBar>
+#include <QtGui/QTreeWidget>
+#include <QtGui/QTreeWidgetItem>
 
-#include "gui/widgets/configuration/configuration-widget.h"
-#include "gui/widgets/configuration/config-group-box.h"
-#include "gui/widgets/chat-widget.h"
-#include "gui/widgets/chat-widget-manager.h"
-#include "gui/widgets/custom-input.h"
 #include "configuration/configuration-file.h"
+#include "gui/widgets/chat-widget-manager.h"
+#include "gui/widgets/chat-widget.h"
+#include "gui/widgets/configuration/config-group-box.h"
+#include "gui/widgets/configuration/configuration-widget.h"
+#include "gui/widgets/custom-input.h"
 #include "misc/misc.h"
-#include "html_document.h"
 #include "debug.h"
+#include "html_document.h"
 
 #include "word-fix.h"
 

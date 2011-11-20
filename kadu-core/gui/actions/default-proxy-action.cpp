@@ -23,9 +23,9 @@
 #include "gui/actions/action.h"
 #include "gui/windows/proxy-edit-window.h"
 #include "model/roles.h"
-#include "network/proxy/network-proxy-manager.h"
 #include "network/proxy/model/network-proxy-model.h"
 #include "network/proxy/model/network-proxy-proxy-model.h"
+#include "network/proxy/network-proxy-manager.h"
 
 #include "default-proxy-action.h"
 

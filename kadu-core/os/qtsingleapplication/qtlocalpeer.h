@@ -45,9 +45,9 @@
 ****************************************************************************/
 
 
+#include <QtCore/QDir>
 #include <QtNetwork/QLocalServer>
 #include <QtNetwork/QLocalSocket>
-#include <QtCore/QDir>
 #include "exports.h"
 
 namespace QtLP_Private {

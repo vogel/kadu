@@ -54,10 +54,10 @@
 #include "misc/misc.h"
 #include "model/actions-proxy-model.h"
 #include "model/roles.h"
-#include "protocols/protocol.h"
-#include "protocols/protocol-factory.h"
-#include "protocols/protocols-manager.h"
 #include "protocols/filter/can-register-protocol-filter.h"
+#include "protocols/protocol-factory.h"
+#include "protocols/protocol.h"
+#include "protocols/protocols-manager.h"
 
 #include "activate.h"
 

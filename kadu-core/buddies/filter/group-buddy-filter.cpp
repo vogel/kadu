@@ -20,8 +20,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "buddies/buddy.h"
 #include "buddies/buddy-manager.h"
+#include "buddies/buddy.h"
 #include "buddies/group-manager.h"
 
 #include "group-buddy-filter.h"

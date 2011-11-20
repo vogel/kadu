@@ -21,8 +21,8 @@
 #ifndef HINT_OVER_USER_CONFIGURATION_WINDOW_H
 #define HINT_OVER_USER_CONFIGURATION_WINDOW_H
 
-#include "gui/windows/configuration-window.h"
 #include "buddies/buddy.h"
+#include "gui/windows/configuration-window.h"
 
 class QFrame;
 class QLabel;

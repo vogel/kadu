@@ -33,12 +33,12 @@
 
 #include <QtCore/QTimer>
 #include <QtGui/QCheckBox>
+#include <QtGui/QComboBox>
 #include <QtGui/QDialogButtonBox>
 #include <QtGui/QIntValidator>
 #include <QtGui/QKeyEvent>
 #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
-#include <QtGui/QComboBox>
 #include <QtGui/QPushButton>
 #include <QtGui/QScrollArea>
 #include <QtGui/QScrollBar>
@@ -46,12 +46,11 @@
 #include <QtGui/QVBoxLayout>
 #include <QtNetwork/QHostInfo>
 
-#include "accounts/account.h"
 #include "accounts/account-manager.h"
-#include "activate.h"
+#include "accounts/account.h"
 #include "buddies/buddy-manager.h"
-#include "buddies/group.h"
 #include "buddies/group-manager.h"
+#include "buddies/group.h"
 #include "configuration/configuration-file.h"
 #include "configuration/xml-configuration-file.h"
 #include "contacts/contact.h"
@@ -63,11 +62,12 @@
 #include "gui/windows/buddy-data-window-aware-object.h"
 #include "gui/windows/message-dialog.h"
 #include "misc/misc.h"
-#include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
+#include "protocols/protocol.h"
+#include "activate.h"
 
-#include "debug.h"
 #include "icons/icons-manager.h"
+#include "debug.h"
 
 #include "buddy-data-window.h"
 

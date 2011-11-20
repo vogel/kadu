@@ -24,8 +24,8 @@
 #ifndef KADU_THEMES_H
 #define KADU_THEMES_H
 
-#include <QtCore/QStringList>
 #include <QtCore/QMap>
+#include <QtCore/QStringList>
 
 #include "exports.h"
 

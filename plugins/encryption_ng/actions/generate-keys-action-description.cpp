@@ -21,8 +21,8 @@
 
 #include <QtGui/QMenu>
 
-#include "accounts/account.h"
 #include "accounts/account-manager.h"
+#include "accounts/account.h"
 #include "core/core.h"
 #include "gui/actions/action.h"
 #include "gui/windows/kadu-window.h"

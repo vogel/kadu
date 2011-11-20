@@ -17,8 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtNetwork/QNetworkRequest>
 #include <QtNetwork/QNetworkReply>
+#include <QtNetwork/QNetworkRequest>
 #include <QtXml/QDomDocument>
 
 #include "oauth/oauth-parameters.h"

@@ -22,8 +22,8 @@
 
 #include "misc/path-conversion.h"
 
-#include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/configuration/config-combo-box.h"
+#include "gui/widgets/configuration/configuration-widget.h"
 
 #include "screenshot-configuration-ui-handler.h"
 

@@ -18,14 +18,14 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "accounts/account.h"
 #include "accounts/account-manager.h"
-#include "contacts/contact.h"
+#include "accounts/account.h"
 #include "contacts/contact-manager.h"
+#include "contacts/contact.h"
 #include "file-transfer/file-transfer-handler.h"
 #include "file-transfer/file-transfer-manager.h"
-#include "protocols/services/file-transfer-service.h"
 #include "protocols/protocol.h"
+#include "protocols/services/file-transfer-service.h"
 
 #include "file-transfer-shared.h"
 

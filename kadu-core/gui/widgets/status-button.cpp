@@ -22,12 +22,12 @@
 #include <QtCore/QTimer>
 #include <QtGui/QMenu>
 
-#include "accounts/account.h"
 #include "accounts/account-manager.h"
+#include "accounts/account.h"
 #include "configuration/main-configuration-holder.h"
-#include "icons/kadu-icon.h"
 #include "gui/status-icon.h"
 #include "gui/widgets/status-menu.h"
+#include "icons/kadu-icon.h"
 #include "protocols/protocol.h"
 #include "status/status-container.h"
 

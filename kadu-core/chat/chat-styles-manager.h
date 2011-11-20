@@ -23,8 +23,8 @@
 #ifndef CHAT_STYLES_MANAGER_H
 #define CHAT_STYLES_MANAGER_H
 
-#include <QtCore/QObject>
 #include <QtCore/QMap>
+#include <QtCore/QObject>
 
 #include "configuration/configuration-aware-object.h"
 #include "gui/windows/main-configuration-window.h"

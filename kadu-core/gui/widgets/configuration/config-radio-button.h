@@ -22,8 +22,8 @@
 
 #include <QtGui/QRadioButton>
 
-#include "gui/widgets/configuration/config-widget-value.h"
 #include "configuration/configuration-window-data-manager.h"
+#include "gui/widgets/configuration/config-widget-value.h"
 
 class ConfigGroupBox;
 

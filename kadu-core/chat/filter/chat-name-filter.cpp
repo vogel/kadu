@@ -20,9 +20,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "chat/chat.h"
-#include "buddies/filter/buddy-name-filter.h"
 #include "buddies/buddy-list.h"
+#include "buddies/filter/buddy-name-filter.h"
+#include "chat/chat.h"
 #include "contacts/contact-set.h"
 
 #include "chat-name-filter.h"

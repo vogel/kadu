@@ -27,8 +27,8 @@
 #ifndef SPELLCHECKER_H
 #define SPELLCHECKER_H
 
-#include <QtCore/QString>
 #include <QtCore/QMap>
+#include <QtCore/QString>
 
 #ifdef Q_WS_MAC
 #include "macspellchecker.h"

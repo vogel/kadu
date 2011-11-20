@@ -23,8 +23,8 @@
 
 #include <QtGui/QLabel>
 
-#include "gui/widgets/configuration/config-widget.h"
 #include "configuration/configuration-window-data-manager.h"
+#include "gui/widgets/configuration/config-widget.h"
 
 class ConfigGroupBox;
 

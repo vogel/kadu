@@ -35,9 +35,9 @@
 #include <QtCore/QMap>
 #include <QtGui/QWidget>
 
-#include "exports.h"
 #include "plugins/plugins-common.h"
 #include "storage/storable-object.h"
+#include "exports.h"
 
 class QCheckBox;
 class QLabel;

@@ -23,8 +23,8 @@
 #define ACCOUNT_NOTIFICATION_H
 
 #include "accounts/account.h"
-#include "notification.h"
 #include "exports.h"
+#include "notification.h"
 
 class BuddySet;
 

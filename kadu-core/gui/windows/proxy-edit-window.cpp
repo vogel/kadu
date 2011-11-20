@@ -28,12 +28,12 @@
 #include <QtGui/QStyle>
 #include <QtGui/QVBoxLayout>
 
+#include "misc/misc.h"
 #include "model/actions-proxy-model.h"
 #include "model/roles.h"
-#include "misc/misc.h"
-#include "network/proxy/network-proxy-manager.h"
 #include "network/proxy/model/network-proxy-model.h"
 #include "network/proxy/model/network-proxy-proxy-model.h"
+#include "network/proxy/network-proxy-manager.h"
 #include "activate.h"
 
 #include "proxy-edit-window.h"

@@ -21,8 +21,8 @@
 #include <QtCore/QDir>
 #include <QtCore/QFile>
 
-#include "contacts/contact.h"
 #include "contacts/contact-manager.h"
+#include "contacts/contact.h"
 #include "misc/misc.h"
 
 #include "keys/keys-manager.h"

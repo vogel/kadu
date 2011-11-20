@@ -21,8 +21,8 @@
 #include <QtGui/QLabel>
 #include <QtGui/QListWidget>
 
-#include "gui/widgets/configuration/config-radio-button.h"
 #include "gui/widgets/configuration/config-group-box.h"
+#include "gui/widgets/configuration/config-radio-button.h"
 
 #include "debug.h"
 

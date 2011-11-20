@@ -25,9 +25,9 @@
 #include <QtGui/QCheckBox>
 #include <QtGui/QComboBox>
 #include <QtGui/QGroupBox>
+#include <QtGui/QHBoxLayout>
 #include <QtGui/QLabel>
 #include <QtGui/QVBoxLayout>
-#include <QtGui/QHBoxLayout>
 
 #include "gui/widgets/account-add-widget.h"
 #include "gui/widgets/identities-combo-box.h"

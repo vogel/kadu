@@ -34,10 +34,10 @@
 #include <QtCore/QFile>
 #include <QtCore/QMimeData>
 #include <QtCore/QPoint>
-#include <QtCore/QWeakPointer>
 #include <QtCore/QString>
 #include <QtCore/QTimer>
 #include <QtCore/QUrl>
+#include <QtCore/QWeakPointer>
 #include <QtGui/QAction>
 #include <QtGui/QApplication>
 #include <QtGui/QClipboard>
@@ -49,8 +49,8 @@
 #include <QtGui/QMouseEvent>
 #include <QtGui/QStyle>
 #include <QtGui/QTextDocument>
-#include <QtWebKit/QWebHitTestResult>
 #include <QtWebKit/QWebHistory>
+#include <QtWebKit/QWebHitTestResult>
 #include <QtWebKit/QWebPage>
 
 #include "configuration/configuration-file.h"

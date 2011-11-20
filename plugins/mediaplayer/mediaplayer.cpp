@@ -32,18 +32,18 @@
 #include <QtGui/QTextEdit>
 #include <QtGui/QToolTip>
 
-#include "core/core.h"
 #include "configuration/configuration-file.h"
+#include "core/core.h"
 
+#include "gui/actions/action-description.h"
 #include "gui/actions/action.h"
 #include "gui/actions/actions.h"
-#include "gui/actions/action-description.h"
 
 #include "gui/widgets/chat-edit-box.h"
-#include "gui/widgets/chat-widget.h"
 #include "gui/widgets/chat-widget-manager.h"
-#include "gui/widgets/custom-input.h"
+#include "gui/widgets/chat-widget.h"
 #include "gui/widgets/configuration/configuration-widget.h"
+#include "gui/widgets/custom-input.h"
 
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-dialog.h"

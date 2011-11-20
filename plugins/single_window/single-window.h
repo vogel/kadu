@@ -2,9 +2,9 @@
 #define SINGLE_WINDOW_H
 
 #include <QtCore/QList>
+#include <QtGui/QMainWindow>
 #include <QtGui/QSplitter>
 #include <QtGui/QTabWidget>
-#include <QtGui/QMainWindow>
 
 #include "chat/chat-manager.h"
 #include "configuration/configuration-aware-object.h"

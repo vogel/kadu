@@ -24,17 +24,17 @@
  * See COPYING file for the detailed license.
  */
 
-#include <QtDebug>
 #include <QFile>
 #include <QMessageBox>
 #include <QPushButton>
+#include <QtDebug>
 
 #include "core/core.h"
 #include "gui/windows/kadu-window.h"
 
-#include "certificates/certificate-helpers.h"
-#include "certificates/certificate-error-dialog.h"
 #include "certificates/certificate-display-dialog.h"
+#include "certificates/certificate-error-dialog.h"
+#include "certificates/certificate-helpers.h"
 #include "certificates/trusted-certificates-manager.h"
 #include "client/mini-client.h"
 

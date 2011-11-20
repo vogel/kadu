@@ -18,8 +18,8 @@
  *
  */
 
-#include "idle.h"
 #include <Carbon/Carbon.h>
+#include "idle.h"
 
 static EventLoopTimerRef mTimerRef = 0;
 static int mSecondsIdle = 0;

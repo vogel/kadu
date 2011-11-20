@@ -28,12 +28,12 @@
  * See http://mpris.org/ for more details about the standard
  */
 
+#include <QtCore/QDateTime>
 #include <QtCore/QString>
-#include <QtDBus/QDBusInterface>
 #include <QtDBus/QDBusConnection>
+#include <QtDBus/QDBusInterface>
 #include <QtDBus/QDBusMetaType>
 #include <QtDBus/QDBusReply>
-#include <QtCore/QDateTime>
 
 #include "debug.h"
 #include "mediaplayer.h"

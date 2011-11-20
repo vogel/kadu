@@ -36,12 +36,12 @@
 #include <QtGui/QMenu>
 
 #include "gui/hot-key.h"
-#include "protocols/services/chat-image-service.h"
 #include "protocols/protocol.h"
+#include "protocols/services/chat-image-service.h"
 #include "debug.h"
 
-#include "custom-input.h"
 #include "custom-input-menu-manager.h"
+#include "custom-input.h"
 
 CustomInput::CustomInput(Chat chat, QWidget *parent) :
 		QTextEdit(parent), CurrentChat(chat), CopyPossible(false), autosend_enabled(true)

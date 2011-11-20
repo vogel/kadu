@@ -22,10 +22,10 @@
 #include "buddies/buddy-set.h"
 #include "contacts/contact.h"
 #include "core/core.h"
-#include "gui/actions/action.h"
 #include "gui/actions/action-context.h"
-#include "gui/actions/actions.h"
 #include "gui/actions/action-description.h"
+#include "gui/actions/action.h"
+#include "gui/actions/actions.h"
 #include "protocols/protocol.h"
 
 #include "actions/show-xml-console-action-description.h"

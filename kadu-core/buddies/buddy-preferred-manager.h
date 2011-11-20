@@ -23,8 +23,9 @@
 #ifndef BUDDY_PREFERRED_MANAGER_H
 #define BUDDY_PREFERRED_MANAGER_H
 
-#include <QtCore/QObject>
 #include <QtCore/QMap>
+#include <QtCore/QObject>
+
 #include "accounts/account.h"
 #include "buddies/buddy.h"
 #include "contacts/contact.h"

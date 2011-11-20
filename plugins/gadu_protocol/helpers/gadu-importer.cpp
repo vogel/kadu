@@ -24,8 +24,8 @@
 #include <QtXmlPatterns/QXmlQuery>
 #include <QtXmlPatterns/QXmlResultItems>
 
-#include "accounts/account.h"
 #include "accounts/account-manager.h"
+#include "accounts/account.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-set.h"
 #include "buddies/buddy.h"
@@ -34,9 +34,9 @@
 #include "contacts/contact-manager.h"
 #include "core/core.h"
 #include "identities/identity-manager.h"
-#include "protocols/protocols-manager.h"
 #include "misc/misc.h"
 #include "network/proxy/network-proxy-manager.h"
+#include "protocols/protocols-manager.h"
 
 #include "helpers/gadu-imported-contact-xml-receiver.h"
 #include "gadu-account-details.h"

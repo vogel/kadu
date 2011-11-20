@@ -23,19 +23,19 @@
 #include <QtGui/QKeyEvent>
 #include <QtGui/QLabel>
 #include <QtGui/QPushButton>
-#include <QtGui/QVBoxLayout>
 #include <QtGui/QTableView>
+#include <QtGui/QVBoxLayout>
 
 #include "accounts/filter/have-multilogon-filter.h"
 #include "gui/widgets/accounts-combo-box.h"
+#include "icons/icons-manager.h"
 #include "misc/misc.h"
 #include "model/roles.h"
-#include "multilogon/multilogon-session.h"
 #include "multilogon/model/multilogon-model.h"
+#include "multilogon/multilogon-session.h"
 #include "protocols/protocol.h"
 #include "protocols/services/multilogon-service.h"
 #include "activate.h"
-#include "icons/icons-manager.h"
 
 #include "multilogon-window.h"
 

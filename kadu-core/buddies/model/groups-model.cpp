@@ -20,8 +20,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "buddies/group.h"
 #include "buddies/group-manager.h"
+#include "buddies/group.h"
 
 #include "model/roles.h"
 

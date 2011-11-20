@@ -29,8 +29,8 @@
 #ifndef AUTOAWAY_H
 #define AUTOAWAY_H
 
-#include <QtCore/QTimer>
 #include <QtCore/QObject>
+#include <QtCore/QTimer>
 
 #include "gui/windows/main-configuration-window.h"
 #include "plugins/generic-plugin.h"

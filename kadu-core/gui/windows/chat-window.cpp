@@ -32,20 +32,20 @@
 #include <QtGui/QDesktopWidget>
 #include <QtGui/QVBoxLayout>
 
-#include "chat/type/chat-type.h"
 #include "chat/chat-details.h"
 #include "chat/chat-geometry-data.h"
+#include "chat/type/chat-type.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact-set.h"
-#include "gui/widgets/chat-widget.h"
 #include "gui/widgets/chat-widget-manager.h"
+#include "gui/widgets/chat-widget.h"
 #include "gui/widgets/custom-input.h"
 #include "gui/windows/message-dialog.h"
 #include "message/message-manager.h"
 
+#include "misc/misc.h"
 #include "activate.h"
 #include "debug.h"
-#include "misc/misc.h"
 
 #include "chat-window.h"
 

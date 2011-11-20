@@ -28,8 +28,8 @@
 #include <QtGui/QStyle>
 #include <QtGui/QVBoxLayout>
 
-#include "buddies/buddy-additional-data-delete-handler.h"
 #include "buddies/buddy-additional-data-delete-handler-manager.h"
+#include "buddies/buddy-additional-data-delete-handler.h"
 #include "buddies/buddy-manager.h"
 #include "icons/kadu-icon.h"
 

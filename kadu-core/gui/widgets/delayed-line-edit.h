@@ -24,8 +24,8 @@
 
 #include <QtCore/QTimer>
 
-#include "line-edit-with-clear-button.h"
 #include "exports.h"
+#include "line-edit-with-clear-button.h"
 
 class KADUAPI DelayedLineEdit : public LineEditWithClearButton
 {

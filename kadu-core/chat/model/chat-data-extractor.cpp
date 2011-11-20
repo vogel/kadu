@@ -20,8 +20,8 @@
 #include <QtCore/QVariant>
 
 #include "accounts/account.h"
-#include "chat/type/chat-type-manager.h"
 #include "chat/chat.h"
+#include "chat/type/chat-type-manager.h"
 #include "icons/kadu-icon.h"
 #include "model/roles.h"
 

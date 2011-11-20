@@ -24,18 +24,18 @@
 #include <QtCore/QDateTime>
 #include <QtCore/QScopedPointer>
 
-#include "chat/chat.h"
 #include "chat/chat-manager.h"
-#include "contacts/contact.h"
+#include "chat/chat.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
+#include "contacts/contact.h"
 #include "message/message.h"
 #include "plugins/history/history.h"
 #include "status/status.h"
 
+#include "history-import-thread.h"
 #include "history-importer-chat-data.h"
 #include "history-importer-manager.h"
-#include "history-import-thread.h"
 #include "history-migration-helper.h"
 
 HistoryImportThread::HistoryImportThread(Account gaduAccount, const QString &path, const QList<UinsList> &uinsLists, int totalEntries, QObject *parent) :

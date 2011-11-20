@@ -35,21 +35,21 @@
 #include <QtGui/QVBoxLayout>
 
 #include "chat/chat-manager.h"
-#include "contacts/contact.h"
 #include "configuration/configuration-file.h"
+#include "contacts/contact.h"
 #include "core/core.h"
 #include "gui/widgets/chat-widget-manager.h"
-#include "gui/widgets/tool-tip-class-manager.h"
 #include "gui/widgets/chat-widget.h"
+#include "gui/widgets/tool-tip-class-manager.h"
 #include "message/message-manager.h"
 #include "misc/misc.h"
 #include "notify/chat-notification.h"
 #include "notify/notification-manager.h"
 #include "parser/parser.h"
 
+#include "icons/icons-manager.h"
 #include "activate.h"
 #include "debug.h"
-#include "icons/icons-manager.h"
 #include "hints-configuration-ui-handler.h"
 #include "hints_configuration_widget.h"
 

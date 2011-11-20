@@ -38,18 +38,18 @@
 #include <QtGui/QTabWidget>
 #include <QtGui/QVBoxLayout>
 
-#include "accounts/account.h"
 #include "accounts/account-manager.h"
+#include "accounts/account.h"
 #include "configuration/configuration-file.h"
 #include "gui/widgets/account-avatar-widget.h"
 #include "gui/widgets/account-buddy-list-widget.h"
 #include "gui/widgets/identities-combo-box.h"
 #include "gui/widgets/proxy-combo-box.h"
+#include "icons/icons-manager.h"
 #include "identities/identity-manager.h"
+#include "protocols/protocol.h"
 #include "protocols/services/avatar-service.h"
 #include "protocols/services/contact-list-service.h"
-#include "protocols/protocol.h"
-#include "icons/icons-manager.h"
 
 #include "gui/windows/gadu-change-password-window.h"
 #include "gui/windows/gadu-remind-password-window.h"

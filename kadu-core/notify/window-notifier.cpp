@@ -25,9 +25,9 @@
 
 #include "configuration/configuration-file.h"
 
+#include "icons/icons-manager.h"
 #include "activate.h"
 #include "debug.h"
-#include "icons/icons-manager.h"
 
 #include "window-notifier.h"
 

@@ -6,8 +6,8 @@
 
 #include "accounts/accounts-aware-object.h"
 #include "configuration/configuration-aware-object.h"
-#include "contacts/contact.h"
 #include "contacts/contact-set.h"
+#include "contacts/contact.h"
 #include "gui/windows/main-configuration-window.h"
 #include "plugins/generic-plugin.h"
 #include "protocols/protocol.h"

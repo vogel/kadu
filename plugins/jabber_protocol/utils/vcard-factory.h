@@ -28,12 +28,12 @@
 #ifndef VCARD_FACTORY_H
 #define VCARD_FACTORY_H
 
-#include <QObject>
 #include <QMap>
+#include <QObject>
 #include <QStringList>
 
-#include "xmpp_vcard.h"
 #include "xmpp_tasks.h"
+#include "xmpp_vcard.h"
 
 namespace XMPP {
 	class VCard;

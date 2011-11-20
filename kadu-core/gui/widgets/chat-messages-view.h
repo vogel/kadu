@@ -29,9 +29,9 @@
 
 #include "configuration/configuration-aware-object.h"
 #include "message/message.h"
+#include "protocols/protocol.h"
 #include "protocols/services/chat-service.h"
 #include "protocols/services/chat-state-service.h"
-#include "protocols/protocol.h"
 
 #include "kadu-web-view.h"
 

@@ -30,8 +30,8 @@
 #include "gui/widgets/select-file.h"
 #include "misc/path-conversion.h"
 #include "parser/parser.h"
-#include "speech.h"
 #include "debug.h"
+#include "speech.h"
 
 #include "speech-configuration-ui-handler.h"
 

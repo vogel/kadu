@@ -22,16 +22,16 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "pcspeaker.h"
-#include "pcspeaker_configuration_widget.h"
 #include "debug.h"
 #include "exports.h"
+#include "pcspeaker.h"
+#include "pcspeaker_configuration_widget.h"
 
 #include "configuration/configuration-file.h"
 #include "gui/widgets/configuration/configuration-widget.h"
+#include "misc/misc.h"
 #include "notify/notification-manager.h"
 #include "notify/notification.h"
-#include "misc/misc.h"
 
 #include <QtGui/QLineEdit>
 #include <QtGui/QSlider>

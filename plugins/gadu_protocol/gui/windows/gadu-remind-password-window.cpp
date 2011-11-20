@@ -21,17 +21,17 @@
 
 #include <QtGui/QDialogButtonBox>
 #include <QtGui/QFormLayout>
+#include <QtGui/QKeyEvent>
 #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
-#include <QtGui/QKeyEvent>
 #include <QtGui/QPushButton>
 #include <QtGui/QStyle>
 #include <QtGui/QVBoxLayout>
 
 #include "gui/windows/message-dialog.h"
+#include "icons/icons-manager.h"
 #include "misc/misc.h"
 #include "url-handlers/url-handler-manager.h"
-#include "icons/icons-manager.h"
 
 #include "gui/widgets/token-widget.h"
 #include "server/gadu-server-remind-password.h"

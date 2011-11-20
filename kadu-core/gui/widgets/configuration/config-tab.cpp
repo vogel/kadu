@@ -20,13 +20,13 @@
 
 #include <QtGui/QApplication>
 #include <QtGui/QGroupBox>
-#include <QtGui/QVBoxLayout>
 #include <QtGui/QScrollArea>
 #include <QtGui/QTabWidget>
+#include <QtGui/QVBoxLayout>
 
-#include "gui/widgets/configuration/config-tab.h"
-#include "gui/widgets/configuration/config-section.h"
 #include "gui/widgets/configuration/config-group-box.h"
+#include "gui/widgets/configuration/config-section.h"
+#include "gui/widgets/configuration/config-tab.h"
 #include "gui/widgets/configuration/kadu-scroll-area.h"
 
 ConfigTab::ConfigTab(const QString &name, ConfigSection *configSection, QWidget *mainWidget) :

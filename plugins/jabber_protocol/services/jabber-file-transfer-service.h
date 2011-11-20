@@ -23,8 +23,8 @@
 #ifndef JABBER_FILE_TRANSFER_SERVICE_H
 #define JABBER_FILE_TRANSFER_SERVICE_H
 
-#include "protocols/services/file-transfer-service.h"
 #include "file-transfer/jabber-file-transfer-handler.h"
+#include "protocols/services/file-transfer-service.h"
 
 namespace XMPP
 {

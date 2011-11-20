@@ -23,8 +23,8 @@
 #include "accounts/account-manager.h"
 #include "contacts/contact.h"
 #include "core/core.h"
-#include "identities/identity-manager.h"
 #include "icons/kadu-icon.h"
+#include "identities/identity-manager.h"
 #include "misc/misc.h"
 #include "protocols/protocol.h"
 

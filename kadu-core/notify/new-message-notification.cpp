@@ -23,10 +23,10 @@
 
 #include <QtGui/QTextDocument>
 
+#include "icons/icons-manager.h"
 #include "message/message.h"
 #include "notify/notification-manager.h"
 #include "notify/notify-event.h"
-#include "icons/icons-manager.h"
 
 #include "new-message-notification.h"
 

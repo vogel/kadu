@@ -20,8 +20,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "debug.h"
 #include "misc/misc.h"
+#include "debug.h"
 
 #include "helpers/gadu-protocol-helper.h"
 #include "socket-notifiers/gadu-protocol-socket-notifiers.h"

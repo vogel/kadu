@@ -22,9 +22,9 @@
 #include <fcntl.h>
 
 #include "file-transfer/file-transfer-manager.h"
+#include "misc/misc.h"
 #include "notify/notification-manager.h"
 #include "notify/notify-event.h"
-#include "misc/misc.h"
 #include "debug.h"
 
 #include "file-transfer-notifications.h"

@@ -24,14 +24,14 @@
 #include <QtGui/QMenu>
 #include <QtGui/QTextDocument>
 
-#include "accounts/account.h"
 #include "accounts/account-manager.h"
+#include "accounts/account.h"
 #include "chat/chat-manager.h"
-#include "contacts/contact.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
-#include "gui/widgets/chat-widget.h"
+#include "contacts/contact.h"
 #include "gui/widgets/chat-widget-manager.h"
+#include "gui/widgets/chat-widget.h"
 #include "icons/kadu-icon.h"
 #include "misc/misc.h"
 #include "status/status-container.h"

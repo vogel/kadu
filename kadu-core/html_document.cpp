@@ -27,8 +27,8 @@
 
 #include "configuration/configuration-file.h"
 
-#include "debug.h"
 #include "misc/misc.h"
+#include "debug.h"
 
 #include "html_document.h"
 

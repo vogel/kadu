@@ -34,10 +34,10 @@
 #include "accounts/account-manager.h"
 #include "gui/widgets/identities-combo-box.h"
 #include "gui/windows/message-dialog.h"
+#include "icons/icons-manager.h"
 #include "identities/identity-manager.h"
 #include "protocols/protocols-manager.h"
 #include "html_document.h"
-#include "icons/icons-manager.h"
 
 #include "gui/windows/gadu-remind-password-window.h"
 #include "server/gadu-server-register-account.h"

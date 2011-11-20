@@ -26,9 +26,9 @@
  */
 
 #include <QtGui/QApplication>
-#include <QtGui/QPainter>
-#include <QtGui/QHeaderView>
 #include <QtGui/QFontMetrics>
+#include <QtGui/QHeaderView>
+#include <QtGui/QPainter>
 
 #include "notify/notification-manager.h"
 #include "notify/notifier.h"

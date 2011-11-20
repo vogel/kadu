@@ -27,8 +27,8 @@
  * works ;)
  */
 
-#include <QtCore/QProcess>
 #include <QtCore/QByteArray>
+#include <QtCore/QProcess>
 #include <QtCore/QString>
 #include <QtCore/QStringList>
 

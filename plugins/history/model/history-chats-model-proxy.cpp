@@ -21,15 +21,15 @@
 
 #include <stdio.h>
 
-#include "contacts/contact-set.h"
-#include "buddies/buddy.h"
 #include "buddies/buddy-set.h"
+#include "buddies/buddy.h"
 #include "buddies/filter/abstract-buddy-filter.h"
+#include "chat/chat.h"
 #include "chat/filter/chat-filter.h"
 #include "chat/type/chat-type.h"
-#include "chat/chat.h"
-#include "model/roles.h"
+#include "contacts/contact-set.h"
 #include "model/history-chats-model.h"
+#include "model/roles.h"
 
 #include "history-chats-model-proxy.h"
 

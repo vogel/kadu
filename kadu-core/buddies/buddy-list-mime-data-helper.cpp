@@ -22,10 +22,10 @@
 #include <QtCore/QMimeData>
 #include <QtCore/QStringList>
 
-#include "buddies/buddy.h"
-#include "buddies/buddy-list.h"
 #include "buddies/buddy-list-mime-data-helper.h"
+#include "buddies/buddy-list.h"
 #include "buddies/buddy-manager.h"
+#include "buddies/buddy.h"
 
 QLatin1String BuddyListMimeDataHelper::MimeType("application/x-kadu-ules");
 

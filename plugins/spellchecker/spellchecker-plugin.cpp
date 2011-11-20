@@ -20,8 +20,8 @@
 #include "misc/path-conversion.h"
 
 #include "configuration/spellchecker-configuration.h"
-#include "spellchecker.h"
 #include "spellchecker-plugin.h"
+#include "spellchecker.h"
 #include "suggester.h"
 
 SpellCheckerPlugin * SpellCheckerPlugin::Instance = 0;

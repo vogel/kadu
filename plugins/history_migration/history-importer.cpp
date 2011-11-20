@@ -26,8 +26,8 @@
 #include <QtCore/QTimer>
 #include <QtGui/QProgressDialog>
 
-#include "accounts/account.h"
 #include "accounts/account-manager.h"
+#include "accounts/account.h"
 #include "configuration/configuration-file.h"
 #include "core/core.h"
 #include "gui/windows/kadu-window.h"

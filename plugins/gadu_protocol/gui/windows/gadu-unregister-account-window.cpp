@@ -21,21 +21,21 @@
 
 #include <QtGui/QDialogButtonBox>
 #include <QtGui/QFormLayout>
+#include <QtGui/QKeyEvent>
 #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
-#include <QtGui/QKeyEvent>
 #include <QtGui/QPushButton>
 #include <QtGui/QStyle>
 #include <QtGui/QVBoxLayout>
 
 #include "accounts/account-manager.h"
 #include "gui/windows/message-dialog.h"
-#include "misc/misc.h"
 #include "icons/icons-manager.h"
+#include "misc/misc.h"
 
-#include "gadu-id-validator.h"
 #include "gui/widgets/token-widget.h"
 #include "server/gadu-server-unregister-account.h"
+#include "gadu-id-validator.h"
 
 #include "gadu-unregister-account-window.h"
 

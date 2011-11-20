@@ -36,17 +36,17 @@
 #include "accounts/account-manager.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact.h"
-#include "parser/parser-token.h"
 #include "icons/kadu-icon.h"
 #include "misc/misc.h"
+#include "parser/parser-token.h"
 #include "status/status-container.h"
-#include "status/status-type.h"
 #include "status/status-type-data.h"
 #include "status/status-type-manager.h"
+#include "status/status-type.h"
 
+#include "icons/icons-manager.h"
 #include "debug.h"
 #include "html_document.h"
-#include "icons/icons-manager.h"
 
 #include "parser.h"
 

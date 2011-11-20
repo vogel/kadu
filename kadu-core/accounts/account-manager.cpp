@@ -33,8 +33,8 @@
 #include "identities/identity.h"
 #include "notify/notification-manager.h"
 #include "protocols/connection-error-notification.h"
-#include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
+#include "protocols/protocol.h"
 #include "protocols/protocols-manager.h"
 #include "debug.h"
 

@@ -20,10 +20,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "accounts/account.h"
 #include "accounts/account-manager.h"
-#include "avatars/avatar.h"
+#include "accounts/account.h"
 #include "avatars/avatar-manager.h"
+#include "avatars/avatar.h"
 #include "buddies/buddy-manager.h"
 #include "contacts/contact-details.h"
 #include "contacts/contact-manager.h"

@@ -21,11 +21,11 @@
 
 #include "icons/kadu-icon.h"
 #include "misc/misc.h"
-#include "status/status-type.h"
 #include "status/status-type-manager.h"
+#include "status/status-type.h"
 
-#include "gui/widgets/jabber-contact-personal-info-widget.h"
 #include "gui/widgets/jabber-add-account-widget.h"
+#include "gui/widgets/jabber-contact-personal-info-widget.h"
 #include "gui/widgets/jabber-create-account-widget.h"
 #include "gui/widgets/jabber-edit-account-widget.h"
 #include "jabber-account-details.h"

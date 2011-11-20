@@ -24,8 +24,8 @@
 #include <QtGui/QLabel>
 #include <QtXml/QDomElement>
 
-#include "gui/widgets/configuration/config-syntax-editor.h"
 #include "gui/widgets/configuration/config-group-box.h"
+#include "gui/widgets/configuration/config-syntax-editor.h"
 
 #include "debug.h"
 

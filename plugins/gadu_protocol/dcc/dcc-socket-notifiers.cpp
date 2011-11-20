@@ -23,8 +23,8 @@
 
 #include <QtCore/QFile>
 
-#include "debug.h"
 #include "misc/misc.h"
+#include "debug.h"
 
 #include "file-transfer/gadu-file-transfer-handler.h"
 #include "socket-notifiers/gadu-protocol-socket-notifiers.h"

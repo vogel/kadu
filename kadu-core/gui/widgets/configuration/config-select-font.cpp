@@ -23,8 +23,8 @@
 #include <QtGui/QApplication>
 #include <QtGui/QLabel>
 
-#include "gui/widgets/configuration/config-select-font.h"
 #include "gui/widgets/configuration/config-group-box.h"
+#include "gui/widgets/configuration/config-select-font.h"
 
 #include "debug.h"
 

@@ -20,8 +20,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QtAlgorithms>
 #include <QtCore/QVector>
+#include <QtCore/QtAlgorithms>
 
 #include "configuration/configuration-manager.h"
 

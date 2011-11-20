@@ -23,8 +23,8 @@
 #ifndef STATUS_CONTAINER_H
 #define STATUS_CONTAINER_H
 
-#include "status/status.h"
 #include "status/status-type.h"
+#include "status/status.h"
 #include "exports.h"
 
 class KaduIcon;

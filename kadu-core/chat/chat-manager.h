@@ -25,12 +25,12 @@
 #ifndef CHAT_MANAGER_H
 #define CHAT_MANAGER_H
 
-#include <QtCore/QVector>
 #include <QtCore/QObject>
 #include <QtCore/QUuid>
+#include <QtCore/QVector>
 
-#include "storage/manager.h"
 #include "message/message.h"
+#include "storage/manager.h"
 
 #include "chat.h"
 

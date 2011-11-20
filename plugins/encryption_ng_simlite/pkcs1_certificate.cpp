@@ -28,9 +28,9 @@
  *
  */
 
+#include "pkcs1_certificate.h"
 #include <limits.h>
 #include <stdint.h>
-#include "pkcs1_certificate.h"
 
 PKCS1Certificate::~PKCS1Certificate()
 {

@@ -21,9 +21,9 @@
 #ifndef CONFIG_SYNTAX_EDITOR_H
 #define CONFIG_SYNTAX_EDITOR_H
 
+#include "configuration/configuration-window-data-manager.h"
 #include "gui/widgets/configuration/config-widget-value.h"
 #include "gui/widgets/syntax-editor.h"
-#include "configuration/configuration-window-data-manager.h"
 
 class QLabel;
 class QDomElement;

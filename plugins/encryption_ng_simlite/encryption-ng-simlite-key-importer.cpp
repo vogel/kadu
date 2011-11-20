@@ -25,8 +25,8 @@
 #include "contacts/contact-manager.h"
 #include "misc/path-conversion.h"
 
-#include "plugins/encryption_ng/keys/keys-manager.h"
 #include "plugins/encryption_ng/keys/key.h"
+#include "plugins/encryption_ng/keys/keys-manager.h"
 
 #include "encryption-ng-simlite-key-importer.h"
 

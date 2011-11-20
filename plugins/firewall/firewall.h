@@ -24,8 +24,8 @@
 #ifndef KADU_FIREWALL_H
 #define KADU_FIREWALL_H
 
-#include <QtCore/QObject>
 #include <QtCore/QDateTime>
+#include <QtCore/QObject>
 #include <QtCore/QRegExp>
 
 #include "chat/chat.h"

@@ -28,8 +28,8 @@
 #include "model/roles.h"
 
 #include "model/history-type.h"
-#include "history-tree-item.h"
 #include "history-chats-model.h"
+#include "history-tree-item.h"
 
 HistoryChatsModel::HistoryChatsModel(QObject *parent) :
 		QAbstractItemModel(parent)

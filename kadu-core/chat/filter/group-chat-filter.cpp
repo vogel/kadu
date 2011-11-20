@@ -18,8 +18,8 @@
  */
 
 #include "buddies/group-manager.h"
-#include "chat/chat.h"
 #include "chat/chat-manager.h"
+#include "chat/chat.h"
 
 #include "group-chat-filter.h"
 

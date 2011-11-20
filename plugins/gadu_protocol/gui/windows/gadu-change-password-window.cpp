@@ -20,9 +20,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QIntValidator>
 #include <QtGui/QDialogButtonBox>
 #include <QtGui/QFormLayout>
+#include <QtGui/QIntValidator>
 #include <QtGui/QKeyEvent>
 #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
@@ -31,9 +31,9 @@
 #include <QtGui/QVBoxLayout>
 
 #include "gui/windows/message-dialog.h"
+#include "icons/icons-manager.h"
 #include "misc/misc.h"
 #include "url-handlers/url-handler-manager.h"
-#include "icons/icons-manager.h"
 
 #include "gui/widgets/token-widget.h"
 #include "server/gadu-server-change-password.h"

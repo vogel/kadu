@@ -26,17 +26,17 @@
 #include <QtGui/QMenu>
 
 #include "accounts/account-manager.h"
+#include "buddies/buddy-set.h"
+#include "buddies/buddy.h"
 #include "configuration/configuration-file.h"
 #include "configuration/configuration-manager.h"
 #include "configuration/toolbar-configuration-manager.h"
 #include "configuration/xml-configuration-file.h"
-#include "buddies/buddy.h"
-#include "buddies/buddy-set.h"
+#include "core/core.h"
 #include "gui/actions/action.h"
 #include "gui/actions/actions.h"
 #include "gui/widgets/talkable-tree-view.h"
 #include "gui/widgets/toolbar.h"
-#include "core/core.h"
 
 #include "debug.h"
 

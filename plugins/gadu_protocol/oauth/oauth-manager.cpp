@@ -19,8 +19,8 @@
 
 #include <QtNetwork/QNetworkAccessManager>
 
-#include "oauth/oauth-authorization.h"
 #include "oauth/oauth-authorization-chain.h"
+#include "oauth/oauth-authorization.h"
 #include "oauth/oauth-parameters.h"
 #include "oauth/oauth-token-fetcher.h"
 

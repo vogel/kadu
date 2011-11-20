@@ -1,10 +1,10 @@
 #ifndef PCSPEAKER_CONFIG_WIDGET
 #define PCSPEAKER_CONFIG_WIDGET
 
+#include <QtCore/QMap>
 #include <QtCore/QObject>
 #include <QtCore/QString>
 #include <QtGui/QWidget>
-#include <QtCore/QMap>
 
 #include "gui/widgets/configuration/notifier-configuration-widget.h"
 

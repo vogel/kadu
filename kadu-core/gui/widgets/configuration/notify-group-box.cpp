@@ -19,8 +19,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QHBoxLayout>
 #include <QtGui/QCheckBox>
+#include <QtGui/QHBoxLayout>
 
 #include "icons/icons-manager.h"
 

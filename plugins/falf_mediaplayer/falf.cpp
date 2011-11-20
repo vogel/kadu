@@ -23,8 +23,8 @@
  */
 
 #include <QtCore/QDir>
-#include <QtCore/QTextStream>
 #include <QtCore/QStringList>
+#include <QtCore/QTextStream>
 
 #include "debug.h"
 #include "exports.h"

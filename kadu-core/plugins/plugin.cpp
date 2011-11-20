@@ -24,8 +24,8 @@
 #include <QtGui/QApplication>
 
 #include "configuration/configuration-file.h"
-#include "gui/windows/plugin-error-dialog.h"
 #include "gui/windows/modules-window.h"
+#include "gui/windows/plugin-error-dialog.h"
 #include "misc/path-conversion.h"
 #include "plugins/generic-plugin.h"
 #include "plugins/plugin-info.h"

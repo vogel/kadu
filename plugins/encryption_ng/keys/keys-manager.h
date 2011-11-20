@@ -26,8 +26,8 @@
 
 #include "key.h"
 
-#include "storage/simple-manager.h"
 #include "../encryption_exports.h"
+#include "storage/simple-manager.h"
 
 class ENCRYPTIONAPI KeysManager : public QObject, public SimpleManager<Key>
 {

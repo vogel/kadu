@@ -20,8 +20,8 @@
 #ifndef MULTILOGON_NOTIFICATION_H
 #define MULTILOGON_NOTIFICATION_H
 
-#include "notify/notification-manager.h"
 #include "notify/account-notification.h"
+#include "notify/notification-manager.h"
 
 class MultilogonSession;
 class NotifyEvent;

@@ -20,14 +20,14 @@
  */
 
 #include <QtGui/QApplication>
-#include <QtGui/QLineEdit>
 #include <QtGui/QLabel>
+#include <QtGui/QLineEdit>
 
 #include "configuration/configuration-window-data-manager.h"
 #include "gui/widgets/configuration/config-group-box.h"
 
-#include "debug.h"
 #include "misc/misc.h"
+#include "debug.h"
 
 #include "config-gg-password-edit.h"
 

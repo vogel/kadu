@@ -19,11 +19,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "accounts/account.h"
 #include "accounts/account-manager.h"
+#include "accounts/account.h"
 
-#include "buddies/buddy.h"
 #include "buddies/buddy-list-mime-data-helper.h"
+#include "buddies/buddy.h"
 #include "contacts/contact.h"
 
 #include "protocols/protocol.h"

@@ -30,9 +30,9 @@
 #include <QtGui/QLineEdit>
 #include <QtGui/QListWidget>
 
-#include "debug.h"
 #include "icons/kadu-icon.h"
 #include "misc/misc.h"
+#include "debug.h"
 
 #include "path-list-edit.h"
 

@@ -31,8 +31,8 @@
 
 #include "accounts/account.h"
 #include "buddies/buddy-preferred-manager.h"
-#include "configuration/configuration-file.h"
 #include "configuration/config-file-data-manager.h"
+#include "configuration/configuration-file.h"
 #include "contacts/contact.h"
 #include "gui/widgets/configuration/config-color-button.h"
 #include "gui/widgets/configuration/config-combo-box.h"

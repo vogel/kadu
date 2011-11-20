@@ -25,8 +25,8 @@
 
 #include "contacts/contact-set.h"
 #include "core/core.h"
-#include "gui/actions/action.h"
 #include "gui/actions/action-description.h"
+#include "gui/actions/action.h"
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-widget.h"
 #include "gui/widgets/talkable-menu-manager.h"
@@ -34,8 +34,8 @@
 #include "gui/windows/kadu-window.h"
 #include "debug.h"
 
-#include "gui/windows/sms-image-dialog.h"
 #include "gui/windows/sms-dialog.h"
+#include "gui/windows/sms-image-dialog.h"
 
 #include "sms-actions.h"
 

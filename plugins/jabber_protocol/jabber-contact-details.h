@@ -28,8 +28,8 @@ class QDomElement;
 
 #include <xmpp_rosteritem.h>
 
-#include "contacts/contact.h"
 #include "contacts/contact-details.h"
+#include "contacts/contact.h"
 
 class JabberContactDetails : public ContactDetails
 {

@@ -18,8 +18,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "chat/chat.h"
 #include "chat/chat-manager.h"
+#include "chat/chat.h"
 #include "misc/coding-conversion.h"
 #include "plugins/encryption_ng/keys/key.h"
 #include "plugins/encryption_ng/keys/keys-manager.h"

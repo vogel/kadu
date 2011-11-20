@@ -19,8 +19,8 @@
 
 #include "configuration/configuration-file.h"
 
-#include "spellchecker.h" 
 #include "spellchecker-plugin.h"
+#include "spellchecker.h" 
 
 #include "spellchecker-configuration.h"
 

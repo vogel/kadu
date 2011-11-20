@@ -24,9 +24,9 @@
 
 #include <QtGui/QTabBar>
 
-#include "configuration/configuration-aware-object.h"
 #include "buddies/buddy-list.h"
 #include "buddies/group.h"
+#include "configuration/configuration-aware-object.h"
 
 class KADUAPI GroupTabBar : public QTabBar, ConfigurationAwareObject
 {

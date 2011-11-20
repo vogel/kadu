@@ -22,8 +22,8 @@
 #ifndef IDENTITIES_COMBO_BOX_H
 #define IDENTITIES_COMBO_BOX_H
 
-#include "identities/identity.h"
 #include "gui/widgets/actions-combo-box.h"
+#include "identities/identity.h"
 #include "exports.h"
 
 class KADUAPI IdentitiesComboBox : public ActionsComboBox

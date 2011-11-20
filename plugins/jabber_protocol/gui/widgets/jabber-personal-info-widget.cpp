@@ -25,8 +25,8 @@
 #include <QtGui/QLineEdit>
 
 #include "accounts/account.h"
-#include "protocols/services/personal-info-service.h"
 #include "protocols/protocol.h"
+#include "protocols/services/personal-info-service.h"
 
 #include "jabber-personal-info-widget.h"
 

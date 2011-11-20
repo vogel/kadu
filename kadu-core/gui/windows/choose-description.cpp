@@ -41,9 +41,9 @@
 #include "status/status-container.h"
 #include "status/status-setter.h"
 
+#include "icons/icons-manager.h"
 #include "activate.h"
 #include "debug.h"
-#include "icons/icons-manager.h"
 
 #include "choose-description.h"
 

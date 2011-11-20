@@ -20,8 +20,8 @@
  */
 
 #include "configuration/configuration-file.h"
-#include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/configuration/config-combo-box.h"
+#include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/path-list-edit.h"
 #include "misc/path-conversion.h"
 #include "debug.h"

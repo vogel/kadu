@@ -38,8 +38,8 @@
 #include "pixmap-grabber.h"
 #include "screenshot-taker.h"
 
-#include "screenshot.h"
 #include "screen-shot-saver.h"
+#include "screenshot.h"
 
 ScreenShot::ScreenShot(ChatWidget *chatWidget) :
 		MyChatWidget(chatWidget)

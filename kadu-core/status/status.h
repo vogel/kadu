@@ -29,8 +29,8 @@
 #include <QtCore/QMetaType>
 #include <QtCore/QString>
 
-#include "status/status-type.h"
 #include "status/status-type-group.h"
+#include "status/status-type.h"
 
 #include "exports.h"
 

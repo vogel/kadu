@@ -24,8 +24,8 @@
 #define CHAT_EDIT_BOX_H
 
 #include "chat/chat.h"
-#include "gui/windows/main-window.h"
 #include "configuration/configuration-aware-object.h"
+#include "gui/windows/main-window.h"
 
 #include "exports.h"
 

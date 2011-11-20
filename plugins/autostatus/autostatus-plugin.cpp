@@ -21,8 +21,8 @@
 #include "gui/windows/main-configuration-window.h"
 #include "misc/path-conversion.h"
 
-#include "autostatus.h"
 #include "autostatus-actions.h"
+#include "autostatus.h"
 
 #include "autostatus-plugin.h"
 

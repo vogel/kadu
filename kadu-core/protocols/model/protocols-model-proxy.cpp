@@ -21,12 +21,12 @@
 #include <stdio.h>
 
 #include "model/roles.h"
-#include "protocols/protocol.h"
-#include "protocols/protocol-factory.h"
 #include "protocols/filter/abstract-protocol-filter.h"
+#include "protocols/protocol-factory.h"
+#include "protocols/protocol.h"
 
-#include "protocols-model.h"
 #include "protocols-model-proxy.h"
+#include "protocols-model.h"
 
 ProtocolsModelProxy::ProtocolsModelProxy(QObject *parent)
 	: QSortFilterProxyModel(parent), SourceProtocolModel(0)

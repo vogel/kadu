@@ -17,10 +17,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "chat/model/chat-data-extractor.h"
 #include "chat/chat-manager.h"
-#include "contacts/model/contact-data-extractor.h"
+#include "chat/model/chat-data-extractor.h"
 #include "contacts/contact-set.h"
+#include "contacts/model/contact-data-extractor.h"
 #include "model/roles.h"
 
 #include "chats-model.h"

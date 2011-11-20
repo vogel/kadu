@@ -33,11 +33,11 @@
 #include <libgadu.h>
 
 #include "accounts/account.h"
-#include "contacts/contact-manager.h"
 #include "buddies/buddy-set.h"
 #include "configuration/configuration-file.h"
-#include "debug.h"
+#include "contacts/contact-manager.h"
 #include "misc/misc.h"
+#include "debug.h"
 
 #include "gadu-protocol-socket-notifiers.h"
 

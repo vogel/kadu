@@ -40,8 +40,8 @@
 #include "hint-over-user-configuration-window.h"
 #include "hints-plugin.h"
 
-#include "activate.h"
 #include "misc/misc.h"
+#include "activate.h"
 
 #include "hints-configuration-ui-handler.h"
 

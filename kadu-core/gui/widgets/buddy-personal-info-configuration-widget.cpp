@@ -27,11 +27,11 @@
 #include <QtGui/QLabel>
 #include <QtGui/QVBoxLayout>
 
-#include "accounts/account.h"
 #include "accounts/account-manager.h"
-#include "contacts/model/buddy-contact-model.h"
-#include "contacts/contact.h"
+#include "accounts/account.h"
 #include "contacts/contact-manager.h"
+#include "contacts/contact.h"
+#include "contacts/model/buddy-contact-model.h"
 #include "misc/misc.h"
 #include "model/roles.h"
 #include "protocols/protocol.h"

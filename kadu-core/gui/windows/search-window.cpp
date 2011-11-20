@@ -27,8 +27,8 @@
 #include <QtGui/QButtonGroup>
 #include <QtGui/QCheckBox>
 #include <QtGui/QComboBox>
-#include <QtGui/QGroupBox>
 #include <QtGui/QGridLayout>
+#include <QtGui/QGroupBox>
 #include <QtGui/QKeyEvent>
 #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
@@ -41,25 +41,25 @@
 #include "buddies/buddy-preferred-manager.h"
 #include "chat/chat-manager.h"
 #include "configuration/configuration-file.h"
-#include "contacts/contact.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
+#include "contacts/contact.h"
 #include "core/core.h"
-#include "icons/kadu-icon.h"
 #include "gui/actions/base-action-context.h"
-#include "gui/widgets/chat-widget.h"
 #include "gui/widgets/chat-widget-manager.h"
+#include "gui/widgets/chat-widget.h"
+#include "gui/widgets/toolbar.h"
 #include "gui/windows/add-buddy-window.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-dialog.h"
 #include "gui/windows/search-window-actions.h"
+#include "icons/kadu-icon.h"
 #include "misc/misc.h"
-#include "gui/widgets/toolbar.h"
-#include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
+#include "protocols/protocol.h"
 #include "protocols/services/search-service.h"
-#include "status/status-container.h"
 #include "qt/long-validator.h"
+#include "status/status-container.h"
 
 #include "search-window.h"
 

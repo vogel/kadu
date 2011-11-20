@@ -24,8 +24,8 @@
 #ifndef EXEC_NOTIFY_H
 #define EXEC_NOTIFY_H
 
-#include <QtCore/QObject>
 #include <QtCore/QMap>
+#include <QtCore/QObject>
 #include <QtCore/QStringList>
 
 #include "gui/widgets/configuration/notifier-configuration-widget.h"

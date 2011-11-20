@@ -23,9 +23,9 @@
 #include <QtGui/QApplication>
 #include <QtGui/QLabel>
 
-#include "gui/widgets/configuration/config-path-list-edit.h"
-#include "gui/widgets/configuration/config-group-box.h"
 #include "configuration/configuration-window-data-manager.h"
+#include "gui/widgets/configuration/config-group-box.h"
+#include "gui/widgets/configuration/config-path-list-edit.h"
 
 #include "debug.h"
 

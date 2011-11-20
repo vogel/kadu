@@ -42,7 +42,6 @@
 #include <QtGui/QMenu>
 #include <QtGui/QMouseEvent>
 
-#include "activate.h"
 #include "configuration/configuration-file.h"
 #include "core/core.h"
 #include "gui/widgets/chat-widget.h"
@@ -56,6 +55,7 @@
 #include "protocols/protocol.h"
 #include "status/status-changer.h"
 #include "status/status-container-manager.h"
+#include "activate.h"
 #include "debug.h"
 
 #ifdef Q_OS_MAC
@@ -66,8 +66,8 @@ extern void qt_mac_set_dock_menu(QMenu *);
 
 #include "docker.h"
 
-#include "docking.h"
 #include <gui/status-icon.h>
+#include "docking.h"
 
 DockingManager * DockingManager::Instance = 0;
 

@@ -24,8 +24,8 @@
 #include <QtGui/QLabel>
 #include <QtXml/QDomElement>
 
-#include "gui/widgets/configuration/config-spin-box.h"
 #include "gui/widgets/configuration/config-group-box.h"
+#include "gui/widgets/configuration/config-spin-box.h"
 
 #include "debug.h"
 

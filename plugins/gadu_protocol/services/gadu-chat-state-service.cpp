@@ -17,9 +17,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "contacts/contact.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
+#include "contacts/contact.h"
 
 #include "helpers/gadu-protocol-helper.h"
 #include "gadu-account-details.h"

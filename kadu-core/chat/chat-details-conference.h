@@ -24,8 +24,8 @@
 #define CHAT_DETAILS_CONFERENCE_H
 
 #include "buddies/buddy-set.h"
-#include "contacts/contact.h"
 #include "contacts/contact-set.h"
+#include "contacts/contact.h"
 
 #include "chat/chat-details.h"
 

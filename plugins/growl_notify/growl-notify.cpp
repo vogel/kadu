@@ -27,22 +27,22 @@
  * growlnotifier.cpp file, which are the part of PSI Jabber Client.
  */
 
-#include "growlnotifier.h"
-#include "growl-notify.h"
 #include "growl-notify-configuration-widget.h"
+#include "growl-notify.h"
+#include "growlnotifier.h"
 
-#include <QtGui/QTextDocument>
 #include <QtGui/QMessageBox>
+#include <QtGui/QTextDocument>
 
 #include "avatars/avatar.h"
 #include "configuration/configuration-file.h"
 #include "gui/windows/message-dialog.h"
+#include "icons/icons-manager.h"
 #include "notify/account-notification.h"
 #include "notify/chat-notification.h"
 #include "notify/notification-manager.h"
 #include "notify/notification.h"
 #include "parser/parser.h"
-#include "icons/icons-manager.h"
 #include "debug.h"
 
 GrowlNotify *GrowlNotify::Instance = NULL;

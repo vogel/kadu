@@ -20,16 +20,16 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <Cocoa/Cocoa.h>
 #include <QtGui/QApplication>
 #include <QtGui/QIcon>
-#include <Cocoa/Cocoa.h>
 
 #include "ApplicationServices/ApplicationServices.h"
-#include "mac_docking_helper.h"
+#include "configuration/configuration-file.h"
 #include "core/core.h"
 #include "gui/windows/kadu-window.h"
-#include "configuration/configuration-file.h"
 #include "docking.h"
+#include "mac_docking_helper.h"
 
 @interface MacDockingHelperObjC : NSObject {
 }

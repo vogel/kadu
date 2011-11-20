@@ -19,8 +19,8 @@
 
 #include "plugins/mediaplayer/mediaplayer.h"
 
-#include "itunes.h"
 #include "itunes-player-plugin.h"
+#include "itunes.h"
 
 ItunesMediaplayerPlugin::~ItunesMediaplayerPlugin()
 {

@@ -21,8 +21,8 @@
 
 #include "message/message.h"
 
-#include "history.h"
 #include "history-save-thread.h"
+#include "history.h"
 
 // 15 seconds
 #define SYNCHRONIZATION_TIMEOUT 15*1000

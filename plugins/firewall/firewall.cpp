@@ -38,29 +38,29 @@ Nowa funkcjonalnosc - Dorregaray
 **/
 
 #include <QtCore/QFile>
-#include <QtCore/QTimer>
 #include <QtCore/QStringList>
+#include <QtCore/QTimer>
 #include <QtGui/QMessageBox>
 
 #include "plugins/history/history.h"
 
-#include "accounts/account.h"
 #include "accounts/account-manager.h"
+#include "accounts/account.h"
 #include "buddies/buddy-manager.h"
 #include "chat/chat-manager.h"
 #include "configuration/configuration-file.h"
 #include "core/core.h"
-#include "debug.h"
-#include "gui/widgets/chat-widget.h"
 #include "gui/widgets/chat-widget-manager.h"
+#include "gui/widgets/chat-widget.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/search-window.h"
 #include "icons/icons-manager.h"
+#include "misc/misc.h"
 #include "notify/notification-manager.h"
 #include "notify/notification.h"
-#include "misc/misc.h"
 #include "protocols/services/chat-service.h"
 #include "status/status-container.h"
+#include "debug.h"
 
 #include "buddy-firewall-data.h"
 #include "firewall-notification.h"

@@ -19,10 +19,10 @@
 
 #include <QtGui/QMenu>
 
-#include "gui/actions/action.h"
-#include "gui/actions/action-context.h"
 #include "gui/actions/action-context-provider.h"
+#include "gui/actions/action-context.h"
 #include "gui/actions/action-description.h"
+#include "gui/actions/action.h"
 
 #include "custom-input-menu-manager.h"
 

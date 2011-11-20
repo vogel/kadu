@@ -27,15 +27,15 @@
 #include "status/status-type.h"
 
 #include "actions/jabber-protocol-menu-manager.h"
-#include "gui/widgets/jabber-contact-personal-info-widget.h"
 #include "gui/widgets/jabber-add-account-widget.h"
+#include "gui/widgets/jabber-contact-personal-info-widget.h"
 #include "gui/widgets/jabber-create-account-widget.h"
 #include "gui/widgets/jabber-edit-account-widget.h"
 #include "jabber-account-details.h"
 #include "jabber-contact-details.h"
 #include "jabber-id-validator.h"
-#include "jabber-protocol.h"
 #include "jabber-protocol-factory.h"
+#include "jabber-protocol.h"
 
 JabberProtocolFactory * JabberProtocolFactory::Instance = 0;
 

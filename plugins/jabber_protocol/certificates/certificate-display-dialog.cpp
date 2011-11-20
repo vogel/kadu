@@ -24,13 +24,13 @@
  * Copyright (C) 2003  Justin Karneges
  */
 
-#include <QtCrypto>
 #include <QDateTime>
 #include <QLabel>
 #include <QPushButton>
+#include <QtCrypto>
 
-#include "certificates/certificate-helpers.h"
 #include "certificates/certificate-display-dialog.h"
+#include "certificates/certificate-helpers.h"
 
 
 CertificateDisplayDialog::CertificateDisplayDialog(const QCA::Certificate &cert, int result, QCA::Validity validity, QWidget *parent) : QDialog(parent)

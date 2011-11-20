@@ -20,8 +20,8 @@
 #ifndef CONFIG_PROXY_COMBO_BOX_H
 #define CONFIG_PROXY_COMBO_BOX_H
 
-#include "gui/widgets/proxy-combo-box.h"
 #include "gui/widgets/configuration/config-widget-value.h"
+#include "gui/widgets/proxy-combo-box.h"
 
 class QLabel;
 class QDomElement;

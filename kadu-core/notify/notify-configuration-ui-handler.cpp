@@ -22,21 +22,21 @@
 #include <QtGui/QApplication>
 #include <QtGui/QCheckBox>
 #include <QtGui/QGridLayout>
-#include <QtGui/QPushButton>
 #include <QtGui/QHBoxLayout>
-#include <QtGui/QListWidget>
 #include <QtGui/QLabel>
+#include <QtGui/QListWidget>
+#include <QtGui/QPushButton>
 
-#include "configuration/configuration-file.h"
 #include "buddies/buddy-list.h"
 #include "buddies/buddy-manager.h"
+#include "configuration/configuration-file.h"
 #include "contacts/contact.h"
 #include "gui/widgets/chat-widget.h"
-#include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/configuration/config-combo-box.h"
 #include "gui/widgets/configuration/config-group-box.h"
-#include "gui/widgets/configuration/notify-group-box.h"
+#include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/configuration/notifier-configuration-widget.h"
+#include "gui/widgets/configuration/notify-group-box.h"
 #include "gui/widgets/configuration/notify-tree-widget.h"
 #include "gui/windows/configuration-window.h"
 

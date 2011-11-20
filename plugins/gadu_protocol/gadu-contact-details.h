@@ -22,8 +22,8 @@
 #ifndef GADU_CONTACT_DETAILS_H
 #define GADU_CONTACT_DETAILS_H
 
-#include "contacts/contact.h"
 #include "contacts/contact-details.h"
+#include "contacts/contact.h"
 
 #include "gadu-protocol.h"
 

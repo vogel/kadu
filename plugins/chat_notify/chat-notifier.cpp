@@ -18,8 +18,8 @@
  */
 
 #include "contacts/contact-set.h"
-#include "gui/widgets/chat-widget.h"
 #include "gui/widgets/chat-widget-manager.h"
+#include "gui/widgets/chat-widget.h"
 #include "message/message-manager.h"
 #include "message/message-render-info.h"
 #include "notify/chat-notification.h"

@@ -21,9 +21,9 @@
 #ifndef CONFIG_SELECT_FONT_H
 #define CONFIG_SELECT_FONT_H
 
+#include "configuration/configuration-window-data-manager.h"
 #include "gui/widgets/configuration/config-widget-value.h"
 #include "gui/widgets/select-font.h"
-#include "configuration/configuration-window-data-manager.h"
 
 class QLabel;
 

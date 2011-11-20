@@ -18,10 +18,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "speech-configuration-ui-handler.h"
-#include "speech.h"
 #include "debug.h"
 #include "exports.h"
+#include "speech-configuration-ui-handler.h"
+#include "speech.h"
 
 #include "speech-plugin.h"
 

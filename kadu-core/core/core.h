@@ -29,8 +29,8 @@
 #include <QtCore/QObject>
 
 #include "accounts/accounts-aware-object.h"
-#include "buddies/buddy.h"
 #include "buddies/buddy-list.h"
+#include "buddies/buddy.h"
 #include "chat/chat.h"
 #include "configuration/configuration-aware-object.h"
 #include "icons/kadu-icon.h"

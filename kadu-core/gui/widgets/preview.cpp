@@ -29,8 +29,8 @@
 #include "chat/style-engines/chat-engine-kadu/kadu-chat-syntax.h"
 #include "configuration/chat-configuration-holder.h"
 #include "parser/parser.h"
-#include "status/status.h"
 #include "status/status-type-manager.h"
+#include "status/status.h"
 
 #include "misc/misc.h"
 

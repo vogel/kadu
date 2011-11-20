@@ -20,10 +20,10 @@
 #include <QtGui/QAction>
 #include <QtGui/QMenu>
 
-#include "gui/actions/action.h"
 #include "gui/actions/action-context.h"
-#include "gui/widgets/status-menu.h"
+#include "gui/actions/action.h"
 #include "gui/status-icon.h"
+#include "gui/widgets/status-menu.h"
 
 #include "change-status-action.h"
 

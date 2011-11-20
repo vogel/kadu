@@ -20,8 +20,8 @@
 
 #include <QtGui/QApplication>
 
-#include "gui/widgets/configuration/config-label.h"
 #include "gui/widgets/configuration/config-group-box.h"
+#include "gui/widgets/configuration/config-label.h"
 
 #include "debug.h"
 

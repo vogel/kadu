@@ -23,8 +23,8 @@
 
 #include "key-shared.h"
 
-#include "storage/shared-base.h"
 #include "../encryption_exports.h"
+#include "storage/shared-base.h"
 
 class Contact;
 class StoragePoint;

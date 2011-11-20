@@ -25,8 +25,8 @@
 #include <QtGui/QGridLayout>
 #include <QtGui/QPixmap>
 
-#include "debug.h"
 #include "misc/misc.h"
+#include "debug.h"
 
 #include "color-selector.h"
 

@@ -33,14 +33,14 @@
 #include <QtCore/QDir>
 #include <QtCore/QLibraryInfo>
 #include <QtCore/QLocale>
-#include <QtCore/QTimer>
 #include <QtCore/QString>
 #include <QtCore/QStringList>
+#include <QtCore/QTimer>
 #include <QtCore/QTranslator>
 #include <QtGui/QApplication>
 
-#include <time.h>
 #include <errno.h>
+#include <time.h>
 #ifndef Q_WS_WIN
 #include <sys/file.h>
 #include <sys/stat.h>
@@ -52,19 +52,19 @@
 #include <sys/types.h>
 #endif // Q_OS_BSD4 || Q_OS_LINUX
 
-#include "core/core.h"
 #include "configuration/configuration-file.h"
 #include "configuration/xml-configuration-file.h"
+#include "core/core.h"
 #include "gui/windows/message-dialog.h"
 #include "os/qtsingleapplication/qtlocalpeer.h"
 #include "plugins/plugins-manager.h"
 #include "protocols/protocols-manager.h"
 
-#include "debug.h"
-#include "kadu-config.h"
 #include "icons/icons-manager.h"
-#include "kadu-application.h"
 #include "misc/misc.h"
+#include "debug.h"
+#include "kadu-application.h"
+#include "kadu-config.h"
 
 #ifndef Q_WS_WIN
 static void kaduQtMessageHandler(QtMsgType type, const char *msg)

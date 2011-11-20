@@ -19,8 +19,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "icons/kadu-icon.h"
 #include "chat/chat-details-simple.h"
+#include "icons/kadu-icon.h"
 
 #include "chat-type-simple.h"
 

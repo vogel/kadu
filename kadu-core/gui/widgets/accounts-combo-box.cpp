@@ -24,8 +24,8 @@
 #include "accounts/filter/abstract-account-filter.h"
 #include "accounts/model/accounts-model.h"
 #include "accounts/model/accounts-proxy-model.h"
-#include "model/roles.h"
 #include "model/model-chain.h"
+#include "model/roles.h"
 
 #include "accounts-combo-box.h"
 

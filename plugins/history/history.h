@@ -39,16 +39,16 @@
 #include <QtCore/QString>
 #include <QtCore/QStringList>
 #include <QtCore/QVariant>
-#include <QtGui/QLabel>
-#include <QtGui/QListWidget>
-#include <QtGui/QKeyEvent>
 #include <QtGui/QCheckBox>
 #include <QtGui/QDialog>
+#include <QtGui/QKeyEvent>
+#include <QtGui/QLabel>
+#include <QtGui/QListWidget>
 
 #include "configuration/configuration-aware-object.h"
 #include "core/crash-aware-object.h"
-#include "gui/actions/action.h"
 #include "gui/actions/action-description.h"
+#include "gui/actions/action.h"
 #include "gui/widgets/talkable-menu-manager.h"
 #include "gui/windows/main-configuration-window.h"
 #include "protocols/protocol.h"

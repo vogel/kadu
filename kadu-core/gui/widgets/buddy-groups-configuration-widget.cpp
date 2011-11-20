@@ -24,8 +24,8 @@
 #include <QtGui/QLabel>
 #include <QtGui/QVBoxLayout>
 
-#include "contacts/contact.h"
 #include "buddies/group.h"
+#include "contacts/contact.h"
 #include "gui/widgets/group-list.h"
 #include "misc/misc.h"
 

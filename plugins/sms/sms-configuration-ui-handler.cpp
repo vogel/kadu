@@ -27,32 +27,32 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QProcess>
 #include <QtGui/QCheckBox>
 #include <QtGui/QComboBox>
 #include <QtGui/QGridLayout>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QListWidget>
-#include <QtCore/QProcess>
 #include <QtGui/QPushButton>
 #include <QtGui/QTextEdit>
 
-#include "configuration/configuration-file.h"
 #include "buddies/buddy-manager.h"
+#include "configuration/configuration-file.h"
 #include "core/core.h"
-#include "debug.h"
-#include "gui/widgets/configuration/configuration-widget.h"
+#include "gui/hot-key.h"
 #include "gui/widgets/configuration/config-combo-box.h"
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/config-line-edit.h"
+#include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-dialog.h"
-#include "gui/hot-key.h"
 #include "icons/icons-manager.h"
+#include "debug.h"
 
 #include "misc/path-conversion.h"
 
-#include "gui/windows/sms-image-dialog.h"
 #include "gui/windows/sms-dialog.h"
+#include "gui/windows/sms-image-dialog.h"
 
 #include "sms-actions.h"
 

@@ -30,8 +30,8 @@
 #define MINICLIENT_H
 
 #include <QObject>
-#include <QtCrypto>
 #include <QString>
+#include <QtCrypto>
 
 #include "jid.h"
 

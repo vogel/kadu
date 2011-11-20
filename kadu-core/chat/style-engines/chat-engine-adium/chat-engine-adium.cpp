@@ -25,24 +25,24 @@
 #include <QtCore/QString>
 #include <QtWebKit/QWebFrame>
 
-#include "accounts/account.h"
 #include "accounts/account-manager.h"
+#include "accounts/account.h"
 #include "avatars/avatar.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-set.h"
 #include "chat/chat-styles-manager.h"
 #include "chat/html-messages-renderer.h"
-#include "contacts/contact.h"
 #include "contacts/contact-set.h"
+#include "contacts/contact.h"
 #include "gui/widgets/chat-messages-view.h"
 #include "gui/widgets/chat-widget.h"
 #include "gui/widgets/preview.h"
 #include "icons/kadu-icon.h"
 #include "identities/identity.h"
 #include "message/message-render-info.h"
+#include "misc/misc.h"
 #include "parser/parser.h"
 #include "protocols/protocol-factory.h"
-#include "misc/misc.h"
 
 #include "adium-style.h"
 #include "adium-time-formatter.h"

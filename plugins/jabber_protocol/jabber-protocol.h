@@ -24,11 +24,10 @@
 #ifndef JABBER_PROTOCOL_H
 #define JABBER_PROTOCOL_H
 
-#include "protocols/services/chat-service.h"
 #include "protocols/protocol.h"
+#include "protocols/services/chat-service.h"
 
 #include "client/jabber-client.h"
-#include "jabber-account-details.h"
 #include "services/jabber-avatar-service.h"
 #include "services/jabber-chat-service.h"
 #include "services/jabber-chat-state-service.h"
@@ -36,6 +35,7 @@
 #include "services/jabber-file-transfer-service.h"
 #include "services/jabber-personal-info-service.h"
 #include "services/jabber-roster-service.h"
+#include "jabber-account-details.h"
 
 class JabberContactDetails;
 class JabberResourcePool;

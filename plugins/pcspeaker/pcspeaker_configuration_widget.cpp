@@ -21,17 +21,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+#include <QtGui/QHBoxLayout>
+#include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
 #include <QtGui/QPushButton>
-#include <QtGui/QLabel>
-#include <QtGui/QHBoxLayout>
 
 #include "configuration/configuration-file.h"
 #include "gui/widgets/configuration/notify-group-box.h"
 #include "icons/kadu-icon.h"
 
-#include "pcspeaker_configuration_widget.h"
 #include "pcspeaker.h"
+#include "pcspeaker_configuration_widget.h"
 
 PCSpeakerConfigurationWidget::PCSpeakerConfigurationWidget(QWidget *parent)
 	: NotifierConfigurationWidget(parent)

@@ -26,15 +26,15 @@
 #include <QtCore/QTextStream>
 
 #include "buddies/buddy-list.h"
-#include "buddies/group.h"
 #include "buddies/group-manager.h"
-#include "contacts/contact.h"
+#include "buddies/group.h"
 #include "contacts/contact-manager.h"
+#include "contacts/contact.h"
 
 #include "protocols/protocol.h"
 
-#include "debug.h"
 #include "misc/misc.h"
+#include "debug.h"
 
 #include "../gadu-contact-details.h"
 

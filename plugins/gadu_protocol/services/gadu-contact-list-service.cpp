@@ -26,17 +26,17 @@
 #include <QtCore/QByteArray>
 
 #include "buddies/buddy-manager.h"
-#include "contacts/contact.h"
 #include "contacts/contact-manager.h"
+#include "contacts/contact.h"
 #include "core/core.h"
 #include "misc/misc.h"
 #include "debug.h"
 
 #include "helpers/gadu-list-helper.h"
-#include "gadu-account-details.h"
-#include "gadu-protocol.h"
 #include "services/gadu-contact-list-state-machine.h"
 #include "socket-notifiers/gadu-protocol-socket-notifiers.h"
+#include "gadu-account-details.h"
+#include "gadu-protocol.h"
 
 #include "gadu-contact-list-service.h"
 

@@ -19,8 +19,8 @@
 
 #include <QtGui/QApplication>
 
-#include "gui/widgets/configuration/config-line-separator.h"
 #include "gui/widgets/configuration/config-group-box.h"
+#include "gui/widgets/configuration/config-line-separator.h"
 
 #include "debug.h"
 

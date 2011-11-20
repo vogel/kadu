@@ -30,8 +30,8 @@
 #include <QtGui/QTextEdit>
 #include <QtGui/QVBoxLayout>
 
-#include "buddies/filter/mobile-buddy-filter.h"
 #include "buddies/buddy-manager.h"
+#include "buddies/filter/mobile-buddy-filter.h"
 #include "configuration/configuration-file.h"
 #include "gui/widgets/select-buddy-combo-box.h"
 #include "gui/windows/message-dialog.h"

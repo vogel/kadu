@@ -28,8 +28,8 @@
 #include <QtCore/QDateTime>
 #include <QtCore/QObject>
 
-#include "chat/chat.h"
 #include "buddies/buddy.h"
+#include "chat/chat.h"
 
 #include "../history_exports.h"
 

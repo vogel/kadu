@@ -21,8 +21,8 @@
  */
 
 #include "accounts/account.h"
-#include "contacts/contact.h"
 #include "contacts/contact-manager.h"
+#include "contacts/contact.h"
 #include "icons/kadu-icon.h"
 #include "identities/identity.h"
 #include "model/roles.h"

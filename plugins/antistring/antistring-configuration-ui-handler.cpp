@@ -26,12 +26,12 @@
 #include <QtGui/QPushButton>
 #include <QtGui/QSpinBox>
 
-#include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/configuration/config-group-box.h"
+#include "gui/widgets/configuration/configuration-widget.h"
 #include "misc/path-conversion.h"
 
-#include "antistring.h"
 #include "antistring-configuration.h"
+#include "antistring.h"
 
 #include "antistring-configuration-ui-handler.h"
 

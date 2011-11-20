@@ -23,9 +23,9 @@
 #ifndef CONFIG_PREVIEW_H
 #define CONFIG_PREVIEW_H
 
+#include "configuration/configuration-window-data-manager.h"
 #include "gui/widgets/configuration/config-widget.h"
 #include "gui/widgets/preview.h"
-#include "configuration/configuration-window-data-manager.h"
 
 class QLabel;
 class ConfigGroupBox;

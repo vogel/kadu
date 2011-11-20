@@ -42,12 +42,12 @@
 #include "macspellchecker.h"
 #endif
 
+#include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/chat-widget.h"
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/custom-input.h"
-#include "gui/widgets/chat-edit-box.h"
 #include "gui/windows/message-dialog.h"
 #include "misc/misc.h"
 

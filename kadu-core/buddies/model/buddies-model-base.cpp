@@ -22,21 +22,21 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "accounts/account.h"
 #include "accounts/account-manager.h"
-#include "avatars/avatar.h"
+#include "accounts/account.h"
 #include "avatars/avatar-manager.h"
-#include "buddies/buddy.h"
+#include "avatars/avatar.h"
 #include "buddies/buddy-kadu-data.h"
 #include "buddies/buddy-list-mime-data-helper.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-preferred-manager.h"
+#include "buddies/buddy.h"
 #include "buddies/model/buddy-data-extractor.h"
 #include "contacts/contact.h"
 #include "contacts/model/contact-data-extractor.h"
+#include "icons/icons-manager.h"
 #include "model/roles.h"
 #include "protocols/protocol.h"
-#include "icons/icons-manager.h"
 
 #include "buddies-model-base.h"
 

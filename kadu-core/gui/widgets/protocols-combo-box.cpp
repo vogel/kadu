@@ -23,10 +23,10 @@
 #include <QtGui/QAction>
 
 #include "model/actions-proxy-model.h"
-#include "model/roles.h"
 #include "model/model-chain.h"
-#include "protocols/model/protocols-model.h"
+#include "model/roles.h"
 #include "protocols/model/protocols-model-proxy.h"
+#include "protocols/model/protocols-model.h"
 
 #include "protocols-combo-box.h"
 

@@ -21,10 +21,10 @@
 
 #include <QtXml/QDomDocument>
 
-#include "gadu-avatar-service.h"
 #include "misc/path-conversion.h"
 #include "server/gadu-avatar-fetcher.h"
 #include "server/gadu-avatar-uploader.h"
+#include "gadu-avatar-service.h"
 
 void GaduAvatarService::fetchAvatar(Contact contact)
 {

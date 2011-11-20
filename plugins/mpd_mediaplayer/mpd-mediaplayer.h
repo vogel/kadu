@@ -26,8 +26,8 @@
 
 #include "plugins/generic-plugin.h"
 
-#include "plugins/mediaplayer/player_info.h"
 #include "plugins/mediaplayer/player_commands.h"
+#include "plugins/mediaplayer/player_info.h"
 
 #include "mpd-config.h"
 

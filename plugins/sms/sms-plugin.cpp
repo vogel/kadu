@@ -18,11 +18,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "scripts/sms-script-manager.h"
 #include "mobile-number-manager.h"
 #include "sms-actions.h"
 #include "sms-configuration-ui-handler.h"
 #include "sms-gateway-manager.h"
-#include "scripts/sms-script-manager.h"
 
 #include "sms-plugin.h"
 

@@ -22,14 +22,14 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "accounts/account.h"
 #include "accounts/account-manager.h"
+#include "accounts/account.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-set.h"
 #include "buddies/group-manager.h"
-#include "chat/type/chat-type.h"
 #include "chat/chat-details.h"
 #include "chat/chat-manager.h"
+#include "chat/type/chat-type.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact-set.h"
 #include "parser/parser.h"

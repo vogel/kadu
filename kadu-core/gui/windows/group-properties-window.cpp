@@ -31,8 +31,8 @@
 #include <QtGui/QStyle>
 #include <QtGui/QVBoxLayout>
 
-#include "configuration/configuration-file.h"
 #include "buddies/group.h"
+#include "configuration/configuration-file.h"
 
 #include "icons/kadu-icon.h"
 #include "misc/misc.h"

@@ -26,8 +26,8 @@
 #include "gui/windows/message-dialog.h"
 #include "identities/identity-manager.h"
 #include "identities/model/identity-model.h"
-#include "model/roles.h"
 #include "model/model-chain.h"
+#include "model/roles.h"
 
 #include "identities-combo-box.h"
 

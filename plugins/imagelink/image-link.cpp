@@ -24,13 +24,13 @@
 
 #include "configuration/configuration-file.h"
 #include "contacts/contact-set.h"
-#include "debug.h"
 #include "gui/widgets/chat-messages-view.h"
-#include "gui/widgets/chat-widget.h"
 #include "gui/widgets/chat-widget-manager.h"
+#include "gui/widgets/chat-widget.h"
 #include "message/message-manager.h"
 #include "message/message-render-info.h"
 #include "protocols/services/chat-service.h"
+#include "debug.h"
 
 #include "image-link.h"
 

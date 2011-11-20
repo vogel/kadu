@@ -27,11 +27,11 @@
 #include <QtGui/QPushButton>
 #include <QtGui/QScrollArea>
 
-#include "file-transfer/file-transfer.h"
 #include "file-transfer/file-transfer-manager.h"
+#include "file-transfer/file-transfer.h"
 
-#include "debug.h"
 #include "misc/misc.h"
+#include "debug.h"
 
 #include "gui/widgets/file-transfer-widget.h"
 

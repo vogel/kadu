@@ -21,12 +21,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "icons/icons-manager.h"
+#include "identities/identity.h"
 #include "notify/notification-manager.h"
 #include "notify/notify-event.h"
 #include "parser/parser.h"
 #include "debug.h"
-#include "icons/icons-manager.h"
-#include "identities/identity.h"
 
 #include "connection-error-notification.h"
 

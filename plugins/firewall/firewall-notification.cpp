@@ -20,9 +20,9 @@
 #include <QtGui/QTextDocument>
 
 #include "configuration/configuration-file.h"
+#include "icons/icons-manager.h"
 #include "notify/notification-manager.h"
 #include "notify/notify-event.h"
-#include "icons/icons-manager.h"
 
 #include "firewall-notification.h"
 

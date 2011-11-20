@@ -21,8 +21,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <phonon/mediaobject.h>
 #include <phonon/audiooutput.h>
+#include <phonon/mediaobject.h>
 #include <phonon/phononnamespace.h>
 
 #include "plugins/sound/sound-manager.h"

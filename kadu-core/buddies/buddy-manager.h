@@ -30,8 +30,8 @@
 #include <QtCore/QObject>
 #include <QtCore/QUuid>
 
-#include "buddies/buddy.h"
 #include "buddies/buddy-list.h"
+#include "buddies/buddy.h"
 #include "storage/simple-manager.h"
 
 #include "exports.h"

@@ -22,9 +22,9 @@
  */
 
 #include "buddies/buddy-manager.h"
-#include "contacts/contact-set-configuration-helper.h"
-#include "chat/type/chat-type-manager.h"
 #include "chat/chat.h"
+#include "chat/type/chat-type-manager.h"
+#include "contacts/contact-set-configuration-helper.h"
 
 #include "chat-details-conference.h"
 

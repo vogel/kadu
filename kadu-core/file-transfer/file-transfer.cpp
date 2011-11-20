@@ -23,8 +23,8 @@
 
 #include <QtCore/QFile>
 
-#include "accounts/account.h"
 #include "accounts/account-manager.h"
+#include "accounts/account.h"
 #include "configuration/xml-configuration-file.h"
 #include "contacts/contact.h"
 #include "file-transfer/file-transfer-manager.h"
@@ -32,9 +32,9 @@
 #include "protocols/services/file-transfer-service.h"
 #include "storage/storage-point.h"
 
-#include "file-transfer.h"
 #include "buddies/buddy-manager.h"
 #include "contacts/contact-manager.h"
+#include "file-transfer.h"
 
 KaduSharedBaseClassImpl(FileTransfer)
 

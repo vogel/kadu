@@ -28,8 +28,8 @@
 #include "misc/path-conversion.h"
 #include "protocols/protocol.h"
 
-#include "history-importer.h"
 #include "history-importer-manager.h"
+#include "history-importer.h"
 
 #include "history-migration-actions.h"
 

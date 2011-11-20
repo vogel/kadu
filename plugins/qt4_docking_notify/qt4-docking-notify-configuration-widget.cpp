@@ -22,13 +22,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtGui/QApplication>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QPushButton>
-#include <QtGui/QApplication>
 
 #include "configuration/notifier-configuration-data-manager.h"
-#include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/configuration/config-combo-box.h"
+#include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/configuration/notify-group-box.h"
 #include "gui/windows/configuration-window.h"
 #include "gui/windows/main-configuration-window.h"

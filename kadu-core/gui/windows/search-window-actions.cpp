@@ -23,9 +23,9 @@
 #include <QtGui/QRadioButton>
 #include <QtGui/QTreeWidget>
 
+#include "gui/actions/action-description.h"
 #include "gui/actions/action.h"
 #include "gui/actions/actions.h"
-#include "gui/actions/action-description.h"
 #include "gui/windows/search-window.h"
 
 #include "search-window-actions.h"

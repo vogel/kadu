@@ -22,8 +22,8 @@
 #ifndef BUDDY_SEARCH_CRITERIA_H
 #define BUDDY_SEARCH_CRITERIA_H
 
-#include "contacts/contact.h"
 #include "buddies/buddy.h"
+#include "contacts/contact.h"
 
 struct KADUAPI BuddySearchCriteria
 {

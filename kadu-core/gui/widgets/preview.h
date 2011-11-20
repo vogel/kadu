@@ -25,8 +25,8 @@
 #define PREVIEW_H
 
 #include "configuration/configuration-aware-object.h"
-#include "contacts/contact.h"
 #include "contacts/contact-set.h"
+#include "contacts/contact.h"
 
 #include "kadu-web-view.h"
 

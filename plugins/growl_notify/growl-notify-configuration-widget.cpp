@@ -21,16 +21,16 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QLabel>
-#include <QtGui/QSpinBox>
+#include <QtGui/QApplication>
 #include <QtGui/QCheckBox>
 #include <QtGui/QComboBox>
-#include <QtGui/QLineEdit>
 #include <QtGui/QGridLayout>
-#include <QtGui/QApplication>
+#include <QtGui/QLabel>
+#include <QtGui/QLineEdit>
+#include <QtGui/QSpinBox>
 
-#include "debug.h"
 #include "configuration/configuration-file.h"
+#include "debug.h"
 
 #include "growl-notify-configuration-widget.h"
 

@@ -28,8 +28,8 @@
 
 #include "contacts/contact.h"
 #include "message/message.h"
-#include "exports.h"
 #include "storage/manager.h"
+#include "exports.h"
 
 class Account;
 class Contact;

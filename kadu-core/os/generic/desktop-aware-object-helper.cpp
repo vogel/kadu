@@ -23,8 +23,8 @@
 #include <QtGui/QDesktopWidget>
 #include <QtGui/QWidget>
 
-#include "os/generic/desktop-aware-object.h"
 #include "misc/misc.h"
+#include "os/generic/desktop-aware-object.h"
 
 #define DESKTOP_AWARE_OBJECT_HELPER_TIMER_INTERVAL 300 /*ms*/
 

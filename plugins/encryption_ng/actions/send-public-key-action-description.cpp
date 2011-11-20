@@ -19,13 +19,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "chat/chat.h"
 #include "chat/chat-manager.h"
-#include "contacts/contact.h"
+#include "chat/chat.h"
 #include "contacts/contact-set.h"
+#include "contacts/contact.h"
 #include "core/core.h"
-#include "gui/actions/action.h"
 #include "gui/actions/action-context.h"
+#include "gui/actions/action.h"
 #include "gui/widgets/talkable-menu-manager.h"
 #include "protocols/services/chat-service.h"
 

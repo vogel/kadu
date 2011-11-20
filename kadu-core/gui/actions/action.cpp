@@ -23,8 +23,8 @@
 #include <QtGui/QMenu>
 
 #include "accounts/account-manager.h"
-#include "buddies/buddy.h"
 #include "buddies/buddy-set.h"
+#include "buddies/buddy.h"
 #include "gui/actions/action-context.h"
 #include "gui/actions/action-description.h"
 #include "gui/hot-key.h"

@@ -21,8 +21,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "spellchecker.h"
 #include "spellchecker-plugin.h"
+#include "spellchecker.h"
 
 #include "highlighter.h"
 

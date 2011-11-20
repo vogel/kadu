@@ -21,11 +21,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QProcess>
 #include <QtCore/QDateTime>
+#include <QtCore/QProcess>
 
-#include "debug.h"
 #include "plugins/mediaplayer/mediaplayer.h"
+#include "debug.h"
 
 #include "itunes.h"
 #include "itunescontroller.h"

@@ -27,8 +27,8 @@
 
 #include "buddies/group-manager.h"
 #include "buddies/model/groups-model.h"
-#include "model/roles.h"
 #include "model/model-chain.h"
+#include "model/roles.h"
 
 #include "groups-combo-box.h"
 

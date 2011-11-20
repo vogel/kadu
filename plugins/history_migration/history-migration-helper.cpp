@@ -23,10 +23,10 @@
 #include <QtCore/QChar>
 #include <QtCore/QDir>
 #include <QtCore/QFile>
-#include <QtCore/QStringList>
 #include <QtCore/QRegExp>
-#include <QtCore/QtAlgorithms>
+#include <QtCore/QStringList>
 #include <QtCore/QTextStream>
+#include <QtCore/QtAlgorithms>
 
 #include "misc/misc.h"
 #include "debug.h"

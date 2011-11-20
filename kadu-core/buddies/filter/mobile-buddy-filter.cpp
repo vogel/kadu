@@ -18,8 +18,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "buddies/buddy.h"
 #include "buddies/buddy-set.h"
+#include "buddies/buddy.h"
 
 #include "mobile-buddy-filter.h"
 

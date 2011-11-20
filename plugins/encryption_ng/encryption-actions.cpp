@@ -20,8 +20,8 @@
  */
 
 #include "chat/chat.h"
-#include "gui/actions/action.h"
 #include "gui/actions/action-description.h"
+#include "gui/actions/action.h"
 #include "gui/widgets/chat-edit-box.h"
 #include "identities/identity.h"
 #include "protocols/protocol.h"

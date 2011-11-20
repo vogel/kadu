@@ -24,8 +24,8 @@
 #include <stdarg.h>
 #include <stdio.h>
 
-#include "debug.h"
 #include "misc/misc.h"
+#include "debug.h"
 
 int debug_mask;
 

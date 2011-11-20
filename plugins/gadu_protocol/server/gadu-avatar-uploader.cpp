@@ -21,8 +21,8 @@
 #include <QtCore/QBuffer>
 #include <QtCore/QRegExp>
 #include <QtNetwork/QNetworkAccessManager>
-#include <QtNetwork/QNetworkRequest>
 #include <QtNetwork/QNetworkReply>
+#include <QtNetwork/QNetworkRequest>
 
 #include "oauth/oauth-manager.h"
 #include "oauth/oauth-parameters.h"

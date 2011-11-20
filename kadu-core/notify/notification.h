@@ -26,8 +26,8 @@
 #include <QtCore/QPair>
 
 #include "buddies/buddy-set.h"
-#include "exports.h"
 #include "icons/kadu-icon.h"
+#include "exports.h"
 
 class QTimer;
 

@@ -26,10 +26,10 @@
 #include <QtNetwork/QHostInfo>
 
 #if defined(Q_WS_X11) || defined(Q_WS_MAC)
-#include <time.h>
+#include <sys/utsname.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/utsname.h>
+#include <time.h>
 #endif
 
 #ifdef Q_WS_WIN

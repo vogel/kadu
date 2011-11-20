@@ -26,8 +26,8 @@
 #ifndef BUDDY_SHARED_DATA
 #define BUDDY_SHARED_DATA
 
-#include <QtCore/QMap>
 #include <QtCore/QList>
+#include <QtCore/QMap>
 #include <QtCore/QSharedData>
 #include <QtCore/QString>
 #include <QtCore/QStringList>

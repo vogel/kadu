@@ -25,8 +25,8 @@
 
 #include "accounts/account.h"
 
-#include "plugins/encryption_ng/keys/key.h"
 #include "plugins/encryption_ng/decryptor.h"
+#include "plugins/encryption_ng/keys/key.h"
 
 class EncryptioNgSimliteDecryptor : public Decryptor
 {

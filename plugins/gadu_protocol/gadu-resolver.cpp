@@ -26,19 +26,19 @@
 #include <QtNetwork/QHostInfo>
 
 #ifdef Q_OS_WIN
-#include <winsock2.h>
 #include <io.h>
+#include <winsock2.h>
 #else
-#include <sys/wait.h>
-#include <netinet/in.h>
-#include <netdb.h>
 #include <arpa/inet.h>
+#include <netinet/in.h>
+#include <sys/wait.h>
+#include <netdb.h>
 #include <unistd.h>
 #endif
 #include <errno.h>
-#include <stdlib.h>
-#include <signal.h>
 #include <libgadu.h>
+#include <signal.h>
+#include <stdlib.h>
 
 #include "debug.h"
 

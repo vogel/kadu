@@ -24,8 +24,8 @@
 
 #include <QtCrypto>
 
-#include "storage/shared.h"
 #include "../encryption_exports.h"
+#include "storage/shared.h"
 
 class Contact;
 

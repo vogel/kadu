@@ -26,8 +26,8 @@
  *
  */
 
-#include "jid.h"
 #include "jid-util.h"
+#include "jid.h"
 
 using namespace XMPP;
 

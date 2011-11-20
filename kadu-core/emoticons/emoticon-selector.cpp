@@ -38,8 +38,8 @@
 #include <QtGui/QMouseEvent>
 #include <QtGui/QScrollBar>
 
-#include "emoticons/emoticons-manager.h"
 #include "emoticons/emoticon-selector-button.h"
+#include "emoticons/emoticons-manager.h"
 
 #include "emoticon-selector.h"
 

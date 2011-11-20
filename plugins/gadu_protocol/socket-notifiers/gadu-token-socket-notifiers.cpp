@@ -23,8 +23,8 @@
 
 #include <libgadu.h>
 
-#include "debug.h"
 #include "misc/misc.h"
+#include "debug.h"
 
 #include "gadu-token-socket-notifiers.h"
 

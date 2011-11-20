@@ -24,8 +24,8 @@
 #include <QtGui/QLabel>
 #include <QtXml/QDomElement>
 
-#include "gui/widgets/configuration/config-slider.h"
 #include "gui/widgets/configuration/config-group-box.h"
+#include "gui/widgets/configuration/config-slider.h"
 
 #include "debug.h"
 

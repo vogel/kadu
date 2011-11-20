@@ -22,8 +22,8 @@
 #ifndef BUDDY_SET_H
 #define BUDDY_SET_H
 
-#include <QtCore/QSet>
 #include <QtCore/QList>
+#include <QtCore/QSet>
 
 #include "accounts/account.h"
 #include "buddies/buddy.h"

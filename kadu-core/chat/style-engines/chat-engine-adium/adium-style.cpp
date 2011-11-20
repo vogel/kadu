@@ -19,13 +19,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QIODevice>
 #include <QtCore/QDir>
+#include <QtCore/QIODevice>
 #include <QtCore/QSettings>
 #include <QtCore/QTextCodec>
 #include <QtCore/QTextStream>
-#include <QtXml/QDomNode>
 #include <QtXml/QDomElement>
+#include <QtXml/QDomNode>
 
 #include "misc/path-conversion.h"
 

@@ -18,9 +18,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "icons/icons-manager.h"
 #include "notify/notification-manager.h"
 #include "notify/notify-event.h"
-#include "icons/icons-manager.h"
 
 #include "cenzor-notification.h"
 

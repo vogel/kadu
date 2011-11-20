@@ -28,8 +28,8 @@
 #include <QtGui/QPushButton>
 #include <QtGui/QVBoxLayout>
 
-#include "buddies/filter/non-buddy-filter.h"
 #include "buddies/buddy-manager.h"
+#include "buddies/filter/non-buddy-filter.h"
 #include "gui/widgets/select-buddy-combo-box.h"
 #include "icons/icons-manager.h"
 

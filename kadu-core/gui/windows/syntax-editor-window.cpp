@@ -25,8 +25,8 @@
 #include <QtGui/QFrame>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QInputDialog>
-#include <QtGui/QLabel>
 #include <QtGui/QKeyEvent>
+#include <QtGui/QLabel>
 #include <QtGui/QPushButton>
 #include <QtGui/QSplitter>
 #include <QtGui/QStyle>
@@ -36,9 +36,9 @@
 #include "configuration/configuration-file.h"
 #include "gui/widgets/preview.h"
 #include "gui/windows/message-dialog.h"
+#include "icons/icons-manager.h"
 #include "misc/misc.h"
 #include "misc/syntax-list.h"
-#include "icons/icons-manager.h"
 
 #include "syntax-editor-window.h"
 

@@ -1,8 +1,8 @@
 #ifndef ITUNESCONTROLLER_H
 #define ITUNESCONTROLLER_H
 
-#include <QtCore/QString>
 #include <CoreFoundation/CoreFoundation.h>
+#include <QtCore/QString>
 
 #include "tune.h"
 

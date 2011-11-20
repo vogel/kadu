@@ -26,8 +26,8 @@
 #include "icons/kadu-icon.h"
 #include "identities/identity.h"
 #include "model/roles.h"
-#include "protocols/services/roster-service.h"
 #include "protocols/protocol.h"
+#include "protocols/services/roster-service.h"
 
 #include "buddy-contacts-table-model.h"
 

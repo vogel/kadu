@@ -25,12 +25,12 @@
 
 #include <QtCore/QProcess>
 #include <QtGui/QApplication>
-#include <QtGui/QLineEdit>
-#include <QtGui/QLabel>
 #include <QtGui/QHBoxLayout>
+#include <QtGui/QLabel>
+#include <QtGui/QLineEdit>
 
-#include "buddies/buddy.h"
 #include "buddies/buddy-list.h"
+#include "buddies/buddy.h"
 
 #include "chat/chat.h"
 
@@ -45,8 +45,8 @@
 
 #include "notify/account-notification.h"
 #include "notify/chat-notification.h"
-#include "notify/notification.h"
 #include "notify/notification-manager.h"
+#include "notify/notification.h"
 
 #include "icons/icons-manager.h"
 #include "parser/parser.h"

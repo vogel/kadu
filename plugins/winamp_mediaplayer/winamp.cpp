@@ -7,11 +7,11 @@
  */
 
 #include <QtCore/QDir>
-#include <QtCore/QTextStream>
 #include <QtCore/QStringList>
+#include <QtCore/QTextStream>
 
-#include "debug.h"
 #include "plugins/mediaplayer/mediaplayer.h"
+#include "debug.h"
 #include "winamp.h"
 
 #include "wa_ipc.h"

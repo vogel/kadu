@@ -21,13 +21,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <stdio.h>
 #include <sys/file.h>
 #include <sys/stat.h>
 #include <sys/time.h>
 #include <sys/types.h>
+#include <stdio.h>
 
-#include "activate.h"
 #include "configuration/xml-configuration-file.h"
 #include "core/core.h"
 #include "core/crash-aware-object.h"
@@ -35,6 +34,7 @@
 #include "misc/path-conversion.h"
 #include "plugins/plugin.h"
 #include "plugins/plugins-manager.h"
+#include "activate.h"
 #include "debug.h"
 #include "kadu-config.h"
 

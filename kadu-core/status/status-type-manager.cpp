@@ -26,9 +26,9 @@
 #include <QtGui/QApplication>
 
 #include "icons/kadu-icon.h"
-#include "status/status.h"
-#include "status/status-type.h"
 #include "status/status-type-data.h"
+#include "status/status-type.h"
+#include "status/status.h"
 
 #include "status-type-manager.h"
 

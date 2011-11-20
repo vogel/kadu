@@ -18,8 +18,8 @@
  */
 
 #include "model/roles.h"
-#include "network/proxy/network-proxy.h"
 #include "network/proxy/model/network-proxy-model.h"
+#include "network/proxy/network-proxy.h"
 
 #include "network-proxy-proxy-model.h"
 

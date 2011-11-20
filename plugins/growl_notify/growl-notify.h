@@ -1,8 +1,8 @@
 #ifndef GROWL_NOTIFY_H
 #define GROWL_NOTIFY_H
 
-#include "notify/notifier.h"
 #include "gui/windows/main-configuration-window.h"
+#include "notify/notifier.h"
 #include "plugins/generic-plugin.h"
 
 /**

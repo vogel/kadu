@@ -21,8 +21,8 @@
 #ifndef SOUND_PLAY_THREAD_H
 #define SOUND_PLAY_THREAD_H
 
-#include <QtCore/QObject>
 #include <QtCore/QMutex>
+#include <QtCore/QObject>
 #include <QtCore/QWaitCondition>
 
 class SoundPlayer;

@@ -22,13 +22,13 @@
  */
 
 #include <QtGui/QApplication>
-#include <QtGui/QListWidget>
 #include <QtGui/QGroupBox>
 #include <QtGui/QHBoxLayout>
+#include <QtGui/QListWidget>
 
 #include "configuration/configuration-file.h"
-#include "gui/widgets/configuration/config-section.h"
 #include "gui/widgets/configuration/config-group-box.h"
+#include "gui/widgets/configuration/config-section.h"
 #include "gui/widgets/configuration/config-tab.h"
 #include "gui/widgets/configuration/config-widget.h"
 

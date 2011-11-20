@@ -29,8 +29,8 @@
 
 #include "gui/widgets/buddy-contacts-table-delegate.h"
 #include "gui/widgets/buddy-contacts-table-item.h"
-#include "gui/widgets/buddy-contacts-table-model.h"
 #include "gui/widgets/buddy-contacts-table-model-proxy.h"
+#include "gui/widgets/buddy-contacts-table-model.h"
 #include "gui/windows/message-dialog.h"
 #include "identities/identity.h"
 #include "model/roles.h"

@@ -23,12 +23,12 @@
 
 #include "accounts/account.h"
 
-#include "buddies/buddy.h"
 #include "buddies/buddy-list.h"
-#include "contacts/contact-manager.h"
-#include "contacts/contact.h"
+#include "buddies/buddy.h"
 #include "configuration/configuration-manager.h"
 #include "configuration/xml-configuration-file.h"
+#include "contacts/contact-manager.h"
+#include "contacts/contact.h"
 #include "core/core.h"
 #include "storage/storage-point.h"
 

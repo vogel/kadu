@@ -27,7 +27,6 @@
 #ifndef CERTIFICATEDISPLAYDIALOG_H
 #define CERTIFICATEDISPLAYDIALOG_H
 
-#include <QtCrypto>
 #include <QtGui/QButtonGroup>
 #include <QtGui/QDialog>
 #include <QtGui/QFrame>
@@ -38,6 +37,7 @@
 #include <QtGui/QSpacerItem>
 #include <QtGui/QTextBrowser>
 #include <QtGui/QVBoxLayout>
+#include <QtCrypto>
 
 class CertificateDisplayDialog : public QDialog
 {

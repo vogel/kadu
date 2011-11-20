@@ -23,16 +23,16 @@
 
 #include <QtGui/QDialogButtonBox>
 #include <QtGui/QFormLayout>
+#include <QtGui/QKeyEvent>
 #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
-#include <QtGui/QKeyEvent>
 #include <QtGui/QPushButton>
 #include <QtGui/QStyle>
 #include <QtGui/QVBoxLayout>
 
 #include "gui/windows/message-dialog.h"
-#include "misc/misc.h"
 #include "icons/icons-manager.h"
+#include "misc/misc.h"
 
 #include "server/jabber-server-change-password.h"
 

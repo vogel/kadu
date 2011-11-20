@@ -28,17 +28,16 @@
 #include <QtSql/QSqlError>
 #include <QtSql/QSqlRecord>
 
-#include "accounts/account.h"
 #include "accounts/account-manager.h"
+#include "accounts/account.h"
 #include "buddies/buddy-manager.h"
-#include "chat/chat-details.h"
 #include "chat/chat-details-aggregate.h"
+#include "chat/chat-details.h"
 #include "chat/chat-manager.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
 #include "core/core.h"
-#include "debug.h"
 #include "gui/widgets/chat-widget.h"
 #include "gui/windows/message-dialog.h"
 #include "message/formatted-message.h"
@@ -46,9 +45,10 @@
 #include "misc/misc.h"
 #include "misc/path-conversion.h"
 #include "status/status-type-manager.h"
+#include "debug.h"
 
-#include "plugins/history/model/dates-model-item.h"
 #include "plugins/history/history.h"
+#include "plugins/history/model/dates-model-item.h"
 #include "plugins/history/search/history-search-parameters.h"
 #include "plugins/history/timed-status.h"
 

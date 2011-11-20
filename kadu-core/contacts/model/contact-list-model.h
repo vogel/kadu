@@ -25,8 +25,8 @@
 #include <QtCore/QAbstractListModel>
 #include <QtCore/QModelIndex>
 
-#include "model/kadu-abstract-model.h"
 #include "contacts/contact.h"
+#include "model/kadu-abstract-model.h"
 
 class ContactListModel : public QAbstractItemModel, public KaduAbstractModel
 {

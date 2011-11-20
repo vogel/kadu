@@ -19,8 +19,8 @@
 #ifndef _WA_IPC_H_
 #define _WA_IPC_H_
 
-#include <windows.h>
 #include <stddef.h>
+#include <windows.h>
 #if (_MSC_VER <= 1200)
 typedef int intptr_t;
 #endif

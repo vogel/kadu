@@ -24,8 +24,8 @@
 #include <QtXmlPatterns/QAbstractXmlReceiver>
 #include <QtXmlPatterns/QXmlNamePool>
 
-#include "buddies/buddy.h"
 #include "buddies/buddy-list.h"
+#include "buddies/buddy.h"
 
 class GaduImportedContactXmlReceiver : public QAbstractXmlReceiver
 {

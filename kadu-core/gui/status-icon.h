@@ -23,9 +23,9 @@
 #include <QtGui/QPushButton>
 
 #include "configuration/configuration-aware-object.h"
-#include "exports.h"
 #include "icons/kadu-icon.h"
 #include "status/status.h"
+#include "exports.h"
 
 class StatusContainer;
 

@@ -20,8 +20,8 @@
 #include <QtGui/QAction>
 
 #include "gui/windows/proxy-edit-window.h"
-#include "model/roles.h"
 #include "model/model-chain.h"
+#include "model/roles.h"
 #include "network/proxy/model/network-proxy-model.h"
 #include "network/proxy/model/network-proxy-proxy-model.h"
 

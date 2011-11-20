@@ -24,8 +24,8 @@
 
 #include "accounts/account.h"
 #include "avatars/avatar.h"
-#include "contacts/contact.h"
 #include "buddies/buddy-kadu-data.h"
+#include "contacts/contact.h"
 #include "icons/kadu-icon.h"
 #include "model/roles.h"
 #include "status/status-container.h"

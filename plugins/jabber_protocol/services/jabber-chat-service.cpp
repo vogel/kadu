@@ -25,18 +25,18 @@
 #include <QtGui/QTextDocument>
 
 #include "buddies/buddy-set.h"
-#include "chat/chat.h"
 #include "chat/chat-manager.h"
-#include "core/core.h"
+#include "chat/chat.h"
 #include "configuration/configuration-file.h"
-#include "contacts/contact-set.h"
 #include "contacts/contact-manager.h"
+#include "contacts/contact-set.h"
+#include "core/core.h"
 #include "gui/windows/message-dialog.h"
 #include "message/message.h"
 #include "misc/misc.h"
 
-#include "html_document.h"
 #include "debug.h"
+#include "html_document.h"
 
 #include "../jabber-protocol.h"
 

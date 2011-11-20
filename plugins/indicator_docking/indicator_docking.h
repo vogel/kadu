@@ -21,8 +21,8 @@
 #ifndef INDICATOR_DOCKING_H
 #define INDICATOR_DOCKING_H
 
-#include <QtCore/QScopedPointer>
 #include <QtCore/QMultiMap>
+#include <QtCore/QScopedPointer>
 
 #include "chat/chat.h"
 #include "notify/notifier.h"
@@ -93,7 +93,7 @@ public:
 };
 
 // for MOC
-#include <libindicate-qt/qindicateindicator.h>
 #include "notify/notification.h"
+#include <libindicate-qt/qindicateindicator.h>
 
 #endif // INDICATOR_DOCKING_H

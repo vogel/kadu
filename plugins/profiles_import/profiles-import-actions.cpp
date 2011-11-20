@@ -18,8 +18,8 @@
  */
 
 #include "core/core.h"
-#include "gui/actions/actions.h"
 #include "gui/actions/action-description.h"
+#include "gui/actions/actions.h"
 #include "gui/windows/kadu-window.h"
 
 #include "gui/windows/import-profile-window.h"

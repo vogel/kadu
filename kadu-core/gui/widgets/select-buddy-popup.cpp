@@ -25,12 +25,12 @@
 #include "buddies/buddy-manager.h"
 #include "buddies/filter/anonymous-buddy-filter.h"
 #include "buddies/filter/buddy-name-filter.h"
-#include "buddies/model/buddies-model.h"
 #include "buddies/model/buddies-model-proxy.h"
+#include "buddies/model/buddies-model.h"
 #include "gui/widgets/filter-widget.h"
 #include "gui/widgets/talkable-tree-view.h"
-#include "model/roles.h"
 #include "model/model-chain.h"
+#include "model/roles.h"
 
 #include "select-buddy-popup.h"
 

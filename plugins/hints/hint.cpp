@@ -34,11 +34,11 @@
 #include "chat/chat.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact-set.h"
+#include "icons/icons-manager.h"
 #include "notify/chat-notification.h"
 #include "notify/notification.h"
 #include "parser/parser.h"
 #include "debug.h"
-#include "icons/icons-manager.h"
 
 #include "hint.h"
 

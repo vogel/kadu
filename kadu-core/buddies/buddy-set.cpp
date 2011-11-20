@@ -20,9 +20,9 @@
  */
 
 #include "accounts/account-manager.h"
+#include "buddies/buddy-list.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
-#include "buddies/buddy-list.h"
 
 #include "buddy-set.h"
 

@@ -19,8 +19,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "jabber-protocol.h"
 #include "utils/vcard-factory.h"
+#include "jabber-protocol.h"
 
 #include "jabber-personal-info-service.h"
 

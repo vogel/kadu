@@ -20,8 +20,8 @@
  */
 
 #include "accounts/account.h"
-#include "core/core.h"
 #include "configuration/configuration-manager.h"
+#include "core/core.h"
 #include "identities/identities-aware-object.h"
 #include "identity.h"
 

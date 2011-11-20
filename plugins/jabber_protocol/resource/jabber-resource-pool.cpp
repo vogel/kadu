@@ -20,9 +20,9 @@
 
 #include "debug.h"
 
+#include "jabber-protocol.h"
 #include "jabber-resource-pool.h"
 #include "jabber-resource.h"
-#include "jabber-protocol.h"
 
 /**
  * This resource will be returned if no other resource
