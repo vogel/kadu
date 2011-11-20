@@ -45,7 +45,7 @@
 #include "roster-widget.h"
 
 RosterWidget::RosterWidget(QWidget *parent) :
-		QWidget(parent), CompositingEnabled(false)
+	QWidget(parent), CompositingEnabled(false)
 {
 	Context = new ProxyActionContext();
 	createGui();
@@ -63,9 +63,11 @@ RosterWidget::~RosterWidget()
 void RosterWidget::createGui()
 {
 	QVBoxLayout *layout = new QVBoxLayout(this);
+	layout->setMargin(0);
+	layout->setSpacing(0);
 
-	QWidget *selectViewButtons = new QWidget(this);
-	QHBoxLayout *selectViewButtonsLayout = new QHBoxLayout(selectViewButtons);
+	SelectViewButtons = new QWidget(this);
+	QHBoxLayout *selectViewButtonsLayout = new QHBoxLayout(SelectViewButtons);
 
 	ViewButtonGroup = new QButtonGroup(this);
 
@@ -102,7 +104,7 @@ void RosterWidget::createGui()
 	hboxLayout->addWidget(TalkableViews);
 	hboxLayout->setStretchFactor(TalkableViews, 100);
 
-	layout->addWidget(selectViewButtons);
+	layout->addWidget(SelectViewButtons);
 	layout->addWidget(hbox);
 
 	viewButtonClicked();
@@ -195,7 +197,7 @@ void RosterWidget::compositingEnabled()
 	GroupBar->setAutoFillBackground(true);
 	BuddiesWidget->filterWidget()->setAutoFillBackground(true);
 	BuddiesTree->verticalScrollBar()->setAutoFillBackground(true);
-
+	SelectViewButtons->setAutoFillBackground(true);
 	// TODO: find a way to paint this QFrame outside its viewport still allowing the viewport to be transparent
 	BuddiesTree->setFrameShape(QFrame::NoFrame);
 
@@ -211,6 +213,8 @@ void RosterWidget::compositingDisabled()
 	GroupBar->setAutoFillBackground(false);
 	BuddiesWidget->filterWidget()->setAutoFillBackground(false);
 	BuddiesTree->verticalScrollBar()->setAutoFillBackground(false);
+	SelectViewButtons->setAutoFillBackground(false);
+
 	BuddiesTree->setFrameShape(QFrame::StyledPanel);
 
 	configurationUpdated();

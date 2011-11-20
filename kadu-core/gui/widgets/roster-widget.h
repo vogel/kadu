@@ -57,6 +57,7 @@ class RosterWidget : public QWidget, public ActionContextProvider, Configuration
 	QButtonGroup *ViewButtonGroup;
 	QPushButton *BuddiesViewButton;
 	QPushButton *ChatsViewButton;
+	QWidget *SelectViewButtons;
 
 	ProxyActionContext *Context;
 
