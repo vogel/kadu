@@ -23,12 +23,12 @@
 #include <QtCore/QTimer>
 
 #include "buddies/buddy.h"
-#include "chat/message/message-manager.h"
 #include "configuration/configuration-file.h"
 #include "configuration/configuration-manager.h"
 #include "contacts/contact.h"
 #include "contacts/contact-parser-tags.h"
 #include "core/core.h"
+#include "message/message-manager.h"
 #include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
 #include "debug.h"

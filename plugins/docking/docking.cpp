@@ -43,7 +43,6 @@
 #include <QtGui/QMouseEvent>
 
 #include "activate.h"
-#include "chat/message/message-manager.h"
 #include "configuration/configuration-file.h"
 #include "core/core.h"
 #include "gui/widgets/chat-widget.h"
@@ -52,6 +51,7 @@
 #include "gui/windows/main-configuration-window.h"
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
+#include "message/message-manager.h"
 #include "misc/misc.h"
 #include "protocols/protocol.h"
 #include "status/status-changer.h"

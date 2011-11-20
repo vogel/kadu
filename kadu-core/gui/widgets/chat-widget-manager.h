@@ -26,8 +26,8 @@
 #define CHAT_WIDGET_MANAGER_H
 
 #include "buddies/buddy.h"
-#include "chat/message/message.h"
 #include "configuration/configuration-aware-object.h"
+#include "message/message.h"
 #include "storage/storable-string-list.h"
 
 #include "exports.h"

@@ -29,8 +29,8 @@
 #include <QtCore/QObject>
 #include <QtCore/QUuid>
 
-#include "chat/message/message.h"
 #include "storage/manager.h"
+#include "message/message.h"
 
 #include "chat.h"
 

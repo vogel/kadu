@@ -30,10 +30,10 @@
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
 #include "buddies/buddy-manager.h"
-#include "chat/message/formatted-message.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact-manager.h"
 #include "gui/windows/message-dialog.h"
+#include "message/formatted-message.h"
 
 #include "gadu-account-details.h"
 #include "gadu-protocol.h"

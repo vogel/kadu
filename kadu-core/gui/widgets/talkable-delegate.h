@@ -29,9 +29,9 @@
 #undef check
 
 #include "buddies/buddy.h"
-#include "chat/message/message.h"
 #include "gui/widgets/talkable-delegate-configuration.h"
 #include "gui/widgets/kadu-tree-view-delegate.h"
+#include "message/message.h"
 
 class Contact;
 class ModelChain;

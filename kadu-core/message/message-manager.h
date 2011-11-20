@@ -23,7 +23,7 @@
 #include <QtCore/QObject>
 
 #include "accounts/accounts-aware-object.h"
-#include "chat/message/message.h"
+#include "message/message.h"
 #include "storage/simple-manager.h"
 
 #include "exports.h"

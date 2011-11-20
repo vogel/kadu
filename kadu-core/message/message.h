@@ -25,8 +25,8 @@
 
 #include <QtCore/QDateTime>
 
-#include "chat/message/message-common.h"
-#include "chat/message/message-shared.h"
+#include "message/message-common.h"
+#include "message/message-shared.h"
 #include "storage/shared-base.h"
 
 #include "exports.h"

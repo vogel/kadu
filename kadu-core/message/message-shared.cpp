@@ -21,11 +21,11 @@
  */
 
 #include "chat/chat.h"
-#include "chat/message/message.h"
-#include "chat/message/message-manager.h"
 #include "chat/chat-manager.h"
 #include "contacts/contact.h"
 #include "contacts/contact-manager.h"
+#include "message/message.h"
+#include "message/message-manager.h"
 
 #include "message-shared.h"
 

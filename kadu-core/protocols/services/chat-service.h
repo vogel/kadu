@@ -29,7 +29,7 @@
 #include "buddies/buddy-list.h"
 
 #include "chat/chat.h"
-#include "chat/message/formatted-message.h"
+#include "message/formatted-message.h"
 
 #include "exports.h"
 

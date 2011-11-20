@@ -34,7 +34,6 @@
 #include <QtGui/QLabel>
 #include <QtGui/QVBoxLayout>
 
-#include "chat/message/message-manager.h"
 #include "chat/chat-manager.h"
 #include "contacts/contact.h"
 #include "configuration/configuration-file.h"
@@ -42,6 +41,7 @@
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/tool-tip-class-manager.h"
 #include "gui/widgets/chat-widget.h"
+#include "message/message-manager.h"
 #include "misc/misc.h"
 #include "notify/chat-notification.h"
 #include "notify/notification-manager.h"

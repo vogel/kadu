@@ -27,8 +27,8 @@
 
 #include <QtCore/QList>
 
-#include "chat/message/message.h"
 #include "configuration/configuration-aware-object.h"
+#include "message/message.h"
 #include "protocols/services/chat-service.h"
 #include "protocols/services/chat-state-service.h"
 #include "protocols/protocol.h"

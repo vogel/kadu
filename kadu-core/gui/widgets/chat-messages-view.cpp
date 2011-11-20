@@ -32,11 +32,11 @@
 #include "accounts/account-manager.h"
 #include "configuration/chat-configuration-holder.h"
 #include "chat/style-engines/chat-style-engine.h"
-#include "chat/message/message-render-info.h"
 #include "chat/chat.h"
 #include "chat/chat-styles-manager.h"
 #include "chat/html-messages-renderer.h"
 #include "gui/widgets/chat-view-network-access-manager.h"
+#include "message/message-render-info.h"
 #include "protocols/services/chat-image-service.h"
 
 #include "debug.h"

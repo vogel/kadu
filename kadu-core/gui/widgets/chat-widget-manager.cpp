@@ -26,8 +26,6 @@
 #include <QtGui/QApplication>
 
 #include "chat/aggregate-chat-manager.h"
-#include "chat/message/message-manager.h"
-#include "chat/message/message-render-info.h"
 #include "chat/chat-manager.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact.h"
@@ -39,6 +37,8 @@
 #include "gui/windows/chat-window.h"
 #include "gui/windows/kadu-window.h"
 #include "icons/icons-manager.h"
+#include "message/message-manager.h"
+#include "message/message-render-info.h"
 #include "protocols/protocol-factory.h"
 #include "activate.h"
 

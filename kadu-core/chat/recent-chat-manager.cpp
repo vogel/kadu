@@ -23,9 +23,9 @@
 #include <QtCore/QVector>
 
 #include "chat/chat-manager.h"
-#include "chat/message/message.h"
-#include "chat/message/message-manager.h"
 #include "configuration/configuration-file.h"
+#include "message/message.h"
+#include "message/message-manager.h"
 
 #include "recent-chat-manager.h"
 

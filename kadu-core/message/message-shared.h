@@ -25,7 +25,7 @@
 #include <QtCore/QDateTime>
 #include <QtCore/QSharedData>
 
-#include "chat/message/message-common.h"
+#include "message/message-common.h"
 #include "storage/shared.h"
 
 class Chat;

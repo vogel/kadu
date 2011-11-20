@@ -24,9 +24,9 @@
 
 #include "chat/chat-styles-manager.h"
 #include "chat/style-engines/chat-style-engine.h"
-#include "chat/message/message-render-info.h"
 #include "configuration/chat-configuration-holder.h"
 #include "configuration/configuration-file.h"
+#include "message/message-render-info.h"
 
 #include "html-messages-renderer.h"
 

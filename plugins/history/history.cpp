@@ -48,8 +48,6 @@
 #include "chat/aggregate-chat-manager.h"
 #include "chat/chat.h"
 #include "chat/chat-manager.h"
-#include "chat/message/message.h"
-#include "chat/message/message-manager.h"
 #include "configuration/configuration-file.h"
 #include "buddies/buddy.h"
 #include "contacts/contact-set.h"
@@ -62,6 +60,8 @@
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-dialog.h"
+#include "message/message.h"
+#include "message/message-manager.h"
 #include "misc/path-conversion.h"
 
 #include "debug.h"

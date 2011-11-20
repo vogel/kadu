@@ -77,6 +77,7 @@ set (kadu_SUBDIRS
 	gui
 	icons
 	identities
+	message
 	misc
 	model
 	multilogon
@@ -356,6 +357,7 @@ kadu_api_directories (kadu-core
 	icons
 	identities/model
 	identities
+	message
 	misc
 	model
 	multilogon/model

@@ -24,10 +24,10 @@
 
 #include "accounts/account-manager.h"
 #include "buddies/buddy-preferred-manager.h"
-#include "chat/message/message-manager.h"
 #include "chat/type/chat-type-manager.h"
 #include "chat/chat-details-conference.h"
 #include "chat/chat-details-simple.h"
+#include "message/message-manager.h"
 
 #include "chat-manager.h"
 

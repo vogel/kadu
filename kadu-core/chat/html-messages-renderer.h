@@ -25,7 +25,7 @@
 #include <QtCore/QObject>
 
 #include "chat/chat.h"
-#include "chat/message/message.h"
+#include "message/message.h"
 #include "protocols/services/chat-state-service.h"
 
 class QWebPage;

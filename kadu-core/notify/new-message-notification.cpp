@@ -23,7 +23,7 @@
 
 #include <QtGui/QTextDocument>
 
-#include "chat/message/message.h"
+#include "message/message.h"
 #include "notify/notification-manager.h"
 #include "notify/notify-event.h"
 #include "icons/icons-manager.h"

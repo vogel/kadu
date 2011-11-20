@@ -26,10 +26,10 @@
 
 #include "chat/chat.h"
 #include "chat/chat-manager.h"
-#include "chat/message/message.h"
 #include "contacts/contact.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
+#include "message/message.h"
 #include "plugins/history/history.h"
 #include "status/status.h"
 

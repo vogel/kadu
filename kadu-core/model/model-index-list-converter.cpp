@@ -19,7 +19,7 @@
 
 #include "buddies/buddy-preferred-manager.h"
 #include "chat/chat-manager.h"
-#include "chat/message/message-manager.h"
+#include "message/message-manager.h"
 #include "model/roles.h"
 
 #include "model-index-list-converter.h"

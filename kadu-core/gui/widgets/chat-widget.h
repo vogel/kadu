@@ -33,8 +33,8 @@
 #include <QtGui/QWidget>
 
 #include "chat/chat.h"
-#include "chat/message/message.h"
 #include "configuration/configuration-aware-object.h"
+#include "message/message.h"
 #include "protocols/services/chat-state-service.h"
 #include "exports.h"
 

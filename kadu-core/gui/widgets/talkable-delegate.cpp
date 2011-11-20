@@ -29,8 +29,8 @@
 
 #include "accounts/account.h"
 #include "buddies/buddy-preferred-manager.h"
-#include "chat/message/message-manager.h"
 #include "contacts/contact-manager.h"
+#include "message/message-manager.h"
 #include "model/kadu-abstract-model.h"
 #include "model/model-chain.h"
 

@@ -25,7 +25,7 @@
 #include <QtCore/QString>
 #include <QtCore/QStringList>
 
-#include "chat/message/message.h"
+#include "message/message.h"
 #include "protocols/services/chat-state-service.h"
 
 class HtmlMessagesRenderer;

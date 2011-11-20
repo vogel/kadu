@@ -17,13 +17,6 @@ set (chat_SRCS
 	filter/chat-unread-filter.cpp
 	filter/group-chat-filter.cpp
 
-	message/formatted-message.cpp
-	message/formatted-message-part.cpp
-	message/message.cpp
-	message/message-manager.cpp
-	message/message-render-info.cpp
-	message/message-shared.cpp
-
 	model/chat-data-extractor.cpp
 	model/chats-model.cpp
 	model/chats-proxy-model.cpp
@@ -61,10 +54,6 @@ set (chat_MOC_SRCS
 	filter/chat-or-filter.h
 	filter/chat-unread-filter.h
 	filter/group-chat-filter.h
-
-	message/message-manager.h
-	message/message-render-info.h
-	message/message-shared.h
 
 	model/chats-model.h
 	model/chats-proxy-model.h

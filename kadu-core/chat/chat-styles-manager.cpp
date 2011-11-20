@@ -37,7 +37,6 @@
 #include "chat/html-messages-renderer.h"
 #include "chat/style-engines/chat-engine-adium/chat-engine-adium.h"
 #include "chat/style-engines/chat-engine-kadu/chat-engine-kadu.h"
-#include "chat/message/message-render-info.h"
 #include "configuration/chat-configuration-holder.h"
 #include "configuration/configuration-file.h"
 #include "core/core.h"
@@ -47,6 +46,7 @@
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/windows/message-dialog.h"
+#include "message/message-render-info.h"
 #include "misc/misc.h"
 #include "protocols/protocols-manager.h"
 

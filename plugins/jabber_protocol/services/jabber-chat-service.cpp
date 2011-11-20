@@ -27,12 +27,12 @@
 #include "buddies/buddy-set.h"
 #include "chat/chat.h"
 #include "chat/chat-manager.h"
-#include "chat/message/message.h"
 #include "core/core.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact-set.h"
 #include "contacts/contact-manager.h"
 #include "gui/windows/message-dialog.h"
+#include "message/message.h"
 #include "misc/misc.h"
 
 #include "html_document.h"

@@ -29,11 +29,9 @@
 #include <QtCore/QDateTime>
 #include <QtCore/QString>
 
-#include "chat/message/message.h"
-
 #include "buddies/buddy.h"
 #include "buddies/buddy-list.h"
-
+#include "message/message.h"
 #include "protocols/protocol.h"
 
 #include "exports.h"

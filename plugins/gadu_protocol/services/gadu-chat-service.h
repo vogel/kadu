@@ -28,7 +28,7 @@
 #include <libgadu.h>
 
 #include "chat/chat.h"
-#include "chat/message/message.h"
+#include "message/message.h"
 #include "protocols/services/chat-service.h"
 
 class QTimer;

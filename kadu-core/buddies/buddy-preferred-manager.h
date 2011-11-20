@@ -27,8 +27,8 @@
 #include <QtCore/QMap>
 #include "accounts/account.h"
 #include "buddies/buddy.h"
-#include "chat/message/message.h"
 #include "contacts/contact.h"
+#include "message/message.h"
 
 class Account;
 class Buddy;

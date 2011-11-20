@@ -32,7 +32,6 @@
 #include <QtGui/QDesktopWidget>
 #include <QtGui/QVBoxLayout>
 
-#include "chat/message/message-manager.h"
 #include "chat/type/chat-type.h"
 #include "chat/chat-details.h"
 #include "chat/chat-geometry-data.h"
@@ -42,6 +41,7 @@
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/custom-input.h"
 #include "gui/windows/message-dialog.h"
+#include "message/message-manager.h"
 
 #include "activate.h"
 #include "debug.h"

@@ -25,13 +25,13 @@
 
 #include <QtGui/QDrag>
 
-#include "chat/message/message-manager.h"
 #include "configuration/configuration-file.h"
 #include "gui/widgets/chat-widget.h"
 #include "gui/widgets/filtered-tree-view.h"
 #include "gui/windows/open-chat-with/open-chat-with.h"
 #include "gui/hot-key.h"
 #include "icons/kadu-icon.h"
+#include "message/message-manager.h"
 #include "misc/misc.h"
 #include "activate.h"
 

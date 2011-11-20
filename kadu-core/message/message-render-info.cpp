@@ -25,11 +25,11 @@
 #include <QtCore/QFile>
 #include <QtCore/QRegExp>
 
-#include "chat/message/formatted-message-part.h"
 #include "configuration/chat-configuration-holder.h"
 #include "configuration/configuration-file.h"
 #include "emoticons/emoticons-manager.h"
 #include "icons/kadu-icon.h"
+#include "message/formatted-message-part.h"
 #include "misc/misc.h"
 #include "parser/parser.h"
 #include "protocols/services/chat-image-service.h"
