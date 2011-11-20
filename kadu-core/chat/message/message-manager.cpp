@@ -19,8 +19,8 @@
 
 #include "accounts/account.h"
 #include "buddies/buddy-manager.h"
-#include "chat/message/pending-messages-manager.h"
 #include "chat/chat-details-aggregate.h"
+#include "configuration/xml-configuration-file.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "protocols/protocol.h"
 #include "protocols/services/chat-service.h"
@@ -46,12 +46,84 @@ MessageManager::MessageManager()
 
 MessageManager::~MessageManager()
 {
+	ConfigurationManager::instance()->unregisterStorableObject(this);
+
 	triggerAllAccountsUnregistered();
 }
 
 void MessageManager::init()
 {
+	setState(StateNotLoaded);
+	ConfigurationManager::instance()->registerStorableObject(this);
+
 	triggerAllAccountsRegistered();
+}
+
+bool MessageManager::importFromPendingMessages()
+{
+	QDomElement pendingMessagesNode = xml_config_file->getNode("PendingMessages", XmlConfigFile::ModeFind);
+	if (pendingMessagesNode.isNull())
+		return false;
+
+	QVector<QDomElement> messageElements = xml_config_file->getNodes(pendingMessagesNode, "Message");
+	foreach (const QDomElement &messageElement, messageElements)
+	{
+		QSharedPointer<StoragePoint> storagePoint(new StoragePoint(storage()->storage(), messageElement));
+		QUuid uuid = storagePoint->point().attribute("uuid");
+		if (!uuid.isNull())
+		{
+			Message message = Message::loadStubFromStorage(storagePoint);
+			addUnreadMessage(message);
+
+			// reset storage for message as it will be stored in other place
+			message.data()->setStorage(QSharedPointer<StoragePoint>());
+			message.data()->setState(StateNew);
+		}
+	}
+
+	// PendingMessages is no longer needed
+	pendingMessagesNode.parentNode().removeChild(pendingMessagesNode);
+
+	return true;
+}
+
+void MessageManager::load()
+{
+	StorableObject::load();
+
+	if (importFromPendingMessages())
+	{
+		loaded();
+		return;
+	}
+
+	QDomElement itemsNode = storage()->point();
+	if (itemsNode.isNull())
+		return;
+
+	QVector<QDomElement> itemElements = storage()->storage()->getNodes(itemsNode, "Message");
+	UnreadMessages.reserve(itemElements.count());
+
+	foreach (const QDomElement &itemElement, itemElements)
+	{
+		QSharedPointer<StoragePoint> storagePoint(new StoragePoint(storage()->storage(), itemElement));
+		QUuid uuid = storagePoint->point().attribute("uuid");
+		if (!uuid.isNull())
+		{
+			Message item = Message::loadStubFromStorage(storagePoint);
+			addUnreadMessage(item);
+		}
+	}
+
+	loaded();
+}
+
+void MessageManager::store()
+{
+	ensureLoaded();
+
+	foreach (Message message, UnreadMessages)
+		message.ensureStored();
 }
 
 void MessageManager::accountRegistered(Account account)
@@ -104,7 +176,6 @@ void MessageManager::addUnreadMessage(const Message &message)
 		// todo: rethink this one
 		BuddyManager::instance()->byContact(message.messageSender(), ActionCreateAndAdd);
 
-		PendingMessagesManager::instance()->addItem(message);
 		message.setPending(true);
 	}
 
@@ -115,8 +186,8 @@ void MessageManager::removeUnreadMessage(const Message &message)
 {
 	UnreadMessages.removeAll(message);
 
-	PendingMessagesManager::instance()->removeItem(message);
 	message.setPending(false);
+	message.data()->removeFromStorage();
 
 	emit unreadMessageRemoved(message);
 }
@@ -166,6 +237,9 @@ void MessageManager::markAllMessagesAsRead(const Chat &chat)
 		UnreadMessages.removeAll(message);
 
 		message.setStatus(MessageStatusRead);
+		message.setPending(false);
+		message.data()->removeFromStorage();
+
 		emit unreadMessageRemoved(message);
 	}
 }

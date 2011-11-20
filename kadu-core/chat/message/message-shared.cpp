@@ -22,7 +22,7 @@
 
 #include "chat/chat.h"
 #include "chat/message/message.h"
-#include "chat/message/pending-messages-manager.h"
+#include "chat/message/message-manager.h"
 #include "chat/chat-manager.h"
 #include "contacts/contact.h"
 #include "contacts/contact-manager.h"
@@ -60,7 +60,7 @@ MessageShared::~MessageShared()
 
 StorableObject * MessageShared::storageParent()
 {
-	return PendingMessagesManager::instance();
+	return MessageManager::instance();
 }
 
 QString MessageShared::storageNodeName()

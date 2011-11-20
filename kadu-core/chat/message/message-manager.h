@@ -30,7 +30,7 @@
 
 class Buddy;
 
-class KADUAPI MessageManager : public QObject, AccountsAwareObject
+class KADUAPI MessageManager : public QObject, public StorableObject, AccountsAwareObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(MessageManager)
@@ -44,15 +44,23 @@ class KADUAPI MessageManager : public QObject, AccountsAwareObject
 
 	void init();
 
+	bool importFromPendingMessages();
+
 private slots:
 	void messageReceivedSlot(const Message &message);
 
 protected:
+	virtual void load();
+	virtual void store();
+
 	virtual void accountRegistered(Account account);
 	virtual void accountUnregistered(Account account);
 
 public:
 	static MessageManager * instance();
+
+	virtual StorableObject * storageParent() { return 0; }
+	virtual QString storageNodeName() { return QLatin1String("Messages"); }
 
 	void addUnreadMessage(const Message &message);
 	void removeUnreadMessage(const Message &message);
