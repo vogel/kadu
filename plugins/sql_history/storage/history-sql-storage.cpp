@@ -55,6 +55,8 @@
 #include "history-sql-storage.h"
 
 #define SCHEMA_VERSION "2"
+#define OLD_HISTORY_FILE "history/history.db"
+#define HISTORY_FILE "history1.db"
 
 HistorySqlStorage::HistorySqlStorage(QObject *parent) :
 		HistoryStorage(parent), DatabaseMutex(QMutex::NonRecursive)
@@ -62,6 +64,8 @@ HistorySqlStorage::HistorySqlStorage(QObject *parent) :
 	kdebugf();
 
 	QMutexLocker locker(&DatabaseMutex);
+
+	copyHistoryFile();
 
 	initDatabase();
 	initQueries();
@@ -72,6 +76,17 @@ HistorySqlStorage::~HistorySqlStorage()
 	kdebugf();
 
 	Database.commit();
+}
+
+void HistorySqlStorage::copyHistoryFile()
+{
+	QFileInfo scheme1FileInfo(profilePath(HISTORY_FILE));
+	if (scheme1FileInfo.exists())
+		return;
+
+	QFileInfo scheme0FileInfo(profilePath(OLD_HISTORY_FILE));
+	if (scheme0FileInfo.exists())
+		QFile::copy(scheme0FileInfo.absoluteFilePath(), scheme1FileInfo.absoluteFilePath());
 }
 
 void HistorySqlStorage::initDatabase()
@@ -99,7 +114,7 @@ void HistorySqlStorage::initDatabase()
 		historyDir.mkpath(profilePath("history"));
 
 	Database = QSqlDatabase::addDatabase("QSQLITE", "kadu-history");
-	Database.setDatabaseName(profilePath("history/history.db"));
+	Database.setDatabaseName(profilePath(HISTORY_FILE));
 
 	if (!Database.open())
 	{

@@ -51,6 +51,8 @@ class HistorySqlStorage : public HistoryStorage
 	QMap<Contact, int> ContactMap;
 	QMap<QString, int> DateMap;
 
+	void copyHistoryFile();
+
 	void initDatabase();
 	void initQueries();
 	void initTables();
