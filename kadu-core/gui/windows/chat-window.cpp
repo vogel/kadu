@@ -297,3 +297,12 @@ void ChatWindow::closeChatWidget(ChatWidget *chatWidget)
 
 	close();
 }
+
+bool ChatWindow::isChatWidgetActive(ChatWidget *chatWidget)
+{
+	Q_UNUSED(chatWidget)
+	Q_ASSERT(chatWidget == currentChatWidget);
+
+	return _isWindowActiveOrFullyVisible(this);
+}
+

@@ -179,6 +179,7 @@ public:
 
 	virtual void activateChatWidget(ChatWidget *chatWidget);
 	virtual void alertChatWidget(ChatWidget *chatWidget);
+	virtual bool isChatWidgetActive(ChatWidget *chatWidget);
 
 	/**
 	* Metoda wywoływana w momencie ignorowania/blokowania kontaktu

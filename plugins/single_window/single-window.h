@@ -36,6 +36,7 @@ public:
 	virtual void activateChatWidget(ChatWidget *chatWidget);
 	virtual void alertChatWidget(ChatWidget *chatWidget);
 	virtual void closeChatWidget(ChatWidget *chatWidget);
+	virtual bool isChatWidgetActive(ChatWidget *chatWidget);
 
 	int rosterPosition() { return rosterPos; }
 	void changeRosterPos(int newRosterPos);

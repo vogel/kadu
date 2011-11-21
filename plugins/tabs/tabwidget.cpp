@@ -120,6 +120,11 @@ void TabWidget::closeChatWidget(ChatWidget *chatWidget)
 	delete chatWidget;
 }
 
+bool TabWidget::isChatWidgetActive(ChatWidget *chatWidget)
+{
+	return currentWidget() == chatWidget && _isWindowActiveOrFullyVisible(this);
+}
+
 void TabWidget::closeEvent(QCloseEvent *e)
 {
 	//w zaleznosci od opcji w konfiguracji zamykamy wszystkie karty, lub tylko aktywna

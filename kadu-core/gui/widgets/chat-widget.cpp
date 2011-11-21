@@ -611,6 +611,11 @@ void ChatWidget::activate()
 		Container->activateChatWidget(this);
 }
 
+bool ChatWidget::isActive()
+{
+	return Container && Container->isChatWidgetActive(this);
+}
+
 void ChatWidget::verticalSplitterMoved(int pos, int index)
 {
 	Q_UNUSED(pos)

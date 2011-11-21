@@ -280,6 +280,11 @@ void SingleWindow::closeChatWidget(ChatWidget *chatWidget)
 		closeTab(index);
 }
 
+bool SingleWindow::isChatWidgetActive(ChatWidget *chatWidget)
+{
+	return tabs->currentWidget() == chatWidget && _isWindowActiveOrFullyVisible(this);
+}
+
 void SingleWindow::onTabChange(int index)
 {
 	if (index == -1)
