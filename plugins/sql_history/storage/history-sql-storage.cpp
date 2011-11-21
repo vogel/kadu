@@ -54,6 +54,8 @@
 
 #include "history-sql-storage.h"
 
+#define SCHEMA_VERSION "2"
+
 HistorySqlStorage::HistorySqlStorage(QObject *parent) :
 		HistoryStorage(parent), DatabaseMutex(QMutex::NonRecursive)
 {
@@ -105,22 +107,48 @@ void HistorySqlStorage::initDatabase()
 		return;
 	}
 
-	import010History();
+	quint16 storedSchemaVersion = loadSchemaVersion();
+	switch (storedSchemaVersion)
+	{
+		case 0:
+			initTables();
+			initIndexes();
+			break;
+		case 1:
+			importVersion1Schema();
+			break;
+		default:
+			break; // no need to import
+	}
 
 	Database.transaction();
-
-	initTables();
-	initIndexes();
 }
 
-void HistorySqlStorage::import010History()
+quint16 HistorySqlStorage::loadSchemaVersion()
 {
-	if (Database.tables().contains("kadu_chats")
-	        && Database.tables().contains("kadu_dates")
-	        && Database.tables().contains("kadu_contacts")
-	        && Database.tables().contains("kadu_message_contents"))
-		return;
+	// no schema_version table
+	if (!Database.tables().contains("schema_version"))
+	{
+		if (!Database.tables().contains("kadu_messages"))
+			return 0; // first run of module, so no version available
+		else
+			return 1; // first slow version of SQL module
+	}
 
+	QSqlQuery query(Database);
+	query.prepare("SELECT version FROM schema_version");
+
+	if (!query.exec()) // looks like broken database, we should make a fatal error or something now
+		return 0;
+
+	if (!query.next()) // looks like broken database, we should make a fatal error or something now
+		return 0;
+
+	return query.value(0).toUInt();
+}
+
+void HistorySqlStorage::importVersion1Schema()
+{
 	MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("We have to update your chats history to the latest version. Please be patient, it will take few minutes."));
 
 	QSqlQuery query(Database);
@@ -172,7 +200,11 @@ void HistorySqlStorage::import010History()
 	           "(SELECT id FROM kadu_dates WHERE date = REPLACE(substr(old.receive_time,0,11), '-', '')), send_time, receive_time, "
 	           "(SELECT id FROM kadu_message_contents WHERE content=old.content LIMIT 1), substr(attributes, 10, 1) FROM kadu_messages_old old;"
 
-	        << "DROP TABLE kadu_messages_old;";
+	        << "DROP TABLE kadu_messages_old;"
+
+	        << "CREATE TABLE schema_version(version id INTEGER);"
+	        << "DELETE FROM schema_version;"
+	        << "INSERT INTO schema_version (version) VALUES (" SCHEMA_VERSION ");";
 
 	foreach (const QString &queryString, queries)
 	{
@@ -185,17 +217,33 @@ void HistorySqlStorage::import010History()
 	query.prepare("VACUUM;");
 	executeQuery(query);
 
+	initIndexes();
+
+	Database.commit();
+
 	MessageDialog::show(KaduIcon("dialog-ok"), tr("Kadu"), tr("Chats history was successfuly updated."));
 }
 
 void HistorySqlStorage::initTables()
 {
-	if (!Database.tables().contains("kadu_messages") && !Database.tables().contains("kadu_chats"))
-		initKaduMessagesTable();
-	if (!Database.tables().contains("kadu_statuses"))
-		initKaduStatusesTable();
-	if (!Database.tables().contains("kadu_sms"))
-		initKaduSmsTable();
+	initKaduSchemaTable();
+	initKaduMessagesTable();
+	initKaduStatusesTable();
+	initKaduSmsTable();
+}
+
+void HistorySqlStorage::initKaduSchemaTable()
+{
+	QSqlQuery query(Database);
+
+	query.prepare("CREATE TABLE schema_version(version id INTEGER);");
+	executeQuery(query);
+
+	query.prepare("DELETE FROM schema_version;");
+	executeQuery(query);
+
+	query.prepare("INSERT INTO schema_version (version) VALUES (" SCHEMA_VERSION ");");
+	executeQuery(query);
 }
 
 void HistorySqlStorage::initKaduMessagesTable()

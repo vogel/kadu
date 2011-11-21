@@ -51,11 +51,14 @@ class HistorySqlStorage : public HistoryStorage
 	void initQueries();
 	void initTables();
 	void initIndexes();
+	void initKaduSchemaTable();
 	void initKaduMessagesTable();
 	void initKaduStatusesTable();
 	void initKaduSmsTable();
 
-	void import010History();
+	quint16 loadSchemaVersion();
+
+	void importVersion1Schema();
 
 	int findOrCreateChat(const Chat &chat);
 	int findOrCreateContact(const Contact &contact);
