@@ -448,6 +448,9 @@ void HistorySqlStorage::messageSent(const Message &message)
 
 int HistorySqlStorage::findOrCreateChat(const Chat &chat)
 {
+	if (ChatMap.contains(chat))
+		return ChatMap.value(chat);
+
 	QSqlQuery query(Database);
 	QString queryString = "SELECT id FROM kadu_chats WHERE uuid=:uuid";
 
@@ -474,6 +477,8 @@ int HistorySqlStorage::findOrCreateChat(const Chat &chat)
 		executeQuery(query);
 		chatId = query.lastInsertId().toInt();
 	}
+
+	ChatMap.insert(chat, chatId);
 
 	return chatId;
 }

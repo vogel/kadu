@@ -47,6 +47,8 @@ class HistorySqlStorage : public HistoryStorage
 
 	QMutex DatabaseMutex;
 
+	QMap<Chat, int> ChatMap;
+
 	void initDatabase();
 	void initQueries();
 	void initTables();
