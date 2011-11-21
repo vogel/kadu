@@ -485,6 +485,9 @@ int HistorySqlStorage::findOrCreateChat(const Chat &chat)
 
 int HistorySqlStorage::findOrCreateContact(const Contact &contact)
 {
+	if (ContactMap.contains(contact))
+		return ContactMap.value(contact);
+
 	QSqlQuery query(Database);
 	QString queryString = "SELECT id FROM kadu_contacts WHERE uuid=:uuid";
 
@@ -512,16 +515,22 @@ int HistorySqlStorage::findOrCreateContact(const Contact &contact)
 		contactId = query.lastInsertId().toInt();
 	}
 
+	ContactMap.insert(contact, contactId);
+
 	return contactId;
 }
 
 int HistorySqlStorage::findOrCreateDate(const QDate &date)
 {
+	QString stringDate = date.toString("yyyyMMdd");
+	if (DateMap.contains(stringDate))
+		return DateMap.value(stringDate);
+
 	QSqlQuery query(Database);
 	QString queryString = "SELECT id FROM kadu_dates WHERE date=:date";
 
 	query.prepare(queryString);
-	query.bindValue(":date", date.toString("yyyyMMdd"));
+	query.bindValue(":date", stringDate);
 
 	int dateId = -1;
 
@@ -538,11 +547,13 @@ int HistorySqlStorage::findOrCreateDate(const QDate &date)
 	  QString queryString = "INSERT INTO kadu_dates (date) VALUES (:date)";
 
 	  query.prepare(queryString);
-	  query.bindValue(":date", date.toString("yyyyMMdd"));
+	  query.bindValue(":date", stringDate);
 
 	  executeQuery(query);
 	  dateId = query.lastInsertId().toInt();
 	}
+
+	DateMap.insert(stringDate, dateId);
 
 	return dateId;
 }
