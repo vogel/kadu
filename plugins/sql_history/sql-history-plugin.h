@@ -42,4 +42,4 @@ public:
 
 };
 
-#endif //SQL_HISTORY_PLUGIN
+#endif // SQL_HISTORY_PLUGIN
