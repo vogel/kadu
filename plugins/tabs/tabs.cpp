@@ -264,7 +264,7 @@ void TabsManager::onTabChange(int index)
 	TabDialog->setWindowTitle(chat->title());
 	TabDialog->setWindowIcon(chat->icon());
 
-	MessageManager::instance()->markAllMessagesAsRead(chat);
+	MessageManager::instance()->markAllMessagesAsRead(chat->chat());
 	// ustawiamy focus na pole edycji chata
 	chat->edit()->setFocus();
 }
