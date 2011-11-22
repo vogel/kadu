@@ -544,7 +544,7 @@ QVector<DatesModelItem> HistorySqlStorage::chatDates(const Chat &chat, const His
 	QMutexLocker locker(&DatabaseMutex);
 
 	QSqlQuery query(Database);
-	QString queryString = "SELECT count(1), date, date_id, content FROM";
+	QString queryString = "SELECT count(1), date, content FROM";
 	queryString += " (SELECT km.rowid, date, date_id, content FROM kadu_messages km "
 		"LEFT JOIN kadu_message_contents kmc ON (km.content_id=kmc.id) "
 		"LEFT JOIN kadu_dates d ON (km.date_id=d.id) "
