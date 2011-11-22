@@ -47,7 +47,6 @@ SqlInitializer::~SqlInitializer()
 
 void SqlInitializer::initialize()
 {
-	copyHistoryFile();
 	initDatabase();
 
 	bool ok = Database.isOpen();
@@ -61,8 +60,6 @@ void SqlInitializer::initialize()
 
 void SqlInitializer::importVersion1Schema()
 {
-	// MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("We have to update your chats history to the latest version. Please be patient, it will take few minutes."));
-
 	QSqlQuery query(Database);
 	Database.transaction();
 
@@ -132,8 +129,16 @@ void SqlInitializer::importVersion1Schema()
 	initIndexes();
 
 	Database.commit();
+}
 
-	// MessageDialog::show(KaduIcon("dialog-ok"), tr("Kadu"), tr("Chats history was successfuly updated."));
+bool SqlInitializer::isCopyingNeeded()
+{
+	QFileInfo scheme1FileInfo(profilePath(HISTORY_FILE));
+	if (scheme1FileInfo.exists())
+		return false;
+
+	QFileInfo scheme0FileInfo(profilePath(OLD_HISTORY_FILE));
+	return scheme0FileInfo.exists();
 }
 
 void SqlInitializer::copyHistoryFile()
@@ -163,6 +168,14 @@ void SqlInitializer::initDatabase()
 	if (!historyDir.exists())
 		historyDir.mkpath(profilePath("history"));
 
+	bool importStartedEmited = false;
+	if (isCopyingNeeded())
+	{
+		emit importStarted();
+		importStartedEmited = true;
+		copyHistoryFile();
+	}
+
 	Database = QSqlDatabase::addDatabase("QSQLITE", "kadu-history");
 	Database.setDatabaseName(profilePath(HISTORY_FILE));
 
@@ -180,11 +193,16 @@ void SqlInitializer::initDatabase()
 			initIndexes();
 			break;
 		case 1:
+			if (!importStartedEmited)
+				emit importStarted();
 			importVersion1Schema();
 			break;
 		default:
 			break; // no need to import
 	}
+
+	if (importStartedEmited)
+		emit importFinished();
 
 	Database.transaction();
 }

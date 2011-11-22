@@ -30,6 +30,7 @@ class SqlInitializer : public QObject
 
 	QSqlDatabase Database;
 
+	bool isCopyingNeeded();
 	void copyHistoryFile();
 
 	void initDatabase();
@@ -54,6 +55,9 @@ public slots:
 signals:
 	void initialized();
 	void databaseReady(bool ok);
+
+	void importStarted();
+	void importFinished();
 
 };
 

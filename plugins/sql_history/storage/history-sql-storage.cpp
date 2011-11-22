@@ -41,6 +41,7 @@
 #include "core/core.h"
 #include "gui/widgets/chat-widget.h"
 #include "gui/windows/message-dialog.h"
+#include "gui/windows/progress-window2.h"
 #include "message/formatted-message.h"
 #include "message/message.h"
 #include "misc/misc.h"
@@ -58,7 +59,7 @@
 #include "history-sql-storage.h"
 
 HistorySqlStorage::HistorySqlStorage(QObject *parent) :
-		HistoryStorage(parent), DatabaseMutex(QMutex::NonRecursive)
+		HistoryStorage(parent), ImportProgressWindow(0), DatabaseMutex(QMutex::NonRecursive)
 {
 	kdebugf();
 
@@ -71,6 +72,8 @@ HistorySqlStorage::HistorySqlStorage(QObject *parent) :
 	connect(InitializerThread, SIGNAL(started()), initializer, SLOT(initialize()));
 	connect(initializer, SIGNAL(initialized()), InitializerThread, SLOT(quit()));
 	connect(initializer, SIGNAL(databaseReady(bool)), this, SLOT(databaseReady(bool)));
+	connect(initializer, SIGNAL(importStarted()), this, SLOT(importStarted()));
+	connect(initializer, SIGNAL(importFinished()), this, SLOT(importFinished()));
 
 	InitializerThread->start();
 }
@@ -96,6 +99,24 @@ void HistorySqlStorage::databaseReady(bool ok)
 	}
 
 	initQueries();
+}
+
+void HistorySqlStorage::importStarted()
+{
+	ImportProgressWindow = new ProgressWindow2(
+	            tr("Optimizing history database. This can take several minutes.\n"
+	               "Please do not close Kadu until optimalization is complete.")
+	);
+	ImportProgressWindow->show();
+}
+
+void HistorySqlStorage::importFinished()
+{
+	if (ImportProgressWindow)
+	{
+		ImportProgressWindow->setText(tr("Optimalization complete. You can now close this window."));
+		ImportProgressWindow->enableClosing();
+	}
 }
 
 bool HistorySqlStorage::isDatabaseReady(bool wait)

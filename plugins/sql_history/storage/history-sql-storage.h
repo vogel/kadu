@@ -29,6 +29,8 @@
 
 #include "plugins/history/storage/history-storage.h"
 
+class ProgressWindow2;
+
 /**
 	@class HistorySqlStorage
 	@author Juzef, Adrian
@@ -39,6 +41,7 @@ class HistorySqlStorage : public HistoryStorage
 	Q_OBJECT
 
 	QThread *InitializerThread;
+	ProgressWindow2 *ImportProgressWindow;
 
 	QSqlDatabase Database;
 
@@ -75,6 +78,9 @@ private slots:
 	virtual void messageSent(const Message &message);
 
 	void databaseReady(bool ok);
+
+	void importStarted();
+	void importFinished();
 
 public:
 	explicit HistorySqlStorage(QObject *parent = 0);
