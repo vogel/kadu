@@ -197,7 +197,6 @@ void History::clearHistoryActionActivated(QAction *sender, bool toggled)
 
 void History::chatCreated(ChatWidget *chatWidget)
 {
-
 	kdebugf();
 
 	if (!chatWidget)

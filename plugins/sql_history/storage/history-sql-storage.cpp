@@ -24,6 +24,7 @@
 
 #include <QtCore/QDir>
 #include <QtCore/QMutexLocker>
+#include <QtCore/QThread>
 #include <QtGui/QTextDocument>
 #include <QtSql/QSqlError>
 #include <QtSql/QSqlRecord>
@@ -52,23 +53,26 @@
 #include "plugins/history/search/history-search-parameters.h"
 #include "plugins/history/timed-status.h"
 
-#include "history-sql-storage.h"
+#include "storage/sql-initializer.h"
 
-#define SCHEMA_VERSION "2"
-#define OLD_HISTORY_FILE "history/history.db"
-#define HISTORY_FILE "history1.db"
+#include "history-sql-storage.h"
 
 HistorySqlStorage::HistorySqlStorage(QObject *parent) :
 		HistoryStorage(parent), DatabaseMutex(QMutex::NonRecursive)
 {
 	kdebugf();
 
-	QMutexLocker locker(&DatabaseMutex);
+	InitializerThread = new QThread();
 
-	copyHistoryFile();
+	// this object cannot have parent as it will be moved to a new thread
+	SqlInitializer *initializer = new SqlInitializer();
+	initializer->moveToThread(InitializerThread);
 
-	initDatabase();
-	initQueries();
+	connect(InitializerThread, SIGNAL(started()), initializer, SLOT(initialize()));
+	connect(initializer, SIGNAL(initialized()), InitializerThread, SLOT(quit()));
+	connect(initializer, SIGNAL(databaseReady(bool)), this, SLOT(databaseReady(bool)));
+
+	InitializerThread->start();
 }
 
 HistorySqlStorage::~HistorySqlStorage()
@@ -78,323 +82,33 @@ HistorySqlStorage::~HistorySqlStorage()
 	Database.commit();
 }
 
-void HistorySqlStorage::copyHistoryFile()
+void HistorySqlStorage::databaseReady(bool ok)
 {
-	QFileInfo scheme1FileInfo(profilePath(HISTORY_FILE));
-	if (scheme1FileInfo.exists())
-		return;
+	if (ok)
+		Database = QSqlDatabase::database("kadu-history", true);
 
-	QFileInfo scheme0FileInfo(profilePath(OLD_HISTORY_FILE));
-	if (scheme0FileInfo.exists())
-		QFile::copy(scheme0FileInfo.absoluteFilePath(), scheme1FileInfo.absoluteFilePath());
-}
-
-void HistorySqlStorage::initDatabase()
-{
-	kdebugf();
-
-	if (!QSqlDatabase::isDriverAvailable("QSQLITE"))
+	if (!Database.isOpen())
 	{
 		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"),
 				tr("It seems your Qt library does not provide support for selected database.\n "
 				   "Please select another driver in configuration window or install Qt with %1 plugin.").arg("QSQLITE"));
 		History::instance()->unregisterStorage(this);
-		return;
 	}
 
-	if (QSqlDatabase::contains("kadu-history"))
-	{
-		if (Database.isOpen())
-			Database.close();
-		QSqlDatabase::removeDatabase("kadu-history");
-	}
-
-	QDir historyDir(profilePath("history"));
-	if (!historyDir.exists())
-		historyDir.mkpath(profilePath("history"));
-
-	Database = QSqlDatabase::addDatabase("QSQLITE", "kadu-history");
-	Database.setDatabaseName(profilePath(HISTORY_FILE));
-
-	if (!Database.open())
-	{
-		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), Database.lastError().text());
-		return;
-	}
-
-	quint16 storedSchemaVersion = loadSchemaVersion();
-	switch (storedSchemaVersion)
-	{
-		case 0:
-			initTables();
-			initIndexes();
-			break;
-		case 1:
-			importVersion1Schema();
-			break;
-		default:
-			break; // no need to import
-	}
-
-	Database.transaction();
+	initQueries();
 }
 
-quint16 HistorySqlStorage::loadSchemaVersion()
+bool HistorySqlStorage::isDatabaseReady(bool wait)
 {
-	// no schema_version table
-	if (!Database.tables().contains("schema_version"))
+	if (InitializerThread && InitializerThread->isRunning())
 	{
-		if (!Database.tables().contains("kadu_messages"))
-			return 0; // first run of module, so no version available
+		if (wait)
+			InitializerThread->wait();
 		else
-			return 1; // first slow version of SQL module
+			return false;
 	}
 
-	QSqlQuery query(Database);
-	query.prepare("SELECT version FROM schema_version");
-
-	if (!query.exec()) // looks like broken database, we should make a fatal error or something now
-		return 0;
-
-	if (!query.next()) // looks like broken database, we should make a fatal error or something now
-		return 0;
-
-	return query.value(0).toUInt();
-}
-
-void HistorySqlStorage::importVersion1Schema()
-{
-	MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("We have to update your chats history to the latest version. Please be patient, it will take few minutes."));
-
-	QSqlQuery query(Database);
-	Database.transaction();
-
-	QStringList queries;
-
-	queries
-	        << "PRAGMA foreign_keys = ON;"
-	        << "DROP INDEX IF EXISTS kadu_messages_chat;"
-	        << "DROP INDEX IF EXISTS kadu_messages_chat_receive_time_rowid;"
-	        << "DROP INDEX IF EXISTS kadu_messages_chat_receive_time;"
-	        << "DROP INDEX IF EXISTS kadu_messages_chat_receive_time_date;"
-	        << "DROP INDEX IF EXISTS kadu_messages_chat_receive_time_send_time;"
-	        << "DROP INDEX IF EXISTS kadu_messages_chat_receive_time_date_send_time;"
-	        << "DROP INDEX IF EXISTS kadu_statuses_contact;"
-	        << "DROP INDEX IF EXISTS kadu_statuses_contact_time;"
-	        << "DROP INDEX IF EXISTS kadu_statuses_contact_time_date;"
-	        << "DROP INDEX IF EXISTS kadu_sms_receipient;"
-	        << "DROP INDEX IF EXISTS kadu_sms_receipient_time;"
-	        << "DROP INDEX IF EXISTS kadu_sms_receipient_time_date;"
-
-	        << "CREATE TABLE kadu_chats (id INTEGER PRIMARY KEY AUTOINCREMENT, uuid VARCHAR(16));"
-	        << "CREATE TABLE kadu_contacts (id INTEGER PRIMARY KEY AUTOINCREMENT, uuid VARCHAR(16));"
-	        << "CREATE TABLE kadu_message_contents (id INTEGER PRIMARY KEY AUTOINCREMENT, content TEXT, attributes VARCHAR(25));"
-	        << "CREATE TABLE kadu_dates (id INTEGER PRIMARY KEY AUTOINCREMENT, date INTEGER);"
-
-	        << "ALTER TABLE kadu_messages RENAME TO kadu_messages_old;"
-
-	        << "INSERT INTO kadu_chats (uuid) SELECT DISTINCT chat FROM kadu_messages_old;"
-	        << "INSERT INTO kadu_contacts (uuid) SELECT DISTINCT sender FROM kadu_messages_old;"
-	        << "INSERT INTO kadu_dates (date) SELECT DISTINCT REPLACE(substr(receive_time,0,11), '-', '') FROM kadu_messages_old;"
-	        << "INSERT INTO kadu_message_contents (content) SELECT DISTINCT content FROM kadu_messages_old;"
-
-	        << "CREATE TABLE kadu_messages ("
-	           "chat_id INTEGER,"
-	           "contact_id INTEGER,"
-	           "date_id INTEGER,"
-	           "send_time TIMESTAMP,"
-	           "receive_time TIMESTAMP,"
-	           "content_id INTEGER,"
-	           "is_outgoing BOOL, "
-	           "FOREIGN KEY (chat_id) REFERENCES kadu_chats(id), FOREIGN KEY (contact_id) REFERENCES kadu_contacts(id), "
-	           "FOREIGN KEY (date_id) REFERENCES kadu_dates(id), FOREIGN KEY (content_id) REFERENCES kadu_message_contents(id));"
-
-	        << "INSERT INTO kadu_messages ("
-	           "chat_id, contact_id, date_id, send_time, receive_time, content_id, is_outgoing) "
-	           "SELECT (SELECT id FROM kadu_chats WHERE uuid=old.chat LIMIT 1), (SELECT id FROM kadu_contacts WHERE uuid=old.sender LIMIT 1), "
-	           "(SELECT id FROM kadu_dates WHERE date = REPLACE(substr(old.receive_time,0,11), '-', '')), send_time, receive_time, "
-	           "(SELECT id FROM kadu_message_contents WHERE content=old.content LIMIT 1), substr(attributes, 10, 1) FROM kadu_messages_old old;"
-
-	        << "DROP TABLE kadu_messages_old;"
-
-	        << "CREATE TABLE schema_version(version id INTEGER);"
-	        << "DELETE FROM schema_version;"
-	        << "INSERT INTO schema_version (version) VALUES (" SCHEMA_VERSION ");";
-
-	foreach (const QString &queryString, queries)
-	{
-		query.prepare(queryString);
-		executeQuery(query);
-	}
-
-	Database.commit();
-
-	query.prepare("VACUUM;");
-	executeQuery(query);
-
-	initIndexes();
-
-	Database.commit();
-
-	MessageDialog::show(KaduIcon("dialog-ok"), tr("Kadu"), tr("Chats history was successfuly updated."));
-}
-
-void HistorySqlStorage::initTables()
-{
-	initKaduSchemaTable();
-	initKaduMessagesTable();
-	initKaduStatusesTable();
-	initKaduSmsTable();
-}
-
-void HistorySqlStorage::initKaduSchemaTable()
-{
-	QSqlQuery query(Database);
-
-	query.prepare("CREATE TABLE schema_version(version id INTEGER);");
-	executeQuery(query);
-
-	query.prepare("DELETE FROM schema_version;");
-	executeQuery(query);
-
-	query.prepare("INSERT INTO schema_version (version) VALUES (" SCHEMA_VERSION ");");
-	executeQuery(query);
-}
-
-void HistorySqlStorage::initKaduMessagesTable()
-{
-	QSqlQuery query(Database);
-
-	query.prepare("PRAGMA encoding = \"UTF-8\";");
-	executeQuery(query);
-
-	query.prepare("PRAGMA synchronous = OFF;");
-	executeQuery(query);
-
-	query.prepare("PRAGMA foreign_keys = ON;");
-	executeQuery(query);
-
-	query.prepare(
-			"CREATE TABLE kadu_chats ("
-			"id INTEGER PRIMARY KEY AUTOINCREMENT,"
-			"uuid VARCHAR(16));"
-	);
-	executeQuery(query);
-
-	query.prepare(
-			"CREATE TABLE kadu_contacts ("
-			"id INTEGER PRIMARY KEY AUTOINCREMENT,"
-			"uuid VARCHAR(16));"
-	);
-	executeQuery(query);
-
-	query.prepare(
-			"CREATE TABLE kadu_dates ("
-			"id INTEGER PRIMARY KEY AUTOINCREMENT,"
-			"date VARCHAR(8));"
-	);
-	executeQuery(query);
-
-	query.prepare(
-			"CREATE TABLE kadu_message_contents ("
-			"id INTEGER PRIMARY KEY AUTOINCREMENT,"
-			"content TEXT,"
-			"attributes VARCHAR(25));"
-	);
-	executeQuery(query);
-
-	query.prepare(
-			"CREATE TABLE kadu_messages ("
-			"chat_id INTEGER,"
-			"contact_id INTEGER,"
-			"date_id INTEGER,"
-			"send_time TIMESTAMP,"
-			"receive_time TIMESTAMP,"
-			"content_id INTEGER,"
-			"is_outgoing BOOL,"
-			"FOREIGN KEY (chat_id) REFERENCES kadu_chats(id),"
-			"FOREIGN KEY (contact_id) REFERENCES kadu_contacts(id),"
-			"FOREIGN KEY (date_id) REFERENCES kadu_dates(id),"
-			"FOREIGN KEY (content_id) REFERENCES kadu_message_contents(id));"
-	);
-	executeQuery(query);
-}
-
-void HistorySqlStorage::initKaduStatusesTable()
-{
-	QSqlQuery query(Database);
-
-	query.prepare("PRAGMA encoding = \"UTF-8\";");
-	executeQuery(query);
-
-	query.prepare("PRAGMA synchronous = OFF;");
-	executeQuery(query);
-
-	query.prepare(
-		"CREATE TABLE kadu_statuses ("
-			"contact VARCHAR(255),"
-			"status VARCHAR(255),"
-			"set_time TIMESTAMP,"
-			"description TEXT);"
-	);
-	executeQuery(query);
-}
-
-void HistorySqlStorage::initKaduSmsTable()
-{
-	QSqlQuery query(Database);
-
-	query.prepare("PRAGMA encoding = \"UTF-8\";");
-	executeQuery(query);
-
-	query.prepare("PRAGMA synchronous = OFF;");
-	executeQuery(query);
-
-	query.prepare(
-		"CREATE TABLE kadu_sms ("
-			"receipient VARCHAR(255),"
-			"send_time TIMESTAMP,"
-			"content TEXT);"
-	);
-	executeQuery(query);
-}
-
-void HistorySqlStorage::initIndexes()
-{
-	QSqlQuery query(Database);
-
-	query.prepare("CREATE INDEX IF NOT EXISTS kadu_chat_pk ON kadu_chats (id)");
-	executeQuery(query);
-
-	query.prepare("CREATE INDEX IF NOT EXISTS kadu_chat_uuid ON kadu_chats (uuid)");
-	executeQuery(query);
-
-	query.prepare("CREATE INDEX IF NOT EXISTS kadu_contact_pk ON kadu_contacts (id)");
-	executeQuery(query);
-
-	query.prepare("CREATE INDEX IF NOT EXISTS kadu_contact_uuid ON kadu_contacts (uuid)");
-	executeQuery(query);
-
-	query.prepare("CREATE INDEX IF NOT EXISTS kadu_dates_pk ON kadu_dates (id)");
-	executeQuery(query);
-
-	query.prepare("CREATE INDEX IF NOT EXISTS kadu_dates_val ON kadu_dates (date)");
-	executeQuery(query);
-
-	query.prepare("CREATE INDEX IF NOT EXISTS kadu_content_pk ON kadu_message_contents (id)");
-	executeQuery(query);
-
-	query.prepare("CREATE INDEX IF NOT EXISTS kadu_msg_chat ON kadu_messages (chat_id)");
-	executeQuery(query);
-
-	query.prepare("CREATE INDEX IF NOT EXISTS kadu_msg_contact ON kadu_messages (contact_id)");
-	executeQuery(query);
-
-	query.prepare("CREATE INDEX IF NOT EXISTS kadu_msg_date ON kadu_messages (date_id)");
-	executeQuery(query);
-
-	query.prepare("CREATE INDEX IF NOT EXISTS kadu_msg_content ON kadu_messages (content_id)");
-	executeQuery(query);
+	return Database.isOpen();
 }
 
 void HistorySqlStorage::initQueries()
@@ -445,6 +159,9 @@ QString HistorySqlStorage::buddyContactsWhere(const Buddy &buddy)
 
 void HistorySqlStorage::sync()
 {
+	if (!isDatabaseReady(false))
+		return; // nothing to sync yet
+
 	QMutexLocker locker(&DatabaseMutex);
 
 	Database.commit();
@@ -592,6 +309,9 @@ void HistorySqlStorage::appendMessage(const Message &message)
 {
 	kdebugf();
 
+	if (!isDatabaseReady(true))
+		return;
+
 	QMutexLocker locker(&DatabaseMutex);
 
 	int outgoing = (message.type() == MessageTypeSent)
@@ -621,6 +341,9 @@ void HistorySqlStorage::appendStatus(const Contact &contact, const Status &statu
 {
 	kdebugf();
 
+	if (!isDatabaseReady(true))
+		return;
+
 	QMutexLocker locker(&DatabaseMutex);
 
 	AppendStatusQuery.bindValue(":contact", contact.uuid().toString());
@@ -639,6 +362,9 @@ void HistorySqlStorage::appendSms(const QString &recipient, const QString &conte
 {
 	kdebugf();
 
+	if (!isDatabaseReady(true))
+		return;
+
 	QMutexLocker locker(&DatabaseMutex);
 
 	AppendSmsQuery.bindValue(":contact", recipient);
@@ -654,6 +380,9 @@ void HistorySqlStorage::appendSms(const QString &recipient, const QString &conte
 
 void HistorySqlStorage::clearChatHistory(const Chat &chat, const QDate &date)
 {
+	if (!isDatabaseReady(true))
+		return;
+
 	QMutexLocker locker(&DatabaseMutex);
 
 	QSqlQuery query(Database);
@@ -671,6 +400,9 @@ void HistorySqlStorage::clearChatHistory(const Chat &chat, const QDate &date)
 
 void HistorySqlStorage::clearStatusHistory(const Buddy &buddy, const QDate &date)
 {
+	if (!isDatabaseReady(true))
+		return;
+
 	QMutexLocker locker(&DatabaseMutex);
 
 	QSqlQuery query(Database);
@@ -688,6 +420,9 @@ void HistorySqlStorage::clearStatusHistory(const Buddy &buddy, const QDate &date
 
 void HistorySqlStorage::clearSmsHistory(const QString &recipient, const QDate &date)
 {
+	if (!isDatabaseReady(true))
+		return;
+
 	QMutexLocker locker(&DatabaseMutex);
 
 	QSqlQuery query(Database);
@@ -706,6 +441,9 @@ void HistorySqlStorage::clearSmsHistory(const QString &recipient, const QDate &d
 
 void HistorySqlStorage::deleteHistory(const Buddy &buddy)
 {
+	if (!isDatabaseReady(true))
+		return;
+
 	QMutexLocker locker(&DatabaseMutex);
 
 	QSqlQuery query(Database);
@@ -729,6 +467,9 @@ void HistorySqlStorage::deleteHistory(const Buddy &buddy)
 QVector<Chat> HistorySqlStorage::chats(const HistorySearchParameters &search)
 {
 	kdebugf();
+
+	if (!isDatabaseReady(false))
+		return QVector<Chat>();
 
 	QMutexLocker locker(&DatabaseMutex);
 
@@ -774,6 +515,9 @@ QVector<DatesModelItem> HistorySqlStorage::chatDates(const Chat &chat, const His
 	kdebugf();
 
 	if (!chat)
+		return QVector<DatesModelItem>();
+
+	if (!isDatabaseReady(false))
 		return QVector<DatesModelItem>();
 
 	QMutexLocker locker(&DatabaseMutex);
@@ -843,6 +587,9 @@ QVector<Message> HistorySqlStorage::messages(const Chat &chat, const QDate &date
 {
 	kdebugf();
 
+	if (!isDatabaseReady(false))
+		return QVector<Message>();
+
 	QMutexLocker locker(&DatabaseMutex);
 
 	QSqlQuery query(Database);
@@ -874,6 +621,9 @@ QVector<Message> HistorySqlStorage::messagesSince(const Chat &chat, const QDate 
 {
 	kdebugf();
 
+	if (!isDatabaseReady(false))
+		return QVector<Message>();
+
 	QMutexLocker locker(&DatabaseMutex);
 
 	QVector<Message> messages;
@@ -901,6 +651,9 @@ QVector<Message> HistorySqlStorage::messagesSince(const Chat &chat, const QDate 
 
 QVector<Message> HistorySqlStorage::messagesBackTo(const Chat &chat, const QDateTime &datetime, int limit)
 {
+	if (!isDatabaseReady(false))
+		return QVector<Message>();
+
 	DatabaseMutex.lock();
 
 	QVector<Message> result;
@@ -939,6 +692,9 @@ QList<QString> HistorySqlStorage::smsRecipientsList(const HistorySearchParameter
 {
 	kdebugf();
 
+	if (!isDatabaseReady(false))
+		return QList<QString>();
+
 	QMutexLocker locker(&DatabaseMutex);
 
 	QSqlQuery query(Database);
@@ -975,6 +731,9 @@ QVector<DatesModelItem> HistorySqlStorage::datesForSmsRecipient(const QString &r
 	kdebugf();
 
 	if (recipient.isEmpty())
+		return QVector<DatesModelItem>();
+
+	if (!isDatabaseReady(false))
 		return QVector<DatesModelItem>();
 
 	QMutexLocker locker(&DatabaseMutex);
@@ -1022,6 +781,9 @@ QVector<Message> HistorySqlStorage::sms(const QString &recipient, const QDate &d
 {
 	kdebugf();
 
+	if (!isDatabaseReady(false))
+		return QVector<Message>();
+
 	QMutexLocker locker(&DatabaseMutex);
 
 	QSqlQuery query(Database);
@@ -1049,6 +811,9 @@ QVector<Message> HistorySqlStorage::sms(const QString &recipient, const QDate &d
 QVector<Buddy> HistorySqlStorage::statusBuddiesList(const HistorySearchParameters &search)
 {
 	kdebugf();
+
+	if (!isDatabaseReady(false))
+		return QVector<Buddy>();
 
 	QMutexLocker locker(&DatabaseMutex);
 
@@ -1097,6 +862,9 @@ QVector<DatesModelItem> HistorySqlStorage::datesForStatusBuddy(const Buddy &budd
 	if (!buddy)
 		return QVector<DatesModelItem>();
 
+	if (!isDatabaseReady(false))
+		return QVector<DatesModelItem>();
+
 	QMutexLocker locker(&DatabaseMutex);
 
 	QSqlQuery query(Database);
@@ -1143,6 +911,9 @@ QList<TimedStatus> HistorySqlStorage::statuses(const Buddy &buddy, const QDate &
 {
 	kdebugf();
 
+	if (!isDatabaseReady(false))
+		return QList<TimedStatus>();
+
 	QMutexLocker locker(&DatabaseMutex);
 
 	QSqlQuery query(Database);
@@ -1177,11 +948,14 @@ void HistorySqlStorage::executeQuery(QSqlQuery &query)
 	query.exec();
 	QDateTime after = QDateTime::currentDateTime();
 	kdebugm(KDEBUG_INFO, "db query: %s\n", qPrintable(query.executedQuery()));
+
+	/*
 	printf("[%s]\n[%d.%d]-[%d.%d]/%d.%d\n", qPrintable(query.executedQuery()),
 			before.toTime_t(), before.time().msec(),
 			after.toTime_t(), after.time().msec(),
 			after.toTime_t() - before.toTime_t(),
 			after.time().msec() - before.time().msec());
+	*/
 }
 
 QVector<Message> HistorySqlStorage::messagesFromQuery(QSqlQuery &query)

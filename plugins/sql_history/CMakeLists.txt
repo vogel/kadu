@@ -10,11 +10,13 @@ include (FindKadu)
 
 set (SOURCES
 	storage/history-sql-storage.cpp
+	storage/sql-initializer.cpp
 	sql-history-plugin.cpp
 )
 
 set (MOC_SOURCES
 	storage/history-sql-storage.h
+	storage/sql-initializer.h
 	sql-history-plugin.h
 )
 

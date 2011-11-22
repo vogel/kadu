@@ -38,6 +38,8 @@ class HistorySqlStorage : public HistoryStorage
 {
 	Q_OBJECT
 
+	QThread *InitializerThread;
+
 	QSqlDatabase Database;
 
 	QSqlQuery ListChatsQuery;
@@ -51,20 +53,7 @@ class HistorySqlStorage : public HistoryStorage
 	QMap<Contact, int> ContactMap;
 	QMap<QString, int> DateMap;
 
-	void copyHistoryFile();
-
-	void initDatabase();
 	void initQueries();
-	void initTables();
-	void initIndexes();
-	void initKaduSchemaTable();
-	void initKaduMessagesTable();
-	void initKaduStatusesTable();
-	void initKaduSmsTable();
-
-	quint16 loadSchemaVersion();
-
-	void importVersion1Schema();
 
 	int findOrCreateChat(const Chat &chat);
 	int findOrCreateContact(const Contact &contact);
@@ -79,9 +68,13 @@ class HistorySqlStorage : public HistoryStorage
 	QList<TimedStatus> statusesFromQuery(QSqlQuery &query);
 	QVector<Message> smsFromQuery(QSqlQuery &query);
 
+	bool isDatabaseReady(bool wait);
+
 private slots:
 	virtual void messageReceived(const Message &message);
 	virtual void messageSent(const Message &message);
+
+	void databaseReady(bool ok);
 
 public:
 	explicit HistorySqlStorage(QObject *parent = 0);
