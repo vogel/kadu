@@ -75,7 +75,7 @@ void ShowHistoryActionDescription::actionInstanceCreated(Action *action)
 	if (config_file.readBoolEntry("Chat", "ChatPrune", false))
 	{
 		int prune = config_file.readNumEntry("Chat", "ChatPruneLen", 20);
-		menu->addAction(tr("Show last %1 messages").arg(prune), this, SLOT(showPruneMessages(QAction *)))->setData(chatWidgetData);
+		menu->addAction(tr("Show last %1 messages").arg(prune), this, SLOT(showPruneMessages()))->setData(chatWidgetData);
 		menu->addSeparator();
 	}
 
