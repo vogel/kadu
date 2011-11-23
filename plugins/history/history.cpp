@@ -33,6 +33,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QFutureWatcher>
 #include <QtCore/QList>
 #include <QtCore/QMutex>
 #include <QtCore/QScopedPointer>
@@ -195,6 +196,21 @@ void History::clearHistoryActionActivated(QAction *sender, bool toggled)
 		CurrentStorage->clearChatHistory(action->context()->chat());
 }
 
+void History::messagesForNewChatWidgetAvailable()
+{
+	QFutureWatcher<QVector<Message> > *futureWatcher = dynamic_cast<QFutureWatcher<QVector<Message> > *>(sender());
+	if (!futureWatcher)
+		return;
+
+	ChatMessagesView *chatMessagesView = qobject_cast<ChatMessagesView *>(futureWatcher->parent());
+	if (!chatMessagesView)
+		return;
+
+	chatMessagesView->prependMessages(futureWatcher->result());
+
+	futureWatcher->deleteLater();
+}
+
 void History::chatCreated(ChatWidget *chatWidget)
 {
 	kdebugf();
@@ -205,29 +221,21 @@ void History::chatCreated(ChatWidget *chatWidget)
 	if (!CurrentStorage)
 		return;
 
-	// don't do it for already opened chats with discussions
-	if (chatWidget->countMessages())
-		return;
-
 	ChatMessagesView *chatMessagesView = chatWidget->chatMessagesView();
 	if (!chatMessagesView)
 		return;
 
-	QVector<Message> messages;
-
-	unsigned int chatHistoryQuotation = qMax(ChatHistoryCitation, qint32(chatWidget->chat().unreadMessagesCount()));
-
 	Chat chat = AggregateChatManager::instance()->aggregateChat(chatWidget->chat());
 
-	QDateTime backTo = QDateTime::currentDateTime().addSecs(ChatHistoryQuotationTime * 3600);
-	messages = CurrentStorage->messagesBackTo(chat ? chat : chatWidget->chat(), backTo, chatHistoryQuotation);
+	QFutureWatcher<QVector<Message> > *futureWatcher = new QFutureWatcher<QVector<Message> >(chatMessagesView);
+	connect(futureWatcher, SIGNAL(finished()), this, SLOT(messagesForNewChatWidgetAvailable()));
 
-	if (messages.isEmpty())
-		return;
+	QDateTime backTo = QDateTime::currentDateTime().addDays(ChatHistoryQuotationTime/24);
+	QFuture<QVector<Message> > futureMessages = History::instance()->currentStorage()->
+	        asyncMessagesBackTo(chat ? chat : chatWidget->chat(), backTo,
+	                            config_file.readNumEntry("Chat", "ChatPruneLen", 20));
 
-	chatMessagesView->appendMessages(messages);
-
-	kdebugf2();
+	futureWatcher->setFuture(futureMessages);
 }
 
 void History::accountRegistered(Account account)

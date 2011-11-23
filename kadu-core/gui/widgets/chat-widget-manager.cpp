@@ -206,13 +206,10 @@ ChatWidget * ChatWidgetManager::createChatWidget(const Chat &chat)
 //		BuddyPreferredManager::instance()->updatePreferred(contact.ownerBuddy());
 //	}
 
-	emit chatWidgetCreated(chatWidget);
-
 	const QList<Message> &messages = loadUnreadMessages(chat);
-	if (!messages.isEmpty())
-		// TODO: Lame API
-		if (0 == chatWidget->countMessages())
-			chatWidget->appendMessages(messages);
+	chatWidget->appendMessages(messages);
+
+	emit chatWidgetCreated(chatWidget);
 
 	return chatWidget;
 }

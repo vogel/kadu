@@ -412,6 +412,9 @@ QIcon ChatWidget::icon()
 
 void ChatWidget::appendMessages(const QList<Message> &messages)
 {
+	if (messages.isEmpty())
+		return;
+
 	bool unread = false;
 
 	QList<MessageRenderInfo *> messageRenderInfos;

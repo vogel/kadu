@@ -127,6 +127,8 @@ private slots:
 
 	void updateQuoteTimeLabel(int value);
 
+	void messagesForNewChatWidgetAvailable();
+
 protected:
 	virtual void crash();
 
