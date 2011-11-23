@@ -43,6 +43,8 @@ private slots:
 	void show30DaysMessages();
 	void showAllMessages();
 
+	void messagesAvailable();
+
 protected:
 	virtual void configurationUpdated();
 

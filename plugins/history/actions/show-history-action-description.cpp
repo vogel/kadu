@@ -17,6 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QFutureWatcher>
 #include <QtGui/QAction>
 #include <QtGui/QMenu>
 
@@ -158,10 +159,33 @@ void ShowHistoryActionDescription::showDaysMessages(QAction *action, int days)
 	}
 	else
 	{
+		QFutureWatcher<QVector<Message> > *futureWatcher = new QFutureWatcher<QVector<Message> >(chatMessagesView);
+		connect(futureWatcher, SIGNAL(finished()), this, SLOT(messagesAvailable()));
+
 		QDateTime backTo = QDateTime::currentDateTime().addDays(ChatHistoryQuotationTime/24);
-		messages = History::instance()->currentStorage()->messagesBackTo(chat ? chat : chatWidget->chat(), backTo, config_file.readNumEntry("Chat", "ChatPruneLen", 20));
+		QFuture<QVector<Message> > futureMessages = History::instance()->currentStorage()->
+		        asyncMessagesBackTo(chat ? chat : chatWidget->chat(), backTo,
+		                            config_file.readNumEntry("Chat", "ChatPruneLen", 20));
+
+		futureWatcher->setFuture(futureMessages);
 	}
 
 	chatMessagesView->clearMessages();
 	chatMessagesView->appendMessages(messages);
+}
+
+void ShowHistoryActionDescription::messagesAvailable()
+{
+	QFutureWatcher<QVector<Message> > *futureWatcher = dynamic_cast<QFutureWatcher<QVector<Message> > *>(sender());
+	if (!futureWatcher)
+		return;
+
+	ChatMessagesView *chatMessagesView = qobject_cast<ChatMessagesView *>(futureWatcher->parent());
+	if (!chatMessagesView)
+		return;
+
+	chatMessagesView->clearMessages();
+	chatMessagesView->appendMessages(futureWatcher->result());
+
+	futureWatcher->deleteLater();
 }
