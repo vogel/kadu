@@ -22,8 +22,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CHAT_MESSAGES_VIEW
-#define CHAT_MESSAGES_VIEW
+#ifndef CHAT_MESSAGES_VIEW_H
+#define CHAT_MESSAGES_VIEW_H
 
 #include <QtCore/QList>
 
@@ -91,7 +91,7 @@ public:
 	void appendMessages(const QVector<Message> &messages);
 	void appendMessages(const QList<MessageRenderInfo *> &messages);
 
- 	unsigned int countMessages();
+	unsigned int countMessages();
 
 	void updateBackgroundsAndColors();
 
@@ -111,4 +111,4 @@ signals:
 
 };
 
-#endif // CHAT_MESSAGES_VIEW
+#endif // CHAT_MESSAGES_VIEW_H
