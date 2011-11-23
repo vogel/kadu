@@ -184,8 +184,7 @@ void ShowHistoryActionDescription::messagesAvailable()
 	if (!chatMessagesView)
 		return;
 
-	chatMessagesView->clearMessages();
-	chatMessagesView->appendMessages(futureWatcher->result());
+	chatMessagesView->prependMessages(futureWatcher->result());
 
 	futureWatcher->deleteLater();
 }
