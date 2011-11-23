@@ -169,6 +169,55 @@ void ChatMessagesView::repaintMessages()
 	Renderer->refresh();
 }
 
+bool ChatMessagesView::sameMessage(const Message &left, const Message &right)
+{
+	if (left.type() != right.type())
+		return false;
+
+	if (left.sendDate() != right.sendDate())
+		return false;
+
+	if (left.messageChat() != right.messageChat())
+		return false;
+
+	if (left.messageSender() != right.messageSender())
+		return false;
+
+	if (left.content() != right.content())
+		return false;
+
+	return true;
+}
+
+void ChatMessagesView::prependMessages(const QVector<Message> &messages)
+{
+	QList<MessageRenderInfo *> copyOfRendererMessages = Renderer->messages();
+	if (copyOfRendererMessages.isEmpty()) // no need to prepend anything
+	{
+		appendMessages(messages);
+		return;
+	}
+
+	const Message &firstMessage = copyOfRendererMessages.at(0)->message();
+
+	QList<MessageRenderInfo *> newMessages;
+	foreach (const Message &message, messages)
+	{
+		if (sameMessage(firstMessage, message))
+			break; // we already have this and following messages in our window
+
+		newMessages.append(new MessageRenderInfo(message));
+	}
+
+	// we need to make new instances of MessageRenderInfo here
+	// clearMessages will destroy existing ones
+	foreach (const MessageRenderInfo *renderInfo, copyOfRendererMessages)
+		newMessages.append(new MessageRenderInfo(renderInfo->message()));
+
+	Renderer->clearMessages();
+	Renderer->appendMessages(newMessages);
+}
+
 void ChatMessagesView::appendMessage(const Message &message)
 {
 	MessageRenderInfo *messageRenderInfo = new MessageRenderInfo(message);

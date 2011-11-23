@@ -73,6 +73,8 @@ private slots:
 
 	void scrollToBottom();
 
+	bool sameMessage(const Message &left, const Message &right);
+
 protected:
 	virtual void configurationUpdated();
 	virtual void mouseReleaseEvent(QMouseEvent *e);
@@ -84,6 +86,8 @@ public:
 	virtual ~ChatMessagesView();
 
 	HtmlMessagesRenderer * renderer() { return Renderer; }
+
+	void prependMessages(const QVector<Message> &messages);
 
 	void appendMessage(const Message &message);
 	void appendMessage(MessageRenderInfo *message);
