@@ -24,6 +24,7 @@
 
 #include <QtCore/QDir>
 #include <QtCore/QMutexLocker>
+#include <QtCore/QtConcurrentRun>
 #include <QtCore/QThread>
 #include <QtGui/QTextDocument>
 #include <QtSql/QSqlError>
@@ -670,11 +671,8 @@ QVector<Message> HistorySqlStorage::messagesSince(const Chat &chat, const QDate 
 	return messages;
 }
 
-QVector<Message> HistorySqlStorage::messagesBackTo(const Chat &chat, const QDateTime &datetime, int limit)
+QVector<Message> HistorySqlStorage::getMessagesBackTo(const Chat &chat, const QDateTime &datetime, int limit)
 {
-	if (!isDatabaseReady(false))
-		return QVector<Message>();
-
 	DatabaseMutex.lock();
 
 	QVector<Message> result;
@@ -707,6 +705,27 @@ QVector<Message> HistorySqlStorage::messagesBackTo(const Chat &chat, const QDate
 	for (int i = result.size() - 1; i >= 0; --i)
 		inverted.append(result.at(i));
 	return inverted;
+}
+
+QVector<Message> HistorySqlStorage::syncGetMessagesBackTo(const Chat &chat, const QDateTime &datetime, int limit)
+{
+	if (!isDatabaseReady(true))
+		return QVector<Message>();
+
+	return getMessagesBackTo(chat, datetime, limit);
+}
+
+QVector<Message> HistorySqlStorage::messagesBackTo(const Chat &chat, const QDateTime &datetime, int limit)
+{
+	if (!isDatabaseReady(false))
+		return QVector<Message>();
+
+	return getMessagesBackTo(chat, datetime, limit);
+}
+
+QFuture<QVector<Message> > HistorySqlStorage::asyncMessagesBackTo(const Chat &chat, const QDateTime &datetime, int limit)
+{
+	return QtConcurrent::run(this, &HistorySqlStorage::syncGetMessagesBackTo, chat, datetime, limit);
 }
 
 QList<QString> HistorySqlStorage::smsRecipientsList(const HistorySearchParameters &search)
