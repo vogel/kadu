@@ -386,7 +386,7 @@ void TabsManager::onTimer()
 
 				if (currentChat == chat)
 				{
-					MessageManager::instance()->markAllMessagesAsRead(chat);
+					MessageManager::instance()->markAllMessagesAsRead(chat->chat());
 					TabDialog->setTabIcon(i, chat->icon());
 					ChatsWithNewMessages.removeAll(chat);
 				}
