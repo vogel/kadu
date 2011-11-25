@@ -29,6 +29,7 @@
 #include "gui/widgets/chat-widget.h"
 
 #include "gui/windows/history-window.h"
+#include "history-messages-prepender.h"
 
 #include "show-history-action-description.h"
 
@@ -159,32 +160,16 @@ void ShowHistoryActionDescription::showDaysMessages(QAction *action, int days)
 	}
 	else
 	{
-		QFutureWatcher<QVector<Message> > *futureWatcher = new QFutureWatcher<QVector<Message> >(chatMessagesView);
-		connect(futureWatcher, SIGNAL(finished()), this, SLOT(messagesAvailable()));
-
 		QDateTime backTo = QDateTime::currentDateTime().addDays(ChatHistoryQuotationTime/24);
 		QFuture<QVector<Message> > futureMessages = History::instance()->currentStorage()->
 		        asyncMessagesBackTo(chat ? chat : chatWidget->chat(), backTo,
 		                            config_file.readNumEntry("Chat", "ChatPruneLen", 20));
 
-		futureWatcher->setFuture(futureMessages);
+		new HistoryMessagesPrepender(futureMessages, chatMessagesView);
+
+		return;
 	}
 
 	chatMessagesView->clearMessages();
 	chatMessagesView->appendMessages(messages);
-}
-
-void ShowHistoryActionDescription::messagesAvailable()
-{
-	QFutureWatcher<QVector<Message> > *futureWatcher = dynamic_cast<QFutureWatcher<QVector<Message> > *>(sender());
-	if (!futureWatcher)
-		return;
-
-	ChatMessagesView *chatMessagesView = qobject_cast<ChatMessagesView *>(futureWatcher->parent());
-	if (!chatMessagesView)
-		return;
-
-	chatMessagesView->prependMessages(futureWatcher->result());
-
-	futureWatcher->deleteLater();
 }

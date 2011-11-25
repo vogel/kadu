@@ -33,7 +33,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QFutureWatcher>
 #include <QtCore/QList>
 #include <QtCore/QMutex>
 #include <QtCore/QScopedPointer>
@@ -70,6 +69,7 @@
 #include "actions/show-history-action-description.h"
 #include "gui/windows/history-window.h"
 #include "model/dates-model-item.h"
+#include "history-messages-prepender.h"
 #include "history-save-thread.h"
 #include "timed-status.h"
 
@@ -196,21 +196,6 @@ void History::clearHistoryActionActivated(QAction *sender, bool toggled)
 		CurrentStorage->clearChatHistory(action->context()->chat());
 }
 
-void History::messagesForNewChatWidgetAvailable()
-{
-	QFutureWatcher<QVector<Message> > *futureWatcher = dynamic_cast<QFutureWatcher<QVector<Message> > *>(sender());
-	if (!futureWatcher)
-		return;
-
-	ChatMessagesView *chatMessagesView = qobject_cast<ChatMessagesView *>(futureWatcher->parent());
-	if (!chatMessagesView)
-		return;
-
-	chatMessagesView->prependMessages(futureWatcher->result());
-
-	futureWatcher->deleteLater();
-}
-
 void History::chatCreated(ChatWidget *chatWidget)
 {
 	kdebugf();
@@ -227,15 +212,11 @@ void History::chatCreated(ChatWidget *chatWidget)
 
 	Chat chat = AggregateChatManager::instance()->aggregateChat(chatWidget->chat());
 
-	QFutureWatcher<QVector<Message> > *futureWatcher = new QFutureWatcher<QVector<Message> >(chatMessagesView);
-	connect(futureWatcher, SIGNAL(finished()), this, SLOT(messagesForNewChatWidgetAvailable()));
-
 	QDateTime backTo = QDateTime::currentDateTime().addDays(ChatHistoryQuotationTime/24);
 	QFuture<QVector<Message> > futureMessages = History::instance()->currentStorage()->
 	        asyncMessagesBackTo(chat ? chat : chatWidget->chat(), backTo,
 	                            config_file.readNumEntry("Chat", "ChatPruneLen", 20));
-
-	futureWatcher->setFuture(futureMessages);
+	new HistoryMessagesPrepender(futureMessages, chatMessagesView);
 }
 
 void History::accountRegistered(Account account)
