@@ -35,6 +35,7 @@ set (SOURCES
 
 	buddy-history-delete-handler.cpp
 	history.cpp
+	history-messages-prepender.cpp
 	history-plugin.cpp
 	history-tree-item.cpp
 	history-save-thread.cpp
@@ -55,6 +56,7 @@ set (MOC_SOURCES
 	storage/history-storage.h
 
 	history.h
+	history-messages-prepender.h
 	history-plugin.h
 	history-save-thread.h
 )
