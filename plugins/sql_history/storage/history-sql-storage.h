@@ -73,6 +73,9 @@ class HistorySqlStorage : public HistoryStorage
 
 	bool isDatabaseReady(bool wait);
 
+	QVector<Message> getMessagesSince(const Chat &chat, const QDate &date);
+	QVector<Message> syncMessagesSince(const Chat &chat, const QDate &date);
+
 	QVector<Message> getMessagesBackTo(const Chat &chat, const QDateTime &datetime, int limit);
 	QVector<Message> syncGetMessagesBackTo(const Chat &chat, const QDateTime &datetime, int limit);
 
@@ -93,7 +96,9 @@ public:
 
 	virtual QVector<DatesModelItem> chatDates(const Chat &chat, const HistorySearchParameters &search);
 	virtual QVector<Message> messages(const Chat &chat, const QDate &date = QDate(), int limit = 0);
+
 	virtual QVector<Message> messagesSince(const Chat &chat, const QDate &date);
+	virtual QFuture<QVector<Message> > asyncMessagesSince(const Chat &chat, const QDate &date);
 
 	virtual QVector<Message> messagesBackTo(const Chat &chat, const QDateTime &datetime, int limit);
 	virtual QFuture<QVector<Message> > asyncMessagesBackTo(const Chat &chat, const QDateTime &datetime, int limit);
