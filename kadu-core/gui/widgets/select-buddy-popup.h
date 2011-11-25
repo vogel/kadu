@@ -23,7 +23,7 @@
 #ifndef SELECT_BUDDY_POPUP_H
 #define SELECT_BUDDY_POPUP_H
 
-#include "buddies/talkable.h"
+#include "talkable/talkable.h"
 
 #include "gui/widgets/filtered-tree-view.h"
 

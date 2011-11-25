@@ -27,8 +27,8 @@
 
 #include <QtCore/QObject>
 
-#include "buddies/talkable.h"
 #include "chat/chat.h"
+#include "talkable/talkable.h"
 
 class QAction;
 

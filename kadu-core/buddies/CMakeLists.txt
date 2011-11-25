@@ -13,7 +13,6 @@ set (buddies_SRCS
 	group.cpp
 	group-manager.cpp
 	group-shared.cpp
-	talkable.cpp
 
 	filter/account-buddy-filter.cpp
 	filter/anonymous-buddy-filter.cpp

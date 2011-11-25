@@ -33,11 +33,11 @@
 #include <QtCore/QTimer>
 
 #include "buddies/buddy.h"
-#include "buddies/talkable.h"
 #include "chat/chat.h"
 #include "contacts/contact.h"
 #include "gui/actions/action-context-provider.h"
 #include "gui/actions/action-context.h"
+#include "talkable/talkable.h"
 
 #include "gui/widgets/kadu-tree-view.h"
 

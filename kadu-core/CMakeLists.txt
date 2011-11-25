@@ -90,6 +90,7 @@ set (kadu_SUBDIRS
 	qt
 	status
 	storage
+	talkable
 	themes
 	url-handlers
 )
@@ -376,6 +377,7 @@ kadu_api_directories (kadu-core
 	qt
 	status
 	storage
+	talkable
 	themes
 	url-handlers
 	.

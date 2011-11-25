@@ -18,8 +18,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "buddies/talkable.h"
 #include "configuration/configuration-file.h"
+#include "talkable/talkable.h"
 
 #include "tool-tip-class-manager.h"
 

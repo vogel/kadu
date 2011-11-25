@@ -32,10 +32,10 @@
 #include <QtCore/QPair>
 
 #include "buddies/buddy-list.h"
-#include "buddies/talkable.h"
 #include "chat/chat.h"
 #include "gui/windows/main-window.h"
 #include "os/generic/compositing-aware-object.h"
+#include "talkable/talkable.h"
 #include "exports.h"
 
 class QSplitter;

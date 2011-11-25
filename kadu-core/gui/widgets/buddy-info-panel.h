@@ -22,9 +22,9 @@
 #ifndef BUDDY_INFO_PANEL_H
 #define BUDDY_INFO_PANEL_H
 
-#include "buddies/talkable.h"
 #include "configuration/configuration-aware-object.h"
 #include "contacts/contact.h"
+#include "talkable/talkable.h"
 
 #include "kadu-web-view.h"
 

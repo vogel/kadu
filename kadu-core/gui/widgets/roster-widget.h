@@ -22,7 +22,7 @@
 
 #include <QtGui/QWidget>
 
-#include "buddies/talkable.h"
+#include "talkable/talkable.h"
 
 #include "configuration/configuration-aware-object.h"
 #include "gui/actions/action-context-provider.h"

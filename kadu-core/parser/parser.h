@@ -27,8 +27,8 @@
 
 #include <QtCore/QMap>
 
-#include "buddies/talkable.h"
 #include "parser/parser-token-type.h"
+#include "talkable/talkable.h"
 
 #include "exports.h"
 

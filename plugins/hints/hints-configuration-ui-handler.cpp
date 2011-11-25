@@ -30,12 +30,12 @@
 #include <QtGui/QSpinBox>
 
 #include "buddies/buddy-preferred-manager.h"
-#include "buddies/talkable.h"
 #include "configuration/config-file-data-manager.h"
 #include "core/core.h"
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "notify/chat-notification.h"
+#include "talkable/talkable.h"
 
 #include "hint-over-user-configuration-window.h"
 #include "hints-plugin.h"
