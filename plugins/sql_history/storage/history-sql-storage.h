@@ -64,7 +64,7 @@ class HistorySqlStorage : public HistoryStorage
 	int findOrCreateDate(const QDate &date);
 
 	QString chatWhere(const Chat &chat);
-	QString buddyContactsWhere(const Buddy &buddy);
+	QString buddyContactsWhere(const Buddy &buddy, const QString &fieldName);
 
 	void executeQuery(QSqlQuery &query);
 	QVector<Message> messagesFromQuery(QSqlQuery &query);

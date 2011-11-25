@@ -167,7 +167,7 @@ QString HistorySqlStorage::chatWhere(const Chat &chat)
 	return QString("chat.uuid IN (%1)").arg(uuids.join(QLatin1String(", ")));
 }
 
-QString HistorySqlStorage::buddyContactsWhere(const Buddy &buddy)
+QString HistorySqlStorage::buddyContactsWhere(const Buddy &buddy, const QString &fieldName)
 {
 	if (!buddy || buddy.contacts().isEmpty())
 		return  QLatin1String("false");
@@ -176,7 +176,7 @@ QString HistorySqlStorage::buddyContactsWhere(const Buddy &buddy)
 	foreach (const Contact &contact, buddy.contacts())
 		uuids.append(QString("'%1'").arg(contact.uuid().toString()));
 
-	return QString("con.uuid IN (%1)").arg(uuids.join(QLatin1String(", ")));
+	return QString("(%1) IN (%2)").arg(fieldName).arg(uuids.join(QLatin1String(", ")));
 }
 
 void HistorySqlStorage::sync()
@@ -428,7 +428,7 @@ void HistorySqlStorage::clearStatusHistory(const Buddy &buddy, const QDate &date
 	QMutexLocker locker(&DatabaseMutex);
 
 	QSqlQuery query(Database);
-	QString queryString = "DELETE FROM kadu_statuses WHERE " + buddyContactsWhere(buddy);
+	QString queryString = "DELETE FROM kadu_statuses WHERE " + buddyContactsWhere(buddy, "contact");
 	if (!date.isNull())
 		queryString += " AND substr(set_time,0,11) = :date";
 
@@ -481,7 +481,7 @@ void HistorySqlStorage::deleteHistory(const Buddy &buddy)
 		}
 	}
 
-	QString queryString = "DELETE FROM kadu_statuses WHERE " + buddyContactsWhere(buddy);
+	QString queryString = "DELETE FROM kadu_statuses WHERE " + buddyContactsWhere(buddy, "contact");
 	query.prepare(queryString);
 	executeQuery(query);
 }
@@ -909,7 +909,7 @@ QVector<DatesModelItem> HistorySqlStorage::datesForStatusBuddy(const Buddy &budd
 
 	QSqlQuery query(Database);
 	QString queryString = "SELECT count(1), substr(set_time,0,11) FROM";
-	queryString += " (select set_time FROM kadu_statuses WHERE " + buddyContactsWhere(buddy);
+	queryString += " (SELECT set_time FROM kadu_statuses WHERE " + buddyContactsWhere(buddy, "contact");
 
 	if (!search.query().isEmpty())
 		queryString += " AND description LIKE :description";
@@ -918,8 +918,8 @@ QVector<DatesModelItem> HistorySqlStorage::datesForStatusBuddy(const Buddy &budd
 	if (search.toDate().isValid())
 		queryString += " AND substr(set_time,0,11) <= :toDate";
 
-	queryString += "order by set_time DESC, rowid DESC)";
-	queryString += "group by substr(set_time,0,11) order by set_time ASC";
+	queryString += " ORDER BY set_time DESC, rowid DESC)";
+	queryString += " GROUP BY substr(set_time,0,11) ORDER BY set_time ASC";
 
 	query.prepare(queryString);
 
@@ -957,7 +957,7 @@ QList<TimedStatus> HistorySqlStorage::statuses(const Buddy &buddy, const QDate &
 	QMutexLocker locker(&DatabaseMutex);
 
 	QSqlQuery query(Database);
-	QString queryString = "SELECT contact, status, description, set_time FROM kadu_statuses WHERE " + buddyContactsWhere(buddy);
+	QString queryString = "SELECT contact, status, description, set_time FROM kadu_statuses WHERE " + buddyContactsWhere(buddy, "contact");
 	if (!date.isNull())
 		queryString += " AND substr(set_time,0,11) = :date";
 	queryString += " ORDER BY set_time ASC";
