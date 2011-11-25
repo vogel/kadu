@@ -24,8 +24,8 @@
 #include <QtGui/QCloseEvent>
 #include <QtGui/QDialogButtonBox>
 #include <QtGui/QLabel>
-#include <QtGui/QPushButton>
 #include <QtGui/QProgressBar>
+#include <QtGui/QPushButton>
 #include <QtGui/QStyle>
 #include <QtGui/QVBoxLayout>
 

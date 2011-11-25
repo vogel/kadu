@@ -21,8 +21,8 @@
 #include "buddies/buddy-manager.h"
 #include "chat/chat-details-aggregate.h"
 #include "configuration/xml-configuration-file.h"
-#include "gui/widgets/chat-widget.h"
 #include "gui/widgets/chat-widget-manager.h"
+#include "gui/widgets/chat-widget.h"
 #include "protocols/protocol.h"
 #include "protocols/services/chat-service.h"
 
