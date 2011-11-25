@@ -59,6 +59,8 @@
 
 #include "history-sql-storage.h"
 
+#define DATE_TITLE_LENGTH 120
+
 HistorySqlStorage::HistorySqlStorage(QObject *parent) :
 		HistoryStorage(parent), ImportProgressWindow(0), DatabaseMutex(QMutex::NonRecursive)
 {
@@ -593,9 +595,9 @@ QVector<DatesModelItem> HistorySqlStorage::chatDates(const Chat &chat, const His
 		FormattedMessage formatted = FormattedMessage::parse(&document);
 		QString title = formatted.toPlain();
 
-		if (title.length() > 20)
+		if (title.length() > DATE_TITLE_LENGTH)
 		{
-			title.truncate(20);
+			title.truncate(DATE_TITLE_LENGTH);
 			title += " ...";
 		}
 

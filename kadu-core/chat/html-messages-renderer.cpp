@@ -47,8 +47,6 @@ HtmlMessagesRenderer::~HtmlMessagesRenderer()
 void HtmlMessagesRenderer::setChat(const Chat &chat)
 {
 	MyChat = chat;
-	clearMessages();
-	refresh();
 }
 
 void HtmlMessagesRenderer::setForcePruneDisabled(bool forcePruneDisabled)

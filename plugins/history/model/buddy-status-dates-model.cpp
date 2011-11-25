@@ -41,7 +41,7 @@ BuddyStatusDatesModel::~BuddyStatusDatesModel()
 
 int BuddyStatusDatesModel::columnCount(const QModelIndex &parent) const
 {
-	return parent.isValid() ? 0 : 2;
+	return parent.isValid() ? 0 : 1;
 }
 
 int BuddyStatusDatesModel::rowCount(const QModelIndex &parent) const
@@ -49,29 +49,11 @@ int BuddyStatusDatesModel::rowCount(const QModelIndex &parent) const
 	return parent.isValid() ? 0 : Dates.size();
 }
 
-QVariant BuddyStatusDatesModel::headerData(int section, Qt::Orientation orientation, int role) const
-{
-    if (role != Qt::DisplayRole)
-		return QVariant();
-
-	if (orientation != Qt::Horizontal)
-		return QVariant();
-
-	switch (section)
-	{
-		case 0: return tr("Date");
-		case 1: return tr("Length");
-	}
-
-	return QVariant();
-}
-
 QVariant BuddyStatusDatesModel::data(const QModelIndex &index, int role) const
 {
 	if (!MyBuddy)
 		return QVariant();
 
-	int col = index.column();
 	int row = index.row();
 
 	if (row < 0 || row >= Dates.size())
@@ -79,17 +61,7 @@ QVariant BuddyStatusDatesModel::data(const QModelIndex &index, int role) const
 
 	switch (role)
 	{
-		case Qt::DisplayRole:
-		{
-			switch (col)
-			{
-				case 0: return Dates.at(row).Date.toString("dd.MM.yyyy");
-				case 1: return Dates.at(row).Count;
-			}
-
-			return QVariant();
-		}
-
+		case Qt::DisplayRole: return Dates.at(row).Date.toString("dd.MM.yyyy");
 		case HistoryItemRole: return QVariant::fromValue<HistoryTreeItem>(HistoryTreeItem(MyBuddy));
 		case BuddyRole: return QVariant::fromValue<Buddy>(MyBuddy);
 		case DateRole: return Dates.at(row).Date;

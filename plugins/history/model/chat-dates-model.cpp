@@ -40,7 +40,7 @@ ChatDatesModel::~ChatDatesModel()
 
 int ChatDatesModel::columnCount(const QModelIndex &parent) const
 {
-    return parent.isValid() ? 0 : 4;
+	return parent.isValid() ? 0 : 1;
 }
 
 int ChatDatesModel::rowCount(const QModelIndex &parent) const
@@ -48,31 +48,11 @@ int ChatDatesModel::rowCount(const QModelIndex &parent) const
 	return parent.isValid() ? 0 : Dates.size();
 }
 
-QVariant ChatDatesModel::headerData(int section, Qt::Orientation orientation, int role) const
-{
-    if (role != Qt::DisplayRole)
-		return QVariant();
-
-	if (orientation != Qt::Horizontal)
-		return QVariant();
-
-	switch (section)
-	{
-		case 0: return tr("Chat");
-		case 1: return tr("Title");
-		case 2: return tr("Date");
-		case 3: return tr("Length");
-	}
-
-	return QVariant();
-}
-
 QVariant ChatDatesModel::data(const QModelIndex &index, int role) const
 {
 	if (!MyChat)
 		return QVariant();
 
-	int col = index.column();
 	int row = index.row();
 
 	if (row < 0 || row >= Dates.size())
@@ -80,19 +60,7 @@ QVariant ChatDatesModel::data(const QModelIndex &index, int role) const
 
 	switch (role)
 	{
-		case Qt::DisplayRole:
-		{
-			switch (col)
-			{
-				case 0: return MyChat.name();
-				case 1: return Dates.at(row).Title;
-				case 2: return Dates.at(row).Date.toString("dd.MM.yyyy");
-				case 3: return Dates.at(row).Count;
-			}
-
-			return QVariant();
-		}
-
+		case Qt::DisplayRole: return QString("%1 - %2").arg(Dates.at(row).Date.toString("dd.MM.yyyy")).arg(Dates.at(row).Title);
 		case HistoryItemRole: return QVariant::fromValue<HistoryTreeItem>(HistoryTreeItem(MyChat));
 		case ChatRole: return QVariant::fromValue<Chat>(MyChat);
 		case DateRole: return Dates.at(row).Date;

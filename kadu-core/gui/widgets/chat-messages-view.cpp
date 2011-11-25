@@ -273,8 +273,6 @@ void ChatMessagesView::appendMessages(const QList<MessageRenderInfo *> &messages
 {
 	kdebugf2();
 
-//	rememberScrollBarPosition();
-
 	Renderer->appendMessages(messages);
 	emit messagesUpdated();
 }

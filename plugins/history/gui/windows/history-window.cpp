@@ -170,6 +170,8 @@ void HistoryWindow::createGui()
 	MyBuddyStatusDatesModel = new BuddyStatusDatesModel(Buddy::null, QVector<DatesModelItem>(), this);
 	MySmsDatesModel = new SmsDatesModel(QString(), QVector<DatesModelItem>(), this);
 
+	DetailsListView->header()->hide();
+	DetailsListView->setAlternatingRowColors(true);
 	DetailsListView->setRootIsDecorated(false);
 	DetailsListView->setUniformRowHeights(true);
 
@@ -212,6 +214,7 @@ void HistoryWindow::createChatTree(QWidget *parent)
 
 	ChatsModelProxy->addChatFilter(NameFilter);
 
+	ChatsTree->setAlternatingRowColors(true);
 	ChatsTree->setModel(ChatsModelProxy);
 	ChatsTree->setRootIsDecorated(true);
 }
@@ -546,10 +549,13 @@ void HistoryWindow::dateCurrentChanged(const QModelIndex &current, const QModelI
 	HistoryTreeItem treeItem = current.data(HistoryItemRole).value<HistoryTreeItem>();
 	QDate date = current.data(DateRole).value<QDate>();
 
+	ContentBrowser->setUpdatesEnabled(false);
+
 	switch (treeItem.type())
 	{
 		case HistoryTypeNone:
 			ContentBrowser->setChat(Chat::null);
+			ContentBrowser->clearMessages();
 			break;
 
 		case HistoryTypeChat:
@@ -559,6 +565,7 @@ void HistoryWindow::dateCurrentChanged(const QModelIndex &current, const QModelI
 			if (chat && date.isValid())
 				messages = History::instance()->messages(chat, date);
 			ContentBrowser->setChat(chat);
+			ContentBrowser->clearMessages();
 			ContentBrowser->appendMessages(messages);
 			break;
 		}
@@ -571,6 +578,7 @@ void HistoryWindow::dateCurrentChanged(const QModelIndex &current, const QModelI
 				statuses = History::instance()->statuses(buddy, date);
 			if (!buddy.contacts().isEmpty())
 				ContentBrowser->setChat(ChatManager::instance()->findChat(ContactSet(buddy.contacts().at(0)), true));
+			ContentBrowser->clearMessages();
 			ContentBrowser->appendMessages(statusesToMessages(statuses));
 			break;
 		}
@@ -582,10 +590,13 @@ void HistoryWindow::dateCurrentChanged(const QModelIndex &current, const QModelI
 			if (!recipient.isEmpty() && date.isValid())
 				sms = History::instance()->sms(recipient, date);
 			ContentBrowser->setChat(Chat::null);
+			ContentBrowser->clearMessages();
 			ContentBrowser->appendMessages(sms);
 			break;
 		}
 	}
+
+	ContentBrowser->setUpdatesEnabled(true);
 
 	if (!Search.query().isEmpty())
 		QTimer::singleShot(500, this, SLOT(selectQueryText()));
