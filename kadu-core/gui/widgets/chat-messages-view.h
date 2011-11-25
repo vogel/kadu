@@ -61,6 +61,8 @@ class KADUAPI ChatMessagesView : public KaduWebView, public ConfigurationAwareOb
 
 	bool AtBottom;
 
+	Message firstNonSystemMessage(const QList<MessageRenderInfo *> &messages);
+
 private slots:
 	void repaintMessages();
 

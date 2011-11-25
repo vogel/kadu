@@ -171,6 +171,12 @@ void ChatMessagesView::repaintMessages()
 
 bool ChatMessagesView::sameMessage(const Message &left, const Message &right)
 {
+	if (left.isNull() && right.isNull())
+		return true;
+
+	if (left.isNull() || right.isNull()) // one is null, second one is not
+		return false;
+
 	if (left.type() != right.type())
 		return false;
 
@@ -189,21 +195,33 @@ bool ChatMessagesView::sameMessage(const Message &left, const Message &right)
 	return true;
 }
 
+Message ChatMessagesView::firstNonSystemMessage(const QList<MessageRenderInfo *> &messages)
+{
+	foreach (MessageRenderInfo *message, messages)
+		if (message->message().type() != MessageTypeSystem)
+			return message->message();
+
+	return Message::null;
+}
+
 void ChatMessagesView::prependMessages(const QVector<Message> &messages)
 {
-	QList<MessageRenderInfo *> copyOfRendererMessages = Renderer->messages();
-	if (copyOfRendererMessages.isEmpty()) // no need to prepend anything
-	{
-		appendMessages(messages);
+	if (messages.empty())
 		return;
-	}
 
-	const Message &firstMessage = copyOfRendererMessages.at(0)->message();
+	// case #1: all prepended messages are already rendered
+	const Message &firstMessage = messages.at(0);
+	QList<MessageRenderInfo *> copyOfRendererMessages = Renderer->messages();
+	foreach (const MessageRenderInfo *renderInfo, copyOfRendererMessages)
+		if (sameMessage(renderInfo->message(), firstMessage))
+			return;
 
+	// case #2: some prepended messages are already rendered
+	const Message &firstRenderedMessage = firstNonSystemMessage(copyOfRendererMessages);
 	QList<MessageRenderInfo *> newMessages;
 	foreach (const Message &message, messages)
 	{
-		if (sameMessage(firstMessage, message))
+		if (sameMessage(firstRenderedMessage, message))
 			break; // we already have this and following messages in our window
 
 		newMessages.append(new MessageRenderInfo(message));
