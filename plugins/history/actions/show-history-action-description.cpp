@@ -143,33 +143,30 @@ void ShowHistoryActionDescription::showDaysMessages(QAction *action, int days)
 		return;
 	}
 
-	Chat chat = AggregateChatManager::instance()->aggregateChat(chatWidget->chat());
-
 	chatMessagesView->setForcePruneDisabled(0 != days);
-	QVector<Message> messages;
 
 	if (-1 == days)
 	{
 		HistoryWindow::show(chatWidget->chat());
 		return;
 	}
-	else if (0 != days)
+
+	const Chat &aggregateChat = AggregateChatManager::instance()->aggregateChat(chatWidget->chat());
+	const Chat &messagesChat = aggregateChat ? aggregateChat : chatWidget->chat();
+	HistoryStorage *historyStorage = History::instance()->currentStorage();
+
+	QFuture<QVector<Message> > futureMessages;
+	if (0 != days)
 	{
 		QDate since = QDate::currentDate().addDays(-days);
-		messages = History::instance()->currentStorage()->messagesSince(chat ? chat : chatWidget->chat(), since);
+		futureMessages = historyStorage->asyncMessagesSince(messagesChat, since);
 	}
 	else
 	{
+		int pruneLen = config_file.readNumEntry("Chat", "ChatPruneLen", 20);
 		QDateTime backTo = QDateTime::currentDateTime().addDays(ChatHistoryQuotationTime/24);
-		QFuture<QVector<Message> > futureMessages = History::instance()->currentStorage()->
-		        asyncMessagesBackTo(chat ? chat : chatWidget->chat(), backTo,
-		                            config_file.readNumEntry("Chat", "ChatPruneLen", 20));
-
-		new HistoryMessagesPrepender(futureMessages, chatMessagesView);
-
-		return;
+		futureMessages = historyStorage->asyncMessagesBackTo(messagesChat, backTo, pruneLen);
 	}
 
-	chatMessagesView->clearMessages();
-	chatMessagesView->appendMessages(messages);
+	new HistoryMessagesPrepender(futureMessages, chatMessagesView);
 }
