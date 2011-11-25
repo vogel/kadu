@@ -674,14 +674,6 @@ QVector<Message> HistorySqlStorage::syncMessagesSince(const Chat &chat, const QD
 	return getMessagesSince(chat, date);
 }
 
-QVector<Message> HistorySqlStorage::messagesSince(const Chat &chat, const QDate &date)
-{
-	if (!isDatabaseReady(false))
-		return QVector<Message>();
-
-	return getMessagesSince(chat, date);
-}
-
 QFuture<QVector<Message> > HistorySqlStorage::asyncMessagesSince(const Chat &chat, const QDate &date)
 {
 	return QtConcurrent::run(this, &HistorySqlStorage::syncMessagesSince, chat, date);
@@ -726,14 +718,6 @@ QVector<Message> HistorySqlStorage::getMessagesBackTo(const Chat &chat, const QD
 QVector<Message> HistorySqlStorage::syncGetMessagesBackTo(const Chat &chat, const QDateTime &datetime, int limit)
 {
 	if (!isDatabaseReady(true))
-		return QVector<Message>();
-
-	return getMessagesBackTo(chat, datetime, limit);
-}
-
-QVector<Message> HistorySqlStorage::messagesBackTo(const Chat &chat, const QDateTime &datetime, int limit)
-{
-	if (!isDatabaseReady(false))
 		return QVector<Message>();
 
 	return getMessagesBackTo(chat, datetime, limit);

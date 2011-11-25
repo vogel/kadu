@@ -96,11 +96,7 @@ public:
 
 	virtual QVector<DatesModelItem> chatDates(const Chat &chat, const HistorySearchParameters &search);
 	virtual QVector<Message> messages(const Chat &chat, const QDate &date = QDate(), int limit = 0);
-
-	virtual QVector<Message> messagesSince(const Chat &chat, const QDate &date);
 	virtual QFuture<QVector<Message> > asyncMessagesSince(const Chat &chat, const QDate &date);
-
-	virtual QVector<Message> messagesBackTo(const Chat &chat, const QDateTime &datetime, int limit);
 	virtual QFuture<QVector<Message> > asyncMessagesBackTo(const Chat &chat, const QDateTime &datetime, int limit);
 
 	virtual QVector<Buddy> statusBuddiesList(const HistorySearchParameters &search);
