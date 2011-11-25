@@ -547,7 +547,7 @@ QVector<DatesModelItem> HistorySqlStorage::chatDates(const Chat &chat, const His
 	QMutexLocker locker(&DatabaseMutex);
 
 	QSqlQuery query(Database);
-	QString queryString = "SELECT count(1), date, content FROM";
+	QString queryString = "SELECT date, content FROM";
 	queryString += " (SELECT km.rowid, date, date_id, content FROM kadu_messages km "
 		"LEFT JOIN kadu_message_contents kmc ON (km.content_id=kmc.id) "
 		"LEFT JOIN kadu_dates d ON (km.date_id=d.id) "
@@ -574,18 +574,16 @@ QVector<DatesModelItem> HistorySqlStorage::chatDates(const Chat &chat, const His
 	QVector<DatesModelItem> dates;
 	executeQuery(query);
 
-	int count;
 	QString message;
 	QDate date;
 	while (query.next())
 	{
-		count = query.value(0).toInt();
-		QString dateString = query.value(1).toString();
+		QString dateString = query.value(0).toString();
 		date = QDate::fromString(dateString, "yyyyMMdd");
 		if (!date.isValid())
 			continue;
 
-		message = query.value(2).toString();
+		message = query.value(1).toString();
 		if (message.isEmpty())
 			continue;
 
@@ -601,7 +599,7 @@ QVector<DatesModelItem> HistorySqlStorage::chatDates(const Chat &chat, const His
 			title += " ...";
 		}
 
-		dates.append(DatesModelItem(date, count, title));
+		dates.append(DatesModelItem(date, title));
 	}
 
 	return dates;
@@ -781,7 +779,7 @@ QVector<DatesModelItem> HistorySqlStorage::datesForSmsRecipient(const QString &r
 	QMutexLocker locker(&DatabaseMutex);
 
 	QSqlQuery query(Database);
-	QString queryString = "SELECT count(1), substr(send_time,0,11)";
+	QString queryString = "SELECT substr(send_time,0,11)";
 	queryString += " FROM (SELECT send_time FROM kadu_sms WHERE receipient = :receipient";
 
 	if (!search.query().isEmpty())
@@ -809,11 +807,11 @@ QVector<DatesModelItem> HistorySqlStorage::datesForSmsRecipient(const QString &r
 
 	while (query.next())
 	{
-		QDate date = query.value(1).toDate();
+		QDate date = query.value(0).toDate();
 		if (!date.isValid())
 			continue;
 
-		dates.append(DatesModelItem(date, query.value(0).toInt(), QString()));
+		dates.append(DatesModelItem(date, QString()));
 	}
 
 	return dates;
@@ -910,7 +908,7 @@ QVector<DatesModelItem> HistorySqlStorage::datesForStatusBuddy(const Buddy &budd
 	QMutexLocker locker(&DatabaseMutex);
 
 	QSqlQuery query(Database);
-	QString queryString = "SELECT count(1), substr(set_time,0,11) FROM";
+	QString queryString = "SELECT substr(set_time,0,11) FROM";
 	queryString += " (SELECT set_time FROM kadu_statuses WHERE " + buddyContactsWhere(buddy, "contact");
 
 	if (!search.query().isEmpty())
@@ -939,11 +937,11 @@ QVector<DatesModelItem> HistorySqlStorage::datesForStatusBuddy(const Buddy &budd
 	QDate date;
 	while (query.next())
 	{
-		date = query.value(1).toDate();
+		date = query.value(0).toDate();
 		if (!date.isValid())
 			continue;
 
-		dates.append(DatesModelItem(date, query.value(0).toInt(), QString()));
+		dates.append(DatesModelItem(date, QString()));
 	}
 
 	return dates;
