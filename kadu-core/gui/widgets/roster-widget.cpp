@@ -32,7 +32,6 @@
 #include "chat/filter/chat-unread-filter.h"
 #include "chat/filter/group-chat-filter.h"
 #include "chat/model/chats-model.h"
-#include "chat/model/chats-proxy-model.h"
 #include "configuration/configuration-file.h"
 #include "gui/widgets/filter-widget.h"
 #include "gui/widgets/filtered-tree-view.h"
@@ -243,7 +242,7 @@ ModelChain * RosterWidget::createChatsModelChain()
 {
 	ModelChain *chain = new ModelChain(new ChatsModel(ChatsTree), ChatsTree);
 
-	ChatsProxyModel *chatsProxyModel = new ChatsProxyModel(chain);
+	TalkableProxyModel *chatsProxyModel = new TalkableProxyModel(chain);
 
 	ChatOrFilter *chatOrFilter = new ChatOrFilter(chatsProxyModel);
 

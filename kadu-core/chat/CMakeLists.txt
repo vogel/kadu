@@ -19,7 +19,6 @@ set (chat_SRCS
 
 	model/chat-data-extractor.cpp
 	model/chats-model.cpp
-	model/chats-proxy-model.cpp
 
 	style-engines/chat-engine-adium/adium-style.cpp
 	style-engines/chat-engine-adium/adium-time-formatter.cpp
@@ -56,7 +55,6 @@ set (chat_MOC_SRCS
 	filter/group-chat-filter.h
 
 	model/chats-model.h
-	model/chats-proxy-model.h
 
 	style-engines/chat-engine-adium/chat-engine-adium.h
 	style-engines/chat-engine-kadu/chat-engine-kadu.h
