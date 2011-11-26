@@ -30,7 +30,6 @@
 #include "buddies/filter/account-buddy-filter.h"
 #include "buddies/filter/anonymous-buddy-filter.h"
 #include "buddies/filter/buddy-name-filter.h"
-#include "buddies/model/buddies-model-proxy.h"
 #include "buddies/model/buddies-model.h"
 #include "contacts/contact-details.h"
 #include "contacts/contact-manager.h"
@@ -39,6 +38,7 @@
 #include "gui/widgets/talkable-tree-view.h"
 #include "gui/windows/message-dialog.h"
 #include "model/model-chain.h"
+#include "talkable/model/talkable-proxy-model.h"
 
 #include "protocols/protocol.h"
 #include "protocols/services/contact-list-service.h"
@@ -54,7 +54,7 @@ AccountBuddyListWidget::AccountBuddyListWidget(Account account, QWidget *parent)
 	layout->setSpacing(5);
 
 	ModelChain *chain = new ModelChain(new BuddiesModel(this), this);
-	BuddiesModelProxy *proxyModel = new BuddiesModelProxy(chain);
+	TalkableProxyModel *proxyModel = new TalkableProxyModel(chain);
 
 	AccountBuddyFilter *accountFilter = new AccountBuddyFilter(CurrentAccount, proxyModel);
 	accountFilter->setEnabled(true);
