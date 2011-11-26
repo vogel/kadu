@@ -127,21 +127,14 @@ bool BuddiesModelProxy::lessThan(const QModelIndex &left, const QModelIndex &rig
 bool BuddiesModelProxy::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
 {
 	if (sourceParent.isValid())
-	{
-		const Contact &contact = sourceModel()->index(sourceRow, 0, sourceParent).data(ContactRole).value<Contact>();
-		foreach (AbstractContactFilter *filter, ContactFilters)
-			if (!filter->acceptContact(contact))
-				return false;
-	}
-	else
-	{
-		const Buddy &buddy = sourceModel()->index(sourceRow, 0, sourceParent).data(BuddyRole).value<Buddy>();
-		foreach (AbstractBuddyFilter *filter, BuddyFilters)
-			if (!filter->acceptBuddy(buddy))
-				return false;
-			else if (filter->ignoreNextFilters(buddy))
-				return true;
-	}
+		return true;
+
+	const Buddy &buddy = sourceModel()->index(sourceRow, 0, sourceParent).data(BuddyRole).value<Buddy>();
+	foreach (AbstractBuddyFilter *filter, BuddyFilters)
+		if (!filter->acceptBuddy(buddy))
+			return false;
+		else if (filter->ignoreNextFilters(buddy))
+			return true;
 
 	return true;
 }
@@ -159,25 +152,6 @@ void BuddiesModelProxy::addFilter(AbstractBuddyFilter *filter)
 void BuddiesModelProxy::removeFilter(AbstractBuddyFilter *filter)
 {
 	if (BuddyFilters.removeAll(filter) <= 0)
-		return;
-
-	invalidateFilter();
-	disconnect(filter, SIGNAL(filterChanged()), this, SLOT(invalidate()));
-}
-
-void BuddiesModelProxy::addFilter(AbstractContactFilter *filter)
-{
-	if (ContactFilters.contains(filter))
-		return;
-
-	ContactFilters.append(filter);
-	invalidateFilter();
-	connect(filter, SIGNAL(filterChanged()), this, SLOT(invalidate()));
-}
-
-void BuddiesModelProxy::removeFilter(AbstractContactFilter *filter)
-{
-	if (ContactFilters.removeAll(filter) <= 0)
 		return;
 
 	invalidateFilter();

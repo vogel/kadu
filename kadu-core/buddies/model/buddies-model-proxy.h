@@ -36,7 +36,6 @@ class BuddiesModelProxy : public QSortFilterProxyModel
 	Q_OBJECT
 
 	QList<AbstractBuddyFilter *> BuddyFilters;
-	QList<AbstractContactFilter *> ContactFilters;
 
 	bool BrokenStringCompare;
 	bool SortByStatus;
@@ -52,9 +51,6 @@ public:
 
 	void addFilter(AbstractBuddyFilter *filter);
 	void removeFilter(AbstractBuddyFilter *filter);
-
-	void addFilter(AbstractContactFilter *filter);
-	void removeFilter(AbstractContactFilter *filter);
 
 	void setSortByStatus(bool sortByStatus);
 
