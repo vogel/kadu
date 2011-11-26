@@ -146,7 +146,7 @@ public:
 
 	virtual bool supportsActionType(ActionDescription::ActionType type);
 	virtual ChatWidget * chatWidget() { return 0; }
-	virtual BuddiesModelProxy * buddiesProxyModel() { return 0; }
+	virtual TalkableProxyModel * talkableProxyModel() { return 0; }
 
 };
 

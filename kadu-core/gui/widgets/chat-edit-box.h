@@ -68,7 +68,7 @@ public:
 	CustomInput * inputBox();
 
 	virtual bool supportsActionType(ActionDescription::ActionType type);
-	virtual BuddiesModelProxy * buddiesProxyModel();
+	virtual TalkableProxyModel * talkableProxyModel();
 
 	ChatWidget * chatWidget();
 

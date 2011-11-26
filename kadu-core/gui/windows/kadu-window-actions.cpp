@@ -40,7 +40,6 @@
 #include "buddies/filter/offline-buddy-filter.h"
 #include "buddies/filter/online-and-description-buddy-filter.h"
 #include "buddies/group-manager.h"
-#include "buddies/model/buddies-model-proxy.h"
 #include "buddies/model/buddies-model.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact.h"
@@ -76,6 +75,7 @@
 #include "parser/parser.h"
 #include "protocols/protocol.h"
 #include "status/status-container-manager.h"
+#include "talkable/model/talkable-proxy-model.h"
 #include "url-handlers/url-handler-manager.h"
 
 #include "about.h"
@@ -434,7 +434,7 @@ void KaduWindowActions::inactiveUsersActionCreated(Action *action)
 	MainWindow *window = qobject_cast<MainWindow *>(action->parentWidget());
 	if (!window)
 		return;
-	if (!window->buddiesProxyModel())
+	if (!window->talkableProxyModel())
 		return;
 
 	bool enabled = config_file.readBoolEntry("General", "ShowOffline");
@@ -444,7 +444,7 @@ void KaduWindowActions::inactiveUsersActionCreated(Action *action)
 	action->setData(QVariant::fromValue(ofcf));
 	action->setChecked(enabled);
 
-	window->buddiesProxyModel()->addFilter(ofcf);
+	window->talkableProxyModel()->addFilter(ofcf);
 }
 
 void KaduWindowActions::descriptionUsersActionCreated(Action *action)
@@ -452,7 +452,7 @@ void KaduWindowActions::descriptionUsersActionCreated(Action *action)
 	MainWindow *window = qobject_cast<MainWindow *>(action->parentWidget());
 	if (!window)
 		return;
-	if (!window->buddiesProxyModel())
+	if (!window->talkableProxyModel())
 		return;
 
 	bool enabled = !config_file.readBoolEntry("General", "ShowWithoutDescription");
@@ -462,7 +462,7 @@ void KaduWindowActions::descriptionUsersActionCreated(Action *action)
 	action->setData(QVariant::fromValue(hdcf));
 	action->setChecked(enabled);
 
-	window->buddiesProxyModel()->addFilter(hdcf);
+	window->talkableProxyModel()->addFilter(hdcf);
 }
 
 void KaduWindowActions::showDescriptionsActionCreated(Action *action)
@@ -476,7 +476,7 @@ void KaduWindowActions::onlineAndDescUsersActionCreated(Action *action)
 	MainWindow *window = qobject_cast<MainWindow *>(action->parentWidget());
 	if (!window)
 		return;
-	if (!window->buddiesProxyModel())
+	if (!window->talkableProxyModel())
 		return;
 
 	bool enabled = config_file.readBoolEntry("General", "ShowOnlineAndDescription");
@@ -486,7 +486,7 @@ void KaduWindowActions::onlineAndDescUsersActionCreated(Action *action)
 	action->setData(QVariant::fromValue(oadcf));
 	action->setChecked(enabled);
 
-	window->buddiesProxyModel()->addFilter(oadcf);
+	window->talkableProxyModel()->addFilter(oadcf);
 }
 
 void KaduWindowActions::editUserActionCreated(Action *action)
@@ -511,7 +511,7 @@ void KaduWindowActions::showBlockedActionCreated(Action *action)
 	MainWindow *window = qobject_cast<MainWindow *>(action->parentWidget());
 	if (!window)
 		return;
-	if (!window->buddiesProxyModel())
+	if (!window->talkableProxyModel())
 		return;
 
 	bool enabled = config_file.readBoolEntry("General", "ShowBlocked");
@@ -521,7 +521,7 @@ void KaduWindowActions::showBlockedActionCreated(Action *action)
 	action->setData(QVariant::fromValue(ibf));
 	action->setChecked(enabled);
 
-	window->buddiesProxyModel()->addFilter(ibf);
+	window->talkableProxyModel()->addFilter(ibf);
 }
 
 void KaduWindowActions::showMyselfActionCreated(Action *action)
@@ -529,11 +529,11 @@ void KaduWindowActions::showMyselfActionCreated(Action *action)
 	MainWindow *window = qobject_cast<MainWindow *>(action->parentWidget());
 	if (!window)
 		return;
-	if (!window->buddiesProxyModel())
+	if (!window->talkableProxyModel())
 		return;
 
 	bool enabled = config_file.readBoolEntry("General", "ShowMyself", false);
-	BuddiesModel *model = qobject_cast<BuddiesModel *>(window->buddiesProxyModel()->sourceModel());
+	BuddiesModel *model = qobject_cast<BuddiesModel *>(window->talkableProxyModel()->sourceModel());
 	if (model)
 	{
 		model->setIncludeMyself(enabled);
@@ -725,10 +725,10 @@ void KaduWindowActions::showMyselfActionActivated(QAction *sender, bool toggled)
 	MainWindow *window = qobject_cast<MainWindow *>(sender->parentWidget());
 	if (!window)
 		return;
-	if (!window->buddiesProxyModel())
+	if (!window->talkableProxyModel())
 		return;
 
-	BuddiesModel *model = qobject_cast<BuddiesModel *>(window->buddiesProxyModel()->sourceModel());
+	BuddiesModel *model = qobject_cast<BuddiesModel *>(window->talkableProxyModel()->sourceModel());
 	if (model)
 	{
 		model->setIncludeMyself(toggled);

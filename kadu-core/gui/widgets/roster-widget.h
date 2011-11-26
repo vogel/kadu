@@ -32,13 +32,13 @@ class QButtonGroup;
 class QPushButton;
 class QStackedWidget;
 
-class BuddiesModelProxy;
 class FilteredTreeView;
 class GroupBuddyFilter;
 class GroupChatFilter;
 class GroupTabBar;
 class ProxyActionContext;
 class ModelChain;
+class TalkableProxyModel;
 class TalkableTreeView;
 
 class RosterWidget : public QWidget, public ActionContextProvider, ConfigurationAwareObject, CompositingAwareObject
@@ -48,7 +48,7 @@ class RosterWidget : public QWidget, public ActionContextProvider, Configuration
 	GroupTabBar *GroupBar;
 	FilteredTreeView *BuddiesWidget;
 	TalkableTreeView *BuddiesTree;
-	BuddiesModelProxy *ProxyModel;
+	TalkableProxyModel *ProxyModel;
 	GroupBuddyFilter *BuddyGroupFilter;
 	GroupChatFilter *ChatGroupFilter;
 	TalkableTreeView *ChatsTree;
@@ -88,7 +88,7 @@ public:
 
 	// TODO 0.11.0: rething
 	TalkableTreeView * talkableTreeView();
-	BuddiesModelProxy * buddiesProxyModel();
+	TalkableProxyModel * talkableProxyModel();
 
 	// ActionContextProvider implementation
 	virtual ActionContext * actionContext();

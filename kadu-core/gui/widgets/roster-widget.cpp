@@ -26,7 +26,6 @@
 #include "buddies/filter/buddy-name-filter.h"
 #include "buddies/filter/group-buddy-filter.h"
 #include "buddies/filter/unread-messages-filter.h"
-#include "buddies/model/buddies-model-proxy.h"
 #include "buddies/model/buddies-model.h"
 #include "chat/filter/chat-named-filter.h"
 #include "chat/filter/chat-or-filter.h"
@@ -41,6 +40,7 @@
 #include "gui/widgets/talkable-tree-view.h"
 #include "gui/windows/proxy-action-context.h"
 #include "model/model-chain.h"
+#include "talkable/model/talkable-proxy-model.h"
 
 #include "roster-widget.h"
 
@@ -223,7 +223,7 @@ void RosterWidget::compositingDisabled()
 ModelChain * RosterWidget::createBuddiesModelChain()
 {
 	ModelChain *chain = new ModelChain(new BuddiesModel(this), this);
-	ProxyModel = new BuddiesModelProxy(chain);
+	ProxyModel = new TalkableProxyModel(chain);
 	ProxyModel->addFilter(new UnreadMessagesFilter(ProxyModel));
 
 	BuddyNameFilter *nameFilter = new BuddyNameFilter(ProxyModel);
@@ -299,7 +299,7 @@ TalkableTreeView * RosterWidget::talkableTreeView()
 	return BuddiesTree;
 }
 
-BuddiesModelProxy * RosterWidget::buddiesProxyModel()
+TalkableProxyModel * RosterWidget::talkableProxyModel()
 {
 	return ProxyModel;
 }

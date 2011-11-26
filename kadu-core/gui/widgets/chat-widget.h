@@ -41,7 +41,6 @@
 
 class QSplitter;
 
-class BuddiesModelProxy;
 class ChatEditBox;
 class ChatMessagesView;
 class ChatWidget;
@@ -50,6 +49,7 @@ class CustomInput;
 class FilteredTreeView;
 class MessageRenderInfo;
 class Protocol;
+class TalkableProxyModel;
 
 class KADUAPI ChatWidget : public QWidget, public ConfigurationAwareObject
 {
@@ -63,7 +63,7 @@ class KADUAPI ChatWidget : public QWidget, public ConfigurationAwareObject
 
 	ChatMessagesView *MessagesView;
 	FilteredTreeView *BuddiesWidget;
-	BuddiesModelProxy *ProxyModel;
+	TalkableProxyModel *ProxyModel;
 	ChatEditBox *InputBox;
 
 	QSplitter *VerticalSplitter;
@@ -121,7 +121,7 @@ public:
 	void repaintMessages();
 
 	CustomInput * edit() const;
-	BuddiesModelProxy * buddiesProxyModel() const;
+	TalkableProxyModel * talkableProxyModel() const;
 	ChatEditBox * getChatEditBox() const { return InputBox; }
 	ChatMessagesView * chatMessagesView() const { return MessagesView; }
 

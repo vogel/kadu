@@ -156,11 +156,11 @@ bool ChatEditBox::supportsActionType(ActionDescription::ActionType type)
 	return (type == ActionDescription::TypeGlobal || type == ActionDescription::TypeChat || type == ActionDescription::TypeUser);
 }
 
-BuddiesModelProxy * ChatEditBox::buddiesProxyModel()
+TalkableProxyModel * ChatEditBox::talkableProxyModel()
 {
 	ChatWidget *cw = chatWidget();
 	if (cw && cw->chat().contacts().count() > 1)
-		return cw->buddiesProxyModel();
+		return cw->talkableProxyModel();
 
 	return 0;
 }

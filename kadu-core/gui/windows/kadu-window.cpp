@@ -436,9 +436,9 @@ TalkableTreeView * KaduWindow::talkableTreeView()
 	return Roster->talkableTreeView();
 }
 
-BuddiesModelProxy * KaduWindow::buddiesProxyModel()
+TalkableProxyModel * KaduWindow::talkableProxyModel()
 {
-	return Roster->buddiesProxyModel();
+	return Roster->talkableProxyModel();
 }
 
 void KaduWindow::configurationUpdated()

@@ -39,13 +39,13 @@
 
 class QContextMenuEvent;
 
-class BuddiesModelProxy;
 class Buddy;
 class BuddySet;
 class Chat;
 class Contact;
 class ContactSet;
 class StatusContainer;
+class TalkableProxyModel;
 class ToolBar;
 
 class KADUAPI MainWindow : public QMainWindow, public ActionContextProvider, DesktopAwareObject
@@ -101,7 +101,7 @@ public:
 	virtual QMenu * createPopupMenu() { return 0; }
 
 	virtual bool supportsActionType(ActionDescription::ActionType type) = 0;
-	virtual BuddiesModelProxy * buddiesProxyModel() = 0;
+	virtual TalkableProxyModel * talkableProxyModel() = 0;
 
 	Contact contact();
 	Buddy buddy();

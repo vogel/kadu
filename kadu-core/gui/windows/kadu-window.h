@@ -136,7 +136,7 @@ public:
 	virtual ~KaduWindow();
 
 	virtual TalkableTreeView * talkableTreeView();
-	virtual BuddiesModelProxy * buddiesProxyModel();
+	virtual TalkableProxyModel * talkableProxyModel();
 
 	void insertMenuActionDescription(ActionDescription *actionDescription, MenuType Type, int pos = -1);
 	void removeMenuActionDescription(ActionDescription *actionDescription);
