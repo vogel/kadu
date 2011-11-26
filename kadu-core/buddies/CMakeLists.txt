@@ -30,7 +30,6 @@ set (buddies_SRCS
 	model/buddy-list-model.cpp
 	model/buddies-model.cpp
 	model/buddies-model-base.cpp
-	model/buddies-model-proxy.cpp
 	model/groups-model.cpp
 )
 
@@ -59,7 +58,6 @@ set (buddies_MOC_SRCS
 	model/buddy-list-model.h
 	model/buddies-model.h
 	model/buddies-model-base.h
-	model/buddies-model-proxy.h
 	model/groups-model.h
 )
 
