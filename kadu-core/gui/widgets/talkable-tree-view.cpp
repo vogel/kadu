@@ -43,7 +43,6 @@
 #include "buddies/buddy-preferred-manager.h"
 #include "buddies/buddy-set.h"
 #include "buddies/buddy.h"
-#include "buddies/model/buddies-model-proxy.h"
 #include "chat/chat-manager.h"
 #include "configuration/configuration-file.h"
 #include "configuration/main-configuration-holder.h"

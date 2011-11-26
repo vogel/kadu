@@ -25,13 +25,13 @@
 
 #include "buddies/filter/anonymous-buddy-filter.h"
 #include "buddies/filter/buddy-name-filter.h"
-#include "buddies/model/buddies-model-proxy.h"
 #include "buddies/model/buddies-model.h"
 #include "gui/widgets/select-buddy-popup.h"
 #include "gui/widgets/talkable-tree-view.h"
 #include "misc/misc.h"
 #include "model/model-chain.h"
 #include "model/roles.h"
+#include "talkable/model/talkable-proxy-model.h"
 
 #include "select-buddy-combo-box.h"
 
@@ -39,7 +39,7 @@ SelectBuddyComboBox::SelectBuddyComboBox(QWidget *parent) :
 		ActionsComboBox(parent)
 {
 	ModelChain *chain = new ModelChain(new BuddiesModel(this), this);
-	ProxyModel = new BuddiesModelProxy(chain);
+	ProxyModel = new TalkableProxyModel(chain);
 	ProxyModel->setSortByStatus(false);
 	chain->addProxyModel(ProxyModel);
 

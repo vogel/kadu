@@ -30,8 +30,8 @@
 class QModelIndex;
 
 class AbstractBuddyFilter;
-class BuddiesModelProxy;
 class Buddy;
+class TalkableProxyModel;
 class TalkableTreeView;
 
 class SelectBuddyPopup : public FilteredTreeView
@@ -39,7 +39,7 @@ class SelectBuddyPopup : public FilteredTreeView
 	Q_OBJECT
 
 	TalkableTreeView *View;
-	BuddiesModelProxy *ProxyModel;
+	TalkableProxyModel *ProxyModel;
 
 private slots:
 	void itemClicked(const QModelIndex &index);

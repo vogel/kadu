@@ -31,15 +31,15 @@
 #include "gui/widgets/actions-combo-box.h"
 
 class AbstractBuddyFilter;
-class BuddiesModelProxy;
 class SelectBuddyPopup;
+class TalkableProxyModel;
 
 class KADUAPI SelectBuddyComboBox : public ActionsComboBox
 {
 	Q_OBJECT
 
 	SelectBuddyPopup *Popup;
-	BuddiesModelProxy *ProxyModel;
+	TalkableProxyModel *ProxyModel;
 
 protected:
 	virtual void showPopup();
