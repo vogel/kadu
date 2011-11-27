@@ -53,14 +53,13 @@ public:
 	explicit BuddiesModelBase(QObject *parent = 0);
 	virtual ~BuddiesModelBase();
 
-	virtual QModelIndex index(int row, int column, const QModelIndex& parent = QModelIndex()) const;
+	virtual QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
+	virtual QModelIndex parent(const QModelIndex &child) const;
 
 	virtual int columnCount(const QModelIndex& parent = QModelIndex()) const;
 	virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
 
 	virtual QFlags<Qt::ItemFlag> flags(const QModelIndex &index) const;
-
-	virtual QModelIndex parent(const QModelIndex &child) const;
 	virtual QVariant data(const QModelIndex &index, int role) const;
 
 	// AbstractContactsModel implementation
