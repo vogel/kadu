@@ -83,6 +83,8 @@ set (DEFAULT_PLUGINS
 	last_seen
 	# Imports profiles from old Kadu
 	profiles_import
+	# Easily take screenshots and send as images
+	screenshot
 	# Simple view - neww port for 0.11.0
 	# simpleview
 	# Single window mode
@@ -122,10 +124,6 @@ if (UNIX AND NOT APPLE)
 		amarok1_mediaplayer
 		# FALF mediaplayer support
 		falf_mediaplayer
-
-	# misc
-		# Easily take screenshots and send as images
-		screenshot
 	)
 
 	if (WITH_LIBINDICATE_QT)

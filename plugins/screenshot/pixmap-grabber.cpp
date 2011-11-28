@@ -30,11 +30,12 @@
 
 #define MINIMUM_SIZE 8
 
+#ifdef Q_WS_X11
+
 //////////////////////////////////////////////////////////////////
 // Code below is copied (and changed a little) from KSnapShot,
 // copyrighted by Bernd Brandstetter <bbrand@freenet.de>.
 // It's licenced with GPL.
-
 static bool operator < (const QRect &r1, const QRect &r2)
 {
     return r1.width() * r1.height() < r2.width() * r2.height();
@@ -209,3 +210,104 @@ Window PixmapGrabber::findRealWindow( Window w, int depth )
 
 // End of code copied from KSnapShot
 //////////////////////////////////////////////////////////////////
+
+#elif defined Q_WS_WIN
+
+#include <windows.h>
+#undef MessageBox
+typedef BOOL (WINAPI *PrintWindow_t)(HWND hwnd, HDC  hdcBlt, UINT nFlags);
+
+QPixmap PixmapGrabber::grabCurrent()
+{
+	kdebugf();
+	POINT p;
+	HWND winId = 0;
+	if(GetCursorPos(&p))
+		winId = WindowFromPoint(p);
+
+	// find top level window
+	while(winId){
+		LONG style = GetWindowLong(winId, GWL_STYLE);
+
+		if(!(style & WS_CHILD))
+			break;
+
+		winId=GetParent(winId);
+	}
+
+
+	if(winId){
+		RECT rect;
+		GetWindowRect(winId, &rect);
+		int width = rect.right - rect.left;
+		int height = rect.bottom - rect.top;
+		PrintWindow_t PrintWindow_f=(PrintWindow_t)QLibrary::resolve("user32", "PrintWindow");
+		if(!PrintWindow_f){
+			kdebugmf(KDEBUG_WARNING, "Old windows detected, using hack..\n");
+			// ugly hack..
+			HWND hwndFg=GetForegroundWindow();
+			SetForegroundWindow(winId);
+
+			// repaint window
+			SendMessage(winId, WM_PAINT, 0, 0);
+
+			QPixmap desktop = QPixmap::grabWindow(QApplication::desktop()->winId());
+
+			SetForegroundWindow(hwndFg);
+
+			// and copy windows content
+			return desktop.copy(rect.left, rect.top, width, height);
+		}
+		else
+		{
+			HDC hDC = GetWindowDC(winId);
+			HDC hdcMem = CreateCompatibleDC(hDC);
+
+			HBITMAP hBitmap = CreateCompatibleBitmap(hDC, width, height);
+			SelectObject(hdcMem, hBitmap);
+			PrintWindow_f(winId, hdcMem, NULL);
+
+			DeleteDC(hdcMem);
+			ReleaseDC(winId, hDC);
+
+			QPixmap ret=QPixmap::fromWinHBITMAP(hBitmap);
+
+			DeleteObject(hBitmap);
+			return ret;
+		}
+	}
+	else
+		return QPixmap();
+	
+}
+
+#elif defined Q_WS_MAC
+
+#include <QtGui/QDesktopWidget>
+#include <QtGui/QApplication>
+#include <Carbon/Carbon.h>
+
+QPixmap PixmapGrabber::grabCurrent()
+{
+	WindowRef window;
+	Point mousePos;
+	Rect rect;
+	int err;
+
+	GetGlobalMouse(&mousePos);
+
+	/* This code works only with our application windows. 
+	 * In order to capture other application's windows the private CoreGraphics API must be used.
+	 */
+	err = MacFindWindow(mousePos, &window);
+	err = GetWindowBounds(window, kWindowStructureRgn, &rect);
+	if (err == noErr)
+	{
+		QPixmap desktop = QPixmap::grabWindow(QApplication::desktop()->winId());
+		return desktop.copy(rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top);
+	}
+	else
+		return QPixmap();
+}
+
+#endif

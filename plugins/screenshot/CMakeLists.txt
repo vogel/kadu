@@ -51,8 +51,10 @@ set (CONFIGURATION_FILES
 	data/configuration/screenshot.ui
 )
 
-include (FindX11)
-include_directories (${X11_INCLUDE_DIR})
+if (UNIX AND NOT APPLE)
+	include (FindX11)
+	include_directories (${X11_INCLUDE_DIR})
+endif (UNIX AND NOT APPLE)
 
 kadu_plugin (screenshot
 	PLUGIN_SOURCES ${SOURCES}
