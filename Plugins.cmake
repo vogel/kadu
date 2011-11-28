@@ -105,8 +105,6 @@ if (UNIX)
 	list (APPEND DEFAULT_PLUGINS
 
 	# mediaplayer
-		# MPD mediaplayer support
-		mpd_mediaplayer
 		# MPRIS Media Players support
 		mprisplayer_mediaplayer
 	)
@@ -124,6 +122,8 @@ if (UNIX AND NOT APPLE)
 		amarok1_mediaplayer
 		# FALF mediaplayer support
 		falf_mediaplayer
+		# MPD mediaplayer support
+		mpd_mediaplayer
 	)
 
 	if (WITH_LIBINDICATE_QT)
