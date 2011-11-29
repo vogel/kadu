@@ -24,7 +24,22 @@
 #include <QtGui/QBitmap>
 #include <QtGui/QPainter>
 #include <QtGui/QPixmap>
+#ifdef Q_WS_X11
 #include <QtGui/QX11Info>
+#else
+#include <QtGui/QApplication>
+#include <QtGui/QDesktopWidget>
+#endif
+#ifdef Q_WS_MAC
+#include <Carbon/Carbon.h>
+#endif
+#ifdef Q_WS_WIN
+#include <QtCore/QLibrary>
+#include <windows.h>
+#undef MessageBox
+typedef BOOL (WINAPI *PrintWindow_t)(HWND hwnd, HDC  hdcBlt, UINT nFlags);
+#include <debug.h>
+#endif
 
 #include "pixmap-grabber.h"
 
@@ -213,10 +228,6 @@ Window PixmapGrabber::findRealWindow( Window w, int depth )
 
 #elif defined Q_WS_WIN
 
-#include <windows.h>
-#undef MessageBox
-typedef BOOL (WINAPI *PrintWindow_t)(HWND hwnd, HDC  hdcBlt, UINT nFlags);
-
 QPixmap PixmapGrabber::grabCurrent()
 {
 	kdebugf();
@@ -265,12 +276,12 @@ QPixmap PixmapGrabber::grabCurrent()
 
 			HBITMAP hBitmap = CreateCompatibleBitmap(hDC, width, height);
 			SelectObject(hdcMem, hBitmap);
-			PrintWindow_f(winId, hdcMem, NULL);
+			PrintWindow_f(winId, hdcMem, 0);
 
 			DeleteDC(hdcMem);
 			ReleaseDC(winId, hDC);
 
-			QPixmap ret=QPixmap::fromWinHBITMAP(hBitmap);
+			QPixmap ret = QPixmap::fromWinHBITMAP(hBitmap);
 
 			DeleteObject(hBitmap);
 			return ret;
@@ -282,10 +293,6 @@ QPixmap PixmapGrabber::grabCurrent()
 }
 
 #elif defined Q_WS_MAC
-
-#include <QtGui/QDesktopWidget>
-#include <QtGui/QApplication>
-#include <Carbon/Carbon.h>
 
 QPixmap PixmapGrabber::grabCurrent()
 {
