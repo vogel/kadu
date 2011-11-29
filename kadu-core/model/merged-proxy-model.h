@@ -100,30 +100,6 @@ class MergedProxyModel : public QAbstractItemModel
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Maps proxy index to source index.
-	 * @param proxyIndex proxy index
-	 * @return source index corresponding to proxyIndex
-	 *
-	 * This method maps proxy index to source index. If proxyIndex has not parent, mapFirstLevelToSource
-	 * is used to do the mapping. If it has a parent then its parent is mapped first and then new index
-	 * with computed parent and unchanged row/column is created.
-	 */
-	QModelIndex mapToSource(const QModelIndex &proxyIndex) const;
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Maps source index to proxy index.
-	 * @param sourceIndex source index
-	 * @return proxy index corresponding to sourceIndex
-	 *
-	 * This method maps source index to proxy index. If sourceIndex has not parent, mapFirstLevelFromSource
-	 * is used to do the mapping. If it has a parent then its parent is mapped first and then new index
-	 * with computed parent and unchanged row/column is created.
-	 */
-	QModelIndex mapFromSource(const QModelIndex &sourceIndex) const;
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
 	 * @short Creates new mapping for given index or returns existing one.
 	 * @param sourceParent source index to create mapping for
 	 * @return new or existing mapping for given index
@@ -190,6 +166,31 @@ private slots:
 
 	void modelAboutToBeResetSlot();
 	void modelResetSlot();
+
+protected:
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Maps proxy index to source index.
+	 * @param proxyIndex proxy index
+	 * @return source index corresponding to proxyIndex
+	 *
+	 * This method maps proxy index to source index. If proxyIndex has not parent, mapFirstLevelToSource
+	 * is used to do the mapping. If it has a parent then its parent is mapped first and then new index
+	 * with computed parent and unchanged row/column is created.
+	 */
+	QModelIndex mapToSource(const QModelIndex &proxyIndex) const;
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Maps source index to proxy index.
+	 * @param sourceIndex source index
+	 * @return proxy index corresponding to sourceIndex
+	 *
+	 * This method maps source index to proxy index. If sourceIndex has not parent, mapFirstLevelFromSource
+	 * is used to do the mapping. If it has a parent then its parent is mapped first and then new index
+	 * with computed parent and unchanged row/column is created.
+	 */
+	QModelIndex mapFromSource(const QModelIndex &sourceIndex) const;
 
 public:
 	/**
