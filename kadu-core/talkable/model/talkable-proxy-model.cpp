@@ -137,7 +137,7 @@ bool TalkableProxyModel::lessThan(const Buddy &left, const Buddy &right) const
 bool TalkableProxyModel::lessThan(const QModelIndex &left, const QModelIndex &right) const
 {
 	const int leftRole = left.data(ItemTypeRole).value<int>();
-	const int rightRole = left.data(ItemTypeRole).value<int>();
+	const int rightRole = right.data(ItemTypeRole).value<int>();
 
 	// first - chats
 	if (ChatRole == leftRole && ChatRole != rightRole)
