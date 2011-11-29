@@ -20,7 +20,7 @@
 #include <QtCore/QPair>
 
 #include "merged-proxy-model.h"
-#include <stdio.h>
+
 MergedProxyModel::MergedProxyModel(QList<QAbstractItemModel *> models, QObject *parent) :
 		QAbstractItemModel(parent), Models(models)
 {
