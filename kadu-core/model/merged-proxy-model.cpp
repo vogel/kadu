@@ -394,9 +394,5 @@ int MergedProxyModel::columnCount(const QModelIndex &parent) const
 
 QVariant MergedProxyModel::data(const QModelIndex &index, int role) const
 {
-	if (!index.isValid())
-		return QVariant();
-
-	const QModelIndex &sourceIndex = mapToSource(index);
-	return sourceIndex.model()->data(sourceIndex, role);
+	return mapToSource(index).data(role);
 }
