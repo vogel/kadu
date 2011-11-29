@@ -278,13 +278,13 @@ QModelIndex MergedProxyModel::mapFromSource(const QModelIndex &sourceIndex) cons
 	return index(sourceIndex.row(), sourceIndex.column(), proxyParentIndex);
 }
 
-MergedProxyModel::Mapping * MergedProxyModel::createMapping(const QModelIndex &sourceParent) const
+QModelIndex * MergedProxyModel::createMapping(const QModelIndex &sourceParent) const
 {
 	IndexMapping::const_iterator it = Mappings.constFind(sourceParent);
 	if (it != Mappings.constEnd())
 		return it.value();
 
-	Mapping *mapping = new Mapping(sourceParent);
+	QModelIndex *mapping = new QModelIndex(sourceParent);
 	Mappings.insert(sourceParent, mapping);
 
 	return mapping;
@@ -292,7 +292,7 @@ MergedProxyModel::Mapping * MergedProxyModel::createMapping(const QModelIndex &s
 
 void MergedProxyModel::removeMapping(const QModelIndex &sourceParent) const
 {
-	Mapping *mapping = Mappings.take(sourceParent);
+	QModelIndex *mapping = Mappings.take(sourceParent);
 	if (mapping)
 		delete mapping;
 
@@ -302,7 +302,7 @@ void MergedProxyModel::removeMapping(const QModelIndex &sourceParent) const
 	QModelIndexList indexesToRemove;
 	while (i != end)
 	{
-		if (i.value()->SourceParent == sourceParent)
+		if (*i.value() == sourceParent)
 			indexesToRemove.append(i.key());
 		i++;
 	}
@@ -319,8 +319,8 @@ QModelIndex MergedProxyModel::mappedSourceParent(const QModelIndex &proxyIndex) 
 	const void *p = proxyIndex.internalPointer();
 	Q_ASSERT(p);
 
-	const Mapping *mapping = static_cast<const Mapping *>(p);
-	return mapping->SourceParent;
+	const QModelIndex *mapping = static_cast<const QModelIndex *>(p);
+	return *mapping;
 }
 
 QModelIndex MergedProxyModel::index(int row, int column, const QModelIndex &parent) const
@@ -329,7 +329,7 @@ QModelIndex MergedProxyModel::index(int row, int column, const QModelIndex &pare
 		return QModelIndex();
 
 	const QModelIndex &sourceParent = mapToSource(parent); // parent is already mapped
-	Mapping *mapping = createMapping(sourceParent); // map children for this parent
+	QModelIndex *mapping = createMapping(sourceParent); // map children for this parent
 
 	if (!mapping) // something went wrong
 		return QModelIndex();

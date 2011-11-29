@@ -45,30 +45,16 @@ class MergedProxyModel : public QAbstractItemModel
 	Q_OBJECT
 
 	/**
-	 * @struct Mapping
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Helper struct to be stored into QModelIndex's internalPointer field.
-	 *
-	 * This class is stored under internalPointer field of each of proxy QModelIndex instances.
-	 * It contains source parent index of proxy index it is stored within.
-	 */
-	struct Mapping
-	{
-		QModelIndex SourceParent;
-		Mapping(const QModelIndex &sourceParent) : SourceParent(sourceParent) {}
-	};
-
-	/**
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Mapping between source indexes and Mapping instances with these indexes.
 	 *
-	 * This type maps QModelIndex to Mapping instance that contain this index. It is used
-	 * to cache Mapping and to allow to remove them if not needed anymore.
+	 * This type maps QModelIndex to pointer that contain this index. It is used
+	 * to cache these pointers and to allow to remove them if not needed anymore.
 	 *
-	 * Storing Mapping values in source indexes' internalPointer is not possible, as we can
+	 * Storing QModelIndex * values in source indexes' internalPointer is not possible, as we can
 	 * only alter proxy indexes' internalPointer values.
 	 */
-	typedef QHash<QModelIndex, Mapping *> IndexMapping;
+	typedef QHash<QModelIndex, QModelIndex *> IndexMapping;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -146,7 +132,7 @@ class MergedProxyModel : public QAbstractItemModel
 	 * mapping is found it creates new one, adds it to Mappings field and returns it. Created mapping
 	 * will contain sourceParent value.
 	 */
-	Mapping * createMapping(const QModelIndex &sourceParent) const;
+	QModelIndex * createMapping(const QModelIndex &sourceParent) const;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
