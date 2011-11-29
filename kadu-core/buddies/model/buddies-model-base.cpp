@@ -72,16 +72,56 @@ void BuddiesModelBase::buddyStatusChanged(Contact contact, Status oldStatus)
 			emit dataChanged(index, index);
 }
 
-QModelIndex BuddiesModelBase::index(int row, int column, const QModelIndex &parent) const
-{
-	return hasIndex(row, column, parent) ? createIndex(row, column, parent.isValid() ? parent.row() : -1) : QModelIndex();
-}
-
 int BuddiesModelBase::columnCount(const QModelIndex &parent) const
 {
 	Q_UNUSED(parent)
 
 	return 1;
+}
+
+QModelIndex BuddiesModelBase::index(int row, int column, const QModelIndex &parent) const
+{
+	if (row < 0 || column < 0)
+		return QModelIndex();
+
+	if (!parent.isValid()) // buddy
+	{
+		if (row >= rowCount())
+			return QModelIndex(); // invalid
+
+		const Buddy &buddy = buddyAt(row);
+		Q_ASSERT(buddy.data());
+
+		return createIndex(row, column, buddy.data());
+	}
+
+	// contact
+	BuddyShared *parentBuddyShared = static_cast<BuddyShared *>(parent.internalPointer());
+	Q_ASSERT(parentBuddyShared);
+
+	Buddy parentBuddy(parentBuddyShared);
+	const QList<Contact> &parentBuddyContacts = parentBuddy.contacts();
+	if (row >= parentBuddyContacts.count())
+		return QModelIndex();
+
+	const Contact &contact = parentBuddyContacts.at(row);
+	Q_ASSERT(contact.data());
+
+	return createIndex(row, column, contact.data());
+}
+
+QModelIndex BuddiesModelBase::parent(const QModelIndex &child) const
+{
+	QObject *sharedData = static_cast<QObject *>(child.internalPointer());
+	Q_ASSERT(sharedData);
+
+	if (qobject_cast<BuddyShared *>(sharedData))
+		return QModelIndex(); // buddies does not have parent
+
+	ContactShared *childContactShared = qobject_cast<ContactShared *>(sharedData);
+	Q_ASSERT(childContactShared);
+
+	return index(buddyIndex(childContactShared->ownerBuddy()), 0);
 }
 
 int BuddiesModelBase::rowCount(const QModelIndex &parentIndex) const
@@ -99,14 +139,6 @@ QFlags<Qt::ItemFlag> BuddiesModelBase::flags(const QModelIndex& index) const
 		return QAbstractItemModel::flags(index) | Qt::ItemIsDragEnabled;
 	else
 		return QAbstractItemModel::flags(index);
-}
-
-QModelIndex BuddiesModelBase::parent(const QModelIndex &child) const
-{
-	if (-1 == child.internalId())
-		return QModelIndex();
-	else
-		return index(child.internalId(), 0, QModelIndex());
 }
 
 Contact BuddiesModelBase::buddyContact(const QModelIndex &index, int accountIndex) const
@@ -127,21 +159,24 @@ QVariant BuddiesModelBase::data(const QModelIndex &index, int role) const
 	if (!index.isValid())
 		return QVariant();
 
-	QModelIndex parentIndex = parent(index);
-	if (!parentIndex.isValid())
-	{
-		if (ItemTypeRole == role)
-			return BuddyRole;
+	QObject *sharedData = static_cast<QObject *>(index.internalPointer());
+	Q_ASSERT(sharedData);
 
-		const Buddy &buddy = buddyAt(index.row());
+	BuddyShared *buddyShared = qobject_cast<BuddyShared *>(sharedData);
+	if (buddyShared)
+	{
+		const Buddy &buddy = Buddy(buddyShared);
 		const Contact &contact = BuddyPreferredManager::instance()->preferredContact(buddy);
 
 		return !contact.isNull()
 				? ContactDataExtractor::data(contact, role, true)
 				: BuddyDataExtractor::data(buddy, role);
 	}
-	else
-		return ContactDataExtractor::data(buddyContact(parentIndex, index.row()), role, false);
+
+	ContactShared *contactShared = qobject_cast<ContactShared *>(sharedData);
+	Q_ASSERT(contactShared);
+
+	return ContactDataExtractor::data(Contact(contactShared), role, false);
 }
 
 QModelIndexList BuddiesModelBase::indexListForValue(const QVariant &value) const

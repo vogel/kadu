@@ -39,6 +39,7 @@
 #include "gui/widgets/talkable-tree-view.h"
 #include "gui/windows/proxy-action-context.h"
 #include "model/model-chain.h"
+#include "talkable/model/talkable-model-factory.h"
 #include "talkable/model/talkable-proxy-model.h"
 
 #include "roster-widget.h"
@@ -48,7 +49,7 @@ RosterWidget::RosterWidget(QWidget *parent) :
 {
 	Context = new ProxyActionContext();
 	createGui();
-	Context->setForwardActionContext(BuddiesTree->actionContext());
+	Context->setForwardActionContext(TalkableTree->actionContext());
 
 	configurationUpdated();
 }
@@ -61,66 +62,18 @@ RosterWidget::~RosterWidget()
 
 void RosterWidget::createGui()
 {
-	QVBoxLayout *layout = new QVBoxLayout(this);
+	QHBoxLayout *layout = new QHBoxLayout(this);
 	layout->setMargin(0);
 	layout->setSpacing(0);
 
-	SelectViewButtons = new QWidget(this);
-	QHBoxLayout *selectViewButtonsLayout = new QHBoxLayout(SelectViewButtons);
-
-	ViewButtonGroup = new QButtonGroup(this);
-
-	BuddiesViewButton = new QPushButton(tr("Buddies"), this);
-	BuddiesViewButton->setCheckable(true);
-
-	ChatsViewButton = new QPushButton(tr("Chats"), this);
-	ChatsViewButton->setCheckable(true);
-
-	ViewButtonGroup->addButton(BuddiesViewButton);
-	ViewButtonGroup->addButton(ChatsViewButton);
-	BuddiesViewButton->setChecked(true);
-	connect(ViewButtonGroup, SIGNAL(buttonClicked(int)), this, SLOT(viewButtonClicked()));
-
-	selectViewButtonsLayout->setContentsMargins(0, 0, 0, 0);
-	selectViewButtonsLayout->setSpacing(0);
-	selectViewButtonsLayout->addWidget(BuddiesViewButton);
-	selectViewButtonsLayout->addWidget(ChatsViewButton);
-	selectViewButtonsLayout->addStretch(1);
-
 	GroupBar = new GroupTabBar(this);
+	createTalkableWidget(this);
 
-	TalkableViews = new QStackedWidget(this);
-	TalkableViews->addWidget(createBuddiesWidget(TalkableViews));
-	TalkableViews->addWidget(createChatsWidget(TalkableViews));
+	layout->addWidget(GroupBar);
+	layout->addWidget(TalkableWidget);
 
-	QWidget* hbox = new QWidget(this);
-	QHBoxLayout *hboxLayout = new QHBoxLayout(hbox);
-	hboxLayout->setMargin(0);
-	hboxLayout->setSpacing(0);
-
-	hboxLayout->addWidget(GroupBar);
-	hboxLayout->setStretchFactor(GroupBar, 1);
-	hboxLayout->addWidget(TalkableViews);
-	hboxLayout->setStretchFactor(TalkableViews, 100);
-
-	layout->addWidget(SelectViewButtons);
-	layout->addWidget(hbox);
-
-	viewButtonClicked();
-}
-
-void RosterWidget::viewButtonClicked()
-{
-	if (ViewButtonGroup->checkedButton() == ChatsViewButton)
-	{
-		TalkableViews->setCurrentIndex(1);
-		Context->setForwardActionContext(ChatsTree->actionContext());
-	}
-	else
-	{
-		TalkableViews->setCurrentIndex(0);
-		Context->setForwardActionContext(BuddiesTree->actionContext());
-	}
+	layout->setStretchFactor(GroupBar, 1);
+	layout->setStretchFactor(TalkableWidget, 100);
 }
 
 void RosterWidget::configurationUpdated()
@@ -158,13 +111,11 @@ void RosterWidget::configurationUpdated()
 		else
 			type = KaduTreeView::BackgroundNone;
 
-		BuddiesTree->setBackground(bgColor, alternateBgColor, config_file.readEntry("Look", "UserboxBackground"), type);
-		ChatsTree->setBackground(bgColor, alternateBgColor, config_file.readEntry("Look", "UserboxBackground"), type);
+		TalkableTree->setBackground(bgColor, alternateBgColor, config_file.readEntry("Look", "UserboxBackground"), type);
 	}
 	else
 	{
-		BuddiesTree->setBackground(bgColor, alternateBgColor);
-		ChatsTree->setBackground(bgColor, alternateBgColor);
+		TalkableTree->setBackground(bgColor, alternateBgColor);
 	}
 
 	triggerCompositingStateChanged();
@@ -194,11 +145,11 @@ void RosterWidget::compositingEnabled()
 
 	CompositingEnabled = true;
 	GroupBar->setAutoFillBackground(true);
-	BuddiesWidget->filterWidget()->setAutoFillBackground(true);
-	BuddiesTree->verticalScrollBar()->setAutoFillBackground(true);
-	SelectViewButtons->setAutoFillBackground(true);
+	TalkableWidget->filterWidget()->setAutoFillBackground(true);
+	TalkableTree->verticalScrollBar()->setAutoFillBackground(true);
+
 	// TODO: find a way to paint this QFrame outside its viewport still allowing the viewport to be transparent
-	BuddiesTree->setFrameShape(QFrame::NoFrame);
+	TalkableTree->setFrameShape(QFrame::NoFrame);
 
 	configurationUpdated();
 }
@@ -210,23 +161,39 @@ void RosterWidget::compositingDisabled()
 
 	CompositingEnabled = false;
 	GroupBar->setAutoFillBackground(false);
-	BuddiesWidget->filterWidget()->setAutoFillBackground(false);
-	BuddiesTree->verticalScrollBar()->setAutoFillBackground(false);
-	SelectViewButtons->setAutoFillBackground(false);
+	TalkableWidget->filterWidget()->setAutoFillBackground(false);
+	TalkableTree->verticalScrollBar()->setAutoFillBackground(false);
 
-	BuddiesTree->setFrameShape(QFrame::StyledPanel);
+	TalkableTree->setFrameShape(QFrame::StyledPanel);
 
 	configurationUpdated();
 }
 
-ModelChain * RosterWidget::createBuddiesModelChain()
+ModelChain * RosterWidget::createModelChain()
 {
-	ModelChain *chain = new ModelChain(new BuddiesModel(this), this);
+	ModelChain *chain = new ModelChain(TalkableModelFactory::createInstance(TalkableTree), TalkableTree);
+
 	ProxyModel = new TalkableProxyModel(chain);
 	ProxyModel->addFilter(new UnreadMessagesFilter(ProxyModel));
 
+	ChatOrFilter *chatOrFilter = new ChatOrFilter(ProxyModel);
+
+	ChatNamedFilter *chatNamedFilter = new ChatNamedFilter(chatOrFilter);
+	chatNamedFilter->setEnabled(true);
+	chatOrFilter->addFilter(chatNamedFilter);
+
+	ChatUnreadFilter *chatUnreadFilter = new ChatUnreadFilter(chatOrFilter);
+	chatUnreadFilter->setEnabled(true);
+	chatOrFilter->addFilter(chatUnreadFilter);
+
+	ProxyModel->addFilter(chatOrFilter);
+
+	ChatGroupFilter = new GroupChatFilter(ProxyModel);
+	connect(GroupBar, SIGNAL(currentGroupChanged(Group)), ChatGroupFilter, SLOT(setGroup(Group)));
+	ProxyModel->addFilter(ChatGroupFilter);
+
 	BuddyNameFilter *nameFilter = new BuddyNameFilter(ProxyModel);
-	connect(BuddiesWidget, SIGNAL(filterChanged(QString)), nameFilter, SLOT(setName(QString)));
+	connect(TalkableWidget, SIGNAL(filterChanged(QString)), nameFilter, SLOT(setName(QString)));
 	ProxyModel->addFilter(nameFilter);
 
 	BuddyGroupFilter = new GroupBuddyFilter(ProxyModel);
@@ -238,64 +205,24 @@ ModelChain * RosterWidget::createBuddiesModelChain()
 	return chain;
 }
 
-ModelChain * RosterWidget::createChatsModelChain()
+void RosterWidget::createTalkableWidget(QWidget *parent)
 {
-	ModelChain *chain = new ModelChain(new ChatsModel(ChatsTree), ChatsTree);
+	TalkableWidget = new FilteredTreeView(FilteredTreeView::FilterAtTop, parent);
 
-	TalkableProxyModel *chatsProxyModel = new TalkableProxyModel(chain);
+	TalkableTree = new TalkableTreeView(TalkableWidget);
+	TalkableTree->useConfigurationColors(true);
+	TalkableTree->setContextMenuEnabled(true);
+	TalkableTree->setChain(createModelChain());
 
-	ChatOrFilter *chatOrFilter = new ChatOrFilter(chatsProxyModel);
+	connect(TalkableTree, SIGNAL(talkableActivated(Talkable)), this, SIGNAL(talkableActivated(Talkable)));
+	connect(TalkableTree, SIGNAL(currentChanged(Talkable)), this, SIGNAL(currentChanged(Talkable)));
 
-	ChatNamedFilter *chatNamedFilter = new ChatNamedFilter(chatsProxyModel);
-	chatNamedFilter->setEnabled(true);
-	chatOrFilter->addFilter(chatNamedFilter);
-
-	ChatUnreadFilter *chatUnreadFilter = new ChatUnreadFilter(chatsProxyModel);
-	chatUnreadFilter->setEnabled(true);
-	chatOrFilter->addFilter(chatUnreadFilter);
-
-	chatsProxyModel->addFilter(chatOrFilter);
-
-	ChatGroupFilter = new GroupChatFilter(chatsProxyModel);
-	connect(GroupBar, SIGNAL(currentGroupChanged(Group)), ChatGroupFilter, SLOT(setGroup(Group)));
-	chatsProxyModel->addFilter(ChatGroupFilter);
-
-	chain->addProxyModel(chatsProxyModel);
-
-	return chain;
-}
-
-QWidget * RosterWidget::createBuddiesWidget(QWidget *parent)
-{
-	BuddiesWidget = new FilteredTreeView(FilteredTreeView::FilterAtTop, parent);
-	BuddiesTree = new TalkableTreeView(BuddiesWidget);
-	BuddiesWidget->setTreeView(BuddiesTree);
-
-	BuddiesTree->useConfigurationColors(true);
-	BuddiesTree->setChain(createBuddiesModelChain());
-	BuddiesTree->setContextMenuEnabled(true);
-
-	connect(BuddiesTree, SIGNAL(talkableActivated(Talkable)), this, SIGNAL(talkableActivated(Talkable)));
-	connect(BuddiesTree, SIGNAL(currentChanged(Talkable)), this, SIGNAL(currentChanged(Talkable)));
-
-	return BuddiesWidget;
-}
-
-QWidget * RosterWidget::createChatsWidget(QWidget *parent)
-{
-	ChatsTree = new TalkableTreeView(parent);
-	ChatsTree->setContextMenuEnabled(true);
-	ChatsTree->setChain(createChatsModelChain());
-
-	connect(ChatsTree, SIGNAL(talkableActivated(Talkable)), this, SIGNAL(talkableActivated(Talkable)));
-	connect(ChatsTree, SIGNAL(currentChanged(Talkable)), this, SIGNAL(currentChanged(Talkable)));
-
-	return ChatsTree;
+	TalkableWidget->setTreeView(TalkableTree);
 }
 
 TalkableTreeView * RosterWidget::talkableTreeView()
 {
-	return BuddiesTree;
+	return TalkableTree;
 }
 
 TalkableProxyModel * RosterWidget::talkableProxyModel()
@@ -310,5 +237,5 @@ ActionContext * RosterWidget::actionContext()
 
 void RosterWidget::clearFilter()
 {
-	BuddiesWidget->filterWidget()->setFilter(QString());
+	TalkableWidget->filterWidget()->setFilter(QString());
 }
