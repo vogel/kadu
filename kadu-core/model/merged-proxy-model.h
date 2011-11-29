@@ -173,6 +173,9 @@ class MergedProxyModel : public QAbstractItemModel
 	 */
 	int modelRowOffset(QAbstractItemModel *model) const;
 
+	void connectModels();
+	void disconnectModels();
+
 private slots:
 	void dataChangedSlot(const QModelIndex &topLeft, const QModelIndex &bottomRight);
 
@@ -191,14 +194,22 @@ private slots:
 public:
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Creates new instance of MergedProxyModel with given list of models as submodels to merge.
-	 * @param models submodels to merge
+	 * @short Creates new instance of MergedProxyModel.
 	 * @param parent QObject parent of new MergedProxyModel.
 	 *
-	 * Creates new instance of MergedProxyModel with given list of models as submodels to merge.
+	 * Creates new instance of MergedProxyModel.
 	 */
-	explicit MergedProxyModel(QList<QAbstractItemModel *> models, QObject *parent = 0);
+	explicit MergedProxyModel(QObject *parent = 0);
 	virtual ~MergedProxyModel();
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Sets list of models to merge.
+	 * @param models list of models to merge
+	 *
+	 * Sets list of models to merge.
+	 */
+	void setModels(QList<QAbstractItemModel *> models);
 
 	virtual QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
 	virtual QModelIndex parent(const QModelIndex &proxyChild) const;

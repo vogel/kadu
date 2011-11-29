@@ -23,5 +23,7 @@
 
 QAbstractItemModel * MergedProxyModelFactory::createInstance(QList<QAbstractItemModel *> models, QObject *parent)
 {
-	return new MergedProxyModel(models, parent);
+	MergedProxyModel *mergedProxyModel = new MergedProxyModel(parent);
+	mergedProxyModel->setModels(models);
+	return mergedProxyModel;
 }

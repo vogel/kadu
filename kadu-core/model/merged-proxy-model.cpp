@@ -21,11 +21,17 @@
 
 #include "merged-proxy-model.h"
 
-MergedProxyModel::MergedProxyModel(QList<QAbstractItemModel *> models, QObject *parent) :
-		QAbstractItemModel(parent), Models(models)
+MergedProxyModel::MergedProxyModel(QObject *parent) :
+		QAbstractItemModel(parent)
 {
-	updateBoundaries();
+}
 
+MergedProxyModel::~MergedProxyModel()
+{
+}
+
+void MergedProxyModel::connectModels()
+{
 	foreach (const QAbstractItemModel *model, Models)
 	{
 		Q_ASSERT(model);
@@ -52,7 +58,7 @@ MergedProxyModel::MergedProxyModel(QList<QAbstractItemModel *> models, QObject *
 	}
 }
 
-MergedProxyModel::~MergedProxyModel()
+void MergedProxyModel::disconnectModels()
 {
 	foreach (const QAbstractItemModel *model, Models)
 	{
@@ -80,8 +86,22 @@ MergedProxyModel::~MergedProxyModel()
 	}
 }
 
+void MergedProxyModel::setModels(QList<QAbstractItemModel *> models)
+{
+	beginResetModel();
+
+	disconnectModels();
+	Models = models;
+	connectModels();
+	updateBoundaries();
+
+	endResetModel();
+}
+
 void MergedProxyModel::updateBoundaries() const
 {
+	Boundaries.clear();
+
 	int index = 0;
 	foreach (const QAbstractItemModel *model, Models)
 	{
