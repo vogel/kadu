@@ -28,10 +28,6 @@
 #include "gui/actions/action-context-provider.h"
 #include "os/generic/compositing-aware-object.h"
 
-class QButtonGroup;
-class QPushButton;
-class QStackedWidget;
-
 class FilteredTreeView;
 class GroupBuddyFilter;
 class GroupChatFilter;
@@ -46,18 +42,13 @@ class RosterWidget : public QWidget, public ActionContextProvider, Configuration
 	Q_OBJECT
 
 	GroupTabBar *GroupBar;
-	FilteredTreeView *BuddiesWidget;
-	TalkableTreeView *BuddiesTree;
+
 	TalkableProxyModel *ProxyModel;
 	GroupBuddyFilter *BuddyGroupFilter;
 	GroupChatFilter *ChatGroupFilter;
-	TalkableTreeView *ChatsTree;
 
-	QStackedWidget *TalkableViews;
-	QButtonGroup *ViewButtonGroup;
-	QPushButton *BuddiesViewButton;
-	QPushButton *ChatsViewButton;
-	QWidget *SelectViewButtons;
+	FilteredTreeView *TalkableWidget;
+	TalkableTreeView *TalkableTree;
 
 	ProxyActionContext *Context;
 
@@ -65,14 +56,8 @@ class RosterWidget : public QWidget, public ActionContextProvider, Configuration
 
 	void createGui();
 
-	ModelChain * createBuddiesModelChain();
-	ModelChain * createChatsModelChain();
-
-	QWidget * createBuddiesWidget(QWidget *parent);
-	QWidget * createChatsWidget(QWidget *parent);
-
-private slots:
-	void viewButtonClicked();
+	ModelChain * createModelChain();
+	void createTalkableWidget(QWidget *parent);
 
 protected:
 	void configurationUpdated();
