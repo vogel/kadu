@@ -169,7 +169,7 @@ const QList<Chat> & RecentChatManager::recentChats()
 
 /**
  * @author Rafal 'Vogel' Malinowski
- * @short Adds new chat to list (or moves it on first position).
+ * @short Adds new chat to list (or moves it to the first position).
  *
  * Adds new chat to list. If chat is already on list it is just moved to the first place.
  * Else, it is added at first place and all chats after 20th are removed. Time of add is
@@ -177,6 +177,7 @@ const QList<Chat> & RecentChatManager::recentChats()
  * of time.
  *
  * Signals recentChatAboutToBeAdded and recentChatAdded are emitted.
+ * If the chat was on the list on the first position already, signals are NOT emitted.
  */
 void RecentChatManager::addRecentChat(Chat chat, QDateTime datetime)
 {
@@ -184,6 +185,9 @@ void RecentChatManager::addRecentChat(Chat chat, QDateTime datetime)
 		return;
 
 	ensureLoaded();
+
+	QDateTime *recentChatData = chat.data()->moduleData<QDateTime>("recent-chat", true);
+	*recentChatData = datetime;
 
 	if (!RecentChats.isEmpty() && RecentChats.at(0) == chat)
 		return;
@@ -193,9 +197,6 @@ void RecentChatManager::addRecentChat(Chat chat, QDateTime datetime)
 	// limit
 	while (RecentChats.count() >= MAX_RECENT_CHAT_COUNT)
 		removeRecentChat(RecentChats.last());
-
-	QDateTime *recentChatData = chat.data()->moduleData<QDateTime>("recent-chat", true);
-	*recentChatData = datetime;
 
 	emit recentChatAboutToBeAdded(chat);
 	RecentChats.prepend(chat);
