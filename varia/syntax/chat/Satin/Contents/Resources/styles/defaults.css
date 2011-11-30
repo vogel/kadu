@@ -30,7 +30,7 @@ p {margin: 0px;overflow: hidden;}
 	font-size: 10px;
 	color: #999999;
 	float: right;
-	padding-top: 2px;
+	padding-top: 0px;
 	vertical-align: baseline;
 	}
 .messagetime.consecutive {
