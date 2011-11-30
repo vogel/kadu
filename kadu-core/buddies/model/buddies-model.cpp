@@ -35,7 +35,7 @@
 #include "buddies-model.h"
 
 BuddiesModel::BuddiesModel(QObject *parent) :
-		BuddiesModelBase(parent)
+		BuddiesModelBase(parent), DetachingOrAttaching(false)
 {
 	IncludeMyself = config_file.readBoolEntry("General", "ShowMyself", false);
 
@@ -191,12 +191,16 @@ void BuddiesModel::contactAboutToBeAttached(Contact contact, Buddy nearFutureBud
 	if (!index.isValid())
 		return;
 
+	DetachingOrAttaching = true;
+
 	int count = nearFutureBuddy.contacts().size();
 	beginInsertRows(index, count, count);
 }
 
 void BuddiesModel::contactAttached(Contact contact)
 {
+	DetachingOrAttaching = false;
+
 	const Buddy &buddy = contact.ownerBuddy();
 
 	const QModelIndexList &indexes = indexListForValue(buddy);
@@ -220,6 +224,8 @@ void BuddiesModel::contactAboutToBeDetached(Contact contact)
 	if (!index.isValid())
 		return;
 
+	DetachingOrAttaching = true;
+
 	int contactIndex = buddy.contacts().indexOf(contact);
 	beginRemoveRows(index, contactIndex, contactIndex);
 }
@@ -227,6 +233,8 @@ void BuddiesModel::contactAboutToBeDetached(Contact contact)
 void BuddiesModel::contactDetached(Contact contact, Buddy previousBuddy)
 {
 	Q_UNUSED(contact)
+
+	DetachingOrAttaching = false;
 
 	const QModelIndexList &indexes = indexListForValue(previousBuddy);
 	Q_ASSERT(indexes.size() == 1);
@@ -240,6 +248,9 @@ void BuddiesModel::contactDetached(Contact contact, Buddy previousBuddy)
 
 void BuddiesModel::contactUpdated(Contact &contact)
 {
+	if (DetachingOrAttaching)
+		return;
+
 	const Buddy &buddy = contact.ownerBuddy();
 	if (!buddy)
 		return;
@@ -262,10 +273,11 @@ void BuddiesModel::setIncludeMyself(bool includeMyself)
 	if (IncludeMyself == includeMyself)
 		return;
 
+	int count = BuddyManager::instance()->count();
 	if (IncludeMyself)
-		beginRemoveRows(QModelIndex(), rowCount() - 1, rowCount() - 1);
+		beginRemoveRows(QModelIndex(), count, count);
 	else
-		beginInsertRows(QModelIndex(), rowCount(), rowCount());
+		beginInsertRows(QModelIndex(), count, count);
 
 	IncludeMyself = includeMyself;
 

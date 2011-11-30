@@ -38,6 +38,7 @@ class BuddiesModel : public BuddiesModelBase
 	Q_OBJECT
 
 	bool IncludeMyself;
+	bool DetachingOrAttaching;
 
 private slots:
 	void buddyAboutToBeAdded(Buddy &buddy);
