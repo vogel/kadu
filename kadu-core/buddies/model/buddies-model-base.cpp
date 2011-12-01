@@ -165,6 +165,10 @@ QVariant BuddiesModelBase::data(const QModelIndex &index, int role) const
 	BuddyShared *buddyShared = qobject_cast<BuddyShared *>(sharedData);
 	if (buddyShared)
 	{
+		// use buddy role instead of what ContactDataExtractor would return
+		if (ItemTypeRole == role)
+			return BuddyRole;
+
 		const Buddy &buddy = Buddy(buddyShared);
 		const Contact &contact = BuddyPreferredManager::instance()->preferredContact(buddy);
 
