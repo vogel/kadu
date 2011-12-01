@@ -171,6 +171,12 @@ void MergedProxyModel::rowsAboutToBeRemovedSlot(const QModelIndex &parent, int f
 	        : modelRowOffset(model);
 
 	beginRemoveRows(proxyParent, first - offset, last - offset);
+
+	for (int i = first; i <= last; i++)
+	{
+		const QModelIndex &sourceIndex = model->index(i - offset, 0, parent);
+		removeMapping(sourceIndex);
+	}
 }
 
 void MergedProxyModel::rowsRemovedSlot(const QModelIndex &parent, int first, int last)
@@ -186,9 +192,6 @@ void MergedProxyModel::rowsRemovedSlot(const QModelIndex &parent, int first, int
 
 	updateBoundaries();
 	endRemoveRows();
-
-	if (parent.isValid())
-		removeMapping(parent);
 }
 
 void MergedProxyModel::rowsAboutToBeMovedSlot(const QModelIndex &parent, int start, int end, const QModelIndex &destination, int row)
