@@ -180,6 +180,8 @@ void disableIfContactSelected(Action *action)
 
 	if (action->context()->buddies().contains(Core::instance()->myself()))
 		action->setEnabled(false);
+	else
+		action->setEnabled(true);
 }
 
 void disableMerge(Action *action)
