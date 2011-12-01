@@ -108,8 +108,7 @@ static void checkBlocking(Action *action)
 		return;
 	}
 
-	if (action && action->context())
-		action->setEnabled(!action->context()->roles().contains(ContactRole));
+	action->setEnabled(!action->context()->roles().contains(ContactRole));
 
 	bool on = false;
 	foreach (const Buddy &buddy, buddies)
