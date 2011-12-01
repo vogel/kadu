@@ -196,22 +196,14 @@ void MergedProxyModel::rowsRemovedSlot(const QModelIndex &parent, int first, int
 
 void MergedProxyModel::rowsAboutToBeMovedSlot(const QModelIndex &parent, int start, int end, const QModelIndex &destination, int row)
 {
-	QAbstractItemModel *model = qobject_cast<QAbstractItemModel *>(sender());
-	Q_UNUSED(model);
-	Q_ASSERT(model);
-	Q_ASSERT(Boundaries.contains(model));
+	Q_UNUSED(parent);
+	Q_UNUSED(start);
+	Q_UNUSED(end);
+	Q_UNUSED(destination);
+	Q_UNUSED(row);
 
-	const QModelIndex &proxyParent = mapFromSource(parent);
-	const int offset = proxyParent.isValid()
-	        ? 0
-	        : modelRowOffset(model);
-
-	const QModelIndex &proxyDestination = mapFromSource(destination);
-	const int destinationOffset = proxyDestination.isValid()
-	        ? 0
-	        : modelRowOffset(model);
-
-	beginMoveRows(proxyParent, start - offset, end - offset, proxyDestination, row - destinationOffset);
+	// we do not support moving yet
+	Q_ASSERT(false);
 }
 
 void MergedProxyModel::rowsMovedSlot(const QModelIndex &parent, int start, int end, const QModelIndex &destination, int row)
@@ -222,13 +214,8 @@ void MergedProxyModel::rowsMovedSlot(const QModelIndex &parent, int start, int e
 	Q_UNUSED(destination);
 	Q_UNUSED(row);
 
-	QAbstractItemModel *model = qobject_cast<QAbstractItemModel *>(sender());
-	Q_UNUSED(model);
-	Q_ASSERT(model);
-	Q_ASSERT(Boundaries.contains(model));
-
-	updateBoundaries();
-	endMoveRows();
+	// we do not support moving yet
+	Q_ASSERT(false);
 }
 
 void MergedProxyModel::modelAboutToBeResetSlot()
