@@ -53,3 +53,13 @@ QModelIndexList TalkableModel::indexListForValue(const QVariant &value) const
 
 	return result;
 }
+
+void TalkableModel::setIncludeMyself(bool includeMyself)
+{
+	Buddies->setIncludeMyself(includeMyself);
+}
+
+bool TalkableModel::includeMyself() const
+{
+	return Buddies->includeMyself();
+}

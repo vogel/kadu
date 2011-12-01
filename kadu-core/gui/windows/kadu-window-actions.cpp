@@ -40,7 +40,6 @@
 #include "buddies/filter/offline-buddy-filter.h"
 #include "buddies/filter/online-and-description-buddy-filter.h"
 #include "buddies/group-manager.h"
-#include "buddies/model/buddies-model.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact.h"
 #include "core/core.h"
@@ -75,6 +74,7 @@
 #include "parser/parser.h"
 #include "protocols/protocol.h"
 #include "status/status-container-manager.h"
+#include "talkable/model/talkable-model.h"
 #include "talkable/model/talkable-proxy-model.h"
 #include "url-handlers/url-handler-manager.h"
 
@@ -535,7 +535,7 @@ void KaduWindowActions::showMyselfActionCreated(Action *action)
 		return;
 
 	bool enabled = config_file.readBoolEntry("General", "ShowMyself", false);
-	BuddiesModel *model = qobject_cast<BuddiesModel *>(window->talkableProxyModel()->sourceModel());
+	TalkableModel *model = qobject_cast<TalkableModel *>(window->talkableProxyModel()->sourceModel());
 	if (model)
 	{
 		model->setIncludeMyself(enabled);
@@ -730,7 +730,7 @@ void KaduWindowActions::showMyselfActionActivated(QAction *sender, bool toggled)
 	if (!window->talkableProxyModel())
 		return;
 
-	BuddiesModel *model = qobject_cast<BuddiesModel *>(window->talkableProxyModel()->sourceModel());
+	TalkableModel *model = qobject_cast<TalkableModel *>(window->talkableProxyModel()->sourceModel());
 	if (model)
 	{
 		model->setIncludeMyself(toggled);

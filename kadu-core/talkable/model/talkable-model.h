@@ -39,6 +39,9 @@ public:
 
 	virtual QModelIndexList indexListForValue(const QVariant &value) const;
 
+	void setIncludeMyself(bool includeMyself);
+	bool includeMyself() const;
+
 };
 
 #endif // TALKABLE_MODEL_H
