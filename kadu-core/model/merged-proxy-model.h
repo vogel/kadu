@@ -75,6 +75,8 @@ class MergedProxyModel : public QAbstractItemModel
 
 	QList<QAbstractItemModel *> Models;
 
+	QModelIndexList IndexesToRemove;
+
 	/**
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Maps proxy index to source index at root level.

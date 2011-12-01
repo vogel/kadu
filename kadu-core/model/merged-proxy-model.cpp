@@ -141,7 +141,7 @@ void MergedProxyModel::rowsAboutToBeInsertedSlot(const QModelIndex &parent, int 
 	        ? 0
 	        : modelRowOffset(model);
 
-	beginInsertRows(proxyParent, first - offset, last - offset);
+	beginInsertRows(proxyParent, first + offset, last + offset);
 }
 
 void MergedProxyModel::rowsInsertedSlot(const QModelIndex &parent, int first, int last)
@@ -156,6 +156,7 @@ void MergedProxyModel::rowsInsertedSlot(const QModelIndex &parent, int first, in
 	Q_ASSERT(Boundaries.contains(model));
 
 	updateBoundaries();
+
 	endInsertRows();
 }
 
@@ -170,13 +171,10 @@ void MergedProxyModel::rowsAboutToBeRemovedSlot(const QModelIndex &parent, int f
 	        ? 0
 	        : modelRowOffset(model);
 
-	beginRemoveRows(proxyParent, first - offset, last - offset);
+	beginRemoveRows(proxyParent, first + offset, last + offset);
 
 	for (int i = first; i <= last; i++)
-	{
-		const QModelIndex &sourceIndex = model->index(i - offset, 0, parent);
-		removeMapping(sourceIndex);
-	}
+		IndexesToRemove.append(model->index(i, 0, parent));
 }
 
 void MergedProxyModel::rowsRemovedSlot(const QModelIndex &parent, int first, int last)
@@ -190,7 +188,12 @@ void MergedProxyModel::rowsRemovedSlot(const QModelIndex &parent, int first, int
 	Q_ASSERT(model);
 	Q_ASSERT(Boundaries.contains(model));
 
+	foreach (const QModelIndex &sourceIndex, IndexesToRemove)
+		removeMapping(sourceIndex);
+	IndexesToRemove.clear();
+
 	updateBoundaries();
+
 	endRemoveRows();
 }
 
@@ -226,6 +229,7 @@ void MergedProxyModel::modelAboutToBeResetSlot()
 void MergedProxyModel::modelResetSlot()
 {
 	updateBoundaries();
+
 	endResetModel();
 }
 
@@ -362,6 +366,8 @@ int MergedProxyModel::rowCount(const QModelIndex &parent) const
 		Q_ASSERT(parent.model() == this);
 
 		const QModelIndex &sourceParent = mapToSource(parent);
+		Q_ASSERT(sourceParent.model());
+
 		return sourceParent.model()->rowCount(sourceParent);
 	}
 
