@@ -780,7 +780,7 @@ void MediaPlayer::configurationUpdated()
 	}
 	else
 	{
-		Core::instance()->kaduWindow()->insertMenuActionDescription(enableMediaPlayerStatuses, KaduWindow::MenuKadu);
+		Core::instance()->kaduWindow()->insertMenuActionDescription(enableMediaPlayerStatuses, KaduWindow::MenuKadu, 7);
 		if (enableMediaPlayerStatuses->action(Core::instance()->kaduWindow()->actionContext()))
 			enableMediaPlayerStatuses->action(Core::instance()->kaduWindow()->actionContext())->setChecked(enabled);
 	}
