@@ -31,7 +31,7 @@ class QAction;
 class Action;
 class ActionDescription;
 class Buddy;
-class EditChatAction;
+class EditTalkableAction;
 class LeaveChatAction;
 
 class ChatWidgetActions : public QObject, ConfigurationAwareObject
@@ -52,7 +52,7 @@ class ChatWidgetActions : public QObject, ConfigurationAwareObject
 	ActionDescription *InsertEmoticon;
 // 	ActionDescription *ColorSelector;
 
-	EditChatAction *EditChat;
+	EditTalkableAction *EditTalkable;
 	LeaveChatAction *LeaveChat;
 
 	void autoSendActionCheck();
@@ -94,8 +94,6 @@ public:
 	ActionDescription * openChatWith() const { return OpenWith; }
 // 	ActionDescription * colorSelector() { return ColorSelector; }
 	ActionDescription * insertEmoticon() const { return InsertEmoticon; }
-
-	EditChatAction * editChat() const { return EditChat; }
 
 };
 

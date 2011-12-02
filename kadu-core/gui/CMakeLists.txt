@@ -2,7 +2,6 @@ set (gui_SRCS
 	hot-key.cpp
 	status-icon.cpp
 
-	actions/chat/edit-chat-action.cpp
 	actions/chat/leave-chat-action.cpp
 
 	actions/action.cpp
@@ -11,6 +10,7 @@ set (gui_SRCS
 	actions/base-action-context.cpp
 	actions/change-status-action.cpp
 	actions/default-proxy-action.cpp
+	actions/edit-talkable-action.cpp
 
 	widgets/account-buddy-list-widget.cpp
 	widgets/account-avatar-widget.cpp
@@ -152,7 +152,6 @@ set (gui_MOC_SRCS
 	hot-key.h
 	status-icon.h
 
-	actions/chat/edit-chat-action.h
 	actions/chat/leave-chat-action.h
 
 	actions/action.h
@@ -162,6 +161,7 @@ set (gui_MOC_SRCS
 	actions/base-action-context.h
 	actions/change-status-action.h
 	actions/default-proxy-action.h
+	actions/edit-talkable-action.h
 
 	widgets/account-add-widget.h
 	widgets/account-avatar-widget.h

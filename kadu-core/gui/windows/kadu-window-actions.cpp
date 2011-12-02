@@ -46,7 +46,7 @@
 #include "gui/actions/action.h"
 #include "gui/actions/actions.h"
 #include "gui/actions/change-status-action.h"
-#include "gui/actions/chat/edit-chat-action.h"
+#include "gui/actions/edit-talkable-action.h"
 #include "gui/actions/default-proxy-action.h"
 #include "gui/status-icon.h"
 #include "gui/widgets/buddy-info-panel.h"
@@ -57,7 +57,6 @@
 #include "gui/widgets/talkable-menu-manager.h"
 #include "gui/widgets/talkable-tree-view.h"
 #include "gui/windows/add-buddy-window.h"
-#include "gui/windows/buddy-data-window.h"
 #include "gui/windows/buddy-delete-window.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/main-configuration-window.h"
@@ -107,39 +106,6 @@ void hideNoSearchServiceAccounts(Action *action)
 		}
 
 	action->setVisible(hasSearchServiceAccount);
-}
-
-void checkBuddyProperties(Action *action)
-{
-	kdebugf();
-
-	const Buddy &buddy = action->context()->buddies().toBuddy();
-	if (!buddy)
-	{
-		action->setEnabled(false);
-		return;
-	}
-
-	if (buddy == Core::instance()->myself())
-	{
-		action->setEnabled(false);
-		return;
-	}
-
-	action->setEnabled(true);
-
-	if (buddy.isAnonymous())
-	{
-		action->setIcon(KaduIcon("contact-new"));
-		action->setText(qApp->translate("KaduWindowActions", "Add Buddy..."));
-	}
-	else
-	{
-		action->setIcon(KaduIcon("x-office-address-book"));
-		action->setText(qApp->translate("KaduWindowActions", "View Buddy Properties"));
-	}
-
-	kdebugf2();
 }
 
 void disableNoSearchService(Action *action)
@@ -376,16 +342,8 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 	);
 	connect(OnlineAndDescriptionUsers, SIGNAL(actionCreated(Action *)), this, SLOT(onlineAndDescUsersActionCreated(Action *)));
 
-	EditUser = new ActionDescription(this,
-		ActionDescription::TypeUser, "editUserAction",
-		this, SLOT(editUserActionActivated(QAction *, bool)),
-		KaduIcon("x-office-address-book"), tr("View Buddy Properties"), false,
-		checkBuddyProperties
-	);
-	connect(EditUser, SIGNAL(actionCreated(Action *)), this, SLOT(editUserActionCreated(Action *)));
-	TalkableMenuManager::instance()->addActionDescription(EditUser, TalkableMenuItem::CategoryView, 0);
-	TalkableMenuManager::instance()->addActionDescription(ChatWidgetManager::instance()->actions()->editChat(),
-	                                                      TalkableMenuItem::CategoryView, 5);
+	EditTalkable = new EditTalkableAction(this);
+	TalkableMenuManager::instance()->addActionDescription(EditTalkable, TalkableMenuItem::CategoryView, 0);
 
 	MergeContact = new ActionDescription(this,
 		ActionDescription::TypeUser, "mergeContactAction",
@@ -489,18 +447,6 @@ void KaduWindowActions::onlineAndDescUsersActionCreated(Action *action)
 	action->setChecked(enabled);
 
 	window->talkableProxyModel()->addFilter(oadcf);
-}
-
-void KaduWindowActions::editUserActionCreated(Action *action)
-{
-	const Buddy &buddy = action->context()->buddies().toBuddy();
-	action->setEnabled(buddy);
-
-	if (buddy && buddy.isAnonymous())
-	{
-		action->setIcon(KaduIcon("contact-new"));
-		action->setText(tr("Add Buddy..."));
-	}
 }
 
 void KaduWindowActions::showInfoPanelActionCreated(Action *action)
@@ -923,37 +869,6 @@ void KaduWindowActions::onlineAndDescUsersActionActivated(QAction *sender, bool 
 		OnlineAndDescriptionBuddyFilter *oadcf = v.value<OnlineAndDescriptionBuddyFilter *>();
 		oadcf->setEnabled(toggled);
 	}
-}
-
-void KaduWindowActions::editUserActionActivated(QAction *sender, bool toggled)
-{
-	Q_UNUSED(toggled)
-
-	kdebugf();
-
-	Action *action = qobject_cast<Action *>(sender);
-	if (!action)
-		return;
-
-	editUserActionActivated(action->context());
-}
-
-void KaduWindowActions::editUserActionActivated(ActionContext *source)
-{
-	kdebugf();
-
-	BuddySet buddySet = source->buddies();
-	if (1 != buddySet.count())
-		return;
-
-	Buddy buddy = *buddySet.constBegin();
-
-	if (buddy.isAnonymous())
-		(new AddBuddyWindow(Core::instance()->kaduWindow(), buddy, true))->show();
-	else
-		BuddyDataWindow::instance(buddy, Core::instance()->kaduWindow())->show();
-
-	kdebugf2();
 }
 
 void KaduWindowActions::configurationUpdated()

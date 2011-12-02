@@ -46,15 +46,18 @@
 #include "chat/chat-manager.h"
 #include "configuration/configuration-file.h"
 #include "configuration/main-configuration-holder.h"
+#include "core/core.h"
 #include "gui/actions/action-description.h"
 #include "gui/actions/action.h"
 #include "gui/actions/base-action-context.h"
+#include "gui/actions/edit-talkable-action.h"
 #include "gui/hot-key.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/filtered-tree-view.h"
 #include "gui/widgets/talkable-delegate.h"
 #include "gui/widgets/talkable-menu-manager.h"
 #include "gui/widgets/tool-tip-class-manager.h"
+#include "gui/windows/kadu-window.h"
 #include "gui/windows/kadu-window-actions.h"
 #include "icons/kadu-icon.h"
 #include "identities/identity.h"
@@ -168,7 +171,7 @@ void TalkableTreeView::keyPressEvent(QKeyEvent *event)
 	if (HotKey::shortCut(event, "ShortCuts", "kadu_deleteuser"))
 		KaduWindowActions::deleteUserActionActivated(Context);
 	else if (HotKey::shortCut(event, "ShortCuts", "kadu_persinfo"))
-		KaduWindowActions::editUserActionActivated(Context);
+		Core::instance()->kaduWindow()->kaduWindowActions()->editTalkable()->trigger(Context);
 	else
 		switch (event->key())
 		{

@@ -1,12 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2008 Piotr Galiszewski (piotr.galiszewski@kadu.im)
- * Copyright 2008 Michał Podsiadlik (michal@kadu.net)
- * Copyright 2009 Bartłomiej Zimoń (uzi18@o2.pl)
- * Copyright 2004 Adrian Smarzewski (adrian@kadu.net)
- * Copyright 2007, 2008, 2009, 2010, 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
- * Copyright 2011 Bartosz Brachaczek (b.brachaczek@gmail.com)
- * Copyright 2004, 2006 Marcin Ślusarz (joi@kadu.net)
+ * Copyright 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -23,25 +17,46 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EDIT_CHAT_ACTION_H
-#define EDIT_CHAT_ACTION_H
+#ifndef EDIT_TALKABLE_ACTION_H
+#define EDIT_TALKABLE_ACTION_H
 
 #include <QtGui/QAction>
 
+#include "model/roles.h"
+
 #include "gui/actions/action-description.h"
 
-class EditChatAction : public ActionDescription
+class Buddy;
+class Chat;
+
+class EditTalkableAction : public ActionDescription
 {
 	Q_OBJECT
 
+	int actionRole(ActionContext *context) const;
+	Chat actionChat(ActionContext *context) const;
+	Buddy actionBuddy(ActionContext *context) const;
+
+	void setChatActionTitleAndIcon(Action *action);
+	void setBuddyActionTitleAndIcon(Action *action);
+
+	void updateChatActionState(Action *action);
+	void updateBuddyActionState(Action *action);
+
+	void chatActionTriggered(ActionContext *context);
+	void buddyActionTriggered(ActionContext *context);
+
 protected:
+	virtual void actionInstanceCreated(Action *action);
 	virtual void updateActionState(Action *action);
 	virtual void triggered(QWidget *widget, ActionContext *context, bool toggled);
 
 public:
-	explicit EditChatAction(QObject *parent);
-	virtual ~EditChatAction();
+	explicit EditTalkableAction(QObject *parent);
+	virtual ~EditTalkableAction();
+
+	void trigger(ActionContext *context);
 
 };
 
-#endif // EDIT_CHAT_ACTION_H
+#endif // EDIT_TALKABLE_ACTION_H

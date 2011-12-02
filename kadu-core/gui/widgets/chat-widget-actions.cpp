@@ -36,12 +36,12 @@
 #include "emoticons/emoticons.h"
 #include "gui/actions/action.h"
 #include "gui/actions/actions.h"
-#include "gui/actions/chat/edit-chat-action.h"
 #include "gui/actions/chat/leave-chat-action.h"
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-messages-view.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/chat-widget.h"
+#include "gui/actions/edit-talkable-action.h"
 #include "gui/widgets/talkable-menu-manager.h"
 #include "gui/widgets/toolbar.h"
 #include "gui/windows/kadu-window-actions.h"
@@ -238,7 +238,7 @@ ChatWidgetActions::ChatWidgetActions(QObject *parent) : QObject(parent)
 		KaduIcon("kadu_icons/change-color"), tr("Change Color")
 	);*/
 
-	EditChat = new EditChatAction(this);
+	EditTalkable = new EditTalkableAction(this);
 	LeaveChat = new LeaveChatAction(this);
 }
 

@@ -138,6 +138,8 @@ public:
 	virtual TalkableTreeView * talkableTreeView();
 	virtual TalkableProxyModel * talkableProxyModel();
 
+	KaduWindowActions * kaduWindowActions() const { return Actions; }
+
 	void insertMenuActionDescription(ActionDescription *actionDescription, MenuType Type, int pos = -1);
 	void removeMenuActionDescription(ActionDescription *actionDescription);
 

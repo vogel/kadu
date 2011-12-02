@@ -35,6 +35,7 @@ class ActionContext;
 class ActionDescription;
 class ChangeStatusAction;
 class DefaultProxyAction;
+class EditTalkableAction;
 class MainWindow;
 class StatusContainer;
 
@@ -73,8 +74,8 @@ class KaduWindowActions : QObject, ConfigurationAwareObject
 	ActionDescription *DescriptionUsers;
 	ActionDescription *ShowDescriptions;
 	ActionDescription *OnlineAndDescriptionUsers;
-	ActionDescription *EditUser;
 
+	EditTalkableAction *EditTalkable;
 	ChangeStatusAction *ChangeStatus;
 	DefaultProxyAction *DefaultProxy;
 
@@ -85,7 +86,6 @@ private slots:
 	void descriptionUsersActionCreated(Action *action);
 	void showDescriptionsActionCreated(Action *action);
 	void onlineAndDescUsersActionCreated(Action *action);
-	void editUserActionCreated(Action *action);
 	void showInfoPanelActionCreated(Action *action);
 	void showBlockedActionCreated(Action *action);
 	void showMyselfActionCreated(Action *action);
@@ -120,17 +120,17 @@ private slots:
 	void descriptionUsersActionActivated(QAction *sender, bool toggled);
 	void showDescriptionsActionActivated(QAction *sender, bool toggled);
 	void onlineAndDescUsersActionActivated(QAction *sender, bool toggled);
-	void editUserActionActivated(QAction *sender, bool toggled);
 
 protected:
 	virtual void configurationUpdated();
 
 public:
 	static void deleteUserActionActivated(ActionContext *source);
-	static void editUserActionActivated(ActionContext *source);
 
 	explicit KaduWindowActions(QObject *parent);
 	virtual ~KaduWindowActions();
+
+	EditTalkableAction * editTalkable() { return EditTalkable; }
 
 };
 
