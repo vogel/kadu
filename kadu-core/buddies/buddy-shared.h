@@ -110,6 +110,8 @@ private slots:
 	void markContactsDirty();
 
 protected:
+	virtual QSharedPointer<StoragePoint> createStoragePoint();
+
 	virtual void load();
 	virtual void store();
 	virtual bool shouldStore();

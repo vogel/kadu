@@ -35,6 +35,7 @@
 #include "configuration/xml-configuration-file.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
+#include "core/core.h"
 #include "storage/storage-point.h"
 
 #include "buddy-shared.h"
@@ -526,6 +527,15 @@ quint16 BuddyShared::unreadMessagesCount()
 		result += contact.unreadMessagesCount();
 
 	return result;
+}
+
+QSharedPointer<StoragePoint> BuddyShared::createStoragePoint()
+{
+	// TODO: fix this, it is only a workaround for an empty buddy on list
+	if (Core::instance()->myself() == Buddy(this))
+		return QSharedPointer<StoragePoint>();
+	else
+		return Shared::createStoragePoint();
 }
 
 KaduShared_PropertyPtrReadDef(BuddyShared, Avatar, buddyAvatar, BuddyAvatar)
