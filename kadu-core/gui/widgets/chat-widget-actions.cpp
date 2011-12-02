@@ -281,7 +281,7 @@ void ChatWidgetActions::sendActionCreated(Action *action)
 
 void ChatWidgetActions::insertEmoticonActionCreated(Action *action)
 {
-	if (config_file.readEntry("Chat","EmoticonsTheme").isEmpty())
+	if (config_file.readEntry("Chat","EmoticonsTheme").trimmed().isEmpty())
 	{
 		action->setToolTip(tr("Insert emoticon - enable in configuration"));
 		action->setEnabled(false);
@@ -293,7 +293,7 @@ void ChatWidgetActions::insertEmoticonsActionCheck()
 	QString toolTip;
 	bool enabled;
 
-	if ((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle") == EmoticonsStyleNone)
+	if (config_file.readEntry("Chat","EmoticonsTheme").trimmed().isEmpty())
 	{
 		toolTip =  tr("Insert emoticon - enable in configuration");
 		enabled = false;
