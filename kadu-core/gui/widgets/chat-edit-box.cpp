@@ -68,6 +68,14 @@ ChatEditBox::ChatEditBox(const Chat &chat, QWidget *parent) :
 	Context = static_cast<BaseActionContext *>(actionContext());
 
 	Context->blockChangedSignal();
+
+	RoleSet roles;
+	if (CurrentChat.contacts().size() > 1)
+		roles.insert(ChatRole);
+	else
+		roles.insert(BuddyRole);
+	Context->setRoles(roles);
+
 	Context->setChat(CurrentChat);
 	Context->setContacts(CurrentChat.contacts());
 	Context->setBuddies(CurrentChat.contacts().toBuddySet());
