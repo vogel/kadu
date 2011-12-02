@@ -71,9 +71,9 @@ KaduWebView::KaduWebView(QWidget *parent) :
 	QWebSettings::setMaximumPagesInCache(0);
 	QWebSettings::setObjectCacheCapacities(0, 0, 0);
 
-
 	setAttribute(Qt::WA_NoBackground);
 	setAcceptDrops(false);
+	setRenderHints(QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform | QPainter::HighQualityAntialiasing);
 
 	setPage(page());
 
