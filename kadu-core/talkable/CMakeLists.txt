@@ -1,4 +1,6 @@
 set (talkable_SRCS
+	filter/talkable-filter.cpp
+
 	model/talkable-model.cpp
 	model/talkable-model-factory.cpp
 	model/talkable-proxy-model.cpp
@@ -7,6 +9,8 @@ set (talkable_SRCS
 )
 
 set (talkable_MOC_SRCS
+	filter/talkable-filter.h
+
 	model/talkable-model.h
 	model/talkable-proxy-model.h
 )
