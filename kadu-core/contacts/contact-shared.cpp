@@ -309,6 +309,12 @@ void ContactShared::protocolUnregistered(ProtocolFactory *protocolFactory)
 	if (!*ContactAccount || ContactAccount->protocolName() != protocolFactory->name())
 		return;
 
+	/* NOTE: This guard is needed to avoid deleting this object when detaching
+	 * Contact from Buddy which may hold last reference to it and thus wants to
+	 * delete it. But we don't want this to happen.
+	 */
+	Contact guard(this);
+
 	if (Details)
 	{
 		// do not store contacts that are not in contact manager
