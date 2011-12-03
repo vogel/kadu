@@ -31,11 +31,13 @@ class Buddy;
 class Chat;
 class ChatFilter;
 class Contact;
+class TalkableFilter;
 
 class TalkableProxyModel : public QSortFilterProxyModel
 {
 	Q_OBJECT
 
+	QList<TalkableFilter *> TalkableFilters;
 	QList<ChatFilter *> ChatFilters;
 	QList<AbstractBuddyFilter *> BuddyFilters;
 	QList<AbstractContactFilter *> ContactFilters;
@@ -59,6 +61,9 @@ protected:
 public:
 	explicit TalkableProxyModel(QObject *parent = 0);
 	virtual ~TalkableProxyModel();
+
+	void addFilter(TalkableFilter *filter);
+	void removeFilter(TalkableFilter *filter);
 
 	void addFilter(ChatFilter *filter);
 	void removeFilter(ChatFilter *filter);

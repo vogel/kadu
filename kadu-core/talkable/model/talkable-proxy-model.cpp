@@ -33,6 +33,7 @@
 #include "model/roles.h"
 #include "status/status-type.h"
 #include "status/status.h"
+#include "talkable/filter/talkable-filter.h"
 
 #include "talkable-proxy-model.h"
 
@@ -171,6 +172,17 @@ bool TalkableProxyModel::lessThan(const QModelIndex &left, const QModelIndex &ri
 
 bool TalkableProxyModel::accept(const Chat &chat) const
 {
+	foreach (TalkableFilter *filter, TalkableFilters)
+		switch (filter->filterChat(chat))
+		{
+			case TalkableFilter::Accepted:
+				return true;
+			case TalkableFilter::Undecided:
+				break;
+			case TalkableFilter::Rejected:
+				return false;
+		}
+
 	foreach (ChatFilter *filter, ChatFilters)
 		if (!filter->acceptChat(chat))
 			return false;
@@ -180,6 +192,17 @@ bool TalkableProxyModel::accept(const Chat &chat) const
 
 bool TalkableProxyModel::accept(const Buddy &buddy) const
 {
+	foreach (TalkableFilter *filter, TalkableFilters)
+		switch (filter->filterBuddy(buddy))
+		{
+			case TalkableFilter::Accepted:
+				return true;
+			case TalkableFilter::Undecided:
+				break;
+			case TalkableFilter::Rejected:
+				return false;
+		}
+
 	foreach (AbstractBuddyFilter *filter, BuddyFilters)
 		if (!filter->acceptBuddy(buddy))
 			return false;
@@ -191,6 +214,17 @@ bool TalkableProxyModel::accept(const Buddy &buddy) const
 
 bool TalkableProxyModel::accept(const Contact &contact) const
 {
+	foreach (TalkableFilter *filter, TalkableFilters)
+		switch (filter->filterContact(contact))
+		{
+			case TalkableFilter::Accepted:
+				return true;
+			case TalkableFilter::Undecided:
+				break;
+			case TalkableFilter::Rejected:
+				return false;
+		}
+
 	foreach (AbstractContactFilter *filter, ContactFilters)
 		if (!filter->acceptContact(contact))
 			return false;
@@ -218,6 +252,25 @@ bool TalkableProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sour
 	}
 
 	return true;
+}
+
+void TalkableProxyModel::addFilter(TalkableFilter *filter)
+{
+	if (TalkableFilters.contains(filter))
+		return;
+
+	TalkableFilters.append(filter);
+	invalidateFilter();
+	connect(filter, SIGNAL(filterChanged()), this, SLOT(invalidate()));
+}
+
+void TalkableProxyModel::removeFilter(TalkableFilter *filter)
+{
+	if (TalkableFilters.removeAll(filter) <= 0)
+		return;
+
+	invalidateFilter();
+	disconnect(filter, SIGNAL(filterChanged()), this, SLOT(invalidate()));
 }
 
 void TalkableProxyModel::addFilter(ChatFilter *filter)
