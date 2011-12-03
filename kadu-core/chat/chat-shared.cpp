@@ -73,7 +73,7 @@ ChatShared * ChatShared::loadFromStorage(const QSharedPointer<StoragePoint> &sto
  * created.
  */
 ChatShared::ChatShared(const QUuid &uuid) :
-		Shared(uuid), IgnoreAllMessages(false), UnreadMessagesCount(0)
+		Shared(uuid), Details(0), IgnoreAllMessages(false), UnreadMessagesCount(0)
 {
 	ChatAccount = new Account();
 }
@@ -194,8 +194,8 @@ void ChatShared::store()
 	else
 		configurationStorage->removeNode(parent, "ChatGroups");
 
-	if (hasDetails())
-		details()->ensureStored();
+	if (Details)
+		Details->ensureStored();
 }
 
 /**
@@ -213,7 +213,7 @@ bool ChatShared::shouldStore()
 
 	return UuidStorableObject::shouldStore()
 			&& !ChatAccount->uuid().isNull()
-			&& (!hasDetails() || details()->shouldStore());
+			&& (!Details || Details->shouldStore());
 }
 
 /**
@@ -228,10 +228,11 @@ void ChatShared::aboutToBeRemoved()
 	*ChatAccount = Account::null;
 	Groups.clear();
 
-	if (hasDetails())
+	if (Details)
 	{
-		details()->ensureStored();
-		removeDetails();
+		Details->ensureStored();
+		delete Details;
+		Details = 0;
 	}
 }
 
@@ -256,14 +257,15 @@ void ChatShared::emitUpdated()
  */
 void ChatShared::chatTypeRegistered(ChatType *chatType)
 {
-	if (hasDetails())
-		return;
-
 	if (chatType->name() != Type)
 		return;
 
-	setDetails(chatType->createChatDetails(this));
-	details()->ensureLoaded();
+	Q_ASSERT(!Details);
+
+	Details = chatType->createChatDetails(this);
+	Q_ASSERT(Details);
+
+	Details->ensureLoaded();
 
 	ChatManager::instance()->registerItem(this);
 }
@@ -277,14 +279,16 @@ void ChatShared::chatTypeRegistered(ChatType *chatType)
  */
 void ChatShared::chatTypeUnregistered(ChatType *chatType)
 {
-	if (!hasDetails())
-		return;
-
 	if (chatType->name() != Type)
 		return;
 
-	details()->ensureStored();
-	removeDetails();
+	if (Details)
+	{
+		Details->ensureStored();
+		delete Details;
+		Details = 0;
+	}
+
 	ChatManager::instance()->unregisterItem(this);
 }
 
@@ -300,7 +304,7 @@ ContactSet ChatShared::contacts()
 {
 	ensureLoaded();
 
-	return hasDetails() ? details()->contacts() : ContactSet();
+	return Details ? Details->contacts() : ContactSet();
 }
 
 /**
@@ -308,14 +312,14 @@ ContactSet ChatShared::contacts()
  * @short Returns chat name.
  * @return chat name
  *
- * Returns chae name. Name fetched from details object, so if no details object is present
+ * Returns chat name. Name is fetched from details object, so if no details object is present
  * empty string will be returned.
  */
 QString ChatShared::name()
 {
 	ensureLoaded();
 
-	return hasDetails() ? details()->name() : QString();
+	return Details ? Details->name() : QString();
 }
 
 void ChatShared::setType(const QString &type)
@@ -325,10 +329,12 @@ void ChatShared::setType(const QString &type)
 	if (Type == type)
 		return;
 
-	if (hasDetails())
+	if (Details)
 	{
-		details()->ensureStored();
-		removeDetails();
+		Details->ensureStored();
+		delete Details;
+		Details = 0;
+
 		ChatManager::instance()->unregisterItem(this);
 	}
 
