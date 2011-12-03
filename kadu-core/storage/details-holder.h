@@ -230,6 +230,18 @@ public:
 		return Details;
 	}
 
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Returns true if details are available.
+	 * @return true if details are available
+	 *
+	 * Returns true if details are available.
+	 */
+	bool hasDetails() const
+	{
+		return 0 != Details;
+	}
+
 	void detailsDestroyed()
 	{
 		if (!Details || DeletionInProgress)

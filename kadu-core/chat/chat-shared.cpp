@@ -193,7 +193,7 @@ void ChatShared::store()
 	else
 		configurationStorage->removeNode(parent, "ChatGroups");
 
-	if (details())
+	if (hasDetails())
 		details()->ensureStored();
 }
 
@@ -212,7 +212,7 @@ bool ChatShared::shouldStore()
 
 	return UuidStorableObject::shouldStore()
 			&& !ChatAccount->uuid().isNull()
-			&& (!details() || details()->shouldStore());
+			&& (!hasDetails() || details()->shouldStore());
 }
 
 /**
@@ -250,7 +250,7 @@ void ChatShared::emitUpdated()
  */
 void ChatShared::chatTypeRegistered(ChatType *chatType)
 {
-	if (details())
+	if (hasDetails())
 		return;
 
 	if (chatType->name() != Type)
@@ -268,7 +268,7 @@ void ChatShared::chatTypeRegistered(ChatType *chatType)
  */
 void ChatShared::chatTypeUnregistered(ChatType *chatType)
 {
-	if (!details())
+	if (!hasDetails())
 		return;
 
 	if (chatType->name() != Type)
@@ -318,7 +318,7 @@ ContactSet ChatShared::contacts()
 {
 	ensureLoaded();
 
-	return details() ? details()->contacts() : ContactSet();
+	return hasDetails() ? details()->contacts() : ContactSet();
 }
 
 /**
@@ -333,7 +333,7 @@ QString ChatShared::name()
 {
 	ensureLoaded();
 
-	return details() ? details()->name() : QString();
+	return hasDetails() ? details()->name() : QString();
 }
 
 void ChatShared::setGroups(const QList<Group> &groups)

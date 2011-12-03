@@ -163,7 +163,7 @@ void ContactShared::detach(bool resetBuddy, bool reattaching, bool emitSignals)
 	if (!*OwnerBuddy)
 		return;
 
-	if (!details())
+	if (!hasDetails())
 	{
 		*OwnerBuddy = Buddy::null;
 		return;
@@ -196,7 +196,7 @@ void ContactShared::detach(bool resetBuddy, bool reattaching, bool emitSignals)
 
 void ContactShared::attach(const Buddy &buddy, bool reattaching, bool emitSignals)
 {
-	if (!details() || !buddy)
+	if (!hasDetails() || !buddy)
 	{
 		*OwnerBuddy = buddy;
 		return;
@@ -274,7 +274,7 @@ void ContactShared::protocolRegistered(ProtocolFactory *protocolFactory)
 {
 	ensureLoaded();
 
-	if (details())
+	if (hasDetails())
 		return;
 
 	if (!*ContactAccount || ContactAccount->protocolName() != protocolFactory->name())
@@ -287,7 +287,7 @@ void ContactShared::protocolUnregistered(ProtocolFactory *protocolFactory)
 {
 	ensureLoaded();
 
-	if (!details())
+	if (!hasDetails())
 		return;
 
 	if (!*ContactAccount || ContactAccount->protocolName() != protocolFactory->name())
