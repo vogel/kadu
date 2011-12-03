@@ -260,12 +260,13 @@ void ChatShared::chatTypeRegistered(ChatType *chatType)
 	if (chatType->name() != Type)
 		return;
 
-	Q_ASSERT(!Details);
+	if (!Details)
+	{
+		Details = chatType->createChatDetails(this);
+		Q_ASSERT(Details);
 
-	Details = chatType->createChatDetails(this);
-	Q_ASSERT(Details);
-
-	Details->ensureLoaded();
+		Details->ensureLoaded();
+	}
 
 	ChatManager::instance()->registerItem(this);
 }
