@@ -1,9 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
- * Copyright 2004 Adrian Smarzewski (adrian@kadu.net)
- * Copyright 2007, 2008, 2009, 2010, 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
- * Copyright 2004, 2006 Marcin Ślusarz (joi@kadu.net)
+ * Copyright 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -20,28 +17,23 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "chat/chat.h"
+#ifndef UNREAD_MESSAGES_TALKABLE_FILTER_H
+#define UNREAD_MESSAGES_TALKABLE_FILTER_H
 
-#include "chat-unread-filter.h"
+#include "talkable/filter/talkable-filter.h"
 
-ChatUnreadFilter::ChatUnreadFilter(QObject *parent) :
-		ChatFilter(parent), Enabled(false)
+class UnreadMessagesTalkableFilter : public TalkableFilter
 {
-}
+	Q_OBJECT
 
-bool ChatUnreadFilter::acceptChat(const Chat &chat)
-{
-	if (!Enabled)
-		return true;
+public:
+	explicit UnreadMessagesTalkableFilter(QObject *parent = 0);
+	virtual ~UnreadMessagesTalkableFilter();
 
-	return chat.unreadMessagesCount() > 0;
-}
+	virtual FilterResult filterChat(const Chat &chat);
+	virtual FilterResult filterBuddy(const Buddy &buddy);
+	virtual FilterResult filterContact(const Contact &contact);
 
-void ChatUnreadFilter::setEnabled(bool enabled)
-{
-	if (enabled != Enabled)
-	{
-		Enabled = enabled;
-		emit filterChanged();
-	}
-}
+};
+
+#endif // UNREAD_MESSAGES_TALKABLE_FILTER_H

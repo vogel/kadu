@@ -1,5 +1,6 @@
 set (talkable_SRCS
 	filter/talkable-filter.cpp
+	filter/unread-messages-talkable-filter.cpp
 
 	model/talkable-model.cpp
 	model/talkable-model-factory.cpp
@@ -10,6 +11,7 @@ set (talkable_SRCS
 
 set (talkable_MOC_SRCS
 	filter/talkable-filter.h
+	filter/unread-messages-talkable-filter.h
 
 	model/talkable-model.h
 	model/talkable-proxy-model.h

@@ -26,11 +26,9 @@
 #include "buddies/filter/anonymous-buddy-filter.h"
 #include "buddies/filter/buddy-name-filter.h"
 #include "buddies/filter/group-buddy-filter.h"
-#include "buddies/filter/unread-messages-filter.h"
 #include "buddies/model/buddies-model.h"
 #include "chat/filter/chat-named-filter.h"
 #include "chat/filter/chat-or-filter.h"
-#include "chat/filter/chat-unread-filter.h"
 #include "chat/filter/group-chat-filter.h"
 #include "chat/model/chats-model.h"
 #include "configuration/configuration-file.h"
@@ -40,6 +38,7 @@
 #include "gui/widgets/talkable-tree-view.h"
 #include "gui/windows/proxy-action-context.h"
 #include "model/model-chain.h"
+#include "talkable/filter/unread-messages-talkable-filter.h"
 #include "talkable/model/talkable-model-factory.h"
 #include "talkable/model/talkable-proxy-model.h"
 
@@ -175,17 +174,14 @@ ModelChain * RosterWidget::createModelChain()
 	ModelChain *chain = new ModelChain(TalkableModelFactory::createInstance(TalkableTree), TalkableTree);
 
 	ProxyModel = new TalkableProxyModel(chain);
-	ProxyModel->addFilter(new UnreadMessagesFilter(ProxyModel));
+
+	ProxyModel->addFilter(new UnreadMessagesTalkableFilter(ProxyModel));
 
 	ChatOrFilter *chatOrFilter = new ChatOrFilter(ProxyModel);
 
 	ChatNamedFilter *chatNamedFilter = new ChatNamedFilter(chatOrFilter);
 	chatNamedFilter->setEnabled(true);
 	chatOrFilter->addFilter(chatNamedFilter);
-
-	ChatUnreadFilter *chatUnreadFilter = new ChatUnreadFilter(chatOrFilter);
-	chatUnreadFilter->setEnabled(true);
-	chatOrFilter->addFilter(chatUnreadFilter);
 
 	ProxyModel->addFilter(chatOrFilter);
 

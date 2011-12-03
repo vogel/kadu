@@ -14,7 +14,6 @@ set (chat_SRCS
 	filter/chat-name-filter.cpp
 	filter/chat-named-filter.cpp
 	filter/chat-or-filter.cpp
-	filter/chat-unread-filter.cpp
 	filter/group-chat-filter.cpp
 
 	model/chat-data-extractor.cpp
@@ -52,7 +51,6 @@ set (chat_MOC_SRCS
 	filter/chat-name-filter.h
 	filter/chat-named-filter.h
 	filter/chat-or-filter.h
-	filter/chat-unread-filter.h
 	filter/group-chat-filter.h
 
 	model/chats-model.h

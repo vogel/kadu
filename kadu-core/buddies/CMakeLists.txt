@@ -24,7 +24,6 @@ set (buddies_SRCS
 	filter/non-buddy-filter.cpp
 	filter/offline-buddy-filter.cpp
 	filter/online-and-description-buddy-filter.cpp
-	filter/unread-messages-filter.cpp
 
 	model/buddy-data-extractor.cpp
 	model/buddy-list-model.cpp
@@ -53,7 +52,6 @@ set (buddies_MOC_SRCS
 	filter/non-buddy-filter.h
 	filter/offline-buddy-filter.h
 	filter/online-and-description-buddy-filter.h
-	filter/unread-messages-filter.h
 
 	model/buddy-list-model.h
 	model/buddies-model.h
