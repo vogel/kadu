@@ -47,6 +47,9 @@ void HistoryChatsModel::chatTypeRegistered(ChatType *chatType)
 	if (ChatKeys.contains(chatType))
 		return;
 
+	if (-1 == chatType->sortIndex())
+		return;
+
 	beginInsertRows(QModelIndex(), Chats.size(), Chats.size());
 	ChatKeys.append(chatType);
 	Chats.insert(ChatKeys.size() - 1, QVector<Chat>());
@@ -56,6 +59,9 @@ void HistoryChatsModel::chatTypeRegistered(ChatType *chatType)
 void HistoryChatsModel::chatTypeUnregistered(ChatType *chatType)
 {
 	if (!ChatKeys.contains(chatType))
+		return;
+
+	if (-1 == chatType->sortIndex())
 		return;
 
 	int index = ChatKeys.indexOf(chatType);
