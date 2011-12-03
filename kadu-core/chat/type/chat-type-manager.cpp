@@ -19,6 +19,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "chat/type/chat-type-aggregate.h"
 #include "chat/type/chat-type-aware-object.h"
 #include "chat/type/chat-type-conference.h"
 #include "chat/type/chat-type-simple.h"
@@ -56,6 +57,7 @@ void ChatTypeManager::init()
 {
 	addChatType(new ChatTypeSimple());
 	addChatType(new ChatTypeConference());
+	addChatType(new ChatTypeAggregate());
 }
 
 

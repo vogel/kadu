@@ -143,7 +143,7 @@ void Chat::removeFromGroup(Group group)
 
 KaduSharedBase_PropertyReadDef(Chat, ContactSet, contacts, Contacts, ContactSet())
 KaduSharedBase_PropertyReadDef(Chat, QString, name, Name, QString())
-KaduSharedBase_PropertyDef(Chat, ChatDetails *, details, Details, 0)
+KaduSharedBase_PropertyReadDef(Chat, ChatDetails *, details, Details, 0)
 KaduSharedBase_PropertyDefCRW(Chat, Account, chatAccount, ChatAccount, Account::null)
 KaduSharedBase_PropertyDefCRW(Chat, QString, type, Type, QString())
 KaduSharedBase_PropertyDefCRW(Chat, QString, display, Display, QString())

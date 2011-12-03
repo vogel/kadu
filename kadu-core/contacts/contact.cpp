@@ -93,7 +93,7 @@ Contact Contact::contactWithHigherStatus(const Contact &c1, const Contact &c2)
 	return c2.currentStatus() < c1.currentStatus() ? c2 : c1;
 }
 
-KaduSharedBase_PropertyDef(Contact, ContactDetails *, details, Details, 0)
+KaduSharedBase_PropertyReadDef(Contact, ContactDetails *, details, Details, 0)
 KaduSharedBase_PropertyReadDef(Contact, QUuid, uuid, Uuid, QUuid())
 KaduSharedBase_PropertyReadDef(Contact, QSharedPointer<StoragePoint>, storage, Storage, QSharedPointer<StoragePoint>())
 KaduSharedBase_PropertyDefCRW(Contact, Account, contactAccount, ContactAccount, Account::null)

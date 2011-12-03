@@ -44,7 +44,7 @@ class ContactSet;
  * @author Rafal 'Vogel' Malinowski
  * @short Chat data specyfic to given chat type.
  *
- * Objects derivered from this class contains chat data that is specyfic to
+ * Objects derivered from this class contains chat data that is specific to
  * given chat type. This class creates common interface for this custom data
  * - it can return list of contacts in that chat.
  */

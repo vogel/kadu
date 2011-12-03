@@ -23,6 +23,7 @@
 
 #include "buddies/buddy.h"
 #include "chat/chat.h"
+#include "chat/chat-details-aggregate.h"
 #include "chat/type/chat-type-manager.h"
 #include "icons/kadu-icon.h"
 #include "model/roles.h"
@@ -47,6 +48,9 @@ void HistoryChatsModel::chatTypeRegistered(ChatType *chatType)
 	if (ChatKeys.contains(chatType))
 		return;
 
+	if (-1 == chatType->sortIndex())
+		return;
+
 	beginInsertRows(QModelIndex(), Chats.size(), Chats.size());
 	ChatKeys.append(chatType);
 	Chats.insert(ChatKeys.size() - 1, QVector<Chat>());
@@ -56,6 +60,9 @@ void HistoryChatsModel::chatTypeRegistered(ChatType *chatType)
 void HistoryChatsModel::chatTypeUnregistered(ChatType *chatType)
 {
 	if (!ChatKeys.contains(chatType))
+		return;
+
+	if (-1 == chatType->sortIndex())
 		return;
 
 	int index = ChatKeys.indexOf(chatType);
@@ -262,7 +269,20 @@ void HistoryChatsModel::addChat(const Chat &chat)
 	if (!chatType)
 		return;
 
+	if (chatType->name() == "Aggregate")
+	{
+		ChatDetailsAggregate *details = dynamic_cast<ChatDetailsAggregate *>(chat.details());
+		Q_ASSERT(details);
+		Q_ASSERT(!details->chats().isEmpty());
+
+		chatType = ChatTypeManager::instance()->chatType(details->chats().at(0).type());
+		if (!chatType)
+			return;
+	}
+
 	int id = ChatKeys.indexOf(chatType);
+	if (-1 == id)
+		return;
 
 	QModelIndex idx = index(id, 0);
 	int count = Chats.at(id).count();

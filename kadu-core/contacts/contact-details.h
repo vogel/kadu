@@ -26,19 +26,16 @@
 #ifndef CONTACT_DETAILS_H
 #define CONTACT_DETAILS_H
 
-#include <QtCore/QObject>
-
 #include "storage/details.h"
 #include "exports.h"
 
 class ContactShared;
 
-class KADUAPI ContactDetails : public QObject, public Details<ContactShared>
+class KADUAPI ContactDetails : public Details<ContactShared>
 {
-	Q_OBJECT
 
 public:
-	explicit ContactDetails(ContactShared *mainData, QObject *parent = 0);
+	explicit ContactDetails(ContactShared *mainData);
 	virtual ~ContactDetails();
 
 };

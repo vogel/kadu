@@ -30,6 +30,7 @@
 #include "chat/chat-details.h"
 #include "chat/chat-manager.h"
 #include "chat/type/chat-type.h"
+#include "chat/type/chat-type-manager.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact-set.h"
 #include "parser/parser.h"
@@ -72,7 +73,7 @@ ChatShared * ChatShared::loadFromStorage(const QSharedPointer<StoragePoint> &sto
  * created.
  */
 ChatShared::ChatShared(const QUuid &uuid) :
-		Shared(uuid), IgnoreAllMessages(false), UnreadMessagesCount(0)
+		Shared(uuid), Details(0), IgnoreAllMessages(false), UnreadMessagesCount(0)
 {
 	ChatAccount = new Account();
 }
@@ -193,8 +194,8 @@ void ChatShared::store()
 	else
 		configurationStorage->removeNode(parent, "ChatGroups");
 
-	if (details())
-		details()->ensureStored();
+	if (Details)
+		Details->ensureStored();
 }
 
 /**
@@ -212,7 +213,7 @@ bool ChatShared::shouldStore()
 
 	return UuidStorableObject::shouldStore()
 			&& !ChatAccount->uuid().isNull()
-			&& (!details() || details()->shouldStore());
+			&& (!Details || Details->shouldStore());
 }
 
 /**
@@ -226,7 +227,13 @@ void ChatShared::aboutToBeRemoved()
 {
 	*ChatAccount = Account::null;
 	Groups.clear();
-	setDetails(0);
+
+	if (Details)
+	{
+		Details->ensureStored();
+		delete Details;
+		Details = 0;
+	}
 }
 
 /**
@@ -250,13 +257,17 @@ void ChatShared::emitUpdated()
  */
 void ChatShared::chatTypeRegistered(ChatType *chatType)
 {
-	if (details())
-		return;
-
 	if (chatType->name() != Type)
 		return;
 
-	setDetails(chatType->createChatDetails(this));
+	Q_ASSERT(!Details);
+
+	Details = chatType->createChatDetails(this);
+	Q_ASSERT(Details);
+
+	Details->ensureLoaded();
+
+	ChatManager::instance()->registerItem(this);
 }
 
 /**
@@ -268,42 +279,17 @@ void ChatShared::chatTypeRegistered(ChatType *chatType)
  */
 void ChatShared::chatTypeUnregistered(ChatType *chatType)
 {
-	if (!details())
-		return;
-
 	if (chatType->name() != Type)
 		return;
 
-	setDetails(0);
-}
+	if (Details)
+	{
+		Details->ensureStored();
+		delete Details;
+		Details = 0;
+	}
 
-/**
- * @author Rafal 'Vogel' Malinowski
- * @short Called after new details class was assigned to this object.
- *
- * After new details class is assigned to this object, it data is loaded from storage.
- */
-void ChatShared::detailsAdded()
-{
-	details()->ensureLoaded();
-
-	ChatManager::instance()->detailsLoaded(this);
-}
-
-/**
- * @author Rafal 'Vogel' Malinowski
- * @short Called before old details class is removed from this object.
- *
- * Before old details class is removed from this object its data is stored to storage.
- */
-void ChatShared::detailsAboutToBeRemoved()
-{
-	details()->ensureStored();
-}
-
-void ChatShared::detailsRemoved()
-{
-	ChatManager::instance()->detailsUnloaded(this);
+	ChatManager::instance()->unregisterItem(this);
 }
 
 /**
@@ -318,7 +304,7 @@ ContactSet ChatShared::contacts()
 {
 	ensureLoaded();
 
-	return details() ? details()->contacts() : ContactSet();
+	return Details ? Details->contacts() : ContactSet();
 }
 
 /**
@@ -326,14 +312,37 @@ ContactSet ChatShared::contacts()
  * @short Returns chat name.
  * @return chat name
  *
- * Returns chae name. Name fetched from details object, so if no details object is present
+ * Returns chat name. Name is fetched from details object, so if no details object is present
  * empty string will be returned.
  */
 QString ChatShared::name()
 {
 	ensureLoaded();
 
-	return details() ? details()->name() : QString();
+	return Details ? Details->name() : QString();
+}
+
+void ChatShared::setType(const QString &type)
+{
+	ensureLoaded();
+
+	if (Type == type)
+		return;
+
+	if (Details)
+	{
+		Details->ensureStored();
+		delete Details;
+		Details = 0;
+
+		ChatManager::instance()->unregisterItem(this);
+	}
+
+	Type = type;
+
+	ChatType *chatType = ChatTypeManager::instance()->chatType(type);
+	if (chatType)
+		chatTypeRegistered(chatType); // this will add details
 }
 
 void ChatShared::setGroups(const QList<Group> &groups)

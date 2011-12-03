@@ -29,7 +29,6 @@
 #include "network/proxy/network-proxy.h"
 #include "protocols/protocols-aware-object.h"
 #include "status/status.h"
-#include "storage/details-holder.h"
 #include "storage/shared.h"
 
 class AccountDetails;
@@ -41,7 +40,7 @@ class Protocol;
 class ProtocolFactory;
 class StatusContainer;
 
-class KADUAPI AccountShared : public QObject, public Shared, public DetailsHolder<AccountDetails>, ProtocolsAwareObject
+class KADUAPI AccountShared : public QObject, public Shared, ProtocolsAwareObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(AccountShared)
@@ -54,6 +53,8 @@ class KADUAPI AccountShared : public QObject, public Shared, public DetailsHolde
 
 	Identity *AccountIdentity;
 	Contact *AccountContact;
+
+	AccountDetails *Details;
 
 	QString Id;
 
@@ -69,6 +70,9 @@ class KADUAPI AccountShared : public QObject, public Shared, public DetailsHolde
 	bool PrivateStatus;
 	// TODO: hack, remove at some time
 	bool Removing;
+
+	void protocolFactoryLoaded(ProtocolFactory *factory);
+	void protocolFactoryUnloaded();
 
 	void setDisconnectStatus();
 	void useProtocolFactory(ProtocolFactory *factory);
@@ -88,10 +92,6 @@ protected:
 	friend class GaduEditAccountWidget;
 	void emitUpdated();
 
-	virtual void detailsAdded();
-	virtual void detailsAboutToBeRemoved();
-	virtual void detailsRemoved();
-
 	virtual void protocolRegistered(ProtocolFactory *protocolHandler);
 	virtual void protocolUnregistered(ProtocolFactory *protocolHandler);
 
@@ -106,6 +106,8 @@ public:
 	virtual QString storageNodeName();
 
 	virtual void aboutToBeRemoved();
+
+	AccountDetails * details() const { return Details; }
 
 	Contact accountContact();
 

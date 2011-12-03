@@ -112,11 +112,10 @@ Chat AggregateChatManager::aggregateChat(const BuddySet &buddies)
 		return Chat::null;
 
 	Chat result = Chat::create();
-	result.setType(chats.at(0).type());
+	result.setType("Aggregate");
 
-	ChatDetailsAggregate *details = new ChatDetailsAggregate(result);
+	ChatDetailsAggregate *details = dynamic_cast<ChatDetailsAggregate *>(result.details());
 	details->setChats(chats);
-	result.setDetails(details);
 
 	return result;
 }

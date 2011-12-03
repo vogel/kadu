@@ -134,22 +134,6 @@ void AccountManager::itemUnregistered(Account item)
 	emit accountUnregistered(item);
 }
 
-void AccountManager::detailsLoaded(Account account)
-{
-	QMutexLocker locker(&mutex());
-
-	if (!account.isNull())
-		registerItem(account);
-}
-
-void AccountManager::detailsUnloaded(Account account)
-{
-	QMutexLocker locker(&mutex());
-
-	if (!account.isNull())
-		unregisterItem(account);
-}
-
 Account AccountManager::defaultAccount()
 {
 	QMutexLocker locker(&mutex());

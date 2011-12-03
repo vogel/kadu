@@ -42,7 +42,7 @@
 /**
  * @class Manager
  * @author Rafal 'Vogel' Malinowski
- * @param Item class type of manager items, must be derivered from UuidStorableObject and DetailsHolder.
+ * @param Item class type of manager items, must be derivered from UuidStorableObject.
  * @short Object that manages instances of given Item type (including storing and loading from XML file).
  *
  * This object manages items of Item type - it allows adding, removing, searching by uuid,
@@ -56,9 +56,6 @@
  * that has to emits signals must also derive from QObject class and reimplement abstract
  * functions: @link itemAboutToBeRegistered @endlink, @link itemRegistered @endlink,
  * @link itemAboutToBeUnregistered @endlink, @link itemUnregisterd @endlink to emit signals.
- *
- * To manager objects not derivered from @link DetailsHolder @endlink class use
- * @link SimpleManager @endlink template class.
  *
  * Class Item must implement Item loadFromStorage(const QSharedPointer\<StoragePoint\> &) static method.
  * Class Item must have static field Item null that represents unique NULL value.
@@ -222,54 +219,6 @@ protected:
 	virtual void itemUnregistered(Item item)
 	{
 		Q_UNUSED(item)
-	}
-
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Registers item already added to manager.
-	 *
-	 * This method should be run after details has been set on item that
-	 * has already been added to manager. This method has no effect
-	 * for items not added to manager or to items that has already been
-	 * registered. This method calls @link itemAboutToBeRegistered @endlink
-	 * and @link itemRegistered @endlink.
-	 */
-	void registerItem(Item item)
-	{
-		QMutexLocker locker(&Mutex);
-
-		if (ItemsWithDetails.contains(item))
-			return;
-		if (!Items.contains(item.uuid()))
-			return;
-
-		itemAboutToBeRegistered(item);
-		ItemsWithDetails.append(item);
-		itemRegistered(item);
-	}
-
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Unegisters item already added to manager.
-	 *
-	 * This method should be run after details has been removed from item that
-	 * has already been added to manager. This method has no effect
-	 * for items not added to manager or to items that has not been
-	 * registered. This method calls @link itemAboutToBeUnregistered @endlink
-	 * and @link itemUnregisterd @endlink.
-	 */
-	void unregisterItem(Item item)
-	{
-		QMutexLocker locker(&Mutex);
-
-		if (!ItemsWithDetails.contains(item))
-			return;
-		if (!Items.contains(item.uuid()))
-			return;
-
-		itemAboutToBeUnregisterd(item);
-		ItemsWithDetails.remove(ItemsWithDetails.indexOf(item));
-		itemUnregistered(item);
 	}
 
 	/**
@@ -505,6 +454,54 @@ public:
 
 		item.remove();
 		itemRemoved(item);
+	}
+
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Registers item already added to manager.
+	 *
+	 * This method should be run after details has been set on item that
+	 * has already been added to manager. This method has no effect
+	 * for items not added to manager or to items that has already been
+	 * registered. This method calls @link itemAboutToBeRegistered @endlink
+	 * and @link itemRegistered @endlink.
+	 */
+	void registerItem(Item item)
+	{
+		QMutexLocker locker(&Mutex);
+
+		if (ItemsWithDetails.contains(item))
+			return;
+		if (!Items.contains(item.uuid()))
+			return;
+
+		itemAboutToBeRegistered(item);
+		ItemsWithDetails.append(item);
+		itemRegistered(item);
+	}
+
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Unegisters item already added to manager.
+	 *
+	 * This method should be run after details has been removed from item that
+	 * has already been added to manager. This method has no effect
+	 * for items not added to manager or to items that has not been
+	 * registered. This method calls @link itemAboutToBeUnregistered @endlink
+	 * and @link itemUnregisterd @endlink.
+	 */
+	void unregisterItem(Item item)
+	{
+		QMutexLocker locker(&Mutex);
+
+		if (!ItemsWithDetails.contains(item))
+			return;
+		if (!Items.contains(item.uuid()))
+			return;
+
+		itemAboutToBeUnregisterd(item);
+		ItemsWithDetails.remove(ItemsWithDetails.indexOf(item));
+		itemUnregistered(item);
 	}
 
 };

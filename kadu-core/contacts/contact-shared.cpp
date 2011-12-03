@@ -48,7 +48,7 @@ ContactShared * ContactShared::loadFromStorage(const QSharedPointer<StoragePoint
 }
 
 ContactShared::ContactShared(const QUuid &uuid) :
-		Shared(uuid),
+		Shared(uuid), Details(0),
 		Priority(-1), MaximumImageSize(0), UnreadMessagesCount(0),
 		Blocking(false), Dirty(true), Port(0)
 {
@@ -120,7 +120,19 @@ void ContactShared::aboutToBeRemoved()
 	AvatarManager::instance()->removeItem(*ContactAvatar);
 	setContactAvatar(Avatar::null);
 
-	setDetails(0);
+	// do not store contacts that are not in contact manager
+	if (ContactManager::instance()->allItems().contains(uuid()))
+		details()->ensureStored();
+
+	detach(false, false, true);
+	if (Details)
+	{
+		delete Details;
+		Details = 0;
+	}
+	ContactManager::instance()->unregisterItem(this);
+
+	dataUpdated();
 }
 
 void ContactShared::store()
@@ -163,7 +175,7 @@ void ContactShared::detach(bool resetBuddy, bool reattaching, bool emitSignals)
 	if (!*OwnerBuddy)
 		return;
 
-	if (!details())
+	if (!Details)
 	{
 		*OwnerBuddy = Buddy::null;
 		return;
@@ -196,7 +208,7 @@ void ContactShared::detach(bool resetBuddy, bool reattaching, bool emitSignals)
 
 void ContactShared::attach(const Buddy &buddy, bool reattaching, bool emitSignals)
 {
-	if (!details() || !buddy)
+	if (!Details || !buddy)
 	{
 		*OwnerBuddy = buddy;
 		return;
@@ -274,47 +286,47 @@ void ContactShared::protocolRegistered(ProtocolFactory *protocolFactory)
 {
 	ensureLoaded();
 
-	if (details())
-		return;
-
 	if (!*ContactAccount || ContactAccount->protocolName() != protocolFactory->name())
 		return;
 
-	setDetails(protocolFactory->createContactDetails(this));
+	Q_ASSERT(!Details);
+
+	Details = protocolFactory->createContactDetails(this);
+	Q_ASSERT(Details);
+
+	Details->ensureLoaded();
+
+	dataUpdated();
+
+	ContactManager::instance()->registerItem(this);
+	attach(*OwnerBuddy, false, true);
 }
 
 void ContactShared::protocolUnregistered(ProtocolFactory *protocolFactory)
 {
-	Q_UNUSED(protocolFactory)
-// 	protocol unregistered means auto-deleting all contact details, so we cannot set them to zero here
-}
+	ensureLoaded();
 
-void ContactShared::detailsAdded()
-{
-	details()->ensureLoaded();
+	if (!*ContactAccount || ContactAccount->protocolName() != protocolFactory->name())
+		return;
 
-	dataUpdated();
+	/* NOTE: This guard is needed to avoid deleting this object when detaching
+	 * Contact from Buddy which may hold last reference to it and thus wants to
+	 * delete it. But we don't want this to happen.
+	 */
+	Contact guard(this);
 
-	ContactManager::instance()->detailsLoaded(this);
-}
+	if (Details)
+	{
+		// do not store contacts that are not in contact manager
+		if (ContactManager::instance()->allItems().contains(uuid()))
+			Details->ensureStored();
 
-void ContactShared::afterDetailsAdded()
-{
-	attach(*OwnerBuddy, false, true);
-}
+		detach(false, false, true);
+		delete Details;
+		Details = 0;
+	}
 
-void ContactShared::detailsAboutToBeRemoved()
-{
-	// do not store contacts that are not in contact manager
-	if (ContactManager::instance()->allItems().contains(uuid()))
-		details()->ensureStored();
-
-	detach(false, false, true);
-}
-
-void ContactShared::detailsRemoved()
-{
-	ContactManager::instance()->detailsUnloaded(this);
+	ContactManager::instance()->unregisterItem(this);
 
 	dataUpdated();
 }

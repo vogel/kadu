@@ -35,13 +35,12 @@
  * @class Details
  * @author Rafal 'Vogel' Malinowski
  * @param T class type, derivered from @link<StorableObject> StorableObject @endlink
- * @short Object that can extend any DetailsHolder by protocol data.
+ * @short Object that can extend any other object by protocol data.
  *
  * Some object (@link<Account> Account @endlink, @link<Contact> Contact @endlink and others)
  * have common data that should be always available and protocol data that can only be loaded
  * when protocol plugin is loaded. Common data is stored in normal @link<StorableObject>
- * StorableObject @endlink that can be extended by @link<DetailsHolder> DetailsHolder @endlink
- * class that holds object of Details type.
+ * StorableObject @endlink that can hold object of Details type.
  *
  * Object of Details type is always attached to @link<StorableObject> StorableObject @endlink
  * and uses exactly the same @link<StoragePoint> StoragePoint @endlink (so these two object
@@ -76,8 +75,6 @@ public:
 	 */
 	virtual ~Details()
 	{
-		if (MainData)
-			MainData->detailsDestroyed();
 	}
 
 	/**

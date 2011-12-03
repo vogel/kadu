@@ -80,7 +80,7 @@ public:
 	* this field contains ChatDetails object that holds detailed information
 	* about this chat.
 	*/
-	KaduSharedBase_Property(ChatDetails *, details, Details)
+	KaduSharedBase_PropertyRead(ChatDetails *, details, Details)
 
 	/**
 	* @author Rafal 'Vogel' Malinowski
