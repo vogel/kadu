@@ -36,17 +36,15 @@ class QDomElement;
 
 class JabberContactDetails : public ContactDetails
 {
-	Q_OBJECT
-
 	PROPERTY_DEC(XMPP::Subscription, ContactSubscription)
 
 protected:
 	virtual bool shouldStore() { return false; }
 
 public:
-	explicit JabberContactDetails(ContactShared *contactShared, QObject *parent = 0);
+	explicit JabberContactDetails(ContactShared *contactShared);
 	virtual ~JabberContactDetails();
-	
+
 	PROPERTY_DEF(XMPP::Subscription, subscription, setSubscription, ContactSubscription)
 
 };
