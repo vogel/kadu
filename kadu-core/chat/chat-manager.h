@@ -96,10 +96,6 @@ class KADUAPI ChatManager : public QObject, public Manager<Chat>
 
 	void init();
 
-	friend class ChatShared;
-	void detailsLoaded(Chat chat);
-	void detailsUnloaded(Chat chat);
-
 private slots:
 	void chatDataUpdated();
 

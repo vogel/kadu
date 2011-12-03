@@ -226,54 +226,6 @@ protected:
 
 	/**
 	 * @author Rafal 'Vogel' Malinowski
-	 * @short Registers item already added to manager.
-	 *
-	 * This method should be run after details has been set on item that
-	 * has already been added to manager. This method has no effect
-	 * for items not added to manager or to items that has already been
-	 * registered. This method calls @link itemAboutToBeRegistered @endlink
-	 * and @link itemRegistered @endlink.
-	 */
-	void registerItem(Item item)
-	{
-		QMutexLocker locker(&Mutex);
-
-		if (ItemsWithDetails.contains(item))
-			return;
-		if (!Items.contains(item.uuid()))
-			return;
-
-		itemAboutToBeRegistered(item);
-		ItemsWithDetails.append(item);
-		itemRegistered(item);
-	}
-
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Unegisters item already added to manager.
-	 *
-	 * This method should be run after details has been removed from item that
-	 * has already been added to manager. This method has no effect
-	 * for items not added to manager or to items that has not been
-	 * registered. This method calls @link itemAboutToBeUnregistered @endlink
-	 * and @link itemUnregisterd @endlink.
-	 */
-	void unregisterItem(Item item)
-	{
-		QMutexLocker locker(&Mutex);
-
-		if (!ItemsWithDetails.contains(item))
-			return;
-		if (!Items.contains(item.uuid()))
-			return;
-
-		itemAboutToBeUnregisterd(item);
-		ItemsWithDetails.remove(ItemsWithDetails.indexOf(item));
-		itemUnregistered(item);
-	}
-
-	/**
-	 * @author Rafal 'Vogel' Malinowski
 	 * @short Loads all items from configuration file.
 	 *
 	 * Loads all items from configuration file. Uses @link storageNodeItemName @endlink
@@ -505,6 +457,54 @@ public:
 
 		item.remove();
 		itemRemoved(item);
+	}
+
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Registers item already added to manager.
+	 *
+	 * This method should be run after details has been set on item that
+	 * has already been added to manager. This method has no effect
+	 * for items not added to manager or to items that has already been
+	 * registered. This method calls @link itemAboutToBeRegistered @endlink
+	 * and @link itemRegistered @endlink.
+	 */
+	void registerItem(Item item)
+	{
+		QMutexLocker locker(&Mutex);
+
+		if (ItemsWithDetails.contains(item))
+			return;
+		if (!Items.contains(item.uuid()))
+			return;
+
+		itemAboutToBeRegistered(item);
+		ItemsWithDetails.append(item);
+		itemRegistered(item);
+	}
+
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Unegisters item already added to manager.
+	 *
+	 * This method should be run after details has been removed from item that
+	 * has already been added to manager. This method has no effect
+	 * for items not added to manager or to items that has not been
+	 * registered. This method calls @link itemAboutToBeUnregistered @endlink
+	 * and @link itemUnregisterd @endlink.
+	 */
+	void unregisterItem(Item item)
+	{
+		QMutexLocker locker(&Mutex);
+
+		if (!ItemsWithDetails.contains(item))
+			return;
+		if (!Items.contains(item.uuid()))
+			return;
+
+		itemAboutToBeUnregisterd(item);
+		ItemsWithDetails.remove(ItemsWithDetails.indexOf(item));
+		itemUnregistered(item);
 	}
 
 };

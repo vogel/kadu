@@ -295,7 +295,7 @@ void AccountShared::detailsAdded()
 {
 	details()->ensureLoaded();
 
-	AccountManager::instance()->detailsLoaded(this);
+	AccountManager::instance()->registerItem(this);
 }
 
 void AccountShared::detailsAboutToBeRemoved()
@@ -305,7 +305,7 @@ void AccountShared::detailsAboutToBeRemoved()
 
 void AccountShared::detailsRemoved()
 {
-	AccountManager::instance()->detailsUnloaded(this);
+	AccountManager::instance()->unregisterItem(this);
 }
 
 void AccountShared::doSetAccountIdentity(const Identity &accountIdentity)

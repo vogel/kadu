@@ -49,10 +49,6 @@ class KADUAPI ContactManager : public QObject, public Manager<Contact>
 
 	void init();
 
-	friend class ContactShared;
-	void detailsLoaded(Contact item);
-	void detailsUnloaded(Contact item);
-
 private slots:
 	void removeDuplicateContacts();
 

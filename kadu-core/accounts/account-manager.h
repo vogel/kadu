@@ -33,7 +33,6 @@
 #include "storage/manager.h"
 #include "exports.h"
 
-class AccountShared;
 class Status;
 class XmlConfigFile;
 
@@ -48,10 +47,6 @@ class KADUAPI AccountManager : public QObject, public Manager<Account>
 	virtual ~AccountManager();
 
 	void init();
-
-	friend class AccountShared;
-	void detailsLoaded(Account account);
-	void detailsUnloaded(Account account);
 
 private slots:
 	void passwordProvided(const QVariant &data, const QString &password, bool permament);

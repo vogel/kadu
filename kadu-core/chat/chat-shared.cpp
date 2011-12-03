@@ -287,7 +287,7 @@ void ChatShared::detailsAdded()
 {
 	details()->ensureLoaded();
 
-	ChatManager::instance()->detailsLoaded(this);
+	ChatManager::instance()->registerItem(this);
 }
 
 /**
@@ -303,7 +303,7 @@ void ChatShared::detailsAboutToBeRemoved()
 
 void ChatShared::detailsRemoved()
 {
-	ChatManager::instance()->detailsUnloaded(this);
+	ChatManager::instance()->unregisterItem(this);
 }
 
 /**
