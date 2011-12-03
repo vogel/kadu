@@ -226,7 +226,7 @@ void ChatShared::aboutToBeRemoved()
 {
 	*ChatAccount = Account::null;
 	Groups.clear();
-	setDetails(0);
+	removeDetails();
 }
 
 /**
@@ -274,7 +274,7 @@ void ChatShared::chatTypeUnregistered(ChatType *chatType)
 	if (chatType->name() != Type)
 		return;
 
-	setDetails(0);
+	removeDetails();
 }
 
 /**

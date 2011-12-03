@@ -220,6 +220,19 @@ public:
 
 	/**
 	 * @author Rafal 'Vogel' Malinowski
+	 * @short Removes current details.
+	 *
+	 * Removes current details. Can only be called if details are present.
+	 */
+	void removeDetails()
+	{
+		Q_ASSERT(hasDetails());
+
+		removeOldDetails();
+	}
+
+	/**
+	 * @author Rafal 'Vogel' Malinowski
 	 * @short Returns current details.
 	 * @return current details
 	 *
