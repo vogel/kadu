@@ -13,7 +13,6 @@ set (contacts_SRCS
 )
 
 set (contacts_MOC_SRCS
-	contact-details.h
 	contact-manager.h
 	contact-shared.h
 

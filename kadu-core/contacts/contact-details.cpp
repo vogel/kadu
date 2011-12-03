@@ -24,8 +24,8 @@
 
 #include "contact-details.h"
 
-ContactDetails::ContactDetails(ContactShared *mainData, QObject *parent) :
-		QObject(parent), Details<ContactShared>(mainData)
+ContactDetails::ContactDetails(ContactShared *mainData) :
+		Details<ContactShared>(mainData)
 {
 }
 

@@ -23,8 +23,8 @@
 
 #include "gadu-contact-details.h"
 
-GaduContactDetails::GaduContactDetails(ContactShared *contactShared, QObject *parent) :
-		ContactDetails(contactShared, parent), GaduFlags(0)
+GaduContactDetails::GaduContactDetails(ContactShared *contactShared) :
+		ContactDetails(contactShared), GaduFlags(0)
 {
 }
 
