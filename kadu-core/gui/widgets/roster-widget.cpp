@@ -38,6 +38,7 @@
 #include "gui/widgets/talkable-tree-view.h"
 #include "gui/windows/proxy-action-context.h"
 #include "model/model-chain.h"
+#include "talkable/filter/hide-simple-chats-talkable-filter.h"
 #include "talkable/filter/unread-messages-talkable-filter.h"
 #include "talkable/model/talkable-model-factory.h"
 #include "talkable/model/talkable-proxy-model.h"
@@ -174,7 +175,7 @@ ModelChain * RosterWidget::createModelChain()
 	ModelChain *chain = new ModelChain(TalkableModelFactory::createInstance(TalkableTree), TalkableTree);
 
 	ProxyModel = new TalkableProxyModel(chain);
-
+	ProxyModel->addFilter(new HideSimpleChatsTalkableFilter(ProxyModel));
 	ProxyModel->addFilter(new UnreadMessagesTalkableFilter(ProxyModel));
 
 	ChatOrFilter *chatOrFilter = new ChatOrFilter(ProxyModel);

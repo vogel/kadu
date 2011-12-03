@@ -17,21 +17,23 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef HIDE_SIMPLE_CHATS_TALKABLE_FILTER_H
-#define HIDE_SIMPLE_CHATS_TALKABLE_FILTER_H
+#include "chat/chat.h"
 
-#include "talkable/filter/talkable-filter.h"
+#include "hide-simple-chats-talkable-filter.h"
 
-class HideSimpleChatsTalkableFilter : public TalkableFilter
+HideSimpleChatsTalkableFilter::HideSimpleChatsTalkableFilter(QObject *parent) :
+		TalkableFilter(parent)
 {
-	Q_OBJECT
+}
 
-public:
-	explicit HideSimpleChatsTalkableFilter(QObject *parent = 0);
-	virtual ~HideSimpleChatsTalkableFilter();
+HideSimpleChatsTalkableFilter::~HideSimpleChatsTalkableFilter()
+{
+}
 
-	virtual FilterResult filterChat(const Chat &chat);
-
-};
-
-#endif // HIDE_SIMPLE_CHATS_TALKABLE_FILTER_H
+TalkableFilter::FilterResult HideSimpleChatsTalkableFilter::filterChat(const Chat &chat)
+{
+	if (chat.type() == "Simple")
+		return Rejected;
+	else
+		return Undecided;
+}

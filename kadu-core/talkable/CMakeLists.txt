@@ -1,4 +1,5 @@
 set (talkable_SRCS
+	filter/hide-simple-chats-talkable-filter.cpp
 	filter/talkable-filter.cpp
 	filter/unread-messages-talkable-filter.cpp
 
@@ -10,6 +11,7 @@ set (talkable_SRCS
 )
 
 set (talkable_MOC_SRCS
+	filter/hide-simple-chats-talkable-filter.h
 	filter/talkable-filter.h
 	filter/unread-messages-talkable-filter.h
 
