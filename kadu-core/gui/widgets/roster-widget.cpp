@@ -23,6 +23,7 @@
 #include <QtGui/QScrollBar>
 #include <QtGui/QStackedWidget>
 
+#include "buddies/filter/anonymous-buddy-filter.h"
 #include "buddies/filter/buddy-name-filter.h"
 #include "buddies/filter/group-buddy-filter.h"
 #include "buddies/filter/unread-messages-filter.h"
@@ -191,6 +192,10 @@ ModelChain * RosterWidget::createModelChain()
 	ChatGroupFilter = new GroupChatFilter(ProxyModel);
 	connect(GroupBar, SIGNAL(currentGroupChanged(Group)), ChatGroupFilter, SLOT(setGroup(Group)));
 	ProxyModel->addFilter(ChatGroupFilter);
+
+	AnonymousBuddyFilter *anonymousBuddyFilter = new AnonymousBuddyFilter(ProxyModel);
+	anonymousBuddyFilter->setEnabled(true);
+	ProxyModel->addFilter(anonymousBuddyFilter);
 
 	BuddyNameFilter *nameFilter = new BuddyNameFilter(ProxyModel);
 	connect(TalkableWidget, SIGNAL(filterChanged(QString)), nameFilter, SLOT(setName(QString)));
