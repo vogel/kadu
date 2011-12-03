@@ -211,22 +211,6 @@ void ContactManager::itemUnregistered(Contact item)
 	emit contactRemoved(item);
 }
 
-void ContactManager::detailsLoaded(Contact item)
-{
-	QMutexLocker locker(&mutex());
-
-	if (!item.isNull())
-		registerItem(item);
-}
-
-void ContactManager::detailsUnloaded(Contact item)
-{
-	QMutexLocker locker(&mutex());
-
-	if (!item.isNull())
-		unregisterItem(item);
-}
-
 Contact ContactManager::byId(Account account, const QString &id, NotFoundAction action)
 {
 	QMutexLocker locker(&mutex());

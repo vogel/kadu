@@ -295,7 +295,7 @@ void ContactShared::detailsAdded()
 
 	dataUpdated();
 
-	ContactManager::instance()->detailsLoaded(this);
+	ContactManager::instance()->registerItem(this);
 }
 
 void ContactShared::afterDetailsAdded()
@@ -314,7 +314,7 @@ void ContactShared::detailsAboutToBeRemoved()
 
 void ContactShared::detailsRemoved()
 {
-	ContactManager::instance()->detailsUnloaded(this);
+	ContactManager::instance()->unregisterItem(this);
 
 	dataUpdated();
 }

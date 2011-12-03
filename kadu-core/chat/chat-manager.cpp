@@ -99,38 +99,6 @@ void ChatManager::itemUnregistered(Chat item)
 	emit chatRemoved(item);
 }
 
-/**
- * @author Rafal 'Vogel' Malinowski
- * @short Method is called after details for chat were loaded.
- *
- * Method is calles after details for chat were loaded. It means that
- * chat has all data loaded. It can now be registered in ChatManager
- * and itemAboutToBeAdded and itemAdded methods will be called.
- */
-void ChatManager::detailsLoaded(Chat chat)
-{
-	QMutexLocker locker(&mutex());
-
-	if (!chat.isNull())
-		registerItem(chat);
-}
-
-/**
- * @author Rafal 'Vogel' Malinowski
- * @short Method is called after details for chat were unloaded.
- *
- * Method is calles after details for chat were unloaded. It means that
- * chat has soem data unloaded. It can now be unregistered in ChatManager
- * and itemAboutToBeRemoved and itemRemoved methods will be called.
- */
-void ChatManager::detailsUnloaded(Chat chat)
-{
-	QMutexLocker locker(&mutex());
-
-	if (!chat.isNull())
-		unregisterItem(chat);
-}
-
 bool ChatManager::isAccountCommon(const Account &account, const BuddySet &buddies)
 {
 	QMutexLocker locker(&mutex());
