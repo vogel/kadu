@@ -48,7 +48,7 @@ ContactShared * ContactShared::loadFromStorage(const QSharedPointer<StoragePoint
 }
 
 ContactShared::ContactShared(const QUuid &uuid) :
-		Shared(uuid),
+		Shared(uuid), Details(0),
 		Priority(-1), MaximumImageSize(0), UnreadMessagesCount(0),
 		Blocking(false), Dirty(true), Port(0)
 {
@@ -125,7 +125,11 @@ void ContactShared::aboutToBeRemoved()
 		details()->ensureStored();
 
 	detach(false, false, true);
-	removeDetails();
+	if (Details)
+	{
+		delete Details;
+		Details = 0;
+	}
 	ContactManager::instance()->unregisterItem(this);
 
 	dataUpdated();
@@ -171,7 +175,7 @@ void ContactShared::detach(bool resetBuddy, bool reattaching, bool emitSignals)
 	if (!*OwnerBuddy)
 		return;
 
-	if (!hasDetails())
+	if (!Details)
 	{
 		*OwnerBuddy = Buddy::null;
 		return;
@@ -204,7 +208,7 @@ void ContactShared::detach(bool resetBuddy, bool reattaching, bool emitSignals)
 
 void ContactShared::attach(const Buddy &buddy, bool reattaching, bool emitSignals)
 {
-	if (!hasDetails() || !buddy)
+	if (!Details || !buddy)
 	{
 		*OwnerBuddy = buddy;
 		return;
@@ -282,14 +286,15 @@ void ContactShared::protocolRegistered(ProtocolFactory *protocolFactory)
 {
 	ensureLoaded();
 
-	if (hasDetails())
-		return;
-
 	if (!*ContactAccount || ContactAccount->protocolName() != protocolFactory->name())
 		return;
 
-	setDetails(protocolFactory->createContactDetails(this));
-	details()->ensureLoaded();
+	Q_ASSERT(!Details);
+
+	Details = protocolFactory->createContactDetails(this);
+	Q_ASSERT(Details);
+
+	Details->ensureLoaded();
 
 	dataUpdated();
 
@@ -301,18 +306,20 @@ void ContactShared::protocolUnregistered(ProtocolFactory *protocolFactory)
 {
 	ensureLoaded();
 
-	if (!hasDetails())
-		return;
-
 	if (!*ContactAccount || ContactAccount->protocolName() != protocolFactory->name())
 		return;
 
-	// do not store contacts that are not in contact manager
-	if (ContactManager::instance()->allItems().contains(uuid()))
-		details()->ensureStored();
+	if (Details)
+	{
+		// do not store contacts that are not in contact manager
+		if (ContactManager::instance()->allItems().contains(uuid()))
+			Details->ensureStored();
 
-	detach(false, false, true);
-	removeDetails();
+		detach(false, false, true);
+		delete Details;
+		Details = 0;
+	}
+
 	ContactManager::instance()->unregisterItem(this);
 
 	dataUpdated();
