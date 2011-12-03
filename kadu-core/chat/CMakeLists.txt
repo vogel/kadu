@@ -27,6 +27,7 @@ set (chat_SRCS
 	style-engines/chat-engine-kadu/kadu-chat-syntax.cpp
 
 	type/chat-type.cpp
+	type/chat-type-aggregate.cpp
 	type/chat-type-aware-object.cpp
 	type/chat-type-conference.cpp
 	type/chat-type-manager.cpp
@@ -60,6 +61,7 @@ set (chat_MOC_SRCS
 	style-engines/chat-engine-kadu/chat-engine-kadu.h
 
 	type/chat-type.h
+	type/chat-type-aggregate.h
 	type/chat-type-conference.h
 	type/chat-type-manager.h
 	type/chat-type-simple.h
