@@ -140,6 +140,34 @@ protected:
 	{
 		removeOldDetails();
 	}
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Set new details to object.
+	 * @param details new details to set
+	 *
+	 * Set new details to object. Can result in calling @link detailsAboutToBeRemoved @endlink
+	 * and @link detailsAdded @endlink virtual methods. Can only be called if no details are present.
+	 */
+	void setDetails(DetailsClass *details)
+	{
+		Q_ASSERT(!hasDetails());
+		Q_ASSERT(details);
+
+		setNewDetails(details);
+	}
+
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Removes current details.
+	 *
+	 * Removes current details. Can only be called if details are present.
+	 */
+	void removeDetails()
+	{
+		Q_ASSERT(hasDetails());
+
+		removeOldDetails();
+	}
 
 	/**
 	 * @author Rafal 'Vogel' Malinowski
@@ -204,35 +232,6 @@ protected:
 	}
 
 public:
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Set new details to object.
-	 * @param details new details to set
-	 *
-	 * Set new details to object. Can result in calling @link detailsAboutToBeRemoved @endlink
-	 * and @link detailsAdded @endlink virtual methods. Can only be called if no details are present.
-	 */
-	void setDetails(DetailsClass *details)
-	{
-		Q_ASSERT(!hasDetails());
-		Q_ASSERT(details);
-
-		setNewDetails(details);
-	}
-
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Removes current details.
-	 *
-	 * Removes current details. Can only be called if details are present.
-	 */
-	void removeDetails()
-	{
-		Q_ASSERT(hasDetails());
-
-		removeOldDetails();
-	}
-
 	/**
 	 * @author Rafal 'Vogel' Malinowski
 	 * @short Returns current details.
