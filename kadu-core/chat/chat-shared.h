@@ -79,10 +79,6 @@ protected:
 	virtual void chatTypeRegistered(ChatType *chatType);
 	virtual void chatTypeUnregistered(ChatType *chatType);
 
-	virtual void detailsAdded();
-	virtual void detailsAboutToBeRemoved();
-	virtual void detailsRemoved();
-
 public:
 	static ChatShared * loadStubFromStorage(const QSharedPointer<StoragePoint> &storagePoint);
 	static ChatShared * loadFromStorage(const QSharedPointer<StoragePoint> &storagePoint);

@@ -227,7 +227,12 @@ void ChatShared::aboutToBeRemoved()
 {
 	*ChatAccount = Account::null;
 	Groups.clear();
-	removeDetails();
+
+	if (hasDetails())
+	{
+		details()->ensureStored();
+		removeDetails();
+	}
 }
 
 /**
@@ -258,6 +263,9 @@ void ChatShared::chatTypeRegistered(ChatType *chatType)
 		return;
 
 	setDetails(chatType->createChatDetails(this));
+	details()->ensureLoaded();
+
+	ChatManager::instance()->registerItem(this);
 }
 
 /**
@@ -275,35 +283,8 @@ void ChatShared::chatTypeUnregistered(ChatType *chatType)
 	if (chatType->name() != Type)
 		return;
 
-	removeDetails();
-}
-
-/**
- * @author Rafal 'Vogel' Malinowski
- * @short Called after new details class was assigned to this object.
- *
- * After new details class is assigned to this object, it data is loaded from storage.
- */
-void ChatShared::detailsAdded()
-{
-	details()->ensureLoaded();
-
-	ChatManager::instance()->registerItem(this);
-}
-
-/**
- * @author Rafal 'Vogel' Malinowski
- * @short Called before old details class is removed from this object.
- *
- * Before old details class is removed from this object its data is stored to storage.
- */
-void ChatShared::detailsAboutToBeRemoved()
-{
 	details()->ensureStored();
-}
-
-void ChatShared::detailsRemoved()
-{
+	removeDetails();
 	ChatManager::instance()->unregisterItem(this);
 }
 
@@ -345,7 +326,11 @@ void ChatShared::setType(const QString &type)
 		return;
 
 	if (hasDetails())
+	{
+		details()->ensureStored();
 		removeDetails();
+		ChatManager::instance()->unregisterItem(this);
+	}
 
 	Type = type;
 

@@ -76,78 +76,28 @@ protected:
 	 * @short Set new details to object.
 	 * @param details new details to set
 	 *
-	 * Set new details to object. Folliwing virtual methods are called:
-	 * @link detailsAboutToBeAdded @endlink and @link detailsAdded @endlink.
-	 * Can only be called if no details are present.
+	 * Set new details to object. Can only be called if no details are present.
 	 */
 	void setDetails(DetailsClass *details)
 	{
 		Q_ASSERT(!hasDetails());
 		Q_ASSERT(details);
 
-		detailsAboutToBeAdded();
 		Details = details;
-		detailsAdded();
 	}
 
 	/**
 	 * @author Rafal 'Vogel' Malinowski
 	 * @short Removes current details.
 	 *
-	 * Removes current details. Folliwing virtual methods are called:
-	 * @link detailsAboutToBeRemoved @endlink and @link detailsRemoved @endlink.
-	 * Can only be called if details are present.
+	 * Removes current details. Can only be called if details are present.
 	 */
 	void removeDetails()
 	{
 		Q_ASSERT(hasDetails());
 
-		detailsAboutToBeRemoved();
 		delete Details;
 		Details = 0;
-		detailsRemoved();
-	}
-
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Method called before adding new details.
-	 *
-	 * Method is called always before adding new details.
-	 */
-	virtual void detailsAboutToBeAdded()
-	{
-	}
-
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Method called after adding new details.
-	 *
-	 * Method is called always after adding new details.
-	 */
-	virtual void detailsAdded()
-	{
-	}
-
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Method called before removing old details.
-	 *
-	 * Method is called always before removing old details. Included
-	 * destroying object with not-NULL details.
-	 */
-	virtual void detailsAboutToBeRemoved()
-	{
-	}
-
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Method called after removing old details.
-	 *
-	 * Method is called always after removing old details. Included
-	 * destroying object with not-NULL details.
-	 */
-	virtual void detailsRemoved()
-	{
 	}
 
 public:
