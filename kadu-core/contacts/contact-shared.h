@@ -77,7 +77,6 @@ protected:
 	virtual void protocolUnregistered(ProtocolFactory *protocolFactory);
 
 	virtual void detailsAdded();
-	virtual void afterDetailsAdded();
 	virtual void detailsAboutToBeRemoved();
 	virtual void detailsRemoved();
 

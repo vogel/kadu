@@ -303,10 +303,6 @@ void ContactShared::detailsAdded()
 	dataUpdated();
 
 	ContactManager::instance()->registerItem(this);
-}
-
-void ContactShared::afterDetailsAdded()
-{
 	attach(*OwnerBuddy, false, true);
 }
 

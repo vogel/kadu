@@ -32,8 +32,7 @@
  * @author Rafal 'Vogel' Malinowski
  * @param Class class type, derivering from @link<DetailsHolder> DetailsHolder @endlink (used for casting)
  * @param DetailsClass class that will be holded by this one
- * @param ManagerClass singleton class that will be informed about details loading/unloading from this holder
- * @short Object that holds extra data and informs ManagerClass singleton about loading/unloading this extra data.
+ * @short Object that holds extra data.
  *
  * Some object (@link<Account> Account @endlink, @link<Contact> Contact @endlink and others)
  * have common data that should be always available and protocol data that can only be loaded
@@ -41,81 +40,14 @@
  * StorableObject @endlink that can be extended by @link<DetailsHolder> DetailsHolder @endlink
  * class that holds object of Details type.
  *
- * Object of DetailsHolder type can hold extra information in instance of DetailsClass type. When
- * new value is assigned to Details field a @link<Manager::detailsLoaded detailsLoaded @endlink method of
- * ManagerClass is called with this object as a parameter (casted to Class type to avoid casting
- * at manager side). When old value is removed from Details field a @link<Manager::detailsUnloaded
- * detailsUnloaded @endlink method ManagerClass is called with this object as a parameter.
- * This allows Managers to show only these object, that have details loaded.
+ * Object of DetailsHolder type can hold extra information in instance of DetailsClass type.
  *
  * Example of inheritance:
- *
- * <pre>
- * class Contact: public DetailsHolder&lt;Contact, ContactDetails, ContactManager&gt;
- * </pre>
- *
- * First template parameter allows object to be properly casted.
  */
 template <class DetailsClass>
 class DetailsHolder
 {
 	DetailsClass *Details;
-
-	bool DeletionInProgress;
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Sets new details.
-	 * @param details new details to set
-	 *
-	 * Sets details holded by this object to new value: details. Also calls
-	 * virtual method @link detailsAdded @endlink that can be overridden
-	 * in subclasses to do something with new details.
-	 *
-	 * After that manager's method detailsLoaded is called with this as
-	 * parameter.
-	 */
-	void setNewDetails(DetailsClass *details)
-	{
-		if (details)
-			detailsAboutToBeAdded();
-
-		Details = details;
-		if (!Details)
-			return;
-
-		detailsAdded();
-		afterDetailsAdded();
-	}
-
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Removes details from object.
-	 * @param details removes details from object
-	 *
-	 * This method calls * virtual method @link detailsAboutToBeRemoved @endlink
-	 * that can be overridden in subclasses to do something with old details.
-	 * Then details value is cleared.
-	 *
-	 * After that manager's method detailsUnloaded is called with this as
-	 * parameter.
-	 */
-	void removeOldDetails()
-	{
-		if (!Details)
-			return;
-
-		detailsAboutToBeRemoved();
-
-		if (!DeletionInProgress)
-		{
-			DetailsClass *deleteMe = Details;
-			Details = 0;
-			delete deleteMe;
-		}
-
-		detailsRemoved();
-		afterDetailsRemoved();
-	}
 
 protected:
 	/**
@@ -125,48 +57,55 @@ protected:
 	 * Contructs object with empty details.
 	 */
 	DetailsHolder() :
-		Details(0), DeletionInProgress(false)
+			Details(0)
 	{
 	}
 
 	/**
 	 * @author Rafal 'Vogel' Malinowski
-	 * @short Removes current details.
+	 * @short Empty destructor.
 	 *
-	 * Removes current details. Method @link detailsAboutToBeRemoved @endlink
-	 * is called when details was not NULL.
+	 * Empty destructor. All details must be removed by derivered class before destruction.
 	 */
 	virtual ~DetailsHolder()
 	{
-		removeOldDetails();
 	}
+
 	/**
 	 * @author Rafal 'Vogel' Malinowski
 	 * @short Set new details to object.
 	 * @param details new details to set
 	 *
-	 * Set new details to object. Can result in calling @link detailsAboutToBeRemoved @endlink
-	 * and @link detailsAdded @endlink virtual methods. Can only be called if no details are present.
+	 * Set new details to object. Folliwing virtual methods are called:
+	 * @link detailsAboutToBeAdded @endlink and @link detailsAdded @endlink.
+	 * Can only be called if no details are present.
 	 */
 	void setDetails(DetailsClass *details)
 	{
 		Q_ASSERT(!hasDetails());
 		Q_ASSERT(details);
 
-		setNewDetails(details);
+		detailsAboutToBeAdded();
+		Details = details;
+		detailsAdded();
 	}
 
 	/**
 	 * @author Rafal 'Vogel' Malinowski
 	 * @short Removes current details.
 	 *
-	 * Removes current details. Can only be called if details are present.
+	 * Removes current details. Folliwing virtual methods are called:
+	 * @link detailsAboutToBeRemoved @endlink and @link detailsRemoved @endlink.
+	 * Can only be called if details are present.
 	 */
 	void removeDetails()
 	{
 		Q_ASSERT(hasDetails());
 
-		removeOldDetails();
+		detailsAboutToBeRemoved();
+		delete Details;
+		Details = 0;
+		detailsRemoved();
 	}
 
 	/**
@@ -191,16 +130,6 @@ protected:
 
 	/**
 	 * @author Rafal 'Vogel' Malinowski
-	 * @short Method called after informing manager about new details.
-	 *
-	 * Method is called after adding informing manager about new detais.
-	 */
-	virtual void afterDetailsAdded()
-	{
-	}
-
-	/**
-	 * @author Rafal 'Vogel' Malinowski
 	 * @short Method called before removing old details.
 	 *
 	 * Method is called always before removing old details. Included
@@ -218,16 +147,6 @@ protected:
 	 * destroying object with not-NULL details.
 	 */
 	virtual void detailsRemoved()
-	{
-	}
-
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Method called after informing manager about removing old details.
-	 *
-	 * Method is called always after informing manager about removing old details.
-	 */
-	virtual void afterDetailsRemoved()
 	{
 	}
 
