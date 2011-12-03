@@ -210,11 +210,13 @@ public:
 	 * @param details new details to set
 	 *
 	 * Set new details to object. Can result in calling @link detailsAboutToBeRemoved @endlink
-	 * and @link detailsAdded @endlink virtual methods.
+	 * and @link detailsAdded @endlink virtual methods. Can only be called if no details are present.
 	 */
 	void setDetails(DetailsClass *details)
 	{
-		removeOldDetails();
+		Q_ASSERT(!hasDetails());
+		Q_ASSERT(details);
+
 		setNewDetails(details);
 	}
 
