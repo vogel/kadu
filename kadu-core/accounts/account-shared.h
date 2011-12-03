@@ -88,10 +88,6 @@ protected:
 	friend class GaduEditAccountWidget;
 	void emitUpdated();
 
-	virtual void detailsAdded();
-	virtual void detailsAboutToBeRemoved();
-	virtual void detailsRemoved();
-
 	virtual void protocolRegistered(ProtocolFactory *protocolHandler);
 	virtual void protocolUnregistered(ProtocolFactory *protocolHandler);
 

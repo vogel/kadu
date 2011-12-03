@@ -120,7 +120,15 @@ void ContactShared::aboutToBeRemoved()
 	AvatarManager::instance()->removeItem(*ContactAvatar);
 	setContactAvatar(Avatar::null);
 
+	// do not store contacts that are not in contact manager
+	if (ContactManager::instance()->allItems().contains(uuid()))
+		details()->ensureStored();
+
+	detach(false, false, true);
 	removeDetails();
+	ContactManager::instance()->unregisterItem(this);
+
+	dataUpdated();
 }
 
 void ContactShared::store()
@@ -281,6 +289,12 @@ void ContactShared::protocolRegistered(ProtocolFactory *protocolFactory)
 		return;
 
 	setDetails(protocolFactory->createContactDetails(this));
+	details()->ensureLoaded();
+
+	dataUpdated();
+
+	ContactManager::instance()->registerItem(this);
+	attach(*OwnerBuddy, false, true);
 }
 
 void ContactShared::protocolUnregistered(ProtocolFactory *protocolFactory)
@@ -293,30 +307,12 @@ void ContactShared::protocolUnregistered(ProtocolFactory *protocolFactory)
 	if (!*ContactAccount || ContactAccount->protocolName() != protocolFactory->name())
 		return;
 
-	removeDetails();
-}
-
-void ContactShared::detailsAdded()
-{
-	details()->ensureLoaded();
-
-	dataUpdated();
-
-	ContactManager::instance()->registerItem(this);
-	attach(*OwnerBuddy, false, true);
-}
-
-void ContactShared::detailsAboutToBeRemoved()
-{
 	// do not store contacts that are not in contact manager
 	if (ContactManager::instance()->allItems().contains(uuid()))
 		details()->ensureStored();
 
 	detach(false, false, true);
-}
-
-void ContactShared::detailsRemoved()
-{
+	removeDetails();
 	ContactManager::instance()->unregisterItem(this);
 
 	dataUpdated();

@@ -76,10 +76,6 @@ protected:
 	virtual void protocolRegistered(ProtocolFactory *protocolFactory);
 	virtual void protocolUnregistered(ProtocolFactory *protocolFactory);
 
-	virtual void detailsAdded();
-	virtual void detailsAboutToBeRemoved();
-	virtual void detailsRemoved();
-
 public:
 	static ContactShared * loadStubFromStorage(const QSharedPointer<StoragePoint> &contactStoragePoint);
 	static ContactShared * loadFromStorage(const QSharedPointer<StoragePoint> &contactStoragePoint);

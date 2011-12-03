@@ -192,7 +192,9 @@ bool AccountShared::shouldStore()
 
 void AccountShared::aboutToBeRemoved()
 {
+	details()->ensureStored();
 	removeDetails();
+	AccountManager::instance()->unregisterItem(this);
 	setAccountIdentity(Identity::null);
 }
 
@@ -239,7 +241,9 @@ void AccountShared::useProtocolFactory(ProtocolFactory *factory)
 
 	if (!factory)
 	{
+		details()->ensureStored();
 		removeDetails();
+		AccountManager::instance()->unregisterItem(this);
 		ProtocolHandler = 0;
 		emit protocolUnloaded();
 	}
@@ -247,6 +251,8 @@ void AccountShared::useProtocolFactory(ProtocolFactory *factory)
 	{
 		ProtocolHandler = factory->createProtocolHandler(this);
 		setDetails(factory->createAccountDetails(this));
+		details()->ensureLoaded();
+		AccountManager::instance()->registerItem(this);
 		emit protocolLoaded();
 	}
 
@@ -289,23 +295,6 @@ void AccountShared::protocolUnregistered(ProtocolFactory* factory)
 		return;
 
 	useProtocolFactory(0);
-}
-
-void AccountShared::detailsAdded()
-{
-	details()->ensureLoaded();
-
-	AccountManager::instance()->registerItem(this);
-}
-
-void AccountShared::detailsAboutToBeRemoved()
-{
-	details()->ensureStored();
-}
-
-void AccountShared::detailsRemoved()
-{
-	AccountManager::instance()->unregisterItem(this);
 }
 
 void AccountShared::doSetAccountIdentity(const Identity &accountIdentity)
