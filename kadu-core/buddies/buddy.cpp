@@ -252,7 +252,6 @@ Buddy Buddy::dummy()
 		contact.setCurrentStatus(Status(StatusTypeAway, example.data()->tr("Example description")));
 		contact.setAddress(QHostAddress(2130706433));
 		contact.setPort(80);
-		contact.setDetails(account.protocolHandler()->protocolFactory()->createContactDetails(contact));
 
 		// this is just an example contact, do not add avatar to list
 		Avatar avatar = AvatarManager::instance()->byContact(contact, ActionCreate);
