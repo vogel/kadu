@@ -28,17 +28,18 @@
 #include "contacts/contact-details.h"
 #include "protocols/protocols-aware-object.h"
 #include "status/status.h"
-#include "storage/details-holder.h"
 #include "storage/shared.h"
 
 class Account;
 class Avatar;
 class Buddy;
 
-class KADUAPI ContactShared : public QObject, public Shared, public DetailsHolder<ContactDetails>, ProtocolsAwareObject
+class KADUAPI ContactShared : public QObject, public Shared, ProtocolsAwareObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(ContactShared)
+
+	ContactDetails *Details;
 
 	Account *ContactAccount;
 	Avatar *ContactAvatar;
@@ -87,6 +88,8 @@ public:
 	virtual QString storageNodeName();
 
 	virtual void aboutToBeRemoved();
+
+	ContactDetails * details() const { return Details; }
 
 	KaduShared_PropertyRead(const QString &, id, Id)
 	void setId(const QString &id);
