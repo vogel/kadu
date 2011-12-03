@@ -76,8 +76,6 @@ public:
 	 */
 	virtual ~Details()
 	{
-		if (MainData)
-			MainData->detailsDestroyed();
 	}
 
 	/**

@@ -256,20 +256,6 @@ public:
 		return 0 != Details;
 	}
 
-	void detailsDestroyed()
-	{
-		if (!Details || DeletionInProgress)
-			return;
-
-		DeletionInProgress = true;
-		detailsAboutToBeRemoved();
-		Details = 0;
-
-		detailsRemoved();
-		afterDetailsRemoved();
-		DeletionInProgress = false;
-	}
-
 };
 
 /**
