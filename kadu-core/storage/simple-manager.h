@@ -55,9 +55,6 @@
  * functions: @link itemAboutToBeAdded @endlink, @link itemAdded @endlink,
  * @link itemAboutToBeRemoved @endlink, @link itemRemoved @endlink to emit signals.
  *
- * To manager objects derivered from @link DetailsHolder @endlink class use @link Manager @endlink
- * template class.
- *
  * Class Item must implement Item loadFromStorage(const QSharedPointer\<StoragePoint\> &) static method.
  * Class Item must have static field Item null that represents unique NULL value.
  *
