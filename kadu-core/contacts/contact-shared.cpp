@@ -120,7 +120,7 @@ void ContactShared::aboutToBeRemoved()
 	AvatarManager::instance()->removeItem(*ContactAvatar);
 	setContactAvatar(Avatar::null);
 
-	setDetails(0);
+	removeDetails();
 }
 
 void ContactShared::store()
@@ -293,7 +293,7 @@ void ContactShared::protocolUnregistered(ProtocolFactory *protocolFactory)
 	if (!*ContactAccount || ContactAccount->protocolName() != protocolFactory->name())
 		return;
 
-	setDetails(0);
+	removeDetails();
 }
 
 void ContactShared::detailsAdded()

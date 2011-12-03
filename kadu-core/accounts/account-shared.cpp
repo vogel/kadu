@@ -192,7 +192,7 @@ bool AccountShared::shouldStore()
 
 void AccountShared::aboutToBeRemoved()
 {
-	setDetails(0);
+	removeDetails();
 	setAccountIdentity(Identity::null);
 }
 
@@ -239,7 +239,7 @@ void AccountShared::useProtocolFactory(ProtocolFactory *factory)
 
 	if (!factory)
 	{
-		setDetails(0);
+		removeDetails();
 		ProtocolHandler = 0;
 		emit protocolUnloaded();
 	}
