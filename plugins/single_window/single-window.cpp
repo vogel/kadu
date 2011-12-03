@@ -182,17 +182,16 @@ void SingleWindow::onNewChat(ChatWidget *w, bool &handled)
 
 	tabs->addTab(w, w->icon(), title);
 
-	connect(w, SIGNAL(messageReceived(Chat)), this, SLOT(onNewMessage(Chat)));
 	connect(w->edit(), SIGNAL(keyPressed(QKeyEvent *, CustomInput *, bool &)),
 		this, SLOT(onChatKeyPressed(QKeyEvent *, CustomInput *, bool &)));
 	connect(w, SIGNAL(iconChanged()), this, SLOT(onIconChanged()));
 }
 
+
 void SingleWindow::closeTab(int index)
 {
 	ChatWidget *w = static_cast<ChatWidget *>(tabs->widget(index));
 
-	disconnect(w, SIGNAL(messageReceived(Chat)), this, SLOT(onNewMessage(Chat)));
 	disconnect(w->edit(), SIGNAL(keyPressed(QKeyEvent *, CustomInput *, bool &)),
 		this, SLOT(onChatKeyPressed(QKeyEvent *, CustomInput *, bool &)));
 	disconnect(w, SIGNAL(iconChanged()), this, SLOT(onIconChanged()));
