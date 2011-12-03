@@ -1,9 +1,10 @@
-+++ version 0.11.0-alpha1
+﻿+++ version 0.11.0-alpha1
 * plugins: #2272 fixed: added possibility to tell Kadu to try to load plugin failing to load on next Kadu run (beevvy)
 * gadu: fixed compatibility with advanced message formatting including text mixed with multiple images (beevvy)
 * build: support defining plugins to be compiled through commandline -DCOMPILE_PLUGINS=... argument (beevvy)
 * screenshot: #2285 fixed: update the pixmap only if the crop rect changed (ultr)
 * screenshot: #2286 fixed: intelligent toolbox positioning (ultr)
+* screenshot: windows and Mac OS X support (dorr)
 * gui: added support for images drag&drop in chat edit box (ultr)
 * history: #2197 fixed: show history button now has proper implementation of menu (Vogel)
 * gui: do not set custom font for the groups tab bar (beevvy)
