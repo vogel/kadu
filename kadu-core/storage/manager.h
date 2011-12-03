@@ -42,7 +42,7 @@
 /**
  * @class Manager
  * @author Rafal 'Vogel' Malinowski
- * @param Item class type of manager items, must be derivered from UuidStorableObject and DetailsHolder.
+ * @param Item class type of manager items, must be derivered from UuidStorableObject.
  * @short Object that manages instances of given Item type (including storing and loading from XML file).
  *
  * This object manages items of Item type - it allows adding, removing, searching by uuid,
@@ -56,9 +56,6 @@
  * that has to emits signals must also derive from QObject class and reimplement abstract
  * functions: @link itemAboutToBeRegistered @endlink, @link itemRegistered @endlink,
  * @link itemAboutToBeUnregistered @endlink, @link itemUnregisterd @endlink to emit signals.
- *
- * To manager objects not derivered from @link DetailsHolder @endlink class use
- * @link SimpleManager @endlink template class.
  *
  * Class Item must implement Item loadFromStorage(const QSharedPointer\<StoragePoint\> &) static method.
  * Class Item must have static field Item null that represents unique NULL value.
