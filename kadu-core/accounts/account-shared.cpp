@@ -55,7 +55,7 @@ AccountShared * AccountShared::loadFromStorage(const QSharedPointer<StoragePoint
 
 AccountShared::AccountShared(const QUuid &uuid) :
 		QObject(), Shared(uuid),
-		ProtocolHandler(0), MyStatusContainer(new AccountStatusContainer(this)),
+		ProtocolHandler(0), MyStatusContainer(new AccountStatusContainer(this)), Details(0),
 		RememberPassword(false), HasPassword(false), Removing(false)
 {
 	AccountIdentity = new Identity();
@@ -192,8 +192,13 @@ bool AccountShared::shouldStore()
 
 void AccountShared::aboutToBeRemoved()
 {
-	details()->ensureStored();
-	removeDetails();
+	if (Details)
+	{
+		Details->ensureStored();
+		delete Details;
+		Details = 0;
+	}
+
 	AccountManager::instance()->unregisterItem(this);
 	setAccountIdentity(Identity::null);
 }
@@ -224,6 +229,38 @@ void AccountShared::setDisconnectStatus()
 	StatusSetter::instance()->setStatus(MyStatusContainer, disconnectStatus);
 }
 
+void AccountShared::protocolFactoryLoaded(ProtocolFactory *factory)
+{
+	Q_ASSERT(factory);
+	Q_ASSERT(!ProtocolHandler);
+	Q_ASSERT(!Details);
+
+	ProtocolHandler = factory->createProtocolHandler(this);
+	Q_ASSERT(ProtocolHandler);
+
+	Details = factory->createAccountDetails(this);
+	Q_ASSERT(Details);
+
+	details()->ensureLoaded();
+
+	AccountManager::instance()->registerItem(this);
+	emit protocolLoaded();
+}
+
+void AccountShared::protocolFactoryUnloaded()
+{
+	if (Details)
+	{
+		Details->ensureStored();
+		delete Details;
+		Details = 0;
+	}
+
+	AccountManager::instance()->unregisterItem(this);
+	ProtocolHandler = 0;
+	emit protocolUnloaded();
+}
+
 void AccountShared::useProtocolFactory(ProtocolFactory *factory)
 {
 	Protocol *oldProtocolHandler = ProtocolHandler;
@@ -232,29 +269,17 @@ void AccountShared::useProtocolFactory(ProtocolFactory *factory)
 	{
 		disconnect(ProtocolHandler, SIGNAL(statusChanged(Account, Status)), MyStatusContainer, SLOT(triggerStatusUpdated()));
 		disconnect(ProtocolHandler, SIGNAL(contactStatusChanged(Contact, Status)),
-				   this, SIGNAL(buddyStatusChanged(Contact, Status)));
+		           this, SIGNAL(buddyStatusChanged(Contact, Status)));
 		disconnect(ProtocolHandler, SIGNAL(connected(Account)), this, SIGNAL(connected()));
 		disconnect(ProtocolHandler, SIGNAL(disconnected(Account)), this, SIGNAL(disconnected()));
 
 		setDisconnectStatus();
 	}
 
-	if (!factory)
-	{
-		details()->ensureStored();
-		removeDetails();
-		AccountManager::instance()->unregisterItem(this);
-		ProtocolHandler = 0;
-		emit protocolUnloaded();
-	}
+	if (factory)
+		protocolFactoryLoaded(factory);
 	else
-	{
-		ProtocolHandler = factory->createProtocolHandler(this);
-		setDetails(factory->createAccountDetails(this));
-		details()->ensureLoaded();
-		AccountManager::instance()->registerItem(this);
-		emit protocolLoaded();
-	}
+		protocolFactoryUnloaded();
 
 	delete oldProtocolHandler;
 	oldProtocolHandler = 0;
