@@ -1,4 +1,4 @@
-/*
+﻿/*
  * %kadu copyright begin%
  * Copyright 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
@@ -27,7 +27,9 @@
 
 #include "gui/actions/action-context.h"
 
-class BaseActionContext : public ActionContext
+#include "exports.h"
+
+class KADUAPI BaseActionContext : public ActionContext
 {
 	Q_OBJECT
 
