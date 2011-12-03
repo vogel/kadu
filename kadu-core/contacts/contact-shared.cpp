@@ -285,8 +285,15 @@ void ContactShared::protocolRegistered(ProtocolFactory *protocolFactory)
 
 void ContactShared::protocolUnregistered(ProtocolFactory *protocolFactory)
 {
-	Q_UNUSED(protocolFactory)
-// 	protocol unregistered means auto-deleting all contact details, so we cannot set them to zero here
+	ensureLoaded();
+
+	if (!details())
+		return;
+
+	if (!*ContactAccount || ContactAccount->protocolName() != protocolFactory->name())
+		return;
+
+	setDetails(0);
 }
 
 void ContactShared::detailsAdded()
