@@ -126,7 +126,8 @@ public:
 	 * and 'conference' (for on-to-many chats). Other what types could be: 'irc-room' (for irc room
 	 * chats).
 	 */
-	KaduShared_Property(const QString &, type, Type)
+	KaduShared_PropertyWriteDecl(const QString &, type, Type)
+	KaduShared_PropertyRead(const QString &, type, Type)
 
 	// temporary, not stored, lost after program close
 	KaduShared_PropertyBool(IgnoreAllMessages)

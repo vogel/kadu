@@ -395,10 +395,11 @@ void ChatStylesManager::preparePreview(Preview *preview)
 
 	Chat chat = Chat::create();
 	chat.setChatAccount(BuddyPreferredManager::instance()->preferredAccount(example));
-	ChatDetailsSimple *details = new ChatDetailsSimple(chat);
+	chat.setType("Simple");
+
+	ChatDetailsSimple *details = dynamic_cast<ChatDetailsSimple *>(chat.details());
 	details->setState(StorableObject::StateNew);
 	details->setContact(BuddyPreferredManager::instance()->preferredContact(example));
-	chat.setDetails(details);
 
 	connect(preview, SIGNAL(destroyed()), chat, SLOT(deleteLater()));
 
