@@ -26,7 +26,6 @@
 #define CHAT_SHARED_H
 
 #include "chat/type/chat-type-aware-object.h"
-#include "storage/details-holder.h"
 #include "storage/shared.h"
 
 class Account;
@@ -51,12 +50,14 @@ class Group;
  * and attached to objects of this class using @link setDetails @endlink and @link details @endlink
  * methods of @link DetailsHolder @endlink class.
  */
-class KADUAPI ChatShared : public QObject, public Shared, public DetailsHolder<ChatDetails>, ChatTypeAwareObject
+class KADUAPI ChatShared : public QObject, public Shared, ChatTypeAwareObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(ChatShared)
 
 	Account *ChatAccount;
+	ChatDetails *Details;
+
 	QString Display;
 	QString Type;
 	bool IgnoreAllMessages;
@@ -90,6 +91,8 @@ public:
 	virtual QString storageNodeName();
 
 	virtual void aboutToBeRemoved();
+
+	ChatDetails * details() const { return Details; }
 
 	ContactSet contacts();
 	QString name();
