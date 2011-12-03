@@ -30,6 +30,7 @@
 #include "chat/chat-details.h"
 #include "chat/chat-manager.h"
 #include "chat/type/chat-type.h"
+#include "chat/type/chat-type-manager.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact-set.h"
 #include "parser/parser.h"
@@ -334,6 +335,23 @@ QString ChatShared::name()
 	ensureLoaded();
 
 	return hasDetails() ? details()->name() : QString();
+}
+
+void ChatShared::setType(const QString &type)
+{
+	ensureLoaded();
+
+	if (Type == type)
+		return;
+
+	if (hasDetails())
+		removeDetails();
+
+	Type = type;
+
+	ChatType *chatType = ChatTypeManager::instance()->chatType(type);
+	if (chatType)
+		chatTypeRegistered(chatType); // this will add details
 }
 
 void ChatShared::setGroups(const QList<Group> &groups)

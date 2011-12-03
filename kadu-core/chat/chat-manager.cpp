@@ -213,28 +213,26 @@ Chat ChatManager::findChat(const ContactSet &contacts, bool create)
 
 	Chat chat = Chat::create();
 	chat.setChatAccount(account);
-	ChatDetails *details = 0;
 
 	Contact contact = contacts.toContact();
 	if (!contact.isNull())
 	{
-		ChatDetailsSimple *simple = new ChatDetailsSimple(chat);
+		chat.setType("Simple");
+
+		ChatDetailsSimple *simple = dynamic_cast<ChatDetailsSimple *>(chat.details());
 		simple->setState(StateNew);
 		simple->setContact(contact);
-		details = simple;
 	}
 	else if (contacts.size() > 1)
 	{
-		ChatDetailsConference *conference = new ChatDetailsConference(chat);
+		chat.setType("Conference");
+
+		ChatDetailsConference *conference = dynamic_cast<ChatDetailsConference *>(chat.details());
 		conference->setState(StateNew);
 		conference->setContacts(contacts);
-		details = conference;
 	}
 	else
 		return Chat::null;
-
-	chat.setDetails(details);
-	chat.setType(details->type()->name());
 
 	addItem(chat);
 	return chat;
