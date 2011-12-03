@@ -62,7 +62,7 @@ public:
 
 	void removeOwnerBuddy() const;
 
-	KaduSharedBase_Property(ContactDetails *, details, Details)
+	KaduSharedBase_PropertyRead(ContactDetails *, details, Details)
 	KaduSharedBase_PropertyRead(QUuid, uuid, Uuid)
 	KaduSharedBase_PropertyRead(QSharedPointer<StoragePoint>, storage, Storage)
 	KaduSharedBase_PropertyCRW(Account, contactAccount, ContactAccount)
