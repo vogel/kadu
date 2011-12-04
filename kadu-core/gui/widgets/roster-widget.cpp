@@ -24,7 +24,6 @@
 #include <QtGui/QStackedWidget>
 
 #include "buddies/filter/anonymous-buddy-filter.h"
-#include "buddies/filter/buddy-name-filter.h"
 #include "buddies/filter/group-buddy-filter.h"
 #include "buddies/model/buddies-model.h"
 #include "chat/filter/chat-named-filter.h"
@@ -39,6 +38,7 @@
 #include "gui/windows/proxy-action-context.h"
 #include "model/model-chain.h"
 #include "talkable/filter/hide-simple-chats-talkable-filter.h"
+#include "talkable/filter/name-talkable-filter.h"
 #include "talkable/filter/unread-messages-talkable-filter.h"
 #include "talkable/model/talkable-model-factory.h"
 #include "talkable/model/talkable-proxy-model.h"
@@ -178,6 +178,10 @@ ModelChain * RosterWidget::createModelChain()
 	ProxyModel->addFilter(new HideSimpleChatsTalkableFilter(ProxyModel));
 	ProxyModel->addFilter(new UnreadMessagesTalkableFilter(ProxyModel));
 
+	NameTalkableFilter *nameTalkableFilter = new NameTalkableFilter(ProxyModel);
+	connect(TalkableWidget, SIGNAL(filterChanged(QString)), nameTalkableFilter, SLOT(setName(QString)));
+	ProxyModel->addFilter(nameTalkableFilter);
+
 	ChatOrFilter *chatOrFilter = new ChatOrFilter(ProxyModel);
 
 	ChatNamedFilter *chatNamedFilter = new ChatNamedFilter(chatOrFilter);
@@ -193,10 +197,6 @@ ModelChain * RosterWidget::createModelChain()
 	AnonymousBuddyFilter *anonymousBuddyFilter = new AnonymousBuddyFilter(ProxyModel);
 	anonymousBuddyFilter->setEnabled(true);
 	ProxyModel->addFilter(anonymousBuddyFilter);
-
-	BuddyNameFilter *nameFilter = new BuddyNameFilter(ProxyModel);
-	connect(TalkableWidget, SIGNAL(filterChanged(QString)), nameFilter, SLOT(setName(QString)));
-	ProxyModel->addFilter(nameFilter);
 
 	BuddyGroupFilter = new GroupBuddyFilter(ProxyModel);
 	connect(GroupBar, SIGNAL(currentGroupChanged(Group)), BuddyGroupFilter, SLOT(setGroup(Group)));
