@@ -23,7 +23,6 @@
 
 #include <QtGui/QAction>
 
-#include "buddies/filter/anonymous-buddy-filter.h"
 #include "buddies/filter/buddy-name-filter.h"
 #include "buddies/model/buddies-model.h"
 #include "gui/widgets/select-buddy-popup.h"
@@ -31,6 +30,7 @@
 #include "misc/misc.h"
 #include "model/model-chain.h"
 #include "model/roles.h"
+#include "talkable/filter/hide-anonymous-talkable-filter.h"
 #include "talkable/model/talkable-proxy-model.h"
 
 #include "select-buddy-combo-box.h"
@@ -48,9 +48,8 @@ SelectBuddyComboBox::SelectBuddyComboBox(QWidget *parent) :
 
 	Popup = new SelectBuddyPopup();
 
-	AnonymousBuddyFilter *anonymousFilter = new AnonymousBuddyFilter(this);
-	anonymousFilter->setEnabled(true);
-	addFilter(anonymousFilter);
+	HideAnonymousTalkableFilter *hideAnonymousFilter = new HideAnonymousTalkableFilter(ProxyModel);
+	addFilter(hideAnonymousFilter);
 
 	connect(Popup, SIGNAL(buddySelected(Buddy)), this, SLOT(setCurrentBuddy(Buddy)));
 }
@@ -82,6 +81,18 @@ void SelectBuddyComboBox::showPopup()
 void SelectBuddyComboBox::hidePopup()
 {
 	Popup->hide();
+}
+
+void SelectBuddyComboBox::addFilter(TalkableFilter *filter)
+{
+	ProxyModel->addFilter(filter);
+	Popup->addFilter(filter);
+}
+
+void SelectBuddyComboBox::removeFilter(TalkableFilter *filter)
+{
+	ProxyModel->removeFilter(filter);
+	Popup->removeFilter(filter);
 }
 
 void SelectBuddyComboBox::addFilter(AbstractBuddyFilter *filter)

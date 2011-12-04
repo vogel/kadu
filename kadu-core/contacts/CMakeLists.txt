@@ -16,8 +16,6 @@ set (contacts_MOC_SRCS
 	contact-manager.h
 	contact-shared.h
 
-	filter/abstract-contact-filter.h
-
 	model/buddy-contact-model.h
 	model/contact-list-model.h
 )

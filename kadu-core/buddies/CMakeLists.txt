@@ -15,10 +15,8 @@ set (buddies_SRCS
 	group-shared.cpp
 
 	filter/account-buddy-filter.cpp
-	filter/anonymous-buddy-filter.cpp
 	filter/blocked-buddy-filter.cpp
 	filter/buddy-name-filter.cpp
-	filter/group-buddy-filter.cpp
 	filter/has-description-buddy-filter.cpp
 	filter/mobile-buddy-filter.cpp
 	filter/non-buddy-filter.cpp
@@ -43,10 +41,8 @@ set (buddies_MOC_SRCS
 
 	filter/abstract-buddy-filter.h
 	filter/account-buddy-filter.h
-	filter/anonymous-buddy-filter.h
 	filter/blocked-buddy-filter.h
 	filter/buddy-name-filter.h
-	filter/group-buddy-filter.h
 	filter/has-description-buddy-filter.h
 	filter/mobile-buddy-filter.h
 	filter/non-buddy-filter.h

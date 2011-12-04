@@ -28,7 +28,6 @@
 
 #include "buddies/buddy-manager.h"
 #include "buddies/filter/account-buddy-filter.h"
-#include "buddies/filter/anonymous-buddy-filter.h"
 #include "buddies/filter/buddy-name-filter.h"
 #include "buddies/model/buddies-model.h"
 #include "contacts/contact-details.h"
@@ -38,6 +37,7 @@
 #include "gui/widgets/talkable-tree-view.h"
 #include "gui/windows/message-dialog.h"
 #include "model/model-chain.h"
+#include "talkable/filter/hide-anonymous-talkable-filter.h"
 #include "talkable/model/talkable-proxy-model.h"
 
 #include "protocols/protocol.h"
@@ -58,11 +58,10 @@ AccountBuddyListWidget::AccountBuddyListWidget(Account account, QWidget *parent)
 
 	AccountBuddyFilter *accountFilter = new AccountBuddyFilter(CurrentAccount, proxyModel);
 	accountFilter->setEnabled(true);
-	AnonymousBuddyFilter *anonymousFilter = new AnonymousBuddyFilter(proxyModel);
-	anonymousFilter->setEnabled(true);
+	HideAnonymousTalkableFilter *hideAnonymousFilter = new HideAnonymousTalkableFilter(proxyModel);
 
 	proxyModel->addFilter(accountFilter);
-	proxyModel->addFilter(anonymousFilter);
+	proxyModel->addFilter(hideAnonymousFilter);
 
 	chain->addProxyModel(proxyModel);
 

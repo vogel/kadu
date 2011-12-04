@@ -26,10 +26,8 @@
 #include <QtGui/QSortFilterProxyModel>
 
 class AbstractBuddyFilter;
-class AbstractContactFilter;
 class Buddy;
 class Chat;
-class ChatFilter;
 class Contact;
 class TalkableFilter;
 
@@ -38,9 +36,7 @@ class TalkableProxyModel : public QSortFilterProxyModel
 	Q_OBJECT
 
 	QList<TalkableFilter *> TalkableFilters;
-	QList<ChatFilter *> ChatFilters;
 	QList<AbstractBuddyFilter *> BuddyFilters;
-	QList<AbstractContactFilter *> ContactFilters;
 
 	bool BrokenStringCompare;
 	bool SortByStatus;
@@ -65,14 +61,8 @@ public:
 	void addFilter(TalkableFilter *filter);
 	void removeFilter(TalkableFilter *filter);
 
-	void addFilter(ChatFilter *filter);
-	void removeFilter(ChatFilter *filter);
-
 	void addFilter(AbstractBuddyFilter *filter);
 	void removeFilter(AbstractBuddyFilter *filter);
-
-	void addFilter(AbstractContactFilter *filter);
-	void removeFilter(AbstractContactFilter *filter);
 
 	void setSortByStatus(bool sortByStatus);
 

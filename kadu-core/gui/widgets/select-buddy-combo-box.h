@@ -32,6 +32,7 @@
 
 class AbstractBuddyFilter;
 class SelectBuddyPopup;
+class TalkableFilter;
 class TalkableProxyModel;
 
 class KADUAPI SelectBuddyComboBox : public ActionsComboBox
@@ -50,6 +51,9 @@ public:
 	virtual ~SelectBuddyComboBox();
 
 	Buddy currentBuddy();
+
+	void addFilter(TalkableFilter *filter);
+	void removeFilter(TalkableFilter *filter);
 
 	void addFilter(AbstractBuddyFilter *filter);
 	void removeFilter(AbstractBuddyFilter *filter);

@@ -37,7 +37,6 @@
 
 #include "buddies/buddy-list-mime-data-helper.h"
 #include "buddies/buddy-manager.h"
-#include "buddies/filter/group-buddy-filter.h"
 #include "buddies/group-manager.h"
 #include "buddies/group.h"
 #include "configuration/configuration-file.h"

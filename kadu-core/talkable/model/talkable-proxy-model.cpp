@@ -24,11 +24,9 @@
 #include "buddies/buddy-preferred-manager.h"
 #include "buddies/buddy.h"
 #include "buddies/filter/abstract-buddy-filter.h"
-#include "chat/filter/chat-filter.h"
 #include "chat/model/chat-data-extractor.h"
 #include "chat/chat.h"
 #include "contacts/contact.h"
-#include "contacts/filter/abstract-contact-filter.h"
 #include "message/message-manager.h"
 #include "model/roles.h"
 #include "status/status-type.h"
@@ -183,10 +181,6 @@ bool TalkableProxyModel::accept(const Chat &chat) const
 				return false;
 		}
 
-	foreach (ChatFilter *filter, ChatFilters)
-		if (!filter->acceptChat(chat))
-			return false;
-
 	return true;
 }
 
@@ -224,10 +218,6 @@ bool TalkableProxyModel::accept(const Contact &contact) const
 			case TalkableFilter::Rejected:
 				return false;
 		}
-
-	foreach (AbstractContactFilter *filter, ContactFilters)
-		if (!filter->acceptContact(contact))
-			return false;
 
 	return accept(contact.ownerBuddy());
 }
@@ -273,25 +263,6 @@ void TalkableProxyModel::removeFilter(TalkableFilter *filter)
 	disconnect(filter, SIGNAL(filterChanged()), this, SLOT(invalidate()));
 }
 
-void TalkableProxyModel::addFilter(ChatFilter *filter)
-{
-	if (ChatFilters.contains(filter))
-		return;
-
-	ChatFilters.append(filter);
-	invalidateFilter();
-	connect(filter, SIGNAL(filterChanged()), this, SLOT(invalidate()));
-}
-
-void TalkableProxyModel::removeFilter(ChatFilter *filter)
-{
-	if (ChatFilters.removeAll(filter) <= 0)
-		return;
-
-	invalidateFilter();
-	disconnect(filter, SIGNAL(filterChanged()), this, SLOT(invalidate()));
-}
-
 void TalkableProxyModel::addFilter(AbstractBuddyFilter *filter)
 {
 	if (BuddyFilters.contains(filter))
@@ -305,25 +276,6 @@ void TalkableProxyModel::addFilter(AbstractBuddyFilter *filter)
 void TalkableProxyModel::removeFilter(AbstractBuddyFilter *filter)
 {
 	if (BuddyFilters.removeAll(filter) <= 0)
-		return;
-
-	invalidateFilter();
-	disconnect(filter, SIGNAL(filterChanged()), this, SLOT(invalidate()));
-}
-
-void TalkableProxyModel::addFilter(AbstractContactFilter *filter)
-{
-	if (ContactFilters.contains(filter))
-		return;
-
-	ContactFilters.append(filter);
-	invalidateFilter();
-	connect(filter, SIGNAL(filterChanged()), this, SLOT(invalidate()));
-}
-
-void TalkableProxyModel::removeFilter(AbstractContactFilter *filter)
-{
-	if (ContactFilters.removeAll(filter) <= 0)
 		return;
 
 	invalidateFilter();

@@ -31,6 +31,7 @@ class QModelIndex;
 
 class AbstractBuddyFilter;
 class Buddy;
+class TalkableFilter;
 class TalkableProxyModel;
 class TalkableTreeView;
 
@@ -50,6 +51,9 @@ public:
 	virtual ~SelectBuddyPopup();
 
 	void show(Buddy buddy);
+
+	void addFilter(TalkableFilter *filter);
+	void removeFilter(TalkableFilter *filter);
 
 	void addFilter(AbstractBuddyFilter *filter);
 	void removeFilter(AbstractBuddyFilter *filter);
