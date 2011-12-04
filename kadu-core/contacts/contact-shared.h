@@ -117,6 +117,7 @@ public:
 
 	bool isAnonymous();
 	QString display(bool useBuddyData);
+	Avatar avatar(bool useBuddyData);
 
 signals:
 	void aboutToBeDetached();

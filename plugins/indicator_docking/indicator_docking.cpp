@@ -176,8 +176,8 @@ void IndicatorDocking::notify(Notification *notification)
 
 			if (chat.contacts().count() == 1)
 			{
-				Avatar avatar = chat.contacts().constBegin()->contactAvatar();
-				if (avatar && !avatar.pixmap().isNull())
+				const Avatar &avatar = chat.contacts().constBegin()->avatar(true);
+				if (!avatar.isEmpty())
 					indicator->setIconProperty(avatar.pixmap().toImage().scaled(20, 20, Qt::KeepAspectRatio, Qt::SmoothTransformation));
 			}
 		}

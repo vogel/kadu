@@ -61,6 +61,7 @@ public:
 	virtual ~Contact();
 
 	QString display(bool useBuddyData) const;
+	Avatar avatar(bool useBuddyData) const;
 
 	void removeOwnerBuddy() const;
 

@@ -380,16 +380,14 @@ QString AdiumChatStyleEngine::replaceKeywords(const Chat &chat, const QString &s
 		photoIncoming = webKitPath(styleHref + QLatin1String("Incoming/buddy_icon.png"));
 	else if (contactsSize == 1)
 	{
-		Contact contact = chat.contacts().toContact();
-		if (!contact.isNull() && !contact.ownerBuddy().buddyAvatar().pixmap().isNull())
-			photoIncoming = webKitPath(contact.ownerBuddy().buddyAvatar().filePath());
-		else if (!contact.isNull() && !contact.contactAvatar().pixmap().isNull())
-			photoIncoming = webKitPath(contact.contactAvatar().filePath());
+		const Avatar &avatar = chat.contacts().toContact().avatar(true);
+		if (!avatar.isEmpty())
+			photoIncoming = webKitPath(avatar.filePath());
 		else
 			photoIncoming = webKitPath(styleHref + QLatin1String("Incoming/buddy_icon.png"));
 	}
 
-	Avatar avatar = chat.chatAccount().accountContact().contactAvatar();
+	const Avatar &avatar = chat.chatAccount().accountContact().avatar(true);
 	if (!avatar.isEmpty())
 		photoOutgoing = webKitPath(avatar.filePath());
 	else
@@ -448,17 +446,16 @@ QString AdiumChatStyleEngine::replaceKeywords(const QString &styleHref, const QS
 	{
 		result.replace(QString("%messageClasses%"), "message incoming");
 
-		if (!msg.messageSender().ownerBuddy().buddyAvatar().pixmap().isNull())
-			photoPath = webKitPath(msg.messageSender().ownerBuddy().buddyAvatar().filePath());
-		else if (!msg.messageSender().contactAvatar().pixmap().isNull())
-			photoPath = webKitPath(msg.messageSender().contactAvatar().filePath());
+		const Avatar &avatar = msg.messageSender().avatar(true);
+		if (!avatar.isEmpty())
+			photoPath = webKitPath(avatar.filePath());
 		else
 			photoPath = webKitPath(styleHref + QLatin1String("Incoming/buddy_icon.png"));
 	}
 	else if (msg.type() == MessageTypeSent)
 	{
-   		result.replace(QString("%messageClasses%"), "message outgoing");
-		Avatar avatar = msg.messageChat().chatAccount().accountContact().contactAvatar();
+		result.replace(QString("%messageClasses%"), "message outgoing");
+		const Avatar &avatar = msg.messageChat().chatAccount().accountContact().avatar(true);
 		if (!avatar.isEmpty())
 			photoPath = webKitPath(avatar.filePath());
 		else

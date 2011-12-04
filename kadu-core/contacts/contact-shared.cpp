@@ -414,6 +414,16 @@ QString ContactShared::display(bool useBuddyData)
 	return OwnerBuddy->display();
 }
 
+Avatar ContactShared::avatar(bool useBuddyData)
+{
+	ensureLoaded();
+
+	if (!useBuddyData || !OwnerBuddy || !(*OwnerBuddy) || OwnerBuddy->buddyAvatar().isEmpty())
+		return ContactAvatar ? *ContactAvatar : Avatar::null;
+
+	return OwnerBuddy->buddyAvatar();
+}
+
 KaduShared_PropertyPtrReadDef(ContactShared, Account, contactAccount, ContactAccount)
 KaduShared_PropertyPtrReadDef(ContactShared, Avatar, contactAvatar, ContactAvatar)
 KaduShared_PropertyPtrReadDef(ContactShared, Buddy, ownerBuddy, OwnerBuddy)

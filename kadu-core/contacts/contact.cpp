@@ -86,6 +86,14 @@ QString Contact::display(bool useBuddyData) const
 	return QString();
 }
 
+Avatar Contact::avatar(bool useBuddyData) const
+{
+	if (data())
+		return data()->avatar(useBuddyData);
+
+	return Avatar::null;
+}
+
 void Contact::removeOwnerBuddy() const
 {
 	if (data())
