@@ -23,11 +23,8 @@
 #include <QtGui/QScrollBar>
 #include <QtGui/QStackedWidget>
 
-#include "buddies/filter/anonymous-buddy-filter.h"
 #include "buddies/filter/group-buddy-filter.h"
 #include "buddies/model/buddies-model.h"
-#include "chat/filter/chat-named-filter.h"
-#include "chat/filter/chat-or-filter.h"
 #include "chat/filter/group-chat-filter.h"
 #include "chat/model/chats-model.h"
 #include "configuration/configuration-file.h"
@@ -37,6 +34,7 @@
 #include "gui/widgets/talkable-tree-view.h"
 #include "gui/windows/proxy-action-context.h"
 #include "model/model-chain.h"
+#include "talkable/filter/hide-anonymous-talkable-filter.h"
 #include "talkable/filter/hide-simple-chats-talkable-filter.h"
 #include "talkable/filter/name-talkable-filter.h"
 #include "talkable/filter/unread-messages-talkable-filter.h"
@@ -177,26 +175,15 @@ ModelChain * RosterWidget::createModelChain()
 	ProxyModel = new TalkableProxyModel(chain);
 	ProxyModel->addFilter(new HideSimpleChatsTalkableFilter(ProxyModel));
 	ProxyModel->addFilter(new UnreadMessagesTalkableFilter(ProxyModel));
+	ProxyModel->addFilter(new HideAnonymousTalkableFilter(ProxyModel));
 
 	NameTalkableFilter *nameTalkableFilter = new NameTalkableFilter(ProxyModel);
 	connect(TalkableWidget, SIGNAL(filterChanged(QString)), nameTalkableFilter, SLOT(setName(QString)));
 	ProxyModel->addFilter(nameTalkableFilter);
 
-	ChatOrFilter *chatOrFilter = new ChatOrFilter(ProxyModel);
-
-	ChatNamedFilter *chatNamedFilter = new ChatNamedFilter(chatOrFilter);
-	chatNamedFilter->setEnabled(true);
-	chatOrFilter->addFilter(chatNamedFilter);
-
-	ProxyModel->addFilter(chatOrFilter);
-
 	ChatGroupFilter = new GroupChatFilter(ProxyModel);
 	connect(GroupBar, SIGNAL(currentGroupChanged(Group)), ChatGroupFilter, SLOT(setGroup(Group)));
 	ProxyModel->addFilter(ChatGroupFilter);
-
-	AnonymousBuddyFilter *anonymousBuddyFilter = new AnonymousBuddyFilter(ProxyModel);
-	anonymousBuddyFilter->setEnabled(true);
-	ProxyModel->addFilter(anonymousBuddyFilter);
 
 	BuddyGroupFilter = new GroupBuddyFilter(ProxyModel);
 	connect(GroupBar, SIGNAL(currentGroupChanged(Group)), BuddyGroupFilter, SLOT(setGroup(Group)));

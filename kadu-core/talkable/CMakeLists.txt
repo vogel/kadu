@@ -1,4 +1,5 @@
 set (talkable_SRCS
+	filter/hide-anonymous-talkable-filter.cpp
 	filter/hide-simple-chats-talkable-filter.cpp
 	filter/name-talkable-filter.cpp
 	filter/talkable-filter.cpp
@@ -12,6 +13,7 @@ set (talkable_SRCS
 )
 
 set (talkable_MOC_SRCS
+	filter/hide-anonymous-talkable-filter.h
 	filter/hide-simple-chats-talkable-filter.h
 	filter/name-talkable-filter.h
 	filter/talkable-filter.h
