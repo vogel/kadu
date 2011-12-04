@@ -29,9 +29,8 @@
 #include "os/generic/compositing-aware-object.h"
 
 class FilteredTreeView;
-class GroupBuddyFilter;
-class GroupChatFilter;
 class GroupTabBar;
+class GroupTalkableFilter;
 class ProxyActionContext;
 class ModelChain;
 class TalkableProxyModel;
@@ -44,8 +43,7 @@ class RosterWidget : public QWidget, public ActionContextProvider, Configuration
 	GroupTabBar *GroupBar;
 
 	TalkableProxyModel *ProxyModel;
-	GroupBuddyFilter *BuddyGroupFilter;
-	GroupChatFilter *ChatGroupFilter;
+	GroupTalkableFilter *GroupFilter;
 
 	FilteredTreeView *TalkableWidget;
 	TalkableTreeView *TalkableTree;

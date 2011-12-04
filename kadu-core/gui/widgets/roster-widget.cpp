@@ -23,9 +23,7 @@
 #include <QtGui/QScrollBar>
 #include <QtGui/QStackedWidget>
 
-#include "buddies/filter/group-buddy-filter.h"
 #include "buddies/model/buddies-model.h"
-#include "chat/filter/group-chat-filter.h"
 #include "chat/model/chats-model.h"
 #include "configuration/configuration-file.h"
 #include "gui/widgets/filter-widget.h"
@@ -34,6 +32,7 @@
 #include "gui/widgets/talkable-tree-view.h"
 #include "gui/windows/proxy-action-context.h"
 #include "model/model-chain.h"
+#include "talkable/filter/group-talkable-filter.h"
 #include "talkable/filter/hide-anonymous-talkable-filter.h"
 #include "talkable/filter/hide-simple-chats-talkable-filter.h"
 #include "talkable/filter/name-talkable-filter.h"
@@ -120,15 +119,9 @@ void RosterWidget::configurationUpdated()
 	triggerCompositingStateChanged();
 
 	if (config_file.readBoolEntry("Look", "DisplayGroupTabs", true))
-	{
-		BuddyGroupFilter->setAllGroupShown(config_file.readBoolEntry("Look", "ShowGroupAll", true));
-		ChatGroupFilter->setAllGroupShown(config_file.readBoolEntry("Look", "ShowGroupAll", true));
-	}
+		GroupFilter->setAllGroupShown(config_file.readBoolEntry("Look", "ShowGroupAll", true));
 	else
-	{
-		BuddyGroupFilter->setAllGroupShown(true);
-		ChatGroupFilter->setAllGroupShown(config_file.readBoolEntry("Look", "ShowGroupAll", true));
-	}
+		GroupFilter->setAllGroupShown(true);
 }
 
 void RosterWidget::compositingEnabled()
@@ -181,13 +174,9 @@ ModelChain * RosterWidget::createModelChain()
 	connect(TalkableWidget, SIGNAL(filterChanged(QString)), nameTalkableFilter, SLOT(setName(QString)));
 	ProxyModel->addFilter(nameTalkableFilter);
 
-	ChatGroupFilter = new GroupChatFilter(ProxyModel);
-	connect(GroupBar, SIGNAL(currentGroupChanged(Group)), ChatGroupFilter, SLOT(setGroup(Group)));
-	ProxyModel->addFilter(ChatGroupFilter);
-
-	BuddyGroupFilter = new GroupBuddyFilter(ProxyModel);
-	connect(GroupBar, SIGNAL(currentGroupChanged(Group)), BuddyGroupFilter, SLOT(setGroup(Group)));
-	ProxyModel->addFilter(BuddyGroupFilter);
+	GroupFilter = new GroupTalkableFilter(ProxyModel);
+	connect(GroupBar, SIGNAL(currentGroupChanged(Group)), GroupFilter, SLOT(setGroup(Group)));
+	ProxyModel->addFilter(GroupFilter);
 
 	chain->addProxyModel(ProxyModel);
 
