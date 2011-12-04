@@ -289,7 +289,8 @@ void ContactShared::protocolRegistered(ProtocolFactory *protocolFactory)
 	if (!*ContactAccount || ContactAccount->protocolName() != protocolFactory->name())
 		return;
 
-	Q_ASSERT(!Details);
+	if (Details)
+		return;
 
 	Details = protocolFactory->createContactDetails(this);
 	Q_ASSERT(Details);
