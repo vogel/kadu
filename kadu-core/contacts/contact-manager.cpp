@@ -310,7 +310,7 @@ void ContactManager::removeDuplicateContacts()
 		QMap<QPair<Account, QString>, Contact>::iterator it = uniqueContacts.find(qMakePair(contact.contactAccount(), contact.id()));
 		if (it != uniqueContacts.end())
 		{
-			if (it->ownerBuddy().isAnonymous())
+			if (it->isAnonymous())
 			{
 				removeItem(*it);
 				it->setUuid(contact.uuid());

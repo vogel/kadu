@@ -148,7 +148,7 @@ void ContactShared::store()
 	storeValue("Priority", Priority);
 	storeValue("Dirty", Dirty);
 	storeValue("Account", ContactAccount->uuid().toString());
-	storeValue("Buddy", !OwnerBuddy->isAnonymous()
+	storeValue("Buddy", !isAnonymous()
 			? OwnerBuddy->uuid().toString()
 			: QString());
 
@@ -234,7 +234,7 @@ void ContactShared::doSetOwnerBuddy(const Buddy &buddy, bool emitSignals)
 	 */
 	Contact guard(this);
 
-	bool reattaching = !OwnerBuddy->isAnonymous() && !buddy.isAnonymous();
+	bool reattaching = !isAnonymous() && !buddy.isAnonymous();
 	detach(true, reattaching, emitSignals);
 	attach(buddy, reattaching, emitSignals);
 }
@@ -389,6 +389,19 @@ void ContactShared::setContactAvatar(const Avatar &contactAvatar)
 
 	if (*ContactAvatar)
 		connect(*ContactAvatar, SIGNAL(updated()), this, SLOT(avatarUpdated()));
+}
+
+bool ContactShared::isAnonymous()
+{
+	ensureLoaded();
+
+	if (!OwnerBuddy)
+		return true;
+
+	if (!(*OwnerBuddy))
+		return true;
+
+	return OwnerBuddy->isAnonymous();
 }
 
 KaduShared_PropertyPtrReadDef(ContactShared, Account, contactAccount, ContactAccount)

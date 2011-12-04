@@ -72,7 +72,7 @@ Infos::Infos(QObject *parent) :
 					contact = ContactManager::instance()->byId(account, uin, ActionReturnNull);
 					if (contact.isNull())
 						continue;
-					if (!contact.ownerBuddy().isAnonymous())
+					if (!contact.isAnonymous())
 					{
 						lastSeen[qMakePair(protocol, uin)] = dateTime;
 						// wystarczy, że kontakt jest na jednym koncie, omijamy resztę

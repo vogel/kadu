@@ -395,7 +395,7 @@ void GaduProtocol::sendUserList()
 	QVector<Contact> contactsToSend;
 
 	foreach (const Contact &contact, contacts)
-		if (!contact.ownerBuddy().isAnonymous())
+		if (!contact.isAnonymous())
 			contactsToSend.append(contact);
 
 	ContactListHandler->setUpContactList(contactsToSend);
@@ -404,12 +404,12 @@ void GaduProtocol::sendUserList()
 void GaduProtocol::socketContactStatusChanged(UinType uin, unsigned int status, const QString &description, unsigned int maxImageSize)
 {
 	Contact contact = ContactManager::instance()->byId(account(), QString::number(uin), ActionReturnNull);
-	Buddy buddy = contact.ownerBuddy();
 
-	if (buddy.isAnonymous())
+	if (contact.isAnonymous())
 	{
 		kdebugmf(KDEBUG_INFO, "buddy %u not in list. Damned server!\n", uin);
-		emit userStatusChangeIgnored(buddy);
+		if (contact.ownerBuddy())
+			emit userStatusChangeIgnored(contact.ownerBuddy());
 		ContactListHandler->updateContactEntry(contact);
 		return;
 	}

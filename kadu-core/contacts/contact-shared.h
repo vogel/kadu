@@ -115,6 +115,8 @@ public:
 	KaduShared_Property(short int, maximumImageSize, MaximumImageSize)
 	KaduShared_Property(quint16, unreadMessagesCount, UnreadMessagesCount)
 
+	bool isAnonymous();
+
 signals:
 	void aboutToBeDetached();
 	void detached(const Buddy &previousBuddy, bool reattaching);

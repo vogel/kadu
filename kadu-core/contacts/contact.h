@@ -79,6 +79,7 @@ public:
 	KaduSharedBase_PropertyCRW(QString, dnsName, DnsName)
 	KaduSharedBase_Property(short int, maximumImageSize, MaximumImageSize)
 	KaduSharedBase_Property(quint16, unreadMessagesCount, UnreadMessagesCount)
+	KaduSharedBase_PropertyBoolRead(Anonymous)
 
 };
 

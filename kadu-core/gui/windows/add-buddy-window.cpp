@@ -392,7 +392,7 @@ void AddBuddyWindow::validateData()
 	}
 
 	Contact contact = ContactManager::instance()->byId(account, UserNameEdit->text(), ActionReturnNull);
-	if (contact && contact.ownerBuddy() && !contact.ownerBuddy().isAnonymous())
+	if (!contact.isAnonymous())
 	{
 		displayErrorMessage(tr("This contact is already available as <i>%1</i>").arg(contact.ownerBuddy().display()));
 		return;

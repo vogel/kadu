@@ -200,7 +200,7 @@ Buddy BuddyManager::byContact(Contact contact, NotFoundAction action)
 	if (contact.isNull())
 		return Buddy::null;
 
-	if (ActionReturnNull == action || !contact.ownerBuddy().isAnonymous())
+	if (ActionReturnNull == action || !contact.isAnonymous())
 		return contact.ownerBuddy();
 
 	if (!contact.ownerBuddy())

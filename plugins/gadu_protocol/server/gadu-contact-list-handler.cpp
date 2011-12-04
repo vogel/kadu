@@ -36,11 +36,10 @@
 
 int GaduContactListHandler::notifyTypeFromContact(const Contact &contact)
 {
-	Buddy buddy = contact.ownerBuddy();
-
-	if (buddy.isAnonymous())
+	if (contact.isAnonymous())
 		return 0;
 
+	Buddy buddy = contact.ownerBuddy();
 	int result = 0x01; // GG_USER_BUDDY
 	if (!buddy.isOfflineTo())
 		result |= 0x02; // GG_USER_FRIEND

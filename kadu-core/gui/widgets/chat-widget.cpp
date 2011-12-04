@@ -354,7 +354,7 @@ void ChatWidget::refreshTitle()
 
 		if (ChatConfigurationHolder::instance()->chatContents().isEmpty())
 		{
-			if (contact.ownerBuddy().isAnonymous())
+			if (contact.isAnonymous())
 				title = Parser::parse(tr("Chat with ") + "%a", Talkable(contact), false);
 			else
 				title = Parser::parse(tr("Chat with ") + "%a (%s[: %d])", Talkable(contact), false);

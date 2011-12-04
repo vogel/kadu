@@ -302,7 +302,7 @@ void JabberProtocol::clientAvailableResourceReceived(const XMPP::Jid &jid, const
 void JabberProtocol::clientUnavailableResourceReceived(const XMPP::Jid &jid, const XMPP::Resource &resource)
 {
   	kdebug("New resource unavailable for %s\n", jid.full().toUtf8().constData());
-	
+
 	XMPP::Resource bestResource = resourcePool()->bestResource(jid);
 
 	bool notify = bestResource.name() == resource.name();
@@ -375,10 +375,10 @@ void JabberProtocol::contactUpdated(Contact contact)
 	if (!isConnected() || contact.contactAccount() != account())
 		return;
 
-	Buddy buddy = contact.ownerBuddy();
-	if (buddy.isAnonymous())
+	if (contact.isAnonymous())
 		return;
 
+	Buddy buddy = contact.ownerBuddy();
 	QStringList groupsList;
 	foreach (const Group &group, buddy.groups())
 		groupsList.append(group.name());
