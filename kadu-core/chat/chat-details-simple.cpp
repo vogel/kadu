@@ -146,9 +146,7 @@ ContactSet ChatDetailsSimple::contacts() const
  */
 QString ChatDetailsSimple::name() const
 {
-	if (CurrentContact.isNull())
-		return QString();
-	return BuddyManager::instance()->byContact(CurrentContact, ActionCreateAndAdd).display();
+	return CurrentContact.display(true);
 }
 
 /**

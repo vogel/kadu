@@ -98,7 +98,7 @@ void JabberSubscriptionService::subscription(const XMPP::Jid &jid, const QString
 		else
 			authorizeContact(contact, MessageDialog::ask(KaduIcon("dialog-question"), tr("Kadu - authorize user?"), tr("The user %1 (%2) is asking for subscription from you. "
 						   "He will be able to view your online/offline status. "
-						   "Do you want to authorize the contact?").arg(contact.ownerBuddy().display(), jid.full())));
+						   "Do you want to authorize the contact?").arg(contact.display(true), jid.full())));
 	}
 }
 

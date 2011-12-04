@@ -81,7 +81,7 @@ InfosDialog::InfosDialog(const LastSeen &lastSeen, QWidget *parent) :
 			ip = contact.address().toString();
 
 		QStringList labels;
-		labels << contact.ownerBuddy().display()
+		labels << contact.display(true)
 				<< contact.contactAccount().protocolName()
 				<< contact.id()
 				<< contact.ownerBuddy().nickName()

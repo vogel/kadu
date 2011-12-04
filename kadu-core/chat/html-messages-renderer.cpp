@@ -176,7 +176,7 @@ void HtmlMessagesRenderer::messageStatusChanged(Message message, MessageStatus s
 
 void HtmlMessagesRenderer::contactActivityChanged(ChatStateService::ContactActivity state, const Contact &contact)
 {
-	QString display = contact.ownerBuddy().display();
+	QString display = contact.display(true);
 	QString message;
 	switch (state)
 	{

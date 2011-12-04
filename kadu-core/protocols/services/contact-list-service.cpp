@@ -62,7 +62,7 @@ bool ContactListService::askForAddingContacts(const QMap<Buddy, Contact> &contac
 	{
 		QStringList contactsToRenameStrings;
 		for (QMap<Buddy, Contact>::const_iterator i = contactsToRename.constBegin(); i != contactsToRename.constEnd(); i++)
-			contactsToRenameStrings.append(i.value().ownerBuddy().display() + " (" + i.value().id() + ") -> " + i.key().display());
+			contactsToRenameStrings.append(i.value().display(true) + " (" + i.value().id() + ") -> " + i.key().display());
 
 		if (contactsToAdd.isEmpty())
 			questionString += tr("The following contacts from your local list are present on the server under different names:<br/>"
@@ -214,7 +214,7 @@ void ContactListService::setBuddiesList(const BuddyList &buddies, bool removeOld
 		}
 		else
 		{
-			contactsList.append(i->ownerBuddy().display() + " (" + i->id() + ')');
+			contactsList.append(i->display(true) + " (" + i->id() + ')');
 			++i;
 		}
 	}

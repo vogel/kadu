@@ -149,8 +149,7 @@ void EncryptionProviderManager::releaseEncryptor(const Chat &chat, Encryptor *en
 // I know it is not best place for invoking gui, please change it in future
 void EncryptionProviderManager::keyReceived(const Contact &contact, const QString &keyType, const QByteArray &keyData)
 {
-	Buddy buddy = BuddyManager::instance()->byContact(contact, ActionReturnNull);
-	if (!buddy)
+	if (contact.isAnonymous())
 		return; // just ignore anonymous contacts
 
 	Key key = KeysManager::instance()->byContactAndType(contact, keyType, ActionReturnNull);
@@ -158,7 +157,7 @@ void EncryptionProviderManager::keyReceived(const Contact &contact, const QStrin
 	if (key && key.key() == keyData)
 		return;
 
-	QString question = tr("Buddy %1 is sending you his public key.\nDo you want to save it?").arg(buddy.display());
+	QString question = tr("Buddy %1 is sending you his public key.\nDo you want to save it?").arg(contact.display(true));
 	bool answer = MessageDialog::ask(KaduIcon("dialog-question"), tr("Encryption"), question);
 
 	if (answer)

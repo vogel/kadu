@@ -404,6 +404,16 @@ bool ContactShared::isAnonymous()
 	return OwnerBuddy->isAnonymous();
 }
 
+QString ContactShared::display(bool useBuddyData)
+{
+	ensureLoaded();
+
+	if (!useBuddyData || !OwnerBuddy || !(*OwnerBuddy) || OwnerBuddy->display().isEmpty())
+		return Id;
+
+	return OwnerBuddy->display();
+}
+
 KaduShared_PropertyPtrReadDef(ContactShared, Account, contactAccount, ContactAccount)
 KaduShared_PropertyPtrReadDef(ContactShared, Avatar, contactAvatar, ContactAvatar)
 KaduShared_PropertyPtrReadDef(ContactShared, Buddy, ownerBuddy, OwnerBuddy)

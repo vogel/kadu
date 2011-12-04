@@ -60,6 +60,8 @@ public:
 	Contact(const Contact &copy);
 	virtual ~Contact();
 
+	QString display(bool useBuddyData) const;
+
 	void removeOwnerBuddy() const;
 
 	KaduSharedBase_PropertyRead(ContactDetails *, details, Details)

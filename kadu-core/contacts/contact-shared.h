@@ -116,6 +116,7 @@ public:
 	KaduShared_Property(quint16, unreadMessagesCount, UnreadMessagesCount)
 
 	bool isAnonymous();
+	QString display(bool useBuddyData);
 
 signals:
 	void aboutToBeDetached();

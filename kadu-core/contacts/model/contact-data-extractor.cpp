@@ -40,9 +40,7 @@ QVariant ContactDataExtractor::data(const Contact &contact, int role, bool useBu
 	switch (role)
 	{
 		case Qt::DisplayRole:
-			return useBuddyData
-					? contact.ownerBuddy().display()
-					: contact.id();
+			return contact.display(useBuddyData);
 		case Qt::DecorationRole:
 		{
 			if (contact.ownerBuddy().isBlocked())

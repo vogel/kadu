@@ -92,7 +92,7 @@ void EncryptionNgNotification::notifyPublicKeySent(Contact contact)
 {
 	EncryptionNgNotification *notification = new EncryptionNgNotification("encryption-ng/publicKeySent");
 	notification->setTitle(tr("Encryption"));
-	notification->setText(tr("Public key has been send to: %1 (%2)").arg(contact.ownerBuddy().display()).arg(contact.id()));
+	notification->setText(tr("Public key has been send to: %1 (%2)").arg(contact.display(true)).arg(contact.id()));
 	NotificationManager::instance()->notify(notification);
 }
 
@@ -100,7 +100,7 @@ void EncryptionNgNotification::notifyPublicKeySendError(Contact contact, const Q
 {
 	EncryptionNgNotification *notification = new EncryptionNgNotification("encryption-ng/publicKeySendError");
 	notification->setTitle(tr("Encryption"));
-	notification->setText(tr("Error sending public key to: %1 (%2)").arg(contact.ownerBuddy().display()).arg(contact.id()));
+	notification->setText(tr("Error sending public key to: %1 (%2)").arg(contact.display(true)).arg(contact.id()));
 	notification->setDetails(error);
 	NotificationManager::instance()->notify(notification);
 }

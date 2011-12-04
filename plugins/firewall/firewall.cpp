@@ -519,7 +519,7 @@ void Firewall::writeLog(const Contact &contact, const QString &message)
 
 	logFile.open(QIODevice::WriteOnly | QIODevice::Append);
 	QTextStream stream(&logFile);
-	stream << QDateTime::currentDateTime().toString() << " :: " << contact.ownerBuddy().display() << " :: " << message << "\n";
+	stream << QDateTime::currentDateTime().toString() << " :: " << contact.display(true) << " :: " << message << "\n";
 	logFile.close();
 
 	kdebugf2();

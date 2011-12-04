@@ -78,6 +78,14 @@ Contact::~Contact()
 {
 }
 
+QString Contact::display(bool useBuddyData) const
+{
+	if (data())
+		return data()->display(useBuddyData);
+
+	return QString();
+}
+
 void Contact::removeOwnerBuddy() const
 {
 	if (data())

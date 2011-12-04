@@ -408,7 +408,7 @@ QString AdiumChatStyleEngine::replaceKeywords(const QString &styleHref, const QS
 	Message msg = message->message();
 
 	// Replace sender (contact nick)
-	result.replace(QString("%sender%"), BuddyManager::instance()->byContact(msg.messageSender(), ActionCreateAndAdd).display());
+	result.replace(QString("%sender%"), msg.messageSender().display(true));
 	// Replace %screenName% (contact ID)
 	result.replace(QString("%senderScreenName%"), msg.messageSender().id());
 	// Replace service name (protocol name)

@@ -234,7 +234,7 @@ static FormattedMessagePart imagePart(Account account, Contact contact, const gg
 					"Buddy %1 is attempting to send you an image of %2 KiB in size.\n"
 					"This exceeds your configured limits.\n"
 					"Do you want to accept this image anyway?")
-					.arg(contact.ownerBuddy().display()).arg((size + 1023) / 1024);
+					.arg(contact.display(true)).arg((size + 1023) / 1024);
 			allow = MessageDialog::ask(
 					KaduIcon("dialog-question"),
 					qApp->translate("@default", "Kadu") + " - " + qApp->translate("@default", "Incoming Image"),

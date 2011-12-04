@@ -191,7 +191,7 @@ void IndicatorDocking::notify(Notification *notification)
 			else
 			{
 				Contact contact = *chat.contacts().constBegin();
-				indicator->setNameProperty(contact.ownerBuddy().display());
+				indicator->setNameProperty(contact.display(true));
 
 				Avatar avatar = contact.contactAvatar();
 				if (avatar && !avatar.pixmap().isNull())
