@@ -35,7 +35,6 @@
 #include "accounts/account.h"
 #include "buddies/buddy-kadu-data.h"
 #include "buddies/buddy-manager.h"
-#include "buddies/filter/blocked-buddy-filter.h"
 #include "buddies/filter/has-description-buddy-filter.h"
 #include "buddies/filter/offline-buddy-filter.h"
 #include "buddies/filter/online-and-description-buddy-filter.h"
@@ -73,6 +72,7 @@
 #include "parser/parser.h"
 #include "protocols/protocol.h"
 #include "status/status-container-manager.h"
+#include "talkable/filter/blocked-talkable-filter.h"
 #include "talkable/model/talkable-model.h"
 #include "talkable/model/talkable-proxy-model.h"
 #include "url-handlers/url-handler-manager.h"
@@ -463,13 +463,13 @@ void KaduWindowActions::showBlockedActionCreated(Action *action)
 		return;
 
 	bool enabled = config_file.readBoolEntry("General", "ShowBlocked");
-	BlockedBuddyFilter *ibf = new BlockedBuddyFilter(action);
-	ibf->setEnabled(!enabled);
+	BlockedTalkableFilter *blockedTalkableFilter = new BlockedTalkableFilter(action);
+	blockedTalkableFilter->setEnabled(!enabled);
 
-	action->setData(QVariant::fromValue(ibf));
+	action->setData(QVariant::fromValue(blockedTalkableFilter));
 	action->setChecked(enabled);
 
-	window->talkableProxyModel()->addFilter(ibf);
+	window->talkableProxyModel()->addFilter(blockedTalkableFilter);
 }
 
 void KaduWindowActions::showMyselfActionCreated(Action *action)
@@ -660,10 +660,10 @@ void KaduWindowActions::showInfoPanelActionActivated(QAction *sender, bool toggl
 void KaduWindowActions::showBlockedActionActivated(QAction *sender, bool toggled)
 {
 	QVariant v = sender->data();
-	if (v.canConvert<BlockedBuddyFilter *>())
+	if (v.canConvert<BlockedTalkableFilter *>())
 	{
-		BlockedBuddyFilter *bbf = v.value<BlockedBuddyFilter *>();
-		bbf->setEnabled(!toggled);
+		BlockedTalkableFilter *blockedTalkableFilter = v.value<BlockedTalkableFilter *>();
+		blockedTalkableFilter->setEnabled(!toggled);
 		config_file.writeEntry("General", "ShowBlocked", toggled);
 	}
 }

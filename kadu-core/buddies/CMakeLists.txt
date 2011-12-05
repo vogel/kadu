@@ -14,7 +14,6 @@ set (buddies_SRCS
 	group-manager.cpp
 	group-shared.cpp
 
-	filter/blocked-buddy-filter.cpp
 	filter/buddy-name-filter.cpp
 	filter/has-description-buddy-filter.cpp
 	filter/mobile-buddy-filter.cpp
@@ -39,7 +38,6 @@ set (buddies_MOC_SRCS
 	group-shared.h
 
 	filter/abstract-buddy-filter.h
-	filter/blocked-buddy-filter.h
 	filter/buddy-name-filter.h
 	filter/has-description-buddy-filter.h
 	filter/mobile-buddy-filter.h
