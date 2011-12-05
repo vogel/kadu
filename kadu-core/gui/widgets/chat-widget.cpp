@@ -46,7 +46,6 @@
 #include "accounts/account.h"
 #include "buddies/buddy-set.h"
 #include "buddies/buddy.h"
-#include "buddies/filter/buddy-name-filter.h"
 #include "buddies/model/buddy-list-model.h"
 #include "chat/chat-geometry-data.h"
 #include "chat/chat-manager.h"
@@ -76,6 +75,7 @@
 #include "model/model-chain.h"
 #include "parser/parser.h"
 #include "protocols/protocol.h"
+#include "talkable/filter/name-talkable-filter.h"
 #include "talkable/model/talkable-proxy-model.h"
 
 #include "icons/icons-manager.h"
@@ -220,7 +220,7 @@ void ChatWidget::createContactsList()
 	ModelChain *chain = new ModelChain(new ContactListModel(CurrentChat.contacts().toContactVector(), this), this);
 	ProxyModel = new TalkableProxyModel(chain);
 
-	BuddyNameFilter *nameFilter = new BuddyNameFilter(ProxyModel);
+	NameTalkableFilter *nameFilter = new NameTalkableFilter(NameTalkableFilter::UndecidedMatching, ProxyModel);
 	connect(BuddiesWidget, SIGNAL(filterChanged(QString)), nameFilter, SLOT(setName(QString)));
 
 	ProxyModel->addFilter(nameFilter);

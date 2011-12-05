@@ -23,13 +23,13 @@
 #include <QtGui/QLineEdit>
 
 #include "buddies/buddy-manager.h"
-#include "buddies/filter/buddy-name-filter.h"
 #include "buddies/model/buddies-model.h"
 #include "gui/widgets/filter-widget.h"
 #include "gui/widgets/talkable-tree-view.h"
 #include "model/model-chain.h"
 #include "model/roles.h"
 #include "talkable/filter/hide-anonymous-talkable-filter.h"
+#include "talkable/filter/name-talkable-filter.h"
 #include "talkable/model/talkable-proxy-model.h"
 
 #include "select-buddy-popup.h"
@@ -49,7 +49,7 @@ SelectBuddyPopup::SelectBuddyPopup(QWidget *parent) :
 	HideAnonymousTalkableFilter *hideAnonymousFilter = new HideAnonymousTalkableFilter(ProxyModel);
 	ProxyModel->addFilter(hideAnonymousFilter);
 
-	BuddyNameFilter *nameFilter = new BuddyNameFilter(ProxyModel);
+	NameTalkableFilter *nameFilter = new NameTalkableFilter(NameTalkableFilter::UndecidedMatching, ProxyModel);
 	connect(this, SIGNAL(filterChanged(QString)), nameFilter, SLOT(setName(QString)));
 
 	ProxyModel->addFilter(nameFilter);
@@ -63,8 +63,6 @@ SelectBuddyPopup::SelectBuddyPopup(QWidget *parent) :
 	View->setRootIsDecorated(false);
 	View->setShowAccountName(false);
 	View->setSelectionMode(QAbstractItemView::SingleSelection);
-
-	nameFilter->setIgnoreNextFilters(false);
 }
 
 SelectBuddyPopup::~SelectBuddyPopup()

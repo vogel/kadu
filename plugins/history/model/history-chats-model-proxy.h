@@ -31,16 +31,16 @@
 class AbstractBuddyFilter;
 class Buddy;
 class Chat;
-class ChatFilter;
 class ChatType;
 class HistoryChatsModel;
+class TalkableFilter;
 
 class HistoryChatsModelProxy : public QSortFilterProxyModel
 {
 	Q_OBJECT
 
 	HistoryChatsModel *Model;
-	QList<ChatFilter *> ChatFilters;
+	QList<TalkableFilter *> TalkableFilters;
 	QList<AbstractBuddyFilter *> BuddyFilters;
 
 	bool BrokenStringCompare;
@@ -55,8 +55,8 @@ public:
 
 	virtual void setSourceModel(QAbstractItemModel *sourceModel);
 
-	void addChatFilter(ChatFilter *filter);
-	void removeChatFilter(ChatFilter *filter);
+	void addTalkableFilter(TalkableFilter *filter);
+	void removeTalkableFilter(TalkableFilter *filter);
 
 	void addBuddyFilter(AbstractBuddyFilter *filter);
 	void removeBuddyFilter(AbstractBuddyFilter *filter);

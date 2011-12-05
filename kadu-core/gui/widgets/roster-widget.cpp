@@ -170,7 +170,7 @@ ModelChain * RosterWidget::createModelChain()
 	ProxyModel->addFilter(new UnreadMessagesTalkableFilter(ProxyModel));
 	ProxyModel->addFilter(new HideAnonymousTalkableFilter(ProxyModel));
 
-	NameTalkableFilter *nameTalkableFilter = new NameTalkableFilter(ProxyModel);
+	NameTalkableFilter *nameTalkableFilter = new NameTalkableFilter(NameTalkableFilter::AcceptMatching, ProxyModel);
 	connect(TalkableWidget, SIGNAL(filterChanged(QString)), nameTalkableFilter, SLOT(setName(QString)));
 	ProxyModel->addFilter(nameTalkableFilter);
 

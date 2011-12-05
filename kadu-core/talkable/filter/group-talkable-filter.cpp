@@ -23,7 +23,7 @@
 #include "group-talkable-filter.h"
 
 GroupTalkableFilter::GroupTalkableFilter(QObject *parent) :
-		TalkableFilter(parent)
+		TalkableFilter(parent), AllGroupShown(true)
 {
 }
 

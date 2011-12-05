@@ -26,10 +26,25 @@ class NameTalkableFilter : public TalkableFilter
 {
 	Q_OBJECT
 
+public:
+	enum NameFilterMatchingMode
+	{
+		AcceptMatching,
+		UndecidedMatching
+	};
+
+private:
+	NameFilterMatchingMode Mode;
 	QString Name;
 
+	bool matches(const Chat &chat);
+	bool matches(const Buddy &buddy);
+	bool matches(const Contact &contact);
+
+	FilterResult computeResult(bool matched);
+
 public:
-	explicit NameTalkableFilter(QObject *parent = 0);
+	explicit NameTalkableFilter(NameFilterMatchingMode mode, QObject *parent = 0);
 	virtual ~NameTalkableFilter();
 
 	virtual FilterResult filterChat(const Chat &chat);

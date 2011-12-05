@@ -37,13 +37,12 @@
 #include "history_exports.h"
 
 class BaseActionContext;
-class BuddyNameFilter;
 class BuddyStatusDatesModel;
 class ChatDatesModel;
-class ChatNameFilter;
 class HistoryChatsModel;
 class HistoryChatsModelProxy;
 class HistoryTreeItem;
+class NameTalkableFilter;
 class SmsDatesModel;
 class TimedStatus;
 
@@ -63,8 +62,7 @@ class HistoryWindow : public MainWindow
 	QTreeView *DetailsListView;
 	HistoryChatsModel *ChatsModel;
 	HistoryChatsModelProxy *ChatsModelProxy;
-	BuddyNameFilter *StatusBuddyNameFilter;
-	ChatNameFilter *NameFilter;
+	NameTalkableFilter *StatusBuddyNameFilter;
 
 	ChatDatesModel *MyChatDatesModel;
 	BuddyStatusDatesModel *MyBuddyStatusDatesModel;

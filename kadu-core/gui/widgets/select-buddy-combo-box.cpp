@@ -23,7 +23,6 @@
 
 #include <QtGui/QAction>
 
-#include "buddies/filter/buddy-name-filter.h"
 #include "buddies/model/buddies-model.h"
 #include "gui/widgets/select-buddy-popup.h"
 #include "gui/widgets/talkable-tree-view.h"
