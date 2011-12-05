@@ -35,7 +35,6 @@
 #include "accounts/account.h"
 #include "buddies/buddy-kadu-data.h"
 #include "buddies/buddy-manager.h"
-#include "buddies/filter/has-description-buddy-filter.h"
 #include "buddies/filter/offline-buddy-filter.h"
 #include "buddies/filter/online-and-description-buddy-filter.h"
 #include "buddies/group-manager.h"
@@ -73,6 +72,7 @@
 #include "protocols/protocol.h"
 #include "status/status-container-manager.h"
 #include "talkable/filter/blocked-talkable-filter.h"
+#include "talkable/filter/hide-buddies-without-description-talkable-filter.h"
 #include "talkable/model/talkable-model.h"
 #include "talkable/model/talkable-proxy-model.h"
 #include "url-handlers/url-handler-manager.h"
@@ -416,13 +416,13 @@ void KaduWindowActions::descriptionUsersActionCreated(Action *action)
 		return;
 
 	bool enabled = !config_file.readBoolEntry("General", "ShowWithoutDescription");
-	HasDescriptionBuddyFilter *hdcf = new HasDescriptionBuddyFilter(action);
-	hdcf->setEnabled(enabled);
+	HideBuddiesWithoutDescriptionTalkableFilter *filter = new HideBuddiesWithoutDescriptionTalkableFilter(action);
+	filter->setEnabled(enabled);
 
-	action->setData(QVariant::fromValue(hdcf));
+	action->setData(QVariant::fromValue(filter));
 	action->setChecked(enabled);
 
-	window->talkableProxyModel()->addFilter(hdcf);
+	window->talkableProxyModel()->addFilter(filter);
 }
 
 void KaduWindowActions::showDescriptionsActionCreated(Action *action)
@@ -844,10 +844,10 @@ void KaduWindowActions::inactiveUsersActionActivated(QAction *sender, bool toggl
 void KaduWindowActions::descriptionUsersActionActivated(QAction *sender, bool toggled)
 {
 	QVariant v = sender->data();
-	if (v.canConvert<HasDescriptionBuddyFilter *>())
+	if (v.canConvert<HideBuddiesWithoutDescriptionTalkableFilter *>())
 	{
-		HasDescriptionBuddyFilter *hdcf = v.value<HasDescriptionBuddyFilter *>();
-		hdcf->setEnabled(toggled);
+		HideBuddiesWithoutDescriptionTalkableFilter *filter = v.value<HideBuddiesWithoutDescriptionTalkableFilter *>();
+		filter->setEnabled(toggled);
 	}
 }
 
