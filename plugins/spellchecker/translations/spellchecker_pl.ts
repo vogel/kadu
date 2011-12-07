@@ -59,6 +59,14 @@
         <translation>Kadu</translation>
     </message>
     <message>
+        <source>Could not find dictionary for %1 language.</source>
+        <translation>Nie można znaleźć słownika dla języka %1.</translation>
+    </message>
+    <message>
+        <source>Details: %1.</source>
+        <translation>Szczegóły: %1.</translation>
+    </message>
+    <message>
         <source>Move to &apos;Checked&apos;</source>
         <translation>Przenieś do &apos;Sprawdzane&apos;</translation>
     </message>

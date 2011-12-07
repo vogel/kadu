@@ -59,6 +59,14 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Could not find dictionary for %1 language.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Details: %1.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Move to &apos;Checked&apos;</source>
         <translation type="unfinished"></translation>
     </message>

@@ -152,18 +152,21 @@ bool SpellChecker::addCheckedLang(const QString &name)
 	if (MyCheckers.contains(name))
 		return true;
 
+	bool ok = true;
+	const char *errorMsg = 0;
+
 #if defined(HAVE_ASPELL)
 	aspell_config_replace(SpellConfig, "lang", name.toAscii().constData());
 
 	// create spell checker using prepared configuration
 	AspellCanHaveError *possibleErr = new_aspell_speller(SpellConfig);
-	if (aspell_error_number(possibleErr) != 0)
-	{
-		MessageDialog::show(KaduIcon("dialog-error"), tr("Kadu"), aspell_error_message(possibleErr));
-		return false;
-	}
-	else
+	if (aspell_error_number(possibleErr) == 0)
 		MyCheckers.insert(name, to_aspell_speller(possibleErr));
+	else
+	{
+		errorMsg = aspell_error_message(possibleErr);
+		ok = false;
+	}
 #elif defined(HAVE_ENCHANT)
 	try
 	{
@@ -171,12 +174,19 @@ bool SpellChecker::addCheckedLang(const QString &name)
 	}
 	catch (enchant::Exception &e)
 	{
-		MessageDialog::show(KaduIcon("dialog-error"), tr("Kadu"), e.what());
-		return false;
+		errorMsg = e.what();
+		ok = false;
 	}
 #elif defined(Q_WS_MAC)
 	MyCheckers.insert(name, new MacSpellChecker());
 #endif
+
+	if (!ok)
+	{
+		MessageDialog::show(KaduIcon("dialog-error"), tr("Kadu"), tr("Could not find dictionary for %1 language.").arg(name)
+				+ (qstrlen(errorMsg) > 0 ? tr("Details: %1.").arg(errorMsg) : QString()));
+		return false;
+	}
 
 	if (MyCheckers.size() == 1)
 		foreach (ChatWidget *chat, ChatWidgetManager::instance()->chats())
