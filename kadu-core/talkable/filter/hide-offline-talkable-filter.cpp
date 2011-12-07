@@ -34,6 +34,9 @@ HideOfflineTalkableFilter::~HideOfflineTalkableFilter()
 
 TalkableFilter::FilterResult HideOfflineTalkableFilter::filterBuddy(const Buddy &buddy)
 {
+	if (!Enabled)
+		return Undecided;
+
 	const Contact &contact = BuddyPreferredManager::instance()->preferredContact(buddy, false);
 	if (!contact)
 		return Rejected;
