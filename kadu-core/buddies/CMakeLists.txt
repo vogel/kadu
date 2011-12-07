@@ -14,8 +14,6 @@ set (buddies_SRCS
 	group-manager.cpp
 	group-shared.cpp
 
-	filter/online-and-description-buddy-filter.cpp
-
 	model/buddy-data-extractor.cpp
 	model/buddy-list-model.cpp
 	model/buddies-model.cpp
@@ -33,7 +31,6 @@ set (buddies_MOC_SRCS
 	group-shared.h
 
 	filter/abstract-buddy-filter.h
-	filter/online-and-description-buddy-filter.h
 
 	model/buddy-list-model.h
 	model/buddies-model.h

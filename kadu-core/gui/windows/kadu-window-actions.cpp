@@ -35,7 +35,6 @@
 #include "accounts/account.h"
 #include "buddies/buddy-kadu-data.h"
 #include "buddies/buddy-manager.h"
-#include "buddies/filter/online-and-description-buddy-filter.h"
 #include "buddies/group-manager.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact.h"
@@ -73,6 +72,7 @@
 #include "talkable/filter/blocked-talkable-filter.h"
 #include "talkable/filter/hide-buddies-without-description-talkable-filter.h"
 #include "talkable/filter/hide-offline-talkable-filter.h"
+#include "talkable/filter/hide-offline-without-description-talkable-filter.h"
 #include "talkable/model/talkable-model.h"
 #include "talkable/model/talkable-proxy-model.h"
 #include "url-handlers/url-handler-manager.h"
@@ -440,13 +440,13 @@ void KaduWindowActions::onlineAndDescUsersActionCreated(Action *action)
 		return;
 
 	bool enabled = config_file.readBoolEntry("General", "ShowOnlineAndDescription");
-	OnlineAndDescriptionBuddyFilter *oadcf = new OnlineAndDescriptionBuddyFilter(action);
-	oadcf->setEnabled(enabled);
+	HideOfflineWithoutDescriptionTalkableFilter *filter = new HideOfflineWithoutDescriptionTalkableFilter(action);
+	filter->setEnabled(enabled);
 
-	action->setData(QVariant::fromValue(oadcf));
+	action->setData(QVariant::fromValue(filter));
 	action->setChecked(enabled);
 
-	window->talkableProxyModel()->addFilter(oadcf);
+	window->talkableProxyModel()->addFilter(filter);
 }
 
 void KaduWindowActions::showInfoPanelActionCreated(Action *action)
@@ -864,10 +864,10 @@ void KaduWindowActions::onlineAndDescUsersActionActivated(QAction *sender, bool 
 	config_file.writeEntry("General", "ShowOnlineAndDescription", toggled);
 
 	QVariant v = sender->data();
-	if (v.canConvert<OnlineAndDescriptionBuddyFilter *>())
+	if (v.canConvert<HideOfflineWithoutDescriptionTalkableFilter *>())
 	{
-		OnlineAndDescriptionBuddyFilter *oadcf = v.value<OnlineAndDescriptionBuddyFilter *>();
-		oadcf->setEnabled(toggled);
+		HideOfflineWithoutDescriptionTalkableFilter *filter = v.value<HideOfflineWithoutDescriptionTalkableFilter *>();
+		filter->setEnabled(toggled);
 	}
 }
 

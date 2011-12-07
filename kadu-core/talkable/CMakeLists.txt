@@ -6,6 +6,7 @@ set (talkable_SRCS
 	filter/hide-anonymous-talkable-filter.cpp
 	filter/hide-buddies-without-description-talkable-filter.cpp
 	filter/hide-offline-talkable-filter.cpp
+	filter/hide-offline-without-description-talkable-filter.cpp
 	filter/hide-simple-chats-talkable-filter.cpp
 	filter/mobile-talkable-filter.cpp
 	filter/name-talkable-filter.cpp
@@ -27,6 +28,7 @@ set (talkable_MOC_SRCS
 	filter/hide-anonymous-talkable-filter.h
 	filter/hide-buddies-without-description-talkable-filter.h
 	filter/hide-offline-talkable-filter.h
+	filter/hide-offline-without-description-talkable-filter.h
 	filter/hide-simple-chats-talkable-filter.h
 	filter/mobile-talkable-filter.h
 	filter/name-talkable-filter.h
