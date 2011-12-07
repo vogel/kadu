@@ -1,11 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2008, 2010, 2011 Piotr Galiszewski (piotr.galiszewski@kadu.im)
- * Copyright 2008 Michał Podsiadlik (michal@kadu.net)
- * Copyright 2009 Bartłomiej Zimoń (uzi18@o2.pl)
- * Copyright 2004 Adrian Smarzewski (adrian@kadu.net)
- * Copyright 2007, 2008, 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
- * Copyright 2004, 2006 Marcin Ślusarz (joi@kadu.net)
+ * Copyright 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -22,27 +17,30 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef OFFLINE_BUDDY_FILTER_H
-#define OFFLINE_BUDDY_FILTER_H
+#ifndef HIDE_OFFLINE_TALKABLE_FILTER_H
+#define HIDE_OFFLINE_TALKABLE_FILTER_H
 
 #include <QtCore/QMetaType>
 
-#include "abstract-buddy-filter.h"
+#include "talkable/filter/talkable-filter.h"
 
-class OfflineBuddyFilter : public AbstractBuddyFilter
+class HideOfflineTalkableFilter : public TalkableFilter
 {
 	Q_OBJECT
 
 	bool Enabled;
 
 public:
-	OfflineBuddyFilter(QObject *parent = 0);
+	explicit HideOfflineTalkableFilter(QObject *parent = 0);
+	virtual ~HideOfflineTalkableFilter();
+
+	virtual FilterResult filterBuddy(const Buddy &buddy);
+	virtual FilterResult filterContact(const Contact &contact);
 
 	void setEnabled(bool enabled);
-	virtual bool acceptBuddy(const Buddy &buddy);
 
 };
 
-Q_DECLARE_METATYPE(OfflineBuddyFilter *)
+Q_DECLARE_METATYPE(HideOfflineTalkableFilter *)
 
-#endif // OFFLINE_BUDDY_FILTER_H
+#endif // HIDE_OFFLINE_TALKABLE_FILTER_H

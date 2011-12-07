@@ -35,7 +35,6 @@
 #include "accounts/account.h"
 #include "buddies/buddy-kadu-data.h"
 #include "buddies/buddy-manager.h"
-#include "buddies/filter/offline-buddy-filter.h"
 #include "buddies/filter/online-and-description-buddy-filter.h"
 #include "buddies/group-manager.h"
 #include "configuration/configuration-file.h"
@@ -73,6 +72,7 @@
 #include "status/status-container-manager.h"
 #include "talkable/filter/blocked-talkable-filter.h"
 #include "talkable/filter/hide-buddies-without-description-talkable-filter.h"
+#include "talkable/filter/hide-offline-talkable-filter.h"
 #include "talkable/model/talkable-model.h"
 #include "talkable/model/talkable-proxy-model.h"
 #include "url-handlers/url-handler-manager.h"
@@ -398,13 +398,13 @@ void KaduWindowActions::inactiveUsersActionCreated(Action *action)
 		return;
 
 	bool enabled = config_file.readBoolEntry("General", "ShowOffline");
-	OfflineBuddyFilter *ofcf = new OfflineBuddyFilter(action);
-	ofcf->setEnabled(!enabled);
+	HideOfflineTalkableFilter *filter = new HideOfflineTalkableFilter(action);
+	filter->setEnabled(!enabled);
 
-	action->setData(QVariant::fromValue(ofcf));
+	action->setData(QVariant::fromValue(filter));
 	action->setChecked(enabled);
 
-	window->talkableProxyModel()->addFilter(ofcf);
+	window->talkableProxyModel()->addFilter(filter);
 }
 
 void KaduWindowActions::descriptionUsersActionCreated(Action *action)
@@ -833,10 +833,10 @@ void KaduWindowActions::deleteUserActionActivated(ActionContext *source)
 void KaduWindowActions::inactiveUsersActionActivated(QAction *sender, bool toggled)
 {
 	QVariant v = sender->data();
-	if (v.canConvert<OfflineBuddyFilter *>())
+	if (v.canConvert<HideOfflineTalkableFilter *>())
 	{
-		OfflineBuddyFilter *ofcf = v.value<OfflineBuddyFilter *>();
-		ofcf->setEnabled(!toggled);
+		HideOfflineTalkableFilter *filter = v.value<HideOfflineTalkableFilter *>();
+		filter->setEnabled(!toggled);
 		config_file.writeEntry("General", "ShowOffline", toggled);
 	}
 }
