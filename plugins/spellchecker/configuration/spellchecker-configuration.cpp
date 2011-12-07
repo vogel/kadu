@@ -72,16 +72,31 @@ void SpellcheckerConfiguration::createDefaultConfiguration()
 
 void SpellcheckerConfiguration::configurationUpdated()
 {
-	Bold = config_file.readBoolEntry("ASpell", "Bold", false);
-	Italic = config_file.readBoolEntry("ASpell", "Italic", false);
-	Underline = config_file.readBoolEntry("ASpell", "Underline", false);
-	Accents = config_file.readBoolEntry("ASpell", "Accents", false);
-	Case = config_file.readBoolEntry("ASpell", "Case", false);
-	Suggester = config_file.readBoolEntry("ASpell", "Suggester", true);
+	bool bold = config_file.readBoolEntry("ASpell", "Bold", false);
+	bool italic = config_file.readBoolEntry("ASpell", "Italic", false);
+	bool underline = config_file.readBoolEntry("ASpell", "Underline", false);
+	bool accents = config_file.readBoolEntry("ASpell", "Accents", false);
+	bool caseSensivity = config_file.readBoolEntry("ASpell", "Case", false);
+	bool suggester = config_file.readBoolEntry("ASpell", "Suggester", true);
 	QColor colorMark("#FF0101");
-	Color = config_file.readColorEntry("ASpell", "Color", &colorMark);
-	Checked = config_file.readEntry("ASpell", "Checked", config_file.readEntry("General", "Language")).split(',', QString::SkipEmptyParts);
-	SuggesterWordCount = config_file.readNumEntry("ASpell", "SuggesterWordCount");
+	QColor color = config_file.readColorEntry("ASpell", "Color", &colorMark);
+	QStringList checked = config_file.readEntry("ASpell", "Checked", config_file.readEntry("General", "Language")).split(',', QString::SkipEmptyParts);
+	int suggesterWordCount = config_file.readNumEntry("ASpell", "SuggesterWordCount");
+
+	if (bold == Bold && italic == Italic && underline == Underline && accents == Accents &&
+			caseSensivity == Case && suggester == Suggester && color == Color &&
+			checked == Checked && suggesterWordCount == SuggesterWordCount)
+		return;
+
+	Bold = bold;
+	Italic = italic;
+	Underline = underline;
+	Accents = accents;
+	Case = caseSensivity;
+	Suggester = suggester;
+	Color = color;
+	Checked = checked;
+	SuggesterWordCount = suggesterWordCount;
 
 	SpellCheckerPlugin::instance()->spellChecker()->buildMarkTag();
 	SpellCheckerPlugin::instance()->spellChecker()->buildCheckers();
