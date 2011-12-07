@@ -294,7 +294,7 @@ void SpellChecker::mainConfigurationWindowCreated(MainConfigurationWindow *mainC
 	connect(mainConfigurationWindow, SIGNAL(configurationWindowApplied()),
 			this, SLOT(configurationWindowApplied()));
 
-#if defined(HAVE_ASPELL)
+#if !defined(HAVE_ASPELL)
 	mainConfigurationWindow->widget()->widgetById("spellchecker/ignoreCase")->hide();
 #endif
 
