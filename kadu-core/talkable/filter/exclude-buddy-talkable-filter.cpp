@@ -17,42 +17,22 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "chat/chat.h"
-#include "contacts/contact.h"
-#include "contacts/contact-set.h"
+#include "exclude-buddy-talkable-filter.h"
 
-#include "account-talkable-filter.h"
-
-AccountTalkableFilter::AccountTalkableFilter(const Account &filterAccount, QObject *parent) :
-		TalkableFilter(parent), FilterAccount(filterAccount)
+ExcludeBuddyTalkableFilter::ExcludeBuddyTalkableFilter(const Buddy &excludedBuddy, QObject *parent) :
+		TalkableFilter(parent), ExcludedBuddy(excludedBuddy)
 {
-	Q_ASSERT(FilterAccount);
+	Q_ASSERT(ExcludedBuddy);
 }
 
-AccountTalkableFilter::~AccountTalkableFilter()
+ExcludeBuddyTalkableFilter::~ExcludeBuddyTalkableFilter()
 {
 }
 
-TalkableFilter::FilterResult AccountTalkableFilter::filterChat(const Chat &chat)
+TalkableFilter::FilterResult ExcludeBuddyTalkableFilter::filterBuddy(const Buddy &buddy)
 {
-	if (chat.chatAccount() == FilterAccount)
-		return Undecided;
-	else
+	if (ExcludedBuddy == buddy)
 		return Rejected;
-}
-
-TalkableFilter::FilterResult AccountTalkableFilter::filterBuddy(const Buddy &buddy)
-{
-	if (buddy.hasContact(FilterAccount))
-		return Undecided;
 	else
-		return Rejected;
-}
-
-TalkableFilter::FilterResult AccountTalkableFilter::filterContact(const Contact &contact)
-{
-	if (contact.contactAccount() == FilterAccount)
 		return Undecided;
-	else
-		return Rejected;
 }

@@ -1,9 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2008, 2009, 2011 Piotr Galiszewski (piotr.galiszewski@kadu.im)
- * Copyright 2004 Adrian Smarzewski (adrian@kadu.net)
- * Copyright 2007, 2008, 2009, 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
- * Copyright 2004, 2006 Marcin Ślusarz (joi@kadu.net)
+ * Copyright 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -20,27 +17,25 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "non-buddy-filter.h"
+#ifndef EXCLUDE_BUDDY_TALKABLE_FILTER_H
+#define EXCLUDE_BUDDY_TALKABLE_FILTER_H
 
-NonBuddyFilter::NonBuddyFilter(QObject *parent) :
-		AbstractBuddyFilter(parent)
-{
-}
+#include "buddies/buddy.h"
 
-NonBuddyFilter::~NonBuddyFilter()
-{
-}
+#include "talkable/filter/talkable-filter.h"
 
-void NonBuddyFilter::setBuddy(Buddy buddy)
+class ExcludeBuddyTalkableFilter : public TalkableFilter
 {
-	if (CurrentBuddy != buddy)
-	{
-		CurrentBuddy = buddy;
-		emit filterChanged();
-	}
-}
+	Q_OBJECT
 
-bool NonBuddyFilter::acceptBuddy(const Buddy &buddy)
-{
-	return buddy != CurrentBuddy;
-}
+	Buddy ExcludedBuddy;
+
+public:
+	explicit ExcludeBuddyTalkableFilter(const Buddy &excludedBuddy, QObject *parent = 0);
+	virtual ~ExcludeBuddyTalkableFilter();
+
+	virtual FilterResult filterBuddy(const Buddy &buddy);
+
+};
+
+#endif // EXCLUDE_BUDDY_TALKABLE_FILTER_H
