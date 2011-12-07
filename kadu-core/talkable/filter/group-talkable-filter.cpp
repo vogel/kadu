@@ -31,12 +31,12 @@ GroupTalkableFilter::~GroupTalkableFilter()
 {
 }
 
-bool GroupTalkableFilter::acceptGroupList(const QList<Group> &groups, bool showInAllGroups)
+bool GroupTalkableFilter::acceptGroupList(const QList<Group> &groups, bool showInAllGroup)
 {
 	if (CurrentGroup)
 		return groups.contains(CurrentGroup);
 	if (AllGroupShown)
-		return showInAllGroups;
+		return showInAllGroup;
 	return groups.isEmpty();
 }
 

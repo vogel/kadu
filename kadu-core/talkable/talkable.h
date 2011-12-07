@@ -28,14 +28,49 @@
 #include "contacts/contact.h"
 #include "exports.h"
 
+/**
+ * @addtogroup Talkable
+ * @{
+ */
+
+/**
+ * @class Talkable
+ * @author Rafał 'Vogel' Malinowski
+ * @short Class representing a talkable entity in Kadu - Chat, Buddy or Contact.
+ *
+ * Objects of this class can contain instance of one of talkable types - Chat, Buddy or Contact.
+ * Empty Talkable objects does not contain anything.
+ *
+ * Talkable contructors can take an object of Chat, Buddy or Contact type. Getter methods chat() buddy()
+ * and contact() can convert object contained in Talkable from one type to another. For example, if Talkable
+ * was created with Contact object, then buddy() getter will return ownerBuddy() of given Contact. Check
+ * documentation of getters for more information about possible conversions.
+ */
 class KADUAPI Talkable
 {
 public:
+	/**
+	 * @enum ItemType
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Enum describing content of Talkable object.
+	 */
 	enum ItemType
 	{
+		/**
+		 * Talkable object does not contain anything.
+		 */
 		ItemNone,
-		ItemBuddy,
+		/**
+		 * Talkable object does contains instance of Buddy object.
+		 */
+		ItemBuddy
+		/**
+		 * Talkable object does contains instance of Contact object.
+		 */,
 		ItemContact,
+		/**
+		 * Talkable object does contains instance of Chat object.
+		 */
 		ItemChat
 	};
 
@@ -46,31 +81,165 @@ private:
 	Chat MyChat;
 
 public:
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Creates empty Talkable object.
+	 */
 	Talkable();
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Creates Talkable object that contains Buddy instance.
+	 * @param buddy this Buddy instance will be hold by new Talkable object
+	 */
 	Talkable(const Buddy &buddy);
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Creates Talkable object that contains Contact instance.
+	 * @param contact this Contact instance will be hold by new Talkable object
+	 */
 	Talkable(const Contact &contact);
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Creates Talkable object that contains Chat instance.
+	 * @param chat this Chat instance will be hold by new Talkable object
+	 */
 	Talkable(const Chat &chat);
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Copy construtor.
+	 * @param copyMe Talkable instance to copy
+	 */
 	Talkable(const Talkable &copyMe);
 
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Assignment operator.
+	 * @param copyMe Talkable instance to copy
+	 *
+	 * Copies value of copyMe into this Talkable instance.
+	 */
 	Talkable & operator = (const Talkable &copyMe);
 
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Equality operator.
+	 * @param compareTo Talkable instance to compare
+	 *
+	 * Two Talkable instances are equal when their content objects are of equal type and value.
+	 */
 	bool operator == (const Talkable &compareTo) const;
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Non-equality operator.
+	 * @param compareTo Talkable instance to compare
+	 *
+	 * Two Talkable instances are non equal when their content objects are of different types
+	 * or values.
+	 */
 	bool operator != (const Talkable &compareTo) const;
 
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Returns type of Talkable instance.
+	 * @return type of Talkable instance
+	 */
 	ItemType type() const { return Type; }
 
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Returns Buddy instance from this Talkable instance.
+	 * @return Buddy instance from this Talkable instance
+	 *
+	 * If current Talkable instance is of type ItemBuddy, then Buddy used to create this instance is returned.
+	 * If current Talkable instance is of type ItemContact, then ownerBuddy of Contact used to create this instance is returned.
+	 * If current Talkable instance is of type ItemChat, then if this Chat is composed only of one Contact, this Contact's
+	 * ownerBuddy is returned. In other case null Buddy is returned.
+	 */
 	Buddy buddy() const;
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Returns Contact instance from this Talkable instance.
+	 * @return Contact instance from this Talkable instance
+	 *
+	 * If current Talkable instance is of type ItemContact, then Contact used to create this instance is returned.
+	 * If current Talkable instance is of type ItemBuddy, then preffered contact of Buddy used to create this
+	 * instance is returned. For computation of preffered contact @see BuddyPreferredManager.
+	 * If current Talkable instance is of type ItemChat, then if this Chat is composed only of one Contact, this Contact
+	 * is returned. In other case null Contact is returned.
+	 */
 	Contact contact() const;
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Returns Contact instance from this Talkable instance.
+	 * @return Contact instance from this Talkable instance
+	 *
+	 * If current Talkable instance is of type ItemChat, then Chat used to create this instance is returned.
+	 * In other case null Chat is returned.
+	 */
 	Chat chat() const;
 
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Returns true if this Talkable instance does not contains non-null object.
+	 * @return true if this Talkable instance does not contains non-null object
+	 *
+	 * True is returned if type of this Talkable instance is ItemNone or if contained object is null.
+	 */
 	bool isEmpty() const;
 
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Returns avatar assigned to this Talkable.
+	 * @return avatar assigned to this Talkable
+	 *
+	 * If current Talkable instance is of type ItemBuddy and Buddy instance contains non-empty avatar, then it is used.
+	 * If not, avatar of contact returned by contact() is used and returned.
+	 */
 	Avatar avatar() const;
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Returns true if Buddy returnd by buddy() is blocked.
+	 * @return true if Buddy returned by buddy() is blocked
+	 */
 	bool isBlocked() const;
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Returns true if Contact returnd by contact() is blocking.
+	 * @return true if Contact returned by contact() is blocking
+	 */
 	bool isBlocking() const;
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Returns account assigned to this Talkable instance.
+	 * @return account assigned to this Talkable instance
+	 *
+	 * For Talkables of type ItemChat or ItemContact account assigned to contained Chat or Contact object
+	 * is returned. For Talkables of type ItemBuddy account assigned to preferred contact of contained Buddy is
+	 * returned. For computation of preffered contact @see BuddyPreferredManager.
+	 */
 	Account account() const;
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Returns current status of Contact returnd by contact().
+	 * @return current status of Contact returnd by contact()
+	 */
 	Status currentStatus() const;
 
 };
+
+/**
+ * @}
+ */
 
 #endif // TALKABLE_H

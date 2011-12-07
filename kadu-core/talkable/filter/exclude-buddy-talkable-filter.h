@@ -24,6 +24,18 @@
 
 #include "talkable/filter/talkable-filter.h"
 
+/**
+ * @addtogroup Talkable
+ * @{
+ */
+
+/**
+ * @class ExcludeBuddyTalkableFilter
+ * @author Rafał 'Vogel' Malinowski
+ * @short Filter that removes given Buddy from list.
+ *
+ * This filter removes given Buddy from list. All other items are passed to next filters.
+ */
 class ExcludeBuddyTalkableFilter : public TalkableFilter
 {
 	Q_OBJECT
@@ -31,11 +43,24 @@ class ExcludeBuddyTalkableFilter : public TalkableFilter
 	Buddy ExcludedBuddy;
 
 public:
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Create new instance of ExcludeBuddyTalkableFilter with given parent.
+	 * @param excludedBuddy buddy parameter of filter
+	 * @param parent QObject parent of new object
+	 *
+	 * Create new instance of ExcludeBuddyTalkableFilter with given parent. All Buddy items that
+	 * are equal to excludedBuddy will be rejected by this filter.
+	 */
 	explicit ExcludeBuddyTalkableFilter(const Buddy &excludedBuddy, QObject *parent = 0);
 	virtual ~ExcludeBuddyTalkableFilter();
 
 	virtual FilterResult filterBuddy(const Buddy &buddy);
 
 };
+
+/**
+ * @}
+ */
 
 #endif // EXCLUDE_BUDDY_TALKABLE_FILTER_H

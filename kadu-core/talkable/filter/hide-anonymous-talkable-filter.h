@@ -22,11 +22,29 @@
 
 #include "talkable/filter/talkable-filter.h"
 
+/**
+ * @addtogroup Talkable
+ * @{
+ */
+
+/**
+ * @class HideAnonymousTalkableFilter
+ * @author Rafał 'Vogel' Malinowski
+ * @short Filter that removes items that are anonymous.
+ *
+ * This filter removes items that are anonymous. Anonymous Chat items have empty display() value.
+ * Anonymous Buddy and Contact items have true isAnonymous() value.
+ */
 class HideAnonymousTalkableFilter : public TalkableFilter
 {
 	Q_OBJECT
 
 public:
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Create new instance of HideAnonymousTalkableFilter with given parent.
+	 * @param parent QObject parent of new object
+	 */
 	explicit HideAnonymousTalkableFilter(QObject *parent = 0);
 	virtual ~HideAnonymousTalkableFilter();
 
@@ -35,5 +53,9 @@ public:
 	virtual FilterResult filterContact(const Contact &contact);
 
 };
+
+/**
+ * @}
+ */
 
 #endif // HIDE_ANONYMOUS_TALKABLE_FILTER_H

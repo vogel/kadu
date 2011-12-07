@@ -24,6 +24,19 @@
 
 #include "talkable/filter/talkable-filter.h"
 
+/**
+ * @addtogroup Talkable
+ * @{
+ */
+
+/**
+ * @class BlockedTalkableFilter
+ * @author Rafał 'Vogel' Malinowski
+ * @short Filter that removes buddies and contacts that are blocked.
+ *
+ * This filter removes buddies and contacts that are blocked. Non-blocked buddies and contacts and all chats
+ * are passed to nexts filters.
+ */
 class BlockedTalkableFilter : public TalkableFilter
 {
 	Q_OBJECT
@@ -31,6 +44,11 @@ class BlockedTalkableFilter : public TalkableFilter
 	bool Enabled;
 
 public:
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Create new instance of BlockedTalkableFilter with given parent.
+	 * @param parent QObject parent of new object
+	 */
 	explicit BlockedTalkableFilter(QObject *parent = 0);
 	virtual ~BlockedTalkableFilter();
 
@@ -40,6 +58,11 @@ public:
 	void setEnabled(bool enabled);
 
 };
+
+/**
+ * @addtogroup Talkable
+ * @}
+ */
 
 Q_DECLARE_METATYPE(BlockedTalkableFilter *)
 
