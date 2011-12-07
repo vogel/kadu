@@ -35,10 +35,6 @@
 #include "accounts/account.h"
 #include "buddies/buddy-kadu-data.h"
 #include "buddies/buddy-manager.h"
-#include "buddies/filter/blocked-buddy-filter.h"
-#include "buddies/filter/has-description-buddy-filter.h"
-#include "buddies/filter/offline-buddy-filter.h"
-#include "buddies/filter/online-and-description-buddy-filter.h"
 #include "buddies/group-manager.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact.h"
@@ -73,6 +69,10 @@
 #include "parser/parser.h"
 #include "protocols/protocol.h"
 #include "status/status-container-manager.h"
+#include "talkable/filter/blocked-talkable-filter.h"
+#include "talkable/filter/hide-offline-talkable-filter.h"
+#include "talkable/filter/hide-offline-without-description-talkable-filter.h"
+#include "talkable/filter/hide-without-description-talkable-filter.h"
 #include "talkable/model/talkable-model.h"
 #include "talkable/model/talkable-proxy-model.h"
 #include "url-handlers/url-handler-manager.h"
@@ -398,13 +398,13 @@ void KaduWindowActions::inactiveUsersActionCreated(Action *action)
 		return;
 
 	bool enabled = config_file.readBoolEntry("General", "ShowOffline");
-	OfflineBuddyFilter *ofcf = new OfflineBuddyFilter(action);
-	ofcf->setEnabled(!enabled);
+	HideOfflineTalkableFilter *filter = new HideOfflineTalkableFilter(action);
+	filter->setEnabled(!enabled);
 
-	action->setData(QVariant::fromValue(ofcf));
+	action->setData(QVariant::fromValue(filter));
 	action->setChecked(enabled);
 
-	window->talkableProxyModel()->addFilter(ofcf);
+	window->talkableProxyModel()->addFilter(filter);
 }
 
 void KaduWindowActions::descriptionUsersActionCreated(Action *action)
@@ -416,13 +416,13 @@ void KaduWindowActions::descriptionUsersActionCreated(Action *action)
 		return;
 
 	bool enabled = !config_file.readBoolEntry("General", "ShowWithoutDescription");
-	HasDescriptionBuddyFilter *hdcf = new HasDescriptionBuddyFilter(action);
-	hdcf->setEnabled(enabled);
+	HideWithoutDescriptionTalkableFilter *filter = new HideWithoutDescriptionTalkableFilter(action);
+	filter->setEnabled(enabled);
 
-	action->setData(QVariant::fromValue(hdcf));
+	action->setData(QVariant::fromValue(filter));
 	action->setChecked(enabled);
 
-	window->talkableProxyModel()->addFilter(hdcf);
+	window->talkableProxyModel()->addFilter(filter);
 }
 
 void KaduWindowActions::showDescriptionsActionCreated(Action *action)
@@ -440,13 +440,13 @@ void KaduWindowActions::onlineAndDescUsersActionCreated(Action *action)
 		return;
 
 	bool enabled = config_file.readBoolEntry("General", "ShowOnlineAndDescription");
-	OnlineAndDescriptionBuddyFilter *oadcf = new OnlineAndDescriptionBuddyFilter(action);
-	oadcf->setEnabled(enabled);
+	HideOfflineWithoutDescriptionTalkableFilter *filter = new HideOfflineWithoutDescriptionTalkableFilter(action);
+	filter->setEnabled(enabled);
 
-	action->setData(QVariant::fromValue(oadcf));
+	action->setData(QVariant::fromValue(filter));
 	action->setChecked(enabled);
 
-	window->talkableProxyModel()->addFilter(oadcf);
+	window->talkableProxyModel()->addFilter(filter);
 }
 
 void KaduWindowActions::showInfoPanelActionCreated(Action *action)
@@ -463,13 +463,13 @@ void KaduWindowActions::showBlockedActionCreated(Action *action)
 		return;
 
 	bool enabled = config_file.readBoolEntry("General", "ShowBlocked");
-	BlockedBuddyFilter *ibf = new BlockedBuddyFilter(action);
-	ibf->setEnabled(!enabled);
+	BlockedTalkableFilter *blockedTalkableFilter = new BlockedTalkableFilter(action);
+	blockedTalkableFilter->setEnabled(!enabled);
 
-	action->setData(QVariant::fromValue(ibf));
+	action->setData(QVariant::fromValue(blockedTalkableFilter));
 	action->setChecked(enabled);
 
-	window->talkableProxyModel()->addFilter(ibf);
+	window->talkableProxyModel()->addFilter(blockedTalkableFilter);
 }
 
 void KaduWindowActions::showMyselfActionCreated(Action *action)
@@ -660,10 +660,10 @@ void KaduWindowActions::showInfoPanelActionActivated(QAction *sender, bool toggl
 void KaduWindowActions::showBlockedActionActivated(QAction *sender, bool toggled)
 {
 	QVariant v = sender->data();
-	if (v.canConvert<BlockedBuddyFilter *>())
+	if (v.canConvert<BlockedTalkableFilter *>())
 	{
-		BlockedBuddyFilter *bbf = v.value<BlockedBuddyFilter *>();
-		bbf->setEnabled(!toggled);
+		BlockedTalkableFilter *blockedTalkableFilter = v.value<BlockedTalkableFilter *>();
+		blockedTalkableFilter->setEnabled(!toggled);
 		config_file.writeEntry("General", "ShowBlocked", toggled);
 	}
 }
@@ -833,10 +833,10 @@ void KaduWindowActions::deleteUserActionActivated(ActionContext *source)
 void KaduWindowActions::inactiveUsersActionActivated(QAction *sender, bool toggled)
 {
 	QVariant v = sender->data();
-	if (v.canConvert<OfflineBuddyFilter *>())
+	if (v.canConvert<HideOfflineTalkableFilter *>())
 	{
-		OfflineBuddyFilter *ofcf = v.value<OfflineBuddyFilter *>();
-		ofcf->setEnabled(!toggled);
+		HideOfflineTalkableFilter *filter = v.value<HideOfflineTalkableFilter *>();
+		filter->setEnabled(!toggled);
 		config_file.writeEntry("General", "ShowOffline", toggled);
 	}
 }
@@ -844,10 +844,10 @@ void KaduWindowActions::inactiveUsersActionActivated(QAction *sender, bool toggl
 void KaduWindowActions::descriptionUsersActionActivated(QAction *sender, bool toggled)
 {
 	QVariant v = sender->data();
-	if (v.canConvert<HasDescriptionBuddyFilter *>())
+	if (v.canConvert<HideWithoutDescriptionTalkableFilter *>())
 	{
-		HasDescriptionBuddyFilter *hdcf = v.value<HasDescriptionBuddyFilter *>();
-		hdcf->setEnabled(toggled);
+		HideWithoutDescriptionTalkableFilter *filter = v.value<HideWithoutDescriptionTalkableFilter *>();
+		filter->setEnabled(toggled);
 	}
 }
 
@@ -864,10 +864,10 @@ void KaduWindowActions::onlineAndDescUsersActionActivated(QAction *sender, bool 
 	config_file.writeEntry("General", "ShowOnlineAndDescription", toggled);
 
 	QVariant v = sender->data();
-	if (v.canConvert<OnlineAndDescriptionBuddyFilter *>())
+	if (v.canConvert<HideOfflineWithoutDescriptionTalkableFilter *>())
 	{
-		OnlineAndDescriptionBuddyFilter *oadcf = v.value<OnlineAndDescriptionBuddyFilter *>();
-		oadcf->setEnabled(toggled);
+		HideOfflineWithoutDescriptionTalkableFilter *filter = v.value<HideOfflineWithoutDescriptionTalkableFilter *>();
+		filter->setEnabled(toggled);
 	}
 }
 

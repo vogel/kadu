@@ -60,6 +60,9 @@ public:
 	Contact(const Contact &copy);
 	virtual ~Contact();
 
+	QString display(bool useBuddyData) const;
+	Avatar avatar(bool useBuddyData) const;
+
 	void removeOwnerBuddy() const;
 
 	KaduSharedBase_PropertyRead(ContactDetails *, details, Details)
@@ -79,6 +82,7 @@ public:
 	KaduSharedBase_PropertyCRW(QString, dnsName, DnsName)
 	KaduSharedBase_Property(short int, maximumImageSize, MaximumImageSize)
 	KaduSharedBase_Property(quint16, unreadMessagesCount, UnreadMessagesCount)
+	KaduSharedBase_PropertyBoolRead(Anonymous)
 
 };
 

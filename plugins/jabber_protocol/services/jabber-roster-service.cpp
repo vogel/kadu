@@ -191,7 +191,7 @@ void JabberRosterService::addContact(const Contact &contact)
 	if (Protocol->account().removing())
 		return;
 
-	if (!Protocol->isConnected() || contact.contactAccount() != Protocol->account() || contact.ownerBuddy().isAnonymous())
+	if (!Protocol->isConnected() || contact.contactAccount() != Protocol->account() || contact.isAnonymous())
 		return;
 
 	if (!Protocol->client())

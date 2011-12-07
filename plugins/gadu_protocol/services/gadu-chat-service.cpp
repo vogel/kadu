@@ -201,7 +201,7 @@ QByteArray GaduChatService::getContent(gg_event *e)
 
 bool GaduChatService::ignoreRichText(Contact sender)
 {
-	bool ignore = sender.ownerBuddy().isAnonymous() &&
+	bool ignore = sender.isAnonymous() &&
 		config_file.readBoolEntry("Chat","IgnoreAnonymousRichtext");
 
 	if (ignore)
@@ -216,7 +216,7 @@ bool GaduChatService::ignoreImages(Contact sender)
 {
 	GaduAccountDetails *gaduAccountDetails = dynamic_cast<GaduAccountDetails *>(Protocol->account().details());
 
-	return sender.ownerBuddy().isAnonymous() ||
+	return sender.isAnonymous() ||
 		(
 			StatusTypeGroupOffline == Protocol->status().group() ||
 			(

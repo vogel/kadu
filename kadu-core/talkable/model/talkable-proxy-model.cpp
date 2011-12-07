@@ -23,16 +23,14 @@
 
 #include "buddies/buddy-preferred-manager.h"
 #include "buddies/buddy.h"
-#include "buddies/filter/abstract-buddy-filter.h"
-#include "chat/filter/chat-filter.h"
 #include "chat/model/chat-data-extractor.h"
 #include "chat/chat.h"
 #include "contacts/contact.h"
-#include "contacts/filter/abstract-contact-filter.h"
 #include "message/message-manager.h"
 #include "model/roles.h"
 #include "status/status-type.h"
 #include "status/status.h"
+#include "talkable/filter/talkable-filter.h"
 
 #include "talkable-proxy-model.h"
 
@@ -171,29 +169,48 @@ bool TalkableProxyModel::lessThan(const QModelIndex &left, const QModelIndex &ri
 
 bool TalkableProxyModel::accept(const Chat &chat) const
 {
-	foreach (ChatFilter *filter, ChatFilters)
-		if (!filter->acceptChat(chat))
-			return false;
+	foreach (TalkableFilter *filter, TalkableFilters)
+		switch (filter->filterChat(chat))
+		{
+			case TalkableFilter::Accepted:
+				return true;
+			case TalkableFilter::Undecided:
+				break;
+			case TalkableFilter::Rejected:
+				return false;
+		}
 
 	return true;
 }
 
 bool TalkableProxyModel::accept(const Buddy &buddy) const
 {
-	foreach (AbstractBuddyFilter *filter, BuddyFilters)
-		if (!filter->acceptBuddy(buddy))
-			return false;
-		else if (filter->ignoreNextFilters(buddy))
-			return true;
+	foreach (TalkableFilter *filter, TalkableFilters)
+		switch (filter->filterBuddy(buddy))
+		{
+			case TalkableFilter::Accepted:
+				return true;
+			case TalkableFilter::Undecided:
+				break;
+			case TalkableFilter::Rejected:
+				return false;
+		}
 
 	return true;
 }
 
 bool TalkableProxyModel::accept(const Contact &contact) const
 {
-	foreach (AbstractContactFilter *filter, ContactFilters)
-		if (!filter->acceptContact(contact))
-			return false;
+	foreach (TalkableFilter *filter, TalkableFilters)
+		switch (filter->filterContact(contact))
+		{
+			case TalkableFilter::Accepted:
+				return true;
+			case TalkableFilter::Undecided:
+				break;
+			case TalkableFilter::Rejected:
+				return false;
+		}
 
 	return accept(contact.ownerBuddy());
 }
@@ -220,57 +237,19 @@ bool TalkableProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sour
 	return true;
 }
 
-void TalkableProxyModel::addFilter(ChatFilter *filter)
+void TalkableProxyModel::addFilter(TalkableFilter *filter)
 {
-	if (ChatFilters.contains(filter))
+	if (TalkableFilters.contains(filter))
 		return;
 
-	ChatFilters.append(filter);
+	TalkableFilters.append(filter);
 	invalidateFilter();
 	connect(filter, SIGNAL(filterChanged()), this, SLOT(invalidate()));
 }
 
-void TalkableProxyModel::removeFilter(ChatFilter *filter)
+void TalkableProxyModel::removeFilter(TalkableFilter *filter)
 {
-	if (ChatFilters.removeAll(filter) <= 0)
-		return;
-
-	invalidateFilter();
-	disconnect(filter, SIGNAL(filterChanged()), this, SLOT(invalidate()));
-}
-
-void TalkableProxyModel::addFilter(AbstractBuddyFilter *filter)
-{
-	if (BuddyFilters.contains(filter))
-		return;
-
-	BuddyFilters.append(filter);
-	invalidateFilter();
-	connect(filter, SIGNAL(filterChanged()), this, SLOT(invalidate()));
-}
-
-void TalkableProxyModel::removeFilter(AbstractBuddyFilter *filter)
-{
-	if (BuddyFilters.removeAll(filter) <= 0)
-		return;
-
-	invalidateFilter();
-	disconnect(filter, SIGNAL(filterChanged()), this, SLOT(invalidate()));
-}
-
-void TalkableProxyModel::addFilter(AbstractContactFilter *filter)
-{
-	if (ContactFilters.contains(filter))
-		return;
-
-	ContactFilters.append(filter);
-	invalidateFilter();
-	connect(filter, SIGNAL(filterChanged()), this, SLOT(invalidate()));
-}
-
-void TalkableProxyModel::removeFilter(AbstractContactFilter *filter)
-{
-	if (ContactFilters.removeAll(filter) <= 0)
+	if (TalkableFilters.removeAll(filter) <= 0)
 		return;
 
 	invalidateFilter();

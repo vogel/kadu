@@ -133,7 +133,7 @@ void GrowlNotify::notify(Notification *notification)
 		if (chatNotification)
 		{
 			Avatar avatar = //chatNotification->account().accountContact().contactAvatar();
-			chatNotification->chat().contacts().toContact().contactAvatar();
+			chatNotification->chat().contacts().toContact().avatar(true);
 			if (!avatar.isEmpty())
 				pixmap = avatar.pixmap();
 		}

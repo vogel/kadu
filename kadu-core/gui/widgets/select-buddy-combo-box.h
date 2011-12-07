@@ -30,8 +30,8 @@
 
 #include "gui/widgets/actions-combo-box.h"
 
-class AbstractBuddyFilter;
 class SelectBuddyPopup;
+class TalkableFilter;
 class TalkableProxyModel;
 
 class KADUAPI SelectBuddyComboBox : public ActionsComboBox
@@ -51,8 +51,8 @@ public:
 
 	Buddy currentBuddy();
 
-	void addFilter(AbstractBuddyFilter *filter);
-	void removeFilter(AbstractBuddyFilter *filter);
+	void addFilter(TalkableFilter *filter);
+	void removeFilter(TalkableFilter *filter);
 
 public slots:
 	void setCurrentBuddy(Buddy buddy);

@@ -38,7 +38,6 @@
 #include <QtGui/QVBoxLayout>
 
 #include "accounts/account-manager.h"
-#include "buddies/filter/buddy-name-filter.h"
 #include "buddies/model/buddies-model-base.h"
 #include "chat/aggregate-chat-manager.h"
 #include "chat/chat-details-aggregate.h"
@@ -62,6 +61,7 @@
 #include "protocols/protocol-menu-manager.h"
 #include "status/status-type-data.h"
 #include "status/status-type-manager.h"
+#include "talkable/filter/name-talkable-filter.h"
 #include "activate.h"
 #include "debug.h"
 
@@ -205,14 +205,9 @@ void HistoryWindow::createChatTree(QWidget *parent)
 	ChatsModelProxy = new HistoryChatsModelProxy(this);
 	ChatsModelProxy->setSourceModel(ChatsModel);
 
-	StatusBuddyNameFilter = new BuddyNameFilter(this);
+	StatusBuddyNameFilter = new NameTalkableFilter(NameTalkableFilter::UndecidedMatching, this);
 	connect(filterWidget, SIGNAL(textChanged(const QString &)), StatusBuddyNameFilter, SLOT(setName(const QString &)));
-	ChatsModelProxy->addBuddyFilter(StatusBuddyNameFilter);
-
-	NameFilter = new ChatNameFilter(this);
-	connect(filterWidget, SIGNAL(textChanged(const QString &)), NameFilter, SLOT(setName(const QString &)));
-
-	ChatsModelProxy->addChatFilter(NameFilter);
+	ChatsModelProxy->addTalkableFilter(StatusBuddyNameFilter);
 
 	ChatsTree->setAlternatingRowColors(true);
 	ChatsTree->setModel(ChatsModelProxy);

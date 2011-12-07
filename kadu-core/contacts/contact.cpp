@@ -78,6 +78,22 @@ Contact::~Contact()
 {
 }
 
+QString Contact::display(bool useBuddyData) const
+{
+	if (data())
+		return data()->display(useBuddyData);
+
+	return QString();
+}
+
+Avatar Contact::avatar(bool useBuddyData) const
+{
+	if (data())
+		return data()->avatar(useBuddyData);
+
+	return Avatar::null;
+}
+
 void Contact::removeOwnerBuddy() const
 {
 	if (data())
@@ -110,3 +126,4 @@ KaduSharedBase_PropertyDef(Contact, unsigned int, port, Port, 0)
 KaduSharedBase_PropertyDefCRW(Contact, QString, dnsName, DnsName, QString())
 KaduSharedBase_PropertyDef(Contact, short int, maximumImageSize, MaximumImageSize, 0)
 KaduSharedBase_PropertyDef(Contact, quint16, unreadMessagesCount, UnreadMessagesCount, 0)
+KaduSharedBase_PropertyBoolReadDef(Contact, Anonymous, true)

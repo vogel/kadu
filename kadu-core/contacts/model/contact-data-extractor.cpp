@@ -40,9 +40,7 @@ QVariant ContactDataExtractor::data(const Contact &contact, int role, bool useBu
 	switch (role)
 	{
 		case Qt::DisplayRole:
-			return useBuddyData
-					? contact.ownerBuddy().display()
-					: contact.id();
+			return contact.display(useBuddyData);
 		case Qt::DecorationRole:
 		{
 			if (contact.ownerBuddy().isBlocked())
@@ -72,10 +70,7 @@ QVariant ContactDataExtractor::data(const Contact &contact, int role, bool useBu
 		case AccountRole:
 			return QVariant::fromValue(contact.contactAccount());
 		case AvatarRole:
-			if (useBuddyData && !contact.ownerBuddy().buddyAvatar().isEmpty())
-				return QVariant::fromValue(contact.ownerBuddy().buddyAvatar().pixmap());
-			else
-				return QVariant::fromValue(contact.contactAvatar().pixmap());
+			return contact.avatar(useBuddyData).pixmap();
 		case ItemTypeRole:
 			return ContactRole;
 		default:

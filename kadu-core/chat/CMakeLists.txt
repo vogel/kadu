@@ -11,12 +11,6 @@ set (chat_SRCS
 	html-messages-renderer.cpp
 	recent-chat-manager.cpp
 
-	filter/chat-name-filter.cpp
-	filter/chat-named-filter.cpp
-	filter/chat-or-filter.cpp
-	filter/chat-unread-filter.cpp
-	filter/group-chat-filter.cpp
-
 	model/chat-data-extractor.cpp
 	model/chats-model.cpp
 
@@ -47,13 +41,6 @@ set (chat_MOC_SRCS
 	chat-styles-manager.h
 	html-messages-renderer.h
 	recent-chat-manager.h
-
-	filter/chat-filter.h
-	filter/chat-name-filter.h
-	filter/chat-named-filter.h
-	filter/chat-or-filter.h
-	filter/chat-unread-filter.h
-	filter/group-chat-filter.h
 
 	model/chats-model.h
 

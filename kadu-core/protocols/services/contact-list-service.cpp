@@ -62,7 +62,7 @@ bool ContactListService::askForAddingContacts(const QMap<Buddy, Contact> &contac
 	{
 		QStringList contactsToRenameStrings;
 		for (QMap<Buddy, Contact>::const_iterator i = contactsToRename.constBegin(); i != contactsToRename.constEnd(); i++)
-			contactsToRenameStrings.append(i.value().ownerBuddy().display() + " (" + i.value().id() + ") -> " + i.key().display());
+			contactsToRenameStrings.append(i.value().display(true) + " (" + i.value().id() + ") -> " + i.key().display());
 
 		if (contactsToAdd.isEmpty())
 			questionString += tr("The following contacts from your local list are present on the server under different names:<br/>"
@@ -139,9 +139,9 @@ QVector<Contact> ContactListService::registerBuddies(const BuddyList &buddies)
 				// do not import dirty removed contacts unless we will be asking the user
 				// (We will be asking only if we are migrating from 0.9.x. Remember that
 				// all migrated contacts, including those with anynomous buddies, are initially marked dirty.)
-				if (!(knownContact.isDirty() && knownContact.ownerBuddy().isAnonymous() && !haveToAskForAddingContacts()))
+				if (!(knownContact.isDirty() && knownContact.isAnonymous() && !haveToAskForAddingContacts()))
 				{
-					if (knownContact.ownerBuddy().isAnonymous())
+					if (knownContact.isAnonymous())
 						contactsToAdd.insert(targetBuddy, knownContact);
 					else
 					{
@@ -204,18 +204,17 @@ void ContactListService::setBuddiesList(const BuddyList &buddies, bool removeOld
 	QList<Contact>::iterator i = unImportedContacts.begin();
 	while (i != unImportedContacts.end())
 	{
-		Buddy ownerBuddy = i->ownerBuddy();
-		if (i->isDirty() || ownerBuddy.isAnonymous())
+		if (i->isDirty() || i->isAnonymous())
 		{
 			// local dirty removed contacts are no longer dirty if they were absent on server
-			if (i->isDirty() && ownerBuddy.isAnonymous())
+			if (i->isDirty() && i->isAnonymous())
 				i->setDirty(false);
 
 			i = unImportedContacts.erase(i);
 		}
 		else
 		{
-			contactsList.append(ownerBuddy.display() + " (" + i->id() + ')');
+			contactsList.append(i->display(true) + " (" + i->id() + ')');
 			++i;
 		}
 	}

@@ -23,15 +23,7 @@
 #include <QtGui/QScrollBar>
 #include <QtGui/QStackedWidget>
 
-#include "buddies/filter/anonymous-buddy-filter.h"
-#include "buddies/filter/buddy-name-filter.h"
-#include "buddies/filter/group-buddy-filter.h"
-#include "buddies/filter/unread-messages-filter.h"
 #include "buddies/model/buddies-model.h"
-#include "chat/filter/chat-named-filter.h"
-#include "chat/filter/chat-or-filter.h"
-#include "chat/filter/chat-unread-filter.h"
-#include "chat/filter/group-chat-filter.h"
 #include "chat/model/chats-model.h"
 #include "configuration/configuration-file.h"
 #include "gui/widgets/filter-widget.h"
@@ -40,6 +32,11 @@
 #include "gui/widgets/talkable-tree-view.h"
 #include "gui/windows/proxy-action-context.h"
 #include "model/model-chain.h"
+#include "talkable/filter/group-talkable-filter.h"
+#include "talkable/filter/hide-anonymous-talkable-filter.h"
+#include "talkable/filter/hide-simple-chats-talkable-filter.h"
+#include "talkable/filter/name-talkable-filter.h"
+#include "talkable/filter/unread-messages-talkable-filter.h"
 #include "talkable/model/talkable-model-factory.h"
 #include "talkable/model/talkable-proxy-model.h"
 
@@ -122,15 +119,9 @@ void RosterWidget::configurationUpdated()
 	triggerCompositingStateChanged();
 
 	if (config_file.readBoolEntry("Look", "DisplayGroupTabs", true))
-	{
-		BuddyGroupFilter->setAllGroupShown(config_file.readBoolEntry("Look", "ShowGroupAll", true));
-		ChatGroupFilter->setAllGroupShown(config_file.readBoolEntry("Look", "ShowGroupAll", true));
-	}
+		GroupFilter->setAllGroupShown(config_file.readBoolEntry("Look", "ShowGroupAll", true));
 	else
-	{
-		BuddyGroupFilter->setAllGroupShown(true);
-		ChatGroupFilter->setAllGroupShown(config_file.readBoolEntry("Look", "ShowGroupAll", true));
-	}
+		GroupFilter->setAllGroupShown(true);
 }
 
 void RosterWidget::compositingEnabled()
@@ -175,35 +166,17 @@ ModelChain * RosterWidget::createModelChain()
 	ModelChain *chain = new ModelChain(TalkableModelFactory::createInstance(TalkableTree), TalkableTree);
 
 	ProxyModel = new TalkableProxyModel(chain);
-	ProxyModel->addFilter(new UnreadMessagesFilter(ProxyModel));
+	ProxyModel->addFilter(new HideSimpleChatsTalkableFilter(ProxyModel));
+	ProxyModel->addFilter(new UnreadMessagesTalkableFilter(ProxyModel));
+	ProxyModel->addFilter(new HideAnonymousTalkableFilter(ProxyModel));
 
-	ChatOrFilter *chatOrFilter = new ChatOrFilter(ProxyModel);
+	NameTalkableFilter *nameTalkableFilter = new NameTalkableFilter(NameTalkableFilter::AcceptMatching, ProxyModel);
+	connect(TalkableWidget, SIGNAL(filterChanged(QString)), nameTalkableFilter, SLOT(setName(QString)));
+	ProxyModel->addFilter(nameTalkableFilter);
 
-	ChatNamedFilter *chatNamedFilter = new ChatNamedFilter(chatOrFilter);
-	chatNamedFilter->setEnabled(true);
-	chatOrFilter->addFilter(chatNamedFilter);
-
-	ChatUnreadFilter *chatUnreadFilter = new ChatUnreadFilter(chatOrFilter);
-	chatUnreadFilter->setEnabled(true);
-	chatOrFilter->addFilter(chatUnreadFilter);
-
-	ProxyModel->addFilter(chatOrFilter);
-
-	ChatGroupFilter = new GroupChatFilter(ProxyModel);
-	connect(GroupBar, SIGNAL(currentGroupChanged(Group)), ChatGroupFilter, SLOT(setGroup(Group)));
-	ProxyModel->addFilter(ChatGroupFilter);
-
-	AnonymousBuddyFilter *anonymousBuddyFilter = new AnonymousBuddyFilter(ProxyModel);
-	anonymousBuddyFilter->setEnabled(true);
-	ProxyModel->addFilter(anonymousBuddyFilter);
-
-	BuddyNameFilter *nameFilter = new BuddyNameFilter(ProxyModel);
-	connect(TalkableWidget, SIGNAL(filterChanged(QString)), nameFilter, SLOT(setName(QString)));
-	ProxyModel->addFilter(nameFilter);
-
-	BuddyGroupFilter = new GroupBuddyFilter(ProxyModel);
-	connect(GroupBar, SIGNAL(currentGroupChanged(Group)), BuddyGroupFilter, SLOT(setGroup(Group)));
-	ProxyModel->addFilter(BuddyGroupFilter);
+	GroupFilter = new GroupTalkableFilter(ProxyModel);
+	connect(GroupBar, SIGNAL(currentGroupChanged(Group)), GroupFilter, SLOT(setGroup(Group)));
+	ProxyModel->addFilter(GroupFilter);
 
 	chain->addProxyModel(ProxyModel);
 

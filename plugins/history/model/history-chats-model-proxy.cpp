@@ -23,13 +23,13 @@
 
 #include "buddies/buddy-set.h"
 #include "buddies/buddy.h"
-#include "buddies/filter/abstract-buddy-filter.h"
 #include "chat/chat.h"
 #include "chat/filter/chat-filter.h"
 #include "chat/type/chat-type.h"
 #include "contacts/contact-set.h"
 #include "model/history-chats-model.h"
 #include "model/roles.h"
+#include "talkable/filter/talkable-filter.h"
 
 #include "history-chats-model-proxy.h"
 
@@ -57,9 +57,13 @@ bool HistoryChatsModelProxy::filterAcceptsRow(int sourceRow, const QModelIndex &
 	Chat chat = sourceChild.data(ChatRole).value<Chat>();
 	if (chat)
 	{
-		foreach (ChatFilter *filter, ChatFilters)
-			if (!filter->acceptChat(chat))
-				return false;
+		foreach (TalkableFilter *filter, TalkableFilters)
+			switch (filter->filterChat(chat))
+			{
+				case TalkableFilter::Accepted: return true;
+				case TalkableFilter::Undecided: break;
+				case TalkableFilter::Rejected: return false;
+			}
 
 		return true;
 	}
@@ -67,9 +71,13 @@ bool HistoryChatsModelProxy::filterAcceptsRow(int sourceRow, const QModelIndex &
 	Buddy buddy = sourceChild.data(BuddyRole).value<Buddy>();
 	if (buddy)
 	{
-		foreach (AbstractBuddyFilter *filter, BuddyFilters)
-			if (!filter->acceptBuddy(buddy))
-				return false;
+		foreach (TalkableFilter *filter, TalkableFilters)
+			switch (filter->filterBuddy(buddy))
+			{
+				case TalkableFilter::Accepted: return true;
+				case TalkableFilter::Undecided: break;
+				case TalkableFilter::Rejected: return false;
+			}
 
 		return true;
 	}
@@ -119,45 +127,23 @@ void HistoryChatsModelProxy::setSourceModel(QAbstractItemModel *sourceModel)
 	Model = qobject_cast<HistoryChatsModel *>(sourceModel);
 }
 
-void HistoryChatsModelProxy::addChatFilter(ChatFilter *filter)
+void HistoryChatsModelProxy::addTalkableFilter(TalkableFilter *filter)
 {
 	if (!filter)
 		return;
 
-	ChatFilters.append(filter);
+	TalkableFilters.append(filter);
 	connect(filter, SIGNAL(filterChanged()), this, SLOT(invalidate()));
 
 	invalidateFilter();
 }
 
-void HistoryChatsModelProxy::removeChatFilter(ChatFilter *filter)
+void HistoryChatsModelProxy::removeTalkableFilter(TalkableFilter *filter)
 {
 	if (!filter)
 		return;
 
-	ChatFilters.removeAll(filter);
-	disconnect(filter, SIGNAL(filterChanged()), this, SLOT(invalidate()));
-
-	invalidateFilter();
-}
-
-void HistoryChatsModelProxy::addBuddyFilter(AbstractBuddyFilter *filter)
-{
-	if (!filter)
-		return;
-
-	BuddyFilters.append(filter);
-	connect(filter, SIGNAL(filterChanged()), this, SLOT(invalidate()));
-
-	invalidateFilter();
-}
-
-void HistoryChatsModelProxy::removeBuddyFilter(AbstractBuddyFilter *filter)
-{
-	if (!filter)
-		return;
-
-	BuddyFilters.removeAll(filter);
+	TalkableFilters.removeAll(filter);
 	disconnect(filter, SIGNAL(filterChanged()), this, SLOT(invalidate()));
 
 	invalidateFilter();

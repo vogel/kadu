@@ -292,9 +292,9 @@ void ChatEditBox::openInsertImageDialog()
 			Contact contact = *CurrentChat.contacts().constBegin();
 			if (tooBigCounter > 0)
 				message = tr("This image has %1 KiB and may be too big for %2.")
-						.arg((f.size() + 1023) / 1024).arg(contact.ownerBuddy().display()) + '\n';
+						.arg((f.size() + 1023) / 1024).arg(contact.display(true)) + '\n';
 			else if (disconnectedCounter > 0)
-				message = tr("%1 appears to be offline and may not receive images.").arg(contact.ownerBuddy().display()) + '\n';
+				message = tr("%1 appears to be offline and may not receive images.").arg(contact.display(true)) + '\n';
 		}
 		else
 		{

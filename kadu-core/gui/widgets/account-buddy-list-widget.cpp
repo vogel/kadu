@@ -27,9 +27,6 @@
 #include <QtGui/QVBoxLayout>
 
 #include "buddies/buddy-manager.h"
-#include "buddies/filter/account-buddy-filter.h"
-#include "buddies/filter/anonymous-buddy-filter.h"
-#include "buddies/filter/buddy-name-filter.h"
 #include "buddies/model/buddies-model.h"
 #include "contacts/contact-details.h"
 #include "contacts/contact-manager.h"
@@ -38,6 +35,9 @@
 #include "gui/widgets/talkable-tree-view.h"
 #include "gui/windows/message-dialog.h"
 #include "model/model-chain.h"
+#include "talkable/filter/account-talkable-filter.h"
+#include "talkable/filter/hide-anonymous-talkable-filter.h"
+#include "talkable/filter/name-talkable-filter.h"
 #include "talkable/model/talkable-proxy-model.h"
 
 #include "protocols/protocol.h"
@@ -55,20 +55,13 @@ AccountBuddyListWidget::AccountBuddyListWidget(Account account, QWidget *parent)
 
 	ModelChain *chain = new ModelChain(new BuddiesModel(this), this);
 	TalkableProxyModel *proxyModel = new TalkableProxyModel(chain);
-
-	AccountBuddyFilter *accountFilter = new AccountBuddyFilter(CurrentAccount, proxyModel);
-	accountFilter->setEnabled(true);
-	AnonymousBuddyFilter *anonymousFilter = new AnonymousBuddyFilter(proxyModel);
-	anonymousFilter->setEnabled(true);
-
-	proxyModel->addFilter(accountFilter);
-	proxyModel->addFilter(anonymousFilter);
-
+	proxyModel->addFilter(new AccountTalkableFilter(CurrentAccount, proxyModel));
+	proxyModel->addFilter(new HideAnonymousTalkableFilter(proxyModel));
 	chain->addProxyModel(proxyModel);
 
 	BuddiesWidget = new FilteredTreeView(FilteredTreeView::FilterAtTop, this);
 
-	BuddyNameFilter *nameFilter = new BuddyNameFilter(proxyModel);
+	NameTalkableFilter *nameFilter = new NameTalkableFilter(NameTalkableFilter::UndecidedMatching, proxyModel);
 	connect(BuddiesWidget, SIGNAL(filterChanged(QString)), nameFilter, SLOT(setName(QString)));
 	proxyModel->addFilter(nameFilter);
 

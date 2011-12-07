@@ -165,7 +165,7 @@ Avatar Talkable::avatar() const
 		avatar = buddy().buddyAvatar();
 
 	if (!avatar || avatar.pixmap().isNull())
-		avatar = contact().contactAvatar();
+		avatar = contact().avatar(true);
 
 	return avatar;
 }

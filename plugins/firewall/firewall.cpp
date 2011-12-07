@@ -163,7 +163,7 @@ void Firewall::filterIncomingMessage(Chat chat, Contact sender, QString &message
 
 	if (CheckFloodingEmoticons)
 	{
-		if ((!EmoticonsAllowKnown || sender.ownerBuddy().isAnonymous()) && checkEmoticons(message))
+		if ((!EmoticonsAllowKnown || sender.isAnonymous()) && checkEmoticons(message))
 		{
 			ignore = true;
 			if (LastNotify.elapsed() > min_interval_notify)
@@ -242,7 +242,7 @@ bool Firewall::checkConference(const Chat &chat)
 
 	foreach (const Contact &contact, chat.contacts())
 	{
-		if (!contact.ownerBuddy().isAnonymous() || Passed.contains(contact))
+		if (!contact.isAnonymous() || Passed.contains(contact))
 		{
 			kdebugf2();
  			return false;
@@ -267,7 +267,7 @@ bool Firewall::checkChat(const Chat &chat, const Contact &sender, const QString 
  		return false;
 	}
 
-	if (!sender.ownerBuddy().isAnonymous() || Passed.contains(sender))
+	if (!sender.isAnonymous() || Passed.contains(sender))
 	{
 		kdebugf2();
  		return false;
@@ -461,7 +461,7 @@ void Firewall::filterOutgoingMessage(Chat chat, QString &msg, bool &stop)
 		if (!chat)
 			continue;
 
-		if (contact.ownerBuddy().isAnonymous() && ChatWidgetManager::instance()->byChat(chat, false))
+		if (contact.isAnonymous() && ChatWidgetManager::instance()->byChat(chat, false))
 			Passed.insert(contact);
 	}
 
@@ -519,7 +519,7 @@ void Firewall::writeLog(const Contact &contact, const QString &message)
 
 	logFile.open(QIODevice::WriteOnly | QIODevice::Append);
 	QTextStream stream(&logFile);
-	stream << QDateTime::currentDateTime().toString() << " :: " << contact.ownerBuddy().display() << " :: " << message << "\n";
+	stream << QDateTime::currentDateTime().toString() << " :: " << contact.display(true) << " :: " << message << "\n";
 	logFile.close();
 
 	kdebugf2();
