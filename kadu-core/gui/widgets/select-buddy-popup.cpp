@@ -113,13 +113,3 @@ void SelectBuddyPopup::removeFilter(TalkableFilter *filter)
 {
 	ProxyModel->removeFilter(filter);
 }
-
-void SelectBuddyPopup::addFilter(AbstractBuddyFilter *filter)
-{
-	ProxyModel->addFilter(filter);
-}
-
-void SelectBuddyPopup::removeFilter(AbstractBuddyFilter *filter)
-{
-	ProxyModel->removeFilter(filter);
-}

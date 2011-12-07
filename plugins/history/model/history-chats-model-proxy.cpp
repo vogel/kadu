@@ -23,7 +23,6 @@
 
 #include "buddies/buddy-set.h"
 #include "buddies/buddy.h"
-#include "buddies/filter/abstract-buddy-filter.h"
 #include "chat/chat.h"
 #include "chat/filter/chat-filter.h"
 #include "chat/type/chat-type.h"
@@ -79,10 +78,6 @@ bool HistoryChatsModelProxy::filterAcceptsRow(int sourceRow, const QModelIndex &
 				case TalkableFilter::Undecided: break;
 				case TalkableFilter::Rejected: return false;
 			}
-
-		foreach (AbstractBuddyFilter *filter, BuddyFilters)
-			if (!filter->acceptBuddy(buddy))
-				return false;
 
 		return true;
 	}
@@ -149,28 +144,6 @@ void HistoryChatsModelProxy::removeTalkableFilter(TalkableFilter *filter)
 		return;
 
 	TalkableFilters.removeAll(filter);
-	disconnect(filter, SIGNAL(filterChanged()), this, SLOT(invalidate()));
-
-	invalidateFilter();
-}
-
-void HistoryChatsModelProxy::addBuddyFilter(AbstractBuddyFilter *filter)
-{
-	if (!filter)
-		return;
-
-	BuddyFilters.append(filter);
-	connect(filter, SIGNAL(filterChanged()), this, SLOT(invalidate()));
-
-	invalidateFilter();
-}
-
-void HistoryChatsModelProxy::removeBuddyFilter(AbstractBuddyFilter *filter)
-{
-	if (!filter)
-		return;
-
-	BuddyFilters.removeAll(filter);
 	disconnect(filter, SIGNAL(filterChanged()), this, SLOT(invalidate()));
 
 	invalidateFilter();

@@ -30,8 +30,6 @@ set (buddies_MOC_SRCS
 	buddy-preferred-manager.h
 	group-shared.h
 
-	filter/abstract-buddy-filter.h
-
 	model/buddy-list-model.h
 	model/buddies-model.h
 	model/buddies-model-base.h

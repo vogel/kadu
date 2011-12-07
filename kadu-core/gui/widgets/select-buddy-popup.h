@@ -29,7 +29,6 @@
 
 class QModelIndex;
 
-class AbstractBuddyFilter;
 class Buddy;
 class TalkableFilter;
 class TalkableProxyModel;
@@ -54,9 +53,6 @@ public:
 
 	void addFilter(TalkableFilter *filter);
 	void removeFilter(TalkableFilter *filter);
-
-	void addFilter(AbstractBuddyFilter *filter);
-	void removeFilter(AbstractBuddyFilter *filter);
 
 signals:
 	void buddySelected(Buddy buddy);

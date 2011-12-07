@@ -23,7 +23,6 @@
 
 #include "buddies/buddy-preferred-manager.h"
 #include "buddies/buddy.h"
-#include "buddies/filter/abstract-buddy-filter.h"
 #include "chat/model/chat-data-extractor.h"
 #include "chat/chat.h"
 #include "contacts/contact.h"
@@ -197,12 +196,6 @@ bool TalkableProxyModel::accept(const Buddy &buddy) const
 				return false;
 		}
 
-	foreach (AbstractBuddyFilter *filter, BuddyFilters)
-		if (!filter->acceptBuddy(buddy))
-			return false;
-		else if (filter->ignoreNextFilters(buddy))
-			return true;
-
 	return true;
 }
 
@@ -257,25 +250,6 @@ void TalkableProxyModel::addFilter(TalkableFilter *filter)
 void TalkableProxyModel::removeFilter(TalkableFilter *filter)
 {
 	if (TalkableFilters.removeAll(filter) <= 0)
-		return;
-
-	invalidateFilter();
-	disconnect(filter, SIGNAL(filterChanged()), this, SLOT(invalidate()));
-}
-
-void TalkableProxyModel::addFilter(AbstractBuddyFilter *filter)
-{
-	if (BuddyFilters.contains(filter))
-		return;
-
-	BuddyFilters.append(filter);
-	invalidateFilter();
-	connect(filter, SIGNAL(filterChanged()), this, SLOT(invalidate()));
-}
-
-void TalkableProxyModel::removeFilter(AbstractBuddyFilter *filter)
-{
-	if (BuddyFilters.removeAll(filter) <= 0)
 		return;
 
 	invalidateFilter();

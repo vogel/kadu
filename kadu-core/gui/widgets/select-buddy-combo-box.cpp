@@ -93,15 +93,3 @@ void SelectBuddyComboBox::removeFilter(TalkableFilter *filter)
 	ProxyModel->removeFilter(filter);
 	Popup->removeFilter(filter);
 }
-
-void SelectBuddyComboBox::addFilter(AbstractBuddyFilter *filter)
-{
-	ProxyModel->addFilter(filter);
-	Popup->addFilter(filter);
-}
-
-void SelectBuddyComboBox::removeFilter(AbstractBuddyFilter *filter)
-{
-	ProxyModel->removeFilter(filter);
-	Popup->removeFilter(filter);
-}
