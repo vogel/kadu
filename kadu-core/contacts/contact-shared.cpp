@@ -106,7 +106,7 @@ void ContactShared::load()
 				storage()->point().removeChild(avatars.at(0));
 	}
 
-	setContactAvatar(AvatarManager::instance()->byUuid(loadValue<QString>("Avatar")));
+	doSetContactAvatar(AvatarManager::instance()->byUuid(loadValue<QString>("Avatar")));
 
 	triggerAllProtocolsRegistered();
 }
@@ -118,7 +118,7 @@ void ContactShared::aboutToBeRemoved()
 	*OwnerBuddy = Buddy::null;
 
 	AvatarManager::instance()->removeItem(*ContactAvatar);
-	setContactAvatar(Avatar::null);
+	doSetContactAvatar(Avatar::null);
 
 	// do not store contacts that are not in contact manager
 	if (ContactManager::instance()->allItems().contains(uuid()))
@@ -377,19 +377,26 @@ void ContactShared::avatarUpdated()
 	dataUpdated();
 }
 
-void ContactShared::setContactAvatar(const Avatar &contactAvatar)
+void ContactShared::doSetContactAvatar(const Avatar &contactAvatar)
 {
-	if (*ContactAvatar == contactAvatar)
-		return;
-
 	if (*ContactAvatar)
 		disconnect(*ContactAvatar, SIGNAL(updated()), this, SLOT(avatarUpdated()));
 
 	*ContactAvatar = contactAvatar;
-	dataUpdated();
 
 	if (*ContactAvatar)
 		connect(*ContactAvatar, SIGNAL(updated()), this, SLOT(avatarUpdated()));
+}
+
+void ContactShared::setContactAvatar(const Avatar &contactAvatar)
+{
+	ensureLoaded();
+
+	if (*ContactAvatar == contactAvatar)
+		return;
+
+	doSetContactAvatar(contactAvatar);
+	dataUpdated();
 }
 
 bool ContactShared::isAnonymous()
