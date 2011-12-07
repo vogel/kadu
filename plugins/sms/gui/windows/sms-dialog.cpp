@@ -31,13 +31,13 @@
 #include <QtGui/QVBoxLayout>
 
 #include "buddies/buddy-manager.h"
-#include "buddies/filter/mobile-buddy-filter.h"
 #include "configuration/configuration-file.h"
 #include "gui/widgets/select-buddy-combo-box.h"
 #include "gui/windows/message-dialog.h"
 #include "icons/kadu-icon.h"
 #include "misc/misc.h"
 #include "plugins/plugins-manager.h"
+#include "talkable/filter/mobile-talkable-filter.h"
 #include "debug.h"
 
 #include "gui/windows/sms-progress-window.h"
@@ -96,9 +96,7 @@ void SmsDialog::createGui()
 	recipientLayout->addWidget(RecipientEdit);
 
 	RecipientComboBox = new SelectBuddyComboBox(this);
-	MobileBuddyFilter *mobileFilter = new MobileBuddyFilter(RecipientComboBox);
-	mobileFilter->setEnabled(true);
-	RecipientComboBox->addFilter(mobileFilter);
+	RecipientComboBox->addFilter(new MobileTalkableFilter(RecipientComboBox));
 
 	connect(RecipientComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(recipientBuddyChanged()));
 	recipientLayout->addWidget(RecipientComboBox);
