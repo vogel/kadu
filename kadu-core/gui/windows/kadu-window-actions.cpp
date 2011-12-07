@@ -70,9 +70,9 @@
 #include "protocols/protocol.h"
 #include "status/status-container-manager.h"
 #include "talkable/filter/blocked-talkable-filter.h"
-#include "talkable/filter/hide-buddies-without-description-talkable-filter.h"
 #include "talkable/filter/hide-offline-talkable-filter.h"
 #include "talkable/filter/hide-offline-without-description-talkable-filter.h"
+#include "talkable/filter/hide-without-description-talkable-filter.h"
 #include "talkable/model/talkable-model.h"
 #include "talkable/model/talkable-proxy-model.h"
 #include "url-handlers/url-handler-manager.h"
@@ -416,7 +416,7 @@ void KaduWindowActions::descriptionUsersActionCreated(Action *action)
 		return;
 
 	bool enabled = !config_file.readBoolEntry("General", "ShowWithoutDescription");
-	HideBuddiesWithoutDescriptionTalkableFilter *filter = new HideBuddiesWithoutDescriptionTalkableFilter(action);
+	HideWithoutDescriptionTalkableFilter *filter = new HideWithoutDescriptionTalkableFilter(action);
 	filter->setEnabled(enabled);
 
 	action->setData(QVariant::fromValue(filter));
@@ -844,9 +844,9 @@ void KaduWindowActions::inactiveUsersActionActivated(QAction *sender, bool toggl
 void KaduWindowActions::descriptionUsersActionActivated(QAction *sender, bool toggled)
 {
 	QVariant v = sender->data();
-	if (v.canConvert<HideBuddiesWithoutDescriptionTalkableFilter *>())
+	if (v.canConvert<HideWithoutDescriptionTalkableFilter *>())
 	{
-		HideBuddiesWithoutDescriptionTalkableFilter *filter = v.value<HideBuddiesWithoutDescriptionTalkableFilter *>();
+		HideWithoutDescriptionTalkableFilter *filter = v.value<HideWithoutDescriptionTalkableFilter *>();
 		filter->setEnabled(toggled);
 	}
 }

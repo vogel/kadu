@@ -17,22 +17,22 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef HIDE_BUDDIES_WITHOUT_DESCRIPTION_TALKABLE_FILTER_H
-#define HIDE_BUDDIES_WITHOUT_DESCRIPTION_TALKABLE_FILTER_H
+#ifndef HIDE_WITHOUT_DESCRIPTION_TALKABLE_FILTER_H
+#define HIDE_WITHOUT_DESCRIPTION_TALKABLE_FILTER_H
 
 #include <QtCore/QMetaType>
 
 #include "talkable/filter/talkable-filter.h"
 
-class HideBuddiesWithoutDescriptionTalkableFilter : public TalkableFilter
+class HideWithoutDescriptionTalkableFilter : public TalkableFilter
 {
 	Q_OBJECT
 
 	bool Enabled;
 
 public:
-	explicit HideBuddiesWithoutDescriptionTalkableFilter(QObject *parent = 0);
-	virtual ~HideBuddiesWithoutDescriptionTalkableFilter();
+	explicit HideWithoutDescriptionTalkableFilter(QObject *parent = 0);
+	virtual ~HideWithoutDescriptionTalkableFilter();
 
 	virtual FilterResult filterBuddy(const Buddy &buddy);
 
@@ -40,6 +40,6 @@ public:
 
 };
 
-Q_DECLARE_METATYPE(HideBuddiesWithoutDescriptionTalkableFilter *)
+Q_DECLARE_METATYPE(HideWithoutDescriptionTalkableFilter *)
 
-#endif // HIDE_BUDDIES_WITHOUT_DESCRIPTION_TALKABLE_FILTER_H
+#endif // HIDE_WITHOUT_DESCRIPTION_TALKABLE_FILTER_H

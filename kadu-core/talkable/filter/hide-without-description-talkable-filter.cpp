@@ -21,18 +21,18 @@
 #include "buddies/buddy-preferred-manager.h"
 #include "contacts/contact.h"
 
-#include "hide-buddies-without-description-talkable-filter.h"
+#include "hide-without-description-talkable-filter.h"
 
-HideBuddiesWithoutDescriptionTalkableFilter::HideBuddiesWithoutDescriptionTalkableFilter(QObject *parent) :
+HideWithoutDescriptionTalkableFilter::HideWithoutDescriptionTalkableFilter(QObject *parent) :
 		TalkableFilter(parent), Enabled(false)
 {
 }
 
-HideBuddiesWithoutDescriptionTalkableFilter::~HideBuddiesWithoutDescriptionTalkableFilter()
+HideWithoutDescriptionTalkableFilter::~HideWithoutDescriptionTalkableFilter()
 {
 }
 
-TalkableFilter::FilterResult HideBuddiesWithoutDescriptionTalkableFilter::filterBuddy(const Buddy &buddy)
+TalkableFilter::FilterResult HideWithoutDescriptionTalkableFilter::filterBuddy(const Buddy &buddy)
 {
 	if (!Enabled)
 		return Undecided;
@@ -47,7 +47,7 @@ TalkableFilter::FilterResult HideBuddiesWithoutDescriptionTalkableFilter::filter
 		return Undecided;
 }
 
-void HideBuddiesWithoutDescriptionTalkableFilter::setEnabled(bool enabled)
+void HideWithoutDescriptionTalkableFilter::setEnabled(bool enabled)
 {
 	if (Enabled == enabled)
 		return;
