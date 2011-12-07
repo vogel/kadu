@@ -20,7 +20,6 @@
 #ifndef SPELLCHECKER_CONFIGURATION_H
 #define SPELLCHECKER_CONFIGURATION_H
 
-#include <QtCore/QString>
 #include <QtCore/QStringList>
 #include <QtGui/QColor>
 
@@ -39,7 +38,7 @@ class SpellcheckerConfiguration : private ConfigurationAwareObject
 	bool Case;
 	bool Suggester;
 	QColor Color;
-	QString Checked;
+	QStringList Checked;
 	int SuggesterWordCount;
 
 	explicit SpellcheckerConfiguration();
@@ -62,8 +61,8 @@ public:
 	bool accents() const { return Accents; }
 	bool casesens() const { return Case; }
 	bool suggester() const { return Suggester; }
-	const QColor &color() const { return Color; }
-	const QString &checked() const { return Checked; }
+	const QColor & color() const { return Color; }
+	const QStringList & checked() const { return Checked; }
 	int suggesterWordCount() const { return SuggesterWordCount; }
 
 	void setChecked(const QStringList &checked);

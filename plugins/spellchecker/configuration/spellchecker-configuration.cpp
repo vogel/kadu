@@ -80,7 +80,7 @@ void SpellcheckerConfiguration::configurationUpdated()
 	Suggester = config_file.readBoolEntry("ASpell", "Suggester", true);
 	QColor colorMark("#FF0101");
 	Color = config_file.readColorEntry("ASpell", "Color", &colorMark);
-	Checked = config_file.readEntry("ASpell", "Checked", config_file.readEntry("General", "Language"));
+	Checked = config_file.readEntry("ASpell", "Checked", config_file.readEntry("General", "Language")).split(',', QString::SkipEmptyParts);
 	SuggesterWordCount = config_file.readNumEntry("ASpell", "SuggesterWordCount");
 
 	SpellCheckerPlugin::instance()->spellChecker()->buildMarkTag();

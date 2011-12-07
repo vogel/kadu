@@ -234,13 +234,8 @@ void SpellChecker::buildCheckers()
 		aspell_config_replace(SpellConfig, "ignore-case", "false");
 #endif
 
-	// load languages to check from configuration
-	QString checkedStr = SpellcheckerConfiguration::instance()->checked();
-	QStringList checkedList = checkedStr.split(',', QString::SkipEmptyParts);
-
-	// create spell checkers for each language
-	for (int i = 0; i < checkedList.count(); i++)
-		addCheckedLang(checkedList.at(i));
+	foreach (const QString &checked, SpellcheckerConfiguration::instance()->checked())
+		addCheckedLang(checked);
 }
 
 void SpellChecker::buildMarkTag()
