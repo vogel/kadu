@@ -163,11 +163,11 @@ bool SpellChecker::addCheckedLang(const QString &name)
 		return false;
 	}
 	else
-		MyCheckers[name] = to_aspell_speller(possibleErr);
+		MyCheckers.insert(name, to_aspell_speller(possibleErr));
 #elif defined(HAVE_ENCHANT)
 	try
 	{
-		MyCheckers[name] = enchant::Broker::instance()->request_dict(name.toStdString());
+		MyCheckers.insert(name, enchant::Broker::instance()->request_dict(name.toStdString()));
 	}
 	catch (enchant::Exception &e)
 	{
@@ -175,7 +175,7 @@ bool SpellChecker::addCheckedLang(const QString &name)
 		return false;
 	}
 #elif defined(Q_WS_MAC)
-	MyCheckers[name] = new MacSpellChecker();
+	MyCheckers.insert(name, new MacSpellChecker());
 #endif
 
 	if (MyCheckers.size() == 1)
