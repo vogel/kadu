@@ -63,7 +63,7 @@ void SpellcheckerConfiguration::createDefaultConfiguration()
 	config_file.addVariable("ASpell", "Italic", "false");
 	config_file.addVariable("ASpell", "Underline", "true");
 	config_file.addVariable("ASpell", "Color", "#FF0101");
-	config_file.addVariable("ASpell", "Checked", "pl");
+	config_file.addVariable("ASpell", "Checked", config_file.readEntry("General", "Language"));
 	config_file.addVariable("ASpell", "Accents", "false");
 	config_file.addVariable("ASpell", "Case", "false");
 	config_file.addVariable("ASpell", "Suggester", "true");
@@ -80,7 +80,7 @@ void SpellcheckerConfiguration::configurationUpdated()
 	Suggester = config_file.readBoolEntry("ASpell", "Suggester", true);
 	QColor colorMark("#FF0101");
 	Color = config_file.readColorEntry("ASpell", "Color", &colorMark);
-	Checked = config_file.readEntry("ASpell", "Checked", "pl");
+	Checked = config_file.readEntry("ASpell", "Checked", config_file.readEntry("General", "Language"));
 	SuggesterWordCount = config_file.readNumEntry("ASpell", "SuggesterWordCount");
 
 	SpellCheckerPlugin::instance()->spellChecker()->buildMarkTag();

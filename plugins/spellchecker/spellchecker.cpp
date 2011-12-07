@@ -185,6 +185,9 @@ bool SpellChecker::addCheckedLang(const QString &name)
 	{
 		MessageDialog::show(KaduIcon("dialog-error"), tr("Kadu"), tr("Could not find dictionary for %1 language.").arg(name)
 				+ (qstrlen(errorMsg) > 0 ? tr("Details: %1.").arg(errorMsg) : QString()));
+
+		// remove this checker from configuration
+		configurationWindowApplied();
 		return false;
 	}
 
