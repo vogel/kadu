@@ -25,16 +25,19 @@
 
 #include "configuration/configuration-aware-object.h"
 #include "gui/widgets/group-tab-bar.h"
+#include "gui/widgets/roster-widget.h"
+#include "gui/widgets/talkable-tree-view.h"
 #include "os/generic/compositing-aware-object.h"
 
 class QAction;
 class QString;
 class QWidget;
 
-class BuddiesListWidget;
 class KaduWindow;
 class MainWindow;
+class RosterWidget;
 class StatusButtons;
+class TalkableTreeView;
 
 class SimpleView :
 	public QObject, private ConfigurationAwareObject, CompositingAwareObject
@@ -55,9 +58,10 @@ class SimpleView :
 	QAction *DockAction;
 	KaduWindow *KaduWindowHandle;
 	MainWindow *MainWindowHandle;
-	BuddiesListWidget *BuddiesListWidgetHandle;
 	GroupTabBar *GroupTabBarHandle;
 	StatusButtons *StatusButtonsHandle;
+	RosterWidget *RosterWidgetHandle;
+	TalkableTreeView *TalkableTreeViewHandle;
 
 	SimpleView();
 	virtual ~SimpleView();
