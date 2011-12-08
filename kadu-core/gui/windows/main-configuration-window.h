@@ -60,6 +60,7 @@ class KADUAPI MainConfigurationWindow : public ConfigurationWindow, CompositingA
 	QCheckBox *onStartupSetLastDescription;
 	QCheckBox *userboxTransparency;
 	QSlider *userboxAlpha;
+	QCheckBox *userboxBlur;
 	ConfigComboBox *emoticonsStyleComboBox;
 	ConfigComboBox *emoticonsThemeComboBox;
 	ConfigComboBox *emoticonsScalingComboBox;

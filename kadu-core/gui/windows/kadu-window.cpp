@@ -448,6 +448,7 @@ void KaduWindow::configurationUpdated()
 	ChangeStatusButtons->setVisible(config_file.readBoolEntry("Look", "ShowStatusButton"));
 
 	triggerCompositingStateChanged();
+	setBlur(config_file.readBoolEntry("Look", "UserboxTransparency") && config_file.readBoolEntry("Look", "UserboxBlur"));
 }
 
 void KaduWindow::insertMenuActionDescription(ActionDescription *actionDescription, MenuType type, int pos)

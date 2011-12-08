@@ -298,6 +298,7 @@ void Core::createDefaultConfiguration()
 	config_file.addVariable("Look", "UserboxBackgroundDisplayStyle", "Stretched");
 	config_file.addVariable("Look", "UserboxTransparency", false);
 	config_file.addVariable("Look", "UserboxAlpha", 0);
+	config_file.addVariable("Look", "UserboxBlur", 0);
 	config_file.addVariable("Look", "UserboxBgColor", w.palette().base().color());
 	config_file.addVariable("Look", "UserboxAlternateBgColor", w.palette().alternateBase().color());
 	config_file.addVariable("Look", "UserBoxColumnCount", 1);

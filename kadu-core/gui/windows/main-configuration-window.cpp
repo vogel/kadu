@@ -75,6 +75,11 @@
 
 #include "main-configuration-window.h"
 
+#ifdef Q_WS_X11
+#include "os/x11tools.h" // this should be included as last one,
+#undef Status            // and Status defined by Xlib.h must be undefined
+#endif
+
 MainConfigurationWindow *MainConfigurationWindow::Instance = 0;
 ConfigFileDataManager *MainConfigurationWindow::InstanceDataManager = 0;
 QList<QString> MainConfigurationWindow::UiFiles;
@@ -193,6 +198,7 @@ MainConfigurationWindow::MainConfigurationWindow() :
 	widget()->widgetById("userboxTransparency")->hide();
 	// cast is needed to call proper hide() method (QWidget::hide() is not virtual)
 	qobject_cast<ConfigSlider *>(widget()->widgetById("userboxAlpha"))->hide();
+	widget()->widgetById("useBlur")->hide();
 #endif
 
 	onStartupSetLastDescription = static_cast<QCheckBox *>(widget()->widgetById("onStartupSetLastDescription"));
@@ -264,6 +270,8 @@ MainConfigurationWindow::MainConfigurationWindow() :
 	userboxTransparency = static_cast<QCheckBox *>(widget()->widgetById("userboxTransparency"));
 	userboxAlpha = static_cast<QSlider *>(widget()->widgetById("userboxAlpha"));
 	connect(userboxTransparency, SIGNAL(toggled(bool)), widget()->widgetById("userboxAlpha"), SLOT(setEnabled(bool)));
+	userboxBlur = static_cast<QCheckBox *>(widget()->widgetById("userboxBlur"));
+	connect(userboxTransparency, SIGNAL(toggled(bool)), widget()->widgetById("userboxBlur"), SLOT(setEnabled(bool)));
 
 	buddyColors = new BuddyListBackgroundColorsWidget(this);
 
@@ -286,6 +294,7 @@ void MainConfigurationWindow::compositingDisabled()
 {
 	userboxTransparency->setEnabled(false);
 	userboxAlpha->setEnabled(false);
+	userboxBlur->setEnabled(false);
 }
 
 void MainConfigurationWindow::show()

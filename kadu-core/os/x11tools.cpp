@@ -1005,3 +1005,16 @@ bool X11_isCompositingManagerRunning( Display *display )
 	Atom netwmcms0 = XInternAtom( display, "_NET_WM_CM_S0", False );
 	return XGetSelectionOwner( display, netwmcms0 );
 }
+
+void X11_setBlur( Display *display, Window window, bool enable )
+{
+	Atom atom = XInternAtom( display, "_KDE_NET_WM_BLUR_BEHIND_REGION", False );
+	
+	if ( atom != None )
+	{
+		if  ( enable )
+			XChangeProperty( display, window, atom, XA_CARDINAL, 32, PropModeReplace, NULL, 0 );
+		else
+			XDeleteProperty( display, window, atom );
+	}
+}

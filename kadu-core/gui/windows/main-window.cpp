@@ -21,7 +21,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 #include <QtGui/QContextMenuEvent>
 #include <QtGui/QMenu>
 
@@ -42,6 +41,12 @@
 
 #include "main-window.h"
 
+#ifdef Q_WS_X11
+#include <QtGui/QX11Info>
+#include "os/x11tools.h" // this should be included as last one,
+#undef Status            // and Status defined by Xlib.h must be undefined
+#endif
+
 MainWindow * MainWindow::findMainWindow(QWidget *widget)
 {
 	while (widget)
@@ -56,7 +61,7 @@ MainWindow * MainWindow::findMainWindow(QWidget *widget)
 }
 
 MainWindow::MainWindow(ActionContext *context, const QString &windowName, QWidget *parent) :
-		QMainWindow(parent), DesktopAwareObject(this),  WindowName(windowName), TransparencyEnabled(false),
+		QMainWindow(parent), DesktopAwareObject(this),  WindowName(windowName), TransparencyEnabled(false), BlurEnabled(false),
 		Context(context)
 {
 	Q_ASSERT(0 != Context);
@@ -466,4 +471,20 @@ void MainWindow::toolbarRemoved(ToolBar *toolBar)
 ActionContext * MainWindow::actionContext()
 {
 	return Context;
+}
+
+void MainWindow::setBlur(bool enable)
+{
+#if defined(Q_WS_X11)
+	BlurEnabled = enable;
+	X11_setBlur(QX11Info::display(), winId(), enable);
+#endif
+}
+
+
+void MainWindow::showEvent(QShowEvent * event)
+{
+	Q_UNUSED(event);
+	if (BlurEnabled)
+		setBlur(true);
 }
