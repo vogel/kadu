@@ -293,7 +293,7 @@ void KaduWindow::compositingDisabled()
 
 void KaduWindow::talkableActivatedSlot(const Talkable &talkable)
 {
-	const Chat &chat = talkable.chat();
+	const Chat &chat = talkable.toChat();
 	if (chat && !chat.contacts().toBuddySet().contains(Core::instance()->myself()))
 	{
 		ChatWidget * const chatWidget = ChatWidgetManager::instance()->byChat(chat, true);
@@ -302,7 +302,7 @@ void KaduWindow::talkableActivatedSlot(const Talkable &talkable)
 		return;
 	}
 
-	const Buddy &buddy = talkable.buddy();
+	const Buddy &buddy = talkable.toBuddy();
 	if (buddy.contacts().isEmpty() && buddy.mobile().isEmpty() && !buddy.email().isEmpty())
 		if (buddy.email().indexOf(UrlHandlerManager::instance()->mailRegExp()) == 0)
 			UrlOpener::openEmail(buddy.email().toUtf8());

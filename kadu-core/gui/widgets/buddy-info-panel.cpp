@@ -68,7 +68,7 @@ void BuddyInfoPanel::configurationUpdated()
 
 void BuddyInfoPanel::buddyUpdated(Buddy &buddy)
 {
-	if (buddy == Item.buddy())
+	if (buddy == Item.toBuddy())
 		update();
 }
 
@@ -141,7 +141,7 @@ void BuddyInfoPanel::update()
 
 void BuddyInfoPanel::connectItem()
 {
-	Buddy buddy = Item.buddy();
+	Buddy buddy = Item.toBuddy();
 	if (buddy)
 	{
 		connect(buddy, SIGNAL(updated()), this, SLOT(update()));
@@ -149,7 +149,7 @@ void BuddyInfoPanel::connectItem()
 			connect(buddy.buddyAvatar(), SIGNAL(updated()), this, SLOT(update()));
 	}
 
-	Contact contact = Item.contact();
+	Contact contact = Item.toContact();
 	if (contact)
 	{
 		connect(contact, SIGNAL(updated()), this, SLOT(update()));
@@ -160,7 +160,7 @@ void BuddyInfoPanel::connectItem()
 
 void BuddyInfoPanel::disconnectItem()
 {
-	Buddy buddy = Item.buddy();
+	Buddy buddy = Item.toBuddy();
 	if (buddy)
 	{
 		disconnect(buddy, SIGNAL(updated()), this, SLOT(update()));
@@ -168,7 +168,7 @@ void BuddyInfoPanel::disconnectItem()
 			disconnect(buddy.buddyAvatar(), SIGNAL(updated()), this, SLOT(update()));
 	}
 
-	Contact contact = Item.contact();
+	Contact contact = Item.toContact();
 	if (contact)
 	{
 		disconnect(contact, SIGNAL(updated()), this, SLOT(update()));

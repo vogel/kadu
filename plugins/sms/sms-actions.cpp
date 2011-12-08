@@ -95,7 +95,7 @@ void SmsActions::newSms(const QString &mobile)
 
 void SmsActions::talkableActivated(const Talkable &talkable)
 {
-	const Buddy &buddy = talkable.buddy();
+	const Buddy &buddy = talkable.toBuddy();
 	if (buddy.contacts().isEmpty() && !buddy.mobile().isEmpty())
 		newSms(buddy.mobile());
 }

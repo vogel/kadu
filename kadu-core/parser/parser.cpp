@@ -185,8 +185,8 @@ ParserToken Parser::parsePercentSyntax(const QString &s, int &idx, const Talkabl
 	ParserToken pe;
 	pe.setType(PT_STRING);
 
-	Buddy buddy = talkable.buddy();
-	Contact contact = talkable.contact();
+	Buddy buddy = talkable.toBuddy();
+	Contact contact = talkable.toContact();
 
 	switch (s.at(idx).toAscii())
 	{

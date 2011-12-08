@@ -96,7 +96,7 @@ void SelectBuddyPopup::itemClicked(const QModelIndex &index)
 
 void SelectBuddyPopup::talkableActivated(const Talkable &talkable)
 {
-	const Buddy &buddy = talkable.buddy();
+	const Buddy &buddy = talkable.toBuddy();
 	if (buddy)
 	{
 		emit buddySelected(buddy);

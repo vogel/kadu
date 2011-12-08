@@ -108,19 +108,19 @@ bool Talkable::operator != (const Talkable &compareTo) const
 	return !(*this == compareTo);
 }
 
-Buddy Talkable::buddy() const
+Buddy Talkable::toBuddy() const
 {
 	switch (Type)
 	{
 		case ItemBuddy: return MyBuddy;
 		case ItemContact: return MyContact.ownerBuddy();
-		case ItemChat: return contact().ownerBuddy();
+		case ItemChat: return toContact().ownerBuddy();
 		default:
 			return Buddy::null;
 	}
 }
 
-Contact Talkable::contact() const
+Contact Talkable::toContact() const
 {
 	switch (Type)
 	{
@@ -136,7 +136,7 @@ Contact Talkable::contact() const
 	}
 }
 
-Chat Talkable::chat() const
+Chat Talkable::toChat() const
 {
 	switch (Type)
 	{
@@ -162,22 +162,22 @@ Avatar Talkable::avatar() const
 {
 	Avatar avatar;
 	if (Talkable::ItemBuddy == Type)
-		avatar = buddy().buddyAvatar();
+		avatar = toBuddy().buddyAvatar();
 
 	if (!avatar || avatar.pixmap().isNull())
-		avatar = contact().avatar(true);
+		avatar = toContact().avatar(true);
 
 	return avatar;
 }
 
 bool Talkable::isBlocked() const
 {
-	return buddy().isBlocked();
+	return toBuddy().isBlocked();
 }
 
 bool Talkable::isBlocking() const
 {
-	return contact().isBlocking();
+	return toContact().isBlocking();
 }
 
 Account Talkable::account() const
@@ -186,11 +186,11 @@ Account Talkable::account() const
 	{
 		case ItemChat: return MyChat.chatAccount();
 		default:
-			return contact().contactAccount();
+			return toContact().contactAccount();
 	}
 }
 
 Status Talkable::currentStatus() const
 {
-	return contact().currentStatus();
+	return toContact().currentStatus();
 }

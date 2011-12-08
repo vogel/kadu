@@ -41,9 +41,9 @@
  * Objects of this class can contain instance of one of talkable types - Chat, Buddy or Contact.
  * Empty Talkable objects does not contain anything.
  *
- * Talkable contructors can take an object of Chat, Buddy or Contact type. Getter methods chat() buddy()
- * and contact() can convert object contained in Talkable from one type to another. For example, if Talkable
- * was created with Contact object, then buddy() getter will return ownerBuddy() of given Contact. Check
+ * Talkable contructors can take an object of Chat, Buddy or Contact type. Getter methods toChat() toBuddy()
+ * and toContact() can convert object contained in Talkable from one type to another. For example, if Talkable
+ * was created with Contact object, then toBuddy() getter will return ownerBuddy() of given Contact. Check
  * documentation of getters for more information about possible conversions.
  */
 class KADUAPI Talkable
@@ -160,7 +160,7 @@ public:
 	 * If current Talkable instance is of type ItemChat, then if this Chat is composed only of one Contact, this Contact's
 	 * ownerBuddy is returned. In other case null Buddy is returned.
 	 */
-	Buddy buddy() const;
+	Buddy toBuddy() const;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -173,7 +173,7 @@ public:
 	 * If current Talkable instance is of type ItemChat, then if this Chat is composed only of one Contact, this Contact
 	 * is returned. In other case null Contact is returned.
 	 */
-	Contact contact() const;
+	Contact toContact() const;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -183,7 +183,7 @@ public:
 	 * If current Talkable instance is of type ItemChat, then Chat used to create this instance is returned.
 	 * In other case null Chat is returned.
 	 */
-	Chat chat() const;
+	Chat toChat() const;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -200,21 +200,21 @@ public:
 	 * @return avatar assigned to this Talkable
 	 *
 	 * If current Talkable instance is of type ItemBuddy and Buddy instance contains non-empty avatar, then it is used.
-	 * If not, avatar of contact returned by contact() is used and returned.
+	 * If not, avatar of contact returned by toContact() is used and returned.
 	 */
 	Avatar avatar() const;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns true if Buddy returnd by buddy() is blocked.
-	 * @return true if Buddy returned by buddy() is blocked
+	 * @short Returns true if Buddy returnd by toBuddy() is blocked.
+	 * @return true if Buddy returned by toBuddy() is blocked
 	 */
 	bool isBlocked() const;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns true if Contact returnd by contact() is blocking.
-	 * @return true if Contact returned by contact() is blocking
+	 * @short Returns true if Contact returnd by toContact() is blocking.
+	 * @return true if Contact returned by toContact() is blocking
 	 */
 	bool isBlocking() const;
 
@@ -231,8 +231,8 @@ public:
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns current status of Contact returnd by contact().
-	 * @return current status of Contact returnd by contact()
+	 * @short Returns current status of Contact returnd by toContact().
+	 * @return current status of Contact returnd by toContact()
 	 */
 	Status currentStatus() const;
 
