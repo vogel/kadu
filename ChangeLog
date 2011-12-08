@@ -12,6 +12,12 @@
 * encryption_ng_simlite: support UTF-8 messages and use if the interlocutor supports them (beevvy)
 * network: #2298 fixed: better proxy configuration system (Vogel)
 * chat styles: #1786 fixed: Satin style draws messages' backgrounds properly in wide windows now (ultr)
+* gui: #1014 fixed: conferences can now be stored and displayed on roster widget (Vogel)
+* gui: #1227 fixed: systray icon blinks on messages from inactive windows/tabs (Vogel)
+* history: #1357 fixed: history speedup (Juzef)
+* history: #1787, #2270 fixed: history messages are loaded asynchronically into chat window (Vogel)
+* gui: #2090 fixed: added minimize/restore items to docking menu (beevvy)
+*
 
 +++ version 0.10.1
 * gadu: clearer contact list synchronization message when updating from <0.10.0 (beevvy)
