@@ -24,7 +24,6 @@
 #include "buddies/buddy-set.h"
 #include "buddies/buddy.h"
 #include "chat/chat.h"
-#include "chat/filter/chat-filter.h"
 #include "chat/type/chat-type.h"
 #include "contacts/contact-set.h"
 #include "model/history-chats-model.h"

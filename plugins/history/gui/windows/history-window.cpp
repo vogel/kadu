@@ -42,7 +42,6 @@
 #include "chat/aggregate-chat-manager.h"
 #include "chat/chat-details-aggregate.h"
 #include "chat/chat-manager.h"
-#include "chat/filter/chat-name-filter.h"
 #include "chat/type/chat-type-manager.h"
 #include "chat/type/chat-type.h"
 #include "gui/actions/actions.h"
