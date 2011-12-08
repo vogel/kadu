@@ -44,8 +44,9 @@
  *
  * Object of Details type is always attached to @link<StorableObject> StorableObject @endlink
  * and uses exactly the same @link<StoragePoint> StoragePoint @endlink (so these two object
- * share XML node for storing data). All other data (like State) is not shared between these
- * objects.
+ * share XML node for storing data). It has various implications, including the fact that if
+ * any of these two objects' shouldStore() method would return false, both will be deleted.
+ * All other data (like State) is not shared between these objects.
  */
 template<typename T>
 class Details : public StorableObject

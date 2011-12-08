@@ -34,9 +34,6 @@ class GaduContactDetails : public ContactDetails
 {
 	int GaduFlags;
 
-protected:
-	virtual bool shoulStore() { return false; }
-
 public:
 	explicit GaduContactDetails(ContactShared *contactShared);
 	virtual ~GaduContactDetails();

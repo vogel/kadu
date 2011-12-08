@@ -38,9 +38,6 @@ class JabberContactDetails : public ContactDetails
 {
 	PROPERTY_DEC(XMPP::Subscription, ContactSubscription)
 
-protected:
-	virtual bool shouldStore() { return false; }
-
 public:
 	explicit JabberContactDetails(ContactShared *contactShared);
 	virtual ~JabberContactDetails();
