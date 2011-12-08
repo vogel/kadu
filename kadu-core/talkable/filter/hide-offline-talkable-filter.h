@@ -34,7 +34,7 @@
  * @author Rafał 'Vogel' Malinowski
  * @short Filter that removes items that are not available.
  *
- * This filter removes items that not available. Contact items that have offline status are rejected.
+ * This filter removes items that are not available. Contact items that have offline status are rejected.
  * Buddy items that have preffered contact with offline status are rejected. All other items are passed
  * to next filters.
  *

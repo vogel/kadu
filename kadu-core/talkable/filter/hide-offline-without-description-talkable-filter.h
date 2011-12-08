@@ -24,6 +24,22 @@
 
 #include "talkable/filter/talkable-filter.h"
 
+/**
+ * @addtogroup Talkable
+ * @{
+ */
+
+/**
+ * @class HideOfflineTalkableFilter
+ * @author Rafał 'Vogel' Malinowski
+ * @short Filter that removes items that are not available and have no description.
+ *
+ * This filter removes items that not available and have no description. Contact items that have offline
+ * status and empty description are rejected. Buddy items that have preffered contact with offline status
+ * and no description are rejected. All other items are passed to next filters.
+ *
+ * This filter can be enable or disabled. In disabled state it always returs Undecided.
+ */
 class HideOfflineWithoutDescriptionTalkableFilter : public TalkableFilter
 {
 	Q_OBJECT
@@ -31,15 +47,29 @@ class HideOfflineWithoutDescriptionTalkableFilter : public TalkableFilter
 	bool Enabled;
 
 public:
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Create new instance of HideOfflineWithoutDescriptionTalkableFilter with given parent.
+	 * @param parent QObject parent of new object
+	 */
 	explicit HideOfflineWithoutDescriptionTalkableFilter(QObject *parent = 0);
 	virtual ~HideOfflineWithoutDescriptionTalkableFilter();
 
 	virtual FilterResult filterBuddy(const Buddy &buddy);
 	virtual FilterResult filterContact(const Contact &contact);
 
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Enable or disalbe filter.
+	 * @param enabled new value of enabled property
+	 */
 	void setEnabled(bool enabled);
 
 };
+
+/**
+ * @}
+ */
 
 Q_DECLARE_METATYPE(HideOfflineWithoutDescriptionTalkableFilter *)
 

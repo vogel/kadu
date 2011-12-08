@@ -22,11 +22,29 @@
 
 #include "talkable/filter/talkable-filter.h"
 
+/**
+ * @addtogroup Talkable
+ * @{
+ */
+
+/**
+ * @class UnreadMessagesTalkableFilter
+ * @author Rafał 'Vogel' Malinowski
+ * @short Filter that accepts all item that have unread messages.
+ *
+ * This filter accepts all item that have unread messages. Items withoud unread messages are passed to
+ * next filters.
+ */
 class UnreadMessagesTalkableFilter : public TalkableFilter
 {
 	Q_OBJECT
 
 public:
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Create new instance of UnreadMessagesTalkableFilter with given parent.
+	 * @param parent QObject parent of new object
+	 */
 	explicit UnreadMessagesTalkableFilter(QObject *parent = 0);
 	virtual ~UnreadMessagesTalkableFilter();
 
@@ -35,5 +53,9 @@ public:
 	virtual FilterResult filterContact(const Contact &contact);
 
 };
+
+/**
+ * @}
+ */
 
 #endif // UNREAD_MESSAGES_TALKABLE_FILTER_H

@@ -22,16 +22,38 @@
 
 #include "talkable/filter/talkable-filter.h"
 
+/**
+ * @addtogroup Talkable
+ * @{
+ */
+
+/**
+ * @class HideOfflineTalkableFilter
+ * @author Rafał 'Vogel' Malinowski
+ * @short Filter that removes items that are chats with only one contact.
+ *
+ * This filter removes items that are chats with only one contact. This allows removing double items
+ * from roster widget, as single contacts are non-distinguishable from single contact chats.
+ */
 class HideSimpleChatsTalkableFilter : public TalkableFilter
 {
 	Q_OBJECT
 
 public:
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Create new instance of HideSimpleChatsTalkableFilter with given parent.
+	 * @param parent QObject parent of new object
+	 */
 	explicit HideSimpleChatsTalkableFilter(QObject *parent = 0);
 	virtual ~HideSimpleChatsTalkableFilter();
 
 	virtual FilterResult filterChat(const Chat &chat);
 
 };
+
+/**
+ * @}
+ */
 
 #endif // HIDE_SIMPLE_CHATS_TALKABLE_FILTER_H

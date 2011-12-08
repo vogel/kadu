@@ -22,11 +22,29 @@
 
 #include "talkable/filter/talkable-filter.h"
 
+/**
+ * @addtogroup Talkable
+ * @{
+ */
+
+/**
+ * @class MobileTalkableFilter
+ * @author Rafał 'Vogel' Malinowski
+ * @short Filter that accepts only buddies with mobile number.
+ *
+ * This filter accepts only buddies with mobile number. Contacts, chats and buddies without mobile
+ * are rejected.
+ */
 class MobileTalkableFilter : public TalkableFilter
 {
 	Q_OBJECT
 
 public:
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Create new instance of MobileTalkableFilter with given parent.
+	 * @param parent QObject parent of new object
+	 */
 	explicit MobileTalkableFilter(QObject *parent = 0);
 	virtual ~MobileTalkableFilter();
 
@@ -35,5 +53,9 @@ public:
 	virtual FilterResult filterContact(const Contact &contact);
 
 };
+
+/**
+ * @}
+ */
 
 #endif // MOBILE_TALKABLE_FILTER_H

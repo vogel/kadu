@@ -22,9 +22,29 @@
 
 #include <QtCore/QAbstractItemModel>
 
+/**
+ * @addtogroup Talkable
+ * @{
+ */
+
+/**
+ * @namespace TalkableModelFactory
+ * @author Rafał 'Vogel' Malinowski
+ * @short Namespace containing functions for creating TalkableModel instances.
+ */
 namespace TalkableModelFactory
 {
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Create new instance of TalkableModel with given parent.
+	 * @param parent QObject parent of new object
+	 * @return new instance of TalkableModel with given parent
+	 */
 	QAbstractItemModel * createInstance(QObject *parent = 0);
 }
+
+/**
+ * @}
+ */
 
 #endif // TALKABLE_MODEL_FACTORY_H
