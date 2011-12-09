@@ -315,7 +315,7 @@ void TalkableTreeView::hideEvent(QHideEvent *event)
 
 void TalkableTreeView::currentChanged(const QModelIndex &current, const QModelIndex &previous)
 {
-	Q_UNUSED(previous);
+	QTreeView::currentChanged(current, previous);
 
 	emit currentChanged(talkableAt(current));
 }
