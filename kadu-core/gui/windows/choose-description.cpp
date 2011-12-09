@@ -49,10 +49,15 @@
 
 QMap<QWidget *, ChooseDescription *> ChooseDescription::Dialogs;
 
-void ChooseDescription::showDialog(const QList<StatusContainer *> &statusContainerList, const QPoint &position, QWidget *parent)
+/**
+ * Special value for position parameter of ChooseDescription::showDialog method. Causes the dialog to be positioned in the center of the desktop.
+ */
+QPoint ChooseDescription::ShowCentered = QPoint(-512000, -512000);
+
+ChooseDescription * ChooseDescription::showDialog(const QList<StatusContainer *> &statusContainerList, const QPoint &position, QWidget *parent)
 {
 	if (statusContainerList.isEmpty())
-		return;
+		return 0;
 
 	ChooseDescription *dialog;
 	if (Dialogs.contains(parent))
@@ -63,7 +68,7 @@ void ChooseDescription::showDialog(const QList<StatusContainer *> &statusContain
 		Dialogs[parent] = dialog;
 	}
 
-	if (!position.isNull())
+	if (position != ChooseDescription::ShowCentered)
 		dialog->setPosition(position);
 	else
 		dialog->setPosition(QPoint((qApp->desktop()->screenGeometry().width() - dialog->sizeHint().width()) / 2,
@@ -71,6 +76,8 @@ void ChooseDescription::showDialog(const QList<StatusContainer *> &statusContain
 
 	dialog->show();
 	_activateWindow(dialog);
+
+	return dialog;
 }
 
 ChooseDescription::ChooseDescription(const QList<StatusContainer *> &statusContainerList, QWidget *parent) :

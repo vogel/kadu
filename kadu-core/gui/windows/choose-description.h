@@ -57,7 +57,19 @@ private slots:
 	void currentDescriptionChanged(const QString &);
 
 public:
-	static void showDialog(const QList<StatusContainer *> &statusContainerList, const QPoint &position, QWidget *parent);
+	static QPoint ShowCentered;
+	/**
+	 * @short Shows new choose description dialog window.
+	 * @return Pointer to the created ChooseDescription dialog.
+	 * @param statusContainerList list of statusContainers
+	 * @param position position in which new dialog should be shown on the desktop, ChooseDescription::ShowCentered by default
+	 * @param parent dialog's parent widget, null by default
+	 *
+	 * Creates and shows new choose description dialog window.
+	 *
+	 * Use ChooseDescription::ShowCentered value for position parameter to show the widget in the center of the desktop.
+	 */
+	static ChooseDescription * showDialog(const QList<StatusContainer *> &statusContainerList, const QPoint &position = ChooseDescription::ShowCentered, QWidget *parent = 0);
 
 	virtual QSize sizeHint() const;
 
