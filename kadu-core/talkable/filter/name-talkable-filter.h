@@ -28,7 +28,7 @@
  */
 
 /**
- * @class MobileTalkableFilter
+ * @class NameTalkableFilter
  * @author Rafał 'Vogel' Malinowski
  * @short Filter that accepts only items matching given name.
  *
