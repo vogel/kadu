@@ -26,12 +26,11 @@
 #include "configuration/configuration-file.h"
 #include "core/core.h"
 #include "gui/hot-key.h"
-#include "gui/widgets/buddies-list-view.h"
-#include "gui/widgets/buddies-list-widget.h"
 #include "gui/widgets/buddy-info-panel.h"
 #include "gui/widgets/status-buttons.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/main-window.h"
+#include "gui/widgets/roster-widget.h"
 #include "icons/kadu-icon.h"
 #include "misc/misc.h"
 #include "misc/path-conversion.h"
@@ -46,6 +45,8 @@ SimpleView *SimpleView::Instance = 0;
 SimpleView::SimpleView() :
 	SimpleViewActive(false)
 {
+	RosterWidget *roster;
+	
 	SimpleViewConfigUi::createInstance();
 
 	MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/simpleview.ui"));
@@ -58,9 +59,9 @@ SimpleView::SimpleView() :
 
 	KaduWindowHandle = Core::instance()->kaduWindow();
 	MainWindowHandle = KaduWindowHandle->findMainWindow(KaduWindowHandle);
-	RosterWidgetHandle = KaduWindowHandle->findChild<RosterWidget *>();
-	GroupTabBarHandle = RosterWidgetHandle->findChild<GroupTabBar *>();
-	TalkableTreeViewHandle = RosterWidgetHandle->talkableTreeView();
+	roster = KaduWindowHandle->findChild<RosterWidget *>();
+	GroupTabBarHandle = roster->findChild<GroupTabBar *>();
+	TalkableTreeViewHandle = roster->talkableTreeView();
 	StatusButtonsHandle = KaduWindowHandle->findChild<StatusButtons *>();
 
 	configurationUpdated();

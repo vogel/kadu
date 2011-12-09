@@ -35,7 +35,6 @@ class QWidget;
 
 class KaduWindow;
 class MainWindow;
-class RosterWidget;
 class StatusButtons;
 class TalkableTreeView;
 
@@ -60,7 +59,6 @@ class SimpleView :
 	MainWindow *MainWindowHandle;
 	GroupTabBar *GroupTabBarHandle;
 	StatusButtons *StatusButtonsHandle;
-	RosterWidget *RosterWidgetHandle;
 	TalkableTreeView *TalkableTreeViewHandle;
 
 	SimpleView();
