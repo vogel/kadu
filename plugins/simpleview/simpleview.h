@@ -24,15 +24,13 @@
 #include <QtCore/QRect>
 
 #include "configuration/configuration-aware-object.h"
-#include "gui/widgets/group-tab-bar.h"
-#include "gui/widgets/roster-widget.h"
-#include "gui/widgets/talkable-tree-view.h"
 #include "os/generic/compositing-aware-object.h"
 
 class QAction;
 class QString;
 class QWidget;
 
+class GroupTabBar;
 class KaduWindow;
 class MainWindow;
 class StatusButtons;
