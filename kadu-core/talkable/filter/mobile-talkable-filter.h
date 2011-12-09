@@ -30,10 +30,10 @@
 /**
  * @class MobileTalkableFilter
  * @author Rafał 'Vogel' Malinowski
- * @short Filter that accepts only buddies with mobile number.
+ * @short Filter that rejects buddies without mobile number.
  *
- * This filter accepts only buddies with mobile number. Contacts, chats and buddies without mobile
- * are rejected.
+ * This filter rejects contacts, chats and buddies without mobile number. Buddies
+ * with mobile number are passed to next filters.
  */
 class MobileTalkableFilter : public TalkableFilter
 {
