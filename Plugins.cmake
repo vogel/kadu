@@ -86,7 +86,7 @@ set (DEFAULT_PLUGINS
 	# Easily take screenshots and send as images
 	screenshot
 	# Simple view - neww port for 0.11.0
-	# simpleview
+	simpleview
 	# Single window mode
 	single_window
 	# Sms gateway support

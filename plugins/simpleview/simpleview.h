@@ -24,17 +24,17 @@
 #include <QtCore/QRect>
 
 #include "configuration/configuration-aware-object.h"
-#include "gui/widgets/group-tab-bar.h"
 #include "os/generic/compositing-aware-object.h"
 
 class QAction;
 class QString;
 class QWidget;
 
-class BuddiesListWidget;
+class GroupTabBar;
 class KaduWindow;
 class MainWindow;
 class StatusButtons;
+class TalkableTreeView;
 
 class SimpleView :
 	public QObject, private ConfigurationAwareObject, CompositingAwareObject
@@ -55,9 +55,9 @@ class SimpleView :
 	QAction *DockAction;
 	KaduWindow *KaduWindowHandle;
 	MainWindow *MainWindowHandle;
-	BuddiesListWidget *BuddiesListWidgetHandle;
 	GroupTabBar *GroupTabBarHandle;
 	StatusButtons *StatusButtonsHandle;
+	TalkableTreeView *TalkableTreeViewHandle;
 
 	SimpleView();
 	virtual ~SimpleView();

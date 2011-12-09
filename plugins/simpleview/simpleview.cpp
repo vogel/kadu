@@ -26,10 +26,11 @@
 #include "configuration/configuration-file.h"
 #include "core/core.h"
 #include "gui/hot-key.h"
-#include "gui/widgets/buddies-list-view.h"
-#include "gui/widgets/buddies-list-widget.h"
 #include "gui/widgets/buddy-info-panel.h"
+#include "gui/widgets/group-tab-bar.h"
+#include "gui/widgets/roster-widget.h"
 #include "gui/widgets/status-buttons.h"
+#include "gui/widgets/talkable-tree-view.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/main-window.h"
 #include "icons/kadu-icon.h"
@@ -46,8 +47,8 @@ SimpleView *SimpleView::Instance = 0;
 SimpleView::SimpleView() :
 	SimpleViewActive(false)
 {
-	BuddiesListView *buddiesListViewHandle;
-
+	RosterWidget *roster;
+	
 	SimpleViewConfigUi::createInstance();
 
 	MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/simpleview.ui"));
@@ -60,9 +61,9 @@ SimpleView::SimpleView() :
 
 	KaduWindowHandle = Core::instance()->kaduWindow();
 	MainWindowHandle = KaduWindowHandle->findMainWindow(KaduWindowHandle);
-	buddiesListViewHandle = KaduWindowHandle->buddiesListView();
-	BuddiesListWidgetHandle = qobject_cast<BuddiesListWidget *>(buddiesListViewHandle->parentWidget());
-	GroupTabBarHandle = KaduWindowHandle->findChild<GroupTabBar *>();
+	roster = KaduWindowHandle->findChild<RosterWidget *>();
+	GroupTabBarHandle = roster->findChild<GroupTabBar *>();
+	TalkableTreeViewHandle = roster->talkableTreeView();
 	StatusButtonsHandle = KaduWindowHandle->findChild<StatusButtons *>();
 
 	configurationUpdated();
@@ -108,13 +109,10 @@ void SimpleView::simpleViewToggle(bool activate)
 	 * +-QWidget (MainWidget)
 	 *   =QVBoxLayout (MainLayout)
 	 *   +-QSplitter (Split)
-	 *     +-QWidget (hbox)
-	 *     |=QHBoxLayout (hboxLayout)
-	 *     |+-GroupTabBar (GroupBar)
-	 *     |+-BuddiesListWidget (ContactsWidget)
-	 *     |  =QVBoxLayout (layout)
-	 *     |  +-BuddiesListView (ContactsWidget->view())
-	 *     |  +-FilterWidget (nameFilterWidget())
+	 *     +-RosterWidget (Roster)
+	 *     | +-GroupTabBar (GroupBar)
+	 *     | + TalkableTreeView (TalkableTree)
+	 *     |   This contains buddy list tree
 	 *     +-BuddyInfoPanel (InfoPanel)
 	 */
 	if (activate != SimpleViewActive)
@@ -133,8 +131,8 @@ void SimpleView::simpleViewToggle(bool activate)
 			{
 				if (KeepSize)
 				{
-					r.setTopLeft(BuddiesListWidgetHandle->view()->mapToGlobal(BuddiesListWidgetHandle->view()->rect().topLeft()));
-					r.setSize(BuddiesListWidgetHandle->view()->rect().size());
+					r.setTopLeft(TalkableTreeViewHandle->mapToGlobal(TalkableTreeViewHandle->rect().topLeft()));
+					r.setSize(TalkableTreeViewHandle->rect().size());
 				}
 				else
 					r = MainWindowHandle->frameGeometry();
@@ -145,7 +143,7 @@ void SimpleView::simpleViewToggle(bool activate)
 				r.setRect(mr.x() - DiffRect.x(), mr.y() - DiffRect.y(), mr.width() - DiffRect.width(), mr.height() - DiffRect.height());
 
 			if (Borderless)
-				BuddiesListViewStyle = BuddiesListWidgetHandle->view()->styleSheet();
+				BuddiesListViewStyle = TalkableTreeViewHandle->styleSheet();
 
 			MainWindowHandle->hide();
 
@@ -170,7 +168,7 @@ void SimpleView::simpleViewToggle(bool activate)
 
 			/* ScrollBar */
 			if (NoScrollBar)
-				BuddiesListWidgetHandle->view()->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+				TalkableTreeViewHandle->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
 			/* Info panel*/
 			KaduWindowHandle->infoPanel()->hide();
@@ -183,14 +181,14 @@ void SimpleView::simpleViewToggle(bool activate)
 			setWindowGeometry(MainWindowHandle, r);
 
 			if (Borderless)
-				BuddiesListWidgetHandle->view()->setStyleSheet(QString("QTreeView { border-style: none; }") + BuddiesListViewStyle);
+				TalkableTreeViewHandle->setStyleSheet(QString("QTreeView { border-style: none; }") + BuddiesListViewStyle);
 		}
 		else
 		{
 			MainWindowHandle->hide();
 
 			if (Borderless)
-				BuddiesListWidgetHandle->view()->setStyleSheet(BuddiesListViewStyle);
+				TalkableTreeViewHandle->setStyleSheet(BuddiesListViewStyle);
 
 			r.setRect(mr.x() + DiffRect.x(), mr.y() + DiffRect.y(), mr.width() + DiffRect.width(), mr.height() + DiffRect.height());
 
@@ -206,7 +204,7 @@ void SimpleView::simpleViewToggle(bool activate)
 				KaduWindowHandle->infoPanel()->show();
 
 			/* ScrollBar */
-			BuddiesListWidgetHandle->view()->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+			TalkableTreeViewHandle->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
 
 			/* Filter */
 			/* Note: filter hides/shows now automatically.
@@ -231,7 +229,6 @@ void SimpleView::simpleViewToggle(bool activate)
 			DiffRect = QRect(0,0,0,0);
 		}
 		MainWindowHandle->show();
-
 		if (!Core::instance()->isClosing())
 			DockAction->setChecked(SimpleViewActive);
 	}
