@@ -40,7 +40,7 @@ TalkableFilter::FilterResult MobileTalkableFilter::filterChat(const Chat &chat)
 TalkableFilter::FilterResult MobileTalkableFilter::filterBuddy(const Buddy &buddy)
 {
 	if (!buddy.mobile().isEmpty())
-		return Accepted;
+		return Undecided;
 	else
 		return Rejected;
 }
