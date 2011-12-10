@@ -76,6 +76,8 @@ void FilteredTreeView::insertView()
 		Layout->insertWidget(1, View);
 	else
 		Layout->insertWidget(0, View);
+
+	setFocusProxy(View);
 }
 
 void FilteredTreeView::setPosition(FilterPosition filterPosition)

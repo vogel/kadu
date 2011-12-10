@@ -144,6 +144,8 @@ void KaduWindow::createGui()
 
 	setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
 	setCentralWidget(MainWidget);
+	setFocusProxy(Roster);
+	Roster->setFocus();
 }
 
 void KaduWindow::createMenu()

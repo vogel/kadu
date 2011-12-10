@@ -74,6 +74,8 @@ void RosterWidget::createGui()
 
 	layout->setStretchFactor(GroupBar, 1);
 	layout->setStretchFactor(TalkableWidget, 100);
+
+	setFocusProxy(TalkableWidget);
 }
 
 void RosterWidget::configurationUpdated()
