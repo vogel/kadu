@@ -907,7 +907,7 @@ To poważne zagrożenie bezpieczeństwa!</translation>
     </message>
     <message>
         <source>Turn on blur</source>
-        <translation>Włącz blur efekt</translation>
+        <translation>Włącz rozmycie tła</translation>
     </message>
     <message>
         <source>Displays group tabs on the buddy list</source>
