@@ -19,6 +19,10 @@
 
 #include "talkable-filter.h"
 
+#include "buddies/buddy.h"
+#include "chat/chat.h"
+#include "contacts/contact.h"
+
 TalkableFilter::TalkableFilter(QObject *parent) :
 		QObject(parent)
 {

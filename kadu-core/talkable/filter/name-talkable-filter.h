@@ -20,6 +20,7 @@
 #ifndef NAME_TALKABLE_FILTER_H
 #define NAME_TALKABLE_FILTER_H
 
+#include "exports.h"
 #include "talkable/filter/talkable-filter.h"
 
 /**
@@ -46,7 +47,7 @@
  *   <li>UndecidedMatching - in this mode item is passed to next filters if matched and rejected if not</li>
  * </ul>
  */
-class NameTalkableFilter : public TalkableFilter
+class KADUAPI NameTalkableFilter : public TalkableFilter
 {
 	Q_OBJECT
 

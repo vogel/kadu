@@ -20,6 +20,7 @@
 #ifndef MOBILE_TALKABLE_FILTER_H
 #define MOBILE_TALKABLE_FILTER_H
 
+#include "exports.h"
 #include "talkable/filter/talkable-filter.h"
 
 /**
@@ -35,7 +36,7 @@
  * This filter rejects contacts, chats and buddies without mobile number. Buddies
  * with mobile number are passed to next filters.
  */
-class MobileTalkableFilter : public TalkableFilter
+class KADUAPI MobileTalkableFilter : public TalkableFilter
 {
 	Q_OBJECT
 

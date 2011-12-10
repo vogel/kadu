@@ -18,6 +18,8 @@
  */
 
 #include "buddies/buddy.h"
+#include "chat/chat.h"
+#include "contacts/contact.h"
 
 #include "mobile-talkable-filter.h"
 

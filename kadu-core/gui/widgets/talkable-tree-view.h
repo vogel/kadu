@@ -35,6 +35,7 @@
 #include "buddies/buddy.h"
 #include "chat/chat.h"
 #include "contacts/contact.h"
+#include "exports.h"
 #include "gui/actions/action-context-provider.h"
 #include "gui/actions/action-context.h"
 #include "talkable/talkable.h"
@@ -53,7 +54,7 @@ class ModelChain;
 class TalkableDelegate;
 class TalkableDelegateConfiguration;
 
-class TalkableTreeView : public KaduTreeView, public ActionContextProvider
+class KADUAPI TalkableTreeView : public KaduTreeView, public ActionContextProvider
 {
 	Q_OBJECT
 

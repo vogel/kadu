@@ -22,11 +22,11 @@
 
 #include <QtGui/QWidget>
 
-#include "talkable/talkable.h"
-
 #include "configuration/configuration-aware-object.h"
+#include "exports.h"
 #include "gui/actions/action-context-provider.h"
 #include "os/generic/compositing-aware-object.h"
+#include "talkable/talkable.h"
 
 class FilteredTreeView;
 class GroupTabBar;
@@ -36,7 +36,7 @@ class ModelChain;
 class TalkableProxyModel;
 class TalkableTreeView;
 
-class RosterWidget : public QWidget, public ActionContextProvider, ConfigurationAwareObject, CompositingAwareObject
+class KADUAPI RosterWidget : public QWidget, public ActionContextProvider, ConfigurationAwareObject, CompositingAwareObject
 {
 	Q_OBJECT
 
