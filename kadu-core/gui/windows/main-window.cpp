@@ -475,7 +475,9 @@ ActionContext * MainWindow::actionContext()
 
 void MainWindow::setBlur(bool enable)
 {
-#if defined(Q_WS_X11)
+#if !defined(Q_WS_X11)
+	Q_UNUSED(enable);
+#else
 	BlurEnabled = enable;
 	X11_setBlur(QX11Info::display(), winId(), enable);
 #endif
