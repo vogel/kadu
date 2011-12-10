@@ -194,6 +194,11 @@ void GroupTabBar::addGroup(const Group &group)
 	updateGroup(group);
 }
 
+Group GroupTabBar::group() const
+{
+	return GroupManager::instance()->byUuid(tabData(currentIndex()).toString());
+}
+
 void GroupTabBar::currentChangedSlot(int index)
 {
 	emit currentGroupChanged(GroupManager::instance()->byUuid(tabData(index).toString()));

@@ -81,6 +81,8 @@ public:
 
 	void addGroup(const Group &group);
 
+	Group group() const;
+
 signals:
 	void currentGroupChanged(const Group &group);
 

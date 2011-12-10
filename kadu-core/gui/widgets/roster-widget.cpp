@@ -47,7 +47,9 @@ RosterWidget::RosterWidget(QWidget *parent) :
 {
 	Context = new ProxyActionContext();
 	createGui();
+
 	Context->setForwardActionContext(TalkableTree->actionContext());
+	GroupFilter->setGroup(GroupBar->group());
 
 	configurationUpdated();
 }
