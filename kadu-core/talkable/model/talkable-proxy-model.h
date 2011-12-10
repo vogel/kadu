@@ -199,6 +199,13 @@ public:
 	 */
 	void setSortByStatus(bool sortByStatus);
 
+signals:
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Signal emited after filtering or sorting was changed.
+	 */
+	void invalidated();
+
 };
 
 /**

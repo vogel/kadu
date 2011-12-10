@@ -102,6 +102,9 @@ void TalkableTreeView::setChain(ModelChain *chain)
 
 	connect(selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
 	        this, SLOT(updateContext()));
+
+	// for TalkableProxyModel
+	connect(model(), SIGNAL(invalidated()), this, SLOT(updateContext()));
 }
 
 ModelChain * TalkableTreeView::chain() const
@@ -241,6 +244,9 @@ StatusContainer * TalkableTreeView::statusContainerForChat(const Chat &chat) con
 
 void TalkableTreeView::updateContext()
 {
+	// cuurent index is part of context
+	emit currentChanged(talkableAt(currentIndex()));
+
 	ModelIndexListConverter converter(selectedIndexes());
 
 	Context->blockChangedSignal();

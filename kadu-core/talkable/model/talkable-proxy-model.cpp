@@ -48,6 +48,11 @@ TalkableProxyModel::TalkableProxyModel(QObject *parent) :
 			this, SLOT(invalidate()));
 	connect(MessageManager::instance(), SIGNAL(unreadMessageRemoved(Message)),
 			this, SLOT(invalidate()));
+
+	connect(MessageManager::instance(), SIGNAL(unreadMessageAdded(Message)),
+			this, SIGNAL(invalidated()));
+	connect(MessageManager::instance(), SIGNAL(unreadMessageRemoved(Message)),
+			this, SIGNAL(invalidated()));
 }
 
 TalkableProxyModel::~TalkableProxyModel()
@@ -245,6 +250,9 @@ void TalkableProxyModel::addFilter(TalkableFilter *filter)
 	TalkableFilters.append(filter);
 	invalidateFilter();
 	connect(filter, SIGNAL(filterChanged()), this, SLOT(invalidate()));
+	connect(filter, SIGNAL(filterChanged()), this, SIGNAL(invalidated()));
+
+	emit invalidated();
 }
 
 void TalkableProxyModel::removeFilter(TalkableFilter *filter)
@@ -254,4 +262,7 @@ void TalkableProxyModel::removeFilter(TalkableFilter *filter)
 
 	invalidateFilter();
 	disconnect(filter, SIGNAL(filterChanged()), this, SLOT(invalidate()));
+	disconnect(filter, SIGNAL(filterChanged()), this, SIGNAL(invalidate()));
+
+	emit invalidated();
 }
