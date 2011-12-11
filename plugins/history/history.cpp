@@ -320,7 +320,7 @@ void History::stopSaveThread()
 	if (SaveThread && SaveThread->isRunning())
 	{
 		SaveThread->stop();
-		SaveThread->wait(10000);
+		SaveThread->wait(30000);
 
 		if (SaveThread->isRunning())
 		{
