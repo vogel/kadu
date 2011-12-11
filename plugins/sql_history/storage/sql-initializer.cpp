@@ -22,7 +22,6 @@
 #include <QtCore/QFile>
 #include <QtCore/QFileInfo>
 #include <QtCore/QThread>
-#include <QtCore/QWaitCondition>
 #include <QtSql/QSqlError>
 
 #include "gui/windows/message-dialog.h"

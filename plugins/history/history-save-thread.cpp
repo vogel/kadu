@@ -30,7 +30,7 @@
 #define SYNCHRONIZATION_TIMEOUT 15*1000
 
 HistorySaveThread::HistorySaveThread(History *history, QObject *parent) :
-		QThread(parent), CurrentHistory(history), Enabled(true), Stopped(false), ForceSyncOnce(false)
+		QThread(parent), CurrentHistory(history), Enabled(true), Stopped(false), CurrentlySaving(false), ForceSyncOnce(false)
 {
 }
 
@@ -86,6 +86,11 @@ void HistorySaveThread::forceSync(bool crashed)
 	if (isRunning())
 	{
 		ForceSyncOnce = true;
+		// It doesn't really guarantee that all new data will be sync'ed
+		// now, for the same reason as in newDataAvailable() method.
+		// But I don't think we really need that - it would decrease
+		// history importing performance even more at the cost of very
+		// questionable safety.
 		WaitForSomethingToSave.wakeAll();
 	}
 	else
@@ -102,11 +107,14 @@ void HistorySaveThread::run()
 {
 	LastSyncTime = QDateTime::currentDateTime();
 
+	// Solution copied from QWaitCondition docs and adjusted.
+	SomethingToSave.lock();
 	while (!Stopped)
 	{
-		QMutexLocker locker(&SomethingToSave);
+		CurrentlySaving = true;
+		SomethingToSave.unlock();
 
-		if (Enabled || ForceSyncOnce)
+		if (!Stopped && (Enabled || ForceSyncOnce))
 		{
 			storeMessages();
 			storeStatusChanges();
@@ -117,8 +125,11 @@ void HistorySaveThread::run()
 			}
 		}
 
-		WaitForSomethingToSave.wait(locker.mutex(), SYNCHRONIZATION_TIMEOUT);
+		SomethingToSave.lock();
+		CurrentlySaving = false;
+		WaitForSomethingToSave.wait(&SomethingToSave, SYNCHRONIZATION_TIMEOUT);
 	}
+	SomethingToSave.unlock();
 
 	storeMessages();
 	storeStatusChanges();
@@ -132,11 +143,27 @@ void HistorySaveThread::setEnabled(bool enabled)
 
 void HistorySaveThread::newDataAvailable()
 {
+	// If we are currently sync'ing, it will do nothing and some
+	// data may be potentially not dequeued now. But we cannot afford
+	// to apply the same solution as in stop() method, which would
+	// block the main thread. That data will be dequeued later anyway,
+	// even if the app crashes.
 	WaitForSomethingToSave.wakeAll();
 }
 
 void HistorySaveThread::stop()
 {
+	// Solution copied from QWaitCondition docs and adjusted.
+
 	Stopped = true;
+
+	SomethingToSave.lock();
+	while (CurrentlySaving)
+	{
+		SomethingToSave.unlock();
+		QThread::msleep(200);
+		SomethingToSave.lock();
+	}
 	WaitForSomethingToSave.wakeAll();
+	SomethingToSave.unlock();
 }

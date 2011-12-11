@@ -47,6 +47,7 @@ class HistorySaveThread : public QThread
 	QDateTime LastSyncTime;
 
 	bool Stopped;
+	bool CurrentlySaving;
 	bool ForceSyncOnce;
 
 	void storeMessages();
