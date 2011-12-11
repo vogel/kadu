@@ -247,6 +247,7 @@ void TabsManager::onTitleChanged(ChatWidget *chatChanged, const QString &newTitl
 	if (-1 == chatIndex || !chatChanged)
 		return;
 
+	updateTabName(chatChanged);
 	TabDialog->setTabToolTip(chatIndex, newTitle);
 	if (TabDialog->currentIndex() == chatIndex)
 		TabDialog->setWindowTitle(newTitle);
@@ -417,16 +418,7 @@ void TabsManager::onTimer()
 					TabDialog->setWindowTitle(chat->title());
 			}
 
-			if (chat->chat().unreadMessagesCount() > 0)
-			{
-				TabDialog->setTabText(i, QString("%1 [%2]").arg(formatTabName(chat)).arg(chat->chat().unreadMessagesCount()));
-				TabDialog->setTabToolTip(i, QString("%1\n%2 new message(s)").arg(chat->title()).arg(chat->chat().unreadMessagesCount()));
-			}
-			else
-			{
-				TabDialog->setTabText(i, formatTabName(chat));
-				TabDialog->setTabToolTip(i, chat->title());
-			}
+			updateTabName(chat);
 		}
 	}
 
@@ -699,6 +691,24 @@ QString TabsManager::formatTabName(ChatWidget * chatWidget)
 	if (contactsCount > 1)
 		return tr("Conference [%1]").arg(contactsCount);
 	return chat.name();
+}
+
+void TabsManager::updateTabName(ChatWidget *chat)
+{
+	const int i = TabDialog->indexOf(chat);
+	if (-1 == i)
+		return;
+
+	if (chat->chat().unreadMessagesCount() > 0)
+	{
+		TabDialog->setTabText(i, QString("%1 [%2]").arg(formatTabName(chat)).arg(chat->chat().unreadMessagesCount()));
+		TabDialog->setTabToolTip(i, QString("%1\n%2 new message(s)").arg(chat->title()).arg(chat->chat().unreadMessagesCount()));
+	}
+	else
+	{
+		TabDialog->setTabText(i, formatTabName(chat));
+		TabDialog->setTabToolTip(i, chat->title());
+	}
 }
 
 void TabsManager::closeChat()
