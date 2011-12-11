@@ -20,7 +20,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QMutexLocker>
+#include <QtCore/QThread>
+#include <QtGui/QApplication>
 
 #include "debug.h"
 
@@ -29,7 +30,7 @@
 #include "sound-play-thread.h"
 
 SoundPlayThread::SoundPlayThread() :
-		End(false), Play(false), Player(0)
+		End(false), CurrentlyNotWaiting(false), Play(false), Player(0)
 {
 }
 
@@ -41,17 +42,15 @@ void SoundPlayThread::start()
 {
 	kdebugf();
 
-	QMutex mutex;
-
+	// Solution copied from QWaitCondition docs and adjusted.
+	NewSoundToPlay.lock();
 	while (!End)
 	{
-		QMutexLocker locker(&mutex);
-		NewSoundToPlay.wait(locker.mutex());
+		WaitForNewSoundToPlay.wait(&NewSoundToPlay);
+		CurrentlyNotWaiting = true;
+		NewSoundToPlay.unlock();
 
-		if (End)
-			break;
-
-		if (Play)
+		if (!End && Play)
 		{
 			if (Player)
 			{
@@ -62,7 +61,11 @@ void SoundPlayThread::start()
 
 			Play = false;
 		}
+
+		NewSoundToPlay.lock();
+		CurrentlyNotWaiting = false;
 	}
+	NewSoundToPlay.unlock();
 
 	emit finished();
 
@@ -73,8 +76,21 @@ void SoundPlayThread::start()
 
 void SoundPlayThread::end()
 {
+	// Solution copied from QWaitCondition docs and adjusted.
+
 	End = true;
-	NewSoundToPlay.wakeAll();
+
+	NewSoundToPlay.lock();
+	while (CurrentlyNotWaiting)
+	{
+		NewSoundToPlay.unlock();
+// 		QThread::msleep(200);
+		Q_ASSERT(QThread::currentThread() != thread());
+		thread()->wait(200);
+		NewSoundToPlay.lock();
+	}
+	WaitForNewSoundToPlay.wakeAll();
+	NewSoundToPlay.unlock();
 }
 
 void SoundPlayThread::play(SoundPlayer *player, const QString &path)
@@ -98,7 +114,7 @@ void SoundPlayThread::play(SoundPlayer *player, const QString &path)
 	Play = true;
 
 	PlayingMutex.unlock();
-	NewSoundToPlay.wakeAll();
+	WaitForNewSoundToPlay.wakeAll();
 }
 
 void SoundPlayThread::playerDestroyed()

@@ -38,8 +38,10 @@ class SoundPlayThread : public QObject
 	Q_OBJECT
 
 	bool End;
+	bool CurrentlyNotWaiting;
 	QMutex PlayingMutex;
-	QWaitCondition NewSoundToPlay;
+	QMutex NewSoundToPlay;
+	QWaitCondition WaitForNewSoundToPlay;
 
 	bool Play;
 
