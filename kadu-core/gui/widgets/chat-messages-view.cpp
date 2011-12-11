@@ -35,6 +35,7 @@
 #include "chat/html-messages-renderer.h"
 #include "chat/style-engines/chat-style-engine.h"
 #include "configuration/chat-configuration-holder.h"
+#include "contacts/contact-set.h"
 #include "gui/widgets/chat-view-network-access-manager.h"
 #include "message/message-render-info.h"
 #include "protocols/services/chat-image-service.h"
@@ -111,6 +112,10 @@ void ChatMessagesView::connectChat()
 	if (CurrentChat.isNull() || CurrentChat.chatAccount().isNull() || !CurrentChat.chatAccount().protocolHandler())
 		return;
 
+	foreach (const Contact &contact, CurrentChat.contacts())
+		if (contact.ownerBuddy())
+			connect(contact.ownerBuddy(), SIGNAL(displayUpdated()), this, SLOT(repaintMessages()));
+
 	ChatImageService *chatImageService = CurrentChat.chatAccount().protocolHandler()->chatImageService();
 	if (chatImageService)
 		connect(chatImageService, SIGNAL(imageReceived(const QString &, const QString &)),
@@ -121,6 +126,10 @@ void ChatMessagesView::disconnectChat()
 {
 	if (CurrentChat.isNull() || CurrentChat.chatAccount().isNull() || !CurrentChat.chatAccount().protocolHandler())
 		return;
+
+	foreach (const Contact &contact, CurrentChat.contacts())
+		if (contact.ownerBuddy())
+			disconnect(contact.ownerBuddy(), SIGNAL(displayUpdated()), this, SLOT(repaintMessages()));
 
 	ChatImageService *chatImageService = CurrentChat.chatAccount().protocolHandler()->chatImageService();
 	if (chatImageService)
@@ -166,7 +175,9 @@ void ChatMessagesView::updateBackgroundsAndColors()
 
 void ChatMessagesView::repaintMessages()
 {
+	int scrollBarPosition = page()->mainFrame()->scrollBarValue(Qt::Vertical);
 	Renderer->refresh();
+	page()->mainFrame()->setScrollBarValue(Qt::Vertical, scrollBarPosition);
 }
 
 bool ChatMessagesView::sameMessage(const Message &left, const Message &right)
@@ -245,8 +256,6 @@ void ChatMessagesView::appendMessage(const Message &message)
 void ChatMessagesView::appendMessage(MessageRenderInfo *message)
 {
 	kdebugf();
-
-//	rememberScrollBarPosition();
 
 	Renderer->appendMessage(message);
 

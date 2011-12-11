@@ -410,6 +410,20 @@ void BuddyShared::setBuddyAvatar(const Avatar &buddyAvatar)
 		connect(*BuddyAvatar, SIGNAL(updated()), this, SLOT(avatarUpdated()));
 }
 
+void BuddyShared::setDisplay(const QString &display)
+{
+	ensureLoaded();
+
+	if (Display != display)
+	{
+		Display = display;
+		dataUpdated();
+		markContactsDirty();
+
+		emit displayUpdated();
+	}
+}
+
 void BuddyShared::setGroups(const QList<Group> &groups)
 {
 	ensureLoaded();

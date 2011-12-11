@@ -158,7 +158,9 @@ public:
 	KaduShared_PropertyReadDecl(Avatar, buddyAvatar)
 	void setBuddyAvatar(const Avatar &buddyAvatar);
 
-	BuddyShared_PropertyDirty(const QString &, display, Display)
+	KaduShared_PropertyRead(const QString &, display, Display)
+	void setDisplay(const QString &display);
+
 	BuddyShared_PropertyDirty(const QString &, firstName, FirstName)
 	BuddyShared_PropertyDirty(const QString &, lastName, LastName)
 	BuddyShared_PropertyDirty(const QString &, familyName, FamilyName)
@@ -185,6 +187,7 @@ signals:
 	void contactRemoved(const Contact &contact);
 
 	void updated();
+	void displayUpdated();
 	void buddySubscriptionChanged();
 
 };
