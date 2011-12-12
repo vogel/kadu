@@ -37,7 +37,7 @@ GroupsComboBox::GroupsComboBox(QWidget *parent) :
 {
 	QSortFilterProxyModel *proxyModel = new QSortFilterProxyModel(this);
 
-	addBeforeAction(new QAction(tr(" - Select group - "), this));
+	addBeforeAction(new QAction(tr(" - Do not add - "), this));
 
 	CreateNewGroupAction = new QAction(tr("Create a new group..."), this);
 	QFont createNewGroupActionFont = CreateNewGroupAction->font();

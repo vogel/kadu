@@ -2404,8 +2404,8 @@ Jest to prawdopodobnie dalsza część pliku &lt;b&gt;%5&lt;/b&gt;
         <translation>Podaj nazwę dla nowej grupy:</translation>
     </message>
     <message>
-        <source> - Select group - </source>
-        <translation> - Wybierz grupę - </translation>
+        <source> - Do not add - </source>
+        <translation> - Nie dodawaj - </translation>
     </message>
 </context>
 <context>
