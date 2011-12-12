@@ -309,7 +309,7 @@ void TabsManager::onNewTab(QAction *sender, bool toggled)
 	kdebugf2();
 }
 
-void TabsManager::insertTab(ChatWidget* chat)
+void TabsManager::insertTab(ChatWidget *chat)
 {
 	kdebugf();
 
@@ -335,7 +335,7 @@ void TabsManager::insertTab(ChatWidget* chat)
 	chat->setContainer(TabDialog);
 
 	// Ustawiam tytul karty w zaleznosci od tego czy mamy do czynienia z rozmowa czy z konferencja
-	TabDialog->insertTab(TargetTabs, chat, chat->icon(), formatTabName(chat));
+	TabDialog->insertTab(TargetTabs, chat, chat->icon(), formatTabName(chat->chat()));
 
 	if (restoreChatGeometry)
 		chat->kaduRestoreGeometry();
@@ -681,33 +681,33 @@ void TabsManager::openTabWith(QStringList altnicks, int index)
 	*/
 }
 
-QString TabsManager::formatTabName(ChatWidget * chatWidget)
+QString TabsManager::formatTabName(const Chat &chat)
 {
-	const Chat &chat = chatWidget->chat();
-	int contactsCount = chat.contacts().count();
-
 	if (!chat.display().isEmpty())
 		return chat.display();
+
+	int contactsCount = chat.contacts().count();
 	if (contactsCount > 1)
 		return tr("Conference [%1]").arg(contactsCount);
 	return chat.name();
 }
 
-void TabsManager::updateTabName(ChatWidget *chat)
+void TabsManager::updateTabName(ChatWidget *chatWidget)
 {
-	const int i = TabDialog->indexOf(chat);
+	const int i = TabDialog->indexOf(chatWidget);
 	if (-1 == i)
 		return;
 
-	if (chat->chat().unreadMessagesCount() > 0)
+	const Chat &chat = chatWidget->chat();
+	if (chat.unreadMessagesCount() > 0)
 	{
-		TabDialog->setTabText(i, QString("%1 [%2]").arg(formatTabName(chat)).arg(chat->chat().unreadMessagesCount()));
-		TabDialog->setTabToolTip(i, QString("%1\n%2 new message(s)").arg(chat->title()).arg(chat->chat().unreadMessagesCount()));
+		TabDialog->setTabText(i, QString("%1 [%2]").arg(formatTabName(chat)).arg(chat.unreadMessagesCount()));
+		TabDialog->setTabToolTip(i, QString("%1\n%2 new message(s)").arg(chatWidget->title()).arg(chat.unreadMessagesCount()));
 	}
 	else
 	{
 		TabDialog->setTabText(i, formatTabName(chat));
-		TabDialog->setTabToolTip(i, chat->title());
+		TabDialog->setTabToolTip(i, chatWidget->title());
 	}
 }
 
