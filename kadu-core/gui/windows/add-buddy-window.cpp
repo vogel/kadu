@@ -28,14 +28,10 @@
 #include <QtGui/QCheckBox>
 #include <QtGui/QComboBox>
 #include <QtGui/QDialogButtonBox>
-#include <QtGui/QGridLayout>
+#include <QtGui/QFormLayout>
 #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
 #include <QtGui/QPushButton>
-#ifdef Q_WS_MAEMO_5
-# include <QtGui/QResizeEvent>
-# include <QtGui/QScrollArea>
-#endif
 #include <QtGui/QSortFilterProxyModel>
 
 #include "accounts/account-manager.h"
@@ -93,48 +89,17 @@ AddBuddyWindow::~AddBuddyWindow()
 	saveWindowGeometry(this, "General", "AddBuddyWindowGeometry");
 }
 
-#ifdef Q_WS_MAEMO_5
-void AddBuddyWindow::resizeEvent(QResizeEvent *event)
-{
-	ScrollArea->resize(event->size());
-}
-#endif
-
 void AddBuddyWindow::createGui()
 {
 	loadWindowGeometry(this, "General", "AddBuddyWindowGeometry", 0, 50, 425, 430);
 
-#ifdef Q_WS_MAEMO_5
+	QVBoxLayout *mainLayout = new QVBoxLayout(this);
+
 	QWidget *mainWidget = new QWidget(this);
+	mainLayout->addWidget(mainWidget);
+	mainLayout->addStretch(100);
 
-	ScrollArea = new QScrollArea(this);
-	ScrollArea->setFrameStyle(QFrame::NoFrame);
-	ScrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
-	ScrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
-	ScrollArea->setWidget(mainWidget);
-	ScrollArea->setWidgetResizable(true);
-
-	QGridLayout *layout = new QGridLayout(mainWidget);
-#else
-	QGridLayout *layout = new QGridLayout(this);
-#endif
-
-	UserNameEdit = new QLineEdit(this);
-
-	if (MyBuddy)
-	{
-		UserNameEdit->setText(MyBuddy.id(MyAccount));
-		UserNameEdit->hide();
-	}
-	else
-	{
-		connect(UserNameEdit, SIGNAL(textChanged(const QString &)), this, SLOT(setAddContactEnabled()));
-		connect(UserNameEdit, SIGNAL(textChanged(const QString &)), this, SLOT(setAccountFilter()));
-
-		UserNameLabel = new QLabel(this);
-		layout->addWidget(UserNameLabel, 0, 0, Qt::AlignRight);
-		layout->addWidget(UserNameEdit, 0, 1);
-	}
+	Layout = new QFormLayout(mainWidget);
 
 	AccountCombo = new AccountsComboBox(MyBuddy.isNull(), ActionsProxyModel::AlwaysVisible, this);
 	AccountCombo->setIncludeIdInDisplay(true);
@@ -147,87 +112,91 @@ void AddBuddyWindow::createGui()
 	{
 		AccountCombo->setCurrentAccount(MyAccount);
 
-		QHBoxLayout *hLayout = new QHBoxLayout();
-		QLabel *addingBuddyDescription = new QLabel(tr("Adding contact with ID <b>%1</b> in").arg(MyBuddy.id(MyAccount)), this);
-		hLayout->addWidget(addingBuddyDescription, 0, Qt::AlignLeft);
+		ProtocolFilter *protocolFilter = new ProtocolFilter(AccountCombo);
+		protocolFilter->setProtocolName(MyAccount.protocolName());
+		AccountCombo->addFilter(protocolFilter);
+	}
 
-		if (ForceBuddyAccount)
-		{
-			// NOTE: keep "%2 (%3)" consistent with AccountsModel::data() for DisplayRole, when IncludeIdInDisplay is true
-			// TODO 0.10: remove such code duplication
-			addingBuddyDescription->setText(addingBuddyDescription->text() + ' ' + tr("%1 account <b>%2 (%3)</b>")
-					.arg(MyAccount.protocolHandler()->protocolFactory()->displayName(),
-					MyAccount.accountIdentity().name(), MyAccount.id()));
-			AccountCombo->hide();
-		}
-		else
-		{
-			ProtocolFilter *protocolFilter = new ProtocolFilter(AccountCombo);
-			protocolFilter->setProtocolName(MyAccount.protocolName());
-			AccountCombo->addFilter(protocolFilter);
-			hLayout->addWidget(AccountCombo, 10, Qt::AlignLeft);
-		}
-
-		layout->addLayout(hLayout, 0, 0, 1, -1);
-		layout->setRowMinimumHeight(0, 30);
+	if (MyBuddy && ForceBuddyAccount)
+	{
+		// NOTE: keep "%1 (%2)" consistent with AccountsModel::data() for DisplayRole, when IncludeIdInDisplay is true
+		// TODO 0.10: remove such code duplication
+		QString accountLabel = QString("<b>%1 (%2)</b>").arg(MyAccount.accountIdentity().name()).arg(MyAccount.id());
+		Layout->addRow(tr("Account:"), new QLabel(accountLabel));
+		AccountCombo->hide();
 	}
 	else
+		Layout->addRow(tr("Account:"), AccountCombo);
+
+	UserNameEdit = new QLineEdit(this);
+	UserNameLabel = new QLabel(this);
+
+	if (MyBuddy)
 	{
-		layout->addWidget(new QLabel(tr("in"), this), 0, 2);
-		layout->addWidget(AccountCombo, 0, 3);
+		UserNameEdit->setText(MyBuddy.id(MyAccount));
+		UserNameEdit->hide();
+
+		Layout->addRow(UserNameLabel, new QLabel(QString("<b>%1</b>").arg(MyBuddy.id(MyAccount)), this));
 	}
+	else
+		Layout->addRow(UserNameLabel, UserNameEdit);
 
-	layout->addWidget(new QLabel(tr("Add in group:"), this), 1, 0, Qt::AlignRight);
+	MergeBuddy = new QCheckBox(tr("Merge with existing buddy"), this);
+	Layout->addRow(0, MergeBuddy);
+
 	GroupCombo = new GroupsComboBox(this);
-	layout->addWidget(GroupCombo, 1, 1, 1, 3);
+	Layout->addRow(tr("Add in group:"), GroupCombo);
 
-	layout->addWidget(new QLabel(tr("Visible name:"), this), 2, 0, Qt::AlignRight);
+	NonMergeWidgets.append(GroupCombo);
+
 	DisplayNameEdit = new QLineEdit(this);
-	layout->addWidget(DisplayNameEdit, 2, 1, 1, 1);
+	Layout->addRow(tr("Visible name:"), DisplayNameEdit);
+
 	if (MyBuddy)
 	{
 		DisplayNameEdit->setText(MyBuddy.display());
 		DisplayNameEdit->setFocus();
 	}
+
 	connect(DisplayNameEdit, SIGNAL(textChanged(const QString &)), this, SLOT(setAddContactEnabled()));
+
+	NonMergeWidgets.append(DisplayNameEdit);
 
 	QLabel *hintLabel = new QLabel(tr("Enter a name for this buddy"));
 	QFont hintLabelFont = hintLabel->font();
 	hintLabelFont.setItalic(true);
 	hintLabelFont.setPointSize(hintLabelFont.pointSize() - 2);
 	hintLabel->setFont(hintLabelFont);
-	layout->addWidget(hintLabel, 3, 1, 1, 3);
+	Layout->addRow(0, hintLabel);
 
-	MergeBuddy = new QCheckBox(tr("Merge with existing buddy"), this);
-	layout->addWidget(MergeBuddy, 4, 1, 1, 3);
+	NonMergeWidgets.append(hintLabel);
 
-	QWidget *selectContactWidget = new QWidget(this);
-	QHBoxLayout *selectContactLayout = new QHBoxLayout(selectContactWidget);
-	selectContactLayout->addSpacing(20);
-	SelectBuddy = new SelectBuddyComboBox(selectContactWidget);
+	SelectBuddy = new SelectBuddyComboBox(this);
 	SelectBuddy->setEnabled(false);
-	selectContactLayout->addWidget(SelectBuddy);
-	layout->addWidget(selectContactWidget, 5, 1, 1, 3);
+	SelectBuddy->setVisible(false);
+	Layout->addRow(tr("Merge with:"), SelectBuddy);
+
+	MergeWidgets.append(SelectBuddy);
 
 	AskForAuthorization = new QCheckBox(tr("Ask contact for authorization"), this);
-	layout->addWidget(AskForAuthorization, 7, 1, 1, 3);
+	Layout->addRow(0, AskForAuthorization);
+
+	NonMergeWidgets.append(AskForAuthorization);
 
 	AllowToSeeMeCheck = new QCheckBox(tr("Allow buddy to see me when I'm available"), this);
 	AllowToSeeMeCheck->setChecked(true);
-	layout->addWidget(AllowToSeeMeCheck, 8, 1, 1, 3);
+	Layout->addRow(0, AllowToSeeMeCheck);
 
-	layout->setRowMinimumHeight(6, 20);
-	layout->setRowMinimumHeight(9, 20);
-	layout->setRowStretch(9, 100);
+	NonMergeWidgets.append(AllowToSeeMeCheck);
 
 	ErrorLabel = new QLabel();
 	QFont labelFont = ErrorLabel->font();
 	labelFont.setBold(true);
 	ErrorLabel->setFont(labelFont);
-	layout->addWidget(ErrorLabel, 10, 1, 1, 4);
+	Layout->addRow(0, ErrorLabel);
 
-	QDialogButtonBox *buttons = new QDialogButtonBox(this);
-	layout->addWidget(buttons, 11, 0, 1, 4);
+	QDialogButtonBox *buttons = new QDialogButtonBox(mainWidget);
+	mainLayout->addWidget(buttons);
 
 	AddContactButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogOkButton), tr("Add buddy"), this);
 	AddContactButton->setDefault(true);
@@ -239,31 +208,24 @@ void AddBuddyWindow::createGui()
 	buttons->addButton(AddContactButton, QDialogButtonBox::AcceptRole);
 	buttons->addButton(cancel, QDialogButtonBox::DestructiveRole);
 
-	if (MyBuddy)
-		layout->setContentsMargins(30, 0, 0, 0);
-	else
-		layout->setColumnMinimumWidth(0, 140);
-	layout->setColumnMinimumWidth(1, 200);
-
-#ifndef Q_WS_MAEMO_5
-	setFixedHeight(layout->minimumSize().height());
-	setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
-#endif
-
+	connect(UserNameEdit, SIGNAL(textChanged(const QString &)), this, SLOT(setAddContactEnabled()));
+	connect(UserNameEdit, SIGNAL(textChanged(const QString &)), this, SLOT(setAccountFilter()));
 	connect(AccountCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(accountChanged()));
 	connect(AccountCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(updateGui()));
 	connect(AccountCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(setAddContactEnabled()));
-	connect(MergeBuddy, SIGNAL(toggled(bool)), SelectBuddy, SLOT(setEnabled(bool)));
-	connect(MergeBuddy, SIGNAL(toggled(bool)), DisplayNameEdit, SLOT(setDisabled(bool)));
-	connect(MergeBuddy, SIGNAL(toggled(bool)), AllowToSeeMeCheck, SLOT(setDisabled(bool)));
+	connect(MergeBuddy, SIGNAL(toggled(bool)), this, SLOT(mergeToggled(bool)));
 	connect(MergeBuddy, SIGNAL(toggled(bool)), this, SLOT(setAddContactEnabled()));
 	connect(SelectBuddy, SIGNAL(currentIndexChanged(int)), this, SLOT(setAddContactEnabled()));
 	connect(SelectBuddy, SIGNAL(currentIndexChanged(int)), this, SLOT(setAccountFilter()));
+
+	mergeToggled(false);
 
 	setAddContactEnabled();
 	setAccountFilter();
 	accountChanged();
 	updateGui();
+
+	setFixedHeight(height());
 }
 
 void AddBuddyWindow::addFakeAccountsToComboBox()
@@ -479,6 +441,38 @@ void AddBuddyWindow::setAccountFilter()
 	AccountComboIdFilter->setId(UserNameEdit->text());
 }
 
+void AddBuddyWindow::mergeToggled(bool toggled)
+{
+	setUpdatesEnabled(false);
+
+	foreach (QWidget *widget, NonMergeWidgets)
+	{
+		widget->setVisible(!toggled);
+		widget->setEnabled(!toggled);
+
+		QWidget *label = Layout->labelForField(widget);
+		if (label)
+			label->setVisible(!toggled);
+	}
+
+	foreach (QWidget *widget, MergeWidgets)
+	{
+		widget->setVisible(toggled);
+		widget->setEnabled(toggled);
+
+		QWidget *label = Layout->labelForField(widget);
+		if (label)
+			label->setVisible(toggled);
+	}
+
+	if (toggled)
+		AddContactButton->setText(tr("Merge with buddy"));
+	else
+		AddContactButton->setText(tr("Add buddy"));
+
+	setUpdatesEnabled(true);
+}
+
 bool AddBuddyWindow::addContact()
 {
 	Account account = AccountCombo->currentAccount();
@@ -504,6 +498,7 @@ bool AddBuddyWindow::addContact()
 
 		QString display = DisplayNameEdit->text().isEmpty() ? UserNameEdit->text() : DisplayNameEdit->text();
 		buddy.setDisplay(display);
+		buddy.addToGroup(GroupCombo->currentGroup());
 	}
 	else
 	{
@@ -517,10 +512,7 @@ bool AddBuddyWindow::addContact()
 	// force reattach for gadu protocol, even if buddy == contact.ownerBuddy()
 	// TODO: this is probably unneeded, please review
 	contact.setOwnerBuddy(Buddy::null);
-
 	contact.setOwnerBuddy(buddy);
-
-	buddy.addToGroup(GroupCombo->currentGroup());
 
 	if (!buddy.isOfflineTo())
 		sendAuthorization(contact);

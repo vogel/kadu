@@ -32,10 +32,10 @@
 #include "os/generic/desktop-aware-object.h"
 
 class QCheckBox;
+class QFormLayout;
 class QLabel;
 class QLineEdit;
 class QRegExpValidator;
-class QScrollArea;
 
 class AccountsComboBox;
 class GroupsComboBox;
@@ -46,9 +46,8 @@ class AddBuddyWindow : public QDialog, DesktopAwareObject
 {
 	Q_OBJECT
 
-#ifdef Q_WS_MAEMO_5
-	QScrollArea *ScrollArea;
-#endif
+	QFormLayout *Layout;
+
 	QLabel *UserNameLabel;
 	QLineEdit *UserNameEdit;
 	QAction *MobileAccountAction; // TODO: hack
@@ -64,6 +63,9 @@ class AddBuddyWindow : public QDialog, DesktopAwareObject
 	QCheckBox *AllowToSeeMeCheck;
 	QLabel *ErrorLabel;
 	QPushButton *AddContactButton;
+
+	QList<QWidget *> NonMergeWidgets;
+	QList<QWidget *> MergeWidgets;
 
 	Buddy MyBuddy;
 	Account MyAccount;
@@ -91,15 +93,12 @@ class AddBuddyWindow : public QDialog, DesktopAwareObject
 	void askForAuthorization(const Contact &contact);
 	void sendAuthorization(const Contact &contact);
 
-#ifdef Q_WS_MAEMO_5
-	void resizeEvent(QResizeEvent *event);
-#endif
-
 private slots:
 	void accountChanged();
 	void updateGui();
 	void setAddContactEnabled();
 	void setAccountFilter();
+	void mergeToggled(bool toggled);
 
 public:
 	explicit AddBuddyWindow(QWidget *parent = 0, const Buddy &buddy = Buddy::null, bool forceBuddyAccount = false);

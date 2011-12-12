@@ -19,6 +19,7 @@
 * history: #2267 fixed: history sometimes caused delay and crash on Kadu exit (beevvy)
 * gui: #1841, #1949 fixed: update chat content when changing buddy's display name (Vogel)
 * tabs: #2381 fixed: update tab name when updating buddy's display name (Vogel)
+* gui: Add Buddy window improvements (Vogel)
 
 +++ version 0.10.1
 * gadu: clearer contact list synchronization message when updating from <0.10.0 (beevvy)
