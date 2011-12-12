@@ -68,7 +68,7 @@ class TabsManager : public ConfigurationUiHandler, ConfigurationAwareObject, Sto
 	bool ForceTabs;
 
 	int TargetTabs;
-	void insertTab(ChatWidget *chat);
+	void insertTab(ChatWidget *chatWidget);
 	void makePopupMenu();
 	ChatWidget *SelectedChat;
 	QMenu *Menu;
@@ -108,16 +108,16 @@ public:
 
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
 
-	bool detachChat(ChatWidget *chat);
+	bool detachChat(ChatWidget *chatWidget);
 
 	virtual StorableObject * storageParent() { return 0; }
 	virtual QString storageNodeName() { return QLatin1String("ModuleTabs"); }
 
 public slots:
-	void onNewChat(ChatWidget *chat, bool &handled);
-	void onDestroyingChat(ChatWidget *chat);
+	void onNewChat(ChatWidget *chatWidget, bool &handled);
+	void onDestroyingChat(ChatWidget *chatWidget);
 	void onIconChanged();
-	void onTitleChanged(ChatWidget *chatChanged, const QString &newTitle);
+	void onTitleChanged(ChatWidget *chatWidget, const QString &newTitle);
 
 	void onTabChange(int index);
 

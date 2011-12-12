@@ -42,7 +42,7 @@ public:
 	void changeRosterPos(int newRosterPos);
 
 public slots:
-	void onNewChat(ChatWidget *w, bool &handled);
+	void onNewChat(ChatWidget *chatWidget, bool &handled);
 	void onTabChange(int index);
 	void onChatKeyPressed(QKeyEvent *e, CustomInput *w, bool &handled);
 	void onkaduKeyPressed(QKeyEvent *e);

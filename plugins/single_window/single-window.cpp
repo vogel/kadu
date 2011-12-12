@@ -115,15 +115,15 @@ SingleWindow::SingleWindow()
 	connect(kadu, SIGNAL(keyPressed(QKeyEvent *)), this, SLOT(onkaduKeyPressed(QKeyEvent *)));
 
 	/* conquer all already open chats ;) */
-	foreach (ChatWidget *chat, ChatWidgetManager::instance()->chats())
+	foreach (ChatWidget *chatWidget, ChatWidgetManager::instance()->chats())
 	{
-		if (chat->parentWidget())
-			chat->parentWidget()->deleteLater();
+		if (chatWidget->parentWidget())
+			chatWidget->parentWidget()->deleteLater();
 		else
-			chat->kaduRestoreGeometry();
+			chatWidget->kaduRestoreGeometry();
 
 		bool dummy;
-		onNewChat(chat, dummy);
+		onNewChat(chatWidget, dummy);
 	}
 
 	kadu->show();
@@ -151,11 +151,11 @@ SingleWindow::~SingleWindow()
 	{
 		for (int i = tabs->count()-1; i >= 0; --i)
 		{
-			ChatWidget *chat = static_cast<ChatWidget *>(tabs->widget(i));
-			Chat oldchat = chat->chat();
+			ChatWidget *chatWidget = static_cast<ChatWidget *>(tabs->widget(i));
+			const Chat &chat = chatWidget->chat();
 			tabs->removeTab(i);
-			delete chat;
-			ChatWidgetManager::instance()->byChat(oldchat, true);
+			delete chatWidget;
+			ChatWidgetManager::instance()->byChat(chat, true);
 		}
 	}
 
@@ -173,28 +173,28 @@ void SingleWindow::changeRosterPos(int newRosterPos)
 	split->insertWidget(rosterPos, Core::instance()->kaduWindow());
 }
 
-void SingleWindow::onNewChat(ChatWidget *w, bool &handled)
+void SingleWindow::onNewChat(ChatWidget *chatWidget, bool &handled)
 {
 	handled = true;
-	w->setContainer(this);
+	chatWidget->setContainer(this);
 
-	QString title = w->chat().name();
+	QString title = chatWidget->chat().name();
 
-	tabs->addTab(w, w->icon(), title);
+	tabs->addTab(chatWidget, chatWidget->icon(), title);
 
-	connect(w->edit(), SIGNAL(keyPressed(QKeyEvent *, CustomInput *, bool &)),
+	connect(chatWidget->edit(), SIGNAL(keyPressed(QKeyEvent *, CustomInput *, bool &)),
 		this, SLOT(onChatKeyPressed(QKeyEvent *, CustomInput *, bool &)));
-	connect(w, SIGNAL(iconChanged()), this, SLOT(onIconChanged()));
+	connect(chatWidget, SIGNAL(iconChanged()), this, SLOT(onIconChanged()));
 }
 
 
 void SingleWindow::closeTab(int index)
 {
-	ChatWidget *w = static_cast<ChatWidget *>(tabs->widget(index));
+	ChatWidget *chatWidget = static_cast<ChatWidget *>(tabs->widget(index));
 
-	disconnect(w->edit(), SIGNAL(keyPressed(QKeyEvent *, CustomInput *, bool &)),
+	disconnect(chatWidget->edit(), SIGNAL(keyPressed(QKeyEvent *, CustomInput *, bool &)),
 		this, SLOT(onChatKeyPressed(QKeyEvent *, CustomInput *, bool &)));
-	disconnect(w, SIGNAL(iconChanged()), this, SLOT(onIconChanged()));
+	disconnect(chatWidget, SIGNAL(iconChanged()), this, SLOT(onIconChanged()));
 
 	tabs->widget(index)->deleteLater();
 	tabs->removeTab(index);
@@ -288,8 +288,8 @@ void SingleWindow::onTabChange(int index)
 	if (index == -1)
 		return;
 
-	ChatWidget *w = (ChatWidget *)tabs->widget(index);
-	tabs->setTabIcon(index, w->icon());
+	ChatWidget *chatWidget = (ChatWidget *)tabs->widget(index);
+	tabs->setTabIcon(index, chatWidget->icon());
 
 	QString title = tabs->tabText(index);
 	int pos = title.indexOf(" [");
@@ -297,7 +297,7 @@ void SingleWindow::onTabChange(int index)
 		title.truncate(pos);
 	tabs->setTabText(index, title);
 
-	MessageManager::instance()->markAllMessagesAsRead(w->chat());
+	MessageManager::instance()->markAllMessagesAsRead(chatWidget->chat());
 }
 
 void SingleWindow::onkaduKeyPressed(QKeyEvent *e)
@@ -305,11 +305,9 @@ void SingleWindow::onkaduKeyPressed(QKeyEvent *e)
 	/* unfortunatelly does not work correctly */
 	if (HotKey::shortCut(e, "ShortCuts", "FocusOnRosterTab"))
 	{
-		ChatWidget *w = (ChatWidget *)tabs->currentWidget();
-		if (w)
-		{
-			w->edit()->setFocus();
-		}
+		ChatWidget *chatWidget = static_cast<ChatWidget *>(tabs->currentWidget());
+		if (chatWidget)
+			chatWidget->edit()->setFocus();
 	}
 }
 

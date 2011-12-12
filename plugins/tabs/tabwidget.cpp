@@ -266,9 +266,9 @@ void TabWidget::changeEvent(QEvent *event)
 	if (event->type() == QEvent::ActivationChange)
 	{
 		kdebugf();
-		ChatWidget *chat = static_cast<ChatWidget *>(currentWidget());
-		if (chat && _isActiveWindow(this))
-			MessageManager::instance()->markAllMessagesAsRead(chat->chat());
+		ChatWidget *chatWidget = static_cast<ChatWidget *>(currentWidget());
+		if (chatWidget && _isActiveWindow(this))
+			MessageManager::instance()->markAllMessagesAsRead(chatWidget->chat());
 		kdebugf2();
 	}
 }
