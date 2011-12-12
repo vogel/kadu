@@ -168,17 +168,14 @@ void MessageManager::messageReceivedSlot(const Message &message)
 
 void MessageManager::addUnreadMessage(const Message &message)
 {
-	ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(message.messageChat(), false);
+	// just ensure that owner buddy is managed - we need it to be shown on contact list
+	// todo: rethink this one
+	BuddyManager::instance()->byContact(message.messageSender(), ActionCreateAndAdd);
 
+	ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(message.messageChat(), false);
 	// message is pending if chat widget is not open
 	if (!chatWidget)
-	{
-		// just ensure that owner buddy is managed - we need it to be shown on contact list
-		// todo: rethink this one
-		BuddyManager::instance()->byContact(message.messageSender(), ActionCreateAndAdd);
-
 		message.setPending(true);
-	}
 	else if (chatWidget->isActive())
 		return;
 
