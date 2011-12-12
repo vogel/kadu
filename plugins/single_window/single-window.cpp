@@ -237,8 +237,7 @@ void SingleWindow::activateChatWidget(ChatWidget *chatWidget)
 	if (index < 0)
 		return;
 
-	setWindowState(windowState() & ~Qt::WindowMinimized);
-	_activateWindow(window());
+	_activateWindow(this);
 
 	tabs->setCurrentIndex(index);
 	chatWidget->edit()->setFocus();

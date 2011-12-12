@@ -289,10 +289,7 @@ void TabsManager::onNewTab(QAction *sender, bool toggled)
 	if (chatWidget)
 	{
 		if (TabDialog->indexOf(chatWidget) != -1)
-		{
-			TabDialog->setWindowState(TabDialog->windowState() & ~Qt::WindowMinimized);
 			TabDialog->setCurrentWidget(chatWidget);
-		}
 		_activateWindow(chatWidget);
 	}
 	else
@@ -342,7 +339,6 @@ void TabsManager::insertTab(ChatWidget *chat)
 
 	TabDialog->setTabToolTip(TargetTabs, chat->title());
 
-	TabDialog->setWindowState(TabDialog->windowState() & ~Qt::WindowMinimized);
 	_activateWindow(TabDialog);
 
 	TargetTabs = -1;
