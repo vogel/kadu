@@ -248,7 +248,6 @@ void TabsManager::onTitleChanged(ChatWidget *chatWidget, const QString &newTitle
 		return;
 
 	updateTabName(chatWidget);
-	TabDialog->setTabToolTip(chatIndex, newTitle);
 	if (TabDialog->currentIndex() == chatIndex)
 		TabDialog->setWindowTitle(newTitle);
 
@@ -332,12 +331,12 @@ void TabsManager::insertTab(ChatWidget *chatWidget)
 	chatWidget->setContainer(TabDialog);
 
 	// Ustawiam tytul karty w zaleznosci od tego czy mamy do czynienia z rozmowa czy z konferencja
-	TabDialog->insertTab(TargetTabs, chatWidget, chatWidget->icon(), formatTabName(chatWidget->chat()));
+	TabDialog->insertTab(TargetTabs, chatWidget, chatWidget->icon(), QString());
 
 	if (restoreChatGeometry)
 		chatWidget->kaduRestoreGeometry();
 
-	TabDialog->setTabToolTip(TargetTabs, chatWidget->title());
+	updateTabName(chatWidget);
 
 	_activateWindow(TabDialog);
 
