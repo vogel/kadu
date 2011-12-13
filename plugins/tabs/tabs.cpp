@@ -360,7 +360,6 @@ void TabsManager::onTimer()
 	ChatWidget *chatWidget;
 	static bool msg = true;
 
-	// NOTE: keep it consistent with onMessageReceived()
 	bool tabsActive = _isWindowActiveOrFullyVisible(TabDialog);
 	ChatWidget *currentChatWidget = static_cast<ChatWidget *>(TabDialog->currentWidget());
 

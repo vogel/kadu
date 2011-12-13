@@ -242,14 +242,13 @@ QList<Message> ChatWidgetManager::loadUnreadMessages(const Chat &chat)
 	const Chat &unreadChat = aggregateChat ? aggregateChat : chat;
 	const QList<Message> &unreadMessages = MessageManager::instance()->chatUnreadMessages(unreadChat);
 
-	QList<Message> messages;
 	foreach (const Message &message, unreadMessages)
 	{
-		messages.append(message);
-		MessageManager::instance()->removeUnreadMessage(message);
+		message.setPending(false);
+		message.data()->removeFromStorage();
 	}
 
-	return messages;
+	return unreadMessages;
 }
 
 void ChatWidgetManager::closeChat(const Chat &chat)

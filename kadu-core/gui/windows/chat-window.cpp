@@ -272,6 +272,7 @@ void ChatWindow::alertChatWidget(ChatWidget *chatWidget)
 {
 	Q_UNUSED(chatWidget)
 	Q_ASSERT(chatWidget == currentChatWidget);
+	Q_ASSERT(chatWidget->chat().unreadMessagesCount() > 0);
 
 	if (_isWindowActiveOrFullyVisible(this))
 	{

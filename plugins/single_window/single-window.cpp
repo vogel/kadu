@@ -245,8 +245,8 @@ void SingleWindow::activateChatWidget(ChatWidget *chatWidget)
 
 void SingleWindow::alertChatWidget(ChatWidget *chatWidget)
 {
-	if (!chatWidget)
-		return;
+	Q_ASSERT(chatWidget);
+	Q_ASSERT(chatWidget->chat().unreadMessagesCount() > 0);
 
 	if (chatWidget == tabs->currentWidget() && _isWindowActiveOrFullyVisible(this))
 	{
