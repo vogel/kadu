@@ -75,7 +75,6 @@ class TabsManager : public ConfigurationUiHandler, ConfigurationAwareObject, Sto
 	QAction *DetachTabMenuAction;
 	QAction *CloseTabMenuAction;
 
-	static QString formatTabName(const Chat &chat);
 	void updateTabName(ChatWidget *chatWidget);
 
 	/**
