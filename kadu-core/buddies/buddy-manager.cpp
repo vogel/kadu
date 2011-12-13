@@ -131,6 +131,14 @@ void BuddyManager::itemRemoved(Buddy buddy)
 	emit buddyRemoved(buddy);
 }
 
+QString BuddyManager::mergeValue(const QString &destination, const QString &source) const
+{
+	if (destination.isEmpty())
+		return source;
+	else
+		return destination;
+}
+
 void BuddyManager::mergeBuddies(Buddy destination, Buddy source)
 {
 	QMutexLocker locker(&mutex());
@@ -139,6 +147,11 @@ void BuddyManager::mergeBuddies(Buddy destination, Buddy source)
 		return;
 
 	ensureLoaded();
+
+	destination.setEmail(mergeValue(destination.email(), source.email()));
+	destination.setHomePhone(mergeValue(destination.homePhone(), source.homePhone()));
+	destination.setMobile(mergeValue(destination.mobile(), source.mobile()));
+	destination.setWebsite(mergeValue(destination.website(), source.website()));
 
 	foreach (const Contact &contact, source.contacts())
 		contact.setOwnerBuddy(destination);

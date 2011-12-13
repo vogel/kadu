@@ -54,6 +54,8 @@ class KADUAPI BuddyManager : public QObject, public SimpleManager<Buddy>
 
 	void importConfiguration(XmlConfigFile *configurationStorage);
 
+	QString mergeValue(const QString &destination, const QString &source) const;
+
 private slots:
 	void buddyDataUpdated();
 	void buddySubscriptionChanged();
