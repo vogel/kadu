@@ -184,7 +184,10 @@ void SingleWindow::onNewChat(ChatWidget *chatWidget, bool &handled)
 
 	connect(chatWidget->edit(), SIGNAL(keyPressed(QKeyEvent *, CustomInput *, bool &)),
 		this, SLOT(onChatKeyPressed(QKeyEvent *, CustomInput *, bool &)));
+	connect(chatWidget, SIGNAL(closed()), this, SLOT(closeChat()));
 	connect(chatWidget, SIGNAL(iconChanged()), this, SLOT(onIconChanged()));
+	connect(chatWidget, SIGNAL(titleChanged(ChatWidget * , const QString &)),
+			this, SLOT(onTitleChanged(ChatWidget *, const QString &)));
 }
 
 // TODO: share with tabs
@@ -225,7 +228,10 @@ void SingleWindow::closeTab(int index)
 
 	disconnect(chatWidget->edit(), SIGNAL(keyPressed(QKeyEvent *, CustomInput *, bool &)),
 		this, SLOT(onChatKeyPressed(QKeyEvent *, CustomInput *, bool &)));
+	disconnect(chatWidget, SIGNAL(closed()), this, SLOT(closeChat()));
 	disconnect(chatWidget, SIGNAL(iconChanged()), this, SLOT(onIconChanged()));
+	disconnect(chatWidget, SIGNAL(titleChanged(ChatWidget * , const QString &)),
+			this, SLOT(onTitleChanged(ChatWidget *, const QString &)));
 
 	tabs->widget(index)->deleteLater();
 	tabs->removeTab(index);
@@ -389,4 +395,23 @@ void SingleWindow::onIconChanged()
 	int index;
 	if (chatWidget && (index = tabs->indexOf(chatWidget)) != -1)
 		tabs->setTabIcon(index, chatWidget->icon());
+}
+
+void SingleWindow::onTitleChanged(ChatWidget *chatWidget, const QString &newTitle)
+{
+	Q_UNUSED(newTitle)
+
+	int chatIndex = tabs->indexOf(chatWidget);
+
+	if (-1 == chatIndex || !chatWidget)
+		return;
+
+	updateTabName(chatWidget);
+}
+
+void SingleWindow::closeChat()
+{
+	QObject *chat = sender();
+	if (chat)
+		chat->deleteLater();
 }

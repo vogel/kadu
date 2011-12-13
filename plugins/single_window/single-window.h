@@ -50,7 +50,9 @@ public slots:
 	void onkaduKeyPressed(QKeyEvent *e);
 	void closeTab(int index);
 	void onIconChanged();
+	void onTitleChanged(ChatWidget *chatWidget, const QString &newTitle);
 	void onStatusPixmapChanged(const KaduIcon &icon);
+	void closeChat();
 
 };
 
