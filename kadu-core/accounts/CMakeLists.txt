@@ -7,7 +7,6 @@ set (accounts_SRCS
 	accounts-aware-object.cpp
 
 	filter/have-multilogon-filter.cpp
-	filter/id-validity-filter.cpp
 	filter/protocol-filter.cpp
 	filter/writeable-contacts-list-filter.cpp
 
@@ -22,7 +21,6 @@ set (accounts_MOC_SRCS
 
 	filter/abstract-account-filter.h
 	filter/have-multilogon-filter.h
-	filter/id-validity-filter.h
 	filter/protocol-filter.h
 	filter/writeable-contacts-list-filter.h
 

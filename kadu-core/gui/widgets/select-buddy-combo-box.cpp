@@ -44,6 +44,7 @@ SelectBuddyComboBox::SelectBuddyComboBox(QWidget *parent) :
 
 	setUpModel(BuddyRole, chain);
 	addBeforeAction(new QAction(tr(" - Select buddy - "), this));
+	setCurrentIndex(0);
 
 	Popup = new SelectBuddyPopup();
 

@@ -36,7 +36,6 @@
 
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
-#include "accounts/filter/id-validity-filter.h"
 #include "accounts/filter/protocol-filter.h"
 #include "accounts/filter/writeable-contacts-list-filter.h"
 #include "accounts/model/accounts-model.h"
@@ -63,7 +62,7 @@
 
 AddBuddyWindow::AddBuddyWindow(QWidget *parent, const Buddy &buddy, bool forceBuddyAccount) :
 		QDialog(parent, Qt::Window), DesktopAwareObject(this), UserNameLabel(0), UserNameEdit(0),
-		MobileAccountAction(0), EmailAccountAction(0), AccountCombo(0), AccountComboIdFilter(0),
+		MobileAccountAction(0), EmailAccountAction(0), AccountCombo(0),
 		GroupCombo(0), DisplayNameEdit(0), MergeBuddy(0), SelectBuddy(0), AskForAuthorization(0),
 		AllowToSeeMeCheck(0), ErrorLabel(0), AddContactButton(0), MyBuddy(buddy),
 		ForceBuddyAccount(forceBuddyAccount)
@@ -103,9 +102,6 @@ void AddBuddyWindow::createGui()
 
 	AccountCombo = new AccountsComboBox(MyBuddy.isNull(), ActionsProxyModel::AlwaysVisible, this);
 	AccountCombo->setIncludeIdInDisplay(true);
-
-	AccountComboIdFilter = new IdValidityFilter(AccountCombo);
-	AccountCombo->addFilter(AccountComboIdFilter);
 	AccountCombo->addFilter(new WriteableContactsListFilter(AccountCombo));
 
 	if (MyBuddy)
@@ -209,19 +205,16 @@ void AddBuddyWindow::createGui()
 	buttons->addButton(cancel, QDialogButtonBox::DestructiveRole);
 
 	connect(UserNameEdit, SIGNAL(textChanged(const QString &)), this, SLOT(setAddContactEnabled()));
-	connect(UserNameEdit, SIGNAL(textChanged(const QString &)), this, SLOT(setAccountFilter()));
 	connect(AccountCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(accountChanged()));
 	connect(AccountCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(updateGui()));
 	connect(AccountCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(setAddContactEnabled()));
 	connect(MergeBuddy, SIGNAL(toggled(bool)), this, SLOT(mergeToggled(bool)));
 	connect(MergeBuddy, SIGNAL(toggled(bool)), this, SLOT(setAddContactEnabled()));
 	connect(SelectBuddy, SIGNAL(currentIndexChanged(int)), this, SLOT(setAddContactEnabled()));
-	connect(SelectBuddy, SIGNAL(currentIndexChanged(int)), this, SLOT(setAccountFilter()));
 
 	mergeToggled(false);
 
 	setAddContactEnabled();
-	setAccountFilter();
 	accountChanged();
 	updateGui();
 
@@ -304,7 +297,6 @@ void AddBuddyWindow::updateMobileGui()
 	UserNameLabel->setText(tr("Mobile number:"));
 	MergeBuddy->setChecked(false);
 	MergeBuddy->setEnabled(false);
-	SelectBuddy->setCurrentBuddy(Buddy::null);
 	AllowToSeeMeCheck->setEnabled(false);
 }
 
@@ -313,7 +305,6 @@ void AddBuddyWindow::updateEmailGui()
 	UserNameLabel->setText(tr("E-mail address:"));
 	MergeBuddy->setChecked(false);
 	MergeBuddy->setEnabled(false);
-	SelectBuddy->setCurrentBuddy(Buddy::null);
 	AllowToSeeMeCheck->setEnabled(false);
 }
 
@@ -370,11 +361,19 @@ void AddBuddyWindow::validateData()
 	}
 	else
 	{
-		Buddy existingBuddy = BuddyManager::instance()->byDisplay(DisplayNameEdit->text(), ActionReturnNull);
-		if (existingBuddy && existingBuddy != MyBuddy)
+		if (DisplayNameEdit->text().isEmpty())
 		{
-			displayErrorMessage(tr("Visible name is already used for another buddy"));
+			displayErrorMessage(tr("Enter visible name"));
 			return;
+		}
+		else
+		{
+			Buddy existingBuddy = BuddyManager::instance()->byDisplay(DisplayNameEdit->text(), ActionReturnNull);
+			if (existingBuddy && existingBuddy != MyBuddy)
+			{
+				displayErrorMessage(tr("Visible name is already used for another buddy"));
+				return;
+			}
 		}
 	}
 
@@ -384,6 +383,8 @@ void AddBuddyWindow::validateData()
 
 void AddBuddyWindow::validateMobileData()
 {
+	Q_ASSERT(!MergeBuddy->isChecked());
+
 	static QRegExp mobileRegularExpression("[0-9]{3,12}");
 
 	if (!mobileRegularExpression.exactMatch(UserNameEdit->text()))
@@ -395,9 +396,9 @@ void AddBuddyWindow::validateMobileData()
 		return;
 	}
 
-	if (MergeBuddy->isChecked())
+	if (DisplayNameEdit->text().isEmpty())
 	{
-		displayErrorMessage(tr("Merging mobile number with buddy is not supported. Please use edit buddy window."));
+		displayErrorMessage(tr("Enter visible name"));
 		return;
 	}
 
@@ -407,6 +408,8 @@ void AddBuddyWindow::validateMobileData()
 
 void AddBuddyWindow::validateEmailData()
 {
+	Q_ASSERT(!MergeBuddy->isChecked());
+
 	if (!UrlHandlerManager::instance()->mailRegExp().exactMatch(UserNameEdit->text()))
 	{
 		if (!UserNameEdit->text().isEmpty())
@@ -416,9 +419,9 @@ void AddBuddyWindow::validateEmailData()
 		return;
 	}
 
-	if (MergeBuddy->isChecked())
+	if (DisplayNameEdit->text().isEmpty())
 	{
-		displayErrorMessage(tr("Merging e-mail with buddy is not supported. Please use edit buddy window."));
+		displayErrorMessage(tr("Enter visible name"));
 		return;
 	}
 
@@ -434,11 +437,6 @@ void AddBuddyWindow::setAddContactEnabled()
 		validateEmailData();
 	else
 		validateData();
-}
-
-void AddBuddyWindow::setAccountFilter()
-{
-	AccountComboIdFilter->setId(UserNameEdit->text());
 }
 
 void AddBuddyWindow::mergeToggled(bool toggled)

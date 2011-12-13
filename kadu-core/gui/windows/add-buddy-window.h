@@ -39,7 +39,6 @@ class QRegExpValidator;
 
 class AccountsComboBox;
 class GroupsComboBox;
-class IdValidityFilter;
 class SelectBuddyComboBox;
 
 class AddBuddyWindow : public QDialog, DesktopAwareObject
@@ -54,7 +53,6 @@ class AddBuddyWindow : public QDialog, DesktopAwareObject
 	QAction *EmailAccountAction; // TODO: hack
 	Account LastSelectedAccount;
 	AccountsComboBox *AccountCombo;
-	IdValidityFilter *AccountComboIdFilter;
 	GroupsComboBox *GroupCombo;
 	QLineEdit *DisplayNameEdit;
 	QCheckBox *MergeBuddy;
@@ -97,7 +95,6 @@ private slots:
 	void accountChanged();
 	void updateGui();
 	void setAddContactEnabled();
-	void setAccountFilter();
 	void mergeToggled(bool toggled);
 
 public:
