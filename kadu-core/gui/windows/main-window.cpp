@@ -486,7 +486,7 @@ void MainWindow::setBlur(bool enable)
 
 void MainWindow::showEvent(QShowEvent * event)
 {
-	Q_UNUSED(event);
 	if (BlurEnabled)
 		setBlur(true);
+	QMainWindow::showEvent(event);
 }
