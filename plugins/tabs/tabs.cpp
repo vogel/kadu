@@ -261,11 +261,18 @@ void TabsManager::onTabChange(int index)
 
 	ChatWidget *chatWidget = static_cast<ChatWidget *>(TabDialog->widget(index));
 
+	const Chat &chat = chatWidget->chat();
+	if (chat.unreadMessagesCount() > 0)
+	{
+		MessageManager::instance()->markAllMessagesAsRead(chat);
+		TabDialog->setTabIcon(index, chatWidget->icon());
+		updateTabName(chatWidget);
+		ChatsWithNewMessages.removeAll(chatWidget);
+	}
+
 	TabDialog->setWindowTitle(chatWidget->title());
 	TabDialog->setWindowIcon(chatWidget->icon());
 
-	MessageManager::instance()->markAllMessagesAsRead(chatWidget->chat());
-	// ustawiamy focus na pole edycji chata
 	chatWidget->edit()->setFocus();
 }
 
@@ -377,14 +384,14 @@ void TabsManager::onTimer()
 
 			if (tabsActive)
 			{
-				TabDialog->setWindowTitle(currentChatWidget->title());
-
 				if (currentChatWidget == chatWidget)
 				{
 					MessageManager::instance()->markAllMessagesAsRead(chatWidget->chat());
 					TabDialog->setTabIcon(i, chatWidget->icon());
 					ChatsWithNewMessages.removeAll(chatWidget);
 				}
+
+				TabDialog->setWindowTitle(currentChatWidget->title());
 			}
 			else
 			{

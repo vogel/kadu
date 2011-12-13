@@ -177,7 +177,11 @@ void SingleWindow::changeEvent(QEvent *event)
 	{
 		ChatWidget *chatWidget = static_cast<ChatWidget *>(tabs->currentWidget());
 		if (chatWidget && _isActiveWindow(this))
+		{
 			MessageManager::instance()->markAllMessagesAsRead(chatWidget->chat());
+			tabs->setTabIcon(tabs->currentIndex(), chatWidget->icon());
+			updateTabName(chatWidget);
+		}
 	}
 }
 
@@ -329,9 +333,9 @@ void SingleWindow::onTabChange(int index)
 		return;
 
 	ChatWidget *chatWidget = (ChatWidget *)tabs->widget(index);
+	MessageManager::instance()->markAllMessagesAsRead(chatWidget->chat());
 	tabs->setTabIcon(index, chatWidget->icon());
 	updateTabName(chatWidget);
-	MessageManager::instance()->markAllMessagesAsRead(chatWidget->chat());
 }
 
 void SingleWindow::onkaduKeyPressed(QKeyEvent *e)
