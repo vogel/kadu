@@ -2,6 +2,7 @@
 *                                                                           *
 *   X11tools                                                                *
 *   Copyright (C) 2008-2011  Piotr Dąbrowski ultr@ultr.pl                   *
+*   Copyright (C) 2011       Przemysław Rudy prudy1@o2.pl                   *
 *                                                                           *
 *   This program is free software: you can redistribute it and/or modify    *
 *   it under the terms of the GNU General Public License as published by    *
