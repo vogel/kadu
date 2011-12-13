@@ -8,11 +8,35 @@
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    version="1.0"
-   width="183.73317"
-   height="188.82465"
-   viewBox="0 0 142.39321 144.1233"
-   id="svg2">
+   width="40.794662"
+   height="41.925137"
+   viewBox="0 0 31.615865 32"
+   id="svg2"
+   inkscape:version="0.48.2 r9819"
+   sodipodi:docname="composing.svg">
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1366"
+     inkscape:window-height="709"
+     id="namedview79"
+     showgrid="false"
+     inkscape:zoom="1"
+     inkscape:cx="91.866585"
+     inkscape:cy="-33.604386"
+     inkscape:window-x="-2"
+     inkscape:window-y="-3"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg2" />
   <metadata
      id="metadata131">
     <rdf:RDF>
@@ -21,7 +45,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -110,7 +134,7 @@
        gradientTransform="translate(-484,-665)" />
   </defs>
   <g
-     transform="matrix(-1.3798207,0,0,1.3798207,138.522,2.1974012)"
+     transform="matrix(-0.3063642,0,0,0.3063642,30.756303,0.48797467)"
      id="Layer_7">
     <linearGradient
        x1="512.49707"
@@ -135,7 +159,7 @@
        style="fill:url(#linearGradient3632)" />
   </g>
   <g
-     transform="matrix(0.9552775,0,0,0.9552775,-6.7126263,-31.310035)"
+     transform="matrix(0.21210207,0,0,0.21210207,-1.4904154,-6.9517453)"
      id="g3303">
     <g
        transform="matrix(-1.4444187,0,0,1.4444187,152.03397,35.076127)"
@@ -178,7 +202,7 @@
            offset="1" />
       </linearGradient>
       <polygon
-         points="84.413,76.236 76.025,84.3 15.717,23.991 15.717,23.991 24.425,16.412 "
+         points="76.025,84.3 15.717,23.991 15.717,23.991 24.425,16.412 84.413,76.236 "
          id="polygon2707"
          style="fill:url(#linearGradient3634)" />
     </g>
@@ -243,11 +267,11 @@
            offset="1" />
       </linearGradient>
       <polygon
-         points="84.291,76.238 91.91,89.702 89.209,92.282 89.209,92.282 76.025,84.3 "
+         points="91.91,89.702 89.209,92.282 89.209,92.282 76.025,84.3 84.291,76.238 "
          id="polygon2735"
          style="fill:url(#linearGradient3636)" />
       <polygon
-         points="80.702,79.805 87.395,84.723 83.404,77.124 80.702,79.805 "
+         points="83.404,77.124 80.702,79.805 80.702,79.805 87.395,84.723 "
          id="polygon2737"
          style="opacity:0.5;fill:#ffffff" />
     </g>
@@ -272,9 +296,10 @@
            offset="0.98949999" />
       </linearGradient>
       <path
-         d="m 89.209,92.282 4.203,2.69 c 0,0 0.798,0.527 1.209,0.182 0.393,-0.334 -0.092,-1.149 -0.092,-1.149 l -2.619,-4.303 -2.701,2.58 z"
+         d="M 89.209,92.282 L 93.412,94.972 C 93.412,94.972 94.21,95.499 94.621,95.154 C 95.014,94.82 94.529,94.005 94.529,94.005 L 91.91,89.702 L 89.209,92.282 z"
          id="path2745"
-         style="fill:url(#linearGradient3638)" />
+         style="fill:url(#linearGradient3638)"
+         inkscape:connector-curvature="0" />
     </g>
     <g
        transform="matrix(-1.4444187,0,0,1.4444187,152.03397,35.076127)"
@@ -297,9 +322,10 @@
            offset="0.75919998" />
       </linearGradient>
       <path
-         d="M 7.534,15.122 4.187,11.656 c 0,0 -1.29,-1.169 -1.25,-3.306 0.04,-2.137 0.808,-4.838 4.676,-4.958 1.29,-0.04 2.661,0.282 3.75,1.29 1.03,0.954 3.467,3.305 3.467,3.305 l -7.296,7.135 z"
+         d="M 7.534,15.122 L 4.187,11.656 C 4.187,11.656 2.897,10.487 2.937,8.35 C 2.977,6.213 3.745,3.512 7.613,3.392 C 8.903,3.352 10.274,3.674 11.363,4.682 C 12.393,5.636 14.83,7.987 14.83,7.987 L 7.534,15.122 z"
          id="path2753"
-         style="fill:url(#linearGradient3640);stroke:#f1803b;stroke-width:0.25" />
+         style="fill:url(#linearGradient3640);stroke:#f1803b;stroke-width:0.25"
+         inkscape:connector-curvature="0" />
     </g>
     <g
        transform="matrix(-1.4444187,0,0,1.4444187,152.03397,35.076127)"
@@ -342,7 +368,7 @@
            offset="1" />
       </linearGradient>
       <polygon
-         points="15.073,7.2 24.566,16.331 16.101,24.434 16.101,24.434 6.788,15.243 "
+         points="24.566,16.331 16.101,24.434 16.101,24.434 6.788,15.243 15.073,7.2 "
          id="polygon2771"
          style="fill:url(#linearGradient3642)" />
     </g>
@@ -367,7 +393,7 @@
            offset="1" />
       </linearGradient>
       <polygon
-         points="9.76,18.156 9.041,17.48 13.028,13.762 13.028,13.762 13.691,14.466 "
+         points="9.041,17.48 13.028,13.762 13.028,13.762 13.691,14.466 9.76,18.156 "
          id="polygon2779"
          style="fill:url(#linearGradient3644)" />
       <linearGradient
@@ -388,7 +414,7 @@
            offset="1" />
       </linearGradient>
       <polygon
-         points="15.752,16.416 11.842,20.224 11.167,19.532 11.167,19.532 15.078,15.722 "
+         points="11.842,20.224 11.167,19.532 11.167,19.532 15.078,15.722 15.752,16.416 "
          id="polygon2786"
          style="fill:url(#linearGradient3646)" />
       <linearGradient
@@ -409,7 +435,7 @@
            offset="1" />
       </linearGradient>
       <polygon
-         points="17.546,18.309 13.695,22.059 13.021,21.366 13.021,21.366 16.871,17.617 "
+         points="13.695,22.059 13.021,21.366 13.021,21.366 16.871,17.617 17.546,18.309 "
          id="polygon2793"
          style="fill:url(#linearGradient3648)" />
     </g>
