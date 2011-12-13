@@ -437,6 +437,9 @@ void YourAccounts::selectAccount(Account account)
 	AccountsView->selectionModel()->clearSelection();
 
 	const QModelIndexList &indexes = MyAccountsModel->indexListForValue(account);
+	if (indexes.isEmpty())
+		return;
+
 	Q_ASSERT(indexes.size() == 1);
 
 	AccountsView->selectionModel()->select(indexes.at(0), QItemSelectionModel::Select);

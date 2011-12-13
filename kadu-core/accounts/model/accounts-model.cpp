@@ -116,7 +116,11 @@ int AccountsModel::accountIndex(Account account) const
 QModelIndexList AccountsModel::indexListForValue(const QVariant &value) const
 {
 	QModelIndexList result;
-	result.append(createIndex(accountIndex(value.value<Account>()), 0, 0));
+
+	const int i = accountIndex(value.value<Account>());
+	if (-1 != i)
+		result.append(index(i));
+
 	return result;
 }
 

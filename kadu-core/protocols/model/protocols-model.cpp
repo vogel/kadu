@@ -90,7 +90,11 @@ int ProtocolsModel::protocolFactoryIndex(ProtocolFactory *protocolFactory) const
 QModelIndexList ProtocolsModel::indexListForValue(const QVariant &value) const
 {
 	QModelIndexList result;
-	result.append(index(protocolFactoryIndex(value.value<ProtocolFactory *>()), 0));
+
+	int i = protocolFactoryIndex(value.value<ProtocolFactory *>());
+	if (-1 != i)
+		result.append(index(i, 0));
+
 	return result;
 }
 

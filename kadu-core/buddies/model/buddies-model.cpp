@@ -140,6 +140,9 @@ void BuddiesModel::buddyAdded(Buddy &buddy)
 	// see bug #2167
 
 	const QModelIndexList &indexes = indexListForValue(buddy);
+	if (indexes.isEmpty())
+		return;
+
 	Q_ASSERT(indexes.size() == 1);
 
 	const QModelIndex &index = indexes.at(0);
@@ -149,6 +152,9 @@ void BuddiesModel::buddyAdded(Buddy &buddy)
 void BuddiesModel::buddyAboutToBeRemoved(Buddy &buddy)
 {
 	const QModelIndexList &indexes = indexListForValue(buddy);
+	if (indexes.isEmpty())
+		return;
+
 	Q_ASSERT(indexes.size() == 1);
 
 	const QModelIndex &index = indexes.at(0);
@@ -174,6 +180,9 @@ void BuddiesModel::myselfBuddyUpdated()
 void BuddiesModel::buddyUpdated(Buddy &buddy)
 {
 	const QModelIndexList &indexes = indexListForValue(buddy);
+	if (indexes.isEmpty())
+		return;
+
 	Q_ASSERT(indexes.size() == 1);
 
 	const QModelIndex &index = indexes.at(0);
@@ -185,6 +194,9 @@ void BuddiesModel::contactAboutToBeAttached(Contact contact, Buddy nearFutureBud
 	Q_UNUSED(contact)
 
 	const QModelIndexList &indexes = indexListForValue(nearFutureBuddy);
+	if (indexes.isEmpty())
+		return;
+
 	Q_ASSERT(indexes.size() == 1);
 
 	const QModelIndex &index = indexes.at(0);
@@ -204,6 +216,9 @@ void BuddiesModel::contactAttached(Contact contact)
 	const Buddy &buddy = contact.ownerBuddy();
 
 	const QModelIndexList &indexes = indexListForValue(buddy);
+	if (indexes.isEmpty())
+		return;
+
 	Q_ASSERT(indexes.size() == 1);
 
 	const QModelIndex &index = indexes.at(0);
@@ -218,6 +233,9 @@ void BuddiesModel::contactAboutToBeDetached(Contact contact)
 	const Buddy &buddy = contact.ownerBuddy();
 
 	const QModelIndexList &indexes = indexListForValue(buddy);
+	if (indexes.isEmpty())
+		return;
+
 	Q_ASSERT(indexes.size() == 1);
 
 	const QModelIndex &index = indexes.at(0);
@@ -237,6 +255,9 @@ void BuddiesModel::contactDetached(Contact contact, Buddy previousBuddy)
 	DetachingOrAttaching = false;
 
 	const QModelIndexList &indexes = indexListForValue(previousBuddy);
+	if (indexes.isEmpty())
+		return;
+
 	Q_ASSERT(indexes.size() == 1);
 
 	const QModelIndex &index = indexes.at(0);
@@ -256,6 +277,9 @@ void BuddiesModel::contactUpdated(Contact &contact)
 		return;
 
 	const QModelIndexList &indexes = indexListForValue(buddy);
+	if (indexes.isEmpty())
+		return;
+
 	Q_ASSERT(indexes.size() == 1);
 
 	const QModelIndex &indexOfBuddy = indexes.at(0);

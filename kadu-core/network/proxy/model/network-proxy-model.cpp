@@ -103,13 +103,20 @@ int NetworkProxyModel::networkProxyIndex(NetworkProxy networkProxy) const
 QModelIndexList NetworkProxyModel::indexListForValue(const QVariant &value) const
 {
 	QModelIndexList result;
-	result.append(createIndex(networkProxyIndex(value.value<NetworkProxy>()), 0, 0));
+
+	const int i = networkProxyIndex(value.value<NetworkProxy>());
+	if (-1 != i)
+		result.append(index(i, 0));
+
 	return result;
 }
 
 void NetworkProxyModel::networkProxyUpdated(NetworkProxy networkProxy)
 {
 	const QModelIndexList &indexes = indexListForValue(networkProxy);
+	if (indexes.isEmpty())
+		return;
+
 	Q_ASSERT(indexes.size() == 1);
 
 	const QModelIndex &index = indexes.at(0);

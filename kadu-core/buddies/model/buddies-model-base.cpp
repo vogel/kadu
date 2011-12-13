@@ -190,7 +190,9 @@ QModelIndexList BuddiesModelBase::indexListForValue(const QVariant &value) const
 	const Buddy &buddy = value.value<Buddy>();
 	if (buddy)
 	{
-		result.append(index(buddyIndex(buddy), 0));
+		const int i = buddyIndex(buddy);
+		if (-1 != i)
+			result.append(index(i, 0));
 		return result;
 	}
 
@@ -199,7 +201,13 @@ QModelIndexList BuddiesModelBase::indexListForValue(const QVariant &value) const
 	{
 		const Buddy &ownerBuddy = contact.ownerBuddy();
 		const int contactIndexInBuddy = ownerBuddy.contacts().indexOf(contact);
-		result.append(index(buddyIndex(ownerBuddy), 0).child(contactIndexInBuddy, 0));
+
+		Q_ASSERT(-1 != contactIndexInBuddy);
+
+		const int i = buddyIndex(buddy);
+		if (-1 != i)
+			result.append(index(i, 0).child(contactIndexInBuddy, 0));
+
 		return result;
 	}
 

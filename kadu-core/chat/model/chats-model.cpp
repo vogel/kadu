@@ -145,6 +145,9 @@ void ChatsModel::chatAdded(Chat chat)
 	// see bug #2167
 
 	const QModelIndexList &indexes = indexListForValue(chat);
+	if (indexes.isEmpty())
+		return;
+
 	Q_ASSERT(indexes.size() == 1);
 
 	const QModelIndex &index = indexes.at(0);
@@ -154,6 +157,9 @@ void ChatsModel::chatAdded(Chat chat)
 void ChatsModel::chatAboutToBeRemoved(Chat chat)
 {
 	const QModelIndexList &indexes = indexListForValue(chat);
+	if (indexes.isEmpty())
+		return;
+
 	Q_ASSERT(indexes.size() == 1);
 
 	const QModelIndex &index = indexes.at(0);
@@ -170,6 +176,9 @@ void ChatsModel::chatRemoved(Chat chat)
 void ChatsModel::chatUpdated(const Chat &chat)
 {
 	const QModelIndexList &indexes = indexListForValue(chat);
+	if (indexes.isEmpty())
+		return;
+
 	Q_ASSERT(indexes.size() == 1);
 
 	const QModelIndex &index = indexes.at(0);
@@ -193,7 +202,9 @@ QModelIndexList ChatsModel::indexListForValue(const QVariant &value) const
 
 	if (chat)
 	{
-		result.append(index(ChatManager::instance()->indexOf(chat), 0));
+		const int i = ChatManager::instance()->indexOf(chat);
+		if (-1 != i)
+			result.append(index(i, 0));
 		return result;
 	}
 

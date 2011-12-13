@@ -75,7 +75,7 @@ QModelIndexList ContactListModel::indexListForValue(const QVariant &value) const
 	{
 		const Contact &contact = List.at(i);
 		if (contact.ownerBuddy() == buddy)
-			result.append(createIndex(i, 0, 0));
+			result.append(index(i, 0));
 	}
 
 	return result;
