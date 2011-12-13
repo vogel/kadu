@@ -98,7 +98,6 @@ void TabWidget::activateChatWidget(ChatWidget *chatWidget)
 void TabWidget::alertChatWidget(ChatWidget *chatWidget)
 {
 	Q_ASSERT(chatWidget);
-	Q_ASSERT(chatWidget->chat().unreadMessagesCount() > 0);
 
 	if (currentWidget() == chatWidget && _isWindowActiveOrFullyVisible(this))
 	{
