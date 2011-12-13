@@ -675,6 +675,7 @@ void TabsManager::openTabWith(QStringList altnicks, int index)
 	*/
 }
 
+// TODO: share with single_window
 void TabsManager::updateTabName(ChatWidget *chatWidget)
 {
 	const int i = TabDialog->indexOf(chatWidget);

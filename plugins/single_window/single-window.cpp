@@ -12,6 +12,7 @@
 #include <QtGui/QKeyEvent>
 
 #include "configuration/configuration-file.h"
+#include "contacts/contact-set.h"
 #include "core/core.h"
 #include "gui/hot-key.h"
 #include "gui/widgets/chat-widget-manager.h"
@@ -178,15 +179,45 @@ void SingleWindow::onNewChat(ChatWidget *chatWidget, bool &handled)
 	handled = true;
 	chatWidget->setContainer(this);
 
-	QString title = chatWidget->chat().name();
-
-	tabs->addTab(chatWidget, chatWidget->icon(), title);
+	tabs->addTab(chatWidget, chatWidget->icon(), QString());
+	updateTabName(chatWidget);
 
 	connect(chatWidget->edit(), SIGNAL(keyPressed(QKeyEvent *, CustomInput *, bool &)),
 		this, SLOT(onChatKeyPressed(QKeyEvent *, CustomInput *, bool &)));
 	connect(chatWidget, SIGNAL(iconChanged()), this, SLOT(onIconChanged()));
 }
 
+// TODO: share with tabs
+void SingleWindow::updateTabName(ChatWidget *chatWidget)
+{
+	const int i = tabs->indexOf(chatWidget);
+	if (-1 == i)
+		return;
+
+	const Chat &chat = chatWidget->chat();
+	QString baseTabName;
+	if (!chat.display().isEmpty())
+		baseTabName = chat.display();
+	else
+	{
+		int contactsCount = chat.contacts().count();
+		if (contactsCount > 1)
+			baseTabName = tr("Conference [%1]").arg(contactsCount);
+		else
+			baseTabName = chat.name();
+	}
+
+	if (config_file.readBoolEntry("SingleWindow", "NumMessagesInTab", false) && chat.unreadMessagesCount() > 0)
+	{
+		tabs->setTabText(i, QString("%1 [%2]").arg(baseTabName).arg(chat.unreadMessagesCount()));
+		tabs->setTabToolTip(i, QString("%1\n%2 new message(s)").arg(chatWidget->title()).arg(chat.unreadMessagesCount()));
+	}
+	else
+	{
+		tabs->setTabText(i, baseTabName);
+		tabs->setTabToolTip(i, chatWidget->title());
+	}
+}
 
 void SingleWindow::closeTab(int index)
 {
@@ -256,16 +287,7 @@ void SingleWindow::alertChatWidget(ChatWidget *chatWidget)
 
 	int index = tabs->indexOf(chatWidget);
 	tabs->setTabIcon(index, KaduIcon("protocols/common/message").icon());
-
-	if (config_file.readBoolEntry("SingleWindow", "NumMessagesInTab", false))
-	{
-		QString title = tabs->tabText(index);
-		int pos = title.indexOf(" [");
-		if (pos > -1)
-			title.truncate(pos);
-		title += QString(" [%1]").arg(chatWidget->chat().unreadMessagesCount());
-		tabs->setTabText(index, title);
-	}
+	updateTabName(chatWidget);
 }
 
 void SingleWindow::closeChatWidget(ChatWidget *chatWidget)
@@ -290,13 +312,7 @@ void SingleWindow::onTabChange(int index)
 
 	ChatWidget *chatWidget = (ChatWidget *)tabs->widget(index);
 	tabs->setTabIcon(index, chatWidget->icon());
-
-	QString title = tabs->tabText(index);
-	int pos = title.indexOf(" [");
-	if (pos > -1)
-		title.truncate(pos);
-	tabs->setTabText(index, title);
-
+	updateTabName(chatWidget);
 	MessageManager::instance()->markAllMessagesAsRead(chatWidget->chat());
 }
 

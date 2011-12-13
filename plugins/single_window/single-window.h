@@ -24,6 +24,8 @@ class SingleWindow : public QMainWindow, public ChatWidgetContainer
 	QList<int> splitSizes;
 	int rosterPos;
 
+	void updateTabName(ChatWidget *chatWidget);
+
 protected:
 	void closeEvent(QCloseEvent *event);
 	void keyPressEvent(QKeyEvent *event);
