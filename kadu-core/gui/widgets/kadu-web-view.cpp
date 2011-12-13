@@ -73,7 +73,8 @@ KaduWebView::KaduWebView(QWidget *parent) :
 
 	setAttribute(Qt::WA_NoBackground);
 	setAcceptDrops(false);
-	setRenderHints(QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform | QPainter::HighQualityAntialiasing);
+	setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing |
+	               QPainter::SmoothPixmapTransform | QPainter::HighQualityAntialiasing);
 
 	setPage(page());
 
