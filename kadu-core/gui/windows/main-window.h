@@ -54,6 +54,7 @@ class KADUAPI MainWindow : public QMainWindow, public ActionContextProvider, Des
 
 	QString WindowName;
 	bool TransparencyEnabled;
+	bool BlurEnabled;
 
 	ActionContext *Context;
 
@@ -84,7 +85,9 @@ protected:
 	static QDomElement findExistingToolbar(const QString &prefix);
 
 	void setTransparency(bool enable);
-
+	void setBlur(bool enable);
+	virtual void showEvent (QShowEvent * event);
+	
 	virtual void contextMenuEvent(QContextMenuEvent *event);
 
 protected slots:

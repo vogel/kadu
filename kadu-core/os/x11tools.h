@@ -121,5 +121,5 @@ void X11_waitForWindowMapped( Display *display, Window window );
 
 bool X11_isCompositingManagerRunning( Display *display );
 
-
+void X11_setBlur( Display *display, Window window, bool enable );
 #endif

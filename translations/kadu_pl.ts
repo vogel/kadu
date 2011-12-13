@@ -906,6 +906,10 @@ To poważne zagrożenie bezpieczeństwa!</translation>
         <translation>Włącz przezroczystość</translation>
     </message>
     <message>
+        <source>Turn on blur</source>
+        <translation>Włącz rozmycie tła</translation>
+    </message>
+    <message>
         <source>Displays group tabs on the buddy list</source>
         <translation>Wyświetlaj zakładki grup</translation>
     </message>
