@@ -61,7 +61,7 @@ class TalkableProxyModel : public QSortFilterProxyModel
 	QList<TalkableFilter *> TalkableFilters;
 
 	bool BrokenStringCompare;
-	bool SortByStatus;
+	bool SortByStatusAndUnreadMessages;
 	int compareNames(const QString &n1, const QString &n2) const;
 
 	/**
@@ -191,13 +191,15 @@ public:
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Enable or disable sorting by status.
-	 * @param sortByStatus if true, sorting by status will be enabled
+	 * @short Enable or disable sorting by status and unread messages.
+	 * @param sortByStatusAndUnreadMessages if true, sorting by status and unread messages will be enabled
 	 *
-	 * This method enables or disables sorting by status. If method of sorting is chagned then
+	 * This method enables or disables sorting by status and unread messages. If method of sorting is changed then
 	 * current model will be invalidated.
+	 *
+	 * Default value is true.
 	 */
-	void setSortByStatus(bool sortByStatus);
+	void setSortByStatusAndUnreadMessages(bool sortByStatusAndUnreadMessages);
 
 signals:
 	/**

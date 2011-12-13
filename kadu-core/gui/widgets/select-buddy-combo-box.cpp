@@ -39,7 +39,7 @@ SelectBuddyComboBox::SelectBuddyComboBox(QWidget *parent) :
 {
 	ModelChain *chain = new ModelChain(new BuddiesModel(this), this);
 	ProxyModel = new TalkableProxyModel(chain);
-	ProxyModel->setSortByStatus(false);
+	ProxyModel->setSortByStatusAndUnreadMessages(false);
 	chain->addProxyModel(ProxyModel);
 
 	setUpModel(BuddyRole, chain);

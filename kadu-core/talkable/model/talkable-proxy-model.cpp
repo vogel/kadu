@@ -35,7 +35,7 @@
 #include "talkable-proxy-model.h"
 
 TalkableProxyModel::TalkableProxyModel(QObject *parent) :
-		QSortFilterProxyModel(parent), SortByStatus(true)
+		QSortFilterProxyModel(parent), SortByStatusAndUnreadMessages(true)
 {
 	setDynamicSortFilter(true);
 	sort(0);
@@ -66,12 +66,12 @@ int TalkableProxyModel::compareNames(const QString &n1, const QString &n2) const
 			: n1.localeAwareCompare(n2);
 }
 
-void TalkableProxyModel::setSortByStatus(bool sortByStatus)
+void TalkableProxyModel::setSortByStatusAndUnreadMessages(bool sortByStatusAndUnreadMessages)
 {
-	if (SortByStatus == sortByStatus)
+	if (SortByStatusAndUnreadMessages == sortByStatusAndUnreadMessages)
 		return;
 
-	SortByStatus = sortByStatus;
+	SortByStatusAndUnreadMessages = sortByStatusAndUnreadMessages;
 	invalidate();
 }
 
@@ -101,15 +101,15 @@ bool TalkableProxyModel::lessThan(const Buddy &left, const Buddy &right) const
 	if (!left.isBlocked() && right.isBlocked())
 		return true;
 
-	const bool leftHasUnreadMessages = left.unreadMessagesCount() > 0;
-	const bool rightHasUnreadMessages = right.unreadMessagesCount() > 0;
-	if (!leftHasUnreadMessages && rightHasUnreadMessages)
-		return false;
-	if (leftHasUnreadMessages && !rightHasUnreadMessages)
-		return true;
-
-	if (SortByStatus)
+	if (SortByStatusAndUnreadMessages)
 	{
+		const bool leftHasUnreadMessages = left.unreadMessagesCount() > 0;
+		const bool rightHasUnreadMessages = right.unreadMessagesCount() > 0;
+		if (!leftHasUnreadMessages && rightHasUnreadMessages)
+			return false;
+		if (leftHasUnreadMessages && !rightHasUnreadMessages)
+			return true;
+
 		const Contact &leftContact = BuddyPreferredManager::instance()->preferredContact(left, false);
 		const Contact &rightContact = BuddyPreferredManager::instance()->preferredContact(right, false);
 

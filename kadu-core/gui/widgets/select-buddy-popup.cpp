@@ -44,7 +44,7 @@ SelectBuddyPopup::SelectBuddyPopup(QWidget *parent) :
 
 	ModelChain *chain = new ModelChain(new BuddiesModel(this), this);
 	ProxyModel = new TalkableProxyModel(chain);
-	ProxyModel->setSortByStatus(false);
+	ProxyModel->setSortByStatusAndUnreadMessages(false);
 
 	HideAnonymousTalkableFilter *hideAnonymousFilter = new HideAnonymousTalkableFilter(ProxyModel);
 	ProxyModel->addFilter(hideAnonymousFilter);
