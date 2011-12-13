@@ -170,6 +170,17 @@ SingleWindow::~SingleWindow()
 	}
 }
 
+void SingleWindow::changeEvent(QEvent *event)
+{
+	QMainWindow::changeEvent(event);
+	if (event->type() == QEvent::ActivationChange)
+	{
+		ChatWidget *chatWidget = static_cast<ChatWidget *>(tabs->currentWidget());
+		if (chatWidget && _isActiveWindow(this))
+			MessageManager::instance()->markAllMessagesAsRead(chatWidget->chat());
+	}
+}
+
 void SingleWindow::changeRosterPos(int newRosterPos)
 {
 	rosterPos = newRosterPos;
