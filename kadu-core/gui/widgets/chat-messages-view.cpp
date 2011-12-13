@@ -113,8 +113,12 @@ void ChatMessagesView::connectChat()
 		return;
 
 	foreach (const Contact &contact, CurrentChat.contacts())
+	{
 		if (contact.ownerBuddy())
 			connect(contact.ownerBuddy(), SIGNAL(displayUpdated()), this, SLOT(repaintMessages()));
+		connect(contact, SIGNAL(attached(bool)), this, SLOT(repaintMessages()));
+		connect(contact, SIGNAL(detached()), this, SLOT(repaintMessages()));
+	}
 
 	ChatImageService *chatImageService = CurrentChat.chatAccount().protocolHandler()->chatImageService();
 	if (chatImageService)
@@ -128,8 +132,12 @@ void ChatMessagesView::disconnectChat()
 		return;
 
 	foreach (const Contact &contact, CurrentChat.contacts())
+	{
 		if (contact.ownerBuddy())
 			disconnect(contact.ownerBuddy(), SIGNAL(displayUpdated()), this, SLOT(repaintMessages()));
+		disconnect(contact, SIGNAL(attached(bool)), this, SLOT(repaintMessages()));
+		disconnect(contact, SIGNAL(detached()), this, SLOT(repaintMessages()));
+	}
 
 	ChatImageService *chatImageService = CurrentChat.chatAccount().protocolHandler()->chatImageService();
 	if (chatImageService)
