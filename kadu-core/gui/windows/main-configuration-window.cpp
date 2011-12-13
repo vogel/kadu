@@ -286,13 +286,14 @@ MainConfigurationWindow::~MainConfigurationWindow()
 void MainConfigurationWindow::compositingEnabled()
 {
 	userboxTransparency->setEnabled(true);
-	if (userboxTransparency->isChecked())
-		userboxAlpha->setEnabled(true);
+	userboxTransparency->blockSignals(false);
+	userboxAlpha->setEnabled(userboxTransparency->isChecked());
 }
 
 void MainConfigurationWindow::compositingDisabled()
 {
 	userboxTransparency->setEnabled(false);
+	userboxTransparency->blockSignals(true);
 	userboxAlpha->setEnabled(false);
 	userboxBlur->setEnabled(false);
 }
