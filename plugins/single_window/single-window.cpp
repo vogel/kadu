@@ -127,7 +127,9 @@ SingleWindow::SingleWindow()
 		onNewChat(chatWidget, dummy);
 	}
 
+	setFocusProxy(kadu);
 	kadu->show();
+	kadu->setFocus();
 	show();
 }
 
