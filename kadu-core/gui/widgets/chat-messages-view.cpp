@@ -183,9 +183,13 @@ void ChatMessagesView::updateBackgroundsAndColors()
 
 void ChatMessagesView::repaintMessages()
 {
+	setUpdatesEnabled(false);
+
 	int scrollBarPosition = page()->mainFrame()->scrollBarValue(Qt::Vertical);
 	Renderer->refresh();
 	page()->mainFrame()->setScrollBarValue(Qt::Vertical, scrollBarPosition);
+
+	setUpdatesEnabled(true);
 }
 
 bool ChatMessagesView::sameMessage(const Message &left, const Message &right)
@@ -251,8 +255,12 @@ void ChatMessagesView::prependMessages(const QVector<Message> &messages)
 	foreach (const MessageRenderInfo *renderInfo, copyOfRendererMessages)
 		newMessages.append(new MessageRenderInfo(renderInfo->message()));
 
+	setUpdatesEnabled(false);
+
 	Renderer->clearMessages();
 	Renderer->appendMessages(newMessages);
+
+	setUpdatesEnabled(true);
 }
 
 void ChatMessagesView::appendMessage(const Message &message)
@@ -265,7 +273,11 @@ void ChatMessagesView::appendMessage(MessageRenderInfo *message)
 {
 	kdebugf();
 
+	setUpdatesEnabled(false);
+
 	Renderer->appendMessage(message);
+
+	setUpdatesEnabled(true);
 
 	emit messagesUpdated();
 }
@@ -290,13 +302,23 @@ void ChatMessagesView::appendMessages(const QList<MessageRenderInfo *> &messages
 {
 	kdebugf2();
 
+	setUpdatesEnabled(false);
+
 	Renderer->appendMessages(messages);
+
+	setUpdatesEnabled(true);
+
 	emit messagesUpdated();
 }
 
 void ChatMessagesView::clearMessages()
 {
+	setUpdatesEnabled(false);
+
 	Renderer->clearMessages();
+
+	setUpdatesEnabled(true);
+
 	emit messagesUpdated();
 	AtBottom = true;
 }
