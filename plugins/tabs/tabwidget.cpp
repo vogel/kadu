@@ -99,7 +99,7 @@ void TabWidget::alertChatWidget(ChatWidget *chatWidget)
 {
 	Q_ASSERT(chatWidget);
 
-	if (currentWidget() == chatWidget && _isWindowActiveOrFullyVisible(this))
+	if (isChatWidgetActive(chatWidget))
 	{
 		MessageManager::instance()->markAllMessagesAsRead(chatWidget->chat());
 		return;

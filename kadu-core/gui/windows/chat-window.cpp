@@ -273,7 +273,7 @@ void ChatWindow::alertChatWidget(ChatWidget *chatWidget)
 	Q_UNUSED(chatWidget)
 	Q_ASSERT(chatWidget == currentChatWidget);
 
-	if (_isWindowActiveOrFullyVisible(this))
+	if (isChatWidgetActive(chatWidget))
 	{
 		MessageManager::instance()->markAllMessagesAsRead(currentChatWidget->chat());
 		return;
