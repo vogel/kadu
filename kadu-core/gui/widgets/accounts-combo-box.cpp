@@ -32,15 +32,14 @@
 AccountsComboBox::AccountsComboBox(bool includeSelectAccount, ActionsProxyModel::ActionVisibility visibility, QWidget *parent) :
 		ActionsComboBox(parent)
 {
+	if (includeSelectAccount)
+		addBeforeAction(new QAction(tr(" - Select account - "), this), visibility);
+
 	Model = new AccountsModel(this);
 	ProxyModel = new AccountsProxyModel(this);
-
 	ModelChain *chain = new ModelChain(Model, this);
 	chain->addProxyModel(ProxyModel);
 	setUpModel(AccountRole, chain);
-
-	if (includeSelectAccount)
-		addBeforeAction(new QAction(tr(" - Select account - "), this), visibility);
 }
 
 AccountsComboBox::~AccountsComboBox()

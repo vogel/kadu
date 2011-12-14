@@ -33,11 +33,8 @@
 #include "identities-combo-box.h"
 
 IdentitiesComboBox::IdentitiesComboBox(bool includeSelectIdentity, QWidget *parent) :
-		ActionsComboBox(parent), InActivatedSlot(false)
+		ActionsComboBox(parent)
 {
-	ModelChain *chain = new ModelChain(new IdentityModel(this), this);
-	setUpModel(IdentityRole, chain);
-
 	if (includeSelectIdentity)
 		addBeforeAction(new QAction(tr(" - Select identity - "), this));
 
@@ -47,8 +44,10 @@ IdentitiesComboBox::IdentitiesComboBox(bool includeSelectIdentity, QWidget *pare
 	CreateNewIdentityAction->setFont(createNewIdentityActionFont);
 	CreateNewIdentityAction->setData(true);
 	connect(CreateNewIdentityAction, SIGNAL(triggered()), this, SLOT(createNewIdentity()));
-
 	addAfterAction(CreateNewIdentityAction);
+
+	ModelChain *chain = new ModelChain(new IdentityModel(this), this);
+	setUpModel(IdentityRole, chain);
 
 	setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 }

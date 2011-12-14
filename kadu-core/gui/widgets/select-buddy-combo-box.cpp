@@ -37,14 +37,13 @@
 SelectBuddyComboBox::SelectBuddyComboBox(QWidget *parent) :
 		ActionsComboBox(parent)
 {
+	addBeforeAction(new QAction(tr(" - Select buddy - "), this));
+
 	ModelChain *chain = new ModelChain(new BuddiesModel(this), this);
 	ProxyModel = new TalkableProxyModel(chain);
 	ProxyModel->setSortByStatusAndUnreadMessages(false);
 	chain->addProxyModel(ProxyModel);
-
 	setUpModel(BuddyRole, chain);
-	addBeforeAction(new QAction(tr(" - Select buddy - "), this));
-	setCurrentIndex(0);
 
 	Popup = new SelectBuddyPopup();
 

@@ -33,10 +33,8 @@
 #include "groups-combo-box.h"
 
 GroupsComboBox::GroupsComboBox(QWidget *parent) :
-		ActionsComboBox(parent), InActivatedSlot(false)
+		ActionsComboBox(parent)
 {
-	QSortFilterProxyModel *proxyModel = new QSortFilterProxyModel(this);
-
 	addBeforeAction(new QAction(tr(" - Do not add - "), this));
 
 	CreateNewGroupAction = new QAction(tr("Create a new group..."), this);
@@ -44,12 +42,11 @@ GroupsComboBox::GroupsComboBox(QWidget *parent) :
 	createNewGroupActionFont.setItalic(true);
 	CreateNewGroupAction->setFont(createNewGroupActionFont);
 	CreateNewGroupAction->setData(true);
-
 	connect(CreateNewGroupAction, SIGNAL(triggered()), this, SLOT(createNewGroup()));
-
 	addAfterAction(CreateNewGroupAction);
 
 	ModelChain *chain = new ModelChain(new GroupsModel(this), this);
+	QSortFilterProxyModel *proxyModel = new QSortFilterProxyModel(this);
 	chain->addProxyModel(proxyModel);
 	setUpModel(GroupRole, chain);
 	proxyModel->setDynamicSortFilter(true);

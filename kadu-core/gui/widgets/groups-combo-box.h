@@ -32,8 +32,6 @@ class GroupsComboBox : public ActionsComboBox
 {
 	Q_OBJECT
 
-	bool InActivatedSlot;
-
 	QAction *CreateNewGroupAction;
 
 private slots:

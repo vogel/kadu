@@ -33,12 +33,12 @@
 ProxyComboBox::ProxyComboBox(QWidget *parent) :
 		ActionsComboBox(parent), InActivatedSlot(false), DefaultProxyAction(0)
 {
+	addBeforeAction(new QAction(tr(" - No proxy - "), this));
+
 	Model = new NetworkProxyModel(this);
 	ModelChain *chain = new ModelChain(Model, this);
 	chain->addProxyModel(new NetworkProxyProxyModel(this));
-
 	setUpModel(NetworkProxyRole, chain);
-	addBeforeAction(new QAction(tr(" - No proxy - "), this));
 
 	EditProxyAction = new QAction(tr("Edit proxy configuration..."), this);
 	QFont editProxyActionFont = EditProxyAction->font();

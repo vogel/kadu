@@ -34,8 +34,6 @@ class KADUAPI IdentitiesComboBox : public ActionsComboBox
 {
 	Q_OBJECT
 
-	bool InActivatedSlot;
-
 	QAction *CreateNewIdentityAction;
 
 private slots:
