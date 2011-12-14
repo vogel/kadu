@@ -109,6 +109,7 @@ set (SOURCES
 
 	client/jabber-client.cpp
 	client/mini-client.cpp
+	client/pong-server.cpp
 
 	file-transfer/jabber-file-transfer-handler.cpp
 	file-transfer/s5b-server-manager.cpp
@@ -177,6 +178,7 @@ set (MOC_SOURCES
 
 	client/jabber-client.h
 	client/mini-client.h
+	client/pong-server.h
 
 	file-transfer/jabber-file-transfer-handler.h
 	file-transfer/s5b-server-manager.h

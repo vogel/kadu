@@ -36,6 +36,7 @@
 #include "debug.h"
 
 #include "certificates/certificate-helpers.h"
+#include "client/pong-server.h"
 #include "resource/jabber-resource-pool.h"
 #include "utils/pep-manager.h"
 #include "utils/server-info-manager.h"
@@ -100,6 +101,8 @@ JabberClient::JabberClient(JabberProtocol *protocol, QObject *parent) :
 	QObject::connect(PepManager, SIGNAL(publish_error(const QString&, const XMPP::PubSubItem&)),
 		this, SIGNAL(publishError(const QString&,const XMPP::PubSubItem&)));
 	PepAvailable = false;
+
+	new PongServer(Client->rootTask());
 
 	/* This should only be done here to connect the signals, otherwise it is a
 	 * bad idea.
