@@ -84,7 +84,8 @@ JabberClient::JabberClient(JabberProtocol *protocol, QObject *parent) :
 			<< "jabber:x:data"
 			<< "urn:xmpp:avatar:data"
 			<< "urn:xmpp:avatar:metadata"
-			<< "urn:xmpp:avatar:metadata+notify";
+			<< "urn:xmpp:avatar:metadata+notify"
+			<< "urn:xmpp:ping";
 
 	setCapsVersion(calculateCapsVersion(identity, features));
 
