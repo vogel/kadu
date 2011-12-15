@@ -203,7 +203,7 @@ QModelIndexList BuddiesModelBase::indexListForValue(const QVariant &value) const
 	const Buddy &ownerBuddy = contact.ownerBuddy();
 	const int contactIndexInBuddy = ownerBuddy.contacts().indexOf(contact);
 
-	if (-1 != contactIndexInBuddy);
+	if (-1 != contactIndexInBuddy)
 	{
 		const int i = buddyIndex(buddy);
 		if (-1 != i)
