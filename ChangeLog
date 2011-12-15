@@ -22,6 +22,7 @@
 * gui: Add Buddy window improvements (Vogel)
 * buddies: #2373 fixed: merge does not remove mobile data anymore (Vogel)
 * gui: allow blur behing transparent roster (prody)
+* gadu: require at least libgadu 1.11.1 (Vogel)
 
 +++ version 0.10.1
 * gadu: clearer contact list synchronization message when updating from <0.10.0 (beevvy)

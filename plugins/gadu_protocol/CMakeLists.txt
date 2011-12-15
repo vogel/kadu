@@ -16,7 +16,7 @@ include (FindKadu)
 
 include (FindPkgConfig)
 
-set (LIBGADU_MIN_VERSION "1.11.0")
+set (LIBGADU_MIN_VERSION "1.11.1")
 
 kadu_api_directories (plugins/gadu_protocol
 	dcc
