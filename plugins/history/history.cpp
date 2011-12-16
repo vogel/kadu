@@ -213,9 +213,8 @@ void History::chatCreated(ChatWidget *chatWidget)
 	Chat chat = AggregateChatManager::instance()->aggregateChat(chatWidget->chat());
 
 	QDateTime backTo = QDateTime::currentDateTime().addDays(ChatHistoryQuotationTime/24);
-	QFuture<QVector<Message> > futureMessages = History::instance()->currentStorage()->
-	        asyncMessagesBackTo(chat ? chat : chatWidget->chat(), backTo,
-	                            config_file.readNumEntry("Chat", "ChatPruneLen", 20));
+	QFuture<QVector<Message> > futureMessages = CurrentStorage->asyncMessagesBackTo(chat ? chat : chatWidget->chat(), backTo,
+			config_file.readNumEntry("Chat", "ChatPruneLen", 20));
 	new HistoryMessagesPrepender(futureMessages, chatMessagesView);
 }
 
@@ -335,7 +334,9 @@ void History::stopSaveThread()
 void History::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
 	dontCiteOldMessagesLabel = static_cast<QLabel *>(mainConfigurationWindow->widget()->widgetById("history/dontCiteOldMessagesLabel"));
-	connect(mainConfigurationWindow->widget()->widgetById("history/dontCiteOldMessages"), SIGNAL(valueChanged(int)),
+	QSlider *dontCiteOldMessagesSlider = static_cast<QSlider *>(mainConfigurationWindow->widget()->widgetById("history/dontCiteOldMessages"));
+	updateQuoteTimeLabel(dontCiteOldMessagesSlider->value());
+	connect(dontCiteOldMessagesSlider, SIGNAL(valueChanged(int)),
 		this, SLOT(updateQuoteTimeLabel(int)));
 
 	connect(mainConfigurationWindow->widget()->widgetById("history/save"), SIGNAL(toggled(bool)),
