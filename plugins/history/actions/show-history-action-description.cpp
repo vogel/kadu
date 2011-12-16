@@ -164,7 +164,7 @@ void ShowHistoryActionDescription::showDaysMessages(QAction *action, int days)
 	else
 	{
 		int pruneLen = config_file.readNumEntry("Chat", "ChatPruneLen", 20);
-		QDateTime backTo = QDateTime::currentDateTime().addDays(ChatHistoryQuotationTime/24);
+		QDateTime backTo = QDateTime::currentDateTime().addSecs(ChatHistoryQuotationTime * 3600);
 		futureMessages = historyStorage->asyncMessagesBackTo(messagesChat, backTo, pruneLen);
 	}
 

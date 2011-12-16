@@ -690,14 +690,13 @@ QVector<Message> HistorySqlStorage::getMessagesBackTo(const Chat &chat, const QD
 	// it is reverted back manually below
 	QString queryString = "SELECT chat.uuid, con.uuid, kmc.content, send_time, receive_time, is_outgoing FROM kadu_messages "
 			"LEFT JOIN kadu_chats chat ON (kadu_messages.chat_id=chat.id) "
-			"LEFT JOIN kadu_dates d ON (kadu_messages.date_id=d.id) "
 			"LEFT JOIN kadu_contacts con ON (kadu_messages.contact_id=con.id) "
 			"LEFT JOIN kadu_message_contents kmc ON (kadu_messages.content_id=kmc.id) WHERE " + chatWhere(chat) +
-			" AND date >= :date ORDER BY date_id DESC, kadu_messages.rowid DESC LIMIT :limit";
+			" AND receive_time >= :datetime ORDER BY date_id DESC, kadu_messages.rowid DESC LIMIT :limit";
 	query.prepare(queryString);
 
 	query.bindValue(":chat", chat.uuid().toString());
-	query.bindValue(":date", datetime.toString("yyyyMMdd"));
+	query.bindValue(":datetime", datetime.toString(Qt::ISODate));
 	query.bindValue(":limit", limit);
 
 	executeQuery(query);
@@ -706,7 +705,7 @@ QVector<Message> HistorySqlStorage::getMessagesBackTo(const Chat &chat, const QD
 
 	DatabaseMutex.unlock();
 
-	// se comment above
+	// see comment above
 	QVector<Message> inverted;
 	inverted.reserve(result.size());
 
