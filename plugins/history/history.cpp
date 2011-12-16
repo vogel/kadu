@@ -356,7 +356,7 @@ void History::configurationUpdated()
 	kdebugf();
 
 	ChatHistoryCitation = config_file.readNumEntry("History", "ChatHistoryCitation");
-	ChatHistoryQuotationTime = config_file.readNumEntry("History", "ChatHistoryQuotationTime", -744);
+	ChatHistoryQuotationTime = config_file.readNumEntry("History", "ChatHistoryQuotationTime", -24);
 
 	SaveChats = config_file.readBoolEntry("History", "SaveChats", true);
 	SaveChatsWithAnonymous = config_file.readBoolEntry("History", "SaveChatsWithAnonymous", true);

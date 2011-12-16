@@ -55,7 +55,7 @@ void ShowHistoryActionDescription::configurationUpdated()
 {
 	ActionDescription::configurationUpdated();
 
-	ChatHistoryQuotationTime = config_file.readNumEntry("History", "ChatHistoryQuotationTime", -744);
+	ChatHistoryQuotationTime = config_file.readNumEntry("History", "ChatHistoryQuotationTime", -24);
 }
 
 void ShowHistoryActionDescription::actionInstanceCreated(Action *action)
