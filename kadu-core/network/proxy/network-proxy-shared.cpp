@@ -64,10 +64,12 @@ void NetworkProxyShared::load()
 
 	Shared::load();
 
+	Type = loadValue<QString>("Type");
 	Address = loadValue<QString>("Address");
 	Port = loadValue<int>("Port", 0);
 	User = loadValue<QString>("User");
 	Password = loadValue<QString>("Password");
+	PollingUrl = loadValue<QString>("PollingUrl");
 }
 
 void NetworkProxyShared::store()
@@ -79,10 +81,12 @@ void NetworkProxyShared::store()
 
 	Shared::store();
 
+	storeValue("Type", Type);
 	storeValue("Address", Address);
 	storeValue("Port", Port);
 	storeValue("User", User);
 	storeValue("Password", Password);
+	storeValue("PollingUrl", PollingUrl);
 }
 
 void NetworkProxyShared::emitUpdated()

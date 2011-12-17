@@ -31,10 +31,12 @@ class KADUAPI NetworkProxyShared : public QObject, public Shared
 	Q_OBJECT
 	Q_DISABLE_COPY(NetworkProxyShared)
 
+	QString Type;
 	QString Address;
 	int Port;
 	QString User;
 	QString Password;
+	QString PollingUrl;
 
 protected:
 	virtual void load();
@@ -51,10 +53,12 @@ public:
 	virtual StorableObject * storageParent();
 	virtual QString storageNodeName();
 
+	KaduShared_Property(const QString &, type, Type)
 	KaduShared_Property(const QString &, address, Address)
 	KaduShared_Property(int, port, Port)
 	KaduShared_Property(const QString &, user, User)
 	KaduShared_Property(const QString &, password, Password)
+	KaduShared_Property(const QString &, pollingUrl, PollingUrl)
 
 	QString displayName();
 

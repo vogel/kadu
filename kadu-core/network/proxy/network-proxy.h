@@ -41,10 +41,12 @@ public:
 
 	virtual ~NetworkProxy();
 
+	KaduSharedBase_PropertyCRW(QString, type, Type)
 	KaduSharedBase_PropertyCRW(QString, address, Address)
 	KaduSharedBase_Property(int, port, Port)
 	KaduSharedBase_PropertyCRW(QString, user, User)
 	KaduSharedBase_PropertyCRW(QString, password, Password)
+	KaduSharedBase_PropertyCRW(QString, pollingUrl, PollingUrl)
 	KaduSharedBase_PropertyRead(QString, displayName, DisplayName)
 
 };

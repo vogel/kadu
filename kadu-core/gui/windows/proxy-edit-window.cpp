@@ -17,7 +17,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QUrl>
 #include <QtGui/QAction>
+#include <QtGui/QComboBox>
 #include <QtGui/QDialogButtonBox>
 #include <QtGui/QFormLayout>
 #include <QtGui/QKeyEvent>
@@ -107,6 +109,13 @@ void ProxyEditWindow::createGui()
 
 	QFormLayout *editLayout = new QFormLayout(editPanel);
 
+	Type = new QComboBox(this);
+	Type->addItem("HTTP \"Connect\"", "http");
+	Type->addItem("SOCKS Version 5",  "socks");
+	Type->addItem("HTTP Polling",     "poll");
+	connect(Type, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
+	editLayout->addRow(tr("Type"), Type);
+	
 	Host = new QLineEdit(this);
 	connect(Host, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
 	editLayout->addRow(tr("Host"), Host);
@@ -124,6 +133,10 @@ void ProxyEditWindow::createGui()
 	connect(Password, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
 	Password->setEchoMode(QLineEdit::Password);
 	editLayout->addRow(tr("Password"), Password);
+
+	PollingUrl = new QLineEdit(this);
+	connect(PollingUrl, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
+	editLayout->addRow(tr("Polling URL"), PollingUrl);
 
 	QDialogButtonBox *editButtons = new QDialogButtonBox(Qt::Horizontal, this);
 	editLayout->addRow(editButtons);
@@ -175,11 +188,14 @@ void ProxyEditWindow::updateProxyView()
 	NetworkProxy proxy = selection.at(0).data(NetworkProxyRole).value<NetworkProxy>();
 	if (proxy)
 	{
+	  	int type = Type->findData(proxy.type());
+		Type->setCurrentIndex(type == -1 ? 0 : type);
 		Host->setText(proxy.address());
 		Port->setText(QString::number(proxy.port()));
 		User->setText(proxy.user());
 		Password->setText(proxy.password());
-
+		PollingUrl->setText(proxy.pollingUrl());
+		
 		SaveButton->setText(tr("Save"));
 		RemoveButton->show();
 	}
@@ -236,10 +252,12 @@ void ProxyEditWindow::saveProxy(NetworkProxy proxy)
 {
 	if (proxy)
 	{
+		proxy.setType(Type->itemData(Type->currentIndex()).toString());
 		proxy.setAddress(Host->text());
 		proxy.setPort(Port->text().toUInt());
 		proxy.setUser(User->text());
 		proxy.setPassword(Password->text());
+		proxy.setPollingUrl(PollingUrl->text());
 	}
 	else
 		proxy = NetworkProxyManager::instance()->byConfiguration(Host->text(), Port->text().toUInt(), User->text(), Password->text(),
@@ -254,10 +272,12 @@ ModalConfigurationWidgetState ProxyEditWindow::state(NetworkProxy proxy)
 {
 	bool valid = !Host->text().isEmpty()
 	        && !Port->text().isEmpty();
-	bool changed = proxy.address() != Host->text()
+	bool changed = proxy.type() == Type->itemData(Type->currentIndex()).toString()
+		|| proxy.address() != Host->text()
 	        || ((QString::number(proxy.port()) != Port->text()) && (proxy.port() != 0 || !Port->text().isEmpty()))
 	        || proxy.user() != User->text()
-	        || proxy.password() !=  Password->text();
+	        || proxy.password() !=  Password->text()
+		|| proxy.pollingUrl() !=  PollingUrl->text();
 
 	if (!changed)
 		return StateNotChanged;

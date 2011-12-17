@@ -26,6 +26,7 @@
 #include "gui/widgets/modal-configuration-widget.h"
 #include "network/proxy/network-proxy.h"
 
+class QComboBox;
 class QLineEdit;
 class QListView;
 class QPushButton;
@@ -44,10 +45,12 @@ class ProxyEditWindow : public QWidget
 	NetworkProxyProxyModel *ProxyProxyModel;
 	QAction *AddProxyAction;
 
+	QComboBox *Type;
 	QLineEdit *Host;
 	QLineEdit *Port;
 	QLineEdit *User;
 	QLineEdit *Password;
+	QLineEdit *PollingUrl;
 
 	QPushButton *SaveButton;
 	QPushButton *CancelButton;
