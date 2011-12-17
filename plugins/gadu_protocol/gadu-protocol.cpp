@@ -112,6 +112,20 @@ int GaduProtocol::maxDescriptionLength()
 	return GG_STATUS_DESCR_MAXSIZE;
 }
 
+void GaduProtocol::setStatusFlags()
+{
+	if (!GaduSession)
+		return;
+
+	GaduAccountDetails *details = static_cast<GaduAccountDetails *>(account().details());
+
+	int statusFlags = GG_STATUS_FLAG_UNKNOWN;
+	if (details->receiveSpam())
+		statusFlags = statusFlags | GG_STATUS_FLAG_SPAM;
+
+	gg_change_status_flags(GaduSession, GG_STATUS_FLAG_UNKNOWN | statusFlags);
+}
+
 void GaduProtocol::sendStatusToServer()
 {
 	if (!GaduSession)
@@ -123,6 +137,8 @@ void GaduProtocol::sendStatusToServer()
 
 	int type = GaduProtocolHelper::gaduStatusFromStatus(newStatus);
 	bool hasDescription = !newStatus.description().isEmpty();
+
+	setStatusFlags();
 
 	if (hasDescription)
 		gg_change_status_descr(GaduSession, type | friends, newStatus.description().toUtf8().constData());
@@ -157,6 +173,7 @@ void GaduProtocol::everyMinuteActions()
 
 void GaduProtocol::accountUpdated()
 {
+	sendStatusToServer();
 	setUpFileTransferService();
 }
 
@@ -335,6 +352,8 @@ void GaduProtocol::setupLoginParams()
 	GaduLoginParams.last_sysmsg = config_file.readNumEntry("General", "SystemMsgIndex", 1389);
 
 	GaduLoginParams.image_size = qMax(qMin(gaduAccountDetails->maximumImageSize(), 255), 0);
+
+	setStatusFlags();
 }
 
 void GaduProtocol::cleanUpLoginParams()

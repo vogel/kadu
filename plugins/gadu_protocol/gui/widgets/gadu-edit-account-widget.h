@@ -61,8 +61,6 @@ class GaduEditAccountWidget : public AccountEditWidget
 
 	QCheckBox *ChatImageSizeWarning;
 
-	QCheckBox *PrivateStatus;
-
 	IdentitiesComboBox *Identities;
 
 	GaduPersonalInfoWidget *gpiw;
@@ -71,7 +69,10 @@ class GaduEditAccountWidget : public AccountEditWidget
 	QLineEdit *ipAddresses;
 	QCheckBox *AllowFileTransfers;
 	QCheckBox *UseTlsEncryption;
+
+	QCheckBox *ShowStatusToEveryone;
 	QCheckBox *SendTypingNotification;
+	QCheckBox *ReceiveSpam;
 
 	QLineEdit *ExternalIp;
 	QLineEdit *ExternalPort;

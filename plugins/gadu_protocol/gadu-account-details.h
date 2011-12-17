@@ -45,6 +45,7 @@ class GaduAccountDetails : public AccountDetails
 	PROPERTY_DEC(QString, ExternalIp)
 	PROPERTY_DEC(unsigned int, ExternalPort)
 	PROPERTY_DEC(int, UserlistVersion)
+	PROPERTY_DEC(bool, ReceiveSpam)
 
 	GaduOpenChatWithRunner *OpenChatRunner;
 
@@ -71,6 +72,7 @@ public:
 	PROPERTY_DEF(QString, externalIp, setExternalIp, ExternalIp)
 	PROPERTY_DEF(unsigned int, externalPort, setExternalPort, ExternalPort)
 	PROPERTY_DEF(int, userlistVersion, setUserlistVersion, UserlistVersion)
+	PROPERTY_DEF(bool, receiveSpam, setReceiveSpam, ReceiveSpam)
 
 	void import_0_6_5_LastStatus();
 

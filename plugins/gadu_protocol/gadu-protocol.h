@@ -125,6 +125,8 @@ private:
 	void connectedToServer();
 	void disconnectedFromServer();
 
+	void setStatusFlags();
+
 private slots:
 	void accountUpdated();
 

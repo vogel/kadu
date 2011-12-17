@@ -243,29 +243,32 @@ void GaduEditAccountWidget::createOptionsTab(QTabWidget *tabWidget)
 
 	layout->addWidget(outgoingImages);
 
+	QGroupBox *other = new QGroupBox(tr("Other"), this);
+	QFormLayout *otherLayout = new QFormLayout(other);
+
+	layout->addWidget(other);
+
 	// status
 
-	QGroupBox *status = new QGroupBox(tr("Status"), this);
-	QFormLayout *statusLayout = new QFormLayout(status);
+	ShowStatusToEveryone = new QCheckBox(tr("Show my status to everyone"), other);
+	ShowStatusToEveryone->setToolTip(tr("When disabled, you're visible only to buddies on your list"));
+	connect(ShowStatusToEveryone, SIGNAL(clicked()), this, SLOT(dataChanged()));
 
-	PrivateStatus = new QCheckBox(tr("Show my status to everyone"), optionsTab);
-	PrivateStatus->setToolTip(tr("When disabled, you're visible only to buddies on your list"));
-	connect(PrivateStatus, SIGNAL(clicked()), this, SLOT(dataChanged()));
-
-	statusLayout->addRow(PrivateStatus);
-
-	layout->addWidget(status);
+	otherLayout->addRow(ShowStatusToEveryone);
 
 	// notifications
 
-	QGroupBox *notifications = new QGroupBox(tr("Notifications"), this);
-
-	QVBoxLayout *notificationsLayout = new QVBoxLayout(notifications);
-	SendTypingNotification = new QCheckBox(tr("Send composing events"));
+	SendTypingNotification = new QCheckBox(tr("Send composing events"), other);
 	connect(SendTypingNotification, SIGNAL(clicked()), this, SLOT(dataChanged()));
-	notificationsLayout->addWidget(SendTypingNotification);
 
-	layout->addWidget(notifications);
+	otherLayout->addRow(SendTypingNotification);
+
+	// spam
+
+	ReceiveSpam = new QCheckBox(tr("Receive URLs from anonymous buddies"), other);
+	connect(ReceiveSpam, SIGNAL(clicked()), this, SLOT(dataChanged()));
+
+	otherLayout->addRow(ReceiveSpam);
 
 	// stretch
 
@@ -347,7 +350,7 @@ void GaduEditAccountWidget::apply()
 	account().setRememberPassword(RememberPassword->isChecked());
 	account().setPassword(AccountPassword->text());
 	account().setHasPassword(!AccountPassword->text().isEmpty());
-	account().setPrivateStatus(!PrivateStatus->isChecked());
+	account().setPrivateStatus(!ShowStatusToEveryone->isChecked());
 	account().setUseDefaultProxy(ProxyCombo->isDefaultProxySelected());
 	account().setProxy(ProxyCombo->currentProxy());
 
@@ -365,6 +368,7 @@ void GaduEditAccountWidget::apply()
 		if (gg_libgadu_check_feature(GG_LIBGADU_FEATURE_SSL))
 			Details->setTlsEncryption(UseTlsEncryption->isChecked());
 		Details->setSendTypingNotification(SendTypingNotification->isChecked());
+		Details->setReceiveSpam(ReceiveSpam->isChecked());
 
 		Details->setExternalIp(ExternalIp->text());
 		Details->setExternalPort(ExternalPort->text().toUInt());
@@ -410,7 +414,7 @@ void GaduEditAccountWidget::dataChanged()
 		&& account().id() == AccountId->text()
 		&& account().rememberPassword() == RememberPassword->isChecked()
 		&& account().password() == AccountPassword->text()
-		&& account().privateStatus() != PrivateStatus->isChecked()
+		&& account().privateStatus() != ShowStatusToEveryone->isChecked()
 		&& account().useDefaultProxy() == ProxyCombo->isDefaultProxySelected()
 		&& account().proxy() == ProxyCombo->currentProxy()
 		&& Details->limitImageSize() == LimitImageSize->isChecked()
@@ -427,6 +431,7 @@ void GaduEditAccountWidget::dataChanged()
 		&& config_file.readEntry("Network", "Server") == ipAddresses->text()
 		&& (!gg_libgadu_check_feature(GG_LIBGADU_FEATURE_SSL) || Details->tlsEncryption() == UseTlsEncryption->isChecked())
 		&& Details->sendTypingNotification() == SendTypingNotification->isChecked()
+		&& Details->receiveSpam() == ReceiveSpam->isChecked()
 		&& !gpiw->isModified()
 
 		&& Details->externalIp() == ExternalIp->text()
@@ -459,7 +464,7 @@ void GaduEditAccountWidget::loadAccountData()
 	AccountId->setText(account().id());
 	RememberPassword->setChecked(account().rememberPassword());
 	AccountPassword->setText(account().password());
-	PrivateStatus->setChecked(!account().privateStatus());
+	ShowStatusToEveryone->setChecked(!account().privateStatus());
 	if (account().useDefaultProxy())
 		ProxyCombo->selectDefaultProxy();
 	else
@@ -481,6 +486,7 @@ void GaduEditAccountWidget::loadAccountData()
 		AllowFileTransfers->setChecked(details->allowDcc());
 		UseTlsEncryption->setChecked(gg_libgadu_check_feature(GG_LIBGADU_FEATURE_SSL) ? details->tlsEncryption() : false);
 		SendTypingNotification->setChecked(details->sendTypingNotification());
+		ReceiveSpam->setChecked(details->receiveSpam());
 
 		ExternalIp->setText(details->externalIp());
 		ExternalPort->setText(QString::number(details->externalPort()));

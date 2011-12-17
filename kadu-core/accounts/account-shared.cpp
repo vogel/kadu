@@ -153,6 +153,8 @@ void AccountShared::load()
 			Proxy = NetworkProxyManager::instance()->byUuid(loadValue<QString>("Proxy"));
 	}
 
+	PrivateStatus = loadValue<bool>("PrivateStatus", true);
+
 	triggerAllProtocolsRegistered();
 }
 
