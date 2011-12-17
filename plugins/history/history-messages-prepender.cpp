@@ -26,12 +26,14 @@
 HistoryMessagesPrepender::HistoryMessagesPrepender(QFuture<QVector<Message> > messages, ChatMessagesView *chatMessagesView) :
 		Messages(messages), MessagesView(chatMessagesView)
 {
+	Q_ASSERT(MessagesView);
+
 	connect(chatMessagesView, SIGNAL(destroyed()), this, SLOT(chatMessagesViewDestroyed()));
 
 	QFutureWatcher<QVector<Message> > *futureWatcher = new QFutureWatcher<QVector<Message> >(this);
 	connect(futureWatcher, SIGNAL(finished()), this, SLOT(messagesAvailable()));
 
-	futureWatcher->setFuture(messages);
+	futureWatcher->setFuture(Messages);
 }
 
 HistoryMessagesPrepender::~HistoryMessagesPrepender()
