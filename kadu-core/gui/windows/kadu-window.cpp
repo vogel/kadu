@@ -34,6 +34,7 @@
 #include <QtGui/QVBoxLayout>
 
 #include "buddies/buddy-set.h"
+#include "chat/model/chat-data-extractor.h"
 #include "chat/recent-chat-manager.h"
 #include "chat/type/chat-type-manager.h"
 #include "configuration/configuration-file.h"
@@ -330,7 +331,9 @@ void KaduWindow::updateRecentChatsMenu()
 		if (!ChatWidgetManager::instance()->byChat(chat, false))
 		{
 			ChatType *type = ChatTypeManager::instance()->chatType(chat.type());
-			QAction *action = new QAction(type ? type->icon().icon() : QIcon(), chat.name(), RecentChatsMenu);
+			QAction *action = new QAction(type ? type->icon().icon() : QIcon(),
+			                              ChatDataExtractor::data(chat, Qt::DisplayRole).toString(),
+			                              RecentChatsMenu);
 			action->setData(QVariant::fromValue<Chat>(chat));
 			RecentChatsMenu->addAction(action);
 		}
