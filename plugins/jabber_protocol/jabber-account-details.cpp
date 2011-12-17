@@ -80,6 +80,7 @@ void JabberAccountDetails::load()
 
 	SendTypingNotification = loadValue<bool>("SendTypingNotification", true);
 	SendGoneNotification = loadValue<bool>("SendGoneNotification", true);
+	PublishSystemInfo = loadValue<bool>("PublishSystemInfo", true);
 }
 
 void JabberAccountDetails::store()
@@ -104,4 +105,5 @@ void JabberAccountDetails::store()
 
 	storeValue("SendTypingNotification", SendTypingNotification);
 	storeValue("SendGoneNotification", SendGoneNotification);
+	storeValue("PublishSystemInfo", PublishSystemInfo);
 }

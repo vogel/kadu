@@ -334,6 +334,15 @@ void JabberEditAccountWidget::createOptionsTab(QTabWidget *tabWidget)
 
 	layout->addWidget(notifications);
 
+	QGroupBox *privacy = new QGroupBox(tr("Privacy"), this);
+
+	QVBoxLayout *privacyLayout = new QVBoxLayout(privacy);
+	PublishSystemInfo = new QCheckBox(tr("Publish system information"));
+	connect(PublishSystemInfo, SIGNAL(clicked()), this, SLOT(dataChanged()));
+	privacyLayout->addWidget(PublishSystemInfo);
+
+	layout->addWidget(privacy);
+
 	layout->addStretch(100);
 }
 
@@ -406,6 +415,7 @@ void JabberEditAccountWidget::dataChanged()
 		&& AccountDetails->dataTransferProxy() == DataTransferProxy->text()
 		&& AccountDetails->sendGoneNotification() == SendGoneNotification->isChecked()
 		&& AccountDetails->sendTypingNotification() == SendTypingNotification->isChecked()
+		&& AccountDetails->publishSystemInfo() == PublishSystemInfo->isChecked()
 		&& !PersonalInfoWidget->isModified())
 	{
 		resetState();
@@ -465,6 +475,8 @@ void JabberEditAccountWidget::loadAccountDetailsData()
 
 	SendGoneNotification->setChecked(AccountDetails->sendGoneNotification());
 	SendTypingNotification->setChecked(AccountDetails->sendTypingNotification());
+
+	PublishSystemInfo->setChecked(AccountDetails->publishSystemInfo());
 }
 
 void JabberEditAccountWidget::apply()
@@ -492,6 +504,7 @@ void JabberEditAccountWidget::apply()
 	AccountDetails->setDataTransferProxy(DataTransferProxy->text());
 	AccountDetails->setSendGoneNotification(SendGoneNotification->isChecked());
 	AccountDetails->setSendTypingNotification(SendTypingNotification->isChecked());
+	AccountDetails->setPublishSystemInfo(PublishSystemInfo->isChecked());
 
 	if (PersonalInfoWidget->isModified())
 		PersonalInfoWidget->apply();

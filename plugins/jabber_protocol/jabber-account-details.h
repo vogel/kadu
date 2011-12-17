@@ -65,7 +65,7 @@ private:
 	PROPERTY_DEC(QString, DataTransferProxy)
 	PROPERTY_DEC(bool, SendTypingNotification)
 	PROPERTY_DEC(bool, SendGoneNotification)
-
+	PROPERTY_DEC(bool, PublishSystemInfo)
 protected:
 	virtual void load();
 	virtual void store();
@@ -88,6 +88,7 @@ public:
 	PROPERTY_DEF(QString, dataTransferProxy, setDataTransferProxy, DataTransferProxy)
 	PROPERTY_DEF(bool, sendTypingNotification, setSendTypingNotification, SendTypingNotification)
 	PROPERTY_DEF(bool, sendGoneNotification, setSendGoneNotification, SendGoneNotification)
+	PROPERTY_DEF(bool, publishSystemInfo, setPublishSystemInfo, PublishSystemInfo)
 
 };
 

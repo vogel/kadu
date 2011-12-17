@@ -81,6 +81,8 @@ class JabberEditAccountWidget : public AccountEditWidget
 	QCheckBox *SendTypingNotification;
 	QCheckBox *SendGoneNotification;
 
+	QCheckBox *PublishSystemInfo;
+		
 	ProxyComboBox *ProxyCombo;
 
 	QPushButton *ApplyButton;

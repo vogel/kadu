@@ -221,9 +221,13 @@ void JabberProtocol::login()
 		return;
 	}
 
-	JabberClient->setOSName(SystemInfo::instance()->osFullName());
-	JabberClient->setClientName("Kadu");
-	JabberClient->setClientVersion(Core::instance()->version());
+	if (jabberAccountDetails->publishSystemInfo())
+	{
+		JabberClient->setOSName(SystemInfo::instance()->osFullName());
+		JabberClient->setClientName("Kadu");
+		JabberClient->setClientVersion(Core::instance()->version());
+		kdebugm(KDEBUG_WARNING, "KLIENT:  %s, %s\n", qPrintable(SystemInfo::instance()->osFullName()), qPrintable(Core::instance()->version()));
+	}
 
 	// Set caps node information
 	JabberClient->setCapsNode("http://kadu.im/caps");

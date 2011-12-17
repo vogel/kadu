@@ -57,9 +57,8 @@ JabberClient::JabberClient(JabberProtocol *protocol, QObject *parent) :
 	cleanUp();
 
 	Client = new XMPP::Client(this);
-	Client->setClientName(clientName());
-	Client->setClientVersion(clientVersion());
-	Client->setOSName(osName());
+
+	updateClientInfo();
 
 	// Set caps information
 	Client->setCapsNode(capsNode());
@@ -227,10 +226,19 @@ int JabberClient::getPenaltyTime()
 	return currentTime;
 }
 
+void JabberClient::updateClientInfo()
+{
+	Client->setClientName(clientName());
+	Client->setClientVersion(clientVersion());
+	Client->setOSName(osName());
+}
+
 void JabberClient::connect(const XMPP::Jid &jid, const QString &password, bool auth)
 {
 	MyJid = jid;
 	Password = password;
+
+	updateClientInfo();
 
 	/*
 	 * Return an error if we should force TLS but it's not available.
