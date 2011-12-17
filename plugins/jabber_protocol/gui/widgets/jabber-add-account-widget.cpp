@@ -189,6 +189,16 @@ void JabberAddAccountWidget::apply()
 			details->setEncryptionMode(JabberAccountDetails::Encryption_No);
 			details->setPlainAuthMode(JabberAccountDetails::NoAllowPlain);
 		}
+		
+		bool isGoogleAppsAccount = Factory->name() == "gmail/google talk" && !Domain->currentText().contains("gmail");
+
+		// Google Apps account sometimes needs custom host/port settings to work
+		if (isGoogleAppsAccount)
+		{
+		  details->setUseCustomHostPort(true);
+		  details->setCustomHost("talk.google.com");
+		  details->setCustomPort(5222);
+		}
 	}
 
 	resetGui();
