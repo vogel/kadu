@@ -54,16 +54,13 @@ void HistoryChatsModel::chatTypeRegistered(ChatType *chatType)
 
 	beginInsertRows(QModelIndex(), Chats.size(), Chats.size());
 	ChatKeys.append(chatType);
-	Chats.insert(ChatKeys.size() - 1, QVector<Chat>());
+	Chats.append(QVector<Chat>());
 	endInsertRows();
 }
 
 void HistoryChatsModel::chatTypeUnregistered(ChatType *chatType)
 {
 	if (!ChatKeys.contains(chatType))
-		return;
-
-	if (-1 == chatType->sortIndex())
 		return;
 
 	int index = ChatKeys.indexOf(chatType);
@@ -121,7 +118,7 @@ QModelIndex HistoryChatsModel::parent(const QModelIndex &child) const
 
 QVariant HistoryChatsModel::chatTypeData(const QModelIndex &index, int role) const
 {
-	if (index.row() < 0 || index.row() >= ChatKeys.count())
+	if (index.row() < 0 || index.row() >= ChatKeys.size())
 		return QVariant();
 
 	ChatType *chatType = ChatKeys.at(index.row());
@@ -226,7 +223,7 @@ QVariant HistoryChatsModel::data(const QModelIndex &index, int role) const
 	if (index.parent().parent().isValid())
 		return QVariant();
 
-	int chatTypeIndex = index.parent().isValid() ? index.internalId() : index.row();
+	qint64 chatTypeIndex = index.parent().isValid() ? index.internalId() : index.row();
 	if (chatTypeIndex < 0)
 		return QVariant();
 
@@ -267,7 +264,7 @@ void HistoryChatsModel::addChat(const Chat &chat)
 
 	if (chatType->name() == "Aggregate")
 	{
-		ChatDetailsAggregate *details = dynamic_cast<ChatDetailsAggregate *>(chat.details());
+		ChatDetailsAggregate *details = qobject_cast<ChatDetailsAggregate *>(chat.details());
 		Q_ASSERT(details);
 		Q_ASSERT(!details->chats().isEmpty());
 
