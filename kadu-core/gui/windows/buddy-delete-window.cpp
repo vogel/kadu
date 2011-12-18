@@ -135,10 +135,10 @@ void BuddyDeleteWindow::deleteBuddy(Buddy buddy)
 		}
 	}
 
+	BuddyManager::instance()->removeItem(buddy);
+
 	foreach (Contact contact, buddy.contacts())
 		contact.setOwnerBuddy(Buddy::null);
-
-	BuddyManager::instance()->removeItem(buddy);
 }
 
 void BuddyDeleteWindow::accept()
@@ -152,5 +152,5 @@ void BuddyDeleteWindow::accept()
 
 void BuddyDeleteWindow::reject()
 {
-    QDialog::reject();
+	QDialog::reject();
 }

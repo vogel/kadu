@@ -26,7 +26,6 @@
 #include "chat/model/chat-data-extractor.h"
 #include "chat/chat.h"
 #include "contacts/contact.h"
-#include "message/message-manager.h"
 #include "model/roles.h"
 #include "status/status-type.h"
 #include "status/status.h"
@@ -43,27 +42,10 @@ TalkableProxyModel::TalkableProxyModel(QObject *parent) :
 	BrokenStringCompare = (QString("a").localeAwareCompare(QString("B")) > 0);
 	if (BrokenStringCompare)
 		fprintf(stderr, "There's something wrong with native string compare function. Applying workaround (slower).\n");
-
-	connect(MessageManager::instance(), SIGNAL(unreadMessageAdded(Message)),
-			this, SLOT(invalidate()));
-	connect(MessageManager::instance(), SIGNAL(unreadMessageRemoved(Message)),
-			this, SLOT(invalidate()));
-
-	connect(MessageManager::instance(), SIGNAL(unreadMessageAdded(Message)),
-			this, SIGNAL(invalidated()));
-	connect(MessageManager::instance(), SIGNAL(unreadMessageRemoved(Message)),
-			this, SIGNAL(invalidated()));
 }
 
 TalkableProxyModel::~TalkableProxyModel()
 {
-}
-
-int TalkableProxyModel::compareNames(const QString &n1, const QString &n2) const
-{
-	return BrokenStringCompare
-			? n1.toLower().localeAwareCompare(n2.toLower())
-			: n1.localeAwareCompare(n2);
 }
 
 void TalkableProxyModel::setSortByStatusAndUnreadMessages(bool sortByStatusAndUnreadMessages)
@@ -75,49 +57,57 @@ void TalkableProxyModel::setSortByStatusAndUnreadMessages(bool sortByStatusAndUn
 	invalidate();
 }
 
+bool TalkableProxyModel::lessThan(const QString &n1, const QString &n2) const
+{
+	int res = BrokenStringCompare
+			? n1.toLower().localeAwareCompare(n2.toLower())
+			: n1.localeAwareCompare(n2);
+
+	return res < 0;
+}
+
 bool TalkableProxyModel::lessThan(const Chat &left, const Chat &right) const
 {
 	if (left.unreadMessagesCount() > 0 && right.unreadMessagesCount() == 0)
-		return -1;
+		return true;
 	if (left.unreadMessagesCount() == 0 && right.unreadMessagesCount() > 0)
-		return 1;
+		return false;
 
 	const QString &leftChatDisplay = ChatDataExtractor::data(left, Qt::DisplayRole).toString();
 	const QString &rightChatDisplay = ChatDataExtractor::data(right, Qt::DisplayRole).toString();
 
-	int displayCompare = compareNames(leftChatDisplay, rightChatDisplay);
-	return displayCompare < 0;
+	return lessThan(leftChatDisplay, rightChatDisplay);
 }
 
 bool TalkableProxyModel::lessThan(const Buddy &left, const Buddy &right) const
 {
-	if (left.contacts().isEmpty() && !right.contacts().isEmpty())
-		return false;
 	if (!left.contacts().isEmpty() && right.contacts().isEmpty())
 		return true;
-
-	if (left.isBlocked() && !right.isBlocked())
+	if (left.contacts().isEmpty() && !right.contacts().isEmpty())
 		return false;
+
 	if (!left.isBlocked() && right.isBlocked())
 		return true;
+	if (left.isBlocked() && !right.isBlocked())
+		return false;
 
 	if (SortByStatusAndUnreadMessages)
 	{
 		const bool leftHasUnreadMessages = left.unreadMessagesCount() > 0;
 		const bool rightHasUnreadMessages = right.unreadMessagesCount() > 0;
-		if (!leftHasUnreadMessages && rightHasUnreadMessages)
-			return false;
+
 		if (leftHasUnreadMessages && !rightHasUnreadMessages)
+			return true;
+		if (!leftHasUnreadMessages && rightHasUnreadMessages)
 			return true;
 
 		const Contact &leftContact = BuddyPreferredManager::instance()->preferredContact(left, false);
 		const Contact &rightContact = BuddyPreferredManager::instance()->preferredContact(right, false);
 
-		if (leftContact.isBlocking() && !rightContact.isBlocking())
-			return false;
-
 		if (!leftContact.isBlocking() && rightContact.isBlocking())
 			return true;
+		if (leftContact.isBlocking() && !rightContact.isBlocking())
+			return false;
 
 		const Status &leftStatus = !leftContact.isNull()
 				? leftContact.currentStatus()
@@ -126,19 +116,22 @@ bool TalkableProxyModel::lessThan(const Buddy &left, const Buddy &right) const
 				? rightContact.currentStatus()
 				: Status();
 
-		if (leftStatus.isDisconnected() && !rightStatus.isDisconnected())
-			return false;
-
 		if (!leftStatus.isDisconnected() && rightStatus.isDisconnected())
 			return true;
+		if (leftStatus.isDisconnected() && !rightStatus.isDisconnected())
+			return false;
 	}
 
-	const int displayCompare = compareNames(left.display(), right.display());
-	return displayCompare < 0;
+	return lessThan(left.display(), right.display());
 }
 
 bool TalkableProxyModel::lessThan(const QModelIndex &left, const QModelIndex &right) const
 {
+	Q_ASSERT(left.parent().isValid() == right.parent().isValid());
+
+	if (left.parent().isValid())
+		return QSortFilterProxyModel::lessThan(left, right);
+
 	const int leftRole = left.data(ItemTypeRole).value<int>();
 	const int rightRole = right.data(ItemTypeRole).value<int>();
 
@@ -169,7 +162,7 @@ bool TalkableProxyModel::lessThan(const QModelIndex &left, const QModelIndex &ri
 			Q_ASSERT(false);
 	}
 
-	return false;
+	return QSortFilterProxyModel::lessThan(left, right);
 }
 
 bool TalkableProxyModel::accept(const Chat &chat) const

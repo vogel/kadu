@@ -62,7 +62,7 @@ class TalkableProxyModel : public QSortFilterProxyModel
 
 	bool BrokenStringCompare;
 	bool SortByStatusAndUnreadMessages;
-	int compareNames(const QString &n1, const QString &n2) const;
+	bool lessThan(const QString &left, const QString &right) const;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski

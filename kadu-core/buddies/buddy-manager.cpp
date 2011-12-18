@@ -153,11 +153,12 @@ void BuddyManager::mergeBuddies(Buddy destination, Buddy source)
 	destination.setMobile(mergeValue(destination.mobile(), source.mobile()));
 	destination.setWebsite(mergeValue(destination.website(), source.website()));
 
+	removeItem(source);
+
 	foreach (const Contact &contact, source.contacts())
 		contact.setOwnerBuddy(destination);
 
 	source.setAnonymous(true);
-	removeItem(source);
 	// each item that stores pointer to "source" will now use the same uuid as "destination"
 	source.data()->setUuid(destination.uuid());
 
