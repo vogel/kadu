@@ -247,7 +247,7 @@ Chat ChatManager::byDisplay(const QString &display)
 	if (display.isEmpty())
 		return Chat::null;
 
-	foreach (const Chat &chat, items())
+	foreach (const Chat &chat, allItems())
 		if (display == chat.display())
 			return chat;
 

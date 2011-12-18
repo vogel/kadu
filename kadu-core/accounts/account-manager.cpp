@@ -141,7 +141,7 @@ Account AccountManager::defaultAccount()
 	ensureLoaded();
 
 	// TODO: hack
-	foreach (const Account &account, items())
+	foreach (const Account &account, allItems())
 		if (account.protocolName() == "gadu")
 			return account;
 
