@@ -35,7 +35,7 @@
 JabberAccountDetails::JabberAccountDetails(AccountShared *data) :
 		AccountDetails(data), AutoResource(false), UseCustomHostPort(false), CustomPort(5222),
 		EncryptionMode(Encryption_Auto), PlainAuthMode(AllowPlainOverTLS), LegacySSLProbe(true),
-		SendTypingNotification(true), SendGoneNotification(true)
+		SendTypingNotification(true), SendGoneNotification(true), PublishSystemInfo(true)
 {
 	OpenChatRunner = new JabberOpenChatWithRunner(data);
 	OpenChatWithRunnerManager::instance()->registerRunner(OpenChatRunner);
