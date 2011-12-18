@@ -85,7 +85,8 @@ HistorySqlStorage::~HistorySqlStorage()
 {
 	kdebugf();
 
-	Database.commit();
+	if (Database.isOpen())
+		Database.commit();
 }
 
 void HistorySqlStorage::databaseReady(bool ok)
@@ -99,8 +100,10 @@ void HistorySqlStorage::databaseReady(bool ok)
 				tr("It seems your Qt library does not provide support for selected database.\n "
 				   "Please select another driver in configuration window or install Qt with %1 plugin.").arg("QSQLITE"));
 		History::instance()->unregisterStorage(this);
+		return;
 	}
 
+	Database.transaction();
 	initQueries();
 }
 

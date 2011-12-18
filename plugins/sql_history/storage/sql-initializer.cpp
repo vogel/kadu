@@ -138,8 +138,10 @@ void SqlInitializer::initDatabase()
 	switch (storedSchemaVersion)
 	{
 		case 0:
+			Database.transaction();
 			initTables();
 			initIndexes();
+			Database.commit();
 			break;
 		case 1:
 			if (!importStartedEmited)
@@ -152,8 +154,6 @@ void SqlInitializer::initDatabase()
 
 	if (importStartedEmited)
 		emit importFinished();
-
-	Database.transaction();
 }
 
 void SqlInitializer::initTables()
@@ -377,12 +377,10 @@ void SqlInitializer::importVersion1Schema()
 		query.exec();
 	}
 
+	initIndexes();
+
 	Database.commit();
 
 	query.prepare("VACUUM;");
 	query.exec();
-
-	initIndexes();
-
-	Database.commit();
 }
