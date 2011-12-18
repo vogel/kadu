@@ -85,6 +85,8 @@ TalkableTreeView::TalkableTreeView(QWidget *parent) :
 
 	connect(&ToolTipTimeoutTimer, SIGNAL(timeout()), this, SLOT(toolTipTimeout()));
 	connect(this, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(doubleClickedSlot(const QModelIndex &)));
+
+	updateContext();
 }
 
 TalkableTreeView::~TalkableTreeView()
