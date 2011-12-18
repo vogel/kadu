@@ -38,15 +38,14 @@ int SqlHistoryPlugin::init(bool firstLoad)
 	Q_UNUSED(firstLoad)
 
 	Storage = new HistorySqlStorage();
-	History::instance()->registerStorage(Storage);
 
 	return 0;
 }
 
 void SqlHistoryPlugin::done()
 {
-	History::instance()->unregisterStorage(Storage);
-	Storage = 0;
+	if (Storage)
+		History::instance()->unregisterStorage(Storage.data());
 
 	QSqlDatabase::removeDatabase("kadu-history");
 }

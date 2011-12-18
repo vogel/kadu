@@ -66,6 +66,14 @@ HistorySqlStorage::HistorySqlStorage(QObject *parent) :
 {
 	kdebugf();
 
+	if (!QSqlDatabase::isDriverAvailable("QSQLITE"))
+	{
+		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"),
+				tr("It seems your Qt library does not provide support for selected database. "
+				   "Please install Qt with %1 plugin.").arg("QSQLITE"));
+		return;
+	}
+
 	qRegisterMetaType<QSqlError>("QSqlError");
 
 	InitializerThread = new QThread();
@@ -82,6 +90,8 @@ HistorySqlStorage::HistorySqlStorage(QObject *parent) :
 	connect(initializer, SIGNAL(databaseOpenFailed(QSqlError)), this, SLOT(databaseOpenFailed(QSqlError)));
 
 	InitializerThread->start();
+
+	History::instance()->registerStorage(this);
 }
 
 HistorySqlStorage::~HistorySqlStorage()
@@ -99,9 +109,7 @@ void HistorySqlStorage::databaseReady(bool ok)
 
 	if (!Database.isOpen())
 	{
-		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"),
-				tr("It seems your Qt library does not provide support for selected database.\n "
-				   "Please select another driver in configuration window or install Qt with %1 plugin.").arg("QSQLITE"));
+		databaseOpenFailed(Database.lastError());
 		History::instance()->unregisterStorage(this);
 		return;
 	}

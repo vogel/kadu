@@ -102,9 +102,6 @@ quint16 SqlInitializer::loadSchemaVersion()
 
 void SqlInitializer::initDatabase()
 {
-	if (!QSqlDatabase::isDriverAvailable("QSQLITE"))
-		return;
-
 	if (QSqlDatabase::contains("kadu-history"))
 	{
 		if (Database.isOpen())
