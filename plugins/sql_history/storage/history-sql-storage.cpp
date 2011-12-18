@@ -251,11 +251,8 @@ int HistorySqlStorage::findOrCreateChat(const Chat &chat)
 
 	executeQuery(query);
 
-	if (query.size() > 0)
-	{
-		query.next();
+	if (query.next())
 		chatId = query.value(0).toInt();
-	}
 	else
 	{
 		QSqlQuery query(Database);
@@ -288,11 +285,8 @@ int HistorySqlStorage::findOrCreateContact(const Contact &contact)
 
 	executeQuery(query);
 
-	if (query.size() > 0)
-	{
-		query.next();
+	if (query.next())
 		contactId = query.value(0).toInt();
-	}
 	else
 	{
 		QSqlQuery query(Database);
@@ -326,21 +320,18 @@ int HistorySqlStorage::findOrCreateDate(const QDate &date)
 
 	executeQuery(query);
 
-	if (query.size() > 0)
-	{
-	  query.next();
-	  dateId = query.value(0).toInt();
-	}
+	if (query.next())
+		dateId = query.value(0).toInt();
 	else
 	{
-	  QSqlQuery query(Database);
-	  QString queryString = "INSERT INTO kadu_dates (date) VALUES (:date)";
+		QSqlQuery query(Database);
+		QString queryString = "INSERT INTO kadu_dates (date) VALUES (:date)";
 
-	  query.prepare(queryString);
-	  query.bindValue(":date", stringDate);
+		query.prepare(queryString);
+		query.bindValue(":date", stringDate);
 
-	  executeQuery(query);
-	  dateId = query.lastInsertId().toInt();
+		executeQuery(query);
+		dateId = query.lastInsertId().toInt();
 	}
 
 	DateMap.insert(stringDate, dateId);
