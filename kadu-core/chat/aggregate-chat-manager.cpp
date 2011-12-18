@@ -50,7 +50,7 @@ AggregateChatManager::~AggregateChatManager()
 	disconnect(ChatManager::instance(), SIGNAL(chatAdded(Chat)), this, SLOT(chatAdded(Chat)));
 	disconnect(ChatManager::instance(), SIGNAL(chatRemoved(Chat)), this, SLOT(chatRemoved(Chat)));
 
-	foreach (const Chat &chat, ChatManager::instance()->allItems())
+	foreach (const Chat &chat, ChatManager::instance()->items())
 		chatRemoved(chat);
 }
 
@@ -59,7 +59,7 @@ void AggregateChatManager::init()
 	connect(ChatManager::instance(), SIGNAL(chatAdded(Chat)), this, SLOT(chatAdded(Chat)));
 	connect(ChatManager::instance(), SIGNAL(chatRemoved(Chat)), this, SLOT(chatRemoved(Chat)));
 
-	foreach (const Chat &chat, ChatManager::instance()->allItems())
+	foreach (const Chat &chat, ChatManager::instance()->items())
 		chatAdded(chat);
 }
 
