@@ -34,6 +34,7 @@
 #include "chat/chat-details-aggregate.h"
 #include "chat/chat-manager.h"
 #include "chat/chat.h"
+#include "chat/model/chat-data-extractor.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact-set.h"
 #include "contacts/contact.h"
@@ -186,14 +187,10 @@ void IndicatorDocking::notify(Notification *notification)
 			indicator = new QIndicate::Indicator(this);
 			IndicatorsMap.insert(indicator, chatNotification);
 
-			if (chat.contacts().count() > 1)
-				indicator->setNameProperty(chat.name());
-			else
+			indicator->setNameProperty(ChatDataExtractor::data(chat, Qt::DisplayRole).toString());
+			if (chat.contacts().count() == 1)
 			{
-				Contact contact = *chat.contacts().constBegin();
-				indicator->setNameProperty(contact.display(true));
-
-				Avatar avatar = contact.contactAvatar();
+				Avatar avatar = chat.contacts().constBegin()->contactAvatar();
 				if (avatar && !avatar.pixmap().isNull())
 					indicator->setIconProperty(avatar.pixmap().toImage().scaled(20, 20, Qt::KeepAspectRatio, Qt::SmoothTransformation));
 			}
