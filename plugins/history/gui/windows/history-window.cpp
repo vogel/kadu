@@ -83,7 +83,7 @@ void HistoryWindow::show(const Chat &chat)
 {
 	if (!History::instance()->currentStorage())
 	{
-		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("There is no history storage module loaded!"));
+		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("There is no history storage plugin loaded!"));
 		return;
 	}
 
