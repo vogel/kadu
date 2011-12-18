@@ -24,6 +24,8 @@
 #include <QtCore/QObject>
 #include <QtSql/QSqlDatabase>
 
+class QSqlError;
+
 class SqlInitializer : public QObject
 {
 	Q_OBJECT
@@ -58,6 +60,7 @@ signals:
 
 	void importStarted();
 	void importFinished();
+	void databaseOpenFailed(const QSqlError &error);
 
 };
 

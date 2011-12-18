@@ -24,7 +24,6 @@
 #include <QtCore/QThread>
 #include <QtSql/QSqlError>
 
-#include "gui/windows/message-dialog.h"
 #include "misc/path-conversion.h"
 
 #include "storage/history-sql-storage.h"
@@ -130,7 +129,7 @@ void SqlInitializer::initDatabase()
 
 	if (!Database.open())
 	{
-		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), Database.lastError().text());
+		emit databaseOpenFailed(Database.lastError());
 		return;
 	}
 

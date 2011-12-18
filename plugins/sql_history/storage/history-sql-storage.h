@@ -29,6 +29,8 @@
 
 #include "plugins/history/storage/history-storage.h"
 
+class QSqlError;
+
 class ProgressWindow2;
 
 /**
@@ -87,6 +89,7 @@ private slots:
 
 	void importStarted();
 	void importFinished();
+	void databaseOpenFailed(const QSqlError &error);
 
 public:
 	explicit HistorySqlStorage(QObject *parent = 0);

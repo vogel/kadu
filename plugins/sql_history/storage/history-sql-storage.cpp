@@ -66,6 +66,8 @@ HistorySqlStorage::HistorySqlStorage(QObject *parent) :
 {
 	kdebugf();
 
+	qRegisterMetaType<QSqlError>("QSqlError");
+
 	InitializerThread = new QThread();
 
 	// this object cannot have parent as it will be moved to a new thread
@@ -77,6 +79,7 @@ HistorySqlStorage::HistorySqlStorage(QObject *parent) :
 	connect(initializer, SIGNAL(databaseReady(bool)), this, SLOT(databaseReady(bool)));
 	connect(initializer, SIGNAL(importStarted()), this, SLOT(importStarted()));
 	connect(initializer, SIGNAL(importFinished()), this, SLOT(importFinished()));
+	connect(initializer, SIGNAL(databaseOpenFailed(QSqlError)), this, SLOT(databaseOpenFailed(QSqlError)));
 
 	InitializerThread->start();
 }
@@ -123,6 +126,17 @@ void HistorySqlStorage::importFinished()
 		ImportProgressWindow->setText(tr("Optimalization complete. You can now close this window."));
 		ImportProgressWindow->enableClosing();
 	}
+}
+
+void HistorySqlStorage::databaseOpenFailed (const QSqlError &error)
+{
+	if (ImportProgressWindow)
+	{
+		ImportProgressWindow->setText(tr("Optimalization failed. Error message:\n%1").arg(error.text()));
+		ImportProgressWindow->enableClosing();
+	}
+	else
+		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), error.text());
 }
 
 bool HistorySqlStorage::isDatabaseReady(bool wait)
