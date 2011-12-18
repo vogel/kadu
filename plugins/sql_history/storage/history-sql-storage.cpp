@@ -874,19 +874,18 @@ QVector<Buddy> HistorySqlStorage::statusBuddiesList(const HistorySearchParameter
 		query.bindValue(":toDate", search.toDate());
 
 	QVector<Buddy> buddies;
-	QSet<Contact> usedContacts;
 
 	executeQuery(query);
 	while (query.next())
 	{
 		Contact contact = ContactManager::instance()->byUuid(query.value(0).toString());
-		if (contact && !usedContacts.contains(contact))
-		{
-			Buddy buddy = BuddyManager::instance()->byContact(contact, ActionCreateAndAdd);
+		if (!contact)
+			continue;
+
+		Buddy buddy = BuddyManager::instance()->byContact(contact, ActionCreateAndAdd);
+		Q_ASSERT(buddy);
+		if (!buddies.contains(buddy))
 			buddies.append(buddy);
-			foreach (const Contact &contact, buddy.contacts())
-				usedContacts.insert(contact);
-		}
 	}
 
 	return buddies;
