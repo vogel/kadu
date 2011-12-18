@@ -656,7 +656,6 @@ QVector<Message> HistorySqlStorage::getMessagesSince(const Chat &chat, const QDa
 			" AND date >= :date ORDER BY date_id ASC, kadu_messages.rowid ASC";
 	query.prepare(queryString);
 
-	query.bindValue(":chat", chat.uuid().toString());
 	query.bindValue(":date", date.toString("yyyyMMdd"));
 
 	executeQuery(query);
@@ -695,7 +694,6 @@ QVector<Message> HistorySqlStorage::getMessagesBackTo(const Chat &chat, const QD
 			" AND receive_time >= :datetime ORDER BY date_id DESC, kadu_messages.rowid DESC LIMIT :limit";
 	query.prepare(queryString);
 
-	query.bindValue(":chat", chat.uuid().toString());
 	query.bindValue(":datetime", datetime.toString(Qt::ISODate));
 	query.bindValue(":limit", limit);
 
