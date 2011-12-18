@@ -33,15 +33,15 @@ class SqlInitializer : public QObject
 	bool isCopyingNeeded();
 	void copyHistoryFile();
 
+	quint16 loadSchemaVersion();
+
 	void initDatabase();
 	void initTables();
-	void initIndexes();
 	void initKaduSchemaTable();
 	void initKaduMessagesTable();
 	void initKaduStatusesTable();
 	void initKaduSmsTable();
-
-	quint16 loadSchemaVersion();
+	void initIndexes();
 
 	void importVersion1Schema();
 
