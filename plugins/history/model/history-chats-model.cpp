@@ -24,6 +24,7 @@
 #include "buddies/buddy.h"
 #include "chat/chat.h"
 #include "chat/chat-details-aggregate.h"
+#include "chat/model/chat-data-extractor.h"
 #include "chat/type/chat-type-manager.h"
 #include "icons/kadu-icon.h"
 #include "model/roles.h"
@@ -153,13 +154,8 @@ QVariant HistoryChatsModel::chatData(const QModelIndex &index, int role) const
 	switch (role)
 	{
 		case Qt::DisplayRole:
-			if (chat.display().isEmpty())
-				return chat.name();
-			else
-				return chat.display();
-
 		case ChatRole:
-			return QVariant::fromValue<Chat>(chat);
+			return ChatDataExtractor::data(chat, role);
 
 		case HistoryItemRole:
 			return QVariant::fromValue<HistoryTreeItem>(HistoryTreeItem(chat));
