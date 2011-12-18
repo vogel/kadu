@@ -24,6 +24,7 @@
 * gui: allow blur behing transparent roster (prody)
 * gadu: require at least libgadu 1.11.1 (Vogel)
 * gadu: #1737 fixed: added per-account "Receive URLs from anonymous" option (Vogel)
+* jabber: #2074 fixed: support socks5 proxy (Juzef)
 
 +++ version 0.10.1
 * gadu: clearer contact list synchronization message when updating from <0.10.0 (beevvy)
