@@ -113,6 +113,9 @@ void AddBuddyWindow::createGui()
 		AccountCombo->addFilter(protocolFilter);
 	}
 
+	if (1 == AccountManager::instance()->count())
+		AccountCombo->setCurrentAccount(AccountManager::instance()->items().at(0));
+
 	if (MyBuddy && ForceBuddyAccount)
 	{
 		// NOTE: keep "%1 (%2)" consistent with AccountsModel::data() for DisplayRole, when IncludeIdInDisplay is true
