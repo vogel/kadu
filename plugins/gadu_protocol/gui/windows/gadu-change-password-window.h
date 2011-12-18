@@ -45,7 +45,7 @@ class GaduChangePasswordWindow : public QWidget
 	Account MyAccount;
 
 	QLineEdit *EMail;
-	QLineEdit *OldPassword;
+	QLineEdit *CurrentPassword;
 	QLineEdit *NewPassword;
 	QLineEdit *ReNewPassword;
 	TokenWidget *MyTokenWidget;

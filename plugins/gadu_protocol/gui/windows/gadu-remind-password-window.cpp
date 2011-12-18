@@ -48,7 +48,7 @@ GaduRemindPasswordWindow::GaduRemindPasswordWindow(UinType uin, QWidget *parent)
 
 	dataChanged();
 
-	loadWindowGeometry(this, "General", "GaduRemindPasswordGeometry", 0, 50, 500, 275);
+	loadWindowGeometry(this, "General", "GaduRemindPasswordGeometry", 0, 50, 500, 100);
 }
 
 GaduRemindPasswordWindow::~GaduRemindPasswordWindow()
@@ -60,14 +60,6 @@ void GaduRemindPasswordWindow::createGui()
 {
 	QVBoxLayout *mainLayout = new QVBoxLayout(this);
 
-	QLabel *infoLabel = new QLabel;
-	infoLabel->setText(tr("This dialog box allows you to ask server to remind your current password."));
-	infoLabel->setWordWrap(true);
-	infoLabel->setAlignment(Qt::AlignTop | Qt::AlignLeft);
-	infoLabel->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
-
-	mainLayout->addWidget(infoLabel);
-
 	QWidget *formWidget = new QWidget(this);
 	mainLayout->addWidget(formWidget);
 
@@ -77,10 +69,7 @@ void GaduRemindPasswordWindow::createGui()
 	connect(EMail, SIGNAL(textChanged(const QString &)), this, SLOT(dataChanged()));
 	layout->addRow(tr("E-Mail Address") + ':', EMail);
 
-	infoLabel = new QLabel(tr("<font size='-1'><i>Type E-Mail Address used during registration.</i></font>"), this);
-	infoLabel->setWordWrap(true);
-	infoLabel->setAlignment(Qt::AlignTop | Qt::AlignLeft);
-	infoLabel->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed));
+	QLabel *infoLabel = new QLabel(tr("<font size='-1'><i>Type E-Mail Address used during registration.</i></font>"), this);
 	layout->addRow(0, infoLabel);
 
 	MyTokenWidget = new TokenWidget(this);
@@ -88,9 +77,6 @@ void GaduRemindPasswordWindow::createGui()
 	layout->addRow(tr("Characters") + ':', MyTokenWidget);
 
 	infoLabel = new QLabel(tr("<font size='-1'><i>For verification purposes, please type the characters above.</i></font>"), this);
-	infoLabel->setWordWrap(true);
-	infoLabel->setAlignment(Qt::AlignTop | Qt::AlignLeft);
-	infoLabel->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed));
 	layout->addRow(0, infoLabel);
 
 	mainLayout->addStretch(100);

@@ -50,7 +50,7 @@ GaduChangePasswordWindow::GaduChangePasswordWindow(UinType uin, Account account,
 
 	dataChanged();
 
-	loadWindowGeometry(this, "General", "GaduChangePasswordGeometry", 0, 50, 550, 400);
+	loadWindowGeometry(this, "General", "GaduChangePasswordGeometry", 0, 50, 550, 200);
 }
 
 GaduChangePasswordWindow::~GaduChangePasswordWindow()
@@ -62,12 +62,6 @@ void GaduChangePasswordWindow::createGui()
 {
 	QVBoxLayout *mainLayout = new QVBoxLayout(this);
 
-	QLabel *infoLabel = new QLabel(tr("This dialog box allows you to change your current password.\n"));
-	infoLabel->setWordWrap(true);
-	infoLabel->setAlignment(Qt::AlignTop | Qt::AlignLeft);
-	infoLabel->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
-	mainLayout->addWidget(infoLabel);
-
 	QWidget *formWidget = new QWidget(this);
 	mainLayout->addWidget(formWidget);
 
@@ -77,21 +71,15 @@ void GaduChangePasswordWindow::createGui()
 	connect(EMail, SIGNAL(textChanged(const QString &)), this, SLOT(dataChanged()));
 	layout->addRow(tr("E-Mail Address") + ':', EMail);
 
-	infoLabel = new QLabel(tr("<font size='-1'><i>Type E-Mail Address used during registration.</i></font>"), this);
-	infoLabel->setWordWrap(true);
-	infoLabel->setAlignment(Qt::AlignTop | Qt::AlignLeft);
-	infoLabel->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
+	QLabel *infoLabel = new QLabel(tr("<font size='-1'><i>Type E-Mail Address used during registration.</i></font>"), this);
 	layout->addRow(0, infoLabel);
 
-	OldPassword = new QLineEdit(this);
-	OldPassword->setEchoMode(QLineEdit::Password);
-	connect(OldPassword, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
-	layout->addRow(tr("Old Password") + ':', OldPassword);
+	CurrentPassword = new QLineEdit(this);
+	CurrentPassword->setEchoMode(QLineEdit::Password);
+	connect(CurrentPassword, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
+	layout->addRow(tr("Old Password") + ':', CurrentPassword);
 
 	infoLabel = new QLabel(tr("<font size='-1'><i>Enter current password for your Gadu-Gadu account.</i></font>"), this);
-	infoLabel->setWordWrap(true);
-	infoLabel->setAlignment(Qt::AlignTop | Qt::AlignLeft);
-	infoLabel->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
 	layout->addRow(0, infoLabel);
 
 	NewPassword = new QLineEdit(this);
@@ -100,9 +88,6 @@ void GaduChangePasswordWindow::createGui()
 	layout->addRow(tr("New Password") + ':', NewPassword);
 
 	infoLabel = new QLabel(tr("<font size='-1'><i>Enter new password for your Gadu-Gadu account.</i></font>"), this);
-	infoLabel->setWordWrap(true);
-	infoLabel->setAlignment(Qt::AlignTop | Qt::AlignLeft);
-	infoLabel->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
 	layout->addRow(0, infoLabel);
 
 	ReNewPassword = new QLineEdit(this);
@@ -115,9 +100,6 @@ void GaduChangePasswordWindow::createGui()
 	layout->addRow(tr("Characters") + ':', MyTokenWidget);
 
 	infoLabel = new QLabel(tr("<font size='-1'><i>For verification purposes, please type the characters above.</i></font>"), this);
-	infoLabel->setWordWrap(true);
-	infoLabel->setAlignment(Qt::AlignTop | Qt::AlignLeft);
-	infoLabel->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
 	layout->addRow(0, infoLabel);
 
 	mainLayout->addStretch(100);
@@ -138,7 +120,7 @@ void GaduChangePasswordWindow::createGui()
 void GaduChangePasswordWindow::dataChanged()
 {
 	bool disable =  EMail->text().indexOf(UrlHandlerManager::instance()->mailRegExp()) < 0
-			|| OldPassword->text().isEmpty()
+			|| CurrentPassword->text().isEmpty()
 			|| NewPassword->text().isEmpty()
 			|| ReNewPassword->text().isEmpty()
 			|| MyTokenWidget->tokenValue().isEmpty();
@@ -156,7 +138,7 @@ void GaduChangePasswordWindow::changePassword()
 		return;
 	}
 
-	GaduServerChangePassword *gscp = new GaduServerChangePassword(Uin, EMail->text(), OldPassword->text(), NewPassword->text(),
+	GaduServerChangePassword *gscp = new GaduServerChangePassword(Uin, EMail->text(), CurrentPassword->text(), NewPassword->text(),
 			MyTokenWidget->tokenId(), MyTokenWidget->tokenValue());
 	connect(gscp, SIGNAL(finished(GaduServerChangePassword *)),
 			this, SLOT(changingFinished(GaduServerChangePassword *)));
