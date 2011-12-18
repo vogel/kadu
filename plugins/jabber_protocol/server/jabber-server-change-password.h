@@ -47,7 +47,7 @@ public:
 	virtual void performAction();
 
 	bool result() { return Result; }
-	
+
 private slots:
 	void actionFinished();
 

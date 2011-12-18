@@ -26,6 +26,7 @@
 * gadu: #1737 fixed: added per-account "Receive URLs from anonymous" option (Vogel)
 * jabber: #2074 fixed: support socks5 proxy (Juzef)
 * gui: #2070 fixed: proper link to online help in help menu (Vogel)
+* jabber: #2080 fixed: do not crash when chaning password (Vogel)
 
 +++ version 0.10.1
 * gadu: clearer contact list synchronization message when updating from <0.10.0 (beevvy)

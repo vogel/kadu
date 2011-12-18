@@ -62,6 +62,7 @@ public:
 
 signals:
 	void passwordChanged(const QString &);
+
 };
 
 #endif // JABBER_CHANGE_PASSWORD_WINDOW_H

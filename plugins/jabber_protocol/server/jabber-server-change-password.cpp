@@ -29,13 +29,13 @@
 #include "jabber-server-change-password.h"
 
 JabberServerChangePassword::JabberServerChangePassword(Account account, const QString &password, const QString &newPassword) :
-	QObject(), Result(false), MyAccount(account), Password(password), NewPassword(newPassword)
+		QObject(), Result(false), MyAccount(account), Password(password), NewPassword(newPassword)
 {
 }
 
 void JabberServerChangePassword::performAction()
 {
-  	JabberProtocol *jabberProtocol = qobject_cast<JabberProtocol *>(MyAccount.protocolHandler());
+	JabberProtocol *jabberProtocol = qobject_cast<JabberProtocol *>(MyAccount.protocolHandler());
 	if (!jabberProtocol || !jabberProtocol->isConnected())
 		emit finished(this);
 

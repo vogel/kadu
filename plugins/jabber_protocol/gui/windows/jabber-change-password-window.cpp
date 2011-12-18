@@ -147,12 +147,13 @@ void JabberChangePasswordWindow::changingFinished(JabberServerChangePassword *gs
 	if (gscp)
 	{
 		result = gscp->result();
-		delete gscp;
+		gscp->deleteLater();
 	}
 
 	if (result)
 	{
-		MessageDialog::show(KaduIcon("dialog-information"), tr("Kadu"),tr("Changing password was successful."), QMessageBox::Ok, this);
+		// using 'this' as parent is invalid, as close below will delete 'this' object
+		MessageDialog::show(KaduIcon("dialog-information"), tr("Kadu"),tr("Changing password was successful."), QMessageBox::Ok);
 
 		MyAccount.setPassword(NewPassword->text());
 		emit passwordChanged(NewPassword->text());
