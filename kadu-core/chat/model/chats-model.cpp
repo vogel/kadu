@@ -29,6 +29,14 @@ ChatsModel::ChatsModel(QObject *parent) :
 		QAbstractItemModel(parent)
 {
 	ChatManager *manager = ChatManager::instance();
+
+	// We want all items to be loaded. Needed to fix bug #2383.
+	foreach (const Chat &chat, manager->allItems())
+	{
+		Q_ASSERT(chat.data());
+		chat.data()->ensureLoaded();
+	}
+
 	connect(manager, SIGNAL(chatAboutToBeAdded(Chat)),
 			this, SLOT(chatAboutToBeAdded(Chat)));
 	connect(manager, SIGNAL(chatAdded(Chat)),
