@@ -98,6 +98,15 @@ HistorySqlStorage::~HistorySqlStorage()
 {
 	kdebugf();
 
+	if (InitializerThread && InitializerThread->isRunning())
+	{
+		InitializerThread->terminate();
+		InitializerThread->wait(2000);
+	}
+
+	delete InitializerThread;
+	InitializerThread = 0;
+
 	if (Database.isOpen())
 		Database.commit();
 }
