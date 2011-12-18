@@ -604,7 +604,7 @@ void KaduWindowActions::helpActionActivated(QAction *sender, bool toggled)
 	Q_UNUSED(toggled)
 
 	if (config_file.readEntry("General", "Language") == "pl")
-		UrlOpener::openUrl("http://www.kadu.im/w/Pomoc_online");
+		UrlOpener::openUrl("http://www.kadu.im/w/Pomoc");
 	else
 		UrlOpener::openUrl("http://www.kadu.im/w/English:Kadu:Help");
 }
