@@ -92,6 +92,14 @@ bool HistoryChatsModelProxy::lessThan(const QModelIndex &left, const QModelIndex
 
 	if (!leftChat.isNull() && !rightChat.isNull())
 	{
+		bool isLeftNamed = !leftChat.display().isEmpty();
+		bool isRightNamed = !rightChat.display().isEmpty();
+
+		if (isLeftNamed && !isRightNamed)
+			return true;
+		if (isRightNamed && !isLeftNamed)
+			return false;
+
 		bool isLeftAllAnonymous = leftChat.contacts().toBuddySet().isAllAnonymous();
 		bool isRightAllAnonymous = rightChat.contacts().toBuddySet().isAllAnonymous();
 
@@ -100,10 +108,7 @@ bool HistoryChatsModelProxy::lessThan(const QModelIndex &left, const QModelIndex
 		if (isRightAllAnonymous && !isLeftAllAnonymous)
 			return true;
 
-		const QString &leftName = leftChat.display().isEmpty() ? leftChat.name() : leftChat.display();
-		const QString &rightName = rightChat.display().isEmpty() ? rightChat.name() : rightChat.display();
-
-		return compareNames(leftName, rightName) < 0;
+		return compareNames(left.data(Qt::DisplayRole).toString(), right.data(Qt::DisplayRole).toString()) < 0;
 	}
 
 	ChatType *leftType = left.data(ChatTypeRole).value<ChatType *>();
