@@ -226,7 +226,7 @@ void JabberProtocol::login()
 		JabberClient->setOSName(SystemInfo::instance()->osFullName());
 		JabberClient->setClientName("Kadu");
 		JabberClient->setClientVersion(Core::instance()->version());
-		kdebugm(KDEBUG_WARNING, "KLIENT:  %s, %s\n", qPrintable(SystemInfo::instance()->osFullName()), qPrintable(Core::instance()->version()));
+		kdebugm(KDEBUG_WARNING, "CLIENT:  %s, %s\n", qPrintable(SystemInfo::instance()->osFullName()), qPrintable(Core::instance()->version()));
 	}
 
 	// Set caps node information

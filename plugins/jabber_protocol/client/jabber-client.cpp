@@ -275,13 +275,9 @@ void JabberClient::connect(const XMPP::Jid &jid, const QString &password, bool a
 		XMPP::AdvancedConnector::Proxy proxySettings;
 
 		if (proxy.type() == "http") // HTTP Connect
-		{
 			proxySettings.setHttpConnect(proxy.address(), proxy.port());
-		}
 		else if (proxy.type() == "socks") // SOCKS
-		{
 			proxySettings.setSocks(proxy.address(), proxy.port());
-		}
 		else if (proxy.type() == "poll") // HTTP Poll
 		{
 			QUrl pollingUrl = proxy.pollingUrl();
@@ -293,9 +289,7 @@ void JabberClient::connect(const XMPP::Jid &jid, const QString &password, bool a
 					pollingUrl.addQueryItem("server", host + ':' + QString::number(Port));
 				}
 				else
-				{
 					pollingUrl.addQueryItem("server", MyJid.domain());
-				}
 			}
 			proxySettings.setHttpPoll(proxy.address(), proxy.port(), pollingUrl.toString());
 			proxySettings.setPollInterval(2);

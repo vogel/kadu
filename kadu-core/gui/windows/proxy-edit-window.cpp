@@ -110,11 +110,15 @@ void ProxyEditWindow::createGui()
 	QFormLayout *editLayout = new QFormLayout(editPanel);
 
 	Type = new QComboBox(editPanel);
-	Type->addItem("HTTP \"Connect\"", "http");
-	Type->addItem("SOCKS Version 5",  "socks");
-	Type->addItem("HTTP Polling",     "poll");
+	Type->addItem(tr("HTTP CONNECT method"), "http");
+	Type->addItem(tr("SOCKS Version 5"), "socks");
+	Type->addItem(tr("HTTP Polling"), "poll");
 	connect(Type, SIGNAL(currentIndexChanged(int)), this, SLOT(dataChanged()));
-	editLayout->addRow(tr("Type"), Type);
+	editLayout->addRow(tr("Type (for Jabber)"), Type);
+
+	PollingUrl = new QLineEdit(editPanel);
+	connect(PollingUrl, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
+	editLayout->addRow(tr("Polling URL"), PollingUrl);
 	
 	Host = new QLineEdit(editPanel);
 	connect(Host, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
@@ -133,10 +137,6 @@ void ProxyEditWindow::createGui()
 	connect(Password, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
 	Password->setEchoMode(QLineEdit::Password);
 	editLayout->addRow(tr("Password"), Password);
-
-	PollingUrl = new QLineEdit(editPanel);
-	connect(PollingUrl, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
-	editLayout->addRow(tr("Polling URL"), PollingUrl);
 
 	QDialogButtonBox *editButtons = new QDialogButtonBox(Qt::Horizontal, editPanel);
 	editLayout->addRow(editButtons);
@@ -269,16 +269,17 @@ void ProxyEditWindow::saveProxy(NetworkProxy proxy)
 ModalConfigurationWidgetState ProxyEditWindow::state(NetworkProxy proxy)
 {
 	bool valid = !Host->text().isEmpty()
-	        && !Port->text().isEmpty();
+			&& !Port->text().isEmpty();
 	bool changed = proxy.type() == Type->itemData(Type->currentIndex()).toString()
-		|| proxy.address() != Host->text()
-	        || ((QString::number(proxy.port()) != Port->text()) && (proxy.port() != 0 || !Port->text().isEmpty()))
-	        || proxy.user() != User->text()
-	        || proxy.password() !=  Password->text()
-		|| proxy.pollingUrl() !=  PollingUrl->text();
+			|| proxy.address() != Host->text()
+			|| ((QString::number(proxy.port()) != Port->text()) && (proxy.port() != 0 || !Port->text().isEmpty()))
+			|| proxy.user() != User->text()
+			|| proxy.password() !=  Password->text()
+			|| proxy.pollingUrl() !=  PollingUrl->text();
 
 	if (!changed)
 		return StateNotChanged;
+
 	return valid
 			? StateChangedDataValid
 			: StateChangedDataInvalid;
@@ -366,8 +367,9 @@ void ProxyEditWindow::selectProxy(NetworkProxy proxy)
 
 void ProxyEditWindow::dataChanged()
 {
-	ModalConfigurationWidgetState changeState = state();
+	PollingUrl->setEnabled(Type->itemData(Type->currentIndex()).toString() == QLatin1String("poll"));
 
+	ModalConfigurationWidgetState changeState = state();
 	SaveButton->setEnabled(StateChangedDataValid == changeState);
 	CancelButton->setEnabled(StateNotChanged != changeState);
 }
