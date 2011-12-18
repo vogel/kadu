@@ -116,7 +116,7 @@ ChatType * ChatDetailsConference::type() const
 QString ChatDetailsConference::name() const
 {
 	QStringList displays;
-	foreach (const Contact &contact, Contacts.toContactVector())
+	foreach (const Contact &contact, Contacts)
 		displays.append(contact.display(true));
 
 	displays.sort();
