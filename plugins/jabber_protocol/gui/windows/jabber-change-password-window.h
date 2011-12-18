@@ -41,7 +41,7 @@ class JabberChangePasswordWindow : public QWidget
 
 	Account MyAccount;
 
-	QLineEdit *OldPassword;
+	QLineEdit *CurrentPassword;
 	QLineEdit *NewPassword;
 	QLineEdit *ReNewPassword;
 	QPushButton *ChangePasswordButton;
