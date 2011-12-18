@@ -109,43 +109,43 @@ void ProxyEditWindow::createGui()
 
 	QFormLayout *editLayout = new QFormLayout(editPanel);
 
-	Type = new QComboBox(this);
+	Type = new QComboBox(editPanel);
 	Type->addItem("HTTP \"Connect\"", "http");
 	Type->addItem("SOCKS Version 5",  "socks");
 	Type->addItem("HTTP Polling",     "poll");
-	connect(Type, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
+	connect(Type, SIGNAL(currentIndexChanged(int)), this, SLOT(dataChanged()));
 	editLayout->addRow(tr("Type"), Type);
 	
-	Host = new QLineEdit(this);
+	Host = new QLineEdit(editPanel);
 	connect(Host, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
 	editLayout->addRow(tr("Host"), Host);
 
-	Port = new QLineEdit(this);
+	Port = new QLineEdit(editPanel);
 	connect(Port, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
 	Port->setValidator(new QIntValidator(1, 65535, Port));
 	editLayout->addRow(tr("Port"), Port);
 
-	User = new QLineEdit(this);
+	User = new QLineEdit(editPanel);
 	connect(User, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
 	editLayout->addRow(tr("User"), User);
 
-	Password = new QLineEdit(this);
+	Password = new QLineEdit(editPanel);
 	connect(Password, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
 	Password->setEchoMode(QLineEdit::Password);
 	editLayout->addRow(tr("Password"), Password);
 
-	PollingUrl = new QLineEdit(this);
+	PollingUrl = new QLineEdit(editPanel);
 	connect(PollingUrl, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
 	editLayout->addRow(tr("Polling URL"), PollingUrl);
 
-	QDialogButtonBox *editButtons = new QDialogButtonBox(Qt::Horizontal, this);
+	QDialogButtonBox *editButtons = new QDialogButtonBox(Qt::Horizontal, editPanel);
 	editLayout->addRow(editButtons);
 
-	SaveButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogApplyButton), tr("Add"), this);
+	SaveButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogApplyButton), tr("Add"), editButtons);
 	connect(SaveButton, SIGNAL(clicked()), this, SLOT(saveProxyButtonClicked()));
-	CancelButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton), tr("Cancel"), this);
+	CancelButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton), tr("Cancel"), editButtons);
 	connect(CancelButton, SIGNAL(clicked()), this, SLOT(cancelButtonClicked()));
-	RemoveButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton), tr("Remove"), this);
+	RemoveButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton), tr("Remove"), editButtons);
 	connect(RemoveButton, SIGNAL(clicked(bool)), this, SLOT(removeButtonClicked()));
 
 	editButtons->addButton(SaveButton, QDialogButtonBox::ApplyRole);
@@ -155,12 +155,10 @@ void ProxyEditWindow::createGui()
 	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
 	mainLayout->addWidget(buttons);
 
-	QPushButton *closeButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton), tr("Close"), this);
+	QPushButton *closeButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton), tr("Close"), buttons);
 
 	connect(closeButton, SIGNAL(clicked(bool)), this, SLOT(close()));
 	buttons->addButton(closeButton, QDialogButtonBox::RejectRole);
-
-	mainLayout->addWidget(buttons);
 }
 
 void ProxyEditWindow::keyPressEvent(QKeyEvent *e)
