@@ -146,6 +146,9 @@ void SqlInitializer::initDatabase()
 				importStartedEmitted = true;
 			}
 			importVersion1Schema();
+			// We do not need to call importVersion2Schema() here as the only thing it does
+			// over importVersion1Schema() is cleaninig up after an already fixed bug which
+			// polluted chat, contact, and date id's tables.
 			break;
 		case 2:
 			if (!importStartedEmitted)
@@ -154,6 +157,7 @@ void SqlInitializer::initDatabase()
 				importStartedEmitted = true;
 			}
 			importVersion2Schema();
+			break;
 		default:
 			break; // no need to import
 	}
