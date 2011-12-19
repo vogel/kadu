@@ -64,8 +64,8 @@ ChatDataWindow::ChatDataWindow(const Chat &chat, QWidget *parent) :
 
 	loadWindowGeometry(this, "General", "ChatDataWindowGeometry", 0, 50, 425, 500);
 
-	connect(ChatManager::instance(), SIGNAL(chatRemoved(Buddy&)),
-			this, SLOT(chatRemoved(Buddy&)));
+	connect(ChatManager::instance(), SIGNAL(chatRemoved(Chat)),
+			this, SLOT(chatRemoved(Chat)));
 }
 
 ChatDataWindow::~ChatDataWindow()
