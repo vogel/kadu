@@ -279,10 +279,10 @@ void AdiumChatStyleEngine::prepareStylePreview(Preview *preview, QString styleNa
 	AdiumStyle style(styleName);
 
 	style.setCurrentVariant(variantName);
-	if (preview->getObjectsToParse().count() != 2)
+	if (preview->messages().count() != 2)
 		return;
 
-	MessageRenderInfo *message = qobject_cast<MessageRenderInfo *>(preview->getObjectsToParse().at(0));
+	MessageRenderInfo *message = preview->messages().at(0);
 	if (!message)
 		return;
 	Message msg = message->message();
@@ -319,7 +319,7 @@ void AdiumChatStyleEngine::prepareStylePreview(Preview *preview, QString styleNa
 	outgoingHtml.append("</span>");
 	preview->page()->mainFrame()->evaluateJavaScript("appendMessage(\'" + outgoingHtml + "\')");
 
-	message = qobject_cast<MessageRenderInfo *>(preview->getObjectsToParse().at(1));
+	message = preview->messages().at(1);
 	QString incomingHtml(replacedNewLine(replaceKeywords(style.baseHref(), style.incomingHtml(), message), QLatin1String(" ")));
 	incomingHtml.replace('\'', QLatin1String("\\'"));
 	if (!message->message().id().isEmpty())

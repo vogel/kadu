@@ -99,7 +99,6 @@ SyntaxEditorWindow::SyntaxEditorWindow(const QSharedPointer<SyntaxList> &syntaxL
 	previewPanel->setMinimumHeight(0);
 	previewPanel->setMaximumHeight(QWIDGETSIZE_MAX);
 	previewPanel->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
-	previewPanel->setResetBackgroundColor(config_file.readEntry("Look", category + "BgColor"));
 	previewPanel->setMinimumSize(PREVIEW_MINIMUM_SIZE);
 
 	QPushButton *previewbutton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_BrowserReload), tr("Refresh Preview"), this);

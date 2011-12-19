@@ -32,32 +32,24 @@
 
 #define PREVIEW_DEFAULT_HEIGHT 250
 
+class MessageRenderInfo;
+
 class Preview : public KaduWebView, public ConfigurationAwareObject
 {
 	Q_OBJECT
 
-	Contact contact;
-	QObjectList objectsToParse;
-	ContactSet contacts;
-	QString resetBackgroundColor;
-	bool DrawFrame;
+	QList<MessageRenderInfo *> Messages;
 
 protected:
 	virtual void configurationUpdated();
 	void paintEvent(QPaintEvent *event);
 
 public:
-	Preview(QWidget *parent = 0);
-	~Preview();
+	explicit Preview(QWidget *parent = 0);
+	virtual ~Preview();
 
-	void setResetBackgroundColor(const QString &resetBackgroundColor) { this->resetBackgroundColor = resetBackgroundColor; }
-	void addObjectToParse(Contact contact, QObject *object) { contacts.insert(contact); objectsToParse.append(object); }
-
-	const QObjectList & getObjectsToParse() const { return objectsToParse; }
-	const ContactSet & getContactList() const { return contacts; }
-
-	bool drawFrame() { return DrawFrame; };
-	void setDrawFrame(bool drawFrame);
+	void addMessage(MessageRenderInfo *messageRenderInfo);
+	const QList<MessageRenderInfo *> & messages() const;
 
 public slots:
 	void syntaxChanged(const QString &content);

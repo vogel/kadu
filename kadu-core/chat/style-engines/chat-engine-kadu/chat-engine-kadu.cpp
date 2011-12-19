@@ -256,16 +256,15 @@ void KaduChatStyleEngine::prepareStylePreview(Preview *preview, QString styleNam
 
 	KaduChatSyntax syntax(SyntaxList::readSyntax("chat", styleName, QString()));
 
-	Contact contact = preview->getContactList().count() == 1 ? *(preview->getContactList().constBegin()) : Contact();
-	QString text = Parser::parse(syntax.top(), Talkable(contact), true);
+	QString text = Parser::parse(syntax.top(), Talkable(), true);
 
-	int count = preview->getObjectsToParse().count();
+	int count = preview->messages().count();
 	if (count)
 	{
 		MessageRenderInfo *message;
 		for (int i = 0; i < count; i++)
 		{
-			message = qobject_cast<MessageRenderInfo *>(preview->getObjectsToParse().at(i));
+			message = preview->messages().at(i);
 			Contact sender = message->message().messageSender();
 			text += Parser::parse(syntax.withHeader(), Talkable(sender), message);
 		}

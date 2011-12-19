@@ -413,7 +413,7 @@ void ChatStylesManager::preparePreview(Preview *preview)
 
 	MessageRenderInfo *messageRenderInfo = new MessageRenderInfo(sentMessage);
 	messageRenderInfo->setSeparatorSize(CfgHeaderSeparatorHeight);
-	preview->addObjectToParse(BuddyPreferredManager::instance()->preferredContact(Core::instance()->myself()), messageRenderInfo);
+	preview->addMessage(messageRenderInfo);
 
 	Message receivedMessage = Message::create();
 	receivedMessage.setMessageChat(chat);
@@ -425,7 +425,7 @@ void ChatStylesManager::preparePreview(Preview *preview)
 
 	messageRenderInfo = new MessageRenderInfo(receivedMessage);
 	messageRenderInfo->setSeparatorSize(CfgHeaderSeparatorHeight);
-	preview->addObjectToParse(BuddyPreferredManager::instance()->preferredContact(example), messageRenderInfo);
+	preview->addMessage(messageRenderInfo);
 }
 
 void ChatStylesManager::styleChangedSlot(const QString &styleName)

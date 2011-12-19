@@ -28,6 +28,7 @@
 #include "accounts/account-manager.h"
 #include "chat/style-engines/chat-engine-kadu/kadu-chat-syntax.h"
 #include "configuration/chat-configuration-holder.h"
+#include "message/message-render-info.h"
 #include "parser/parser.h"
 #include "status/status-type-manager.h"
 #include "status/status.h"
@@ -36,8 +37,8 @@
 
 #include "preview.h"
 
-Preview::Preview(QWidget *parent)
-	: KaduWebView(parent), contact(Contact::null), DrawFrame(true)
+Preview::Preview(QWidget *parent) :
+		KaduWebView(parent)
 {
 	setFixedHeight(PREVIEW_DEFAULT_HEIGHT);
 	setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
@@ -52,7 +53,17 @@ Preview::Preview(QWidget *parent)
 
 Preview::~Preview()
 {
-	qDeleteAll(objectsToParse);
+	qDeleteAll(Messages);
+}
+
+void Preview::addMessage(MessageRenderInfo *messageRenderInfo)
+{
+	 Messages.append(messageRenderInfo);
+}
+
+const QList<MessageRenderInfo *> & Preview::messages() const
+{
+	return Messages;
 }
 
 void Preview::syntaxChanged(const QString &content)
@@ -64,18 +75,14 @@ void Preview::syntaxChanged(const QString &content)
 
 	QString text;
 
-// 	setHtml("<body bgcolor=\"" + resetBackgroundColor + "\"></body>");
-
-	int count = objectsToParse.count();
-	if (count)
+	if (!Messages.isEmpty())
 	{
 		KaduChatSyntax syntax(content);
 
-		text = Parser::parse(syntax.top(), Talkable(contact), true);
+		text = Parser::parse(syntax.top(), Talkable(), true);
 
-		Contact contact = *contacts.constBegin();
-		for (int i = 0; i < count; i++)
-			text += Parser::parse(syntax.withHeader(), Talkable(contact), objectsToParse.at(i));
+		foreach (MessageRenderInfo *message, Messages)
+			text += Parser::parse(syntax.withHeader(), message->message().messageSender(), message);
 	}
 	else
 		text = Parser::parse(syntax, Talkable(Buddy::dummy()));
@@ -87,24 +94,14 @@ void Preview::syntaxChanged(const QString &content)
 
 void Preview::paintEvent(QPaintEvent *event)
 {
-	if (DrawFrame)
-	{
-		QFrame frame;
-		frame.setFrameStyle(QFrame::StyledPanel | QFrame::Raised);
-		frame.resize(size());
-		QPainter painter(this);
-		QPixmap framepixmap = QPixmap::grabWidget(&frame);
-		painter.drawPixmap(0, 0, framepixmap);
-	}
-	KaduWebView::paintEvent(event);
-}
+	QFrame frame;
+	frame.setFrameStyle(QFrame::StyledPanel | QFrame::Raised);
+	frame.resize(size());
+	QPainter painter(this);
+	QPixmap framepixmap = QPixmap::grabWidget(&frame);
+	painter.drawPixmap(0, 0, framepixmap);
 
-void Preview::setDrawFrame(bool drawFrame)
-{
-	if (DrawFrame == drawFrame)
-		return;
-	DrawFrame = drawFrame;
-	repaint();
+	KaduWebView::paintEvent(event);
 }
 
 void Preview::configurationUpdated()
