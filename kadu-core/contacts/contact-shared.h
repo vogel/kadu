@@ -26,15 +26,15 @@
 #include <QtNetwork/QHostAddress>
 
 #include "contacts/contact-details.h"
-#include "protocols/protocols-aware-object.h"
 #include "status/status.h"
 #include "storage/shared.h"
 
 class Account;
 class Avatar;
 class Buddy;
+class ProtocolFactory;
 
-class KADUAPI ContactShared : public QObject, public Shared, ProtocolsAwareObject
+class KADUAPI ContactShared : public QObject, public Shared
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(ContactShared)
@@ -66,6 +66,9 @@ class KADUAPI ContactShared : public QObject, public Shared, ProtocolsAwareObjec
 	void doSetOwnerBuddy(const Buddy &buddy, bool emitSignals);
 
 private slots:
+	void protocolFactoryRegistered(ProtocolFactory *protocolFactory);
+	void protocolFactoryUnregistered(ProtocolFactory *protocolFactory);
+
 	void avatarUpdated();
 
 protected:
@@ -74,9 +77,6 @@ protected:
 	virtual bool shouldStore();
 
 	virtual void emitUpdated();
-
-	virtual void protocolRegistered(ProtocolFactory *protocolFactory);
-	virtual void protocolUnregistered(ProtocolFactory *protocolFactory);
 
 public:
 	static ContactShared * loadStubFromStorage(const QSharedPointer<StoragePoint> &contactStoragePoint);

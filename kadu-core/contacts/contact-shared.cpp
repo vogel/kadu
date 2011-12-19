@@ -28,6 +28,8 @@
 #include "contacts/contact-details.h"
 #include "contacts/contact-manager.h"
 #include "protocols/protocol.h"
+#include "protocols/protocol-factory.h"
+#include "protocols/protocols-manager.h"
 
 #include "contact-shared.h"
 
@@ -55,13 +57,23 @@ ContactShared::ContactShared(const QUuid &uuid) :
 	ContactAccount = new Account();
 	ContactAvatar = new Avatar();
 	OwnerBuddy = new Buddy();
+
+	connect(ProtocolsManager::instance(), SIGNAL(protocolFactoryRegistered(ProtocolFactory*)),
+	        this, SLOT(protocolFactoryRegistered(ProtocolFactory*)));
+	connect(ProtocolsManager::instance(), SIGNAL(protocolFactoryUnregistered(ProtocolFactory*)),
+	        this, SLOT(protocolFactoryUnregistered(ProtocolFactory*)));
 }
 
 ContactShared::~ContactShared()
 {
 	ref.ref();
 
-	triggerAllProtocolsUnregistered();
+	disconnect(ProtocolsManager::instance(), SIGNAL(protocolFactoryRegistered(ProtocolFactory*)),
+	           this, SLOT(protocolFactoryRegistered(ProtocolFactory*)));
+	disconnect(ProtocolsManager::instance(), SIGNAL(protocolFactoryUnregistered(ProtocolFactory*)),
+	           this, SLOT(protocolFactoryUnregistered(ProtocolFactory*)));
+
+	protocolFactoryUnregistered(ProtocolsManager::instance()->byName(ContactAccount->protocolName()));
 
 	delete OwnerBuddy;
 	delete ContactAvatar;
@@ -108,7 +120,7 @@ void ContactShared::load()
 
 	doSetContactAvatar(AvatarManager::instance()->byUuid(loadValue<QString>("Avatar")));
 
-	triggerAllProtocolsRegistered();
+	protocolFactoryRegistered(ProtocolsManager::instance()->byName(ContactAccount->protocolName()));
 }
 
 void ContactShared::aboutToBeRemoved()
@@ -272,21 +284,21 @@ void ContactShared::setContactAccount(const Account &account)
 		return;
 
 	if (*ContactAccount && ContactAccount->protocolHandler() && ContactAccount->protocolHandler()->protocolFactory())
-		protocolUnregistered(ContactAccount->protocolHandler()->protocolFactory());
+		protocolFactoryUnregistered(ContactAccount->protocolHandler()->protocolFactory());
 
 	*ContactAccount = account;
 
 	if (*ContactAccount && ContactAccount->protocolHandler() && ContactAccount->protocolHandler()->protocolFactory())
-		protocolRegistered(ContactAccount->protocolHandler()->protocolFactory());
+		protocolFactoryRegistered(ContactAccount->protocolHandler()->protocolFactory());
 
 	dataUpdated();
 }
 
-void ContactShared::protocolRegistered(ProtocolFactory *protocolFactory)
+void ContactShared::protocolFactoryRegistered(ProtocolFactory *protocolFactory)
 {
 	ensureLoaded();
 
-	if (!*ContactAccount || ContactAccount->protocolName() != protocolFactory->name())
+	if (!protocolFactory || !*ContactAccount || ContactAccount->protocolName() != protocolFactory->name())
 		return;
 
 	if (Details)
@@ -303,11 +315,11 @@ void ContactShared::protocolRegistered(ProtocolFactory *protocolFactory)
 	attach(*OwnerBuddy, false, true);
 }
 
-void ContactShared::protocolUnregistered(ProtocolFactory *protocolFactory)
+void ContactShared::protocolFactoryUnregistered(ProtocolFactory *protocolFactory)
 {
 	ensureLoaded();
 
-	if (!*ContactAccount || ContactAccount->protocolName() != protocolFactory->name())
+	if (!protocolFactory || ContactAccount->protocolName() != protocolFactory->name())
 		return;
 
 	/* NOTE: This guard is needed to avoid deleting this object when detaching
