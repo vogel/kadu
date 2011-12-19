@@ -27,6 +27,7 @@
 
 #include <QtGui/QAction>
 
+class Action;
 class ActionDescription;
 class ContactSet;
 
@@ -41,6 +42,7 @@ class FileTransferActions : public QObject
 	void selectFilesAndSend(const ContactSet &contacts);
 
 private slots:
+	void sendFileActionCreated(Action *action);
 	void sendFileActionActivated(QAction *sender, bool toggled);
 	void toggleFileTransferWindow(QAction *sender, bool toggled);
 

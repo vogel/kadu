@@ -74,6 +74,9 @@ FileTransferActions::FileTransferActions(QObject *parent)
 	SendFileActionDescription->setShortcut("kadu_sendfile");
 	TalkableMenuManager::instance()->addActionDescription(SendFileActionDescription, TalkableMenuItem::CategoryActions, 100);
 
+	connect(SendFileActionDescription, SIGNAL(actionCreated(Action*)),
+	        this, SLOT(sendFileActionCreated(Action*)));
+
 	FileTransferWindowActionDescription = new ActionDescription(this,
 		ActionDescription::TypeMainMenu, "sendFileWindowAction",
 		this, SLOT(toggleFileTransferWindow(QAction *, bool)),
@@ -87,6 +90,16 @@ FileTransferActions::~FileTransferActions()
 {
 	TalkableMenuManager::instance()->removeActionDescription(SendFileActionDescription);
 	Core::instance()->kaduWindow()->removeMenuActionDescription(FileTransferWindowActionDescription);
+}
+
+void FileTransferActions::sendFileActionCreated(Action *action)
+{
+	const Account &account = action->context()->chat().chatAccount();
+	if (!account)
+		return;
+
+	connect(account, SIGNAL(fileTransferServiceRegistered()), action, SLOT(checkState()));
+	connect(account, SIGNAL(fileTransferServiceUnregistered()), action, SLOT(checkState()));
 }
 
 void FileTransferActions::sendFileActionActivated(QAction *sender, bool toggled)
