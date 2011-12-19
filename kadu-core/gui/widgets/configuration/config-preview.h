@@ -50,8 +50,8 @@ public:
 	ConfigPreview(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
 	virtual ~ConfigPreview();
 
-	virtual void loadConfiguration() {};
-	virtual void saveConfiguration() {};
+	virtual void loadConfiguration() {}
+	virtual void saveConfiguration() {}
 
 	virtual void show();
 	virtual void hide();

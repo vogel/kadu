@@ -305,10 +305,10 @@ void AdiumChatStyleEngine::prepareStylePreview(Preview *preview, QString styleNa
 		styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, (style.styleViewVersion() < 3) ? "s" : QString("@import url( \"" + style.mainHref() + "\" );"));
 	}
 
-	preview->page()->mainFrame()->setHtml(styleBaseHtml);
-	preview->page()->mainFrame()->evaluateJavaScript(jsCode);
+	preview->webView()->page()->mainFrame()->setHtml(styleBaseHtml);
+	preview->webView()->page()->mainFrame()->evaluateJavaScript(jsCode);
 	//I don't know why, sometimes 'initStyle' was performed after 'appendMessage'
-	preview->page()->mainFrame()->evaluateJavaScript("initStyle()");
+	preview->webView()->page()->mainFrame()->evaluateJavaScript("initStyle()");
 
 	QString outgoingHtml(replacedNewLine(replaceKeywords(style.baseHref(), style.outgoingHtml(), message), QLatin1String(" ")));
 	outgoingHtml.replace('\'', QLatin1String("\\'"));
@@ -317,7 +317,7 @@ void AdiumChatStyleEngine::prepareStylePreview(Preview *preview, QString styleNa
 	else
 		outgoingHtml.prepend("<span>");
 	outgoingHtml.append("</span>");
-	preview->page()->mainFrame()->evaluateJavaScript("appendMessage(\'" + outgoingHtml + "\')");
+	preview->webView()->page()->mainFrame()->evaluateJavaScript("appendMessage(\'" + outgoingHtml + "\')");
 
 	message = preview->messages().at(1);
 	QString incomingHtml(replacedNewLine(replaceKeywords(style.baseHref(), style.incomingHtml(), message), QLatin1String(" ")));
@@ -327,14 +327,14 @@ void AdiumChatStyleEngine::prepareStylePreview(Preview *preview, QString styleNa
 	else
 		incomingHtml.prepend("<span>");
 	incomingHtml.append("</span>");
-	preview->page()->mainFrame()->evaluateJavaScript("appendMessage(\'" + incomingHtml + "\')");
+	preview->webView()->page()->mainFrame()->evaluateJavaScript("appendMessage(\'" + incomingHtml + "\')");
 
 	/* in Qt 4.6.3 / WebKit there is a bug making the following call not working */
 	/* according to: https://bugs.webkit.org/show_bug.cgi?id=35633 */
 	/* the proper refreshing behaviour should occur once the bug is fixed */
 	/* possible temporary solution: use QWebElements API to randomly change */
 	/* URLs in the HTML/CSS content. */
-	preview->page()->triggerAction(QWebPage::ReloadAndBypassCache, false);
+	preview->webView()->page()->triggerAction(QWebPage::ReloadAndBypassCache, false);
 }
 
 // Some parts of the code below are borrowed from Kopete project (http://kopete.kde.org/)

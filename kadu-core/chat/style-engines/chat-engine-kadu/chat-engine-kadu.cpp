@@ -269,7 +269,7 @@ void KaduChatStyleEngine::prepareStylePreview(Preview *preview, QString styleNam
 			text += Parser::parse(syntax.withHeader(), Talkable(sender), message);
 		}
 	}
-	preview->setHtml(QString("<html><head><style type='text/css'>%1</style></head><body>%2</body>").arg(ChatStylesManager::instance()->mainStyle(), text));
+	preview->webView()->setHtml(QString("<html><head><style type='text/css'>%1</style></head><body>%2</body>").arg(ChatStylesManager::instance()->mainStyle(), text));
 }
 
 void KaduChatStyleEngine::styleEditionRequested(QString styleName)

@@ -62,9 +62,6 @@ protected:
 	virtual void mousePressEvent(QMouseEvent *e);
 	virtual void mouseReleaseEvent(QMouseEvent *e);
 
-	void setUserFont(const QString &fontString, bool force);
-	QString userFontStyle(const QFont &font, bool force);
-
 #ifdef Q_WS_MAEMO_5
 	virtual bool eventFilter(QObject *, QEvent *e);
 #endif
@@ -75,6 +72,9 @@ public:
 
 	// hides QWebPage::setPage() (non-virtual)
 	void setPage(QWebPage *page);
+
+	void setUserFont(const QString &fontString, bool force);
+	QString userFontStyle(const QFont &font, bool force);
 
 };
 

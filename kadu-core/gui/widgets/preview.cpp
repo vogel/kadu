@@ -21,32 +21,33 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QApplication>
-#include <QtGui/QFrame>
-#include <QtNetwork/QHostAddress>
+#include <QtGui/QHBoxLayout>
 
-#include "accounts/account-manager.h"
 #include "chat/style-engines/chat-engine-kadu/kadu-chat-syntax.h"
 #include "configuration/chat-configuration-holder.h"
+#include "gui/widgets/kadu-web-view.h"
 #include "message/message-render-info.h"
 #include "parser/parser.h"
-#include "status/status-type-manager.h"
-#include "status/status.h"
-
-#include "misc/misc.h"
 
 #include "preview.h"
 
 Preview::Preview(QWidget *parent) :
-		KaduWebView(parent)
+		QFrame(parent)
 {
+	setFrameStyle(QFrame::StyledPanel | QFrame::Raised);
 	setFixedHeight(PREVIEW_DEFAULT_HEIGHT);
 	setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
 
+	QHBoxLayout *layout = new QHBoxLayout(this);
+	layout->setContentsMargins(5, 5, 5, 5);
+
+	WebView = new KaduWebView(this);
+	layout->addWidget(WebView);
+
 	QPalette p = palette();
 	p.setBrush(QPalette::Base, Qt::transparent);
-	page()->setPalette(p);
-	setAttribute(Qt::WA_OpaquePaintEvent, false);
+	WebView->page()->setPalette(p);
+	WebView->setAttribute(Qt::WA_OpaquePaintEvent, false);
 
 	configurationUpdated();
 }
@@ -64,6 +65,11 @@ void Preview::addMessage(MessageRenderInfo *messageRenderInfo)
 const QList<MessageRenderInfo *> & Preview::messages() const
 {
 	return Messages;
+}
+
+KaduWebView * Preview::webView() const
+{
+	return WebView;
 }
 
 void Preview::syntaxChanged(const QString &content)
@@ -89,22 +95,10 @@ void Preview::syntaxChanged(const QString &content)
 
 	emit needFixup(text);
 
-	setHtml(text);
-}
-
-void Preview::paintEvent(QPaintEvent *event)
-{
-	QFrame frame;
-	frame.setFrameStyle(QFrame::StyledPanel | QFrame::Raised);
-	frame.resize(size());
-	QPainter painter(this);
-	QPixmap framepixmap = QPixmap::grabWidget(&frame);
-	painter.drawPixmap(0, 0, framepixmap);
-
-	KaduWebView::paintEvent(event);
+	WebView->setHtml(text);
 }
 
 void Preview::configurationUpdated()
 {
-	setUserFont(ChatConfigurationHolder::instance()->chatFont().toString(), ChatConfigurationHolder::instance()->forceCustomChatFont());
+	WebView->setUserFont(ChatConfigurationHolder::instance()->chatFont().toString(), ChatConfigurationHolder::instance()->forceCustomChatFont());
 }
