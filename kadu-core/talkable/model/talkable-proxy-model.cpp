@@ -99,7 +99,7 @@ bool TalkableProxyModel::lessThan(const Buddy &left, const Buddy &right) const
 		if (leftHasUnreadMessages && !rightHasUnreadMessages)
 			return true;
 		if (!leftHasUnreadMessages && rightHasUnreadMessages)
-			return true;
+			return false;
 
 		const Contact &leftContact = BuddyPreferredManager::instance()->preferredContact(left, false);
 		const Contact &rightContact = BuddyPreferredManager::instance()->preferredContact(right, false);
