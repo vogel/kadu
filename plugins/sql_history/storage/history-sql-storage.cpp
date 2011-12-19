@@ -252,7 +252,10 @@ int HistorySqlStorage::findOrCreateChat(const Chat &chat)
 	executeQuery(query);
 
 	if (query.next())
+	{
 		chatId = query.value(0).toInt();
+		Q_ASSERT(!query.next());
+	}
 	else
 	{
 		QSqlQuery query(Database);
@@ -286,7 +289,10 @@ int HistorySqlStorage::findOrCreateContact(const Contact &contact)
 	executeQuery(query);
 
 	if (query.next())
+	{
 		contactId = query.value(0).toInt();
+		Q_ASSERT(!query.next());
+	}
 	else
 	{
 		QSqlQuery query(Database);
@@ -321,7 +327,10 @@ int HistorySqlStorage::findOrCreateDate(const QDate &date)
 	executeQuery(query);
 
 	if (query.next())
+	{
 		dateId = query.value(0).toInt();
+		Q_ASSERT(!query.next());
+	}
 	else
 	{
 		QSqlQuery query(Database);
