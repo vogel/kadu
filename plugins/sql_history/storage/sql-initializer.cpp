@@ -30,7 +30,7 @@
 
 #include "sql-initializer.h"
 
-#define SCHEMA_VERSION "2"
+#define SCHEMA_VERSION "3"
 #define OLD_HISTORY_FILE "history/history.db"
 #define HISTORY_FILE "history1.db"
 
@@ -147,6 +147,13 @@ void SqlInitializer::initDatabase()
 			}
 			importVersion1Schema();
 			break;
+		case 2:
+			if (!importStartedEmitted)
+			{
+				emit importStarted();
+				importStartedEmitted = true;
+			}
+			importVersion2Schema();
 		default:
 			break; // no need to import
 	}
@@ -167,7 +174,7 @@ void SqlInitializer::initKaduSchemaTable()
 {
 	QSqlQuery query(Database);
 
-	query.prepare("CREATE TABLE schema_version(version id INTEGER);");
+	query.prepare("CREATE TABLE IF NOT EXISTS schema_version(version id INTEGER);");
 	query.exec();
 
 	query.prepare("DELETE FROM schema_version;");
@@ -381,5 +388,61 @@ void SqlInitializer::importVersion1Schema()
 	Database.commit();
 
 	query.prepare("VACUUM;");
+	query.exec();
+}
+
+void SqlInitializer::importVersion2Schema()
+{
+	Database.transaction();
+
+	removeDuplicatesFromVersion2Schema("kadu_chats", "uuid", "chat_id");
+	removeDuplicatesFromVersion2Schema("kadu_contacts", "uuid", "contact_id");
+	removeDuplicatesFromVersion2Schema("kadu_dates", "date", "date_id");
+	initKaduSchemaTable();
+
+	Database.commit();
+
+	QSqlQuery query(Database);
+	query.prepare("VACUUM;");
+	query.exec();
+}
+
+void SqlInitializer::removeDuplicatesFromVersion2Schema(const QString &idTableName, const QString &valueFieldName, const QString &idFieldName)
+{
+	QSqlQuery query(Database);
+
+	// typedef is needed for foreach
+	typedef QPair<QString, QStringList> IdsPair;
+	QHash<QString, IdsPair> chats;
+	query.prepare(QString("SELECT id, %1 FROM %2;").arg(valueFieldName, idTableName));
+	query.setForwardOnly(true);
+	query.exec();
+	while (query.next())
+	{
+		QString id = query.value(0).toString();
+		QString value = query.value(1).toString();
+		if (!chats.contains(value))
+			chats.insert(value, qMakePair(id, QStringList()));
+		else
+			chats[value].second.append(id);
+	}
+
+	QStringList badIds;
+	foreach (const IdsPair &pair, chats)
+	{
+		if (pair.second.isEmpty())
+			continue;
+
+		badIds << pair.second;
+
+		// This should be prepared outside of loop and ids should be only binded here.
+		// But I have no idea how to bind a list...
+		query.prepare(QString("UPDATE kadu_messages SET %1 = %2 WHERE %1 IN (%3)").arg(idFieldName, pair.first, pair.second.join(", ")));
+		query.setForwardOnly(true);
+		query.exec();
+	}
+
+	query.prepare(QString("DELETE FROM %1 WHERE id IN (%2);").arg(idTableName, badIds.join(", ")));
+	query.setForwardOnly(true);
 	query.exec();
 }

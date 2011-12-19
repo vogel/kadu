@@ -46,6 +46,8 @@ class SqlInitializer : public QObject
 	void initIndexes();
 
 	void importVersion1Schema();
+	void importVersion2Schema();
+	void removeDuplicatesFromVersion2Schema(const QString &idTableName, const QString &valueFieldName, const QString &idFieldName);
 
 public:
 	explicit SqlInitializer(QObject *parent = 0);
