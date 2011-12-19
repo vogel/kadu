@@ -49,6 +49,9 @@ SyntaxEditorWindow::SyntaxEditorWindow(const QSharedPointer<SyntaxList> &syntaxL
 		const QString &category, const QString &syntaxHint, QWidget *parent) :
 		QWidget(parent), DesktopAwareObject(this), syntaxList(syntaxList), syntaxName(syntaxName)
 {
+	// TODO: unused since a1a2ce99fa7c849560021ef9e9436f3cc1b7a3d6, fix API
+	Q_UNUSED(category);
+
 	setWindowRole("kadu-syntax-editor");
 
 	setWindowTitle(tr("Kadu syntax editor"));
