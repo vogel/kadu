@@ -113,11 +113,11 @@ void SqlInitializer::initDatabase()
 	if (!historyDir.exists())
 		historyDir.mkpath(profilePath("history"));
 
-	bool importStartedEmited = false;
+	bool importStartedEmitted = false;
 	if (isCopyingNeeded())
 	{
 		emit importStarted();
-		importStartedEmited = true;
+		importStartedEmitted = true;
 		copyHistoryFile();
 	}
 
@@ -140,15 +140,18 @@ void SqlInitializer::initDatabase()
 			Database.commit();
 			break;
 		case 1:
-			if (!importStartedEmited)
+			if (!importStartedEmitted)
+			{
 				emit importStarted();
+				importStartedEmitted = true;
+			}
 			importVersion1Schema();
 			break;
 		default:
 			break; // no need to import
 	}
 
-	if (importStartedEmited)
+	if (importStartedEmitted)
 		emit importFinished();
 }
 
