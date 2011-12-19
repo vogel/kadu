@@ -100,7 +100,7 @@ void AddBuddyWindow::createGui()
 
 	Layout = new QFormLayout(mainWidget);
 
-	AccountCombo = new AccountsComboBox(MyBuddy.isNull(), ActionsProxyModel::AlwaysVisible, this);
+	AccountCombo = new AccountsComboBox(MyBuddy.isNull(), ActionsProxyModel::NotVisibleWithOneRowSourceModel, this);
 	AccountCombo->setIncludeIdInDisplay(true);
 	AccountCombo->addFilter(new WriteableContactsListFilter(AccountCombo));
 
@@ -112,9 +112,6 @@ void AddBuddyWindow::createGui()
 		protocolFilter->setProtocolName(MyAccount.protocolName());
 		AccountCombo->addFilter(protocolFilter);
 	}
-
-	if (1 == AccountManager::instance()->count())
-		AccountCombo->setCurrentAccount(AccountManager::instance()->items().at(0));
 
 	if (MyBuddy && ForceBuddyAccount)
 	{
