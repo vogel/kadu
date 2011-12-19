@@ -91,7 +91,7 @@ QString IconsManager::iconPathAllowEmpty(const QString &path, const QString &siz
 	if (path == QLatin1String("protocols/common"))
 	{
 		QString protocolpath;
-		if (AccountManager::instance()->defaultAccount())
+		if (AccountManager::instance()->defaultAccount().protocolHandler())
 			protocolpath = AccountManager::instance()->defaultAccount().protocolHandler()->statusPixmapPath();
 		else
 			protocolpath = localProtocolPath;
@@ -227,7 +227,7 @@ const QIcon & IconsManager::iconByPath(const QString &path, bool allowEmpty)
 				if (path.contains(commonRegexp))
 				{
 					QString protocolpath;
-					if (AccountManager::instance()->defaultAccount())
+					if (AccountManager::instance()->defaultAccount().protocolHandler())
 						protocolpath = AccountManager::instance()->defaultAccount().protocolHandler()->statusPixmapPath();
 					else
 						protocolpath = localProtocolPath;
