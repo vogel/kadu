@@ -237,7 +237,7 @@ void ChatWidget::createContactsList()
 	BuddiesWidget->setTreeView(view);
 
 	QToolBar *toolBar = new QToolBar(contactsListContainer);
-	toolBar->addAction(Actions::instance()->createAction("editChatAction", InputBox->actionContext(), toolBar));
+	toolBar->addAction(Actions::instance()->createAction("editUserAction", InputBox->actionContext(), toolBar));
 	toolBar->addAction(Actions::instance()->createAction("leaveChatAction", InputBox->actionContext(), toolBar));
 
 	layout->addWidget(toolBar);
