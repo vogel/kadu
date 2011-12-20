@@ -20,16 +20,12 @@
         </translation>
     </message>
     <message>
-        <source>Show message content in hint</source>
-        <translation>Pokaż treść wiadomości w dymku</translation>
+        <source>Show message content</source>
+        <translation>Pokaż treść wiadomości</translation>
     </message>
     <message>
         <source>Number of quoted characters</source>
         <translation>Liczba cytowanych znaków</translation>
-    </message>
-    <message>
-        <source>System</source>
-        <translation>System</translation>
     </message>
     <message>
         <source>System notifications</source>
