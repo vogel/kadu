@@ -57,7 +57,6 @@ void StandardUrlHandler::convertUrlsToHtml(HtmlDocument &document, bool generate
 		QString displayLink = Qt::escape(text.mid(index, length));
 		QString aLink = displayLink;
 
-		aLink.replace("%20", "%2520"); // Opera's bug workaround - allows opening links with spaces
 		if (!aLink.contains("://"))
 			aLink.prepend("http://");
 
