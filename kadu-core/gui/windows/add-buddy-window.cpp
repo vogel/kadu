@@ -140,11 +140,6 @@ void AddBuddyWindow::createGui()
 	MergeBuddy = new QCheckBox(tr("Merge with existing buddy"), this);
 	Layout->addRow(0, MergeBuddy);
 
-	GroupCombo = new GroupsComboBox(this);
-	Layout->addRow(tr("Add in group:"), GroupCombo);
-
-	NonMergeWidgets.append(GroupCombo);
-
 	DisplayNameEdit = new QLineEdit(this);
 	Layout->addRow(tr("Visible name:"), DisplayNameEdit);
 
@@ -167,6 +162,11 @@ void AddBuddyWindow::createGui()
 
 	NonMergeWidgets.append(hintLabel);
 
+	GroupCombo = new GroupsComboBox(this);
+	Layout->addRow(tr("Add in group:"), GroupCombo);
+
+	NonMergeWidgets.append(GroupCombo);
+
 	SelectBuddy = new SelectBuddyComboBox(this);
 	SelectBuddy->setEnabled(false);
 	SelectBuddy->setVisible(false);
@@ -176,8 +176,6 @@ void AddBuddyWindow::createGui()
 
 	AskForAuthorization = new QCheckBox(tr("Ask contact for authorization"), this);
 	Layout->addRow(0, AskForAuthorization);
-
-	NonMergeWidgets.append(AskForAuthorization);
 
 	AllowToSeeMeCheck = new QCheckBox(tr("Allow buddy to see me when I'm available"), this);
 	AllowToSeeMeCheck->setChecked(true);

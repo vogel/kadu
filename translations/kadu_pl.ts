@@ -1403,7 +1403,7 @@ znajomych po połączeniu się z serwerem</translation>
     </message>
     <message>
         <source>Ask contact for authorization</source>
-        <translation>Poproś kontakt o autoryzacj</translation>
+        <translation>Poproś kontakt o autoryzację</translation>
     </message>
     <message>
         <source>Allow buddy to see me when I&apos;m available</source>
