@@ -104,7 +104,7 @@ class Protocol;
  *       <li>protocol connection closed -> logged out, online</li>
  *     </ul>
  *   </dd>
- *   <dt>loggged in in</dt>
+ *   <dt>Logged in</dt>
  *   <dd>
  *     This state is used when protocol is logged in. This state can be only entered after Logging in state
  *     and is used by protocol objects to set up services, rosters and other data, see Protocol::afterLoggedIn().
