@@ -62,9 +62,8 @@ void GaduAvatarUploader::authorized(OAuthToken token)
 	{
 		emit avatarUploaded(false, Avatar);
 		deleteLater();
+		return;
 	}
-
-	QByteArray boundary = QByteArray("-----------------------------") + QUuid::createUuid().toString().remove(QRegExp("[{}-]")).toUtf8();
 
 	QBuffer avatarBuffer;
 	avatarBuffer.open(QIODevice::WriteOnly);
@@ -72,32 +71,16 @@ void GaduAvatarUploader::authorized(OAuthToken token)
 	avatarBuffer.close();
 
 	QByteArray url;
-	url += "http://api.gadu-gadu.pl/avatars/";
-	url += token.consumer().consumerKey();
-	url += "/0.xml";
+	url += "http://avatars.nowe.gg/upload";
 
 	QByteArray payload;
-	payload += "--";
-	payload += boundary;
-	payload += "\r\n";
-	payload += "Content-Disposition: form-data; name=\"_method\"\r\n";
-	payload += "\r\n";
-	payload += "PUT\r\n";
-	payload += "--";
-	payload += boundary;
-	payload += "\r\n";
-	payload += "Content-Disposition: form-data; name=\"avatar\"; filename=\"avatar.png\"\r\n";
-	payload += "Content-Type: image/png\r\n";
-	payload += "\r\n";
+	payload += "uin=" + MyAccount.id();
+	payload += "&photo=";
 	payload += avatarBuffer.buffer();
-	payload += "\r\n";
-	payload += "--";
-	payload += boundary;
-	payload += "--\r\n";
 
 	QNetworkRequest putAvatarRequest;
 	putAvatarRequest.setUrl(QString(url));
-	putAvatarRequest.setHeader(QNetworkRequest::ContentTypeHeader, QByteArray("multipart/form-data; boundary=") + boundary);
+	putAvatarRequest.setHeader(QNetworkRequest::ContentTypeHeader, QByteArray("application/x-www-form-urlencoded"));
 
 	OAuthParameters parameters(token.consumer(), token);
 	parameters.setHttpMethod("PUT");

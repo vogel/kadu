@@ -37,17 +37,20 @@ OAuthAuthorization::~OAuthAuthorization()
 void OAuthAuthorization::authorize()
 {
 	QByteArray payback;
-	payback += "callback_url=http://www.mojageneracja.pl&request_token=";
-	payback += Token.token();
+	payback += "callback_url=";
+	payback += QUrl::toPercentEncoding("http://www.mojageneracja.pl");
+	payback += "&request_token=";
+	payback += QUrl::toPercentEncoding(Token.token());
 	payback += "&uin=";
-	payback += Token.consumer().consumerKey();
+	payback += QUrl::toPercentEncoding(Token.consumer().consumerKey());
 	payback += "&password=";
-	payback += Token.consumer().consumerSecret();
+	payback += QUrl::toPercentEncoding(Token.consumer().consumerSecret());
 
 	QNetworkRequest request;
 	request.setUrl(AuthorizationUrl);
 	request.setRawHeader("Connection", "close");
-	request.setRawHeader("Content-Length", QByteArray::number(payback.size()));
+	request.setHeader(QNetworkRequest::ContentLengthHeader, QByteArray::number(payback.size()));
+	request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
 
 	Reply = NetworkAccessManager->post(request, payback);
 	connect(Reply, SIGNAL(finished()), this, SLOT(requestFinished()));
