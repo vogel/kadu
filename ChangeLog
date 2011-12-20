@@ -28,6 +28,7 @@
 * gui: #2070 fixed: proper link to online help in help menu (Vogel)
 * jabber: #2080 fixed: do not crash when chaning password (Vogel)
 * gadu: #2364 fixed: updated avatar upload code to match current GG implementation (Vogel)
+* core: #2288 fixed: mark all contacts as offline after network error (Vogel)
 
 +++ version 0.10.1
 * gadu: clearer contact list synchronization message when updating from <0.10.0 (beevvy)

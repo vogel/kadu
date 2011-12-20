@@ -199,6 +199,11 @@ KaduIcon Protocol::statusIcon(const Status &status)
 
 void Protocol::loggingInStateEntered()
 {
+	// this may be called from our connection error-handling code, when user wants to be logged in
+	// at any cost, so we should assume that we were just disconnected
+	// better do some cleanup then
+	disconnectedCleanup();
+
 	if (!CurrentAccount.details() || account().id().isEmpty())
 	{
 		emit stateMachineConnectionClosed();
