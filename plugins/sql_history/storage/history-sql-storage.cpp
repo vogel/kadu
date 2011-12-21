@@ -171,6 +171,10 @@ bool HistorySqlStorage::isDatabaseReady(bool wait)
 
 void HistorySqlStorage::initQueries()
 {
+	AppendMessageQuery = QSqlQuery(Database);
+	AppendMessageQuery.prepare("INSERT INTO kadu_messages (chat_id, contact_id, send_time, receive_time, date_id, is_outgoing, content_id) VALUES "
+			"(:chat_id, :contact_id, :send_time, :receive_time, :date_id, :is_outgoing, :content_id)");
+
 	AppendStatusQuery = QSqlQuery(Database);
 	AppendStatusQuery.prepare("INSERT INTO kadu_statuses (contact, status, set_time, description) VALUES "
 			"(:contact, :status, :set_time, :description)");
@@ -372,10 +376,6 @@ void HistorySqlStorage::appendMessage(const Message &message)
 	int outgoing = (message.type() == MessageTypeSent)
 			? 1
 			: 0;
-
-	AppendMessageQuery = QSqlQuery(Database);
-	AppendMessageQuery.prepare("INSERT INTO kadu_messages (chat_id, contact_id, send_time, receive_time, date_id, is_outgoing, content_id) VALUES "
-			"(:chat_id, :contact_id, :send_time, :receive_time, :date_id, :is_outgoing, :content_id)");
 
 	AppendMessageQuery.bindValue(":chat_id", findOrCreateChat(message.messageChat()));
 	AppendMessageQuery.bindValue(":contact_id", findOrCreateContact(message.messageSender()));
