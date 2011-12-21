@@ -529,7 +529,7 @@ QVector<Chat> HistorySqlStorage::chats(const HistorySearchParameters &search)
 	QMutexLocker locker(&DatabaseMutex);
 
 	QString joins = !search.query().isEmpty() || search.fromDate().isValid() || search.toDate().isValid()
-		? "LEFT JOIN kadu_messages km ON (kadu_chats.id=km.chat_id) LEFT JOIN kadu_dates kd ON (kd.id=km.date_id) LEFT JOIN kadu_message_contents ON (kadu_message_contents.id=kadu_messages.content_id) "
+		? "LEFT JOIN kadu_messages km ON (kadu_chats.id=km.chat_id) LEFT JOIN kadu_dates kd ON (kd.id=km.date_id) LEFT JOIN kadu_message_contents kmc ON (kmc.id=km.content_id) "
 		: "";
 
 	QSqlQuery query(Database);
