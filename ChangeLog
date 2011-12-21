@@ -1,4 +1,7 @@
-﻿+++ version 0.11.0-beta1
+﻿+++ version 0.11.0-beta2
+* gui: #2192 fixed: added option to hide main window from taskbar on Windows (beevvy)
+
++++ version 0.11.0-beta1
 * plugins: #2272 fixed: added possibility to tell Kadu to try to load plugin failing to load on next Kadu run (beevvy)
 * gadu: fixed compatibility with advanced message formatting including text mixed with multiple images (beevvy)
 * build: support defining plugins to be compiled through commandline -DCOMPILE_PLUGINS=... argument (beevvy)

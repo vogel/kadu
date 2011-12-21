@@ -35,6 +35,7 @@
 			<group-box name="Advanced">
 				<proxy-combo-box caption="Default proxy" config-section="Network" config-item="DefaultProxy" />
 				<check-box caption="Allow executing commands by parser" config-section="General" config-item="AllowExecutingFromParser" />
+				<check-box caption="Hide main window icon from taskbar" config-section="General" config-item="HideMainWindowFromTaskbar" id="hideMainWindowFromTaskbar" />
 				<combo-box caption="Select window activation method" config-section="General" config-item="WindowActivationMethod" id="windowActivationMethod" >
 					<item value="0" caption="Move the Window to the Active Desktop" />
 					<item value="1" caption="Switch Desktop Making the Window Visible" />

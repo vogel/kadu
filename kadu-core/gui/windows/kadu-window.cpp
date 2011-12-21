@@ -33,6 +33,10 @@
 #include <QtGui/QSplitter>
 #include <QtGui/QVBoxLayout>
 
+#ifdef Q_WS_WIN
+#include <windows.h>
+#endif
+
 #include "buddies/buddy-set.h"
 #include "chat/model/chat-data-extractor.h"
 #include "chat/recent-chat-manager.h"
@@ -425,6 +429,13 @@ void KaduWindow::changeEvent(QEvent *event)
 		if (!_isActiveWindow(this))
 			Roster->clearFilter();
 	}
+#ifdef Q_WS_WIN
+	else if (event->type() == QEvent::WindowStateChange)
+	{
+		if (Docked && isMinimized() && config_file.readBoolEntry("General", "HideMainWindowFromTaskbar"))
+			QMetaObject::invokeMethod(this, "hide", Qt::QueuedConnection);
+	}
+#endif
 	else if (event->type() == QEvent::ParentChange)
 	{
 		QWidget *previousWindowParent = WindowParent;
@@ -451,6 +462,20 @@ TalkableProxyModel * KaduWindow::talkableProxyModel()
 
 void KaduWindow::configurationUpdated()
 {
+#ifdef Q_WS_WIN
+	// This window already has parent, see Core::createGui().
+
+	bool wasVisible = isVisible();
+	setVisible(false);
+	LONG_PTR newWindowLongPtr = GetWindowLongPtr(winId(), GWL_EXSTYLE);
+	if (config_file.readBoolEntry("General", "HideMainWindowFromTaskbar"))
+		newWindowLongPtr &= ~WS_EX_APPWINDOW;
+	else
+		newWindowLongPtr |= WS_EX_APPWINDOW;
+	SetWindowLongPtr(winId(), GWL_EXSTYLE, newWindowLongPtr);
+	setVisible(wasVisible);
+#endif
+
 	setDocked(Docked);
 
 	ChangeStatusButtons->setVisible(config_file.readBoolEntry("Look", "ShowStatusButton"));

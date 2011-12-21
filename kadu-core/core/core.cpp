@@ -138,8 +138,11 @@ Core::~Core()
 
 	MainConfigurationHolder::destroyInstance();
 
+	// see Core::createGui()
+	QWidget *hiddenParent = Window->parentWidget();
 	delete Window;
 	Window = 0;
+	delete hiddenParent;
 
 	triggerAllAccountsUnregistered();
 
@@ -208,6 +211,9 @@ void Core::createDefaultConfiguration()
 	config_file.addVariable("General", "DEBUG_MASK", KDEBUG_ALL & ~KDEBUG_FUNCTION_END);
 	config_file.addVariable("General", "DescriptionHeight", 60);
 	config_file.addVariable("General", "DisconnectWithCurrentDescription", true);
+#ifdef Q_WS_WIN
+	config_file.addVariable("General", "HideMainWindowFromTaskbar", false);
+#endif
 	config_file.addVariable("General", "Language",  QLocale::system().name().left(2));
 	config_file.addVariable("General", "Nick", tr("Me"));
 	config_file.addVariable("General", "NumberOfDescriptions", 20);
@@ -504,7 +510,15 @@ void Core::configurationUpdated()
 
 void Core::createGui()
 {
-	Window = new KaduWindow(0);
+	QWidget *hiddenParent = 0;
+#ifdef Q_WS_WIN
+	/* On Windows the only way to not show a window in the taskbar without making it a toolwindow
+	 * is to turn off the WS_EX_APPWINDOW style and provide it with a parent (which will be hidden
+	 * in our case).
+	 */
+	hiddenParent = new QWidget();
+#endif
+	Window = new KaduWindow(hiddenParent);
 	Window->setWindowIcon(QApplication::windowIcon());
 	connect(Window, SIGNAL(destroyed()), this, SLOT(kaduWindowDestroyed()));
 

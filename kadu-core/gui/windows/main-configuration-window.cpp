@@ -185,6 +185,7 @@ MainConfigurationWindow::MainConfigurationWindow() :
 
 #ifndef Q_OS_WIN
 	widget()->widgetById("startup")->hide();
+	widget()->widgetById("hideMainWindowFromTaskbar")->hide();
 #endif
 
 #ifndef Q_WS_X11
