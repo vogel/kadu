@@ -41,13 +41,3 @@ void ConfigLineSeparator::createWidgets()
 	setMinimumHeight(2*margin+1);
 	parentConfigGroupBox->addWidget(this, true);
 }
-
-void ConfigLineSeparator::show()
-{
-	QFrame::show();
-}
-
-void ConfigLineSeparator::hide()
-{
-	QFrame::hide();
-}

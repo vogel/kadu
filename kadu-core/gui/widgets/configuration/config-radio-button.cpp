@@ -67,13 +67,3 @@ void ConfigRadioButton::saveConfiguration()
 
 	dataManager->writeEntry(section, item, QVariant(isChecked() ? "true" : "false"));
 }
-
-void ConfigRadioButton::show()
-{
-	QRadioButton::show();
-}
-
-void ConfigRadioButton::hide()
-{
-	QRadioButton::hide();
-}

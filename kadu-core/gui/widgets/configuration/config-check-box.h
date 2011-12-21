@@ -45,8 +45,6 @@ public:
 	virtual void loadConfiguration();
 	virtual void saveConfiguration();
 
-	virtual void show();
-	virtual void hide();
 };
 
 #endif

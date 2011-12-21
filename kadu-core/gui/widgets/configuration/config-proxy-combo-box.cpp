@@ -86,16 +86,10 @@ void ConfigProxyComboBox::saveConfiguration()
 	}
 }
 
-void ConfigProxyComboBox::show()
+void ConfigProxyComboBox::setVisible(bool visible)
 {
-	Label->show();
-	ProxyComboBox::show();
-}
-
-void ConfigProxyComboBox::hide()
-{
-	Label->hide();
-	ProxyComboBox::hide();
+	Label->setVisible(visible);
+	ProxyComboBox::setVisible(visible);
 }
 
 bool ConfigProxyComboBox::fromDomElement(QDomElement domElement)

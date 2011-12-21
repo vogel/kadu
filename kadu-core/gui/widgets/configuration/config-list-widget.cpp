@@ -76,16 +76,10 @@ void ConfigListWidget::createWidgets()
 	}
 }
 
-void ConfigListWidget::show()
+void ConfigListWidget::setVisible(bool visible)
 {
-	label->show();
-	QListWidget::show();
-}
-
-void ConfigListWidget::hide()
-{
-	label->hide();
-	QListWidget::hide();
+	label->setVisible(visible);
+	QListWidget::setVisible(visible);
 }
 
 bool ConfigListWidget::fromDomElement(QDomElement domElement)

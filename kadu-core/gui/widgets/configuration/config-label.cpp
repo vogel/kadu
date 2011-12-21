@@ -50,16 +50,6 @@ void ConfigLabel::createWidgets()
 		setToolTip(qApp->translate("@default", ConfigWidget::toolTip.toUtf8().constData()));
 }
 
-void ConfigLabel::show()
-{
-	QLabel::show();
-}
-
-void ConfigLabel::hide()
-{
-	QLabel::hide();
-}
-
 void ConfigLabel::setText(const QString &text, bool defaultFormatting)
 {
 	QLabel::setText((defaultFormatting ? "<font size='-1'><i>" : "") + text + (defaultFormatting ? "</i></font>" : ""));

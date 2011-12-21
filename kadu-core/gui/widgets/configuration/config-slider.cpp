@@ -79,16 +79,10 @@ void ConfigSlider::saveConfiguration()
 	dataManager->writeEntry(section, item, QString::number(value()));
 }
 
-void ConfigSlider::show()
+void ConfigSlider::setVisible(bool visible)
 {
-	label->show();
-	QSlider::show();
-}
-
-void ConfigSlider::hide()
-{
-	label->hide();
-	QSlider::hide();
+	label->setVisible(visible);
+	QSlider::setVisible(visible);
 }
 
 bool ConfigSlider::fromDomElement(QDomElement domElement)

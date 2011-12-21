@@ -75,14 +75,8 @@ void ConfigPathListEdit::saveConfiguration()
 	dataManager->writeEntry(section, item, QVariant(pathList().join("&")));
 }
 
-void ConfigPathListEdit::show()
+void ConfigPathListEdit::setVisible(bool visible)
 {
-	label->show();
-	PathListEdit::show();
-}
-
-void ConfigPathListEdit::hide()
-{
-	label->hide();
-	PathListEdit::hide();
+	label->setVisible(visible);
+	PathListEdit::setVisible(visible);
 }

@@ -46,11 +46,11 @@ public:
 	ConfigPathListEdit(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
 	virtual ~ConfigPathListEdit();
 
+	virtual void setVisible(bool visible);
+
 	virtual void loadConfiguration();
 	virtual void saveConfiguration();
 
-	virtual void show();
-	virtual void hide();
 };
 
 #endif

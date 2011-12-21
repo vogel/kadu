@@ -85,16 +85,10 @@ void ConfigSpinBox::saveConfiguration()
 	dataManager->writeEntry(section, item, QVariant(value()));
 }
 
-void ConfigSpinBox::show()
+void ConfigSpinBox::setVisible(bool visible)
 {
-	label->show();
-	QSpinBox::show();
-}
-
-void ConfigSpinBox::hide()
-{
-	label->hide();
-	QSpinBox::hide();
+	label->setVisible(visible);
+	QSpinBox::setVisible(visible);
 }
 
 bool ConfigSpinBox::fromDomElement(QDomElement domElement)

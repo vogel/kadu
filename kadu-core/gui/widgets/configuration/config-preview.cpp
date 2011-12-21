@@ -53,16 +53,10 @@ void ConfigPreview::createWidgets()
 	parentConfigGroupBox->addWidgets(label, this);
 }
 
-void ConfigPreview::show()
+void ConfigPreview::setVisible(bool visible)
 {
-	label->show();
-	Preview::show();
-}
-
-void ConfigPreview::hide()
-{
-	label->hide();
-	QWidget::hide();
+	label->setVisible(visible);
+	Preview::setVisible(visible);
 }
 
 bool ConfigPreview::fromDomElement(QDomElement domElement)

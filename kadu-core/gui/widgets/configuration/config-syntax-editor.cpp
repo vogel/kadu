@@ -75,16 +75,10 @@ void ConfigSyntaxEditor::saveConfiguration()
 	dataManager->writeEntry(section, item, currentSyntax());
 }
 
-void ConfigSyntaxEditor::show()
+void ConfigSyntaxEditor::setVisible(bool visible)
 {
-	label->show();
-	SyntaxEditor::show();
-}
-
-void ConfigSyntaxEditor::hide()
-{
-	label->hide();
-	SyntaxEditor::hide();
+	label->setVisible(visible);
+	SyntaxEditor::setVisible(visible);
 }
 
 bool ConfigSyntaxEditor::fromDomElement(QDomElement domElement)

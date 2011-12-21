@@ -121,16 +121,10 @@ void ConfigComboBox::saveConfiguration()
 		dataManager->writeEntry(section, item, QVariant(itemValues[currentIndex()]));
 }
 
-void ConfigComboBox::show()
+void ConfigComboBox::setVisible(bool visible)
 {
-	label->show();
-	QComboBox::show();
-}
-
-void ConfigComboBox::hide()
-{
-	label->hide();
-	QComboBox::hide();
+	label->setVisible(visible);
+	QComboBox::setVisible(visible);
 }
 
 bool ConfigComboBox::fromDomElement(QDomElement domElement)

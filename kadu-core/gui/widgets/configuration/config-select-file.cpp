@@ -75,16 +75,10 @@ void ConfigSelectFile::saveConfiguration()
 	dataManager->writeEntry(section, item, file());
 }
 
-void ConfigSelectFile::show()
+void ConfigSelectFile::setVisible(bool visible)
 {
-	label->show();
-	SelectFile::show();
-}
-
-void ConfigSelectFile::hide()
-{
-	label->hide();
-	SelectFile::hide();
+	label->setVisible(visible);
+	SelectFile::setVisible(visible);
 }
 
 bool ConfigSelectFile::fromDomElement(QDomElement domElement)

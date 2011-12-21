@@ -47,11 +47,11 @@ public:
 	ConfigHotKeyEdit(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
 	virtual ~ConfigHotKeyEdit();
 
+	virtual void setVisible(bool visible);
+
 	virtual void loadConfiguration();
 	virtual void saveConfiguration();
 
-	virtual void show();
-	virtual void hide();
 };
 
 #endif

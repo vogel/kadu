@@ -73,14 +73,8 @@ void ConfigLineEdit::saveConfiguration()
 	dataManager->writeEntry(section, item, QVariant(text()));
 }
 
-void ConfigLineEdit::show()
+void ConfigLineEdit::setVisible(bool visible)
 {
-	label->show();
-	QLineEdit::show();
-}
-
-void ConfigLineEdit::hide()
-{
-	label->hide();
-	QLineEdit::hide();
+	label->setVisible(visible);
+	QLineEdit::setVisible(visible);
 }

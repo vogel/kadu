@@ -76,14 +76,8 @@ void ConfigSelectFont::saveConfiguration()
 	dataManager->writeEntry(section, item, QVariant(font().toString()));
 }
 
-void ConfigSelectFont::show()
+void ConfigSelectFont::setVisible(bool visible)
 {
-	label->show();
-	SelectFont::show();
-}
-
-void ConfigSelectFont::hide()
-{
-	label->hide();
-	SelectFont::hide();
+	label->setVisible(visible);
+	SelectFont::setVisible(visible);
 }

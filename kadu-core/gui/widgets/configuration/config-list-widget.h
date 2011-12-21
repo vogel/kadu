@@ -59,15 +59,16 @@ public:
 	ConfigListWidget(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
 	virtual ~ConfigListWidget();
 
+	virtual void setVisible(bool visible);
+
 	void setItems(const QStringList &itemValues, const QStringList &itemCaptions);
 	const QString & currentItemValue() { return itemValues.at(currentRow()); }
 
 	virtual void loadConfiguration() {};
 	virtual void saveConfiguration() {};
 
-	virtual void show();
-	virtual void hide();
 	virtual bool fromDomElement(QDomElement domElement);
+
 };
 
 #endif

@@ -73,14 +73,8 @@ void ConfigHotKeyEdit::saveConfiguration()
 	dataManager->writeEntry(section, item, QVariant(shortCutString()));
 }
 
-void ConfigHotKeyEdit::show()
+void ConfigHotKeyEdit::setVisible(bool visible)
 {
-	label->show();
-	HotKeyEdit::show();
-}
-
-void ConfigHotKeyEdit::hide()
-{
-	label->hide();
-	HotKeyEdit::hide();
+	label->setVisible(visible);
+	HotKeyEdit::setVisible(visible);
 }

@@ -65,13 +65,3 @@ void ConfigCheckBox::saveConfiguration()
 		return;
 	dataManager->writeEntry(section, item, QVariant(isChecked() ? "true" : "false"));
 }
-
-void ConfigCheckBox::show()
-{
-	QCheckBox::show();
-}
-
-void ConfigCheckBox::hide()
-{
-	QCheckBox::hide();
-}

@@ -74,14 +74,8 @@ void ConfigColorButton::saveConfiguration()
 	dataManager->writeEntry(section, item, QVariant(color().name()));
 }
 
-void ConfigColorButton::show()
+void ConfigColorButton::setVisible(bool visible)
 {
-	label->show();
-	ColorButton::show();
-}
-
-void ConfigColorButton::hide()
-{
-	label->hide();
-	ColorButton::hide();
+	label->setVisible(visible);
+	ColorButton::setVisible(visible);
 }

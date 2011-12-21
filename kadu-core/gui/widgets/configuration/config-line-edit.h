@@ -47,11 +47,11 @@ public:
 	ConfigLineEdit(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
 	virtual ~ConfigLineEdit();
 
+	virtual void setVisible(bool visible);
+
 	virtual void loadConfiguration();
 	virtual void saveConfiguration();
 
-	virtual void show();
-	virtual void hide();
 };
 
 #endif

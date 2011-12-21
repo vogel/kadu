@@ -50,12 +50,13 @@ public:
 	ConfigSelectFile(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
 	virtual ~ConfigSelectFile();
 
+	virtual void setVisible(bool visible);
+
 	virtual void loadConfiguration();
 	virtual void saveConfiguration();
 
-	virtual void show();
-	virtual void hide();
 	virtual bool fromDomElement(QDomElement domElement);
+
 };
 
 #endif

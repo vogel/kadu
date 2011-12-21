@@ -54,7 +54,6 @@
 #include "gui/widgets/configuration/config-line-edit.h"
 #include "gui/widgets/configuration/config-path-list-edit.h"
 #include "gui/widgets/configuration/config-preview.h"
-#include "gui/widgets/configuration/config-slider.h"
 #include "gui/widgets/configuration/config-syntax-editor.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/proxy-combo-box.h"
@@ -196,8 +195,7 @@ MainConfigurationWindow::MainConfigurationWindow() :
 #if !defined(Q_WS_X11) || defined(Q_WS_MAEMO_5)
 	widget()->widgetById("useTransparency")->hide();
 	widget()->widgetById("userboxTransparency")->hide();
-	// cast is needed to call proper hide() method (QWidget::hide() is not virtual)
-	qobject_cast<ConfigSlider *>(widget()->widgetById("userboxAlpha"))->hide();
+	widget()->widgetById("userboxAlpha")->hide();
 	widget()->widgetById("useBlur")->hide();
 #endif
 

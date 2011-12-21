@@ -49,13 +49,3 @@ void ConfigActionButton::createWidgets()
 	if (!ConfigWidget::toolTip.isEmpty())
 		setToolTip(qApp->translate("@default", ConfigWidget::toolTip.toUtf8().constData()));
 }
-
-void ConfigActionButton::show()
-{
-	QPushButton::show();
-}
-
-void ConfigActionButton::hide()
-{
-	QPushButton::hide();
-}
