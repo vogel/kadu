@@ -53,8 +53,6 @@ public:
 	virtual void loadConfiguration() = 0;
 	virtual void saveConfiguration() = 0;
 
-	virtual void show() = 0;
-	virtual void hide() = 0;
 	virtual bool fromDomElement(QDomElement domElement);
 };
 

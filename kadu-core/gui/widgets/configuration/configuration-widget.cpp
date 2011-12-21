@@ -365,8 +365,6 @@ ConfigWidget * ConfigurationWidget::appendUiElementFromDom(QDomNode uiElementNod
 	if (!id.isEmpty())
 		Widgets.insert(id, dynamic_cast<QWidget *>(widget));
 
-	widget->show();
-
 	kdebugf2();
 	return widget;
 }
