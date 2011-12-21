@@ -74,7 +74,7 @@ KaduWindow::KaduWindow(QWidget *parent) :
 {
 	setWindowRole("kadu-main");
 
-	WindowParent = parent;
+	WindowParent = (window() != this) ? window() : 0;
 
 #ifdef Q_OS_MAC
 	/* Dorr: workaround for Qt window geometry bug when unified toolbars enabled */
@@ -379,28 +379,29 @@ void KaduWindow::storeConfiguration()
 
 void KaduWindow::closeEvent(QCloseEvent *e)
 {
-	if (!parentWidget())
+	if (!isWindow())
 	{
-		if (Docked)
-		{
-			e->ignore();
-			hide();
-		}
-		else
-		{
-			MainWindow::closeEvent(e);
-			qApp->quit();
-		}
+		e->ignore();
+		return;
+	}
+
+	if (Docked)
+	{
+		e->ignore();
+		hide();
 	}
 	else
+	{
 		MainWindow::closeEvent(e);
+		qApp->quit();
+	}
 }
 
 void KaduWindow::keyPressEvent(QKeyEvent *e)
 {
 	if (e->key() == Qt::Key_Escape)
 	{
-		if (Docked && !parentWidget())
+		if (Docked && isWindow())
 		{
 			kdebugm(KDEBUG_INFO, "Kadu::keyPressEvent(Key_Escape): Kadu hide\n");
 			hide();
@@ -424,10 +425,12 @@ void KaduWindow::changeEvent(QEvent *event)
 		if (!_isActiveWindow(this))
 			Roster->clearFilter();
 	}
-	if (event->type() == QEvent::ParentChange)
+	else if (event->type() == QEvent::ParentChange)
 	{
-		emit parentChanged(WindowParent);
-		WindowParent = parentWidget();
+		QWidget *previousWindowParent = WindowParent;
+		WindowParent = (window() != this) ? window() : 0;
+		if (previousWindowParent != WindowParent)
+			emit parentChanged(WindowParent);
 	}
 }
 
