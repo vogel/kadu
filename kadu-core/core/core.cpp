@@ -208,7 +208,6 @@ void Core::createDefaultConfiguration()
 	config_file.addVariable("General", "DEBUG_MASK", KDEBUG_ALL & ~KDEBUG_FUNCTION_END);
 	config_file.addVariable("General", "DescriptionHeight", 60);
 	config_file.addVariable("General", "DisconnectWithCurrentDescription", true);
-	config_file.addVariable("General", "HideBaseModules", true);
 	config_file.addVariable("General", "Language",  QLocale::system().name().left(2));
 	config_file.addVariable("General", "Nick", tr("Me"));
 	config_file.addVariable("General", "NumberOfDescriptions", 20);
