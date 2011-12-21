@@ -114,7 +114,7 @@ Chat AggregateChatManager::aggregateChat(const BuddySet &buddies)
 	Chat result = Chat::create();
 	result.setType("Aggregate");
 
-	ChatDetailsAggregate *details = dynamic_cast<ChatDetailsAggregate *>(result.details());
+	ChatDetailsAggregate *details = qobject_cast<ChatDetailsAggregate *>(result.details());
 	details->setChats(chats);
 
 	return result;
