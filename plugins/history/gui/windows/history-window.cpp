@@ -318,7 +318,9 @@ void HistoryWindow::updateData()
 
 void HistoryWindow::selectChat(const Chat &chat)
 {
-	QString typeName = chat.type();
+	ChatDetailsAggregate *aggregateDetails = qobject_cast<ChatDetailsAggregate *>(chat.details());
+	Q_ASSERT(!aggregateDetails || !aggregateDetails->chats().isEmpty());
+	QString typeName = aggregateDetails ? aggregateDetails->chats().at(0).type() : chat.type();
 	ChatType *type = ChatTypeManager::instance()->chatType(typeName);
 
 	if (!type)
