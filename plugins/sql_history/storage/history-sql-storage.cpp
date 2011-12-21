@@ -171,9 +171,6 @@ bool HistorySqlStorage::isDatabaseReady(bool wait)
 
 void HistorySqlStorage::initQueries()
 {
-	ListChatsQuery = QSqlQuery(Database);
-	ListChatsQuery.prepare("SELECT uuid FROM kadu_chats");
-
 	AppendStatusQuery = QSqlQuery(Database);
 	AppendStatusQuery.prepare("INSERT INTO kadu_statuses (contact, status, set_time, description) VALUES "
 			"(:contact, :status, :set_time, :description)");

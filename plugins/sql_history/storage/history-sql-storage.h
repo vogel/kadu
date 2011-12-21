@@ -47,7 +47,6 @@ class HistorySqlStorage : public HistoryStorage
 
 	QSqlDatabase Database;
 
-	QSqlQuery ListChatsQuery;
 	QSqlQuery AppendMessageQuery;
 	QSqlQuery AppendStatusQuery;
 	QSqlQuery AppendSmsQuery;
