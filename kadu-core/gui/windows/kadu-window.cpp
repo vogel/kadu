@@ -542,5 +542,4 @@ void KaduWindow::createDefaultToolbars(QDomElement parentConfig)
 void KaduWindow::setDocked(bool docked)
 {
 	Docked = docked;
-	qApp->setQuitOnLastWindowClosed(!Docked);
 }
