@@ -29,134 +29,207 @@
  * See http://mpris.org/ for more details about the standard
  */
 
-#include <QtCore/QDateTime>
-#include <QtCore/QString>
+#include <QtCore/QStringList>
+#include <QtDBus/QDBusArgument>
 #include <QtDBus/QDBusConnection>
+#include <QtDBus/QDBusConnectionInterface>
 #include <QtDBus/QDBusInterface>
-#include <QtDBus/QDBusMetaType>
 #include <QtDBus/QDBusReply>
-
-#include "debug.h"
 
 #include "plugins/mediaplayer/mediaplayer.h"
 
 #include "mpris_controller.h"
 
-QDBusArgument &operator<<(QDBusArgument& arg, const PlayerStatus& ps)
-{
-	arg.beginStructure();
-	arg << ps.i1;
-	arg << ps.i2;
-	arg << ps.i3;
-	arg << ps.i4;
-	arg.endStructure();
-	return arg;
-}
-
-const QDBusArgument &operator>>(const QDBusArgument& arg, PlayerStatus& ps)
-{
-	arg.beginStructure();
-	arg >> ps.i1;
-	arg >> ps.i2;
-	arg >> ps.i3;
-	arg >> ps.i4;
-	arg.endStructure();
-	return arg;
-}
-
-MPRISController::MPRISController(const QString &s, QObject *parent) :
-	QObject(parent), service(s)
+MPRISController::MPRISController(const QString &service, QObject *parent) :
+		QObject(parent), CurrentStatus(StatusStopped), Active(false), Service(service)
 {
 	QDBusConnection bus = QDBusConnection::sessionBus();
 
-	qDBusRegisterMetaType<PlayerStatus>();
-	bus.connect(
-			service,
-			"/Player",
-			"org.freedesktop.MediaPlayer",
-			"StatusChange",
-			"(iiii)",
-			this,
-			SLOT(statusChanged(PlayerStatus)));
+	bus.connect("org.freedesktop.DBus", "/org/freedesktop/DBus", "org.freedesktop.DBus",
+	            QLatin1String("NameOwnerChanged"), this, SLOT(nameOwnerChanged(QString, QString, QString)));
 
-	bus.connect(
-			service,
-			"/Player",
-			"org.freedesktop.MediaPlayer",
-			"TrackChange",
-			"a{sv}",
-			this,
-			SLOT(trackChanged(QVariantMap)));
-
-	active_ = (bus.lastError().type() == QDBusError::NoError);
-
-	currentTrack_.time   =  0;
-	currentStatus_.i1    =  2;
+	if (bus.interface()->registeredServiceNames().value().contains(Service))
+		activate();
 }
 
 MPRISController::~MPRISController()
 {
 	QDBusConnection bus = QDBusConnection::sessionBus();
 
-	bus.disconnect(
-			service,
-			"/Player",
-			"org.freedesktop.MediaPlayer",
-			"StatusChange",
-			"(iiii)",
-			this,
-			SLOT(statusChanged(PlayerStatus)));
-
-	bus.disconnect(
-			service,
-			"/Player",
-			"org.freedesktop.MediaPlayer",
-			"TrackChange",
-			"a{sv}",
-			this,
-			SLOT(trackChanged(QVariantMap)));
+	bus.disconnect("org.freedesktop.DBus", "/org/freedesktop/DBus", "org.freedesktop.DBus",
+	               QLatin1String("NameOwnerChanged"), this, SLOT(nameOwnerChanged(QString, QString, QString)));
 }
 
-void MPRISController::statusChanged(const PlayerStatus &status)
+MPRISController::PlayerStatus MPRISController::status() const
 {
-	if (!active_)
-		active_ = true;
+	return CurrentStatus;
+}
 
-	currentStatus_ = status;
+const TrackInfo & MPRISController::track() const
+{
+	return CurrentTrack;
+}
+
+bool MPRISController::active() const
+{
+	return Active;
+}
+
+void MPRISController::activate()
+{
+	if (Active)
+		return;
+
+	Active = true;
+
+	QDBusConnection::sessionBus().connect(Service, "/org/mpris/MediaPlayer2", "org.freedesktop.DBus.Properties",
+	                                      "PropertiesChanged", this, SLOT(propertiesChanged(QDBusMessage)));
+
+	fetchStatus();
+	fetchMetadata();
+
 	MediaPlayer::instance()->statusChanged();
 }
 
-void MPRISController::trackChanged(const QVariantMap &map)
+void MPRISController::deactivate()
 {
-	active_ = true;
-	QString title = map.value("title").toString();
-	if (title != currentTrack_.title)
-	{
-		currentStatus_.i1     = 0; /* is playing */
-		currentTrack_.title   = title;
-		currentTrack_.album   = map.value("album").toString();
-		currentTrack_.artist  = map.value("artist").toString();
-		currentTrack_.track   = map.value("tracknumber").toString();
-		currentTrack_.file    = map.value("location").toString();
-		if (currentTrack_.file.isEmpty())
-			currentTrack_.file    = map.value("URI").toString();
-		currentTrack_.time    = map.value("mtime").toUInt();
-		if (currentTrack_.time == 0) /* for audacious... */
-			currentTrack_.time    = map.value("length").toUInt();
-	}
+	Active = false;
+
+	QDBusConnection::sessionBus().disconnect(Service, "/org/mpris/MediaPlayer2", "org.freedesktop.DBus.Properties",
+	                                         "PropertiesChanged", this, SLOT(propertiesChanged(QDBusMessage)));
+
+	updateStatus(StatusStopped);
+
+	MediaPlayer::instance()->statusChanged();
+}
+
+void MPRISController::updateStatus(const PlayerStatus newStatus)
+{
+	if (newStatus == CurrentStatus)
+		return;
+
+	CurrentStatus = newStatus;
+	MediaPlayer::instance()->statusChanged();
+}
+
+void MPRISController::updateStatus(const QString &newStatus)
+{
+	if (newStatus == "Playing")
+		updateStatus(StatusPlaying);
+	else if (newStatus == "Paused")
+		updateStatus(StatusPaused);
+	else
+		updateStatus(StatusStopped);
+}
+
+TrackInfo MPRISController::toTrackInfo(const QVariantMap &metadata)
+{
+	TrackInfo result;
+
+	result.setTitle(metadata.value("xesam:title").toString());
+	result.setArtist(metadata.value("xesam:artist").toString());
+	result.setAlbum(metadata.value("xesam:album").toString());
+	result.setTrackNumber(metadata.value("xesam:trackNumber").toUInt());
+	result.setFile(metadata.value("mpris:url").toString());
+	result.setLength(metadata.value("mpris:length").toUInt() / 1000);
+
+	return result;
+}
+
+void MPRISController::updateMetadata(const QVariantMap &metadata)
+{
+	CurrentTrack = toTrackInfo(metadata);
 	MediaPlayer::instance()->titleChanged();
 }
 
-void MPRISController::getStatus()
+void MPRISController::nameOwnerChanged(const QString &service, const QString &previousOwner, const QString &currentOwner)
 {
-	if (!service.isEmpty())
-	{
-		QDBusInterface mprisApp(service, "/Player", "org.freedesktop.MediaPlayer");
-		QDBusReply<PlayerStatus> reply = mprisApp.call("GetStatus");
-		if (reply.isValid())
-		{
-			PlayerStatus status = reply.value();
-			currentStatus_ = status;
-		}
-	}
+	Q_UNUSED(previousOwner)
+
+	if (service != Service)
+		return;
+
+	if (currentOwner.isEmpty())
+		deactivate();
+	else
+		activate();
+}
+
+void MPRISController::propertiesChanged(const QDBusMessage &message)
+{
+	QList<QVariant> arguments = message.arguments();
+	if (3 != arguments.count())
+		return;
+
+	QString interfaceName = message.arguments().at(0).toString();
+	if (interfaceName != "org.mpris.MediaPlayer2.Player")
+		return;
+
+	QVariantMap changedProperties = qdbus_cast<QVariantMap>(arguments.at(1).value<QDBusArgument>());
+	if (changedProperties.contains("PlaybackStatus"))
+		updateStatus(changedProperties.value("PlaybackStatus").toString());
+	if (changedProperties.contains("Metadata"))
+		updateMetadata(qdbus_cast<QVariantMap>(changedProperties.value("Metadata")));
+}
+
+void MPRISController::fetchStatus()
+{
+	if (Service.isEmpty())
+		return;
+
+	QDBusInterface mprisApp(Service, "/org/mpris/MediaPlayer2", "org.freedesktop.DBus.Properties");
+	QDBusReply<QDBusVariant> reply = mprisApp.call("Get", "org.mpris.MediaPlayer2.Player", "PlaybackStatus");
+
+	if (!reply.isValid())
+		return;
+
+	updateStatus(qdbus_cast<QString>(reply.value().variant()));
+}
+
+void MPRISController::fetchMetadata()
+{
+	if (Service.isEmpty())
+		return;
+
+	QDBusInterface mprisApp(Service, "/org/mpris/MediaPlayer2", "org.freedesktop.DBus.Properties");
+	QDBusReply<QDBusVariant> reply = mprisApp.call("Get", "org.mpris.MediaPlayer2.Player", "Metadata");
+
+	if (!reply.isValid())
+		return;
+
+	updateMetadata(qdbus_cast<QVariantMap>(reply.value().variant()));
+}
+
+int MPRISController::getCurrentPosition()
+{
+	if (Service.isEmpty())
+		return 0;
+
+	QDBusInterface mprisApp(Service, "/org/mpris/MediaPlayer2", "org.freedesktop.DBus.Properties");
+	QDBusReply<QDBusVariant> reply = mprisApp.call("Get", "org.mpris.MediaPlayer2.Player", "Position");
+
+	if (!reply.isValid())
+		return 0;
+
+	return qdbus_cast<int>(reply.value().variant()) / 1000;
+}
+
+QList<TrackInfo> MPRISController::getTrackList()
+{
+	QList<TrackInfo> result;
+
+	if (Service.isEmpty())
+		return result;
+
+	QDBusInterface mprisApp(Service, "/org/mpris/MediaPlayer2", "org.mpris.MediaPlayer2.TrackList");
+	QDBusReply<QDBusVariant> reply = mprisApp.call("GetTracksMetadata");
+
+	if (!reply.isValid())
+		return result;
+
+	QVariantList trackList = qdbus_cast<QVariantList>(reply.value().variant());
+	foreach (const QVariant &track, trackList)
+		result.append(toTrackInfo(qdbus_cast<QVariantMap>(track)));
+
+	return result;
 }

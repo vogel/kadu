@@ -49,6 +49,7 @@ public:
 	void setVolume(int vol);
 	void incrVolume();
 	void decrVolume();
+
 };
 
 #endif

@@ -14,6 +14,7 @@ set (SOURCES
 	mpris-player-configuration-ui-handler.cpp
 	mpris-player.cpp
 	mpris-player-plugin.cpp
+	track-info.cpp
 )
 
 set (MOC_SOURCES

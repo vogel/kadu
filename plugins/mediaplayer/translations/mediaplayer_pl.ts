@@ -132,11 +132,11 @@ Win+ Enter/Backspace/Left/Right/Up/Down.</translation>
     </message>
     <message>
         <source>Put song title</source>
-        <translation>Wstaw nazwę odtwarzanego pliku</translation>
+        <translation>Wstaw tytuł utworu</translation>
     </message>
     <message>
         <source>Put song file name</source>
-        <translation>Wstaw tytuł utworu</translation>
+        <translation>Wstaw nazwę odtwarzanego pliku</translation>
     </message>
     <message>
         <source>Send all playlist titles</source>

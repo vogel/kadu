@@ -21,3 +21,7 @@ service=org.mpris.vlc
 [XMMS2]
 player=XMMS2
 service=org.mpris.xmms2
+
+[Clementine]
+player=Clementine
+service=org.mpris.clementine
