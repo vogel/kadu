@@ -26,23 +26,6 @@ set (MOC_SOURCES
 	player_commands.h
 )
 
-if (UNIX AND NOT APPLE)
-	set (SOURCES ${SOURCES}
-		mpris_controller.cpp
-		mpris_mediaplayer.cpp
-	)
-
-	set (MOC_SOURCES ${MOC_SOURCES}
-		mpris_controller.h
-		mpris_mediaplayer.h
-	)
-
-	set (DBUS_LIBS
-		${QT_QTDBUS_LIBRARY}
-	)
-endif (UNIX AND NOT APPLE)
-
-
 set (TRANSLATION_SOURCES
 	translations/mediaplayer_cs.ts
 	translations/mediaplayer_de.ts

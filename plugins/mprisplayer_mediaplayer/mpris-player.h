@@ -29,7 +29,7 @@
 #include "configuration/configuration-aware-object.h"
 #include "misc/path-conversion.h"
 
-#include "plugins/mediaplayer/mpris_mediaplayer.h"
+#include "mpris_mediaplayer.h"
 
 class QString;
 

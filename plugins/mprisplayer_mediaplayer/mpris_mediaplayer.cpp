@@ -38,7 +38,9 @@
 #include <QtDBus/QDBusReply>
 
 #include "debug.h"
-#include "mediaplayer.h"
+
+#include "plugins/mediaplayer/mediaplayer.h"
+
 #include "mpris_controller.h"
 #include "mpris_mediaplayer.h"
 

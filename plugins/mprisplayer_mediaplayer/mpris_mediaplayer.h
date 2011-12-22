@@ -3,9 +3,10 @@
 
 #include <QtCore/QObject>
 
+#include "plugins/mediaplayer/player_commands.h"
+#include "plugins/mediaplayer/player_info.h"
+
 #include "mpris_controller.h"
-#include "player_commands.h"
-#include "player_info.h"
 
 class MPRISMediaPlayer : public PlayerCommands, public PlayerInfo
 {
