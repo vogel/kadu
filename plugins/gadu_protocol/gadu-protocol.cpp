@@ -128,6 +128,9 @@ void GaduProtocol::setStatusFlags()
 
 void GaduProtocol::sendStatusToServer()
 {
+	if (!isConnected())
+		return;
+
 	if (!GaduSession)
 		return;
 

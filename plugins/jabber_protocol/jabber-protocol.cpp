@@ -280,6 +280,9 @@ void JabberProtocol::logout()
 
 void JabberProtocol::sendStatusToServer()
 {
+	if (!isConnected())
+		return;
+
 	JabberClient->setPresence(IrisStatusAdapter::toIrisStatus(status()));
 	account().accountContact().setCurrentStatus(status());
 }
