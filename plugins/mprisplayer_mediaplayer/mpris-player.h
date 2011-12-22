@@ -42,7 +42,7 @@ class MPRISPlayer : public MPRISMediaPlayer
 	static const QString UserPlayersListFile;
 	static const QString GlobalPlayersListFile;
 
-	explicit MPRISPlayer();
+	explicit MPRISPlayer(QObject *parent = 0);
 	virtual ~MPRISPlayer();
 
 	void prepareUserPlayersFile();

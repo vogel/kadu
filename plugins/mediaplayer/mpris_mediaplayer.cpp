@@ -42,8 +42,8 @@
 #include "mpris_controller.h"
 #include "mpris_mediaplayer.h"
 
-MPRISMediaPlayer::MPRISMediaPlayer(QString n, QString s) :
-		service(s), name(n)
+MPRISMediaPlayer::MPRISMediaPlayer(QObject *parent) :
+		PlayerCommands(parent)
 {
 	kdebugf();
 	controller = new MPRISController(service, this);

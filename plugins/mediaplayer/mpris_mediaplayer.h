@@ -21,8 +21,8 @@ class MPRISMediaPlayer : public PlayerCommands, public PlayerInfo
 	QString name;
 
 public:
-	MPRISMediaPlayer(QString n, QString s);
-	~MPRISMediaPlayer();
+	explicit MPRISMediaPlayer(QObject *parent = 0);
+	virtual ~MPRISMediaPlayer();
 
 	QString getTitle(int position = -1);
 	QString getAlbum(int position = -1);

@@ -49,8 +49,8 @@ void MPRISPlayer::destroyInstance()
 	Instance = 0;
 }
 
-MPRISPlayer::MPRISPlayer() :
-	MPRISMediaPlayer(QString(), QString())
+MPRISPlayer::MPRISPlayer(QObject *parent) :
+		MPRISMediaPlayer(parent)
 {
 	prepareUserPlayersFile();
 	replacePlugin();
