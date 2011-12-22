@@ -1,5 +1,6 @@
 ﻿+++ version 0.11.0-beta2
 * gui: #2192 fixed: added option to hide main window from taskbar on Windows (beevvy)
+* gui: #1767 fixed: show know buddies in "Open Chat" window first (Vogel)
 
 +++ version 0.11.0-beta1
 * plugins: #2272 fixed: added possibility to tell Kadu to try to load plugin failing to load on next Kadu run (beevvy)

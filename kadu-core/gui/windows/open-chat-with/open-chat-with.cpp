@@ -47,6 +47,7 @@
 #include "misc/misc.h"
 #include "model/model-chain.h"
 #include "os/generic/url-opener.h"
+#include "talkable/model/talkable-proxy-model.h"
 
 #include "activate.h"
 #include "debug.h"
@@ -192,6 +193,8 @@ void OpenChatWith::inputChanged(const QString &text)
 
 	ListModel = new BuddyListModel(matchingContacts, this);
 	Chain = new ModelChain(ListModel, this);
+	TalkableProxyModel *proxyModel = new TalkableProxyModel(Chain);
+	Chain->addProxyModel(proxyModel);
 
 	BuddiesWidget->setChain(Chain);
 

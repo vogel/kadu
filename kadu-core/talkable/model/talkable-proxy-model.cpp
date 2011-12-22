@@ -91,6 +91,11 @@ bool TalkableProxyModel::lessThan(const Buddy &left, const Buddy &right) const
 	if (left.isBlocked() && !right.isBlocked())
 		return false;
 
+	if (!left.isAnonymous() && right.isAnonymous())
+		return true;
+	if (left.isAnonymous() && !right.isAnonymous())
+		return false;
+
 	if (SortByStatusAndUnreadMessages)
 	{
 		const bool leftHasUnreadMessages = left.unreadMessagesCount() > 0;
