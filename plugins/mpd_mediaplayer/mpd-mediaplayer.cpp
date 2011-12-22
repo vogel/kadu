@@ -54,7 +54,7 @@ mpd_connection * MPDMediaPlayer::mpdConnect()
 	return mpd_connection_new(host, port, timeout * 1000);
 }
 
-QString MPDMediaPlayer::getTitle(int position)
+QString MPDMediaPlayer::getTitle()
 {
 	mpd_connection *con = mpdConnect();
 	if (!con)
@@ -64,8 +64,7 @@ QString MPDMediaPlayer::getTitle(int position)
 	mpd_status *status = mpd_run_status(con);
 	if (status)
 	{
-		if (-1 == position)
-			position = mpd_status_get_song_pos(status);
+		int position = mpd_status_get_song_pos(status);
 
 		mpd_song *song = mpd_run_get_queue_song_pos(con, position);
 		if (song)
@@ -80,7 +79,7 @@ QString MPDMediaPlayer::getTitle(int position)
 	return title;
 }
 
-QString MPDMediaPlayer::getArtist(int position)
+QString MPDMediaPlayer::getArtist()
 {
 	mpd_connection *con = mpdConnect();
 	if (!con)
@@ -90,8 +89,7 @@ QString MPDMediaPlayer::getArtist(int position)
 	mpd_status *status = mpd_run_status(con);
 	if (status)
 	{
-		if (-1 == position)
-			position = mpd_status_get_song_pos(status);
+		int position = mpd_status_get_song_pos(status);
 
 		mpd_song *song = mpd_run_get_queue_song_pos(con, position);
 		if (song)
@@ -106,7 +104,7 @@ QString MPDMediaPlayer::getArtist(int position)
 	return artist;
 }
 
-QString MPDMediaPlayer::getAlbum(int position)
+QString MPDMediaPlayer::getAlbum()
 {
 	mpd_connection *con = mpdConnect();
 	if (!con)
@@ -116,8 +114,7 @@ QString MPDMediaPlayer::getAlbum(int position)
 	mpd_status *status = mpd_run_status(con);
 	if (status)
 	{
-		if (-1 == position)
-			position = mpd_status_get_song_pos(status);
+		int position = mpd_status_get_song_pos(status);
 
 		mpd_song *song = mpd_run_get_queue_song_pos(con, position);
 		if (song)
@@ -132,7 +129,7 @@ QString MPDMediaPlayer::getAlbum(int position)
 	return album;
 }
 
-QString MPDMediaPlayer::getFile(int position)
+QString MPDMediaPlayer::getFile()
 {
 	mpd_connection *con = mpdConnect();
 	if (!con)
@@ -142,8 +139,7 @@ QString MPDMediaPlayer::getFile(int position)
 	mpd_status *status = mpd_run_status(con);
 	if (NULL != status)
 	{
-		if (-1 == position)
-			position = mpd_status_get_song_pos(status);
+		int position = mpd_status_get_song_pos(status);
 
 		mpd_song *song = mpd_run_get_queue_song_pos(con, position);
 		if (NULL != song)
@@ -159,7 +155,7 @@ QString MPDMediaPlayer::getFile(int position)
 	return file;
 }
 
-int MPDMediaPlayer::getLength(int position)
+int MPDMediaPlayer::getLength()
 {
 	mpd_connection *con = mpdConnect();
 	if (!con)
@@ -169,8 +165,7 @@ int MPDMediaPlayer::getLength(int position)
 	mpd_status *status = mpd_run_status(con);
 	if (status)
 	{
-		if (-1 == position)
-			position = mpd_status_get_song_pos(status);
+		int position = mpd_status_get_song_pos(status);
 
 		mpd_song *song = mpd_run_get_queue_song_pos(con, position);
 		if (song)
@@ -274,24 +269,6 @@ QStringList MPDMediaPlayer::getPlayListFiles()
 	mpd_connection_free(con);
 
 	return playlistFiles;
-}
-
-uint MPDMediaPlayer::getPlayListLength()
-{
-	mpd_connection *con = mpdConnect();
-	if (!con)
-		return 0;
-
-	uint playlistLength = 0;
-	mpd_status *status = mpd_run_status(con);
-	if (status)
-	{
-		playlistLength = mpd_status_get_queue_length(status);
-		mpd_status_free(status);
-	}
-	mpd_connection_free(con);
-
-	return playlistLength;
 }
 
 QString MPDMediaPlayer::getPlayerName()

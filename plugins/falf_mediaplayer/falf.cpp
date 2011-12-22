@@ -125,43 +125,32 @@ QStringList FalfMediaPlayer::getPlayListFiles()
 	return QStringList();
 }
 
-uint FalfMediaPlayer::getPlayListLength()
+QString FalfMediaPlayer::getTitle()
 {
-	kdebugf();
-	return 0;
-}
-
-QString FalfMediaPlayer::getTitle(int position)
-{
-	Q_UNUSED(position)
 	kdebugf();
 	return getData(TypeTitle);
 }
 
-QString FalfMediaPlayer::getAlbum(int position)
+QString FalfMediaPlayer::getAlbum()
 {
-	Q_UNUSED(position)
 	kdebugf();
 	return getData(TypeAlbum);
 }
 
-QString FalfMediaPlayer::getArtist(int position)
+QString FalfMediaPlayer::getArtist()
 {
-	Q_UNUSED(position)
 	kdebugf();
 	return getData(TypeArtist);
 }
 
-QString FalfMediaPlayer::getFile(int position)
+QString FalfMediaPlayer::getFile()
 {
-	Q_UNUSED(position)
 	kdebugf();
 	return QString();
 }
 
-int FalfMediaPlayer::getLength(int position)
+int FalfMediaPlayer::getLength()
 {
-	Q_UNUSED(position)
 	kdebugf();
 	return 0;
 }

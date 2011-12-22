@@ -75,22 +75,14 @@ QStringList ITunesMediaPlayer::getPlayListFiles()
 	return list;
 }
 
-uint ITunesMediaPlayer::getPlayListLength()
+QString ITunesMediaPlayer::getTitle()
 {
-	kdebugf();
-	QByteArray reply = executeCommand("tell application \"iTunes\" to get duration of current playlist");
-	return reply.toInt();
-}
-
-QString ITunesMediaPlayer::getTitle(int position)
-{
-	Q_UNUSED(position)
 	kdebugf();
 	Tune t = controller->currentTune();
 	return t.name();
 }
 
-QString ITunesMediaPlayer::getAlbum(int position)
+QString ITunesMediaPlayer::getAlbum()
 {
 	Q_UNUSED(position)
 	kdebugf();
@@ -98,25 +90,22 @@ QString ITunesMediaPlayer::getAlbum(int position)
 	return t.album();
 }
 
-QString ITunesMediaPlayer::getArtist(int position)
+QString ITunesMediaPlayer::getArtist()
 {
-	Q_UNUSED(position)
 	kdebugf();
 	Tune t = controller->currentTune();
 	return t.artist();
 }
 
-QString ITunesMediaPlayer::getFile(int position)
+QString ITunesMediaPlayer::getFile()
 {
-	Q_UNUSED(position)
 	kdebugf();
 	Tune t = controller->currentTune();
 	return t.location();
 }
 
-int ITunesMediaPlayer::getLength(int position)
+int ITunesMediaPlayer::getLength()
 {
-	Q_UNUSED(position)
 	kdebugf();
 	Tune t = controller->currentTune();
 	return t.time();

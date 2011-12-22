@@ -174,53 +174,36 @@ QStringList AmarokMediaPlayer::getPlayListFiles()
 	kdebugf2();
 }
 
-uint AmarokMediaPlayer::getPlayListLength()
+QString AmarokMediaPlayer::getTitle()
 {
-	kdebugf();
-	return getUint("playlist", "getTotalTrackCount");
-	kdebugf2();
-}
-
-QString AmarokMediaPlayer::getTitle(int position)
-{
-	Q_UNUSED(position)
-
 	kdebugf();
 	return getString("player", "title");
 	kdebugf2();
 }
 
-QString AmarokMediaPlayer::getAlbum(int position)
+QString AmarokMediaPlayer::getAlbum()
 {
-	Q_UNUSED(position)
-
 	kdebugf();
 	return getString("player", "album");
 	kdebugf2();
 }
 
-QString AmarokMediaPlayer::getArtist(int position)
+QString AmarokMediaPlayer::getArtist()
 {
-	Q_UNUSED(position)
-
 	kdebugf();
 	return getString("player", "artist");
 	kdebugf2();
 }
 
-QString AmarokMediaPlayer::getFile(int position)
+QString AmarokMediaPlayer::getFile()
 {
-	Q_UNUSED(position)
-
 	kdebugf();
 	return getString("player", "path");
 	kdebugf2();
 }
 
-int AmarokMediaPlayer::getLength(int position)
+int AmarokMediaPlayer::getLength()
 {
-	Q_UNUSED(position)
-
 	kdebugf();
 	return getInt("player", "trackTotalTime") * 1000;
 	kdebugf2();

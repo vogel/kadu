@@ -476,10 +476,6 @@ void MediaPlayer::putPlayList(int ident)
 // 		}
 // 	}
 
-	uint lgt = getPlayListLength();
-	if (lgt == 0)
-		return;
-
 	// Creating list of elements to paste/send
 	switch (id)
 	{
@@ -491,6 +487,11 @@ void MediaPlayer::putPlayList(int ident)
 			break;
 	}
 
+	if (list.isEmpty())
+		return;
+
+	uint lgt = list.size();
+
 	// Calculating playlist length as characters
 	uint chars = 0, emptyEntries = 0;
 	for (uint cnt = 0; cnt < lgt; cnt++)
@@ -499,7 +500,6 @@ void MediaPlayer::putPlayList(int ident)
 			emptyEntries++;
 
 		chars += list[cnt].length();
-		chars += formatLength(getLength(cnt)).length();
 		chars += QString::number(cnt).length();
 		chars += 12; /*
 						 The white-space betwean entry and length (1),
@@ -531,7 +531,7 @@ void MediaPlayer::putPlayList(int ident)
 	chat->edit()->moveCursor(QTextCursor::End);
 	for (uint cnt = 0; cnt < lgt; cnt++)
 	{
-		str = QString::number((cnt + 1)) + ". " + list[cnt] + " (" + formatLength(getLength(cnt)) + ")\n";
+		str = QString::number((cnt + 1)) + ". " + list[cnt] + "\n";
 		// TODO to remove? - spliting in protocol!!
 		if ((chat->edit()->document()->toPlainText().length() + str.length()) >= 2000)
 			chat->sendMessage();
@@ -927,11 +927,11 @@ QString MediaPlayer::getPlayerVersion()
 	return QString();
 }
 
-QString MediaPlayer::getTitle(int position)
+QString MediaPlayer::getTitle()
 {
 	if (playerInfoSupported())
 	{
-		QString title = playerInfo->getTitle(position);
+		QString title = playerInfo->getTitle();
 
 		// Lets cut nasty signatures
 		if (config_file.readBoolEntry("MediaPlayer", "signature", true))
@@ -946,34 +946,34 @@ QString MediaPlayer::getTitle(int position)
 	return QString();
 }
 
-QString MediaPlayer::getAlbum(int position)
+QString MediaPlayer::getAlbum()
 {
 	if (playerInfoSupported())
-		return playerInfo->getAlbum(position);
+		return playerInfo->getAlbum();
 
 	return QString();
 }
 
-QString MediaPlayer::getArtist(int position)
+QString MediaPlayer::getArtist()
 {
 	if (playerInfoSupported())
-		return playerInfo->getArtist(position);
+		return playerInfo->getArtist();
 
 	return QString();
 }
 
-QString MediaPlayer::getFile(int position)
+QString MediaPlayer::getFile()
 {
 	if (playerInfoSupported())
-		return playerInfo->getFile(position);
+		return playerInfo->getFile();
 
 	return QString();
 }
 
-int MediaPlayer::getLength(int position)
+int MediaPlayer::getLength()
 {
 	if (playerInfoSupported())
-		return playerInfo->getLength(position);
+		return playerInfo->getLength();
 
 	return 0;
 }
@@ -1016,14 +1016,6 @@ QStringList MediaPlayer::getPlayListFiles()
 		return playerInfo->getPlayListFiles();
 
 	return QStringList();
-}
-
-uint MediaPlayer::getPlayListLength()
-{
-	if (playerInfoSupported())
-		return playerInfo->getPlayListLength();
-
-	return 0;
 }
 
 void MediaPlayer::createDefaultConfiguration()

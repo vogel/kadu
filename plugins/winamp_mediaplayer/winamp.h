@@ -23,11 +23,11 @@ class WinampMediaPlayer : public PlayerCommands, public PlayerInfo
 		~WinampMediaPlayer();
 
 		// PlayerInfo
-		QString getTitle(int position = -1);
-		QString getAlbum(int position = -1);
-		QString getArtist(int position = -1);
-		QString getFile(int position = -1);
-		int getLength(int position = -1);
+		QString getTitle();
+		QString getAlbum();
+		QString getArtist();
+		QString getFile();
+		int getLength();
 		int getCurrentPos();
 		bool isPlaying();
 		bool isActive();

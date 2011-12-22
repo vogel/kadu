@@ -191,78 +191,44 @@ QStringList MPRISMediaPlayer::getPlayListFiles()
 	return result;
 }
 
-uint MPRISMediaPlayer::getPlayListLength()
+QString MPRISMediaPlayer::getTitle()
 {
-	return controller->getTrackList().size();
+	if (!isPlaying())
+		return QString();
+
+	return controller->track().title();
 }
 
-QString MPRISMediaPlayer::getTitle(int position)
+QString MPRISMediaPlayer::getAlbum()
 {
-	kdebugf();
-	if (!isPlaying()) return QString();
+	if (!isPlaying())
+		return QString();
 
-	if (position == -1)
-		return controller->track().title();
-	else
-		return getStringMapValue("/TrackList", "GetMetadata", position, "title");
-	kdebugf2();
+	return controller->track().album();
 }
 
-QString MPRISMediaPlayer::getAlbum(int position)
+QString MPRISMediaPlayer::getArtist()
 {
-	kdebugf();
-	if (!isPlaying()) return QString();
+	if (!isPlaying())
+		return QString();
 
-	if ((position == -1) && !controller->track().album().isEmpty())
-		return controller->track().album();
-
-	return getStringMapValue("/TrackList", "GetMetadata", position, "album");
-	kdebugf2();
+	return controller->track().artist();
 }
 
-QString MPRISMediaPlayer::getArtist(int position)
+QString MPRISMediaPlayer::getFile()
 {
-	kdebugf();
-	if (!isPlaying()) return QString();
+	if (!isPlaying())
+		return QString();
 
-	if ((position == -1) && !controller->track().artist().isEmpty())
-		return controller->track().artist();
-
-	return getStringMapValue("/TrackList", "GetMetadata", position, "artist");
-	kdebugf2();
+	return controller->track().file();
 }
 
-QString MPRISMediaPlayer::getFile(int position)
-{
-	kdebugf();
-	if (!isPlaying()) return QString();
-
-	if ((position == -1) && !controller->track().file().isEmpty())
-		return controller->track().file();
-
-	QString file = getStringMapValue("/TrackList", "GetMetadata", position, "location");
-	/* audacious goes different way... */
-	if (file.isEmpty())
-		file = getStringMapValue("/TrackList", "GetMetadata", position, "URI");
-
-	return file;
-}
-
-int MPRISMediaPlayer::getLength(int position)
+int MPRISMediaPlayer::getLength()
 {
 	if (!isPlaying())
 		return 0;
 
-	if (position == -1)
-		return controller->track().length();
-
-	int len = getIntMapValue("/TrackList", "GetMetadata", position, "mtime");
-	/* here again audacious uses different filed in metafile... */
-	if (len == -1)
-		len = getIntMapValue("/TrackList", "GetMetadata", position, "length");
-
-	return len;
-	kdebugf2();
+	return controller->track().length();
 }
 
 // Player

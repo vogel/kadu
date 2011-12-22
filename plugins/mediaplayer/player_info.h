@@ -18,7 +18,7 @@ public:
 		return "XMMS" string, etc. This string is will be used on user interface.
 	*/
 	virtual QString getPlayerName() = 0;
- 
+
  	/**
 		Returns version of player that this class is implemented for.
 	*/
@@ -30,31 +30,31 @@ public:
 		entry (if supported), which title should be returned of.
 		Value -1 of 'position' means current playing track.
 	*/
-	virtual QString getTitle(int position = -1) = 0;
+	virtual QString getTitle() = 0;
 
 	/**
 		Returns album title as string.
 	*/
-	virtual QString getAlbum(int position = -1) = 0;
+	virtual QString getAlbum() = 0;
 
 	/**
 		Returns artist as string.
 	*/
-	virtual QString getArtist(int position = -1) = 0;
+	virtual QString getArtist() = 0;
 
 	/**
 		Returns song file name as string.
 		Optional argument 'position' similar as in
 		getTitle() method.
 	*/
-	virtual QString getFile(int position = -1) = 0;
+	virtual QString getFile() = 0;
 
 	/**
 		Returns track length in miliseconds.
 		Optional argument 'position' similar as in
 		getTitle() method.
 	*/
-	virtual int getLength(int position = -1) = 0;
+	virtual int getLength() = 0;
 
 	/**
 		Returns current position of played track in miliseconds.
@@ -80,11 +80,6 @@ public:
 		Returns list of file names of entries in playlist.
 	*/
 	virtual QStringList getPlayListFiles() = 0;
-
-	/**
-		Returns number of entries in playlist.
-	*/
-	virtual uint getPlayListLength() = 0;
 
 };
 
